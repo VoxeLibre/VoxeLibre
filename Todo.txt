@@ -1,0 +1,45 @@
++----------------------------------------------------------------+
+¦ LISTE DES AJOUTS, DES MODIFICATIONS ET DES IDÉES POUR MINETEST ¦
++----------------------------------------------------------------+
+
+  ### À AJOUTER ###
+ 
+    - La TNT doit détruire les drops à proximités.
+    - Poser un bloc sur des drops devrait les pousser ailleur, dans un bloc d'air (là les drops sont dans le blocs, il faut donc le casser).
+	- Les drops qui touchent un cactus doivent être détruits.
+	- Prendre un stack avec clic gauche puis l'étaler avec clic gauche devrait le diviser en parts égales dans les cases survolées et laisser le reste indivisible sur la souris.
+	- Prendre un stack avec clic gauche puis l'étaler avec clic droit devrait déposer 1 item seulement dans les cases survolées et laisser le reste sur la souris.
+    - Shift + clic sur un stack doit le déposer en entier dans l'inventaire (ou l'inverse).
+	- Prendre un item avec la souris puis double cliquer sur un 2ème avec Ctrl maintenu (1er toujours sur la souris), doit prendre le 2ème item au maximum de stack disponibles/prenables selon la place dispo.
+	- Double cliquer sur un item doit prendre un stack complet (ou le maxi dispo si moins).
+	- Les distributeurs, les droppeurs, les entonnoirs et les comparateurs.
+	- Tous les types d'arbres et de fleurs.
+	- Les courrants d'eau.
+	- Les animaux et les monstres.
+	- L'expérience.
+	- Les enchantements.
+	- L'enclume et la réparation d'items.
+	- La fusion d'items au niveau des enchantements.
+	- Le renomage des items.
+	- Les villageois et les échanges.
+	- Les structures sur la carte (mine abandonnée, donjon, temple, pyramide, village de pnj, temple sous marin et fort).
+	- Les wagons et leurs dérivés (four, coffre, entonnoir, tnt...).
+ 
+ 
+  ### À MODIFIER ###
+ 
+	- Ajouter une durée à la commande /setweather (et si on veux coler la renomer /weather et changer 'none' en 'clear' et la durée maxi à 999999).
+	- Debug le lit, crash quand on dort dedans (et ajouter le point de respawn si inexistant).
+	- Terminer le tir de l'arc.
+ 
+ 
+  ### IDÉES DIVERSES ###
+ 
+    - Pouvoir remonter dans les commandes du tchat.
+	- Pourquoi pas regrouper la saisie et le tchat lui même un peut comme minecraft le fait.
+	- Ouvrir le tchat avec le signe '/' quand on appuis sur '/' (même sans le Maj).
+	- Pouvoir modifier sa vitesse de vol en /gamemode 1.
+	- En mode F10 : bloquer la caméra et afficher le pointeur de souris.
+	- Écrire en couleur dans le tchat et sur les pancartes.
+	
+	
