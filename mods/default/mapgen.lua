@@ -25,7 +25,7 @@ minetest.register_alias("mapgen_stone_with_coal", "default:stone_with_coal")
 minetest.register_alias("mapgen_stone_with_iron", "default:stone_with_iron")
 minetest.register_alias("mapgen_desert_sand", "default:sand")
 minetest.register_alias("mapgen_desert_stone", "default:sandstone")
-
+minetest.register_alias("mapgen_river_water_source", "default:water_source")
 --
 -- Ore generation
 --
