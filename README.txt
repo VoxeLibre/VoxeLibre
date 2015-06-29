@@ -1,5 +1,5 @@
 ==============================================
-=   				MINECLONE				 =
+=   	           MINECLONE		     =
 =   	Minecraft-like or Perfect clone ?    =
 ==============================================
 
@@ -11,6 +11,11 @@ LGPL v2.1 (Dave Devil's) see licence.txt
 
 Mods Credit :
 See README.txt in each mod directory for information about other authors.
+
+Credit for Support :
+Tox82, MinetestForFun & Calinou for help
+Celeron55 for creating Minetest
+Bob Lennon because it's a pyro-barbare
 
 
 License of media (textures and sounds)
