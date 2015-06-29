@@ -1,0 +1,9 @@
+#Template
+
+Reading cached character database. =
+Font seems to have changed. Rebuilding cache. =
+Could not find font line height in cached DB. Trying brute force. =
+Sign = 
+%s wrote "%s" to sign at %s = 
+Registered %s and %s = 
+signs loaded = 

@@ -1,0 +1,10 @@
+This mod is modified by PilzAdam
+
+Changes:
+- Remove shadows under signs
+- New input system: - There is just one text line that automatically will be splitted up to the lines on the sign
+                    - You can force a newline with " | "
+- It overrides the default signs
+- Make it stackable
+
+License of code: WTFPL

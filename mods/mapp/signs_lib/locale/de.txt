@@ -1,0 +1,9 @@
+# Translation by Xanthin
+
+Reading cached character database. = Lese zwischengespeicherte Buchstabendatenbank.
+Font seems to have changed. Rebuilding cache. = Schriftart scheint sich geaendert zu haben. Wiederaufbau des Zwischenspeichers.
+Could not find font line height in cached DB. Trying brute force. = Konnte die Schriftzeilenhoehe nicht in der zwischengespeicherten DB finden. Versuche Brute-Force.
+Sign = Schild
+%s wrote "%s" to sign at %s = %s schrieb "%s" auf das Schild bei %s
+Registered %s and %s = Registrierte %s und %s
+signs loaded = signs geladen

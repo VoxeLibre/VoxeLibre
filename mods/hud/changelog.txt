@@ -1,0 +1,47 @@
+0.2 Beta
+--------
+- added support of costum config files
+- you can eat max. 50% more than before (although it isnt shown in hunger bar)
+- you get healed with 8 breads and more (in hunger bar) now
+- a bread (from farming) == 2 breads in hunger bar
+
+0.2.1 Beta
+----------
+- tweaked override of food
+- added support for food of dwares, moretrees and simple mobs
+
+0.2.2 Beta
+----------
+- added support for food of animalmaterials (mobf modpack),fishing
+
+0.2.3 Beta
+----------
+- added support for food of glooptest and bushes (commit by CheeseKeg)
+
+0.3 Beta
+----------
+- added fancy borders of hud inventory bar (only for screenheight <= 800)
+
+0.4 Beta
+----------
+- enabled drowning
+
+0.5 Beta
+----------
+- removed the fancy borders of hud inventory bar and moved to new native support
+- moved crosshair to native support too
+
+1.0
+---
+- hunger is reset after death
+- health and hunger bar is shown correct on all screen resolutions now
+- switched to changed native hotbar image support
+- fixed revival of player when drown
+- hunger bar is not shown anymore if hunger is disabled
+- hunger can be disabled by minetest.conf ("hud_hunger_enable = false")
+
+1.1
+---
+- added support for stu's 3darmor mod
+- restructured and cleaned up code
+- added support for poisen food (damages player, but does not kill)
