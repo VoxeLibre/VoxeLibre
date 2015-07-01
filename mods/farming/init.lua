@@ -65,27 +65,6 @@ function farming:place_seed(itemstack, placer, pointed_thing, plantname)
 end
 
 
-minetest.register_abm({
-	nodenames = {"group:dig_by_water"},
-	neighbors = {"group:water"},
-	interval = 1,
-	chance = 1,
-	action = function(pos, node, active_object_count, active_object_count_wider)
-		for xp=-1,1 do
-			for zp=-1,1 do
-				p = {x=pos.x+xp, y=pos.y, z=pos.z+zp}
-				n = minetest.env:get_node(p)
-				-- On verifie si il y a de l'eau
-				if (n.name=="default:water_flowing") then
-						drop_attached_node(pos)
-						minetest.env:dig_node(pos)
-						break
-				end
-			end
-		end
-		
-	end,
-})
 
 -- ========= SOIL =========
 dofile(minetest.get_modpath("farming").."/soil.lua")

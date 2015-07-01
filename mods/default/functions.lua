@@ -96,22 +96,37 @@ grow_reeds = function(pos, node)
 end
 
 -- ABMs
+
 minetest.register_abm({
 	nodenames = {"group:dig_by_water"},
 	neighbors = {"group:water"},
 	interval = 1,
 	chance = 1,
-	action = function(pos)
-		local originalpos = pos
-		for dx=-1,1 do
-			for dy=-1,1 do
-				pos.x = pos.x+dx
-				pos.y = pos.y+dy
-				if minetest.env:get_node(pos).name == "group:water" then
-					minetest.env:set_node(pos, {name="default:air"})
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		for xp=-1,1 do
+			for zp=-1,1 do
+				local p = {x=pos.x+xp, y=pos.y, z=pos.z+zp}
+				local n = minetest.env:get_node(p)
+				-- On verifie si il y a de l'eau
+				if (n.name=="default:water_flowing") then
+						drop_attached_node(pos)
+						minetest.env:dig_node(pos)
+						break
 				end
 			end
 		end
+		-- cas rare
+		for yp=-1,1 do
+			local p = {x=pos.x, y=pos.y+yp, z=pos.z}
+			local n = minetest.env:get_node(p)
+			-- On verifie si il y a de l'eau
+			if (n.name=="default:water_flowing") then
+				drop_attached_node(pos)
+				minetest.env:dig_node(pos)
+				break
+			end
+		end
+		
 	end,
 })
 
