@@ -46,7 +46,7 @@ function watch.pega_hora(tipo)
   local tempo_m =math.floor((tempo - tempo_h)*60) --Get only minutes
 
   --Hour
-  tempo_h_12=tempo_h
+  local tempo_h_12 = tempo_h
   if tempo_h > 12 then -- Converte time to time in 12h format
     tempo_h_12 = tempo_h - 12
   end
@@ -112,7 +112,7 @@ end
 minetest.register_globalstep(function(dtime)
   local t="a" -- d to digital, a to analogic
 
-  now = watch.pega_hora(2)
+  local now = watch.pega_hora(2)
 --DOM_inspeciona_r("Hora:"..now)
   if now == "12" then now = "0" end
 

@@ -373,7 +373,7 @@ minetest.register_node("default:sapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1},
+	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1},
 	sounds = default.node_sound_defaults(),
 })
 
@@ -469,7 +469,7 @@ minetest.register_node("default:junglesapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1},
+	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1},
 	sounds = default.node_sound_defaults(),
 })
 
@@ -535,7 +535,7 @@ minetest.register_node("default:acaciasapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1},
+	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1},
 	sounds = default.node_sound_defaults(),
 })
 
@@ -600,7 +600,7 @@ minetest.register_node("default:sprucesapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1},
+	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1},
 	sounds = default.node_sound_defaults(),
 })
 

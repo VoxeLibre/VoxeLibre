@@ -1,4 +1,4 @@
-worldedit = worldedit or {}
+worldedit = {}
 worldedit.version = {major=1, minor=0}
 worldedit.version_string = "1.0"
 

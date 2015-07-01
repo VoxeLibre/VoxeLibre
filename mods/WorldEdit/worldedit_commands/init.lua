@@ -14,6 +14,7 @@ end
 
 dofile(minetest.get_modpath("worldedit_commands") .. "/mark.lua")
 dofile(minetest.get_modpath("worldedit_commands") .. "/safe.lua")
+safe_region = safe_region or function(callback) return callback end
 
 local get_position = function(name) --position 1 retrieval function for when not using `safe_region`
 	local pos1 = worldedit.pos1[name]
@@ -858,7 +859,7 @@ minetest.register_chatcommand("/suppress", {
 		local node = get_node(name, param)
 		local count = worldedit.suppress(worldedit.pos1[name], worldedit.pos2[name], node)
 		worldedit.player_notify(name, count .. " nodes suppressed")
-	end, check_set),
+	end, check_region),
 })
 
 minetest.register_chatcommand("/highlight", {
@@ -869,7 +870,7 @@ minetest.register_chatcommand("/highlight", {
 		local node = get_node(name, param)
 		local count = worldedit.highlight(worldedit.pos1[name], worldedit.pos2[name], node)
 		worldedit.player_notify(name, count .. " nodes highlighted")
-	end, check_set),
+	end, check_region),
 })
 
 minetest.register_chatcommand("/restore", {
