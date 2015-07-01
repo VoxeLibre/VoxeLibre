@@ -97,6 +97,25 @@ end
 
 -- ABMs
 minetest.register_abm({
+	nodenames = {"group:dig_by_water"},
+	neighbors = {"group:water"},
+	interval = 1,
+	chance = 1,
+	action = function(pos)
+		local originalpos = pos
+		for dx=-1,1 do
+			for dy=-1,1 do
+				pos.x = pos.x+dx
+				pos.y = pos.y+dy
+				if minetest.env:get_node(pos).name == "group:water" then
+					minetest.env:set_node(pos, {name="default:air"})
+				end
+			end
+		end
+	end,
+})
+
+minetest.register_abm({
 	nodenames = {"default:cactus"},
 	neighbors = {"group:sand"},
 	interval = 25,
