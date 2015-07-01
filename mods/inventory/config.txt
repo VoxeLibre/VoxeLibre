@@ -1,13 +1,5 @@
 --Configuration file for Inventory
 
+-- Set "Creative" for all Player have creatif , set "Survival" for all player in normal mode
 Default_Mode = "Survival"
---Mode players are in when they join for the first time.  Possible values: Creative, Survival. CASE SENSITIVE
 
---IMPORTANT: This formspec must be valid.  If you want compatibility with other inventory-changing mods
---or games, you must change the above to the formspec definition for that mod and remove it
---from their mod.
-
---NOTE: At the moment, the creative formspec cannot be changed, as it is required to use variables inside the mod.
---You can try to change it, but it probably will not work.  The same is true for a survival inventory with variables,
---such as inventory_plus.  It is still possible to change the SURVIVAL_FORMSPEC variable inside the code to cope
---with this, but it will not be easy.

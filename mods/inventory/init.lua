@@ -2,7 +2,14 @@ local path = minetest.get_modpath(minetest.get_current_modname())
 
 local filepath = minetest.get_worldpath()
 
-local function save_player_data()
+CREATIVE_SEARCH_ITEMS = ""
+
+local creative_type = "search"
+
+filepath = minetest.get_worldpath()
+se = {}
+
+function save_player_data()
 	local file = io.open(filepath .. "/playerdata.txt", "w")
 	file:write(minetest.serialize(playerdata))
 	file:close()
@@ -20,6 +27,8 @@ function load_player_data()
 	return {}
 end
 
+
+
 inventory = {}
 inventory.inventory_size = 0
 pagenum = 0
@@ -29,21 +38,34 @@ dofile(path.."/config.txt")
 dofile(path.."/api.lua")
 dofile(path.."/workbench.lua")
 
-minetest.register_on_joinplayer(function(player)
-	pname = player:get_player_name()
-	playerdata = load_player_data()
+local function save_newplayer(pname)
 	if not playerdata[pname] then
 		playerdata[pname] = {}
+		playerdata[pname]['isPlayer'] = true
 		playerdata[pname]['gamemode'] = Default_Mode
 		save_player_data()
+		minetest.after(1, function() load_player_data() end)
+		playerdata = load_player_data()
+	end
+end
+
+minetest.register_on_joinplayer(function(player)
+	local pname = player:get_player_name()
+	local playerdata = load_player_data()
+	if not playerdata[pname] then
+		playerdata[pname] = {}
+		playerdata[pname]['isPlayer'] = true
+		playerdata[pname]['gamemode'] = Default_Mode
+		save_player_data()
+
 	end
 	if not playerdata[pname]['gamemode'] then
 		playerdata[pname]['gamemode'] = Default_Mode
 		save_player_data()
 		playerdata = load_player_data()
-		minetest.after(0.3, function() updategamemode(pname, "0") end)
+		minetest.after(1, function() updategamemode(pname, "0") end)
 	else
-		minetest.after(0.3, function() updategamemode(pname, "0") end)
+		minetest.after(1, function() updategamemode(pname, "0") end)
 	end
 end)
 
@@ -62,7 +84,7 @@ local trash = minetest.create_detached_inventory("creative_trash", {
 trash:set_size("main", 1)
 
 
-creative_list = {}
+local creative_list = {}
 for name,def in pairs(minetest.registered_items) do
 		if (not def.groups.not_in_creative_inventory or def.groups.not_in_creative_inventory == 0)
 				and def.description and def.description ~= "" then
@@ -116,13 +138,16 @@ end)
 function updategamemode(pname, status)
 	playerdata = load_player_data()
 	if not status then
-	print(pname.." has switched to "..playerdata[pname]['gamemode'].." Mode.")
-	minetest.chat_send_all(pname.." has switched to "..playerdata[pname]['gamemode'].." Mode.")
+		print(pname.." has switched to "..playerdata[pname]['gamemode'].." Mode.")
+		minetest.chat_send_all(pname.." has switched to "..playerdata[pname]['gamemode'].." Mode.")
+	end
+	print(playerdata[pname])
+	if playerdata[pname] == nil then
+		save_newplayer(pname)
 	end
 	if playerdata[pname]['gamemode'] == "Creative" then
-	local player = minetest.env:get_player_by_name(pname)
-	
-	inventory.set_player_formspec(player, 1, 1)
+		local player = minetest.env:get_player_by_name(pname)
+		inventory.set_player_formspec(player, 1, 1)
 	else
 	
 	local player = minetest.env:get_player_by_name(pname)
@@ -132,13 +157,14 @@ function updategamemode(pname, status)
 end
 inventory.set_player_formspec = function(player, start_i, pagenum)
 playerdata = load_player_data()
-	if playerdata[player:get_player_name()]['gamemode'] == "Creative" or creative_type == "default" then
+	if playerdata[player:get_player_name()]['gamemode'] == "Creative" then
 		inventory.creative_inv(player)
 		inventory.hotbar(player)
 	end
-	if creative_type == "search" then
-		pagenum = math.floor(pagenum)
-		pagemax = math.floor((inventory.inventory_size-1) / (9*3) + 1)
+	
+	if creative_type == "search" and playerdata[player:get_player_name()]['gamemode'] == "Creative" then
+		local pagenum = math.floor(pagenum)
+		local pagemax = math.floor((inventory.inventory_size-1) / (9*3) + 1)
 		CREATIVE_SEARCH_ITEMS = "invsize[10,7;]"..
 		"background[-0.22,-0.25;10.8,7.7;creative_inventory_bg.png]"..
 			"button[8,0;1.5,1;creative_search;Search]"..
@@ -158,7 +184,7 @@ playerdata = load_player_data()
 	end
 end
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-	if not playerdata[pname]['gamemode'] == "Creative" then
+	if playerdata[player:get_player_name()]['gamemode'] == "Survival" then
 		return
 	end
 	-- Figure out current page from formspec
@@ -202,10 +228,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	inventory.set_player_formspec(player, start_i, start_i / (9*3) + 1)
 end)
 
+local gm_priv = false
+
 if minetest.setting_getbool("creative_mode")==false then
-	local gm_priv = true
+	 gm_priv = true
 elseif minetest.setting_getbool("creative_mode")==true then
-	local gm_priv = false
+	 gm_priv = false
 end
 
 minetest.register_chatcommand('gamemode',{
