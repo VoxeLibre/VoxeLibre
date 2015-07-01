@@ -3,19 +3,19 @@
 =   	Minecraft-like or Perfect clone ?    =
 ==============================================
 
-License of source code
-----------------------
+License of source code (LUA)
+----------------------------
 
 Mineclone source :
-LGPL v2.1 (Dave Devil's) see licence.txt
+LGPL v2.1 (licence.txt) - Dave Devil's 
 
 Mods Credit :
 See README.txt in each mod directory for information about other authors.
 
 Credit for Support :
-Tox82, MinetestForFun & Calinou for help
+Tox82, MinetestForFun & Calinou for help :D
 Celeron55 for creating Minetest
-Bob Lennon because it's a pyro-barbare
+Bob Lennon because ... it's a pyro-barbarian <3 !
 
 
 License of media (textures and sounds)
@@ -31,4 +31,4 @@ See README.txt in each mod directory for information about other authors.
 http://www.minecraftforum.net/topic/72747-/
 
 License of menu/header.png
-Copyright (C) 2014 DaveDevil's CC BY-SA 3.0
+CC BY-SA 3.0 - 2014-2015 - DaveDevil's 
