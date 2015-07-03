@@ -1,3 +1,4 @@
+local init = os.clock()
 farming = {}
 
 function farming:add_plant(full_grown, names, interval, chance)
@@ -90,4 +91,5 @@ dofile(minetest.get_modpath("farming").."/potatoes.lua")
 -- ========= MUSHROOMS =========
 dofile(minetest.get_modpath("farming").."/mushrooms.lua")
 
-
+local time_to_load= os.clock() - init
+print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))

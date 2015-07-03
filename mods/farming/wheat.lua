@@ -10,7 +10,8 @@ minetest.register_node("farming:wheat_1", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	walkable = false,
-	drawtype = "plantlike",
+	drawtype = "nodebox",
+	paramtype = "light",
 	drop = "farming:wheat_seed",
 	tiles = {"farming_wheat_1.png"},
 	selection_box = {
@@ -20,13 +21,23 @@ minetest.register_node("farming:wheat_1", {
 		},
 	},
 	groups = {snappy=3, flammable=2, not_in_creative_inventory=1,dig_by_water=1},
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.3125, -0.5, -0.5, -0.3125, 0.375, 0.5}, -- NodeBox1
+			{0.3125, -0.5, -0.5, 0.3125, 0.375, 0.5}, -- NodeBox2
+			{-0.5, -0.5, 0.375, 0.5, 0.375, 0.375}, -- NodeBox3
+			{-0.5, -0.5, -0.25, 0.5, 0.375, -0.25}, -- NodeBox4
+		}
+	},
 })
 
 minetest.register_node("farming:wheat_2", {
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
-	drawtype = "plantlike",
+	drawtype = "nodebox",
+	paramtype = "light",
 	drop = "farming:wheat_seed",
 	tiles = {"farming_wheat_2.png"},
 	selection_box = {
@@ -36,13 +47,23 @@ minetest.register_node("farming:wheat_2", {
 		},
 	},
 	groups = {snappy=3, flammable=2, not_in_creative_inventory=1,dig_by_water=1},
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.3125, -0.5, -0.5, -0.3125, 0.375, 0.5}, -- NodeBox1
+			{0.3125, -0.5, -0.5, 0.3125, 0.375, 0.5}, -- NodeBox2
+			{-0.5, -0.5, 0.375, 0.5, 0.375, 0.375}, -- NodeBox3
+			{-0.5, -0.5, -0.25, 0.5, 0.375, -0.25}, -- NodeBox4
+		}
+	},
 })
 
 minetest.register_node("farming:wheat_3", {
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
-	drawtype = "plantlike",
+	drawtype = "nodebox",
+	paramtype = "light",
 	drop = "farming:wheat_seed",
 	tiles = {"farming_wheat_3.png"},
 	selection_box = {
@@ -52,13 +73,23 @@ minetest.register_node("farming:wheat_3", {
 		},
 	},
 	groups = {snappy=3, flammable=2, not_in_creative_inventory=1,dig_by_water=1},
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.3125, -0.5, -0.5, -0.3125, 0.375, 0.5}, -- NodeBox1
+			{0.3125, -0.5, -0.5, 0.3125, 0.375, 0.5}, -- NodeBox2
+			{-0.5, -0.5, 0.375, 0.5, 0.375, 0.375}, -- NodeBox3
+			{-0.5, -0.5, -0.25, 0.5, 0.375, -0.25}, -- NodeBox4
+		}
+	},
 })
 
 minetest.register_node("farming:wheat", {
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
-	drawtype = "plantlike",
+	drawtype = "nodebox",
+	paramtype = "light",
 	tiles = {"farming_wheat.png"},
 	drop = {
 		max_items = 4,
@@ -69,7 +100,22 @@ minetest.register_node("farming:wheat", {
 			{ items = {'farming:wheat_harvested'} }
 		}
 	},
+	selection_box = {
+		type = "fixed",
+		fixed = {
+			{-0.5, -0.5, -0.5, 0.5, 0.35, 0.5}
+		},
+	},
 	groups = {snappy=3, flammable=2, not_in_creative_inventory=1,dig_by_water=1},
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.3125, -0.5, -0.5, -0.3125, 0.375, 0.5}, -- NodeBox1
+			{0.3125, -0.5, -0.5, 0.3125, 0.375, 0.5}, -- NodeBox2
+			{-0.5, -0.5, 0.375, 0.5, 0.375, 0.375}, -- NodeBox3
+			{-0.5, -0.5, -0.25, 0.5, 0.375, -0.25}, -- NodeBox4
+		}
+	},
 })
 
 farming:add_plant("farming:wheat", {"farming:wheat_1", "farming:wheat_2", "farming:wheat_3"}, 50, 20)
