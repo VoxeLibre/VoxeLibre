@@ -1,3 +1,4 @@
+local init = os.clock()
 worldedit = {}
 worldedit.version = {major=1, minor=0}
 worldedit.version_string = "1.0"
@@ -22,4 +23,5 @@ loadmodule(path .. "/serialization.lua")
 loadmodule(path .. "/code.lua")
 loadmodule(path .. "/compatibility.lua")
 
-print("[MOD] WorldEdit loaded!")
+local time_to_load= os.clock() - init
+print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))

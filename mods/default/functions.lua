@@ -553,10 +553,13 @@ minetest.register_abm({
 	interval = 30,
 	chance = 20,
 	action = function(pos)
+	if pos == nil then 
+		return 
+	end
 	local can_change = 0
 	for i=1,4 do
-			p = {x=pos.x, y=pos.y+i, z=pos.z}
-			n = minetest.env:get_node(p)
+			local p = {x=pos.x, y=pos.y+i, z=pos.z}
+			local n = minetest.env:get_node(p)
 			-- On verifie si il y a de l'air
 			if (n.name=="air") then
 				can_change = can_change + 1

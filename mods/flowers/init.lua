@@ -1,6 +1,6 @@
 -- Minetest 0.4 mod: default
 -- See README.txt for licensing and other information.
-
+local init = os.clock()
 flower_tmp={}
 
 
@@ -361,4 +361,6 @@ minetest.register_node("flowers:pot",{
 	end,
 })
 
+local time_to_load= os.clock() - init
+print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
 

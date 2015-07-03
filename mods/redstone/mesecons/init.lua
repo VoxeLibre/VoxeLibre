@@ -39,7 +39,7 @@
 --	}
 --}
 
-
+local init = os.clock()
 -- PUBLIC VARIABLES
 mesecon={} -- contains all functions and all global variables
 mesecon.actions_on={} -- Saves registered function callbacks for mesecon on | DEPRECATED
@@ -104,11 +104,11 @@ function mesecon:receptor_off(pos, rules)
 	end
 end
 
-
-print("[OK] Mesecons")
-
 --The actual wires
 dofile(minetest.get_modpath("mesecons").."/wires.lua");
 
 --Services like turnoff receptor on dignode and so on
 dofile(minetest.get_modpath("mesecons").."/services.lua");
+
+local time_to_load= os.clock() - init
+print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))

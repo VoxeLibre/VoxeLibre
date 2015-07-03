@@ -1,6 +1,6 @@
 -- Minetest 0.4 mod: stairs
 -- See README.txt for licensing and other information.
-
+local init = os.clock()
 stairs = {}
 
 -- Node will be called stairs:stair_<subname>
@@ -285,4 +285,5 @@ stairs.register_slab("quartzstair", "default:quartz_pillar",
 	default.node_sound_stone_defaults()
 )	
 		
-print('[OK] Stairs loaded')
+local time_to_load= os.clock() - init
+print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))

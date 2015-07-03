@@ -1,3 +1,4 @@
+local init = os.clock()
 
 local clay = {}
 clay.dyes = {
@@ -57,4 +58,7 @@ for _, row in ipairs(clay.dyes) do
 		})
 	end
 end
+
+local time_to_load= os.clock() - init
+print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
 

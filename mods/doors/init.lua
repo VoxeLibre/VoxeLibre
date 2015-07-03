@@ -1,3 +1,4 @@
+local init = os.clock()
 doors = {}
 
 -- Registers a door
@@ -638,4 +639,5 @@ minetest.register_craft({
 	}
 })
 
-print('[OK] Doors loaded!')
+local time_to_load= os.clock() - init
+print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))

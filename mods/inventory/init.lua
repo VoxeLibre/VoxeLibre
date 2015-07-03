@@ -1,3 +1,4 @@
+local init = os.clock()
 local path = minetest.get_modpath(minetest.get_current_modname())
 
 local filepath = minetest.get_worldpath()
@@ -277,3 +278,6 @@ minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack
 end)
 
 minetest.register_privilege("gamemode", "Permission to use /gamemode.")
+local time_to_load= os.clock() - init
+print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
+

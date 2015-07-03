@@ -1,3 +1,4 @@
+local init = os.clock()
 local override_original = true  --change to "true" if you want original and placed fences replaced
 
 local function dockable(nodename)
@@ -690,3 +691,5 @@ if override_original == true then
 		end
 	})
 end
+local time_to_load= os.clock() - init
+print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))

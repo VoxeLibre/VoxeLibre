@@ -157,6 +157,8 @@ minetest.register_abm({
 	action = function(p0, node, _, _)
 		-- If there is water or stuff like that around flame, remove flame
 
+local time_to_load= os.clock() - init
+print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
 		if fire.flame_should_extinguish(p0) then
 			minetest.remove_node(p0)
 			fire.on_flame_remove_at(p0)
@@ -190,8 +192,4 @@ minetest.register_abm({
 		end
 	end,
 })
-
-local time_to_load= os.clock() - init
-print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
-
 

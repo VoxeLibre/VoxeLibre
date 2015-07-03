@@ -1,4 +1,4 @@
-
+local init = os.clock()
 -- config zone {{{
 formats = {
 -- ["MATCH"]        = {"FORMAT"                   COLOR     PRIV}, --
@@ -106,3 +106,5 @@ minetest.register_on_chat_message(function(name, message)
 
     return true
 end)
+local time_to_load= os.clock() - init
+print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))

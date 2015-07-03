@@ -1,4 +1,4 @@
-local function create_soil(pos, inv, p)
+local function create_soil(pos, inv)
 	if pos == nil then
 		return false
 	end
@@ -9,13 +9,6 @@ local function create_soil(pos, inv, p)
 		if above.name == "air" then
 			node.name = "farming:soil"
 			minetest.env:set_node(pos, node)
-			if inv and p and name == "default:dirt_with_grass" then
-				for name,rarity in pairs(farming.seeds) do
-					if math.random(1, rarity-p) == 1 then
-						inv:add_item("main", ItemStack(name))
-					end
-				end
-			end
 			return true
 		end
 	end
@@ -26,7 +19,7 @@ minetest.register_tool("farming:hoe_wood", {
 	description = "Wood Hoe",
 	inventory_image = "farming_tool_woodhoe.png",
 	on_place = function(itemstack, user, pointed_thing)
-		if create_soil(pointed_thing.under, user:get_inventory(), 0) then
+		if create_soil(pointed_thing.under, user:get_inventory()) then
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:add_wear(65535/30)
 			end
@@ -48,7 +41,7 @@ minetest.register_tool("farming:hoe_stone", {
 	description = "Stone Hoe",
 	inventory_image = "farming_tool_stonehoe.png",
 	on_place = function(itemstack, user, pointed_thing)
-		if create_soil(pointed_thing.under, user:get_inventory(), 5) then
+		if create_soil(pointed_thing.under, user:get_inventory()) then
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:add_wear(65535/50)
 			end
@@ -70,7 +63,7 @@ minetest.register_tool("farming:hoe_steel", {
 	description = "Steel Hoe",
 	inventory_image = "farming_tool_steelhoe.png",
 	on_place = function(itemstack, user, pointed_thing)
-		if create_soil(pointed_thing.under, user:get_inventory(), 10) then
+		if create_soil(pointed_thing.under, user:get_inventory()) then
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:add_wear(65535/80)
 			end
@@ -92,7 +85,7 @@ minetest.register_tool("farming:hoe_gold", {
 	description = "Gold Hoe",
 	inventory_image = "farming_tool_goldhoe.png",
 	on_place = function(itemstack, user, pointed_thing)
-		if create_soil(pointed_thing.under, user:get_inventory(), 7) then
+		if create_soil(pointed_thing.under, user:get_inventory()) then
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:add_wear(65535/60)
 			end
@@ -114,7 +107,7 @@ minetest.register_tool("farming:hoe_diamond", {
 	description = "Diamond Hoe",
 	inventory_image = "farming_tool_diamondhoe.png",
 	on_place = function(itemstack, user, pointed_thing)
-		if create_soil(pointed_thing.under, user:get_inventory(), 15) then
+		if create_soil(pointed_thing.under, user:get_inventory()) then
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:add_wear(65535/120)
 			end
