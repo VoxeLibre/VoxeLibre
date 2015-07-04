@@ -135,7 +135,7 @@ worldedit.allocate = function(originpos, value)
 		end
 	elseif version == 3 then --previous list format
 		for x, y, z, name, param1, param2 in value:gmatch("([+-]?%d+)%s+([+-]?%d+)%s+([+-]?%d+)%s+([^%s]+)%s+(%d+)%s+(%d+)[^\r\n]*[\r\n]*") do --match node entries
-			local x, y, z = originx + tonumber(x), originy + tonumber(y), originz + tonumber(z)
+			x, y, z = originx + tonumber(x), originy + tonumber(y), originz + tonumber(z)
 			if x < pos1x then pos1x = x end
 			if y < pos1y then pos1y = y end
 			if z < pos1z then pos1z = z end
@@ -166,7 +166,7 @@ worldedit.allocate = function(originpos, value)
 		count = #nodes
 		for index = 1, count do
 			local entry = nodes[index]
-			local x, y, z = originx + entry.x, originy + entry.y, originz + entry.z
+			x, y, z = originx + entry.x, originy + entry.y, originz + entry.z
 			if x < pos1x then pos1x = x end
 			if y < pos1y then pos1y = y end
 			if z < pos1z then pos1z = z end

@@ -25,7 +25,8 @@ Mods Credit :
 See README.txt in each mod directory for information about other authors.
 
 Credit for Support :
-Tox82, MinetestForFun & Calinou for help
+Tox82, MinetestForFun & Calinou for help in dev
+GravGun & Obani for Help in Build struct
 Celeron55 for creating Minetest
 Bob Lennon because it's a pyro-barbare
 

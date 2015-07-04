@@ -10,7 +10,7 @@
 			local z = math.random(0, 9)/3
 			pos.x = pos.x + x
 			pos.z = pos.z + z
-			minetest.env:add_item(pos, stack)
+			minetest.add_item(pos, stack)
 			stack:clear()
 			inv:set_stack("main", i, stack)
 			pos.x = pos.x - x
@@ -24,11 +24,11 @@
 --
 
 default.cool_lava_source = function(pos)
-	minetest.env:set_node(pos, {name="default:obsidian"})
+	minetest.set_node(pos, {name="default:obsidian"})
 end
 
 default.cool_lava_flowing = function(pos)
-	minetest.env:set_node(pos, {name="default:stone"})
+	minetest.set_node(pos, {name="default:stone"})
 end
 
 minetest.register_abm({
@@ -58,17 +58,17 @@ minetest.register_abm({
 -- Functions
 grow_cactus = function(pos, node)
 	pos.y = pos.y-1
-	local name = minetest.env:get_node(pos).name
+	local name = minetest.get_node(pos).name
 	if minetest.get_item_group(name, "sand") ~= 0 then
 		pos.y = pos.y+1
 		local height = 0
-		while minetest.env:get_node(pos).name == "default:cactus" and height < 4 do
+		while minetest.get_node(pos).name == "default:cactus" and height < 4 do
 			height = height+1
 			pos.y = pos.y+1
 		end
 		if height < 4 then
-			if minetest.env:get_node(pos).name == "air" then
-				minetest.env:set_node(pos, {name="default:cactus"})
+			if minetest.get_node(pos).name == "air" then
+				minetest.set_node(pos, {name="default:cactus"})
 			end
 		end
 	end
@@ -76,20 +76,20 @@ end
 
 grow_reeds = function(pos, node)
 	pos.y = pos.y-1
-	local name = minetest.env:get_node(pos).name
+	local name = minetest.get_node(pos).name
 	if name == "default:dirt" or name == "default:dirt_with_grass" then
-		if minetest.env:find_node_near(pos, 3, {"group:water"}) == nil then
+		if minetest.find_node_near(pos, 3, {"group:water"}) == nil then
 			return
 		end
 		pos.y = pos.y+1
 		local height = 0
-		while minetest.env:get_node(pos).name == "default:reeds" and height < 3 do
+		while minetest.get_node(pos).name == "default:reeds" and height < 3 do
 			height = height+1
 			pos.y = pos.y+1
 		end
 		if height < 3 then
-			if minetest.env:get_node(pos).name == "air" then
-				minetest.env:set_node(pos, {name="default:reeds"})
+			if minetest.get_node(pos).name == "air" then
+				minetest.set_node(pos, {name="default:reeds"})
 			end
 		end
 	end
@@ -106,11 +106,11 @@ minetest.register_abm({
 		for xp=-1,1 do
 			for zp=-1,1 do
 				local p = {x=pos.x+xp, y=pos.y, z=pos.z+zp}
-				local n = minetest.env:get_node(p)
+				local n = minetest.get_node(p)
 				-- On verifie si il y a de l'eau
 				if (n.name=="default:water_flowing") then
 						drop_attached_node(pos)
-						minetest.env:dig_node(pos)
+						minetest.dig_node(pos)
 						break
 				end
 			end
@@ -118,11 +118,11 @@ minetest.register_abm({
 		-- cas rare
 		for yp=-1,1 do
 			local p = {x=pos.x, y=pos.y+yp, z=pos.z}
-			local n = minetest.env:get_node(p)
+			local n = minetest.get_node(p)
 			-- On verifie si il y a de l'eau
 			if (n.name=="default:water_flowing") then
 				drop_attached_node(pos)
-				minetest.env:dig_node(pos)
+				minetest.dig_node(pos)
 				break
 			end
 		end
@@ -161,9 +161,9 @@ minetest.register_on_dignode(function(pos, node)
 	while timber_nodenames[i]~=nil do
 		if node.name==timber_nodenames[i] then
 			np={x=pos.x, y=pos.y+1, z=pos.z}
-			while minetest.env:get_node(np).name==timber_nodenames[i] do
-				minetest.env:remove_node(np)
-				minetest.env:add_item(np, timber_nodenames[i])
+			while minetest.get_node(np).name==timber_nodenames[i] do
+				minetest.remove_node(np)
+				minetest.add_item(np, timber_nodenames[i])
 				np={x=np.x, y=np.y+1, z=np.z}
 			end
 		end
@@ -183,9 +183,9 @@ function get_nodedef_field(nodename, fieldname)
 end
 
 function set_fire(pointed_thing)
-		local n = minetest.env:get_node(pointed_thing.above)
+		local n = minetest.get_node(pointed_thing.above)
 		if n.name ~= ""  and n.name == "air" and not minetest.is_protected(pointed_thing.above, "fire") then
-			minetest.env:add_node(pointed_thing.above, {name="fire:basic_flame"})
+			minetest.add_node(pointed_thing.above, {name="fire:basic_flame"})
 		end
 end
 
@@ -229,17 +229,17 @@ end
 
 function generate_tree(pos, trunk, leaves, typearbre)
 	pos.y = pos.y-1
-	local nodename = minetest.env:get_node(pos).name
+	local nodename = minetest.get_node(pos).name
 		
 	pos.y = pos.y+1
-	if not minetest.env:get_node_light(pos) then
+	if not minetest.get_node_light(pos) then
 		return
 	end
 	if typearbre == nil or typearbre == 1 then
 		node = {name = ""}
 		for dy=1,4 do
 			pos.y = pos.y+dy
-			if minetest.env:get_node(pos).name ~= "air" then
+			if minetest.get_node(pos).name ~= "air" then
 				return
 			end
 			pos.y = pos.y-dy
@@ -247,8 +247,8 @@ function generate_tree(pos, trunk, leaves, typearbre)
 		node = {name = trunk}
 		for dy=0,4 do
 			pos.y = pos.y+dy
-			if minetest.env:get_node(pos).name == "air" then
-				minetest.env:add_node(pos, node)
+			if minetest.get_node(pos).name == "air" then
+				minetest.add_node(pos, node)
 			end
 			pos.y = pos.y-dy
 		end
@@ -267,40 +267,40 @@ function generate_tree(pos, trunk, leaves, typearbre)
 					pos.z = pos.z+dz
 
 					if dx == 0 and dz == 0 and dy==3 then
-						if minetest.env:get_node(pos).name == "air" and math.random(1, 5) <= 4 then
-							minetest.env:add_node(pos, node)
+						if minetest.get_node(pos).name == "air" and math.random(1, 5) <= 4 then
+							minetest.add_node(pos, node)
 							if rarity == 1 then
-								minetest.env:add_node(pos, apple_leave())
+								minetest.add_node(pos, apple_leave())
 							else
-								minetest.env:add_node(pos, air_leave())
+								minetest.add_node(pos, air_leave())
 							end
 						end
 					elseif dx == 0 and dz == 0 and dy==4 then
-						if minetest.env:get_node(pos).name == "air" and math.random(1, 5) <= 4 then
-							minetest.env:add_node(pos, node)
+						if minetest.get_node(pos).name == "air" and math.random(1, 5) <= 4 then
+							minetest.add_node(pos, node)
 							if rarity == 1 then
-								minetest.env:add_node(pos, apple_leave())
+								minetest.add_node(pos, apple_leave())
 							else
-								minetest.env:add_node(pos, air_leave())
+								minetest.add_node(pos, air_leave())
 							end
 						end
 					elseif math.abs(dx) ~= 2 and math.abs(dz) ~= 2 then
-						if minetest.env:get_node(pos).name == "air" then
-							minetest.env:add_node(pos, node)
+						if minetest.get_node(pos).name == "air" then
+							minetest.add_node(pos, node)
 							if rarity == 1 then
-								minetest.env:add_node(pos, apple_leave())
+								minetest.add_node(pos, apple_leave())
 							else
-								minetest.env:add_node(pos, air_leave())
+								minetest.add_node(pos, air_leave())
 							end
 						end
 					else
 						if math.abs(dx) ~= 2 or math.abs(dz) ~= 2 then
-							if minetest.env:get_node(pos).name == "air" and math.random(1, 5) <= 4 then
-								minetest.env:add_node(pos, node)
+							if minetest.get_node(pos).name == "air" and math.random(1, 5) <= 4 then
+								minetest.add_node(pos, node)
 							if rarity == 1 then
-								minetest.env:add_node(pos, apple_leave())
+								minetest.add_node(pos, apple_leave())
 							else
-								minetest.env:add_node(pos, air_leave())
+								minetest.add_node(pos, air_leave())
 							end
 							end
 						end
@@ -318,7 +318,7 @@ function generate_tree(pos, trunk, leaves, typearbre)
 		local tree_size = math.random(15, 25)
 		for dy=1,4 do
 			pos.y = pos.y+dy
-			if minetest.env:get_node(pos).name ~= "air" then
+			if minetest.get_node(pos).name ~= "air" then
 				return
 			end
 			pos.y = pos.y-dy
@@ -329,14 +329,14 @@ function generate_tree(pos, trunk, leaves, typearbre)
 			for dz=0,1 do
 					pos.z = pos.z + dz
 					--> 0
-					if minetest.env:get_node(pos).name == "default:dirt_with_grass" 
-					or  minetest.env:get_node(pos).name == "default:dirt" then else
+					if minetest.get_node(pos).name == "default:dirt_with_grass" 
+					or  minetest.get_node(pos).name == "default:dirt" then else
 							return
 					end
 					pos.x = pos.x+1
 					--> 1
-					if minetest.env:get_node(pos).name == "default:dirt_with_grass" 
-					or  minetest.env:get_node(pos).name == "default:dirt" then else
+					if minetest.get_node(pos).name == "default:dirt_with_grass" 
+					or  minetest.get_node(pos).name == "default:dirt" then else
 							return
 					end
 					pos.x = pos.x-1
@@ -353,43 +353,43 @@ function generate_tree(pos, trunk, leaves, typearbre)
 			for dz=-1,2 do
 				if dz == -1 then
 					pos.z = pos.z + dz
-					if math.random(1, 3) == 1 and minetest.env:get_node(pos).name == "air" then
-						minetest.env:add_node(pos, {name = "default:vine", param2 = 4})
+					if math.random(1, 3) == 1 and minetest.get_node(pos).name == "air" then
+						minetest.add_node(pos, {name = "default:vine", param2 = 4})
 					end
 					pos.x = pos.x+1
-					if math.random(1, 3) == 1 and  minetest.env:get_node(pos).name == "air" then
-						minetest.env:add_node(pos, {name = "default:vine", param2 = 4})
+					if math.random(1, 3) == 1 and  minetest.get_node(pos).name == "air" then
+						minetest.add_node(pos, {name = "default:vine", param2 = 4})
 					end
 					pos.x = pos.x-1
 					pos.z = pos.z - dz
 				elseif dz == 2 then
 					pos.z = pos.z + dz
-					if math.random(1, 3) == 1 and  minetest.env:get_node(pos).name == "air"then
-						minetest.env:add_node(pos, {name = "default:vine", param2 = 5})
+					if math.random(1, 3) == 1 and  minetest.get_node(pos).name == "air"then
+						minetest.add_node(pos, {name = "default:vine", param2 = 5})
 					end
 					pos.x = pos.x+1
-					if math.random(1, 3) == 1 and minetest.env:get_node(pos).name == "air" then
-						minetest.env:add_node(pos, {name = "default:vine", param2 = 5})
+					if math.random(1, 3) == 1 and minetest.get_node(pos).name == "air" then
+						minetest.add_node(pos, {name = "default:vine", param2 = 5})
 					end
 					pos.x = pos.x-1
 					pos.z = pos.z - dz
 				else
 					pos.z = pos.z + dz
 					pos.x = pos.x-1
-					if math.random(1, 3) == 1  and minetest.env:get_node(pos).name == "air" then
-						minetest.env:add_node(pos, {name = "default:vine", param2 = 2})
+					if math.random(1, 3) == 1  and minetest.get_node(pos).name == "air" then
+						minetest.add_node(pos, {name = "default:vine", param2 = 2})
 					end
 					pos.x = pos.x+1
-					if minetest.env:get_node(pos).name == "air" then
-						minetest.env:add_node(pos, {name = trunk, param2=2})
+					if minetest.get_node(pos).name == "air" then
+						minetest.add_node(pos, {name = trunk, param2=2})
 					end
 					pos.x = pos.x+1
-					if minetest.env:get_node(pos).name == "air" then
-						minetest.env:add_node(pos, {name = trunk, param2=2})
+					if minetest.get_node(pos).name == "air" then
+						minetest.add_node(pos, {name = trunk, param2=2})
 					end
 					pos.x = pos.x+1
-					if math.random(1, 3) == 1 and minetest.env:get_node(pos).name == "air" then
-						minetest.env:add_node(pos, {name = "default:vine", param2 = 3})
+					if math.random(1, 3) == 1 and minetest.get_node(pos).name == "air" then
+						minetest.add_node(pos, {name = "default:vine", param2 = 3})
 					end
 					pos.x = pos.x-2
 					pos.z = pos.z - dz
@@ -410,26 +410,26 @@ function generate_tree(pos, trunk, leaves, typearbre)
 					pos.z = pos.z+dz
 
 					if dx == 0 and dz == 0 and dy==3 then
-						if minetest.env:get_node(pos).name == "air" or minetest.env:get_node(pos).name == "default:vine" and math.random(1, 2) == 1 then
-							minetest.env:add_node(pos, node)
+						if minetest.get_node(pos).name == "air" or minetest.get_node(pos).name == "default:vine" and math.random(1, 2) == 1 then
+							minetest.add_node(pos, node)
 							end
 					elseif dx == 0 and dz == 0 and dy==4 then
-						if minetest.env:get_node(pos).name == "air" or minetest.env:get_node(pos).name == "default:vine"  and math.random(1, 5) == 1 then
-							minetest.env:add_node(pos, node)
-								minetest.env:add_node(pos, air_leave())
+						if minetest.get_node(pos).name == "air" or minetest.get_node(pos).name == "default:vine"  and math.random(1, 5) == 1 then
+							minetest.add_node(pos, node)
+								minetest.add_node(pos, air_leave())
 						end
 					elseif math.abs(dx) ~= 2 and math.abs(dz) ~= 2 then
-						if minetest.env:get_node(pos).name == "air" or minetest.env:get_node(pos).name == "default:vine"  then
-							minetest.env:add_node(pos, node)
+						if minetest.get_node(pos).name == "air" or minetest.get_node(pos).name == "default:vine"  then
+							minetest.add_node(pos, node)
 						end
 					else
 						if math.abs(dx) ~= 2 or math.abs(dz) ~= 2 then
-							if minetest.env:get_node(pos).name == "air" or minetest.env:get_node(pos).name == "default:vine" and math.random(1, 3) == 1 then
-								minetest.env:add_node(pos, node)
+							if minetest.get_node(pos).name == "air" or minetest.get_node(pos).name == "default:vine" and math.random(1, 3) == 1 then
+								minetest.add_node(pos, node)
 							end
 						else
-							if math.random(1, 5) == 1 and minetest.env:get_node(pos).name == "air" then
-								minetest.env:add_node(pos, node)
+							if math.random(1, 5) == 1 and minetest.get_node(pos).name == "air" then
+								minetest.add_node(pos, node)
 							end
 						end
 					end
@@ -471,51 +471,51 @@ end)
 
 function duengen(pointed_thing)
 	pos = pointed_thing.under
-	n = minetest.env:get_node(pos)
+	n = minetest.get_node(pos)
 	if n.name == "" then return end
 	local stage = ""
 	if n.name == "default:sapling" then
-		minetest.env:add_node(pos, {name="air"})
+		minetest.add_node(pos, {name="air"})
 		generate_tree(pos, "default:tree", "default:leaves", 1)
 	elseif string.find(n.name, "farming:wheat_") ~= nil then
 		stage = string.sub(n.name, 15)
 		if stage == "3" then
-			minetest.env:add_node(pos, {name="farming:wheat"})
+			minetest.add_node(pos, {name="farming:wheat"})
 		elseif math.random(1,5) < 3 then
-			minetest.env:add_node(pos, {name="farming:wheat"})
+			minetest.add_node(pos, {name="farming:wheat"})
 		else
-			minetest.env:add_node(pos, {name="farming:wheat_"..math.random(2,3)})
+			minetest.add_node(pos, {name="farming:wheat_"..math.random(2,3)})
 		end
 	elseif string.find(n.name, "farming:potato_") ~= nil then
 		stage = tonumber(string.sub(n.name, 16))
 		if stage == 1 then
-			minetest.env:add_node(pos, {name="farming:potato_"..math.random(stage,2)})
+			minetest.add_node(pos, {name="farming:potato_"..math.random(stage,2)})
 		else
-			minetest.env:add_node(pos, {name="farming:potato"})
+			minetest.add_node(pos, {name="farming:potato"})
 		end
 	elseif string.find(n.name, "farming:carrot_") ~= nil then
 		stage = tonumber(string.sub(n.name, 16))
 		if stage == 1 then
-			minetest.env:add_node(pos, {name="farming:carrot_"..math.random(stage,2)})
+			minetest.add_node(pos, {name="farming:carrot_"..math.random(stage,2)})
 		else
-			minetest.env:add_node(pos, {name="farming:carrot"})
+			minetest.add_node(pos, {name="farming:carrot"})
 		end
 	elseif string.find(n.name, "farming:pumpkin_") ~= nil then
 		stage = tonumber(string.sub(n.name, 17))
 		if stage == 1 then
-			minetest.env:add_node(pos, {name="farming:pumpkin_"..math.random(stage,2)})
+			minetest.add_node(pos, {name="farming:pumpkin_"..math.random(stage,2)})
 		else
-			minetest.env:add_node(pos, {name="farming:pumpkintige_unconnect"})
+			minetest.add_node(pos, {name="farming:pumpkintige_unconnect"})
 		end
 	elseif string.find(n.name, "farming:melontige_") ~= nil then
 		stage = tonumber(string.sub(n.name, 18))
 		if stage == 1 then
-			minetest.env:add_node(pos, {name="farming:melontige_"..math.random(stage,2)})
+			minetest.add_node(pos, {name="farming:melontige_"..math.random(stage,2)})
 		else
-			minetest.env:add_node(pos, {name="farming:melontige_unconnect"})
+			minetest.add_node(pos, {name="farming:melontige_unconnect"})
 		end
 	elseif n.name ~= ""  and n.name == "default:junglesapling" then
-		minetest.env:add_node(pos, {name="air"})
+		minetest.add_node(pos, {name="air"})
 		generate_tree(pos, "default:jungletree", "default:jungleleaves", 2)
 	elseif n.name ~="" and n.name == "default:reeds" then
 		grow_reeds(pos)
@@ -526,14 +526,14 @@ function duengen(pointed_thing)
 			for j = -3, 2, 1 do
 				pos = pointed_thing.above
 				pos = {x=pos.x+i, y=pos.y, z=pos.z+j}
-				n = minetest.env:get_node(pos)
-				n2 = minetest.env:get_node({x=pos.x, y=pos.y-1, z=pos.z})
+				n = minetest.get_node(pos)
+				n2 = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
 
 				if n.name ~= ""  and n.name == "air" and n2.name == "default:dirt_with_grass" then
 					if math.random(0,5) > 3 then
-						minetest.env:add_node(pos, {name=plant_tab[math.random(0, rnd_max)]})
+						minetest.add_node(pos, {name=plant_tab[math.random(0, rnd_max)]})
 					else
-						minetest.env:add_node(pos, {name=plant_tab[math.random(0, 5)]})
+						minetest.add_node(pos, {name=plant_tab[math.random(0, 5)]})
 					end
 
 				end
@@ -559,7 +559,7 @@ minetest.register_abm({
 	local can_change = 0
 	for i=1,4 do
 			local p = {x=pos.x, y=pos.y+i, z=pos.z}
-			local n = minetest.env:get_node(p)
+			local n = minetest.get_node(p)
 			-- On verifie si il y a de l'air
 			if (n.name=="air") then
 				can_change = can_change + 1
@@ -568,7 +568,7 @@ minetest.register_abm({
 		if can_change > 3 then
 			local light = minetest.get_node_light(pos)
 			if light or light > 10 then
-				minetest.env:add_node(pos, {name="default:dirt_with_grass"})
+				minetest.add_node(pos, {name="default:dirt_with_grass"})
 			end
 			
 		end
@@ -589,7 +589,7 @@ minetest.register_abm({
 	action = function(pos)
 		local light = minetest.get_node_light(pos)
 		if light or light > 10 then
-		minetest.env:add_node(pos, {name="air"})
+		minetest.add_node(pos, {name="air"})
 		generate_tree(pos, "default:tree", "default:leaves", 1)
 		end
 	end,
@@ -604,7 +604,7 @@ minetest.register_abm({
 	action = function(pos)
 		local light = minetest.get_node_light(pos)
 		if light or light > 10 then
-			minetest.env:add_node(pos, {name="air"})
+			minetest.add_node(pos, {name="air"})
 			generate_tree(pos, "default:jungletree", "default:jungleleaves", 2)
 		end
 	end,
@@ -619,10 +619,10 @@ minetest.register_abm({
 	chance = 5,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		local newpos = {x=pos.x, y=pos.y-1, z=pos.z}
-		local n = minetest.env:get_node(newpos)
+		local n = minetest.get_node(newpos)
 		if n.name == "air" then
 			walldir = node.param2
-			minetest.env:add_node(newpos, {name = "default:vine", param2 = walldir})
+			minetest.add_node(newpos, {name = "default:vine", param2 = walldir})
 		end
 	end
 })
@@ -638,7 +638,7 @@ snowball_VELOCITY=19
 --Shoot snowball.
 snow_shoot_snowball=function (item, player, pointed_thing)
 	local playerpos=player:getpos()
-	local obj=minetest.env:add_entity({x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, "default:snowball_entity")
+	local obj=minetest.add_entity({x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, "default:snowball_entity")
 	local dir=player:get_look_dir()
 	obj:setvelocity({x=dir.x*snowball_VELOCITY, y=dir.y*snowball_VELOCITY, z=dir.z*snowball_VELOCITY})
 	obj:setacceleration({x=dir.x*-3, y=-snowball_GRAVITY, z=dir.z*-3})
@@ -659,7 +659,7 @@ snowball_ENTITY={
 snowball_ENTITY.on_step = function(self, dtime)
 	self.timer=self.timer+dtime
 	local pos = self.object:getpos()
-	local node = minetest.env:get_node(pos)
+	local node = minetest.get_node(pos)
 
 	--Become item when hitting a node.
 	if self.lastpos.x~=nil then --If there is no lastpos for some reason.
@@ -874,7 +874,7 @@ minetest.register_abm({
 		end
 		if not do_preserve then
 			-- Drop stuff other than the node itself
-			itemstacks = minetest.get_node_drops(n0.name)
+			local itemstacks = minetest.get_node_drops(n0.name)
 			for _, itemname in ipairs(itemstacks) do
 				if minetest.get_item_group(n0.name, "leafdecay_drop") ~= 0 or
 						itemname ~= n0.name then

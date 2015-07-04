@@ -1,16 +1,20 @@
 local path = minetest.get_modpath(minetest.get_current_modname())
 
+
 -- Load Info command
 dofile(path.."/info.lua")
 
--- Load vanish command
-dofile(path.."/vanish.lua")
+-- Load GM command
+dofile(path.."/gm.lua")
 
 -- Load time command
 dofile(path.."/time.lua")
 
 -- Load kits command
 dofile(path.."/kits.lua")
+
+-- Load debug command
+dofile(path.."/debug.lua")
 
 -- By VanessaE, sfan5, and kaeza.
 local disallowed = {

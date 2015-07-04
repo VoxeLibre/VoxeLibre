@@ -4,13 +4,14 @@ minetest.register_chatcommand("kit", {
     privs = {},
     func = function(name, param)
 		if param == "" then
-			minetest.chat_send_player(name, "No kit selected use ... Aviable : noob , pvp")
+			minetest.chat_send_player(name, "No kit selected ... ")
+			minetest.chat_send_player(name, "List of Kit: noob , pvp")
 		end
 		local receiverref = core.get_player_by_name(name)
 		if param == "noob" then
 			receiverref:get_inventory():add_item('main', 'default:pick_steel')
 			receiverref:get_inventory():add_item('main', 'default:shovel_steel')
-			receiverref:get_inventory():add_item('main', 'default:torch 16')
+			receiverref:get_inventory():add_item('main', 'torch:torch 16')
 			receiverref:get_inventory():add_item('main', 'default:axe_steel')
 			receiverref:get_inventory():add_item('main', 'default:cobble 64')
 		end

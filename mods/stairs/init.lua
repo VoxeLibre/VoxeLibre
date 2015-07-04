@@ -36,6 +36,18 @@ function stairs.register_stair(subname, recipeitem, groups, images, description,
 					return itemstack
 				end
 			end
+			local futurpos = pointed_thing.under
+			local frontstair = {x=futurpos.x-1, y=futurpos.y+1, z=futurpos.z} 
+			local leftstair = {x=futurpos.x, y=futurpos.y+1, z=futurpos.z+1} 
+			print( minetest.get_node(frontstair).name)
+			if minetest.get_node(frontstair).name == "stairs:stair_"..subname.."" and minetest.get_node(leftstair).name == "stairs:stair_"..subname.."" then
+				local fakestack = ItemStack("stairs:stair_" .. subname.."_corner_1")
+				local ret = minetest.item_place(fakestack, placer, pointed_thing)
+				if ret:is_empty() then
+					itemstack:take_item()
+					return itemstack
+				end
+			end 
 			
 			-- Otherwise place regularly
 			return minetest.item_place(itemstack, placer, pointed_thing)
@@ -56,6 +68,24 @@ function stairs.register_stair(subname, recipeitem, groups, images, description,
 			fixed = {
 				{-0.5, 0, -0.5, 0.5, 0.5, 0.5},
 				{-0.5, -0.5, 0, 0.5, 0, 0.5},
+			},
+		},
+	})
+
+	minetest.register_node(":stairs:stair_" .. subname.."_corner_1", {
+		drop = "stairs:stair_" .. subname,
+		drawtype = "nodebox",
+		tiles = images,
+		paramtype = "light",
+		paramtype2 = "facedir",
+		is_ground_content = true,
+		groups = groups,
+		sounds = sounds,
+		node_box = {
+			type = "fixed",
+			fixed = {
+				{-0.5, -0.5, -0.5, 0.5, 0, 0.5}, 
+				{-0.5, -0, -0, 0, 0.5, 0.5}, 
 			},
 		},
 	})

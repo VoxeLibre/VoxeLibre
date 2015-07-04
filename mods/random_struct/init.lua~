@@ -222,13 +222,15 @@ end
 
 
 -- The call of Struct
-random_struct.call_struct= function(pos, struct_style)	
+random_struct.call_struct= function(pos, struct_style)
+		if math.random(1,2) == 1 then		
 			-- 1 : City , 2 : Temple Sand
 			if struct_style == 1 then
 			  random_struct.generatecity(pos)
 			elseif struct_style == 2 then
 			  random_struct.generate_temple_sand(pos)
 			end
+		end
 end
 
 random_struct.generatecity = function(pos)

@@ -335,7 +335,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 				if is_shallow then
 					for x1=-divlen,divlen do
 					for z1=-divlen,divlen do
-						if minetest.env:get_node({x=cx+x1,y=0,z=cz+z1}).name == "default:sand" then
+						if minetest.env:get_node({x=cx+x1,y=0,z=cz+z1}).name == "default:sand" or minetest.env:get_node({x=cx+x1,y=0,z=cz+z1}).name == "default:sandstone" then
 							minetest.env:set_node({x=cx+x1,y=0,z=cz+z1}, {name="default:clay"})
 						end
 					end
@@ -366,6 +366,12 @@ minetest.register_on_generated(function(minp, maxp, seed)
 						minetest.env:find_node_near({x=x,y=1,z=z}, 1, "default:water_source") then
 					default.make_reeds({x=x,y=2,z=z}, pr:next(2, 4))
 				end
+				if minetest.env:get_node({x=x,y=1,z=z}).name == "default:sand" then
+					if math.random(0,1000) == 1 then -- 0,12000
+						random_struct.call_struct(p,2)
+					end
+				end
+
 			end
 		end
 		end
@@ -443,6 +449,9 @@ minetest.register_on_generated(function(minp, maxp, seed)
 						-- If dirt with grass, add grass
 						elseif nn == "default:dirt_with_grass" then
 							minetest.env:set_node(p,{name="default:grass"})
+							if math.random(0,12000) == 1 then 
+								random_struct.call_struct(p,1)
+							end
 						end
 					end
 				end
