@@ -62,7 +62,7 @@ minetest.register_node("default:stone_with_gold", {
 	sounds = default.node_sound_stone_defaults(),
 })
 
-
+local redstone_timer = 68.28
 minetest.register_node("default:stone_with_redstone", {
 	description = "Redstone Ore",
 	tiles = {"default_stone.png^default_mineral_redstone.png"},
@@ -82,6 +82,44 @@ minetest.register_node("default:stone_with_redstone", {
 		}
 	},
 	sounds = default.node_sound_stone_defaults(),
+	on_punch = function(pos, node, puncher, pointed_thing)
+		minetest.swap_node(pos, {name="default:stone_with_redstone_lit"})
+		local t = minetest.get_node_timer(pos)
+		t:start(redstone_timer)
+	end,
+})
+
+-- Light the redstone ore up when it has been touched
+minetest.register_node("default:stone_with_redstone_lit", {
+	description = "Lit Redstone Ore",
+	tiles = {"default_stone.png^default_mineral_redstone.png"},
+	paramtype = "light",
+	light_source = 8,
+	is_ground_content = true,
+	stack_max = 64,
+	groups = {cracky=2},
+	drop = {
+		items = {
+			max_items = 1,
+			{
+				items = {"mesecons:redstone_dust 4"},
+				rarity = 2,
+			},
+			{
+				items = {"mesecons:redstone_dust 5"},
+			},
+		}
+	},
+	sounds = default.node_sound_stone_defaults(),
+	-- Reset timer after re-punching
+	on_punch = function(pos, node, puncher, pointed_thing)
+		local t = minetest.get_node_timer(pos)
+		t:start(redstone_timer)
+	end,
+	-- Turn back to normal node after some time has passed
+	on_timer = function(pos, elapsed)
+		minetest.swap_node(pos, {name="default:stone_with_redstone"})
+	end,
 })
 
 minetest.register_node("default:stone_with_lapis", {
