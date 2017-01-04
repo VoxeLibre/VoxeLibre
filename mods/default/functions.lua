@@ -898,11 +898,11 @@ minetest.register_abm({
 ------------------------
 function AddGlass(desc, recipeitem, color)
 
-	minetest.register_node("default:glass"..color, {
+	minetest.register_node("default:glass_"..color, {
 		description = desc,
 		drawtype = "glasslike",
-		tile_images = {"xpanes_pane_glass"..color..".png"},
-		inventory_image = minetest.inventorycube("xpanes_pane_glass"..color..".png"),
+		tile_images = {"xpanes_pane_glass_"..color..".png"},
+		inventory_image = minetest.inventorycube("xpanes_pane_glass_"..color..".png"),
 		paramtype = "light",
 		use_texture_alpha = true,
 		stack_max = 64,
@@ -912,9 +912,11 @@ function AddGlass(desc, recipeitem, color)
 	})
 	
 	minetest.register_craft({
-		output = 'default:glass_'..color..'',
+		output = 'default:glass_'..color..' 8',
 		recipe = {
-			{'default:glass', 'group:dye,'..recipeitem}
+			{'default:glass','default:glass','default:glass'},
+			{'default:glass','group:dye,'..recipeitem,'default:glass'},
+			{'default:glass','default:glass','default:glass'},
 		}
 	})
 end
