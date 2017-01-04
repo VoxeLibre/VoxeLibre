@@ -9,33 +9,35 @@ local wool = {}
 -- colors, and then some recipes using more specific colors for a few non-base
 -- colors available. When crafting, the last recipes will be checked first.
 wool.dyes = {
-	{"white",      "White",      nil},
-	{"grey",       "Grey",       "basecolor_grey"},
-	{"black",      "Black",      "basecolor_black"},
-	{"red",        "Red",        "basecolor_red"},
-	{"yellow",     "Yellow",     "basecolor_yellow"},
-	{"green",      "Green",      "basecolor_green"},
-	{"cyan",       "Cyan",       "basecolor_cyan"},
-	{"blue",       "Blue",       "basecolor_blue"},
-	{"magenta",    "Magenta",    "basecolor_magenta"},
-	{"orange",     "Orange",     "excolor_orange"},
-	{"violet",     "Violet",     "excolor_violet"},
-	{"brown",      "Brown",      "unicolor_dark_orange"},
-	{"pink",       "Pink",       "unicolor_light_red"},
-	{"dark_grey",  "Dark Grey",  "unicolor_darkgrey"},
-	{"dark_green", "Dark Green", "unicolor_dark_green"},
+	{"white",      "white",		"White",      nil},
+	{"grey",       "dark_grey",	"Grey",       "unicolor_darkgrey"},
+	{"silver",     "grey",		"Light Gray", "basecolor_grey"},
+	{"black",      "black",		"Black",      "basecolor_black"},
+	{"red",        "red",		"Red",        "basecolor_red"},
+	{"yellow",     "yellow",	"Yellow",     "basecolor_yellow"},
+	{"green",      "green",		"Green",      "unicolor_dark_green"},
+	{"cyan",       "cyan",		"Cyan",       "basecolor_cyan"},
+	{"blue",       "blue",		"Blue",       "basecolor_blue"},
+	{"magenta",    "magenta",	"Magenta",    "basecolor_magenta"},
+	{"orange",     "orange",	"Orange",     "excolor_orange"},
+	{"purple",     "violet",	"Purple",     "excolor_violet"},
+	{"brown",      "brown",		"Brown",      "unicolor_dark_orange"},
+	{"pink",       "pink",		"Pink",       "unicolor_light_red"},
+	{"lime",       "lime",		"Lime",       "basecolor_green"},
+	{"light_blue", "light_blue",	"Light Blue", "unicolor_light_blue"},
 }
 
 for _, row in ipairs(wool.dyes) do
 	local name = row[1]
-	local desc = row[2]
-	local craft_color_group = row[3]
+	local texture = row[2]
+	local desc = row[3]
+	local craft_color_group = row[4]
 	-- Node Definition
 		minetest.register_node("wool:"..name, {
 			description = desc.." Wool",
 			stack_max = 64,
 			is_ground_content = false,
-			tiles = {"wool_"..name..".png"},
+			tiles = {"wool_"..texture..".png"},
 			groups = {snappy=2,choppy=2,oddly_breakable_by_hand=3,flammable=3,wool=1},
 			sounds = default.node_sound_defaults(),
 		})
@@ -43,7 +45,7 @@ for _, row in ipairs(wool.dyes) do
 			description = desc.." Carpet",
 			walkable = false,
 			is_ground_content = false,
-			tiles = {"wool_"..name..".png"},
+			tiles = {"wool_"..texture..".png"},
 			wield_image = "wool_"..name..".png",
 			groups = {snappy=2,choppy=2,oddly_breakable_by_hand=3,carpet=1},
 			sounds = default.node_sound_defaults(),
