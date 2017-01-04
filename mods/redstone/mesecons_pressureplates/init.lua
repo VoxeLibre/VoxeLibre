@@ -119,4 +119,4 @@ mesecon:register_pressure_plate(
 	"Stone Pressure Plate",
 	"default_stone.png",
 	"default_stone.png",
-	{{"default:cobble", "default:cobble"}})
+	{{"default:stone", "default:stone"}})

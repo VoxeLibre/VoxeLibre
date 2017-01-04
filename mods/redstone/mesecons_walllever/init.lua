@@ -84,6 +84,6 @@ minetest.register_craft({
 	output = 'mesecons_walllever:wall_lever_off',
 	recipe = {
 		{'default:stick'},
-		{'default:stone'},
+		{'default:cobble'},
 	}
 })

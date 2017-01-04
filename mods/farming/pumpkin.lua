@@ -280,9 +280,9 @@ minetest.register_node("farming:pumpkin_face_light", {
 })
 
 minetest.register_craft({
-	type = "shapeless",
 	output = "farming:pumpkin_face_light",
-	recipe = {"farming:pumpkin_face", "default:torch"}
+	recipe = {{"farming:pumpkin_face"},
+	{"default:torch"}}
 })
 
 minetest.register_craft({
