@@ -1664,44 +1664,6 @@ minetest.register_node("default:obsidian", {
 	groups = {cracky=4,level=2,oddly_breakable_by_hand=4},
 })
 
-minetest.register_node("default:apple", {
-	description = "Apple",
-	drawtype = "plantlike",
-	visual_scale = 1.0,
-	tiles = {"default_apple.png"},
-	inventory_image = "default_apple.png",
-	paramtype = "light",
-	sunlight_propagates = true,
-	walkable = false,
-	selection_box = {
-		type = "fixed",
-		fixed = {-0.2, -0.5, -0.2, 0.2, 0, 0.2}
-	},
-	stack_max = 64,
-	groups = {fleshy=3,dig_immediate=3,flammable=2},
-	on_use = minetest.item_eat(4),
-	sounds = default.node_sound_defaults(),
-})
-
-minetest.register_node("default:apple_gold", {
-	description = "Golden Apple",
-	drawtype = "plantlike",
-	visual_scale = 1.0,
-	tiles = {"default_apple_gold.png"},
-	inventory_image = "default_apple_gold.png",
-	paramtype = "light",
-	sunlight_propagates = true,
-	walkable = false,
-	selection_box = {
-		type = "fixed",
-		fixed = {-0.2, -0.5, -0.2, 0.2, 0, 0.2}
-	},
-	stack_max = 64,
-	groups = {fleshy=3,dig_immediate=3,flammable=2},
-	on_use = minetest.item_eat(8),
-	sounds = default.node_sound_defaults(),
-})
-
 minetest.register_node("default:dry_shrub", {
 	description = "Dead Bush",
 	drawtype = "plantlike",
