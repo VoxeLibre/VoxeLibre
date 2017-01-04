@@ -138,14 +138,6 @@ function TNT:on_step(dtime)
 	end
 end
 
-function TNT:on_punch(hitter)
-	self.health = self.health - 1
-	if self.health <= 0 then
-		self.object:remove()
-		hitter:get_inventory():add_item("main", "tnt:tnt")
-	end
-end
-
 minetest.register_entity("tnt:tnt", TNT)
 
 minetest.register_craft({
