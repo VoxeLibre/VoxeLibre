@@ -28,8 +28,8 @@ minetest.register_node("mesecons_lightstone:lightstone_on", {
 minetest.register_craft({
     output = "node mesecons_lightstone:lightstone_off",
     recipe = {
-	    {'',"default:redstone_dust",''},
-	    {"default:redstone_dust",'default:glowstone',"default:redstone_dust"},
-	    {'','default:redstone_dust',''},
+	    {'',"mesecons:redstone_dust",''},
+	    {"mesecons:redstone_dust",'default:glowstone',"mesecons:redstone_dust"},
+	    {'','mesecons:redstone_dust',''},
     }
 })

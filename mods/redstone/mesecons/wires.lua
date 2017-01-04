@@ -240,3 +240,5 @@ function mesecon:update_autoconnect(pos, secondcall, replace_old)
 		minetest.env:set_node(pos, {name = "mesecons:wire_"..nodeid.."_on" })
 	end
 end
+
+minetest.register_alias("mesecons:redstone_dust", "mesecons:wire_00000000_off")

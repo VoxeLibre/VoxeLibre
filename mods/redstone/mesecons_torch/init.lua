@@ -37,7 +37,7 @@ end
 minetest.register_craft({
 	output = '"mesecons_torch:mesecon_torch_on" 4',
 	recipe = {
-	{"default:redstone_dust"},
+	{"mesecons:redstone_dust"},
 	{"default:stick"},}
 })
 

@@ -531,13 +531,6 @@ minetest.register_craft({
 	}
 })
 
-
-minetest.register_craft({
-	output = 'default:redstone_dust',
-	recipe = {{"mesecons:wire_00000000_off"}},
-})
-
-
 minetest.register_craft({
 	output = "default:apple_gold",
 	recipe = {
