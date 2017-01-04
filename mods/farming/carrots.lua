@@ -54,9 +54,10 @@ minetest.register_node("farming:carrot", {
 	drop = {
 		max_items = 1,
 		items = {
-			{ items = {'farming:carrot_item 2'} },
+			{ items = {'farming:carrot_item 4'}, rarity = 5 },
 			{ items = {'farming:carrot_item 3'}, rarity = 2 },
-			{ items = {'farming:carrot_item 4'}, rarity = 5 }
+			{ items = {'farming:carrot_item 2'}, rarity = 2 },
+			{ items = {'farming:carrot_item 1'} },
 		}
 	},
 	groups = {snappy=3, flammable=2, not_in_creative_inventory=1,dig_by_water=1},

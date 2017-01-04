@@ -53,7 +53,18 @@ minetest.register_node("default:stone_with_redstone", {
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {cracky=2},
-	drop = "mesecons:wire_00000000_off 5",
+	drop = {
+		items = {
+			max_items = 1,
+			{
+				items = {"mesecons:redstone_dust 4"},
+				rarity = 2,
+			},
+			{
+				items = {"mesecons:redstone_dust 5"},
+			},
+		}
+	},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -64,13 +75,13 @@ minetest.register_node("default:stone_with_lapis", {
 	stack_max = 64,
 	groups = {cracky=2},
 	drop = {
-		max_items = 2,
+		max_items = 1,
 		items = {
-			{items = {'dye:blue 5'},rarity = 16},
-			{items = {'dye:blue 4'},rarity = 12},
-			{items = {'dye:blue 3'},rarity = 8},
-			{items = {'dye:blue 2'},rarity = 6},
-			{items = {'dye:blue 1'},rarity = 1},
+			{items = {'dye:blue 8'},rarity = 5},
+			{items = {'dye:blue 7'},rarity = 5},
+			{items = {'dye:blue 6'},rarity = 5},
+			{items = {'dye:blue 5'},rarity = 5},
+			{items = {'dye:blue 4'}},
 		}
 	},
 	sounds = default.node_sound_stone_defaults(),
@@ -190,7 +201,7 @@ minetest.register_node("default:gravel", {
 	drop = {
 		max_items = 1,
 		items = {
-			{items = {'default:flint'},rarity = 7},
+			{items = {'default:flint'},rarity = 10},
 			{items = {'default:gravel'}}
 		}
 	},
@@ -315,8 +326,8 @@ minetest.register_node("default:sea_lantern", {
 	drop = {
 		max_items = 1,
 		items = {
-			{ items = {'default:prismarine_cry 2'} },
-			{ items = {'default:prismarine_cry 3'}, rarity = 2 }
+			{ items = {'default:prismarine_cry 3'}, rarity = 2 },
+			{ items = {'default:prismarine_cry 2'}}
 		}
 	},
 	tiles = {"default_sea_lantern.png"},
@@ -394,15 +405,10 @@ minetest.register_node("default:leaves", {
 				rarity = 20,
 			},
 						{
-				-- player will get apple with 1/20 chance
+				-- player will get apple with 1/200 chance
 				items = {'default:apple'},
 				rarity = 200,
 			},
-			{
-				-- player will get leaves only if he get no saplings,
-				-- this is because max_items is 1
-				items = {''},
-			}
 		}
 	},
 	sounds = default.node_sound_leaves_defaults(),
@@ -441,15 +447,9 @@ minetest.register_node("default:jungleleaves", {
 		max_items = 1,
 		items = {
 			{
-				-- player will get sapling with 1/20 chance
 				items = {'default:junglesapling'},
-				rarity = 20,
+				rarity = 40,
 			},
-			{
-				-- player will get leaves only if he get no saplings,
-				-- this is because max_items is 1
-				items = {''},
-			}
 		}
 	},
 	sounds = default.node_sound_leaves_defaults(),
@@ -507,15 +507,9 @@ minetest.register_node("default:acacialeaves", {
 		max_items = 1,
 		items = {
 			{
-				-- player will get sapling with 1/20 chance
 				items = {'default:acaciasapling'},
 				rarity = 20,
 			},
-			{
-				-- player will get leaves only if he get no saplings,
-				-- this is because max_items is 1
-				items = {''},
-			}
 		}
 	},
 	sounds = default.node_sound_leaves_defaults(),
@@ -692,7 +686,7 @@ minetest.register_node("default:reeds", {
 
 
 minetest.register_node("default:quartz_ore", {
-    description = "Quartz Ore",
+    description = "Nether Quartz Ore",
 	stack_max = 64,
  	tiles = {"default_quartz_ore.png"},
 	groups = {cracky=3,},
@@ -739,6 +733,7 @@ minetest.register_node("default:bookshelf", {
 	tiles = {"default_wood.png", "default_wood.png", "default_bookshelf.png"},
 	stack_max = 64,
 	groups = {choppy=3,oddly_breakable_by_hand=2,flammable=3},
+	drop = {"default:book 3"},
 	sounds = default.node_sound_wood_defaults(),
 })
 
@@ -1637,7 +1632,7 @@ minetest.register_node("default:apple_gold", {
 })
 
 minetest.register_node("default:dry_shrub", {
-	description = "Dry Shrub",
+	description = "Dead Bush",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
 	tiles = {"default_dry_shrub.png"},
@@ -1647,6 +1642,19 @@ minetest.register_node("default:dry_shrub", {
 	walkable = false,
 	stack_max = 64,
 	groups = {snappy=3,flammable=3,attached_node=1},
+	drop = {
+		max_items = 1,
+		items = {
+			{
+				items = {"default:stick 2"},
+				rarity = 2,
+			},
+			{
+				items = {"default:stick 1"},
+				rarity = 2,
+			},
+		}
+	},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -1655,7 +1663,7 @@ minetest.register_node("default:dry_shrub", {
 })
 
 minetest.register_node("default:grass", {
-	description = "Grass",
+	description = "Tall Grass",
 	drawtype = "plantlike",
 	tiles = {"default_tallgrass.png"},
 	inventory_image = "default_tallgrass.png",
@@ -1664,15 +1672,10 @@ minetest.register_node("default:grass", {
 		max_items = 1,
 		items = {
 			{
-				-- player will get sapling with 1/20 chance
+				-- player will get seed with 1/5 chance
 				items = {'farming:wheat_seed'},
 				rarity = 5,
 			},
-			{
-				-- player will get leaves only if he get no saplings,
-				-- this is because max_items is 1
-				items = {''},
-			}
 		}
 	},
 	paramtype = "light",
@@ -1698,10 +1701,8 @@ minetest.register_node("default:glowstone", {
 	drop = {
 	max_items = 1,
 	items = {
-			{items = {'default:glowdust 9'},rarity = 7},
-			{items = {'default:glowdust 6'},rarity = 5},
 			{items = {'default:glowdust 4'},rarity = 3},
-			{items = {'default:glowdust 3'},rarity = 2},
+			{items = {'default:glowdust 3'},rarity = 3},
 			{items = {'default:glowdust 2'}},
 		}
 	},
@@ -1810,6 +1811,7 @@ minetest.register_node("default:ice", {
 	use_texture_alpha = true,
 	stack_max = 64,
 	groups = {cracky=3,oddly_breakable_by_hand=2},
+	drop = "",
 	sounds = default.node_sound_glass_defaults(),
 })
 
@@ -1822,6 +1824,7 @@ minetest.register_node("default:packedice", {
 	use_texture_alpha = true,
 	stack_max = 64,
 	groups = {cracky=2},
+	drop = "",
 	sounds = default.node_sound_glass_defaults(),
 })
 

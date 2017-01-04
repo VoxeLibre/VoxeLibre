@@ -141,7 +141,7 @@ minetest.register_craftitem("default:prismarine_shard", {
 })
 
 minetest.register_craftitem("default:quartz_crystal", {
-	description = "Quartz Crystal",
+	description = "Nether Quartz",
 	inventory_image = "default_quartz_crystal.png",
 	stack_max = 64,
 })

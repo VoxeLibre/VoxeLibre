@@ -7,11 +7,11 @@ minetest.register_node("farming:melon", {
 	drop = {
 		max_items = 1,
 		items = {
-			{ items = {'farming:melon_item 3'} },
-			{ items = {'farming:melon_item 4'}, rarity = 2 },
-			{ items = {'farming:melon_item 5'}, rarity = 5 },
+			{ items = {'farming:melon_item 7'}, rarity = 14 },
 			{ items = {'farming:melon_item 6'}, rarity = 10 },
-			{ items = {'farming:melon_item 7'}, rarity = 14 }
+			{ items = {'farming:melon_item 5'}, rarity = 5 },
+			{ items = {'farming:melon_item 4'}, rarity = 2 },
+			{ items = {'farming:melon_item 3'} },
 		}
 	},
 	after_dig_node = function(pos, oldnode, oldmetadata, user)
