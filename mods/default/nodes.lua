@@ -759,7 +759,9 @@ minetest.register_node("default:slimeblock", {
 	use_texture_alpha = true,
 	sunlight_propagates = true,
 	stack_max = 64,
-	groups = {oddly_breakable_by_hand=3,dig_immediate=2,bouncy=70,disable_jump=1, fall_damage_add_percent=-100},
+	-- According to Minecraft Wiki, bouncing off a slime block from a height off 255 blocks should result in a bounce height of 50 blocks
+	-- bouncy=44 makes the player bounce up to 49.6. This value was chosen by experiment.
+	groups = {oddly_breakable_by_hand=3,dig_immediate=2,bouncy=44,fall_damage_add_percent=-100},
 })
 
 minetest.register_node("default:glass", {
