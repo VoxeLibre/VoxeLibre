@@ -754,7 +754,6 @@ minetest.register_node("default:slimeblock", {
 		}
 	},
 	tiles = {"default_slimeblock.png"},
-	inventory_image = minetest.inventorycube("default_slimeblock.png"),
 	paramtype = "light",
 	use_texture_alpha = true,
 	sunlight_propagates = true,
@@ -768,7 +767,6 @@ minetest.register_node("default:glass", {
 	description = "Glass",
 	drawtype = "glasslike",
 	tiles = {"default_glass.png"},
-	inventory_image = minetest.inventorycube("default_glass.png"),
 	paramtype = "light",
 	sunlight_propagates = true,
 	stack_max = 64,
@@ -1806,7 +1804,6 @@ minetest.register_node("default:sponge_wet", {
 minetest.register_node("default:ice", {
 	description = "Ice",
 	drawtype = "glasslike",
-	inventory_image = minetest.inventorycube("default_ice.png"),
 	tiles = {"default_ice.png"},
 	is_ground_content = true,
 	paramtype = "light",
@@ -1819,7 +1816,6 @@ minetest.register_node("default:ice", {
 minetest.register_node("default:packedice", {
 	description = "Packed Ice",
 	drawtype = "glasslike",
-	inventory_image = minetest.inventorycube("default_ice_packed.png"),
 	tiles = {"default_ice_packed.png"},
 	is_ground_content = true,
 	paramtype = "light",
