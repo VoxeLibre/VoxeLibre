@@ -143,7 +143,11 @@ end
 minetest.register_on_joinplayer(function(player)
 	default.player_attached[player:get_player_name()] = false
 	default.player_set_model(player, "character.x")
+	-- Minecraft has no sneak glitch
+	-- sneak is also disabled because it is buggy in Minetest (can be used to negate fall damage)
 	player:set_physics_override({sneak_glitch=false})
+	-- Minecraft also offers no minimap for free
+	player:hud_set_flags({minimap=false})
 	player:set_local_animation({x=0, y=79}, {x=168, y=187}, {x=189, y=198}, {x=200, y=219}, 30)
 end)
 
