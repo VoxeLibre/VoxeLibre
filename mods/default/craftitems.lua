@@ -53,7 +53,7 @@ minetest.register_craftitem("default:clay_lump", {
 })
 
 minetest.register_craftitem("default:steel_ingot", {
-	description = "Steel Ingot",
+	description = "Iron Ingot",
 	inventory_image = "default_steel_ingot.png",
 	stack_max = 64,
 })
@@ -145,3 +145,5 @@ minetest.register_craftitem("default:quartz_crystal", {
 	inventory_image = "default_quartz_crystal.png",
 	stack_max = 64,
 })
+
+minetest.register_alias("default:steel_ingot", "default:iron_ingot")

@@ -60,7 +60,7 @@ minetest.register_craft({
 })
 
 minetest.register_tool("farming:hoe_steel", {
-	description = "Steel Hoe",
+	description = "Iron Hoe",
 	inventory_image = "farming_tool_steelhoe.png",
 	on_place = function(itemstack, user, pointed_thing)
 		if create_soil(pointed_thing.under, user:get_inventory()) then

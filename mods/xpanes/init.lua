@@ -135,4 +135,4 @@ pane("glass", "Glass Pane Purple", "", "default:glass_purple", "_purple")
 
 
 -- Iron
-pane("iron", "Iron Fence", "xpanes:pane_iron", "default:steel_ingot", "")
+pane("iron", "Iron Bars", "xpanes:pane_iron", "default:steel_ingot", "")

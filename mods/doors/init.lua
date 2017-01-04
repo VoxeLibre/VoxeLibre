@@ -387,9 +387,9 @@ minetest.register_craft({
 })
 
 
---- Door in Steel ---
+--- Door in Iron ---
 doors:register_door("doors:door_steel", {
-	description = "Steel Door",
+	description = "Iron Door",
 	stack_max = 16,
 	inventory_image = "door_steel.png",
 	groups = {snappy=1,bendy=2,cracky=1,melty=2,level=2,door=1,mesecon_effector_on=1},
@@ -446,7 +446,7 @@ end
 
 
 minetest.register_node("doors:trapdoor", {
-	description = "Trapdoor",
+	description = "Wooden Trapdoor",
 	drawtype = "nodebox",
 	tiles = {"door_trapdoor.png", "door_trapdoor.png",  "default_wood.png",  "default_wood.png", "default_wood.png", "default_wood.png"},
 	paramtype = "light",
@@ -563,7 +563,7 @@ end
 
 
 minetest.register_node("doors:iron_trapdoor", {
-	description = "Trapdoor",
+	description = "Iron Trapdoor",
 	drawtype = "nodebox",
 	tiles = {"iron_trapdoor.png", "iron_trapdoor.png",  "default_steel_block.png",  "default_steel_block.png", "default_steel_block.png", "default_steel_block.png"},
 	paramtype = "light",

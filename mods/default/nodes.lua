@@ -1546,7 +1546,7 @@ minetest.register_node("default:mossycobble", {
 })
 
 minetest.register_node("default:steelblock", {
-	description = "Steel Block",
+	description = "Block of Iron",
 	tiles = {"default_steel_block.png"},
 	is_ground_content = true,
 	stack_max = 64,
