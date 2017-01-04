@@ -99,7 +99,7 @@ function watch.registra_item(nome,imagem,aparece_nas_receitas)
 
 --DOM_inspeciona_r("Registrando item "..nome..","..imagem)
   minetest.register_tool(nome, {
-    description = "Watch",
+    description = "Clock",
     inventory_image = imagem,
     groups = {not_in_creative_inventory=g},
     metadata = {w_type="d"},

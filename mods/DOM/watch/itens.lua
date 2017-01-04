@@ -1,6 +1,6 @@
 -- Watch recipe
 minetest.register_craft({
-  description = "Watch",
+  description = "Clock",
   output = 'watch:watch',
   groups = {not_in_creative_inventory=1},
   recipe = {
