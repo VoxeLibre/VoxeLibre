@@ -34,6 +34,12 @@ minetest.register_craftitem("default:charcoal_lump", {
 	stack_max = 64,
 })
 
+minetest.register_craftitem("default:iron_nugget", {
+	description = "Iron Nugget",
+	inventory_image = "default_iron_nugget.png",
+	stack_max = 64,
+})
+
 minetest.register_craftitem("default:gold_nugget", {
 	description = "Gold Nugget",
 	inventory_image = "default_gold_nugget.png",

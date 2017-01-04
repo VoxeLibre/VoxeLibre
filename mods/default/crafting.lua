@@ -387,6 +387,59 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "default:iron_nugget 9",
+	recipe = {{"default:steel_ingot"}},
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:gold_nugget",
+	recipe = "default:sword_gold",
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:gold_nugget",
+	recipe = "default:axe_gold",
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:gold_nugget",
+	recipe = "default:shovel_gold",
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:gold_nugget",
+	recipe = "default:pick_gold",
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:iron_nugget",
+	recipe = "default:sword_steel",
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:iron_nugget",
+	recipe = "default:axe_steel",
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:iron_nugget",
+	recipe = "default:shovel_steel",
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:iron_nugget",
+	recipe = "default:pick_steel",
+})
+
+minetest.register_craft({
 	output = 'default:sandstone',
 	recipe = {
 		{'group:sand', 'group:sand'},

@@ -150,44 +150,71 @@ minetest.register_tool("3d_armor:boots_chain", {
 -- Register Craft Recipies
 
 local craft_ingreds = {
-	leather = "default:wood",
-	steel = "default:steel_ingot",
-	gold = "default:gold_ingot",
-	diamond = "default:diamond",
+	leather = { "default:wood" },
+	steel = { "default:steel_ingot", "default:iron_nugget" },
+	gold = { "default:gold_ingot", "default:gold_nugget" },
+	diamond = { "default:diamond" },
+	chain = { nil, "default:iron_nugget"} ,
 }		
 
 for k, v in pairs(craft_ingreds) do
-	minetest.register_craft({
-		output = "3d_armor:helmet_"..k,
-		recipe = {
-			{v, v, v},
-			{v, "", v},
-			{"", "", ""},
-		},
-	})
-	minetest.register_craft({
-		output = "3d_armor:chestplate_"..k,
-		recipe = {
-			{v, "", v},
-			{v, v, v},
-			{v, v, v},
-		},
-	})
-	minetest.register_craft({
-		output = "3d_armor:leggings_"..k,
-		recipe = {
-			{v, v, v},
-			{v, "", v},
-			{v, "", v},
-		},
-	})
-	minetest.register_craft({
-		output = "3d_armor:boots_"..k,
-		recipe = {
-			{v, "", v},
-			{v, "", v},
-		},
-	})
+	-- material
+	local m = v[1]
+	-- cooking result
+	local c = v[2]
+	if m ~= nil then
+		minetest.register_craft({
+			output = "3d_armor:helmet_"..k,
+			recipe = {
+				{m, m, m},
+				{m, "", m},
+				{"", "", ""},
+			},
+		})
+		minetest.register_craft({
+			output = "3d_armor:chestplate_"..k,
+			recipe = {
+				{m, "", m},
+				{m, m, m},
+				{m, m, m},
+			},
+		})
+		minetest.register_craft({
+			output = "3d_armor:leggings_"..k,
+			recipe = {
+				{m, m, m},
+				{m, "", m},
+				{m, "", m},
+			},
+		})
+		minetest.register_craft({
+			output = "3d_armor:boots_"..k,
+			recipe = {
+				{m, "", m},
+				{m, "", m},
+			},
+		})
+	end
+	if c ~= nil then
+		minetest.register_craft({
+			type = "cooking",
+			output = c,
+			recipe = "3d_armor:helmet_"..k,
+		})
+		minetest.register_craft({
+			type = "cooking",
+			output = c,
+			recipe = "3d_armor:chestplate_"..k,
+		})
+		minetest.register_craft({
+			type = "cooking",
+			output = c,
+			recipe = "3d_armor:leggings_"..k,
+		})
+		minetest.register_craft({
+			type = "cooking",
+			output = c,
+			recipe = "3d_armor:boots_"..k,
+		})
+	end
 end
-
-

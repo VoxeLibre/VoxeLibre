@@ -81,6 +81,12 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	type = "cooking",
+	output = "default:iron_nugget",
+	recipe = "farming:hoe_steel",
+})
+
 minetest.register_tool("farming:hoe_gold", {
 	description = "Gold Hoe",
 	inventory_image = "farming_tool_goldhoe.png",
@@ -101,6 +107,12 @@ minetest.register_craft({
 		{"", "default:stick"},
 		{"", "default:stick"}
 	}
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:gold_nugget",
+	recipe = "farming:hoe_gold",
 })
 
 minetest.register_tool("farming:hoe_diamond", {
