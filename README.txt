@@ -7,24 +7,24 @@
 = |_|  |_|_|_| |_|\___|\_____|_|\___/|_| |_|\___|=
 =                                                =
 =                                                =		     
-=   	  Minecraft-like or Perfect clone ?      =
+=     A Minecraft-like subgame for Minetest      =
 ==================================================
 
-Where contact Dave Devils ?
-----------------------------
+Where contact Dave Devils?
+--------------------------
 You can contact me at twitter https://twitter.com/dev_dave33
-You can follow me too for see what i work for the next update !
+You can follow me too for see what i work for the next update!
 
 License of source code
 ----------------------
 
-Mineclone source :
-LGPL v2.1 (Dave Devil's) see licence.txt
+MineClone source:
+LGPL v2.1 (Dave Devil's) see Licence.txt
 
-Mods Credit :
+Mods credit:
 See README.txt in each mod directory for information about other authors.
 
-Credit for Support :
+Credit for Support:
 Tox82, MinetestForFun & Calinou for help in dev
 GravGun & Obani for Help in Build struct
 Celeron55 for creating Minetest
