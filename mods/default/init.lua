@@ -10,6 +10,9 @@ LIGHT_MAX = 20
 -- Definitions made by this mod that other mods can use too
 default = {}
 
+minetest.nodedef_default.stack_max = 64
+minetest.craftitemdef_default.stack_max = 64
+
 -- Load files
 dofile(minetest.get_modpath("default").."/functions.lua")
 dofile(minetest.get_modpath("default").."/nodes.lua")
