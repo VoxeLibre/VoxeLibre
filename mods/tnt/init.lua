@@ -47,7 +47,8 @@ minetest.register_node("tnt:tnt", {
 			spawn_tnt(p, "tnt:tnt")
 			nodeupdate(p)
 		end),
-	}}
+	}},
+	sounds = default.node_sound_wood_defaults(),
 })
 
 minetest.register_on_punchnode(function(p, node)
