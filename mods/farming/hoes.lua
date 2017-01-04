@@ -21,7 +21,7 @@ minetest.register_tool("farming:hoe_wood", {
 	on_place = function(itemstack, user, pointed_thing)
 		if create_soil(pointed_thing.under, user:get_inventory()) then
 			if not minetest.setting_getbool("creative_mode") then
-				itemstack:add_wear(65535/30)
+				itemstack:add_wear(65535/60)
 			end
 			return itemstack
 		end
@@ -43,7 +43,7 @@ minetest.register_tool("farming:hoe_stone", {
 	on_place = function(itemstack, user, pointed_thing)
 		if create_soil(pointed_thing.under, user:get_inventory()) then
 			if not minetest.setting_getbool("creative_mode") then
-				itemstack:add_wear(65535/50)
+				itemstack:add_wear(65535/132)
 			end
 			return itemstack
 		end
@@ -65,7 +65,7 @@ minetest.register_tool("farming:hoe_steel", {
 	on_place = function(itemstack, user, pointed_thing)
 		if create_soil(pointed_thing.under, user:get_inventory()) then
 			if not minetest.setting_getbool("creative_mode") then
-				itemstack:add_wear(65535/80)
+				itemstack:add_wear(65535/251)
 			end
 			return itemstack
 		end
@@ -88,12 +88,12 @@ minetest.register_craft({
 })
 
 minetest.register_tool("farming:hoe_gold", {
-	description = "Gold Hoe",
+	description = "Golden Hoe",
 	inventory_image = "farming_tool_goldhoe.png",
 	on_place = function(itemstack, user, pointed_thing)
 		if create_soil(pointed_thing.under, user:get_inventory()) then
 			if not minetest.setting_getbool("creative_mode") then
-				itemstack:add_wear(65535/60)
+				itemstack:add_wear(65535/33)
 			end
 			return itemstack
 		end
@@ -121,7 +121,7 @@ minetest.register_tool("farming:hoe_diamond", {
 	on_place = function(itemstack, user, pointed_thing)
 		if create_soil(pointed_thing.under, user:get_inventory()) then
 			if not minetest.setting_getbool("creative_mode") then
-				itemstack:add_wear(65535/120)
+				itemstack:add_wear(65535/1562)
 			end
 			return itemstack
 		end
