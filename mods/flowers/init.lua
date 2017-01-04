@@ -363,5 +363,5 @@ minetest.register_node("flowers:pot",{
 local time_to_load= os.clock() - init
 print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
 
-minetest.register_alias("flowers:azure_bluet", "flowers:azure_bluet")
-minetest.register_alias("flowers:peony", "flowers:peony")
+minetest.register_alias("flowers:houstonia", "flowers:azure_bluet")
+minetest.register_alias("flowers:paeonia", "flowers:peony")
