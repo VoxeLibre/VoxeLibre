@@ -51,7 +51,7 @@ minetest.register_node("farming:pumpkin_2", {
 
 
 minetest.register_node("farming:pumpkin_face", {
-	description = "Pumpkin Face",
+	description = "Pumpkin",
 	stack_max = 64,
 	paramtype2 = "facedir",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"},
@@ -271,7 +271,7 @@ minetest.register_abm({
 
 
 minetest.register_node("farming:pumpkin_face_light", {
-	description = "Jack O' Lantern",
+	description = "Jack o'Lantern",
 	stack_max = 64,
 	paramtype2 = "facedir",
 	light_source = LIGHT_MAX,

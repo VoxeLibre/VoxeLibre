@@ -14,8 +14,8 @@ clay.dyes = {
 	{"magenta",    "Magenta",    "magenta"},
 	{"orange",     "Orange",     "orange"},
 	{"purple",     "Purple",     "violet"},
-	{"brown",      "Brown",      "dark_orange"},
-	{"pink",       "Pink",       "light_red"},
+	{"brown",      "Brown",      "brown"},
+	{"pink",       "Pink",       "pink"},
 	{"lime",       "Lime",       "green"},
 	{"light_blue", "Light Blue", "lightblue"},
 }

@@ -225,3 +225,5 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 end)
 
 dofile(minetest.get_modpath("torches") .. "/crafting.lua")
+
+minetest.register_alias("default:torch", "torches:torch")
