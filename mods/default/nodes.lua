@@ -326,7 +326,7 @@ minetest.register_node("default:sea_lantern", {
 	description = "Sea Lantern",
 	paramtype2 = "facedir",
 	stack_max = 64,
-	light_source = LIGHT_MAX,
+	light_source = 14,
 	drop = {
 		max_items = 1,
 		items = {
@@ -975,7 +975,7 @@ minetest.register_node("default:lava_flowing", {
 	},
 	paramtype = "light",
 	paramtype2 = "flowingliquid",
-	light_source = LIGHT_MAX,
+	light_source = 14,
 	walkable = false,
 	pointable = false,
 	diggable = false,
@@ -1009,7 +1009,7 @@ minetest.register_node("default:lava_source", {
 		}
 	},
 	paramtype = "light",
-	light_source = LIGHT_MAX,
+	light_source = 14,
 	walkable = false,
 	pointable = false,
 	diggable = false,
@@ -1346,7 +1346,7 @@ minetest.register_node("default:furnace_active", {
 	tiles = {"default_furnace_top.png", "default_furnace_bottom.png", "default_furnace_side.png",
 		"default_furnace_side.png", "default_furnace_side.png", "default_furnace_front_active.png"},
 	paramtype2 = "facedir",
-	light_source = 8,
+	light_source = 12,
 	drop = "default:furnace",
 	groups = {cracky=2, not_in_creative_inventory=1},
 	legacy_facedir_simple = true,

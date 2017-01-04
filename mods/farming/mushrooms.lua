@@ -9,6 +9,7 @@ minetest.register_node("farming:mushroom_brown", {
 	walkable = false,
 	groups = {snappy=3,flammable=2,mushroom=1,attached_node=1},
 	sounds = default.node_sound_leaves_defaults(),
+	light_source = 1,
 	selection_box = {
 		type = "fixed",
 		fixed = { -0.15, -0.5, -0.15, 0.15, 0.015, 0.15 },

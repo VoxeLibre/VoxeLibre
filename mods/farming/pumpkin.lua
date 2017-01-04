@@ -274,7 +274,7 @@ minetest.register_node("farming:pumpkin_face_light", {
 	description = "Jack o'Lantern",
 	stack_max = 64,
 	paramtype2 = "facedir",
-	light_source = LIGHT_MAX,
+	light_source = 14,
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face_light.png"},
 	groups = {choppy=2, oddly_breakable_by_hand=2, flammable=2},
 })
