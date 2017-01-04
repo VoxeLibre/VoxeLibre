@@ -158,18 +158,6 @@ minetest.register_node("default:dirt_with_grass", {
 	}),
 })
 
-minetest.register_node("default:dirt_with_grass_footsteps", {
-	description = "Grass Block with Footsteps",
-	tiles = {"default_grass_footsteps.png", "default_dirt.png", "default_dirt.png^default_grass_side.png"},
-	is_ground_content = true,
-	stack_max = 64,
-	groups = {crumbly=3, not_in_creative_inventory=1, soil=1},
-	drop = 'default:dirt',
-	sounds = default.node_sound_dirt_defaults({
-		footstep = {name="default_grass_footstep", gain=0.4},
-	}),
-})
-
 minetest.register_node("default:dirt_with_snow", {
 	description = "Dirt with Snow",
 	tiles = {"default_snow.png", "default_dirt.png", "default_dirt.png^default_snow_side.png"},
@@ -875,14 +863,6 @@ minetest.register_node("default:wood", {
 	stack_max = 64,
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
 	sounds = default.node_sound_wood_defaults(),
-})
-
-minetest.register_node("default:cloud", {
-	description = "Cloud",
-	tiles = {"default_cloud.png"},
-	stack_max = 64,
-	sounds = default.node_sound_defaults(),
-	groups = {not_in_creative_inventory=1},
 })
 
 minetest.register_node("default:water_flowing", {
