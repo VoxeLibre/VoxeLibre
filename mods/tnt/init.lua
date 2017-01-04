@@ -1,5 +1,5 @@
 function spawn_tnt(pos, entname)
-    minetest.sound_play("", {pos = pos,gain = 1.0,max_hear_distance = 15,})
+    minetest.sound_play("tnt_ignite", {pos = pos,gain = 1.0,max_hear_distance = 15,})
     return minetest.env:add_entity(pos, entname)
 end
 
