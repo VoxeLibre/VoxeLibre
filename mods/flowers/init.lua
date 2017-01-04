@@ -26,7 +26,7 @@ local function add_simple_flower(name, desc, image, color)
 		paramtype = "light",
 		walkable = false,
 		stack_max = 64,
-		groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,dig_by_water=1,color=1},
+		groups = {dig_immediate=3,flammable=2,flower=1,flora=1,attached_node=1,dig_by_water=1,color=1},
 		sounds = default.node_sound_leaves_defaults(),
 		selection_box = {
 			type = "fixed",
@@ -50,7 +50,7 @@ minetest.register_node("flowers:tulip_pink", {
 	paramtype = "light",
 	walkable = false,
 	stack_max = 64,
-	groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_pink=1},
+	groups = {dig_immediate=3,flammable=2,flower=1,flora=1,attached_node=1,color_pink=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -68,7 +68,7 @@ minetest.register_node("flowers:tulip_red", {
 	paramtype = "light",
 	walkable = false,
 	stack_max = 64,
-	groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_red=1},
+	groups = {dig_immediate=3,flammable=2,flower=1,flora=1,attached_node=1,color_red=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -87,7 +87,7 @@ minetest.register_node("flowers:tulip_white", {
 	paramtype = "light",
 	walkable = false,
 	stack_max = 64,
-	groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_white=1},
+	groups = {dig_immediate=3,flammable=2,flower=1,flora=1,attached_node=1,color_white=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -108,7 +108,7 @@ minetest.register_node("flowers:allium", {
 	paramtype = "light",
 	walkable = false,
 	stack_max = 64,
-	groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_pink=1},
+	groups = {dig_immediate=3,flammable=2,flower=1,flora=1,attached_node=1,color_pink=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -128,7 +128,7 @@ minetest.register_node("flowers:peony", {
 	paramtype = "light",
 	walkable = false,
 	stack_max = 64,
-	groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_pink=1},
+	groups = {dig_immediate=3,flammable=2,flower=1,flora=1,attached_node=1,color_pink=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -149,7 +149,7 @@ minetest.register_node("flowers:azure_bluet", {
 	paramtype = "light",
 	walkable = false,
 	stack_max = 64,
-	groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_white=1},
+	groups = {dig_immediate=3,flammable=2,flower=1,flora=1,attached_node=1,color_white=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -169,7 +169,7 @@ minetest.register_node("flowers:blue_orchid", {
 	paramtype = "light",
 	walkable = false,
 	stack_max = 64,
-	groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,color_blue=1},
+	groups = {dig_immediate=3,flammable=2,flower=1,flora=1,attached_node=1,color_blue=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -189,7 +189,7 @@ minetest.register_node("flowers:fern", {
 	paramtype = "light",
 	walkable = false,
 	stack_max = 64,
-	groups = {snappy=3,flammable=2,flower=1,attached_node=1},
+	groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -228,7 +228,7 @@ function register_large(name, desc, inv_img, bot_img, colr) --change in function
         end,
         ]]
         drop = "flowers:"..name,
-        groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,colr=1, dig_by_water=1, double_bottom =1},
+        groups = {dig_immediate=3,flammable=2,flower=1,flora=1,attached_node=1,colr=1, dig_by_water=1, double_bottom =1},
         sounds = default.node_sound_leaves_defaults(),
         selection_box = {
             type = "fixed",
@@ -248,7 +248,7 @@ function register_large(name, desc, inv_img, bot_img, colr) --change in function
         walkable = false,
         buildable_to = true,
         drop = "flowers:"..name,
-        groups = {snappy=3,flammable=2,flower=1,flora=1,attached_node=1,colr=1, dig_by_water=1, not_in_creative_inventory = 1, double_top =1},
+        groups = {dig_immediate=3,flammable=2,flower=1,flora=1,attached_node=1,colr=1, dig_by_water=1, not_in_creative_inventory = 1, double_top =1},
         sounds = default.node_sound_leaves_defaults(),
         selection_box = {
             type = "fixed",
@@ -324,7 +324,7 @@ minetest.register_node("flowers:pot",{
 	tiles = {"flowers_pot_top.png", "flowers_pot_bottom.png", "flowers_pot_top.png"},
 	inventory_image="flowers_pot_inventory.png",
 	paramtype = "light",
-	groups = {snappy=3},
+	groups = {dig_immediate=3},
 	stack_max = 16,
 	sounds = default.node_sound_defaults(),
 	after_place_node = function(pos, placer, itemstack)
