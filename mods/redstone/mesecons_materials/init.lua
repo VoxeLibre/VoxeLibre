@@ -9,6 +9,6 @@ minetest.register_craft({
 	output = '"mesecons_materials:glue" 2',
 	type = "cooking",
 	recipe = "default:sapling",
-	cooktime = 2
+	cooktime = 10,
 })
 

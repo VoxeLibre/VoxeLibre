@@ -200,21 +200,25 @@ for k, v in pairs(craft_ingreds) do
 			type = "cooking",
 			output = c,
 			recipe = "3d_armor:helmet_"..k,
+			cooktime = 10,
 		})
 		minetest.register_craft({
 			type = "cooking",
 			output = c,
 			recipe = "3d_armor:chestplate_"..k,
+			cooktime = 10,
 		})
 		minetest.register_craft({
 			type = "cooking",
 			output = c,
 			recipe = "3d_armor:leggings_"..k,
+			cooktime = 10,
 		})
 		minetest.register_craft({
 			type = "cooking",
 			output = c,
 			recipe = "3d_armor:boots_"..k,
+			cooktime = 10,
 		})
 	end
 end

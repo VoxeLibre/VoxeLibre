@@ -130,6 +130,6 @@ minetest.register_craft({
 	type = "cooking",
 	output = "mobs:meat_cooked_sheep",
 	recipe = "mobs:meat_raw_sheep",
-	cooktime = 25,
+	cooktime = 10,
 })
 

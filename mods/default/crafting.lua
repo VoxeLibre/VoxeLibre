@@ -411,48 +411,56 @@ minetest.register_craft({
 	type = "cooking",
 	output = "default:gold_nugget",
 	recipe = "default:sword_gold",
+	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "default:gold_nugget",
 	recipe = "default:axe_gold",
+	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "default:gold_nugget",
 	recipe = "default:shovel_gold",
+	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "default:gold_nugget",
 	recipe = "default:pick_gold",
+	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "default:iron_nugget",
 	recipe = "default:sword_steel",
+	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "default:iron_nugget",
 	recipe = "default:axe_steel",
+	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "default:iron_nugget",
 	recipe = "default:shovel_steel",
+	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "default:iron_nugget",
 	recipe = "default:pick_steel",
+	cooktime = 10,
 })
 
 minetest.register_craft({
@@ -663,49 +671,56 @@ minetest.register_craft({
 	type = "cooking",
 	output = "default:glass",
 	recipe = "group:sand",
+	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "default:stone",
 	recipe = "default:cobble",
+	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "default:steel_ingot",
 	recipe = "default:stone_with_iron",
+	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "default:gold_ingot",
 	recipe = "default:stone_with_gold",
+	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "default:clay_brick",
 	recipe = "default:clay_lump",
+	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "default:fish",
 	recipe = "default:fish_raw",
-	cooktime = 2,
+	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "default:charcoal_lump",
 	recipe = "group:tree",
+	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "default:sponge",
 	recipe = "default:sponge_wet",
+	cooktime = 10,
 })
 
 --

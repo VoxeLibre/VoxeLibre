@@ -85,6 +85,7 @@ minetest.register_craft({
 	type = "cooking",
 	output = "default:iron_nugget",
 	recipe = "farming:hoe_steel",
+	cooktime = 10,
 })
 
 minetest.register_tool("farming:hoe_gold", {
@@ -113,6 +114,7 @@ minetest.register_craft({
 	type = "cooking",
 	output = "default:gold_nugget",
 	recipe = "farming:hoe_gold",
+	cooktime = 10,
 })
 
 minetest.register_tool("farming:hoe_diamond", {

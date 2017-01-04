@@ -32,6 +32,7 @@ minetest.register_craft({
 	type = "cooking",
 	output = "hardened_clay:hardened_clay",
 	recipe = "default:clay",
+	cooktime = 10,
 })
 
 
