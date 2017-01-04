@@ -699,37 +699,13 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "fuel",
 	recipe = "group:tree",
-	burntime = 30,
-})
-
-minetest.register_craft({
-	type = "fuel",
-	recipe = "default:junglegrass",
-	burntime = 2,
-})
-
-minetest.register_craft({
-	type = "fuel",
-	recipe = "group:leaves",
-	burntime = 1,
-})
-
-minetest.register_craft({
-	type = "fuel",
-	recipe = "default:cactus",
 	burntime = 15,
 })
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "default:reeds",
-	burntime = 1,
-})
-
-minetest.register_craft({
-	type = "fuel",
 	recipe = "default:bookshelf",
-	burntime = 30,
+	burntime = 15,
 })
 
 minetest.register_craft({
@@ -741,19 +717,13 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "fuel",
 	recipe = "default:ladder",
-	burntime = 5,
+	burntime = 15,
 })
 
 minetest.register_craft({
 	type = "fuel",
 	recipe = "group:wood",
-	burntime = 7,
-})
-
-minetest.register_craft({
-	type = "fuel",
-	recipe = "default:lava_source",
-	burntime = 60,
+	burntime = 15,
 })
 
 minetest.register_craft({
@@ -770,52 +740,21 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "default:sapling",
-	burntime = 10,
-})
-
-minetest.register_craft({
-	type = "fuel",
-	recipe = "default:apple",
-	burntime = 3,
-})
-
-minetest.register_craft({
-	type = "fuel",
-	recipe = "default:apple_gold",
-	burntime = 6,
+	recipe = "group:sapling",
+	burntime = 5,
 })
 
 minetest.register_craft({
 	type = "fuel",
 	recipe = "default:coal_lump",
-	burntime = 40,
-})
-
-minetest.register_craft({
-	type = "fuel",
-	recipe = "default:haybale",
-	burntime = 40,
+	burntime = 80,
 })
 
 minetest.register_craft({
 	type = "fuel",
 	recipe = "default:charcoal_lump",
-	burntime = 45,
+	burntime = 80,
 })
-
-minetest.register_craft({
-	type = "fuel",
-	recipe = "default:junglesapling",
-	burntime = 10,
-})
-
-minetest.register_craft({
-	type = "fuel",
-	recipe = "default:grass_1",
-	burntime = 2,
-})
-
 
 --
 --Temporary
