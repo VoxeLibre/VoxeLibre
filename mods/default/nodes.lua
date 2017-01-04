@@ -1580,6 +1580,15 @@ minetest.register_node("default:mossycobble", {
 	sounds = default.node_sound_stone_defaults(),
 })
 
+minetest.register_node("default:coalblock", {
+	description = "Block of Coal",
+	tiles = {"default_coal_block.png"},
+	is_ground_content = true,
+	stack_max = 64,
+	groups = {cracky=2},
+	sounds = default.node_sound_stone_defaults(),
+})
+
 minetest.register_node("default:steelblock", {
 	description = "Block of Iron",
 	tiles = {"default_steel_block.png"},
