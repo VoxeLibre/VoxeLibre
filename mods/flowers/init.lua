@@ -35,8 +35,7 @@ local function add_simple_flower(name, desc, image, color)
 	})
 end
 
-add_simple_flower("rose", "Coqlicot", "flowers_coqlicot", "color_red")
---add_simple_flower("rose", "Rose", "flowers_rose", "color_red") -- Old skin :( you miss me
+add_simple_flower("rose", "Poppy", "flowers_coqlicot", "color_red")
 add_simple_flower("dandelion_yellow", "Yellow Dandelion", "flowers_dandelion_yellow", "color_yellow")
 add_simple_flower("oxeye_daisy", "Oxeye Daisy", "flower_oxeye_daisy", "color_yellow")
 add_simple_flower("tulip_orange", "Orange Tulip", "flower_tulip_orange", "color_orange")
@@ -117,14 +116,14 @@ minetest.register_node("flowers:allium", {
 	},
 })
 
---- paeonia ---
+--- peony ---
 
-minetest.register_node("flowers:paeonia", {
-	description = "Paeonia",
+minetest.register_node("flowers:peony", {
+	description = "Peony",
 	drawtype = "plantlike",
-	tiles = { "flower_paeonia.png" },
-	inventory_image = "flower_paeonia.png",
-	wield_image = "flower_paeonia.png",
+	tiles = { "flower_peony.png" },
+	inventory_image = "flower_peony.png",
+	wield_image = "flower_peony.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -138,14 +137,14 @@ minetest.register_node("flowers:paeonia", {
 })
 
 
---- houstonia ---
+--- azure bluet ---
 
-minetest.register_node("flowers:houstonia", {
-	description = "Houstonia",
+minetest.register_node("flowers:azure_bluet", {
+	description = "Azure Bluet",
 	drawtype = "plantlike",
-	tiles = { "flower_houstonia.png" },
-	inventory_image = "flower_houstonia.png",
-	wield_image = "flower_houstonia.png",
+	tiles = { "flower_azure_bluet.png" },
+	inventory_image = "flower_azure_bluet.png",
+	wield_image = "flower_azure_bluet.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -364,3 +363,5 @@ minetest.register_node("flowers:pot",{
 local time_to_load= os.clock() - init
 print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
 
+minetest.register_alias("flowers:azure_bluet", "flowers:azure_bluet")
+minetest.register_alias("flowers:peony", "flowers:peony")

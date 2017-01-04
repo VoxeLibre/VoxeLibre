@@ -292,7 +292,7 @@ end
 
 --- Normal Door ---
 doors:register_door("doors:door_wood", {
-	description = "Wooden Door",
+	description = "Oak Door",
 	inventory_image = "door_wood.png",
 	stack_max = 16,
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
@@ -311,7 +311,7 @@ minetest.register_craft({
 
 --- Accacia Door --
 doors:register_door("doors:door_acacia", {
-	description = "Wooden Acacia Door",
+	description = "Acacia Door",
 	inventory_image = "door_acacia.png",
 	stack_max = 16,
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
@@ -330,7 +330,7 @@ minetest.register_craft({
 
 --- birch Door --
 doors:register_door("doors:door_birch", {
-	description = "Wooden Birch Door",
+	description = "Birch Door",
 	stack_max = 16,
 	inventory_image = "door_birch.png",
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
@@ -340,7 +340,7 @@ doors:register_door("doors:door_birch", {
 
 --- dark oak Door --
 doors:register_door("doors:door_dark_oak", {
-	description = "Wooden Dark Oak Door",
+	description = "Dark Oak Door",
 	inventory_image = "door_dark_oak.png",
 	stack_max = 16,
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
@@ -350,7 +350,7 @@ doors:register_door("doors:door_dark_oak", {
 
 --- jungle Door --
 doors:register_door("doors:door_jungle", {
-	description = "Wooden Jungle Door",
+	description = "Jungle Door",
 	stack_max = 16,
 	inventory_image = "door_jungle.png",
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
@@ -369,7 +369,7 @@ minetest.register_craft({
 
 --- spruce Door --
 doors:register_door("doors:door_spruce", {
-	description = "Wooden Spruce Door",
+	description = "Spruce Door",
 	stack_max = 16,
 	inventory_image = "door_spruce.png",
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},

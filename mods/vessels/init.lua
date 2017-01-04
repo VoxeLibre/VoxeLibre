@@ -2,7 +2,7 @@
 -- See README.txt for licensing and other information.
 
 minetest.register_node("vessels:glass_bottle", {
-	description = "Glass Bottle (empty)",
+	description = "Glass Bottle",
 	drawtype = "plantlike",
 	tiles = {"vessels_glass_bottle.png"},
 	inventory_image = "vessels_glass_bottle_inv.png",

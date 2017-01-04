@@ -96,7 +96,7 @@ local bx21 = {5/16, 1/2-1/16, -1/16, 5/16, 1/2+8/16, -1/16}   --oben_block(quer)
 
 
 minetest.register_node("fences:fence_wood", {
-	description = "Wooden Fence",
+	description = "Oak Fence",
 	tiles = {"default_wood.png"},
 	inventory_image = "default_fence.png",
 	wield_image = "default_fence.png",
@@ -625,7 +625,7 @@ minetest.register_node("fences:fencegate_open", {
 })
 
 minetest.register_node("fences:fencegate", {
-	description = "Wooden Fancegate",
+	description = "Oak Fence Gate",
 	tiles = {"default_wood.png"},
 	inventory_image = "fences_fencegate.png",
 	wield_image = "fences_fencegate.png",

@@ -86,7 +86,7 @@ boxes = {
 end
 
 minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
-	description = "Delayer",
+	description = "Redstone Repeater",
 	drawtype = "nodebox",
 	tiles = {
 		"mesecons_delayer_off.png",

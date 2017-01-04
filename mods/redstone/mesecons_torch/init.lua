@@ -86,7 +86,7 @@ minetest.register_node("mesecons_torch:mesecon_torch_on", {
 })
 
 minetest.register_node("mesecons_torch:redstoneblock", {
-	description = "Redstone Block",
+	description = "Block of Redstone",
 	tiles = {"default_redstone_block.png"},
 	stack_max = 64,
 	groups = {cracky=1},

@@ -94,7 +94,7 @@ minetest.register_node("default:stone_with_emerald", {
 })
 
 minetest.register_node("default:stone_with_diamond", {
-	description = "Diamonds in Stone",
+	description = "Diamond Ore",
 	tiles = {"default_stone.png^default_mineral_diamond.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -104,7 +104,7 @@ minetest.register_node("default:stone_with_diamond", {
 })
 
 minetest.register_node("default:stonebrick", {
-	description = "Stone Brick",
+	description = "Stone Bricks",
 	tiles = {"default_stone_brick.png"},
 	stack_max = 64,
 	groups = {cracky=3, stone=1},
@@ -112,7 +112,7 @@ minetest.register_node("default:stonebrick", {
 })
 
 minetest.register_node("default:stonebrickcarved", {
-	description = "Stone Brick Carved",
+	description = "Chiseled Stone Bricks",
 	tiles = {"default_stonebrick_carved.png"},
 	stack_max = 64,
 	groups = {cracky=3, stone=1},
@@ -120,7 +120,7 @@ minetest.register_node("default:stonebrickcarved", {
 })
 
 minetest.register_node("default:stonebrickcracked", {
-	description = "Stone Brick Cracked",
+	description = "Cracked Stone Bricks",
 	tiles = {"default_stonebrick_cracked.png"},
 	stack_max = 64,
 	groups = {cracky=3, stone=1},
@@ -128,7 +128,7 @@ minetest.register_node("default:stonebrickcracked", {
 })
 
 minetest.register_node("default:stonebrickmossy", {
-	description = "Mossy Stone Brick",
+	description = "Mossy Stone Bricks",
 	tiles = {"default_stonebrick_mossy.png"},
 	stack_max = 64,
 	groups = {cracky=3, stone=1},
@@ -136,7 +136,7 @@ minetest.register_node("default:stonebrickmossy", {
 })
 
 minetest.register_node("default:dirt_with_grass", {
-	description = "Dirt with Grass",
+	description = "Grass Block",
 	tiles = {"default_grass.png", "default_dirt.png", "default_dirt.png^default_grass_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -148,7 +148,7 @@ minetest.register_node("default:dirt_with_grass", {
 })
 
 minetest.register_node("default:dirt_with_grass_footsteps", {
-	description = "Dirt with Grass and Footsteps",
+	description = "Grass Block with Footsteps",
 	tiles = {"default_grass_footsteps.png", "default_dirt.png", "default_dirt.png^default_grass_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -219,7 +219,7 @@ minetest.register_node("default:sandstone", {
 })
 
 minetest.register_node("default:sandstonesmooth", {
-	description = "Sandstone Smooth",
+	description = "Smooth Sandstone",
 	tiles = {"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_smooth.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -228,7 +228,7 @@ minetest.register_node("default:sandstonesmooth", {
 })
 
 minetest.register_node("default:sandstonecarved", {
-	description = "Sandstone Carved",
+	description = "Chiseled Sandstone",
 	tiles = {"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_carved.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -248,7 +248,7 @@ minetest.register_node("default:redsand", {
 })
 
 minetest.register_node("default:redsandstone", {
-	description = "Red SandStone",
+	description = "Red Sandstone",
 	tiles = {"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_normal.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -257,7 +257,7 @@ minetest.register_node("default:redsandstone", {
 })
 
 minetest.register_node("default:redsandstonesmooth", {
-	description = "Red SandStone Smooth",
+	description = "Smooth Red Sandstone",
 	tiles = {"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_smooth.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -266,7 +266,7 @@ minetest.register_node("default:redsandstonesmooth", {
 })
 
 minetest.register_node("default:redsandstonecarved", {
-	description = "Red SandStone Carved",
+	description = "Chiseled Red Sandstone",
 	tiles = {"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_carved.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -289,7 +289,7 @@ minetest.register_node("default:clay", {
 })
 
 minetest.register_node("default:brick", {
-	description = "Brick Block",
+	description = "Bricks",
 	tiles = {"default_brick.png"},
 	stack_max = 64,
 	groups = {cracky=3},
@@ -331,7 +331,7 @@ minetest.register_node("default:prismarine", {
 })
 
 minetest.register_node("default:prismarine_brick", {
-     description = "Prismarine Brick",
+     description = "Prismarine Bricks",
 	 stack_max = 64,
      tiles = {"default_prismarine_bricks.png"},
      groups = {cracky=2},
@@ -349,7 +349,7 @@ minetest.register_node("default:prismarine_dark", {
 
 -- Normal tree --
 minetest.register_node("default:tree", {
-	description = "Tree",
+	description = "Wood",
 	tiles = {"default_tree_top.png", "default_tree_top.png", "default_tree.png"},
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -360,7 +360,7 @@ minetest.register_node("default:tree", {
 })
 
 minetest.register_node("default:sapling", {
-	description = "Sapling",
+	description = "Oak Sapling",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
 	tiles = {"default_sapling.png"},
@@ -378,7 +378,7 @@ minetest.register_node("default:sapling", {
 })
 
 minetest.register_node("default:leaves", {
-	description = "Leaves",
+	description = "Oak Leaves",
 	drawtype = "allfaces_optional",
 	visual_scale = 1.3,
 	tiles = {"default_leaves.png"},
@@ -411,7 +411,7 @@ minetest.register_node("default:leaves", {
 -- Jungle Tree --
 
 minetest.register_node("default:jungletree", {
-	description = "Jungle Tree",
+	description = "Jungle Wood",
 	tiles = {"default_jungletree_top.png", "default_jungletree_top.png", "default_jungletree.png"},
 	stack_max = 64,
 	paramtype2 = "facedir",
@@ -422,7 +422,7 @@ minetest.register_node("default:jungletree", {
 })
 
 minetest.register_node("default:junglewood", {
-	description = "Junglewood Planks",
+	description = "Jungle Wood Planks",
 	tiles = {"default_junglewood.png"},
 	stack_max = 64,
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
@@ -477,7 +477,7 @@ minetest.register_node("default:junglesapling", {
 -- Accacia Tree --
 
 minetest.register_node("default:acaciatree", {
-	description = "Acacia Tree",
+	description = "Acacia Wood",
 	tiles = {"default_acaciatree_top.png", "default_acaciatree_top.png", "default_acaciatree.png"},
 	stack_max = 64,
 	paramtype2 = "facedir",
@@ -488,7 +488,7 @@ minetest.register_node("default:acaciatree", {
 })
 
 minetest.register_node("default:acaciawood", {
-	description = "Acaciawood Planks",
+	description = "Acacia Wood Planks",
 	tiles = {"default_acaciawood.png"},
 	stack_max = 64,
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
@@ -542,7 +542,7 @@ minetest.register_node("default:acaciasapling", {
 -- Spruce Tree --
 
 minetest.register_node("default:sprucetree", {
-	description = "Spruce Tree",
+	description = "Spruce Wood",
 	tiles = {"default_sprucetree_top.png", "default_sprucetree_top.png", "default_sprucetree.png"},
 	stack_max = 64,
 	paramtype2 = "facedir",
@@ -553,7 +553,7 @@ minetest.register_node("default:sprucetree", {
 })
 
 minetest.register_node("default:sprucewood", {
-	description = "Sprucewood Planks",
+	description = "Spruce Wood Planks",
 	tiles = {"default_sprucewood.png"},
 	stack_max = 64,
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
@@ -661,7 +661,7 @@ minetest.register_node("default:cactus", {
 })
 
 minetest.register_node("default:reeds", {
-	description = "Sugarcane",
+	description = "Sugar Canes",
 	drawtype = "plantlike",
 	tiles = {"default_papyrus.png"},
 	inventory_image = "default_sugar_cane.png",
@@ -701,7 +701,7 @@ minetest.register_node("default:quartz_ore", {
 })
 	 
 minetest.register_node("default:quartz_block", {
-	description = "Quartz Block",
+	description = "Block of Quartz",
 	stack_max = 64,
 	tiles = {"default_quartz_block_top.png", "default_quartz_block_bottom.png", "default_quartz_block_side.png"},
 	groups = {snappy=1,bendy=2,cracky=1,level=2},
@@ -717,7 +717,7 @@ minetest.register_node("default:quartz_chiseled", {
 })
 
 minetest.register_node("default:quartz_pillar", {
-	description = "Quartz Pillar",
+	description = "Pillar Quartz Block",
 	stack_max = 64,
 	paramtype2 = "facedir",
 	on_place = minetest.rotate_node,
@@ -776,21 +776,22 @@ minetest.register_node("default:glass", {
 })
 
 ---- colored glass
-AddGlass( "Glass Red",  "basecolor_red", "_red")
-AddGlass( "Glass Green",  "unicolor_dark_green", "_green")
-AddGlass( "Glass Blue",  "basecolor_blue", "_blue")
-AddGlass( "Glass Light Blue",  "basecolor_cyan", "_light_blue")
-AddGlass( "Glass Black",  "basecolor_black", "_black")
-AddGlass( "Glass White",  "basecolor_white", "_white")
-AddGlass( "Glass Yellow",  "basecolor_yellow", "_yellow")
-AddGlass( "Glass Brown",  "unicolor_dark_orange", "_brown")
-AddGlass( "Glass Orange",  "excolor_orange", "_orange")
-AddGlass( "Glass Pink",  "unicolor_light_red", "_pink")
-AddGlass( "Glass Gray",  "unicolor_darkgrey", "_gray")
-AddGlass( "Glass Lime",  "basecolor_green", "_lime")
-AddGlass( "Glass Silver",  "basecolor_grey", "_silver")
-AddGlass( "Glass Magenta",  "basecolor_magenta", "_magenta")
-AddGlass( "Glass Purple",  "excolor_violet", "_purple")
+AddGlass( "Red Glass",  "basecolor_red", "_red")
+AddGlass( "Green Glass",  "unicolor_dark_green", "_green")
+AddGlass( "Blue Glass",  "basecolor_blue", "_blue")
+AddGlass( "Light Blue Glass",  "basecolor_cyan", "_light_blue")
+AddGlass( "Black Glass",  "basecolor_black", "_black")
+AddGlass( "White Glass",  "basecolor_white", "_white")
+AddGlass( "Yellow Glass",  "basecolor_yellow", "_yellow")
+AddGlass( "Brown Glass",  "unicolor_dark_orange", "_brown")
+AddGlass( "Orange Glass",  "excolor_orange", "_orange")
+AddGlass( "Pink Glass",  "unicolor_light_red", "_pink")
+AddGlass( "Gray Glass",  "unicolor_darkgrey", "_gray")
+AddGlass( "Lime Glass",  "basecolor_green", "_lime")
+AddGlass( "Light Gray Glass",  "basecolor_grey", "_silver")
+AddGlass( "Magenta Glass",  "basecolor_magenta", "_magenta")
+AddGlass( "Purple Glass",  "excolor_violet", "_purple")
+AddGlass( "Cyan Glass",  "basecolor_cyan", "_cyan")
 
 minetest.register_node("default:rail", {
 	description = "Rail",
@@ -833,7 +834,7 @@ minetest.register_node("default:ladder", {
 
 
 minetest.register_node("default:vine", {
-	description = "Vine",
+	description = "Vines",
 	drawtype = "signlike",
 	tiles = {"default_vine.png"},
 	inventory_image = "default_vine.png",
@@ -874,7 +875,7 @@ minetest.register_node("default:vine", {
 
 
 minetest.register_node("default:wood", {
-	description = "Wooden Planks",
+	description = "Wood Planks",
 	tiles = {"default_wood.png"},
 	stack_max = 64,
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
@@ -1537,7 +1538,7 @@ minetest.register_node("default:cobble", {
 })
 
 minetest.register_node("default:mossycobble", {
-	description = "Mossy Cobblestone",
+	description = "Moss Stone",
 	tiles = {"default_mossycobble.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -1555,7 +1556,7 @@ minetest.register_node("default:steelblock", {
 })
 
 minetest.register_node("default:goldblock", {
-	description = "Gold Block",
+	description = "Block of Gold",
 	tiles = {"default_gold_block.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -1564,7 +1565,7 @@ minetest.register_node("default:goldblock", {
 })
 
 minetest.register_node("default:diamondblock", {
-	description = "Diamond Block",
+	description = "Block of Diamond",
 	tiles = {"default_diamond_block.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -1581,7 +1582,7 @@ minetest.register_node("default:lapisblock", {
 })
 
 minetest.register_node("default:emeraldblock", {
-	description = "Emerald Block",
+	description = "Block of Emerald",
 	tiles = {"default_emerald_block.png"},
 	stack_max = 64,
 	groups = {cracky=1},
@@ -1827,7 +1828,7 @@ minetest.register_node("default:packedice", {
 })
 
 minetest.register_node("default:snow", {
-	description = "Snow",
+	description = "Snow Layer",
 	tiles = {"default_snow.png"},
 	inventory_image = "default_snowball.png",
 	wield_image = "default_snowball.png",
@@ -1856,7 +1857,7 @@ minetest.register_node("default:snow", {
 })
 
 minetest.register_node("default:snowblock", {
-	description = "Snow Block",
+	description = "Snow",
 	tiles = {"default_snow.png"},
 	is_ground_content = true,
 	stack_max = 64,

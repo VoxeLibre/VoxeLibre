@@ -23,13 +23,13 @@ minetest.register_craftitem("default:book", {
 })
 
 minetest.register_craftitem("default:coal_lump", {
-	description = "Coal Lump",
+	description = "Coal",
 	inventory_image = "default_coal_lump.png",
 	stack_max = 64,
 })
 
 minetest.register_craftitem("default:charcoal_lump", {
-	description = "Charcoal Lump",
+	description = "Charcoal",
 	inventory_image = "default_charcoal_lump.png",
 	stack_max = 64,
 })
@@ -71,7 +71,7 @@ minetest.register_craftitem("default:emerald", {
 })
 
 minetest.register_craftitem("default:clay_brick", {
-	description = "Clay Brick",
+	description = "Brick",
 	inventory_image = "default_clay_brick.png",
 	stack_max = 64,
 })
