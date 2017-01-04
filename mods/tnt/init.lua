@@ -87,13 +87,6 @@ function TNT:on_step(dtime)
 	minetest.add_particle({x=pos.x,y=pos.y+0.5,z=pos.z}, {x=math.random(-.1,.1),y=math.random(1,2),z=math.random(-.1,.1)}, {x=0,y=-0.1,z=0}, math.random(.5,1),math.random(1,2), false, "tnt_smoke.png")
 	self.timer = self.timer + dtime
 	self.blinktimer = self.blinktimer + dtime
-    if self.timer>3 then
-        self.blinktimer = self.blinktimer + dtime
-        if self.timer>5 then
-            self.blinktimer = self.blinktimer + dtime
-            self.blinktimer = self.blinktimer + dtime
-        end
-    end
 	if self.blinktimer > 0.5 then
 		self.blinktimer = self.blinktimer - 0.5
 		if self.blinkstatus then
@@ -103,7 +96,7 @@ function TNT:on_step(dtime)
 		end
 		self.blinkstatus = not self.blinkstatus
 	end
-	if self.timer > 8 then
+	if self.timer > 4 then
 		local pos = self.object:getpos()
         pos.x = math.floor(pos.x+0.5)
         pos.y = math.floor(pos.y+0.5)
