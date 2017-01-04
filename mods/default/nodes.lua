@@ -4,6 +4,22 @@
 -- Node definitions
 --
 
+minetest.register_node("default:barrier", {
+	description = "Barrier",
+	drawtype = "airlike",
+	paramtype = "light",
+	inventory_image = "default_barrier.png",
+	wield_image = "default_barrier.png",
+	stack_max = 64,
+	sunlight_propagates = true,
+	is_ground_content = false,
+	groups = { not_in_creative_inventory = 1 },
+	on_blast = function() end,
+	on_destruct = function () end,
+	can_dig = function() return false end,
+	diggable = false,
+})
+
 minetest.register_node("default:stone", {
 	description = "Stone",
 	tiles = {"default_stone.png"},
