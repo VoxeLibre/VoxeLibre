@@ -1868,10 +1868,8 @@ minetest.register_node("default:packedice", {
 })
 
 minetest.register_node("default:snow", {
-	description = "Snow Layer",
+	description = "Top Snow",
 	tiles = {"default_snow.png"},
-	inventory_image = "default_snowball.png",
-	wield_image = "default_snowball.png",
 	is_ground_content = true,
 	paramtype = "light",
 	buildable_to = true,
@@ -1887,13 +1885,7 @@ minetest.register_node("default:snow", {
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
-	on_use = snow_shoot_snowball,
-	on_construct = function(pos)
-	pos.y = pos.y - 1
-		if minetest.env:get_node(pos).name == "default:dirt_with_grass" then
-			minetest.env:set_node(pos, {name="default:dirt_with_snow"})
-		end
-	end,
+	drop = "default:snowball 2",
 })
 
 minetest.register_node("default:snowblock", {
@@ -1905,7 +1897,7 @@ minetest.register_node("default:snowblock", {
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
-	drop = "default:snow 4",
+	drop = "default:snowball 4",
 })
 
 minetest.register_node("default:cobweb", {

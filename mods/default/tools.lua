@@ -339,3 +339,17 @@ minetest.register_tool("default:shears", {
         	}
     }
 })
+
+-- Snowball
+minetest.register_craftitem("default:snowball", {
+	description = "Snowball",
+	inventory_image = "default_snowball.png",
+	stack_max = 64,
+	on_use = snow_shoot_snowball,
+	on_construct = function(pos)
+	pos.y = pos.y - 1
+		if minetest.env:get_node(pos).name == "default:dirt_with_grass" then
+			minetest.env:set_node(pos, {name="default:dirt_with_snow"})
+		end
+	end,
+})

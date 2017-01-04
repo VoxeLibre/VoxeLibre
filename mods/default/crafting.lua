@@ -594,16 +594,15 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'default:snowblock',
 	recipe = {
-		{'default:snow', 'default:snow', 'default:snow'},
-		{'default:snow', 'default:snow', 'default:snow'},
-		{'default:snow', 'default:snow', 'default:snow'},
+		{'default:snowball', 'default:snowball'},
+		{'default:snowball', 'default:snowball'},
 	}
 })
 
 minetest.register_craft({
-	output = 'default:snow 9',
+	output = 'default:snow 6',
 	recipe = {
-		{'default:snowblock'},
+		{'default:snowblock', 'default:snowblock', 'default:snowblock'},
 	}
 })
 
