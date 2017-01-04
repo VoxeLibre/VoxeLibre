@@ -49,6 +49,7 @@ minetest.register_node("beds:bed_bottom", {
 	wield_image = "beds_bed.png",
 	wield_scale = {x=0.8,y=2.5,z=1.3},
 	drawtype = "nodebox",
+	is_ground_content = false,
 	tiles = {"beds_bed_top_bottom.png^[transformR90", "default_wood.png",  "beds_bed_side_bottom_r.png",  "beds_bed_side_bottom_r.png^[transformfx", "beds_bed_leer.png", "beds_bed_side_bottom.png"},
 	paramtype = "light",
 	paramtype2 = "facedir",
@@ -149,6 +150,7 @@ minetest.register_node("beds:bed_top", {
 	tiles = {"beds_bed_top_top.png^[transformR90", "beds_bed_leer.png",  "beds_bed_side_top_r.png",  "beds_bed_side_top_r.png^[transformfx",  "beds_bed_side_top.png", "beds_bed_leer.png"},
 	paramtype = "light",
 	paramtype2 = "facedir",
+	is_ground_content = false,
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=3},
 	sounds = default.node_sound_wood_defaults(),
 	node_box = {

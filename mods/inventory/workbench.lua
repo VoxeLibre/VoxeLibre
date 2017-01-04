@@ -4,6 +4,7 @@ minetest.register_node("inventory:crafting_table", {
 		"inventory_crafting_table_side.png", "inventory_crafting_table_front.png", "inventory_crafting_table_front.png"},
 	paramtype2 = "facedir",
 	paramtype = "light",
+	is_ground_content = false,
 	groups = {choppy=2,oddly_breakable_by_hand=1,flammable=2},
 	sounds = default.node_sound_wood_defaults(),
 	on_rightclick = function(pos, node, clicker, itemstack)

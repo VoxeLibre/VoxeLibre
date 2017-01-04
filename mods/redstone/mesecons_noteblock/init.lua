@@ -5,6 +5,7 @@ minetest.register_node("mesecons_noteblock:noteblock", {
 	drawtype = "allfaces_optional",
 	visual_scale = 1.3,
 	paramtype="light",
+	is_ground_content = false,
 	after_place_node = function(pos)
 		minetest.env:add_node(pos, {name="mesecons_noteblock:noteblock", param2=0})
 	end,

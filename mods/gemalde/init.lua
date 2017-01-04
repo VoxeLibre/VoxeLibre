@@ -28,6 +28,7 @@ minetest.register_node("gemalde:node_"..n.."", {
 	tiles = {"gemalde_"..n..".png"},
 	visual_scale = 3.0,
 	inventory_image = "gemalde_node.png",
+	is_ground_content = false,
 	wield_image = "gemalde_node.png",
 	paramtype = "light",
 	paramtype2 = "wallmounted",

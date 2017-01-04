@@ -140,6 +140,7 @@ minetest.register_node("torches:floor", {
 		"torches_torch.png^[transformfx", "torches_torch.png", "torches_torch.png"},
 	paramtype = "light",
 	paramtype2 = "none",
+	is_ground_content = false,
 	sunlight_propagates = true,
 	drop = "default:torch",
 	walkable = false,
@@ -186,6 +187,7 @@ minetest.register_node("torches:wand", {
 
 	paramtype = "light",
 	paramtype2 = "facedir",
+	is_ground_content = false,
 	sunlight_propagates = true,
 	walkable = false,
 	light_source = 13,

@@ -56,6 +56,7 @@ minetest.register_node("mesecons_torch:mesecon_torch_off", {
 	paramtype = "light",
 	walkable = false,
 	paramtype2 = "wallmounted",
+	is_ground_content = false,
 	selection_box = torch_selectionbox,
 	groups = {dig_immediate = 3, not_in_creative_inventory = 1},
 	drop = "mesecons_torch:mesecon_torch_on",
@@ -75,6 +76,7 @@ minetest.register_node("mesecons_torch:mesecon_torch_on", {
 	sunlight_propagates = true,
 	walkable = false,
 	paramtype2 = "wallmounted",
+	is_ground_content = false,
 	selection_box = torch_selectionbox,
 	groups = {dig_immediate=3},
 	light_source = 6,
@@ -91,6 +93,7 @@ minetest.register_node("mesecons_torch:redstoneblock", {
 	stack_max = 64,
 	groups = {cracky=1},
 	sounds = default.node_sound_stone_defaults(),
+	is_ground_content = false,
 	mesecons = {receptor = {
 		state = mesecon.state.on,
 		rules = torch_get_output_rules

@@ -313,6 +313,7 @@ minetest.register_abm({
 minetest.register_node("flowers:pot",{
 	description = "Flower Pot",
 	drawtype = "nodebox",
+	is_ground_content = false,
 	node_box = { type = "fixed", fixed = {
 		{-0.125,-0.125,-0.187500,-0.187500,-0.500,0.1875}, --Wall 1
 		{0.1875,-0.125,-0.125,0.125,-0.500,0.1875}, --Wall 2

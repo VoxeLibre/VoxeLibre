@@ -26,6 +26,7 @@ minetest.register_node("mesecons_button:button_stone_off", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	legacy_wallmounted = true,
+	is_ground_content = false,
 	walkable = false,
 	sunlight_propagates = true,
 	selection_box = {
@@ -57,6 +58,7 @@ minetest.register_node("mesecons_button:button_stone_on", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	legacy_wallmounted = true,
+	is_ground_content = false,
 	walkable = false,
 	sunlight_propagates = true,
 	selection_box = {
@@ -83,6 +85,7 @@ minetest.register_node("mesecons_button:button_wood_off", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	legacy_wallmounted = true,
+	is_ground_content = false,
 	walkable = false,
 	sunlight_propagates = true,
 	selection_box = {
@@ -114,6 +117,7 @@ minetest.register_node("mesecons_button:button_wood_on", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	legacy_wallmounted = true,
+	is_ground_content = false,
 	walkable = false,
 	sunlight_propagates = true,
 	selection_box = {

@@ -82,6 +82,7 @@ function doors:register_door(name, def)
 		tiles = {tb[2], tb[2], tb[2], tb[2], tb[1], tb[1].."^[transformfx"},
 		paramtype = "light",
 		paramtype2 = "facedir",
+		is_ground_content = false,
 		drop = name,
 		drawtype = "nodebox",
 		node_box = {
@@ -116,6 +117,7 @@ function doors:register_door(name, def)
 		tiles = {tb[2], tb[2], tb[2], tb[2], tb[1].."^[transformfx", tb[1]},
 		paramtype = "light",
 		paramtype2 = "facedir",
+		is_ground_content = false,
 		drop = name,
 		drawtype = "nodebox",
 		node_box = {

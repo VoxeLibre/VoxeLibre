@@ -3,7 +3,8 @@
 function addhead(node, desc)
 	minetest.register_node("head:"..node, {
 			description = ""..desc,
-			drawtype = "nodebox",
+	    		drawtype = "nodebox",
+			is_ground_content = false,
 			node_box = {
 				type = "fixed",
 				fixed = {       

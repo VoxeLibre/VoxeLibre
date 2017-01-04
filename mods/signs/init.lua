@@ -87,6 +87,7 @@ minetest.register_node("signs:sign_wall", {
     description = "Sign",
     inventory_image = "default_sign_wall.png",
 	walkable = false,
+	is_ground_content = false,
     wield_image = "default_sign_wall.png",
     node_placement_prediction = "",
     paramtype = "light",
@@ -158,6 +159,7 @@ minetest.register_node("signs:sign_yard", {
     paramtype = "light",
 	sunlight_propagates = true,
 	walkable = false,
+	is_ground_content = false,
     paramtype2 = "facedir",
     drawtype = "nodebox",
     node_box = {type = "fixed", fixed = {

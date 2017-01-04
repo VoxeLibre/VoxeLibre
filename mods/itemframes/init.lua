@@ -89,6 +89,7 @@ end
 minetest.register_node("itemframes:frame",{
 	description = "Item Frame",
 	drawtype = "nodebox",
+	is_ground_content = false,
 	node_box = { type = "fixed", fixed = {-0.5, -0.5, 7/16, 0.5, 0.5, 0.5} },
 	selection_box = { type = "fixed", fixed = {-0.5, -0.5, 7/16, 0.5, 0.5, 0.5} },
 	inventory_image = "itemframes_frame.png",

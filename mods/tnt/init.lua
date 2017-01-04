@@ -35,6 +35,7 @@ minetest.register_node("tnt:tnt", {
 			"default_tnt_side.png", "default_tnt_side.png",
 			"default_tnt_side.png", "default_tnt_side.png"},
 	dug_item = '', -- Get nothing
+	is_ground_content = false,
 	material = {
 		diggability = "not",
 	},

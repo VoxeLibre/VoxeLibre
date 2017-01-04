@@ -28,6 +28,7 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 			 { -1/16, -8/16, 7/16, 1/16, 0/16,  5/16 }}	-- the lever itself.
 	},
 	groups = {dig_immediate=2},
+	is_ground_content = false,
 	description="Lever",
 	on_punch = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_walllever:wall_lever_on")
@@ -66,6 +67,7 @@ minetest.register_node("mesecons_walllever:wall_lever_on", {
 			 { -1/16, 0/16, 7/16, 1/16, 8/16,  5/16 }}	-- the lever itself.
 	},
 	groups = {dig_immediate = 2, not_in_creative_inventory = 1},
+	is_ground_content = false,
 	drop = '"mesecons_walllever:wall_lever_off" 1',
 	description="Lever",
 	on_punch = function (pos, node)

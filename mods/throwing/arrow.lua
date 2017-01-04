@@ -5,6 +5,7 @@ minetest.register_craftitem("throwing:arrow", {
 
 minetest.register_node("throwing:arrow_box", {
 	drawtype = "nodebox",
+	is_ground_content = false,
 	node_box = {
 		type = "fixed",
 		fixed = {

@@ -25,6 +25,7 @@ minetest.register_node("cake:cake", {
 	description = "Cake",
 	tiles = {"cake_top.png","cake_bottom.png","cake_side.png","cake_side.png","cake_side.png","cake_side.png"},
 	paramtype = "light",
+	is_ground_content = false,
 	drawtype = "nodebox",
 	selection_box = {
 		type = "fixed",
@@ -34,7 +35,6 @@ minetest.register_node("cake:cake", {
 		type = "fixed",
 			fixed = slice_6
 		},
-	is_ground_content = true,
 	stack_max = 1,
 	groups = {crumbly=3,falling_node=1},
 	drop = '',
@@ -47,9 +47,10 @@ minetest.register_node("cake:cake", {
 	end,
 })
 minetest.register_node("cake:cake_5", {
-	description = "Cake [5 Slices Left]",
+	description = "Cake (5 Slices Left)",
 	tiles = cake_texture,
 	paramtype = "light",
+	is_ground_content = false,
 	drawtype = "nodebox",
 	selection_box = {
 		type = "fixed",
@@ -59,7 +60,6 @@ minetest.register_node("cake:cake_5", {
 		type = "fixed",
 			fixed = slice_5
 		},
-	is_ground_content = true,
 	groups = {crumbly=3,falling_node=1,not_in_creative_inventory=1},
 	drop = '',
 	--legacy_mineral = true,
@@ -71,9 +71,10 @@ minetest.register_node("cake:cake_5", {
 	end,
 })
 minetest.register_node("cake:cake_4", {
-	description = "Cake [4 Slices Left]",
+	description = "Cake (4 Slices Left)",
 	tiles = cake_texture,
 	paramtype = "light",
+	is_ground_content = false,
 	drawtype = "nodebox",
 	selection_box = {
 		type = "fixed",
@@ -83,7 +84,6 @@ minetest.register_node("cake:cake_4", {
 		type = "fixed",
 			fixed = slice_4
 		},
-	is_ground_content = true,
 	groups = {crumbly=3,falling_node=1,not_in_creative_inventory=1},
 	drop = '',
 	--legacy_mineral = true,
@@ -95,9 +95,10 @@ minetest.register_node("cake:cake_4", {
 	end,
 })
 minetest.register_node("cake:cake_3", {
-	description = "Cake [3 Slices Left]",
+	description = "Cake (3 Slices Left)",
 	tiles = cake_texture,
 	paramtype = "light",
+	is_ground_content = false,
 	drawtype = "nodebox",
 	selection_box = {
 		type = "fixed",
@@ -107,7 +108,6 @@ minetest.register_node("cake:cake_3", {
 		type = "fixed",
 			fixed = slice_3
 		},
-	is_ground_content = true,
 	groups = {crumbly=3,falling_node=1,not_in_creative_inventory=1},
 	drop = '',
 	--legacy_mineral = true,
@@ -119,9 +119,10 @@ minetest.register_node("cake:cake_3", {
 	end,
 })
 minetest.register_node("cake:cake_2", {
-	description = "Cake [2 Slices Left]",
+	description = "Cake (2 Slices Left)",
 	tiles = cake_texture,
 	paramtype = "light",
+	is_ground_content = false,
 	drawtype = "nodebox",
 	selection_box = {
 		type = "fixed",
@@ -131,7 +132,6 @@ minetest.register_node("cake:cake_2", {
 		type = "fixed",
 			fixed = slice_2
 		},
-	is_ground_content = true,
 	groups = {crumbly=3,falling_node=1,not_in_creative_inventory=1},
 	drop = '',
 	--legacy_mineral = true,
@@ -143,9 +143,10 @@ minetest.register_node("cake:cake_2", {
 	end,
 })
 minetest.register_node("cake:cake_1", {
-	description = "Cake [1 Slice Left]",
+	description = "Cake (1 Slice Left)",
 	tiles = cake_texture,
 	paramtype = "light",
+	is_ground_content = false,
 	drawtype = "nodebox",
 	selection_box = {
 		type = "fixed",
@@ -155,7 +156,6 @@ minetest.register_node("cake:cake_1", {
 		type = "fixed",
 			fixed = slice_1
 		},
-	is_ground_content = true,
 	groups = {crumbly=3,falling_node=1,not_in_creative_inventory=1},
 	drop = '',
 	--legacy_mineral = true,

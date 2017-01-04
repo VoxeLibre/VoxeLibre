@@ -152,6 +152,7 @@ function doors:register_door(name, def)
 		tiles = {tb[2], tb[2], tb[2], tb[2], tb[1], tb[1].."^[transformfx"},
 		paramtype = "light",
 		paramtype2 = "facedir",
+		is_ground_content = false,
 		drop = name,
 		drawtype = "nodebox",
 		node_box = {
@@ -187,6 +188,7 @@ function doors:register_door(name, def)
 		tiles = {tt[2], tt[2], tt[2], tt[2], tt[1], tt[1].."^[transformfx"},
 		paramtype = "light",
 		paramtype2 = "facedir",
+		is_ground_content = false,
 		drop = "",
 		drawtype = "nodebox",
 		node_box = {
@@ -222,6 +224,7 @@ function doors:register_door(name, def)
 		tiles = {tb[2], tb[2], tb[2], tb[2], tb[1].."^[transformfx", tb[1]},
 		paramtype = "light",
 		paramtype2 = "facedir",
+		is_ground_content = false,
 		drop = name,
 		drawtype = "nodebox",
 		node_box = {
@@ -257,6 +260,7 @@ function doors:register_door(name, def)
 		tiles = {tt[2], tt[2], tt[2], tt[2], tt[1].."^[transformfx", tt[1]},
 		paramtype = "light",
 		paramtype2 = "facedir",
+		is_ground_content = false,
 		drop = "",
 		drawtype = "nodebox",
 		node_box = {
@@ -449,6 +453,7 @@ minetest.register_node("doors:trapdoor", {
 	description = "Wooden Trapdoor",
 	drawtype = "nodebox",
 	tiles = {"door_trapdoor.png", "door_trapdoor.png",  "default_wood.png",  "default_wood.png", "default_wood.png", "default_wood.png"},
+	is_ground_content = false,
 	paramtype = "light",
 	stack_max = 16,
 	paramtype2 = "facedir",
@@ -494,6 +499,7 @@ minetest.register_node("doors:trapdoor", {
 minetest.register_node("doors:trapdoor_open", {
 	drawtype = "nodebox",
 	tiles = {"default_wood.png", "default_wood.png",  "default_wood.png",  "default_wood.png", "door_trapdoor.png", "door_trapdoor.png"},
+	is_ground_content = false,
 	paramtype = "light",
 	paramtype2 = "facedir",
 	pointable = true,
@@ -567,6 +573,7 @@ minetest.register_node("doors:iron_trapdoor", {
 	drawtype = "nodebox",
 	tiles = {"iron_trapdoor.png", "iron_trapdoor.png",  "default_steel_block.png",  "default_steel_block.png", "default_steel_block.png", "default_steel_block.png"},
 	paramtype = "light",
+	is_ground_content = false,
 	stack_max = 16,
 	paramtype2 = "facedir",
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,flammable=0,door=1},
@@ -610,6 +617,7 @@ minetest.register_node("doors:iron_trapdoor_open", {
 	tiles = {"default_steel_block.png", "default_steel_block.png",  "default_steel_block.png",  "default_steel_block.png", "iron_trapdoor.png", "iron_trapdoor.png"},
 	paramtype = "light",
 	paramtype2 = "facedir",
+	is_ground_content = false,
 	pointable = true,
 	stack_max = 0,
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=0,door=1,mesecon_effector_on=1},

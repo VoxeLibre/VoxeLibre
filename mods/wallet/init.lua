@@ -108,6 +108,7 @@ local function register_wall(nodename, name, texture, invtex)
 				fixed = {-4/16, -1, -4/16, 4/16, 1, 4/16}
 			},
 			drawtype = "nodebox",
+			is_ground_content = false,
 			tile_images = {texture},
 			paramtype = "light",
 			groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,fences=1},
@@ -127,6 +128,7 @@ local function register_wall(nodename, name, texture, invtex)
 		},
 		tile_images = {texture},
 		paramtype = "light",
+		is_ground_content = false,
 		groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,fences=1},
 		drop = nodename,
 		node_box = {
@@ -143,6 +145,7 @@ local function register_wall(nodename, name, texture, invtex)
 		},
 		tile_images = {texture},
 		paramtype = "light",
+		is_ground_content = false,
 		groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,fences=1},
 		drop = nodename,
 		node_box = {
@@ -155,6 +158,7 @@ local function register_wall(nodename, name, texture, invtex)
 	minetest.register_node(nodename, {
 		description = name,
 		paramtype = "light",
+		is_ground_content = false,
 		tile_images = {texture},
 		inventory_image = invtex,
 		stack_max = 64,

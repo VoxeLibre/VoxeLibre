@@ -5,6 +5,7 @@ minetest.register_node("vessels:glass_bottle", {
 	description = "Glass Bottle",
 	drawtype = "plantlike",
 	tiles = {"vessels_glass_bottle.png"},
+	is_ground_content = false,
 	inventory_image = "vessels_glass_bottle_inv.png",
 	wield_image = "vessels_glass_bottle.png",
 	paramtype = "light",
