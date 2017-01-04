@@ -272,15 +272,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "default:pole",
-	recipe = {
-		{'', '', 'default:stick'},
-		{'', 'default:stick', 'default:string'},
-		{'default:stick', '', 'default:string'},
-	}
-})
-
-minetest.register_craft({
 	output = 'default:rail 15',
 	recipe = {
 		{'default:steel_ingot', '', 'default:steel_ingot'},
