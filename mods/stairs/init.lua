@@ -238,29 +238,29 @@ end
 stairs.register_stair_and_slab("wood", "default:wood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
 		{"default_wood.png"},
-		"Wooden Stair",
-		"Wooden Slab",
+		"Oak Wood Stair",
+		"Oak Wood Slab",
 		default.node_sound_wood_defaults())
 		
 stairs.register_stair_and_slab("junglewood", "default:junglewood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
 		{"default_junglewood.png"},
-		"Junglewood Stair",
-		"Junglewood Slab",
+		"Jungle Wood Stair",
+		"Jungle Wood Slab",
 		default.node_sound_wood_defaults())
 		
 stairs.register_stair_and_slab("acaciawood", "default:acaciawood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
 		{"default_acaciawood.png"},
-		"Acaciawood Stair",
-		"Acaciawood Slab",
+		"Acacia Wood Stair",
+		"Acacia Wood Slab",
 		default.node_sound_wood_defaults())
 		
 stairs.register_stair_and_slab("sprucewood", "default:sprucewood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
 		{"default_sprucewood.png"},
-		"Sprucewood Stair",
-		"Sprucewood Slab",
+		"Spruce Wood Stair",
+		"Spruce Wood Slab",
 		default.node_sound_wood_defaults())
 
 stairs.register_stair_and_slab("stone", "default:stone",
@@ -273,15 +273,15 @@ stairs.register_stair_and_slab("stone", "default:stone",
 stairs.register_stair_and_slab("cobble", "default:cobble",
 		{cracky=3},
 		{"default_cobble.png"},
-		"Cobble Stair",
-		"Cobble Slab",
+		"Cobblestone Stair",
+		"Cobblestone Slab",
 		default.node_sound_stone_defaults())
 
 stairs.register_stair_and_slab("brick", "default:brick",
 		{cracky=3},
 		{"default_brick.png"},
-		"Brick Stair",
-		"Brick Slab",
+		"Bricks Stair",
+		"Bricks Slab",
 		default.node_sound_stone_defaults())
 
 stairs.register_stair_and_slab("sandstone", "default:sandstone",
@@ -291,29 +291,28 @@ stairs.register_stair_and_slab("sandstone", "default:sandstone",
 		"Sandstone Slab",
 		default.node_sound_stone_defaults())
 
+stairs.register_stair_and_slab("redsandstone", "default:redsandstone",
+		{crumbly=2,cracky=2},
+		{"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_normal.png"},
+		"Red Sandstone Stair",
+		"Red Sandstone Slab",
+		default.node_sound_stone_defaults())
+
 stairs.register_stair_and_slab("stonebrick", "default:stonebrick",
 		{cracky=3},
 		{"default_stone_brick.png"},
-		"Stone Brick Stair",
-		"Stone Brick Slab",
+		"Stone Bricks Stair",
+		"Stone Bricks Slab",
 		default.node_sound_stone_defaults()
 )
 
 stairs.register_stair_and_slab("quartzblock", "default:quartz_block",
 	{snappy=1,bendy=2,cracky=1,level=2},
 	{"default_quartz_block_top.png", "default_quartz_block_bottom.png", "default_quartz_block_side.png"},
-	"Quartz stair",
-	"Quartz slab",
+	"Quartz Stair",
+	"Quartz Slab",
 	default.node_sound_stone_defaults()
 )
 
-stairs.register_slab("quartzstair", "default:quartz_pillar",
-	{snappy=1,bendy=2,cracky=1,level=2},
-	{"default_quartz_pillar_top.png", "default_quartz_pillar_top.png", "default_quartz_pillar_side.png"},
-	"Quartz Pillar stair",
-	"Quartz Pillar slab",
-	default.node_sound_stone_defaults()
-)	
-		
 local time_to_load= os.clock() - init
 print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
