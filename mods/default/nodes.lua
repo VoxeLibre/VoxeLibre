@@ -714,6 +714,11 @@ minetest.register_node("default:bedrock", {
 	stack_max = 64,
 	groups = {oddly_breakable_by_hand=5},
 	sounds = default.node_sound_stone_defaults(),
+	is_ground_content = false,
+	on_blast = function() end,
+	on_destruct = function () end,
+	can_dig = function() return false end,
+	diggable = false,
 })
 
 minetest.register_node("default:bookshelf", {
