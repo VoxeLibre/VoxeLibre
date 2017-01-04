@@ -686,7 +686,7 @@ minetest.register_node("default:reeds", {
 		},
 	},
 	stack_max = 64,
-	groups = {snappy=3,flammable=2},
+	groups = {dig_immediate=3,flammable=2},
 	sounds = default.node_sound_leaves_defaults(),
 })
 
@@ -695,7 +695,7 @@ minetest.register_node("default:quartz_ore", {
     description = "Quartz Ore",
 	stack_max = 64,
  	tiles = {"default_quartz_ore.png"},
-	groups = {cracky=3, stone=1},
+	groups = {cracky=3,},
 	drop = 'default:quartz_crystal',
     sounds = default.node_sound_stone_defaults(),
 })

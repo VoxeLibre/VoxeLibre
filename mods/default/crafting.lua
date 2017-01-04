@@ -86,7 +86,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'default:pick_stone',
 	recipe = {
-		{'group:stone', 'group:stone', 'group:stone'},
+		{'default:cobble', 'default:cobble', 'default:cobble'},
 		{'', 'default:stick', ''},
 		{'', 'default:stick', ''},
 	}
@@ -131,7 +131,7 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'default:shovel_stone',
 	recipe = {
-		{'group:stone'},
+		{'default:cobble'},
 		{'default:stick'},
 		{'default:stick'},
 	}
@@ -176,8 +176,8 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'default:axe_stone',
 	recipe = {
-		{'group:stone', 'group:stone'},
-		{'group:stone', 'default:stick'},
+		{'default:cobble', 'default:cobble'},
+		{'default:cobble', 'default:stick'},
 		{'', 'default:stick'},
 	}
 })
@@ -221,8 +221,8 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'default:sword_stone',
 	recipe = {
-		{'group:stone'},
-		{'group:stone'},
+		{'default:cobble'},
+		{'default:cobble'},
 		{'default:stick'},
 	}
 })
@@ -427,7 +427,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'default:paper',
+	output = 'default:paper 3',
 	recipe = {
 		{'default:reeds', 'default:reeds', 'default:reeds'},
 	}
