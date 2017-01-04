@@ -69,7 +69,7 @@ dyelocal.dyes = {
 	{"black",      "Ink Sac",     {dye=1, basecolor_black=1,   excolor_black=1,     unicolor_black=1}},
 	{"violet",     "Violet Dye",    {dye=1, basecolor_magenta=1, excolor_violet=1,    unicolor_violet=1}},
 	{"blue",       "Lapis Lazuli",      {dye=1, basecolor_blue=1,    excolor_blue=1,      unicolor_blue=1}},
-	{"lightblue",  "Light Blue Dye",      {dye=1, basecolor_blue=1,    excolor_lightblue=1,   unicolor_lightblue=1}},
+	{"lightblue",  "Light Blue Dye",      {dye=1, basecolor_blue=1,    excolor_blue=1,   unicolor_light_blue=1}},
 	{"cyan",       "Cyan Dye",      {dye=1, basecolor_cyan=1,    excolor_cyan=1,      unicolor_cyan=1}},
 	{"dark_green", "Cactus Green",{dye=1, basecolor_green=1,   excolor_green=1,     unicolor_dark_green=1}},
 	{"green",      "Lime Dye",     {dye=1, basecolor_green=1,   excolor_green=1,     unicolor_green=1}},

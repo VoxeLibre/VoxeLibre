@@ -834,7 +834,7 @@ minetest.register_node("default:glass", {
 AddGlass( "Red Stained Glass",  "basecolor_red", "red")
 AddGlass( "Green Stained Glass",  "unicolor_dark_green", "green")
 AddGlass( "Blue Stained Glass",  "basecolor_blue", "blue")
-AddGlass( "Light Blue Stained Glass",  "basecolor_cyan", "light_blue")
+AddGlass( "Light Blue Stained Glass",  "unicolor_light_blue", "light_blue")
 AddGlass( "Black Stained Glass",  "basecolor_black", "black")
 AddGlass( "White Stained Glass",  "basecolor_white", "white")
 AddGlass( "Yellow Stained Glass",  "basecolor_yellow", "yellow")
