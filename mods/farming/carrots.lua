@@ -82,8 +82,9 @@ minetest.register_craftitem("farming:carrot_item_gold", {
 minetest.register_craft({
 	output = "farming:carrot_item_gold",
 	recipe = {
-		{'default:gold_lump'},
-		{'farming:carrot_item'},
+		{'default:gold_nugget', 'default:gold_nugget', 'default:gold_nugget'},
+		{'default:gold_nugget', 'farming:carrot_item', 'default:gold_nugget'},
+		{'default:gold_nugget', 'default:gold_nugget', 'default:gold_nugget'},
 	}
 })
 
