@@ -366,7 +366,8 @@ minetest.register_on_generated(function(minp, maxp, seed)
 						minetest.env:find_node_near({x=x,y=1,z=z}, 1, "default:water_source") then
 					default.make_reeds({x=x,y=2,z=z}, pr:next(2, 4))
 				end
-				if minetest.env:get_node({x=x,y=1,z=z}).name == "default:sand" then
+				local p = {x=x,y=1,z=z}
+				if minetest.env:get_node(p).name == "default:sand" then
 					if math.random(0,1000) == 1 then -- 0,12000
 						random_struct.call_struct(p,2)
 					end
