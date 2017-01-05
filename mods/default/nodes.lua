@@ -1148,46 +1148,69 @@ minetest.register_node("default:chest", {
 			local p = get_chest_neighborpos(pos, param2, "right")
 			meta:set_string("formspec",
 					"size[9,11.5]"..
+					default.inventory_header..
 					"list[nodemeta:"..p.x..","..p.y..","..p.z..";main;0,0;9,3;]"..
 					"list[current_name;main;0,3;9,3;]"..
 					"list[current_player;main;0,7;9,3;9]"..
-					"list[current_player;main;0,10.5;9,1;]")
+					"list[current_player;main;0,10.5;9,1;]"..
+					"listring[current_player;main]"..
+					"listring[nodemeta:"..p.x..","..p.y..","..p.z..";main]"..
+					"listring[current_player;main]"..
+					"listring[current_name;main]")
 			meta:set_string("infotext", "Large Chest")
 			hacky_swap_node(p, "default:chest_left", param2)
 			local m = minetest.env:get_meta(p)
 			m:set_string("formspec",
 					"size[9,11.5]"..
+					default.inventory_header..
 					"list[current_name;main;0,0;9,3;]"..
 					"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3;9,3;]"..
 					"list[current_player;main;0,7;9,3;9]"..
-					"list[current_player;main;0,10.5;9,1;]")
+					"list[current_player;main;0,10.5;9,1;]"..
+					"listring[current_player;main]"..
+					"listring[current_name;main]"..
+					"listring[current_player;main]"..
+					"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]")
 			m:set_string("infotext", "Large Chest")
 		elseif minetest.env:get_node(get_chest_neighborpos(pos, param2, "left")).name == "default:chest" then
 			minetest.env:set_node(pos, {name="default:chest_left",param2=param2})
 			local p = get_chest_neighborpos(pos, param2, "left")
 			meta:set_string("formspec",
 					"size[9,11.5]"..
+					default.inventory_header..
 					"list[current_name;main;0,0;9,3;]"..
 					"list[nodemeta:"..p.x..","..p.y..","..p.z..";main;0,3;9,3;]"..
 					"list[current_player;main;0,7;9,3;9]"..
-					"list[current_player;main;0,10.5;9,1;]")
+					"list[current_player;main;0,10.5;9,1;]"..
+					"listring[current_player;main]"..
+					"listring[current_name;main]"..
+					"listring[current_player;main]"..
+					"listring[nodemeta:"..p.x..","..p.y..","..p.z..";main]")
 			meta:set_string("infotext", "Large Chest")
 			hacky_swap_node(p, "default:chest_right", param2)
 			local m = minetest.env:get_meta(p)
 			m:set_string("formspec",
 					"size[9,11.5]"..
+					default.inventory_header..
 					"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0;9,3;]"..
 					"list[current_name;main;0,3;9,3;]"..
 					"list[current_player;main;0,7;9,3;9]"..
-					"list[current_player;main;0,10.5;9,1;]")
+					"list[current_player;main;0,10.5;9,1;]"..
+					"listring[current_player;main]"..
+					"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]"..
+					"listring[current_player;main]"..
+					"listring[current_name;main]")
 			m:set_string("infotext", "Large Chest")
 		else
 			meta:set_string("formspec",
 					"size[9,8.5]"..
+					default.inventory_header..
 					"list[current_name;main;0,0;9,3;]"..
 					"list[current_player;main;0,4;9,3;9]"..
-					"list[current_player;main;0,7.5.5;9,1;]")
-			meta:set_string("infotext", "Coffre")
+					"list[current_player;main;0,7.5.5;9,1;]"..
+					"listring[current_name;main]"..
+					"listring[current_player;main]")
+			meta:set_string("infotext", "Chest")
 		end
 		local inv = meta:get_inventory()
 		inv:set_size("main", 9*3)
@@ -1241,10 +1264,13 @@ minetest.register_node("default:chest_left", {
 		local meta = minetest.env:get_meta(p)
 		meta:set_string("formspec",
 				"size[9,8.5]"..
+				default.inventory_header..
 				"list[current_name;main;0,0;9,3;]"..
 				"list[current_player;main;0,4;9,3;9]"..
-				"list[current_player;main;0,7.5.5;9,1;]")
-		meta:set_string("infotext", "Coffre")
+				"list[current_player;main;0,7.5.5;9,1;]"..
+				"listring[current_name;main]"..
+				"listring[current_player;main]")
+		meta:set_string("infotext", "Chest")
 		hacky_swap_node(p, "default:chest")
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
@@ -1296,9 +1322,12 @@ minetest.register_node("default:chest_right", {
 		local meta = minetest.env:get_meta(p)
 		meta:set_string("formspec",
 				"size[9,8.5]"..
+				default.inventory_header..
 				"list[current_name;main;0,0;9,3;]"..
 				"list[current_player;main;0,4;9,3;9]"..
-				"list[current_player;main;0,7.5.5;9,1;]")
+				"list[current_player;main;0,7.5.5;9,1;]"..
+				"listring[current_name;main]"..
+				"listring[current_player;main]")
 		meta:set_string("infotext", "Chest")
 		hacky_swap_node(p, "default:chest")
 	end,
