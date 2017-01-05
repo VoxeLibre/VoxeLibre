@@ -663,7 +663,7 @@ minetest.register_alias("acaciasapling", "default:acaciasapling")
 minetest.register_alias("sprucesapling", "default:sprucesapling")
 
 minetest.register_node("default:junglegrass", {
-	description = "Jungle Grass",
+	description = "Double Tallgrass",
 	drawtype = "plantlike",
 	visual_scale = 1.3,
 	tiles = {"default_junglegrass.png"},
