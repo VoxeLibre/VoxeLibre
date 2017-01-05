@@ -1148,7 +1148,6 @@ minetest.register_node("default:chest", {
 			local p = get_chest_neighborpos(pos, param2, "right")
 			meta:set_string("formspec",
 					"size[9,11.5]"..
-					default.inventory_header..
 					"list[nodemeta:"..p.x..","..p.y..","..p.z..";main;0,0;9,3;]"..
 					"list[current_name;main;0,3;9,3;]"..
 					"list[current_player;main;0,7;9,3;9]"..
@@ -1162,7 +1161,6 @@ minetest.register_node("default:chest", {
 			local m = minetest.env:get_meta(p)
 			m:set_string("formspec",
 					"size[9,11.5]"..
-					default.inventory_header..
 					"list[current_name;main;0,0;9,3;]"..
 					"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3;9,3;]"..
 					"list[current_player;main;0,7;9,3;9]"..
@@ -1177,7 +1175,6 @@ minetest.register_node("default:chest", {
 			local p = get_chest_neighborpos(pos, param2, "left")
 			meta:set_string("formspec",
 					"size[9,11.5]"..
-					default.inventory_header..
 					"list[current_name;main;0,0;9,3;]"..
 					"list[nodemeta:"..p.x..","..p.y..","..p.z..";main;0,3;9,3;]"..
 					"list[current_player;main;0,7;9,3;9]"..
@@ -1191,7 +1188,6 @@ minetest.register_node("default:chest", {
 			local m = minetest.env:get_meta(p)
 			m:set_string("formspec",
 					"size[9,11.5]"..
-					default.inventory_header..
 					"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0;9,3;]"..
 					"list[current_name;main;0,3;9,3;]"..
 					"list[current_player;main;0,7;9,3;9]"..
@@ -1203,11 +1199,12 @@ minetest.register_node("default:chest", {
 			m:set_string("infotext", "Large Chest")
 		else
 			meta:set_string("formspec",
-					"size[9,8.5]"..
+					"size[9,8.75]"..
+					"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
 					default.inventory_header..
-					"list[current_name;main;0,0;9,3;]"..
-					"list[current_player;main;0,4;9,3;9]"..
-					"list[current_player;main;0,7.5.5;9,1;]"..
+					"list[current_name;main;0,0.5;9,3;]"..
+					"list[current_player;main;0,4.5;9,3;9]"..
+					"list[current_player;main;0,7.74;9,1;]"..
 					"listring[current_name;main]"..
 					"listring[current_player;main]")
 			meta:set_string("infotext", "Chest")
@@ -1263,11 +1260,12 @@ minetest.register_node("default:chest_left", {
 		end
 		local meta = minetest.env:get_meta(p)
 		meta:set_string("formspec",
-				"size[9,8.5]"..
+				"size[9,8.75]"..
+				"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
 				default.inventory_header..
-				"list[current_name;main;0,0;9,3;]"..
-				"list[current_player;main;0,4;9,3;9]"..
-				"list[current_player;main;0,7.5.5;9,1;]"..
+				"list[current_name;main;0,0.5;9,3;]"..
+				"list[current_player;main;0,4.5;9,3;9]"..
+				"list[current_player;main;0,7.74;9,1;]"..
 				"listring[current_name;main]"..
 				"listring[current_player;main]")
 		meta:set_string("infotext", "Chest")
@@ -1321,11 +1319,12 @@ minetest.register_node("default:chest_right", {
 		end
 		local meta = minetest.env:get_meta(p)
 		meta:set_string("formspec",
-				"size[9,8.5]"..
+				"size[9,8.75]"..
+				"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
 				default.inventory_header..
-				"list[current_name;main;0,0;9,3;]"..
-				"list[current_player;main;0,4;9,3;9]"..
-				"list[current_player;main;0,7.5.5;9,1;]"..
+				"list[current_name;main;0,0.5;9,3;]"..
+				"list[current_player;main;0,4.5;9,3;9]"..
+				"list[current_player;main;0,7.74;9,1;]"..
 				"listring[current_name;main]"..
 				"listring[current_player;main]")
 		meta:set_string("infotext", "Chest")

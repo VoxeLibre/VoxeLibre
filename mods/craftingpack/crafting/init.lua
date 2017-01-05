@@ -1,5 +1,3 @@
-dofile(minetest.get_modpath("crafting").."/formspecs.lua")
-
 local show_armor = false
 if minetest.get_modpath("3d_armor") ~= nil then show_armor = true end
 
