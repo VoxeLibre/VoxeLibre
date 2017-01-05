@@ -89,7 +89,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'signs:sign_wall',
+	output = 'signs:sign_wall 3',
 	recipe = {
 		{'group:wood', 'group:wood', 'group:wood'},
 		{'group:wood', 'group:wood', 'group:wood'},
