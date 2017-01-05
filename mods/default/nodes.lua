@@ -1360,13 +1360,15 @@ minetest.register_node("default:chest_right", {
 })
 
 default.furnace_inactive_formspec =
-	"size[9,9]"..
+	"size[9,8.75]"..
+	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory_furnace.png]"..
 	default.inventory_header..
-	"image[2,2;1,1;default_furnace_fire_bg.png]"..
-	"list[current_name;fuel;2,3;1,1;]"..
-	"list[current_name;src;2,1;1,1;]"..
-	"list[current_name;dst;5,1;2,2;]"..
-	"list[current_player;main;0,5;9,4;]"..
+	"list[current_player;main;0,4.5;9,3;9]"..
+	"list[current_player;main;0,7.74;9,1;]"..
+	"list[current_name;src;2.75,0.5;1,1;]"..
+	"list[current_name;fuel;2.75,2.5;1,1;]"..
+	"list[current_name;dst;5.75,1.5;1,1;]"..
+	"image[2.75,1.5;1,1;default_furnace_fire_bg.png]"..
 	"listring[current_name;dst]"..
 	"listring[current_player;main]"..
 	"listring[current_name;src]"..
@@ -1582,14 +1584,16 @@ minetest.register_abm({
 			meta:set_string("infotext","Furnace active: "..percent.."%")
 			hacky_swap_node(pos,"default:furnace_active")
 			meta:set_string("formspec",
-				"size[9,9]"..
+				"size[9,8.75]"..
+				"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory_furnace.png]"..
 				default.inventory_header..
-				"image[2,2;1,1;default_furnace_fire_bg.png^[lowpart:"..
-						(100-percent)..":default_furnace_fire_fg.png]"..
-				"list[current_name;fuel;2,3;1,1;]"..
-				"list[current_name;src;2,1;1,1;]"..
-				"list[current_name;dst;5,1;2,2;]"..
-				"list[current_player;main;0,5;9,4;]"..
+				"list[current_player;main;0,4.5;9,3;9]"..
+				"list[current_player;main;0,7.74;9,1;]"..
+				"list[current_name;src;2.75,0.5;1,1;]"..
+				"list[current_name;fuel;2.75,2.5;1,1;]"..
+				"list[current_name;dst;5.75,1.5;1,1;]"..
+				"image[2.75,1.5;1,1;default_furnace_fire_bg.png^[lowpart:"..
+				(100-percent)..":default_furnace_fire_fg.png]"..
 				"listring[current_name;dst]"..
 				"listring[current_player;main]"..
 				"listring[current_name;src]"..

@@ -1,34 +1,3 @@
-default.furnace_inactive_formspec =
-	"size[9,8.75]"..
-	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory_furnace.png]"..
-	default.inventory_header..
-	"list[current_player;main;0,4.5;9,3;9]"..
-	"list[current_player;main;0,7.74;9,1;]"..
-	"list[current_name;src;2.75,0.5;1,1;]"..
-	"list[current_name;fuel;2.75,2.5;1,1;]"..
-	"list[current_name;dst;5.75,1.5;1,1;]"..
-	"image[2.75,1.5;1,1;crafting_furnace_fire_bg.png"
-
-function default.get_furnace_active_formspec(pos, percent)
-	local formspec = 
-	"size[9,8.75]"..
-	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory_furnace.png]"..
-	default.inventory_header..
-	"list[current_player;main;0,4.5;9,3;9]"..
-	"list[current_player;main;0,7.74;9,1;]"..
-	"list[current_name;src;2.75,0.5;1,1;]"..
-	"list[current_name;fuel;2.75,2.5;1,1;]"..
-	"list[current_name;dst;5.75,1.5;1,1;]"..
-	"image[2.75,1.5;1,1;crafting_furnace_fire_bg.png^[lowpart:"..
-	(100-percent)..":default_furnace_fire_fg.png]"
-	
-	local meta = minetest.get_meta(pos)
-	local inv = meta:get_inventory()
-	inv:set_size("dst",1)
-
-	return formspec
-end
-
 default.chest_formspec = 
 	"size[9,9.75]"..
 	"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
