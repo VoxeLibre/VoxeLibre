@@ -8,6 +8,8 @@ LAVA_VISC = 7
 
 -- Definitions made by this mod that other mods can use too
 default = {}
+default.gui_slots = "listcolors[#808080FF;#CFCFCFFF;#00000000;#000000FF;#FFFFFFFF]"
+default.inventory_header = default.gui_slots
 
 minetest.nodedef_default.stack_max = 64
 minetest.craftitemdef_default.stack_max = 64

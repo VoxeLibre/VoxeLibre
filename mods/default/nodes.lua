@@ -1332,11 +1332,18 @@ minetest.register_node("default:chest_right", {
 
 default.furnace_inactive_formspec =
 	"size[9,9]"..
+	default.inventory_header..
 	"image[2,2;1,1;default_furnace_fire_bg.png]"..
 	"list[current_name;fuel;2,3;1,1;]"..
 	"list[current_name;src;2,1;1,1;]"..
 	"list[current_name;dst;5,1;2,2;]"..
-	"list[current_player;main;0,5;9,4;]"
+	"list[current_player;main;0,5;9,4;]"..
+	"listring[current_name;dst]"..
+	"listring[current_player;main]"..
+	"listring[current_name;src]"..
+	"listring[current_player;main]"..
+	"listring[current_name;fuel]"..
+	"listring[current_player;main]"
 
 minetest.register_node("default:furnace", {
 	description = "Furnace",
@@ -1547,12 +1554,19 @@ minetest.register_abm({
 			hacky_swap_node(pos,"default:furnace_active")
 			meta:set_string("formspec",
 				"size[9,9]"..
+				default.inventory_header..
 				"image[2,2;1,1;default_furnace_fire_bg.png^[lowpart:"..
 						(100-percent)..":default_furnace_fire_fg.png]"..
 				"list[current_name;fuel;2,3;1,1;]"..
 				"list[current_name;src;2,1;1,1;]"..
 				"list[current_name;dst;5,1;2,2;]"..
-				"list[current_player;main;0,5;9,4;]")
+				"list[current_player;main;0,5;9,4;]"..
+				"listring[current_name;dst]"..
+				"listring[current_player;main]"..
+				"listring[current_name;src]"..
+				"listring[current_player;main]"..
+				"listring[current_name;fuel]"..
+				"listring[current_player;main]")
 			return
 		end
 
