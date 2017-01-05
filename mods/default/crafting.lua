@@ -408,62 +408,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	type = "cooking",
-	output = "default:gold_nugget",
-	recipe = "default:sword_gold",
-	cooktime = 10,
-})
-
-minetest.register_craft({
-	type = "cooking",
-	output = "default:gold_nugget",
-	recipe = "default:axe_gold",
-	cooktime = 10,
-})
-
-minetest.register_craft({
-	type = "cooking",
-	output = "default:gold_nugget",
-	recipe = "default:shovel_gold",
-	cooktime = 10,
-})
-
-minetest.register_craft({
-	type = "cooking",
-	output = "default:gold_nugget",
-	recipe = "default:pick_gold",
-	cooktime = 10,
-})
-
-minetest.register_craft({
-	type = "cooking",
-	output = "default:iron_nugget",
-	recipe = "default:sword_steel",
-	cooktime = 10,
-})
-
-minetest.register_craft({
-	type = "cooking",
-	output = "default:iron_nugget",
-	recipe = "default:axe_steel",
-	cooktime = 10,
-})
-
-minetest.register_craft({
-	type = "cooking",
-	output = "default:iron_nugget",
-	recipe = "default:shovel_steel",
-	cooktime = 10,
-})
-
-minetest.register_craft({
-	type = "cooking",
-	output = "default:iron_nugget",
-	recipe = "default:pick_steel",
-	cooktime = 10,
-})
-
-minetest.register_craft({
 	output = 'default:sandstone',
 	recipe = {
 		{'group:sand', 'group:sand'},
@@ -725,10 +669,89 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "cooking",
-	output = "default:coal",
+	output = "default:coal_lump",
 	recipe = "default:stone_with_coal",
 	cooktime = 10,
 })
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:diamond",
+	recipe = "default:stone_with_diamond",
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:emerald",
+	recipe = "default:stone_with_emerald",
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "dye:blue",
+	recipe = "default:stone_with_lapis",
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:gold_nugget",
+	recipe = "default:sword_gold",
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:gold_nugget",
+	recipe = "default:axe_gold",
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:gold_nugget",
+	recipe = "default:shovel_gold",
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:gold_nugget",
+	recipe = "default:pick_gold",
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:iron_nugget",
+	recipe = "default:sword_steel",
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:iron_nugget",
+	recipe = "default:axe_steel",
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:iron_nugget",
+	recipe = "default:shovel_steel",
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "default:iron_nugget",
+	recipe = "default:pick_steel",
+	cooktime = 10,
+})
+
+
 
 --
 -- Fuels

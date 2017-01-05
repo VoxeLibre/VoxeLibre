@@ -244,3 +244,12 @@ function mesecon:update_autoconnect(pos, secondcall, replace_old)
 end
 
 minetest.register_alias("mesecons:redstone_dust", "mesecons:wire_00000000_off")
+
+minetest.register_craft({
+	type = "cooking",
+	output = "mesecons:redstone_dust",
+	recipe = "default:stone_with_redstone",
+	cooktime = 10,
+})
+
+
