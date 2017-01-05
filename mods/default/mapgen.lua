@@ -50,9 +50,19 @@ minetest.register_ore({
 	ore            = "default:stone_with_coal",
 	wherein        = "default:stone",
 	clust_scarcity = 500,
+	clust_num_ores = 5,
+	clust_size     = 3,
+	height_min     = 13,
+	height_max     = 31000,
+})
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "default:stone_with_coal",
+	wherein        = "default:stone",
+	clust_scarcity = 500,
 	clust_num_ores = 8,
 	clust_size     = 3,
-	height_min     = -59,
+	height_min     = 12,
 	height_max     = -12,
 })
 minetest.register_ore({
@@ -86,7 +96,7 @@ minetest.register_ore({
 	clust_scarcity = 830,
 	clust_num_ores = 5,
 	clust_size     = 3,
-	height_min     = -59,
+	height_min     = -127,
 	height_max     = -10,
 })
 minetest.register_ore({
@@ -97,7 +107,7 @@ minetest.register_ore({
 	clust_num_ores = 3,
 	clust_size     = 2,
 	height_min     = -9,
-	height_max     = 0,
+	height_max     = 1,
 })
 
 --
