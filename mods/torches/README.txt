@@ -1,29 +1,62 @@
 Minetest mod "Torches"
-=======================
-version: 1.1
+======================
 
-License of source code: WTFPL
------------------------------------------
-(c) Copyright BlockMen (2013)
+(c) Copyright BlockMen (2013-2015)
+(C) Copyright sofar <sofar@foo-projects.org> (2016)
 
 
-This program is free software. It comes without any warranty, to
-the extent permitted by applicable law. You can redistribute it
-and/or modify it under the terms of the Do What The Fuck You Want
-To Public License, Version 2, as published by Sam Hocevar. See
-http://sam.zoy.org/wtfpl/COPYING for more details.
+About this mod:
+~~~~~~~~~~~~~~~
+This mod changes the default torch drawtype from "torchlike" to "mesh",
+giving the torch a three dimensional appearance. The mesh contains the
+proper pixel mapping to make the animation appear as a particle above
+the torch, while in fact the animation is just the texture of the mesh.
+
+Originally, this mod created in-game alternatives with several
+draw styles.  The alternatives have been removed and instead of
+providing alternate nodes, this mod now directly modifies the existing
+nodes. Conversion from the wallmounted style is done through an LBM.
+
+The wield light part is inspired, but not copied from "walking light",
+a mod by "echo". After looking at the code I decided to implement
+it from scratch as I found it to be too resource intensive and not
+implemented efficiently enough. Still, echo deserves the credit for
+the excellent idea.
+
+Torches is meant for minetest-0.4.14, and does not directly support
+older minetest releases. You'll need a recent git, or nightly build.
 
 
-Using the mod:
---------------
+License:
+~~~~~~~~
+(c) Copyright BlockMen (2013-2015)
 
-This mod adds 3D torches to Minetest. They also have real flames and look much more realistic.
+Textures and Meshes/Models:
+CC-BY 3.0 BlockMen
+Note that the models were entirely done from scratch by sofar.
 
-Notice: Already placed old torches wont be changed.
+Code:
+Licensed under the GNU LGPL version 2.1 or higher.
+You can redistribute it and/or modify it under
+the terms of the GNU Lesser General Public License
+as published by the Free Software Foundation;
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+See LICENSE.txt and http://www.gnu.org/licenses/lgpl-2.1.txt
+
+
+Github:
+~~~~~~~
+https://github.com/BlockMen/torches
+
+Forum:
+~~~~~~
+https://forum.minetest.net/viewtopic.php?id=6099
 
 
 Changelog:
-----------
-- Torches on wall dont fall when node under it is dug
-- Torches fall directly when not placed on floor or wall
-- fixed different placing bugs
+~~~~~~~~~~
+see changelog.txt

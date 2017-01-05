@@ -1,0 +1,9 @@
+
+# Enable wielded torches to light the area around it as the player moves. This is
+# somewhat resource intensive and may be disabled to reduce lag.
+torches_wieldlight_enable (Enable held torch to emit light) bool false
+
+# How often the wieldlight should be moved if the player moves with a torch in their
+# hand. Reducing this makes it feel more laggy, but reduces the amount of network
+# packets sent to clients.
+torches_wieldlight_interval (Torch light from held torch update interval) float 0.25
