@@ -21,13 +21,13 @@ mcl_minecarts.cart = {
 	visual_size = {x=1, y=1},
 	textures = {"cart.png"},
 	
-	driver = nil,
-	punched = false, -- used to re-send velocity and position
-	velocity = {x=0, y=0, z=0}, -- only used on punch
-	old_dir = {x=0, y=0, z=0},
-	old_pos = nil,
-	old_switch = 0,
-	railtype = nil,
+	_driver = nil,
+	_punched = false, -- used to re-send _velocity and position
+	_velocity = {x=0, y=0, z=0}, -- only used on punch
+	_old_dir = {x=0, y=0, z=0},
+	_old_pos = nil,
+	_old_switch = 0,
+	_railtype = nil,
 }
 
 function mcl_minecarts.cart:on_rightclick(clicker)
@@ -35,11 +35,11 @@ function mcl_minecarts.cart:on_rightclick(clicker)
 		return
 	end
 	local player_name = clicker:get_player_name()
-	if self.driver and player_name == self.driver then
-		self.driver = nil
+	if self._driver and player_name == self._driver then
+		self._driver = nil
 		clicker:set_detach()
-	elseif not self.driver then
-		self.driver = player_name
+	elseif not self._driver then
+		self._driver = player_name
 		default.player_attached[player_name] = true
 		clicker:set_attach(self.object, "", {x=0, y=3, z=0}, {x=0, y=0, z=0})
 	end
@@ -51,29 +51,29 @@ end
 
 function mcl_minecarts.cart:on_punch(puncher, time_from_last_punch, tool_capabilities, direction)
 	local pos = self.object:getpos()
-	if not self.railtype then
+	if not self._railtype then
 		local node = minetest.get_node(vector.floor(pos)).name
-		self.railtype = minetest.get_item_group(node, "connect_to_raillike")
+		self._railtype = minetest.get_item_group(node, "connect_to_raillike")
 	end
 	
 	if not puncher or not puncher:is_player() then
-		local cart_dir = mcl_minecarts:get_rail_direction(pos, {x=1, y=0, z=0}, nil, nil, self.railtype)
+		local cart_dir = mcl_minecarts:get_rail_direction(pos, {x=1, y=0, z=0}, nil, nil, self._railtype)
 		if vector.equals(cart_dir, {x=0, y=0, z=0}) then
 			return
 		end
-		self.velocity = vector.multiply(cart_dir, 3)
-		self.old_pos = nil
-		self.punched = true
+		self._velocity = vector.multiply(cart_dir, 3)
+		self._old_pos = nil
+		self._punched = true
 		return
 	end
 
 	if puncher:get_player_control().sneak then
-		if self.driver then
-			if self.old_pos then
-				self.object:setpos(self.old_pos)
+		if self._driver then
+			if self._old_pos then
+				self.object:setpos(self._old_pos)
 			end
-			default.player_attached[self.driver] = nil
-			local player = minetest.get_player_by_name(self.driver)
+			default.player_attached[self._driver] = nil
+			local player = minetest.get_player_by_name(self._driver)
 			if player then
 				player:set_detach()
 			end
@@ -85,7 +85,7 @@ function mcl_minecarts.cart:on_punch(puncher, time_from_last_punch, tool_capabil
 	end
 	
 	local vel = self.object:getvelocity()
-	if puncher:get_player_name() == self.driver then
+	if puncher:get_player_name() == self._driver then
 		if math.abs(vel.x + vel.z) > 7 then
 			return
 		end
@@ -93,7 +93,7 @@ function mcl_minecarts.cart:on_punch(puncher, time_from_last_punch, tool_capabil
 	
 	local punch_dir = mcl_minecarts:velocity_to_dir(puncher:get_look_dir())
 	punch_dir.y = 0
-	local cart_dir = mcl_minecarts:get_rail_direction(pos, punch_dir, nil, nil, self.railtype)
+	local cart_dir = mcl_minecarts:get_rail_direction(pos, punch_dir, nil, nil, self._railtype)
 	if vector.equals(cart_dir, {x=0, y=0, z=0}) then
 		return
 	end
@@ -101,45 +101,45 @@ function mcl_minecarts.cart:on_punch(puncher, time_from_last_punch, tool_capabil
 	time_from_last_punch = math.min(time_from_last_punch, tool_capabilities.full_punch_interval)
 	local f = 3 * (time_from_last_punch / tool_capabilities.full_punch_interval)
 	
-	self.velocity = vector.multiply(cart_dir, f)
-	self.old_pos = nil
-	self.punched = true
+	self._velocity = vector.multiply(cart_dir, f)
+	self._old_pos = nil
+	self._punched = true
 end
 
 function mcl_minecarts.cart:on_step(dtime)
 	local vel = self.object:getvelocity()
 	local update = {}
-	if self.punched then
-		vel = vector.add(vel, self.velocity)
+	if self._punched then
+		vel = vector.add(vel, self._velocity)
 		self.object:setvelocity(vel)
-		self.old_dir.y = 0
+		self._old_dir.y = 0
 	elseif vector.equals(vel, {x=0, y=0, z=0}) then
 		return
 	end
 	
 	local dir, last_switch = nil, nil
 	local pos = self.object:getpos()
-	if self.old_pos and not self.punched then
+	if self._old_pos and not self._punched then
 		local flo_pos = vector.floor(pos)
-		local flo_old = vector.floor(self.old_pos)
+		local flo_old = vector.floor(self._old_pos)
 		if vector.equals(flo_pos, flo_old) then
 			return
 		end
 	end
 	
 	local ctrl, player = nil, nil
-	if self.driver then
-		player = minetest.get_player_by_name(self.driver)
+	if self._driver then
+		player = minetest.get_player_by_name(self._driver)
 		if player then
 			ctrl = player:get_player_control()
 		end
 	end
-	if self.old_pos then
-		local diff = vector.subtract(self.old_pos, pos)
+	if self._old_pos then
+		local diff = vector.subtract(self._old_pos, pos)
 		for _,v in ipairs({"x","y","z"}) do
 			if math.abs(diff[v]) > 1.1 then
-				local expected_pos = vector.add(self.old_pos, self.old_dir)
-				dir, last_switch = mcl_minecarts:get_rail_direction(pos, self.old_dir, ctrl, self.old_switch, self.railtype)
+				local expected_pos = vector.add(self._old_pos, self._old_dir)
+				dir, last_switch = mcl_minecarts:get_rail_direction(pos, self._old_dir, ctrl, self._old_switch, self._railtype)
 				if vector.equals(dir, {x=0, y=0, z=0}) then
 					dir = false
 					pos = vector.new(expected_pos)
@@ -162,7 +162,7 @@ function mcl_minecarts.cart:on_step(dtime)
 	local cart_dir = mcl_minecarts:velocity_to_dir(vel)
 	local max_vel = mcl_minecarts.speed_max
 	if not dir then
-		dir, last_switch = mcl_minecarts:get_rail_direction(pos, cart_dir, ctrl, self.old_switch, self.railtype)
+		dir, last_switch = mcl_minecarts:get_rail_direction(pos, cart_dir, ctrl, self._old_switch, self._railtype)
 	end
 	
 	local new_acc = {x=0, y=0, z=0}
@@ -171,20 +171,20 @@ function mcl_minecarts.cart:on_step(dtime)
 		update.vel = true
 	else
 		-- If the direction changed
-		if dir.x ~= 0 and self.old_dir.z ~= 0 then
+		if dir.x ~= 0 and self._old_dir.z ~= 0 then
 			vel.x = dir.x * math.abs(vel.z)
 			vel.z = 0
 			pos.z = math.floor(pos.z + 0.5)
 			update.pos = true
 		end
-		if dir.z ~= 0 and self.old_dir.x ~= 0 then
+		if dir.z ~= 0 and self._old_dir.x ~= 0 then
 			vel.z = dir.z * math.abs(vel.x)
 			vel.x = 0
 			pos.x = math.floor(pos.x + 0.5)
 			update.pos = true
 		end
 		-- Up, down?
-		if dir.y ~= self.old_dir.y then
+		if dir.y ~= self._old_dir.y then
 			vel.y = dir.y * math.abs(vel.x + vel.z)
 			pos = vector.round(pos)
 			update.pos = true
@@ -216,9 +216,9 @@ function mcl_minecarts.cart:on_step(dtime)
 	end
 	
 	self.object:setacceleration(new_acc)
-	self.old_pos = vector.new(pos)
-	self.old_dir = vector.new(dir)
-	self.old_switch = last_switch
+	self._old_pos = vector.new(pos)
+	self._old_dir = vector.new(dir)
+	self._old_switch = last_switch
 	
 	-- Limits
 	for _,v in ipairs({"x","y","z"}) do
@@ -228,8 +228,8 @@ function mcl_minecarts.cart:on_step(dtime)
 		end
 	end
 
-	if self.punched then
-		self.punched = false
+	if self._punched then
+		self._punched = false
 	end
 	
 	if not (update.vel or update.pos) then
