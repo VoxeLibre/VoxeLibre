@@ -17,15 +17,13 @@ draw styles.  The alternatives have been removed and instead of
 providing alternate nodes, this mod now directly modifies the existing
 nodes. Conversion from the wallmounted style is done through an LBM.
 
-The wield light part is inspired, but not copied from "walking light",
-a mod by "echo". After looking at the code I decided to implement
-it from scratch as I found it to be too resource intensive and not
-implemented efficiently enough. Still, echo deserves the credit for
-the excellent idea.
-
 Torches is meant for minetest-0.4.14, and does not directly support
 older minetest releases. You'll need a recent git, or nightly build.
 
+Changes for MineClone:
+~~~~~~~~~~~~~~~~~~~~~~
+- Torch does not generate light when wielding
+- Torch drops when near water
 
 License:
 ~~~~~~~~
