@@ -30,6 +30,18 @@ minetest.register_alias("mapgen_river_water_source", "default:water_source")
 -- Ore generation
 --
 
+-- Gravel
+minetest.register_ore({
+	ore_type       = "blob",
+	ore            = "default:gravel",
+	wherein        = {"default:stone"},
+	clust_scarcity = 14*14*14,
+	clust_num_ores = 33,
+	clust_size     = 5,
+	height_min     = -90,
+	height_max     = 90,
+})
+
 --
 -- Coal
 --
@@ -223,6 +235,8 @@ minetest.register_ore({
 	height_min     = -59,
 	height_max     = -50,
 })
+
+
 
 --
 -- Glowstone
