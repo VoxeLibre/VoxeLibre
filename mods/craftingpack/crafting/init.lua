@@ -86,29 +86,23 @@ local function set_inventory(player)
 	local form = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory.png"..armor_img.."]"..
 	default.inventory_header..
-	img_element
+	img_element..
 	--armor
-	if show_armor then
-		if armor.def[player_name] and armor.def[player_name].level then
-			form  = form .. 
-			"list[detached:"..player_name.."_armor;armor;0,0;1,1;1]"..
-			"list[detached:"..player_name.."_armor;armor;0,1;1,1;2]"..
-			"list[detached:"..player_name.."_armor;armor;0,2;1,1;3]"..
-			"list[detached:"..player_name.."_armor;armor;0,3;1,1;4]"
-		else
-			form  = form .. 
-			"list[detached:"..player_name.."_armor;armor_head;0,0;1,1;]"..
-			"list[detached:"..player_name.."_armor;armor_torso;0,1;1,1;]"..
-			"list[detached:"..player_name.."_armor;armor_legs;0,2;1,1;]"..
-			"list[detached:"..player_name.."_armor;armor_feet;0,3;1,1;]"
-		end
-	end
-	form = form ..
+	"list[detached:"..player_name.."_armor;armor;0,0;1,1;1]"..
+	"list[detached:"..player_name.."_armor;armor;0,1;1,1;2]"..
+	"list[detached:"..player_name.."_armor;armor;0,2;1,1;3]"..
+	"list[detached:"..player_name.."_armor;armor;0,3;1,1;4]"..
+	-- craft and inventory
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
 	"list[current_player;craft;4,1;2,1;1]"..
 	"list[current_player;craft;4,2;2,1;4]"..
 	"list[current_player;craftpreview;7,1.5;1,1;]"..
+	-- for shortcuts
+	"listring[current_player;main]"..
+	"listring[current_player;craft]"..
+	"listring[current_player;main]"..
+	"listring[detached:"..player_name.."_armor;armor]"..
 	"inv"
 	
 	player:set_inventory_formspec(form)
@@ -126,6 +120,8 @@ local function set_workbench(player)
 	"list[current_player;main;0,7.74;9,1;]"..
 	"list[current_player;craft;1.75,0.5;3,3;]"..
 	"list[current_player;craftpreview;5.75,1.5;1,1;]"..
+	"listring[current_player;main]"..
+	"listring[current_player;craft]"..
 	"wob"
 
 	--player:set_inventory_formspec(form)
