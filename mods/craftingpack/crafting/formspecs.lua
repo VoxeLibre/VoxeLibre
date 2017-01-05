@@ -1,8 +1,7 @@
 default.furnace_inactive_formspec =
 	"size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory_furnace.png]"..
-	"bgcolor[#080808BB;true]"..
-	"listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
+	default.inventory_header..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
 	"list[current_name;src;2.75,0.5;1,1;]"..
@@ -14,8 +13,7 @@ function default.get_furnace_active_formspec(pos, percent)
 	local formspec = 
 	"size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory_furnace.png]"..
-	"bgcolor[#080808BB;true]"..
-	"listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
+	default.inventory_header..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
 	"list[current_name;src;2.75,0.5;1,1;]"..
@@ -34,8 +32,7 @@ end
 default.chest_formspec = 
 	"size[9,9.75]"..
 	"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
-	"bgcolor[#080808BB;true]"..
-	"listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
+	default.inventory_header..
 	"list[current_name;main;0,0.5;9,4;]"..
 	"list[current_player;main;0,5.5;9,3;9]"..
 	"list[current_player;main;0,8.74;9,1;]"
@@ -55,8 +52,7 @@ function default.get_locked_chest_formspec(pos)
 	local formspec = 
 		"size[9,9.75]"..
 		"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
-		"bgcolor[#080808BB;true]"..
-		"listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
+		default.inventory_header..
 		"list[nodemeta:".. spos .. ";main;0,0.5;9,4;]"..
 		"list[current_player;main;0,5.5;9,3;9]"..
 		"list[current_player;main;0,8.74;9,1;]"

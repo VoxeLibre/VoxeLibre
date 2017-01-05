@@ -87,8 +87,7 @@ local function set_inventory(player)
 
 	local form = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory.png"..armor_img.."]"..
-	"bgcolor[#080808BB;true]"..
-	"listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
+	default.inventory_header..
 	img_element
 	--armor
 	if show_armor then
@@ -124,8 +123,7 @@ local function set_workbench(player)
 
 	local form = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory_workbench.png]"..
-	"bgcolor[#080808BB;true]"..
-	"listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
+	default.inventory_header..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
 	"list[current_player;craft;1.75,0.5;3,3;]"..
