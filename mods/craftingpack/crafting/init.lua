@@ -174,7 +174,7 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 minetest.register_node("crafting:workbench", {
-	description = "Workbench",
+	description = "Crafting Table",
 	tiles = {"crafting_workbench_top.png", "default_wood.png", "crafting_workbench_side.png",
 		"crafting_workbench_side.png", "crafting_workbench_front.png", "crafting_workbench_front.png"},
 	paramtype2 = "facedir",
@@ -182,7 +182,8 @@ minetest.register_node("crafting:workbench", {
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=2},
 	on_rightclick = function(pos, node, clicker, itemstack)
 		set_workbench(clicker)
-	end
+	end,
+	sounds = default.node_sound_wood_defaults(),
 })
 
 minetest.register_craft({
