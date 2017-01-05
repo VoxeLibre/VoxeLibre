@@ -953,17 +953,17 @@ minetest.register_node("default:water_flowing", {
 	description = "Flowing Water",
 	inventory_image = minetest.inventorycube("default_water.png"),
 	drawtype = "flowingliquid",
-	tiles = {name="default_water_flowing_animated.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=5.0}},
+	tiles = {name="default_water_flowing_animated.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=2.0}},
 	special_tiles = {
 		{
 			image="default_water_flowing_animated.png",
 			backface_culling=false,
-			animation={type="vertical_frames", aspect_w=64, aspect_h=64, length=5.0}
+			animation={type="vertical_frames", aspect_w=64, aspect_h=64, length=2.0}
 		},
 		{
 			image="default_water_flowing_animated.png",
 			backface_culling=true,
-			animation={type="vertical_frames", aspect_w=64, aspect_h=64, length=5.0}
+			animation={type="vertical_frames", aspect_w=64, aspect_h=64, length=2.0}
 		},
 	},
 	alpha = WATER_ALPHA,
