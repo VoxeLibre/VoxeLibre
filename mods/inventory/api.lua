@@ -5,7 +5,7 @@ SURVIVAL_FORMSPEC = "";
 function inventory.creative_inv(player)
 local name = player:get_player_name()
 CREATIVE_FORMSPEC =
-	"invsize[11,9.75;]"..
+	"size[11,9.75]"..
 	default.inventory_header..
 	--"background[-0.25,1;10.5,8;inventory_creative_inventory_bg.png]"..
 	"button[9.5,0;1.5,1.5;creative_search;Search]"..
@@ -28,7 +28,7 @@ end
 function inventory.survival_inv(player)
 local name = player:get_player_name()
 	SURVIVAL_FORMSPEC =
-		"invsize[9,9.5;]"..
+		"size[9,9.5]"..
 		default.inventory_header..
 		--"background[-0.4,-0.45;9.8,9.825;inventory_survival_inventory_bg.png]"..
 		"list[detached:"..name.."_armor;armor_head;0,0;1,1;]"..
