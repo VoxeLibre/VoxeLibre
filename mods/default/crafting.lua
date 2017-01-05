@@ -723,6 +723,13 @@ minetest.register_craft({
 	cooktime = 10,
 })
 
+minetest.register_craft({
+	type = "cooking",
+	output = "default:coal",
+	recipe = "default:stone_with_coal",
+	cooktime = 10,
+})
+
 --
 -- Fuels
 --
