@@ -7,7 +7,7 @@ local name = player:get_player_name()
 CREATIVE_FORMSPEC =
 	"size[11,9.75]"..
 	default.inventory_header..
-	--"background[-0.25,1;10.5,8;inventory_creative_inventory_bg.png]"..
+	--"background[-0.25,1;10.5,8;mcl_inventory_creative_inventory_bg.png]"..
 	"button[9.5,0;1.5,1.5;creative_search;Search]"..
 	"list[detached:"..name.."_armor;armor_head;0.25,1.25;1,1;]"..
 	"list[detached:"..name.."_armor;armor_torso;0.25,2.5;1,1;]"..
@@ -30,7 +30,7 @@ local name = player:get_player_name()
 	SURVIVAL_FORMSPEC =
 		"size[9,9.5]"..
 		default.inventory_header..
-		--"background[-0.4,-0.45;9.8,9.825;inventory_survival_inventory_bg.png]"..
+		--"background[-0.4,-0.45;9.8,9.825;mcl_inventory_survival_inventory_bg.png]"..
 		"list[detached:"..name.."_armor;armor_head;0,0;1,1;]"..
 		"list[detached:"..name.."_armor;armor_torso;0,1;1,1;]"..
 		"list[detached:"..name.."_armor;armor_legs;0,2;1,1;]"..
@@ -61,7 +61,7 @@ end
 CRAFTING_FORMSPEC =
 "size[9,8.5]"..
 default.inventory_header..
-"background[-0.4,-0.5;9.78,9.5;inventory_crafting_inventory_bg.png]"..
+"background[-0.4,-0.5;9.78,9.5;mcl_inventory_crafting_inventory_bg.png]"..
 "list[current_player;main;0,4.32;9,4;9]"..
 "list[current_player;main;0,7.6;9,1;]"..
 "list[current_player;craft;1.218,0.46;3,3;]"..
@@ -78,6 +78,6 @@ function inventory.hotbar(player)
 	if player.hud_set_hotbar_itemcount then
 		minetest.after(0, player.hud_set_hotbar_itemcount, player, 9)
 	end
-	player:hud_set_hotbar_image("inventory_hotbar.png")
-	player:hud_set_hotbar_selected_image("inventory_hotbar_selected.png")
+	player:hud_set_hotbar_image("mcl_inventory_hotbar.png")
+	player:hud_set_hotbar_selected_image("mcl_inventory_hotbar_selected.png")
 end
