@@ -872,7 +872,7 @@ minetest.register_node("default:rail", {
                 fixed = {-1/2, -1/2, -1/2, 1/2, -1/2+1/16, 1/2},
 	},
 	stack_max = 64,
-	groups = {bendy=2,dig_immediate=2,attached_node=1},
+	groups = {dig_immediate=2,attached_node=1,rail=1,connect_to_raillike=1},
 })
 
 minetest.register_node("default:ladder", {
