@@ -783,6 +783,7 @@ minetest.register_node("default:bedrock", {
 	on_destruct = function () end,
 	can_dig = function() return false end,
 	diggable = false,
+	drop = '',
 })
 
 minetest.register_node("default:bookshelf", {
