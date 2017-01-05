@@ -1,5 +1,0 @@
---Configuration file for Inventory
-
--- Set "Creative" for all Player have creatif , set "Survival" for all player in normal mode
-Default_Mode = "Survival"
-
