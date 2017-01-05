@@ -7,15 +7,8 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'torches:torch 4',
 	recipe = {
-		{'default:coal_lump'},
+		{'group:coal'},
 		{'default:stick'},
 	}
 })
 
-minetest.register_craft({
-	output = 'torches:torch 4',
-	recipe = {
-		{'default:charcoal_lump'},
-		{'default:stick'},
-	}
-})

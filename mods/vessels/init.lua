@@ -19,7 +19,7 @@ minetest.register_node("vessels:glass_bottle", {
 })
 
 minetest.register_craft( {
-	output = "vessels:glass_bottle 4",
+	output = "vessels:glass_bottle 3",
 	recipe = {
 		{ "default:glass", "", "default:glass" },
 		{ "", "default:glass", "" }

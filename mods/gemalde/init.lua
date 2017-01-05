@@ -95,9 +95,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'gemalde:node_1',
 	recipe = {
-		{'default:paper', 'default:paper'},
-		{'default:paper', 'default:paper'},
-		{'default:paper', 'default:paper'},
+		{'default:stick', 'default:stick', 'default:stick'},
+		{'default:stick', 'group:wool', 'default:stick'},
+		{'default:stick', 'default:stick', 'default:stick'},
 	}
 })
 

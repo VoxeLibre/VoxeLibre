@@ -761,7 +761,7 @@ minetest.register_node("default:quartz_block", {
 })
 
 minetest.register_node("default:quartz_chiseled", {
-	description = "Chiseled Quartz",
+	description = "Chiseled Quartz Block",
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {"default_quartz_chiseled_top.png", "default_quartz_chiseled_top.png", "default_quartz_chiseled_side.png"},

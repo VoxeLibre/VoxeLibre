@@ -37,7 +37,7 @@ minetest.register_tool("farming:hoe_wood", {
 minetest.register_craft({
 	output = "farming:hoe_wood",
 	recipe = {
-		{"default:wood", "default:wood"},
+		{"group:wood", "group:wood"},
 		{"", "default:stick"},
 		{"", "default:stick"}
 	}

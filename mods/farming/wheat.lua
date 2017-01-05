@@ -137,7 +137,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "farming:cookie",
+	output = "farming:cookie 8",
 	recipe = {
 		{'farming:wheat_harvested', 'dye:brown', 'farming:wheat_harvested'},
 	}

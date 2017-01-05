@@ -81,14 +81,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'fences:fence_wood 2',
-	recipe = {
-		{'default:stick', 'default:stick', 'default:stick'},
-		{'default:stick', 'default:stick', 'default:stick'},
-	}
-})
-
-minetest.register_craft({
 	output = 'signs:sign_wall 3',
 	recipe = {
 		{'group:wood', 'group:wood', 'group:wood'},
@@ -278,24 +270,22 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	type = 'shapeless',
 	output = 'default:flint_and_steel',
-	recipe = {
-		{'default:steel_ingot', ''},
-		{'', 'default:flint'},
-	}
+	recipe = { 'default:steel_ingot', 'default:flint'},
 })
 
 minetest.register_craft({
 	output = "default:pole",
 	recipe = {
 		{'','','default:stick'},
-		{'','default:stick','farming:string'},
-		{'default:stick','','farming:string'},
+		{'','default:stick','default:string'},
+		{'default:stick','','default:string'},
 	}
 })
 
 minetest.register_craft({
-	output = 'default:rail 15',
+	output = 'default:rail 16',
 	recipe = {
 		{'default:steel_ingot', '', 'default:steel_ingot'},
 		{'default:steel_ingot', 'default:stick', 'default:steel_ingot'},
@@ -463,13 +453,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'default:clay_brick 4',
-	recipe = {
-		{'default:brick'},
-	}
-})
-
-minetest.register_craft({
 	output = 'default:paper 3',
 	recipe = {
 		{'default:reeds', 'default:reeds', 'default:reeds'},
@@ -477,11 +460,10 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	type = 'shapeless',
 	output = 'default:book',
-	recipe = {
-		{'default:paper'},
-		{'default:paper'},
-		{'default:paper'},
+	-- TODO: 3 paper 1 lether
+	recipe = { 'default:paper', 'default:paper', 'default:paper', 'default:paper',
 	}
 })
 
@@ -495,7 +477,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'default:ladder',
+	output = 'default:ladder 3',
 	recipe = {
 		{'default:stick', '', 'default:stick'},
 		{'default:stick', 'default:stick', 'default:stick'},
@@ -504,7 +486,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'default:stonebrick',
+	output = 'default:stonebrick 4',
 	recipe = {
 		{'default:stone', 'default:stone'},
 		{'default:stone', 'default:stone'},
@@ -556,6 +538,22 @@ minetest.register_craft({
 	output = 'default:emerald 9',
 	recipe = {
 		{'default:emeraldblock'},
+	}
+})
+
+minetest.register_craft({
+	output = "default:diamondblock",
+	recipe = {
+		{'default:diamond', 'default:diamond', 'default:diamond'},
+		{'default:diamond', 'default:diamond', 'default:diamond'},
+		{'default:diamond', 'default:diamond', 'default:diamond'},
+	}
+})
+
+minetest.register_craft({
+	output = 'default:diamond 9',
+	recipe = {
+		{'default:diamondblock'},
 	}
 })
 

@@ -305,7 +305,7 @@ doors:register_door("doors:door_wood", {
 })
 
 minetest.register_craft({
-	output = "doors:door_wood",
+	output = "doors:door_wood 3",
 	recipe = {
 		{"default:wood", "default:wood"},
 		{"default:wood", "default:wood"},
@@ -324,7 +324,7 @@ doors:register_door("doors:door_acacia", {
 })
 
 minetest.register_craft({
-	output = "doors:door_acacia",
+	output = "doors:door_acacia 3",
 	recipe = {
 		{"default:acaciawood", "default:acaciawood"},
 		{"default:acaciawood", "default:acaciawood"},
@@ -363,7 +363,7 @@ doors:register_door("doors:door_jungle", {
 })
 
 minetest.register_craft({
-	output = "doors:door_jungle",
+	output = "doors:door_jungle 3",
 	recipe = {
 		{"default:junglewood", "default:junglewood"},
 		{"default:junglewood", "default:junglewood"},
@@ -382,7 +382,7 @@ doors:register_door("doors:door_spruce", {
 })
 
 minetest.register_craft({
-	output = "doors:door_spruce",
+	output = "doors:door_spruce 3",
 	recipe = {
 		{"default:sprucewood", "default:sprucewood"},
 		{"default:sprucewood", "default:sprucewood"},
@@ -404,7 +404,7 @@ doors:register_door("doors:door_steel", {
 })
 
 minetest.register_craft({
-	output = "doors:door_steel",
+	output = "doors:door_steel 3",
 	recipe = {
 		{"default:steel_ingot", "default:steel_ingot"},
 		{"default:steel_ingot", "default:steel_ingot"},

@@ -553,10 +553,10 @@ minetest.register_node("fences:fence_wood_13", {  --right(2)+top(11)=13
 minetest.register_alias("default:fence_wood", "fences:fence")
 
 minetest.register_craft({
-	output = 'fences:fence_wood 2',
+	output = 'fences:fence_wood 3',
 	recipe = {
-		{'default:stick', 'default:stick', 'default:stick'},
-		{'default:stick', 'default:stick', 'default:stick'},
+		{'default:wood', 'default:stick', 'default:wood'},
+		{'default:wood', 'default:stick', 'default:wood'},
 	}
 })
 

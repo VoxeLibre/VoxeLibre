@@ -115,9 +115,9 @@ minetest.register_tool("throwing:bow_2", {
 minetest.register_craft({
 	output = 'throwing:bow',
 	recipe = {
-		{'', 'group:wood', 'default:string'},
-		{'group:wood', '', 'default:string'},
-		{'', 'group:wood', 'default:string'},
+		{'', 'default:stick', 'default:string'},
+		{'default:stick', '', 'default:string'},
+		{'', 'default:stick', 'default:string'},
 	}
 })
 
