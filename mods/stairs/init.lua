@@ -314,5 +314,21 @@ stairs.register_stair_and_slab("quartzblock", "default:quartz_block",
 	default.node_sound_stone_defaults()
 )
 
+minetest.register_craft({
+	output = 'default:sandstonecarved',
+	recipe = {
+		{'stairs:slab_sandstone'},
+		{'stairs:slab_sandstone'}
+	}
+})
+
+minetest.register_craft({
+	output = 'default:redsandstonecarved',
+	recipe = {
+		{'stairs:slab_redsandstone'},
+		{'stairs:slab_redsandstone'}
+	}
+})
+
 local time_to_load= os.clock() - init
 print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))

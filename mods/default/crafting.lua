@@ -57,6 +57,22 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = 'default:sandstonesmooth 4',
+	recipe = {
+		{'default:sandstone','default:sandstone'},
+		{'default:sandstone','default:sandstone'},
+	}
+})
+
+minetest.register_craft({
+	output = 'default:redsandstonesmooth 4',
+	recipe = {
+		{'default:redsandstone','default:redsandstone'},
+		{'default:redsandstone','default:redsandstone'},
+	}
+})
+
+minetest.register_craft({
 	output = 'default:stick 4',
 	recipe = {
 		{'group:wood'},
@@ -417,8 +433,16 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'default:sandstone',
 	recipe = {
-		{'group:sand', 'group:sand'},
-		{'group:sand', 'group:sand'},
+		{'default:sand', 'default:sand'},
+		{'default:sand', 'default:sand'},
+	}
+})
+
+minetest.register_craft({
+	output = 'default:redsandstone',
+	recipe = {
+		{'default:redsand', 'default:redsand'},
+		{'default:redsand', 'default:redsand'},
 	}
 })
 
