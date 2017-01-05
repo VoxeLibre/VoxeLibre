@@ -553,9 +553,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "default:apple_gold",
 	recipe = {
-		{"default:gold_nugget", "default:gold_nugget", "default:gold_nugget"},
-		{"default:gold_nugget", 'default:apple', "default:gold_nugget"},
-		{"default:gold_nugget", "default:gold_nugget", "default:gold_nugget"},
+		{"default:gold_ingot", "default:gold_ingot", "default:gold_ingot"},
+		{"default:gold_ingot", 'default:apple', "default:gold_ingot"},
+		{"default:gold_ingot", "default:gold_ingot", "default:gold_ingot"},
 	}
 })
 
