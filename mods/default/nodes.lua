@@ -235,6 +235,14 @@ minetest.register_node("default:dirt", {
 	sounds = default.node_sound_dirt_defaults(),
 })
 
+minetest.register_node("default:coarse_dirt", {
+	description = "Coarse Dirt",
+	tiles = {"default_coarse_dirt.png"},
+	is_ground_content = true,
+	stack_max = 64,
+	groups = {crumbly=3, soil=1},
+	sounds = default.node_sound_dirt_defaults(),
+})
 
 minetest.register_node("default:gravel", {
 	description = "Gravel",

@@ -2,13 +2,19 @@ local function create_soil(pos, inv)
 	if pos == nil then
 		return false
 	end
-	local node = minetest.env:get_node(pos)
+	local node = minetest.get_node(pos)
 	local name = node.name
-	local above = minetest.env:get_node({x=pos.x, y=pos.y+1, z=pos.z})
+	local above = minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z})
 	if name == "default:dirt" or name == "default:dirt_with_grass" then
 		if above.name == "air" then
 			node.name = "farming:soil"
-			minetest.env:set_node(pos, node)
+			minetest.set_node(pos, node)
+			return true
+		end
+	elseif name == "default:coarse_dirt" then
+		if above.name == "air" then
+			node.name = "default:dirt"
+			minetest.set_node(pos, node)
 			return true
 		end
 	end

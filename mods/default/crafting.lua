@@ -48,6 +48,13 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = 'default:coarse_dirt 4',
+	recipe = {
+		{'default:dirt', 'default:gravel'},
+		{'default:gravel', 'default:dirt'},
+	}
+})
 
 minetest.register_craft({
 	output = 'default:stick 4',
