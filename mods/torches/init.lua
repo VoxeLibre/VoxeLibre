@@ -19,7 +19,7 @@ minetest.register_node(":default:torch", {
 	walkable = false,
 	liquids_pointable = false,
 	light_source = 13,
-	groups = {choppy=2, dig_immediate=3, flammable=1, attached_node=1, torch=1},
+	groups = {choppy=2, dig_immediate=3, flammable=1, attached_node=1, torch=1, dig_by_water=1,},
 	drop = "default:torch",
 	selection_box = {
 		type = "wallmounted",
@@ -73,7 +73,7 @@ minetest.register_node(":default:torch_wall", {
 	sunlight_propagates = true,
 	walkable = false,
 	light_source = 13,
-	groups = {choppy=2, dig_immediate=3, flammable=1, not_in_creative_inventory=1, attached_node=1, torch=1},
+	groups = {choppy=2, dig_immediate=3, flammable=1, not_in_creative_inventory=1, attached_node=1, torch=1, dig_by_water=1},
 	drop = "default:torch",
 	selection_box = {
 		type = "wallmounted",
