@@ -17,6 +17,7 @@ CREATIVE_FORMSPEC = "invsize[11,9.75;]"..
 	"list[detached:creative_trash;main;9.1,7.75;1,1;]"..
 	"button[9.15,6;1,1;clear_inventory;Clear]"..
 	"button[9.5,8.75;1.5,1.5;creative_survival;Survival]"
+
 	player:get_inventory():set_width("main", 9)
 	player:get_inventory():set_size("main", 36)
 	player:set_inventory_formspec(CREATIVE_FORMSPEC)
@@ -34,11 +35,22 @@ local name = player:get_player_name()
 		"list[current_player;main;0,4.5;9,4;9]"..
 		"list[current_player;main;0,8.25;9,1;]"..
 		"list[current_player;craft;4,1;2,2;]"..
-		"list[current_player;craftpreview;7,1.5;1,1;]"
-		player:get_inventory():set_width("craft", 2)
-		player:get_inventory():set_size("craft", 4)
-		player:get_inventory():set_width("main", 9)
-		player:get_inventory():set_size("main", 36)
+		"list[current_player;craftpreview;7,1.5;1,1;]"..
+		"listring[current_player;main]"..
+		"listring[current_player;craft]"..
+		"listring[current_player;main]"..
+		"listring[detached:"..name.."_armor;armor_head]"..
+		"listring[current_player;main]"..
+		"listring[detached:"..name.."_armor;armor_torso]"..
+		"listring[current_player;main]"..
+		"listring[detached:"..name.."_armor;armor_legs]"..
+		"listring[current_player;main]"..
+		"listring[detached:"..name.."_armor;armor_feet]"
+
+	player:get_inventory():set_width("craft", 2)
+	player:get_inventory():set_size("craft", 4)
+	player:get_inventory():set_width("main", 9)
+	player:get_inventory():set_size("main", 36)
 	player:set_inventory_formspec(SURVIVAL_FORMSPEC)
 end
 
@@ -47,7 +59,9 @@ CRAFTING_FORMSPEC = "size[9,8.5]"..
 "list[current_player;main;0,4.32;9,4;9]"..
 "list[current_player;main;0,7.6;9,1;]"..
 "list[current_player;craft;1.218,0.46;3,3;]"..
-"list[current_player;craftpreview;6.44,1.5;1.5,1.5;]"
+"list[current_player;craftpreview;6.44,1.5;1.5,1.5;]"..
+"listring[current_player;main]"..
+"listring[current_player;craft]"
 
 --
 -- Hotbar
