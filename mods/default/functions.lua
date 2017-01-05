@@ -472,11 +472,12 @@ end)
 function duengen(pointed_thing)
 	pos = pointed_thing.under
 	n = minetest.get_node(pos)
-	if n.name == "" then return end
+	if n.name == "" then return false end
 	local stage = ""
 	if n.name == "default:sapling" then
 		minetest.add_node(pos, {name="air"})
 		generate_tree(pos, "default:tree", "default:leaves", 1)
+		return true
 	elseif string.find(n.name, "farming:wheat_") ~= nil then
 		stage = string.sub(n.name, 15)
 		if stage == "3" then
@@ -486,6 +487,7 @@ function duengen(pointed_thing)
 		else
 			minetest.add_node(pos, {name="farming:wheat_"..math.random(2,3)})
 		end
+		return true
 	elseif string.find(n.name, "farming:potato_") ~= nil then
 		stage = tonumber(string.sub(n.name, 16))
 		if stage == 1 then
@@ -493,6 +495,7 @@ function duengen(pointed_thing)
 		else
 			minetest.add_node(pos, {name="farming:potato"})
 		end
+		return true
 	elseif string.find(n.name, "farming:carrot_") ~= nil then
 		stage = tonumber(string.sub(n.name, 16))
 		if stage == 1 then
@@ -500,6 +503,7 @@ function duengen(pointed_thing)
 		else
 			minetest.add_node(pos, {name="farming:carrot"})
 		end
+		return true
 	elseif string.find(n.name, "farming:pumpkin_") ~= nil then
 		stage = tonumber(string.sub(n.name, 17))
 		if stage == 1 then
@@ -507,6 +511,7 @@ function duengen(pointed_thing)
 		else
 			minetest.add_node(pos, {name="farming:pumpkintige_unconnect"})
 		end
+		return true
 	elseif string.find(n.name, "farming:melontige_") ~= nil then
 		stage = tonumber(string.sub(n.name, 18))
 		if stage == 1 then
@@ -514,13 +519,17 @@ function duengen(pointed_thing)
 		else
 			minetest.add_node(pos, {name="farming:melontige_unconnect"})
 		end
+		return true
 	elseif n.name ~= ""  and n.name == "default:junglesapling" then
 		minetest.add_node(pos, {name="air"})
 		generate_tree(pos, "default:jungletree", "default:jungleleaves", 2)
+		return true
 	elseif n.name ~="" and n.name == "default:reeds" then
 		grow_reeds(pos)
+		return true
 	elseif n.name ~="" and n.name == "default:cactus" then
 		grow_cactus(pos)
+		return true
 	elseif n.name == "default:dirt_with_grass" then
 		for i = -2, 3, 1 do
 			for j = -3, 2, 1 do
@@ -539,6 +548,9 @@ function duengen(pointed_thing)
 				end
 			end
 		end
+		return true
+	else
+		return false
 	end
 end
 

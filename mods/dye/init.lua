@@ -94,50 +94,7 @@ for _, row in ipairs(dyelocal.dyes) do
 		groups = groups,
 		stack_max = 64,
 	})
-	minetest.register_craft({
-		type = "shapeless",
-		output = item_name.." 4",
-		recipe = {"group:flower,color_"..name},
-	})
 end
-
--- Mix recipes
--- Just mix everything to everything somehow sanely
-
-dyelocal.mixbases = {"magenta", "red", "orange", "brown", "yellow", "green", "dark_green", "cyan", "blue", "violet", "black", "dark_grey", "grey", "white", "lightblue"}
-
-dyelocal.mixes = {
-	--       magenta,  red,    orange,   brown,    yellow,  green,  dark_green, cyan,    blue,   violet,   black,  dark_grey,  grey,   white,        lightblue
-lightblue ={ "violet",  "violet", "orange", "orange", "green", "green", "green",  "blue",  "blue", "violet",  "black",  "grey",   "grey", "lightblue", "lightblue" },
-	white = {"pink",  "pink", "orange", "orange", "yellow", "green", "green",  "grey",  "lightblue", "violet",  "grey",  "grey",   "white", "white" },
-	grey  = {"pink",  "pink", "orange", "orange", "yellow", "green", "green",  "grey",  "cyan",  "pink",  "dark_grey","grey", "grey"},
-	dark_grey={"brown","brown", "brown", "brown", "brown","dark_green","dark_green","blue","blue","violet","black", "black"},
-	black = {"black", "black", "black",  "black", "black",  "black", "black",  "black", "black", "black",  "black"},
-	violet= {"magenta","magenta","red",  "brown", "red",    "cyan",  "brown",  "blue",  "violet","violet"},
-	blue  = {"violet", "magenta","brown","brown","dark_green","cyan","cyan",   "cyan",  "blue"},
-	cyan  = {"blue","brown","dark_green","dark_grey","green","cyan","dark_green","cyan"},
-	dark_green={"brown","brown","brown", "brown", "green",  "green", "dark_green"},
-	green = {"brown", "yellow","yellow","dark_green","green","green"},
-	yellow= {"red",  "orange", "yellow","orange", "yellow"},
-	brown = {"brown", "brown","orange", "brown"},
-	orange= {"red",  "orange","orange"},
-	red   = {"magenta","red"},
-	magenta={"magenta"},
-}
-
-for one,results in pairs(dyelocal.mixes) do
-	for i,result in ipairs(results) do
-		local another = dyelocal.mixbases[i]
-		minetest.register_craft({
-			type = "shapeless",
-			output = 'dye:'..result..' 2',
-			recipe = {'dye:'..one, 'dye:'..another},
-		})
-	end
-end
-
--- Hide dyelocal
-dyelocal = nil
 
 minetest.register_craftitem("dye:white", {
 	inventory_image = "dye_white.png",
@@ -145,13 +102,146 @@ minetest.register_craftitem("dye:white", {
 	stack_max = 64,
 	groups = {dye=1, basecolor_white=1,   excolor_white=1,     unicolor_white=1},
 	on_place = function(itemstack, user, pointed_thing) 
-		duengen(pointed_thing)
+		if(duengen(pointed_thing)) then
+			itemstack:take_item()
+		end
+		return itemstack
 	end,
 })
 
+-- Dye mixing
 minetest.register_craft({
-	output = 'dye:lightblue',
-	recipe = {
-		{'flowers:blue_orchid'},
-	}
+	type = "shapeless",
+	output = "dye:dark_grey 2",
+	recipe = {"dye:black", "dye:white"},
+})
+minetest.register_craft({
+	type = "shapeless",
+	output = "dye:lightblue 2",
+	recipe = {"dye:blue", "dye:white"},
+})
+minetest.register_craft({
+	type = "shapeless",
+	output = "dye:grey 3",
+	recipe = {"dye:black", "dye:white", "dye:white"},
+})
+minetest.register_craft({
+	type = "shapeless",
+	output = "dye:grey 2",
+	recipe = {"dye:dark_grey", "dye:white"},
+})
+minetest.register_craft({
+	type = "shapeless",
+	output = "dye:green 2",
+	recipe = {"dye:dark_green", "dye:white"},
+})
+minetest.register_craft({
+	type = "shapeless",
+	output = "dye:magenta 4",
+	recipe = {"dye:blue", "dye:white", "dye:red", "dye:red"},
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "dye:pink 2",
+	recipe = {"dye:red", "dye:white"},
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "dye:cyan 2",
+	recipe = {"dye:blue", "dye:dark_green"},
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "dye:violet 2",
+	recipe = {"dye:blue", "dye:red"},
+})
+minetest.register_craft({
+	type = "shapeless",
+	output = "dye:orange 2",
+	recipe = {"dye:yellow", "dye:red"},
+})
+minetest.register_craft({
+	type = "shapeless",
+	output = "dye:magenta 2",
+	recipe = {"dye:violet", "dye:pink"},
+})
+minetest.register_craft({
+	type = "shapeless",
+	output = "dye:magenta 3",
+	recipe = {"dye:pink", "dye:red", "dye:blue"},
+})
+
+-- Dye creation
+minetest.register_craft({
+	output = "dye:yellow",
+	recipe = {{"flowers:dandelion_yellow"}},
+})
+minetest.register_craft({
+	output = "dye:yellow 2",
+	recipe = {{"flowers:sunflower"}},
+})
+minetest.register_craft({
+	output = "dye:lightblue",
+	recipe = {{"flowers:blue_orchid"}},
+})
+minetest.register_craft({
+	output = "dye:grey",
+	recipe = {{"flowers:azure_bluet"}},
+})
+minetest.register_craft({
+	output = "dye:grey",
+	recipe = {{"flowers:oxeye_daisy"}},
+})
+minetest.register_craft({
+	output = "dye:grey",
+	recipe = {{"flowers:tulip_white"}},
+})
+minetest.register_craft({
+	output = "dye:magenta",
+	recipe = {{"flowers:allium"}},
+})
+minetest.register_craft({
+	output = "dye:magenta 2",
+	recipe = {{"flowers:lilac"}},
+})
+minetest.register_craft({
+	output = "dye:orange",
+	recipe = {{"flowers:tulip_orange"}},
+})
+minetest.register_craft({
+	output = "dye:pink",
+	recipe = {{"flowers:tulip_pink"}},
+})
+minetest.register_craft({
+	output = "dye:pink 2",
+	recipe = {{"flowers:peony"}},
+})
+minetest.register_craft({
+	output = "dye:red",
+	recipe = {{"flowers:poppy"}},
+})
+minetest.register_craft({
+	output = "dye:red",
+	recipe = {{"flowers:tulip_red"}},
+})
+minetest.register_craft({
+	output = "dye:red 2",
+	recipe = {{"flowers:rose_bush"}},
+})
+minetest.register_craft({
+	type = "cooking",
+	output = "dye:dark_green",
+	recipe = "default:cactus",
+	cooktime = 10,
+})
+minetest.register_craft({
+	output = "dye:white 3",
+	recipe = {{"default:bone"}},
+})
+minetest.register_craft({
+	output = "dye:white 9",
+	recipe = {{"default:boneblock"}},
 })

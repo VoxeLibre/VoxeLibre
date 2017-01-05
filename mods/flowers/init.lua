@@ -36,8 +36,8 @@ local function add_simple_flower(name, desc, image, color)
 	})
 end
 
-add_simple_flower("rose", "Poppy", "flowers_coqlicot", "color_red")
-add_simple_flower("dandelion_yellow", "Yellow Dandelion", "flowers_dandelion_yellow", "color_yellow")
+add_simple_flower("poppy", "Poppy", "flowers_coqlicot", "color_red")
+add_simple_flower("dandelion", "Dandelion", "flowers_dandelion_yellow", "color_yellow")
 add_simple_flower("oxeye_daisy", "Oxeye Daisy", "flower_oxeye_daisy", "color_yellow")
 add_simple_flower("tulip_orange", "Orange Tulip", "flower_tulip_orange", "color_orange")
 
@@ -370,8 +370,11 @@ minetest.register_node("flowers:pot",{
 	end,
 })
 
+
 local time_to_load= os.clock() - init
 print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
 
 minetest.register_alias("flowers:houstonia", "flowers:azure_bluet")
 minetest.register_alias("flowers:paeonia", "flowers:peony")
+minetest.register_alias("flowers:rose", "flowers:poppy")
+minetest.register_alias("flowers:dandelion_yellow", "flowers:dandelion")
