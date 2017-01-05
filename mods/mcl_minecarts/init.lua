@@ -206,10 +206,6 @@ function mcl_minecarts.cart:on_step(dtime)
 			acc = acc + (speed_mod * 8)
 		else
 			acc = acc - 0.4
-			-- Handbrake
-			if ctrl and ctrl.down and math.abs(vel.x + vel.z) > 1.2 then
-				acc = acc - 1.2
-			end
 		end
 		
 		new_acc = vector.multiply(dir, acc)
