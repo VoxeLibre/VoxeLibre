@@ -171,6 +171,10 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page)
 	local name = "nix"
 	local formspec = ""
 	local main_list = "list[detached:creative;main;0,1.75;9,5;"..tostring(start_i).."]"
+	local listrings = "listring[detached:creative;main]"..
+		"listring[current_player;main]"..
+		"listring[detached:creative_trash;main]"
+
 	if page ~= nil then name = page end
 	bg[name] = "crafting_creative_bg.png"
 		if name == "inv" then
@@ -202,7 +206,8 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page)
 			--"image_button[4.93,8.28;1,1;"..bg["brew"].."^crafting_creative_matr.png;matr;]"..	--materials^
 			"image_button[9.19,8.28;1,1;"..bg["inv"].."^crafting_creative_inv.png;inv;]"..			--inventory
 			"list[detached:creative_trash;main;9,7;1,1;]"..
-			"image[9,7;1,1;crafting_creative_trash.png]"
+			"image[9,7;1,1;crafting_creative_trash.png]"..
+			listrings
 
 			if name == "nix" then formspec = formspec .. "field[5.3,1.3;4,0.75;suche;;]" end
 			if pagenum ~= nil then formspec = formspec .. "p"..tostring(pagenum) end
