@@ -12,7 +12,7 @@ math.randomseed(3)
 --water
 
 minetest.register_entity("drippingwater:drop_water", {
-	hp_max = 2000,
+	hp_max = 1,
 	physical = true,
 	collisionbox = {0,0,0,0,0,0},
 	visual = "cube",
@@ -48,7 +48,7 @@ minetest.register_entity("drippingwater:drop_water", {
 --lava
 
 minetest.register_entity("drippingwater:drop_lava", {
-	hp_max = 2000,
+	hp_max = 1,
 	physical = true,
 	collisionbox = {0,0,0,0,0,0},
 	visual = "cube",
