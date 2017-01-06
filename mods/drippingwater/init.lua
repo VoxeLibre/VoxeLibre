@@ -14,6 +14,7 @@ math.randomseed(3)
 minetest.register_entity("drippingwater:drop_water", {
 	hp_max = 1,
 	physical = true,
+	collide_with_objects = false,
 	collisionbox = {0,0,0,0,0,0},
 	visual = "cube",
 	visual_size = {x=0.05, y=0.1},
@@ -50,6 +51,7 @@ minetest.register_entity("drippingwater:drop_water", {
 minetest.register_entity("drippingwater:drop_lava", {
 	hp_max = 1,
 	physical = true,
+	collide_with_objects = false,
 	collisionbox = {0,0,0,0,0,0},
 	visual = "cube",
 	visual_size = {x=0.05, y=0.1},
