@@ -12,11 +12,6 @@ and/or modify it under the terms of the Do What The Fuck You Want
 To Public License, Version 2, as published by Sam Hocevar. See
 http://sam.zoy.org/wtfpl/COPYING for more details.
 
-License of sounds:
-------------------
-intweak_break_tool.ogg by EdgardEdition (CC BY 3.0), http://www.freesound.org/people/EdgardEdition
-
-
 --USING the mod--
 ------------------
 

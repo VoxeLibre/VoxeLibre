@@ -22,24 +22,3 @@ if auto_refill == true then
 	end)
 end
 
-local typ = ""
-local tname = ""
-minetest.register_on_punchnode(function(pos, node, puncher)
-	if not puncher then return end
-	tname = puncher:get_wielded_item():get_name()
-	typ = minetest.registered_items[tname].type
-	if typ == "tool" and puncher:get_wielded_item():get_wear() == 65535 then
-		minetest.sound_play("intweak_tool_break", {gain = 1.5, max_hear_distance = 5})
-		if auto_refill == true then minetest.after(0.01, refill, puncher, tname, puncher:get_wield_index()) end
-	end
-end)
-
-minetest.register_on_dignode(function(pos, oldnode, digger)
-		if not digger then return end
-		local num = digger:get_wielded_item():get_wear()
-		local index = digger:get_wield_index()
-		if num == 0 and typ == "tool" then
-			minetest.sound_play("intweak_tool_break", {gain = 1.5, max_hear_distance = 5})
-			if auto_refill == true then minetest.after(0.01, refill, digger, tname, index) end
-		end
-end)

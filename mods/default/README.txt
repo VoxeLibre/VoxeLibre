@@ -17,6 +17,8 @@ License of media (sounds)
 Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
 http://creativecommons.org/licenses/by-sa/3.0/
 
+  default_tool_break.ogg by EdgardEdition (CC BY 3.0), http://www.freesound.org/people/EdgardEdition
+
 Authors of media files
 -----------------------
 MirceaKitsune (WTFPL):
@@ -61,3 +63,5 @@ Mito551 (sounds) (CC BY-SA):
   default_dirt_footstep.1.ogg
   default_dirt_footstep.2.ogg
   default_glass_footstep.ogg
+
+
