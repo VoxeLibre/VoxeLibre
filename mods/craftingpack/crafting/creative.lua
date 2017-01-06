@@ -62,7 +62,7 @@ function set_inv(filter, player)
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#food" then
-					if def.groups.food ~= nil or string.find(string.lower(def.description), "apple") or string.find(string.lower(def.description), "bread") then
+					if def.groups.food ~= nil then
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#tools" then
