@@ -54,10 +54,8 @@ end
 
 local function set_inventory(player)
 	if minetest.setting_getbool("creative_mode") then
-		minetest.after(0.5,function()
-			crafting.set_creative_formspec(player, 0, 1)
-			return
-		end)
+		crafting.set_creative_formspec(player, 0, 1)
+		return
 	end
 	player:get_inventory():set_width("craft", 2)
 	player:get_inventory():set_size("craft", 4)
@@ -148,23 +146,19 @@ minetest.register_on_joinplayer(function(player)
 	player:get_inventory():set_size("main", 36)
 
 	--set hotbar size
-	if player.hud_set_hotbar_itemcount then
-		minetest.after(0.5, player.hud_set_hotbar_itemcount, player, 9)
-	end
+	player:hud_set_hotbar_itemcount(9)
 	--add hotbar images
-	minetest.after(0.5,function()
-		player:hud_set_hotbar_image("crafting_hotbar.png")
- 		player:hud_set_hotbar_selected_image("crafting_hotbar_selected.png")
+	player:hud_set_hotbar_image("crafting_hotbar.png")
+ 	player:hud_set_hotbar_selected_image("crafting_hotbar_selected.png")
 
-		if show_armor then
-			local armor_orginal = armor.set_player_armor
-			armor.set_player_armor = function(self, player)
-				armor_orginal(self, player)
-				update_armor(player)
-				set_inventory(player)
-			end
+	if show_armor then
+		local armor_orginal = armor.set_player_armor
+		armor.set_player_armor = function(self, player)
+			armor_orginal(self, player)
+			update_armor(player)
+			set_inventory(player)
 		end
-	end)
+	end
 end)
 
 minetest.register_node("crafting:workbench", {

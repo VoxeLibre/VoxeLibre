@@ -221,9 +221,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 	if fields.suche ~= nil and fields.suche ~= "" then
 		set_inv(string.lower(fields.suche))
-		minetest.after(0.5, function()
-			minetest.show_formspec(player:get_player_name(), "detached:creative",  player:get_inventory_formspec())
-		end)
+		minetest.show_formspec(player:get_player_name(), "detached:creative",  player:get_inventory_formspec())
 	end
 
 	if fields.build then		
