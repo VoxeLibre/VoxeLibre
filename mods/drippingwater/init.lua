@@ -33,11 +33,11 @@ minetest.register_entity("drippingwater:drop_water", {
 	self.object:setacceleration({x=0, y=-5, z=0})
 	end
 
-	if minetest.env:get_node({x=ownpos.x, y=ownpos.y +0.5, z=ownpos.z}).name == "air" then
+	if minetest.get_node({x=ownpos.x, y=ownpos.y +0.5, z=ownpos.z}).name == "air" then
 	self.object:setacceleration({x=0, y=-5, z=0})
 	end
 	
-		if minetest.env:get_node({x=ownpos.x, y=ownpos.y -0.5, z=ownpos.z}).name ~= "air" then
+		if minetest.get_node({x=ownpos.x, y=ownpos.y -0.5, z=ownpos.z}).name ~= "air" then
 		self.object:remove()
 		minetest.sound_play({name="drippingwater_drip"}, {pos = ownpos, gain = 0.5, max_hear_distance = 8})
 		end
@@ -69,12 +69,12 @@ minetest.register_entity("drippingwater:drop_lava", {
 	self.object:setacceleration({x=0, y=-5, z=0})
 	end
 
-	if minetest.env:get_node({x=ownpos.x, y=ownpos.y +0.5, z=ownpos.z}).name == "air" then
+	if minetest.get_node({x=ownpos.x, y=ownpos.y +0.5, z=ownpos.z}).name == "air" then
 	self.object:setacceleration({x=0, y=-5, z=0})
 	end
 
 		
-		if minetest.env:get_node({x=ownpos.x, y=ownpos.y -0.5, z=ownpos.z}).name ~= "air" then
+		if minetest.get_node({x=ownpos.x, y=ownpos.y -0.5, z=ownpos.z}).name ~= "air" then
 		self.object:remove()
 		minetest.sound_play({name="drippingwater_lavadrip"}, {pos = ownpos, gain = 0.5, max_hear_distance = 8})
 		end
@@ -91,10 +91,10 @@ minetest.register_abm(
         interval = 2,
         chance = 22,
         action = function(pos)
-		if minetest.env:get_node({x=pos.x, y=pos.y -1, z=pos.z}).name == "air" and 
-		minetest.env:get_node({x=pos.x, y=pos.y -2, z=pos.z}).name == "air" then
+		if minetest.get_node({x=pos.x, y=pos.y -1, z=pos.z}).name == "air" and 
+		minetest.get_node({x=pos.x, y=pos.y -2, z=pos.z}).name == "air" then
 		local i = math.random(-45,45) / 100
-		minetest.env:add_entity({x=pos.x + i, y=pos.y - 0.501, z=pos.z + i}, "drippingwater:drop_water")
+		minetest.add_entity({x=pos.x + i, y=pos.y - 0.501, z=pos.z + i}, "drippingwater:drop_water")
 		end
         end,
 })
@@ -107,10 +107,10 @@ minetest.register_abm(
         interval = 2,
         chance = 22,
         action = function(pos)
-		if minetest.env:get_node({x=pos.x, y=pos.y -1, z=pos.z}).name == "air" and 
-		minetest.env:get_node({x=pos.x, y=pos.y -2, z=pos.z}).name == "air" then
+		if minetest.get_node({x=pos.x, y=pos.y -1, z=pos.z}).name == "air" and 
+		minetest.get_node({x=pos.x, y=pos.y -2, z=pos.z}).name == "air" then
 		local i = math.random(-45,45) / 100
-		minetest.env:add_entity({x=pos.x + i, y=pos.y - 0.501, z=pos.z + i}, "drippingwater:drop_lava")
+		minetest.add_entity({x=pos.x + i, y=pos.y - 0.501, z=pos.z + i}, "drippingwater:drop_lava")
 		end
         end,
 })
