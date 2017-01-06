@@ -86,7 +86,7 @@ minetest.register_entity("drippingwater:drop_lava", {
 --Create drop
 
 minetest.register_abm(
-        {nodenames = {"group:crumbly"},
+        {nodenames = {"group:crumbly", "group:cracky"},
 	neighbors = {"group:water"},
         interval = 2,
         chance = 22,
@@ -99,27 +99,10 @@ minetest.register_abm(
         end,
 })
 
-
---Cloudstone
-
-minetest.register_abm(
-        {nodenames = {"default:cloud"},
-        interval = 0,
-        chance = 1,
-        action = function(pos)
-		if minetest.env:get_node({x=pos.x, y=pos.y -1, z=pos.z}).name == "air" and 
-		minetest.env:get_node({x=pos.x, y=pos.y -2, z=pos.z}).name == "air" then
-		local i = math.random(-45,45) / 100
-		minetest.env:add_entity({x=pos.x + i, y=pos.y - 0.5, z=pos.z + i}, "drippingwater:drop_water")
-		end
-        end,
-})
-
-
 --Create lava drop
 
 minetest.register_abm(
-        {nodenames = {"group:crumbly"},
+        {nodenames = {"group:crumbly", "group:cracky"},
 	neighbors = {"group:lava"},
         interval = 2,
         chance = 22,
