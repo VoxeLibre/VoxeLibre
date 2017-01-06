@@ -59,9 +59,8 @@ local function set_inventory(player)
 			return
 		end)
 	end
-	player:get_inventory():set_width("craft", 3)
-	player:get_inventory():set_size("craft", 9)
-	player:get_inventory():set_size("main", 9*4)
+	player:get_inventory():set_width("craft", 2)
+	player:get_inventory():set_size("craft", 4)
 
 	local player_name = player:get_player_name()
 	local img = "crafting_inventory_player.png"
@@ -95,8 +94,7 @@ local function set_inventory(player)
 	-- craft and inventory
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
-	"list[current_player;craft;4,1;2,1;1]"..
-	"list[current_player;craft;4,2;2,1;4]"..
+	"list[current_player;craft;4,1;2,2]"..
 	"list[current_player;craftpreview;7,1.5;1,1;]"..
 	-- for shortcuts
 	"listring[current_player;main]"..
@@ -111,7 +109,6 @@ end
 local function set_workbench(player)
 	player:get_inventory():set_width("craft", 3)
 	player:get_inventory():set_size("craft", 9)
-	player:get_inventory():set_size("main", 9*4)
 
 	local form = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory_workbench.png]"..
@@ -147,6 +144,9 @@ minetest.register_on_joinplayer(function(player)
   	end
 	--init inventory
 	set_inventory(player)
+	player:get_inventory():set_width("main", 9)
+	player:get_inventory():set_size("main", 36)
+
 	--set hotbar size
 	if player.hud_set_hotbar_itemcount then
 		minetest.after(0.5, player.hud_set_hotbar_itemcount, player, 9)
