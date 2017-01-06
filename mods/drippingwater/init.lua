@@ -94,7 +94,7 @@ minetest.register_abm(
 		if minetest.env:get_node({x=pos.x, y=pos.y -1, z=pos.z}).name == "air" and 
 		minetest.env:get_node({x=pos.x, y=pos.y -2, z=pos.z}).name == "air" then
 		local i = math.random(-45,45) / 100
-		minetest.env:add_entity({x=pos.x + i, y=pos.y - 0.5, z=pos.z + i}, "drippingwater:drop_water")
+		minetest.env:add_entity({x=pos.x + i, y=pos.y - 0.501, z=pos.z + i}, "drippingwater:drop_water")
 		end
         end,
 })
@@ -110,7 +110,7 @@ minetest.register_abm(
 		if minetest.env:get_node({x=pos.x, y=pos.y -1, z=pos.z}).name == "air" and 
 		minetest.env:get_node({x=pos.x, y=pos.y -2, z=pos.z}).name == "air" then
 		local i = math.random(-45,45) / 100
-		minetest.env:add_entity({x=pos.x + i, y=pos.y - 0.5, z=pos.z + i}, "drippingwater:drop_lava")
+		minetest.env:add_entity({x=pos.x + i, y=pos.y - 0.501, z=pos.z + i}, "drippingwater:drop_lava")
 		end
         end,
 })
