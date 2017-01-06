@@ -182,9 +182,8 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page)
 				"list[current_player;main;0,3.75;9,3;9]"
 		end
 		formspec = "size[10,9.3]"..
+			default.inventory_header..
 			"background[-0.19,-0.25;10.5,9.87;crafting_inventory_creative.png]"..
-			"bgcolor[#080808BB;true]"..
-			"listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
 			"label[-5,-5;"..name.."]"..
 			"image[" .. offset[name] .. ";1.5,1.44;crafting_creative_active.png"..hoch[name].."]"..
 			"image_button[-0.1,0;1,1;"..bg["blocks"].."^crafting_creative_build.png;build;]"..	--build blocks
