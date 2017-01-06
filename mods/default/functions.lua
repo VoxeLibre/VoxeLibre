@@ -107,18 +107,24 @@ minetest.register_abm({
 			for zp=-1,1 do
 				local p = {x=pos.x+xp, y=pos.y, z=pos.z+zp}
 				local n = minetest.get_node(p)
-				drop_attached_node(pos)
-				minetest.dig_node(pos)
-				break
+				-- On verifie si il y a de l'eau
+				if (n.name=="default:water_flowing") then
+						drop_attached_node(pos)
+						minetest.dig_node(pos)
+						break
+				end
 			end
 		end
 		-- cas rare
 		for yp=-1,1 do
 			local p = {x=pos.x, y=pos.y+yp, z=pos.z}
 			local n = minetest.get_node(p)
-			drop_attached_node(pos)
-			minetest.dig_node(pos)
-			break
+			-- On verifie si il y a de l'eau
+			if (n.name=="default:water_flowing") then
+				drop_attached_node(pos)
+				minetest.dig_node(pos)
+				break
+			end
 		end
 		
 	end,
