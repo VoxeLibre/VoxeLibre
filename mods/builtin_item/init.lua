@@ -2,7 +2,8 @@ minetest.register_entity(":__builtin:item", {
 	initial_properties = {
 		hp_max = 1,
 		physical = true,
-		collisionbox = {-0.07,-0.07,-0.07, 0.07,0.07,0.07},
+		collisionbox = {-0.175, -0.175, -0.175, 0.175, 0.175, 0.175},
+		collide_with_objects = false,
 		visual = "sprite",
 		visual_size = {x=0.5, y=0.5},
 		textures = {""},
@@ -12,7 +13,7 @@ minetest.register_entity(":__builtin:item", {
 		timer = 0,
 	},
 	
-	itemstring = '',
+	itemstring = "",
 	physical_state = true,
 
 	set_item = function(self, itemstring)
@@ -35,14 +36,14 @@ minetest.register_entity(":__builtin:item", {
 			textures = {"unknown_item.png"}
 		}
 		if item_texture and item_texture ~= "" then
-			prop.visual = "sprite"
-			prop.textures = {item_texture}
-			prop.visual_size = {x=0.50, y=0.50}
+			prop.visual = "wielditem"
+			prop.textures = {itemname}
+			prop.visual_size = {x=0.25, y=0.25}
 		else
 			prop.visual = "wielditem"
 			prop.textures = {itemname}
-			prop.visual_size = {x=0.20, y=0.20}
-			prop.automatic_rotate = math.pi * 0.25
+			prop.visual_size = {x=0.25, y=0.25}
+			prop.automatic_rotate = math.pi * 0.5
 		end
 		self.object:set_properties(prop)
 	end,
@@ -80,7 +81,7 @@ minetest.register_entity(":__builtin:item", {
 	on_step = function(self, dtime)
 		local time = tonumber(minetest.setting_get("remove_items"))
 		if not time then
-			time = 300
+			time = 600
 		end
 		if not self.timer then
 			self.timer = 0
@@ -92,17 +93,24 @@ minetest.register_entity(":__builtin:item", {
 		
 		local p = self.object:getpos()
 		
-		local name = minetest.env:get_node(p).name
-		if name == "default:lava_flowing" or name == "default:lava_source" then
-			minetest.sound_play("builtin_item_lava", {pos=self.object:getpos()})
+		local name = minetest.get_node(p).name
+		if minetest.registered_nodes[name].damage_per_second > 0 or name == "maptools:igniter" then
+			minetest.sound_play("builtin_item_lava", {pos = self.object:getpos(), gain = 0.5})
 			self.object:remove()
 			return
 		end
+	
+		--[[ if name == "default:water_source" then
+			self.object:setacceleration({x = 0, y = 4, z = 0})
+		else
+			self.object:setacceleration({x = 0, y = -10, z = 0})
+		end
+		--]]
 		
 		if minetest.registered_nodes[name].liquidtype == "flowing" then
 			get_flowing_dir = function(self)
 				local pos = self.object:getpos()
-				local param2 = minetest.env:get_node(pos).param2
+				local param2 = minetest.get_node(pos).param2
 				for i,d in ipairs({-1, 1, -1, 1}) do
 					if i<3 then
 						pos.x = pos.x+d
@@ -110,8 +118,8 @@ minetest.register_entity(":__builtin:item", {
 						pos.z = pos.z+d
 					end
 					
-					local name = minetest.env:get_node(pos).name
-					local par2 = minetest.env:get_node(pos).param2
+					local name = minetest.get_node(pos).name
+					local par2 = minetest.get_node(pos).param2
 					if name == "default:water_flowing" and par2 < param2 then
 						return pos
 					end
@@ -128,15 +136,20 @@ minetest.register_entity(":__builtin:item", {
 			if vec then
 				local v = self.object:getvelocity()
 				if vec and vec.x-p.x > 0 then
-					self.object:setvelocity({x=0.5,y=v.y,z=0})
+					self.object:setacceleration({x = 0, y = 0, z = 0})
+					self.object:setvelocity({x = 1, y = -0.22, z = 0})
 				elseif vec and vec.x-p.x < 0 then
-					self.object:setvelocity({x=-0.5,y=v.y,z=0})
+					self.object:setacceleration({x = 0, y = 0, z = 0})
+					self.object:setvelocity({x = -1, y = -0.22, z = 0})
 				elseif vec and vec.z-p.z > 0 then
-					self.object:setvelocity({x=0,y=v.y,z=0.5})
+					self.object:setacceleration({x = 0, y = 0, z = 0})
+					self.object:setvelocity({x = 0, y = -0.22, z = 1})
 				elseif vec and vec.z-p.z < 0 then
-					self.object:setvelocity({x=0,y=v.y,z=-0.5})
+					self.object:setacceleration({x = 0, y = 0, z = 0})
+					self.object:setvelocity({x = 0, y = -0.22, z = -1})
 				end
-				self.object:setacceleration({x=0, y=-10, z=0})
+
+				self.object:setacceleration({x = 0, y = -10, z = 0})
 				self.physical_state = true
 				self.object:set_properties({
 					physical = true
@@ -146,8 +159,8 @@ minetest.register_entity(":__builtin:item", {
 		end
 		
 		p.y = p.y - 0.3
-		local nn = minetest.env:get_node(p).name
-		-- If node is not registered or node is walkably solid
+		local nn = minetest.get_node(p).name
+		-- If node is not registered or node is walkably solid.
 		if not minetest.registered_nodes[nn] or minetest.registered_nodes[nn].walkable then
 			if self.physical_state then
 				self.object:setvelocity({x=0,y=0,z=0})
@@ -168,9 +181,9 @@ minetest.register_entity(":__builtin:item", {
 			end
 		end
 	end,
-
+	--[[ This causes a duplication glitch if a player walks upon an item and clicks on it at the same time.
 	on_punch = function(self, hitter)
-		if self.itemstring ~= '' then
+		if self.itemstring ~= "" then
 			local left = hitter:get_inventory():add_item("main", self.itemstring)
 			if not left:is_empty() then
 				self.itemstring = left:to_string()
@@ -179,8 +192,9 @@ minetest.register_entity(":__builtin:item", {
 		end
 		self.object:remove()
 	end,
+	--]]
 })
 
 if minetest.setting_get("log_mods") then
-	minetest.log("action", "builtin_item loaded")
+	minetest.log("action", "[builtin_item] loaded.")
 end
