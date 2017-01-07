@@ -387,6 +387,7 @@ minetest.register_node("default:sea_lantern", {
 	},
 	tiles = {"default_sea_lantern.png"},
 	groups = {oddly_breakable_by_hand=3},
+	sounds = default.node_sound_glass_defaults(),
 })
 
 minetest.register_node("default:prismarine", {
@@ -395,6 +396,7 @@ minetest.register_node("default:prismarine", {
 	is_ground_content = false,
 	tiles = {{name="default_prismarine_anim.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=45.0}}},
 	groups = {cracky=3},
+	sounds = default.node_sound_stone_defaults(),
 })
 
 minetest.register_node("default:prismarine_brick", {
@@ -403,6 +405,7 @@ minetest.register_node("default:prismarine_brick", {
 	is_ground_content = false,
 	tiles = {"default_prismarine_bricks.png"},
 	groups = {cracky=2},
+	sounds = default.node_sound_stone_defaults(),
 })
 
 minetest.register_node("default:prismarine_dark", {
@@ -411,6 +414,7 @@ minetest.register_node("default:prismarine_dark", {
 	is_ground_content = false,
 	tiles = {"default_prismarine_dark.png"},
 	groups = {cracky=2},
+	sounds = default.node_sound_stone_defaults(),
 })
 
 
