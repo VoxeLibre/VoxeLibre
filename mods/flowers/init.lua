@@ -204,6 +204,15 @@ minetest.register_node("flowers:fern", {
 		type = "fixed",
 		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
 	},
+	drop = {
+		max_items = 1,
+		items = {
+			{
+				items = {'farming:wheat_seed'},
+				rarity = 24,
+			},
+		}
+	},
 })
 
 function register_large(name, desc, inv_img, bot_img, colr) --change in function

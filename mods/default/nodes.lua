@@ -684,6 +684,15 @@ minetest.register_node("default:junglegrass", {
 		type = "fixed",
 		fixed = {-0.5, -0.5, -0.5, 0.5, -5/16, 0.5},
 	},
+	drop = {
+		max_items = 1,
+		items = {
+			{
+				items = {'farming:wheat_seed'},
+				rarity = 24,
+			},
+		}
+	},
 })
 
 minetest.register_node("default:cactus", {
@@ -1764,9 +1773,8 @@ minetest.register_node("default:grass", {
 		max_items = 1,
 		items = {
 			{
-				-- player will get seed with 1/5 chance
 				items = {'farming:wheat_seed'},
-				rarity = 5,
+				rarity = 24,
 			},
 		}
 	},
