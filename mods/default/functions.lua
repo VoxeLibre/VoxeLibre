@@ -97,6 +97,21 @@ end
 
 -- ABMs
 
+
+local function drop_attached_node(p)
+	local nn = minetest.get_node(p).name
+	minetest.remove_node(p)
+	for _, item in pairs(minetest.get_node_drops(nn, "")) do
+		local pos = {
+			x = p.x + math.random()/2 - 0.25,
+			y = p.y + math.random()/2 - 0.25,
+			z = p.z + math.random()/2 - 0.25,
+		}
+		minetest.add_item(pos, item)
+	end
+end
+
+-- Remove attached nodes next to flowing water
 minetest.register_abm({
 	nodenames = {"group:dig_by_water"},
 	neighbors = {"group:water"},
@@ -107,19 +122,16 @@ minetest.register_abm({
 			for zp=-1,1 do
 				local p = {x=pos.x+xp, y=pos.y, z=pos.z+zp}
 				local n = minetest.get_node(p)
-				-- On verifie si il y a de l'eau
 				if (n.name=="default:water_flowing") then
-						drop_attached_node(pos)
-						minetest.dig_node(pos)
-						break
+					drop_attached_node(pos)
+					minetest.dig_node(pos)
+					break
 				end
 			end
 		end
-		-- cas rare
 		for yp=-1,1 do
 			local p = {x=pos.x, y=pos.y+yp, z=pos.z}
 			local n = minetest.get_node(p)
-			-- On verifie si il y a de l'eau
 			if (n.name=="default:water_flowing") then
 				drop_attached_node(pos)
 				minetest.dig_node(pos)
