@@ -298,7 +298,7 @@ stairs.register_stair_and_slab("redsandstone", "default:redsandstone",
 		"Red Sandstone Slab",
 		default.node_sound_stone_defaults())
 
-stairs.register_stair_and_slab("stonebrick", "default:stonebrick",
+stairs.register_stair_and_slab("stonebrick", "group:stonebrick",
 		{cracky=3},
 		{"default_stone_brick.png"},
 		"Stone Bricks Stair",

@@ -172,7 +172,7 @@ minetest.register_node("default:stonebrick", {
 	description = "Stone Bricks",
 	tiles = {"default_stone_brick.png"},
 	stack_max = 64,
-	groups = {cracky=3, stone=1},
+	groups = {cracky=3, stone=1, stonebrick=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -181,7 +181,7 @@ minetest.register_node("default:stonebrickcarved", {
 	tiles = {"default_stonebrick_carved.png"},
 	is_ground_content = false,
 	stack_max = 64,
-	groups = {cracky=3, stone=1},
+	groups = {cracky=3, stone=1, stonebrick=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -190,7 +190,7 @@ minetest.register_node("default:stonebrickcracked", {
 	tiles = {"default_stonebrick_cracked.png"},
 	is_ground_content = false,
 	stack_max = 64,
-	groups = {cracky=3, stone=1},
+	groups = {cracky=3, stone=1, stonebrick=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -198,7 +198,7 @@ minetest.register_node("default:stonebrickmossy", {
 	description = "Mossy Stone Bricks",
 	tiles = {"default_stonebrick_mossy.png"},
 	stack_max = 64,
-	groups = {cracky=3, stone=1},
+	groups = {cracky=3, stone=1, stonebrick=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
