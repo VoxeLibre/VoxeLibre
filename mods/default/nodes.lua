@@ -418,7 +418,7 @@ minetest.register_node("default:prismarine_dark", {
 
 -- Normal tree --
 minetest.register_node("default:tree", {
-	description = "Wood",
+	description = "Oak Wood",
 	tiles = {"default_tree_top.png", "default_tree_top.png", "default_tree.png"},
 	paramtype2 = "facedir",
 	on_place = minetest.rotate_node,
@@ -941,7 +941,7 @@ minetest.register_node("default:vine", {
 
 
 minetest.register_node("default:wood", {
-	description = "Wood Planks",
+	description = "Oak Wood Planks",
 	tiles = {"default_wood.png"},
 	stack_max = 64,
 	is_ground_content = false,
