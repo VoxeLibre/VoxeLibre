@@ -63,7 +63,7 @@ end
 local function construct(pos)
 	local meta = minetest.get_meta(pos)
 
-	meta:set_string("commands", "tell @nearest Commandblock unconfigured")
+	meta:set_string("commands", "")
 
 	meta:set_string("owner", "")
 
@@ -181,8 +181,14 @@ minetest.register_node("mesecons_commandblock:commandblock_off", {
 	description = "Command Block",
 	tiles = {"jeija_commandblock_off.png"},
 	inventory_image = minetest.inventorycube("jeija_commandblock_off.png"),
-	groups = {cracky=2, mesecon_effector_off=1},
+	groups = {mesecon_effector_off=1},
+	drop = "",
+	diggable = false,
+	can_dig = function() return false end,
+	on_blast = function() end,
+	on_destruct = function() end,
 	on_construct = construct,
+	is_ground_content = false,
 	after_place_node = after_place,
 	on_receive_fields = receive_fields,
 	can_dig = can_dig,
@@ -195,8 +201,13 @@ minetest.register_node("mesecons_commandblock:commandblock_off", {
 minetest.register_node("mesecons_commandblock:commandblock_on", {
 	tiles = {"jeija_commandblock_on.png"},
 	groups = {mesecon_effector_on=1, not_in_creative_inventory=1},
-	drop = "mesecons_commandblock:commandblock_off",
+	drop = "",
+	diggable = false,
+	can_dig = function() return false end,
+	on_blast = function() end,
+	on_destruct = function() end,
 	on_construct = construct,
+	is_ground_content = false,
 	after_place_node = after_place,
 	on_receive_fields = receive_fields,
 	can_dig = can_dig,
