@@ -678,7 +678,7 @@ minetest.register_node("default:junglegrass", {
 	buildable_to = true,
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {snappy=3,flammable=2,attached_node=1,dig_by_water=1},
+	groups = {dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
@@ -1733,7 +1733,7 @@ minetest.register_node("default:dry_shrub", {
 	paramtype = "light",
 	walkable = false,
 	stack_max = 64,
-	groups = {snappy=3,flammable=3,attached_node=1},
+	groups = {dig_immediate=3,flammable=3,attached_node=1,dig_by_water=1},
 	drop = {
 		max_items = 1,
 		items = {
