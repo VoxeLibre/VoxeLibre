@@ -24,12 +24,14 @@ minetest.register_craftitem("default:book", {
 
 minetest.register_craftitem("default:coal_lump", {
 	description = "Coal",
+	groups = { coal=1 },
 	inventory_image = "default_coal_lump.png",
 	stack_max = 64,
 })
 
 minetest.register_craftitem("default:charcoal_lump", {
 	description = "Charcoal",
+	groups = { coal=1 },
 	inventory_image = "default_charcoal_lump.png",
 	stack_max = 64,
 })

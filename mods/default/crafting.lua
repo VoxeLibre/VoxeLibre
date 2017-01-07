@@ -32,7 +32,13 @@ minetest.register_craft({
 	}
 })
 
-
+minetest.register_craft({
+	output = "default:torch 4",
+	recipe = {
+		{ "group:coal" },
+		{ "default:stick" },
+	}
+})
 
 minetest.register_craft({
 	output = 'default:mossycobble',
