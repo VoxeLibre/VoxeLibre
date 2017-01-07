@@ -330,5 +330,13 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = 'default:stonebrickcarved',
+	recipe = {
+		{'stairs:slab_stonebrick'},
+		{'stairs:slab_stonebrick'}
+	}
+})
+
 local time_to_load= os.clock() - init
 print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
