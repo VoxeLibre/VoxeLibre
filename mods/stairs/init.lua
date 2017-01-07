@@ -238,70 +238,70 @@ end
 stairs.register_stair_and_slab("wood", "default:wood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
 		{"default_wood.png"},
-		"Oak Wood Stair",
+		"Oak Wood Stairs",
 		"Oak Wood Slab",
 		default.node_sound_wood_defaults())
 		
 stairs.register_stair_and_slab("junglewood", "default:junglewood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
 		{"default_junglewood.png"},
-		"Jungle Wood Stair",
+		"Jungle Wood Stairs",
 		"Jungle Wood Slab",
 		default.node_sound_wood_defaults())
 		
 stairs.register_stair_and_slab("acaciawood", "default:acaciawood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
 		{"default_acaciawood.png"},
-		"Acacia Wood Stair",
+		"Acacia Wood Stairs",
 		"Acacia Wood Slab",
 		default.node_sound_wood_defaults())
 		
 stairs.register_stair_and_slab("sprucewood", "default:sprucewood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
 		{"default_sprucewood.png"},
-		"Spruce Wood Stair",
+		"Spruce Wood Stairs",
 		"Spruce Wood Slab",
 		default.node_sound_wood_defaults())
 
 stairs.register_stair_and_slab("stone", "default:stone",
 		{cracky=3},
 		{"default_stone.png"},
-		"Stone Stair",
+		"Stone Stairs",
 		"Stone Slab",
 		default.node_sound_stone_defaults())
 
 stairs.register_stair_and_slab("cobble", "default:cobble",
 		{cracky=3},
 		{"default_cobble.png"},
-		"Cobblestone Stair",
+		"Cobblestone Stairs",
 		"Cobblestone Slab",
 		default.node_sound_stone_defaults())
 
 stairs.register_stair_and_slab("brick", "default:brick",
 		{cracky=3},
 		{"default_brick.png"},
-		"Bricks Stair",
+		"Bricks Stairs",
 		"Bricks Slab",
 		default.node_sound_stone_defaults())
 
 stairs.register_stair_and_slab("sandstone", "default:sandstone",
 		{crumbly=2,cracky=2},
 		{"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_normal.png"},
-		"Sandstone Stair",
+		"Sandstone Stairs",
 		"Sandstone Slab",
 		default.node_sound_stone_defaults())
 
 stairs.register_stair_and_slab("redsandstone", "default:redsandstone",
 		{crumbly=2,cracky=2},
 		{"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_normal.png"},
-		"Red Sandstone Stair",
+		"Red Sandstone Stairs",
 		"Red Sandstone Slab",
 		default.node_sound_stone_defaults())
 
 stairs.register_stair_and_slab("stonebrick", "group:stonebrick",
 		{cracky=3},
 		{"default_stone_brick.png"},
-		"Stone Bricks Stair",
+		"Stone Bricks Stairs",
 		"Stone Bricks Slab",
 		default.node_sound_stone_defaults()
 )
@@ -309,7 +309,7 @@ stairs.register_stair_and_slab("stonebrick", "group:stonebrick",
 stairs.register_stair_and_slab("quartzblock", "default:quartz_block",
 	{snappy=1,bendy=2,cracky=1,level=2},
 	{"default_quartz_block_top.png", "default_quartz_block_bottom.png", "default_quartz_block_side.png"},
-	"Quartz Stair",
+	"Quartz Stairs",
 	"Quartz Slab",
 	default.node_sound_stone_defaults()
 )
