@@ -97,7 +97,7 @@ minetest.register_node("default:stone_with_redstone_lit", {
 	light_source = 8,
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {cracky=2},
+	groups = {cracky=2, not_in_creative_inventory=1},
 	drop = {
 		items = {
 			max_items = 1,
