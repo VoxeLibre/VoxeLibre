@@ -1799,6 +1799,7 @@ minetest.register_node("default:glowstone", {
 		}
 	},
 	light_source = 12,
+	sounds = default.node_sound_stone_defaults(),
 })
 
 minetest.register_node("default:sponge", {
