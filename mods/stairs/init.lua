@@ -314,6 +314,14 @@ stairs.register_stair_and_slab("quartzblock", "default:quartz_block",
 	default.node_sound_stone_defaults()
 )
 
+stairs.register_stair_and_slab("purpur_block", "mcl_end:purpur_block",
+		{cracky=3},
+		{"mcl_end_purpur_block.png"},
+		"Purpur Stairs",
+		"Purpur Slab",
+		default.node_sound_stone_defaults()
+)
+
 minetest.register_craft({
 	output = 'default:sandstonecarved',
 	recipe = {
@@ -337,6 +345,16 @@ minetest.register_craft({
 		{'stairs:slab_stonebrick'}
 	}
 })
+
+minetest.register_craft({
+	output = 'mcl_end:purpur_pillar',
+	recipe = {
+		{'stairs:slab_purpur_block'},
+		{'stairs:slab_purpur_block'}
+	}
+})
+
+
 
 local time_to_load= os.clock() - init
 print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
