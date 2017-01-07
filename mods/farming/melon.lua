@@ -222,8 +222,8 @@ minetest.register_craftitem("farming:melon_item", {
 	on_use = minetest.item_eat(2),
 })
 
-minetest.register_craftitem("farming:melon_item_speckled", {
-	description = "Melon Speckled",
+minetest.register_craftitem("farming:speckled_melon", {
+	description = "Glistering Melon",
 	stack_max = 64,
 	inventory_image = "farming_melon_speckled.png",
 })
@@ -292,5 +292,14 @@ minetest.register_craft({
 		{'farming:melon_item', 'farming:melon_item', 'farming:melon_item'},
 		{'farming:melon_item', 'farming:melon_item', 'farming:melon_item'},
 		{'farming:melon_item', 'farming:melon_item', 'farming:melon_item'},
+	}
+})
+
+minetest.register_craft({
+	output = "farming:speckled_melon",
+	recipe = {
+		{'default:gold_nugget', 'default:gold_nugget', 'default:gold_nugget'},
+		{'default:gold_nugget', 'farming:melon_item', 'default:gold_nugget'},
+		{'default:gold_nugget', 'default:gold_nugget', 'default:gold_nugget'},
 	}
 })
