@@ -125,7 +125,7 @@ minetest.register_node("farming:wheat", {
 farming:add_plant("farming:wheat", {"farming:wheat_1", "farming:wheat_2", "farming:wheat_3"}, 50, 20)
 
 minetest.register_craftitem("farming:wheat_harvested", {
-	description = "Harvested Wheat",
+	description = "Wheat",
 	inventory_image = "farming_wheat_harvested.png",
 })
 
