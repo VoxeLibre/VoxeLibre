@@ -202,6 +202,57 @@ minetest.register_node("default:stonebrickmossy", {
 	sounds = default.node_sound_stone_defaults(),
 })
 
+minetest.register_node("default:granite", {
+	description = "Granite",
+	tiles = {"default_granite.png"},
+	is_ground_content = true,
+	stack_max = 64,
+	groups = {cracky=3, stone=1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_node("default:granite_smooth", {
+	description = "Polished Granite",
+	tiles = {"default_granite_smooth.png"},
+	stack_max = 64,
+	groups = {cracky=3, stone=1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_node("default:andesite", {
+	description = "Andesite",
+	tiles = {"default_andesite.png"},
+	is_ground_content = true,
+	stack_max = 64,
+	groups = {cracky=3, stone=1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_node("default:andesite_smooth", {
+	description = "Polished Andesite",
+	tiles = {"default_andesite_smooth.png"},
+	stack_max = 64,
+	groups = {cracky=3, stone=1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_node("default:diorite", {
+	description = "Diorite",
+	tiles = {"default_diorite.png"},
+	is_ground_content = true,
+	stack_max = 64,
+	groups = {cracky=3, stone=1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
+minetest.register_node("default:diorite_smooth", {
+	description = "Polished Diorite",
+	tiles = {"default_diorite_smooth.png"},
+	stack_max = 64,
+	groups = {cracky=3, stone=1},
+	sounds = default.node_sound_stone_defaults(),
+})
+
 minetest.register_node("default:dirt_with_grass", {
 	description = "Grass Block",
 	tiles = {"default_grass.png", "default_dirt.png", "default_dirt.png^default_grass_side.png"},

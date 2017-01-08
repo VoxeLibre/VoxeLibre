@@ -79,6 +79,50 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = 'default:granite_smooth 4',
+	recipe = {
+		{'default:granite', 'default:granite'},
+		{'default:granite', 'default:granite'}
+	},
+})
+
+minetest.register_craft({
+	output = 'default:andesite_smooth 4',
+	recipe = {
+		{'default:andesite', 'default:andesite'},
+		{'default:andesite', 'default:andesite'}
+	},
+})
+
+minetest.register_craft({
+	output = 'default:diorite_smooth 4',
+	recipe = {
+		{'default:diorite', 'default:diorite'},
+		{'default:diorite', 'default:diorite'}
+	},
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = 'default:granite',
+	recipe = {'default:diorite', 'default:quartz_crystal'},
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = 'default:andesite 2',
+	recipe = {'default:diorite', 'default:cobble'},
+})
+
+minetest.register_craft({
+	output = 'default:diorite 2',
+	recipe = {
+		{'default:cobble', 'default:quartz_crystal'},
+		{'default:quartz_crystal', 'default:cobble'},
+	}
+})
+
+minetest.register_craft({
 	output = 'default:stick 4',
 	recipe = {
 		{'group:wood'},
