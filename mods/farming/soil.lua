@@ -7,7 +7,8 @@ minetest.register_node("farming:soil", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, 0.4, 0.5},
+			-- 15/16 of the normal height
+			{-0.5, -0.5, -0.5, 0.5, 0.4375, 0.5},
 		}
 	},
 	groups = {crumbly=3, not_in_creative_inventory=1,soil=2},
@@ -23,7 +24,7 @@ minetest.register_node("farming:soil_wet", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, 0.4, 0.5}, 
+			{-0.5, -0.5, -0.5, 0.5, 0.4375, 0.5},
 		}
 	},
 	groups = {crumbly=3, not_in_creative_inventory=1,soil=3},
