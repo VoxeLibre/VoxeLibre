@@ -1979,7 +1979,7 @@ minetest.register_node("default:packed_ice", {
 	paramtype = "light",
 	use_texture_alpha = true,
 	stack_max = 64,
-	groups = {cracky=2},
+	groups = {cracky=3,oddly_breakable_by_hand=2},
 	drop = "",
 	sounds = default.node_sound_glass_defaults(),
 })
