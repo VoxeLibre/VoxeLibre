@@ -1971,7 +1971,7 @@ minetest.register_node("default:ice", {
 	sounds = default.node_sound_glass_defaults(),
 })
 
-minetest.register_node("default:packedice", {
+minetest.register_node("default:packed_ice", {
 	description = "Packed Ice",
 	drawtype = "glasslike",
 	tiles = {"default_ice_packed.png"},
@@ -1983,6 +1983,59 @@ minetest.register_node("default:packedice", {
 	drop = "",
 	sounds = default.node_sound_glass_defaults(),
 })
+
+-- Frosted Ice (4 nodes)
+for i=0,3 do
+	local ice = {}
+	ice.increase_age = function(pos, ice_near, first_melt)
+		-- Increase age of frosted age or turn to water source if too old
+		local nn = minetest.get_node(pos).name
+		local age = tonumber(string.sub(nn, -1))
+		if age == nil then return end
+		local nextnode
+		if age < 3 then
+			nextnode = "default:frosted_ice_"..(age+1)
+		else
+			nextnode = "default:water_source"
+		end
+		minetest.swap_node(pos, { name = nextnode })
+		-- Spread aging to neighbor blocks, but not recursively
+		if first_melt and i == 3 then
+			for j=1, #ice_near do
+				ice.increase_age(ice_near[j], false)
+			end
+		end
+	end
+	minetest.register_node("default:frosted_ice_"..i, {
+		description = "Frosted Ice",
+		drawtype = "glasslike",
+		tiles = {"default_frosted_ice_"..i..".png"},
+		is_ground_content = false,
+		paramtype = "light",
+		use_texture_alpha = true,
+		stack_max = 64,
+		groups = {cracky=2, frosted_ice=1},
+		drop = "",
+		sounds = default.node_sound_glass_defaults(),
+		on_construct = function(pos)
+			local timer = minetest.get_node_timer(pos)
+			timer:start(1.5)
+		end,
+		on_timer = function(pos, elapsed)
+			local ice_near = minetest.find_nodes_in_area(
+				{ x = pos.x - 1, y = pos.y - 1, z = pos.z - 1 },
+				{ x = pos.x + 1, y = pos.y + 1, z = pos.z + 1 },
+				{ "group:frosted_ice" }
+			)
+			-- Check condition to increase age
+			if (#ice_near < 4 and minetest.get_node_light(pos) > (11 - i)) or math.random(1, 3) == 1 then
+				ice.increase_age(pos, ice_near, true)
+			end
+			local timer = minetest.get_node_timer(pos)
+			timer:start(1.5)
+		end,
+	})
+end
 
 minetest.register_node("default:snow", {
 	description = "Top Snow",
