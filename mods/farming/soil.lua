@@ -1,5 +1,6 @@
 minetest.register_node("farming:soil", {
 	tiles = {"farming_soil.png", "default_dirt.png", "default_dirt.png", "default_dirt.png", "default_dirt.png", "default_dirt.png"},
+	description = "Farmland",
 	drop = "default:dirt",
 	drawtype = "nodebox",
 	paramtype = "light",
@@ -15,6 +16,7 @@ minetest.register_node("farming:soil", {
 
 minetest.register_node("farming:soil_wet", {
 	tiles = {"farming_soil_wet.png", "default_dirt.png", "default_dirt.png", "default_dirt.png", "default_dirt.png", "default_dirt.png"},
+	description = "Hydrated Farmland",
 	drop = "default:dirt",
 	drawtype = "nodebox",
 	paramtype = "light",
