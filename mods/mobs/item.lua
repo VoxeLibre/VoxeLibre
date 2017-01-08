@@ -1,8 +1,8 @@
--------------------
--- Oeuf de spawn --
--------------------
+----------------
+-- Spawn eggs --
+----------------
 minetest.register_craftitem("mobs:sheep", {
-	description = "Sheep",
+	description = "Spawn Sheep",
 	inventory_image = "spawn_sheep.png",
 	wield_scale = {x = 1.25, y = 1.25, z = 2.5},
 	groups = {},
@@ -18,7 +18,7 @@ minetest.register_craftitem("mobs:sheep", {
 })
 
 minetest.register_craftitem("mobs:slime", {
-	description = "slime",
+	description = "Spawn Slime",
 	inventory_image = "spawn_slime.png",
 	wield_scale = {x = 1.25, y = 1.25, z = 2.5},
 	groups = {},
@@ -34,7 +34,7 @@ minetest.register_craftitem("mobs:slime", {
 })
 
 minetest.register_craftitem("mobs:zombie", {
-	description = "Zombie",
+	description = "Spawn Zombie",
 	inventory_image = "spawn_zombie.png",
 	wield_scale = {x = 1.25, y = 1.25, z = 2.5},
 	groups = {},
@@ -51,7 +51,7 @@ minetest.register_craftitem("mobs:zombie", {
 
 
 minetest.register_craftitem("mobs:spider", {
-	description = "Spider",
+	description = "Spawn Spider",
 	inventory_image = "spawn_spider.png",
 	wield_scale = {x = 1.25, y = 1.25, z = 2.5},
 	groups = {},
@@ -68,7 +68,7 @@ minetest.register_craftitem("mobs:spider", {
 
 
 minetest.register_craftitem("mobs:creeper", {
-	description = "Creeper",
+	description = "Spawn Creeper",
 	inventory_image = "spawn_creeper.png",
 	wield_scale = {x = 1.25, y = 1.25, z = 2.5},
 	groups = {},
@@ -84,7 +84,7 @@ minetest.register_craftitem("mobs:creeper", {
 })
 
 minetest.register_craftitem("mobs:herobrine", {
-	description = "herobrine",
+	description = "Spawn Herobrine",
 	inventory_image = "spawn_herobrine.png",
 	groups = {not_in_creative_inventory=1},
 	wield_scale = {x = 1.25, y = 1.25, z = 2.5},
@@ -103,7 +103,7 @@ minetest.register_craftitem("mobs:herobrine", {
 ---------------------
 
 minetest.register_craftitem("mobs:rotten_flesh", {
-	description = "rotten flesh",
+	description = "Rotten Flesh",
 	inventory_image = "rotten_flesh.png",
 	on_use = minetest.item_eat(2),
 })
