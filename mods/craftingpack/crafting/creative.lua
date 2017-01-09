@@ -278,7 +278,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local size = string.len(formspec)
 	local marker = string.sub(formspec,size-2)
 	marker = string.sub(marker,1)
-	local start_i
 	if marker ~= nil and marker == "p" then
 		local page = string.sub(formspec,size-1)
 		--minetest.chat_send_all(page)
@@ -287,11 +286,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	start_i = tonumber(start_i) or 0
 	if fields.creative_prev then
 		start_i = start_i - 9*5
-		page = tmp_page
 	end
 	if fields.creative_next then
 		start_i = start_i + 9*5
-		page = tmp_page
 	end
 	if start_i < 0 then
 		start_i = start_i + 9*5
