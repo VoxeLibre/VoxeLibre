@@ -49,8 +49,8 @@ function set_inv(filter, player)
 					if def.walkable == false or def.drawtype == "plantlike" or def.drawtype == "allfaces_optional" then--def.groups. == true then
 						table.insert(creative_list, name)
 					end
-				elseif filter == "#mese" then
-					if string.find(string.lower(def.name), "mese") or string.find(string.lower(def.description), "mese") then
+				elseif filter == "#redstone" then
+					if string.find(string.lower(def.name), "redstone") or string.find(string.lower(def.description), "redstone") then
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#rail" then
@@ -58,7 +58,7 @@ function set_inv(filter, player)
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#misc" then
-					if def.drawtype == nil and def.tool_capabilities == nil and not string.find(string.lower(def.description), "ingot") and not string.find(string.lower(def.description), "lump") and not string.find(string.lower(def.description), "dye") and not string.find(string.lower(def.name), "diamond") and not string.find(string.lower(def.name), "mese") and not string.find(string.lower(def.name), "obsidian") and not string.find(string.lower(def.description), "clay") then
+					if def.drawtype == nil and def.tool_capabilities == nil and not string.find(string.lower(def.description), "ingot") and not string.find(string.lower(def.description), "lump") and not string.find(string.lower(def.description), "dye") and not string.find(string.lower(def.name), "diamond") and not string.find(string.lower(def.name), "redstone") and not string.find(string.lower(def.name), "obsidian") and not string.find(string.lower(def.description), "clay") then
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#food" then
@@ -74,7 +74,7 @@ function set_inv(filter, player)
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#matr" then
-					if def.drawtype == nil and def.tool_capabilities == nil and (string.find(string.lower(def.description), "ingot") or string.find(string.lower(def.description), "lump") or string.find(string.lower(def.description), "dye") or string.find(string.lower(def.name), "diamond") or string.find(string.lower(def.name), "mese") or string.find(string.lower(def.name), "obsidian") or string.find(string.lower(def.description), "clay") or string.find(string.lower(def.description), "stick") or string.find(string.lower(def.description), "flint") or string.find(string.lower(def.description), "seed")) then
+					if def.drawtype == nil and def.tool_capabilities == nil and (string.find(string.lower(def.description), "ingot") or string.find(string.lower(def.description), "lump") or string.find(string.lower(def.description), "dye") or string.find(string.lower(def.name), "diamond") or string.find(string.lower(def.name), "redstone") or string.find(string.lower(def.name), "obsidian") or string.find(string.lower(def.description), "clay") or string.find(string.lower(def.description), "stick") or string.find(string.lower(def.description), "flint") or string.find(string.lower(def.description), "seed")) then
 						table.insert(creative_list, name)
 					end
 				elseif filter == "all" then
@@ -120,7 +120,7 @@ local hoch = {}
 local bg = {}
 offset["blocks"] = "-0.29,-0.25"
 offset["deco"] = "0.98,-0.25"
-offset["mese"] = "2.23,-0.25"
+offset["redstone"] = "2.23,-0.25"
 offset["rail"] = "3.495,-0.25"
 offset["misc"] = "4.75,-0.25"
 offset["nix"] = "8.99,-0.25"
@@ -133,7 +133,7 @@ offset["inv"] = "8.99,8.12"
 
 hoch["blocks"] = ""
 hoch["deco"] = ""
-hoch["mese"] = ""
+hoch["redstone"] = ""
 hoch["rail"] = ""
 hoch["misc"] = ""
 hoch["nix"] = ""
@@ -149,7 +149,7 @@ local dark_bg = "crafting_creative_bg_dark.png"
 local function reset_menu_item_bg()
 	bg["blocks"] = dark_bg 
 	bg["deco"] = dark_bg 
-	bg["mese"] = dark_bg 
+	bg["redstone"] = dark_bg 
 	bg["rail"] = dark_bg 
 	bg["misc"] = dark_bg 
 	bg["nix"] = dark_bg 
@@ -188,7 +188,7 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page)
 			"image[" .. offset[name] .. ";1.5,1.44;crafting_creative_active.png"..hoch[name].."]"..
 			"image_button[-0.1,0;1,1;"..bg["blocks"].."^crafting_creative_build.png;build;]"..	--build blocks
 			"image_button[1.15,0;1,1;"..bg["deco"].."^crafting_creative_deko.png;deco;]"..	--decoration blocks
-			"image_button[2.415,0;1,1;"..bg["mese"].."^crafting_creative_mese.png;mese;]"..	--redstone
+			"image_button[2.415,0;1,1;"..bg["redstone"].."^crafting_creative_redstone.png;redstone;]"..	--redstone
 			"image_button[3.693,0;1,1;"..bg["rail"].."^crafting_creative_rail.png;rail;]"..	--transportation
 			"image_button[4.93,0;1,1;"..bg["misc"].."^crafting_creative_misc.png;misc;]"..	--miscellaneous
 			"image_button[9.19,0;1,1;"..bg["nix"].."^crafting_creative_all.png;default;]"..	--search
@@ -236,9 +236,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		set_inv("#deco",player)
 		page = "deco"
 	end
-	if fields.mese then		
-		set_inv("#mese",player)
-		page = "mese"
+	if fields.redstone then		
+		set_inv("#redstone",player)
+		page = "redstone"
 	end
 	if fields.rail then		
 		set_inv("#rail",player)
@@ -278,6 +278,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local size = string.len(formspec)
 	local marker = string.sub(formspec,size-2)
 	marker = string.sub(marker,1)
+	local start_i
 	if marker ~= nil and marker == "p" then
 		local page = string.sub(formspec,size-1)
 		--minetest.chat_send_all(page)
