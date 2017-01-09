@@ -12,9 +12,15 @@ minetest.register_craft({
 
 
 --Watch tool
-watch.registra_item("watch:watch",watch.images_a[3],true)
+watch.registra_item("watch:watch",watch.images[3],true)
 
 --Faces
-for a=0,11,1 do
-  watch.registra_item("watch:watch_a"..tostring(a),watch.images_a[a+1],false)
+for a=0,63,1 do
+	local b = a
+	if b > 31 then
+		b = b - 32
+	else
+		b = b + 32
+	end
+	watch.registra_item("watch:watch_"..tostring(a),watch.images[b+1],false)
 end
