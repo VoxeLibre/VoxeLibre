@@ -55,7 +55,7 @@ minetest.register_craft({
 	recipe = {
 		{'default:glass', 'default:glass', 'default:glass'},
 		{'default:glass', 'default:glass', 'default:glass'},
-		{'mesecons:redstone_dust', 'mesecons:redstone_dust', 'mesecons:redstone_dust'},
+		{'mesecons:redstone', 'mesecons:redstone', 'mesecons:redstone'},
 	}
 })
 
@@ -142,7 +142,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
 minetest.register_craft({
 	output = '"mesecons_solarpanel:solar_panel_inverted_off" 1',
 	recipe = {
-		{'mesecons:redstone_dust', 'mesecons:redstone_dust', 'mesecons:redstone_dust'},
+		{'mesecons:redstone', 'mesecons:redstone', 'mesecons:redstone'},
 		{'default:glass', 'default:glass', 'default:glass'},
 		{'default:glass', 'default:glass', 'default:glass'},
 	}

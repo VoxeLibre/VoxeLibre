@@ -27,7 +27,7 @@ minetest.register_craft({
 	output = '"mesecons_noteblock:noteblock" 1',
 	recipe = {
 		{"group:wood", "group:wood", "group:wood"},
-		{"group:wood", "mesecons:redstone_dust", "group:wood"},
+		{"group:wood", "mesecons:redstone", "group:wood"},
 		{"group:wood", "group:wood", "group:wood"},
 	}
 })

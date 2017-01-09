@@ -78,7 +78,7 @@ minetest.register_craft({
 	groups = {not_in_creative_inventory=1},
 	recipe = {
 		{'', 'default:gold_ingot', ''},
-		{'default:gold_ingot', 'mesecons:redstone_dust', 'default:gold_ingot'},
+		{'default:gold_ingot', 'mesecons:redstone', 'default:gold_ingot'},
 		{'', 'default:gold_ingot', ''}
 	}
 })

@@ -72,11 +72,11 @@ minetest.register_node("default:stone_with_redstone", {
 		items = {
 			max_items = 1,
 			{
-				items = {"mesecons:redstone_dust 4"},
+				items = {"mesecons:redstone 4"},
 				rarity = 2,
 			},
 			{
-				items = {"mesecons:redstone_dust 5"},
+				items = {"mesecons:redstone 5"},
 			},
 		}
 	},
@@ -101,11 +101,11 @@ minetest.register_node("default:stone_with_redstone_lit", {
 		items = {
 			max_items = 1,
 			{
-				items = {"mesecons:redstone_dust 4"},
+				items = {"mesecons:redstone 4"},
 				rarity = 2,
 			},
 			{
-				items = {"mesecons:redstone_dust 5"},
+				items = {"mesecons:redstone 5"},
 			},
 		}
 	},

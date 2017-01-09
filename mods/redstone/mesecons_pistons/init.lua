@@ -751,7 +751,7 @@ minetest.register_craft({
 	recipe = {
 		{"group:wood", "group:wood", "group:wood"},
 		{"default:cobble", "default:steel_ingot", "default:cobble"},
-		{"default:cobble", "mesecons:redstone_dust", "default:cobble"},
+		{"default:cobble", "mesecons:redstone", "default:cobble"},
 	}
 })
 
