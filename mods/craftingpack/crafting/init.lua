@@ -130,8 +130,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		local size = string.len(formspec)
 		local marker = string.sub(formspec,size-2)
 		if marker == "inv" or marker == "wob" then
-			set_inventory(player)
 			drop_fields(player,"craft")			
+			set_inventory(player)
 		end
 	end
 end)
