@@ -352,6 +352,15 @@ doors:register_door("doors:door_dark_oak", {
 	tiles_top = {"door_dark_oak_a.png", "door_brown.png"},
 })
 
+minetest.register_craft({
+	output = "doors:door_dark_oak 3",
+	recipe = {
+		{"default:darkwood", "default:darkwood"},
+		{"default:darkwood", "default:darkwood"},
+		{"default:darkwood", "default:darkwood"},
+	}
+})
+
 --- jungle Door --
 doors:register_door("doors:door_jungle", {
 	description = "Jungle Door",

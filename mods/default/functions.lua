@@ -604,6 +604,8 @@ minetest.register_abm({
 --------------------------
 -- Try generate tree   ---
 --------------------------
+-- TODO: Acacia, dark oak, spruce, birch
+
 -- Normal tree
 minetest.register_abm({
 	nodenames = {"default:sapling"},

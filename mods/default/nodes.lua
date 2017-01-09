@@ -471,7 +471,7 @@ minetest.register_node("default:prismarine_dark", {
 
 
 
--- Normal tree --
+-- Oak tree --
 minetest.register_node("default:tree", {
 	description = "Oak Wood",
 	tiles = {"default_tree_top.png", "default_tree_top.png", "default_tree.png"},
@@ -520,6 +520,56 @@ minetest.register_node("default:leaves", {
 				-- player will get apple with 1/200 chance
 				items = {'default:apple'},
 				rarity = 200,
+			},
+		}
+	},
+	sounds = default.node_sound_leaves_defaults(),
+})
+
+-- Dark oak tree --
+minetest.register_node("default:dark_tree", {
+	description = "Dark Oak Wood",
+	tiles = {"default_log_big_oak_top.png", "default_log_big_oak_top.png", "default_log_big_oak.png"},
+	paramtype2 = "facedir",
+	on_place = minetest.rotate_node,
+	stack_max = 64,
+	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2},
+	sounds = default.node_sound_wood_defaults(),
+})
+
+minetest.register_node("default:darksapling", {
+	description = "Dark Oak Sapling",
+	drawtype = "plantlike",
+	visual_scale = 1.0,
+	tiles = {"default_sapling_big_oak.png"},
+	inventory_image = "default_sapling_big_oak.png",
+	wield_image = "default_sapling_big_oak.png",
+	paramtype = "light",
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
+	},
+	stack_max = 64,
+	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1},
+	sounds = default.node_sound_defaults(),
+})
+
+minetest.register_node("default:darkleaves", {
+	description = "Dark Oak Leaves",
+	drawtype = "allfaces_optional",
+	visual_scale = 1.3,
+	tiles = {"default_leaves_big_oak.png"},
+	paramtype = "light",
+	stack_max = 64,
+	groups = {snappy=3, leafdecay=3, flammable=2, leaves=1},
+	drop = {
+		max_items = 1,
+		items = {
+			{
+				-- player will get sapling with 1/20 chance
+				items = {'default:darksapling'},
+				rarity = 20,
 			},
 		}
 	},
@@ -1007,6 +1057,15 @@ minetest.register_node("default:vine", {
 minetest.register_node("default:wood", {
 	description = "Oak Wood Planks",
 	tiles = {"default_wood.png"},
+	stack_max = 64,
+	is_ground_content = false,
+	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
+	sounds = default.node_sound_wood_defaults(),
+})
+
+minetest.register_node("default:darkwood", {
+	description = "Dark Oak Wood Planks",
+	tiles = {"default_planks_big_oak.png"},
 	stack_max = 64,
 	is_ground_content = false,
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},

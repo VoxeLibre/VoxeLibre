@@ -12,6 +12,13 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = 'default:darkwood 4',
+	recipe = {
+		{'default:darktree'},
+	}
+})
+
+minetest.register_craft({
 	output = 'default:junglewood 4',
 	recipe = {
 		{'default:jungletree'},
