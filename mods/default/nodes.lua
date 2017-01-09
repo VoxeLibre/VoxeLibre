@@ -516,7 +516,7 @@ minetest.register_node("default:leaves", {
 				items = {'default:sapling'},
 				rarity = 20,
 			},
-						{
+			{
 				-- player will get apple with 1/200 chance
 				items = {'default:apple'},
 				rarity = 200,
@@ -570,6 +570,11 @@ minetest.register_node("default:darkleaves", {
 				-- player will get sapling with 1/20 chance
 				items = {'default:darksapling'},
 				rarity = 20,
+			},
+			{
+				-- player will get apple with 1/200 chance
+				items = {'default:apple'},
+				rarity = 200,
 			},
 		}
 	},
