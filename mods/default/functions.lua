@@ -764,6 +764,9 @@ function default.node_sound_stone_defaults(table)
 	return table
 end
 
+-- TODO: Maybe add custom metal sounds
+default.node_sound_metal_defaults = default.node_sound_stone_defaults
+
 function default.node_sound_dirt_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or
