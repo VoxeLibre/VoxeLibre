@@ -21,8 +21,8 @@ minetest.register_globalstep(function(dtime)
 			local angle_north = math.deg(math.atan2(spawn.x - pos.x, spawn.z - pos.z))
 			if angle_north < 0 then angle_north = angle_north + 360 end
 			angle_dir = 90 - math.deg(dir)
-			local angle_relative = (angle_north - angle_dir) % 360
-			local compass_image = math.floor((angle_relative/30) + 0.5)%12
+			local angle_relative = (angle_north - angle_dir + 180) % 360
+			local compass_image = math.floor((angle_relative/11.25) + 0.5)%32
 
 			for j,stack in ipairs(player:get_inventory():get_list("main")) do
 				if minetest.get_item_group(stack:get_name(), "compass") ~= 0 and
@@ -34,20 +34,10 @@ minetest.register_globalstep(function(dtime)
 	end
 end)
 
-local images = {
-	"compass_0.png",
-	"compass_1.png",
-	"compass_2.png",
-	"compass_3.png",
-	"compass_4.png",
-	"compass_5.png",
-	"compass_6.png",
-	"compass_7.png",
-	"compass_8.png",
-	"compass_9.png",
-	"compass_10.png",
-	"compass_11.png",
-}
+local images = {}
+for frame=0,31 do
+	table.insert(images, "compass_compass.png^[verticalframe:32:"..frame)
+end
 
 local i
 for i,img in ipairs(images) do
