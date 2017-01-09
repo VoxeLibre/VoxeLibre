@@ -37,12 +37,18 @@ function watch.register_item(name, image, creative)
 	})
 end
 
+-- This timer makes sure the clocks get updated from time to time regardless of time_speed,
+-- just in case some clocks in the world go wrong
+local force_clock_update_timer = 0
+
 minetest.register_globalstep(function(dtime)
 	local now = watch.get_clock_frame()
+	force_clock_update_timer = force_clock_update_timer + dtime
 
-	if watch.old_time == now then
+	if watch.old_time == now and force_clock_update_timer < 60 then
 		return
 	end
+	force_clock_update_timer = 0
 
 	watch.old_time = now
 
@@ -57,6 +63,14 @@ minetest.register_globalstep(function(dtime)
 		end
 	end
 end)
+
+-- Immediately set correct clock time after crafting
+minetest.register_on_craft(function(itemstack)
+	if itemstack:get_name() == "mcl_clock:clock" then
+		itemstack:set_name("mcl_clock:clock_"..watch.get_clock_frame())
+	end
+end)
+
 -- Clock recipe
 minetest.register_craft({
 	description = "Clock",
