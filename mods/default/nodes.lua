@@ -27,7 +27,6 @@ minetest.register_node("default:stone", {
 	stack_max = 64,
 	groups = {cracky=3, stone=1},
 	drop = 'default:cobble',
-	legacy_mineral = true,
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -1013,7 +1012,6 @@ minetest.register_node("default:ladder", {
 	},
 	stack_max = 64,
 	groups = {choppy=2,oddly_breakable_by_hand=3,flammable=2},
-	legacy_wallmounted = true,
 	sounds = default.node_sound_wood_defaults(),
 })
 
@@ -1033,7 +1031,6 @@ minetest.register_node("default:vine", {
 	},
 	stack_max = 64,
 	groups = {choppy=2,oddly_breakable_by_hand=3,flammable=2},
-	legacy_wallmounted = true,
 	sounds = default.node_sound_leaves_defaults(),
 	drop = "",
 	after_dig_node = function(pos, oldnode, oldmetadata, user)
@@ -1265,7 +1262,6 @@ minetest.register_node("default:chest", {
 	paramtype2 = "facedir",
 	stack_max = 64,
 	groups = {choppy=2,oddly_breakable_by_hand=2},
-	legacy_facedir_simple = true,
 	is_ground_content = false,
 	sounds = default.node_sound_wood_defaults(),
 	on_construct = function(pos)
@@ -1511,7 +1507,6 @@ minetest.register_node("default:furnace", {
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {cracky=2},
-	legacy_facedir_simple = true,
 	sounds = default.node_sound_stone_defaults(),
 	on_construct = function(pos)
 		local meta = minetest.env:get_meta(pos)
@@ -1582,7 +1577,6 @@ minetest.register_node("default:furnace_active", {
 	light_source = 12,
 	drop = "default:furnace",
 	groups = {cracky=2, not_in_creative_inventory=1},
-	legacy_facedir_simple = true,
 	sounds = default.node_sound_stone_defaults(),
 	on_construct = function(pos)
 		local meta = minetest.env:get_meta(pos)
