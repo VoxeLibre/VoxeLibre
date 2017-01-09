@@ -2070,6 +2070,10 @@ for i=0,3 do
 			end
 		end
 	end
+	local creative = 1
+	if i == 0 then
+		creative = 0
+	end
 	minetest.register_node("default:frosted_ice_"..i, {
 		description = "Frosted Ice",
 		drawtype = "glasslike",
@@ -2078,7 +2082,7 @@ for i=0,3 do
 		paramtype = "light",
 		use_texture_alpha = true,
 		stack_max = 64,
-		groups = {cracky=2, frosted_ice=1},
+		groups = {cracky=2, frosted_ice=1, not_in_creative_inventory=creative},
 		drop = "",
 		sounds = default.node_sound_glass_defaults(),
 		on_construct = function(pos)
