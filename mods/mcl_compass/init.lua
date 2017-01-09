@@ -39,10 +39,10 @@ for frame=0,31 do
 	table.insert(images, "mcl_compass_compass.png^[verticalframe:32:"..frame)
 end
 
-local i
+local stereotype_frame = 18
 for i,img in ipairs(images) do
 	local inv = 1
-	if i == 1 then
+	if i == stereotype_frame then
 		inv = 0
 	end
 	minetest.register_tool("mcl_compass:"..(i-1), {
@@ -55,10 +55,12 @@ for i,img in ipairs(images) do
 end
 
 minetest.register_craft({
-	output = 'mcl_compass:1',
+	output = 'mcl_compass:'..stereotype_frame,
 	recipe = {
 		{'', 'default:steel_ingot', ''},
 		{'default:steel_ingot', 'mesecons:redstone_dust', 'default:steel_ingot'},
 		{'', 'default:steel_ingot', ''}
 	}
 })
+
+minetest.register_alias("mcl_compass:compass", "mcl_compass:"..stereotype_frame)
