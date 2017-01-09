@@ -16,11 +16,11 @@ minetest.register_globalstep(function(dtime)
 			local spawn = beds_player_spawns[player:get_player_name()] or
 			              minetest.setting_get("static_spawnpoint") or
 			              {x=0,y=0,z=0}
-			pos = player:getpos()
-			dir = player:get_look_yaw()
+			local pos = player:getpos()
+			local dir = player:get_look_yaw()
 			local angle_north = math.deg(math.atan2(spawn.x - pos.x, spawn.z - pos.z))
 			if angle_north < 0 then angle_north = angle_north + 360 end
-			angle_dir = 90 - math.deg(dir)
+			local angle_dir = 90 - math.deg(dir)
 			local angle_relative = (angle_north - angle_dir + 180) % 360
 			local compass_image = math.floor((angle_relative/11.25) + 0.5)%32
 
