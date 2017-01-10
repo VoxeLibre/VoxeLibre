@@ -7,7 +7,7 @@ minetest.register_node("farming:mushroom_brown", {
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
-	groups = {dig_immediate=3,flammable=2,mushroom=1,attached_node=1},
+	groups = {dig_immediate=3,flammable=2,mushroom=1,attached_node=1,dig_by_water=1},
 	sounds = default.node_sound_leaves_defaults(),
 	light_source = 1,
 	selection_box = {
@@ -25,7 +25,7 @@ minetest.register_node("farming:mushroom_red", {
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
-	groups = {dig_immediate=3,flammable=2,mushroom=1,attached_node=1},
+	groups = {dig_immediate=3,flammable=2,mushroom=1,attached_node=1,dig_by_water=1},
 	sounds = default.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
