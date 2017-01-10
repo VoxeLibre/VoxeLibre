@@ -270,7 +270,7 @@ minetest.register_node("default:mycelium", {
 	is_ground_content = true,
 	stack_max = 64,
 	-- TODO: Add mushroom soil group
-	groups = {crumbly=3, cultivatable=2},
+	groups = {crumbly=3},
 	drop = 'default:dirt',
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
