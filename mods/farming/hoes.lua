@@ -5,7 +5,7 @@ local function create_soil(pos, inv)
 	local node = minetest.get_node(pos)
 	local name = node.name
 	local above = minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z})
-	if name == "default:dirt" or name == "default:dirt_with_grass" then
+	if name == "default:dirt" or name == "default:dirt_with_grass" or name == "default:mycelium" then
 		if above.name == "air" then
 			node.name = "farming:soil"
 			minetest.set_node(pos, node)

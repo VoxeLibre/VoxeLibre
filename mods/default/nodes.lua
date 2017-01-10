@@ -264,6 +264,18 @@ minetest.register_node("default:dirt_with_grass", {
 	}),
 })
 
+minetest.register_node("default:mycelium", {
+	description = "Mycelium",
+	tiles = {"default_mycelium_top.png", "default_dirt.png", "default_mycelium_side.png"},
+	is_ground_content = true,
+	stack_max = 64,
+	groups = {crumbly=3, soil=1},
+	drop = 'default:dirt',
+	sounds = default.node_sound_dirt_defaults({
+		footstep = {name="default_grass_footstep", gain=0.4},
+	}),
+})
+
 minetest.register_node("default:dirt_with_snow", {
 	description = "Dirt with Snow",
 	tiles = {"default_snow.png", "default_dirt.png", "default_dirt.png^default_snow_side.png"},
