@@ -390,7 +390,8 @@ minetest.register_node("default:redsandstonecarved", {
 ---
 
 minetest.register_node("default:clay", {
-	description = "Clay",
+	-- Original name: Clay
+	description = "Block of Clay",
 	tiles = {"default_clay.png"},
 	is_ground_content = true,
 	stack_max = 64,
