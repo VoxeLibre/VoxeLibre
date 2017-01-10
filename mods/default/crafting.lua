@@ -149,6 +149,22 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "dye:bone_block", 
+	recipe = {
+		{ "dye:white", "dye:white", "dye:white" },
+		{ "dye:white", "dye:white", "dye:white" },
+		{ "dye:white", "dye:white", "dye:white" },
+	},
+})
+
+minetest.register_craft({
+	output = "dye:white 9",
+	recipe = {
+		{ "dye:bone_block" },
+	},
+})
+
+minetest.register_craft({
 	output = 'default:stick 4',
 	recipe = {
 		{'group:wood'},

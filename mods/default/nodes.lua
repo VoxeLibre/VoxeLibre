@@ -425,13 +425,24 @@ minetest.register_node("default:brick", {
 minetest.register_node("default:haybale", {
 	description = "Hay Bale",
 	tiles = {"default_hayblock_top.png", "default_hayblock_top.png", "default_hayblock_side.png"},
-	is_ground_content = true,
+	is_ground_content = false,
 	stack_max = 64,
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	on_place = minetest.rotate_node,
 	groups = {oddly_breakable_by_hand=3,flammable=2},
 	sounds = default.node_sound_wood_defaults(),
+})
+
+minetest.register_node("default:bone_block", {
+	description = "Bone Block",
+	-- FIXME: Missing texutres
+	tiles = {"default_bone_block_top.png", "default_bone_block_top.png", "default_bone_block_side.png"},
+	is_ground_content = false,
+	paramtype2 = "facedir",
+	on_place = minetest.rotate_node,
+	groups = {cracky=3},
+	sounds = default.node_sound_stone_defaults(),
 })
 
 minetest.register_node("default:sea_lantern", {
