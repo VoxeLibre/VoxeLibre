@@ -235,32 +235,71 @@ function stairs.register_stair_and_slab(subname, recipeitem, groups, images, des
 	stairs.register_slab(subname, recipeitem, groups, images, desc_slab, sounds)
 end
 
-stairs.register_stair_and_slab("wood", "default:wood",
+stairs.register_stair("wood", "default:wood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
 		{"default_wood.png"},
 		"Oak Wood Stairs",
+		default.node_sound_wood_defaults())
+stairs.register_slab("wood", "default:wood",
+		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_slab=1},
+		{"default_wood.png"},
 		"Oak Wood Slab",
 		default.node_sound_wood_defaults())
-		
-stairs.register_stair_and_slab("junglewood", "default:junglewood",
+
+stairs.register_stair("junglewood", "default:junglewood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
 		{"default_junglewood.png"},
 		"Jungle Wood Stairs",
+		default.node_sound_wood_defaults())
+stairs.register_slab("junglewood", "default:junglewood",
+		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_slab=1},
+		{"default_junglewood.png"},
 		"Jungle Wood Slab",
 		default.node_sound_wood_defaults())
-		
-stairs.register_stair_and_slab("acaciawood", "default:acaciawood",
+	
+stairs.register_stair("acaciawood", "default:acaciawood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
 		{"default_acaciawood.png"},
 		"Acacia Wood Stairs",
+		default.node_sound_wood_defaults())
+
+stairs.register_slab("acaciawood", "default:acaciawood",
+		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_slab=1},
+		{"default_acaciawood.png"},
 		"Acacia Wood Slab",
 		default.node_sound_wood_defaults())
-		
-stairs.register_stair_and_slab("sprucewood", "default:sprucewood",
+	
+stairs.register_stair("sprucewood", "default:sprucewood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
 		{"default_sprucewood.png"},
 		"Spruce Wood Stairs",
+		default.node_sound_wood_defaults())
+stairs.register_slab("sprucewood", "default:sprucewood",
+		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_slab=1},
+		{"default_sprucewood.png"},
 		"Spruce Wood Slab",
+		default.node_sound_wood_defaults())
+
+stairs.register_stair("birchwood", "default:birchwood",
+		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
+		{"default_birchewood.png"},
+		"Birch Wood Stairs",
+		default.node_sound_wood_defaults())
+stairs.register_slab("birchwood", "default:birchwood",
+		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_slab=1},
+		{"default_birchwood.png"},
+		"Birch Wood Slab",
+		default.node_sound_wood_defaults())
+
+stairs.register_stair("darkwood", "default:darkwood",
+		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
+		{"default_planks_big_oak.png"},
+		"Dark Oak Wood Stairs",
+		default.node_sound_wood_defaults())
+stairs.register_slab("oakwood", "default:darkwood",
+		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_slab=1},
+		{"default_planks_big_oak.png"},
+		"Dark Oak Wood Slab",
 		default.node_sound_wood_defaults())
 
 stairs.register_stair_and_slab("stone", "default:stone",

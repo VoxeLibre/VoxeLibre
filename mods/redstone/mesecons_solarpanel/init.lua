@@ -51,11 +51,11 @@ minetest.register_node("mesecons_solarpanel:solar_panel_off", {
 })
 
 minetest.register_craft({
-	output = '"mesecons_solarpanel:solar_panel_off" 1',
+	output = 'mesecons_solarpanel:solar_panel_off',
 	recipe = {
 		{'default:glass', 'default:glass', 'default:glass'},
-		{'default:glass', 'default:glass', 'default:glass'},
-		{'mesecons:redstone', 'mesecons:redstone', 'mesecons:redstone'},
+		{'default:quartz_crystal', 'default:quartz_crystal', 'default:quartz_crystal'},
+		{'group:wood_slab', 'group:wood_slab', 'group:wood_slab'},
 	}
 })
 
@@ -142,9 +142,9 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
 minetest.register_craft({
 	output = '"mesecons_solarpanel:solar_panel_inverted_off" 1',
 	recipe = {
-		{'mesecons:redstone', 'mesecons:redstone', 'mesecons:redstone'},
 		{'default:glass', 'default:glass', 'default:glass'},
-		{'default:glass', 'default:glass', 'default:glass'},
+		{'default:quartz_crystal', 'default:quartz_crystal', 'default:quartz_crystal'},
+		{'group:slab_wood', 'group:slab_wood', 'group:slab_wood'},
 	}
 })
 
