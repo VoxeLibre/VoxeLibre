@@ -37,17 +37,3 @@ end
 addhead("zombie", "Zombie Head")
 addhead("creeper", "Creeper Head")
 addhead("steve", "Steve Head")
-addhead("herobrine", "Herobrine Head")
-
-
-minetest.register_abm(
-	{nodenames = {"head:herobrine"},
-	interval = 70,
-	chance = 4,
-	action = function(pos, node, active_object_count, active_object_count_wider)
-		if math.random(1, 200) <= 1 then
-			minetest.add_entity(pos, "mobs:herobrine")
-			minetest.chat_send_all("Herobrine : I'm Here for you !")
-		end
-	end,
-})

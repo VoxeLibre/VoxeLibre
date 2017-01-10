@@ -83,21 +83,6 @@ minetest.register_craftitem("mobs:creeper", {
 	end,
 })
 
-minetest.register_craftitem("mobs:herobrine", {
-	description = "Spawn Herobrine",
-	inventory_image = "spawn_herobrine.png",
-	groups = {not_in_creative_inventory=1},
-	wield_scale = {x = 1.25, y = 1.25, z = 2.5},
-	on_place = function(itemstack, placer, pointed_thing)
-		if pointed_thing.above then
-			minetest.add_entity(pointed_thing.above, "mobs:herobrine")
-			if not minetest.setting_getbool("creative_mode") then itemstack:take_item() end
-			minetest.log("action", placer:get_player_name() .. " placed a herobrine at " .. minetest.pos_to_string(pointed_thing.above) .. ".")
-		end
-		return itemstack
-	end,
-})
-
 ---------------------
 -- Drop de monstre --
 ---------------------
