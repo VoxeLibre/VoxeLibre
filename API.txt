@@ -5,10 +5,15 @@ This document is a WORK IN PROGRESS.
 Currently, it only contains some information about the used groups.
 
 
-Groups
+Groups for interactions
 
 	dig_by_water=1
 		Blocks with this group will drop when they are near flowing water
+
+	cultivatable=2
+		Block will be turned into Farmland by using a hoe on it
+	cultivatable=1
+		Block will be turned into Dirt by using a hoe on it
 
 
 Groups (mostly) used for crafting recipes
