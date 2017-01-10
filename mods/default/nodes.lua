@@ -431,7 +431,7 @@ minetest.register_node("default:haybale", {
 	is_ground_content = false,
 	on_place = minetest.rotate_node,
 	groups = {oddly_breakable_by_hand=3,flammable=2},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = default.node_sound_leaves_defaults(),
 })
 
 --[[
