@@ -562,6 +562,24 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "default:gold_ingot",
+	recipe = {
+		{"default:gold_nugget", "default:gold_nugget", "default:gold_nugget"},
+		{"default:gold_nugget", "default:gold_nugget", "default:gold_nugget"},
+		{"default:gold_nugget", "default:gold_nugget", "default:gold_nugget"},
+	}
+})
+
+minetest.register_craft({
+	output = "default:steel_ingot",
+	recipe = {
+		{"default:iron_nugget", "default:iron_nugget", "default:iron_nugget"},
+		{"default:iron_nugget", "default:iron_nugget", "default:iron_nugget"},
+		{"default:iron_nugget", "default:iron_nugget", "default:iron_nugget"},
+	}
+})
+
+minetest.register_craft({
 	output = 'default:sandstone',
 	recipe = {
 		{'default:sand', 'default:sand'},
