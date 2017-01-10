@@ -434,6 +434,7 @@ minetest.register_node("default:haybale", {
 	sounds = default.node_sound_wood_defaults(),
 })
 
+--[[
 minetest.register_node("default:bone_block", {
 	description = "Bone Block",
 	-- FIXME: Missing texutres
@@ -444,6 +445,7 @@ minetest.register_node("default:bone_block", {
 	groups = {cracky=3},
 	sounds = default.node_sound_stone_defaults(),
 })
+]]
 
 minetest.register_node("default:sea_lantern", {
 	description = "Sea Lantern",
