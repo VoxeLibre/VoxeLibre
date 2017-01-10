@@ -764,12 +764,63 @@ minetest.register_node("default:sprucesapling", {
 	sounds = default.node_sound_defaults(),
 })
 
+minetest.register_node("default:birchtree", {
+	description = "Birch Wood",
+	tiles = {"default_log_birch_top.png", "default_log_birch_top.png", "default_log_birch.png"},
+	stack_max = 64,
+	paramtype2 = "facedir",
+	on_place = minetest.rotate_node,
+	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2},
+	sounds = default.node_sound_wood_defaults(),
+})
 
--- aliases 
-minetest.register_alias("sapling", "default:sapling")
-minetest.register_alias("junglesapling", "default:junglesapling")
-minetest.register_alias("acaciasapling", "default:acaciasapling")
-minetest.register_alias("sprucesapling", "default:sprucesapling")
+minetest.register_node("default:birchwood", {
+	description = "Birch Wood Planks",
+	tiles = {"default_planks_birch.png"},
+	stack_max = 64,
+	is_ground_content = false,
+	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1},
+	sounds = default.node_sound_wood_defaults(),
+})
+
+minetest.register_node("default:birchleaves", {
+	description = "Birch Leaves",
+	drawtype = "allfaces_optional",
+	visual_scale = 1.3,
+	tiles = {"default_leaves_birch.png"},
+	paramtype = "light",
+	stack_max = 64,
+	groups = {snappy=3, leafdecay=3, flammable=2, leaves=1},
+	drop = {
+		max_items = 1,
+		items = {
+			{
+				-- player will get sapling with 1/20 chance
+				items = {'default:birchsapling'},
+				rarity = 20,
+			},
+		}
+	},
+	sounds = default.node_sound_leaves_defaults(),
+})
+
+minetest.register_node("default:birchsapling", {
+	description = "Birch Sapling",
+	drawtype = "plantlike",
+	visual_scale = 1.0,
+	tiles = {"default_sapling_birch.png"},
+	inventory_image = "default_sapling_birch.png",
+	wield_image = "default_sapling_birch.png",
+	paramtype = "light",
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
+	},
+	stack_max = 64,
+	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1},
+	sounds = default.node_sound_defaults(),
+})
 
 minetest.register_node("default:junglegrass", {
 	description = "Double Tallgrass",

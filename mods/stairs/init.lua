@@ -282,12 +282,12 @@ stairs.register_slab("sprucewood", "default:sprucewood",
 
 stairs.register_stair("birchwood", "default:birchwood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
-		{"default_birchewood.png"},
+		{"default_planks_birch.png"},
 		"Birch Wood Stairs",
 		default.node_sound_wood_defaults())
 stairs.register_slab("birchwood", "default:birchwood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_slab=1},
-		{"default_birchwood.png"},
+		{"default_planks_birch.png"},
 		"Birch Wood Slab",
 		default.node_sound_wood_defaults())
 

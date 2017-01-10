@@ -342,6 +342,15 @@ doors:register_door("doors:door_birch", {
 	tiles_top = {"door_birch_a.png", "door_brown.png"},
 })
 
+minetest.register_craft({
+	output = "doors:door_birch 3",
+	recipe = {
+		{"default:birchwood", "default:birchwood"},
+		{"default:birchwood", "default:birchwood"},
+		{"default:birchwood", "default:birchwood"},
+	}
+})
+
 --- dark oak Door --
 doors:register_door("doors:door_dark_oak", {
 	description = "Dark Oak Door",

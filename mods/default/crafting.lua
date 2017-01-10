@@ -40,6 +40,13 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = 'default:birchwood 4',
+	recipe = {
+		{'default:birchtree'},
+	}
+})
+
+minetest.register_craft({
 	output = "default:torch 4",
 	recipe = {
 		{ "group:coal" },
