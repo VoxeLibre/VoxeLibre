@@ -181,7 +181,7 @@ minetest.register_node("mesecons_commandblock:commandblock_off", {
 	description = "Command Block",
 	tiles = {"jeija_commandblock_off.png"},
 	inventory_image = minetest.inventorycube("jeija_commandblock_off.png"),
-	groups = {mesecon_effector_off=1},
+	groups = {mesecon_effector_off=1, not_in_creative_inventory},
 	drop = "",
 	diggable = false,
 	can_dig = function() return false end,
