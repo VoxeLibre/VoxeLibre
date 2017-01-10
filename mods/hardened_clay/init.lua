@@ -25,7 +25,7 @@ minetest.register_node("hardened_clay:hardened_clay", {
 	tiles = {"hardened_clay.png"},
 	stack_max = 64,
 	groups = {cracky=3},
-	legacy_mineral = true,
+	sounds = default.node_sound_stone_defaults(),
 })
 
 minetest.register_craft({
@@ -46,7 +46,7 @@ for _, row in ipairs(clay.dyes) do
 			tiles = {"hardened_clay_stained_"..name..".png"},
 			groups = {cracky=3,hardened_clay=1},
 			stack_max = 64,
-			sounds = default.node_sound_defaults(),
+			sounds = default.node_sound_stone_defaults(),
 		})
 	if craft_color_group then
 		minetest.register_craft({
