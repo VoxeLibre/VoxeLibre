@@ -80,6 +80,7 @@ end
 
 minetest.register_entity("throwing:arrow_entity", THROWING_ARROW_ENTITY)
 
+-- FIXME: Replace paper with feather
 minetest.register_craft({
 	output = 'throwing:arrow 4',
 	recipe = {

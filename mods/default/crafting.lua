@@ -603,7 +603,7 @@ minetest.register_craft({
 minetest.register_craft({
 	type = 'shapeless',
 	output = 'default:book',
-	-- TODO: 3 paper 1 lether
+	-- FIXME: Update recipe. 3 paper 1 lether
 	recipe = { 'default:paper', 'default:paper', 'default:paper', 'default:paper',
 	}
 })

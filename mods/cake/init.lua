@@ -11,6 +11,7 @@ slice_4 = { -7/16, -8/16, -7/16, 3/16, 0/16, 7/16}
 slice_5 = { -7/16, -8/16, -7/16, 5/16, 0/16, 7/16}
 slice_6 = { -7/16, -8/16, -7/16, 7/16, 0/16, 7/16}
 
+-- FIXME: Recipe. milk instead of water bucket and egg instead of leaves
 minetest.register_craft({
 	output = "cake:cake",
 	recipe = {

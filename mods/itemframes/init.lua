@@ -131,6 +131,7 @@ minetest.register_node("itemframes:frame",{
 	end,
 })
 
+-- FIXME: Replace paper with leather
 minetest.register_craft({
 	output = 'itemframes:frame',
 	recipe = {

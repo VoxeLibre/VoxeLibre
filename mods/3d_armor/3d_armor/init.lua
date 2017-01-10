@@ -150,6 +150,7 @@ minetest.register_tool("3d_armor:boots_chain", {
 -- Register Craft Recipies
 
 local craft_ingreds = {
+	-- FIXME: Replace with leather
 	leather = { "default:wood" },
 	steel = { "default:steel_ingot", "default:iron_nugget" },
 	gold = { "default:gold_ingot", "default:gold_nugget" },

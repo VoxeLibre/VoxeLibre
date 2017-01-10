@@ -55,7 +55,7 @@ minetest.register_craftitem("default:diamond", {
 })
 
 minetest.register_craftitem("default:clay_lump", {
-	description = "Clay Lump",
+	description = "Clay",
 	inventory_image = "default_clay_lump.png",
 	stack_max = 64,
 })
