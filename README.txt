@@ -30,6 +30,9 @@ GravGun & Obani for Help in Build struct
 Celeron55 for creating Minetest
 Bob Lennon because it's a pyro-barbare
 
+Info for programmers
+--------------------
+You find interesting and useful infos in API.txt.
 
 License of media (textures and sounds)
 --------------------------------------
