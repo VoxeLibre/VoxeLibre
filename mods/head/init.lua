@@ -38,6 +38,6 @@ end
 --head add
 addhead("zombie", "Zombie Head")
 addhead("creeper", "Creeper Head")
-addhead("steve", "Steve Head")
+addhead("steve", "Head")
 addhead("skeleton", "Skeleton Skull")
 addhead("wither_skeleton", "Wither Skeleton Skull")
