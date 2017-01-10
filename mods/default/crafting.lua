@@ -789,6 +789,13 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "cooking",
+	output = "default:quartz_crystal",
+	recipe = "default:quartz_ore",
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	type = "cooking",
 	output = "default:clay_brick",
 	recipe = "default:clay_lump",
 	cooktime = 10,
