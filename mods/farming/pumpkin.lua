@@ -76,7 +76,8 @@ minetest.register_node("farming:pumpkin_face", {
 				end
 			end
 		end
-	end
+	end,
+	sounds = default.node_sound_wood_defaults(),
 })
 
 minetest.register_node("farming:pumpkintige_unconnect", {
@@ -277,6 +278,7 @@ minetest.register_node("farming:pumpkin_face_light", {
 	light_source = 14,
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face_light.png"},
 	groups = {choppy=2, oddly_breakable_by_hand=2, flammable=2},
+	sounds = default.node_sound_wood_defaults(),
 })
 
 minetest.register_craft({
