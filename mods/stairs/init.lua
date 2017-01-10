@@ -323,14 +323,14 @@ stairs.register_stair_and_slab("brick", "default:brick",
 		"Bricks Slab",
 		default.node_sound_stone_defaults())
 
-stairs.register_stair_and_slab("sandstone", "default:sandstone",
+stairs.register_stair_and_slab("sandstone", "group:sandstone",
 		{crumbly=2,cracky=2},
 		{"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_normal.png"},
 		"Sandstone Stairs",
 		"Sandstone Slab",
 		default.node_sound_stone_defaults())
 
-stairs.register_stair_and_slab("redsandstone", "default:redsandstone",
+stairs.register_stair_and_slab("redsandstone", "group:redsandstone",
 		{crumbly=2,cracky=2},
 		{"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_normal.png"},
 		"Red Sandstone Stairs",
@@ -345,7 +345,7 @@ stairs.register_stair_and_slab("stonebrick", "group:stonebrick",
 		default.node_sound_stone_defaults()
 )
 
-stairs.register_stair_and_slab("quartzblock", "default:quartz_block",
+stairs.register_stair_and_slab("quartzblock", "group:quartz_block",
 	{snappy=1,bendy=2,cracky=1,level=2},
 	{"default_quartz_block_top.png", "default_quartz_block_bottom.png", "default_quartz_block_side.png"},
 	"Quartz Stairs",

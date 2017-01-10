@@ -327,7 +327,7 @@ minetest.register_node("default:sandstone", {
 	tiles = {"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_normal.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {crumbly=2,cracky=2},
+	groups = {crumbly=2,cracky=2,sandstone=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -336,7 +336,7 @@ minetest.register_node("default:sandstonesmooth", {
 	tiles = {"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_smooth.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {crumbly=2,cracky=2},
+	groups = {crumbly=2,cracky=2,sandstone=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -345,7 +345,7 @@ minetest.register_node("default:sandstonecarved", {
 	tiles = {"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_carved.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {crumbly=2,cracky=2},
+	groups = {crumbly=2,cracky=2,sandstone=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -365,7 +365,7 @@ minetest.register_node("default:redsandstone", {
 	tiles = {"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_normal.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {crumbly=2,cracky=2},
+	groups = {crumbly=2,cracky=2,redsandstone=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -374,7 +374,7 @@ minetest.register_node("default:redsandstonesmooth", {
 	tiles = {"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_smooth.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {crumbly=2,cracky=2},
+	groups = {crumbly=2,cracky=2,redsandstone=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -383,7 +383,7 @@ minetest.register_node("default:redsandstonecarved", {
 	tiles = {"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_carved.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {crumbly=2,cracky=2},
+	groups = {crumbly=2,cracky=2,redsandstone=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -925,7 +925,7 @@ minetest.register_node("default:quartz_block", {
 	description = "Block of Quartz",
 	stack_max = 64,
 	tiles = {"default_quartz_block_top.png", "default_quartz_block_bottom.png", "default_quartz_block_side.png"},
-	groups = {snappy=1,bendy=2,cracky=1,level=2},
+	groups = {snappy=1,bendy=2,cracky=1,level=2,quartz_block=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -934,7 +934,7 @@ minetest.register_node("default:quartz_chiseled", {
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {"default_quartz_chiseled_top.png", "default_quartz_chiseled_top.png", "default_quartz_chiseled_side.png"},
-	groups = {snappy=1,bendy=2,cracky=1,level=2},
+	groups = {snappy=1,bendy=2,cracky=1,level=2,quartz_block=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -945,7 +945,7 @@ minetest.register_node("default:quartz_pillar", {
 	is_ground_content = true,
 	on_place = minetest.rotate_node,
 	tiles = {"default_quartz_pillar_top.png", "default_quartz_pillar_top.png", "default_quartz_pillar_side.png"},
-	groups = {snappy=1,bendy=2,cracky=1,level=2},
+	groups = {snappy=1,bendy=2,cracky=1,level=2,quartz_block=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
