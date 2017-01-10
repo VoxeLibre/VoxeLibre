@@ -32,6 +32,12 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	type = "fuel",
+	recipe = "mesecons_noteblock:noteblock",
+	burntime = 15
+})
+
 mesecon.noteblock_play = function (pos, param2)
 	local soundname
 	if param2==8 then

@@ -148,6 +148,7 @@ minetest.register_craftitem("boat:boat", {
 	description = "Boat",
 	inventory_image = "boat_inventory.png",
 	liquids_pointable = true,
+	groups = { boat = 1, },
 
 	on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type ~= "node" then
@@ -172,6 +173,12 @@ minetest.register_craft({
 		{"default:wood", "", "default:wood"},
 		{"default:wood", "default:wood", "default:wood"},
 	},
+})
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "group:boat",
+	burntime = 20,
 })
 
 local time_to_load= os.clock() - init

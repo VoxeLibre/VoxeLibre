@@ -176,3 +176,14 @@ minetest.register_abm(
 	end,
 })
 
+minetest.register_craft({
+	type = "fuel",
+	recipe = "mesecons_solarpanel:solar_panel_off",
+	burntime = 15
+})
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "mesecons_solarpanel:solar_panel_inverted_off",
+	burntime = 15
+})

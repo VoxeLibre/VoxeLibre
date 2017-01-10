@@ -408,6 +408,36 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	type = "fuel",
+	recipe = "doors:door_wood",
+	burntime = 10,
+})
+minetest.register_craft({
+	type = "fuel",
+	recipe = "doors:door_jungle",
+	burntime = 10,
+})
+minetest.register_craft({
+	type = "fuel",
+	recipe = "doors:door_dark_oak",
+	burntime = 10,
+})
+minetest.register_craft({
+	type = "fuel",
+	recipe = "doors:door_birch",
+	burntime = 10,
+})
+minetest.register_craft({
+	type = "fuel",
+	recipe = "doors:door_acacia",
+	burntime = 10,
+})
+minetest.register_craft({
+	type = "fuel",
+	recipe = "doors:door_spruce",
+	burntime = 10,
+})
 
 --- Door in Iron ---
 doors:register_door("doors:door_steel", {
@@ -554,6 +584,12 @@ minetest.register_craft({
 		{'group:wood', 'group:wood', 'group:wood'},
 		{'', '', ''},
 	}
+})
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "doors:trapdoor",
+	burntime = 15,
 })
 
 --- Iron Trapdoor ----

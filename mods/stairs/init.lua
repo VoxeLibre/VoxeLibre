@@ -236,7 +236,7 @@ function stairs.register_stair_and_slab(subname, recipeitem, groups, images, des
 end
 
 stairs.register_stair("wood", "default:wood",
-		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
+		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_stairs=1},
 		{"default_wood.png"},
 		"Oak Wood Stairs",
 		default.node_sound_wood_defaults())
@@ -247,7 +247,7 @@ stairs.register_slab("wood", "default:wood",
 		default.node_sound_wood_defaults())
 
 stairs.register_stair("junglewood", "default:junglewood",
-		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
+		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_stairs=1},
 		{"default_junglewood.png"},
 		"Jungle Wood Stairs",
 		default.node_sound_wood_defaults())
@@ -258,7 +258,7 @@ stairs.register_slab("junglewood", "default:junglewood",
 		default.node_sound_wood_defaults())
 	
 stairs.register_stair("acaciawood", "default:acaciawood",
-		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
+		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_stairs=1},
 		{"default_acaciawood.png"},
 		"Acacia Wood Stairs",
 		default.node_sound_wood_defaults())
@@ -270,7 +270,7 @@ stairs.register_slab("acaciawood", "default:acaciawood",
 		default.node_sound_wood_defaults())
 	
 stairs.register_stair("sprucewood", "default:sprucewood",
-		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
+		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_stairs=1},
 		{"default_sprucewood.png"},
 		"Spruce Wood Stairs",
 		default.node_sound_wood_defaults())
@@ -281,7 +281,7 @@ stairs.register_slab("sprucewood", "default:sprucewood",
 		default.node_sound_wood_defaults())
 
 stairs.register_stair("birchwood", "default:birchwood",
-		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
+		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_stairs=1},
 		{"default_planks_birch.png"},
 		"Birch Wood Stairs",
 		default.node_sound_wood_defaults())
@@ -292,7 +292,7 @@ stairs.register_slab("birchwood", "default:birchwood",
 		default.node_sound_wood_defaults())
 
 stairs.register_stair("darkwood", "default:darkwood",
-		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3},
+		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_stairs=1},
 		{"default_planks_big_oak.png"},
 		"Dark Oak Wood Stairs",
 		default.node_sound_wood_defaults())
@@ -393,7 +393,17 @@ minetest.register_craft({
 	}
 })
 
-
+-- Fuel
+minetest.register_craft({
+	type = "fuel",
+	recipe = "group:wood_stairs",
+	burntime = 15,
+})
+minetest.register_craft({
+	type = "fuel",
+	recipe = "group:wood_slab",
+	burntime = 15,
+})
 
 local time_to_load= os.clock() - init
 print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))

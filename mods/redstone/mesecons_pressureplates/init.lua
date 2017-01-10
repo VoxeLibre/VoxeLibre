@@ -122,3 +122,9 @@ mesecon:register_pressure_plate(
 	"default_stone.png",
 	"default_stone.png",
 	{{"default:stone", "default:stone"}})
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "mesecons_pressureplates:pressure_plate_wood_off",
+	burntime = 15
+})

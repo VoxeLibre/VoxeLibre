@@ -50,6 +50,11 @@ minetest.register_craft({
 		{"default:stick", ""}
 	}
 })
+minetest.register_craft({
+	type = "fuel",
+	recipe = "farming:hoe_wood",
+	burntime = 10,
+})
 
 minetest.register_tool("farming:hoe_stone", {
 	description = "Stone Hoe",

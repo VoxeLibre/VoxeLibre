@@ -181,3 +181,10 @@ minetest.register_craft({
 		{"group:wood", "group:wood"}
 	}
 })
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "crafting:workbench",
+	burntime = 15,
+})
+

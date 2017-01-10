@@ -129,3 +129,8 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	type = "fuel",
+	recipe = "throwing:bow",
+	burntime = 15,
+})

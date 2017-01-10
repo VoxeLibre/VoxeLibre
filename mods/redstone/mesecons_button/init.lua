@@ -151,3 +151,10 @@ minetest.register_craft({
 		{'group:wood'},
 	}
 })
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = 'mesecons_button:button_wood_off',
+	burntime = 5,
+})
+
