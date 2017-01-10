@@ -139,12 +139,14 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
 	}}
 })
 
+-- Unofficial craft
+-- TODO: Make solar panel switch on user action, so this craft can be removed
 minetest.register_craft({
 	output = '"mesecons_solarpanel:solar_panel_inverted_off" 1',
 	recipe = {
-		{'default:glass', 'default:glass', 'default:glass'},
+		{'group:wood_slab', 'group:wood_slab', 'group:wood_slab'},
 		{'default:quartz_crystal', 'default:quartz_crystal', 'default:quartz_crystal'},
-		{'group:slab_wood', 'group:slab_wood', 'group:slab_wood'},
+		{'default:glass', 'default:glass', 'default:glass'},
 	}
 })
 
