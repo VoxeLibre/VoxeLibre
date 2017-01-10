@@ -305,3 +305,9 @@ end
 if minetest.setting_get("log_mods") then
 	minetest.log("action", "signs loaded")
 end
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "signs:sign_wall",
+	burntime = 10,
+})

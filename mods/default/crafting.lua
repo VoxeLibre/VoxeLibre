@@ -1000,12 +1000,6 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "default:fence_wood",
-	burntime = 15,
-})
-
-minetest.register_craft({
-	type = "fuel",
 	recipe = "default:ladder",
 	burntime = 15,
 })
@@ -1014,12 +1008,6 @@ minetest.register_craft({
 	type = "fuel",
 	recipe = "group:wood",
 	burntime = 15,
-})
-
-minetest.register_craft({
-	type = "fuel",
-	recipe = "signs:sign_wall",
-	burntime = 10,
 })
 
 minetest.register_craft({
