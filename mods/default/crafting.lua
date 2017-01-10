@@ -392,6 +392,21 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = 'default:shears',
+	recipe = {
+		{ 'default:steel_ingot', '' },
+		{ '', 'default:steel_ingot', },
+	}
+})
+minetest.register_craft({
+	output = 'default:shears',
+	recipe = {
+		{ '', 'default:steel_ingot', },
+		{ 'default:steel_ingot', '' },
+	}
+})
+
+minetest.register_craft({
 	output = "default:fishing_rod",
 	recipe = {
 		{'','','default:stick'},

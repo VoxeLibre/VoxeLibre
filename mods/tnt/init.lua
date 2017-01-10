@@ -143,8 +143,8 @@ minetest.register_entity("tnt:tnt", TNT)
 minetest.register_craft({
 	output = "tnt:tnt",
 	recipe = {
-		{'default:gunpowder','default:sand','default:gunpowder'},
-		{'default:sand','default:gunpowder','default:sand'},
-		{'default:gunpowder','default:sand','default:gunpowder'}
+		{'default:gunpowder','group:sand','default:gunpowder'},
+		{'group:sand','default:gunpowder','group:sand'},
+		{'default:gunpowder','group:sand','default:gunpowder'}
 	}
 })
