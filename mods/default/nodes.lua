@@ -264,17 +264,27 @@ minetest.register_node("default:dirt_with_grass", {
 	}),
 })
 
+-- TODO: Add particles
 minetest.register_node("default:mycelium", {
 	description = "Mycelium",
 	tiles = {"default_mycelium_top.png", "default_dirt.png", "default_mycelium_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	-- TODO: Add mushroom soil group
 	groups = {crumbly=3},
 	drop = 'default:dirt',
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
+})
+
+minetest.register_node("default:podzol", {
+	description = "Podzol",
+	tiles = {"default_dirt_podzol_top.png", "default_dirt.png", "default_dirt_podzol_side.png"},
+	is_ground_content = true,
+	stack_max = 64,
+	groups = {crumbly=3, soil=1},
+	drop = 'default:dirt',
+	sounds = default.node_sound_dirt_defaults(),
 })
 
 minetest.register_node("default:dirt", {
