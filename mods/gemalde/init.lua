@@ -23,7 +23,7 @@ end
 
 -- inivisible node
 minetest.register_node("gemalde:node_"..n.."", {
-	description = "Picture #"..n.."",
+	description = "Painting #"..n.."",
 	drawtype = "signlike",
 	tiles = {"gemalde_"..n..".png"},
 	visual_scale = 3.0,
@@ -69,27 +69,7 @@ minetest.register_node("gemalde:node_"..n.."", {
 --	on_place = minetest.rotate_node
 })
 
--- crafts
-if n < N then
-minetest.register_craft({
-	output = 'gemalde:node_'..n..'',
-	recipe = {
-		{'gemalde:node_'..(n+1)..''},
-	}
-})
 end
-
-n = n + 1
-
-end
-
--- close the craft loop
-minetest.register_craft({
-	output = 'gemalde:node_'..N..'',
-	recipe = {
-		{'gemalde:node_1'},
-	}
-})
 
 -- initial craft
 minetest.register_craft({
@@ -101,72 +81,3 @@ minetest.register_craft({
 	}
 })
 
--- reset several pictures to #1
-minetest.register_craft({
-	type = 'shapeless',
-	output = 'gemalde:node_1 2',
-	recipe = {'group:picture', 'group:picture'},
-})
-
-minetest.register_craft({
-	type = 'shapeless',
-	output = 'gemalde:node_1 3',
-	recipe = {'group:picture', 'group:picture', 'group:picture'},
-})
-
-minetest.register_craft({
-	type = 'shapeless',
-	output = 'gemalde:node_1 4',
-	recipe = {
-		'group:picture', 'group:picture', 'group:picture', 
-		'group:picture'
-	}
-})
-
-minetest.register_craft({
-	type = 'shapeless',
-	output = 'gemalde:node_1 5',
-	recipe = {
-		'group:picture', 'group:picture', 'group:picture', 
-		'group:picture', 'group:picture'
-	}
-})
-
-minetest.register_craft({
-	type = 'shapeless',
-	output = 'gemalde:node_1 6',
-	recipe = {
-		'group:picture', 'group:picture', 'group:picture', 
-		'group:picture', 'group:picture', 'group:picture'
-	}
-})
-
-minetest.register_craft({
-	type = 'shapeless',
-	output = 'gemalde:node_1 7',
-	recipe = {
-		'group:picture', 'group:picture', 'group:picture', 
-		'group:picture', 'group:picture', 'group:picture', 
-		'group:picture'
-	}
-})
-
-minetest.register_craft({
-	type = 'shapeless',
-	output = 'gemalde:node_1 8',
-	recipe = {
-		'group:picture', 'group:picture', 'group:picture', 
-		'group:picture', 'group:picture', 'group:picture', 
-		'group:picture', 'group:picture'
-	}
-})
-
-minetest.register_craft({
-	type = 'shapeless',
-	output = 'gemalde:node_1 9',
-	recipe = {
-			'group:picture', 'group:picture', 'group:picture', 
-			'group:picture', 'group:picture', 'group:picture', 
-			'group:picture', 'group:picture', 'group:picture'
-		}
-})

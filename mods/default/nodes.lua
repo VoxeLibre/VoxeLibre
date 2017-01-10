@@ -526,7 +526,7 @@ minetest.register_node("default:leaves", {
 })
 
 -- Dark oak tree --
-minetest.register_node("default:dark_tree", {
+minetest.register_node("default:darktree", {
 	description = "Dark Oak Wood",
 	tiles = {"default_log_big_oak_top.png", "default_log_big_oak_top.png", "default_log_big_oak.png"},
 	paramtype2 = "facedir",

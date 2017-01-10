@@ -120,4 +120,12 @@ minetest.register_craft({
 		{'', 'default:stick', 'default:string'},
 	}
 })
+minetest.register_craft({
+	output = 'throwing:bow',
+	recipe = {
+		{'default:string', 'default:stick', ''},
+		{'default:string', '', 'default:stick'},
+		{'default:string', 'default:stick', ''},
+	}
+})
 

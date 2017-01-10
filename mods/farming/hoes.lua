@@ -42,6 +42,14 @@ minetest.register_craft({
 		{"", "default:stick"}
 	}
 })
+minetest.register_craft({
+	output = "farming:hoe_wood",
+	recipe = {
+		{"group:wood", "group:wood"},
+		{"default:stick", ""},
+		{"default:stick", ""}
+	}
+})
 
 minetest.register_tool("farming:hoe_stone", {
 	description = "Stone Hoe",
@@ -64,6 +72,14 @@ minetest.register_craft({
 		{"", "default:stick"}
 	}
 })
+minetest.register_craft({
+	output = "farming:hoe_stone",
+	recipe = {
+		{"default:cobble", "default:cobble"},
+		{"default:stick", ""},
+		{"default:stick", ""}
+	}
+})
 
 minetest.register_tool("farming:hoe_steel", {
 	description = "Iron Hoe",
@@ -84,6 +100,14 @@ minetest.register_craft({
 		{"default:steel_ingot", "default:steel_ingot"},
 		{"", "default:stick"},
 		{"", "default:stick"}
+	}
+})
+minetest.register_craft({
+	output = "farming:hoe_steel",
+	recipe = {
+		{"default:steel_ingot", "default:steel_ingot"},
+		{"default:stick", ""},
+		{"default:stick", ""}
 	}
 })
 
@@ -115,6 +139,16 @@ minetest.register_craft({
 		{"", "default:stick"}
 	}
 })
+minetest.register_craft({
+	output = "farming:hoe_gold",
+	recipe = {
+		{"default:gold_ingot", "default:gold_ingot"},
+		{"default:stick", ""},
+		{"default:stick", ""}
+	}
+})
+
+
 
 minetest.register_craft({
 	type = "cooking",
@@ -142,5 +176,13 @@ minetest.register_craft({
 		{"default:diamond", "default:diamond"},
 		{"", "default:stick"},
 		{"", "default:stick"}
+	}
+})
+minetest.register_craft({
+	output = "farming:hoe_diamond",
+	recipe = {
+		{"default:diamond", "default:diamond"},
+		{"default:stick", ""},
+		{"default:stick", ""}
 	}
 })

@@ -48,17 +48,15 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	type = 'shapeless',
 	output = 'default:mossycobble',
-	recipe = {
-		{'default:cobble', 'default:vine'},
-	}
+	recipe = { 'default:cobble', 'default:vine' },
 })
 
 minetest.register_craft({
+	type = 'shapeless',
 	output = 'default:stonebrickmossy',
-	recipe = {
-		{'default:stonebrick', 'default:vine'},
-	}
+	recipe = { 'default:stonebrick', 'default:vine' },
 })
 
 minetest.register_craft({
@@ -66,6 +64,13 @@ minetest.register_craft({
 	recipe = {
 		{'default:dirt', 'default:gravel'},
 		{'default:gravel', 'default:dirt'},
+	}
+})
+minetest.register_craft({
+	output = 'default:coarse_dirt 4',
+	recipe = {
+		{'default:gravel', 'default:dirt'},
+		{'default:dirt', 'default:gravel'},
 	}
 })
 
@@ -126,6 +131,13 @@ minetest.register_craft({
 	recipe = {
 		{'default:cobble', 'default:quartz_crystal'},
 		{'default:quartz_crystal', 'default:cobble'},
+	}
+})
+minetest.register_craft({
+	output = 'default:diorite 2',
+	recipe = {
+		{'default:quartz_crystal', 'default:cobble'},
+		{'default:cobble', 'default:quartz_crystal'},
 	}
 })
 
@@ -244,6 +256,14 @@ minetest.register_craft({
 		{'', 'default:stick'},
 	}
 })
+minetest.register_craft({
+	output = 'default:axe_wood',
+	recipe = {
+		{'group:wood', 'group:wood'},
+		{'default:stick', 'group:wood'},
+		{'default:stick', ''},
+	}
+})
 
 minetest.register_craft({
 	output = 'default:axe_stone',
@@ -251,6 +271,14 @@ minetest.register_craft({
 		{'default:cobble', 'default:cobble'},
 		{'default:cobble', 'default:stick'},
 		{'', 'default:stick'},
+	}
+})
+minetest.register_craft({
+	output = 'default:axe_stone',
+	recipe = {
+		{'default:cobble', 'default:cobble'},
+		{'default:stick', 'default:cobble'},
+		{'default:stick', ''},
 	}
 })
 
@@ -262,6 +290,14 @@ minetest.register_craft({
 		{'', 'default:stick'},
 	}
 })
+minetest.register_craft({
+	output = 'default:axe_steel',
+	recipe = {
+		{'default:steel_ingot', 'default:steel_ingot'},
+		{'default:stick', 'default:steel_ingot'},
+		{'default:stick', ''},
+	}
+})
 
 minetest.register_craft({
 	output = 'default:axe_gold',
@@ -271,6 +307,14 @@ minetest.register_craft({
 		{'', 'default:stick'},
 	}
 })
+minetest.register_craft({
+	output = 'default:axe_gold',
+	recipe = {
+		{'default:gold_ingot', 'default:gold_ingot'},
+		{'default:stick', 'default:gold_ingot'},
+		{'default:stick', ''},
+	}
+})
 
 minetest.register_craft({
 	output = 'default:axe_diamond',
@@ -278,6 +322,14 @@ minetest.register_craft({
 		{'default:diamond', 'default:diamond'},
 		{'default:diamond', 'default:stick'},
 		{'', 'default:stick'},
+	}
+})
+minetest.register_craft({
+	output = 'default:axe_diamond',
+	recipe = {
+		{'default:diamond', 'default:diamond'},
+		{'default:stick', 'default:diamond'},
+		{'default:stick', ''},
 	}
 })
 
@@ -333,13 +385,23 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "default:pole",
+	output = "default:fishing_rod",
 	recipe = {
 		{'','','default:stick'},
 		{'','default:stick','default:string'},
 		{'default:stick','','default:string'},
 	}
 })
+minetest.register_craft({
+	output = "default:fishing_rod",
+	recipe = {
+		{'default:stick', '', ''},
+		{'default:string', 'default:stick', ''},
+		{'default:string','','default:stick'},
+	}
+})
+
+
 
 minetest.register_craft({
 	output = 'default:rail 16',
