@@ -430,7 +430,7 @@ minetest.register_node("default:haybale", {
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	on_place = minetest.rotate_node,
-	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2},
+	groups = {oddly_breakable_by_hand=3,flammable=2},
 	sounds = default.node_sound_wood_defaults(),
 })
 
