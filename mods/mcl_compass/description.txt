@@ -1,0 +1,1 @@
+A compass item which points towards the world origin.
