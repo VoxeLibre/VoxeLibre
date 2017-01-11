@@ -58,7 +58,7 @@ minetest.register_node("mesecons_torch:mesecon_torch_off", {
 	paramtype2 = "wallmounted",
 	is_ground_content = false,
 	selection_box = torch_selectionbox,
-	groups = {dig_immediate = 3, not_in_creative_inventory = 1},
+	groups = {dig_immediate = 3, dig_by_water=1, not_in_creative_inventory = 1},
 	drop = "mesecons_torch:mesecon_torch_on",
 	mesecons = {receptor = {
 		state = mesecon.state.off,
@@ -78,7 +78,7 @@ minetest.register_node("mesecons_torch:mesecon_torch_on", {
 	paramtype2 = "wallmounted",
 	is_ground_content = false,
 	selection_box = torch_selectionbox,
-	groups = {dig_immediate=3},
+	groups = {dig_immediate=3, dig_by_water=1},
 	light_source = 6,
 	description="Redstone Torch",
 	mesecons = {receptor = {
