@@ -136,6 +136,12 @@ minetest.register_craftitem("default:string",{
 	stack_max = 64,
 })
 
+minetest.register_craftitem("default:bowl",{
+	description = "Bowl",
+	inventory_image = "default_bowl.png",
+	stack_max = 64,
+})
+
 minetest.register_craftitem("default:prismarine_cry", {
 	description = "Prismarine Crystals",
 	inventory_image = "default_prismarine_crystals.png",

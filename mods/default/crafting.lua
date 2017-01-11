@@ -757,6 +757,16 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "default:bowl 4",
+	recipe = {
+		{"group:wood", "", "group:wood"},
+		{"", "group:wood", ""},
+	}
+})
+
+
+
+minetest.register_craft({
 	output = 'default:snowblock',
 	recipe = {
 		{'default:snowball', 'default:snowball'},
