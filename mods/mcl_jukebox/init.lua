@@ -16,9 +16,8 @@ local records = #recorddata
 for r=1, records do
 	minetest.register_craftitem("mcl_jukebox:record_"..r, {
 		description =
-			"Music Disc" .. "\n" ..
-			recorddata[r][1] .. "\n" ..
-			recorddata[r][2],
+			core.colorize("#75FFEA", "Music Disc") .. "\n" ..
+			core.colorize("#909090", recorddata[r][2] .. "—" .. recorddata[r][1]),
 		inventory_image = "mcl_jukebox_record_"..recorddata[r][3]..".png",
 		stack_max = 1,
 		groups = { music_record = r },
