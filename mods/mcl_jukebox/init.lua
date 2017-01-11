@@ -29,7 +29,7 @@ local function now_playing(player, track_id)
 	local text = "Now playing: " .. recorddata[track_id][2] .. "—" .. recorddata[track_id][1]
 
 	if hud ~= nil then
-		player:hud_change(active_huds[player], "text", text)
+		player:hud_change(active_huds[player:get_player_name()], "text", text)
 	else
 		id = player:hud_add({
 			hud_elem_type = "text",
@@ -49,6 +49,7 @@ local function now_playing(player, track_id)
 		end
 		if id == active_huds[player:get_player_name()] then
 			player:hud_remove(active_huds[player:get_player_name()])
+			active_huds[player:get_player_name()] = nil
 		end
 	end, {player, id})
 	
@@ -110,7 +111,7 @@ minetest.register_node("mcl_jukebox:jukebox", {
 			if record_id ~= 0 then
 				if active_tracks[cname] ~= nil then
 					minetest.sound_stop(active_tracks[cname])
-					clicker:hud_remove(active_huds[cname])
+					active_tracks[cname] = nil
 				end
 				active_tracks[cname] = minetest.sound_play("mcl_jukebox_track_"..record_id, {
 					to_player = cname,
@@ -137,6 +138,8 @@ minetest.register_node("mcl_jukebox:jukebox", {
 			if active_tracks[name] ~= nil then
 				minetest.sound_stop(active_tracks[name])
 				digger:hud_remove(active_huds[name])
+				active_tracks[name] = nil
+				active_huds[name] = nil
 			end
 		end
 		meta:from_table(meta2:to_table())
