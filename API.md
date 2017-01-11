@@ -1,0 +1,31 @@
+# API
+
+This document is a WORK IN PROGRESS. Currently, it only contains some information about the used groups.
+
+## Groups
+This section explains all the used groups in this subgame.
+
+### Groups for interactions
+
+* `dig_by_water=1`: Blocks with this group will drop when they are near flowing water
+* `cultivatable=2`: Block will be turned into Farmland by using a hoe on it
+* `cultivatable=1`: Block will be turned into Dirt by using a hoe on it
+
+### Groups (mostly) used for crafting recipes
+
+* `sand=1`: Sand (any color)
+* `sandstone=1`: (Yellow) sandstone and related nodes (chiseled and the like) (only full blocks)
+* `redsandstone=1`: Red sandstone and related nodes (chiseled and the like) (only full blocks)
+* `quartz_block=1`: Quartz Block and variants (chiseled, pillar, etc.) (only full blocks)
+* `stonebrick=1`: Stone Bricks and related nodes (only full blocks)
+* `tree=1`: Oak Wood, Birch Wood, etc. (tree trunks)
+* `wood=1`: Oak Wood Planks, Birch Wood Planks, etc. (only full blocks)
+* `wood_slab=1`: Slabs made out of a kind of wooden planks
+* `wood_stairs=1`: Stairs made out of a kind of wooden planks
+* `coal=1`: Coal of any kind (coal lump)
+* `boat=1`: Boat
+
+### Other groups
+
+* `water=1`: Water
+* `lava=1`: Lava

@@ -32,7 +32,7 @@ Bob Lennon because it's a pyro-barbare
 
 Info for programmers
 --------------------
-You find interesting and useful infos in API.txt.
+You find interesting and useful infos in API.md.
 
 License of media (textures and sounds)
 --------------------------------------
