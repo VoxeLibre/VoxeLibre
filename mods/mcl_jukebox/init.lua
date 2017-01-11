@@ -141,3 +141,8 @@ minetest.register_node("mcl_jukebox:jukebox", {
 	end,
 })
 
+minetest.register_craft({
+	type = "fuel",
+	recipe = "mcl_jukebox:jukebox",
+	burntime = 15,
+})
