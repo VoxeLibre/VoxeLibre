@@ -97,7 +97,7 @@ minetest.register_node("mesecons_button:button_wood_off", {
 		fixed = boxes_off	-- the button itself
 	},
 	groups = {dig_immediate=2, attached_node=1},
-	description = "Wood Button",
+	description = "Wooden Button",
 	on_punch = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_button:button_wood_on")
 		mesecon:receptor_on(pos, mesecon.rules.buttonlike_get(node))
@@ -130,7 +130,7 @@ minetest.register_node("mesecons_button:button_wood_on", {
 	},
 	groups = {dig_immediate=2, not_in_creative_inventory=1, attached_node=1},
 	drop = 'mesecons_button:button_wood_off',
-	description = "Wood Button",
+	description = "Wooden Button",
 	sounds = default.node_sound_stone_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.on,
