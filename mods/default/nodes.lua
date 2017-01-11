@@ -1175,7 +1175,7 @@ minetest.register_node("default:water_flowing", {
 	diggable = false,
 	buildable_to = true,
 	drop = "",
-	drowning = 1,
+	drowning = 4,
 	liquidtype = "flowing",
 	liquid_alternative_flowing = "default:water_flowing",
 	liquid_alternative_source = "default:water_source",
@@ -1208,7 +1208,7 @@ minetest.register_node("default:water_source", {
 	diggable = false,
 	buildable_to = true,
 	drop = "",
-	drowning = 1,
+	drowning = 4,
 	liquidtype = "source",
 	liquid_alternative_flowing = "default:water_flowing",
 	liquid_alternative_source = "default:water_source",
@@ -1245,7 +1245,10 @@ minetest.register_node("default:lava_flowing", {
 	diggable = false,
 	buildable_to = true,
 	drop = "",
-	drowning = 1,
+	--[[ Drowning in Minecraft deals 2 damage per second.
+	In Minetest, drowning damage is dealt every 2 seconds so this
+	translates to 4 drowning damage ]]
+	drowning = 4,
 	liquidtype = "flowing",
 	liquid_alternative_flowing = "default:lava_flowing",
 	liquid_alternative_source = "default:lava_source",
@@ -1279,7 +1282,7 @@ minetest.register_node("default:lava_source", {
 	diggable = false,
 	buildable_to = true,
 	drop = "",
-	drowning = 1,
+	drowning = 4,
 	liquidtype = "source",
 	liquid_alternative_flowing = "default:lava_flowing",
 	liquid_alternative_source = "default:lava_source",
