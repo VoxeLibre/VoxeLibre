@@ -16,8 +16,8 @@ local records = #recorddata
 for r=1, records do
 	minetest.register_craftitem("mcl_jukebox:record_"..r, {
 		description =
-			core.colorize("#75FFEA", "Music Disc") .. "\n" ..
-			core.colorize("#909090", recorddata[r][2] .. "—" .. recorddata[r][1]),
+			core.colorize("#55FFFF", "Music Disc") .. "\n" ..
+			core.colorize("#989898", recorddata[r][2] .. "—" .. recorddata[r][1]),
 		inventory_image = "mcl_jukebox_record_"..recorddata[r][3]..".png",
 		stack_max = 1,
 		groups = { music_record = r },
@@ -36,7 +36,7 @@ local function now_playing(player, track_id)
 			position = { x=0.5, y=0.8 },
 			offset = { x=0, y = 0 },
 			size = { x=100, y=100},
-			number = 0x75FFEA,
+			number = 0x55FFFF,
 			text = text,
 		})
 		active_huds[player:get_player_name()] = id
