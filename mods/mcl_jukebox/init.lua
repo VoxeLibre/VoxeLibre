@@ -128,6 +128,11 @@ minetest.register_node("mcl_jukebox:jukebox", {
 		end
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		local name = digger:get_player_name()
+		if active_tracks[name] ~= nil then
+			minetest.sound_stop(active_tracks[name])
+			digger:hud_remove(active_huds[name])
+		end
 		local meta = minetest.get_meta(pos)
 		local meta2 = meta
 		meta:from_table(oldmetadata)
