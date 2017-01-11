@@ -90,7 +90,6 @@ minetest.register_node("farming:melontige_linked_r", {
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "wallmounted",
-	legacy_wallmounted = true,
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -121,7 +120,6 @@ minetest.register_node("farming:melontige_linked_l", {
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "wallmounted",
-	legacy_wallmounted = true,
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -152,7 +150,6 @@ minetest.register_node("farming:melontige_linked_t", {
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "wallmounted",
-	legacy_wallmounted = true,
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -183,7 +180,6 @@ minetest.register_node("farming:melontige_linked_b", {
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "wallmounted",
-	legacy_wallmounted = true,
 	node_box = {
 		type = "fixed",
 		fixed = {

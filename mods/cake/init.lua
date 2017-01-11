@@ -39,7 +39,6 @@ minetest.register_node("cake:cake", {
 	stack_max = 1,
 	groups = {crumbly=3,falling_node=1},
 	drop = '',
-	--legacy_mineral = true,
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
@@ -63,7 +62,6 @@ minetest.register_node("cake:cake_5", {
 		},
 	groups = {crumbly=3,falling_node=1,not_in_creative_inventory=1},
 	drop = '',
-	--legacy_mineral = true,
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
@@ -87,7 +85,6 @@ minetest.register_node("cake:cake_4", {
 		},
 	groups = {crumbly=3,falling_node=1,not_in_creative_inventory=1},
 	drop = '',
-	--legacy_mineral = true,
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
@@ -111,7 +108,6 @@ minetest.register_node("cake:cake_3", {
 		},
 	groups = {crumbly=3,falling_node=1,not_in_creative_inventory=1},
 	drop = '',
-	--legacy_mineral = true,
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
@@ -135,7 +131,6 @@ minetest.register_node("cake:cake_2", {
 		},
 	groups = {crumbly=3,falling_node=1,not_in_creative_inventory=1},
 	drop = '',
-	--legacy_mineral = true,
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
@@ -159,7 +154,6 @@ minetest.register_node("cake:cake_1", {
 		},
 	groups = {crumbly=3,falling_node=1,not_in_creative_inventory=1},
 	drop = '',
-	--legacy_mineral = true,
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
