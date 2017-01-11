@@ -129,10 +129,6 @@ minetest.register_node("mcl_jukebox:jukebox", {
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local name = digger:get_player_name()
-		if active_tracks[name] ~= nil then
-			minetest.sound_stop(active_tracks[name])
-			digger:hud_remove(active_huds[name])
-		end
 		local meta = minetest.get_meta(pos)
 		local meta2 = meta
 		meta:from_table(oldmetadata)
@@ -141,6 +137,10 @@ minetest.register_node("mcl_jukebox:jukebox", {
 		if not stack:is_empty() then
 			local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
 			minetest.add_item(p, stack)
+			if active_tracks[name] ~= nil then
+				minetest.sound_stop(active_tracks[name])
+				digger:hud_remove(active_huds[name])
+			end
 		end
 		meta:from_table(meta2:to_table())
 	end,
