@@ -299,12 +299,12 @@ minetest.register_node("flowers:pot",{
 	stack_max = 16,
 	sounds = default.node_sound_defaults(),
 	after_place_node = function(pos, placer, itemstack)
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		meta:set_string("owner",placer:get_player_name())
 	end,
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if not itemstack then return end
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		if clicker:get_player_name() == meta:get_string("owner") then
 			flower_pot_drop_item(pos,node)
 			local s = itemstack:take_item()
@@ -314,20 +314,20 @@ minetest.register_node("flowers:pot",{
 		return itemstack
 	end,
 	on_punch = function(pos,node,puncher)
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		if puncher:get_player_name() == meta:get_string("owner") then
 			flower_pot_drop_item(pos,node)
 		end
 	end,
 	can_dig = function(pos,player)
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		return player:get_player_name() == meta:get_string("owner")
 	end,
 	on_destruct = function(pos)
 		local node = minetest.get_node(pos)
 		flower_pot_drop_item(pos,node)
-		minetest.env:add_node(pos, {name="air"})
-		minetest.env:add_item(pos, "flowers:pot")
+		minetest.add_node(pos, {name="air"})
+		minetest.add_item(pos, "flowers:pot")
 	end,
 })
 

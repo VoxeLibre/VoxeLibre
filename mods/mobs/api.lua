@@ -613,9 +613,9 @@ function mobs:register_mob(name, def)
 							pos.y = math.floor(pos.y+0.5)
 							pos.z = math.floor(pos.z+0.5)
 							do_tnt_physics(pos, 3)
-							local meta = minetest.env:get_meta(pos)
+							local meta = minetest.get_meta(pos)
 							minetest.sound_play("tnt_explode", {pos = pos,gain = 1.0,max_hear_distance = 16,})
-							if minetest.env:get_node(pos).name == "default:water_source" or minetest.env:get_node(pos).name == "default:water_flowing" or minetest.is_protected(pos, "tnt") then
+							if minetest.get_node(pos).name == "default:water_source" or minetest.get_node(pos).name == "default:water_flowing" or minetest.is_protected(pos, "tnt") then
 								self.object:remove()
 								return
 							end
@@ -624,17 +624,17 @@ function mobs:register_mob(name, def)
 									for z=-3,3 do
 										if x*x+y*y+z*z <= 3 * 3 + 3 then
 											local np={x=pos.x+x,y=pos.y+y,z=pos.z+z}
-											local n = minetest.env:get_node(np)
+											local n = minetest.get_node(np)
 											if n.name ~= "air" and n.name ~= "default:obsidian" and n.name ~= "default:bedrock" and n.name ~= "protector:protect" then
 												activate_if_tnt(n.name, np, pos, 3)
-												minetest.env:remove_node(np)
+												minetest.remove_node(np)
 												nodeupdate(np)
 												if n.name ~= "tnt:tnt" and math.random() > 0.9 then
 													local drop = minetest.get_node_drops(n.name, "")
 													for _,item in ipairs(drop) do
 														if type(item) == "string" then
 															if math.random(1,100) > 40 then
-															local obj = minetest.env:add_item(np, item)
+															local obj = minetest.add_item(np, item)
 															end
 														end
 													end
@@ -970,7 +970,7 @@ function mobs:register_spawn(name, description, nodes, max_light, min_light, cha
 end
 
 function do_tnt_physics(tnt_np,tntr)
-    local objs = minetest.env:get_objects_inside_radius(tnt_np, tntr)
+    local objs = minetest.get_objects_inside_radius(tnt_np, tntr)
     for k, obj in pairs(objs) do
         local oname = obj:get_entity_name()
         local v = obj:getvelocity()

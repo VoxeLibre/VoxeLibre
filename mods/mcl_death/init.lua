@@ -7,7 +7,7 @@
 			local z = math.random(0, 9)/3
 			pos.x = pos.x + x
 			pos.z = pos.z + z
-			minetest.env:add_item(pos, stack)
+			minetest.add_item(pos, stack)
 			stack:clear()
 			inv:set_stack("main", i, stack)
 			pos.x = pos.x - x

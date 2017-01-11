@@ -7,7 +7,7 @@ minetest.register_globalstep(function(dtime)
          local ctrl = player:get_player_control()
          if ctrl.up or ctrl.left or ctrl.right then
 
-            for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, 2)) do
+            for _,object in ipairs(minetest.get_objects_inside_radius(pos, 2)) do
                local en = object:get_luaentity()
                if not object:is_player() and en and en.name == "__builtin:item" then
                   if inv and
@@ -46,7 +46,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 		end
 		if not inv or not inv:contains_item("main", ItemStack(name)) then
 			for i=1,count do
-				local obj = minetest.env:add_item(pos, name)
+				local obj = minetest.add_item(pos, name)
 				if obj ~= nil then
 					obj:get_luaentity().collect = true
 					local x = math.random(1, 5)

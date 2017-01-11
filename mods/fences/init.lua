@@ -13,47 +13,47 @@ local function find_dock(pos, second)
 		return false
 	end
 
-	local h1 = minetest.env:get_node({x=pos.x+1, y=pos.y, z=pos.z})
-	local v1 = minetest.env:get_node({x=pos.x-1, y=pos.y, z=pos.z})
-	local r1 = minetest.env:get_node({x=pos.x, y=pos.y, z=pos.z+1})
-	local l1 = minetest.env:get_node({x=pos.x, y=pos.y, z=pos.z-1})
+	local h1 = minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z})
+	local v1 = minetest.get_node({x=pos.x-1, y=pos.y, z=pos.z})
+	local r1 = minetest.get_node({x=pos.x, y=pos.y, z=pos.z+1})
+	local l1 = minetest.get_node({x=pos.x, y=pos.y, z=pos.z-1})
 	local code = 0
 	if dockable(l1.name) then
 		code = code+1
 		if second < 2 then
-			minetest.env:punch_node({x=pos.x, y=pos.y, z=pos.z-1})
+			minetest.punch_node({x=pos.x, y=pos.y, z=pos.z-1})
 		end
 	end
 	if dockable(r1.name) then
 		code = code+2
 		if second < 2 then
-			minetest.env:punch_node({x=pos.x, y=pos.y, z=pos.z+1})
+			minetest.punch_node({x=pos.x, y=pos.y, z=pos.z+1})
 		end
 	end
 	if dockable(v1.name) then
 		code = code+11
 		if second < 2 then
-			minetest.env:punch_node({x=pos.x-1, y=pos.y, z=pos.z})
+			minetest.punch_node({x=pos.x-1, y=pos.y, z=pos.z})
 		end
 	end
 	if dockable(h1.name) then
 		code = code+21
 		if second < 2 then
-			minetest.env:punch_node({x=pos.x+1, y=pos.y, z=pos.z})
+			minetest.punch_node({x=pos.x+1, y=pos.y, z=pos.z})
 		end
 	end
-		local me = minetest.env:get_node(pos)
+		local me = minetest.get_node(pos)
 		if code > 0 then
 			local tmp_name = "fences:fence_wood_"..code
 			local tmp_node = {name=tmp_name, param1=me.param1, param2=me.param2}
 			if second > 0 then
 				local tmp_node = {name=tmp_name, param1=me.param1, param2=me.param2}
-				minetest.env:set_node(pos, tmp_node)			
+				minetest.set_node(pos, tmp_node)			
 			end
 		elseif code == 0 then
 			if second == 2 then
 				local tmp_node = {name="fences:fence_wood", param1=me.param1, param2=me.param2}
-				minetest.env:set_node(pos, tmp_node)			
+				minetest.set_node(pos, tmp_node)			
 			end
 		end
 	
@@ -583,11 +583,11 @@ local meta2
 local state2 = 0
 
 local function update_gate(pos, node) 
-	minetest.env:set_node(pos, node)
+	minetest.set_node(pos, node)
 end
 
 local function punch_gate(pos, node)
-	meta2 = minetest.env:get_meta(pos)
+	meta2 = minetest.get_meta(pos)
 	state2 = meta2:get_int("state")
 	local tmp_node2
 		if state2 == 1 then
@@ -684,8 +684,8 @@ minetest.register_node("fences:fencegate", {
 			}
 	},
 	on_construct = function(pos)
-		me2 = minetest.env:get_node(pos)
-		meta2 = minetest.env:get_meta(pos)
+		me2 = minetest.get_node(pos)
+		meta2 = minetest.get_meta(pos)
 		meta2:set_int("state", 0)
 		state2 = 0
 		find_dock(pos, -1)
@@ -711,8 +711,8 @@ if override_original == true then
 		chance = 1,
 		action = function(pos, node, active_object_count, active_object_count_wider)
 			local tmp_node3 = {name="fences:fence_wood"}
-			minetest.env:set_node(pos, tmp_node3)
-			minetest.env:punch_node(pos)
+			minetest.set_node(pos, tmp_node3)
+			minetest.punch_node(pos)
 		end
 	})
 end

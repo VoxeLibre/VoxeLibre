@@ -8,14 +8,14 @@ function farming:add_plant(full_grown, names, interval, chance)
 		chance = chance,
 		action = function(pos, node)
 			pos.y = pos.y-1
-			if minetest.env:get_node(pos).name ~= "farming:soil_wet" and math.random(0, 9) > 0 then
+			if minetest.get_node(pos).name ~= "farming:soil_wet" and math.random(0, 9) > 0 then
 				return
 			end
 			pos.y = pos.y+1
-			if not minetest.env:get_node_light(pos) then
+			if not minetest.get_node_light(pos) then
 				return
 			end
-			if minetest.env:get_node_light(pos) < 10 then
+			if minetest.get_node_light(pos) < 10 then
 				return
 			end
 			local step = nil
@@ -32,7 +32,7 @@ function farming:add_plant(full_grown, names, interval, chance)
 			if new_node.name == nil then
 				new_node.name = full_grown
 			end
-			minetest.env:set_node(pos, new_node)
+			minetest.set_node(pos, new_node)
 		end
 }	)
 end
@@ -48,13 +48,13 @@ function farming:place_seed(itemstack, placer, pointed_thing, plantname)
 	end
 	
 	local pos = {x=pt.above.x, y=pt.above.y-1, z=pt.above.z}
-	local farmland = minetest.env:get_node(pos)
+	local farmland = minetest.get_node(pos)
 	pos= {x=pt.above.x, y=pt.above.y, z=pt.above.z}
-	local place_s = minetest.env:get_node(pos)
+	local place_s = minetest.get_node(pos)
 
 	
 	if string.find(farmland.name, "farming:soil") and string.find(place_s.name, "air")  then
-		minetest.env:add_node(pos, {name=plantname})
+		minetest.add_node(pos, {name=plantname})
 	else
 		return
 	end

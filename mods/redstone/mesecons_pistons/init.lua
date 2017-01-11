@@ -59,10 +59,10 @@ local piston_remove_pusher = function (pos, node)
 
 	dir = piston_get_direction(pistonspec.dir, node)
 	local pusherpos = mesecon:addPosRule(pos, dir)
-	local pushername = minetest.env:get_node(pusherpos).name
+	local pushername = minetest.get_node(pusherpos).name
 
 	if pushername == pistonspec.pusher then --make sure there actually is a pusher (for compatibility reasons mainly)
-		minetest.env:remove_node(pusherpos)
+		minetest.remove_node(pusherpos)
 		nodeupdate(pusherpos)
 	end
 end
@@ -74,15 +74,15 @@ local piston_on = function (pos, node)
 	local np = mesecon:addPosRule(pos, dir)
 	success, stack = mesecon:mvps_push(np, dir, PISTON_MAXIMUM_PUSH)
 	if success then
-		minetest.env:add_node(pos, {param2 = node.param2, name = pistonspec.onname})
-		minetest.env:add_node(np, {param2 = node.param2, name = pistonspec.pusher})
+		minetest.add_node(pos, {param2 = node.param2, name = pistonspec.onname})
+		minetest.add_node(np, {param2 = node.param2, name = pistonspec.pusher})
 		mesecon:mvps_process_stack(stack)
 	end
 end
 
 local piston_off = function (pos, node)
 	local pistonspec = minetest.registered_nodes[node.name].mesecons_piston
-	minetest.env:add_node(pos, {param2 = node.param2, name = pistonspec.offname})
+	minetest.add_node(pos, {param2 = node.param2, name = pistonspec.offname})
 	piston_remove_pusher (pos, node)
 
 	if pistonspec.sticky then
@@ -100,12 +100,12 @@ local piston_orientate = function (pos, placer)
 	-- placer pitch in degrees
 	local pitch = placer:get_look_pitch() * (180 / math.pi)
 
-	local node = minetest.env:get_node(pos)
+	local node = minetest.get_node(pos)
 	local pistonspec = minetest.registered_nodes[node.name].mesecons_piston
 	if pitch > 55 then --looking upwards
-		minetest.env:add_node(pos, {name=pistonspec.piston_down})
+		minetest.add_node(pos, {name=pistonspec.piston_down})
 	elseif pitch < -55 then --looking downwards
-		minetest.env:add_node(pos, {name=pistonspec.piston_up})
+		minetest.add_node(pos, {name=pistonspec.piston_up})
 	end
 end
 
@@ -723,7 +723,7 @@ local piston_get_stopper = function (node, dir, stack, stackid)
 	pistonspec = minetest.registered_nodes[node.name].mesecons_piston
 	dir = piston_get_direction(pistonspec.dir, node)
 	local pusherpos  = mesecon:addPosRule(stack[stackid].pos, dir)
-	local pushernode = minetest.env:get_node(pusherpos)
+	local pushernode = minetest.get_node(pusherpos)
 
 	if minetest.registered_nodes[node.name].mesecons_piston.pusher == pushernode.name then
 		for _, s in ipairs(stack) do

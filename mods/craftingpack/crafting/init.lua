@@ -7,7 +7,7 @@ local function item_drop(itemstack, dropper, pos)
 		local p = {x=pos.x, y=pos.y+1.2, z=pos.z}
 		p.x = p.x+(math.random(1,3)*0.2)
 		p.z = p.z+(math.random(1,3)*0.2)
-		local obj = minetest.env:add_item(p, itemstack)
+		local obj = minetest.add_item(p, itemstack)
 		if obj then
 			v.x = v.x*4
 			v.y = v.y*4 + 2

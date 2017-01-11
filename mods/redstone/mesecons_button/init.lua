@@ -3,7 +3,7 @@
 -- and then turns off again
 
 mesecon.button_turnoff = function (pos)
-	local node = minetest.env:get_node(pos)
+	local node = minetest.get_node(pos)
 	if node.name=="mesecons_button:button_stone_on" then --has not been dug
 		mesecon:swap_node(pos, "mesecons_button:button_stone_off")
 		minetest.sound_play("mesecons_button_pop", {pos=pos})

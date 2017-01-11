@@ -43,7 +43,7 @@ minetest.register_node("cake:cake", {
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
-			minetest.env:add_node(pos,{type="node",name="cake:cake_5",param2=param2})
+			minetest.add_node(pos,{type="node",name="cake:cake_5",param2=param2})
 		end
 	end,
 })
@@ -67,7 +67,7 @@ minetest.register_node("cake:cake_5", {
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
-			minetest.env:add_node(pos,{type="node",name="cake:cake_4",param2=param2})
+			minetest.add_node(pos,{type="node",name="cake:cake_4",param2=param2})
 		end
 	end,
 })
@@ -91,7 +91,7 @@ minetest.register_node("cake:cake_4", {
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
-			minetest.env:add_node(pos,{type="node",name="cake:cake_3",param2=param2})
+			minetest.add_node(pos,{type="node",name="cake:cake_3",param2=param2})
 		end
 	end,
 })
@@ -115,7 +115,7 @@ minetest.register_node("cake:cake_3", {
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
-			minetest.env:add_node(pos,{type="node",name="cake:cake_2",param2=param2})
+			minetest.add_node(pos,{type="node",name="cake:cake_2",param2=param2})
 		end
 	end,
 })
@@ -139,7 +139,7 @@ minetest.register_node("cake:cake_2", {
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
-			minetest.env:add_node(pos,{type="node",name="cake:cake_1",param2=param2})
+			minetest.add_node(pos,{type="node",name="cake:cake_1",param2=param2})
 		end
 	end,
 })
@@ -163,7 +163,7 @@ minetest.register_node("cake:cake_1", {
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
-			minetest.env:remove_node(pos)
+			minetest.remove_node(pos)
 		end
 	end,
 })

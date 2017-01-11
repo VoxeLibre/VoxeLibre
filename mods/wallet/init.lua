@@ -11,7 +11,7 @@ local directions = {
 }
 
 local function update_wall(pos)
-	local thisnode = minetest.env:get_node(pos)
+	local thisnode = minetest.get_node(pos)
 
 	if thisnode.name:find("wallet:wall") ~= 1 and
 		thisnode.name:find("wallet:wallmossy") ~= 1 then
@@ -32,14 +32,14 @@ local function update_wall(pos)
 	-- Neighbouring walkable nodes
 	for i = 1, 4 do
 		local dir = directions[i]
-		local node = minetest.env:get_node({x = pos.x + dir.x, y = pos.y + dir.y, z = pos.z + dir.z})
+		local node = minetest.get_node({x = pos.x + dir.x, y = pos.y + dir.y, z = pos.z + dir.z})
 		if minetest.registered_nodes[node.name].walkable then
 			sum = sum + 2 ^ (i - 1)
 		end
 	end
 
 	-- Torches or walkable nodes above the wall
-	local upnode = minetest.env:get_node({x = pos.x, y = pos.y+1, z = pos.z})
+	local upnode = minetest.get_node({x = pos.x, y = pos.y+1, z = pos.z})
 	if sum == 5 or sum == 10 then
 		if minetest.registered_nodes[upnode.name].walkable or upnode.name == "torches:floor" then
 			sum = sum + 11
@@ -50,7 +50,7 @@ local function update_wall(pos)
 		sum = 15
 	end]]
 
-	minetest.env:add_node(pos, {name = basename..sum})
+	minetest.add_node(pos, {name = basename..sum})
 end
 
 function update_wall_global(pos)

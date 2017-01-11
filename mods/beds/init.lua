@@ -5,13 +5,13 @@ local old_yaw = 0
 
 local function get_dir(pos)
 	local btop = "beds:bed_top"
-	if minetest.env:get_node({x=pos.x+1,y=pos.y,z=pos.z}).name == btop then
+	if minetest.get_node({x=pos.x+1,y=pos.y,z=pos.z}).name == btop then
 		return 7.9
-	elseif minetest.env:get_node({x=pos.x-1,y=pos.y,z=pos.z}).name == btop then
+	elseif minetest.get_node({x=pos.x-1,y=pos.y,z=pos.z}).name == btop then
 		return 4.75
-	elseif minetest.env:get_node({x=pos.x,y=pos.y,z=pos.z+1}).name == btop then
+	elseif minetest.get_node({x=pos.x,y=pos.y,z=pos.z+1}).name == btop then
 		return 3.15
-	elseif minetest.env:get_node({x=pos.x,y=pos.y,z=pos.z-1}).name == btop then
+	elseif minetest.get_node({x=pos.x,y=pos.y,z=pos.z-1}).name == btop then
 		return 6.28
 	end
 end
@@ -28,15 +28,15 @@ function plock(start, max, tick, player, yaw)
 end
 
 function exit(pos)
-	local npos = minetest.env:find_node_near(pos, 1, "beds:bed_bottom")
+	local npos = minetest.find_node_near(pos, 1, "beds:bed_bottom")
 	if npos ~= nil then pos = npos end
-	if minetest.env:get_node({x=pos.x+1,y=pos.y,z=pos.z}).name == "air" then
+	if minetest.get_node({x=pos.x+1,y=pos.y,z=pos.z}).name == "air" then
 		return {x=pos.x+1,y=pos.y,z=pos.z}
-	elseif minetest.env:get_node({x=pos.x-1,y=pos.y,z=pos.z}).name == "air" then
+	elseif minetest.get_node({x=pos.x-1,y=pos.y,z=pos.z}).name == "air" then
 		return {x=pos.x-1,y=pos.y,z=pos.z}
-	elseif minetest.env:get_node({x=pos.x,y=pos.y,z=pos.z+1}).name == "air" then
+	elseif minetest.get_node({x=pos.x,y=pos.y,z=pos.z+1}).name == "air" then
 		return {x=pos.x,y=pos.y,z=pos.z+1}
-	elseif minetest.env:get_node({x=pos.x,y=pos.y,z=pos.z-1}).name == "air" then
+	elseif minetest.get_node({x=pos.x,y=pos.y,z=pos.z-1}).name == "air" then
 		return {x=pos.x,y=pos.y,z=pos.z-1}
 	else 
 		return {x=pos.x,y=pos.y,z=pos.z}
@@ -67,7 +67,7 @@ minetest.register_node("beds:bed_bottom", {
 	},
 	
 	after_place_node = function(pos, placer, itemstack)
-		local node = minetest.env:get_node(pos)
+		local node = minetest.get_node(pos)
 		local param2 = node.param2
 		local npos = {x=pos.x, y=pos.y, z=pos.z}
 		if param2 == 0 then
@@ -79,17 +79,17 @@ minetest.register_node("beds:bed_bottom", {
 		elseif param2 == 3 then
 			npos.x = npos.x-1
 		end
-		if minetest.registered_nodes[minetest.env:get_node(npos).name].buildable_to == true and minetest.env:get_node({x=npos.x, y=npos.y-1, z=npos.z}).name ~= "air" then
-			minetest.env:set_node(npos, {name="beds:bed_top", param2 = param2})
+		if minetest.registered_nodes[minetest.get_node(npos).name].buildable_to == true and minetest.get_node({x=npos.x, y=npos.y-1, z=npos.z}).name ~= "air" then
+			minetest.set_node(npos, {name="beds:bed_top", param2 = param2})
 		else
-			minetest.env:dig_node(pos)
+			minetest.dig_node(pos)
 			return true
 		end
 	end,	
 	
 	on_destruct = function(pos)
-		pos = minetest.env:find_node_near(pos, 1, "beds:bed_top")
-		if pos ~= nil then minetest.env:remove_node(pos) end
+		pos = minetest.find_node_near(pos, 1, "beds:bed_top")
+		if pos ~= nil then minetest.remove_node(pos) end
 	end,
 	
 	 on_rightclick = function(pos, node, clicker, itemstack)
@@ -97,7 +97,7 @@ minetest.register_node("beds:bed_bottom", {
 			return
 		end
 
-		if minetest.env:get_timeofday() > 0.2 and minetest.env:get_timeofday() < 0.805 then
+		if minetest.get_timeofday() > 0.2 and minetest.get_timeofday() < 0.805 then
 			minetest.chat_send_all("You can only sleep at night")
 			return
 		else			
@@ -110,7 +110,7 @@ minetest.register_node("beds:bed_bottom", {
 		end
 
 		if not clicker:get_player_control().sneak then
-			local meta = minetest.env:get_meta(pos)
+			local meta = minetest.get_meta(pos)
 			local param2 = node.param2
 			if param2 == 0 then
 				pos.z = pos.z+1
@@ -191,10 +191,10 @@ minetest.register_globalstep(function(dtime)
 	
 	local players = #minetest.get_connected_players()
 	if players == player_in_bed and players ~= 0 then
-		if minetest.env:get_timeofday() < 0.2 or minetest.env:get_timeofday() > 0.805 then
+		if minetest.get_timeofday() < 0.2 or minetest.get_timeofday() > 0.805 then
 			if not wait then
 				minetest.after(2, function()
-					minetest.env:set_timeofday(0.23)
+					minetest.set_timeofday(0.23)
 					wait = false
 					guy:set_physics_override(1,1,1)
 					guy:setpos(exit(guy:getpos()))
@@ -227,7 +227,7 @@ minetest.register_abm({
 	interval = 1,
 	chance = 1,
 	action = function(pos, node)
-		local meta = minetest.env:get_meta(pos)
+		local meta = minetest.get_meta(pos)
 		if meta:get_string("player") ~= "" then
 			local param2 = node.param2
 			if param2 == 0 then
@@ -239,7 +239,7 @@ minetest.register_abm({
 			elseif param2 == 3 then
 				pos.x = pos.x-1
 			end
-			local player = minetest.env:get_player_by_name(meta:get_string("player"))
+			local player = minetest.get_player_by_name(meta:get_string("player"))
 			if player == nil then
 				meta:set_string("player", "")
 				player_in_bed = player_in_bed-1

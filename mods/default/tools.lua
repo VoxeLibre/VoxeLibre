@@ -306,7 +306,7 @@ minetest.register_tool("default:pole", {
     liquids_pointable = true,
 	on_use = function (itemstack, user, pointed_thing)
 		if pointed_thing and pointed_thing.under then
-			local node = minetest.env:get_node(pointed_thing.under)
+			local node = minetest.get_node(pointed_thing.under)
 			if string.find(node.name, "default:water") then
 				if math.random(1, 100) > 50 then
 					local inv = user:get_inventory()
@@ -348,8 +348,8 @@ minetest.register_craftitem("default:snowball", {
 	on_use = snow_shoot_snowball,
 	on_construct = function(pos)
 	pos.y = pos.y - 1
-		if minetest.env:get_node(pos).name == "default:dirt_with_grass" then
-			minetest.env:set_node(pos, {name="default:dirt_with_snow"})
+		if minetest.get_node(pos).name == "default:dirt_with_grass" then
+			minetest.set_node(pos, {name="default:dirt_with_snow"})
 		end
 	end,
 })

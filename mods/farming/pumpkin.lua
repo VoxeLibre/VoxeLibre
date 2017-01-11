@@ -5,10 +5,10 @@ minetest.register_craftitem("farming:pumpkin_seed", {
 	stack_max = 64,
 	inventory_image = "farming_pumpkin_seed.png",
 	on_place = function(itemstack, placer, pointed_thing)
-		local above = minetest.env:get_node(pointed_thing.above)
+		local above = minetest.get_node(pointed_thing.above)
 		if above.name == "air" then
 			above.name = "farming:pumpkin_1"
-			minetest.env:set_node(pointed_thing.above, above)
+			minetest.set_node(pointed_thing.above, above)
 			itemstack:take_item(1)
 			return itemstack
 		end
@@ -60,19 +60,19 @@ minetest.register_node("farming:pumpkin_face", {
 		local have_change = 0
 		for x=-1,1 do
 				local p = {x=pos.x+x, y=pos.y, z=pos.z}
-				local n = minetest.env:get_node(p)
+				local n = minetest.get_node(p)
 			if string.find(n.name, "pumpkintige_linked_") and have_change == 0 then
 					have_change = 1
-					minetest.env:add_node(p, {name="farming:pumpkintige_unconnect"})
+					minetest.add_node(p, {name="farming:pumpkintige_unconnect"})
 			end
 		end
 		if have_change == 0 then
 			for z=-1,1 do
 				p = {x=pos.x, y=pos.y, z=pos.z+z}
-				local n = minetest.env:get_node(p)
+				local n = minetest.get_node(p)
 				if string.find(n.name, "pumpkintige_linked_") and have_change == 0 then
 						have_change = 1
-						minetest.env:add_node(p, {name="farming:pumpkintige_unconnect"})
+						minetest.add_node(p, {name="farming:pumpkintige_unconnect"})
 				end
 			end
 		end
@@ -232,17 +232,17 @@ minetest.register_abm({
 		for x=-1,1 do
 				local p = {x=pos.x+x, y=pos.y-1, z=pos.z}
 				newpos = {x=pos.x+x, y=pos.y, z=pos.z}
-				local n = minetest.env:get_node(p)
-				local nod = minetest.env:get_node(newpos)
+				local n = minetest.get_node(p)
+				local nod = minetest.get_node(newpos)
 			if n.name=="default:dirt_with_grass" and nod.name=="air" and have_change == 0 
 			or n.name=="default:dirt" and nod.name=="air" and have_change == 0
 			or string.find(n.name, "farming:soil") and nod.name=="air" and have_change == 0 then
 					have_change = 1
-					minetest.env:add_node(newpos, {name="farming:pumpkin_face"})
+					minetest.add_node(newpos, {name="farming:pumpkin_face"})
 					if x == 1 then
-						minetest.env:add_node(pos, {name="farming:pumpkintige_linked_r" })
+						minetest.add_node(pos, {name="farming:pumpkintige_linked_r" })
 					else
-						minetest.env:add_node(pos, {name="farming:pumpkintige_linked_l"})
+						minetest.add_node(pos, {name="farming:pumpkintige_linked_l"})
 					end
 			end
 		end
@@ -250,17 +250,17 @@ minetest.register_abm({
 			for z=-1,1 do
 					p = {x=pos.x, y=pos.y-1, z=pos.z+z}
 					newpos = {x=pos.x, y=pos.y, z=pos.z+z}
-					n = minetest.env:get_node(p)
-					local nod2 = minetest.env:get_node(newpos)
+					n = minetest.get_node(p)
+					local nod2 = minetest.get_node(newpos)
 					if n.name=="default:dirt_with_grass" and nod2.name=="air" and have_change == 0 
 					or n.name=="default:dirt" and nod2.name=="air" and have_change == 0 
 					or string.find(n.name, "farming:soil") and nod2.name=="air" and have_change == 0 then
 						have_change = 1
-						minetest.env:add_node(newpos, {name="farming:pumpkin_face"})
+						minetest.add_node(newpos, {name="farming:pumpkin_face"})
 					if z == 1 then
-						minetest.env:add_node(pos, {name="farming:pumpkintige_linked_t" })
+						minetest.add_node(pos, {name="farming:pumpkintige_linked_t" })
 					else
-						minetest.env:add_node(pos, {name="farming:pumpkintige_linked_b" })
+						minetest.add_node(pos, {name="farming:pumpkintige_linked_b" })
 					end
 					end
 			end
