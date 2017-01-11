@@ -1,4 +1,5 @@
 local active_tracks = {}
+local active_huds = {}
 
 local recorddata = {
 	{ "The Evil Sister (Jordach's Mix)", "SoundHelix", "13" } ,
@@ -24,6 +25,44 @@ for r=1, records do
 	})
 end
 
+local function now_playing(player, track_id)
+	local hud = active_huds[player:get_player_name()]
+	local text = 
+		recorddata[track_id][1].."\n"..
+		recorddata[track_id][2]
+
+	if hud ~= nil then
+		player:hud_change(active_huds[player], {
+			text = text
+		})
+	else
+		id = player:hud_add({
+			hud_elem_type = "text",
+			position = { x=0.5, y=0.8 },
+			offset = { x=0, y = 0 },
+			size = { x=100, y=100},
+			number = 0xFFFFFF,
+			text = text,
+		})
+		active_huds[player:get_player_name()] = id
+	end
+	minetest.after(5, function(tab)
+		local player = tab[1]
+		local id = tab[2]
+		if not player or not player:is_player() or not active_huds[player:get_player_name()] then
+			return
+		end
+		if id == active_huds[player:get_player_name()] then
+			player:hud_remove(active_huds[player:get_player_name()])
+		end
+	end, {player, id})
+	
+end
+
+minetest.register_on_leaveplayer(function(player)
+	active_tracks[player:get_player_name()] = nil
+	active_huds[player:get_player_name()] = nil
+end)
 
 -- Jukebox crafting
 minetest.register_craft({
@@ -34,6 +73,7 @@ minetest.register_craft({
 		{'group:wood', 'group:wood', 'group:wood'},
 	}
 })
+
 
 -- Jukebox
 minetest.register_node("mcl_jukebox:jukebox", {
@@ -64,6 +104,9 @@ minetest.register_node("mcl_jukebox:jukebox", {
 			inv:set_stack("main", 1, "")
 			if active_tracks[puncher:get_player_name()] ~= nil then
 				minetest.sound_stop(active_tracks[puncher:get_player_name()])
+				puncher:hud_remove(active_huds[puncher:get_player_name()])
+				active_tracks[puncher:get_player_name()] = nil
+				active_huds[puncher:get_player_name()] = nil
 			end
 		else
 			-- Jukebox is empty: Play track if player holds music record
@@ -72,6 +115,7 @@ minetest.register_node("mcl_jukebox:jukebox", {
 			if record_id ~= 0 then
 				if active_tracks[puncher:get_player_name()] ~= nil then
 					minetest.sound_stop(active_tracks[puncher:get_player_name()])
+					puncher:hud_remove(active_huds[puncher:get_player_name()])
 				end
 				puncher:set_wielded_item("")
 				active_tracks[puncher:get_player_name()] = minetest.sound_play("mcl_jukebox_track_"..record_id, {
@@ -79,6 +123,7 @@ minetest.register_node("mcl_jukebox:jukebox", {
 					--max_hear_distance = 16,
 					gain = 1,
 				})
+				now_playing(puncher, record_id)
 				inv:set_stack("main", 1, wield)
 			end
 		end
