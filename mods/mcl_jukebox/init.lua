@@ -32,9 +32,7 @@ local function now_playing(player, track_id)
 		recorddata[track_id][2]
 
 	if hud ~= nil then
-		player:hud_change(active_huds[player], {
-			text = text
-		})
+		player:hud_change(active_huds[player], "text", text)
 	else
 		id = player:hud_add({
 			hud_elem_type = "text",
@@ -86,15 +84,16 @@ minetest.register_node("mcl_jukebox:jukebox", {
 		local inv = meta:get_inventory()
 		inv:set_size("main", 1)
 	end,
-	on_punch = function(pos, node, puncher, pointed_thing)
-		if not puncher then return end
+	on_rightclick= function(pos, node, clicker, itemstack, pointed_thing)
+		if not clicker then return end
+		local cname = clicker:get_player_name()
 	
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		if not inv:is_empty("main") then
 			-- Jukebox contains a disc: Stop music and remove disc
-			if active_tracks[puncher:get_player_name()] ~= nil then
-				minetest.sound_stop(active_tracks[puncher:get_player_name()])
+			if active_tracks[cname] ~= nil then
+				minetest.sound_stop(active_tracks[cname])
 			end
 			local lx = pos.x
 			local ly = pos.y+1
@@ -102,29 +101,29 @@ minetest.register_node("mcl_jukebox:jukebox", {
 			local record = inv:get_stack("main", 1)
 			minetest.add_item({x=lx, y=ly, z=lz}, record:get_name())
 			inv:set_stack("main", 1, "")
-			if active_tracks[puncher:get_player_name()] ~= nil then
-				minetest.sound_stop(active_tracks[puncher:get_player_name()])
-				puncher:hud_remove(active_huds[puncher:get_player_name()])
-				active_tracks[puncher:get_player_name()] = nil
-				active_huds[puncher:get_player_name()] = nil
+			if active_tracks[cname] ~= nil then
+				minetest.sound_stop(active_tracks[cname])
+				clicker:hud_remove(active_huds[cname])
+				active_tracks[cname] = nil
+				active_huds[cname] = nil
 			end
 		else
 			-- Jukebox is empty: Play track if player holds music record
-			local wield = puncher:get_wielded_item():get_name()
-			local record_id = minetest.get_item_group(wield, "music_record")
+			local record_id = minetest.get_item_group(itemstack:get_name(), "music_record")
 			if record_id ~= 0 then
-				if active_tracks[puncher:get_player_name()] ~= nil then
-					minetest.sound_stop(active_tracks[puncher:get_player_name()])
-					puncher:hud_remove(active_huds[puncher:get_player_name()])
+				if active_tracks[cname] ~= nil then
+					minetest.sound_stop(active_tracks[cname])
+					clicker:hud_remove(active_huds[cname])
 				end
-				puncher:set_wielded_item("")
-				active_tracks[puncher:get_player_name()] = minetest.sound_play("mcl_jukebox_track_"..record_id, {
-					to_player = puncher:get_player_name(),
+				active_tracks[cname] = minetest.sound_play("mcl_jukebox_track_"..record_id, {
+					to_player = cname,
 					--max_hear_distance = 16,
 					gain = 1,
 				})
-				now_playing(puncher, record_id)
-				inv:set_stack("main", 1, wield)
+				now_playing(clicker, record_id)
+				inv:set_stack("main", 1, itemstack:get_name())
+				itemstack:take_item()
+				return itemstack
 			end
 		end
 	end,
