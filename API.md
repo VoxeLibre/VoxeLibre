@@ -40,3 +40,4 @@ This section explains all the used groups in this subgame.
 * `clock=1`: Clock
 * `compass`: Compass (rating doesn't matter)
 * `rail=1`: Rail
+* `music_record`: Music Disc (rating is track ID)
