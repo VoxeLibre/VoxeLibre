@@ -161,7 +161,7 @@ doors:register_door("doors:door_wood", {
 doors:register_door("doors:door_steel", {
 	description = "Iron Door",
 	inventory_image = "door_steel.png",
-	groups = {snappy=1,bendy=2,cracky=1,melty=2,level=2,door=1},
+	groups = {snappy=1,cracky=1,level=2,door=1},
 	tiles_bottom = {"door_steel_b.png", "door_grey.png"},
 	tiles_top = {"door_steel_a.png", "door_grey.png"},
 	only_placer_can_open = true,

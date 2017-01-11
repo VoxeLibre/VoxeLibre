@@ -287,7 +287,6 @@ minetest.register_tool("default:flint_and_steel", {
 			flamable = {uses=65, maxlevel=1},
 		}
 	},
-	--groups = {hot=3, igniter=1, not_in_creative_inventory=1},
 	on_use = function(itemstack, user, pointed_thing)
 		if pointed_thing.type == "node" then
 				set_fire(pointed_thing)

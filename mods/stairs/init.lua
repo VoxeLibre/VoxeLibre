@@ -346,7 +346,7 @@ stairs.register_stair_and_slab("stonebrick", "group:stonebrick",
 )
 
 stairs.register_stair_and_slab("quartzblock", "group:quartz_block",
-	{snappy=1,bendy=2,cracky=1,level=2},
+	{snappy=1,cracky=1,level=2},
 	{"default_quartz_block_top.png", "default_quartz_block_bottom.png", "default_quartz_block_side.png"},
 	"Quartz Stairs",
 	"Quartz Slab",
