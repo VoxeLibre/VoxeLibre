@@ -154,7 +154,7 @@ minetest.register_craftitem("default:quartz_crystal", {
 	stack_max = 64,
 })
 
-minetest.register_node("default:apple", {
+minetest.register_craftitem("default:apple", {
 	description = "Apple",
 	wield_image = "default_apple.png",
 	inventory_image = "default_apple.png",
@@ -162,7 +162,7 @@ minetest.register_node("default:apple", {
 	on_use = minetest.item_eat(4),
 })
 
-minetest.register_node("default:apple_gold", {
+minetest.register_craftitem("default:apple_gold", {
 	description = "Golden Apple",
 	wield_image = "default_apple_gold.png",
 	inventory_image = "default_apple_gold.png",
