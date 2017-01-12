@@ -1434,7 +1434,7 @@ minetest.register_node("default:chest_left", {
 	sounds = default.node_sound_wood_defaults(),
 	on_destruct = function(pos)
 		local n = minetest.get_node(pos)
-		if n.name == "deault:chest" then
+		if n.name == "default:chest" then
 			return
 		end
 		local param2 = n.param2
