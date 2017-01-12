@@ -135,18 +135,20 @@ minetest.register_entity(":__builtin:item", {
 			local vec = get_flowing_dir(self)
 			if vec then
 				local v = self.object:getvelocity()
+				-- Minecraft Wiki: Flowing speed is "about 1.39 meters per second"
+				local f = 1.39
 				if vec and vec.x-p.x > 0 then
 					self.object:setacceleration({x = 0, y = 0, z = 0})
-					self.object:setvelocity({x = 1, y = -0.22, z = 0})
+					self.object:setvelocity({x = f, y = -0.22, z = 0})
 				elseif vec and vec.x-p.x < 0 then
 					self.object:setacceleration({x = 0, y = 0, z = 0})
-					self.object:setvelocity({x = -1, y = -0.22, z = 0})
+					self.object:setvelocity({x = -f, y = -0.22, z = 0})
 				elseif vec and vec.z-p.z > 0 then
 					self.object:setacceleration({x = 0, y = 0, z = 0})
-					self.object:setvelocity({x = 0, y = -0.22, z = 1})
+					self.object:setvelocity({x = 0, y = -0.22, z = f})
 				elseif vec and vec.z-p.z < 0 then
 					self.object:setacceleration({x = 0, y = 0, z = 0})
-					self.object:setvelocity({x = 0, y = -0.22, z = -1})
+					self.object:setvelocity({x = 0, y = -0.22, z = -f})
 				end
 
 				self.object:setacceleration({x = 0, y = -10, z = 0})
