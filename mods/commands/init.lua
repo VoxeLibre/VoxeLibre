@@ -72,26 +72,17 @@ minetest.register_chatcommand("clear", {
 	end,
 })
 
-minetest.register_chatcommand("clearme", {
-	description = S("Clear your inventory"),
-	func = function(name)
-		return handle_clear_command(name, name)
-	end,
-})
-
 minetest.register_chatcommand("kill", {
-	params = S("<name>"),
+	params = S("[<name>]"),
 	description = S("Kill player"),
 	privs = {kill=true},
 	func = function(name, param)
-		return handle_kill_command(name, param)
-	end,
-})
-
-minetest.register_chatcommand("killme", {
-	description = S("Kill yourself"),
-	func = function(name)
-		return handle_kill_command(name, name)
+		if(param == "") then
+			-- Selfkill
+			return handle_kill_command(name, name)
+		else
+			return handle_kill_command(name, param)
+		end
 	end,
 })
 
