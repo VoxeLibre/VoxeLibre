@@ -1320,20 +1320,6 @@ local function get_chest_neighborpos(pos, param2, side)
 	end
 end
 
-local function hacky_swap_node(pos,name, param2)
-	local node = minetest.get_node(pos)
-	local meta = minetest.get_meta(pos)
-	if node.name == name then
-		return
-	end
-	node.name = name
-	node.param2 = param2 or node.param2
-	local meta0 = meta:to_table()
-	minetest.set_node(pos,node)
-	meta = minetest.get_meta(pos)
-	meta:from_table(meta0)
-end
-
 minetest.register_node("default:chest", {
 	description = "Chest",
 	tiles = {"default_chest_top.png", "default_chest_top.png", "default_chest_side.png",
@@ -1359,7 +1345,7 @@ minetest.register_node("default:chest", {
 					"listring[nodemeta:"..p.x..","..p.y..","..p.z..";main]"..
 					"listring[current_player;main]"..
 					"listring[current_name;main]")
-			hacky_swap_node(p, "default:chest_left", param2)
+			minetest.swap_node(p, { name = "default:chest_left", param2 = param2 })
 			local m = minetest.get_meta(p)
 			m:set_string("formspec",
 					"size[9,11.5]"..
@@ -1384,7 +1370,7 @@ minetest.register_node("default:chest", {
 					"listring[current_name;main]"..
 					"listring[current_player;main]"..
 					"listring[nodemeta:"..p.x..","..p.y..","..p.z..";main]")
-			hacky_swap_node(p, "default:chest_right", param2)
+			minetest.swap_node(p, { name = "default:chest_right", param2 = param2 })
 			local m = minetest.get_meta(p)
 			m:set_string("formspec",
 					"size[9,11.5]"..
@@ -1466,7 +1452,7 @@ minetest.register_node("default:chest_left", {
 				"list[current_player;main;0,7.74;9,1;]"..
 				"listring[current_name;main]"..
 				"listring[current_player;main]")
-		hacky_swap_node(p, "default:chest")
+		minetest.swap_node(p, { name = "default:chest" })
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)
@@ -1524,7 +1510,7 @@ minetest.register_node("default:chest_right", {
 				"list[current_player;main;0,7.74;9,1;]"..
 				"listring[current_name;main]"..
 				"listring[current_player;main]")
-		hacky_swap_node(p, "default:chest")
+		minetest.swap_node(p, { name = "default:chest" })
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)
@@ -1696,20 +1682,6 @@ minetest.register_node("default:furnace_active", {
 	end,
 })
 
-function hacky_swap_node(pos,name)
-	local node = minetest.get_node(pos)
-	local meta = minetest.get_meta(pos)
-	local meta0 = meta:to_table()
-	if node.name == name then
-		return
-	end
-	node.name = name
-	local meta0 = meta:to_table()
-	minetest.set_node(pos,node)
-	meta = minetest.get_meta(pos)
-	meta:from_table(meta0)
-end
-
 minetest.register_abm({
 	nodenames = {"default:furnace","default:furnace_active"},
 	interval = 1.0,
@@ -1760,7 +1732,7 @@ minetest.register_abm({
 		if meta:get_float("fuel_time") < meta:get_float("fuel_totaltime") then
 			local percent = math.floor(meta:get_float("fuel_time") /
 					meta:get_float("fuel_totaltime") * 100)
-			hacky_swap_node(pos,"default:furnace_active")
+			minetest.swap_node(pos, { name = "default:furnace_active" })
 			meta:set_string("formspec",
 				"size[9,8.75]"..
 				"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory_furnace.png]"..
@@ -1795,14 +1767,14 @@ minetest.register_abm({
 		end
 
 		if fuel.time <= 0 then
-			hacky_swap_node(pos,"default:furnace")
+			minetest.swap_node(pos, { name = "default:furnace" })
 			meta:set_string("formspec", default.furnace_inactive_formspec)
 			return
 		end
 
 		if cooked.item:is_empty() then
 			if was_active then
-				hacky_swap_node(pos,"default:furnace")
+				minetest.swap_node(pos, { name = "default:furnace" })
 				meta:set_string("formspec", default.furnace_inactive_formspec)
 			end
 			return
