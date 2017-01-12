@@ -615,7 +615,7 @@ minetest.register_abm({
 	action = function(pos)
 		local light = minetest.get_node_light(pos)
 		local soilnode = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
-		local soiltype = mietest.get_item_group(soilnode.name, "soil_sapling")
+		local soiltype = minetest.get_item_group(soilnode.name, "soil_sapling")
 		if soiltype >= 1 and light and light >= 9 then
 			minetest.add_node(pos, {name="air"})
 			generate_tree(pos, "default:tree", "default:leaves", 1)
@@ -632,7 +632,7 @@ minetest.register_abm({
 	action = function(pos)
 		local light = minetest.get_node_light(pos)
 		local soilnode = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
-		local soiltype = mietest.get_item_group(soilnode.name, "soil_sapling")
+		local soiltype = minetest.get_item_group(soilnode.name, "soil_sapling")
 		if soiltype == 2 and light and light >= 9 then
 			minetest.add_node(pos, {name="air"})
 			generate_tree(pos, "default:jungletree", "default:jungleleaves", 2)
