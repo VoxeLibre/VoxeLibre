@@ -37,7 +37,6 @@ local sign_groups = {choppy=2, dig_immediate=2}
 local construct_sign = function(pos)
     local meta = minetest.get_meta(pos)
 	meta:set_string("formspec", "field[text;;${text}]")
-	meta:set_string("infotext", "")
 end
 
 local destruct_sign = function(pos)
@@ -52,7 +51,6 @@ end
 local update_sign = function(pos, fields, sender)
     local meta = minetest.get_meta(pos)
 	local owner = meta:get_string("owner")
-	meta:set_string("infotext", "")
 	local text = meta:get_string("text")
 	if fields and sender:get_player_name() == owner or text == "" and fields then
 		meta:set_string("text", fields.text)

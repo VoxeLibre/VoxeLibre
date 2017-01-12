@@ -1359,7 +1359,6 @@ minetest.register_node("default:chest", {
 					"listring[nodemeta:"..p.x..","..p.y..","..p.z..";main]"..
 					"listring[current_player;main]"..
 					"listring[current_name;main]")
-			meta:set_string("infotext", "Large Chest")
 			hacky_swap_node(p, "default:chest_left", param2)
 			local m = minetest.get_meta(p)
 			m:set_string("formspec",
@@ -1372,7 +1371,6 @@ minetest.register_node("default:chest", {
 					"listring[current_name;main]"..
 					"listring[current_player;main]"..
 					"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]")
-			m:set_string("infotext", "Large Chest")
 		elseif minetest.get_node(get_chest_neighborpos(pos, param2, "left")).name == "default:chest" then
 			minetest.set_node(pos, {name="default:chest_left",param2=param2})
 			local p = get_chest_neighborpos(pos, param2, "left")
@@ -1386,7 +1384,6 @@ minetest.register_node("default:chest", {
 					"listring[current_name;main]"..
 					"listring[current_player;main]"..
 					"listring[nodemeta:"..p.x..","..p.y..","..p.z..";main]")
-			meta:set_string("infotext", "Large Chest")
 			hacky_swap_node(p, "default:chest_right", param2)
 			local m = minetest.get_meta(p)
 			m:set_string("formspec",
@@ -1399,7 +1396,6 @@ minetest.register_node("default:chest", {
 					"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]"..
 					"listring[current_player;main]"..
 					"listring[current_name;main]")
-			m:set_string("infotext", "Large Chest")
 		else
 			meta:set_string("formspec",
 					"size[9,8.75]"..
@@ -1410,7 +1406,6 @@ minetest.register_node("default:chest", {
 					"list[current_player;main;0,7.74;9,1;]"..
 					"listring[current_name;main]"..
 					"listring[current_player;main]")
-			meta:set_string("infotext", "Chest")
 		end
 		local inv = meta:get_inventory()
 		inv:set_size("main", 9*3)
@@ -1452,13 +1447,13 @@ minetest.register_node("default:chest_left", {
 	is_ground_content = false,
 	sounds = default.node_sound_wood_defaults(),
 	on_destruct = function(pos)
-		local m = minetest.get_meta(pos)
-		if m:get_string("infotext") == "Chest" then
+		local n = minetest.get_node(pos)
+		if n.name == "deault:chest" then
 			return
 		end
-		local param2 = minetest.get_node(pos).param2
+		local param2 = n.param2
 		local p = get_chest_neighborpos(pos, param2, "left")
-		if not p or minetest.get_node(p).name ~= "default:chest_right" then
+		if not p or n.name ~= "default:chest_right" then
 			return
 		end
 		local meta = minetest.get_meta(p)
@@ -1471,7 +1466,6 @@ minetest.register_node("default:chest_left", {
 				"list[current_player;main;0,7.74;9,1;]"..
 				"listring[current_name;main]"..
 				"listring[current_player;main]")
-		meta:set_string("infotext", "Chest")
 		hacky_swap_node(p, "default:chest")
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
@@ -1511,13 +1505,13 @@ minetest.register_node("default:chest_right", {
 	is_ground_content = false,
 	sounds = default.node_sound_wood_defaults(),
 	on_destruct = function(pos)
-		local m = minetest.get_meta(pos)
-		if m:get_string("infotext") == "Chest" then
+		local n = minetest.get_node(pos)
+		if n.name == "default:chest" then
 			return
 		end
-		local param2 = minetest.get_node(pos).param2
+		local param2 = n.param2
 		local p = get_chest_neighborpos(pos, param2, "right")
-		if not p or minetest.get_node(p).name ~= "default:chest_left" then
+		if not p or n.name ~= "default:chest_left" then
 			return
 		end
 		local meta = minetest.get_meta(p)
@@ -1530,7 +1524,6 @@ minetest.register_node("default:chest_right", {
 				"list[current_player;main;0,7.74;9,1;]"..
 				"listring[current_name;main]"..
 				"listring[current_player;main]")
-		meta:set_string("infotext", "Chest")
 		hacky_swap_node(p, "default:chest")
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
@@ -1590,7 +1583,6 @@ minetest.register_node("default:furnace", {
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", default.furnace_inactive_formspec)
-		meta:set_string("infotext", "Furnace")
 		local inv = meta:get_inventory()
 		inv:set_size("fuel", 1)
 		inv:set_size("src", 1)
@@ -1613,9 +1605,6 @@ minetest.register_node("default:furnace", {
 		local inv = meta:get_inventory()
 		if listname == "fuel" then
 			if minetest.get_craft_result({method="fuel",width=1,items={stack}}).time ~= 0 then
-				if inv:is_empty("src") then
-					meta:set_string("infotext","Furnace is empty")
-				end
 				return stack:get_count()
 			else
 				return 0
@@ -1632,9 +1621,6 @@ minetest.register_node("default:furnace", {
 		local stack = inv:get_stack(from_list, from_index)
 		if to_list == "fuel" then
 			if minetest.get_craft_result({method="fuel",width=1,items={stack}}).time ~= 0 then
-				if inv:is_empty("src") then
-					meta:set_string("infotext","Furnace is empty")
-				end
 				return count
 			else
 				return 0
@@ -1660,7 +1646,6 @@ minetest.register_node("default:furnace_active", {
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", default.furnace_inactive_formspec)
-		meta:set_string("infotext", "Furnace");
 		local inv = meta:get_inventory()
 		inv:set_size("fuel", 1)
 		inv:set_size("src", 1)
@@ -1683,9 +1668,6 @@ minetest.register_node("default:furnace_active", {
 		local inv = meta:get_inventory()
 		if listname == "fuel" then
 			if minetest.get_craft_result({method="fuel",width=1,items={stack}}).time ~= 0 then
-				if inv:is_empty("src") then
-					meta:set_string("infotext","Furnace is empty")
-				end
 				return stack:get_count()
 			else
 				return 0
@@ -1702,9 +1684,6 @@ minetest.register_node("default:furnace_active", {
 		local stack = inv:get_stack(from_list, from_index)
 		if to_list == "fuel" then
 			if minetest.get_craft_result({method="fuel",width=1,items={stack}}).time ~= 0 then
-				if inv:is_empty("src") then
-					meta:set_string("infotext","Furnace is empty")
-				end
 				return count
 			else
 				return 0
@@ -1781,7 +1760,6 @@ minetest.register_abm({
 		if meta:get_float("fuel_time") < meta:get_float("fuel_totaltime") then
 			local percent = math.floor(meta:get_float("fuel_time") /
 					meta:get_float("fuel_totaltime") * 100)
-			meta:set_string("infotext","Furnace active: "..percent.."%")
 			hacky_swap_node(pos,"default:furnace_active")
 			meta:set_string("formspec",
 				"size[9,8.75]"..
@@ -1817,7 +1795,6 @@ minetest.register_abm({
 		end
 
 		if fuel.time <= 0 then
-			meta:set_string("infotext","Furnace out of fuel")
 			hacky_swap_node(pos,"default:furnace")
 			meta:set_string("formspec", default.furnace_inactive_formspec)
 			return
@@ -1825,7 +1802,6 @@ minetest.register_abm({
 
 		if cooked.item:is_empty() then
 			if was_active then
-				meta:set_string("infotext","Furnace is empty")
 				hacky_swap_node(pos,"default:furnace")
 				meta:set_string("formspec", default.furnace_inactive_formspec)
 			end

@@ -55,9 +55,6 @@ local function initialize_data(meta)
 	else
 		owner = "owned by " .. owner
 	end
-	meta:set_string("infotext", "Command Block\n" ..
-		"(" .. owner .. ")\n" ..
-		"Commands: "..commands)
 end
 
 local function construct(pos)

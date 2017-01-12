@@ -98,7 +98,6 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", armor_stand_formspec)
-		meta:set_string("infotext", "Armor Stand")
 		local inv = meta:get_inventory()
 		for _, element in pairs(elements) do
 			inv:set_size("armor_"..element, 1)
