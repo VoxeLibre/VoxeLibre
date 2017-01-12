@@ -167,6 +167,13 @@ minetest.register_craftitem("mobs:rabbit_hide", {
 	stack_max = 64,
 })
 
+minetest.register_craftitem("mobs:rabbit_foot", {
+	description = "Rabbit's Foot",
+	wield_image = "mobs_rabbit_foot.png",
+	inventory_image = "mobs_rabbit_foot.png",
+	stack_max = 64,
+})
+
 -----------
 -- Crafting
 -----------
