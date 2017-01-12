@@ -12,7 +12,7 @@ mobs:register_mob("mobs:sheep", {
 	armor = 100,
 	drops = {
 		{name = "mobs:meat_raw_sheep",
-		chance = 2,
+		chance = 1,
 		min = 1,
 		max = 2,},
 	},

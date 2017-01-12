@@ -130,7 +130,15 @@ minetest.register_node("itemframes:frame",{
 	end,
 })
 
--- FIXME: Replace paper with leather
+minetest.register_craft({
+	output = 'itemframes:frame',
+	recipe = {
+		{'default:stick', 'default:stick', 'default:stick'},
+		{'default:stick', 'mobs:leather', 'default:stick'},
+		{'default:stick', 'default:stick', 'default:stick'},
+	}
+})
+-- FIXME: Remove helper recipe
 minetest.register_craft({
 	output = 'itemframes:frame',
 	recipe = {

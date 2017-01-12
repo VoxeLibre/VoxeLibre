@@ -49,7 +49,6 @@ minetest.register_craftitem("mobs:zombie", {
 	end,
 })
 
-
 minetest.register_craftitem("mobs:spider", {
 	description = "Spawn Spider",
 	inventory_image = "spawn_spider.png",
@@ -90,25 +89,105 @@ minetest.register_craftitem("mobs:creeper", {
 minetest.register_craftitem("mobs:rotten_flesh", {
 	description = "Rotten Flesh",
 	inventory_image = "rotten_flesh.png",
+	wield_image = "rotten_flesh.png",
 	on_use = minetest.item_eat(2),
+	stack_max = 64,
 })
 
 minetest.register_craftitem("mobs:meat_raw_sheep", {
 	description = "Raw Mutton",
 	inventory_image = "mutton_raw.png",
+	wield_image = "mutton_raw.png",
 	on_use = minetest.item_eat(2),
+	stack_max = 64,
 })
 
 minetest.register_craftitem("mobs:meat_cooked_sheep", {
 	description = "Cooked Mutton",
 	inventory_image = "mutton_cooked.png",
+	wield_image = "mutton_cooked.png",
 	on_use = minetest.item_eat(4),
+	stack_max = 64,
 })
 
 minetest.register_craftitem("mobs:spider_eye", {
 	description = "Spider Eye",
 	inventory_image = "spider_eye.png",
+	wield_image = "spider_eye.png",
 	on_use = minetest.item_eat(2),
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mobs:blaze_rod", {
+	description = "Blaze Rod",
+	wield_image = "mobs_blaze_rod.png",
+	inventory_image = "mobs_blaze_rod.png",
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mobs:blaze_powder", {
+	description = "Blaze Powder",
+	wield_image = "mobs_blaze_powder.png",
+	inventory_image = "mobs_blaze_powder.png",
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mobs:magma_cream", {
+	description = "Magma Cream",
+	wield_image = "mobs_magma_cream.png",
+	inventory_image = "mobs_magma_cream.png",
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mobs:ghast_tear", {
+	description = "Ghast Tear",
+	wield_image = "mobs_ghast_tear.png",
+	inventory_image = "mobs_ghast_tear.png",
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mobs:nether_star", {
+	description = "Nether Star",
+	wield_image = "mobs_nether_star.png",
+	inventory_image = "mobs_nether_star.png",
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mobs:leather", {
+	description = "Leather",
+	wield_image = "mobs_leather.png",
+	inventory_image = "mobs_leather.png",
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mobs:rabbit_hide", {
+	description = "Rabbit Hide",
+	wield_image = "mobs_rabbit_hide.png",
+	inventory_image = "mobs_rabbit_hide.png",
+	stack_max = 64,
+})
+
+-----------
+-- Crafting
+-----------
+
+minetest.register_craft({
+	output = "mobs:leather",
+	recipe = {
+		{ "mobs:rabbit_hide", "mobs:rabbit_hide" },
+		{ "mobs:rabbit_hide", "mobs:rabbit_hide" },
+	}
+})
+
+minetest.register_craft({
+	output = "mobs:blaze_powder 2",
+	recipe = {{"mobs:blaze_rod"}},
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "mobs:magma_cream",
+	recipe = {"mobs:blaze_powder", "mesecons_materials:glue"},
 })
 
 minetest.register_craft({

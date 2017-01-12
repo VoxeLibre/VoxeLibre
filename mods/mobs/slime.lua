@@ -29,8 +29,8 @@ mobs:register_mob("mobs:slime", {
 	drops = {
 		{name = "mesecons_materials:glue",
 		chance = 1,
-		min = 1,
-		max = 4,},
+		min = 0,
+		max = 2,},
 	},
 	armor = 100,
 	drawtype = "front",

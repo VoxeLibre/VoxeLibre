@@ -41,3 +41,17 @@ minetest.register_craft({
 		{"mcl_end:end_stone", "mcl_end:end_stone"},
 	}
 })
+
+minetest.register_craftitem("mcl_end:ender_eye", {
+	description = "Eye of Ender",
+	wield_image = "mcl_end_ender_eye.png",
+	inventory_image = "mcl_end_ender_eye.png",
+	stack_max = 64,
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "mcl_end:ender_eye",
+	recipe = {"mobs:blaze_powder", "mcl_ender_pearl:ender_pearl"},
+})
+

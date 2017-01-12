@@ -17,8 +17,8 @@ mobs:register_mob("mobs:creeper", {
 	drops = {
 		{name = "default:gunpowder",
 		chance = 1,
-		min = 1,
-		max = 3,},
+		min = 0,
+		max = 2,},
 	},
 	armor = 70,
 	drawtype = "front",
