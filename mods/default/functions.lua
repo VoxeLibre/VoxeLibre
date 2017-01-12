@@ -66,7 +66,7 @@ grow_cactus = function(pos, node)
 			height = height+1
 			pos.y = pos.y+1
 		end
-		if height < 4 then
+		if height < 3 then
 			if minetest.get_node(pos).name == "air" then
 				minetest.set_node(pos, {name="default:cactus"})
 			end
