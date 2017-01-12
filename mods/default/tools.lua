@@ -307,11 +307,80 @@ minetest.register_tool("default:pole", {
 		if pointed_thing and pointed_thing.under then
 			local node = minetest.get_node(pointed_thing.under)
 			if string.find(node.name, "default:water") then
-				if math.random(1, 100) > 50 then
-					local inv = user:get_inventory()
-					if inv:room_for_item("main", {name="default:fish_raw", count=1, wear=0, metadata=""}) then
-						inv:add_item("main", {name="default:fish_raw", count=1, wear=0, metadata=""})
+				local itemname
+				local itemcount = 1
+				local r = math.random(1, 100)
+				if r <= 85 then
+					-- Fish
+					r = math.random(1, 100)
+					if r <= 60 then
+						itemname = "default:fish"
+					elseif r <= 85 then
+						itemname = "default:fish"
+						--itemname = "default:salmon"
+					elseif r <= 87 then
+						itemname = "default:fish"
+						--itemname = "default:clownfish"
+					else
+						itemname = "default:fish"
+						--itemname = "default:pufferfish"
 					end
+				elseif r <= 95 then
+					-- Junk
+					r = math.random(1, 83)
+					if r <= 10 then
+						itemname = "default:bowl"
+					elseif r <= 12 then
+						-- TODO: Damaged
+						itemname = "default:pole"
+					elseif r <= 22 then
+						itemname = "mobs:leather"
+					elseif r <= 32 then
+						itemname = "3d_armor:boots_leather"
+					elseif r <= 42 then
+						itemname = "mobs:rotten_flesh"
+					elseif r <= 47 then
+						itemname = "default:stick"
+					elseif r <= 52 then
+						itemname = "default:string"
+					elseif r <= 62 then
+						itemname = "vessels:glass_bottle"
+						--TODO itemname = "mcl_potions:bottle_water"
+					elseif r <= 72 then
+						itemname = "default:bone"
+					elseif r <= 73 then
+						itemname = "dye:black"
+						itemcount = 10
+					else
+						-- TODO: Tripwire hook
+						itemname = "default:stick"
+					end
+				else
+					-- Treasure
+					r = math.random(1, 6)
+					if r == 1 then
+						-- TODO: Enchanted and damaged
+						itemname = "throwing:bow"
+					elseif r == 2 then
+						-- TODO: Enchanted book
+						itemname = "default:book"
+					elseif r == 3 then
+						-- TODO: Enchanted and damaged
+						itemname = "default:pole"
+					elseif r == 4 then
+						itemname = "mobs:spider_eye"
+						-- TODO itemname = "mobs:naming_tag"
+					elseif r == 5 then
+						itemname = "flowers:dandelion"
+						-- TODO itemname = "mobs:saddle"
+					elseif r == 6 then
+						itemname = "flowers:tulip_orange"
+						-- TODO itemname = "flowers:waterlily"
+					end
+				end
+				local inv = user:get_inventory()
+				if inv:room_for_item("main", {name=itemname, count=1, wear=0, metadata=""}) then
+					inv:add_item("main", {name=itemname, count=1, wear=0, metadata=""})
 				end
 				itemstack:add_wear(66000/65) -- 65 uses
 				return itemstack
