@@ -764,8 +764,6 @@ minetest.register_craft({
 	}
 })
 
-
-
 minetest.register_craft({
 	output = 'default:snowblock',
 	recipe = {
@@ -1059,6 +1057,12 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "fuel",
 	recipe = "group:sapling",
+	burntime = 5,
+})
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "default:bowl",
 	burntime = 5,
 })
 
