@@ -331,6 +331,61 @@ minetest.register_node("flowers:pot",{
 	end,
 })
 
+-- Lily Pad
+minetest.register_node("flowers:waterlily", {
+	description = "Lily Pad",
+	drawtype = "nodebox",
+	paramtype = "light",
+	paramtype2 = "facedir",
+	tiles = {"flowers_waterlily.png", "flowers_waterlily.png"},
+	inventory_image = "flowers_waterlily.png",
+	wield_image = "flowers_waterlily.png",
+	liquids_pointable = true,
+	walkable = true,
+	sunlight_propagates = true,
+	groups = {dig_immediate = 3, dig_by_water = 1, },
+	sounds = default.node_sound_leaves_defaults(),
+	node_placement_prediction = "",
+	node_box = {
+		type = "fixed",
+		fixed = {-0.5, -0.5, -0.5, 0.5, -15 / 32, 0.5}
+	},
+	selection_box = {
+		type = "fixed",
+		fixed = {-7 / 16, -0.5, -7 / 16, 7 / 16, -15 / 32, 7 / 16}
+	},
+
+	on_place = function(itemstack, placer, pointed_thing)
+		local pos = pointed_thing.above
+		local node = minetest.get_node(pointed_thing.under).name
+		local def = minetest.registered_nodes[node]
+		local node_above = minetest.get_node(pointed_thing.above).name
+		local def_above = minetest.registered_nodes[node_above]
+		local player_name = placer:get_player_name()
+
+		if def and
+				pointed_thing.under.x == pointed_thing.above.x and
+				pointed_thing.under.z == pointed_thing.above.z then
+			if ((def.liquidtype == "source" and minetest.get_item_group(node, "water") > 0) or
+					(node == "default:ice") or
+					(minetest.get_item_group(node, "frosted_ice") > 0)) and
+					(def_above.buildable_to and minetest.get_item_group(node_above, "liquid") == 0) then
+				if not minetest.is_protected(pos, player_name) then
+					minetest.set_node(pos, {name = "flowers:waterlily",
+						param2 = math.random(0, 3)})
+					if not minetest.setting_getbool("creative_mode") then
+						itemstack:take_item()
+					end
+				else
+					minetest.chat_send_player(player_name, "Node is protected")
+					minetest.record_protection_violation(pos, player_name)
+				end
+			end
+		end
+
+		return itemstack
+	end
+})
 
 local time_to_load= os.clock() - init
 print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
