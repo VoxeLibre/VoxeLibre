@@ -62,6 +62,11 @@ minetest.register_node("default:stone_with_gold", {
 })
 
 local redstone_timer = 68.28
+local redstone_ore_activate = function(pos)
+	minetest.swap_node(pos, {name="default:stone_with_redstone_lit"})
+	local t = minetest.get_node_timer(pos)
+	t:start(redstone_timer)
+end
 minetest.register_node("default:stone_with_redstone", {
 	description = "Redstone Ore",
 	tiles = {"default_stone.png^default_mineral_redstone.png"},
@@ -81,13 +86,14 @@ minetest.register_node("default:stone_with_redstone", {
 		}
 	},
 	sounds = default.node_sound_stone_defaults(),
-	on_punch = function(pos, node, puncher, pointed_thing)
-		minetest.swap_node(pos, {name="default:stone_with_redstone_lit"})
-		local t = minetest.get_node_timer(pos)
-		t:start(redstone_timer)
-	end,
+	on_punch = redstone_ore_activate,
+	on_walk_over = redstone_ore_activate, -- Uses walkover mod
 })
 
+local redstone_ore_reactivate = function(pos)
+	local t = minetest.get_node_timer(pos)
+	t:start(redstone_timer)
+end
 -- Light the redstone ore up when it has been touched
 minetest.register_node("default:stone_with_redstone_lit", {
 	description = "Lit Redstone Ore",
@@ -110,11 +116,9 @@ minetest.register_node("default:stone_with_redstone_lit", {
 		}
 	},
 	sounds = default.node_sound_stone_defaults(),
-	-- Reset timer after re-punching
-	on_punch = function(pos, node, puncher, pointed_thing)
-		local t = minetest.get_node_timer(pos)
-		t:start(redstone_timer)
-	end,
+	-- Reset timer after re-punching or stepping on
+	on_punch = redstone_ore_reactivate,
+	on_walk_over = redstone_ore_reactivate, -- Uses walkover mod
 	-- Turn back to normal node after some time has passed
 	on_timer = function(pos, elapsed)
 		minetest.swap_node(pos, {name="default:stone_with_redstone"})
