@@ -197,3 +197,9 @@ minetest.register_craft({
 	cooktime = 10,
 })
 
+minetest.register_craft({
+	type = "fuel",
+	recipe = "mobs:blaze_rod",
+	burntime = 120,
+})
+
