@@ -113,7 +113,7 @@ mesecon:register_pressure_plate(
 	"Wooden Pressure Plate",
 	"default_wood.png",
 	"default_wood.png",
-	{{"default:wood", "default:wood"}})
+	{{"group:wood", "group:wood"}})
 
 mesecon:register_pressure_plate(
 	"mesecons_pressureplates:pressure_plate_stone_off",
