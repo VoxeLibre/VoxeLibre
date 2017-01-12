@@ -10,6 +10,7 @@ LAVA_VISC = 7
 default = {}
 default.gui_slots = "listcolors[#9990;#FFF7;#FFF0;#000;#FFF]"
 default.gui_bg = "bgcolor[#080808BB;true]"
+default.gui_bg_img = ""
 
 default.inventory_header = default.gui_slots .. default.gui_bg
 
