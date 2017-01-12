@@ -1439,7 +1439,7 @@ minetest.register_node("default:chest_left", {
 		end
 		local param2 = n.param2
 		local p = get_chest_neighborpos(pos, param2, "left")
-		if not p or n.name ~= "default:chest_right" then
+		if not p or minetest.get_node(p).name ~= "default:chest_right" then
 			return
 		end
 		local meta = minetest.get_meta(p)
@@ -1452,7 +1452,7 @@ minetest.register_node("default:chest_left", {
 				"list[current_player;main;0,7.74;9,1;]"..
 				"listring[current_name;main]"..
 				"listring[current_player;main]")
-		minetest.swap_node(p, { name = "default:chest" })
+		minetest.swap_node(p, { name = "default:chest", param2 = param2 })
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)
@@ -1497,7 +1497,7 @@ minetest.register_node("default:chest_right", {
 		end
 		local param2 = n.param2
 		local p = get_chest_neighborpos(pos, param2, "right")
-		if not p or n.name ~= "default:chest_left" then
+		if not p or minetest.get_node(p).name ~= "default:chest_left" then
 			return
 		end
 		local meta = minetest.get_meta(p)
@@ -1510,7 +1510,7 @@ minetest.register_node("default:chest_right", {
 				"list[current_player;main;0,7.74;9,1;]"..
 				"listring[current_name;main]"..
 				"listring[current_player;main]")
-		minetest.swap_node(p, { name = "default:chest" })
+		minetest.swap_node(p, { name = "default:chest", param2 = param2 })
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)
