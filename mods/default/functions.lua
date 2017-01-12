@@ -77,7 +77,7 @@ end
 grow_reeds = function(pos, node)
 	pos.y = pos.y-1
 	local name = minetest.get_node(pos).name
-	if name == "default:dirt" or name == "default:dirt_with_grass" then
+	if minetest.get_node_group(name, "soil_sugarcane") ~= 0 then
 		if minetest.find_node_near(pos, 3, {"group:water"}) == nil then
 			return
 		end
