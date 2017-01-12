@@ -1187,7 +1187,7 @@ minetest.register_node("default:water_flowing", {
 })
 
 minetest.register_node("default:water_source", {
-	description = "Water Source",
+	description = "Still Water",
 	inventory_image = minetest.inventorycube("default_water.png"),
 	drawtype = "liquid",
 	tiles = {
@@ -1261,7 +1261,7 @@ minetest.register_node("default:lava_flowing", {
 })
 
 minetest.register_node("default:lava_source", {
-	description = "Lava Source",
+	description = "Still Lava",
 	inventory_image = minetest.inventorycube("default_lava.png"),
 	drawtype = "liquid",
 	tiles = {
