@@ -20,7 +20,7 @@ minetest.register_node("farming:wheat_1", {
 			{-0.5, -0.5, -0.5, 0.5, -0.125, 0.5}
 		},
 	},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1,dig_by_water=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1, dig_by_water=1},
 	sounds = default.node_sound_leaves_defaults(),
 	node_box = {
 		type = "fixed",
@@ -47,7 +47,7 @@ minetest.register_node("farming:wheat_2", {
 			{-0.5, -0.5, -0.5, 0.5, -0.25, 0.5}
 		},
 	},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1,dig_by_water=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1, dig_by_water=1},
 	sounds = default.node_sound_leaves_defaults(),
 	node_box = {
 		type = "fixed",
@@ -74,7 +74,7 @@ minetest.register_node("farming:wheat_3", {
 			{-0.5, -0.5, -0.5, 0.5, 0.25, 0.5}
 		},
 	},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1,dig_by_water=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1, dig_by_water=1},
 	sounds = default.node_sound_leaves_defaults(),
 	node_box = {
 		type = "fixed",
@@ -109,7 +109,7 @@ minetest.register_node("farming:wheat", {
 			{-0.5, -0.5, -0.5, 0.5, 0.35, 0.5}
 		},
 	},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1,dig_by_water=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1, dig_by_water=1},
 	sounds = default.node_sound_leaves_defaults(),
 	node_box = {
 		type = "fixed",
