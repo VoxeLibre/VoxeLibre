@@ -634,17 +634,10 @@ minetest.register_craft({
 	}
 })
 
--- TODO: Remove helper recipe
 minetest.register_craft({
 	type = 'shapeless',
 	output = 'default:book',
 	recipe = { 'default:paper', 'default:paper', 'default:paper', 'mobs:leather',
-	}
-})
-minetest.register_craft({
-	type = 'shapeless',
-	output = 'default:book',
-	recipe = { 'default:paper', 'default:paper', 'default:paper', 'default:paper',
 	}
 })
 
@@ -1081,8 +1074,9 @@ minetest.register_craft({
 
 --
 --Temporary
---
+-- TODO: Remove when string is ready
 minetest.register_craft({
 	output = "default:string",
-	recipe = {{"default:paper", "default:paper"}},
+	recipe = {{"default:paper",},
+	{"default:paper"}},
 })

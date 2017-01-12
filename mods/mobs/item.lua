@@ -225,6 +225,13 @@ minetest.register_craftitem("mobs:leather", {
 	stack_max = 64,
 })
 
+minetest.register_craftitem("mobs:feather", {
+	description = "Feather",
+	wield_image = "mobs_feather.png",
+	inventory_image = "mobs_feather.png",
+	stack_max = 64,
+})
+
 minetest.register_craftitem("mobs:rabbit_hide", {
 	description = "Rabbit Hide",
 	wield_image = "mobs_rabbit_hide.png",
@@ -295,4 +302,20 @@ minetest.register_craft({
 	recipe = "mobs:blaze_rod",
 	burntime = 120,
 })
+
+-- Temporary helper recipes
+-- TODO: Remove them
+minetest.register_craft({
+	type = "shapeless",
+	output = "mobs:leather",
+	recipe = { "default:paper", "default:paper" },
+})
+minetest.register_craft({
+	output = "mobs:feather 3",
+	recipe = {
+		{ "flowers:oxeye_daisy" },
+		{ "flowers:oxeye_daisy" },
+	}
+})
+
 

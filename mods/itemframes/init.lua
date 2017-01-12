@@ -138,12 +138,3 @@ minetest.register_craft({
 		{'default:stick', 'default:stick', 'default:stick'},
 	}
 })
--- FIXME: Remove helper recipe
-minetest.register_craft({
-	output = 'itemframes:frame',
-	recipe = {
-		{'default:stick', 'default:stick', 'default:stick'},
-		{'default:stick', 'default:paper', 'default:stick'},
-		{'default:stick', 'default:stick', 'default:stick'},
-	}
-})

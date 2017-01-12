@@ -88,12 +88,3 @@ minetest.register_craft({
 		{'mobs:feather'}
 	}
 })
--- FIXME: Helper recipe
-minetest.register_craft({
-	output = 'throwing:arrow 4',
-	recipe = {
-		{'default:flint'},
-		{'default:stick'},
-		{'default:paper'}
-	}
-})
