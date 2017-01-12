@@ -90,11 +90,12 @@ minetest.register_craftitem("mobs:rotten_flesh", {
 	description = "Rotten Flesh",
 	inventory_image = "rotten_flesh.png",
 	wield_image = "rotten_flesh.png",
-	on_use = minetest.item_eat(2),
+	-- TODO: Raise to 4
+	on_use = minetest.item_eat(1),
 	stack_max = 64,
 })
 
-minetest.register_craftitem("mobs:meat_raw_sheep", {
+minetest.register_craftitem("mobs:mutton", {
 	description = "Raw Mutton",
 	inventory_image = "mutton_raw.png",
 	wield_image = "mutton_raw.png",
@@ -102,11 +103,75 @@ minetest.register_craftitem("mobs:meat_raw_sheep", {
 	stack_max = 64,
 })
 
-minetest.register_craftitem("mobs:meat_cooked_sheep", {
+minetest.register_craftitem("mobs:cooked_mutton", {
 	description = "Cooked Mutton",
 	inventory_image = "mutton_cooked.png",
 	wield_image = "mutton_cooked.png",
-	on_use = minetest.item_eat(4),
+	on_use = minetest.item_eat(6),
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mobs:beef", {
+	description = "Raw Beef",
+	inventory_image = "mobs_beef_raw.png",
+	wield_image = "mobs_beef_raw.png",
+	on_use = minetest.item_eat(3),
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mobs:cooked_beef", {
+	description = "Steak",
+	inventory_image = "mobs_beef_cooked.png",
+	wield_image = "mobs_beef_cooked.png",
+	on_use = minetest.item_eat(8),
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mobs:chicken", {
+	description = "Raw Chicken",
+	inventory_image = "mobs_chicken_raw.png",
+	wield_image = "mobs_chicken_raw.png",
+	on_use = minetest.item_eat(2),
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mobs:cooked_chicken", {
+	description = "Cooked Chicken",
+	inventory_image = "mobs_chicken_cooked.png",
+	wield_image = "mobs_chicken_cooked.png",
+	on_use = minetest.item_eat(6),
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mobs:porkchop", {
+	description = "Raw Porkchop",
+	inventory_image = "mobs_porkchop_raw.png",
+	wield_image = "mobs_porkchop.png",
+	on_use = minetest.item_eat(3),
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mobs:cooked_porkchop", {
+	description = "Cooked Porkchop",
+	inventory_image = "mobs_porkchop_cooked.png",
+	wield_image = "mobs_porkchop_cooked.png",
+	on_use = minetest.item_eat(8),
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mobs:rabbit", {
+	description = "Raw Rabbit",
+	inventory_image = "mobs_rabbit_raw.png",
+	wield_image = "mobs_rabbit_raw.png",
+	on_use = minetest.item_eat(3),
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mobs:cooked_rabbit", {
+	description = "Cooked Rabbit",
+	inventory_image = "mobs_rabbit_cooked.png",
+	wield_image = "mobs_rabbit_cooked.png",
+	on_use = minetest.item_eat(5),
 	stack_max = 64,
 })
 
@@ -199,8 +264,29 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "cooking",
-	output = "mobs:meat_cooked_sheep",
-	recipe = "mobs:meat_raw_sheep",
+	output = "mobs:cooked_mutton",
+	recipe = "mobs:mutton",
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "mobs:cooked_rabbit",
+	recipe = "mobs:rabbit",
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "mobs:cooked_chicken",
+	recipe = "mobs:chicken",
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "mobs:cooked_beef",
+	recipe = "mobs:beef",
 	cooktime = 10,
 })
 
