@@ -289,10 +289,3 @@ minetest.register_craft({
 	recipe = {"farming:pumpkin_face"}
 })
 
-
--- ========= FUEL =========
-minetest.register_craft({
-	type = "fuel",
-	recipe = "farming:pumpkin_seed",
-	burntime = 1
-})

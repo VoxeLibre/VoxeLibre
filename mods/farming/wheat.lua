@@ -158,15 +158,3 @@ minetest.register_craftitem("farming:bread", {
 	on_use = minetest.item_eat(5)
 })
 
--- ========= FUEL =========
-minetest.register_craft({
-	type = "fuel",
-	recipe = "farming:wheat_seed",
-	burntime = 1
-})
-
-minetest.register_craft({
-	type = "fuel",
-	recipe = "farming:wheat_harvested",
-	burntime = 2
-})
