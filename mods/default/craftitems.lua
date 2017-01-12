@@ -169,7 +169,7 @@ minetest.register_craftitem("default:apple", {
 })
 
 minetest.register_craftitem("default:apple_gold", {
-	description = "Golden Apple",
+	description = core.colorize("#55FFFF", "Golden Apple"),
 	wield_image = "default_apple_gold.png",
 	inventory_image = "default_apple_gold.png",
 	stack_max = 64,
