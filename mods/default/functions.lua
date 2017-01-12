@@ -609,14 +609,16 @@ minetest.register_abm({
 -- Normal tree
 minetest.register_abm({
 	nodenames = {"default:sapling"},
-	neighbors = {"default:dirt", "default:dirt_with_grass"},
+	neighbors = {"group:soil_sapling"},
 	interval = 30,
 	chance = 15,
 	action = function(pos)
 		local light = minetest.get_node_light(pos)
-		if light or light > 10 then
-		minetest.add_node(pos, {name="air"})
-		generate_tree(pos, "default:tree", "default:leaves", 1)
+		local soilnode = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
+		local soiltype = mietest.get_item_group(soilnode.name, "soil_sapling")
+		if soiltype >= 1 and light and light >= 9 then
+			minetest.add_node(pos, {name="air"})
+			generate_tree(pos, "default:tree", "default:leaves", 1)
 		end
 	end,
 })
@@ -624,12 +626,14 @@ minetest.register_abm({
 -- Jungle Tree
 minetest.register_abm({
 	nodenames = {"default:junglesapling"},
-	neighbors = {"default:dirt", "default:dirt_with_grass"},
+	neighbors = {"group:soil_sapling"},
 	interval = 30,
 	chance = 15,
 	action = function(pos)
 		local light = minetest.get_node_light(pos)
-		if light or light > 10 then
+		local soilnode = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
+		local soiltype = mietest.get_item_group(soilnode.name, "soil_sapling")
+		if soiltype == 2 and light and light >= 9 then
 			minetest.add_node(pos, {name="air"})
 			generate_tree(pos, "default:jungletree", "default:jungleleaves", 2)
 		end

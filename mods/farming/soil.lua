@@ -11,7 +11,7 @@ minetest.register_node("farming:soil", {
 			{-0.5, -0.5, -0.5, 0.5, 0.4375, 0.5},
 		}
 	},
-	groups = {crumbly=3, not_in_creative_inventory=1,soil=2},
+	groups = { crumbly=3, not_in_creative_inventory=1, soil=2, soil_sapling=1 },
 	sounds = default.node_sound_dirt_defaults(),
 })
 
@@ -27,7 +27,7 @@ minetest.register_node("farming:soil_wet", {
 			{-0.5, -0.5, -0.5, 0.5, 0.4375, 0.5},
 		}
 	},
-	groups = {crumbly=3, not_in_creative_inventory=1,soil=3},
+	groups = { crumbly=3, not_in_creative_inventory=1, soil=3, soil_sapling=1 },
 	sounds = default.node_sound_dirt_defaults(),
 })
 

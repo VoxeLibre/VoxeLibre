@@ -12,6 +12,8 @@ This section explains all the used groups in this subgame.
 * `cultivatable=1`: Block will be turned into Dirt by using a hoe on it
 * `flammable`: Block helps spreading fire and gets destroyed by nearby fire (rating doesn't matter)
 * `soil=1`: Saplings and other small plants can grow on it
+* `soil_sapling=2`: Soil for saplings. Intended to be natural soil. All saplings will grow on this
+* `soil_sapling=1`: Artificial soil (such as farmland) for saplings. Some saplings will not grow on this
 * `soil_sugarcane=1`: Sugar canes will grow on this near water
 
 ### Groups (mostly) used for crafting recipes

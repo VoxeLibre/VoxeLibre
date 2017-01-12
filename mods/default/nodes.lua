@@ -257,7 +257,7 @@ minetest.register_node("default:dirt_with_grass", {
 	tiles = {"default_grass.png", "default_dirt.png", "default_dirt.png^default_grass_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {crumbly=3, soil=1, soil_sugarcane=1, cultivatable=2},
+	groups = {crumbly=3, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2},
 	drop = 'default:dirt',
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
@@ -282,7 +282,7 @@ minetest.register_node("default:podzol", {
 	tiles = {"default_dirt_podzol_top.png", "default_dirt.png", "default_dirt_podzol_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {crumbly=3, soil=1, soil_sugarcane=1},
+	groups = {crumbly=3, soil=1, soil_sapling=2, soil_sugarcane=1},
 	drop = 'default:dirt',
 	sounds = default.node_sound_dirt_defaults(),
 })
@@ -292,7 +292,7 @@ minetest.register_node("default:dirt", {
 	tiles = {"default_dirt.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {crumbly=3, soil=1, soil_sugarcane=1, cultivatable=2},
+	groups = {crumbly=3, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2},
 	sounds = default.node_sound_dirt_defaults(),
 })
 
