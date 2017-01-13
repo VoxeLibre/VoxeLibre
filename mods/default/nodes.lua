@@ -2180,6 +2180,6 @@ minetest.register_node("default:cobweb", {
        liquid_range = 0,
        walkable = false,
        groups = {snappy=1,liquid=3,flammable=2},
-       drop = "farming:string",
+       drop = "default:string",
 })
 
