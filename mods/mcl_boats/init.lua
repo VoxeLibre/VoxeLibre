@@ -22,7 +22,6 @@ local boat = {
 	collisionbox = {-1,-0.5,-1, 1,0.5,1},
 	visual = "mesh",
 	mesh = "mcl_boats_base.x",
-	textures = {"mcl_boats_texture.png"},
 
 	_driver = nil,
 	_v = 0,
@@ -134,38 +133,45 @@ function boat.on_step(self, dtime)
 	
 end
 
-minetest.register_entity("mcl_boats:boat", boat)
+local woods = { "", "_spruce", "_birch", "_jungle", "_dark", "_acacia" }
+local names = { "Oak Boat", "Spruce Boat", "Birch Boat", "Jungle Boat", "Dark Oak Boat", "Acacia Boat" }
+local craftstuffs = { "default:wood", "default:sprucewood", "default:birchwood", "default:junglewood", "default:darkwood", "default:acaciawood" }
 
-minetest.register_craftitem("mcl_boats:boat", {
-	description = "Boat",
-	inventory_image = "mcl_boats_inventory.png",
-	liquids_pointable = true,
-	groups = { boat = 1, },
+for w=1, #woods do
+	textures = {"mcl_boats_texture.png"},
+	minetest.register_entity("mcl_boats:boat"..woods[w], boat)
 
-	on_place = function(itemstack, placer, pointed_thing)
-		if pointed_thing.type ~= "node" then
-			return
-		end
-		if not is_water(pointed_thing.under) then
-			return
-		end
-		pointed_thing.under.y = pointed_thing.under.y+0.5
-		minetest.add_entity(pointed_thing.under, "mcl_boats:boat")
-		if not minetest.setting_getbool("creative_mode") then
-			itemstack:take_item()
-		end
-		return itemstack
-	end,
-})
+	minetest.register_craftitem("mcl_boats:boat"..woods[w], {
+		description = names[w],
+		inventory_image = "mcl_boats_inventory.png",
+		liquids_pointable = true,
+		groups = { boat = 1, },
 
-minetest.register_craft({
-	output = "mcl_boats:boat",
-	recipe = {
-		{"", "", ""},
-		{"default:wood", "", "default:wood"},
-		{"default:wood", "default:wood", "default:wood"},
-	},
-})
+		on_place = function(itemstack, placer, pointed_thing)
+			if pointed_thing.type ~= "node" then
+				return
+			end
+			if not is_water(pointed_thing.under) then
+				return
+			end
+			pointed_thing.under.y = pointed_thing.under.y+0.5
+			minetest.add_entity(pointed_thing.under, "mcl_boats:boat"..woods[w])
+			if not minetest.setting_getbool("creative_mode") then
+				itemstack:take_item()
+			end
+			return itemstack
+		end,
+	})
+
+	local c = craftstuffs[w]
+	minetest.register_craft({
+		output = "mcl_boats:boat",
+		recipe = {
+			{c, "", c},
+			{c, c, c},
+		},
+	})
+end
 
 minetest.register_craft({
 	type = "fuel",

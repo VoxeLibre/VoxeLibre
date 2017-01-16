@@ -54,7 +54,7 @@ function set_inv(filter, player)
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#rail" then
-					if string.find(string.lower(def.name), "rail") or string.find(string.lower(def.description), "rail") or string.find(string.lower(def.name), "cart") or string.find(string.lower(def.description), "cart") or string.find(string.lower(def.description), "boat") then
+					if def.groups.rail or def.groups.cart or def.groups.boat then
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#misc" then
