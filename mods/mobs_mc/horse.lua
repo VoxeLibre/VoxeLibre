@@ -224,8 +224,8 @@ mobs:register_mob("mobs_mc:horse", {
 
 	on_rightclick = function(self, clicker)
 		local tool = clicker:get_wielded_item()
-		if tool:get_name() == "mobs:saddle" then
-			clicker:get_inventory():remove_item("main", "mobs:saddle")
+		if tool:get_name() == "mcl_mobitems:saddle" then
+			clicker:get_inventory():remove_item("main", "mcl_mobitems:saddle")
 			local pos = self.object:getpos()
 			self.object:remove()
 			minetest.add_entity(pos, "mobs_mc:horseh1")
@@ -267,8 +267,8 @@ mobs:register_mob("mobs_mc:horse2", {
 
 	on_rightclick = function(self, clicker)
 		local tool = clicker:get_wielded_item()
-		if tool:get_name() == "mobs:saddle" then
-			clicker:get_inventory():remove_item("main", "mobs:saddle")
+		if tool:get_name() == "mcl_mobitems:saddle" then
+			clicker:get_inventory():remove_item("main", "mcl_mobitems:saddle")
 			local pos = self.object:getpos()
 			self.object:remove()
 			minetest.add_entity(pos, "mobs_mc:horsepegh1")
@@ -310,8 +310,8 @@ mobs:register_mob("mobs_mc:horse3", {
 
 	on_rightclick = function(self, clicker)
 		local tool = clicker:get_wielded_item()
-		if tool:get_name() == "mobs:saddle" then
-			clicker:get_inventory():remove_item("main", "mobs:saddle")
+		if tool:get_name() == "mcl_mobitems:saddle" then
+			clicker:get_inventory():remove_item("main", "mcl_mobitems:saddle")
 			local pos = self.object:getpos()
 			self.object:remove()
 			minetest.add_entity(pos, "mobs_mc:horsearah1")

@@ -48,7 +48,7 @@ mobs:register_mob("mobs_mc:dog", {
 	light_damage = 0,
 	on_rightclick = function(self, clicker)
 		local item = clicker:get_wielded_item()
-		if item:get_name() == "mobs:meat_raw" then
+		if item:get_name() == "mcl_mobitems:meat_raw" then
 			local hp = self.object:get_hp()
 			if hp + 4 > self.hp_max then return end
 			if not minetest.setting_getbool("creative_mode") then
@@ -142,7 +142,7 @@ mobs:register_mob("mobs_mc:wolf", {
 	armor = 200,
 	attack_type = "dogfight",
 	drops = {
-		{name = "mobs:meat_raw",
+		{name = "mcl_mobitems:meat_raw",
 		chance = 1,
 		min = 2,
 		max = 3,},

@@ -37,7 +37,7 @@ mobs:register_mob("mobs_mc:enderman", {
 		chance = 11,
 		min = 1,
 		max = 1,},
-		{name = "farorb:farorb",
+		{name = "mcl_ender_pearl:ender_pearl",
 		chance = 3,
 		min = 0,
 		max = 1,},

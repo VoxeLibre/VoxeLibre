@@ -20,11 +20,11 @@ mobs:register_mob("mobs_mc:cow", {
 	walk_velocity = 1,
 	armor = 200,
 	drops = {
-		{name = "mobs:beef_raw",
+		{name = "mcl_mobitems:beef_raw",
 		chance = 1,
 		min = 1,
 		max = 3,},
-		{name = "mobs:leather",
+		{name = "mcl_mobitems:leather",
 		chance = 1,
 		min = 0,
 		max = 2,},
@@ -107,12 +107,12 @@ mobs:register_mob("mobs_mc:cow", {
 
 			inv:remove_item("main", "bucket:bucket_empty")
 
-			if inv:room_for_item("main", {name = "mobs:bucket_milk"}) then
-				clicker:get_inventory():add_item("main", "mobs:bucket_milk")
+			if inv:room_for_item("main", {name = "mcl_mobitems:milk"}) then
+				clicker:get_inventory():add_item("main", "mcl_mobitems:milk")
 			else
 				local pos = self.object:getpos()
 				pos.y = pos.y + 0.5
-				minetest.add_item(pos, {name = "mobs:bucket_milk"})
+				minetest.add_item(pos, {name = "mcl_mobitems:milk"})
 			end
 
 			self.gotten = true -- milked
