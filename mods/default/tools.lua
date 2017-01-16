@@ -10,7 +10,7 @@ minetest.register_item(":", {
 	wield_image = "wieldhand.png",
 	wield_scale = {x=1,y=1,z=2.5},
 	tool_capabilities = {
-		full_punch_interval = 0.9,
+		full_punch_interval = 0.25,
 		max_drop_level = 0,
 		groupcaps = {
 			crumbly = {times={[2]=3.00, [3]=0.70}, uses=0, maxlevel=1},
@@ -26,7 +26,8 @@ minetest.register_tool("default:pick_wood", {
 	description = "Wooden Pickaxe",
 	inventory_image = "default_tool_woodpick.png",
 	tool_capabilities = {
-		full_punch_interval = 1.2,
+		-- 1/1.2
+		full_punch_interval = 0.83333333,
 		max_drop_level=0,
 		groupcaps={
 			cracky = {times={[3]=1.60}, uses=10, maxlevel=1},
@@ -38,7 +39,8 @@ minetest.register_tool("default:pick_stone", {
 	description = "Stone Pickaxe",
 	inventory_image = "default_tool_stonepick.png",
 	tool_capabilities = {
-		full_punch_interval = 1.3,
+		-- 1/1.2
+		full_punch_interval = 0.83333333,
 		max_drop_level=0,
 		groupcaps={
 			cracky = {times={[2]=2.0, [3]=1.20}, uses=20, maxlevel=1},
@@ -50,7 +52,8 @@ minetest.register_tool("default:pick_steel", {
 	description = "Iron Pickaxe",
 	inventory_image = "default_tool_steelpick.png",
 	tool_capabilities = {
-		full_punch_interval = 1.0,
+		-- 1/1.2
+		full_punch_interval = 0.83333333,
 		max_drop_level=1,
 		groupcaps={
 			cracky = {times={[1]=4.00, [2]=1.60, [3]=0.80}, uses=20, maxlevel=2},
@@ -62,19 +65,21 @@ minetest.register_tool("default:pick_gold", {
 	description = "Gold Pickaxe",
 	inventory_image = "default_tool_goldpick.png",
 	tool_capabilities = {
-		full_punch_interval = 1.3,
+		-- 1/1.2
+		full_punch_interval = 0.83333333,
 		max_drop_level=0,
 		groupcaps={
 			cracky = {times={[2]=2.0, [3]=1.20}, uses=20, maxlevel=1},
 		},
-		damage_groups = {fleshy=3},
+		damage_groups = {fleshy=2},
 	},
 })
 minetest.register_tool("default:pick_diamond", {
 	description = "Diamond Pickaxe",
 	inventory_image = "default_tool_diamondpick.png",
 	tool_capabilities = {
-		full_punch_interval = 0.9,
+		-- 1/1.2
+		full_punch_interval = 0.83333333,
 		max_drop_level=3,
 		groupcaps={
 			cracky = {times={[1]=2.0, [2]=1.0, [3]=0.50,[4]=20.00 }, uses=30, maxlevel=4},
@@ -89,7 +94,7 @@ minetest.register_tool("default:shovel_wood", {
 	inventory_image = "default_tool_woodshovel.png",
 	wield_image = "default_tool_woodshovel.png^[transformR90",
 	tool_capabilities = {
-		full_punch_interval = 1.2,
+		full_punch_interval = 1,
 		max_drop_level=0,
 		groupcaps={
 			crumbly = {times={[1]=3.00, [2]=1.60, [3]=0.60}, uses=10, maxlevel=1},
@@ -102,12 +107,12 @@ minetest.register_tool("default:shovel_stone", {
 	inventory_image = "default_tool_stoneshovel.png",
 	wield_image = "default_tool_stoneshovel.png^[transformR90",
 	tool_capabilities = {
-		full_punch_interval = 1.4,
+		full_punch_interval = 1,
 		max_drop_level=0,
 		groupcaps={
 			crumbly = {times={[1]=1.80, [2]=1.20, [3]=0.50}, uses=20, maxlevel=1},
 		},
-		damage_groups = {fleshy=2},
+		damage_groups = {fleshy=3},
 	},
 })
 minetest.register_tool("default:shovel_steel", {
@@ -115,12 +120,12 @@ minetest.register_tool("default:shovel_steel", {
 	inventory_image = "default_tool_steelshovel.png",
 	wield_image = "default_tool_steelshovel.png^[transformR90",
 	tool_capabilities = {
-		full_punch_interval = 1.1,
+		full_punch_interval = 1,
 		max_drop_level=1,
 		groupcaps={
 			crumbly = {times={[1]=1.50, [2]=0.90, [3]=0.40}, uses=30, maxlevel=2},
 		},
-		damage_groups = {fleshy=3},
+		damage_groups = {fleshy=4},
 	},
 })
 minetest.register_tool("default:shovel_gold", {
@@ -128,7 +133,7 @@ minetest.register_tool("default:shovel_gold", {
 	inventory_image = "default_tool_goldshovel.png",
 	wield_image = "default_tool_goldshovel.png^[transformR90",
 	tool_capabilities = {
-		full_punch_interval = 1.4,
+		full_punch_interval = 1,
 		max_drop_level=0,
 		groupcaps={
 			crumbly = {times={[1]=1.80, [2]=1.20, [3]=0.50}, uses=20, maxlevel=1},
@@ -141,12 +146,12 @@ minetest.register_tool("default:shovel_diamond", {
 	inventory_image = "default_tool_diamondshovel.png",
 	wield_image = "default_tool_diamondshovel.png^[transformR90",
 	tool_capabilities = {
-		full_punch_interval = 1.0,
+		full_punch_interval = 1,
 		max_drop_level=1,
 		groupcaps={
 			crumbly = {times={[1]=1.10, [2]=0.50, [3]=0.30}, uses=30, maxlevel=3},
 		},
-		damage_groups = {fleshy=4},
+		damage_groups = {fleshy=5},
 	},
 })
 
@@ -155,60 +160,61 @@ minetest.register_tool("default:axe_wood", {
 	description = "Wooden Axe",
 	inventory_image = "default_tool_woodaxe.png",
 	tool_capabilities = {
-		full_punch_interval = 1.0,
+		full_punch_interval = 1.25,
 		max_drop_level=0,
 		groupcaps={
 			choppy = {times={[2]=3.00, [3]=2.00}, uses=10, maxlevel=1},
 		},
-		damage_groups = {fleshy=2},
+		damage_groups = {fleshy=7},
 	},
 })
 minetest.register_tool("default:axe_stone", {
 	description = "Stone Axe",
 	inventory_image = "default_tool_stoneaxe.png",
 	tool_capabilities = {
-		full_punch_interval = 1.2,
+		full_punch_interval = 1.25,
 		max_drop_level=0,
 		groupcaps={
 			choppy={times={[1]=3.00, [2]=2.00, [3]=1.50}, uses=20, maxlevel=1},
 		},
-		damage_groups = {fleshy=3},
+		damage_groups = {fleshy=9},
 	},
 })
 minetest.register_tool("default:axe_steel", {
 	description = "Iron Axe",
 	inventory_image = "default_tool_steelaxe.png",
 	tool_capabilities = {
-		full_punch_interval = 1.0,
+		-- 1/0.9
+		full_punch_interval = 1.11111111,
 		max_drop_level=1,
 		groupcaps={
 			choppy={times={[1]=2.50, [2]=1.40, [3]=1.00}, uses=20, maxlevel=2},
 		},
-		damage_groups = {fleshy=4},
+		damage_groups = {fleshy=9},
 	},
 })
 minetest.register_tool("default:axe_gold", {
 	description = "Gold Axe",
 	inventory_image = "default_tool_goldaxe.png",
 	tool_capabilities = {
-		full_punch_interval = 1.2,
+		full_punch_interval = 1.0,
 		max_drop_level=0,
 		groupcaps={
 			choppy={times={[1]=3.00, [2]=2.00, [3]=1.50}, uses=20, maxlevel=1},
 		},
-		damage_groups = {fleshy=3},
+		damage_groups = {fleshy=7},
 	},
 })
 minetest.register_tool("default:axe_diamond", {
 	description = "Diamond Axe",
 	inventory_image = "default_tool_diamondaxe.png",
 	tool_capabilities = {
-		full_punch_interval = 0.9,
+		full_punch_interval = 1.0,
 		max_drop_level=1,
 		groupcaps={
 			choppy={times={[1]=2.10, [2]=0.90, [3]=0.50}, uses=30, maxlevel=2},
 		},
-		damage_groups = {fleshy=7},
+		damage_groups = {fleshy=9},
 	},
 })
 
@@ -258,7 +264,7 @@ minetest.register_tool("default:sword_gold", {
 		groupcaps={
 			snappy={times={[2]=1.4, [3]=0.40}, uses=20, maxlevel=1},
 		},
-		damage_groups = {fleshy=3},
+		damage_groups = {fleshy=4},
 	}
 })
 minetest.register_tool("default:sword_diamond", {
