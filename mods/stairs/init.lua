@@ -69,7 +69,7 @@ function stairs.register_stair(subname, recipeitem, groups, images, description,
 
 	if recipeitem then
 		minetest.register_craft({
-			output = 'stairs:stair_' .. subname .. ' 8',
+			output = 'stairs:stair_' .. subname .. ' 4',
 			recipe = {
 				{recipeitem, "", ""},
 				{recipeitem, recipeitem, ""},
@@ -77,9 +77,9 @@ function stairs.register_stair(subname, recipeitem, groups, images, description,
 			},
 		})
 
-		-- Flipped recipe for the silly minecrafters
+		-- Flipped recipe
 		minetest.register_craft({
-			output = 'stairs:stair_' .. subname .. ' 8',
+			output = 'stairs:stair_' .. subname .. ' 4',
 			recipe = {
 				{"", "", recipeitem},
 				{"", recipeitem, recipeitem},
