@@ -16,14 +16,6 @@ This section explains all the used groups in this subgame.
 * `soil_sapling=1`: Artificial soil (such as farmland) for saplings. Some saplings will not grow on this
 * `soil_sugarcane=1`: Sugar canes will grow on this near water
 * `disable_suffocation=1`: Disables suffocation for full solid cubes (1)
-* `food`: Item is a comestible item which can be consumed (healthy or unhealthy)
-    * `food=2`: Food
-    * `food=3`: Drink
-    * `food=1`: Other/unsure
-* `eatable`: Item can be *directly* eaten by wielding + left click (`on_use=item_eat`). Rating is the satiation gain
-* `ammo=1`: Item is used as ammo for a weapon
-* `ammo_bow=1`: Item is used as ammo for bows
-* `weapon_ranged=1`: Item is a ranged weapon
 
 ### Footnotes
 
@@ -43,11 +35,11 @@ This section explains all the used groups in this subgame.
 * `wood_slab=1`: Slabs made out of a kind of wooden planks
 * `wood_stairs=1`: Stairs made out of a kind of wooden planks
 * `coal=1`: Coal of any kind (lumps only, not blocks)
-* `boat=1`: Boat
 * `wool=1`: Wool (only full blocks)
 * `carpet=1:` (Wool) carpet
 
-### Other groups
+### Declarative groups
+These groups are used mostly for informational purposes
 
 * `water=1`: Water
 * `lava=1`: Lava
@@ -59,3 +51,14 @@ This section explains all the used groups in this subgame.
 * `compass`: Compass (rating doesn't matter)
 * `rail=1`: Rail
 * `music_record`: Music Disc (rating is track ID)
+* `boat=1`: Boat
+* `minecart=1`: Minecart
+* `food`: Item is a comestible item which can be consumed (healthy or unhealthy)
+    * `food=2`: Food
+    * `food=3`: Drink
+    * `food=1`: Other/unsure
+* `eatable`: Item can be *directly* eaten by wielding + left click (`on_use=item_eat`). Rating is the satiation gain
+* `ammo=1`: Item is used as ammo for a weapon
+* `ammo_bow=1`: Item is used as ammo for bows
+* `weapon_ranged=1`: Item is a ranged weapon
+

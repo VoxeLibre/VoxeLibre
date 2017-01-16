@@ -275,6 +275,7 @@ minetest.register_craftitem("mcl_minecarts:minecart", {
 		itemstack:take_item()
 		return itemstack
 	end,
+	groups = { minecart = 1 },
 })
 
 minetest.register_craft({
