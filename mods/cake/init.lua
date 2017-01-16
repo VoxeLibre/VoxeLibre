@@ -39,14 +39,16 @@ minetest.register_node("cake:cake", {
 			fixed = slice_6
 		},
 	stack_max = 1,
-	groups = {food=2,crumbly=3,falling_node=1},
+	groups = {food=2,crumbly=3,attached_node=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
+		minetest.item_eat(2)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
 			minetest.add_node(pos,{type="node",name="cake:cake_5",param2=param2})
 		end
 	end,
+	sounds = default.node_sound_leaves_defaults(),
 })
 minetest.register_node("cake:cake_5", {
 	description = "Cake (5 Slices Left)",
@@ -62,7 +64,7 @@ minetest.register_node("cake:cake_5", {
 		type = "fixed",
 			fixed = slice_5
 		},
-	groups = {food=2,crumbly=3,falling_node=1,not_in_creative_inventory=1},
+	groups = {food=2,crumbly=3,attached_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
@@ -70,6 +72,7 @@ minetest.register_node("cake:cake_5", {
 			minetest.add_node(pos,{type="node",name="cake:cake_4",param2=param2})
 		end
 	end,
+	sounds = default.node_sound_leaves_defaults(),
 })
 minetest.register_node("cake:cake_4", {
 	description = "Cake (4 Slices Left)",
@@ -85,7 +88,7 @@ minetest.register_node("cake:cake_4", {
 		type = "fixed",
 			fixed = slice_4
 		},
-	groups = {food=2,crumbly=3,falling_node=1,not_in_creative_inventory=1},
+	groups = {food=2,crumbly=3,attached_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
@@ -93,6 +96,7 @@ minetest.register_node("cake:cake_4", {
 			minetest.add_node(pos,{type="node",name="cake:cake_3",param2=param2})
 		end
 	end,
+	sounds = default.node_sound_leaves_defaults(),
 })
 minetest.register_node("cake:cake_3", {
 	description = "Cake (3 Slices Left)",
@@ -108,7 +112,7 @@ minetest.register_node("cake:cake_3", {
 		type = "fixed",
 			fixed = slice_3
 		},
-	groups = {food=2,crumbly=3,falling_node=1,not_in_creative_inventory=1},
+	groups = {food=2,crumbly=3,attached_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
@@ -116,6 +120,7 @@ minetest.register_node("cake:cake_3", {
 			minetest.add_node(pos,{type="node",name="cake:cake_2",param2=param2})
 		end
 	end,
+	sounds = default.node_sound_leaves_defaults(),
 })
 minetest.register_node("cake:cake_2", {
 	description = "Cake (2 Slices Left)",
@@ -131,7 +136,7 @@ minetest.register_node("cake:cake_2", {
 		type = "fixed",
 			fixed = slice_2
 		},
-	groups = {food=2,crumbly=3,falling_node=1,not_in_creative_inventory=1},
+	groups = {food=2,crumbly=3,attached_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
@@ -139,6 +144,7 @@ minetest.register_node("cake:cake_2", {
 			minetest.add_node(pos,{type="node",name="cake:cake_1",param2=param2})
 		end
 	end,
+	sounds = default.node_sound_leaves_defaults(),
 })
 minetest.register_node("cake:cake_1", {
 	description = "Cake (1 Slice Left)",
@@ -154,7 +160,7 @@ minetest.register_node("cake:cake_1", {
 		type = "fixed",
 			fixed = slice_1
 		},
-	groups = {food=2,crumbly=3,falling_node=1,not_in_creative_inventory=1},
+	groups = {food=2,crumbly=3,attached_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
@@ -162,4 +168,5 @@ minetest.register_node("cake:cake_1", {
 			minetest.remove_node(pos)
 		end
 	end,
+	sounds = default.node_sound_leaves_defaults(),
 })
