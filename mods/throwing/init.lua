@@ -37,7 +37,7 @@ minetest.register_tool("throwing:bow", {
 		return itemstack
 	end,
 	on_use = function(itemstack, user, pointed_thing)
-		wear = itemstack:get_wear()
+		local wear = itemstack:get_wear()
 		itemstack:add_wear(wear)
 		if throwing_shoot_arrow(itemstack, user, pointed_thing) then
 			if not minetest.setting_getbool("creative_mode") then

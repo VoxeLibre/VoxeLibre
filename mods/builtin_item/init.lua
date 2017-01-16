@@ -30,7 +30,7 @@ minetest.register_entity(":__builtin:item", {
 			item_texture = minetest.registered_items[itemname].inventory_image
 			item_type = minetest.registered_items[itemname].type
 		end
-		prop = {
+		local prop = {
 			is_visible = true,
 			visual = "sprite",
 			textures = {"unknown_item.png"}
@@ -108,7 +108,7 @@ minetest.register_entity(":__builtin:item", {
 		--]]
 		
 		if minetest.registered_nodes[name] and minetest.registered_nodes[name].liquidtype == "flowing" then
-			get_flowing_dir = function(self)
+			local get_flowing_dir = function(self)
 				local pos = self.object:getpos()
 				local param2 = minetest.get_node(pos).param2
 				for i,d in ipairs({-1, 1, -1, 1}) do

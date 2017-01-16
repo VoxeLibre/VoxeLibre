@@ -118,6 +118,8 @@ minetest.after(0, init)
 local offset = {}
 local hoch = {}
 local bg = {}
+-- TODO: Investigate what is going on with this weird variable
+local start_i
 offset["blocks"] = "-0.29,-0.25"
 offset["deco"] = "0.98,-0.25"
 offset["redstone"] = "2.23,-0.25"
