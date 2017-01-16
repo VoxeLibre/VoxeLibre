@@ -21,8 +21,8 @@ local boat = {
 	physical = true,
 	collisionbox = {-1,-0.5,-1, 1,0.5,1},
 	visual = "mesh",
-	mesh = "boat_base.x",
-	textures = {"boat_texture.png"},
+	mesh = "mcl_boats_base.x",
+	textures = {"mcl_boats_texture.png"},
 
 	_driver = nil,
 	_v = 0,
@@ -62,13 +62,13 @@ function boat.on_punch(self, puncher, time_from_last_punch, tool_capabilities, d
 		self._driver = nil
 		boat.schedule_removal(self)
 		if not minetest.setting_getbool("creative_mode") then
-			puncher:get_inventory():add_item("main", "boat:boat")
+			puncher:get_inventory():add_item("main", "mcl_boats:boat")
 		end
 	else
 
 		boat.schedule_removal(self)
 		if not minetest.setting_getbool("creative_mode") then
-			puncher:get_inventory():add_item("main", "boat:boat")
+			puncher:get_inventory():add_item("main", "mcl_boats:boat")
 		end
 	
 	end
@@ -143,11 +143,11 @@ function boat.schedule_removal(self)
 end
 
 
-minetest.register_entity("boat:boat", boat)
+minetest.register_entity("mcl_boats:boat", boat)
 
-minetest.register_craftitem("boat:boat", {
+minetest.register_craftitem("mcl_boats:boat", {
 	description = "Boat",
-	inventory_image = "boat_inventory.png",
+	inventory_image = "mcl_boats_inventory.png",
 	liquids_pointable = true,
 	groups = { boat = 1, },
 
@@ -159,7 +159,7 @@ minetest.register_craftitem("boat:boat", {
 			return
 		end
 		pointed_thing.under.y = pointed_thing.under.y+0.5
-		minetest.add_entity(pointed_thing.under, "boat:boat")
+		minetest.add_entity(pointed_thing.under, "mcl_boats:boat")
 		if not minetest.setting_getbool("creative_mode") then
 			itemstack:take_item()
 		end
@@ -168,7 +168,7 @@ minetest.register_craftitem("boat:boat", {
 })
 
 minetest.register_craft({
-	output = "boat:boat",
+	output = "mcl_boats:boat",
 	recipe = {
 		{"", "", ""},
 		{"default:wood", "", "default:wood"},
