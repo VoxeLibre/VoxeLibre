@@ -23,21 +23,22 @@ local boat = {
 	visual = "mesh",
 	mesh = "boat_base.x",
 	textures = {"boat_texture.png"},
-	driver = nil,
-	v = 0,
-	stepcount = 0,
-	unattended = 0
+
+	_driver = nil,
+	_v = 0,
+	_stepcount = 0,
+	_unattended = 0
 }
 
 function boat.on_rightclick(self, clicker)
 	if not clicker or not clicker:is_player() then
 		return
 	end
-	if self.driver and clicker == self.driver then
-		self.driver = nil
+	if self._driver and clicker == self._driver then
+		self._driver = nil
 		clicker:set_detach()
-	elseif not self.driver then
-		self.driver = clicker
+	elseif not self._driver then
+		self._driver = clicker
 		clicker:set_attach(self.object, "", {x=0,y=5,z=0}, {x=0,y=0,z=0})
 		self.object:setyaw(clicker:get_look_yaw())
 	end
@@ -46,7 +47,7 @@ end
 function boat.on_activate(self, staticdata, dtime_s)
 	self.object:set_armor_groups({immortal=1})
 	if staticdata then
-		self.v = tonumber(staticdata)
+		self._v = tonumber(staticdata)
 	end
 end
 
@@ -56,9 +57,9 @@ end
 
 function boat.on_punch(self, puncher, time_from_last_punch, tool_capabilities, direction)
 
-	 if self.driver then
-		self.driver:set_detach()
-		self.driver = nil
+	 if self._driver then
+		self._driver:set_detach()
+		self._driver = nil
 		boat.schedule_removal(self)
 		if not minetest.setting_getbool("creative_mode") then
 			puncher:get_inventory():add_item("main", "boat:boat")
@@ -75,24 +76,24 @@ end
 
 function boat.on_step(self, dtime)
 
-	self.stepcount=self.stepcount+1
-	if self.stepcount>9 then
+	self._stepcount=self._stepcount+1
+	if self._stepcount>9 then
 	
-		self.stepcount=0
+		self._stepcount=0
 		
-		if self.driver then
-			local ctrl = self.driver:get_player_control()
+		if self._driver then
+			local ctrl = self._driver:get_player_control()
 
-			self.unattended=0
+			self._unattended=0
 		
 			local yaw = self.object:getyaw()
 
-			if ctrl.up and self.v<3 then
-				self.v = self.v + 1
+			if ctrl.up and self._v<3 then
+				self._v = self._v + 1
 			end
 			
-			if ctrl.down and self.v>=-1 then
-				self.v = self.v - 1
+			if ctrl.down and self._v>=-1 then
+				self._v = self._v - 1
 			end	
 			
 			if ctrl.left then
@@ -111,7 +112,7 @@ function boat.on_step(self, dtime)
 			end
 		end
 
-		local tmp_velocity = get_velocity(self.v, self.object:getyaw(), 0)
+		local tmp_velocity = get_velocity(self._v, self.object:getyaw(), 0)
 
 		local tmp_pos = self.object:getpos()
 
