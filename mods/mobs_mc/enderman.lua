@@ -64,7 +64,7 @@ mobs:register_spawn("mobs_mc:enderman", { "default:sand", "default:desert_sand"}
 
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:enderman", "Spawn Enderman", "spawn_egg_overlay.png")
+mobs:register_egg("mobs_mc:enderman", "Spawn Enderman", "spawn_egg_enderman.png")
 
 
 if minetest.setting_get("log_mods") then
