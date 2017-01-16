@@ -42,11 +42,8 @@ minetest.register_node("mcl_cake:cake", {
 	groups = {food=2,crumbly=3,attached_node=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
-		minetest.item_eat(2)
-		if clicker:get_hp() < 20 then
-			clicker:set_hp(clicker:get_hp()+2)
-			minetest.add_node(pos,{type="node",name="mcl_cake:cake_5",param2=param2})
-		end
+		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_5"), ItemStack("mcl_cake:cake"), clicker, {type="nothing"})
+		minetest.add_node(pos,{type="node",name="mcl_cake:cake_5",param2=param2})
 	end,
 	sounds = default.node_sound_leaves_defaults(),
 })
@@ -67,10 +64,8 @@ minetest.register_node("mcl_cake:cake_5", {
 	groups = {food=2,crumbly=3,attached_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
-		if clicker:get_hp() < 20 then
-			clicker:set_hp(clicker:get_hp()+2)
-			minetest.add_node(pos,{type="node",name="mcl_cake:cake_4",param2=param2})
-		end
+		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_4"), ItemStack("mcl_cake:cake_5"), clicker, {type="nothing"})
+		minetest.add_node(pos,{type="node",name="mcl_cake:cake_4",param2=param2})
 	end,
 	sounds = default.node_sound_leaves_defaults(),
 })
@@ -91,10 +86,8 @@ minetest.register_node("mcl_cake:cake_4", {
 	groups = {food=2,crumbly=3,attached_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
-		if clicker:get_hp() < 20 then
-			clicker:set_hp(clicker:get_hp()+2)
-			minetest.add_node(pos,{type="node",name="mcl_cake:cake_3",param2=param2})
-		end
+		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_3"), ItemStack("mcl_cake:cake_4"), clicker, {type="nothing"})
+		minetest.add_node(pos,{type="node",name="mcl_cake:cake_3",param2=param2})
 	end,
 	sounds = default.node_sound_leaves_defaults(),
 })
@@ -115,10 +108,8 @@ minetest.register_node("mcl_cake:cake_3", {
 	groups = {food=2,crumbly=3,attached_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
-		if clicker:get_hp() < 20 then
-			clicker:set_hp(clicker:get_hp()+2)
-			minetest.add_node(pos,{type="node",name="mcl_cake:cake_2",param2=param2})
-		end
+		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_2"), ItemStack("mcl_cake:cake_3"), clicker, {type="nothing"})
+		minetest.add_node(pos,{type="node",name="mcl_cake:cake_2",param2=param2})
 	end,
 	sounds = default.node_sound_leaves_defaults(),
 })
@@ -139,10 +130,8 @@ minetest.register_node("mcl_cake:cake_2", {
 	groups = {food=2,crumbly=3,attached_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
-		if clicker:get_hp() < 20 then
-			clicker:set_hp(clicker:get_hp()+2)
-			minetest.add_node(pos,{type="node",name="mcl_cake:cake_1",param2=param2})
-		end
+		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_1"), ItemStack("mcl_cake:cake_2"), clicker, {type="nothing"})
+		minetest.add_node(pos,{type="node",name="mcl_cake:cake_1",param2=param2})
 	end,
 	sounds = default.node_sound_leaves_defaults(),
 })
@@ -163,10 +152,8 @@ minetest.register_node("mcl_cake:cake_1", {
 	groups = {food=2,crumbly=3,attached_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
-		if clicker:get_hp() < 20 then
-			clicker:set_hp(clicker:get_hp()+2)
-			minetest.remove_node(pos)
-		end
+		minetest.do_item_eat(2, ItemStack("mcl:cake:cake 0"), ItemStack("mcl_cake:cake_1"), clicker, {type="nothing"})
+		minetest.remove_node(pos)
 	end,
 	sounds = default.node_sound_leaves_defaults(),
 })
