@@ -72,7 +72,7 @@ local TNT = {
 function TNT:on_activate(staticdata)
 	self.object:setvelocity({x=0, y=4, z=0})
 	self.object:setacceleration({x=0, y=-10, z=0})
-	self.object:settexturemod("^[brighten")
+	self.object:settexturemod("^tnt_blink.png")
 end
 
 function TNT:on_step(dtime)
@@ -85,7 +85,7 @@ function TNT:on_step(dtime)
 		if self.blinkstatus then
 			self.object:settexturemod("")
 		else
-			self.object:settexturemod("^[brighten")
+			self.object:settexturemod("^tnt_blink.png")
 		end
 		self.blinkstatus = not self.blinkstatus
 	end
