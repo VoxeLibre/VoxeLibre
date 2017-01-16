@@ -38,8 +38,8 @@ minetest.register_ore({
 	clust_scarcity = 14*14*14,
 	clust_num_ores = 33,
 	clust_size     = 5,
-	height_min     = -90,
-	height_max     = 90,
+	y_min          = -90,
+	y_max          = 90,
 })
 
 --
@@ -52,8 +52,8 @@ minetest.register_ore({
 	clust_scarcity = 500,
 	clust_num_ores = 5,
 	clust_size     = 3,
-	height_min     = 13,
-	height_max     = 31000,
+	y_min          = 13,
+	y_max          = 31000,
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -62,8 +62,8 @@ minetest.register_ore({
 	clust_scarcity = 500,
 	clust_num_ores = 8,
 	clust_size     = 3,
-	height_min     = 12,
-	height_max     = -12,
+	y_min          = 12,
+	y_max          = -12,
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -72,8 +72,8 @@ minetest.register_ore({
 	clust_scarcity = 1000,
 	clust_num_ores = 6,
 	clust_size     = 3,
-	height_min     = -11,
-	height_max     = 64,
+	y_min          = -11,
+	y_max          = 64,
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -82,8 +82,8 @@ minetest.register_ore({
 	clust_scarcity = 5000,
 	clust_num_ores = 4,
 	clust_size     = 2,
-	height_min     = 65,
-	height_max     = 67,
+	y_min          = 65,
+	y_max          = 67,
 })
 
 --
@@ -96,8 +96,8 @@ minetest.register_ore({
 	clust_scarcity = 830,
 	clust_num_ores = 5,
 	clust_size     = 3,
-	height_min     = -127,
-	height_max     = -10,
+	y_min          = -127,
+	y_max          = -10,
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -106,8 +106,8 @@ minetest.register_ore({
 	clust_scarcity = 1660,
 	clust_num_ores = 3,
 	clust_size     = 2,
-	height_min     = -9,
-	height_max     = 1,
+	y_min          = -9,
+	y_max          = 1,
 })
 
 --
@@ -120,8 +120,8 @@ minetest.register_ore({
 	clust_scarcity = 5000,
 	clust_num_ores = 5,
 	clust_size     = 3,
-	height_min     = -59,
-	height_max     = -35,
+	y_min          = -59,
+	y_max          = -35,
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -130,8 +130,8 @@ minetest.register_ore({
 	clust_scarcity = 10000,
 	clust_num_ores = 3,
 	clust_size     = 2,
-	height_min     = -35,
-	height_max     = -33,
+	y_min          = -35,
+	y_max          = -33,
 })
 
 --
@@ -144,8 +144,8 @@ minetest.register_ore({
 	clust_scarcity = 10000,
 	clust_num_ores = 4,
 	clust_size     = 3,
-	height_min     = -59,
-	height_max     = -48,
+	y_min          = -59,
+	y_max          = -48,
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -154,8 +154,8 @@ minetest.register_ore({
 	clust_scarcity = 5000,
 	clust_num_ores = 2,
 	clust_size     = 2,
-	height_min     = -59,
-	height_max     = -48,
+	y_min          = -59,
+	y_max          = -48,
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -164,8 +164,8 @@ minetest.register_ore({
 	clust_scarcity = 10000,
 	clust_num_ores = 8,
 	clust_size     = 3,
-	height_min     = -55,
-	height_max     = -52,
+	y_min          = -55,
+	y_max          = -52,
 })
 
 --
@@ -179,8 +179,8 @@ minetest.register_ore({
 	clust_scarcity = 10000,
 	clust_num_ores = 5,
 	clust_size     = 3,
-	height_min     = -59,
-	height_max     = -48,
+	y_min          = -59,
+	y_max          = -48,
 })
 
 minetest.register_ore({
@@ -190,8 +190,8 @@ minetest.register_ore({
 	clust_scarcity = 10000,
 	clust_num_ores = 10,
 	clust_size     = 4,
-	height_min     = -59,
-	height_max     = -48,
+	y_min          = -59,
+	y_max          = -48,
 })
 
 --
@@ -205,8 +205,8 @@ minetest.register_ore({
 	clust_scarcity = 10000,
 	clust_num_ores = 1,
 	clust_size     = 2,
-	height_min     = -59,
-	height_max     = -35,
+	y_min          = -59,
+	y_max          = -35,
 })
 
 minetest.register_ore({
@@ -216,8 +216,8 @@ minetest.register_ore({
 	clust_scarcity = 50000,
 	clust_num_ores = 3,
 	clust_size     = 2,
-	height_min     = -59,
-	height_max     = -35,
+	y_min          = -59,
+	y_max          = -35,
 })
 
 --
@@ -231,8 +231,8 @@ minetest.register_ore({
 	clust_scarcity = 10000,
 	clust_num_ores = 7,
 	clust_size     = 4,
-	height_min     = -50,
-	height_max     = -46,
+	y_min          = -50,
+	y_max          = -46,
 })
 
 minetest.register_ore({
@@ -242,8 +242,8 @@ minetest.register_ore({
 	clust_scarcity = 10000,
 	clust_num_ores = 5,
 	clust_size     = 4,
-	height_min     = -59,
-	height_max     = -50,
+	y_min          = -59,
+	y_max          = -50,
 })
 
 
@@ -258,18 +258,18 @@ minetest.register_ore({
 	clust_scarcity = 50000,
 	clust_num_ores = 10,
 	clust_size     = 5,
-	height_min     = -59,
-	height_max     = -0,
+	y_min          = -59,
+	y_max          = -0,
 })
 
-function default.generate_ore(name, wherein, minp, maxp, seed, chunks_per_volume, chunk_size, ore_per_chunk, height_min, height_max)
+function default.generate_ore(name, wherein, minp, maxp, seed, chunks_per_volume, chunk_size, ore_per_chunk, y_min, y_max)
 	minetest.log('action', "WARNING: default.generate_ore is deprecated")
 
-	if maxp.y < height_min or minp.y > height_max then
+	if maxp.y < y_min or minp.y > y_max then
 		return
 	end
-	local y_min = math.max(minp.y, height_min)
-	local y_max = math.min(maxp.y, height_max)
+	y_min = math.max(minp.y, y_min)
+	y_max = math.min(maxp.y, y_max)
 	if chunk_size >= y_max - y_min + 1 then
 		return
 	end
@@ -280,7 +280,7 @@ function default.generate_ore(name, wherein, minp, maxp, seed, chunks_per_volume
 	--print("generate_ore num_chunks: "..dump(num_chunks))
 	for i=1,num_chunks do
 		local y0 = pr:next(y_min, y_max-chunk_size+1)
-		if y0 >= height_min and y0 <= height_max then
+		if y0 >= y_min and y0 <= y_max then
 			local x0 = pr:next(minp.x, maxp.x-chunk_size+1)
 			local z0 = pr:next(minp.z, maxp.z-chunk_size+1)
 			local p0 = {x=x0, y=y0, z=z0}
@@ -498,8 +498,8 @@ local function replace(old, new, min, max)
 		clust_scarcity = 1,
 		clust_num_ores = 1,
 		clust_size     = 1,
-		height_min     = min,
-		height_max     = max,
+		y_min          = min,
+		y_max          = max,
 	})
 end
 replace("air", "default:bedrock", -90, -80)
@@ -524,8 +524,8 @@ local function bedrock(old)
 		clust_scarcity = 5,
 		clust_num_ores = 3,
 		clust_size     = 2,
-		height_min     = -64,
-		height_max     = -60,
+		y_min          = -64,
+		y_max          = -60,
 	})
 end
 bedrock("air")

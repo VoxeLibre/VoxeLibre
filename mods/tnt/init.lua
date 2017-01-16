@@ -31,10 +31,10 @@ function do_tnt_physics(tnt_np,tntr)
 end
 
 minetest.register_node("tnt:tnt", {
-	tile_images = {"default_tnt_top.png", "default_tnt_bottom.png",
+	tiles = {"default_tnt_top.png", "default_tnt_bottom.png",
 			"default_tnt_side.png", "default_tnt_side.png",
 			"default_tnt_side.png", "default_tnt_side.png"},
-	dug_item = '', -- Get nothing
+	drop = '', -- Get nothing
 	is_ground_content = false,
 	material = {
 		diggability = "not",

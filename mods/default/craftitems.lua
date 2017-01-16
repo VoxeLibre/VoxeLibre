@@ -176,4 +176,4 @@ minetest.register_craftitem("default:apple_gold", {
 	on_use = minetest.item_eat(8),
 })
 
-minetest.register_alias("default:steel_ingot", "default:iron_ingot")
+minetest.register_alias("default:iron_ingot", "default:steel_ingot")
