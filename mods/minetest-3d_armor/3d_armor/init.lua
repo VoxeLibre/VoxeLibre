@@ -150,7 +150,7 @@ minetest.register_tool("3d_armor:boots_chain", {
 -- Register Craft Recipies
 
 local craft_ingreds = {
-	leather = { "mobs:leather" },
+	leather = { "mcl_mobitems:leather" },
 	steel = { "default:steel_ingot", "default:iron_nugget" },
 	gold = { "default:gold_ingot", "default:gold_nugget" },
 	diamond = { "default:diamond" },
