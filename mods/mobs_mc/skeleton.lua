@@ -147,7 +147,7 @@ mobs:alias_mob("mobs:skeleton", "mobs_mc:skeleton")
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:skeleton", "Spawn Skeleton", "spawn_egg_skeleton.png")
-mobs:register_egg("mobs_mc:skeleton2", "Spawn Wither Skeleton", "spawn_egg_skeleton.png")
+mobs:register_egg("mobs_mc:skeleton2", "Spawn Wither Skeleton", "spawn_egg_wither_skeleton.png")
 
 
 if minetest.setting_get("log_mods") then
