@@ -166,6 +166,7 @@ minetest.register_craftitem("default:apple", {
 	inventory_image = "default_apple.png",
 	stack_max = 64,
 	on_use = minetest.item_eat(4),
+	groups = { food = 2 },
 })
 
 minetest.register_craftitem("default:apple_gold", {
@@ -174,6 +175,7 @@ minetest.register_craftitem("default:apple_gold", {
 	inventory_image = "default_apple_gold.png",
 	stack_max = 64,
 	on_use = minetest.item_eat(8),
+	groups = { food = 2 },
 })
 
 minetest.register_alias("default:iron_ingot", "default:steel_ingot")

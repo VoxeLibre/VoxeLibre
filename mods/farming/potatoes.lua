@@ -51,6 +51,7 @@ minetest.register_craftitem("farming:potato_item", {
 	description = "Potato",
 	inventory_image = "farming_potato.png",
 	on_use = minetest.item_eat(1),
+	groups = { food = 2, eatable = 1 },
 	stack_max = 64,
 	on_place = function(itemstack, placer, pointed_thing)
 		return farming:place_seed(itemstack, placer, pointed_thing, "farming:potato_1")
@@ -62,6 +63,7 @@ minetest.register_craftitem("farming:potato_item_baked", {
 	stack_max = 64,
 	inventory_image = "farming_potato_baked.png",
 	on_use = minetest.item_eat(6),
+	groups = { food = 2, eatable = 6 },
 })
 
 minetest.register_craftitem("farming:potato_item_poison", {
@@ -69,6 +71,7 @@ minetest.register_craftitem("farming:potato_item_poison", {
 	stack_max = 64,
 	inventory_image = "farming_potato_poison.png",
 	on_use = minetest.item_eat(2),
+	groups = { food = 2, eatable = 2 },
 })
 
 minetest.register_craft({

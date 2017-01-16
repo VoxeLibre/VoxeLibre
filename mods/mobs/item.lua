@@ -86,12 +86,15 @@ minetest.register_craftitem("mobs:creeper", {
 -- Drop de monstre --
 ---------------------
 
+-- TODO: Add special status effects for raw flesh
+
 minetest.register_craftitem("mobs:rotten_flesh", {
 	description = "Rotten Flesh",
 	inventory_image = "rotten_flesh.png",
 	wield_image = "rotten_flesh.png",
 	-- TODO: Raise to 4
 	on_use = minetest.item_eat(1),
+	groups = { food = 2, eatable = 1 },
 	stack_max = 64,
 })
 
@@ -100,6 +103,7 @@ minetest.register_craftitem("mobs:mutton", {
 	inventory_image = "mutton_raw.png",
 	wield_image = "mutton_raw.png",
 	on_use = minetest.item_eat(2),
+	groups = { food = 2, eatable = 2 },
 	stack_max = 64,
 })
 
@@ -108,6 +112,7 @@ minetest.register_craftitem("mobs:cooked_mutton", {
 	inventory_image = "mutton_cooked.png",
 	wield_image = "mutton_cooked.png",
 	on_use = minetest.item_eat(6),
+	groups = { food = 2, eatable = 6 },
 	stack_max = 64,
 })
 
@@ -116,6 +121,7 @@ minetest.register_craftitem("mobs:beef", {
 	inventory_image = "mobs_beef_raw.png",
 	wield_image = "mobs_beef_raw.png",
 	on_use = minetest.item_eat(3),
+	groups = { food = 2, eatable = 3 },
 	stack_max = 64,
 })
 
@@ -124,6 +130,7 @@ minetest.register_craftitem("mobs:cooked_beef", {
 	inventory_image = "mobs_beef_cooked.png",
 	wield_image = "mobs_beef_cooked.png",
 	on_use = minetest.item_eat(8),
+	groups = { food = 2, eatable = 8 },
 	stack_max = 64,
 })
 
@@ -132,6 +139,7 @@ minetest.register_craftitem("mobs:chicken", {
 	inventory_image = "mobs_chicken_raw.png",
 	wield_image = "mobs_chicken_raw.png",
 	on_use = minetest.item_eat(2),
+	groups = { food = 2, eatable = 2 },
 	stack_max = 64,
 })
 
@@ -140,6 +148,7 @@ minetest.register_craftitem("mobs:cooked_chicken", {
 	inventory_image = "mobs_chicken_cooked.png",
 	wield_image = "mobs_chicken_cooked.png",
 	on_use = minetest.item_eat(6),
+	groups = { food = 2, eatable = 6 },
 	stack_max = 64,
 })
 
@@ -148,6 +157,7 @@ minetest.register_craftitem("mobs:porkchop", {
 	inventory_image = "mobs_porkchop_raw.png",
 	wield_image = "mobs_porkchop.png",
 	on_use = minetest.item_eat(3),
+	groups = { food = 2, eatable = 3 },
 	stack_max = 64,
 })
 
@@ -156,6 +166,7 @@ minetest.register_craftitem("mobs:cooked_porkchop", {
 	inventory_image = "mobs_porkchop_cooked.png",
 	wield_image = "mobs_porkchop_cooked.png",
 	on_use = minetest.item_eat(8),
+	groups = { food = 2, eatable = 8 },
 	stack_max = 64,
 })
 
@@ -164,6 +175,7 @@ minetest.register_craftitem("mobs:rabbit", {
 	inventory_image = "mobs_rabbit_raw.png",
 	wield_image = "mobs_rabbit_raw.png",
 	on_use = minetest.item_eat(3),
+	groups = { food = 2, eatable = 3 },
 	stack_max = 64,
 })
 
@@ -172,6 +184,7 @@ minetest.register_craftitem("mobs:cooked_rabbit", {
 	inventory_image = "mobs_rabbit_cooked.png",
 	wield_image = "mobs_rabbit_cooked.png",
 	on_use = minetest.item_eat(5),
+	groups = { food = 2, eatable = 5 },
 	stack_max = 64,
 })
 
@@ -180,6 +193,7 @@ minetest.register_craftitem("mobs:spider_eye", {
 	inventory_image = "spider_eye.png",
 	wield_image = "spider_eye.png",
 	on_use = minetest.item_eat(2),
+	groups = { food = 2, eatable = 2 },
 	stack_max = 64,
 })
 

@@ -62,7 +62,7 @@ function set_inv(filter, player)
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#food" then
-					if def.groups.food ~= nil then
+					if def.groups.food or def.groups.eatable then
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#tools" then
@@ -70,7 +70,7 @@ function set_inv(filter, player)
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#combat" then
-					if def.tool_capabilities ~= nil and (string.find(string.lower(def.description), "sword") or string.find(string.lower(def.name), "armor") or string.find(string.lower(def.description), "bow") or string.find(string.lower(def.description), "arrow")) or string.find(string.lower(def.name), "armor") then
+					if (def.tool_capabilities ~= nil and def.tool_capabilities.damage_groups ~= nil) or def.groups.weapon or def.groups.weapon_ranged or def.groups.ammo or def.groups.armor_head or def.groups.armor_torso or def.groups.armor_legs or def.groups.armor_feet then
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#matr" then

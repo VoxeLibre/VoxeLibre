@@ -146,7 +146,7 @@ minetest.register_craft({
 minetest.register_craftitem("farming:cookie", {
 	description = "Cookie",
 	inventory_image = "farming_cookie.png",
-	groups = {food=2},
+	groups = {food=2, eatable=2},
 	on_use = minetest.item_eat(2)
 })
 
@@ -154,7 +154,7 @@ minetest.register_craftitem("farming:cookie", {
 minetest.register_craftitem("farming:bread", {
 	description = "Bread",
 	inventory_image = "farming_bread.png",
-	groups = {food=2},
+	groups = {food=2, eatable=5},
 	on_use = minetest.item_eat(5)
 })
 

@@ -68,6 +68,7 @@ minetest.register_craftitem("farming:carrot_item", {
 	description = "Carrot",
 	inventory_image = "farming_carrot.png",
 	on_use = minetest.item_eat(3),
+	groups = { food = 2, eatable = 3 },
 	on_place = function(itemstack, placer, pointed_thing)
 		return farming:place_seed(itemstack, placer, pointed_thing, "farming:carrot_1")
 	end
@@ -77,6 +78,7 @@ minetest.register_craftitem("farming:carrot_item_gold", {
 	description = "Golden Carrot",
 	inventory_image = "farming_carrot_gold.png",
 	on_use = minetest.item_eat(3),
+	groups = { food = 2, eatable = 3 },
 })
 
 minetest.register_craft({

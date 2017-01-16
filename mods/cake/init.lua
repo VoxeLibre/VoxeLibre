@@ -37,7 +37,7 @@ minetest.register_node("cake:cake", {
 			fixed = slice_6
 		},
 	stack_max = 1,
-	groups = {crumbly=3,falling_node=1},
+	groups = {food=2,crumbly=3,falling_node=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
@@ -60,7 +60,7 @@ minetest.register_node("cake:cake_5", {
 		type = "fixed",
 			fixed = slice_5
 		},
-	groups = {crumbly=3,falling_node=1,not_in_creative_inventory=1},
+	groups = {food=2,crumbly=3,falling_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
@@ -83,7 +83,7 @@ minetest.register_node("cake:cake_4", {
 		type = "fixed",
 			fixed = slice_4
 		},
-	groups = {crumbly=3,falling_node=1,not_in_creative_inventory=1},
+	groups = {food=2,crumbly=3,falling_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
@@ -106,7 +106,7 @@ minetest.register_node("cake:cake_3", {
 		type = "fixed",
 			fixed = slice_3
 		},
-	groups = {crumbly=3,falling_node=1,not_in_creative_inventory=1},
+	groups = {food=2,crumbly=3,falling_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
@@ -129,7 +129,7 @@ minetest.register_node("cake:cake_2", {
 		type = "fixed",
 			fixed = slice_2
 		},
-	groups = {crumbly=3,falling_node=1,not_in_creative_inventory=1},
+	groups = {food=2,crumbly=3,falling_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
@@ -152,7 +152,7 @@ minetest.register_node("cake:cake_1", {
 		type = "fixed",
 			fixed = slice_1
 		},
-	groups = {crumbly=3,falling_node=1,not_in_creative_inventory=1},
+	groups = {food=2,crumbly=3,falling_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then

@@ -16,6 +16,14 @@ This section explains all the used groups in this subgame.
 * `soil_sapling=1`: Artificial soil (such as farmland) for saplings. Some saplings will not grow on this
 * `soil_sugarcane=1`: Sugar canes will grow on this near water
 * `disable_suffocation=1`: Disables suffocation for full solid cubes (1)
+* `food`: Item is a comestible item which can be consumed (healthy or unhealthy)
+    * `food=2`: Food
+    * `food=3`: Drink
+    * `food=1`: Other/unsure
+* `eatable`: Item can be *directly* eaten by wielding + left click (`on_use=item_eat`). Rating is the satiation gain
+* `ammo=1`: Item is used as ammo for a weapon
+* `ammo_bow=1`: Item is used as ammo for bows
+* `weapon_ranged=1`: Item is a ranged weapon
 
 ### Footnotes
 

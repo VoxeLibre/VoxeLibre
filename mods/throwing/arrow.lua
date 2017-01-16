@@ -1,6 +1,7 @@
 minetest.register_craftitem("throwing:arrow", {
 	description = "Arrow",
 	inventory_image = "throwing_arrow_inv.png",
+	groups = { ammo=1, ammo_bow=1 },
 })
 
 minetest.register_node("throwing:arrow_box", {
