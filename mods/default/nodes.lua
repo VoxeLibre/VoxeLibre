@@ -2148,7 +2148,7 @@ minetest.register_node("default:snow", {
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
-	drop = "default:snowball 2",
+	drop = "mcl_throwing:snowball 2",
 })
 
 minetest.register_node("default:snowblock", {
@@ -2160,7 +2160,7 @@ minetest.register_node("default:snowblock", {
 	sounds = default.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
-	drop = "default:snowball 4",
+	drop = "mcl_throwing:snowball 4",
 })
 
 minetest.register_node("default:cobweb", {

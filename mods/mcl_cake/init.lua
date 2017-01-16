@@ -16,7 +16,7 @@ minetest.register_craft({
 	output = "mcl_cake:cake",
 	recipe = {
 		{'bucket:bucket_water', 'bucket:bucket_water', 'bucket:bucket_water'},
-		{'default:sugar', 'default:leaves', 'default:sugar'},
+		{'default:sugar', 'mcl_throwing:egg', 'default:sugar'},
 		{'farming:wheat_harvested', 'farming:wheat_harvested', 'farming:wheat_harvested'},
 	},
 	replacements = {{"bucket:bucket_water", "bucket:bucket_empty"}},

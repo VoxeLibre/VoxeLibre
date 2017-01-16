@@ -151,6 +151,14 @@ minetest.register_craftitem("mcl_mobitems:leather", {
 	stack_max = 64,
 })
 
+minetest.register_craftitem("mcl_mobitems:egg", {
+	description = "Egg",
+	inventory_image = "mcl_mobitems_rotten_flesh.png",
+	wield_image = "mcl_mobitems_rotten_flesh.png",
+	stack_max = 16,
+	
+})
+
 minetest.register_craftitem("mcl_mobitems:feather", {
 	description = "Feather",
 	wield_image = "mcl_mobitems_feather.png",

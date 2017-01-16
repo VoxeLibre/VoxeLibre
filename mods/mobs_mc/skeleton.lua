@@ -28,15 +28,11 @@ mobs:register_mob("mobs_mc:skeleton", {
 	damage = 1,
 	armor = 200,
 	drops = {
-		{name = "throwing:arrow",
+		{name = "mcl_throwing:arrow",
 		chance = 1,
 		min = 0,
 		max = 2,},
-		{name = "throwing:bow",
-		chance = 11,
-		min = 1,
-		max = 1,},
-		{name = "bonemeal:bone",
+		{name = "default:bone",
 		chance = 1,
 		min = 0,
 		max = 2,},
@@ -63,7 +59,7 @@ mobs:register_mob("mobs_mc:skeleton", {
 	light_damage = 1,
 	view_range = 16,
 	attack_type = "dogshoot",
-	arrow = "throwing:arrow_entity",
+	arrow = "mcl_throwing:arrow_entity",
 	shoot_interval = 2.5,
 	shoot_offset = 1,
 	--'dogshoot_switch' allows switching between shoot and dogfight modes inside dogshoot using timer (1 = shoot, 2 = dogfight)
@@ -96,18 +92,18 @@ mobs:register_mob("mobs_mc:skeleton2", {
 	damage = 3,
 	armor = 200,
 	drops = {
-		{name = "throwing:arrow",
+		{name = "default:coal_lump",
+		chance = 1,
+		min = 0,
+		max = 1,},
+		{name = "default:bone",
 		chance = 1,
 		min = 0,
 		max = 2,},
-		{name = "throwing:bow",
-		chance = 11,
+		{name = "heads:wither_skeleton",
+		chance = 40,
 		min = 1,
 		max = 1,},
-		{name = "bonemeal:bone",
-		chance = 1,
-		min = 0,
-		max = 2,},
 	},
 	animation = {
 		speed_normal = 30,
@@ -131,7 +127,7 @@ mobs:register_mob("mobs_mc:skeleton2", {
 	light_damage = 0,
 	view_range = 16,
 	attack_type = "dogshoot",
-	arrow = "throwing:arrow_entity",
+	arrow = "mcl_throwing:arrow_entity",
 	shoot_interval = 0.5,
 	shoot_offset = 1,
 	--'dogshoot_switch' allows switching between shoot and dogfight modes inside dogshoot using timer (1 = shoot, 2 = dogfight)
@@ -143,7 +139,7 @@ mobs:register_spawn("mobs_mc:skeleton2", {"group:crumbly", "group:cracky", "grou
 
 
 arrows = {
-	{"throwing:arrow", "throwing:arrow_entity" },
+	{"mcl_throwing:arrow", "mcl_throwing:arrow_entity" },
 }
 
 -- compatibility

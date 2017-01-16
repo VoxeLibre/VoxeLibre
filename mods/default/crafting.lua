@@ -767,8 +767,8 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'default:snowblock',
 	recipe = {
-		{'default:snowball', 'default:snowball'},
-		{'default:snowball', 'default:snowball'},
+		{'mcl_throwing:snowball', 'mcl_throwing:snowball'},
+		{'mcl_throwing:snowball', 'mcl_throwing:snowball'},
 	}
 })
 

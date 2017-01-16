@@ -107,7 +107,7 @@ mobs:register_mob("mobs_mc:chicken", {
 
 		local pos = self.object:getpos()
 
-		minetest.add_item(pos, "mcl_mobitems:egg")
+		minetest.add_item(pos, "mcl_throwing:egg")
 
 		minetest.sound_play("default_place_node_hard", {
 			pos = pos,
@@ -120,32 +120,6 @@ mobs:register_mob("mobs_mc:chicken", {
 
 --mobs:register_spawn("mobs_mc:chicken", {"default:dirt_with_grass"}, 20, 8, 7000, 1, 31000)
 
-
--- from mobs_redo
--- egg
-minetest.register_node(":mobs:egg", {
-	description = "Chicken Egg",
-	tiles = {"mobs_chicken_egg.png"},
-	inventory_image  = "mobs_chicken_egg.png",
-	visual_scale = 0.7,
-	drawtype = "plantlike",
-	wield_image = "mobs_chicken_egg.png",
-	paramtype = "light",
-	walkable = false,
-	is_ground_content = true,
-	sunlight_propagates = true,
-	selection_box = {
-		type = "fixed",
-		fixed = {-0.2, -0.5, -0.2, 0.2, 0, 0.2}
-	},
-	groups = {snappy = 2, dig_immediate = 3},
-	after_place_node = function(pos, placer, itemstack)
-		if placer:is_player() then
-			minetest.set_node(pos, {name = "mobs:egg", param2 = 1})
-		end
-	end,
-	on_use = mobs_shoot_egg
-})
 
 -- compatibility
 mobs:alias_mob("mobs:chicken", "mobs_mc:chicken")
