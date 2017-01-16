@@ -25,6 +25,8 @@ minetest.register_craft({
 minetest.register_node("cake:cake", {
 	description = "Cake",
 	tiles = {"cake_top.png","cake_bottom.png","cake_side.png","cake_side.png","cake_side.png","cake_side.png"},
+	inventory_image = "cake.png",
+	wield_image = "cake.png",
 	paramtype = "light",
 	is_ground_content = false,
 	drawtype = "nodebox",
