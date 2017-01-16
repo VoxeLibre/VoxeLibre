@@ -50,7 +50,7 @@ function set_inv(filter, player)
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#redstone" then
-					if string.find(string.lower(def.name), "redstone") or string.find(string.lower(def.description), "redstone") then
+					if def.mesecons or def.groups.mesecon or def.groups.mesecon_conductor_craftable or def.groups.mesecon_effecor_off then
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#rail" then
