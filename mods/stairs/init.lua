@@ -6,12 +6,6 @@
 
 stairs = {}
 
-
--- Get setting for replace ABM
-
-local replace = minetest.setting_getbool("enable_stairs_replace_abm")
-
-
 -- Register stairs.
 -- Node will be called stairs:stair_<subname>
 
@@ -73,14 +67,6 @@ function stairs.register_stair(subname, recipeitem, groups, images, description,
 		end,
 	})
 
-	-- for replace ABM
-	if replace then
-		minetest.register_node(":stairs:stair_" .. subname .. "upside_down", {
-			replace_name = "stairs:stair_" .. subname,
-			groups = {slabs_replace = 1},
-		})
-	end
-
 	if recipeitem then
 		minetest.register_craft({
 			output = 'stairs:stair_' .. subname .. ' 8',
@@ -100,20 +86,6 @@ function stairs.register_stair(subname, recipeitem, groups, images, description,
 				{recipeitem, recipeitem, recipeitem},
 			},
 		})
-
-		-- Fuel
-		local baseburntime = minetest.get_craft_result({
-			method = "fuel",
-			width = 1,
-			items = {recipeitem}
-		}).time
-		if baseburntime > 0 then
-			minetest.register_craft({
-				type = "fuel",
-				recipe = 'stairs:stair_' .. subname,
-				burntime = math.floor(baseburntime * 0.75),
-			})
-		end
 	end
 end
 
@@ -200,14 +172,6 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 		end,
 	})
 
-	-- for replace ABM
-	if replace then
-		minetest.register_node(":stairs:slab_" .. subname .. "upside_down", {
-			replace_name = "stairs:slab_".. subname,
-			groups = {slabs_replace = 1},
-		})
-	end
-
 	if recipeitem then
 		minetest.register_craft({
 			output = 'stairs:slab_' .. subname .. ' 6',
@@ -216,19 +180,6 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 			},
 		})
 
-		-- Fuel
-		local baseburntime = minetest.get_craft_result({
-			method = "fuel",
-			width = 1,
-			items = {recipeitem}
-		}).time
-		if baseburntime > 0 then
-			minetest.register_craft({
-				type = "fuel",
-				recipe = 'stairs:slab_' .. subname,
-				burntime = math.floor(baseburntime * 0.5),
-			})
-		end
 	end
 end
 
