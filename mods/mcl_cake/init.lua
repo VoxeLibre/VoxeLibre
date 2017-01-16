@@ -13,7 +13,7 @@ slice_6 = { -7/16, -8/16, -7/16, 7/16, 0/16, 7/16}
 
 -- FIXME: Recipe. milk instead of water bucket and egg instead of leaves
 minetest.register_craft({
-	output = "cake:cake",
+	output = "mcl_cake:cake",
 	recipe = {
 		{'bucket:bucket_water', 'bucket:bucket_water', 'bucket:bucket_water'},
 		{'default:sugar', 'default:leaves', 'default:sugar'},
@@ -22,7 +22,7 @@ minetest.register_craft({
 	replacements = {{"bucket:bucket_water", "bucket:bucket_empty"}},
 })
 
-minetest.register_node("cake:cake", {
+minetest.register_node("mcl_cake:cake", {
 	description = "Cake",
 	tiles = {"cake_top.png","cake_bottom.png","cake_side.png","cake_side.png","cake_side.png","cake_side.png"},
 	inventory_image = "cake.png",
@@ -45,12 +45,12 @@ minetest.register_node("cake:cake", {
 		minetest.item_eat(2)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
-			minetest.add_node(pos,{type="node",name="cake:cake_5",param2=param2})
+			minetest.add_node(pos,{type="node",name="mcl_cake:cake_5",param2=param2})
 		end
 	end,
 	sounds = default.node_sound_leaves_defaults(),
 })
-minetest.register_node("cake:cake_5", {
+minetest.register_node("mcl_cake:cake_5", {
 	description = "Cake (5 Slices Left)",
 	tiles = cake_texture,
 	paramtype = "light",
@@ -69,12 +69,12 @@ minetest.register_node("cake:cake_5", {
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
-			minetest.add_node(pos,{type="node",name="cake:cake_4",param2=param2})
+			minetest.add_node(pos,{type="node",name="mcl_cake:cake_4",param2=param2})
 		end
 	end,
 	sounds = default.node_sound_leaves_defaults(),
 })
-minetest.register_node("cake:cake_4", {
+minetest.register_node("mcl_cake:cake_4", {
 	description = "Cake (4 Slices Left)",
 	tiles = cake_texture,
 	paramtype = "light",
@@ -93,12 +93,12 @@ minetest.register_node("cake:cake_4", {
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
-			minetest.add_node(pos,{type="node",name="cake:cake_3",param2=param2})
+			minetest.add_node(pos,{type="node",name="mcl_cake:cake_3",param2=param2})
 		end
 	end,
 	sounds = default.node_sound_leaves_defaults(),
 })
-minetest.register_node("cake:cake_3", {
+minetest.register_node("mcl_cake:cake_3", {
 	description = "Cake (3 Slices Left)",
 	tiles = cake_texture,
 	paramtype = "light",
@@ -117,12 +117,12 @@ minetest.register_node("cake:cake_3", {
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
-			minetest.add_node(pos,{type="node",name="cake:cake_2",param2=param2})
+			minetest.add_node(pos,{type="node",name="mcl_cake:cake_2",param2=param2})
 		end
 	end,
 	sounds = default.node_sound_leaves_defaults(),
 })
-minetest.register_node("cake:cake_2", {
+minetest.register_node("mcl_cake:cake_2", {
 	description = "Cake (2 Slices Left)",
 	tiles = cake_texture,
 	paramtype = "light",
@@ -141,12 +141,12 @@ minetest.register_node("cake:cake_2", {
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if clicker:get_hp() < 20 then
 			clicker:set_hp(clicker:get_hp()+2)
-			minetest.add_node(pos,{type="node",name="cake:cake_1",param2=param2})
+			minetest.add_node(pos,{type="node",name="mcl_cake:cake_1",param2=param2})
 		end
 	end,
 	sounds = default.node_sound_leaves_defaults(),
 })
-minetest.register_node("cake:cake_1", {
+minetest.register_node("mcl_cake:cake_1", {
 	description = "Cake (1 Slice Left)",
 	tiles = cake_texture,
 	paramtype = "light",
