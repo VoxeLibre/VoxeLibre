@@ -1,0 +1,3 @@
+Health = Leben
+Breath = Atem
+%s: %d/%d = %s: %d/%d

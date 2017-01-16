@@ -1,0 +1,4 @@
+Armor =
+
+# Format string for displaying the armor. E.g. "Armor: 100%"
+%s: %d%% =

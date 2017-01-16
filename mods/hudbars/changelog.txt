@@ -1,0 +1,92 @@
+Note: This software uses semantic versioning,
+as of version 2.0.0 of the standard <http://semver.org/>.
+
+0.1.0
+-----
+- Initial release, forked from mod “Better HUD” [hud].
+
+0.2.0
+-----
+- Add API documentation
+
+0.3.0
+-----
+- Rename main table from “hud” to “hb” (affects function names!)
+- Arguments 3-4 of hb.change_hudbar can be nil for values which should not change
+- Add proper function hb.init_hudbar, replaces odd call to hud.hudtables[identifier].add_all
+- Update API documentation and fix mistakes
+- Use “hudbars.conf” instead of “hud.conf”
+
+0.4.0
+-----
+- New function: hb.get_hudbar_state to get information about the state of an active HUD bar, such as values, whether it is hidden, etc.
+- hb.change_hudbar has been optimized to call hud_change fewer times, which is hopefully good for networking
+- Rename hb.register_hudbar parameter “start_hide” to “start_hidden”
+- start_hidden parameter now finally works
+- Do not affect other HUD flags (crosshair, wielditem, etc.) when starting mod
+- Show error message when trying to call hb.init_hudbar or hb.change_hudbar with bad values
+- Update documentation
+- Lots of refactoring
+- Health and breath bar now use API
+
+1.0.0
+-----
+- Add new parameter start_hidden to hb.init_hudbar, specified whether HUD bar is hidden on start
+- Copy-editing of API.md and README.txt
+- Internal: Fix add_all weirdness
+
+1.0.1
+-----
+- Fix race condition causing crash at start of server
+
+1.0.2
+-----
+- Fix other HUD elements disappearing for rejoining players
+- Remove pointless delays for initializing the HUD for new or rejoining players
+
+1.0.3
+-----
+- Adjust default HUD bars position for Minetest 0.4.12
+
+1.1.0
+-----
+- Add boolean minetest.conf setting support (hudbars_autohide_breathbar) to control whether the breath bar is automatically hidden when full (default: yes)
+
+1.2.0
+-----
+- New setting: hudbars_sorting. You can now manually sort all the HUD bars. Useful if you don't like automatic order
+- New setting: hudbars_bar_type. You now can change the appearance of the HUD bars.
+- New HUD bar types, slightly experimental: Classic statbars and modern [hud]-style statbars
+- New experimental/unfinished setting: hudbars_alignment_pattern: You can now make the HUD bars stack vertically instead of the current zig-zag pattern. Note you probably need to change source code to productively use this feature
+- Various position-related HUD bar settings (see README.txt)
+- Remove hudbars.conf support and hudbars.conf.example (was never officially supported anyways)
+
+1.2.1
+-----
+- Fix crash when enable_damage is changed in mid-game
+
+1.3.0
+-----
+- Make all settings avaialbe in Minetest's advanced settings menu
+- Fix HUD bars overlap when both hudbars_tick and hudbars_vmargin were set
+- Use Markdown syntax in readme file
+- Fix some factual mistakes in readme file
+- Add metadata: mod.conf, description.txt, screenshot.png
+
+1.4.0
+-----
+- Allow to change HUD bar images and label after it has been registered
+- Minor API.md correction
+
+1.4.1
+-----
+- Fix bug in hb.change_hudbar being a no-op if new_value and new_max value are nil
+
+1.5.0
+-----
+- Portuguese translation by BrunoMine
+
+1.5.1
+-----
+- Fix critical bug: Mod does not work with both intllib and mod security enabled
+- Update screenshot to use new 3:2 aspect ratio

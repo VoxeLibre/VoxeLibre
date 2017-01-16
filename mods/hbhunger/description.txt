@@ -1,0 +1,1 @@
+Adds a simple hunger meachanic with satiation, food poisoning and different healing.

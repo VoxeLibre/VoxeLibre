@@ -1,0 +1,119 @@
+[Appearance]
+# Specifies how the value indicators (i.e. health, breah, etc.) look. There are 3 styles
+# available. You can choose between the default progress-bar-like bars and the good
+# old statbars like you know from vanilla Minetest.
+# These values are possible:
+#   - progress_bar:    A horizontal progress-bar-like bar with a label, showing numerical value
+#                      (current, maximum), and an icon. These bars usually convey the most
+#                      information. This is the default and recommended value.
+#   - statbar_classic: Classic statbar, like in vanilla Minetest. Made out of up to 20
+#                      half-symbols. Those bars represent the vague ratio between
+#                      the current value and the maximum value. 1 half-symbol stands for
+#                      approximately 5% of the maximum value.
+#   - statbar_modern:  Like the classic statbar, but also supports background images, this
+#                      kind of statbar may be considered to be more user-friendly than the
+#                      classic statbar. This bar type closely resembles the mod
+#                      “Better HUD” [hud] by BlockMen.
+hudbars_bar_type (HUD bars style) enum progress_bar progress_bar,statbar_classic,statbar_modern
+
+
+# If enabled (default), the breath indicators in the HUD will be automatically hidden shortly
+# after the breath has been filled up. Otherwise, the breath will always be displayed. 
+hudbars_autohide_breath (Automatically hide breath indicators) bool true
+
+# This setting changes the way the HUD bars are ordered on the display. You can choose
+# between a zig-zag pattern (default) or a vertically stacked pattern.
+# The following values are allowed:
+#    - zigzag:     Starting from the left bottom, the next is right from the first,
+#                  the next is above the first, the next is right of the third, etc.
+#    - stack_up:   The HUD bars are stacked vertically, going upwards.
+#    - stack_down: The HUD bars are stacked vertically, going downwards.
+hudbars_alignment_pattern (HUD bars alignment pattern) enum zigzag zigzag,stack_up,stack_down
+
+# This setting allows you to specify the order of the HUD bars explicitly. If left empty
+# (the default), the health and breath indicators come first, additional indicators
+# may appear in any order. This setting is quite technical and normal users probably do not
+# need to worry about it.
+#
+# Syntax:
+# The setting has to be specified as a comma-seperated list of key=value pairs, where a key
+# refers to the identifier of a HUD bar and the value refers to the slot number of where the
+# HUD bar should be placed. The slot number must be an integer greater of equal to 0. Where
+# the HUD bars will be displayed exactly depends on the alignment pattern being used.
+# All HUD bars to which no order value has been applied will fill in all slots which have
+# not been occupied by the HUD bars specified in this setting, the slots will be filled in
+# from the lowest slot number.
+# Note that the order of those remaining HUD bars is not fixed, it basically just boils
+# down on which mod “came” first. Don't worry, the mod will still work perfectly fine, this
+# setting is entirely optional.
+# The identifier for the health bar is “health” and the identifier for the breath bar is
+# “breath”. For other HUD bars, you have to learn it from the mod which is supplying them.
+#
+# Be careful not to use slot indices twice, or else different HUD bars will be drawn over
+# each other!
+#
+# Example: “breath=0, health=1”
+# This makes the breath bar first and the health bar second, which is the opposite order
+# of the default one.
+hudbars_sorting (HUD bars order) string
+
+[Positions and offsets]
+# Horizontal (x) main position of the HUD bars over the entire screen.
+# 0.0 is left-most, 1.0 is right-most.
+# For the zig-zag alignment pattern, this is for the left HUD bars.
+hudbars_pos_left_x (Left HUD bar screen x position) float 0.5 0.0 1.0
+# Vertical (y) main position of the HUD bars over the entire screen.
+# 0.0 is top, 1.0 is bottom.
+# For the zig-zag alignment pattern, this is for the left HUD bars.
+hudbars_pos_left_y (Left HUD bar screen y position) float 1.0 0.0 1.0
+# Horizontal (x) main position of the right HUD bars over the entire screen.
+# 0.0 is left-most, 1.0 is right-most.
+# Only used for the zig-zag alignment pattern.
+hudbars_pos_right_x (Right HUD bar screen x position) float 0.5 0.0 1.0
+# Vertical main position (y) of the right HUD bars over the entire screen.
+# 0.0 is top, 1.0 is bottom.
+# Only used for the zig-zag alignment pattern.
+hudbars_pos_right_y (Right HUD bar screen y position) float 1.0 0.0 1.0
+
+# Precise x offset in pixels from the basic screen x position of the HUD bars.
+# For the zig-zag alignment pattern, this is for the left HUD bars.
+# This setting is used for the progress bar HUD bar style.
+hudbars_start_offset_left_x (Left HUD bar x offset) int -175
+# Precise y offset in pixels from the basic screen y position of the HUD bars.
+# For the zig-zag alignment pattern, this is for the left HUD bars.
+# This setting is used for the progress bar HUD bar style.
+hudbars_start_offset_left_y (Left HUD bar y offset) int -86
+# Precise x offset in pixels from the basic screen x position of the right HUD bars.
+# Only used for the zig-zag alignment pattern.
+# This setting is used for the progress bar HUD bar style.
+hudbars_start_offset_right_x (Right HUD bar x offset) int 15
+# Precise y offset in pixels from the basic screen y position of the right HUD bars.
+# Only used for the zig-zag alignment pattern.
+# This setting is used for the progress bar HUD bar style.
+hudbars_start_offset_right_y (Right HUD bar y offset) int -86
+
+# Precise x offset in pixels from the basic screen x position of the HUD statbars.
+# For the zig-zag alignment pattern, this is for the left HUD statbars.
+# This setting is used for the classic and modern statbar styles.
+hudbars_start_statbar_offset_left_x (Left HUD statbar x offset) int -265
+# Precise y offset in pixels from the basic screen y position of the HUD statbars.
+# For the zig-zag alignment pattern, this is for the left HUD statbars.
+# This setting is used for the classic and modern statbar styles.
+hudbars_start_statbar_offset_left_y (Left HUD statbar y offset) int -90
+# Precise x offset in pixels from the basic screen x position of the right HUD statbars.
+# Only used for the zig-zag alignment pattern.
+# This setting is used for the classic and modern statbar styles.
+hudbars_start_statbar_offset_right_x (Right HUD statbar x offset) int 25
+# Precise y offset in pixels from the basic screen y position of the right HUD statbars.
+# Only used for the zig-zag alignment pattern.
+# This setting is used for the classic and modern statbar styles.
+hudbars_start_statbar_offset_right_y (Right HUD statbar y offset) int -90
+
+# The vertical distance between two HUD bars, in pixels.
+hudbars_vmargin (Vertical distance between HUD bars) int 24 0
+
+[Performance]
+# The of seconds which need to pass before the server updates the default HUD bars
+# (health and breath). Increase this number if you have a slow server or a slow network
+# connection and experience performance problems.
+hudbars_tick (Default HUD bars update interval) float 0.1 0.0 4.0
