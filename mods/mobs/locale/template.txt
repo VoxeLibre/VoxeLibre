@@ -19,7 +19,7 @@ Enter name: =
 Rename = 
 
 #crafts.lua
-Nametag = 
+Name Tag = 
 Leather = 
 Raw Meat = 
 Meat = 
@@ -28,7 +28,7 @@ Net (right-click animal to put in inventory) =
 Steel Shears (right-click to shear) = 
 
 #spawner.lua
-Mob Spawner = 
+Monster Spawner = 
 Mob MinLight MaxLight Amount PlayerDist = 
 Spawner Not Active (enter settings) = 
 Spawner Active (@1) = 

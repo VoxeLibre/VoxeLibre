@@ -21,7 +21,7 @@ Enter name: = Insira um nome:
 Rename = Renomear
 
 #crafts.lua
-Nametag = Etiqueta
+Name Tag = Etiqueta
 Leather = Couro
 Raw Meat = Carne crua
 Meat = Carne
@@ -30,7 +30,7 @@ Net (right-click animal to put in inventory) = Net (clique-direito no animal par
 Steel Shears (right-click to shear) = Tesoura de Aço (clique-direito para tosquiar)
 
 #spawner.lua
-Mob Spawner = Spawnador de Mob
+Monster Spawner =
 Mob MinLight MaxLight Amount PlayerDist = Mob LuzMinima LuzMaxima Valor DistJogador
 Spawner Not Active (enter settings) = Spawnador Inativo (configurar)
 Spawner Active (@1) = Spawnador Ativo (@1)

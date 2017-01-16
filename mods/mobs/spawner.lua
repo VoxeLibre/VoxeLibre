@@ -10,7 +10,7 @@ minetest.register_node("mobs:spawner", {
 	drawtype = "glasslike",
 	paramtype = "light",
 	walkable = true,
-	description = S("Mob Spawner"),
+	description = S("Monster Spawner"),
 	groups = {cracky = 1},
 
 	on_construct = function(pos)
