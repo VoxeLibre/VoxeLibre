@@ -289,9 +289,13 @@ minetest.register_tool("default:flint_and_steel", {
 	},
 	on_use = function(itemstack, user, pointed_thing)
 		if pointed_thing.type == "node" then
+			if minetest.get_node(pointed_thing.under).name == "tnt:tnt" then
+				tnt.ignite(pointed_thing.under)
+			else
 				set_fire(pointed_thing)
-			itemstack:add_wear(66000/65) -- 65 uses
-			return itemstack
+				itemstack:add_wear(66000/65) -- 65 uses
+				return itemstack
+			end
 		end
 	end,
 })

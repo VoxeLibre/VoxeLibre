@@ -195,10 +195,10 @@ function get_nodedef_field(nodename, fieldname)
 end
 
 function set_fire(pointed_thing)
-		local n = minetest.get_node(pointed_thing.above)
-		if n.name ~= ""  and n.name == "air" and not minetest.is_protected(pointed_thing.above, "fire") then
-			minetest.add_node(pointed_thing.above, {name="fire:basic_flame"})
-		end
+	local n = minetest.get_node(pointed_thing.above)
+	if n.name ~= ""  and n.name == "air" and not minetest.is_protected(pointed_thing.above, "fire") then
+		minetest.add_node(pointed_thing.above, {name="fire:basic_flame"})
+	end
 end
 
 --

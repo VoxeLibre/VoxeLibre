@@ -1,16 +1,16 @@
-function spawn_tnt(pos, entname)
+local function spawn_tnt(pos, entname)
     minetest.sound_play("tnt_ignite", {pos = pos,gain = 1.0,max_hear_distance = 15,})
     return minetest.add_entity(pos, entname)
 end
 
-function activate_if_tnt(nname, np, tnt_np, tntr)
+local function activate_if_tnt(nname, np, tnt_np, tntr)
     if nname == "tnt:tnt" then
         local e = spawn_tnt(np, nname)
         e:setvelocity({x=(np.x - tnt_np.x)*5+(tntr / 4), y=(np.y - tnt_np.y)*5+(tntr / 3), z=(np.z - tnt_np.z)*5+(tntr / 4)})
     end
 end
 
-function do_tnt_physics(tnt_np,tntr)
+local function do_tnt_physics(tnt_np,tntr)
     local objs = minetest.get_objects_inside_radius(tnt_np, tntr)
     for k, obj in pairs(objs) do
         local oname = obj:get_entity_name()
@@ -30,6 +30,14 @@ function do_tnt_physics(tnt_np,tntr)
     end
 end
 
+tnt = {}
+tnt.ignite = function(pos)
+	minetest.remove_node(pos)
+	spawn_tnt(pos, "tnt:tnt")
+	nodeupdate(pos)
+end
+
+
 minetest.register_node("tnt:tnt", {
 	tiles = {"default_tnt_top.png", "default_tnt_bottom.png",
 			"default_tnt_side.png", "default_tnt_side.png",
@@ -39,22 +47,10 @@ minetest.register_node("tnt:tnt", {
 	stack_max = 64,
 	description = "TNT",
 	mesecons = {effector = {
-		action_on = (function(p, node)
-			minetest.remove_node(p)
-			spawn_tnt(p, "tnt:tnt")
-			nodeupdate(p)
-		end),
+		action_on = tnt.ignite
 	}},
 	sounds = default.node_sound_wood_defaults(),
 })
-
-minetest.register_on_punchnode(function(p, node)
-	if node.name == "tnt:tnt" then
-		minetest.remove_node(p)
-		spawn_tnt(p, "tnt:tnt")
-		nodeupdate(p)
-	end
-end)
 
 local TNT_RANGE = 3
 local TNT = {
