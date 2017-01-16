@@ -418,6 +418,7 @@ minetest.register_craftitem("default:snowball", {
 	inventory_image = "default_snowball.png",
 	stack_max = 64,
 	on_use = snow_shoot_snowball,
+	groups = { weapon_ranged = 1 },
 	on_construct = function(pos)
 	pos.y = pos.y - 1
 		if minetest.get_node(pos).name == "default:dirt_with_grass" then
