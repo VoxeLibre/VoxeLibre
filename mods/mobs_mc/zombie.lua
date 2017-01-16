@@ -89,7 +89,7 @@ mobs:register_spawn("mobs_mc:zombie", {"group:crumbly", "group:cracky", "group:c
 mobs:alias_mob("mobs:zombie", "mobs_mc:zombie")
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:zombie", "Zombie", "spawn_egg_zombie.png")
+mobs:register_egg("mobs_mc:zombie", "Spawn Zombie", "spawn_egg_zombie.png")
 
 
 if minetest.setting_get("log_mods") then

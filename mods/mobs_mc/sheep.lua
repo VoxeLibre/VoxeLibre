@@ -130,7 +130,7 @@ print(item:get_name(), minetest.get_item_group(item:get_name(), "dye"))
 mobs:alias_mob("mobs:sheep", "mobs_mc:sheep")
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:sheep", "Sheep", "spawn_egg_sheep.png")
+mobs:register_egg("mobs_mc:sheep", "Spawn Sheep", "spawn_egg_sheep.png")
 
 
 if minetest.setting_get("log_mods") then

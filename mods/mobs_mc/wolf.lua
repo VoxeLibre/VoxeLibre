@@ -179,8 +179,8 @@ mobs:alias_mob("esmobs:wolf", "mobs_mc:wolf")
 mobs:alias_mob("esmobs:dog", "mobs_mc:dog")
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:wolf", "Wolf", "wool_grey.png", 1)
-mobs:register_egg("mobs_mc:dog", "Dog", "wool_brown.png", 1)
+mobs:register_egg("mobs_mc:wolf", "Spawn Wolf", "wool_grey.png", 1)
+mobs:register_egg("mobs_mc:dog", "Spawn Dog", "wool_brown.png", 1)
 
 
 if minetest.setting_get("log_mods") then

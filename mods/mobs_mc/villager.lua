@@ -175,7 +175,7 @@ mobs:register_spawn("mobs_mc:villager", {"default:gravel"}, 20, 8, 500, 2, 31000
 mobs:alias_mob("mobs:villager", "mobs_mc:villager")
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:villager", "Villager", "spawn_egg_villager.png")
+mobs:register_egg("mobs_mc:villager", "Spawn Villager", "spawn_egg_villager.png")
 
 
 if minetest.setting_get("log_mods") then

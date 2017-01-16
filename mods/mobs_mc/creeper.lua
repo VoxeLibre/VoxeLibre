@@ -71,7 +71,7 @@ mobs:register_spawn("mobs_mc:creeper", {"group:crumbly", "group:cracky", "group:
 mobs:alias_mob("mobs:creeper", "mobs_mc:creeper")
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:creeper", "Creeper", "spawn_egg_creeper.png")
+mobs:register_egg("mobs_mc:creeper", "Spawn Creeper", "spawn_egg_creeper.png")
 
 
 if minetest.setting_get("log_mods") then

@@ -131,7 +131,7 @@ mobs:register_mob("mobs_mc:cow", {
 mobs:alias_mob("mobs:cow", "mobs_mc:cow")
 
 -- spawn egg
-mobs:register_egg("mobs_mc:cow", "Cow", "spawn_egg_cow.png")
+mobs:register_egg("mobs_mc:cow", "Spawn Cow", "spawn_egg_cow.png")
 
 
 if minetest.setting_get("log_mods") then

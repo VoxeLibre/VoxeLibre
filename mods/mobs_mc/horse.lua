@@ -330,13 +330,13 @@ mobs:alias_mob("mobs:horse3", "mobs_mc:horse3")
 
 -- spawn eggs
 -- KPV wild horse spawn eggs
-mobs:register_egg("mobs_mc:horse", "Brown Horse", "mobs_horse_inv.png", 0)
-mobs:register_egg("mobs_mc:horse2", "White Horse", "mobs_horse_peg_inv.png", 0)
-mobs:register_egg("mobs_mc:horse3", "Arabic Horse", "mobs_horse_ara_inv.png", 0)
+mobs:register_egg("mobs_mc:horse", "Spawn Brown Horse", "mobs_horse_inv.png", 0)
+mobs:register_egg("mobs_mc:horse2", "Spawn White Horse", "mobs_horse_peg_inv.png", 0)
+mobs:register_egg("mobs_mc:horse3", "Spawn Arabic Horse", "mobs_horse_ara_inv.png", 0)
 -- KPV tamed horse spawn eggs
-mobs:register_egg("mobs_mc:horseh1", "Tamed Brown Horse", "mobs_horse_inv.png", 0)
-mobs:register_egg("mobs_mc:horsepegh1", "Tamed White Horse", "mobs_horse_peg_inv.png", 0)
-mobs:register_egg("mobs_mc:horsearah1", "Tamed Arabic Horse", "mobs_horse_ara_inv.png", 0)
+mobs:register_egg("mobs_mc:horseh1", "Spawn Tamed Brown Horse", "mobs_horse_inv.png", 0)
+mobs:register_egg("mobs_mc:horsepegh1", "Spawn Tamed White Horse", "mobs_horse_peg_inv.png", 0)
+mobs:register_egg("mobs_mc:horsearah1", "Spawn Tamed Arabic Horse", "mobs_horse_ara_inv.png", 0)
 
 
 if minetest.setting_get("log_mods") then

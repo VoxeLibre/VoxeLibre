@@ -324,8 +324,8 @@ mobs:alias_mob("slimes:greenbig", "mobs_mc:greenbig")
 
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:lavabig", "Magma Cube", "spawn_egg_magma_cube.png")
-mobs:register_egg("mobs_mc:greenbig", "Green Slime", "spawn_egg_slime.png")
+mobs:register_egg("mobs_mc:lavabig", "Spawn Magma Cube", "spawn_egg_magma_cube.png")
+mobs:register_egg("mobs_mc:greenbig", "Spawn Green Slime", "spawn_egg_slime.png")
 
 
 if minetest.setting_get("log_mods") then

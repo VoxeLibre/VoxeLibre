@@ -90,7 +90,7 @@ mobs:register_spawn("mobs_mc:pigman", {"default:obsidian"}, 17, -1, 1900, 1, 310
 mobs:alias_mob("mobs:pigman", "mobs_mc:pigman")
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:pigman", "Zombie Pigman", "spawn_egg_zombie_pigman.png")
+mobs:register_egg("mobs_mc:pigman", "Spawn Zombie Pigman", "spawn_egg_zombie_pigman.png")
 
 
 if minetest.setting_get("log_mods") then

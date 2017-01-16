@@ -174,7 +174,7 @@ mobs:register_spawn("mobs_mc:pig", {"default:dirt_with_grass"}, 20, 12, 5000, 1,
 mobs:alias_mob("mobs:pig", "mobs_mc:pig")
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:pig", "Pig", "spawn_egg_pig.png")
+mobs:register_egg("mobs_mc:pig", "Spawn Pig", "spawn_egg_pig.png")
 
 
 if minetest.setting_get("log_mods") then

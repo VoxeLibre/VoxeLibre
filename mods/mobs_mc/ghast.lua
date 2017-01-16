@@ -114,7 +114,7 @@ mobs:register_arrow(":mobs_monster:fireball", {
 
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:ghast", "Ghast", "ghast_front.png")
+mobs:register_egg("mobs_mc:ghast", "Spawn Ghast", "ghast_front.png")
 
 
 if minetest.setting_get("log_mods") then
