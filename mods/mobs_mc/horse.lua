@@ -323,21 +323,6 @@ mobs:register_spawn("mobs_mc:horse2", {"default:dirt_with_dry_grass"}, 20, 12, 2
 mobs:register_spawn("mobs_mc:horse3", {"default:desert_sand"}, 20, 8, 17000, 1, 5)
 
 
--- saddle
-minetest.register_craftitem(":mobs:saddle", {
-	description = "Saddle",
-	inventory_image = "saddle.png",
-})
-
-minetest.register_craft({
-	output = "mobs:saddle",
-	recipe = {
-		{"mobs:leather", "mobs:leather", "mobs:leather"},
-		{"farming:string", "", "farming:string"},
-	{"default:steel_ingot", "", "default:steel_ingot"}
-	},
-})
-
 -- compatibility
 mobs:alias_mob("mobs:horse", "mobs_mc:horse")
 mobs:alias_mob("mobs:horse2", "mobs_mc:horse2")

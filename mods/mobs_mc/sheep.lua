@@ -126,27 +126,6 @@ print(item:get_name(), minetest.get_item_group(item:get_name(), "dye"))
 --mobs:register_spawn("mobs_mc:sheep", {"default:dirt_with_grass"}, 20, 12, 5000, 2, 31000)
 
 
---mutton
-minetest.register_craftitem(":mobs:mutton_raw", {
-	description = "Raw Mutton",
-	inventory_image = "mutton_raw.png",
-	on_use = minetest.item_eat(4),
-})
-
-minetest.register_craftitem(":mobs:mutton_cooked", {
-	description = "Cooked Mutton",
-	inventory_image = "mutton_cooked.png",
-	on_use = minetest.item_eat(8),
-})
-
-minetest.register_craft({
-	type = "cooking",
-	output = "mobs:mutton_cooked",
-	recipe = "mobs:mutton_raw",
-	cooktime = 5,
-})
-
-
 -- compatibility
 mobs:alias_mob("mobs:sheep", "mobs_mc:sheep")
 

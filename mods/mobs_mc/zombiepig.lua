@@ -97,14 +97,6 @@ mobs:register_spawn("mobs_mc:pigman", {"nether:portal"}, 15, -1, 500, 4, 31000)
 mobs:register_spawn("mobs_mc:pigman", {"default:obsidian"}, 17, -1, 1900, 1, 31000)
 
 
--- meat rotted
-minetest.register_craftitem(":mobs:rotten_flesh", {
-	description = "Rotten Flesh",
-	inventory_image = "mobs_rotten_flesh.png",
-	on_use = minetest.item_eat(4),
-})
-
-
 -- compatibility
 mobs:alias_mob("mobs:pigman", "mobs_mc:pigman")
 

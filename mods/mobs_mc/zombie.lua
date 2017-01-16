@@ -80,14 +80,6 @@ mobs:register_mob("mobs_mc:zombie", {
 mobs:register_spawn("mobs_mc:zombie", {"group:crumbly", "group:cracky", "group:choppy", "group:snappy"}, 7, -1, 5000, 4, 31000)
 
 
--- meat rotted
-minetest.register_craftitem(":mobs:rotten_flesh", {
-	description = "Rotten Flesh",
-	inventory_image = "mobs_rotten_flesh.png",
-	on_use = minetest.item_eat(4),
-})
-
-
 -- compatibility
 mobs:alias_mob("mobs:zombie", "mobs_mc:zombie")
 

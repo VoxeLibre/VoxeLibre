@@ -155,8 +155,8 @@ mobs:register_mob("mobs_mc:wolf", {
 		tool = clicker:get_wielded_item()
 		local dog
 		local ent
-		if tool:get_name() == "mobs:meat_raw" then
-			clicker:get_inventory():remove_item("main", "mobs:meat_raw")
+		if tool:get_name() == "mcl_mobitems:meat_raw" then
+			clicker:get_inventory():remove_item("main", "mcl_mobitems:meat_raw")
 			dog = minetest.add_entity(self.object:getpos(), "mobs_mc:dog")
 			ent = dog:get_luaentity()
 			ent.owner = clicker:get_player_name()
