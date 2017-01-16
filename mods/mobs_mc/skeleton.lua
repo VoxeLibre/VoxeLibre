@@ -63,7 +63,7 @@ mobs:register_mob("mobs_mc:skeleton", {
 	light_damage = 1,
 	view_range = 16,
 	attack_type = "dogshoot",
-	arrow = "mobs:arrow_entity",
+	arrow = "throwing:arrow_entity",
 	shoot_interval = 2.5,
 	shoot_offset = 1,
 	--'dogshoot_switch' allows switching between shoot and dogfight modes inside dogshoot using timer (1 = shoot, 2 = dogfight)
@@ -131,7 +131,7 @@ mobs:register_mob("mobs_mc:skeleton2", {
 	light_damage = 0,
 	view_range = 16,
 	attack_type = "dogshoot",
-	arrow = "mobs:arrow_entity",
+	arrow = "throwing:arrow_entity",
 	shoot_interval = 0.5,
 	shoot_offset = 1,
 	--'dogshoot_switch' allows switching between shoot and dogfight modes inside dogshoot using timer (1 = shoot, 2 = dogfight)
@@ -140,73 +140,6 @@ mobs:register_mob("mobs_mc:skeleton2", {
 	dogshoot_count_max =6,
 })
 mobs:register_spawn("mobs_mc:skeleton2", {"group:crumbly", "group:cracky", "group:choppy", "group:snappy"}, 7, -1, 5000, 4, -3000)
-
-
-local THROWING_ARROW_ENTITY={
-	physical = false,
-	timer=0,
-	visual = "wielditem",
-	visual_size = {x=0.1, y=0.1},
-	textures = {"mobs:arrow_box"},
-	--textures = {"esmobs:arrow.png"},
-	velocity = 10,
-	lastpos={},
-	collisionbox = {0,0,0,0,0,0},
-}
-
-
---ARROW CODE
-THROWING_ARROW_ENTITY.on_step = function(self, dtime)
-	self.timer=self.timer+dtime
-	local pos = self.object:getpos()
-	local node = minetest.get_node(pos)
-
-minetest.add_particle({
-    pos = pos,
-    vel = {x=0, y=0, z=0},
-    acc = {x=0, y=0, z=0},
-    expirationtime = .3,
-    size = 1,
-    collisiondetection = false,
-    vertical = false,
-    texture = "arrow_particle.png",
-})
-
-	if self.timer>0.2 then
-		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 1.5)
-		for k, obj in pairs(objs) do
-			if obj:get_luaentity() ~= nil then
-				if obj:get_luaentity().name ~= "mobs:arrow_entity" and obj:get_luaentity().name ~= "__builtin:item" then
-					local damage = 3
-					minetest.sound_play("damage", {pos = pos})
-					obj:punch(self.object, 1.0, {
-						full_punch_interval=1.0,
-						damage_groups={fleshy=damage},
-					}, nil)
-					self.object:remove()
-				end
-			else
-				local damage = 3
-				minetest.sound_play("damage", {pos = pos})
-				obj:punch(self.object, 1.0, {
-					full_punch_interval=1.0,
-					damage_groups={fleshy=damage},
-				}, nil)
-				self.object:remove()
-			end
-		end
-	end
-
-	if self.lastpos.x~=nil then
-		if node.name ~= "air" then
-			minetest.sound_play("bowhit1", {pos = pos})
-			--minetest.punch_node(pos)  --this crash game when bones for mobs used
-			minetest.add_item(self.lastpos, 'mobs:arrow')
-			self.object:remove()
-		end
-	end
-	self.lastpos={x=pos.x, y=pos.y, z=pos.z}
-end
 
 
 arrows = {
