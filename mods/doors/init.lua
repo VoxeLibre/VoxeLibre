@@ -48,7 +48,7 @@ function doors:register_door(name, def)
 	minetest.register_craftitem(name, {
 		description = def.description,
 		inventory_image = def.inventory_image,
-		stack_max = 1,
+		stack_max = 64,
 		on_place = function(itemstack, placer, pointed_thing)
 			if not pointed_thing.type == "node" then
 				return itemstack
@@ -298,7 +298,6 @@ end
 doors:register_door("doors:door_wood", {
 	description = "Oak Door",
 	inventory_image = "door_wood.png",
-	stack_max = 16,
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_wood_b.png", "door_brown.png"},
 	tiles_top = {"door_wood_a.png", "door_brown.png"},
@@ -318,7 +317,6 @@ minetest.register_craft({
 doors:register_door("doors:door_acacia", {
 	description = "Acacia Door",
 	inventory_image = "door_acacia.png",
-	stack_max = 16,
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_acacia_b.png", "door_brown.png"},
 	tiles_top = {"door_acacia_a.png", "door_brown.png"},
@@ -337,7 +335,6 @@ minetest.register_craft({
 --- birch Door --
 doors:register_door("doors:door_birch", {
 	description = "Birch Door",
-	stack_max = 16,
 	inventory_image = "door_birch.png",
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_birch_b.png", "door_brown.png"},
@@ -358,7 +355,6 @@ minetest.register_craft({
 doors:register_door("doors:door_dark_oak", {
 	description = "Dark Oak Door",
 	inventory_image = "door_dark_oak.png",
-	stack_max = 16,
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_dark_oak_b.png", "door_brown.png"},
 	tiles_top = {"door_dark_oak_a.png", "door_brown.png"},
@@ -377,7 +373,6 @@ minetest.register_craft({
 --- jungle Door --
 doors:register_door("doors:door_jungle", {
 	description = "Jungle Door",
-	stack_max = 16,
 	inventory_image = "door_jungle.png",
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_jungle_b.png", "door_brown.png"},
@@ -397,7 +392,6 @@ minetest.register_craft({
 --- spruce Door --
 doors:register_door("doors:door_spruce", {
 	description = "Spruce Door",
-	stack_max = 16,
 	inventory_image = "door_spruce.png",
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_spruce_b.png", "door_brown.png"},
@@ -448,7 +442,6 @@ minetest.register_craft({
 --- Door in Iron ---
 doors:register_door("doors:door_steel", {
 	description = "Iron Door",
-	stack_max = 16,
 	inventory_image = "door_steel.png",
 	groups = {snappy=1,cracky=1,level=2,door=1,mesecon_effector_on=1},
 	tiles_bottom = {"door_steel_b.png", "door_grey.png"},
@@ -508,7 +501,7 @@ minetest.register_node("doors:trapdoor", {
 	tiles = {"door_trapdoor.png", "door_trapdoor.png",  "default_wood.png",  "default_wood.png", "default_wood.png", "default_wood.png"},
 	is_ground_content = false,
 	paramtype = "light",
-	stack_max = 16,
+	stack_max = 64,
 	paramtype2 = "facedir",
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,flammable=2,door=1},
 	sounds = default.node_sound_wood_defaults(),
@@ -556,7 +549,6 @@ minetest.register_node("doors:trapdoor_open", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	pointable = true,
-	stack_max = 0,
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,flammable=2,door=1},
 	sounds = default.node_sound_wood_defaults(),
 	drop = "doors:trapdoor",
@@ -633,7 +625,7 @@ minetest.register_node("doors:iron_trapdoor", {
 	tiles = {"iron_trapdoor.png", "iron_trapdoor.png",  "default_steel_block.png",  "default_steel_block.png", "default_steel_block.png", "default_steel_block.png"},
 	paramtype = "light",
 	is_ground_content = false,
-	stack_max = 16,
+	stack_max = 64,
 	paramtype2 = "facedir",
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,flammable=0,door=1},
 	sounds = default.node_sound_wood_defaults(),
@@ -678,7 +670,6 @@ minetest.register_node("doors:iron_trapdoor_open", {
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	pointable = true,
-	stack_max = 0,
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=0,door=1,mesecon_effector_on=1},
 	sounds = default.node_sound_wood_defaults(),
 	drop = "doors:iron_trapdoor",

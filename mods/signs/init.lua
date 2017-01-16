@@ -96,6 +96,7 @@ minetest.register_node("signs:sign_wall", {
     selection_box = {type = "fixed", fixed = {-0.45, -0.15, 0.4, 0.45, 0.45, 0.498}},
     tiles = {"signs_top.png", "signs_bottom.png", "signs_side.png", "signs_side.png", "signs_back.png", "signs_front.png"},
     groups = sign_groups,
+	stack_max = 16,
 
     on_place = function(itemstack, placer, pointed_thing)
         local above = pointed_thing.above
@@ -168,6 +169,7 @@ minetest.register_node("signs:sign_yard", {
     tiles = {"signs_top.png", "signs_bottom.png", "signs_side.png", "signs_side.png", "signs_back.png", "signs_front.png"},
     groups = {choppy=2, dig_immediate=2},
     drop = "signs:sign_wall",
+	stack_max = 16,
 
     on_construct = function(pos)
         construct_sign(pos)

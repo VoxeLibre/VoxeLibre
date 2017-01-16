@@ -38,7 +38,7 @@ minetest.register_craftitem("farming:mushroom_stew", {
     inventory_image = "farming_mushroom_stew.png",
 	on_use = minetest.item_eat(6),
 	groups = { food = 2, eatable = 6 },
-	stack_max = 64,
+	stack_max = 1,
 })
 
 minetest.register_craft({

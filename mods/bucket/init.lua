@@ -18,6 +18,8 @@ minetest.register_craft({
 bucket = {}
 bucket.liquids = {}
 
+-- FIXME: Make buckets stack up to 16
+
 -- Register a new liquid
 --   source = name of the source node
 --   flowing = name of the flowing node
