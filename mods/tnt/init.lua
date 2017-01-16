@@ -36,9 +36,6 @@ minetest.register_node("tnt:tnt", {
 			"default_tnt_side.png", "default_tnt_side.png"},
 	drop = '', -- Get nothing
 	is_ground_content = false,
-	material = {
-		diggability = "not",
-	},
 	stack_max = 64,
 	description = "TNT",
 	mesecons = {effector = {
