@@ -302,6 +302,7 @@ doors:register_door("doors:door_wood", {
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_wood_b.png", "door_brown.png"},
 	tiles_top = {"door_wood_a.png", "door_brown.png"},
+	sounds = default.node_sound_wood_defaults(),
 })
 
 minetest.register_craft({
@@ -321,6 +322,7 @@ doors:register_door("doors:door_acacia", {
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_acacia_b.png", "door_brown.png"},
 	tiles_top = {"door_acacia_a.png", "door_brown.png"},
+	sounds = default.node_sound_wood_defaults(),
 })
 
 minetest.register_craft({
@@ -340,6 +342,7 @@ doors:register_door("doors:door_birch", {
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_birch_b.png", "door_brown.png"},
 	tiles_top = {"door_birch_a.png", "door_brown.png"},
+	sounds = default.node_sound_wood_defaults(),
 })
 
 minetest.register_craft({
@@ -359,6 +362,7 @@ doors:register_door("doors:door_dark_oak", {
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_dark_oak_b.png", "door_brown.png"},
 	tiles_top = {"door_dark_oak_a.png", "door_brown.png"},
+	sounds = default.node_sound_wood_defaults(),
 })
 
 minetest.register_craft({
@@ -378,6 +382,7 @@ doors:register_door("doors:door_jungle", {
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_jungle_b.png", "door_brown.png"},
 	tiles_top = {"door_jungle_a.png", "door_brown.png"},
+	sounds = default.node_sound_wood_defaults(),
 })
 
 minetest.register_craft({
@@ -397,6 +402,7 @@ doors:register_door("doors:door_spruce", {
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_spruce_b.png", "door_brown.png"},
 	tiles_top = {"door_spruce_a.png", "door_brown.png"},
+	sounds = default.node_sound_wood_defaults(),
 })
 
 minetest.register_craft({
@@ -447,8 +453,7 @@ doors:register_door("doors:door_steel", {
 	groups = {snappy=1,cracky=1,level=2,door=1,mesecon_effector_on=1},
 	tiles_bottom = {"door_steel_b.png", "door_grey.png"},
 	tiles_top = {"door_steel_a.png", "door_grey.png"},
-	only_placer_can_open = true,
-	
+	sounds = default.node_sound_metal_defaults(),
 })
 
 minetest.register_craft({

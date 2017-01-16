@@ -149,21 +149,3 @@ function doors:register_door(name, def)
 	})
 end
 
-doors:register_door("doors:door_wood", {
-	description = "Wooden Door",
-	inventory_image = "door_wood.png",
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
-	tiles_bottom = {"door_wood_b.png", "door_brown.png"},
-	tiles_top = {"door_wood_a.png", "door_brown.png"},
-	sounds = default.node_sound_wood_defaults(),
-})
-
-doors:register_door("doors:door_steel", {
-	description = "Iron Door",
-	inventory_image = "door_steel.png",
-	groups = {snappy=1,cracky=1,level=2,door=1},
-	tiles_bottom = {"door_steel_b.png", "door_grey.png"},
-	tiles_top = {"door_steel_a.png", "door_grey.png"},
-	only_placer_can_open = true,
-	sounds = default.node_sound_stone_defaults(),
-})
