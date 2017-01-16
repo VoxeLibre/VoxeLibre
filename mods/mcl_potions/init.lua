@@ -8,7 +8,7 @@ minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_potions:fermented_spider_eye",
-	recipe = { "farming:mushroom_brown", "default:sugar", "mobs:spider_eye" },
+	recipe = { "farming:mushroom_brown", "default:sugar", "mcl_mobitems:spider_eye" },
 })
 
 -- TODO: Get texture

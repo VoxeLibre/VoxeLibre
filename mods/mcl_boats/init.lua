@@ -165,7 +165,7 @@ for w=1, #woods do
 
 	local c = craftstuffs[w]
 	minetest.register_craft({
-		output = "mcl_boats:boat",
+		output = "mcl_boats:boat"..woods[w],
 		recipe = {
 			{c, "", c},
 			{c, c, c},
