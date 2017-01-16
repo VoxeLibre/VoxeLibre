@@ -1,0 +1,1 @@
+Hurts players touching a cactus and when with the head inside solid blocks.

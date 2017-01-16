@@ -15,6 +15,13 @@ This section explains all the used groups in this subgame.
 * `soil_sapling=2`: Soil for saplings. Intended to be natural soil. All saplings will grow on this
 * `soil_sapling=1`: Artificial soil (such as farmland) for saplings. Some saplings will not grow on this
 * `soil_sugarcane=1`: Sugar canes will grow on this near water
+* `disable_suffocation=1`: Disables suffocation for full solid cubes (1)
+
+### Footnotes
+
+1. Normally, all walkable blocks with the default 1×1×1 cube as a collision box (e.g. sand,
+   gravel, stone, but not fences) will damage the players while their head is inside. This
+   is called “suffocation”. Setting this group disables this behaviour
 
 ### Groups (mostly) used for crafting recipes
 
