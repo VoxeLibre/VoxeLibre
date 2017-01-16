@@ -9,7 +9,7 @@
 
 mobs:register_mob("mobs_mc:chicken", {
 	type = "animal",
-	hp_max = 24,
+	hp_max = 4,
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1, 0.4},
 	
 	visual = "mesh",
@@ -19,7 +19,7 @@ mobs:register_mob("mobs_mc:chicken", {
 	},
 	makes_footstep_sound = true,
 	walk_velocity = 1,
-	armor = 200,
+	armor = 100,
 	drops = {
 		{name = "mcl_mobitems:chicken_raw",
 		chance = 1,

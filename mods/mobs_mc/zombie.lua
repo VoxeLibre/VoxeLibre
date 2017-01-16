@@ -10,7 +10,7 @@
 
 mobs:register_mob("mobs_mc:zombie", {
 	type = "monster",
-	hp_max = 35,
+	hp_max = 20,
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.9, 0.4},
 	textures = {
 	{"mobs_zombie.png"}
@@ -26,33 +26,38 @@ mobs:register_mob("mobs_mc:zombie", {
 	},
 	walk_velocity = .8,
 	run_velocity = 1.6,
-	damage = 1,
+	damage = 3,
 	pathfinding = true,
 	group_attack = true,
-	armor = 200,
+	armor = 80,
 	drops = {
 		{name = "mcl_mobitems:rotten_flesh",
 		chance = 1,
-		min = 1,
-		max = 1,},
-		{name = "default:steel_ingot",
-		chance = 3,
 		min = 0,
 		max = 2,},
+		{name = "default:steel_ingot",
+		-- approximation to 8.5%
+		chance = 11,
+		min = 1,
+		max = 1,},
 		{name = "default:shovel_steel",
-		chance = 4,
+		-- approximation to 8.5%
+		chance = 11,
 		min = 1,
 		max = 1,},
 		{name = "default:sword_steel",
-		chance = 8,
+		-- approximation to 8.5%
+		chance = 11,
 		min = 1,
 		max = 1,},
 		{name = "farming:carrot",
-		chance = 10,
+		-- approximation to 8.5%
+		chance = 11,
 		min = 1,
 		max = 1,},
 		{name = "farming:potato",
-		chance = 10,
+		-- approximation to 8.5%
+		chance = 11,
 		min = 1,
 		max = 1,},
 	},

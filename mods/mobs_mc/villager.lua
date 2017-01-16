@@ -9,8 +9,7 @@
 
 mobs:register_mob("mobs_mc:villager", {
 	type = "npc",
-	hp_min = 35,
-	hp_max = 75,
+	hp_max = 20,
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.95, 0.4},
 	textures = {
 	{"mobs_farmer.png"}
@@ -18,19 +17,13 @@ mobs:register_mob("mobs_mc:villager", {
 	visual = "mesh",
 	mesh = "mobs_villager.x",
 	makes_footstep_sound = true,
-	damage = 2,
+	damage = 0,
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
-	damage = 1,
-		group_attack = true,
-		attack_type = "dogfight",
-	drops = {
-		{name = "default:apple",
-		chance = 10,
-		min = 1,
-		max = 2,},
-	},
-	armor = 90,
+	group_attack = true,
+	attack_type = "dogfight",
+	drops = {},
+	armor = 100,
 	sounds = {
 		random = "Villager1",
 		death = "Villagerdead",

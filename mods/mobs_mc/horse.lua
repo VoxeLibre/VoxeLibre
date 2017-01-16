@@ -235,8 +235,8 @@ mobs:register_mob("mobs_mc:horse", {
 
 mobs:register_mob("mobs_mc:horse2", {
 	type = "animal",
-	hp_min = 5,
-	hp_max = 10,
+	hp_min = 15,
+	hp_max = 30,
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1, 0.4},
 	textures = {
 		{"mobs_horsepegh.png"},
@@ -247,10 +247,10 @@ mobs:register_mob("mobs_mc:horse2", {
 	walk_velocity = 1,
 	armor = 200,
 	drops = {
-		{name = "mcl_mobitems:meat_raw",
+		{name = "mcl_mobitems:leather",
 		chance = 1,
-		min = 2,
-		max = 3,},
+		min = 0,
+		max = 2,},
 	},
 	drawtype = "front",
 	water_damage = 1,
@@ -278,8 +278,8 @@ mobs:register_mob("mobs_mc:horse2", {
 
 mobs:register_mob("mobs_mc:horse3", {
 	type = "animal",
-	hp_min = 5,
-	hp_max = 10,
+	hp_min = 15,
+	hp_max = 30,
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1, 0.4},
 	textures = {
 		{"mobs_horsearah.png"},
@@ -288,12 +288,12 @@ mobs:register_mob("mobs_mc:horse3", {
 	mesh = "mobs_horse.x",
 	makes_footstep_sound = true,
 	walk_velocity = 1,
-	armor = 200,
+	armor = 100,
 	drops = {
-		{name = "mcl_mobitems:meat_raw",
+		{name = "mcl_mobitems:leather",
 		chance = 1,
-		min = 2,
-		max = 3,},
+		min = 0,
+		max = 2,},
 	},
 	drawtype = "front",
 	water_damage = 1,

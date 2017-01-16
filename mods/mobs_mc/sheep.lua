@@ -9,7 +9,7 @@
 --mcsheep
 mobs:register_mob("mobs_mc:sheep", {
 	type = "animal",
-	hp_max = 25,
+	hp_max = 8,
 	collisionbox = {-0.5, -0.01, -0.5, 0.5, 1.5, 0.5},
 	
 	visual = "mesh",
@@ -19,7 +19,7 @@ mobs:register_mob("mobs_mc:sheep", {
 	},
 	makes_footstep_sound = true,
 	walk_velocity = 1,
-	armor = 200,
+	armor = 100,
 	drops = {
 		{name = "mcl_mobs:mutton_raw",
 		chance = 1,

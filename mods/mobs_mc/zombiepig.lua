@@ -9,19 +9,7 @@
 
 mobs:register_mob("mobs_mc:pigman", {
 	type = "monster",
-	hp_max = 35,
-	--old zombie mesh code
-	--collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.9, 0.4},
-	--textures = {
-	--{"mobs_zombie_pigman.png"}
-	--},
-	--visual = "mesh",
-	--mesh = "mobs_zombie.x",
-	
-	--Tried to get a sword in pig hand
-	--http://minetest.fensta.bplaced.net/#page=20
-	--Author: Fedora P 
-	--License: CC BY-SA 3.0
+	hp_max = 20,
 	collisionbox = {-0.3, -1.0, -0.3, 0.3, 0.8, 0.3},
 	visual = "mesh",
 	mesh = "3d_armor_character.b3d",
@@ -40,18 +28,19 @@ mobs:register_mob("mobs_mc:pigman", {
 	drops = {
 		{name = "mcl_mobitems:rotten_flesh",
 		chance = 1,
-		min = 1,
+		min = 0,
+		max = 1,},
+		{name = "default:gold_nugget",
+		chance = 1,
+		min = 0,
 		max = 1,},
 		{name = "default:gold_ingot",
-		chance = 13,
-		min = 0,
-		max = 2,},
-		{name = "default:sword_gold",
-		chance = 8,
+		chance = 40,
 		min = 1,
 		max = 1,},
 		{name = "default:sword_gold",
-		chance = 8,
+		-- approximation to 8.5%
+		chance = 11,
 		min = 1,
 		max = 1,},
 	},

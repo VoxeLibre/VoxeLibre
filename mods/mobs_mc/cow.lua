@@ -8,7 +8,7 @@
 
 mobs:register_mob("mobs_mc:cow", {
 	type = "animal",
-	hp_max = 28,
+	hp_max = 10,
 	collisionbox = {-0.6, -0.01, -0.6, 0.6, 1.8, 0.6},
 	
 	visual = "mesh",
@@ -18,7 +18,7 @@ mobs:register_mob("mobs_mc:cow", {
 	},
 	makes_footstep_sound = true,
 	walk_velocity = 1,
-	armor = 200,
+	armor = 100,
 	drops = {
 		{name = "mcl_mobitems:beef_raw",
 		chance = 1,

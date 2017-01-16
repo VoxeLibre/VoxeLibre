@@ -8,7 +8,7 @@
 
 mobs:register_mob("mobs_mc:pig", {
 	type = "animal",
-	hp_max = 25,
+	hp_max = 10,
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1, 0.4},
 	
 	visual = "mesh",
@@ -18,7 +18,7 @@ mobs:register_mob("mobs_mc:pig", {
 	},
 	makes_footstep_sound = true,
 	walk_velocity = 1,
-	armor = 200,
+	armor = 100,
 	drops = {
 		{name = "mcl_mobitems:pork_raw",
 		chance = 1,

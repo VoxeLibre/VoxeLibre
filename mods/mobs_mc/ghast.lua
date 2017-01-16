@@ -10,12 +10,9 @@ mobs:register_mob("mobs_mc:ghast", {
 	type = "monster",
 	pathfinding = true,
 	group_attack = true,
-	hp_max = 50,
+	hp_max = 10,
 	collisionbox = {-1.45, -1.45, -1.45 ,1.45, 1.45, 1.45},
 	visual_size = {x=3.0, y=3.0},
---	textures = {
---	{"ghast_top.png", "ghast_bottom.png", "ghast_front.png", "ghast_sides.png", "ghast_sides.png", "ghast_sides.png"}
---	},	
 	textures = {
 	{"ghast_white.png", "ghast_white.png", "ghast_front.png", "ghast_white.png", "ghast_white.png", "ghast_white.png"}
 	},
@@ -35,14 +32,14 @@ mobs:register_mob("mobs_mc:ghast", {
 	damage = 1,
 	armor = 100,
 	drops = {
-		{name = "default:lava_source 1",
-		chance = 3,
-		min = 1,
-		max = 4,},
-		{name = "default:diamond",
+		{name = "mcl_mobitems:ghast_tear",
 		chance = 1,
-		min = 1,
-		max = 5,},
+		min = 0,
+		max = 1,},
+		{name = "default:gunpowder",
+		chance = 1,
+		min = 0,
+		max = 2,},
 	},
 	animation = {
 		speed_normal = 24,
