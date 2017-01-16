@@ -1,0 +1,38 @@
+# Portuguese Translation for mobs_redo mod
+# Tradução em Portugues do mod mobs_redo
+# Ultima revisao: 30/Ago/2016
+# Autor: BrunoMine
+
+#init.lua
+[MOD] Mobs Redo loaded = [MOD] Mobs Redo carregado
+
+#api.lua
+[MOBS] mod profiling enabled, damage not enabled = [MOBS] Mod criador de perfis ativado, dano desabilitado
+lifetimer expired, removed @1 = tempo de vida expirado, @1 removido
+[Mobs Redo] @1 has spawning disabled = [Mobs Redo] @1 teve spawn desabilitado
+[Mobs Redo] Chance setting for @1 is now @2 = [Mobs Redo] Chances para @1 agora vai ser @2
+[mobs] @1 failed to spawn at @2 = [mobs] @1 falhou ao spawnar em @2
+Not tamed! = Indomesticado!
+@1 is owner! = Dono @1!
+Missed! = Faltou!
+@1 at full health (@2) = @1 em plena saude (@2)
+@1 has been tamed! = @1 foi domesticado!
+Enter name: = Insira um nome:
+Rename = Renomear
+
+#crafts.lua
+Nametag = Etiqueta
+Leather = Couro
+Raw Meat = Carne crua
+Meat = Carne
+Magic Lasso (right-click animal to put in inventory) = Laço Magico (clique-direito no animal para por no inventario)
+Net (right-click animal to put in inventory) = Net (clique-direito no animal para por no inventario)
+Steel Shears (right-click to shear) = Tesoura de Aço (clique-direito para tosquiar)
+
+#spawner.lua
+Mob Spawner = Spawnador de Mob
+Mob MinLight MaxLight Amount PlayerDist = Mob LuzMinima LuzMaxima Valor DistJogador
+Spawner Not Active (enter settings) = Spawnador Inativo (configurar)
+Spawner Active (@1) = Spawnador Ativo (@1)
+Mob Spawner settings failed! = Configuraçao de Spawnador do Mob falhou!
+> name min_light[0-14] max_light[0-14] max_mobs_in_area[0 to disable] distance[1-20] y_offset[-10 to 10] = > nome luz_min[0-14] luz_max[0-14] max_mobs_na_area[0 para desabilitar] distancia[1-20] y_offset[-10 a 10]

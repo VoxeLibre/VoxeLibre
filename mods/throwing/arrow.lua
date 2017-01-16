@@ -86,6 +86,6 @@ minetest.register_craft({
 	recipe = {
 		{'default:flint'},
 		{'default:stick'},
-		{'mobs:feather'}
+		{'mcl_mobitems:feather'}
 	}
 })

@@ -338,11 +338,11 @@ minetest.register_tool("default:pole", {
 						-- TODO: Damaged
 						itemname = "default:pole"
 					elseif r <= 22 then
-						itemname = "mobs:leather"
+						itemname = "mcl_mobitems:leather"
 					elseif r <= 32 then
 						itemname = "3d_armor:boots_leather"
 					elseif r <= 42 then
-						itemname = "mobs:rotten_flesh"
+						itemname = "mcl_mobitems:rotten_flesh"
 					elseif r <= 47 then
 						itemname = "default:stick"
 					elseif r <= 52 then
@@ -372,7 +372,7 @@ minetest.register_tool("default:pole", {
 						-- TODO: Enchanted and damaged
 						itemname = "default:pole"
 					elseif r == 4 then
-						itemname = "mobs:spider_eye"
+						itemname = "mcl_mobitems:spider_eye"
 						-- TODO itemname = "mobs:naming_tag"
 					elseif r == 5 then
 						itemname = "flowers:dandelion"

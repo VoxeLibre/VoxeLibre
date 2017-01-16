@@ -1,0 +1,38 @@
+# German Translation for mobs_redo mod
+# Deutsche Übersetzung der mobs_redo Mod
+# last update: 2016/June/10
+# Author: Xanthin
+
+#init.lua
+[MOD] Mobs Redo loaded = [MOD] Mobs Redo geladen
+
+#api.lua
+[MOBS] mod profiling enabled, damage not enabled = [MOBS] Modanalyse aktiviert, Schaden deaktiviert
+lifetimer expired, removed @1 = Lebensdauer abgelaufen, @1 wurde entfernt
+[Mobs Redo] @1 has spawning disabled = [Mobs Redo] Spawnen von @1 ist deaktiviert
+[Mobs Redo] Chance setting for @1 is now @2 = [Mobs Redo] Wahrscheinlichkeitswert für @1 ist jetzt @2
+[mobs] @1 failed to spawn at @2 = [mobs] @1 konnte nicht bei @2 spawnen
+Not tamed! = Nicht gezähmt!
+@1 is owner! = @1 ist Besitzer!
+Missed! = Verfehlt!
+@1 at full health (@2) = @1 bei voller Gesundheit (@2)
+@1 has been tamed! = @1 ist gezähmt worden!
+Enter name: = Namen eingeben:
+Rename = Umbenennen
+
+#crafts.lua
+Nametag = Namensschild
+Leather = Leder
+Raw Meat = Rohes Fleisch
+Meat = Fleisch
+Magic Lasso (right-click animal to put in inventory) = Magisches Lasso (Rechtsklick auf Tier,\num es ins Inventar zu legen)
+Net (right-click animal to put in inventory) = Netz (Rechtsklick auf Tier,\num es ins Inventar zu legen)
+Steel Shears (right-click to shear) = Stahlschere (Rechtsklick zum Scheren)
+
+#spawner.lua
+Mob Spawner = Mobspawner
+Mob MinLight MaxLight Amount PlayerDist = Mob MinLicht MaxLicht Menge SpielerEntfng
+Spawner Not Active (enter settings) = Spawner nicht aktiv (Einstellungen eintragen)
+Spawner Active (@1) = Spawner aktiv (@1)
+Mob Spawner settings failed! = Mobspawnereinstellungen gescheitert!
+> name min_light[0-14] max_light[0-14] max_mobs_in_area[0 to disable] distance[1-20] y_offset[-10 to 10] = Name min. Licht[0-14] max. Licht[0-14] max. Mobs in Gebiet[0 zum deaktivieren] Entfernung zum Spieler[1-20] Höhe[-10 bis 10]

@@ -1,0 +1,36 @@
+# Template for translations of mobs_redo mod
+# last update: 2016/June/10
+
+#init.lua
+[MOD] Mobs Redo loaded = 
+
+#api.lua
+[MOBS] mod profiling enabled, damage not enabled = 
+lifetimer expired, removed @1 = 
+[Mobs Redo] @1 has spawning disabled = 
+[Mobs Redo] Chance setting for @1 is now @2 = 
+[mobs] @1 failed to spawn at @2 = 
+Not tamed! = 
+@1 is owner! = 
+Missed! = 
+@1 at full health (@2) = 
+@1 has been tamed! = 
+Enter name: = 
+Rename = 
+
+#crafts.lua
+Nametag = 
+Leather = 
+Raw Meat = 
+Meat = 
+Magic Lasso (right-click animal to put in inventory) = 
+Net (right-click animal to put in inventory) = 
+Steel Shears (right-click to shear) = 
+
+#spawner.lua
+Mob Spawner = 
+Mob MinLight MaxLight Amount PlayerDist = 
+Spawner Not Active (enter settings) = 
+Spawner Active (@1) = 
+Mob Spawner settings failed! = 
+> name min_light[0-14] max_light[0-14] max_mobs_in_area[0 to disable] distance[1-20] y_offset[-10 to 10] = 

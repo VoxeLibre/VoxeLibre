@@ -637,7 +637,7 @@ minetest.register_craft({
 minetest.register_craft({
 	type = 'shapeless',
 	output = 'default:book',
-	recipe = { 'default:paper', 'default:paper', 'default:paper', 'mobs:leather',
+	recipe = { 'default:paper', 'default:paper', 'default:paper', 'mcl_mobitems:leather',
 	}
 })
 
