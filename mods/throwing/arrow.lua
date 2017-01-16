@@ -36,8 +36,7 @@ local THROWING_ARROW_ENTITY={
 	timer=0,
 	visual = "wielditem",
 	visual_size = {x=0.4, y=0.4},
-	--textures = {"throwing:arrow_box"},
-	textures = {"throwing_arrow_back.png"},
+	textures = {"throwing:arrow_box"},
 	lastpos={},
 	collisionbox = {0,0,0,0,0,0},
 }
