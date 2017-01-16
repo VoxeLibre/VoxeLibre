@@ -60,16 +60,16 @@ function boat.on_punch(self, puncher, time_from_last_punch, tool_capabilities, d
 	 if self._driver then
 		self._driver:set_detach()
 		self._driver = nil
-		boat.schedule_removal(self)
 		if not minetest.setting_getbool("creative_mode") then
 			puncher:get_inventory():add_item("main", "mcl_boats:boat")
 		end
+		self.object:remove()
 	else
 
-		boat.schedule_removal(self)
 		if not minetest.setting_getbool("creative_mode") then
 			puncher:get_inventory():add_item("main", "mcl_boats:boat")
 		end
+		self.object:remove()
 	
 	end
 end
@@ -133,15 +133,6 @@ function boat.on_step(self, dtime)
 	end
 	
 end
-
-function boat.schedule_removal(self)
-
-	minetest.after(0.25,function()
-		self.object:remove()
-	end)
-
-end
-
 
 minetest.register_entity("mcl_boats:boat", boat)
 
