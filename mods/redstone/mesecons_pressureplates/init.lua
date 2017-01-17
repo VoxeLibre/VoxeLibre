@@ -49,7 +49,7 @@ end
 -- image:	inventory and wield image of the pressure plate
 -- recipe:	crafting recipe of the pressure plate
 
-function mesecon:register_pressure_plate(offstate, onstate, description, texture_off, texture_on, recipe)
+function mesecon:register_pressure_plate(offstate, onstate, description, texture_off, texture_on, recipe, sounds)
 	local ppspec = {
 		offstate = offstate,
 		onstate  = onstate
@@ -67,6 +67,7 @@ function mesecon:register_pressure_plate(offstate, onstate, description, texture
 	    	description = description,
 		pressureplate = ppspec,
 		on_timer = pp_on_timer,
+		sounds = sounds,
 		mesecons = {receptor = {
 			state = mesecon.state.off
 		}},
@@ -86,7 +87,7 @@ function mesecon:register_pressure_plate(offstate, onstate, description, texture
 		drop = offstate,
 		pressureplate = ppspec,
 		on_timer = pp_on_timer,
-		sounds = default.node_sound_wood_defaults(),
+		sounds = sounds,
 		mesecons = {receptor = {
 			state = mesecon.state.on
 		}},
@@ -113,7 +114,8 @@ mesecon:register_pressure_plate(
 	"Wooden Pressure Plate",
 	"default_wood.png",
 	"default_wood.png",
-	{{"group:wood", "group:wood"}})
+	{{"group:wood", "group:wood"}},
+	default.node_sound_wood_defaults())
 
 mesecon:register_pressure_plate(
 	"mesecons_pressureplates:pressure_plate_stone_off",
@@ -121,7 +123,8 @@ mesecon:register_pressure_plate(
 	"Stone Pressure Plate",
 	"default_stone.png",
 	"default_stone.png",
-	{{"default:stone", "default:stone"}})
+	{{"default:stone", "default:stone"}},
+	default.node_sound_stone_defaults())
 
 minetest.register_craft({
 	type = "fuel",
