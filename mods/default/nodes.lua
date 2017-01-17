@@ -1335,10 +1335,12 @@ minetest.register_node("default:chest", {
 			local p = get_chest_neighborpos(pos, param2, "right")
 			meta:set_string("formspec",
 					"size[9,11.5]"..
-					"list[nodemeta:"..p.x..","..p.y..","..p.z..";main;0,0;9,3;]"..
-					"list[current_name;main;0,3;9,3;]"..
-					"list[current_player;main;0,7;9,3;9]"..
-					"list[current_player;main;0,10.5;9,1;]"..
+					"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
+					default.inventory_header..
+					"list[nodemeta:"..p.x..","..p.y..","..p.z..";main;0,0.5;9,3;]"..
+					"list[current_name;main;0,3.5;9,3;]"..
+					"list[current_player;main;0,7.5;9,3;9]"..
+					"list[current_player;main;0,10.75;9,1;]"..
 					"listring[current_player;main]"..
 					"listring[nodemeta:"..p.x..","..p.y..","..p.z..";main]"..
 					"listring[current_player;main]"..
@@ -1347,10 +1349,12 @@ minetest.register_node("default:chest", {
 			local m = minetest.get_meta(p)
 			m:set_string("formspec",
 					"size[9,11.5]"..
-					"list[current_name;main;0,0;9,3;]"..
-					"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3;9,3;]"..
-					"list[current_player;main;0,7;9,3;9]"..
-					"list[current_player;main;0,10.5;9,1;]"..
+					"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
+					default.inventory_header..
+					"list[current_name;main;0,0.5;9,3;]"..
+					"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3.5;9,3;]"..
+					"list[current_player;main;0,7.5;9,3;9]"..
+					"list[current_player;main;0,10.75;9,1;]"..
 					"listring[current_player;main]"..
 					"listring[current_name;main]"..
 					"listring[current_player;main]"..
@@ -1360,10 +1364,12 @@ minetest.register_node("default:chest", {
 			local p = get_chest_neighborpos(pos, param2, "left")
 			meta:set_string("formspec",
 					"size[9,11.5]"..
-					"list[current_name;main;0,0;9,3;]"..
-					"list[nodemeta:"..p.x..","..p.y..","..p.z..";main;0,3;9,3;]"..
-					"list[current_player;main;0,7;9,3;9]"..
-					"list[current_player;main;0,10.5;9,1;]"..
+					"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
+					default.inventory_header..
+					"list[current_name;main;0,0.5;9,3;]"..
+					"list[nodemeta:"..p.x..","..p.y..","..p.z..";main;0,3.5;9,3;]"..
+					"list[current_player;main;0,7.5;9,3;9]"..
+					"list[current_player;main;0,10.75;9,1;]"..
 					"listring[current_player;main]"..
 					"listring[current_name;main]"..
 					"listring[current_player;main]"..
@@ -1372,10 +1378,12 @@ minetest.register_node("default:chest", {
 			local m = minetest.get_meta(p)
 			m:set_string("formspec",
 					"size[9,11.5]"..
-					"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0;9,3;]"..
-					"list[current_name;main;0,3;9,3;]"..
-					"list[current_player;main;0,7;9,3;9]"..
-					"list[current_player;main;0,10.5;9,1;]"..
+					"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
+					default.inventory_header..
+					"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
+					"list[current_name;main;0,3.5;9,3;]"..
+					"list[current_player;main;0,7.5;9,3;9]"..
+					"list[current_player;main;0,10.75;9,1;]"..
 					"listring[current_player;main]"..
 					"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]"..
 					"listring[current_player;main]"..
