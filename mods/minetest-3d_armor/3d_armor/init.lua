@@ -3,7 +3,7 @@ dofile(minetest.get_modpath(minetest.get_current_modname()).."/armor.lua")
 -- Regisiter Head Armor
 
 minetest.register_tool("3d_armor:helmet_leather", {
-	description = "Leather Helmet",
+	description = "Leather Cap",
 	inventory_image = "3d_armor_inv_helmet_leather.png",
 	groups = {armor_head=5, armor_heal=0, armor_use=100},
 	wear = 0,
@@ -40,7 +40,7 @@ minetest.register_tool("3d_armor:helmet_chain", {
 -- Regisiter Torso Armor
 
 minetest.register_tool("3d_armor:chestplate_leather", {
-	description = "Leather Chestplate",
+	description = "Leather Tunic",
 	inventory_image = "3d_armor_inv_chestplate_leather.png",
 	groups = {armor_torso=15, armor_heal=0, armor_use=100},
 	wear = 0,
@@ -77,7 +77,7 @@ minetest.register_tool("3d_armor:chestplate_chain", {
 -- Regisiter Leg Armor
 
 minetest.register_tool("3d_armor:leggings_leather", {
-	description = "Leather Leggings",
+	description = "Leather Pants",
 	inventory_image = "3d_armor_inv_leggings_leather.png",
 	groups = {armor_legs=10, armor_heal=0, armor_use=100},
 	wear = 0,
