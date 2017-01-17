@@ -5,6 +5,21 @@
 --
 
 -- The hand
+local groupcaps
+if minetest.setting_getbool("creative_mode") then
+	groupcaps = {
+		snappy = {times={[1]=0, [2]=0, [3]=0}, uses=0, maxlevel=255},
+		cracky = {times={[1]=0, [2]=0, [3]=0}, uses=0, maxlevel=255},
+		crumbly = {times={[1]=0, [2]=0, [3]=0}, uses=0, maxlevel=255},
+		oddly_breakable_by_hand = {times={[1]=0, [2]=0, [3]=0, [4]=0, [5]=0}, uses=0, maxlevel=255},
+	}
+else
+	groupcaps = {
+		crumbly = {times={[2]=3.00, [3]=0.70}, uses=0, maxlevel=1},
+		snappy = {times={[3]=0.40}, uses=0, maxlevel=1},
+		oddly_breakable_by_hand = {times={[0]=90.00,[1]=7.00,[2]=4.00,[3]=1.40,[4]=480.70,}, uses=0, maxlevel=5}
+	}
+end
 minetest.register_item(":", {
 	type = "none",
 	wield_image = "wieldhand.png",
@@ -12,11 +27,7 @@ minetest.register_item(":", {
 	tool_capabilities = {
 		full_punch_interval = 0.25,
 		max_drop_level = 0,
-		groupcaps = {
-			crumbly = {times={[2]=3.00, [3]=0.70}, uses=0, maxlevel=1},
-			snappy = {times={[3]=0.40}, uses=0, maxlevel=1},
-			oddly_breakable_by_hand = {times={[0]=90.00,[1]=7.00,[2]=4.00,[3]=1.40,[4]=480.70,}, uses=0, maxlevel=5}
-		},
+		groupcaps = groupcaps,
 		damage_groups = {fleshy=1},
 	}
 })
