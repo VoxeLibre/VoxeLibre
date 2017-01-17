@@ -105,7 +105,7 @@ local function register_wall(nodename, name, texture, invtex)
 		minetest.register_node(nodename.."_"..i, {
 			collision_box = {
 				type = 'fixed', 
-				fixed = {-4/16, -1, -4/16, 4/16, 1, 4/16}
+				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 			},
 			drawtype = "nodebox",
 			is_ground_content = false,
@@ -125,7 +125,7 @@ local function register_wall(nodename, name, texture, invtex)
 		drawtype = "nodebox",
 		collision_box = {
 				type = 'fixed', 
-				fixed = {-4/16, -1, -4/16, 4/16, 1, 4/16}
+				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 		},
 		tiles = {texture},
 		paramtype = "light",
@@ -143,7 +143,7 @@ local function register_wall(nodename, name, texture, invtex)
 		drawtype = "nodebox",
 		collision_box = {
 				type = 'fixed', 
-				fixed = {-4/16, -1, -4/16, 4/16, 1, 4/16}
+				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 		},
 		tiles = {texture},
 		paramtype = "light",
@@ -172,7 +172,7 @@ local function register_wall(nodename, name, texture, invtex)
 		},
 		collision_box = {
 				type = 'fixed', 
-				fixed = {-4/16, -1, -4/16, 4/16, 1, 4/16}
+				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 		},
 		collisionbox = {-0.2, 0, -0.2, 0.2, 1.4, 0.2},
 		on_construct = update_wall,
