@@ -138,7 +138,7 @@ minetest.register_abm({
 
 minetest.register_abm({
 	nodenames = {"hopper:hopper"},
-	neighbors = {"default:chest","hopper:hopper","hopper:hopper_side","default:furnace","default:furnace_active"},
+	neighbors = {"default:chest","default:chest_left","default:chest_right","hopper:hopper","hopper:hopper_side","default:furnace","default:furnace_active"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -219,7 +219,7 @@ minetest.register_abm({
 		end
 	
 		--the hopper output
-		if a == "default:chest" or a == "hopper:hopper" or a == "hopper:hopper_side" then
+		if a == "default:chest" or a == "default:chest_left" or a == "default:chest_right" or a == "hopper:hopper" or a == "hopper:hopper_side" then
 			--hopper inventory
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
@@ -293,7 +293,7 @@ minetest.register_abm({
 
 minetest.register_abm({
 	nodenames = {"hopper:hopper_side"},
-	neighbors = {"default:chest","hopper:hopper","hopper:hopper_side","default:furnace","default:furnace_active"},
+	neighbors = {"default:chest","default:chest_left","default_chest_right","hopper:hopper","hopper:hopper_side","default:furnace","default:furnace_active"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -320,7 +320,7 @@ minetest.register_abm({
 		local b = vm:get_node_at({x=pos.x,y=pos.y+1,z=pos.z}).name
 
 		--the hopper input
-		if b == "default:chest" then
+		if b == "default:chest" or b == "default:chest_left" or b == "default:chest_right" then
 			--hopper inventory
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
@@ -384,7 +384,7 @@ minetest.register_abm({
 		end
 	
 		--the hopper output
-		if a == "default:chest" or a == "hopper:hopper" or a == "hopper:hopper_side" then
+		if a == "default:chest" or a == "default:chest_left" or "default:chest_right" or a == "hopper:hopper" or a == "hopper:hopper_side" then
 			--print("test")
 			--room_for_item(listname, stack)
 			--hopper inventory
