@@ -2,15 +2,15 @@
 
 local chest = minetest.get_content_id("default:chest")
 
-local chest_formspec =
-	"size[8,9]"..
-	--default.gui_bg..
-	--default.gui_bg_img..
-	--default.gui_slots..
-	"list[current_name;main;0,0.3;8,4;]"..
-	"list[current_player;main;0,4.85;8,1;]"..
-	"list[current_player;main;0,6.08;8,3;8]"
-	--default.get_hotbar_bg(0,4.85)
+local hopper_formspec =
+	"size[9,7]"..
+	"background[-0.19,-0.25;9.41,10.48;hopper_inventory.png]"..
+	default.inventory_header..
+	"list[current_name;main;2,0.5;5,1;]"..
+	"list[current_player;main;0,2.5;9,3;9]"..
+	"list[current_player;main;0,5.74;9,1;]"..
+	"listring[current_name;main]"..
+	"listring[current_player;main]"
 
 minetest.register_node("hopper:hopper", {
 	drop = "hopper:hopper_item",
@@ -38,10 +38,9 @@ minetest.register_node("hopper:hopper", {
 
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", chest_formspec)
-		meta:set_string("infotext", "Chest")
+		meta:set_string("formspec", hopper_formspec)
 		local inv = meta:get_inventory()
-		inv:set_size("main", 8*4)
+		inv:set_size("main", 5)
 	end,
 	can_dig = function(pos,player)
 		local meta = minetest.get_meta(pos);
@@ -90,10 +89,9 @@ minetest.register_node("hopper:hopper_side", {
 
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", chest_formspec)
-		meta:set_string("infotext", "Chest")
+		meta:set_string("formspec", hopper_formspec)
 		local inv = meta:get_inventory()
-		inv:set_size("main", 8*4)
+		inv:set_size("main", 5)
 	end,
 	can_dig = function(pos,player)
 		local meta = minetest.get_meta(pos);
