@@ -1570,7 +1570,7 @@ minetest.register_node("default:furnace", {
 		local inv = meta:get_inventory()
 		inv:set_size("fuel", 1)
 		inv:set_size("src", 1)
-		inv:set_size("dst", 4)
+		inv:set_size("dst", 1)
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)
@@ -1635,7 +1635,7 @@ minetest.register_node("default:furnace_active", {
 		local inv = meta:get_inventory()
 		inv:set_size("fuel", 1)
 		inv:set_size("src", 1)
-		inv:set_size("dst", 4)
+		inv:set_size("dst", 1)
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)
