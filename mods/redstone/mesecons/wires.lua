@@ -34,10 +34,10 @@ for zmy=0, 1 do
 			tostring(xpy)..tostring(zpy)..tostring(xmy)..tostring(zmy)
 
 	if nodeid == "00000000" then
-		groups = {dig_immediate = 3, mesecon_conductor_craftable = 1, attach_node = 1}
+		groups = {dig_immediate = 3, mesecon_conductor_craftable = 1, attach_node = 1, dig_by_water = 1}
 		wiredesc = "Redstone"
 	else
-		groups = {dig_immediate = 3, not_in_creative_inventory = 1, attach_node = 1}
+		groups = {dig_immediate = 3, not_in_creative_inventory = 1, attach_node = 1, dig_by_water = 1}
 		wiredesc = "Redstone Trail (ID: "..nodeid..")"
 	end
 
@@ -145,7 +145,7 @@ for zmy=0, 1 do
 			type = "fixed",
 			fixed = nodebox
 		},
-		groups = {dig_immediate = 3, mesecon = 2, not_in_creative_inventory = 1},
+		groups = {dig_immediate = 3, mesecon = 2, dig_by_water = 1, not_in_creative_inventory = 1},
 		walkable = false,
 		stack_max = 64,
 		drop = "mesecons:wire_00000000_off",

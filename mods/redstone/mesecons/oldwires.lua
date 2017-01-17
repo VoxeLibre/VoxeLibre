@@ -10,7 +10,7 @@ minetest.register_node("mesecons:mesecon_off", {
 		type = "fixed",
 		fixed = {-0.5, -0.5, -0.5, 0.5, -0.45, 0.5},
 	},
-	groups = {dig_immediate=3, mesecon=1, mesecon_conductor_craftable=1},
+	groups = {dig_immediate=3, mesecon=1, dig_by_water=1, mesecon_conductor_craftable=1},
     	description="Redstone",
 	mesecons = {conductor={
 		state = mesecon.state.off,
@@ -28,7 +28,7 @@ minetest.register_node("mesecons:mesecon_on", {
 		type = "fixed",
 		fixed = {-0.5, -0.5, -0.5, 0.5, -0.45, 0.5},
 	},
-	groups = {dig_immediate=3, not_in_creaive_inventory=1, mesecon=1},
+	groups = {dig_immediate=3, dig_by_water = 1, not_in_creaive_inventory=1, mesecon=1},
 	drop = '"mesecons:mesecon_off" 1',
 	light_source = LIGHT_MAX-11,
 	mesecons = {conductor={
