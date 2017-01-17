@@ -122,6 +122,7 @@ mcl_fences.register_fence = function(id, fence_name, fence_gate_name, texture, f
 				punch_gate(pos, node)
 			end),
 		}},
+		sounds = sounds,
 	})
 
 	groups.mesecon_effector_on = nil
@@ -173,6 +174,7 @@ mcl_fences.register_fence = function(id, fence_name, fence_gate_name, texture, f
 		on_rightclick = function(pos, node, clicker)
 			punch_gate(pos, node)
 		end,
+		sounds = sounds,
 	})
 
 end
