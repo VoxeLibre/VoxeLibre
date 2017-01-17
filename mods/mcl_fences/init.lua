@@ -29,8 +29,8 @@ mcl_fences.register_fence = function(id, fence_name, fence_gate_name, texture, f
 	minetest.register_node("mcl_fences:"..id, {
 		description = fence_name,
 		tiles = {texture},
-		inventory_image = fence_image,
-		wield_image = fence_image,
+		inventory_image = "mcl_fences_fence_mask.png^" .. texture .. "^mcl_fences_fence_mask.png^[makealpha:255,126,126",
+		wield_image = "mcl_fences_fence_mask.png^" .. texture .. "^mcl_fences_fence_mask.png^[makealpha:255,126,126",
 		paramtype = "light",
 		is_ground_content = false,
 		groups = groups,
@@ -85,10 +85,10 @@ mcl_fences.register_fence = function(id, fence_name, fence_gate_name, texture, f
 	groups.mesecon_effector_on = 1
 	minetest.register_node("mcl_fences:"..id_gate.."_open", {
 		tiles = {texture},
-		inventory_image = gate_image,
-		wield_image = gate_image,
 		paramtype = "light",
 		paramtype2 = "facedir",
+		inventory_image = "mcl_fences_fence_gate_mask.png^" .. texture .. "^mcl_fences_fence_gate_mask.png^[makealpha:255,126,126",
+		wield_image = "mcl_fences_fence_gate_mask.png^" .. texture .. "^mcl_fences_fence_gate_mask.png^[makealpha:255,126,126",
 		is_ground_content = false,
 		sunlight_propagates = true,
 		walkable = true,
@@ -129,8 +129,8 @@ mcl_fences.register_fence = function(id, fence_name, fence_gate_name, texture, f
 	minetest.register_node("mcl_fences:"..id_gate, {
 		description = fence_gate_name,
 		tiles = {texture},
-		inventory_image = gate_image,
-		wield_image = gate_image,
+		inventory_image = "mcl_fences_fence_gate_mask.png^" .. texture .. "^mcl_fences_fence_gate_mask.png^[makealpha:255,126,126",
+		wield_image = "mcl_fences_fence_gate_mask.png^" .. texture .. "^mcl_fences_fence_gate_mask.png^[makealpha:255,126,126",
 		paramtype = "light",
 		is_ground_content = false,
 		stack_max = 64,
