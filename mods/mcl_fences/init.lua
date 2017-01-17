@@ -72,11 +72,11 @@ mcl_fences.register_fence = function(id, fence_name, fence_gate_name, texture, f
 		if state2 == 1 then
 			state2 = 0
 			minetest.sound_play("door_close", {gain = 0.3, max_hear_distance = 10})
-			tmp_node2 = {name="mcl_fences:fence_gate", param1=node.param1, param2=node.param2}
+			tmp_node2 = {name="mcl_fences:"..id_gate, param1=node.param1, param2=node.param2}
 		else
 			state2 = 1
 			minetest.sound_play("door_open", {gain = 0.3, max_hear_distance = 10})
-			tmp_node2 = {name="mcl_fences:fence_gate_open", param1=node.param1, param2=node.param2}
+			tmp_node2 = {name="mcl_fences:"..id_gate.."_open", param1=node.param1, param2=node.param2}
 		end
 		update_gate(pos, tmp_node2)
 		meta2:set_int("state", state2)
