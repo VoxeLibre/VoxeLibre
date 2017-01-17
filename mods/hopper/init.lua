@@ -42,10 +42,19 @@ minetest.register_node("hopper:hopper", {
 		local inv = meta:get_inventory()
 		inv:set_size("main", 5)
 	end,
-	can_dig = function(pos,player)
-		local meta = minetest.get_meta(pos);
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		local meta = minetest.get_meta(pos)
+		local meta2 = meta
+		meta:from_table(oldmetadata)
 		local inv = meta:get_inventory()
-		return inv:is_empty("main")
+		for i=1,inv:get_size("main") do
+			local stack = inv:get_stack("main", i)
+			if not stack:is_empty() then
+				local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
+				minetest.add_item(p, stack)
+			end
+		end
+		meta:from_table(meta2:to_table())
 	end,
 	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 		minetest.log("action", player:get_player_name()..
@@ -93,10 +102,19 @@ minetest.register_node("hopper:hopper_side", {
 		local inv = meta:get_inventory()
 		inv:set_size("main", 5)
 	end,
-	can_dig = function(pos,player)
-		local meta = minetest.get_meta(pos);
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		local meta = minetest.get_meta(pos)
+		local meta2 = meta
+		meta:from_table(oldmetadata)
 		local inv = meta:get_inventory()
-		return inv:is_empty("main")
+		for i=1,inv:get_size("main") do
+			local stack = inv:get_stack("main", i)
+			if not stack:is_empty() then
+				local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
+				minetest.add_item(p, stack)
+			end
+		end
+		meta:from_table(meta2:to_table())
 	end,
 	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 		minetest.log("action", player:get_player_name()..
