@@ -18,76 +18,57 @@ local cx2 = {2/16, -1/2+6/16, -2/16, 1/2, 1, 2/16} --unten(quer) x
 local cz1 = {2/16, -1/2+6/16, -2/16, -2/16, 1, -1/2} --unten(quer) -z
 local cz2 = {-2/16, -1/2+6/16, 2/16, 2/16, 1, 1/2} --unten(quer) z
 
-minetest.register_node("mcl_fences:fence", {
-	description = "Oak Fence",
-	tiles = {"default_wood.png"},
-	inventory_image = "default_fence.png",
-	wield_image = "default_fence.png",
-	paramtype = "light",
-	is_ground_content = false,
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fence=1},
-	stack_max = 64,
-	sunlight_propagates = true,
-	drawtype = "nodebox",
-	connect_sides = { "front", "back", "left", "right" },
-	connects_to = { "group:solid", "group:fence" },
-	node_box = {
-		type = "connected",
-		fixed = {p},
-		connect_front = {z1,z12},
-		connect_back = {z2,z22,},
-		connect_left = {x1,x12},
-		connect_right = {x2,x22},
-	},
-	collision_box = {
-		type = "connected",
-		fixed = {cp},
-		connect_front = {cz1},
-		connect_back = {cz2,},
-		connect_left = {cx1},
-		connect_right = {cx2},
-	},
-	sounds = default.node_sound_wood_defaults(),
-})
+mcl_fences = {}
+mcl_fences.register_fence = function(id, fence_name, fence_gate_name, texture, fence_image, gate_image, groups, connects_to, sounds)
+	if groups == nil then groups = {} end
+	groups.fence = 1
+	if connects_to == nil then connects_to = {} end
+	table.insert(connects_to, "group:solid")
+	table.insert(connects_to, "group:fence")
+	local id_gate = id .. "_gate"
+	minetest.register_node("mcl_fences:"..id, {
+		description = fence_name,
+		tiles = {texture},
+		inventory_image = fence_image,
+		wield_image = fence_image,
+		paramtype = "light",
+		is_ground_content = false,
+		groups = groups,
+		stack_max = 64,
+		sunlight_propagates = true,
+		drawtype = "nodebox",
+		connect_sides = { "front", "back", "left", "right" },
+		connects_to = connects_to,
+		node_box = {
+			type = "connected",
+			fixed = {p},
+			connect_front = {z1,z12},
+			connect_back = {z2,z22,},
+			connect_left = {x1,x12},
+			connect_right = {x2,x22},
+		},
+		collision_box = {
+			type = "connected",
+			fixed = {cp},
+			connect_front = {cz1},
+			connect_back = {cz2,},
+			connect_left = {cx1},
+			connect_right = {cx2},
+		},
+		sounds = sounds,
+	})
 
-minetest.register_craft({
-	output = 'mcl_fences:fence 3',
-	recipe = {
-		{'default:wood', 'default:stick', 'default:wood'},
-		{'default:wood', 'default:stick', 'default:wood'},
-	}
-})
+	local meta2
+	local state2 = 0
 
-minetest.register_craft({
-	output = 'mcl_fences:fence_gate',
-	recipe = {
-		{'default:stick', 'default:wood', 'default:stick'},
-		{'default:stick', 'default:wood', 'default:stick'},
-	}
-})
+	local function update_gate(pos, node) 
+		minetest.set_node(pos, node)
+	end
 
-minetest.register_craft({
-	type = "fuel",
-	recipe = "mcl_fences:fence",
-	burntime = 15,
-})
-minetest.register_craft({
-	type = "fuel",
-	recipe = "mcl_fences:fence_gate",
-	burntime = 15,
-})
-
-local meta2
-local state2 = 0
-
-local function update_gate(pos, node) 
-	minetest.set_node(pos, node)
-end
-
-local function punch_gate(pos, node)
-	meta2 = minetest.get_meta(pos)
-	state2 = meta2:get_int("state")
-	local tmp_node2
+	local function punch_gate(pos, node)
+		meta2 = minetest.get_meta(pos)
+		state2 = meta2:get_int("state")
+		local tmp_node2
 		if state2 == 1 then
 			state2 = 0
 			minetest.sound_play("door_close", {gain = 0.3, max_hear_distance = 10})
@@ -99,23 +80,24 @@ local function punch_gate(pos, node)
 		end
 		update_gate(pos, tmp_node2)
 		meta2:set_int("state", state2)
-end
+	end
 
-minetest.register_node("mcl_fences:fence_gate_open", {
-	tiles = {"default_wood.png"},
-	inventory_image = "default_fence.png",
-	wield_image = "default_fence.png",
-	paramtype = "light",
-	paramtype2 = "facedir",
-	is_ground_content = false,
-	sunlight_propagates = true,
-	walkable = true,
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fence=1,not_in_inventory=1,mesecon_effector_on=1},
-	drop = 'mcl_fences:fence_gate',
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
+	groups.mesecon_effector_on = 1
+	minetest.register_node("mcl_fences:"..id_gate.."_open", {
+		tiles = {texture},
+		inventory_image = gate_image,
+		wield_image = gate_image,
+		paramtype = "light",
+		paramtype2 = "facedir",
+		is_ground_content = false,
+		sunlight_propagates = true,
+		walkable = true,
+		groups = groups,
+		drop = 'mcl_fences:fence_gate',
+		drawtype = "nodebox",
+		node_box = {
+			type = "fixed",
+			fixed = {
 				{-1/2, -1/2+5/16, -1/16, -1/2+2/16, 1/2, 1/16},   --links abschluss
 				{1/2-2/16, -1/2+5/16, -1/16, 1/2, 1/2, 1/16},   --rechts abschluss
 				{-1/2, 1/2-4/16, 1/16, -1/2+2/16, 1/2-1/16, 1/2-2/16},   --oben-links(quer) x
@@ -125,40 +107,41 @@ minetest.register_node("mcl_fences:fence_gate_open", {
 				{-1/2, -1/2+6/16, 6/16, -1/2+2/16, 1/2-1/16, 1/2},  --mitte links
 				{1/2-2/16, 1/2-4/16, 1/2, 1/2, -1/2+9/16, 6/16},  --mitte rechts
 			}
-	},
-	selection_box = {
-		type = "fixed",
-		fixed = {
-				{-1/2, -1/2+5/16, -1/16, 1/2, 1/2, 1/16},   --gate
-			}
-	},
-	--on_punch = function(pos, node, puncher)
-	on_rightclick = function(pos, node, clicker)
-		punch_gate(pos, node)
-	end,
-	mesecons = {effector = {
-	action_on = (function(pos, node)
-		punch_gate(pos, node)
-	end),
-	}},
-})
+		},
+		selection_box = {
+			type = "fixed",
+			fixed = {
+					{-1/2, -1/2+5/16, -1/16, 1/2, 1/2, 1/16},   --gate
+				}
+		},
+		on_rightclick = function(pos, node, clicker)
+			punch_gate(pos, node)
+		end,
+		mesecons = {effector = {
+			action_on = (function(pos, node)
+				punch_gate(pos, node)
+			end),
+		}},
+	})
 
-minetest.register_node("mcl_fences:fence_gate", {
-	description = "Oak Fence Gate",
-	tiles = {"default_wood.png"},
-	inventory_image = "mcl_fences_fence_gate.png",
-	wield_image = "mcl_fences_fence_gate.png",
-	paramtype = "light",
-	is_ground_content = false,
-	stack_max = 16,
-	paramtype2 = "facedir",
-	sunlight_propagates = true,
-	walkable = true,
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,mesecon_effector_on=1,fence=1},
-	drawtype = "nodebox",
-	node_box = {
-		type = "fixed",
-		fixed = {
+	groups.mesecon_effector_on = nil
+	groups.mesecon_effector_off = nil
+	minetest.register_node("mcl_fences:"..id_gate, {
+		description = fence_gate_name,
+		tiles = {texture},
+		inventory_image = gate_image,
+		wield_image = gate_image,
+		paramtype = "light",
+		is_ground_content = false,
+		stack_max = 64,
+		paramtype2 = "facedir",
+		sunlight_propagates = true,
+		walkable = true,
+		groups = groups,
+		drawtype = "nodebox",
+		node_box = {
+			type = "fixed",
+			fixed = {
 				{-1/2, -1/2+5/16, -1/16, -1/2+2/16, 1/2, 1/16},   --links abschluss
 				{1/2-2/16, -1/2+5/16, -1/16, 1/2, 1/2, 1/16},   --rechts abschluss
 				{-2/16, -1/2+6/16, -1/16, 0, 1/2-1/16, 1/16},  --mitte links
@@ -170,28 +153,78 @@ minetest.register_node("mcl_fences:fence_gate", {
 				p1,p2,p3,p4,p5,
 				bx1,bx11,bx2,bx21,
 			}
-	},
-	selection_box = {
-		type = "fixed",
-		fixed = {
-				{-1/2, -1/2+5/16, -1/16, 1/2, 1/2, 1/16},   --gate
+		},
+		selection_box = {
+			type = "fixed",
+			fixed = {
+					{-1/2, -1/2+5/16, -1/16, 1/2, 1/2, 1/16},   --gate
 			}
-	},
-	on_construct = function(pos)
-		me2 = minetest.get_node(pos)
-		meta2 = minetest.get_meta(pos)
-		meta2:set_int("state", 0)
-		state2 = 0
-	end,
-	mesecons = {effector = {
-	action_on = (function(pos, node)
-		punch_gate(pos, node)
-	end),
-	}},
-	on_rightclick = function(pos, node, clicker)
-		punch_gate(pos, node)
-	end,
+		},
+		on_construct = function(pos)
+			meta2 = minetest.get_meta(pos)
+			meta2:set_int("state", 0)
+			state2 = 0
+		end,
+		mesecons = {effector = {
+			action_on = (function(pos, node)
+				punch_gate(pos, node)
+			end),
+		}},
+		on_rightclick = function(pos, node, clicker)
+			punch_gate(pos, node)
+		end,
+	})
+
+end
+
+local wood_groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fence_wood=1}
+local wood_connect = {}
+local wood_sounds = default.node_sound_wood_defaults()
+
+local woods = {
+	{"", "Oak Fence", "Oak Fence Gate", "default_wood.png", "default_fence.png", "mcl_fences_fence_gate.png", "default:wood"},
+	{"spruce", "Spruce Fence", "Spruce Fence Gate", "default_sprucewood.png", "default_fence.png", "mcl_fences_fence_gate.png", "default:sprucewood"},
+	{"birch", "Birch Fence", "Birch Fence Gate", "default_planks_birch.png", "default_fence.png", "mcl_fences_fence_gate.png", "default:birchwood"},
+	{"jungle", "Jungle Fence", "Jungle Fence Gate", "default_junglewood.png", "default_fence.png", "mcl_fences_fence_gate.png", "default:junglewood"},
+	{"dark_oak", "Dark Oak Fence", "Dark Oak Fence Gate", "default_planks_big_oak.png", "default_fence.png", "mcl_fences_fence_gate.png", "default:darkwood"},
+	{"acacia", "Acacia Fence", "Acacia Fence Gate", "default_acaciawood.png", "default_fence.png", "mcl_fences_fence_gate.png", "default:acaciawood"},
+}
+
+for w=1, #woods do
+	local wood = woods[w]
+	local id, id_gate
+	if wood[1] == "" then
+		id = "fence"
+		id_gate = "fence_gate"
+	else
+		id = wood[1].."_fence"
+		id_gate = wood[1].."_fence_gate"
+	end
+	mcl_fences.register_fence(id, wood[2], wood[3], wood[4], wood[5], wood[6], wood_groups, wood_connect, wood_sounds)
+
+	minetest.register_craft({
+		output = 'mcl_fences:'..id..' 3',
+		recipe = {
+			{wood[7], 'default:stick', wood[7]},
+			{wood[7], 'default:stick', wood[7]},
+		}
+	})
+	minetest.register_craft({
+		output = 'mcl_fences:'..id_gate,
+		recipe = {
+			{'default:stick', wood[7], 'default:stick'},
+			{'default:stick', wood[7], 'default:stick'},
+		}
+	})
+end
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "group:fence_wood",
+	burntime = 15,
 })
 
 local time_to_load= os.clock() - init
 print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
+
+
