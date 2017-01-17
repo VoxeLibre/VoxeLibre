@@ -14,8 +14,8 @@ local chest_formspec =
 
 minetest.register_node("hopper:hopper", {
 	drop = "hopper:hopper_item",
-	description = "I think you broke something",
-	groups = {cracky=1,level=2},
+	description = "Hopper (Node)",
+	groups = {cracky=1,level=2,not_in_creative_inventory=1},
 	drawtype = "nodebox",
 	paramtype = "light",
 	tiles = {"default_coal_block.png"},
@@ -60,12 +60,13 @@ minetest.register_node("hopper:hopper", {
 		minetest.log("action", player:get_player_name()..
 				" takes stuff from hopper at "..minetest.pos_to_string(pos))
 	end,
+	sounds = default.node_sound_metal_defaults(),
 })
 
 minetest.register_node("hopper:hopper_side", {
-	description = "I think you broke something",
+	description = "Hopper (Side)",
 	drop = "hopper:hopper_item",
-	groups = {cracky=1,level=2},
+	groups = {cracky=1,level=2,not_in_creative_inventory=1},
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",
@@ -111,6 +112,7 @@ minetest.register_node("hopper:hopper_side", {
 		minetest.log("action", player:get_player_name()..
 				" takes stuff from hopper at "..minetest.pos_to_string(pos))
 	end,
+	sounds = default.node_sound_metal_defaults(),
 })
 --make hoppers suck in blocks
 minetest.register_abm({
