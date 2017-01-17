@@ -35,10 +35,10 @@ for zmy=0, 1 do
 
 	if nodeid == "00000000" then
 		groups = {dig_immediate = 3, mesecon_conductor_craftable = 1, attach_node = 1}
-		wiredesc = "Mesecon"
+		wiredesc = "Redstone"
 	else
 		groups = {dig_immediate = 3, not_in_creative_inventory = 1, attach_node = 1}
-		wiredesc = "Mesecons Wire (ID: "..nodeid..")"
+		wiredesc = "Redstone Trail (ID: "..nodeid..")"
 	end
 
 	local nodebox = {}
@@ -96,7 +96,7 @@ for zmy=0, 1 do
 	end
 
 	minetest.register_node("mesecons:wire_"..nodeid.."_off", {
-		description = "Redstone Dust",
+		description = "Redstone",
 		drawtype = "nodebox",
 		tiles = tiles_off,
 		is_ground_content = false,
@@ -126,7 +126,7 @@ for zmy=0, 1 do
 	})
 
 	minetest.register_node("mesecons:wire_"..nodeid.."_on", {
-		description = "Redstone Dust",
+		description = "Redstone",
 		drawtype = "nodebox",
 		tiles = tiles_on,
 		is_ground_content = false,
