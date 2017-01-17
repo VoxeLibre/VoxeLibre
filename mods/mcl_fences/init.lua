@@ -18,7 +18,7 @@ local cx2 = {2/16, -1/2+6/16, -2/16, 1/2, 1, 2/16} --unten(quer) x
 local cz1 = {2/16, -1/2+6/16, -2/16, -2/16, 1, -1/2} --unten(quer) -z
 local cz2 = {-2/16, -1/2+6/16, 2/16, 2/16, 1, 1/2} --unten(quer) z
 
-minetest.register_node("fences:fence_wood", {
+minetest.register_node("mcl_fences:fence", {
 	description = "Oak Fence",
 	tiles = {"default_wood.png"},
 	inventory_image = "default_fence.png",
@@ -26,7 +26,6 @@ minetest.register_node("fences:fence_wood", {
 	paramtype = "light",
 	is_ground_content = false,
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fence=1},
-	drop = 'fences:fence_wood',
 	stack_max = 64,
 	sunlight_propagates = true,
 	drawtype = "nodebox",
@@ -52,7 +51,7 @@ minetest.register_node("fences:fence_wood", {
 })
 
 minetest.register_craft({
-	output = 'fences:fence_wood 3',
+	output = 'mcl_fences:fence 3',
 	recipe = {
 		{'default:wood', 'default:stick', 'default:wood'},
 		{'default:wood', 'default:stick', 'default:wood'},
@@ -60,7 +59,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'fences:fencegate',
+	output = 'mcl_fences:fence_gate',
 	recipe = {
 		{'default:stick', 'default:wood', 'default:stick'},
 		{'default:stick', 'default:wood', 'default:stick'},
@@ -69,12 +68,12 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "fences:fence_wood",
+	recipe = "mcl_fences:fence",
 	burntime = 15,
 })
 minetest.register_craft({
 	type = "fuel",
-	recipe = "fences:fencegate",
+	recipe = "mcl_fences:fence_gate",
 	burntime = 15,
 })
 
@@ -92,17 +91,17 @@ local function punch_gate(pos, node)
 		if state2 == 1 then
 			state2 = 0
 			minetest.sound_play("door_close", {gain = 0.3, max_hear_distance = 10})
-			tmp_node2 = {name="fences:fencegate", param1=node.param1, param2=node.param2}
+			tmp_node2 = {name="mcl_fences:fence_gate", param1=node.param1, param2=node.param2}
 		else
 			state2 = 1
 			minetest.sound_play("door_open", {gain = 0.3, max_hear_distance = 10})
-			tmp_node2 = {name="fences:fencegate_open", param1=node.param1, param2=node.param2}
+			tmp_node2 = {name="mcl_fences:fence_gate_open", param1=node.param1, param2=node.param2}
 		end
 		update_gate(pos, tmp_node2)
 		meta2:set_int("state", state2)
 end
 
-minetest.register_node("fences:fencegate_open", {
+minetest.register_node("mcl_fences:fence_gate_open", {
 	tiles = {"default_wood.png"},
 	inventory_image = "default_fence.png",
 	wield_image = "default_fence.png",
@@ -112,7 +111,7 @@ minetest.register_node("fences:fencegate_open", {
 	sunlight_propagates = true,
 	walkable = true,
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fence=1,not_in_inventory=1,mesecon_effector_on=1},
-	drop = 'fences:fencegate',
+	drop = 'mcl_fences:fence_gate',
 	drawtype = "nodebox",
 	node_box = {
 		type = "fixed",
@@ -144,11 +143,11 @@ minetest.register_node("fences:fencegate_open", {
 	}},
 })
 
-minetest.register_node("fences:fencegate", {
+minetest.register_node("mcl_fences:fence_gate", {
 	description = "Oak Fence Gate",
 	tiles = {"default_wood.png"},
-	inventory_image = "fences_fencegate.png",
-	wield_image = "fences_fencegate.png",
+	inventory_image = "mcl_fences_fence_gate.png",
+	wield_image = "mcl_fences_fence_gate.png",
 	paramtype = "light",
 	is_ground_content = false,
 	stack_max = 16,
@@ -156,7 +155,6 @@ minetest.register_node("fences:fencegate", {
 	sunlight_propagates = true,
 	walkable = true,
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,mesecon_effector_on=1,fence=1},
-	drop = 'fences:fencegate',
 	drawtype = "nodebox",
 	node_box = {
 		type = "fixed",
