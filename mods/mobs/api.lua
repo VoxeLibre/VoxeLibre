@@ -321,8 +321,6 @@ function check_for_death(self)
 
 		self.htimer = 2
 
-		self.nametag = "health: " .. self.health .. " of " .. self.hp_max
-
 		update_tag(self)
 
 		return false
