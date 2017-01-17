@@ -1572,17 +1572,19 @@ minetest.register_node("default:furnace", {
 		inv:set_size("src", 1)
 		inv:set_size("dst", 4)
 	end,
-	can_dig = function(pos,player)
-		local meta = minetest.get_meta(pos);
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		local meta = minetest.get_meta(pos)
+		local meta2 = meta
+		meta:from_table(oldmetadata)
 		local inv = meta:get_inventory()
-		if not inv:is_empty("fuel") then
-			return false
-		elseif not inv:is_empty("dst") then
-			return false
-		elseif not inv:is_empty("src") then
-			return false
+		for _, listname in ipairs({"src", "dst", "fuel"}) do
+			local stack = inv:get_stack(listname, 1)
+			if not stack:is_empty() then
+				local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
+				minetest.add_item(p, stack)
+			end
 		end
-		return true
+		meta:from_table(meta2:to_table())
 	end,
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 		local meta = minetest.get_meta(pos)
@@ -1635,17 +1637,19 @@ minetest.register_node("default:furnace_active", {
 		inv:set_size("src", 1)
 		inv:set_size("dst", 4)
 	end,
-	can_dig = function(pos,player)
-		local meta = minetest.get_meta(pos);
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		local meta = minetest.get_meta(pos)
+		local meta2 = meta
+		meta:from_table(oldmetadata)
 		local inv = meta:get_inventory()
-		if not inv:is_empty("fuel") then
-			return false
-		elseif not inv:is_empty("dst") then
-			return false
-		elseif not inv:is_empty("src") then
-			return false
+		for _, listname in ipairs({"src", "dst", "fuel"}) do
+			local stack = inv:get_stack(listname, 1)
+			if not stack:is_empty() then
+				local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
+				minetest.add_item(p, stack)
+			end
 		end
-		return true
+		meta:from_table(meta2:to_table())
 	end,
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 		local meta = minetest.get_meta(pos)
