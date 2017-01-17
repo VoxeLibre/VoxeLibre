@@ -100,6 +100,17 @@ minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
 	stack_max = 64,
 })
 
+-- TODO: Fix drinking sound
+-- TODO: Clear status effects
+minetest.register_craftitem("mcl_mobitems:milk_bucket", {
+	description = "Milk",
+	inventory_image = "mcl_mobitems_bucket_milk.png",
+	wield_image = "mcl_mobitems_bucket_milk.png",
+	on_use = minetest.item_eat(0, "bucket:bucket_empty"),
+	groups = { food = 3, },
+	stack_max = 1,
+})
+
 minetest.register_craftitem("mcl_mobitems:spider_eye", {
 	description = "Spider Eye",
 	inventory_image = "mcl_mobitems_spider_eye.png",
@@ -149,14 +160,6 @@ minetest.register_craftitem("mcl_mobitems:leather", {
 	wield_image = "mcl_mobitems_leather.png",
 	inventory_image = "mcl_mobitems_leather.png",
 	stack_max = 64,
-})
-
-minetest.register_craftitem("mcl_mobitems:egg", {
-	description = "Egg",
-	inventory_image = "mcl_mobitems_rotten_flesh.png",
-	wield_image = "mcl_mobitems_rotten_flesh.png",
-	stack_max = 16,
-	
 })
 
 minetest.register_craftitem("mcl_mobitems:feather", {

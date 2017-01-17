@@ -11,15 +11,18 @@ slice_4 = { -7/16, -8/16, -7/16, 3/16, 0/16, 7/16}
 slice_5 = { -7/16, -8/16, -7/16, 5/16, 0/16, 7/16}
 slice_6 = { -7/16, -8/16, -7/16, 7/16, 0/16, 7/16}
 
--- FIXME: Recipe. milk instead of water bucket and egg instead of leaves
 minetest.register_craft({
 	output = "mcl_cake:cake",
 	recipe = {
-		{'bucket:bucket_water', 'bucket:bucket_water', 'bucket:bucket_water'},
+		{'mcl_mobitems:milk_bucket', 'mcl_mobitems:milk_bucket', 'mcl_mobitems:milk_bucket'},
 		{'default:sugar', 'mcl_throwing:egg', 'default:sugar'},
 		{'farming:wheat_harvested', 'farming:wheat_harvested', 'farming:wheat_harvested'},
 	},
-	replacements = {{"bucket:bucket_water", "bucket:bucket_empty"}},
+	replacements = {
+		{"mcl_mobitems:milk_bucket", "bucket:bucket_empty"},
+		{"mcl_mobitems:milk_bucket", "bucket:bucket_empty"},
+		{"mcl_mobitems:milk_bucket", "bucket:bucket_empty"},
+	},
 })
 
 minetest.register_node("mcl_cake:cake", {

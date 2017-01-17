@@ -107,12 +107,12 @@ mobs:register_mob("mobs_mc:cow", {
 
 			inv:remove_item("main", "bucket:bucket_empty")
 
-			if inv:room_for_item("main", {name = "mcl_mobitems:milk"}) then
-				clicker:get_inventory():add_item("main", "mcl_mobitems:milk")
+			if inv:room_for_item("main", {name = "mcl_mobitems:milk_bucket"}) then
+				clicker:get_inventory():add_item("main", "mcl_mobitems:milk_bucket")
 			else
 				local pos = self.object:getpos()
 				pos.y = pos.y + 0.5
-				minetest.add_item(pos, {name = "mcl_mobitems:milk"})
+				minetest.add_item(pos, {name = "mcl_mobitems:milk_bucket"})
 			end
 
 			self.gotten = true -- milked
