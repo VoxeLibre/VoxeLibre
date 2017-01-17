@@ -506,6 +506,7 @@ minetest.register_craftitem("mcl_hoppers:hopper_item", {
 			placed = true
 		end
 		if placed == true then
+			minetest.sound_play(default.node_sound_metal_defaults().place, { pos = pos2 })
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:take_item()
 			end
