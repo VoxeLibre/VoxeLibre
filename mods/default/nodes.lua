@@ -13,11 +13,8 @@ minetest.register_node("default:barrier", {
 	stack_max = 64,
 	sunlight_propagates = true,
 	is_ground_content = false,
-	groups = { not_in_creative_inventory = 1 },
+	groups = { not_in_creative_inventory = 1, oddly_breakable_by_hand = 5 },
 	on_blast = function() end,
-	on_destruct = function () end,
-	can_dig = function() return false end,
-	diggable = false,
 })
 
 minetest.register_node("default:stone", {
@@ -986,9 +983,6 @@ minetest.register_node("default:bedrock", {
 	sounds = default.node_sound_stone_defaults(),
 	is_ground_content = false,
 	on_blast = function() end,
-	on_destruct = function () end,
-	can_dig = function() return false end,
-	diggable = false,
 	drop = '',
 })
 
