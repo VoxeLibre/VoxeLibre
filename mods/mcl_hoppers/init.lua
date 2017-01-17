@@ -2,9 +2,9 @@
 
 local chest = minetest.get_content_id("default:chest")
 
-local hopper_formspec =
+local mcl_hoppers_formspec =
 	"size[9,7]"..
-	"background[-0.19,-0.25;9.41,10.48;hopper_inventory.png]"..
+	"background[-0.19,-0.25;9.41,10.48;mcl_hoppers_inventory.png]"..
 	default.inventory_header..
 	"list[current_name;main;2,0.5;5,1;]"..
 	"list[current_player;main;0,2.5;9,3;9]"..
@@ -12,8 +12,8 @@ local hopper_formspec =
 	"listring[current_name;main]"..
 	"listring[current_player;main]"
 
-minetest.register_node("hopper:hopper", {
-	drop = "hopper:hopper_item",
+minetest.register_node("mcl_hoppers:hopper", {
+	drop = "mcl_hoppers:hopper_item",
 	description = "Hopper (Node)",
 	groups = {cracky=1,level=2,not_in_creative_inventory=1},
 	drawtype = "nodebox",
@@ -38,7 +38,7 @@ minetest.register_node("hopper:hopper", {
 
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", hopper_formspec)
+		meta:set_string("formspec", mcl_hoppers_formspec)
 		local inv = meta:get_inventory()
 		inv:set_size("main", 5)
 	end,
@@ -58,22 +58,22 @@ minetest.register_node("hopper:hopper", {
 	end,
 	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 		minetest.log("action", player:get_player_name()..
-				" moves stuff in hopper at "..minetest.pos_to_string(pos))
+				" moves stuff in mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
     on_metadata_inventory_put = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
-				" moves stuff to hopper at "..minetest.pos_to_string(pos))
+				" moves stuff to mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
     on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
-				" takes stuff from hopper at "..minetest.pos_to_string(pos))
+				" takes stuff from mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
 	sounds = default.node_sound_metal_defaults(),
 })
 
-minetest.register_node("hopper:hopper_side", {
+minetest.register_node("mcl_hoppers:hopper_side", {
 	description = "Hopper (Side)",
-	drop = "hopper:hopper_item",
+	drop = "mcl_hoppers:hopper_item",
 	groups = {cracky=1,level=2,not_in_creative_inventory=1},
 	drawtype = "nodebox",
 	paramtype = "light",
@@ -98,7 +98,7 @@ minetest.register_node("hopper:hopper_side", {
 
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", hopper_formspec)
+		meta:set_string("formspec", mcl_hoppers_formspec)
 		local inv = meta:get_inventory()
 		inv:set_size("main", 5)
 	end,
@@ -118,21 +118,21 @@ minetest.register_node("hopper:hopper_side", {
 	end,
 	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 		minetest.log("action", player:get_player_name()..
-				" moves stuff in hopper at "..minetest.pos_to_string(pos))
+				" moves stuff in mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
     on_metadata_inventory_put = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
-				" moves stuff to hopper at "..minetest.pos_to_string(pos))
+				" moves stuff to mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
     on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
-				" takes stuff from hopper at "..minetest.pos_to_string(pos))
+				" takes stuff from mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
 	sounds = default.node_sound_metal_defaults(),
 })
---make hoppers suck in blocks
+--make mcl_hopperss suck in blocks
 minetest.register_abm({
-	nodenames = {"hopper:hopper","hopper:hopper_side"},
+	nodenames = {"mcl_hoppers:hopper","mcl_hoppers:hopper_side"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -155,8 +155,8 @@ minetest.register_abm({
 })
 
 minetest.register_abm({
-	nodenames = {"hopper:hopper"},
-	neighbors = {"default:chest","default:chest_left","default:chest_right","hopper:hopper","hopper:hopper_side","default:furnace","default:furnace_active"},
+	nodenames = {"mcl_hoppers:hopper"},
+	neighbors = {"default:chest","default:chest_left","default:chest_right","mcl_hoppers:hopper","mcl_hoppers:hopper_side","default:furnace","default:furnace_active"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -171,14 +171,14 @@ minetest.register_abm({
 		local a = vm:get_node_at({x=pos.x,y=pos.y-1,z=pos.z}).name
 		local b = vm:get_node_at({x=pos.x,y=pos.y+1,z=pos.z}).name
 
-		--the hopper input
+		--the mcl_hoppers input
 		if b == "default:chest" then
-			--hopper inventory
+			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
 			local invsize = inv:get_size("main")
 
-			--chest/hopper/furnace inventory
+			--chest/mcl_hoppers/furnace inventory
 			local meta2 = minetest.get_meta({x=pos.x,y=pos.y+1,z=pos.z});
 			local inv2 = meta2:get_inventory()
 			local invsize2 = inv2:get_size("main")
@@ -194,7 +194,7 @@ minetest.register_abm({
 						--print(stack:to_string())
 						stack:take_item(1)
 						inv2:set_stack("main", i, stack)
-						--add to hopper
+						--add to mcl_hoppers
 						--print("adding item")
 						inv:add_item("main", item)
 						break
@@ -204,12 +204,12 @@ minetest.register_abm({
 			end
 		end
 		if b == "default:furnace" or b == "default:furnace_active" then
-			--hopper inventory
+			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
 			local invsize = inv:get_size("main")
 
-			--chest/hopper/furnace inventory
+			--chest/mcl_hoppers/furnace inventory
 			local meta2 = minetest.get_meta({x=pos.x,y=pos.y+1,z=pos.z});
 			local inv2 = meta2:get_inventory()
 			local invsize2 = inv2:get_size("dst")
@@ -226,7 +226,7 @@ minetest.register_abm({
 						--print(stack:to_string())
 						stack:take_item(1)
 						inv2:set_stack("dst", i, stack)
-						--add to hopper
+						--add to mcl_hoppers
 						--print("adding item")
 						inv:add_item("main", item)
 						break
@@ -236,9 +236,9 @@ minetest.register_abm({
 			end
 		end
 	
-		--the hopper output
-		if a == "default:chest" or a == "default:chest_left" or a == "default:chest_right" or a == "hopper:hopper" or a == "hopper:hopper_side" then
-			--hopper inventory
+		--the mcl_hoppers output
+		if a == "default:chest" or a == "default:chest_left" or a == "default:chest_right" or a == "mcl_hoppers:hopper" or a == "mcl_hoppers:hopper_side" then
+			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
 			if inv:is_empty("main") == true then
@@ -246,7 +246,7 @@ minetest.register_abm({
 			end
 			local invsize = inv:get_size("main")
 
-			--chest/hopper/furnace inventory
+			--chest/mcl_hoppers/furnace inventory
 			local meta2 = minetest.get_meta({x=pos.x,y=pos.y-1,z=pos.z});
 			local inv2 = meta2:get_inventory()
 			local invsize2 = inv2:get_size("main")
@@ -261,7 +261,7 @@ minetest.register_abm({
 					end
 					stack:take_item(1)
 					inv:set_stack("main", i, stack)
-					--add to hopper or chest
+					--add to mcl_hoppers or chest
 					--print("adding item")
 					inv2:add_item("main", item)
 					break
@@ -272,7 +272,7 @@ minetest.register_abm({
 		elseif a == "default:furnace" or a == "default:furnace_active" then
 			--print("test")
 			--room_for_item(listname, stack)
-			--hopper inventory
+			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			--print(dump(meta:to_table()))
 			local inv = meta:get_inventory()
@@ -281,7 +281,7 @@ minetest.register_abm({
 			end
 			local invsize = inv:get_size("main")
 
-			--chest/hopper/furnace inventory
+			--chest/mcl_hoppers/furnace inventory
 			local meta2 = minetest.get_meta({x=pos.x,y=pos.y-1,z=pos.z});
 			local inv2 = meta2:get_inventory()
 			local invsize2 = inv2:get_size("src")
@@ -297,7 +297,7 @@ minetest.register_abm({
 					minetest.get_node_timer({x=pos.x,y=pos.y-1,z=pos.z}):start(1.0)
 					stack:take_item(1)
 					inv:set_stack("main", i, stack)
-					--add to hopper or chest
+					--add to mcl_hoppers or chest
 					--print("adding item")
 					inv2:add_item("src", item)
 					break
@@ -310,8 +310,8 @@ minetest.register_abm({
 
 
 minetest.register_abm({
-	nodenames = {"hopper:hopper_side"},
-	neighbors = {"default:chest","default:chest_left","default_chest_right","hopper:hopper","hopper:hopper_side","default:furnace","default:furnace_active"},
+	nodenames = {"mcl_hoppers:hopper_side"},
+	neighbors = {"default:chest","default:chest_left","default_chest_right","mcl_hoppers:hopper","mcl_hoppers:hopper_side","default:furnace","default:furnace_active"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -337,14 +337,14 @@ minetest.register_abm({
 		local a = vm:get_node_at(front).name
 		local b = vm:get_node_at({x=pos.x,y=pos.y+1,z=pos.z}).name
 
-		--the hopper input
+		--the mcl_hoppers input
 		if b == "default:chest" or b == "default:chest_left" or b == "default:chest_right" then
-			--hopper inventory
+			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
 			local invsize = inv:get_size("main")
 
-			--chest/hopper/furnace inventory
+			--chest/mcl_hoppers/furnace inventory
 			local meta2 = minetest.get_meta({x=pos.x,y=pos.y+1,z=pos.z});
 			local inv2 = meta2:get_inventory()
 			local invsize2 = inv2:get_size("main")
@@ -360,7 +360,7 @@ minetest.register_abm({
 						--print(stack:to_string())
 						stack:take_item(1)
 						inv2:set_stack("main", i, stack)
-						--add to hopper
+						--add to mcl_hoppers
 						--print("adding item")
 						inv:add_item("main", item)
 						break
@@ -370,12 +370,12 @@ minetest.register_abm({
 			end
 		end
 		if b == "default:furnace" or b == "default:furnace_active" then
-			--hopper inventory
+			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
 			local invsize = inv:get_size("main")
 
-			--chest/hopper/furnace inventory
+			--chest/mcl_hoppers/furnace inventory
 			local meta2 = minetest.get_meta({x=pos.x,y=pos.y+1,z=pos.z});
 			local inv2 = meta2:get_inventory()
 			local invsize2 = inv2:get_size("dst")
@@ -391,7 +391,7 @@ minetest.register_abm({
 						--print(stack:to_string())
 						stack:take_item(1)
 						inv2:set_stack("dst", i, stack)
-						--add to hopper
+						--add to mcl_hoppers
 						--print("adding item")
 						inv:add_item("main", item)
 						break
@@ -401,11 +401,11 @@ minetest.register_abm({
 			end
 		end
 	
-		--the hopper output
-		if a == "default:chest" or a == "default:chest_left" or "default:chest_right" or a == "hopper:hopper" or a == "hopper:hopper_side" then
+		--the mcl_hoppers output
+		if a == "default:chest" or a == "default:chest_left" or "default:chest_right" or a == "mcl_hoppers:hopper" or a == "mcl_hoppers:hopper_side" then
 			--print("test")
 			--room_for_item(listname, stack)
-			--hopper inventory
+			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			--print(dump(meta:to_table()))
 			local inv = meta:get_inventory()
@@ -414,7 +414,7 @@ minetest.register_abm({
 			end
 			local invsize = inv:get_size("main")
 
-			--chest/hopper/furnace inventory
+			--chest/mcl_hoppers/furnace inventory
 			local meta2 = minetest.get_meta(front);
 			local inv2 = meta2:get_inventory()
 			local invsize2 = inv2:get_size("main")
@@ -429,7 +429,7 @@ minetest.register_abm({
 					end
 					stack:take_item(1)
 					inv:set_stack("main", i, stack)
-					--add to hopper or chest
+					--add to mcl_hoppers or chest
 					--print("adding item")
 					inv2:add_item("main", item)
 					break
@@ -440,7 +440,7 @@ minetest.register_abm({
 		elseif a == "default:furnace" or a == "default:furnace_active" then
 			--print("test")
 			--room_for_item(listname, stack)
-			--hopper inventory
+			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			--print(dump(meta:to_table()))
 			local inv = meta:get_inventory()
@@ -449,7 +449,7 @@ minetest.register_abm({
 			end
 			local invsize = inv:get_size("main")
 
-			--chest/hopper/furnace inventory
+			--chest/mcl_hoppers/furnace inventory
 			local meta2 = minetest.get_meta(front);
 			local inv2 = meta2:get_inventory()
 			local invsize2 = inv2:get_size("fuel")
@@ -464,7 +464,7 @@ minetest.register_abm({
 					end
 					stack:take_item(1)
 					inv:set_stack("main", i, stack)
-					--add to hopper or chest
+					--add to mcl_hoppers or chest
 					--print("adding item")
 					minetest.get_node_timer(front):start(1.0)
 					inv2:add_item("fuel", item)
@@ -476,9 +476,9 @@ minetest.register_abm({
 	end,
 })
 
-minetest.register_craftitem("hopper:hopper_item", {
+minetest.register_craftitem("mcl_hoppers:hopper_item", {
 	description = "Hopper",
-	inventory_image = "hopper_item.png",
+	inventory_image = "mcl_hoppers_item.png",
 	on_place = function(itemstack, placer, pointed_thing)
 		local pos  = pointed_thing.under
 		local pos2 = pointed_thing.above
@@ -490,19 +490,19 @@ minetest.register_craftitem("hopper:hopper_item", {
 		local placed = false
 
 		if x == -1 then
-			minetest.set_node(pos2, {name="hopper:hopper_side", param2=0})
+			minetest.set_node(pos2, {name="mcl_hoppers:hopper_side", param2=0})
 			placed = true
 		elseif x == 1 then
-			minetest.set_node(pos2, {name="hopper:hopper_side", param2=2})
+			minetest.set_node(pos2, {name="mcl_hoppers:hopper_side", param2=2})
 			placed = true
 		elseif z == -1 then
-			minetest.set_node(pos2, {name="hopper:hopper_side", param2=3})
+			minetest.set_node(pos2, {name="mcl_hoppers:hopper_side", param2=3})
 			placed = true
 		elseif z == 1 then
-			minetest.set_node(pos2, {name="hopper:hopper_side", param2=1})
+			minetest.set_node(pos2, {name="mcl_hoppers:hopper_side", param2=1})
 			placed = true
 		else
-			minetest.set_node(pos2, {name="hopper:hopper"})
+			minetest.set_node(pos2, {name="mcl_hoppers:hopper"})
 			placed = true
 		end
 		if placed == true then
@@ -514,7 +514,7 @@ minetest.register_craftitem("hopper:hopper_item", {
 	end,
 })
 minetest.register_craft({
-	output = "hopper:hopper_item",
+	output = "mcl_hoppers:hopper_item",
 	recipe = {
 		{"default:steel_ingot","","default:steel_ingot"},
 		{"default:steel_ingot","default:chest","default:steel_ingot"},
