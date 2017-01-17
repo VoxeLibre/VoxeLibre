@@ -134,7 +134,7 @@ minetest.register_craft({
 	output = 'itemframes:frame',
 	recipe = {
 		{'default:stick', 'default:stick', 'default:stick'},
-		{'default:stick', 'mobs:leather', 'default:stick'},
+		{'default:stick', 'mcl_mobitems:leather', 'default:stick'},
 		{'default:stick', 'default:stick', 'default:stick'},
 	}
 })
