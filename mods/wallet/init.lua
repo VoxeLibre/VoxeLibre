@@ -111,12 +111,13 @@ local function register_wall(nodename, name, texture, invtex)
 			is_ground_content = false,
 			tiles = {texture},
 			paramtype = "light",
-			groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,fences=1},
+			groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1},
 			drop = nodename,
 			node_box = {
 				type = "fixed",
 				fixed = take
 			},
+			sounds = default.node_sound_stone_defaults(), 
 		})
 	end
 
@@ -129,12 +130,13 @@ local function register_wall(nodename, name, texture, invtex)
 		tiles = {texture},
 		paramtype = "light",
 		is_ground_content = false,
-		groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,fences=1},
+		groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1},
 		drop = nodename,
 		node_box = {
 			type = "fixed",
 			fixed = {pillar, full_blocks[1]}
 		},
+		sounds = default.node_sound_stone_defaults(), 
 	})
 
 	minetest.register_node(nodename.."_21", {
@@ -146,12 +148,13 @@ local function register_wall(nodename, name, texture, invtex)
 		tiles = {texture},
 		paramtype = "light",
 		is_ground_content = false,
-		groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,fences=1},
+		groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1},
 		drop = nodename,
 		node_box = {
 			type = "fixed",
 			fixed = {pillar, full_blocks[2]}
 		},
+		sounds = default.node_sound_stone_defaults(), 
 	})
 
 	-- Inventory item
@@ -172,7 +175,8 @@ local function register_wall(nodename, name, texture, invtex)
 				fixed = {-4/16, -1, -4/16, 4/16, 1, 4/16}
 		},
 		collisionbox = {-0.2, 0, -0.2, 0.2, 1.4, 0.2},
-		on_construct = update_wall
+		on_construct = update_wall,
+		sounds = default.node_sound_stone_defaults(), 
 	})
 end
 
