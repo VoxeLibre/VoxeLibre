@@ -140,7 +140,7 @@ minetest.register_craftitem("mcl_mobitems:magma_cream", {
 	description = "Magma Cream",
 	wield_image = "mcl_mobitems_magma_cream.png",
 	inventory_image = "mcl_mobitems_magma_cream.png",
-	groups = { craftitem = 1 },
+	groups = { brewitem = 1 },
 	stack_max = 64,
 })
 
