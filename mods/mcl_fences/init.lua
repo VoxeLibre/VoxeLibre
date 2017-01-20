@@ -154,10 +154,16 @@ mcl_fences.register_fence = function(id, fence_name, fence_gate_name, texture, f
 				{2/16, -1/2+6/16, -1/16, 1/2, -1/2+9/16, 1/16}, --unten(quer) z
 			}
 		},
+		collision_box = {
+			type = "fixed",
+			fixed = {
+				{-1/2, -1/2+5/16, -2/16, 1/2, 1, 2/16},   --gate
+			}
+		},
 		selection_box = {
 			type = "fixed",
 			fixed = {
-					{-1/2, -1/2+5/16, -1/16, 1/2, 1/2, 1/16},   --gate
+				{-1/2, -1/2+5/16, -1/16, 1/2, 1/2, 1/16},   --gate
 			}
 		},
 		on_construct = function(pos)
