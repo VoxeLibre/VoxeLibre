@@ -12,6 +12,21 @@ minetest.register_craft({
 	recipe = { "farming:mushroom_brown", "default:sugar", "mcl_mobitems:spider_eye" },
 })
 
+minetest.register_craftitem("mcl_potions:glass_bottle", {
+	description = "Glass Bottle",
+	inventory_image = "vessels_glass_bottle_inv.png",
+	wield_image = "vessels_glass_bottle_inv.png",
+	groups = {brewitem=1},
+})
+
+minetest.register_craft( {
+	output = "mcl_potions:glass_bottle 3",
+	recipe = {
+		{ "default:glass", "", "default:glass" },
+		{ "", "default:glass", "" }
+	}
+})
+
 -- TODO: Get texture
 --[[
 minetest.register_craftitem("mcl_potions:dragon_breath", {
