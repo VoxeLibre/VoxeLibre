@@ -479,6 +479,8 @@ minetest.register_abm({
 minetest.register_craftitem("mcl_hoppers:hopper_item", {
 	description = "Hopper",
 	inventory_image = "mcl_hoppers_item.png",
+	-- TODO: Move to redstone category
+	groups = { deco_block = 1 },
 	on_place = function(itemstack, placer, pointed_thing)
 		local pos  = pointed_thing.under
 		local pos2 = pointed_thing.above

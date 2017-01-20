@@ -60,5 +60,12 @@ These groups are used mostly for informational purposes
 * `eatable`: Item can be *directly* eaten by wielding + left click (`on_use=item_eat`). Rating is the satiation gain
 * `ammo=1`: Item is used as ammo for a weapon
 * `ammo_bow=1`: Item is used as ammo for bows
-* `weapon_ranged=1`: Item is a ranged weapon
+
+* `weapon=1`: Item is primarily (!) a weapon
+* `tool=1`: Item is primarily (!) a tool
+* `craftitem=1`: Item is primarily (!) used for crafting
+* `brewitem=1`: Item is primarily (!) used in brewing
+* `transport=1`: Item is used for transportation
+* `building_block=1`: Block is a building block
+* `deco_block=1`: Block is a decorational block
 

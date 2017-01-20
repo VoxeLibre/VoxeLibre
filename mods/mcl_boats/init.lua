@@ -145,7 +145,7 @@ for w=1, #woods do
 		description = names[w],
 		inventory_image = "mcl_boats_inventory.png",
 		liquids_pointable = true,
-		groups = { boat = 1, },
+		groups = { boat = 1, transport = 1},
 		stack_max = 1,
 		on_place = function(itemstack, placer, pointed_thing)
 			if pointed_thing.type ~= "node" then

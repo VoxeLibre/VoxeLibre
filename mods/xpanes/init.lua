@@ -91,6 +91,7 @@ function xpanes.register_pane(name, def)
 
 	local flatgroups = table.copy(def.groups)
 	flatgroups.pane = 1
+	flatgroups.deco_block = 1
 	minetest.register_node(":xpanes:" .. name .. "_flat", {
 		description = def.description,
 		drawtype = "nodebox",

@@ -32,7 +32,7 @@ local signs_yard = {
     {delta = {x = 0.05, y = 0, z = 0}, yaw = math.pi / 2},
 }
 
-local sign_groups = {choppy=2, dig_immediate=2}
+local sign_groups = {choppy=2, dig_immediate=2, deco_block=1}
 
 local construct_sign = function(pos)
     local meta = minetest.get_meta(pos)
@@ -167,7 +167,7 @@ minetest.register_node("signs:sign_yard", {
     }},
     selection_box = {type = "fixed", fixed = {-0.45, -0.15, -0.049, 0.45, 0.45, 0.049}},
     tiles = {"signs_top.png", "signs_bottom.png", "signs_side.png", "signs_side.png", "signs_back.png", "signs_front.png"},
-    groups = {choppy=2, dig_immediate=2},
+    groups = {choppy=2, dig_immediate=2, deco_block=1},
     drop = "signs:sign_wall",
 	stack_max = 16,
 

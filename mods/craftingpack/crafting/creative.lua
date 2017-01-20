@@ -41,24 +41,29 @@ function set_inv(filter, player)
 	for name,def in pairs(minetest.registered_items) do
 		if (not def.groups.not_in_creative_inventory or def.groups.not_in_creative_inventory == 0) and def.description and def.description ~= "" then
 			if filter ~= "" then
+				local is_redstone = function(def)
+					return def.mesecons or def.groups.mesecon or def.groups.mesecon_conductor_craftable or def.groups.mesecon_effecor_off
+				end
+				local is_tool = function(def)
+					return def.groups.tool or (def.tool_capabilities ~= nil and def.tool_capabilities.damage_groups == nil)
+				end
+				local is_weapon = function(def)
+					return def.groups.weapon or def.groups.weapon_ranged or def.groups.ammo or def.groups.armor_head or def.groups.armor_torso or def.groups.armor_legs or def.groups.armor_feet
+				end
 				if filter == "#blocks" then
-					if def.walkable == true then
+					if def.groups.building_block then
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#deco" then
-					if def.walkable == false or def.drawtype == "plantlike" or def.drawtype == "allfaces_optional" then--def.groups. == true then
+					if def.groups.deco_block then
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#redstone" then
-					if def.mesecons or def.groups.mesecon or def.groups.mesecon_conductor_craftable or def.groups.mesecon_effecor_off then
+					if is_redstone(def) then
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#rail" then
-					if def.groups.rail or def.groups.minecart or def.groups.boat then
-						table.insert(creative_list, name)
-					end
-				elseif filter == "#misc" then
-					if def.drawtype == nil and def.tool_capabilities == nil and not string.find(string.lower(def.description), "ingot") and not string.find(string.lower(def.description), "lump") and not string.find(string.lower(def.description), "dye") and not string.find(string.lower(def.name), "diamond") and not string.find(string.lower(def.name), "redstone") and not string.find(string.lower(def.name), "obsidian") and not string.find(string.lower(def.description), "clay") then
+					if def.groups.transport then
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#food" then
@@ -66,15 +71,21 @@ function set_inv(filter, player)
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#tools" then
-					if def.tool_capabilities ~= nil and not string.find(string.lower(def.description), "sword") then
+					if is_tool(def) then
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#combat" then
-					if (def.tool_capabilities ~= nil and def.tool_capabilities.damage_groups ~= nil) or def.groups.weapon or def.groups.weapon_ranged or def.groups.ammo or def.groups.armor_head or def.groups.armor_torso or def.groups.armor_legs or def.groups.armor_feet then
+					if is_weapon(def) then
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#matr" then
-					if def.drawtype == nil and def.tool_capabilities == nil and (string.find(string.lower(def.description), "ingot") or string.find(string.lower(def.description), "lump") or string.find(string.lower(def.description), "dye") or string.find(string.lower(def.name), "diamond") or string.find(string.lower(def.name), "redstone") or string.find(string.lower(def.name), "obsidian") or string.find(string.lower(def.description), "clay") or string.find(string.lower(def.description), "stick") or string.find(string.lower(def.description), "flint") or string.find(string.lower(def.description), "seed")) then
+					-- TODO: Add separate brewing category
+					if def.groups.craftitem or def.groups.brewitem then
+						table.insert(creative_list, name)
+					end
+				elseif filter == "#misc" then
+					if not def.groups.building_block and not def.groups.deco_block and not is_redstone(def) and not def.groups.transport and not def.groups.food and not def.groups.eatable and not is_tool(def) and not is_weapon(def) and not def.groups.craftitem and not def.groups.brewitem then
+
 						table.insert(creative_list, name)
 					end
 				elseif filter == "all" then

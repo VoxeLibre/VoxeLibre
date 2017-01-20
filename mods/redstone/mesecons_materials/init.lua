@@ -2,6 +2,7 @@ minetest.register_craftitem("mesecons_materials:slimeball", {
 	image = "jeija_glue.png",
 	on_place_on_ground = minetest.craftitem_place_item,
     	description="Slimeball",
+	groups = { craftitem = 1 },
 })
 
 minetest.register_craft({

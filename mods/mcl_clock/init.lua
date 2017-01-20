@@ -31,7 +31,7 @@ function watch.register_item(name, image, creative)
 	minetest.register_tool(name, {
 		description = "Clock",
 		inventory_image = image,
-		groups = {not_in_creative_inventory=g, clock=1},
+		groups = {not_in_creative_inventory=g, tool=1, clock=1},
 		wield_image = "",
 		stack_max = 1,
 	})
@@ -73,9 +73,7 @@ end)
 
 -- Clock recipe
 minetest.register_craft({
-	description = "Clock",
 	output = 'mcl_clock:clock',
-	groups = {not_in_creative_inventory=1},
 	recipe = {
 		{'', 'default:gold_ingot', ''},
 		{'default:gold_ingot', 'mesecons:redstone', 'default:gold_ingot'},

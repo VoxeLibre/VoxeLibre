@@ -127,6 +127,7 @@ farming:add_plant("farming:wheat", {"farming:wheat_1", "farming:wheat_2", "farmi
 minetest.register_craftitem("farming:wheat_harvested", {
 	description = "Wheat",
 	inventory_image = "farming_wheat_harvested.png",
+	groups = { craftitem = 1 },
 })
 
 minetest.register_craft({

@@ -3,7 +3,7 @@ minetest.register_node("farming:melon", {
 	paramtype2 = "facedir",
 	stack_max = 64,
 	tiles = {"farming_melon_top.png", "farming_melon_top.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png"},
-	groups = {choppy=2, oddly_breakable_by_hand=2},
+	groups = {choppy=2, oddly_breakable_by_hand=2, building_block=1},
 	drop = {
 		max_items = 1,
 		items = {
@@ -222,6 +222,7 @@ minetest.register_craftitem("farming:melon_item", {
 minetest.register_craftitem("farming:speckled_melon", {
 	description = "Glistering Melon",
 	stack_max = 64,
+	groups = { brewitem = 1 },
 	inventory_image = "farming_melon_speckled.png",
 })
 

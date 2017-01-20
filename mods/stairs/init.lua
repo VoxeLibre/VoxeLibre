@@ -11,6 +11,7 @@ stairs = {}
 
 function stairs.register_stair(subname, recipeitem, groups, images, description, sounds)
 	groups.stair = 1
+	groups.building_block = 1
 	minetest.register_node(":stairs:stair_" .. subname, {
 		description = description,
 		drawtype = "mesh",
@@ -100,6 +101,7 @@ local slab_trans_dir_place = {[0] = 0, 20, 12, 16, 4, 8}
 
 function stairs.register_slab(subname, recipeitem, groups, images, description, sounds)
 	groups.slab = 1
+	groups.building_block = 1
 	minetest.register_node(":stairs:slab_" .. subname, {
 		description = description,
 		drawtype = "nodebox",

@@ -38,7 +38,7 @@ for _, row in ipairs(wool.dyes) do
 			stack_max = 64,
 			is_ground_content = false,
 			tiles = {"wool_"..texture..".png"},
-			groups = {snappy=2,choppy=2,oddly_breakable_by_hand=3,flammable=1,wool=1},
+			groups = {snappy=2,choppy=2,oddly_breakable_by_hand=3,flammable=1,wool=1,building_block=1},
 			sounds = default.node_sound_defaults(),
 		})
 		minetest.register_node("wool:"..name.."_carpet", {
@@ -47,7 +47,7 @@ for _, row in ipairs(wool.dyes) do
 			is_ground_content = false,
 			tiles = {"wool_"..texture..".png"},
 			wield_image = "wool_"..name..".png",
-			groups = {snappy=2,choppy=2,oddly_breakable_by_hand=3,flammable=1,carpet=1},
+			groups = {snappy=2,choppy=2,oddly_breakable_by_hand=3,flammable=1,carpet=1,deco_block=1},
 			sounds = default.node_sound_defaults(),
 			paramtype = "light",
 			stack_max = 64,

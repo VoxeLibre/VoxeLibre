@@ -2,6 +2,7 @@ minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 	description = "Fermented Spider Eye",
 	wield_image = "mcl_potions_spider_eye_fermented.png",
 	inventory_image = "mcl_potions_spider_eye_fermented.png",
+	groups = { brewitem = 1 },
 	stack_max = 64,
 })
 

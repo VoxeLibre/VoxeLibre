@@ -39,7 +39,7 @@ minetest.register_tool("mcl_throwing:bow", {
 		itemstack:add_wear(wear)
 		return itemstack
 	end,
-	groups = {weapon_ranged=1,},
+	groups = {weapon=1,weapon_ranged=1},
 	on_use = function(itemstack, user, pointed_thing)
 		local wear = itemstack:get_wear()
 		itemstack:add_wear(wear)
