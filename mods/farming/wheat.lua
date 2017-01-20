@@ -1,5 +1,6 @@
 minetest.register_craftitem("farming:wheat_seed", {
 	description = "Wheat Seeds",
+	groups = { craftitem=1 },
 	inventory_image = "farming_wheat_seed.png",
 	on_place = function(itemstack, placer, pointed_thing)
 		return farming:place_seed(itemstack, placer, pointed_thing, "farming:wheat_1")

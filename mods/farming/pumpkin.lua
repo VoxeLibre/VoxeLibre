@@ -4,6 +4,7 @@ minetest.register_craftitem("farming:pumpkin_seed", {
 	description = "Pumpkin Seed",
 	stack_max = 64,
 	inventory_image = "farming_pumpkin_seed.png",
+	groups = { craftitem=1 },
 	on_place = function(itemstack, placer, pointed_thing)
 		local above = minetest.get_node(pointed_thing.above)
 		if above.name == "air" then

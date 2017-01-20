@@ -205,6 +205,7 @@ minetest.register_node("farming:melontige_linked_b", {
 minetest.register_craftitem("farming:melon_seed", {
 	description = "Melon Seeds",
 	stack_max = 64,
+	groups = { craftitem=1 },
 	inventory_image = "farming_melon_seed.png",
 	on_place = function(itemstack, placer, pointed_thing)
 		return farming:place_seed(itemstack, placer, pointed_thing, "farming:melontige_1")
