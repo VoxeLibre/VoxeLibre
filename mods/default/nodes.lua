@@ -2161,6 +2161,7 @@ minetest.register_node("default:snowblock", {
 minetest.register_node("default:cobweb", {
        description = "Cobweb",
        drawtype = "plantlike",
+	paramtype2 = "degrotate",
        visual_scale = 1.1,
 	   stack_max = 64,
        tiles = {"web.png"},

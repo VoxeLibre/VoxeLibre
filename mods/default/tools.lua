@@ -386,7 +386,7 @@ minetest.register_tool("default:pole", {
 					elseif r <= 52 then
 						itemname = "default:string"
 					elseif r <= 62 then
-						itemname = "vessels:glass_bottle"
+						itemname = "mcl_potions:glass_bottle"
 						--TODO itemname = "mcl_potions:bottle_water"
 					elseif r <= 72 then
 						itemname = "default:bone"
@@ -395,7 +395,7 @@ minetest.register_tool("default:pole", {
 						itemcount = 10
 					else
 						-- TODO: Tripwire hook
-						itemname = "default:stick"
+						itemname = "default:string"
 					end
 				else
 					-- Treasure
@@ -410,14 +410,12 @@ minetest.register_tool("default:pole", {
 						-- TODO: Enchanted and damaged
 						itemname = "default:pole"
 					elseif r == 4 then
-						itemname = "mcl_mobitems:spider_eye"
-						-- TODO itemname = "mobs:naming_tag"
+						itemname = "mobs:naming_tag"
 					elseif r == 5 then
 						itemname = "flowers:dandelion"
 						-- TODO itemname = "mobs:saddle"
 					elseif r == 6 then
-						itemname = "flowers:tulip_orange"
-						-- TODO itemname = "flowers:waterlily"
+						itemname = "flowers:waterlily"
 					end
 				end
 				local inv = user:get_inventory()
