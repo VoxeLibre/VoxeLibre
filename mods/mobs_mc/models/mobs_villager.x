@@ -556,7 +556,7 @@ Frame Root {
              96.078431;
              0.500000; 0.500000; 0.500000;;
              0.000000; 0.000000; 0.000000;;
-            TextureFilename {"farmer.png";}
+            TextureFilename {"mobs_farmer.png";}
           }
         } // End of Cube_001 material list
         XSkinMeshHeader {

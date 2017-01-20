@@ -58,7 +58,7 @@ mobs:register_mob("mobs_mc:pig", {
 		end
 	
 		local item = clicker:get_wielded_item()
-		if item:get_name() == "mobs:saddle" and self.saddle ~= "yes" then
+		if item:get_name() == "mcl_mobitems:saddle" and self.saddle ~= "yes" then
 			self.object:set_properties({
 				textures = {"mobs_pig_with_saddle.png"},
 			})
@@ -69,7 +69,7 @@ mobs:register_mob("mobs_mc:pig", {
 				chance = 1,
 				min = 1,
 				max = 3,},
-				{name = "mobs:saddle",
+				{name = "mcl_mobitems:saddle",
 				chance = 1,
 				min = 1,
 				max = 1,},

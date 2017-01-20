@@ -412,8 +412,7 @@ minetest.register_tool("default:pole", {
 					elseif r == 4 then
 						itemname = "mobs:naming_tag"
 					elseif r == 5 then
-						itemname = "flowers:dandelion"
-						-- TODO itemname = "mobs:saddle"
+						itemname = "mcl_mobitems:saddle"
 					elseif r == 6 then
 						itemname = "flowers:waterlily"
 					end

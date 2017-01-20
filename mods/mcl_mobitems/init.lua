@@ -192,6 +192,13 @@ minetest.register_craftitem("mcl_mobitems:rabbit_foot", {
 	stack_max = 64,
 })
 
+minetest.register_craftitem("mcl_mobitems:saddle", {
+	description = "Saddle",
+	wield_image = "mcl_mobitems_saddle.png",
+	inventory_image = "mcl_mobitems_saddle.png",
+	stack_max = 1,
+})
+
 -----------
 -- Crafting
 -----------
