@@ -28,10 +28,11 @@ local function now_playing(player, track_id)
 	local hud = active_huds[player:get_player_name()]
 	local text = "Now playing: " .. recorddata[track_id][2] .. "—" .. recorddata[track_id][1]
 
+	local id
 	if hud ~= nil then
 		player:hud_change(active_huds[player:get_player_name()], "text", text)
 	else
-		local id = player:hud_add({
+		id = player:hud_add({
 			hud_elem_type = "text",
 			position = { x=0.5, y=0.8 },
 			offset = { x=0, y = 0 },
