@@ -9,6 +9,7 @@
 
 mobs:register_mob("mobs_mc:pigman", {
 	type = "monster",
+	hp_min = 20,
 	hp_max = 20,
 	collisionbox = {-0.3, -1.0, -0.3, 0.3, 0.8, 0.3},
 	visual = "mesh",

@@ -9,6 +9,7 @@
 --mcsheep
 mobs:register_mob("mobs_mc:sheep", {
 	type = "animal",
+	hp_min = 8,
 	hp_max = 8,
 	collisionbox = {-0.5, -0.01, -0.5, 0.5, 1.5, 0.5},
 	

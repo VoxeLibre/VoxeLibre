@@ -10,6 +10,7 @@
 
 mobs:register_mob("mobs_mc:zombie", {
 	type = "monster",
+	hp_min = 20,
 	hp_max = 20,
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.9, 0.4},
 	textures = {

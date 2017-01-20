@@ -9,6 +9,7 @@
 
 mobs:register_mob("mobs_mc:enderman", {
 	type = "monster",
+	hp_min = 40,
 	hp_max = 40,
 	collisionbox = {-0.4, -2.4, -0.4, 0.4, 1.8, 0.4},
 	

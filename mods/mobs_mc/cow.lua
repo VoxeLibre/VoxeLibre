@@ -8,6 +8,7 @@
 
 mobs:register_mob("mobs_mc:cow", {
 	type = "animal",
+	hp_min = 10,
 	hp_max = 10,
 	collisionbox = {-0.6, -0.01, -0.6, 0.6, 1.8, 0.6},
 	

@@ -10,6 +10,7 @@ mobs:register_mob("mobs_mc:ghast", {
 	type = "monster",
 	pathfinding = true,
 	group_attack = true,
+	hp_min = 10,
 	hp_max = 10,
 	collisionbox = {-1.45, -1.45, -1.45 ,1.45, 1.45, 1.45},
 	visual_size = {x=3.0, y=3.0},
