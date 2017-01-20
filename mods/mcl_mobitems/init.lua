@@ -107,7 +107,6 @@ minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 	inventory_image = "mcl_mobitems_bucket_milk.png",
 	wield_image = "mcl_mobitems_bucket_milk.png",
 	on_use = minetest.item_eat(0, "bucket:bucket_empty"),
-	groups = { food = 3, },
 	stack_max = 1,
 })
 
@@ -188,7 +187,7 @@ minetest.register_craftitem("mcl_mobitems:rabbit_foot", {
 	description = "Rabbit's Foot",
 	wield_image = "mcl_mobitems_rabbit_foot.png",
 	inventory_image = "mcl_mobitems_rabbit_foot.png",
-	groups = { craftitem = 1 },
+	groups = { brewitem = 1 },
 	stack_max = 64,
 })
 

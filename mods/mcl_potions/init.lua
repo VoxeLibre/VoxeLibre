@@ -27,6 +27,22 @@ minetest.register_craft( {
 	}
 })
 
+minetest.register_craftitem("mcl_potions:speckled_melon", {
+	description = "Glistering Melon",
+	stack_max = 64,
+	groups = { brewitem = 1 },
+	inventory_image = "mcl_potions_melon_speckled.png",
+})
+
+minetest.register_craft({
+	output = "mcl_potions:speckled_melon",
+	recipe = {
+		{'default:gold_nugget', 'default:gold_nugget', 'default:gold_nugget'},
+		{'default:gold_nugget', 'farming:melon_item', 'default:gold_nugget'},
+		{'default:gold_nugget', 'default:gold_nugget', 'default:gold_nugget'},
+	}
+})
+
 -- TODO: Get texture
 --[[
 minetest.register_craftitem("mcl_potions:dragon_breath", {
