@@ -984,7 +984,7 @@ minetest.register_node("default:bookshelf", {
 	tiles = {"default_wood.png", "default_wood.png", "default_bookshelf.png"},
 	stack_max = 64,
 	is_ground_content = false,
-	groups = {choppy=3,oddly_breakable_by_hand=2,flammable=3,deco_block=1},
+	groups = {choppy=3,oddly_breakable_by_hand=2,flammable=3,building_block=1},
 	drop = "default:book 3",
 	sounds = default.node_sound_wood_defaults(),
 })

@@ -108,6 +108,7 @@ minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 	wield_image = "mcl_mobitems_bucket_milk.png",
 	on_use = minetest.item_eat(0, "bucket:bucket_empty"),
 	stack_max = 1,
+	groups = { food = 3 },
 })
 
 minetest.register_craftitem("mcl_mobitems:spider_eye", {

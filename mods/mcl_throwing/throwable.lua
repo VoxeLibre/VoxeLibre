@@ -60,7 +60,6 @@ minetest.register_craftitem("mcl_throwing:snowball", {
 	inventory_image = "mcl_throwing_snowball.png",
 	stack_max = 16,
 	on_use = throw_function("mcl_throwing:snowball_entity", snowball_VELOCITY),
-	groups = { weapon_ranged = 1 },
 	on_construct = function(pos)
 	pos.y = pos.y - 1
 		if minetest.get_node(pos).name == "default:dirt_with_grass" then
@@ -74,5 +73,5 @@ minetest.register_craftitem("mcl_throwing:egg", {
 	inventory_image = "mcl_throwing_egg.png",
 	stack_max = 16,
 	on_use = throw_function("mcl_throwing:egg_entity", egg_VELOCITY),
-	groups = { weapon_ranged = 1 },
+	groups = { craftitem = 1 },
 })
