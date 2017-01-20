@@ -184,29 +184,6 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 end
 
 
--- Optionally replace old "upside_down" nodes with new param2 versions.
--- Disabled by default.
-
-if replace then
-	minetest.register_abm({
-		label = "Slab replace",
-		nodenames = {"group:slabs_replace"},
-		interval = 16,
-		chance = 1,
-		action = function(pos, node)
-			node.name = minetest.registered_nodes[node.name].replace_name
-			node.param2 = node.param2 + 20
-			if node.param2 == 21 then
-				node.param2 = 23
-			elseif node.param2 == 23 then
-				node.param2 = 21
-			end
-			minetest.set_node(pos, node)
-		end,
-	})
-end
-
-
 -- Stair/slab registration function.
 -- Nodes will be called stairs:{stair,slab}_<subname>
 
