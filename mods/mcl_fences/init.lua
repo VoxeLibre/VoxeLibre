@@ -22,6 +22,7 @@ mcl_fences = {}
 mcl_fences.register_fence = function(id, fence_name, fence_gate_name, texture, fence_image, gate_image, groups, connects_to, sounds)
 	if groups == nil then groups = {} end
 	groups.fence = 1
+	groups.deco_block = 1
 	if connects_to == nil then connects_to = {} end
 	table.insert(connects_to, "group:solid")
 	table.insert(connects_to, "group:fence")

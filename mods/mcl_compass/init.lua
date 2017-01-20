@@ -50,7 +50,7 @@ for i,img in ipairs(images) do
 		inventory_image = img,
 		wield_image = img,
 		stack_max = 1,
-		groups = {not_in_creative_inventory=inv,compass=i}
+		groups = {not_in_creative_inventory=inv,compass=i,tool=1}
 	})
 end
 

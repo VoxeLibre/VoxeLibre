@@ -94,7 +94,7 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 		type = "fixed",
 		fixed = {-0.5,-0.5,-0.5, 0.5,1.4,0.5}
 	},
-	groups = {choppy=2, oddly_breakable_by_hand=2},
+	groups = {choppy=2, oddly_breakable_by_hand=2, deco_block=1},
 	sounds = default.node_sound_wood_defaults(),
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)

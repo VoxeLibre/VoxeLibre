@@ -11,7 +11,7 @@ local function addhead(node, desc)
 				{ -0.25, -0.5, -0.25, 0.25, 0.0, 0.25, },   			
 			},
 		},
-		groups = {oddly_breakable_by_hand=3, head=1},
+		groups = {oddly_breakable_by_hand=3, head=1, deco_block=1},
 		tiles = {
 			"head_"..node.."_top.png",
 			"head_"..node.."_top.png",

@@ -111,7 +111,7 @@ local function register_wall(nodename, name, texture, invtex)
 			is_ground_content = false,
 			tiles = {texture},
 			paramtype = "light",
-			groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1},
+			groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1,not_in_creative_inventory=1},
 			drop = nodename,
 			node_box = {
 				type = "fixed",
@@ -130,7 +130,7 @@ local function register_wall(nodename, name, texture, invtex)
 		tiles = {texture},
 		paramtype = "light",
 		is_ground_content = false,
-		groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1},
+		groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1,not_in_creative_inventory=1},
 		drop = nodename,
 		node_box = {
 			type = "fixed",
@@ -148,7 +148,7 @@ local function register_wall(nodename, name, texture, invtex)
 		tiles = {texture},
 		paramtype = "light",
 		is_ground_content = false,
-		groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1},
+		groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1,not_in_creative_inventory=1},
 		drop = nodename,
 		node_box = {
 			type = "fixed",
@@ -162,6 +162,7 @@ local function register_wall(nodename, name, texture, invtex)
 		description = name,
 		paramtype = "light",
 		is_ground_content = false,
+		groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1,deco_block=1},
 		tiles = {texture},
 		inventory_image = invtex,
 		stack_max = 64,

@@ -32,6 +32,7 @@ minetest.register_tool("farming:hoe_wood", {
 			return itemstack
 		end
 	end,
+	groups = { tool=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
 		damage_groups = { fleshy = 1, }
@@ -71,6 +72,7 @@ minetest.register_tool("farming:hoe_stone", {
 			return itemstack
 		end
 	end,
+	groups = { tool=1 },
 	tool_capabilities = {
 		full_punch_interval = 0.5,
 		damage_groups = { fleshy = 1, }
@@ -105,6 +107,7 @@ minetest.register_tool("farming:hoe_steel", {
 			return itemstack
 		end
 	end,
+	groups = { tool=1 },
 	tool_capabilities = {
 		-- 1/3
 		full_punch_interval = 0.33333333,
@@ -147,6 +150,7 @@ minetest.register_tool("farming:hoe_gold", {
 			return itemstack
 		end
 	end,
+	groups = { tool=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
 		damage_groups = { fleshy = 1, }
@@ -190,6 +194,7 @@ minetest.register_tool("farming:hoe_diamond", {
 			return itemstack
 		end
 	end,
+	groups = { tool=1 },
 	tool_capabilities = {
 		full_punch_interval = 0.25,
 		damage_groups = { fleshy = 1, }

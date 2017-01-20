@@ -2,7 +2,7 @@ minetest.register_node("mcl_end:end_stone", {
 	description = "End Stone",
 	tiles = {"mcl_end_end_stone.png"},
 	stack_max = 64,
-	groups = {cracky=2},
+	groups = {cracky=2,building_block=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -11,7 +11,7 @@ minetest.register_node("mcl_end:end_bricks", {
 	tiles = {"mcl_end_end_stone_brick.png"},
 	is_ground_content = false,
 	stack_max = 64,
-	groups = {cracky=3},
+	groups = {cracky=3,building_block=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -20,7 +20,7 @@ minetest.register_node("mcl_end:purpur_block", {
 	tiles = {"mcl_end_purpur_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
-	groups = {cracky=3},
+	groups = {cracky=3,building_block=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 
@@ -30,7 +30,7 @@ minetest.register_node("mcl_end:purpur_pillar", {
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	tiles = {"mcl_end_purpur_pillar_top.png", "mcl_end_purpur_pillar_top.png", "mcl_end_purpur_pillar.png"},
-	groups = {cracky=3},
+	groups = {cracky=3,building_block=1},
 	sounds = default.node_sound_stone_defaults(),
 })
 

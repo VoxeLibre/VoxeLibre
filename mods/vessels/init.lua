@@ -14,7 +14,7 @@ minetest.register_node("vessels:glass_bottle", {
 		type = "fixed",
 		fixed = {-0.25, -0.5, -0.25, 0.25, 0.4, 0.25}
 	},
-	groups = {vessel=1,dig_immediate=3,attached_node=1},
+	groups = {vessel=1,dig_immediate=3,attached_node=1,brewitem=1},
 	sounds = default.node_sound_glass_defaults(),
 })
 

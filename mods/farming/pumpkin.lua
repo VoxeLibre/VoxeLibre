@@ -55,7 +55,7 @@ minetest.register_node("farming:pumpkin_face", {
 	stack_max = 64,
 	paramtype2 = "facedir",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"},
-	groups = {choppy=2, oddly_breakable_by_hand=2, flammable=2},
+	groups = {choppy=2, oddly_breakable_by_hand=2, flammable=2, building_block=1},
 	after_dig_node = function(pos, oldnode, oldmetadata, user)
 		local have_change = 0
 		for x=-1,1 do
@@ -273,7 +273,7 @@ minetest.register_node("farming:pumpkin_face_light", {
 	paramtype2 = "facedir",
 	light_source = 14,
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face_light.png"},
-	groups = {choppy=2, oddly_breakable_by_hand=2, flammable=2},
+	groups = {choppy=2, oddly_breakable_by_hand=2, flammable=2, building_block=1},
 	sounds = default.node_sound_wood_defaults(),
 })
 

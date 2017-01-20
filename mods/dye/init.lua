@@ -63,22 +63,22 @@ local dyelocal = {}
 
 -- This collection of colors is partly a historic thing, partly something else.
 dyelocal.dyes = {
-	{"white",      "Bone Meal",     {dye=1, basecolor_white=1,   excolor_white=1,     unicolor_white=1}},
-	{"grey",       "Light Grey Dye",      {dye=1, basecolor_grey=1,    excolor_grey=1,      unicolor_grey=1}},
-	{"dark_grey",  "Grey Dye", {dye=1, basecolor_grey=1,    excolor_darkgrey=1,  unicolor_darkgrey=1}},
-	{"black",      "Ink Sac",     {dye=1, basecolor_black=1,   excolor_black=1,     unicolor_black=1}},
-	{"violet",     "Violet Dye",    {dye=1, basecolor_magenta=1, excolor_violet=1,    unicolor_violet=1}},
-	{"blue",       "Lapis Lazuli",      {dye=1, basecolor_blue=1,    excolor_blue=1,      unicolor_blue=1}},
-	{"lightblue",  "Light Blue Dye",      {dye=1, basecolor_blue=1,    excolor_blue=1,   unicolor_light_blue=1}},
-	{"cyan",       "Cyan Dye",      {dye=1, basecolor_cyan=1,    excolor_cyan=1,      unicolor_cyan=1}},
-	{"dark_green", "Cactus Green",{dye=1, basecolor_green=1,   excolor_green=1,     unicolor_dark_green=1}},
-	{"green",      "Lime Dye",     {dye=1, basecolor_green=1,   excolor_green=1,     unicolor_green=1}},
-	{"yellow",     "Dandelion Yellow",    {dye=1, basecolor_yellow=1,  excolor_yellow=1,    unicolor_yellow=1}},
-	{"brown",      "Cocoa Beans",     {dye=1, basecolor_yellow=1,  excolor_orange=1,    unicolor_dark_orange=1}},
-	{"orange",     "Orange Dye",    {dye=1, basecolor_orange=1,  excolor_orange=1,    unicolor_orange=1}},
-	{"red",        "Rose Red",       {dye=1, basecolor_red=1,     excolor_red=1,       unicolor_red=1}},
-	{"magenta",    "Magenta Dye",   {dye=1, basecolor_magenta=1, excolor_red_violet=1,unicolor_red_violet=1}},
-	{"pink",       "Pink Dye",      {dye=1, basecolor_red=1,     excolor_red=1,       unicolor_light_red=1}},
+	{"white",      "Bone Meal",     {dye=1, craftitem=1, basecolor_white=1,   excolor_white=1,     unicolor_white=1}},
+	{"grey",       "Light Grey Dye",      {dye=1, craftitem=1, basecolor_grey=1,    excolor_grey=1,      unicolor_grey=1}},
+	{"dark_grey",  "Grey Dye", {dye=1, craftitem=1, basecolor_grey=1,    excolor_darkgrey=1,  unicolor_darkgrey=1}},
+	{"black",      "Ink Sac",     {dye=1, craftitem=1, basecolor_black=1,   excolor_black=1,     unicolor_black=1}},
+	{"violet",     "Violet Dye",    {dye=1, craftitem=1, basecolor_magenta=1, excolor_violet=1,    unicolor_violet=1}},
+	{"blue",       "Lapis Lazuli",      {dye=1, craftitem=1, basecolor_blue=1,    excolor_blue=1,      unicolor_blue=1}},
+	{"lightblue",  "Light Blue Dye",      {dye=1, craftitem=1, basecolor_blue=1,    excolor_blue=1,   unicolor_light_blue=1}},
+	{"cyan",       "Cyan Dye",      {dye=1, craftitem=1, basecolor_cyan=1,    excolor_cyan=1,      unicolor_cyan=1}},
+	{"dark_green", "Cactus Green",{dye=1, craftitem=1, basecolor_green=1,   excolor_green=1,     unicolor_dark_green=1}},
+	{"green",      "Lime Dye",     {dye=1, craftitem=1, basecolor_green=1,   excolor_green=1,     unicolor_green=1}},
+	{"yellow",     "Dandelion Yellow",    {dye=1, craftitem=1, basecolor_yellow=1,  excolor_yellow=1,    unicolor_yellow=1}},
+	{"brown",      "Cocoa Beans",     {dye=1, craftitem=1, basecolor_yellow=1,  excolor_orange=1,    unicolor_dark_orange=1}},
+	{"orange",     "Orange Dye",    {dye=1, craftitem=1, basecolor_orange=1,  excolor_orange=1,    unicolor_orange=1}},
+	{"red",        "Rose Red",       {dye=1, craftitem=1, basecolor_red=1,     excolor_red=1,       unicolor_red=1}},
+	{"magenta",    "Magenta Dye",   {dye=1, craftitem=1, basecolor_magenta=1, excolor_red_violet=1,unicolor_red_violet=1}},
+	{"pink",       "Pink Dye",      {dye=1, craftitem=1, basecolor_red=1,     excolor_red=1,       unicolor_light_red=1}},
 }
 
 -- Define items
@@ -100,7 +100,7 @@ minetest.register_craftitem("dye:white", {
 	inventory_image = "dye_white.png",
 	description = "Bone Meal",
 	stack_max = 64,
-	groups = {dye=1, basecolor_white=1,   excolor_white=1,     unicolor_white=1},
+	groups = {dye=1, craftitem=1, basecolor_white=1,   excolor_white=1,     unicolor_white=1},
 	on_place = function(itemstack, user, pointed_thing) 
 		if(duengen(pointed_thing)) then
 			itemstack:take_item()
