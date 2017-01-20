@@ -35,8 +35,8 @@ minetest.register_node("farming:mushroom_red", {
 
 minetest.register_craftitem("farming:mushroom_stew", {
 	description = "Mushroom Stew",
-    inventory_image = "farming_mushroom_stew.png",
-	on_use = minetest.item_eat(6),
+	inventory_image = "farming_mushroom_stew.png",
+	on_use = minetest.item_eat(6, "default:bowl"),
 	groups = { food = 2, eatable = 6 },
 	stack_max = 1,
 })
