@@ -151,8 +151,6 @@ mcl_fences.register_fence = function(id, fence_name, fence_gate_name, texture, f
 				{-2/16, -1/2+6/16, 1/16, -1/2, -1/2+9/16, -1/16}, --unten(quer) -z
 				{2/16, 1/2-4/16, -1/16, 1/2, 1/2-1/16, 1/16},   --oben(quer) z
 				{2/16, -1/2+6/16, -1/16, 1/2, -1/2+9/16, 1/16}, --unten(quer) z
-				p1,p2,p3,p4,p5,
-				bx1,bx11,bx2,bx21,
 			}
 		},
 		selection_box = {
