@@ -262,31 +262,6 @@ function effect(pos, amount, texture, min_size, max_size, radius, gravity)
 	})
 end
 
--- update nametag colour
-function update_tag(self)
-
-	local col = "#00FF00"
-	local qua = self.hp_max / 4
-
-	if self.health <= floor(qua * 3) then
-		col = "#FFFF00"
-	end
-
-	if self.health <= floor(qua * 2) then
-		col = "#FF6600"
-	end
-
-	if self.health <= floor(qua) then
-		col = "#FF0000"
-	end
-
-	self.object:set_properties({
-		nametag = self.nametag,
-		nametag_color = col
-	})
-
-end
-
 -- check if mob is dead or only hurt
 function check_for_death(self)
 
@@ -320,8 +295,6 @@ function check_for_death(self)
 		end
 
 		self.htimer = 2
-
-		update_tag(self)
 
 		return false
 	end
@@ -446,8 +419,6 @@ do_env_damage = function(self)
 
 		self.nametag = self.nametag2
 		self.nametag2 = nil
-
-		update_tag(self)
 	end
 
 	local pos = self.object:getpos()
@@ -2141,7 +2112,6 @@ local mob_activate = function(self, staticdata, dtime_s, def)
 
 	-- set anything changed above
 	self.object:set_properties(self)
-	update_tag(self)
 end
 
 local mob_step = function(self, dtime)
@@ -3005,8 +2975,6 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 
 		self.object:set_hp(self.health)
 
-		update_tag(self)
-
 		-- make children grow quicker
 		if self.child == true then
 
@@ -3098,8 +3066,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 		-- update nametag
 		mob_obj[name].nametag = fields.name
-
-		update_tag(mob_obj[name])
 
 		-- if not in creative then take item
 		if not creative then
