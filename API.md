@@ -51,6 +51,7 @@ These groups are used mostly for informational purposes
 * `compass`: Compass (rating doesn't matter)
 * `rail=1`: Rail
 * `music_record`: Music Disc (rating is track ID)
+* `tnt=1`: Block is TNT
 * `boat=1`: Boat
 * `minecart=1`: Minecart
 * `food`: Item is a comestible item which can be consumed (healthy or unhealthy)

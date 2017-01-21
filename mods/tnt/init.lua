@@ -42,10 +42,10 @@ minetest.register_node("tnt:tnt", {
 	tiles = {"default_tnt_top.png", "default_tnt_bottom.png",
 			"default_tnt_side.png", "default_tnt_side.png",
 			"default_tnt_side.png", "default_tnt_side.png"},
-	drop = '', -- Get nothing
 	is_ground_content = false,
 	stack_max = 64,
 	description = "TNT",
+	groups = { dig_immediate = 3, tnt = 1, },
 	mesecons = {effector = {
 		action_on = tnt.ignite
 	}},
