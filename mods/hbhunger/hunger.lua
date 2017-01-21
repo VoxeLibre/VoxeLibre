@@ -41,7 +41,7 @@ function hbhunger.eat(hp_change, replace_with_item, itemstack, user, pointed_thi
 			hp_change = 1
 			core.log("error", "Wrong on_use() definition for item '" .. item .. "'")
 		end
-		def.saturation = hp_change * 1.3
+		def.saturation = hp_change
 		def.replace = replace_with_item
 	end
 	local func = hbhunger.item_eat(def.saturation, def.replace, def.poisen, def.healing, def.sound)
@@ -79,9 +79,9 @@ function hbhunger.item_eat(hunger_change, replace_with_item, poisen, heal, sound
 			minetest.sound_play({name = sound or "hbhunger_eat_generic", gain = 1}, {pos=user:getpos(), max_hear_distance = 16})
 
 			-- Saturation
-			if h < 30 and hunger_change then
+			if h < 20 and hunger_change then
 				h = h + hunger_change
-				if h > 30 then h = 30 end
+				if h > 20 then h = 20 end
 				hbhunger.hunger[name] = h
 				hbhunger.set_hunger_raw(user)
 			end

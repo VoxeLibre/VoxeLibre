@@ -46,7 +46,7 @@ end
 dofile(minetest.get_modpath("hbhunger").."/hunger.lua")
 
 -- register satiation hudbar
-hb.register_hudbar("satiation", 0xFFFFFF, S("Satiation"), { icon = "hbhunger_icon.png", bgicon = "hbhunger_bgicon.png",  bar = "hbhunger_bar.png" }, 20, 30, false)
+hb.register_hudbar("satiation", 0xFFFFFF, S("Satiation"), { icon = "hbhunger_icon.png", bgicon = "hbhunger_bgicon.png",  bar = "hbhunger_bar.png" }, 20, 20, false)
 
 -- update hud elemtens if value has changed
 local function update_hud(player)
@@ -78,7 +78,7 @@ hbhunger.set_hunger_raw = function(player)
 	local name = player:get_player_name()
 	local value = hbhunger.hunger[name]
 	if not inv  or not value then return nil end
-	if value > 30 then value = 30 end
+	if value > 20 then value = 20 end
 	if value < 0 then value = 0 end
 	
 	inv:set_stack("hunger", 1, ItemStack({name=":", count=value+1}))
@@ -107,26 +107,33 @@ minetest.register_on_respawnplayer(function(player)
 end)
 
 local main_timer = 0
-local timer = 0
+local timer = 0		-- Half second timer
 local timer2 = 0
+local timerMult = 1	-- Cycles from 0 to 7, each time when timer hits half a second
 minetest.register_globalstep(function(dtime)
 	main_timer = main_timer + dtime
 	timer = timer + dtime
 	timer2 = timer2 + dtime
-	if main_timer > hbhunger.HUD_TICK or timer > 4 or timer2 > hbhunger.HUNGER_TICK then
+	if main_timer > hbhunger.HUD_TICK or timer > 0.5 or timer2 > hbhunger.HUNGER_TICK then
 		if main_timer > hbhunger.HUD_TICK then main_timer = 0 end
 		for _,player in ipairs(minetest.get_connected_players()) do
 		local name = player:get_player_name()
 
 		local h = tonumber(hbhunger.hunger[name])
 		local hp = player:get_hp()
-		if timer > 4 then
-			-- heal player by 1 hp if not dead and satiation is > 15 (of 30)
-			if h > 15 and hp > 0 and player:get_breath() > 0 then
+		if timer > 0.5 then
+			-- Quick heal (every 0.5s)
+			if h >= 20 and hp > 0 then
 				player:set_hp(hp+1)
-				-- or damage player by 1 hp if satiation is < 2 (of 30)
-				elseif h <= 1 then
-					if hp-1 >= 0 then player:set_hp(hp-1) end
+			-- Slow heal, and hunger damage (every 4s)
+			elseif timerMult == 0 then
+				if h >= 18 and hp > 0 then
+					player:set_hp(hp+1)
+				elseif h == 0 then
+				-- Damage hungry player down to 1 HP
+					if hp-1 >= 0 then
+						player:set_hp(hp-1)
+					end
 				end
 			end
 			-- lower satiation by 1 point after xx seconds
@@ -147,8 +154,15 @@ minetest.register_globalstep(function(dtime)
 				hbhunger.handle_node_actions(nil, nil, player)
 			end
 		end
+		end
 	end
-	if timer > 4 then timer = 0 end
+	if timer > 0.5 then
+		timer = 0
+		timerMult = timerMult + 1
+		if timerMult > 7 then
+			timerMult = 0
+		end
+	end
 	if timer2 > hbhunger.HUNGER_TICK then timer2 = 0 end
 end)
 
