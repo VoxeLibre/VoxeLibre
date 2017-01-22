@@ -199,23 +199,34 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page)
 			"background[-0.19,-0.25;10.5,9.87;crafting_inventory_creative.png]"..
 			"label[-5,-5;"..name.."]"..
 			"image[" .. offset[name] .. ";1.5,1.44;crafting_creative_active.png"..hoch[name].."]"..
-			"image_button[-0.1,0;1,1;"..bg["blocks"].."^default_brick.png;build;]"..	--build blocks
-			"image_button[1.15,0;1,1;"..bg["deco"].."^flower_peony.png;deco;]"..	--decoration blocks
-			"image_button[2.415,0;1,1;"..bg["redstone"].."^mesecons_redstone_dust.png;redstone;]"..	--redstone
-			"image_button[3.693,0;1,1;"..bg["rail"].."^carts_rail_pwr.png;rail;]"..	--transportation
-			"image_button[4.93,0;1,1;"..bg["misc"].."^bucket_lava.png;misc;]"..	--miscellaneous
-			"image_button[9.19,0;1,1;"..bg["nix"].."^default_sign.png;default;]"..	--search
+			"item_image_button[-0.1,0;1,1;default:brick;build;]"..	--build blocks
+			"tooltip[build;Building Blocks]"..
+			"item_image_button[1.15,0;1,1;flowers:peony;deco;]"..	--decoration blocks
+			"tooltip[deco;Decoration Blocks]"..
+			"item_image_button[2.415,0;1,1;mesecons:redstone;redstone;]"..	--redstone
+			"tooltip[redstone;Redstone]"..
+			"item_image_button[3.693,0;1,1;mcl_minecarts:golden_rail;rail;]"..	--transportation
+			"tooltip[rail;Transportation]"..
+			"item_image_button[4.93,0;1,1;bucket:bucket_lava;misc;]"..	--miscellaneous
+			"tooltip[misc;Miscellaneous]"..
+			"item_image_button[9.19,0;1,1;mcl_compass:compass;default;]"..	--search
+			"tooltip[default;Search Items]"..
 			"image[0,1;5,0.75;fnt_"..name..".png]"..
 			"list[current_player;main;0,7;9,1;]"..
 			main_list..
 			"image_button[9.03,1.74;0.85,0.6;crafting_creative_up.png;creative_prev;]"..
 			"image[9.04," .. tostring(slider_pos) .. ";0.75,"..tostring(slider_height) .. ";crafting_slider.png]"..
 			"image_button[9.03,6.15;0.85,0.6;crafting_creative_down.png;creative_next;]"..
-			"image_button[-0.1,8.28;1,1;"..bg["food"].."^default_apple.png;food;]"..	--foodstuff
-			"image_button[1.15,8.28;1,1;"..bg["tools"].."^default_tool_steelaxe.png;tools;]"..	--tools
-			"image_button[2.415,8.28;1,1;"..bg["combat"].."^default_tool_goldsword.png;combat;]"..	--combat
-			"image_button[3.693,8.28;1,1;"..bg["matr"].."^default_stick.png;matr;]"..	--brewing
-			"image_button[9.19,8.28;1,1;"..bg["inv"].."^default_chest_front.png;inv;]"..			--inventory
+			"item_image_button[-0.1,8.28;1,1;default:apple;food;]"..	--foodstuff
+			"tooltip[food;Foodstuffs]"..
+			"item_image_button[1.15,8.28;1,1;default:axe_steel;tools;]"..	--tools
+			"tooltip[tools;Tools]"..
+			"item_image_button[2.415,8.28;1,1;default:sword_gold;combat;]"..	--combat
+			"tooltip[combat;Combat]"..
+			"item_image_button[3.693,8.28;1,1;default:stick;matr;]"..	--brewing
+			"tooltip[matr;Materials]"..
+			"item_image_button[9.19,8.28;1,1;default:chest;inv;]"..			--inventory
+			"tooltip[inv;Survival Inventory]"..
 			"list[detached:creative_trash;main;9,7;1,1;]"..
 			"image[9,7;1,1;crafting_creative_trash.png]"..
 			listrings
