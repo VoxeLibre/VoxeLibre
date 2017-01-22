@@ -78,9 +78,12 @@ function set_inv(filter, player)
 					if is_weapon(def) then
 						table.insert(creative_list, name)
 					end
+				elseif filter == "#brew" then
+					if def.groups.brewitem then
+						table.insert(creative_list, name)
+					end
 				elseif filter == "#matr" then
-					-- TODO: Add separate brewing category
-					if def.groups.craftitem or def.groups.brewitem then
+					if def.groups.craftitem then
 						table.insert(creative_list, name)
 					end
 				elseif filter == "#misc" then
@@ -141,7 +144,7 @@ offset["food"] = "-0.29,8.12"
 offset["tools"] = "0.98,8.12"
 offset["combat"] = "2.23,8.12"
 offset["brew"] = "3.495,8.12"
-offset["matr"] = offset["brew"]--"4.74,8.12"
+offset["matr"] = "4.74,8.12"
 offset["inv"] = "8.99,8.12"
 
 hoch["blocks"] = ""
@@ -242,7 +245,10 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page)
 			"item_image_button[2.415,8.28;1,1;default:sword_gold;combat;]"..	--combat
 			tab(name, "combat") ..
 			"tooltip[combat;Combat]"..
-			"item_image_button[3.693,8.28;1,1;default:stick;matr;]"..	--brewing
+			"item_image_button[3.693,8.28;1,1;mcl_potions:glass_bottle;brew;]"..	--brewing
+			tab(name, "brew") ..
+			"tooltip[brew;Brewing]"..
+			"item_image_button[4.938,8.28;1,1;default:stick;matr;]"..	--materials
 			tab(name, "matr") ..
 			"tooltip[matr;Materials]"..
 			"item_image_button[9.19,8.28;1,1;default:chest;inv;]"..			--inventory
@@ -307,6 +313,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.combat then
 		set_inv("#combat")
 		page = "combat"
+	end
+	if fields.brew then
+		set_inv("#brew")
+		page = "brew"
 	end
 	if fields.matr then
 		set_inv("#matr")
