@@ -31,7 +31,7 @@ function init()
 			end
 		end,
 	})
- set_inv("all")
+	set_inv("#all")
 end
 
 function set_inv(filter, player)
@@ -91,7 +91,7 @@ function set_inv(filter, player)
 
 						table.insert(creative_list, name)
 					end
-				elseif filter == "all" then
+				elseif filter == "#all" then
 					table.insert(creative_list, name)
 				else --for all other
 					if string.find(string.lower(def.name), filter) or string.find(string.lower(def.description), filter) then
@@ -180,7 +180,7 @@ local function reset_menu_item_bg()
 end
 
 
-crafting.set_creative_formspec = function(player, start_i, pagenum, show, page)
+crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, filter)
 	reset_menu_item_bg()
 	pagenum = math.floor(pagenum) or 1
 	local pagemax = math.floor((crafting.creative_inventory_size-1) / (9*5) + 1)
@@ -258,7 +258,13 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page)
 			"image[9,7;1,1;crafting_creative_trash.png]"..
 			listrings
 
-			if name == "nix" then formspec = formspec .. "field[5.3,1.3;4,0.75;suche;;]" end
+			if name == "nix" then
+				if filter == nil then
+					filter = ""
+				end
+				formspec = formspec .. "field[5.3,1.3;4,0.75;suche;;"..filter.."]"
+				formspec = formspec .. "field_close_on_enter[suche;false]"
+			end
 			if pagenum ~= nil then formspec = formspec .. "p"..tostring(pagenum) end
 			
 	player:set_inventory_formspec(formspec)
@@ -269,61 +275,51 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if not minetest.setting_getbool("creative_mode") then
 		return
 	end
-	
+
 	if fields.bgcolor then
 		minetest.chat_send_all("jupp")
 	end
-	if fields.suche ~= nil and fields.suche ~= "" then
-		set_inv(string.lower(fields.suche))
-		minetest.show_formspec(player:get_player_name(), "detached:creative",  player:get_inventory_formspec())
-	end
-
 	if fields.blocks then
 		set_inv("#blocks",player)
 		page = "blocks"		
-	end
-	if fields.deco then		
+	elseif fields.deco then
 		set_inv("#deco",player)
 		page = "deco"
-	end
-	if fields.redstone then		
+	elseif fields.redstone then
 		set_inv("#redstone",player)
 		page = "redstone"
-	end
-	if fields.rail then		
+	elseif fields.rail then
 		set_inv("#rail",player)
 		page = "rail"
-	end
-	if fields.misc then		
+	elseif fields.misc then
 		set_inv("#misc",player)
 		page = "misc"
-	end
-	if fields.default then		
-		set_inv("all")
-		page = nil
-	end
-	if fields.food then		
-		set_inv("#food")
+	elseif fields.nix then
+		set_inv("#all",player)
+		page = "nix"
+	elseif fields.food then
+		set_inv("#food",player)
 		page = "food"
-	end
-	if fields.tools then		
-		set_inv("#tools")
+	elseif fields.tools then
+		set_inv("#tools",player)
 		page = "tools"
-	end
-	if fields.combat then
-		set_inv("#combat")
+	elseif fields.combat then
+		set_inv("#combat",player)
 		page = "combat"
-	end
-	if fields.brew then
-		set_inv("#brew")
+	elseif fields.brew then
+		set_inv("#brew",player)
 		page = "brew"
-	end
-	if fields.matr then
-		set_inv("#matr")
+	elseif fields.matr then
+		set_inv("#matr",player)
 		page = "matr"
-	end
-	if fields.inv then
+	elseif fields.inv then
 		page = "inv"
+	elseif fields.suche == "" then
+		set_inv("#all", player)
+		page = "nix"
+	elseif fields.suche ~= nil then
+		set_inv(string.lower(fields.suche),player)
+		page = "nix"
 	end
 	-- Figure out current page from formspec
 	local current_page = 0
@@ -353,7 +349,13 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if start_i < 0 or start_i >= crafting.creative_inventory_size then
 		start_i = 0
 	end
-	crafting.set_creative_formspec(player, start_i, start_i / (9*5) + 1, false, page)
+
+	local filter
+	if fields.suche ~= nil and fields.suche ~= "" then
+		filter = fields.suche
+	end
+
+	crafting.set_creative_formspec(player, start_i, start_i / (9*5) + 1, false, page, filter)
 end)
 
 
