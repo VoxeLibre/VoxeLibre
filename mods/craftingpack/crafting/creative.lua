@@ -150,6 +150,7 @@ hoch["redstone"] = ""
 hoch["rail"] = ""
 hoch["misc"] = ""
 hoch["nix"] = ""
+hoch["default"] = ""
 hoch["food"] = "^[transformfy"
 hoch["tools"] = "^[transformfy"
 hoch["combat"] = "^[transformfy"
@@ -172,6 +173,7 @@ local function reset_menu_item_bg()
 	bg["brew"] = dark_bg 
 	bg["matr"] = dark_bg 
 	bg["inv"] = dark_bg 
+	bg["default"] = dark_bg
 end
 
 
@@ -194,23 +196,37 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page)
 			main_list = "image[-0.2,1.7;11.35,2.33;crafting_creative_bg.png]"..
 				"list[current_player;main;0,3.75;9,3;9]"
 		end
+		local function tab(current, check)
+			local img
+			if current == check then
+				img = "crafting_creative_active.png"
+			else
+				img = "crafting_creative_inactive.png"
+			end
+			return "image[" .. offset[check] .. ";1.5,1.44;" .. img .. hoch[check].. "]"
+		end
 		formspec = "size[10,9.3]"..
 			default.inventory_header..
 			"background[-0.19,-0.25;10.5,9.87;crafting_inventory_creative.png]"..
 			"label[-5,-5;"..name.."]"..
-			"image[" .. offset[name] .. ";1.5,1.44;crafting_creative_active.png"..hoch[name].."]"..
-			"item_image_button[-0.1,0;1,1;default:brick;build;]"..	--build blocks
-			"tooltip[build;Building Blocks]"..
+			"item_image_button[-0.1,0;1,1;default:brick;blocks;]"..	--build blocks
+			tab(name, "blocks") ..
+			"tooltip[blocks;Building Blocks]"..
 			"item_image_button[1.15,0;1,1;flowers:peony;deco;]"..	--decoration blocks
+			tab(name, "deco") ..
 			"tooltip[deco;Decoration Blocks]"..
 			"item_image_button[2.415,0;1,1;mesecons:redstone;redstone;]"..	--redstone
+			tab(name, "redstone") ..
 			"tooltip[redstone;Redstone]"..
 			"item_image_button[3.693,0;1,1;mcl_minecarts:golden_rail;rail;]"..	--transportation
+			tab(name, "rail") ..
 			"tooltip[rail;Transportation]"..
 			"item_image_button[4.93,0;1,1;bucket:bucket_lava;misc;]"..	--miscellaneous
+			tab(name, "misc") ..
 			"tooltip[misc;Miscellaneous]"..
-			"item_image_button[9.19,0;1,1;mcl_compass:compass;default;]"..	--search
-			"tooltip[default;Search Items]"..
+			"item_image_button[9.19,0;1,1;mcl_compass:compass;nix;]"..	--search
+			tab(name, "nix") ..
+			"tooltip[nix;Search Items]"..
 			"image[0,1;5,0.75;fnt_"..name..".png]"..
 			"list[current_player;main;0,7;9,1;]"..
 			main_list..
@@ -218,14 +234,19 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page)
 			"image[9.04," .. tostring(slider_pos) .. ";0.75,"..tostring(slider_height) .. ";crafting_slider.png]"..
 			"image_button[9.03,6.15;0.85,0.6;crafting_creative_down.png;creative_next;]"..
 			"item_image_button[-0.1,8.28;1,1;default:apple;food;]"..	--foodstuff
+			tab(name, "food") ..
 			"tooltip[food;Foodstuffs]"..
 			"item_image_button[1.15,8.28;1,1;default:axe_steel;tools;]"..	--tools
+			tab(name, "tools") ..
 			"tooltip[tools;Tools]"..
 			"item_image_button[2.415,8.28;1,1;default:sword_gold;combat;]"..	--combat
+			tab(name, "combat") ..
 			"tooltip[combat;Combat]"..
 			"item_image_button[3.693,8.28;1,1;default:stick;matr;]"..	--brewing
+			tab(name, "matr") ..
 			"tooltip[matr;Materials]"..
 			"item_image_button[9.19,8.28;1,1;default:chest;inv;]"..			--inventory
+			tab(name, "inv") ..
 			"tooltip[inv;Survival Inventory]"..
 			"list[detached:creative_trash;main;9,7;1,1;]"..
 			"image[9,7;1,1;crafting_creative_trash.png]"..
@@ -251,7 +272,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		minetest.show_formspec(player:get_player_name(), "detached:creative",  player:get_inventory_formspec())
 	end
 
-	if fields.build then		
+	if fields.blocks then
 		set_inv("#blocks",player)
 		page = "blocks"		
 	end
