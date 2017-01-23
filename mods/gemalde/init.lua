@@ -21,9 +21,16 @@ if n == 1 then
 	groups = {choppy=2, dig_immediate=3, picture=1, deco_block=1}
 end
 
+local desc
+if n == 1 then
+	desc = "Painting"
+else
+	desc = "Painting ("..n..")"
+end
+
 -- inivisible node
 minetest.register_node("gemalde:node_"..n.."", {
-	description = "Painting #"..n.."",
+	description = desc,
 	drawtype = "signlike",
 	tiles = {"gemalde_"..n..".png"},
 	visual_scale = 3.0,
@@ -37,6 +44,7 @@ minetest.register_node("gemalde:node_"..n.."", {
 	selection_box = {
 		type = "wallmounted",
 	},
+	drop = "gemalde:node_1",
 	groups = groups,
 
 	on_rightclick = function(pos, node, clicker)
