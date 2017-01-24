@@ -129,23 +129,31 @@ trash:set_size("main", 1)
 -- Create detached creative inventory after loading all mods
 minetest.after(0, init)
 
-local offset = {}
+local noffset = {} -- numeric tab offset
+local offset = {} -- string offset:
+local boffset = {} -- 
 local hoch = {}
 local bg = {}
 -- TODO: Investigate what is going on with this weird variable
 local start_i
-offset["blocks"] = "-0.29,-0.25"
-offset["deco"] = "0.98,-0.25"
-offset["redstone"] = "2.23,-0.25"
-offset["rail"] = "3.495,-0.25"
-offset["misc"] = "4.75,-0.25"
-offset["nix"] = "8.99,-0.25"
-offset["food"] = "-0.29,8.12"
-offset["tools"] = "0.98,8.12"
-offset["combat"] = "2.23,8.12"
-offset["brew"] = "3.495,8.12"
-offset["matr"] = "4.74,8.12"
-offset["inv"] = "8.99,8.12"
+
+noffset["blocks"] = {-0.29,-0.25}
+noffset["deco"] = {0.98,-0.25}
+noffset["redstone"] = {2.23,-0.25}
+noffset["rail"] = {3.495,-0.25}
+noffset["misc"] = {4.75,-0.25}
+noffset["nix"] = {8.99,-0.25}
+noffset["food"] = {-0.29,8.12}
+noffset["tools"] = {0.98,8.12}
+noffset["combat"] = {2.23,8.12}
+noffset["brew"] = {3.495,8.12}
+noffset["matr"] = {4.74,8.12}
+noffset["inv"] = {8.99,8.12}
+
+for k,v in pairs(noffset) do
+	offset[k] = tostring(v[1]) .. "," .. tostring(v[2])
+	boffset[k] = tostring(v[1]+0.19) .. "," .. tostring(v[2]+0.25)
+end
 
 hoch["blocks"] = ""
 hoch["deco"] = ""
@@ -216,7 +224,8 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 			else
 				img = "crafting_creative_inactive.png"
 			end
-			return "image[" .. offset[check] .. ";1.5,1.44;" .. img .. hoch[check].. "]"
+			return "image[" .. offset[check] .. ";1.5,1.44;" .. img .. hoch[check].. "]" ..
+				"image[" .. boffset[check] .. ";1,1;crafting_creative_marker.png]"
 		end
 		formspec = "size[10,9.3]"..
 			default.inventory_header..
@@ -243,22 +252,22 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 			"image[0,1;5,0.75;fnt_"..name..".png]"..
 			"list[current_player;main;0,7;9,1;]"..
 			main_list..
-			"item_image_button[-0.1,8.28;1,1;default:apple;food;]"..	--foodstuff
+			"item_image_button[-0.1,8.37;1,1;default:apple;food;]"..	--foodstuff
 			tab(name, "food") ..
 			"tooltip[food;Foodstuffs]"..
-			"item_image_button[1.15,8.28;1,1;default:axe_steel;tools;]"..	--tools
+			"item_image_button[1.15,8.37;1,1;default:axe_steel;tools;]"..	--tools
 			tab(name, "tools") ..
 			"tooltip[tools;Tools]"..
-			"item_image_button[2.415,8.28;1,1;default:sword_gold;combat;]"..	--combat
+			"item_image_button[2.415,8.37;1,1;default:sword_gold;combat;]"..	--combat
 			tab(name, "combat") ..
 			"tooltip[combat;Combat]"..
-			"item_image_button[3.693,8.28;1,1;mcl_potions:glass_bottle;brew;]"..	--brewing
+			"item_image_button[3.693,8.37;1,1;mcl_potions:glass_bottle;brew;]"..	--brewing
 			tab(name, "brew") ..
 			"tooltip[brew;Brewing]"..
-			"item_image_button[4.938,8.28;1,1;default:stick;matr;]"..	--materials
+			"item_image_button[4.938,8.37;1,1;default:stick;matr;]"..	--materials
 			tab(name, "matr") ..
 			"tooltip[matr;Materials]"..
-			"item_image_button[9.19,8.28;1,1;default:chest;inv;]"..			--inventory
+			"item_image_button[9.19,8.37;1,1;default:chest;inv;]"..			--inventory
 			tab(name, "inv") ..
 			"tooltip[inv;Survival Inventory]"..
 			"list[detached:creative_trash;main;9,7;1,1;]"..
