@@ -1,6 +1,19 @@
 crafting = {}
 crafting.creative_inventory_size = 0
 
+-- Prepare player info table
+local players = {}
+
+minetest.register_on_joinplayer(function(player)
+	local name = player:get_player_name()
+	if not players[name] then
+		players[name] = {}
+		players[name].page = "nix"
+		players[name].filter = ""
+		players[name].start_i = 0
+	end
+end)
+
 local function set_inv(filter, player)
 	local inv = minetest.get_inventory({type="detached", name="creative"})
 	inv:set_size("main", 0)
@@ -134,8 +147,6 @@ local offset = {} -- string offset:
 local boffset = {} -- 
 local hoch = {}
 local bg = {}
--- TODO: Investigate what is going on with this weird variable
-local start_i
 
 noffset["blocks"] = {-0.29,-0.25}
 noffset["deco"] = {0.98,-0.25}
@@ -295,6 +306,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.bgcolor then
 		minetest.chat_send_all("jupp")
 	end
+	local name = player:get_player_name()
+	if not name or name == "" then
+		minetest.log("error", "NONAME")
+	end
 	if fields.blocks then
 		set_inv("#blocks",player)
 		page = "blocks"		
@@ -337,19 +352,19 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		set_inv(string.lower(fields.suche),player)
 		page = "nix"
 	end
+
+	if page then
+		players[name].page = page
+	end
+	if players[name].page then
+		page = players[name].page
+	end
+
 	-- Figure out current page from formspec
-	local current_page = 0
 	local formspec = player:get_inventory_formspec()
 
 	local size = string.len(formspec)
-	local marker = string.sub(formspec,size-2)
-	marker = string.sub(marker,1)
-	if marker ~= nil and marker == "p" then
-		local page = string.sub(formspec,size-1)
-		--minetest.chat_send_all(page)
-		start_i = page
-	end
-	start_i = tonumber(start_i) or 0
+	local start_i = players[name].start_i
 	if fields.creative_prev then
 		start_i = start_i - 9*5
 	end
@@ -365,10 +380,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if start_i < 0 or start_i >= crafting.creative_inventory_size then
 		start_i = 0
 	end
+	players[name].start_i = start_i
 
 	local filter
 	if fields.suche ~= nil and fields.suche ~= "" then
 		filter = fields.suche
+		players[name].filter = filter
 	end
 
 	crafting.set_creative_formspec(player, start_i, start_i / (9*5) + 1, false, page, filter)

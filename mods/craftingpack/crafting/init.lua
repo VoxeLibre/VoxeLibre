@@ -137,9 +137,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 minetest.register_on_joinplayer(function(player)
- 	if minetest.setting_getbool("creative_mode") then
-		dofile(minetest.get_modpath("crafting").."/creative.lua")
-  	end
 	--init inventory
 	set_inventory(player)
 	player:get_inventory():set_width("main", 9)
@@ -187,4 +184,8 @@ minetest.register_craft({
 	recipe = "crafting:workbench",
 	burntime = 15,
 })
+
+if minetest.setting_getbool("creative_mode") then
+	dofile(minetest.get_modpath("crafting").."/creative.lua")
+end
 
