@@ -195,11 +195,13 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 
 	if page ~= nil then name = page end
 	bg[name] = "crafting_creative_bg.png"
+		local inv_bg = "crafting_inventory_creative.png"
 		if name == "inv" then
 			-- Survival inventory slots
 			main_list = "image[-0.2,1.7;11.35,2.33;crafting_creative_bg.png]"..
 				"list[current_player;main;0,3.75;9,3;9]"
 		else
+			inv_bg = inv_bg .. "^crafting_inventory_creative_scroll.png"
 			-- Creative inventory slots
 			main_list = "list[detached:creative;main;0,1.75;9,5;"..tostring(start_i).."]" ..
 			-- ... and scroll bar
@@ -218,7 +220,7 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 		end
 		formspec = "size[10,9.3]"..
 			default.inventory_header..
-			"background[-0.19,-0.25;10.5,9.87;crafting_inventory_creative.png]"..
+			"background[-0.19,-0.25;10.5,9.87;"..inv_bg.."]"..
 			"label[-5,-5;"..name.."]"..
 			"item_image_button[-0.1,0;1,1;default:brick;blocks;]"..	--build blocks
 			tab(name, "blocks") ..
