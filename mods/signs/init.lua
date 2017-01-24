@@ -272,7 +272,7 @@ minetest.register_node("signs:sign_yard", {
     }},
     selection_box = {type = "fixed", fixed = {-0.45, -0.15, -0.049, 0.45, 0.45, 0.049}},
     tiles = {"signs_top.png", "signs_bottom.png", "signs_side.png", "signs_side.png", "signs_back.png", "signs_front.png"},
-    groups = {choppy=2, dig_immediate=2, deco_block=1},
+    groups = sign_groups,
     drop = "signs:sign_wall",
 	stack_max = 16,
 

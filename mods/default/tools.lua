@@ -11,6 +11,7 @@ if minetest.setting_getbool("creative_mode") then
 		snappy = {times={[1]=0, [2]=0, [3]=0}, uses=0, maxlevel=255},
 		cracky = {times={[1]=0, [2]=0, [3]=0}, uses=0, maxlevel=255},
 		crumbly = {times={[1]=0, [2]=0, [3]=0}, uses=0, maxlevel=255},
+		choppy = {times={[1]=0, [2]=0, [3]=0}, uses=0, maxlevel=255},
 		oddly_breakable_by_hand = {times={[1]=0, [2]=0, [3]=0, [4]=0, [5]=0}, uses=0, maxlevel=255},
 	}
 else
