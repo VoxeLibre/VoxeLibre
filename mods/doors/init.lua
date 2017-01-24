@@ -239,7 +239,7 @@ function doors:register_door(name, def)
 		
 		after_dig_node = function(pos, oldnode, oldmetadata, digger)
 			pos.y = pos.y+1
-			after_dig_node(pos, name.."_t_2")
+			after_dig_node(pos, name.."_t_2", digger)
 		end,
 		
 		on_rightclick = function(pos, node, clicker)
