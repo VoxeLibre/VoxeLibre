@@ -30,48 +30,48 @@ local function set_inv(filter, player)
 				local is_weapon = function(def)
 					return def.groups.weapon or def.groups.weapon_ranged or def.groups.ammo or def.groups.armor_head or def.groups.armor_torso or def.groups.armor_legs or def.groups.armor_feet
 				end
-				if filter == "#blocks" then
+				if filter == "\0blocks" then
 					if def.groups.building_block then
 						table.insert(creative_list, name)
 					end
-				elseif filter == "#deco" then
+				elseif filter == "\0deco" then
 					if def.groups.deco_block then
 						table.insert(creative_list, name)
 					end
-				elseif filter == "#redstone" then
+				elseif filter == "\0redstone" then
 					if is_redstone(def) then
 						table.insert(creative_list, name)
 					end
-				elseif filter == "#rail" then
+				elseif filter == "\0rail" then
 					if def.groups.transport then
 						table.insert(creative_list, name)
 					end
-				elseif filter == "#food" then
+				elseif filter == "\0food" then
 					if def.groups.food or def.groups.eatable then
 						table.insert(creative_list, name)
 					end
-				elseif filter == "#tools" then
+				elseif filter == "\0tools" then
 					if is_tool(def) then
 						table.insert(creative_list, name)
 					end
-				elseif filter == "#combat" then
+				elseif filter == "\0combat" then
 					if is_weapon(def) then
 						table.insert(creative_list, name)
 					end
-				elseif filter == "#brew" then
+				elseif filter == "\0brew" then
 					if def.groups.brewitem then
 						table.insert(creative_list, name)
 					end
-				elseif filter == "#matr" then
+				elseif filter == "\0matr" then
 					if def.groups.craftitem then
 						table.insert(creative_list, name)
 					end
-				elseif filter == "#misc" then
+				elseif filter == "\0misc" then
 					if not def.groups.building_block and not def.groups.deco_block and not is_redstone(def) and not def.groups.transport and not def.groups.food and not def.groups.eatable and not is_tool(def) and not is_weapon(def) and not def.groups.craftitem and not def.groups.brewitem then
 
 						table.insert(creative_list, name)
 					end
-				elseif filter == "#all" then
+				elseif filter == "\0all" then
 					table.insert(creative_list, name)
 				else --for all other
 					if string.find(string.lower(def.name), filter) or string.find(string.lower(def.description), filter) then
@@ -120,7 +120,7 @@ local function init()
 			end
 		end,
 	})
-	set_inv("#all")
+	set_inv("\0all")
 end
 
 -- Create the trash field
@@ -311,42 +311,42 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		minetest.log("error", "NONAME")
 	end
 	if fields.blocks then
-		set_inv("#blocks",player)
+		set_inv("\0blocks",player)
 		page = "blocks"		
 	elseif fields.deco then
-		set_inv("#deco",player)
+		set_inv("\0deco",player)
 		page = "deco"
 	elseif fields.redstone then
-		set_inv("#redstone",player)
+		set_inv("\0redstone",player)
 		page = "redstone"
 	elseif fields.rail then
-		set_inv("#rail",player)
+		set_inv("\0rail",player)
 		page = "rail"
 	elseif fields.misc then
-		set_inv("#misc",player)
+		set_inv("\0misc",player)
 		page = "misc"
 	elseif fields.nix then
-		set_inv("#all",player)
+		set_inv("\0all",player)
 		page = "nix"
 	elseif fields.food then
-		set_inv("#food",player)
+		set_inv("\0food",player)
 		page = "food"
 	elseif fields.tools then
-		set_inv("#tools",player)
+		set_inv("\0tools",player)
 		page = "tools"
 	elseif fields.combat then
-		set_inv("#combat",player)
+		set_inv("\0combat",player)
 		page = "combat"
 	elseif fields.brew then
-		set_inv("#brew",player)
+		set_inv("\0brew",player)
 		page = "brew"
 	elseif fields.matr then
-		set_inv("#matr",player)
+		set_inv("\0matr",player)
 		page = "matr"
 	elseif fields.inv then
 		page = "inv"
 	elseif fields.suche == "" then
-		set_inv("#all", player)
+		set_inv("\0all", player)
 		page = "nix"
 	elseif fields.suche ~= nil then
 		set_inv(string.lower(fields.suche),player)
