@@ -3,13 +3,13 @@
 #!#!#!#Released under CC Attribution-ShareAlike 3.0 Unported #!#!#
 ]]--
 
-cake_texture = {"cake_top.png","cake_bottom.png","cake_inner.png","cake_side.png","cake_side.png","cake_side.png"}
-slice_1 = { -7/16, -8/16, -7/16, -5/16, 0/16, 7/16}
-slice_2 = { -7/16, -8/16, -7/16, -2/16, 0/16, 7/16}
-slice_3 = { -7/16, -8/16, -7/16, 1/16, 0/16, 7/16}
-slice_4 = { -7/16, -8/16, -7/16, 3/16, 0/16, 7/16}
-slice_5 = { -7/16, -8/16, -7/16, 5/16, 0/16, 7/16}
-slice_6 = { -7/16, -8/16, -7/16, 7/16, 0/16, 7/16}
+local cake_texture = {"cake_top.png","cake_bottom.png","cake_inner.png","cake_side.png","cake_side.png","cake_side.png"}
+local slice_1 = { -7/16, -8/16, -7/16, -5/16, 0/16, 7/16}
+local slice_2 = { -7/16, -8/16, -7/16, -2/16, 0/16, 7/16}
+local slice_3 = { -7/16, -8/16, -7/16, 1/16, 0/16, 7/16}
+local slice_4 = { -7/16, -8/16, -7/16, 3/16, 0/16, 7/16}
+local slice_5 = { -7/16, -8/16, -7/16, 5/16, 0/16, 7/16}
+local slice_6 = { -7/16, -8/16, -7/16, 7/16, 0/16, 7/16}
 
 minetest.register_craft({
 	output = "mcl_cake:cake",
@@ -46,7 +46,7 @@ minetest.register_node("mcl_cake:cake", {
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_5"), ItemStack("mcl_cake:cake"), clicker, {type="nothing"})
-		minetest.add_node(pos,{type="node",name="mcl_cake:cake_5",param2=param2})
+		minetest.add_node(pos,{type="node",name="mcl_cake:cake_5",param2=0})
 	end,
 	sounds = default.node_sound_leaves_defaults(),
 })
@@ -68,7 +68,7 @@ minetest.register_node("mcl_cake:cake_5", {
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_4"), ItemStack("mcl_cake:cake_5"), clicker, {type="nothing"})
-		minetest.add_node(pos,{type="node",name="mcl_cake:cake_4",param2=param2})
+		minetest.add_node(pos,{type="node",name="mcl_cake:cake_4",param2=0})
 	end,
 	sounds = default.node_sound_leaves_defaults(),
 })
@@ -90,7 +90,7 @@ minetest.register_node("mcl_cake:cake_4", {
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_3"), ItemStack("mcl_cake:cake_4"), clicker, {type="nothing"})
-		minetest.add_node(pos,{type="node",name="mcl_cake:cake_3",param2=param2})
+		minetest.add_node(pos,{type="node",name="mcl_cake:cake_3",param2=0})
 	end,
 	sounds = default.node_sound_leaves_defaults(),
 })
@@ -112,7 +112,7 @@ minetest.register_node("mcl_cake:cake_3", {
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_2"), ItemStack("mcl_cake:cake_3"), clicker, {type="nothing"})
-		minetest.add_node(pos,{type="node",name="mcl_cake:cake_2",param2=param2})
+		minetest.add_node(pos,{type="node",name="mcl_cake:cake_2",param2=0})
 	end,
 	sounds = default.node_sound_leaves_defaults(),
 })
@@ -134,7 +134,7 @@ minetest.register_node("mcl_cake:cake_2", {
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_1"), ItemStack("mcl_cake:cake_2"), clicker, {type="nothing"})
-		minetest.add_node(pos,{type="node",name="mcl_cake:cake_1",param2=param2})
+		minetest.add_node(pos,{type="node",name="mcl_cake:cake_1",param2=0})
 	end,
 	sounds = default.node_sound_leaves_defaults(),
 })

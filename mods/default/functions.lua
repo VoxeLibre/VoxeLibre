@@ -35,7 +35,7 @@ minetest.register_abm({
 --
 
 -- Functions
-grow_cactus = function(pos, node)
+local grow_cactus = function(pos, node)
 	pos.y = pos.y-1
 	local name = minetest.get_node(pos).name
 	if minetest.get_item_group(name, "sand") ~= 0 then
@@ -53,7 +53,7 @@ grow_cactus = function(pos, node)
 	end
 end
 
-grow_reeds = function(pos, node)
+local grow_reeds = function(pos, node)
 	pos.y = pos.y-1
 	local name = minetest.get_node(pos).name
 	if minetest.get_node_group(name, "soil_sugarcane") ~= 0 then

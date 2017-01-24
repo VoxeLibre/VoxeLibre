@@ -139,7 +139,7 @@ mobs:register_mob("mobs_mc:skeleton2", {
 mobs:register_spawn("mobs_mc:skeleton2", {"group:crumbly", "group:cracky", "group:choppy", "group:snappy"}, 7, -1, 5000, 4, -3000)
 
 
-arrows = {
+local arrows = {
 	{"mcl_throwing:arrow", "mcl_throwing:arrow_entity" },
 }
 

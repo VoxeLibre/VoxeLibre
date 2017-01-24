@@ -1,40 +1,7 @@
 crafting = {}
 crafting.creative_inventory_size = 0
 
-function init()
- local inv = minetest.create_detached_inventory("creative", {
-		allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
-			if minetest.setting_getbool("creative_mode") then
-				return count
-			else
-				return 0
-			end
-		end,
-		allow_put = function(inv, listname, index, stack, player)
-			return 0
-		end,
-		allow_take = function(inv, listname, index, stack, player)
-			if minetest.setting_getbool("creative_mode") then
-				return -1
-			else
-				return 0
-			end
-		end,
-		on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
-		end,
-		on_put = function(inv, listname, index, stack, player)
-		end,
-		on_take = function(inv, listname, index, stack, player)
-			print(player:get_player_name().." takes item from creative inventory; listname="..dump(listname)..", index="..dump(index)..", stack="..dump(stack))
-			if stack then
-				print("stack:get_name()="..dump(stack:get_name())..", stack:get_count()="..dump(stack:get_count()))
-			end
-		end,
-	})
-	set_inv("#all")
-end
-
-function set_inv(filter, player)
+local function set_inv(filter, player)
 	local inv = minetest.get_inventory({type="detached", name="creative"})
 	inv:set_size("main", 0)
 	local creative_list = {}
@@ -108,6 +75,39 @@ function set_inv(filter, player)
 	end
 	crafting.creative_inventory_size = #creative_list
 	--print("creative inventory size: "..dump(crafting.creative_inventory_size))
+end
+
+local function init()
+ local inv = minetest.create_detached_inventory("creative", {
+		allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
+			if minetest.setting_getbool("creative_mode") then
+				return count
+			else
+				return 0
+			end
+		end,
+		allow_put = function(inv, listname, index, stack, player)
+			return 0
+		end,
+		allow_take = function(inv, listname, index, stack, player)
+			if minetest.setting_getbool("creative_mode") then
+				return -1
+			else
+				return 0
+			end
+		end,
+		on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
+		end,
+		on_put = function(inv, listname, index, stack, player)
+		end,
+		on_take = function(inv, listname, index, stack, player)
+			print(player:get_player_name().." takes item from creative inventory; listname="..dump(listname)..", index="..dump(index)..", stack="..dump(stack))
+			if stack then
+				print("stack:get_name()="..dump(stack:get_name())..", stack:get_count()="..dump(stack:get_count()))
+			end
+		end,
+	})
+	set_inv("#all")
 end
 
 -- Create the trash field

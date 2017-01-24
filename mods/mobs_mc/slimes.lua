@@ -118,12 +118,10 @@ mobs:register_mob("mobs_mc:greenmedium", {
 	jump_chance = 100,
 	fear_height = 60,
 	on_die =function(self, pos)
-		lavasmall = minetest.add_entity(self.object:getpos(), "mobs_mc:greensmall")
-		lavasmall = minetest.add_entity(self.object:getpos(), "mobs_mc:greensmall")
-		lavasmall = minetest.add_entity(self.object:getpos(), "mobs_mc:greensmall")
-		lavasmall = minetest.add_entity(self.object:getpos(), "mobs_mc:greensmall")
-			ent = lavasmall:get_luaentity()
-			end
+		for i=1,4 do
+			minetest.add_entity(self.object:getpos(), "mobs_mc:greensmall")
+		end
+	end
 })
 
 mobs:register_mob("mobs_mc:greenbig", {
@@ -178,11 +176,11 @@ mobs:register_mob("mobs_mc:greenbig", {
 	jump_height = 8,
 	jump_chance = 100,
 	fear_height = 60,
-	on_die =function(self, pos)
-		lavasmall = minetest.add_entity(self.object:getpos(), "mobs_mc:greenmedium")
-		lavasmall = minetest.add_entity(self.object:getpos(), "mobs_mc:greenmedium")
-			ent = lavasmall:get_luaentity()
-			end
+	on_die = function(self, pos)
+		for i=1,2 do
+			minetest.add_entity(self.object:getpos(), "mobs_mc:greenmedium")
+		end
+	end,
 })
 mobs:register_spawn("mobs_mc:greensmall", {"default:flowing_water", "default:mossycobble"}, 7, -1, 5000, 4, 31000)
 mobs:register_spawn("mobs_mc:greenmedium", {"default:flowing_water", "default:mossycobble"}, 7, -1, 5000, 4, 31000)
@@ -302,13 +300,11 @@ mobs:register_mob("mobs_mc:lavabig", {
 	jump_height = 8,
 	jump_chance = 100,
 	fear_height = 60,
-	on_die =function(self, pos)
-		lavasmall = minetest.add_entity(self.object:getpos(), "mobs_mc:lavasmall")
-		lavasmall = minetest.add_entity(self.object:getpos(), "mobs_mc:lavasmall")
-		lavasmall = minetest.add_entity(self.object:getpos(), "mobs_mc:lavasmall")
-		lavasmall = minetest.add_entity(self.object:getpos(), "mobs_mc:lavasmall")
-			ent = lavasmall:get_luaentity()
-			end
+	on_die = function(self, pos)
+		for i=1,4 do
+			minetest.add_entity(self.object:getpos(), "mobs_mc:lavasmall")
+		end
+	end
 })
 
 mobs:register_spawn("mobs_mc:lavasmall", {"nether:rack", "default:lava"}, 7, -1, 5000, 4, 31000)

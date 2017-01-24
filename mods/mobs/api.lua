@@ -68,7 +68,7 @@ local atan = function(x)
 	end
 end
 
-do_attack = function(self, player)
+local do_attack = function(self, player)
 
 	if self.state ~= "attack" then
 
@@ -86,7 +86,7 @@ do_attack = function(self, player)
 	end
 end
 
-set_velocity = function(self, v)
+local set_velocity = function(self, v)
 
 	local yaw = self.object:getyaw() + self.rotate or 0
 
@@ -97,14 +97,14 @@ set_velocity = function(self, v)
 	})
 end
 
-get_velocity = function(self)
+local get_velocity = function(self)
 
 	local v = self.object:getvelocity()
 
 	return (v.x * v.x + v.z * v.z) ^ 0.5
 end
 
-set_animation = function(self, type)
+local set_animation = function(self, type)
 
 	if not self.animation then
 		return
@@ -199,7 +199,7 @@ set_animation = function(self, type)
 end
 
 -- check line of sight for walkers and swimmers alike
-function line_of_sight_water(self, pos1, pos2, stepsize)
+local function line_of_sight_water(self, pos1, pos2, stepsize)
 
 	local s, pos_w = minetest.line_of_sight(pos1, pos2, stepsize)
 
@@ -238,7 +238,7 @@ function line_of_sight_water(self, pos1, pos2, stepsize)
 end
 
 -- particle effects
-function effect(pos, amount, texture, min_size, max_size, radius, gravity)
+local function effect(pos, amount, texture, min_size, max_size, radius, gravity)
 
 	radius = radius or 2
 	min_size = min_size or 0.5
@@ -263,7 +263,7 @@ function effect(pos, amount, texture, min_size, max_size, radius, gravity)
 end
 
 -- check if mob is dead or only hurt
-function check_for_death(self)
+local function check_for_death(self)
 
 	-- has health actually changed?
 	if self.health == self.old_health then
@@ -350,7 +350,7 @@ function check_for_death(self)
 end
 
 -- check if within physical map limits (-30911 to 30927)
-function within_limits(pos, radius)
+local function within_limits(pos, radius)
 
 	if  (pos.x - radius) > -30913
 	and (pos.x + radius) <  30928
@@ -407,7 +407,7 @@ local function node_ok(pos, fallback)
 end
 
 -- environmental damage (water, lava, fire, light)
-do_env_damage = function(self)
+local do_env_damage = function(self)
 
 	-- feed/tame text timer (so mob 'full' messages dont spam chat)
 	if self.htimer > 0 then
@@ -480,7 +480,7 @@ do_env_damage = function(self)
 end
 
 -- jump if facing a solid node (not fences or gates)
-do_jump = function(self)
+local do_jump = function(self)
 
 	if self.fly
 	or self.child then
@@ -550,7 +550,7 @@ local get_distance = function(a, b)
 end
 
 -- blast damage to entities nearby (modified from TNT mod)
-function entity_physics(pos, radius)
+local function entity_physics(pos, radius)
 
 	radius = radius * 2
 
@@ -582,7 +582,7 @@ function entity_physics(pos, radius)
 end
 
 -- should mob follow what I'm holding ?
-function follow_holding(self, clicker)
+local function follow_holding(self, clicker)
 
 	if mobs.invis[clicker:get_player_name()] then
 		return false
@@ -745,7 +745,7 @@ local function breed(self)
 end
 
 -- find and replace what mob is looking for (grass, wheat etc.)
-function replace(self, pos)
+local function replace(self, pos)
 
 	if self.replace_rate
 	and self.child == false
@@ -774,7 +774,7 @@ function replace(self, pos)
 end
 
 -- check if daytime and also if mob is docile during daylight hours
-function day_docile(self)
+local function day_docile(self)
 
 	if self.docile_by_day == false then
 
@@ -789,7 +789,7 @@ function day_docile(self)
 end
 
 -- path finding and smart mob routine by rnd
-function smart_mobs(self, s, p, dist, dtime)
+local function smart_mobs(self, s, p, dist, dtime)
 
 	local s1 = self.path.lastpos
 
@@ -1057,9 +1057,9 @@ local npc_attack = function(self)
 		if obj
 		and obj.type == "monster" then
 
-			p = obj.object:getpos()
+			local p = obj.object:getpos()
 
-			dist = get_distance(p, s)
+			local dist = get_distance(p, s)
 
 			if dist < min_dist then
 				min_dist = dist

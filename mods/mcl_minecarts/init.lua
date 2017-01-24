@@ -2,7 +2,7 @@ mcl_minecarts = {}
 mcl_minecarts.modpath = minetest.get_modpath("mcl_minecarts")
 mcl_minecarts.speed_max = 10
 
-function vector.floor(v)
+local vector_floor = function(v)
 	return {
 		x = math.floor(v.x),
 		y = math.floor(v.y),
@@ -52,7 +52,7 @@ end
 function mcl_minecarts.cart:on_punch(puncher, time_from_last_punch, tool_capabilities, direction)
 	local pos = self.object:getpos()
 	if not self._railtype then
-		local node = minetest.get_node(vector.floor(pos)).name
+		local node = minetest.get_node(vector_floor(pos)).name
 		self._railtype = minetest.get_item_group(node, "connect_to_raillike")
 	end
 	
@@ -120,8 +120,8 @@ function mcl_minecarts.cart:on_step(dtime)
 	local dir, last_switch = nil, nil
 	local pos = self.object:getpos()
 	if self._old_pos and not self._punched then
-		local flo_pos = vector.floor(pos)
-		local flo_old = vector.floor(self._old_pos)
+		local flo_pos = vector_floor(pos)
+		local flo_old = vector_floor(self._old_pos)
 		if vector.equals(flo_pos, flo_old) then
 			return
 		end

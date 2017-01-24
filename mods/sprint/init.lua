@@ -1,4 +1,4 @@
-player_running_physics = {}
+local player_running_physics = {}
 minetest.register_globalstep(function(dtime)
 	for _,player in ipairs(minetest.get_connected_players()) do
 		--local pos = player:getpos()

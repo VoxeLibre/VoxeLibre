@@ -13,9 +13,7 @@ minetest.register_globalstep(function(dtime)
 			return false
 		end
 		if has_compass(player) then
-			local spawn = beds_player_spawns[player:get_player_name()] or
-			              minetest.setting_get("static_spawnpoint") or
-			              {x=0,y=0,z=0}
+			local spawn = minetest.setting_get("static_spawnpoint") or {x=0,y=0,z=0}
 			local pos = player:getpos()
 			local dir = player:get_look_horizontal()
 			local angle_north = math.deg(math.atan2(spawn.x - pos.x, spawn.z - pos.z))

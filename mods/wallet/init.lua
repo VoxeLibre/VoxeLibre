@@ -53,7 +53,7 @@ local function update_wall(pos)
 	minetest.add_node(pos, {name = basename..sum})
 end
 
-function update_wall_global(pos)
+local function update_wall_global(pos)
 	for i = 1,5 do
 		local dir = directions[i]
 		update_wall({x = pos.x + dir.x, y = pos.y + dir.y, z = pos.z + dir.z})

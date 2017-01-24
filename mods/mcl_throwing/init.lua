@@ -2,7 +2,7 @@
 dofile(minetest.get_modpath("mcl_throwing").."/arrow.lua")
 dofile(minetest.get_modpath("mcl_throwing").."/throwable.lua")
 
-arrows = {
+local arrows = {
 	{"mcl_throwing:arrow", "mcl_throwing:arrow_entity"},
 }
 
@@ -34,7 +34,7 @@ minetest.register_tool("mcl_throwing:bow", {
 	inventory_image = "mcl_throwing_bow.png",
     stack_max = 1,
 	on_place = function(itemstack, placer, pointed_thing)
-		wear = itemstack:get_wear()
+		local wear = itemstack:get_wear()
 		itemstack:replace("mcl_throwing:bow_0")
 		itemstack:add_wear(wear)
 		return itemstack
@@ -58,13 +58,13 @@ minetest.register_tool("mcl_throwing:bow_0", {
     stack_max = 1,
 	groups = {not_in_creative_inventory=1},
 	on_place = function(itemstack, placer, pointed_thing)
-		wear = itemstack:get_wear()
+		local wear = itemstack:get_wear()
 		itemstack:replace("mcl_throwing:bow_1")
 		itemstack:add_wear(wear)
 		return itemstack
 	end,
 		on_use = function(itemstack, user, pointed_thing)
-		wear = itemstack:get_wear()
+		local wear = itemstack:get_wear()
 		itemstack:add_wear(wear)
 		if mcl_throwing_shoot_arrow(itemstack, user, pointed_thing) then
 			if not minetest.setting_getbool("creative_mode") then
@@ -81,13 +81,13 @@ minetest.register_tool("mcl_throwing:bow_1", {
     stack_max = 1,
 	groups = {not_in_creative_inventory=1},
 	on_place = function(itemstack, placer, pointed_thing)
-		wear = itemstack:get_wear()
+		local wear = itemstack:get_wear()
 		itemstack:replace("mcl_throwing:bow_2")
 		itemstack:add_wear(wear)
 		return itemstack
 	end,
 	on_use = function(itemstack, user, pointed_thing)
-		wear = itemstack:get_wear()
+		local wear = itemstack:get_wear()
 		itemstack:add_wear(wear)
 		if mcl_throwing_shoot_arrow(itemstack, user, pointed_thing) then
 			if not minetest.setting_getbool("creative_mode") then
@@ -104,7 +104,7 @@ minetest.register_tool("mcl_throwing:bow_2", {
     stack_max = 1,
 	groups = {not_in_creative_inventory=1},
 	on_use = function(itemstack, user, pointed_thing)
-		wear = itemstack:get_wear()
+		local wear = itemstack:get_wear()
 		itemstack:replace("mcl_throwing:bow")
 		itemstack:add_wear(wear)
 		if mcl_throwing_shoot_arrow(itemstack, user, pointed_thing) then

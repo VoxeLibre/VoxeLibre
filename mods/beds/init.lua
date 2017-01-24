@@ -16,7 +16,7 @@ local function get_dir(pos)
 	end
 end
 
-function plock(start, max, tick, player, yaw)
+local function plock(start, max, tick, player, yaw)
 	if start+tick < max then
 		player:set_look_pitch(-1.2)
 		player:set_look_yaw(yaw)
@@ -27,7 +27,7 @@ function plock(start, max, tick, player, yaw)
 	end
 end
 
-function exit(pos)
+local function exit(pos)
 	local npos = minetest.find_node_near(pos, 1, "beds:bed_bottom")
 	if npos ~= nil then pos = npos end
 	if minetest.get_node({x=pos.x+1,y=pos.y,z=pos.z}).name == "air" then
@@ -173,7 +173,7 @@ minetest.register_craft({
 	}
 })
 
-beds_player_spawns = {}
+local beds_player_spawns = {}
 local file = io.open(minetest.get_worldpath().."/beds_player_spawns", "r")
 if file then
 	beds_player_spawns = minetest.deserialize(file:read("*all"))

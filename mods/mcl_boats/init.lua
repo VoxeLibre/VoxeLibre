@@ -138,7 +138,7 @@ local names = { "Oak Boat", "Spruce Boat", "Birch Boat", "Jungle Boat", "Dark Oa
 local craftstuffs = { "default:wood", "default:sprucewood", "default:birchwood", "default:junglewood", "default:darkwood", "default:acaciawood" }
 
 for w=1, #woods do
-	textures = {"mcl_boats_texture.png"},
+	local textures = {"mcl_boats_texture.png"}
 	minetest.register_entity("mcl_boats:boat"..woods[w], boat)
 
 	minetest.register_craftitem("mcl_boats:boat"..woods[w], {

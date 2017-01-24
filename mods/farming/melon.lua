@@ -26,7 +26,7 @@ minetest.register_node("farming:melon", {
 		end
 		if have_change == 0 then
 			for z=-1,1 do
-				p = {x=pos.x, y=pos.y, z=pos.z+z}
+				local p = {x=pos.x, y=pos.y, z=pos.z+z}
 				local n = minetest.get_node(p)
 				if string.find(n.name, "melontige_linked_") and have_change == 0 then
 						have_change = 1
@@ -249,9 +249,9 @@ minetest.register_abm({
 		end
 		if have_change == 0 then
 			for z=-1,1 do
-					p = {x=pos.x, y=pos.y-1, z=pos.z+z}
+					local p = {x=pos.x, y=pos.y-1, z=pos.z+z}
 					newpos = {x=pos.x, y=pos.y, z=pos.z+z}
-					n = minetest.get_node(p)
+					local n = minetest.get_node(p)
 					local nod2 = minetest.get_node(newpos)
 					if n.name=="default:dirt_with_grass" and nod2.name=="air" and have_change == 0 
 					or n.name=="default:dirt" and nod2.name=="air" and have_change == 0 

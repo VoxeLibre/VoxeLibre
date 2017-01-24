@@ -142,7 +142,7 @@ mobs:register_mob("mobs_mc:wolf", {
 	lava_damage = 5,
 	light_damage = 0,
 	on_rightclick = function(self, clicker)
-		tool = clicker:get_wielded_item()
+		local tool = clicker:get_wielded_item()
 		local dog
 		local ent
 		if tool:get_name() == "mcl_mobitems:meat_raw" then

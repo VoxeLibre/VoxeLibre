@@ -39,7 +39,7 @@ local function get_v(v)
 	return math.sqrt(v.x^2+v.z^2)
 end
 
-function merge(a, b)
+local function merge(a, b)
     if type(a) == 'table' and type(b) == 'table' then
         for k,v in pairs(b) do if type(v)=='table' and type(a[k] or false)=='table' then merge(a[k],v) else a[k]=v end end
     end
