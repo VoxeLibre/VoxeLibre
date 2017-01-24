@@ -303,13 +303,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		return
 	end
 
-	if fields.bgcolor then
-		minetest.chat_send_all("jupp")
-	end
 	local name = player:get_player_name()
-	if not name or name == "" then
-		minetest.log("error", "NONAME")
-	end
+
 	if fields.blocks then
 		set_inv("\0blocks",player)
 		page = "blocks"		
@@ -345,10 +340,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		page = "matr"
 	elseif fields.inv then
 		page = "inv"
-	elseif fields.suche == "" then
+	elseif fields.suche == "" and not fields.creative_next and not fields.creative_prev then
 		set_inv("\0all", player)
 		page = "nix"
-	elseif fields.suche ~= nil then
+	elseif fields.suche ~= nil and not fields.creative_next and not fields.creative_prev then
 		set_inv(string.lower(fields.suche),player)
 		page = "nix"
 	end
