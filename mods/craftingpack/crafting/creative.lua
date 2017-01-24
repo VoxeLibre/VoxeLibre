@@ -203,8 +203,13 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 	reset_menu_item_bg()
 	pagenum = math.floor(pagenum) or 1
 	local pagemax = math.floor((crafting.creative_inventory_size-1) / (9*5) + 1)
-	local slider_height = 4/pagemax
-	local slider_pos = slider_height*(pagenum-1)+2.25
+	local slider_height
+	if pagemax == 1 then
+		slider_height = 4.525
+	else
+		slider_height = 4/pagemax
+	end
+	local slider_pos = slider_height*(pagenum-1)+2.20
 	local name = "nix"
 	local formspec = ""
 	local main_list
