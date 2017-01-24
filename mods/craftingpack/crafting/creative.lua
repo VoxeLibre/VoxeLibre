@@ -188,7 +188,7 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 	local slider_pos = slider_height*(pagenum-1)+2.25
 	local name = "nix"
 	local formspec = ""
-	local main_list = "list[detached:creative;main;0,1.75;9,5;"..tostring(start_i).."]"
+	local main_list
 	local listrings = "listring[detached:creative;main]"..
 		"listring[current_player;main]"..
 		"listring[detached:creative_trash;main]"
@@ -196,8 +196,16 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 	if page ~= nil then name = page end
 	bg[name] = "crafting_creative_bg.png"
 		if name == "inv" then
+			-- Survival inventory slots
 			main_list = "image[-0.2,1.7;11.35,2.33;crafting_creative_bg.png]"..
 				"list[current_player;main;0,3.75;9,3;9]"
+		else
+			-- Creative inventory slots
+			main_list = "list[detached:creative;main;0,1.75;9,5;"..tostring(start_i).."]" ..
+			-- ... and scroll bar
+				"image_button[9.03,1.74;0.85,0.6;crafting_creative_up.png;creative_prev;]"..
+				"image[9.04," .. tostring(slider_pos) .. ";0.75,"..tostring(slider_height) .. ";crafting_slider.png]"..
+				"image_button[9.03,6.15;0.85,0.6;crafting_creative_down.png;creative_next;]"
 		end
 		local function tab(current, check)
 			local img
@@ -233,9 +241,6 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 			"image[0,1;5,0.75;fnt_"..name..".png]"..
 			"list[current_player;main;0,7;9,1;]"..
 			main_list..
-			"image_button[9.03,1.74;0.85,0.6;crafting_creative_up.png;creative_prev;]"..
-			"image[9.04," .. tostring(slider_pos) .. ";0.75,"..tostring(slider_height) .. ";crafting_slider.png]"..
-			"image_button[9.03,6.15;0.85,0.6;crafting_creative_down.png;creative_next;]"..
 			"item_image_button[-0.1,8.28;1,1;default:apple;food;]"..	--foodstuff
 			tab(name, "food") ..
 			"tooltip[food;Foodstuffs]"..
