@@ -4,18 +4,9 @@ crafting.creative_inventory_size = 0
 -- Prepare player info table
 local players = {}
 
-minetest.register_on_joinplayer(function(player)
-	local name = player:get_player_name()
-	if not players[name] then
-		players[name] = {}
-		players[name].page = "nix"
-		players[name].filter = ""
-		players[name].start_i = 0
-	end
-end)
-
 local function set_inv(filter, player)
-	local inv = minetest.get_inventory({type="detached", name="creative"})
+	local playername = player:get_player_name()
+	local inv = minetest.get_inventory({type="detached", name="creative_"..playername})
 	inv:set_size("main", 0)
 	local creative_list = {}
 	for name,def in pairs(minetest.registered_items) do
@@ -87,11 +78,11 @@ local function set_inv(filter, player)
 		inv:add_item("main", ItemStack(itemstring))
 	end
 	crafting.creative_inventory_size = #creative_list
-	--print("creative inventory size: "..dump(crafting.creative_inventory_size))
 end
 
-local function init()
- local inv = minetest.create_detached_inventory("creative", {
+local function init(player)
+	local playername = player:get_player_name()
+	local inv = minetest.create_detached_inventory("creative_"..playername, {
 		allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
 			if minetest.setting_getbool("creative_mode") then
 				return count
@@ -119,12 +110,12 @@ local function init()
 				print("stack:get_name()="..dump(stack:get_name())..", stack:get_count()="..dump(stack:get_count()))
 			end
 		end,
-	})
-	set_inv("\0all")
+	}, playername)
+	set_inv("\0all", player)
 end
 
 -- Create the trash field
-local trash = minetest.create_detached_inventory("creative_trash", {
+local trash = minetest.create_detached_inventory("trash", {
 	allow_put = function(inv, listname, index, stack, player)
 		if minetest.setting_getbool("creative_mode") then
 			return stack:get_count()
@@ -137,10 +128,6 @@ local trash = minetest.create_detached_inventory("creative_trash", {
 	end,
 })
 trash:set_size("main", 1)
-
-
--- Create detached creative inventory after loading all mods
-minetest.after(0, init)
 
 local noffset = {} -- numeric tab offset
 local offset = {} -- string offset:
@@ -213,9 +200,10 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 	local name = "nix"
 	local formspec = ""
 	local main_list
-	local listrings = "listring[detached:creative;main]"..
+	local playername = player:get_player_name()
+	local listrings = "listring[detached:creative_"..playername..";main]"..
 		"listring[current_player;main]"..
-		"listring[detached:creative_trash;main]"
+		"listring[detached:trash;main]"
 
 	if page ~= nil then name = page end
 	bg[name] = "crafting_creative_bg.png"
@@ -227,7 +215,7 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 		else
 			inv_bg = inv_bg .. "^crafting_inventory_creative_scroll.png"
 			-- Creative inventory slots
-			main_list = "list[detached:creative;main;0,1.75;9,5;"..tostring(start_i).."]" ..
+			main_list = "list[detached:creative_"..playername..";main;0,1.75;9,5;"..tostring(start_i).."]" ..
 			-- ... and scroll bar
 				"image_button[9.03,1.74;0.85,0.6;crafting_creative_up.png;creative_prev;]"..
 				"image[9.04," .. tostring(slider_pos) .. ";0.75,"..tostring(slider_height) .. ";crafting_slider.png]"..
@@ -286,7 +274,7 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 			"item_image_button[9.19,8.37;1,1;default:chest;inv;]"..			--inventory
 			tab(name, "inv") ..
 			"tooltip[inv;Survival Inventory]"..
-			"list[detached:creative_trash;main;9,7;1,1;]"..
+			"list[detached:trash;main;9,7;1,1;]"..
 			"image[9,7;1,1;crafting_creative_trash.png]"..
 			listrings
 
@@ -413,3 +401,14 @@ if minetest.setting_getbool("creative_mode") then
 	end
 	
 end
+
+minetest.register_on_joinplayer(function(player)
+	local name = player:get_player_name()
+	if not players[name] then
+		players[name] = {}
+		players[name].page = "nix"
+		players[name].filter = ""
+		players[name].start_i = 0
+	end
+	init(player)
+end)
