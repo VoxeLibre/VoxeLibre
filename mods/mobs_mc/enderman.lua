@@ -30,7 +30,7 @@ mobs:register_mob("mobs_mc:enderman", {
 	damage = 1,
 	armor = 100,
 	drops = {
-		{name = "mcl_ender_pearl:ender_pearl",
+		{name = "mcl_throwing:ender_pearl",
 		chance = 1,
 		min = 0,
 		max = 1,},
