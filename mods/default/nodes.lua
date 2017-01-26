@@ -1112,7 +1112,7 @@ minetest.register_node("default:vine", {
 			local node = minetest.get_node(pos2)
 			if node.name == "default:vine" and check_attached_node(pos2, node) == false then
 				drop_attached_node(pos2)
-				nodeupdate(pos2)
+				core.check_for_falling(pos2)
 				ptr = ptr + 1
 			else
 				next_find = false

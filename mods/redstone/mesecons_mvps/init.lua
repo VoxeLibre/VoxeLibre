@@ -20,7 +20,7 @@ end
 function mesecon:mvps_process_stack(stack)
 	-- update mesecons for placed nodes ( has to be done after all nodes have been added )
 	for _, n in ipairs(stack) do
-		nodeupdate(n.pos)
+		core.check_for_falling(n.pos)
 		mesecon.on_placenode(n.pos, minetest.get_node(n.pos))
 		mesecon:update_autoconnect(n.pos)
 	end
@@ -92,8 +92,8 @@ function mesecon:mvps_pull_single(pos, dir) -- pos: pos of mvps; direction: dire
 		minetest.add_node(pos, nn)
 		minetest.get_meta(pos):from_table(meta)
 
-		nodeupdate(np)
-		nodeupdate(pos)
+		core.check_for_falling(np)
+		core.check_for_falling(pos)
 		mesecon.on_dignode(np, nn)
 		mesecon:update_autoconnect(np)
 	end
@@ -113,7 +113,7 @@ function mesecon:mvps_pull_all(pos, direction) -- pos: pos of mvps; direction: d
 		repeat
 			lnode2 = minetest.get_node(lpos2)
 			minetest.add_node(oldpos, {name=lnode2.name})
-			nodeupdate(oldpos)
+			core.check_for_falling(oldpos)
 			oldpos = {x=lpos2.x, y=lpos2.y, z=lpos2.z}
 			lpos2.x = lpos2.x-direction.x
 			lpos2.y = lpos2.y-direction.y

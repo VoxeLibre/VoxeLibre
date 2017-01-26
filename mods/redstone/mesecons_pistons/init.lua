@@ -63,7 +63,7 @@ local piston_remove_pusher = function (pos, node)
 
 	if pushername == pistonspec.pusher then --make sure there actually is a pusher (for compatibility reasons mainly)
 		minetest.remove_node(pusherpos)
-		nodeupdate(pusherpos)
+		core.check_for_falling(pusherpos)
 	end
 end
 

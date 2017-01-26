@@ -34,7 +34,7 @@ tnt = {}
 tnt.ignite = function(pos)
 	minetest.remove_node(pos)
 	spawn_tnt(pos, "mcl_tnt:tnt")
-	nodeupdate(pos)
+	core.check_for_falling(pos)
 end
 
 
@@ -111,7 +111,7 @@ function TNT:on_step(dtime)
 						if n.name ~= "air" and n.name ~= "default:obsidian" and n.name ~= "default:bedrock" and n.name ~= "protector:protect" then
 							activate_if_tnt(n.name, np, pos, 3)
 							minetest.remove_node(np)
-							nodeupdate(np)
+							core.check_for_falling(np)
 							if n.name ~= "mcl_tnt:tnt" and math.random() > 0.9 then
 								local drop = minetest.get_node_drops(n.name, "")
 									for _,item in ipairs(drop) do
