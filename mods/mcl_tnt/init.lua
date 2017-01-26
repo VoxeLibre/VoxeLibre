@@ -72,7 +72,7 @@ local TNT = {
 function TNT:on_activate(staticdata)
 	self.object:setvelocity({x=0, y=4, z=0})
 	self.object:setacceleration({x=0, y=-10, z=0})
-	self.object:settexturemod("^tnt_blink.png")
+	self.object:settexturemod("^mcl_tnt_blink.png")
 end
 
 function TNT:on_step(dtime)
