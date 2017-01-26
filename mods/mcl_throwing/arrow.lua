@@ -70,7 +70,8 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 	end
 
 	if self.lastpos.x~=nil then
-		if node.name ~= "air" then
+		local def = minetest.registered_nodes[node.name]
+		if (def and def.walkable) or not def then
 			minetest.add_item(self.lastpos, 'mcl_throwing:arrow')
 			self.object:remove()
 		end

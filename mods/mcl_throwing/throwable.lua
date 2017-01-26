@@ -83,10 +83,11 @@ local on_step = function(self, dtime)
 	self.timer=self.timer+dtime
 	local pos = self.object:getpos()
 	local node = minetest.get_node(pos)
+	local def = minetest.registered_nodes[node.name]
 
-	-- Remove when hitting a node.
+	-- Destroy when hitting a solid node
 	if self._lastpos.x~=nil then
-		if node.name ~= "air" then
+		if (def and def.walkable) or not def then
 			self.object:remove()
 			return
 		end
@@ -99,10 +100,11 @@ local pearl_on_step = function(self, dtime)
 	self.timer=self.timer+dtime
 	local pos = self.object:getpos()
 	local node = minetest.get_node(pos)
+	local def = minetest.registered_nodes[node.name]
 
-	--Become item when hitting a node.
+	-- Destroy when hitting a solid node
 	if self._lastpos.x~=nil then
-		if node.name ~= "air" then
+		if (def and def.walkable) or not def then
 			local player = minetest.get_player_by_name(self._thrower)
 			if player then
 				-- Teleport and hurt player
