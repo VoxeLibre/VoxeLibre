@@ -16,7 +16,9 @@ local throw_function = function (entity_name, velocity)
 		obj:setvelocity({x=dir.x*velocity, y=dir.y*velocity, z=dir.z*velocity})
 		obj:setacceleration({x=dir.x*-3, y=-GRAVITY, z=dir.z*-3})
 		obj:get_luaentity()._thrower = player:get_player_name()
-		item:take_item()
+		if not minetest.setting_getbool("creative_mode") then
+			item:take_item()
+		end
 		return item
 	end
 	return func
