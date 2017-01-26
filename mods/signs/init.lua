@@ -226,9 +226,7 @@ minetest.register_node("signs:sign_wall", {
         local sign_info
         if wdir == 0 then
             --how would you add sign to ceiling?
-            minetest.add_item(above, "signs:sign_wall")
-			itemstack:take_item()
-			return itemstack
+		return itemstack
         elseif wdir == 1 then
             minetest.add_node(above, {name = "signs:sign_yard", param2 = fdir})
             sign_info = signs_yard[fdir + 1]

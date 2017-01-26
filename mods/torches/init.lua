@@ -27,6 +27,7 @@ minetest.register_node(":default:torch", {
 		wall_bottom = {-1/16, -0.5, -1/16, 1/16, 2/16, 1/16},
 	},
 	sounds = default.node_sound_wood_defaults(),
+	node_placement_prediction = "",
 	on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type ~= "node" then
 			-- no interaction possible with entities, for now.
@@ -45,7 +46,11 @@ minetest.register_node(":default:torch", {
 		local wdir = minetest.dir_to_wallmounted({x = under.x - above.x, y = under.y - above.y, z = under.z - above.z})
 		local fakestack = itemstack
 		local retval
-		if wdir <= 1 then
+
+		if wdir == 0 then
+			-- Prevent placement of ceiling torches
+			return itemstack
+		elseif wdir == 1 then
 			retval = fakestack:set_name("default:torch")
 		else
 			retval = fakestack:set_name("default:torch_wall")
