@@ -4,7 +4,7 @@ local function spawn_tnt(pos, entname)
 end
 
 local function activate_if_tnt(nname, np, tnt_np, tntr)
-    if nname == "tnt:tnt" then
+    if nname == "mcl_tnt:tnt" then
         local e = spawn_tnt(np, nname)
         e:setvelocity({x=(np.x - tnt_np.x)*5+(tntr / 4), y=(np.y - tnt_np.y)*5+(tntr / 3), z=(np.z - tnt_np.z)*5+(tntr / 4)})
     end
@@ -16,7 +16,7 @@ local function do_tnt_physics(tnt_np,tntr)
         local oname = obj:get_entity_name()
         local v = obj:getvelocity()
         local p = obj:getpos()
-        if oname == "tnt:tnt" then
+        if oname == "mcl_tnt:tnt" then
             obj:setvelocity({x=(p.x - tnt_np.x) + (tntr / 2) + v.x, y=(p.y - tnt_np.y) + tntr + v.y, z=(p.z - tnt_np.z) + (tntr / 2) + v.z})
         else
             if v ~= nil then
@@ -33,12 +33,12 @@ end
 tnt = {}
 tnt.ignite = function(pos)
 	minetest.remove_node(pos)
-	spawn_tnt(pos, "tnt:tnt")
+	spawn_tnt(pos, "mcl_tnt:tnt")
 	nodeupdate(pos)
 end
 
 
-minetest.register_node("tnt:tnt", {
+minetest.register_node("mcl_tnt:tnt", {
 	tiles = {"default_tnt_top.png", "default_tnt_bottom.png",
 			"default_tnt_side.png", "default_tnt_side.png",
 			"default_tnt_side.png", "default_tnt_side.png"},
@@ -77,7 +77,7 @@ end
 
 function TNT:on_step(dtime)
 	local pos = self.object:getpos()
-	minetest.add_particle({x=pos.x,y=pos.y+0.5,z=pos.z}, {x=math.random(-.1,.1),y=math.random(1,2),z=math.random(-.1,.1)}, {x=0,y=-0.1,z=0}, math.random(.5,1),math.random(1,2), false, "tnt_smoke.png")
+	minetest.add_particle({x=pos.x,y=pos.y+0.5,z=pos.z}, {x=math.random(-.1,.1),y=math.random(1,2),z=math.random(-.1,.1)}, {x=0,y=-0.1,z=0}, math.random(.5,1),math.random(1,2), false, "mcl_tnt_smoke.png")
 	self.timer = self.timer + dtime
 	self.blinktimer = self.blinktimer + dtime
 	if self.blinktimer > 0.5 then
@@ -85,7 +85,7 @@ function TNT:on_step(dtime)
 		if self.blinkstatus then
 			self.object:settexturemod("")
 		else
-			self.object:settexturemod("^tnt_blink.png")
+			self.object:settexturemod("^mcl_tnt_blink.png")
 		end
 		self.blinkstatus = not self.blinkstatus
 	end
@@ -112,7 +112,7 @@ function TNT:on_step(dtime)
 							activate_if_tnt(n.name, np, pos, 3)
 							minetest.remove_node(np)
 							nodeupdate(np)
-							if n.name ~= "tnt:tnt" and math.random() > 0.9 then
+							if n.name ~= "mcl_tnt:tnt" and math.random() > 0.9 then
 								local drop = minetest.get_node_drops(n.name, "")
 									for _,item in ipairs(drop) do
 										if type(item) == "string" then
@@ -131,10 +131,10 @@ function TNT:on_step(dtime)
 	end
 end
 
-minetest.register_entity("tnt:tnt", TNT)
+minetest.register_entity("mcl_tnt:tnt", TNT)
 
 minetest.register_craft({
-	output = "tnt:tnt",
+	output = "mcl_tnt:tnt",
 	recipe = {
 		{'default:gunpowder','group:sand','default:gunpowder'},
 		{'group:sand','default:gunpowder','group:sand'},

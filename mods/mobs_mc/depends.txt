@@ -1,5 +1,5 @@
 default
 fire
 mobs
-tnt
+mcl_tnt
 mcl_mobitems
