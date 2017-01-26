@@ -3,9 +3,9 @@
 --
 
 local GRAVITY = tonumber(minetest.setting_get("movement_gravity"))
-local snowball_VELOCITY=19
-local egg_VELOCITY=19
-local pearl_VELOCITY=19
+local snowball_VELOCITY=24
+local egg_VELOCITY=24
+local pearl_VELOCITY=24
 
 --Shoot item
 local throw_function = function (entity_name, velocity)
