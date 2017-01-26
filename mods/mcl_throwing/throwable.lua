@@ -24,28 +24,57 @@ local throw_function = function (entity_name, velocity)
 	return func
 end
 
+-- Staticdata handling because objects may want to be reloaded
+local get_staticdata = function(self)
+	local data = {
+		_lastpos = self._lastpos,
+		_thrower = self._thrower,
+	}
+	return minetest.serialize(data)
+end
+
+local on_activate = function(self, staticdata, dtime_s)
+	local data = minetest.deserialize(staticdata)
+	if data then
+		self._lastpos = data._lastpos
+		self._thrower = data._thrower
+	end
+end
+
 -- The snowball entity
 local snowball_ENTITY={
 	physical = false,
 	timer=0,
 	textures = {"mcl_throwing_snowball.png"},
-	_lastpos={},
 	collisionbox = {0,0,0,0,0,0},
+
+	get_staticdata = get_staticdata,
+	on_activate = on_activate,
+
+	_lastpos={},
 }
 local egg_ENTITY={
 	physical = false,
 	timer=0,
 	textures = {"mcl_throwing_egg.png"},
-	_lastpos={},
 	collisionbox = {0,0,0,0,0,0},
+
+	get_staticdata = get_staticdata,
+	on_activate = on_activate,
+
+	_lastpos={},
 }
 -- Ender pearl entity
 local pearl_ENTITY={
 	physical = false,
 	timer=0,
 	textures = {"mcl_throwing_ender_pearl.png"},
-	_lastpos={},
 	collisionbox = {0,0,0,0,0,0},
+
+	get_staticdata = get_staticdata,
+	on_activate = on_activate,
+
+	_lastpos={},
 	_thrower = nil,		-- Player ObjectRef of the player who threw the ender pearl
 }
 
