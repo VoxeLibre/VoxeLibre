@@ -1,5 +1,9 @@
 -- mods/default/nodes.lua
 
+local WATER_ALPHA = 160
+local WATER_VISC = 1
+local LAVA_VISC = 7
+
 --
 -- Node definitions
 --
@@ -1025,22 +1029,22 @@ minetest.register_node("default:glass", {
 })
 
 ---- colored glass
-AddGlass( "Red Stained Glass",  "basecolor_red", "red")
-AddGlass( "Green Stained Glass",  "unicolor_dark_green", "green")
-AddGlass( "Blue Stained Glass",  "basecolor_blue", "blue")
-AddGlass( "Light Blue Stained Glass",  "unicolor_light_blue", "light_blue")
-AddGlass( "Black Stained Glass",  "basecolor_black", "black")
-AddGlass( "White Stained Glass",  "basecolor_white", "white")
-AddGlass( "Yellow Stained Glass",  "basecolor_yellow", "yellow")
-AddGlass( "Brown Stained Glass",  "unicolor_dark_orange", "brown")
-AddGlass( "Orange Stained Glass",  "excolor_orange", "orange")
-AddGlass( "Pink Stained Glass",  "unicolor_light_red", "pink")
-AddGlass( "Gray Stained Glass",  "unicolor_darkgrey", "gray")
-AddGlass( "Lime Stained Glass",  "basecolor_green", "lime")
-AddGlass( "Light Gray Stained Glass",  "basecolor_grey", "silver")
-AddGlass( "Magenta Stained Glass",  "basecolor_magenta", "magenta")
-AddGlass( "Purple Stained Glass",  "excolor_violet", "purple")
-AddGlass( "Cyan Stained Glass",  "basecolor_cyan", "cyan")
+default.add_glass( "Red Stained Glass",  "basecolor_red", "red")
+default.add_glass( "Green Stained Glass",  "unicolor_dark_green", "green")
+default.add_glass( "Blue Stained Glass",  "basecolor_blue", "blue")
+default.add_glass( "Light Blue Stained Glass",  "unicolor_light_blue", "light_blue")
+default.add_glass( "Black Stained Glass",  "basecolor_black", "black")
+default.add_glass( "White Stained Glass",  "basecolor_white", "white")
+default.add_glass( "Yellow Stained Glass",  "basecolor_yellow", "yellow")
+default.add_glass( "Brown Stained Glass",  "unicolor_dark_orange", "brown")
+default.add_glass( "Orange Stained Glass",  "excolor_orange", "orange")
+default.add_glass( "Pink Stained Glass",  "unicolor_light_red", "pink")
+default.add_glass( "Gray Stained Glass",  "unicolor_darkgrey", "gray")
+default.add_glass( "Lime Stained Glass",  "basecolor_green", "lime")
+default.add_glass( "Light Gray Stained Glass",  "basecolor_grey", "silver")
+default.add_glass( "Magenta Stained Glass",  "basecolor_magenta", "magenta")
+default.add_glass( "Purple Stained Glass",  "excolor_violet", "purple")
+default.add_glass( "Cyan Stained Glass",  "basecolor_cyan", "cyan")
 
 minetest.register_node("default:rail", {
 	description = "Rail",
@@ -1498,7 +1502,7 @@ minetest.register_node("default:sponge", {
 				on_water = true
 			end
 		end
-		
+			local p, n
 			if on_water == true then
 				for i=-3,3 do
 					for j=-3,3 do
@@ -1514,8 +1518,8 @@ minetest.register_node("default:sponge", {
 					end
 				end
 			end
-			local p = {x=pos.x, y=pos.y, z=pos.z}
-			local n = minetest.get_node(p)
+			p = {x=pos.x, y=pos.y, z=pos.z}
+			n = minetest.get_node(p)
 			if change == true then
 				minetest.add_node(pointed_thing.above, {name = "default:sponge_wet"})	
 			else

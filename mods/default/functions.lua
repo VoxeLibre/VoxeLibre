@@ -151,7 +151,7 @@ minetest.register_on_dignode(function(pos, node)
 	local i=1
 	while timber_nodenames[i]~=nil do
 		if node.name==timber_nodenames[i] then
-			np={x=pos.x, y=pos.y+1, z=pos.z}
+			local np={x=pos.x, y=pos.y+1, z=pos.z}
 			while minetest.get_node(np).name==timber_nodenames[i] do
 				minetest.remove_node(np)
 				minetest.add_item(np, timber_nodenames[i])
@@ -166,14 +166,7 @@ end)
 -- Flint and Steel
 --
 
-function get_nodedef_field(nodename, fieldname)
-    if not minetest.registered_nodes[nodename] then
-        return nil
-    end
-    return minetest.registered_nodes[nodename][fieldname]
-end
-
-function set_fire(pointed_thing)
+function default.set_fire(pointed_thing)
 	local n = minetest.get_node(pointed_thing.above)
 	if n.name ~= ""  and n.name == "air" and not minetest.is_protected(pointed_thing.above, "fire") then
 		minetest.add_node(pointed_thing.above, {name="fire:basic_flame"})
@@ -184,7 +177,7 @@ end
 -- Fire Particles
 --
 
-function add_fire(pos)
+function default.add_fire(pos)
 	local null = {x=0, y=0, z=0}
 	pos.y = pos.y+0.19
 	minetest.add_particle(pos, null, null, 1.1,
@@ -202,7 +195,7 @@ local n
 local n2
 local pos
 
-function apple_leave()
+local function apple_leave()
 	if math.random(0, 10) == 3 then
 		return {name = "default:apple"}
 	else
@@ -210,7 +203,7 @@ function apple_leave()
 	end
 end
 
-function air_leave()
+local function air_leave()
 	if math.random(0, 50) == 3 then
 		return {name = "air"}
 	else
@@ -218,7 +211,7 @@ function air_leave()
 	end
 end
 
-function generate_tree(pos, trunk, leaves, typearbre)
+local function generate_tree(pos, trunk, leaves, typearbre)
 	pos.y = pos.y-1
 	local nodename = minetest.get_node(pos).name
 		
@@ -226,6 +219,7 @@ function generate_tree(pos, trunk, leaves, typearbre)
 	if not minetest.get_node_light(pos) then
 		return
 	end
+	local node
 	if typearbre == nil or typearbre == 1 then
 		node = {name = ""}
 		for dy=1,4 do
@@ -460,7 +454,7 @@ end
 
 end)
 
-function duengen(pointed_thing)
+function default.duengen(pointed_thing)
 	pos = pointed_thing.under
 	n = minetest.get_node(pos)
 	if n.name == "" then return false end
@@ -630,52 +624,11 @@ minetest.register_abm({
 		local newpos = {x=pos.x, y=pos.y-1, z=pos.z}
 		local n = minetest.get_node(newpos)
 		if n.name == "air" then
-			walldir = node.param2
+			local walldir = node.param2
 			minetest.add_node(newpos, {name = "default:vine", param2 = walldir})
 		end
 	end
 })
-
-
--- Global environment step function
-function on_step(dtime)
-	-- print("on_step")
-end
-minetest.register_globalstep(on_step)
-
-function on_placenode(p, node)
-	--print("on_placenode")
-end
-minetest.register_on_placenode(on_placenode)
-
-function on_dignode(p, node)
-	--print("on_dignode")
-end
-minetest.register_on_dignode(on_dignode)
-
-function on_punchnode(p, node)
-end
-minetest.register_on_punchnode(on_punchnode)
-
--- END
-
--- Support old code
-function default.spawn_falling_node(p, nodename)
-	spawn_falling_node(p, nodename)
-end
-
--- Horrible crap to support old code
--- Don't use this and never do what this does, it's completely wrong!
--- (More specifically, the client and the C++ code doesn't get the group)
-function default.register_falling_node(nodename, texture)
-	minetest.log("error", debug.traceback())
-	minetest.log('error', "WARNING: default.register_falling_node is deprecated")
-	if minetest.registered_nodes[nodename] then
-		minetest.registered_nodes[nodename].groups.falling_node = 1
-	end
-end
-
---Sounds
 
 
 --
@@ -864,7 +817,7 @@ minetest.register_abm({
 ------------------------
 -- Create Color Glass -- 
 ------------------------
-function AddGlass(desc, recipeitem, color)
+function default.add_glass(desc, recipeitem, color)
 
 	minetest.register_node("default:glass_"..color, {
 		description = desc,
