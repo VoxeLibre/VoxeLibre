@@ -1,6 +1,6 @@
 
 
-local chest = minetest.get_content_id("default:chest")
+local chest = minetest.get_content_id("mcl_chests:chest")
 
 local mcl_hoppers_formspec =
 	"size[9,7]"..
@@ -156,7 +156,7 @@ minetest.register_abm({
 
 minetest.register_abm({
 	nodenames = {"mcl_hoppers:hopper"},
-	neighbors = {"default:chest","default:chest_left","default:chest_right","mcl_hoppers:hopper","mcl_hoppers:hopper_side","default:furnace","default:furnace_active"},
+	neighbors = {"mcl_chests:chest","mcl_chests:chest_left","mcl_chests:chest_right","mcl_hoppers:hopper","mcl_hoppers:hopper_side","mcl_furnaces:furnace","mcl_furnaces:furnace_active"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -172,7 +172,7 @@ minetest.register_abm({
 		local b = vm:get_node_at({x=pos.x,y=pos.y+1,z=pos.z}).name
 
 		--the mcl_hoppers input
-		if b == "default:chest" then
+		if b == "mcl_chests:chest" then
 			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
@@ -203,7 +203,7 @@ minetest.register_abm({
 				end
 			end
 		end
-		if b == "default:furnace" or b == "default:furnace_active" then
+		if b == "mcl_furnaces:furnace" or b == "mcl_furnaces:furnace_active" then
 			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
@@ -237,7 +237,7 @@ minetest.register_abm({
 		end
 	
 		--the mcl_hoppers output
-		if a == "default:chest" or a == "default:chest_left" or a == "default:chest_right" or a == "mcl_hoppers:hopper" or a == "mcl_hoppers:hopper_side" then
+		if a == "mcl_chests:chest" or a == "mcl_chests:chest_left" or a == "mcl_chests:chest_right" or a == "mcl_hoppers:hopper" or a == "mcl_hoppers:hopper_side" then
 			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
@@ -311,7 +311,7 @@ minetest.register_abm({
 
 minetest.register_abm({
 	nodenames = {"mcl_hoppers:hopper_side"},
-	neighbors = {"default:chest","default:chest_left","default_chest_right","mcl_hoppers:hopper","mcl_hoppers:hopper_side","default:furnace","default:furnace_active"},
+	neighbors = {"mcl_chests:chest","mcl_chests:chest_left","mcl_chests:chest_right","mcl_hoppers:hopper","mcl_hoppers:hopper_side","mcl_furnaces:furnace","mcl_furnaces:furnace_active"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -338,7 +338,7 @@ minetest.register_abm({
 		local b = vm:get_node_at({x=pos.x,y=pos.y+1,z=pos.z}).name
 
 		--the mcl_hoppers input
-		if b == "default:chest" or b == "default:chest_left" or b == "default:chest_right" then
+		if b == "mcl_chests:chest" or b == "mcl_chests:chest_left" or b == "mcl_chests:chest_right" then
 			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
@@ -402,7 +402,7 @@ minetest.register_abm({
 		end
 	
 		--the mcl_hoppers output
-		if a == "default:chest" or a == "default:chest_left" or "default:chest_right" or a == "mcl_hoppers:hopper" or a == "mcl_hoppers:hopper_side" then
+		if a == "mcl_chests:chest" or a == "mcl_chests:chest_left" or "mcl_chests:chest_right" or a == "mcl_hoppers:hopper" or a == "mcl_hoppers:hopper_side" then
 			--print("test")
 			--room_for_item(listname, stack)
 			--mcl_hoppers inventory
@@ -520,7 +520,7 @@ minetest.register_craft({
 	output = "mcl_hoppers:hopper_item",
 	recipe = {
 		{"default:steel_ingot","","default:steel_ingot"},
-		{"default:steel_ingot","default:chest","default:steel_ingot"},
+		{"default:steel_ingot","mcl_chests:chest","default:steel_ingot"},
 		{"","default:steel_ingot",""},
 	}
 })

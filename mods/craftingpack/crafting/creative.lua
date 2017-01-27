@@ -271,7 +271,7 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 			"item_image_button[4.938,8.37;1,1;default:stick;matr;]"..	--materials
 			tab(name, "matr") ..
 			"tooltip[matr;Materials]"..
-			"item_image_button[9.19,8.37;1,1;default:chest;inv;]"..			--inventory
+			"item_image_button[9.19,8.37;1,1;mcl_chests:chest;inv;]"..			--inventory
 			tab(name, "inv") ..
 			"tooltip[inv;Survival Inventory]"..
 			"list[detached:trash;main;9,7;1,1;]"..

@@ -451,15 +451,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'default:chest',
-	recipe = {
-		{'group:wood', 'group:wood', 'group:wood'},
-		{'group:wood', '', 'group:wood'},
-		{'group:wood', 'group:wood', 'group:wood'},
-	}
-})
-
-minetest.register_craft({
 	output = 'default:furnace',
 	recipe = {
 		{'default:cobble', 'default:cobble', 'default:cobble'},
@@ -1015,12 +1006,6 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "fuel",
 	recipe = "group:wood",
-	burntime = 15,
-})
-
-minetest.register_craft({
-	type = "fuel",
-	recipe = "default:chest",
 	burntime = 15,
 })
 
