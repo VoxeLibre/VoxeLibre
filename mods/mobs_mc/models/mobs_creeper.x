@@ -543,7 +543,6 @@ Frame Root {
              96.078431;
              0.500000; 0.500000; 0.500000;;
              0.000000; 0.000000; 0.000000;;
-            TextureFilename {"mobs_creeper.png";}
           }
         } // End of Creeper material list
         XSkinMeshHeader {

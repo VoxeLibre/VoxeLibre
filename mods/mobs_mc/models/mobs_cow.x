@@ -687,7 +687,6 @@ Frame Root {
              96.078431;
              0.140000; 0.140000; 0.140000;;
              0.000000; 0.000000; 0.000000;;
-            TextureFilename {"cow.png";}
           }
         } // End of Cow material list
         XSkinMeshHeader {

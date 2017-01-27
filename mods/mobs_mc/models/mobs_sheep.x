@@ -847,7 +847,6 @@ Frame Root {
              96.078431;
              0.000000; 0.000000; 0.000000;;
              0.000000; 0.000000; 0.000000;;
-            TextureFilename {"sheep.png";}
           }
         } // End of Sheep material list
         XSkinMeshHeader {

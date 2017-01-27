@@ -1018,7 +1018,6 @@ Frame Root {
              96.078431;
              0.000000; 0.000000; 0.000000;;
              0.000000; 0.000000; 0.000000;;
-            TextureFilename {"mobs_horse.png";}
           }
         } //End of Mesh Material List
         MeshTextureCoords { //Mesh UV Coordinates
