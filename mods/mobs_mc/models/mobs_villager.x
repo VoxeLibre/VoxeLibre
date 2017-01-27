@@ -1,10 +1,5 @@
 xof 0303txt 0032
 
-template AnimTicksPerSecond {
-  <9E415A43-7BA6-4a73-8743-B73D47E88476>
-  DWORD AnimTicksPerSecond;
-}
-
 template XSkinMeshHeader {
   <3cf169ce-ff7c-44ab-93c0-f78f62d172e2>
   WORD nMaxSkinWeightsPerVertex;
@@ -931,9 +926,6 @@ Frame Root {
     } // End of Cube_001
   } // End of Skeleton_Rig
 } // End of Root
-AnimTicksPerSecond {
-  30;
-}
 AnimationSet ArmatureAction {
   Animation {
     {Skeleton_Rig}
