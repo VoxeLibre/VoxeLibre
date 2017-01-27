@@ -13,19 +13,25 @@ local directions = {
 local function update_wall(pos)
 	local thisnode = minetest.get_node(pos)
 
-	if thisnode.name:find("wallet:wall") ~= 1 and
-		thisnode.name:find("wallet:wallmossy") ~= 1 then
-		-- Not a wall
+	if minetest.get_item_group(thisnode.name, "wall") == 0 then
 		return
 	end
 
 	-- Get the node's base name, including the underscore since we will need it
-	local basename = thisnode.name:find("_")
-	if basename == nil then -- New wall
+	local colonpos = thisnode.name:find(":")
+	local underscorepos
+	local itemname, basename
+	if colonpos ~= nil then
+		itemname = thisnode.name:sub(colonpos+1)
+	end
+	minetest.log("error", itemname)
+	underscorepos = itemname:find("_")
+	if underscorepos == nil then -- New wall
 		basename = thisnode.name .. "_"
 	else -- Already placed wall
-		basename = thisnode.name:sub(1, basename)
+		basename = "mcl_walls:" .. itemname:sub(1, underscorepos)
 	end
+	minetest.log("error", basename)
 
 	local sum = 0
 
@@ -74,6 +80,11 @@ local full_blocks = {
     {-3/16, -0.5, -0.5, 3/16, 5/16, 0.5}
 }
 
+--[[ Adds a new wall type.
+* nodename: Itemstring of base node. Must not contain an underscore
+* name: Item name, visible to user
+* texture: Wall texture
+* invtex: Inventory image ]]
 local function register_wall(nodename, name, texture, invtex)
 	for i = 0, 15 do
 		local need = {}
@@ -183,9 +194,9 @@ end
 
 -- Cobblestone wall
 
-register_wall("wallet:wall", "Cobblestone Wall", "default_cobble.png", "cobblestone_wallet.png")
+register_wall("mcl_walls:cobble", "Cobblestone Wall", "default_cobble.png", "mcl_walls_cobble.png")
 minetest.register_craft({
-	output = 'wallet:wall 6',
+	output = 'mcl_walls:cobble 6',
 	recipe = {
 		{'default:cobble', 'default:cobble', 'default:cobble'},
 		{'default:cobble', 'default:cobble', 'default:cobble'}
@@ -194,9 +205,9 @@ minetest.register_craft({
 
 -- Mossy wall
 
-register_wall("wallet:wallmossy", "Mossy Cobblestone Wall", "default_mossycobble.png", "cobblestonemossy_wallet.png")
+register_wall("mcl_walls:mossycobble", "Mossy Cobblestone Wall", "default_mossycobble.png", "mcl_walls_mossycobble.png")
 minetest.register_craft({
-	output = 'wallet:wallmossy 6',
+	output = 'mcl_walls:mossycobble 6',
 	recipe = {
 		{'default:mossycobble', 'default:mossycobble', 'default:mossycobble'},
         {'default:mossycobble', 'default:mossycobble', 'default:mossycobble'}
