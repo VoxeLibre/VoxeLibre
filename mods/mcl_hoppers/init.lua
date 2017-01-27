@@ -269,7 +269,7 @@ minetest.register_abm({
 				end
 			end
 			--print(inv)
-		elseif a == "default:furnace" or a == "default:furnace_active" then
+		elseif a == "mcl_furnaces:furnace" or a == "mcl_furnaces:furnace_active" then
 			--print("test")
 			--room_for_item(listname, stack)
 			--mcl_hoppers inventory
@@ -369,7 +369,7 @@ minetest.register_abm({
 				end
 			end
 		end
-		if b == "default:furnace" or b == "default:furnace_active" then
+		if b == "mcl_furnaces:furnace" or b == "mcl_furnaces:furnace_active" then
 			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
@@ -437,7 +437,7 @@ minetest.register_abm({
 				end
 			end
 			--print(inv)
-		elseif a == "default:furnace" or a == "default:furnace_active" then
+		elseif a == "mcl_furnaces:furnace" or a == "mcl_furnaces:furnace_active" then
 			--print("test")
 			--room_for_item(listname, stack)
 			--mcl_hoppers inventory

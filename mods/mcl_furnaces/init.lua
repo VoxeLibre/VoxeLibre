@@ -248,3 +248,13 @@ minetest.register_abm({
 		inv:set_stack("fuel", 1, afterfuel.items[1])
 	end,
 })
+
+minetest.register_craft({
+	output = 'mcl_furnaces:furnace',
+	recipe = {
+		{'default:cobble', 'default:cobble', 'default:cobble'},
+		{'default:cobble', '', 'default:cobble'},
+		{'default:cobble', 'default:cobble', 'default:cobble'},
+	}
+})
+

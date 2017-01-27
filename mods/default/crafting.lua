@@ -451,15 +451,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'default:furnace',
-	recipe = {
-		{'default:cobble', 'default:cobble', 'default:cobble'},
-		{'default:cobble', '', 'default:cobble'},
-		{'default:cobble', 'default:cobble', 'default:cobble'},
-	}
-})
-
-minetest.register_craft({
 	output = 'default:haybale',
 	recipe = {
 		{'farming:wheat_harvested', 'farming:wheat_harvested', 'farming:wheat_harvested'},
