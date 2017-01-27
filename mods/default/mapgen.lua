@@ -439,8 +439,8 @@ minetest.register_on_generated(function(minp, maxp, seed)
 						break
 					end
 				end
-				-- If desert sand, make cactus
-				if ground_y and minetest.get_node({x=x,y=ground_y,z=z}).name == "default:desert_sand" then
+				-- If sand, make cactus
+				if ground_y and minetest.get_node({x=x,y=ground_y,z=z}).name == "default:sand" then
 					default.make_cactus({x=x,y=ground_y+1,z=z}, pr:next(3, 4))
 				end
 			end
@@ -480,8 +480,8 @@ minetest.register_on_generated(function(minp, maxp, seed)
 					if minetest.registered_nodes[nn] and
 						minetest.registered_nodes[nn].buildable_to then
 						nn = minetest.get_node({x=x,y=ground_y,z=z}).name
-						-- If desert sand, add dry shrub
-						if nn == "default:desert_sand" then
+						-- If sand, add dry shrub
+						if nn == "default:sand" then
 							minetest.set_node(p,{name="default:dry_shrub"})
 							
 						-- If dirt with grass, add grass
