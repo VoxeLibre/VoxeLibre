@@ -62,6 +62,7 @@ minetest.register_node("mcl_end:dragon_egg", {
 		}
 	},
 	groups = { oddly_breakable_by_hand = 3, falling_node = 1, deco_block = 1, not_in_creative_inventory = 1 },
+	sounds = default.node_sound_stone_defaults(),
 	-- TODO: Make dragon egg teleport on punching
 })
 
