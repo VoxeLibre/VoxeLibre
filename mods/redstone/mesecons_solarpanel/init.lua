@@ -18,11 +18,16 @@ minetest.register_node("mesecons_solarpanel:solar_panel_on", {
 		fixed = boxes
 	},
 	drop = "mesecons_solarpanel:solar_panel_off",
+	description="Daylight Sensor",
 	groups = {dig_immediate=3, not_in_creative_inventory = 1},
 	sounds = default.node_sound_glass_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.on
-	}}
+	}},
+	on_rightclick = function(pos, node, clicker, pointed_thing)
+		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_inverted_off"})
+		mesecon:receptor_off(pos)
+	end,
 })
 
 -- Solar Panel
@@ -43,11 +48,15 @@ minetest.register_node("mesecons_solarpanel:solar_panel_off", {
 		fixed = boxes
 	},
 	groups = {dig_immediate=3},
-    	description="Daylight Sensor",
+	description="Daylight Sensor",
 	sounds = default.node_sound_glass_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.off
-	}}
+	}},
+	on_rightclick = function(pos, node, clicker, pointed_thing)
+		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_inverted_on"})
+		mesecon:receptor_on(pos)
+	end,
 })
 
 minetest.register_craft({
@@ -106,12 +115,17 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_on", {
 		type = "fixed",
 		fixed = boxes
 	},
-	drop = "mesecons_solarpanel:solar_panel_inverted_off",
+	drop = "mesecons_solarpanel:solar_panel_off",
 	groups = {dig_immediate=3, not_in_creative_inventory = 1},
+    	description="Inverted Daylight Sensor",
 	sounds = default.node_sound_glass_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.on
-	}}
+	}},
+	on_rightclick = function(pos, node, clicker, pointed_thing)
+		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_off"})
+		mesecon:receptor_off(pos)
+	end,
 })
 
 -- Solar Panel
@@ -131,23 +145,17 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
 		type = "fixed",
 		fixed = boxes
 	},
-	groups = {dig_immediate=3},
+	drop = "mesecons_solarpanel:solar_panel_off",
+	groups = {dig_immediate=3, not_in_creative_inventory=1},
     	description="Inverted Daylight Sensor",
 	sounds = default.node_sound_glass_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.off
-	}}
-})
-
--- Unofficial craft
--- TODO: Make solar panel switch on user action, so this craft can be removed
-minetest.register_craft({
-	output = '"mesecons_solarpanel:solar_panel_inverted_off" 1',
-	recipe = {
-		{'group:wood_slab', 'group:wood_slab', 'group:wood_slab'},
-		{'default:quartz_crystal', 'default:quartz_crystal', 'default:quartz_crystal'},
-		{'default:glass', 'default:glass', 'default:glass'},
-	}
+	}},
+	on_rightclick = function(pos, node, clicker, pointed_thing)
+		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_on"})
+		mesecon:receptor_on(pos)
+	end,
 })
 
 minetest.register_abm(
@@ -184,8 +192,3 @@ minetest.register_craft({
 	burntime = 15
 })
 
-minetest.register_craft({
-	type = "fuel",
-	recipe = "mesecons_solarpanel:solar_panel_inverted_off",
-	burntime = 15
-})
