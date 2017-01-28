@@ -102,6 +102,24 @@ minetest.register_node("mcl_end:dragon_egg", {
 })
 
 -- Craftitems
+-- TODO: Add textures for chorus fruit and popped chorus fruit
+minetest.register_craftitem("mcl_end:chorus_fruit", {
+	description = "Chorus Fruit",
+	wield_image = "mcl_end_chorus_fruit.png",
+	inventory_image = "mcl_end_chorus_fruit.png",
+	on_use = minetest.item_eat(4),
+	groups = { food = 2, eatable = 4 },
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mcl_end:chorus_fruit_popped", {
+	description = "Popped Chorus Fruit",
+	wield_image = "mcl_end_chorus_fruit_popped.png",
+	inventory_image = "mcl_end_chorus_fruit_popped.png",
+	groups = { craftitem = 1 },
+	stack_max = 64,
+})
+
 minetest.register_craftitem("mcl_end:ender_eye", {
 	description = "Eye of Ender",
 	wield_image = "mcl_end_ender_eye.png",
@@ -120,6 +138,14 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "mcl_end:purpur_block 4",
+	recipe = {
+		{"mcl_end:chorus_fruit_popped", "mcl_end:chorus_fruit_popped",},
+		{"mcl_end:chorus_fruit_popped", "mcl_end:chorus_fruit_popped",},
+	}
+})
+
+minetest.register_craft({
 	output = "mcl_end:end_rod 4",
 	recipe = {
 		{"mcl_mobitems:blaze_rod"},
@@ -133,3 +159,9 @@ minetest.register_craft({
 	recipe = {"mcl_mobitems:blaze_powder", "mcl_throwing:ender_pearl"},
 })
 
+minetest.register_craft({
+	type = "cooking",
+	output = "mcl_end:chorus_fruit_popped",
+	recipe = "mcl_end:chorus_fruit",
+	cooktime = 10,
+})
