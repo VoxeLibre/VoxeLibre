@@ -24,14 +24,12 @@ local function update_wall(pos)
 	if colonpos ~= nil then
 		itemname = thisnode.name:sub(colonpos+1)
 	end
-	minetest.log("error", itemname)
 	underscorepos = itemname:find("_")
 	if underscorepos == nil then -- New wall
 		basename = thisnode.name .. "_"
 	else -- Already placed wall
 		basename = "mcl_walls:" .. itemname:sub(1, underscorepos)
 	end
-	minetest.log("error", basename)
 
 	local sum = 0
 
