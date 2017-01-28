@@ -1,3 +1,4 @@
+-- Nodes
 minetest.register_node("mcl_end:end_stone", {
 	description = "End Stone",
 	tiles = {"mcl_end_end_stone.png"},
@@ -34,6 +35,40 @@ minetest.register_node("mcl_end:purpur_pillar", {
 	sounds = default.node_sound_stone_defaults(),
 })
 
+local rod_box = {
+	type = "wallmounted",
+	wall_top = {-0.125, -0.5, -0.125, 0.125, 0.5, 0.125},
+	wall_side = {-0.5, -0.125, -0.125, 0.5, 0.125, 0.125},
+	wall_bottom = {-0.125, -0.5, -0.125, 0.125, 0.5, 0.125},
+}
+minetest.register_node("mcl_end:end_rod", {
+	description = "End Rod",
+	tiles = {
+		"mcl_end_end_rod_top.png",
+		"mcl_end_end_rod_bottom.png",
+		"mcl_end_end_rod_side.png",
+		"mcl_end_end_rod_side.png",
+		"mcl_end_end_rod_side.png",
+		"mcl_end_end_rod_side.png",
+	},
+	drawtype = "nodebox",
+	paramtype = "light",
+	paramtype2 = "wallmounted",
+	light_source = 14,
+	sunlight_propagates = true,
+	groups = { dig_immediate=3, deco_block=1 },
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.125, -0.5, -0.125, 0.125, -0.4375, 0.125}, -- Base
+			{-0.0625, -0.4375, -0.0625, 0.0625, 0.5, 0.0625}, -- Rod
+		},
+	},
+	selection_box = rod_box,
+	collision_box = rod_box,
+	sounds = default.node_sound_glass_defaults(),
+})
+
 minetest.register_node("mcl_end:dragon_egg", {
 	description = "Dragon Egg",
 	tiles = {
@@ -66,6 +101,16 @@ minetest.register_node("mcl_end:dragon_egg", {
 	-- TODO: Make dragon egg teleport on punching
 })
 
+-- Craftitems
+minetest.register_craftitem("mcl_end:ender_eye", {
+	description = "Eye of Ender",
+	wield_image = "mcl_end_ender_eye.png",
+	inventory_image = "mcl_end_ender_eye.png",
+	stack_max = 64,
+})
+
+
+-- Crafting recipes
 minetest.register_craft({
 	output = "mcl_end:end_bricks 4",
 	recipe = {
@@ -74,11 +119,12 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craftitem("mcl_end:ender_eye", {
-	description = "Eye of Ender",
-	wield_image = "mcl_end_ender_eye.png",
-	inventory_image = "mcl_end_ender_eye.png",
-	stack_max = 64,
+minetest.register_craft({
+	output = "mcl_end:end_rod 4",
+	recipe = {
+		{"mcl_mobitems:blaze_rod"},
+		{"mcl_end:chorus_fruit_popped"},
+	},
 })
 
 minetest.register_craft({
