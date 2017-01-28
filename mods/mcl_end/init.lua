@@ -65,6 +65,7 @@ minetest.register_node("mcl_end:end_rod", {
 		},
 	},
 	selection_box = rod_box,
+	-- FIXME: Collision box does not seem to rotate correctly
 	collision_box = rod_box,
 	sounds = default.node_sound_glass_defaults(),
 })
