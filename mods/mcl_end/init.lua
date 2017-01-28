@@ -52,6 +52,7 @@ minetest.register_node("mcl_end:end_rod", {
 		"mcl_end_end_rod_side.png",
 	},
 	drawtype = "nodebox",
+	is_ground_content = false,
 	paramtype = "light",
 	paramtype2 = "wallmounted",
 	light_source = 14,
@@ -81,6 +82,7 @@ minetest.register_node("mcl_end:dragon_egg", {
 		"mcl_end_dragon_egg.png",
 	},
 	drawtype = "nodebox",
+	is_ground_content = false,
 	paramtype = "light",
 	light_source = 1,
 	node_box = {

@@ -296,7 +296,7 @@ minetest.register_node("flowers:pot",{
 	inventory_image="flowers_pot_inventory.png",
 	paramtype = "light",
 	groups = {dig_immediate=3,deco_block=1},
-	stack_max = 16,
+	stack_max = 64,
 	sounds = default.node_sound_defaults(),
 	after_place_node = function(pos, placer, itemstack)
 		local meta = minetest.get_meta(pos)
