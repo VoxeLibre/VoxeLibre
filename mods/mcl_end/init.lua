@@ -103,6 +103,7 @@ minetest.register_node("mcl_end:dragon_egg", {
 
 -- Craftitems
 -- TODO: Add textures for chorus fruit and popped chorus fruit
+--[[
 minetest.register_craftitem("mcl_end:chorus_fruit", {
 	description = "Chorus Fruit",
 	wield_image = "mcl_end_chorus_fruit.png",
@@ -119,6 +120,7 @@ minetest.register_craftitem("mcl_end:chorus_fruit_popped", {
 	groups = { craftitem = 1 },
 	stack_max = 64,
 })
+]]
 
 minetest.register_craftitem("mcl_end:ender_eye", {
 	description = "Eye of Ender",
