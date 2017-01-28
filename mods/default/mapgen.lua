@@ -406,7 +406,8 @@ minetest.register_on_generated(function(minp, maxp, seed)
 				local p = {x=x,y=1,z=z}
 				if minetest.get_node(p).name == "default:sand" then
 					if math.random(0,1000) == 1 then -- 0,12000
-						random_struct.call_struct(p,2)
+						-- TODO: Re-enable random_struct
+						--random_struct.call_struct(p,2)
 					end
 				end
 
@@ -488,7 +489,8 @@ minetest.register_on_generated(function(minp, maxp, seed)
 						elseif nn == "default:dirt_with_grass" then
 							minetest.set_node(p,{name="default:grass"})
 							if math.random(0,12000) == 1 then 
-								random_struct.call_struct(p,1)
+								-- TODO: Re-enable random_struct
+								--random_struct.call_struct(p,1)
 							end
 						end
 					end
