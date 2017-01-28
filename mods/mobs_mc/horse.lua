@@ -204,10 +204,10 @@ mobs:register_mob("mobs_mc:horse", {
 	walk_velocity = 1,
 	armor = 200,
 	drops = {
-		{name = "mcl_mobitems:meat_raw",
+		{name = "mcl_mobitems:leather",
 		chance = 1,
-		min = 2,
-		max = 3,},
+		min = 0,
+		max = 2,},
 	},
 	drawtype = "front",
 	water_damage = 1,
