@@ -26,7 +26,7 @@ mobs:register_mob("mobs_mc:sheep", {
 		chance = 1,
 		min = 1,
 		max = 2,},
-		{name = "wool:white",
+		{name = "mcl_wool:white",
 		chance = 1,
 		min = 1,
 		max = 1,},
@@ -90,9 +90,9 @@ mobs:register_mob("mobs_mc:sheep", {
 			minetest.sound_play("shears", {pos = pos})
 			pos.y = pos.y + 0.5
 			if not self.color then
-				minetest.add_item(pos, ItemStack("wool:white "..math.random(1,3)))
+				minetest.add_item(pos, ItemStack("mcl_wool:white "..math.random(1,3)))
 			else
-				minetest.add_item(pos, ItemStack("wool:"..self.color.." "..math.random(1,3)))
+				minetest.add_item(pos, ItemStack("mcl_wool:"..self.color.." "..math.random(1,3)))
 			end
 			self.object:set_properties({
 				textures = {"sheep_sheared.png"},
@@ -116,7 +116,7 @@ print(item:get_name(), minetest.get_item_group(item:get_name(), "dye"))
 				chance = 1,
 				min = 1,
 				max = 2,},
-				{name = "wool:"..self.color,
+				{name = "mcl_wool:"..self.color,
 				chance = 1,
 				min = 1,
 				max = 1,},

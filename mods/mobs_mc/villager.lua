@@ -126,7 +126,7 @@ mobs:register_mob("mobs_mc:villager", {
 			{"mobs:rotten_flesh 40",		"default:clay_lump 1"},
 			{"default:gold_ingot 10",		"default:clay_lump 1"},
 			{"farming:cotton 10",			"default:clay_lump 1"},
-			{"wool:white 15",			"default:clay_lump 1"},
+			{"mcl_wool:white 15",			"default:clay_lump 1"},
 			{"farming:pumpkin 8",		"default:clay_lump 1"},
 
 			{"default:clay_lump 1",		"mobs:beef_cooked 5"},
