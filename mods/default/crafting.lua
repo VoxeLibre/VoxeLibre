@@ -149,18 +149,18 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "dye:bone_block", 
+	output = "mcl_dye:bone_block",
 	recipe = {
-		{ "dye:white", "dye:white", "dye:white" },
-		{ "dye:white", "dye:white", "dye:white" },
-		{ "dye:white", "dye:white", "dye:white" },
+		{ "mcl_dye:white", "mcl_dye:white", "mcl_dye:white" },
+		{ "mcl_dye:white", "mcl_dye:white", "mcl_dye:white" },
+		{ "mcl_dye:white", "mcl_dye:white", "mcl_dye:white" },
 	},
 })
 
 minetest.register_craft({
-	output = "dye:white 9",
+	output = "mcl_dye:white 9",
 	recipe = {
-		{ "dye:bone_block" },
+		{ "mcl_dye:bone_block" },
 	},
 })
 
@@ -496,7 +496,7 @@ minetest.register_craft({
 	output = 'default:prismarine_dark',
 	recipe = {
 		{'default:prismarine_shard', 'default:prismarine_shard', 'default:prismarine_shard'},
-		{'default:prismarine_shard', 'dye:black', 'default:prismarine_shard'},
+		{'default:prismarine_shard', 'mcl_dye:black', 'default:prismarine_shard'},
 		{'default:prismarine_shard', 'default:prismarine_shard', 'default:prismarine_shard'},
 	}
 })
@@ -662,14 +662,14 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'default:lapisblock',
 	recipe = {
-		{'dye:blue', 'dye:blue', 'dye:blue'},
-		{'dye:blue', 'dye:blue', 'dye:blue'},
-		{'dye:blue', 'dye:blue', 'dye:blue'},
+		{'mcl_dye:blue', 'mcl_dye:blue', 'mcl_dye:blue'},
+		{'mcl_dye:blue', 'mcl_dye:blue', 'mcl_dye:blue'},
+		{'mcl_dye:blue', 'mcl_dye:blue', 'mcl_dye:blue'},
 	}
 })
 
 minetest.register_craft({
-	output = 'dye:blue 9',
+	output = 'mcl_dye:blue 9',
 	recipe = {
 		{'default:lapisblock'},
 	}
@@ -891,7 +891,7 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "cooking",
-	output = "dye:blue",
+	output = "mcl_dye:blue",
 	recipe = "default:stone_with_lapis",
 	cooktime = 10,
 })

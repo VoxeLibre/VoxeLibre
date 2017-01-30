@@ -53,7 +53,7 @@ for _, row in ipairs(clay.dyes) do
 			output = 'hardened_clay:'..name..' 8',
 			recipe = {
 					{'hardened_clay:hardened_clay', 'hardened_clay:hardened_clay', 'hardened_clay:hardened_clay'},
-					{'hardened_clay:hardened_clay', 'dye:'..craft_color_group, 'hardened_clay:hardened_clay'},
+					{'hardened_clay:hardened_clay', 'mcl_dye:'..craft_color_group, 'hardened_clay:hardened_clay'},
 					{'hardened_clay:hardened_clay', 'hardened_clay:hardened_clay', 'hardened_clay:hardened_clay'},
 			},
 		})

@@ -135,11 +135,11 @@ minetest.register_node("default:stone_with_lapis", {
 	drop = {
 		max_items = 1,
 		items = {
-			{items = {'dye:blue 8'},rarity = 5},
-			{items = {'dye:blue 7'},rarity = 5},
-			{items = {'dye:blue 6'},rarity = 5},
-			{items = {'dye:blue 5'},rarity = 5},
-			{items = {'dye:blue 4'}},
+			{items = {'mcl_dye:blue 8'},rarity = 5},
+			{items = {'mcl_dye:blue 7'},rarity = 5},
+			{items = {'mcl_dye:blue 6'},rarity = 5},
+			{items = {'mcl_dye:blue 5'},rarity = 5},
+			{items = {'mcl_dye:blue 4'}},
 		}
 	},
 	sounds = default.node_sound_stone_defaults(),

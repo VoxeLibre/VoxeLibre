@@ -392,7 +392,7 @@ minetest.register_tool("default:pole", {
 					elseif r <= 72 then
 						itemname = "default:bone"
 					elseif r <= 73 then
-						itemname = "dye:black"
+						itemname = "mcl_dye:black"
 						itemcount = 10
 					else
 						-- TODO: Tripwire hook
