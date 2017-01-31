@@ -1,2 +1,2 @@
 default
-dye
+mcl_dye
