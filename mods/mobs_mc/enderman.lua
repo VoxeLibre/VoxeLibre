@@ -54,12 +54,12 @@ mobs:register_mob("mobs_mc:enderman", {
 	view_range = 16,
 	attack_type = "dogfight",
 	replace_rate = 1,
-	replace_what = {"default:torch","default:sand","default:desert_sand","default:cobble","default:dirt","default:dirt_with_glass","default:dirt_with_dry_grass","default:wood","default:stone","default:sandstone"},
+	replace_what = {"torches:torch","mcl_core:sand","mcl_core:desert_sand","mcl_core:cobble","mcl_core:dirt","mcl_core:dirt_with_glass","mcl_core:dirt_with_dry_grass","mcl_core:wood","mcl_core:stone","mcl_core:sandstone"},
 	replace_with = "air",
 	replace_offset = -1,
 
 })
-mobs:register_spawn("mobs_mc:enderman", { "default:sand", "default:desert_sand"}, 5, -1, 5000, 4, 31000)
+mobs:register_spawn("mobs_mc:enderman", { "mcl_core:sand", "mcl_core:desert_sand"}, 5, -1, 5000, 4, 31000)
 
 
 

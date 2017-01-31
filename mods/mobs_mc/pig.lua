@@ -51,7 +51,7 @@ mobs:register_mob("mobs_mc:pig", {
 		look_start = 78,
 		look_end = 108,
 	},
-	follow = {"default:apple", "farming:potato", "farming:carrot"},
+	follow = {"mcl_core:apple", "farming:potato", "farming:carrot"},
 	view_range = 5,
 	on_rightclick = function(self, clicker)
 		if not clicker or not clicker:is_player() then
@@ -133,7 +133,7 @@ mobs:register_mob("mobs_mc:pig", {
 	end,
 })
 
-mobs:register_spawn("mobs_mc:pig", {"default:dirt_with_grass"}, 20, 12, 5000, 1, 31000)
+mobs:register_spawn("mobs_mc:pig", {"mcl_core:dirt_with_grass"}, 20, 12, 5000, 1, 31000)
 	
 
 --api code to fix

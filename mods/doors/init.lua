@@ -301,15 +301,15 @@ doors:register_door("doors:door_wood", {
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_wood_b.png", "door_brown.png"},
 	tiles_top = {"door_wood_a.png", "door_brown.png"},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
 minetest.register_craft({
 	output = "doors:door_wood 3",
 	recipe = {
-		{"default:wood", "default:wood"},
-		{"default:wood", "default:wood"},
-		{"default:wood", "default:wood"}
+		{"mcl_core:wood", "mcl_core:wood"},
+		{"mcl_core:wood", "mcl_core:wood"},
+		{"mcl_core:wood", "mcl_core:wood"}
 	}
 })
 
@@ -320,15 +320,15 @@ doors:register_door("doors:door_acacia", {
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_acacia_b.png", "door_brown.png"},
 	tiles_top = {"door_acacia_a.png", "door_brown.png"},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
 minetest.register_craft({
 	output = "doors:door_acacia 3",
 	recipe = {
-		{"default:acaciawood", "default:acaciawood"},
-		{"default:acaciawood", "default:acaciawood"},
-		{"default:acaciawood", "default:acaciawood"}
+		{"mcl_core:acaciawood", "mcl_core:acaciawood"},
+		{"mcl_core:acaciawood", "mcl_core:acaciawood"},
+		{"mcl_core:acaciawood", "mcl_core:acaciawood"}
 	}
 })
 
@@ -339,15 +339,15 @@ doors:register_door("doors:door_birch", {
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_birch_b.png", "door_brown.png"},
 	tiles_top = {"door_birch_a.png", "door_brown.png"},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
 minetest.register_craft({
 	output = "doors:door_birch 3",
 	recipe = {
-		{"default:birchwood", "default:birchwood"},
-		{"default:birchwood", "default:birchwood"},
-		{"default:birchwood", "default:birchwood"},
+		{"mcl_core:birchwood", "mcl_core:birchwood"},
+		{"mcl_core:birchwood", "mcl_core:birchwood"},
+		{"mcl_core:birchwood", "mcl_core:birchwood"},
 	}
 })
 
@@ -358,15 +358,15 @@ doors:register_door("doors:door_dark_oak", {
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_dark_oak_b.png", "door_brown.png"},
 	tiles_top = {"door_dark_oak_a.png", "door_brown.png"},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
 minetest.register_craft({
 	output = "doors:door_dark_oak 3",
 	recipe = {
-		{"default:darkwood", "default:darkwood"},
-		{"default:darkwood", "default:darkwood"},
-		{"default:darkwood", "default:darkwood"},
+		{"mcl_core:darkwood", "mcl_core:darkwood"},
+		{"mcl_core:darkwood", "mcl_core:darkwood"},
+		{"mcl_core:darkwood", "mcl_core:darkwood"},
 	}
 })
 
@@ -377,15 +377,15 @@ doors:register_door("doors:door_jungle", {
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_jungle_b.png", "door_brown.png"},
 	tiles_top = {"door_jungle_a.png", "door_brown.png"},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
 minetest.register_craft({
 	output = "doors:door_jungle 3",
 	recipe = {
-		{"default:junglewood", "default:junglewood"},
-		{"default:junglewood", "default:junglewood"},
-		{"default:junglewood", "default:junglewood"}
+		{"mcl_core:junglewood", "mcl_core:junglewood"},
+		{"mcl_core:junglewood", "mcl_core:junglewood"},
+		{"mcl_core:junglewood", "mcl_core:junglewood"}
 	}
 })
 
@@ -396,15 +396,15 @@ doors:register_door("doors:door_spruce", {
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
 	tiles_bottom = {"door_spruce_b.png", "door_brown.png"},
 	tiles_top = {"door_spruce_a.png", "door_brown.png"},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
 minetest.register_craft({
 	output = "doors:door_spruce 3",
 	recipe = {
-		{"default:sprucewood", "default:sprucewood"},
-		{"default:sprucewood", "default:sprucewood"},
-		{"default:sprucewood", "default:sprucewood"}
+		{"mcl_core:sprucewood", "mcl_core:sprucewood"},
+		{"mcl_core:sprucewood", "mcl_core:sprucewood"},
+		{"mcl_core:sprucewood", "mcl_core:sprucewood"}
 	}
 })
 
@@ -446,15 +446,15 @@ doors:register_door("doors:door_steel", {
 	groups = {snappy=1,cracky=1,level=2,door=1,mesecon_effector_on=1},
 	tiles_bottom = {"door_steel_b.png", "door_grey.png"},
 	tiles_top = {"door_steel_a.png", "door_grey.png"},
-	sounds = default.node_sound_metal_defaults(),
+	sounds = mcl_core.node_sound_metal_defaults(),
 })
 
 minetest.register_craft({
 	output = "doors:door_steel 3",
 	recipe = {
-		{"default:steel_ingot", "default:steel_ingot"},
-		{"default:steel_ingot", "default:steel_ingot"},
-		{"default:steel_ingot", "default:steel_ingot"}
+		{"mcl_core:steel_ingot", "mcl_core:steel_ingot"},
+		{"mcl_core:steel_ingot", "mcl_core:steel_ingot"},
+		{"mcl_core:steel_ingot", "mcl_core:steel_ingot"}
 	}
 })
 
@@ -504,7 +504,7 @@ minetest.register_node("doors:trapdoor", {
 	stack_max = 64,
 	paramtype2 = "facedir",
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,flammable=2,door=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	drop = "doors:trapdoor",
 	node_box = {
 		type = "fixed",
@@ -550,7 +550,7 @@ minetest.register_node("doors:trapdoor_open", {
 	paramtype2 = "facedir",
 	pointable = true,
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,flammable=2,door=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	drop = "doors:trapdoor",
 	node_box = {
 		type = "fixed",
@@ -628,7 +628,7 @@ minetest.register_node("doors:iron_trapdoor", {
 	stack_max = 64,
 	paramtype2 = "facedir",
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,flammable=0,door=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	drop = "doors:iron_trapdoor",
 	node_box = {
 		type = "fixed",
@@ -671,7 +671,7 @@ minetest.register_node("doors:iron_trapdoor_open", {
 	is_ground_content = false,
 	pointable = true,
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=0,door=1,mesecon_effector_on=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	drop = "doors:iron_trapdoor",
 	node_box = {
 		type = "fixed",
@@ -691,8 +691,8 @@ minetest.register_node("doors:iron_trapdoor_open", {
 minetest.register_craft({
 	output = 'doors:iron_trapdoor',
 	recipe = {
-		{'default:steel_ingot', 'default:steel_ingot', ''},
-		{'default:steel_ingot', 'default:steel_ingot', ''},
+		{'mcl_core:steel_ingot', 'mcl_core:steel_ingot', ''},
+		{'mcl_core:steel_ingot', 'mcl_core:steel_ingot', ''},
 		{'', '', ''},
 	}
 })

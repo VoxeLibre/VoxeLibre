@@ -152,7 +152,7 @@ local pane = function(description, node, append)
 		textures = {"xpanes_pane_glass"..append..".png","xpanes_pane_half_glass"..append..".png","xpanes_top_glass"..append..".png"},
 		inventory_image = "xpanes_pane_glass"..append..".png",
 		wield_image = "xpanes_pane_glass"..append..".png",
-		sounds = default.node_sound_glass_defaults(),
+		sounds = mcl_core.node_sound_glass_defaults(),
 		groups = {snappy=2, cracky=3, oddly_breakable_by_hand=3},
 		recipe = {
 			{node, node, node},
@@ -168,28 +168,28 @@ xpanes.register_pane("bar", {
 	inventory_image = "xpanes_pane_iron.png",
 	wield_image = "xpanes_pane_iron.png",
 	groups = {cracky=2},
-	sounds = default.node_sound_metal_defaults(),
+	sounds = mcl_core.node_sound_metal_defaults(),
 	recipe = {
-		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"},
-		{"default:steel_ingot", "default:steel_ingot", "default:steel_ingot"}
+		{"mcl_core:steel_ingot", "mcl_core:steel_ingot", "mcl_core:steel_ingot"},
+		{"mcl_core:steel_ingot", "mcl_core:steel_ingot", "mcl_core:steel_ingot"}
 	}
 })
 
 -- Glass
-pane("Glass Pane", "default:glass", "_natural")
-pane("Red Stained Glass Pane", "default:glass_red", "_red")
-pane("Green Stained Glass Pane", "default:glass_green", "_green")
-pane("Blue Stained Glass Pane", "default:glass_blue", "_blue")
-pane("Light Blue Stained Glass Pane", "default:glass_light_blue", "_light_blue")
-pane("Black Stained Glass Pane", "default:glass_black", "_black")
-pane("White Stained Glass Pane", "default:glass_white", "_white")
-pane("Yellow Stained Glass Pane", "default:glass_yellow", "_yellow")
-pane("Brown Stained Glass Pane", "default:glass_brown", "_brown")
-pane("Orange Stained Glass Pane", "default:glass_orange", "_orange")
-pane("Pink Stained Glass Pane", "default:glass_pink", "_pink")
-pane("Gray Stained Glass Pane", "default:glass_gray", "_gray")
-pane("Lime Stained Glass Pane", "default:glass_lime", "_lime")
-pane("Light Gray Stained Glass Pane", "default:glass_silver", "_silver")
-pane("Magenta Stained Glass Pane", "default:glass_magenta", "_magenta")
-pane("Purple Stained Glass Pane", "default:glass_purple", "_purple")
-pane("Cyan Stained Glass Pane", "default:glass_cyan", "_cyan")
+pane("Glass Pane", "mcl_core:glass", "_natural")
+pane("Red Stained Glass Pane", "mcl_core:glass_red", "_red")
+pane("Green Stained Glass Pane", "mcl_core:glass_green", "_green")
+pane("Blue Stained Glass Pane", "mcl_core:glass_blue", "_blue")
+pane("Light Blue Stained Glass Pane", "mcl_core:glass_light_blue", "_light_blue")
+pane("Black Stained Glass Pane", "mcl_core:glass_black", "_black")
+pane("White Stained Glass Pane", "mcl_core:glass_white", "_white")
+pane("Yellow Stained Glass Pane", "mcl_core:glass_yellow", "_yellow")
+pane("Brown Stained Glass Pane", "mcl_core:glass_brown", "_brown")
+pane("Orange Stained Glass Pane", "mcl_core:glass_orange", "_orange")
+pane("Pink Stained Glass Pane", "mcl_core:glass_pink", "_pink")
+pane("Gray Stained Glass Pane", "mcl_core:glass_gray", "_gray")
+pane("Lime Stained Glass Pane", "mcl_core:glass_lime", "_lime")
+pane("Light Gray Stained Glass Pane", "mcl_core:glass_silver", "_silver")
+pane("Magenta Stained Glass Pane", "mcl_core:glass_magenta", "_magenta")
+pane("Purple Stained Glass Pane", "mcl_core:glass_purple", "_purple")
+pane("Cyan Stained Glass Pane", "mcl_core:glass_cyan", "_cyan")

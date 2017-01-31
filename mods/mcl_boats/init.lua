@@ -135,7 +135,7 @@ end
 
 local woods = { "", "_spruce", "_birch", "_jungle", "_dark", "_acacia" }
 local names = { "Oak Boat", "Spruce Boat", "Birch Boat", "Jungle Boat", "Dark Oak Boat", "Acacia Boat" }
-local craftstuffs = { "default:wood", "default:sprucewood", "default:birchwood", "default:junglewood", "default:darkwood", "default:acaciawood" }
+local craftstuffs = { "mcl_core:wood", "mcl_core:sprucewood", "mcl_core:birchwood", "mcl_core:junglewood", "mcl_core:darkwood", "mcl_core:acaciawood" }
 
 for w=1, #woods do
 	local textures = {"mcl_boats_texture.png"}

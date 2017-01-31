@@ -10,7 +10,7 @@ local function deepcopy ( t )
     return nt;
 end
 
-local newbook = deepcopy(minetest.registered_items["default:book"]);
+local newbook = deepcopy(minetest.registered_items["mcl_core:book"]);
 
 newbook.on_use = function ( itemstack, user, pointed_thing )
 
@@ -21,16 +21,16 @@ newbook.on_use = function ( itemstack, user, pointed_thing )
         "textarea[0.5,0.25;7.5,9.25;text;;"..minetest.formspec_escape(text).."]"..
         "button_exit[3,8.25;2,1;ok;Exit]";
 
-    minetest.show_formspec(user:get_player_name(), "default:book", formspec);
+    minetest.show_formspec(user:get_player_name(), "mcl_core:book", formspec);
 
 end
 
-minetest.register_craftitem(":default:book", newbook);
+minetest.register_craftitem(":mcl_core:book", newbook);
 
 minetest.register_on_player_receive_fields(function ( player, formname, fields )
-    if ((formname == "default:book") and fields and fields.text) then
+    if ((formname == "mcl_core:book") and fields and fields.text) then
         local stack = player:get_wielded_item();
-        if (stack:get_name() and (stack:get_name() == "default:book")) then
+        if (stack:get_name() and (stack:get_name() == "mcl_core:book")) then
             local t = stack:to_table();
             t.metadata = fields.text;
             player:set_wielded_item(ItemStack(t));

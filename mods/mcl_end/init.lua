@@ -4,7 +4,7 @@ minetest.register_node("mcl_end:end_stone", {
 	tiles = {"mcl_end_end_stone.png"},
 	stack_max = 64,
 	groups = {cracky=2,building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
 minetest.register_node("mcl_end:end_bricks", {
@@ -13,7 +13,7 @@ minetest.register_node("mcl_end:end_bricks", {
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {cracky=3,building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
 minetest.register_node("mcl_end:purpur_block", {
@@ -22,7 +22,7 @@ minetest.register_node("mcl_end:purpur_block", {
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {cracky=3,building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
 minetest.register_node("mcl_end:purpur_pillar", {
@@ -32,7 +32,7 @@ minetest.register_node("mcl_end:purpur_pillar", {
 	is_ground_content = false,
 	tiles = {"mcl_end_purpur_pillar_top.png", "mcl_end_purpur_pillar_top.png", "mcl_end_purpur_pillar.png"},
 	groups = {cracky=3,building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
 local rod_box = {
@@ -68,7 +68,7 @@ minetest.register_node("mcl_end:end_rod", {
 	selection_box = rod_box,
 	-- FIXME: Collision box does not seem to rotate correctly
 	collision_box = rod_box,
-	sounds = default.node_sound_glass_defaults(),
+	sounds = mcl_core.node_sound_glass_defaults(),
 })
 
 minetest.register_node("mcl_end:dragon_egg", {
@@ -103,7 +103,7 @@ minetest.register_node("mcl_end:dragon_egg", {
 		type = "regular",
 	},
 	groups = { oddly_breakable_by_hand = 3, falling_node = 1, deco_block = 1, not_in_creative_inventory = 1 },
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 	-- TODO: Make dragon egg teleport on punching
 })
 

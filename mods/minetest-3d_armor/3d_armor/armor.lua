@@ -9,23 +9,23 @@ ARMOR_HEAL_MULTIPLIER = 1
 ARMOR_RADIATION_MULTIPLIER = 1
 ARMOR_MATERIALS = {
 	wood = "group:wood",
-	cactus = "default:cactus",
-	steel = "default:steel_ingot",
-	bronze = "default:bronze_ingot",
-	diamond = "default:diamond",
-	gold = "default:gold_ingot",
+	cactus = "mcl_core:cactus",
+	steel = "mcl_core:steel_ingot",
+	bronze = "mcl_core:bronze_ingot",
+	diamond = "mcl_core:diamond",
+	gold = "mcl_core:gold_ingot",
 	mithril = "moreores:mithril_ingot",
 	crystal = "ethereal:crystal_ingot",
 }
 ARMOR_FIRE_PROTECT = minetest.get_modpath("ethereal") ~= nil
 ARMOR_FIRE_NODES = {
-	{"default:lava_source",     5, 8},
-	{"default:lava_flowing",    5, 8},
+	{"mcl_core:lava_source",     5, 8},
+	{"mcl_core:lava_flowing",    5, 8},
 	{"fire:basic_flame",        3, 4},
 	{"fire:permanent_flame",    3, 4},
 	{"ethereal:crystal_spike",  2, 1},
 	{"ethereal:fire_flower",    2, 1},
-	{"default:torch",           1, 1},
+	{"torches:torch",           1, 1},
 }
 
 local skin_mod = nil
@@ -128,7 +128,7 @@ armor.update_player_visuals = function(self, player)
 	end
 	local name = player:get_player_name()
 	if self.textures[name] then
-		default.player_set_textures(player, {
+		mcl_core.player_set_textures(player, {
 			self.textures[name].skin,
 			self.textures[name].armor,
 			self.textures[name].wielditem,
@@ -325,7 +325,7 @@ end
 
 -- Register Player Model
 
-default.player_register_model("3d_armor_character.b3d", {
+mcl_core.player_register_model("3d_armor_character.b3d", {
 	animation_speed = 30,
 	textures = {
 		armor.default_skin..".png",
@@ -366,7 +366,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 minetest.register_on_joinplayer(function(player)
-	default.player_set_model(player, "3d_armor_character.b3d")
+	mcl_core.player_set_model(player, "3d_armor_character.b3d")
 	local name = player:get_player_name()
 	local player_inv = player:get_inventory()
 	local armor_inv = minetest.create_detached_inventory(name.."_armor", {

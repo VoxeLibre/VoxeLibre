@@ -123,7 +123,7 @@ for zmy=0, 1 do
 			state = mesecon.state.off,
 			onstate = "mesecons:wire_"..nodeid.."_on"
 		}},
-		sounds = default.node_sound_defaults(),
+		sounds = mcl_core.node_sound_defaults(),
 	})
 
 	minetest.register_node("mesecons:wire_"..nodeid.."_on", {
@@ -154,7 +154,7 @@ for zmy=0, 1 do
 			state = mesecon.state.on,
 			offstate = "mesecons:wire_"..nodeid.."_off"
 		}},
-		sounds = default.node_sound_defaults(),
+		sounds = mcl_core.node_sound_defaults(),
 	})
 end
 end
@@ -250,7 +250,7 @@ minetest.register_alias("mesecons:redstone", "mesecons:wire_00000000_off")
 minetest.register_craft({
 	type = "cooking",
 	output = "mesecons:redstone",
-	recipe = "default:stone_with_redstone",
+	recipe = "mcl_core:stone_with_redstone",
 	cooktime = 10,
 })
 

@@ -123,10 +123,10 @@ function mesecon:mvps_pull_all(pos, direction) -- pos: pos of mvps; direction: d
 		minetest.remove_node(oldpos)
 end
 
-mesecon:register_mvps_stopper("default:sign")
-mesecon:register_mvps_stopper("default:obsidian")
-mesecon:register_mvps_stopper("default:bedrock")
-mesecon:register_mvps_stopper("default:barrier")
+mesecon:register_mvps_stopper("mcl_core:sign")
+mesecon:register_mvps_stopper("mcl_core:obsidian")
+mesecon:register_mvps_stopper("mcl_core:bedrock")
+mesecon:register_mvps_stopper("mcl_core:barrier")
 mesecon:register_mvps_stopper("mcl_chests:chest")
 mesecon:register_mvps_stopper("mcl_chests:chest_left")
 mesecon:register_mvps_stopper("mcl_chests:chest_right")

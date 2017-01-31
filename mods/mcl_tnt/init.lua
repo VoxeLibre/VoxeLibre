@@ -49,7 +49,7 @@ minetest.register_node("mcl_tnt:tnt", {
 	mesecons = {effector = {
 		action_on = tnt.ignite
 	}},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
 local TNT_RANGE = 3
@@ -97,7 +97,7 @@ function TNT:on_step(dtime)
         do_tnt_physics(pos, TNT_RANGE)
 		local meta = minetest.get_meta(pos)
         minetest.sound_play("tnt_explode", {pos = pos,gain = 1.0,max_hear_distance = 16,})
-        if minetest.get_node(pos).name == "default:water_source" or minetest.get_node(pos).name == "default:water_flowing" or minetest.get_node(pos).name == "default:bedrock" or minetest.get_node(pos).name == "protector:display" or minetest.is_protected(pos, "tnt") then
+        if minetest.get_node(pos).name == "mcl_core:water_source" or minetest.get_node(pos).name == "mcl_core:water_flowing" or minetest.get_node(pos).name == "mcl_core:bedrock" or minetest.get_node(pos).name == "protector:display" or minetest.is_protected(pos, "tnt") then
             -- Cancel the Explosion
             self.object:remove()
             return
@@ -108,7 +108,7 @@ function TNT:on_step(dtime)
 					if x*x+y*y+z*z <= TNT_RANGE * TNT_RANGE + TNT_RANGE then
 						local np={x=pos.x+x,y=pos.y+y,z=pos.z+z}
 						local n = minetest.get_node(np)
-						if n.name ~= "air" and n.name ~= "default:obsidian" and n.name ~= "default:bedrock" and n.name ~= "protector:protect" then
+						if n.name ~= "air" and n.name ~= "mcl_core:obsidian" and n.name ~= "mcl_core:bedrock" and n.name ~= "protector:protect" then
 							activate_if_tnt(n.name, np, pos, 3)
 							minetest.remove_node(np)
 							core.check_for_falling(np)
@@ -136,8 +136,8 @@ minetest.register_entity("mcl_tnt:tnt", TNT)
 minetest.register_craft({
 	output = "mcl_tnt:tnt",
 	recipe = {
-		{'default:gunpowder','group:sand','default:gunpowder'},
-		{'group:sand','default:gunpowder','group:sand'},
-		{'default:gunpowder','group:sand','default:gunpowder'}
+		{'mcl_core:gunpowder','group:sand','mcl_core:gunpowder'},
+		{'group:sand','mcl_core:gunpowder','group:sand'},
+		{'mcl_core:gunpowder','group:sand','mcl_core:gunpowder'}
 	}
 })

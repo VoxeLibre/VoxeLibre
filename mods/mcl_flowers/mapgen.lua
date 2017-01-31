@@ -1,4 +1,4 @@
-minetest.register_alias("mapgen_dandelion", "mcl_flowers:dandelion_yellow")
+minetest.register_alias("mapgen_dandelion", "mcl_flowers:dandelion")
 minetest.register_alias("mapgen_rose", "mcl_flowers:rose")
 
 minetest.register_alias("mapgen_oxeye_daisy", "mcl_flowers:oxeye_daisy")
@@ -10,9 +10,9 @@ minetest.register_alias("mapgen_tulip_white", "mcl_flowers:tulip_white")
 
 minetest.register_alias("mapgen_allium", "mcl_flowers:allium")
 
-minetest.register_alias("mapgen_paeonia", "mcl_flowers:paeonia")
+minetest.register_alias("mapgen_poppy", "mcl_flowers:poppy")
 
-minetest.register_alias("mapgen_houstonia", "mcl_flowers:houstonia")
+minetest.register_alias("mapgen_azure_bluet", "mcl_flowers:azure_bluet")
 
 minetest.register_alias("mapgen_blue_orchid", "mcl_flowers:blue_orchid")
 
@@ -52,15 +52,15 @@ minetest.register_on_generated(function(minp, maxp, seed)
 					if minetest.registered_nodes[nn] and
 						minetest.registered_nodes[nn].buildable_to then
 						nn = minetest.get_node({x=x,y=ground_y,z=z}).name
-						if nn == "default:dirt_with_grass" then
+						if nn == "mcl_core:dirt_with_grass" then
 							--local flower_choice = pr:next(1, 11)
-							local flower_choice = math.random(0, 11)
-							local flower = "default:grass"
+							local flower_choice = math.random(0, 10)
+							local flower = "mcl_core:grass"
 							if flower_choice == 1 then
-								flower = "mcl_flowers:dandelion_yellow"
+								flower = "mcl_flowers:dandelion"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 2 then
-								flower = "mcl_flowers:rose"
+								flower = "mcl_flowers:fern"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 3 then
 								flower = "mcl_flowers:oxeye_daisy"
@@ -81,19 +81,16 @@ minetest.register_on_generated(function(minp, maxp, seed)
 								flower = "mcl_flowers:allium"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 9 then
-								flower = "mcl_flowers:paeonia"
+								flower = "mcl_flowers:azure_bluet"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 10 then
-								flower = "mcl_flowers:houstonia"
+								flower = "mcl_flowers:poppy"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 11 then
 								flower = "mcl_flowers:blue_orchid"
 								minetest.set_node(p, {name=flower})
-							elseif flower_choice == 12 then
-								flower = "mcl_flowers:fern"
-								minetest.set_node(p, {name=flower})
 							else
-								flower = "default:grass"
+								flower = "mcl_core:grass"
 								minetest.set_node(p, {name=flower})
 							end
 							

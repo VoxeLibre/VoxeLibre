@@ -44,7 +44,7 @@ minetest.register_node("mesecons_button:button_stone_off", {
 		minetest.sound_play("mesecons_button_push", {pos=pos})
 		minetest.after(1, mesecon.button_turnoff, pos)
 	end,
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.off,
 		rules = mesecon.rules.buttonlike_get
@@ -70,7 +70,7 @@ minetest.register_node("mesecons_button:button_stone_on", {
 	groups = {dig_immediate=2, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
 	drop = 'mesecons_button:button_stone_off',
 	description = "Stone Button",
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.on,
 		rules = mesecon.rules.buttonlike_get
@@ -101,7 +101,7 @@ minetest.register_node("mesecons_button:button_wood_off", {
 		minetest.sound_play("mesecons_button_push", {pos=pos})
 		minetest.after(1, mesecon.button_turnoff, pos)
 	end,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.off,
 		rules = mesecon.rules.buttonlike_get
@@ -127,7 +127,7 @@ minetest.register_node("mesecons_button:button_wood_on", {
 	groups = {dig_immediate=2, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
 	drop = 'mesecons_button:button_wood_off',
 	description = "Wooden Button",
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.on,
 		rules = mesecon.rules.buttonlike_get
@@ -137,7 +137,7 @@ minetest.register_node("mesecons_button:button_wood_on", {
 minetest.register_craft({
 	output = 'mesecons_button:button_stone_off',
 	recipe = {
-		{'default:stone'},
+		{'mcl_core:stone'},
 	}
 })
 

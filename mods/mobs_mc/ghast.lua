@@ -37,7 +37,7 @@ mobs:register_mob("mobs_mc:ghast", {
 		chance = 1,
 		min = 0,
 		max = 1,},
-		{name = "default:gunpowder",
+		{name = "mcl_core:gunpowder",
 		chance = 1,
 		min = 0,
 		max = 2,},
@@ -81,7 +81,7 @@ mobs:register_mob("mobs_mc:ghast", {
 })
 
 
-mobs:register_spawn("mobs_mc:ghast", {"default:flowing_lava", "nether:rack","air"}, 17, -1, 5000, 1, -2000)
+mobs:register_spawn("mobs_mc:ghast", {"mcl_core:flowing_lava", "nether:rack","air"}, 17, -1, 5000, 1, -2000)
 
 -- fireball (weapon)
 mobs:register_arrow(":mobs_monster:fireball", {

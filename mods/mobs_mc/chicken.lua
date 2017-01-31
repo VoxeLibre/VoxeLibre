@@ -119,7 +119,7 @@ mobs:register_mob("mobs_mc:chicken", {
 	
 })
 
---mobs:register_spawn("mobs_mc:chicken", {"default:dirt_with_grass"}, 20, 8, 7000, 1, 31000)
+--mobs:register_spawn("mobs_mc:chicken", {"mcl_core:dirt_with_grass"}, 20, 8, 7000, 1, 31000)
 
 
 -- compatibility

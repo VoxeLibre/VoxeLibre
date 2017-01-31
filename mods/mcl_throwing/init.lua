@@ -121,17 +121,17 @@ minetest.register_tool("mcl_throwing:bow_2", {
 minetest.register_craft({
 	output = 'mcl_throwing:bow',
 	recipe = {
-		{'', 'default:stick', 'default:string'},
-		{'default:stick', '', 'default:string'},
-		{'', 'default:stick', 'default:string'},
+		{'', 'mcl_core:stick', 'mcl_core:string'},
+		{'mcl_core:stick', '', 'mcl_core:string'},
+		{'', 'mcl_core:stick', 'mcl_core:string'},
 	}
 })
 minetest.register_craft({
 	output = 'mcl_throwing:bow',
 	recipe = {
-		{'default:string', 'default:stick', ''},
-		{'default:string', '', 'default:stick'},
-		{'default:string', 'default:stick', ''},
+		{'mcl_core:string', 'mcl_core:stick', ''},
+		{'mcl_core:string', '', 'mcl_core:stick'},
+		{'mcl_core:string', 'mcl_core:stick', ''},
 	}
 })
 

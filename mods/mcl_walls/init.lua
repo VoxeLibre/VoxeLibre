@@ -126,7 +126,7 @@ local function register_wall(nodename, name, texture, invtex)
 				type = "fixed",
 				fixed = take
 			},
-			sounds = default.node_sound_stone_defaults(), 
+			sounds = mcl_core.node_sound_stone_defaults(), 
 		})
 	end
 
@@ -145,7 +145,7 @@ local function register_wall(nodename, name, texture, invtex)
 			type = "fixed",
 			fixed = {pillar, full_blocks[1]}
 		},
-		sounds = default.node_sound_stone_defaults(), 
+		sounds = mcl_core.node_sound_stone_defaults(), 
 	})
 
 	minetest.register_node(nodename.."_21", {
@@ -163,7 +163,7 @@ local function register_wall(nodename, name, texture, invtex)
 			type = "fixed",
 			fixed = {pillar, full_blocks[2]}
 		},
-		sounds = default.node_sound_stone_defaults(), 
+		sounds = mcl_core.node_sound_stone_defaults(), 
 	})
 
 	-- Inventory item
@@ -186,7 +186,7 @@ local function register_wall(nodename, name, texture, invtex)
 		},
 		collisionbox = {-0.2, 0, -0.2, 0.2, 1.4, 0.2},
 		on_construct = update_wall,
-		sounds = default.node_sound_stone_defaults(), 
+		sounds = mcl_core.node_sound_stone_defaults(), 
 	})
 end
 
@@ -196,8 +196,8 @@ register_wall("mcl_walls:cobble", "Cobblestone Wall", "default_cobble.png", "mcl
 minetest.register_craft({
 	output = 'mcl_walls:cobble 6',
 	recipe = {
-		{'default:cobble', 'default:cobble', 'default:cobble'},
-		{'default:cobble', 'default:cobble', 'default:cobble'}
+		{'mcl_core:cobble', 'mcl_core:cobble', 'mcl_core:cobble'},
+		{'mcl_core:cobble', 'mcl_core:cobble', 'mcl_core:cobble'}
 	}
 })
 
@@ -207,8 +207,8 @@ register_wall("mcl_walls:mossycobble", "Mossy Cobblestone Wall", "default_mossyc
 minetest.register_craft({
 	output = 'mcl_walls:mossycobble 6',
 	recipe = {
-		{'default:mossycobble', 'default:mossycobble', 'default:mossycobble'},
-        {'default:mossycobble', 'default:mossycobble', 'default:mossycobble'}
+		{'mcl_core:mossycobble', 'mcl_core:mossycobble', 'mcl_core:mossycobble'},
+        {'mcl_core:mossycobble', 'mcl_core:mossycobble', 'mcl_core:mossycobble'}
 	}
 })
 

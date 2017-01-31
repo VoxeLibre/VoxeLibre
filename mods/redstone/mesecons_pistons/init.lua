@@ -157,7 +157,7 @@ minetest.register_node("mesecons_pistons:piston_normal_off", {
 	is_ground_content = false,
 	after_place_node = piston_orientate,
 	mesecons_piston = pistonspec_normal,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	mesecons = {effector={
 		action_on = piston_on,
 		rules = piston_get_rules
@@ -186,7 +186,7 @@ minetest.register_node("mesecons_pistons:piston_normal_on", {
 	node_box = piston_on_box,
 	selection_box = piston_on_box,
 	mesecons_piston = pistonspec_normal,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	mesecons = {effector={
 		action_off = piston_off,
 		rules = piston_get_rules
@@ -241,7 +241,7 @@ minetest.register_node("mesecons_pistons:piston_sticky_off", {
 	is_ground_content = false,
 	after_place_node = piston_orientate,
 	mesecons_piston = pistonspec_sticky,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	mesecons = {effector={
 		action_on = piston_on,
 		rules = piston_get_rules
@@ -270,7 +270,7 @@ minetest.register_node("mesecons_pistons:piston_sticky_on", {
 	node_box = piston_on_box,
 	selection_box = piston_on_box,
 	mesecons_piston = pistonspec_sticky,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	mesecons = {effector={
 		action_off = piston_off,
 		rules = piston_get_rules
@@ -372,7 +372,7 @@ minetest.register_node("mesecons_pistons:piston_up_normal_on", {
 	node_box = piston_up_on_box,
 	selection_box = piston_up_on_box,
 	mesecons_piston = pistonspec_normal_up,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	mesecons = {effector={
 		action_off = piston_off,
 		rules = piston_up_rules,
@@ -430,7 +430,7 @@ minetest.register_node("mesecons_pistons:piston_up_sticky_off", {
 	is_ground_content = false,
 	drop = "mesecons_pistons:piston_sticky_off",
 	mesecons_piston = pistonspec_sticky_up,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	mesecons = {effector={
 		action_on = piston_on,
 		rules = piston_up_rules,
@@ -459,7 +459,7 @@ minetest.register_node("mesecons_pistons:piston_up_sticky_on", {
 	node_box = piston_up_on_box,
 	selection_box = piston_up_on_box,
 	mesecons_piston = pistonspec_sticky_up,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	mesecons = {effector={
 		action_off = piston_off,
 		rules = piston_up_rules,
@@ -535,7 +535,7 @@ minetest.register_node("mesecons_pistons:piston_down_normal_off", {
 	is_ground_content = false,
 	drop = "mesecons_pistons:piston_normal_off",
 	mesecons_piston = pistonspec_normal_down,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	mesecons = {effector={
 		action_on = piston_on,
 		rules = piston_down_rules,
@@ -564,7 +564,7 @@ minetest.register_node("mesecons_pistons:piston_down_normal_on", {
 	node_box = piston_down_on_box,
 	selection_box = piston_down_on_box,
 	mesecons_piston = pistonspec_normal_down,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	mesecons = {effector={
 		action_off = piston_off,
 		rules = piston_down_rules,
@@ -618,7 +618,7 @@ minetest.register_node("mesecons_pistons:piston_down_sticky_off", {
 	is_ground_content = false,
 	drop = "mesecons_pistons:piston_sticky_off",
 	mesecons_piston = pistonspec_sticky_down,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	mesecons = {effector={
 		action_on = piston_on,
 		rules = piston_down_rules,
@@ -647,7 +647,7 @@ minetest.register_node("mesecons_pistons:piston_down_sticky_on", {
 	node_box = piston_down_on_box,
 	selection_box = piston_down_on_box,
 	mesecons_piston = pistonspec_sticky_down,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	mesecons = {effector={
 		action_off = piston_off,
 		rules = piston_down_rules,
@@ -750,8 +750,8 @@ minetest.register_craft({
 	output = 'mesecons_pistons:piston_normal_off',
 	recipe = {
 		{"group:wood", "group:wood", "group:wood"},
-		{"default:cobble", "default:steel_ingot", "default:cobble"},
-		{"default:cobble", "mesecons:redstone", "default:cobble"},
+		{"mcl_core:cobble", "mcl_core:steel_ingot", "mcl_core:cobble"},
+		{"mcl_core:cobble", "mesecons:redstone", "mcl_core:cobble"},
 	}
 })
 

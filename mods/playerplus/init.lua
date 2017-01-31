@@ -101,7 +101,7 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		-- am I near a cactus?
-		local near = minetest.find_node_near(pos, 1, "default:cactus")
+		local near = minetest.find_node_near(pos, 1, "mcl_core:cactus")
 
 		if near then
 			-- am I touching the cactus? if so it hurts

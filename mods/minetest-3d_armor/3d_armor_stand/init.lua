@@ -95,7 +95,7 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 		fixed = {-0.5,-0.5,-0.5, 0.5,1.4,0.5}
 	},
 	groups = {choppy=2, oddly_breakable_by_hand=2, deco_block=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", armor_stand_formspec)
@@ -186,9 +186,9 @@ minetest.register_entity("3d_armor_stand:armor_entity", {
 minetest.register_craft({
 	output = "3d_armor_stand:armor_stand",
 	recipe = {
-		{"default:stick", "default:stick", "default:stick"},
-		{"", "default:stick", ""},
-		{"default:stick", "stairs:slab_stone", "default:stick"},
+		{"mcl_core:stick", "mcl_core:stick", "mcl_core:stick"},
+		{"", "mcl_core:stick", ""},
+		{"mcl_core:stick", "stairs:slab_stone", "mcl_core:stick"},
 	}
 })
 

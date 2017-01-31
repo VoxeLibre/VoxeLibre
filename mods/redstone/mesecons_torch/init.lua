@@ -38,7 +38,7 @@ minetest.register_craft({
 	output = 'mesecons_torch:mesecon_torch_on',
 	recipe = {
 	{"mesecons:redstone"},
-	{"default:stick"},}
+	{"mcl_core:stick"},}
 })
 
 local torch_selectionbox =
@@ -92,7 +92,7 @@ minetest.register_node("mesecons_torch:redstoneblock", {
 	tiles = {"default_redstone_block.png"},
 	stack_max = 64,
 	groups = {cracky=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 	is_ground_content = false,
 	mesecons = {receptor = {
 		state = mesecon.state.on,

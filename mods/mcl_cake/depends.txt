@@ -1,4 +1,4 @@
-default
+mcl_core
 bucket
 mcl_farming
 mcl_mobitems

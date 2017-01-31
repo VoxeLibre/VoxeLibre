@@ -5,7 +5,7 @@ local chest = minetest.get_content_id("mcl_chests:chest")
 local mcl_hoppers_formspec =
 	"size[9,7]"..
 	"background[-0.19,-0.25;9.41,10.48;mcl_hoppers_inventory.png]"..
-	default.inventory_header..
+	mcl_core.inventory_header..
 	"list[current_name;main;2,0.5;5,1;]"..
 	"list[current_player;main;0,2.5;9,3;9]"..
 	"list[current_player;main;0,5.74;9,1;]"..
@@ -68,7 +68,7 @@ minetest.register_node("mcl_hoppers:hopper", {
 		minetest.log("action", player:get_player_name()..
 				" takes stuff from mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
-	sounds = default.node_sound_metal_defaults(),
+	sounds = mcl_core.node_sound_metal_defaults(),
 })
 
 minetest.register_node("mcl_hoppers:hopper_side", {
@@ -128,7 +128,7 @@ minetest.register_node("mcl_hoppers:hopper_side", {
 		minetest.log("action", player:get_player_name()..
 				" takes stuff from mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
-	sounds = default.node_sound_metal_defaults(),
+	sounds = mcl_core.node_sound_metal_defaults(),
 })
 --make mcl_hopperss suck in blocks
 minetest.register_abm({
@@ -508,7 +508,7 @@ minetest.register_craftitem("mcl_hoppers:hopper_item", {
 			placed = true
 		end
 		if placed == true then
-			minetest.sound_play(default.node_sound_metal_defaults().place, { pos = pos2 })
+			minetest.sound_play(mcl_core.node_sound_metal_defaults().place, { pos = pos2 })
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:take_item()
 			end
@@ -519,8 +519,8 @@ minetest.register_craftitem("mcl_hoppers:hopper_item", {
 minetest.register_craft({
 	output = "mcl_hoppers:hopper_item",
 	recipe = {
-		{"default:steel_ingot","","default:steel_ingot"},
-		{"default:steel_ingot","mcl_chests:chest","default:steel_ingot"},
-		{"","default:steel_ingot",""},
+		{"mcl_core:steel_ingot","","mcl_core:steel_ingot"},
+		{"mcl_core:steel_ingot","mcl_chests:chest","mcl_core:steel_ingot"},
+		{"","mcl_core:steel_ingot",""},
 	}
 })

@@ -644,7 +644,7 @@ for _,v in ipairs({
 	"birchwood",
 	"darkwood"
 }) do
-	local t = minetest.registered_nodes["default:"..v].tiles[1]
+	local t = minetest.registered_nodes["mcl_core:"..v].tiles[1]
 	mcstair.add("stairs:stair_"..v, {
 		{
 			t.."^("..t.."^[transformR90^mcstair_turntexture.png^[makealpha:255,0,255)",

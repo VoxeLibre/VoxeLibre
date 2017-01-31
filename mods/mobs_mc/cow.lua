@@ -78,7 +78,7 @@ mobs:register_mob("mobs_mc:cow", {
 	follow = "farming:wheat",
 	view_range = 7,
 	replace_rate = 10,
-	replace_what = {"default:grass_3", "default:grass_4", "default:grass_5", "farming:wheat_8"},
+	replace_what = {"mcl_core:grass_3", "mcl_core:grass_4", "mcl_core:grass_5", "farming:wheat_8"},
 	replace_with = "air",
 	fear_height = 2,
 	on_rightclick = function(self, clicker)
@@ -125,7 +125,7 @@ mobs:register_mob("mobs_mc:cow", {
 	end,	
 })
 
---mobs:register_spawn("mobs_mc:cow", {"default:dirt_with_grass"}, 20, 8, 7000, 1, 31000)
+--mobs:register_spawn("mobs_mc:cow", {"mcl_core:dirt_with_grass"}, 20, 8, 7000, 1, 31000)
 
 
 -- compatibility

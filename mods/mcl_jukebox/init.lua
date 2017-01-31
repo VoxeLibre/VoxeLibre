@@ -66,7 +66,7 @@ minetest.register_craft({
 	output = 'mcl_jukebox:jukebox',
 	recipe = {
 		{'group:wood', 'group:wood', 'group:wood'},
-		{'group:wood', 'default:diamond', 'group:wood'},
+		{'group:wood', 'mcl_core:diamond', 'group:wood'},
 		{'group:wood', 'group:wood', 'group:wood'},
 	}
 })
@@ -76,7 +76,7 @@ minetest.register_craft({
 minetest.register_node("mcl_jukebox:jukebox", {
 	description = "Jukebox",
 	tiles = {"mcl_jukebox_top.png", "mcl_jukebox_side.png", "mcl_jukebox_side.png"},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	groups = {oddly_breakable_by_hand=1, flammable=1, choppy=3, deco_block=1},
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)

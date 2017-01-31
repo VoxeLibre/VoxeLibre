@@ -182,9 +182,9 @@ mobs:register_mob("mobs_mc:greenbig", {
 		end
 	end,
 })
-mobs:register_spawn("mobs_mc:greensmall", {"default:flowing_water", "default:mossycobble"}, 7, -1, 5000, 4, 31000)
-mobs:register_spawn("mobs_mc:greenmedium", {"default:flowing_water", "default:mossycobble"}, 7, -1, 5000, 4, 31000)
-mobs:register_spawn("mobs_mc:greenbig", {"default:flowing_water", "default:mossycobble"}, 7, -1, 5000, 4, 31000)
+mobs:register_spawn("mobs_mc:greensmall", {"mcl_core:flowing_water", "mcl_core:mossycobble"}, 7, -1, 5000, 4, 31000)
+mobs:register_spawn("mobs_mc:greenmedium", {"mcl_core:flowing_water", "mcl_core:mossycobble"}, 7, -1, 5000, 4, 31000)
+mobs:register_spawn("mobs_mc:greenbig", {"mcl_core:flowing_water", "mcl_core:mossycobble"}, 7, -1, 5000, 4, 31000)
 
 
 
@@ -307,8 +307,8 @@ mobs:register_mob("mobs_mc:lavabig", {
 	end
 })
 
-mobs:register_spawn("mobs_mc:lavasmall", {"nether:rack", "default:lava"}, 7, -1, 5000, 4, 31000)
-mobs:register_spawn("mobs_mc:lavabig", {"nether:rack", "default:lava"}, 7, -1, 5000, 4, 31000)
+mobs:register_spawn("mobs_mc:lavasmall", {"nether:rack", "mcl_core:lava"}, 7, -1, 5000, 4, 31000)
+mobs:register_spawn("mobs_mc:lavabig", {"nether:rack", "mcl_core:lava"}, 7, -1, 5000, 4, 31000)
 
 -- compatibility
 mobs:alias_mob("mobs:lavasmall", "mobs_mc:lavasmall")

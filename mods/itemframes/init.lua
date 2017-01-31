@@ -100,7 +100,7 @@ minetest.register_node("itemframes:frame",{
 	paramtype2 = "facedir",
 	sunlight_propagates = true,
 	groups = { choppy=2,dig_immediate=2,deco_block=1},
-	sounds = default.node_sound_defaults(),
+	sounds = mcl_core.node_sound_defaults(),
 	after_place_node = function(pos, placer, itemstack)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("owner",placer:get_player_name())
@@ -133,8 +133,8 @@ minetest.register_node("itemframes:frame",{
 minetest.register_craft({
 	output = 'itemframes:frame',
 	recipe = {
-		{'default:stick', 'default:stick', 'default:stick'},
-		{'default:stick', 'mcl_mobitems:leather', 'default:stick'},
-		{'default:stick', 'default:stick', 'default:stick'},
+		{'mcl_core:stick', 'mcl_core:stick', 'mcl_core:stick'},
+		{'mcl_core:stick', 'mcl_mobitems:leather', 'mcl_core:stick'},
+		{'mcl_core:stick', 'mcl_core:stick', 'mcl_core:stick'},
 	}
 })

@@ -55,9 +55,9 @@ end
 minetest.register_craft({
 	output = 'mcl_compass:'..stereotype_frame,
 	recipe = {
-		{'', 'default:steel_ingot', ''},
-		{'default:steel_ingot', 'mesecons:redstone', 'default:steel_ingot'},
-		{'', 'default:steel_ingot', ''}
+		{'', 'mcl_core:steel_ingot', ''},
+		{'mcl_core:steel_ingot', 'mesecons:redstone', 'mcl_core:steel_ingot'},
+		{'', 'mcl_core:steel_ingot', ''}
 	}
 })
 

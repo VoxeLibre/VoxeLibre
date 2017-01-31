@@ -151,10 +151,10 @@ minetest.register_tool("3d_armor:boots_chain", {
 
 local craft_ingreds = {
 	leather = { "mcl_mobitems:leather" },
-	steel = { "default:steel_ingot", "default:iron_nugget" },
-	gold = { "default:gold_ingot", "default:gold_nugget" },
-	diamond = { "default:diamond" },
-	chain = { nil, "default:iron_nugget"} ,
+	steel = { "mcl_core:steel_ingot", "mcl_core:iron_nugget" },
+	gold = { "mcl_core:gold_ingot", "mcl_core:gold_nugget" },
+	diamond = { "mcl_core:diamond" },
+	chain = { nil, "mcl_core:iron_nugget"} ,
 }		
 
 for k, v in pairs(craft_ingreds) do

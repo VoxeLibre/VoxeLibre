@@ -34,7 +34,7 @@ minetest.register_item(":", {
 })
 
 -- Picks
-minetest.register_tool("default:pick_wood", {
+minetest.register_tool("mcl_core:pick_wood", {
 	description = "Wooden Pickaxe",
 	inventory_image = "default_tool_woodpick.png",
 	groups = { tool=1 },
@@ -48,7 +48,7 @@ minetest.register_tool("default:pick_wood", {
 		damage_groups = {fleshy=2},
 	},
 })
-minetest.register_tool("default:pick_stone", {
+minetest.register_tool("mcl_core:pick_stone", {
 	description = "Stone Pickaxe",
 	inventory_image = "default_tool_stonepick.png",
 	groups = { tool=1 },
@@ -62,7 +62,7 @@ minetest.register_tool("default:pick_stone", {
 		damage_groups = {fleshy=3},
 	},
 })
-minetest.register_tool("default:pick_steel", {
+minetest.register_tool("mcl_core:pick_steel", {
 	description = "Iron Pickaxe",
 	inventory_image = "default_tool_steelpick.png",
 	groups = { tool=1 },
@@ -76,7 +76,7 @@ minetest.register_tool("default:pick_steel", {
 		damage_groups = {fleshy=4},
 	},
 })
-minetest.register_tool("default:pick_gold", {
+minetest.register_tool("mcl_core:pick_gold", {
 	description = "Golden Pickaxe",
 	inventory_image = "default_tool_goldpick.png",
 	groups = { tool=1 },
@@ -90,7 +90,7 @@ minetest.register_tool("default:pick_gold", {
 		damage_groups = {fleshy=2},
 	},
 })
-minetest.register_tool("default:pick_diamond", {
+minetest.register_tool("mcl_core:pick_diamond", {
 	description = "Diamond Pickaxe",
 	inventory_image = "default_tool_diamondpick.png",
 	groups = { tool=1 },
@@ -106,7 +106,7 @@ minetest.register_tool("default:pick_diamond", {
 })
 
 -- Shovels
-minetest.register_tool("default:shovel_wood", {
+minetest.register_tool("mcl_core:shovel_wood", {
 	description = "Wooden Shovel",
 	inventory_image = "default_tool_woodshovel.png",
 	wield_image = "default_tool_woodshovel.png^[transformR90",
@@ -120,7 +120,7 @@ minetest.register_tool("default:shovel_wood", {
 		damage_groups = {fleshy=2},
 	},
 })
-minetest.register_tool("default:shovel_stone", {
+minetest.register_tool("mcl_core:shovel_stone", {
 	description = "Stone Shovel",
 	inventory_image = "default_tool_stoneshovel.png",
 	wield_image = "default_tool_stoneshovel.png^[transformR90",
@@ -134,7 +134,7 @@ minetest.register_tool("default:shovel_stone", {
 		damage_groups = {fleshy=3},
 	},
 })
-minetest.register_tool("default:shovel_steel", {
+minetest.register_tool("mcl_core:shovel_steel", {
 	description = "Iron Shovel",
 	inventory_image = "default_tool_steelshovel.png",
 	wield_image = "default_tool_steelshovel.png^[transformR90",
@@ -148,7 +148,7 @@ minetest.register_tool("default:shovel_steel", {
 		damage_groups = {fleshy=4},
 	},
 })
-minetest.register_tool("default:shovel_gold", {
+minetest.register_tool("mcl_core:shovel_gold", {
 	description = "Golden Shovel",
 	inventory_image = "default_tool_goldshovel.png",
 	wield_image = "default_tool_goldshovel.png^[transformR90",
@@ -162,7 +162,7 @@ minetest.register_tool("default:shovel_gold", {
 		damage_groups = {fleshy=2},
 	},
 })
-minetest.register_tool("default:shovel_diamond", {
+minetest.register_tool("mcl_core:shovel_diamond", {
 	description = "Diamond Shovel",
 	inventory_image = "default_tool_diamondshovel.png",
 	wield_image = "default_tool_diamondshovel.png^[transformR90",
@@ -178,7 +178,7 @@ minetest.register_tool("default:shovel_diamond", {
 })
 
 -- Axes
-minetest.register_tool("default:axe_wood", {
+minetest.register_tool("mcl_core:axe_wood", {
 	description = "Wooden Axe",
 	inventory_image = "default_tool_woodaxe.png",
 	groups = { tool=1 },
@@ -191,7 +191,7 @@ minetest.register_tool("default:axe_wood", {
 		damage_groups = {fleshy=7},
 	},
 })
-minetest.register_tool("default:axe_stone", {
+minetest.register_tool("mcl_core:axe_stone", {
 	description = "Stone Axe",
 	inventory_image = "default_tool_stoneaxe.png",
 	groups = { tool=1 },
@@ -204,7 +204,7 @@ minetest.register_tool("default:axe_stone", {
 		damage_groups = {fleshy=9},
 	},
 })
-minetest.register_tool("default:axe_steel", {
+minetest.register_tool("mcl_core:axe_steel", {
 	description = "Iron Axe",
 	inventory_image = "default_tool_steelaxe.png",
 	groups = { tool=1 },
@@ -218,7 +218,7 @@ minetest.register_tool("default:axe_steel", {
 		damage_groups = {fleshy=9},
 	},
 })
-minetest.register_tool("default:axe_gold", {
+minetest.register_tool("mcl_core:axe_gold", {
 	description = "Golden Axe",
 	inventory_image = "default_tool_goldaxe.png",
 	groups = { tool=1 },
@@ -231,7 +231,7 @@ minetest.register_tool("default:axe_gold", {
 		damage_groups = {fleshy=7},
 	},
 })
-minetest.register_tool("default:axe_diamond", {
+minetest.register_tool("mcl_core:axe_diamond", {
 	description = "Diamond Axe",
 	inventory_image = "default_tool_diamondaxe.png",
 	groups = { tool=1 },
@@ -246,7 +246,7 @@ minetest.register_tool("default:axe_diamond", {
 })
 
 -- Swords
-minetest.register_tool("default:sword_wood", {
+minetest.register_tool("mcl_core:sword_wood", {
 	description = "Wooden Sword",
 	inventory_image = "default_tool_woodsword.png",
 	groups = { weapon=1 },
@@ -259,7 +259,7 @@ minetest.register_tool("default:sword_wood", {
 		damage_groups = {fleshy=4},
 	}
 })
-minetest.register_tool("default:sword_stone", {
+minetest.register_tool("mcl_core:sword_stone", {
 	description = "Stone Sword",
 	inventory_image = "default_tool_stonesword.png",
 	groups = { weapon=1 },
@@ -272,7 +272,7 @@ minetest.register_tool("default:sword_stone", {
 		damage_groups = {fleshy=5},
 	}
 })
-minetest.register_tool("default:sword_steel", {
+minetest.register_tool("mcl_core:sword_steel", {
 	description = "Iron Sword",
 	inventory_image = "default_tool_steelsword.png",
 	groups = { weapon=1 },
@@ -285,7 +285,7 @@ minetest.register_tool("default:sword_steel", {
 		damage_groups = {fleshy=6},
 	}
 })
-minetest.register_tool("default:sword_gold", {
+minetest.register_tool("mcl_core:sword_gold", {
 	description = "Golden Sword",
 	inventory_image = "default_tool_goldsword.png",
 	groups = { weapon=1 },
@@ -298,7 +298,7 @@ minetest.register_tool("default:sword_gold", {
 		damage_groups = {fleshy=4},
 	}
 })
-minetest.register_tool("default:sword_diamond", {
+minetest.register_tool("mcl_core:sword_diamond", {
 	description = "Diamond Sword",
 	inventory_image = "default_tool_diamondsword.png",
 	groups = { weapon=1 },
@@ -313,7 +313,7 @@ minetest.register_tool("default:sword_diamond", {
 })
 
 -- Flint and Steel
-minetest.register_tool("default:flint_and_steel", {
+minetest.register_tool("mcl_core:flint_and_steel", {
 	description = "Flint and Steel",
 	inventory_image = "default_tool_flint_and_steel.png",
 	liquids_pointable = false,
@@ -331,7 +331,7 @@ minetest.register_tool("default:flint_and_steel", {
 			if minetest.get_node(pointed_thing.under).name == "mcl_tnt:tnt" then
 				tnt.ignite(pointed_thing.under)
 			else
-				default.set_fire(pointed_thing)
+				mcl_core.set_fire(pointed_thing)
 				itemstack:add_wear(66000/65) -- 65 uses
 				return itemstack
 			end
@@ -340,7 +340,7 @@ minetest.register_tool("default:flint_and_steel", {
 })
 
 -- Fishing Pole
-minetest.register_tool("default:pole", {
+minetest.register_tool("mcl_core:pole", {
 	description = "Fishing Rod",
     groups = { tool=1 },
     inventory_image = "default_tool_fishing_pole.png",
@@ -349,7 +349,7 @@ minetest.register_tool("default:pole", {
 	on_use = function (itemstack, user, pointed_thing)
 		if pointed_thing and pointed_thing.under then
 			local node = minetest.get_node(pointed_thing.under)
-			if string.find(node.name, "default:water") then
+			if string.find(node.name, "mcl_core:water") then
 				local itemname
 				local itemcount = 1
 				local r = math.random(1, 100)
@@ -357,25 +357,25 @@ minetest.register_tool("default:pole", {
 					-- Fish
 					r = math.random(1, 100)
 					if r <= 60 then
-						itemname = "default:fish"
+						itemname = "mcl_core:fish"
 					elseif r <= 85 then
-						itemname = "default:fish"
-						--itemname = "default:salmon"
+						itemname = "mcl_core:fish"
+						--itemname = "mcl_core:salmon"
 					elseif r <= 87 then
-						itemname = "default:fish"
-						--itemname = "default:clownfish"
+						itemname = "mcl_core:fish"
+						--itemname = "mcl_core:clownfish"
 					else
-						itemname = "default:fish"
-						--itemname = "default:pufferfish"
+						itemname = "mcl_core:fish"
+						--itemname = "mcl_core:pufferfish"
 					end
 				elseif r <= 95 then
 					-- Junk
 					r = math.random(1, 83)
 					if r <= 10 then
-						itemname = "default:bowl"
+						itemname = "mcl_core:bowl"
 					elseif r <= 12 then
 						-- TODO: Damaged
-						itemname = "default:pole"
+						itemname = "mcl_core:pole"
 					elseif r <= 22 then
 						itemname = "mcl_mobitems:leather"
 					elseif r <= 32 then
@@ -383,20 +383,20 @@ minetest.register_tool("default:pole", {
 					elseif r <= 42 then
 						itemname = "mcl_mobitems:rotten_flesh"
 					elseif r <= 47 then
-						itemname = "default:stick"
+						itemname = "mcl_core:stick"
 					elseif r <= 52 then
-						itemname = "default:string"
+						itemname = "mcl_core:string"
 					elseif r <= 62 then
 						itemname = "mcl_potions:glass_bottle"
 						--TODO itemname = "mcl_potions:bottle_water"
 					elseif r <= 72 then
-						itemname = "default:bone"
+						itemname = "mcl_core:bone"
 					elseif r <= 73 then
 						itemname = "mcl_dye:black"
 						itemcount = 10
 					else
 						-- TODO: Tripwire hook
-						itemname = "default:string"
+						itemname = "mcl_core:string"
 					end
 				else
 					-- Treasure
@@ -406,10 +406,10 @@ minetest.register_tool("default:pole", {
 						itemname = "throwing:bow"
 					elseif r == 2 then
 						-- TODO: Enchanted book
-						itemname = "default:book"
+						itemname = "mcl_core:book"
 					elseif r == 3 then
 						-- TODO: Enchanted and damaged
-						itemname = "default:pole"
+						itemname = "mcl_core:pole"
 					elseif r == 4 then
 						itemname = "mobs:naming_tag"
 					elseif r == 5 then
@@ -431,7 +431,7 @@ minetest.register_tool("default:pole", {
 })
 
 --Shears
-minetest.register_tool("default:shears", {
+minetest.register_tool("mcl_core:shears", {
 	description = "Shears",
 	inventory_image = "default_tool_shears.png",
 	wield_image = "default_tool_shears.png",

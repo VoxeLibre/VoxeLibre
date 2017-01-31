@@ -55,7 +55,7 @@ minetest.register_node("beds:bed_bottom", {
 	paramtype2 = "facedir",
 	stack_max = 1,
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=3,deco_block=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	node_box = {
 		type = "fixed",
 		fixed = {-0.5, -0.5, -0.5, 0.5, 0.06, 0.5},
@@ -152,7 +152,7 @@ minetest.register_node("beds:bed_top", {
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=3,not_in_creative_inventory=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	node_box = {
 		type = "fixed",
 		fixed = {-0.5, -0.5, -0.5, 0.5, 0.06, 0.5},

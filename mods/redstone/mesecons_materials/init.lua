@@ -8,17 +8,17 @@ minetest.register_craftitem("mesecons_materials:slimeball", {
 minetest.register_craft({
 	output = 'mesecons_materials:slimeball',
 	type = "cooking",
-	recipe = "default:sapling",
+	recipe = "mcl_core:sapling",
 	cooktime = 10,
 })
 
 minetest.register_craft({
 	output = 'mesecons_materials:slimeball 9',
-	recipe = {{"default:slimeblock"}},
+	recipe = {{"mcl_core:slimeblock"}},
 })
 
 minetest.register_craft({
-	output = "default:slimeblock",
+	output = "mcl_core:slimeblock",
 	recipe = {{"mesecons_materials:slimeball","mesecons_materials:slimeball","mesecons_materials:slimeball",},
 		{"mesecons_materials:slimeball","mesecons_materials:slimeball","mesecons_materials:slimeball",},
 		{"mesecons_materials:slimeball","mesecons_materials:slimeball","mesecons_materials:slimeball",}},

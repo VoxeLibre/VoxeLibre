@@ -82,7 +82,7 @@ local function set_inventory(player)
 
 	local form = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory.png"..armor_img.."]"..
-	default.inventory_header..
+	mcl_core.inventory_header..
 	img_element..
 	--armor
 	"list[detached:"..player_name.."_armor;armor;0,0;1,1;1]"..
@@ -110,7 +110,7 @@ local function set_workbench(player)
 
 	local form = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory_workbench.png]"..
-	default.inventory_header..
+	mcl_core.inventory_header..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
 	"list[current_player;craft;1.75,0.5;3,3;]"..
@@ -168,7 +168,7 @@ minetest.register_node("crafting:workbench", {
 	on_rightclick = function(pos, node, clicker, itemstack)
 		set_workbench(clicker)
 	end,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
 minetest.register_craft({

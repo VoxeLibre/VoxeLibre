@@ -84,8 +84,8 @@ minetest.register_entity("mcl_throwing:arrow_entity", THROWING_ARROW_ENTITY)
 minetest.register_craft({
 	output = 'mcl_throwing:arrow 4',
 	recipe = {
-		{'default:flint'},
-		{'default:stick'},
+		{'mcl_core:flint'},
+		{'mcl_core:stick'},
 		{'mcl_mobitems:feather'}
 	}
 })

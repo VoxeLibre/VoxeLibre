@@ -186,15 +186,15 @@ end
 
 local wood_groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fence_wood=1}
 local wood_connect = {}
-local wood_sounds = default.node_sound_wood_defaults()
+local wood_sounds = mcl_core.node_sound_wood_defaults()
 
 local woods = {
-	{"", "Oak Fence", "Oak Fence Gate", "default_wood.png", "default_fence.png", "mcl_fences_fence_gate.png", "default:wood"},
-	{"spruce", "Spruce Fence", "Spruce Fence Gate", "default_sprucewood.png", "default_fence.png", "mcl_fences_fence_gate.png", "default:sprucewood"},
-	{"birch", "Birch Fence", "Birch Fence Gate", "default_planks_birch.png", "default_fence.png", "mcl_fences_fence_gate.png", "default:birchwood"},
-	{"jungle", "Jungle Fence", "Jungle Fence Gate", "default_junglewood.png", "default_fence.png", "mcl_fences_fence_gate.png", "default:junglewood"},
-	{"dark_oak", "Dark Oak Fence", "Dark Oak Fence Gate", "default_planks_big_oak.png", "default_fence.png", "mcl_fences_fence_gate.png", "default:darkwood"},
-	{"acacia", "Acacia Fence", "Acacia Fence Gate", "default_acaciawood.png", "default_fence.png", "mcl_fences_fence_gate.png", "default:acaciawood"},
+	{"", "Oak Fence", "Oak Fence Gate", "default_wood.png", "default_fence.png", "mcl_fences_fence_gate.png", "mcl_core:wood"},
+	{"spruce", "Spruce Fence", "Spruce Fence Gate", "default_sprucewood.png", "default_fence.png", "mcl_fences_fence_gate.png", "mcl_core:sprucewood"},
+	{"birch", "Birch Fence", "Birch Fence Gate", "default_planks_birch.png", "default_fence.png", "mcl_fences_fence_gate.png", "mcl_core:birchwood"},
+	{"jungle", "Jungle Fence", "Jungle Fence Gate", "default_junglewood.png", "default_fence.png", "mcl_fences_fence_gate.png", "mcl_core:junglewood"},
+	{"dark_oak", "Dark Oak Fence", "Dark Oak Fence Gate", "default_planks_big_oak.png", "default_fence.png", "mcl_fences_fence_gate.png", "mcl_core:darkwood"},
+	{"acacia", "Acacia Fence", "Acacia Fence Gate", "default_acaciawood.png", "default_fence.png", "mcl_fences_fence_gate.png", "mcl_core:acaciawood"},
 }
 
 for w=1, #woods do
@@ -212,15 +212,15 @@ for w=1, #woods do
 	minetest.register_craft({
 		output = 'mcl_fences:'..id..' 3',
 		recipe = {
-			{wood[7], 'default:stick', wood[7]},
-			{wood[7], 'default:stick', wood[7]},
+			{wood[7], 'mcl_core:stick', wood[7]},
+			{wood[7], 'mcl_core:stick', wood[7]},
 		}
 	})
 	minetest.register_craft({
 		output = 'mcl_fences:'..id_gate,
 		recipe = {
-			{'default:stick', wood[7], 'default:stick'},
-			{'default:stick', wood[7], 'default:stick'},
+			{'mcl_core:stick', wood[7], 'mcl_core:stick'},
+			{'mcl_core:stick', wood[7], 'mcl_core:stick'},
 		}
 	})
 end

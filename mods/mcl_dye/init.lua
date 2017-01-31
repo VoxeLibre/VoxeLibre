@@ -102,7 +102,7 @@ minetest.register_craftitem("mcl_dye:white", {
 	stack_max = 64,
 	groups = {dye=1, craftitem=1, basecolor_white=1,   excolor_white=1,     unicolor_white=1},
 	on_place = function(itemstack, user, pointed_thing) 
-		if(default.duengen(pointed_thing)) then
+		if(mcl_core.duengen(pointed_thing)) then
 			itemstack:take_item()
 		end
 		return itemstack
@@ -177,7 +177,7 @@ minetest.register_craft({
 -- Dye creation
 minetest.register_craft({
 	output = "mcl_dye:yellow",
-	recipe = {{"mcl_flowers:dandelion_yellow"}},
+	recipe = {{"mcl_flowers:dandelion"}},
 })
 minetest.register_craft({
 	output = "mcl_dye:yellow 2",
@@ -234,10 +234,10 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "cooking",
 	output = "mcl_dye:dark_green",
-	recipe = "default:cactus",
+	recipe = "mcl_core:cactus",
 	cooktime = 10,
 })
 minetest.register_craft({
 	output = "mcl_dye:white 3",
-	recipe = {{"default:bone"}},
+	recipe = {{"mcl_core:bone"}},
 })

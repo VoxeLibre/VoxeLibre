@@ -25,13 +25,13 @@ minetest.register_node("hardened_clay:hardened_clay", {
 	tiles = {"hardened_clay.png"},
 	stack_max = 64,
 	groups = {cracky=3,hardened_clay=1,building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "hardened_clay:hardened_clay",
-	recipe = "default:clay",
+	recipe = "mcl_core:clay",
 	cooktime = 10,
 })
 
@@ -46,7 +46,7 @@ for _, row in ipairs(clay.dyes) do
 			tiles = {"hardened_clay_stained_"..name..".png"},
 			groups = {cracky=3,hardened_clay=1,building_block=1},
 			stack_max = 64,
-			sounds = default.node_sound_stone_defaults(),
+			sounds = mcl_core.node_sound_stone_defaults(),
 		})
 	if craft_color_group then
 		minetest.register_craft({

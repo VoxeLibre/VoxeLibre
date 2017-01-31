@@ -35,12 +35,12 @@ mobs:register_mob("mobs_mc:spider", {
 	floats = 0,
 	group_attack = true,
 		replace_rate = 5,
-	replace_what = {"default:torch"},
+	replace_what = {"torches:torch"},
 	replace_with = "air",
 	replace_offset = -1,
 	peaceful = false,
     drops = {
-		{name = "default:string",
+		{name = "mcl_core:string",
 		chance = 1, min = 0, max = 2,},
 		{name = "mcl_mobitems:spider_eye",
 		chance = 3, min = 1, max = 1,},
@@ -57,7 +57,7 @@ mobs:register_mob("mobs_mc:spider", {
 		punch_start = 50,		punch_end = 90,
 	},
 })
-mobs:register_spawn("mobs_mc:spider", {"default:stone" ,"default:gravel","default:cobble","group:crumbly", "group:cracky", "group:choppy", "group:snappy"}, 4, -1, 17000, 2, 3000)
+mobs:register_spawn("mobs_mc:spider", {"mcl_core:stone" ,"mcl_core:gravel","mcl_core:cobble","group:crumbly", "group:cracky", "group:choppy", "group:snappy"}, 4, -1, 17000, 2, 3000)
 
 
 -- compatibility

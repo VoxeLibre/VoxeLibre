@@ -83,9 +83,9 @@ end
 minetest.register_craft({
 	output = 'gemalde:node_1',
 	recipe = {
-		{'default:stick', 'default:stick', 'default:stick'},
-		{'default:stick', 'group:wool', 'default:stick'},
-		{'default:stick', 'default:stick', 'default:stick'},
+		{'mcl_core:stick', 'mcl_core:stick', 'mcl_core:stick'},
+		{'mcl_core:stick', 'group:wool', 'mcl_core:stick'},
+		{'mcl_core:stick', 'mcl_core:stick', 'mcl_core:stick'},
 	}
 })
 

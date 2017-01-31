@@ -1,3 +1,3 @@
-default
+mcl_core
 mcl_farming
 mcl_mobitems

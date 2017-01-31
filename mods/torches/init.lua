@@ -3,7 +3,7 @@
 -- 3d torch part
 --
 
-minetest.register_node(":default:torch", {
+minetest.register_node("torches:torch", {
 	description = "Torch",
 	drawtype = "mesh",
 	mesh = "torch_floor.obj",
@@ -20,13 +20,13 @@ minetest.register_node(":default:torch", {
 	liquids_pointable = false,
 	light_source = 13,
 	groups = {choppy=2, dig_immediate=3, flammable=1, attached_node=1, torch=1, dig_by_water=1, deco_block=1},
-	drop = "default:torch",
+	drop = "torches:torch",
 	selection_box = {
 		type = "wallmounted",
 		wall_top = {-1/16, -2/16, -1/16, 1/16, 0.5, 1/16},
 		wall_bottom = {-1/16, -0.5, -1/16, 1/16, 2/16, 1/16},
 	},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	node_placement_prediction = "",
 	on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type ~= "node" then
@@ -51,22 +51,22 @@ minetest.register_node(":default:torch", {
 			-- Prevent placement of ceiling torches
 			return itemstack
 		elseif wdir == 1 then
-			retval = fakestack:set_name("default:torch")
+			retval = fakestack:set_name("torches:torch")
 		else
-			retval = fakestack:set_name("default:torch_wall")
+			retval = fakestack:set_name("torches:torch_wall")
 		end
 		if not retval then
 			return itemstack
 		end
 
 		itemstack = minetest.item_place(fakestack, placer, pointed_thing, wdir)
-		itemstack:set_name("default:torch")
+		itemstack:set_name("torches:torch")
 
 		return itemstack
 	end
 })
 
-minetest.register_node(":default:torch_wall", {
+minetest.register_node("torches:torch_wall", {
 	drawtype = "mesh",
 	mesh = "torch_wall.obj",
 	tiles = {{
@@ -79,25 +79,25 @@ minetest.register_node(":default:torch_wall", {
 	walkable = false,
 	light_source = 13,
 	groups = {choppy=2, dig_immediate=3, flammable=1, not_in_creative_inventory=1, attached_node=1, torch=1, dig_by_water=1},
-	drop = "default:torch",
+	drop = "torches:torch",
 	selection_box = {
 		type = "wallmounted",
 		wall_top = {-0.1, -0.1, -0.1, 0.1, 0.5, 0.1},
 		wall_bottom = {-0.1, -0.5, -0.1, 0.1, 0.1, 0.1},
 		wall_side = {-0.5, -0.3, -0.1, -0.2, 0.3, 0.1},
 	},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
 minetest.register_lbm({
 	name = "torches:convert_wallmounted",
-	nodenames = {"default:torch", "torches:floor", "torches:wall"},
+	nodenames = {"torches:torch", "torches:floor", "torches:wall"},
 	action = function(pos, node)
 		if node.param2 >= 2 then
-			minetest.set_node(pos, {name = "default:torch_wall",
+			minetest.set_node(pos, {name = "torches:torch_wall",
 				param2 = node.param2})
 		else
-			minetest.set_node(pos, {name = "default:torch",
+			minetest.set_node(pos, {name = "torches:torch",
 				param2 = node.param2})
 		end
 	end

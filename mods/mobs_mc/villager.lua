@@ -113,39 +113,39 @@ mobs:register_mob("mobs_mc:villager", {
 		inv:set_size("offered", 1)
 
 		local trades = {
-			{"default:apple 12",			"default:clay_lump 1"},
-			{"default:coal_lump 20",		"default:clay_lump 1"},
-			{"default:paper 30",			"default:clay_lump 1"},
-			{"mobs:leather 10",			"default:clay_lump 1"},
-			{"default:book 2",			"default:clay_lump 1"},
-			{"default:clay_lump 3",		"default:clay_lump 1"},
-			{"farming:potato 15",		"default:clay_lump 1"},
-			{"farming:wheat 20",			"default:clay_lump 1"},
-			{"farming:carrot 15",			"default:clay_lump 1"},
-			{"farming:melon_8 8",		"default:clay_lump 1"},
-			{"mobs:rotten_flesh 40",		"default:clay_lump 1"},
-			{"default:gold_ingot 10",		"default:clay_lump 1"},
-			{"farming:cotton 10",			"default:clay_lump 1"},
-			{"mcl_wool:white 15",			"default:clay_lump 1"},
-			{"farming:pumpkin 8",		"default:clay_lump 1"},
+			{"mcl_core:apple 12",			"mcl_core:clay_lump 1"},
+			{"mcl_core:coal_lump 20",		"mcl_core:clay_lump 1"},
+			{"mcl_core:paper 30",			"mcl_core:clay_lump 1"},
+			{"mobs:leather 10",			"mcl_core:clay_lump 1"},
+			{"mcl_core:book 2",			"mcl_core:clay_lump 1"},
+			{"mcl_core:clay_lump 3",		"mcl_core:clay_lump 1"},
+			{"farming:potato 15",		"mcl_core:clay_lump 1"},
+			{"farming:wheat 20",			"mcl_core:clay_lump 1"},
+			{"farming:carrot 15",			"mcl_core:clay_lump 1"},
+			{"farming:melon_8 8",		"mcl_core:clay_lump 1"},
+			{"mobs:rotten_flesh 40",		"mcl_core:clay_lump 1"},
+			{"mcl_core:gold_ingot 10",		"mcl_core:clay_lump 1"},
+			{"farming:cotton 10",			"mcl_core:clay_lump 1"},
+			{"mcl_wool:white 15",			"mcl_core:clay_lump 1"},
+			{"farming:pumpkin 8",		"mcl_core:clay_lump 1"},
 
-			{"default:clay_lump 1",		"mobs:beef_cooked 5"},
-			{"default:clay_lump 1",		"mobs:chicken_cooked 7"},
-			{"default:clay_lump 1",		"farming:cookie 6"},
-			{"default:clay_lump 1",		"farming:pumpkin_bread 3"},
-			{"default:clay_lump 1",		"mobs:arrow 10"},
-			{"default:clay_lump 3",		"mobs:bow_wood 1"},
-			{"default:clay_lump 8",		"fishing:pole_wood 1"},
-			--{"default:clay_lump 4",		"potionspack:healthii 1"},
-			{"default:clay_lump 1",		"cake:cake 1"},
-			{"default:clay_lump 10",		"mobs:saddle 1"},
-			{"default:clay_lump 10",		"clock:1 1"},
-			{"default:clay_lumpd 10",		"compass:0 1"},
-			{"default:clay_lump 1",		"default:glass 5"},
-			{"default:clay_lump 1",		"nether:glowstone 3"},
-			{"default:clay_lump 3",		"mobs:shears 1"},
-			{"default:clay_lump 10",		"default:sword_diamond 1"},
-			{"default:clay_lump 20",		"3d_armor:chestplate_diamond 1"},
+			{"mcl_core:clay_lump 1",		"mobs:beef_cooked 5"},
+			{"mcl_core:clay_lump 1",		"mobs:chicken_cooked 7"},
+			{"mcl_core:clay_lump 1",		"farming:cookie 6"},
+			{"mcl_core:clay_lump 1",		"farming:pumpkin_bread 3"},
+			{"mcl_core:clay_lump 1",		"mobs:arrow 10"},
+			{"mcl_core:clay_lump 3",		"mobs:bow_wood 1"},
+			{"mcl_core:clay_lump 8",		"fishing:pole_wood 1"},
+			--{"mcl_core:clay_lump 4",		"potionspack:healthii 1"},
+			{"mcl_core:clay_lump 1",		"cake:cake 1"},
+			{"mcl_core:clay_lump 10",		"mobs:saddle 1"},
+			{"mcl_core:clay_lump 10",		"clock:1 1"},
+			{"mcl_core:clay_lumpd 10",		"compass:0 1"},
+			{"mcl_core:clay_lump 1",		"mcl_core:glass 5"},
+			{"mcl_core:clay_lump 1",		"nether:glowstone 3"},
+			{"mcl_core:clay_lump 3",		"mobs:shears 1"},
+			{"mcl_core:clay_lump 10",		"mcl_core:sword_diamond 1"},
+			{"mcl_core:clay_lump 20",		"3d_armor:chestplate_diamond 1"},
 		}
 		local tradenum = math.random(#trades)
 		inv:set_stack("wanted", 1, ItemStack(trades[tradenum][1]))
@@ -168,8 +168,8 @@ mobs:register_mob("mobs_mc:villager", {
 	
 	]]
 })
---mobs:register_spawn("mobs_mc:villager", {"default:gravel"}, 20, 8, 50, 8, 31000)
-mobs:register_spawn("mobs_mc:villager", {"default:gravel"}, 20, 8, 500, 2, 31000)
+--mobs:register_spawn("mobs_mc:villager", {"mcl_core:gravel"}, 20, 8, 50, 8, 31000)
+mobs:register_spawn("mobs_mc:villager", {"mcl_core:gravel"}, 20, 8, 500, 2, 31000)
 
 
 -- compatibility

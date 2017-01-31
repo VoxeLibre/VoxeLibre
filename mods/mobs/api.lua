@@ -211,12 +211,12 @@ local function line_of_sight_water(self, pos1, pos2, stepsize)
 	-- swimming mobs can see you through water
 	if s == false
 	and self.fly
-	and self.fly_in == "default:water_source" then
+	and self.fly_in == "mcl_core:water_source" then
 
 		local nod = minetest.get_node(pos_w).name
 
-		if nod == "default:water_source"
-		or nod == "default:water_flowing" then
+		if nod == "mcl_core:water_source"
+		or nod == "mcl_core:water_flowing" then
 
 			return true
 		end
@@ -391,7 +391,7 @@ end
 -- get node but use fallback for nil or unknown
 local function node_ok(pos, fallback)
 
-	fallback = fallback or "default:dirt"
+	fallback = fallback or "mcl_core:dirt"
 
 	local node = minetest.get_node_or_nil(pos)
 
@@ -513,7 +513,7 @@ local do_jump = function(self)
 	})
 
 	-- thin blocks that do not need to be jumped
-	if nod.name == "default:snow" then
+	if nod.name == "mcl_core:snow" then
 		return
 	end
 
@@ -858,7 +858,7 @@ local function smart_mobs(self, s, p, dist, dtime)
 				if s.y < p1.y then
 
 					if not minetest.is_protected(s, "") then
-						minetest.set_node(s, {name = "default:dirt"})
+						minetest.set_node(s, {name = "mcl_core:dirt"})
 					end
 
 					local sheight = math.ceil(self.collisionbox[5]) + 1
@@ -1186,7 +1186,7 @@ local follow_flop = function(self)
 
 	-- water swimmers flop when on land
 	if self.fly
-	and self.fly_in == "default:water_source"
+	and self.fly_in == "mcl_core:water_source"
 	and self.standing_in ~= self.fly_in then
 
 		self.state = "flop"
@@ -2283,7 +2283,7 @@ minetest.register_entity(name, {
 	water_damage = def.water_damage or 0,
 	lava_damage = def.lava_damage or 0,
 	fall_damage = def.fall_damage or 1,
-	fall_speed = def.fall_speed or -10, -- must be lower than -2 (default: -10)
+	fall_speed = def.fall_speed or -10, -- must be lower than -2 (mcl_core: -10)
 	drops = def.drops or {},
 	armor = def.armor or 100,
 	on_rightclick = def.on_rightclick,
@@ -2583,9 +2583,8 @@ end
 -- set content id's
 local c_air = minetest.get_content_id("air")
 local c_ignore = minetest.get_content_id("ignore")
-local c_obsidian = minetest.get_content_id("default:obsidian")
-local c_brick = minetest.get_content_id("default:obsidianbrick")
-local c_chest = minetest.get_content_id("default:chest_locked")
+local c_obsidian = minetest.get_content_id("mcl_core:obsidian")
+local c_chest = minetest.get_content_id("mcl_core:chest")
 local c_fire = minetest.get_content_id("fire:basic_flame")
 
 -- explosion (cannot break protected or unbreakable nodes)
@@ -2634,7 +2633,6 @@ function mobs:explosion(pos, radius, fire, smoke, sound)
 		and data[vi] ~= c_air
 		and data[vi] ~= c_ignore
 		and data[vi] ~= c_obsidian
-		and data[vi] ~= c_brick
 		and data[vi] ~= c_chest
 		and data[vi] ~= c_fire then
 

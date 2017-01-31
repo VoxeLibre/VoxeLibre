@@ -38,9 +38,9 @@ minetest.register_node("mcl_minecarts:golden_rail", {
 minetest.register_craft({
 	output = "mcl_minecarts:golden_rail 6",
 	recipe = {
-		{"default:gold_ingot", "", "default:gold_ingot"},
-		{"default:gold_ingot", "default:stick", "default:gold_ingot"},
-		{"default:gold_ingot", "mesecons:redstone", "default:gold_ingot"},
+		{"mcl_core:gold_ingot", "", "mcl_core:gold_ingot"},
+		{"mcl_core:gold_ingot", "mcl_core:stick", "mcl_core:gold_ingot"},
+		{"mcl_core:gold_ingot", "mesecons:redstone", "mcl_core:gold_ingot"},
 	}
 })
 

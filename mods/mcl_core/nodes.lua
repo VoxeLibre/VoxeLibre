@@ -8,7 +8,7 @@ local LAVA_VISC = 7
 -- Node definitions
 --
 
-minetest.register_node("default:barrier", {
+minetest.register_node("mcl_core:barrier", {
 	description = "Barrier",
 	drawtype = "airlike",
 	paramtype = "light",
@@ -21,54 +21,54 @@ minetest.register_node("default:barrier", {
 	on_blast = function() end,
 })
 
-minetest.register_node("default:stone", {
+minetest.register_node("mcl_core:stone", {
 	description = "Stone",
 	tiles = {"default_stone.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {cracky=3, stone=1, building_block=1, deco_block=1},
-	drop = 'default:cobble',
-	sounds = default.node_sound_stone_defaults(),
+	drop = 'mcl_core:cobble',
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:stone_with_coal", {
+minetest.register_node("mcl_core:stone_with_coal", {
 	description = "Coal Ore",
 	tiles = {"default_stone.png^default_mineral_coal.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {cracky=3, building_block=1},
-	drop = 'default:coal_lump',
-	sounds = default.node_sound_stone_defaults(),
+	drop = 'mcl_core:coal_lump',
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:stone_with_iron", {
+minetest.register_node("mcl_core:stone_with_iron", {
 	description = "Iron Ore",
 	tiles = {"default_stone.png^default_mineral_iron.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {cracky=2, building_block=1},
-	drop = 'default:stone_with_iron',
-	sounds = default.node_sound_stone_defaults(),
+	drop = 'mcl_core:stone_with_iron',
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
 
-minetest.register_node("default:stone_with_gold", {
+minetest.register_node("mcl_core:stone_with_gold", {
 	description = "Gold Ore",
 	tiles = {"default_stone.png^default_mineral_gold.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {cracky=2, building_block=1},
-	drop = "default:stone_with_gold",
-	sounds = default.node_sound_stone_defaults(),
+	drop = "mcl_core:stone_with_gold",
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
 local redstone_timer = 68.28
 local redstone_ore_activate = function(pos)
-	minetest.swap_node(pos, {name="default:stone_with_redstone_lit"})
+	minetest.swap_node(pos, {name="mcl_core:stone_with_redstone_lit"})
 	local t = minetest.get_node_timer(pos)
 	t:start(redstone_timer)
 end
-minetest.register_node("default:stone_with_redstone", {
+minetest.register_node("mcl_core:stone_with_redstone", {
 	description = "Redstone Ore",
 	tiles = {"default_stone.png^default_mineral_redstone.png"},
 	is_ground_content = true,
@@ -86,7 +86,7 @@ minetest.register_node("default:stone_with_redstone", {
 			},
 		}
 	},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 	on_punch = redstone_ore_activate,
 	on_walk_over = redstone_ore_activate, -- Uses walkover mod
 })
@@ -96,7 +96,7 @@ local redstone_ore_reactivate = function(pos)
 	t:start(redstone_timer)
 end
 -- Light the redstone ore up when it has been touched
-minetest.register_node("default:stone_with_redstone_lit", {
+minetest.register_node("mcl_core:stone_with_redstone_lit", {
 	description = "Lit Redstone Ore",
 	tiles = {"default_stone.png^default_mineral_redstone.png"},
 	paramtype = "light",
@@ -116,17 +116,17 @@ minetest.register_node("default:stone_with_redstone_lit", {
 			},
 		}
 	},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 	-- Reset timer after re-punching or stepping on
 	on_punch = redstone_ore_reactivate,
 	on_walk_over = redstone_ore_reactivate, -- Uses walkover mod
 	-- Turn back to normal node after some time has passed
 	on_timer = function(pos, elapsed)
-		minetest.swap_node(pos, {name="default:stone_with_redstone"})
+		minetest.swap_node(pos, {name="mcl_core:stone_with_redstone"})
 	end,
 })
 
-minetest.register_node("default:stone_with_lapis", {
+minetest.register_node("mcl_core:stone_with_lapis", {
 	description = "Lapis Lazuli Ore",
 	tiles = {"default_stone.png^default_mineral_lapis.png"},
 	is_ground_content = true,
@@ -142,168 +142,168 @@ minetest.register_node("default:stone_with_lapis", {
 			{items = {'mcl_dye:blue 4'}},
 		}
 	},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:stone_with_emerald", {
+minetest.register_node("mcl_core:stone_with_emerald", {
 	description = "Emerald Ore",
 	tiles = {"default_stone.png^default_mineral_emerald.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {cracky=2, building_block=1},
-	drop = "default:emerald",
-	sounds = default.node_sound_stone_defaults(),
+	drop = "mcl_core:emerald",
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:stone_with_diamond", {
+minetest.register_node("mcl_core:stone_with_diamond", {
 	description = "Diamond Ore",
 	tiles = {"default_stone.png^default_mineral_diamond.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {cracky=1, building_block=1},
-	drop = "default:diamond",
-	sounds = default.node_sound_stone_defaults(),
+	drop = "mcl_core:diamond",
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:stonebrick", {
+minetest.register_node("mcl_core:stonebrick", {
 	description = "Stone Bricks",
 	tiles = {"default_stone_brick.png"},
 	stack_max = 64,
 	groups = {cracky=3, stone=1, stonebrick=1, building_block=1, deco_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:stonebrickcarved", {
+minetest.register_node("mcl_core:stonebrickcarved", {
 	description = "Chiseled Stone Bricks",
 	tiles = {"default_stonebrick_carved.png"},
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {cracky=3, stone=1, stonebrick=1, building_block=1, deco_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:stonebrickcracked", {
+minetest.register_node("mcl_core:stonebrickcracked", {
 	description = "Cracked Stone Bricks",
 	tiles = {"default_stonebrick_cracked.png"},
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {cracky=3, stone=1, stonebrick=1, building_block=1, deco_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:stonebrickmossy", {
+minetest.register_node("mcl_core:stonebrickmossy", {
 	description = "Mossy Stone Bricks",
 	tiles = {"default_stonebrick_mossy.png"},
 	stack_max = 64,
 	groups = {cracky=3, stone=1, stonebrick=1, building_block=1, deco_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:granite", {
+minetest.register_node("mcl_core:granite", {
 	description = "Granite",
 	tiles = {"default_granite.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {cracky=3, stone=1, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:granite_smooth", {
+minetest.register_node("mcl_core:granite_smooth", {
 	description = "Polished Granite",
 	tiles = {"default_granite_smooth.png"},
 	stack_max = 64,
 	groups = {cracky=3, stone=1, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:andesite", {
+minetest.register_node("mcl_core:andesite", {
 	description = "Andesite",
 	tiles = {"default_andesite.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {cracky=3, stone=1, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:andesite_smooth", {
+minetest.register_node("mcl_core:andesite_smooth", {
 	description = "Polished Andesite",
 	tiles = {"default_andesite_smooth.png"},
 	stack_max = 64,
 	groups = {cracky=3, stone=1, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:diorite", {
+minetest.register_node("mcl_core:diorite", {
 	description = "Diorite",
 	tiles = {"default_diorite.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {cracky=3, stone=1, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:diorite_smooth", {
+minetest.register_node("mcl_core:diorite_smooth", {
 	description = "Polished Diorite",
 	tiles = {"default_diorite_smooth.png"},
 	stack_max = 64,
 	groups = {cracky=3, stone=1, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:dirt_with_grass", {
+minetest.register_node("mcl_core:dirt_with_grass", {
 	description = "Grass Block",
 	tiles = {"default_grass.png", "default_dirt.png", "default_dirt.png^default_grass_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {crumbly=3, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, building_block=1},
-	drop = 'default:dirt',
-	sounds = default.node_sound_dirt_defaults({
+	drop = 'mcl_core:dirt',
+	sounds = mcl_core.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
 })
 
 -- TODO: Add particles
-minetest.register_node("default:mycelium", {
+minetest.register_node("mcl_core:mycelium", {
 	description = "Mycelium",
 	tiles = {"default_mycelium_top.png", "default_dirt.png", "default_mycelium_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {crumbly=3, building_block=1},
-	drop = 'default:dirt',
-	sounds = default.node_sound_dirt_defaults({
+	drop = 'mcl_core:dirt',
+	sounds = mcl_core.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
 })
 
-minetest.register_node("default:podzol", {
+minetest.register_node("mcl_core:podzol", {
 	description = "Podzol",
 	tiles = {"default_dirt_podzol_top.png", "default_dirt.png", "default_dirt_podzol_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {crumbly=3, soil=1, soil_sapling=2, soil_sugarcane=1, building_block=1},
-	drop = 'default:dirt',
-	sounds = default.node_sound_dirt_defaults(),
+	drop = 'mcl_core:dirt',
+	sounds = mcl_core.node_sound_dirt_defaults(),
 })
 
-minetest.register_node("default:dirt", {
+minetest.register_node("mcl_core:dirt", {
 	description = "Dirt",
 	tiles = {"default_dirt.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {crumbly=3, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, building_block=1},
-	sounds = default.node_sound_dirt_defaults(),
+	sounds = mcl_core.node_sound_dirt_defaults(),
 })
 
-minetest.register_node("default:coarse_dirt", {
+minetest.register_node("mcl_core:coarse_dirt", {
 	description = "Coarse Dirt",
 	tiles = {"default_coarse_dirt.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {crumbly=3, soil=1, soil_sugarcane=1, cultivatable=1, building_block=1},
-	sounds = default.node_sound_dirt_defaults(),
+	sounds = mcl_core.node_sound_dirt_defaults(),
 })
 
-minetest.register_node("default:gravel", {
+minetest.register_node("mcl_core:gravel", {
 	description = "Gravel",
 	tiles = {"default_gravel.png"},
 	is_ground_content = true,
@@ -312,115 +312,115 @@ minetest.register_node("default:gravel", {
 	drop = {
 		max_items = 1,
 		items = {
-			{items = {'default:flint'},rarity = 10},
-			{items = {'default:gravel'}}
+			{items = {'mcl_core:flint'},rarity = 10},
+			{items = {'mcl_core:gravel'}}
 		}
 	},
-	sounds = default.node_sound_dirt_defaults({
+	sounds = mcl_core.node_sound_dirt_defaults({
 		footstep = {name="default_gravel_footstep", gain=0.45},
 	}),
 })
 
 -- sandstone --
-minetest.register_node("default:sand", {
+minetest.register_node("mcl_core:sand", {
 	description = "Sand",
 	tiles = {"default_sand.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {crumbly=3, falling_node=1, sand=1, soil_sugarcane=1, building_block=1},
-	sounds = default.node_sound_sand_defaults(),
+	sounds = mcl_core.node_sound_sand_defaults(),
 })
 
-minetest.register_node("default:sandstone", {
+minetest.register_node("mcl_core:sandstone", {
 	description = "Sandstone",
 	tiles = {"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_normal.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {crumbly=2,cracky=2,sandstone=1, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:sandstonesmooth", {
+minetest.register_node("mcl_core:sandstonesmooth", {
 	description = "Smooth Sandstone",
 	tiles = {"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_smooth.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {crumbly=2,cracky=2,sandstone=1, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:sandstonecarved", {
+minetest.register_node("mcl_core:sandstonecarved", {
 	description = "Chiseled Sandstone",
 	tiles = {"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_carved.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {crumbly=2,cracky=2,sandstone=1, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
 -- red sandstone --
 
-minetest.register_node("default:redsand", {
+minetest.register_node("mcl_core:redsand", {
 	description = "Red Sand",
 	tiles = {"default_red_sand.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {crumbly=3, falling_node=1, sand=1, soil_sugarcane=1, building_block=1},
-	sounds = default.node_sound_sand_defaults(),
+	sounds = mcl_core.node_sound_sand_defaults(),
 })
 
-minetest.register_node("default:redsandstone", {
+minetest.register_node("mcl_core:redsandstone", {
 	description = "Red Sandstone",
 	tiles = {"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_normal.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {crumbly=2,cracky=2,redsandstone=1, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:redsandstonesmooth", {
+minetest.register_node("mcl_core:redsandstonesmooth", {
 	description = "Smooth Red Sandstone",
 	tiles = {"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_smooth.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {crumbly=2,cracky=2,redsandstone=1, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:redsandstonecarved", {
+minetest.register_node("mcl_core:redsandstonecarved", {
 	description = "Chiseled Red Sandstone",
 	tiles = {"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_carved.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {crumbly=2,cracky=2,redsandstone=1, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
 ---
 
-minetest.register_node("default:clay", {
+minetest.register_node("mcl_core:clay", {
 	-- Original name: Clay
 	description = "Block of Clay",
 	tiles = {"default_clay.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {crumbly=3, building_block=1},
-	drop = 'default:clay_lump 4',
-	sounds = default.node_sound_dirt_defaults({
+	drop = 'mcl_core:clay_lump 4',
+	sounds = mcl_core.node_sound_dirt_defaults({
 		footstep = "",
 	}),
 })
 
-minetest.register_node("default:brick", {
+minetest.register_node("mcl_core:brick", {
 	description = "Bricks",
 	tiles = {"default_brick.png"},
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {cracky=3, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:haybale", {
+minetest.register_node("mcl_core:haybale", {
 	description = "Hay Bale",
 	tiles = {"default_hayblock_top.png", "default_hayblock_top.png", "default_hayblock_side.png"},
 	is_ground_content = false,
@@ -429,11 +429,11 @@ minetest.register_node("default:haybale", {
 	is_ground_content = false,
 	on_place = minetest.rotate_node,
 	groups = {oddly_breakable_by_hand=3,flammable=2, building_block=1},
-	sounds = default.node_sound_leaves_defaults(),
+	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
 --[[
-minetest.register_node("default:bone_block", {
+minetest.register_node("mcl_core:bone_block", {
 	description = "Bone Block",
 	-- FIXME: Missing texutres
 	tiles = {"default_bone_block_top.png", "default_bone_block_top.png", "default_bone_block_side.png"},
@@ -441,11 +441,11 @@ minetest.register_node("default:bone_block", {
 	paramtype2 = "facedir",
 	on_place = minetest.rotate_node,
 	groups = {cracky=3, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 ]]
 
-minetest.register_node("default:sea_lantern", {
+minetest.register_node("mcl_core:sea_lantern", {
 	description = "Sea Lantern",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -454,57 +454,57 @@ minetest.register_node("default:sea_lantern", {
 	drop = {
 		max_items = 1,
 		items = {
-			{ items = {'default:prismarine_cry 3'}, rarity = 2 },
-			{ items = {'default:prismarine_cry 2'}}
+			{ items = {'mcl_core:prismarine_cry 3'}, rarity = 2 },
+			{ items = {'mcl_core:prismarine_cry 2'}}
 		}
 	},
 	tiles = {"default_sea_lantern.png"},
 	groups = {oddly_breakable_by_hand=3, building_block=1},
-	sounds = default.node_sound_glass_defaults(),
+	sounds = mcl_core.node_sound_glass_defaults(),
 })
 
-minetest.register_node("default:prismarine", {
+minetest.register_node("mcl_core:prismarine", {
 	description = "Prismarine",
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {{name="default_prismarine_anim.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=45.0}}},
 	groups = {cracky=3, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:prismarine_brick", {
+minetest.register_node("mcl_core:prismarine_brick", {
 	description = "Prismarine Bricks",
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {"default_prismarine_bricks.png"},
 	groups = {cracky=2, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:prismarine_dark", {
+minetest.register_node("mcl_core:prismarine_dark", {
 	description = "Dark Prismarine",
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {"default_prismarine_dark.png"},
 	groups = {cracky=2, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
 
 
 
 -- Oak tree --
-minetest.register_node("default:tree", {
+minetest.register_node("mcl_core:tree", {
 	description = "Oak Wood",
 	tiles = {"default_tree_top.png", "default_tree_top.png", "default_tree.png"},
 	paramtype2 = "facedir",
 	on_place = minetest.rotate_node,
 	stack_max = 64,
 	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2, building_block=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
-minetest.register_node("default:sapling", {
+minetest.register_node("mcl_core:sapling", {
 	description = "Oak Sapling",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
@@ -519,10 +519,10 @@ minetest.register_node("default:sapling", {
 	},
 	stack_max = 64,
 	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1,deco_block=1},
-	sounds = default.node_sound_defaults(),
+	sounds = mcl_core.node_sound_defaults(),
 })
 
-minetest.register_node("default:leaves", {
+minetest.register_node("mcl_core:leaves", {
 	description = "Oak Leaves",
 	drawtype = "allfaces_optional",
 	visual_scale = 1.3,
@@ -535,31 +535,31 @@ minetest.register_node("default:leaves", {
 		items = {
 			{
 				-- player will get sapling with 1/20 chance
-				items = {'default:sapling'},
+				items = {'mcl_core:sapling'},
 				rarity = 20,
 			},
 			{
 				-- player will get apple with 1/200 chance
-				items = {'default:apple'},
+				items = {'mcl_core:apple'},
 				rarity = 200,
 			},
 		}
 	},
-	sounds = default.node_sound_leaves_defaults(),
+	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
 -- Dark oak tree --
-minetest.register_node("default:darktree", {
+minetest.register_node("mcl_core:darktree", {
 	description = "Dark Oak Wood",
 	tiles = {"default_log_big_oak_top.png", "default_log_big_oak_top.png", "default_log_big_oak.png"},
 	paramtype2 = "facedir",
 	on_place = minetest.rotate_node,
 	stack_max = 64,
 	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2,building_block=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
-minetest.register_node("default:darksapling", {
+minetest.register_node("mcl_core:darksapling", {
 	description = "Dark Oak Sapling",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
@@ -574,10 +574,10 @@ minetest.register_node("default:darksapling", {
 	},
 	stack_max = 64,
 	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1,deco_block=1},
-	sounds = default.node_sound_defaults(),
+	sounds = mcl_core.node_sound_defaults(),
 })
 
-minetest.register_node("default:darkleaves", {
+minetest.register_node("mcl_core:darkleaves", {
 	description = "Dark Oak Leaves",
 	drawtype = "allfaces_optional",
 	visual_scale = 1.3,
@@ -590,41 +590,41 @@ minetest.register_node("default:darkleaves", {
 		items = {
 			{
 				-- player will get sapling with 1/20 chance
-				items = {'default:darksapling'},
+				items = {'mcl_core:darksapling'},
 				rarity = 20,
 			},
 			{
 				-- player will get apple with 1/200 chance
-				items = {'default:apple'},
+				items = {'mcl_core:apple'},
 				rarity = 200,
 			},
 		}
 	},
-	sounds = default.node_sound_leaves_defaults(),
+	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
 -- Jungle Tree --
 
-minetest.register_node("default:jungletree", {
+minetest.register_node("mcl_core:jungletree", {
 	description = "Jungle Wood",
 	tiles = {"default_jungletree_top.png", "default_jungletree_top.png", "default_jungletree.png"},
 	stack_max = 64,
 	paramtype2 = "facedir",
 	on_place = minetest.rotate_node,
 	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2,building_block=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
-minetest.register_node("default:junglewood", {
+minetest.register_node("mcl_core:junglewood", {
 	description = "Jungle Wood Planks",
 	tiles = {"default_junglewood.png"},
 	stack_max = 64,
 	is_ground_content = false,
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1,building_block=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
-minetest.register_node("default:jungleleaves", {
+minetest.register_node("mcl_core:jungleleaves", {
 	description = "Jungle Leaves",
 	drawtype = "allfaces_optional",
 	visual_scale = 1.3,
@@ -636,15 +636,15 @@ minetest.register_node("default:jungleleaves", {
 		max_items = 1,
 		items = {
 			{
-				items = {'default:junglesapling'},
+				items = {'mcl_core:junglesapling'},
 				rarity = 40,
 			},
 		}
 	},
-	sounds = default.node_sound_leaves_defaults(),
+	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
-minetest.register_node("default:junglesapling", {
+minetest.register_node("mcl_core:junglesapling", {
 	description = "Jungle Sapling",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
@@ -659,32 +659,32 @@ minetest.register_node("default:junglesapling", {
 	},
 	stack_max = 64,
 	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1,deco_block=1},
-	sounds = default.node_sound_defaults(),
+	sounds = mcl_core.node_sound_defaults(),
 })
 
 
 -- Accacia Tree --
 
-minetest.register_node("default:acaciatree", {
+minetest.register_node("mcl_core:acaciatree", {
 	description = "Acacia Wood",
 	tiles = {"default_acaciatree_top.png", "default_acaciatree_top.png", "default_acaciatree.png"},
 	stack_max = 64,
 	paramtype2 = "facedir",
 	on_place = minetest.rotate_node,
 	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2,building_block=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
-minetest.register_node("default:acaciawood", {
+minetest.register_node("mcl_core:acaciawood", {
 	description = "Acacia Wood Planks",
 	tiles = {"default_acaciawood.png"},
 	stack_max = 64,
 	is_ground_content = false,
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1,building_block=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
-minetest.register_node("default:acacialeaves", {
+minetest.register_node("mcl_core:acacialeaves", {
 	description = "Acacia Leaves",
 	drawtype = "allfaces_optional",
 	visual_scale = 1.3,
@@ -696,15 +696,15 @@ minetest.register_node("default:acacialeaves", {
 		max_items = 1,
 		items = {
 			{
-				items = {'default:acaciasapling'},
+				items = {'mcl_core:acaciasapling'},
 				rarity = 20,
 			},
 		}
 	},
-	sounds = default.node_sound_leaves_defaults(),
+	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
-minetest.register_node("default:acaciasapling", {
+minetest.register_node("mcl_core:acaciasapling", {
 	description = "Acacia Sapling",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
@@ -719,31 +719,31 @@ minetest.register_node("default:acaciasapling", {
 	},
 	stack_max = 64,
 	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1,deco_block=1},
-	sounds = default.node_sound_defaults(),
+	sounds = mcl_core.node_sound_defaults(),
 })
 
 -- Spruce Tree --
 
-minetest.register_node("default:sprucetree", {
+minetest.register_node("mcl_core:sprucetree", {
 	description = "Spruce Wood",
 	tiles = {"default_sprucetree_top.png", "default_sprucetree_top.png", "default_sprucetree.png"},
 	stack_max = 64,
 	paramtype2 = "facedir",
 	on_place = minetest.rotate_node,
 	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2,building_block=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
-minetest.register_node("default:sprucewood", {
+minetest.register_node("mcl_core:sprucewood", {
 	description = "Spruce Wood Planks",
 	tiles = {"default_sprucewood.png"},
 	stack_max = 64,
 	is_ground_content = false,
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1,building_block=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
-minetest.register_node("default:spruceleaves", {
+minetest.register_node("mcl_core:spruceleaves", {
 	description = "Spruce Leaves",
 	drawtype = "allfaces_optional",
 	visual_scale = 1.3,
@@ -756,7 +756,7 @@ minetest.register_node("default:spruceleaves", {
 		items = {
 			{
 				-- player will get sapling with 1/20 chance
-				items = {'default:sprucesapling'},
+				items = {'mcl_core:sprucesapling'},
 				rarity = 20,
 			},
 			{
@@ -766,10 +766,10 @@ minetest.register_node("default:spruceleaves", {
 			}
 		}
 	},
-	sounds = default.node_sound_leaves_defaults(),
+	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
-minetest.register_node("default:sprucesapling", {
+minetest.register_node("mcl_core:sprucesapling", {
 	description = "Spruce Sapling",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
@@ -784,29 +784,29 @@ minetest.register_node("default:sprucesapling", {
 	},
 	stack_max = 64,
 	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1,deco_block=1},
-	sounds = default.node_sound_defaults(),
+	sounds = mcl_core.node_sound_defaults(),
 })
 
-minetest.register_node("default:birchtree", {
+minetest.register_node("mcl_core:birchtree", {
 	description = "Birch Wood",
 	tiles = {"default_log_birch_top.png", "default_log_birch_top.png", "default_log_birch.png"},
 	stack_max = 64,
 	paramtype2 = "facedir",
 	on_place = minetest.rotate_node,
 	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2,building_block=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
-minetest.register_node("default:birchwood", {
+minetest.register_node("mcl_core:birchwood", {
 	description = "Birch Wood Planks",
 	tiles = {"default_planks_birch.png"},
 	stack_max = 64,
 	is_ground_content = false,
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1,building_block=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
-minetest.register_node("default:birchleaves", {
+minetest.register_node("mcl_core:birchleaves", {
 	description = "Birch Leaves",
 	drawtype = "allfaces_optional",
 	visual_scale = 1.3,
@@ -819,15 +819,15 @@ minetest.register_node("default:birchleaves", {
 		items = {
 			{
 				-- player will get sapling with 1/20 chance
-				items = {'default:birchsapling'},
+				items = {'mcl_core:birchsapling'},
 				rarity = 20,
 			},
 		}
 	},
-	sounds = default.node_sound_leaves_defaults(),
+	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
-minetest.register_node("default:birchsapling", {
+minetest.register_node("mcl_core:birchsapling", {
 	description = "Birch Sapling",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
@@ -842,10 +842,10 @@ minetest.register_node("default:birchsapling", {
 	},
 	stack_max = 64,
 	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1,deco_block=1},
-	sounds = default.node_sound_defaults(),
+	sounds = mcl_core.node_sound_defaults(),
 })
 
-minetest.register_node("default:junglegrass", {
+minetest.register_node("mcl_core:junglegrass", {
 	description = "Double Tallgrass",
 	drawtype = "plantlike",
 	visual_scale = 1.3,
@@ -858,7 +858,7 @@ minetest.register_node("default:junglegrass", {
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1,deco_block=1},
-	sounds = default.node_sound_leaves_defaults(),
+	sounds = mcl_core.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = {-0.5, -0.5, -0.5, 0.5, -5/16, 0.5},
@@ -874,14 +874,14 @@ minetest.register_node("default:junglegrass", {
 	},
 })
 
-minetest.register_node("default:cactus", {
+minetest.register_node("mcl_core:cactus", {
 	description = "Cactus",
 	drawtype = "nodebox",
 	tiles = {"default_cactus_top.png", "default_cactus_bottom.png", "default_cactus_side.png","default_cactus_side.png","default_cactus_side.png","default_cactus_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {oddly_breakable_by_hand=2,deco_block=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	paramtype = "light",
 	node_box = {
 		type = "fixed",
@@ -903,7 +903,7 @@ minetest.register_node("default:cactus", {
 			
 })
 
-minetest.register_node("default:reeds", {
+minetest.register_node("mcl_core:reeds", {
 	description = "Sugar Canes",
 	drawtype = "plantlike",
 	tiles = {"default_papyrus.png"},
@@ -930,38 +930,38 @@ minetest.register_node("default:reeds", {
 	},
 	stack_max = 64,
 	groups = {dig_immediate=3,flammable=2,craftitem=1},
-	sounds = default.node_sound_leaves_defaults(),
+	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
 
-minetest.register_node("default:quartz_ore", {
+minetest.register_node("mcl_core:quartz_ore", {
 	description = "Nether Quartz Ore",
 	stack_max = 64,
  	tiles = {"default_quartz_ore.png"},
 	is_ground_content = false,
 	groups = {cracky=3,building_block=1},
-	drop = 'default:quartz_crystal',
-	sounds = default.node_sound_stone_defaults(),
+	drop = 'mcl_core:quartz_crystal',
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 	 
-minetest.register_node("default:quartz_block", {
+minetest.register_node("mcl_core:quartz_block", {
 	description = "Block of Quartz",
 	stack_max = 64,
 	tiles = {"default_quartz_block_top.png", "default_quartz_block_bottom.png", "default_quartz_block_side.png"},
 	groups = {snappy=1,cracky=1,level=2,quartz_block=1,building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:quartz_chiseled", {
+minetest.register_node("mcl_core:quartz_chiseled", {
 	description = "Chiseled Quartz Block",
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {"default_quartz_chiseled_top.png", "default_quartz_chiseled_top.png", "default_quartz_chiseled_side.png"},
 	groups = {snappy=1,cracky=1,level=2,quartz_block=1,building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:quartz_pillar", {
+minetest.register_node("mcl_core:quartz_pillar", {
 	description = "Pillar Quartz Block",
 	stack_max = 64,
 	paramtype2 = "facedir",
@@ -969,31 +969,31 @@ minetest.register_node("default:quartz_pillar", {
 	on_place = minetest.rotate_node,
 	tiles = {"default_quartz_pillar_top.png", "default_quartz_pillar_top.png", "default_quartz_pillar_side.png"},
 	groups = {snappy=1,cracky=1,level=2,quartz_block=1,building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:bedrock", {
+minetest.register_node("mcl_core:bedrock", {
 	description = "Bedrock",
 	tiles = {"default_bedrock.png"},
 	stack_max = 64,
 	groups = {oddly_breakable_by_hand=5,building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 	is_ground_content = false,
 	on_blast = function() end,
 	drop = '',
 })
 
-minetest.register_node("default:bookshelf", {
+minetest.register_node("mcl_core:bookshelf", {
 	description = "Bookshelf",
 	tiles = {"default_wood.png", "default_wood.png", "default_bookshelf.png"},
 	stack_max = 64,
 	is_ground_content = false,
 	groups = {choppy=3,oddly_breakable_by_hand=2,flammable=3,building_block=1},
-	drop = "default:book 3",
-	sounds = default.node_sound_wood_defaults(),
+	drop = "mcl_core:book 3",
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
-minetest.register_node("default:slimeblock", {
+minetest.register_node("mcl_core:slimeblock", {
 	description = "Slime Block",
 	drawtype = "nodebox",
 	paramtype = "light",
@@ -1015,7 +1015,7 @@ minetest.register_node("default:slimeblock", {
 	groups = {oddly_breakable_by_hand=3,dig_immediate=2,bouncy=44,fall_damage_add_percent=-100,deco_block=1},
 })
 
-minetest.register_node("default:glass", {
+minetest.register_node("mcl_core:glass", {
 	description = "Glass",
 	drawtype = "glasslike",
 	is_ground_content = false,
@@ -1024,29 +1024,29 @@ minetest.register_node("default:glass", {
 	sunlight_propagates = true,
 	stack_max = 64,
 	groups = {cracky=3,oddly_breakable_by_hand=3,building_block=1},
-	sounds = default.node_sound_glass_defaults(),
+	sounds = mcl_core.node_sound_glass_defaults(),
 	drop = "",
 })
 
 ---- colored glass
-default.add_glass( "Red Stained Glass",  "basecolor_red", "red")
-default.add_glass( "Green Stained Glass",  "unicolor_dark_green", "green")
-default.add_glass( "Blue Stained Glass",  "basecolor_blue", "blue")
-default.add_glass( "Light Blue Stained Glass",  "unicolor_light_blue", "light_blue")
-default.add_glass( "Black Stained Glass",  "basecolor_black", "black")
-default.add_glass( "White Stained Glass",  "basecolor_white", "white")
-default.add_glass( "Yellow Stained Glass",  "basecolor_yellow", "yellow")
-default.add_glass( "Brown Stained Glass",  "unicolor_dark_orange", "brown")
-default.add_glass( "Orange Stained Glass",  "excolor_orange", "orange")
-default.add_glass( "Pink Stained Glass",  "unicolor_light_red", "pink")
-default.add_glass( "Gray Stained Glass",  "unicolor_darkgrey", "gray")
-default.add_glass( "Lime Stained Glass",  "basecolor_green", "lime")
-default.add_glass( "Light Gray Stained Glass",  "basecolor_grey", "silver")
-default.add_glass( "Magenta Stained Glass",  "basecolor_magenta", "magenta")
-default.add_glass( "Purple Stained Glass",  "excolor_violet", "purple")
-default.add_glass( "Cyan Stained Glass",  "basecolor_cyan", "cyan")
+mcl_core.add_glass( "Red Stained Glass",  "basecolor_red", "red")
+mcl_core.add_glass( "Green Stained Glass",  "unicolor_dark_green", "green")
+mcl_core.add_glass( "Blue Stained Glass",  "basecolor_blue", "blue")
+mcl_core.add_glass( "Light Blue Stained Glass",  "unicolor_light_blue", "light_blue")
+mcl_core.add_glass( "Black Stained Glass",  "basecolor_black", "black")
+mcl_core.add_glass( "White Stained Glass",  "basecolor_white", "white")
+mcl_core.add_glass( "Yellow Stained Glass",  "basecolor_yellow", "yellow")
+mcl_core.add_glass( "Brown Stained Glass",  "unicolor_dark_orange", "brown")
+mcl_core.add_glass( "Orange Stained Glass",  "excolor_orange", "orange")
+mcl_core.add_glass( "Pink Stained Glass",  "unicolor_light_red", "pink")
+mcl_core.add_glass( "Gray Stained Glass",  "unicolor_darkgrey", "gray")
+mcl_core.add_glass( "Lime Stained Glass",  "basecolor_green", "lime")
+mcl_core.add_glass( "Light Gray Stained Glass",  "basecolor_grey", "silver")
+mcl_core.add_glass( "Magenta Stained Glass",  "basecolor_magenta", "magenta")
+mcl_core.add_glass( "Purple Stained Glass",  "excolor_violet", "purple")
+mcl_core.add_glass( "Cyan Stained Glass",  "basecolor_cyan", "cyan")
 
-minetest.register_node("default:rail", {
+minetest.register_node("mcl_core:rail", {
 	description = "Rail",
 	drawtype = "raillike",
 	tiles = {"default_rail.png", "default_rail_curved.png", "default_rail_t_junction.png", "default_rail_crossing.png"},
@@ -1064,7 +1064,7 @@ minetest.register_node("default:rail", {
 	groups = {dig_immediate=2,attached_node=1,rail=1,connect_to_raillike=1,dig_by_water=1,transport=1},
 })
 
-minetest.register_node("default:ladder", {
+minetest.register_node("mcl_core:ladder", {
 	description = "Ladder",
 	drawtype = "signlike",
 	is_ground_content = false,
@@ -1083,11 +1083,11 @@ minetest.register_node("default:ladder", {
 	},
 	stack_max = 64,
 	groups = {choppy=2,oddly_breakable_by_hand=3,flammable=2,deco_block=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
 
-minetest.register_node("default:vine", {
+minetest.register_node("mcl_core:vine", {
 	description = "Vines",
 	drawtype = "signlike",
 	tiles = {"default_vine.png"},
@@ -1102,11 +1102,11 @@ minetest.register_node("default:vine", {
 	},
 	stack_max = 64,
 	groups = {choppy=2,oddly_breakable_by_hand=3,flammable=2,deco_block=1},
-	sounds = default.node_sound_leaves_defaults(),
+	sounds = mcl_core.node_sound_leaves_defaults(),
 	drop = "",
 	after_dig_node = function(pos, oldnode, oldmetadata, user)
 	local item = user:get_wielded_item()
-		if item:get_name() == "default:shears" then 
+		if item:get_name() == "mcl_core:shears" then 
 			user:get_inventory():add_item("main", ItemStack(oldnode.name))
 		end
 		local next_find = true
@@ -1114,7 +1114,7 @@ minetest.register_node("default:vine", {
 		while next_find == true do 
 			local pos2 = {x=pos.x, y=pos.y-ptr, z=pos.z}
 			local node = minetest.get_node(pos2)
-			if node.name == "default:vine" and check_attached_node(pos2, node) == false then
+			if node.name == "mcl_core:vine" and check_attached_node(pos2, node) == false then
 				drop_attached_node(pos2)
 				core.check_for_falling(pos2)
 				ptr = ptr + 1
@@ -1127,25 +1127,25 @@ minetest.register_node("default:vine", {
 
 
 
-minetest.register_node("default:wood", {
+minetest.register_node("mcl_core:wood", {
 	description = "Oak Wood Planks",
 	tiles = {"default_wood.png"},
 	stack_max = 64,
 	is_ground_content = false,
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1,building_block=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
-minetest.register_node("default:darkwood", {
+minetest.register_node("mcl_core:darkwood", {
 	description = "Dark Oak Wood Planks",
 	tiles = {"default_planks_big_oak.png"},
 	stack_max = 64,
 	is_ground_content = false,
 	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1,building_block=1},
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
-minetest.register_node("default:water_flowing", {
+minetest.register_node("mcl_core:water_flowing", {
 	description = "Flowing Water",
 	inventory_image = minetest.inventorycube("default_water.png"),
 	drawtype = "flowingliquid",
@@ -1172,16 +1172,16 @@ minetest.register_node("default:water_flowing", {
 	drop = "",
 	drowning = 4,
 	liquidtype = "flowing",
-	liquid_alternative_flowing = "default:water_flowing",
-	liquid_alternative_source = "default:water_source",
+	liquid_alternative_flowing = "mcl_core:water_flowing",
+	liquid_alternative_source = "mcl_core:water_source",
 	liquid_viscosity = WATER_VISC,
 	liquid_range = 7,
-	freezemelt = "default:snow",
+	freezemelt = "mcl_core:snow",
 	post_effect_color = {a=64, r=100, g=100, b=200},
 	groups = {water=3, liquid=3, puts_out_fire=1, not_in_creative_inventory=1, freezes=1, melt_around=1},
 })
 
-minetest.register_node("default:water_source", {
+minetest.register_node("mcl_core:water_source", {
 	description = "Still Water",
 	inventory_image = minetest.inventorycube("default_water.png"),
 	drawtype = "liquid",
@@ -1205,17 +1205,17 @@ minetest.register_node("default:water_source", {
 	drop = "",
 	drowning = 4,
 	liquidtype = "source",
-	liquid_alternative_flowing = "default:water_flowing",
-	liquid_alternative_source = "default:water_source",
+	liquid_alternative_flowing = "mcl_core:water_flowing",
+	liquid_alternative_source = "mcl_core:water_source",
 	liquid_viscosity = WATER_VISC,
 	liquid_range = 7,
-	freezemelt = "default:ice",
+	freezemelt = "mcl_core:ice",
 	post_effect_color = {a=64, r=100, g=100, b=200},
 	stack_max = 64,
 	groups = {water=3, liquid=3, puts_out_fire=1, freezes=1, not_in_creative_inventory=1},
 })
 
-minetest.register_node("default:lava_flowing", {
+minetest.register_node("mcl_core:lava_flowing", {
 	description = "Flowing Lava",
 	inventory_image = minetest.inventorycube("default_lava.png"),
 	drawtype = "flowingliquid",
@@ -1245,8 +1245,8 @@ minetest.register_node("default:lava_flowing", {
 	translates to 4 drowning damage ]]
 	drowning = 4,
 	liquidtype = "flowing",
-	liquid_alternative_flowing = "default:lava_flowing",
-	liquid_alternative_source = "default:lava_source",
+	liquid_alternative_flowing = "mcl_core:lava_flowing",
+	liquid_alternative_source = "mcl_core:lava_source",
 	liquid_viscosity = LAVA_VISC,
 	liquid_renewable = false,
 	liquid_range = 4,
@@ -1255,7 +1255,7 @@ minetest.register_node("default:lava_flowing", {
 	groups = {lava=3, liquid=2, igniter=3, not_in_creative_inventory=1},
 })
 
-minetest.register_node("default:lava_source", {
+minetest.register_node("mcl_core:lava_source", {
 	description = "Still Lava",
 	inventory_image = minetest.inventorycube("default_lava.png"),
 	drawtype = "liquid",
@@ -1279,8 +1279,8 @@ minetest.register_node("default:lava_source", {
 	drop = "",
 	drowning = 4,
 	liquidtype = "source",
-	liquid_alternative_flowing = "default:lava_flowing",
-	liquid_alternative_source = "default:lava_source",
+	liquid_alternative_flowing = "mcl_core:lava_flowing",
+	liquid_alternative_source = "mcl_core:lava_source",
 	liquid_viscosity = LAVA_VISC,
 	liquid_renewable = false,
 	liquid_range = 4,
@@ -1290,88 +1290,88 @@ minetest.register_node("default:lava_source", {
 	groups = {lava=3, liquid=2, igniter=3, not_in_creative_inventory=1},
 })
 
-minetest.register_node("default:cobble", {
+minetest.register_node("mcl_core:cobble", {
 	description = "Cobblestone",
 	tiles = {"default_cobble.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {cracky=3, stone=2, building_block=1, deco_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:mossycobble", {
+minetest.register_node("mcl_core:mossycobble", {
 	description = "Moss Stone",
 	tiles = {"default_mossycobble.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {cracky=3, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:coalblock", {
+minetest.register_node("mcl_core:coalblock", {
 	description = "Block of Coal",
 	tiles = {"default_coal_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {cracky=2, building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:steelblock", {
+minetest.register_node("mcl_core:steelblock", {
 	description = "Block of Iron",
 	tiles = {"default_steel_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {cracky=1,level=2,building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:goldblock", {
+minetest.register_node("mcl_core:goldblock", {
 	description = "Block of Gold",
 	tiles = {"default_gold_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {cracky=1,building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:diamondblock", {
+minetest.register_node("mcl_core:diamondblock", {
 	description = "Block of Diamond",
 	tiles = {"default_diamond_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {cracky=1,level=3,building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:lapisblock", {
+minetest.register_node("mcl_core:lapisblock", {
 	description = "Lapis Lazul Block",
 	tiles = {"default_lapis_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {cracky=1,building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:emeraldblock", {
+minetest.register_node("mcl_core:emeraldblock", {
 	description = "Block of Emerald",
 	tiles = {"default_emerald_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {cracky=1,building_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:obsidian", {
+minetest.register_node("mcl_core:obsidian", {
 	description = "Obsidian",
 	tiles = {"default_obsidian.png"},
 	is_ground_content = true,
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 	stack_max = 64,
 	groups = {cracky=4,level=2,oddly_breakable_by_hand=4,building_block=1},
 })
 
-minetest.register_node("default:dry_shrub", {
+minetest.register_node("mcl_core:dry_shrub", {
 	description = "Dead Bush",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
@@ -1386,23 +1386,23 @@ minetest.register_node("default:dry_shrub", {
 		max_items = 1,
 		items = {
 			{
-				items = {"default:stick 2"},
+				items = {"mcl_core:stick 2"},
 				rarity = 2,
 			},
 			{
-				items = {"default:stick 1"},
+				items = {"mcl_core:stick 1"},
 				rarity = 2,
 			},
 		}
 	},
-	sounds = default.node_sound_leaves_defaults(),
+	sounds = mcl_core.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = {-1/3, -1/2, -1/3, 1/3, 1/6, 1/3},
 	},
 })
 
-minetest.register_node("default:grass", {
+minetest.register_node("mcl_core:grass", {
 	description = "Tall Grass",
 	drawtype = "plantlike",
 	tiles = {"default_tallgrass.png"},
@@ -1422,16 +1422,16 @@ minetest.register_node("default:grass", {
 	buildable_to = true,
 	is_ground_content = true,
 	groups = {snappy=3,flammable=3,attached_node=1,dig_immediate=3,dig_by_water=1,deco_block=1},
-	sounds = default.node_sound_leaves_defaults(),
+	sounds = mcl_core.node_sound_leaves_defaults(),
 	after_dig_node = function(pos, oldnode, oldmetadata, user)
 	local item = user:get_wielded_item()
-		if item:get_name() == "default:shears" then 
+		if item:get_name() == "mcl_core:shears" then 
 			user:get_inventory():add_item("main", ItemStack(oldnode.name))
 		end
 	end
 })
 
-minetest.register_node("default:glowstone", {
+minetest.register_node("mcl_core:glowstone", {
 	description = "Glowstone",
 	tiles = {"default_glowstone.png"},
 	is_ground_content = true,
@@ -1440,16 +1440,16 @@ minetest.register_node("default:glowstone", {
 	drop = {
 	max_items = 1,
 	items = {
-			{items = {'default:glowdust 4'},rarity = 3},
-			{items = {'default:glowdust 3'},rarity = 3},
-			{items = {'default:glowdust 2'}},
+			{items = {'mcl_core:glowdust 4'},rarity = 3},
+			{items = {'mcl_core:glowdust 3'},rarity = 3},
+			{items = {'mcl_core:glowdust 2'}},
 		}
 	},
 	light_source = 12,
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
-minetest.register_node("default:sponge", {
+minetest.register_node("mcl_core:sponge", {
 	description = "Sponge",
 	drawtype = "normal",
 	is_ground_content = false,
@@ -1460,7 +1460,7 @@ minetest.register_node("default:sponge", {
 	diggable = true,
 	buildable_to = false,
 	stack_max = 64,
-	sounds = default.node_sound_dirt_defaults(),
+	sounds = mcl_core.node_sound_dirt_defaults(),
 	groups = {snappy=2,choppy=2,oddly_breakable_by_hand=3,flammable=3,building_block=1},
 	   	on_place = function(itemstack, placer, pointed_thing)
 		local pn = placer:get_player_name()
@@ -1482,7 +1482,7 @@ minetest.register_node("default:sponge", {
 			local p = {x=pos.x+i, y=pos.y, z=pos.z}
 			local n = minetest.get_node(p)
 			-- On verifie si il y a de l'eau
-			if (n.name=="default:water_flowing") or (n.name == "default:water_source") then
+			if (n.name=="mcl_core:water_flowing") or (n.name == "mcl_core:water_source") then
 				on_water = true
 			end
 		end
@@ -1490,7 +1490,7 @@ minetest.register_node("default:sponge", {
 			local p = {x=pos.x, y=pos.y+i, z=pos.z}
 			local n = minetest.get_node(p)
 			-- On verifie si il y a de l'eau
-			if (n.name=="default:water_flowing") or (n.name == "default:water_source") then
+			if (n.name=="mcl_core:water_flowing") or (n.name == "mcl_core:water_source") then
 				on_water = true
 			end
 		end
@@ -1498,7 +1498,7 @@ minetest.register_node("default:sponge", {
 			local p = {x=pos.x, y=pos.y, z=pos.z+i}
 			local n = minetest.get_node(p)
 			-- On verifie si il y a de l'eau
-			if (n.name=="default:water_flowing") or (n.name == "default:water_source") then
+			if (n.name=="mcl_core:water_flowing") or (n.name == "mcl_core:water_source") then
 				on_water = true
 			end
 		end
@@ -1510,7 +1510,7 @@ minetest.register_node("default:sponge", {
 							p = {x=pos.x+i, y=pos.y+j, z=pos.z+k}
 							n = minetest.get_node(p)
 							-- On Supprime l'eau
-							if (n.name=="default:water_flowing") or (n.name == "default:water_source")then
+							if (n.name=="mcl_core:water_flowing") or (n.name == "mcl_core:water_source")then
 								minetest.add_node(p, {name="air"})
 								change = true
 							end
@@ -1521,16 +1521,16 @@ minetest.register_node("default:sponge", {
 			p = {x=pos.x, y=pos.y, z=pos.z}
 			n = minetest.get_node(p)
 			if change == true then
-				minetest.add_node(pointed_thing.above, {name = "default:sponge_wet"})	
+				minetest.add_node(pointed_thing.above, {name = "mcl_core:sponge_wet"})	
 			else
-				minetest.add_node(pointed_thing.above, {name = "default:sponge"})	
+				minetest.add_node(pointed_thing.above, {name = "mcl_core:sponge"})	
 			end
 		return itemstack
 		
 	end
 })
 
-minetest.register_node("default:sponge_wet", {
+minetest.register_node("mcl_core:sponge_wet", {
 	description = "Wet Sponge",
 	drawtype = "normal",
 	is_ground_content = false,
@@ -1541,12 +1541,12 @@ minetest.register_node("default:sponge_wet", {
 	diggable = true,
 	buildable_to = false,
 	stack_max = 64,
-	sounds = default.node_sound_dirt_defaults(),
+	sounds = mcl_core.node_sound_dirt_defaults(),
 	groups = {snappy=2,choppy=2,oddly_breakable_by_hand=3,building_block=1},
 })
 
 
-minetest.register_node("default:ice", {
+minetest.register_node("mcl_core:ice", {
 	description = "Ice",
 	drawtype = "glasslike",
 	tiles = {"default_ice.png"},
@@ -1556,10 +1556,10 @@ minetest.register_node("default:ice", {
 	stack_max = 64,
 	groups = {cracky=3,oddly_breakable_by_hand=2,building_block=1},
 	drop = "",
-	sounds = default.node_sound_glass_defaults(),
+	sounds = mcl_core.node_sound_glass_defaults(),
 })
 
-minetest.register_node("default:packed_ice", {
+minetest.register_node("mcl_core:packed_ice", {
 	description = "Packed Ice",
 	drawtype = "glasslike",
 	tiles = {"default_ice_packed.png"},
@@ -1569,7 +1569,7 @@ minetest.register_node("default:packed_ice", {
 	stack_max = 64,
 	groups = {cracky=3,oddly_breakable_by_hand=2,building_block=1},
 	drop = "",
-	sounds = default.node_sound_glass_defaults(),
+	sounds = mcl_core.node_sound_glass_defaults(),
 })
 
 -- Frosted Ice (4 nodes)
@@ -1582,9 +1582,9 @@ for i=0,3 do
 		if age == nil then return end
 		local nextnode
 		if age < 3 then
-			nextnode = "default:frosted_ice_"..(age+1)
+			nextnode = "mcl_core:frosted_ice_"..(age+1)
 		else
-			nextnode = "default:water_source"
+			nextnode = "mcl_core:water_source"
 		end
 		minetest.swap_node(pos, { name = nextnode })
 		-- Spread aging to neighbor blocks, but not recursively
@@ -1594,7 +1594,7 @@ for i=0,3 do
 			end
 		end
 	end
-	minetest.register_node("default:frosted_ice_"..i, {
+	minetest.register_node("mcl_core:frosted_ice_"..i, {
 		description = "Frosted Ice",
 		drawtype = "glasslike",
 		tiles = {"default_frosted_ice_"..i..".png"},
@@ -1604,7 +1604,7 @@ for i=0,3 do
 		stack_max = 64,
 		groups = {cracky=2, frosted_ice=1, not_in_creative_inventory=1},
 		drop = "",
-		sounds = default.node_sound_glass_defaults(),
+		sounds = mcl_core.node_sound_glass_defaults(),
 		on_construct = function(pos)
 			local timer = minetest.get_node_timer(pos)
 			timer:start(1.5)
@@ -1625,7 +1625,7 @@ for i=0,3 do
 	})
 end
 
-minetest.register_node("default:snow", {
+minetest.register_node("mcl_core:snow", {
 	description = "Top Snow",
 	tiles = {"default_snow.png"},
 	is_ground_content = true,
@@ -1640,25 +1640,25 @@ minetest.register_node("default:snow", {
 		},
 	},
 	groups = {crumbly=3,falling_node=1,deco_block=1},
-	sounds = default.node_sound_dirt_defaults({
+	sounds = mcl_core.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
 	drop = "mcl_throwing:snowball 2",
 })
 
-minetest.register_node("default:snowblock", {
+minetest.register_node("mcl_core:snowblock", {
 	description = "Snow",
 	tiles = {"default_snow.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {crumbly=3,building_block=1},
-	sounds = default.node_sound_dirt_defaults({
+	sounds = mcl_core.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
 	drop = "mcl_throwing:snowball 4",
 })
 
-minetest.register_node("default:cobweb", {
+minetest.register_node("mcl_core:cobweb", {
        description = "Cobweb",
        drawtype = "plantlike",
 	paramtype2 = "degrotate",
@@ -1670,12 +1670,12 @@ minetest.register_node("default:cobweb", {
        sunlight_propagates = true,
        liquid_viscosity = 14,
        liquidtype = "source",
-       liquid_alternative_flowing = "default:cobweb",
-       liquid_alternative_source = "default:cobweb",
+       liquid_alternative_flowing = "mcl_core:cobweb",
+       liquid_alternative_source = "mcl_core:cobweb",
        liquid_renewable = false,
        liquid_range = 0,
        walkable = false,
        groups = {snappy=1,liquid=3,flammable=2,deco_block=1},
-       drop = "default:string",
+       drop = "mcl_core:string",
 })
 

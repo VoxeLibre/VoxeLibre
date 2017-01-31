@@ -13,7 +13,7 @@ local function create_soil(pos, inv)
 		end
 	elseif minetest.get_item_group(name, "cultivatable") == 1 then
 		if above.name == "air" then
-			node.name = "default:dirt"
+			node.name = "mcl_core:dirt"
 			minetest.set_node(pos, node)
 			return true
 		end
@@ -43,16 +43,16 @@ minetest.register_craft({
 	output = "mcl_farming:hoe_wood",
 	recipe = {
 		{"group:wood", "group:wood"},
-		{"", "default:stick"},
-		{"", "default:stick"}
+		{"", "mcl_core:stick"},
+		{"", "mcl_core:stick"}
 	}
 })
 minetest.register_craft({
 	output = "mcl_farming:hoe_wood",
 	recipe = {
 		{"group:wood", "group:wood"},
-		{"default:stick", ""},
-		{"default:stick", ""}
+		{"mcl_core:stick", ""},
+		{"mcl_core:stick", ""}
 	}
 })
 minetest.register_craft({
@@ -82,17 +82,17 @@ minetest.register_tool("mcl_farming:hoe_stone", {
 minetest.register_craft({
 	output = "mcl_farming:hoe_stone",
 	recipe = {
-		{"default:cobble", "default:cobble"},
-		{"", "default:stick"},
-		{"", "default:stick"}
+		{"mcl_core:cobble", "mcl_core:cobble"},
+		{"", "mcl_core:stick"},
+		{"", "mcl_core:stick"}
 	}
 })
 minetest.register_craft({
 	output = "mcl_farming:hoe_stone",
 	recipe = {
-		{"default:cobble", "default:cobble"},
-		{"default:stick", ""},
-		{"default:stick", ""}
+		{"mcl_core:cobble", "mcl_core:cobble"},
+		{"mcl_core:stick", ""},
+		{"mcl_core:stick", ""}
 	}
 })
 
@@ -118,23 +118,23 @@ minetest.register_tool("mcl_farming:hoe_steel", {
 minetest.register_craft({
 	output = "mcl_farming:hoe_steel",
 	recipe = {
-		{"default:steel_ingot", "default:steel_ingot"},
-		{"", "default:stick"},
-		{"", "default:stick"}
+		{"mcl_core:steel_ingot", "mcl_core:steel_ingot"},
+		{"", "mcl_core:stick"},
+		{"", "mcl_core:stick"}
 	}
 })
 minetest.register_craft({
 	output = "mcl_farming:hoe_steel",
 	recipe = {
-		{"default:steel_ingot", "default:steel_ingot"},
-		{"default:stick", ""},
-		{"default:stick", ""}
+		{"mcl_core:steel_ingot", "mcl_core:steel_ingot"},
+		{"mcl_core:stick", ""},
+		{"mcl_core:stick", ""}
 	}
 })
 
 minetest.register_craft({
 	type = "cooking",
-	output = "default:iron_nugget",
+	output = "mcl_core:iron_nugget",
 	recipe = "mcl_farming:hoe_steel",
 	cooktime = 10,
 })
@@ -160,17 +160,17 @@ minetest.register_tool("mcl_farming:hoe_gold", {
 minetest.register_craft({
 	output = "mcl_farming:hoe_gold",
 	recipe = {
-		{"default:gold_ingot", "default:gold_ingot"},
-		{"", "default:stick"},
-		{"", "default:stick"}
+		{"mcl_core:gold_ingot", "mcl_core:gold_ingot"},
+		{"", "mcl_core:stick"},
+		{"", "mcl_core:stick"}
 	}
 })
 minetest.register_craft({
 	output = "mcl_farming:hoe_gold",
 	recipe = {
-		{"default:gold_ingot", "default:gold_ingot"},
-		{"default:stick", ""},
-		{"default:stick", ""}
+		{"mcl_core:gold_ingot", "mcl_core:gold_ingot"},
+		{"mcl_core:stick", ""},
+		{"mcl_core:stick", ""}
 	}
 })
 
@@ -178,7 +178,7 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "cooking",
-	output = "default:gold_nugget",
+	output = "mcl_core:gold_nugget",
 	recipe = "mcl_farming:hoe_gold",
 	cooktime = 10,
 })
@@ -204,16 +204,16 @@ minetest.register_tool("mcl_farming:hoe_diamond", {
 minetest.register_craft({
 	output = "mcl_farming:hoe_diamond",
 	recipe = {
-		{"default:diamond", "default:diamond"},
-		{"", "default:stick"},
-		{"", "default:stick"}
+		{"mcl_core:diamond", "mcl_core:diamond"},
+		{"", "mcl_core:stick"},
+		{"", "mcl_core:stick"}
 	}
 })
 minetest.register_craft({
 	output = "mcl_farming:hoe_diamond",
 	recipe = {
-		{"default:diamond", "default:diamond"},
-		{"default:stick", ""},
-		{"default:stick", ""}
+		{"mcl_core:diamond", "mcl_core:diamond"},
+		{"mcl_core:stick", ""},
+		{"mcl_core:stick", ""}
 	}
 })

@@ -100,7 +100,7 @@ minetest.register_entity(":__builtin:item", {
 			return
 		end
 	
-		--[[ if name == "default:water_source" then
+		--[[ if name == "mcl_core:water_source" then
 			self.object:setacceleration({x = 0, y = 4, z = 0})
 		else
 			self.object:setacceleration({x = 0, y = -10, z = 0})
@@ -120,7 +120,7 @@ minetest.register_entity(":__builtin:item", {
 					
 					local name = minetest.get_node(pos).name
 					local par2 = minetest.get_node(pos).param2
-					if name == "default:water_flowing" and par2 < param2 then
+					if name == "mcl_core:water_flowing" and par2 < param2 then
 						return pos
 					end
 					

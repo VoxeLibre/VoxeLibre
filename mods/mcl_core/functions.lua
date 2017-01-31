@@ -2,31 +2,31 @@
 -- Lavacooling
 --
 
-default.cool_lava_source = function(pos)
-	minetest.set_node(pos, {name="default:obsidian"})
+mcl_core.cool_lava_source = function(pos)
+	minetest.set_node(pos, {name="mcl_core:obsidian"})
 end
 
-default.cool_lava_flowing = function(pos)
-	minetest.set_node(pos, {name="default:stone"})
+mcl_core.cool_lava_flowing = function(pos)
+	minetest.set_node(pos, {name="mcl_core:stone"})
 end
 
 minetest.register_abm({
-	nodenames = {"default:lava_flowing"},
+	nodenames = {"mcl_core:lava_flowing"},
 	neighbors = {"group:water"},
 	interval = 1,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		default.cool_lava_flowing(pos, node, active_object_count, active_object_count_wider)
+		mcl_core.cool_lava_flowing(pos, node, active_object_count, active_object_count_wider)
 	end,
 })
 
 minetest.register_abm({
-	nodenames = {"default:lava_source"},
+	nodenames = {"mcl_core:lava_source"},
 	neighbors = {"group:water"},
 	interval = 1,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		default.cool_lava_source(pos, node, active_object_count, active_object_count_wider)
+		mcl_core.cool_lava_source(pos, node, active_object_count, active_object_count_wider)
 	end,
 })
 
@@ -41,13 +41,13 @@ local grow_cactus = function(pos, node)
 	if minetest.get_item_group(name, "sand") ~= 0 then
 		pos.y = pos.y+1
 		local height = 0
-		while minetest.get_node(pos).name == "default:cactus" and height < 4 do
+		while minetest.get_node(pos).name == "mcl_core:cactus" and height < 4 do
 			height = height+1
 			pos.y = pos.y+1
 		end
 		if height < 3 then
 			if minetest.get_node(pos).name == "air" then
-				minetest.set_node(pos, {name="default:cactus"})
+				minetest.set_node(pos, {name="mcl_core:cactus"})
 			end
 		end
 	end
@@ -62,13 +62,13 @@ local grow_reeds = function(pos, node)
 		end
 		pos.y = pos.y+1
 		local height = 0
-		while minetest.get_node(pos).name == "default:reeds" and height < 3 do
+		while minetest.get_node(pos).name == "mcl_core:reeds" and height < 3 do
 			height = height+1
 			pos.y = pos.y+1
 		end
 		if height < 3 then
 			if minetest.get_node(pos).name == "air" then
-				minetest.set_node(pos, {name="default:reeds"})
+				minetest.set_node(pos, {name="mcl_core:reeds"})
 			end
 		end
 	end
@@ -101,7 +101,7 @@ minetest.register_abm({
 			for zp=-1,1 do
 				local p = {x=pos.x+xp, y=pos.y, z=pos.z+zp}
 				local n = minetest.get_node(p)
-				if (n.name=="default:water_flowing") then
+				if (n.name=="mcl_core:water_flowing") then
 					drop_attached_node(pos)
 					minetest.dig_node(pos)
 					break
@@ -111,7 +111,7 @@ minetest.register_abm({
 		for yp=-1,1 do
 			local p = {x=pos.x, y=pos.y+yp, z=pos.z}
 			local n = minetest.get_node(p)
-			if (n.name=="default:water_flowing") then
+			if (n.name=="mcl_core:water_flowing") then
 				drop_attached_node(pos)
 				minetest.dig_node(pos)
 				break
@@ -122,7 +122,7 @@ minetest.register_abm({
 })
 
 minetest.register_abm({
-	nodenames = {"default:cactus"},
+	nodenames = {"mcl_core:cactus"},
 	neighbors = {"group:sand"},
 	interval = 25,
 	chance = 10,
@@ -132,8 +132,8 @@ minetest.register_abm({
 })
 
 minetest.register_abm({
-	nodenames = {"default:reeds"},
-	neighbors = {"default:dirt", "default:dirt_with_grass"},
+	nodenames = {"mcl_core:reeds"},
+	neighbors = {"mcl_core:dirt", "mcl_core:dirt_with_grass"},
 	interval = 25,
 	chance = 10,
 	action = function(pos)
@@ -145,7 +145,7 @@ minetest.register_abm({
 -- Papyrus and cactus drop
 --
 
-local timber_nodenames={"default:reeds", "default:cactus"}
+local timber_nodenames={"mcl_core:reeds", "mcl_core:cactus"}
 
 minetest.register_on_dignode(function(pos, node)
 	local i=1
@@ -166,7 +166,7 @@ end)
 -- Flint and Steel
 --
 
-function default.set_fire(pointed_thing)
+function mcl_core.set_fire(pointed_thing)
 	local n = minetest.get_node(pointed_thing.above)
 	if n.name ~= ""  and n.name == "air" and not minetest.is_protected(pointed_thing.above, "fire") then
 		minetest.add_node(pointed_thing.above, {name="fire:basic_flame"})
@@ -177,7 +177,7 @@ end
 -- Fire Particles
 --
 
-function default.add_fire(pos)
+function mcl_core.add_fire(pos)
 	local null = {x=0, y=0, z=0}
 	pos.y = pos.y+0.19
 	minetest.add_particle(pos, null, null, 1.1,
@@ -197,9 +197,9 @@ local pos
 
 local function apple_leave()
 	if math.random(0, 10) == 3 then
-		return {name = "default:apple"}
+		return {name = "mcl_core:apple"}
 	else
-		return {name = "default:leaves"}
+		return {name = "mcl_core:leaves"}
 	end
 end
 
@@ -207,7 +207,7 @@ local function air_leave()
 	if math.random(0, 50) == 3 then
 		return {name = "air"}
 	else
-		return {name = "default:leaves"}
+		return {name = "mcl_core:leaves"}
 	end
 end
 
@@ -314,14 +314,14 @@ local function generate_tree(pos, trunk, leaves, typearbre)
 			for dz=0,1 do
 					pos.z = pos.z + dz
 					--> 0
-					if minetest.get_node(pos).name == "default:dirt_with_grass" 
-					or  minetest.get_node(pos).name == "default:dirt" then else
+					if minetest.get_node(pos).name == "mcl_core:dirt_with_grass" 
+					or  minetest.get_node(pos).name == "mcl_core:dirt" then else
 							return
 					end
 					pos.x = pos.x+1
 					--> 1
-					if minetest.get_node(pos).name == "default:dirt_with_grass" 
-					or  minetest.get_node(pos).name == "default:dirt" then else
+					if minetest.get_node(pos).name == "mcl_core:dirt_with_grass" 
+					or  minetest.get_node(pos).name == "mcl_core:dirt" then else
 							return
 					end
 					pos.x = pos.x-1
@@ -339,22 +339,22 @@ local function generate_tree(pos, trunk, leaves, typearbre)
 				if dz == -1 then
 					pos.z = pos.z + dz
 					if math.random(1, 3) == 1 and minetest.get_node(pos).name == "air" then
-						minetest.add_node(pos, {name = "default:vine", param2 = 4})
+						minetest.add_node(pos, {name = "mcl_core:vine", param2 = 4})
 					end
 					pos.x = pos.x+1
 					if math.random(1, 3) == 1 and  minetest.get_node(pos).name == "air" then
-						minetest.add_node(pos, {name = "default:vine", param2 = 4})
+						minetest.add_node(pos, {name = "mcl_core:vine", param2 = 4})
 					end
 					pos.x = pos.x-1
 					pos.z = pos.z - dz
 				elseif dz == 2 then
 					pos.z = pos.z + dz
 					if math.random(1, 3) == 1 and  minetest.get_node(pos).name == "air"then
-						minetest.add_node(pos, {name = "default:vine", param2 = 5})
+						minetest.add_node(pos, {name = "mcl_core:vine", param2 = 5})
 					end
 					pos.x = pos.x+1
 					if math.random(1, 3) == 1 and minetest.get_node(pos).name == "air" then
-						minetest.add_node(pos, {name = "default:vine", param2 = 5})
+						minetest.add_node(pos, {name = "mcl_core:vine", param2 = 5})
 					end
 					pos.x = pos.x-1
 					pos.z = pos.z - dz
@@ -362,7 +362,7 @@ local function generate_tree(pos, trunk, leaves, typearbre)
 					pos.z = pos.z + dz
 					pos.x = pos.x-1
 					if math.random(1, 3) == 1  and minetest.get_node(pos).name == "air" then
-						minetest.add_node(pos, {name = "default:vine", param2 = 2})
+						minetest.add_node(pos, {name = "mcl_core:vine", param2 = 2})
 					end
 					pos.x = pos.x+1
 					if minetest.get_node(pos).name == "air" then
@@ -374,7 +374,7 @@ local function generate_tree(pos, trunk, leaves, typearbre)
 					end
 					pos.x = pos.x+1
 					if math.random(1, 3) == 1 and minetest.get_node(pos).name == "air" then
-						minetest.add_node(pos, {name = "default:vine", param2 = 3})
+						minetest.add_node(pos, {name = "mcl_core:vine", param2 = 3})
 					end
 					pos.x = pos.x-2
 					pos.z = pos.z - dz
@@ -395,21 +395,21 @@ local function generate_tree(pos, trunk, leaves, typearbre)
 					pos.z = pos.z+dz
 
 					if dx == 0 and dz == 0 and dy==3 then
-						if minetest.get_node(pos).name == "air" or minetest.get_node(pos).name == "default:vine" and math.random(1, 2) == 1 then
+						if minetest.get_node(pos).name == "air" or minetest.get_node(pos).name == "mcl_core:vine" and math.random(1, 2) == 1 then
 							minetest.add_node(pos, node)
 							end
 					elseif dx == 0 and dz == 0 and dy==4 then
-						if minetest.get_node(pos).name == "air" or minetest.get_node(pos).name == "default:vine"  and math.random(1, 5) == 1 then
+						if minetest.get_node(pos).name == "air" or minetest.get_node(pos).name == "mcl_core:vine"  and math.random(1, 5) == 1 then
 							minetest.add_node(pos, node)
 								minetest.add_node(pos, air_leave())
 						end
 					elseif math.abs(dx) ~= 2 and math.abs(dz) ~= 2 then
-						if minetest.get_node(pos).name == "air" or minetest.get_node(pos).name == "default:vine"  then
+						if minetest.get_node(pos).name == "air" or minetest.get_node(pos).name == "mcl_core:vine"  then
 							minetest.add_node(pos, node)
 						end
 					else
 						if math.abs(dx) ~= 2 or math.abs(dz) ~= 2 then
-							if minetest.get_node(pos).name == "air" or minetest.get_node(pos).name == "default:vine" and math.random(1, 3) == 1 then
+							if minetest.get_node(pos).name == "air" or minetest.get_node(pos).name == "mcl_core:vine" and math.random(1, 3) == 1 then
 								minetest.add_node(pos, node)
 							end
 						else
@@ -431,37 +431,36 @@ local plant_tab = {}
 local rnd_max = 5
 minetest.after(0.5, function()
 	plant_tab[0] = "air"
-	plant_tab[1] = "default:grass"
-	plant_tab[2] = "default:grass"
-	plant_tab[3] = "default:grass"
-	plant_tab[4] = "default:grass"
-	plant_tab[5] = "default:grass"
+	plant_tab[1] = "mcl_core:grass"
+	plant_tab[2] = "mcl_core:grass"
+	plant_tab[3] = "mcl_core:grass"
+	plant_tab[4] = "mcl_core:grass"
+	plant_tab[5] = "mcl_core:grass"
 
 if minetest.get_modpath("mcl_flowers") ~= nil then
-	rnd_max = 16
-	plant_tab[6] = "mcl_flowers:dandelion_yellow"
-	plant_tab[7] = "mcl_flowers:rose"
+	rnd_max = 15
+	plant_tab[6] = "mcl_flowers:dandelion"
+	plant_tab[7] = "mcl_flowers:blue_orchid"
 	plant_tab[8] = "mcl_flowers:oxeye_daisy"
 	plant_tab[9] = "mcl_flowers:tulip_orange"
 	plant_tab[10] = "mcl_flowers:tulip_red"
 	plant_tab[11] = "mcl_flowers:tulip_white"
 	plant_tab[12] = "mcl_flowers:tulip_pink"
 	plant_tab[13] = "mcl_flowers:allium"
-	plant_tab[14] = "mcl_flowers:paeonia"
-	plant_tab[15] = "mcl_flowers:houstonia"
-	plant_tab[16] = "mcl_flowers:blue_orchid"
+	plant_tab[14] = "mcl_flowers:poppy"
+	plant_tab[15] = "mcl_flowers:azure_bluet"
 end
 
 end)
 
-function default.duengen(pointed_thing)
+function mcl_core.duengen(pointed_thing)
 	pos = pointed_thing.under
 	n = minetest.get_node(pos)
 	if n.name == "" then return false end
 	local stage = ""
-	if n.name == "default:sapling" then
+	if n.name == "mcl_core:sapling" then
 		minetest.add_node(pos, {name="air"})
-		generate_tree(pos, "default:tree", "default:leaves", 1)
+		generate_tree(pos, "mcl_core:tree", "mcl_core:leaves", 1)
 		return true
 	elseif string.find(n.name, "mcl_farming:wheat_") ~= nil then
 		stage = string.sub(n.name, 15)
@@ -505,17 +504,17 @@ function default.duengen(pointed_thing)
 			minetest.add_node(pos, {name="mcl_farming:melontige_unconnect"})
 		end
 		return true
-	elseif n.name ~= ""  and n.name == "default:junglesapling" then
+	elseif n.name ~= ""  and n.name == "mcl_core:junglesapling" then
 		minetest.add_node(pos, {name="air"})
-		generate_tree(pos, "default:jungletree", "default:jungleleaves", 2)
+		generate_tree(pos, "mcl_core:jungletree", "mcl_core:jungleleaves", 2)
 		return true
-	elseif n.name ~="" and n.name == "default:reeds" then
+	elseif n.name ~="" and n.name == "mcl_core:reeds" then
 		grow_reeds(pos)
 		return true
-	elseif n.name ~="" and n.name == "default:cactus" then
+	elseif n.name ~="" and n.name == "mcl_core:cactus" then
 		grow_cactus(pos)
 		return true
-	elseif n.name == "default:dirt_with_grass" then
+	elseif n.name == "mcl_core:dirt_with_grass" then
 		for i = -2, 3, 1 do
 			for j = -3, 2, 1 do
 				pos = pointed_thing.above
@@ -523,7 +522,7 @@ function default.duengen(pointed_thing)
 				n = minetest.get_node(pos)
 				n2 = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
 
-				if n.name ~= ""  and n.name == "air" and n2.name == "default:dirt_with_grass" then
+				if n.name ~= ""  and n.name == "air" and n2.name == "mcl_core:dirt_with_grass" then
 					if math.random(0,5) > 3 then
 						minetest.add_node(pos, {name=plant_tab[math.random(0, rnd_max)]})
 					else
@@ -545,7 +544,7 @@ end
 ------------------------------
 -- turn dirt to dirt with grass
 minetest.register_abm({
-	nodenames = {"default:dirt"},
+	nodenames = {"mcl_core:dirt"},
 	neighbors = {"air"},
 	interval = 30,
 	chance = 20,
@@ -565,7 +564,7 @@ minetest.register_abm({
 		if can_change > 3 then
 			local light = minetest.get_node_light(pos)
 			if light or light > 10 then
-				minetest.add_node(pos, {name="default:dirt_with_grass"})
+				minetest.add_node(pos, {name="mcl_core:dirt_with_grass"})
 			end
 			
 		end
@@ -581,7 +580,7 @@ minetest.register_abm({
 
 -- Normal tree
 minetest.register_abm({
-	nodenames = {"default:sapling"},
+	nodenames = {"mcl_core:sapling"},
 	neighbors = {"group:soil_sapling"},
 	interval = 30,
 	chance = 15,
@@ -591,14 +590,14 @@ minetest.register_abm({
 		local soiltype = minetest.get_item_group(soilnode.name, "soil_sapling")
 		if soiltype >= 1 and light and light >= 9 then
 			minetest.add_node(pos, {name="air"})
-			generate_tree(pos, "default:tree", "default:leaves", 1)
+			generate_tree(pos, "mcl_core:tree", "mcl_core:leaves", 1)
 		end
 	end,
 })
 
 -- Jungle Tree
 minetest.register_abm({
-	nodenames = {"default:junglesapling"},
+	nodenames = {"mcl_core:junglesapling"},
 	neighbors = {"group:soil_sapling"},
 	interval = 30,
 	chance = 15,
@@ -608,7 +607,7 @@ minetest.register_abm({
 		local soiltype = minetest.get_item_group(soilnode.name, "soil_sapling")
 		if soiltype == 2 and light and light >= 9 then
 			minetest.add_node(pos, {name="air"})
-			generate_tree(pos, "default:jungletree", "default:jungleleaves", 2)
+			generate_tree(pos, "mcl_core:jungletree", "mcl_core:jungleleaves", 2)
 		end
 	end,
 })
@@ -617,7 +616,7 @@ minetest.register_abm({
 -- Vine generating --
 ---------------------
 minetest.register_abm({
-	nodenames = {"default:vine"},
+	nodenames = {"mcl_core:vine"},
 	interval = 80,
 	chance = 5,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -625,7 +624,7 @@ minetest.register_abm({
 		local n = minetest.get_node(newpos)
 		if n.name == "air" then
 			local walldir = node.param2
-			minetest.add_node(newpos, {name = "default:vine", param2 = walldir})
+			minetest.add_node(newpos, {name = "mcl_core:vine", param2 = walldir})
 		end
 	end
 })
@@ -635,7 +634,7 @@ minetest.register_abm({
 -- Sounds
 --
 
-function default.node_sound_defaults(table)
+function mcl_core.node_sound_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or
 			{name="", gain=1.0}
@@ -646,20 +645,20 @@ function default.node_sound_defaults(table)
 	return table
 end
 
-function default.node_sound_stone_defaults(table)
+function mcl_core.node_sound_stone_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or
 			{name="default_hard_footstep", gain=0.5}
 	table.dug = table.dug or
 			{name="default_hard_footstep", gain=1.0}
-	default.node_sound_defaults(table)
+	mcl_core.node_sound_defaults(table)
 	return table
 end
 
 -- TODO: Maybe add custom metal sounds
-default.node_sound_metal_defaults = default.node_sound_stone_defaults
+mcl_core.node_sound_metal_defaults = mcl_core.node_sound_stone_defaults
 
-function default.node_sound_dirt_defaults(table)
+function mcl_core.node_sound_dirt_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or
 			{name="default_dirt_footstep", gain=1.0}
@@ -667,11 +666,11 @@ function default.node_sound_dirt_defaults(table)
 			{name="default_dirt_footstep", gain=1.5}
 	table.place = table.place or
 			{name="default_place_node", gain=1.0}
-	default.node_sound_defaults(table)
+	mcl_core.node_sound_defaults(table)
 	return table
 end
 
-function default.node_sound_sand_defaults(table)
+function mcl_core.node_sound_sand_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or
 			{name="default_sand_footstep", gain=0.5}
@@ -679,21 +678,21 @@ function default.node_sound_sand_defaults(table)
 			{name="default_sand_footstep", gain=1.0}
 	table.place = table.place or
 			{name="default_place_node", gain=1.0}
-	default.node_sound_defaults(table)
+	mcl_core.node_sound_defaults(table)
 	return table
 end
 
-function default.node_sound_wood_defaults(table)
+function mcl_core.node_sound_wood_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or
 			{name="default_wood_footstep", gain=0.5}
 	table.dug = table.dug or
 			{name="default_wood_footstep", gain=1.0}
-	default.node_sound_defaults(table)
+	mcl_core.node_sound_defaults(table)
 	return table
 end
 
-function default.node_sound_leaves_defaults(table)
+function mcl_core.node_sound_leaves_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or
 			{name="default_grass_footstep", gain=0.35}
@@ -703,17 +702,17 @@ function default.node_sound_leaves_defaults(table)
 			{name="default_dig_crumbly", gain=0.4}
 	table.place = table.place or
 			{name="default_place_node", gain=1.0}
-	default.node_sound_defaults(table)
+	mcl_core.node_sound_defaults(table)
 	return table
 end
 
-function default.node_sound_glass_defaults(table)
+function mcl_core.node_sound_glass_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or
 			{name="default_glass_footstep", gain=0.5}
 	table.dug = table.dug or
 			{name="default_break_glass", gain=1.0}
-	default.node_sound_defaults(table)
+	mcl_core.node_sound_defaults(table)
 	return table
 end
 
@@ -730,14 +729,14 @@ end
 -- If the node is in the leafdecay_drop group then the it will always be dropped
 -- as an item
 
-default.leafdecay_trunk_cache = {}
-default.leafdecay_enable_cache = true
+mcl_core.leafdecay_trunk_cache = {}
+mcl_core.leafdecay_enable_cache = true
 -- Spread the load of finding trunks
-default.leafdecay_trunk_find_allow_accumulator = 0
+mcl_core.leafdecay_trunk_find_allow_accumulator = 0
 
 minetest.register_globalstep(function(dtime)
 	local finds_per_second = 5000
-	default.leafdecay_trunk_find_allow_accumulator =
+	mcl_core.leafdecay_trunk_find_allow_accumulator =
 			math.floor(dtime * finds_per_second)
 end)
 
@@ -762,9 +761,9 @@ minetest.register_abm({
 			return
 		end
 		local p0_hash = nil
-		if default.leafdecay_enable_cache then
+		if mcl_core.leafdecay_enable_cache then
 			p0_hash = minetest.hash_node_position(p0)
-			local trunkp = default.leafdecay_trunk_cache[p0_hash]
+			local trunkp = mcl_core.leafdecay_trunk_cache[p0_hash]
 			if trunkp then
 				local n = minetest.get_node(trunkp)
 				local reg = minetest.registered_nodes[n.name]
@@ -775,22 +774,22 @@ minetest.register_abm({
 				end
 				--print("cached trunk is invalid")
 				-- Cache is invalid
-				table.remove(default.leafdecay_trunk_cache, p0_hash)
+				table.remove(mcl_core.leafdecay_trunk_cache, p0_hash)
 			end
 		end
-		if default.leafdecay_trunk_find_allow_accumulator <= 0 then
+		if mcl_core.leafdecay_trunk_find_allow_accumulator <= 0 then
 			return
 		end
-		default.leafdecay_trunk_find_allow_accumulator =
-				default.leafdecay_trunk_find_allow_accumulator - 1
+		mcl_core.leafdecay_trunk_find_allow_accumulator =
+				mcl_core.leafdecay_trunk_find_allow_accumulator - 1
 		-- Assume ignore is a trunk, to make the thing work at the border of the active area
 		local p1 = minetest.find_node_near(p0, d, {"ignore", "group:tree"})
 		if p1 then
 			do_preserve = true
-			if default.leafdecay_enable_cache then
+			if mcl_core.leafdecay_enable_cache then
 				--print("caching trunk")
 				-- Cache the trunk
-				default.leafdecay_trunk_cache[p0_hash] = p1
+				mcl_core.leafdecay_trunk_cache[p0_hash] = p1
 			end
 		end
 		if not do_preserve then
@@ -817,9 +816,9 @@ minetest.register_abm({
 ------------------------
 -- Create Color Glass -- 
 ------------------------
-function default.add_glass(desc, recipeitem, color)
+function mcl_core.add_glass(desc, recipeitem, color)
 
-	minetest.register_node("default:glass_"..color, {
+	minetest.register_node("mcl_core:glass_"..color, {
 		description = desc,
 		drawtype = "glasslike",
 		is_ground_content = false,
@@ -829,16 +828,16 @@ function default.add_glass(desc, recipeitem, color)
 		use_texture_alpha = true,
 		stack_max = 64,
 		groups = {cracky=3,oddly_breakable_by_hand=3, building_block=1},
-		sounds = default.node_sound_glass_defaults(),
+		sounds = mcl_core.node_sound_glass_defaults(),
 		drop = "",
 	})
 	
 	minetest.register_craft({
-		output = 'default:glass_'..color..' 8',
+		output = 'mcl_core:glass_'..color..' 8',
 		recipe = {
-			{'default:glass','default:glass','default:glass'},
-			{'default:glass','group:dye,'..recipeitem,'default:glass'},
-			{'default:glass','default:glass','default:glass'},
+			{'mcl_core:glass','mcl_core:glass','mcl_core:glass'},
+			{'mcl_core:glass','group:dye,'..recipeitem,'mcl_core:glass'},
+			{'mcl_core:glass','mcl_core:glass','mcl_core:glass'},
 		}
 	})
 end

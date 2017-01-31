@@ -11,7 +11,7 @@ minetest.register_node("mcl_farming:carrot_1", {
 		},
 	},
 	groups = {snappy=3, flammable=2, not_in_creative_inventory=1,dig_by_water=1},
-	sounds = default.node_sound_leaves_defaults(),
+	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
 minetest.register_node("mcl_farming:carrot_2", {
@@ -27,7 +27,7 @@ minetest.register_node("mcl_farming:carrot_2", {
 		},
 	},
 	groups = {snappy=3, flammable=2, not_in_creative_inventory=1,dig_by_water=1},
-	sounds = default.node_sound_leaves_defaults(),
+	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
 minetest.register_node("mcl_farming:carrot_3", {
@@ -43,7 +43,7 @@ minetest.register_node("mcl_farming:carrot_3", {
 		},
 	},
 	groups = {snappy=3, flammable=2, not_in_creative_inventory=1,dig_by_water=1},
-	sounds = default.node_sound_leaves_defaults(),
+	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
 minetest.register_node("mcl_farming:carrot", {
@@ -61,7 +61,7 @@ minetest.register_node("mcl_farming:carrot", {
 		}
 	},
 	groups = {snappy=3, flammable=2, not_in_creative_inventory=1,dig_by_water=1},
-	sounds = default.node_sound_leaves_defaults(),
+	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
 minetest.register_craftitem("mcl_farming:carrot_item", {
@@ -84,9 +84,9 @@ minetest.register_craftitem("mcl_farming:carrot_item_gold", {
 minetest.register_craft({
 	output = "mcl_farming:carrot_item_gold",
 	recipe = {
-		{'default:gold_nugget', 'default:gold_nugget', 'default:gold_nugget'},
-		{'default:gold_nugget', 'mcl_farming:carrot_item', 'default:gold_nugget'},
-		{'default:gold_nugget', 'default:gold_nugget', 'default:gold_nugget'},
+		{'mcl_core:gold_nugget', 'mcl_core:gold_nugget', 'mcl_core:gold_nugget'},
+		{'mcl_core:gold_nugget', 'mcl_farming:carrot_item', 'mcl_core:gold_nugget'},
+		{'mcl_core:gold_nugget', 'mcl_core:gold_nugget', 'mcl_core:gold_nugget'},
 	}
 })
 

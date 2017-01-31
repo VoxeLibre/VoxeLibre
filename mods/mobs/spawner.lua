@@ -69,7 +69,7 @@ minetest.register_node("mobs:spawner", {
 				S("> name min_light[0-14] max_light[0-14] max_mobs_in_area[0 to disable] distance[1-20] y_offset[-10 to 10]"))
 		end
 	end,
-	sounds = default.node_sound_metal_defaults(),
+	sounds = mcl_core.node_sound_metal_defaults(),
 })
 
 -- spawner abm

@@ -75,9 +75,9 @@ end)
 minetest.register_craft({
 	output = 'mcl_clock:clock',
 	recipe = {
-		{'', 'default:gold_ingot', ''},
-		{'default:gold_ingot', 'mesecons:redstone', 'default:gold_ingot'},
-		{'', 'default:gold_ingot', ''}
+		{'', 'mcl_core:gold_ingot', ''},
+		{'mcl_core:gold_ingot', 'mesecons:redstone', 'mcl_core:gold_ingot'},
+		{'', 'mcl_core:gold_ingot', ''}
 	}
 })
 

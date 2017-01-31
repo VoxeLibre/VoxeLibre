@@ -30,7 +30,7 @@ minetest.register_node("mcl_chests:chest", {
 	stack_max = 64,
 	groups = {choppy=2,oddly_breakable_by_hand=2, deco_block=1},
 	is_ground_content = false,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	on_construct = function(pos)
 		local param2 = minetest.get_node(pos).param2
 		local meta = minetest.get_meta(pos)
@@ -40,7 +40,7 @@ minetest.register_node("mcl_chests:chest", {
 			meta:set_string("formspec",
 					"size[9,11.5]"..
 					"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
-					default.inventory_header..
+					mcl_core.inventory_header..
 					"list[nodemeta:"..p.x..","..p.y..","..p.z..";main;0,0.5;9,3;]"..
 					"list[current_name;main;0,3.5;9,3;]"..
 					"list[current_player;main;0,7.5;9,3;9]"..
@@ -54,7 +54,7 @@ minetest.register_node("mcl_chests:chest", {
 			m:set_string("formspec",
 					"size[9,11.5]"..
 					"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
-					default.inventory_header..
+					mcl_core.inventory_header..
 					"list[current_name;main;0,0.5;9,3;]"..
 					"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3.5;9,3;]"..
 					"list[current_player;main;0,7.5;9,3;9]"..
@@ -69,7 +69,7 @@ minetest.register_node("mcl_chests:chest", {
 			meta:set_string("formspec",
 					"size[9,11.5]"..
 					"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
-					default.inventory_header..
+					mcl_core.inventory_header..
 					"list[current_name;main;0,0.5;9,3;]"..
 					"list[nodemeta:"..p.x..","..p.y..","..p.z..";main;0,3.5;9,3;]"..
 					"list[current_player;main;0,7.5;9,3;9]"..
@@ -83,7 +83,7 @@ minetest.register_node("mcl_chests:chest", {
 			m:set_string("formspec",
 					"size[9,11.5]"..
 					"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
-					default.inventory_header..
+					mcl_core.inventory_header..
 					"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
 					"list[current_name;main;0,3.5;9,3;]"..
 					"list[current_player;main;0,7.5;9,3;9]"..
@@ -96,7 +96,7 @@ minetest.register_node("mcl_chests:chest", {
 			meta:set_string("formspec",
 					"size[9,8.75]"..
 					"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
-					default.inventory_header..
+					mcl_core.inventory_header..
 					"list[current_name;main;0,0.5;9,3;]"..
 					"list[current_player;main;0,4.5;9,3;9]"..
 					"list[current_player;main;0,7.74;9,1;]"..
@@ -141,7 +141,7 @@ minetest.register_node("mcl_chests:chest_left", {
 	groups = {choppy=2,oddly_breakable_by_hand=2,not_in_creative_inventory=1},
 	drop = "mcl_chests:chest",
 	is_ground_content = false,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	on_destruct = function(pos)
 		local n = minetest.get_node(pos)
 		if n.name == "mcl_chests:chest" then
@@ -156,7 +156,7 @@ minetest.register_node("mcl_chests:chest_left", {
 		meta:set_string("formspec",
 				"size[9,8.75]"..
 				"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
-				default.inventory_header..
+				mcl_core.inventory_header..
 				"list[current_name;main;0,0.5;9,3;]"..
 				"list[current_player;main;0,4.5;9,3;9]"..
 				"list[current_player;main;0,7.74;9,1;]"..
@@ -199,7 +199,7 @@ minetest.register_node("mcl_chests:chest_right", {
 	groups = {choppy=2,oddly_breakable_by_hand=2,not_in_creative_inventory=1},
 	drop = "mcl_chests:chest",
 	is_ground_content = false,
-	sounds = default.node_sound_wood_defaults(),
+	sounds = mcl_core.node_sound_wood_defaults(),
 	on_destruct = function(pos)
 		local n = minetest.get_node(pos)
 		if n.name == "mcl_chests:chest" then
@@ -214,7 +214,7 @@ minetest.register_node("mcl_chests:chest_right", {
 		meta:set_string("formspec",
 				"size[9,8.75]"..
 				"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
-				default.inventory_header..
+				mcl_core.inventory_header..
 				"list[current_name;main;0,0.5;9,3;]"..
 				"list[current_player;main;0,4.5;9,3;9]"..
 				"list[current_player;main;0,7.74;9,1;]"..

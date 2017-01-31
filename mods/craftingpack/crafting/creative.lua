@@ -232,10 +232,10 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 				"image[" .. boffset[check] .. ";1,1;crafting_creative_marker.png]"
 		end
 		formspec = "size[10,9.3]"..
-			default.inventory_header..
+			mcl_core.inventory_header..
 			"background[-0.19,-0.25;10.5,9.87;"..inv_bg.."]"..
 			"label[-5,-5;"..name.."]"..
-			"item_image_button[-0.1,0;1,1;default:brick;blocks;]"..	--build blocks
+			"item_image_button[-0.1,0;1,1;mcl_core:brick;blocks;]"..	--build blocks
 			tab(name, "blocks") ..
 			"tooltip[blocks;Building Blocks]"..
 			"item_image_button[1.15,0;1,1;mcl_flowers:peony;deco;]"..	--decoration blocks
@@ -256,19 +256,19 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 			"image[0,1;5,0.75;fnt_"..name..".png]"..
 			"list[current_player;main;0,7;9,1;]"..
 			main_list..
-			"item_image_button[-0.1,8.37;1,1;default:apple;food;]"..	--foodstuff
+			"item_image_button[-0.1,8.37;1,1;mcl_core:apple;food;]"..	--foodstuff
 			tab(name, "food") ..
 			"tooltip[food;Foodstuffs]"..
-			"item_image_button[1.15,8.37;1,1;default:axe_steel;tools;]"..	--tools
+			"item_image_button[1.15,8.37;1,1;mcl_core:axe_steel;tools;]"..	--tools
 			tab(name, "tools") ..
 			"tooltip[tools;Tools]"..
-			"item_image_button[2.415,8.37;1,1;default:sword_gold;combat;]"..	--combat
+			"item_image_button[2.415,8.37;1,1;mcl_core:sword_gold;combat;]"..	--combat
 			tab(name, "combat") ..
 			"tooltip[combat;Combat]"..
 			"item_image_button[3.693,8.37;1,1;mcl_potions:glass_bottle;brew;]"..	--brewing
 			tab(name, "brew") ..
 			"tooltip[brew;Brewing]"..
-			"item_image_button[4.938,8.37;1,1;default:stick;matr;]"..	--materials
+			"item_image_button[4.938,8.37;1,1;mcl_core:stick;matr;]"..	--materials
 			tab(name, "matr") ..
 			"tooltip[matr;Materials]"..
 			"item_image_button[9.19,8.37;1,1;mcl_chests:chest;inv;]"..			--inventory

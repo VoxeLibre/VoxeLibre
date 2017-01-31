@@ -16,7 +16,7 @@ mobs:register_mob("mobs_mc:pigman", {
 	mesh = "3d_armor_character.b3d",
 	textures = {{"Original_Zombiepig_Man_by_Fedora_P.png",
 			"3d_armor_trans.png",
-				minetest.registered_items["default:sword_gold"].inventory_image,
+				minetest.registered_items["mcl_core:sword_gold"].inventory_image,
 			}},
 
 	makes_footstep_sound = true,
@@ -31,15 +31,15 @@ mobs:register_mob("mobs_mc:pigman", {
 		chance = 1,
 		min = 0,
 		max = 1,},
-		{name = "default:gold_nugget",
+		{name = "mcl_core:gold_nugget",
 		chance = 1,
 		min = 0,
 		max = 1,},
-		{name = "default:gold_ingot",
+		{name = "mcl_core:gold_ingot",
 		chance = 40,
 		min = 1,
 		max = 1,},
-		{name = "default:sword_gold",
+		{name = "mcl_core:sword_gold",
 		-- approximation to 8.5%
 		chance = 11,
 		min = 1,
@@ -84,7 +84,7 @@ mobs:register_mob("mobs_mc:pigman", {
 })
 mobs:register_spawn("mobs_mc:pigman", {"nether:rack"},  17, -1, 5000, 3, -2000)
 mobs:register_spawn("mobs_mc:pigman", {"nether:portal"}, 15, -1, 500, 4, 31000)
-mobs:register_spawn("mobs_mc:pigman", {"default:obsidian"}, 17, -1, 1900, 1, 31000)
+mobs:register_spawn("mobs_mc:pigman", {"mcl_core:obsidian"}, 17, -1, 1900, 1, 31000)
 
 
 -- compatibility

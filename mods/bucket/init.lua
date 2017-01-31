@@ -10,8 +10,8 @@ minetest.register_alias("bucket_lava", "bucket:bucket_lava")
 minetest.register_craft({
 	output = 'bucket:bucket_empty 1',
 	recipe = {
-		{'default:steel_ingot', '', 'default:steel_ingot'},
-		{'', 'default:steel_ingot', ''},
+		{'mcl_core:steel_ingot', '', 'mcl_core:steel_ingot'},
+		{'', 'mcl_core:steel_ingot', ''},
 	}
 })
 
@@ -130,16 +130,16 @@ minetest.register_craftitem("bucket:bucket_empty", {
 })
 
 bucket.register_liquid(
-	"default:water_source",
-	"default:water_flowing",
+	"mcl_core:water_source",
+	"mcl_core:water_flowing",
 	"bucket:bucket_water",
 	"bucket_water.png",
 	"Water Bucket"
 )
 
 bucket.register_liquid(
-	"default:lava_source",
-	"default:lava_flowing",
+	"mcl_core:lava_source",
+	"mcl_core:lava_flowing",
 	"bucket:bucket_lava",
 	"bucket_lava.png",
 	"Lava Bucket"

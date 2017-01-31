@@ -1,7 +1,7 @@
 local furnace_inactive_formspec =
 	"size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory_furnace.png]"..
-	default.inventory_header..
+	mcl_core.inventory_header..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
 	"list[current_name;src;2.75,0.5;1,1;]"..
@@ -23,7 +23,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {cracky=2, deco_block=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", furnace_inactive_formspec)
@@ -88,7 +88,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	light_source = 12,
 	drop = "mcl_furnaces:furnace",
 	groups = {cracky=2, not_in_creative_inventory=1},
-	sounds = default.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_stone_defaults(),
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", furnace_inactive_formspec)
@@ -198,7 +198,7 @@ minetest.register_abm({
 			meta:set_string("formspec",
 				"size[9,8.75]"..
 				"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory_furnace.png]"..
-				default.inventory_header..
+				mcl_core.inventory_header..
 				"list[current_player;main;0,4.5;9,3;9]"..
 				"list[current_player;main;0,7.74;9,1;]"..
 				"list[current_name;src;2.75,0.5;1,1;]"..
@@ -252,9 +252,9 @@ minetest.register_abm({
 minetest.register_craft({
 	output = 'mcl_furnaces:furnace',
 	recipe = {
-		{'default:cobble', 'default:cobble', 'default:cobble'},
-		{'default:cobble', '', 'default:cobble'},
-		{'default:cobble', 'default:cobble', 'default:cobble'},
+		{'mcl_core:cobble', 'mcl_core:cobble', 'mcl_core:cobble'},
+		{'mcl_core:cobble', '', 'mcl_core:cobble'},
+		{'mcl_core:cobble', 'mcl_core:cobble', 'mcl_core:cobble'},
 	}
 })
 

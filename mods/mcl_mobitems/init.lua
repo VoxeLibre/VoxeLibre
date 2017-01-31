@@ -261,7 +261,7 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_mobitems:leather",
-	recipe = { "default:paper", "default:paper" },
+	recipe = { "mcl_core:paper", "mcl_core:paper" },
 })
 minetest.register_craft({
 	output = "mcl_mobitems:feather 3",
