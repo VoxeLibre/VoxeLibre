@@ -101,7 +101,7 @@ mobs:register_mob("mobs_mc:skeleton2", {
 		chance = 1,
 		min = 0,
 		max = 2,},
-		{name = "heads:wither_skeleton",
+		{name = "mcl_heads:wither_skeleton",
 		chance = 40,
 		min = 1,
 		max = 1,},

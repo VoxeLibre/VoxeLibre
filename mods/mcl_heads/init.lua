@@ -1,8 +1,8 @@
--- head system
+-- Heads system
 
 local function addhead(node, desc)
-	minetest.register_node("head:"..node, {
-		description = ""..desc,
+	minetest.register_node("mcl_heads:"..node, {
+		description = desc,
     		drawtype = "nodebox",
 		is_ground_content = false,
 		node_box = {
@@ -35,7 +35,7 @@ local function addhead(node, desc)
 	})
 end
 
---head add
+-- Add heads
 addhead("zombie", "Zombie Head")
 addhead("creeper", "Creeper Head")
 addhead("steve", "Head")
