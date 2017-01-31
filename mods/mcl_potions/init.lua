@@ -9,7 +9,7 @@ minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_potions:fermented_spider_eye",
-	recipe = { "farming:mushroom_brown", "default:sugar", "mcl_mobitems:spider_eye" },
+	recipe = { "mcl_farming:mushroom_brown", "default:sugar", "mcl_mobitems:spider_eye" },
 })
 
 minetest.register_craftitem("mcl_potions:glass_bottle", {
@@ -38,7 +38,7 @@ minetest.register_craft({
 	output = "mcl_potions:speckled_melon",
 	recipe = {
 		{'default:gold_nugget', 'default:gold_nugget', 'default:gold_nugget'},
-		{'default:gold_nugget', 'farming:melon_item', 'default:gold_nugget'},
+		{'default:gold_nugget', 'mcl_farming:melon_item', 'default:gold_nugget'},
 		{'default:gold_nugget', 'default:gold_nugget', 'default:gold_nugget'},
 	}
 })

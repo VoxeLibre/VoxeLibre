@@ -1,8 +1,8 @@
-minetest.register_node("farming:carrot_1", {
+minetest.register_node("mcl_farming:carrot_1", {
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
-	drop = "farming:carrot_item",
+	drop = "mcl_farming:carrot_item",
 	tiles = {"farming_carrot_1.png"},
 	selection_box = {
 		type = "fixed",
@@ -14,11 +14,11 @@ minetest.register_node("farming:carrot_1", {
 	sounds = default.node_sound_leaves_defaults(),
 })
 
-minetest.register_node("farming:carrot_2", {
+minetest.register_node("mcl_farming:carrot_2", {
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
-	drop = "farming:carrot_item",
+	drop = "mcl_farming:carrot_item",
 	tiles = {"farming_carrot_2.png"},
 	selection_box = {
 		type = "fixed",
@@ -30,11 +30,11 @@ minetest.register_node("farming:carrot_2", {
 	sounds = default.node_sound_leaves_defaults(),
 })
 
-minetest.register_node("farming:carrot_3", {
+minetest.register_node("mcl_farming:carrot_3", {
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
-	drop = "farming:carrot_item",
+	drop = "mcl_farming:carrot_item",
 	tiles = {"farming_carrot_3.png"},
 	selection_box = {
 		type = "fixed",
@@ -46,7 +46,7 @@ minetest.register_node("farming:carrot_3", {
 	sounds = default.node_sound_leaves_defaults(),
 })
 
-minetest.register_node("farming:carrot", {
+minetest.register_node("mcl_farming:carrot", {
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
@@ -54,27 +54,27 @@ minetest.register_node("farming:carrot", {
 	drop = {
 		max_items = 1,
 		items = {
-			{ items = {'farming:carrot_item 4'}, rarity = 5 },
-			{ items = {'farming:carrot_item 3'}, rarity = 2 },
-			{ items = {'farming:carrot_item 2'}, rarity = 2 },
-			{ items = {'farming:carrot_item 1'} },
+			{ items = {'mcl_farming:carrot_item 4'}, rarity = 5 },
+			{ items = {'mcl_farming:carrot_item 3'}, rarity = 2 },
+			{ items = {'mcl_farming:carrot_item 2'}, rarity = 2 },
+			{ items = {'mcl_farming:carrot_item 1'} },
 		}
 	},
 	groups = {snappy=3, flammable=2, not_in_creative_inventory=1,dig_by_water=1},
 	sounds = default.node_sound_leaves_defaults(),
 })
 
-minetest.register_craftitem("farming:carrot_item", {
+minetest.register_craftitem("mcl_farming:carrot_item", {
 	description = "Carrot",
 	inventory_image = "farming_carrot.png",
 	on_use = minetest.item_eat(3),
 	groups = { food = 2, eatable = 3 },
 	on_place = function(itemstack, placer, pointed_thing)
-		return farming:place_seed(itemstack, placer, pointed_thing, "farming:carrot_1")
+		return mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:carrot_1")
 	end
 })
 
-minetest.register_craftitem("farming:carrot_item_gold", {
+minetest.register_craftitem("mcl_farming:carrot_item_gold", {
 	description = "Golden Carrot",
 	inventory_image = "farming_carrot_gold.png",
 	on_use = minetest.item_eat(3),
@@ -82,12 +82,12 @@ minetest.register_craftitem("farming:carrot_item_gold", {
 })
 
 minetest.register_craft({
-	output = "farming:carrot_item_gold",
+	output = "mcl_farming:carrot_item_gold",
 	recipe = {
 		{'default:gold_nugget', 'default:gold_nugget', 'default:gold_nugget'},
-		{'default:gold_nugget', 'farming:carrot_item', 'default:gold_nugget'},
+		{'default:gold_nugget', 'mcl_farming:carrot_item', 'default:gold_nugget'},
 		{'default:gold_nugget', 'default:gold_nugget', 'default:gold_nugget'},
 	}
 })
 
-farming:add_plant("farming:carrot", {"farming:carrot_1", "farming:carrot_2", "farming:carrot_3"}, 50, 20)
+mcl_farming:add_plant("mcl_farming:carrot", {"mcl_farming:carrot_1", "mcl_farming:carrot_2", "mcl_farming:carrot_3"}, 50, 20)

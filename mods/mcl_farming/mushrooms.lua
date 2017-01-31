@@ -1,4 +1,4 @@
-minetest.register_node("farming:mushroom_brown", {
+minetest.register_node("mcl_farming:mushroom_brown", {
 	description = "Brown Mushroom",
 	drawtype = "plantlike",
 	tiles = { "farming_mushroom_brown.png" },
@@ -16,7 +16,7 @@ minetest.register_node("farming:mushroom_brown", {
 	},
 })
 
-minetest.register_node("farming:mushroom_red", {
+minetest.register_node("mcl_farming:mushroom_red", {
 	description = "Red Mushroom",
 	drawtype = "plantlike",
 	tiles = { "farming_mushroom_red.png" },
@@ -33,7 +33,7 @@ minetest.register_node("farming:mushroom_red", {
 	},
 })
 
-minetest.register_craftitem("farming:mushroom_stew", {
+minetest.register_craftitem("mcl_farming:mushroom_stew", {
 	description = "Mushroom Stew",
 	inventory_image = "farming_mushroom_stew.png",
 	on_use = minetest.item_eat(6, "default:bowl"),
@@ -43,6 +43,6 @@ minetest.register_craftitem("farming:mushroom_stew", {
 
 minetest.register_craft({
 	type = "shapeless",
-	output = "farming:mushroom_stew",
-	recipe = {'default:bowl', 'farming:mushroom_brown', 'farming:mushroom_red'}
+	output = "mcl_farming:mushroom_stew",
+	recipe = {'default:bowl', 'mcl_farming:mushroom_brown', 'mcl_farming:mushroom_red'}
 })

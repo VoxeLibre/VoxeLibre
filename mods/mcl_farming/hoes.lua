@@ -7,7 +7,7 @@ local function create_soil(pos, inv)
 	local above = minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z})
 	if minetest.get_item_group(name, "cultivatable") == 2 then
 		if above.name == "air" then
-			node.name = "farming:soil"
+			node.name = "mcl_farming:soil"
 			minetest.set_node(pos, node)
 			return true
 		end
@@ -21,7 +21,7 @@ local function create_soil(pos, inv)
 	return false
 end
 
-minetest.register_tool("farming:hoe_wood", {
+minetest.register_tool("mcl_farming:hoe_wood", {
 	description = "Wood Hoe",
 	inventory_image = "farming_tool_woodhoe.png",
 	on_place = function(itemstack, user, pointed_thing)
@@ -40,7 +40,7 @@ minetest.register_tool("farming:hoe_wood", {
 })
 
 minetest.register_craft({
-	output = "farming:hoe_wood",
+	output = "mcl_farming:hoe_wood",
 	recipe = {
 		{"group:wood", "group:wood"},
 		{"", "default:stick"},
@@ -48,7 +48,7 @@ minetest.register_craft({
 	}
 })
 minetest.register_craft({
-	output = "farming:hoe_wood",
+	output = "mcl_farming:hoe_wood",
 	recipe = {
 		{"group:wood", "group:wood"},
 		{"default:stick", ""},
@@ -57,11 +57,11 @@ minetest.register_craft({
 })
 minetest.register_craft({
 	type = "fuel",
-	recipe = "farming:hoe_wood",
+	recipe = "mcl_farming:hoe_wood",
 	burntime = 10,
 })
 
-minetest.register_tool("farming:hoe_stone", {
+minetest.register_tool("mcl_farming:hoe_stone", {
 	description = "Stone Hoe",
 	inventory_image = "farming_tool_stonehoe.png",
 	on_place = function(itemstack, user, pointed_thing)
@@ -80,7 +80,7 @@ minetest.register_tool("farming:hoe_stone", {
 })
 
 minetest.register_craft({
-	output = "farming:hoe_stone",
+	output = "mcl_farming:hoe_stone",
 	recipe = {
 		{"default:cobble", "default:cobble"},
 		{"", "default:stick"},
@@ -88,7 +88,7 @@ minetest.register_craft({
 	}
 })
 minetest.register_craft({
-	output = "farming:hoe_stone",
+	output = "mcl_farming:hoe_stone",
 	recipe = {
 		{"default:cobble", "default:cobble"},
 		{"default:stick", ""},
@@ -96,7 +96,7 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_tool("farming:hoe_steel", {
+minetest.register_tool("mcl_farming:hoe_steel", {
 	description = "Iron Hoe",
 	inventory_image = "farming_tool_steelhoe.png",
 	on_place = function(itemstack, user, pointed_thing)
@@ -116,7 +116,7 @@ minetest.register_tool("farming:hoe_steel", {
 })
 
 minetest.register_craft({
-	output = "farming:hoe_steel",
+	output = "mcl_farming:hoe_steel",
 	recipe = {
 		{"default:steel_ingot", "default:steel_ingot"},
 		{"", "default:stick"},
@@ -124,7 +124,7 @@ minetest.register_craft({
 	}
 })
 minetest.register_craft({
-	output = "farming:hoe_steel",
+	output = "mcl_farming:hoe_steel",
 	recipe = {
 		{"default:steel_ingot", "default:steel_ingot"},
 		{"default:stick", ""},
@@ -135,11 +135,11 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "cooking",
 	output = "default:iron_nugget",
-	recipe = "farming:hoe_steel",
+	recipe = "mcl_farming:hoe_steel",
 	cooktime = 10,
 })
 
-minetest.register_tool("farming:hoe_gold", {
+minetest.register_tool("mcl_farming:hoe_gold", {
 	description = "Golden Hoe",
 	inventory_image = "farming_tool_goldhoe.png",
 	on_place = function(itemstack, user, pointed_thing)
@@ -158,7 +158,7 @@ minetest.register_tool("farming:hoe_gold", {
 })
 
 minetest.register_craft({
-	output = "farming:hoe_gold",
+	output = "mcl_farming:hoe_gold",
 	recipe = {
 		{"default:gold_ingot", "default:gold_ingot"},
 		{"", "default:stick"},
@@ -166,7 +166,7 @@ minetest.register_craft({
 	}
 })
 minetest.register_craft({
-	output = "farming:hoe_gold",
+	output = "mcl_farming:hoe_gold",
 	recipe = {
 		{"default:gold_ingot", "default:gold_ingot"},
 		{"default:stick", ""},
@@ -179,11 +179,11 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "cooking",
 	output = "default:gold_nugget",
-	recipe = "farming:hoe_gold",
+	recipe = "mcl_farming:hoe_gold",
 	cooktime = 10,
 })
 
-minetest.register_tool("farming:hoe_diamond", {
+minetest.register_tool("mcl_farming:hoe_diamond", {
 	description = "Diamond Hoe",
 	inventory_image = "farming_tool_diamondhoe.png",
 	on_place = function(itemstack, user, pointed_thing)
@@ -202,7 +202,7 @@ minetest.register_tool("farming:hoe_diamond", {
 })
 
 minetest.register_craft({
-	output = "farming:hoe_diamond",
+	output = "mcl_farming:hoe_diamond",
 	recipe = {
 		{"default:diamond", "default:diamond"},
 		{"", "default:stick"},
@@ -210,7 +210,7 @@ minetest.register_craft({
 	}
 })
 minetest.register_craft({
-	output = "farming:hoe_diamond",
+	output = "mcl_farming:hoe_diamond",
 	recipe = {
 		{"default:diamond", "default:diamond"},
 		{"default:stick", ""},

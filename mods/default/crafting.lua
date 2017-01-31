@@ -453,14 +453,14 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'default:haybale',
 	recipe = {
-		{'farming:wheat_harvested', 'farming:wheat_harvested', 'farming:wheat_harvested'},
-		{'farming:wheat_harvested', 'farming:wheat_harvested', 'farming:wheat_harvested'},
-		{'farming:wheat_harvested', 'farming:wheat_harvested', 'farming:wheat_harvested'},
+		{'mcl_farming:wheat_harvested', 'mcl_farming:wheat_harvested', 'mcl_farming:wheat_harvested'},
+		{'mcl_farming:wheat_harvested', 'mcl_farming:wheat_harvested', 'mcl_farming:wheat_harvested'},
+		{'mcl_farming:wheat_harvested', 'mcl_farming:wheat_harvested', 'mcl_farming:wheat_harvested'},
 	}
 })
 
 minetest.register_craft({
-	output = 'farming:wheat_harvested 9',
+	output = 'mcl_farming:wheat_harvested 9',
 	recipe = {
 		{'default:haybale'},
 	}

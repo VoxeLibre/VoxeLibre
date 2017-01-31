@@ -14,17 +14,19 @@ For further information or help see:
 http://wiki.minetest.com/wiki/Installing_Mods
 
 How to use the mod:
-Craft a bow with the strings from the farming mod:
-     wood string
-wood      string
-     wood string
+Craft a bow with strings:
+	stick	string
+stick		string
+	stick	string
+
 Craft arrows with:
 flint
 stick
 paper
+
 Select the bow and shoot with left mouse click. Every shoot will take 1
 arrow from your inventory and wears out the bow (you have around 385
-shoots).
+shots).
 
 License:
 This mod was originally published by Jeija.

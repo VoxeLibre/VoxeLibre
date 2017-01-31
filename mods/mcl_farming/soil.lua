@@ -1,4 +1,4 @@
-minetest.register_node("farming:soil", {
+minetest.register_node("mcl_farming:soil", {
 	tiles = {"farming_soil.png", "default_dirt.png", "default_dirt.png", "default_dirt.png", "default_dirt.png", "default_dirt.png"},
 	description = "Farmland",
 	drop = "default:dirt",
@@ -15,7 +15,7 @@ minetest.register_node("farming:soil", {
 	sounds = default.node_sound_dirt_defaults(),
 })
 
-minetest.register_node("farming:soil_wet", {
+minetest.register_node("mcl_farming:soil_wet", {
 	tiles = {"farming_soil_wet.png", "default_dirt.png", "default_dirt.png", "default_dirt.png", "default_dirt.png", "default_dirt.png"},
 	description = "Hydrated Farmland",
 	drop = "default:dirt",
@@ -32,12 +32,12 @@ minetest.register_node("farming:soil_wet", {
 })
 
 minetest.register_abm({
-	nodenames = {"farming:soil"},
+	nodenames = {"mcl_farming:soil"},
 	interval = 15,
 	chance = 3,
 	action = function(pos, node)
 		if minetest.find_node_near(pos, 3, {"default:water_source", "default:water_flowing"}) then
-			node.name = "farming:soil_wet"
+			node.name = "mcl_farming:soil_wet"
 			minetest.set_node(pos, node)
 		end
 	end,

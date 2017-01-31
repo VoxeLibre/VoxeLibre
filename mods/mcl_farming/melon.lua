@@ -1,20 +1,43 @@
-minetest.register_craftitem("farming:pumpkin_seed", {
-	description = "Pumpkin Seed",
+minetest.register_node("mcl_farming:melon", {
+	description = "Melon",
+	paramtype2 = "facedir",
 	stack_max = 64,
-	inventory_image = "farming_pumpkin_seed.png",
-	groups = { craftitem=1 },
-	on_place = function(itemstack, placer, pointed_thing)
-		local above = minetest.get_node(pointed_thing.above)
-		if above.name == "air" then
-			above.name = "farming:pumpkin_1"
-			minetest.set_node(pointed_thing.above, above)
-			itemstack:take_item(1)
-			return itemstack
+	tiles = {"farming_melon_top.png", "farming_melon_top.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png"},
+	groups = {choppy=2, oddly_breakable_by_hand=2, building_block=1},
+	drop = {
+		max_items = 1,
+		items = {
+			{ items = {'mcl_farming:melon_item 7'}, rarity = 14 },
+			{ items = {'mcl_farming:melon_item 6'}, rarity = 10 },
+			{ items = {'mcl_farming:melon_item 5'}, rarity = 5 },
+			{ items = {'mcl_farming:melon_item 4'}, rarity = 2 },
+			{ items = {'mcl_farming:melon_item 3'} },
+		}
+	},
+	after_dig_node = function(pos, oldnode, oldmetadata, user)
+		local have_change = 0
+		for x=-1,1 do
+				local p = {x=pos.x+x, y=pos.y, z=pos.z}
+				local n = minetest.get_node(p)
+			if string.find(n.name, "melontige_linked_") and have_change == 0 then
+					have_change = 1
+					minetest.add_node(p, {name="mcl_farming:melontige_unconnect"})
+			end
+		end
+		if have_change == 0 then
+			for z=-1,1 do
+				local p = {x=pos.x, y=pos.y, z=pos.z+z}
+				local n = minetest.get_node(p)
+				if string.find(n.name, "melontige_linked_") and have_change == 0 then
+						have_change = 1
+						minetest.add_node(p, {name="mcl_farming:melontige_unconnect"})
+				end
+			end
 		end
 	end
 })
 
-minetest.register_node("farming:pumpkin_1", {
+minetest.register_node("mcl_farming:melontige_1", {
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
@@ -31,7 +54,7 @@ minetest.register_node("farming:pumpkin_1", {
 	sounds = default.node_sound_leaves_defaults(),
 })
 
-minetest.register_node("farming:pumpkin_2", {
+minetest.register_node("mcl_farming:melontige_2", {
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
@@ -48,38 +71,7 @@ minetest.register_node("farming:pumpkin_2", {
 	sounds = default.node_sound_leaves_defaults(),
 })
 
-
-minetest.register_node("farming:pumpkin_face", {
-	description = "Pumpkin",
-	stack_max = 64,
-	paramtype2 = "facedir",
-	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"},
-	groups = {choppy=2, oddly_breakable_by_hand=2, flammable=2, building_block=1},
-	after_dig_node = function(pos, oldnode, oldmetadata, user)
-		local have_change = 0
-		for x=-1,1 do
-				local p = {x=pos.x+x, y=pos.y, z=pos.z}
-				local n = minetest.get_node(p)
-			if string.find(n.name, "pumpkintige_linked_") and have_change == 0 then
-					have_change = 1
-					minetest.add_node(p, {name="farming:pumpkintige_unconnect"})
-			end
-		end
-		if have_change == 0 then
-			for z=-1,1 do
-				local p = {x=pos.x, y=pos.y, z=pos.z+z}
-				local n = minetest.get_node(p)
-				if string.find(n.name, "pumpkintige_linked_") and have_change == 0 then
-						have_change = 1
-						minetest.add_node(p, {name="farming:pumpkintige_unconnect"})
-				end
-			end
-		end
-	end,
-	sounds = default.node_sound_wood_defaults(),
-})
-
-minetest.register_node("farming:pumpkintige_unconnect", {
+minetest.register_node("mcl_farming:melontige_unconnect", {
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
@@ -90,8 +82,7 @@ minetest.register_node("farming:pumpkintige_unconnect", {
 	sounds = default.node_sound_leaves_defaults(),
 })
 
-
-minetest.register_node("farming:pumpkintige_linked_r", {
+minetest.register_node("mcl_farming:melontige_linked_r", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	walkable = false,
@@ -121,7 +112,7 @@ minetest.register_node("farming:pumpkintige_linked_r", {
 	sounds = default.node_sound_leaves_defaults(),
 })
 
-minetest.register_node("farming:pumpkintige_linked_l", {
+minetest.register_node("mcl_farming:melontige_linked_l", {
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
@@ -151,7 +142,7 @@ minetest.register_node("farming:pumpkintige_linked_l", {
 	sounds = default.node_sound_leaves_defaults(),
 })
 
-minetest.register_node("farming:pumpkintige_linked_t", {
+minetest.register_node("mcl_farming:melontige_linked_t", {
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
@@ -181,7 +172,7 @@ minetest.register_node("farming:pumpkintige_linked_t", {
 	sounds = default.node_sound_leaves_defaults(),
 })
 
-minetest.register_node("farming:pumpkintige_linked_b", {
+minetest.register_node("mcl_farming:melontige_linked_b", {
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
@@ -211,13 +202,28 @@ minetest.register_node("farming:pumpkintige_linked_b", {
 	sounds = default.node_sound_leaves_defaults(),
 })
 
-farming:add_plant("farming:pumpkintige_unconnect", {"farming:pumpkin_1", "farming:pumpkin_2"}, 80, 20)
+minetest.register_craftitem("mcl_farming:melon_seed", {
+	description = "Melon Seeds",
+	stack_max = 64,
+	groups = { craftitem=1 },
+	inventory_image = "farming_melon_seed.png",
+	on_place = function(itemstack, placer, pointed_thing)
+		return mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:melontige_1")
+	end,
+})
 
+minetest.register_craftitem("mcl_farming:melon_item", {
+	description = "Melon",
+	stack_max = 64,
+	inventory_image = "farming_melon.png",
+	on_use = minetest.item_eat(2),
+	groups = { food = 2, eatable = 2 },
+})
 
 minetest.register_abm({
-	nodenames = {"farming:pumpkintige_unconnect"},
+	nodenames = {"mcl_farming:melontige_unconnect"},
 	neighbors = {"air"},
-	interval = 30,
+	interval = 25,
 	chance = 15,
 	action = function(pos)
 	local have_change = 0
@@ -231,13 +237,13 @@ minetest.register_abm({
 				local nod = minetest.get_node(newpos)
 			if n.name=="default:dirt_with_grass" and nod.name=="air" and have_change == 0 
 			or n.name=="default:dirt" and nod.name=="air" and have_change == 0
-			or string.find(n.name, "farming:soil") and nod.name=="air" and have_change == 0 then
+			or string.find(n.name, "mcl_farming:soil") and nod.name=="air" and have_change == 0 then
 					have_change = 1
-					minetest.add_node(newpos, {name="farming:pumpkin_face"})
+					minetest.add_node(newpos, {name="mcl_farming:melon"})
 					if x == 1 then
-						minetest.add_node(pos, {name="farming:pumpkintige_linked_r" })
+						minetest.add_node(pos, {name="mcl_farming:melontige_linked_r" })
 					else
-						minetest.add_node(pos, {name="farming:pumpkintige_linked_l"})
+						minetest.add_node(pos, {name="mcl_farming:melontige_linked_l"})
 					end
 			end
 		end
@@ -249,13 +255,13 @@ minetest.register_abm({
 					local nod2 = minetest.get_node(newpos)
 					if n.name=="default:dirt_with_grass" and nod2.name=="air" and have_change == 0 
 					or n.name=="default:dirt" and nod2.name=="air" and have_change == 0 
-					or string.find(n.name, "farming:soil") and nod2.name=="air" and have_change == 0 then
+					or string.find(n.name, "mcl_farming:soil") and nod2.name=="air" and have_change == 0 then
 						have_change = 1
-						minetest.add_node(newpos, {name="farming:pumpkin_face"})
+						minetest.add_node(newpos, {name="mcl_farming:melon"})
 					if z == 1 then
-						minetest.add_node(pos, {name="farming:pumpkintige_linked_t" })
+						minetest.add_node(pos, {name="mcl_farming:melontige_linked_t" })
 					else
-						minetest.add_node(pos, {name="farming:pumpkintige_linked_b" })
+						minetest.add_node(pos, {name="mcl_farming:melontige_linked_b" })
 					end
 					end
 			end
@@ -264,27 +270,21 @@ minetest.register_abm({
 	end,
 })
 
-
-
-minetest.register_node("farming:pumpkin_face_light", {
-	description = "Jack o'Lantern",
-	stack_max = 64,
-	paramtype2 = "facedir",
-	light_source = 14,
-	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face_light.png"},
-	groups = {choppy=2, oddly_breakable_by_hand=2, flammable=2, building_block=1},
-	sounds = default.node_sound_wood_defaults(),
-})
-
-minetest.register_craft({
-	output = "farming:pumpkin_face_light",
-	recipe = {{"farming:pumpkin_face"},
-	{"default:torch"}}
-})
+mcl_farming:add_plant("mcl_farming:melontige_unconnect", {"mcl_farming:melontige_1", "mcl_farming:melontige_2"}, 50, 20)
 
 minetest.register_craft({
 	type = "shapeless",
-	output = "farming:pumpkin_seed 4",
-	recipe = {"farming:pumpkin_face"}
+	output = "mcl_farming:melon_seed",
+	recipe = {"mcl_farming:melon_item"}
 })
+
+minetest.register_craft({
+	output = 'mcl_farming:melon',
+	recipe = {
+		{'mcl_farming:melon_item', 'mcl_farming:melon_item', 'mcl_farming:melon_item'},
+		{'mcl_farming:melon_item', 'mcl_farming:melon_item', 'mcl_farming:melon_item'},
+		{'mcl_farming:melon_item', 'mcl_farming:melon_item', 'mcl_farming:melon_item'},
+	}
+})
+
 

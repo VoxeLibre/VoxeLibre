@@ -463,46 +463,46 @@ function default.duengen(pointed_thing)
 		minetest.add_node(pos, {name="air"})
 		generate_tree(pos, "default:tree", "default:leaves", 1)
 		return true
-	elseif string.find(n.name, "farming:wheat_") ~= nil then
+	elseif string.find(n.name, "mcl_farming:wheat_") ~= nil then
 		stage = string.sub(n.name, 15)
 		if stage == "3" then
-			minetest.add_node(pos, {name="farming:wheat"})
+			minetest.add_node(pos, {name="mcl_farming:wheat"})
 		elseif math.random(1,5) < 3 then
-			minetest.add_node(pos, {name="farming:wheat"})
+			minetest.add_node(pos, {name="mcl_farming:wheat"})
 		else
-			minetest.add_node(pos, {name="farming:wheat_"..math.random(2,3)})
+			minetest.add_node(pos, {name="mcl_farming:wheat_"..math.random(2,3)})
 		end
 		return true
-	elseif string.find(n.name, "farming:potato_") ~= nil then
+	elseif string.find(n.name, "mcl_farming:potato_") ~= nil then
 		stage = tonumber(string.sub(n.name, 16))
 		if stage == 1 then
-			minetest.add_node(pos, {name="farming:potato_"..math.random(stage,2)})
+			minetest.add_node(pos, {name="mcl_farming:potato_"..math.random(stage,2)})
 		else
-			minetest.add_node(pos, {name="farming:potato"})
+			minetest.add_node(pos, {name="mcl_farming:potato"})
 		end
 		return true
-	elseif string.find(n.name, "farming:carrot_") ~= nil then
+	elseif string.find(n.name, "mcl_farming:carrot_") ~= nil then
 		stage = tonumber(string.sub(n.name, 16))
 		if stage == 1 then
-			minetest.add_node(pos, {name="farming:carrot_"..math.random(stage,2)})
+			minetest.add_node(pos, {name="mcl_farming:carrot_"..math.random(stage,2)})
 		else
-			minetest.add_node(pos, {name="farming:carrot"})
+			minetest.add_node(pos, {name="mcl_farming:carrot"})
 		end
 		return true
-	elseif string.find(n.name, "farming:pumpkin_") ~= nil then
+	elseif string.find(n.name, "mcl_farming:pumpkin_") ~= nil then
 		stage = tonumber(string.sub(n.name, 17))
 		if stage == 1 then
-			minetest.add_node(pos, {name="farming:pumpkin_"..math.random(stage,2)})
+			minetest.add_node(pos, {name="mcl_farming:pumpkin_"..math.random(stage,2)})
 		else
-			minetest.add_node(pos, {name="farming:pumpkintige_unconnect"})
+			minetest.add_node(pos, {name="mcl_farming:pumpkintige_unconnect"})
 		end
 		return true
-	elseif string.find(n.name, "farming:melontige_") ~= nil then
+	elseif string.find(n.name, "mcl_farming:melontige_") ~= nil then
 		stage = tonumber(string.sub(n.name, 18))
 		if stage == 1 then
-			minetest.add_node(pos, {name="farming:melontige_"..math.random(stage,2)})
+			minetest.add_node(pos, {name="mcl_farming:melontige_"..math.random(stage,2)})
 		else
-			minetest.add_node(pos, {name="farming:melontige_unconnect"})
+			minetest.add_node(pos, {name="mcl_farming:melontige_unconnect"})
 		end
 		return true
 	elseif n.name ~= ""  and n.name == "default:junglesapling" then
