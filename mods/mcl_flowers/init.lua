@@ -337,7 +337,7 @@ minetest.register_node("mcl_flowers:waterlily", {
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",
-	tiles = {"flowers_waterlily.png", "flowers_waterlily.png"},
+	tiles = {"flowers_waterlily.png", "flowers_waterlily.png^[transformFY"},
 	inventory_image = "flowers_waterlily.png",
 	wield_image = "flowers_waterlily.png",
 	liquids_pointable = true,
