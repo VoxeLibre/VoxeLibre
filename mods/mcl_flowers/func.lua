@@ -1,4 +1,4 @@
-minetest.register_entity("flowers:item",{
+minetest.register_entity("mcl_flowers:item",{
 	hp_max = 1,
 	visual="wielditem",
 	visual_size={x=.25,y=.25},
@@ -44,12 +44,12 @@ facedir[3] = {x=-1,y=0,z=0}
 
 local flower_pot_remove_item = function(pos, node)
 	local objs = nil
-	if node and node.name == "flowers:pot" then
+	if node and node.name == "mcl_flowers:pot" then
 		objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, .5)
 	end
 	if objs then
 		for _, obj in ipairs(objs) do
-			if obj and obj:get_luaentity() and obj:get_luaentity().name == "flowers:item" then
+			if obj and obj:get_luaentity() and obj:get_luaentity().name == "mcl_flowers:item" then
 				obj:remove()
 			end
 		end
@@ -60,19 +60,19 @@ flower_pot_update_item = function(pos, node)
 	flower_pot_remove_item(pos, node)
 	local meta = minetest.get_meta(pos)
 	if meta and meta:get_string("item") ~= "" then
-		if node.name == "flowers:pot" then
+		if node.name == "mcl_flowers:pot" then
 			pos.y = pos.y
 		end
 		flower_tmp.nodename = node.name
 		flower_tmp.texture = ItemStack(meta:get_string("item")):get_name()
-		local e = minetest.add_entity(pos,"flowers:item")
+		local e = minetest.add_entity(pos,"mcl_flowers:item")
 	end
 end
 
 flower_pot_drop_item = function(pos, node)
 	local meta = minetest.get_meta(pos)
 	if meta:get_string("item") ~= "" then
-		if node.name == "flowers:pot" then
+		if node.name == "mcl_flowers:pot" then
 			minetest.add_item({x=pos.x,y=pos.y+1,z=pos.z}, meta:get_string("item"))
 		end
 		meta:set_string("item","")

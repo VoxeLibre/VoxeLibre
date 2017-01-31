@@ -1,20 +1,20 @@
-minetest.register_alias("mapgen_dandelion", "flowers:dandelion_yellow")
-minetest.register_alias("mapgen_rose", "flowers:rose")
+minetest.register_alias("mapgen_dandelion", "mcl_flowers:dandelion_yellow")
+minetest.register_alias("mapgen_rose", "mcl_flowers:rose")
 
-minetest.register_alias("mapgen_oxeye_daisy", "flowers:oxeye_daisy")
+minetest.register_alias("mapgen_oxeye_daisy", "mcl_flowers:oxeye_daisy")
 
-minetest.register_alias("mapgen_tulip_orange", "flowers:tulip_orange")
-minetest.register_alias("mapgen_tulip_pink", "flowers:tulip_pink")
-minetest.register_alias("mapgen_tulip_red", "flowers:tulip_red")
-minetest.register_alias("mapgen_tulip_white", "flowers:tulip_white")
+minetest.register_alias("mapgen_tulip_orange", "mcl_flowers:tulip_orange")
+minetest.register_alias("mapgen_tulip_pink", "mcl_flowers:tulip_pink")
+minetest.register_alias("mapgen_tulip_red", "mcl_flowers:tulip_red")
+minetest.register_alias("mapgen_tulip_white", "mcl_flowers:tulip_white")
 
-minetest.register_alias("mapgen_allium", "flowers:allium")
+minetest.register_alias("mapgen_allium", "mcl_flowers:allium")
 
-minetest.register_alias("mapgen_paeonia", "flowers:paeonia")
+minetest.register_alias("mapgen_paeonia", "mcl_flowers:paeonia")
 
-minetest.register_alias("mapgen_houstonia", "flowers:houstonia")
+minetest.register_alias("mapgen_houstonia", "mcl_flowers:houstonia")
 
-minetest.register_alias("mapgen_blue_orchid", "flowers:blue_orchid")
+minetest.register_alias("mapgen_blue_orchid", "mcl_flowers:blue_orchid")
 
 minetest.register_on_generated(function(minp, maxp, seed)
 	if maxp.y >= 3 and minp.y <= 0 then
@@ -57,40 +57,40 @@ minetest.register_on_generated(function(minp, maxp, seed)
 							local flower_choice = math.random(0, 11)
 							local flower = "default:grass"
 							if flower_choice == 1 then
-								flower = "flowers:dandelion_yellow"
+								flower = "mcl_flowers:dandelion_yellow"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 2 then
-								flower = "flowers:rose"
+								flower = "mcl_flowers:rose"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 3 then
-								flower = "flowers:oxeye_daisy"
+								flower = "mcl_flowers:oxeye_daisy"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 4 then
-								flower = "flowers:tulip_orange"
+								flower = "mcl_flowers:tulip_orange"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 5 then
-								flower = "flowers:tulip_pink"
+								flower = "mcl_flowers:tulip_pink"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 6 then
-								flower = "flowers:tulip_red"
+								flower = "mcl_flowers:tulip_red"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 7 then
-								flower = "flowers:tulip_white"
+								flower = "mcl_flowers:tulip_white"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 8 then
-								flower = "flowers:allium"
+								flower = "mcl_flowers:allium"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 9 then
-								flower = "flowers:paeonia"
+								flower = "mcl_flowers:paeonia"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 10 then
-								flower = "flowers:houstonia"
+								flower = "mcl_flowers:houstonia"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 11 then
-								flower = "flowers:blue_orchid"
+								flower = "mcl_flowers:blue_orchid"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 12 then
-								flower = "flowers:fern"
+								flower = "mcl_flowers:fern"
 								minetest.set_node(p, {name=flower})
 							else
 								flower = "default:grass"

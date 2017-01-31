@@ -238,7 +238,7 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 			"item_image_button[-0.1,0;1,1;default:brick;blocks;]"..	--build blocks
 			tab(name, "blocks") ..
 			"tooltip[blocks;Building Blocks]"..
-			"item_image_button[1.15,0;1,1;flowers:peony;deco;]"..	--decoration blocks
+			"item_image_button[1.15,0;1,1;mcl_flowers:peony;deco;]"..	--decoration blocks
 			tab(name, "deco") ..
 			"tooltip[deco;Decoration Blocks]"..
 			"item_image_button[2.415,0;1,1;mesecons:redstone;redstone;]"..	--redstone

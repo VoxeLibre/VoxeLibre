@@ -177,59 +177,59 @@ minetest.register_craft({
 -- Dye creation
 minetest.register_craft({
 	output = "mcl_dye:yellow",
-	recipe = {{"flowers:dandelion_yellow"}},
+	recipe = {{"mcl_flowers:dandelion_yellow"}},
 })
 minetest.register_craft({
 	output = "mcl_dye:yellow 2",
-	recipe = {{"flowers:sunflower"}},
+	recipe = {{"mcl_flowers:sunflower"}},
 })
 minetest.register_craft({
 	output = "mcl_dye:lightblue",
-	recipe = {{"flowers:blue_orchid"}},
+	recipe = {{"mcl_flowers:blue_orchid"}},
 })
 minetest.register_craft({
 	output = "mcl_dye:grey",
-	recipe = {{"flowers:azure_bluet"}},
+	recipe = {{"mcl_flowers:azure_bluet"}},
 })
 minetest.register_craft({
 	output = "mcl_dye:grey",
-	recipe = {{"flowers:oxeye_daisy"}},
+	recipe = {{"mcl_flowers:oxeye_daisy"}},
 })
 minetest.register_craft({
 	output = "mcl_dye:grey",
-	recipe = {{"flowers:tulip_white"}},
+	recipe = {{"mcl_flowers:tulip_white"}},
 })
 minetest.register_craft({
 	output = "mcl_dye:magenta",
-	recipe = {{"flowers:allium"}},
+	recipe = {{"mcl_flowers:allium"}},
 })
 minetest.register_craft({
 	output = "mcl_dye:magenta 2",
-	recipe = {{"flowers:lilac"}},
+	recipe = {{"mcl_flowers:lilac"}},
 })
 minetest.register_craft({
 	output = "mcl_dye:orange",
-	recipe = {{"flowers:tulip_orange"}},
+	recipe = {{"mcl_flowers:tulip_orange"}},
 })
 minetest.register_craft({
 	output = "mcl_dye:pink",
-	recipe = {{"flowers:tulip_pink"}},
+	recipe = {{"mcl_flowers:tulip_pink"}},
 })
 minetest.register_craft({
 	output = "mcl_dye:pink 2",
-	recipe = {{"flowers:peony"}},
+	recipe = {{"mcl_flowers:peony"}},
 })
 minetest.register_craft({
 	output = "mcl_dye:red",
-	recipe = {{"flowers:poppy"}},
+	recipe = {{"mcl_flowers:poppy"}},
 })
 minetest.register_craft({
 	output = "mcl_dye:red",
-	recipe = {{"flowers:tulip_red"}},
+	recipe = {{"mcl_flowers:tulip_red"}},
 })
 minetest.register_craft({
 	output = "mcl_dye:red 2",
-	recipe = {{"flowers:rose_bush"}},
+	recipe = {{"mcl_flowers:rose_bush"}},
 })
 minetest.register_craft({
 	type = "cooking",

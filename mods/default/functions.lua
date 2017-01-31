@@ -437,19 +437,19 @@ minetest.after(0.5, function()
 	plant_tab[4] = "default:grass"
 	plant_tab[5] = "default:grass"
 
-if minetest.get_modpath("flowers") ~= nil then
+if minetest.get_modpath("mcl_flowers") ~= nil then
 	rnd_max = 16
-	plant_tab[6] = "flowers:dandelion_yellow"
-	plant_tab[7] = "flowers:rose"
-	plant_tab[8] = "flowers:oxeye_daisy"
-	plant_tab[9] = "flowers:tulip_orange"
-	plant_tab[10] = "flowers:tulip_red"
-	plant_tab[11] = "flowers:tulip_white"
-	plant_tab[12] = "flowers:tulip_pink"
-	plant_tab[13] = "flowers:allium"
-	plant_tab[14] = "flowers:paeonia"
-	plant_tab[15] = "flowers:houstonia"
-	plant_tab[16] = "flowers:blue_orchid"
+	plant_tab[6] = "mcl_flowers:dandelion_yellow"
+	plant_tab[7] = "mcl_flowers:rose"
+	plant_tab[8] = "mcl_flowers:oxeye_daisy"
+	plant_tab[9] = "mcl_flowers:tulip_orange"
+	plant_tab[10] = "mcl_flowers:tulip_red"
+	plant_tab[11] = "mcl_flowers:tulip_white"
+	plant_tab[12] = "mcl_flowers:tulip_pink"
+	plant_tab[13] = "mcl_flowers:allium"
+	plant_tab[14] = "mcl_flowers:paeonia"
+	plant_tab[15] = "mcl_flowers:houstonia"
+	plant_tab[16] = "mcl_flowers:blue_orchid"
 end
 
 end)

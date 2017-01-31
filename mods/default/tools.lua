@@ -415,7 +415,7 @@ minetest.register_tool("default:pole", {
 					elseif r == 5 then
 						itemname = "mcl_mobitems:saddle"
 					elseif r == 6 then
-						itemname = "flowers:waterlily"
+						itemname = "mcl_flowers:waterlily"
 					end
 				end
 				local inv = user:get_inventory()

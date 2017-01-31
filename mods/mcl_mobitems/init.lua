@@ -266,8 +266,8 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_mobitems:feather 3",
 	recipe = {
-		{ "flowers:oxeye_daisy" },
-		{ "flowers:oxeye_daisy" },
+		{ "mcl_flowers:oxeye_daisy" },
+		{ "mcl_flowers:oxeye_daisy" },
 	}
 })
 

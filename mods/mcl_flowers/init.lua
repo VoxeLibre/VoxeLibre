@@ -5,8 +5,8 @@ flower_tmp={}
 
 
 -- Map Generation
-dofile(minetest.get_modpath("flowers").."/mapgen.lua")
-dofile(minetest.get_modpath("flowers").."/func.lua")
+dofile(minetest.get_modpath("mcl_flowers").."/mapgen.lua")
+dofile(minetest.get_modpath("mcl_flowers").."/func.lua")
 
 
 
@@ -16,7 +16,7 @@ dofile(minetest.get_modpath("flowers").."/func.lua")
 
 
 local function add_simple_flower(name, desc, image, color)
-	minetest.register_node("flowers:"..name.."", {
+	minetest.register_node("mcl_flowers:"..name.."", {
 		description = desc,
 		drawtype = "plantlike",
 		tiles = { image..".png" },
@@ -36,17 +36,17 @@ local function add_simple_flower(name, desc, image, color)
 	})
 end
 
-add_simple_flower("poppy", "Poppy", "flowers_coqlicot", "color_red")
+add_simple_flower("poppy", "Poppy", "mcl_flowers_poppy", "color_red")
 add_simple_flower("dandelion", "Dandelion", "flowers_dandelion_yellow", "color_yellow")
-add_simple_flower("oxeye_daisy", "Oxeye Daisy", "flower_oxeye_daisy", "color_yellow")
-add_simple_flower("tulip_orange", "Orange Tulip", "flower_tulip_orange", "color_orange")
+add_simple_flower("oxeye_daisy", "Oxeye Daisy", "mcl_flowers_oxeye_daisy", "color_yellow")
+add_simple_flower("tulip_orange", "Orange Tulip", "flowers_tulip", "color_orange")
 
-minetest.register_node("flowers:tulip_pink", {
+minetest.register_node("mcl_flowers:tulip_pink", {
 	description = "Pink Tulip",
 	drawtype = "plantlike",
-	tiles = { "flower_tulip_pink.png" },
-	inventory_image = "flower_tulip_pink.png",
-	wield_image = "flower_tulip_pink.png",
+	tiles = { "mcl_flowers_tulip_pink.png" },
+	inventory_image = "mcl_flowers_tulip_pink.png",
+	wield_image = "mcl_flowers_tulip_pink.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -60,12 +60,12 @@ minetest.register_node("flowers:tulip_pink", {
 	},
 })
 
-minetest.register_node("flowers:tulip_red", {
+minetest.register_node("mcl_flowers:tulip_red", {
 	description = "Red Tulip",
 	drawtype = "plantlike",
-	tiles = { "flower_tulip_red.png" },
-	inventory_image = "flower_tulip_red.png",
-	wield_image = "flower_tulip_red.png",
+	tiles = { "mcl_flowers_tulip_red.png" },
+	inventory_image = "mcl_flowers_tulip_red.png",
+	wield_image = "mcl_flowers_tulip_red.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -80,12 +80,12 @@ minetest.register_node("flowers:tulip_red", {
 })
 
 
-minetest.register_node("flowers:tulip_white", {
+minetest.register_node("mcl_flowers:tulip_white", {
 	description = "White Tulip",
 	drawtype = "plantlike",
-	tiles = { "flower_tulip_white.png" },
-	inventory_image = "flower_tulip_white.png",
-	wield_image = "flower_tulip_white.png",
+	tiles = { "mcl_flowers_tulip_white.png" },
+	inventory_image = "mcl_flowers_tulip_white.png",
+	wield_image = "mcl_flowers_tulip_white.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -102,12 +102,12 @@ minetest.register_node("flowers:tulip_white", {
 
 --- allium ---
 
-minetest.register_node("flowers:allium", {
+minetest.register_node("mcl_flowers:allium", {
 	description = "Allium",
 	drawtype = "plantlike",
-	tiles = { "flower_allium.png" },
-	inventory_image = "flower_allium.png",
-	wield_image = "flower_allium.png",
+	tiles = { "mcl_flowers_allium.png" },
+	inventory_image = "mcl_flowers_allium.png",
+	wield_image = "mcl_flowers_allium.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -123,12 +123,12 @@ minetest.register_node("flowers:allium", {
 
 --- peony ---
 
-minetest.register_node("flowers:peony", {
+minetest.register_node("mcl_flowers:peony", {
 	description = "Peony",
 	drawtype = "plantlike",
-	tiles = { "flower_peony.png" },
-	inventory_image = "flower_peony.png",
-	wield_image = "flower_peony.png",
+	tiles = { "mcl_flowers_peony.png" },
+	inventory_image = "mcl_flowers_peony.png",
+	wield_image = "mcl_flowers_peony.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -145,12 +145,12 @@ minetest.register_node("flowers:peony", {
 
 --- azure bluet ---
 
-minetest.register_node("flowers:azure_bluet", {
+minetest.register_node("mcl_flowers:azure_bluet", {
 	description = "Azure Bluet",
 	drawtype = "plantlike",
-	tiles = { "flower_azure_bluet.png" },
-	inventory_image = "flower_azure_bluet.png",
-	wield_image = "flower_azure_bluet.png",
+	tiles = { "mcl_flowers_azure_bluet.png" },
+	inventory_image = "mcl_flowers_azure_bluet.png",
+	wield_image = "mcl_flowers_azure_bluet.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -166,12 +166,12 @@ minetest.register_node("flowers:azure_bluet", {
 
 ---blue_orchid ---
 
-minetest.register_node("flowers:blue_orchid", {
+minetest.register_node("mcl_flowers:blue_orchid", {
 	description = "Blue Orchid",
 	drawtype = "plantlike",
-	tiles = { "flower_blue_orchid.png" },
-	inventory_image = "flower_blue_orchid.png",
-	wield_image = "flower_blue_orchid.png",
+	tiles = { "mcl_flowers_blue_orchid.png" },
+	inventory_image = "mcl_flowers_blue_orchid.png",
+	wield_image = "mcl_flowers_blue_orchid.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -187,12 +187,12 @@ minetest.register_node("flowers:blue_orchid", {
 
 --- Fern ---
 
-minetest.register_node("flowers:fern", {
+minetest.register_node("mcl_flowers:fern", {
 	description = "Fern",
 	drawtype = "plantlike",
-	tiles = { "fern.png" },
-	inventory_image = "fern.png",
-	wield_image = "fern.png",
+	tiles = { "mcl_flowers_fern.png" },
+	inventory_image = "mcl_flowers_fern.png",
+	wield_image = "mcl_flowers_fern.png",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -216,7 +216,7 @@ minetest.register_node("flowers:fern", {
 })
 
 function register_large(name, desc, inv_img, bot_img, colr) --change in function
-    minetest.register_node("flowers:"..name.."_bottom", {
+    minetest.register_node("mcl_flowers:"..name.."_bottom", {
         description = desc.." Bottom",
         drawtype = "plantlike",
         tiles = { "double_plant_"..name.."_bottom.png" },
@@ -233,19 +233,19 @@ function register_large(name, desc, inv_img, bot_img, colr) --change in function
             if minetest.get_item_group(name, "soil") ~= 0 then
                 pointed_thing.under = pointed_thing.under+1
                 local height = 0
-                while minetest.get_node(pointed_thing.under).name == "flowers:"..name.."_bottom" and height < 2 do
+                while minetest.get_node(pointed_thing.under).name == "mcl_flowers:"..name.."_bottom" and height < 2 do
                     height = height+1
                     pointed_thing.under = pointed_thing.under+1
                 end
                 if height <2 then
                     if minetest.get_node(pointed_thing.under).name == "air" then
-                        minetest.set_node(pointed_thing.under, {name="flowers:"..name.."_top"})
+                        minetest.set_node(pointed_thing.under, {name="mcl_flowers:"..name.."_top"})
                     end
                 end
             end
         end,
         ]]
-        drop = "flowers:"..name,
+        drop = "mcl_flowers:"..name,
         groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,colr=1, dig_by_water=1, double_bottom =1,deco_block=1,deco_block=1},
         sounds = default.node_sound_leaves_defaults(),
         selection_box = {
@@ -255,7 +255,7 @@ function register_large(name, desc, inv_img, bot_img, colr) --change in function
     })
 
     -- Top
-    minetest.register_node("flowers:"..name.."_top", {
+    minetest.register_node("mcl_flowers:"..name.."_top", {
         description = desc.." Top",
         drawtype = "plantlike",
         tiles = { "double_plant_"..name.."_top.png" },
@@ -265,7 +265,7 @@ function register_large(name, desc, inv_img, bot_img, colr) --change in function
         paramtype = "light",
         walkable = false,
         buildable_to = true,
-        drop = "flowers:"..name,
+        drop = "mcl_flowers:"..name,
         groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,colr=1, dig_by_water=1, not_in_creative_inventory = 1, double_top =1},
         sounds = default.node_sound_leaves_defaults(),
         selection_box = {
@@ -280,7 +280,7 @@ end
 -- Flower Pot
 --
 
-minetest.register_node("flowers:pot",{
+minetest.register_node("mcl_flowers:pot",{
 	description = "Flower Pot",
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -327,12 +327,12 @@ minetest.register_node("flowers:pot",{
 		local node = minetest.get_node(pos)
 		flower_pot_drop_item(pos,node)
 		minetest.add_node(pos, {name="air"})
-		minetest.add_item(pos, "flowers:pot")
+		minetest.add_item(pos, "mcl_flowers:pot")
 	end,
 })
 
 -- Lily Pad
-minetest.register_node("flowers:waterlily", {
+minetest.register_node("mcl_flowers:waterlily", {
 	description = "Lily Pad",
 	drawtype = "nodebox",
 	paramtype = "light",
@@ -371,7 +371,7 @@ minetest.register_node("flowers:waterlily", {
 					(minetest.get_item_group(node, "frosted_ice") > 0)) and
 					(def_above.buildable_to and minetest.get_item_group(node_above, "liquid") == 0) then
 				if not minetest.is_protected(pos, player_name) then
-					minetest.set_node(pos, {name = "flowers:waterlily",
+					minetest.set_node(pos, {name = "mcl_flowers:waterlily",
 						param2 = math.random(0, 3)})
 					if not minetest.setting_getbool("creative_mode") then
 						itemstack:take_item()
@@ -389,8 +389,3 @@ minetest.register_node("flowers:waterlily", {
 
 local time_to_load= os.clock() - init
 print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
-
-minetest.register_alias("flowers:houstonia", "flowers:azure_bluet")
-minetest.register_alias("flowers:paeonia", "flowers:peony")
-minetest.register_alias("flowers:rose", "flowers:poppy")
-minetest.register_alias("flowers:dandelion_yellow", "flowers:dandelion")
