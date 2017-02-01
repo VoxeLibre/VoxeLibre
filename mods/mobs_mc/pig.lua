@@ -101,7 +101,7 @@ mobs:register_mob("mobs_mc:pig", {
 		----[[
 			-- ridable pigs
 		if self.name == "mobs_mc:pig" and self.saddle == "yes" and self.driver then
-			local item = self.driver:get_wielded_item()
+			local item = clicker:get_wielded_item()
 			if item:get_name() == "mcl_mobitems:carrot_on_a_stick" then
 				local yaw = self.driver:get_look_yaw() - math.pi / 2
 				local velo = self.object:getvelocity()
@@ -112,12 +112,13 @@ mobs:register_mob("mobs_mc:pig", {
 				self.object:setvelocity({x = -math.sin(yaw) * v, y = velo.y, z = math.cos(yaw) * v})
 
 				local inv = self.driver:get_inventory()
-				local stack = inv:get_stack("main", self.driver:get_wield_index())
-				stack:add_wear(100)
-				if stack:get_wear() > 65400 then
-					stack = {name = "mcl_fishing:fishing_rod", count = 1}
+				-- 26 uses
+				if item:get_wear() > 63000 then
+					item = {name = "mcl_fishing:fishing_rod", count = 1}
+				else
+					item:add_wear(2521)
 				end
-				inv:set_stack("main", self.driver:get_wield_index(), stack)
+				inv:set_stack("main", self.driver:get_wield_index(), item)
 				return
 			end
 			end
