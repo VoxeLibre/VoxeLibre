@@ -1676,6 +1676,6 @@ minetest.register_node("mcl_core:cobweb", {
        liquid_range = 0,
        walkable = false,
        groups = {snappy=1,liquid=3,deco_block=1},
-       drop = "mcl_core:string",
+       drop = "mcl_mobitems:string",
 })
 

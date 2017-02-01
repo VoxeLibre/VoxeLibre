@@ -149,7 +149,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_dye:bone_block",
+	output = "mcl_core:bone_block",
 	recipe = {
 		{ "mcl_dye:white", "mcl_dye:white", "mcl_dye:white" },
 		{ "mcl_dye:white", "mcl_dye:white", "mcl_dye:white" },
@@ -1008,13 +1008,4 @@ minetest.register_craft({
 	type = "fuel",
 	recipe = "mcl_core:stick",
 	burntime = 5,
-})
-
---
---Temporary
--- TODO: Remove when string is ready
-minetest.register_craft({
-	output = "mcl_core:string",
-	recipe = {{"mcl_core:paper",},
-	{"mcl_core:paper"}},
 })

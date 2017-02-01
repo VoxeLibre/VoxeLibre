@@ -111,13 +111,6 @@ minetest.register_craftitem("mcl_core:gunpowder", {
 	groups = { craftitem=1 },
 })
 
-minetest.register_craftitem("mcl_core:bone", {
-	description = "Bone",
-	inventory_image = "default_bone.png",
-	stack_max = 64,
-	groups = { craftitem=1 },
-})
-
 minetest.register_craftitem("mcl_core:glowstone_dust", {
 	description = "Glowstone Dust",
 	inventory_image = "default_glowstone_dust.png",
@@ -128,13 +121,6 @@ minetest.register_craftitem("mcl_core:glowstone_dust", {
 minetest.register_craftitem("mcl_core:sugar", {
 	description = "Sugar",
 	inventory_image = "default_sugar.png",
-	stack_max = 64,
-	groups = { craftitem = 1 },
-})
-
-minetest.register_craftitem("mcl_core:string",{
-	description = "String",
-	inventory_image = "default_string.png",
 	stack_max = 64,
 	groups = { craftitem = 1 },
 })

@@ -243,5 +243,5 @@ minetest.register_craft({
 })
 minetest.register_craft({
 	output = "mcl_dye:white 3",
-	recipe = {{"mcl_core:bone"}},
+	recipe = {{"mcl_mobitems:bone"}},
 })

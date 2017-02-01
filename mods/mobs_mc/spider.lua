@@ -40,7 +40,7 @@ mobs:register_mob("mobs_mc:spider", {
 	replace_offset = -1,
 	peaceful = false,
     drops = {
-		{name = "mcl_core:string",
+		{name = "mcl_mobitems:string",
 		chance = 1, min = 0, max = 2,},
 		{name = "mcl_mobitems:spider_eye",
 		chance = 3, min = 1, max = 1,},

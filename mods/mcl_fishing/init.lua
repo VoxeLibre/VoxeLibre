@@ -43,18 +43,18 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 					elseif r <= 47 then
 						itemname = "mcl_core:stick"
 					elseif r <= 52 then
-						itemname = "mcl_core:string"
+						itemname = "mcl_mobitems:string"
 					elseif r <= 62 then
 						itemname = "mcl_potions:glass_bottle"
 						--TODO itemname = "mcl_potions:bottle_water"
 					elseif r <= 72 then
-						itemname = "mcl_core:bone"
+						itemname = "mcl_mobitems:bone"
 					elseif r <= 73 then
 						itemname = "mcl_dye:black"
 						itemcount = 10
 					else
 						-- TODO: Tripwire hook
-						itemname = "mcl_core:string"
+						itemname = "mcl_mobitems:string"
 					end
 				else
 					-- Treasure
@@ -97,16 +97,16 @@ minetest.register_craft({
 	output = "mcl_fishing:fishing_rod",
 	recipe = {
 		{'','','mcl_core:stick'},
-		{'','mcl_core:stick','mcl_core:string'},
-		{'mcl_core:stick','','mcl_core:string'},
+		{'','mcl_core:stick','mcl_mobitems:string'},
+		{'mcl_core:stick','','mcl_mobitems:string'},
 	}
 })
 minetest.register_craft({
 	output = "mcl_fishing:fishing_rod",
 	recipe = {
 		{'mcl_core:stick', '', ''},
-		{'mcl_core:string', 'mcl_core:stick', ''},
-		{'mcl_core:string','','mcl_core:stick'},
+		{'mcl_mobitems:string', 'mcl_core:stick', ''},
+		{'mcl_mobitems:string','','mcl_core:stick'},
 	}
 })
 

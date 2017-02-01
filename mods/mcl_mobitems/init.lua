@@ -120,6 +120,20 @@ minetest.register_craftitem("mcl_mobitems:spider_eye", {
 	stack_max = 64,
 })
 
+minetest.register_craftitem("mcl_mobitems:bone", {
+	description = "Bone",
+	inventory_image = "mcl_mobitems_bone.png",
+	stack_max = 64,
+	groups = { craftitem=1 },
+})
+
+minetest.register_craftitem("mcl_mobitems:string",{
+	description = "String",
+	inventory_image = "mcl_mobitems_string.png",
+	stack_max = 64,
+	groups = { craftitem = 1 },
+})
+
 minetest.register_craftitem("mcl_mobitems:blaze_rod", {
 	description = "Blaze Rod",
 	wield_image = "mcl_mobitems_blaze_rod.png",
