@@ -1,5 +1,5 @@
 minetest.register_craftitem("mcl_farming:pumpkin_seed", {
-	description = "Pumpkin Seed",
+	description = "Pumpkin Seeds",
 	stack_max = 64,
 	inventory_image = "farming_pumpkin_seed.png",
 	groups = { craftitem=1 },
