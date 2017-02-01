@@ -164,7 +164,7 @@ minetest.register_node("crafting:workbench", {
 		"crafting_workbench_side.png", "crafting_workbench_front.png", "crafting_workbench_front.png"},
 	paramtype2 = "facedir",
 	paramtype = "light",
-	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=2,deco_block=1},
+	groups = {choppy=2,oddly_breakable_by_hand=2,deco_block=1},
 	on_rightclick = function(pos, node, clicker, itemstack)
 		set_workbench(clicker)
 	end,

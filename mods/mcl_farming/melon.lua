@@ -50,7 +50,7 @@ minetest.register_node("mcl_farming:melontige_1", {
 			{-0.5, -0.5, -0.5, 0.5, -0.5+6/16, 0.5}
 		},
 	},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
@@ -67,7 +67,7 @@ minetest.register_node("mcl_farming:melontige_2", {
 			{-0.5, -0.5, -0.5, 0.5, -0.5+9/16, 0.5}
 		},
 	},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
@@ -78,7 +78,7 @@ minetest.register_node("mcl_farming:melontige_unconnect", {
 	drop = "",
 	drawtype = "plantlike",
 	tiles = {"farming_tige_end.png"},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
@@ -108,7 +108,7 @@ minetest.register_node("mcl_farming:melontige_linked_r", {
 		"farming_tige_connnect.png", -- back
 		"farming_tige_connnect.png^[transformFX90" --front
 	},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
@@ -138,7 +138,7 @@ minetest.register_node("mcl_farming:melontige_linked_l", {
 		"farming_tige_connnect.png^[transformFX90", -- back
 		"farming_tige_connnect.png" --front
 	},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
@@ -168,7 +168,7 @@ minetest.register_node("mcl_farming:melontige_linked_t", {
 		"farming_tige_connnect.png", -- back
 		"farming_tige_connnect.png" --front
 	},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
@@ -198,7 +198,7 @@ minetest.register_node("mcl_farming:melontige_linked_b", {
 		"farming_tige_connnect.png", -- back
 		"farming_tige_connnect.png" --front
 	},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 

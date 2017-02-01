@@ -27,7 +27,7 @@ minetest.register_node("mcl_farming:pumpkin_1", {
 			{-0.5, -0.5, -0.5, 0.5, -0.5+6/16, 0.5}
 		},
 	},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
@@ -44,7 +44,7 @@ minetest.register_node("mcl_farming:pumpkin_2", {
 			{-0.5, -0.5, -0.5, 0.5, -0.5+9/16, 0.5}
 		},
 	},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
@@ -54,7 +54,7 @@ minetest.register_node("mcl_farming:pumpkin_face", {
 	stack_max = 64,
 	paramtype2 = "facedir",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"},
-	groups = {choppy=2, oddly_breakable_by_hand=2, flammable=2, building_block=1},
+	groups = {choppy=2, oddly_breakable_by_hand=2, building_block=1},
 	after_dig_node = function(pos, oldnode, oldmetadata, user)
 		local have_change = 0
 		for x=-1,1 do
@@ -86,7 +86,7 @@ minetest.register_node("mcl_farming:pumpkintige_unconnect", {
 	drop = "",
 	drawtype = "plantlike",
 	tiles = {"farming_tige_end.png"},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
@@ -117,7 +117,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_r", {
 		"farming_tige_connnect.png", -- back
 		"farming_tige_connnect.png^[transformFX90" --front
 	},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
@@ -147,7 +147,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_l", {
 		"farming_tige_connnect.png^[transformFX90", -- back
 		"farming_tige_connnect.png" --front
 	},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
@@ -177,7 +177,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_t", {
 		"farming_tige_connnect.png", -- back
 		"farming_tige_connnect.png" --front
 	},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
@@ -207,7 +207,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_b", {
 		"farming_tige_connnect.png", -- back
 		"farming_tige_connnect.png" --front
 	},
-	groups = {snappy=3, flammable=2, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
@@ -272,7 +272,7 @@ minetest.register_node("mcl_farming:pumpkin_face_light", {
 	paramtype2 = "facedir",
 	light_source = 14,
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face_light.png"},
-	groups = {choppy=2, oddly_breakable_by_hand=2, flammable=2, building_block=1},
+	groups = {choppy=2, oddly_breakable_by_hand=2, building_block=1},
 	sounds = mcl_core.node_sound_wood_defaults(),
 })
 

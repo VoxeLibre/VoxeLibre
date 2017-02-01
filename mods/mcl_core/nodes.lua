@@ -518,7 +518,7 @@ minetest.register_node("mcl_core:sapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_core.node_sound_defaults(),
 })
 
@@ -573,7 +573,7 @@ minetest.register_node("mcl_core:darksapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_core.node_sound_defaults(),
 })
 
@@ -658,7 +658,7 @@ minetest.register_node("mcl_core:junglesapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_core.node_sound_defaults(),
 })
 
@@ -718,7 +718,7 @@ minetest.register_node("mcl_core:acaciasapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_core.node_sound_defaults(),
 })
 
@@ -783,7 +783,7 @@ minetest.register_node("mcl_core:sprucesapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_core.node_sound_defaults(),
 })
 
@@ -841,7 +841,7 @@ minetest.register_node("mcl_core:birchsapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {snappy=2,dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_core.node_sound_defaults(),
 })
 
@@ -929,7 +929,7 @@ minetest.register_node("mcl_core:reeds", {
 		},
 	},
 	stack_max = 64,
-	groups = {dig_immediate=3,flammable=2,craftitem=1},
+	groups = {dig_immediate=3,craftitem=1},
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
@@ -1082,7 +1082,7 @@ minetest.register_node("mcl_core:ladder", {
 		--wall_side = = <default>
 	},
 	stack_max = 64,
-	groups = {choppy=2,oddly_breakable_by_hand=3,flammable=2,deco_block=1},
+	groups = {choppy=2,oddly_breakable_by_hand=3,deco_block=1},
 	sounds = mcl_core.node_sound_wood_defaults(),
 })
 
@@ -1313,7 +1313,7 @@ minetest.register_node("mcl_core:coalblock", {
 	tiles = {"default_coal_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
-	groups = {cracky=2, building_block=1},
+	groups = {cracky=2, flammable=1, building_block=1},
 	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
@@ -1461,7 +1461,7 @@ minetest.register_node("mcl_core:sponge", {
 	buildable_to = false,
 	stack_max = 64,
 	sounds = mcl_core.node_sound_dirt_defaults(),
-	groups = {snappy=2,choppy=2,oddly_breakable_by_hand=3,flammable=3,building_block=1},
+	groups = {snappy=2,choppy=2,oddly_breakable_by_hand=3,building_block=1},
 	   	on_place = function(itemstack, placer, pointed_thing)
 		local pn = placer:get_player_name()
 		if pointed_thing.type ~= "node" then
@@ -1675,7 +1675,7 @@ minetest.register_node("mcl_core:cobweb", {
        liquid_renewable = false,
        liquid_range = 0,
        walkable = false,
-       groups = {snappy=1,liquid=3,flammable=2,deco_block=1},
+       groups = {snappy=1,liquid=3,deco_block=1},
        drop = "mcl_core:string",
 })
 

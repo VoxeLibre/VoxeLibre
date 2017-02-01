@@ -298,7 +298,7 @@ end
 doors:register_door("doors:door_wood", {
 	description = "Oak Door",
 	inventory_image = "door_wood.png",
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,door=1},
 	tiles_bottom = {"door_wood_b.png", "door_brown.png"},
 	tiles_top = {"door_wood_a.png", "door_brown.png"},
 	sounds = mcl_core.node_sound_wood_defaults(),
@@ -317,7 +317,7 @@ minetest.register_craft({
 doors:register_door("doors:door_acacia", {
 	description = "Acacia Door",
 	inventory_image = "door_acacia.png",
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,door=1},
 	tiles_bottom = {"door_acacia_b.png", "door_brown.png"},
 	tiles_top = {"door_acacia_a.png", "door_brown.png"},
 	sounds = mcl_core.node_sound_wood_defaults(),
@@ -336,7 +336,7 @@ minetest.register_craft({
 doors:register_door("doors:door_birch", {
 	description = "Birch Door",
 	inventory_image = "door_birch.png",
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,door=1},
 	tiles_bottom = {"door_birch_b.png", "door_brown.png"},
 	tiles_top = {"door_birch_a.png", "door_brown.png"},
 	sounds = mcl_core.node_sound_wood_defaults(),
@@ -355,7 +355,7 @@ minetest.register_craft({
 doors:register_door("doors:door_dark_oak", {
 	description = "Dark Oak Door",
 	inventory_image = "door_dark_oak.png",
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,door=1},
 	tiles_bottom = {"door_dark_oak_b.png", "door_brown.png"},
 	tiles_top = {"door_dark_oak_a.png", "door_brown.png"},
 	sounds = mcl_core.node_sound_wood_defaults(),
@@ -374,7 +374,7 @@ minetest.register_craft({
 doors:register_door("doors:door_jungle", {
 	description = "Jungle Door",
 	inventory_image = "door_jungle.png",
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,door=1},
 	tiles_bottom = {"door_jungle_b.png", "door_brown.png"},
 	tiles_top = {"door_jungle_a.png", "door_brown.png"},
 	sounds = mcl_core.node_sound_wood_defaults(),
@@ -393,7 +393,7 @@ minetest.register_craft({
 doors:register_door("doors:door_spruce", {
 	description = "Spruce Door",
 	inventory_image = "door_spruce.png",
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,door=1},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,door=1},
 	tiles_bottom = {"door_spruce_b.png", "door_brown.png"},
 	tiles_top = {"door_spruce_a.png", "door_brown.png"},
 	sounds = mcl_core.node_sound_wood_defaults(),
@@ -503,7 +503,7 @@ minetest.register_node("doors:trapdoor", {
 	paramtype = "light",
 	stack_max = 64,
 	paramtype2 = "facedir",
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,flammable=2,door=1},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,door=1},
 	sounds = mcl_core.node_sound_wood_defaults(),
 	drop = "doors:trapdoor",
 	node_box = {
@@ -549,7 +549,7 @@ minetest.register_node("doors:trapdoor_open", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	pointable = true,
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,flammable=2,door=1},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,door=1},
 	sounds = mcl_core.node_sound_wood_defaults(),
 	drop = "doors:trapdoor",
 	node_box = {
@@ -627,7 +627,7 @@ minetest.register_node("doors:iron_trapdoor", {
 	is_ground_content = false,
 	stack_max = 64,
 	paramtype2 = "facedir",
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,flammable=0,door=1},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,door=1},
 	sounds = mcl_core.node_sound_wood_defaults(),
 	drop = "doors:iron_trapdoor",
 	node_box = {
@@ -670,7 +670,7 @@ minetest.register_node("doors:iron_trapdoor_open", {
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	pointable = true,
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=0,door=1,mesecon_effector_on=1},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,door=1,mesecon_effector_on=1},
 	sounds = mcl_core.node_sound_wood_defaults(),
 	drop = "doors:iron_trapdoor",
 	node_box = {
