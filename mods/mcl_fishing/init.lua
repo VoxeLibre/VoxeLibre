@@ -78,7 +78,9 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 				if inv:room_for_item("main", {name=itemname, count=1, wear=0, metadata=""}) then
 					inv:add_item("main", {name=itemname, count=1, wear=0, metadata=""})
 				end
-				itemstack:add_wear(66000/65) -- 65 uses
+				if not minetest.setting_get("creative_mode") then
+					itemstack:add_wear(66000/65) -- 65 uses
+				end
 				return itemstack
 			end
 		end
