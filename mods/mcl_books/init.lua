@@ -24,7 +24,7 @@ minetest.register_craftitem("mcl_books:writable_book", {
 		local formspec = "size[8,9]"..
 			"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
 			"textarea[0.5,0.25;7.5,9.25;text;;"..minetest.formspec_escape(text).."]"..
-        		"button_exit[3,8.25;2,1;ok;Done]"
+			"button_exit[2.5,8.15;3,1;ok;Done]"
 			minetest.show_formspec(user:get_player_name(), "mcl_books:writable_book", formspec)
 	end,
 })
