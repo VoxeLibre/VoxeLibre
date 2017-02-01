@@ -21,7 +21,7 @@ local function addhead(node, desc)
 			"head_"..node.."_face.png",
 		},	    
 		paramtype = "light",
-		stack_max = 16,
+		stack_max = 64,
 		paramtype2 = "facedir",
 		sunlight_propagates = true,
 		walkable = true,
