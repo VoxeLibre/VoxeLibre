@@ -192,6 +192,7 @@ minetest.register_abm({
 })
 
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/flint_and_steel.lua")
+dofile(minetest.get_modpath(minetest.get_current_modname()).."/fire_charge.lua")
 
 local time_to_load= os.clock() - init
 print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
