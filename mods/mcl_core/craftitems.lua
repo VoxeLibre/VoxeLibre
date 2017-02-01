@@ -18,13 +18,6 @@ minetest.register_craftitem("mcl_core:paper", {
 	groups = { craftitem=1 },
 })
 
-minetest.register_craftitem("mcl_core:book", {
-	description = "Book",
-	inventory_image = "default_book.png",
-	stack_max = 64,
-	groups = { craftitem=1 },
-})
-
 minetest.register_craftitem("mcl_core:coal_lump", {
 	description = "Coal",
 	groups = { coal=1 },

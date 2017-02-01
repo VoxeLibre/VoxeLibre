@@ -985,16 +985,6 @@ minetest.register_node("mcl_core:bedrock", {
 	drop = '',
 })
 
-minetest.register_node("mcl_core:bookshelf", {
-	description = "Bookshelf",
-	tiles = {"default_wood.png", "default_wood.png", "default_bookshelf.png"},
-	stack_max = 64,
-	is_ground_content = false,
-	groups = {choppy=3,oddly_breakable_by_hand=2,flammable=3,building_block=1},
-	drop = "mcl_core:book 3",
-	sounds = mcl_core.node_sound_wood_defaults(),
-})
-
 minetest.register_node("mcl_core:slimeblock", {
 	description = "Slime Block",
 	drawtype = "nodebox",

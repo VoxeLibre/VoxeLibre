@@ -592,22 +592,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	type = 'shapeless',
-	output = 'mcl_core:book',
-	recipe = { 'mcl_core:paper', 'mcl_core:paper', 'mcl_core:paper', 'mcl_mobitems:leather',
-	}
-})
-
-minetest.register_craft({
-	output = 'mcl_core:bookshelf',
-	recipe = {
-		{'group:wood', 'group:wood', 'group:wood'},
-		{'mcl_core:book', 'mcl_core:book', 'mcl_core:book'},
-		{'group:wood', 'group:wood', 'group:wood'},
-	}
-})
-
-minetest.register_craft({
 	output = 'mcl_core:ladder 3',
 	recipe = {
 		{'mcl_core:stick', '', 'mcl_core:stick'},
@@ -947,12 +931,6 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "fuel",
 	recipe = "group:tree",
-	burntime = 15,
-})
-
-minetest.register_craft({
-	type = "fuel",
-	recipe = "mcl_core:bookshelf",
 	burntime = 15,
 })
 
