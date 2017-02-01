@@ -67,7 +67,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_chicken", {
 minetest.register_craftitem("mcl_mobitems:porkchop", {
 	description = "Raw Porkchop",
 	inventory_image = "mcl_mobitems_porkchop_raw.png",
-	wield_image = "mcl_mobitems_porkchop.png",
+	wield_image = "mcl_mobitems_porkchop_raw.png",
 	on_use = minetest.item_eat(3),
 	groups = { food = 2, eatable = 3 },
 	stack_max = 64,
