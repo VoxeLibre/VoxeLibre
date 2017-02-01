@@ -18,20 +18,17 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 					if r <= 60 then
 						itemname = "mcl_fishing:fish_raw"
 					elseif r <= 85 then
-						itemname = "mcl_fishing:fish_raw"
-						--itemname = "mcl_core:salmon"
+						itemname = "mcl_fishing:salmon_raw"
 					elseif r <= 87 then
-						itemname = "mcl_fishing:fish_raw"
-						--itemname = "mcl_core:clownfish"
+						itemname = "mcl_fishing:clownfish_raw"
 					else
-						itemname = "mcl_fishing:fish_raw"
-						--itemname = "mcl_core:pufferfish"
+						itemname = "mcl_fishing:pufferfish_raw"
 					end
 				elseif r <= 95 then
 					-- Junk
 					r = math.random(1, 83)
 					if r <= 10 then
-						itemname = "mcl_fishing:bowl"
+						itemname = "mcl_core:bowl"
 					elseif r <= 12 then
 						-- TODO: Damaged
 						itemname = "mcl_fishing:fishing_rod"
@@ -62,7 +59,7 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 					r = math.random(1, 6)
 					if r == 1 then
 						-- TODO: Enchanted and damaged
-						itemname = "throwing:bow"
+						itemname = "mcl_throwing:bow"
 					elseif r == 2 then
 						-- TODO: Enchanted book
 						itemname = "mcl_core:book"
@@ -135,5 +132,47 @@ minetest.register_craft({
 	output = "mcl_fishing:fish_cooked",
 	recipe = "mcl_fishing:fish_raw",
 	cooktime = 10,
+})
+
+-- Salmon
+minetest.register_craftitem("mcl_fishing:salmon_raw", {
+	description = "Raw Salmon",
+	inventory_image = "mcl_fishing_salmon_raw.png",
+	on_use = minetest.item_eat(2),
+	stack_max = 64,
+	groups = { food=2, eatable = 2 },
+})
+
+minetest.register_craftitem("mcl_fishing:salmon_cooked", {
+	description = "Cooked Salmon",
+	inventory_image = "mcl_fishing_salmon_cooked.png",
+	on_use = minetest.item_eat(6),
+	stack_max = 64,
+	groups = { food=2, eatable=6 },
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = "mcl_fishing:salmon_cooked",
+	recipe = "mcl_fishing:salmon_raw",
+	cooktime = 10,
+})
+
+-- Clownfish
+minetest.register_craftitem("mcl_fishing:clownfish_raw", {
+	description = "Clownfish",
+	inventory_image = "mcl_fishing_clownfish_raw.png",
+	on_use = minetest.item_eat(1),
+	stack_max = 64,
+	groups = { food=2, eatable = 1 },
+})
+
+-- Pufferfish
+minetest.register_craftitem("mcl_fishing:pufferfish_raw", {
+	description = "Pufferfish",
+	inventory_image = "mcl_fishing_pufferfish_raw.png",
+	on_use = minetest.item_eat(1),
+	stack_max = 64,
+	groups = { food=2, eatable=1 },
 })
 
