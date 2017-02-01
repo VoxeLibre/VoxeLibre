@@ -288,3 +288,17 @@ minetest.register_craft({
 	recipe = {"mcl_farming:pumpkin_face"}
 })
 
+minetest.register_craftitem("mcl_farming:pumpkin_pie", {
+	description = "Pumpkin Pie",
+	stack_max = 64,
+	inventory_image = "mcl_farming_pumpkin_pie.png",
+	wield_image = "mcl_farming_pumpkin_pie.png",
+	on_use = minetest.item_eat(8),
+	groups = { food = 2, eatable = 8 },
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "mcl_farming:pumpkin_pie",
+	recipe = {"mcl_farming:pumpkin_face", "mcl_core:sugar", "mcl_throwing:egg"},
+})
