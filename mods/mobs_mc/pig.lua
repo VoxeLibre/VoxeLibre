@@ -51,7 +51,7 @@ mobs:register_mob("mobs_mc:pig", {
 		look_start = 78,
 		look_end = 108,
 	},
-	follow = {"mcl_core:apple", "farming:potato", "farming:carrot"},
+	follow = {"mcl_core:apple", "mcl_farming:beetroot_item", "mcl_farming:carrot_item", "mcl_mobitems:carrot_on_a_stick"},
 	view_range = 5,
 	on_rightclick = function(self, clicker)
 		if not clicker or not clicker:is_player() then
@@ -149,7 +149,6 @@ mobs:register_spawn("mobs_mc:pig", {"mcl_core:dirt_with_grass"}, 20, 12, 5000, 1
 				local v = 1.5
 				if math.abs(velo.x) + math.abs(velo.z) < .6 then velo.y = 5 end
 				self.state = "walk"
-				self:set_animation("walk")
 				self.object:setyaw(yaw)
 				self.object:setvelocity({x = -math.sin(yaw) * v, y = velo.y, z = math.cos(yaw) * v})
 
