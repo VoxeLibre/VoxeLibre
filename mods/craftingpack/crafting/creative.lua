@@ -235,7 +235,7 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 			mcl_core.inventory_header..
 			"background[-0.19,-0.25;10.5,9.87;"..inv_bg.."]"..
 			"label[-5,-5;"..name.."]"..
-			"item_image_button[-0.1,0;1,1;mcl_core:brick;blocks;]"..	--build blocks
+			"item_image_button[-0.1,0;1,1;mcl_core:brick_block;blocks;]"..	--build blocks
 			tab(name, "blocks") ..
 			"tooltip[blocks;Building Blocks]"..
 			"item_image_button[1.15,0;1,1;mcl_flowers:peony;deco;]"..	--decoration blocks
