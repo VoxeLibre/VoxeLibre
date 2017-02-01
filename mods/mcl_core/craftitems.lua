@@ -144,7 +144,6 @@ minetest.register_craftitem("mcl_core:prismarine_shard", {
 	inventory_image = "default_prismarine_shard.png",
 	stack_max = 64,
 	groups = { craftitem = 1 },
-	groups = { craftitem=1 },
 })
 
 minetest.register_craftitem("mcl_core:quartz_crystal", {
@@ -152,7 +151,6 @@ minetest.register_craftitem("mcl_core:quartz_crystal", {
 	inventory_image = "default_quartz_crystal.png",
 	stack_max = 64,
 	groups = { craftitem = 1 },
-	groups = { craftitem=1 },
 })
 
 minetest.register_craftitem("mcl_core:apple", {
