@@ -13,20 +13,23 @@ minetest.register_craft({
 	}
 })
 
+local write = function(itemstack, user, pointed_thing)
+	local text = itemstack:get_metadata()
+	local formspec = "size[8,9]"..
+		"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
+		"textarea[0.5,0.25;7.5,9.25;text;;"..minetest.formspec_escape(text).."]"..
+		"button_exit[2.5,8.15;3,1;ok;Done]"
+		minetest.show_formspec(user:get_player_name(), "mcl_books:writable_book", formspec)
+end
+
 -- Book and Quill
 minetest.register_craftitem("mcl_books:writable_book", {
 	description = "Book and Quill",
 	inventory_image = "mcl_books_book_writable.png",
 	groups = { book=1 },
 	stack_max = 1,
-	on_use = function (itemstack, user, pointed_thing)
-		local text = itemstack:get_metadata()
-		local formspec = "size[8,9]"..
-			"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
-			"textarea[0.5,0.25;7.5,9.25;text;;"..minetest.formspec_escape(text).."]"..
-			"button_exit[2.5,8.15;3,1;ok;Done]"
-			minetest.show_formspec(user:get_player_name(), "mcl_books:writable_book", formspec)
-	end,
+	on_place = write,
+	on_secondary_use = write,
 })
 
 minetest.register_on_player_receive_fields(function ( player, formname, fields )
