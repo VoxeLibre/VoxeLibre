@@ -1,5 +1,5 @@
 mcl_core
-fire
+mcl_fire
 mobs
 mcl_tnt
 mcl_mobitems
