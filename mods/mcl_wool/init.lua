@@ -74,6 +74,14 @@ for _, row in ipairs(wool.dyes) do
 end
 
 minetest.register_craft({
+	output = "mcl_wool:white",
+	recipe = {
+		{ "mcl_mobitems:string", "mcl_mobitems:string" },
+		{ "mcl_mobitems:string", "mcl_mobitems:string" },
+	},
+})
+
+minetest.register_craft({
 	type = "fuel",
 	recipe = "group:wool",
 	burntime = 5,
