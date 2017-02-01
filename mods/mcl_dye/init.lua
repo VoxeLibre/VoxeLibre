@@ -232,6 +232,10 @@ minetest.register_craft({
 	recipe = {{"mcl_flowers:rose_bush"}},
 })
 minetest.register_craft({
+	output = "mcl_dye:red",
+	recipe = {{"mcl_farming:beetroot_item"}},
+})
+minetest.register_craft({
 	type = "cooking",
 	output = "mcl_dye:dark_green",
 	recipe = "mcl_core:cactus",
