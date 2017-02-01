@@ -1879,7 +1879,7 @@ end
 		punch_interval = tool_capabilities.full_punch_interval or 1.4
 	end
 
-	if minetest.setting_getbool("creative_mode")
+	if (not minetest.setting_getbool("creative_mode"))
 	and weapon:get_definition()
 	and weapon:get_definition().tool_capabilities then
 		weapon:add_wear(floor((punch_interval / 75) * 9000))
