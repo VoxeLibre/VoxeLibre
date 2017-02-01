@@ -577,10 +577,10 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'mcl_core:brick',
+	output = 'mcl_core:brick_block',
 	recipe = {
-		{'mcl_core:clay_brick', 'mcl_core:clay_brick'},
-		{'mcl_core:clay_brick', 'mcl_core:clay_brick'},
+		{'mcl_core:brick', 'mcl_core:brick'},
+		{'mcl_core:brick', 'mcl_core:brick'},
 	}
 })
 
@@ -817,7 +817,7 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "cooking",
-	output = "mcl_core:clay_brick",
+	output = "mcl_core:brick",
 	recipe = "mcl_core:clay_lump",
 	cooktime = 10,
 })

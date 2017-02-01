@@ -331,6 +331,14 @@ minetest.register_node("mcl_flowers:pot",{
 	end,
 })
 
+minetest.register_craft({
+	output = "mcl_flowers:pot",
+	recipe = {
+		{ "mcl_core:brick", "", "mcl_core:brick", },
+		{ "", "mcl_core:brick", "" },
+	},
+})
+
 -- Lily Pad
 minetest.register_node("mcl_flowers:waterlily", {
 	description = "Lily Pad",

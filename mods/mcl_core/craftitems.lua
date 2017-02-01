@@ -90,7 +90,7 @@ minetest.register_craftitem("mcl_core:emerald", {
 	groups = { craftitem=1 },
 })
 
-minetest.register_craftitem("mcl_core:clay_brick", {
+minetest.register_craftitem("mcl_core:brick", {
 	description = "Brick",
 	inventory_image = "default_clay_brick.png",
 	stack_max = 64,

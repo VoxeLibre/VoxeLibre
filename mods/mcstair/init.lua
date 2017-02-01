@@ -662,7 +662,7 @@ end
 for _,v in ipairs({
 	"stone",
 	"cobble",
-	"brick",
+	"brick_block",
 	"sandstone",
 	"redsandstone",
 	"stonebrick",

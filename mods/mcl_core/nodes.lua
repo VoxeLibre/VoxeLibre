@@ -411,8 +411,9 @@ minetest.register_node("mcl_core:clay", {
 	}),
 })
 
-minetest.register_node("mcl_core:brick", {
-	description = "Bricks",
+minetest.register_node("mcl_core:brick_block", {
+	-- Original name: “Bricks”
+	description = "Brick Block",
 	tiles = {"default_brick.png"},
 	is_ground_content = false,
 	stack_max = 64,
