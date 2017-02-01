@@ -16,10 +16,14 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 		if pointed_thing.type == "node" then
 			if minetest.get_node(pointed_thing.under).name == "mcl_tnt:tnt" then
 				tnt.ignite(pointed_thing.under)
-				itemstack:add_wear(66000/65) -- 65 uses
+				if not minetest.setting_getbool("creative_mode") then
+					itemstack:add_wear(66000/65) -- 65 uses
+				end
 			else
 				mcl_fire.set_fire(pointed_thing)
-				itemstack:add_wear(66000/65) -- 65 uses
+				if not minetest.setting_getbool("creative_mode") then
+					itemstack:add_wear(66000/65) -- 65 uses
+				end
 			end
 		end
 		return itemstack
