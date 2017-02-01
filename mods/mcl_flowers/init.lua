@@ -209,7 +209,7 @@ minetest.register_node("mcl_flowers:fern", {
 		items = {
 			{
 				items = {'mcl_farming:wheat_seed'},
-				rarity = 24,
+				rarity = 8,
 			},
 		}
 	},

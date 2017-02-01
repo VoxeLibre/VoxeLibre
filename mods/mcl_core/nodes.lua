@@ -869,7 +869,7 @@ minetest.register_node("mcl_core:junglegrass", {
 		items = {
 			{
 				items = {'mcl_farming:wheat_seed'},
-				rarity = 24,
+				rarity = 8,
 			},
 		}
 	},
@@ -1414,7 +1414,7 @@ minetest.register_node("mcl_core:grass", {
 		items = {
 			{
 				items = {'mcl_farming:wheat_seed'},
-				rarity = 24,
+				rarity = 8,
 			},
 		}
 	},
