@@ -75,7 +75,7 @@ local function set_inv(filter, player)
 	table.sort(creative_list)
 	inv:set_size("main", #creative_list)
 	for _,itemstring in ipairs(creative_list) do
-		inv:add_item("main", ItemStack(itemstring .. " " .. minetest.registered_items[itemstring].stack_max))
+		inv:add_item("main", ItemStack(itemstring))
 	end
 	crafting.creative_inventory_size = #creative_list
 end
