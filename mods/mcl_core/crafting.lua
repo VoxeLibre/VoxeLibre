@@ -423,25 +423,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_core:fishing_rod",
-	recipe = {
-		{'','','mcl_core:stick'},
-		{'','mcl_core:stick','mcl_core:string'},
-		{'mcl_core:stick','','mcl_core:string'},
-	}
-})
-minetest.register_craft({
-	output = "mcl_core:fishing_rod",
-	recipe = {
-		{'mcl_core:stick', '', ''},
-		{'mcl_core:string', 'mcl_core:stick', ''},
-		{'mcl_core:string','','mcl_core:stick'},
-	}
-})
-
-
-
-minetest.register_craft({
 	output = 'mcl_core:rail 16',
 	recipe = {
 		{'mcl_core:steel_ingot', '', 'mcl_core:steel_ingot'},
@@ -849,13 +830,6 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "cooking",
-	output = "mcl_core:fish",
-	recipe = "mcl_core:fish_raw",
-	cooktime = 10,
-})
-
-minetest.register_craft({
-	type = "cooking",
 	output = "mcl_core:charcoal_lump",
 	recipe = "group:tree",
 	cooktime = 10,
@@ -997,12 +971,6 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "fuel",
 	recipe = "group:wood",
-	burntime = 15,
-})
-
-minetest.register_craft({
-	type = "fuel",
-	recipe = "mcl_core:fishing_rod",
 	burntime = 15,
 })
 

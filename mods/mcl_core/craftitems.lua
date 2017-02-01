@@ -125,22 +125,6 @@ minetest.register_craftitem("mcl_core:glowstone_dust", {
 	groups = { craftitem=1 },
 })
 
-minetest.register_craftitem("mcl_core:fish_raw", {
-	description = "Raw Fish",
-	inventory_image = "default_fish.png",
-	on_use = minetest.item_eat(2),
-	stack_max = 64,
-	groups = { food=1, eatable = 2 },
-})
-
-minetest.register_craftitem("mcl_core:fish", {
-	description = "Cooked Fish",
-	inventory_image = "default_fish_cooked.png",
-	on_use = minetest.item_eat(4),
-	stack_max = 64,
-	groups = { food=1, eatable=4 },
-})
-
 minetest.register_craftitem("mcl_core:sugar", {
 	description = "Sugar",
 	inventory_image = "default_sugar.png",
