@@ -78,6 +78,7 @@ minetest.register_craft({
 	type = "cooking",
 	output = "mcl_farming:potato_item_baked",
 	recipe = "mcl_farming:potato_item",
+	cooktime = 10,
 })
 
 mcl_farming:add_plant("mcl_farming:potato", {"mcl_farming:potato_1", "mcl_farming:potato_2"}, 50, 20)
