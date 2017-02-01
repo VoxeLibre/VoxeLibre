@@ -18,6 +18,7 @@ minetest.register_node("mesecons_lightstone:lightstone_on", {
 	groups = {cracky=2,not_in_creative_inventory=1, mesecon = 2},
 	drop = "node mesecons_lightstone:lightstone_off",
 	is_ground_content = false,
+	-- Real light level: 15 (Minetest caps at 14)
 	light_source = 14,
 	sounds = mcl_core.node_sound_stone_defaults(),
 	mesecons = {effector = {

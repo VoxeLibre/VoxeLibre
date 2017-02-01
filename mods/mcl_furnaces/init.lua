@@ -85,7 +85,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 		"default_furnace_side.png", "default_furnace_side.png", "default_furnace_front_active.png"},
 	paramtype2 = "facedir",
 	is_ground_content = false,
-	light_source = 12,
+	light_source = 13,
 	drop = "mcl_furnaces:furnace",
 	groups = {cracky=2, not_in_creative_inventory=1},
 	sounds = mcl_core.node_sound_stone_defaults(),

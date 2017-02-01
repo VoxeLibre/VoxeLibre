@@ -79,7 +79,7 @@ minetest.register_node("mesecons_torch:mesecon_torch_on", {
 	is_ground_content = false,
 	selection_box = torch_selectionbox,
 	groups = {dig_immediate=3, dig_by_water=1},
-	light_source = 6,
+	light_source = 7,
 	description="Redstone Torch",
 	mesecons = {receptor = {
 		state = mesecon.state.on,

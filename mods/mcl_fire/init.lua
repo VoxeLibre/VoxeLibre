@@ -7,6 +7,7 @@ minetest.register_node("mcl_fire:basic_flame", {
 		animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=1},
 	}},
 	inventory_image = "fire_basic_flame.png",
+	-- Real light level: 15 (but Minetest caps at 14)
 	light_source = 14,
 	groups = {igniter=2,dig_immediate=3,dig_by_water=1,not_in_creative_inventory=1},
 	drop = '',

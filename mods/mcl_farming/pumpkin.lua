@@ -270,6 +270,7 @@ minetest.register_node("mcl_farming:pumpkin_face_light", {
 	description = "Jack o'Lantern",
 	stack_max = 64,
 	paramtype2 = "facedir",
+	-- Real light level: 15 (Minetest caps at 14)
 	light_source = 14,
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face_light.png"},
 	groups = {choppy=2, oddly_breakable_by_hand=2, building_block=1},

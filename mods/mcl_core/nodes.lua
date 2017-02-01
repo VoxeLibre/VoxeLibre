@@ -100,7 +100,7 @@ minetest.register_node("mcl_core:stone_with_redstone_lit", {
 	description = "Lit Redstone Ore",
 	tiles = {"default_stone.png^default_mineral_redstone.png"},
 	paramtype = "light",
-	light_source = 8,
+	light_source = 9,
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {cracky=2, not_in_creative_inventory=1},
@@ -451,6 +451,7 @@ minetest.register_node("mcl_core:sea_lantern", {
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	stack_max = 64,
+	-- Real light level: 15 (but Minetest caps at 14)
 	light_source = 14,
 	drop = {
 		max_items = 1,
@@ -1235,6 +1236,7 @@ minetest.register_node("mcl_core:lava_flowing", {
 	},
 	paramtype = "light",
 	paramtype2 = "flowingliquid",
+	-- Real light level: 15 (but Minetest caps at 14)
 	light_source = 14,
 	walkable = false,
 	pointable = false,
@@ -1272,6 +1274,7 @@ minetest.register_node("mcl_core:lava_source", {
 		}
 	},
 	paramtype = "light",
+	-- Real light level: 15 (but Minetest caps at 14)
 	light_source = 14,
 	walkable = false,
 	pointable = false,
@@ -1446,7 +1449,8 @@ minetest.register_node("mcl_core:glowstone", {
 			{items = {'mcl_core:glowdust 2'}},
 		}
 	},
-	light_source = 12,
+	-- Real light level: 15 (but Minetest caps at 14)
+	light_source = 14,
 	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
