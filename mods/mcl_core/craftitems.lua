@@ -132,7 +132,7 @@ minetest.register_craftitem("mcl_core:bowl",{
 	groups = { craftitem = 1 },
 })
 
-minetest.register_craftitem("mcl_core:prismarine_cry", {
+minetest.register_craftitem("mcl_core:prismarine_crystals", {
 	description = "Prismarine Crystals",
 	inventory_image = "default_prismarine_crystals.png",
 	stack_max = 64,

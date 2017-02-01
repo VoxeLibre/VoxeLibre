@@ -444,9 +444,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'mcl_core:sea_lantern',
 	recipe = {
-		{'mcl_core:prismarine_shard', 'mcl_core:prismarine_cry', 'mcl_core:prismarine_shard'},
-		{'mcl_core:prismarine_cry', 'mcl_core:prismarine_cry', 'mcl_core:prismarine_cry'},
-		{'mcl_core:prismarine_shard', 'mcl_core:prismarine_cry', 'mcl_core:prismarine_shard'},
+		{'mcl_core:prismarine_shard', 'mcl_core:prismarine_crystals', 'mcl_core:prismarine_shard'},
+		{'mcl_core:prismarine_crystals', 'mcl_core:prismarine_crystals', 'mcl_core:prismarine_crystals'},
+		{'mcl_core:prismarine_shard', 'mcl_core:prismarine_crystals', 'mcl_core:prismarine_shard'},
 	}
 })
 
