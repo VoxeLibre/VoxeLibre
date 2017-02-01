@@ -199,6 +199,15 @@ minetest.register_craftitem("mcl_mobitems:saddle", {
 	stack_max = 1,
 })
 
+minetest.register_craftitem("mcl_mobitems:rabbit_stew", {
+	description = "Rabbit Stew",
+	wield_image = "mcl_mobitems_rabbit_stew.png",
+	inventory_image = "mcl_mobitems_rabbit_stew.png",
+	stack_max = 1,
+	on_use = minetest.item_eat(10, "mcl_core:bowl"),
+	groups = { food = 3, eatable = 10 },
+})
+
 -----------
 -- Crafting
 -----------
@@ -214,6 +223,15 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_mobitems:blaze_powder 2",
 	recipe = {{"mcl_mobitems:blaze_rod"}},
+})
+
+minetest.register_craft({
+	output = "mcl_mobitems:rabbit_stew",
+	recipe = {
+		{ "", "mcl_mobitems:cooked_rabbit", "", },
+		{ "mcl_farming:carrot_item", "mcl_farming:potato_item_baked", "group:mushroom", },
+		{ "", "mcl_core:bowl", "", },
+	},
 })
 
 minetest.register_craft({
