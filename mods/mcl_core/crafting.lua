@@ -402,12 +402,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	type = 'shapeless',
-	output = 'mcl_core:flint_and_steel',
-	recipe = { 'mcl_core:steel_ingot', 'mcl_core:flint'},
-})
-
-minetest.register_craft({
 	output = 'mcl_core:shears',
 	recipe = {
 		{ 'mcl_core:steel_ingot', '' },
