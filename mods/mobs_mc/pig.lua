@@ -89,26 +89,25 @@ mobs:register_mob("mobs_mc:pig", {
 	if self.driver and clicker == self.driver then
 		self.driver = nil
 		clicker:set_detach()
-		default.player_attached[name] = false
-		default.player_set_animation(clicker, "stand" , 30)
+		mcl_core.player_attached[name] = false
+		mcl_core.player_set_animation(clicker, "stand" , 30)
 	elseif not self.driver and self.saddle == "yes" then
 		self.driver = clicker
 		clicker:set_attach(self.object, "", {x = 0, y = 19, z = 0}, {x = 0, y = 0, z = 0})
-		default.player_attached[name] = true
+		mcl_core.player_attached[name] = true
 		minetest.after(0.2, function()
-			default.player_set_animation(clicker, "sit" , 30)
+			mcl_core.player_set_animation(clicker, "sit" , 30)
 		end)
 		----[[
 			-- ridable pigs
-		if self.name == "mobs:pig" and self.saddle == "yes" and self.driver then
+		if self.name == "mobs_mc:pig" and self.saddle == "yes" and self.driver then
 			local item = self.driver:get_wielded_item()
-			if item:get_name() == "mobs:carrotstick" then
+			if item:get_name() == "mcl_mobitems:carrot_on_a_stick" then
 				local yaw = self.driver:get_look_yaw() - math.pi / 2
 				local velo = self.object:getvelocity()
 				local v = 1.5
 				if math.abs(velo.x) + math.abs(velo.z) < .6 then velo.y = 5 end
 				self.state = "walk"
-				self:set_animation("walk")
 				self.object:setyaw(yaw)
 				self.object:setvelocity({x = -math.sin(yaw) * v, y = velo.y, z = math.cos(yaw) * v})
 
@@ -116,7 +115,7 @@ mobs:register_mob("mobs_mc:pig", {
 				local stack = inv:get_stack("main", self.driver:get_wield_index())
 				stack:add_wear(100)
 				if stack:get_wear() > 65400 then
-					stack = {name = "fishing:pole", count = 1}
+					stack = {name = "mcl_fishing:fishing_rod", count = 1}
 				end
 				inv:set_stack("main", self.driver:get_wield_index(), stack)
 				return

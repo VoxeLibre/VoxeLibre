@@ -208,6 +208,13 @@ minetest.register_craftitem("mcl_mobitems:rabbit_stew", {
 	groups = { food = 3, eatable = 10 },
 })
 
+minetest.register_tool("mcl_mobitems:carrot_on_a_stick", {
+	description = "Carrot on a Stick",
+	wield_image = "mcl_mobitems_carrot_on_a_stick.png",
+	inventory_image = "mcl_mobitems_carrot_on_a_stick.png",
+	groups = { transport = 1 },
+})
+
 -----------
 -- Crafting
 -----------
@@ -231,6 +238,22 @@ minetest.register_craft({
 		{ "", "mcl_mobitems:cooked_rabbit", "", },
 		{ "mcl_farming:carrot_item", "mcl_farming:potato_item_baked", "group:mushroom", },
 		{ "", "mcl_core:bowl", "", },
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_mobitems:carrot_on_a_stick",
+	recipe = {
+		{ "mcl_fishing:fishing_rod", "", },
+		{ "", "mcl_farming:carrot_item" },
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_mobitems:carrot_on_a_stick",
+	recipe = {
+		{ "", "mcl_fishing:fishing_rod", },
+		{ "mcl_farming:carrot_item", "" },
 	},
 })
 
