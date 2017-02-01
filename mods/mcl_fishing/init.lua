@@ -11,6 +11,7 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 			if string.find(node.name, "mcl_core:water") then
 				local itemname
 				local itemcount = 1
+				local itemwear = 0
 				local r = math.random(1, 100)
 				if r <= 85 then
 					-- Fish
@@ -30,12 +31,13 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 					if r <= 10 then
 						itemname = "mcl_core:bowl"
 					elseif r <= 12 then
-						-- TODO: Damaged
 						itemname = "mcl_fishing:fishing_rod"
+						itemwear = math.random(6554, 65535)	-- 10%-100% damaged
 					elseif r <= 22 then
 						itemname = "mcl_mobitems:leather"
 					elseif r <= 32 then
 						itemname = "3d_armor:boots_leather"
+						itemwear = math.random(6554, 65535)	-- 10%-100% damaged
 					elseif r <= 42 then
 						itemname = "mcl_mobitems:rotten_flesh"
 					elseif r <= 47 then
@@ -58,14 +60,16 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 					-- Treasure
 					r = math.random(1, 6)
 					if r == 1 then
-						-- TODO: Enchanted and damaged
+						-- TODO: Enchanted
 						itemname = "mcl_throwing:bow"
+						itemwear = math.random(49144, 65535)	-- 75%-100% damaged
 					elseif r == 2 then
 						-- TODO: Enchanted book
 						itemname = "mcl_core:book"
 					elseif r == 3 then
-						-- TODO: Enchanted and damaged
+						-- TODO: Enchanted
 						itemname = "mcl_fishing:fishing_rod"
+						itemwear = math.random(49144, 65535)	-- 75%-100% damaged
 					elseif r == 4 then
 						itemname = "mobs:nametag"
 					elseif r == 5 then
@@ -75,8 +79,9 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 					end
 				end
 				local inv = user:get_inventory()
-				if inv:room_for_item("main", {name=itemname, count=itemcount, wear=0, metadata=""}) then
-					inv:add_item("main", {name=itemname, count=itemcount, wear=0, metadata=""})
+				local item = {name=itemname, count=itemcount, wear=itemwear, metadata=""}
+				if inv:room_for_item("main", item) then
+					inv:add_item("main", item)
 				end
 				if not minetest.setting_get("creative_mode") then
 					itemstack:add_wear(66000/65) -- 65 uses
