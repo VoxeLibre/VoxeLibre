@@ -67,7 +67,7 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 						-- TODO: Enchanted and damaged
 						itemname = "mcl_fishing:fishing_rod"
 					elseif r == 4 then
-						itemname = "mobs:naming_tag"
+						itemname = "mobs:nametag"
 					elseif r == 5 then
 						itemname = "mcl_mobitems:saddle"
 					elseif r == 6 then
@@ -75,8 +75,8 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 					end
 				end
 				local inv = user:get_inventory()
-				if inv:room_for_item("main", {name=itemname, count=1, wear=0, metadata=""}) then
-					inv:add_item("main", {name=itemname, count=1, wear=0, metadata=""})
+				if inv:room_for_item("main", {name=itemname, count=itemcount, wear=0, metadata=""}) then
+					inv:add_item("main", {name=itemname, count=itemcount, wear=0, metadata=""})
 				end
 				if not minetest.setting_get("creative_mode") then
 					itemstack:add_wear(66000/65) -- 65 uses
