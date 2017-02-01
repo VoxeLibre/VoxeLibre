@@ -17,7 +17,7 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 			if minetest.get_node(pointed_thing.under).name == "mcl_tnt:tnt" then
 				tnt.ignite(pointed_thing.under)
 			else
-				mcl_core.set_fire(pointed_thing)
+				mcl_fire.set_fire(pointed_thing)
 				itemstack:add_wear(66000/65) -- 65 uses
 				return itemstack
 			end

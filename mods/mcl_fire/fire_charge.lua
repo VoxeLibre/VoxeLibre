@@ -11,7 +11,7 @@ minetest.register_craftitem("mcl_fire:fire_charge", {
 				tnt.ignite(pointed_thing.under)
 				itemstack:take_item()
 			else
-				mcl_core.set_fire(pointed_thing)
+				mcl_fire.set_fire(pointed_thing)
 				itemstack:take_item()
 			end
 		end

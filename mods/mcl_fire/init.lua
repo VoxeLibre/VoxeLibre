@@ -1,4 +1,3 @@
--- minetest/fire/init.lua
 local init = os.clock()
 minetest.register_node("mcl_fire:basic_flame", {
 	description = "Fire",
@@ -16,36 +15,36 @@ minetest.register_node("mcl_fire:basic_flame", {
 	damage_per_second = 4,
 	
 	after_place_node = function(pos, placer)
-		fire.on_flame_add_at(pos)
+		mcl_fire.on_flame_add_at(pos)
 	end,
 	
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
-		fire.on_flame_remove_at(pos)
+		mcl_fire.on_flame_remove_at(pos)
 	end,
 })
 
-fire = {}
-fire.D = 6
+mcl_fire = {}
+mcl_fire.D = 6
 -- key: position hash of low corner of area
 -- value: {handle=sound handle, name=sound name}
-fire.sounds = {}
+mcl_fire.sounds = {}
 
-function fire.get_area_p0p1(pos)
+function mcl_fire.get_area_p0p1(pos)
 	local p0 = {
-		x=math.floor(pos.x/fire.D)*fire.D,
-		y=math.floor(pos.y/fire.D)*fire.D,
-		z=math.floor(pos.z/fire.D)*fire.D,
+		x=math.floor(pos.x/mcl_fire.D)*mcl_fire.D,
+		y=math.floor(pos.y/mcl_fire.D)*mcl_fire.D,
+		z=math.floor(pos.z/mcl_fire.D)*mcl_fire.D,
 	}
 	local p1 = {
-		x=p0.x+fire.D-1,
-		y=p0.y+fire.D-1,
-		z=p0.z+fire.D-1
+		x=p0.x+mcl_fire.D-1,
+		y=p0.y+mcl_fire.D-1,
+		z=p0.z+mcl_fire.D-1
 	}
 	return p0, p1
 end
 
-function fire.update_sounds_around(pos)
-	local p0, p1 = fire.get_area_p0p1(pos)
+function mcl_fire.update_sounds_around(pos)
+	local p0, p1 = mcl_fire.get_area_p0p1(pos)
 	local cp = {x=(p0.x+p1.x)/2, y=(p0.y+p1.y)/2, z=(p0.z+p1.z)/2}
 	local flames_p = minetest.find_nodes_in_area(p0, p1, {"mcl_fire:basic_flame"})
 	--print("number of flames at "..minetest.pos_to_string(p0).."/"
@@ -58,10 +57,10 @@ function fire.update_sounds_around(pos)
 		wanted_sound = {name="fire_small", gain=1.5}
 	end
 	local p0_hash = minetest.hash_node_position(p0)
-	local sound = fire.sounds[p0_hash]
+	local sound = mcl_fire.sounds[p0_hash]
 	if not sound then
 		if should_have_sound then
-			fire.sounds[p0_hash] = {
+			mcl_fire.sounds[p0_hash] = {
 				handle = minetest.sound_play(wanted_sound, {pos=cp, loop=true}),
 				name = wanted_sound.name,
 			}
@@ -69,10 +68,10 @@ function fire.update_sounds_around(pos)
 	else
 		if not wanted_sound then
 			minetest.sound_stop(sound.handle)
-			fire.sounds[p0_hash] = nil
+			mcl_fire.sounds[p0_hash] = nil
 		elseif sound.name ~= wanted_sound.name then
 			minetest.sound_stop(sound.handle)
-			fire.sounds[p0_hash] = {
+			mcl_fire.sounds[p0_hash] = {
 				handle = minetest.sound_play(wanted_sound, {pos=cp, loop=true}),
 				name = wanted_sound.name,
 			}
@@ -80,21 +79,21 @@ function fire.update_sounds_around(pos)
 	end
 end
 
-function fire.on_flame_add_at(pos)
+function mcl_fire.on_flame_add_at(pos)
 	--print("flame added at "..minetest.pos_to_string(pos))
-	fire.update_sounds_around(pos)
+	mcl_fire.update_sounds_around(pos)
 end
 
-function fire.on_flame_remove_at(pos)
+function mcl_fire.on_flame_remove_at(pos)
 	--print("flame removed at "..minetest.pos_to_string(pos))
-	fire.update_sounds_around(pos)
+	mcl_fire.update_sounds_around(pos)
 end
 
-function fire.find_pos_for_flame_around(pos)
+function mcl_fire.find_pos_for_flame_around(pos)
 	return minetest.find_node_near(pos, 1, {"air"})
 end
 
-function fire.flame_should_extinguish(pos)
+function mcl_fire.flame_should_extinguish(pos)
 	if minetest.setting_getbool("disable_fire") then return true end
 	--return minetest.find_node_near(pos, 1, {"group:puts_out_fire"})
 	local p0 = {x=pos.x-2, y=pos.y, z=pos.z-2}
@@ -111,13 +110,13 @@ minetest.register_abm({
 	chance = 2,
 	action = function(p0, node, _, _)
 		-- If there is water or stuff like that around flame, don't ignite
-		if fire.flame_should_extinguish(p0) then
+		if mcl_fire.flame_should_extinguish(p0) then
 			return
 		end
-		local p = fire.find_pos_for_flame_around(p0)
+		local p = mcl_fire.find_pos_for_flame_around(p0)
 		if p then
 			minetest.set_node(p, {name="mcl_fire:basic_flame"})
-			fire.on_flame_add_at(p)
+			mcl_fire.on_flame_add_at(p)
 		end
 	end,
 })
@@ -137,13 +136,13 @@ minetest.register_abm({
 		local p = minetest.find_node_near(p0, d, {"group:flammable"})
 		if p then
 			-- If there is water or stuff like that around flame, don't ignite
-			if fire.flame_should_extinguish(p) then
+			if mcl_fire.flame_should_extinguish(p) then
 				return
 			end
-			local p2 = fire.find_pos_for_flame_around(p)
+			local p2 = mcl_fire.find_pos_for_flame_around(p)
 			if p2 then
 				minetest.set_node(p2, {name="mcl_fire:basic_flame"})
-				fire.on_flame_add_at(p2)
+				mcl_fire.on_flame_add_at(p2)
 			end
 		end
 	end,
@@ -157,9 +156,9 @@ minetest.register_abm({
 	action = function(p0, node, _, _)
 		-- If there is water or stuff like that around flame, remove flame
 
-		if fire.flame_should_extinguish(p0) then
+		if mcl_fire.flame_should_extinguish(p0) then
 			minetest.remove_node(p0)
-			fire.on_flame_remove_at(p0)
+			mcl_fire.on_flame_remove_at(p0)
 			return
 		end
 		-- Make the following things rarer
@@ -169,7 +168,7 @@ minetest.register_abm({
 		-- If there are no flammable nodes around flame, remove flame
 		if not minetest.find_node_near(p0, 1, {"group:flammable"}) then
 			minetest.remove_node(p0)
-			fire.on_flame_remove_at(p0)
+			mcl_fire.on_flame_remove_at(p0)
 			return
 		end
 		if math.random(1,3) == 1 then
@@ -177,7 +176,7 @@ minetest.register_abm({
 			local p = minetest.find_node_near(p0, 1, {"group:flammable"})
 			if p then
 				-- If there is water or stuff like that around flame, don't remove
-				if fire.flame_should_extinguish(p0) then
+				if mcl_fire.flame_should_extinguish(p0) then
 					return
 				end
 				minetest.remove_node(p)
@@ -186,10 +185,35 @@ minetest.register_abm({
 		else
 			-- remove flame
 			minetest.remove_node(p0)
-			fire.on_flame_remove_at(p0)
+			mcl_fire.on_flame_remove_at(p0)
 		end
 	end,
 })
+
+--
+-- Flint and Steel
+--
+
+function mcl_fire.set_fire(pointed_thing)
+	local n = minetest.get_node(pointed_thing.above)
+	if n.name ~= ""  and n.name == "air" and not minetest.is_protected(pointed_thing.above, "fire") then
+		minetest.add_node(pointed_thing.above, {name="mcl_fire:basic_flame"})
+	end
+end
+
+--
+-- Fire Particles
+--
+
+function mcl_fire.add_fire(pos)
+	local null = {x=0, y=0, z=0}
+	pos.y = pos.y+0.19
+	minetest.add_particle(pos, null, null, 1.1,
+   					1.5, true, "default_fire_particle"..tostring(math.random(1,2)) ..".png")
+	pos.y = pos.y +0.01
+	minetest.add_particle(pos, null, null, 0.8,
+   					1.5, true, "default_fire_particle"..tostring(math.random(1,2)) ..".png")
+end
 
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/flint_and_steel.lua")
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/fire_charge.lua")

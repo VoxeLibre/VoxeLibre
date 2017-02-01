@@ -163,31 +163,6 @@ minetest.register_on_dignode(function(pos, node)
 end)
 
 --
--- Flint and Steel
---
-
-function mcl_core.set_fire(pointed_thing)
-	local n = minetest.get_node(pointed_thing.above)
-	if n.name ~= ""  and n.name == "air" and not minetest.is_protected(pointed_thing.above, "fire") then
-		minetest.add_node(pointed_thing.above, {name="mcl_fire:basic_flame"})
-	end
-end
-
---
--- Fire Particles
---
-
-function mcl_core.add_fire(pos)
-	local null = {x=0, y=0, z=0}
-	pos.y = pos.y+0.19
-	minetest.add_particle(pos, null, null, 1.1,
-   					1.5, true, "default_fire_particle"..tostring(math.random(1,2)) ..".png")
-	pos.y = pos.y +0.01
-	minetest.add_particle(pos, null, null, 0.8,
-   					1.5, true, "default_fire_particle"..tostring(math.random(1,2)) ..".png")
-end
-
---
 -- Bone Meal
 --
 
