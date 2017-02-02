@@ -93,7 +93,7 @@ end)
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_books:writable_book",
-	recipe = { "mcl_books:books", "mcl_dyes:black", "mcl_mobitems:feather" },
+	recipe = { "mcl_books:book", "mcl_dye:black", "mcl_mobitems:feather" },
 })
 
 -- Written Book
@@ -101,10 +101,41 @@ minetest.register_craftitem("mcl_books:written_book", {
 	description = "Written Book",
 	inventory_image = "mcl_books_book_written.png",
 	groups = { not_in_creative_inventory=1, book=1 },
+	-- TODO: Increase to 16 when this mod is ready
 	stack_max = 1,
 	on_place = read,
 	on_secondary_use = read
 })
+
+-- Copy books
+minetest.register_craft({
+	type = "shapeless",
+	output = "mcl_books:written_book",
+	recipe = {"mcl_books:writable_book", "mcl_books:written_book"}
+})
+
+minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
+	if itemstack:get_name() ~= "mcl_books:written_book" then
+		return
+	end
+
+	local original
+	local index
+	for i = 1, player:get_inventory():get_size("craft") do
+		if old_craft_grid[i]:get_name() == "mcl_books:written_book" then
+			original = old_craft_grid[i]
+			index = i
+		end
+	end
+	if not original then
+		return
+	end
+	local copymeta = original:get_metadata()
+	-- copy of the book held by player's mouse cursor
+	itemstack:set_metadata(copymeta)
+	-- put the book with metadata back in the craft grid
+	craft_inv:set_stack("craft", index, original)
+end)
 
 -- Bookshelf
 minetest.register_node("mcl_books:bookshelf", {
