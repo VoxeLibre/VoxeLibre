@@ -17,7 +17,7 @@ local write = function(itemstack, user, pointed_thing)
 	local formspec = "size[8,9]"..
 		"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
 		"textarea[0.5,0.25;7.5,9.25;text;;"..minetest.formspec_escape(text).."]"..
-		"button_exit[0.5,8.15;3,1;sign;Sign]"..
+		"button[0.5,8.15;3,1;sign;Sign]"..
 		"button_exit[4,8.15;3,1;ok;Done]"
 	minetest.show_formspec(user:get_player_name(), "mcl_books:writable_book", formspec)
 end
@@ -65,7 +65,7 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 					"label[0.5,1.5;"..core.colorize("#404040", minetest.formspec_escape("by " .. name)).."]"..
 					"label[0.5,7.15;"..core.colorize("#000000", "Note: The book will no longer") .. "\n" .. core.colorize("#000000", "be editable after signing.").."]"..
 					"button_exit[0.5,8.15;3,1;sign;Sign and Close]"..
-					"button_exit[4,8.15;3,1;cancel;Cancel]"
+					"button[4,8.15;3,1;cancel;Cancel]"
 				minetest.show_formspec(player:get_player_name(), "mcl_books:signing", formspec)
 			end
 		end
@@ -86,6 +86,12 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 			player:set_wielded_item(newbook)
 		else
 			minetest.log("error", "[mcl_books] "..name.." failed to sign a book!")
+		end
+	elseif ((formname == "mcl_books:signing") and fields and fields.cancel) then
+		local book = player:get_wielded_item()
+		local name = player:get_player_name()
+		if book:get_name() == "mcl_books:writable_book" then
+			write(book, player)
 		end
 	end
 end)
@@ -113,6 +119,7 @@ minetest.register_craft({
 	output = "mcl_books:written_book",
 	recipe = {"mcl_books:writable_book", "mcl_books:written_book"}
 })
+-- TODO: Add copy recipes to copy 2-8 books at once
 
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
 	if itemstack:get_name() ~= "mcl_books:written_book" then
