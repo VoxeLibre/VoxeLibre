@@ -33,7 +33,7 @@ local read = function(itemstack, user, pointed_thing)
 	end
 	local formspec = "size[8,9]"..
 		"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
-		"textarea[0.5,0.25;7.5,9.25;text;;"..minetest.formspec_escape(text).."]"..
+		"textarea[0.5,0.25;7.5,9.25;;"..core.colorize("#000000", minetest.formspec_escape(text))..";]"..
 		"button_exit[2.5,8.15;3,1;ok;Done]"
 	minetest.show_formspec(user:get_player_name(), "mcl_books:written_book", formspec)
 end
@@ -57,6 +57,10 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 				t.metadata = fields.text
 				player:set_wielded_item(ItemStack(t))
 			elseif fields.sign then
+				local t = stack:to_table()
+				t.metadata = fields.text
+				player:set_wielded_item(ItemStack(t))
+
 				local text = stack:get_metadata()
 				local name = player:get_player_name()
 				local formspec = "size[8,9]"..
@@ -65,7 +69,9 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 					"label[0.5,1.5;"..core.colorize("#404040", minetest.formspec_escape("by " .. name)).."]"..
 					"label[0.5,7.15;"..core.colorize("#000000", "Note: The book will no longer") .. "\n" .. core.colorize("#000000", "be editable after signing.").."]"..
 					"button_exit[0.5,8.15;3,1;sign;Sign and Close]"..
-					"button[4,8.15;3,1;cancel;Cancel]"
+					"button[4,8.15;3,1;cancel;Cancel]"..
+					"field_close_on_enter[title;false]"..
+					"field_close_on_enter[sign;false]"
 				minetest.show_formspec(player:get_player_name(), "mcl_books:signing", formspec)
 			end
 		end
