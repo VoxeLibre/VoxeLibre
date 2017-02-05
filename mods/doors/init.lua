@@ -579,7 +579,6 @@ minetest.register_craft({
 	recipe = {
 		{'group:wood', 'group:wood', 'group:wood'},
 		{'group:wood', 'group:wood', 'group:wood'},
-		{'', '', ''},
 	}
 })
 
@@ -697,9 +696,8 @@ minetest.register_node("doors:iron_trapdoor_open", {
 minetest.register_craft({
 	output = 'doors:iron_trapdoor',
 	recipe = {
-		{'mcl_core:steel_ingot', 'mcl_core:steel_ingot', ''},
-		{'mcl_core:steel_ingot', 'mcl_core:steel_ingot', ''},
-		{'', '', ''},
+		{'mcl_core:steel_ingot', 'mcl_core:steel_ingot'},
+		{'mcl_core:steel_ingot', 'mcl_core:steel_ingot'},
 	}
 })
 
