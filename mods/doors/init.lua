@@ -531,10 +531,10 @@ minetest.register_node("doors:trapdoor", {
 	on_creation = function(pos)
 		state = 0
 	end,
-		mesecons = {effector = {
-	action_on = (function(pos, node)
-		punch(pos)
-	end),
+	mesecons = {effector = {
+		action_on = (function(pos, node)
+			punch(pos)
+		end),
 	}},
 	on_rightclick = function(pos, node, clicker)
 		punch(pos)
@@ -660,6 +660,9 @@ minetest.register_node("doors:iron_trapdoor", {
 	on_creation = function(pos)
 		state = 0
 	end,
+	on_rightclick = function(pos, node, clicker)
+		punch(pos)
+	end,
 })
 
 
@@ -686,6 +689,9 @@ minetest.register_node("doors:iron_trapdoor_open", {
 		punch(pos)
 	end),
 	}},
+	on_rightclick = function(pos, node, clicker)
+		punch(pos)
+	end,
 })
 
 minetest.register_craft({
