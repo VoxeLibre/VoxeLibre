@@ -67,12 +67,17 @@ function craftguide:get_tooltip(item, recipe_type, cooktime, groups)
 		return tooltip.."Unknown Item ("..item..")]"
 	end
 	if groups then
-		local groupstr = "Any item belonging to the "
-		for i=1, #groups do
-			groupstr = groupstr..colorize(groups[i])..
+		local groupstr
+		if #groups == 1 then
+			groupstr = "Any item belonging to the " .. colorize(groups[1]) .. " group"
+		else
+			groupstr = "Any item belonging to the following groups: "
+			for i=1, #groups do
+				groupstr = groupstr .. colorize(groups[i])..
 				(groups[i+1] and " and " or "")
+			end
 		end
-		tooltip = tooltip..groupstr.." group(s)"
+		tooltip = tooltip..groupstr
 	end
 	if recipe_type == "cooking" then
 		tooltip = tooltip..item_desc.."\nCooking time: "..
