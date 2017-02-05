@@ -108,7 +108,13 @@ function craftguide:get_recipe(iY, xoffset, tooltip, item, recipe_num, recipes)
 
 	local items = recipes[recipe_num].items
 	local width = recipes[recipe_num].width
-	if width == 0 then width = min(3, #items) end
+	if width == 0 then
+		if #items <= 4 then
+			width = 2
+		else
+			width = min(3, #items)
+		end
+	end
 	local rows = ceil(maxn(items) / width)
 	local btn_size, craftgrid_limit = 1, 5
 
