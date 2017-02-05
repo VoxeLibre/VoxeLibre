@@ -284,9 +284,8 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	type = "shapeless",
 	output = "mcl_farming:pumpkin_seed 4",
-	recipe = {"mcl_farming:pumpkin_face"}
+	recipe = {{"mcl_farming:pumpkin_face"}}
 })
 
 minetest.register_craftitem("mcl_farming:pumpkin_pie", {
