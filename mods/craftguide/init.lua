@@ -10,12 +10,15 @@ local remove, maxn, sort = table.remove, table.maxn, table.sort
 local min, max, floor, ceil = math.min, math.max, math.floor, math.ceil
 
 local group_stereotypes = {
-	wool	     = "wool:white",
-	dye	     = "dye:white",
+	wool	     = "mcl_wool:white",
+	carpet       = "mcl_wool:white_carpet",
+	dye	     = "mcl_dye:white",
 	water_bucket = "bucket:bucket_water",
 	vessel	     = "vessels:glass_bottle",
-	coal	     = "default:coal_lump",
-	flower	     = "flowers:dandelion_yellow",
+	flower	     = "flowers:dandelion",
+	wood_slab    = "stairs:slab_wood",
+	wood_stairs  = "stairs:stairs_wood",
+	coal         = "mcl_core:coal_lump",
 	mesecon_conductor_craftable = "mesecons:wire_00000000_off",
 }
 
@@ -24,8 +27,8 @@ function craftguide:group_to_item(item)
 		local itemsub = item:sub(7)
 		if group_stereotypes[itemsub] then
 			item = group_stereotypes[itemsub]
-		elseif reg_items["default:"..itemsub] then
-			item = item:gsub("group:", "default:")
+		elseif reg_items["mcl_core:"..itemsub] then
+			item = item:gsub("group:", "mcl_core:")
 		else
 			for name, def in pairs(reg_items) do
 				if def.groups[item:match("[^,:]+$")] then
@@ -437,7 +440,7 @@ mt.register_node("craftguide:sign", {
 mt.register_craft({
 	output = "craftguide:book",
 	type = "shapeless",
-	recipe = {"default:book"}
+	recipe = {"mcl_books:book"}
 })
 
 mt.register_craft({
@@ -449,7 +452,7 @@ mt.register_craft({
 mt.register_craft({
 	output = "craftguide:sign",
 	type = "shapeless",
-	recipe = {"default:sign_wall_wood"}
+	recipe = {"signs:sign_wall"}
 })
 
 mt.register_craft({
