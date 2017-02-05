@@ -1,7 +1,7 @@
 minetest.register_node("mesecons_noteblock:noteblock", {
 	description = "Note Block",
 	tiles = {"mesecons_noteblock.png"},
-	groups = {snappy=2,choppy=2,oddly_breakable_by_hand=2},
+	groups = {choppy=2,oddly_breakable_by_hand=2},
 	drawtype = "allfaces_optional",
 	visual_scale = 1.3,
 	paramtype="light",
@@ -9,7 +9,7 @@ minetest.register_node("mesecons_noteblock:noteblock", {
 	after_place_node = function(pos)
 		minetest.add_node(pos, {name="mesecons_noteblock:noteblock", param2=0})
 	end,
-	on_punch = function (pos, node) -- change sound when punched
+	on_rightclick = function (pos, node) -- change sound when punched
 		local param2 = node.param2+1
 		if param2==12 then param2=0 end
 		minetest.add_node(pos, {name = node.name, param2 = param2})

@@ -30,7 +30,7 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 	groups = {dig_immediate=2, dig_by_water=1},
 	is_ground_content = false,
 	description="Lever",
-	on_punch = function (pos, node)
+	on_rightclick = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_walllever:wall_lever_on")
 		mesecon:receptor_on(pos, mesecon.rules.buttonlike_get(node))
 		minetest.sound_play("mesecons_lever", {pos=pos})
@@ -70,7 +70,7 @@ minetest.register_node("mesecons_walllever:wall_lever_on", {
 	is_ground_content = false,
 	drop = '"mesecons_walllever:wall_lever_off" 1',
 	description="Lever",
-	on_punch = function (pos, node)
+	on_rightclick = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_walllever:wall_lever_off")
 		mesecon:receptor_off(pos, mesecon.rules.buttonlike_get(node))
 		minetest.sound_play("mesecons_lever", {pos=pos})

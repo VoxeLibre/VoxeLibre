@@ -38,7 +38,7 @@ minetest.register_node("mesecons_button:button_stone_off", {
 	},
 	groups = {dig_immediate=2, attached_node=1, dig_by_water=1},
 	description = "Stone Button",
-	on_rightclick= function (pos, node)
+	on_rightclick = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_button:button_stone_on")
 		mesecon:receptor_on(pos, mesecon.rules.buttonlike_get(node))
 		minetest.sound_play("mesecons_button_push", {pos=pos})
