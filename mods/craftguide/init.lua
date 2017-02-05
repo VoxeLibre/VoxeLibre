@@ -381,7 +381,7 @@ mt.register_on_player_receive_fields(function(player, formname, fields)
 	end
 end)
 
-function craftguide:on_use(itemstack, user)
+function craftguide:on_use(user)
 	if not datas.init_items then
 		craftguide:get_init_items()
 	end
@@ -401,65 +401,8 @@ function craftguide:on_use(itemstack, user)
 	end
 end
 
-mt.register_craftitem("craftguide:book", {
-	description = "Crafting Guide",
-	inventory_image = "craftguide_book.png",
-	wield_image = "craftguide_book.png",
-	stack_max = 1,
-	groups = {book=1},
-	on_use = function(itemstack, user)
-		craftguide:on_use(itemstack, user)
+mt.register_on_player_receive_fields(function(player, formname, fields)
+	if fields.__mcl_craftguide then
+		craftguide:on_use(player)
 	end
-})
-
-mt.register_node("craftguide:sign", {
-	description = "Crafting Guide Sign",
-	drawtype = "nodebox",
-	tiles = {"craftguide_sign.png"},
-	inventory_image = "craftguide_sign_inv.png",
-	wield_image = "craftguide_sign_inv.png",
-	paramtype = "light",
-	paramtype2 = "wallmounted",
-	sunlight_propagates = true,
-	groups = {wood=1, oddly_breakable_by_hand=1, flammable=3},
-	node_box = {
-		type = "wallmounted",
-		wall_top    = {-0.4375, 0.4375, -0.3125, 0.4375, 0.5, 0.3125},
-		wall_bottom = {-0.4375, -0.5, -0.3125, 0.4375, -0.4375, 0.3125},
-		wall_side   = {-0.5, -0.3125, -0.4375, -0.4375, 0.3125, 0.4375}
-	},
-	on_construct = function(pos)
-		local meta = minetest.get_meta(pos)
-		meta:set_string("infotext", "Crafting Guide Sign")
-	end,
-	on_rightclick = function(pos, node, user, itemstack)
-		craftguide:on_use(itemstack, user)
-	end
-})
-
-mt.register_craft({
-	output = "craftguide:book",
-	type = "shapeless",
-	recipe = {"mcl_books:book"}
-})
-
-mt.register_craft({
-	type = "fuel",
-	recipe = "craftguide:book",
-	burntime = 3
-})
-
-mt.register_craft({
-	output = "craftguide:sign",
-	type = "shapeless",
-	recipe = {"signs:sign_wall"}
-})
-
-mt.register_craft({
-	type = "fuel",
-	recipe = "craftguide:sign",
-	burntime = 10
-})
-
-mt.register_alias("xdecor:crafting_guide", "craftguide:book")
-
+end)
