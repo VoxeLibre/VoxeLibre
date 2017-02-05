@@ -103,6 +103,7 @@ function craftguide:get_recipe(iY, xoffset, tooltip, item, recipe_num, recipes)
 
 	local items = recipes[recipe_num].items
 	local width = recipes[recipe_num].width
+	local cooking_time = 10
 	local is_shapeless = false
 	if recipe_type == "normal" and width == 0 then
 		is_shapeless = true
@@ -114,16 +115,16 @@ function craftguide:get_recipe(iY, xoffset, tooltip, item, recipe_num, recipes)
 	end
 
 	if recipe_type == "cooking" then
+		cooking_time = width
+		width = 1
 		formspec = formspec..
 			"image["..(xoffset-0.8)..","..(iY+1)..
 				".5;0.5,0.5;default_furnace_front_active.png]"
 	elseif is_shapeless then
 		formspec = formspec..
 			"image["..(xoffset-0.8)..","..(iY+1)..
-				".5;0.5,0.5;craftguide_shapeless.png^[transformFX]"
+				".5;0.5,0.5;craftguide_shapeless.png]"
 	end
-
-	-- TODO: Make “crafting arrow” point to the right, not to the left
 
 	local rows = ceil(maxn(items) / width)
 	local btn_size, craftgrid_limit = 1, 5
@@ -136,13 +137,14 @@ function craftguide:get_recipe(iY, xoffset, tooltip, item, recipe_num, recipes)
 				width.."x"..rows..")]"
 	else
 		for i, v in pairs(items) do
-			local X = (i-1) % width + xoffset
+			local X = (i-1) % width + xoffset - 4 + (3 - max(1, width))
 			local Y = ceil(i / width + iY+2 - min(2, rows))
 
 			if recipe_type == "normal" and
 					width > 3 or rows > 3 then
 				btn_size = width > 3 and 3 / width or 3 / rows
-				X = btn_size * (i % width) + xoffset
+				X = btn_size * (i % width) + xoffset - 4 + (3 - max(1, width))
+
 				Y = btn_size * floor((i-1) / width) + iY+3 -
 					min(2, rows)
 			end
@@ -151,7 +153,7 @@ function craftguide:get_recipe(iY, xoffset, tooltip, item, recipe_num, recipes)
 			local label = groups and "\nG" or ""
 			local item_r = self:group_to_item(v)
 			local tltip = self:get_tooltip(
-					item_r, recipe_type, width, groups)
+					item_r, recipe_type, cooking_time, groups)
 
 			formspec = formspec..
 				"item_image_button["..X..","..Y..";"..
@@ -163,7 +165,7 @@ function craftguide:get_recipe(iY, xoffset, tooltip, item, recipe_num, recipes)
 	return formspec..
 		"image["..(xoffset-1)..","..(iY+2)..
 			".12;0.9,0.7;craftguide_arrow.png]"..
-		"item_image_button["..(xoffset-2)..","..(iY+2)..";1,1;"..
+		"item_image_button["..(xoffset)..","..(iY+2)..";1,1;"..
 			output..";"..item..";]"..tooltip
 end
 
@@ -199,7 +201,7 @@ function craftguide:get_formspec(player_name, is_fuel)
 				mt.formspec_escape(data.filter).."]"
 
 	local even_num = data.iX % 2 == 0
-	local xoffset = data.iX / 2 + (even_num and 0.5 or 0)
+	local xoffset = data.iX / 2 + (even_num and 0.5 or 0) + 2
 
 	if not next(data.items) then
 		formspec = formspec..
@@ -226,9 +228,9 @@ function craftguide:get_formspec(player_name, is_fuel)
 			formspec = formspec..
 				"image["..(xoffset-1)..","..(iY+2)..
 					".12;0.9,0.7;craftguide_arrow.png]"..
-				"item_image_button["..xoffset..","..(iY+2)..
+				"item_image_button["..(xoffset-2)..","..(iY+2)..
 					";1,1;"..data.item..";"..data.item..";]"..
-				tooltip.."image["..(xoffset-2)..","..
+				tooltip.."image["..(xoffset)..","..
 					(iY+1.98)..";1,1;craftguide_fire.png]"
 		else
 			formspec = formspec..self:get_recipe(
