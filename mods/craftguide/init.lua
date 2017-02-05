@@ -120,8 +120,10 @@ function craftguide:get_recipe(iY, xoffset, tooltip, item, recipe_num, recipes)
 	elseif is_shapeless then
 		formspec = formspec..
 			"image["..(xoffset-0.8)..","..(iY+1)..
-				".5;0.5,0.5;craftguide_shapeless.png]"
+				".5;0.5,0.5;craftguide_shapeless.png^[transformFX]"
 	end
+
+	-- TODO: Make “crafting arrow” point to the right, not to the left
 
 	local rows = ceil(maxn(items) / width)
 	local btn_size, craftgrid_limit = 1, 5
