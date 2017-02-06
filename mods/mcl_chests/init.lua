@@ -95,7 +95,6 @@ minetest.register_node("mcl_chests:chest", {
 		else
 			meta:set_string("formspec",
 					"size[9,8.75]"..
-					"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
 					mcl_core.inventory_header..
 					"list[current_name;main;0,0.5;9,3;]"..
 					"list[current_player;main;0,4.5;9,3;9]"..
@@ -258,3 +257,45 @@ minetest.register_craft({
 		{'group:wood', 'group:wood', 'group:wood'},
 	}
 })
+
+minetest.register_node("mcl_chests:ender_chest", {
+	description = "Ender Chest",
+	tiles = {"mcl_chests_ender_chest_top.png", "mcl_chests_ender_chest_bottom.png",
+		"mcl_chests_ender_chest_right.png", "mcl_chests_ender_chest_left.png",
+		"mcl_chests_ender_chest_back.png", "mcl_chests_ender_chest_front.png"},
+	groups = {cracky=1, deco_block=1},
+	is_ground_content = false,
+	light_source = 7,
+	paramtype = "light",
+	paramtype2 = "facedir",
+	sounds = mcl_core.node_sound_stone_defaults(),
+	drop = "mcl_core:obsidian 8",
+	on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		meta:set_string("formspec", 
+				"size[9,8.75]"..
+				mcl_core.inventory_header..
+				"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
+				"list[current_player;enderchest;0,0.5;9,3;]"..
+				"list[current_player;main;0,4.5;9,3;9]"..
+				"list[current_player;main;0,7.74;9,1;]"..
+				"listring[current_player;enderchest]"..
+				"listring[current_player;main]")
+	end,
+})
+
+minetest.register_on_joinplayer(function(player)
+	local inv = player:get_inventory()
+	inv:set_size("enderchest", 9*3)
+end)
+
+minetest.register_craft({
+	output = 'mcl_chests:ender_chest',
+	recipe = {
+		{'mcl_core:obsidian', 'mcl_core:obsidian', 'mcl_core:obsidian'},
+		{'mcl_core:obsidian', 'mcl_end:ender_eye', 'mcl_core:obsidian'},
+		{'mcl_core:obsidian', 'mcl_core:obsidian', 'mcl_core:obsidian'},
+	}
+})
+
+

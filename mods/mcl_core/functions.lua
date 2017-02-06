@@ -438,7 +438,7 @@ function mcl_core.duengen(pointed_thing)
 		generate_tree(pos, "mcl_core:tree", "mcl_core:leaves", 1)
 		return true
 	elseif string.find(n.name, "mcl_farming:wheat_") ~= nil then
-		stage = string.sub(n.name, 15)
+		stage = string.sub(n.name, -1)
 		if stage == "3" then
 			minetest.add_node(pos, {name="mcl_farming:wheat"})
 		elseif math.random(1,5) < 3 then
@@ -448,15 +448,23 @@ function mcl_core.duengen(pointed_thing)
 		end
 		return true
 	elseif string.find(n.name, "mcl_farming:potato_") ~= nil then
-		stage = tonumber(string.sub(n.name, 16))
+		stage = tonumber(string.sub(n.name, -1))
 		if stage == 1 then
 			minetest.add_node(pos, {name="mcl_farming:potato_"..math.random(stage,2)})
 		else
 			minetest.add_node(pos, {name="mcl_farming:potato"})
 		end
 		return true
+	elseif string.find(n.name, "mcl_farming:beetroot_") ~= nil then
+		stage = tonumber(string.sub(n.name, -1))
+		if stage == 1 then
+			minetest.add_node(pos, {name="mcl_farming:beetroot_"..math.random(stage,2)})
+		else
+			minetest.add_node(pos, {name="mcl_farming:beetroot"})
+		end
+		return true
 	elseif string.find(n.name, "mcl_farming:carrot_") ~= nil then
-		stage = tonumber(string.sub(n.name, 16))
+		stage = tonumber(string.sub(n.name, -1))
 		if stage == 1 then
 			minetest.add_node(pos, {name="mcl_farming:carrot_"..math.random(stage,2)})
 		else
@@ -464,7 +472,7 @@ function mcl_core.duengen(pointed_thing)
 		end
 		return true
 	elseif string.find(n.name, "mcl_farming:pumpkin_") ~= nil then
-		stage = tonumber(string.sub(n.name, 17))
+		stage = tonumber(string.sub(n.name, -1))
 		if stage == 1 then
 			minetest.add_node(pos, {name="mcl_farming:pumpkin_"..math.random(stage,2)})
 		else
@@ -472,7 +480,7 @@ function mcl_core.duengen(pointed_thing)
 		end
 		return true
 	elseif string.find(n.name, "mcl_farming:melontige_") ~= nil then
-		stage = tonumber(string.sub(n.name, 18))
+		stage = tonumber(string.sub(n.name, -1))
 		if stage == 1 then
 			minetest.add_node(pos, {name="mcl_farming:melontige_"..math.random(stage,2)})
 		else
