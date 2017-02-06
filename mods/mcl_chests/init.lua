@@ -96,6 +96,8 @@ minetest.register_node("mcl_chests:chest", {
 			meta:set_string("formspec",
 					"size[9,8.75]"..
 					mcl_core.inventory_header..
+					"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
+					"image[0,-0.2;5,0.75;fnt_chest.png]"..
 					"list[current_name;main;0,0.5;9,3;]"..
 					"list[current_player;main;0,4.5;9,3;9]"..
 					"list[current_player;main;0,7.74;9,1;]"..
@@ -155,6 +157,7 @@ minetest.register_node("mcl_chests:chest_left", {
 		meta:set_string("formspec",
 				"size[9,8.75]"..
 				"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
+				"image[0,-0.2;5,0.75;fnt_chest.png]"..
 				mcl_core.inventory_header..
 				"list[current_name;main;0,0.5;9,3;]"..
 				"list[current_player;main;0,4.5;9,3;9]"..
@@ -213,6 +216,7 @@ minetest.register_node("mcl_chests:chest_right", {
 		meta:set_string("formspec",
 				"size[9,8.75]"..
 				"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
+				"image[0,-0.2;5,0.75;fnt_chest.png]"..
 				mcl_core.inventory_header..
 				"list[current_name;main;0,0.5;9,3;]"..
 				"list[current_player;main;0,4.5;9,3;9]"..
@@ -265,6 +269,7 @@ minetest.register_node("mcl_chests:ender_chest", {
 		"mcl_chests_ender_chest_back.png", "mcl_chests_ender_chest_front.png"},
 	groups = {cracky=1, deco_block=1},
 	is_ground_content = false,
+	paramtype = "light",
 	light_source = 7,
 	paramtype2 = "facedir",
 	sounds = mcl_core.node_sound_stone_defaults(),
@@ -275,6 +280,7 @@ minetest.register_node("mcl_chests:ender_chest", {
 				"size[9,8.75]"..
 				mcl_core.inventory_header..
 				"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
+				"image[0,-0.2;5,0.75;fnt_ender_chest.png]"..
 				"list[current_player;enderchest;0,0.5;9,3;]"..
 				"list[current_player;main;0,4.5;9,3;9]"..
 				"list[current_player;main;0,7.74;9,1;]"..
