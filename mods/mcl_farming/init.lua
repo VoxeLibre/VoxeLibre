@@ -92,8 +92,7 @@ dofile(minetest.get_modpath("mcl_farming").."/potatoes.lua")
 dofile(minetest.get_modpath("mcl_farming").."/mushrooms.lua")
 
 -- ========= BEETROOT =========
--- TODO: Add beetroot textures
---dofile(minetest.get_modpath("mcl_farming").."/beetroot.lua")
+dofile(minetest.get_modpath("mcl_farming").."/beetroot.lua")
 
 local time_to_load= os.clock() - init
 print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
