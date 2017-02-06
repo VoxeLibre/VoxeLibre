@@ -433,18 +433,15 @@ minetest.register_node("mcl_core:haybale", {
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
---[[
 minetest.register_node("mcl_core:bone_block", {
 	description = "Bone Block",
-	-- FIXME: Missing texutres
-	tiles = {"default_bone_block_top.png", "default_bone_block_top.png", "default_bone_block_side.png"},
+	tiles = {"mcl_core_bone_block_top.png", "mcl_core_bone_block_top.png", "mcl_core_bone_block_side.png"},
 	is_ground_content = false,
 	paramtype2 = "facedir",
 	on_place = minetest.rotate_node,
-	groups = {cracky=3, building_block=1},
+	groups = {cracky=2, building_block=1},
 	sounds = mcl_core.node_sound_stone_defaults(),
 })
-]]
 
 minetest.register_node("mcl_core:sea_lantern", {
 	description = "Sea Lantern",
