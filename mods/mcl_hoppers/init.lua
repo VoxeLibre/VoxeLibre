@@ -18,7 +18,7 @@ minetest.register_node("mcl_hoppers:hopper", {
 	groups = {cracky=1,level=2,not_in_creative_inventory=1},
 	drawtype = "nodebox",
 	paramtype = "light",
-	tiles = {"default_coal_block.png"},
+	tiles = {"mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_inside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png"},
 	selection_box = {type="regular"},
 	node_box = {
 			type = "fixed",
@@ -78,7 +78,7 @@ minetest.register_node("mcl_hoppers:hopper_side", {
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",
-	tiles = {"default_coal_block.png"},
+	tiles = {"mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_inside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png"},
 	selection_box = {type="regular"},
 	node_box = {
 			type = "fixed",
