@@ -36,17 +36,13 @@ Mods credit:
 See README.txt in each mod directory for information about other authors.
 
 ### License of media (textures and sounds)
+The textures, unless otherwise noted, are taken from the Faithful 1.11 resource pack for Minecraft,
+authored by Vattic, xMrVizzy and many others.
 
-!!! WARNING WARNING WARNING !!!
-
-The textures are NOT released under a libre license. Yes, I know, this sucks and I should be ashamed
-of myself. But please be aware of this. You can NOT legally use them in free software.
-Because I know perfectly how much this sucks, I will eventually try to replace all textures anyway, as I don't like 32×32.
-So please have patience.
-
-The textures, unless otherwise noted, are taken from the Faithful 32x32 resource pack for Minecraft,
-authored by Vattic.
+Source:
 http://www.minecraftforum.net/topic/72747-/
+
+The license of this texture pack is the MIT license.
 
 License of all main menu images: WTFPL
 
