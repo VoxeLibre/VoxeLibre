@@ -277,7 +277,9 @@ minetest.register_node("mcl_core:grass_path", {
 		}
 	},
 	groups = { crumbly=3, not_in_creative_inventory=1, },
-	sounds = mcl_core.node_sound_dirt_defaults(),
+	sounds = mcl_core.node_sound_dirt_defaults({
+		footstep = {name="default_grass_footstep", gain=0.4},
+	}),
 })
 
 -- TODO: Add particles
