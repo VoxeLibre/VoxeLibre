@@ -222,6 +222,12 @@ minetest.register_craftitem("mcl_mobitems:rabbit_stew", {
 	groups = { food = 3, eatable = 10 },
 })
 
+minetest.register_craftitem("mcl_mobitems:shulker_shell", {
+	description = "Shulker Shell",
+	inventory_image = "mcl_mobitems_shulker_shell.png",
+	groups = { craftitem = 1 },
+})
+
 minetest.register_tool("mcl_mobitems:carrot_on_a_stick", {
 	description = "Carrot on a Stick",
 	wield_image = "mcl_mobitems_carrot_on_a_stick.png",

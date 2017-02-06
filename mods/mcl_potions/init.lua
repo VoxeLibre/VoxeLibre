@@ -43,12 +43,10 @@ minetest.register_craft({
 	}
 })
 
--- TODO: Get texture
---[[
 minetest.register_craftitem("mcl_potions:dragon_breath", {
 	description = "Dragon's Breath",
 	wield_image = "mcl_potions_dragon_breath.png",
 	inventory_image = "mcl_potions_dragon_breath.png",
+	groups = { brewitem = 1 },
 	stack_max = 64,
 })
-]]
