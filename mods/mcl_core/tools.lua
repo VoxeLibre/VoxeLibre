@@ -105,6 +105,27 @@ minetest.register_tool("mcl_core:pick_diamond", {
 	},
 })
 
+local make_grass_path = function(itemstack, placer, pointed_thing)
+	if minetest.get_node(pointed_thing.under).name == "mcl_core:dirt_with_grass" and pointed_thing.above.y == pointed_thing.under.y then
+		local above = table.copy(pointed_thing.under)
+		above.y = above.y + 1
+		if minetest.get_node(above).name == "air" then
+			if not minetest.setting_getbool("creative_mode") then
+				-- Add wear, as if digging a level 0 crumbly node
+				local def = minetest.registered_items[itemstack:get_name()]
+				local base_uses = def.tool_capabilities.groupcaps.crumbly.uses
+				local maxlevel = def.tool_capabilities.groupcaps.crumbly.maxlevel
+				local uses = base_uses * math.pow(3, maxlevel)
+				local wear = math.ceil(65535 / uses)
+				itemstack:add_wear(wear)
+			end
+			minetest.sound_play({name="default_dirt_footstep", gain=1.1}, {pos = above})
+			minetest.swap_node(pointed_thing.under, {name="mcl_core:grass_path"})
+		end
+	end
+	return itemstack
+end
+
 -- Shovels
 minetest.register_tool("mcl_core:shovel_wood", {
 	description = "Wooden Shovel",
@@ -119,6 +140,7 @@ minetest.register_tool("mcl_core:shovel_wood", {
 		},
 		damage_groups = {fleshy=2},
 	},
+	on_place = make_grass_path,
 })
 minetest.register_tool("mcl_core:shovel_stone", {
 	description = "Stone Shovel",
@@ -133,6 +155,7 @@ minetest.register_tool("mcl_core:shovel_stone", {
 		},
 		damage_groups = {fleshy=3},
 	},
+	on_place = make_grass_path,
 })
 minetest.register_tool("mcl_core:shovel_steel", {
 	description = "Iron Shovel",
@@ -147,6 +170,7 @@ minetest.register_tool("mcl_core:shovel_steel", {
 		},
 		damage_groups = {fleshy=4},
 	},
+	on_place = make_grass_path,
 })
 minetest.register_tool("mcl_core:shovel_gold", {
 	description = "Golden Shovel",
@@ -161,6 +185,7 @@ minetest.register_tool("mcl_core:shovel_gold", {
 		},
 		damage_groups = {fleshy=2},
 	},
+	on_place = make_grass_path,
 })
 minetest.register_tool("mcl_core:shovel_diamond", {
 	description = "Diamond Shovel",
@@ -175,6 +200,7 @@ minetest.register_tool("mcl_core:shovel_diamond", {
 		},
 		damage_groups = {fleshy=5},
 	},
+	on_place = make_grass_path,
 })
 
 -- Axes
