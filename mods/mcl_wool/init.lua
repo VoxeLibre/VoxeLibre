@@ -64,7 +64,7 @@ for _, row in ipairs(wool.dyes) do
 		minetest.register_craft({
 			type = "shapeless",
 			output = 'mcl_wool:'..name,
-			recipe = {'group:dye,'..craft_color_group, 'group:wool'},
+			recipe = {'group:dye,'..craft_color_group, 'mcl_wool:white'},
 		})
 		minetest.register_craft({
 			output = 'mcl_wool:'..name..'_carpet 3',
