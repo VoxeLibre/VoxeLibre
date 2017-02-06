@@ -266,7 +266,6 @@ minetest.register_node("mcl_chests:ender_chest", {
 	groups = {cracky=1, deco_block=1},
 	is_ground_content = false,
 	light_source = 7,
-	paramtype = "light",
 	paramtype2 = "facedir",
 	sounds = mcl_core.node_sound_stone_defaults(),
 	drop = "mcl_core:obsidian 8",
