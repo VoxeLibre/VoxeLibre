@@ -276,7 +276,7 @@ minetest.register_node("mcl_core:grass_path", {
 			{-0.5, -0.5, -0.5, 0.5, 0.4375, 0.5},
 		}
 	},
-	groups = { crumbly=3, not_in_creative_inventory=1, soil=2, soil_sapling=1 },
+	groups = { crumbly=3, not_in_creative_inventory=1, },
 	sounds = mcl_core.node_sound_dirt_defaults(),
 })
 
