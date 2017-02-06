@@ -5,6 +5,11 @@ This document is a WORK IN PROGRESS. Currently, it only contains some informatio
 ## Groups
 This section explains all the used groups in this subgame.
 
+### Special groups
+
+* `not_in_creative_inventory=1`: Item will not be shown in creative inventory
+* `not_in_craft_guide=1`: Item will not be shown as result or fuel item in crafting guide (but still may be shown as ingredient)
+
 ### Groups for interactions
 
 * `dig_by_water=1`: Blocks with this group will drop when they are near flowing water
@@ -17,7 +22,7 @@ This section explains all the used groups in this subgame.
 * `soil_sugarcane=1`: Sugar canes will grow on this near water
 * `disable_suffocation=1`: Disables suffocation for full solid cubes (1)
 
-### Footnotes
+#### Footnotes
 
 1. Normally, all walkable blocks with the default 1×1×1 cube as a collision box (e.g. sand,
    gravel, stone, but not fences) will damage the players while their head is inside. This

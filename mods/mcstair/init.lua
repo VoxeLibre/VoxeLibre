@@ -194,7 +194,9 @@ function mcstair.add(name, stairtiles)
 	outer_groups.not_in_creative_inventory = 1
 	local inner_groups = table.copy(outer_groups)
 	outer_groups.stair = 2
+	outer_groups.not_in_craft_guide = 1
 	inner_groups.stair = 3
+	inner_groups.not_in_craft_guide = 1
 	local drop = node_def.drop or name
 	local after_dig_node = function(pos, oldnode)
 		local param = get_stair_param(oldnode)
