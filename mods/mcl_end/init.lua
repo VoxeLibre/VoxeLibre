@@ -9,7 +9,7 @@ minetest.register_node("mcl_end:end_stone", {
 
 minetest.register_node("mcl_end:end_bricks", {
 	description = "End Stone Bricks",
-	tiles = {"mcl_end_end_stone_brick.png"},
+	tiles = {"mcl_end_end_bricks.png"},
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {cracky=3,building_block=1},

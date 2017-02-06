@@ -136,6 +136,7 @@ end
 local woods = { "", "_spruce", "_birch", "_jungle", "_dark", "_acacia" }
 local names = { "Oak Boat", "Spruce Boat", "Birch Boat", "Jungle Boat", "Dark Oak Boat", "Acacia Boat" }
 local craftstuffs = { "mcl_core:wood", "mcl_core:sprucewood", "mcl_core:birchwood", "mcl_core:junglewood", "mcl_core:darkwood", "mcl_core:acaciawood" }
+local images = { "oak", "spruce", "birch", "jungle", "dark_oak", "acacia" }
 
 for w=1, #woods do
 	local textures = {"mcl_boats_texture.png"}
@@ -143,7 +144,7 @@ for w=1, #woods do
 
 	minetest.register_craftitem("mcl_boats:boat"..woods[w], {
 		description = names[w],
-		inventory_image = "mcl_boats_inventory.png",
+		inventory_image = "mcl_boats_"..images[w].."_boat.png",
 		liquids_pointable = true,
 		groups = { boat = 1, transport = 1},
 		stack_max = 1,
