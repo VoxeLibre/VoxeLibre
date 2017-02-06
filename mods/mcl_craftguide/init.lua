@@ -1,3 +1,5 @@
+mcl_craftguide = {}
+
 local craftguide, datas, mt = {}, {}, minetest
 local progressive_mode = mt.setting_getbool("craftguide_progressive_mode")
 local get_recipe, get_recipes = mt.get_craft_recipe, mt.get_all_craft_recipes
@@ -424,6 +426,10 @@ function craftguide:on_use(user)
 	else
 		show_formspec(player_name, "craftguide", data.formspec)
 	end
+end
+
+mcl_craftguide.show_craftguide = function(player)
+	craftguide:on_use(player)
 end
 
 mt.register_on_player_receive_fields(function(player, formname, fields)

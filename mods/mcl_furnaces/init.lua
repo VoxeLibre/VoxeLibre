@@ -8,12 +8,20 @@ local furnace_inactive_formspec =
 	"list[current_name;fuel;2.75,2.5;1,1;]"..
 	"list[current_name;dst;5.75,1.5;1,1;]"..
 	"image[2.75,1.5;1,1;default_furnace_fire_bg.png]"..
+	"image_button[8,0;1,1;craftguide_book.png;__mcl_craftguide;]"..
+	"tooltip[__mcl_craftguide;Show crafting recipes]"..
 	"listring[current_name;dst]"..
 	"listring[current_player;main]"..
 	"listring[current_name;src]"..
 	"listring[current_player;main]"..
 	"listring[current_name;fuel]"..
 	"listring[current_player;main]"
+
+local craftguide = function(pos, formname, fields, sender)
+	if fields.__mcl_craftguide then
+		mcl_craftguide.show_craftguide(sender)
+	end
+end
 
 minetest.register_node("mcl_furnaces:furnace", {
 	description = "Furnace",
@@ -77,6 +85,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 			return 0
 		end
 	end,
+	on_receive_fields = craftguide,
 })
 
 minetest.register_node("mcl_furnaces:furnace_active", {
@@ -142,6 +151,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 			return 0
 		end
 	end,
+	on_receive_fields = craftguide,
 })
 
 minetest.register_abm({
@@ -206,6 +216,8 @@ minetest.register_abm({
 				"list[current_name;dst;5.75,1.5;1,1;]"..
 				"image[2.75,1.5;1,1;default_furnace_fire_bg.png^[lowpart:"..
 				(100-percent)..":default_furnace_fire_fg.png]"..
+				"image_button[8,0;1,1;craftguide_book.png;__mcl_craftguide;]"..
+				"tooltip[__mcl_craftguide;Show crafting recipes]"..
 				"listring[current_name;dst]"..
 				"listring[current_player;main]"..
 				"listring[current_name;src]"..
