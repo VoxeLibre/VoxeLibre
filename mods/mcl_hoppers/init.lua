@@ -176,7 +176,7 @@ minetest.register_abm({
 		local bshulker = not (bg == 0 or bg == nil)
 
 		--the mcl_hoppers input
-		if b == "mcl_chests:chest" or b == "mcl_chests:chest_left" or b == "mcl_chests:chest_right" or bshulker then
+		if b == "mcl_chests:chest" or b == "mcl_chests:chest_left" or b == "mcl_chests:chest_right" or bshulker or b == "mcl_hoppers:hopper" or b == "mcl_hoppers:hopper_side" then
 			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
@@ -346,7 +346,7 @@ minetest.register_abm({
 		local bshulker = not (bg == 0 or bg == nil)
 
 		--the mcl_hoppers input
-		if b == "mcl_chests:chest" or b == "mcl_chests:chest_left" or b == "mcl_chests:chest_right" or bshulker then
+		if b == "mcl_chests:chest" or b == "mcl_chests:chest_left" or b == "mcl_chests:chest_right" or bshulker or b == "mcl_hoppers:hopper" or b == "mcl_hoppers:hopper_side" then
 			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
