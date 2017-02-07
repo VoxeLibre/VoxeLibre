@@ -43,6 +43,7 @@ minetest.register_node("gemalde:node_"..n.."", {
 	walkable = false,
 	selection_box = {
 		type = "wallmounted",
+		wall_side = { -0.5, -1.5, -1.5, -0.4(1/16), 1.5, 1.5 },
 	},
 	drop = "gemalde:node_1",
 	groups = groups,
