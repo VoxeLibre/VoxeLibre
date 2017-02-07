@@ -316,7 +316,6 @@ for color, desc in pairs(boxtypes) do
 			"mcl_chests_"..color.."_shulker_box_side.png", "mcl_chests_"..color.."_shulker_box_side.png"},
 		groups = {cracky=2, deco_block=1, shulker_box=1},
 		is_ground_content = false,
-		paramtype2 = "facedir",
 		sounds = mcl_core.node_sound_stone_defaults(),
 		stack_max = 1,
 		drop = "",
