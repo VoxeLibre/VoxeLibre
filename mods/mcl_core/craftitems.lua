@@ -8,7 +8,7 @@ minetest.register_craftitem("mcl_core:stick", {
 	description = "Stick",
 	inventory_image = "default_stick.png",
 	stack_max = 64,
-	groups = { craftitem=1 },
+	groups = { craftitem=1, stick=1 },
 })
 
 minetest.register_craftitem("mcl_core:paper", {

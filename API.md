@@ -43,6 +43,7 @@ This section explains all the used groups in this subgame.
 * `coal=1`: Coal of any kind (lumps only, not blocks)
 * `wool=1`: Wool (only full blocks)
 * `carpet=1:` (Wool) carpet
+* `stick=1`: Stick
 
 ### Declarative groups
 These groups are used mostly for informational purposes
