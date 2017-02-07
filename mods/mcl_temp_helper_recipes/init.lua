@@ -6,9 +6,40 @@ minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_core:gunpowder",
 	recipe = {
-		'mcl_core:sand',
+		'group:sand',
 		'mcl_core:gravel',
 	}
+})
+
+minetest.register_craft({
+	output = "mcl_core:sponge",
+	recipe = {
+		{ "mcl_core:haybale", "mcl_core:haybale", "mcl_core:haybale" },
+		{ "mcl_core:haybale", "mcl_core:emerald", "mcl_core:haybale" },
+		{ "mcl_core:haybale", "mcl_core:haybale", "mcl_core:haybale" },
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_core:redsand 8",
+	recipe = {
+		{ "mcl_core:sand", "mcl_core:sand", "mcl_core:sand" },
+		{ "mcl_core:sand", "mcl_dye:red", "mcl_core:sand" },
+		{ "mcl_core:sand", "mcl_core:sand", "mcl_core:sand" },
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_core:prismarine_shard",
+	recipe = {
+		{ "mcl_core:glass_cyan", },
+	}
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "mcl_core:prismarine_crystals",
+	recipe = { "mcl_core:prismarine_shard", "mcl_core:prismarine_shard", "mcl_core:prismarine_shard", "mcl_core:emerald" },
 })
 
 minetest.register_craft({
@@ -26,7 +57,7 @@ minetest.register_craft({
 	output = "mcl_dye:white",
 	recipe = {
 		{"mcl_core:dirt", "mcl_core:dirt", "mcl_core:dirt"},
-		{"mcl_core:dirt", "mcl_core:dirt", "mcl_core:dirt"},
+		{"mcl_core:dirt", "mcl_core:iron_nugget", "mcl_core:dirt"},
 		{"mcl_core:dirt", "mcl_core:dirt", "mcl_core:dirt"},
 	},
 })
@@ -38,6 +69,21 @@ minetest.register_craft({
 		{ "mcl_flowers:allium", "mcl_flowers:allium", "mcl_flowers:allium" },
 		{ "mcl_flowers:allium", "mcl_flowers:allium", "mcl_flowers:allium" },
 	},
+})
+
+minetest.register_craft({
+	output = "mcl_end:end_stone",
+	recipe = {
+		{ "mcl_core:sandstone", "mcl_core:stone", "mcl_core:sandstone" },
+		{ "mcl_core:stone", "mcl_core:sandstone", "mcl_core:stone" },
+		{ "mcl_core:sandstone", "mcl_core:stone", "mcl_core:sandstone" },
+	},
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "mcl_throwing:ender_pearl",
+	recipe = { "mcl_core:emeraldblock", "mcl_core:diamondblock", "mcl_core:goldblock", }
 })
 
 minetest.register_craft({
@@ -62,16 +108,16 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_mobitems:blaze_rod",
 	recipe = {
-		 { "", "mcl_fire:flint_and_steel", ""},
+		 { "mcl_fire:flint_and_steel", "mcl_fire:flint_and_steel", "mcl_fire:flint_and_steel"},
 		 { "mcl_fire:flint_and_steel", "mcl_core:stick", "mcl_fire:flint_and_steel" },
-		 { "", "mcl_fire:flint_and_steel", ""},
+		 { "mcl_fire:flint_and_steel", "mcl_fire:flint_and_steel", "mcl_fire:flint_and_steel"},
 	}
 })
 minetest.register_craft({
 	output = "mcl_mobitems:shulker_shell",
 	recipe = {
 		 { "mcl_end:purpur_block", "mcl_end:purpur_block", "mcl_end:purpur_block", },
-		 { "mcl_end:purpur_block", "", "mcl_end:purpur_block", },
+		 { "mcl_end:purpur_block", "mcl_core:emerald", "mcl_end:purpur_block", },
 		 { "mcl_end:purpur_block", "", "mcl_end:purpur_block", },
 	}
 })
@@ -83,3 +129,11 @@ minetest.register_craft({
 	cooktime = 10,
 })
 
+minetest.register_craft({
+	output = "mcl_core:quartz_crystal",
+	recipe = {
+		{"group:sand", "group:sand", "group:sand"},
+		{"group:sand", "group:sand", "group:sand"},
+		{"group:sand", "group:sand", "group:sand"},
+	}
+})
