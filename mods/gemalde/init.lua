@@ -32,7 +32,7 @@ end
 minetest.register_node("gemalde:node_"..n.."", {
 	description = desc,
 	drawtype = "signlike",
-	tiles = {"gemalde_"..n..".png"},
+	tiles = {"gemalde_"..n..".png","gemalde_bg.png"},
 	visual_scale = 3.0,
 	inventory_image = "gemalde_node.png",
 	is_ground_content = false,
