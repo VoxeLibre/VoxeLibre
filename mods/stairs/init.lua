@@ -99,7 +99,8 @@ local slab_trans_dir_place = {[0] = 0, 20, 12, 16, 4, 8}
 -- Register slabs.
 -- Node will be called stairs:slab_<subname>
 
-function stairs.register_slab(subname, recipeitem, groups, images, description, sounds)
+-- double_description: NEW argument, not supported in Minetest Game
+function stairs.register_slab(subname, recipeitem, groups, images, description, sounds, double_description)
 	groups.slab = 1
 	groups.building_block = 1
 	minetest.register_node(":stairs:slab_" .. subname, {
@@ -138,7 +139,13 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 							player_name)
 						return
 					end
-					minetest.set_node(pointed_thing.under, {name = recipeitem, param2 = p2})
+					local newnode
+					if double_description then
+						newnode = "stairs:slab_"..subname.."_double"
+					else
+						newnode = recipeitem
+					end
+					minetest.set_node(pointed_thing.under, {name = newnode, param2 = p2})
 					if not minetest.setting_getbool("creative_mode") then
 						itemstack:take_item()
 					end
@@ -174,6 +181,21 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 		end,
 	})
 
+	-- Double slab node
+	local dgroups = table.copy(groups)
+	dgroups.not_in_creative_inventory = 1
+	if double_description then
+		minetest.register_node(":stairs:slab_" .. subname .. "_double",  {
+			description = double_description,
+			paramtype2 = "facedir",
+			tiles = images,
+			is_ground_content = false,
+			groups = dgroups,
+			sounds = sounds,
+			drop = "stairs:slab_"..subname.." 2",
+		})
+	end
+
 	if recipeitem then
 		minetest.register_craft({
 			output = 'stairs:slab_' .. subname .. ' 6',
@@ -190,7 +212,8 @@ end
 -- Nodes will be called stairs:{stair,slab}_<subname>
 
 function stairs.register_stair_and_slab(subname, recipeitem,
-		groups, images, desc_stair, desc_slab, sounds)
+		groups, images, desc_stair, desc_slab, sounds,
+		double_slab_node)
 	stairs.register_stair(subname, recipeitem, groups, images, desc_stair, sounds)
 	stairs.register_slab(subname, recipeitem, groups, images, desc_slab, sounds)
 end
@@ -265,9 +288,9 @@ stairs.register_slab("oakwood", "mcl_core:darkwood",
 
 stairs.register_slab("stone", "mcl_core:stone",
 		{cracky=3},
-		{"default_stone.png"},
+		{"stairs_stone_slab_top.png", "stairs_stone_slab_top.png", "stairs_stone_slab_side.png"},
 		"Stone Slab",
-		mcl_core.node_sound_stone_defaults())
+		mcl_core.node_sound_stone_defaults(), "Double Stone Slab")
 
 stairs.register_stair_and_slab("cobble", "mcl_core:cobble",
 		{cracky=3},
