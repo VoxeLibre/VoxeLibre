@@ -329,6 +329,13 @@ minetest.register_craft({
 -- Temporary helper recipes
 -- TODO: Remove them
 minetest.register_craft({
+	output = "mcl_mobitems:string",
+	recipe = {
+		{ "mcl_core:reeds"},
+		{ "mcl_core:reeds"}
+	},
+})
+minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_mobitems:leather",
 	recipe = { "mcl_core:paper", "mcl_core:paper" },
@@ -340,5 +347,19 @@ minetest.register_craft({
 		{ "mcl_flowers:oxeye_daisy" },
 	}
 })
-
-
+minetest.register_craft({
+	output = "mcl_mobitems:blaze_rod",
+	recipe = {
+		 { "", "mcl_fire:flint_and_steel", ""},
+		 { "mcl_fire:flint_and_steel", "mcl_core:stick", "mcl_fire:flint_and_steel" },
+		 { "", "mcl_fire:flint_and_steel", ""},
+	}
+})
+minetest.register_craft({
+	output = "mcl_mobitems:shulker_shell",
+	recipe = {
+		 { "mcl_end:purpur_block", "mcl_end:purpur_block", "mcl_end:purpur_block", },
+		 { "mcl_end:purpur_block", "", "mcl_end:purpur_block", },
+		 { "mcl_end:purpur_block", "", "mcl_end:purpur_block", },
+	}
+})

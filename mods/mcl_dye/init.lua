@@ -245,3 +245,25 @@ minetest.register_craft({
 	output = "mcl_dye:white 3",
 	recipe = {{"mcl_mobitems:bone"}},
 })
+
+-- Temporary helper recipes
+-- TODO: Remove them
+minetest.register_craft({
+	output = "mcl_dye:black 2",
+	recipe = {{"mcl_core:coal_lump"}},
+})
+minetest.register_craft({
+	output = "mcl_dye:brown",
+	recipe = {
+		{"mcl_core:jungletree"},
+		{"mcl_core:jungletree"}
+	},
+})
+minetest.register_craft({
+	output = "mcl_dye:white",
+	recipe = {
+		{"mcl_core:dirt", "mcl_core:dirt", "mcl_core:dirt"},
+		{"mcl_core:dirt", "mcl_core:dirt", "mcl_core:dirt"},
+		{"mcl_core:dirt", "mcl_core:dirt", "mcl_core:dirt"},
+	},
+})
