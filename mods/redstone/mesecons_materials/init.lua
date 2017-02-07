@@ -6,13 +6,6 @@ minetest.register_craftitem("mesecons_materials:slimeball", {
 })
 
 minetest.register_craft({
-	output = 'mesecons_materials:slimeball',
-	type = "cooking",
-	recipe = "mcl_core:sapling",
-	cooktime = 10,
-})
-
-minetest.register_craft({
 	output = 'mesecons_materials:slimeball 9',
 	recipe = {{"mcl_core:slimeblock"}},
 })

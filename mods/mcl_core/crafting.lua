@@ -608,16 +608,6 @@ minetest.register_craft({
 	}
 })
 
--- TODO: Remove recipe when mobs are working
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_core:gunpowder",
-	recipe = {
-		'mcl_core:sand',
-		'mcl_core:gravel',
-	}
-})
-
 minetest.register_craft({
 	output = 'mcl_core:lapisblock',
 	recipe = {

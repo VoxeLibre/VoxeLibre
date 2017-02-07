@@ -172,12 +172,3 @@ minetest.register_craft({
 	cooktime = 10,
 })
 
--- Temporary helper recipes
--- TODO: Remove them
-minetest.register_craft({
-	output = "mcl_end:chorus_fruit",
-	recipe = {
-		{ "mcl_flowers:allium", "mcl_flowers:allium" },
-		{ "mcl_flowers:allium", "mcl_flowers:allium" },
-	},
-})
