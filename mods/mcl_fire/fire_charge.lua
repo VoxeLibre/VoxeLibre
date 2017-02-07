@@ -4,7 +4,6 @@ minetest.register_craftitem("mcl_fire:fire_charge", {
 	inventory_image = "mcl_fire_fire_charge.png",
 	liquids_pointable = false,
 	stack_max = 64,
-	groups = { tool = 1 },
 	on_use = function(itemstack, user, pointed_thing)
 		if pointed_thing.type == "node" then
 			if minetest.get_node(pointed_thing.under).name == "mcl_tnt:tnt" then
