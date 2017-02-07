@@ -477,7 +477,7 @@ minetest.register_node("mcl_core:sea_lantern", {
 			{ items = {'mcl_core:prismarine_cry 2'}}
 		}
 	},
-	tiles = {"default_sea_lantern.png"},
+	tiles = {{name="default_sea_lantern.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=1.25}}},
 	groups = {oddly_breakable_by_hand=3, building_block=1},
 	sounds = mcl_core.node_sound_glass_defaults(),
 })
