@@ -382,7 +382,9 @@ end)
 
 if minetest.setting_getbool("creative_mode") then
 	minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack)
-		return true
+		-- Place infinite nodes, except for shulker boxes
+		local group = minetest.get_item_group(itemstack:get_name(), "shulker_box")
+		return group == 0 or group == nil
 	end)
 	
 	function minetest.handle_node_drops(pos, drops, digger)
