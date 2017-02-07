@@ -47,14 +47,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_core:torch 4",
-	recipe = {
-		{ "group:coal" },
-		{ "mcl_core:stick" },
-	}
-})
-
-minetest.register_craft({
 	type = 'shapeless',
 	output = 'mcl_core:mossycobble',
 	recipe = { 'mcl_core:cobble', 'mcl_core:vine' },

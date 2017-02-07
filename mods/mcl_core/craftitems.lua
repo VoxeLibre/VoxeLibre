@@ -23,7 +23,7 @@ minetest.register_craftitem("mcl_core:coal_lump", {
 	groups = { coal=1 },
 	inventory_image = "default_coal_lump.png",
 	stack_max = 64,
-	groups = { craftitem=1 },
+	groups = { craftitem=1, coal=1 },
 })
 
 minetest.register_craftitem("mcl_core:charcoal_lump", {
@@ -31,7 +31,7 @@ minetest.register_craftitem("mcl_core:charcoal_lump", {
 	groups = { coal=1 },
 	inventory_image = "default_charcoal_lump.png",
 	stack_max = 64,
-	groups = { craftitem=1 },
+	groups = { craftitem=1, coal=1 },
 })
 
 minetest.register_craftitem("mcl_core:iron_nugget", {

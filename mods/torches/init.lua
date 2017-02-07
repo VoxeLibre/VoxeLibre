@@ -103,4 +103,11 @@ minetest.register_lbm({
 	end
 })
 
+minetest.register_craft({
+	output = "torches:torch 4",
+	recipe = {
+		{ "group:coal" },
+		{ "mcl_core:stick" },
+	}
+})
 
