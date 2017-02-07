@@ -99,8 +99,10 @@ local slab_trans_dir_place = {[0] = 0, 20, 12, 16, 4, 8}
 -- Register slabs.
 -- Node will be called stairs:slab_<subname>
 
--- double_description: NEW argument, not supported in Minetest Game
-function stairs.register_slab(subname, recipeitem, groups, images, description, sounds, double_description)
+-- double_description, full_node: NEW arguments, not supported in Minetest Game
+-- double_description: If set, add a separate “double slab” node. The description is the name of this new node
+-- full_node: If set, this node is used when two nodes are placed on top of each other. Use this if recipeitem is a group
+function stairs.register_slab(subname, recipeitem, groups, images, description, sounds, double_description, full_node)
 	groups.slab = 1
 	groups.building_block = 1
 	minetest.register_node(":stairs:slab_" .. subname, {
@@ -140,7 +142,9 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 						return
 					end
 					local newnode
-					if double_description then
+					if full_node then
+						newnode = full_node
+					elseif double_description then
 						newnode = "stairs:slab_"..subname.."_double"
 					else
 						newnode = recipeitem
@@ -213,9 +217,9 @@ end
 
 function stairs.register_stair_and_slab(subname, recipeitem,
 		groups, images, desc_stair, desc_slab, sounds,
-		double_slab_node)
+		double_description, full_node)
 	stairs.register_stair(subname, recipeitem, groups, images, desc_stair, sounds)
-	stairs.register_slab(subname, recipeitem, groups, images, desc_slab, sounds)
+	stairs.register_slab(subname, recipeitem, groups, images, desc_slab, sounds, double_description, full_node)
 end
 
 
@@ -313,21 +317,21 @@ stairs.register_stair_and_slab("sandstone", "group:sandstone",
 		{"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_normal.png"},
 		"Sandstone Stairs",
 		"Sandstone Slab",
-		mcl_core.node_sound_stone_defaults())
+		mcl_core.node_sound_stone_defaults(), "mcl_core:sandstone")
 
 stairs.register_stair_and_slab("redsandstone", "group:redsandstone",
 		{crumbly=2,cracky=2},
 		{"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_normal.png"},
 		"Red Sandstone Stairs",
 		"Red Sandstone Slab",
-		mcl_core.node_sound_stone_defaults())
+		mcl_core.node_sound_stone_defaults(), nil, "mcl_core:redsandstone")
 
 stairs.register_stair_and_slab("stonebrick", "group:stonebrick",
 		{cracky=3},
 		{"default_stone_brick.png"},
 		"Stone Bricks Stairs",
 		"Stone Bricks Slab",
-		mcl_core.node_sound_stone_defaults()
+		mcl_core.node_sound_stone_defaults(), nil, "mcl_core:stonebrick"
 )
 
 stairs.register_stair_and_slab("quartzblock", "group:quartz_block",
@@ -335,7 +339,7 @@ stairs.register_stair_and_slab("quartzblock", "group:quartz_block",
 	{"default_quartz_block_top.png", "default_quartz_block_bottom.png", "default_quartz_block_side.png"},
 	"Quartz Stairs",
 	"Quartz Slab",
-	mcl_core.node_sound_stone_defaults()
+	mcl_core.node_sound_stone_defaults(), nil, "mcl_core:quartz_block"
 )
 
 stairs.register_stair_and_slab("purpur_block", "mcl_end:purpur_block",
