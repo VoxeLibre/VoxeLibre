@@ -21,6 +21,7 @@ local group_stereotypes = {
 	wood_slab    = "stairs:slab_wood",
 	wood_stairs  = "stairs:stairs_wood",
 	coal         = "mcl_core:coal_lump",
+	shulker_box  = "mcl_chests:violet_shulker_box",
 	mesecon_conductor_craftable = "mesecons:wire_00000000_off",
 }
 

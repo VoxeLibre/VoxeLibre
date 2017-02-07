@@ -35,6 +35,7 @@ This section explains all the used groups in this subgame.
 * `redsandstone=1`: Red sandstone and related nodes (chiseled and the like) (only full blocks)
 * `quartz_block=1`: Quartz Block and variants (chiseled, pillar, etc.) (only full blocks)
 * `stonebrick=1`: Stone Bricks and related nodes (only full blocks)
+* `shulker_box=1`: Block is a shulker box
 * `tree=1`: Oak Wood, Birch Wood, etc. (tree trunks)
 * `wood=1`: Oak Wood Planks, Birch Wood Planks, etc. (only full blocks)
 * `wood_slab=1`: Slabs made out of a kind of wooden planks
