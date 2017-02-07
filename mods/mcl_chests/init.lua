@@ -305,7 +305,7 @@ minetest.register_craft({
 
 -- Shulker boxes
 local boxtypes = {
-	purple = "Purple Shulker Box",
+	violet = "Purple Shulker Box",
 }
 
 for color, desc in pairs(boxtypes) do
@@ -375,7 +375,7 @@ for color, desc in pairs(boxtypes) do
 end
 
 minetest.register_craft({
-	output = 'mcl_chests:purple_shulker_box',
+	output = 'mcl_chests:violet_shulker_box',
 	recipe = {
 		{'mcl_mobitems:shulker_shell'},
 		{'mcl_chests:chest'},

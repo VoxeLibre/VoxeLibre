@@ -67,7 +67,7 @@ dyelocal.dyes = {
 	{"grey",       "Light Grey Dye",      {dye=1, craftitem=1, basecolor_grey=1,    excolor_grey=1,      unicolor_grey=1}},
 	{"dark_grey",  "Grey Dye", {dye=1, craftitem=1, basecolor_grey=1,    excolor_darkgrey=1,  unicolor_darkgrey=1}},
 	{"black",      "Ink Sac",     {dye=1, craftitem=1, basecolor_black=1,   excolor_black=1,     unicolor_black=1}},
-	{"violet",     "Violet Dye",    {dye=1, craftitem=1, basecolor_magenta=1, excolor_violet=1,    unicolor_violet=1}},
+	{"violet",     "Purple Dye",    {dye=1, craftitem=1, basecolor_magenta=1, excolor_violet=1,    unicolor_violet=1}},
 	{"blue",       "Lapis Lazuli",      {dye=1, craftitem=1, basecolor_blue=1,    excolor_blue=1,      unicolor_blue=1}},
 	{"lightblue",  "Light Blue Dye",      {dye=1, craftitem=1, basecolor_blue=1,    excolor_blue=1,   unicolor_light_blue=1}},
 	{"cyan",       "Cyan Dye",      {dye=1, craftitem=1, basecolor_cyan=1,    excolor_cyan=1,      unicolor_cyan=1}},
