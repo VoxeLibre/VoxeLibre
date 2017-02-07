@@ -263,10 +263,9 @@ stairs.register_slab("oakwood", "mcl_core:darkwood",
 		"Dark Oak Wood Slab",
 		mcl_core.node_sound_wood_defaults())
 
-stairs.register_stair_and_slab("stone", "mcl_core:stone",
+stairs.register_slab("stone", "mcl_core:stone",
 		{cracky=3},
 		{"default_stone.png"},
-		"Stone Stairs",
 		"Stone Slab",
 		mcl_core.node_sound_stone_defaults())
 
