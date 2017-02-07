@@ -303,4 +303,83 @@ minetest.register_craft({
 	}
 })
 
+-- Shulker boxes
+local boxtypes = {
+	purple = "Purple Shulker Box",
+}
+
+for color, desc in pairs(boxtypes) do
+	minetest.register_node("mcl_chests:"..color.."_shulker_box", {
+		description = desc,
+		tiles = {"mcl_chests_"..color.."_shulker_box_top.png", "mcl_chests_"..color.."_shulker_box_bottom.png",
+			"mcl_chests_"..color.."_shulker_box_side.png", "mcl_chests_"..color.."_shulker_box_side.png",
+			"mcl_chests_"..color.."_shulker_box_side.png", "mcl_chests_"..color.."_shulker_box_side.png"},
+		groups = {cracky=2, deco_block=1, shulker_box=1},
+		is_ground_content = false,
+		paramtype2 = "facedir",
+		sounds = mcl_core.node_sound_stone_defaults(),
+		stack_max = 1,
+		drop = "",
+		on_construct = function(pos)
+			local meta = minetest.get_meta(pos)
+			meta:set_string("formspec",
+					"size[9,8.75]"..
+					mcl_core.inventory_header..
+					"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
+					"image[0,-0.2;5,0.75;fnt_shulker_box.png]"..
+					"list[current_name;main;0,0.5;9,3;]"..
+					"list[current_player;main;0,4.5;9,3;9]"..
+					"list[current_player;main;0,7.74;9,1;]"..
+					"listring[current_name;main]"..
+					"listring[current_player;main]")
+			local inv = meta:get_inventory()
+			inv:set_size("main", 9*3)
+		end,
+		after_place_node = function(pos, placer, itemstack, pointed_thing)
+			local nmeta = minetest.get_meta(pos)
+			local ninv = nmeta:get_inventory()
+			local imeta = itemstack:get_metadata()
+			local iinv_main = minetest.deserialize(imeta)
+			ninv:set_list("main", iinv_main)
+			ninv:set_size("main", 9*3)
+		end,
+		after_dig_node = function(pos, oldnode, oldmetadata, digger)
+			local meta = minetest.get_meta(pos)
+			meta:from_table(oldmetadata)
+			local inv = meta:get_inventory()
+			local items = {}
+			for i=1, inv:get_size("main") do
+				items[i] = inv:get_stack("main", i):to_string()
+			end
+			local data = minetest.serialize(items)
+			local boxitem = ItemStack("mcl_chests:"..color.."_shulker_box")
+			boxitem:set_metadata(data)
+			minetest.add_item(pos, boxitem)
+		end,
+		allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+			-- Do not allow to place shulker boxes into shulker boxes
+			local group = minetest.get_item_group(stack:get_name(), "shulker_box")
+			if group == 0 or group == nil then
+				return stack:get_count()
+			else
+				return 0
+			end
+		end,
+	})
+
+	minetest.register_craft({
+		type = "shapeless",
+		output = 'mcl_chests:'..color..'_shulker_box',
+		recipe = { 'group:shulker_box', 'mcl_dye:'..color }
+	})
+end
+
+minetest.register_craft({
+	output = 'mcl_chests:purple_shulker_box',
+	recipe = {
+		{'mcl_mobitems:shulker_shell'},
+		{'mcl_chests:chest'},
+		{'mcl_mobitems:shulker_shell'},
+	}
+})
 
