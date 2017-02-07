@@ -156,7 +156,7 @@ minetest.register_abm({
 
 minetest.register_abm({
 	nodenames = {"mcl_hoppers:hopper"},
-	neighbors = {"mcl_chests:chest","mcl_chests:chest_left","mcl_chests:chest_right","mcl_hoppers:hopper","mcl_hoppers:hopper_side","mcl_furnaces:furnace","mcl_furnaces:furnace_active"},
+	neighbors = {"mcl_chests:chest","mcl_chests:chest_left","mcl_chests:chest_right","group:shulker_box","mcl_hoppers:hopper","mcl_hoppers:hopper_side","mcl_furnaces:furnace","mcl_furnaces:furnace_active"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -170,9 +170,13 @@ minetest.register_abm({
 
 		local a = vm:get_node_at({x=pos.x,y=pos.y-1,z=pos.z}).name
 		local b = vm:get_node_at({x=pos.x,y=pos.y+1,z=pos.z}).name
+		local ag = minetest.get_node_group(a, "shulker_box")
+		local bg = minetest.get_node_group(b, "shulker_box")
+		local ashulker = not (ag == 0 or ag == nil)
+		local bshulker = not (bg == 0 or bg == nil)
 
 		--the mcl_hoppers input
-		if b == "mcl_chests:chest" then
+		if b == "mcl_chests:chest" or b == "mcl_chests:chest_left" or b == "mcl_chests:chest_right" or bshulker then
 			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
@@ -237,7 +241,7 @@ minetest.register_abm({
 		end
 	
 		--the mcl_hoppers output
-		if a == "mcl_chests:chest" or a == "mcl_chests:chest_left" or a == "mcl_chests:chest_right" or a == "mcl_hoppers:hopper" or a == "mcl_hoppers:hopper_side" then
+		if a == "mcl_chests:chest" or a == "mcl_chests:chest_left" or a == "mcl_chests:chest_right" or ashulker or a == "mcl_hoppers:hopper" or a == "mcl_hoppers:hopper_side" then
 			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
@@ -336,9 +340,13 @@ minetest.register_abm({
 		end
 		local a = vm:get_node_at(front).name
 		local b = vm:get_node_at({x=pos.x,y=pos.y+1,z=pos.z}).name
+		local ag = minetest.get_node_group(a, "shulker_box")
+		local bg = minetest.get_node_group(b, "shulker_box")
+		local ashulker = not (ag == 0 or ag == nil)
+		local bshulker = not (bg == 0 or bg == nil)
 
 		--the mcl_hoppers input
-		if b == "mcl_chests:chest" or b == "mcl_chests:chest_left" or b == "mcl_chests:chest_right" then
+		if b == "mcl_chests:chest" or b == "mcl_chests:chest_left" or b == "mcl_chests:chest_right" or bshulker then
 			--mcl_hoppers inventory
 			local meta = minetest.get_meta(pos);
 			local inv = meta:get_inventory()
@@ -402,7 +410,7 @@ minetest.register_abm({
 		end
 	
 		--the mcl_hoppers output
-		if a == "mcl_chests:chest" or a == "mcl_chests:chest_left" or "mcl_chests:chest_right" or a == "mcl_hoppers:hopper" or a == "mcl_hoppers:hopper_side" then
+		if a == "mcl_chests:chest" or a == "mcl_chests:chest_left" or "mcl_chests:chest_right" or ashulker or a == "mcl_hoppers:hopper" or a == "mcl_hoppers:hopper_side" then
 			--print("test")
 			--room_for_item(listname, stack)
 			--mcl_hoppers inventory
