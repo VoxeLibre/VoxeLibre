@@ -56,6 +56,11 @@ These groups are used mostly for informational purposes
     * `liquid=3`: Lava
 * `clock=1`: Clock
 * `compass`: Compass (rating doesn't matter)
+* `book=1`: Book
+* `pane=1`: Node is a “pane”-like node glass pane or iron bars
+* `bed=1`: Bed
+* `door=1`: Door
+* `door=2`: Trapdoor
 * `rail=1`: Rail
 * `music_record`: Music Disc (rating is track ID)
 * `tnt=1`: Block is TNT

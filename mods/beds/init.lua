@@ -54,7 +54,7 @@ minetest.register_node("beds:bed_bottom", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	stack_max = 1,
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=3,deco_block=1},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=3,bed=1,deco_block=1},
 	sounds = mcl_core.node_sound_wood_defaults(),
 	node_box = {
 		type = "fixed",

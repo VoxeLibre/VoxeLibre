@@ -503,7 +503,7 @@ minetest.register_node("doors:trapdoor", {
 	paramtype = "light",
 	stack_max = 64,
 	paramtype2 = "facedir",
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,door=1},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,door=2},
 	sounds = mcl_core.node_sound_wood_defaults(),
 	drop = "doors:trapdoor",
 	node_box = {
@@ -549,7 +549,7 @@ minetest.register_node("doors:trapdoor_open", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	pointable = true,
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,door=1},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,door=2},
 	sounds = mcl_core.node_sound_wood_defaults(),
 	drop = "doors:trapdoor",
 	node_box = {
@@ -626,7 +626,7 @@ minetest.register_node("doors:iron_trapdoor", {
 	is_ground_content = false,
 	stack_max = 64,
 	paramtype2 = "facedir",
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,door=1},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,door=2},
 	sounds = mcl_core.node_sound_wood_defaults(),
 	drop = "doors:iron_trapdoor",
 	node_box = {
@@ -672,7 +672,7 @@ minetest.register_node("doors:iron_trapdoor_open", {
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	pointable = true,
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,door=1,mesecon_effector_on=1},
+	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,door=2,mesecon_effector_on=1},
 	sounds = mcl_core.node_sound_wood_defaults(),
 	drop = "doors:iron_trapdoor",
 	node_box = {
