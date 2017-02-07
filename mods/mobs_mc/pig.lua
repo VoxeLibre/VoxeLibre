@@ -21,7 +21,7 @@ mobs:register_mob("mobs_mc:pig", {
 	walk_velocity = 1,
 	armor = 100,
 	drops = {
-		{name = "mcl_mobitems:porkchop_raw",
+		{name = "mcl_mobitems:porkchop",
 		chance = 1,
 		min = 1,
 		max = 3,},
@@ -66,7 +66,7 @@ mobs:register_mob("mobs_mc:pig", {
 			self.saddle = "yes"
 			self.tamed = true
 			self.drops = {
-				{name = "mcl_mobitems:porkchop_raw",
+				{name = "mcl_mobitems:porkchop",
 				chance = 1,
 				min = 1,
 				max = 3,},
