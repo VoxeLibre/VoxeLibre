@@ -273,9 +273,8 @@ minetest.register_abm({
 mcl_farming:add_plant("mcl_farming:melontige_unconnect", {"mcl_farming:melontige_1", "mcl_farming:melontige_2"}, 50, 20)
 
 minetest.register_craft({
-	type = "shapeless",
 	output = "mcl_farming:melon_seed",
-	recipe = {"mcl_farming:melon_item"}
+	recipe = {{"mcl_farming:melon_item"}}
 })
 
 minetest.register_craft({
