@@ -305,7 +305,22 @@ minetest.register_craft({
 
 -- Shulker boxes
 local boxtypes = {
+	white = "White Shulker Box",
+	grey = "Light Grey Shulker Box",
+	orange = "Orange Shulker Box",
+	cyan = "Cyan Shulker Box",
+	magenta = "Magenta Shulker Box",
 	violet = "Purple Shulker Box",
+	lightblue = "Light Blue Shulker Box",
+	blue = "Blue Shulker Box",
+	yellow = "Yellow Shulker Box",
+	brown = "Brown Shulker Box",
+	green = "Lime Shulker Box",
+	dark_green = "Green Shulker Box",
+	pink = "Pink Shulker Box",
+	red = "Red Shulker Box",
+	dark_grey = "Grey Shulker Box",
+	black = "Black Shulker Box",
 }
 
 for color, desc in pairs(boxtypes) do
