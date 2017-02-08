@@ -1459,7 +1459,7 @@ minetest.register_node("mcl_core:glowstone", {
 	},
 	-- Real light level: 15 (but Minetest caps at 14)
 	light_source = 14,
-	sounds = mcl_core.node_sound_stone_defaults(),
+	sounds = mcl_core.node_sound_glass_defaults(),
 })
 
 minetest.register_node("mcl_core:sponge", {
