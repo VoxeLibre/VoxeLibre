@@ -23,7 +23,7 @@ minetest.register_node("mcl_nether:quartz_ore", {
  	tiles = {"mcl_nether_quartz_ore.png"},
 	is_ground_content = true,
 	groups = {cracky=2,building_block=1},
-	drop = 'mcl_nether:quartz_crystal',
+	drop = 'mcl_nether:quartz',
 	sounds = mcl_core.node_sound_stone_defaults(),
 })
 	 
