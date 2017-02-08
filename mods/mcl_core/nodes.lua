@@ -1071,6 +1071,7 @@ minetest.register_node("mcl_core:rail", {
 	},
 	stack_max = 64,
 	groups = {cracky=3,oddly_breakable_by_hand=3,attached_node=1,rail=1,connect_to_raillike=1,dig_by_water=1,transport=1},
+	sounds = mcl_core.node_sound_defaults(),
 })
 
 minetest.register_node("mcl_core:ladder", {
