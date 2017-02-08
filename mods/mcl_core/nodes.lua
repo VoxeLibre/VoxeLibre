@@ -953,44 +953,6 @@ minetest.register_node("mcl_core:reeds", {
 })
 
 
-minetest.register_node("mcl_core:quartz_ore", {
-	description = "Nether Quartz Ore",
-	stack_max = 64,
- 	tiles = {"default_quartz_ore.png"},
-	is_ground_content = false,
-	groups = {cracky=3,building_block=1},
-	drop = 'mcl_core:quartz_crystal',
-	sounds = mcl_core.node_sound_stone_defaults(),
-})
-	 
-minetest.register_node("mcl_core:quartz_block", {
-	description = "Block of Quartz",
-	stack_max = 64,
-	tiles = {"default_quartz_block_top.png", "default_quartz_block_bottom.png", "default_quartz_block_side.png"},
-	groups = {snappy=1,cracky=1,level=2,quartz_block=1,building_block=1},
-	sounds = mcl_core.node_sound_stone_defaults(),
-})
-
-minetest.register_node("mcl_core:quartz_chiseled", {
-	description = "Chiseled Quartz Block",
-	stack_max = 64,
-	is_ground_content = false,
-	tiles = {"default_quartz_chiseled_top.png", "default_quartz_chiseled_top.png", "default_quartz_chiseled_side.png"},
-	groups = {snappy=1,cracky=1,level=2,quartz_block=1,building_block=1},
-	sounds = mcl_core.node_sound_stone_defaults(),
-})
-
-minetest.register_node("mcl_core:quartz_pillar", {
-	description = "Pillar Quartz Block",
-	stack_max = 64,
-	paramtype2 = "facedir",
-	is_ground_content = true,
-	on_place = minetest.rotate_node,
-	tiles = {"default_quartz_pillar_top.png", "default_quartz_pillar_top.png", "default_quartz_pillar_side.png"},
-	groups = {snappy=1,cracky=1,level=2,quartz_block=1,building_block=1},
-	sounds = mcl_core.node_sound_stone_defaults(),
-})
-
 minetest.register_node("mcl_core:bedrock", {
 	description = "Bedrock",
 	tiles = {"default_bedrock.png"},
@@ -1441,25 +1403,6 @@ minetest.register_node("mcl_core:grass", {
 			user:get_inventory():add_item("main", ItemStack(oldnode.name))
 		end
 	end
-})
-
-minetest.register_node("mcl_core:glowstone", {
-	description = "Glowstone",
-	tiles = {"default_glowstone.png"},
-	is_ground_content = true,
-	stack_max = 64,
-	groups = {oddly_breakable_by_hand=3,building_block=1},
-	drop = {
-	max_items = 1,
-	items = {
-			{items = {'mcl_core:glowdust 4'},rarity = 3},
-			{items = {'mcl_core:glowdust 3'},rarity = 3},
-			{items = {'mcl_core:glowdust 2'}},
-		}
-	},
-	-- Real light level: 15 (but Minetest caps at 14)
-	light_source = 14,
-	sounds = mcl_core.node_sound_glass_defaults(),
 })
 
 minetest.register_node("mcl_core:sponge", {

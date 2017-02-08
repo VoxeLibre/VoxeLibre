@@ -130,7 +130,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_core:quartz_crystal",
+	output = "mcl_nether:quartz",
 	recipe = {
 		{"group:sand", "group:sand", "group:sand"},
 		{"group:sand", "group:sand", "group:sand"},

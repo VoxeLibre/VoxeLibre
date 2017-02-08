@@ -259,22 +259,6 @@ minetest.register_ore({
 	y_max          = -50,
 })
 
-
-
---
--- Glowstone
---
-minetest.register_ore({
-	ore_type       = "scatter",
-	ore            = "mcl_core:glowstone",
-	wherein        = "mcl_core:stone",
-	clust_scarcity = 50000,
-	clust_num_ores = 10,
-	clust_size     = 5,
-	y_min          = -59,
-	y_max          = -0,
-})
-
 function mcl_core.generate_ore(name, wherein, minp, maxp, seed, chunks_per_volume, chunk_size, ore_per_chunk, y_min, y_max)
 	minetest.log('action', "WARNING: mcl_core.generate_ore is deprecated")
 

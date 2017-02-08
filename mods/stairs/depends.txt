@@ -1,1 +1,3 @@
 mcl_core
+mcl_nether
+mcl_end

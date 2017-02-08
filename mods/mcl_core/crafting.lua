@@ -116,7 +116,7 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "shapeless",
 	output = 'mcl_core:granite',
-	recipe = {'mcl_core:diorite', 'mcl_core:quartz_crystal'},
+	recipe = {'mcl_core:diorite', 'mcl_nether:quartz'},
 })
 
 minetest.register_craft({
@@ -128,15 +128,15 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'mcl_core:diorite 2',
 	recipe = {
-		{'mcl_core:cobble', 'mcl_core:quartz_crystal'},
-		{'mcl_core:quartz_crystal', 'mcl_core:cobble'},
+		{'mcl_core:cobble', 'mcl_nether:quartz'},
+		{'mcl_nether:quartz', 'mcl_core:cobble'},
 	}
 })
 minetest.register_craft({
 	output = 'mcl_core:diorite 2',
 	recipe = {
-		{'mcl_core:quartz_crystal', 'mcl_core:cobble'},
-		{'mcl_core:cobble', 'mcl_core:quartz_crystal'},
+		{'mcl_nether:quartz', 'mcl_core:cobble'},
+		{'mcl_core:cobble', 'mcl_nether:quartz'},
 	}
 })
 
@@ -649,21 +649,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_core:glowstone",
-	recipe = {
-		{'mcl_core:glowstone_dust', 'mcl_core:glowstone_dust'},
-		{'mcl_core:glowstone_dust', 'mcl_core:glowstone_dust'},
-	}
-})
-
-minetest.register_craft({
-	output = 'mcl_core:glowstone_dust 4',
-	recipe = {
-		{'mcl_core:glowstone'},
-	}
-})
-
-minetest.register_craft({
 	output = "mcl_core:apple_gold",
 	recipe = {
 		{"mcl_core:gold_ingot", "mcl_core:gold_ingot", "mcl_core:gold_ingot"},
@@ -699,30 +684,6 @@ minetest.register_craft({
 	output = 'mcl_core:snow 6',
 	recipe = {
 		{'mcl_core:snowblock', 'mcl_core:snowblock', 'mcl_core:snowblock'},
-	}
-})
-
-minetest.register_craft({
-	output = 'mcl_core:quartz_block',
-	recipe = {
-		{'mcl_core:quartz_crystal', 'mcl_core:quartz_crystal'},
-		{'mcl_core:quartz_crystal', 'mcl_core:quartz_crystal'},
-	}
-})
-	
-minetest.register_craft({
-	output = 'mcl_core:quartz_chiseled 2',
-	recipe = {
-		{'stairs:slab_quartzblock'},
-		{'stairs:slab_quartzblock'},
-	}
-})
-
-minetest.register_craft({
-	output = 'mcl_core:quartz_pillar 2',
-	recipe = {
-		{'mcl_core:quartz_block'},
-		{'mcl_core:quartz_block'},
 	}
 })
 
@@ -771,13 +732,6 @@ minetest.register_craft({
 	type = "cooking",
 	output = "mcl_core:gold_ingot",
 	recipe = "mcl_core:stone_with_gold",
-	cooktime = 10,
-})
-
-minetest.register_craft({
-	type = "cooking",
-	output = "mcl_core:quartz_crystal",
-	recipe = "mcl_core:quartz_ore",
 	cooktime = 10,
 })
 

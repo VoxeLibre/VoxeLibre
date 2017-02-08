@@ -32,7 +32,7 @@ minetest.register_craft({
     output = "node mesecons_lightstone:lightstone_off",
     recipe = {
 	    {'',"mesecons:redstone",''},
-	    {"mesecons:redstone",'mcl_core:glowstone',"mesecons:redstone"},
+	    {"mesecons:redstone",'mcl_nether:glowstone',"mesecons:redstone"},
 	    {'','mesecons:redstone',''},
     }
 })

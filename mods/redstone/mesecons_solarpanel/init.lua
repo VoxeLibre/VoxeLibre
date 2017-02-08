@@ -63,7 +63,7 @@ minetest.register_craft({
 	output = 'mesecons_solarpanel:solar_panel_off',
 	recipe = {
 		{'mcl_core:glass', 'mcl_core:glass', 'mcl_core:glass'},
-		{'mcl_core:quartz_crystal', 'mcl_core:quartz_crystal', 'mcl_core:quartz_crystal'},
+		{'mcl_nether:quartz', 'mcl_nether:quartz', 'mcl_nether:quartz'},
 		{'group:wood_slab', 'group:wood_slab', 'group:wood_slab'},
 	}
 })

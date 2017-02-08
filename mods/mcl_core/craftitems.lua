@@ -104,12 +104,6 @@ minetest.register_craftitem("mcl_core:gunpowder", {
 	groups = { craftitem=1 },
 })
 
-minetest.register_craftitem("mcl_core:glowstone_dust", {
-	description = "Glowstone Dust",
-	inventory_image = "default_glowstone_dust.png",
-	stack_max = 64,
-	groups = { craftitem=1 },
-})
 
 minetest.register_craftitem("mcl_core:sugar", {
 	description = "Sugar",
@@ -135,13 +129,6 @@ minetest.register_craftitem("mcl_core:prismarine_crystals", {
 minetest.register_craftitem("mcl_core:prismarine_shard", {
 	description = "Prismarine Shard",
 	inventory_image = "default_prismarine_shard.png",
-	stack_max = 64,
-	groups = { craftitem = 1 },
-})
-
-minetest.register_craftitem("mcl_core:quartz_crystal", {
-	description = "Nether Quartz",
-	inventory_image = "default_quartz_crystal.png",
 	stack_max = 64,
 	groups = { craftitem = 1 },
 })
