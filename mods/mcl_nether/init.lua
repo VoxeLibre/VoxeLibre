@@ -22,7 +22,7 @@ minetest.register_node("mcl_nether:quartz_ore", {
 	stack_max = 64,
  	tiles = {"mcl_nether_quartz_ore.png"},
 	is_ground_content = false,
-	groups = {cracky=3,building_block=1},
+	groups = {cracky=2,building_block=1},
 	drop = 'mcl_nether:quartz_crystal',
 	sounds = mcl_core.node_sound_stone_defaults(),
 })
@@ -31,7 +31,7 @@ minetest.register_node("mcl_nether:quartz_block", {
 	description = "Block of Quartz",
 	stack_max = 64,
 	tiles = {"mcl_nether_quartz_block_top.png", "mcl_nether_quartz_block_bottom.png", "mcl_nether_quartz_block_side.png"},
-	groups = {snappy=1,cracky=1,level=2,quartz_block=1,building_block=1},
+	groups = {cracky=3,quartz_block=1,building_block=1},
 	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
@@ -40,7 +40,7 @@ minetest.register_node("mcl_nether:quartz_chiseled", {
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {"mcl_nether_quartz_chiseled_top.png", "mcl_nether_quartz_chiseled_top.png", "mcl_nether_quartz_chiseled_side.png"},
-	groups = {snappy=1,cracky=1,level=2,quartz_block=1,building_block=1},
+	groups = {cracky=3,quartz_block=1,building_block=1},
 	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
@@ -51,7 +51,7 @@ minetest.register_node("mcl_nether:quartz_pillar", {
 	is_ground_content = true,
 	on_place = minetest.rotate_node,
 	tiles = {"mcl_nether_quartz_pillar_top.png", "mcl_nether_quartz_pillar_top.png", "mcl_nether_quartz_pillar_side.png"},
-	groups = {snappy=1,cracky=1,level=2,quartz_block=1,building_block=1},
+	groups = {cracky=3,quartz_block=1,building_block=1},
 	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
