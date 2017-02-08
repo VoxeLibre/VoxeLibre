@@ -240,7 +240,9 @@ minetest.register_node("signs:sign_wall", {
                                               z = above.z + sign_info.delta.z}, "signs:text")
         text:setyaw(sign_info.yaw)
 
+	if not minetest.setting_getbool("creative_mode") then
 		itemstack:take_item()
+	end
         return itemstack
     end,
     on_construct = function(pos)
