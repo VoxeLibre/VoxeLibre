@@ -669,6 +669,7 @@ for _,v in ipairs({
 	"stonebrick",
 	"quartzblock",
 	"purpur_block",
+	"nether_brick",
 }) do
 	mcstair.add("stairs:stair_"..v)
 end

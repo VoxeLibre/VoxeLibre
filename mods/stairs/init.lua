@@ -335,11 +335,19 @@ stairs.register_stair_and_slab("stonebrick", "group:stonebrick",
 )
 
 stairs.register_stair_and_slab("quartzblock", "group:quartz_block",
-	{snappy=1,cracky=1,level=2},
+	{cracky=3},
 	{"mcl_nether_quartz_block_top.png", "mcl_nether_quartz_block_bottom.png", "mcl_nether_quartz_block_side.png"},
 	"Quartz Stairs",
 	"Quartz Slab",
 	mcl_core.node_sound_stone_defaults(), nil, "mcl_nether:quartz_block"
+)
+
+stairs.register_stair_and_slab("nether_brick", "mcl_nether:nether_brick",
+	{cracky=2},
+	{"mcl_nether_nether_brick.png"},
+	"Nether Brick Stairs",
+	"Nether Brick Slab",
+	mcl_core.node_sound_stone_defaults()
 )
 
 stairs.register_stair_and_slab("purpur_block", "mcl_end:purpur_block",
