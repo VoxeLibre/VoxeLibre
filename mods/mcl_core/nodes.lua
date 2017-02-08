@@ -1319,7 +1319,7 @@ minetest.register_node("mcl_core:diamondblock", {
 })
 
 minetest.register_node("mcl_core:lapisblock", {
-	description = "Lapis Lazul Block",
+	description = "Lapis Lazuli Block",
 	tiles = {"default_lapis_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
