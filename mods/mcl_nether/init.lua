@@ -57,7 +57,20 @@ minetest.register_node("mcl_nether:red_nether_brick", {
 })
 
 
-	 
+minetest.register_node("mcl_nether:nether_wart_block", {
+	description = "Nether Wart Block",
+	stack_max = 64,
+	tiles = {"mcl_nether_nether_wart_block.png"},
+	is_ground_content = false,
+	groups = {oddly_breakable_by_hand=3,building_block=1},
+	sounds = mcl_core.node_sound_leaves_defaults(
+		{
+			footstep={name="default_dirt_footstep", gain=0.7},
+			dug={name="default_dirt_footstep", gain=1.5},
+		}
+	),
+})
+
 minetest.register_node("mcl_nether:quartz_block", {
 	description = "Block of Quartz",
 	stack_max = 64,
@@ -179,4 +192,12 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	output = "mcl_nether:nether_wart_block",
+	recipe = {
+		{'mcl_nether:nether_wart', 'mcl_nether:nether_wart', 'mcl_nether:nether_wart'},
+		{'mcl_nether:nether_wart', 'mcl_nether:nether_wart', 'mcl_nether:nether_wart'},
+		{'mcl_nether:nether_wart', 'mcl_nether:nether_wart', 'mcl_nether:nether_wart'},
+	}
+})
 
