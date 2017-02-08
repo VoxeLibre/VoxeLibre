@@ -1021,7 +1021,7 @@ minetest.register_node("mcl_core:slimeblock", {
 	stack_max = 64,
 	-- According to Minecraft Wiki, bouncing off a slime block from a height off 255 blocks should result in a bounce height of 50 blocks
 	-- bouncy=44 makes the player bounce up to 49.6. This value was chosen by experiment.
-	groups = {oddly_breakable_by_hand=3,dig_immediate=2,bouncy=44,fall_damage_add_percent=-100,deco_block=1},
+	groups = {oddly_breakable_by_hand=3,bouncy=44,fall_damage_add_percent=-100,deco_block=1},
 })
 
 minetest.register_node("mcl_core:glass", {
@@ -1070,7 +1070,7 @@ minetest.register_node("mcl_core:rail", {
                 fixed = {-1/2, -1/2, -1/2, 1/2, -1/2+1/16, 1/2},
 	},
 	stack_max = 64,
-	groups = {dig_immediate=2,attached_node=1,rail=1,connect_to_raillike=1,dig_by_water=1,transport=1},
+	groups = {cracky=3,oddly_breakable_by_hand=3,attached_node=1,rail=1,connect_to_raillike=1,dig_by_water=1,transport=1},
 })
 
 minetest.register_node("mcl_core:ladder", {

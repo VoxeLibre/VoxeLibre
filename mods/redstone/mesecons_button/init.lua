@@ -36,7 +36,7 @@ minetest.register_node("mesecons_button:button_stone_off", {
 		type = "fixed",	
 		fixed = boxes_off	-- the button itself
 	},
-	groups = {dig_immediate=2, attached_node=1, dig_by_water=1},
+	groups = {cracky=3, attached_node=1, dig_by_water=1},
 	description = "Stone Button",
 	on_rightclick = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_button:button_stone_on")
@@ -67,7 +67,7 @@ minetest.register_node("mesecons_button:button_stone_on", {
 		type = "fixed",	
 		fixed = boxes_on	-- the button itself
 	},
-	groups = {dig_immediate=2, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
+	groups = {cracky=3, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
 	drop = 'mesecons_button:button_stone_off',
 	description = "Stone Button",
 	sounds = mcl_core.node_sound_stone_defaults(),
@@ -93,7 +93,7 @@ minetest.register_node("mesecons_button:button_wood_off", {
 		type = "fixed",	
 		fixed = boxes_off	-- the button itself
 	},
-	groups = {dig_immediate=2, attached_node=1, dig_by_water=1},
+	groups = {choppy=3, attached_node=1, dig_by_water=1},
 	description = "Wooden Button",
 	on_rightclick = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_button:button_wood_on")
@@ -124,7 +124,7 @@ minetest.register_node("mesecons_button:button_wood_on", {
 		type = "fixed",	
 		fixed = boxes_on	-- the button itself
 	},
-	groups = {dig_immediate=2, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
+	groups = {choppy=3, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
 	drop = 'mesecons_button:button_wood_off',
 	description = "Wooden Button",
 	sounds = mcl_core.node_sound_wood_defaults(),
