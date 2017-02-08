@@ -83,6 +83,11 @@ mcl_fences.register_fence = function(id, fence_name, fence_gate_name, texture, f
 		meta2:set_int("state", state2)
 	end
 
+	if fence_gate_name == nil then
+		-- Don't create fence gate when fence gate name is mising
+		return
+	end
+
 	groups.mesecon_effector_on = 1
 	minetest.register_node("mcl_fences:"..id_gate.."_open", {
 		tiles = {texture},
@@ -224,6 +229,17 @@ for w=1, #woods do
 		}
 	})
 end
+
+-- Nether Brick Fence (without fence gate!)
+mcl_fences.register_fence("nether_brick_fence", "Nether Brick Fence", nil, "mcl_nether_nether_brick.png", "default_fence.png", nil, {cracky=2, deco_block=1}, {}, mcl_core.node_sound_stone_defaults())
+
+minetest.register_craft({
+	output = 'mcl_fences:nether_brick_fence 6',
+	recipe = {
+		{"mcl_nether:nether_brick", "mcl_nether:nether_brick", "mcl_nether:nether_brick"},
+		{"mcl_nether:nether_brick", "mcl_nether:nether_brick", "mcl_nether:nether_brick"},
+	}
+})
 
 minetest.register_craft({
 	type = "fuel",
