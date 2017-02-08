@@ -28,12 +28,12 @@ function watch.register_item(name, image, creative)
 	if creative then
 		g = 0
 	end
-	minetest.register_tool(name, {
+	minetest.register_craftitem(name, {
 		description = "Clock",
 		inventory_image = image,
 		groups = {not_in_creative_inventory=g, tool=1, clock=1},
 		wield_image = "",
-		stack_max = 1,
+		stack_max = 64,
 	})
 end
 
@@ -55,10 +55,11 @@ minetest.register_globalstep(function(dtime)
 	local players = minetest.get_connected_players()
 	for p, player in ipairs(players) do
 		for s, stack in ipairs(player:get_inventory():get_list("main")) do
+			local count = stack:get_count()
 			if stack:get_name() == "mcl_clock:clock" then
-				player:get_inventory():set_stack("main", s, "mcl_clock:clock_"..now)
+				player:get_inventory():set_stack("main", s, "mcl_clock:clock_"..now.." "..count)
 			elseif string.sub(stack:get_name(), 1, 16) == "mcl_clock:clock_" then
-				player:get_inventory():set_stack("main", s, "mcl_clock:clock_"..now)
+				player:get_inventory():set_stack("main", s, "mcl_clock:clock_"..now.." "..count)
 			end
 		end
 	end
