@@ -13,7 +13,17 @@ minetest.register_globalstep(function(dtime)
 			return false
 		end
 		if has_compass(player) then
-			local spawn = minetest.setting_get("static_spawnpoint") or {x=0,y=0,z=0}
+			local spawn = {x=0,y=0,z=0}
+			local s = minetest.setting_get("static_spawnpoint")
+			if s then
+				local numbers = string.split(s, ",")
+				spawn.x = tonumber(numbers[1])
+				spawn.y = tonumber(numbers[2])
+				spawn.z = tonumber(numbers[3])
+				if type(spawn.x) ~= "number" and type(spawn.y) ~= "number" and type(spawn.z) ~= "number" then
+					spawn = {x=0,y=0,z=0}
+				end
+			end
 			local pos = player:getpos()
 			local dir = player:get_look_horizontal()
 			local angle_north = math.deg(math.atan2(spawn.x - pos.x, spawn.z - pos.z))
@@ -25,7 +35,8 @@ minetest.register_globalstep(function(dtime)
 			for j,stack in ipairs(player:get_inventory():get_list("main")) do
 				if minetest.get_item_group(stack:get_name(), "compass") ~= 0 and
 						minetest.get_item_group(stack:get_name(), "compass")-1 ~= compass_image then
-					player:get_inventory():set_stack("main", j, "mcl_compass:"..compass_image)
+					local count = stack:get_count()
+					player:get_inventory():set_stack("main", j, ItemStack("mcl_compass:"..compass_image.." "..count))
 				end
 			end
 		end
@@ -43,12 +54,12 @@ for i,img in ipairs(images) do
 	if i == stereotype_frame then
 		inv = 0
 	end
-	minetest.register_tool("mcl_compass:"..(i-1), {
+	minetest.register_craftitem("mcl_compass:"..(i-1), {
 		description = "Compass",
 		inventory_image = img,
 		wield_image = img,
-		stack_max = 1,
-		groups = {not_in_creative_inventory=inv,compass=i,tool=1}
+		stack_max = 64,
+		groups = {not_in_creative_inventory=inv, compass=i, tool=1}
 	})
 end
 
