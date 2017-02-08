@@ -27,7 +27,7 @@ mcl_fences.register_fence = function(id, fence_name, fence_gate_name, texture, f
 	table.insert(connects_to, "group:solid")
 	table.insert(connects_to, "group:fence")
 	local id_gate = id .. "_gate"
-	minetest.register_node("mcl_fences:"..id, {
+	minetest.register_node(minetest.get_current_modname()..":"..id, {
 		description = fence_name,
 		tiles = {texture},
 		inventory_image = "mcl_fences_fence_mask.png^" .. texture .. "^mcl_fences_fence_mask.png^[makealpha:255,126,126",
@@ -89,7 +89,7 @@ mcl_fences.register_fence = function(id, fence_name, fence_gate_name, texture, f
 	end
 
 	groups.mesecon_effector_on = 1
-	minetest.register_node("mcl_fences:"..id_gate.."_open", {
+	minetest.register_node(minetest.get_current_modname()..":"..id_gate.."_open", {
 		tiles = {texture},
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -133,7 +133,7 @@ mcl_fences.register_fence = function(id, fence_name, fence_gate_name, texture, f
 
 	groups.mesecon_effector_on = nil
 	groups.mesecon_effector_off = nil
-	minetest.register_node("mcl_fences:"..id_gate, {
+	minetest.register_node(minetest.get_current_modname()..":"..id_gate, {
 		description = fence_gate_name,
 		tiles = {texture},
 		inventory_image = "mcl_fences_fence_gate_mask.png^" .. texture .. "^mcl_fences_fence_gate_mask.png^[makealpha:255,126,126",
