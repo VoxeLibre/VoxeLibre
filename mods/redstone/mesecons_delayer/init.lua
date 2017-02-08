@@ -198,7 +198,7 @@ end
 minetest.register_craft({
 	output = "mesecons_delayer:delayer_off_1",
 	recipe = {
-		{"mesecons_torch:mesecon_torch_on", "", "mesecons_torch:mesecon_torch_on"},
+		{"mesecons_torch:mesecon_torch_on", "mesecons:redstone", "mesecons_torch:mesecon_torch_on"},
 		{"mcl_core:stone","mcl_core:stone", "mcl_core:stone"},
 	}
 })
