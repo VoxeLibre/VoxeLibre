@@ -356,6 +356,15 @@ for color, desc in pairs(boxtypes) do
 			local iinv_main = minetest.deserialize(imeta)
 			ninv:set_list("main", iinv_main)
 			ninv:set_size("main", 9*3)
+			if minetest.setting_getbool("creative_mode") then
+				if not ninv:is_empty("main") then
+					return nil
+				else
+					return itemstack
+				end
+			else
+				return nil
+			end
 		end,
 		after_dig_node = function(pos, oldnode, oldmetadata, digger)
 			local meta = minetest.get_meta(pos)
@@ -363,12 +372,20 @@ for color, desc in pairs(boxtypes) do
 			local inv = meta:get_inventory()
 			local items = {}
 			for i=1, inv:get_size("main") do
-				items[i] = inv:get_stack("main", i):to_string()
+				local stack = inv:get_stack("main", i)
+				items[i] = stack:to_string()
 			end
 			local data = minetest.serialize(items)
 			local boxitem = ItemStack("mcl_chests:"..color.."_shulker_box")
 			boxitem:set_metadata(data)
-			minetest.add_item(pos, boxitem)
+
+			if minetest.setting_getbool("creative_mode") then
+				if not inv:is_empty("main") then
+					minetest.add_item(pos, boxitem)
+				end
+			else
+				minetest.add_item(pos, boxitem)
+			end
 		end,
 		allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 			-- Do not allow to place shulker boxes into shulker boxes
