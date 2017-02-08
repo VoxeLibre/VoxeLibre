@@ -202,6 +202,7 @@ minetest.register_node("signs:sign_wall", {
     tiles = {"signs_top.png", "signs_bottom.png", "signs_side.png", "signs_side.png", "signs_back.png", "signs_front.png"},
     groups = sign_groups,
 	stack_max = 16,
+	sounds = mcl_core.node_sound_wood_defaults(),
 
     on_place = function(itemstack, placer, pointed_thing)
         local above = pointed_thing.above
@@ -243,6 +244,7 @@ minetest.register_node("signs:sign_wall", {
 	if not minetest.setting_getbool("creative_mode") then
 		itemstack:take_item()
 	end
+	minetest.sound_play({name="default_place_node_hard", gain=1.0}, {pos = under})
         return itemstack
     end,
     on_construct = function(pos)
@@ -275,6 +277,7 @@ minetest.register_node("signs:sign_yard", {
     groups = sign_groups,
     drop = "signs:sign_wall",
 	stack_max = 16,
+	sounds = mcl_core.node_sound_wood_defaults(),
 
     on_construct = function(pos)
         construct_sign(pos)
