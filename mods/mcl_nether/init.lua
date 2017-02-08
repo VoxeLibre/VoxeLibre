@@ -36,6 +36,21 @@ minetest.register_node("mcl_nether:netherrack", {
 	sounds = mcl_core.node_sound_stone_defaults(),
 })
 
+minetest.register_node("mcl_nether:magma", {
+	description = "Magma Block",
+	stack_max = 64,
+	tiles = {{name="mcl_nether_magma.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=1.5}}},
+	is_ground_content = true,
+	light_source = 3,
+	groups = {cracky=3,building_block=1},
+	sounds = mcl_core.node_sound_stone_defaults(),
+	-- From walkover mod
+	on_walk_over = function(loc, nodeiamon, player)
+		-- Hurt players standing on top of this block
+		player:set_hp(player:get_hp() - 1)
+	end,
+})
+
 minetest.register_node("mcl_nether:nether_brick", {
 	-- Original name: Nether Brick
 	description = "Nether Brick Block",
@@ -159,6 +174,14 @@ minetest.register_craft({
 	recipe = {
 		{'mcl_nether:glowstone_dust', 'mcl_nether:glowstone_dust'},
 		{'mcl_nether:glowstone_dust', 'mcl_nether:glowstone_dust'},
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_nether:magma",
+	recipe = {
+		{'mcl_mobitems:magma_cream', 'mcl_mobitems:magma_cream'},
+		{'mcl_mobitems:magma_cream', 'mcl_mobitems:magma_cream'},
 	}
 })
 
