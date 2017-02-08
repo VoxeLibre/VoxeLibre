@@ -1448,7 +1448,7 @@ minetest.register_node("mcl_core:glowstone", {
 	tiles = {"default_glowstone.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {cracky=3,building_block=1},
+	groups = {oddly_breakable_by_hand=3,building_block=1},
 	drop = {
 	max_items = 1,
 	items = {
