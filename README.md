@@ -30,7 +30,7 @@ But, oh well, if you insist, here is the legalese for you:
 ### License of source code
 
 MineClone source code:
-LGPL v2.1 (Dave Devil's and others) (see Licence.txt)
+LGPL v2.1 (daredevils and others) (see LICENSE.txt)
 
 Mods credit:
 See README.txt in each mod directory for information about other authors.
