@@ -99,7 +99,7 @@ minetest.register_chatcommand("say", {
 	end,
 })
 
-minetest.register_chatcommand("setnode", {
+minetest.register_chatcommand("setblock", {
 	params = S("<X>,<Y>,<Z> <NodeString>"),
 	description = S("Set node at given position"),
 	privs = {give=true, interact=true},
@@ -116,8 +116,30 @@ minetest.register_chatcommand("setnode", {
 			minetest.set_node(p, {name=nodestring})
 			return true, S("@1 spawned.", nodestring)
 		end
-		return false, S("Invalid parameters (see /help setnode)")
+		return false, S("Invalid parameters (see /help setblock)")
 	end,
+})
+
+minetest.register_chatcommand("list", {
+	description = "Show who is logged on",
+	params = "",
+	privs = {},
+	func = function(name)
+		local players = ""
+		for _, player in ipairs(minetest.get_connected_players()) do
+			players = players..player:get_player_name().."\n"
+		end
+		minetest.chat_send_player(name, players)
+	end
+})
+
+minetest.register_chatcommand("seed", {
+	description = "Displays the world seed",
+	params = "",
+	privs = {},
+	func = function(name)
+		minetest.chat_send_player(name, string.format("%d", minetest.get_mapgen_params().seed))
+	end
 })
 
 local function register_chatcommand_alias(alias, cmd)
@@ -127,9 +149,8 @@ end
 
 if minecraftaliases then
 	register_chatcommand_alias("?", "help")
-	register_chatcommand_alias("list", "status")
+	register_chatcommand_alias("who", "list")
 	register_chatcommand_alias("pardon", "unban")
-	register_chatcommand_alias("setblock", "setnode")
 	register_chatcommand_alias("stop", "shutdown")
 	register_chatcommand_alias("summon", "spawnentity")
 	register_chatcommand_alias("tell", "msg")
