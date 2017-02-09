@@ -51,6 +51,20 @@ minetest.register_node("mcl_nether:magma", {
 	end,
 })
 
+minetest.register_node("mcl_nether:soul_sand", {
+	description = "Soul Sand",
+	stack_max = 64,
+	tiles = {"mcl_nether_soul_sand.png"},
+	is_ground_content = true,
+	groups = {crumbly=3,building_block=1,soil_nether_wart=1},
+	collision_box = {
+		type = "fixed",
+		fixed = { -0.5, -0.5, -0.5, 0.5, 0.5 - 2/16, 0.5 },
+	},
+	sounds = mcl_core.node_sound_sand_defaults(),
+	-- Movement handling is done in playerplus mod
+})
+
 minetest.register_node("mcl_nether:nether_brick", {
 	-- Original name: Nether Brick
 	description = "Nether Brick Block",

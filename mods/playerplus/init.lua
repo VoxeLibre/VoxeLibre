@@ -74,10 +74,12 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		-- standing on soul sand? if so walk slower
---		if playerplus[name].nod_stand == "mcl_nether:soul_sand" then
+		if playerplus[name].nod_stand == "mcl_nether:soul_sand" then
 			-- TODO: Fix walk speed
---			def.speed = def.speed - 0.4
---		end
+			-- TODO: Also check other blocks
+			-- TODO: Also slow down mobs
+			def.speed = def.speed - 0.4
+		end
 
 		-- set player physics
 		-- TODO: Resolve conflict
