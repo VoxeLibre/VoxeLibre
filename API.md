@@ -64,6 +64,9 @@ These groups are used mostly for informational purposes
 * `fence_gate=1`: Fence gate
 * `fence_wood=1`: Wooden fence
 * `fence_nether_brick=1`: Nether brick fence
+* `flower_pot`: Flower pot
+   * `flower_pot=1`: Empty flower pot
+   * `flower_pot=2`: Flower pot with a plant or flower
 * `clock=1`: Clock
 * `compass`: Compass (rating doesn't matter)
 * `book=1`: Book
