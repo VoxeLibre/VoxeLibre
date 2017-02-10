@@ -308,10 +308,8 @@ stairs.register_stair_and_slab("cobble", "mcl_core:cobble",
 stairs.register_stair_and_slab("brick_block", "mcl_core:brick_block",
 		{cracky=3},
 		{"default_brick.png"},
-		-- Original name: Bricks Stairs
-		"Brick Block Stairs",
-		-- Original name: Bricks Slab
-		"Brick Block Slab",
+		"Brick Stairs",
+		"Brick Slab",
 		mcl_core.node_sound_stone_defaults())
 
 stairs.register_stair_and_slab("sandstone", "group:sandstone",
