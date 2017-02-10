@@ -5,9 +5,9 @@
 
 mcl_torches = {}
 
-mcl_torches.register_torch = function(substring, description, icon, mesh_floor, mesh_wall, tiles, light, groups, sounds)
-	local itemstring = "mcl_torches:"..substring
-	local itemstring_wall = "mcl_torches:"..substring.."_wall"
+mcl_torches.register_torch = function(substring, description, icon, mesh_floor, mesh_wall, tiles, light, groups, sounds, moredef)
+	local itemstring = minetest.get_current_modname()..":"..substring
+	local itemstring_wall = minetest.get_current_modname()..":"..substring.."_wall"
 
 	if light == nil then light = 14 end
 	if mesh_floor == nil then mesh_floor = "mcl_torches_torch_floor.obj" end
@@ -18,7 +18,7 @@ mcl_torches.register_torch = function(substring, description, icon, mesh_floor, 
 	groups.torch = 1
 	groups.dig_by_water = 1
 
-	minetest.register_node(itemstring, {
+	local floordef = {
 		description = description,
 		drawtype = "mesh",
 		mesh = mesh_floor,
@@ -63,25 +63,31 @@ mcl_torches.register_torch = function(substring, description, icon, mesh_floor, 
 				-- Prevent placement of ceiling torches
 				return itemstack
 			elseif wdir == 1 then
-				retval = fakestack:set_name("mcl_torches:torch")
+				retval = fakestack:set_name(itemstring)
 			else
-				retval = fakestack:set_name("mcl_torches:torch_wall")
+				retval = fakestack:set_name(itemstring_wall)
 			end
 			if not retval then
 				return itemstack
 			end
 
 			itemstack = minetest.item_place(fakestack, placer, pointed_thing, wdir)
-			itemstack:set_name("mcl_torches:torch")
+			itemstack:set_name(itemstring)
 
 			return itemstack
 		end
-	})
+	}
+	if moredef ~= nil then
+		for k,v in pairs(moredef) do
+			floordef[k] = v
+		end
+	end
+	minetest.register_node(itemstring, floordef)
 
 	local groups_wall = table.copy(groups)
 	groups_wall.torch = 2
 
-	minetest.register_node(itemstring_wall, {
+	local walldef = {
 		drawtype = "mesh",
 		mesh = mesh_wall,
 		tiles = tiles,
@@ -99,7 +105,13 @@ mcl_torches.register_torch = function(substring, description, icon, mesh_floor, 
 			wall_side = {-0.5, -0.5, -0.1, -0.2, 0.1, 0.1},
 		},
 		sounds = sounds,
-	})
+	}
+	if moredef ~= nil then
+		for k,v in pairs(moredef) do
+			walldef[k] = v
+		end
+	end
+	minetest.register_node(itemstring_wall, walldef)
 end
 
 mcl_torches.register_torch("torch", "Torch", "default_torch_on_floor.png",

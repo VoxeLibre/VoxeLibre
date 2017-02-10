@@ -41,51 +41,34 @@ minetest.register_craft({
 	{"mcl_core:stick"},}
 })
 
-local torch_selectionbox =
-{
-	type = "wallmounted",
-	wall_top = {-0.1, 0.5-0.6, -0.1, 0.1, 0.5, 0.1},
-	wall_bottom = {-0.1, -0.5, -0.1, 0.1, -0.5+0.6, 0.1},
-	wall_side = {-0.5, -0.1, -0.1, -0.5+0.6, 0.1, 0.1},
-}
+mcl_torches.register_torch("mesecon_torch_off", "Mesecon Torch (off)", "jeija_torches_off.png",
+	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",
+	{"jeija_torches_off.png"},
+	0,
+	{dig_immediate=3, dig_by_water=1, not_in_creative_inventory=1},
+	mcl_core.node_sound_wood_defaults(),
+	{
+		mesecons = {receptor = {
+			state = mesecon.state.off,
+			rules = torch_get_output_rules
+		}},
+		drop = "mesecons_torch:mesecon_torch_on",
+	}
+)
 
-minetest.register_node("mesecons_torch:mesecon_torch_off", {
-	drawtype = "torchlike",
-	tiles = {"jeija_torches_off.png", "jeija_torches_off_ceiling.png", "jeija_torches_off_side.png"},
-	inventory_image = "jeija_torches_off.png",
-	paramtype = "light",
-	walkable = false,
-	paramtype2 = "wallmounted",
-	is_ground_content = false,
-	selection_box = torch_selectionbox,
-	groups = {dig_immediate = 3, dig_by_water=1, not_in_creative_inventory = 1},
-	drop = "mesecons_torch:mesecon_torch_on",
-	mesecons = {receptor = {
-		state = mesecon.state.off,
-		rules = torch_get_output_rules
-	}}
-})
-
-minetest.register_node("mesecons_torch:mesecon_torch_on", {
-	drawtype = "torchlike",
-	tiles = {"jeija_torches_on.png", "jeija_torches_on_ceiling.png", "jeija_torches_on_side.png"},
-	inventory_image = "jeija_torches_on.png",
-	wield_image = "jeija_torches_on.png",
-	stack_max = 64,
-	paramtype = "light",
-	sunlight_propagates = true,
-	walkable = false,
-	paramtype2 = "wallmounted",
-	is_ground_content = false,
-	selection_box = torch_selectionbox,
-	groups = {dig_immediate=3, dig_by_water=1},
-	light_source = 7,
-	description="Redstone Torch",
-	mesecons = {receptor = {
-		state = mesecon.state.on,
-		rules = torch_get_output_rules
-	}},
-})
+mcl_torches.register_torch("mesecon_torch_on", "Mesecon Torch", "jeija_torches_on_inv.png",
+	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",
+	{"jeija_torches_on.png"},
+	7,
+	{dig_immediate=3, dig_by_water=1},
+	mcl_core.node_sound_wood_defaults(),
+	{
+		mesecons = {receptor = {
+			state = mesecon.state.on,
+			rules = torch_get_output_rules
+		}}
+	}
+)
 
 minetest.register_node("mesecons_torch:redstoneblock", {
 	description = "Block of Redstone",
@@ -117,7 +100,7 @@ minetest.register_craft({
 })
 
 minetest.register_abm({
-	nodenames = {"mesecons_torch:mesecon_torch_off","mesecons_torch:mesecon_torch_on"},
+	nodenames = {"mesecons_torch:mesecon_torch_off","mesecons_torch:mesecon_torch_off_wall","mesecons_torch:mesecon_torch_on","mesecons_torch:mesecon_torch_on_wall"},
 	interval = 1,
 	chance = 1,
 	action = function(pos, node)
@@ -133,9 +116,15 @@ minetest.register_abm({
 			if node.name == "mesecons_torch:mesecon_torch_on" then
 				mesecon:swap_node(pos, "mesecons_torch:mesecon_torch_off")
 				mesecon:receptor_off(pos, torch_get_output_rules(node))
+			elseif node.name == "mesecons_torch:mesecon_torch_on_wall" then
+				mesecon:swap_node(pos, "mesecons_torch:mesecon_torch_off_wall")
+				mesecon:receptor_off(pos, torch_get_output_rules(node))
 			end
 		elseif node.name == "mesecons_torch:mesecon_torch_off" then
 			mesecon:swap_node(pos, "mesecons_torch:mesecon_torch_on")
+			mesecon:receptor_on(pos, torch_get_output_rules(node))
+		elseif node.name == "mesecons_torch:mesecon_torch_off_wall" then
+			mesecon:swap_node(pos, "mesecons_torch:mesecon_torch_on_wall")
 			mesecon:receptor_on(pos, torch_get_output_rules(node))
 		end
 	end
