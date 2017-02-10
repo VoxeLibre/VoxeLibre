@@ -170,3 +170,42 @@ minetest.register_craft({
 		{"mcl_core:redsand","mcl_nether:netherrack","mcl_core:redsand"},
 	},
 })
+
+minetest.register_craft({
+	output = "mcl_farming:beetroot_seeds",
+	recipe = {
+		{"mcl_core:haybale","mcl_farming:wheat_seeds"},
+		{"mcl_farming:wheat_seeds","mcl_core:haybale"},
+	},
+})
+minetest.register_craft({
+	output = "mcl_farming:beetroot_seeds",
+	recipe = {
+		{"mcl_farming:wheat_seeds","mcl_core:haybale"},
+		{"mcl_core:haybale","mcl_farming:wheat_seeds"},
+	},
+})
+minetest.register_craft({
+	output = "mcl_farming:melon_seeds",
+	recipe = {
+		{"mcl_farming:beetroot_soup", "mcl_farming:beetroot_soup", "mcl_farming:beetroot_soup"},
+		{"mcl_farming:beetroot_soup", "mcl_farming:beetroot_soup", "mcl_farming:beetroot_soup"},
+		{"mcl_farming:beetroot_soup", "mcl_farming:beetroot_soup", "mcl_farming:beetroot_soup"},
+	},
+})
+minetest.register_craft({
+	output = "mcl_farming:potato_item",
+	recipe = {
+		{"mcl_dye:brown", "mcl_dye:brown", "mcl_dye:brown"},
+		{"mcl_dye:brown", "mcl_dye:brown", "mcl_dye:brown"},
+		{"mcl_dye:brown", "mcl_dye:brown", "mcl_dye:brown"},
+	},
+})
+minetest.register_craft({
+	output = "mcl_farming:pumpkin_seeds",
+	recipe = {
+		{"mcl_farming:potato_item","mcl_farming:potato_item","mcl_farming:potato_item"},
+		{"mcl_farming:potato_item","mcl_farming:potato_item","mcl_farming:potato_item"},
+		{"mcl_farming:potato_item","mcl_farming:potato_item","mcl_farming:potato_item"},
+	},
+})
