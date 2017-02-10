@@ -51,12 +51,12 @@ mobs:register_mob("mobs_mc:zombie", {
 		chance = 11,
 		min = 1,
 		max = 1,},
-		{name = "farming:carrot",
+		{name = "mcl_farming:carrot_item",
 		-- approximation to 8.5%
 		chance = 11,
 		min = 1,
 		max = 1,},
-		{name = "farming:potato",
+		{name = "mcl_farming:potato_item",
 		-- approximation to 8.5%
 		chance = 11,
 		min = 1,
