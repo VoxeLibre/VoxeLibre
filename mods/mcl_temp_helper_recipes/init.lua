@@ -137,3 +137,36 @@ minetest.register_craft({
 		{"group:sand", "group:sand", "group:sand"},
 	}
 })
+
+minetest.register_craft({
+	output = "mcl_nether:nether_wart_item",
+	recipe = {
+		{"mcl_nether:soul_sand", "mcl_core:obsidian", "mcl_nether:soul_sand"},
+		{"mcl_core:obsidian", "mcl_core:goldblock", "mcl_core:obsidian"},
+		{"mcl_nether:soul_sand", "mcl_core:obsidian", "mcl_nether:soul_sand"},
+	}
+})
+
+minetest.register_craft({
+	type = "shapeless",
+	output = "mcl_nether:netherrack",
+	recipe = {"mcl_core:stone", "group:redsandstone"},
+})
+
+minetest.register_craft({
+	output = "mcl_nether:glowstone_dust",
+	recipe = {
+		{"mcl_torches:torch", "mcl_torches:torch", "mcl_torches:torch",},
+		{"mcl_torches:torch", "mcl_core:coalblock", "mcl_torches:torch",},
+		{"mcl_torches:torch", "mcl_torches:torch", "mcl_torches:torch",},
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_nether:soul_sand",
+	recipe = {
+		{"mcl_core:redsand","mcl_nether:netherrack","mcl_core:redsand"},
+		{"mcl_nether:netherrack","mcl_core:redsand","mcl_nether:netherrack"},
+		{"mcl_core:redsand","mcl_nether:netherrack","mcl_core:redsand"},
+	},
+})
