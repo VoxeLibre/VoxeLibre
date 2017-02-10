@@ -217,24 +217,25 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_nether:red_nether_brick",
 	recipe = {
-		{'mcl_nether:nether_wart', 'mcl_nether:netherbrick'},
-		{'mcl_nether:netherbrick', 'mcl_nether:nether_wart'},
+		{'mcl_nether:nether_wart_item', 'mcl_nether:netherbrick'},
+		{'mcl_nether:netherbrick', 'mcl_nether:nether_wart_item'},
 	}
 })
 minetest.register_craft({
 	output = "mcl_nether:red_nether_brick",
 	recipe = {
-		{'mcl_nether:netherbrick', 'mcl_nether:nether_wart'},
-		{'mcl_nether:nether_wart', 'mcl_nether:netherbrick'},
+		{'mcl_nether:netherbrick', 'mcl_nether:nether_wart_item'},
+		{'mcl_nether:nether_wart_item', 'mcl_nether:netherbrick'},
 	}
 })
 
 minetest.register_craft({
 	output = "mcl_nether:nether_wart_block",
 	recipe = {
-		{'mcl_nether:nether_wart', 'mcl_nether:nether_wart', 'mcl_nether:nether_wart'},
-		{'mcl_nether:nether_wart', 'mcl_nether:nether_wart', 'mcl_nether:nether_wart'},
-		{'mcl_nether:nether_wart', 'mcl_nether:nether_wart', 'mcl_nether:nether_wart'},
+		{'mcl_nether:nether_wart_item', 'mcl_nether:nether_wart_item', 'mcl_nether:nether_wart_item'},
+		{'mcl_nether:nether_wart_item', 'mcl_nether:nether_wart_item', 'mcl_nether:nether_wart_item'},
+		{'mcl_nether:nether_wart_item', 'mcl_nether:nether_wart_item', 'mcl_nether:nether_wart_item'},
 	}
 })
 
+dofile(minetest.get_modpath(minetest.get_current_modname()).."/nether_wart.lua")
