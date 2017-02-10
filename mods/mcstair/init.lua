@@ -602,6 +602,7 @@ function mcstair.add(name, stairtiles)
 		paramtype = "light",
 		paramtype2 = "facedir",
 		is_ground_content = false,
+		sunlight_propagates = false,
 		groups = outer_groups,
 		sounds = node_def.sounds,
 		node_box = {
@@ -622,6 +623,7 @@ function mcstair.add(name, stairtiles)
 		paramtype = "light",
 		paramtype2 = "facedir",
 		is_ground_content = false,
+		sunlight_propagates = false,
 		groups = inner_groups,
 		sounds = node_def.sounds,
 		node_box = {
