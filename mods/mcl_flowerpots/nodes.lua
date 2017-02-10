@@ -55,16 +55,20 @@ minetest.register_node("mcl_flowerpots:flower_pot", {
 			local flower = row[1]
 			local flower_node = row[2]
 			if item == flower_node then
-				minetest.set_node(pos, {name="mcl_flowerpots:flower_pot_"..flower})
-				itemstack:take_item()
+				minetest.swap_node(pos, {name="mcl_flowerpots:flower_pot_"..flower})
+				if not minetest.setting_getbool("creative_mode") then
+					itemstack:take_item()
+				end
 			end
 		end
 		for _, row in ipairs(cubes) do
 			local flower = row[1]
 			local flower_node = row[2]
 			if item == flower_node then
-				minetest.set_node(pos, {name="mcl_flowerpots:flower_pot_"..flower})
-				itemstack:take_item()
+				minetest.swap_node(pos, {name="mcl_flowerpots:flower_pot_"..flower})
+				if not minetest.setting_getbool("creative_mode") then
+					itemstack:take_item()
+				end
 			end
 		end
 	end,
