@@ -108,7 +108,11 @@ minetest.register_node("mcl_flowerpots:flower_pot_"..flower, {
 		minetest.add_item({x=pos.x, y=pos.y+0.5, z=pos.z}, flower_node)
 		minetest.set_node(pos, {name="mcl_flowerpots:flower_pot"})
 	end,
-	drop = "mcl_flowerpots:flower_pot",
+	drop = {
+		items = {
+			{ items = { "mcl_flowerpots:flower_pot", flower_node } }
+		}
+	},
 })
 end
 
@@ -140,6 +144,10 @@ minetest.register_node("mcl_flowerpots:flower_pot_"..flower, {
 		minetest.add_item({x=pos.x, y=pos.y+0.5, z=pos.z}, flower_node)
 		minetest.set_node(pos, {name="mcl_flowerpots:flower_pot"})
 	end,
-	drop = "mcl_flowerpots:flower_pot",
+	drop = {
+		items = {
+			{ items = { "mcl_flowerpots:flower_pot", flower_node } }
+		}
+	},
 })
 end
