@@ -47,7 +47,7 @@ minetest.register_node("beds:bed_bottom", {
 	description = "Bed",
 	inventory_image = "beds_bed.png",
 	wield_image = "beds_bed.png",
-	wield_scale = {x=0.8,y=2.5,z=1.3},
+	wield_scale = {x=1.5,y=1.5,z=1.5},
 	drawtype = "nodebox",
 	is_ground_content = false,
 	tiles = {"beds_bed_top_bottom.png^[transformR90", "default_wood.png",  "beds_bed_side_bottom_r.png",  "beds_bed_side_bottom_r.png^[transformfx", "beds_bed_leer.png", "beds_bed_side_bottom.png"},
