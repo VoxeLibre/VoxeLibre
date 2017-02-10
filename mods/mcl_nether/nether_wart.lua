@@ -81,14 +81,18 @@ minetest.register_craftitem("mcl_nether:nether_wart_item", {
 		if pointed_thing.type ~= "node" then
 			return itemstack
 		end
+		local placepos = pointed_thing.above
+		local soilpos = table.copy(placepos)
+		soilpos.y = soilpos.y - 1
+
 		-- Check for correct soil type
-		local chk = minetest.get_item_group(minetest.get_node(pointed_thing.under).name, "soil_nether_wart")
+		local chk = minetest.get_item_group(minetest.get_node(soilpos).name, "soil_nether_wart")
 		if chk ~= 0 and chk ~= nil then
 			-- Check if node above soil node allows placement
-			if minetest.registered_items[minetest.get_node(pointed_thing.above).name].buildable_to then
+			if minetest.registered_items[minetest.get_node(placepos).name].buildable_to then
 				-- Place nether wart
-				minetest.sound_play({name="default_place_node", gain=1.0}, {pos=pointed_thing.above})
-				minetest.set_node(pointed_thing.above, {name="mcl_nether:nether_wart_0"})
+				minetest.sound_play({name="default_place_node", gain=1.0}, {pos=placepos})
+				minetest.set_node(placepos, {name="mcl_nether:nether_wart_0"})
 
 				if not minetest.setting_getbool("creative_mode") then
 					itemstack:take_item()
