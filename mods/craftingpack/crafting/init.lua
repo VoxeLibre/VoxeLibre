@@ -102,6 +102,7 @@ local function set_inventory(player)
 	"listring[current_player;craft]"..
 	"listring[current_player;main]"..
 	"listring[detached:"..player_name.."_armor;armor]"..
+	-- inventory marker
 	"inv"
 	
 	player:set_inventory_formspec(form)
@@ -122,6 +123,7 @@ local function set_workbench(player)
 	"tooltip[__mcl_craftguide;Show crafting recipes]"..
 	"listring[current_player;main]"..
 	"listring[current_player;craft]"..
+	-- inventory marker
 	"wob"
 
 	--player:set_inventory_formspec(form)
@@ -131,10 +133,11 @@ end
 --drop craf items and reset inventory on closing
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.quit then
+		minetest.log("error", "quite")
 		local formspec = player:get_inventory_formspec()
 		local size = string.len(formspec)
 		local marker = string.sub(formspec,size-2)
-		if marker == "inv" or marker == "wob" then
+		if marker == "inv" or marker == "wob" or marker == "cin" then
 			drop_fields(player,"craft")			
 			set_inventory(player)
 		end

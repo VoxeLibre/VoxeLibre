@@ -286,6 +286,9 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 				formspec = formspec .. "field_close_on_enter[suche;false]"
 			end
 			if pagenum ~= nil then formspec = formspec .. "p"..tostring(pagenum) end
+
+			-- inventory marker
+			formspec = formspec .. "cin"
 			
 	player:set_inventory_formspec(formspec)
 end
