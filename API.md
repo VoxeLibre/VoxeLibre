@@ -55,6 +55,10 @@ These groups are used mostly for informational purposes
     * `liquid=1`: Unspecified type
     * `liquid=2`: Water
     * `liquid=3`: Lava
+* `fence=1`: Fence
+* `fence_gate=1`: Fence gate
+* `fence_wood=1`: Wooden fence
+* `fence_nether_brick=1`: Nether brick fence
 * `clock=1`: Clock
 * `compass`: Compass (rating doesn't matter)
 * `book=1`: Book

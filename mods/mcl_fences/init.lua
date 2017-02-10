@@ -24,10 +24,12 @@ mcl_fences.register_fence = function(id, fence_name, fence_gate_name, texture, f
 	groups.fence = 1
 	groups.deco_block = 1
 	if connects_to == nil then connects_to = {} end
+	local fence_id = minetest.get_current_modname()..":"..id
 	table.insert(connects_to, "group:solid")
-	table.insert(connects_to, "group:fence")
+	table.insert(connects_to, "group:fence_gate")
+	table.insert(connects_to, fence_id)
 	local id_gate = id .. "_gate"
-	minetest.register_node(minetest.get_current_modname()..":"..id, {
+	minetest.register_node(fence_id, {
 		description = fence_name,
 		tiles = {texture},
 		inventory_image = "mcl_fences_fence_mask.png^" .. texture .. "^mcl_fences_fence_mask.png^[makealpha:255,126,126",
@@ -89,6 +91,7 @@ mcl_fences.register_fence = function(id, fence_name, fence_gate_name, texture, f
 	end
 
 	groups.mesecon_effector_on = 1
+	groups.fence_gate = 1
 	minetest.register_node(minetest.get_current_modname()..":"..id_gate.."_open", {
 		tiles = {texture},
 		paramtype = "light",
@@ -190,7 +193,7 @@ mcl_fences.register_fence = function(id, fence_name, fence_gate_name, texture, f
 end
 
 local wood_groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fence_wood=1}
-local wood_connect = {}
+local wood_connect = {"group:fence_wood"}
 local wood_sounds = mcl_core.node_sound_wood_defaults()
 
 local woods = {
@@ -231,7 +234,7 @@ for w=1, #woods do
 end
 
 -- Nether Brick Fence (without fence gate!)
-mcl_fences.register_fence("nether_brick_fence", "Nether Brick Fence", nil, "mcl_nether_nether_brick.png", "default_fence.png", nil, {cracky=2, deco_block=1}, {}, mcl_core.node_sound_stone_defaults())
+mcl_fences.register_fence("nether_brick_fence", "Nether Brick Fence", nil, "mcl_nether_nether_brick.png", "default_fence.png", nil, {cracky=2, deco_block=1, fence_nether_brick=1}, {"group:fence_nether_brick"}, mcl_core.node_sound_stone_defaults())
 
 minetest.register_craft({
 	output = 'mcl_fences:nether_brick_fence 6',
