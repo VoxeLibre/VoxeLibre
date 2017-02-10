@@ -149,6 +149,7 @@ minetest.register_node("mcl_end:chorus_flower_dead", {
 	paramtype = "light",
 	node_box = chorus_flower_box,
 	sounds = mcl_core.node_sound_wood_defaults(),
+	drop = "mcl_end:chorus_flower",
 	groups = { oddly_breakable_by_hand = 3, choppy = 3, deco_block = 1},
 })
 
