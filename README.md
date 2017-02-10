@@ -9,7 +9,8 @@ fight monsters and hunger for survival and slowly progress through the
 various other aspects of the game, such as mining, farming, building machines, and so on
 Or you can play in “creative mode” in which you can build almost anything instantly.
 
-Gameplay summary:
+#### Gameplay summary
+
 * Sandbox-style gameplay, no goals (for now)
 * Survive: Fight against hostile monsters and hunger
 * Mine for ores and other treasures
@@ -97,6 +98,7 @@ The following main features are available:
 * And more!
 
 The following features are incomplete:
+
 * Monsters and NPCs
 * Digging times
 * Some redstone-related things
@@ -111,10 +113,12 @@ The following features are incomplete:
 * A couple of non-trivial blocks and items
 
 Additional features:
+
 * Built-in crafting guide which shows you crafting and smelting recipes
 * New temporary crafting recipes. For example, you can craft ender pearls (impossible in Minecraft). They only exist to make some otherwise unaccessible items available when you're not in creative mode. These recipes will be removed as development goes on an more features become available
 
 Technical differences from Minecraft:
+
 * Still very, very incomplete and buggy
 * Many blocks, items, enemies and other features are missing
 * A few items have slightly different names to make them easier to distinguish
@@ -166,10 +170,10 @@ But, oh well, if you insist, here is the legalese for you:
 
 ### License of source code
 MineClone source code:
-LGPL v2.1 (daredevils and others) (see LICENSE.txt)
+LGPL v2.1 (daredevils and others) (see `LICENSE.txt`)
 
 Mods credit:
-See README.txt in each mod directory for information about other authors.
+See `README.txt` or `README.md` in each mod directory for information about other authors.
 
 ### License of media (textures and sounds)
 The textures, unless otherwise noted, are taken from the Faithful 1.11 resource pack for Minecraft,
