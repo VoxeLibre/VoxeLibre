@@ -131,6 +131,7 @@ minetest.register_node("mcl_end:chorus_flower", {
 	drawtype = "nodebox",
 	paramtype = "light",
 	node_box = chorus_flower_box,
+	selection_box = { type = "regular" },
 	sounds = mcl_core.node_sound_wood_defaults(),
 	groups = { oddly_breakable_by_hand = 3, choppy = 3, deco_block = 1 },
 })
@@ -148,6 +149,7 @@ minetest.register_node("mcl_end:chorus_flower_dead", {
 	drawtype = "nodebox",
 	paramtype = "light",
 	node_box = chorus_flower_box,
+	selection_box = { type = "regular" },
 	sounds = mcl_core.node_sound_wood_defaults(),
 	drop = "mcl_end:chorus_flower",
 	groups = { oddly_breakable_by_hand = 3, choppy = 3, deco_block = 1},
