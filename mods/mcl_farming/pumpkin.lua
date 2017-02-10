@@ -4,13 +4,7 @@ minetest.register_craftitem("mcl_farming:pumpkin_seeds", {
 	inventory_image = "farming_pumpkin_seed.png",
 	groups = { craftitem=1 },
 	on_place = function(itemstack, placer, pointed_thing)
-		local above = minetest.get_node(pointed_thing.above)
-		if above.name == "air" then
-			above.name = "mcl_farming:pumpkin_1"
-			minetest.set_node(pointed_thing.above, above)
-			itemstack:take_item(1)
-			return itemstack
-		end
+		return mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:pumpkin_1")
 	end
 })
 
