@@ -86,8 +86,11 @@ minetest.register_craftitem("mcl_nether:nether_wart_item", {
 		if chk ~= 0 and chk ~= nil then
 			-- Check if node above soil node allows placement
 			if minetest.registered_items[minetest.get_node(pointed_thing.above).name].buildable_to then
+				-- Place nether wart
+				minetest.sound_play({name="default_place_node", gain=1.0}, {pos=pointed_thing.above})
 				minetest.set_node(pointed_thing.above, {name="mcl_nether:nether_wart_0"})
-				if not minetest.setting_get("creative_mode") then
+
+				if not minetest.setting_getbool("creative_mode") then
 					itemstack:take_item()
 				end
 				return itemstack
