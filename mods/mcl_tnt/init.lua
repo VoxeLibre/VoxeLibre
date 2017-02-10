@@ -77,7 +77,15 @@ end
 
 function TNT:on_step(dtime)
 	local pos = self.object:getpos()
-	minetest.add_particle({x=pos.x,y=pos.y+0.5,z=pos.z}, {x=math.random(-.1,.1),y=math.random(1,2),z=math.random(-.1,.1)}, {x=0,y=-0.1,z=0}, math.random(.5,1),math.random(1,2), false, "tnt_smoke.png")
+	minetest.add_particle({
+		pos = {x=pos.x,y=pos.y+0.5,z=pos.z},
+		velocity = {x=math.random(-.1,.1),y=math.random(1,2),z=math.random(-.1,.1)},
+		acceleration = {x=0,y=-0.1,z=0},
+		expirationtime = math.random(.5,1),
+		size = math.random(1,2),
+		collisiondetection = false,
+		texture = "tnt_smoke.png"
+	})
 	self.timer = self.timer + dtime
 	self.blinktimer = self.blinktimer + dtime
 	if self.blinktimer > 0.5 then

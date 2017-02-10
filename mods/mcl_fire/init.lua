@@ -209,11 +209,25 @@ end
 function mcl_fire.add_fire(pos)
 	local null = {x=0, y=0, z=0}
 	pos.y = pos.y+0.19
-	minetest.add_particle(pos, null, null, 1.1,
-   					1.5, true, "default_fire_particle"..tostring(math.random(1,2)) ..".png")
+	minetest.add_particle({
+		pos = pos,
+		velocity = null,
+		acceleration = null,
+		expirationtime = 1.1,
+		size = 1.5,
+		collisiondetection = true,
+		texture = "default_fire_particle"..tostring(math.random(1,2)) ..".png"
+	})
 	pos.y = pos.y +0.01
-	minetest.add_particle(pos, null, null, 0.8,
-   					1.5, true, "default_fire_particle"..tostring(math.random(1,2)) ..".png")
+	minetest.add_particle({
+		pos = pos,
+		velocity = null,
+		acceleration = null,
+		expirationtime = 0.8,
+		size = 1.5,
+		collisiondetection = true,
+		texture = "default_fire_particle"..tostring(math.random(1,2)) ..".png"
+	})
 end
 
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/flint_and_steel.lua")
