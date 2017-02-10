@@ -20,6 +20,7 @@ This section explains all the used groups in this subgame.
 * `soil_sapling=2`: Soil for saplings. Intended to be natural soil. All saplings will grow on this
 * `soil_sapling=1`: Artificial soil (such as farmland) for saplings. Some saplings will not grow on this
 * `soil_sugarcane=1`: Sugar canes will grow on this near water
+* `soil_nether_wart=1`: Nether wart will grow on this
 * `disable_suffocation=1`: Disables suffocation for full solid cubes (1)
 
 #### Footnotes
