@@ -1069,6 +1069,7 @@ minetest.register_node("mcl_core:vine", {
 	paramtype2 = "wallmounted",
 	walkable = false,
 	climbable = true,
+	buildable_to = true,
 	selection_box = {
 		type = "wallmounted",
 	},
