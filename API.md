@@ -53,6 +53,9 @@ These groups are used mostly for informational purposes
 * `not_solid=1`: Block is sold (only assign this group for nodes which are automatically detected as “solid” in error
 * `water=1`: Water
 * `lava=1`: Lava
+* `torch`: Torch or torch-like node
+    * `torch=1`: Torch on floor
+    * `torch=2`: Torch at wall
 * `liquid`: Block is a liquid
     * `liquid=1`: Unspecified type
     * `liquid=2`: Water
