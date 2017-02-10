@@ -1066,6 +1066,7 @@ minetest.register_node("mcl_core:vine", {
 	inventory_image = "default_vine.png",
 	wield_image = "default_vine.png",
 	paramtype = "light",
+	sunlight_propagates = true,
 	paramtype2 = "wallmounted",
 	walkable = false,
 	climbable = true,
