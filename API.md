@@ -49,6 +49,8 @@ This section explains all the used groups in this subgame.
 ### Declarative groups
 These groups are used mostly for informational purposes
 
+* `solid=1`: Solid block (automatically assigned)
+* `not_solid=1`: Block is sold (only assign this group for nodes which are automatically detected as “solid” in error
 * `water=1`: Water
 * `lava=1`: Lava
 * `liquid`: Block is a liquid
