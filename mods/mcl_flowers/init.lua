@@ -208,7 +208,7 @@ minetest.register_node("mcl_flowers:fern", {
 		max_items = 1,
 		items = {
 			{
-				items = {'mcl_farming:wheat_seed'},
+				items = {'mcl_farming:wheat_seeds'},
 				rarity = 8,
 			},
 		}

@@ -1,4 +1,4 @@
-minetest.register_craftitem("mcl_farming:pumpkin_seed", {
+minetest.register_craftitem("mcl_farming:pumpkin_seeds", {
 	description = "Pumpkin Seeds",
 	stack_max = 64,
 	inventory_image = "farming_pumpkin_seed.png",
@@ -284,7 +284,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_farming:pumpkin_seed 4",
+	output = "mcl_farming:pumpkin_seeds 4",
 	recipe = {{"mcl_farming:pumpkin_face"}}
 })
 

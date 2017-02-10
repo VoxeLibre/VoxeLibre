@@ -1,4 +1,4 @@
-minetest.register_craftitem("mcl_farming:wheat_seed", {
+minetest.register_craftitem("mcl_farming:wheat_seeds", {
 	description = "Wheat Seeds",
 	groups = { craftitem=1 },
 	inventory_image = "farming_wheat_seed.png",
@@ -13,7 +13,7 @@ minetest.register_node("mcl_farming:wheat_1", {
 	walkable = false,
 	drawtype = "nodebox",
 	paramtype = "light",
-	drop = "mcl_farming:wheat_seed",
+	drop = "mcl_farming:wheat_seeds",
 	tiles = {"farming_wheat_1.png"},
 	selection_box = {
 		type = "fixed",
@@ -40,7 +40,7 @@ minetest.register_node("mcl_farming:wheat_2", {
 	walkable = false,
 	drawtype = "nodebox",
 	paramtype = "light",
-	drop = "mcl_farming:wheat_seed",
+	drop = "mcl_farming:wheat_seeds",
 	tiles = {"farming_wheat_2.png"},
 	selection_box = {
 		type = "fixed",
@@ -67,7 +67,7 @@ minetest.register_node("mcl_farming:wheat_3", {
 	walkable = false,
 	drawtype = "nodebox",
 	paramtype = "light",
-	drop = "mcl_farming:wheat_seed",
+	drop = "mcl_farming:wheat_seeds",
 	tiles = {"farming_wheat_3.png"},
 	selection_box = {
 		type = "fixed",
@@ -98,9 +98,9 @@ minetest.register_node("mcl_farming:wheat", {
 	drop = {
 		max_items = 4,
 		items = {
-			{ items = {'mcl_farming:wheat_seed'} },
-			{ items = {'mcl_farming:wheat_seed'}, rarity = 2},
-			{ items = {'mcl_farming:wheat_seed'}, rarity = 5},
+			{ items = {'mcl_farming:wheat_seeds'} },
+			{ items = {'mcl_farming:wheat_seeds'}, rarity = 2},
+			{ items = {'mcl_farming:wheat_seeds'}, rarity = 5},
 			{ items = {'mcl_farming:wheat_harvested'} }
 		}
 	},

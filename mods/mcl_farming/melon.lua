@@ -202,7 +202,7 @@ minetest.register_node("mcl_farming:melontige_linked_b", {
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
 
-minetest.register_craftitem("mcl_farming:melon_seed", {
+minetest.register_craftitem("mcl_farming:melon_seeds", {
 	description = "Melon Seeds",
 	stack_max = 64,
 	groups = { craftitem=1 },
@@ -273,7 +273,7 @@ minetest.register_abm({
 mcl_farming:add_plant("mcl_farming:melontige_unconnect", {"mcl_farming:melontige_1", "mcl_farming:melontige_2"}, 50, 20)
 
 minetest.register_craft({
-	output = "mcl_farming:melon_seed",
+	output = "mcl_farming:melon_seeds",
 	recipe = {{"mcl_farming:melon_item"}}
 })
 

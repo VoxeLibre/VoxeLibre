@@ -886,7 +886,7 @@ minetest.register_node("mcl_core:junglegrass", {
 		max_items = 1,
 		items = {
 			{
-				items = {'mcl_farming:wheat_seed'},
+				items = {'mcl_farming:wheat_seeds'},
 				rarity = 8,
 			},
 		}
@@ -1388,7 +1388,7 @@ minetest.register_node("mcl_core:grass", {
 		max_items = 1,
 		items = {
 			{
-				items = {'mcl_farming:wheat_seed'},
+				items = {'mcl_farming:wheat_seeds'},
 				rarity = 8,
 			},
 		}
