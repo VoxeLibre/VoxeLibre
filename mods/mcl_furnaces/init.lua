@@ -204,7 +204,7 @@ minetest.register_abm({
 		if meta:get_float("fuel_time") < meta:get_float("fuel_totaltime") then
 			local percent = math.floor(meta:get_float("fuel_time") /
 					meta:get_float("fuel_totaltime") * 100)
-			minetest.swap_node(pos, { name = "mcl_furnaces:furnace_active" })
+			minetest.swap_node(pos, { name = "mcl_furnaces:furnace_active", param = node.param, param2 = node.param2 })
 			meta:set_string("formspec",
 				"size[9,8.75]"..
 				"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory_furnace.png]"..
@@ -241,14 +241,14 @@ minetest.register_abm({
 		end
 
 		if fuel.time <= 0 then
-			minetest.swap_node(pos, { name = "mcl_furnaces:furnace" })
+			minetest.swap_node(pos, { name = "mcl_furnaces:furnace", param = node.param, param2 = node.param2 })
 			meta:set_string("formspec", furnace_inactive_formspec)
 			return
 		end
 
 		if cooked.item:is_empty() then
 			if was_active then
-				minetest.swap_node(pos, { name = "mcl_furnaces:furnace" })
+				minetest.swap_node(pos, { name = "mcl_furnaces:furnace", param = node.param, param2 = node.param2 })
 				meta:set_string("formspec", furnace_inactive_formspec)
 			end
 			return
