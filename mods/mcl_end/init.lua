@@ -107,6 +107,51 @@ minetest.register_node("mcl_end:dragon_egg", {
 	-- TODO: Make dragon egg teleport on punching
 })
 
+local chorus_flower_box = {
+	type = "fixed",
+	fixed = {
+		{-0.5, -0.375, -0.375, 0.5, 0.375, 0.375},
+		{-0.375, -0.375, 0.375, 0.375, 0.375, 0.5},
+		{-0.375, -0.375, -0.5, 0.375, 0.375, -0.375},
+		{-0.375, 0.375, -0.375, 0.375, 0.5, 0.375},
+		{-0.375, -0.5, -0.375, 0.375, -0.375, 0.375},
+	}
+}
+
+minetest.register_node("mcl_end:chorus_flower", {
+	description = "Chorus Flower",
+	tiles = {
+		"mcl_end_chorus_flower.png",
+		"mcl_end_chorus_flower.png",
+		"mcl_end_chorus_flower.png",
+		"mcl_end_chorus_flower.png",
+		"mcl_end_chorus_flower.png",
+		"mcl_end_chorus_flower.png",
+	},
+	drawtype = "nodebox",
+	paramtype = "light",
+	node_box = chorus_flower_box,
+	sounds = mcl_core.node_sound_wood_defaults(),
+	groups = { oddly_breakable_by_hand = 3, choppy = 3, deco_block = 1 },
+})
+
+minetest.register_node("mcl_end:chorus_flower_dead", {
+	description = "Dead Chorus Flower",
+	tiles = {
+		"mcl_end_chorus_flower_dead.png",
+		"mcl_end_chorus_flower_dead.png",
+		"mcl_end_chorus_flower_dead.png",
+		"mcl_end_chorus_flower_dead.png",
+		"mcl_end_chorus_flower_dead.png",
+		"mcl_end_chorus_flower_dead.png",
+	},
+	drawtype = "nodebox",
+	paramtype = "light",
+	node_box = chorus_flower_box,
+	sounds = mcl_core.node_sound_wood_defaults(),
+	groups = { oddly_breakable_by_hand = 3, choppy = 3, deco_block = 1},
+})
+
 -- Craftitems
 minetest.register_craftitem("mcl_end:chorus_fruit", {
 	description = "Chorus Fruit",
