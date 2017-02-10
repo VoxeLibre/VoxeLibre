@@ -133,7 +133,6 @@ end
 --drop craf items and reset inventory on closing
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.quit then
-		minetest.log("error", "quite")
 		local formspec = player:get_inventory_formspec()
 		local size = string.len(formspec)
 		local marker = string.sub(formspec,size-2)
