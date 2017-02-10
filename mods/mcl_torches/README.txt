@@ -24,6 +24,8 @@ Changes for MineClone:
 ~~~~~~~~~~~~~~~~~~~~~~
 - Torch does not generate light when wielding
 - Torch drops when near water
+- Torch can't be placed on ceiling
+- Simple API (WIP)
 
 License:
 ~~~~~~~~

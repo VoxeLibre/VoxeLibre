@@ -6,12 +6,12 @@
 mcl_torches = {}
 
 mcl_torches.register_torch = function(substring, description, icon, mesh_floor, mesh_wall, tiles, light, groups, sounds)
-	local itemstring = "torches:"..substring
-	local itemstring_wall = "torches:"..substring.."_wall"
+	local itemstring = "mcl_torches:"..substring
+	local itemstring_wall = "mcl_torches:"..substring.."_wall"
 
 	if light == nil then light = 14 end
-	if mesh_floor == nil then mesh_floor = "torch_floor.obj" end
-	if mesh_wall == nil then mesh_wall = "torch_wall.obj" end
+	if mesh_floor == nil then mesh_floor = "mcl_torches_torch_floor.obj" end
+	if mesh_wall == nil then mesh_wall = "mcl_torches_torch_wall.obj" end
 	if groups == nil then groups = {} end
 
 	groups.attached_node = 1
@@ -63,16 +63,16 @@ mcl_torches.register_torch = function(substring, description, icon, mesh_floor, 
 				-- Prevent placement of ceiling torches
 				return itemstack
 			elseif wdir == 1 then
-				retval = fakestack:set_name("torches:torch")
+				retval = fakestack:set_name("mcl_torches:torch")
 			else
-				retval = fakestack:set_name("torches:torch_wall")
+				retval = fakestack:set_name("mcl_torches:torch_wall")
 			end
 			if not retval then
 				return itemstack
 			end
 
 			itemstack = minetest.item_place(fakestack, placer, pointed_thing, wdir)
-			itemstack:set_name("torches:torch")
+			itemstack:set_name("mcl_torches:torch")
 
 			return itemstack
 		end
@@ -103,7 +103,7 @@ mcl_torches.register_torch = function(substring, description, icon, mesh_floor, 
 end
 
 mcl_torches.register_torch("torch", "Torch", "default_torch_on_floor.png",
-	"torch_floor.obj", "torch_wall.obj",
+	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",
 	{{
 		name = "default_torch_on_floor_animated.png",
 		animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 3.3}
@@ -114,7 +114,7 @@ mcl_torches.register_torch("torch", "Torch", "default_torch_on_floor.png",
 	
 
 minetest.register_craft({
-	output = "torches:torch 4",
+	output = "mcl_torches:torch 4",
 	recipe = {
 		{ "group:coal" },
 		{ "mcl_core:stick" },

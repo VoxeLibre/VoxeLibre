@@ -25,7 +25,7 @@ ARMOR_FIRE_NODES = {
 	{"fire:permanent_flame",    3, 4},
 	{"ethereal:crystal_spike",  2, 1},
 	{"ethereal:fire_flower",    2, 1},
-	{"torches:torch",           1, 1},
+	{"mcl_torches:torch",       1, 1},
 }
 
 local skin_mod = nil

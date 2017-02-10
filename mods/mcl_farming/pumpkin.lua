@@ -280,7 +280,7 @@ minetest.register_node("mcl_farming:pumpkin_face_light", {
 minetest.register_craft({
 	output = "mcl_farming:pumpkin_face_light",
 	recipe = {{"mcl_farming:pumpkin_face"},
-	{"torches:torch"}}
+	{"mcl_torches:torch"}}
 })
 
 minetest.register_craft({

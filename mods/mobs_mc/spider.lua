@@ -35,7 +35,7 @@ mobs:register_mob("mobs_mc:spider", {
 	floats = 0,
 	group_attack = true,
 		replace_rate = 5,
-	replace_what = {"torches:torch"},
+	replace_what = {"mcl_torches:torch"},
 	replace_with = "air",
 	replace_offset = -1,
 	peaceful = false,

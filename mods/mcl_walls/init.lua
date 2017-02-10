@@ -45,7 +45,7 @@ local function update_wall(pos)
 	-- Torches or walkable nodes above the wall
 	local upnode = minetest.get_node({x = pos.x, y = pos.y+1, z = pos.z})
 	if sum == 5 or sum == 10 then
-		if minetest.registered_nodes[upnode.name].walkable or upnode.name == "torches:floor" then
+		if minetest.registered_nodes[upnode.name].walkable or upnode.name == "mcl_torches:floor" then
 			sum = sum + 11
 		end
 	end

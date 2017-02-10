@@ -1,7 +1,7 @@
 -- Wielded Item Transformations - http://dev.minetest.net/texture
 
 wieldview_transform = {
-	["torches:torch"]="R270",
+	["mcl_torches:torch"]="R270",
 	["mcl_core:sapling"]="R270",
 	["flowers:dandelion_white"]="R270",
 	["flowers:dandelion_yellow"]="R270",

@@ -1,4 +1,4 @@
 mcl_core
 bucket
 mcl_wool
-torches
+mcl_torches
