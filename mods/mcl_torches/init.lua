@@ -96,7 +96,7 @@ mcl_torches.register_torch = function(substring, description, icon, mesh_floor, 
 			type = "wallmounted",
 			wall_top = {-0.1, -0.1, -0.1, 0.1, 0.5, 0.1},
 			wall_bottom = {-0.1, -0.5, -0.1, 0.1, 0.1, 0.1},
-			wall_side = {-0.5, -0.3, -0.1, -0.2, 0.3, 0.1},
+			wall_side = {-0.5, -0.5, -0.1, -0.2, 0.1, 0.1},
 		},
 		sounds = sounds,
 	})
