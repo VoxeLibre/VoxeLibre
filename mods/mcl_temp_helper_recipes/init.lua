@@ -65,9 +65,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_end:chorus_fruit",
 	recipe = {
-		{ "mcl_flowers:allium", "mcl_flowers:allium", "mcl_flowers:allium" },
-		{ "mcl_flowers:allium", "mcl_flowers:allium", "mcl_flowers:allium" },
-		{ "mcl_flowers:allium", "mcl_flowers:allium", "mcl_flowers:allium" },
+		{ "mcl_flowers:allium", "mcl_end:end_stone", "mcl_flowers:allium" },
+		{ "mcl_end:end_stone", "mcl_end:end_stone", "mcl_end:end_stone" },
+		{ "mcl_flowers:allium", "mcl_end:end_stone", "mcl_flowers:allium" },
 	},
 })
 
