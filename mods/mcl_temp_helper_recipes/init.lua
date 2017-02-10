@@ -209,3 +209,11 @@ minetest.register_craft({
 		{"mcl_farming:potato_item","mcl_farming:potato_item","mcl_farming:potato_item"},
 	},
 })
+minetest.register_craft({
+	output = "mcl_farming:carrot_item",
+	recipe = {
+		{"mcl_flowers:poppy", "mcl_flowers:oxeye_daisy", "mcl_flowers:dandelion",},
+		{"mcl_flowers:tulip_pink", "mcl_flowers:tulip_orange", "mcl_flowers:tulip_red",},
+		{"mcl_flowers:blue_orchid", "mcl_flowers:azure_bluet", "mcl_flowers:allium",}
+	},
+})
