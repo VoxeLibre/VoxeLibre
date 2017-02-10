@@ -498,7 +498,7 @@ end
 minetest.register_node("doors:trapdoor", {
 	description = "Wooden Trapdoor",
 	drawtype = "nodebox",
-	tiles = {"door_trapdoor.png", "door_trapdoor.png",  "default_wood.png",  "default_wood.png", "default_wood.png", "default_wood.png"},
+	tiles = {"door_trapdoor.png"},
 	is_ground_content = false,
 	paramtype = "light",
 	stack_max = 64,
@@ -544,7 +544,7 @@ minetest.register_node("doors:trapdoor", {
 
 minetest.register_node("doors:trapdoor_open", {
 	drawtype = "nodebox",
-	tiles = {"default_wood.png", "default_wood.png",  "default_wood.png",  "default_wood.png", "door_trapdoor.png", "door_trapdoor.png"},
+	tiles = {"door_trapdoor.png"},
 	is_ground_content = false,
 	paramtype = "light",
 	paramtype2 = "facedir",
