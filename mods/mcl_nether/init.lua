@@ -42,6 +42,7 @@ minetest.register_node("mcl_nether:magma", {
 	tiles = {{name="mcl_nether_magma.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=1.5}}},
 	is_ground_content = true,
 	light_source = 3,
+	sunlight_propagates = false,
 	groups = {cracky=3,building_block=1},
 	sounds = mcl_core.node_sound_stone_defaults(),
 	-- From walkover mod
