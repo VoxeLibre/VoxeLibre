@@ -153,6 +153,37 @@ minetest.register_node("mcl_end:chorus_flower_dead", {
 	groups = { oddly_breakable_by_hand = 3, choppy = 3, deco_block = 1},
 })
 
+minetest.register_node("mcl_end:chorus_plant", {
+	description = "Chorus Plant",
+	tiles = {
+		"mcl_end_chorus_plant.png",
+		"mcl_end_chorus_plant.png",
+		"mcl_end_chorus_plant.png",
+		"mcl_end_chorus_plant.png",
+		"mcl_end_chorus_plant.png",
+		"mcl_end_chorus_plant.png",
+	},
+	drawtype = "nodebox",
+	paramtype = "light",
+	-- TODO: Maybe improve nodebox a bit to look more “natural”
+	node_box = {
+		type = "connected",
+		fixed = { -0.25, -0.25, -0.25, 0.25, 0.25, 0.25 }, -- Core
+		connect_top = { -0.1875, 0.25, -0.1875, 0.1875, 0.5, 0.1875 },
+		connect_left = { -0.5, -0.1875, -0.1875, -0.25, 0.1875, 0.1875 },
+		connect_right = { 0.25, -0.1875, -0.1875, 0.5, 0.1875, 0.1875 },
+		connect_bottom = { -0.1875, -0.5, -0.25, 0.1875, -0.25, 0.25 },
+		connect_front = { -0.1875, -0.1875, -0.5, 0.1875, 0.1875, -0.25 },
+		connect_back = { -0.1875, -0.1875, 0.25, 0.1875, 0.1875, 0.5 },
+	},
+	connect_sides = { "top", "bottom", "front", "back", "left", "right" },
+	connects_to = {"mcl_end:chorus_plant", "mcl_end:chorus_flower", "mcl_end:chorus_flower_dead", "mcl_end:end_stone"},
+	sounds = mcl_core.node_sound_wood_defaults(),
+	-- TODO: Check drop probability
+	drop = { items = { {items = { "mcl_end:chorus_fruit", rarity = 4 } } } },
+	groups = { oddly_breakable_by_hand = 3, choppy = 3, not_in_creative_inventory = 1,},
+})
+
 -- Craftitems
 minetest.register_craftitem("mcl_end:chorus_fruit", {
 	description = "Chorus Fruit",
