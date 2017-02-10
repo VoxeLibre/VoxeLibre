@@ -179,7 +179,6 @@ minetest.register_node("mesecons_commandblock:commandblock_off", {
 	tiles = {{name="jeija_commandblock_off.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=2}}},
 	groups = {mesecon_effector_off=1, not_in_creative_inventory=1, oddly_breakable_by_hand=5},
 	drop = "",
-	diggable = false,
 	on_blast = function() end,
 	on_construct = construct,
 	is_ground_content = false,
