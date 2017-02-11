@@ -30,6 +30,7 @@ minetest.register_node("mcl_end:purpur_pillar", {
 	stack_max = 64,
 	paramtype2 = "facedir",
 	is_ground_content = false,
+	on_place = minetest.rotate_node,
 	tiles = {"mcl_end_purpur_pillar_top.png", "mcl_end_purpur_pillar_top.png", "mcl_end_purpur_pillar.png"},
 	groups = {cracky=3,building_block=1},
 	sounds = mcl_core.node_sound_stone_defaults(),
