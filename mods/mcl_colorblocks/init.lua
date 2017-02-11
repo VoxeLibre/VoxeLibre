@@ -1,7 +1,7 @@
 local init = os.clock()
 
-local clay = {}
-clay.dyes = {
+local block = {}
+block.dyes = {
 	{"white",      "White",      "white"},
 	{"grey",       "Grey",       "dark_grey"},
 	{"silver",     "Light Gray", "grey"},
@@ -20,7 +20,7 @@ clay.dyes = {
 	{"light_blue", "Light Blue", "lightblue"},
 }
 
-minetest.register_node("hardened_clay:hardened_clay", {
+minetest.register_node("mcl_colorblocks:hardened_clay", {
 	description = "Hardened Clay",
 	tiles = {"hardened_clay.png"},
 	stack_max = 64,
@@ -30,18 +30,18 @@ minetest.register_node("hardened_clay:hardened_clay", {
 
 minetest.register_craft({
 	type = "cooking",
-	output = "hardened_clay:hardened_clay",
+	output = "mcl_colorblocks:hardened_clay",
 	recipe = "mcl_core:clay",
 	cooktime = 10,
 })
 
 
-for _, row in ipairs(clay.dyes) do
+for _, row in ipairs(block.dyes) do
 	local name = row[1]
 	local desc = row[2]
 	local craft_color_group = row[3]
 	-- Node Definition
-		minetest.register_node("hardened_clay:"..name, {
+		minetest.register_node("mcl_colorblocks:hardened_clay_"..name, {
 			description = desc.." Hardened Clay",
 			tiles = {"hardened_clay_stained_"..name..".png"},
 			groups = {cracky=3,hardened_clay=1,building_block=1},
@@ -50,11 +50,11 @@ for _, row in ipairs(clay.dyes) do
 		})
 	if craft_color_group then
 		minetest.register_craft({
-			output = 'hardened_clay:'..name..' 8',
+			output = 'mcl_colorblocks:'..name..' 8',
 			recipe = {
-					{'hardened_clay:hardened_clay', 'hardened_clay:hardened_clay', 'hardened_clay:hardened_clay'},
-					{'hardened_clay:hardened_clay', 'mcl_dye:'..craft_color_group, 'hardened_clay:hardened_clay'},
-					{'hardened_clay:hardened_clay', 'hardened_clay:hardened_clay', 'hardened_clay:hardened_clay'},
+					{'mcl_colorblocks:hardened_clay', 'mcl_colorblocks:hardened_clay', 'mcl_colorblocks:hardened_clay'},
+					{'mcl_colorblocks:hardened_clay', 'mcl_dye:'..craft_color_group, 'mcl_colorblocks:hardened_clay'},
+					{'mcl_colorblocks:hardened_clay', 'mcl_colorblocks:hardened_clay', 'mcl_colorblocks:hardened_clay'},
 			},
 		})
 	end
