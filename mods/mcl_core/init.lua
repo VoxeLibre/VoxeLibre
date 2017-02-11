@@ -20,9 +20,3 @@ dofile(minetest.get_modpath("mcl_core").."/tools.lua")
 dofile(minetest.get_modpath("mcl_core").."/craftitems.lua")
 dofile(minetest.get_modpath("mcl_core").."/crafting.lua")
 dofile(minetest.get_modpath("mcl_core").."/mapgen.lua")
-
--- Aliases
-minetest.register_alias("default:desert_sand", "mcl_core:sand")
-minetest.register_alias("default:desert_stone", "mcl_core:sandstone")
-minetest.register_alias("default:iron_lump", "mcl_core:iron_lump")
-minetest.register_alias("default:gold_lump", "mcl_core:gold_lump")
