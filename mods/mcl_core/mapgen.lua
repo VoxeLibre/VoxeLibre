@@ -467,7 +467,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 						nn = minetest.get_node({x=x,y=ground_y,z=z}).name
 						-- If sand, add dry shrub
 						if nn == "mcl_core:sand" then
-							minetest.set_node(p,{name="mcl_core:dry_shrub"})
+							minetest.set_node(p,{name="mcl_core:deadbush"})
 							
 						-- If dirt with grass, add grass
 						elseif nn == "mcl_core:dirt_with_grass" then

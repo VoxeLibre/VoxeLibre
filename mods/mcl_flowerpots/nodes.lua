@@ -12,14 +12,13 @@ local flowers = {
 	{"oxeye_daisy", "mcl_flowers:oxeye_daisy", "Oxeye Daisy Flower Pot"},
 	{"mushroom_brown", "mcl_farming:mushroom_brown", "Brown Mushroom Flower Pot"},
 	{"mushroom_red", "mcl_farming:mushroom_red", "Red Mushroom Flower Pot"},
-	{"dry_shrub", "mcl_core:dry_shrub", "Dead Bush Flower Pot"},
 	{"sapling", "mcl_core:sapling", "Oak Sapling Flower Pot"},
 	{"acaciasapling", "mcl_core:acaciasapling", "Acacia Sapling Flower Pot"},
 	{"junglesapling", "mcl_core:junglesapling", "Jungle Sapling Flower Pot"},
 	{"darksapling", "mcl_core:darksapling", "Dark Oak Sapling Flower Pot"},
 	{"sprucesapling", "mcl_core:sprucesapling", "Spruce Sapling Flower Pot"},
 	{"birchsapling", "mcl_core:birchsapling", "Birch Sapling Flower Pot"},
-	{"dry_shrub", "mcl_core:dry_shrub", "Dead Bush Flower Pot"},
+	{"deadbush", "mcl_core:deadbush", "Dead Bush Flower Pot"},
 	{"fern", "mcl_flowers:fern", "Fern Flower Pot"},
 }
 

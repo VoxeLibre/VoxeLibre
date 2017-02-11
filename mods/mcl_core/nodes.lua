@@ -1318,7 +1318,7 @@ minetest.register_node("mcl_core:obsidian", {
 	groups = {cracky=4,level=2,oddly_breakable_by_hand=4,building_block=1},
 })
 
-minetest.register_node("mcl_core:dry_shrub", {
+minetest.register_node("mcl_core:deadbush", {
 	description = "Dead Bush",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
