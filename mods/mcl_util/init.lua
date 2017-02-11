@@ -16,7 +16,7 @@ This function is a simplified version of minetest.rotate_and_place.
 The Minetest function is seen as inappropriate because this includes mirror
 images of possible orientations, causing problems with pillar shadings.
 ]]
-function mcl_util.axis_place(itemstack, placer, pointed_thing, infinitestacks, invert_wall)
+function mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing, infinitestacks, invert_wall)
 	local unode = minetest.get_node_or_nil(pointed_thing.under)
 	if not unode then
 		return
@@ -86,5 +86,14 @@ function mcl_util.axis_place(itemstack, placer, pointed_thing, infinitestacks, i
 		itemstack:take_item()
 		return itemstack
 	end
+end
+
+-- Wrapper of above function for use as `on_place` callback (Recommended).
+-- Similar to minetest.rotate_node.
+function mcl_util.rotate_axis(itemstack, placer, pointed_thing)
+	mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing,
+		core.setting_getbool("creative_mode"),
+		placer:get_player_control().sneak)
+	return itemstack
 end
 
