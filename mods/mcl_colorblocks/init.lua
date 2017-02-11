@@ -4,7 +4,7 @@ local block = {}
 block.dyes = {
 	{"white",      "White",      "white"},
 	{"grey",       "Grey",       "dark_grey"},
-	{"silver",     "Light Gray", "grey"},
+	{"silver",     "Light Grey", "grey"},
 	{"black",      "Black",      "black"},
 	{"red",        "Red",        "red"},
 	{"yellow",     "Yellow",     "yellow"},

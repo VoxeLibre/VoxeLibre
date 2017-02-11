@@ -11,7 +11,7 @@ local wool = {}
 wool.dyes = {
 	{"white",      "white",		"White",      nil},
 	{"grey",       "dark_grey",	"Grey",       "unicolor_darkgrey"},
-	{"silver",     "grey",		"Light Gray", "basecolor_grey"},
+	{"silver",     "grey",		"Light Grey", "basecolor_grey"},
 	{"black",      "black",		"Black",      "basecolor_black"},
 	{"red",        "red",		"Red",        "basecolor_red"},
 	{"yellow",     "yellow",	"Yellow",     "basecolor_yellow"},
