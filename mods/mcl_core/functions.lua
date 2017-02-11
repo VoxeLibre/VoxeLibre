@@ -35,7 +35,7 @@ minetest.register_abm({
 --
 
 -- Functions
-local grow_cactus = function(pos, node)
+mcl_core.grow_cactus = function(pos, node)
 	pos.y = pos.y-1
 	local name = minetest.get_node(pos).name
 	if minetest.get_item_group(name, "sand") ~= 0 then
@@ -53,7 +53,7 @@ local grow_cactus = function(pos, node)
 	end
 end
 
-local grow_reeds = function(pos, node)
+mcl_core.grow_reeds = function(pos, node)
 	pos.y = pos.y-1
 	local name = minetest.get_node(pos).name
 	if minetest.get_node_group(name, "soil_sugarcane") ~= 0 then
@@ -127,7 +127,7 @@ minetest.register_abm({
 	interval = 25,
 	chance = 10,
 	action = function(pos)
-		grow_cactus(pos)
+		mcl_core.grow_cactus(pos)
 	end,
 })
 
@@ -137,7 +137,7 @@ minetest.register_abm({
 	interval = 25,
 	chance = 10,
 	action = function(pos)
-		grow_reeds(pos)
+		mcl_core.grow_reeds(pos)
 	end,
 })
 
@@ -186,7 +186,7 @@ local function air_leave()
 	end
 end
 
-local function generate_tree(pos, trunk, leaves, typearbre)
+function mcl_core.generate_tree(pos, trunk, leaves, typearbre)
 	pos.y = pos.y-1
 	local nodename = minetest.get_node(pos).name
 		
@@ -402,126 +402,6 @@ local function generate_tree(pos, trunk, leaves, typearbre)
 	end
 end
 
-local plant_tab = {}
-local rnd_max = 5
-minetest.after(0.5, function()
-	plant_tab[0] = "air"
-	plant_tab[1] = "mcl_core:grass"
-	plant_tab[2] = "mcl_core:grass"
-	plant_tab[3] = "mcl_core:grass"
-	plant_tab[4] = "mcl_core:grass"
-	plant_tab[5] = "mcl_core:grass"
-
-if minetest.get_modpath("mcl_flowers") ~= nil then
-	rnd_max = 15
-	plant_tab[6] = "mcl_flowers:dandelion"
-	plant_tab[7] = "mcl_flowers:blue_orchid"
-	plant_tab[8] = "mcl_flowers:oxeye_daisy"
-	plant_tab[9] = "mcl_flowers:tulip_orange"
-	plant_tab[10] = "mcl_flowers:tulip_red"
-	plant_tab[11] = "mcl_flowers:tulip_white"
-	plant_tab[12] = "mcl_flowers:tulip_pink"
-	plant_tab[13] = "mcl_flowers:allium"
-	plant_tab[14] = "mcl_flowers:poppy"
-	plant_tab[15] = "mcl_flowers:azure_bluet"
-end
-
-end)
-
-function mcl_core.duengen(pointed_thing)
-	pos = pointed_thing.under
-	n = minetest.get_node(pos)
-	if n.name == "" then return false end
-	local stage = ""
-	if n.name == "mcl_core:sapling" then
-		minetest.add_node(pos, {name="air"})
-		generate_tree(pos, "mcl_core:tree", "mcl_core:leaves", 1)
-		return true
-	elseif string.find(n.name, "mcl_farming:wheat_") ~= nil then
-		stage = string.sub(n.name, -1)
-		if stage == "3" then
-			minetest.add_node(pos, {name="mcl_farming:wheat"})
-		elseif math.random(1,5) < 3 then
-			minetest.add_node(pos, {name="mcl_farming:wheat"})
-		else
-			minetest.add_node(pos, {name="mcl_farming:wheat_"..math.random(2,3)})
-		end
-		return true
-	elseif string.find(n.name, "mcl_farming:potato_") ~= nil then
-		stage = tonumber(string.sub(n.name, -1))
-		if stage == 1 then
-			minetest.add_node(pos, {name="mcl_farming:potato_"..math.random(stage,2)})
-		else
-			minetest.add_node(pos, {name="mcl_farming:potato"})
-		end
-		return true
-	elseif string.find(n.name, "mcl_farming:beetroot_") ~= nil then
-		stage = tonumber(string.sub(n.name, -1))
-		if stage == 1 then
-			minetest.add_node(pos, {name="mcl_farming:beetroot_"..math.random(stage,2)})
-		else
-			minetest.add_node(pos, {name="mcl_farming:beetroot"})
-		end
-		return true
-	elseif string.find(n.name, "mcl_farming:carrot_") ~= nil then
-		stage = tonumber(string.sub(n.name, -1))
-		if stage == 1 then
-			minetest.add_node(pos, {name="mcl_farming:carrot_"..math.random(stage,2)})
-		else
-			minetest.add_node(pos, {name="mcl_farming:carrot"})
-		end
-		return true
-	elseif string.find(n.name, "mcl_farming:pumpkin_") ~= nil then
-		stage = tonumber(string.sub(n.name, -1))
-		if stage == 1 then
-			minetest.add_node(pos, {name="mcl_farming:pumpkin_"..math.random(stage,2)})
-		else
-			minetest.add_node(pos, {name="mcl_farming:pumpkintige_unconnect"})
-		end
-		return true
-	elseif string.find(n.name, "mcl_farming:melontige_") ~= nil then
-		stage = tonumber(string.sub(n.name, -1))
-		if stage == 1 then
-			minetest.add_node(pos, {name="mcl_farming:melontige_"..math.random(stage,2)})
-		else
-			minetest.add_node(pos, {name="mcl_farming:melontige_unconnect"})
-		end
-		return true
-	elseif n.name ~= ""  and n.name == "mcl_core:junglesapling" then
-		minetest.add_node(pos, {name="air"})
-		generate_tree(pos, "mcl_core:jungletree", "mcl_core:jungleleaves", 2)
-		return true
-	elseif n.name ~="" and n.name == "mcl_core:reeds" then
-		grow_reeds(pos)
-		return true
-	elseif n.name ~="" and n.name == "mcl_core:cactus" then
-		grow_cactus(pos)
-		return true
-	elseif n.name == "mcl_core:dirt_with_grass" then
-		for i = -2, 3, 1 do
-			for j = -3, 2, 1 do
-				pos = pointed_thing.above
-				pos = {x=pos.x+i, y=pos.y, z=pos.z+j}
-				n = minetest.get_node(pos)
-				n2 = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
-
-				if n.name ~= ""  and n.name == "air" and n2.name == "mcl_core:dirt_with_grass" then
-					if math.random(0,5) > 3 then
-						minetest.add_node(pos, {name=plant_tab[math.random(0, rnd_max)]})
-					else
-						minetest.add_node(pos, {name=plant_tab[math.random(0, 5)]})
-					end
-
-				end
-			end
-		end
-		return true
-	else
-		return false
-	end
-end
-
-
 ------------------------------
 -- Try generate grass dirt ---
 ------------------------------
@@ -573,7 +453,7 @@ minetest.register_abm({
 		local soiltype = minetest.get_item_group(soilnode.name, "soil_sapling")
 		if soiltype >= 1 and light and light >= 9 then
 			minetest.add_node(pos, {name="air"})
-			generate_tree(pos, "mcl_core:tree", "mcl_core:leaves", 1)
+			mcl_core.generate_tree(pos, "mcl_core:tree", "mcl_core:leaves", 1)
 		end
 	end,
 })
@@ -590,7 +470,7 @@ minetest.register_abm({
 		local soiltype = minetest.get_item_group(soilnode.name, "soil_sapling")
 		if soiltype == 2 and light and light >= 9 then
 			minetest.add_node(pos, {name="air"})
-			generate_tree(pos, "mcl_core:jungletree", "mcl_core:jungleleaves", 2)
+			mcl_core.generate_tree(pos, "mcl_core:jungletree", "mcl_core:jungleleaves", 2)
 		end
 	end,
 })

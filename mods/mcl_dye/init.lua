@@ -96,13 +96,127 @@ for _, row in ipairs(dyelocal.dyes) do
 	})
 end
 
+-- Bone Meal
+
+local apply_bone_meal = function(pointed_thing)
+	local plant_tab = {
+		"air",
+		"mcl_core:grass",
+		"mcl_core:grass",
+		"mcl_core:grass",
+		"mcl_core:grass",
+		"mcl_core:grass",
+		"mcl_flowers:dandelion",
+		"mcl_flowers:blue_orchid",
+		"mcl_flowers:oxeye_daisy",
+		"mcl_flowers:tulip_orange",
+		"mcl_flowers:tulip_red",
+		"mcl_flowers:tulip_white",
+		"mcl_flowers:tulip_pink",
+		"mcl_flowers:allium",
+		"mcl_flowers:poppy",
+		"mcl_flowers:azure_bluet",
+	}
+
+	pos = pointed_thing.under
+	n = minetest.get_node(pos)
+	if n.name == "" then return false end
+	local stage = ""
+	if n.name == "mcl_core:sapling" then
+		minetest.add_node(pos, {name="air"})
+		mcl_core.generate_tree(pos, "mcl_core:tree", "mcl_core:leaves", 1)
+		return true
+	elseif string.find(n.name, "mcl_farming:wheat_") ~= nil then
+		stage = string.sub(n.name, -1)
+		if stage == "3" then
+			minetest.add_node(pos, {name="mcl_farming:wheat"})
+		elseif math.random(1,5) < 3 then
+			minetest.add_node(pos, {name="mcl_farming:wheat"})
+		else
+			minetest.add_node(pos, {name="mcl_farming:wheat_"..math.random(2,3)})
+		end
+		return true
+	elseif string.find(n.name, "mcl_farming:potato_") ~= nil then
+		stage = tonumber(string.sub(n.name, -1))
+		if stage == 1 then
+			minetest.add_node(pos, {name="mcl_farming:potato_"..math.random(stage,2)})
+		else
+			minetest.add_node(pos, {name="mcl_farming:potato"})
+		end
+		return true
+	elseif string.find(n.name, "mcl_farming:beetroot_") ~= nil then
+		stage = tonumber(string.sub(n.name, -1))
+		if stage == 1 then
+			minetest.add_node(pos, {name="mcl_farming:beetroot_"..math.random(stage,2)})
+		else
+			minetest.add_node(pos, {name="mcl_farming:beetroot"})
+		end
+		return true
+	elseif string.find(n.name, "mcl_farming:carrot_") ~= nil then
+		stage = tonumber(string.sub(n.name, -1))
+		if stage == 1 then
+			minetest.add_node(pos, {name="mcl_farming:carrot_"..math.random(stage,2)})
+		else
+			minetest.add_node(pos, {name="mcl_farming:carrot"})
+		end
+		return true
+	elseif string.find(n.name, "mcl_farming:pumpkin_") ~= nil then
+		stage = tonumber(string.sub(n.name, -1))
+		if stage == 1 then
+			minetest.add_node(pos, {name="mcl_farming:pumpkin_"..math.random(stage,2)})
+		else
+			minetest.add_node(pos, {name="mcl_farming:pumpkintige_unconnect"})
+		end
+		return true
+	elseif string.find(n.name, "mcl_farming:melontige_") ~= nil then
+		stage = tonumber(string.sub(n.name, -1))
+		if stage == 1 then
+			minetest.add_node(pos, {name="mcl_farming:melontige_"..math.random(stage,2)})
+		else
+			minetest.add_node(pos, {name="mcl_farming:melontige_unconnect"})
+		end
+		return true
+	elseif n.name ~= ""  and n.name == "mcl_core:junglesapling" then
+		minetest.add_node(pos, {name="air"})
+		mcl_core.generate_tree(pos, "mcl_core:jungletree", "mcl_core:jungleleaves", 2)
+		return true
+	elseif n.name ~="" and n.name == "mcl_core:reeds" then
+		mcl_core.grow_reeds(pos)
+		return true
+	elseif n.name ~="" and n.name == "mcl_core:cactus" then
+		mcl_core.grow_cactus(pos)
+		return true
+	elseif n.name == "mcl_core:dirt_with_grass" then
+		for i = -2, 3, 1 do
+			for j = -3, 2, 1 do
+				pos = pointed_thing.above
+				pos = {x=pos.x+i, y=pos.y, z=pos.z+j}
+				n = minetest.get_node(pos)
+				n2 = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
+
+				if n.name ~= ""  and n.name == "air" and n2.name == "mcl_core:dirt_with_grass" then
+					if math.random(0,5) > 3 then
+						minetest.add_node(pos, {name=plant_tab[math.random(1, #plant_tab)]})
+					else
+						minetest.add_node(pos, {name=plant_tab[math.random(1, 6)]})
+					end
+
+				end
+			end
+		end
+		return true
+	else
+		return false
+	end
+end
+
 minetest.register_craftitem("mcl_dye:white", {
 	inventory_image = "dye_white.png",
 	description = "Bone Meal",
 	stack_max = 64,
 	groups = {dye=1, craftitem=1, basecolor_white=1,   excolor_white=1,     unicolor_white=1},
 	on_place = function(itemstack, user, pointed_thing) 
-		if(mcl_core.duengen(pointed_thing)) then
+		if(apply_bone_meal(pointed_thing)) then
 			itemstack:take_item()
 		end
 		return itemstack
