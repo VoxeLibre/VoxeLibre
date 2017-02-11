@@ -56,6 +56,9 @@ for _, row in ipairs(block.dyes) do
 		stack_max = 64,
 		is_ground_content = false,
 		sounds = mcl_sounds.node_sound_sand_defaults(),
+
+		-- Specify the node to which this node will convert after getting in contact with water
+		_mcl_colorblocks_harden_to = "mcl_colorblocks:concrete_"..name,
 	})
 
 	minetest.register_node("mcl_colorblocks:concrete_"..name, {
@@ -88,7 +91,18 @@ for _, row in ipairs(block.dyes) do
 	end
 end
 
--- TODO: ABM: Concrete Powder + Water = Concrete
+-- When water touches concrete powder, it turns into concrete of the same color
+minetest.register_abm({
+	label = "Concrete powder hardening",
+	interval = 1,
+	chance = 1,
+	nodenames = {"group:concrete_powder"},
+	neighbors = {"group:water"},
+	action = function(pos, node)
+		local harden_to = minetest.registered_nodes[node.name]._mcl_colorblocks_harden_to
+		minetest.swap_node(pos, { name = harden_to, param = node.param, param2 = node.param2 })
+	end,
+})
 
 local time_to_load= os.clock() - init
 print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
