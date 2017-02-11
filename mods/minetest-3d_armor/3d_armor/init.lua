@@ -9,7 +9,7 @@ minetest.register_tool("3d_armor:helmet_leather", {
 	wear = 0,
 })
 
-minetest.register_tool("3d_armor:helmet_steel", {
+minetest.register_tool("3d_armor:helmet_iron", {
 	description = "Iron Helmet",
 	inventory_image = "3d_armor_inv_helmet_steel.png",
 	groups = {armor_head=10, armor_heal=5, armor_use=250},
@@ -46,7 +46,7 @@ minetest.register_tool("3d_armor:chestplate_leather", {
 	wear = 0,
 })
 
-minetest.register_tool("3d_armor:chestplate_steel", {
+minetest.register_tool("3d_armor:chestplate_iron", {
 	description = "Iron Chestplate",
 	inventory_image = "3d_armor_inv_chestplate_steel.png",
 	groups = {armor_torso=20, armor_heal=5, armor_use=250},
@@ -83,7 +83,7 @@ minetest.register_tool("3d_armor:leggings_leather", {
 	wear = 0,
 })
 
-minetest.register_tool("3d_armor:leggings_steel", {
+minetest.register_tool("3d_armor:leggings_iron", {
 	description = "Iron Leggings",
 	inventory_image = "3d_armor_inv_leggings_steel.png",
 	groups = {armor_legs=15, armor_heal=5, armor_use=250},
@@ -119,7 +119,7 @@ minetest.register_tool("3d_armor:boots_leather", {
 	wear = 0,
 })
 
-minetest.register_tool("3d_armor:boots_steel", {
+minetest.register_tool("3d_armor:boots_iron", {
 	description = "Iron Boots",
 	inventory_image = "3d_armor_inv_boots_steel.png",
 	groups = {armor_feet=10, armor_heal=5, armor_use=250},
@@ -151,7 +151,7 @@ minetest.register_tool("3d_armor:boots_chain", {
 
 local craft_ingreds = {
 	leather = { "mcl_mobitems:leather" },
-	steel = { "mcl_core:steel_ingot", "mcl_core:iron_nugget" },
+	iron = { "mcl_core:iron_ingot", "mcl_core:iron_nugget" },
 	gold = { "mcl_core:gold_ingot", "mcl_core:gold_nugget" },
 	diamond = { "mcl_core:diamond" },
 	chain = { nil, "mcl_core:iron_nugget"} ,

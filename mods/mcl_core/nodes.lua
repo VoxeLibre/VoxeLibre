@@ -1264,7 +1264,7 @@ minetest.register_node("mcl_core:coalblock", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 })
 
-minetest.register_node("mcl_core:steelblock", {
+minetest.register_node("mcl_core:ironblock", {
 	description = "Block of Iron",
 	tiles = {"default_steel_block.png"},
 	is_ground_content = false,

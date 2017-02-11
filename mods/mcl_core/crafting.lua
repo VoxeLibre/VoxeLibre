@@ -192,9 +192,9 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'mcl_core:pick_steel',
+	output = 'mcl_core:pick_iron',
 	recipe = {
-		{'mcl_core:steel_ingot', 'mcl_core:steel_ingot', 'mcl_core:steel_ingot'},
+		{'mcl_core:iron_ingot', 'mcl_core:iron_ingot', 'mcl_core:iron_ingot'},
 		{'', 'mcl_core:stick', ''},
 		{'', 'mcl_core:stick', ''},
 	}
@@ -237,9 +237,9 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'mcl_core:shovel_steel',
+	output = 'mcl_core:shovel_iron',
 	recipe = {
-		{'mcl_core:steel_ingot'},
+		{'mcl_core:iron_ingot'},
 		{'mcl_core:stick'},
 		{'mcl_core:stick'},
 	}
@@ -298,18 +298,18 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'mcl_core:axe_steel',
+	output = 'mcl_core:axe_iron',
 	recipe = {
-		{'mcl_core:steel_ingot', 'mcl_core:steel_ingot'},
-		{'mcl_core:steel_ingot', 'mcl_core:stick'},
+		{'mcl_core:iron_ingot', 'mcl_core:iron_ingot'},
+		{'mcl_core:iron_ingot', 'mcl_core:stick'},
 		{'', 'mcl_core:stick'},
 	}
 })
 minetest.register_craft({
-	output = 'mcl_core:axe_steel',
+	output = 'mcl_core:axe_iron',
 	recipe = {
-		{'mcl_core:steel_ingot', 'mcl_core:steel_ingot'},
-		{'mcl_core:stick', 'mcl_core:steel_ingot'},
+		{'mcl_core:iron_ingot', 'mcl_core:iron_ingot'},
+		{'mcl_core:stick', 'mcl_core:iron_ingot'},
 		{'mcl_core:stick', ''},
 	}
 })
@@ -367,10 +367,10 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'mcl_core:sword_steel',
+	output = 'mcl_core:sword_iron',
 	recipe = {
-		{'mcl_core:steel_ingot'},
-		{'mcl_core:steel_ingot'},
+		{'mcl_core:iron_ingot'},
+		{'mcl_core:iron_ingot'},
 		{'mcl_core:stick'},
 	}
 })
@@ -396,24 +396,24 @@ minetest.register_craft({
 minetest.register_craft({
 	output = 'mcl_core:shears',
 	recipe = {
-		{ 'mcl_core:steel_ingot', '' },
-		{ '', 'mcl_core:steel_ingot', },
+		{ 'mcl_core:iron_ingot', '' },
+		{ '', 'mcl_core:iron_ingot', },
 	}
 })
 minetest.register_craft({
 	output = 'mcl_core:shears',
 	recipe = {
-		{ '', 'mcl_core:steel_ingot', },
-		{ 'mcl_core:steel_ingot', '' },
+		{ '', 'mcl_core:iron_ingot', },
+		{ 'mcl_core:iron_ingot', '' },
 	}
 })
 
 minetest.register_craft({
 	output = 'mcl_core:rail 16',
 	recipe = {
-		{'mcl_core:steel_ingot', '', 'mcl_core:steel_ingot'},
-		{'mcl_core:steel_ingot', 'mcl_core:stick', 'mcl_core:steel_ingot'},
-		{'mcl_core:steel_ingot', '', 'mcl_core:steel_ingot'},
+		{'mcl_core:iron_ingot', '', 'mcl_core:iron_ingot'},
+		{'mcl_core:iron_ingot', 'mcl_core:stick', 'mcl_core:iron_ingot'},
+		{'mcl_core:iron_ingot', '', 'mcl_core:iron_ingot'},
 	}
 })
 
@@ -485,18 +485,18 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'mcl_core:steelblock',
+	output = 'mcl_core:ironblock',
 	recipe = {
-		{'mcl_core:steel_ingot', 'mcl_core:steel_ingot', 'mcl_core:steel_ingot'},
-		{'mcl_core:steel_ingot', 'mcl_core:steel_ingot', 'mcl_core:steel_ingot'},
-		{'mcl_core:steel_ingot', 'mcl_core:steel_ingot', 'mcl_core:steel_ingot'},
+		{'mcl_core:iron_ingot', 'mcl_core:iron_ingot', 'mcl_core:iron_ingot'},
+		{'mcl_core:iron_ingot', 'mcl_core:iron_ingot', 'mcl_core:iron_ingot'},
+		{'mcl_core:iron_ingot', 'mcl_core:iron_ingot', 'mcl_core:iron_ingot'},
 	}
 })
 
 minetest.register_craft({
-	output = 'mcl_core:steel_ingot 9',
+	output = 'mcl_core:iron_ingot 9',
 	recipe = {
-		{'mcl_core:steelblock'},
+		{'mcl_core:ironblock'},
 	}
 })
 
@@ -523,7 +523,7 @@ minetest.register_craft({
 
 minetest.register_craft({
 	output = "mcl_core:iron_nugget 9",
-	recipe = {{"mcl_core:steel_ingot"}},
+	recipe = {{"mcl_core:iron_ingot"}},
 })
 
 minetest.register_craft({
@@ -536,7 +536,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_core:steel_ingot",
+	output = "mcl_core:iron_ingot",
 	recipe = {
 		{"mcl_core:iron_nugget", "mcl_core:iron_nugget", "mcl_core:iron_nugget"},
 		{"mcl_core:iron_nugget", "mcl_core:iron_nugget", "mcl_core:iron_nugget"},
@@ -723,7 +723,7 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "cooking",
-	output = "mcl_core:steel_ingot",
+	output = "mcl_core:iron_ingot",
 	recipe = "mcl_core:stone_with_iron",
 	cooktime = 10,
 })
@@ -815,28 +815,28 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "cooking",
 	output = "mcl_core:iron_nugget",
-	recipe = "mcl_core:sword_steel",
+	recipe = "mcl_core:sword_iron",
 	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "mcl_core:iron_nugget",
-	recipe = "mcl_core:axe_steel",
+	recipe = "mcl_core:axe_iron",
 	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "mcl_core:iron_nugget",
-	recipe = "mcl_core:shovel_steel",
+	recipe = "mcl_core:shovel_iron",
 	cooktime = 10,
 })
 
 minetest.register_craft({
 	type = "cooking",
 	output = "mcl_core:iron_nugget",
-	recipe = "mcl_core:pick_steel",
+	recipe = "mcl_core:pick_iron",
 	cooktime = 10,
 })
 

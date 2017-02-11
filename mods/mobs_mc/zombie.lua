@@ -36,17 +36,17 @@ mobs:register_mob("mobs_mc:zombie", {
 		chance = 1,
 		min = 0,
 		max = 2,},
-		{name = "mcl_core:steel_ingot",
+		{name = "mcl_core:iron_ingot",
 		-- approximation to 8.5%
 		chance = 11,
 		min = 1,
 		max = 1,},
-		{name = "mcl_core:shovel_steel",
+		{name = "mcl_core:shovel_iron",
 		-- approximation to 8.5%
 		chance = 11,
 		min = 1,
 		max = 1,},
-		{name = "mcl_core:sword_steel",
+		{name = "mcl_core:sword_iron",
 		-- approximation to 8.5%
 		chance = 11,
 		min = 1,

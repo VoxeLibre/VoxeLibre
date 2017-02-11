@@ -62,7 +62,7 @@ minetest.register_craftitem("mcl_core:clay_lump", {
 	groups = { craftitem=1 },
 })
 
-minetest.register_craftitem("mcl_core:steel_ingot", {
+minetest.register_craftitem("mcl_core:iron_ingot", {
 	description = "Iron Ingot",
 	inventory_image = "default_steel_ingot.png",
 	stack_max = 64,
@@ -150,5 +150,3 @@ minetest.register_craftitem("mcl_core:apple_gold", {
 	on_use = minetest.item_eat(8),
 	groups = { food = 2 },
 })
-
-minetest.register_alias("mcl_core:iron_ingot", "mcl_core:steel_ingot")

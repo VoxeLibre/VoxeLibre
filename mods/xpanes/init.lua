@@ -170,8 +170,8 @@ xpanes.register_pane("bar", {
 	groups = {cracky=2},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	recipe = {
-		{"mcl_core:steel_ingot", "mcl_core:steel_ingot", "mcl_core:steel_ingot"},
-		{"mcl_core:steel_ingot", "mcl_core:steel_ingot", "mcl_core:steel_ingot"}
+		{"mcl_core:iron_ingot", "mcl_core:iron_ingot", "mcl_core:iron_ingot"},
+		{"mcl_core:iron_ingot", "mcl_core:iron_ingot", "mcl_core:iron_ingot"},
 	}
 })
 

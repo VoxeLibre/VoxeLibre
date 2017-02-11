@@ -96,7 +96,7 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_tool("mcl_farming:hoe_steel", {
+minetest.register_tool("mcl_farming:hoe_iron", {
 	description = "Iron Hoe",
 	inventory_image = "farming_tool_steelhoe.png",
 	on_place = function(itemstack, user, pointed_thing)
@@ -116,17 +116,17 @@ minetest.register_tool("mcl_farming:hoe_steel", {
 })
 
 minetest.register_craft({
-	output = "mcl_farming:hoe_steel",
+	output = "mcl_farming:hoe_iron",
 	recipe = {
-		{"mcl_core:steel_ingot", "mcl_core:steel_ingot"},
+		{"mcl_core:iron_ingot", "mcl_core:iron_ingot"},
 		{"", "mcl_core:stick"},
 		{"", "mcl_core:stick"}
 	}
 })
 minetest.register_craft({
-	output = "mcl_farming:hoe_steel",
+	output = "mcl_farming:hoe_iron",
 	recipe = {
-		{"mcl_core:steel_ingot", "mcl_core:steel_ingot"},
+		{"mcl_core:iron_ingot", "mcl_core:iron_ingot"},
 		{"mcl_core:stick", ""},
 		{"mcl_core:stick", ""}
 	}
@@ -135,7 +135,7 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "cooking",
 	output = "mcl_core:iron_nugget",
-	recipe = "mcl_farming:hoe_steel",
+	recipe = "mcl_farming:hoe_iron",
 	cooktime = 10,
 })
 

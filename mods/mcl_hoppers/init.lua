@@ -527,8 +527,8 @@ minetest.register_craftitem("mcl_hoppers:hopper_item", {
 minetest.register_craft({
 	output = "mcl_hoppers:hopper_item",
 	recipe = {
-		{"mcl_core:steel_ingot","","mcl_core:steel_ingot"},
-		{"mcl_core:steel_ingot","mcl_chests:chest","mcl_core:steel_ingot"},
-		{"","mcl_core:steel_ingot",""},
+		{"mcl_core:iron_ingot","","mcl_core:iron_ingot"},
+		{"mcl_core:iron_ingot","mcl_chests:chest","mcl_core:iron_ingot"},
+		{"","mcl_core:iron_ingot",""},
 	}
 })

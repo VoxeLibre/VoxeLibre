@@ -750,7 +750,7 @@ minetest.register_craft({
 	output = 'mesecons_pistons:piston_normal_off',
 	recipe = {
 		{"group:wood", "group:wood", "group:wood"},
-		{"mcl_core:cobble", "mcl_core:steel_ingot", "mcl_core:cobble"},
+		{"mcl_core:cobble", "mcl_core:iron_ingot", "mcl_core:cobble"},
 		{"mcl_core:cobble", "mesecons:redstone", "mcl_core:cobble"},
 	}
 })

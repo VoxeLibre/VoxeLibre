@@ -62,7 +62,7 @@ minetest.register_tool("mcl_core:pick_stone", {
 		damage_groups = {fleshy=3},
 	},
 })
-minetest.register_tool("mcl_core:pick_steel", {
+minetest.register_tool("mcl_core:pick_iron", {
 	description = "Iron Pickaxe",
 	inventory_image = "default_tool_steelpick.png",
 	groups = { tool=1 },
@@ -157,7 +157,7 @@ minetest.register_tool("mcl_core:shovel_stone", {
 	},
 	on_place = make_grass_path,
 })
-minetest.register_tool("mcl_core:shovel_steel", {
+minetest.register_tool("mcl_core:shovel_iron", {
 	description = "Iron Shovel",
 	inventory_image = "default_tool_steelshovel.png",
 	wield_image = "default_tool_steelshovel.png^[transformR90",
@@ -230,7 +230,7 @@ minetest.register_tool("mcl_core:axe_stone", {
 		damage_groups = {fleshy=9},
 	},
 })
-minetest.register_tool("mcl_core:axe_steel", {
+minetest.register_tool("mcl_core:axe_iron", {
 	description = "Iron Axe",
 	inventory_image = "default_tool_steelaxe.png",
 	groups = { tool=1 },
@@ -298,7 +298,7 @@ minetest.register_tool("mcl_core:sword_stone", {
 		damage_groups = {fleshy=5},
 	}
 })
-minetest.register_tool("mcl_core:sword_steel", {
+minetest.register_tool("mcl_core:sword_iron", {
 	description = "Iron Sword",
 	inventory_image = "default_tool_steelsword.png",
 	groups = { weapon=1 },

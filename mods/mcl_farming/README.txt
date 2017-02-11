@@ -14,7 +14,7 @@ For further information or help see:
 http://wiki.minetest.com/wiki/Installing_Mods
 
 How to use the mod:
-Craft a wood/stone/steel hoe:
+Craft a wood/stone/iron/gold/diamond hoe:
 material	material
 			stick
 			stick

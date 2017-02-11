@@ -282,7 +282,7 @@ minetest.register_craftitem("mcl_minecarts:minecart", {
 minetest.register_craft({
 	output = "mcl_minecarts:minecart",
 	recipe = {
-		{"mcl_core:steel_ingot", "", "mcl_core:steel_ingot"},
-		{"mcl_core:steel_ingot", "mcl_core:steel_ingot", "mcl_core:steel_ingot"},
+		{"mcl_core:iron_ingot", "", "mcl_core:iron_ingot"},
+		{"mcl_core:iron_ingot", "mcl_core:iron_ingot", "mcl_core:iron_ingot"},
 	},
 })

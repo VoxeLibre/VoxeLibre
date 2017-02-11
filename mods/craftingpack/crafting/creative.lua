@@ -259,7 +259,7 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 			"item_image_button[-0.1,8.37;1,1;mcl_core:apple;food;]"..	--foodstuff
 			tab(name, "food") ..
 			"tooltip[food;Foodstuffs]"..
-			"item_image_button[1.15,8.37;1,1;mcl_core:axe_steel;tools;]"..	--tools
+			"item_image_button[1.15,8.37;1,1;mcl_core:axe_iron;tools;]"..	--tools
 			tab(name, "tools") ..
 			"tooltip[tools;Tools]"..
 			"item_image_button[2.415,8.37;1,1;mcl_core:sword_gold;combat;]"..	--combat

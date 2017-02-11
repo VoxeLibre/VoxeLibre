@@ -440,7 +440,7 @@ minetest.register_craft({
 })
 
 --- Door in Iron ---
-doors:register_door("doors:door_steel", {
+doors:register_door("doors:door_iron", {
 	description = "Iron Door",
 	inventory_image = "door_steel.png",
 	groups = {snappy=1,cracky=1,level=2,door=1,mesecon_effector_on=1},
@@ -450,11 +450,11 @@ doors:register_door("doors:door_steel", {
 })
 
 minetest.register_craft({
-	output = "doors:door_steel 3",
+	output = "doors:door_iron 3",
 	recipe = {
-		{"mcl_core:steel_ingot", "mcl_core:steel_ingot"},
-		{"mcl_core:steel_ingot", "mcl_core:steel_ingot"},
-		{"mcl_core:steel_ingot", "mcl_core:steel_ingot"}
+		{"mcl_core:iron_ingot", "mcl_core:iron_ingot"},
+		{"mcl_core:iron_ingot", "mcl_core:iron_ingot"},
+		{"mcl_core:iron_ingot", "mcl_core:iron_ingot"}
 	}
 })
 
@@ -696,8 +696,8 @@ minetest.register_node("doors:iron_trapdoor_open", {
 minetest.register_craft({
 	output = 'doors:iron_trapdoor',
 	recipe = {
-		{'mcl_core:steel_ingot', 'mcl_core:steel_ingot'},
-		{'mcl_core:steel_ingot', 'mcl_core:steel_ingot'},
+		{'mcl_core:iron_ingot', 'mcl_core:iron_ingot'},
+		{'mcl_core:iron_ingot', 'mcl_core:iron_ingot'},
 	}
 })
 
