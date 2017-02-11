@@ -286,7 +286,7 @@ stairs.register_stair("darkwood", "mcl_core:darkwood",
 		{"default_planks_big_oak.png"},
 		"Dark Oak Wood Stairs",
 		mcl_sounds.node_sound_wood_defaults())
-stairs.register_slab("oakwood", "mcl_core:darkwood",
+stairs.register_slab("darkwood", "mcl_core:darkwood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_slab=1},
 		{"default_planks_big_oak.png"},
 		"Dark Oak Wood Slab",
