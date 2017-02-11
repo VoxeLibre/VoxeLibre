@@ -81,12 +81,13 @@ for _, row in ipairs(block.dyes) do
 			},
 		})
 		minetest.register_craft({
+			type = "shapeless",
 			output = 'mcl_colorblocks:concrete_powder_'..name..' 8',
 			recipe = {
-					{'mcl_core:sand', 'mcl_core:gravel', 'mcl_core:sand'},
-					{'mcl_core:gravel', 'mcl_dye:'..craft_color_group, 'mcl_core:gravel'},
-					{'mcl_core:sand', 'mcl_core:gravel', 'mcl_core:sand'},
-			},
+				'mcl_core:sand', 'mcl_core:gravel', 'mcl_core:sand',
+				'mcl_core:gravel', 'mcl_dye:'..craft_color_group, 'mcl_core:gravel',
+				'mcl_core:sand', 'mcl_core:gravel', 'mcl_core:sand',
+			}
 		})
 	end
 end
