@@ -126,7 +126,7 @@ local function register_wall(nodename, name, texture, invtex)
 				type = "fixed",
 				fixed = take
 			},
-			sounds = mcl_core.node_sound_stone_defaults(), 
+			sounds = mcl_sounds.node_sound_stone_defaults(), 
 		})
 	end
 
@@ -145,7 +145,7 @@ local function register_wall(nodename, name, texture, invtex)
 			type = "fixed",
 			fixed = {pillar, full_blocks[1]}
 		},
-		sounds = mcl_core.node_sound_stone_defaults(), 
+		sounds = mcl_sounds.node_sound_stone_defaults(), 
 	})
 
 	minetest.register_node(nodename.."_21", {
@@ -163,7 +163,7 @@ local function register_wall(nodename, name, texture, invtex)
 			type = "fixed",
 			fixed = {pillar, full_blocks[2]}
 		},
-		sounds = mcl_core.node_sound_stone_defaults(), 
+		sounds = mcl_sounds.node_sound_stone_defaults(), 
 	})
 
 	-- Inventory item
@@ -186,7 +186,7 @@ local function register_wall(nodename, name, texture, invtex)
 		},
 		collisionbox = {-0.2, 0, -0.2, 0.2, 1.4, 0.2},
 		on_construct = update_wall,
-		sounds = mcl_core.node_sound_stone_defaults(), 
+		sounds = mcl_sounds.node_sound_stone_defaults(), 
 	})
 end
 

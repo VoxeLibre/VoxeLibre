@@ -4,7 +4,7 @@ minetest.register_node("mesecons_lightstone:lightstone_off", {
 	groups = {cracky=2, mesecon_effector_off = 1, mesecon = 2},
 	is_ground_content = false,
 	description= "Redstone Lamp",
-	sounds = mcl_core.node_sound_stone_defaults(),
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {effector = {
 		action_on = function (pos, node)
 			mesecon:swap_node(pos, "mesecons_lightstone:lightstone_on")
@@ -20,7 +20,7 @@ minetest.register_node("mesecons_lightstone:lightstone_on", {
 	is_ground_content = false,
 	-- Real light level: 15 (Minetest caps at 14)
 	light_source = 14,
-	sounds = mcl_core.node_sound_stone_defaults(),
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {effector = {
 		action_off = function (pos, node)
 			mesecon:swap_node(pos, "mesecons_lightstone:lightstone_off")

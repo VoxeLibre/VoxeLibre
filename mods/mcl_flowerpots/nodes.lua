@@ -48,7 +48,7 @@ minetest.register_node("mcl_flowerpots:flower_pot", {
 	},
 	inventory_image = "mcl_flowerpots_flowerpot_inventory.png",
 	groups = {dig_immediate=3, deco_block=1, attached_node=1, flower_pot=1},
-	sounds = mcl_core.node_sound_stone_defaults(),
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_rightclick = function(pos, node, clicker, itemstack)
 		local item = clicker:get_wielded_item():get_name()
 		for _, row in ipairs(flowers) do
@@ -107,7 +107,7 @@ minetest.register_node("mcl_flowerpots:flower_pot_"..flower, {
 		fixed = {-0.2, -0.5, -0.2, 0.2, -0.1, 0.2}
 	},
 	groups = {dig_immediate=3, attached_node=1, not_in_creative_inventory=1, flower_pot=2},
-	sounds = mcl_core.node_sound_stone_defaults(),
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_rightclick = function(pos, item, clicker)
 		minetest.add_item({x=pos.x, y=pos.y+0.5, z=pos.z}, flower_node)
 		minetest.set_node(pos, {name="mcl_flowerpots:flower_pot"})
@@ -143,7 +143,7 @@ minetest.register_node("mcl_flowerpots:flower_pot_"..flower, {
 		fixed = {-0.2, -0.5, -0.2, 0.2, -0.1, 0.2}
 	},
 	groups = {dig_immediate=3, attached_node=1, not_in_creative_inventory=1, flower_pot=2},
-	sounds = mcl_core.node_sound_stone_defaults(),
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_rightclick = function(pos, item, clicker)
 		minetest.add_item({x=pos.x, y=pos.y+0.5, z=pos.z}, flower_node)
 		minetest.set_node(pos, {name="mcl_flowerpots:flower_pot"})

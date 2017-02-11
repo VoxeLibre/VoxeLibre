@@ -8,7 +8,7 @@ minetest.register_node("mcl_farming:mushroom_brown", {
 	paramtype = "light",
 	walkable = false,
 	groups = {dig_immediate=3,mushroom=1,attached_node=1,dig_by_water=1,deco_block=1},
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	light_source = 1,
 	selection_box = {
 		type = "fixed",
@@ -26,7 +26,7 @@ minetest.register_node("mcl_farming:mushroom_red", {
 	paramtype = "light",
 	walkable = false,
 	groups = {dig_immediate=3,mushroom=1,attached_node=1,dig_by_water=1,deco_block=1},
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -0.15, -0.5, -0.15, 0.15, 0.015, 0.15 },

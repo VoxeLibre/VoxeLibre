@@ -30,7 +30,7 @@ minetest.register_node("mcl_chests:chest", {
 	stack_max = 64,
 	groups = {choppy=2,oddly_breakable_by_hand=2, deco_block=1},
 	is_ground_content = false,
-	sounds = mcl_core.node_sound_wood_defaults(),
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_construct = function(pos)
 		local param2 = minetest.get_node(pos).param2
 		local meta = minetest.get_meta(pos)
@@ -142,7 +142,7 @@ minetest.register_node("mcl_chests:chest_left", {
 	groups = {choppy=2,oddly_breakable_by_hand=2,not_in_creative_inventory=1},
 	drop = "mcl_chests:chest",
 	is_ground_content = false,
-	sounds = mcl_core.node_sound_wood_defaults(),
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_destruct = function(pos)
 		local n = minetest.get_node(pos)
 		if n.name == "mcl_chests:chest" then
@@ -201,7 +201,7 @@ minetest.register_node("mcl_chests:chest_right", {
 	groups = {choppy=2,oddly_breakable_by_hand=2,not_in_creative_inventory=1},
 	drop = "mcl_chests:chest",
 	is_ground_content = false,
-	sounds = mcl_core.node_sound_wood_defaults(),
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_destruct = function(pos)
 		local n = minetest.get_node(pos)
 		if n.name == "mcl_chests:chest" then
@@ -272,7 +272,7 @@ minetest.register_node("mcl_chests:ender_chest", {
 	paramtype = "light",
 	light_source = 7,
 	paramtype2 = "facedir",
-	sounds = mcl_core.node_sound_stone_defaults(),
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	drop = "mcl_core:obsidian 8",
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -331,7 +331,7 @@ for color, desc in pairs(boxtypes) do
 			"mcl_chests_"..color.."_shulker_box_side.png", "mcl_chests_"..color.."_shulker_box_side.png"},
 		groups = {cracky=2, deco_block=1, shulker_box=1},
 		is_ground_content = false,
-		sounds = mcl_core.node_sound_stone_defaults(),
+		sounds = mcl_sounds.node_sound_stone_defaults(),
 		stack_max = 1,
 		drop = "",
 		on_construct = function(pos)

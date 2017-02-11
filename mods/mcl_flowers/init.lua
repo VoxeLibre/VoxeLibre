@@ -26,7 +26,7 @@ local function add_simple_flower(name, desc, image, color)
 		walkable = false,
 		stack_max = 64,
 		groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,dig_by_water=1,color=1,deco_block=1},
-		sounds = mcl_core.node_sound_leaves_defaults(),
+		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		buildable_to = true,
 		selection_box = {
 			type = "fixed",
@@ -52,7 +52,7 @@ minetest.register_node("mcl_flowers:tulip_pink", {
 	stack_max = 64,
 	groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,color_pink=1,dig_by_water=1,deco_block=1},
 	buildable_to = true,
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
@@ -71,7 +71,7 @@ minetest.register_node("mcl_flowers:tulip_red", {
 	stack_max = 64,
 	groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,color_red=1,dig_by_water=1,deco_block=1},
 	buildable_to = true,
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
@@ -91,7 +91,7 @@ minetest.register_node("mcl_flowers:tulip_white", {
 	stack_max = 64,
 	groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,color_white=1,dig_by_water=1,deco_block=1},
 	buildable_to = true,
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
@@ -113,7 +113,7 @@ minetest.register_node("mcl_flowers:allium", {
 	stack_max = 64,
 	groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,color_pink=1,dig_by_water=1,deco_block=1},
 	buildable_to = true,
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
@@ -134,7 +134,7 @@ minetest.register_node("mcl_flowers:peony", {
 	stack_max = 64,
 	groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,color_pink=1,dig_by_water=1,deco_block=1},
 	buildable_to = true,
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
@@ -156,7 +156,7 @@ minetest.register_node("mcl_flowers:azure_bluet", {
 	stack_max = 64,
 	groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,color_white=1,dig_by_water=1,deco_block=1},
 	buildable_to = true,
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
@@ -177,7 +177,7 @@ minetest.register_node("mcl_flowers:blue_orchid", {
 	stack_max = 64,
 	groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,color_blue=1,dig_by_water=1,deco_block=1},
 	buildable_to = true,
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
@@ -198,7 +198,7 @@ minetest.register_node("mcl_flowers:fern", {
 	stack_max = 64,
 	groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,dig_by_water=1,deco_block=1},
 	buildable_to = true,
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
 		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
@@ -246,7 +246,7 @@ function register_large(name, desc, inv_img, bot_img, colr) --change in function
         ]]
         drop = "mcl_flowers:"..name,
         groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,colr=1, dig_by_water=1, double_bottom =1,deco_block=1,deco_block=1},
-        sounds = mcl_core.node_sound_leaves_defaults(),
+        sounds = mcl_sounds.node_sound_leaves_defaults(),
         selection_box = {
             type = "fixed",
             fixed = { -0.25, -0.5, -0.25, 0.25, 0.5, 0.25 },
@@ -266,7 +266,7 @@ function register_large(name, desc, inv_img, bot_img, colr) --change in function
         buildable_to = true,
         drop = "mcl_flowers:"..name,
         groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,colr=1, dig_by_water=1, not_in_creative_inventory = 1, double_top =1},
-        sounds = mcl_core.node_sound_leaves_defaults(),
+        sounds = mcl_sounds.node_sound_leaves_defaults(),
         selection_box = {
             type = "fixed",
             fixed = { -0.25, -0.5, -0.25, 0.25, 0.5, 0.25 },
@@ -288,7 +288,7 @@ minetest.register_node("mcl_flowers:waterlily", {
 	walkable = true,
 	sunlight_propagates = true,
 	groups = {dig_immediate = 3, dig_by_water = 1, deco_block=1},
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	node_placement_prediction = "",
 	node_box = {
 		type = "fixed",

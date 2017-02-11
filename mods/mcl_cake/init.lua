@@ -48,7 +48,7 @@ minetest.register_node("mcl_cake:cake", {
 		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_5"), ItemStack("mcl_cake:cake"), clicker, {type="nothing"})
 		minetest.add_node(pos,{type="node",name="mcl_cake:cake_5",param2=0})
 	end,
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 minetest.register_node("mcl_cake:cake_5", {
 	description = "Cake (5 Slices Left)",
@@ -70,7 +70,7 @@ minetest.register_node("mcl_cake:cake_5", {
 		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_4"), ItemStack("mcl_cake:cake_5"), clicker, {type="nothing"})
 		minetest.add_node(pos,{type="node",name="mcl_cake:cake_4",param2=0})
 	end,
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 minetest.register_node("mcl_cake:cake_4", {
 	description = "Cake (4 Slices Left)",
@@ -92,7 +92,7 @@ minetest.register_node("mcl_cake:cake_4", {
 		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_3"), ItemStack("mcl_cake:cake_4"), clicker, {type="nothing"})
 		minetest.add_node(pos,{type="node",name="mcl_cake:cake_3",param2=0})
 	end,
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 minetest.register_node("mcl_cake:cake_3", {
 	description = "Cake (3 Slices Left)",
@@ -114,7 +114,7 @@ minetest.register_node("mcl_cake:cake_3", {
 		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_2"), ItemStack("mcl_cake:cake_3"), clicker, {type="nothing"})
 		minetest.add_node(pos,{type="node",name="mcl_cake:cake_2",param2=0})
 	end,
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 minetest.register_node("mcl_cake:cake_2", {
 	description = "Cake (2 Slices Left)",
@@ -136,7 +136,7 @@ minetest.register_node("mcl_cake:cake_2", {
 		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_1"), ItemStack("mcl_cake:cake_2"), clicker, {type="nothing"})
 		minetest.add_node(pos,{type="node",name="mcl_cake:cake_1",param2=0})
 	end,
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 minetest.register_node("mcl_cake:cake_1", {
 	description = "Cake (1 Slice Left)",
@@ -158,5 +158,5 @@ minetest.register_node("mcl_cake:cake_1", {
 		minetest.do_item_eat(2, ItemStack("mcl:cake:cake 0"), ItemStack("mcl_cake:cake_1"), clicker, {type="nothing"})
 		minetest.remove_node(pos)
 	end,
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })

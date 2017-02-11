@@ -49,7 +49,7 @@ minetest.register_node("mcl_tnt:tnt", {
 	mesecons = {effector = {
 		action_on = tnt.ignite
 	}},
-	sounds = mcl_core.node_sound_wood_defaults(),
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
 local TNT_RANGE = 3

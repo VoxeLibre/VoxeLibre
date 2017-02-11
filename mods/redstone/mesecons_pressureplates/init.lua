@@ -115,7 +115,7 @@ mesecon:register_pressure_plate(
 	"default_wood.png",
 	"default_wood.png",
 	{{"group:wood", "group:wood"}},
-	mcl_core.node_sound_wood_defaults())
+	mcl_sounds.node_sound_wood_defaults())
 
 mesecon:register_pressure_plate(
 	"mesecons_pressureplates:pressure_plate_stone_off",
@@ -124,7 +124,7 @@ mesecon:register_pressure_plate(
 	"default_stone.png",
 	"default_stone.png",
 	{{"mcl_core:stone", "mcl_core:stone"}},
-	mcl_core.node_sound_stone_defaults())
+	mcl_sounds.node_sound_stone_defaults())
 
 minetest.register_craft({
 	type = "fuel",

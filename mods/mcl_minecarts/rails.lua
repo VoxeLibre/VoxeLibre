@@ -21,7 +21,7 @@ minetest.register_node("mcl_minecarts:golden_rail", {
 			minetest.get_meta(pos):set_string("cart_acceleration", "0.5")
 		end
 	end,
-	sounds = mcl_core.node_sound_defaults(),
+	sounds = mcl_sounds.node_sound_defaults(),
 	mesecons = {
 		effector = {
 			action_on = function(pos, node)

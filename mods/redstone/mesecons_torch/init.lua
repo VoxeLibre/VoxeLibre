@@ -46,7 +46,7 @@ mcl_torches.register_torch("mesecon_torch_off", "Mesecon Torch (off)", "jeija_to
 	{"jeija_torches_off.png"},
 	0,
 	{dig_immediate=3, dig_by_water=1, not_in_creative_inventory=1},
-	mcl_core.node_sound_wood_defaults(),
+	mcl_sounds.node_sound_wood_defaults(),
 	{
 		mesecons = {receptor = {
 			state = mesecon.state.off,
@@ -61,7 +61,7 @@ mcl_torches.register_torch("mesecon_torch_on", "Mesecon Torch", "jeija_torches_o
 	{"jeija_torches_on.png"},
 	7,
 	{dig_immediate=3, dig_by_water=1},
-	mcl_core.node_sound_wood_defaults(),
+	mcl_sounds.node_sound_wood_defaults(),
 	{
 		mesecons = {receptor = {
 			state = mesecon.state.on,
@@ -75,7 +75,7 @@ minetest.register_node("mesecons_torch:redstoneblock", {
 	tiles = {"default_redstone_block.png"},
 	stack_max = 64,
 	groups = {cracky=1},
-	sounds = mcl_core.node_sound_stone_defaults(),
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	mesecons = {receptor = {
 		state = mesecon.state.on,

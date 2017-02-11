@@ -122,7 +122,7 @@ mcl_torches.register_torch("torch", "Torch", "default_torch_on_floor.png",
 	}},
 	14,
 	{dig_immediate=3, torch=1, dig_by_water=1, deco_block=1},
-	mcl_core.node_sound_wood_defaults())
+	mcl_sounds.node_sound_wood_defaults())
 	
 
 minetest.register_craft({

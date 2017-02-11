@@ -123,7 +123,7 @@ for zmy=0, 1 do
 			state = mesecon.state.off,
 			onstate = "mesecons:wire_"..nodeid.."_on"
 		}},
-		sounds = mcl_core.node_sound_defaults(),
+		sounds = mcl_sounds.node_sound_defaults(),
 	})
 
 	minetest.register_node("mesecons:wire_"..nodeid.."_on", {
@@ -154,7 +154,7 @@ for zmy=0, 1 do
 			state = mesecon.state.on,
 			offstate = "mesecons:wire_"..nodeid.."_off"
 		}},
-		sounds = mcl_core.node_sound_defaults(),
+		sounds = mcl_sounds.node_sound_defaults(),
 	})
 end
 end

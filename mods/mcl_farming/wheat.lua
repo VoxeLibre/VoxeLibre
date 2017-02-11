@@ -22,7 +22,7 @@ minetest.register_node("mcl_farming:wheat_1", {
 		},
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1, dig_by_water=1},
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -49,7 +49,7 @@ minetest.register_node("mcl_farming:wheat_2", {
 		},
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1, dig_by_water=1},
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -76,7 +76,7 @@ minetest.register_node("mcl_farming:wheat_3", {
 		},
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1, dig_by_water=1},
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -111,7 +111,7 @@ minetest.register_node("mcl_farming:wheat", {
 		},
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1, dig_by_water=1},
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	node_box = {
 		type = "fixed",
 		fixed = {

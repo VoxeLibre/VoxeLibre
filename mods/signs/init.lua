@@ -202,7 +202,7 @@ minetest.register_node("signs:sign_wall", {
     tiles = {"signs_top.png", "signs_bottom.png", "signs_side.png", "signs_side.png", "signs_back.png", "signs_front.png"},
     groups = sign_groups,
 	stack_max = 16,
-	sounds = mcl_core.node_sound_wood_defaults(),
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 
     on_place = function(itemstack, placer, pointed_thing)
         local above = pointed_thing.above
@@ -277,7 +277,7 @@ minetest.register_node("signs:sign_yard", {
     groups = sign_groups,
     drop = "signs:sign_wall",
 	stack_max = 16,
-	sounds = mcl_core.node_sound_wood_defaults(),
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 
     on_construct = function(pos)
         construct_sign(pos)

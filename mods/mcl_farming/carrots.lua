@@ -11,7 +11,7 @@ minetest.register_node("mcl_farming:carrot_1", {
 		},
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1},
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 
 minetest.register_node("mcl_farming:carrot_2", {
@@ -27,7 +27,7 @@ minetest.register_node("mcl_farming:carrot_2", {
 		},
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1},
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 
 minetest.register_node("mcl_farming:carrot_3", {
@@ -43,7 +43,7 @@ minetest.register_node("mcl_farming:carrot_3", {
 		},
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1},
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 
 minetest.register_node("mcl_farming:carrot", {
@@ -61,7 +61,7 @@ minetest.register_node("mcl_farming:carrot", {
 		}
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1},
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 
 minetest.register_craftitem("mcl_farming:carrot_item", {

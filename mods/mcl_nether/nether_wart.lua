@@ -12,7 +12,7 @@ minetest.register_node("mcl_nether:nether_wart_0", {
 		},
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,attached_node=1,dig_by_water=1},
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 
 minetest.register_node("mcl_nether:nether_wart_1", {
@@ -29,7 +29,7 @@ minetest.register_node("mcl_nether:nether_wart_1", {
 		},
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,attached_node=1,dig_by_water=1},
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 
 minetest.register_node("mcl_nether:nether_wart_2", {
@@ -46,7 +46,7 @@ minetest.register_node("mcl_nether:nether_wart_2", {
 		},
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,attached_node=1,dig_by_water=1},
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 
 minetest.register_node("mcl_nether:nether_wart", {
@@ -70,7 +70,7 @@ minetest.register_node("mcl_nether:nether_wart", {
 		},
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,attached_node=1,dig_by_water=1},
-	sounds = mcl_core.node_sound_leaves_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 
 minetest.register_craftitem("mcl_nether:nether_wart_item", {

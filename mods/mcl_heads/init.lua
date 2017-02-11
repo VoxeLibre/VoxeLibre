@@ -29,7 +29,7 @@ local function addhead(node, desc)
 			type = "fixed",
 			fixed = { -0.25, -0.5, -0.25, 0.25, 0.0, 0.25, },
 		},
-		sounds = mcl_core.node_sound_defaults({
+		sounds = mcl_sounds.node_sound_defaults({
 			footstep = {name="default_hard_footstep", gain=0.3}
 		}),
 	})

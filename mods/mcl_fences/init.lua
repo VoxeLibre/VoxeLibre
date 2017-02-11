@@ -194,7 +194,7 @@ end
 
 local wood_groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fence_wood=1}
 local wood_connect = {"group:fence_wood"}
-local wood_sounds = mcl_core.node_sound_wood_defaults()
+local wood_sounds = mcl_sounds.node_sound_wood_defaults()
 
 local woods = {
 	{"", "Oak Fence", "Oak Fence Gate", "default_wood.png", "default_fence.png", "mcl_fences_fence_gate.png", "mcl_core:wood"},
@@ -234,7 +234,7 @@ for w=1, #woods do
 end
 
 -- Nether Brick Fence (without fence gate!)
-mcl_fences.register_fence("nether_brick_fence", "Nether Brick Fence", nil, "mcl_nether_nether_brick.png", "default_fence.png", nil, {cracky=2, deco_block=1, fence_nether_brick=1}, {"group:fence_nether_brick"}, mcl_core.node_sound_stone_defaults())
+mcl_fences.register_fence("nether_brick_fence", "Nether Brick Fence", nil, "mcl_nether_nether_brick.png", "default_fence.png", nil, {cracky=2, deco_block=1, fence_nether_brick=1}, {"group:fence_nether_brick"}, mcl_sounds.node_sound_stone_defaults())
 
 minetest.register_craft({
 	output = 'mcl_fences:nether_brick_fence 6',

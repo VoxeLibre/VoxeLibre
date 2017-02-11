@@ -31,7 +31,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {cracky=2, deco_block=1},
-	sounds = mcl_core.node_sound_stone_defaults(),
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", furnace_inactive_formspec)
@@ -97,7 +97,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	light_source = 13,
 	drop = "mcl_furnaces:furnace",
 	groups = {cracky=2, not_in_creative_inventory=1},
-	sounds = mcl_core.node_sound_stone_defaults(),
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", furnace_inactive_formspec)

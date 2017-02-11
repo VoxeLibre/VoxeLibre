@@ -152,7 +152,7 @@ local pane = function(description, node, append)
 		textures = {"xpanes_pane_glass"..append..".png","xpanes_pane_half_glass"..append..".png","xpanes_top_glass"..append..".png"},
 		inventory_image = "xpanes_pane_glass"..append..".png",
 		wield_image = "xpanes_pane_glass"..append..".png",
-		sounds = mcl_core.node_sound_glass_defaults(),
+		sounds = mcl_sounds.node_sound_glass_defaults(),
 		groups = {snappy=2, cracky=3, oddly_breakable_by_hand=3},
 		recipe = {
 			{node, node, node},
@@ -168,7 +168,7 @@ xpanes.register_pane("bar", {
 	inventory_image = "xpanes_pane_iron.png",
 	wield_image = "xpanes_pane_iron.png",
 	groups = {cracky=2},
-	sounds = mcl_core.node_sound_metal_defaults(),
+	sounds = mcl_sounds.node_sound_metal_defaults(),
 	recipe = {
 		{"mcl_core:steel_ingot", "mcl_core:steel_ingot", "mcl_core:steel_ingot"},
 		{"mcl_core:steel_ingot", "mcl_core:steel_ingot", "mcl_core:steel_ingot"}

@@ -68,7 +68,7 @@ minetest.register_node("mcl_hoppers:hopper", {
 		minetest.log("action", player:get_player_name()..
 				" takes stuff from mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
-	sounds = mcl_core.node_sound_metal_defaults(),
+	sounds = mcl_sounds.node_sound_metal_defaults(),
 })
 
 minetest.register_node("mcl_hoppers:hopper_side", {
@@ -128,7 +128,7 @@ minetest.register_node("mcl_hoppers:hopper_side", {
 		minetest.log("action", player:get_player_name()..
 				" takes stuff from mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
-	sounds = mcl_core.node_sound_metal_defaults(),
+	sounds = mcl_sounds.node_sound_metal_defaults(),
 })
 --make mcl_hopperss suck in blocks
 minetest.register_abm({
@@ -516,7 +516,7 @@ minetest.register_craftitem("mcl_hoppers:hopper_item", {
 			placed = true
 		end
 		if placed == true then
-			minetest.sound_play(mcl_core.node_sound_metal_defaults().place, { pos = pos2 })
+			minetest.sound_play(mcl_sounds.node_sound_metal_defaults().place, { pos = pos2 })
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:take_item()
 			end

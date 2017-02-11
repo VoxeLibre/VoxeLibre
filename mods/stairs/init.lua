@@ -229,109 +229,109 @@ stairs.register_stair("wood", "mcl_core:wood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_stairs=1},
 		{"default_wood.png"},
 		"Oak Wood Stairs",
-		mcl_core.node_sound_wood_defaults())
+		mcl_sounds.node_sound_wood_defaults())
 stairs.register_slab("wood", "mcl_core:wood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_slab=1},
 		{"default_wood.png"},
 		"Oak Wood Slab",
-		mcl_core.node_sound_wood_defaults())
+		mcl_sounds.node_sound_wood_defaults())
 
 stairs.register_stair("junglewood", "mcl_core:junglewood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_stairs=1},
 		{"default_junglewood.png"},
 		"Jungle Wood Stairs",
-		mcl_core.node_sound_wood_defaults())
+		mcl_sounds.node_sound_wood_defaults())
 stairs.register_slab("junglewood", "mcl_core:junglewood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_slab=1},
 		{"default_junglewood.png"},
 		"Jungle Wood Slab",
-		mcl_core.node_sound_wood_defaults())
+		mcl_sounds.node_sound_wood_defaults())
 	
 stairs.register_stair("acaciawood", "mcl_core:acaciawood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_stairs=1},
 		{"default_acaciawood.png"},
 		"Acacia Wood Stairs",
-		mcl_core.node_sound_wood_defaults())
+		mcl_sounds.node_sound_wood_defaults())
 
 stairs.register_slab("acaciawood", "mcl_core:acaciawood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_slab=1},
 		{"default_acaciawood.png"},
 		"Acacia Wood Slab",
-		mcl_core.node_sound_wood_defaults())
+		mcl_sounds.node_sound_wood_defaults())
 	
 stairs.register_stair("sprucewood", "mcl_core:sprucewood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_stairs=1},
 		{"default_sprucewood.png"},
 		"Spruce Wood Stairs",
-		mcl_core.node_sound_wood_defaults())
+		mcl_sounds.node_sound_wood_defaults())
 stairs.register_slab("sprucewood", "mcl_core:sprucewood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_slab=1},
 		{"default_sprucewood.png"},
 		"Spruce Wood Slab",
-		mcl_core.node_sound_wood_defaults())
+		mcl_sounds.node_sound_wood_defaults())
 
 stairs.register_stair("birchwood", "mcl_core:birchwood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_stairs=1},
 		{"default_planks_birch.png"},
 		"Birch Wood Stairs",
-		mcl_core.node_sound_wood_defaults())
+		mcl_sounds.node_sound_wood_defaults())
 stairs.register_slab("birchwood", "mcl_core:birchwood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_slab=1},
 		{"default_planks_birch.png"},
 		"Birch Wood Slab",
-		mcl_core.node_sound_wood_defaults())
+		mcl_sounds.node_sound_wood_defaults())
 
 stairs.register_stair("darkwood", "mcl_core:darkwood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_stairs=1},
 		{"default_planks_big_oak.png"},
 		"Dark Oak Wood Stairs",
-		mcl_core.node_sound_wood_defaults())
+		mcl_sounds.node_sound_wood_defaults())
 stairs.register_slab("oakwood", "mcl_core:darkwood",
 		{snappy=2,choppy=2,oddly_breakable_by_hand=2,flammable=3,wood_slab=1},
 		{"default_planks_big_oak.png"},
 		"Dark Oak Wood Slab",
-		mcl_core.node_sound_wood_defaults())
+		mcl_sounds.node_sound_wood_defaults())
 
 stairs.register_slab("stone", "mcl_core:stone",
 		{cracky=3},
 		{"stairs_stone_slab_top.png", "stairs_stone_slab_top.png", "stairs_stone_slab_side.png"},
 		"Stone Slab",
-		mcl_core.node_sound_stone_defaults(), "Double Stone Slab")
+		mcl_sounds.node_sound_stone_defaults(), "Double Stone Slab")
 
 stairs.register_stair_and_slab("cobble", "mcl_core:cobble",
 		{cracky=3},
 		{"default_cobble.png"},
 		"Cobblestone Stairs",
 		"Cobblestone Slab",
-		mcl_core.node_sound_stone_defaults())
+		mcl_sounds.node_sound_stone_defaults())
 
 stairs.register_stair_and_slab("brick_block", "mcl_core:brick_block",
 		{cracky=3},
 		{"default_brick.png"},
 		"Brick Stairs",
 		"Brick Slab",
-		mcl_core.node_sound_stone_defaults())
+		mcl_sounds.node_sound_stone_defaults())
 
 stairs.register_stair_and_slab("sandstone", "group:sandstone",
 		{crumbly=2,cracky=2},
 		{"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_normal.png"},
 		"Sandstone Stairs",
 		"Sandstone Slab",
-		mcl_core.node_sound_stone_defaults(), "mcl_core:sandstone")
+		mcl_sounds.node_sound_stone_defaults(), "mcl_core:sandstone")
 
 stairs.register_stair_and_slab("redsandstone", "group:redsandstone",
 		{crumbly=2,cracky=2},
 		{"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_normal.png"},
 		"Red Sandstone Stairs",
 		"Red Sandstone Slab",
-		mcl_core.node_sound_stone_defaults(), nil, "mcl_core:redsandstone")
+		mcl_sounds.node_sound_stone_defaults(), nil, "mcl_core:redsandstone")
 
 stairs.register_stair_and_slab("stonebrick", "group:stonebrick",
 		{cracky=3},
 		{"default_stone_brick.png"},
 		"Stone Bricks Stairs",
 		"Stone Bricks Slab",
-		mcl_core.node_sound_stone_defaults(), nil, "mcl_core:stonebrick"
+		mcl_sounds.node_sound_stone_defaults(), nil, "mcl_core:stonebrick"
 )
 
 stairs.register_stair_and_slab("quartzblock", "group:quartz_block",
@@ -339,7 +339,7 @@ stairs.register_stair_and_slab("quartzblock", "group:quartz_block",
 	{"mcl_nether_quartz_block_top.png", "mcl_nether_quartz_block_bottom.png", "mcl_nether_quartz_block_side.png"},
 	"Quartz Stairs",
 	"Quartz Slab",
-	mcl_core.node_sound_stone_defaults(), nil, "mcl_nether:quartz_block"
+	mcl_sounds.node_sound_stone_defaults(), nil, "mcl_nether:quartz_block"
 )
 
 stairs.register_stair_and_slab("nether_brick", "mcl_nether:nether_brick",
@@ -347,7 +347,7 @@ stairs.register_stair_and_slab("nether_brick", "mcl_nether:nether_brick",
 	{"mcl_nether_nether_brick.png"},
 	"Nether Brick Stairs",
 	"Nether Brick Slab",
-	mcl_core.node_sound_stone_defaults()
+	mcl_sounds.node_sound_stone_defaults()
 )
 
 stairs.register_stair_and_slab("purpur_block", "mcl_end:purpur_block",
@@ -355,7 +355,7 @@ stairs.register_stair_and_slab("purpur_block", "mcl_end:purpur_block",
 		{"mcl_end_purpur_block.png"},
 		"Purpur Stairs",
 		"Purpur Slab",
-		mcl_core.node_sound_stone_defaults()
+		mcl_sounds.node_sound_stone_defaults()
 )
 
 minetest.register_craft({

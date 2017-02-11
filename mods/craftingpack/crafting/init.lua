@@ -175,7 +175,7 @@ minetest.register_node("crafting:workbench", {
 	on_rightclick = function(pos, node, clicker, itemstack)
 		set_workbench(clicker)
 	end,
-	sounds = mcl_core.node_sound_wood_defaults(),
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
 minetest.register_craft({

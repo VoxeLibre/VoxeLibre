@@ -95,7 +95,7 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 		fixed = {-0.5,-0.5,-0.5, 0.5,1.4,0.5}
 	},
 	groups = {choppy=2, oddly_breakable_by_hand=2, deco_block=1},
-	sounds = mcl_core.node_sound_wood_defaults(),
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", armor_stand_formspec)
