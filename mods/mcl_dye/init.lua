@@ -216,7 +216,7 @@ minetest.register_craftitem("mcl_dye:white", {
 	stack_max = 64,
 	groups = {dye=1, craftitem=1, basecolor_white=1,   excolor_white=1,     unicolor_white=1},
 	on_place = function(itemstack, user, pointed_thing) 
-		if(apply_bone_meal(pointed_thing)) then
+		if(apply_bone_meal(pointed_thing) and not minetest.setting_getbool("creative_mode")) then
 			itemstack:take_item()
 		end
 		return itemstack
