@@ -20,7 +20,6 @@ dofile(minetest.get_modpath("mcl_core").."/tools.lua")
 dofile(minetest.get_modpath("mcl_core").."/craftitems.lua")
 dofile(minetest.get_modpath("mcl_core").."/crafting.lua")
 dofile(minetest.get_modpath("mcl_core").."/mapgen.lua")
-dofile(minetest.get_modpath("mcl_core").."/player.lua")
 
 -- Aliases
 minetest.register_alias("default:desert_sand", "mcl_core:sand")

@@ -128,7 +128,7 @@ armor.update_player_visuals = function(self, player)
 	end
 	local name = player:get_player_name()
 	if self.textures[name] then
-		mcl_core.player_set_textures(player, {
+		mcl_player.player_set_textures(player, {
 			self.textures[name].skin,
 			self.textures[name].armor,
 			self.textures[name].wielditem,
@@ -325,7 +325,7 @@ end
 
 -- Register Player Model
 
-mcl_core.player_register_model("3d_armor_character.b3d", {
+mcl_player.player_register_model("3d_armor_character.b3d", {
 	animation_speed = 30,
 	textures = {
 		armor.default_skin..".png",
@@ -366,7 +366,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 minetest.register_on_joinplayer(function(player)
-	mcl_core.player_set_model(player, "3d_armor_character.b3d")
+	mcl_player.player_set_model(player, "3d_armor_character.b3d")
 	local name = player:get_player_name()
 	local player_inv = player:get_inventory()
 	local armor_inv = minetest.create_detached_inventory(name.."_armor", {

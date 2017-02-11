@@ -40,7 +40,7 @@ function mcl_minecarts.cart:on_rightclick(clicker)
 		clicker:set_detach()
 	elseif not self._driver then
 		self._driver = player_name
-		mcl_core.player_attached[player_name] = true
+		mcl_player.player_attached[player_name] = true
 		clicker:set_attach(self.object, "", {x=0, y=3, z=0}, {x=0, y=0, z=0})
 	end
 end
@@ -72,7 +72,7 @@ function mcl_minecarts.cart:on_punch(puncher, time_from_last_punch, tool_capabil
 			if self._old_pos then
 				self.object:setpos(self._old_pos)
 			end
-			mcl_core.player_attached[self._driver] = nil
+			mcl_player.player_attached[self._driver] = nil
 			local player = minetest.get_player_by_name(self._driver)
 			if player then
 				player:set_detach()

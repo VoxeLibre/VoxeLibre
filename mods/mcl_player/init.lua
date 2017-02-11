@@ -1,4 +1,4 @@
--- Minetest 0.4 mod: player
+-- MineClone 2 mod: mcl_player
 -- See README.txt for licensing and other information.
 
 --[[
@@ -6,29 +6,29 @@
 API
 ---
 
-mcl_core.player_register_model(name, def)
+mcl_player.player_register_model(name, def)
 ^ Register a new model to be used by players.
 ^ <name> is the model filename such as "character.x", "foo.b3d", etc.
 ^ See Model Definition below for format of <def>.
 
-mcl_core.registered_player_models[name]
+mcl_player.registered_player_models[name]
 ^ See Model Definition below for format.
 
-mcl_core.player_set_model(player, model_name)
+mcl_player.player_set_model(player, model_name)
 ^ <player> is a PlayerRef.
 ^ <model_name> is a model registered with player_register_model.
 
-mcl_core.player_set_animation(player, anim_name [, speed])
+mcl_player.player_set_animation(player, anim_name [, speed])
 ^ <player> is a PlayerRef.
 ^ <anim_name> is the name of the animation.
 ^ <speed> is in frames per second. If nil, default from the model is used
 
-mcl_core.player_set_textures(player, textures)
+mcl_player.player_set_textures(player, textures)
 ^ <player> is a PlayerRef.
 ^ <textures> is an array of textures
 ^ If <textures> is nil, the default textures from the model def are used
 
-mcl_core.player_get_animation(player)
+mcl_player.player_get_animation(player)
 ^ <player> is a PlayerRef.
 ^ Returns a table containing fields "model", "textures" and "animation".
 ^ Any of the fields of the returned table may be nil.
@@ -50,21 +50,23 @@ model_def = {
 
 ]]
 
+mcl_player = {}
+
 -- Player animation blending
 -- Note: This is currently broken due to a bug in Irrlicht, leave at 0
 local animation_blend = 0
 
-mcl_core.registered_player_models = { }
+mcl_player.registered_player_models = { }
 
 -- Local for speed.
-local models = mcl_core.registered_player_models
+local models = mcl_player.registered_player_models
 
-function mcl_core.player_register_model(name, def)
+function mcl_player.player_register_model(name, def)
 	models[name] = def
 end
 
 -- Default player appearance
-mcl_core.player_register_model("character.x", {
+mcl_player.player_register_model("character.x", {
 	animation_speed = 30,
 	textures = {"character.png", },
 	animations = {
@@ -84,9 +86,9 @@ local player_model = {}
 local player_textures = {}
 local player_anim = {}
 local player_sneak = {}
-mcl_core.player_attached = {}
+mcl_player.player_attached = {}
 
-function mcl_core.player_get_animation(player)
+function mcl_player.player_get_animation(player)
 	local name = player:get_player_name()
 	return {
 		model = player_model[name],
@@ -96,7 +98,7 @@ function mcl_core.player_get_animation(player)
 end
 
 -- Called when a player's appearance needs to be updated
-function mcl_core.player_set_model(player, model_name)
+function mcl_player.player_set_model(player, model_name)
 	local name = player:get_player_name()
 	local model = models[model_name]
 	if model then
@@ -109,7 +111,7 @@ function mcl_core.player_set_model(player, model_name)
 			visual = "mesh",
 			visual_size = model.visual_size or {x=1, y=1},
 		})
-		mcl_core.player_set_animation(player, "stand")
+		mcl_player.player_set_animation(player, "stand")
 	else
 		player:set_properties({
 			textures = { "player.png", "player_back.png", },
@@ -119,13 +121,13 @@ function mcl_core.player_set_model(player, model_name)
 	player_model[name] = model_name
 end
 
-function mcl_core.player_set_textures(player, textures)
+function mcl_player.player_set_textures(player, textures)
 	local name = player:get_player_name()
 	player_textures[name] = textures
 	player:set_properties({textures = textures,})
 end
 
-function mcl_core.player_set_animation(player, anim_name, speed)
+function mcl_player.player_set_animation(player, anim_name, speed)
 	local name = player:get_player_name()
 	if player_anim[name] == anim_name then
 		return
@@ -141,8 +143,8 @@ end
 
 -- Update appearance when the player joins
 minetest.register_on_joinplayer(function(player)
-	mcl_core.player_attached[player:get_player_name()] = false
-	mcl_core.player_set_model(player, "character.x")
+	mcl_player.player_attached[player:get_player_name()] = false
+	mcl_player.player_set_model(player, "character.x")
 	-- Minecraft has no sneak glitch
 	-- sneak is also disabled because it is buggy in Minetest (can be used to negate fall damage)
 	player:set_physics_override({sneak_glitch=false})
@@ -159,7 +161,7 @@ minetest.register_on_leaveplayer(function(player)
 end)
 
 -- Localize for better performance.
-local player_set_animation = mcl_core.player_set_animation
+local player_set_animation = mcl_player.player_set_animation
 
 -- Check each player and apply animations
 minetest.register_globalstep(function(dtime)
@@ -167,7 +169,7 @@ minetest.register_globalstep(function(dtime)
 		local name = player:get_player_name()
 		local model_name = player_model[name]
 		local model = model_name and models[model_name]
-		if model and not mcl_core.player_attached[name] then
+		if model and not mcl_player.player_attached[name] then
 			local controls = player:get_player_control()
 			local walking = false
 			local animation_speed_mod = model.animation_speed or 30

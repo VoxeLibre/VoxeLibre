@@ -89,14 +89,14 @@ mobs:register_mob("mobs_mc:pig", {
 	if self.driver and clicker == self.driver then
 		self.driver = nil
 		clicker:set_detach()
-		mcl_core.player_attached[name] = false
-		mcl_core.player_set_animation(clicker, "stand" , 30)
+		mcl_player.player_attached[name] = false
+		mcl_player.player_set_animation(clicker, "stand" , 30)
 	elseif not self.driver and self.saddle == "yes" then
 		self.driver = clicker
 		clicker:set_attach(self.object, "", {x = 0, y = 19, z = 0}, {x = 0, y = 0, z = 0})
-		mcl_core.player_attached[name] = true
+		mcl_player.player_attached[name] = true
 		minetest.after(0.2, function()
-			mcl_core.player_set_animation(clicker, "sit" , 30)
+			mcl_player.player_set_animation(clicker, "sit" , 30)
 		end)
 		----[[
 			-- ridable pigs
