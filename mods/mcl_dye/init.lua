@@ -180,12 +180,6 @@ local apply_bone_meal = function(pointed_thing)
 		minetest.add_node(pos, {name="air"})
 		mcl_core.generate_tree(pos, "mcl_core:jungletree", "mcl_core:jungleleaves", 2)
 		return true
-	elseif n.name ~="" and n.name == "mcl_core:reeds" then
-		mcl_core.grow_reeds(pos)
-		return true
-	elseif n.name ~="" and n.name == "mcl_core:cactus" then
-		mcl_core.grow_cactus(pos)
-		return true
 	elseif n.name == "mcl_core:dirt_with_grass" then
 		for i = -2, 3, 1 do
 			for j = -3, 2, 1 do
