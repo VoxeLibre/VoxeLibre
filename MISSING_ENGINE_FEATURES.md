@@ -8,19 +8,21 @@ For these features, no easy Lua workaround could be found.
 
 ### Lua API
 #### Tools/wielded item
-- Allow **much** faster liquid flowing
+- Allow **much** faster liquid flowing ([#2810](https://github.com/minetest/minetest/issues/2810))
+
 - “Lock” hotbar for a brief time after using an item, making it impossible to switch item or to attach/mine/build until the delay is over (For eating with delay)
-- Tool charging: Holding down the mouse and releasing it, applying a “power level” (For bow and arrows, more charge = higher arrow range)
+- Tool charging: Holding down the mouse and releasing it, applying a “power level” (For bow and arrows, more charge = higher arrow range) ([issue 5212](https://github.com/minetest/minetest/issues/5212))
 - [Dual Wielding](http://minecraft.gamepedia.com/Dual_wield)
-- Eating/drinking animation
+- Eating/drinking animation ([issue 2811](https://github.com/minetest/minetest/issues/2811))
 
 #### Nodes
 - Light level 15 for nodes (not sunlight)
+- Nodes makes light level drop by 2 or or more per node ([issue 5209](https://github.com/minetest/minetest/issues/5209))
 
 ## Interface
 - Inventory: Hold down right mouse button while holding an item stack to drop items into the slots as you move the mouse. Makes crafting MUCH faster
 - **Much** more informative item tooltips
-- Sneak+Leftclick on crafting output crafts as many items as possible and immediately puts it into the player inventory
+- Sneak+Leftclick on crafting output crafts as many items as possible and immediately puts it into the player inventory ([issue 5211](https://github.com/minetest/minetest/issues/5211))
 
 ## Workaround theoretically possible
 For these features, a workaround (or hack ;-)) by using Lua is theoretically possible. But engine support would be clearly better, more performant, more reliable, etc.
