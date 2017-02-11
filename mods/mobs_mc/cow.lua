@@ -75,7 +75,7 @@ mobs:register_mob("mobs_mc:cow", {
 	end,
 	]]
 	--from mobs_animals
-	follow = "mcl_farming:wheat_harvested",
+	follow = "mcl_farming:wheat_item",
 	view_range = 7,
 	replace_rate = 10,
 	replace_what = {"mcl_core:tallgrass",},

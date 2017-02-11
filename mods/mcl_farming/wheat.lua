@@ -101,7 +101,7 @@ minetest.register_node("mcl_farming:wheat", {
 			{ items = {'mcl_farming:wheat_seeds'} },
 			{ items = {'mcl_farming:wheat_seeds'}, rarity = 2},
 			{ items = {'mcl_farming:wheat_seeds'}, rarity = 5},
-			{ items = {'mcl_farming:wheat_harvested'} }
+			{ items = {'mcl_farming:wheat_item'} }
 		}
 	},
 	selection_box = {
@@ -125,7 +125,7 @@ minetest.register_node("mcl_farming:wheat", {
 
 mcl_farming:add_plant("mcl_farming:wheat", {"mcl_farming:wheat_1", "mcl_farming:wheat_2", "mcl_farming:wheat_3"}, 50, 20)
 
-minetest.register_craftitem("mcl_farming:wheat_harvested", {
+minetest.register_craftitem("mcl_farming:wheat_item", {
 	description = "Wheat",
 	inventory_image = "farming_wheat_harvested.png",
 	groups = { craftitem = 1 },
@@ -134,14 +134,14 @@ minetest.register_craftitem("mcl_farming:wheat_harvested", {
 minetest.register_craft({
 	output = "mcl_farming:bread",
 	recipe = {
-		{'mcl_farming:wheat_harvested', 'mcl_farming:wheat_harvested', 'mcl_farming:wheat_harvested'},
+		{'mcl_farming:wheat_item', 'mcl_farming:wheat_item', 'mcl_farming:wheat_item'},
 	}
 })
 
 minetest.register_craft({
 	output = "mcl_farming:cookie 8",
 	recipe = {
-		{'mcl_farming:wheat_harvested', 'mcl_dye:brown', 'mcl_farming:wheat_harvested'},
+		{'mcl_farming:wheat_item', 'mcl_dye:brown', 'mcl_farming:wheat_item'},
 	}
 })
 

@@ -16,7 +16,7 @@ minetest.register_craft({
 	recipe = {
 		{'mcl_mobitems:milk_bucket', 'mcl_mobitems:milk_bucket', 'mcl_mobitems:milk_bucket'},
 		{'mcl_core:sugar', 'mcl_throwing:egg', 'mcl_core:sugar'},
-		{'mcl_farming:wheat_harvested', 'mcl_farming:wheat_harvested', 'mcl_farming:wheat_harvested'},
+		{'mcl_farming:wheat_item', 'mcl_farming:wheat_item', 'mcl_farming:wheat_item'},
 	},
 	replacements = {
 		{"mcl_mobitems:milk_bucket", "bucket:bucket_empty"},
