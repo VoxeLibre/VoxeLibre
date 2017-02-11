@@ -34,3 +34,6 @@ For these features, a workaround (or hack ;-)) by using Lua is theoretically pos
 - Set frequency in which players lose breath. 2 seconds are hardcoded in Minetest, in Minecraft it's 1 second
 - Set damage frequency of `damage_per_second`. In Minecraft many things damage players every half-second rather than every second
 - Possible to damage players directly when they are with the head inside. This allows to add Minecraft-like suffocation
+
+#### Nice-to-haye
+- Utility function to rotate pillar-like nodes, requiring only 3 possible orientations (X, Y, Z). Basically this is `minetest.rotate_node` but with less orientations; the purpur pillar would mess up if a mirrored rotation would be possible. This is already implemented in MCL2, See `mcl_util` for more infos
