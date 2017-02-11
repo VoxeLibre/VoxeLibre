@@ -448,7 +448,7 @@ minetest.register_node("mcl_core:haybale", {
 	stack_max = 64,
 	paramtype2 = "facedir",
 	is_ground_content = false,
-	on_place = minetest.rotate_node,
+	on_place = mcl_util.rotate_axis,
 	groups = {oddly_breakable_by_hand=3,flammable=2, building_block=1},
 	sounds = mcl_core.node_sound_leaves_defaults(),
 })
@@ -458,7 +458,7 @@ minetest.register_node("mcl_core:bone_block", {
 	tiles = {"mcl_core_bone_block_top.png", "mcl_core_bone_block_top.png", "mcl_core_bone_block_side.png"},
 	is_ground_content = false,
 	paramtype2 = "facedir",
-	on_place = minetest.rotate_node,
+	on_place = mcl_util.rotate_axis,
 	groups = {cracky=2, building_block=1},
 	sounds = mcl_core.node_sound_stone_defaults(),
 })
@@ -517,7 +517,7 @@ minetest.register_node("mcl_core:tree", {
 	description = "Oak Wood",
 	tiles = {"default_tree_top.png", "default_tree_top.png", "default_tree.png"},
 	paramtype2 = "facedir",
-	on_place = minetest.rotate_node,
+	on_place = mcl_util.rotate_axis,
 	stack_max = 64,
 	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2, building_block=1},
 	sounds = mcl_core.node_sound_wood_defaults(),
@@ -572,7 +572,7 @@ minetest.register_node("mcl_core:darktree", {
 	description = "Dark Oak Wood",
 	tiles = {"default_log_big_oak_top.png", "default_log_big_oak_top.png", "default_log_big_oak.png"},
 	paramtype2 = "facedir",
-	on_place = minetest.rotate_node,
+	on_place = mcl_util.rotate_axis,
 	stack_max = 64,
 	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2,building_block=1},
 	sounds = mcl_core.node_sound_wood_defaults(),
@@ -629,7 +629,7 @@ minetest.register_node("mcl_core:jungletree", {
 	tiles = {"default_jungletree_top.png", "default_jungletree_top.png", "default_jungletree.png"},
 	stack_max = 64,
 	paramtype2 = "facedir",
-	on_place = minetest.rotate_node,
+	on_place = mcl_util.rotate_axis,
 	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2,building_block=1},
 	sounds = mcl_core.node_sound_wood_defaults(),
 })
@@ -689,7 +689,7 @@ minetest.register_node("mcl_core:acaciatree", {
 	tiles = {"default_acaciatree_top.png", "default_acaciatree_top.png", "default_acaciatree.png"},
 	stack_max = 64,
 	paramtype2 = "facedir",
-	on_place = minetest.rotate_node,
+	on_place = mcl_util.rotate_axis,
 	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2,building_block=1},
 	sounds = mcl_core.node_sound_wood_defaults(),
 })
@@ -748,7 +748,7 @@ minetest.register_node("mcl_core:sprucetree", {
 	tiles = {"default_sprucetree_top.png", "default_sprucetree_top.png", "default_sprucetree.png"},
 	stack_max = 64,
 	paramtype2 = "facedir",
-	on_place = minetest.rotate_node,
+	on_place = mcl_util.rotate_axis,
 	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2,building_block=1},
 	sounds = mcl_core.node_sound_wood_defaults(),
 })
@@ -811,7 +811,7 @@ minetest.register_node("mcl_core:birchtree", {
 	tiles = {"default_log_birch_top.png", "default_log_birch_top.png", "default_log_birch.png"},
 	stack_max = 64,
 	paramtype2 = "facedir",
-	on_place = minetest.rotate_node,
+	on_place = mcl_util.rotate_axis,
 	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2,building_block=1},
 	sounds = mcl_core.node_sound_wood_defaults(),
 })

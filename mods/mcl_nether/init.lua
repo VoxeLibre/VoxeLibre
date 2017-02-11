@@ -124,7 +124,7 @@ minetest.register_node("mcl_nether:quartz_pillar", {
 	stack_max = 64,
 	paramtype2 = "facedir",
 	is_ground_content = false,
-	on_place = minetest.rotate_node,
+	on_place = mcl_util.rotate_axis,
 	tiles = {"mcl_nether_quartz_pillar_top.png", "mcl_nether_quartz_pillar_top.png", "mcl_nether_quartz_pillar_side.png"},
 	groups = {cracky=3,quartz_block=1,building_block=1},
 	sounds = mcl_core.node_sound_stone_defaults(),
