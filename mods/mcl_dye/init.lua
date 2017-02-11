@@ -101,11 +101,11 @@ end
 local apply_bone_meal = function(pointed_thing)
 	local plant_tab = {
 		"air",
-		"mcl_core:grass",
-		"mcl_core:grass",
-		"mcl_core:grass",
-		"mcl_core:grass",
-		"mcl_core:grass",
+		"mcl_core:tallgrass",
+		"mcl_core:tallgrass",
+		"mcl_core:tallgrass",
+		"mcl_core:tallgrass",
+		"mcl_core:tallgrass",
 		"mcl_flowers:dandelion",
 		"mcl_flowers:blue_orchid",
 		"mcl_flowers:oxeye_daisy",

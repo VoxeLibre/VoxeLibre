@@ -75,10 +75,10 @@ mobs:register_mob("mobs_mc:cow", {
 	end,
 	]]
 	--from mobs_animals
-	follow = "farming:wheat",
+	follow = "mcl_farming:wheat_harvested",
 	view_range = 7,
 	replace_rate = 10,
-	replace_what = {"mcl_core:grass_3", "mcl_core:grass_4", "mcl_core:grass_5", "farming:wheat_8"},
+	replace_what = {"mcl_core:tallgrass",},
 	replace_with = "air",
 	fear_height = 2,
 	on_rightclick = function(self, clicker)

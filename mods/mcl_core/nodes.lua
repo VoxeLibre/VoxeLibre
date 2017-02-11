@@ -1349,7 +1349,7 @@ minetest.register_node("mcl_core:dry_shrub", {
 	},
 })
 
-minetest.register_node("mcl_core:grass", {
+minetest.register_node("mcl_core:tallgrass", {
 	description = "Tall Grass",
 	drawtype = "plantlike",
 	tiles = {"default_tallgrass.png"},

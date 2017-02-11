@@ -24,7 +24,7 @@ minetest.register_alias("mapgen_clay", "mcl_core:clay")
 minetest.register_alias("mapgen_lava_source", "mcl_core:lava_source")
 minetest.register_alias("mapgen_cobble", "mcl_core:cobble")
 minetest.register_alias("mapgen_mossycobble", "mcl_core:mossycobble")
-minetest.register_alias("mapgen_junglegrass", "mcl_core:grass")
+minetest.register_alias("mapgen_junglegrass", "mcl_core:tallgrass")
 minetest.register_alias("mapgen_stone_with_coal", "mcl_core:stone_with_coal")
 minetest.register_alias("mapgen_stone_with_iron", "mcl_core:stone_with_iron")
 minetest.register_alias("mapgen_desert_sand", "mcl_core:sand")
@@ -471,7 +471,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 							
 						-- If dirt with grass, add grass
 						elseif nn == "mcl_core:dirt_with_grass" then
-							minetest.set_node(p,{name="mcl_core:grass"})
+							minetest.set_node(p,{name="mcl_core:tallgrass"})
 							if math.random(0,12000) == 1 then 
 								-- TODO: Re-enable random_struct
 								--random_struct.call_struct(p,1)
