@@ -228,12 +228,19 @@ minetest.register_craftitem("mcl_mobitems:shulker_shell", {
 	groups = { craftitem = 1 },
 })
 
+minetest.register_craftitem("mcl_mobitems:slimeball", {
+	description = "Slimeball",
+	inventory_image = "mcl_mobitems_slimeball.png",
+	groups = { craftitem = 1 },
+})
+
 minetest.register_tool("mcl_mobitems:carrot_on_a_stick", {
 	description = "Carrot on a Stick",
 	wield_image = "mcl_mobitems_carrot_on_a_stick.png",
 	inventory_image = "mcl_mobitems_carrot_on_a_stick.png",
 	groups = { transport = 1 },
 })
+
 
 -----------
 -- Crafting
@@ -289,7 +296,7 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_mobitems:magma_cream",
-	recipe = {"mcl_mobitems:blaze_powder", "mesecons_materials:glue"},
+	recipe = {"mcl_mobitems:blaze_powder", "mcl_mobitems:slimeball"},
 })
 
 minetest.register_craft({
@@ -326,4 +333,15 @@ minetest.register_craft({
 	burntime = 120,
 })
 
+minetest.register_craft({
+	output = 'mcl_mobitems:slimeball 9',
+	recipe = {{"mcl_core:slimeblock"}},
+})
+
+minetest.register_craft({
+	output = "mcl_core:slimeblock",
+	recipe = {{"mcl_mobitems:slimeball","mcl_mobitems:slimeball","mcl_mobitems:slimeball",},
+		{"mcl_mobitems:slimeball","mcl_mobitems:slimeball","mcl_mobitems:slimeball",},
+		{"mcl_mobitems:slimeball","mcl_mobitems:slimeball","mcl_mobitems:slimeball",}},
+})
 

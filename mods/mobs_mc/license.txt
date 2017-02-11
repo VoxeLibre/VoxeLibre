@@ -146,7 +146,7 @@ Details
 
 Green slimes:
   > spawn in jungle grass or in temples mossy cobble (default:mossycobble).
-  > on die, they drop a randomish amount of glue (from mesecon mod)
+  > on die, they drop a randomish amount of slimeballs
   > Lava hurts them.
 
 Lava slimes:

@@ -32,7 +32,7 @@ mobs:register_mob("mobs_mc:greensmall", {
 	damage = 0,
 	armor = 100,
 	drops = {
-		{name = "mesecons_materials:glue",
+		{name = "mcl_mobitems:slimeball",
 		chance = 1,
 		min = 0,
 		max = 2,},

@@ -123,7 +123,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'mesecons_materials:slimeball',
+	output = 'mcl_mobitems:slimeball',
 	type = "cooking",
 	recipe = "mcl_core:sapling",
 	cooktime = 10,
