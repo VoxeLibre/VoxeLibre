@@ -39,24 +39,20 @@ mobs:register_mob("mobs_mc:blaze", {
 		max = 1,},
 	},
 	animation = {
-		speed_normal = 24,
-		speed_run = 48,
-		stand_start = 0,
-		stand_end = 23,
-		walk_start = 24,
-		walk_end = 47,
-		run_start = 48,
-		run_end = 62,
-		hurt_start = 64,
-		hurt_end = 86,
-		death_start = 88,
-		death_end = 118,
+		stand_start = 1,
+		stand_end = 40,
+		walk_start = 1,
+		walk_end = 40,
+		run_start = 1,
+		run_end = 40,
+        shoot_start = 1,
+        shoot_end = 40,
 	},
 	drawtype = "front",
     water_damage = 10,
 	lava_damage = 0,
 	fall_damage = 0,
-	light_damage = 1,
+	light_damage = 0,
 	view_range = 16,
 	attack_type = "shoot",
     arrow = "mobs_monster:fireball",
@@ -70,7 +66,7 @@ mobs:register_mob("mobs_mc:blaze", {
     fear_height = 120,
 })
 
-mobs:register_spawn("mobs_mc:blaze", {"mcl_core:flowing_lava", "nether:rack","air"}, 17, -1, 5000, 1, -2000)
+mobs:register_spawn("mobs_mc:blaze", {"mcl_core:flowing_lava", "nether:rack","air"}, 30, -1, 5000, 1, -2000)
 
 -- compatibility
 mobs:alias_mob("mobs:blaze", "mobs_mc:blaze")
