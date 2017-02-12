@@ -142,6 +142,12 @@ core feature.
 Finally, any limitations found in Minetest (the game engine) will be written down in the course
 of development.
 
+## Other readme files
+
+* `LICENSE.txt`: The LGPLv2.1 license text
+* `CONTRIBUTING.md`: Information for those who want to contribute
+* `MISSING_ENGINE_FEATURES.md`: List of missing features in Minetest which MineClone 2 would need for improvement
+
 ## Credits
 There are so many people to list (sorry).
 
