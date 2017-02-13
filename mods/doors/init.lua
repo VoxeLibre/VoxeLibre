@@ -93,6 +93,9 @@ function doors:register_door(name, def)
 						minetest.set_node(pt, {name=name.."_b_2", param2=p2})
 						minetest.set_node(pt2, {name=name.."_t_2", param2=p2})
 					end
+					if def.sounds and def.sounds.place then
+						minetest.sound_play(def.sounds.place, {pos=pt})
+					end
 					
 					if def.only_placer_can_open then
 						local pn = placer:get_player_name()
@@ -164,6 +167,7 @@ function doors:register_door(name, def)
 			fixed = def.selection_box_bottom
 		},
 		groups = def.groups,
+		sounds = def.sounds,
 		
 		after_dig_node = function(pos, oldnode, oldmetadata, digger)
 			pos.y = pos.y+1
@@ -200,6 +204,7 @@ function doors:register_door(name, def)
 			fixed = def.selection_box_top
 		},
 		groups = def.groups,
+		sounds = def.sounds,
 		
 		after_dig_node = function(pos, oldnode, oldmetadata, digger)
 			pos.y = pos.y-1
@@ -236,6 +241,7 @@ function doors:register_door(name, def)
 			fixed = def.selection_box_bottom
 		},
 		groups = def.groups,
+		sounds = def.sounds,
 		
 		after_dig_node = function(pos, oldnode, oldmetadata, digger)
 			pos.y = pos.y+1
@@ -272,6 +278,7 @@ function doors:register_door(name, def)
 			fixed = def.selection_box_top
 		},
 		groups = def.groups,
+		sounds = def.sounds,
 		
 		after_dig_node = function(pos, oldnode, oldmetadata, digger)
 			pos.y = pos.y-1
