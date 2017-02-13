@@ -15,7 +15,7 @@ local mcl_hoppers_formspec =
 minetest.register_node("mcl_hoppers:hopper", {
 	drop = "mcl_hoppers:hopper_item",
 	description = "Hopper (Node)",
-	groups = {cracky=1,level=2,not_in_creative_inventory=1},
+	groups = {cracky=1,level=2,container=2,not_in_creative_inventory=1},
 	drawtype = "nodebox",
 	paramtype = "light",
 	tiles = {"mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_inside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png"},
@@ -74,7 +74,7 @@ minetest.register_node("mcl_hoppers:hopper", {
 minetest.register_node("mcl_hoppers:hopper_side", {
 	description = "Hopper (Side)",
 	drop = "mcl_hoppers:hopper_item",
-	groups = {cracky=1,level=2,not_in_creative_inventory=1},
+	groups = {cracky=1,level=2,container=2,not_in_creative_inventory=1},
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",

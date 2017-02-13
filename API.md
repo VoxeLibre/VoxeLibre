@@ -86,6 +86,11 @@ These groups are used mostly for informational purposes
 * `eatable`: Item can be *directly* eaten by wielding + left click (`on_use=item_eat`). Rating is the satiation gain
 * `ammo=1`: Item is used as ammo for a weapon
 * `ammo_bow=1`: Item is used as ammo for bows
+* `container`: Node is a container which physically stores items within and has at least 1 inventory
+   * `container=2`: Has one inventory with list name `"main"`. Items can be placed and taken freely
+   * `container=3`: Same as `container=2`, but shulker boxes can not be inserted
+   * `container=4`: Furnace-like, has lists `"src"`, `"fuel"` and `"dst"`
+   * `container=1`: Other/unspecified container type
 
 * `weapon=1`: Item is primarily (!) a weapon
 * `tool=1`: Item is primarily (!) a tool

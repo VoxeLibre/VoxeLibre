@@ -5,7 +5,7 @@ minetest.register_node("mcl_dropper:dropper", {
 		"default_furnace_side.png", "default_furnace_side.png",
 		"default_furnace_side.png", "mcl_dropper_dropper_front_horizontal.png"
 	}, 
-	groups = {cracky=2},
+	groups = {cracky=2,container=2},
 	is_ground_content = false,
 	paramtype2 = "facedir",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
