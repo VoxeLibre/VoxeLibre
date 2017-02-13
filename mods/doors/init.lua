@@ -174,9 +174,9 @@ function doors:register_door(name, def)
 			if check_player_priv(pos, clicker) then
 			on_rightclick(pos, 1, name.."_t_1", name.."_b_2", name.."_t_2", {1,2,3,0})
 				if is_right(pos, clicker) then
-					minetest.sound_play("door_close", {pos = pos, gain = 0.3, max_hear_distance = 10})					
+					minetest.sound_play("doors_door_close", {pos = pos, gain = 0.3, max_hear_distance = 10})
 				else
-					minetest.sound_play("door_open", {pos = pos, gain = 0.3, max_hear_distance = 10})
+					minetest.sound_play("doors_door_open", {pos = pos, gain = 0.3, max_hear_distance = 10})
 				end
 			end
 		end,
@@ -210,9 +210,9 @@ function doors:register_door(name, def)
 			if check_player_priv(pos, clicker) then
 				on_rightclick(pos, -1, name.."_b_1", name.."_t_2", name.."_b_2", {1,2,3,0})
 				if is_right(pos, clicker) then
-					minetest.sound_play("door_close", {pos = pos, gain = 0.3, max_hear_distance = 10})					
+					minetest.sound_play("doors_door_close", {pos = pos, gain = 0.3, max_hear_distance = 10})
 				else
-					minetest.sound_play("door_open", {pos = pos, gain = 0.3, max_hear_distance = 10})
+					minetest.sound_play("doors_door_open", {pos = pos, gain = 0.3, max_hear_distance = 10})
 				end
 			end
 		end,
@@ -246,9 +246,9 @@ function doors:register_door(name, def)
 			if check_player_priv(pos, clicker) then
 				on_rightclick(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1", {3,0,1,2})
 				if is_right(pos, clicker) then
-					minetest.sound_play("door_open", {gain = 0.3, max_hear_distance = 10})					
+					minetest.sound_play("doors_door_open", {gain = 0.3, max_hear_distance = 10})
 				else
-					minetest.sound_play("door_close", {gain = 0.3, max_hear_distance = 10})
+					minetest.sound_play("doors_door_close", {gain = 0.3, max_hear_distance = 10})
 				end
 			end
 		end,
@@ -282,9 +282,9 @@ function doors:register_door(name, def)
 			if check_player_priv(pos, clicker) then
 				on_rightclick(pos, -1, name.."_b_2", name.."_t_1", name.."_b_1", {3,0,1,2})
 				if is_right(pos, clicker) then
-					minetest.sound_play("door_open", {pos=pos, gain = 0.3, max_hear_distance = 10})					
+					minetest.sound_play("doors_door_open", {pos=pos, gain = 0.3, max_hear_distance = 10})
 				else
-					minetest.sound_play("door_close", {gain = 0.3, max_hear_distance = 10})
+					minetest.sound_play("doors_door_close", {gain = 0.3, max_hear_distance = 10})
 				end
 			end
 		end,
@@ -464,115 +464,112 @@ minetest.register_alias("doors:door_wood_b_c", "doors:door_wood_b_1")
 minetest.register_alias("doors:door_wood_b_o", "doors:door_wood_b_1")
 
 
-----trapdoor Wood----
+---- Trapdoor ----
 
-local me
-local meta
-local state = 0
+function doors:register_trapdoor(name, def)
+	local function update_door(pos, node) 
+		minetest.set_node(pos, node)
+	end
 
-local function update_door(pos, node) 
-	minetest.set_node(pos, node)
-end
+	local me
+	local meta
+	local state = 0
 
-local function punch(pos)
-	meta = minetest.get_meta(pos)
-	state = meta:get_int("state")
-	me = minetest.get_node(pos)
-	local tmp_node
-	local tmp_node2
-	local oben = {x=pos.x, y=pos.y+1, z=pos.z}
+	if not def.sound_open then
+		def.sound_open = "doors_door_open"
+	end
+	if not def.sound_close then
+		def.sound_close = "doors_door_close"
+	end
+
+	local function punch(pos)
+		meta = minetest.get_meta(pos)
+		state = meta:get_int("state")
+		me = minetest.get_node(pos)
+		local tmp_node
+		local tmp_node2
+		local oben = {x=pos.x, y=pos.y+1, z=pos.z}
 		if state == 1 then
 			state = 0
-			minetest.sound_play("door_close", {pos = pos, gain = 0.3, max_hear_distance = 10})
-			tmp_node = {name="doors:trapdoor", param1=me.param1, param2=me.param2}
+			minetest.sound_play(def.sound_close, {pos = pos, gain = 0.3, max_hear_distance = 10})
+			tmp_node = {name=name, param1=me.param1, param2=me.param2}
 		else
 			state = 1
-			minetest.sound_play("door_open", {pos = pos, gain = 0.3, max_hear_distance = 10})
-			tmp_node = {name="doors:trapdoor_open", param1=me.param1, param2=me.param2}
+			minetest.sound_play(def.sound_open, {pos = pos, gain = 0.3, max_hear_distance = 10})
+			tmp_node = {name=name.."_open", param1=me.param1, param2=me.param2}
 		end
 		update_door(pos, tmp_node)
 		meta:set_int("state", state)
-end
+	end
 
+	minetest.register_node(name, {
+		description = def.description,
+		drawtype = "nodebox",
+		tiles = def.tiles,
+		inventory_image = def.inventory_image,
+		wield_image = def.wield_image,
+		is_ground_content = false,
+		paramtype = "light",
+		stack_max = 64,
+		paramtype2 = "facedir",
+		groups = def.groups,
+		sounds = def.sounds,
+		node_box = {
+			type = "fixed",
+			fixed = {
+			{-8/16, -8/16, -8/16, 8/16, -6/16, 8/16},},
+		},
+		on_creation = function(pos)
+			state = 0
+		end,
+		mesecons = {effector = {
+			action_on = (function(pos, node)
+				punch(pos)
+			end),
+		}},
+		on_rightclick = function(pos, node, clicker)
+			punch(pos)
+		end,
+	})
 
-minetest.register_node("doors:trapdoor", {
-	description = "Wooden Trapdoor",
-	drawtype = "nodebox",
-	tiles = {"door_trapdoor.png"},
-	is_ground_content = false,
-	paramtype = "light",
-	stack_max = 64,
-	paramtype2 = "facedir",
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,door=2},
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-	drop = "doors:trapdoor",
-	node_box = {
-		type = "fixed",
-		fixed = {
-		{-8/16, -8/16, -8/16, -5/16, -6/16, 8/16},--left
-		{5/16, -8/16, -8/16, 8/16, -6/16, 8/16},  --right
-		{-8/16, -8/16, -8/16, 8/16, -6/16, -5/16},--down
-		{-8/16, -8/16, 5/16, 8/16, -6/16, 8/16},  --up
-		{-2/16, -8/16, -5/16, 2/16, -6/16, 5/16}, --vert mid
-		{-5/16, -8/16, -2/16, 5/16, -6/16, 2/16}, --hori mid
+	minetest.register_node(name.."_open", {
+		drawtype = "nodebox",
+		tiles = def.tiles,
+		is_ground_content = false,
+		paramtype = "light",
+		paramtype2 = "facedir",
+		pointable = true,
+		groups = def.groups,
+		sounds = def.sounds,
+		drop = name,
+		node_box = {
+			type = "fixed",
+			fixed = {-0.5, -0.5, 0.4, 0.5, 0.5, 0.5}
 		},
-	},
-	selection_box = {
-		type = "fixed",
-		fixed = {
-		{-8/16, -8/16, -8/16, -5/16, -6/16, 8/16},--left
-		{5/16, -8/16, -8/16, 8/16, -6/16, 8/16},  --right
-		{-8/16, -8/16, -8/16, 8/16, -6/16, -5/16},--down
-		{-8/16, -8/16, 5/16, 8/16, -6/16, 8/16},  --up
-		{-2/16, -8/16, -5/16, 2/16, -6/16, 5/16}, --vert mid
-		{-5/16, -8/16, -2/16, 5/16, -6/16, 2/16}, --hori mid
+		selection_box = {
+			type = "fixed",
+			fixed = {-0.5, -0.5, 0.4, 0.5, 0.5, 0.5}
 		},
-	},
-	on_creation = function(pos)
-		state = 0
-	end,
-	mesecons = {effector = {
+		on_rightclick = function(pos, node, clicker)
+			punch(pos)
+		end,
+		mesecons = {effector = {
 		action_on = (function(pos, node)
 			punch(pos)
 		end),
-	}},
-	on_rightclick = function(pos, node, clicker)
-		punch(pos)
-	end,
-})
+		}},
+	})
 
 
-minetest.register_node("doors:trapdoor_open", {
-	drawtype = "nodebox",
+end
+
+doors:register_trapdoor("doors:trapdoor", {
+	description = "Wooden Trapdoor",
 	tiles = {"door_trapdoor.png"},
-	is_ground_content = false,
-	paramtype = "light",
-	paramtype2 = "facedir",
-	pointable = true,
+	wield_image = "door_trapdoor.png",
 	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,door=2},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	drop = "doors:trapdoor",
-	node_box = {
-		type = "fixed",
-		fixed = {-0.5, -0.5, 0.4, 0.5, 0.5, 0.5}
-	},
-	selection_box = {
-		type = "fixed",
-		fixed = {-0.5, -0.5, 0.4, 0.5, 0.5, 0.5}
-	},
-	on_rightclick = function(pos, node, clicker)
-		punch(pos)
-	end,
-	mesecons = {effector = {
-	action_on = (function(pos, node)
-		punch(pos)
-	end),
-	}},
-
 })
-
-
-
 
 minetest.register_craft({
 	output = 'doors:trapdoor 2',
@@ -588,109 +585,14 @@ minetest.register_craft({
 	burntime = 15,
 })
 
---- Iron Trapdoor ----
-local me
-local meta
-local state = 0
-
-local function update_door(pos, node) 
-	minetest.set_node(pos, node)
-end
-
-local function punch(pos)
-	meta = minetest.get_meta(pos)
-	state = meta:get_int("state")
-	me = minetest.get_node(pos)
-	local tmp_node
-	local tmp_node2
-	local oben = {x=pos.x, y=pos.y+1, z=pos.z}
-		if state == 1 then
-			state = 0
-			minetest.sound_play("door_close", {pos = pos, gain = 0.3, max_hear_distance = 10})
-			tmp_node = {name="doors:iron_trapdoor", param1=me.param1, param2=me.param2}
-		else
-			state = 1
-			minetest.sound_play("door_open", {pos = pos, gain = 0.3, max_hear_distance = 10})
-			tmp_node = {name="doors:iron_trapdoor_open", param1=me.param1, param2=me.param2}
-		end
-		update_door(pos, tmp_node)
-		meta:set_int("state", state)
-end
-
-
-minetest.register_node("doors:iron_trapdoor", {
+doors:register_trapdoor("doors:iron_trapdoor", {
 	description = "Iron Trapdoor",
-	drawtype = "nodebox",
-	tiles = {"iron_trapdoor.png", "iron_trapdoor.png",  "default_steel_block.png",  "default_steel_block.png", "default_steel_block.png", "default_steel_block.png"},
-	paramtype = "light",
-	is_ground_content = false,
-	stack_max = 64,
-	paramtype2 = "facedir",
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,mesecon_effector_on=1,door=2},
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-	drop = "doors:iron_trapdoor",
-	node_box = {
-		type = "fixed",
-		fixed = {
-		{-8/16, -8/16, -8/16, -5/16, -6/16, 8/16},--left
-		{5/16, -8/16, -8/16, 8/16, -6/16, 8/16},  --right
-		{-8/16, -8/16, -8/16, 8/16, -6/16, -5/16},--down
-		{-8/16, -8/16, 5/16, 8/16, -6/16, 8/16},  --up
-		{-2/16, -8/16, -5/16, 2/16, -6/16, 5/16}, --vert mid
-		{-5/16, -8/16, -2/16, 5/16, -6/16, 2/16}, --hori mid
-		},
-	},
-	selection_box = {
-		type = "fixed",
-		fixed = {
-		{-8/16, -8/16, -8/16, -5/16, -6/16, 8/16},--left
-		{5/16, -8/16, -8/16, 8/16, -6/16, 8/16},  --right
-		{-8/16, -8/16, -8/16, 8/16, -6/16, -5/16},--down
-		{-8/16, -8/16, 5/16, 8/16, -6/16, 8/16},  --up
-		{-2/16, -8/16, -5/16, 2/16, -6/16, 5/16}, --vert mid
-		{-5/16, -8/16, -2/16, 5/16, -6/16, 2/16}, --hori mid
-		},
-	},
-	mesecons = {effector = {
-	action_on = (function(pos, node)
-		punch(pos)
-	end),
-	}},
-	on_creation = function(pos)
-		state = 0
-	end,
-	on_rightclick = function(pos, node, clicker)
-		punch(pos)
-	end,
-})
-
-
-minetest.register_node("doors:iron_trapdoor_open", {
-	drawtype = "nodebox",
-	tiles = {"default_steel_block.png", "default_steel_block.png",  "default_steel_block.png",  "default_steel_block.png", "iron_trapdoor.png", "iron_trapdoor.png"},
-	paramtype = "light",
-	paramtype2 = "facedir",
-	is_ground_content = false,
-	pointable = true,
-	groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,door=2,mesecon_effector_on=1},
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-	drop = "doors:iron_trapdoor",
-	node_box = {
-		type = "fixed",
-		fixed = {-0.5, -0.5, 0.4, 0.5, 0.5, 0.5}
-	},
-	selection_box = {
-		type = "fixed",
-		fixed = {-0.5, -0.5, 0.4, 0.5, 0.5, 0.5}
-	},
-	mesecons = {effector = {
-	action_on = (function(pos, node)
-		punch(pos)
-	end),
-	}},
-	on_rightclick = function(pos, node, clicker)
-		punch(pos)
-	end,
+	tiles = {"iron_trapdoor.png"},
+	wield_image = "iron_trapdoor.png",
+	groups = {cracky=2,mesecon_effector_on=1,door=2},
+	sounds = mcl_sounds.node_sound_metal_defaults(),
+	sound_open = "doors_steel_door_open",
+	sound_close = "doors_steel_door_close",
 })
 
 minetest.register_craft({
