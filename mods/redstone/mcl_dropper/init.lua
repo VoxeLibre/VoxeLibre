@@ -62,21 +62,12 @@ minetest.register_node("mcl_dropper:dropper", {
 				local stack = stacks[r].stack
 				local dropitem = ItemStack(stack:get_name())
 				local stack_id = stacks[r].stackpos
-				-- If it's a container, put it into the container
-				if dropnodedef.groups.container then
-					local dropmeta = minetest.get_meta(droppos)
-					local dropinv = dropmeta:get_inventory()
-					if dropnodedef.groups.container == 2 then
-						mcl_util.move_item(inv, "main", stack_id, dropinv, "main")
-					elseif dropnodedef.groups.container == 3 then
-						if not minetest.registered_nodes[stack:get_name()].groups.shulker_box then
-							mcl_util.move_item(inv, "main", stack_id, dropinv, "main")
-						end
-					elseif dropnodedef.groups.container == 4 then
-						mcl_util.move_item(inv, "main", stack_id, dropinv, "src")
-					end
-				else
-				-- Drop item normally
+
+				-- If it's a container, attempt to put it into the container
+				local dropped = mcl_util.move_item_container(pos, "main", stack_id, droppos)
+				-- No container?
+				if not dropped and not dropnodedef.groups.container then
+					-- Drop item normally
 					minetest.add_item(droppos, dropitem)
 					stack:take_item()
 					inv:set_stack("main", stack_id, stack)

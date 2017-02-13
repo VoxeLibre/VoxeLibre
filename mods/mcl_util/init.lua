@@ -98,7 +98,14 @@ function mcl_util.rotate_axis(itemstack, placer, pointed_thing)
 end
 
 -- Moves a single item from one inventory to another
+--- source_inventory: Inventory to take the item from
+--- source_list: List name of the source inventory from which to take the item
+--- source_stack_id: The inventory position ID of the source inventory to take the item from
+--- destination_inventory: Put item into this inventory
+--- destination_list: List name of the destination inventory to which to put the item into
+
 -- Returns true on success and false on failure
+-- Possible failures: No item in source slot, destination inventory full
 function mcl_util.move_item(source_inventory, source_list, source_stack_id, destination_inventory, destination_list)
 	if not source_inventory:is_empty(source_list) then
 		local stack = source_inventory:get_stack(source_list, source_stack_id)
@@ -111,6 +118,38 @@ function mcl_util.move_item(source_inventory, source_list, source_stack_id, dest
 			source_inventory:set_stack(source_list, source_stack_id, stack)
 			destination_inventory:add_item(destination_list, item)
 			return true
+		end
+	end
+	return false
+end
+
+-- Moves a single item from one container node into another.
+--- source_pos: Position ({x,y,z}) of the node to take the item from
+--- source_list: List name of the source inventory from which to take the item
+--- source_stack_id: The inventory position ID of the source inventory to take the item from
+--- destination_pos: Position ({x,y,z}) of the node to put the item into
+-- Returns true on success and false on failure
+function mcl_util.move_item_container(source_pos, source_list, source_stack_id, destination_pos)
+	local smeta = minetest.get_meta(source_pos)
+	local dmeta = minetest.get_meta(destination_pos)
+
+	local sinv = smeta:get_inventory()
+	local dinv = dmeta:get_inventory()
+
+	local snodedef = minetest.registered_nodes[minetest.get_node(source_pos).name]
+	local dnodedef = minetest.registered_nodes[minetest.get_node(destination_pos).name]
+
+	-- If it's a container, put it into the container
+	if dnodedef.groups.container then
+		if dnodedef.groups.container == 2 or snodedef.groups.continer == 3 then
+			return mcl_util.move_item(sinv, source_list, source_stack_id, dinv, "main")
+		elseif dnodedef.groups.container == 3 then
+			local stack = sinv:get_stack(source_list, source_stack_id)
+			if stack and (not stack:is_empty()) and (not minetest.registered_nodes[stack:get_name()].groups.shulker_box) then
+				return mcl_util.move_item(sinv, source_list, source_stack_id, dinv, "main")
+			end
+		elseif dnodedef.groups.container == 4 then
+			return mcl_util.move_item(sinv, source_list, source_stack_id, dinv, "src")
 		end
 	end
 	return false
