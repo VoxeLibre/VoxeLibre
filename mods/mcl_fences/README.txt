@@ -1,6 +1,4 @@
-Minetest mod "Fences"
-=======================
-version: 1.0
+This mod adds fences and fence gates.
 
 License of source code and textures:
 ------------------------------------
@@ -13,15 +11,12 @@ To Public License, Version 2, as published by Sam Hocevar. See
 http://sam.zoy.org/wtfpl/COPYING for more details.
 
 
+License and source of sounds:
+-----------------------------
+doors_fencegate_open.ogg:
+  http://www.freesound.org/people/mhtaylor67/sounds/126041/ - (CC0 1.0)
+doors_fencegate_close.ogg:
+  http://www.freesound.org/people/BarkersPinhead/sounds/274807/ - (CC-BY-3.0)
+  http://www.freesound.org/people/rivernile7/sounds/249573/ - (CC-BY-3.0)
 
 
-
---USING the mod--
-
-This mod "overrides" the recipe for the default fence, so if you want craft a fance, it crafts THIS fence.
-
-If you want replace already placed default fences open the "init.lua" (in this directory) and change
-the first line to "local override_original = true". Then all placed default fences will be replaced with
-this fence.
-
-It is not possible to jump over the Fence or the closed Fencegate. Only exception is when you "sneak" and "jump".

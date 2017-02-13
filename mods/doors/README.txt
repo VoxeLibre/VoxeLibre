@@ -17,6 +17,12 @@ http://sam.zoy.org/wtfpl/COPYING for more details.
 License of sounds
 --------------------------------------
 Opening-Sound created by CGEffex (CC BY 3.0), modified by BlockMen
-  door_open.ogg
+  doors_door_open.ogg
 Closing-Sound created by bennstir (CC BY 3.0)
-  door_close.ogg
+  doors_door_close.ogg
+Steel door sounds open & close (CC-BY-3.0) by HazMatt
+  - http://www.freesound.org/people/HazMattt/sounds/187283/
+  doors_steel_door_open.ogg
+  doors_steel_door_close.ogg
+
+
