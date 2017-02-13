@@ -102,6 +102,7 @@ function xpanes.register_pane(name, def)
 		wield_image = def.wield_image,
 		paramtype2 = "facedir",
 		tiles = {def.textures[3], def.textures[3], def.textures[1]},
+		use_texture_alpha = def.use_texture_alpha,
 		groups = flatgroups,
 		drop = "xpanes:" .. name .. "_flat",
 		sounds = def.sounds,
@@ -126,6 +127,7 @@ function xpanes.register_pane(name, def)
 		sunlight_propagates = true,
 		description = def.description,
 		tiles = {def.textures[3], def.textures[3], def.textures[1]},
+		use_texture_alpha = def.use_texture_alpha,
 		groups = groups,
 		drop = "xpanes:" .. name .. "_flat",
 		sounds = def.sounds,
@@ -150,6 +152,7 @@ local pane = function(description, node, append)
 	xpanes.register_pane("pane"..append, {
 		description = description,
 		textures = {"xpanes_pane_glass"..append..".png","xpanes_pane_half_glass"..append..".png","xpanes_top_glass"..append..".png"},
+		use_texture_alpha = true,
 		inventory_image = "xpanes_pane_glass"..append..".png",
 		wield_image = "xpanes_pane_glass"..append..".png",
 		sounds = mcl_sounds.node_sound_glass_defaults(),
