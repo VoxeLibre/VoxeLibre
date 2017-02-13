@@ -45,9 +45,9 @@ minetest.register_node("mcl_dropper:dropper", {
 			local inv = meta:get_inventory()
 			local droppos = vector.subtract(pos, minetest.facedir_to_dir(node.param2))
 			local dropnode = minetest.get_node(droppos)
-			-- Do not drop into solid nodes
-			if minetest.registered_nodes[dropnode.name].walkable then
-				-- TODO: Drop into container
+			-- Do not drop into solid nodes, unless they are containers
+			local dropnodedef = minetest.registered_nodes[dropnode.name]
+			if dropnodedef.walkable and not dropnodedef.groups.container then
 				return
 			end
 			local stacks = {}
@@ -61,9 +61,26 @@ minetest.register_node("mcl_dropper:dropper", {
 				local r = math.random(1, #stacks)
 				local stack = stacks[r].stack
 				local dropitem = ItemStack(stack:get_name())
-				minetest.add_item(droppos, dropitem)
-				stack:take_item()
-				inv:set_stack("main", stacks[r].stackpos, stack)
+				local stack_id = stacks[r].stackpos
+				-- If it's a container, put it into the container
+				if dropnodedef.groups.container then
+					local dropmeta = minetest.get_meta(droppos)
+					local dropinv = dropmeta:get_inventory()
+					if dropnodedef.groups.container == 2 then
+						mcl_util.move_item(inv, "main", stack_id, dropinv, "main")
+					elseif dropnodedef.groups.container == 3 then
+						if not minetest.registered_nodes[stack:get_name()].groups.shulker_box then
+							mcl_util.move_item(inv, "main", stack_id, dropinv, "main")
+						end
+					elseif dropnodedef.groups.container == 4 then
+						mcl_util.move_item(inv, "main", stack_id, dropinv, "src")
+					end
+				else
+				-- Drop item normally
+					minetest.add_item(droppos, dropitem)
+					stack:take_item()
+					inv:set_stack("main", stack_id, stack)
+				end
 			end
 		end
 	}}

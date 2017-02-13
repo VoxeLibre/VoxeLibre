@@ -97,3 +97,21 @@ function mcl_util.rotate_axis(itemstack, placer, pointed_thing)
 	return itemstack
 end
 
+-- Moves a single item from one inventory to another
+-- Returns true on success and false on failure
+function mcl_util.move_item(source_inventory, source_list, source_stack_id, destination_inventory, destination_list)
+	if not source_inventory:is_empty(source_list) then
+		local stack = source_inventory:get_stack(source_list, source_stack_id)
+		local item = stack:get_name()
+		if not stack:is_empty() then
+			if not destination_inventory:room_for_item(destination_list, item) then
+				return false
+			end
+			stack:take_item()
+			source_inventory:set_stack(source_list, source_stack_id, stack)
+			destination_inventory:add_item(destination_list, item)
+			return true
+		end
+	end
+	return false
+end
