@@ -72,7 +72,7 @@ mcl_torches.register_torch("mesecon_torch_on", "Mesecon Torch", "jeija_torches_o
 
 minetest.register_node("mesecons_torch:redstoneblock", {
 	description = "Block of Redstone",
-	tiles = {"default_redstone_block.png"},
+	tiles = {"redstone_redstone_block.png"},
 	stack_max = 64,
 	groups = {cracky=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
