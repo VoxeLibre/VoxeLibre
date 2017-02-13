@@ -29,6 +29,13 @@ end
 
 function doors:register_door(name, def)
 	def.groups.not_in_creative_inventory = 1
+
+	if not def.sound_open then
+		def.sound_open = "doors_door_open"
+	end
+	if not def.sound_close then
+		def.sound_close = "doors_door_close"
+	end
 	
 	local box = {{-8/16, -8/16, -8/16, 8/16, 8/16, -6.5/16}}
 	
@@ -178,9 +185,9 @@ function doors:register_door(name, def)
 			if check_player_priv(pos, clicker) then
 			on_rightclick(pos, 1, name.."_t_1", name.."_b_2", name.."_t_2", {1,2,3,0})
 				if is_right(pos, clicker) then
-					minetest.sound_play("doors_door_close", {pos = pos, gain = 0.3, max_hear_distance = 10})
+					minetest.sound_play(def.sound_close, {pos = pos, gain = 0.5, max_hear_distance = 10})
 				else
-					minetest.sound_play("doors_door_open", {pos = pos, gain = 0.3, max_hear_distance = 10})
+					minetest.sound_play(def.sound_open, {pos = pos, gain = 0.5, max_hear_distance = 10})
 				end
 			end
 		end,
@@ -215,9 +222,9 @@ function doors:register_door(name, def)
 			if check_player_priv(pos, clicker) then
 				on_rightclick(pos, -1, name.."_b_1", name.."_t_2", name.."_b_2", {1,2,3,0})
 				if is_right(pos, clicker) then
-					minetest.sound_play("doors_door_close", {pos = pos, gain = 0.3, max_hear_distance = 10})
+					minetest.sound_play(def.sound_close, {pos = pos, gain = 0.5, max_hear_distance = 10})
 				else
-					minetest.sound_play("doors_door_open", {pos = pos, gain = 0.3, max_hear_distance = 10})
+					minetest.sound_play(def.sound_open, {pos = pos, gain = 0.5, max_hear_distance = 10})
 				end
 			end
 		end,
@@ -252,9 +259,9 @@ function doors:register_door(name, def)
 			if check_player_priv(pos, clicker) then
 				on_rightclick(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1", {3,0,1,2})
 				if is_right(pos, clicker) then
-					minetest.sound_play("doors_door_open", {gain = 0.3, max_hear_distance = 10})
+					minetest.sound_play(def.sound_open, {pos = pos, gain = 0.5, max_hear_distance = 10})
 				else
-					minetest.sound_play("doors_door_close", {gain = 0.3, max_hear_distance = 10})
+					minetest.sound_play(def.sound_close, {pos = pos, gain = 0.5, max_hear_distance = 10})
 				end
 			end
 		end,
@@ -289,9 +296,9 @@ function doors:register_door(name, def)
 			if check_player_priv(pos, clicker) then
 				on_rightclick(pos, -1, name.."_b_2", name.."_t_1", name.."_b_1", {3,0,1,2})
 				if is_right(pos, clicker) then
-					minetest.sound_play("doors_door_open", {pos=pos, gain = 0.3, max_hear_distance = 10})
+					minetest.sound_play(def.sound_open, {pos=pos, gain = 0.5, max_hear_distance = 10})
 				else
-					minetest.sound_play("doors_door_close", {gain = 0.3, max_hear_distance = 10})
+					minetest.sound_play(def.sound_close, {pos=pos, gain = 0.5, max_hear_distance = 10})
 				end
 			end
 		end,
@@ -454,6 +461,8 @@ doors:register_door("doors:door_iron", {
 	tiles_bottom = {"door_steel_b.png", "door_grey.png"},
 	tiles_top = {"door_steel_a.png", "door_grey.png"},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
+	sound_open = "doors_steel_door_open",
+	sound_close = "doors_steel_door_close",
 })
 
 minetest.register_craft({
