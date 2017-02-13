@@ -328,6 +328,13 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	type = "cooking",
+	output = "mcl_mobitems:cooked_porkchop",
+	recipe = "mcl_mobitems:porkchop",
+	cooktime = 10,
+})
+
+minetest.register_craft({
 	type = "fuel",
 	recipe = "mcl_mobitems:blaze_rod",
 	burntime = 120,
