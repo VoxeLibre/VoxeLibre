@@ -537,7 +537,7 @@ minetest.register_node("mcl_core:sapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_defaults(),
 })
 
@@ -592,7 +592,7 @@ minetest.register_node("mcl_core:darksapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_defaults(),
 })
 
@@ -677,7 +677,7 @@ minetest.register_node("mcl_core:junglesapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_defaults(),
 })
 
@@ -737,7 +737,7 @@ minetest.register_node("mcl_core:acaciasapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_defaults(),
 })
 
@@ -802,7 +802,7 @@ minetest.register_node("mcl_core:sprucesapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_defaults(),
 })
 
@@ -860,7 +860,7 @@ minetest.register_node("mcl_core:birchsapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_defaults(),
 })
 

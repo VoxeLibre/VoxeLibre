@@ -399,5 +399,6 @@ minetest.register_craft({
 minetest.register_craft({
 	type = "fuel",
 	recipe = "group:wood_slab",
-	burntime = 15,
+	-- Original burn time: 7.5 (PC edition)
+	burntime = 8,
 })

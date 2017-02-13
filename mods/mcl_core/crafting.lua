@@ -884,6 +884,12 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "fuel",
+	recipe = "group:sapling",
+	burntime = 5,
+})
+
+minetest.register_craft({
+	type = "fuel",
 	recipe = "mcl_core:pick_wood",
 	burntime = 10,
 })

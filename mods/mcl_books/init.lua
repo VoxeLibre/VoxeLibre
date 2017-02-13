@@ -170,7 +170,7 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "mcl_core:bookshelf",
+	recipe = "mcl_books:bookshelf",
 	burntime = 15,
 })
 

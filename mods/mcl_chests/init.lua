@@ -262,6 +262,12 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_craft({
+	type = 'fuel',
+	recipe = 'mcl_chests:chest',
+	burntime = 15
+})
+
 minetest.register_node("mcl_chests:ender_chest", {
 	description = "Ender Chest",
 	tiles = {"mcl_chests_ender_chest_top.png", "mcl_chests_ender_chest_bottom.png",
