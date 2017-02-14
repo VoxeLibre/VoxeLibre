@@ -261,7 +261,6 @@ up_def.tiles = {
 minetest.register_node("mcl_dispensers:dispenser_up", up_def)
 
 
-
 minetest.register_craft({
 	output = 'mcl_dispensers:dispenser',
 	recipe = {
@@ -270,3 +269,40 @@ minetest.register_craft({
 		{"mcl_core:cobble", "mesecons:redstone", "mcl_core:cobble",},
 	}
 })
+
+-- Only allow crafting if the bow is intact
+minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
+	if itemstack:get_name() == "mcl_dispensers:dispenser" then
+		local bow, id
+		for i=1, craft_inv:get_size("craft") do
+			local item = craft_inv:get_stack("craft", i)
+			if item:get_name() == "mcl_throwing:bow" then
+				bow = item
+				id = i
+				break
+			end
+		end
+		if bow:get_wear() ~= 0 then
+			return ""
+		end
+	end
+	return nil
+end)
+
+minetest.register_craft_predict(function(itemstack, player, old_craft_grid, craft_inv)
+	if itemstack:get_name() == "mcl_dispensers:dispenser" then
+		local bow, id
+		for i=1, craft_inv:get_size("craft") do
+			local item = craft_inv:get_stack("craft", i)
+			if item:get_name() == "mcl_throwing:bow" then
+				bow = item
+				id = i
+				break
+			end
+		end
+		if bow:get_wear() ~= 0 then
+			return ""
+		end
+	end
+	return nil
+end)
