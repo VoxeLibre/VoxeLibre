@@ -103,6 +103,38 @@ local dispenserdef = {
 						stack:take_item()
 						inv:set_stack("main", stack_id, stack)
 					end
+				elseif iname == "bucket:bucket_empty" then
+					-- Fill empty bucket with liquid or drop bucket if no liquid
+					local collect_liquid = false
+					local bucket_id
+					if dropnode.name == "mcl_core:water_source" then
+						collect_liquid = true
+						bucket_id = "bucket:bucket_water"
+					elseif dropnode.name == "mcl_core:lava_source" then
+						collect_liquid = true
+						bucket_id = "bucket:bucket_lava"
+					end
+					if collect_liquid then
+						minetest.swap_node(droppos, {name="air"})
+
+						-- Fill bucket with liquid and put it back into inventory
+						-- if there's still space. If not, drop it.
+						stack:take_item()
+						inv:set_stack("main", stack_id, stack)
+
+						local new_bucket = ItemStack(bucket_id)
+						if inv:room_for_item("main", new_bucket) then
+							inv:add_item("main", new_bucket)
+						else
+							minetest.add_item(droppos, dropitem)
+						end
+					else
+						-- No liquid found: Drop empty bucket
+						minetest.add_item(droppos, dropitem)
+
+						stack:take_item()
+						inv:set_stack("main", stack_id, stack)
+					end
 				elseif igroups.head or igroups.shulker_box or iname == "mcl_farming:pumpkin_face" then
 					-- Place head, shulker box, or pumpkin
 					if dropnodedef.buildable_to then
