@@ -78,6 +78,7 @@ minetest.register_tool("mcl_throwing:bow_0", {
 	on_secondary_use = powerup_function("mcl_throwing:bow_1"),
 	on_use = function(itemstack, user, pointed_thing)
 		local wear = itemstack:get_wear()
+		itemstack:replace("mcl_throwing:bow")
 		itemstack:add_wear(wear)
 		if player_shoot_arrow(itemstack, user, pointed_thing) then
 			if not minetest.setting_getbool("creative_mode") then
@@ -97,6 +98,7 @@ minetest.register_tool("mcl_throwing:bow_1", {
 	on_secondary_use = powerup_function("mcl_throwing:bow_2"),
 	on_use = function(itemstack, user, pointed_thing)
 		local wear = itemstack:get_wear()
+		itemstack:replace("mcl_throwing:bow")
 		itemstack:add_wear(wear)
 		if player_shoot_arrow(itemstack, user, pointed_thing) then
 			if not minetest.setting_getbool("creative_mode") then
