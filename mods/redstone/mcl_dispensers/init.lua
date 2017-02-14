@@ -84,9 +84,10 @@ local dispenserdef = {
 				--[===[ Dispense item ]===]
 				if iname == "mcl_throwing:arrow" then
 					-- Shoot arrow
-					local shootpos = vector.add(droppos, dropdir)
-					-- FIXME: Bad yaw of arrow when shootin
-					mcl_throwing.shoot_arrow(iname, shootpos, dropdir, 0, nil)
+					local f = {x=dropdir.x, y=0, z=dropdir.z}
+					local shootpos = vector.add(droppos, f)
+					local yaw = math.atan2(dropdir.z, dropdir.x) + math.pi/2
+					mcl_throwing.shoot_arrow(iname, shootpos, dropdir, yaw, nil)
 
 					stack:take_item()
 					inv:set_stack("main", stack_id, stack)
