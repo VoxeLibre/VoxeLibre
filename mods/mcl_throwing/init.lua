@@ -41,16 +41,21 @@ local player_shoot_arrow = function(itemstack, player)
 	return false
 end
 
+local powerup_function = function(nextbow)
+	return function(itemstack, placer, pointed_thing)
+		local wear = itemstack:get_wear()
+		itemstack:replace(nextbow)
+		itemstack:add_wear(wear)
+		return itemstack
+	end
+end
+
 minetest.register_tool("mcl_throwing:bow", {
 	description = "Bow",
 	inventory_image = "mcl_throwing_bow.png",
-    stack_max = 1,
-	on_place = function(itemstack, placer, pointed_thing)
-		local wear = itemstack:get_wear()
-		itemstack:replace("mcl_throwing:bow_0")
-		itemstack:add_wear(wear)
-		return itemstack
-	end,
+	stack_max = 1,
+	on_place = powerup_function("mcl_throwing:bow_0"),
+	on_secondary_use = powerup_function("mcl_throwing:bow_0"),
 	groups = {weapon=1,weapon_ranged=1},
 	on_use = function(itemstack, user, pointed_thing)
 		local wear = itemstack:get_wear()
@@ -67,15 +72,11 @@ minetest.register_tool("mcl_throwing:bow", {
 minetest.register_tool("mcl_throwing:bow_0", {
 	description = "Bow",
 	inventory_image = "mcl_throwing_bow_0.png",
-    stack_max = 1,
+	stack_max = 1,
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
-	on_place = function(itemstack, placer, pointed_thing)
-		local wear = itemstack:get_wear()
-		itemstack:replace("mcl_throwing:bow_1")
-		itemstack:add_wear(wear)
-		return itemstack
-	end,
-		on_use = function(itemstack, user, pointed_thing)
+	on_place = powerup_function("mcl_throwing:bow_1"),
+	on_secondary_use = powerup_function("mcl_throwing:bow_1"),
+	on_use = function(itemstack, user, pointed_thing)
 		local wear = itemstack:get_wear()
 		itemstack:add_wear(wear)
 		if player_shoot_arrow(itemstack, user, pointed_thing) then
@@ -90,14 +91,10 @@ minetest.register_tool("mcl_throwing:bow_0", {
 minetest.register_tool("mcl_throwing:bow_1", {
 	description = "Bow",
 	inventory_image = "mcl_throwing_bow_1.png",
-    stack_max = 1,
+	stack_max = 1,
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
-	on_place = function(itemstack, placer, pointed_thing)
-		local wear = itemstack:get_wear()
-		itemstack:replace("mcl_throwing:bow_2")
-		itemstack:add_wear(wear)
-		return itemstack
-	end,
+	on_place = powerup_function("mcl_throwing:bow_2"),
+	on_secondary_use = powerup_function("mcl_throwing:bow_2"),
 	on_use = function(itemstack, user, pointed_thing)
 		local wear = itemstack:get_wear()
 		itemstack:add_wear(wear)
@@ -113,7 +110,7 @@ minetest.register_tool("mcl_throwing:bow_1", {
 minetest.register_tool("mcl_throwing:bow_2", {
 	description = "Bow",
 	inventory_image = "mcl_throwing_bow_2.png",
-    stack_max = 1,
+	stack_max = 1,
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
 	on_use = function(itemstack, user, pointed_thing)
 		local wear = itemstack:get_wear()
