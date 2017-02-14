@@ -160,155 +160,24 @@ minetest.register_abm({
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
+		-- Get node pos' for item transfer
+		local uppos = {x=pos.x,y=pos.y+1,z=pos.z}
+		local downpos = {x=pos.x,y=pos.y-1,z=pos.z}
 
-		local min = {x=pos.x-1,y=pos.y-1,z=pos.z-1}
-		local max = {x=pos.x+1,y=pos.y+1,z=pos.z+1}
-		local vm = minetest.get_voxel_manip()	
-		local emin, emax = vm:read_from_map(min,max)
-		local area = VoxelArea:new{MinEdge=emin, MaxEdge=emax}
-		local data = vm:get_data()	
-
-		local a = vm:get_node_at({x=pos.x,y=pos.y-1,z=pos.z}).name
-		local b = vm:get_node_at({x=pos.x,y=pos.y+1,z=pos.z}).name
-		local ag = minetest.get_node_group(a, "shulker_box")
-		local bg = minetest.get_node_group(b, "shulker_box")
-		local ashulker = not (ag == 0 or ag == nil)
-		local bshulker = not (bg == 0 or bg == nil)
-
-		--the mcl_hoppers input
-		if b == "mcl_chests:chest" or b == "mcl_chests:chest_left" or b == "mcl_chests:chest_right" or bshulker or b == "mcl_hoppers:hopper" or b == "mcl_hoppers:hopper_side" then
-			--mcl_hoppers inventory
-			local meta = minetest.get_meta(pos);
-			local inv = meta:get_inventory()
-			local invsize = inv:get_size("main")
-
-			--chest/mcl_hoppers/furnace inventory
-			local meta2 = minetest.get_meta({x=pos.x,y=pos.y+1,z=pos.z});
-			local inv2 = meta2:get_inventory()
-			local invsize2 = inv2:get_size("main")
-			if inv2:is_empty("main") == false then
-				for i = 1,invsize2 do
-					local stack = inv2:get_stack("main", i)
-					local item = stack:get_name()
-					if item ~= "" then
-						if inv:room_for_item("main", item) == false then
-							--print("no room for items 2")
-							--return
-						end
-						--print(stack:to_string())
-						stack:take_item(1)
-						inv2:set_stack("main", i, stack)
-						--add to mcl_hoppers
-						--print("adding item")
-						inv:add_item("main", item)
-						break
-					
-					end
-				end
-			end
-		end
-		if b == "mcl_furnaces:furnace" or b == "mcl_furnaces:furnace_active" then
-			--mcl_hoppers inventory
-			local meta = minetest.get_meta(pos);
-			local inv = meta:get_inventory()
-			local invsize = inv:get_size("main")
-
-			--chest/mcl_hoppers/furnace inventory
-			local meta2 = minetest.get_meta({x=pos.x,y=pos.y+1,z=pos.z});
-			local inv2 = meta2:get_inventory()
-			local invsize2 = inv2:get_size("dst")
-			if inv2:is_empty("dst") == false then
-		
-				for i = 1,invsize2 do
-					local stack = inv2:get_stack("dst", i)
-					local item = stack:get_name()
-					if item ~= "" then
-						if inv:room_for_item("main", item) == false then
-							--print("no room for items")
-							return
-						end
-						--print(stack:to_string())
-						stack:take_item(1)
-						inv2:set_stack("dst", i, stack)
-						--add to mcl_hoppers
-						--print("adding item")
-						inv:add_item("main", item)
-						break
-					
-					end
-				end
-			end
-		end
+		-- Move an item from the hopper into container below
+		mcl_util.move_item_container(pos, "main", -1, downpos)
 	
-		--the mcl_hoppers output
-		if a == "mcl_chests:chest" or a == "mcl_chests:chest_left" or a == "mcl_chests:chest_right" or ashulker or a == "mcl_hoppers:hopper" or a == "mcl_hoppers:hopper_side" then
-			--mcl_hoppers inventory
-			local meta = minetest.get_meta(pos);
-			local inv = meta:get_inventory()
-			if inv:is_empty("main") == true then
-				return
-			end
-			local invsize = inv:get_size("main")
-
-			--chest/mcl_hoppers/furnace inventory
-			local meta2 = minetest.get_meta({x=pos.x,y=pos.y-1,z=pos.z});
-			local inv2 = meta2:get_inventory()
-			local invsize2 = inv2:get_size("main")
-		
-			for i = 1,invsize do
-				local stack = inv:get_stack("main", i)
-				local item = stack:get_name()
-				if item ~= "" then
-					if inv2:room_for_item("main", item) == false then
-						--print("no room for items")
-						return
-					end
-					stack:take_item(1)
-					inv:set_stack("main", i, stack)
-					--add to mcl_hoppers or chest
-					--print("adding item")
-					inv2:add_item("main", item)
-					break
-					
-				end
-			end
-			--print(inv)
-		elseif a == "mcl_furnaces:furnace" or a == "mcl_furnaces:furnace_active" then
-			--print("test")
-			--room_for_item(listname, stack)
-			--mcl_hoppers inventory
-			local meta = minetest.get_meta(pos);
-			--print(dump(meta:to_table()))
-			local inv = meta:get_inventory()
-			if inv:is_empty("main") == true then
-				return
-			end
-			local invsize = inv:get_size("main")
-
-			--chest/mcl_hoppers/furnace inventory
-			local meta2 = minetest.get_meta({x=pos.x,y=pos.y-1,z=pos.z});
-			local inv2 = meta2:get_inventory()
-			local invsize2 = inv2:get_size("src")
-		
-			for i = 1,invsize do
-				local stack = inv:get_stack("main", i)
-				local item = stack:get_name()
-				if item ~= "" then
-					if inv2:room_for_item("src", item) == false then
-						--print("no room for items")
-						return
-					end
-					minetest.get_node_timer({x=pos.x,y=pos.y-1,z=pos.z}):start(1.0)
-					stack:take_item(1)
-					inv:set_stack("main", i, stack)
-					--add to mcl_hoppers or chest
-					--print("adding item")
-					inv2:add_item("src", item)
-					break
-					
-				end
-			end
+		-- Suck an item from the container above into the hopper
+		local upnode = minetest.get_node(uppos)
+		local g = minetest.registered_nodes[upnode.name].groups.container
+		if g == 2 or g == 3 then
+			-- Typical container inventory
+			mcl_util.move_item_container(uppos, "main", -1, pos)
+		elseif g == 4 then
+			-- Furnace output
+			mcl_util.move_item_container(uppos, "dst", -1, pos)
 		end
+
 	end,
 })
 
@@ -319,16 +188,9 @@ minetest.register_abm({
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-
-		local min = {x=pos.x-1,y=pos.y-1,z=pos.z-1}
-		local max = {x=pos.x+1,y=pos.y+1,z=pos.z+1}
-		local vm = minetest.get_voxel_manip()	
-		local emin, emax = vm:read_from_map(min,max)
-		local area = VoxelArea:new{MinEdge=emin, MaxEdge=emax}
-		local data = vm:get_data()	
-		local face = vm:get_node_at(pos).param2
+		-- Determine to which side the hopper is facing, get nodes
+		local face = minetest.get_node(pos).param2
 		local front = {}
-		--print(face)
 		if face == 0 then
 			front = {x=pos.x-1,y=pos.y,z=pos.z}
 		elseif face == 1 then
@@ -338,150 +200,24 @@ minetest.register_abm({
 		elseif face == 3 then
 			front = {x=pos.x,y=pos.y,z=pos.z-1}
 		end
-		local a = vm:get_node_at(front).name
-		local b = vm:get_node_at({x=pos.x,y=pos.y+1,z=pos.z}).name
-		local ag = minetest.get_node_group(a, "shulker_box")
-		local bg = minetest.get_node_group(b, "shulker_box")
-		local ashulker = not (ag == 0 or ag == nil)
-		local bshulker = not (bg == 0 or bg == nil)
+		local above = {x=pos.x,y=pos.y+1,z=pos.z}
 
-		--the mcl_hoppers input
-		if b == "mcl_chests:chest" or b == "mcl_chests:chest_left" or b == "mcl_chests:chest_right" or bshulker or b == "mcl_hoppers:hopper" or b == "mcl_hoppers:hopper_side" then
-			--mcl_hoppers inventory
-			local meta = minetest.get_meta(pos);
-			local inv = meta:get_inventory()
-			local invsize = inv:get_size("main")
-
-			--chest/mcl_hoppers/furnace inventory
-			local meta2 = minetest.get_meta({x=pos.x,y=pos.y+1,z=pos.z});
-			local inv2 = meta2:get_inventory()
-			local invsize2 = inv2:get_size("main")
-			if inv2:is_empty("main") == false then
-				for i = 1,invsize2 do
-					local stack = inv2:get_stack("main", i)
-					local item = stack:get_name()
-					if item ~= "" then
-						if inv:room_for_item("main", item) == false then
-							--print("no room for items 2")
-							--return
-						end
-						--print(stack:to_string())
-						stack:take_item(1)
-						inv2:set_stack("main", i, stack)
-						--add to mcl_hoppers
-						--print("adding item")
-						inv:add_item("main", item)
-						break
-					
-					end
-				end
-			end
-		end
-		if b == "mcl_furnaces:furnace" or b == "mcl_furnaces:furnace_active" then
-			--mcl_hoppers inventory
-			local meta = minetest.get_meta(pos);
-			local inv = meta:get_inventory()
-			local invsize = inv:get_size("main")
-
-			--chest/mcl_hoppers/furnace inventory
-			local meta2 = minetest.get_meta({x=pos.x,y=pos.y+1,z=pos.z});
-			local inv2 = meta2:get_inventory()
-			local invsize2 = inv2:get_size("dst")
-			if inv2:is_empty("dst") == false then
-				for i = 1,invsize2 do
-					local stack = inv2:get_stack("dst", i)
-					local item = stack:get_name()
-					if item ~= "" then
-						if inv:room_for_item("main", item) == false then
-							--print("no room for items")
-							return
-						end
-						--print(stack:to_string())
-						stack:take_item(1)
-						inv2:set_stack("dst", i, stack)
-						--add to mcl_hoppers
-						--print("adding item")
-						inv:add_item("main", item)
-						break
-					
-					end
-				end
-			end
-		end
+		local frontnode = minetest.get_node(front)
 	
-		--the mcl_hoppers output
-		if a == "mcl_chests:chest" or a == "mcl_chests:chest_left" or "mcl_chests:chest_right" or ashulker or a == "mcl_hoppers:hopper" or a == "mcl_hoppers:hopper_side" then
-			--print("test")
-			--room_for_item(listname, stack)
-			--mcl_hoppers inventory
-			local meta = minetest.get_meta(pos);
-			--print(dump(meta:to_table()))
-			local inv = meta:get_inventory()
-			if inv:is_empty("main") == true then
-				return
-			end
-			local invsize = inv:get_size("main")
+		-- Move an item from the hopper into the container to which the hopper points to
+		mcl_util.move_item_container(pos, "main", -1, front)
 
-			--chest/mcl_hoppers/furnace inventory
-			local meta2 = minetest.get_meta(front);
-			local inv2 = meta2:get_inventory()
-			local invsize2 = inv2:get_size("main")
-		
-			for i = 1,invsize do
-				local stack = inv:get_stack("main", i)
-				local item = stack:get_name()
-				if item ~= "" then
-					if inv2:room_for_item("main", item) == false then
-						--print("no room for items")
-						return
-					end
-					stack:take_item(1)
-					inv:set_stack("main", i, stack)
-					--add to mcl_hoppers or chest
-					--print("adding item")
-					inv2:add_item("main", item)
-					break
-					
-				end
-			end
-			--print(inv)
-		elseif a == "mcl_furnaces:furnace" or a == "mcl_furnaces:furnace_active" then
-			--print("test")
-			--room_for_item(listname, stack)
-			--mcl_hoppers inventory
-			local meta = minetest.get_meta(pos);
-			--print(dump(meta:to_table()))
-			local inv = meta:get_inventory()
-			if inv:is_empty("main") == true then
-				return
-			end
-			local invsize = inv:get_size("main")
-
-			--chest/mcl_hoppers/furnace inventory
-			local meta2 = minetest.get_meta(front);
-			local inv2 = meta2:get_inventory()
-			local invsize2 = inv2:get_size("fuel")
-		
-			for i = 1,invsize do
-				local stack = inv:get_stack("main", i)
-				local item = stack:get_name()
-				if item ~= "" then
-					if inv2:room_for_item("fuel", item) == false then
-						--print("no room for items")
-						return
-					end
-					stack:take_item(1)
-					inv:set_stack("main", i, stack)
-					--add to mcl_hoppers or chest
-					--print("adding item")
-					minetest.get_node_timer(front):start(1.0)
-					inv2:add_item("fuel", item)
-					break
-					
-				end
-			end
+		-- Suck an item from the container above into the hopper
+		local abovenode = minetest.get_node(above)
+		local g = minetest.registered_nodes[abovenode.name].groups.container
+		if g == 2 or g == 3 then
+			-- Typical container inventory
+			mcl_util.move_item_container(above, "main", -1, pos)
+		elseif g == 4 then
+			-- Furnace output
+			mcl_util.move_item_container(above, "dst", -1, pos)
 		end
-	end,
+	end
 })
 
 minetest.register_craftitem("mcl_hoppers:hopper_item", {

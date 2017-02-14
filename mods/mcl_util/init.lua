@@ -100,13 +100,20 @@ end
 -- Moves a single item from one inventory to another
 --- source_inventory: Inventory to take the item from
 --- source_list: List name of the source inventory from which to take the item
---- source_stack_id: The inventory position ID of the source inventory to take the item from
+--- source_stack_id: The inventory position ID of the source inventory to take the item from (-1 for first occupied slot)
 --- destination_inventory: Put item into this inventory
 --- destination_list: List name of the destination inventory to which to put the item into
 
 -- Returns true on success and false on failure
 -- Possible failures: No item in source slot, destination inventory full
 function mcl_util.move_item(source_inventory, source_list, source_stack_id, destination_inventory, destination_list)
+	if source_stack_id == -1 then
+		source_stack_id = mcl_util.get_first_occupied_inventory_slot(source_inventory, source_list)
+		if source_stack_id == nil then
+			return false
+		end
+	end
+
 	if not source_inventory:is_empty(source_list) then
 		local stack = source_inventory:get_stack(source_list, source_stack_id)
 		local item = stack:get_name()
@@ -126,7 +133,7 @@ end
 -- Moves a single item from one container node into another.
 --- source_pos: Position ({x,y,z}) of the node to take the item from
 --- source_list: List name of the source inventory from which to take the item
---- source_stack_id: The inventory position ID of the source inventory to take the item from
+--- source_stack_id: The inventory position ID of the source inventory to take the item from (-1 for first occupied slot)
 --- destination_pos: Position ({x,y,z}) of the node to put the item into
 -- Returns true on success and false on failure
 function mcl_util.move_item_container(source_pos, source_list, source_stack_id, destination_pos)
@@ -138,6 +145,13 @@ function mcl_util.move_item_container(source_pos, source_list, source_stack_id, 
 
 	local snodedef = minetest.registered_nodes[minetest.get_node(source_pos).name]
 	local dnodedef = minetest.registered_nodes[minetest.get_node(destination_pos).name]
+
+	if source_stack_id == -1 then
+		source_stack_id = mcl_util.get_first_occupied_inventory_slot(sinv, source_list)
+		if source_stack_id == nil then
+			return false
+		end
+	end
 
 	-- If it's a container, put it into the container
 	if dnodedef.groups.container then
@@ -153,4 +167,16 @@ function mcl_util.move_item_container(source_pos, source_list, source_stack_id, 
 		end
 	end
 	return false
+end
+
+-- Returns the ID of the first non-empty slot in the given inventory list
+-- or nil, if inventory is empty.
+function mcl_util.get_first_occupied_inventory_slot(inventory, listname)
+	for i=1, inventory:get_size(listname) do
+		local stack = inventory:get_stack(listname, i)
+		if not stack:is_empty() then
+			return i
+		end
+	end
+	return nil
 end
