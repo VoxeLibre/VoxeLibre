@@ -156,7 +156,7 @@ minetest.register_abm({
 
 minetest.register_abm({
 	nodenames = {"mcl_hoppers:hopper"},
-	neighbors = {"mcl_chests:chest","mcl_chests:chest_left","mcl_chests:chest_right","group:shulker_box","mcl_hoppers:hopper","mcl_hoppers:hopper_side","mcl_furnaces:furnace","mcl_furnaces:furnace_active"},
+	neighbors = {"group:container"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -183,7 +183,7 @@ minetest.register_abm({
 
 minetest.register_abm({
 	nodenames = {"mcl_hoppers:hopper_side"},
-	neighbors = {"mcl_chests:chest","mcl_chests:chest_left","mcl_chests:chest_right","mcl_hoppers:hopper","mcl_hoppers:hopper_side","mcl_furnaces:furnace","mcl_furnaces:furnace_active"},
+	neighbors = {"group:container"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
