@@ -135,6 +135,32 @@ local dispenserdef = {
 						stack:take_item()
 						inv:set_stack("main", stack_id, stack)
 					end
+				elseif iname == "bucket:bucket_water" or iname == "bucket:bucket_lava" then
+					-- Place water/lava source
+					if dropnodedef.buildable_to then
+						if iname == "bucket:bucket_water" then
+							minetest.set_node(droppos, {name = "mcl_core:water_source"})
+						elseif iname == "bucket:bucket_lava" then
+							minetest.set_node(droppos, {name = "mcl_core:lava_source"})
+						end
+
+						stack:take_item()
+						inv:set_stack("main", stack_id, stack)
+
+						if inv:room_for_item("main", "bucket:bucket_empty") then
+							inv:add_item("main", "bucket:bucket_empty")
+						else
+							minetest.add_item(droppos, dropitem)
+						end
+					end
+				elseif iname == "bucket:bucket_water" then
+					-- Place water source
+					if dropnodedef.buildable_to then
+						minetest.set_node(droppos, {name = "mcl_core:water_source"})
+
+						inv:set_stack("main", stack_id, "bucket:bucket_empty")
+					end
+
 				elseif igroups.head or igroups.shulker_box or iname == "mcl_farming:pumpkin_face" then
 					-- Place head, shulker box, or pumpkin
 					if dropnodedef.buildable_to then
