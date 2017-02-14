@@ -8,7 +8,9 @@ All node definitions share a lot of code, so this is the reason why there
 are so many weird tables below.
 ]]
 
+-- For after_place_node
 local setup_dropper = function(pos)
+	-- Set formspec and inventory
 	local form = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_inventory_9_slots.png]"..
 	mcl_core.inventory_header..
@@ -137,3 +139,15 @@ up_def.tiles = {
 	"default_furnace_side.png", "default_furnace_side.png"
 }
 minetest.register_node("mcl_dropper:dropper_up", up_def)
+
+
+
+-- Ladies and gentlemen, I present to you: the crafting recipe!
+minetest.register_craft({
+	output = 'mcl_dropper:dropper',
+	recipe = {
+		{"mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble",},
+		{"mcl_core:cobble", "", "mcl_core:cobble",},
+		{"mcl_core:cobble", "mesecons:redstone", "mcl_core:cobble",},
+	}
+})
