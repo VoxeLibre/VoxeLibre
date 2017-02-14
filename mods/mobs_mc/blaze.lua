@@ -66,10 +66,7 @@ mobs:register_mob("mobs_mc:blaze", {
     fear_height = 120,
 })
 
-mobs:register_spawn("mobs_mc:blaze", {"mcl_core:flowing_lava", "nether:rack","air"}, 30, -1, 5000, 1, -2000)
-
--- compatibility
-mobs:alias_mob("mobs:blaze", "mobs_mc:blaze")
+mobs:register_spawn("mobs_mc:blaze", {"mcl_core:lava_flowing", "mcl_nether:netherrack","air"}, 30, -1, 5000, 1, -2000)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:blaze", "Spawn Blaze", "spawn_egg_blaze.png")
