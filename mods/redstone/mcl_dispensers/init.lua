@@ -49,12 +49,15 @@ local dispenserdef = {
 		action_on = function (pos, node)
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
-			local droppos
+			local droppos, dropdir
 			if node.name == "mcl_dispensers:dispenser" then
-				droppos  = vector.subtract(pos, minetest.facedir_to_dir(node.param2))
+				dropdir = vector.multiply(minetest.facedir_to_dir(node.param2), -1)
+				droppos = vector.subtract(pos, dropdir)
 			elseif node.name == "mcl_dispensers:dispenser_up" then
+				dropdir = {x=0, y=1, z=0}
 				droppos  = {x=pos.x, y=pos.y+1, z=pos.z}
 			elseif node.name == "mcl_dispensers:dispenser_down" then
+				dropdir = {x=0, y=-1, z=0}
 				droppos  = {x=pos.x, y=pos.y-1, z=pos.z}
 			end
 			local dropnode = minetest.get_node(droppos)
@@ -79,7 +82,16 @@ local dispenserdef = {
 				local igroups = minetest.registered_items[iname].groups
 
 				--[===[ Dispense item ]===]
-				if iname == "mcl_fire:flint_and_steel" then
+				if iname == "mcl_throwing:arrow" then
+					-- Shoot arrow
+					local shootpos = vector.add(droppos, dropdir)
+					-- FIXME: Bad yaw of arrow when shootin
+					mcl_throwing.shoot_arrow(iname, shootpos, dropdir, 0, nil)
+
+					stack:take_item()
+					inv:set_stack("main", stack_id, stack)
+
+				elseif iname == "mcl_fire:flint_and_steel" then
 					-- Ignite air or fire
 					if dropnode.name == "air" then
 						minetest.add_node(droppos, {name="mcl_fire:basic_flame"})

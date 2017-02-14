@@ -4,13 +4,13 @@ dofile(minetest.get_modpath("mcl_throwing").."/throwable.lua")
 mcl_throwing = {}
 
 local arrows = {
-	{"mcl_throwing:arrow", "mcl_throwing:arrow_entity"},
+	["mcl_throwing:arrow"] = "mcl_throwing:arrow_entity",
 }
 
 local GRAVITY = 9.81
 
-mcl_throwing.shoot_arrow = function(entity_name, pos, dir, yaw, shooter)
-	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, entity_name)
+mcl_throwing.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter)
+	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, arrows[arrow_item])
 	obj:setvelocity({x=dir.x*19, y=dir.y*19, z=dir.z*19})
 	obj:setacceleration({x=dir.x*-3, y=-GRAVITY, z=dir.z*-3})
 	obj:setyaw(yaw+math.pi/2)
@@ -25,16 +25,16 @@ mcl_throwing.shoot_arrow = function(entity_name, pos, dir, yaw, shooter)
 end
 
 local player_shoot_arrow = function(itemstack, player)
-	for _,arrow in ipairs(arrows) do
-		if player:get_inventory():get_stack("main", player:get_wield_index()+1):get_name() == arrow[1] then
+	for arrow_item, arrow_entity in pairs(arrows) do
+		if player:get_inventory():get_stack("main", player:get_wield_index()+1):get_name() == arrow_item then
 			if not minetest.setting_getbool("creative_mode") then
-				player:get_inventory():remove_item("main", arrow[1])
+				player:get_inventory():remove_item("main", arrow_item)
 			end
 			local playerpos = player:getpos()
 			local dir = player:get_look_dir()
 			local yaw = player:get_look_horizontal()
 
-			mcl_throwing.shoot_arrow(arrow[2], {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, dir, yaw, player)
+			mcl_throwing.shoot_arrow(arrow_item, {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, dir, yaw, player)
 			return true
 		end
 	end
