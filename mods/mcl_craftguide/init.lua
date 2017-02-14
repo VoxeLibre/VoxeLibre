@@ -2,9 +2,33 @@ mcl_craftguide = {}
 
 local craftguide, datas, mt = {}, {}, minetest
 local progressive_mode = mt.setting_getbool("craftguide_progressive_mode")
-local get_recipe, get_recipes = mt.get_craft_recipe, mt.get_all_craft_recipes
+local get_recipe = mt.get_craft_recipe
 local get_result, show_formspec = mt.get_craft_result, mt.show_formspec
 local reg_items = mt.registered_items
+
+local get_recipes = function(query_item)
+	local recipes = mt.get_all_craft_recipes(query_item)
+
+	-- Manually add repairing recipes (workaround, because get_all_craft_recipes
+	-- doesn't return repairing recipes)
+	if minetest.get_modpath("mcl_core") then
+		local def = minetest.registered_items[query_item]
+		if def.type == "tool" then
+			if recipes == nil then
+				recipes = {}
+			end
+			table.insert(recipes, {
+				type = "normal",
+				width = 0,
+				items = { [1] = query_item, [2] = query_item },
+				output = query_item,
+				-- Special marker for repairing recipes
+				_is_toolrepair = true,
+			})
+		end
+	end
+	return recipes
+end
 
 -- Lua 5.3 removed `table.maxn`, use this alternative in case of breakage:
 -- https://github.com/kilbith/xdecor/blob/master/handlers/helpers.lua#L1
@@ -127,7 +151,7 @@ function craftguide:get_recipe(iY, xoffset, tooltip, item, recipe_num, recipes)
 	elseif is_shapeless then
 		formspec = formspec..
 			"image["..(xoffset-0.8)..","..(iY+1)..
-				".5;0.5,0.5;craftguide_shapeless.png]"
+			".5;0.5,0.5;craftguide_shapeless.png]"
 	end
 
 	local rows = ceil(maxn(items) / width)
@@ -302,8 +326,9 @@ function craftguide:get_init_items()
 	local items_list, counter = {}, 0
 	for name, def in pairs(reg_items) do
 		local is_fuel = get_fueltime(name) > 0
+		local is_tool = def.type == "tool"
 		if (not def.groups.not_in_craft_guide or def.groups.not_in_craft_guide == 0)
-				and (get_recipe(name).items or is_fuel)
+				and (get_recipe(name).items or is_fuel or is_tool)
 				and def.description and def.description ~= "" then
 			counter = counter + 1
 			items_list[counter] = name
@@ -403,6 +428,7 @@ mt.register_on_player_receive_fields(function(player, formname, fields)
 			data.item = item
 			data.recipe_num = 1
 			data.recipes_item = recipes
+
 			craftguide:get_formspec(player_name, is_fuel)
 		end
 	     end
