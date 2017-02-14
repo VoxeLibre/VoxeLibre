@@ -1,6 +1,7 @@
-
 dofile(minetest.get_modpath("mcl_throwing").."/arrow.lua")
 dofile(minetest.get_modpath("mcl_throwing").."/throwable.lua")
+
+mcl_throwing = {}
 
 local arrows = {
 	{"mcl_throwing:arrow", "mcl_throwing:arrow_entity"},
@@ -8,23 +9,32 @@ local arrows = {
 
 local GRAVITY = 9.81
 
-local mcl_throwing_shoot_arrow = function(itemstack, player)
+mcl_throwing.shoot_arrow = function(entity_name, pos, dir, yaw, shooter)
+	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, entity_name)
+	obj:setvelocity({x=dir.x*19, y=dir.y*19, z=dir.z*19})
+	obj:setacceleration({x=dir.x*-3, y=-GRAVITY, z=dir.z*-3})
+	obj:setyaw(yaw+math.pi/2)
+	minetest.sound_play("mcl_throwing_bow_shoot", {pos=pos})
+	if shooter ~= nil then
+		if obj:get_luaentity().player == "" then
+			obj:get_luaentity().player = shooter
+		end
+		obj:get_luaentity().node = shooter:get_inventory():get_stack("main", 1):get_name()
+	end
+	return obj
+end
+
+local player_shoot_arrow = function(itemstack, player)
 	for _,arrow in ipairs(arrows) do
 		if player:get_inventory():get_stack("main", player:get_wield_index()+1):get_name() == arrow[1] then
 			if not minetest.setting_getbool("creative_mode") then
 				player:get_inventory():remove_item("main", arrow[1])
 			end
 			local playerpos = player:getpos()
-			local obj = minetest.add_entity({x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, arrow[2])
 			local dir = player:get_look_dir()
-			obj:setvelocity({x=dir.x*19, y=dir.y*19, z=dir.z*19})
-			obj:setacceleration({x=dir.x*-3, y=-GRAVITY, z=dir.z*-3})
-			obj:setyaw(player:get_look_yaw()+math.pi)
-			minetest.sound_play("mcl_throwing_bow_shoot", {pos=playerpos})
-			if obj:get_luaentity().player == "" then
-				obj:get_luaentity().player = player
-			end
-			obj:get_luaentity().node = player:get_inventory():get_stack("main", 1):get_name()
+			local yaw = player:get_look_horizontal()
+
+			mcl_throwing.shoot_arrow(arrow[2], {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, dir, yaw, player)
 			return true
 		end
 	end
@@ -45,7 +55,7 @@ minetest.register_tool("mcl_throwing:bow", {
 	on_use = function(itemstack, user, pointed_thing)
 		local wear = itemstack:get_wear()
 		itemstack:add_wear(wear)
-		if mcl_throwing_shoot_arrow(itemstack, user, pointed_thing) then
+		if player_shoot_arrow(itemstack, user, pointed_thing) then
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:add_wear(65535/385)
 			end
@@ -68,7 +78,7 @@ minetest.register_tool("mcl_throwing:bow_0", {
 		on_use = function(itemstack, user, pointed_thing)
 		local wear = itemstack:get_wear()
 		itemstack:add_wear(wear)
-		if mcl_throwing_shoot_arrow(itemstack, user, pointed_thing) then
+		if player_shoot_arrow(itemstack, user, pointed_thing) then
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:add_wear(65535/385)
 			end
@@ -91,7 +101,7 @@ minetest.register_tool("mcl_throwing:bow_1", {
 	on_use = function(itemstack, user, pointed_thing)
 		local wear = itemstack:get_wear()
 		itemstack:add_wear(wear)
-		if mcl_throwing_shoot_arrow(itemstack, user, pointed_thing) then
+		if player_shoot_arrow(itemstack, user, pointed_thing) then
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:add_wear(65535/385)
 			end
@@ -109,7 +119,7 @@ minetest.register_tool("mcl_throwing:bow_2", {
 		local wear = itemstack:get_wear()
 		itemstack:replace("mcl_throwing:bow")
 		itemstack:add_wear(wear)
-		if mcl_throwing_shoot_arrow(itemstack, user, pointed_thing) then
+		if player_shoot_arrow(itemstack, user, pointed_thing) then
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:add_wear(65535/385)
 			end
