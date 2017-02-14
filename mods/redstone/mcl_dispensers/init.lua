@@ -52,7 +52,7 @@ local dispenserdef = {
 			local droppos, dropdir
 			if node.name == "mcl_dispensers:dispenser" then
 				dropdir = vector.multiply(minetest.facedir_to_dir(node.param2), -1)
-				droppos = vector.subtract(pos, dropdir)
+				droppos = vector.add(pos, dropdir)
 			elseif node.name == "mcl_dispensers:dispenser_up" then
 				dropdir = {x=0, y=1, z=0}
 				droppos  = {x=pos.x, y=pos.y+1, z=pos.z}
@@ -84,8 +84,7 @@ local dispenserdef = {
 				--[===[ Dispense item ]===]
 				if iname == "mcl_throwing:arrow" then
 					-- Shoot arrow
-					local f = {x=dropdir.x, y=0, z=dropdir.z}
-					local shootpos = vector.add(droppos, f)
+					local shootpos = vector.add(droppos, vector.multiply(dropdir, -1))
 					local yaw = math.atan2(dropdir.z, dropdir.x) + math.pi/2
 					mcl_throwing.shoot_arrow(iname, shootpos, dropdir, yaw, nil)
 
@@ -94,8 +93,7 @@ local dispenserdef = {
 
 				elseif iname == "mcl_throwing:egg" or iname == "mcl_throwing:snowball" then
 					-- Throw egg or snowball
-					local f = {x=dropdir.x, y=0, z=dropdir.z}
-					local shootpos = vector.add(droppos, f)
+					local shootpos = vector.add(droppos, vector.multiply(dropdir, -1))
 					mcl_throwing.throw(iname, shootpos, dropdir)
 
 					stack:take_item()
