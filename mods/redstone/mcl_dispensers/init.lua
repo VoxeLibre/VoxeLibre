@@ -153,13 +153,6 @@ local dispenserdef = {
 							minetest.add_item(droppos, dropitem)
 						end
 					end
-				elseif iname == "bucket:bucket_water" then
-					-- Place water source
-					if dropnodedef.buildable_to then
-						minetest.set_node(droppos, {name = "mcl_core:water_source"})
-
-						inv:set_stack("main", stack_id, "bucket:bucket_empty")
-					end
 
 				elseif igroups.head or igroups.shulker_box or iname == "mcl_farming:pumpkin_face" then
 					-- Place head, shulker box, or pumpkin
