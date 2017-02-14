@@ -163,6 +163,19 @@ local dispenserdef = {
 						inv:set_stack("main", stack_id, stack)
 					end
 
+				elseif iname == "mcl_dye:white" then
+					-- Apply bone meal, if possible
+					if dropnode.name == "air" then
+						pointed_thing = { above = droppos, under = { x=droppos.x, y=droppos.y-1, z=droppos.z } }
+					else
+						pointed_thing = { above = pos, under = droppos }
+					end
+					local success = mcl_dye.apply_bone_meal(pointed_thing)
+					if success then
+						stack:take_item()
+						inv:set_stack("main", stack_id, stack)
+					end
+
 				elseif iname == "mcl_minecarts:minecart" then
 					-- Place minecart as entity on rail
 					if dropnodedef.groups.rail then

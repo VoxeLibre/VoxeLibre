@@ -14,6 +14,7 @@
 -- })
 
 -- Other mods can use these for looping through available colors
+mcl_dye = {}
 local dye = {}
 dye.basecolors = {"white", "grey", "black", "red", "yellow", "green", "cyan", "blue", "magenta"}
 dye.excolors = {"white", "lightgrey", "grey", "darkgrey", "black", "red", "orange", "yellow", "lime", "green", "aqua", "cyan", "sky_blue", "blue", "violet", "magenta", "red_violet"}
@@ -98,7 +99,7 @@ end
 
 -- Bone Meal
 
-local apply_bone_meal = function(pointed_thing)
+mcl_dye.apply_bone_meal = function(pointed_thing)
 	local plant_tab = {
 		"air",
 		"mcl_core:tallgrass",
@@ -210,7 +211,7 @@ minetest.register_craftitem("mcl_dye:white", {
 	stack_max = 64,
 	groups = {dye=1, craftitem=1, basecolor_white=1,   excolor_white=1,     unicolor_white=1},
 	on_place = function(itemstack, user, pointed_thing) 
-		if(apply_bone_meal(pointed_thing) and not minetest.setting_getbool("creative_mode")) then
+		if(mcl_dye.apply_bone_meal(pointed_thing) and not minetest.setting_getbool("creative_mode")) then
 			itemstack:take_item()
 		end
 		return itemstack
