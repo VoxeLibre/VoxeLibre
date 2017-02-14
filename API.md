@@ -91,6 +91,7 @@ These groups are used mostly for informational purposes
    * `container=3`: Same as `container=2`, but shulker boxes can not be inserted
    * `container=4`: Furnace-like, has lists `"src"`, `"fuel"` and `"dst"`
    * `container=1`: Other/unspecified container type
+* `spawn_egg=1`: Spawn egg
 
 * `weapon=1`: Item is primarily (!) a weapon
 * `tool=1`: Item is primarily (!) a tool

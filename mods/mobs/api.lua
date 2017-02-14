@@ -2805,6 +2805,7 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 	if creative and no_creative == true then
 		grp = {not_in_creative_inventory = 1}
 	end
+	grp.spawn_egg = 1
 
 	local invimg = background
 
