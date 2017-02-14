@@ -50,6 +50,26 @@ local group_stereotypes = {
 	mesecon_conductor_craftable = "mesecons:wire_00000000_off",
 }
 
+local group_names = {
+	shulker_box = "Any shulker box",
+	wool = "Any wool",
+	wood = "Any wood planks",
+	tree = "Any wood",
+	sand = "Any sand",
+	sandstone = "Any sandstone (yellow)",
+	redsandstone = "Any red sandstone",
+	carpet = "Any carpet",
+	dye = "Any dye",
+	water_bucket = "Any water bucket",
+	flower = "Any flower",
+	mushroom = "Any mushroom",
+	wood_slab = "Any wooden slab",
+	wood_stairs = "Any wooden stairs",
+	coal = "Any coal",
+	quartz_block = "Any kind of quartz block",
+	stonebrick = "Any stone bricks"
+}
+
 function craftguide:group_to_item(item)
 	if item:sub(1,6) == "group:" then
 		local itemsub = item:sub(7)
@@ -107,24 +127,29 @@ function craftguide:get_tooltip_raw(item, recipe_type, cooktime, groups)
 		return tooltip.."Unknown Item ("..item..")]"
 	end
 	if groups then
+		local gcol = "#FFAAFF"
 		local groupstr
 		if #groups == 1 then
-			groupstr = "Any item belonging to the " .. colorize(groups[1]) .. " group"
+			if group_names[groups[1]] then
+				groupstr = group_names[groups[1]]
+			else
+				groupstr = "Any item belonging to the " .. groups[1] .. " group"
+			end
 		else
 			groupstr = "Any item belonging to the following groups: "
 			for i=1, #groups do
-				groupstr = groupstr .. colorize(groups[i])..
+				groupstr = groupstr .. groups[i]..
 				(groups[i+1] and " and " or "")
 			end
 		end
-		tooltip = tooltip..groupstr
+		tooltip = tooltip..core.colorize(gcol, groupstr)
 	end
 	tooltip = tooltip .. item_desc
 	if recipe_type == "cooking" then
 		tooltip = tooltip.."\nCooking time: "..
 			colorize(cooktime)
 	end
-	if fueltime > 0 then
+	if fueltime > 0 and not groups then
 		tooltip = tooltip.."\nBurning time: "..
 			colorize(fueltime)
 	end
