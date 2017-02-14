@@ -28,4 +28,6 @@ dofile(path .. "/spider.lua") -- Spider by AspireMint (fishyWET (CC-BY-SA 3.0 li
 dofile(path .. "/enderman.lua") -- maikerumine
 dofile(path .. "/ghast.lua") -- maikerumine
 
+dofile(path .. "/blaze.lua")  -- Animation by daufinsyd
+
 print ("[MOD] Mobs Redo 'MC' loaded")
