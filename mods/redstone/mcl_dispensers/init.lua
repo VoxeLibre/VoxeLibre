@@ -115,7 +115,7 @@ local dispenserdef = {
 						bucket_id = "bucket:bucket_lava"
 					end
 					if collect_liquid then
-						minetest.swap_node(droppos, {name="air"})
+						minetest.set_node(droppos, {name="air"})
 
 						-- Fill bucket with liquid and put it back into inventory
 						-- if there's still space. If not, drop it.
@@ -169,6 +169,33 @@ local dispenserdef = {
 						stack:take_item()
 						inv:set_stack("main", stack_id, stack)
 					end
+
+				elseif iname == "mcl_minecarts:minecart" then
+					-- Place minecart as entity on rail
+					if dropnodedef.groups.rail then
+						minetest.add_entity(droppos, "mcl_minecarts:minecart")
+
+					else
+						-- Drop item
+						minetest.add_item(droppos, dropitem)
+
+					end
+
+					stack:take_item()
+					inv:set_stack("main", stack_id, stack)
+
+				elseif igroups.boat then
+					local below = {x=droppos.x, y=droppos.y-1, z=droppos.z}
+					local belownode = minetest.get_node(below)
+					-- Place boat as entity on or in water
+					if dropnodedef.groups.water or (dropnode.name == "air" and minetest.registered_nodes[belownode.name].groups.water) then
+						minetest.add_entity(droppos, "mcl_boats:boat")
+					else
+						minetest.add_item(droppos, dropitem)
+					end
+
+					stack:take_item()
+					inv:set_stack("main", stack_id, stack)
 
 				-- TODO: Many other dispenser actions
 				else
