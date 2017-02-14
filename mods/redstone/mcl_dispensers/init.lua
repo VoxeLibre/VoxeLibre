@@ -94,10 +94,20 @@ local dispenserdef = {
 					end
 
 					inv:set_stack("main", stack_id, stack)
+				elseif iname == "mcl_tnt:tnt" then
+					-- Place and ignite TNT
+					if dropnodedef.buildable_to then
+						minetest.set_node(droppos, {name = iname})
+						tnt.ignite(droppos)
+
+						stack:take_item()
+						inv:set_stack("main", stack_id, stack)
+					end
 				elseif igroups.head or igroups.shulker_box or iname == "mcl_farming:pumpkin_face" then
 					-- Place head, shulker box, or pumpkin
 					if dropnodedef.buildable_to then
 						minetest.set_node(droppos, {name = iname, param2 = node.param2})
+
 						stack:take_item()
 						inv:set_stack("main", stack_id, stack)
 					end
