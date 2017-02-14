@@ -1,7 +1,7 @@
 --[[ This mod registers 3 nodes:
-- One node for the horizontal-facing dropper (mcl_dropper:dropper)
-- One node for the upwards-facing droppers (mcl_dropper:dropper_up)
-- One node for the downwards-facing droppers (mcl_dropper:dropper_down)
+- One node for the horizontal-facing dropper (mcl_droppers:dropper)
+- One node for the upwards-facing droppers (mcl_droppers:dropper_up)
+- One node for the downwards-facing droppers (mcl_droppers:dropper_down)
 
 3 node definitions are needed because of the way the textures are defined.
 All node definitions share a lot of code, so this is the reason why there
@@ -14,7 +14,7 @@ local setup_dropper = function(pos)
 	local form = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_inventory_9_slots.png]"..
 	mcl_core.inventory_header..
-	"image[3,-0.2;5,0.75;mcl_dropper_fnt_dropper.png]"..
+	"image[3,-0.2;5,0.75;mcl_droppers_fnt_dropper.png]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
 	"list[current_name;main;3,0.5;3,3;]"..
@@ -50,11 +50,11 @@ local dropperdef = {
 			local meta = minetest.get_meta(pos)
 			local inv = meta:get_inventory()
 			local droppos
-			if node.name == "mcl_dropper:dropper" then
+			if node.name == "mcl_droppers:dropper" then
 				droppos  = vector.subtract(pos, minetest.facedir_to_dir(node.param2))
-			elseif node.name == "mcl_dropper:dropper_up" then
+			elseif node.name == "mcl_droppers:dropper_up" then
 				droppos  = {x=pos.x, y=pos.y+1, z=pos.z}
-			elseif node.name == "mcl_dropper:dropper_down" then
+			elseif node.name == "mcl_droppers:dropper_down" then
 				droppos  = {x=pos.x, y=pos.y-1, z=pos.z}
 			end
 			local dropnode = minetest.get_node(droppos)
@@ -99,9 +99,9 @@ horizontal_def.after_place_node = function(pos, placer, itemstack, pointed_thing
 
 	-- When placed up and down, convert node to up/down dropper
 	if pointed_thing.above.y < pointed_thing.under.y then
-		minetest.swap_node(pos, {name = "mcl_dropper:dropper_down"})
+		minetest.swap_node(pos, {name = "mcl_droppers:dropper_down"})
 	elseif pointed_thing.above.y > pointed_thing.under.y then
-		minetest.swap_node(pos, {name = "mcl_dropper:dropper_up"})
+		minetest.swap_node(pos, {name = "mcl_droppers:dropper_up"})
 	end
 
 	-- Else, the normal facedir logic applies
@@ -109,42 +109,42 @@ end
 horizontal_def.tiles = {
 	"default_furnace_top.png", "default_furnace_bottom.png",
 	"default_furnace_side.png", "default_furnace_side.png",
-	"default_furnace_side.png", "mcl_dropper_dropper_front_horizontal.png"
+	"default_furnace_side.png", "mcl_droppers_dropper_front_horizontal.png"
 }
 horizontal_def.paramtype2 = "facedir"
 horizontal_def.groups = {cracky=2,container=2}
 
-minetest.register_node("mcl_dropper:dropper", horizontal_def)
+minetest.register_node("mcl_droppers:dropper", horizontal_def)
 
 -- Down dropper
 local down_def = table.copy(dropperdef)
 down_def.description = "Downwards-Facing Dropper"
 down_def.after_place_node = setup_dropper
 down_def.tiles = {
-	"default_furnace_top.png", "mcl_dropper_dropper_front_vertical.png",
+	"default_furnace_top.png", "mcl_droppers_dropper_front_vertical.png",
 	"default_furnace_side.png", "default_furnace_side.png",
 	"default_furnace_side.png", "default_furnace_side.png"
 }
 down_def.groups = {cracky=2,container=2,not_in_creative_inventory=1}
-down_def.drop = "mcl_dropper:dropper"
-minetest.register_node("mcl_dropper:dropper_down", down_def)
+down_def.drop = "mcl_droppers:dropper"
+minetest.register_node("mcl_droppers:dropper_down", down_def)
 
 -- Up dropper
 -- The up dropper is almost identical to the down dropper, it only differs in textures
 up_def = table.copy(down_def)
 up_def.description = "Upwards-Facing Dropper"
 up_def.tiles = {
-	"mcl_dropper_dropper_front_vertical.png", "default_furnace_bottom.png",
+	"mcl_droppers_dropper_front_vertical.png", "default_furnace_bottom.png",
 	"default_furnace_side.png", "default_furnace_side.png",
 	"default_furnace_side.png", "default_furnace_side.png"
 }
-minetest.register_node("mcl_dropper:dropper_up", up_def)
+minetest.register_node("mcl_droppers:dropper_up", up_def)
 
 
 
 -- Ladies and gentlemen, I present to you: the crafting recipe!
 minetest.register_craft({
-	output = 'mcl_dropper:dropper',
+	output = 'mcl_droppers:dropper',
 	recipe = {
 		{"mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble",},
 		{"mcl_core:cobble", "", "mcl_core:cobble",},
