@@ -1,7 +1,7 @@
+mcl_throwing = {}
+
 dofile(minetest.get_modpath("mcl_throwing").."/arrow.lua")
 dofile(minetest.get_modpath("mcl_throwing").."/throwable.lua")
-
-mcl_throwing = {}
 
 local arrows = {
 	["mcl_throwing:arrow"] = "mcl_throwing:arrow_entity",
