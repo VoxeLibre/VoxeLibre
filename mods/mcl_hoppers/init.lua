@@ -164,9 +164,6 @@ minetest.register_abm({
 		local uppos = {x=pos.x,y=pos.y+1,z=pos.z}
 		local downpos = {x=pos.x,y=pos.y-1,z=pos.z}
 
-		-- Move an item from the hopper into container below
-		mcl_util.move_item_container(pos, "main", -1, downpos)
-	
 		-- Suck an item from the container above into the hopper
 		local upnode = minetest.get_node(uppos)
 		local g = minetest.registered_nodes[upnode.name].groups.container
@@ -178,6 +175,8 @@ minetest.register_abm({
 			mcl_util.move_item_container(uppos, "dst", -1, pos)
 		end
 
+		-- Move an item from the hopper into container below
+		mcl_util.move_item_container(pos, "main", -1, downpos)
 	end,
 })
 
@@ -204,9 +203,6 @@ minetest.register_abm({
 
 		local frontnode = minetest.get_node(front)
 	
-		-- Move an item from the hopper into the container to which the hopper points to
-		mcl_util.move_item_container(pos, "main", -1, front)
-
 		-- Suck an item from the container above into the hopper
 		local abovenode = minetest.get_node(above)
 		local g = minetest.registered_nodes[abovenode.name].groups.container
@@ -217,6 +213,9 @@ minetest.register_abm({
 			-- Furnace output
 			mcl_util.move_item_container(above, "dst", -1, pos)
 		end
+
+		-- Move an item from the hopper into the container to which the hopper points to
+		mcl_util.move_item_container(pos, "main", -1, front)
 	end
 })
 
