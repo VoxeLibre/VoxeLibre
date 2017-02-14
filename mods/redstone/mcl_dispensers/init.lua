@@ -271,7 +271,7 @@ minetest.register_craft({
 })
 
 -- Only allow crafting if the bow is intact
-minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
+local check_craft = function(itemstack, player, old_craft_grid, craft_inv)
 	if itemstack:get_name() == "mcl_dispensers:dispenser" then
 		local bow, id
 		for i=1, craft_inv:get_size("craft") do
@@ -282,27 +282,12 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 				break
 			end
 		end
-		if bow:get_wear() ~= 0 then
+		if bow and bow:get_wear() ~= 0 then
 			return ""
 		end
 	end
 	return nil
-end)
+end
 
-minetest.register_craft_predict(function(itemstack, player, old_craft_grid, craft_inv)
-	if itemstack:get_name() == "mcl_dispensers:dispenser" then
-		local bow, id
-		for i=1, craft_inv:get_size("craft") do
-			local item = craft_inv:get_stack("craft", i)
-			if item:get_name() == "mcl_throwing:bow" then
-				bow = item
-				id = i
-				break
-			end
-		end
-		if bow:get_wear() ~= 0 then
-			return ""
-		end
-	end
-	return nil
-end)
+minetest.register_on_craft(check_craft)
+minetest.register_craft_predict(check_craft)
