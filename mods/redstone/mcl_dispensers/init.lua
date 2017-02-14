@@ -92,6 +92,15 @@ local dispenserdef = {
 					stack:take_item()
 					inv:set_stack("main", stack_id, stack)
 
+				elseif iname == "mcl_throwing:egg" or iname == "mcl_throwing:snowball" then
+					-- Throw egg or snowball
+					local f = {x=dropdir.x, y=0, z=dropdir.z}
+					local shootpos = vector.add(droppos, f)
+					mcl_throwing.throw(iname, shootpos, dropdir)
+
+					stack:take_item()
+					inv:set_stack("main", stack_id, stack)
+
 				elseif iname == "mcl_fire:flint_and_steel" then
 					-- Ignite air or fire
 					if dropnode.name == "air" then

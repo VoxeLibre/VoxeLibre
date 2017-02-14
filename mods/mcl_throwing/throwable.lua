@@ -24,7 +24,7 @@ mcl_throwing.throw = function(throw_item, pos, dir, velocity)
 		velocity = 22
 	end
 
-	local itemstring = throw_item:get_name()
+	local itemstring = ItemStack(throw_item):get_name()
 	local obj = minetest.add_entity(pos, entity_mapping[itemstring])
 	obj:setvelocity({x=dir.x*velocity, y=dir.y*velocity, z=dir.z*velocity})
 	obj:setacceleration({x=dir.x*-3, y=-GRAVITY, z=dir.z*-3})
