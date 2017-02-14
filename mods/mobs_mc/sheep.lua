@@ -124,7 +124,7 @@ print(item:get_name(), minetest.get_item_group(item:get_name(), "dye"))
 		end
 	end,
 })
---mobs:register_spawn("mobs_mc:sheep", {"mcl_core:dirt_with_grass"}, 20, 12, 5000, 2, 31000)
+mobs:register_spawn("mobs_mc:sheep", {"mcl_core:dirt_with_grass"}, 20, 12, 5000, 2, 31000)
 
 
 -- compatibility

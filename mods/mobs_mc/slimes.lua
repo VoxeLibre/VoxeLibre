@@ -182,9 +182,9 @@ mobs:register_mob("mobs_mc:greenbig", {
 		end
 	end,
 })
-mobs:register_spawn("mobs_mc:greensmall", {"mcl_core:flowing_water", "mcl_core:mossycobble"}, 7, -1, 5000, 4, 31000)
-mobs:register_spawn("mobs_mc:greenmedium", {"mcl_core:flowing_water", "mcl_core:mossycobble"}, 7, -1, 5000, 4, 31000)
-mobs:register_spawn("mobs_mc:greenbig", {"mcl_core:flowing_water", "mcl_core:mossycobble"}, 7, -1, 5000, 4, 31000)
+mobs:register_spawn("mobs_mc:greensmall", {"mcl_core:water_flowing", "mcl_core:mossycobble"}, 7, -1, 5000, 4, 31000)
+mobs:register_spawn("mobs_mc:greenmedium", {"mcl_core:water_flowing", "mcl_core:mossycobble"}, 7, -1, 5000, 4, 31000)
+mobs:register_spawn("mobs_mc:greenbig", {"mcl_core:water_flowing", "mcl_core:mossycobble"}, 7, -1, 5000, 4, 31000)
 
 
 

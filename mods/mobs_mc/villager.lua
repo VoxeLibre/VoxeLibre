@@ -168,7 +168,6 @@ mobs:register_mob("mobs_mc:villager", {
 	
 	]]
 })
---mobs:register_spawn("mobs_mc:villager", {"mcl_core:gravel"}, 20, 8, 50, 8, 31000)
 mobs:register_spawn("mobs_mc:villager", {"mcl_core:gravel"}, 20, 8, 500, 2, 31000)
 
 

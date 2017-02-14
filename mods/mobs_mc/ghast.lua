@@ -81,7 +81,7 @@ mobs:register_mob("mobs_mc:ghast", {
 })
 
 
-mobs:register_spawn("mobs_mc:ghast", {"mcl_core:flowing_lava", "nether:rack","air"}, 17, -1, 5000, 1, -2000)
+mobs:register_spawn("mobs_mc:ghast", {"mcl_core:lava_flowing", "mcl_nether:netherrack", "air"}, 17, -1, 5000, 1, -2000)
 
 -- Ghast fireball
 mobs:register_arrow("mobs_mc:ghast_fireball", {
