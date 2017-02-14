@@ -55,7 +55,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	light_damage = 0,
 	view_range = 16,
 	attack_type = "shoot",
-    arrow = "mobs_monster:fireball",
+    arrow = "mobs_mc:blaze_fireball",
     shoot_interval = 3.5,
     passive = false,
     jump = true,
@@ -67,6 +67,37 @@ mobs:register_mob("mobs_mc:blaze", {
 })
 
 mobs:register_spawn("mobs_mc:blaze", {"mcl_core:lava_flowing", "mcl_nether:netherrack","air"}, 30, -1, 5000, 1, -2000)
+
+-- Blaze fireball
+mobs:register_arrow("mobs_mc:blaze_fireball", {
+	visual = "sprite",
+	visual_size = {x = 0.3, y = 0.3},
+	textures = {"mcl_fire_fire_charge.png"},
+	velocity = 12,
+
+	-- Direct hit, no fire... just plenty of pain
+	hit_player = function(self, player)
+		player:punch(self.object, 1.0, {
+			full_punch_interval = 1.0,
+			damage_groups = {fleshy = 5},
+		}, nil)
+	end,
+
+	hit_mob = function(self, player)
+		player:punch(self.object, 1.0, {
+			full_punch_interval = 1.0,
+			damage_groups = {fleshy = 5},
+		}, nil)
+	end,
+
+	-- Node hit, make fire
+	hit_node = function(self, pos, node)
+		local pos_above = {x=pos.x, y=pos.y+1, z=pos.z}
+		if minetest.registered_nodes[minetest.get_node(pos_above).name].buildable_to then
+			minetest.set_node(pos_above, {name="mcl_fire:basic_flame"})
+		end
+	end
+})
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:blaze", "Spawn Blaze", "spawn_egg_blaze.png")

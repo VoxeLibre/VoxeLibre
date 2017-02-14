@@ -64,7 +64,7 @@ mobs:register_mob("mobs_mc:ghast", {
 	view_range = 16,
 	--attack_type = "dogshoot",
 	attack_type = "dogshoot",
-	arrow = "mobs_monster:fireball",
+	arrow = "mobs_mc:ghast_fireball",
 	shoot_interval = 3.5,
 	shoot_offset = 1,
 		--'dogshoot_switch' allows switching between shoot and dogfight modes inside dogshoot using timer (1 = shoot, 2 = dogfight)
@@ -83,25 +83,25 @@ mobs:register_mob("mobs_mc:ghast", {
 
 mobs:register_spawn("mobs_mc:ghast", {"mcl_core:flowing_lava", "nether:rack","air"}, 17, -1, 5000, 1, -2000)
 
--- fireball (weapon)
-mobs:register_arrow(":mobs_monster:fireball", {
+-- Ghast fireball
+mobs:register_arrow("mobs_mc:ghast_fireball", {
 	visual = "sprite",
 	visual_size = {x = 0.5, y = 0.5},
-	textures = {"mobs_fireball.png"},
+	textures = {"mcl_fire_fire_charge.png"},
 	velocity = 6,
 
 	-- direct hit, no fire... just plenty of pain
 	hit_player = function(self, player)
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
-			damage_groups = {fleshy = 8},
+			damage_groups = {fleshy = 6},
 		}, nil)
 	end,
 
 	hit_mob = function(self, player)
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
-			damage_groups = {fleshy = 8},
+			damage_groups = {fleshy = 6},
 		}, nil)
 	end,
 
@@ -110,7 +110,6 @@ mobs:register_arrow(":mobs_monster:fireball", {
 		mobs:explosion(pos, 1, 1, 0)
 	end
 })
-
 
 
 
