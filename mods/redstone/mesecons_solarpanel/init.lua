@@ -8,7 +8,6 @@ minetest.register_node("mesecons_solarpanel:solar_panel_on", {
 	wield_image = "jeija_solar_panel.png",
 	wield_scale = { x=1, y=1, z=3 },
 	paramtype = "light",
-	walkable = false,
 	is_ground_content = false,
 	selection_box = {
 		type = "fixed",
@@ -39,7 +38,6 @@ minetest.register_node("mesecons_solarpanel:solar_panel_off", {
 	wield_image = "jeija_solar_panel.png",
 	wield_scale = { x=1, y=1, z=3 },
 	paramtype = "light",
-	walkable = false,
 	is_ground_content = false,
 	selection_box = {
 		type = "fixed",
@@ -108,7 +106,6 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_on", {
 	wield_image = "jeija_solar_panel_inverted.png",
 	wield_scale = { x=1, y=1, z=3 },
 	paramtype = "light",
-	walkable = false,
 	is_ground_content = false,
 	selection_box = {
 		type = "fixed",
@@ -139,7 +136,6 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
 	wield_image = "jeija_solar_panel_inverted.png",
 	wield_scale = { x=1, y=1, z=3 },
 	paramtype = "light",
-	walkable = false,
 	is_ground_content = false,
 	selection_box = {
 		type = "fixed",
