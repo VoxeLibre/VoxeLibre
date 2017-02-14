@@ -159,6 +159,7 @@ minetest.register_entity("3d_armor_stand:armor_entity", {
 	timer = 0,
 	on_activate = function(self)
 		local pos = self.object:getpos()
+		self.object:set_armor_groups({immortal=1})
 		if pos then
 			self.pos = vector.round(pos)
 			update_entity(pos)
