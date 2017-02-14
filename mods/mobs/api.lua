@@ -2826,7 +2826,7 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 
 			if pos
 			and within_limits(pos, 0)
-			and not minetest.is_protected(pos, placer:get_player_name()) then
+			and (not placer or not minetest.is_protected(pos, placer:get_player_name())) then
 
 				pos.y = pos.y + 1
 
@@ -2840,8 +2840,10 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 
 				if ent.type ~= "monster" then
 					-- set owner and tame if not monster
-					ent.owner = placer:get_player_name()
-					ent.tamed = true
+					if placer then
+						ent.owner = placer:get_player_name()
+						ent.tamed = true
+					end
 				end
 
 				-- if not in creative then take item
