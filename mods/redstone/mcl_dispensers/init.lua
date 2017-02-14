@@ -203,6 +203,81 @@ local dispenserdef = {
 					stack:take_item()
 					inv:set_stack("main", stack_id, stack)
 
+				elseif igroups.armor_head or igroups.armor_torso or igroups.armor_legs or igroups.armor_feet then
+					local armor_type, armor_slot
+					if igroups.armor_head then
+						armor_type = "armor_head"
+						armor_slot = 2
+					elseif igroups.armor_torso then
+						armor_type = "armor_torso"
+						armor_slot = 3
+					elseif igroups.armor_legs then
+						armor_type = "armor_legs"
+						armor_slot = 4
+					elseif igroups.armor_feet then
+						armor_type = "armor_feet"
+						armor_slot = 5
+					end
+
+					local droppos_below = {x=droppos.x, y=droppos.y-1, z=droppos.z}
+					local dropnode_below = minetest.get_node(droppos_below)
+					-- Put armor on player or armor stand
+					local standpos
+					if dropnode.name == "3d_armor_stand:armor_stand" then
+						standpos = droppos
+					elseif dropnode_below.name == "3d_armor_stand:armor_stand" then
+						standpos = droppos_below
+					end
+					if standpos then
+						local dropmeta = minetest.get_meta(standpos)
+						local dropinv = dropmeta:get_inventory()
+						if dropinv:room_for_item(armor_type, dropitem) then
+							dropinv:add_item(armor_type, dropitem)
+							--[[ FIXME: For some reason, this function is not called after calling add_item,
+							so we call it manually to update the armor stand entity.
+							This may need investigation and the following line may be a small hack. ]]
+							minetest.registered_nodes["3d_armor_stand:armor_stand"].on_metadata_inventory_put(standpos)
+							stack:take_item()
+							inv:set_stack("main", stack_id, stack)
+						end
+					else
+						-- Put armor on nearby player
+						-- First search for player in front of dispenser (check 2 nodes)
+						local objs1 = minetest.get_objects_inside_radius(droppos, 1)
+						local objs2 = minetest.get_objects_inside_radius(droppos_below, 1)
+						local objs_table = {objs1, objs2}
+						local player
+						for oi=1, #objs_table do
+							local objs_inner = objs_table[oi]
+							for o=1, #objs_inner do
+								--[[ First player in list is the lucky one. The other player get nothing :-(
+								If multiple players are close to the dispenser, it can be a bit
+								-- unpredictable on who gets the armor. ]]
+								if objs_inner[o]:is_player() then
+									player = objs_inner[o]
+									break
+								end
+							end
+							if player then
+								break
+							end
+						end
+						-- If player found, add armor
+						if player then
+							local ainv = minetest.get_inventory({type="detached", name=player:get_player_name().."_armor"})
+							local pinv = player:get_inventory()
+							if ainv:get_stack("armor", armor_slot):is_empty() and pinv:get_stack("armor", armor_slot):is_empty() then
+								ainv:set_stack("armor", armor_slot, dropitem)
+								pinv:set_stack("armor", armor_slot, dropitem)
+								armor:set_player_armor(player)
+								armor:update_inventory(player)
+
+								stack:take_item()
+								inv:set_stack("main", stack_id, stack)
+							end
+						end
+					end
+
 				-- TODO: Many other dispenser actions
 				else
 					-- Drop item
