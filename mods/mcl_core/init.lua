@@ -10,6 +10,9 @@ mcl_core.gui_bg_img = ""
 
 mcl_core.inventory_header = mcl_core.gui_slots .. mcl_core.gui_bg
 
+-- Repair percentage for toolrepair
+mcl_core.repair = 0.05
+
 minetest.nodedef_default.stack_max = 64
 minetest.craftitemdef_default.stack_max = 64
 

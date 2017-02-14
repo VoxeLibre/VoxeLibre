@@ -83,7 +83,19 @@ local function get_fueltime(item)
 end
 
 function craftguide:get_tooltip(item, recipe_type, cooktime, groups)
-	local tooltip, item_desc = "tooltip["..item..";", ""
+	local raw = self:get_tooltip_raw(item, recipe_type, cooktime, groups)
+	if raw == "" then
+		return raw
+	else
+		local tooltip = "tooltip["..item..";"
+		tooltip = tooltip .. raw
+		tooltip = tooltip .. "]"
+		return tooltip
+	end
+end
+
+function craftguide:get_tooltip_raw(item, recipe_type, cooktime, groups)
+	local tooltip, item_desc  = "", ""
 	local fueltime = get_fueltime(item)
 	local has_extras = groups or recipe_type == "cooking" or fueltime > 0
 
@@ -107,19 +119,20 @@ function craftguide:get_tooltip(item, recipe_type, cooktime, groups)
 		end
 		tooltip = tooltip..groupstr
 	end
+	tooltip = tooltip .. item_desc
 	if recipe_type == "cooking" then
-		tooltip = tooltip..item_desc.."\nCooking time: "..
+		tooltip = tooltip.."\nCooking time: "..
 			colorize(cooktime)
 	end
 	if fueltime > 0 then
-		tooltip = tooltip..item_desc.."\nBurning time: "..
+		tooltip = tooltip.."\nBurning time: "..
 			colorize(fueltime)
 	end
 
-	return has_extras and tooltip.."]" or ""
+	return tooltip
 end
 
-function craftguide:get_recipe(iY, xoffset, tooltip, item, recipe_num, recipes)
+function craftguide:get_recipe(iY, xoffset, tooltip_raw, item, recipe_num, recipes)
 	local formspec, recipes_total = "", #recipes
 	if recipes_total > 1 then
 		formspec = formspec..
@@ -190,11 +203,16 @@ function craftguide:get_recipe(iY, xoffset, tooltip, item, recipe_num, recipes)
 		end
 	end
 	local output = recipes[recipe_num].output
+	local label = ""
+	if recipes[recipe_num]._is_toolrepair then
+		tooltip_raw = tooltip_raw .. "\n" .. core.colorize("#00FF00", string.format("Repaired by %.0f%%", (mcl_core.repair*100)))
+		label = "\nR"
+	end
 	return formspec..
 		"image["..(xoffset-1)..","..(iY+2)..
 			".12;0.9,0.7;craftguide_arrow.png]"..
 		"item_image_button["..(xoffset)..","..(iY+2)..";1,1;"..
-			output..";"..item..";]"..tooltip
+			output..";"..item.."_out"..";"..label.."]".."tooltip["..item.."_out"..";"..minetest.formspec_escape(tooltip_raw).."]"
 end
 
 function craftguide:get_formspec(player_name, is_fuel)
@@ -250,7 +268,11 @@ function craftguide:get_formspec(player_name, is_fuel)
 	end
 
 	if data.item and reg_items[data.item] then
-		local tooltip = self:get_tooltip(data.item)
+		local tooltip_raw = self:get_tooltip_raw(data.item)
+		local tooltip = ""
+		if tooltip_raw ~= "" then
+			tooltip = "tooltip["..data.item..";"..minetest.formspec_escape(tooltip_raw).."]"
+		end
 		if not data.recipes_item or (is_fuel and not
 				get_recipe(data.item).items) then
 			formspec = formspec..
@@ -258,11 +280,12 @@ function craftguide:get_formspec(player_name, is_fuel)
 					".12;0.9,0.7;craftguide_arrow.png]"..
 				"item_image_button["..(xoffset-2)..","..(iY+2)..
 					";1,1;"..data.item..";"..data.item..";]"..
-				tooltip.."image["..(xoffset)..","..
+				tooltip..
+				"image["..(xoffset)..","..
 					(iY+1.98)..";1,1;craftguide_fire.png]"
 		else
 			formspec = formspec..self:get_recipe(
-					iY, xoffset, tooltip, data.item,
+					iY, xoffset, tooltip_raw, data.item,
 					data.recipe_num, data.recipes_item)
 		end
 	end
@@ -407,7 +430,7 @@ mt.register_on_player_receive_fields(function(player, formname, fields)
 		craftguide:get_formspec(player_name)
 	else for item in pairs(fields) do
 		if item:find(":") then
-			if item:sub(-4) == "_inv" then
+			if item:sub(-4) == "_inv" or item:sub(-4) == "_out" then
 				item = item:sub(1,-5)
 			end
 
