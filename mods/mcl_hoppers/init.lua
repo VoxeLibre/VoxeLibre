@@ -130,13 +130,19 @@ minetest.register_node("mcl_hoppers:hopper_side", {
 	end,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 })
---make mcl_hopperss suck in blocks
+
+-- Make hoppers suck in dropped items
 minetest.register_abm({
 	nodenames = {"mcl_hoppers:hopper","mcl_hoppers:hopper_side"},
 	interval = 1.0,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		local meta = minetest.get_meta(pos);
+		local abovenode = minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z})
+		-- Don't bother checking item enties if node above is a container (should save some CPU)
+		if minetest.registered_items[abovenode.name].groups.container then
+			return
+		end
+		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 
 		for _,object in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
