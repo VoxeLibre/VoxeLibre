@@ -4,26 +4,39 @@
 
 local GRAVITY = tonumber(minetest.setting_get("movement_gravity"))
 
+local entity_mapping = {
+	["mcl_throwing:snowball"] = "mcl_throwing:snowball_entity",
+	["mcl_throwing:egg"] = "mcl_throwing:egg_entity",
+	["mcl_throwing:ender_pearl"] = "mcl_throwing:ender_pearl_entity",
+}
+
 local velocities = {
 	["mcl_throwing:snowball_entity"] = 22,
 	["mcl_throwing:egg_entity"] = 22,
 	["mcl_throwing:ender_pearl_entity"] = 22,
 }
 
--- Throw item
-local throw_function = function(entity_name, velocity)
+mcl_throwing.throw = function(throw_item, pos, dir, velocity)
 	if velocity == nil then
 		velocity = velocities[entity_name]
 	end
 	if velocity == nil then
 		velocity = 22
 	end
+
+	local itemstring = throw_item:get_name()
+	local obj = minetest.add_entity(pos, entity_mapping[itemstring])
+	obj:setvelocity({x=dir.x*velocity, y=dir.y*velocity, z=dir.z*velocity})
+	obj:setacceleration({x=dir.x*-3, y=-GRAVITY, z=dir.z*-3})
+	return obj
+end
+
+-- Throw item
+local throw_function = function(entity_name, velocity)
 	local func = function(item, player, pointed_thing)
-		local playerpos=player:getpos()
-		local obj=minetest.add_entity({x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, entity_name)
-		local dir=player:get_look_dir()
-		obj:setvelocity({x=dir.x*velocity, y=dir.y*velocity, z=dir.z*velocity})
-		obj:setacceleration({x=dir.x*-3, y=-GRAVITY, z=dir.z*-3})
+		local playerpos = player:getpos()
+		local dir = player:get_look_dir()
+		local obj = mcl_throwing.throw(item, {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, velocity)
 		obj:get_luaentity()._thrower = player:get_player_name()
 		if not minetest.setting_getbool("creative_mode") then
 			item:take_item()
