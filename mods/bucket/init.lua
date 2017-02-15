@@ -18,8 +18,6 @@ minetest.register_craft({
 bucket = {}
 bucket.liquids = {}
 
--- FIXME: Make buckets stack up to 16
-
 -- Register a new liquid
 --   source = name of the source node
 --   flowing = name of the flowing node
@@ -38,7 +36,7 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 		minetest.register_craftitem(itemname, {
 			description = name,
 			inventory_image = inventory_image,
-			stack_max = 1,
+			stack_max = 16,
 			liquids_pointable = true,
 			on_place = function(itemstack, user, pointed_thing)
 				-- Must be pointing to node
@@ -99,10 +97,26 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 						return
 					end
 				end
+
+				-- Handle bucket item and inventory stuff
 				if not minetest.setting_getbool("creative_mode") then
-					return {name="bucket:bucket_empty"}
+					-- Add empty bucket and put it into invntory, if possible.
+					-- Drop empty bucket otherwise.
+					local new_bucket = ItemStack("bucket:bucket_empty")
+					if itemstack:get_count() == 1 then
+						return new_bucket
+					else
+						local inv = user:get_inventory()
+						if inv:room_for_item("main", new_bucket) then
+							inv:add_item("main", new_bucket)
+						else
+							minetest.add_item(user:getpos(), new_bucket)
+						end
+						itemstack:take_item()
+						return itemstack
+					end
 				else
-					return {name=itemname}
+					return
 				end
 			end
 		})
@@ -112,7 +126,7 @@ end
 minetest.register_craftitem("bucket:bucket_empty", {
 	description = "Empty Bucket",
 	inventory_image = "bucket.png",
-	stack_max = 1,
+	stack_max = 16,
 	liquids_pointable = true,
 	on_place = function(itemstack, user, pointed_thing)
 		-- Must be pointing to node
@@ -125,10 +139,26 @@ minetest.register_craftitem("bucket:bucket_empty", {
 		if liquiddef ~= nil and liquiddef.itemname ~= nil and (node.name == liquiddef.source or
 			(node.name == liquiddef.flowing and minetest.setting_getbool("liquid_finite"))) then
 
+			local new_bucket = ItemStack({name = liquiddef.itemname, metadata = tostring(node.param2)})
+
 			minetest.add_node(pointed_thing.under, {name="air"})
 
-			if node.name == liquiddef.source then node.param2 = LIQUID_MAX end
-			return ItemStack({name = liquiddef.itemname, metadata = tostring(node.param2)})
+			-- Add liquid bucket and put it into inventory, if possible.
+			-- Drop new bucket otherwise.
+			if itemstack:get_count() == 1 then
+				return new_bucket
+			else
+				local inv = user:get_inventory()
+				if inv:room_for_item("main", new_bucket) then
+					inv:add_item("main", new_bucket)
+				else
+					minetest.add_item(user:getpos(), new_bucket)
+				end
+				if not minetest.setting_getbool("creative_mode") then
+					itemstack:take_item()
+				end
+				return itemstack
+			end
 		end
 	end,
 })
