@@ -1,3 +1,9 @@
+--[==[
+NOTE: THIS MOD IS DISABLED IN MINECLONE 2!
+TODO: It should be merged with item_drop.
+
+
+
 minetest.register_entity(":__builtin:item", {
 	initial_properties = {
 		hp_max = 1,
@@ -200,3 +206,5 @@ minetest.register_entity(":__builtin:item", {
 if minetest.setting_get("log_mods") then
 	minetest.log("action", "[builtin_item] loaded.")
 end
+
+]==]
