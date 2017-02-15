@@ -84,7 +84,7 @@ local dispenserdef = {
 				--[===[ Dispense item ]===]
 				if iname == "mcl_throwing:arrow" then
 					-- Shoot arrow
-					local shootpos = vector.add(droppos, vector.multiply(dropdir, -1))
+					local shootpos = vector.add(pos, vector.multiply(dropdir, 0.51))
 					local yaw = math.atan2(dropdir.z, dropdir.x) + math.pi/2
 					mcl_throwing.shoot_arrow(iname, shootpos, dropdir, yaw, nil)
 
@@ -93,8 +93,20 @@ local dispenserdef = {
 
 				elseif iname == "mcl_throwing:egg" or iname == "mcl_throwing:snowball" then
 					-- Throw egg or snowball
-					local shootpos = vector.add(droppos, vector.multiply(dropdir, -1))
+					local shootpos = vector.add(pos, vector.multiply(dropdir, 0.51))
 					mcl_throwing.throw(iname, shootpos, dropdir)
+
+					stack:take_item()
+					inv:set_stack("main", stack_id, stack)
+
+				elseif iname == "mcl_fire:fire_charge" then
+					-- Throw fire charge
+					local shootpos = vector.add(pos, vector.multiply(dropdir, 0.51))
+					local fireball = minetest.add_entity(shootpos, "mobs_mc:blaze_fireball")
+					local ent = fireball:get_luaentity()
+					local v = ent.velocity or 1
+					fireball:setvelocity(vector.multiply(dropdir, v))
+					ent.switch = 1
 
 					stack:take_item()
 					inv:set_stack("main", stack_id, stack)
