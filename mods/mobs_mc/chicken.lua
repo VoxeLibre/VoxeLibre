@@ -87,7 +87,7 @@ mobs:register_mob("mobs_mc:chicken", {
 	end,
 	]]
 	--from mobs_animals
-	follow = {"farming:seed_wheat", "farming:seed_cotton"},
+	follow = {"mcl_farming:wheat_seeds", "mcl_farming:beetroot_seeds", "mcl_farming:pumpkin_seeds", "mcl_farming:melon_seeds"},
 	view_range = 5,
 
 	on_rightclick = function(self, clicker)

@@ -219,7 +219,7 @@ mobs:register_mob("mobs_mc:horse", {
 		stand_start = 25,		stand_end = 75,
 		walk_start = 75,		walk_end = 100,
 	},
-	follow = "farming:wheat",
+	follow = "mcl_farming:wheat_item",
 	view_range = 5,
 
 	on_rightclick = function(self, clicker)
@@ -262,7 +262,7 @@ mobs:register_mob("mobs_mc:horse2", {
 		stand_start = 25,		stand_end = 75,
 		walk_start = 75,		walk_end = 100,
 	},
-	follow = "farming:wheat",
+	follow = "mcl_farming:wheat_item",
 	view_range = 5,
 
 	on_rightclick = function(self, clicker)
@@ -305,7 +305,7 @@ mobs:register_mob("mobs_mc:horse3", {
 		stand_start = 25,		stand_end = 75,
 		walk_start = 75,		walk_end = 100,
 	},
-	follow = "farming:wheat",
+	follow = "mcl_farming:wheat_item",
 	view_range = 5,
 
 	on_rightclick = function(self, clicker)

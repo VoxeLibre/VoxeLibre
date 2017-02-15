@@ -86,7 +86,7 @@ mobs:register_spawn("mobs_mc:ghast", {"mcl_core:lava_flowing", "mcl_nether:nethe
 -- Ghast fireball
 mobs:register_arrow("mobs_mc:ghast_fireball", {
 	visual = "sprite",
-	visual_size = {x = 0.5, y = 0.5},
+	visual_size = {x = 0.8, y = 0.8},
 	textures = {"mcl_fire_fire_charge.png"},
 	velocity = 6,
 

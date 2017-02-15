@@ -56,12 +56,12 @@ mobs:register_mob("mobs_mc:sheep", {
 		look_start = 78,
 		look_end = 108,
 	},
-	follow = "farming:wheat",
+	follow = "mcl_farming:wheat_item",
 	view_range = 5,
 	
 	on_rightclick = function(self, clicker)
 		local item = clicker:get_wielded_item()
-		if item:get_name() == "farming:wheat" then
+		if item:get_name() == "mcl_farming:wheat_item" then
 			if not self.tamed then
 				if not minetest.setting_getbool("creative_mode") then
 					item:take_item()
@@ -84,7 +84,7 @@ mobs:register_mob("mobs_mc:sheep", {
 			end
 			return
 		end
-		if item:get_name() == "mobs:shears" and not self.naked then
+		if item:get_name() == "mcl_core:shears" and not self.naked then
 			self.naked = true
 			local pos = self.object:getpos()
 			minetest.sound_play("shears", {pos = pos})
