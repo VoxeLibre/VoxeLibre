@@ -1,5 +1,33 @@
--- Speed up
+-- Normal rail
+minetest.register_node("mcl_minecarts:rail", {
+	description = "Rail",
+	drawtype = "raillike",
+	tiles = {"default_rail.png", "default_rail_curved.png", "default_rail_t_junction.png", "default_rail_crossing.png"},
+	is_ground_content = false,
+	inventory_image = "default_rail.png",
+	wield_image = "default_rail.png",
+	paramtype = "light",
+	walkable = false,
+	selection_box = {
+		type = "fixed",
+                -- but how to specify the dimensions for curved and sideways rails?
+                fixed = {-1/2, -1/2, -1/2, 1/2, -1/2+1/16, 1/2},
+	},
+	stack_max = 64,
+	groups = {cracky=3,oddly_breakable_by_hand=3,attached_node=1,rail=1,connect_to_raillike=1,dig_by_water=1,transport=1},
+	sounds = mcl_sounds.node_sound_defaults(),
+})
 
+minetest.register_craft({
+	output = 'mcl_minecarts:rail 16',
+	recipe = {
+		{'mcl_core:iron_ingot', '', 'mcl_core:iron_ingot'},
+		{'mcl_core:iron_ingot', 'mcl_core:stick', 'mcl_core:iron_ingot'},
+		{'mcl_core:iron_ingot', '', 'mcl_core:iron_ingot'},
+	}
+})
+
+-- Rail to speed up
 minetest.register_node("mcl_minecarts:golden_rail", {
 	description = "Powered Rail",
 	drawtype = "raillike",

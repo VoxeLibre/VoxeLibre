@@ -409,15 +409,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'mcl_core:rail 16',
-	recipe = {
-		{'mcl_core:iron_ingot', '', 'mcl_core:iron_ingot'},
-		{'mcl_core:iron_ingot', 'mcl_core:stick', 'mcl_core:iron_ingot'},
-		{'mcl_core:iron_ingot', '', 'mcl_core:iron_ingot'},
-	}
-})
-
-minetest.register_craft({
 	output = 'mcl_core:haybale',
 	recipe = {
 		{'mcl_farming:wheat_item', 'mcl_farming:wheat_item', 'mcl_farming:wheat_item'},
