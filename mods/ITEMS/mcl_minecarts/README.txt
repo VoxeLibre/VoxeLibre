@@ -17,7 +17,7 @@ WTFPL
 
 License of media (textures, sounds and models):
 -----------------------------------------------
-CC-0
+MIT License
 
 Authors of media files:
 -----------------------
@@ -29,3 +29,12 @@ kddekadenz:
 Zeg9:
   cart.x
   cart.png
+
+Wuzzy (based on Faithful 1.11):
+  carts_rail_crossing_pwr.png
+  carts_rail_curved_pwr.png
+  carts_rail_t_junction_pwr.png
+
+Vattic et al. (Faithful 1.11 resource pack):
+  carts_rail.png
+  carts_rail_pwr.png
