@@ -81,7 +81,7 @@ These groups are used mostly for informational purposes
 * `minecart=1`: Minecart
 * `food`: Item is a comestible item which can be consumed (healthy or unhealthy)
     * `food=2`: Food
-    * `food=3`: Drink
+    * `food=3`: Drink (including soups)
     * `food=1`: Other/unsure
 * `eatable`: Item can be *directly* eaten by wielding + left click (`on_use=item_eat`). Rating is the satiation gain
 * `ammo=1`: Item is used as ammo for a weapon

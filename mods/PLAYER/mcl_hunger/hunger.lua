@@ -78,33 +78,45 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sou
 			local h = tonumber(mcl_hunger.hunger[name])
 			local hp = user:get_hp()
 
-			-- Add eat particle effect and sound
 			local pos = user:getpos()
 			pos.y = pos.y + item_drop_settings.player_collect_height
 			local texture  = minetest.registered_items[itemname].inventory_image
+			-- FIXME: Is this correct? o_O
 			minetest.add_item(pos, drop)
-			minetest.add_particlespawner({
-				amount = 20,
-				time = 0.1,
-				minpos = {x=pos.x, y=pos.y, z=pos.z},
-				maxpos = {x=pos.x, y=pos.y, z=pos.z},
-				minvel = {x=-1, y=1, z=-1},
-				maxvel = {x=1, y=2, z=1},
-				minacc = {x=0, y=-5, z=0},
-				maxacc = {x=0, y=-9, z=0},
-				minexptime = 1,
-				maxexptime = 1,
-				minsize = 1,
-				maxsize = 2,
-				collisiondetection = true,
-				vertical = false,
-				texture = texture,
-			})
-			minetest.sound_play("mcl_hunger_bite", {
-				pos = pos,
-				max_hear_distance = 8,
-				gain = 10.0,
-			})
+			local foodtype = minetest.get_item_group(itemname, "food")
+			if foodtype == 3 then
+				-- Item is a drink, only play drinking sound (no particle)
+				minetest.sound_play("survival_thirst_drink", {
+					pos = pos,
+					max_hear_distance = 12,
+					gain = 1.0,
+				})
+			else
+				-- Assume the item is a food
+				-- Add eat particle effect and sound
+				minetest.add_particlespawner({
+					amount = 20,
+					time = 0.1,
+					minpos = {x=pos.x, y=pos.y, z=pos.z},
+					maxpos = {x=pos.x, y=pos.y, z=pos.z},
+					minvel = {x=-1, y=1, z=-1},
+					maxvel = {x=1, y=2, z=1},
+					minacc = {x=0, y=-5, z=0},
+					maxacc = {x=0, y=-9, z=0},
+					minexptime = 1,
+					maxexptime = 1,
+					minsize = 1,
+					maxsize = 2,
+					collisiondetection = true,
+					vertical = false,
+					texture = texture,
+				})
+				minetest.sound_play("mcl_hunger_bite", {
+					pos = pos,
+					max_hear_distance = 12,
+					gain = 1.0,
+				})
+			end
 
 			-- Saturation
 			if h < 20 and hunger_change then

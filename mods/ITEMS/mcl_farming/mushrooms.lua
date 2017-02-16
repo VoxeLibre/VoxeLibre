@@ -37,7 +37,7 @@ minetest.register_craftitem("mcl_farming:mushroom_stew", {
 	description = "Mushroom Stew",
 	inventory_image = "farming_mushroom_stew.png",
 	on_use = minetest.item_eat(6, "mcl_core:bowl"),
-	groups = { food = 2, eatable = 6 },
+	groups = { food = 3, eatable = 6 },
 	stack_max = 1,
 })
 

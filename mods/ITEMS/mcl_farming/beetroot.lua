@@ -102,7 +102,7 @@ minetest.register_craftitem("mcl_farming:beetroot_soup", {
 	inventory_image = "mcl_farming_beetroot_soup.png",
 	wield_image = "mcl_farming_beetroot_soup.png",
 	on_use = minetest.item_eat(6, "mcl_core:bowl"),
-	groups = { food = 1, eatable = 6 },
+	groups = { food = 3, eatable = 6 },
 })
 
 minetest.register_craft({
