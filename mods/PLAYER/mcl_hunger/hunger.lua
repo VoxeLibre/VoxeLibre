@@ -106,7 +106,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sou
 					local maxvel = vector.add(v, {x=1, y=2, z=1})
 
 					minetest.add_particlespawner({
-						amount = 20,
+						amount = math.min(math.max(8, hunger_change*2), 25),
 						time = 0.1,
 						minpos = {x=pos.x, y=pos.y, z=pos.z},
 						maxpos = {x=pos.x, y=pos.y, z=pos.z},
