@@ -30,7 +30,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_core:prismarine_shard",
+	output = "mcl_ocean:prismarine_shard",
 	recipe = {
 		{ "mcl_core:glass_cyan", },
 	}
@@ -38,8 +38,8 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "shapeless",
-	output = "mcl_core:prismarine_crystals",
-	recipe = { "mcl_core:prismarine_shard", "mcl_core:prismarine_shard", "mcl_core:prismarine_shard", "mcl_core:emerald" },
+	output = "mcl_ocean:prismarine_crystals",
+	recipe = { "mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard", "mcl_core:emerald" },
 })
 
 minetest.register_craft({

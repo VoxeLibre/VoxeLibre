@@ -119,20 +119,6 @@ minetest.register_craftitem("mcl_core:bowl",{
 	groups = { craftitem = 1 },
 })
 
-minetest.register_craftitem("mcl_core:prismarine_crystals", {
-	description = "Prismarine Crystals",
-	inventory_image = "default_prismarine_crystals.png",
-	stack_max = 64,
-	groups = { craftitem = 1 },
-})
-
-minetest.register_craftitem("mcl_core:prismarine_shard", {
-	description = "Prismarine Shard",
-	inventory_image = "default_prismarine_shard.png",
-	stack_max = 64,
-	groups = { craftitem = 1 },
-})
-
 minetest.register_craftitem("mcl_core:apple", {
 	description = "Apple",
 	wield_image = "default_apple.png",

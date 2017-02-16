@@ -425,41 +425,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'mcl_core:sea_lantern',
-	recipe = {
-		{'mcl_core:prismarine_shard', 'mcl_core:prismarine_crystals', 'mcl_core:prismarine_shard'},
-		{'mcl_core:prismarine_crystals', 'mcl_core:prismarine_crystals', 'mcl_core:prismarine_crystals'},
-		{'mcl_core:prismarine_shard', 'mcl_core:prismarine_crystals', 'mcl_core:prismarine_shard'},
-	}
-})
-
-minetest.register_craft({
-	output = 'mcl_core:prismarine',
-	recipe = {
-		{'mcl_core:prismarine_shard', 'mcl_core:prismarine_shard'},
-		{'mcl_core:prismarine_shard', 'mcl_core:prismarine_shard'},
-	}
-})
-
-minetest.register_craft({
-	output = 'mcl_core:prismarine_brick',
-	recipe = {
-		{'mcl_core:prismarine_shard', 'mcl_core:prismarine_shard', 'mcl_core:prismarine_shard'},
-		{'mcl_core:prismarine_shard', 'mcl_core:prismarine_shard', 'mcl_core:prismarine_shard'},
-		{'mcl_core:prismarine_shard', 'mcl_core:prismarine_shard', 'mcl_core:prismarine_shard'},
-	}
-})
-
-minetest.register_craft({
-	output = 'mcl_core:prismarine_dark',
-	recipe = {
-		{'mcl_core:prismarine_shard', 'mcl_core:prismarine_shard', 'mcl_core:prismarine_shard'},
-		{'mcl_core:prismarine_shard', 'mcl_dye:black', 'mcl_core:prismarine_shard'},
-		{'mcl_core:prismarine_shard', 'mcl_core:prismarine_shard', 'mcl_core:prismarine_shard'},
-	}
-})
-
-minetest.register_craft({
 	output = 'mcl_core:coalblock',
 	recipe = {
 		{'mcl_core:coal_lump', 'mcl_core:coal_lump', 'mcl_core:coal_lump'},

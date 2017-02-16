@@ -463,55 +463,6 @@ minetest.register_node("mcl_core:bone_block", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 })
 
-minetest.register_node("mcl_core:sea_lantern", {
-	description = "Sea Lantern",
-	paramtype2 = "facedir",
-	is_ground_content = false,
-	stack_max = 64,
-	-- Real light level: 15 (but Minetest caps at 14)
-	light_source = 14,
-	drop = {
-		max_items = 1,
-		items = {
-			{ items = {'mcl_core:prismarine_cry 3'}, rarity = 2 },
-			{ items = {'mcl_core:prismarine_cry 2'}}
-		}
-	},
-	tiles = {{name="default_sea_lantern.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=1.25}}},
-	groups = {oddly_breakable_by_hand=3, building_block=1},
-	sounds = mcl_sounds.node_sound_glass_defaults(),
-})
-
--- TODO: Move to own mod
-minetest.register_node("mcl_core:prismarine", {
-	description = "Prismarine",
-	stack_max = 64,
-	is_ground_content = false,
-	tiles = {{name="default_prismarine_anim.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=45.0}}},
-	groups = {cracky=3, building_block=1},
-	sounds = mcl_sounds.node_sound_stone_defaults(),
-})
-
--- TODO: Move to own mod
-minetest.register_node("mcl_core:prismarine_brick", {
-	description = "Prismarine Bricks",
-	stack_max = 64,
-	is_ground_content = false,
-	tiles = {"default_prismarine_bricks.png"},
-	groups = {cracky=2, building_block=1},
-	sounds = mcl_sounds.node_sound_stone_defaults(),
-})
-
--- TODO: Move to own mod
-minetest.register_node("mcl_core:prismarine_dark", {
-	description = "Dark Prismarine",
-	stack_max = 64,
-	is_ground_content = false,
-	tiles = {"default_prismarine_dark.png"},
-	groups = {cracky=2, building_block=1},
-	sounds = mcl_sounds.node_sound_stone_defaults(),
-})
-
 
 
 
