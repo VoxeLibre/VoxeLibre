@@ -5,7 +5,8 @@ minetest.register_craftitem("mcl_mobitems:rotten_flesh", {
 	inventory_image = "mcl_mobitems_rotten_flesh.png",
 	wield_image = "mcl_mobitems_rotten_flesh.png",
 	-- TODO: Raise to 4
-	on_use = minetest.item_eat(1),
+	on_place = minetest.item_eat(1),
+	on_secondary_use = minetest.item_eat(1),
 	groups = { food = 2, eatable = 1 },
 	stack_max = 64,
 })
@@ -14,7 +15,8 @@ minetest.register_craftitem("mcl_mobitems:mutton", {
 	description = "Raw Mutton",
 	inventory_image = "mcl_mobitems_mutton_raw.png",
 	wield_image = "mcl_mobitems_mutton_raw.png",
-	on_use = minetest.item_eat(2),
+	on_place = minetest.item_eat(2),
+	on_secondary_use = minetest.item_eat(2),
 	groups = { food = 2, eatable = 2 },
 	stack_max = 64,
 })
@@ -23,7 +25,8 @@ minetest.register_craftitem("mcl_mobitems:cooked_mutton", {
 	description = "Cooked Mutton",
 	inventory_image = "mcl_mobitems_mutton_cooked.png",
 	wield_image = "mcl_mobitems_mutton_cooked.png",
-	on_use = minetest.item_eat(6),
+	on_place = minetest.item_eat(6),
+	on_secondary_use = minetest.item_eat(6),
 	groups = { food = 2, eatable = 6 },
 	stack_max = 64,
 })
@@ -32,7 +35,8 @@ minetest.register_craftitem("mcl_mobitems:beef", {
 	description = "Raw Beef",
 	inventory_image = "mcl_mobitems_beef_raw.png",
 	wield_image = "mcl_mobitems_beef_raw.png",
-	on_use = minetest.item_eat(3),
+	on_place = minetest.item_eat(3),
+	on_secondary_use = minetest.item_eat(3),
 	groups = { food = 2, eatable = 3 },
 	stack_max = 64,
 })
@@ -41,7 +45,8 @@ minetest.register_craftitem("mcl_mobitems:cooked_beef", {
 	description = "Steak",
 	inventory_image = "mcl_mobitems_beef_cooked.png",
 	wield_image = "mcl_mobitems_beef_cooked.png",
-	on_use = minetest.item_eat(8),
+	on_place = minetest.item_eat(8),
+	on_secondary_use = minetest.item_eat(8),
 	groups = { food = 2, eatable = 8 },
 	stack_max = 64,
 })
@@ -50,7 +55,8 @@ minetest.register_craftitem("mcl_mobitems:chicken", {
 	description = "Raw Chicken",
 	inventory_image = "mcl_mobitems_chicken_raw.png",
 	wield_image = "mcl_mobitems_chicken_raw.png",
-	on_use = minetest.item_eat(2),
+	on_place = minetest.item_eat(2),
+	on_secondary_use = minetest.item_eat(2),
 	groups = { food = 2, eatable = 2 },
 	stack_max = 64,
 })
@@ -59,7 +65,8 @@ minetest.register_craftitem("mcl_mobitems:cooked_chicken", {
 	description = "Cooked Chicken",
 	inventory_image = "mcl_mobitems_chicken_cooked.png",
 	wield_image = "mcl_mobitems_chicken_cooked.png",
-	on_use = minetest.item_eat(6),
+	on_place = minetest.item_eat(6),
+	on_secondary_use = minetest.item_eat(6),
 	groups = { food = 2, eatable = 6 },
 	stack_max = 64,
 })
@@ -68,7 +75,8 @@ minetest.register_craftitem("mcl_mobitems:porkchop", {
 	description = "Raw Porkchop",
 	inventory_image = "mcl_mobitems_porkchop_raw.png",
 	wield_image = "mcl_mobitems_porkchop_raw.png",
-	on_use = minetest.item_eat(3),
+	on_place = minetest.item_eat(3),
+	on_secondary_use = minetest.item_eat(3),
 	groups = { food = 2, eatable = 3 },
 	stack_max = 64,
 })
@@ -77,7 +85,8 @@ minetest.register_craftitem("mcl_mobitems:cooked_porkchop", {
 	description = "Cooked Porkchop",
 	inventory_image = "mcl_mobitems_porkchop_cooked.png",
 	wield_image = "mcl_mobitems_porkchop_cooked.png",
-	on_use = minetest.item_eat(8),
+	on_place = minetest.item_eat(8),
+	on_secondary_use = minetest.item_eat(8),
 	groups = { food = 2, eatable = 8 },
 	stack_max = 64,
 })
@@ -86,7 +95,8 @@ minetest.register_craftitem("mcl_mobitems:rabbit", {
 	description = "Raw Rabbit",
 	inventory_image = "mcl_mobitems_rabbit_raw.png",
 	wield_image = "mcl_mobitems_rabbit_raw.png",
-	on_use = minetest.item_eat(3),
+	on_place = minetest.item_eat(3),
+	on_secondary_use = minetest.item_eat(3),
 	groups = { food = 2, eatable = 3 },
 	stack_max = 64,
 })
@@ -95,18 +105,19 @@ minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
 	description = "Cooked Rabbit",
 	inventory_image = "mcl_mobitems_rabbit_cooked.png",
 	wield_image = "mcl_mobitems_rabbit_cooked.png",
-	on_use = minetest.item_eat(5),
+	on_place = minetest.item_eat(5),
+	on_secondary_use = minetest.item_eat(5),
 	groups = { food = 2, eatable = 5 },
 	stack_max = 64,
 })
 
--- TODO: Fix drinking sound
 -- TODO: Clear status effects
 minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 	description = "Milk",
 	inventory_image = "mcl_mobitems_bucket_milk.png",
 	wield_image = "mcl_mobitems_bucket_milk.png",
-	on_use = minetest.item_eat(0, "bucket:bucket_empty"),
+	on_place = minetest.item_eat(0, "bucket:bucket_empty"),
+	on_secondary_use = minetest.item_eat(0, "bucket:bucket_empty"),
 	stack_max = 1,
 	groups = { food = 3 },
 })
@@ -115,7 +126,8 @@ minetest.register_craftitem("mcl_mobitems:spider_eye", {
 	description = "Spider Eye",
 	inventory_image = "mcl_mobitems_spider_eye.png",
 	wield_image = "mcl_mobitems_spider_eye.png",
-	on_use = minetest.item_eat(2),
+	on_place = minetest.item_eat(2),
+	on_secondary_use = minetest.item_eat(2),
 	groups = { food = 2, eatable = 2 },
 	stack_max = 64,
 })
@@ -218,7 +230,8 @@ minetest.register_craftitem("mcl_mobitems:rabbit_stew", {
 	wield_image = "mcl_mobitems_rabbit_stew.png",
 	inventory_image = "mcl_mobitems_rabbit_stew.png",
 	stack_max = 1,
-	on_use = minetest.item_eat(10, "mcl_core:bowl"),
+	on_place = minetest.item_eat(10, "mcl_core:bowl"),
+	on_secondary_use = minetest.item_eat(10, "mcl_core:bowl"),
 	groups = { food = 3, eatable = 10 },
 })
 

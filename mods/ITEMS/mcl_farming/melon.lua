@@ -216,7 +216,8 @@ minetest.register_craftitem("mcl_farming:melon_item", {
 	description = "Melon",
 	stack_max = 64,
 	inventory_image = "farming_melon.png",
-	on_use = minetest.item_eat(2),
+	on_place = minetest.item_eat(2),
+	on_secondary_use = minetest.item_eat(2),
 	groups = { food = 2, eatable = 2 },
 })
 

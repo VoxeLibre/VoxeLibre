@@ -138,7 +138,8 @@ minetest.register_craftitem("mcl_core:apple", {
 	wield_image = "default_apple.png",
 	inventory_image = "default_apple.png",
 	stack_max = 64,
-	on_use = minetest.item_eat(4),
+	on_place = minetest.item_eat(4),
+	on_secondary_use = minetest.item_eat(4),
 	groups = { food = 2 },
 })
 
@@ -147,6 +148,7 @@ minetest.register_craftitem("mcl_core:apple_gold", {
 	wield_image = "default_apple_gold.png",
 	inventory_image = "default_apple_gold.png",
 	stack_max = 64,
-	on_use = minetest.item_eat(8),
+	on_place = minetest.item_eat(8),
+	on_secondary_use = minetest.item_eat(8),
 	groups = { food = 2 },
 })

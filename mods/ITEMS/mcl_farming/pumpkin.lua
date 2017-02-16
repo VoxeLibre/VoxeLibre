@@ -287,7 +287,8 @@ minetest.register_craftitem("mcl_farming:pumpkin_pie", {
 	stack_max = 64,
 	inventory_image = "mcl_farming_pumpkin_pie.png",
 	wield_image = "mcl_farming_pumpkin_pie.png",
-	on_use = minetest.item_eat(8),
+	on_place = minetest.item_eat(8),
+	on_secondary_use = minetest.item_eat(8),
 	groups = { food = 2, eatable = 8 },
 })
 

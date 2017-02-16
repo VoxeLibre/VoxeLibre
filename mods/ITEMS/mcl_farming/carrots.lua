@@ -67,17 +67,23 @@ minetest.register_node("mcl_farming:carrot", {
 minetest.register_craftitem("mcl_farming:carrot_item", {
 	description = "Carrot",
 	inventory_image = "farming_carrot.png",
-	on_use = minetest.item_eat(3),
 	groups = { food = 2, eatable = 3 },
+	on_secondary_use = minetest.item_eat(3),
 	on_place = function(itemstack, placer, pointed_thing)
-		return mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:carrot_1")
-	end
+		local new = mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:carrot_1")
+		if new ~= nil then
+			return new
+		else
+			return minetest.do_item_eat(3, nil, itemstack, placer, pointed_thing)
+		end
+	end,
 })
 
 minetest.register_craftitem("mcl_farming:carrot_item_gold", {
 	description = "Golden Carrot",
 	inventory_image = "farming_carrot_gold.png",
-	on_use = minetest.item_eat(3),
+	on_place = minetest.item_eat(3),
+	on_secondary_use = minetest.item_eat(3),
 	groups = { brewitem = 1, food = 2, eatable = 3 },
 })
 

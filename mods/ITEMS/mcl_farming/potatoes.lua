@@ -50,11 +50,16 @@ minetest.register_node("mcl_farming:potato", {
 minetest.register_craftitem("mcl_farming:potato_item", {
 	description = "Potato",
 	inventory_image = "farming_potato.png",
-	on_use = minetest.item_eat(1),
 	groups = { food = 2, eatable = 1 },
 	stack_max = 64,
+	on_secondary_use = minetest.item_eat(1),
 	on_place = function(itemstack, placer, pointed_thing)
-		return mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:potato_1")
+		local new = mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:potato_1")
+		if new ~= nil then
+			return new
+		else
+			return minetest.do_item_eat(1, nil, itemstack, placer, pointed_thing)
+		end
 	end,
 })
 
@@ -62,7 +67,8 @@ minetest.register_craftitem("mcl_farming:potato_item_baked", {
 	description = "Baked Potato",
 	stack_max = 64,
 	inventory_image = "farming_potato_baked.png",
-	on_use = minetest.item_eat(6),
+	on_place = minetest.item_eat(6),
+	on_secondary_use = minetest.item_eat(6),
 	groups = { food = 2, eatable = 6 },
 })
 
@@ -70,7 +76,8 @@ minetest.register_craftitem("mcl_farming:potato_item_poison", {
 	description = "Poisonous Potato",
 	stack_max = 64,
 	inventory_image = "farming_potato_poison.png",
-	on_use = minetest.item_eat(2),
+	on_place = minetest.item_eat(2),
+	on_secondary_use = minetest.item_eat(2),
 	groups = { food = 2, eatable = 2 },
 })
 

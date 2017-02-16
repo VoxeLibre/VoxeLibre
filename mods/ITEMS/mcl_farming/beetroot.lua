@@ -92,7 +92,8 @@ minetest.register_craftitem("mcl_farming:beetroot_item", {
 	description = "Beetroot",
 	inventory_image = "mcl_farming_beetroot.png",
 	wield_image = "mcl_farming_beetroot.png",
-	on_use = minetest.item_eat(1),
+	on_place = minetest.item_eat(1),
+	on_secondary_use = minetest.item_eat(1),
 	groups = { food = 2, eatable = 1 },
 })
 
@@ -101,7 +102,8 @@ minetest.register_craftitem("mcl_farming:beetroot_soup", {
 	stack_max = 1,
 	inventory_image = "mcl_farming_beetroot_soup.png",
 	wield_image = "mcl_farming_beetroot_soup.png",
-	on_use = minetest.item_eat(6, "mcl_core:bowl"),
+	on_place = minetest.item_eat(6, "mcl_core:bowl"),
+	on_secondary_use = minetest.item_eat(6, "mcl_core:bowl"),
 	groups = { food = 3, eatable = 6 },
 })
 

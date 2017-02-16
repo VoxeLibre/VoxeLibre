@@ -193,7 +193,8 @@ minetest.register_craftitem("mcl_end:chorus_fruit", {
 	wield_image = "mcl_end_chorus_fruit.png",
 	inventory_image = "mcl_end_chorus_fruit.png",
 	-- TODO: Teleport player
-	on_use = minetest.item_eat(4),
+	on_place = minetest.item_eat(4),
+	on_secondary_use = minetest.item_eat(4),
 	groups = { food = 2, eatable = 4 },
 	stack_max = 64,
 })

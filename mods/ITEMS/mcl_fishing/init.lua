@@ -121,7 +121,8 @@ minetest.register_craft({
 minetest.register_craftitem("mcl_fishing:fish_raw", {
 	description = "Raw Fish",
 	inventory_image = "mcl_fishing_fish_raw.png",
-	on_use = minetest.item_eat(2),
+	on_place = minetest.item_eat(2),
+	on_secondary_use = minetest.item_eat(2),
 	stack_max = 64,
 	groups = { food=2, eatable = 2 },
 })
@@ -129,7 +130,8 @@ minetest.register_craftitem("mcl_fishing:fish_raw", {
 minetest.register_craftitem("mcl_fishing:fish_cooked", {
 	description = "Cooked Fish",
 	inventory_image = "mcl_fishing_fish_cooked.png",
-	on_use = minetest.item_eat(5),
+	on_place = minetest.item_eat(5),
+	on_secondary_use = minetest.item_eat(5),
 	stack_max = 64,
 	groups = { food=2, eatable=5 },
 })
@@ -145,7 +147,8 @@ minetest.register_craft({
 minetest.register_craftitem("mcl_fishing:salmon_raw", {
 	description = "Raw Salmon",
 	inventory_image = "mcl_fishing_salmon_raw.png",
-	on_use = minetest.item_eat(2),
+	on_place = minetest.item_eat(2),
+	on_secondary_use = minetest.item_eat(2),
 	stack_max = 64,
 	groups = { food=2, eatable = 2 },
 })
@@ -153,7 +156,8 @@ minetest.register_craftitem("mcl_fishing:salmon_raw", {
 minetest.register_craftitem("mcl_fishing:salmon_cooked", {
 	description = "Cooked Salmon",
 	inventory_image = "mcl_fishing_salmon_cooked.png",
-	on_use = minetest.item_eat(6),
+	on_place = minetest.item_eat(6),
+	on_secondary_use = minetest.item_eat(6),
 	stack_max = 64,
 	groups = { food=2, eatable=6 },
 })
@@ -169,7 +173,8 @@ minetest.register_craft({
 minetest.register_craftitem("mcl_fishing:clownfish_raw", {
 	description = "Clownfish",
 	inventory_image = "mcl_fishing_clownfish_raw.png",
-	on_use = minetest.item_eat(1),
+	on_place = minetest.item_eat(1),
+	on_secondary_use = minetest.item_eat(1),
 	stack_max = 64,
 	groups = { food=2, eatable = 1 },
 })
@@ -178,7 +183,8 @@ minetest.register_craftitem("mcl_fishing:clownfish_raw", {
 minetest.register_craftitem("mcl_fishing:pufferfish_raw", {
 	description = "Pufferfish",
 	inventory_image = "mcl_fishing_pufferfish_raw.png",
-	on_use = minetest.item_eat(1),
+	on_place = minetest.item_eat(1),
+	on_secondary_use = minetest.item_eat(1),
 	stack_max = 64,
 	groups = { food=2, eatable=1 },
 })
