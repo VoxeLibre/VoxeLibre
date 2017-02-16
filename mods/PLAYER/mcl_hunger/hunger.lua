@@ -101,13 +101,17 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sou
 				-- Special item definition field: _food_particles
 				-- If false, force item to not spawn any food partiles when eaten
 				if def._food_particles ~= false and texture and texture ~= "" then
+					local v = user:get_player_velocity()
+					local minvel = vector.add(v, {x=-1, y=1, z=-1})
+					local maxvel = vector.add(v, {x=1, y=2, z=1})
+
 					minetest.add_particlespawner({
 						amount = 20,
 						time = 0.1,
 						minpos = {x=pos.x, y=pos.y, z=pos.z},
 						maxpos = {x=pos.x, y=pos.y, z=pos.z},
-						minvel = {x=-1, y=1, z=-1},
-						maxvel = {x=1, y=2, z=1},
+						minvel = minvel,
+						maxvel = maxvel,
 						minacc = {x=0, y=-5, z=0},
 						maxacc = {x=0, y=-9, z=0},
 						minexptime = 1,
