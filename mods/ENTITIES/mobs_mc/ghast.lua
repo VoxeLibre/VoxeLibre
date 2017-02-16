@@ -37,7 +37,7 @@ mobs:register_mob("mobs_mc:ghast", {
 		chance = 1,
 		min = 0,
 		max = 1,},
-		{name = "mcl_core:gunpowder",
+		{name = "mcl_mobitems:gunpowder",
 		chance = 1,
 		min = 0,
 		max = 2,},

@@ -97,14 +97,6 @@ minetest.register_craftitem("mcl_core:flint", {
 	groups = { craftitem=1 },
 })
 
-minetest.register_craftitem("mcl_core:gunpowder", {
-	description = "Gunpowder",
-	inventory_image = "default_gunpowder.png",
-	stack_max = 64,
-	groups = { craftitem=1 },
-})
-
-
 minetest.register_craftitem("mcl_core:sugar", {
 	description = "Sugar",
 	inventory_image = "default_sugar.png",

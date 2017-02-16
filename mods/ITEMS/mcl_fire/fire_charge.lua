@@ -25,5 +25,5 @@ minetest.register_craftitem("mcl_fire:fire_charge", {
 minetest.register_craft({
 	type = 'shapeless',
 	output = 'mcl_fire:fire_charge 3',
-	recipe = { 'mcl_mobitems:blaze_powder', 'group:coal', 'mcl_core:gunpowder' },
+	recipe = { 'mcl_mobitems:blaze_powder', 'group:coal', 'mcl_mobitems:gunpowder' },
 })

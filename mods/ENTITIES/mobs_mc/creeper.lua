@@ -36,7 +36,7 @@ mobs:register_mob("mobs_mc:creeper", {
 	armor = 100,
 	maxdrops = 3,
 	drops = {
-		{name = "mcl_core:gunpowder",
+		{name = "mcl_mobitems:gunpowder",
 		chance = 1,
 		min = 0,
 		max = 2,},

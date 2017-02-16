@@ -4,7 +4,7 @@
 
 minetest.register_craft({
 	type = "shapeless",
-	output = "mcl_core:gunpowder",
+	output = "mcl_mobitems:gunpowder",
 	recipe = {
 		'group:sand',
 		'mcl_core:gravel',
