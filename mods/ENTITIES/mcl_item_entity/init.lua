@@ -361,9 +361,72 @@ core.register_entity(":__builtin:item", {
 			self.object:set_properties({physical = false})
 			return
 		end
+
+		-- Destroy item in lava and other igniters
 		local nn = node.name
+		if (minetest.registered_nodes[nn] and minetest.registered_nodes[nn].damage_per_second > 0) or nn == "maptools:igniter" then
+			minetest.sound_play("builtin_item_lava", {pos = self.object:getpos(), gain = 0.5})
+			self.object:remove()
+			return
+		end
+
+		-- Move item around on flowing liquids
+		if minetest.registered_nodes[nn] and minetest.registered_nodes[nn].liquidtype == "flowing" then
+			local get_flowing_dir = function(self)
+				local pos = self.object:getpos()
+				local param2 = minetest.get_node(pos).param2
+				for i,d in ipairs({-1, 1, -1, 1}) do
+					if i<3 then
+						pos.x = pos.x+d
+					else
+						pos.z = pos.z+d
+					end
+
+					local name = minetest.get_node(pos).name
+					local par2 = minetest.get_node(pos).param2
+					if name == "mcl_core:water_flowing" and par2 < param2 then
+						return pos
+					end
+
+					if i<3 then
+						pos.x = pos.x-d
+					else
+						pos.z = pos.z-d
+					end
+				end
+			end
+
+			local vec = get_flowing_dir(self)
+			if vec then
+				local v = self.object:getvelocity()
+				-- Minecraft Wiki: Flowing speed is "about 1.39 meters per second"
+				local f = 1.39
+				if vec and vec.x-p.x > 0 then
+					self.object:setacceleration({x = 0, y = 0, z = 0})
+					self.object:setvelocity({x = f, y = -0.22, z = 0})
+				elseif vec and vec.x-p.x < 0 then
+					self.object:setacceleration({x = 0, y = 0, z = 0})
+					self.object:setvelocity({x = -f, y = -0.22, z = 0})
+				elseif vec and vec.z-p.z > 0 then
+					self.object:setacceleration({x = 0, y = 0, z = 0})
+					self.object:setvelocity({x = 0, y = -0.22, z = f})
+				elseif vec and vec.z-p.z < 0 then
+					self.object:setacceleration({x = 0, y = 0, z = 0})
+					self.object:setvelocity({x = 0, y = -0.22, z = -f})
+				end
+
+				self.object:setacceleration({x = 0, y = -10, z = 0})
+				self.physical_state = true
+				self.object:set_properties({
+					physical = true
+				})
+				return
+			end
+		end
+
 		-- If node is not registered or node is walkably solid and resting on nodebox
 		local v = self.object:getvelocity()
+
 		if not core.registered_nodes[nn] or core.registered_nodes[nn].walkable and v.y == 0 then
 			if self.physical_state then
 				local own_stack = ItemStack(self.object:get_luaentity().itemstring)
