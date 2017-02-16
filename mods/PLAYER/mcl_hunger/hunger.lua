@@ -100,7 +100,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sou
 				vertical = false,
 				texture = texture,
 			})
-			minetest.sound_play("bite_item_drop", {
+			minetest.sound_play("mcl_hunger_bite", {
 				pos = pos,
 				max_hear_distance = 8,
 				gain = 10.0,
