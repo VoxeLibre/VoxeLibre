@@ -3,10 +3,6 @@
 
 -- License of code, textures & sounds: CC0
 
---Random
-math.randomseed(3)
-
-
 --Drop entities
 
 --water

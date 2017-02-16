@@ -16,6 +16,9 @@ mcl_core.repair = 0.05
 minetest.nodedef_default.stack_max = 64
 minetest.craftitemdef_default.stack_max = 64
 
+-- Set random seed for all other mods (Remember to make sure no other mod calls this function)
+math.randomseed(os.time())
+
 -- Load files
 dofile(minetest.get_modpath("mcl_core").."/functions.lua")
 dofile(minetest.get_modpath("mcl_core").."/nodes.lua")
