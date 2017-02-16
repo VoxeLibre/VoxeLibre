@@ -361,10 +361,14 @@ core.register_entity(":__builtin:item", {
 			return
 		end
 
-		-- Destroy item in lava and other igniters
+		-- Destroy item in lava or special nodes
 		local nn = node.name
-		if (minetest.registered_nodes[nn] and minetest.registered_nodes[nn].damage_per_second > 0) or nn == "maptools:igniter" then
-			minetest.sound_play("builtin_item_lava", {pos = self.object:getpos(), gain = 0.5})
+		local def = minetest.registered_nodes[nn]
+		if (def and def.groups and (def.groups.lava or def.groups.destroys_items == 1)) then
+			-- Special effect for lava
+			if def.groups.lava then
+				minetest.sound_play("builtin_item_lava", {pos = self.object:getpos(), gain = 0.5})
+			end
 			self.object:remove()
 			return
 		end

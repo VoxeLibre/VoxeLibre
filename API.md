@@ -22,6 +22,7 @@ This section explains all the used groups in this subgame.
 * `soil_sugarcane=1`: Sugar canes will grow on this near water
 * `soil_nether_wart=1`: Nether wart will grow on this
 * `disable_suffocation=1`: Disables suffocation for full solid cubes (1)
+* `destroys_items=1`: If an item happens to be *inside* this node, the item will be destroyed
 
 #### Footnotes
 
