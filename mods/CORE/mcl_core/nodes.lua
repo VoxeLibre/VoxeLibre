@@ -521,6 +521,15 @@ minetest.register_node("mcl_core:leaves", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 
+minetest.register_node("mcl_core:wood", {
+	description = "Oak Wood Planks",
+	tiles = {"default_wood.png"},
+	stack_max = 64,
+	is_ground_content = false,
+	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1,building_block=1},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+})
+
 -- Dark oak --
 minetest.register_node("mcl_core:darktree", {
 	description = "Dark Oak Wood",
@@ -574,6 +583,15 @@ minetest.register_node("mcl_core:darkleaves", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+})
+
+minetest.register_node("mcl_core:darkwood", {
+	description = "Dark Oak Wood Planks",
+	tiles = {"default_planks_big_oak.png"},
+	stack_max = 64,
+	is_ground_content = false,
+	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1,building_block=1},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
 -- Jungle tree --
@@ -1007,25 +1025,6 @@ minetest.register_node("mcl_core:vine", {
 	end
 })
 
-
-
-minetest.register_node("mcl_core:wood", {
-	description = "Oak Wood Planks",
-	tiles = {"default_wood.png"},
-	stack_max = 64,
-	is_ground_content = false,
-	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1,building_block=1},
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-})
-
-minetest.register_node("mcl_core:darkwood", {
-	description = "Dark Oak Wood Planks",
-	tiles = {"default_planks_big_oak.png"},
-	stack_max = 64,
-	is_ground_content = false,
-	groups = {choppy=2,oddly_breakable_by_hand=2,flammable=3,wood=1,building_block=1},
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-})
 
 minetest.register_node("mcl_core:water_flowing", {
 	description = "Flowing Water",
