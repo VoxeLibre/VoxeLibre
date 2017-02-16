@@ -374,23 +374,22 @@ core.register_entity(":__builtin:item", {
 			local get_flowing_dir = function(self)
 				local pos = self.object:getpos()
 				local param2 = minetest.get_node(pos).param2
-				for i,d in ipairs({-1, 1, -1, 1}) do
-					if i<3 then
-						pos.x = pos.x+d
-					else
-						pos.z = pos.z+d
-					end
-
-					local name = minetest.get_node(pos).name
-					local par2 = minetest.get_node(pos).param2
-					if name == "mcl_core:water_flowing" and par2 < param2 then
-						return pos
-					end
-
-					if i<3 then
-						pos.x = pos.x-d
-					else
-						pos.z = pos.z-d
+				-- Search for a liquid source, or a flowing liquid node higher than
+				-- the item's position in the 4 cardinal directions
+				local posses = {
+					{x=-1, y=0, z=0},
+					{x=1, y=0, z=0},
+					{x=0, y=0, z=-1},
+					{x=0, y=0, z=1},
+				}
+				for _, p in pairs(posses) do
+					local realpos = vector.add(pos, p)
+					local name = minetest.get_node(realpos).name
+					local par2 = minetest.get_node(realpos).param2
+					if name == "mcl_core:water_source" or (name == "mcl_core:water_flowing" and par2 > param2) then
+						-- Node found! Since we looked upwards, the flowing
+						-- direction is the *opposite* of what we've found
+						return vector.multiply(p, -1)
 					end
 				end
 			end
@@ -400,16 +399,16 @@ core.register_entity(":__builtin:item", {
 				local v = self.object:getvelocity()
 				-- Minecraft Wiki: Flowing speed is "about 1.39 meters per second"
 				local f = 1.39
-				if vec and vec.x-p.x > 0 then
+				if vec.x > 0 then
 					self.object:setacceleration({x = 0, y = 0, z = 0})
 					self.object:setvelocity({x = f, y = -0.22, z = 0})
-				elseif vec and vec.x-p.x < 0 then
+				elseif vec.x < 0 then
 					self.object:setacceleration({x = 0, y = 0, z = 0})
 					self.object:setvelocity({x = -f, y = -0.22, z = 0})
-				elseif vec and vec.z-p.z > 0 then
+				elseif vec.z > 0 then
 					self.object:setacceleration({x = 0, y = 0, z = 0})
 					self.object:setvelocity({x = 0, y = -0.22, z = f})
-				elseif vec and vec.z-p.z < 0 then
+				elseif vec.z < 0 then
 					self.object:setacceleration({x = 0, y = 0, z = 0})
 					self.object:setvelocity({x = 0, y = -0.22, z = -f})
 				end
