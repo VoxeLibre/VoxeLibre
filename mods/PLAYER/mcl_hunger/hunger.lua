@@ -93,11 +93,14 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sou
 			else
 				-- Assume the item is a food
 				-- Add eat particle effect and sound
-				local texture  = minetest.registered_items[itemname].inventory_image
+				local def = minetest.registered_items[itemname]
+				local texture = def.inventory_image
 				if not texture or texture == "" then
-					texture = minetest.registered_items[itemname].wield_image
+					texture = def.wield_image
 				end
-				if texture and texture ~= "" then
+				-- Special item definition field: _food_particles
+				-- If false, force item to not spawn any food partiles when eaten
+				if def._food_particles ~= false and texture and texture ~= "" then
 					minetest.add_particlespawner({
 						amount = 20,
 						time = 0.1,

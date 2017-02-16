@@ -49,6 +49,8 @@ minetest.register_node("mcl_cake:cake", {
 		minetest.add_node(pos,{type="node",name="mcl_cake:cake_5",param2=0})
 	end,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+
+	_food_particles = false,
 })
 minetest.register_node("mcl_cake:cake_5", {
 	description = "Cake (5 Slices Left)",
@@ -71,6 +73,8 @@ minetest.register_node("mcl_cake:cake_5", {
 		minetest.add_node(pos,{type="node",name="mcl_cake:cake_4",param2=0})
 	end,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+
+	_food_particles = false,
 })
 minetest.register_node("mcl_cake:cake_4", {
 	description = "Cake (4 Slices Left)",
@@ -93,6 +97,8 @@ minetest.register_node("mcl_cake:cake_4", {
 		minetest.add_node(pos,{type="node",name="mcl_cake:cake_3",param2=0})
 	end,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+
+	_food_particles = false,
 })
 minetest.register_node("mcl_cake:cake_3", {
 	description = "Cake (3 Slices Left)",
@@ -115,6 +121,8 @@ minetest.register_node("mcl_cake:cake_3", {
 		minetest.add_node(pos,{type="node",name="mcl_cake:cake_2",param2=0})
 	end,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+
+	_food_particles = false,
 })
 minetest.register_node("mcl_cake:cake_2", {
 	description = "Cake (2 Slices Left)",
@@ -137,6 +145,8 @@ minetest.register_node("mcl_cake:cake_2", {
 		minetest.add_node(pos,{type="node",name="mcl_cake:cake_1",param2=0})
 	end,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+
+	_food_particles = false,
 })
 minetest.register_node("mcl_cake:cake_1", {
 	description = "Cake (1 Slice Left)",
@@ -159,4 +169,6 @@ minetest.register_node("mcl_cake:cake_1", {
 		minetest.remove_node(pos)
 	end,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+
+	_food_particles = false,
 })
