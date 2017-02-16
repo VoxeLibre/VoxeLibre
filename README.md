@@ -1,6 +1,8 @@
 # MineClone 2
 A Minecraft-like game for Minetest. Forked from MineClone by daredevils.
 
+Version: 0.10.0
+
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
 the world and dig and build almost every block in the world to create new

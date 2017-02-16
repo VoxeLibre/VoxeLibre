@@ -1,8 +1,8 @@
--- mods/default/mapgen.lua
-
 --
 -- Aliases for map generator outputs
 --
+
+mcl_mapgen_core = {}
 
 minetest.register_alias("mapgen_air", "air")
 minetest.register_alias("mapgen_stone", "mcl_core:stone")
@@ -259,7 +259,7 @@ minetest.register_ore({
 	y_max          = -50,
 })
 
-function mcl_core.generate_ore(name, wherein, minp, maxp, seed, chunks_per_volume, chunk_size, ore_per_chunk, y_min, y_max)
+function mcl_mapgen_core.generate_ore(name, wherein, minp, maxp, seed, chunks_per_volume, chunk_size, ore_per_chunk, y_min, y_max)
 	minetest.log('action', "WARNING: mcl_core.generate_ore is deprecated")
 
 	if maxp.y < y_min or minp.y > y_max then
@@ -301,7 +301,7 @@ function mcl_core.generate_ore(name, wherein, minp, maxp, seed, chunks_per_volum
 	--print("generate_ore done")
 end
 
-function mcl_core.make_reeds(pos, size)
+function mcl_mapgen_core.make_reeds(pos, size)
 	for y=0,size-1 do
 		local p = {x=pos.x, y=pos.y+y, z=pos.z}
 		local nn = minetest.get_node(p).name
@@ -314,7 +314,7 @@ function mcl_core.make_reeds(pos, size)
 	end
 end
 
-function mcl_core.make_cactus(pos, size)
+function mcl_mapgen_core.make_cactus(pos, size)
 	for y=0,size-1 do
 		local p = {x=pos.x, y=pos.y+y, z=pos.z}
 		local nn = minetest.get_node(p).name
@@ -385,7 +385,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 				local z = pr:next(z0, z1)
 				if minetest.get_node({x=x,y=1,z=z}).name == "mcl_core:dirt_with_grass" and
 						minetest.find_node_near({x=x,y=1,z=z}, 1, "mcl_core:water_source") then
-					mcl_core.make_reeds({x=x,y=2,z=z}, pr:next(2, 4))
+					mcl_mapgen_core.make_reeds({x=x,y=2,z=z}, pr:next(2, 4))
 				end
 				local p = {x=x,y=1,z=z}
 				if minetest.get_node(p).name == "mcl_core:sand" then
@@ -426,7 +426,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 				end
 				-- If sand, make cactus
 				if ground_y and minetest.get_node({x=x,y=ground_y,z=z}).name == "mcl_core:sand" then
-					mcl_core.make_cactus({x=x,y=ground_y+1,z=z}, pr:next(3, 4))
+					mcl_mapgen_core.make_cactus({x=x,y=ground_y+1,z=z}, pr:next(3, 4))
 				end
 			end
 		end
