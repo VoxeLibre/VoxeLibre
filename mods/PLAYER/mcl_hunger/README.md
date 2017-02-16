@@ -42,11 +42,12 @@ This mod is free software.
 * Forked from `hbhunger` for MineClone 2. `hbhunger` in turn was forked from the “Better HUD
   (and hunger)” mod by BlockMen (2013-2015), most code comes from this mod.
 
-### Textures
+### Textures and sounds
 
 * `hbhunger_icon.png`—PilzAdam ([WTFPL](http://www.wtfpl.net/txt/copying/)), modified by BlockMen
 * `hbhunger_bgicon.png`—PilzAdam (WTFPL), modified by BlockMen
 * `hbhunger_bar.png—Wuzzy` (WTFPL)
 * `hbhunger_icon_health_poison.png`—celeron55 ([CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)), modified by BlockMen, modified again by Wuzzy
+* `bite_item_drop.1.ogg`, `bite_item_drop.2.ogg`: WTFPL
 * Everything else: WTFPL, by BlockMen and Wuzzy
 

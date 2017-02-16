@@ -72,11 +72,39 @@ end
 
 function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sound)
 	return function(itemstack, user, pointed_thing)
+		local itemname = itemstack:get_name()
 		if itemstack:take_item() ~= nil and user ~= nil then
 			local name = user:get_player_name()
 			local h = tonumber(mcl_hunger.hunger[name])
 			local hp = user:get_hp()
-			minetest.sound_play({name = sound or "mcl_hunger_eat_generic", gain = 1}, {pos=user:getpos(), max_hear_distance = 16})
+
+			-- Add eat particle effect and sound
+			local pos = user:getpos()
+			pos.y = pos.y + item_drop_settings.player_collect_height
+			local texture  = minetest.registered_items[itemname].inventory_image
+			minetest.add_item(pos, drop)
+			minetest.add_particlespawner({
+				amount = 20,
+				time = 0.1,
+				minpos = {x=pos.x, y=pos.y, z=pos.z},
+				maxpos = {x=pos.x, y=pos.y, z=pos.z},
+				minvel = {x=-1, y=1, z=-1},
+				maxvel = {x=1, y=2, z=1},
+				minacc = {x=0, y=-5, z=0},
+				maxacc = {x=0, y=-9, z=0},
+				minexptime = 1,
+				maxexptime = 1,
+				minsize = 1,
+				maxsize = 2,
+				collisiondetection = true,
+				vertical = false,
+				texture = texture,
+			})
+			minetest.sound_play("bite_item_drop", {
+				pos = pos,
+				max_hear_distance = 8,
+				gain = 10.0,
+			})
 
 			-- Saturation
 			if h < 20 and hunger_change then
