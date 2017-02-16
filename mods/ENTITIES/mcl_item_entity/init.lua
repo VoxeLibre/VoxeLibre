@@ -350,7 +350,6 @@ core.register_entity(":__builtin:item", {
 			return
 		end
 		local p = self.object:getpos()
-		p.y = p.y - 0.5
 		local node = core.get_node_or_nil(p)
 		local in_unloaded = (node == nil)
 		if in_unloaded then
@@ -425,6 +424,8 @@ core.register_entity(":__builtin:item", {
 		end
 
 		-- If node is not registered or node is walkably solid and resting on nodebox
+		p.y = p.y - 0.5
+		local nn = minetest.get_node(p).name
 		local v = self.object:getvelocity()
 
 		if not core.registered_nodes[nn] or core.registered_nodes[nn].walkable and v.y == 0 then
