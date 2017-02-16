@@ -14,9 +14,9 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_sponges:sponge",
 	recipe = {
-		{ "mcl_core:haybale", "mcl_core:haybale", "mcl_core:haybale" },
-		{ "mcl_core:haybale", "mcl_core:emerald", "mcl_core:haybale" },
-		{ "mcl_core:haybale", "mcl_core:haybale", "mcl_core:haybale" },
+		{ "mcl_farming:hay_block", "mcl_farming:hay_block", "mcl_farming:hay_block" },
+		{ "mcl_farming:hay_block", "mcl_core:emerald", "mcl_farming:hay_block" },
+		{ "mcl_farming:hay_block", "mcl_farming:hay_block", "mcl_farming:hay_block" },
 	}
 })
 
@@ -174,15 +174,15 @@ minetest.register_craft({
 minetest.register_craft({
 	output = "mcl_farming:beetroot_seeds",
 	recipe = {
-		{"mcl_core:haybale","mcl_farming:wheat_seeds"},
-		{"mcl_farming:wheat_seeds","mcl_core:haybale"},
+		{"mcl_farming:hay_block","mcl_farming:wheat_seeds"},
+		{"mcl_farming:wheat_seeds","mcl_farming:hay_block"},
 	},
 })
 minetest.register_craft({
 	output = "mcl_farming:beetroot_seeds",
 	recipe = {
-		{"mcl_farming:wheat_seeds","mcl_core:haybale"},
-		{"mcl_core:haybale","mcl_farming:wheat_seeds"},
+		{"mcl_farming:wheat_seeds","mcl_farming:hay_block"},
+		{"mcl_farming:hay_block","mcl_farming:wheat_seeds"},
 	},
 })
 minetest.register_craft({

@@ -162,3 +162,31 @@ minetest.register_craftitem("mcl_farming:bread", {
 	on_secondary_use = minetest.item_eat(5),
 })
 
+minetest.register_node("mcl_farming:hay_block", {
+	description = "Hay Bale",
+	tiles = {"mcl_farming_hayblock_top.png", "mcl_farming_hayblock_top.png", "mcl_farming_hayblock_side.png"},
+	is_ground_content = false,
+	stack_max = 64,
+	paramtype2 = "facedir",
+	is_ground_content = false,
+	on_place = mcl_util.rotate_axis,
+	groups = {oddly_breakable_by_hand=3,flammable=2, building_block=1},
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
+})
+
+minetest.register_craft({
+	output = 'mcl_farming:hay_block',
+	recipe = {
+		{'mcl_farming:wheat_item', 'mcl_farming:wheat_item', 'mcl_farming:wheat_item'},
+		{'mcl_farming:wheat_item', 'mcl_farming:wheat_item', 'mcl_farming:wheat_item'},
+		{'mcl_farming:wheat_item', 'mcl_farming:wheat_item', 'mcl_farming:wheat_item'},
+	}
+})
+
+minetest.register_craft({
+	output = 'mcl_farming:wheat_item 9',
+	recipe = {
+		{'mcl_farming:hay_block'},
+	}
+})
+

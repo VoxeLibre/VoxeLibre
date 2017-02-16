@@ -441,18 +441,6 @@ minetest.register_node("mcl_core:brick_block", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 })
 
-minetest.register_node("mcl_core:haybale", {
-	description = "Hay Bale",
-	tiles = {"default_hayblock_top.png", "default_hayblock_top.png", "default_hayblock_side.png"},
-	is_ground_content = false,
-	stack_max = 64,
-	paramtype2 = "facedir",
-	is_ground_content = false,
-	on_place = mcl_util.rotate_axis,
-	groups = {oddly_breakable_by_hand=3,flammable=2, building_block=1},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-})
-
 minetest.register_node("mcl_core:bone_block", {
 	description = "Bone Block",
 	tiles = {"mcl_core_bone_block_top.png", "mcl_core_bone_block_top.png", "mcl_core_bone_block_side.png"},

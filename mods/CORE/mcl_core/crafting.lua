@@ -409,22 +409,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'mcl_core:haybale',
-	recipe = {
-		{'mcl_farming:wheat_item', 'mcl_farming:wheat_item', 'mcl_farming:wheat_item'},
-		{'mcl_farming:wheat_item', 'mcl_farming:wheat_item', 'mcl_farming:wheat_item'},
-		{'mcl_farming:wheat_item', 'mcl_farming:wheat_item', 'mcl_farming:wheat_item'},
-	}
-})
-
-minetest.register_craft({
-	output = 'mcl_farming:wheat_item 9',
-	recipe = {
-		{'mcl_core:haybale'},
-	}
-})
-
-minetest.register_craft({
 	output = 'mcl_core:coalblock',
 	recipe = {
 		{'mcl_core:coal_lump', 'mcl_core:coal_lump', 'mcl_core:coal_lump'},
