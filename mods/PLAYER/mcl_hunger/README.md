@@ -1,6 +1,6 @@
-# Hunger with HUD bar [`hbhunger`]
+# Hunger for MineClone 2 [`mcl_hunger`]
 
-* Version: 0.5.2
+* Forked from `hbhunger`, version: 0.5.2
 
 ## Using the mod
 
@@ -11,19 +11,12 @@ starting with “1.”.
 ## About hunger
 This mod adds a hunger mechanic to the game. Players get a new attribute called “satiation”:
 
-* A new player starts with 20 satiation points out of 30
+* A new player starts with 20 satiation points out of 20
 * Actions like digging, placing and walking cause exhaustion, which lower the satiation
 * Every 800 seconds you lose 1 satiation point without doing anything
 * At 1 or 0 satiation you will suffer damage and die in case you don't eat something
 * If your satiation is 16 or higher, you will slowly regenerate health points
 * Eating food will increase your satiation (Duh!)
-
-Important: Eating food will not directly increase your health anymore, as long as the food
-item is supported by this mod (see below).
-
-Careful! Some foods may be poisoned. If you eat a poisoned item, you may still get a satiation
-boost, but for a brief period you lose health points because of food poisoning. However,
-food poisoning can never kill you.
 
 ## Statbar mode
 If you use the statbar mode of the HUD Bars mod, these things are important to know:
@@ -33,44 +26,6 @@ satiation. This is different from the hunger mod by BlockMen.
 
 You gain health at 5.5 symbols or more, as 5.5 symbols correspond to 16 satiation points.
 You *may* lose health at exactly 0.5 symbols, as 0.5 symbols correspond to 1-2 satiation points.
-
-## Supported food
-All mods which add food through standard measures (`minetest.item_eat`) are already
-supported automatically. Poisoned food needs special support.
-
-### Known supported food mods
-* Apple from Minetest Game [`default`]
-* Red and brown mushroom from Minetest Game [`flowers`]
-* Bread from Minetest Game [`farming`]
-* [`animalmaterials`] (Mob Framework (`mobf` modpack))
-* Bushes [`bushes`]
-* [`bushes_classic`]
-* Creatures [`creatures`]
-* [`dwarves`] (beer and such)
-* Docfarming [`docfarming`]
-* Ethereal / Ethereal NG [`ethereal`]
-* Farming Redo [`farming`] by TenPlus1
-* Farming plus [`farming_plus`]
-* Ferns [`ferns`]
-* Fishing [`fishing`]
-* [`fruit`]
-* Glooptest [`glooptest`]
-* JKMod ([`jkanimals`], [`jkfarming`], [`jkwine`])
-* [`kpgmobs`]
-* [`mobfcooking`]
-* [`mooretrees`]
-* [`mtfoods`]
-* [`mushroom`]
-* [`mush45`]
-* Seaplants [`sea`]
-* Simple mobs [`mobs`]
-* Pizza [`pizza`]
-* Not So Simple Mobs [`nssm`]
-
-### Supported mods without optional dependency (mods provide their own support)
-
-* Food ([`food`], [`food_basic`])
-* Sweet Foods [`food_sweet`]
 
 ### Examples
 
@@ -84,8 +39,8 @@ This mod is free software.
 
 * License: [LGPL v2.1](https://www.gnu.org/licenses/old-licenses/lgpl-2.1.en.html)
 * Author: by Wuzzy (2015-2016)
-* Forked from the “Better HUD (and hunger)” mod by BlockMen (2013-2015),
-  most code comes from this mod.
+* Forked from `hbhunger` for MineClone 2. `hbhunger` in turn was forked from the “Better HUD
+  (and hunger)” mod by BlockMen (2013-2015), most code comes from this mod.
 
 ### Textures
 
