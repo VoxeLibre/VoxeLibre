@@ -385,8 +385,9 @@ core.register_entity(":__builtin:item", {
 				for _, p in pairs(posses) do
 					local realpos = vector.add(pos, p)
 					local name = minetest.get_node(realpos).name
+					local def = minetest.registered_nodes[name]
 					local par2 = minetest.get_node(realpos).param2
-					if name == "mcl_core:water_source" or (name == "mcl_core:water_flowing" and par2 > param2) then
+					if def.liquidtype == "source" or (def.liquidtype == "flowing" and par2 > param2) then
 						-- Node found! Since we looked upwards, the flowing
 						-- direction is the *opposite* of what we've found
 						return vector.multiply(p, -1)
