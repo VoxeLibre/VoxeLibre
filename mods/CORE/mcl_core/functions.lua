@@ -101,7 +101,8 @@ minetest.register_abm({
 			for zp=-1,1 do
 				local p = {x=pos.x+xp, y=pos.y, z=pos.z+zp}
 				local n = minetest.get_node(p)
-				if (n.name=="mcl_core:water_flowing") then
+				local d = minetest.registered_nodes[n.name]
+				if (d.groups.water and d.liquidtype == "flowing") then
 					drop_attached_node(pos)
 					minetest.dig_node(pos)
 					break
@@ -111,7 +112,8 @@ minetest.register_abm({
 		for yp=-1,1 do
 			local p = {x=pos.x, y=pos.y+yp, z=pos.z}
 			local n = minetest.get_node(p)
-			if (n.name=="mcl_core:water_flowing") then
+			local d = minetest.registered_nodes[n.name]
+			if (d.groups.water and d.liquidtype == "flowing") then
 				drop_attached_node(pos)
 				minetest.dig_node(pos)
 				break
