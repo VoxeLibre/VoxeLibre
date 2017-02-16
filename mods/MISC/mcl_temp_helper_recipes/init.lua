@@ -12,7 +12,7 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_core:sponge",
+	output = "mcl_sponges:sponge",
 	recipe = {
 		{ "mcl_core:haybale", "mcl_core:haybale", "mcl_core:haybale" },
 		{ "mcl_core:haybale", "mcl_core:emerald", "mcl_core:haybale" },

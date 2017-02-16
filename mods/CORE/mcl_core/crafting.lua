@@ -707,13 +707,6 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "cooking",
-	output = "mcl_core:sponge",
-	recipe = "mcl_core:sponge_wet",
-	cooktime = 10,
-})
-
-minetest.register_craft({
-	type = "cooking",
 	output = "mcl_core:coal_lump",
 	recipe = "mcl_core:stone_with_coal",
 	cooktime = 10,
