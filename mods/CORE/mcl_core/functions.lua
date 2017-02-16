@@ -164,14 +164,6 @@ minetest.register_on_dignode(function(pos, node)
 	end
 end)
 
---
--- Bone Meal
---
-
-local n
-local n2
-local pos
-
 local function apple_leave()
 	if math.random(0, 10) == 3 then
 		return {name = "mcl_core:apple"}
