@@ -165,15 +165,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'signs:sign_wall 3',
-	recipe = {
-		{'group:wood', 'group:wood', 'group:wood'},
-		{'group:wood', 'group:wood', 'group:wood'},
-		{'', 'mcl_core:stick', ''},
-	}
-})
-
-minetest.register_craft({
 	output = 'mcl_core:pick_wood',
 	recipe = {
 		{'group:wood', 'group:wood', 'group:wood'},

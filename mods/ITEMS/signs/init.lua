@@ -314,3 +314,13 @@ minetest.register_craft({
 	recipe = "signs:sign_wall",
 	burntime = 10,
 })
+
+minetest.register_craft({
+	output = 'signs:sign_wall 3',
+	recipe = {
+		{'group:wood', 'group:wood', 'group:wood'},
+		{'group:wood', 'group:wood', 'group:wood'},
+		{'', 'mcl_core:stick', ''},
+	}
+})
+
