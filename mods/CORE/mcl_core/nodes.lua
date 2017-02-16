@@ -482,6 +482,7 @@ minetest.register_node("mcl_core:sea_lantern", {
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 })
 
+-- TODO: Move to own mod
 minetest.register_node("mcl_core:prismarine", {
 	description = "Prismarine",
 	stack_max = 64,
@@ -491,6 +492,7 @@ minetest.register_node("mcl_core:prismarine", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 })
 
+-- TODO: Move to own mod
 minetest.register_node("mcl_core:prismarine_brick", {
 	description = "Prismarine Bricks",
 	stack_max = 64,
@@ -500,6 +502,7 @@ minetest.register_node("mcl_core:prismarine_brick", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 })
 
+-- TODO: Move to own mod
 minetest.register_node("mcl_core:prismarine_dark", {
 	description = "Dark Prismarine",
 	stack_max = 64,
@@ -512,7 +515,7 @@ minetest.register_node("mcl_core:prismarine_dark", {
 
 
 
--- Oak tree --
+-- Oak --
 minetest.register_node("mcl_core:tree", {
 	description = "Oak Wood",
 	tiles = {"default_tree_top.png", "default_tree_top.png", "default_tree.png"},
@@ -567,7 +570,7 @@ minetest.register_node("mcl_core:leaves", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 
--- Dark oak tree --
+-- Dark oak --
 minetest.register_node("mcl_core:darktree", {
 	description = "Dark Oak Wood",
 	tiles = {"default_log_big_oak_top.png", "default_log_big_oak_top.png", "default_log_big_oak.png"},
@@ -622,7 +625,7 @@ minetest.register_node("mcl_core:darkleaves", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 
--- Jungle Tree --
+-- Jungle tree --
 
 minetest.register_node("mcl_core:jungletree", {
 	description = "Jungle Wood",
@@ -682,7 +685,7 @@ minetest.register_node("mcl_core:junglesapling", {
 })
 
 
--- Accacia Tree --
+-- Acacia --
 
 minetest.register_node("mcl_core:acaciatree", {
 	description = "Acacia Wood",
@@ -741,7 +744,7 @@ minetest.register_node("mcl_core:acaciasapling", {
 	sounds = mcl_sounds.node_sound_defaults(),
 })
 
--- Spruce Tree --
+-- Spruce --
 
 minetest.register_node("mcl_core:sprucetree", {
 	description = "Spruce Wood",
@@ -805,6 +808,8 @@ minetest.register_node("mcl_core:sprucesapling", {
 	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_defaults(),
 })
+
+-- Birch
 
 minetest.register_node("mcl_core:birchtree", {
 	description = "Birch Wood",
@@ -1359,6 +1364,7 @@ minetest.register_node("mcl_core:tallgrass", {
 	end
 })
 
+-- TODO: Move to own mod
 minetest.register_node("mcl_core:sponge", {
 	description = "Sponge",
 	drawtype = "normal",
@@ -1440,6 +1446,7 @@ minetest.register_node("mcl_core:sponge", {
 	end
 })
 
+-- TODO: Move to own mod
 minetest.register_node("mcl_core:sponge_wet", {
 	description = "Wet Sponge",
 	drawtype = "normal",
