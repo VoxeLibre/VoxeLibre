@@ -145,6 +145,15 @@ core feature.
 Finally, any limitations found in Minetest (the game engine) will be written down in the course
 of development.
 
+## Reporting bugs
+For now, report bugs here:
+https://forum.minetest.net/viewtopic.php?f=50&t=16407&start=150
+
+You can also send an e-mail to <almikes@aol.com>.
+
+There's no bug tracking software in place yet (sorry) but one is planned in the future. Sorry for the inconvenience!
+:-(
+
 ## Other readme files
 
 * `LICENSE.txt`: The LGPLv2.1 license text
