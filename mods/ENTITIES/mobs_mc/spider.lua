@@ -8,7 +8,7 @@
 
 -- Spider by AspireMint (fishyWET (CC-BY-SA 3.0 license for texture)
 mobs:register_mob("mobs_mc:spider", {
-	type = "monster",
+	type = "animal",
 	passive = false,
 	attack_type = "dogfight",
 	pathfinding = true,
