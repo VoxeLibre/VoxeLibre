@@ -460,18 +460,7 @@ core.register_entity(":__builtin:item", {
 		end
 	end,
 
-	on_punch = function(self, hitter)
-		local inv = hitter:get_inventory()
-		if inv and self.itemstring ~= '' then
-			local left = inv:add_item("main", self.itemstring)
-			if left and not left:is_empty() then
-				self.itemstring = left:to_string()
-				return
-			end
-		end
-		self.itemstring = ''
-		self.object:remove()
-	end,
+	-- Note: on_punch intentionally left out. The player should *not* be able to collect items by punching
 })
 
 if minetest.setting_get("log_mods") then
