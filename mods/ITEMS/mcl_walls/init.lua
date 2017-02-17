@@ -1,3 +1,5 @@
+mcl_walls = {}
+
 local function rshift(x, by)
 	return math.floor(x / 2 ^ by)
 end
@@ -20,15 +22,16 @@ local function update_wall(pos)
 	-- Get the node's base name, including the underscore since we will need it
 	local colonpos = thisnode.name:find(":")
 	local underscorepos
-	local itemname, basename
+	local itemname, basename, modname
 	if colonpos ~= nil then
 		itemname = thisnode.name:sub(colonpos+1)
+		modname = thisnode.name:sub(1, colonpos-1)
 	end
 	underscorepos = itemname:find("_")
 	if underscorepos == nil then -- New wall
 		basename = thisnode.name .. "_"
 	else -- Already placed wall
-		basename = "mcl_walls:" .. itemname:sub(1, underscorepos)
+		basename = modname .. ":" .. itemname:sub(1, underscorepos)
 	end
 
 	local sum = 0
@@ -83,7 +86,7 @@ local full_blocks = {
 * name: Item name, visible to user
 * texture: Wall texture
 * invtex: Inventory image ]]
-local function register_wall(nodename, name, texture, invtex)
+function mcl_walls.register_wall(nodename, name, texture, invtex)
 	for i = 0, 15 do
 		local need = {}
 		local need_pillar = false
@@ -192,7 +195,7 @@ end
 
 -- Cobblestone wall
 
-register_wall("mcl_walls:cobble", "Cobblestone Wall", "default_cobble.png", "mcl_walls_cobble.png")
+mcl_walls.register_wall("mcl_walls:cobble", "Cobblestone Wall", "default_cobble.png", "mcl_walls_cobble.png")
 minetest.register_craft({
 	output = 'mcl_walls:cobble 6',
 	recipe = {
@@ -203,7 +206,7 @@ minetest.register_craft({
 
 -- Mossy wall
 
-register_wall("mcl_walls:mossycobble", "Mossy Cobblestone Wall", "default_mossycobble.png", "mcl_walls_mossycobble.png")
+mcl_walls.register_wall("mcl_walls:mossycobble", "Mossy Cobblestone Wall", "default_mossycobble.png", "mcl_walls_mossycobble.png")
 minetest.register_craft({
 	output = 'mcl_walls:mossycobble 6',
 	recipe = {
