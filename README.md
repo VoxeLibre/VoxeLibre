@@ -1,5 +1,6 @@
 # MineClone 2
-A Minecraft-like game for Minetest. Forked from MineClone by daredevils.
+An unofficial  Minecraft-like game for Minetest. Forked from MineClone by daredevils.
+Developed by Wuzzy and contributors. Not developed or endorsed by Mojang AB.
 
 Version: 0.10.0
 
@@ -173,6 +174,8 @@ You find interesting and useful infos in API.md.
 This project is currently mostly a one-person project.
 
 ## Legal information
+This is a fan game, not developed or endorsed by Mojang AB.
+
 Copying is an act of love. Please copy and share! <3
 But, oh well, if you insist, here is the legalese for you:
 
