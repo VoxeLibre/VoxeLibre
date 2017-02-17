@@ -3039,8 +3039,8 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 		local tag = self.nametag or ""
 
 		minetest.show_formspec(name, "mobs_nametag", "size[8,4]"
-			.. default.gui_bg
-			.. default.gui_bg_img
+			.. mcl_vars.gui_bg
+			.. mcl_vars.gui_bg_img
 			.. "field[0.5,1;7.5,0;name;" .. S("Enter name:") .. ";" .. tag .. "]"
 			.. "button_exit[2.5,3.5;3,1;mob_rename;" .. S("Rename") .. "]")
 

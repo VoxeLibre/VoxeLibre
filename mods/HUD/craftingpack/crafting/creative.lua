@@ -232,7 +232,7 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 				"image[" .. boffset[check] .. ";1,1;crafting_creative_marker.png]"
 		end
 		formspec = "size[10,9.3]"..
-			mcl_core.inventory_header..
+			mcl_vars.inventory_header..
 			"background[-0.19,-0.25;10.5,9.87;"..inv_bg.."]"..
 			"label[-5,-5;"..name.."]"..
 			"item_image_button[-0.1,0;1,1;mcl_core:brick_block;blocks;]"..	--build blocks

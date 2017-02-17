@@ -40,7 +40,7 @@ minetest.register_node("mcl_chests:chest", {
 			meta:set_string("formspec",
 					"size[9,11.5]"..
 					"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
-					mcl_core.inventory_header..
+					mcl_vars.inventory_header..
 					"list[nodemeta:"..p.x..","..p.y..","..p.z..";main;0,0.5;9,3;]"..
 					"list[current_name;main;0,3.5;9,3;]"..
 					"list[current_player;main;0,7.5;9,3;9]"..
@@ -54,7 +54,7 @@ minetest.register_node("mcl_chests:chest", {
 			m:set_string("formspec",
 					"size[9,11.5]"..
 					"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
-					mcl_core.inventory_header..
+					mcl_vars.inventory_header..
 					"list[current_name;main;0,0.5;9,3;]"..
 					"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3.5;9,3;]"..
 					"list[current_player;main;0,7.5;9,3;9]"..
@@ -69,7 +69,7 @@ minetest.register_node("mcl_chests:chest", {
 			meta:set_string("formspec",
 					"size[9,11.5]"..
 					"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
-					mcl_core.inventory_header..
+					mcl_vars.inventory_header..
 					"list[current_name;main;0,0.5;9,3;]"..
 					"list[nodemeta:"..p.x..","..p.y..","..p.z..";main;0,3.5;9,3;]"..
 					"list[current_player;main;0,7.5;9,3;9]"..
@@ -83,7 +83,7 @@ minetest.register_node("mcl_chests:chest", {
 			m:set_string("formspec",
 					"size[9,11.5]"..
 					"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
-					mcl_core.inventory_header..
+					mcl_vars.inventory_header..
 					"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
 					"list[current_name;main;0,3.5;9,3;]"..
 					"list[current_player;main;0,7.5;9,3;9]"..
@@ -95,7 +95,7 @@ minetest.register_node("mcl_chests:chest", {
 		else
 			meta:set_string("formspec",
 					"size[9,8.75]"..
-					mcl_core.inventory_header..
+					mcl_vars.inventory_header..
 					"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
 					"image[0,-0.2;5,0.75;fnt_chest.png]"..
 					"list[current_name;main;0,0.5;9,3;]"..
@@ -158,7 +158,7 @@ minetest.register_node("mcl_chests:chest_left", {
 				"size[9,8.75]"..
 				"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
 				"image[0,-0.2;5,0.75;fnt_chest.png]"..
-				mcl_core.inventory_header..
+				mcl_vars.inventory_header..
 				"list[current_name;main;0,0.5;9,3;]"..
 				"list[current_player;main;0,4.5;9,3;9]"..
 				"list[current_player;main;0,7.74;9,1;]"..

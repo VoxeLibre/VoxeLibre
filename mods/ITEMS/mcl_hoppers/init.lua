@@ -5,7 +5,7 @@ local chest = minetest.get_content_id("mcl_chests:chest")
 local mcl_hoppers_formspec =
 	"size[9,7]"..
 	"background[-0.19,-0.25;9.41,10.48;mcl_hoppers_inventory.png]"..
-	mcl_core.inventory_header..
+	mcl_vars.inventory_header..
 	"list[current_name;main;2,0.5;5,1;]"..
 	"list[current_player;main;0,2.5;9,3;9]"..
 	"list[current_player;main;0,5.74;9,1;]"..

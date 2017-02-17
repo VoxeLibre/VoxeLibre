@@ -13,7 +13,7 @@ local setup_dropper = function(pos)
 	-- Set formspec and inventory
 	local form = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_inventory_9_slots.png]"..
-	mcl_core.inventory_header..
+	mcl_vars.inventory_header..
 	"image[3,-0.2;5,0.75;mcl_droppers_fnt_dropper.png]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
