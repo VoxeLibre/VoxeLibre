@@ -21,10 +21,6 @@ MIT License
 
 Authors of media files:
 -----------------------
-kddekadenz:
-  cart_bottom.png
-  cart_side.png
-  cart_top.png
 
 Zeg9:
   cart.x

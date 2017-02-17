@@ -260,8 +260,8 @@ end
 minetest.register_entity("mcl_minecarts:minecart", mcl_minecarts.cart)
 minetest.register_craftitem("mcl_minecarts:minecart", {
 	description = "Minecart",
-	inventory_image = minetest.inventorycube("cart_top.png", "cart_side.png", "cart_side.png"),
-	wield_image = "cart_side.png",
+	inventory_image = "mcl_minecarts_minecart_normal.png",
+	wield_image = "mcl_minecarts_minecart_normal.png",
 	stack_max = 1,
 	on_place = function(itemstack, placer, pointed_thing)
 		if not pointed_thing.type == "node" then
