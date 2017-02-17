@@ -65,7 +65,7 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 						itemwear = math.random(49144, 65535)	-- 75%-100% damaged
 					elseif r == 2 then
 						-- TODO: Enchanted book
-						itemname = "mcl_core:book"
+						itemname = "mcl_books:book"
 					elseif r == 3 then
 						-- TODO: Enchanted
 						itemname = "mcl_fishing:fishing_rod"
