@@ -211,6 +211,7 @@ minetest.register_node("mesecons_pistons:piston_pusher_normal", {
 	corresponding_piston = "mesecons_pistons:piston_normal_on",
 	selection_box = piston_pusher_box,
 	node_box = piston_pusher_box,
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
 -- Sticky ones
@@ -295,6 +296,7 @@ minetest.register_node("mesecons_pistons:piston_pusher_sticky", {
 	corresponding_piston = "mesecons_pistons:piston_sticky_on",
 	selection_box = piston_pusher_box,
 	node_box = piston_pusher_box,
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
 --
@@ -347,7 +349,8 @@ minetest.register_node("mesecons_pistons:piston_up_normal_off", {
 	mesecons = {effector={
 		action_on = piston_on,
 		rules = piston_up_rules,
-	}}
+	}},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
 -- onstate
@@ -397,6 +400,7 @@ minetest.register_node("mesecons_pistons:piston_up_pusher_normal", {
 	corresponding_piston = "mesecons_pistons:piston_up_normal_on",
 	selection_box = piston_up_pusher_box,
 	node_box = piston_up_pusher_box,
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
 
@@ -484,6 +488,7 @@ minetest.register_node("mesecons_pistons:piston_up_pusher_sticky", {
 	corresponding_piston = "mesecons_pistons:piston_up_sticky_on",
 	selection_box = piston_up_pusher_box,
 	node_box = piston_up_pusher_box,
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
 --
@@ -589,6 +594,7 @@ minetest.register_node("mesecons_pistons:piston_down_pusher_normal", {
 	corresponding_piston = "mesecons_pistons:piston_down_normal_on",
 	selection_box = piston_down_pusher_box,
 	node_box = piston_down_pusher_box,
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
 -- Sticky
@@ -672,6 +678,7 @@ minetest.register_node("mesecons_pistons:piston_down_pusher_sticky", {
 	corresponding_piston = "mesecons_pistons:piston_down_sticky_on",
 	selection_box = piston_down_pusher_box,
 	node_box = piston_down_pusher_box,
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
 
