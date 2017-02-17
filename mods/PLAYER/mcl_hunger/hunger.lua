@@ -79,7 +79,8 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sou
 			local hp = user:get_hp()
 
 			local pos = user:getpos()
-			pos.y = pos.y + item_drop_settings.player_collect_height
+			-- player height
+			pos.y = pos.y + 1.5
 			local foodtype = minetest.get_item_group(itemname, "food")
 			if foodtype == 3 then
 				-- Item is a drink, only play drinking sound (no particle)
