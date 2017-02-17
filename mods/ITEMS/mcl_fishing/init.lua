@@ -76,8 +76,8 @@ local go_fishing = function(itemstack, user, pointed_thing)
 			if inv:room_for_item("main", item) then
 				inv:add_item("main", item)
 			end
-			if not minetest.setting_get("creative_mode") then
-				itemstack:add_wear(66000/65) -- 65 uses
+			if not minetest.setting_getbool("creative_mode") then
+				itemstack:add_wear(65535/65) -- 65 uses
 			end
 			return itemstack
 		end
