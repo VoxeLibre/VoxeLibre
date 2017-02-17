@@ -1,19 +1,20 @@
 local init = os.clock()
 
 local block = {}
+
 block.dyes = {
 	{"white",      "White",      "white"},
 	{"grey",       "Grey",       "dark_grey"},
 	{"silver",     "Light Grey", "grey"},
 	{"black",      "Black",      "black"},
 	{"red",        "Red",        "red"},
-	{"yellow",     "Yellow",     "yellow"},
+	{"yellow",     "Yellow",     "yellow", true},
 	{"green",      "Green",      "dark_green"},
 	{"cyan",       "Cyan",       "cyan"},
 	{"blue",       "Blue",       "blue"},
-	{"magenta",    "Magenta",    "magenta"},
+	{"magenta",    "Magenta",    "magenta", true},
 	{"orange",     "Orange",     "orange"},
-	{"purple",     "Purple",     "violet"},
+	{"purple",     "Purple",     "violet", true},
 	{"brown",      "Brown",      "brown"},
 	{"pink",       "Pink",       "pink"},
 	{"lime",       "Lime",       "green"},
@@ -40,6 +41,8 @@ for _, row in ipairs(block.dyes) do
 	local name = row[1]
 	local desc = row[2]
 	local craft_color_group = row[3]
+	-- TODO: Remove when all 16 terracotta textures are available
+	local terracotta = row[4]
 	-- Node Definition
 	minetest.register_node("mcl_colorblocks:hardened_clay_"..name, {
 		description = desc.." Hardened Clay",
@@ -70,6 +73,20 @@ for _, row in ipairs(block.dyes) do
 		sounds = mcl_sounds.node_sound_stone_defaults(),
 	})
 
+	if terracotta then
+		local tex = "mcl_colorblocks_glazed_terracotta_"..name..".png"
+		local texes = { tex, tex, tex.."^[transformR180", tex, tex.."^[transformR270", tex.."^[transformR90" }
+		minetest.register_node("mcl_colorblocks:glazed_terracotta_"..name, {
+			description = desc.." Glazed Terracotta",
+			tiles = texes,
+			groups = {cracky=3,glazed_terracotta=1,building_block=1},
+			paramtype2 = "facedir",
+			stack_max = 64,
+			is_ground_content = false,
+			sounds = mcl_sounds.node_sound_stone_defaults(),
+		})
+	end
+
 	-- Crafting recipes
 	if craft_color_group then
 		minetest.register_craft({
@@ -89,6 +106,15 @@ for _, row in ipairs(block.dyes) do
 				'mcl_core:sand', 'mcl_core:gravel', 'mcl_core:sand',
 			}
 		})
+
+		if terracotta then
+			minetest.register_craft({
+				type = "cooking",
+				output = "mcl_colorblocks:glazed_terracotta_"..name,
+				recipe = "mcl_colorblocks:hardened_clay_"..name,
+				cooktime = 10,
+			})
+		end
 	end
 end
 
