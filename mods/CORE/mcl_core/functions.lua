@@ -164,14 +164,6 @@ minetest.register_on_dignode(function(pos, node)
 	end
 end)
 
-local function apple_leave()
-	if math.random(0, 10) == 3 then
-		return {name = "mcl_core:apple"}
-	else
-		return {name = "mcl_core:leaves"}
-	end
-end
-
 local function air_leave()
 	if math.random(0, 50) == 3 then
 		return {name = "air"}
@@ -223,39 +215,23 @@ function mcl_core.generate_tree(pos, trunk, leaves, typearbre)
 					if dx == 0 and dz == 0 and dy==3 then
 						if minetest.get_node(pos).name == "air" and math.random(1, 5) <= 4 then
 							minetest.add_node(pos, node)
-							if rarity == 1 then
-								minetest.add_node(pos, apple_leave())
-							else
-								minetest.add_node(pos, air_leave())
-							end
+							minetest.add_node(pos, air_leave())
 						end
 					elseif dx == 0 and dz == 0 and dy==4 then
 						if minetest.get_node(pos).name == "air" and math.random(1, 5) <= 4 then
 							minetest.add_node(pos, node)
-							if rarity == 1 then
-								minetest.add_node(pos, apple_leave())
-							else
-								minetest.add_node(pos, air_leave())
-							end
+							minetest.add_node(pos, air_leave())
 						end
 					elseif math.abs(dx) ~= 2 and math.abs(dz) ~= 2 then
 						if minetest.get_node(pos).name == "air" then
 							minetest.add_node(pos, node)
-							if rarity == 1 then
-								minetest.add_node(pos, apple_leave())
-							else
-								minetest.add_node(pos, air_leave())
-							end
+							minetest.add_node(pos, air_leave())
 						end
 					else
 						if math.abs(dx) ~= 2 or math.abs(dz) ~= 2 then
 							if minetest.get_node(pos).name == "air" and math.random(1, 5) <= 4 then
 								minetest.add_node(pos, node)
-							if rarity == 1 then
-								minetest.add_node(pos, apple_leave())
-							else
 								minetest.add_node(pos, air_leave())
-							end
 							end
 						end
 					end
