@@ -57,7 +57,7 @@ mcl_core.grow_reeds = function(pos, node)
 	pos.y = pos.y-1
 	local name = minetest.get_node(pos).name
 	if minetest.get_node_group(name, "soil_sugarcane") ~= 0 then
-		if minetest.find_node_near(pos, 3, {"group:water"}) == nil then
+		if minetest.find_node_near(pos, 1, {"group:water"}) == nil then
 			return
 		end
 		pos.y = pos.y+1
@@ -135,7 +135,7 @@ minetest.register_abm({
 
 minetest.register_abm({
 	nodenames = {"mcl_core:reeds"},
-	neighbors = {"mcl_core:dirt", "mcl_core:dirt_with_grass"},
+	neighbors = {"group:soil_sugarcane"},
 	interval = 25,
 	chance = 10,
 	action = function(pos)
