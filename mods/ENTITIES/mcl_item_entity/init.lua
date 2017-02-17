@@ -139,12 +139,6 @@ function minetest.handle_node_drops(pos, drops, digger)
 					end
 					obj:setvelocity({x=1/x, y=obj:getvelocity().y, z=1/z})
 					obj:get_luaentity().age = 0.6
-					-- FIXME this doesnt work for deactiveted objects
-					if minetest.setting_get("remove_items") and tonumber(minetest.setting_get("remove_items")) then
-						minetest.after(tonumber(minetest.setting_get("remove_items")), function(obj)
-							obj:remove()
-						end, obj)
-					end
 				end
 			end
 		end
