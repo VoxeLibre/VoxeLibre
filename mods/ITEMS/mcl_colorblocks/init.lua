@@ -67,7 +67,7 @@ for _, row in ipairs(block.dyes) do
 	minetest.register_node("mcl_colorblocks:concrete_"..name, {
 		description = desc.." Concrete",
 		tiles = {"mcl_colorblocks_concrete_"..name..".png"},
-		groups = {cracky=3,conrete=1,building_block=1},
+		groups = {cracky=3,concrete=1,building_block=1},
 		stack_max = 64,
 		is_ground_content = false,
 		sounds = mcl_sounds.node_sound_stone_defaults(),
