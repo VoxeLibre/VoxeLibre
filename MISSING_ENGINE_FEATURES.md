@@ -23,6 +23,8 @@ For these features, no easy Lua workaround could be found.
 - Inventory: Hold down right mouse button while holding an item stack to drop items into the slots as you move the mouse. Makes crafting MUCH faster
 - **Much** more informative item tooltips
 - Sneak+Leftclick on crafting output crafts as many items as possible and immediately puts it into the player inventory ([issue 5211](https://github.com/minetest/minetest/issues/5211))
+- Sneak+click on inventory slot should be able to put items into additional “fallback inventories” if the first inventory is full. Required for large chests
+- Sneak+click puts items in different inventories depending on the item type (maybe group-based)? Required for sneak-clicking to armor slots
 
 ## Workaround theoretically possible
 For these features, a workaround (or hack ;-)) by using Lua is theoretically possible. But engine support would be clearly better, more performant, more reliable, etc.
