@@ -95,7 +95,7 @@ mobs:register_mob("mobs_mc:sheep", {
 				minetest.add_item(pos, ItemStack("mcl_wool:"..self.color.." "..math.random(1,3)))
 			end
 			self.object:set_properties({
-				textures = {"sheep_sheared.png"},
+				textures = {"mobs_sheep_sheared.png"},
 			})
 			if not minetest.setting_getbool("creative_mode") then
 				item:add_wear(300)
