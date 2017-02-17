@@ -259,31 +259,94 @@ minetest.register_ore({
 	y_max          = -50,
 })
 
-function mcl_mapgen_core.make_reeds(pos, size)
-	for y=0,size-1 do
-		local p = {x=pos.x, y=pos.y+y, z=pos.z}
-		local nn = minetest.get_node(p).name
-		if minetest.registered_nodes[nn] and
-			minetest.registered_nodes[nn].buildable_to then
-			minetest.set_node(p, {name="mcl_core:reeds"})
-		else
-			return
-		end
-	end
+local function register_mgv6_decorations()
+	minetest.clear_registered_decorations()
+
+	-- Sugar canes
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.3,
+			scale = 0.7,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 2,
+			octaves = 3,
+			persist = 0.7
+		},
+		y_min = 1,
+		y_max = 1,
+		decoration = "mcl_core:reeds",
+		height = 2,
+		height_max = 4,
+		spawn_by = "mcl_core:water_source",
+		num_spawn_by = 1,
+	})
+
+	-- Cacti
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:sand", "mcl_core:redsand"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.012,
+			scale = 0.024,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 257,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 3,
+		y_max = 30,
+		decoration = "mcl_core:cactus",
+		height = 1,
+	        height_max = 3,
+	})
+
+	-- Tall grasses
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 8,
+		noise_params = {
+			offset = 0,
+			scale = 0.05,
+			spread = {x = 50, y = 50, z = 50},
+			seed = 420,
+			octaves = 2,
+			persist = 0.6
+		},
+		y_min = 1,
+		y_max = 30,
+		decoration = "mcl_core:tallgrass",
+	})
+
+	-- Dead bushes
+
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:sand", "mcl_core:redsand", "mcl_core:podzol", "mcl_core:coarse_dirt", "mcl_colorblocks:hardened_clay"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0,
+			scale = 0.035,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 1972,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 3,
+		y_max = 50,
+		decoration = "mcl_core:deadbush",
+	})
+
 end
 
-function mcl_mapgen_core.make_cactus(pos, size)
-	for y=0,size-1 do
-		local p = {x=pos.x, y=pos.y+y, z=pos.z}
-		local nn = minetest.get_node(p).name
-		if minetest.registered_nodes[nn] and
-			minetest.registered_nodes[nn].buildable_to then
-			minetest.set_node(p, {name="mcl_core:cactus"})
-		else
-			return
-		end
-	end
-end
+register_mgv6_decorations()
 
 
 minetest.register_on_generated(function(minp, maxp, seed)
@@ -341,10 +404,6 @@ minetest.register_on_generated(function(minp, maxp, seed)
 			for i=0,reeds_amount do
 				local x = pr:next(x0, x1)
 				local z = pr:next(z0, z1)
-				if minetest.get_node({x=x,y=1,z=z}).name == "mcl_core:dirt_with_grass" and
-						minetest.find_node_near({x=x,y=1,z=z}, 1, "mcl_core:water_source") then
-					mcl_mapgen_core.make_reeds({x=x,y=2,z=z}, pr:next(2, 4))
-				end
 				local p = {x=x,y=1,z=z}
 				if minetest.get_node(p).name == "mcl_core:sand" then
 					if math.random(0,1000) == 1 then -- 0,12000
@@ -353,39 +412,6 @@ minetest.register_on_generated(function(minp, maxp, seed)
 					end
 				end
 
-			end
-		end
-		end
-		-- Generate cactuses
-		local perlin1 = minetest.get_perlin(230, 3, 0.6, 100)
-		-- Assume X and Z lengths are equal
-		local divlen = 16
-		local divs = (maxp.x-minp.x)/divlen+1;
-		for divx=0,divs-1 do
-		for divz=0,divs-1 do
-			local x0 = minp.x + math.floor((divx+0)*divlen)
-			local z0 = minp.z + math.floor((divz+0)*divlen)
-			local x1 = minp.x + math.floor((divx+1)*divlen)
-			local z1 = minp.z + math.floor((divz+1)*divlen)
-			-- Determine cactus amount from perlin noise
-			local cactus_amount = math.floor(perlin1:get2d({x=x0, y=z0}) * 6 - 3)
-			-- Find random positions for cactus based on this random
-			local pr = PseudoRandom(seed+1)
-			for i=0,cactus_amount do
-				local x = pr:next(x0, x1)
-				local z = pr:next(z0, z1)
-				-- Find ground level (0...15)
-				local ground_y = nil
-				for y=30,0,-1 do
-					if minetest.get_node({x=x,y=y,z=z}).name ~= "air" then
-						ground_y = y
-						break
-					end
-				end
-				-- If sand, make cactus
-				if ground_y and minetest.get_node({x=x,y=ground_y,z=z}).name == "mcl_core:sand" then
-					mcl_mapgen_core.make_cactus({x=x,y=ground_y+1,z=z}, pr:next(3, 4))
-				end
 			end
 		end
 		end
@@ -423,13 +449,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 					if minetest.registered_nodes[nn] and
 						minetest.registered_nodes[nn].buildable_to then
 						nn = minetest.get_node({x=x,y=ground_y,z=z}).name
-						-- If sand, add dry shrub
-						if nn == "mcl_core:sand" then
-							minetest.set_node(p,{name="mcl_core:deadbush"})
-							
-						-- If dirt with grass, add grass
-						elseif nn == "mcl_core:dirt_with_grass" then
-							minetest.set_node(p,{name="mcl_core:tallgrass"})
+						if nn == "mcl_core:dirt_with_grass" then
 							if math.random(0,12000) == 1 then 
 								-- TODO: Re-enable random_struct
 								--random_struct.call_struct(p,1)
@@ -442,9 +462,6 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		end
 		end
 	end
-
-	-- Generate nyan cats
-	--generate_nyancats(seed, minp, maxp)
 end)
 
 local function replace(old, new, min, max)
