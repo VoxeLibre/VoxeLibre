@@ -84,9 +84,9 @@ local full_blocks = {
 --[[ Adds a new wall type.
 * nodename: Itemstring of base node. Must not contain an underscore
 * name: Item name, visible to user
-* texture: Wall texture
-* invtex: Inventory image ]]
-function mcl_walls.register_wall(nodename, name, texture, invtex)
+* tiles: Wall textures table
+* invtex: Inventory image (optional) ]]
+function mcl_walls.register_wall(nodename, name, tiles, invtex)
 	for i = 0, 15 do
 		local need = {}
 		local need_pillar = false
@@ -121,7 +121,7 @@ function mcl_walls.register_wall(nodename, name, texture, invtex)
 			},
 			drawtype = "nodebox",
 			is_ground_content = false,
-			tiles = {texture},
+			tiles = tiles,
 			paramtype = "light",
 			groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1,not_in_creative_inventory=1},
 			drop = nodename,
@@ -139,7 +139,7 @@ function mcl_walls.register_wall(nodename, name, texture, invtex)
 				type = 'fixed', 
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 		},
-		tiles = {texture},
+		tiles = tiles,
 		paramtype = "light",
 		is_ground_content = false,
 		groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1,not_in_creative_inventory=1},
@@ -157,7 +157,7 @@ function mcl_walls.register_wall(nodename, name, texture, invtex)
 				type = 'fixed', 
 				fixed = {-4/16, -0.5, -4/16, 4/16, 1, 4/16}
 		},
-		tiles = {texture},
+		tiles = tiles,
 		paramtype = "light",
 		is_ground_content = false,
 		groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1,not_in_creative_inventory=1},
@@ -175,7 +175,7 @@ function mcl_walls.register_wall(nodename, name, texture, invtex)
 		paramtype = "light",
 		is_ground_content = false,
 		groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1,deco_block=1},
-		tiles = {texture},
+		tiles = tiles,
 		inventory_image = invtex,
 		stack_max = 64,
 		drawtype = "nodebox",
@@ -195,7 +195,7 @@ end
 
 -- Cobblestone wall
 
-mcl_walls.register_wall("mcl_walls:cobble", "Cobblestone Wall", "default_cobble.png", "mcl_walls_cobble.png")
+mcl_walls.register_wall("mcl_walls:cobble", "Cobblestone Wall", {"default_cobble.png"}, "mcl_walls_cobble.png")
 minetest.register_craft({
 	output = 'mcl_walls:cobble 6',
 	recipe = {
@@ -206,7 +206,7 @@ minetest.register_craft({
 
 -- Mossy wall
 
-mcl_walls.register_wall("mcl_walls:mossycobble", "Mossy Cobblestone Wall", "default_mossycobble.png", "mcl_walls_mossycobble.png")
+mcl_walls.register_wall("mcl_walls:mossycobble", "Mossy Cobblestone Wall", {"default_mossycobble.png"}, "mcl_walls_mossycobble.png")
 minetest.register_craft({
 	output = 'mcl_walls:mossycobble 6',
 	recipe = {
