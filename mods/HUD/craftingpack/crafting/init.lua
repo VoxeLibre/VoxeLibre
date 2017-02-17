@@ -32,24 +32,7 @@ end
 local player_armor = {}
 
 local function update_armor(player)
-	local out = ""
-	if not player then return end
-	local name = player:get_player_name()
-	if not armor or not armor.textures then return end
-	local armor_str = armor.textures[name].armor
-	if string.find(armor_str, "leggings") then
-		out = out .. "^crafting_armor_legs.png"
-	end
-	if string.find(armor_str, "boots") then
-		out = out .. "^crafting_armor_boots.png"
-	end
-	if string.find(armor_str, "helmet") then
-		out = out .. "^crafting_armor_helmet.png"
-	end
-	if string.find(armor_str, "chestplate") then
-		out = out .. "^crafting_armor_chest.png"
-	end
-	player_armor[name] = out
+	return
 end
 
 local function set_inventory(player)
@@ -61,10 +44,10 @@ local function set_inventory(player)
 	player:get_inventory():set_size("craft", 4)
 
 	local player_name = player:get_player_name()
-	local img = "crafting_inventory_player.png"
+	local img = "crafting_player2d.png"
 	local armor_img = ""
 	if show_armor then
-		armor_img = "^crafting_inventory_armor.png"
+		armor_img = ""
 		if player_armor[player_name] ~= nil then
 			img = img .. player_armor[player_name]
 		end
