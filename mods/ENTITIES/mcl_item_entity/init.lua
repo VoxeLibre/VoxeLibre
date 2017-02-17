@@ -1,5 +1,5 @@
 --basic settings
-item_drop_settings                       = {} --settings table
+local item_drop_settings                 = {} --settings table
 item_drop_settings.age                   = 1 --how old an item has to be before collecting
 item_drop_settings.radius_magnet         = 2 --radius of item magnet
 item_drop_settings.radius_collect        = 0.1 --radius of collection
@@ -475,5 +475,5 @@ core.register_entity(":__builtin:item", {
 })
 
 if minetest.setting_get("log_mods") then
-	minetest.log("action", "item drop reloaded loaded")
+	minetest.log("action", "mcl_item_entity loaded")
 end
