@@ -44,6 +44,7 @@ local function set_inventory(player)
 	player:get_inventory():set_size("craft", 4)
 
 	local player_name = player:get_player_name()
+	-- TODO: Use player.png to allow for custom skins
 	local img = "crafting_player2d.png"
 	local armor_img = ""
 	if show_armor then
