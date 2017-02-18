@@ -407,8 +407,8 @@ minetest.register_on_generated(function(minp, maxp, seed)
 				local p = {x=x,y=1,z=z}
 				if minetest.get_node(p).name == "mcl_core:sand" then
 					if math.random(0,1000) == 1 then -- 0,12000
-						-- TODO: Re-enable random_struct
-						--random_struct.call_struct(p,2)
+						-- Spawn sand temple
+						random_struct.call_struct(p,2)
 					end
 				end
 
@@ -451,7 +451,9 @@ minetest.register_on_generated(function(minp, maxp, seed)
 						nn = minetest.get_node({x=x,y=ground_y,z=z}).name
 						if nn == "mcl_core:dirt_with_grass" then
 							if math.random(0,12000) == 1 then 
+								-- Spawn town
 								-- TODO: Re-enable random_struct
+								-- Towns often float around in air which doesn't look nice
 								--random_struct.call_struct(p,1)
 							end
 						end

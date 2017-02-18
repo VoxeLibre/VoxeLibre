@@ -1,1 +1,3 @@
 mcl_core
+stairs
+random_struct
