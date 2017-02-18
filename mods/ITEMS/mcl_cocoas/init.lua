@@ -67,6 +67,13 @@ end
 
 -- Cocoa definition
 -- 1st stage
+
+--[[ TODO (code quality): Turn the cocoa nodes into attached nodes and make use of wallmounted. This is much better
+than the current ugly hacky check after digging a jungle tree (in mcl_core).
+Problem: If we want to use wallmounted, we MUST use a mesh, since wallmounted does not support
+nodeboxes with multiple boxes. :-(
+Using meshes will also clean up the texture mess.
+]]
 local crop_def = {
 	description = "Young Cocoa",
 	drawtype = "nodebox",
@@ -101,7 +108,7 @@ local crop_def = {
 		},
 	},
 	groups = {
-		choppy=3, not_in_creative_inventory=1, dig_by_water = 1,
+		cocoa = 1, choppy=3, not_in_creative_inventory=1, dig_by_water = 1,
 	},
 	sounds = mcl_sounds.node_sound_wood_defaults()
 }
@@ -110,6 +117,7 @@ local crop_def = {
 minetest.register_node("mcl_cocoas:cocoa_1", table.copy(crop_def))
 
 crop_def.description = "Medium Cocoa"
+crop_def.groups.cocoa = 2
 crop_def.tiles = {
 	"[combine:32x32:10,2=mcl_cocoas_cocoa_stage_1.png", "[combine:32x32:10,18=mcl_cocoas_cocoa_stage_1.png",
 	"mcl_cocoas_cocoa_stage_1.png", "mcl_cocoas_cocoa_stage_1.png^[transformFX",
@@ -139,6 +147,7 @@ minetest.register_node("mcl_cocoas:cocoa_2", table.copy(crop_def))
 
 -- Final stage
 crop_def.description = "Mature Cocoa"
+crop_def.groups.cocoa = 3
 crop_def.tiles = {
 	-- The following 2 textures were derived from the original because the size of the top/bottom is slightly different :-(
 	-- TODO: Find a way to *only* use the base texture

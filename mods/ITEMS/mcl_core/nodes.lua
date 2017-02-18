@@ -590,6 +590,28 @@ minetest.register_node("mcl_core:jungletree", {
 	stack_max = 64,
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
+	-- This is a bad bad workaround which is only done because cocoas are not wallmounted (but should)
+	-- As long cocoas only EVER stick to jungle trees, and nothing else, this is probably a lesser sin.
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		-- Drop attached cocoas
+		local posses = {
+			{ x = pos.x + 1, y = pos.y, z = pos.z },
+			{ x = pos.x - 1, y = pos.y, z = pos.z },
+			{ x = pos.x, y = pos.y, z = pos.z + 1 },
+			{ x = pos.x, y = pos.y, z = pos.z - 1 },
+		}
+		for p=1, #posses do
+			local node = minetest.get_node(posses[p])
+			local g = minetest.get_item_group(node.name, "cocoa")
+			if g and g >= 1 then
+				minetest.remove_node(posses[p])
+				local drops = minetest.get_node_drops(node.name, "")
+				for d=1, #drops do
+					minetest.add_item(posses[p], drops[d])
+				end
+			end
+		end
+	end,
 	groups = {tree=1,choppy=2,oddly_breakable_by_hand=1,flammable=2,building_block=1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
