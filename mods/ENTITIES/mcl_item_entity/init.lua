@@ -19,7 +19,7 @@ minetest.register_globalstep(function(dtime)
 
 			--collection
 
-			for _,object in ipairs(minetest.env:get_objects_inside_radius({x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}, item_drop_settings.radius_collect)) do
+			for _,object in ipairs(minetest.get_objects_inside_radius({x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}, item_drop_settings.radius_collect)) do
 				if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" then
 					if object:get_luaentity().collect and object:get_luaentity().age > item_drop_settings.age then
 						if inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
@@ -43,7 +43,7 @@ minetest.register_globalstep(function(dtime)
 
 
 			--magnet
-			for _,object in ipairs(minetest.env:get_objects_inside_radius({x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}, item_drop_settings.radius_magnet)) do
+			for _,object in ipairs(minetest.get_objects_inside_radius({x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}, item_drop_settings.radius_magnet)) do
 				if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" then
 					if object:get_luaentity().collect and object:get_luaentity().age > item_drop_settings.age then
 						if inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
@@ -126,7 +126,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 		end
 		if not inv or not inv:contains_item("main", ItemStack(name)) then
 			for i=1,count do
-				local obj = minetest.env:add_item(pos, name)
+				local obj = minetest.add_item(pos, name)
 				if obj ~= nil then
 					obj:get_luaentity().collect = true
 					local x = math.random(1, 5)
