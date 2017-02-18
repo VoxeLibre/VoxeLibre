@@ -9,6 +9,8 @@ item_drop_settings.collect_by_default    = true --make item entities automatical
                                                 --versus setting it in the item drop code, setting true might interfere with
                                                 --mods that use item entities (like pipeworks)
 item_drop_settings.random_item_velocity  = true --this sets random item velocity if velocity is 0
+item_drop_settings.drop_single_item      = false --if true, the drop control drops 1 item instead of the entire stack, and sneak+drop drops the stack
+-- drop_single_item is disabled by default because it is annoying to throw away items from the intentory screen
 
 
 minetest.register_globalstep(function(dtime)
@@ -145,24 +147,26 @@ function minetest.handle_node_drops(pos, drops, digger)
 	end
 end
 
---throw single items by default
-function minetest.item_drop(itemstack, dropper, pos)
-	if dropper and dropper:is_player() then
-		local v = dropper:get_look_dir()
-		local p = {x=pos.x, y=pos.y+1.2, z=pos.z}
-		local cs = 1
-		if dropper:get_player_control().sneak then
-			cs = itemstack:get_count()
-		end
-		local item = itemstack:take_item(cs)
-		local obj = core.add_item(p, item)
-		if obj then
-			v.x = v.x*4
-			v.y = v.y*4 + 2
-			v.z = v.z*4
-			obj:setvelocity(v)
-			obj:get_luaentity().collect = true
-			return itemstack
+if item_drop_settings.drop_single_item then
+	-- Drop single items by default
+	function minetest.item_drop(itemstack, dropper, pos)
+		if dropper and dropper:is_player() then
+			local v = dropper:get_look_dir()
+			local p = {x=pos.x, y=pos.y+1.2, z=pos.z}
+			local cs = 1
+			if dropper:get_player_control().sneak then
+				cs = itemstack:get_count()
+			end
+			local item = itemstack:take_item(cs)
+			local obj = core.add_item(p, item)
+			if obj then
+				v.x = v.x*4
+				v.y = v.y*4 + 2
+				v.z = v.z*4
+				obj:setvelocity(v)
+				obj:get_luaentity().collect = true
+				return itemstack
+			end
 		end
 	end
 end
