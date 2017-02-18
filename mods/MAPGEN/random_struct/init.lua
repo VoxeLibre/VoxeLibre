@@ -1,7 +1,3 @@
--- Temporarily disable this mod because of HORRIBLE bugs
--- TODO: Re-enable this mod
---[===[
-
 local init = os.clock()
 random_struct ={}
 
@@ -282,6 +278,3 @@ minetest.register_chatcommand("spawnstruct", {
 
 local time_to_load= os.clock() - init
 print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
-
--- TODO: Remove after re-enabling this mod
-]===]
