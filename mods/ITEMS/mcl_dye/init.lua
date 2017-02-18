@@ -85,16 +85,19 @@ dyelocal.dyes = {
 -- Define items
 for _, row in ipairs(dyelocal.dyes) do
 	local name = row[1]
-	local description = row[2]
-	local groups = row[3]
-	local item_name = "mcl_dye:"..name
-	local item_image = "dye_"..name..".png"
-	minetest.register_craftitem(item_name, {
-		inventory_image = item_image,
-		description = description,
-		groups = groups,
-		stack_max = 64,
-	})
+	-- White and brown dyes are defined explicitly below
+	if name ~= "white" and name ~= "brown" then
+		local description = row[2]
+		local groups = row[3]
+		local item_name = "mcl_dye:"..name
+		local item_image = "dye_"..name..".png"
+		minetest.register_craftitem(item_name, {
+			inventory_image = item_image,
+			description = description,
+			groups = groups,
+			stack_max = 64,
+		})
+	end
 end
 
 -- Bone Meal
@@ -209,12 +212,22 @@ minetest.register_craftitem("mcl_dye:white", {
 	inventory_image = "dye_white.png",
 	description = "Bone Meal",
 	stack_max = 64,
-	groups = {dye=1, craftitem=1, basecolor_white=1,   excolor_white=1,     unicolor_white=1},
+	groups = dyelocal.dyes[1][3],
 	on_place = function(itemstack, user, pointed_thing) 
 		if(mcl_dye.apply_bone_meal(pointed_thing) and not minetest.setting_getbool("creative_mode")) then
 			itemstack:take_item()
 		end
 		return itemstack
+	end,
+})
+
+minetest.register_craftitem("mcl_dye:brown", {
+	inventory_image = "dye_brown.png",
+	description = "Cocoa Beans",
+	stack_max = 64,
+	groups = dyelocal.dyes[4][3],
+	on_place = function(itemstack, user, pointed_thing)
+		return mcl_cocoa.place_cocoa(itemstack, placer, pointed_thing, "mcl_cocoa:cocoa_1")
 	end,
 })
 
