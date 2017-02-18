@@ -1,0 +1,11 @@
+mcl_core
+xpanes
+doors
+stairs
+mcl_colorblocks
+mcl_wool
+mcl_fences
+mcl_chests
+crafting
+mesecons_pressureplates
+mcl_tnt
