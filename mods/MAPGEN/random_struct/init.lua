@@ -227,7 +227,7 @@ random_struct.call_struct= function(pos, struct_style)
 			if struct_style == 1 then
 			  random_struct.generatecity(pos)
 			elseif struct_style == 2 then
-			  random_struct.generate_temple_sand(pos)
+			  random_struct.generate_sand_temple(pos)
 			end
 end
 
@@ -241,7 +241,7 @@ random_struct.generatecity = function(pos)
 	random_struct.deserialise_WE(newpos, city )
 end
 
-random_struct.generate_temple_sand = function(pos)
+random_struct.generate_sand_temple = function(pos)
 	-- No Generating for the temple ... Why using it ? No Change
 	local temple = random_struct.get_struct("desert_temple.we")
 	local newpos = {x=pos.x,y=pos.y-12,z=pos.z}
@@ -254,24 +254,25 @@ end
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
-	params = "",
-	description = "Spawn a Struct.",
+	params = "town | sand_temple",
+	description = "Generate a pre-defined structure near your position.",
+	privs = {debug = true},
 	func = function(name, param)
 		local pos= minetest.get_player_by_name(name):getpos()
 		if not pos then
 			return
 		end
 		if param == "" or param == "help" then
-			minetest.chat_send_player(name, "Please use instruction /spawnstruct TYPE")
-			minetest.chat_send_player(name, "TYPE avaiable : town, temple_sand")
+			minetest.chat_send_player(name, "Please use “/spawnstruct <type>”.")
+			minetest.chat_send_player(name, "Avaiable types: town, sand_temple")
 		end
 		if param == "town" then
 			random_struct.generatecity(pos)
-			minetest.chat_send_player(name, "Town Created")
+			minetest.chat_send_player(name, "Town created.")
 		end
-		if param == "temple_sand" then
-			random_struct.generate_temple_sand(pos)
-			minetest.chat_send_player(name, "Temple Sand Created")
+		if param == "sand_temple" then
+			random_struct.generate_sand_temple(pos)
+			minetest.chat_send_player(name, "Sand temple created")
 		end
 	end
 })
