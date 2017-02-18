@@ -36,7 +36,7 @@ minetest.register_abm({
 	interval = 15,
 	chance = 3,
 	action = function(pos, node)
-		if minetest.find_node_near(pos, 3, {"mcl_core:water_source", "mcl_core:water_flowing"}) then
+		if minetest.find_node_near(pos, 4, {"mcl_core:water_source", "mcl_core:water_flowing"}) then
 			node.name = "mcl_farming:soil_wet"
 			minetest.set_node(pos, node)
 		end
