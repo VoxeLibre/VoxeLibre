@@ -62,6 +62,7 @@ local crop_def = {
 		"[combine:32x32:-10,0=mcl_cocoas_cocoa_stage_0.png", "[combine:32x32:-10,0=mcl_cocoas_cocoa_stage_0.png",
 	},
 	paramtype = "light",
+	sunlight_propagates = true,
 	paramtype2 = "facedir",
 	walkable = true,
 	drop = "mcl_dye:brown",
@@ -154,39 +155,44 @@ crop_def.drop = "mcl_dye:brown 3",
 minetest.register_node("mcl_cocoas:cocoa_3", table.copy(crop_def))
 
 -- Add random cocoa pods to jungle trees
+
+-- TODO: Do this more efficiently, with LuaVoxelManip
 minetest.register_on_generated(function(minp, maxp)
 
 	if maxp.y < 0 then
 		return
 	end
 
-	local pos, dir
+	local pos, treepos, dir
 	local cocoa = minetest.find_nodes_in_area(minp, maxp, "mcl_core:jungletree")
 
 	for n = 1, #cocoa do
 
 		pos = cocoa[n]
+		treepos = table.copy(pos)
 
 		if minetest.find_node_near(pos, 1, {"mcl_core:jungleleaves"}) then
 
-			dir = math.random(1, 80)
+			dir = math.random(1, 40)
 
 			if dir == 1 then
-				pos.x = pos.x + 1
-			elseif dir == 2 then
-				pos.x = pos.x - 1
-			elseif dir == 3 then
 				pos.z = pos.z + 1
+			elseif dir == 2 then
+				pos.z = pos.z - 1
+			elseif dir == 3 then
+				pos.x = pos.x + 1
 			elseif dir == 4 then
-				pos.z = pos.z -1
+				pos.x = pos.x -1
 			end
 
-			if dir < 5
-			and minetest.get_node(pos).name == "air"
-			and minetest.get_node_light(pos) > 12 then
+			local nn = minetest.get_node(pos).name
 
+			if dir < 5
+			and nn == "air"
+			and minetest.get_node_light(pos) > 12 then
 				minetest.swap_node(pos, {
-					name = "mcl_cocoas:cocoa_" .. tostring(math.random(1, 3))
+					name = "mcl_cocoas:cocoa_" .. tostring(math.random(1, 3)),
+					param2 = minetest.dir_to_facedir(vector.subtract(treepos, pos))
 				})
 			end
 
