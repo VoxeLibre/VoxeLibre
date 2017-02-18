@@ -36,19 +36,7 @@ function mcl_cocoas.place_cocoa(itemstack, placer, pointed_thing, plantname)
 	minetest.sound_play("default_place_node", {pos = pt.above, gain = 1.0})
 
 	if not minetest.setting_getbool("creative_mode") then
-
 		itemstack:take_item()
-
-		-- check for refill
-		if itemstack:get_count() == 0 then
-
-			minetest.after(0.20,
-				farming.refill_plant,
-				placer,
-				"mcl_dye:brown",
-				placer:get_wield_index()
-			)
-		end
 	end
 
 	return itemstack
