@@ -174,7 +174,7 @@ crop_def.selection_box = {
 		{-0.25, -0.3125, -0.0625, 0.25, 0.5, 0.5},
 	},
 }
-crop_def.drop = "mcl_dye:brown 3",
+crop_def.drop = "mcl_dye:brown 3"
 minetest.register_node("mcl_cocoas:cocoa_3", table.copy(crop_def))
 
 -- Add random cocoa pods to jungle trees
