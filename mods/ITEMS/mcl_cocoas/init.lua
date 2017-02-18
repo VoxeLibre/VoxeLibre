@@ -46,15 +46,36 @@ end
 
 -- Cocoa definition
 local crop_def = {
-	drawtype = "plantlike",
-	tiles = {"mcl_cocoas_cocoa_stage_0.png"},
+	description = "Cocoa (Stage 0)",
+	drawtype = "nodebox",
+	tiles = {
+		"[combine:32x32:12,2=mcl_cocoas_cocoa_stage_0.png", "[combine:32x32:12,22=mcl_cocoas_cocoa_stage_0.png",
+		"mcl_cocoas_cocoa_stage_0.png", "mcl_cocoas_cocoa_stage_0.png^[transformFX",
+		"[combine:32x32:-10,0=mcl_cocoas_cocoa_stage_0.png", "[combine:32x32:-10,0=mcl_cocoas_cocoa_stage_0.png",
+	},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	walkable = true,
 	drop = "mcl_dye:brown",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{-0.125, -0.0625, 0.1875, 0.125, 0.25, 0.4375},  -- Pod
+			-- FIXME: This has a thickness of 0. Is this OK in Minetest?
+			{0, 0.25, 0.25, 0, 0.5, 0.5},	-- Stem
+		},
+	},
+	collision_box = {
+		type = "fixed",
+		fixed = {
+			{-0.125, -0.0625, 0.1875, 0.125, 0.25, 0.4375},  -- Pod
+		},
+	},
 	selection_box = {
 		type = "fixed",
-		fixed = {-0.3, -0.5, -0.3, 0.3, 0.5, 0.3}
+		fixed = {
+			{-0.125, -0.0625, 0.1875, 0.125, 0.5, 0.5},  -- Pod
+		},
 	},
 	groups = {
 		choppy=3, not_in_creative_inventory=1, dig_by_water = 1,
@@ -65,12 +86,62 @@ local crop_def = {
 -- stage 1
 minetest.register_node("mcl_cocoas:cocoa_1", table.copy(crop_def))
 
--- stage2
-crop_def.tiles = {"mcl_cocoas_cocoa_stage_1.png"}
+crop_def.description = "Cocoa (Stage 1)"
+crop_def.tiles = {
+	"[combine:32x32:10,2=mcl_cocoas_cocoa_stage_1.png", "[combine:32x32:10,18=mcl_cocoas_cocoa_stage_1.png",
+	"mcl_cocoas_cocoa_stage_1.png", "mcl_cocoas_cocoa_stage_1.png^[transformFX",
+	"[combine:32x32:-8,0=mcl_cocoas_cocoa_stage_1.png", "[combine:32x32:-8,0=mcl_cocoas_cocoa_stage_1.png",
+}
+crop_def.node_box = {
+	type = "fixed",
+	fixed = {
+		{-0.1875, -0.1875, 0.0625, 0.1875, 0.25, 0.4375},  -- Pod
+		{0, 0.25, 0.25, 0, 0.5, 0.5},	-- Stem
+	},
+}
+crop_def.collision_box = {
+	type = "fixed",
+	fixed = {
+		{-0.1875, -0.1875, 0.0625, 0.1875, 0.25, 0.4375},  -- Pod
+	},
+}
+crop_def.selection_box = {
+	type = "fixed",
+	fixed = {
+		{-0.1875, -0.1875, 0.0625, 0.1875, 0.5, 0.5},
+	},
+}
+
 minetest.register_node("mcl_cocoas:cocoa_2", table.copy(crop_def))
 
--- stage 3 (final)
-crop_def.tiles = {"mcl_cocoas_cocoa_stage_2.png"}
+-- stage 2 (final)
+crop_def.description = "Cocoa (Stage 2)"
+crop_def.tiles = {
+	-- The following 2 textures were derived from the original because the size of the top/bottom is slightly different :-(
+	-- TODO: Find a way to *only* use the base texture
+	"mcl_cocoas_cocoa_top_stage_2.png", "mcl_cocoas_cocoa_top_stage_2.png^[transformFY",
+	"mcl_cocoas_cocoa_stage_2.png", "mcl_cocoas_cocoa_stage_2.png^[transformFX",
+	"[combine:32x32:-6,0=mcl_cocoas_cocoa_stage_2.png", "[combine:32x32:-6,0=mcl_cocoas_cocoa_stage_2.png",
+}
+crop_def.node_box = {
+	type = "fixed",
+	fixed = {
+		{-0.25, -0.3125, -0.0625, 0.25, 0.25, 0.4375},  -- Pod
+		{0, 0.25, 0.25, 0, 0.5, 0.5},	-- Stem
+	},
+}
+crop_def.collision_box = {
+	type = "fixed",
+	fixed = {
+		{-0.25, -0.3125, -0.0625, 0.25, 0.25, 0.4375},  -- Pod
+	},
+}
+crop_def.selection_box = {
+	type = "fixed",
+	fixed = {
+		{-0.25, -0.3125, -0.0625, 0.25, 0.5, 0.5},
+	},
+}
 crop_def.drop = "mcl_dye:brown 3",
 minetest.register_node("mcl_cocoas:cocoa_3", table.copy(crop_def))
 
