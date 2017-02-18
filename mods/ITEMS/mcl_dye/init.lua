@@ -180,6 +180,12 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 			minetest.add_node(pos, {name="mcl_farming:melontige_unconnect"})
 		end
 		return true
+	elseif n.name == "mcl_cocoas:cocoa_1" then
+		minetest.set_node(pos, {name="mcl_cocoas:cocoa_2", param2 = n.param2})
+		return true
+	elseif n.name == "mcl_cocoas:cocoa_2" then
+		minetest.set_node(pos, {name="mcl_cocoas:cocoa_3", param2 = n.param2})
+		return true
 	elseif n.name ~= ""  and n.name == "mcl_core:junglesapling" then
 		minetest.add_node(pos, {name="air"})
 		mcl_core.generate_tree(pos, "mcl_core:jungletree", "mcl_core:jungleleaves", 2)
