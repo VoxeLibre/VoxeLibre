@@ -52,7 +52,7 @@ mobs:register_mob("mobs_mc:squid", {
 })
 
 --name, nodes, neighbours, minlight, maxlight, interval, chance, active_object_count, min_height, max_height
-mobs:spawn_specific("mobs_mc:squid", l_spawn_in, l_spawn_near, l_min_light, l_max_light, 30, 2, 5000, -31000, l_max_height )
+mobs:spawn_specific("mobs_mc:squid", l_spawn_in, l_spawn_near, l_min_light, l_max_light, 30, 5000, 2, -31000, l_max_height )
 
 -- compatibility
 mobs:alias_mob("mobs:squid", "mobs_mc:squid")
