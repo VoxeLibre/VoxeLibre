@@ -389,13 +389,29 @@ minetest.register_on_joinplayer(function(player)
 			armor:update_inventory(player)
 		end,
 		allow_put = function(inv, listname, index, stack, player)
-			return 1
+			local iname = stack:get_name()
+			local g
+			local groupcheck
+			if index == 2 then
+				g = minetest.get_item_group(iname, "armor_head")
+			elseif index == 3 then
+				g = minetest.get_item_group(iname, "armor_torso")
+			elseif index == 4 then
+				g = minetest.get_item_group(iname, "armor_legs")
+			elseif index == 5 then
+				g = minetest.get_item_group(iname, "armor_feet")
+			end
+			if g ~= 0 and g ~= nil then
+				return stack:get_count()
+			else
+				return 0
+			end
 		end,
 		allow_take = function(inv, listname, index, stack, player)
 			return stack:get_count()
 		end,
 		allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
-			return count
+			return 0
 		end,
 	}, name)
 	if inv_mod == "inventory_plus" then
