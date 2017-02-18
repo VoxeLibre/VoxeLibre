@@ -24,14 +24,22 @@ function mcl_cocoas.place_cocoa(itemstack, placer, pointed_thing, plantname)
 		return def.on_rightclick(pt.under, under, placer, itemstack)
 	end
 
-	-- check if pointing at jungletree
+	-- Check if pointing at jungle tree
 	if under.name ~= "mcl_core:jungletree"
 	or minetest.get_node(pt.above).name ~= "air" then
 		return
 	end
 
-	-- add the node and remove 1 item from the itemstack
-	minetest.set_node(pt.above, {name = plantname})
+	-- Determine cocoa direction
+	local clickdir = vector.subtract(pt.under, pt.above)
+
+	-- Did user click on the SIDE of a jungle tree?
+	if clickdir.y ~= 0 then
+		return
+	end
+
+	-- Add the node, set facedir and remove 1 item from the itemstack
+	minetest.set_node(pt.above, {name = plantname, param2 = minetest.dir_to_facedir(clickdir)})
 
 	minetest.sound_play("default_place_node", {pos = pt.above, gain = 1.0})
 
