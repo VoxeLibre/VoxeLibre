@@ -50,7 +50,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 					local nn = minetest.get_node(p).name
 					-- Check if the node can be replaced
 					if minetest.registered_nodes[nn] and
-						minetest.registered_nodes[nn].buildable_to then
+						minetest.registered_nodes[nn].is_ground_content then
 						nn = minetest.get_node({x=x,y=ground_y,z=z}).name
 						if nn == "mcl_core:dirt_with_grass" then
 							--local flower_choice = pr:next(1, 11)
