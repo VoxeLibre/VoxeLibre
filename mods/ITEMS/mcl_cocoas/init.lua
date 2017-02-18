@@ -1,7 +1,7 @@
-mcl_cocoa = {}
+mcl_cocoas = {}
 
 -- place cocoa
-function mcl_cocoa.place_cocoa(itemstack, placer, pointed_thing, plantname)
+function mcl_cocoas.place_cocoa(itemstack, placer, pointed_thing, plantname)
 
 	local pt = pointed_thing
 
@@ -59,7 +59,7 @@ end
 -- Cocoa definition
 local crop_def = {
 	drawtype = "plantlike",
-	tiles = {"mcl_cocoa_cocoa_stage_0.png"},
+	tiles = {"mcl_cocoas_cocoa_stage_0.png"},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	walkable = true,
@@ -75,16 +75,16 @@ local crop_def = {
 }
 
 -- stage 1
-minetest.register_node("mcl_cocoa:cocoa_1", table.copy(crop_def))
+minetest.register_node("mcl_cocoas:cocoa_1", table.copy(crop_def))
 
 -- stage2
-crop_def.tiles = {"mcl_cocoa_cocoa_stage_1.png"}
-minetest.register_node("mcl_cocoa:cocoa_2", table.copy(crop_def))
+crop_def.tiles = {"mcl_cocoas_cocoa_stage_1.png"}
+minetest.register_node("mcl_cocoas:cocoa_2", table.copy(crop_def))
 
 -- stage 3 (final)
-crop_def.tiles = {"mcl_cocoa_cocoa_stage_2.png"}
+crop_def.tiles = {"mcl_cocoas_cocoa_stage_2.png"}
 crop_def.drop = "mcl_dye:brown 3",
-minetest.register_node("mcl_cocoa:cocoa_3", table.copy(crop_def))
+minetest.register_node("mcl_cocoas:cocoa_3", table.copy(crop_def))
 
 -- Add random cocoa pods to jungle trees
 minetest.register_on_generated(function(minp, maxp)
@@ -119,7 +119,7 @@ minetest.register_on_generated(function(minp, maxp)
 			and minetest.get_node_light(pos) > 12 then
 
 				minetest.swap_node(pos, {
-					name = "mcl_cocoa:cocoa_" .. tostring(math.random(1, 3))
+					name = "mcl_cocoas:cocoa_" .. tostring(math.random(1, 3))
 				})
 			end
 
