@@ -1,7 +1,7 @@
 mcl_cocoas = {}
 
--- place cocoa
-function mcl_cocoas.place_cocoa(itemstack, placer, pointed_thing, plantname)
+-- Place cocoa
+function mcl_cocoas.place(itemstack, placer, pointed_thing, plantname)
 
 	local pt = pointed_thing
 
@@ -50,11 +50,25 @@ function mcl_cocoas.place_cocoa(itemstack, placer, pointed_thing, plantname)
 	return itemstack
 end
 
+-- Attempts to grow a cocoa at pos, returns true when grown, returns false if there's no cocoa
+-- or it is already at full size
+function mcl_cocoas.grow(pos)
+	local node = minetest.get_node(pos)
+	if node.name == "mcl_cocoas:cocoa_1" then
+		minetest.set_node(pos, {name = "mcl_cocoas:cocoa_2", param2 = node.param2})
+	elseif node.name == "mcl_cocoas:cocoa_2" then
+		minetest.set_node(pos, {name = "mcl_cocoas:cocoa_3", param2 = node.param2})
+		return true
+	end
+	return false
+end
+
 -- Note: cocoa beans are implemented as mcl_dye:brown
 
 -- Cocoa definition
+-- 1st stage
 local crop_def = {
-	description = "Cocoa (Stage 0)",
+	description = "Young Cocoa",
 	drawtype = "nodebox",
 	tiles = {
 		"[combine:32x32:12,2=mcl_cocoas_cocoa_stage_0.png", "[combine:32x32:12,22=mcl_cocoas_cocoa_stage_0.png",
@@ -92,10 +106,10 @@ local crop_def = {
 	sounds = mcl_sounds.node_sound_wood_defaults()
 }
 
--- stage 1
+-- 2nd stage
 minetest.register_node("mcl_cocoas:cocoa_1", table.copy(crop_def))
 
-crop_def.description = "Cocoa (Stage 1)"
+crop_def.description = "Medium Cocoa"
 crop_def.tiles = {
 	"[combine:32x32:10,2=mcl_cocoas_cocoa_stage_1.png", "[combine:32x32:10,18=mcl_cocoas_cocoa_stage_1.png",
 	"mcl_cocoas_cocoa_stage_1.png", "mcl_cocoas_cocoa_stage_1.png^[transformFX",
@@ -123,8 +137,8 @@ crop_def.selection_box = {
 
 minetest.register_node("mcl_cocoas:cocoa_2", table.copy(crop_def))
 
--- stage 2 (final)
-crop_def.description = "Cocoa (Stage 2)"
+-- Final stage
+crop_def.description = "Mature Cocoa"
 crop_def.tiles = {
 	-- The following 2 textures were derived from the original because the size of the top/bottom is slightly different :-(
 	-- TODO: Find a way to *only* use the base texture
@@ -199,4 +213,15 @@ minetest.register_on_generated(function(minp, maxp)
 		end
 	end
 end)
+
+minetest.register_abm({
+		nodenames = {"mcl_cocoas:cocoa_1", "mcl_cocoas:cocoa_2"},
+		-- Same as potatoes
+		-- TODO: Tweak/balance the growth speed
+		interval = 50,
+		chance = 20,
+		action = function(pos, node)
+			mcl_cocoas.grow(pos)
+		end
+}	)
 

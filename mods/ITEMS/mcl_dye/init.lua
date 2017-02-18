@@ -180,11 +180,8 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 			minetest.add_node(pos, {name="mcl_farming:melontige_unconnect"})
 		end
 		return true
-	elseif n.name == "mcl_cocoas:cocoa_1" then
-		minetest.set_node(pos, {name="mcl_cocoas:cocoa_2", param2 = n.param2})
-		return true
-	elseif n.name == "mcl_cocoas:cocoa_2" then
-		minetest.set_node(pos, {name="mcl_cocoas:cocoa_3", param2 = n.param2})
+	elseif n.name == "mcl_cocoas:cocoa_1" or n.name == "mcl_cocoas:cocoa_2" then
+		mcl_cocoas.grow(pos)
 		return true
 	elseif n.name ~= ""  and n.name == "mcl_core:junglesapling" then
 		minetest.add_node(pos, {name="air"})
@@ -233,7 +230,7 @@ minetest.register_craftitem("mcl_dye:brown", {
 	stack_max = 64,
 	groups = dyelocal.dyes[4][3],
 	on_place = function(itemstack, user, pointed_thing)
-		return mcl_cocoas.place_cocoa(itemstack, placer, pointed_thing, "mcl_cocoas:cocoa_1")
+		return mcl_cocoas.place(itemstack, placer, pointed_thing, "mcl_cocoas:cocoa_1")
 	end,
 })
 
