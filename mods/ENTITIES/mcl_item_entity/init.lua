@@ -233,7 +233,7 @@ core.register_entity(":__builtin:item", {
 		if item_drop_settings.random_item_velocity == true then
 			minetest.after(0, function()
 				local vel = self.object:getvelocity()
-				if vel.x == 0 and vel.z == 0 then
+				if vel and vel.x == 0 and vel.z == 0 then
 					local x = math.random(1, 5)
 					if math.random(1,2) == 1 then
 						x = -x
