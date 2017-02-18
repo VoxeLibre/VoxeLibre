@@ -1,15 +1,18 @@
--- v1
+-- v1.1
 
 local l_spawn_in = {"mcl_core:water_flowing","mcl_core:water_source"}
 local l_spawn_near = {"mcl_core:water_flowing","mcl_core:water_source"}
-local l_spawn_chance = 5000
+local l_spawn_chance = 500
+local l_min_light = -1
+local l_max_light = 30
+local l_max_height = -1 -- water_level - 1
 
 mobs:register_mob("mobs_mc:squid", {
     type = "animal",
     passive = true,
     hp_min = 10,
     hp_max = 10,
-    armor = 3,
+    armor = 100,
     collisionbox = {-0.4, 1.3, -1.5, 0.6, 2.3, 1.5},
     visual = "mesh",
     mesh = "mobs_squid.b3d",
@@ -47,9 +50,9 @@ mobs:register_mob("mobs_mc:squid", {
     light_damage = 0,
     
 })
---name, nodes, neighbours, minlight, maxlight, interval, chance, active_object_count, min_height, max_height
-mobs:spawn_specific("mobs_mc:squid", l_spawn_in, l_spawn_near, -1, 0, 30, l_spawn_chance, 1, -31000, tonumber(minetest.setting_get("water_level")) - 1 )
 
+--name, nodes, neighbours, minlight, maxlight, interval, chance, active_object_count, min_height, max_height
+mobs:spawn_specific("mobs_mc:squid", l_spawn_in, l_spawn_near, l_min_light, l_max_light, 30, 2, 5000, -31000, l_max_height )
 
 -- compatibility
 mobs:alias_mob("mobs:squid", "mobs_mc:squid")
