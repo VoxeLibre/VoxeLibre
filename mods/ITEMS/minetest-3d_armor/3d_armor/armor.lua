@@ -621,26 +621,3 @@ minetest.register_globalstep(function(dtime)
 	end
 	armor.timer = 0
 end)
-
--- kill player when command issued
-minetest.register_chatcommand("kill", {
-	params = "<name>",
-	description = "Kills player instantly",
-	privs = {ban=true},
-	func = function(name, param)
-		local player = minetest.get_player_by_name(param)
-		if player then
-			player:set_hp(0)
-		end
-	end,
-})
-
-minetest.register_chatcommand("killme", {
-	description = "Kill yourself instantly",
-	func = function(name)
-		local player = minetest.get_player_by_name(name)
-		if player then
-			player:set_hp(-1001)
-		end
-	end,
-})
