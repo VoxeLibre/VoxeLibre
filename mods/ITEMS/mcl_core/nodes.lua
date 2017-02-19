@@ -480,7 +480,7 @@ minetest.register_node("mcl_core:sapling", {
 	},
 	stack_max = 64,
 	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
-	sounds = mcl_sounds.node_sound_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 
 minetest.register_node("mcl_core:leaves", {
@@ -544,7 +544,7 @@ minetest.register_node("mcl_core:darksapling", {
 	},
 	stack_max = 64,
 	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
-	sounds = mcl_sounds.node_sound_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 
 minetest.register_node("mcl_core:darkleaves", {
@@ -660,7 +660,7 @@ minetest.register_node("mcl_core:junglesapling", {
 	},
 	stack_max = 64,
 	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
-	sounds = mcl_sounds.node_sound_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 
 
@@ -720,7 +720,7 @@ minetest.register_node("mcl_core:acaciasapling", {
 	},
 	stack_max = 64,
 	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
-	sounds = mcl_sounds.node_sound_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 
 -- Spruce --
@@ -785,7 +785,7 @@ minetest.register_node("mcl_core:sprucesapling", {
 	},
 	stack_max = 64,
 	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
-	sounds = mcl_sounds.node_sound_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 
 -- Birch
@@ -845,7 +845,7 @@ minetest.register_node("mcl_core:birchsapling", {
 	},
 	stack_max = 64,
 	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
-	sounds = mcl_sounds.node_sound_defaults(),
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
 })
 
 minetest.register_node("mcl_core:cactus", {
