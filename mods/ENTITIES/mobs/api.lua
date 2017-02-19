@@ -262,6 +262,12 @@ local function effect(pos, amount, texture, min_size, max_size, radius, gravity)
 	})
 end
 
+local function update_tag(self)
+	self.object:set_properties({
+		nametag = self.nametag
+	})
+end
+
 -- check if mob is dead or only hurt
 local function check_for_death(self)
 
@@ -295,6 +301,8 @@ local function check_for_death(self)
 		end
 
 		self.htimer = 2
+
+		update_tag(self)
 
 		return false
 	end
@@ -2112,6 +2120,7 @@ local mob_activate = function(self, staticdata, dtime_s, def)
 
 	-- set anything changed above
 	self.object:set_properties(self)
+	update_tag(self)
 end
 
 local mob_step = function(self, dtime)
@@ -2976,6 +2985,8 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 
 		self.object:set_hp(self.health)
 
+		update_tag(self)
+
 		-- make children grow quicker
 		if self.child == true then
 
@@ -3067,6 +3078,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 		-- update nametag
 		mob_obj[name].nametag = fields.name
+
+		update_tag(mob_obj[name])
 
 		-- if not in creative then take item
 		if not creative then
