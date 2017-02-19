@@ -7,6 +7,10 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 	groups = { tool = 1 },
 	on_use = function(itemstack, user, pointed_thing)
 		local idef = itemstack:get_definition()
+		minetest.sound_play(
+			"fire_flint_and_steel",
+			{pos = pointed_thing.above, gain = 0.5, max_hear_distance = 8}
+		)
 		if pointed_thing.type == "node" then
 			if minetest.get_node(pointed_thing.under).name == "mcl_tnt:tnt" then
 				tnt.ignite(pointed_thing.under)

@@ -1,5 +1,6 @@
-Minetest 0.4 mod: fire
-======================
+mcl_fire: Fire mod for MineClone 2
+Based on fire from Minetest Game
+==================================
 
 License of source code:
 -----------------------
