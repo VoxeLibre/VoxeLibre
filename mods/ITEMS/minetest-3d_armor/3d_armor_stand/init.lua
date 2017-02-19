@@ -1,15 +1,3 @@
-local armor_stand_formspec = "size[8,7]" ..
-	"list[current_name;armor_head;3,0.5;1,1;]" ..
-	"list[current_name;armor_torso;4,0.5;1,1;]" ..
-	"list[current_name;armor_legs;3,1.5;1,1;]" ..
-	"list[current_name;armor_feet;4,1.5;1,1;]" ..
-	"image[3,0.5;1,1;3d_armor_stand_head.png]" ..
-	"image[4,0.5;1,1;3d_armor_stand_torso.png]" ..
-	"image[3,1.5;1,1;3d_armor_stand_legs.png]" ..
-	"image[4,1.5;1,1;3d_armor_stand_feet.png]" ..
-	"list[current_player;main;0,3;8,1;]" ..
-	"list[current_player;main;0,4.25;8,3;8]"
-
 local elements = {"head", "torso", "legs", "feet"}
 
 local function get_stand_object(pos)
@@ -98,7 +86,6 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", armor_stand_formspec)
 		local inv = meta:get_inventory()
 		for _, element in pairs(elements) do
 			inv:set_size("armor_"..element, 1)
@@ -113,6 +100,46 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 			end
 		end
 		return true
+	end,
+	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+		-- Check if player wields armor
+		local name = itemstack:get_name()
+		local list
+		for e=1, #elements do
+			local g = minetest.get_item_group(name, "armor_" .. elements[e])
+			if g ~= nil and g ~= 0 then
+				list = "armor_" .. elements[e]
+				break
+			end
+		end
+
+		-- If player wields armor, put it on armor stand
+		local inv = minetest.get_inventory({type = "node", pos = pos})
+		local wielditem = clicker:get_wielded_item()
+		if not inv then return end
+		if list then
+			if inv:room_for_item(list, itemstack) then
+				inv:add_item(list, itemstack)
+				update_entity(pos)
+				itemstack:take_item()
+			end
+			return itemstack
+		elseif wielditem:get_name() == "" then
+		-- If player does not wield anything, take the first available armor from the armor stand
+		-- and give it to the player
+			for e=1, #elements do
+				local stand_armor = inv:get_stack("armor_" .. elements[e], 1)
+				if not stand_armor:is_empty() then
+					local pinv = clicker:get_inventory()
+					pinv:set_stack("main", clicker:get_wield_index(), stand_armor)
+					stand_armor:take_item()
+					inv:set_stack("armor_" .. elements[e], 1, stand_armor)
+					update_entity(pos)
+					return clicker:get_wielded_item()
+				end
+			end
+		end
+		return itemstack
 	end,
 	after_place_node = function(pos)
 		minetest.add_entity(pos, "3d_armor_stand:armor_entity")
