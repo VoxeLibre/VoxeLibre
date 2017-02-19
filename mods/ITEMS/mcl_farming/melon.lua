@@ -1,6 +1,5 @@
 minetest.register_node("mcl_farming:melon", {
 	description = "Melon",
-	paramtype2 = "facedir",
 	stack_max = 64,
 	tiles = {"farming_melon_top.png", "farming_melon_top.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png"},
 	groups = {choppy=2, oddly_breakable_by_hand=2, building_block=1},
@@ -34,7 +33,8 @@ minetest.register_node("mcl_farming:melon", {
 				end
 			end
 		end
-	end
+	end,
+	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
 minetest.register_node("mcl_farming:melontige_1", {
