@@ -56,13 +56,13 @@ mobs:register_mob("mobs_mc:dog", {
 				self.owner = clicker:get_player_name()
 			else
 				local formspec = "size[8,4]"
-				formspec = formspec .. "textlist[2.85,0;2.1,0.5;dialog;What can I do for you?]"
-				formspec = formspec .. "button_exit[1,1;2,2;dfollow;follow]"
-				formspec = formspec .. "button_exit[5,1;2,2;dstand;stand]"
-				formspec = formspec .. "button_exit[0,2;4,4;dfandp;follow and protect]"
-				formspec = formspec .. "button_exit[4,2;4,4;dsandp;stand and protect]"
-				formspec = formspec .. "button_exit[1,2;2,2;dgohome; go home]"
-				formspec = formspec .. "button_exit[5,2;2,2;dsethome; sethome]"
+				formspec = formspec .. "label[0,0;What are your commands for the tamed wolf?]"
+				formspec = formspec .. "button_exit[0,1;4,1;dfollow;Follow me!]"
+				formspec = formspec .. "button_exit[4,1;4,1;dstand;Stay here!]"
+				formspec = formspec .. "button_exit[0,2;4,1;dfandp;Follow and protect me!]"
+				formspec = formspec .. "button_exit[4,2;4,1;dsandp;Stay here and protect me!]"
+				formspec = formspec .. "button_exit[0,3;4,1;dsethome;This is your home!]"
+				formspec = formspec .. "button_exit[4,3;4,1;dgohome;Go home!]"
 				minetest.show_formspec(clicker:get_player_name(), "order", formspec)
 				minetest.register_on_player_receive_fields(function(clicker, formname, fields)
 					if fields.dfollow then
@@ -180,7 +180,7 @@ mobs:alias_mob("esmobs:dog", "mobs_mc:dog")
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:wolf", "Spawn Wolf", "wool_grey.png", 1)
-mobs:register_egg("mobs_mc:dog", "Spawn Dog", "wool_brown.png", 1)
+mobs:register_egg("mobs_mc:dog", "Spawn Tamed Wolf", "wool_brown.png", 1)
 
 
 if minetest.setting_get("log_mods") then
