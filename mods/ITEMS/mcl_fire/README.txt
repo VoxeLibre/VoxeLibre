@@ -19,8 +19,13 @@ http://creativecommons.org/licenses/by-sa/3.0/
 
 Authors of media files
 -----------------------
-fire_small.ogg sampled from:
-  http://www.freesound.org/people/dobroide/sounds/4211/
+Muadtralk (CC BY-SA 3.0)
+  fire_basic_flame_animated.png
 
-fire_large.ogg sampled from:
-  http://www.freesound.org/people/Dynamicell/sounds/17548/
+Dynamicell (CC BY 3.0)
+http://www.freesound.org/people/Dynamicell/sounds/17548/
+  fire_fire.*.ogg
+
+Benboncan (CC BY 3.0)
+https://www.freesound.org/people/Benboncan/sounds/66457/
+  fire_flint_and_steel.ogg
