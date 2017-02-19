@@ -19,7 +19,9 @@ end
 
 function watch.get_clock_frame()
 	local t = 64 * minetest.get_timeofday()
-	return tostring(round(t))
+	t = round(t)
+	if t == 64 then t = 0 end
+	return tostring(t)
 end
 
 -- Register items
