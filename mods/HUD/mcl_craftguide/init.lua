@@ -253,14 +253,14 @@ function craftguide:get_formspec(player_name, is_fuel)
 	local formspec = "size["..data.iX..","..(iY+3)..".6;]"..
 			mcl_vars.gui_slots ..
 			mcl_vars.gui_bg ..
-			[[background[1,1;1,1;craftguide_bg.png;true]
+			[=[background[1,1;1,1;craftguide_bg.png;true]
 			button[2.4,0.21;0.8,0.5;search;?]
 			button[3.05,0.21;0.8,0.5;clear;X]
 			tooltip[search;Search]
 			tooltip[clear;Reset]
 			tooltip[size_inc;Increase window size]
 			tooltip[size_dec;Decrease window size]
-			field_close_on_enter[filter, false] ]]..
+			field_close_on_enter[filter;false]]=]..
 			"button["..(data.iX/2)..",-0.02;0.7,1;size_inc;+]"..
 			"button["..((data.iX/2) + 0.5)..
 				",-0.02;0.7,1;size_dec;-]"..
