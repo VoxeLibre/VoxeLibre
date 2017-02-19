@@ -373,48 +373,21 @@ core.register_entity(":__builtin:item", {
 
 		-- Move item around on flowing liquids
 		if minetest.registered_nodes[nn] and minetest.registered_nodes[nn].liquidtype == "flowing" then
-			local get_flowing_dir = function(self)
-				local pos = self.object:getpos()
-				local param2 = minetest.get_node(pos).param2
-				-- Search for a liquid source, or a flowing liquid node higher than
-				-- the item's position in the 4 cardinal directions
-				local posses = {
-					{x=-1, y=0, z=0},
-					{x=1, y=0, z=0},
-					{x=0, y=0, z=-1},
-					{x=0, y=0, z=1},
-				}
-				for _, p in pairs(posses) do
-					local realpos = vector.add(pos, p)
-					local name = minetest.get_node(realpos).name
-					local def = minetest.registered_nodes[name]
-					local par2 = minetest.get_node(realpos).param2
-					if def.liquidtype == "source" or (def.liquidtype == "flowing" and par2 > param2) then
-						-- Node found! Since we looked upwards, the flowing
-						-- direction is the *opposite* of what we've found
-						return vector.multiply(p, -1)
-					end
-				end
-			end
 
-			local vec = get_flowing_dir(self)
-			if vec then
-				local v = self.object:getvelocity()
+			local pos = self.object:getpos()
+			local node = minetest.get_node(pos)
+			--[[ Get flowing direction (function call from flowlib), if there's a liquid.
+			NOTE: According to Qwertymine, flowlib.quickflow is only reliable for liquids with a flowing distance of 7.
+			Luckily, this is exactly what we need if we only care about water, which has this flowing distance. ]]
+			local vec = flowlib.quick_flow(pos, node)
+			-- Just to make sure we don't manipulate the speed for no reason
+			if vec.x ~= 0 or vec.y ~= 0 or vec.z ~= 0 then
 				-- Minecraft Wiki: Flowing speed is "about 1.39 meters per second"
 				local f = 1.39
-				if vec.x > 0 then
-					self.object:setacceleration({x = 0, y = 0, z = 0})
-					self.object:setvelocity({x = f, y = -0.22, z = 0})
-				elseif vec.x < 0 then
-					self.object:setacceleration({x = 0, y = 0, z = 0})
-					self.object:setvelocity({x = -f, y = -0.22, z = 0})
-				elseif vec.z > 0 then
-					self.object:setacceleration({x = 0, y = 0, z = 0})
-					self.object:setvelocity({x = 0, y = -0.22, z = f})
-				elseif vec.z < 0 then
-					self.object:setacceleration({x = 0, y = 0, z = 0})
-					self.object:setvelocity({x = 0, y = -0.22, z = -f})
-				end
+				-- Set new item moving speed into the direciton of the liquid
+				local newv = vector.multiply(vec, f)
+				self.object:setacceleration({x = 0, y = 0, z = 0})
+				self.object:setvelocity({x = newv.x, y = -0.22, z = newv.z})
 
 				self.object:setacceleration({x = 0, y = -10, z = 0})
 				self.physical_state = true
