@@ -43,7 +43,7 @@ mobs:register_mob("mobs_mc:dog", {
 	light_damage = 0,
 	on_rightclick = function(self, clicker)
 		local item = clicker:get_wielded_item()
-		if item:get_name() == "mcl_mobitems:meat_raw" then
+		if item:get_name() == "mcl:mobitems:bone" then
 			local hp = self.object:get_hp()
 			if hp + 4 > self.hp_max then return end
 			if not minetest.setting_getbool("creative_mode") then
@@ -145,8 +145,8 @@ mobs:register_mob("mobs_mc:wolf", {
 		local tool = clicker:get_wielded_item()
 		local dog
 		local ent
-		if tool:get_name() == "mcl_mobitems:meat_raw" then
-			clicker:get_inventory():remove_item("main", "mcl_mobitems:meat_raw")
+		if tool:get_name() == "mcl_mobitems:bone" then
+			clicker:get_inventory():remove_item("main", "mcl_mobitems:bone")
 			dog = minetest.add_entity(self.object:getpos(), "mobs_mc:dog")
 			ent = dog:get_luaentity()
 			ent.owner = clicker:get_player_name()
