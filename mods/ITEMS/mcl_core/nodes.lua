@@ -1418,9 +1418,7 @@ minetest.register_node("mcl_core:snow", {
 		},
 	},
 	groups = {crumbly=3,falling_node=1,deco_block=1},
-	sounds = mcl_sounds.node_sound_dirt_defaults({
-		footstep = {name="default_grass_footstep", gain=0.4},
-	}),
+	sounds = mcl_sounds.node_sound_snow_defaults(),
 	drop = "mcl_throwing:snowball 2",
 })
 
@@ -1430,9 +1428,7 @@ minetest.register_node("mcl_core:snowblock", {
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {crumbly=3,building_block=1},
-	sounds = mcl_sounds.node_sound_dirt_defaults({
-		footstep = {name="default_grass_footstep", gain=0.4},
-	}),
+	sounds = mcl_sounds.node_sound_snow_defaults(),
 	drop = "mcl_throwing:snowball 4",
 })
 
