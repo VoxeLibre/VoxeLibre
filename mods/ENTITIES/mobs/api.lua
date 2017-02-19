@@ -475,8 +475,8 @@ local do_env_damage = function(self)
 		-- lava or fire
 		if self.lava_damage ~= 0
 		and (nodef.groups.lava
-		or self.standing_in == "mcl_fire:basic_flame"
-		or self.standing_in == "mcl_fire:permanent_flame") then
+		or self.standing_in == "mcl_fire:fire"
+		or self.standing_in == "mcl_fire:eternal_fire") then
 
 			self.health = self.health - self.lava_damage
 
@@ -2594,7 +2594,7 @@ local c_air = minetest.get_content_id("air")
 local c_ignore = minetest.get_content_id("ignore")
 local c_obsidian = minetest.get_content_id("mcl_core:obsidian")
 local c_chest = minetest.get_content_id("mcl_core:chest")
-local c_fire = minetest.get_content_id("mcl_fire:basic_flame")
+local c_fire = minetest.get_content_id("mcl_fire:fire")
 
 -- explosion (cannot break protected or unbreakable nodes)
 function mobs:explosion(pos, radius, fire, smoke, sound)
@@ -2662,7 +2662,7 @@ function mobs:explosion(pos, radius, fire, smoke, sound)
 				and (minetest.registered_nodes[n].groups.flammable
 				or random(1, 100) <= 30) then
 
-					minetest.set_node(p, {name = "mcl_fire:basic_flame"})
+					minetest.set_node(p, {name = "mcl_fire:fire"})
 				else
 					minetest.set_node(p, {name = "air"})
 

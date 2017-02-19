@@ -114,7 +114,7 @@ local dispenserdef = {
 				elseif iname == "mcl_fire:flint_and_steel" then
 					-- Ignite air or fire
 					if dropnode.name == "air" then
-						minetest.add_node(droppos, {name="mcl_fire:basic_flame"})
+						minetest.add_node(droppos, {name="mcl_fire:fire"})
 						if not minetest.setting_getbool("creative_mode") then
 							stack:add_wear(65535/65) -- 65 uses
 						end

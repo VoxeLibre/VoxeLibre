@@ -94,7 +94,7 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 	hit_node = function(self, pos, node)
 		local pos_above = {x=pos.x, y=pos.y+1, z=pos.z}
 		if minetest.registered_nodes[minetest.get_node(pos_above).name].buildable_to then
-			minetest.set_node(pos_above, {name="mcl_fire:basic_flame"})
+			minetest.set_node(pos_above, {name="mcl_fire:fire"})
 		end
 	end
 })
