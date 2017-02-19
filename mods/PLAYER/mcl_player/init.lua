@@ -148,9 +148,8 @@ minetest.register_on_joinplayer(function(player)
 	-- Minecraft has no sneak glitch
 	-- sneak is also disabled because it is buggy in Minetest (can be used to negate fall damage)
 	player:set_physics_override({sneak_glitch=false})
-	-- Minecraft also offers no minimap for free
-	player:hud_set_flags({minimap=false})
 	player:set_local_animation({x=0, y=79}, {x=168, y=187}, {x=189, y=198}, {x=200, y=219}, 30)
+	-- Note: Minimap is now handled in mcl_maps
 end)
 
 minetest.register_on_leaveplayer(function(player)
