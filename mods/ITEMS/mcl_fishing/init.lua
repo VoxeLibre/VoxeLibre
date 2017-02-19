@@ -77,7 +77,11 @@ local go_fishing = function(itemstack, user, pointed_thing)
 				inv:add_item("main", item)
 			end
 			if not minetest.setting_getbool("creative_mode") then
+				local idef = itemstack:get_definition()
 				itemstack:add_wear(65535/65) -- 65 uses
+				if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then
+					minetest.sound_play(idef.sound.breaks, {pos=pointed_thing.above, gain=0.5})
+				end
 			end
 			return itemstack
 		end
@@ -93,6 +97,7 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 	stack_max = 1,
 	liquids_pointable = true,
 	on_place = go_fishing,
+	sound = { breaks = "default_tool_breaks" },
 })
 
 minetest.register_craft({

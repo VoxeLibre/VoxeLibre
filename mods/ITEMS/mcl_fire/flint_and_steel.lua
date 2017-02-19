@@ -6,6 +6,7 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 	stack_max = 1,
 	groups = { tool = 1 },
 	on_use = function(itemstack, user, pointed_thing)
+		local idef = itemstack:get_definition()
 		if pointed_thing.type == "node" then
 			if minetest.get_node(pointed_thing.under).name == "mcl_tnt:tnt" then
 				tnt.ignite(pointed_thing.under)
@@ -19,8 +20,12 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 				end
 			end
 		end
+		if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then
+			minetest.sound_play(idef.sound.breaks, {pos=user:getpos(), gain=0.5})
+		end
 		return itemstack
 	end,
+	sound = { breaks = "default_tool_breaks" },
 })
 
 minetest.register_craft({
