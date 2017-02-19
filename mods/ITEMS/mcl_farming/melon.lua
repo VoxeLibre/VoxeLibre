@@ -213,7 +213,8 @@ minetest.register_craftitem("mcl_farming:melon_seeds", {
 })
 
 minetest.register_craftitem("mcl_farming:melon_item", {
-	description = "Melon",
+	-- Original name: “Melon”
+	description = "Melon Slice",
 	stack_max = 64,
 	inventory_image = "farming_melon.png",
 	on_place = minetest.item_eat(2),
