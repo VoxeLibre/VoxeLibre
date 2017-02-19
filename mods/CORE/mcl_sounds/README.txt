@@ -9,7 +9,7 @@ Glass breaking sounds (CC BY 3.0):
 Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
 http://creativecommons.org/licenses/by-sa/3.0/
 
-default_tool_break.ogg by EdgardEdition (CC BY 3.0), http://www.freesound.org/people/EdgardEdition
+default_tool_breaks.ogg by EdgardEdition (CC BY 3.0), http://www.freesound.org/people/EdgardEdition
 
 Mito551 (sounds) (CC BY-SA 3.0):
   default_dig_choppy.ogg
