@@ -16,7 +16,6 @@ Mito551 (sounds) (CC BY-SA 3.0):
   default_dig_cracky.ogg
   default_dig_crumbly.1.ogg
   default_dig_crumbly.2.ogg
-  default_dig_dig_immediate.ogg
   default_dig_oddly_breakable_by_hand.ogg
   default_dug_node.1.ogg
   default_dug_node.2.ogg
