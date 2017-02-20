@@ -471,36 +471,42 @@ end)
 local BEDROCK_MIN = -66
 local BEDROCK_MAX = -62
 
+-- Below the bedrock, generate air/void
+
 minetest.register_on_generated(function(minp, maxp)
-	if maxp.y >= BEDROCK_MIN or minp.y <= BEDROCK_MAX then
+	if minp.y <= BEDROCK_MAX then
 		local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
 		local data = vm:get_data()
 		local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
 		local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
+		--local c_void = minetest.get_content_id("mcl_core:void")
+		local c_air = minetest.get_content_id("air")
 
-		for y = math.max(minp.y, BEDROCK_MIN), math.min(maxp.y, BEDROCK_MAX) do
+		for y = minp.y, math.min(maxp.y, BEDROCK_MAX) do
 			for x = minp.x, maxp.x do
 				for z = minp.z, maxp.z do
 					local p_pos = area:index(x, y, z)
-					local do_it = false
+					local setdata = nil
 					if y == BEDROCK_MAX then
 						-- 50% bedrock chance
-						if math.random(1,2) == 1 then do_it = true end
+						if math.random(1,2) == 1 then setdata = c_bedrock end
 					elseif y == BEDROCK_MAX -1 then
 						-- 66.666...%
-						if math.random(1,3) <= 2 then do_it = true end
+						if math.random(1,3) <= 2 then setdata = c_bedrock end
 					elseif y == BEDROCK_MAX -2 then
 						-- 75%
-						if math.random(1,4) <= 3 then do_it = true end
+						if math.random(1,4) <= 3 then setdata = c_bedrock end
 					elseif y == BEDROCK_MAX -3 then
 						-- 90%
-						if math.random(1,10) <= 9 then do_it = true end
+						if math.random(1,10) <= 9 then setdata = c_bedrock end
 					elseif y == BEDROCK_MAX -4 then
 						-- 100%
-						do_it = true
+						setdata = c_bedrock
+					elseif y < BEDROCK_MIN then
+						setdata = c_air
 					end
-					if do_it then
-						data[p_pos] = c_bedrock
+					if setdata then
+						data[p_pos] = setdata
 					end
 				end
 			end
@@ -513,6 +519,3 @@ minetest.register_on_generated(function(minp, maxp)
 	end
 end)
 
-
-
--- TODO: Generate the Void
