@@ -78,7 +78,6 @@ local horse = {
 
 	on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, direction)
 		if puncher and puncher:is_player() then
-			puncher:get_inventory():add_item("main", self.name)
 			self.object:remove()
 		end
 	end,
