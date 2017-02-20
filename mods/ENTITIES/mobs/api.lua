@@ -1897,21 +1897,11 @@ end
 -- only play hit sound and show blood effects if damage is 1 or over
 if damage >= 1 then
 
-	-- weapon sounds
-	if weapon:get_definition().sounds ~= nil then
-
-		local s = random(0, #weapon:get_definition().sounds)
-
-		minetest.sound_play(weapon:get_definition().sounds[s], {
-			object = hitter,
-			max_hear_distance = 8
-		})
-	else
-		minetest.sound_play("default_punch", {
-			object = hitter,
-			max_hear_distance = 5
-		})
-	end
+	-- TODO (maybe): Support for custom weapon sounds
+	minetest.sound_play("default_punch", {
+		object = hitter,
+		max_hear_distance = 5
+	})
 
 	-- blood_particles
 	if self.blood_amount > 0
