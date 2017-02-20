@@ -172,7 +172,7 @@ end
 -- ABM for extinguish fire
 if weather.allow_abm then
   minetest.register_abm({
-    nodenames = {"fire:basic_flame"},
+    nodenames = {"mcl_fire:fire"},
     interval = 4.0,
     chance = 2,
     action = function(pos, node, active_object_count, active_object_count_wider)

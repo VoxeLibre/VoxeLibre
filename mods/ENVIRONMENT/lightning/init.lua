@@ -150,11 +150,8 @@ lightning.strike = function(pos)
 	pos2.y = pos2.y + 1/2
 	if minetest.get_item_group(minetest.get_node({x = pos2.x, y = pos2.y - 1, z = pos2.z}).name, "liquid") < 1 then
 		if minetest.get_node(pos2).name == "air" then
-			-- Rarely cause a fire
-			-- TODO: Always cause a fire, but the rain should put out fires then
-			if rng:next(1, 100) == 1 then
-				minetest.set_node(pos2, {name = "mcl_fire:fire"})
-			end
+			-- Cause a fire
+			minetest.set_node(pos2, {name = "mcl_fire:fire"})
 		end
 	end
 
