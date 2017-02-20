@@ -49,6 +49,7 @@ local group_stereotypes = {
 	quartz_block = "mcl_nether:quartz_block",
 	mesecon_conductor_craftable = "mesecons:wire_00000000_off",
 	compass      = mcl_compass.stereotype,
+	clock        = mcl_clock.sterotype,
 }
 
 local group_names = {

@@ -4,6 +4,8 @@
   Original from Echo, here: http://forum.minetest.net/viewtopic.php?id=3795
 ]]--
 
+mcl_clock = {}
+
 local watch = {}
 watch.old_time = -1
 
@@ -97,3 +99,5 @@ for a=0,63,1 do
 	end
 	watch.register_item("mcl_clock:clock_"..tostring(a), watch.images[b+1], false)
 end
+
+mcl_clock.stereotype = "mcl_clock:clock"
