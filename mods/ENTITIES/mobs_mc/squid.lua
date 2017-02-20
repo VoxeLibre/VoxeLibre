@@ -20,7 +20,7 @@ mobs:register_mob("mobs_mc:squid", {
         {"mobs_squid.png"}
     },
     sounds = {
-		damage = "squid_hurt1",
+		damage = "mobs_squid_hurt",
 	},
     animation = {
 		stand_start = 1,
