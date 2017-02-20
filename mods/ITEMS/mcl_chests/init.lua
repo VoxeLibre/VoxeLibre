@@ -217,7 +217,7 @@ minetest.register_node("mcl_chests:chest_right", {
 				"size[9,8.75]"..
 				"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
 				"image[0,-0.2;5,0.75;fnt_chest.png]"..
-				mcl_core.inventory_header..
+				mcl_vars.inventory_header..
 				"list[current_name;main;0,0.5;9,3;]"..
 				"list[current_player;main;0,4.5;9,3;9]"..
 				"list[current_player;main;0,7.74;9,1;]"..
@@ -286,7 +286,7 @@ minetest.register_node("mcl_chests:ender_chest", {
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", 
 				"size[9,8.75]"..
-				mcl_core.inventory_header..
+				mcl_vars.inventory_header..
 				"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
 				"image[0,-0.2;5,0.75;fnt_ender_chest.png]"..
 				"list[current_player;enderchest;0,0.5;9,3;]"..
@@ -346,7 +346,7 @@ for color, desc in pairs(boxtypes) do
 			local meta = minetest.get_meta(pos)
 			meta:set_string("formspec",
 					"size[9,8.75]"..
-					mcl_core.inventory_header..
+					mcl_vars.inventory_header..
 					"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
 					"image[0,-0.2;5,0.75;fnt_shulker_box.png]"..
 					"list[current_name;main;0,0.5;9,3;]"..
