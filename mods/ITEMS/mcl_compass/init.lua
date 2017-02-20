@@ -1,3 +1,4 @@
+mcl_compass = {}
 
 local default_spawn_settings = minetest.setting_get("static_spawnpoint")
 
@@ -73,3 +74,8 @@ minetest.register_craft({
 })
 
 minetest.register_alias("mcl_compass:compass", "mcl_compass:"..stereotype_frame)
+
+-- Export stereotype item for other mods to use
+mcl_compass.stereotype = "mcl_compass:"..tostring(stereotype_frame)
+
+
