@@ -159,7 +159,8 @@ function mcl_util.move_item_container(source_pos, source_list, source_stack_id, 
 			return mcl_util.move_item(sinv, source_list, source_stack_id, dinv, "main")
 		elseif dnodedef.groups.container == 3 then
 			local stack = sinv:get_stack(source_list, source_stack_id)
-			if stack and (not stack:is_empty()) and (not minetest.registered_nodes[stack:get_name()].groups.shulker_box) then
+			local def = minetest.registered_nodes[stack:get_name()]
+			if stack and (not stack:is_empty()) and (not (def and def.groups and def.groups.shulker_box)) then
 				return mcl_util.move_item(sinv, source_list, source_stack_id, dinv, "main")
 			end
 		elseif dnodedef.groups.container == 4 then
