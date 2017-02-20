@@ -132,9 +132,9 @@ minetest.register_privilege("weather_manager", {
 })
 
 -- Weather command definition. Set 
-minetest.register_chatcommand("set_weather", {
-  params = "<weather>",
-  description = "Changes weather by given param, parameter none will remove weather.",
+minetest.register_chatcommand("weather", {
+  params = "none | rain | snow | thunder",
+  description = "Changes the weather to the specified parameter.",
   privs = {weather_manager = true},
   func = function(name, param)
     if (param == "none") then
