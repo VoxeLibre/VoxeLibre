@@ -59,7 +59,7 @@ mobs:register_mob("mobs_mc:enderman", {
 	replace_offset = -1,
 
 })
-mobs:register_spawn("mobs_mc:enderman", { "mcl_core:sand", "mcl_core:redsand"}, 5, -1, 5000, 4, 31000)
+mobs:register_spawn("mobs_mc:enderman", { "group:solid"}, 7, -1, 5000, 4, 31000)
 
 
 

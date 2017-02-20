@@ -68,7 +68,7 @@ mobs:register_mob("mobs_mc:skeleton", {
 	dogshoot_switch = 1,
 	dogshoot_count_max =3,
 })
-mobs:register_spawn("mobs_mc:skeleton", {"group:crumbly", "group:cracky", "group:choppy", "group:snappy"}, 7, -1, 5000, 4, 31000)
+mobs:register_spawn("mobs_mc:skeleton", {"group:solid"}, 7, -1, 5000, 4, 31000)
 
 
 mobs:register_mob("mobs_mc:skeleton2", {

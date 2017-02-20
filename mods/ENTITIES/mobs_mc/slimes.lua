@@ -182,9 +182,9 @@ mobs:register_mob("mobs_mc:greenbig", {
 		end
 	end,
 })
-mobs:register_spawn("mobs_mc:greensmall", {"mcl_core:water_flowing", "mcl_core:mossycobble"}, 7, -1, 5000, 4, 31000)
-mobs:register_spawn("mobs_mc:greenmedium", {"mcl_core:water_flowing", "mcl_core:mossycobble"}, 7, -1, 5000, 4, 31000)
-mobs:register_spawn("mobs_mc:greenbig", {"mcl_core:water_flowing", "mcl_core:mossycobble"}, 7, -1, 5000, 4, 31000)
+mobs:register_spawn("mobs_mc:greensmall", {"mcl_core:water_flowing", "group:solid"}, 15, 0, 5000, 4, -12)
+mobs:register_spawn("mobs_mc:greenmedium", {"mcl_core:water_flowing", "group:solid"}, 15, 0, 5000, 4, -12)
+mobs:register_spawn("mobs_mc:greenbig", {"mcl_core:water_flowing", "group:solid"}, 15, 0, 5000, 4, -12)
 
 
 
@@ -270,7 +270,7 @@ mobs:register_mob("mobs_mc:lavabig", {
 	armor = 100,
 	drops = {
 		{name = "mcl_mobitems:magma_cream",
-		chance = 1,
+		chance = 4,
 		min = 0,
 		max = 1,},
 	},
@@ -307,8 +307,8 @@ mobs:register_mob("mobs_mc:lavabig", {
 	end
 })
 
-mobs:register_spawn("mobs_mc:lavasmall", {"nether:rack", "mcl_core:lava"}, 7, -1, 5000, 4, 31000)
-mobs:register_spawn("mobs_mc:lavabig", {"nether:rack", "mcl_core:lava"}, 7, -1, 5000, 4, 31000)
+mobs:register_spawn("mobs_mc:lavasmall", {"mcl_nether:netherrack", "mcl_nether:nether_brick"}, 15, 0, 5000, 4, -1000)
+mobs:register_spawn("mobs_mc:lavabig", {"mcl_nether:netherrack", "mcl_nether:nether_brick"}, 15, 0, 5000, 4, -1000)
 
 -- compatibility
 mobs:alias_mob("mobs:lavasmall", "mobs_mc:lavasmall")

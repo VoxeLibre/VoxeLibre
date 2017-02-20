@@ -318,9 +318,9 @@ mobs:register_mob("mobs_mc:horse3", {
 		end
 	end,
 })
-mobs:register_spawn("mobs_mc:horse", {"mcl_core:dirt_with_grass", "mcl_core:dirt"}, 20, 12, 21000, 1, 12)
-mobs:register_spawn("mobs_mc:horse2", {"mcl_core:dirt_with_grass", "mcl_core:dirt"}, 20, 12, 23000, 1, 31000)
-mobs:register_spawn("mobs_mc:horse3", {"mcl_core:sand", "mcl_core:redsand"}, 20, 8, 17000, 1, 5)
+mobs:register_spawn("mobs_mc:horse", {"mcl_core:dirt_with_grass", "mcl_core:dirt"}, 20, 9, 21000, 1, 12)
+mobs:register_spawn("mobs_mc:horse2", {"mcl_core:dirt_with_grass", "mcl_core:dirt"}, 20, 9, 23000, 1, 31000)
+mobs:register_spawn("mobs_mc:horse3", {"mcl_core:sand", "mcl_core:redsand"}, 20, 9, 17000, 1, 5)
 
 
 -- compatibility

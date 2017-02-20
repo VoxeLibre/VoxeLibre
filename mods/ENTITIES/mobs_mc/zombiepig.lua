@@ -82,7 +82,7 @@ mobs:register_mob("mobs_mc:pigman", {
 	view_range = 16,
 	attack_type = "dogfight",
 })
-mobs:register_spawn("mobs_mc:pigman", {"mcl_nether:netherrack"},  17, -1, 5000, 3, -2000)
+mobs:register_spawn("mobs_mc:pigman", {"mcl_nether:netherrack", "mcl_nether:nether_brick"}, 17, -1, 5000, 3, -1000)
 mobs:register_spawn("mobs_mc:pigman", {"mcl_nether:portal"}, 15, -1, 500, 4, 31000)
 mobs:register_spawn("mobs_mc:pigman", {"mcl_core:obsidian"}, 17, -1, 1900, 1, 31000)
 

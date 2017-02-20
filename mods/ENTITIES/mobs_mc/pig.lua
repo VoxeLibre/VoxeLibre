@@ -133,7 +133,7 @@ mobs:register_mob("mobs_mc:pig", {
 	end,
 })
 
-mobs:register_spawn("mobs_mc:pig", {"mcl_core:dirt_with_grass"}, 20, 12, 5000, 1, 31000)
+mobs:register_spawn("mobs_mc:pig", {"mcl_core:dirt_with_grass"}, 20, 9, 5000, 1, 31000)
 	
 
 --api code to fix

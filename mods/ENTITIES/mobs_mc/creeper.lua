@@ -64,7 +64,7 @@ mobs:register_mob("mobs_mc:creeper", {
 	view_range = 16,
 	attack_type = "explode",
 })
-mobs:register_spawn("mobs_mc:creeper", {"group:crumbly", "group:cracky", "group:choppy", "group:snappy"}, 7, -1, 5000, 4, 31000)
+mobs:register_spawn("mobs_mc:creeper", {"group:solid"}, 7, -1, 5000, 4, 31000)
 
 
 

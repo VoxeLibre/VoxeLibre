@@ -66,7 +66,7 @@ mobs:register_mob("mobs_mc:blaze", {
     fear_height = 120,
 })
 
-mobs:register_spawn("mobs_mc:blaze", {"mcl_core:lava_flowing", "mcl_nether:netherrack","air"}, 30, -1, 5000, 1, -2000)
+mobs:register_spawn("mobs_mc:blaze", {"mcl_core:lava_flowing", "mcl_nether:netherrack","air"}, 30, -1, 5000, 1, -1000)
 
 -- Blaze fireball
 mobs:register_arrow("mobs_mc:blaze_fireball", {
