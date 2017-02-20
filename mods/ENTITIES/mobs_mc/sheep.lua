@@ -37,9 +37,9 @@ mobs:register_mob("mobs_mc:sheep", {
 	light_damage = 0,
 	fear_height = 3,
 	sounds = {
-		random = "Sheep3",
-		death = "Sheep3",
-		damage = "Sheep3",
+		random = "mobs_sheep",
+		death = "mobs_sheep",
+--		damage = "mobs_sheep",
 	},
 	animation = {
 		speed_normal = 24,
