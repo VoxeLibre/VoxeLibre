@@ -466,54 +466,53 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	end
 end)
 
-local function replace(old, new, min, max)
-	minetest.register_ore({
-		ore_type       = "scatter",
-		ore            = new,
-		wherein        = old,
-		clust_scarcity = 1,
-		clust_num_ores = 1,
-		clust_size     = 1,
-		y_min          = min,
-		y_max          = max,
-	})
-end
-replace("air", "mcl_core:bedrock", -90, -80)
-replace("air", "mcl_core:lava_source", -80, -70)
-replace("mcl_core:stone", "mcl_core:bedrock", -90, -80)
-replace("mcl_core:gravel", "mcl_core:bedrock", -90, -80)
-replace("mcl_core:dirt", "mcl_core:bedrock", -90, -80)
-replace("mcl_core:sand", "mcl_core:bedrock", -90, -80)
-replace("mcl_core:cobble", "mcl_core:bedrock", -90, -80)
-replace("mcl_core:mossycobble", "mcl_core:bedrock", -90, -80)
-replace("stairs:stair_cobble", "mcl_core:bedrock", -90, -80)
-replace("mcl_core:lava_source", "mcl_core:bedrock", -90, -80)
-replace("mcl_core:lava_flowing", "mcl_core:bedrock", -90, -80)
-replace("mcl_core:water_source", "mcl_core:bedrock", -90, -80)
-replace("mcl_core:water_flowing", "mcl_core:bedrock", -90, -80)
 
-local function bedrock(old)
-	minetest.register_ore({
-		ore_type       = "scatter",
-		ore            = "mcl_core:bedrock",
-		wherein        = old,
-		clust_scarcity = 5,
-		clust_num_ores = 3,
-		clust_size     = 2,
-		y_min          = -64,
-		y_max          = -60,
-	})
-end
-bedrock("air")
-bedrock("mcl_core:stone")
-bedrock("mcl_core:gravel")
-bedrock("mcl_core:dirt")
-bedrock("mcl_core:sand")
-bedrock("mcl_core:cobble")
-bedrock("mcl_core:mossycobble")
-bedrock("stairs:stair_cobble")
-bedrock("mcl_core:lava_source")
-bedrock("mcl_core:lava_flowing")
-bedrock("mcl_core:water_source")
-bedrock("mcl_core:water_flowing")
+-- Generate 5 layers of bedrock, with increasing levels of roughness, until a perfecly flat bedrock later at the bottom layer
+local BEDROCK_MIN = -66
+local BEDROCK_MAX = -62
 
+minetest.register_on_generated(function(minp, maxp)
+	if maxp.y >= BEDROCK_MIN or minp.y <= BEDROCK_MAX then
+		local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
+		local data = vm:get_data()
+		local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
+		local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
+
+		for y = math.max(minp.y, BEDROCK_MIN), math.min(maxp.y, BEDROCK_MAX) do
+			for x = minp.x, maxp.x do
+				for z = minp.z, maxp.z do
+					local p_pos = area:index(x, y, z)
+					local do_it = false
+					if y == BEDROCK_MAX then
+						-- 50% bedrock chance
+						if math.random(1,2) == 1 then do_it = true end
+					elseif y == BEDROCK_MAX -1 then
+						-- 66.666...%
+						if math.random(1,3) <= 2 then do_it = true end
+					elseif y == BEDROCK_MAX -2 then
+						-- 75%
+						if math.random(1,4) <= 3 then do_it = true end
+					elseif y == BEDROCK_MAX -3 then
+						-- 90%
+						if math.random(1,10) <= 9 then do_it = true end
+					elseif y == BEDROCK_MAX -4 then
+						-- 100%
+						do_it = true
+					end
+					if do_it then
+						data[p_pos] = c_bedrock
+					end
+				end
+			end
+		end
+
+		vm:set_data(data)
+		vm:calc_lighting()
+		vm:update_liquids()
+		vm:write_to_map()
+	end
+end)
+
+
+
+-- TODO: Generate the Void
