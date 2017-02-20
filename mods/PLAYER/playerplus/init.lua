@@ -51,6 +51,7 @@ minetest.register_globalstep(function(dtime)
 		-- what is around me?
 		pos.y = pos.y - 0.1 -- standing on
 		playerplus[name].nod_stand = node_ok(pos)
+		playerplus[name].nod_stand_below = node_ok({x=pos.x, y=pos.y-1, z=pos.z})
 
 		pos.y = pos.y + 1.5 -- head level
 		playerplus[name].nod_head = node_ok(pos)
@@ -75,10 +76,14 @@ minetest.register_globalstep(function(dtime)
 
 		-- standing on soul sand? if so walk slower
 		if playerplus[name].nod_stand == "mcl_nether:soul_sand" then
-			-- TODO: Fix walk speed
-			-- TODO: Also check other blocks
+			-- TODO: Tweak walk speed
 			-- TODO: Also slow down mobs
-			def.speed = def.speed - 0.6
+			local below = playerplus[name].nod_stand_below 
+			if below == "mcl_core:ice" or below == "mcl_core:packed_ice" or below == "mcl_core:slimeblock" then
+				def.speed = def.speed - 0.9
+			else
+				def.speed = def.speed - 0.6
+			end
 		end
 
 		-- set player physics
