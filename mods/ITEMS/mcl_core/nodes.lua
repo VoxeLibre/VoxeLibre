@@ -21,6 +21,44 @@ minetest.register_node("mcl_core:barrier", {
 	on_blast = function() end,
 })
 
+-- The harmless void directly below the bottom bedrock layer. It doesn't hurt.
+minetest.register_node("mcl_core:void_top", {
+	description = "Void",
+	drawtype = "airlike",
+	paramtype = "light",
+	pointable = false,
+	walkable = false,
+	floodable = false,
+	buildable_to = false,
+	inventory_image = "default_barrier.png",
+	wield_image = "default_barrier.png",
+	stack_max = 64,
+	sunlight_propagates = true,
+	is_ground_content = false,
+	groups = { not_in_creative_inventory = 1 },
+	on_blast = function() end,
+})
+
+-- The deadly void way below bedrock. It hurts very much!
+minetest.register_node("mcl_core:void_deep", {
+	description = "Deep Void",
+	drawtype = "airlike",
+	paramtype = "light",
+	pointable = false,
+	walkable = false,
+	floodable = false,
+	buildable_to = false,
+	inventory_image = "default_barrier.png",
+	wield_image = "default_barrier.png",
+	stack_max = 64,
+	sunlight_propagates = true,
+	is_ground_content = false,
+	groups = { not_in_creative_inventory = 1 },
+	on_blast = function() end,
+	-- Minecraft Wiki: 4 damage each 0.5 seconds
+	damage_per_second = 8,
+})
+
 minetest.register_node("mcl_core:stone", {
 	description = "Stone",
 	tiles = {"default_stone.png"},
