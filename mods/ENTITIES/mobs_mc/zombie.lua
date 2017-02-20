@@ -61,6 +61,11 @@ mobs:register_mob("mobs_mc:zombie", {
 		chance = 11,
 		min = 1,
 		max = 1,},
+		-- TODO: Remove this drop when record discs are properly dropped
+		{name = "mcl_jukebox:record_8",
+		chance = 150,
+		min = 1,
+		max = 1,},
 	},
 	animation = {
 		speed_normal = 24,

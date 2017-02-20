@@ -40,6 +40,15 @@ mobs:register_mob("mobs_mc:creeper", {
 		chance = 1,
 		min = 0,
 		max = 2,},
+		-- TODO: In Minecraft, record discs only drop when a creeper got killed by a skeleton's arrow
+		{name = "mcl_jukebox:record_6",
+		chance = 100,
+		min = 1,
+		max = 1,},
+		{name = "mcl_jukebox:record_7",
+		chance = 125,
+		min = 1,
+		max = 1,},
 	},
 	animation = {
 		speed_normal = 24,

@@ -201,3 +201,48 @@ minetest.register_craft({
 		{"mcl_farming:potato_item","mcl_farming:potato_item","mcl_farming:potato_item"},
 	},
 })
+
+minetest.register_craft({
+	output = "mcl_jukebox:record_1",
+	recipe = {
+		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
+		{ "mcl_core:glass_black", "mcl_ocean:sea_lantern", "mcl_core:glass_black", },
+		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
+	}
+})
+minetest.register_craft({
+	output = "mcl_jukebox:record_2",
+	recipe = {
+		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
+		{ "mcl_core:glass_black", "mcl_fire:fire_charge", "mcl_core:glass_black", },
+		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
+	}
+})
+minetest.register_craft({
+	output = "mcl_jukebox:record_3",
+	recipe = {
+		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
+		{ "mcl_core:glass_black", "mcl_core:emerald", "mcl_core:glass_black", },
+		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
+	}
+})
+minetest.register_craft({
+	output = "mcl_jukebox:record_4",
+	recipe = {
+		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
+		{ "mcl_core:glass_black", "mcl_end:ender_eye", "mcl_core:glass_black", },
+		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
+	}
+})
+minetest.register_craft({
+	output = "mcl_jukebox:record_5",
+	recipe = {
+		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
+		{ "mcl_core:glass_black", "mcl_nether:nether_wart_block", "mcl_core:glass_black", },
+		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
+	}
+})
+
+-- 2 discs are dropped by creeper
+-- 1 disc is droppd by zombie
+-- TODO: Remove/fix these drops when creeper drops music discs properly
