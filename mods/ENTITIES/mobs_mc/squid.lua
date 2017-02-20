@@ -13,7 +13,9 @@ mobs:register_mob("mobs_mc:squid", {
     hp_min = 10,
     hp_max = 10,
     armor = 100,
-    collisionbox = {-0.4, 1.3, -1.5, 0.6, 2.3, 1.5},
+    -- Note: This collision box is pretty generous because they can't be rotated yet, but at least it not confusing for the player.
+    -- TODO: Make the hitbox smaller when Minetest supports rotation of collision boxes
+    collisionbox = {-1.5, 1.3, -1.5, 1.5, 2.3, 1.5},
     visual = "mesh",
     mesh = "mobs_squid.b3d",
     textures = {
