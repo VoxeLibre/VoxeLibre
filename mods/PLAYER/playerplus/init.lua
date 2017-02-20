@@ -78,6 +78,7 @@ minetest.register_globalstep(function(dtime)
 		if playerplus[name].nod_stand == "mcl_nether:soul_sand" then
 			-- TODO: Tweak walk speed
 			-- TODO: Also slow down mobs
+			-- FIXME: This whole speed thing is a giant hack. We need a proper framefork for cleanly handling player speeds
 			local below = playerplus[name].nod_stand_below 
 			if below == "mcl_core:ice" or below == "mcl_core:packed_ice" or below == "mcl_core:slimeblock" then
 				def.speed = def.speed - 0.9
