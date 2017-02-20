@@ -13,7 +13,7 @@ dofile(path .. "/pig.lua") -- Mesh and animation by Pavel_S
 dofile(path .. "/horse.lua") -- KrupnoPavel
 dofile(path .. "/wolf.lua") -- KrupnoPavel
 dofile(path .. "/horse.lua") -- KrupnoPavel
-
+dofile(path .. "/squid.lua") -- Animation, sound and egg texture by daufinsyd
 
 -- NPC
 dofile(path .. "/villager.lua") -- KrupnoPavel
