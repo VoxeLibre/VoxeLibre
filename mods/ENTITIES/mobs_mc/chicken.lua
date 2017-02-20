@@ -36,7 +36,7 @@ mobs:register_mob("mobs_mc:chicken", {
 	lava_damage = 5,
 	light_damage = 0,
 	sounds = {
-		random = "Chicken1",
+		random = "mobs_chicken",
 		death = "Chickenhurt1",
 		hurt = "Chickenhurt1",
 	},

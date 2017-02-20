@@ -36,7 +36,7 @@ mobs:register_mob("mobs_mc:cow", {
 	light_damage = 0,
 	fear_height = 3,
 	sounds = {
-		random = "Cow1",
+		random = "mobs_cow",
 		death = "Cowhurt1",
 		damage = "Cowhurt1",
 	},
