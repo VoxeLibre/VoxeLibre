@@ -103,8 +103,8 @@ local pearl_ENTITY={
 	_thrower = nil,		-- Player ObjectRef of the player who threw the ender pearl
 }
 
--- Snowball and egg entity on_step()--> called when snowball is moving.
-local on_step = function(self, dtime)
+-- Snowball on_step()--> called when snowball is moving.
+local snowball_on_step = function(self, dtime)
 	self.timer=self.timer+dtime
 	local pos = self.object:getpos()
 	local node = minetest.get_node(pos)
@@ -118,6 +118,44 @@ local on_step = function(self, dtime)
 		end
 	end
 	self._lastpos={x=pos.x, y=pos.y, z=pos.z} -- Set _lastpos-->Node will be added at last pos outside the node
+end
+
+-- Movement function of egg
+local egg_on_step = function(self, dtime)
+	self.timer=self.timer+dtime
+	local pos = self.object:getpos()
+	local node = minetest.get_node(pos)
+	local def = minetest.registered_nodes[node.name]
+
+	-- Destroy when hitting a solid node
+	if self._lastpos.x~=nil then
+		if (def and def.walkable) or not def then
+			-- 1/8 chance to spawn a chick
+			-- FIXME: Spawn chicks instead of chickens
+			-- FIXME: Chicks have a quite good chance to spawn in walls
+			local r = math.random(1,8)
+			if r == 1 then
+				minetest.add_entity(self._lastpos, "mobs_mc:chicken")
+
+				-- BONUS ROUND: 1/32 chance to spawn 3 additional chicks
+				local r = math.random(1,32)
+				if r == 1 then
+					local offsets = {
+						{ x=0.7, y=0, z=0 },
+						{ x=-0.7, y=0, z=-0.7 },
+						{ x=-0.7, y=0, z=0.7 },
+					}
+					for o=1, 3 do
+						local pos = vector.add(self._lastpos, offsets[o])
+						minetest.add_entity(pos, "mobs_mc:chicken")
+					end
+				end
+			end
+			self.object:remove()
+			return
+		end
+	end
+	self._lastpos={x=pos.x, y=pos.y, z=pos.z} -- Set lastpos-->Node will be added at last pos outside the node
 end
 
 -- Movement function of ender pearl
@@ -143,8 +181,8 @@ local pearl_on_step = function(self, dtime)
 	self._lastpos={x=pos.x, y=pos.y, z=pos.z} -- Set lastpos-->Node will be added at last pos outside the node
 end
 
-snowball_ENTITY.on_step = on_step
-egg_ENTITY.on_step = on_step
+snowball_ENTITY.on_step = snowball_on_step
+egg_ENTITY.on_step = egg_on_step
 pearl_ENTITY.on_step = pearl_on_step
 
 minetest.register_entity("mcl_throwing:snowball_entity", snowball_ENTITY)
