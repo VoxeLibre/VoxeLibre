@@ -468,8 +468,8 @@ end)
 
 
 -- Generate 5 layers of bedrock, with increasing levels of roughness, until a perfecly flat bedrock later at the bottom layer
-local BEDROCK_MIN = -66
-local BEDROCK_MAX = -62
+local BEDROCK_MIN = mcl_vars.bedrock_overworld_min
+local BEDROCK_MAX = mcl_vars.bedrock_overworld_max
 
 -- Below the bedrock, generate air/void
 

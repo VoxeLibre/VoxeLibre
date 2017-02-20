@@ -8,6 +8,9 @@ mcl_vars.gui_bg_img = ""
 
 mcl_vars.inventory_header = mcl_vars.gui_slots .. mcl_vars.gui_bg
 
+mcl_vars.bedrock_overworld_min = -62
+mcl_vars.bedrock_overworld_max = -58
+
 -- Set default stack sizes
 minetest.nodedef_default.stack_max = 64
 minetest.craftitemdef_default.stack_max = 64
