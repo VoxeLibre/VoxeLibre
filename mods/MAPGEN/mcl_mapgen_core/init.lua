@@ -479,8 +479,7 @@ minetest.register_on_generated(function(minp, maxp)
 		local data = vm:get_data()
 		local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
 		local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
-		local c_void_top = minetest.get_content_id("mcl_core:void_top")
-		local c_void_deep = minetest.get_content_id("mcl_core:void_deep")
+		local c_void = minetest.get_content_id("mcl_core:void")
 		local c_air = minetest.get_content_id("air")
 
 		for y = minp.y, math.min(maxp.y, BEDROCK_MAX) do
@@ -503,10 +502,8 @@ minetest.register_on_generated(function(minp, maxp)
 					elseif y == BEDROCK_MAX -4 then
 						-- 100%
 						setdata = c_bedrock
-					elseif y < BEDROCK_MIN and y > BEDROCK_MIN - 64 then
-						setdata = c_void_top
-					elseif y <= BEDROCK_MIN - 64 then
-						setdata = c_void_deep
+					elseif y < BEDROCK_MIN then
+						setdata = c_void
 					end
 					if setdata then
 						data[p_pos] = setdata

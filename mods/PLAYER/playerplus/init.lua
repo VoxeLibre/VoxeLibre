@@ -115,6 +115,20 @@ minetest.register_globalstep(function(dtime)
 
 		end
 
+		-- Apply black sky in the Void and deal Void damage
+		if pos.y < -64 then
+			-- Player reached the void, set black sky box
+			player:set_sky("#000000", "plain")
+		else
+			player:set_sky(nil, "regular")
+		end
+		if pos.y < -64 -64 then
+			-- Player is deep into the void, deal void damage
+			if player:get_hp() > 0 then
+				player:set_hp(player:get_hp() - 4)
+			end
+		end
+
 	end
 
 end)
