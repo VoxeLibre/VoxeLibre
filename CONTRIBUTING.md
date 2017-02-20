@@ -67,3 +67,7 @@ Depending on what you add, the chances for inclusion vary:
 * Use tabs, not spaces for indentation
 * Never use `minetest.env`
 
+## Reporting bugs
+Report all bugs and missing Minecraft features here:
+
+<https://github.com/Wuzzy2/MineClone2-Bugs>

@@ -146,13 +146,9 @@ Finally, any limitations found in Minetest (the game engine) will be written dow
 of development.
 
 ## Reporting bugs
-For now, report bugs here:
-https://forum.minetest.net/viewtopic.php?f=50&t=16407&start=150
+Report all bugs and missing Minecraft features here:
 
-You can also send an e-mail to <almikes@aol.com>.
-
-There's no bug tracking software in place yet (sorry) but one is planned in the future. Sorry for the inconvenience!
-:-(
+<https://github.com/Wuzzy2/MineClone2-Bugs>
 
 ## Other readme files
 
