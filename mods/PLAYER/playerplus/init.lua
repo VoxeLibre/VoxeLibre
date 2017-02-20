@@ -78,7 +78,7 @@ minetest.register_globalstep(function(dtime)
 			-- TODO: Fix walk speed
 			-- TODO: Also check other blocks
 			-- TODO: Also slow down mobs
-			def.speed = def.speed - 0.4
+			def.speed = def.speed - 0.6
 		end
 
 		-- set player physics
