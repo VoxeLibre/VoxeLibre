@@ -67,7 +67,7 @@ local group_names = {
 	wood_stairs = "Any wooden stairs",
 	coal = "Any coal",
 	quartz_block = "Any kind of quartz block",
-	stonebrick = "Any stone bricks"
+	stonebrick = "Any stone bricks",
 }
 
 function craftguide:group_to_item(item)
@@ -130,10 +130,20 @@ function craftguide:get_tooltip_raw(item, recipe_type, cooktime, groups)
 		local gcol = "#FFAAFF"
 		local groupstr
 		if #groups == 1 then
-			if group_names[groups[1]] then
+			local g = group_names[groups[1]]
+			-- Treat the groups “compass” and “clock” as fake groups
+			-- and just print the normal group name without special formatting
+			if groups[1] == "compass" or groups[1] == "clock" then
+				gcol = ""
+				groupstr = reg_items[item].description
+			elseif group_names[groups[1]] then
+				-- Use the special group name string
 				groupstr = group_names[groups[1]]
 			else
-				groupstr = "Any item belonging to the " .. groups[1] .. " group"
+				--[[ Fallback: Generic group explanation: This always
+				works, but the internally used group name (which
+				looks ugly) is exposed to the user. ]]
+				groupstr = "Any item belonging to the " .. g .. " group"
 			end
 		else
 			groupstr = "Any item belonging to the following groups: "
@@ -216,7 +226,15 @@ function craftguide:get_recipe(iY, xoffset, tooltip_raw, item, recipe_num, recip
 			end
 
 			local groups = extract_groups(v)
-			local label = groups and "\nG" or ""
+			local label = ""
+			-- Add the “G” symbols for group item slots
+			if groups then
+				--[[ Exception: Groups “compass” and “clock” since the items in these groups should
+				be treated as a single item from the user perspective. ]]
+				if not (#groups == 1 and (groups[1] == "compass" or groups[1] == "clock")) then
+					label = "\nG" or ""
+				end
+			end
 			local item_r = self:group_to_item(v)
 			local tltip = self:get_tooltip(
 					item_r, recipe_type, cooking_time, groups)

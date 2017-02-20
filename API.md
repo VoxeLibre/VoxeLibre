@@ -68,8 +68,6 @@ These groups are used mostly for informational purposes
 * `flower_pot`: Flower pot
    * `flower_pot=1`: Empty flower pot
    * `flower_pot=2`: Flower pot with a plant or flower
-* `clock=1`: Clock
-* `compass`: Compass (rating doesn't matter)
 * `book=1`: Book
 * `pane=1`: Node is a “pane”-like node glass pane or iron bars
 * `bed=1`: Bed
@@ -103,3 +101,12 @@ These groups are used mostly for informational purposes
 * `building_block=1`: Block is a building block
 * `deco_block=1`: Block is a decorational block
 
+## Fake item groups
+These groups put similar items together which should all be treated by the gameplay or the GUI as a single item.
+You should not add custom items to these groups for no good reason, this is likely to cause a ton of conflicts.
+
+* `clock=1`: Clock
+* `compass`: Compass (rating doesn't matter)
+
+This has the following implication: If you want to use a compass or clock in a crafting recipe, you *must*
+use `group:compass` or `group:clock`, respectively.
