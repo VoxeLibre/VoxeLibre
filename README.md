@@ -28,12 +28,12 @@ Or you can play in “creative mode” in which you can build almost anything in
 ## How to play (quick start)
 ### Getting started
 * **Use the world generator “v6”!**
-* Find and punch a tree trunk until it breaks and collect wood
-* Place the wood into the 2×2 grid (your “crafting grid” in your inventory menu and craft 4 wood planks
-* Place the 4 wood planks in a 2×2 shape in the crafting grid to make a crafting table
-* Rightclick the crafting table for a 3×3 crafting grid to craft more complex things
-* Use the crafting guide (book icon) to learn all the possible crafting recipes
-* Craft a wooden pickaxe so you can dig stone
+* **Punch a tree** trunk until it breaks and collect wood
+* Place the **wood into the 2×2 grid** (your “crafting grid” in your inventory menu and craft 4 wood planks
+* Place the 4 wood planks in a 2×2 shape in the crafting grid to **make a crafting table**
+* **Rightclick the crafting table** for a 3×3 crafting grid to craft more complex things
+* Use the **crafting guide** (book icon) to learn all the possible crafting recipes
+* **Craft a wooden pickaxe** so you can dig stone
 * Different tools break different kinds of blocks. Try them out!
 * Continue playing as you wish. Have fun!
 
