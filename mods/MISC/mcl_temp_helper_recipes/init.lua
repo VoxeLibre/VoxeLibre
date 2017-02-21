@@ -34,11 +34,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_dye:black 2",
-	recipe = {{"mcl_core:coal_lump"}},
-})
-
-minetest.register_craft({
 	output = "mcl_end:chorus_fruit",
 	recipe = {
 		{ "mcl_flowers:allium", "mcl_end:end_stone", "mcl_flowers:allium" },
