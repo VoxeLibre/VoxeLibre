@@ -32,9 +32,9 @@ minetest.register_globalstep(function(dtime)
 			--Check if they are moving or not
 			players[playerName]["moving"] = player:get_player_control()["up"]
 			
-			--If the player has tapped w longer than SPRINT_TIMEOUT ago, set his/her state to 0
+			--If the player has tapped w longer than mcl_sprint.TIMEOUT ago, set his/her state to 0
 			if playerInfo["state"] == 2 then
-				if playerInfo["timeOut"] + SPRINT_TIMEOUT < gameTime then
+				if playerInfo["timeOut"] + mcl_sprint.TIMEOUT < gameTime then
 					players[playerName]["timeOut"] = nil
 					setState(playerName, 0)
 				end
@@ -98,7 +98,7 @@ function setState(playerName, state) --Sets the state of a player (0=stopped, 1=
 			elseif state == 2 then --Primed
 				players[playerName]["timeOut"] = gameTime
 			elseif state == 3 then --Sprinting
-				player:set_physics_override({speed=SPRINT_SPEED})
+				player:set_physics_override({speed=mcl_sprint.SPEED})
 			end
 			return true
 		end
