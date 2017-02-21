@@ -174,6 +174,12 @@ local get_eligible_transfer_item = function(inventory, list, condition)
 	return nil
 end
 
+-- Returns true if given itemstack is a shulker box
+local is_not_shulker_box = function(itemstack)
+	local g = minetest.get_item_group(itemstack:get_name(), "shulker_box")
+	return g == 0 or g == nil
+end
+
 minetest.register_abm({
 	nodenames = {"mcl_hoppers:hopper"},
 	neighbors = {"group:container"},
@@ -196,7 +202,17 @@ minetest.register_abm({
 		end
 
 		-- Move an item from the hopper into container below
-		mcl_util.move_item_container(pos, "main", -1, downpos)
+		local downnode = minetest.get_node(downpos)
+		g = minetest.registered_nodes[downnode.name].groups.container
+		local slot_id = -1
+		if g == 3 then
+			-- For shulker boxes, only select non-shulker boxes
+			local sinv = minetest.get_inventory({type="node", pos = pos})
+			slot_id = get_eligible_transfer_item(sinv, "main", is_not_shulker_box)
+		end
+		if slot_id then
+			mcl_util.move_item_container(pos, "main", slot_id, downpos)
+		end
 	end,
 })
 
@@ -236,12 +252,19 @@ minetest.register_abm({
 
 		-- Move an item from the hopper into the container to which the hopper points to
 		local g = minetest.registered_nodes[frontnode.name].groups.container
-		if g == 2 or g == 3 then
+		if g == 2 then
 			mcl_util.move_item_container(pos, "main", -1, front)
+		elseif g == 3 then
+			-- Put non-shulker boxes into shulker box
+			local sinv = minetest.get_inventory({type="node", pos = pos})
+			local slot_id = get_eligible_transfer_item(sinv, "main", is_not_shulker_box)
+			if slot_id then
+				mcl_util.move_item_container(pos, "main", slot_id, front)
+			end
 		elseif g == 4 then
 			-- Put fuel into fuel slot
-			local inv = minetest.get_inventory({type="node", pos = pos})
-			local slot_id = get_eligible_transfer_item(inv, "main", mcl_util.is_fuel)
+			local sinv = minetest.get_inventory({type="node", pos = pos})
+			local slot_id = get_eligible_transfer_item(sinv, "main", mcl_util.is_fuel)
 			if slot_id then
 				mcl_util.move_item_container(pos, "main", slot_id, front, "fuel")
 			end
