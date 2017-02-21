@@ -87,8 +87,9 @@ local full_blocks = {
 * tiles: Wall textures table
 * invtex: Inventory image (optional)
 * groups: Base group memberships (optional, default is {cracky=3})
+* sounds: Sound table (optional, default is stone)
 ]]
-function mcl_walls.register_wall(nodename, description, tiles, invtex, groups)
+function mcl_walls.register_wall(nodename, description, tiles, invtex, groups, sounds)
 
 	local base_groups = groups
 	if not base_groups then
@@ -101,6 +102,10 @@ function mcl_walls.register_wall(nodename, description, tiles, invtex, groups)
 
 	main_node_groups = table.copy(base_groups)
 	main_node_groups.deco_block = 1
+
+	if not sounds then
+		sounds = mcl_sounds.node_sound_stone_defaults()
+	end
 
 	for i = 0, 15 do
 		local need = {}
@@ -144,7 +149,7 @@ function mcl_walls.register_wall(nodename, description, tiles, invtex, groups)
 				type = "fixed",
 				fixed = take
 			},
-			sounds = mcl_sounds.node_sound_stone_defaults(), 
+			sounds = sounds,
 		})
 	end
 
@@ -163,7 +168,7 @@ function mcl_walls.register_wall(nodename, description, tiles, invtex, groups)
 			type = "fixed",
 			fixed = {pillar, full_blocks[1]}
 		},
-		sounds = mcl_sounds.node_sound_stone_defaults(), 
+		sounds = sounds,
 	})
 
 	minetest.register_node(nodename.."_21", {
@@ -181,7 +186,7 @@ function mcl_walls.register_wall(nodename, description, tiles, invtex, groups)
 			type = "fixed",
 			fixed = {pillar, full_blocks[2]}
 		},
-		sounds = mcl_sounds.node_sound_stone_defaults(), 
+		sounds = sounds,
 	})
 
 	-- Inventory item
@@ -204,7 +209,7 @@ function mcl_walls.register_wall(nodename, description, tiles, invtex, groups)
 		},
 		collisionbox = {-0.2, 0, -0.2, 0.2, 1.4, 0.2},
 		on_construct = update_wall,
-		sounds = mcl_sounds.node_sound_stone_defaults(), 
+		sounds = sounds,
 	})
 end
 
