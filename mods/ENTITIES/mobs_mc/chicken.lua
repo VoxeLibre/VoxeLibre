@@ -95,8 +95,6 @@ mobs:register_mob("mobs_mc:chicken", {
 		if mobs:feed_tame(self, clicker, 8, true, true) then
 			return
 		end
-
-		mobs:capture_mob(self, clicker, 30, 50, 80, false, nil)
 	end,
 
 	do_custom = function(self)

@@ -129,7 +129,6 @@ mobs:register_mob("mobs_mc:pig", {
 		if mobs:feed_tame(self, clicker, 8, true, true) then
 			return
 		end
-		mobs:capture_mob(self, clicker, 0, 5, 50, false, nil)
 	end,
 })
 
