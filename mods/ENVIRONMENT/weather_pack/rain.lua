@@ -150,6 +150,7 @@ rain.make_weather = function()
   if rain.init_done == false then
     rain.raining = true
     rain.set_sky_box()
+    rain.init_done = true
   end
 
   for _, player in ipairs(minetest.get_connected_players()) do
