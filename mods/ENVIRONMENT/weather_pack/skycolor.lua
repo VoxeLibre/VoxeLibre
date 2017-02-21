@@ -1,6 +1,6 @@
 skycolor = {
 	-- Should be activated before do any effect.
-	active = false,
+	active = true,
 
 	-- To skip update interval
 	force_update = true,
@@ -67,7 +67,6 @@ skycolor = {
 	update_sky_color = function(players)
 		local color = skycolor.current_sky_layer_color()
 		if (color == nil) then
-			skycolor.active = false
 			skycolor.set_default_sky()
 			return
 		end
@@ -97,7 +96,6 @@ skycolor = {
 	-- Initialy used only on 
 	update_transition_sky_color = function()
 		if #skycolor.layer_names == 0 then
-			skycolor.active = false
 			skycolor.set_default_sky()
 			return
 		end
@@ -216,7 +214,7 @@ end)
 
 local initsky = function(player)
 	if (skycolor.active) then
-		skycolor.update_sky_color({player})
+		skycolor.force_update = true
 	end
 end
 
