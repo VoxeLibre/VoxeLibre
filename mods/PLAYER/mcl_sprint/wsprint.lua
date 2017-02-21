@@ -94,11 +94,11 @@ function setState(playerName, state) --Sets the state of a player (0=stopped, 1=
 		-- Don't overwrite physics when standing on soul sand
 		if playerplus[playerName].nod_stand ~= "mcl_nether:soul_sand" then
 			if state == 0 then--Stopped
-				player:set_physics_override({speed=1.0,jump=1.0})
+				player:set_physics_override({speed=1.0})
 			elseif state == 2 then --Primed
 				players[playerName]["timeOut"] = gameTime
 			elseif state == 3 then --Sprinting
-				player:set_physics_override({speed=SPRINT_SPEED,jump=SPRINT_JUMP})
+				player:set_physics_override({speed=SPRINT_SPEED})
 			end
 			return true
 		end

@@ -83,9 +83,9 @@ function setSprinting(playerName, sprinting) --Sets the state of a player (0=sto
 		-- Don't overwrite physics when standing on soul sand
 		if playerplus[playerName].nod_stand ~= "mcl_nether:soul_sand" then
 			if sprinting == true then
-				player:set_physics_override({speed=SPRINT_SPEED,jump=SPRINT_JUMP})
+				player:set_physics_override({speed=SPRINT_SPEED})
 			elseif sprinting == false then
-				player:set_physics_override({speed=1.0,jump=1.0})
+				player:set_physics_override({speed=1.0})
 			end
 			return true
 		end
