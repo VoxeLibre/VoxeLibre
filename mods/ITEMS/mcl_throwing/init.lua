@@ -9,11 +9,20 @@ local arrows = {
 
 local GRAVITY = 9.81
 
-mcl_throwing.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter)
+mcl_throwing.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damage)
 	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, arrows[arrow_item])
-	obj:setvelocity({x=dir.x*19, y=dir.y*19, z=dir.z*19})
+	if power == nil then
+		power = 19
+	end
+	if damage == nil then
+		damage = 3
+	end
+	obj:setvelocity({x=dir.x*power, y=dir.y*power, z=dir.z*power})
 	obj:setacceleration({x=dir.x*-3, y=-GRAVITY, z=dir.z*-3})
 	obj:setyaw(yaw-math.pi/2)
+	local le = obj:get_luaentity()
+	le._shooter = shooter
+	le._damage = damage
 	minetest.sound_play("mcl_throwing_bow_shoot", {pos=pos})
 	if shooter ~= nil then
 		if obj:get_luaentity().player == "" then
@@ -38,7 +47,7 @@ local get_arrow = function(player)
 	return arrow_stack, arrow_stack_id
 end
 
-local player_shoot_arrow = function(itemstack, player)
+local player_shoot_arrow = function(itemstack, player, power, damage)
 	local arrow_stack, arrow_stack_id = get_arrow(player)
 	local arrow_itemstring
 	if not minetest.setting_getbool("creative_mode") then
@@ -57,7 +66,7 @@ local player_shoot_arrow = function(itemstack, player)
 	if not arrow_itemstring then
 		arrow_itemstring = "mcl_throwing:arrow"
 	end
-	mcl_throwing.shoot_arrow(arrow_itemstring, {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, dir, yaw, player)
+	mcl_throwing.shoot_arrow(arrow_itemstring, {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, dir, yaw, player, power, damage)
 	return true
 end
 
@@ -88,6 +97,17 @@ minetest.register_tool("mcl_throwing:bow_0", {
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
 	on_place = powerup_function("mcl_throwing:bow_1"),
 	on_secondary_use = powerup_function("mcl_throwing:bow_1"),
+	on_use = function(itemstack, user, pointed_thing)
+		local wear = itemstack:get_wear()
+		itemstack:replace("mcl_throwing:bow")
+		itemstack:set_wear(wear)
+		if player_shoot_arrow(itemstack, user, 4, 1) then
+			if not minetest.setting_getbool("creative_mode") then
+				itemstack:add_wear(65535/385)
+			end
+		end
+		return itemstack
+	end,
 })
 
 minetest.register_tool("mcl_throwing:bow_1", {
@@ -97,6 +117,17 @@ minetest.register_tool("mcl_throwing:bow_1", {
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
 	on_place = powerup_function("mcl_throwing:bow_2"),
 	on_secondary_use = powerup_function("mcl_throwing:bow_2"),
+	on_use = function(itemstack, user, pointed_thing)
+		local wear = itemstack:get_wear()
+		itemstack:replace("mcl_throwing:bow")
+		itemstack:set_wear(wear)
+		if player_shoot_arrow(itemstack, user, 16, 2) then
+			if not minetest.setting_getbool("creative_mode") then
+				itemstack:add_wear(65535/385)
+			end
+		end
+		return itemstack
+	end,
 })
 
 minetest.register_tool("mcl_throwing:bow_2", {
@@ -108,7 +139,17 @@ minetest.register_tool("mcl_throwing:bow_2", {
 		local wear = itemstack:get_wear()
 		itemstack:replace("mcl_throwing:bow")
 		itemstack:set_wear(wear)
-		if player_shoot_arrow(itemstack, user, pointed_thing) then
+		local r = math.random(1,5)
+		local damage
+		-- Damage and range have been nerfed because the arrow charges very quickly
+		-- TODO: Use Minecraft damage and range (9-10 @ ca. 53 m/s)
+		if r == 1 then
+			-- 20% chance to do more damage
+			damage = 5
+		else
+			damage = 4
+		end
+		if player_shoot_arrow(itemstack, user, 26, damage) then
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:add_wear(65535/385)
 			end
