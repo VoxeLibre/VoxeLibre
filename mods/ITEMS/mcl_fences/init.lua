@@ -60,6 +60,8 @@ mcl_fences.register_fence = function(id, fence_name, texture, fence_image, group
 		},
 		sounds = sounds,
 	})
+
+	return fence_id
 end
 
 mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, gate_image, groups, connects_to, sounds)
@@ -71,6 +73,7 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, gate_ima
 	end
 
 	local gate_id = minetest.get_current_modname()..":"..id.."_gate"
+	local open_gate_id = gate_id .. "_open"
 	local function punch_gate(pos, node)
 		meta2 = minetest.get_meta(pos)
 		state2 = meta2:get_int("state")
@@ -82,7 +85,7 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, gate_ima
 		else
 			state2 = 1
 			minetest.sound_play("doors_fencegate_open", {gain = 0.3, max_hear_distance = 10})
-			tmp_node2 = {name=gate_id.."_open", param1=node.param1, param2=node.param2}
+			tmp_node2 = {name=open_gate_id, param1=node.param1, param2=node.param2}
 		end
 		update_gate(pos, tmp_node2)
 		meta2:set_int("state", state2)
@@ -98,7 +101,7 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, gate_ima
 
 	groups.mesecon_effector_on = 1
 	groups.fence_gate = 1
-	minetest.register_node(gate_id.."_open", {
+	minetest.register_node(open_gate_id, {
 		tiles = {texture},
 		paramtype = "light",
 		paramtype2 = "facedir",
@@ -196,11 +199,13 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, gate_ima
 		sounds = sounds,
 	})
 
+	return gate_id, open_gate_id
 end
 
 mcl_fences.register_fence_and_fence_gate = function(id, fence_name, fence_gate_name, texture, fence_image, gate_image, groups, connects_to, sounds)
-	mcl_fences.register_fence(id, fence_name, texture, fence_image, groups, connects_to, sounds)
-	mcl_fences.register_fence_gate(id, fence_gate_name, texture, gate_image, groups, connects_to, sounds)
+	local fence_id = mcl_fences.register_fence(id, fence_name, texture, fence_image, groups, connects_to, sounds)
+	local gate_id, open_gate_id = mcl_fences.register_fence_gate(id, fence_gate_name, texture, gate_image, groups, connects_to, sounds)
+	return fence_id, gate_id, open_gate_id
 end
 
 local wood_groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fence_wood=1}
