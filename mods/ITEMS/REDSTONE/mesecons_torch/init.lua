@@ -41,7 +41,7 @@ minetest.register_craft({
 	{"mcl_core:stick"},}
 })
 
-mcl_torches.register_torch("mesecon_torch_off", "Mesecon Torch (off)", "jeija_torches_off.png",
+mcl_torches.register_torch("mesecon_torch_off", "Redstone Torch (off)", "jeija_torches_off.png",
 	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",
 	{"jeija_torches_off.png"},
 	0,
@@ -56,7 +56,7 @@ mcl_torches.register_torch("mesecon_torch_off", "Mesecon Torch (off)", "jeija_to
 	}
 )
 
-mcl_torches.register_torch("mesecon_torch_on", "Mesecon Torch", "jeija_torches_on_inv.png",
+mcl_torches.register_torch("mesecon_torch_on", "Redstone Torch", "jeija_torches_on_inv.png",
 	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",
 	{"jeija_torches_on.png"},
 	7,
