@@ -60,6 +60,23 @@ local function update_hud(player)
 	end
 end
 
+-- API START --
+mcl_hunger.get_hunger = function(player)
+	local name = player:get_player_name()
+	return mcl_hunger.hunger[name]
+end
+
+mcl_hunger.set_hunger = function(player, hunger)
+	local name = player:get_player_name()
+	mcl_hunger.hunger[name] = hunger
+	mcl_hunger.set_hunger_raw(player)
+	update_hud(player)
+end
+
+-- END OF API --
+
+-- For internal use only. Don't use the “raw” functions outside of mcl_hunger!
+
 mcl_hunger.get_hunger_raw = function(player)
 	local inv = player:get_inventory()
 	if not inv then return nil end
