@@ -84,12 +84,13 @@ local full_blocks = {
 --[[ Adds a new wall type.
 * nodename: Itemstring of base node to add. Must not contain an underscore
 * description: Item description (tooltip), visible to user
+* craft_material: Material for the default crafting recipe (optional)
 * tiles: Wall textures table
 * inventory_image: Inventory image (optional)
 * groups: Base group memberships (optional, default is {cracky=3})
 * sounds: Sound table (optional, default is stone)
 ]]
-function mcl_walls.register_wall(nodename, description, tiles, inventory_image, groups, sounds)
+function mcl_walls.register_wall(nodename, description, craft_material, tiles, inventory_image, groups, sounds)
 
 	local base_groups = groups
 	if not base_groups then
@@ -211,29 +212,23 @@ function mcl_walls.register_wall(nodename, description, tiles, inventory_image, 
 		on_construct = update_wall,
 		sounds = sounds,
 	})
+	if craft_material then
+		minetest.register_craft({
+			output = nodename .. " 6",
+			recipe = {
+				{craft_material, craft_material, craft_material},
+				{craft_material, craft_material, craft_material},
+			}
+		})
+	end
 end
 
 -- Cobblestone wall
-
-mcl_walls.register_wall("mcl_walls:cobble", "Cobblestone Wall", {"default_cobble.png"}, "mcl_walls_cobble.png")
-minetest.register_craft({
-	output = 'mcl_walls:cobble 6',
-	recipe = {
-		{'mcl_core:cobble', 'mcl_core:cobble', 'mcl_core:cobble'},
-		{'mcl_core:cobble', 'mcl_core:cobble', 'mcl_core:cobble'}
-	}
-})
+mcl_walls.register_wall("mcl_walls:cobble", "Cobblestone Wall", "mcl_core:cobble", {"default_cobble.png"}, "mcl_walls_cobble.png")
 
 -- Mossy wall
 
-mcl_walls.register_wall("mcl_walls:mossycobble", "Mossy Cobblestone Wall", {"default_mossycobble.png"}, "mcl_walls_mossycobble.png")
-minetest.register_craft({
-	output = 'mcl_walls:mossycobble 6',
-	recipe = {
-		{'mcl_core:mossycobble', 'mcl_core:mossycobble', 'mcl_core:mossycobble'},
-        {'mcl_core:mossycobble', 'mcl_core:mossycobble', 'mcl_core:mossycobble'}
-	}
-})
+mcl_walls.register_wall("mcl_walls:mossycobble", "Mossy Cobblestone Wall", "mcl_core:mossycobble", {"default_mossycobble.png"}, "mcl_walls_mossycobble.png")
 
 minetest.register_on_placenode(update_wall_global)
 minetest.register_on_dignode(update_wall_global)
