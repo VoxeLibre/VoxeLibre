@@ -19,6 +19,7 @@ minetest.register_node("mcl_core:barrier", {
 	is_ground_content = false,
 	groups = { not_in_creative_inventory = 1, oddly_breakable_by_hand = 5 },
 	on_blast = function() end,
+	drop = "",
 })
 
 -- The void below the bedrock. Void damage is handled in playerplus
@@ -37,6 +38,7 @@ minetest.register_node("mcl_core:void", {
 	is_ground_content = false,
 	groups = { not_in_creative_inventory = 1 },
 	on_blast = function() end,
+	drop = "",
 })
 
 minetest.register_node("mcl_core:stone", {
