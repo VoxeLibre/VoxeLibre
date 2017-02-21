@@ -221,7 +221,12 @@ minetest.register_abm({
 		end
 
 		-- Move an item from the hopper into the container to which the hopper points to
-		mcl_util.move_item_container(pos, "main", -1, front)
+		local g = minetest.registered_nodes[frontnode.name].groups.container
+		if g == 2 or g == 3 then
+			mcl_util.move_item_container(pos, "main", -1, front)
+		elseif g == 4 then
+			mcl_util.move_item_container(pos, "main", -1, front, "fuel")
+		end
 	end
 })
 

@@ -135,8 +135,9 @@ end
 --- source_list: List name of the source inventory from which to take the item
 --- source_stack_id: The inventory position ID of the source inventory to take the item from (-1 for first occupied slot)
 --- destination_pos: Position ({x,y,z}) of the node to put the item into
+--- destination_list: (optional) list name of the destination inventory. If not set, the main or source list will be used
 -- Returns true on success and false on failure
-function mcl_util.move_item_container(source_pos, source_list, source_stack_id, destination_pos)
+function mcl_util.move_item_container(source_pos, source_list, source_stack_id, destination_pos, destination_list)
 	local smeta = minetest.get_meta(source_pos)
 	local dmeta = minetest.get_meta(destination_pos)
 
@@ -155,16 +156,22 @@ function mcl_util.move_item_container(source_pos, source_list, source_stack_id, 
 
 	-- If it's a container, put it into the container
 	if dnodedef.groups.container then
-		if dnodedef.groups.container == 2 or snodedef.groups.continer == 3 then
-			return mcl_util.move_item(sinv, source_list, source_stack_id, dinv, "main")
-		elseif dnodedef.groups.container == 3 then
-			local stack = sinv:get_stack(source_list, source_stack_id)
-			local def = minetest.registered_nodes[stack:get_name()]
-			if stack and (not stack:is_empty()) and (not (def and def.groups and def.groups.shulker_box)) then
-				return mcl_util.move_item(sinv, source_list, source_stack_id, dinv, "main")
+		-- Automatically select a destination list if omitted
+		if not destination_list then
+			if dnodedef.groups.container == 2 or snodedef.groups.continer == 3 then
+				destination_list = "main"
+			elseif dnodedef.groups.container == 3 then
+				local stack = sinv:get_stack(source_list, source_stack_id)
+				local def = minetest.registered_nodes[stack:get_name()]
+				if stack and (not stack:is_empty()) and (not (def and def.groups and def.groups.shulker_box)) then
+					destination_list = "main"
+				end
+			elseif dnodedef.groups.container == 4 then
+				destination_list = "src"
 			end
-		elseif dnodedef.groups.container == 4 then
-			return mcl_util.move_item(sinv, source_list, source_stack_id, dinv, "src")
+		end
+		if destination_list then
+			return mcl_util.move_item(sinv, source_list, source_stack_id, dinv, destination_list)
 		end
 	end
 	return false
