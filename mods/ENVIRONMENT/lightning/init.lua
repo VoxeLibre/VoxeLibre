@@ -23,7 +23,7 @@ lightning.auto = true
 local rng = PcgRandom(32321123312123)
 
 local ps = {}
-local ttl = 1
+local ttl = -1
 
 local revertsky = function(dtime)
 	if ttl == 0 then
@@ -136,13 +136,13 @@ lightning.strike = function(pos)
 		local name = player:get_player_name()
 		if ps[name] == nil then
 			ps[name] = {p = player, sky = sky}
-			skycolor.add_layer("lightning", {{r=255,g=255,b=255}})
+			skycolor.add_layer("lightning", {{r=255,g=255,b=255}}, true)
 			skycolor.active = true
 		end
 	end
 
 	-- trigger revert of skybox
-	ttl = 5
+	ttl = 0.1
 
 	-- set the air node above it on fire
 	pos2.y = pos2.y + 1/2
