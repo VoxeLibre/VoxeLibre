@@ -86,7 +86,7 @@ local dispenserdef = {
 					-- Shoot arrow
 					local shootpos = vector.add(pos, vector.multiply(dropdir, 0.51))
 					local yaw = math.atan2(dropdir.z, dropdir.x) - math.pi/2
-					mcl_throwing.shoot_arrow(iname, shootpos, dropdir, yaw, nil)
+					mcl_throwing.shoot_arrow(iname, shootpos, dropdir, yaw, nil, 19, 3)
 
 					stack:take_item()
 					inv:set_stack("main", stack_id, stack)
