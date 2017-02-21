@@ -88,17 +88,6 @@ minetest.register_tool("mcl_throwing:bow_0", {
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
 	on_place = powerup_function("mcl_throwing:bow_1"),
 	on_secondary_use = powerup_function("mcl_throwing:bow_1"),
-	on_use = function(itemstack, user, pointed_thing)
-		local wear = itemstack:get_wear()
-		itemstack:replace("mcl_throwing:bow")
-		itemstack:set_wear(wear)
-		if player_shoot_arrow(itemstack, user, pointed_thing) then
-			if not minetest.setting_getbool("creative_mode") then
-				itemstack:add_wear(65535/1600)
-			end
-		end
-	return itemstack
-	end,
 })
 
 minetest.register_tool("mcl_throwing:bow_1", {
@@ -108,17 +97,6 @@ minetest.register_tool("mcl_throwing:bow_1", {
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
 	on_place = powerup_function("mcl_throwing:bow_2"),
 	on_secondary_use = powerup_function("mcl_throwing:bow_2"),
-	on_use = function(itemstack, user, pointed_thing)
-		local wear = itemstack:get_wear()
-		itemstack:replace("mcl_throwing:bow")
-		itemstack:set_wear(wear)
-		if player_shoot_arrow(itemstack, user, pointed_thing) then
-			if not minetest.setting_getbool("creative_mode") then
-				itemstack:add_wear(65535/800)
-			end
-		end
-	return itemstack
-	end,
 })
 
 minetest.register_tool("mcl_throwing:bow_2", {
