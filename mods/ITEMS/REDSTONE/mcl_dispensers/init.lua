@@ -85,7 +85,7 @@ local dispenserdef = {
 				if iname == "mcl_throwing:arrow" then
 					-- Shoot arrow
 					local shootpos = vector.add(pos, vector.multiply(dropdir, 0.51))
-					local yaw = math.atan2(dropdir.z, dropdir.x) + math.pi/2
+					local yaw = math.atan2(dropdir.z, dropdir.x) - math.pi/2
 					mcl_throwing.shoot_arrow(iname, shootpos, dropdir, yaw, nil)
 
 					stack:take_item()

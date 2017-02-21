@@ -13,7 +13,7 @@ mcl_throwing.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter)
 	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, arrows[arrow_item])
 	obj:setvelocity({x=dir.x*19, y=dir.y*19, z=dir.z*19})
 	obj:setacceleration({x=dir.x*-3, y=-GRAVITY, z=dir.z*-3})
-	obj:setyaw(yaw+math.pi/2)
+	obj:setyaw(yaw-math.pi/2)
 	minetest.sound_play("mcl_throwing_bow_shoot", {pos=pos})
 	if shooter ~= nil then
 		if obj:get_luaentity().player == "" then
