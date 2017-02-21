@@ -74,7 +74,10 @@ skycolor = {
 
 		players = skycolor.utils.get_players(players)
 		for _, player in ipairs(players) do
-			player:set_sky(color, "plain", nil)
+			local pos = player:getpos()
+			if pos.y >= mcl_vars.bedrock_overworld_max then
+				player:set_sky(color, "plain", nil)
+			end
 		end
 	end,
 
@@ -110,7 +113,10 @@ skycolor = {
 
 		local players = skycolor.utils.get_players(nil)
 		for _, player in ipairs(players) do
-			player:set_sky(color, "plain", nil)
+			local pos = player:getpos()
+			if pos.y >= mcl_vars.bedrock_overworld_max then
+				player:set_sky(color, "plain", nil)
+			end
 		end
 	end,
 
@@ -120,7 +126,10 @@ skycolor = {
 	set_default_sky = function(players)
 		local players = skycolor.utils.get_players(players)
 		for _, player in ipairs(players) do
-			player:set_sky(nil, "regular", nil)
+			local pos = player:getpos()
+			if pos.y >= mcl_vars.bedrock_overworld_max then
+				player:set_sky(nil, "regular", nil)
+			end
 		end
 	end,
 
@@ -205,8 +214,11 @@ minetest.register_globalstep(function(dtime)
 
 end)
 
-minetest.register_on_joinplayer(function(player)
+local initsky = function(player)
 	if (skycolor.active) then
 		skycolor.update_sky_color({player})
 	end
-end)
+end
+
+minetest.register_on_joinplayer(initsky)
+minetest.register_on_respawnplayer(initsky)
