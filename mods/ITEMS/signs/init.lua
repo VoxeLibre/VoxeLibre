@@ -211,6 +211,12 @@ minetest.register_node("signs:sign_wall", {
                      y = under.y - above.y,
                      z = under.z - above.z}
 
+	-- Only build when it's legal
+	local abovenodedef = minetest.registered_nodes[minetest.get_node(above)]
+	if not abovenodedef or abovenodedef.buildable_to == false then
+		return itemstack
+	end
+
         local wdir = minetest.dir_to_wallmounted(dir)
 
         local placer_pos = placer:getpos()
