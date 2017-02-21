@@ -82,11 +82,26 @@ local full_blocks = {
 }
 
 --[[ Adds a new wall type.
-* nodename: Itemstring of base node. Must not contain an underscore
-* name: Item name, visible to user
+* nodename: Itemstring of base node to add. Must not contain an underscore
+* description: Item description (tooltip), visible to user
 * tiles: Wall textures table
-* invtex: Inventory image (optional) ]]
-function mcl_walls.register_wall(nodename, name, tiles, invtex)
+* invtex: Inventory image (optional)
+* groups: Base group memberships (optional, default is {cracky=3})
+]]
+function mcl_walls.register_wall(nodename, description, tiles, invtex, groups)
+
+	local base_groups = groups
+	if not base_groups then
+		base_groups = {cracky=3}
+	end
+	base_groups.wall = 1
+
+	internal_groups = table.copy(base_groups)
+	internal_groups.not_in_creative_inventory = 1
+
+	main_node_groups = table.copy(base_groups)
+	main_node_groups.deco_block = 1
+
 	for i = 0, 15 do
 		local need = {}
 		local need_pillar = false
@@ -123,7 +138,7 @@ function mcl_walls.register_wall(nodename, name, tiles, invtex)
 			is_ground_content = false,
 			tiles = tiles,
 			paramtype = "light",
-			groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1,not_in_creative_inventory=1},
+			groups = internal_groups,
 			drop = nodename,
 			node_box = {
 				type = "fixed",
@@ -142,7 +157,7 @@ function mcl_walls.register_wall(nodename, name, tiles, invtex)
 		tiles = tiles,
 		paramtype = "light",
 		is_ground_content = false,
-		groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1,not_in_creative_inventory=1},
+		groups = internal_groups,
 		drop = nodename,
 		node_box = {
 			type = "fixed",
@@ -160,7 +175,7 @@ function mcl_walls.register_wall(nodename, name, tiles, invtex)
 		tiles = tiles,
 		paramtype = "light",
 		is_ground_content = false,
-		groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1,not_in_creative_inventory=1},
+		groups = internal_groups,
 		drop = nodename,
 		node_box = {
 			type = "fixed",
@@ -171,10 +186,10 @@ function mcl_walls.register_wall(nodename, name, tiles, invtex)
 
 	-- Inventory item
 	minetest.register_node(nodename, {
-		description = name,
+		description = description,
 		paramtype = "light",
 		is_ground_content = false,
-		groups = {snappy=2,cracky=3,oddly_breakable_by_hand=3,wall=1,deco_block=1},
+		groups = main_node_groups,
 		tiles = tiles,
 		inventory_image = invtex,
 		stack_max = 64,
