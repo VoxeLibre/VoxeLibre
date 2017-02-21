@@ -90,6 +90,10 @@ function xpanes.register_pane(name, def)
 	end
 
 	local flatgroups = table.copy(def.groups)
+	local drop = def.drop
+	if not drop then
+		drop = "xpanes:" .. name .. "_flat"
+	end
 	flatgroups.pane = 1
 	flatgroups.deco_block = 1
 	minetest.register_node(":xpanes:" .. name .. "_flat", {
@@ -104,7 +108,7 @@ function xpanes.register_pane(name, def)
 		tiles = {def.textures[3], def.textures[3], def.textures[1]},
 		use_texture_alpha = def.use_texture_alpha,
 		groups = flatgroups,
-		drop = "xpanes:" .. name .. "_flat",
+		drop = drop,
 		sounds = def.sounds,
 		node_box = {
 			type = "fixed",
@@ -140,6 +144,7 @@ function xpanes.register_pane(name, def)
 			connect_right = {{1/32, -1/2, -1/32, 1/2, 1/2, 1/32}},
 		},
 		connects_to = {"group:pane", "group:stone", "group:glass", "group:wood", "group:tree"},
+		drop = drop,
 	})
 
 	minetest.register_craft({
@@ -160,7 +165,8 @@ local pane = function(description, node, append)
 		recipe = {
 			{node, node, node},
 			{node, node, node},
-		}
+		},
+		drop = "",
 	})
 end
 
