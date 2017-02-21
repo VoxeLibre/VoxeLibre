@@ -129,15 +129,16 @@ function beds.kick_players()
 end
 
 function beds.skip_night()
-	minetest.set_timeofday(0.23)
+	minetest.set_timeofday(0.25) -- tod = 6000
 end
 
 function beds.on_rightclick(pos, player)
 	local name = player:get_player_name()
 	local ppos = player:getpos()
-	local tod = minetest.get_timeofday()
+	local tod = minetest.get_timeofday() * 24000
 
-	if tod > 0.2 and tod < 0.805 then
+	-- Values taken from Minecraft Wiki with offset of +6000
+	if tod < 18541 and tod > 5458 then
 		if beds.player[name] then
 			lay_down(player, nil, nil, false)
 		end
