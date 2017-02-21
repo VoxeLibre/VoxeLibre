@@ -25,20 +25,33 @@ mcl_throwing.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter)
 end
 
 local player_shoot_arrow = function(itemstack, player)
-	for arrow_item, arrow_entity in pairs(arrows) do
-		if player:get_inventory():get_stack("main", player:get_wield_index()+1):get_name() == arrow_item then
-			if not minetest.setting_getbool("creative_mode") then
-				player:get_inventory():remove_item("main", arrow_item)
-			end
-			local playerpos = player:getpos()
-			local dir = player:get_look_dir()
-			local yaw = player:get_look_horizontal()
-
-			mcl_throwing.shoot_arrow(arrow_item, {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, dir, yaw, player)
-			return true
+	local inv = player:get_inventory()
+	local arrow_stack, arrow_itemstring, arrow_stack_id
+	for i=1, inv:get_size("main") do
+		local it = inv:get_stack("main", i)
+		if not it:is_empty() and minetest.get_item_group(it:get_name(), "ammo_bow") ~= 0 then
+			arrow_stack = it
+			arrow_itemstring = it:get_name()
+			arrow_stack_id = i
+			break
 		end
 	end
-	return false
+	if not minetest.setting_getbool("creative_mode") then
+		if not arrow_stack then
+			return false
+		end
+		arrow_stack:take_item()
+		inv:set_stack("main", arrow_stack_id, arrow_stack)
+	end
+	local playerpos = player:getpos()
+	local dir = player:get_look_dir()
+	local yaw = player:get_look_horizontal()
+
+	if not arrow_itemstring then
+		arrow_itemstring = "mcl_throwing:arrow"
+	end
+	mcl_throwing.shoot_arrow(arrow_itemstring, {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, dir, yaw, player)
+	return true
 end
 
 local powerup_function = function(nextbow)
