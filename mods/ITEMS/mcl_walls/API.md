@@ -1,0 +1,31 @@
+# API for MineClone 2 walls
+
+This API allows you to add more walls (like the cobblestone wall) to MineClone 2.
+
+## `mcl_walls.register_wall(nodename, description, tiles, invtex, groups, sounds)`
+
+Adds a new wall type. This is optimized for stone-based walls, but other materials are theoretically possible, too.
+
+The current implementation registers a couple of nodes for the different nodeboxes.
+All walls connect to solid nodes and all other wall nodes.
+
+The crafting recipe is NOT registered, you have to add your own.
+
+### Parameters
+* `nodename`: Full itemstring of the new wall node (base node only). ***Must not have an underscore!***
+* `description`: Item description of item (tooltip), visible to user
+* `tiles`: Wall textures table, same syntax as for `minetest.register_node`
+* `inventory_image`: Inventory image (optional, default is an ugly 3D image)
+* `groups`: Base group memberships (optional, default is `{cracky=3}`)
+* `sounds`: Sound table (optional, by default default uses stone sounds)
+
+The following groups will automatically be added to the nodes (where applicable), you do not need to add them
+to the `groups` table:
+
+* `deco_block=1`
+* `not_in_creative_inventory=1` (except for the base node which the player can take)
+* `wall=1`
+
+### Example
+
+    mcl_walls.register_wall("mymod:granitewall", "Granite Wall", {"mymod_granite.png"}, "mymod_granite_wall_inv.png")

@@ -85,11 +85,11 @@ local full_blocks = {
 * nodename: Itemstring of base node to add. Must not contain an underscore
 * description: Item description (tooltip), visible to user
 * tiles: Wall textures table
-* invtex: Inventory image (optional)
+* inventory_image: Inventory image (optional)
 * groups: Base group memberships (optional, default is {cracky=3})
 * sounds: Sound table (optional, default is stone)
 ]]
-function mcl_walls.register_wall(nodename, description, tiles, invtex, groups, sounds)
+function mcl_walls.register_wall(nodename, description, tiles, inventory_image, groups, sounds)
 
 	local base_groups = groups
 	if not base_groups then
@@ -196,7 +196,7 @@ function mcl_walls.register_wall(nodename, description, tiles, invtex, groups, s
 		is_ground_content = false,
 		groups = main_node_groups,
 		tiles = tiles,
-		inventory_image = invtex,
+		inventory_image = inventory_image,
 		stack_max = 64,
 		drawtype = "nodebox",
 		node_box = {
