@@ -5,7 +5,7 @@
 
 local function active_formspec(fuel_percent, item_percent)
 	return "size[9,8.75]"..
-	"background[-0.19,-0.25;9.41,9.49;mcl_furnaces_formspec.png]"..
+	"background[-0.19,-0.25;9.41,9.49;crafting_inventory_furnace.png]"..
 	mcl_vars.inventory_header..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
@@ -27,7 +27,7 @@ local function active_formspec(fuel_percent, item_percent)
 end
 
 local inactive_formspec = "size[9,8.75]"..
-	"background[-0.19,-0.25;9.41,9.49;mcl_furnaces_formspec.png]"..
+	"background[-0.19,-0.25;9.41,9.49;crafting_inventory_furnace.png]"..
 	mcl_vars.inventory_header..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
