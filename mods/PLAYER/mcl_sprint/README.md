@@ -19,6 +19,7 @@ What a player has to do to start sprinting. 0 = double tap w, 1 = press e.
 Note that if you have the fast privlige, and have the fast 
 speed turned on, you will run very, very fast. You can toggle this 
 by pressing j.
+NOTE: Method 0 is UNTESTED!
  
 mcl_sprint.SPEED (default 1.5)
  

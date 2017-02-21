@@ -15,6 +15,7 @@ mcl_sprint.SPEED = 1.3
 mcl_sprint.TIMEOUT = 0.5 --Only used if mcl_sprint.METHOD = 0
 
 if mcl_sprint.METHOD == 0 then
+	-- UNTESTED
 	dofile(minetest.get_modpath("mcl_sprint") .. "/wsprint.lua")
 elseif mcl_sprint.METHOD == 1 then
 	dofile(minetest.get_modpath("mcl_sprint") .. "/esprint.lua")

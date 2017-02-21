@@ -60,6 +60,8 @@ minetest.register_globalstep(function(dtime)
 				end
 			end
 
+			-- Prevent sprinting if standing on soul sand or hungry
+			local can_sprint = (playerplus[playerName].nod_stand ~= "mcl_nether:soul_sand") and (mcl_hunger.get_hunger(player) <= 6)
 			--Adjust player states
 			if players[playerName]["moving"] == false and playerInfo["state"] == 3 then --Stopped
 				setState(playerName, 0)
@@ -67,18 +69,16 @@ minetest.register_globalstep(function(dtime)
 				setState(playerName, 1)
 			elseif players[playerName]["moving"] == false and playerInfo["state"] == 1 then --Primed
 				local sprinting
-				-- Prevent sprinting if standing on soul sand
-				if not playerplus[playerName].nod_stand ~= "mcl_nether:soul_sand" then
-					setState(playerName, 2)
-				else
+				if can_sprint then
 					setState(playerName, 0)
+				else
+					setState(playerName, 2)
 				end
 			elseif players[playerName]["moving"] == true and playerInfo["state"] == 2 then --Sprinting
-				-- Prevent sprinting if standing on soul sand
-				if not playerplus[playerName].nod_stand ~= "mcl_nether:soul_sand" then
-					setState(playerName, 3)
-				else
+				if can_sprint then
 					setState(playerName, 1)
+				else
+					setState(playerName, 3)
 				end
 			end
 			
