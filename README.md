@@ -28,7 +28,7 @@ Or you can play in “creative mode” in which you can build almost anything in
 ## How to play (quick start)
 ### Getting started
 * **Use the world generator “v6”!**
-* Find punch a tree trunk until it breaks. It gives you wood
+* Find and punch a tree trunk until it breaks and collect wood
 * Place the wood into the 2×2 grid (your “crafting grid” in your inventory menu and craft 4 wood planks
 * Place the 4 wood planks in a 2×2 shape in the crafting grid to make a crafting table
 * Rightclick the crafting table for a 3×3 crafting grid to craft more complex things
@@ -53,14 +53,15 @@ Or you can play in “creative mode” in which you can build almost anything in
 * See tooltips in crafting guide to learn about fuels and smeltable items
 
 ### Additional help
-To learn more about the blocks in MineClone 2, see the Minecraft Wiki for now.
+To learn more about the blocks in MineClone 2, see the
+[Minecraft Wiki](http://minecraft.gamepedia.com/Minecraft_Wiki) for now.
 It is planned to eventually add a sophisticated in-game help system.
 
 ## Installation
-This game requires Minetest 0.4.15 (or later) to run, so you need to install
-Minetest first. To install MineClone 2, move this directory into the “games”
-directory of your Minetest data directory. Consult the help of Minetest to
-learn more.
+This game requires [Minetest](http://minetest.net) 0.4.15 (or later) to run,
+so you need to install Minetest first. To install MineClone 2, move this
+directory into the “games” directory of your Minetest data directory.
+Consult the help of Minetest to learn more.
 
 The logo of MineClone 2 has two grass blocks.
 
@@ -77,6 +78,7 @@ The following main features are available:
 * All ores from Minecraft
 * Most blocks in the overworld
 * Water and lava
+* Weather
 * Redstone circuits (partially): Redstone ore, redstone, redstone repeater, levers, buttons, redstone blocks, redstone lamps
 * Minecarts (partial)
 * Fire
@@ -95,9 +97,9 @@ The following main features are available:
 * Creative inventory
 * Farming (needs balancing)
 * Bookshelves
-* Books (partial)
+* Books
 * More server commands
-* 3D torch
+* 3D torches
 * And more!
 
 The following features are incomplete:
@@ -155,6 +157,7 @@ Report all bugs and missing Minecraft features here:
 * `LICENSE.txt`: The LGPLv2.1 license text
 * `CONTRIBUTING.md`: Information for those who want to contribute
 * `MISSING_ENGINE_FEATURES.md`: List of missing features in Minetest which MineClone 2 would need for improvement
+* `API.md`: For Minetest modders who want to mod this game
 
 ## Credits
 There are so many people to list (sorry).
@@ -175,7 +178,7 @@ TO BE WRITTEN.
 * Notch and Jeb for being the bigg
 
 ## Info for programmers
-You find interesting and useful infos in API.md.
+You find interesting and useful infos in `API.md`.
 This project is currently mostly a one-person project.
 
 ## Legal information
