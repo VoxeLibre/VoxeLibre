@@ -160,6 +160,20 @@ minetest.register_abm({
 	end,
 })
 
+-- Iterates through all items in the given inventory and
+-- return the slot of the first item which matches a condition
+local get_eligible_transfer_item = function(inventory, list, condition)
+	local size = inventory:get_size(list)
+	local stack
+	for i=1, size do
+		stack = inventory:get_stack(list, i)
+		if not stack:is_empty() and condition(stack) then
+			return i
+		end
+	end
+	return nil
+end
+
 minetest.register_abm({
 	nodenames = {"mcl_hoppers:hopper"},
 	neighbors = {"group:container"},
@@ -225,7 +239,12 @@ minetest.register_abm({
 		if g == 2 or g == 3 then
 			mcl_util.move_item_container(pos, "main", -1, front)
 		elseif g == 4 then
-			mcl_util.move_item_container(pos, "main", -1, front, "fuel")
+			-- Put fuel into fuel slot
+			local inv = minetest.get_inventory({type="node", pos = pos})
+			local slot_id = get_eligible_transfer_item(inv, "main", mcl_util.is_fuel)
+			if slot_id then
+				mcl_util.move_item_container(pos, "main", slot_id, front, "fuel")
+			end
 		end
 	end
 })
