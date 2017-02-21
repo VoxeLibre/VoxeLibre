@@ -194,3 +194,14 @@ end
 function mcl_util.is_fuel(item)
 	return minetest.get_craft_result({method="fuel", width=1, items={item}}).time ~= 0
 end
+
+-- For a given position, returns a 2-tuple:
+-- 1st return value: true if pos is in void
+-- 2nd return value: true if it is in the deadly part of the void
+function mcl_util.is_in_void(pos)
+	local void, void_deadly
+	void = pos.y < mcl_vars.bedrock_overworld_min
+	void_deadly = pos.y < mcl_vars.bedrock_overworld_min - 65
+	return void, void_deadly
+end
+

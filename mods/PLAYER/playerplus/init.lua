@@ -129,7 +129,8 @@ minetest.register_globalstep(function(dtime)
 			-- This only works beause weather_pack currently does not touch the sky for players below the height used for this check.
 			-- There should be a real skybox API.
 		end
-		if pos.y < mcl_vars.bedrock_overworld_min - 65 then
+		local void, void_deadly = mcl_util.is_in_void(pos)
+		if void_deadly then
 			-- Player is deep into the void, deal void damage
 			if player:get_hp() > 0 then
 				player:set_hp(player:get_hp() - 4)
