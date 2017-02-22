@@ -10,4 +10,4 @@ mcl_minecarts
 mcl_sponges
 gemalde
 signs
-mesecons_observers
+mcl_observers
