@@ -1,25 +1,7 @@
-minetest.register_alias("mapgen_dandelion", "mcl_flowers:dandelion")
-minetest.register_alias("mapgen_rose", "mcl_flowers:rose")
-
-minetest.register_alias("mapgen_oxeye_daisy", "mcl_flowers:oxeye_daisy")
-
-minetest.register_alias("mapgen_tulip_orange", "mcl_flowers:tulip_orange")
-minetest.register_alias("mapgen_tulip_pink", "mcl_flowers:tulip_pink")
-minetest.register_alias("mapgen_tulip_red", "mcl_flowers:tulip_red")
-minetest.register_alias("mapgen_tulip_white", "mcl_flowers:tulip_white")
-
-minetest.register_alias("mapgen_allium", "mcl_flowers:allium")
-
-minetest.register_alias("mapgen_poppy", "mcl_flowers:poppy")
-
-minetest.register_alias("mapgen_azure_bluet", "mcl_flowers:azure_bluet")
-
-minetest.register_alias("mapgen_blue_orchid", "mcl_flowers:blue_orchid")
-
-
--- Don't spawn flowers in flat mapgen
+-- Don't generate flowers in flat mapgen
 local mg_name = minetest.get_mapgen_setting("mg_name")
 if mg_name ~= "flat" then
+
 minetest.register_on_generated(function(minp, maxp, seed)
 	if maxp.y >= 3 and minp.y <= 0 then
 		-- Generate flowers
