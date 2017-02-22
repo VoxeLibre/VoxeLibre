@@ -71,6 +71,7 @@ minetest.register_node("mobs:spawner", {
 		end
 	end,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
+	_mcl_blast_resistance = 25,
 })
 
 -- spawner abm

@@ -48,7 +48,8 @@ minetest.register_node("mesecons_button:button_stone_off", {
 	mesecons = {receptor = {
 		state = mesecon.state.off,
 		rules = mesecon.rules.buttonlike_get
-	}}
+	}},
+	_mcl_blast_resistance = 2.5,
 })
 
 minetest.register_node("mesecons_button:button_stone_on", {
@@ -74,7 +75,8 @@ minetest.register_node("mesecons_button:button_stone_on", {
 	mesecons = {receptor = {
 		state = mesecon.state.on,
 		rules = mesecon.rules.buttonlike_get
-	}}
+	}},
+	_mcl_blast_resistance = 2.5,
 })
 
 minetest.register_node("mesecons_button:button_wood_off", {
@@ -105,7 +107,8 @@ minetest.register_node("mesecons_button:button_wood_off", {
 	mesecons = {receptor = {
 		state = mesecon.state.off,
 		rules = mesecon.rules.buttonlike_get
-	}}
+	}},
+	_mcl_blast_resistance = 2.5,
 })
 
 minetest.register_node("mesecons_button:button_wood_on", {
@@ -131,7 +134,8 @@ minetest.register_node("mesecons_button:button_wood_on", {
 	mesecons = {receptor = {
 		state = mesecon.state.on,
 		rules = mesecon.rules.buttonlike_get
-	}}
+	}},
+	_mcl_blast_resistance = 2.5,
 })
 
 minetest.register_craft({

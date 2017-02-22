@@ -171,7 +171,8 @@ minetest.register_node("mesecons_pistons:piston_normal_off", {
 	mesecons = {effector={
 		action_on = piston_on,
 		rules = piston_get_rules
-	}}
+	}},
+	_mcl_blast_resistance = 2.5,
 })
 
 -- onstate
@@ -200,7 +201,8 @@ minetest.register_node("mesecons_pistons:piston_normal_on", {
 	mesecons = {effector={
 		action_off = piston_off,
 		rules = piston_get_rules
-	}}
+	}},
+	_mcl_blast_resistance = 2.5,
 })
 
 -- pusher
@@ -222,6 +224,7 @@ minetest.register_node("mesecons_pistons:piston_pusher_normal", {
 	selection_box = piston_pusher_box,
 	node_box = piston_pusher_box,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 2.5,
 })
 
 -- Sticky ones
@@ -256,7 +259,8 @@ minetest.register_node("mesecons_pistons:piston_sticky_off", {
 	mesecons = {effector={
 		action_on = piston_on,
 		rules = piston_get_rules
-	}}
+	}},
+	_mcl_blast_resistance = 2.5,
 })
 
 -- onstate
@@ -285,7 +289,8 @@ minetest.register_node("mesecons_pistons:piston_sticky_on", {
 	mesecons = {effector={
 		action_off = piston_off,
 		rules = piston_get_rules
-	}}
+	}},
+	_mcl_blast_resistance = 2.5,
 })
 
 -- pusher
@@ -307,6 +312,7 @@ minetest.register_node("mesecons_pistons:piston_pusher_sticky", {
 	selection_box = piston_pusher_box,
 	node_box = piston_pusher_box,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 2.5,
 })
 
 --
@@ -361,6 +367,7 @@ minetest.register_node("mesecons_pistons:piston_up_normal_off", {
 		rules = piston_up_rules,
 	}},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 2.5,
 })
 
 -- onstate
@@ -389,7 +396,8 @@ minetest.register_node("mesecons_pistons:piston_up_normal_on", {
 	mesecons = {effector={
 		action_off = piston_off,
 		rules = piston_up_rules,
-	}}
+	}},
+	_mcl_blast_resistance = 2.5,
 })
 
 -- pusher
@@ -411,6 +419,7 @@ minetest.register_node("mesecons_pistons:piston_up_pusher_normal", {
 	selection_box = piston_up_pusher_box,
 	node_box = piston_up_pusher_box,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 2.5,
 })
 
 
@@ -448,7 +457,8 @@ minetest.register_node("mesecons_pistons:piston_up_sticky_off", {
 	mesecons = {effector={
 		action_on = piston_on,
 		rules = piston_up_rules,
-	}}
+	}},
+	_mcl_blast_resistance = 2.5,
 })
 
 -- onstate
@@ -477,7 +487,8 @@ minetest.register_node("mesecons_pistons:piston_up_sticky_on", {
 	mesecons = {effector={
 		action_off = piston_off,
 		rules = piston_up_rules,
-	}}
+	}},
+	_mcl_blast_resistance = 2.5,
 })
 
 -- pusher
@@ -499,6 +510,7 @@ minetest.register_node("mesecons_pistons:piston_up_pusher_sticky", {
 	selection_box = piston_up_pusher_box,
 	node_box = piston_up_pusher_box,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 2.5,
 })
 
 --
@@ -554,7 +566,8 @@ minetest.register_node("mesecons_pistons:piston_down_normal_off", {
 	mesecons = {effector={
 		action_on = piston_on,
 		rules = piston_down_rules,
-	}}
+	}},
+	_mcl_blast_resistance = 2.5,
 })
 
 -- onstate
@@ -583,7 +596,8 @@ minetest.register_node("mesecons_pistons:piston_down_normal_on", {
 	mesecons = {effector={
 		action_off = piston_off,
 		rules = piston_down_rules,
-	}}
+	}},
+	_mcl_blast_resistance = 2.5,
 })
 
 -- pusher
@@ -605,6 +619,7 @@ minetest.register_node("mesecons_pistons:piston_down_pusher_normal", {
 	selection_box = piston_down_pusher_box,
 	node_box = piston_down_pusher_box,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 2.5,
 })
 
 -- Sticky
@@ -638,7 +653,8 @@ minetest.register_node("mesecons_pistons:piston_down_sticky_off", {
 	mesecons = {effector={
 		action_on = piston_on,
 		rules = piston_down_rules,
-	}}
+	}},
+	_mcl_blast_resistance = 2.5,
 })
 
 -- onstate
@@ -667,7 +683,8 @@ minetest.register_node("mesecons_pistons:piston_down_sticky_on", {
 	mesecons = {effector={
 		action_off = piston_off,
 		rules = piston_down_rules,
-	}}
+	}},
+	_mcl_blast_resistance = 2.5,
 })
 
 -- pusher
@@ -689,6 +706,7 @@ minetest.register_node("mesecons_pistons:piston_down_pusher_sticky", {
 	selection_box = piston_down_pusher_box,
 	node_box = piston_down_pusher_box,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 2.5,
 })
 
 

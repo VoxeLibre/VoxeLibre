@@ -189,6 +189,7 @@ minetest.register_node("mesecons_commandblock:commandblock_off", {
 	mesecons = {effector = {
 		action_on = commandblock_action_on
 	}},
+	mcl_blast_resistance = 18000000,
 })
 
 minetest.register_node("mesecons_commandblock:commandblock_on", {
@@ -204,5 +205,6 @@ minetest.register_node("mesecons_commandblock:commandblock_on", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {effector = {
 		action_off = commandblock_action_off
-	}}
+	}},
+	mcl_blast_resistance = 18000000,
 })

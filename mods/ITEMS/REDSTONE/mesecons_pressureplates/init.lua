@@ -74,6 +74,7 @@ function mesecon:register_pressure_plate(offstate, onstate, description, texture
 		on_construct = function(pos)
 			minetest.get_node_timer(pos):start(PRESSURE_PLATE_INTERVAL)
 		end,
+		_mcl_blast_resistance = 2.5,
 	})
 
 	minetest.register_node(onstate, {
@@ -99,7 +100,8 @@ function mesecon:register_pressure_plate(offstate, onstate, description, texture
 			if not mesecon:connected_to_receptor(two_below) then
 				mesecon:turnoff(two_below)
 			end
-		end
+		end,
+		_mcl_blast_resistance = 2.5,
 	})
 
 	minetest.register_craft({

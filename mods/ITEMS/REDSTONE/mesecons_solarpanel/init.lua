@@ -28,6 +28,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_on", {
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_inverted_off"})
 		mesecon:receptor_off(pos)
 	end,
+	_mcl_blast_resistance = 1,
 })
 
 -- Solar Panel
@@ -57,6 +58,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_off", {
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_inverted_on"})
 		mesecon:receptor_on(pos)
 	end,
+	_mcl_blast_resistance = 1,
 })
 
 minetest.register_craft({
@@ -80,6 +82,7 @@ minetest.register_abm(
 			mesecon:receptor_on(pos)
 		end
 	end,
+	_mcl_blast_resistance = 1,
 })
 
 minetest.register_abm(
@@ -94,6 +97,7 @@ minetest.register_abm(
 			mesecon:receptor_off(pos)
 		end
 	end,
+	_mcl_blast_resistance = 1,
 })
 
 --- Solar panel inversed
@@ -126,6 +130,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_on", {
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_off"})
 		mesecon:receptor_off(pos)
 	end,
+	_mcl_blast_resistance = 1,
 })
 
 -- Solar Panel
@@ -156,6 +161,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_on"})
 		mesecon:receptor_on(pos)
 	end,
+	_mcl_blast_resistance = 1,
 })
 
 minetest.register_abm(

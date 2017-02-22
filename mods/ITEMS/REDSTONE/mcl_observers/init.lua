@@ -24,6 +24,7 @@ minetest.register_node("mcl_observers:observer", {
 		end
 		meta:from_table(meta2:to_table())
 	end,
+	_mcl_blast_resistance = 17.5,
 	-- TODO: Mesecons handling
 	mesecons = {effector = {
 	}}

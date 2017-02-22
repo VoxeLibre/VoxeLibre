@@ -39,7 +39,8 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 	mesecons = {receptor = {
 		rules = mesecon.rules.buttonlike_get,
 		state = mesecon.state.off
-	}}
+	}},
+	_mcl_blast_resistance = 2.5,
 })
 minetest.register_node("mesecons_walllever:wall_lever_on", {
 	drawtype = "nodebox",
@@ -79,7 +80,8 @@ minetest.register_node("mesecons_walllever:wall_lever_on", {
 	mesecons = {receptor = {
 		rules = mesecon.rules.buttonlike_get,
 		state = mesecon.state.on
-	}}
+	}},
+	_mcl_blast_resistance = 2.5,
 })
 
 minetest.register_craft({

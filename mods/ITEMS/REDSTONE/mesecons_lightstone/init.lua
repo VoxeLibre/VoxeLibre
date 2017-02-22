@@ -9,7 +9,8 @@ minetest.register_node("mesecons_lightstone:lightstone_off", {
 		action_on = function (pos, node)
 			mesecon:swap_node(pos, "mesecons_lightstone:lightstone_on")
 		end
-	}}
+	}},
+	_mcl_blast_resistance = 1.5,
 })
 
 minetest.register_node("mesecons_lightstone:lightstone_on", {
@@ -25,7 +26,8 @@ minetest.register_node("mesecons_lightstone:lightstone_on", {
 		action_off = function (pos, node)
 			mesecon:swap_node(pos, "mesecons_lightstone:lightstone_off")
 		end
-	}}
+	}},
+	_mcl_blast_resistance = 1.5,
 })
 
 minetest.register_craft({

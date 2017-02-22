@@ -81,6 +81,7 @@ minetest.register_node("mesecons_torch:redstoneblock", {
 		state = mesecon.state.on,
 		rules = torch_get_output_rules
 	}},
+	mcl_blast_resistance = 30,
 })
 
 minetest.register_craft({

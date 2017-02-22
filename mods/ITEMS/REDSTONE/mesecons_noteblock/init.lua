@@ -20,7 +20,8 @@ minetest.register_node("mesecons_noteblock:noteblock", {
 		action_on = function (pos, node)
 			mesecon.noteblock_play(pos, node.param2)
 		end
-	}}
+	}},
+	_mcl_blast_resistance = 4,
 })
 
 minetest.register_craft({

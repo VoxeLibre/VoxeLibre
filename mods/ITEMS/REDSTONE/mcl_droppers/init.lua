@@ -44,6 +44,7 @@ local dropperdef = {
 		end
 		meta:from_table(meta2:to_table())
 	end,
+	_mcl_blast_resistance = 17.5,
 	mesecons = {effector = {
 		-- Drop random item when triggered
 		action_on = function (pos, node)
