@@ -44,23 +44,44 @@ minetest.register_node("mcl_hoppers:hopper", {
 		inv:set_size("main", 5)
 	end,
 
-	after_place_node = function(pos, placer, itemstack, pointed_thing)
-		local pos = pointed_thing.under
-		local pos2 = pointed_thing.above
+	on_place = function(itemstack, placer, pointed_thing)
+		local upos  = pointed_thing.under
+		local apos = pointed_thing.above
 
-		local x = pos.x - pos2.x
-		local y = pos.y - pos2.y
-		local z = pos.z - pos2.z
+		local bpos
+		local uposnodedef = minetest.registered_nodes[minetest.get_node(upos).name]
+		if uposnodedef.buildable_to then
+			bpos = upos
+		else
+			local aposnodedef = minetest.registered_nodes[minetest.get_node(apos).name]
+			if aposnodedef.buildable_to then
+				bpos = apos
+			end
+		end
+
+		if bpos == nil then
+			return itemstack
+		end
+
+		local x = upos.x - apos.x
+		local y = upos.y - apos.y
+		local z = upos.z - apos.z
 
 		if x == -1 then
-			minetest.swap_node(pos2, {name="mcl_hoppers:hopper_side", param2=0})
+			minetest.set_node(bpos, {name="mcl_hoppers:hopper_side", param2=0})
 		elseif x == 1 then
-			minetest.swap_node(pos2, {name="mcl_hoppers:hopper_side", param2=2})
+			minetest.set_node(bpos, {name="mcl_hoppers:hopper_side", param2=2})
 		elseif z == -1 then
-			minetest.swap_node(pos2, {name="mcl_hoppers:hopper_side", param2=3})
+			minetest.set_node(bpos, {name="mcl_hoppers:hopper_side", param2=3})
 		elseif z == 1 then
-			minetest.swap_node(pos2, {name="mcl_hoppers:hopper_side", param2=1})
+			minetest.set_node(bpos, {name="mcl_hoppers:hopper_side", param2=1})
+		else
+			minetest.set_node(bpos, {name="mcl_hoppers:hopper", param2=0})
 		end
+		if not minetest.setting_getbool("creative_mode") then
+			itemstack:take_item()
+		end
+		return itemstack
 	end,
 
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
