@@ -12,7 +12,7 @@ minetest.register_node("mcl_farming:beetroot_0", {
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
-	drop = "",
+	drop = "mcl_farming:beetroot_seeds",
 	tiles = {"mcl_farming_beetroot_0.png"},
 	selection_box = {
 		type = "fixed",
@@ -28,11 +28,7 @@ minetest.register_node("mcl_farming:beetroot_1", {
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
-	drop = {
-		items = {
-			{ items = {"mcl_farming:beetroot_seeds"}, rarity = 5 },
-		},
-	},
+	drop = "mcl_farming:beetroot_seeds",
 	tiles = {"mcl_farming_beetroot_1.png"},
 	selection_box = {
 		type = "fixed",
@@ -48,11 +44,7 @@ minetest.register_node("mcl_farming:beetroot_2", {
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
-	drop = {
-		items = {
-			{ items = {"mcl_farming:beetroot_seeds"}, rarity = 4 },
-		},
-	},
+	drop = "mcl_farming:beetroot_seeds",
 	tiles = {"farming_carrot_2.png"},
 	selection_box = {
 		type = "fixed",
