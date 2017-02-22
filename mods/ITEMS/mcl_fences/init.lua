@@ -20,7 +20,7 @@ local cz2 = {-2/16, -1/2+6/16, 2/16, 2/16, 1, 1/2} --unten(quer) z
 
 mcl_fences = {}
 
-mcl_fences.register_fence = function(id, fence_name, texture, fence_image, groups, connects_to, sounds)
+mcl_fences.register_fence = function(id, fence_name, texture, groups, connects_to, sounds)
 	if groups == nil then groups = {} end
 	groups.fence = 1
 	groups.deco_block = 1
@@ -64,7 +64,7 @@ mcl_fences.register_fence = function(id, fence_name, texture, fence_image, group
 	return fence_id
 end
 
-mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, gate_image, groups, connects_to, sounds, sound_open, sound_close, sound_gain)
+mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, connects_to, sounds, sound_open, sound_close, sound_gain)
 	local meta2
 	local state2 = 0
 
@@ -211,9 +211,9 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, gate_ima
 	return gate_id, open_gate_id
 end
 
-mcl_fences.register_fence_and_fence_gate = function(id, fence_name, fence_gate_name, texture, fence_image, gate_image, groups, connects_to, sounds, sound_open, sound_close)
-	local fence_id = mcl_fences.register_fence(id, fence_name, texture, fence_image, groups, connects_to, sounds)
-	local gate_id, open_gate_id = mcl_fences.register_fence_gate(id, fence_gate_name, texture, gate_image, groups, connects_to, sounds, sound_open, sound_close)
+mcl_fences.register_fence_and_fence_gate = function(id, fence_name, fence_gate_name, texture, groups, connects_to, sounds, sound_open, sound_close)
+	local fence_id = mcl_fences.register_fence(id, fence_name, texture, groups, connects_to, sounds)
+	local gate_id, open_gate_id = mcl_fences.register_fence_gate(id, fence_gate_name, texture, groups, connects_to, sounds, sound_open, sound_close)
 	return fence_id, gate_id, open_gate_id
 end
 
@@ -222,12 +222,12 @@ local wood_connect = {"group:fence_wood"}
 local wood_sounds = mcl_sounds.node_sound_wood_defaults()
 
 local woods = {
-	{"", "Oak Fence", "Oak Fence Gate", "default_wood.png", "default_fence.png", "mcl_fences_fence_gate.png", "mcl_core:wood"},
-	{"spruce", "Spruce Fence", "Spruce Fence Gate", "default_sprucewood.png", "default_fence.png", "mcl_fences_fence_gate.png", "mcl_core:sprucewood"},
-	{"birch", "Birch Fence", "Birch Fence Gate", "default_planks_birch.png", "default_fence.png", "mcl_fences_fence_gate.png", "mcl_core:birchwood"},
-	{"jungle", "Jungle Fence", "Jungle Fence Gate", "default_junglewood.png", "default_fence.png", "mcl_fences_fence_gate.png", "mcl_core:junglewood"},
-	{"dark_oak", "Dark Oak Fence", "Dark Oak Fence Gate", "default_planks_big_oak.png", "default_fence.png", "mcl_fences_fence_gate.png", "mcl_core:darkwood"},
-	{"acacia", "Acacia Fence", "Acacia Fence Gate", "default_acaciawood.png", "default_fence.png", "mcl_fences_fence_gate.png", "mcl_core:acaciawood"},
+	{"", "Oak Fence", "Oak Fence Gate", "default_wood.png", "mcl_core:wood"},
+	{"spruce", "Spruce Fence", "Spruce Fence Gate", "default_sprucewood.png", "mcl_core:sprucewood"},
+	{"birch", "Birch Fence", "Birch Fence Gate", "default_planks_birch.png", "mcl_core:birchwood"},
+	{"jungle", "Jungle Fence", "Jungle Fence Gate", "default_junglewood.png", "mcl_core:junglewood"},
+	{"dark_oak", "Dark Oak Fence", "Dark Oak Fence Gate", "default_planks_big_oak.png", "mcl_core:darkwood"},
+	{"acacia", "Acacia Fence", "Acacia Fence Gate", "default_acaciawood.png", "mcl_core:acaciawood"},
 }
 
 for w=1, #woods do
@@ -240,27 +240,27 @@ for w=1, #woods do
 		id = wood[1].."_fence"
 		id_gate = wood[1].."_fence_gate"
 	end
-	mcl_fences.register_fence_and_fence_gate(id, wood[2], wood[3], wood[4], wood[5], wood[6], wood_groups, wood_connect, wood_sounds)
+	mcl_fences.register_fence_and_fence_gate(id, wood[2], wood[3], wood[4], wood_groups, wood_connect, wood_sounds)
 
 	minetest.register_craft({
 		output = 'mcl_fences:'..id..' 3',
 		recipe = {
-			{wood[7], 'mcl_core:stick', wood[7]},
-			{wood[7], 'mcl_core:stick', wood[7]},
+			{wood[5], 'mcl_core:stick', wood[5]},
+			{wood[5], 'mcl_core:stick', wood[5]},
 		}
 	})
 	minetest.register_craft({
 		output = 'mcl_fences:'..id_gate,
 		recipe = {
-			{'mcl_core:stick', wood[7], 'mcl_core:stick'},
-			{'mcl_core:stick', wood[7], 'mcl_core:stick'},
+			{'mcl_core:stick', wood[5], 'mcl_core:stick'},
+			{'mcl_core:stick', wood[5], 'mcl_core:stick'},
 		}
 	})
 end
 
 
 -- Nether Brick Fence (without fence gate!)
-mcl_fences.register_fence("nether_brick_fence", "Nether Brick Fence", "mcl_nether_nether_brick.png", "default_fence.png", {cracky=2, deco_block=1, fence_nether_brick=1}, {"group:fence_nether_brick"}, mcl_sounds.node_sound_stone_defaults())
+mcl_fences.register_fence("nether_brick_fence", "Nether Brick Fence", "mcl_nether_nether_brick.png", {cracky=2, deco_block=1, fence_nether_brick=1}, {"group:fence_nether_brick"}, mcl_sounds.node_sound_stone_defaults())
 
 minetest.register_craft({
 	output = 'mcl_fences:nether_brick_fence 6',
