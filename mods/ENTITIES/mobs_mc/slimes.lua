@@ -12,8 +12,8 @@ mobs:register_mob("mobs_mc:greensmall", {
 	group_attack = true,
 	hp_min = 1,
 	hp_max = 1,
-	collisionbox = {-0.2, -0.4, -0.2, 0.2, 0.2, 0.2},
-	visual_size = {x=0.5, y=0.5},
+	collisionbox = {-0.3, -0.3, -0.3, 0.3, 0.3, 0.3},
+	visual_size = {x=0.6, y=0.6},
 	textures = {
 	{"green_slime_top.png", "green_slime_bottom.png", "green_slime_front.png", "green_slime_sides.png", "green_slime_sides.png", "green_slime_sides.png"}
 	},
@@ -71,8 +71,8 @@ mobs:register_mob("mobs_mc:greenmedium", {
 	group_attack = true,
 	hp_min = 4,
 	hp_max = 4,
-	collisionbox = {-0.55, -0.55, -0.55, 0.55, 0.55, 0.55},
-	visual_size = {x=1.0, y=1.0},
+	collisionbox = {-0.6, -0.6, -0.6, 0.6, 0.6, 0.6},
+	visual_size = {x=1.2, y=1.2},
 	textures = {
 	{"green_slime_top.png", "green_slime_bottom.png", "green_slime_front.png", "green_slime_sides.png", "green_slime_sides.png", "green_slime_sides.png"}
 	},
@@ -135,8 +135,8 @@ mobs:register_mob("mobs_mc:greenbig", {
 	group_attack = true,
 	hp_min = 16,
 	hp_max = 16,
-	collisionbox = {-0.75, -0.75, -0.75, 0.75, 0.75, 0.75},
-	visual_size = {x=1.5, y=1.5},
+	collisionbox = {-1.2, -1.2, -1.2, 1.2, 1.2, 1.2},
+	visual_size = {x=2.4, y=2.4},
 	textures = {
 	{"green_slime_top.png", "green_slime_bottom.png", "green_slime_front.png", "green_slime_sides.png", "green_slime_sides.png", "green_slime_sides.png"}
 	},
@@ -341,7 +341,7 @@ mobs:alias_mob("slimes:greenbig", "mobs_mc:greenbig")
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:lavabig", "Spawn Magma Cube", "spawn_egg_magma_cube.png")
-mobs:register_egg("mobs_mc:greenbig", "Spawn Green Slime", "spawn_egg_slime.png")
+mobs:register_egg("mobs_mc:greenbig", "Spawn Slime", "spawn_egg_slime.png")
 
 
 if minetest.setting_get("log_mods") then
