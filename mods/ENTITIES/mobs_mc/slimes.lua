@@ -122,7 +122,7 @@ mobs:register_mob("mobs_mc:greenmedium", {
 		angle = math.random(0, math.pi*2)
 		for i=1,4 do
 			posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
-			posadd = vector.multiply(vector.normalize(posadd), 0.5)
+			posadd = vector.multiply(vector.normalize(posadd), 0.6)
 			minetest.add_entity(vector.add(pos, posadd), "mobs_mc:greensmall")
 			angle = angle + math.pi/2
 		end
@@ -315,7 +315,7 @@ mobs:register_mob("mobs_mc:lavabig", {
 		angle = math.random(0, math.pi*2)
 		for i=1,4 do
 			posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
-			posadd = vector.multiply(vector.normalize(posadd), 0.5)
+			posadd = vector.multiply(vector.normalize(posadd), 0.6)
 			minetest.add_entity(vector.add(pos, posadd), "mobs_mc:lavasmall")
 			angle = angle + math.pi/2
 		end
