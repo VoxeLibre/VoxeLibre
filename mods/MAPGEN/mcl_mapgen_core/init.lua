@@ -466,7 +466,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 end)
 
 
--- Generate 5 layers of bedrock, with increasing levels of roughness, until a perfecly flat bedrock later at the bottom layer
+-- Generate bedrock layer or layers
 local BEDROCK_MIN = mcl_vars.bedrock_overworld_min
 local BEDROCK_MAX = mcl_vars.bedrock_overworld_max
 
@@ -486,23 +486,34 @@ minetest.register_on_generated(function(minp, maxp)
 				for z = minp.z, maxp.z do
 					local p_pos = area:index(x, y, z)
 					local setdata = nil
-					if y == BEDROCK_MAX then
-						-- 50% bedrock chance
-						if math.random(1,2) == 1 then setdata = c_bedrock end
-					elseif y == BEDROCK_MAX -1 then
-						-- 66.666...%
-						if math.random(1,3) <= 2 then setdata = c_bedrock end
-					elseif y == BEDROCK_MAX -2 then
-						-- 75%
-						if math.random(1,4) <= 3 then setdata = c_bedrock end
-					elseif y == BEDROCK_MAX -3 then
-						-- 90%
-						if math.random(1,10) <= 9 then setdata = c_bedrock end
-					elseif y == BEDROCK_MAX -4 then
-						-- 100%
-						setdata = c_bedrock
-					elseif y < BEDROCK_MIN then
-						setdata = c_void
+					if mcl_vars.bedrock_is_rough then
+						-- Bedrock layers with increasing levels of roughness, until a perfecly flat bedrock later at the bottom layer
+						-- This code assumes a bedrock height of 5 layers.
+						if y == BEDROCK_MAX then
+							-- 50% bedrock chance
+							if math.random(1,2) == 1 then setdata = c_bedrock end
+						elseif y == BEDROCK_MAX -1 then
+							-- 66.666...%
+							if math.random(1,3) <= 2 then setdata = c_bedrock end
+						elseif y == BEDROCK_MAX -2 then
+							-- 75%
+							if math.random(1,4) <= 3 then setdata = c_bedrock end
+						elseif y == BEDROCK_MAX -3 then
+							-- 90%
+							if math.random(1,10) <= 9 then setdata = c_bedrock end
+						elseif y == BEDROCK_MAX -4 then
+							-- 100%
+							setdata = c_bedrock
+						elseif y < BEDROCK_MIN then
+							setdata = c_void
+						end
+					else
+						-- Perfectly flat bedrock layer(s)
+						if y >= BEDROCK_MIN and y <= BEDROCK_MAX then
+							setdata = c_bedrock
+						elseif y < BEDROCK_MIN then
+							setdata = c_void
+						end
 					end
 					if setdata then
 						data[p_pos] = setdata

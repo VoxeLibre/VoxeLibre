@@ -1,11 +1,25 @@
 
 --
--- Register biomes
+-- Register biomes for mapgens other than v6
 -- EXPERIMENTAL!
 --
 
--- All mapgens except mgv6 and singlenode
+local function register_classic_superflat_biome()
+	-- Classic Superflat: bedrock (not part of biome), 2 dirt, 1 grass block
+	minetest.register_biome({
+		name = "flat",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 2,
+		y_min = 1,
+		y_max = 31000,
+		heat_point = 50,
+		humidity_point = 50,
+	})
+end
 
+-- All mapgens except mgv6, flat and singlenode
 local function register_biomes()
 
 	minetest.register_biome({
@@ -227,7 +241,10 @@ end
 -- Detect mapgen to select functions
 --
 local mg_name = minetest.get_mapgen_setting("mg_name")
-if mg_name ~= "v6" then
+if mg_name ~= "v6" and mg_name ~= "flat" then
 	register_biomes()
 	register_decorations()
+elseif mg_name == "flat" then
+	-- Implementation of Minecraft's Superflat mapgen, classic style
+	register_classic_superflat_biome()
 end
