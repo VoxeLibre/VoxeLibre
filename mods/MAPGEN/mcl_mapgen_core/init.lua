@@ -260,7 +260,6 @@ minetest.register_ore({
 })
 
 local function register_mgv6_decorations()
-	minetest.clear_registered_decorations()
 
 	-- Sugar canes
 
