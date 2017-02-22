@@ -61,7 +61,7 @@ minetest.register_globalstep(function(dtime)
 			end
 
 			-- Prevent sprinting if standing on soul sand or hungry
-			local can_sprint = (playerplus[playerName].nod_stand ~= "mcl_nether:soul_sand") and (mcl_hunger.get_hunger(player) <= 6)
+			local can_sprint = (playerplus[playerName].nod_stand ~= "mcl_nether:soul_sand") or (mcl_hunger and mcl_hunger.get_hunger(player) <= 6)
 			--Adjust player states
 			if players[playerName]["moving"] == false and playerInfo["state"] == 3 then --Stopped
 				setState(playerName, 0)
