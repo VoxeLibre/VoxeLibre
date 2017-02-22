@@ -3,6 +3,11 @@ This API information is WIP. The mod API is still pretty much unofficial;
 this mod is mostly seen as standalone for now.
 This may change in the future development of MineClone 2. Hopefully.
 
+## Before using this mod
+This mod is a no-op when the game is started with damage disabled.
+Before using any of the functions, first check if global variable
+“`mcl_hunger`” is present.
+
 ## Hunger level
 The hunger level of the player is a whole number between 0 and 20 inclusive.
 0 is starving and 20 is full. The hunger level is represented in
