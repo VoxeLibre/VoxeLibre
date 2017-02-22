@@ -76,7 +76,8 @@ minetest.register_node("mcl_sponges:sponge", {
 			end
 		return itemstack
 		
-	end
+	end,
+	_mcl_blast_resistance = 3,
 })
 
 minetest.register_node("mcl_sponges:sponge_wet", {
@@ -92,6 +93,7 @@ minetest.register_node("mcl_sponges:sponge_wet", {
 	stack_max = 64,
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	groups = {snappy=2,choppy=2,oddly_breakable_by_hand=3,building_block=1},
+	_mcl_blast_resistance = 3,
 })
 
 minetest.register_craft({

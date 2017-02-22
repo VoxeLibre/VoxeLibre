@@ -35,6 +35,7 @@ minetest.register_node("mcl_farming:melon", {
 		end
 	end,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 5,
 })
 
 local stemdrop = {
@@ -74,6 +75,7 @@ minetest.register_node("mcl_farming:melontige_1", {
 	},
 	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_farming:melontige_2", {
@@ -92,6 +94,7 @@ minetest.register_node("mcl_farming:melontige_2", {
 	},
 	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_farming:melontige_unconnect", {
@@ -104,6 +107,7 @@ minetest.register_node("mcl_farming:melontige_unconnect", {
 	tiles = {"farming_tige_end.png"},
 	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_farming:melontige_linked_r", {
@@ -135,6 +139,7 @@ minetest.register_node("mcl_farming:melontige_linked_r", {
 	},
 	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_farming:melontige_linked_l", {
@@ -166,6 +171,7 @@ minetest.register_node("mcl_farming:melontige_linked_l", {
 	},
 	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_farming:melontige_linked_t", {
@@ -197,6 +203,7 @@ minetest.register_node("mcl_farming:melontige_linked_t", {
 	},
 	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_farming:melontige_linked_b", {
@@ -228,6 +235,7 @@ minetest.register_node("mcl_farming:melontige_linked_b", {
 	},
 	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_craftitem("mcl_farming:melon_seeds", {

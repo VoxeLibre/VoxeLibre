@@ -32,6 +32,7 @@ local function addhead(node, desc)
 		sounds = mcl_sounds.node_sound_defaults({
 			footstep = {name="default_hard_footstep", gain=0.3}
 		}),
+		_mcl_blast_resistance = 5,
 	})
 end
 

@@ -104,6 +104,8 @@ function mcl_walls.register_wall(nodename, description, craft_material, tiles, i
 	main_node_groups = table.copy(base_groups)
 	main_node_groups.deco_block = 1
 
+	-- TODO: Stop hardcoding blast resistance
+
 	if not sounds then
 		sounds = mcl_sounds.node_sound_stone_defaults()
 	end
@@ -151,6 +153,7 @@ function mcl_walls.register_wall(nodename, description, craft_material, tiles, i
 				fixed = take
 			},
 			sounds = sounds,
+			_mcl_blast_resistance = 30,
 		})
 	end
 
@@ -170,6 +173,7 @@ function mcl_walls.register_wall(nodename, description, craft_material, tiles, i
 			fixed = {pillar, full_blocks[1]}
 		},
 		sounds = sounds,
+		_mcl_blast_resistance = 30,
 	})
 
 	minetest.register_node(nodename.."_21", {
@@ -188,6 +192,7 @@ function mcl_walls.register_wall(nodename, description, craft_material, tiles, i
 			fixed = {pillar, full_blocks[2]}
 		},
 		sounds = sounds,
+		_mcl_blast_resistance = 30,
 	})
 
 	-- Inventory item
@@ -211,6 +216,7 @@ function mcl_walls.register_wall(nodename, description, craft_material, tiles, i
 		collisionbox = {-0.2, 0, -0.2, 0.2, 1.4, 0.2},
 		on_construct = update_wall,
 		sounds = sounds,
+		_mcl_blast_resistance = 30,
 	})
 	if craft_material then
 		minetest.register_craft({

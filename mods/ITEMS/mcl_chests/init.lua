@@ -133,6 +133,7 @@ minetest.register_node("mcl_chests:chest", {
 		minetest.log("action", player:get_player_name()..
 				" takes stuff from chest at "..minetest.pos_to_string(pos))
 	end,
+	_mcl_blast_resistance = 2.5,
 })
 
 minetest.register_node("mcl_chests:chest_left", {
@@ -192,6 +193,7 @@ minetest.register_node("mcl_chests:chest_left", {
 		minetest.log("action", player:get_player_name()..
 				" takes stuff from chest at "..minetest.pos_to_string(pos))
 	end,
+	_mcl_blast_resistance = 2.5,
 })
 
 minetest.register_node("mcl_chests:chest_right", {
@@ -251,6 +253,7 @@ minetest.register_node("mcl_chests:chest_right", {
 		minetest.log("action", player:get_player_name()..
 				" takes stuff from chest at "..minetest.pos_to_string(pos))
 	end,
+	_mcl_blast_resistance = 2.5,
 })
 
 minetest.register_craft({
@@ -295,6 +298,7 @@ minetest.register_node("mcl_chests:ender_chest", {
 				"listring[current_player;enderchest]"..
 				"listring[current_player;main]")
 	end,
+	_mcl_blast_resistance = 3000,
 })
 
 minetest.register_on_joinplayer(function(player)
@@ -404,6 +408,7 @@ for color, desc in pairs(boxtypes) do
 				return 0
 			end
 		end,
+		_mcl_blast_resistance = 30,
 	})
 
 	minetest.register_craft({

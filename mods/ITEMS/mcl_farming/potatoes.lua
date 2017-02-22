@@ -13,6 +13,7 @@ minetest.register_node("mcl_farming:potato_1", {
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_farming:potato_2", {
@@ -30,6 +31,7 @@ minetest.register_node("mcl_farming:potato_2", {
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_farming:potato", {
@@ -49,6 +51,7 @@ minetest.register_node("mcl_farming:potato", {
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_craftitem("mcl_farming:potato_item", {

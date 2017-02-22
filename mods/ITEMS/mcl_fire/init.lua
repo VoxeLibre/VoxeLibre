@@ -46,9 +46,7 @@ minetest.register_node("mcl_fire:fire", {
 	on_construct = function(pos)
 		minetest.get_node_timer(pos):start(math.random(30, 60))
 	end,
-
-	on_blast = function() -- Unaffected by explosions
-	end,
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_fire:eternal_fire", {
@@ -76,9 +74,7 @@ minetest.register_node("mcl_fire:eternal_fire", {
 	groups = {igniter = 1, dig_immediate = 3, not_in_creative_inventory = 1},
 	sounds = {},
 	drop = "",
-
-	on_blast = function() -- Unaffected by explosions
-	end,
+	_mcl_blast_resistance = 0,
 })
 
 --

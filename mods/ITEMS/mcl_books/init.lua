@@ -157,6 +157,7 @@ minetest.register_node("mcl_books:bookshelf", {
 	groups = {choppy=3,oddly_breakable_by_hand=2,flammable=3,building_block=1},
 	drop = "mcl_books:book 3",
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 7.5,
 })
 
 minetest.register_craft({

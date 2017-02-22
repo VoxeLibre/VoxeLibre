@@ -5,6 +5,7 @@ minetest.register_node("mcl_end:end_stone", {
 	stack_max = 64,
 	groups = {cracky=2,building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
+	_mcl_blast_resistance = 45,
 })
 
 minetest.register_node("mcl_end:end_bricks", {
@@ -14,6 +15,7 @@ minetest.register_node("mcl_end:end_bricks", {
 	stack_max = 64,
 	groups = {cracky=3,building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
+	_mcl_blast_resistance = 4,
 })
 
 minetest.register_node("mcl_end:purpur_block", {
@@ -23,6 +25,7 @@ minetest.register_node("mcl_end:purpur_block", {
 	stack_max = 64,
 	groups = {cracky=3,building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
+	_mcl_blast_resistance = 30,
 })
 
 minetest.register_node("mcl_end:purpur_pillar", {
@@ -34,6 +37,7 @@ minetest.register_node("mcl_end:purpur_pillar", {
 	tiles = {"mcl_end_purpur_pillar_top.png", "mcl_end_purpur_pillar_top.png", "mcl_end_purpur_pillar.png"},
 	groups = {cracky=3,building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
+	_mcl_blast_resistance = 30,
 })
 
 local rod_box = {
@@ -70,6 +74,7 @@ minetest.register_node("mcl_end:end_rod", {
 	-- FIXME: Collision box does not seem to rotate correctly
 	collision_box = rod_box,
 	sounds = mcl_sounds.node_sound_glass_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_end:dragon_egg", {
@@ -105,6 +110,7 @@ minetest.register_node("mcl_end:dragon_egg", {
 	},
 	groups = { oddly_breakable_by_hand = 3, falling_node = 1, deco_block = 1, not_in_creative_inventory = 1 },
 	sounds = mcl_sounds.node_sound_stone_defaults(),
+	_mcl_blast_resistance = 45,
 	-- TODO: Make dragon egg teleport on punching
 })
 
@@ -135,6 +141,7 @@ minetest.register_node("mcl_end:chorus_flower", {
 	selection_box = { type = "regular" },
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	groups = { oddly_breakable_by_hand = 3, choppy = 3, deco_block = 1 },
+	_mcl_blast_resistance = 2,
 })
 
 minetest.register_node("mcl_end:chorus_flower_dead", {
@@ -154,6 +161,7 @@ minetest.register_node("mcl_end:chorus_flower_dead", {
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	drop = "mcl_end:chorus_flower",
 	groups = { oddly_breakable_by_hand = 3, choppy = 3, deco_block = 1},
+	_mcl_blast_resistance = 2,
 })
 
 minetest.register_node("mcl_end:chorus_plant", {
@@ -185,6 +193,7 @@ minetest.register_node("mcl_end:chorus_plant", {
 	-- TODO: Check drop probability
 	drop = { items = { {items = { "mcl_end:chorus_fruit", rarity = 4 } } } },
 	groups = { oddly_breakable_by_hand = 3, choppy = 3, not_in_creative_inventory = 1,},
+	_mcl_blast_resistance = 2,
 })
 
 -- Craftitems

@@ -27,6 +27,7 @@ minetest.register_node("mcl_colorblocks:hardened_clay", {
 	stack_max = 64,
 	groups = {cracky=3,hardened_clay=1,building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
+	_mcl_blast_resistance = 21,
 })
 
 minetest.register_craft({
@@ -50,6 +51,7 @@ for _, row in ipairs(block.dyes) do
 		groups = {cracky=3,hardened_clay=1,building_block=1},
 		stack_max = 64,
 		sounds = mcl_sounds.node_sound_stone_defaults(),
+		_mcl_blast_resistance = 21,
 	})
 
 	minetest.register_node("mcl_colorblocks:concrete_powder_"..name, {
@@ -62,6 +64,7 @@ for _, row in ipairs(block.dyes) do
 
 		-- Specify the node to which this node will convert after getting in contact with water
 		_mcl_colorblocks_harden_to = "mcl_colorblocks:concrete_"..name,
+		_mcl_blast_resistance = 2.5,
 	})
 
 	minetest.register_node("mcl_colorblocks:concrete_"..name, {
@@ -71,6 +74,7 @@ for _, row in ipairs(block.dyes) do
 		stack_max = 64,
 		is_ground_content = false,
 		sounds = mcl_sounds.node_sound_stone_defaults(),
+		_mcl_blast_resistance = 9,
 	})
 
 	if terracotta then
@@ -84,6 +88,7 @@ for _, row in ipairs(block.dyes) do
 			stack_max = 64,
 			is_ground_content = false,
 			sounds = mcl_sounds.node_sound_stone_defaults(),
+			_mcl_blast_resistance = 7,
 		})
 	end
 

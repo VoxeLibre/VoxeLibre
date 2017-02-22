@@ -40,6 +40,7 @@ for _, row in ipairs(wool.dyes) do
 			tiles = {"wool_"..texture..".png"},
 			groups = {snappy=2,choppy=2,oddly_breakable_by_hand=3,flammable=1,wool=1,building_block=1},
 			sounds = mcl_sounds.node_sound_defaults(),
+			_mcl_blast_resistance = 4,
 		})
 		minetest.register_node("mcl_wool:"..name.."_carpet", {
 			description = desc.." Carpet",
@@ -58,6 +59,7 @@ for _, row in ipairs(wool.dyes) do
 					{-8/16, -8/16, -8/16, 8/16, -7/16, 8/16},
 				},
 			},
+			_mcl_blast_resistance = 0.5,
 		})
 	if craft_color_group then
 	-- Crafting from dye and white wool

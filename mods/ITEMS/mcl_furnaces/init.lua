@@ -265,6 +265,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
 	on_receive_fields = craftguide,
+	_mcl_blast_resistance = 17.5,
 })
 
 minetest.register_node("mcl_furnaces:furnace_active", {
@@ -302,6 +303,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
 	on_receive_fields = craftguide,
+	_mcl_blast_resistance = 17.5,
 })
 
 minetest.register_craft({

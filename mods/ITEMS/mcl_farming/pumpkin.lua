@@ -45,6 +45,7 @@ minetest.register_node("mcl_farming:pumpkin_1", {
 	},
 	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_farming:pumpkin_2", {
@@ -63,6 +64,7 @@ minetest.register_node("mcl_farming:pumpkin_2", {
 	},
 	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 
@@ -94,6 +96,7 @@ minetest.register_node("mcl_farming:pumpkin_face", {
 		end
 	end,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 5,
 })
 
 minetest.register_node("mcl_farming:pumpkintige_unconnect", {
@@ -106,6 +109,7 @@ minetest.register_node("mcl_farming:pumpkintige_unconnect", {
 	tiles = {"farming_tige_end.png"},
 	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 
@@ -138,6 +142,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_r", {
 	},
 	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_farming:pumpkintige_linked_l", {
@@ -169,6 +174,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_l", {
 	},
 	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_farming:pumpkintige_linked_t", {
@@ -200,6 +206,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_t", {
 	},
 	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_farming:pumpkintige_linked_b", {
@@ -231,6 +238,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_b", {
 	},
 	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_blast_resistance = 0,
 })
 
 mcl_farming:add_plant("mcl_farming:pumpkintige_unconnect", {"mcl_farming:pumpkin_1", "mcl_farming:pumpkin_2"}, 80, 20)
@@ -297,6 +305,7 @@ minetest.register_node("mcl_farming:pumpkin_face_light", {
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face_light.png"},
 	groups = {choppy=2, oddly_breakable_by_hand=2, building_block=1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 5,
 })
 
 minetest.register_craft({

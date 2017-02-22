@@ -33,6 +33,7 @@ minetest.register_node("mcl_farming:wheat_1", {
 			{-0.5, -0.5, -0.25, 0.5, 0.375, -0.25}, -- NodeBox4
 		}
 	},
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_farming:wheat_2", {
@@ -61,6 +62,7 @@ minetest.register_node("mcl_farming:wheat_2", {
 			{-0.5, -0.5, -0.25, 0.5, 0.375, -0.25}, -- NodeBox4
 		}
 	},
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_farming:wheat_3", {
@@ -89,6 +91,7 @@ minetest.register_node("mcl_farming:wheat_3", {
 			{-0.5, -0.5, -0.25, 0.5, 0.375, -0.25}, -- NodeBox4
 		}
 	},
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_farming:wheat", {
@@ -125,6 +128,7 @@ minetest.register_node("mcl_farming:wheat", {
 			{-0.5, -0.5, -0.25, 0.5, 0.375, -0.25}, -- NodeBox4
 		}
 	},
+	_mcl_blast_resistance = 0,
 })
 
 mcl_farming:add_plant("mcl_farming:wheat", {"mcl_farming:wheat_1", "mcl_farming:wheat_2", "mcl_farming:wheat_3"}, 50, 20)

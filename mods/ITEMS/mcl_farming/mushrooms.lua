@@ -14,6 +14,7 @@ minetest.register_node("mcl_farming:mushroom_brown", {
 		type = "fixed",
 		fixed = { -0.15, -0.5, -0.15, 0.15, 0.015, 0.15 },
 	},
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_node("mcl_farming:mushroom_red", {
@@ -31,6 +32,7 @@ minetest.register_node("mcl_farming:mushroom_red", {
 		type = "fixed",
 		fixed = { -0.15, -0.5, -0.15, 0.15, 0.015, 0.15 },
 	},
+	_mcl_blast_resistance = 0,
 })
 
 minetest.register_craftitem("mcl_farming:mushroom_stew", {

@@ -13,6 +13,7 @@ minetest.register_node("mcl_farming:soil", {
 	},
 	groups = { crumbly=3, not_in_creative_inventory=1, soil=2, soil_sapling=1 },
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
+	_mcl_blast_resistance = 3,
 })
 
 minetest.register_node("mcl_farming:soil_wet", {
@@ -29,6 +30,7 @@ minetest.register_node("mcl_farming:soil_wet", {
 	},
 	groups = { crumbly=3, not_in_creative_inventory=1, soil=3, soil_sapling=1 },
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
+	_mcl_blast_resistance = 3,
 })
 
 minetest.register_abm({

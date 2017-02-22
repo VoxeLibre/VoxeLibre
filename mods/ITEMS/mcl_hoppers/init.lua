@@ -111,6 +111,7 @@ minetest.register_node("mcl_hoppers:hopper", {
 				" takes stuff from mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
+	_mcl_blast_resistance = 24,
 })
 
 minetest.register_node("mcl_hoppers:hopper_side", {
@@ -172,6 +173,7 @@ minetest.register_node("mcl_hoppers:hopper_side", {
 				" takes stuff from mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
+	_mcl_blast_resistance = 24,
 })
 
 -- Make hoppers suck in dropped items

@@ -145,6 +145,7 @@ minetest.register_node("mcl_jukebox:jukebox", {
 		end
 		meta:from_table(meta2:to_table())
 	end,
+	_mcl_blast_resistance = 30,
 })
 
 minetest.register_craft({
