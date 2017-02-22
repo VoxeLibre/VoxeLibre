@@ -345,8 +345,10 @@ local function register_mgv6_decorations()
 
 end
 
-register_mgv6_decorations()
-
+local mg_name = minetest.get_mapgen_setting("mg_name")
+if mg_name == "v6" then
+	register_mgv6_decorations()
+end
 
 minetest.register_on_generated(function(minp, maxp, seed)
 	if maxp.y >= 2 and minp.y <= 0 then
