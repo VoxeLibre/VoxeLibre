@@ -212,7 +212,7 @@ minetest.register_node("signs:sign_wall", {
                      z = under.z - above.z}
 
 	-- Only build when it's legal
-	local abovenodedef = minetest.registered_nodes[minetest.get_node(above)]
+	local abovenodedef = minetest.registered_nodes[minetest.get_node(above).name]
 	if not abovenodedef or abovenodedef.buildable_to == false then
 		return itemstack
 	end
