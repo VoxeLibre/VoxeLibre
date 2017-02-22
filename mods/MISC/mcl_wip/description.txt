@@ -1,0 +1,1 @@
+Development mod for MineClone 2 which add a “WIP” comment to items which are considered to be very unfinished.

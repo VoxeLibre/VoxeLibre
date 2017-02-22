@@ -1,5 +1,5 @@
 minetest.register_node("mcl_observers:observer", {
-	description = "Observer (WIP)",
+	description = "Observer",
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	paramtype2 = "facedir",
