@@ -580,6 +580,7 @@ function mcl_core.add_glass(desc, recipeitem, color)
 		groups = {cracky=3,oddly_breakable_by_hand=3, building_block=1},
 		sounds = mcl_sounds.node_sound_glass_defaults(),
 		drop = "",
+		_mcl_blast_resistance = 1.5,
 	})
 	
 	minetest.register_craft({

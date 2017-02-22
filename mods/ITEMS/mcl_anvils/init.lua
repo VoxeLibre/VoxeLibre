@@ -15,6 +15,7 @@ local anvildef = {
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
+	_mcl_blast_resistance = 6000,
 }
 
 local anvildef0 = table.copy(anvildef)
