@@ -145,7 +145,7 @@ function craftguide:get_tooltip_raw(item, recipe_type, cooktime, groups)
 				--[[ Fallback: Generic group explanation: This always
 				works, but the internally used group name (which
 				looks ugly) is exposed to the user. ]]
-				groupstr = "Any item belonging to the " .. g .. " group"
+				groupstr = "Any item belonging to the " .. groups[1] .. " group"
 			end
 		else
 			groupstr = "Any item belonging to the following groups: "
