@@ -8,13 +8,34 @@ minetest.register_craftitem("mcl_farming:pumpkin_seeds", {
 	end
 })
 
+local stemdrop = {
+	max_items = 1,
+	-- FIXME: The probabilities are slightly off from the original.
+	-- Update this drop list when the Minetest drop probability system
+	-- is more powerful.
+	items = {
+		-- 1 seed: Approximation to 20/125 chance
+		-- 20/125 = 0.16
+		-- Approximation: 1/6 = ca. 0.166666666666667
+		{ items = {"mcl_farming:pumpkin_seeds 1"}, rarity = 6 },
+
+		-- 2 seeds: Approximation to 4/125 chance
+		-- 4/125 = 0.032
+		-- Approximation: 1/31 = ca. 0.032258064516129
+		{ items = {"mcl_farming:pumpkin_seeds 2"}, rarity = 31 },
+
+		-- 3 seeds: 1/125 chance
+		{ items = {"mcl_farming:pumkin_seeds 3"}, rarity = 125 },
+	},
+}
+
 minetest.register_node("mcl_farming:pumpkin_1", {
-	description = "Premature Pumpkin (First Stage)",
+	description = "Pumpkin Stem (First Stage)",
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
 	sunlight_propagates = true,
-	drop = "",
+	drop = stemdrop,
 	tiles = {"farming_tige_1.png"},
 	selection_box = {
 		type = "fixed",
@@ -27,12 +48,12 @@ minetest.register_node("mcl_farming:pumpkin_1", {
 })
 
 minetest.register_node("mcl_farming:pumpkin_2", {
-	description = "Premature Pumpkin (Second Stage)",
+	description = "Pumpkin Stem (Second Stage)",
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
 	sunlight_propagates = true,
-	drop = "",
+	drop = stemdrop,
 	tiles = {"farming_tige_2.png"},
 	selection_box = {
 		type = "fixed",
@@ -80,7 +101,7 @@ minetest.register_node("mcl_farming:pumpkintige_unconnect", {
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
-	drop = "",
+	drop = stemdrop,
 	drawtype = "plantlike",
 	tiles = {"farming_tige_end.png"},
 	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
@@ -93,7 +114,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_r", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	walkable = false,
-	drop = "",
+	drop = stemdrop,
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "wallmounted",
@@ -124,7 +145,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_l", {
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
-	drop = "",
+	drop = stemdrop,
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "wallmounted",
@@ -155,7 +176,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_t", {
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
-	drop = "",
+	drop = stemdrop,
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "wallmounted",
@@ -186,7 +207,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_b", {
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
-	drop = "",
+	drop = stemdrop,
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "wallmounted",
