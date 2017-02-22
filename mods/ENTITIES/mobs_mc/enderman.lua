@@ -11,14 +11,14 @@ mobs:register_mob("mobs_mc:enderman", {
 	type = "monster",
 	hp_min = 40,
 	hp_max = 40,
-	collisionbox = {-0.4, -2.4, -0.4, 0.4, 1.8, 0.4},
+	collisionbox = {-0.4, -1.5, -0.4, 0.4, 1.5, 0.4},
 	
 	visual = "mesh",
 	mesh = "mobs_sand_monster.b3d",
 	textures = {
 	{"mobs_endermen.png"}
 	},
-	visual_size = {x=1.2, y=2.5},
+	visual_size = {x=1.5, y=1.6},
 	makes_footstep_sound = true,
 	sounds = {
 		random = "mobs_sandmonster",
