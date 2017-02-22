@@ -16,6 +16,10 @@ minetest.register_alias("mapgen_azure_bluet", "mcl_flowers:azure_bluet")
 
 minetest.register_alias("mapgen_blue_orchid", "mcl_flowers:blue_orchid")
 
+
+-- Don't spawn flowers in flat mapgen
+local mg_name = minetest.get_mapgen_setting("mg_name")
+if mg_name ~= "flat" then
 minetest.register_on_generated(function(minp, maxp, seed)
 	if maxp.y >= 3 and minp.y <= 0 then
 		-- Generate flowers
@@ -103,3 +107,5 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		end
 	end
 end)
+
+end
