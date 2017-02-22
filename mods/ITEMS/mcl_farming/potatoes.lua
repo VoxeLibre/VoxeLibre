@@ -36,11 +36,12 @@ minetest.register_node("mcl_farming:potato", {
 	drawtype = "plantlike",
 	tiles = {"farming_potato_3.png"},
 	drop = {
-		max_items = 1,
 		items = {
-			{ items = {'mcl_farming:potato_item 2'} },
-			{ items = {'mcl_farming:potato_item 3'}, rarity = 2 },
-			{ items = {'mcl_farming:potato_item 4'}, rarity = 5 }
+			{ items = {'mcl_farming:potato_item 1'} },
+			{ items = {'mcl_farming:potato_item 1'}, rarity = 2 },
+			{ items = {'mcl_farming:potato_item 1'}, rarity = 2 },
+			{ items = {'mcl_farming:potato_item 1'}, rarity = 2 },
+			{ items = {'mcl_farming:potato_item_poison 1'}, rarity = 50 }
 		}
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1},
