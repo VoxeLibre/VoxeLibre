@@ -246,5 +246,8 @@ if mg_name ~= "v6" and mg_name ~= "flat" then
 	register_decorations()
 elseif mg_name == "flat" then
 	-- Implementation of Minecraft's Superflat mapgen, classic style
+	minetest.clear_registered_biomes()
+	minetest.clear_registered_decorations()
+	minetest.clear_registered_schematics()
 	register_classic_superflat_biome()
 end

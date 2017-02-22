@@ -3,12 +3,6 @@
 local init = os.clock()
 flower_tmp={}
 
-
--- Map Generation
-dofile(minetest.get_modpath("mcl_flowers").."/mapgen.lua")
-
-
-
 -------------------------------
 --- Fleur Simple (une case) ---
 -------------------------------
