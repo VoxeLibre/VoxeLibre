@@ -59,6 +59,7 @@ local stemdrop = {
 }
 
 minetest.register_node("mcl_farming:melontige_1", {
+	description = "Melon Stem (1)",
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
@@ -76,6 +77,7 @@ minetest.register_node("mcl_farming:melontige_1", {
 })
 
 minetest.register_node("mcl_farming:melontige_2", {
+	description = "Melon Stem (2)",
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
@@ -93,6 +95,7 @@ minetest.register_node("mcl_farming:melontige_2", {
 })
 
 minetest.register_node("mcl_farming:melontige_unconnect", {
+	description = "Melon Stem (unconnected)",
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
@@ -104,6 +107,7 @@ minetest.register_node("mcl_farming:melontige_unconnect", {
 })
 
 minetest.register_node("mcl_farming:melontige_linked_r", {
+	description = "Melon Stem (linked to the right)",
 	paramtype = "light",
 	sunlight_propagates = true,
 	walkable = false,
@@ -134,6 +138,7 @@ minetest.register_node("mcl_farming:melontige_linked_r", {
 })
 
 minetest.register_node("mcl_farming:melontige_linked_l", {
+	description = "Melon Stem (linked to the left)",
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
@@ -164,6 +169,7 @@ minetest.register_node("mcl_farming:melontige_linked_l", {
 })
 
 minetest.register_node("mcl_farming:melontige_linked_t", {
+	description = "Melon Stem (linked to the top)",
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
@@ -194,6 +200,7 @@ minetest.register_node("mcl_farming:melontige_linked_t", {
 })
 
 minetest.register_node("mcl_farming:melontige_linked_b", {
+	description = "Melon Stem (linked to the bottom)",
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,

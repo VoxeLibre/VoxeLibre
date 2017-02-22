@@ -9,6 +9,7 @@ minetest.register_craftitem("mcl_farming:pumpkin_seeds", {
 })
 
 minetest.register_node("mcl_farming:pumpkin_1", {
+	description = "Premature Pumpkin (First Stage)",
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
@@ -26,6 +27,7 @@ minetest.register_node("mcl_farming:pumpkin_1", {
 })
 
 minetest.register_node("mcl_farming:pumpkin_2", {
+	description = "Premature Pumpkin (Second Stage)",
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
@@ -74,6 +76,7 @@ minetest.register_node("mcl_farming:pumpkin_face", {
 })
 
 minetest.register_node("mcl_farming:pumpkintige_unconnect", {
+	description = "Pumpkin Stem (Not Connected)",
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
@@ -86,6 +89,7 @@ minetest.register_node("mcl_farming:pumpkintige_unconnect", {
 
 
 minetest.register_node("mcl_farming:pumpkintige_linked_r", {
+	description = "Pumpkin Stem (Linked to the Right)",
 	paramtype = "light",
 	sunlight_propagates = true,
 	walkable = false,
@@ -116,6 +120,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_r", {
 })
 
 minetest.register_node("mcl_farming:pumpkintige_linked_l", {
+	description = "Pumpkin Stem (Linked to the Left)",
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
@@ -146,6 +151,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_l", {
 })
 
 minetest.register_node("mcl_farming:pumpkintige_linked_t", {
+	description = "Pumpkin Stem (Linked to the Top)",
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
@@ -176,6 +182,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_t", {
 })
 
 minetest.register_node("mcl_farming:pumpkintige_linked_b", {
+	description = "Pumpkin Stem (Linked to the Bottom)",
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
