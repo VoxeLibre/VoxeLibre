@@ -122,7 +122,7 @@ end
 
 -- Horizontal pistons
 
-local pt = 3/16 -- pusher thickness
+local pt = 4/16 -- pusher thickness
 
 local piston_pusher_box = {
 	type = "fixed",
