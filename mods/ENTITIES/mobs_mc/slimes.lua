@@ -117,9 +117,14 @@ mobs:register_mob("mobs_mc:greenmedium", {
 	jump_height = 8,
 	jump_chance = 100,
 	fear_height = 60,
-	on_die =function(self, pos)
+	on_die = function(self, pos)
+		local angle, posadd
+		angle = math.random(0, math.pi*2)
 		for i=1,4 do
-			minetest.add_entity(self.object:getpos(), "mobs_mc:greensmall")
+			posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
+			posadd = vector.multiply(vector.normalize(posadd), 0.5)
+			minetest.add_entity(vector.add(pos, posadd), "mobs_mc:greensmall")
+			angle = angle + math.pi/2
 		end
 	end
 })
@@ -177,8 +182,13 @@ mobs:register_mob("mobs_mc:greenbig", {
 	jump_chance = 100,
 	fear_height = 60,
 	on_die = function(self, pos)
+		local angle, posadd
+		angle = math.random(0, math.pi*2)
 		for i=1,2 do
-			minetest.add_entity(self.object:getpos(), "mobs_mc:greenmedium")
+			posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
+			posadd = vector.normalize(posadd)
+			minetest.add_entity(vector.add(pos, posadd), "mobs_mc:greenmedium")
+			angle = angle + math.pi
 		end
 	end,
 })
@@ -301,8 +311,13 @@ mobs:register_mob("mobs_mc:lavabig", {
 	jump_chance = 100,
 	fear_height = 60,
 	on_die = function(self, pos)
+		local angle, posadd
+		angle = math.random(0, math.pi*2)
 		for i=1,4 do
-			minetest.add_entity(self.object:getpos(), "mobs_mc:lavasmall")
+			posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
+			posadd = vector.multiply(vector.normalize(posadd), 0.5)
+			minetest.add_entity(vector.add(pos, posadd), "mobs_mc:lavasmall")
+			angle = angle + math.pi/2
 		end
 	end
 })
