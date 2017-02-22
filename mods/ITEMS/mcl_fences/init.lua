@@ -64,7 +64,7 @@ mcl_fences.register_fence = function(id, fence_name, texture, fence_image, group
 	return fence_id
 end
 
-mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, gate_image, groups, connects_to, sounds)
+mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, gate_image, groups, connects_to, sounds, sound_open, sound_close, sound_gain)
 	local meta2
 	local state2 = 0
 
@@ -74,17 +74,26 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, gate_ima
 
 	local gate_id = minetest.get_current_modname()..":"..id.."_gate"
 	local open_gate_id = gate_id .. "_open"
+	if not sound_open then
+		sound_open = "doors_fencegate_open"
+	end
+	if not sound_close then
+		sound_close = "doors_fencegate_close"
+	end
+	if not sound_gain then
+		sound_gain = 0.3
+	end
 	local function punch_gate(pos, node)
 		meta2 = minetest.get_meta(pos)
 		state2 = meta2:get_int("state")
 		local tmp_node2
 		if state2 == 1 then
 			state2 = 0
-			minetest.sound_play("doors_fencegate_close", {gain = 0.3, max_hear_distance = 10})
+			minetest.sound_play(sound_close, {gain = 0.5, max_hear_distance = 10})
 			tmp_node2 = {name=gate_id, param1=node.param1, param2=node.param2}
 		else
 			state2 = 1
-			minetest.sound_play("doors_fencegate_open", {gain = 0.3, max_hear_distance = 10})
+			minetest.sound_play(sound_open, {gain = 0.5, max_hear_distance = 10})
 			tmp_node2 = {name=open_gate_id, param1=node.param1, param2=node.param2}
 		end
 		update_gate(pos, tmp_node2)
@@ -202,9 +211,9 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, gate_ima
 	return gate_id, open_gate_id
 end
 
-mcl_fences.register_fence_and_fence_gate = function(id, fence_name, fence_gate_name, texture, fence_image, gate_image, groups, connects_to, sounds)
+mcl_fences.register_fence_and_fence_gate = function(id, fence_name, fence_gate_name, texture, fence_image, gate_image, groups, connects_to, sounds, sound_open, sound_close)
 	local fence_id = mcl_fences.register_fence(id, fence_name, texture, fence_image, groups, connects_to, sounds)
-	local gate_id, open_gate_id = mcl_fences.register_fence_gate(id, fence_gate_name, texture, gate_image, groups, connects_to, sounds)
+	local gate_id, open_gate_id = mcl_fences.register_fence_gate(id, fence_gate_name, texture, gate_image, groups, connects_to, sounds, sound_open, sound_close)
 	return fence_id, gate_id, open_gate_id
 end
 

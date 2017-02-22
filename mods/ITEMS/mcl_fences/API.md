@@ -19,7 +19,7 @@ The full itemstring of the new fence node.
 
 Notes: Fences will always have the group `fence=1`. They will always connect to solid nodes (group `solid=1`).
 
-## `mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, gate_image, groups, connects_to, sounds)`
+## `mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, gate_image, groups, connects_to, sounds, sound_open, sound_close)`
 Adds a fence gate without crafting recipe. This will create 2 nodes.
 
 ### Parameters
@@ -30,6 +30,8 @@ Adds a fence gate without crafting recipe. This will create 2 nodes.
 * `groups`: Table of groups to which the fence gate belongs to
 * `connects_to`: Table of nodes (itemstrings) to which the fence will connect to. Use `group:<groupname>` for all members of the group `<groupname>`
 * `sounds`: Node sound table for the fence gate
+* `sound_open`: Sound to play when opening fence gate (optional, default is wooden sound)
+* `sound_close`: Sound to play when closing fence gate (optional, default is wooden sound)
 
 Notes: Fence gates will always have the group `fence_gate=1`. The open fence gate will always have the group `not_in_creative_inventory=1`.
 
@@ -39,7 +41,7 @@ This function returns 2 values, in the following order:
 1. Itemstring of the closed fence gate
 2. Itemstring of the open fence gate
 
-## `mcl_fences.register_fence_and_fence_gate = function(id, fence_name, fence_gate_name, texture, fence_image, gate_image, groups, connects_to, sounds)`
+## `mcl_fences.register_fence_and_fence_gate = function(id, fence_name, fence_gate_name, texture, fence_image, gate_image, groups, connects_to, sounds, sound_open, sound_close)`
 Registers a fence and fence gate. This is basically a combination of the two functions above. This is the recommended way to add a fence / fence gate pair.
 This will register 3 nodes in total without crafting recipes.
 
@@ -52,6 +54,8 @@ This will register 3 nodes in total without crafting recipes.
 * `groups`: Table of groups to which the fence and fence gate belong to
 * `connects_to`: Table of nodes (itemstrings) to which the fence and fence gate will connect to. Use `group:<groupname>` for all members of the group `<groupname>`
 * `sounds`: Node sound table for the fence and the fence gate
+* `sound_open`: Sound to play when opening fence gate (optional, default is wooden sound)
+* `sound_close`: Sound to play when closing fence gate (optional, default is wooden sound)
 
 ### Return value
 This function returns 3 values, in this order:
