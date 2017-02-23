@@ -50,12 +50,18 @@ end
 local horse = {
 	physical = true,
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1, 0.4},
+	textures = {
+		{"mobs_horseh.png"},
+		{"mobs_horsepegh.png"},
+		{"mobs_horsearah.png"},
+	},
 	visual = "mesh",
 	stepheight = 1.1,
 	visual_size = {x=1,y=1},
 	mesh = "mobs_horseh1.x",
 	driver = nil,
 	v = 0,
+	jump_height = 2,
 
 	on_rightclick = function(self, clicker)
 		if not clicker or not clicker:is_player() then
@@ -160,34 +166,7 @@ local horse = {
 	end,
 }
 
---END HORSE
-
--- backup table
-local hbak = horse
-
--- Brown Horse
-local hrs = {
-	textures = {"mobs_horseh1.png"},
-	jmp = 2,
-}
-minetest.register_entity("mobs_mc:horseh1", merge(hrs, horse))
-
--- White Horse
-horse = hbak
-local peg = {
-	textures = {"mobs_horsepegh1.png"},
-	jmp = 2,
-}
-minetest.register_entity("mobs_mc:horsepegh1", merge(peg, horse))
-
--- Black Horse
-horse = hbak
-local ara = {
-	textures = {"mobs_horsearah1.png"},
-	jmp = 3,
-}
-minetest.register_entity("mobs_mc:horsearah1", merge(ara, horse))
-
+minetest.register_entity("mobs_mc:horse", horse)
 
 mobs:register_mob("mobs_mc:horse", {
 	type = "animal",
@@ -196,6 +175,8 @@ mobs:register_mob("mobs_mc:horse", {
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1, 0.4},
 	textures = {
 		{"mobs_horseh.png"},
+		{"mobs_horsepegh.png"},
+		{"mobs_horsearah.png"},
 	},
 	visual = "mesh",
 	mesh = "mobs_horse.x",
@@ -231,104 +212,22 @@ mobs:register_mob("mobs_mc:horse", {
 	end,
 })
 
-mobs:register_mob("mobs_mc:horse2", {
-	type = "animal",
-	hp_min = 15,
-	hp_max = 30,
-	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1, 0.4},
-	textures = {
-		{"mobs_horsepegh.png"},
-	},
-	visual = "mesh",
-	mesh = "mobs_horse.x",
-	makes_footstep_sound = true,
-	walk_velocity = 1,
-	armor = 200,
-	drops = {
-		{name = "mcl_mobitems:leather",
-		chance = 1,
-		min = 0,
-		max = 2,},
-	},
-	drawtype = "front",
-	lava_damage = minetest.registered_nodes["mcl_core:lava_source"].damage_per_second,
-	light_damage = 0,
-	fear_height = 6,
-	animation = {
-		speed_normal = 15,
-		stand_start = 25,		stand_end = 75,
-		walk_start = 75,		walk_end = 100,
-	},
-	follow = "mcl_farming:wheat_item",
-	view_range = 5,
-
-	on_rightclick = function(self, clicker)
-		local tool = clicker:get_wielded_item()
-		if tool:get_name() == "mcl_mobitems:saddle" then
-			clicker:get_inventory():remove_item("main", "mcl_mobitems:saddle")
-			local pos = self.object:getpos()
-			self.object:remove()
-			minetest.add_entity(pos, "mobs_mc:horsepegh1")
-		end
-	end,
-})
-
-mobs:register_mob("mobs_mc:horse3", {
-	type = "animal",
-	hp_min = 15,
-	hp_max = 30,
-	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1, 0.4},
-	textures = {
-		{"mobs_horsearah.png"},
-	},
-	visual = "mesh",
-	mesh = "mobs_horse.x",
-	makes_footstep_sound = true,
-	walk_velocity = 1,
-	armor = 100,
-	drops = {
-		{name = "mcl_mobitems:leather",
-		chance = 1,
-		min = 0,
-		max = 2,},
-	},
-	drawtype = "front",
-	lava_damage = minetest.registered_nodes["mcl_core:lava_source"].damage_per_second,
-	light_damage = 0,
-	fear_height = 6,
-	animation = {
-		speed_normal = 15,
-		stand_start = 25,		stand_end = 75,
-		walk_start = 75,		walk_end = 100,
-	},
-	follow = "mcl_farming:wheat_item",
-	view_range = 5,
-
-	on_rightclick = function(self, clicker)
-		local tool = clicker:get_wielded_item()
-		if tool:get_name() == "mcl_mobitems:saddle" then
-			clicker:get_inventory():remove_item("main", "mcl_mobitems:saddle")
-			local pos = self.object:getpos()
-			self.object:remove()
-			minetest.add_entity(pos, "mobs_mc:horsearah1")
-		end
-	end,
-})
 mobs:register_spawn("mobs_mc:horse", {"mcl_core:dirt_with_grass", "mcl_core:dirt"}, 20, 9, 21000, 1, 12)
-mobs:register_spawn("mobs_mc:horse2", {"mcl_core:dirt_with_grass", "mcl_core:dirt"}, 20, 9, 23000, 1, 31000)
-mobs:register_spawn("mobs_mc:horse3", {"mcl_core:sand", "mcl_core:redsand"}, 20, 9, 17000, 1, 5)
 
-
--- compatibility
+-- Compatibility
 mobs:alias_mob("mobs:horse", "mobs_mc:horse")
 mobs:alias_mob("mobs:horse2", "mobs_mc:horse2")
 mobs:alias_mob("mobs:horse3", "mobs_mc:horse3")
 
--- spawn eggs
--- KPV wild horse spawn eggs
-mobs:register_egg("mobs_mc:horse", "Spawn Brown Horse", "spawn_egg_horse.png", 0)
-mobs:register_egg("mobs_mc:horse2", "Spawn White Horse", "spawn_egg_horse_white.png", 0)
-mobs:register_egg("mobs_mc:horse3", "Spawn Arabic Horse", "spawn_egg_horse_arabic.png", 0)
+-- Legacy
+mobs:alias_mob("mobs_mc:horse2", "mobs_mc:horse")
+mobs:alias_mob("mobs_mc:horse3", "mobs_mc:horse")
+mobs:alias_mob("mobs_mc:horseh1", "mobs_mc:horse")
+mobs:alias_mob("mobs_mc:horsepegh1", "mobs_mc:horse")
+mobs:alias_mob("mobs_mc:horsearah1", "mobs_mc:horse")
+
+-- Spawn eggs
+mobs:register_egg("mobs_mc:horse", "Spawn Horse", "spawn_egg_horse.png", 0)
 
 if minetest.setting_get("log_mods") then
 	minetest.log("action", "MC Horse loaded")
