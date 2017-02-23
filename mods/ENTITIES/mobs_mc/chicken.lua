@@ -108,7 +108,7 @@ mobs:register_mob("mobs_mc:chicken", {
 
 		minetest.add_item(pos, "mcl_throwing:egg")
 
-		minetest.sound_play("default_place_node_hard", {
+		minetest.sound_play("mobs_mc_chicken_lay_egg", {
 			pos = pos,
 			gain = 1.0,
 			max_hear_distance = 5,

@@ -4,6 +4,7 @@ assembled by maikerumine
 compatable with Mobs Redo API
 
 ## LICENSING
+Note: In the following file name lists, the asterisk (“`*`”) is a placeholder which stands for any sequence of characters.
 
 ### Code
 MIT License
@@ -11,10 +12,13 @@ MIT License
 by PilzAdam and others
 
 ### Sound files
-- `mobs_*.ogg`
-	- MIT License, from `mobs_animal` and `mobs_monster` by TenPlus1
+
 - `mobs_mc_squid_hurt.ogg`
 	- !!! UNKNOWN LICENSE !!! Author: daufinsyd
+- `mobs_mc_chicken_lay_egg.ogg`
+	- WTFPL, by PilzAdam and Wuzzy
+- `mobs_*.ogg` (except the files above)
+	- MIT License, from `mobs_animal` and `mobs_monster` by TenPlus1
 - `blaze_breath.ogg`
 - `blaze_died1.ogg`
 	- !!! UNKNOWN LICENSE !!! Author: daufinsyd
