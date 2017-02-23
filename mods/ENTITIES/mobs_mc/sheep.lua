@@ -35,7 +35,8 @@ mobs:register_mob("mobs_mc:sheep", {
 	water_damage = 1,
 	lava_damage = 5,
 	light_damage = 0,
-	fear_height = 3,
+	fear_height = 4,
+	jump_height = 4.5,
 	sounds = {
 		random = "mobs_sheep",
 		death = "mobs_sheep",
@@ -56,36 +57,22 @@ mobs:register_mob("mobs_mc:sheep", {
 		look_start = 78,
 		look_end = 108,
 	},
-	follow = "mcl_farming:wheat_item",
+	follow = {"mcl_farming:wheat_item"},
 	view_range = 5,
+
+	replace_rate = 10,
+	replace_what = {"mcl_core:dirt_with_grass", "mcl_core:tallgrass"},
+	replace_with = "air",
 	
 	on_rightclick = function(self, clicker)
-		local item = clicker:get_wielded_item()
-		if item:get_name() == "mcl_farming:wheat_item" then
-			if not self.tamed then
-				if not minetest.setting_getbool("creative_mode") then
-					item:take_item()
-					clicker:set_wielded_item(item)
-				end
-				self.tamed = true
-			elseif self.naked then
-				if not minetest.setting_getbool("creative_mode") then
-					item:take_item()
-					clicker:set_wielded_item(item)
-				end
-				self.food = (self.food or 0) + 1
-				if self.food >= 4 then
-					self.food = 0
-					self.naked = false
-					self.object:set_properties({
-						textures = {"sheep.png"},
-					})
-				end
-			end
+
+		if mobs:feed_tame(self, clicker, 1, true, true) then
 			return
 		end
-		if item:get_name() == "mcl_core:shears" and not self.naked then
-			self.naked = true
+
+		local item = clicker:get_wielded_item()
+		if item:get_name() == "mcl_core:shears" and not self.gotten and not self.child then
+			self.gotten = true
 			local pos = self.object:getpos()
 			minetest.sound_play("shears", {pos = pos})
 			pos.y = pos.y + 0.5
@@ -102,7 +89,7 @@ mobs:register_mob("mobs_mc:sheep", {
 				clicker:get_inventory():set_stack("main", clicker:get_wield_index(), item)
 			end
 		end
-		if minetest.get_item_group(item:get_name(), "dye") == 1 and not self.naked then
+		if minetest.get_item_group(item:get_name(), "dye") == 1 and not self.gotten then
 print(item:get_name(), minetest.get_item_group(item:get_name(), "dye"))
 			local name = item:get_name()
 			local pname = name:split(":")[2]
