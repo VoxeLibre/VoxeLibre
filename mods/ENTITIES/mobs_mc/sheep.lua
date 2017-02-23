@@ -37,7 +37,8 @@ mobs:register_mob("mobs_mc:sheep", {
 	type = "animal",
 	hp_min = 8,
 	hp_max = 8,
-	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.29, 0.45},
+	-- FIXME: Should be 1.3 blocks high
+	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.09, 0.45},
 	
 	visual = "mesh",
 	visual_size = {x=0.6, y=0.6},

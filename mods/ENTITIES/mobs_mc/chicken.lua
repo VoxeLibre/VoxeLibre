@@ -11,9 +11,11 @@ mobs:register_mob("mobs_mc:chicken", {
 	type = "animal",
 	hp_min = 4,
 	hp_max = 4,
-	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1, 0.4},
+	-- The x/z size is slightly bigger than in Minecraft (MC: 0.4×0.4; MCL2: 0.5×0.5)
+	collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.69, 0.25},
 	
 	visual = "mesh",
+	visual_size = {x=0.7, y=0.7},
 	mesh = "mobs_mc_chicken.x",
 	textures = {
 	{"mobs_mc_chicken.png"}
