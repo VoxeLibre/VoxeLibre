@@ -12,7 +12,7 @@ mobs:register_mob("mobs_mc:zombie", {
 	type = "monster",
 	hp_min = 20,
 	hp_max = 20,
-	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.9, 0.4},
+	collisionbox = {-0.5, -0.01, -0.5, 0.5, 1.99, 0.5},
 	textures = {
 	{"mobs_zombie.png"}
 	},
@@ -28,9 +28,9 @@ mobs:register_mob("mobs_mc:zombie", {
 	walk_velocity = .8,
 	run_velocity = 1.6,
 	damage = 3,
-	pathfinding = true,
+	fear_height = 8,
+	pathfinding = 1,
 	group_attack = true,
-	armor = 80,
 	drops = {
 		{name = "mcl_mobitems:rotten_flesh",
 		chance = 1,
@@ -85,7 +85,7 @@ mobs:register_mob("mobs_mc:zombie", {
 	lava_damage = minetest.registered_nodes["mcl_core:lava_source"].damage_per_second,
 	-- TODO: Burn mob only when in direct sunlight
 	light_damage = 1,
-	view_range = 16,
+	view_range = 40,
 	attack_type = "dogfight",
 })
 mobs:register_spawn("mobs_mc:zombie", {"group:solid"}, 7, -1, 5000, 4, 31000)
