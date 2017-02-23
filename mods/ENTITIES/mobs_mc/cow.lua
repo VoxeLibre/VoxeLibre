@@ -3,9 +3,6 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-
---dofile(minetest.get_modpath("mobs").."/api.lua")
-
 mobs:register_mob("mobs_mc:cow", {
 	type = "animal",
 	hp_min = 10,
@@ -55,31 +52,9 @@ mobs:register_mob("mobs_mc:cow", {
 		look_start = 78,
 		look_end = 108,
 	},
-	--[[
-	follow = "farming:wheat",
-	view_range = 5,
-	on_rightclick = function(self, clicker)
-		local item = clicker:get_wielded_item()
-		if item:get_name() == "bucket:bucket_empty" and clicker:get_inventory() then
-			local inv = clicker:get_inventory()
-			inv:remove_item("main", "bucket:bucket_empty")
-			-- if room add bucket of milk to inventory, otherwise drop as item
-			if inv:room_for_item("main", {name="mobs:bucket_milk"}) then
-				clicker:get_inventory():add_item("main", "mobs:bucket_milk")
-			else
-				local pos = self.object:getpos()
-				pos.y = pos.y + 0.5
-				minetest.add_item(pos, {name = "mobs:bucket_milk"})
-			end
-		end
-	end,
-	]]
 	--from mobs_animals
 	follow = "mcl_farming:wheat_item",
-	view_range = 7,
-	replace_rate = 10,
-	replace_what = {"mcl_core:tallgrass",},
-	replace_with = "air",
+	view_range = 10,
 	fear_height = 2,
 	on_rightclick = function(self, clicker)
 
@@ -93,14 +68,7 @@ mobs:register_mob("mobs_mc:cow", {
 		-- milk cow with empty bucket
 		if tool:get_name() == "bucket:bucket_empty" then
 
-			--if self.gotten == true
 			if self.child == true then
-				return
-			end
-
-			if self.gotten == true then
-				minetest.chat_send_player(clicker:get_player_name(),
-						"Cow already milked!")
 				return
 			end
 
@@ -115,8 +83,6 @@ mobs:register_mob("mobs_mc:cow", {
 				pos.y = pos.y + 0.5
 				minetest.add_item(pos, {name = "mcl_mobitems:milk_bucket"})
 			end
-
-			self.gotten = true -- milked
 
 			return
 		end
