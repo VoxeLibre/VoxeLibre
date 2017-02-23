@@ -21,7 +21,7 @@ mobs:register_mob("mobs_mc:cow", {
 	walk_velocity = 1,
 	armor = 100,
 	drops = {
-		{name = "mcl_mobitems:beef_raw",
+		{name = "mcl_mobitems:beef",
 		chance = 1,
 		min = 1,
 		max = 3,},

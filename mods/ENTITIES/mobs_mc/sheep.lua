@@ -22,7 +22,7 @@ mobs:register_mob("mobs_mc:sheep", {
 	walk_velocity = 1,
 	armor = 100,
 	drops = {
-		{name = "mcl_mobs:mutton_raw",
+		{name = "mcl_mobs:mutton",
 		chance = 1,
 		min = 1,
 		max = 2,},
@@ -112,7 +112,7 @@ print(item:get_name(), minetest.get_item_group(item:get_name(), "dye"))
 			})
 			self.color = pname
 			self.drops = {
-				{name = "mcl_mobs:mutton_raw",
+				{name = "mcl_mobs:mutton",
 				chance = 1,
 				min = 1,
 				max = 2,},

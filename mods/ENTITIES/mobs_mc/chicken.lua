@@ -22,7 +22,7 @@ mobs:register_mob("mobs_mc:chicken", {
 	walk_velocity = 1,
 	armor = 100,
 	drops = {
-		{name = "mcl_mobitems:chicken_raw",
+		{name = "mcl_mobitems:chicken",
 		chance = 1,
 		min = 1,
 		max = 1,},
