@@ -66,7 +66,7 @@ mobs:alias_mob("mobs:spider", "mobs_mc:spider")
 mobs:alias_mob("esmobs:spider", "mobs_mc:spider")
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:spider", "Spawn Spider", "mcl_core_web.png", 1)
+mobs:register_egg("mobs_mc:spider", "Spawn Spider", "spawn_egg_spider.png", 0)
 
 
 if minetest.setting_get("log_mods") then

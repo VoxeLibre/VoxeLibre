@@ -327,8 +327,8 @@ mobs:alias_mob("mobs:horse3", "mobs_mc:horse3")
 -- spawn eggs
 -- KPV wild horse spawn eggs
 mobs:register_egg("mobs_mc:horse", "Spawn Brown Horse", "spawn_egg_horse.png", 0)
-mobs:register_egg("mobs_mc:horse2", "Spawn White Horse", "spawn_egg_horse.png", 0)
-mobs:register_egg("mobs_mc:horse3", "Spawn Arabic Horse", "spawn_egg_horse.png", 0)
+mobs:register_egg("mobs_mc:horse2", "Spawn White Horse", "spawn_egg_horse_white.png", 0)
+mobs:register_egg("mobs_mc:horse3", "Spawn Arabic Horse", "spawn_egg_horse_arabic.png", 0)
 
 if minetest.setting_get("log_mods") then
 	minetest.log("action", "MC Horse loaded")
