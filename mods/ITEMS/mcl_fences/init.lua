@@ -64,7 +64,7 @@ mcl_fences.register_fence = function(id, fence_name, texture, groups, connects_t
 	return fence_id
 end
 
-mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, connects_to, sounds, sound_open, sound_close, sound_gain)
+mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, sounds, sound_open, sound_close, sound_gain)
 	local meta2
 	local state2 = 0
 
@@ -103,10 +103,6 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 	if groups == nil then groups = {} end
 	groups.fence_gate = 1
 	groups.deco_block = 1
-	if connects_to == nil then connects_to = {} end
-	table.insert(connects_to, "group:solid")
-	table.insert(connects_to, "group:fence_gate")
-	table.insert(connects_to, fence_id)
 
 	groups.mesecon_effector_on = 1
 	groups.fence_gate = 1
@@ -213,7 +209,7 @@ end
 
 mcl_fences.register_fence_and_fence_gate = function(id, fence_name, fence_gate_name, texture, groups, connects_to, sounds, sound_open, sound_close)
 	local fence_id = mcl_fences.register_fence(id, fence_name, texture, groups, connects_to, sounds)
-	local gate_id, open_gate_id = mcl_fences.register_fence_gate(id, fence_gate_name, texture, groups, connects_to, sounds, sound_open, sound_close)
+	local gate_id, open_gate_id = mcl_fences.register_fence_gate(id, fence_gate_name, texture, groups, sounds, sound_open, sound_close)
 	return fence_id, gate_id, open_gate_id
 end
 
