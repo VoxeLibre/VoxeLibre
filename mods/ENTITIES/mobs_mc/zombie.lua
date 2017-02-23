@@ -89,17 +89,36 @@ local zombie = {
 
 mobs:register_mob("mobs_mc:zombie", zombie)
 
--- Baby Zombie.
+-- Baby zombie.
 -- A smaller and more dangerous variant of the zombie
 
-local baby = table.copy(zombie)
-baby.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
-baby.visual_size = {x=0.5, y=0.5}
-baby.walk_velocity = 1.2
-baby.run_velocity = 2.4
-baby.light_damage = 0
+local baby_zombie = table.copy(zombie)
+baby_zombie.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
+baby_zombie.visual_size = {x=0.5, y=0.5}
+baby_zombie.walk_velocity = 1.2
+baby_zombie.run_velocity = 2.4
+baby_zombie.light_damage = 0
 
-mobs:register_mob("mobs_mc:baby_zombie", baby)
+mobs:register_mob("mobs_mc:baby_zombie", baby_zombie)
+
+-- Husk.
+-- Desert variant of the zombie
+local husk = table.copy(zombie)
+husk.textures = {{"mobs_mc_husk.png"}}
+husk.light_damage = 0
+-- TODO: Husks avoid water
+
+mobs:register_mob("mobs_mc:husk", husk)
+
+-- Baby husk.
+-- A smaller and more dangerous variant of the husk
+local baby_husk = table.copy(husk)
+baby_husk.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
+baby_husk.visual_size = {x=0.5, y=0.5}
+baby_husk.walk_velocity = 1.2
+baby_husk.run_velocity = 2.4
+
+mobs:register_mob("mobs_mc:baby_husk", baby_husk)
 
 
 -- Spawning
@@ -107,6 +126,8 @@ mobs:register_mob("mobs_mc:baby_zombie", baby)
 mobs:register_spawn("mobs_mc:zombie", {"group:solid"}, 7, -1, 5000, 4, 31000)
 -- Baby zombie is 20 times less likely than regular zombies
 mobs:register_spawn("mobs_mc:baby_zombie", {"group:solid"}, 7, -1, 100000, 4, 31000)
+mobs:register_spawn("mobs_mc:husk", {"mcl_core:sand", "mcl_core:redsand", "mcl_core:sandstone", "mcl_core:redsandstone"}, 7, -1, 6000, 4, 31000)
+mobs:register_spawn("mobs_mc:baby_husk", {"mcl_core:sand", "mcl_core:redsand", "mcl_core:sandstone", "mcl_core:redsandstone"}, 7, -1, 100000, 4, 31000)
 
 
 -- Compatibility
@@ -114,7 +135,9 @@ mobs:alias_mob("mobs:zombie", "mobs_mc:zombie")
 
 -- Spawn eggs
 mobs:register_egg("mobs_mc:zombie", "Spawn Zombie", "spawn_egg_zombie.png")
-mobs:register_egg("mobs_mc:baby_zombie", "Spawn Baby Zombie", "spawn_egg_baby_zombie.png")
+mobs:register_egg("mobs_mc:baby_zombie", "Spawn Baby Zombie", "spawn_egg_baby_zombie.png") -- TODO: To be removed
+mobs:register_egg("mobs_mc:husk", "Spawn Husk", "spawn_egg_husk.png") -- TODO: To be removed
+mobs:register_egg("mobs_mc:baby_husk", "Spawn Baby Husk", "spawn_egg_baby_husk.png") -- TODO: To be removed
 
 
 if minetest.setting_get("log_mods") then
