@@ -126,7 +126,7 @@ mobs:register_mob("mobs_mc:baby_husk", baby_husk)
 mobs:register_spawn("mobs_mc:zombie", {"group:solid"}, 7, -1, 5000, 4, 31000)
 -- Baby zombie is 20 times less likely than regular zombies
 mobs:register_spawn("mobs_mc:baby_zombie", {"group:solid"}, 7, -1, 100000, 4, 31000)
-mobs:register_spawn("mobs_mc:husk", {"mcl_core:sand", "mcl_core:redsand", "mcl_core:sandstone", "mcl_core:redsandstone"}, 7, -1, 6000, 4, 31000)
+mobs:register_spawn("mobs_mc:husk", {"mcl_core:sand", "mcl_core:redsand", "mcl_core:sandstone", "mcl_core:redsandstone"}, 7, -1, 5000, 4, 31000)
 mobs:register_spawn("mobs_mc:baby_husk", {"mcl_core:sand", "mcl_core:redsand", "mcl_core:sandstone", "mcl_core:redsandstone"}, 7, -1, 100000, 4, 31000)
 
 
