@@ -345,11 +345,6 @@ local function register_mgv6_decorations()
 
 end
 
-local mg_name = minetest.get_mapgen_setting("mg_name")
-if mg_name == "v6" then
-	register_mgv6_decorations()
-end
-
 minetest.register_on_generated(function(minp, maxp, seed)
 	if maxp.y >= 2 and minp.y <= 0 then
 		-- Generate clay
@@ -531,3 +526,13 @@ minetest.register_on_generated(function(minp, maxp)
 	end
 end)
 
+-- Apply mapgen-specific mapgen code
+local mg_name = minetest.get_mapgen_setting("mg_name")
+if mg_name == "v6" then
+	register_mgv6_decorations()
+end
+if mg_name == "flat" then
+	minetest.set_mapgen_setting("mg_flags", "nocaves,nodungeons,nodecorations")
+else
+	minetest.set_mapgen_setting("mg_flags", "nodungeons")
+end

@@ -17,6 +17,9 @@ if mg_name ~= "flat" then
 else
 	-- 1 perfectly flat bedrock layer
 	local ground = minetest.get_mapgen_setting("mgflat_ground_level")
+	if not ground then
+		ground = 8
+	end
 	mcl_vars.bedrock_overworld_min = ground - 3
 	mcl_vars.bedrock_overworld_max = mcl_vars.bedrock_overworld_min
 	mcl_vars.bedrock_is_rough = false
