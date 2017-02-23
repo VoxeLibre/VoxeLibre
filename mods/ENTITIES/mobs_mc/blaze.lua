@@ -49,7 +49,8 @@ mobs:register_mob("mobs_mc:blaze", {
         shoot_end = 40,
 	},
 	drawtype = "front",
-    water_damage = 10,
+	-- MC Wiki: 1 damage every half second
+	water_damage = 2,
 	lava_damage = 0,
 	fall_damage = 0,
 	light_damage = 0,

@@ -39,7 +39,7 @@ mobs:register_mob("mobs_mc:dog", {
 	drops = {},
 	drawtype = "front",
 	water_damage = 0,
-	lava_damage = 5,
+	lava_damage = minetest.registered_nodes["mcl_core:lava_source"].damage_per_second,
 	light_damage = 0,
 	on_rightclick = function(self, clicker)
 		local item = clicker:get_wielded_item()
@@ -139,7 +139,7 @@ mobs:register_mob("mobs_mc:wolf", {
 	drops = {},
 	drawtype = "front",
 	water_damage = 0,
-	lava_damage = 5,
+	lava_damage = minetest.registered_nodes["mcl_core:lava_source"].damage_per_second,
 	light_damage = 0,
 	on_rightclick = function(self, clicker)
 		local tool = clicker:get_wielded_item()

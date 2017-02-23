@@ -47,7 +47,7 @@ mobs:register_mob("mobs_mc:spider", {
 		{name = "mcl_mobitems:spider_eye",
 		chance = 3, min = 1, max = 1,},
 	},
-	lava_damage = 8,
+	lava_damage = minetest.registered_nodes["mcl_core:lava_source"].damage_per_second,
 	light_damage = 0,
 	fear_height = 14,
 	animation = {

@@ -49,7 +49,7 @@ mobs:register_mob("mobs_mc:enderman", {
 	},
 	drawtype = "front",
 	water_damage = 1,
-	lava_damage = 5,
+	lava_damage = minetest.registered_nodes["mcl_core:lava_source"].damage_per_second,
 	light_damage = 0,
 	view_range = 16,
 	attack_type = "dogfight",

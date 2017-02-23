@@ -209,8 +209,7 @@ mobs:register_mob("mobs_mc:horse", {
 		max = 2,},
 	},
 	drawtype = "front",
-	water_damage = 1,
-	lava_damage = 5,
+	lava_damage = minetest.registered_nodes["mcl_core:lava_source"].damage_per_second,
 	light_damage = 0,
 	fear_height = 6,
 	animation = {
@@ -252,8 +251,7 @@ mobs:register_mob("mobs_mc:horse2", {
 		max = 2,},
 	},
 	drawtype = "front",
-	water_damage = 1,
-	lava_damage = 5,
+	lava_damage = minetest.registered_nodes["mcl_core:lava_source"].damage_per_second,
 	light_damage = 0,
 	fear_height = 6,
 	animation = {
@@ -295,8 +293,7 @@ mobs:register_mob("mobs_mc:horse3", {
 		max = 2,},
 	},
 	drawtype = "front",
-	water_damage = 1,
-	lava_damage = 5,
+	lava_damage = minetest.registered_nodes["mcl_core:lava_source"].damage_per_second,
 	light_damage = 0,
 	fear_height = 6,
 	animation = {

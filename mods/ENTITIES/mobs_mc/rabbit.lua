@@ -33,10 +33,9 @@ mobs:register_mob("mobs_mc:rabbit", {
 		{name = "mcl_mobitems:rabbit_hide", chance = 1, min = 0, max = 1},
 		{name = "mcl_mobitems:rabbit_foot", chance = 10, min = 1, max = 1},
 	},
-	water_damage = 1,
-	lava_damage = 4,
+	lava_damage = minetest.registered_nodes["mcl_core:lava_source"].damage_per_second,
 	light_damage = 0,
-	fear_height = 2,
+	fear_height = 3,
 	animation = {
 		speed_normal = 15,
 		stand_start = 1,
