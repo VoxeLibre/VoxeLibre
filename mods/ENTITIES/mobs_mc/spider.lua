@@ -16,7 +16,11 @@ mobs:register_mob("mobs_mc:spider", {
 	hp_min = 16,
 	hp_max = 16,
 	armor = 100,
-	collisionbox = {-0.9, -0.01, -0.7, 0.7, 0.6, 0.7},
+	--[[ MC: 1.5×1×1.5, MCL2: 1.5×0.5×1.5
+	The MC model is surprisingly high because the MC body is
+	high above the ground while in MCL2 the body touches the
+	ground. ]]
+	collisionbox = {-0.75, -0.01, -0.75, 0.75, 0.49, 0.75},
 	visual = "mesh",
 	mesh = "mobs_spider.x",
 	textures = {
