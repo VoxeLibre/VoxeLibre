@@ -51,13 +51,22 @@ mobs:register_mob("mobs_mc:pig", {
 		look_start = 78,
 		look_end = 108,
 	},
-	follow = {"mcl_core:apple", "mcl_farming:beetroot_item", "mcl_farming:carrot_item", "mcl_mobitems:carrot_on_a_stick"},
+	follow = {"mcl_farming:beetroot_item", "mcl_farming:carrot_item", "mcl_mobitems:carrot_on_a_stick", "mcl_farming:potato_item"},
 	view_range = 5,
 	on_rightclick = function(self, clicker)
 		if not clicker or not clicker:is_player() then
 			return
 		end
+
+		local wielditem = clicker:get_wielded_item()
+		-- Feed pig
+		if wielditem:get_name() ~= "mcl_mobitems:carrot_on_a_stick" then
+			if mobs:feed_tame(self, clicker, 8, true, true) then
+				return
+			end
+		end
 	
+		-- Put saddle on pig
 		local item = clicker:get_wielded_item()
 		if item:get_name() == "mcl_mobitems:saddle" and self.saddle ~= "yes" then
 			self.object:set_properties({
@@ -83,9 +92,10 @@ mobs:register_mob("mobs_mc:pig", {
 			end
 			return
 		end
-	-- from boats mod
-	local name = clicker:get_player_name()
 
+	-- from boats mod
+	-- Ride pig if it has a saddle and player uses a carrot on a stick
+	local name = clicker:get_player_name()
 	if self.driver and clicker == self.driver then
 		self.driver = nil
 		clicker:set_detach()
@@ -98,11 +108,8 @@ mobs:register_mob("mobs_mc:pig", {
 		minetest.after(0.2, function()
 			mcl_player.player_set_animation(clicker, "sit" , 30)
 		end)
-		----[[
-			-- ridable pigs
 		if self.name == "mobs_mc:pig" and self.saddle == "yes" and self.driver then
-			local item = clicker:get_wielded_item()
-			if item:get_name() == "mcl_mobitems:carrot_on_a_stick" then
+			if wielditem:get_name() == "mcl_mobitems:carrot_on_a_stick" then
 				local yaw = self.driver:get_look_yaw() - math.pi / 2
 				local velo = self.object:getvelocity()
 				local v = 1.5
@@ -113,29 +120,22 @@ mobs:register_mob("mobs_mc:pig", {
 
 				local inv = self.driver:get_inventory()
 				-- 26 uses
-				if item:get_wear() > 63000 then
-					item = {name = "mcl_fishing:fishing_rod", count = 1}
+				if wielditem:get_wear() > 63000 then
+					wielditem = {name = "mcl_fishing:fishing_rod", count = 1}
 				else
-					item:add_wear(2521)
+					wielditem:add_wear(2521)
 				end
-				inv:set_stack("main", self.driver:get_wield_index(), item)
+				inv:set_stack("main", self.driver:get_wield_index(), wielditem)
 				return
 			end
-			end
-			--]]
-		--self.object:setyaw(clicker:get_look_yaw() - math.pi / 2)
-	end
-	--from mobs_animals
-		if mobs:feed_tame(self, clicker, 8, true, true) then
-			return
 		end
+	end
 	end,
 })
 
 mobs:register_spawn("mobs_mc:pig", {"mcl_core:dirt_with_grass"}, 20, 9, 5000, 1, 31000)
 	
 
---api code to fix
 --[[
 
 	on_step = function(self, dtime)
