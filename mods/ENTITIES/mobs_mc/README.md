@@ -17,6 +17,9 @@ by PilzAdam and others
 	- !!! UNKNOWN LICENSE !!! Author: daufinsyd
 - `mobs_mc_chicken_lay_egg.ogg`
 	- WTFPL, by PilzAdam and Wuzzy
+- `mobs_mc_cow.ogg`
+	- CC0, by Freesound.org user Zozzy
+	- Source: <https://www.freesound.org/people/Zozzy/sounds/59245/>
 - `mobs_*.ogg` (except the files above)
 	- MIT License, from `mobs_animal` and `mobs_monster` by TenPlus1
 - `blaze_breath.ogg`
@@ -24,7 +27,7 @@ by PilzAdam and others
 	- !!! UNKNOWN LICENSE !!! Author: daufinsyd
 - `blaze_hurt1.ogg`
 	- CC0, by freesound.org user thefilmbakery
-	- Source: https://freesound.org/people/thefilmbakery/sounds/137836/
+	- Source: <https://freesound.org/people/thefilmbakery/sounds/137836/>
 - `slime_*.ogg`
 	- MIT License 
 
