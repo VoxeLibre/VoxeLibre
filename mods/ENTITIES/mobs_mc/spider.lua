@@ -8,11 +8,12 @@
 
 -- Spider by AspireMint (fishyWET (CC-BY-SA 3.0 license for texture)
 mobs:register_mob("mobs_mc:spider", {
-	type = "animal",
+	type = "monster",
 	passive = false,
 	attack_type = "dogfight",
 	pathfinding = true,
 	damage = 2,
+	docile_by_day = true,
 	hp_min = 16,
 	hp_max = 16,
 	armor = 100,
@@ -39,7 +40,6 @@ mobs:register_mob("mobs_mc:spider", {
 	view_range = 15,
 	floats = 0,
 	group_attack = true,
-		replace_rate = 5,
 	peaceful = false,
 	drops = {
 		{name = "mcl_mobitems:string",
