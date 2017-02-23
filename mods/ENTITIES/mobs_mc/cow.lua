@@ -56,6 +56,7 @@ mobs:register_mob("mobs_mc:cow", {
 	follow = "mcl_farming:wheat_item",
 	view_range = 10,
 	fear_height = 2,
+	jump_height = 1.25,
 	on_rightclick = function(self, clicker)
 
 		-- feed or tame
@@ -89,7 +90,7 @@ mobs:register_mob("mobs_mc:cow", {
 	end,	
 })
 
-mobs:register_spawn("mobs_mc:cow", {"group:solid"}, 20, 9, 7000, 1, 31000)
+mobs:register_spawn("mobs_mc:cow", {"mcl_core:dirt_with_grass"}, 20, 9, 7000, 1, 31000)
 
 
 -- compatibility
