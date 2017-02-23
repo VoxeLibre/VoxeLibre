@@ -10,9 +10,10 @@ mobs:register_mob("mobs_mc:pig", {
 	type = "animal",
 	hp_min = 10,
 	hp_max = 10,
-	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1, 0.4},
+	collisionbox = {-0.5, -0.01, -0.5, 0.5, 0.874, 0.5},
 	
 	visual = "mesh",
+	visual_size = {x=0.875, y=0.875},
 	mesh = "mobs_pig.x",
 	textures = {
 	{"mobs_pig.png"}
