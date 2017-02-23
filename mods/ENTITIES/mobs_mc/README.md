@@ -1,14 +1,14 @@
 MC MOBS
 WIP
 assembled by maikerumine
-compatable with mobs redo api
+compatable with Mobs Redo API
 
 ## LICENSING
 
 ### Code
-WTFPL
+MIT License
 
-by PilzAdam
+by PilzAdam and others
 
 ### Sound files
 - `mobs_*.ogg`
@@ -22,16 +22,24 @@ by PilzAdam
 	- CC0, by freesound.org user thefilmbakery
 	- Source: https://freesound.org/people/thefilmbakery/sounds/137836/
 - `slime_*.ogg`
-	- WTFPL
+	- MIT License 
 
 ### Textures
 
 - `mobs_squid.png`
 - `mobs_blaze.png`
 	- GPLv3 by 22i
+- `mobs_bunny_*.png`
+	- MIT License, by ExeterDad
 - `spawn_egg_squid.png`
 - `spawn_egg_blaze.png`
 	- !!! UNKNOWN LICENSE !!! Author: daufinsyd
+- `spawn_egg_rabbit.png`
+	- MIT License, by Wuzzy
+
+### Models
+- `mobs_bunny.b3d`
+	- MIT License, by ExeterDad
 
 Everything else:
 
