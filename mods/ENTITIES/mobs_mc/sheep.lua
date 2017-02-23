@@ -98,7 +98,7 @@ mobs:register_mob("mobs_mc:sheep", {
 				textures = {"mobs_sheep_sheared.png"},
 			})
 			if not minetest.setting_getbool("creative_mode") then
-				item:add_wear(300)
+				item:add_wear(65535/238)
 				clicker:get_inventory():set_stack("main", clicker:get_wield_index(), item)
 			end
 		end
