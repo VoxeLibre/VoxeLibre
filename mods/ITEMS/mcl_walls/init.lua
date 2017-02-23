@@ -98,10 +98,10 @@ function mcl_walls.register_wall(nodename, description, craft_material, tiles, i
 	end
 	base_groups.wall = 1
 
-	internal_groups = table.copy(base_groups)
+	local internal_groups = table.copy(base_groups)
 	internal_groups.not_in_creative_inventory = 1
 
-	main_node_groups = table.copy(base_groups)
+	local main_node_groups = table.copy(base_groups)
 	main_node_groups.deco_block = 1
 
 	-- TODO: Stop hardcoding blast resistance
