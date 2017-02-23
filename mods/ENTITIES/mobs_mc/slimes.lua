@@ -27,8 +27,7 @@ mobs:register_mob("mobs_mc:greensmall", {
 		damage = "green_slime_damage",
 		attack = "green_slime_attack",
 	},
-	walk_velocity = .8,
-	run_velocity = 2.6,
+	-- FIXME: The tiny slimes deal damage although this number is set to 0. Strange.
 	damage = 0,
 	armor = 100,
 	drops = {
@@ -60,7 +59,10 @@ mobs:register_mob("mobs_mc:greensmall", {
 	attack_type = "dogfight",
 	passive = false,
 	jump = true,
-	jump_height = 4,
+	walk_velocity = 0.7,
+	run_velocity = 0.7,
+	walk_chance = 0,
+	jump_height = 3,
 	jump_chance = 98,
 	fear_height = 12,	
 })
@@ -86,8 +88,6 @@ mobs:register_mob("mobs_mc:greenmedium", {
 		damage = "green_slime_damage",
 		attack = "green_slime_attack",
 	},
-	walk_velocity = .8,
-	run_velocity = 2.0,
 	damage = 2,
 	armor = 100,
 	drops = {},
@@ -114,7 +114,10 @@ mobs:register_mob("mobs_mc:greenmedium", {
 	attack_type = "dogfight",
 	passive = false,
 	jump = true,
-	jump_height = 8,
+	walk_chance = 0,
+	walk_velocity = 1.3,
+	run_velocity = 1.3,
+	jump_height = 4.3,
 	jump_chance = 100,
 	fear_height = 60,
 	on_die = function(self, pos)
@@ -150,8 +153,6 @@ mobs:register_mob("mobs_mc:greenbig", {
 		damage = "green_slime_damage",
 		attack = "green_slime_attack",
 	},
-	walk_velocity = .8,
-	run_velocity = 1.6,
 	damage = 4,
 	armor = 100,
 	drops = {},
@@ -178,17 +179,20 @@ mobs:register_mob("mobs_mc:greenbig", {
 	attack_type = "dogfight",
 	passive = false,
 	jump = true,
-	jump_height = 8,
+	walk_velocity = 2.5,
+	run_velocity = 2.5,
+	walk_chance = 0,
+	jump_height = 5.2,
 	jump_chance = 100,
 	fear_height = 60,
 	on_die = function(self, pos)
 		local angle, posadd
 		angle = math.random(0, math.pi*2)
-		for i=1,2 do
+		for i=1,4 do
 			posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
 			posadd = vector.normalize(posadd)
 			minetest.add_entity(vector.add(pos, posadd), "mobs_mc:greenmedium")
-			angle = angle + math.pi
+			angle = angle + math.pi/2
 		end
 	end,
 })
