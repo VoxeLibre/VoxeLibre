@@ -62,7 +62,7 @@ mobs:register_mob("mobs_mc:pig", {
 		local wielditem = clicker:get_wielded_item()
 		-- Feed pig
 		if wielditem:get_name() ~= "mcl_mobitems:carrot_on_a_stick" then
-			if mobs:feed_tame(self, clicker, 8, true, true) then
+			if mobs:feed_tame(self, clicker, 1, true, true) then
 				return
 			end
 		end

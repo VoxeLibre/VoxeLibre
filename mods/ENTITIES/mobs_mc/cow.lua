@@ -60,7 +60,7 @@ mobs:register_mob("mobs_mc:cow", {
 	on_rightclick = function(self, clicker)
 
 		-- feed or tame
-		if mobs:feed_tame(self, clicker, 8, true, true) then
+		if mobs:feed_tame(self, clicker, 1, true, true) then
 			return
 		end
 
