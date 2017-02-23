@@ -4,20 +4,45 @@
 --License for code WTFPL and otherwise stated in readmes
 
 
---dofile(minetest.get_modpath("mobs").."/api.lua")
+-- This is a trick to force spawn probabilities
+-- FIXME: Remove this hack, improve the API instead
+local texture_hack = {}
+for i=1,81836 do
+	-- 81.836%
+	table.insert(texture_hack, {"mobs_sheep.png"})
+end
+for i=1,5000 do
+	-- 5%
+	table.insert(texture_hack, {"mobs_sheep_grey.png"})
+end
+for i=1,5000 do
+	-- 5%
+	table.insert(texture_hack, {"mobs_sheep_dark_grey.png"})
+end
+for i=1,5000 do
+	-- 5%
+	table.insert(texture_hack, {"mobs_sheep_black.png"})
+end
+for i=1,3000 do
+	-- 3%
+	table.insert(texture_hack, {"mobs_sheep_brown.png"})
+end
+for i=1,164 do
+	-- 0.164%
+	table.insert(texture_hack, {"mobs_sheep_pink.png"})
+end
 
---mcsheep
+-- Sheep
 mobs:register_mob("mobs_mc:sheep", {
 	type = "animal",
 	hp_min = 8,
 	hp_max = 8,
-	collisionbox = {-0.5, -0.01, -0.5, 0.5, 1.5, 0.5},
+	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.29, 0.45},
 	
 	visual = "mesh",
+	visual_size = {x=0.6, y=0.6},
 	mesh = "mobs_sheep.x",
-	textures = {
-	{"mobs_sheep.png"}
-	},
+	textures = texture_hack,
 	makes_footstep_sound = true,
 	walk_velocity = 1,
 	armor = 100,
