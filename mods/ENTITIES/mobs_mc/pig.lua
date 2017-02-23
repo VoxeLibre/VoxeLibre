@@ -30,7 +30,8 @@ mobs:register_mob("mobs_mc:pig", {
 	water_damage = 1,
 	lava_damage = 5,
 	light_damage = 0,
-	fear_height = 3,
+	fear_height = 4,
+	jump_height = 4.5,
 	sounds = {
 		random = "mobs_pig",
 		death = "mobs_pig_angry",

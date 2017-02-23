@@ -35,6 +35,10 @@ mobs:register_mob("mobs_mc:chicken", {
 	water_damage = 1,
 	lava_damage = 5,
 	light_damage = 0,
+	fall_damage = false,
+	fear_height = 4,
+	jump_height = 4.5,
+	floats = true,
 	sounds = {
 		random = "mobs_chicken",
 		death = "Chickenhurt1",
@@ -57,35 +61,6 @@ mobs:register_mob("mobs_mc:chicken", {
 		fly_start = 181,
 		fly_end = 187,
 	},
-	--[[
-	follow = "farming:seed_wheat",
-	view_range = 5,
-	on_rightclick = function(self, clicker)
-		if clicker:get_inventory() then
-			if minetest.registered_items[":mobs:egg"] then
-				clicker:get_inventory():add_item("main", ItemStack(":mobs:egg 1"))
-			end
-		end
-	end,
-	
-	do_custom = function(self)
-
-		if self.child
-		or math.random(1, 5000) > 1 then
-			return
-		end
-
-		local pos = self.object:getpos()
-
-		minetest.add_item(pos, ":mobs:egg")
-
-		minetest.sound_play("default_place_node_hard", {
-			pos = pos,
-			gain = 1.0,
-			max_hear_distance = 5,
-		})
-	end,
-	]]
 	--from mobs_animals
 	follow = {"mcl_farming:wheat_seeds", "mcl_farming:beetroot_seeds", "mcl_farming:pumpkin_seeds", "mcl_farming:melon_seeds"},
 	view_range = 5,
