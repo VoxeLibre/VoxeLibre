@@ -121,12 +121,14 @@ mobs:register_mob("mobs_mc:greenmedium", {
 	jump_chance = 100,
 	fear_height = 60,
 	on_die = function(self, pos)
-		local angle, posadd
+		local angle, posadd, dir
 		angle = math.random(0, math.pi*2)
 		for i=1,4 do
-			posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
-			posadd = vector.multiply(vector.normalize(posadd), 0.6)
-			minetest.add_entity(vector.add(pos, posadd), "mobs_mc:greensmall")
+			dir = {x=math.cos(angle),y=0,z=math.sin(angle)}
+			posadd = vector.multiply(vector.normalize(dir), 0.6)
+			local slime = minetest.add_entity(vector.add(pos, posadd), "mobs_mc:greensmall")
+			slime:setvelocity(dir)
+			slime:setyaw(angle)
 			angle = angle + math.pi/2
 		end
 	end
@@ -191,7 +193,9 @@ mobs:register_mob("mobs_mc:greenbig", {
 		for i=1,4 do
 			posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
 			posadd = vector.normalize(posadd)
-			minetest.add_entity(vector.add(pos, posadd), "mobs_mc:greenmedium")
+			local slime = minetest.add_entity(vector.add(pos, posadd), "mobs_mc:greenmedium")
+			slime:setvelocity(vector.multiply(posadd, 1.5))
+			slime:setyaw(angle)
 			angle = angle + math.pi/2
 		end
 	end,
@@ -317,12 +321,14 @@ mobs:register_mob("mobs_mc:lavamedium", {
 	jump_chance = 98,
 	fear_height = 100000,
 	on_die = function(self, pos)
-		local angle, posadd
+		local angle, posadd, dir
 		angle = math.random(0, math.pi*2)
 		for i=1,4 do
-			posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
-			posadd = vector.multiply(vector.normalize(posadd), 0.6)
-			minetest.add_entity(vector.add(pos, posadd), "mobs_mc:lavasmall")
+			dir = vector.normalize({x=math.cos(angle),y=0,z=math.sin(angle)})
+			posadd = vector.multiply(dir, 0.6)
+			local mob = minetest.add_entity(vector.add(pos, posadd), "mobs_mc:lavasmall")
+			mob:setvelocity(dir)
+			mob:setyaw(angle)
 			angle = angle + math.pi/2
 		end
 	end
@@ -394,7 +400,9 @@ mobs:register_mob("mobs_mc:lavabig", {
 		for i=1,3 do
 			posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
 			posadd = vector.normalize(posadd)
-			minetest.add_entity(vector.add(pos, posadd), "mobs_mc:lavamedium")
+			local mob = minetest.add_entity(vector.add(pos, posadd), "mobs_mc:lavamedium")
+			mob:setvelocity(vector.multiply(posadd, 1.5))
+			mob:setyaw(angle)
 			angle = angle + (math.pi*2) / 3
 		end
 	end
