@@ -581,6 +581,7 @@ function mcl_core.add_glass(desc, recipeitem, color)
 		sounds = mcl_sounds.node_sound_glass_defaults(),
 		drop = "",
 		_mcl_blast_resistance = 1.5,
+		_mcl_hardness = 0.3,
 	})
 	
 	minetest.register_craft({
