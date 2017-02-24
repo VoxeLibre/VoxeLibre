@@ -476,7 +476,6 @@ minetest.register_on_generated(function(minp, maxp)
 		local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
 		local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
 		local c_void = minetest.get_content_id("mcl_core:void")
-		local c_air = minetest.get_content_id("air")
 
 		for y = minp.y, math.min(maxp.y, BEDROCK_MAX) do
 			for x = minp.x, maxp.x do
