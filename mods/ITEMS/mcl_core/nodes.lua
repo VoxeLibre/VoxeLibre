@@ -542,7 +542,7 @@ minetest.register_node("mcl_core:sapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {sapling=1,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -610,7 +610,7 @@ minetest.register_node("mcl_core:darksapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {sapling=1,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -732,7 +732,7 @@ minetest.register_node("mcl_core:junglesapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {sapling=1,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -796,7 +796,7 @@ minetest.register_node("mcl_core:acaciasapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {sapling=1,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -865,7 +865,7 @@ minetest.register_node("mcl_core:sprucesapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {sapling=1,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -929,7 +929,7 @@ minetest.register_node("mcl_core:birchsapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {sapling=1,snappy=2,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {sapling=1,dig_immediate=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -1025,7 +1025,7 @@ minetest.register_node("mcl_core:slimeblock", {
 	stack_max = 64,
 	-- According to Minecraft Wiki, bouncing off a slime block from a height off 255 blocks should result in a bounce height of 50 blocks
 	-- bouncy=44 makes the player bounce up to 49.6. This value was chosen by experiment.
-	groups = {oddly_breakable_by_hand=3,bouncy=44,fall_damage_add_percent=-100,deco_block=1},
+	groups = {dig_immediate=3,bouncy=44,fall_damage_add_percent=-100,deco_block=1},
 	_mcl_blast_resistance = 0,
 })
 
@@ -1419,7 +1419,7 @@ minetest.register_node("mcl_core:tallgrass", {
 	walkable = false,
 	buildable_to = true,
 	is_ground_content = true,
-	groups = {snappy=3,flammable=3,attached_node=1,dig_immediate=3,dig_by_water=1,deco_block=1},
+	groups = {flammable=3,attached_node=1,dig_immediate=3,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	after_dig_node = function(pos, oldnode, oldmetadata, user)
 	local item = user:get_wielded_item()

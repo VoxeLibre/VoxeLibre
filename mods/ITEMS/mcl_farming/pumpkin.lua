@@ -43,7 +43,7 @@ minetest.register_node("mcl_farming:pumpkin_1", {
 			{-0.5, -0.5, -0.5, 0.5, -0.5+6/16, 0.5}
 		},
 	},
-	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -62,7 +62,7 @@ minetest.register_node("mcl_farming:pumpkin_2", {
 			{-0.5, -0.5, -0.5, 0.5, -0.5+9/16, 0.5}
 		},
 	},
-	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -107,7 +107,7 @@ minetest.register_node("mcl_farming:pumpkintige_unconnect", {
 	drop = stemdrop,
 	drawtype = "plantlike",
 	tiles = {"farming_tige_end.png"},
-	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -140,7 +140,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_r", {
 		"farming_tige_connnect.png", -- back
 		"farming_tige_connnect.png^[transformFX90" --front
 	},
-	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -172,7 +172,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_l", {
 		"farming_tige_connnect.png^[transformFX90", -- back
 		"farming_tige_connnect.png" --front
 	},
-	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -204,7 +204,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_t", {
 		"farming_tige_connnect.png", -- back
 		"farming_tige_connnect.png" --front
 	},
-	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -236,7 +236,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_b", {
 		"farming_tige_connnect.png", -- back
 		"farming_tige_connnect.png" --front
 	},
-	groups = {snappy=3, not_in_creative_inventory=1 ,dig_by_water=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1 ,dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
