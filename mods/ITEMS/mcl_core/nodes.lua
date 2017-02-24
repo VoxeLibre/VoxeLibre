@@ -17,7 +17,7 @@ minetest.register_node("mcl_core:barrier", {
 	stack_max = 64,
 	sunlight_propagates = true,
 	is_ground_content = false,
-	groups = { not_in_creative_inventory = 1, oddly_breakable_by_hand = 5 },
+	groups = { not_in_creative_inventory = 1, oddly_breakable_by_hand = 5, not_solid = 1 },
 	on_blast = function() end,
 	drop = "",
 	_mcl_blast_resistance = 18000003,
