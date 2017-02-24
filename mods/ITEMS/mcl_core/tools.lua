@@ -4,6 +4,15 @@
 -- Tool definition
 --
 
+--[[ Maximum drop level definitions:
+- 0: Hand
+- 1: Wood / Shears
+- 2: Gold
+- 3: Stone
+- 4: Iron
+- 5: Diamond
+]]
+
 -- The hand
 local groupcaps
 if minetest.setting_getbool("creative_mode") then
@@ -42,7 +51,7 @@ minetest.register_tool("mcl_core:pick_wood", {
 	tool_capabilities = {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
-		max_drop_level=0,
+		max_drop_level=1,
 		groupcaps={
 			cracky = {times={[3]=1.60}, uses=10, maxlevel=1},
 		},
@@ -57,7 +66,7 @@ minetest.register_tool("mcl_core:pick_stone", {
 	tool_capabilities = {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
-		max_drop_level=0,
+		max_drop_level=3,
 		groupcaps={
 			cracky = {times={[2]=2.0, [3]=1.20}, uses=20, maxlevel=1},
 		},
@@ -72,7 +81,7 @@ minetest.register_tool("mcl_core:pick_iron", {
 	tool_capabilities = {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
-		max_drop_level=1,
+		max_drop_level=4,
 		groupcaps={
 			cracky = {times={[1]=4.00, [2]=1.60, [3]=0.80}, uses=20, maxlevel=2},
 		},
@@ -87,7 +96,7 @@ minetest.register_tool("mcl_core:pick_gold", {
 	tool_capabilities = {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
-		max_drop_level=0,
+		max_drop_level=2,
 		groupcaps={
 			cracky = {times={[2]=2.0, [3]=1.20}, uses=20, maxlevel=1},
 		},
@@ -102,7 +111,7 @@ minetest.register_tool("mcl_core:pick_diamond", {
 	tool_capabilities = {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
-		max_drop_level=3,
+		max_drop_level=5,
 		groupcaps={
 			cracky = {times={[1]=2.0, [2]=1.0, [3]=0.50,[4]=20.00 }, uses=30, maxlevel=4},
 		},
@@ -140,7 +149,7 @@ minetest.register_tool("mcl_core:shovel_wood", {
 	groups = { tool=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
-		max_drop_level=0,
+		max_drop_level=1,
 		groupcaps={
 			crumbly = {times={[1]=3.00, [2]=1.60, [3]=0.60}, uses=10, maxlevel=1},
 		},
@@ -156,7 +165,7 @@ minetest.register_tool("mcl_core:shovel_stone", {
 	groups = { tool=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
-		max_drop_level=0,
+		max_drop_level=3,
 		groupcaps={
 			crumbly = {times={[1]=1.80, [2]=1.20, [3]=0.50}, uses=20, maxlevel=1},
 		},
@@ -172,7 +181,7 @@ minetest.register_tool("mcl_core:shovel_iron", {
 	groups = { tool=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
-		max_drop_level=1,
+		max_drop_level=4,
 		groupcaps={
 			crumbly = {times={[1]=1.50, [2]=0.90, [3]=0.40}, uses=30, maxlevel=2},
 		},
@@ -188,7 +197,7 @@ minetest.register_tool("mcl_core:shovel_gold", {
 	groups = { tool=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
-		max_drop_level=0,
+		max_drop_level=2,
 		groupcaps={
 			crumbly = {times={[1]=1.80, [2]=1.20, [3]=0.50}, uses=20, maxlevel=1},
 		},
@@ -204,7 +213,7 @@ minetest.register_tool("mcl_core:shovel_diamond", {
 	groups = { tool=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
-		max_drop_level=1,
+		max_drop_level=5,
 		groupcaps={
 			crumbly = {times={[1]=1.10, [2]=0.50, [3]=0.30}, uses=30, maxlevel=3},
 		},
@@ -221,7 +230,7 @@ minetest.register_tool("mcl_core:axe_wood", {
 	groups = { tool=1 },
 	tool_capabilities = {
 		full_punch_interval = 1.25,
-		max_drop_level=0,
+		max_drop_level=1,
 		groupcaps={
 			choppy = {times={[2]=3.00, [3]=2.00}, uses=10, maxlevel=1},
 		},
@@ -235,7 +244,7 @@ minetest.register_tool("mcl_core:axe_stone", {
 	groups = { tool=1 },
 	tool_capabilities = {
 		full_punch_interval = 1.25,
-		max_drop_level=0,
+		max_drop_level=3,
 		groupcaps={
 			choppy={times={[1]=3.00, [2]=2.00, [3]=1.50}, uses=20, maxlevel=1},
 		},
@@ -250,7 +259,7 @@ minetest.register_tool("mcl_core:axe_iron", {
 	tool_capabilities = {
 		-- 1/0.9
 		full_punch_interval = 1.11111111,
-		max_drop_level=1,
+		max_drop_level=4,
 		groupcaps={
 			choppy={times={[1]=2.50, [2]=1.40, [3]=1.00}, uses=20, maxlevel=2},
 		},
@@ -264,7 +273,7 @@ minetest.register_tool("mcl_core:axe_gold", {
 	groups = { tool=1 },
 	tool_capabilities = {
 		full_punch_interval = 1.0,
-		max_drop_level=0,
+		max_drop_level=2,
 		groupcaps={
 			choppy={times={[1]=3.00, [2]=2.00, [3]=1.50}, uses=20, maxlevel=1},
 		},
@@ -278,7 +287,7 @@ minetest.register_tool("mcl_core:axe_diamond", {
 	groups = { tool=1 },
 	tool_capabilities = {
 		full_punch_interval = 1.0,
-		max_drop_level=1,
+		max_drop_level=5,
 		groupcaps={
 			choppy={times={[1]=2.10, [2]=0.90, [3]=0.50}, uses=30, maxlevel=2},
 		},
@@ -294,7 +303,7 @@ minetest.register_tool("mcl_core:sword_wood", {
 	groups = { weapon=1 },
 	tool_capabilities = {
 		full_punch_interval = 0.625,
-		max_drop_level=0,
+		max_drop_level=1,
 		groupcaps={
 			snappy={times={[2]=1.6, [3]=0.40}, uses=10, maxlevel=1},
 		},
@@ -308,7 +317,7 @@ minetest.register_tool("mcl_core:sword_stone", {
 	groups = { weapon=1 },
 	tool_capabilities = {
 		full_punch_interval = 0.625,
-		max_drop_level=0,
+		max_drop_level=3,
 		groupcaps={
 			snappy={times={[2]=1.4, [3]=0.40}, uses=20, maxlevel=1},
 		},
@@ -322,7 +331,7 @@ minetest.register_tool("mcl_core:sword_iron", {
 	groups = { weapon=1 },
 	tool_capabilities = {
 		full_punch_interval = 0.625,
-		max_drop_level=1,
+		max_drop_level=4,
 		groupcaps={
 			snappy={times={[1]=2.5, [2]=1.20, [3]=0.35}, uses=30, maxlevel=2},
 		},
@@ -336,7 +345,7 @@ minetest.register_tool("mcl_core:sword_gold", {
 	groups = { weapon=1 },
 	tool_capabilities = {
 		full_punch_interval = 0.625,
-		max_drop_level=0,
+		max_drop_level=2,
 		groupcaps={
 			snappy={times={[2]=1.4, [3]=0.40}, uses=20, maxlevel=1},
 		},
@@ -350,7 +359,7 @@ minetest.register_tool("mcl_core:sword_diamond", {
 	groups = { weapon=1 },
 	tool_capabilities = {
 		full_punch_interval = 0.625,
-		max_drop_level=1,
+		max_drop_level=5,
 		groupcaps={
 			snappy={times={[1]=1.90, [2]=0.90, [3]=0.30}, uses=40, maxlevel=3},
 		},
@@ -365,7 +374,6 @@ minetest.register_tool("mcl_core:shears", {
 	inventory_image = "default_tool_shears.png",
 	wield_image = "default_tool_shears.png",
 	stack_max = 1,
-	max_drop_level=3,
 	groups = { tool=1 },
 	tool_capabilities = {
 	        full_punch_interval = 0.5,
