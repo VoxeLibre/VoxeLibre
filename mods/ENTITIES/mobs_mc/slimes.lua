@@ -29,6 +29,7 @@ mobs:register_mob("mobs_mc:greensmall", {
 	},
 	-- FIXME: The tiny slimes deal damage although this number is set to 0. Strange.
 	damage = 0,
+	reach = 2.5,
 	armor = 100,
 	drops = {
 		{name = "mcl_mobitems:slimeball",
@@ -89,6 +90,7 @@ mobs:register_mob("mobs_mc:greenmedium", {
 		attack = "green_slime_attack",
 	},
 	damage = 2,
+	reach = 2.75,
 	armor = 100,
 	drops = {},
 	animation = {
@@ -156,6 +158,7 @@ mobs:register_mob("mobs_mc:greenbig", {
 		attack = "green_slime_attack",
 	},
 	damage = 4,
+	reach = 3,
 	armor = 100,
 	drops = {},
 	animation = {
@@ -231,6 +234,7 @@ mobs:register_mob("mobs_mc:lavasmall", {
 	walk_velocity = 1.02,
 	run_velocity = 1.02,
 	damage = 3,
+	reach = 2.5,
 	armor = 85,
 	drops = {},
 	animation = {
@@ -286,6 +290,7 @@ mobs:register_mob("mobs_mc:lavamedium", {
 	walk_velocity = .8,
 	run_velocity = 2.6,
 	damage = 4,
+	reach = 2.75,
 	armor = 70,
 	drops = {
 		{name = "mcl_mobitems:magma_cream",
@@ -360,6 +365,7 @@ mobs:register_mob("mobs_mc:lavabig", {
 	walk_velocity = 4,
 	run_velocity = 4,
 	damage = 6,
+	reach = 3,
 	armor = 40,
 	drops = {
 		{name = "mcl_mobitems:magma_cream",
