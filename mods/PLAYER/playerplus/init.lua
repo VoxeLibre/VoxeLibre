@@ -137,6 +137,36 @@ minetest.register_globalstep(function(dtime)
 			end
 		end
 
+		-- Show positions of barriers when player is wielding a barrier
+		if player:get_wielded_item():get_name() == "mcl_core:barrier" then
+			local pos = vector.round(player:getpos())
+			local r = 8
+			local vm = minetest.get_voxel_manip()
+			local emin, emax = vm:read_from_map({x=pos.x-r, y=pos.y-r, z=pos.z-r}, {x=pos.x+r, y=pos.y+r, z=pos.z+r})
+			local area = VoxelArea:new{
+				MinEdge = emin,
+				MaxEdge = emax,
+			}
+			local data = vm:get_data()
+			for x=pos.x-r, pos.x+r do
+			for y=pos.y-r, pos.y+r do
+			for z=pos.z-r, pos.z+r do
+				local vi = area:indexp(pos)
+				local node = minetest.get_name_from_content_id(data[vi])
+				if minetest.get_node({x=x,y=y,z=z}).name == "mcl_core:barrier" then
+					minetest.add_particle({
+						pos = {x=x, y=y, z=z},
+						expirationtime = 1,
+						size = 8,
+						texture = "default_barrier.png",
+						playername = player:get_player_name()
+					})
+				end
+			end
+			end
+			end
+		end
+
 	end
 
 end)

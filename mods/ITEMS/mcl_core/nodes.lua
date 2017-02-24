@@ -21,6 +21,18 @@ minetest.register_node("mcl_core:barrier", {
 	on_blast = function() end,
 	drop = "",
 	_mcl_blast_resistance = 18000003,
+	after_place_node = function (pos, placer, itemstack, pointed_thing)
+		if placer == nil then
+			return
+		end
+		minetest.add_particle({
+			pos = pos,
+			expirationtime = 1,
+			size = 8,
+			texture = "default_barrier.png",
+			playername = placer:get_player_name()
+		})
+	end,
 })
 
 -- The void below the bedrock. Void damage is handled in playerplus.
