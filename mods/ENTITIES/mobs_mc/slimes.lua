@@ -64,7 +64,7 @@ mobs:register_mob("mobs_mc:greensmall", {
 	walk_chance = 0,
 	jump_height = 3,
 	jump_chance = 98,
-	fear_height = 12,	
+	fear_height = 12,
 })
 
 mobs:register_mob("mobs_mc:greenmedium", {
@@ -205,12 +205,12 @@ mobs:register_spawn("mobs_mc:greenbig", {"mcl_core:water_flowing", "group:solid"
 
 mobs:register_mob("mobs_mc:lavasmall", {
 	type = "monster",
-	pathfinding = true,
+	pathfinding = false,
 	group_attack = true,
-	hp_min = 4,
-	hp_max = 4,
-	collisionbox = {-0.2, -0.4, -0.2, 0.2, 0.2, 0.2},
-	visual_size = {x=0.5, y=0.5},
+	hp_min = 1,
+	hp_max = 1,
+	collisionbox = {-0.2505, -0.2505, -0.2505, 0.2505, 0.2505, 0.2505},
+	visual_size = {x=0.51, y=0.51},
 	textures = {
 	{"lava_slime_top.png", "lava_slime_bottom.png", "lava_slime_front.png", "lava_slime_sides.png", "lava_slime_sides.png", "lava_slime_sides.png"}
 	},
@@ -224,10 +224,10 @@ mobs:register_mob("mobs_mc:lavasmall", {
 		damage = "green_slime_damage",
 		attack = "green_slime_attack",
 	},
-	walk_velocity = .8,
-	run_velocity = 2.6,
-	damage = 1,
-	armor = 100,
+	walk_velocity = 1.02,
+	run_velocity = 1.02,
+	damage = 3,
+	armor = 85,
 	drops = {},
 	animation = {
 		speed_normal = 24,
@@ -253,18 +253,19 @@ mobs:register_mob("mobs_mc:lavasmall", {
 	passive = false,
 	jump = true,
 	jump_height = 4,
-	jump_chance = 98,
-	fear_height = 12,	
+	walk_chance = 0,
+	jump_chance = 80,
+	fear_height = 100000,
 })
 
-mobs:register_mob("mobs_mc:lavabig", {
+mobs:register_mob("mobs_mc:lavamedium", {
 	type = "monster",
-	pathfinding = true,
+	pathfinding = false,
 	group_attack = true,
-	hp_min = 16,
-	hp_max = 16,
-	collisionbox = {-0.75, -0.75, -0.75, 0.75, 0.75, 0.75},
-	visual_size = {x=1.5, y=1.5},
+	hp_min = 4,
+	hp_max = 4,
+	collisionbox = {-0.51, -0.51, -0.51, 0.51, 0.51, 0.51},
+	visual_size = {x=1.01, y=1.01},
 	textures = {
 	{"lava_slime_top.png", "lava_slime_bottom.png", "lava_slime_front.png", "lava_slime_sides.png", "lava_slime_sides.png", "lava_slime_sides.png"}
 	},
@@ -279,13 +280,85 @@ mobs:register_mob("mobs_mc:lavabig", {
 		attack = "green_slime_attack",
 	},
 	walk_velocity = .8,
-	run_velocity = 1.6,
-	damage = 2,
-	armor = 100,
+	run_velocity = 2.6,
+	damage = 4,
+	armor = 70,
 	drops = {
 		{name = "mcl_mobitems:magma_cream",
 		chance = 4,
-		min = 0,
+		min = 1,
+		max = 1,},
+	},
+	animation = {
+		speed_normal = 24,
+		speed_run = 48,
+		stand_start = 0,
+		stand_end = 23,
+		walk_start = 24,
+		walk_end = 47,
+		run_start = 48,
+		run_end = 62,
+		hurt_start = 64,
+		hurt_end = 86,
+		death_start = 88,
+		death_end = 118,
+	},
+	drawtype = "front",
+	water_damage = 0,
+	lava_damage = 0,
+	light_damage = 0,
+	fall_damage = 0,
+	view_range = 16,
+	attack_type = "dogfight",
+	passive = false,
+	jump = true,
+	jump_height = 4,
+	walk_chance = 0,
+	jump_chance = 98,
+	fear_height = 100000,
+	on_die = function(self, pos)
+		local angle, posadd
+		angle = math.random(0, math.pi*2)
+		for i=1,4 do
+			posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
+			posadd = vector.multiply(vector.normalize(posadd), 0.6)
+			minetest.add_entity(vector.add(pos, posadd), "mobs_mc:lavasmall")
+			angle = angle + math.pi/2
+		end
+	end
+})
+
+
+
+mobs:register_mob("mobs_mc:lavabig", {
+	type = "monster",
+	pathfinding = false,
+	group_attack = true,
+	hp_min = 16,
+	hp_max = 16,
+	collisionbox = {-1.02, -1.02, -1.02, 1.02, 1.02, 1.02},
+	visual_size = {x=2.04, y=2.04},
+	textures = {
+	{"lava_slime_top.png", "lava_slime_bottom.png", "lava_slime_front.png", "lava_slime_sides.png", "lava_slime_sides.png", "lava_slime_sides.png"}
+	},
+	visual = "cube",
+	blood_texture ="lava_slime_blood.png",
+	rotate = 270,
+	makes_footstep_sound = true,
+	sounds = {
+		jump = "green_slime_jump",
+		death = "green_slime_death",
+		damage = "green_slime_damage",
+		attack = "green_slime_attack",
+	},
+	walk_velocity = 4,
+	run_velocity = 4,
+	damage = 6,
+	armor = 40,
+	drops = {
+		{name = "mcl_mobitems:magma_cream",
+		chance = 4,
+		min = 1,
 		max = 1,},
 	},
 	animation = {
@@ -312,22 +385,28 @@ mobs:register_mob("mobs_mc:lavabig", {
 	passive = false,
 	jump = true,
 	jump_height = 8,
+	walk_chance = 0,
 	jump_chance = 100,
-	fear_height = 60,
+	fear_height = 100000,
 	on_die = function(self, pos)
 		local angle, posadd
 		angle = math.random(0, math.pi*2)
-		for i=1,4 do
+		for i=1,3 do
 			posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
-			posadd = vector.multiply(vector.normalize(posadd), 0.6)
-			minetest.add_entity(vector.add(pos, posadd), "mobs_mc:lavasmall")
-			angle = angle + math.pi/2
+			posadd = vector.normalize(posadd)
+			minetest.add_entity(vector.add(pos, posadd), "mobs_mc:lavamedium")
+			angle = angle + (math.pi*2) / 3
 		end
 	end
 })
 
-mobs:register_spawn("mobs_mc:lavasmall", {"mcl_nether:netherrack", "mcl_nether:nether_brick"}, 15, 0, 5000, 4, -1000)
-mobs:register_spawn("mobs_mc:lavabig", {"mcl_nether:netherrack", "mcl_nether:nether_brick"}, 15, 0, 5000, 4, -1000)
+mobs:register_spawn("mobs_mc:lavasmall", {"group:solid"}, 15, 0, 5000, 4, -1000)
+mobs:register_spawn("mobs_mc:lavamedium", {"group:solid"}, 15, 0, 5500, 4, -1000)
+mobs:register_spawn("mobs_mc:lavabig", {"group:solid"}, 15, 0, 6000, 4, -1000)
+
+mobs:register_spawn("mobs_mc:lavasmall", {"mcl_nether:nether_brick"}, 15, 0, 1000, 4, -1000)
+mobs:register_spawn("mobs_mc:lavamedium", {"mcl_nether:nether_brick"}, 15, 0, 1100, 4, -1000)
+mobs:register_spawn("mobs_mc:lavabig", {"mcl_nether:nether_brick"}, 15, 0, 1200, 4, -1000)
 
 -- compatibility
 mobs:alias_mob("mobs:lavasmall", "mobs_mc:lavasmall")
