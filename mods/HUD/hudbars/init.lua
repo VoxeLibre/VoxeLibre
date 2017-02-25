@@ -523,7 +523,11 @@ local function update_hud(player)
 	end
 end
 
-minetest.register_on_player_hpchange(update_health)
+minetest.register_on_player_hpchange(function(player)
+	if hb.players[player:get_player_name()] ~= nil then
+		update_health(player)
+	end
+end)
 
 minetest.register_on_respawnplayer(function(player)
 	update_health(player)
