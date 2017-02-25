@@ -161,7 +161,7 @@ minetest.register_tool("mcl_core:shovel_wood", {
 		full_punch_interval = 1,
 		max_drop_level=1,
 		groupcaps={
-			crumbly = {times={[1]=3.00, [2]=1.60, [3]=0.60}, uses=10, maxlevel=1},
+			shovely_dig_wood = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=2},
 	},
@@ -177,7 +177,7 @@ minetest.register_tool("mcl_core:shovel_stone", {
 		full_punch_interval = 1,
 		max_drop_level=3,
 		groupcaps={
-			crumbly = {times={[1]=1.80, [2]=1.20, [3]=0.50}, uses=20, maxlevel=1},
+			shovely_dig_stone = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=3},
 	},
@@ -193,7 +193,7 @@ minetest.register_tool("mcl_core:shovel_iron", {
 		full_punch_interval = 1,
 		max_drop_level=4,
 		groupcaps={
-			crumbly = {times={[1]=1.50, [2]=0.90, [3]=0.40}, uses=30, maxlevel=2},
+			shovely_dig_iron= {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=4},
 	},
@@ -209,7 +209,7 @@ minetest.register_tool("mcl_core:shovel_gold", {
 		full_punch_interval = 1,
 		max_drop_level=2,
 		groupcaps={
-			crumbly = {times={[1]=1.80, [2]=1.20, [3]=0.50}, uses=20, maxlevel=1},
+			shovely_dig_gold = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=2},
 	},
@@ -225,7 +225,7 @@ minetest.register_tool("mcl_core:shovel_diamond", {
 		full_punch_interval = 1,
 		max_drop_level=5,
 		groupcaps={
-			crumbly = {times={[1]=1.10, [2]=0.50, [3]=0.30}, uses=30, maxlevel=3},
+			shovely_dig_diamond = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=5},
 	},
@@ -242,7 +242,7 @@ minetest.register_tool("mcl_core:axe_wood", {
 		full_punch_interval = 1.25,
 		max_drop_level=1,
 		groupcaps={
-			choppy = {times={[2]=3.00, [3]=2.00}, uses=10, maxlevel=1},
+			axey_dig_wood = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=7},
 	},
@@ -256,7 +256,7 @@ minetest.register_tool("mcl_core:axe_stone", {
 		full_punch_interval = 1.25,
 		max_drop_level=3,
 		groupcaps={
-			choppy={times={[1]=3.00, [2]=2.00, [3]=1.50}, uses=20, maxlevel=1},
+			axey_dig_stone = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=9},
 	},
@@ -271,7 +271,7 @@ minetest.register_tool("mcl_core:axe_iron", {
 		full_punch_interval = 1.11111111,
 		max_drop_level=4,
 		groupcaps={
-			choppy={times={[1]=2.50, [2]=1.40, [3]=1.00}, uses=20, maxlevel=2},
+			axey_dig_iron = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=9},
 	},
@@ -285,7 +285,7 @@ minetest.register_tool("mcl_core:axe_gold", {
 		full_punch_interval = 1.0,
 		max_drop_level=2,
 		groupcaps={
-			choppy={times={[1]=3.00, [2]=2.00, [3]=1.50}, uses=20, maxlevel=1},
+			axey_dig_gold = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=7},
 	},
@@ -299,7 +299,7 @@ minetest.register_tool("mcl_core:axe_diamond", {
 		full_punch_interval = 1.0,
 		max_drop_level=5,
 		groupcaps={
-			choppy={times={[1]=2.10, [2]=0.90, [3]=0.50}, uses=30, maxlevel=2},
+			axey_dig_diamond = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=9},
 	},
@@ -315,7 +315,8 @@ minetest.register_tool("mcl_core:sword_wood", {
 		full_punch_interval = 0.625,
 		max_drop_level=1,
 		groupcaps={
-			snappy={times={[2]=1.6, [3]=0.40}, uses=10, maxlevel=1},
+			swordy_dig = {times=tooltimes, uses=0},
+			swordy_cobweb_dig = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=4},
 	},
@@ -329,7 +330,8 @@ minetest.register_tool("mcl_core:sword_stone", {
 		full_punch_interval = 0.625,
 		max_drop_level=3,
 		groupcaps={
-			snappy={times={[2]=1.4, [3]=0.40}, uses=20, maxlevel=1},
+			swordy_dig = {times=tooltimes, uses=0},
+			swordy_cobweb_dig = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=5},
 	},
@@ -343,7 +345,8 @@ minetest.register_tool("mcl_core:sword_iron", {
 		full_punch_interval = 0.625,
 		max_drop_level=4,
 		groupcaps={
-			snappy={times={[1]=2.5, [2]=1.20, [3]=0.35}, uses=30, maxlevel=2},
+			swordy_dig = {times=tooltimes, uses=0},
+			swordy_cobweb_dig = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=6},
 	},
@@ -357,7 +360,8 @@ minetest.register_tool("mcl_core:sword_gold", {
 		full_punch_interval = 0.625,
 		max_drop_level=2,
 		groupcaps={
-			snappy={times={[2]=1.4, [3]=0.40}, uses=20, maxlevel=1},
+			swordy_dig = {times=tooltimes, uses=0},
+			swordy_cobweb_dig = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=4},
 	},
@@ -371,7 +375,8 @@ minetest.register_tool("mcl_core:sword_diamond", {
 		full_punch_interval = 0.625,
 		max_drop_level=5,
 		groupcaps={
-			snappy={times={[1]=1.90, [2]=0.90, [3]=0.30}, uses=40, maxlevel=3},
+			swordy_dig = {times=tooltimes, uses=0},
+			swordy_cobweb_dig = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=7},
 	},
@@ -389,9 +394,8 @@ minetest.register_tool("mcl_core:shears", {
 	        full_punch_interval = 0.5,
 	        max_drop_level=1,
 	        groupcaps={
-			leaves={times={[1]=0,[2]=0,[3]=0}, uses=283, maxlevel=1},
-			wool={times={[1]=0.2,[2]=0.2,[3]=0.2}, uses=283, maxlevel=1},
-			snappy={times={[1]=0.2,[2]=0.2,[3]=0.2}, uses=283, maxlevel=1},
+			shearsy_dig = {times=tooltimes, uses=0},
+			shearsy_wool_dig = {times=tooltimes, uses=0},
 		}
 	},
 	sound = { breaks = "default_tool_breaks" },
