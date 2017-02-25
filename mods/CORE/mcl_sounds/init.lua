@@ -10,6 +10,8 @@ function mcl_sounds.node_sound_defaults(table)
 			{name="", gain=1.0}
 	table.dug = table.dug or
 			{name="default_dug_node", gain=0.25}
+	table.dig = table.dig or
+			{name="default_dig_oddly_breakable_by_hand", gain=1.0}
 	table.place = table.place or
 			{name="default_place_node_hard", gain=1.0}
 	return table
@@ -21,6 +23,8 @@ function mcl_sounds.node_sound_stone_defaults(table)
 			{name="default_hard_footstep", gain=0.5}
 	table.dug = table.dug or
 			{name="default_hard_footstep", gain=1.0}
+	table.dig = table.dig or
+			{name="default_dig_cracky", gain=1.0}
 	mcl_sounds.node_sound_defaults(table)
 	return table
 end
@@ -34,6 +38,8 @@ function mcl_sounds.node_sound_dirt_defaults(table)
 			{name="default_dirt_footstep", gain=1.0}
 	table.dug = table.dug or
 			{name="default_dirt_footstep", gain=1.5}
+	table.dig = table.dig or
+			{name="default_dig_crumbly", gain=1.0}
 	table.place = table.place or
 			{name="default_place_node", gain=1.0}
 	mcl_sounds.node_sound_defaults(table)
@@ -46,6 +52,8 @@ function mcl_sounds.node_sound_sand_defaults(table)
 			{name="default_sand_footstep", gain=0.5}
 	table.dug = table.dug or
 			{name="default_sand_footstep", gain=1.0}
+	table.dig = table.dig or
+			{name="default_dig_crumbly", gain=1.0}
 	table.place = table.place or
 			{name="default_place_node", gain=1.0}
 	mcl_sounds.node_sound_defaults(table)
@@ -58,6 +66,8 @@ function mcl_sounds.node_sound_snow_defaults(table)
 			{name="default_snow_footstep", gain=0.5}
 	table.dug = table.dug or
 			{name="default_snow_footstep", gain=1.0}
+	table.dig = table.dig or
+			{name="default_dig_crumbly", gain=1.0}
 	table.place = table.place or
 			{name="default_place_node", gain=1.0}
 	mcl_sounds.node_sound_defaults(table)
@@ -70,6 +80,8 @@ function mcl_sounds.node_sound_wood_defaults(table)
 			{name="default_wood_footstep", gain=0.5}
 	table.dug = table.dug or
 			{name="default_wood_footstep", gain=1.0}
+	table.dig = table.dig or
+			{name="default_dig_choppy", gain=1.0}
 	mcl_sounds.node_sound_defaults(table)
 	return table
 end
@@ -94,6 +106,8 @@ function mcl_sounds.node_sound_glass_defaults(table)
 			{name="default_glass_footstep", gain=0.5}
 	table.dug = table.dug or
 			{name="default_break_glass", gain=1.0}
+	table.dig = table.dig or
+			{name="default_dig_cracky", gain=1.0}
 	mcl_sounds.node_sound_defaults(table)
 	return table
 end
