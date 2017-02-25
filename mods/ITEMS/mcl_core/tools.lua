@@ -13,21 +13,31 @@
 - 5: Diamond
 ]]
 
+-- Table for tool digging times, everything from 0 to 250
+-- Minecraft digging times are always multiples of 0.05
+local tooltimes = {}
+for i=1,5000 do
+	local time
+	if i == 1 then
+		time = 0
+	else
+		time = i*0.05
+	end
+	table.insert(tooltimes, time)
+end
+
+-- TODO: Add legacy support for Minetest Game groups like crumbly, snappy, cracky, etc. for all tools
+
 -- The hand
 local groupcaps
 if minetest.setting_getbool("creative_mode") then
 	groupcaps = {
-		snappy = {times={[1]=0, [2]=0, [3]=0}, uses=0, maxlevel=255},
-		cracky = {times={[1]=0, [2]=0, [3]=0}, uses=0, maxlevel=255},
-		crumbly = {times={[1]=0, [2]=0, [3]=0}, uses=0, maxlevel=255},
-		choppy = {times={[1]=0, [2]=0, [3]=0}, uses=0, maxlevel=255},
-		oddly_breakable_by_hand = {times={[1]=0, [2]=0, [3]=0, [4]=0, [5]=0}, uses=0, maxlevel=255},
+		creative_breakable = {times={[1]=0}, uses=0},
+
 	}
 else
 	groupcaps = {
-		crumbly = {times={[2]=3.00, [3]=0.70}, uses=0, maxlevel=1},
-		snappy = {times={[3]=0.40}, uses=0, maxlevel=1},
-		oddly_breakable_by_hand = {times={[0]=90.00,[1]=7.00,[2]=4.00,[3]=1.40,[4]=480.70,}, uses=0, maxlevel=5}
+		handy_dig = {times=tooltimes, uses=0},
 	}
 end
 minetest.register_item(":", {
@@ -53,7 +63,7 @@ minetest.register_tool("mcl_core:pick_wood", {
 		full_punch_interval = 0.83333333,
 		max_drop_level=1,
 		groupcaps={
-			cracky = {times={[3]=1.60}, uses=10, maxlevel=1},
+			pickaxey_dig_wood = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=2},
 	},
@@ -68,7 +78,7 @@ minetest.register_tool("mcl_core:pick_stone", {
 		full_punch_interval = 0.83333333,
 		max_drop_level=3,
 		groupcaps={
-			cracky = {times={[2]=2.0, [3]=1.20}, uses=20, maxlevel=1},
+			pickaxey_dig_stone = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=3},
 	},
@@ -83,7 +93,7 @@ minetest.register_tool("mcl_core:pick_iron", {
 		full_punch_interval = 0.83333333,
 		max_drop_level=4,
 		groupcaps={
-			cracky = {times={[1]=4.00, [2]=1.60, [3]=0.80}, uses=20, maxlevel=2},
+			pickaxey_dig_iron = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=4},
 	},
@@ -98,7 +108,7 @@ minetest.register_tool("mcl_core:pick_gold", {
 		full_punch_interval = 0.83333333,
 		max_drop_level=2,
 		groupcaps={
-			cracky = {times={[2]=2.0, [3]=1.20}, uses=20, maxlevel=1},
+			pickaxey_dig_gold = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=2},
 	},
@@ -113,7 +123,7 @@ minetest.register_tool("mcl_core:pick_diamond", {
 		full_punch_interval = 0.83333333,
 		max_drop_level=5,
 		groupcaps={
-			cracky = {times={[1]=2.0, [2]=1.0, [3]=0.50,[4]=20.00 }, uses=30, maxlevel=4},
+			pickaxey_dig_diamond = {times=tooltimes, uses=0},
 		},
 		damage_groups = {fleshy=5},
 	},
