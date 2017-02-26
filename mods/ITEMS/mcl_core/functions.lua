@@ -577,7 +577,7 @@ function mcl_core.add_glass(desc, recipeitem, color)
 		paramtype = "light",
 		use_texture_alpha = true,
 		stack_max = 64,
-		groups = {cracky=3,oddly_breakable_by_hand=3, building_block=1},
+		groups = {handy=1, building_block=1},
 		sounds = mcl_sounds.node_sound_glass_defaults(),
 		drop = "",
 		_mcl_blast_resistance = 1.5,
