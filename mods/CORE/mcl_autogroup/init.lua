@@ -41,6 +41,7 @@ local materials = { "wood", "gold", "stone", "iron", "diamond" }
 local material_divisors = { 2, 12, 4, 6, 8 }
 local basegroups = { "pickaxey", "axey", "shovely" }
 local minigroups = { "handy", "shearsy", "swordy" }
+local minigroup_divisors = { 1, 15, 1.5, 5, 15 }
 
 mcl_autogroup = {}
 mcl_autogroup.digtimes = {}
@@ -53,8 +54,6 @@ end
 for g=1, #minigroups do
 	mcl_autogroup.digtimes[minigroups[g].."_dig"] = {}
 end
-
-
 
 local overwrite = function()
 	for nname, ndef in pairs(minetest.registered_nodes) do
@@ -110,6 +109,29 @@ local overwrite = function()
 						newgroups.handy_dig = #mcl_autogroup.digtimes.handy_dig
 						groups_changed = true
 					end
+				end
+			end
+			for m=1, #minigroups do
+				local minigroup = minigroups[m]
+				if (hardness ~= -1 and ndef.groups[minigroup]) then
+					local diggroup = minigroup.."_dig"
+					local time, validity_factor
+					if ndef.groups[minigroup] == 1 then
+						-- Valid tool
+						validity_factor = 1.5
+					else
+						-- Wrong tool (higher digging time)
+						validity_factor = 5
+					end
+					time = (hardness * validity_factor) / minigroup_divisors[m]
+					if time <= 0.05 then
+						time = 1
+					else
+						time = math.ceil(time * 20) / 20
+					end
+					table.insert(mcl_autogroup.digtimes[diggroup], time)
+					newgroups[diggroup] = #mcl_autogroup.digtimes[diggroup]
+					groups_changed = true
 				end
 			end
 
