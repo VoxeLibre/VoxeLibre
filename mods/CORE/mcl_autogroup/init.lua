@@ -40,7 +40,7 @@ a single tool needs to use. If this is not being done, the loading time will inc
 local materials = { "wood", "gold", "stone", "iron", "diamond" }
 local material_divisors = { 2, 12, 4, 6, 8 }
 local basegroups = { "pickaxey", "axey", "shovely" }
-local minigroups = { "handy", "shearsy", "swordy" }
+local minigroups = { "handy", "shearsy", "swordy", "shearsy_wool", "swordy_cobweb" }
 local minigroup_divisors = { 1, 15, 1.5, 5, 15 }
 
 mcl_autogroup = {}
@@ -98,22 +98,18 @@ local overwrite = function()
 						newgroups[diggroup] = #mcl_autogroup.digtimes[diggroup]
 						groups_changed = true
 					end
-					if not ndef.groups.handy then
-						local time = hardness * 5
-						if time <= 0.05 then
-							time = 0
-						else
-							time = math.ceil(time * 20) / 20
-						end
-						table.insert(mcl_autogroup.digtimes.handy_dig, time)
-						newgroups.handy_dig = #mcl_autogroup.digtimes.handy_dig
-						groups_changed = true
-					end
 				end
 			end
 			for m=1, #minigroups do
 				local minigroup = minigroups[m]
-				if (hardness ~= -1 and ndef.groups[minigroup]) then
+				if (hardness ~= -1 and
+						(minigroup == "handy") or
+						( (minigroup == "shearsy") or
+						(minigroup == "swordy") or
+						(minigroup == "shearsy_wool" and ndef.groups.wool) or
+						(minigroup == "swordy_cobweb" and nname == "mcl_core:cobweb")) and
+						ndef.groups[minigroup] )
+						then
 					local diggroup = minigroup.."_dig"
 					local time, validity_factor
 					if ndef.groups[minigroup] == 1 then
