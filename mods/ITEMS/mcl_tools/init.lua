@@ -13,19 +13,6 @@
 - 5: Diamond
 ]]
 
--- Table for tool digging times, everything from 0 to 250
--- Minecraft digging times are always multiples of 0.05
-local tooltimes = {}
-for i=1,5000 do
-	local time
-	if i == 1 then
-		time = 0
-	else
-		time = i*0.05
-	end
-	table.insert(tooltimes, time)
-end
-
 -- TODO: Add legacy support for Minetest Game groups like crumbly, snappy, cracky, etc. for all tools
 
 -- The hand
@@ -37,7 +24,7 @@ if minetest.setting_getbool("creative_mode") then
 	}
 else
 	groupcaps = {
-		handy_dig = {times=tooltimes, uses=0},
+		handy_dig = {times=mcl_autogroup.digtimes.handy_dig, uses=0},
 	}
 end
 minetest.register_item(":", {
@@ -54,7 +41,7 @@ minetest.register_item(":", {
 })
 
 -- Picks
-minetest.register_tool("mcl_core:pick_wood", {
+minetest.register_tool("mcl_tools:pick_wood", {
 	description = "Wooden Pickaxe",
 	inventory_image = "default_tool_woodpick.png",
 	groups = { tool=1 },
@@ -63,13 +50,13 @@ minetest.register_tool("mcl_core:pick_wood", {
 		full_punch_interval = 0.83333333,
 		max_drop_level=1,
 		groupcaps={
-			pickaxey_dig_wood = {times=tooltimes, uses=0},
+			pickaxey_dig_wood = {times=mcl_autogroup.digtimes.pickaxey_dig_wood, uses=0},
 		},
 		damage_groups = {fleshy=2},
 	},
 	sound = { breaks = "default_tool_breaks" },
 })
-minetest.register_tool("mcl_core:pick_stone", {
+minetest.register_tool("mcl_tools:pick_stone", {
 	description = "Stone Pickaxe",
 	inventory_image = "default_tool_stonepick.png",
 	groups = { tool=1 },
@@ -78,13 +65,13 @@ minetest.register_tool("mcl_core:pick_stone", {
 		full_punch_interval = 0.83333333,
 		max_drop_level=3,
 		groupcaps={
-			pickaxey_dig_stone = {times=tooltimes, uses=0},
+			pickaxey_dig_stone = {times=mcl_autogroup.digtimes.pickaxey_dig_stone , uses=0},
 		},
 		damage_groups = {fleshy=3},
 	},
 	sound = { breaks = "default_tool_breaks" },
 })
-minetest.register_tool("mcl_core:pick_iron", {
+minetest.register_tool("mcl_tools:pick_iron", {
 	description = "Iron Pickaxe",
 	inventory_image = "default_tool_steelpick.png",
 	groups = { tool=1 },
@@ -93,13 +80,13 @@ minetest.register_tool("mcl_core:pick_iron", {
 		full_punch_interval = 0.83333333,
 		max_drop_level=4,
 		groupcaps={
-			pickaxey_dig_iron = {times=tooltimes, uses=0},
+			pickaxey_dig_iron = {times=mcl_autogroup.digtimes.pickaxey_dig_iron , uses=0},
 		},
 		damage_groups = {fleshy=4},
 	},
 	sound = { breaks = "default_tool_breaks" },
 })
-minetest.register_tool("mcl_core:pick_gold", {
+minetest.register_tool("mcl_tools:pick_gold", {
 	description = "Golden Pickaxe",
 	inventory_image = "default_tool_goldpick.png",
 	groups = { tool=1 },
@@ -108,13 +95,13 @@ minetest.register_tool("mcl_core:pick_gold", {
 		full_punch_interval = 0.83333333,
 		max_drop_level=2,
 		groupcaps={
-			pickaxey_dig_gold = {times=tooltimes, uses=0},
+			pickaxey_dig_gold = {times=mcl_autogroup.digtimes.pickaxey_dig_gold , uses=0},
 		},
 		damage_groups = {fleshy=2},
 	},
 	sound = { breaks = "default_tool_breaks" },
 })
-minetest.register_tool("mcl_core:pick_diamond", {
+minetest.register_tool("mcl_tools:pick_diamond", {
 	description = "Diamond Pickaxe",
 	inventory_image = "default_tool_diamondpick.png",
 	groups = { tool=1 },
@@ -123,7 +110,7 @@ minetest.register_tool("mcl_core:pick_diamond", {
 		full_punch_interval = 0.83333333,
 		max_drop_level=5,
 		groupcaps={
-			pickaxey_dig_diamond = {times=tooltimes, uses=0},
+			pickaxey_dig_diamond = {times=mcl_autogroup.digtimes.pickaxey_dig_diamond , uses=0},
 		},
 		damage_groups = {fleshy=5},
 	},
@@ -131,7 +118,7 @@ minetest.register_tool("mcl_core:pick_diamond", {
 })
 
 local make_grass_path = function(itemstack, placer, pointed_thing)
-	if minetest.get_node(pointed_thing.under).name == "mcl_core:dirt_with_grass" and pointed_thing.above.y == pointed_thing.under.y then
+	if minetest.get_node(pointed_thing.under).name == "mcl_tools:dirt_with_grass" and pointed_thing.above.y == pointed_thing.under.y then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
 		if minetest.get_node(above).name == "air" then
@@ -145,14 +132,14 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 				itemstack:add_wear(wear)
 			end
 			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above})
-			minetest.swap_node(pointed_thing.under, {name="mcl_core:grass_path"})
+			minetest.swap_node(pointed_thing.under, {name="mcl_tools:grass_path"})
 		end
 	end
 	return itemstack
 end
 
 -- Shovels
-minetest.register_tool("mcl_core:shovel_wood", {
+minetest.register_tool("mcl_tools:shovel_wood", {
 	description = "Wooden Shovel",
 	inventory_image = "default_tool_woodshovel.png",
 	wield_image = "default_tool_woodshovel.png^[transformR90",
@@ -161,14 +148,14 @@ minetest.register_tool("mcl_core:shovel_wood", {
 		full_punch_interval = 1,
 		max_drop_level=1,
 		groupcaps={
-			shovely_dig_wood = {times=tooltimes, uses=0},
+			shovely_dig_wood = {times=mcl_autogroup.digtimes.shovely_dig_wood, uses=0},
 		},
 		damage_groups = {fleshy=2},
 	},
 	on_place = make_grass_path,
 	sound = { breaks = "default_tool_breaks" },
 })
-minetest.register_tool("mcl_core:shovel_stone", {
+minetest.register_tool("mcl_tools:shovel_stone", {
 	description = "Stone Shovel",
 	inventory_image = "default_tool_stoneshovel.png",
 	wield_image = "default_tool_stoneshovel.png^[transformR90",
@@ -177,14 +164,14 @@ minetest.register_tool("mcl_core:shovel_stone", {
 		full_punch_interval = 1,
 		max_drop_level=3,
 		groupcaps={
-			shovely_dig_stone = {times=tooltimes, uses=0},
+			shovely_dig_stone = {times=mcl_autogroup.digtimes.shovely_dig_stone, uses=0},
 		},
 		damage_groups = {fleshy=3},
 	},
 	on_place = make_grass_path,
 	sound = { breaks = "default_tool_breaks" },
 })
-minetest.register_tool("mcl_core:shovel_iron", {
+minetest.register_tool("mcl_tools:shovel_iron", {
 	description = "Iron Shovel",
 	inventory_image = "default_tool_steelshovel.png",
 	wield_image = "default_tool_steelshovel.png^[transformR90",
@@ -193,14 +180,14 @@ minetest.register_tool("mcl_core:shovel_iron", {
 		full_punch_interval = 1,
 		max_drop_level=4,
 		groupcaps={
-			shovely_dig_iron= {times=tooltimes, uses=0},
+			shovely_dig_iron = {times=mcl_autogroup.digtimes.shovely_dig_iron, uses=0},
 		},
 		damage_groups = {fleshy=4},
 	},
 	on_place = make_grass_path,
 	sound = { breaks = "default_tool_breaks" },
 })
-minetest.register_tool("mcl_core:shovel_gold", {
+minetest.register_tool("mcl_tools:shovel_gold", {
 	description = "Golden Shovel",
 	inventory_image = "default_tool_goldshovel.png",
 	wield_image = "default_tool_goldshovel.png^[transformR90",
@@ -209,14 +196,14 @@ minetest.register_tool("mcl_core:shovel_gold", {
 		full_punch_interval = 1,
 		max_drop_level=2,
 		groupcaps={
-			shovely_dig_gold = {times=tooltimes, uses=0},
+			shovely_dig_gold = {times=mcl_autogroup.digtimes.shovely_dig_gold, uses=0},
 		},
 		damage_groups = {fleshy=2},
 	},
 	on_place = make_grass_path,
 	sound = { breaks = "default_tool_breaks" },
 })
-minetest.register_tool("mcl_core:shovel_diamond", {
+minetest.register_tool("mcl_tools:shovel_diamond", {
 	description = "Diamond Shovel",
 	inventory_image = "default_tool_diamondshovel.png",
 	wield_image = "default_tool_diamondshovel.png^[transformR90",
@@ -225,7 +212,7 @@ minetest.register_tool("mcl_core:shovel_diamond", {
 		full_punch_interval = 1,
 		max_drop_level=5,
 		groupcaps={
-			shovely_dig_diamond = {times=tooltimes, uses=0},
+			shovely_dig_diamond = {times=mcl_autogroup.digtimes.shovely_dig_diamond, uses=0},
 		},
 		damage_groups = {fleshy=5},
 	},
@@ -234,7 +221,7 @@ minetest.register_tool("mcl_core:shovel_diamond", {
 })
 
 -- Axes
-minetest.register_tool("mcl_core:axe_wood", {
+minetest.register_tool("mcl_tools:axe_wood", {
 	description = "Wooden Axe",
 	inventory_image = "default_tool_woodaxe.png",
 	groups = { tool=1 },
@@ -242,13 +229,13 @@ minetest.register_tool("mcl_core:axe_wood", {
 		full_punch_interval = 1.25,
 		max_drop_level=1,
 		groupcaps={
-			axey_dig_wood = {times=tooltimes, uses=0},
+			axey_dig_wood = {times=mcl_autogroup.digtimes.axey_dig_wood, uses=0},
 		},
 		damage_groups = {fleshy=7},
 	},
 	sound = { breaks = "default_tool_breaks" },
 })
-minetest.register_tool("mcl_core:axe_stone", {
+minetest.register_tool("mcl_tools:axe_stone", {
 	description = "Stone Axe",
 	inventory_image = "default_tool_stoneaxe.png",
 	groups = { tool=1 },
@@ -256,13 +243,13 @@ minetest.register_tool("mcl_core:axe_stone", {
 		full_punch_interval = 1.25,
 		max_drop_level=3,
 		groupcaps={
-			axey_dig_stone = {times=tooltimes, uses=0},
+			axey_dig_stone = {times=mcl_autogroup.digtimes.axey_dig_stone, uses=0},
 		},
 		damage_groups = {fleshy=9},
 	},
 	sound = { breaks = "default_tool_breaks" },
 })
-minetest.register_tool("mcl_core:axe_iron", {
+minetest.register_tool("mcl_tools:axe_iron", {
 	description = "Iron Axe",
 	inventory_image = "default_tool_steelaxe.png",
 	groups = { tool=1 },
@@ -271,13 +258,13 @@ minetest.register_tool("mcl_core:axe_iron", {
 		full_punch_interval = 1.11111111,
 		max_drop_level=4,
 		groupcaps={
-			axey_dig_iron = {times=tooltimes, uses=0},
+			axey_dig_iron = {times=mcl_autogroup.digtimes.axey_dig_iron, uses=0},
 		},
 		damage_groups = {fleshy=9},
 	},
 	sound = { breaks = "default_tool_breaks" },
 })
-minetest.register_tool("mcl_core:axe_gold", {
+minetest.register_tool("mcl_tools:axe_gold", {
 	description = "Golden Axe",
 	inventory_image = "default_tool_goldaxe.png",
 	groups = { tool=1 },
@@ -285,13 +272,13 @@ minetest.register_tool("mcl_core:axe_gold", {
 		full_punch_interval = 1.0,
 		max_drop_level=2,
 		groupcaps={
-			axey_dig_gold = {times=tooltimes, uses=0},
+			axey_dig_gold= {times=mcl_autogroup.digtimes.axey_dig_gold, uses=0},
 		},
 		damage_groups = {fleshy=7},
 	},
 	sound = { breaks = "default_tool_breaks" },
 })
-minetest.register_tool("mcl_core:axe_diamond", {
+minetest.register_tool("mcl_tools:axe_diamond", {
 	description = "Diamond Axe",
 	inventory_image = "default_tool_diamondaxe.png",
 	groups = { tool=1 },
@@ -299,7 +286,7 @@ minetest.register_tool("mcl_core:axe_diamond", {
 		full_punch_interval = 1.0,
 		max_drop_level=5,
 		groupcaps={
-			axey_dig_diamond = {times=tooltimes, uses=0},
+			axey_dig_diamond = {times=mcl_autogroup.digtimes.axey_dig_diamond, uses=0},
 		},
 		damage_groups = {fleshy=9},
 	},
@@ -307,7 +294,7 @@ minetest.register_tool("mcl_core:axe_diamond", {
 })
 
 -- Swords
-minetest.register_tool("mcl_core:sword_wood", {
+minetest.register_tool("mcl_tools:sword_wood", {
 	description = "Wooden Sword",
 	inventory_image = "default_tool_woodsword.png",
 	groups = { weapon=1 },
@@ -315,14 +302,14 @@ minetest.register_tool("mcl_core:sword_wood", {
 		full_punch_interval = 0.625,
 		max_drop_level=1,
 		groupcaps={
-			swordy_dig = {times=tooltimes, uses=0},
-			swordy_cobweb_dig = {times=tooltimes, uses=0},
+			swordy_dig = {times=mcl_autogroup.digtimes.swordy_dig , uses=0},
+			swordy_cobweb_dig = {times=mcl_autogroup.digtimes.swordy_cobweb_dig , uses=0},
 		},
 		damage_groups = {fleshy=4},
 	},
 	sound = { breaks = "default_tool_breaks" },
 })
-minetest.register_tool("mcl_core:sword_stone", {
+minetest.register_tool("mcl_tools:sword_stone", {
 	description = "Stone Sword",
 	inventory_image = "default_tool_stonesword.png",
 	groups = { weapon=1 },
@@ -330,14 +317,14 @@ minetest.register_tool("mcl_core:sword_stone", {
 		full_punch_interval = 0.625,
 		max_drop_level=3,
 		groupcaps={
-			swordy_dig = {times=tooltimes, uses=0},
-			swordy_cobweb_dig = {times=tooltimes, uses=0},
+			swordy_dig = {times=mcl_autogroup.digtimes.swordy_dig , uses=0},
+			swordy_cobweb_dig = {times=mcl_autogroup.digtimes.swordy_cobweb_dig , uses=0},
 		},
 		damage_groups = {fleshy=5},
 	},
 	sound = { breaks = "default_tool_breaks" },
 })
-minetest.register_tool("mcl_core:sword_iron", {
+minetest.register_tool("mcl_tools:sword_iron", {
 	description = "Iron Sword",
 	inventory_image = "default_tool_steelsword.png",
 	groups = { weapon=1 },
@@ -345,14 +332,14 @@ minetest.register_tool("mcl_core:sword_iron", {
 		full_punch_interval = 0.625,
 		max_drop_level=4,
 		groupcaps={
-			swordy_dig = {times=tooltimes, uses=0},
-			swordy_cobweb_dig = {times=tooltimes, uses=0},
+			swordy_dig = {times=mcl_autogroup.digtimes.swordy_dig , uses=0},
+			swordy_cobweb_dig = {times=mcl_autogroup.digtimes.swordy_cobweb_dig , uses=0},
 		},
 		damage_groups = {fleshy=6},
 	},
 	sound = { breaks = "default_tool_breaks" },
 })
-minetest.register_tool("mcl_core:sword_gold", {
+minetest.register_tool("mcl_tools:sword_gold", {
 	description = "Golden Sword",
 	inventory_image = "default_tool_goldsword.png",
 	groups = { weapon=1 },
@@ -360,14 +347,14 @@ minetest.register_tool("mcl_core:sword_gold", {
 		full_punch_interval = 0.625,
 		max_drop_level=2,
 		groupcaps={
-			swordy_dig = {times=tooltimes, uses=0},
-			swordy_cobweb_dig = {times=tooltimes, uses=0},
+			swordy_dig = {times=mcl_autogroup.digtimes.swordy_dig , uses=0},
+			swordy_cobweb_dig = {times=mcl_autogroup.digtimes.swordy_cobweb_dig , uses=0},
 		},
 		damage_groups = {fleshy=4},
 	},
 	sound = { breaks = "default_tool_breaks" },
 })
-minetest.register_tool("mcl_core:sword_diamond", {
+minetest.register_tool("mcl_tools:sword_diamond", {
 	description = "Diamond Sword",
 	inventory_image = "default_tool_diamondsword.png",
 	groups = { weapon=1 },
@@ -375,8 +362,8 @@ minetest.register_tool("mcl_core:sword_diamond", {
 		full_punch_interval = 0.625,
 		max_drop_level=5,
 		groupcaps={
-			swordy_dig = {times=tooltimes, uses=0},
-			swordy_cobweb_dig = {times=tooltimes, uses=0},
+			swordy_dig = {times=mcl_autogroup.digtimes.swordy_dig , uses=0},
+			swordy_cobweb_dig = {times=mcl_autogroup.digtimes.swordy_cobweb_dig , uses=0},
 		},
 		damage_groups = {fleshy=7},
 	},
@@ -384,7 +371,7 @@ minetest.register_tool("mcl_core:sword_diamond", {
 })
 
 --Shears
-minetest.register_tool("mcl_core:shears", {
+minetest.register_tool("mcl_tools:shears", {
 	description = "Shears",
 	inventory_image = "default_tool_shears.png",
 	wield_image = "default_tool_shears.png",
@@ -394,11 +381,12 @@ minetest.register_tool("mcl_core:shears", {
 	        full_punch_interval = 0.5,
 	        max_drop_level=1,
 	        groupcaps={
-			shearsy_dig = {times=tooltimes, uses=0},
-			shearsy_wool_dig = {times=tooltimes, uses=0},
+			shearsy_dig = {times=mcl_autogroup.digtimes.shearsy_dig, uses=0},
+			shearsy_wool_dig = {times=mcl_autogroup.digtimes.shearsy_wool_dig, uses=0},
 		}
 	},
 	sound = { breaks = "default_tool_breaks" },
 })
 
 
+dofile(minetest.get_modpath("mcl_tools").."/crafting.lua")

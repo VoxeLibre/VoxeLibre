@@ -16,7 +16,7 @@ mobs:register_mob("mobs_mc:pigman", {
 	mesh = "3d_armor_character.b3d",
 	textures = {{"Original_Zombiepig_Man_by_Fedora_P.png",
 			"3d_armor_trans.png",
-				minetest.registered_items["mcl_core:sword_gold"].inventory_image,
+				minetest.registered_items["mcl_tools:sword_gold"].inventory_image,
 			}},
 
 	makes_footstep_sound = true,
@@ -39,7 +39,7 @@ mobs:register_mob("mobs_mc:pigman", {
 		chance = 40,
 		min = 1,
 		max = 1,},
-		{name = "mcl_core:sword_gold",
+		{name = "mcl_tools:sword_gold",
 		-- approximation to 8.5%
 		chance = 11,
 		min = 1,

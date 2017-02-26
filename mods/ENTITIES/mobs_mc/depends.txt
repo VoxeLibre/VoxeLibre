@@ -1,4 +1,5 @@
 mcl_core
+mcl_tools
 mcl_fire
 mobs
 mcl_tnt
