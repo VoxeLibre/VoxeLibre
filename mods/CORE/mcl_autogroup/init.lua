@@ -38,10 +38,20 @@ a single tool needs to use. If this is not being done, the loading time will inc
 ]]
 
 local materials = { "wood", "gold", "stone", "iron", "diamond" }
-local material_divisors = { 2, 12, 4, 6, 8 }
 local basegroups = { "pickaxey", "axey", "shovely" }
 local minigroups = { "handy", "shearsy", "swordy", "shearsy_wool", "swordy_cobweb" }
-local minigroup_divisors = { 1, 15, 1.5, 5, 15 }
+local divisors = {
+	["wood"] = 2,
+	["gold"] = 12,
+	["stone"] = 4,
+	["iron"] = 6,
+	["diamond"] = 8,
+	["handy"] = 1,
+	["shearsy"] = 15,
+	["swordy"] = 1.5,
+	["shearsy_wool"] = 5,
+	["swordy_cobweb"] = 15,
+}
 
 mcl_autogroup = {}
 mcl_autogroup.digtimes = {}
@@ -70,64 +80,64 @@ local overwrite = function()
 				groups_changed = true
 			end
 
+			local function calculate_group(hardness, material, diggroup, newgroups, actual_rating, expected_rating)
+				local time, validity_factor
+				if actual_rating >= expected_rating then
+					-- Valid tool
+					validity_factor = 1.5
+				else
+					-- Wrong tool (higher digging time)
+					validity_factor = 5
+				end
+				time = (hardness * validity_factor) / divisors[material]
+				if time <= 0.05 then
+					time = 0
+				else
+					time = math.ceil(time * 20) / 20
+				end
+				table.insert(mcl_autogroup.digtimes[diggroup], time)
+				newgroups[diggroup] = #mcl_autogroup.digtimes[diggroup]
+				return newgroups
+			end
+
 			-- Hack in digging times
 			local hardness = ndef._mcl_hardness
 			if not hardness then
 				hardness = 0
 			end
-			-- Handle pickaxey, axey and shovely, and also handy indirectly
+
+			-- Handle pickaxey, axey and shovely
 			for _, basegroup in pairs(basegroups) do
 				if (hardness ~= -1 and ndef.groups[basegroup]) then
 					for g=1,#materials do
 						local diggroup = basegroup.."_dig_"..materials[g]
-						local time, validity_factor
-						if g >= ndef.groups[basegroup] then
-							-- Valid tool
-							validity_factor = 1.5
-						else
-							-- Wrong tool (higher digging time)
-							validity_factor = 5
-						end
-						time = (hardness * validity_factor) / material_divisors[g]
-						if time <= 0.05 then
-							time = 1
-						else
-							time = math.ceil(time * 20) / 20
-						end
-						table.insert(mcl_autogroup.digtimes[diggroup], time)
-						newgroups[diggroup] = #mcl_autogroup.digtimes[diggroup]
+						newgroups = calculate_group(hardness, materials[g], diggroup, newgroups, g, ndef.groups[basegroup])
 						groups_changed = true
 					end
 				end
 			end
 			for m=1, #minigroups do
 				local minigroup = minigroups[m]
-				if (hardness ~= -1 and
-						(minigroup == "handy") or
-						( (minigroup == "shearsy") or
-						(minigroup == "swordy") or
-						(minigroup == "shearsy_wool" and ndef.groups.wool) or
-						(minigroup == "swordy_cobweb" and nname == "mcl_core:cobweb")) and
-						ndef.groups[minigroup] )
-						then
+				if hardness ~= -1 then
 					local diggroup = minigroup.."_dig"
-					local time, validity_factor
-					if ndef.groups[minigroup] == 1 then
-						-- Valid tool
-						validity_factor = 1.5
-					else
-						-- Wrong tool (higher digging time)
-						validity_factor = 5
+					-- actual rating
+					local ar = ndef.groups[minigroup]
+					if ar == nil then
+						ar = 0
 					end
-					time = (hardness * validity_factor) / minigroup_divisors[m]
-					if time <= 0.05 then
-						time = 1
-					else
-						time = math.ceil(time * 20) / 20
+					if minigroup == "handy" then
+						newgroups = calculate_group(hardness, minigroup, diggroup, newgroups, 1, ar)
+						groups_changed = true
+					elseif ndef.groups[minigroup] then
+						if (minigroup == "shearsy_wool" and ndef.groups.wool) or
+						(minigroup == "swordy_cobweb" and nname == "mcl_core:cobweb") then
+							newgroups = calculate_group(hardness, minigroup, diggroup, newgroups, 1, ar)
+							groups_changed = true
+						elseif minigroup ~= "swordy_cobweb" and minigroup ~= "shearsy_wool" then
+							newgroups = calculate_group(hardness, minigroup, diggroup, newgroups, 1, ar)
+							groups_changed = true
+						end
 					end
-					table.insert(mcl_autogroup.digtimes[diggroup], time)
-					newgroups[diggroup] = #mcl_autogroup.digtimes[diggroup]
-					groups_changed = true
 				end
 			end
 
