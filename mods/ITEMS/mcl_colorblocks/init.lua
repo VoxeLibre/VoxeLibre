@@ -87,7 +87,7 @@ for _, row in ipairs(block.dyes) do
 		minetest.register_node("mcl_colorblocks:glazed_terracotta_"..name, {
 			description = desc.." Glazed Terracotta",
 			tiles = texes,
-			groups = {handy=1,pickaxey=1, cracky=3,glazed_terracotta=1,building_block=1},
+			groups = {handy=1,pickaxey=1, glazed_terracotta=1,building_block=1},
 			paramtype2 = "facedir",
 			stack_max = 64,
 			is_ground_content = false,

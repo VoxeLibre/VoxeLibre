@@ -74,7 +74,7 @@ minetest.register_node("mesecons_torch:redstoneblock", {
 	description = "Block of Redstone",
 	tiles = {"redstone_redstone_block.png"},
 	stack_max = 64,
-	groups = {cracky=1},
+	groups = {pickaxey=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
 	mesecons = {receptor = {
@@ -82,6 +82,7 @@ minetest.register_node("mesecons_torch:redstoneblock", {
 		rules = torch_get_output_rules
 	}},
 	mcl_blast_resistance = 30,
+	mcl_hardness = 5,
 })
 
 minetest.register_craft({

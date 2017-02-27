@@ -23,7 +23,7 @@ If `craft_material` is not `nil` it also adds a crafting recipe of the following
 * `craft_material`: Item to be used in the crafting recipe. If `nil`, no crafting recipe will be added
 * `tiles`: Wall textures table, same syntax as for `minetest.register_node`
 * `inventory_image`: Inventory image (optional, default is an ugly 3D image)
-* `groups`: Base group memberships (optional, default is `{cracky=3}`)
+* `groups`: Base group memberships (optional, default is `{pickaxey=1}`)
 * `sounds`: Sound table (optional, by default default uses stone sounds)
 
 The following groups will automatically be added to the nodes (where applicable), you do not need to add them
