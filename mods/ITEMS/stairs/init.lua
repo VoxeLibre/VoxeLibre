@@ -227,6 +227,13 @@ function stairs.register_stair_and_slab(subname, recipeitem,
 	stairs.register_slab(subname, recipeitem, groups, images, desc_slab, sounds, hardness, double_description, full_node)
 end
 
+-- Very simple registration function
+-- Makes stair and slab out of a source node
+function stairs.register_stair_and_slab_simple(subname, sourcenode, desc_stair, desc_slab)
+	local def = minetest.registered_nodes[sourcenode]
+	stairs.register_stair_and_slab(subname, sourcenode, def.groups, def.tiles, desc_stair, desc_slab, def.sounds, def._mcl_hardness)
+end
+
 -- Register all Minecraft stairs and slabs
 -- Note about hardness: For some reason, the hardness of slabs and stairs don't always match nicely, so that some
 -- slabs actually take slightly longer to be dug than their stair counterparts.
@@ -317,20 +324,9 @@ stairs.register_slab("stone", "mcl_core:stone",
 		"Stone Slab",
 		mcl_sounds.node_sound_stone_defaults(), 2, "Double Stone Slab")
 
-stairs.register_stair_and_slab("cobble", "mcl_core:cobble",
-		{pickaxey=1},
-		{"default_cobble.png"},
-		"Cobblestone Stairs",
-		"Cobblestone Slab",
-		mcl_sounds.node_sound_stone_defaults(), 2)
+stairs.register_stair_and_slab_simple("cobble", "mcl_core:cobble", "Cobblestone Stairs", "Cobblestone Slab")
 
-stairs.register_stair_and_slab("brick_block", "mcl_core:brick_block",
-		{pickaxey=1},
-		{"default_brick.png"},
-		"Brick Stairs",
-		"Brick Slab",
-		mcl_sounds.node_sound_stone_defaults(), 2)
-
+stairs.register_stair_and_slab_simple("brick_block", "mcl_core:brick_block", "Brick Stairs", "Brick Slab")
 
 stairs.register_stair("sprucewood", "mcl_core:sprucewood",
 		{handy=1,axey=1, flammable=3,wood_stairs=1},
