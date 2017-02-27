@@ -136,7 +136,7 @@ mobs:register_mob("mobs_mc:skeleton2", {
 	dogshoot_switch = 1,
 	dogshoot_count_max =6,
 })
-mobs:register_spawn("mobs_mc:skeleton2", {"group:crumbly", "group:cracky", "group:choppy", "group:snappy"}, 7, -1, 5000, 4, -3000)
+mobs:register_spawn("mobs_mc:skeleton2", {"group:solid"}, 7, -1, 5000, 4, -3000)
 
 
 local arrows = {

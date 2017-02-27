@@ -11,13 +11,11 @@ Example Usage
 -------------
 
     minetest.register_node("somemod:someblock", {
-           description = key,
+           description = "Talking Block",
            tiles = {"somemod_someblock.png"},
-               groups = {cracky=1},
-                 on_walk_over = function(pos, node, player)
-                
-                        minetest.chat_send_player(player, "Hey! Watch it!")
-                 end
+           on_walk_over = function(pos, node, player)
+                 minetest.chat_send_player(player, "Hey! Watch it!")
+           end
     })
 
  

@@ -1,6 +1,8 @@
 Dripping Water Mod
 by kddekadenz
 
+modified for MineClone 2 by Wuzzy
+
 
 Installing instructions:
 
@@ -11,8 +13,7 @@ Installing instructions:
 
 Manual:
 
--> drops are generated rarely under crumbly nodes (dirt,grass,sandstone)
--> waterdrops are generated under cloudstone massively
+-> drops are generated rarely under solid nodes
 -> they will stay some time at the generated block and than they fall down
 -> when they collide with the ground, a sound is played and they are destroyed
 

@@ -13,12 +13,7 @@
 --Tweaked by: maikerumine
 local function is_ground(pos)
 	local nn = minetest.get_node(pos).name
-	return minetest.get_item_group(nn, "crumbly") ~= 0 or
-	minetest.get_item_group(nn, "choppy") ~= 0 or
-	minetest.get_item_group(nn, "cracky") ~= 0  or
-	minetest.get_item_group(nn, "snappy") ~= 0  or
-	minetest.get_item_group(nn, "unbreakable") ~= 0  or
-	minetest.get_item_group(nn, "immortal") ~= 0
+	return minetest.get_item_group(nn, "solid") ~= 0
 end
 
 local function get_sign(i)

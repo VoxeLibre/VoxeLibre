@@ -58,7 +58,7 @@ mobs:register_mob("mobs_mc:spider", {
 		punch_start = 50,		punch_end = 90,
 	},
 })
-mobs:register_spawn("mobs_mc:spider", {"mcl_core:stone" ,"mcl_core:gravel","mcl_core:cobble","group:crumbly", "group:cracky", "group:choppy", "group:snappy"}, 4, -1, 17000, 2, 3000)
+mobs:register_spawn("mobs_mc:spider", {"group:solid"}, 4, -1, 17000, 2, 3000)
 
 
 -- compatibility

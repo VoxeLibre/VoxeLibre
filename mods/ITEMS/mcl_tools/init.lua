@@ -117,16 +117,36 @@ minetest.register_tool("mcl_tools:pick_diamond", {
 	sound = { breaks = "default_tool_breaks" },
 })
 
+local get_shovel_dig_group = function(itemstring)
+	local def = minetest.registered_items[itemstring]
+	if itemstring == "mcl_core:shovel_wood" then
+		return "shovely_dig_wood"
+	elseif itemstring == "mcl_core:shovel_stone" then
+		return "shovely_dig_stone"
+	elseif itemstring == "mcl_core:shovel_iron" then
+		return "shovely_dig_iron"
+	elseif itemstring == "mcl_core:shovel_gold" then
+		return "shovely_dig_gold"
+	elseif itemstring == "mcl_core:shovel_diamond" then
+		return "shovely_dig_diamond"
+	else
+		-- Fallback
+		return "shovely_dig_wood"
+	end
+end
+
 local make_grass_path = function(itemstack, placer, pointed_thing)
 	if minetest.get_node(pointed_thing.under).name == "mcl_tools:dirt_with_grass" and pointed_thing.above.y == pointed_thing.under.y then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
 		if minetest.get_node(above).name == "air" then
 			if not minetest.setting_getbool("creative_mode") then
-				-- Add wear, as if digging a level 0 crumbly node
-				local def = minetest.registered_items[itemstack:get_name()]
-				local base_uses = def.tool_capabilities.groupcaps.crumbly.uses
-				local maxlevel = def.tool_capabilities.groupcaps.crumbly.maxlevel
+				-- Add wear, as if digging a level 0 shovely node
+				local toolname = itemstack:get_name()
+				local def = minetest.registered_items[toolname]
+				local group = get_shovel_dig_group
+				local base_uses = def.tool_capabilities.groupcaps[group].uses
+				local maxlevel = def.tool_capabilities.groupcaps[group].maxlevel
 				local uses = base_uses * math.pow(3, maxlevel)
 				local wear = math.ceil(65535 / uses)
 				itemstack:add_wear(wear)
