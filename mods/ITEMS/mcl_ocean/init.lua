@@ -15,9 +15,10 @@ minetest.register_node("mcl_ocean:sea_lantern", {
 		}
 	},
 	tiles = {{name="mcl_ocean_sea_lantern.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=1.25}}},
-	groups = {oddly_breakable_by_hand=3, building_block=1},
+	groups = {handy=1, building_block=1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	_mcl_blast_resistance = 1.5,
+	_mcl_hardness = 0.3,
 })
 
 minetest.register_node("mcl_ocean:prismarine", {
@@ -25,9 +26,10 @@ minetest.register_node("mcl_ocean:prismarine", {
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {{name="mcl_ocean_prismarine_anim.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=45.0}}},
-	groups = {cracky=3, building_block=1},
+	groups = {pickaxey=1, building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 30,
+	_mcl_hardness = 1.5,
 })
 
 minetest.register_node("mcl_ocean:prismarine_brick", {
@@ -35,9 +37,10 @@ minetest.register_node("mcl_ocean:prismarine_brick", {
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {"mcl_ocean_prismarine_bricks.png"},
-	groups = {cracky=2, building_block=1},
+	groups = {pickaxey=1, building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 30,
+	_mcl_hardness = 1.5,
 })
 
 minetest.register_node("mcl_ocean:prismarine_dark", {
@@ -45,9 +48,10 @@ minetest.register_node("mcl_ocean:prismarine_dark", {
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {"mcl_ocean_prismarine_dark.png"},
-	groups = {cracky=2, building_block=1},
+	groups = {pickaxey=1, building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 30,
+	_mcl_hardness = 1.5,
 })
 
 -- Craftitems

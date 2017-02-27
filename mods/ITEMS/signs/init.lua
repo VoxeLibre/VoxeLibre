@@ -137,7 +137,7 @@ local signs_yard = {
     {delta = {x = 0.05, y = 0, z = 0}, yaw = math.pi / 2},
 }
 
-local sign_groups = {choppy=2, flammable=1, deco_block=1}
+local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1}
 
 local construct_sign = function(pos)
     local meta = minetest.get_meta(pos)
@@ -265,6 +265,8 @@ minetest.register_node("signs:sign_wall", {
 	on_punch = function(pos, node, puncher)
 		update_sign(pos)
 	end,
+	_mcl_hardness = 1,
+	_mcl_blast_resistance = 5,
 })
 
 minetest.register_node("signs:sign_yard", {
@@ -297,6 +299,8 @@ minetest.register_node("signs:sign_yard", {
 	on_punch = function(pos, node, puncher)
 		update_sign(pos)
 	end,
+	_mcl_hardness = 1,
+	_mcl_blast_resistance = 5,
 })
 
 minetest.register_entity("signs:text", {
