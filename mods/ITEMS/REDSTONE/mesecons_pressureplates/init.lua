@@ -48,12 +48,17 @@ end
 -- tiles_on:	textures of the pressure plate when active
 -- image:	inventory and wield image of the pressure plate
 -- recipe:	crafting recipe of the pressure plate
+-- sounds:	sound table (like in minetest.register_node)
+-- plusgroups:	group memberships (attached_node=1 and not_in_creative_inventory=1 are already used)
 
-function mesecon:register_pressure_plate(offstate, onstate, description, texture_off, texture_on, recipe, sounds)
+function mesecon:register_pressure_plate(offstate, onstate, description, texture_off, texture_on, recipe, sounds, plusgroups)
 	local ppspec = {
 		offstate = offstate,
 		onstate  = onstate
 	}
+
+	local groups_off = table.copy(plusgroups)
+	groups_off.attached_node = 1
 
 	minetest.register_node(offstate, {
 		drawtype = "nodebox",
@@ -62,7 +67,7 @@ function mesecon:register_pressure_plate(offstate, onstate, description, texture
 		paramtype = "light",
 		selection_box = pp_box_off,
 		node_box = pp_box_off,
-		groups = {snappy = 2, oddly_breakable_by_hand = 3, attached_node = 1},
+		groups = groups_off,
 		is_ground_content = false,
 	    	description = description,
 		pressureplate = ppspec,
@@ -75,7 +80,11 @@ function mesecon:register_pressure_plate(offstate, onstate, description, texture
 			minetest.get_node_timer(pos):start(PRESSURE_PLATE_INTERVAL)
 		end,
 		_mcl_blast_resistance = 2.5,
+		_mcl_hardness = 0.5,
 	})
+
+	local groups_on = table.copy(groups_off)
+	groups_on.not_in_creative_inventory = 1
 
 	minetest.register_node(onstate, {
 		drawtype = "nodebox",
@@ -83,7 +92,7 @@ function mesecon:register_pressure_plate(offstate, onstate, description, texture
 		paramtype = "light",
 		selection_box = pp_box_on,
 		node_box = pp_box_on,
-		groups = {snappy = 2, oddly_breakable_by_hand = 3, attached_node = 1, not_in_creative_inventory = 1},
+		groups = groups_on,
 		is_ground_content = false,
 		drop = offstate,
 		pressureplate = ppspec,
@@ -102,6 +111,7 @@ function mesecon:register_pressure_plate(offstate, onstate, description, texture
 			end
 		end,
 		_mcl_blast_resistance = 2.5,
+		_mcl_hardness = 0.5,
 	})
 
 	minetest.register_craft({
@@ -117,7 +127,8 @@ mesecon:register_pressure_plate(
 	"default_wood.png",
 	"default_wood.png",
 	{{"group:wood", "group:wood"}},
-	mcl_sounds.node_sound_wood_defaults())
+	mcl_sounds.node_sound_wood_defaults(),
+	{axey=1})
 
 mesecon:register_pressure_plate(
 	"mesecons_pressureplates:pressure_plate_stone_off",
@@ -126,7 +137,8 @@ mesecon:register_pressure_plate(
 	"default_stone.png",
 	"default_stone.png",
 	{{"mcl_core:stone", "mcl_core:stone"}},
-	mcl_sounds.node_sound_stone_defaults())
+	mcl_sounds.node_sound_stone_defaults(),
+	{pickaxey=1})
 
 minetest.register_craft({
 	type = "fuel",
