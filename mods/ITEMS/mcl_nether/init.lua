@@ -3,7 +3,7 @@ minetest.register_node("mcl_nether:glowstone", {
 	tiles = {"mcl_nether_glowstone.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {oddly_breakable_by_hand=3,building_block=1},
+	groups = {handy=1,building_block=1},
 	drop = {
 	max_items = 1,
 	items = {
@@ -16,6 +16,7 @@ minetest.register_node("mcl_nether:glowstone", {
 	light_source = 14,
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	_mcl_blast_resistance = 1.5,
+	_mcl_hardness = 0.3,
 })
 
 minetest.register_node("mcl_nether:quartz_ore", {
@@ -23,10 +24,11 @@ minetest.register_node("mcl_nether:quartz_ore", {
 	stack_max = 64,
 	tiles = {"mcl_nether_quartz_ore.png"},
 	is_ground_content = true,
-	groups = {cracky=2,building_block=1},
+	groups = {pickaxey=1, building_block=1},
 	drop = 'mcl_nether:quartz',
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 15,
+	_mcl_hardness = 3,
 })
 
 minetest.register_node("mcl_nether:netherrack", {
@@ -34,9 +36,10 @@ minetest.register_node("mcl_nether:netherrack", {
 	stack_max = 64,
 	tiles = {"mcl_nether_netherrack.png"},
 	is_ground_content = true,
-	groups = {cracky=3,building_block=1},
+	groups = {pickaxey=1, building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 2,
+	_mcl_hardness = 0.4,
 })
 
 minetest.register_node("mcl_nether:magma", {
@@ -46,7 +49,7 @@ minetest.register_node("mcl_nether:magma", {
 	is_ground_content = true,
 	light_source = 3,
 	sunlight_propagates = false,
-	groups = {cracky=3,building_block=1},
+	groups = {pickaxey=1, building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	-- From walkover mod
 	on_walk_over = function(loc, nodeiamon, player)
@@ -54,6 +57,7 @@ minetest.register_node("mcl_nether:magma", {
 		player:set_hp(player:get_hp() - 1)
 	end,
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 minetest.register_node("mcl_nether:soul_sand", {
@@ -61,13 +65,14 @@ minetest.register_node("mcl_nether:soul_sand", {
 	stack_max = 64,
 	tiles = {"mcl_nether_soul_sand.png"},
 	is_ground_content = true,
-	groups = {crumbly=3,building_block=1,soil_nether_wart=1},
+	groups = {handy=1,shovely=1, building_block=1,soil_nether_wart=1},
 	collision_box = {
 		type = "fixed",
 		fixed = { -0.5, -0.5, -0.5, 0.5, 0.5 - 2/16, 0.5 },
 	},
 	sounds = mcl_sounds.node_sound_sand_defaults(),
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 	-- Movement handling is done in playerplus mod
 })
 
@@ -77,9 +82,10 @@ minetest.register_node("mcl_nether:nether_brick", {
 	stack_max = 64,
 	tiles = {"mcl_nether_nether_brick.png"},
 	is_ground_content = false,
-	groups = {cracky=2,building_block=1},
+	groups = {pickaxey=1, building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 30,
+	_mcl_hardness = 2,
 })
 
 minetest.register_node("mcl_nether:red_nether_brick", {
@@ -88,9 +94,10 @@ minetest.register_node("mcl_nether:red_nether_brick", {
 	stack_max = 64,
 	tiles = {"mcl_nether_red_nether_brick.png"},
 	is_ground_content = false,
-	groups = {cracky=2,building_block=1},
+	groups = {pickaxey=1, building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 30,
+	_mcl_hardness = 2,
 })
 
 
@@ -99,7 +106,7 @@ minetest.register_node("mcl_nether:nether_wart_block", {
 	stack_max = 64,
 	tiles = {"mcl_nether_nether_wart_block.png"},
 	is_ground_content = false,
-	groups = {oddly_breakable_by_hand=3,building_block=1},
+	groups = {handy=1, building_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(
 		{
 			footstep={name="default_dirt_footstep", gain=0.7},
@@ -107,6 +114,7 @@ minetest.register_node("mcl_nether:nether_wart_block", {
 		}
 	),
 	_mcl_blast_resistance = 5,
+	_mcl_hardness = 1.5,
 })
 
 minetest.register_node("mcl_nether:quartz_block", {
@@ -114,9 +122,10 @@ minetest.register_node("mcl_nether:quartz_block", {
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {"mcl_nether_quartz_block_top.png", "mcl_nether_quartz_block_bottom.png", "mcl_nether_quartz_block_side.png"},
-	groups = {cracky=3,quartz_block=1,building_block=1},
+	groups = {pickaxey=1, quartz_block=1,building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 4,
+	_mcl_hardness = 0.8,
 })
 
 minetest.register_node("mcl_nether:quartz_chiseled", {
@@ -124,9 +133,10 @@ minetest.register_node("mcl_nether:quartz_chiseled", {
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {"mcl_nether_quartz_chiseled_top.png", "mcl_nether_quartz_chiseled_top.png", "mcl_nether_quartz_chiseled_side.png"},
-	groups = {cracky=3,quartz_block=1,building_block=1},
+	groups = {pickaxey=1, quartz_block=1,building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 4,
+	_mcl_hardness = 0.8,
 })
 
 minetest.register_node("mcl_nether:quartz_pillar", {
@@ -136,9 +146,10 @@ minetest.register_node("mcl_nether:quartz_pillar", {
 	is_ground_content = false,
 	on_place = mcl_util.rotate_axis,
 	tiles = {"mcl_nether_quartz_pillar_top.png", "mcl_nether_quartz_pillar_top.png", "mcl_nether_quartz_pillar_side.png"},
-	groups = {cracky=3,quartz_block=1,building_block=1},
+	groups = {pickaxey=1, quartz_block=1,building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 4,
+	_mcl_hardness = 0.8,
 })
 
 
