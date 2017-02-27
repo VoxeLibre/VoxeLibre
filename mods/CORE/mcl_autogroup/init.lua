@@ -125,18 +125,15 @@ local overwrite = function()
 					if ar == nil then
 						ar = 0
 					end
-					if minigroup == "handy" then
+					if (minigroup == "handy")
+							or
+							(ndef.groups.shearsy_wool and minigroup == "shearsy_wool" and ndef.groups.wool)
+							or
+							(ndef.groups.swordy_cobweb and minigroup == "swordy_cobweb" and nname == "mcl_core:cobweb")
+							or
+							(ndef.groups[minigroup] and minigroup ~= "swordy_cobweb" and minigroup ~= "shearsy_wool") then
 						newgroups = calculate_group(hardness, minigroup, diggroup, newgroups, ar, 1)
 						groups_changed = true
-					elseif ndef.groups[minigroup] then
-						if (minigroup == "shearsy_wool" and ndef.groups.wool) or
-						(minigroup == "swordy_cobweb" and nname == "mcl_core:cobweb") then
-							newgroups = calculate_group(hardness, minigroup, diggroup, newgroups, ar, 1)
-							groups_changed = true
-						elseif minigroup ~= "swordy_cobweb" and minigroup ~= "shearsy_wool" then
-							newgroups = calculate_group(hardness, minigroup, diggroup, newgroups, ar, 1)
-							groups_changed = true
-						end
 					end
 				end
 			end

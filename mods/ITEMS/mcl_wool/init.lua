@@ -38,7 +38,7 @@ for _, row in ipairs(wool.dyes) do
 			stack_max = 64,
 			is_ground_content = false,
 			tiles = {"wool_"..texture..".png"},
-			groups = {handy=1,shearsy=1, flammable=1,wool=1,building_block=1},
+			groups = {handy=1,shearsy_wool=1, flammable=1,wool=1,building_block=1},
 			sounds = mcl_sounds.node_sound_defaults(),
 			_mcl_hardness = 0.8,
 			_mcl_blast_resistance = 4,

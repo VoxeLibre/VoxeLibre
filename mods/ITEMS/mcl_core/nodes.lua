@@ -1662,7 +1662,7 @@ minetest.register_node("mcl_core:cobweb", {
        liquid_renewable = false,
        liquid_range = 0,
        walkable = false,
-       groups = {swordy=1,shearsy=1, deco_block=1},
+       groups = {swordy_cobweb=1,shearsy=1, deco_block=1},
        drop = "mcl_mobitems:string",
 	_mcl_blast_resistance = 20,
 	_mcl_hardness = 4,
