@@ -216,7 +216,7 @@ mcl_fences.register_fence_and_fence_gate = function(id, fence_name, fence_gate_n
 	return fence_id, gate_id, open_gate_id
 end
 
-local wood_groups = {snappy=1,choppy=2,oddly_breakable_by_hand=2,flammable=2,fence_wood=1}
+local wood_groups = {handy=1,axey=1, flammable=2,fence_wood=1}
 local wood_connect = {"group:fence_wood"}
 local wood_sounds = mcl_sounds.node_sound_wood_defaults()
 
@@ -259,7 +259,7 @@ end
 
 
 -- Nether Brick Fence (without fence gate!)
-mcl_fences.register_fence("nether_brick_fence", "Nether Brick Fence", "mcl_nether_nether_brick.png", {cracky=2, deco_block=1, fence_nether_brick=1}, {"group:fence_nether_brick"}, mcl_sounds.node_sound_stone_defaults())
+mcl_fences.register_fence("nether_brick_fence", "Nether Brick Fence", "mcl_nether_nether_brick.png", {pickaxey=1, deco_block=1, fence_nether_brick=1}, {"group:fence_nether_brick"}, mcl_sounds.node_sound_stone_defaults())
 
 minetest.register_craft({
 	output = 'mcl_fences:nether_brick_fence 6',
