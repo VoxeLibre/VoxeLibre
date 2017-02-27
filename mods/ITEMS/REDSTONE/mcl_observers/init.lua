@@ -4,7 +4,7 @@ minetest.register_node("mcl_observers:observer", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	paramtype2 = "facedir",
 	-- TODO: Add to craft guide and creative inventory when it's useful
-	groups = { cracky=2, not_in_craft_guide=1, not_in_creative_inventory=1 },
+	groups = {pickaxey=1, not_in_craft_guide=1, not_in_creative_inventory=1 },
 	tiles = {
 		"mcl_observers_observer_top.png", "default_furnace_bottom.png",
 		"mcl_observers_observer_side.png", "mcl_observers_observer_side.png",
@@ -25,6 +25,7 @@ minetest.register_node("mcl_observers:observer", {
 		meta:from_table(meta2:to_table())
 	end,
 	_mcl_blast_resistance = 17.5,
+	_mcl_hardness = 3.5,
 	-- TODO: Mesecons handling
 	mesecons = {effector = {
 	}}

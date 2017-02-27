@@ -45,6 +45,7 @@ local dropperdef = {
 		meta:from_table(meta2:to_table())
 	end,
 	_mcl_blast_resistance = 17.5,
+	_mcl_hardness = 3.5,
 	mesecons = {effector = {
 		-- Drop random item when triggered
 		action_on = function (pos, node)
@@ -113,7 +114,7 @@ horizontal_def.tiles = {
 	"default_furnace_side.png", "mcl_droppers_dropper_front_horizontal.png"
 }
 horizontal_def.paramtype2 = "facedir"
-horizontal_def.groups = {cracky=2,container=2}
+horizontal_def.groups = {pickaxey=1, container=2}
 
 minetest.register_node("mcl_droppers:dropper", horizontal_def)
 
@@ -126,7 +127,7 @@ down_def.tiles = {
 	"default_furnace_side.png", "default_furnace_side.png",
 	"default_furnace_side.png", "default_furnace_side.png"
 }
-down_def.groups = {cracky=2,container=2,not_in_creative_inventory=1}
+down_def.groups = {pickaxey=1, container=2,not_in_creative_inventory=1}
 down_def.drop = "mcl_droppers:dropper"
 minetest.register_node("mcl_droppers:dropper_down", down_def)
 

@@ -36,7 +36,7 @@ minetest.register_node("mesecons_button:button_stone_off", {
 		type = "fixed",	
 		fixed = boxes_off	-- the button itself
 	},
-	groups = {cracky=3, attached_node=1, dig_by_water=1},
+	groups = {handy=1,pickaxey=1, attached_node=1, dig_by_water=1},
 	description = "Stone Button",
 	on_rightclick = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_button:button_stone_on")
@@ -50,6 +50,7 @@ minetest.register_node("mesecons_button:button_stone_off", {
 		rules = mesecon.rules.buttonlike_get
 	}},
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 minetest.register_node("mesecons_button:button_stone_on", {
@@ -68,7 +69,7 @@ minetest.register_node("mesecons_button:button_stone_on", {
 		type = "fixed",	
 		fixed = boxes_on	-- the button itself
 	},
-	groups = {cracky=3, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
+	groups = {handy=1,pickaxey=1, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
 	drop = 'mesecons_button:button_stone_off',
 	description = "Stone Button",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
@@ -77,6 +78,7 @@ minetest.register_node("mesecons_button:button_stone_on", {
 		rules = mesecon.rules.buttonlike_get
 	}},
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 minetest.register_node("mesecons_button:button_wood_off", {
@@ -95,7 +97,7 @@ minetest.register_node("mesecons_button:button_wood_off", {
 		type = "fixed",	
 		fixed = boxes_off	-- the button itself
 	},
-	groups = {choppy=3, attached_node=1, dig_by_water=1},
+	groups = {handy=1,axey=1, attached_node=1, dig_by_water=1},
 	description = "Wooden Button",
 	on_rightclick = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_button:button_wood_on")
@@ -109,6 +111,7 @@ minetest.register_node("mesecons_button:button_wood_off", {
 		rules = mesecon.rules.buttonlike_get
 	}},
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 minetest.register_node("mesecons_button:button_wood_on", {
@@ -127,7 +130,7 @@ minetest.register_node("mesecons_button:button_wood_on", {
 		type = "fixed",	
 		fixed = boxes_on	-- the button itself
 	},
-	groups = {choppy=3, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
+	groups = {handy=1,axey=1, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
 	drop = 'mesecons_button:button_wood_off',
 	description = "Wooden Button",
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -136,6 +139,7 @@ minetest.register_node("mesecons_button:button_wood_on", {
 		rules = mesecon.rules.buttonlike_get
 	}},
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 minetest.register_craft({
