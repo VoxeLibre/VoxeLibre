@@ -108,10 +108,11 @@ local crop_def = {
 		},
 	},
 	groups = {
-		cocoa=1, choppy=3, oddly_breakable_by_hand=3, not_in_creative_inventory=1, dig_by_water=1,
+		handy=1,axey=1, cocoa=1, oddly_breakable_by_hand=3, not_in_creative_inventory=1, dig_by_water=1,
 	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 15,
+	_mcl_hardness = 0.2,
 }
 
 -- 2nd stage

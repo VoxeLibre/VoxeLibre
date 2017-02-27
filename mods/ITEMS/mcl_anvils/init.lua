@@ -1,5 +1,5 @@
 local anvildef = {
-	groups = {cracky=1, falling_node=1, deco_block=1, anvil=1},
+	groups = {pickaxey=1, falling_node=1, deco_block=1, anvil=1},
 	tiles = {"mcl_anvils_anvil_top_damaged_0.png^[transformR90", "mcl_anvils_anvil_base.png"},
 	paramtype = "light",
 	sunlight_propagates = true,
@@ -16,6 +16,7 @@ local anvildef = {
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6000,
+	_mcl_hardness = 5,
 }
 
 local anvildef0 = table.copy(anvildef)

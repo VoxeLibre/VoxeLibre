@@ -28,7 +28,7 @@ minetest.register_node("mcl_chests:chest", {
 		"default_chest_side.png", "default_chest_side.png", "default_chest_front.png"},
 	paramtype2 = "facedir",
 	stack_max = 64,
-	groups = {choppy=2,container=2,oddly_breakable_by_hand=2, deco_block=1},
+	groups = {handy=1,axey=1, container=2, deco_block=1},
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_construct = function(pos)
@@ -134,13 +134,14 @@ minetest.register_node("mcl_chests:chest", {
 				" takes stuff from chest at "..minetest.pos_to_string(pos))
 	end,
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 2.5,
 })
 
 minetest.register_node("mcl_chests:chest_left", {
 	tiles = {"default_chest_top_big.png", "default_chest_top_big.png", "default_chest_side.png",
 		"default_chest_side.png", "default_chest_side_big.png^[transformFX", "default_chest_front_big.png"},
 	paramtype2 = "facedir",
-	groups = {choppy=2,container=2,oddly_breakable_by_hand=2,not_in_creative_inventory=1},
+	groups = {handy=1,axey=1, container=2,not_in_creative_inventory=1},
 	drop = "mcl_chests:chest",
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -194,13 +195,14 @@ minetest.register_node("mcl_chests:chest_left", {
 				" takes stuff from chest at "..minetest.pos_to_string(pos))
 	end,
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 2.5,
 })
 
 minetest.register_node("mcl_chests:chest_right", {
 	tiles = {"default_chest_top_big.png^[transformFX", "default_chest_top_big.png^[transformFX", "default_chest_side.png",
 		"default_chest_side.png", "default_chest_side_big.png", "default_chest_front_big.png^[transformFX"},
 	paramtype2 = "facedir",
-	groups = {choppy=2,container=2,oddly_breakable_by_hand=2,not_in_creative_inventory=1},
+	groups = {handy=1,axey=1, container=2,not_in_creative_inventory=1},
 	drop = "mcl_chests:chest",
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -254,6 +256,7 @@ minetest.register_node("mcl_chests:chest_right", {
 				" takes stuff from chest at "..minetest.pos_to_string(pos))
 	end,
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 2.5,
 })
 
 minetest.register_craft({
@@ -278,7 +281,7 @@ minetest.register_node("mcl_chests:ender_chest", {
 		"mcl_chests_ender_chest_back.png", "mcl_chests_ender_chest_front.png"},
 	-- Note: The “container” group is missing here because the ender chest does not
 	-- have an inventory on its own
-	groups = {cracky=1, deco_block=1},
+	groups = {pickaxey=1, deco_block=1},
 	is_ground_content = false,
 	paramtype = "light",
 	light_source = 7,
@@ -299,6 +302,7 @@ minetest.register_node("mcl_chests:ender_chest", {
 				"listring[current_player;main]")
 	end,
 	_mcl_blast_resistance = 3000,
+	_mcl_hardness = 22.5,
 })
 
 minetest.register_on_joinplayer(function(player)
@@ -341,7 +345,7 @@ for color, desc in pairs(boxtypes) do
 		tiles = {"mcl_chests_"..color.."_shulker_box_top.png", "mcl_chests_"..color.."_shulker_box_bottom.png",
 			"mcl_chests_"..color.."_shulker_box_side.png", "mcl_chests_"..color.."_shulker_box_side.png",
 			"mcl_chests_"..color.."_shulker_box_side.png", "mcl_chests_"..color.."_shulker_box_side.png"},
-		groups = {cracky=2, container=3, deco_block=1, shulker_box=1},
+		groups = {handy=1,pickaxey=1, container=3, deco_block=1, shulker_box=1},
 		is_ground_content = false,
 		sounds = mcl_sounds.node_sound_stone_defaults(),
 		stack_max = 1,
@@ -409,6 +413,7 @@ for color, desc in pairs(boxtypes) do
 			end
 		end,
 		_mcl_blast_resistance = 30,
+		_mcl_hardness = 6,
 	})
 
 	minetest.register_craft({

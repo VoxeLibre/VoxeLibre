@@ -42,7 +42,7 @@ minetest.register_node("mcl_cake:cake", {
 			fixed = slice_6
 		},
 	stack_max = 1,
-	groups = {food=2,crumbly=3,attached_node=1},
+	groups = {handy=1, food=2,attached_node=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_5"), ItemStack("mcl_cake:cake"), clicker, {type="nothing"})
@@ -51,7 +51,8 @@ minetest.register_node("mcl_cake:cake", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 
 	_food_particles = false,
-	_mcl_blast_resistance = 2.5
+	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 5,
 })
 minetest.register_node("mcl_cake:cake_5", {
 	description = "Cake (5 Slices Left)",
@@ -67,7 +68,7 @@ minetest.register_node("mcl_cake:cake_5", {
 		type = "fixed",
 			fixed = slice_5
 		},
-	groups = {food=2,crumbly=3,attached_node=1,not_in_creative_inventory=1},
+	groups = {handy=1, food=2,attached_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_4"), ItemStack("mcl_cake:cake_5"), clicker, {type="nothing"})
@@ -91,7 +92,7 @@ minetest.register_node("mcl_cake:cake_4", {
 		type = "fixed",
 			fixed = slice_4
 		},
-	groups = {food=2,crumbly=3,attached_node=1,not_in_creative_inventory=1},
+	groups = {handy=1, food=2,attached_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_3"), ItemStack("mcl_cake:cake_4"), clicker, {type="nothing"})
@@ -100,7 +101,8 @@ minetest.register_node("mcl_cake:cake_4", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 
 	_food_particles = false,
-	_mcl_blast_resistance = 2.5
+	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 5,
 })
 minetest.register_node("mcl_cake:cake_3", {
 	description = "Cake (3 Slices Left)",
@@ -116,7 +118,7 @@ minetest.register_node("mcl_cake:cake_3", {
 		type = "fixed",
 			fixed = slice_3
 		},
-	groups = {food=2,crumbly=3,attached_node=1,not_in_creative_inventory=1},
+	groups = {handy=1, food=2,attached_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_2"), ItemStack("mcl_cake:cake_3"), clicker, {type="nothing"})
@@ -125,7 +127,8 @@ minetest.register_node("mcl_cake:cake_3", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 
 	_food_particles = false,
-	_mcl_blast_resistance = 2.5
+	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 5,
 })
 minetest.register_node("mcl_cake:cake_2", {
 	description = "Cake (2 Slices Left)",
@@ -141,7 +144,7 @@ minetest.register_node("mcl_cake:cake_2", {
 		type = "fixed",
 			fixed = slice_2
 		},
-	groups = {food=2,crumbly=3,attached_node=1,not_in_creative_inventory=1},
+	groups = {handy=1, food=2,attached_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_1"), ItemStack("mcl_cake:cake_2"), clicker, {type="nothing"})
@@ -150,7 +153,8 @@ minetest.register_node("mcl_cake:cake_2", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 
 	_food_particles = false,
-	_mcl_blast_resistance = 2.5
+	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 5,
 })
 minetest.register_node("mcl_cake:cake_1", {
 	description = "Cake (1 Slice Left)",
@@ -166,7 +170,7 @@ minetest.register_node("mcl_cake:cake_1", {
 		type = "fixed",
 			fixed = slice_1
 		},
-	groups = {food=2,crumbly=3,attached_node=1,not_in_creative_inventory=1},
+	groups = {handy=1, food=2,attached_node=1,not_in_creative_inventory=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		minetest.do_item_eat(2, ItemStack("mcl:cake:cake 0"), ItemStack("mcl_cake:cake_1"), clicker, {type="nothing"})
@@ -175,5 +179,6 @@ minetest.register_node("mcl_cake:cake_1", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 
 	_food_particles = false,
-	_mcl_blast_resistance = 2.5
+	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 5,
 })
