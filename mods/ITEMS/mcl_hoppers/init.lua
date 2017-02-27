@@ -16,7 +16,7 @@ minetest.register_node("mcl_hoppers:hopper", {
 	description = "Hopper",
 	inventory_image = "mcl_hoppers_item.png",
 	wield_image = "mcl_hoppers_item.png",
-	groups = {cracky=1,level=2,container=2,deco_block=1,},
+	groups = {pickaxey=1, container=2,deco_block=1,},
 	drawtype = "nodebox",
 	paramtype = "light",
 	tiles = {"mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_inside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png"},
@@ -112,12 +112,13 @@ minetest.register_node("mcl_hoppers:hopper", {
 	end,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 24,
+	_mcl_hardness = 3,
 })
 
 minetest.register_node("mcl_hoppers:hopper_side", {
 	description = "Hopper (Side)",
 	drop = "mcl_hoppers:hopper",
-	groups = {cracky=1,level=2,container=2,not_in_creative_inventory=1},
+	groups = {pickaxey=1, container=2,not_in_creative_inventory=1},
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",
@@ -174,6 +175,7 @@ minetest.register_node("mcl_hoppers:hopper_side", {
 	end,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 24,
+	_mcl_hardness = 3,
 })
 
 -- Make hoppers suck in dropped items

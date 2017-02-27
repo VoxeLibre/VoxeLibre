@@ -224,7 +224,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 		"default_furnace_side.png", "default_furnace_front.png"
 	},
 	paramtype2 = "facedir",
-	groups = {cracky=2, container=4, deco_block=1},
+	groups = {pickaxey=1, container=4, deco_block=1},
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 
@@ -266,6 +266,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
 	on_receive_fields = craftguide,
 	_mcl_blast_resistance = 17.5,
+	_mcl_hardness = 3.5,
 })
 
 minetest.register_node("mcl_furnaces:furnace_active", {
@@ -278,7 +279,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	paramtype2 = "facedir",
 	light_source = 13,
 	drop = "mcl_furnaces:furnace",
-	groups = {cracky=2, container=4, deco_block=1, not_in_creative_inventory=1},
+	groups = {pickaxey=1, container=4, deco_block=1, not_in_creative_inventory=1},
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_timer = furnace_node_timer,
@@ -304,6 +305,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
 	on_receive_fields = craftguide,
 	_mcl_blast_resistance = 17.5,
+	_mcl_hardness = 3.5,
 })
 
 minetest.register_craft({

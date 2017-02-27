@@ -77,7 +77,7 @@ minetest.register_node("mcl_jukebox:jukebox", {
 	description = "Jukebox",
 	tiles = {"mcl_jukebox_top.png", "mcl_jukebox_side.png", "mcl_jukebox_side.png"},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	groups = {oddly_breakable_by_hand=1, choppy=3, deco_block=1},
+	groups = {handy=1,axey=1, deco_block=1},
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
@@ -146,6 +146,7 @@ minetest.register_node("mcl_jukebox:jukebox", {
 		meta:from_table(meta2:to_table())
 	end,
 	_mcl_blast_resistance = 30,
+	_mcl_hardness = 2,
 })
 
 minetest.register_craft({

@@ -14,9 +14,10 @@ minetest.register_node("mcl_minecarts:rail", {
                 fixed = {-1/2, -1/2, -1/2, 1/2, -1/2+1/16, 1/2},
 	},
 	stack_max = 64,
-	groups = {cracky=3,oddly_breakable_by_hand=3,attached_node=1,rail=1,connect_to_raillike=1,dig_by_water=1,transport=1},
+	groups = {handy=1,pickaxey=1, attached_node=1,rail=1,connect_to_raillike=1,dig_by_water=1,transport=1},
 	sounds = mcl_sounds.node_sound_defaults(),
 	_mcl_blast_resistance = 3.5,
+	_mcl_hardness = 0.7,
 })
 
 minetest.register_craft({
@@ -43,7 +44,7 @@ minetest.register_node("mcl_minecarts:golden_rail", {
 		-- but how to specify the dimensions for curved and sideways rails?
 		fixed = {-1/2, -1/2, -1/2, 1/2, -1/2+1/16, 1/2},
 	},
-	groups = {cracky = 3, oddly_breakable_by_hand = 3, attached_node = 1, rail = 1, connect_to_raillike = 1, dig_by_water = 1, transport = 1},
+	groups = {handy=1,pickaxey=1, attached_node = 1, rail = 1, connect_to_raillike = 1, dig_by_water = 1, transport = 1},
 	
 	after_place_node = function(pos, placer, itemstack)
 		if not mesecon then
@@ -63,6 +64,7 @@ minetest.register_node("mcl_minecarts:golden_rail", {
 		},
 	},
 	_mcl_blast_resistance = 3.5,
+	_mcl_hardness = 0.7,
 })
 
 minetest.register_craft({
