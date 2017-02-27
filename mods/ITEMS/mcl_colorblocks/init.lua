@@ -25,9 +25,10 @@ minetest.register_node("mcl_colorblocks:hardened_clay", {
 	description = "Hardened Clay",
 	tiles = {"hardened_clay.png"},
 	stack_max = 64,
-	groups = {cracky=3,hardened_clay=1,building_block=1},
+	groups = {pickaxey=1, hardened_clay=1,building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 21,
+	_mcl_hardness = 1.25,
 })
 
 minetest.register_craft({
@@ -48,16 +49,17 @@ for _, row in ipairs(block.dyes) do
 	minetest.register_node("mcl_colorblocks:hardened_clay_"..name, {
 		description = desc.." Hardened Clay",
 		tiles = {"hardened_clay_stained_"..name..".png"},
-		groups = {cracky=3,hardened_clay=1,building_block=1},
+		groups = {pickaxey=1, hardened_clay=1,building_block=1},
 		stack_max = 64,
 		sounds = mcl_sounds.node_sound_stone_defaults(),
 		_mcl_blast_resistance = 21,
+		_mcl_hardness = 1.25,
 	})
 
 	minetest.register_node("mcl_colorblocks:concrete_powder_"..name, {
 		description = desc.." Concrete Powder",
 		tiles = {"mcl_colorblocks_concrete_powder_"..name..".png"},
-		groups = {crumbly=3,concrete_powder=1,building_block=1,falling_node=1},
+		groups = {handy=1,shovely=1, concrete_powder=1,building_block=1,falling_node=1},
 		stack_max = 64,
 		is_ground_content = false,
 		sounds = mcl_sounds.node_sound_sand_defaults(),
@@ -65,16 +67,18 @@ for _, row in ipairs(block.dyes) do
 		-- Specify the node to which this node will convert after getting in contact with water
 		_mcl_colorblocks_harden_to = "mcl_colorblocks:concrete_"..name,
 		_mcl_blast_resistance = 2.5,
+		_mcl_hardness = 0.5,
 	})
 
 	minetest.register_node("mcl_colorblocks:concrete_"..name, {
 		description = desc.." Concrete",
 		tiles = {"mcl_colorblocks_concrete_"..name..".png"},
-		groups = {cracky=3,concrete=1,building_block=1},
+		groups = {handy=1,pickaxey=1, concrete=1,building_block=1},
 		stack_max = 64,
 		is_ground_content = false,
 		sounds = mcl_sounds.node_sound_stone_defaults(),
 		_mcl_blast_resistance = 9,
+		_mcl_hardness = 1.8,
 	})
 
 	if terracotta then
@@ -83,12 +87,13 @@ for _, row in ipairs(block.dyes) do
 		minetest.register_node("mcl_colorblocks:glazed_terracotta_"..name, {
 			description = desc.." Glazed Terracotta",
 			tiles = texes,
-			groups = {cracky=3,glazed_terracotta=1,building_block=1},
+			groups = {handy=1,pickaxey=1, cracky=3,glazed_terracotta=1,building_block=1},
 			paramtype2 = "facedir",
 			stack_max = 64,
 			is_ground_content = false,
 			sounds = mcl_sounds.node_sound_stone_defaults(),
 			_mcl_blast_resistance = 7,
+			_mcl_hardness = 1.4,
 		})
 	end
 
