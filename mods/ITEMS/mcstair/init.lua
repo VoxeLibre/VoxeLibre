@@ -614,7 +614,8 @@ function mcstair.add(name, stairtiles)
 		},
 		drop = drop,
 		stairs = {name, name.."_outer", name.."_inner"},
-		after_dig_node = function(pos, oldnode) after_dig_node(pos, oldnode) end
+		after_dig_node = function(pos, oldnode) after_dig_node(pos, oldnode) end,
+		_mcl_hardness = node_def._mcl_hardness,
 	})
 	minetest.register_node(":"..name.."_inner", {
 		description = node_def.description,
@@ -636,7 +637,8 @@ function mcstair.add(name, stairtiles)
 		},
 		drop = drop,
 		stairs = {name, name.."_outer", name.."_inner"},
-		after_dig_node = function(pos, oldnode) after_dig_node(pos, oldnode) end
+		after_dig_node = function(pos, oldnode) after_dig_node(pos, oldnode) end,
+		_mcl_hardness = node_def._mcl_hardness,
 	})
 end
 
