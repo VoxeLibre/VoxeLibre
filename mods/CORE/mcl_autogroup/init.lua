@@ -55,14 +55,17 @@ local divisors = {
 
 mcl_autogroup = {}
 mcl_autogroup.digtimes = {}
+mcl_autogroup.creativetimes = {}	-- Copy of digtimes, except that all values are 0. Used for creative mode
 
 for m=1, #materials do
 	for g=1, #basegroups do
 		mcl_autogroup.digtimes[basegroups[g].."_dig_"..materials[m]] = {}
+		mcl_autogroup.creativetimes[basegroups[g].."_dig_"..materials[m]] = {}
 	end
 end
 for g=1, #minigroups do
 	mcl_autogroup.digtimes[minigroups[g].."_dig"] = {}
+	mcl_autogroup.creativetimes[minigroups[g].."_dig"] = {}
 end
 
 local overwrite = function()
@@ -96,6 +99,7 @@ local overwrite = function()
 					time = math.ceil(time * 20) / 20
 				end
 				table.insert(mcl_autogroup.digtimes[diggroup], time)
+				table.insert(mcl_autogroup.creativetimes[diggroup], 0)
 				newgroups[diggroup] = #mcl_autogroup.digtimes[diggroup]
 				return newgroups
 			end

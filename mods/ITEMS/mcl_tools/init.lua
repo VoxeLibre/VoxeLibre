@@ -18,10 +18,14 @@
 -- The hand
 local groupcaps
 if minetest.setting_getbool("creative_mode") then
+	-- Instant breaking in creative mode
 	groupcaps = {
 		creative_breakable = {times={[1]=0}, uses=0},
-
 	}
+	-- mcl_autogroup provides the creative digging times for all digging groups
+	for k,v in pairs(mcl_autogroup.creativetimes) do
+		groupcaps[k] = { times = v, uses = 0 }
+	end
 else
 	groupcaps = {
 		handy_dig = {times=mcl_autogroup.digtimes.handy_dig, uses=0},
