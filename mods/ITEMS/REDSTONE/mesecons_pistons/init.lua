@@ -162,7 +162,7 @@ minetest.register_node("mesecons_pistons:piston_normal_off", {
 		"mesecons_piston_back.png", 
 		"mesecons_piston_pusher_front.png"
 		},
-	groups = {cracky = 3},
+	groups = {handy = 1},
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	after_place_node = piston_orientate,
@@ -173,6 +173,7 @@ minetest.register_node("mesecons_pistons:piston_normal_off", {
 		rules = piston_get_rules
 	}},
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 -- onstate
@@ -188,7 +189,7 @@ minetest.register_node("mesecons_pistons:piston_normal_on", {
 		},
 	inventory_image = "mesecons_piston_top.png",
 	wield_image = "mesecons_piston_top.png",
-	groups = {cracky = 3, not_in_creative_inventory = 1},
+	groups = {handy=1, not_in_creative_inventory = 1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -203,6 +204,7 @@ minetest.register_node("mesecons_pistons:piston_normal_on", {
 		rules = piston_get_rules
 	}},
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 -- pusher
@@ -250,7 +252,7 @@ minetest.register_node("mesecons_pistons:piston_sticky_off", {
 		"mesecons_piston_back.png", 
 		"mesecons_piston_pusher_front_sticky.png"
 		},
-	groups = {cracky = 3},
+	groups = {handy=1},
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	after_place_node = piston_orientate,
@@ -261,6 +263,7 @@ minetest.register_node("mesecons_pistons:piston_sticky_off", {
 		rules = piston_get_rules
 	}},
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 -- onstate
@@ -276,7 +279,7 @@ minetest.register_node("mesecons_pistons:piston_sticky_on", {
 		},
 	inventory_image = "mesecons_piston_top.png",
 	wield_image = "mesecons_piston_top.png",
-	groups = {cracky = 3, not_in_creative_inventory = 1},
+	groups = {handy=1, not_in_creative_inventory = 1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -291,6 +294,7 @@ minetest.register_node("mesecons_pistons:piston_sticky_on", {
 		rules = piston_get_rules
 	}},
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 -- pusher
@@ -357,7 +361,7 @@ minetest.register_node("mesecons_pistons:piston_up_normal_off", {
 		},
 	inventory_image = "mesecons_piston_top.png",
 	wield_image = "mesecons_piston_top.png",
-	groups = {cracky = 3, not_in_creative_inventory = 1},
+	groups = {handy=1, not_in_creative_inventory = 1},
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	drop = "mesecons_pistons:piston_normal_off",
@@ -368,6 +372,7 @@ minetest.register_node("mesecons_pistons:piston_up_normal_off", {
 	}},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 -- onstate
@@ -383,7 +388,7 @@ minetest.register_node("mesecons_pistons:piston_up_normal_on", {
 		},
 	inventory_image = "mesecons_piston_top.png",
 	wield_image = "mesecons_piston_top.png",
-	groups = {cracky = 3, not_in_creative_inventory = 1},
+	groups = {hanry=1, not_in_creative_inventory = 1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -398,6 +403,7 @@ minetest.register_node("mesecons_pistons:piston_up_normal_on", {
 		rules = piston_up_rules,
 	}},
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 -- pusher
@@ -448,7 +454,7 @@ minetest.register_node("mesecons_pistons:piston_up_sticky_off", {
 		},
 	inventory_image = "mesecons_piston_top.png",
 	wield_image = "mesecons_piston_top.png",
-	groups = {cracky = 3, not_in_creative_inventory = 1},
+	groups = {handy=1, not_in_creative_inventory = 1},
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	drop = "mesecons_pistons:piston_sticky_off",
@@ -459,6 +465,7 @@ minetest.register_node("mesecons_pistons:piston_up_sticky_off", {
 		rules = piston_up_rules,
 	}},
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 -- onstate
@@ -474,7 +481,7 @@ minetest.register_node("mesecons_pistons:piston_up_sticky_on", {
 		},
 	inventory_image = "mesecons_piston_top.png",
 	wield_image = "mesecons_piston_top.png",
-	groups = {cracky = 3, not_in_creative_inventory = 1},
+	groups = {handy=1, not_in_creative_inventory = 1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -489,6 +496,7 @@ minetest.register_node("mesecons_pistons:piston_up_sticky_on", {
 		rules = piston_up_rules,
 	}},
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 -- pusher
@@ -557,7 +565,7 @@ minetest.register_node("mesecons_pistons:piston_down_normal_off", {
 		},
 	inventory_image = "mesecons_piston_top.png",
 	wield_image = "mesecons_piston_top.png",
-	groups = {cracky = 3, not_in_creative_inventory = 1},
+	groups = {handy=1, not_in_creative_inventory = 1},
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	drop = "mesecons_pistons:piston_normal_off",
@@ -568,6 +576,7 @@ minetest.register_node("mesecons_pistons:piston_down_normal_off", {
 		rules = piston_down_rules,
 	}},
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 -- onstate
@@ -583,7 +592,7 @@ minetest.register_node("mesecons_pistons:piston_down_normal_on", {
 		},
 	inventory_image = "mesecons_piston_top.png",
 	wield_image = "mesecons_piston_top.png",
-	groups = {cracky = 3, not_in_creative_inventory = 1},
+	groups = {handy=1, not_in_creative_inventory = 1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -598,6 +607,7 @@ minetest.register_node("mesecons_pistons:piston_down_normal_on", {
 		rules = piston_down_rules,
 	}},
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 -- pusher
@@ -644,7 +654,7 @@ minetest.register_node("mesecons_pistons:piston_down_sticky_off", {
 		},
 	inventory_image = "mesecons_piston_top.png",
 	wield_image = "mesecons_piston_top.png",
-	groups = {cracky = 3, not_in_creative_inventory = 1},
+	groups = {handy=1, not_in_creative_inventory = 1},
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	drop = "mesecons_pistons:piston_sticky_off",
@@ -655,6 +665,7 @@ minetest.register_node("mesecons_pistons:piston_down_sticky_off", {
 		rules = piston_down_rules,
 	}},
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 -- onstate
@@ -670,7 +681,7 @@ minetest.register_node("mesecons_pistons:piston_down_sticky_on", {
 		},
 	inventory_image = "mesecons_piston_top.png",
 	wield_image = "mesecons_piston_top.png",
-	groups = {cracky = 3, not_in_creative_inventory = 1},
+	groups = {handy=1, not_in_creative_inventory = 1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -685,6 +696,7 @@ minetest.register_node("mesecons_pistons:piston_down_sticky_on", {
 		rules = piston_down_rules,
 	}},
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 -- pusher

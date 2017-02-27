@@ -27,7 +27,7 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 		fixed = {{ -2/16, -3/16,  8/16, 2/16, 3/16,  4/16 },	-- the base
 			 { -1/16, -8/16, 7/16, 1/16, 0/16,  5/16 }}	-- the lever itself.
 	},
-	groups = {oddly_breakable_by_hand=3, dig_by_water=1},
+	groups = {handy=1, dig_by_water=1},
 	is_ground_content = false,
 	description="Lever",
 	on_rightclick = function (pos, node)
@@ -41,6 +41,7 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 		state = mesecon.state.off
 	}},
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 minetest.register_node("mesecons_walllever:wall_lever_on", {
 	drawtype = "nodebox",
@@ -67,7 +68,7 @@ minetest.register_node("mesecons_walllever:wall_lever_on", {
 		fixed = {{ -2/16, -3/16,  8/16, 2/16, 3/16,  4/16 },	-- the base
 			 { -1/16, 0/16, 7/16, 1/16, 8/16,  5/16 }}	-- the lever itself.
 	},
-	groups = {oddly_breakable_by_hand=3, not_in_creative_inventory = 1, dig_by_water=1},
+	groups = {handy=1, not_in_creative_inventory = 1, dig_by_water=1},
 	is_ground_content = false,
 	drop = '"mesecons_walllever:wall_lever_off" 1',
 	description="Lever",
@@ -82,6 +83,7 @@ minetest.register_node("mesecons_walllever:wall_lever_on", {
 		state = mesecon.state.on
 	}},
 	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.5,
 })
 
 minetest.register_craft({
