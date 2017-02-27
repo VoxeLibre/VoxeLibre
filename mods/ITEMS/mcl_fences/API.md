@@ -10,6 +10,8 @@ Adds a fence without crafting recipe. A single node is created.
 * `fence_name`: User-visible name (`description`)
 * `texture`: Texture to apply on the fence (all sides)
 * `groups`: Table of groups to which the fence belongs to
+* `hardness`: Hardness (if unsure, pick the hardness of the material node)
+* `blast_resistance`: Blast resistance (if unsure, pick the blast resistance of the material node)
 * `connects_to`: Table of nodes (itemstrings) to which the fence will connect to. Use `group:<groupname>` for all members of the group `<groupname>`
 * `sounds`: Node sound table for the fence
 
@@ -26,6 +28,8 @@ Adds a fence gate without crafting recipe. This will create 2 nodes.
 * `fence_gate_name`: User-visible name (`description`)
 * `texture`: Texture to apply on the fence gate (all sides)
 * `groups`: Table of groups to which the fence gate belongs to
+* `hardness`: Hardness (if unsure, pick the hardness of the material node)
+* `blast_resistance`: Blast resistance (if unsure, pick the blast resistance of the material node)
 * `sounds`: Node sound table for the fence gate
 * `sound_open`: Sound to play when opening fence gate (optional, default is wooden sound)
 * `sound_close`: Sound to play when closing fence gate (optional, default is wooden sound)
@@ -49,6 +53,8 @@ This will register 3 nodes in total without crafting recipes.
 * `fence_gate_name`: User-visible name (`description`) of the fence gate
 * `texture`: Texture to apply on the fence and fence gate (all sides)
 * `groups`: Table of groups to which the fence and fence gate belong to
+* `hardness`: Hardness (if unsure, pick the hardness of the material node)
+* `blast_resistance`: Blast resistance (if unsure, pick the blast resistance of the material node)
 * `connects_to`: Table of nodes (itemstrings) to which the fence will connect to. Use `group:<groupname>` for all members of the group `<groupname>`
 * `sounds`: Node sound table for the fence and the fence gate
 * `sound_open`: Sound to play when opening fence gate (optional, default is wooden sound)

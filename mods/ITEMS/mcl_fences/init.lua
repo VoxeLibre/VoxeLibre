@@ -20,7 +20,7 @@ local cz2 = {-2/16, -1/2+6/16, 2/16, 2/16, 1, 1/2} --unten(quer) z
 
 mcl_fences = {}
 
-mcl_fences.register_fence = function(id, fence_name, texture, groups, connects_to, sounds)
+mcl_fences.register_fence = function(id, fence_name, texture, groups, hardness, blast_resistance, connects_to, sounds)
 	if groups == nil then groups = {} end
 	groups.fence = 1
 	groups.deco_block = 1
@@ -59,12 +59,14 @@ mcl_fences.register_fence = function(id, fence_name, texture, groups, connects_t
 			connect_right = {cx2},
 		},
 		sounds = sounds,
+		_mcl_blast_resistance = blast_resistance,
+		_mcl_hardness = hardness,
 	})
 
 	return fence_id
 end
 
-mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close)
+mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, hardness, blast_resistance, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close)
 	local meta2
 	local state2 = 0
 
@@ -149,6 +151,8 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 			end),
 		}},
 		sounds = sounds,
+		_mcl_blast_resistance = blast_resistance,
+		_mcl_hardness = hardness,
 	})
 
 	groups.mesecon_effector_on = nil
@@ -205,14 +209,16 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 			punch_gate(pos, node)
 		end,
 		sounds = sounds,
+		_mcl_blast_resistance = blast_resistance,
+		_mcl_hardness = hardness,
 	})
 
 	return gate_id, open_gate_id
 end
 
-mcl_fences.register_fence_and_fence_gate = function(id, fence_name, fence_gate_name, texture, groups, connects_to, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close)
-	local fence_id = mcl_fences.register_fence(id, fence_name, texture, groups, connects_to, sounds)
-	local gate_id, open_gate_id = mcl_fences.register_fence_gate(id, fence_gate_name, texture, groups, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close)
+mcl_fences.register_fence_and_fence_gate = function(id, fence_name, fence_gate_name, texture, groups, hardness, blast_reistance, connects_to, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close)
+	local fence_id = mcl_fences.register_fence(id, fence_name, texture, groups, hardness, blast_resistance, connects_to, sounds)
+	local gate_id, open_gate_id = mcl_fences.register_fence_gate(id, fence_gate_name, texture, groups, hardness, blast_resistance, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close)
 	return fence_id, gate_id, open_gate_id
 end
 
@@ -239,7 +245,7 @@ for w=1, #woods do
 		id = wood[1].."_fence"
 		id_gate = wood[1].."_fence_gate"
 	end
-	mcl_fences.register_fence_and_fence_gate(id, wood[2], wood[3], wood[4], wood_groups, wood_connect, wood_sounds)
+	mcl_fences.register_fence_and_fence_gate(id, wood[2], wood[3], wood[4], wood_groups, 2, 15, wood_connect, wood_sounds)
 
 	minetest.register_craft({
 		output = 'mcl_fences:'..id..' 3',
@@ -259,7 +265,7 @@ end
 
 
 -- Nether Brick Fence (without fence gate!)
-mcl_fences.register_fence("nether_brick_fence", "Nether Brick Fence", "mcl_nether_nether_brick.png", {pickaxey=1, deco_block=1, fence_nether_brick=1}, {"group:fence_nether_brick"}, mcl_sounds.node_sound_stone_defaults())
+mcl_fences.register_fence("nether_brick_fence", "Nether Brick Fence", "mcl_nether_nether_brick.png", {pickaxey=1, deco_block=1, fence_nether_brick=1}, 2, 30, {"group:fence_nether_brick"}, mcl_sounds.node_sound_stone_defaults())
 
 minetest.register_craft({
 	output = 'mcl_fences:nether_brick_fence 6',
