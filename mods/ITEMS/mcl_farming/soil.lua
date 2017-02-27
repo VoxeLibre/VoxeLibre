@@ -11,9 +11,10 @@ minetest.register_node("mcl_farming:soil", {
 			{-0.5, -0.5, -0.5, 0.5, 0.4375, 0.5},
 		}
 	},
-	groups = { crumbly=3, not_in_creative_inventory=1, soil=2, soil_sapling=1 },
+	groups = {handy=1,shovely=1, not_in_creative_inventory=1, soil=2, soil_sapling=1 },
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	_mcl_blast_resistance = 3,
+	_mcl_hardness = 0.9,
 })
 
 minetest.register_node("mcl_farming:soil_wet", {
@@ -28,9 +29,10 @@ minetest.register_node("mcl_farming:soil_wet", {
 			{-0.5, -0.5, -0.5, 0.5, 0.4375, 0.5},
 		}
 	},
-	groups = { crumbly=3, not_in_creative_inventory=1, soil=3, soil_sapling=1 },
+	groups = {handy=1,shovely=1, not_in_creative_inventory=1, soil=3, soil_sapling=1 },
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	_mcl_blast_resistance = 3,
+	_mcl_hardness = 0.9,
 })
 
 minetest.register_abm({

@@ -73,7 +73,7 @@ minetest.register_node("mcl_farming:pumpkin_face", {
 	stack_max = 64,
 	paramtype2 = "facedir",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"},
-	groups = {choppy=2, oddly_breakable_by_hand=2, building_block=1},
+	groups = {handy=1,axey=1, building_block=1},
 	after_dig_node = function(pos, oldnode, oldmetadata, user)
 		local have_change = 0
 		for x=-1,1 do
@@ -97,6 +97,7 @@ minetest.register_node("mcl_farming:pumpkin_face", {
 	end,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 5,
+	_mcl_hardness = 1,
 })
 
 minetest.register_node("mcl_farming:pumpkintige_unconnect", {
@@ -303,9 +304,10 @@ minetest.register_node("mcl_farming:pumpkin_face_light", {
 	-- Real light level: 15 (Minetest caps at 14)
 	light_source = 14,
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face_light.png"},
-	groups = {choppy=2, oddly_breakable_by_hand=2, building_block=1},
+	groups = {handy=1,axey=1, building_block=1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 5,
+	_mcl_hardness = 1,
 })
 
 minetest.register_craft({

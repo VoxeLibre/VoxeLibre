@@ -2,7 +2,7 @@ minetest.register_node("mcl_farming:melon", {
 	description = "Melon",
 	stack_max = 64,
 	tiles = {"farming_melon_top.png", "farming_melon_top.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png"},
-	groups = {choppy=2, oddly_breakable_by_hand=2, building_block=1},
+	groups = {handy=1,axey=1, oddly_breakable_by_hand=2, building_block=1},
 	drop = {
 		max_items = 1,
 		items = {
@@ -36,6 +36,7 @@ minetest.register_node("mcl_farming:melon", {
 	end,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 5,
+	_mcl_hardness = 1,
 })
 
 local stemdrop = {
