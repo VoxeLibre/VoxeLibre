@@ -6,6 +6,27 @@ This document explains all the groups used in this subgame.
 * `not_in_creative_inventory=1`: Item will not be shown in creative inventory
 * `not_in_craft_guide=1`: Item will not be shown as result or fuel item in crafting guide (but still may be shown as ingredient)
 
+### Digging time groups
+
+The basic digging time groups determine by which tools a node can be dug.
+
+* `pickaxey`: Diggable by pickaxe. The rating is for the possible tool materials in which the node will make its useful drop:
+    * `pickaxey=1`: Wood, gold, stone, iron and diamond
+    * `pickaxey=2`: Gold, stone, iron and diamond
+    * `pickaxey=3`: Stone, iron and diamond
+    * `pickaxey=4`: Iron and diamond
+    * `pickaxey=5`: Diamond
+* `axey`: Axe. Rating is same as for `pickaxey`
+* `shovely`: Shovel. Rating is same as for `pickaxey`
+* `swordy=1`: Diggable by sword (any material), and this node is *not* a cobweb
+* `swordy_cobweb=1`: Diggable by sword (any material), and this node is a cobweb
+* `shearsy=1`: Diggable by shears, and this node is *not* wool
+* `shearsy=wool=1`: Diggable by shears, and this node is wool
+* `handy=1`: Breakable by hand and this node gives it useful drop when dug by hand. All nodes which are breakable by pickaxe, axe, shovel, sword or shears are also automatically breakable by hand, but not neccess
+* `creative_breakable=1`: Block is breakable by hand in creative mode. This group is implied if the node belongs to any other digging group
+
+Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times work in Minecraft, as MineClone 2 is based on the same system.
+
 ### Groups for interactions
 
 * `dig_by_water=1`: Blocks with this group will drop when they are near flowing water
