@@ -7,7 +7,7 @@ local zombie = {
 	type = "monster",
 	hp_min = 20,
 	hp_max = 20,
-	collisionbox = {-0.5, -0.01, -0.5, 0.5, 1.99, 0.5},
+	collisionbox = {-0.5, -0.01, -0.5, 0.5, 1.9, 0.5},
 	textures = {
 	{"mobs_zombie.png"}
 	},
