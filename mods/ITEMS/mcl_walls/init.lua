@@ -87,14 +87,14 @@ local full_blocks = {
 * craft_material: Material for the default crafting recipe (optional)
 * tiles: Wall textures table
 * inventory_image: Inventory image (optional)
-* groups: Base group memberships (optional, default is {cracky=3})
+* groups: Base group memberships (optional, default is {pickaxey=1})
 * sounds: Sound table (optional, default is stone)
 ]]
 function mcl_walls.register_wall(nodename, description, craft_material, tiles, inventory_image, groups, sounds)
 
 	local base_groups = groups
 	if not base_groups then
-		base_groups = {cracky=3}
+		base_groups = {pickaxey=1}
 	end
 	base_groups.wall = 1
 
@@ -154,6 +154,7 @@ function mcl_walls.register_wall(nodename, description, craft_material, tiles, i
 			},
 			sounds = sounds,
 			_mcl_blast_resistance = 30,
+			_mcl_hardness = 2,
 		})
 	end
 
@@ -174,6 +175,7 @@ function mcl_walls.register_wall(nodename, description, craft_material, tiles, i
 		},
 		sounds = sounds,
 		_mcl_blast_resistance = 30,
+		_mcl_hardness = 2,
 	})
 
 	minetest.register_node(nodename.."_21", {
@@ -193,6 +195,7 @@ function mcl_walls.register_wall(nodename, description, craft_material, tiles, i
 		},
 		sounds = sounds,
 		_mcl_blast_resistance = 30,
+		_mcl_hardness = 2,
 	})
 
 	-- Inventory item
@@ -217,6 +220,7 @@ function mcl_walls.register_wall(nodename, description, craft_material, tiles, i
 		on_construct = update_wall,
 		sounds = sounds,
 		_mcl_blast_resistance = 30,
+		_mcl_hardness = 2,
 	})
 	if craft_material then
 		minetest.register_craft({
