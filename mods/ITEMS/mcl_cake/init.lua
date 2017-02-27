@@ -5,11 +5,13 @@
 
 local cake_texture = {"cake_top.png","cake_bottom.png","cake_inner.png","cake_side.png","cake_side.png","cake_side.png"}
 local slice_1 = { -7/16, -8/16, -7/16, -5/16, 0/16, 7/16}
-local slice_2 = { -7/16, -8/16, -7/16, -2/16, 0/16, 7/16}
-local slice_3 = { -7/16, -8/16, -7/16, 1/16, 0/16, 7/16}
-local slice_4 = { -7/16, -8/16, -7/16, 3/16, 0/16, 7/16}
-local slice_5 = { -7/16, -8/16, -7/16, 5/16, 0/16, 7/16}
-local slice_6 = { -7/16, -8/16, -7/16, 7/16, 0/16, 7/16}
+local slice_2 = { -7/16, -8/16, -7/16, -3/16, 0/16, 7/16}
+local slice_3 = { -7/16, -8/16, -7/16, -1/16, 0/16, 7/16}
+local slice_4 = { -7/16, -8/16, -7/16, 1/16, 0/16, 7/16}
+local slice_5 = { -7/16, -8/16, -7/16, 3/16, 0/16, 7/16}
+local slice_6 = { -7/16, -8/16, -7/16, 5/16, 0/16, 7/16}
+
+local full_cake = { -7/16, -8/16, -7/16, 7/16, 0/16, 7/16}
 
 minetest.register_craft({
 	output = "mcl_cake:cake",
@@ -35,18 +37,18 @@ minetest.register_node("mcl_cake:cake", {
 	drawtype = "nodebox",
 	selection_box = {
 		type = "fixed",
-		fixed = slice_6
+		fixed = full_cake
 	},
 	node_box = {
 		type = "fixed",
-			fixed = slice_6
-		},
+		fixed = full_cake
+	},
 	stack_max = 1,
 	groups = {handy=1, food=2,attached_node=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
-		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_5"), ItemStack("mcl_cake:cake"), clicker, {type="nothing"})
-		minetest.add_node(pos,{type="node",name="mcl_cake:cake_5",param2=0})
+		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_6"), ItemStack("mcl_cake:cake"), clicker, {type="nothing"})
+		minetest.add_node(pos,{type="node",name="mcl_cake:cake_6",param2=0})
 	end,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 
@@ -54,131 +56,51 @@ minetest.register_node("mcl_cake:cake", {
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 5,
 })
-minetest.register_node("mcl_cake:cake_5", {
-	description = "Cake (5 Slices Left)",
-	tiles = cake_texture,
-	paramtype = "light",
-	is_ground_content = false,
-	drawtype = "nodebox",
-	selection_box = {
-		type = "fixed",
-		fixed = slice_5
-	},
-	node_box = {
-		type = "fixed",
-			fixed = slice_5
-		},
-	groups = {handy=1, food=2,attached_node=1,not_in_creative_inventory=1},
-	drop = '',
-	on_rightclick = function(pos, node, clicker, itemstack)
-		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_4"), ItemStack("mcl_cake:cake_5"), clicker, {type="nothing"})
-		minetest.add_node(pos,{type="node",name="mcl_cake:cake_4",param2=0})
-	end,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
 
-	_food_particles = false,
-})
-minetest.register_node("mcl_cake:cake_4", {
-	description = "Cake (4 Slices Left)",
-	tiles = cake_texture,
-	paramtype = "light",
-	is_ground_content = false,
-	drawtype = "nodebox",
-	selection_box = {
-		type = "fixed",
-		fixed = slice_4
-	},
-	node_box = {
-		type = "fixed",
-			fixed = slice_4
-		},
-	groups = {handy=1, food=2,attached_node=1,not_in_creative_inventory=1},
-	drop = '',
-	on_rightclick = function(pos, node, clicker, itemstack)
-		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_3"), ItemStack("mcl_cake:cake_4"), clicker, {type="nothing"})
-		minetest.add_node(pos,{type="node",name="mcl_cake:cake_3",param2=0})
-	end,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
+local register_slice = function(level, nodebox, desc)
+	local this = "mcl_cake:cake_"..level
+	local after_eat = "mcl_cake:cake_"..(level-1)
+	local on_rightclick
+	if level > 1 then
+		on_rightclick = function(pos, node, clicker, itemstack)
+			minetest.do_item_eat(2, ItemStack(after_eat), ItemStack(this), clicker, {type="nothing"})
+			minetest.add_node(pos,{type="node",name=after_eat,param2=0})
+		end
+	else
+		on_rightclick = function(pos, node, clicker, itemstack)
+			minetest.do_item_eat(2, ItemStack("mcl:cake:cake 0"), ItemStack("mcl_cake:cake_1"), clicker, {type="nothing"})
+			minetest.remove_node(pos)
+		end
+	end
 
-	_food_particles = false,
-	_mcl_blast_resistance = 2.5,
-	_mcl_hardness = 5,
-})
-minetest.register_node("mcl_cake:cake_3", {
-	description = "Cake (3 Slices Left)",
-	tiles = cake_texture,
-	paramtype = "light",
-	is_ground_content = false,
-	drawtype = "nodebox",
-	selection_box = {
-		type = "fixed",
-		fixed = slice_3
-	},
-	node_box = {
-		type = "fixed",
-			fixed = slice_3
+	minetest.register_node(this, {
+		description = desc,
+		tiles = cake_texture,
+		paramtype = "light",
+		is_ground_content = false,
+		drawtype = "nodebox",
+		selection_box = {
+			type = "fixed",
+			fixed = nodebox,
 		},
-	groups = {handy=1, food=2,attached_node=1,not_in_creative_inventory=1},
-	drop = '',
-	on_rightclick = function(pos, node, clicker, itemstack)
-		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_2"), ItemStack("mcl_cake:cake_3"), clicker, {type="nothing"})
-		minetest.add_node(pos,{type="node",name="mcl_cake:cake_2",param2=0})
-	end,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
+		node_box = {
+			type = "fixed",
+			fixed = nodebox,
+			},
+		groups = {handy=1, food=2,attached_node=1,not_in_creative_inventory=1},
+		drop = '',
+		on_rightclick = on_rightclick,
+		sounds = mcl_sounds.node_sound_leaves_defaults(),
 
-	_food_particles = false,
-	_mcl_blast_resistance = 2.5,
-	_mcl_hardness = 5,
-})
-minetest.register_node("mcl_cake:cake_2", {
-	description = "Cake (2 Slices Left)",
-	tiles = cake_texture,
-	paramtype = "light",
-	is_ground_content = false,
-	drawtype = "nodebox",
-	selection_box = {
-		type = "fixed",
-		fixed = slice_2
-	},
-	node_box = {
-		type = "fixed",
-			fixed = slice_2
-		},
-	groups = {handy=1, food=2,attached_node=1,not_in_creative_inventory=1},
-	drop = '',
-	on_rightclick = function(pos, node, clicker, itemstack)
-		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_1"), ItemStack("mcl_cake:cake_2"), clicker, {type="nothing"})
-		minetest.add_node(pos,{type="node",name="mcl_cake:cake_1",param2=0})
-	end,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
+		_food_particles = false,
+		_mcl_blast_resistance = 2.5,
+		_mcl_hardness = 5,
+	})
+end
 
-	_food_particles = false,
-	_mcl_blast_resistance = 2.5,
-	_mcl_hardness = 5,
-})
-minetest.register_node("mcl_cake:cake_1", {
-	description = "Cake (1 Slice Left)",
-	tiles = cake_texture,
-	paramtype = "light",
-	is_ground_content = false,
-	drawtype = "nodebox",
-	selection_box = {
-		type = "fixed",
-		fixed = slice_1
-	},
-	node_box = {
-		type = "fixed",
-			fixed = slice_1
-		},
-	groups = {handy=1, food=2,attached_node=1,not_in_creative_inventory=1},
-	drop = '',
-	on_rightclick = function(pos, node, clicker, itemstack)
-		minetest.do_item_eat(2, ItemStack("mcl:cake:cake 0"), ItemStack("mcl_cake:cake_1"), clicker, {type="nothing"})
-		minetest.remove_node(pos)
-	end,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-
-	_food_particles = false,
-	_mcl_blast_resistance = 2.5,
-	_mcl_hardness = 5,
-})
+register_slice(6, slice_6, "Cake (6 Slices Left")
+register_slice(5, slice_5, "Cake (5 Slices Left")
+register_slice(4, slice_4, "Cake (4 Slices Left")
+register_slice(3, slice_3, "Cake (3 Slices Left")
+register_slice(2, slice_2, "Cake (2 Slices Left")
+register_slice(1, slice_1, "Cake (1 Slice Left")
