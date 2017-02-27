@@ -231,7 +231,15 @@ end
 -- Makes stair and slab out of a source node
 function stairs.register_stair_and_slab_simple(subname, sourcenode, desc_stair, desc_slab)
 	local def = minetest.registered_nodes[sourcenode]
-	stairs.register_stair_and_slab(subname, sourcenode, def.groups, def.tiles, desc_stair, desc_slab, def.sounds, def._mcl_hardness)
+	local groups = {}
+	-- Only allow a strict set of groups to be added to stairs and slabs for more predictable results
+	local allowed_groups = { "dig_immediate", "handy", "pickaxey", "axey", "shovely", "shearsy", "shearsy_wool", "swordy", "swordy_wool" }
+	for a=1, #allowed_groups do
+		if def.groups[allowed_groups[a]] then
+			groups[allowed_groups[a]] = def.groups[allowed_groups[a]]
+		end
+	end
+	stairs.register_stair_and_slab(subname, sourcenode, groups, def.tiles, desc_stair, desc_slab, def.sounds, def._mcl_hardness)
 end
 
 -- Register all Minecraft stairs and slabs
