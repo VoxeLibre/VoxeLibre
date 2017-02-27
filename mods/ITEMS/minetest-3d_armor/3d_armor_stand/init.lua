@@ -68,6 +68,7 @@ local function update_entity(pos)
 	end
 end
 
+-- FIXME: The armor stand should be an entity
 minetest.register_node("3d_armor_stand:armor_stand", {
 	description = "Armor Stand",
 	drawtype = "mesh",
@@ -82,7 +83,9 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 		type = "fixed",
 		fixed = {-0.5,-0.5,-0.5, 0.5,1.4,0.5}
 	},
-	groups = {choppy=2, oddly_breakable_by_hand=2, deco_block=1},
+	-- FIXME: This should be breakable by 2 quick punches
+	groups = {handy=1, deco_block=1},
+	_mcl_hardness = 2,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)

@@ -11,7 +11,7 @@ minetest.register_node("mobs:spawner", {
 	paramtype = "light",
 	walkable = true,
 	description = S("Monster Spawner"),
-	groups = {cracky = 1, not_in_creative_inventory = 1},
+	groups = {pickaxey=1, not_in_creative_inventory = 1},
 	drop = "",
 
 	on_construct = function(pos)
@@ -72,6 +72,7 @@ minetest.register_node("mobs:spawner", {
 	end,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 25,
+	_mcl_hardness = 5,
 })
 
 -- spawner abm

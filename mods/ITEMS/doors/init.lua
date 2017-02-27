@@ -316,7 +316,7 @@ end
 doors:register_door("doors:door_wood", {
 	description = "Oak Door",
 	inventory_image = "door_wood.png",
-	groups = {handy=1,axey=1,door=1},
+	groups = {handy=1,axey=1, door=1},
 	_mcl_hardness = 3,
 	tiles_bottom = {"door_wood_b.png", "door_brown.png"},
 	tiles_top = {"door_wood_a.png", "door_brown.png"},
@@ -336,7 +336,7 @@ minetest.register_craft({
 doors:register_door("doors:door_acacia", {
 	description = "Acacia Door",
 	inventory_image = "door_acacia.png",
-	groups = {handy=1,axey=1,door=1},
+	groups = {handy=1,axey=1, door=1},
 	_mcl_hardness = 3,
 	tiles_bottom = {"door_acacia_b.png", "door_brown.png"},
 	tiles_top = {"door_acacia_a.png", "door_brown.png"},
@@ -356,7 +356,7 @@ minetest.register_craft({
 doors:register_door("doors:door_birch", {
 	description = "Birch Door",
 	inventory_image = "door_birch.png",
-	groups = {handy=1,axey=1,door=1},
+	groups = {handy=1,axey=1, door=1},
 	_mcl_hardness = 3,
 	tiles_bottom = {"door_birch_b.png", "door_brown.png"},
 	tiles_top = {"door_birch_a.png", "door_brown.png"},
@@ -376,7 +376,7 @@ minetest.register_craft({
 doors:register_door("doors:door_dark_oak", {
 	description = "Dark Oak Door",
 	inventory_image = "door_dark_oak.png",
-	groups = {handy=1,axey=1,door=1},
+	groups = {handy=1,axey=1, door=1},
 	_mcl_hardness = 3,
 	tiles_bottom = {"door_dark_oak_b.png", "door_brown.png"},
 	tiles_top = {"door_dark_oak_a.png", "door_brown.png"},
@@ -396,7 +396,7 @@ minetest.register_craft({
 doors:register_door("doors:door_jungle", {
 	description = "Jungle Door",
 	inventory_image = "door_jungle.png",
-	groups = {handy=1,axey=1,door=1},
+	groups = {handy=1,axey=1, door=1},
 	_mcl_hardness = 3,
 	tiles_bottom = {"door_jungle_b.png", "door_brown.png"},
 	tiles_top = {"door_jungle_a.png", "door_brown.png"},
@@ -416,7 +416,7 @@ minetest.register_craft({
 doors:register_door("doors:door_spruce", {
 	description = "Spruce Door",
 	inventory_image = "door_spruce.png",
-	groups = {handy=1,axey=1,door=1},
+	groups = {handy=1,axey=1, door=1},
 	_mcl_hardness = 3,
 	tiles_bottom = {"door_spruce_b.png", "door_brown.png"},
 	tiles_top = {"door_spruce_a.png", "door_brown.png"},
@@ -467,7 +467,7 @@ minetest.register_craft({
 doors:register_door("doors:door_iron", {
 	description = "Iron Door",
 	inventory_image = "door_steel.png",
-	groups = {pickaxey=1,door=1,mesecon_effector_on=1},
+	groups = {pickaxey=1, door=1,mesecon_effector_on=1},
 	_mcl_hardness = 5,
 	tiles_bottom = {"door_steel_b.png", "door_grey.png"},
 	tiles_top = {"door_steel_a.png", "door_grey.png"},
@@ -596,7 +596,7 @@ doors:register_trapdoor("doors:trapdoor", {
 	description = "Wooden Trapdoor",
 	tiles = {"door_trapdoor.png"},
 	wield_image = "door_trapdoor.png",
-	groups = {handy=1,axey=1,oddly_breakable_by_hand=2,mesecon_effector_on=1,door=2},
+	groups = {handy=1,axey=1, mesecon_effector_on=1,door=2},
 	_mcl_hardness = 3,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
@@ -619,7 +619,7 @@ doors:register_trapdoor("doors:iron_trapdoor", {
 	description = "Iron Trapdoor",
 	tiles = {"iron_trapdoor.png"},
 	wield_image = "iron_trapdoor.png",
-	groups = {pickaxey=1,mesecon_effector_on=1,door=2},
+	groups = {pickaxey=1, mesecon_effector_on=1,door=2},
 	_mcl_hardness = 5,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	sound_open = "doors_steel_door_open",

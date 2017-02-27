@@ -177,7 +177,7 @@ end
 minetest.register_node("mesecons_commandblock:commandblock_off", {
 	description = "Command Block",
 	tiles = {{name="jeija_commandblock_off.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=2}}},
-	groups = {mesecon_effector_off=1, not_in_creative_inventory=1, oddly_breakable_by_hand=5},
+	groups = {creative_breakable=1, mesecon_effector_off=1, not_in_creative_inventory=1},
 	drop = "",
 	on_blast = function() end,
 	on_construct = construct,
@@ -194,7 +194,7 @@ minetest.register_node("mesecons_commandblock:commandblock_off", {
 
 minetest.register_node("mesecons_commandblock:commandblock_on", {
 	tiles = {{name="jeija_commandblock_off.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=2}}},
-	groups = {mesecon_effector_on=1, not_in_creative_inventory=1, oddly_breakable_by_hand=5},
+	groups = {creative_breakable=1, mesecon_effector_on=1, not_in_creative_inventory=1},
 	drop = "",
 	on_blast = function() end,
 	on_construct = construct,

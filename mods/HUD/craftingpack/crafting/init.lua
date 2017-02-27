@@ -155,11 +155,13 @@ minetest.register_node("crafting:workbench", {
 		"crafting_workbench_side.png", "crafting_workbench_front.png", "crafting_workbench_front.png"},
 	paramtype2 = "facedir",
 	paramtype = "light",
-	groups = {choppy=2,oddly_breakable_by_hand=2,deco_block=1},
+	groups = {handy=1,axey=1, deco_block=1},
 	on_rightclick = function(pos, node, clicker, itemstack)
 		set_workbench(clicker)
 	end,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	_mcl_blast_resistance = 12.5,
+	_mcl_hardness = 2.5,
 })
 
 minetest.register_craft({

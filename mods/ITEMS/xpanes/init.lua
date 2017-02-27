@@ -119,6 +119,8 @@ function xpanes.register_pane(name, def)
 			fixed = {{-1/2, -1/2, -1/32, 1/2, 1/2, 1/32}},
 		},
 		connect_sides = { "left", "right" },
+		_mcl_blast_resistance = def._mcl_blast_resistance,
+		_mcl_hardness = def._mcl_hardness,
 	})
 
 	local groups = table.copy(def.groups)
@@ -145,6 +147,8 @@ function xpanes.register_pane(name, def)
 		},
 		connects_to = {"group:pane", "group:stone", "group:glass", "group:wood", "group:tree"},
 		drop = drop,
+		_mcl_blast_resistance = def._mcl_blast_resistance,
+		_mcl_hardness = def._mcl_hardness,
 	})
 
 	minetest.register_craft({
@@ -161,12 +165,14 @@ local pane = function(description, node, append)
 		inventory_image = "xpanes_pane_glass"..append..".png",
 		wield_image = "xpanes_pane_glass"..append..".png",
 		sounds = mcl_sounds.node_sound_glass_defaults(),
-		groups = {snappy=2, cracky=3, oddly_breakable_by_hand=3},
+		groups = {handy=1},
 		recipe = {
 			{node, node, node},
 			{node, node, node},
 		},
 		drop = "",
+		_mcl_blast_resistance = 1.5,
+		_mcl_hardness = 0.3,
 	})
 end
 
@@ -176,12 +182,14 @@ xpanes.register_pane("bar", {
 	textures = {"xpanes_pane_iron.png","xpanes_pane_half_iron.png","xpanes_top_iron.png"},
 	inventory_image = "xpanes_pane_iron.png",
 	wield_image = "xpanes_pane_iron.png",
-	groups = {cracky=2},
+	groups = {pickaxey=1},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	recipe = {
 		{"mcl_core:iron_ingot", "mcl_core:iron_ingot", "mcl_core:iron_ingot"},
 		{"mcl_core:iron_ingot", "mcl_core:iron_ingot", "mcl_core:iron_ingot"},
-	}
+	},
+	_mcl_blast_resistance = 30,
+	_mcl_hardness = 5,
 })
 
 -- Glass
