@@ -38,8 +38,9 @@ for _, row in ipairs(wool.dyes) do
 			stack_max = 64,
 			is_ground_content = false,
 			tiles = {"wool_"..texture..".png"},
-			groups = {snappy=2,choppy=2,oddly_breakable_by_hand=3,flammable=1,wool=1,building_block=1},
+			groups = {handy=1,shearsy=1, flammable=1,wool=1,building_block=1},
 			sounds = mcl_sounds.node_sound_defaults(),
+			_mcl_hardness = 0.8,
 			_mcl_blast_resistance = 4,
 		})
 		minetest.register_node("mcl_wool:"..name.."_carpet", {
@@ -48,7 +49,7 @@ for _, row in ipairs(wool.dyes) do
 			is_ground_content = false,
 			tiles = {"wool_"..texture..".png"},
 			wield_image = "wool_"..name..".png",
-			groups = {snappy=2,choppy=2,oddly_breakable_by_hand=3,flammable=1,carpet=1,deco_block=1},
+			groups = {handy=1, flammable=1,carpet=1,deco_block=1},
 			sounds = mcl_sounds.node_sound_defaults(),
 			paramtype = "light",
 			stack_max = 64,
@@ -59,6 +60,7 @@ for _, row in ipairs(wool.dyes) do
 					{-8/16, -8/16, -8/16, 8/16, -7/16, 8/16},
 				},
 			},
+			_mcl_hardness = 0.1,
 			_mcl_blast_resistance = 0.5,
 		})
 	if craft_color_group then
