@@ -3,34 +3,25 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
-
--- This is a trick to force spawn probabilities
--- FIXME: Remove this hack, improve the API instead
-local texture_hack = {}
-for i=1,81836 do
-	-- 81.836%
-	table.insert(texture_hack, {"mobs_sheep.png"})
-end
-for i=1,5000 do
-	-- 5%
-	table.insert(texture_hack, {"mobs_sheep_grey.png"})
-end
-for i=1,5000 do
-	-- 5%
-	table.insert(texture_hack, {"mobs_sheep_dark_grey.png"})
-end
-for i=1,5000 do
-	-- 5%
-	table.insert(texture_hack, {"mobs_sheep_black.png"})
-end
-for i=1,3000 do
-	-- 3%
-	table.insert(texture_hack, {"mobs_sheep_brown.png"})
-end
-for i=1,164 do
-	-- 0.164%
-	table.insert(texture_hack, {"mobs_sheep_pink.png"})
-end
+local colors = {
+	-- dyecolor = { woolcolor, textures }
+	white = { "white", { "mobs_sheep.png" } },
+	brown = { "brown", { "mobs_sheep_brown.png" } },
+	grey = { "silver", { "mobs_sheep_grey.png" } },
+	dark_grey = { "grey", { "mobs_sheep_dark_grey.png" } },
+	blue = { "blue", { "mobs_sheep_blue.png" } },
+	lightblue = { "light_blue", { "mobs_sheep_lightblue.png" } },
+	dark_green = { "green", { "mobs_sheep_dark_green.png" } },
+	green = { "lime", { "mobs_sheep_green.png" } },
+	violet = { "purple", { "mobs_sheep_violet.png" } },
+	pink = { "pink", { "mobs_sheep_pink.png" } },
+	yellow = { "yellow", { "mobs_sheep_yellow.png" } },
+	orange = { "orange", { "mobs_sheep_orange.png" } },
+	red = { "red", { "mobs_sheep_red.png" } },
+	cyan  = { "cyan", { "mobs_sheep_cyan.png" } },
+	magenta = { "magenta", { "mobs_sheep_magenta.png" } },
+	black = { "black", { "mobs_sheep_black.png" } },
+}
 
 -- Sheep
 mobs:register_mob("mobs_mc:sheep", {
@@ -43,7 +34,7 @@ mobs:register_mob("mobs_mc:sheep", {
 	visual = "mesh",
 	visual_size = {x=0.6, y=0.6},
 	mesh = "mobs_sheep.x",
-	textures = texture_hack,
+	textures = {{"mobs_sheep.png"}},
 	makes_footstep_sound = true,
 	walk_velocity = 1,
 	armor = 100,
@@ -88,7 +79,51 @@ mobs:register_mob("mobs_mc:sheep", {
 	replace_rate = 10,
 	replace_what = {"mcl_core:dirt_with_grass", "mcl_core:tallgrass"},
 	replace_with = "air",
-	
+	do_custom = function(self)
+		if not self.initial_color_set then
+			local r = math.random(0,100000)
+			local textures
+			if r <= 81836 then
+				-- 81.836%
+				self.color = colors["white"][1]
+				textures = colors["white"][2]
+			elseif r <= 81836 + 5000 then
+				-- 5%
+				self.color = colors["grey"][1]
+				textures = colors["grey"][2]
+			elseif r <= 81836 + 5000 + 5000 then
+				-- 5%
+				self.color = colors["dark_grey"][1]
+				textures = colors["dark_grey"][2]
+			elseif r <= 81836 + 5000 + 5000 + 5000 then
+				-- 5%
+				self.color = colors["black"][1]
+				textures = colors["black"][2]
+			elseif r <= 81836 + 5000 + 5000 + 5000 + 3000 then
+				-- 3%
+				self.color = colors["brown"][1]
+				textures = colors["brown"][2]
+			else
+				-- FIXME: Pink sheem seem to spawn never
+				-- 0.164%
+				self.color = colors["pink"][1]
+				textures = colors["pink"][2]
+			end
+			self.textures = { textures },
+			self.object:set_properties({ textures = textures })
+			self.drops = {
+				{name = "mcl_mobitems:mutton",
+				chance = 1,
+				min = 1,
+				max = 2,},
+				{name = "mcl_wool:"..self.color,
+				chance = 1,
+				min = 1,
+				max = 1,},
+			}
+			self.initial_color_set = true
+		end
+	end,
 	on_rightclick = function(self, clicker)
 
 		if mobs:feed_tame(self, clicker, 1, true, true) then
@@ -96,7 +131,7 @@ mobs:register_mob("mobs_mc:sheep", {
 		end
 
 		local item = clicker:get_wielded_item()
-		if item:get_name() == "mcl_core:shears" and not self.gotten and not self.child then
+		if item:get_name() == "mcl_tools:shears" and not self.gotten and not self.child then
 			self.gotten = true
 			local pos = self.object:getpos()
 			minetest.sound_play("shears", {pos = pos})
@@ -120,9 +155,9 @@ print(item:get_name(), minetest.get_item_group(item:get_name(), "dye"))
 			local pname = name:split(":")[2]
 
 			self.object:set_properties({
-				textures = {"mobs_sheep_"..pname..".png"},
+				textures = colors[pname][2],
 			})
-			self.color = pname
+			self.color = colors[pname][1]
 			self.drops = {
 				{name = "mcl_mobitems:mutton",
 				chance = 1,
