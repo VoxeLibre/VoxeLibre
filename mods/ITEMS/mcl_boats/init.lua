@@ -50,8 +50,8 @@ function boat.on_activate(self, staticdata, dtime_s)
 	end
 end
 
-function boat.get_staticdata()
-	return tostring(v)
+function boat.get_staticdata(self)
+	return tostring(self._v)
 end
 
 function boat.on_punch(self, puncher, time_from_last_punch, tool_capabilities, direction)
