@@ -59,13 +59,13 @@ function boat.on_punch(self, puncher, time_from_last_punch, tool_capabilities, d
 	 if self._driver then
 		self._driver:set_detach()
 		self._driver = nil
-		if not minetest.setting_getbool("creative_mode") then
+		if puncher and puncher:is_player() and (not minetest.setting_getbool("creative_mode")) then
 			puncher:get_inventory():add_item("main", "mcl_boats:boat")
 		end
 		self.object:remove()
 	else
 
-		if not minetest.setting_getbool("creative_mode") then
+		if puncher and puncher:is_player() and (not minetest.setting_getbool("creative_mode")) then
 			puncher:get_inventory():add_item("main", "mcl_boats:boat")
 		end
 		self.object:remove()
