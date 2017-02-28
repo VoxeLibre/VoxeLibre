@@ -190,14 +190,14 @@ end
 -- Apply simple poison effect as long there are no real status effect
 -- TODO: Remove this when status effects are in place
 if minetest.get_modpath("mcl_farming") then
-	mcl_hunger.register_food("mcl_farming:potato_item_poison", 2, "", 3)
+	mcl_hunger.register_food("mcl_farming:potato_item_poison", 1, "", 3)
 end
 if minetest.get_modpath("mcl_mobitems") then
-	mcl_hunger.register_food("mcl_mobitems:rotten_flesh", 4, "", 8)
-	mcl_hunger.register_food("mcl_mobitems:spider_eye", 2, "", 4)
+	mcl_hunger.register_food("mcl_mobitems:rotten_flesh", 2, "", 8)
+	mcl_hunger.register_food("mcl_mobitems:spider_eye", 0, "", 4)
 end
 if minetest.get_modpath("mcl_fishing") then
-	mcl_hunger.register_food("mcl_fishing:pufferfish_raw", 1, "", 60)
+	mcl_hunger.register_food("mcl_fishing:pufferfish_raw", 0, "", 60)
 end
 
 minetest.register_on_placenode(mcl_hunger.handle_node_actions)
