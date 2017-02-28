@@ -4,10 +4,9 @@ minetest.register_craftitem("mcl_mobitems:rotten_flesh", {
 	description = "Rotten Flesh",
 	inventory_image = "mcl_mobitems_rotten_flesh.png",
 	wield_image = "mcl_mobitems_rotten_flesh.png",
-	-- TODO: Raise to 4
-	on_place = minetest.item_eat(1),
-	on_secondary_use = minetest.item_eat(1),
-	groups = { food = 2, eatable = 1 },
+	on_place = minetest.item_eat(4),
+	on_secondary_use = minetest.item_eat(4),
+	groups = { food = 2, eatable = 4 },
 	stack_max = 64,
 })
 

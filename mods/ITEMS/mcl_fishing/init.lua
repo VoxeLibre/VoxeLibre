@@ -187,6 +187,7 @@ minetest.register_craftitem("mcl_fishing:clownfish_raw", {
 })
 
 -- Pufferfish
+-- TODO: Add status effect
 minetest.register_craftitem("mcl_fishing:pufferfish_raw", {
 	description = "Pufferfish",
 	inventory_image = "mcl_fishing_pufferfish_raw.png",

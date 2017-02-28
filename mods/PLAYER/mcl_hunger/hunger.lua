@@ -187,5 +187,18 @@ function mcl_hunger.handle_node_actions(pos, oldnode, player, ext)
 	mcl_hunger.exhaustion[name] = exhaus
 end
 
+-- Apply simple poison effect as long there are no real status effect
+-- TODO: Remove this when status effects are in place
+if minetest.get_modpath("mcl_farming") then
+	mcl_hunger.register_food("mcl_farming:potato_item_poison", 2, "", 3)
+end
+if minetest.get_modpath("mcl_mobitems") then
+	mcl_hunger.register_food("mcl_mobitems:rotten_flesh", 4, "", 8)
+	mcl_hunger.register_food("mcl_mobitems:spider_eye", 2, "", 4)
+end
+if minetest.get_modpath("mcl_fishing") then
+	mcl_hunger.register_food("mcl_fishing:pufferfish_raw", 1, "", 60)
+end
+
 minetest.register_on_placenode(mcl_hunger.handle_node_actions)
 minetest.register_on_dignode(mcl_hunger.handle_node_actions)

@@ -83,9 +83,11 @@ minetest.register_craftitem("mcl_farming:potato_item_poison", {
 	description = "Poisonous Potato",
 	stack_max = 64,
 	inventory_image = "farming_potato_poison.png",
-	on_place = minetest.item_eat(2),
-	on_secondary_use = minetest.item_eat(2),
-	groups = { food = 2, eatable = 2 },
+	-- TODO: Cause status effects
+	-- TODO: Raise to 2
+	on_place = minetest.item_eat(0),
+	on_secondary_use = minetest.item_eat(0),
+	groups = { food = 2, eatable = 0 },
 })
 
 minetest.register_craft({

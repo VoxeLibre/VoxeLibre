@@ -24,12 +24,14 @@ local wip_items = {
 	"mcl_maps:filled_map",
 	"mcl_maps:empty_map",
 	"mcl_mobitems:rotten_flesh",
+	"mcl_mobitems:spider_eye",
 	"mcl_minecarts:golden_rail",
 	"mcl_sponges:sponge",
 	"mcl_farming:mushroom_red",
 	"mcl_farming:mushroom_brown",
 	"gemalde:node_1",
 	"mcl_observers:observer",
+	"mcl_farming:potato_item_poison",
 }
 
 for i=1,#wip_items do
