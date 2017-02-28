@@ -336,19 +336,6 @@ stairs.register_stair_and_slab_simple("cobble", "mcl_core:cobble", "Cobblestone 
 
 stairs.register_stair_and_slab_simple("brick_block", "mcl_core:brick_block", "Brick Stairs", "Brick Slab")
 
-stairs.register_stair("sprucewood", "mcl_core:sprucewood",
-		{handy=1,axey=1, flammable=3,wood_stairs=1},
-		{"default_sprucewood.png"},
-		"Spruce Wood Stairs",
-		mcl_sounds.node_sound_wood_defaults(),
-		2)
-stairs.register_slab("sprucewood", "mcl_core:sprucewood",
-		{handy=1,axey=1, flammable=3,wood_slab=1},
-		{"default_sprucewood.png"},
-		"Spruce Wood Slab",
-		mcl_sounds.node_sound_wood_defaults(),
-		2)
-
 
 stairs.register_stair("sandstone", "group:sandstone",
 		{pickaxey=1},
