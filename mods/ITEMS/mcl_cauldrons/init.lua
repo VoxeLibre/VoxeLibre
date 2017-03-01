@@ -78,6 +78,7 @@ local register_filled_cauldron = function(water_level, description)
 			"mcl_cauldrons_cauldron_side.png"
 		},
 		sounds = mcl_sounds.node_sound_metal_defaults(),
+		drop = "mcl_cauldrons:cauldron",
 		_mcl_hardness = 2,
 		_mcl_blast_resistance = 10,
 	})
