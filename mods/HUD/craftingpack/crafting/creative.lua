@@ -265,7 +265,7 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 			"item_image_button[2.415,8.37;1,1;mcl_core:sword_gold;combat;]"..	--combat
 			tab(name, "combat") ..
 			"tooltip[combat;Combat]"..
-			"item_image_button[3.693,8.37;1,1;mcl_potions:glass_bottle;brew;]"..	--brewing
+			"item_image_button[3.693,8.37;1,1;mcl_potions:potion_water;brew;]"..	--brewing
 			tab(name, "brew") ..
 			"tooltip[brew;Brewing]"..
 			"item_image_button[4.938,8.37;1,1;mcl_core:stick;matr;]"..	--materials
