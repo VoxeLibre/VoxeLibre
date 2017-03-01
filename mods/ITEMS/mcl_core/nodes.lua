@@ -1159,8 +1159,38 @@ minetest.register_node("mcl_core:ladder", {
 		--wall_side = = <default>
 	},
 	stack_max = 64,
-	groups = {handy=1,axey=1, deco_block=1},
+	groups = {handy=1,axey=1, attached_node=1, deco_block=1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	node_placement_prediction = "",
+	-- Restrict placement of ladders
+	on_place = function(itemstack, placer, pointed_thing)
+		if pointed_thing.type ~= "node" then
+			-- no interaction possible with entities
+			return itemstack
+		end
+
+		local under = pointed_thing.under
+		local node = minetest.get_node(under)
+
+		local def = minetest.registered_nodes[node.name]
+		if def and def.on_rightclick then
+			return def.on_rightclick(under, node, placer, itemstack,
+				pointed_thing) or itemstack, false
+		end
+		local above = pointed_thing.above
+
+		-- Ladders may not be placed on ceiling or floor
+		if under.y ~= above.y then
+			return itemstack
+		end
+		local success = minetest.item_place_node(itemstack, placer, pointed_thing)
+
+		if success and not minetest.setting_getbool("creative_mode") then
+			itemstack:take_item()
+		end
+		return itemstack
+	end,
+
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
 })
