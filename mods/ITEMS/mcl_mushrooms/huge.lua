@@ -73,3 +73,9 @@ end
 register_mushroom("red", red, "Huge Red Mushroom Cap Top", "Huge Red Mushroom Cap Side", "Huge Red Mushroom Cap Corner", "Huge Red Mushroom Stem", "Huge Red Mushroom Pores", "Huge Red Mushroom All-Faces Cap", "Huge Red Mushroom All-Faces Stem")
 
 register_mushroom("brown", brown, "Huge Brown Mushroom Cap Top", "Huge Brown Mushroom Cap Side", "Huge Brown Mushroom Cap Corner", "Huge Brown Mushroom Stem", "Huge Brown Mushroom Pores", "Huge Brown Mushroom All-Faces Cap", "Huge Brown Mushroom All-Faces Stem")
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "group:huge_mushroom",
+	burntime = 15,
+})
