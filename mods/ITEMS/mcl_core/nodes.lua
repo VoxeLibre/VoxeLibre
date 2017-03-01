@@ -1150,13 +1150,15 @@ minetest.register_node("mcl_core:ladder", {
 	wield_image = "default_ladder.png",
 	paramtype = "light",
 	paramtype2 = "wallmounted",
-	walkable = false,
+	walkable = true,
 	climbable = true,
+	node_box = {
+		type = "wallmounted",
+		wall_side = { -0.5, -0.5, -0.5, -7/16, 0.5, 0.5 },
+	},
 	selection_box = {
 		type = "wallmounted",
-		--wall_top = = <default>
-		--wall_bottom = = <default>
-		--wall_side = = <default>
+		wall_side = { -0.5, -0.5, -0.5, -7/16, 0.5, 0.5 },
 	},
 	stack_max = 64,
 	groups = {handy=1,axey=1, attached_node=1, deco_block=1},
