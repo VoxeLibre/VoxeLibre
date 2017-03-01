@@ -1176,8 +1176,10 @@ minetest.register_node("mcl_core:ladder", {
 		local node = minetest.get_node(under)
 		local def = minetest.registered_nodes[node.name]
 		local groups = def.groups
+
+		-- Don't allow to place the ladder at particular nodes
 		if (groups and (groups.glass or groups.leaves or groups.slab)) or
-				node.name == "mcl_core:ice" or node.name == "mcl_nether:glowstone" or node.name == "mcl_ocean:sea_lantern" then
+				node.name == "mcl_core:ladder" or node.name == "mcl_core:ice" or node.name == "mcl_nether:glowstone" or node.name == "mcl_ocean:sea_lantern" then
 			return itemstack
 		end
 
