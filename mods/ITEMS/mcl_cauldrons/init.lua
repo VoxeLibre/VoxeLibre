@@ -84,9 +84,9 @@ local register_filled_cauldron = function(water_level, description)
 end
 
 -- Filled crauldrons (3 levels)
-register_filled_cauldron(1, "Cauldron (One Third Full")
-register_filled_cauldron(2, "Cauldron (Two Thirds Full")
-register_filled_cauldron(3, "Cauldron (Full")
+register_filled_cauldron(1, "Cauldron (One Third Full)")
+register_filled_cauldron(2, "Cauldron (Two Thirds Full)")
+register_filled_cauldron(3, "Cauldron (Full)")
 
 minetest.register_craft({
 	output = "mcl_cauldrons:cauldron",
