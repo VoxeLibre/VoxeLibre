@@ -170,18 +170,36 @@ if weather.reg_weathers.rain == nil then
   }
 end
 
--- ABM for extinguish fire
 if weather.allow_abm then
-  minetest.register_abm({
-    nodenames = {"mcl_fire:fire"},
-    interval = 4.0,
-    chance = 2,
-    action = function(pos, node, active_object_count, active_object_count_wider)
-      if rain.raining and rain.extinguish_fire then
-        if weather.is_outdoor(pos) then
-          minetest.remove_node(pos)
-        end
-      end
-    end
-  })
+-- ABM for extinguish fire
+	minetest.register_abm({
+	nodenames = {"mcl_fire:fire"},
+	interval = 4.0,
+	chance = 2,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		if rain.raining and rain.extinguish_fire then
+			if weather.is_outdoor(pos) then
+				minetest.remove_node(pos)
+			end
+		end
+	end
+})
+
+-- Slowly fill up cauldrons
+	minetest.register_abm({
+		nodenames = {"mcl_cauldrons:cauldron", "mcl_cauldrons:cauldron_1", "mcl_cauldrons:cauldron_2"},
+		interval = 56.0,
+		chance = 1,
+		action = function(pos, node, active_object_count, active_object_count_wider)
+			if rain.raining and weather.is_outdoor(pos) then
+				if node.name == "mcl_cauldrons:cauldron" then
+					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_1"})
+				elseif node.name == "mcl_cauldrons:cauldron_1" then
+					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_2"})
+				elseif node.name == "mcl_cauldrons:cauldron_2" then
+					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_3"})
+				end
+			end
+		end
+  	})
 end
