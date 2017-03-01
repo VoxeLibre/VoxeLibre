@@ -21,9 +21,10 @@ local cz2 = {-2/16, -1/2+6/16, 2/16, 2/16, 1, 1/2} --unten(quer) z
 mcl_fences = {}
 
 mcl_fences.register_fence = function(id, fence_name, texture, groups, hardness, blast_resistance, connects_to, sounds)
-	if groups == nil then groups = {} end
-	groups.fence = 1
-	groups.deco_block = 1
+	local cgroups = table.copy(groups)
+	if cgroups == nil then cgroups = {} end
+	cgroups.fence = 1
+	cgroups.deco_block = 1
 	if connects_to == nil then connects_to = {} end
 	local fence_id = minetest.get_current_modname()..":"..id
 	table.insert(connects_to, "group:solid")
@@ -36,7 +37,7 @@ mcl_fences.register_fence = function(id, fence_name, texture, groups, hardness, 
 		wield_image = "mcl_fences_fence_mask.png^" .. texture .. "^mcl_fences_fence_mask.png^[makealpha:255,126,126",
 		paramtype = "light",
 		is_ground_content = false,
-		groups = groups,
+		groups = cgroups,
 		stack_max = 64,
 		sunlight_propagates = true,
 		drawtype = "nodebox",
@@ -105,12 +106,13 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 		meta2:set_int("state", state2)
 	end
 
-	if groups == nil then groups = {} end
-	groups.fence_gate = 1
-	groups.deco_block = 1
+	local cgroups = table.copy(groups)
+	if cgroups == nil then cgroups = {} end
+	cgroups.fence_gate = 1
+	cgroups.deco_block = 1
 
-	groups.mesecon_effector_on = 1
-	groups.fence_gate = 1
+	cgroups.mesecon_effector_on = 1
+	cgroups.fence_gate = 1
 	minetest.register_node(open_gate_id, {
 		tiles = {texture},
 		paramtype = "light",
@@ -120,7 +122,7 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 		is_ground_content = false,
 		sunlight_propagates = true,
 		walkable = true,
-		groups = groups,
+		groups = cgroups,
 		drop = gate_id,
 		drawtype = "nodebox",
 		node_box = {
@@ -155,8 +157,9 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 		_mcl_hardness = hardness,
 	})
 
-	groups.mesecon_effector_on = nil
-	groups.mesecon_effector_off = nil
+	local cgroups_closed = table.copy(cgroups)
+	cgroups_closed.mesecon_effector_on = nil
+	cgroups_closed.mesecon_effector_off = nil
 	minetest.register_node(gate_id, {
 		description = fence_gate_name,
 		tiles = {texture},
@@ -168,7 +171,7 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 		paramtype2 = "facedir",
 		sunlight_propagates = true,
 		walkable = true,
-		groups = groups,
+		groups = cgroups_closed,
 		drawtype = "nodebox",
 		node_box = {
 			type = "fixed",
