@@ -1149,6 +1149,7 @@ minetest.register_node("mcl_core:ladder", {
 	inventory_image = "default_ladder.png",
 	wield_image = "default_ladder.png",
 	paramtype = "light",
+	sunlight_propagates = true,
 	paramtype2 = "wallmounted",
 	walkable = true,
 	climbable = true,
