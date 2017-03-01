@@ -31,8 +31,22 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 			end
 
 			-- Try to fill glass bottle with water
-			-- TODO: Also support cauldrons
+			local get_water = false
 			if def.groups and def.groups.water and def.liquidtype == "source" then
+				-- Water source
+				get_water = true
+			-- Or reduce water level of cauldron by 1
+			elseif node.name == "mcl_cauldrons:cauldron_3" then
+				get_water = true
+				minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_2"})
+			elseif node.name == "mcl_cauldrons:cauldron_2" then
+				get_water = true
+				minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_1"})
+			elseif node.name == "mcl_cauldrons:cauldron_1" then
+				get_water = true
+				minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
+			end
+			if get_water then
 				-- Replace with water bottle, if possible, otherwise
 				-- place the water potion at a place where's space
 				local water_bottle = ItemStack("mcl_potions:potion_water")
@@ -79,7 +93,34 @@ minetest.register_craftitem("mcl_potions:potion_water", {
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
 	groups = {brewitem=1, food=3},
-	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
+	on_place = function(itemstack, placer, pointed_thing)
+		if pointed_thing.type == "node" then
+			local node = minetest.get_node(pointed_thing.under)
+			local def = minetest.registered_nodes[node.name]
+
+			-- Call on_rightclick if the pointed node defines it
+			if placer and not placer:get_player_control().sneak then
+				if def and def.on_rightclick then
+					return def.on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+				end
+			end
+
+			-- Increase water level of cauldron by 1
+			if node.name == "mcl_cauldrons:cauldron" then
+				minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_1"})
+				return "mcl_potions:glass_bottle"
+			elseif node.name == "mcl_cauldrons:cauldron_1" then
+				minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_2"})
+				return "mcl_potions:glass_bottle"
+			elseif node.name == "mcl_cauldrons:cauldron_2" then
+				minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_3"})
+				return "mcl_potions:glass_bottle"
+			end
+		end
+
+		-- Drink the water by default
+		return minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, placer, pointed_thing)
+	end,
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
 minetest.register_craftitem("mcl_potions:potion_awkward", {
