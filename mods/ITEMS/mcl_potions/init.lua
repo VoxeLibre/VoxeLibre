@@ -9,7 +9,7 @@ minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_potions:fermented_spider_eye",
-	recipe = { "mcl_farming:mushroom_brown", "mcl_core:sugar", "mcl_mobitems:spider_eye" },
+	recipe = { "mcl_mushrooms:mushroom_brown", "mcl_core:sugar", "mcl_mobitems:spider_eye" },
 })
 
 minetest.register_craftitem("mcl_potions:glass_bottle", {

@@ -54,7 +54,7 @@ mobs:register_mob("mobs_mc:enderman", {
 	view_range = 16,
 	attack_type = "dogfight",
 	replace_rate = 1,
-	replace_what = {"mcl_flowers:allium", "mcl_flowers:azure_bluet", "mcl_flowers:blue_orchid", "mcl_flowers:dandelion", "mcl_flowers:tulip_orange", "mcl_flowers:tulip_red", "mcl_flowers:tulip_pink", "mcl_flowers:tulip_white", "mcl_flowers:oxeye_daisy", "mcl_flowers:poppy", "mcl_core:cactus", "mcl_core:clay", "mcl_core:coarse_dirt", "mcl_core:dirt", "mcl_core:dirt_with_grass", "mcl_core:gravel", "mcl_farming:melon", "mcl_farming:pumpkin_face", "mcl_core:mycelium", "mcl_core:podzol", "mcl_farming:mushroom_red", "mcl_farming:mushroom_brown", "mcl_core:redsand", "mcl_core:sand", "mcl_tnt:tnt", "mcl_nether:netherrack"},
+	replace_what = {"mcl_flowers:allium", "mcl_flowers:azure_bluet", "mcl_flowers:blue_orchid", "mcl_flowers:dandelion", "mcl_flowers:tulip_orange", "mcl_flowers:tulip_red", "mcl_flowers:tulip_pink", "mcl_flowers:tulip_white", "mcl_flowers:oxeye_daisy", "mcl_flowers:poppy", "mcl_core:cactus", "mcl_core:clay", "mcl_core:coarse_dirt", "mcl_core:dirt", "mcl_core:dirt_with_grass", "mcl_core:gravel", "mcl_farming:melon", "mcl_farming:pumpkin_face", "mcl_core:mycelium", "mcl_core:podzol", "mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown", "mcl_core:redsand", "mcl_core:sand", "mcl_tnt:tnt", "mcl_nether:netherrack"},
 	replace_with = "air",
 	replace_offset = -1,
 
