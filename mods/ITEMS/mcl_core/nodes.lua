@@ -1171,11 +1171,19 @@ minetest.register_node("mcl_core:ladder", {
 
 		local under = pointed_thing.under
 		local node = minetest.get_node(under)
-
 		local def = minetest.registered_nodes[node.name]
+		local groups = def.groups
+		if (groups and (groups.glass or groups.leaves or groups.slab)) or
+				node.name == "mcl_core:ice" or node.name == "mcl_nether:glowstone" or node.name == "mcl_ocean:sea_lantern" then
+			return itemstack
+		end
+
+		-- Check special rightclick action of pointed node
 		if def and def.on_rightclick then
-			return def.on_rightclick(under, node, placer, itemstack,
-				pointed_thing) or itemstack, false
+			if not placer:get_player_control().sneak then
+				return def.on_rightclick(under, node, placer, itemstack,
+					pointed_thing) or itemstack, false
+			end
 		end
 		local above = pointed_thing.above
 
