@@ -22,6 +22,14 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 		if pointed_thing.type == "node" then
 			local node = minetest.get_node(pointed_thing.under)
 			local def = minetest.registered_nodes[node.name]
+
+			-- Call on_rightclick if the pointed node defines it
+			if placer and not placer :get_player_control().sneak then
+				if def and def.on_rightclick then
+					return def.on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+				end
+			end
+
 			-- Try to fill glass bottle with water
 			-- TODO: Also support cauldrons
 			if def.groups and def.groups.water and def.liquidtype == "source" then
