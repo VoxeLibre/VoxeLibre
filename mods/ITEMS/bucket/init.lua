@@ -43,13 +43,13 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 				if pointed_thing.type ~= "node" then
 					return
 				end
-			
+
+				local node = minetest.get_node(pointed_thing.under)
+				local nn = node.name
 				-- Call on_rightclick if the pointed node defines it
 				if user and not user:get_player_control().sneak then
-					local n = minetest.get_node(pointed_thing.under)
-					local nn = n.name
 					if minetest.registered_nodes[nn] and minetest.registered_nodes[nn].on_rightclick then
-						return minetest.registered_nodes[nn].on_rightclick(pointed_thing.under, n, user, itemstack) or itemstack
+						return minetest.registered_nodes[nn].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
 					end
 				end
 
@@ -71,11 +71,19 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 				end
 
 				-- Check if pointing to a buildable node
-				local node = minetest.get_node(pointed_thing.under)
 				local fullness = tonumber(itemstack:get_metadata())
 				if not fullness then fullness = LIQUID_MAX end
+				local item = itemstack:get_name()
 
-				if minetest.registered_nodes[node.name].buildable_to then
+				if item == "bucket:bucket_water" and
+						(nn == "mcl_cauldrons:cauldron" or
+						nn == "mcl_cauldrons:cauldron_1" or
+						nn == "mcl_cauldrons:cauldron_2") then
+					-- Put water into cauldron
+					minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_3"})
+				elseif item == "bucket:bucket_water" and nn == "mcl_cauldrons:cauldron_3" then
+					-- No-op (just empty the bucket)
+				elseif minetest.registered_nodes[nn].buildable_to then
 					-- buildable; replace the node
 					local pns = user:get_player_name()
 					if minetest.is_protected(pointed_thing.under, pns) then
@@ -85,8 +93,8 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 				else
 					-- not buildable to; place the liquid above
 					-- check if the node above can be replaced
-					local node = minetest.get_node(pointed_thing.above)
-					if minetest.registered_nodes[node.name].buildable_to then
+					local abovenode = minetest.get_node(pointed_thing.above)
+					if minetest.registered_nodes[abovenode.name].buildable_to then
 						local pn = user:get_player_name()
 						if minetest.is_protected(pointed_thing.above, pn) then
 							return itemstack
@@ -134,17 +142,26 @@ minetest.register_craftitem("bucket:bucket_empty", {
 			return
 		end
 		-- Check if pointing to a liquid source
-		node = minetest.get_node(pointed_thing.under)
-		liquiddef = bucket.liquids[node.name]
-		if liquiddef ~= nil and liquiddef.itemname ~= nil and (node.name == liquiddef.source or
-			(node.name == liquiddef.flowing and minetest.setting_getbool("liquid_finite"))) then
+		local node = minetest.get_node(pointed_thing.under)
+		local nn = node.name
+		liquiddef = bucket.liquids[nn]
+		local new_bucket
+		if liquiddef ~= nil and liquiddef.itemname ~= nil and (nn == liquiddef.source or
+			(nn == liquiddef.flowing and minetest.setting_getbool("liquid_finite"))) then
 
-			local new_bucket = ItemStack({name = liquiddef.itemname, metadata = tostring(node.param2)})
+			new_bucket = ItemStack({name = liquiddef.itemname, metadata = tostring(node.param2)})
 
 			minetest.add_node(pointed_thing.under, {name="air"})
 
-			-- Add liquid bucket and put it into inventory, if possible.
-			-- Drop new bucket otherwise.
+		elseif nn == "mcl_cauldrons:cauldron_3" then
+			-- Take water out of full cauldron
+			minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
+			new_bucket = ItemStack("bucket:bucket_water")
+		end
+
+		-- Add liquid bucket and put it into inventory, if possible.
+		-- Drop new bucket otherwise.
+		if new_bucket then
 			if itemstack:get_count() == 1 then
 				return new_bucket
 			else
