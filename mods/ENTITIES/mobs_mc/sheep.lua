@@ -168,6 +168,11 @@ print(item:get_name(), minetest.get_item_group(item:get_name(), "dye"))
 				min = 1,
 				max = 1,},
 			}
+
+			if not minetest.setting_getbool("creative_mode") then
+				item:take_item()
+				clicker:get_inventory():set_stack("main", clicker:get_wield_index(), item)
+			end
 		end
 	end,
 })
