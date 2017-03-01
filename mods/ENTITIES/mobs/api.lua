@@ -3056,8 +3056,14 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			return
 		end
 
+		local mobname
+		if string.len(fields.name) > 80 then
+			minetest.chat_send_player(name, "Warning: Your chosen name is very long! It has been shortened to 80 characters.")
+			mobname = string.sub(fields.name, 1, 80)
+		end
+
 		-- update nametag
-		mob_obj[name].nametag = fields.name
+		mob_obj[name].nametag = mobname
 
 		update_tag(mob_obj[name])
 
