@@ -14,8 +14,8 @@ minetest.register_craft({
 
 minetest.register_craftitem("mcl_potions:glass_bottle", {
 	description = "Glass Bottle",
-	inventory_image = "vessels_glass_bottle_inv.png",
-	wield_image = "vessels_glass_bottle_inv.png",
+	inventory_image = "mcl_potions_potion_bottle_empty.png",
+	wield_image = "mcl_potions_potion_bottle_empty.png",
 	groups = {brewitem=1},
 })
 
@@ -25,6 +25,55 @@ minetest.register_craft( {
 		{ "mcl_core:glass", "", "mcl_core:glass" },
 		{ "", "mcl_core:glass", "" }
 	}
+})
+
+-- Tempalte function for creating images of filled potions
+-- - colorstring must be a ColorString of form “#RRGGBB”, e.g. “#0000FF” for blue.
+-- - opacity is optional opacity from 0-255 (default: 127)
+local potion_image = function(colorstring, opacity)
+	if not opacity then
+		opacity = 127
+	end
+	return "mcl_potions_potion_bottle_drinkable.png^(mcl_potions_potion_overlay.png^[colorize:"..colorstring..":"..tostring(opacity)..")"
+end
+
+-- Itemstring of potions is “mcl_potions:potion_<NBT Potion Tag>”
+
+minetest.register_craftitem("mcl_potions:potion_water", {
+	description = "Water Bottle",
+	stack_max = 1,
+	inventory_image = potion_image("#0000FF"),
+	wield_image = potion_image("#0000FF"),
+	groups = {brewitem=1, food=3},
+	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
+	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
+})
+minetest.register_craftitem("mcl_potions:potion_awkward", {
+	description = "Awkward Potion",
+	stack_max = 1,
+	inventory_image = potion_image("#0000FF"),
+	wield_image = potion_image("#0000FF"),
+	groups = {brewitem=1, food=3},
+	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
+	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
+})
+minetest.register_craftitem("mcl_potions:potion_mundane", {
+	description = "Mundane Potion",
+	stack_max = 1,
+	inventory_image = potion_image("#0000FF"),
+	wield_image = potion_image("#0000FF"),
+	groups = {brewitem=1, food=3},
+	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
+	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
+})
+minetest.register_craftitem("mcl_potions:potion_thick", {
+	description = "Thick Potion",
+	stack_max = 1,
+	inventory_image = potion_image("#0000FF"),
+	wield_image = potion_image("#0000FF"),
+	groups = {brewitem=1, food=3},
+	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
+	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
 
 minetest.register_craftitem("mcl_potions:speckled_melon", {
