@@ -1287,7 +1287,8 @@ minetest.register_node("mcl_core:water_flowing", {
 	post_effect_color = {a=64, r=100, g=100, b=200},
 	groups = { water=3, liquid=3, puts_out_fire=1, not_in_creative_inventory=1, freezes=1, melt_around=1},
 	_mcl_blast_resistance = 500,
-	_mcl_hardness = 100,
+	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
+	_mcl_hardness = -1,
 })
 
 minetest.register_node("mcl_core:water_source", {
@@ -1323,7 +1324,8 @@ minetest.register_node("mcl_core:water_source", {
 	stack_max = 64,
 	groups = { water=3, liquid=3, puts_out_fire=1, freezes=1, not_in_creative_inventory=1},
 	_mcl_blast_resistance = 500,
-	_mcl_hardness = 100,
+	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
+	_mcl_hardness = -1,
 })
 
 minetest.register_node("mcl_core:lava_flowing", {
@@ -1366,7 +1368,8 @@ minetest.register_node("mcl_core:lava_flowing", {
 	post_effect_color = {a=192, r=255, g=64, b=0},
 	groups = { lava=3, liquid=2, igniter=3, destroys_items=1, not_in_creative_inventory=1},
 	_mcl_blast_resistance = 500,
-	_mcl_hardness = 100,
+	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
+	_mcl_hardness = -1,
 })
 
 minetest.register_node("mcl_core:lava_source", {
@@ -1404,7 +1407,8 @@ minetest.register_node("mcl_core:lava_source", {
 	stack_max = 64,
 	groups = { lava=3, liquid=2, igniter=3, destroys_items=1, not_in_creative_inventory=1},
 	_mcl_blast_resistance = 500,
-	_mcl_hardness = 100,
+	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
+	_mcl_hardness = -1,
 })
 
 minetest.register_node("mcl_core:cobble", {
