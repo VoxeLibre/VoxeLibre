@@ -127,6 +127,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 end)
 
+-- Drop crafting grid items on leaving
+minetest.register_on_leaveplayer(function(player)
+	drop_fields(player, "craft")
+end)
+
 minetest.register_on_joinplayer(function(player)
 	--init inventory
 	set_inventory(player)
@@ -147,6 +152,12 @@ minetest.register_on_joinplayer(function(player)
 			set_inventory(player)
 		end
 	end
+
+	--[[ Make sure the crafting grid is empty. Why? Because the player might have
+	items remaining in the crafting grid from the previous join; this is likely
+	when the server has been shutdown and the server didn't clean up the player
+	inventories. ]]
+	drop_fields(player, "craft")
 end)
 
 minetest.register_node("crafting:workbench", {
