@@ -52,7 +52,7 @@ local register_mushroom = function(color, template, d_cap_top, d_cap_side, d_cap
 	local cap_corner = table.copy(template)
 	cap_corner.description = d_cap_corner
 	cap_corner.paramtype2 = "facedir"
-	cap_corner.tiles = { "mcl_mushrooms_mushroom_block_skin_"..color..".png", "mcl_mushrooms_mushroom_block_inside.png", "mcl_mushrooms_mushroom_block_inside.png", "mcl_mushrooms_mushroom_block_skin_"..color..".png", "mcl_mushrooms_mushroom_block_inside.png", "mcl_mushrooms_mushroom_block_skin_"..color..".png" }
+	cap_corner.tiles = { "mcl_mushrooms_mushroom_block_skin_"..color..".png", "mcl_mushrooms_mushroom_block_inside.png", "mcl_mushrooms_mushroom_block_skin_"..color..".png", "mcl_mushrooms_mushroom_block_inside.png", "mcl_mushrooms_mushroom_block_inside.png", "mcl_mushrooms_mushroom_block_skin_"..color..".png" }
 	minetest.register_node("mcl_mushrooms:"..color.."_mushroom_block_cap_corner", cap_corner)
 
 	-- DV 5: Cap texture on top
