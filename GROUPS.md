@@ -90,6 +90,7 @@ These groups are used mostly for informational purposes
 * `bed=1`: Bed
 * `door=1`: Door
 * `door=2`: Trapdoor
+* `glass=1`: Glass (full cubes only)
 * `rail=1`: Rail
 * `music_record`: Music Disc (rating is track ID)
 * `tnt=1`: Block is TNT
