@@ -17,6 +17,32 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 	inventory_image = "mcl_potions_potion_bottle_empty.png",
 	wield_image = "mcl_potions_potion_bottle_empty.png",
 	groups = {brewitem=1},
+	liquids_pointable = true,
+	on_place = function(itemstack, placer, pointed_thing)
+		if pointed_thing.type == "node" then
+			local node = minetest.get_node(pointed_thing.under)
+			local def = minetest.registered_nodes[node.name]
+			-- Try to fill glass bottle with water
+			-- TODO: Also support cauldrons
+			if def.groups and def.groups.water and def.liquidtype == "source" then
+				-- Replace with water bottle, if possible, otherwise
+				-- place the water potion at a place where's space
+				local water_bottle = ItemStack("mcl_potions:potion_water")
+				if itemstack:get_count() == 1 then
+					return water_bottle
+				else
+					local inv = placer:get_inventory()
+					if inv:room_for_item("main", water_bottle) then
+						inv:add_item("main", water_bottle)
+					else
+						minetest.add_item(placer:getpos(), water_bottle)
+					end
+					itemstack:take_item()
+				end
+			end
+		end
+		return itemstack
+	end,
 })
 
 minetest.register_craft( {
