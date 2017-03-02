@@ -62,6 +62,15 @@ local function allow_metadata_inventory_put(pos, listname, index, stack, player)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	if listname == "fuel" then
+		-- Special case: empty bucket (not a fuel, but used for sponge drying)
+		if stack:get_name() == "bucket:bucket_empty" then
+			if inv:get_stack(listname, index):get_count() == 0 then
+				return 1
+			else
+				return 0
+			end
+		end
+
 		-- Test stack with size 1 because we burn one fuel at a time
 		local teststack = ItemStack(stack)
 		teststack:set_count(1)
