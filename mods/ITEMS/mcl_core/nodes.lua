@@ -1666,6 +1666,7 @@ minetest.register_node("mcl_core:snow", {
 	wield_scale = { x=1, y=1, z=1 },
 	is_ground_content = true,
 	paramtype = "light",
+	sunlight_propagates = true,
 	buildable_to = true,
 	drawtype = "nodebox",
 	stack_max = 64,
