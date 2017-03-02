@@ -23,6 +23,8 @@ local  boxes_on = { -4/16, -2/16, 8/16, 4/16, 2/16, 7/16 }  -- The button
 minetest.register_node("mesecons_button:button_stone_off", {
 	drawtype = "nodebox",
 	tiles = {"default_stone.png"},
+	wield_image = "default_stone.png^[mask:mesecons_button_wield_mask.png",
+	wield_scale = { x=1, y=1, z=1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -56,6 +58,8 @@ minetest.register_node("mesecons_button:button_stone_off", {
 minetest.register_node("mesecons_button:button_stone_on", {
 	drawtype = "nodebox",
 	tiles = {"default_stone.png"},
+	wield_image = "default_stone.png^[mask:mesecons_button_wield_mask.png",
+	wield_scale = { x=1, y=1, z=0.5},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -84,6 +88,8 @@ minetest.register_node("mesecons_button:button_stone_on", {
 minetest.register_node("mesecons_button:button_wood_off", {
 	drawtype = "nodebox",
 	tiles = {"default_wood.png"},
+	wield_image = "default_wood.png^[mask:mesecons_button_wield_mask.png",
+	wield_scale = { x=1, y=1, z=1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -117,6 +123,8 @@ minetest.register_node("mesecons_button:button_wood_off", {
 minetest.register_node("mesecons_button:button_wood_on", {
 	drawtype = "nodebox",
 	tiles = {"default_wood.png"},
+	wield_image = "default_wood.png^[mask:mesecons_button_wield_mask.png",
+	wield_scale = { x=1, y=1, z=0.5},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	is_ground_content = false,
