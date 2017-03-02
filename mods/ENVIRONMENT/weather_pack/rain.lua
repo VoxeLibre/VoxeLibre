@@ -207,8 +207,8 @@ if weather.allow_abm then
 	-- Wetten the soil
 	minetest.register_abm({
 		nodenames = {"mcl_farming:soil"},
-		interval = 27.0,
-		chance = 1,
+		interval = 22.0,
+		chance = 3,
 		action = function(pos, node, active_object_count, active_object_count_wider)
 			if rain.raining and weather.is_outdoor(pos) then
 				if node.name == "mcl_farming:soil" then
