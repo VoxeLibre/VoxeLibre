@@ -1662,6 +1662,8 @@ end
 minetest.register_node("mcl_core:snow", {
 	description = "Top Snow",
 	tiles = {"default_snow.png"},
+	wield_image = "default_snow.png",
+	wield_scale = { x=1, y=1, z=2 },
 	is_ground_content = true,
 	paramtype = "light",
 	buildable_to = true,
