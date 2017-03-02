@@ -62,8 +62,24 @@ local function allow_metadata_inventory_put(pos, listname, index, stack, player)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	if listname == "fuel" then
-		if minetest.get_craft_result({method="fuel", width=1, items={stack}}).time ~= 0 then
-			return stack:get_count()
+		-- Test stack with size 1 because we burn one fuel at a time
+		local teststack = ItemStack(stack)
+		teststack:set_count(1)
+		local output, decremented_input = minetest.get_craft_result({method="fuel", width=1, items={teststack}})
+		if output.time ~= 0 then
+			-- Only allow to place 1 item if fuel get replaced by recipe.
+			-- This is the case for lava buckets.
+			local replace_item = decremented_input.items[1]
+			if replace_item:is_empty() then
+				-- For most fuels, just allow to place everything
+				return stack:get_count()
+			else
+				if inv:get_stack(listname, index):get_count() == 0 then
+					return 1
+				else
+					return 0
+				end
+			end
 		else
 			return 0
 		end
