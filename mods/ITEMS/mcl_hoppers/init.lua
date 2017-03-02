@@ -256,6 +256,12 @@ minetest.register_abm({
 		elseif g == 4 then
 			-- Furnace output
 			mcl_util.move_item_container(uppos, "dst", -1, pos)
+
+			-- Also suck in non-fuel items from fuel slot
+			local finv = minetest.get_inventory({type="node", pos=uppos})
+			if finv and not mcl_util.is_fuel(finv:get_stack("fuel", 1)) then
+				mcl_util.move_item_container(uppos, "fuel", -1, pos)
+			end
 		end
 
 		-- Move an item from the hopper into container below
