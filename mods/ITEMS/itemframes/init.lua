@@ -92,7 +92,6 @@ minetest.register_node("itemframes:frame",{
 	is_ground_content = false,
 	node_box = { type = "fixed", fixed = {-0.5, -0.5, 7/16, 0.5, 0.5, 0.5} },
 	selection_box = { type = "fixed", fixed = {-0.5, -0.5, 7/16, 0.5, 0.5, 0.5} },
-	inventory_image = "itemframes_frame.png",
 	tiles = {"itemframe_background.png"},
 	inventory_image = "itemframes_frame.png",
 	wield_image = "itemframes_frame.png",
@@ -111,7 +110,10 @@ minetest.register_node("itemframes:frame",{
 		local meta = minetest.get_meta(pos)
 		if clicker:get_player_name() == meta:get_string("owner") then
 			drop_item(pos,node)
-			local s = itemstack:take_item()
+			local s = itemstack
+			if not minetest.setting_getbool("creative_mode") then
+				itemstack:take_item()
+			end
 			meta:set_string("item",s:to_string())
 			update_item(pos,node)
 		end
