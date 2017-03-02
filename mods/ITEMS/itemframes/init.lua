@@ -78,7 +78,7 @@ end
 local drop_item = function(pos, node)
 	local meta = minetest.get_meta(pos)
 	if meta:get_string("item") ~= "" then
-		if node.name == "itemframes:frame" then
+		if node.name == "itemframes:frame" and not minetest.setting_getbool("creative_mode") then
 			minetest.add_item(pos, meta:get_string("item"))
 		end
 		meta:set_string("item","")
