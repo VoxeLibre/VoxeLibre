@@ -58,6 +58,7 @@ minetest.register_node("mcl_sponges:sponge", {
 		end
 		if on_water then
 			-- Absorb water
+			-- FIXME: pos is not always the right placement position because of pointed_thing
 			if absorb(pos) then
 				minetest.item_place_node(ItemStack("mcl_sponges:sponge_wet"), placer, pointed_thing)
 				if not minetest.setting_getbool("creative_mode") then
