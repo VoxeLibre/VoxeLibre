@@ -16,6 +16,7 @@ minetest.register_node("mcl_core:barrier", {
 	paramtype = "light",
 	inventory_image = "default_barrier.png",
 	wield_image = "default_barrier.png",
+	tiles = { "blank.png" },
 	stack_max = 64,
 	sunlight_propagates = true,
 	is_ground_content = false,
