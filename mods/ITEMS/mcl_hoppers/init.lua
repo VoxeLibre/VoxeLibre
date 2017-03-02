@@ -126,6 +126,7 @@ minetest.register_node("mcl_hoppers:hopper", {
 
 minetest.register_node("mcl_hoppers:hopper_side", {
 	description = "Hopper (Side)",
+	_doc_items_create_entry = false,
 	drop = "mcl_hoppers:hopper",
 	groups = {pickaxey=1, container=2,not_in_creative_inventory=1},
 	drawtype = "nodebox",

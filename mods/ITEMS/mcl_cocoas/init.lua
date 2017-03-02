@@ -76,6 +76,7 @@ Using meshes will also clean up the texture mess.
 ]]
 local crop_def = {
 	description = "Young Cocoa",
+	_doc_items_create_entry = false,
 	drawtype = "nodebox",
 	tiles = {
 		"[combine:32x32:12,2=mcl_cocoas_cocoa_stage_0.png", "[combine:32x32:12,22=mcl_cocoas_cocoa_stage_0.png",
@@ -149,6 +150,8 @@ minetest.register_node("mcl_cocoas:cocoa_2", table.copy(crop_def))
 
 -- Final stage
 crop_def.description = "Mature Cocoa"
+crop_def._doc_items_create_entry = true
+crop_def._doc_items_entry_name = "Cocoa"
 crop_def.groups.cocoa = 3
 crop_def.tiles = {
 	-- The following 2 textures were derived from the original because the size of the top/bottom is slightly different :-(

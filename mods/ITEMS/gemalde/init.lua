@@ -31,6 +31,7 @@ end
 -- inivisible node
 minetest.register_node("gemalde:node_"..n.."", {
 	description = desc,
+	_doc_items_create_entry = n == 1,
 	drawtype = "signlike",
 	tiles = {"gemalde_"..n..".png","gemalde_bg.png"},
 	visual_scale = 3.0,

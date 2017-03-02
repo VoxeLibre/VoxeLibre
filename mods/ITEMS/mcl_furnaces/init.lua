@@ -271,6 +271,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 
 minetest.register_node("mcl_furnaces:furnace_active", {
 	description = "Burning Furnace",
+	_doc_items_create_entry = false,
 	tiles = {
 		"default_furnace_top.png", "default_furnace_bottom.png",
 		"default_furnace_side.png", "default_furnace_side.png",

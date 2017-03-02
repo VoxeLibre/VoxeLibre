@@ -32,8 +32,10 @@ function watch.register_item(name, image, creative)
 	if creative then
 		g = 0
 	end
+	local doc = name == "mcl_clock:clock"
 	minetest.register_craftitem(name, {
 		description = "Clock",
+		_doc_items_create_entry = doc,
 		inventory_image = image,
 		groups = {not_in_creative_inventory=g, tool=1, clock=1},
 		wield_image = "",

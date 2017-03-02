@@ -57,6 +57,7 @@ for i,img in ipairs(images) do
 	end
 	minetest.register_craftitem("mcl_compass:"..(i-1), {
 		description = "Compass",
+		_doc_items_create_entry = i == stereotype_frame,
 		inventory_image = img,
 		wield_image = img,
 		stack_max = 64,

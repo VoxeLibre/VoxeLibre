@@ -89,6 +89,7 @@ local desc = row[3]
 local texture = minetest.registered_nodes[flower_node]["tiles"]
 minetest.register_node("mcl_flowerpots:flower_pot_"..flower, {
 	description = desc,
+	_doc_items_create_entry = false,
 	drawtype = "mesh",
 	mesh = "flowerpot.obj",
 	tiles = {
@@ -125,6 +126,7 @@ local flower_node = row[2]
 local desc = row[3]
 minetest.register_node("mcl_flowerpots:flower_pot_"..flower, {
 	description = desc,
+	_doc_items_create_entry = false,
 	drawtype = "mesh",
 	mesh = "flowerpot_with_long_cube.obj",
 	tiles = {

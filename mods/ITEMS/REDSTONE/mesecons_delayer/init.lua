@@ -87,6 +87,7 @@ end
 
 minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 	description = "Redstone Repeater",
+	_doc_items_create_entry = i == 1,
 	drawtype = "nodebox",
 	tiles = {
 		"mesecons_delayer_off.png",
@@ -143,6 +144,7 @@ minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 
 minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
 	description = "You hacker you",
+	_doc_items_create_entry = false,
 	drawtype = "nodebox",
 	tiles = {
 		"mesecons_delayer_on.png",

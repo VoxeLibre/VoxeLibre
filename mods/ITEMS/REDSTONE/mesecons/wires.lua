@@ -97,6 +97,7 @@ for zmy=0, 1 do
 
 	minetest.register_node("mesecons:wire_"..nodeid.."_off", {
 		description = "Redstone",
+		_doc_items_create_entry = nodeid == "00000000",
 		drawtype = "nodebox",
 		tiles = tiles_off,
 		is_ground_content = false,
@@ -128,6 +129,7 @@ for zmy=0, 1 do
 
 	minetest.register_node("mesecons:wire_"..nodeid.."_on", {
 		description = "Redstone",
+		_doc_items_create_entry = false,
 		drawtype = "nodebox",
 		tiles = tiles_on,
 		is_ground_content = false,

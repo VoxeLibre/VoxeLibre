@@ -128,6 +128,7 @@ down_def.tiles = {
 	"default_furnace_side.png", "default_furnace_side.png"
 }
 down_def.groups = {pickaxey=1, container=2,not_in_creative_inventory=1}
+down_def._doc_items_create_entry = false
 down_def.drop = "mcl_droppers:dropper"
 minetest.register_node("mcl_droppers:dropper_down", down_def)
 

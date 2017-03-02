@@ -25,11 +25,13 @@ anvildef0.description = "Anvil"
 local anvildef1 = table.copy(anvildef)
 anvildef1.description = "Slightly Damaged Anvil"
 anvildef1.groups.not_in_creative_inventory = 1
+anvildef1._doc_items_create_entry = false
 anvildef1.tiles = {"mcl_anvils_anvil_top_damaged_1.png^[transformR90", "mcl_anvils_anvil_base.png"}
 
 local anvildef2 = table.copy(anvildef)
 anvildef2.description = "Very Damaged Anvil"
 anvildef2.groups.not_in_creative_inventory = 1
+anvildef2._doc_items_create_entry = false
 anvildef2.tiles = {"mcl_anvils_anvil_top_damaged_2.png^[transformR90", "mcl_anvils_anvil_base.png"}
 
 minetest.register_node("mcl_anvils:anvil", anvildef0)

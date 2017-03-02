@@ -1,5 +1,6 @@
 minetest.register_node("mcl_farming:carrot_1", {
-	description = "Carrot Plant (First Stage)",
+	description = "Premature Carrot Plant (First Stage)",
+	_doc_items_entry_name = "Carrot Plant",
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
@@ -17,7 +18,8 @@ minetest.register_node("mcl_farming:carrot_1", {
 })
 
 minetest.register_node("mcl_farming:carrot_2", {
-	description = "Carrot Plant (Second Stage)",
+	description = "Premature Carrot Plant (Second Stage)",
+	_doc_items_create_entry = false,
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
@@ -35,7 +37,8 @@ minetest.register_node("mcl_farming:carrot_2", {
 })
 
 minetest.register_node("mcl_farming:carrot_3", {
-	description = "Carrot Plant (Third Stage)",
+	description = "Premature Carrot Plant (Third Stage)",
+	_doc_items_create_entry = false,
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
@@ -53,7 +56,7 @@ minetest.register_node("mcl_farming:carrot_3", {
 })
 
 minetest.register_node("mcl_farming:carrot", {
-	description = "Carrot Plant",
+	description = "Mature Carrot Plant",
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",

@@ -10,6 +10,7 @@ minetest.register_craftitem("mcl_farming:beetroot_seeds", {
 
 minetest.register_node("mcl_farming:beetroot_0", {
 	description = "Premature Beetroot Plant (First Stage)",
+	_doc_items_entry_name = "Premature Beetroot Plant",
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
@@ -28,6 +29,7 @@ minetest.register_node("mcl_farming:beetroot_0", {
 
 minetest.register_node("mcl_farming:beetroot_1", {
 	description = "Premature Beetroot Plant (Second Stage)",
+	_doc_items_create_entry = false,
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
@@ -46,6 +48,7 @@ minetest.register_node("mcl_farming:beetroot_1", {
 
 minetest.register_node("mcl_farming:beetroot_2", {
 	description = "Premature Beetroot Plant (Third Stage)",
+	_doc_items_create_entry = false,
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",

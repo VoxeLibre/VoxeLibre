@@ -75,6 +75,7 @@ local register_slice = function(level, nodebox, desc)
 
 	minetest.register_node(this, {
 		description = desc,
+		_doc_items_create_entry = false,
 		tiles = cake_texture,
 		paramtype = "light",
 		is_ground_content = false,

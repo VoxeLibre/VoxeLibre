@@ -1,5 +1,6 @@
 minetest.register_node("mcl_farming:potato_1", {
 	description = "Premature Potato Plant (First Stage)",
+	_doc_items_entry_name = "Premature Potato Plant",
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
@@ -18,6 +19,7 @@ minetest.register_node("mcl_farming:potato_1", {
 
 minetest.register_node("mcl_farming:potato_2", {
 	description = "Premature Potato Plant (Second Stage)",
+	_doc_items_create_entry = false,
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",

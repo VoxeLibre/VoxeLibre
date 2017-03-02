@@ -132,6 +132,7 @@ function xpanes.register_pane(name, def)
 		is_ground_content = false,
 		sunlight_propagates = true,
 		description = def.description,
+		_doc_items_create_entry = false,
 		tiles = {def.textures[3], def.textures[3], def.textures[1]},
 		use_texture_alpha = def.use_texture_alpha,
 		groups = groups,

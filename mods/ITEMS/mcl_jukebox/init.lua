@@ -18,6 +18,8 @@ for r=1, records do
 		description =
 			core.colorize("#55FFFF", "Music Disc") .. "\n" ..
 			core.colorize("#989898", recorddata[r][2] .. "—" .. recorddata[r][1]),
+		_doc_items_create_entry = r == 1,
+		_doc_items_entry_name = "Music Disc",
 		inventory_image = "mcl_jukebox_record_"..recorddata[r][3]..".png",
 		stack_max = 1,
 		groups = { music_record = r },

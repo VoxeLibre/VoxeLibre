@@ -53,6 +53,7 @@ mcl_torches.register_torch("mesecon_torch_off", "Redstone Torch (off)", "jeija_t
 			rules = torch_get_output_rules
 		}},
 		drop = "mesecons_torch:mesecon_torch_on",
+		_doc_items_create_entry = false,
 	}
 )
 

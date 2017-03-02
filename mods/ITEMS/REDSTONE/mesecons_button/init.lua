@@ -76,6 +76,7 @@ minetest.register_node("mesecons_button:button_stone_on", {
 	groups = {handy=1,pickaxey=1, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
 	drop = 'mesecons_button:button_stone_off',
 	description = "Stone Button",
+	_doc_items_create_entry = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.on,
@@ -141,6 +142,7 @@ minetest.register_node("mesecons_button:button_wood_on", {
 	groups = {handy=1,axey=1, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
 	drop = 'mesecons_button:button_wood_off',
 	description = "Wooden Button",
+	_doc_items_create_entry = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.on,

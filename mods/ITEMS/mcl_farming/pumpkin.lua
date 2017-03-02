@@ -31,6 +31,7 @@ local stemdrop = {
 
 minetest.register_node("mcl_farming:pumpkin_1", {
 	description = "Pumpkin Stem (First Stage)",
+	_doc_items_entry_name = "Pumpkin Stem",
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
@@ -50,6 +51,7 @@ minetest.register_node("mcl_farming:pumpkin_1", {
 
 minetest.register_node("mcl_farming:pumpkin_2", {
 	description = "Pumpkin Stem (Second Stage)",
+	_doc_items_create_entry = false,
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
@@ -102,6 +104,7 @@ minetest.register_node("mcl_farming:pumpkin_face", {
 
 minetest.register_node("mcl_farming:pumpkintige_unconnect", {
 	description = "Pumpkin Stem (Not Connected)",
+	_doc_items_create_entry = false,
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
@@ -116,6 +119,7 @@ minetest.register_node("mcl_farming:pumpkintige_unconnect", {
 
 minetest.register_node("mcl_farming:pumpkintige_linked_r", {
 	description = "Pumpkin Stem (Linked to the Right)",
+	_doc_items_create_entry = false,
 	paramtype = "light",
 	sunlight_propagates = true,
 	walkable = false,
@@ -148,6 +152,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_r", {
 
 minetest.register_node("mcl_farming:pumpkintige_linked_l", {
 	description = "Pumpkin Stem (Linked to the Left)",
+	_doc_items_create_entry = false,
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
@@ -180,6 +185,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_l", {
 
 minetest.register_node("mcl_farming:pumpkintige_linked_t", {
 	description = "Pumpkin Stem (Linked to the Top)",
+	_doc_items_create_entry = false,
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,
@@ -212,6 +218,7 @@ minetest.register_node("mcl_farming:pumpkintige_linked_t", {
 
 minetest.register_node("mcl_farming:pumpkintige_linked_b", {
 	description = "Pumpkin Stem (Linked to the Bottom)",
+	_doc_items_create_entry = false,
 	paramtype = "light",
 	walkable = false,
 	sunlight_propagates = true,

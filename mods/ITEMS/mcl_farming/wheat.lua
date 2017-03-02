@@ -9,6 +9,7 @@ minetest.register_craftitem("mcl_farming:wheat_seeds", {
 
 minetest.register_node("mcl_farming:wheat_1", {
 	description = "Premature Wheat Plant (First Stage)",
+	_doc_items_entry_name = "Premature Wheat Plant",
 	paramtype = "light",
 	sunlight_propagates = true,
 	walkable = false,
@@ -38,6 +39,7 @@ minetest.register_node("mcl_farming:wheat_1", {
 
 minetest.register_node("mcl_farming:wheat_2", {
 	description = "Premature Wheat Plant (Second Stage)",
+	_doc_items_create_entry = false,
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
@@ -67,6 +69,7 @@ minetest.register_node("mcl_farming:wheat_2", {
 
 minetest.register_node("mcl_farming:wheat_3", {
 	description = "Premature Wheat Plant (Third Stage)",
+	_doc_items_create_entry = false,
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,

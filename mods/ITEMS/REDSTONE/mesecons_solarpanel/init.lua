@@ -19,6 +19,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_on", {
 	},
 	drop = "mesecons_solarpanel:solar_panel_off",
 	description="Daylight Sensor",
+	_doc_items_create_entry = false,
 	groups = {dig_immediate=3, not_in_creative_inventory = 1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {receptor = {
@@ -122,6 +123,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_on", {
 	drop = "mesecons_solarpanel:solar_panel_off",
 	groups = {dig_immediate=3, not_in_creative_inventory = 1},
     	description="Inverted Daylight Sensor",
+	_doc_items_create_entry = false,
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.on

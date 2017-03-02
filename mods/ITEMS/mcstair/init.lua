@@ -597,6 +597,7 @@ function mcstair.add(name, stairtiles)
 	})
 	minetest.register_node(":"..name.."_outer", {
 		description = node_def.description,
+		_doc_items_create_entry = false,
 		drawtype = "nodebox",
 		tiles = outer_tiles,
 		paramtype = "light",
@@ -619,6 +620,7 @@ function mcstair.add(name, stairtiles)
 	})
 	minetest.register_node(":"..name.."_inner", {
 		description = node_def.description,
+		_doc_items_create_entry = false,
 		drawtype = "nodebox",
 		tiles = inner_tiles,
 		paramtype = "light",

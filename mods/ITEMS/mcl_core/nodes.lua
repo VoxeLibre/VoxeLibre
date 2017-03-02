@@ -41,6 +41,7 @@ minetest.register_node("mcl_core:barrier", {
 -- block here to make things easier for us.
 minetest.register_node("mcl_core:void", {
 	description = "Void",
+	_doc_items_create_entry = false,
 	drawtype = "airlike",
 	paramtype = "light",
 	pointable = false,
@@ -147,6 +148,7 @@ end
 -- Light the redstone ore up when it has been touched
 minetest.register_node("mcl_core:stone_with_redstone_lit", {
 	description = "Lit Redstone Ore",
+	_doc_items_create_entry = false,
 	tiles = {"default_stone.png^default_mineral_redstone.png"},
 	paramtype = "light",
 	light_source = 9,
@@ -1628,6 +1630,7 @@ for i=0,3 do
 	end
 	minetest.register_node("mcl_core:frosted_ice_"..i, {
 		description = "Frosted Ice",
+		_doc_items_create_entry = i == 0,
 		drawtype = "glasslike",
 		tiles = {"default_frosted_ice_"..i..".png"},
 		is_ground_content = false,

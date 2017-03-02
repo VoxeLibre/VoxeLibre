@@ -102,6 +102,7 @@ minetest.register_tool("mcl_throwing:bow", {
 
 minetest.register_tool("mcl_throwing:bow_0", {
 	description = "Bow",
+	_doc_items_create_entry = false,
 	inventory_image = "mcl_throwing_bow_0.png",
 	stack_max = 1,
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
@@ -122,6 +123,7 @@ minetest.register_tool("mcl_throwing:bow_0", {
 
 minetest.register_tool("mcl_throwing:bow_1", {
 	description = "Bow",
+	_doc_items_create_entry = false,
 	inventory_image = "mcl_throwing_bow_1.png",
 	stack_max = 1,
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
@@ -142,6 +144,7 @@ minetest.register_tool("mcl_throwing:bow_1", {
 
 minetest.register_tool("mcl_throwing:bow_2", {
 	description = "Bow",
+	_doc_items_create_entry = false,
 	inventory_image = "mcl_throwing_bow_2.png",
 	stack_max = 1,
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},

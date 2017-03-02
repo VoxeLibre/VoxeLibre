@@ -65,6 +65,7 @@ minetest.register_node("mcl_cauldrons:cauldron", {
 local register_filled_cauldron = function(water_level, description)
 	minetest.register_node("mcl_cauldrons:cauldron_"..water_level, {
 		description = description,
+		_doc_items_create_entry = false,
 		drawtype = "nodebox",
 		paramtype = "light",
 		sunlight_propagates = true,
