@@ -1,3 +1,21 @@
+local absorb = function(pos)
+	local change = false
+	local p, n
+	for i=-3,3 do
+		for j=-3,3 do
+			for k=-3,3 do
+				p = {x=pos.x+i, y=pos.y+j, z=pos.z+k}
+				n = minetest.get_node(p)
+				if minetest.get_item_group(n.name, "water") ~= 0 then
+					minetest.add_node(p, {name="air"})
+					change = true
+				end
+			end
+		end
+	end
+	return change
+end
+
 minetest.register_node("mcl_sponges:sponge", {
 	description = "Sponge",
 	drawtype = "normal",
@@ -28,57 +46,27 @@ minetest.register_node("mcl_sponges:sponge", {
 		if minetest.is_protected(pointed_thing.above, pn) then
 			return itemstack
 		end
-		local change = false
-		local on_water = false
+
 		local pos = pointed_thing.above
-		local nn = minetest.get_node(pointed_thing.above).name
-		if minetest.get_item_group(nn, "water") ~= 0 then
+		local on_water = false
+		if minetest.get_item_group(minetest.get_node(pos).name, "water") ~= 0 then
 			on_water = true
 		end
-		for i=-1,1 do
-			local p = {x=pos.x+i, y=pos.y, z=pos.z}
-			local n = minetest.get_node(p)
-			if minetest.get_item_group(n.name, "water") ~= 0 then
-				on_water = true
-			end
+		local water_found = minetest.find_node_near(pos, 1, "group:water")
+		if water_found ~= nil then
+			on_water = true
 		end
-		for i=-1,1 do
-			local p = {x=pos.x, y=pos.y+i, z=pos.z}
-			local n = minetest.get_node(p)
-			if minetest.get_item_group(n.name, "water") ~= 0 then
-				on_water = true
-			end
-		end
-		for i=-1,1 do
-			local p = {x=pos.x, y=pos.y, z=pos.z+i}
-			local n = minetest.get_node(p)
-			if minetest.get_item_group(n.name, "water") ~= 0 then
-				on_water = true
-			end
-		end
-		local p, n
-		if on_water == true then
-			for i=-3,3 do
-				for j=-3,3 do
-					for k=-3,3 do
-						p = {x=pos.x+i, y=pos.y+j, z=pos.z+k}
-						n = minetest.get_node(p)
-						if minetest.get_item_group(n.name, "water") ~= 0 then
-							minetest.add_node(p, {name="air"})
-							change = true
-						end
-					end
+		if on_water then
+			-- Absorb water
+			if absorb(pos) then
+				minetest.item_place_node(ItemStack("mcl_sponges:sponge_wet"), placer, pointed_thing)
+				if not minetest.setting_getbool("creative_mode") then
+					itemstack:take_item()
 				end
+				return itemstack
 			end
 		end
-		p = {x=pos.x, y=pos.y, z=pos.z}
-		n = minetest.get_node(p)
-		if change == true then
-			minetest.add_node(pointed_thing.above, {name = "mcl_sponges:sponge_wet"})
-		else
-			minetest.add_node(pointed_thing.above, {name = "mcl_sponges:sponge"})
-		end
-		return itemstack
+		return minetest.item_place_node(itemstack, placer, pointed_thing)
 	end,
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 0.6,
@@ -108,3 +96,15 @@ minetest.register_craft({
 	cooktime = 10,
 })
 
+minetest.register_abm({
+	label = "Sponge water absorbtion",
+	nodenames = { "mcl_sponges:sponge" },
+	neighbors = { "group:water" },
+	interval = 1,
+	chance = 1,
+	action = function(pos)
+		if absorb(pos) then
+			minetest.add_node(pos, {name = "mcl_sponges:sponge_wet"})
+		end
+	end,
+})

@@ -26,7 +26,6 @@ local wip_items = {
 	"mcl_mobitems:rotten_flesh",
 	"mcl_mobitems:spider_eye",
 	"mcl_minecarts:golden_rail",
-	"mcl_sponges:sponge",
 	"mcl_mushrooms:mushroom_red",
 	"mcl_mushrooms:mushroom_brown",
 	"gemalde:node_1",
