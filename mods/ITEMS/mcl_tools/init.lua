@@ -125,15 +125,15 @@ minetest.register_tool("mcl_tools:pick_diamond", {
 
 local get_shovel_dig_group = function(itemstring)
 	local def = minetest.registered_items[itemstring]
-	if itemstring == "mcl_core:shovel_wood" then
+	if itemstring == "mcl_tools:shovel_wood" then
 		return "shovely_dig_wood"
-	elseif itemstring == "mcl_core:shovel_stone" then
+	elseif itemstring == "mcl_tools:shovel_stone" then
 		return "shovely_dig_stone"
-	elseif itemstring == "mcl_core:shovel_iron" then
+	elseif itemstring == "mcl_tools:shovel_iron" then
 		return "shovely_dig_iron"
-	elseif itemstring == "mcl_core:shovel_gold" then
+	elseif itemstring == "mcl_tools:shovel_gold" then
 		return "shovely_dig_gold"
-	elseif itemstring == "mcl_core:shovel_diamond" then
+	elseif itemstring == "mcl_tools:shovel_diamond" then
 		return "shovely_dig_diamond"
 	else
 		-- Fallback
@@ -150,7 +150,7 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 		end
 	end
 
-	if minetest.get_node(node).name == "mcl_tools:dirt_with_grass" and pointed_thing.above.y == pointed_thing.under.y then
+	if node.name == "mcl_core:dirt_with_grass" and pointed_thing.above.y == pointed_thing.under.y then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
 		if minetest.get_node(above).name == "air" then
@@ -158,7 +158,7 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 				-- Add wear, as if digging a level 0 shovely node
 				local toolname = itemstack:get_name()
 				local def = minetest.registered_items[toolname]
-				local group = get_shovel_dig_group
+				local group = get_shovel_dig_group(toolname)
 				local base_uses = def.tool_capabilities.groupcaps[group].uses
 				local maxlevel = def.tool_capabilities.groupcaps[group].maxlevel
 				local uses = base_uses * math.pow(3, maxlevel)
@@ -166,7 +166,7 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 				itemstack:add_wear(wear)
 			end
 			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above})
-			minetest.swap_node(pointed_thing.under, {name="mcl_tools:grass_path"})
+			minetest.swap_node(pointed_thing.under, {name="mcl_core:grass_path"})
 		end
 	end
 	return itemstack
