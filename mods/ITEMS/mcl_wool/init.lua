@@ -49,6 +49,7 @@ for _, row in ipairs(wool.dyes) do
 			is_ground_content = false,
 			tiles = {"wool_"..texture..".png"},
 			wield_image = "wool_"..name..".png",
+			wield_scale = { x=1, y=1, z=0.5 },
 			groups = {handy=1, carpet=1,deco_block=1},
 			sounds = mcl_sounds.node_sound_defaults(),
 			paramtype = "light",

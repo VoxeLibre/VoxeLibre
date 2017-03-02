@@ -64,6 +64,7 @@ function mesecon:register_pressure_plate(offstate, onstate, description, texture
 		drawtype = "nodebox",
 		tiles = {texture_off},
 		wield_image = texture_off,
+		wield_scale = { x=1, y=1, z=0.5 },
 		paramtype = "light",
 		selection_box = pp_box_off,
 		node_box = pp_box_off,
@@ -89,6 +90,8 @@ function mesecon:register_pressure_plate(offstate, onstate, description, texture
 	minetest.register_node(onstate, {
 		drawtype = "nodebox",
 		tiles = {texture_on},
+		wield_image = texture_on,
+		wield_scale = { x=1, y=1, z=0.25 },
 		paramtype = "light",
 		selection_box = pp_box_on,
 		node_box = pp_box_on,
