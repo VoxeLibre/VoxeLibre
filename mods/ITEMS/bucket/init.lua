@@ -141,9 +141,17 @@ minetest.register_craftitem("bucket:bucket_empty", {
 		if pointed_thing.type ~= "node" then
 			return
 		end
-		-- Check if pointing to a liquid source
+
+		-- Call on_rightclick if the pointed node defines it
 		local node = minetest.get_node(pointed_thing.under)
 		local nn = node.name
+		if user and not user:get_player_control().sneak then
+			if minetest.registered_nodes[nn] and minetest.registered_nodes[nn].on_rightclick then
+				return minetest.registered_nodes[nn].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
+			end
+		end
+
+		-- Check if pointing to a liquid source
 		liquiddef = bucket.liquids[nn]
 		local new_bucket
 		if liquiddef ~= nil and liquiddef.itemname ~= nil and (nn == liquiddef.source or

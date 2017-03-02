@@ -295,18 +295,25 @@ minetest.register_node("mcl_flowers:waterlily", {
 
 	on_place = function(itemstack, placer, pointed_thing)
 		local pos = pointed_thing.above
-		local node = minetest.get_node(pointed_thing.under).name
-		local def = minetest.registered_nodes[node]
+		local node = minetest.get_node(pointed_thing.under)
+		local nodename = node.name
+		local def = minetest.registered_nodes[nodename]
 		local node_above = minetest.get_node(pointed_thing.above).name
 		local def_above = minetest.registered_nodes[node_above]
 		local player_name = placer:get_player_name()
 
-		if def and
-				pointed_thing.under.x == pointed_thing.above.x and
-				pointed_thing.under.z == pointed_thing.above.z then
-			if ((def.liquidtype == "source" and minetest.get_item_group(node, "water") > 0) or
-					(node == "mcl_core:ice") or
-					(minetest.get_item_group(node, "frosted_ice") > 0)) and
+		if def then
+			-- Use pointed node's on_rightclick function first, if present
+			if placer and not placer:get_player_control().sneak then
+				if def and def.on_rightclick then
+					return def.on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+				end
+			end
+
+			if (pointed_thing.under.x == pointed_thing.above.x and pointed_thing.under.z == pointed_thing.above.z) and
+					((def.liquidtype == "source" and minetest.get_item_group(nodename, "water") > 0) or
+					(nodename == "mcl_core:ice") or
+					(minetest.get_item_group(nodename, "frosted_ice") > 0)) and
 					(def_above.buildable_to and minetest.get_item_group(node_above, "liquid") == 0) then
 				if not minetest.is_protected(pos, player_name) then
 					minetest.set_node(pos, {name = "mcl_flowers:waterlily",
