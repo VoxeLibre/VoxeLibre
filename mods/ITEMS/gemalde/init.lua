@@ -21,17 +21,23 @@ if n == 1 then
 	groups = {dig_immediate=3, picture=1, deco_block=1}
 end
 
-local desc
+local desc, doc, longdesc, usagehelp
 if n == 1 then
 	desc = "Painting"
+	doc = true
+	longdesc = "Paintings are decorations which can be placed on walls and cover a space of 3×3 blocks."
+	usagehelp = "Rightclick the painting to change it."
 else
 	desc = "Painting ("..n..")"
+	doc = false
 end
 
 -- inivisible node
 minetest.register_node("gemalde:node_"..n.."", {
 	description = desc,
-	_doc_items_create_entry = n == 1,
+	_doc_items_create_entry = doc,
+	_doc_items_longdesc = longdesc,
+	_doc_items_usagehelp = usagehelp,
 	drawtype = "signlike",
 	tiles = {"gemalde_"..n..".png","gemalde_bg.png"},
 	visual_scale = 3.0,

@@ -10,6 +10,8 @@ local LAVA_VISC = 7
 
 minetest.register_node("mcl_core:barrier", {
 	description = "Barrier",
+	_doc_items_longdesc = "Barriers are invisble walkable blocks. They are used to create boundaries of adventure maps and the like. Monsters and animals won't appear on barriers, and fences do not connect to barriers. Other blocks can be built on barriers like on any other block.",
+	_doc_items_usagehelp = "When you hold a barrier in hand, you reveal all placed barriers in a short distance around you.",
 	drawtype = "airlike",
 	paramtype = "light",
 	inventory_image = "default_barrier.png",

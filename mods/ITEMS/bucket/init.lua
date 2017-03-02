@@ -24,7 +24,7 @@ bucket.liquids = {}
 --   itemname = name of the new bucket item (or nil if liquid is not takeable)
 --   inventory_image = texture of the new bucket item (ignored if itemname == nil)
 -- This function can be called from any mod (that depends on bucket).
-function bucket.register_liquid(source, flowing, itemname, inventory_image, name)
+function bucket.register_liquid(source, flowing, itemname, inventory_image, name, longdesc, usagehelp)
 	bucket.liquids[source] = {
 		source = source,
 		flowing = flowing,
@@ -35,6 +35,8 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 	if itemname ~= nil then
 		minetest.register_craftitem(itemname, {
 			description = name,
+			_doc_items_longdesc = longdesc,
+			_doc_items_usagehelp = usagehelp,
 			inventory_image = inventory_image,
 			stack_max = 16,
 			liquids_pointable = true,
@@ -133,6 +135,9 @@ end
 
 minetest.register_craftitem("bucket:bucket_empty", {
 	description = "Empty Bucket",
+	_doc_items_longdesc = "A bucket can be used to collect and release liquids.",
+	_doc_items_usagehelp = "Punch a liquid source to collect the liquid. With the filled bucket, you can right-click somewhere to empty the bucket which will create a liquid source at the position you've clicked at.",
+
 	inventory_image = "bucket.png",
 	stack_max = 16,
 	liquids_pointable = true,
@@ -193,7 +198,9 @@ bucket.register_liquid(
 	"mcl_core:water_flowing",
 	"bucket:bucket_water",
 	"bucket_water.png",
-	"Water Bucket"
+	"Water Bucket",
+	"A bucket can be used to collect and release liquids. This one is filled with water.",
+	"Right-click on any block to empty the bucket and put a water source on this spot."
 )
 
 bucket.register_liquid(
@@ -201,7 +208,9 @@ bucket.register_liquid(
 	"mcl_core:lava_flowing",
 	"bucket:bucket_lava",
 	"bucket_lava.png",
-	"Lava Bucket"
+	"Lava Bucket",
+	"A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution.",
+	"Choose a place where you want to empty the bucket, then get in a safe spot somewhere above it. Be prepared to run away when something goes wrong as the lava will soon start to flow after placing. To empty the bucket (which places a lava source), right-click on your chosen place."
 )
 
 minetest.register_craft({

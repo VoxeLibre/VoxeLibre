@@ -55,9 +55,16 @@ for i,img in ipairs(images) do
 	if i == stereotype_frame then
 		inv = 0
 	end
+	local doc, longdesc, usagehelp
+	doc = i == stereotype_frame
+	if doc then
+		longdesc = "Compasses are tools which point to the world origin (X=0, Z=0) or the spawn point in the Overworld."
+	end
 	minetest.register_craftitem("mcl_compass:"..(i-1), {
 		description = "Compass",
-		_doc_items_create_entry = i == stereotype_frame,
+		_doc_items_create_entry = doc,
+		_doc_items_longdesc = longdesc,
+		_doc_items_usagehelp = usagehelp,
 		inventory_image = img,
 		wield_image = img,
 		stack_max = 64,

@@ -88,6 +88,8 @@ end
 
 minetest.register_node("itemframes:frame",{
 	description = "Item Frame",
+	_doc_items_longdesc = "Item frames are decorative blocks in which items can be placed.",
+	_doc_items_usagehelp = "Hold any item in your hand and right-click the item frame to place the item into the frame. Rightclick the item frame again to retrieve the item.",
 	drawtype = "nodebox",
 	is_ground_content = false,
 	node_box = { type = "fixed", fixed = {-0.5, -0.5, 7/16, 0.5, 0.5, 0.5} },

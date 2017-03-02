@@ -33,9 +33,16 @@ function watch.register_item(name, image, creative)
 		g = 0
 	end
 	local doc = name == "mcl_clock:clock"
+	local longdesc, usagehelp
+	if doc then
+		longdesc = "Clocks are tools which shows the current time of day in the Overworld."
+		usagehelp = "The clock contains a rotating disc with a sun symbol (yellow disc) and moon symbol and a little “pointer” which shows the current time of day by estimating the real position of the sun and the moon in the sky. Noon is represented by the sun symbol and midnight is represented by the moon symbol."
+	end
 	minetest.register_craftitem(name, {
 		description = "Clock",
 		_doc_items_create_entry = doc,
+		_doc_items_longdesc = longdesc,
+		_doc_items_usagehelp = usagehelp,
 		inventory_image = image,
 		groups = {not_in_creative_inventory=g, tool=1, clock=1},
 		wield_image = "",
