@@ -1670,6 +1670,7 @@ minetest.register_node("mcl_core:snow", {
 	buildable_to = true,
 	drawtype = "nodebox",
 	stack_max = 64,
+	floodable = true,
 	node_box = {
 		type = "fixed",
 		fixed = {
