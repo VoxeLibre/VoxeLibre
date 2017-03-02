@@ -1668,14 +1668,14 @@ minetest.register_node("mcl_core:snow", {
 	paramtype = "light",
 	buildable_to = true,
 	drawtype = "nodebox",
-	stack_max = 16,
+	stack_max = 64,
 	node_box = {
 		type = "fixed",
 		fixed = {
 			{-0.5, -0.5, -0.5,  0.5, -0.5+2/16, 0.5},
 		},
 	},
-	groups = {shovely=1, falling_node=1,deco_block=1},
+	groups = {shovely=1, attached_node=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_snow_defaults(),
 	drop = "mcl_throwing:snowball 2",
 	_mcl_blast_resistance = 0.5,
