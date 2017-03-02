@@ -2821,6 +2821,14 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 
 		on_place = function(itemstack, placer, pointed_thing)
 
+			-- Call on_rightclick if the pointed node defines it
+			local node = minetest.get_node(pointed_thing.under)
+			if placer and not placer:get_player_control().sneak then
+				if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+					return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+				end
+			end
+
 			local pos = pointed_thing.above
 
 			if pos

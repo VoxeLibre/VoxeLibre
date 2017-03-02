@@ -152,6 +152,15 @@ for w=1, #woods do
 			if pointed_thing.type ~= "node" then
 				return
 			end
+
+			-- Call on_rightclick if the pointed node defines it
+			local node = minetest.get_node(pointed_thing.under)
+			if placer and not placer:get_player_control().sneak then
+				if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+					return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+				end
+			end
+
 			if not is_water(pointed_thing.under) then
 				return
 			end

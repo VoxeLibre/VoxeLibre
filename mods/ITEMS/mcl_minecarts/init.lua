@@ -267,6 +267,15 @@ minetest.register_craftitem("mcl_minecarts:minecart", {
 		if not pointed_thing.type == "node" then
 			return
 		end
+
+		-- Call on_rightclick if the pointed node defines it
+		local node = minetest.get_node(pointed_thing.under)
+		if placer and not placer:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+			end
+		end
+
 		if mcl_minecarts:is_rail(pointed_thing.under) then
 			minetest.add_entity(pointed_thing.under, "mcl_minecarts:minecart")
 		elseif mcl_minecarts:is_rail(pointed_thing.above) then
