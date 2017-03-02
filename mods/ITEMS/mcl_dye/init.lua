@@ -217,6 +217,15 @@ minetest.register_craftitem("mcl_dye:white", {
 	stack_max = 64,
 	groups = dyelocal.dyes[1][3],
 	on_place = function(itemstack, user, pointed_thing) 
+		-- Use pointed node's on_rightclick function first, if present
+		local node = minetest.get_node(pointed_thing.under)
+		if user and not user:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
+			end
+		end
+
+		-- Use the bone meal on the ground
 		if(mcl_dye.apply_bone_meal(pointed_thing) and not minetest.setting_getbool("creative_mode")) then
 			itemstack:take_item()
 		end

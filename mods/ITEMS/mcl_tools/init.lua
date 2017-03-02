@@ -142,7 +142,15 @@ local get_shovel_dig_group = function(itemstring)
 end
 
 local make_grass_path = function(itemstack, placer, pointed_thing)
-	if minetest.get_node(pointed_thing.under).name == "mcl_tools:dirt_with_grass" and pointed_thing.above.y == pointed_thing.under.y then
+	-- Use pointed node's on_rightclick function first, if present
+	local node = minetest.get_node(pointed_thing.under)
+	if placer and not placer:get_player_control().sneak then
+		if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+			return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+		end
+	end
+
+	if minetest.get_node(node).name == "mcl_tools:dirt_with_grass" and pointed_thing.above.y == pointed_thing.under.y then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
 		if minetest.get_node(above).name == "air" then

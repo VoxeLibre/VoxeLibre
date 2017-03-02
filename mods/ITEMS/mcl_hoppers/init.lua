@@ -48,8 +48,17 @@ minetest.register_node("mcl_hoppers:hopper", {
 		local upos  = pointed_thing.under
 		local apos = pointed_thing.above
 
+		local uposnode = minetest.get_node(upos)
+		local uposnodedef = minetest.registered_nodes[uposnode.name]
+
+		-- Use pointed node's on_rightclick function first, if present
+		if placer and not placer:get_player_control().sneak then
+			if uposnodedef and uposnodedef.on_rightclick then
+				return uposnodedef.on_rightclick(pointed_thing.under, uposnode, placer, itemstack) or itemstack
+			end
+		end
+
 		local bpos
-		local uposnodedef = minetest.registered_nodes[minetest.get_node(upos).name]
 		if uposnodedef.buildable_to then
 			bpos = upos
 		else

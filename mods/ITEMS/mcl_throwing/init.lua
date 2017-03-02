@@ -72,6 +72,16 @@ end
 
 local powerup_function = function(nextbow)
 	return function(itemstack, placer, pointed_thing)
+		-- Use pointed node's on_rightclick function first, if present
+		if pointed_thing.type == "node" then
+			local node = minetest.get_node(pointed_thing.under)
+			if placer and not placer:get_player_control().sneak then
+				if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+					return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+				end
+			end
+		end
+
 		if get_arrow(placer) ~= nil then
 			local wear = itemstack:get_wear()
 			itemstack:replace(nextbow)

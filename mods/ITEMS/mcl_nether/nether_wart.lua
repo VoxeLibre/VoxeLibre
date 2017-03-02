@@ -74,13 +74,22 @@ minetest.register_node("mcl_nether:nether_wart", {
 })
 
 minetest.register_craftitem("mcl_nether:nether_wart_item", {
-	description = "Nether Wart",
+	descripointed_thingption = "Nether Wart",
 	inventory_image = "mcl_nether_nether_wart.png",
 	wield_image = "mcl_nether_nether_wart.png",
 	on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type ~= "node" then
 			return itemstack
 		end
+
+		-- Use pointed node's on_rightclick function first, if present
+		local node = minetest.get_node(pointed_thing.under)
+		if placer and not placer:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+			end
+		end
+
 		local placepos = pointed_thing.above
 		local soilpos = table.copy(placepos)
 		soilpos.y = soilpos.y - 1
