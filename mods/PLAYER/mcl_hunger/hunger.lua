@@ -9,6 +9,16 @@ end
 -- wrapper for minetest.item_eat (this way we make sure other mods can't break this one)
 local org_eat = core.do_item_eat
 core.do_item_eat = function(hp_change, replace_with_item, itemstack, user, pointed_thing)
+	-- Call on_rightclick if the pointed node defines it
+	if pointed_thing.type == "node" then
+		local node = minetest.get_node(pointed_thing.under)
+		if user and not user:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
+			end
+		end
+	end
+
 	local old_itemstack = itemstack
 	itemstack = mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_thing)
 	for _, callback in pairs(core.registered_on_item_eats) do
