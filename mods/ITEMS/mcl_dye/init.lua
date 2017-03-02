@@ -229,7 +229,7 @@ minetest.register_craftitem("mcl_dye:brown", {
 	description = "Cocoa Beans",
 	stack_max = 64,
 	groups = dyelocal.dyes[4][3],
-	on_place = function(itemstack, user, pointed_thing)
+	on_place = function(itemstack, placer, pointed_thing)
 		return mcl_cocoas.place(itemstack, placer, pointed_thing, "mcl_cocoas:cocoa_1")
 	end,
 })

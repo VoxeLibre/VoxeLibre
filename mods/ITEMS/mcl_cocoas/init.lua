@@ -17,11 +17,11 @@ function mcl_cocoas.place(itemstack, placer, pointed_thing, plantname)
 		return
 	end
 
-	-- am I right-clicking on something that has a custom on_place set?
-	-- thanks to Krock for helping with this issue :)
-	local def = minetest.registered_nodes[under.name]
-	if def and def.on_rightclick then
-		return def.on_rightclick(pt.under, under, placer, itemstack)
+	-- Am I right-clicking on something that has a custom on_rightclick set?
+	if placer and not placer:get_player_control().sneak then
+		if minetest.registered_nodes[under.name] and minetest.registered_nodes[under.name].on_rightclick then
+			return minetest.registered_nodes[under.name].on_rightclick(pointed_thing.under, under, placer, itemstack) or itemstack
+		end
 	end
 
 	-- Check if pointing at jungle tree
