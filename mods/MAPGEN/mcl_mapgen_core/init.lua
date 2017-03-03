@@ -51,9 +51,47 @@ minetest.register_ore({
 	clust_scarcity = 14*14*14,
 	clust_num_ores = 33,
 	clust_size     = 5,
-	y_min          = -90,
-	y_max          = 90,
+	y_min          = -56,
+	y_max          = 56,
 })
+
+-- Dirt
+minetest.register_ore({
+	ore_type       = "blob",
+	ore            = "mcl_core:dirt",
+	wherein        = {"mcl_core:stone"},
+	clust_scarcity = 15*15*15,
+	clust_num_ores = 33,
+	clust_size     = 4,
+	y_min          = -500,
+	y_max          = 500,
+})
+
+-- Diorite, andesite and granite
+local specialstones = { "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite" }
+for s=1, #specialstones do
+	local node = specialstones[s]
+	minetest.register_ore({
+		ore_type       = "blob",
+		ore            = node,
+		wherein        = {"mcl_core:stone"},
+		clust_scarcity = 15*15*15,
+		clust_num_ores = 33,
+		clust_size     = 5,
+		y_min          = -500,
+		y_max          = 500,
+	})
+	minetest.register_ore({
+		ore_type       = "blob",
+		ore            = node,
+		wherein        = {"mcl_core:stone"},
+		clust_scarcity = 11*11*11,
+		clust_num_ores = 66,
+		clust_size     = 8,
+		y_min          = -500,
+		y_max          = 500,
+	})
+end
 
 --
 -- Coal
