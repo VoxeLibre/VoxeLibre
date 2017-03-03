@@ -11,7 +11,7 @@ mobs:register_mob("mobs_mc:spider", {
 	type = "monster",
 	passive = false,
 	attack_type = "dogfight",
-	pathfinding = true,
+	pathfinding = 1,
 	damage = 2,
 	docile_by_day = true,
 	hp_min = 16,

@@ -24,7 +24,7 @@ mobs:register_mob("mobs_mc:pigman", {
 	run_velocity = 2.6,
 	damage = 2,
 	armor = 80,
-	pathfinding = true,
+	pathfinding = 1,
 	group_attack = true,
 	drops = {
 		{name = "mcl_mobitems:rotten_flesh",

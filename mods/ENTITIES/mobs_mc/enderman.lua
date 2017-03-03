@@ -12,7 +12,7 @@ mobs:register_mob("mobs_mc:enderman", {
 	hp_min = 40,
 	hp_max = 40,
 	collisionbox = {-0.4, -1.5, -0.4, 0.4, 1.5, 0.4},
-	
+	pathfinding = 1,
 	visual = "mesh",
 	mesh = "mobs_sand_monster.b3d",
 	textures = {

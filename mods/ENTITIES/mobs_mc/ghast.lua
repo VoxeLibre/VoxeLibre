@@ -8,7 +8,7 @@
 
 mobs:register_mob("mobs_mc:ghast", {
 	type = "monster",
-	pathfinding = true,
+	pathfinding = 1,
 	group_attack = true,
 	hp_min = 10,
 	hp_max = 10,

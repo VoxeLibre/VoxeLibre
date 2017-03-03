@@ -29,7 +29,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	walk_velocity = .8,
 	run_velocity = 1.6,
 	damage = 2.5,
-	pathfinding = true,
+	pathfinding = 1,
 	group_attack = true,
 	armor = 80,
 	drops = {

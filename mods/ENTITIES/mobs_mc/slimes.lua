@@ -8,7 +8,7 @@
 
 mobs:register_mob("mobs_mc:greensmall", {
 	type = "monster",
-	pathfinding = true,
+	pathfinding = 1,
 	group_attack = true,
 	hp_min = 1,
 	hp_max = 1,
@@ -70,7 +70,7 @@ mobs:register_mob("mobs_mc:greensmall", {
 
 mobs:register_mob("mobs_mc:greenmedium", {
 	type = "monster",
-	pathfinding = true,
+	pathfinding = 1,
 	group_attack = true,
 	hp_min = 4,
 	hp_max = 4,
@@ -138,7 +138,7 @@ mobs:register_mob("mobs_mc:greenmedium", {
 
 mobs:register_mob("mobs_mc:greenbig", {
 	type = "monster",
-	pathfinding = true,
+	pathfinding = 1,
 	group_attack = true,
 	hp_min = 16,
 	hp_max = 16,
@@ -212,7 +212,7 @@ mobs:register_spawn("mobs_mc:greenbig", {"mcl_core:water_flowing", "group:solid"
 
 mobs:register_mob("mobs_mc:lavasmall", {
 	type = "monster",
-	pathfinding = false,
+	pathfinding = 1,
 	group_attack = true,
 	hp_min = 1,
 	hp_max = 1,
@@ -268,7 +268,7 @@ mobs:register_mob("mobs_mc:lavasmall", {
 
 mobs:register_mob("mobs_mc:lavamedium", {
 	type = "monster",
-	pathfinding = false,
+	pathfinding = 1,
 	group_attack = true,
 	hp_min = 4,
 	hp_max = 4,
@@ -343,7 +343,7 @@ mobs:register_mob("mobs_mc:lavamedium", {
 
 mobs:register_mob("mobs_mc:lavabig", {
 	type = "monster",
-	pathfinding = false,
+	pathfinding = 1,
 	group_attack = true,
 	hp_min = 16,
 	hp_max = 16,

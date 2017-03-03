@@ -15,6 +15,7 @@ mobs:register_mob("mobs_mc:dog", {
 	hp_max = 6,
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1, 0.4},
 	visual = "mesh",
+	pathfinding = 1,
 	mesh = "mobs_wolf.x",
 	textures = {
 		{"mobs_dog.png"},
