@@ -323,14 +323,20 @@ function awards.unlock(name, award)
 			offset = {x = 30, y = 100},
 			alignment = {x = 0, y = -1}
 		})
+		--[[ We use a statbar instead of image here because statbar allows us to scale the image
+		properly. Note that number is 2, thus leading to a single full image.
+		Yes, it's a hack, but it works for all texture sizes and is needed because the image
+		type does NOT allow us a simple scaling. ]]
 		local four = player:hud_add({
-			hud_elem_type = "image",
+			hud_elem_type = "statbar",
 			name = "award_icon",
-			scale = {x = 4, y = 4},
+			size = {x=64, y = 64},
+			number = 2,
 			text = icon,
 			position = {x = 0.5, y = 0},
-			offset = {x = -81.5, y = 126},
-			alignment = {x = 0, y = -1}
+			offset = {x = -110, y = 62},
+			alignment = {x = 0, y = 0},
+			direction = 0,
 		})
 		minetest.after(3, function()
 			player:hud_remove(one)
