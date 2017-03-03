@@ -85,9 +85,9 @@ for s=1, #specialstones do
 		ore_type       = "blob",
 		ore            = node,
 		wherein        = {"mcl_core:stone"},
-		clust_scarcity = 11*11*11,
-		clust_num_ores = 66,
-		clust_size     = 8,
+		clust_scarcity = 10*10*10,
+		clust_num_ores = 58,
+		clust_size     = 7,
 		y_min          = -500,
 		y_max          = 500,
 	})
