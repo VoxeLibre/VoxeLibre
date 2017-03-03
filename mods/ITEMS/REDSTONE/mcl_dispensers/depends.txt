@@ -1,14 +1,6 @@
 mcl_init
 mesecons
-mcl_core
 mcl_sounds
-mcl_fire
 mcl_tnt
-mcl_heads
-mcl_dye
-mcl_farming
-mcl_minecarts
-mcl_boats
-mobs_mc
-bucket
 3d_armor_stand
+3d_armor
