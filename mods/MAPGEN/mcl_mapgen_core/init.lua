@@ -226,7 +226,7 @@ minetest.register_ore({
 	ore            = "mcl_core:stone_with_iron",
 	wherein        = "mcl_core:stone",
 	clust_scarcity = 1660,
-	clust_num_ores = 3,
+	clust_num_ores = 4,
 	clust_size     = 2,
 	y_min          = -9,
 	y_max          = 1,
