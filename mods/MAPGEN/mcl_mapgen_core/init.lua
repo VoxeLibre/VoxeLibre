@@ -63,8 +63,8 @@ minetest.register_ore({
 	clust_scarcity = 15*15*15,
 	clust_num_ores = 33,
 	clust_size     = 4,
-	y_min          = -500,
-	y_max          = 500,
+	y_min          = mcl_vars.mg_overworld_min,
+	y_max          = mcl_vars.mg_overworld_max,
 })
 
 -- Diorite, andesite and granite
@@ -78,8 +78,8 @@ for s=1, #specialstones do
 		clust_scarcity = 15*15*15,
 		clust_num_ores = 33,
 		clust_size     = 5,
-		y_min          = -500,
-		y_max          = 500,
+		y_min          = mcl_vars.mg_overworld_min,
+		y_max          = mcl_vars.mg_overworld_max,
 	})
 	minetest.register_ore({
 		ore_type       = "blob",
@@ -88,8 +88,8 @@ for s=1, #specialstones do
 		clust_scarcity = 10*10*10,
 		clust_num_ores = 58,
 		clust_size     = 7,
-		y_min          = -500,
-		y_max          = 500,
+		y_min          = mcl_vars.mg_overworld_min,
+		y_max          = mcl_vars.mg_overworld_max,
 	})
 end
 
@@ -104,7 +104,7 @@ minetest.register_ore({
 	clust_num_ores = 5,
 	clust_size     = 3,
 	y_min          = 13,
-	y_max          = 500,
+	y_max          = mcl_vars.mg_overworld_max,
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -133,7 +133,7 @@ minetest.register_ore({
 	clust_scarcity = 1000,
 	clust_num_ores = 7,
 	clust_size     = 4,
-	y_min          = -500,
+	y_min          = mcl_vars.mg_overworld_min,
 	y_max          = -12,
 })
 minetest.register_ore({
@@ -163,7 +163,7 @@ minetest.register_ore({
 	clust_scarcity = 1500,
 	clust_num_ores = 5,
 	clust_size     = 3,
-	y_min          = -500,
+	y_min          = mcl_vars.mg_overworld_min,
 	y_max          = -30,
 })
 minetest.register_ore({
@@ -173,7 +173,7 @@ minetest.register_ore({
 	clust_scarcity = 1000,
 	clust_num_ores = 9,
 	clust_size     = 5,
-	y_min          = -500,
+	y_min          = mcl_vars.mg_overworld_min,
 	y_max          = -30,
 })
 minetest.register_ore({
@@ -183,7 +183,7 @@ minetest.register_ore({
 	clust_scarcity = 2500,
 	clust_num_ores = 10,
 	clust_size     = 4,
-	y_min          = -500,
+	y_min          = mcl_vars.mg_overworld_min,
 	y_max          = -30,
 })
 minetest.register_ore({
@@ -193,7 +193,7 @@ minetest.register_ore({
 	clust_scarcity = 6000,
 	clust_num_ores = 12,
 	clust_size     = 4,
-	y_min          = -500,
+	y_min          = mcl_vars.mg_overworld_min,
 	y_max          = -40,
 })
 
@@ -242,7 +242,7 @@ minetest.register_ore({
 	clust_scarcity = 4775,
 	clust_num_ores = 5,
 	clust_size     = 3,
-	y_min          = -500,
+	y_min          = mcl_vars.mg_overworld_min,
 	y_max          = -32,
 })
 minetest.register_ore({
@@ -252,7 +252,7 @@ minetest.register_ore({
 	clust_scarcity = 6560,
 	clust_num_ores = 7,
 	clust_size     = 2,
-	y_min          = -500,
+	y_min          = mcl_vars.mg_overworld_min,
 	y_max          = -40,
 })
 
@@ -267,7 +267,7 @@ minetest.register_ore({
 	clust_scarcity = 10000,
 	clust_num_ores = 4,
 	clust_size     = 3,
-	y_min          = -500,
+	y_min          = mcl_vars.mg_overworld_min,
 	y_max          = -48,
 })
 minetest.register_ore({
@@ -277,7 +277,7 @@ minetest.register_ore({
 	clust_scarcity = 5000,
 	clust_num_ores = 2,
 	clust_size     = 2,
-	y_min          = -500,
+	y_min          = mcl_vars.mg_overworld_min,
 	y_max          = -48,
 })
 minetest.register_ore({
@@ -287,7 +287,7 @@ minetest.register_ore({
 	clust_scarcity = 10000,
 	clust_num_ores = 8,
 	clust_size     = 3,
-	y_min          = -500,
+	y_min          = mcl_vars.mg_overworld_min,
 	y_max          = -52,
 })
 
@@ -302,7 +302,7 @@ minetest.register_ore({
 	clust_scarcity = 500,
 	clust_num_ores = 4,
 	clust_size     = 3,
-	y_min          = -500,
+	y_min          = mcl_vars.mg_overworld_min,
 	y_max          = -50,
 })
 
@@ -313,7 +313,7 @@ minetest.register_ore({
 	clust_scarcity = 800,
 	clust_num_ores = 7,
 	clust_size     = 4,
-	y_min          = -500,
+	y_min          = mcl_vars.mg_overworld_min,
 	y_max          = -50,
 })
 
@@ -328,7 +328,7 @@ minetest.register_ore({
 	clust_scarcity = 14340,
 	clust_num_ores = 1,
 	clust_size     = 1,
-	y_min          = -500,
+	y_min          = mcl_vars.mg_overworld_min,
 	y_max          = -32,
 })
 
