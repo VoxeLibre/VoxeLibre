@@ -239,22 +239,23 @@ minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "mcl_core:stone_with_gold",
 	wherein        = "mcl_core:stone",
-	clust_scarcity = 5000,
+	clust_scarcity = 4775,
 	clust_num_ores = 5,
 	clust_size     = 3,
-	y_min          = -59,
-	y_max          = -35,
+	y_min          = -500,
+	y_max          = -32,
 })
 minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "mcl_core:stone_with_gold",
 	wherein        = "mcl_core:stone",
-	clust_scarcity = 10000,
-	clust_num_ores = 3,
+	clust_scarcity = 6560,
+	clust_num_ores = 7,
 	clust_size     = 2,
-	y_min          = -35,
-	y_max          = -33,
+	y_min          = -500,
+	y_max          = -40,
 })
+
 
 --
 -- Diamond
