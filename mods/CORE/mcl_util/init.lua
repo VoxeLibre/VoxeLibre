@@ -205,3 +205,26 @@ function mcl_util.is_in_void(pos)
 	return void, void_deadly
 end
 
+-- Here come 2 simple converter functions which are important for map generators and mob spawning
+
+-- Takes an Y coordinate as input and returns:
+-- 1) The corresponding Minecraft layer (can be nil if void)
+-- 2) The corresponding Minecraft dimension ("overworld", "nether" or "end") or "void" if it is in the void
+-- If the Y coordinate is not located in any dimension, it will return:
+--     nil, "void"
+function mcl_util.y_to_layer(y)
+	if y >= mcl_vars.bedrock_overworld_min then
+		return y - mcl_vars.bedrock_overworld_min, "overworld"
+	else
+		return nil, "void"
+	end
+end
+
+-- Takes a Minecraft layer and a “dimension” name
+-- and returns the corresponding Y coordinate for
+-- MineClone 2.
+-- minecraft_dimension parameter is ignored at the moment
+-- TODO: Implement dimensions
+function mcl_util.layer_to_y(layer, minecraft_dimension)
+	return layer + mcl_vars.bedrock_overworld_min
+end
