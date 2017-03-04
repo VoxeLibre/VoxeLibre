@@ -2,6 +2,7 @@ local function spawn_tnt(pos, entname)
 	minetest.sound_play("tnt_ignite", {pos = pos,gain = 1.0,max_hear_distance = 15,})
 	local tnt = minetest.add_entity(pos, entname)
 	tnt:set_armor_groups({immortal=1})
+	return tnt
 end
 
 local function activate_if_tnt(nname, np, tnt_np, tntr)
