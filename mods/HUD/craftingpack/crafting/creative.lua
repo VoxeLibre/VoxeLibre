@@ -212,6 +212,9 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 			-- Survival inventory slots
 			main_list = "image[-0.2,1.7;11.35,2.33;crafting_creative_bg.png]"..
 				"list[current_player;main;0,3.75;9,3;9]"..
+				-- crafting guide button
+				"image_button[9,1;1,1;craftguide_book.png;__mcl_craftguide;]"..
+				"tooltip[__mcl_craftguide;Show crafting recipes]"..
 				-- achievements button
 				"image_button[9,2;1,1;mcl_achievements_button.png;__mcl_achievements;]"..
 				"tooltip[__mcl_achievements;Achievements]"
