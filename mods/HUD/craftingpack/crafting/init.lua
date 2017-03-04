@@ -81,6 +81,9 @@ local function set_inventory(player)
 	-- crafting guide button
 	"image_button[8,0;1,1;craftguide_book.png;__mcl_craftguide;]"..
 	"tooltip[__mcl_craftguide;Show crafting recipes]"..
+	-- achievements button
+	"image_button[8,1;1,1;mcl_achievements_button.png;__mcl_achievements;]"..
+	"tooltip[__mcl_achievements;Achievements]"..
 	-- for shortcuts
 	"listring[current_player;main]"..
 	"listring[current_player;craft]"..

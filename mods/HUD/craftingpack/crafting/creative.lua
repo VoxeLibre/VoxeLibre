@@ -211,7 +211,10 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 		if name == "inv" then
 			-- Survival inventory slots
 			main_list = "image[-0.2,1.7;11.35,2.33;crafting_creative_bg.png]"..
-				"list[current_player;main;0,3.75;9,3;9]"
+				"list[current_player;main;0,3.75;9,3;9]"..
+				-- achievements button
+				"image_button[9,2;1,1;mcl_achievements_button.png;__mcl_achievements;]"..
+				"tooltip[__mcl_achievements;Achievements]"
 		else
 			inv_bg = inv_bg .. "^crafting_inventory_creative_scroll.png"
 			-- Creative inventory slots

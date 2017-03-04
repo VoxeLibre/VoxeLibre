@@ -200,3 +200,11 @@ awards.register_achievement("mcl:f_placeRails", {
 	}
 })
 
+
+-- Show achievements formspec when the button was pressed
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	if fields.__mcl_achievements then
+		local name = player:get_player_name()
+		awards.show_to(name, name, nil, false)
+	end
+end)
