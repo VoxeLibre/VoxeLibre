@@ -563,8 +563,8 @@ end)
 
 
 -- Generate bedrock layer or layers
-local BEDROCK_MIN = mcl_vars.bedrock_overworld_min
-local BEDROCK_MAX = mcl_vars.bedrock_overworld_max
+local BEDROCK_MIN = mcl_vars.mg_bedrock_overworld_min
+local BEDROCK_MAX = mcl_vars.mg_bedrock_overworld_max
 
 -- Below the bedrock, generate air/void
 
@@ -581,7 +581,7 @@ minetest.register_on_generated(function(minp, maxp)
 				for z = minp.z, maxp.z do
 					local p_pos = area:index(x, y, z)
 					local setdata = nil
-					if mcl_vars.bedrock_is_rough then
+					if mcl_vars.mg_bedrock_is_rough then
 						-- Bedrock layers with increasing levels of roughness, until a perfecly flat bedrock later at the bottom layer
 						-- This code assumes a bedrock height of 5 layers.
 						if y == BEDROCK_MAX then

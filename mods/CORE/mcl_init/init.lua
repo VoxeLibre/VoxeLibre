@@ -8,21 +8,29 @@ mcl_vars.gui_bg_img = ""
 
 mcl_vars.inventory_header = mcl_vars.gui_slots .. mcl_vars.gui_bg
 
+-- Mapgen variables
 local mg_name = minetest.get_mapgen_setting("mg_name")
+local minecraft_height_limit = 256
 if mg_name ~= "flat" then
+	mcl_vars.mg_overworld_min = -62
+	mcl_vars.mg_overworld_max = mcl_vars.mg_overworld_min + minecraft_height_limit
+
 	-- 1 flat bedrock layer with 4 rough layers above
-	mcl_vars.bedrock_overworld_min = -62
-	mcl_vars.bedrock_overworld_max = mcl_vars.bedrock_overworld_min + 4
-	mcl_vars.bedrock_is_rough = true
+	mcl_vars.mg_bedrock_overworld_min = mcl_vars.mg_overworld_min
+	mcl_vars.mg_bedrock_overworld_max = mcl_vars.mg_bedrock_overworld_min + 4
+	mcl_vars.mg_bedrock_is_rough = true
 else
-	-- 1 perfectly flat bedrock layer
 	local ground = minetest.get_mapgen_setting("mgflat_ground_level")
 	if not ground then
 		ground = 8
 	end
-	mcl_vars.bedrock_overworld_min = ground - 3
-	mcl_vars.bedrock_overworld_max = mcl_vars.bedrock_overworld_min
-	mcl_vars.bedrock_is_rough = false
+	mcl_vars.mg_overworld_min = ground - 1
+	mcl_vars.mg_overworld_max = mcl_vars.mg_overworld_min + minecraft_height_limit
+
+	-- 1 perfectly flat bedrock layer
+	mcl_vars.mg_bedrock_overworld_min = mcl_vars.mg_overworld_min
+	mcl_vars.mg_bedrock_overworld_max = mcl_vars.mg_bedrock_overworld_min
+	mcl_vars.mg_bedrock_is_rough = false
 end
 
 -- Set default stack sizes

@@ -74,7 +74,7 @@ skycolor = {
 		players = skycolor.utils.get_players(players)
 		for _, player in ipairs(players) do
 			local pos = player:getpos()
-			if pos.y >= mcl_vars.bedrock_overworld_max then
+			if pos.y >= mcl_vars.mg_bedrock_overworld_max then
 				player:set_sky(color, "plain", nil)
 			end
 		end
@@ -112,7 +112,7 @@ skycolor = {
 		local players = skycolor.utils.get_players(nil)
 		for _, player in ipairs(players) do
 			local pos = player:getpos()
-			if pos.y >= mcl_vars.bedrock_overworld_max then
+			if pos.y >= mcl_vars.mg_bedrock_overworld_max then
 				player:set_sky(color, "plain", nil)
 			end
 		end
@@ -125,7 +125,7 @@ skycolor = {
 		local players = skycolor.utils.get_players(players)
 		for _, player in ipairs(players) do
 			local pos = player:getpos()
-			if pos.y >= mcl_vars.bedrock_overworld_max then
+			if pos.y >= mcl_vars.mg_bedrock_overworld_max then
 				player:set_sky(nil, "regular", nil)
 			end
 		end

@@ -200,8 +200,8 @@ end
 -- 2nd return value: true if it is in the deadly part of the void
 function mcl_util.is_in_void(pos)
 	local void, void_deadly
-	void = pos.y < mcl_vars.bedrock_overworld_min
-	void_deadly = pos.y < mcl_vars.bedrock_overworld_min - 65
+	void = pos.y < mcl_vars.mg_overworld_min
+	void_deadly = pos.y < mcl_vars.mg_overworld_min - 64
 	return void, void_deadly
 end
 
@@ -213,8 +213,8 @@ end
 -- If the Y coordinate is not located in any dimension, it will return:
 --     nil, "void"
 function mcl_util.y_to_layer(y)
-	if y >= mcl_vars.bedrock_overworld_min then
-		return y - mcl_vars.bedrock_overworld_min, "overworld"
+	if y >= mcl_vars.mg_overworld_min then
+		return y - mcl_vars.mg_overworld_min, "overworld"
 	else
 		return nil, "void"
 	end
@@ -226,5 +226,5 @@ end
 -- minecraft_dimension parameter is ignored at the moment
 -- TODO: Implement dimensions
 function mcl_util.layer_to_y(layer, minecraft_dimension)
-	return layer + mcl_vars.bedrock_overworld_min
+	return layer + mcl_vars.mg_overworld_min
 end
