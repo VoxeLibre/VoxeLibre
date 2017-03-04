@@ -324,22 +324,11 @@ minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "mcl_core:stone_with_emerald",
 	wherein        = "mcl_core:stone",
-	clust_scarcity = 10000,
+	clust_scarcity = 14340,
 	clust_num_ores = 1,
-	clust_size     = 2,
-	y_min          = -59,
-	y_max          = -35,
-})
-
-minetest.register_ore({
-	ore_type       = "scatter",
-	ore            = "mcl_core:stone_with_emerald",
-	wherein        = "mcl_core:stone",
-	clust_scarcity = 50000,
-	clust_num_ores = 3,
-	clust_size     = 2,
-	y_min          = -59,
-	y_max          = -35,
+	clust_size     = 1,
+	y_min          = -500,
+	y_max          = -32,
 })
 
 --
