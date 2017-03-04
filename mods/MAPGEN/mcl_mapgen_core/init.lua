@@ -298,22 +298,22 @@ minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "mcl_core:stone_with_redstone",
 	wherein        = "mcl_core:stone",
-	clust_scarcity = 10000,
-	clust_num_ores = 5,
+	clust_scarcity = 500,
+	clust_num_ores = 4,
 	clust_size     = 3,
-	y_min          = -59,
-	y_max          = -48,
+	y_min          = -500,
+	y_max          = -50,
 })
 
 minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "mcl_core:stone_with_redstone",
 	wherein        = "mcl_core:stone",
-	clust_scarcity = 10000,
-	clust_num_ores = 10,
+	clust_scarcity = 800,
+	clust_num_ores = 7,
 	clust_size     = 4,
-	y_min          = -59,
-	y_max          = -48,
+	y_min          = -500,
+	y_max          = -50,
 })
 
 --
