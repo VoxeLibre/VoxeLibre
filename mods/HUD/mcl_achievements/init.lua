@@ -134,6 +134,15 @@ awards.register_achievement("mcl:cookFish", {
 	icon = "mcl_fishing_fish_cooked.png",
 })
 
+-- Other achievements triggered outside of mcl_achievements
+
+-- Triggered in mcl_minecarts
+awards.register_achievement("mcl:onARail", {
+	title = S("On A Rail"),
+	description = S("Travel by minecart for at least 1000 meters from your starting point in a single ride."),
+	icon = "default_rail.png",
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 awards.register_achievement("mcl:n_placeDispenser", {
@@ -193,20 +202,6 @@ awards.register_achievement("mcl:n_emeralds", {
 		target = 30,
 	}
 })
-
--- NOT IN MINECRAFT
-
--- Replacement for “On a Rail”
-awards.register_achievement("mcl:f_placeRails", {
-	title = S("Railroad"),
-	icon = "default_rail.png",
-	trigger = {
-		type = "place",
-		node = "mcl_minecarts:rail",
-		target = 1000,
-	}
-})
-
 
 -- Show achievements formspec when the button was pressed
 minetest.register_on_player_receive_fields(function(player, formname, fields)

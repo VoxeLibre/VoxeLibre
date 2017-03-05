@@ -24,6 +24,7 @@ mcl_minecarts.cart = {
 	_driver = nil,
 	_punched = false, -- used to re-send _velocity and position
 	_velocity = {x=0, y=0, z=0}, -- only used on punch
+	_start_pos = nil, -- Used to calculate distance for “On A Rail” achievement
 	_old_dir = {x=0, y=0, z=0},
 	_old_pos = nil,
 	_old_switch = 0,
@@ -37,9 +38,11 @@ function mcl_minecarts.cart:on_rightclick(clicker)
 	local player_name = clicker:get_player_name()
 	if self._driver and player_name == self._driver then
 		self._driver = nil
+		self._start_pos = nil
 		clicker:set_detach()
 	elseif not self._driver then
 		self._driver = player_name
+		self._start_pos = self.object:getpos()
 		mcl_player.player_attached[player_name] = true
 		clicker:set_attach(self.object, "", {x=0, y=3, z=0}, {x=0, y=0, z=0})
 	end
@@ -226,6 +229,11 @@ function mcl_minecarts.cart:on_step(dtime)
 
 	if self._punched then
 		self._punched = false
+	end
+
+	-- Give achievement when player reached a distance of 1000 nodes from the start position
+	if self._driver and (vector.distance(self._start_pos, pos) >= 1000) then
+		awards.unlock(self._driver, "mcl:onARail")
 	end
 	
 	if not (update.vel or update.pos) then
