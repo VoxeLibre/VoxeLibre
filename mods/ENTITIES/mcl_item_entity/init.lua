@@ -14,8 +14,12 @@ item_drop_settings.drop_single_item      = false --if true, the drop control dro
 
 local check_pickup_achievements = function(object, player)
 	local itemname = ItemStack(object:get_luaentity().itemstring):get_name()
-	if itemname == "mcl_mobitems:blaze_rod" then
+	if minetest.get_item_group(itemname, "tree") ~= 0 then
+		awards.unlock(player:get_player_name(), "mcl:mineWood")
+	elseif itemname == "mcl_mobitems:blaze_rod" then
 		awards.unlock(player:get_player_name(), "mcl:blazeRod")
+	elseif itemname == "mcl_mobitems:leather" then
+		awards.unlock(player:get_player_name(), "mcl:killCow")
 	elseif itemname == "mcl_core:diamond" then
 		awards.unlock(player:get_player_name(), "mcl:diamonds")
 	end

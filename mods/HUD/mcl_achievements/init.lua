@@ -17,16 +17,6 @@ awards.register_achievement("mcl_buildWorkBench", {
 		target = 1
 	}
 })
-awards.register_achievement("mcl_mineWood", {
-	title = S("Getting Wood"),
-	description = S("Punch a tree to get oak wood."),
-	icon = "default_tree.png",
-	trigger = {
-		type = "dig",
-		node = "mcl_core:tree",
-		target = 1
-	}
-})
 awards.register_achievement("mcl:buildPickaxe", {
 	title = S("Time to Mine!"),
 	description = S("Use a crafting table to craft a wooden pickaxe from wooden planks and sticks."),
@@ -107,12 +97,6 @@ awards.register_achievement("mcl:buildSword", {
 	}
 })
 
-awards.register_achievement("mcl:diamonds", {
-	title = S("DIAMONDS!"),
-	description = S("Pick up a diamond from the floor."),
-	icon = "default_stone.png^default_mineral_diamond.png",
-})
-
 awards.register_achievement("mcl:bookcase", {
 	title = S("Librarian"),
 	icon = "default_bookshelf.png",
@@ -123,10 +107,28 @@ awards.register_achievement("mcl:bookcase", {
 	}
 })
 
+-- Item pickup achievements: These are awarded when picking up a certain item.
+-- The achivements are manually given in the mod mcl_item_entity.
+awards.register_achievement("mcl:diamonds", {
+	title = S("DIAMONDS!"),
+	description = S("Pick up a diamond from the floor."),
+	icon = "default_stone.png^default_mineral_diamond.png",
+})
 awards.register_achievement("mcl:blazeRod", {
 	title = S("Into Fire"),
 	description = S("Pick up a blaze rod from the floor."),
 	icon = "mcl_mobitems_blaze_rod.png",
+})
+
+awards.register_achievement("mcl:killCow", {
+	title = S("Cow Tipper"),
+	description = S("Pick up leather from the floor."),
+	icon = "mcl_mobitems_leather.png",
+})
+awards.register_achievement("mcl:mineWood", {
+	title = S("Getting Wood"),
+	description = S("Pick up a wood item from the ground.\nHint: Punch a tree trunk until it pops out as an item."),
+	icon = "default_tree.png",
 })
 
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
