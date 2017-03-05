@@ -96,116 +96,101 @@ end
 --
 -- Coal
 --
+
+-- Common spawn
 minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "mcl_core:stone_with_coal",
 	wherein        = "mcl_core:stone",
-	clust_scarcity = 500,
-	clust_num_ores = 5,
-	clust_size     = 3,
-	y_min          = mcl_util.layer_to_y(75),
-	y_max          = mcl_vars.mg_overworld_max,
-})
-minetest.register_ore({
-	ore_type       = "scatter",
-	ore            = "mcl_core:stone_with_coal",
-	wherein        = "mcl_core:stone",
-	clust_scarcity = 500,
-	clust_num_ores = 8,
-	clust_size     = 3,
-	y_min          = mcl_utils.layer_to_y(50),
-	y_max          = mcl_utils.layer_to_y(74),
-})
-minetest.register_ore({
-	ore_type       = "scatter",
-	ore            = "mcl_core:stone_with_coal",
-	wherein        = "mcl_core:stone",
-	clust_scarcity = 1000,
-	clust_num_ores = 6,
-	clust_size     = 3,
-	y_min          = mcl_utils.layer_to_y(2),
-	y_max          = mcl_utils.layer_to_y(51),
-})
-minetest.register_ore({
-	ore_type       = "scatter",
-	ore            = "mcl_core:stone_with_coal",
-	wherein        = "mcl_core:stone",
-	clust_scarcity = 1000,
-	clust_num_ores = 7,
-	clust_size     = 4,
-	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_utils.layer_to_y(50),
-})
-minetest.register_ore({
-	ore_type       = "scatter",
-	ore            = "mcl_core:stone_with_coal",
-	wherein        = "mcl_core:stone",
-	clust_scarcity = 1000,
-	clust_num_ores = 8,
-	clust_size     = 4,
-	y_min          = mcl_utils.layer_to_y(32),
-	y_max          = mcl_utils.layer_to_y(50),
-})
-minetest.register_ore({
-	ore_type       = "scatter",
-	ore            = "mcl_core:stone_with_coal",
-	wherein        = "mcl_core:stone",
-	clust_scarcity = 5000,
-	clust_num_ores = 9,
-	clust_size     = 4,
-	y_min          = mcl_utils.layer_to_y(32),
-	y_max          = mcl_utils.layer_to_y(50),
-})
-minetest.register_ore({
-	ore_type       = "scatter",
-	ore            = "mcl_core:stone_with_coal",
-	wherein        = "mcl_core:stone",
-	clust_scarcity = 1500,
+	clust_scarcity = 525*3,
 	clust_num_ores = 5,
 	clust_size     = 3,
 	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_utils.layer_to_y(32),
+	y_max          = mcl_util.layer_to_y(50),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "mcl_core:stone_with_coal",
 	wherein        = "mcl_core:stone",
-	clust_scarcity = 1000,
-	clust_num_ores = 9,
-	clust_size     = 5,
+	clust_scarcity = 510*3,
+	clust_num_ores = 8,
+	clust_size     = 3,
 	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_utils.layer_to_y(32),
+	y_max          = mcl_util.layer_to_y(50),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "mcl_core:stone_with_coal",
 	wherein        = "mcl_core:stone",
-	clust_scarcity = 2500,
-	clust_num_ores = 10,
-	clust_size     = 4,
-	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_utils.layer_to_y(32),
-})
-minetest.register_ore({
-	ore_type       = "scatter",
-	ore            = "mcl_core:stone_with_coal",
-	wherein        = "mcl_core:stone",
-	clust_scarcity = 6000,
+	clust_scarcity = 500*3,
 	clust_num_ores = 12,
-	clust_size     = 4,
+	clust_size     = 3,
 	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_utils.layer_to_y(22),
+	y_max          = mcl_util.layer_to_y(50),
 })
 
+-- Medium-rare spawn
 minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "mcl_core:stone_with_coal",
 	wherein        = "mcl_core:stone",
-	clust_scarcity = 5000,
+	clust_scarcity = 550*3,
+	clust_num_ores = 4,
+	clust_size     = 2,
+	y_min          = mcl_util.layer_to_y(51),
+	y_max          = mcl_util.layer_to_y(80),
+})
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "mcl_core:stone_with_coal",
+	wherein        = "mcl_core:stone",
+	clust_scarcity = 525*3,
+	clust_num_ores = 6,
+	clust_size     = 3,
+	y_min          = mcl_util.layer_to_y(51),
+	y_max          = mcl_util.layer_to_y(80),
+})
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "mcl_core:stone_with_coal",
+	wherein        = "mcl_core:stone",
+	clust_scarcity = 500*3,
+	clust_num_ores = 8,
+	clust_size     = 3,
+	y_min          = mcl_util.layer_to_y(51),
+	y_max          = mcl_util.layer_to_y(80),
+})
+
+-- Rare spawn
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "mcl_core:stone_with_coal",
+	wherein        = "mcl_core:stone",
+	clust_scarcity = 600*3,
+	clust_num_ores = 3,
+	clust_size     = 2,
+	y_min          = mcl_util.layer_to_y(81),
+	y_max          = mcl_util.layer_to_y(128),
+})
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "mcl_core:stone_with_coal",
+	wherein        = "mcl_core:stone",
+	clust_scarcity = 550*3,
 	clust_num_ores = 4,
 	clust_size     = 3,
-	y_min          = mcl_utils.layer_to_y(84),
-	y_max          = mcl_utils.layer_to_y(112),
+	y_min          = mcl_util.layer_to_y(81),
+	y_max          = mcl_util.layer_to_y(128),
+})
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "mcl_core:stone_with_coal",
+	wherein        = "mcl_core:stone",
+	clust_scarcity = 500*3,
+	clust_num_ores = 5,
+	clust_size     = 3,
+	y_min          = mcl_util.layer_to_y(81),
+	y_max          = mcl_util.layer_to_y(128),
 })
 
 --
@@ -368,16 +353,15 @@ minetest.register_ore({
 	y_min          = mcl_util.layer_to_y(13),
 	y_max          = mcl_util.layer_to_y(15),
 })
-
 minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "mcl_core:stone_with_redstone",
 	wherein        = "mcl_core:stone",
-	clust_scarcity = 800,
+	clust_scarcity = 1600,
 	clust_num_ores = 7,
 	clust_size     = 4,
-	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_util.layer_to_y(13),
+	y_min          = mcl_util.layer_to_y(13),
+	y_max          = mcl_util.layer_to_y(15),
 })
 
 --
