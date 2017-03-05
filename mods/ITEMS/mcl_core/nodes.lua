@@ -1208,9 +1208,6 @@ minetest.register_node("mcl_core:ladder", {
 			if idef.sounds and idef.sounds.place then
 				minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
 			end
-			if not minetest.setting_getbool("creative_mode") then
-				itemstack:take_item()
-			end
 		end
 		return itemstack
 	end,
