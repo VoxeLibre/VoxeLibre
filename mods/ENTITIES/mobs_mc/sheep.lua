@@ -104,7 +104,6 @@ mobs:register_mob("mobs_mc:sheep", {
 				self.color = colors["brown"][1]
 				textures = colors["brown"][2]
 			else
-				-- FIXME: Pink sheem seem to spawn never
 				-- 0.164%
 				self.color = colors["pink"][1]
 				textures = colors["pink"][2]
