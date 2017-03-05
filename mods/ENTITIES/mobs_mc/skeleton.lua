@@ -8,8 +8,8 @@
 
 mobs:register_mob("mobs_mc:skeleton", {
 	type = "monster",
-	hp_min = 30,
-	hp_max = 30,
+	hp_min = 20,
+	hp_max = 20,
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.9, 0.4},
 	pathfinding = 1,
 	group_attack = true,
@@ -27,7 +27,7 @@ mobs:register_mob("mobs_mc:skeleton", {
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
 	damage = 1,
-	armor = 200,
+	armor = 100,
 	drops = {
 		{name = "mcl_throwing:arrow",
 		chance = 1,
@@ -73,14 +73,18 @@ mobs:register_spawn("mobs_mc:skeleton", {"group:solid"}, 7, -1, 5000, 4, 31000)
 
 mobs:register_mob("mobs_mc:skeleton2", {
 	type = "monster",
-	hp_max = 60,
-	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.9, 0.4},
+	hp_min = 20,
+	hp_max = 20,
+	collisionbox = {-0.3, -1.0, -0.3, 0.3, 0.8, 0.3},
 	pathfinding = 1,
-	group_attack = true,
+	group_attack = false,
 	visual = "mesh",
-	mesh = "mobs_skeleton.x",
+	mesh = "3d_armor_character.b3d",
 	textures = {
-	{"mobs_skeleton2.png"}
+		{"mobs_skeleton2.png",
+		"3d_armor_trans.png",
+		minetest.registered_items["mcl_tools:sword_stone"].inventory_image,
+		},
 	},
 	makes_footstep_sound = true,
 	sounds = {
@@ -90,8 +94,8 @@ mobs:register_mob("mobs_mc:skeleton2", {
 	},
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
-	damage = 3,
-	armor = 200,
+	damage = 7,
+	armor = 100,
 	drops = {
 		{name = "mcl_core:coal_lump",
 		chance = 1,
@@ -107,34 +111,18 @@ mobs:register_mob("mobs_mc:skeleton2", {
 		max = 1,},
 	},
 	animation = {
-		speed_normal = 30,
-		speed_run = 60,
-		stand_start = 0,
-		stand_end = 23,
-		walk_start = 24,
-		walk_end = 49,
-		run_start = 24,
-		run_end = 49,
-		hurt_start = 85,
-		hurt_end = 115,
-		death_start = 117,
-		death_end = 145,
-		shoot_start = 50,
-		shoot_end = 82,
+		speed_normal = 30,		speed_run = 30,
+		stand_start = 0,		stand_end = 79,
+		walk_start = 168,		walk_end = 187,
+		run_start = 168,		run_end = 187,
+		punch_start = 200,		punch_end = 219,
 	},
 	drawtype = "front",
 	water_damage = 1,
 	lava_damage = 0,
 	light_damage = 0,
 	view_range = 16,
-	attack_type = "dogshoot",
-	arrow = "mcl_throwing:arrow_entity",
-	shoot_interval = 0.5,
-	shoot_offset = 1,
-	--'dogshoot_switch' allows switching between shoot and dogfight modes inside dogshoot using timer (1 = shoot, 2 = dogfight)
-	--'dogshoot_count_max' number of seconds before switching above modes.
-	dogshoot_switch = 1,
-	dogshoot_count_max =6,
+	attack_type = "dogfight",
 })
 mobs:register_spawn("mobs_mc:skeleton2", {"group:solid"}, 7, -1, 5000, 4, -3000)
 
