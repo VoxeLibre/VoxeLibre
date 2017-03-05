@@ -113,6 +113,17 @@ local function allow_metadata_inventory_take(pos, listname, index, stack, player
 	return stack:get_count()
 end
 
+local function on_metadata_inventory_take(pos, listname, index, stack, player)
+	-- Award smelting achievements
+	if listname == "dst" then
+		if stack:get_name() == "mcl_core:iron_ingot" then
+			awards.unlock(player:get_player_name(), "mcl:acquireIron")
+		elseif stack:get_name() == "mcl_fishing:fish_cooked" then
+			awards.unlock(player:get_player_name(), "mcl:cookFish")
+		end
+	end
+end
+
 local function swap_node(pos, name)
 	local node = minetest.get_node(pos)
 	if node.name == name then
@@ -296,6 +307,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
+	on_metadata_inventory_take = on_metadata_inventory_take,
 	on_receive_fields = craftguide,
 	_mcl_blast_resistance = 17.5,
 	_mcl_hardness = 3.5,
@@ -336,6 +348,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
+	on_metadata_inventory_take = on_metadata_inventory_take,
 	on_receive_fields = craftguide,
 	_mcl_blast_resistance = 17.5,
 	_mcl_hardness = 3.5,

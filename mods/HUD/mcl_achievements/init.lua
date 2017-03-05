@@ -57,16 +57,6 @@ awards.register_achievement("mcl:makeBread", {
 		target = 1
 	}
 })
-awards.register_achievement("mcl:cookFish", {
-	title = S("Delicious Fish"),
-	description = S("Catch a fish, cook it in the furnace and eat it."),
-	icon = "mcl_fishing_fish_cooked.png",
-	trigger = {
-		type = "eat",
-		item = "mcl_fishing:fish_cooked",
-		target = 1
-	}
-})
 
 awards.register_achievement("mcl:bakeCake", {
 	title = S("The Lie"),
@@ -129,6 +119,19 @@ awards.register_achievement("mcl:mineWood", {
 	title = S("Getting Wood"),
 	description = S("Pick up a wood item from the ground.\nHint: Punch a tree trunk until it pops out as an item."),
 	icon = "default_tree.png",
+})
+
+-- Smelting achivements: These are awarded when picking up an item from a furnace
+-- output. They are given in mcl_furnaces.
+awards.register_achievement("mcl:acquireIron", {
+	title = S("Aquire Hardware"),
+	description = S("Take an iron ingot from a furnace's output slot.\nHint: To smelt an iron ingot, put a fuel (like coal) and iron ore into a furnace."),
+	icon = "default_steel_ingot.png",
+})
+awards.register_achievement("mcl:cookFish", {
+	title = S("Delicious Fish"),
+	description = S("Take a cooked fish from a furnace.\nHint: Use a fishing rod to catch a fish and cook it in a furnace."),
+	icon = "mcl_fishing_fish_cooked.png",
 })
 
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
