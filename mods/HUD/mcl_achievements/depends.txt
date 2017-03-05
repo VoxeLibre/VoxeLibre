@@ -4,4 +4,5 @@ mcl_core
 mcl_cake
 mcl_mobitems
 mcl_flowerpots
+mcl_dispensers
 intllib?
