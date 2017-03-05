@@ -12,6 +12,14 @@ item_drop_settings.random_item_velocity  = true --this sets random item velocity
 item_drop_settings.drop_single_item      = false --if true, the drop control drops 1 item instead of the entire stack, and sneak+drop drops the stack
 -- drop_single_item is disabled by default because it is annoying to throw away items from the intentory screen
 
+local check_pickup_achievements = function(object, player)
+	local itemname = ItemStack(object:get_luaentity().itemstring):get_name()
+	if itemname == "mcl_mobitems:blaze_rod" then
+		awards.unlock(player:get_player_name(), "mcl:blazeRod")
+	elseif itemname == "mcl_core:diamond" then
+		awards.unlock(player:get_player_name(), "mcl:diamonds")
+	end
+end
 
 minetest.register_globalstep(function(dtime)
 	for _,player in ipairs(minetest.get_connected_players()) do
@@ -33,6 +41,7 @@ minetest.register_globalstep(function(dtime)
 									max_hear_distance = 100,
 									gain = 10.0,
 								})
+								check_pickup_achievements(object, player)
 								object:get_luaentity().itemstring = ""
 								object:remove()
 							end
@@ -92,6 +101,7 @@ minetest.register_globalstep(function(dtime)
 													gain = 10.0,
 												})
 											end
+											check_pickup_achievements(object, player)
 											object:get_luaentity().itemstring = ""
 											object:remove()
 										else

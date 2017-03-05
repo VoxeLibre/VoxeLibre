@@ -109,13 +109,10 @@ awards.register_achievement("mcl:buildSword", {
 
 awards.register_achievement("mcl:diamonds", {
 	title = S("DIAMONDS!"),
+	description = S("Pick up a diamond from the floor."),
 	icon = "default_stone.png^default_mineral_diamond.png",
-	trigger = {
-		type = "dig",
-		node = "mcl_core:stone_with_diamond",
-		target = 1
-	}
 })
+
 awards.register_achievement("mcl:bookcase", {
 	title = S("Librarian"),
 	icon = "default_bookshelf.png",
@@ -126,6 +123,11 @@ awards.register_achievement("mcl:bookcase", {
 	}
 })
 
+awards.register_achievement("mcl:blazeRod", {
+	title = S("Into Fire"),
+	description = S("Pick up a blaze rod from the floor."),
+	icon = "mcl_mobitems_blaze_rod.png",
+})
 
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
