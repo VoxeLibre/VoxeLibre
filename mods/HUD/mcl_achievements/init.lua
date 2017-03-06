@@ -70,6 +70,8 @@ awards.register_achievement("mcl:bakeCake", {
 })
 awards.register_achievement("mcl:buildBetterPickaxe", {
 	title = S("Getting an Upgrade"),
+	-- TODO: This achievement should support all non-wood pickaxes
+	description = S("Craft a stone pickaxe using sticks and cobblestone."),
 	icon = "default_tool_stonepick.png",
 	trigger = {
 		type = "craft",
@@ -79,6 +81,7 @@ awards.register_achievement("mcl:buildBetterPickaxe", {
 })
 awards.register_achievement("mcl:buildSword", {
 	title = S("Time to Strike!"),
+	description = S("Craft a wooden sword using wooden planks and sticks on a crafting table."),
 	icon = "default_tool_woodsword.png",
 	trigger = {
 		type = "craft",
@@ -89,6 +92,7 @@ awards.register_achievement("mcl:buildSword", {
 
 awards.register_achievement("mcl:bookcase", {
 	title = S("Librarian"),
+	description = S("Craft a bookshelf."),
 	icon = "default_bookshelf.png",
 	trigger = {
 		type = "craft",
@@ -106,7 +110,7 @@ awards.register_achievement("mcl:diamonds", {
 })
 awards.register_achievement("mcl:blazeRod", {
 	title = S("Into Fire"),
-	description = S("Pick up a blaze rod from the floor."),
+	description = S("Pick up a blaze rod from the floor.\nHint: Blaze rods can be crafted in this alpha version of MineClone 2."),
 	icon = "mcl_mobitems_blaze_rod.png",
 })
 
@@ -166,6 +170,7 @@ awards.register_achievement("mcl:n_placeDispenser", {
 
 awards.register_achievement("mcl:n_eatPorkchop", {
 	title = S("Pork Chop"),
+	description = S("Eat a cooked porkchop."),
 	icon = "mcl_mobitems_porkchop_cooked.png",
 	trigger = {
 		type = "eat",
@@ -176,6 +181,7 @@ awards.register_achievement("mcl:n_eatPorkchop", {
 awards.register_achievement("mcl:n_eatRabbit", {
 	title = S("Rabbit Season"),
 	icon = "mcl_mobitems_rabbit_cooked.png",
+	description = S("Eat a cooked rabbit."),
 	trigger = {
 		type = "eat",
 		item= "mcl_mobitems:cooked_rabbit",
@@ -194,6 +200,7 @@ awards.register_achievement("mcl:n_eatRottenFlesh", {
 })
 awards.register_achievement("mcl:n_placeFlowerpot", {
 	title = S("Pot Planter"),
+	description = S("Place a flower pot."),
 	icon = "mcl_flowerpots_flowerpot_inventory.png",
 	trigger = {
 		type = "place",
@@ -204,6 +211,8 @@ awards.register_achievement("mcl:n_placeFlowerpot", {
 
 awards.register_achievement("mcl:n_emeralds", {
 	title = S("The Haggler"),
+	-- TODO: Should also count emeralds bought from villagers
+	description = S("Mine 30 emerald ore."),
 	icon = "default_emerald.png",
 	trigger = {
 		type = "dig",
