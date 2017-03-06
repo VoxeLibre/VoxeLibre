@@ -52,12 +52,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_throwing:ender_pearl",
-	recipe = { "mcl_core:emeraldblock", "mcl_core:diamondblock", "mcl_core:goldblock", }
-})
-
-minetest.register_craft({
 	output = "mcl_mobitems:blaze_rod",
 	recipe = {
 		 { "mcl_fire:flint_and_steel", "mcl_fire:flint_and_steel", "mcl_fire:flint_and_steel"},
