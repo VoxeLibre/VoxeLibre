@@ -23,6 +23,7 @@ mcl_throwing.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, d
 	local le = obj:get_luaentity()
 	le._shooter = shooter
 	le._damage = damage
+	le._startpos = pos
 	minetest.sound_play("mcl_throwing_bow_shoot", {pos=pos})
 	if shooter ~= nil then
 		if obj:get_luaentity().player == "" then

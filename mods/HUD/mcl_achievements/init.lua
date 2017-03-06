@@ -143,10 +143,19 @@ awards.register_achievement("mcl:onARail", {
 	icon = "default_rail.png",
 })
 
+-- Triggered in mcl_throwing
+awards.register_achievement("mcl:snipeSkeleton", {
+	title = S("Sniper Duel"),
+	-- TODO: This achievement should be for killing, not hitting
+	description = S("Hit a skeleton, wither skeleton or stray by bow and arrow from a distance of at least 50 meters."),
+	icon = "mcl_throwing_bow.png",
+})
+
 -- NON-PC ACHIEVEMENTS (XBox, Pocket Edition, etc.)
 
 awards.register_achievement("mcl:n_placeDispenser", {
 	title = S("Dispense With This"),
+	description = S("Place a dispenser."),
 	icon = "mcl_dispensers_dispenser_front_horizontal.png",
 	trigger = {
 		type = "place",

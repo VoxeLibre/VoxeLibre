@@ -40,6 +40,7 @@ local THROWING_ARROW_ENTITY={
 
 	_timer=0,
 	_lastpos={},
+	_startpos=nil,
 	_damage=1,	-- Damage on impact
 	_shooter=nil,	-- ObjectRef of player or mob who shot it
 }
@@ -53,11 +54,20 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)
 		for k, obj in pairs(objs) do
 			if obj:get_luaentity() ~= nil then
-				if obj ~= self._shooter and obj:get_luaentity().name ~= "mcl_throwing:arrow_entity" and obj:get_luaentity().name ~= "__builtin:item" then
+				local entity_name = obj:get_luaentity().name
+				if obj ~= self._shooter and entity_name ~= "mcl_throwing:arrow_entity" and entity_name ~= "__builtin:item" then
 					obj:punch(self.object, 1.0, {
 						full_punch_interval=1.0,
 						damage_groups={fleshy=self._damage},
 					}, nil)
+
+					-- Achievement for hitting skeleton, wither skeleton or stray (TODO) with an arrow at least 50 meters away
+					-- TODO: This achievement should be given for the kill, not just a hit
+					if self._shooter and self._shooter:is_player() and vector.distance(pos, self._startpos) >= 50 then
+						if (entity_name == "mobs_mc:skeleton" or entity_name == "mobs_mc:skeleton2") then
+							awards.unlock(self._shooter:get_player_name(), "mcl:snipeSkeleton")
+						end
+					end
 					self.object:remove()
 				end
 			elseif obj ~= self._shooter then
