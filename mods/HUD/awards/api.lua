@@ -210,8 +210,8 @@ function awards.unlock(name, award)
 		return
 	end
 
-	-- Unlock Award
-	minetest.log("action", name.." has unlocked award "..name)
+	-- Get award
+	minetest.log("action", name.." has gotten award "..name)
 	data.unlocked[award] = award
 	awards.save()
 
@@ -251,9 +251,9 @@ function awards.unlock(name, award)
 	local custom_announce = awdef.custom_announce
 	if not custom_announce then
 		if awdef.secret then
-			custom_announce = S("Secret Achievement Unlocked:")
+			custom_announce = S("Secret achievement gotten:")
 		else
-			custom_announce = S("Achievement Unlocked:")
+			custom_announce = S("Achievement gotten:")
 		end
 	end
 
@@ -277,9 +277,9 @@ function awards.unlock(name, award)
 	elseif awards.show_mode == "chat" then
 		local chat_announce
 		if awdef.secret == true then
-			chat_announce = S("Secret Achievement Unlocked: %s")
+			chat_announce = S("Secret achievement gotten: %s")
 		else
-			chat_announce = S("Achievement Unlocked: %s")
+			chat_announce = S("Achievement gotten: %s")
 		end
 		-- use the chat console to send it
 		minetest.chat_send_player(name, string.format(chat_announce, title))
@@ -299,9 +299,9 @@ function awards.unlock(name, award)
 		})
 		local hud_announce
 		if awdef.secret == true then
-			hud_announce = S("Secret Achievement Unlocked!")
+			hud_announce = S("Secret achievement gotten!")
 		else
-			hud_announce = S("Achievement Unlocked!")
+			hud_announce = S("Achievement gotten!")
 		end
 		local two = player:hud_add({
 			hud_elem_type = "text",
@@ -375,10 +375,10 @@ function awards.getFormspec(name, to, sid)
 		local def = awards.def[item.name]
 
 		if def and def.secret and not item.got then
-			formspec = formspec .. "label[1,2.75;"..minetest.formspec_escape(S("(Secret Award)")).."]"..
+			formspec = formspec .. "label[1,2.75;"..minetest.formspec_escape(S("(Secret achievement)")).."]"..
 								"image[1,0;3,3;awards_unknown.png]"
 			if def and def.description then
-				formspec = formspec	.. "textarea[0.25,3.25;4.8,1.7;;"..minetest.formspec_escape(S("Unlock this award to find out what it is."))..";]"
+				formspec = formspec	.. "textarea[0.25,3.25;4.8,1.7;;"..minetest.formspec_escape(S("Get this achievement to find out what it is."))..";]"
 			end
 		else
 			local title = item.name
@@ -462,7 +462,7 @@ function awards.show_to(name, to, sid, text)
 			minetest.chat_send_player(to, S("Error: No awards available."))
 			return
 		elseif not awards.players[name] or not awards.players[name].unlocked  then
-			minetest.chat_send_player(to, S("You have not unlocked any awards."))
+			minetest.chat_send_player(to, S("You have not gotten any awards."))
 			return
 		end
 		minetest.chat_send_player(to, string.format(S("%s’s awards:"), name))
