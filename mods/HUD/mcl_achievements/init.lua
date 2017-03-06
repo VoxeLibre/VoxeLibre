@@ -110,7 +110,7 @@ awards.register_achievement("mcl:diamonds", {
 })
 awards.register_achievement("mcl:blazeRod", {
 	title = S("Into Fire"),
-	description = S("Pick up a blaze rod from the floor.\nHint: Blaze rods can be crafted in this alpha version of MineClone 2."),
+	description = S("Pick up a blaze rod from the floor."),
 	icon = "mcl_mobitems_blaze_rod.png",
 })
 
