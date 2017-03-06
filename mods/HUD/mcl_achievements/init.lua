@@ -112,7 +112,7 @@ awards.register_achievement("mcl:blazeRod", {
 
 awards.register_achievement("mcl:killCow", {
 	title = S("Cow Tipper"),
-	description = S("Pick up leather from the floor."),
+	description = S("Pick up leather from the floor.\nHint: Cows and some other animals have a chance to drop leather, when killed."),
 	icon = "mcl_mobitems_leather.png",
 })
 awards.register_achievement("mcl:mineWood", {
