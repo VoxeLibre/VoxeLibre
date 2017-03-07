@@ -1268,22 +1268,9 @@ minetest.register_node("mcl_core:vine", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	drop = "",
 	after_dig_node = function(pos, oldnode, oldmetadata, user)
-	local item = user:get_wielded_item()
-		if item:get_name() == "mcl_core:shears" then 
+		local item = user:get_wielded_item()
+		if item:get_name() == "mcl_tools:shears" then
 			user:get_inventory():add_item("main", ItemStack(oldnode.name))
-		end
-		local next_find = true
-		local ptr = 1
-		while next_find == true do 
-			local pos2 = {x=pos.x, y=pos.y-ptr, z=pos.z}
-			local node = minetest.get_node(pos2)
-			if node.name == "mcl_core:vine" and check_attached_node(pos2, node) == false then
-				drop_attached_node(pos2)
-				core.check_for_falling(pos2)
-				ptr = ptr + 1
-			else
-				next_find = false
-			end
 		end
 	end,
 	_mcl_blast_resistance = 1,
@@ -1604,8 +1591,8 @@ minetest.register_node("mcl_core:tallgrass", {
 	groups = {dig_immediate=3, flammable=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	after_dig_node = function(pos, oldnode, oldmetadata, user)
-	local item = user:get_wielded_item()
-		if item:get_name() == "mcl_core:shears" then 
+		local item = user:get_wielded_item()
+		if item:get_name() == "mcl_tools:shears" then
 			user:get_inventory():add_item("main", ItemStack(oldnode.name))
 		end
 	end,
