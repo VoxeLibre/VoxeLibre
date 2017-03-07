@@ -612,6 +612,7 @@ minetest.register_node("mcl_core:sapling", {
 minetest.register_node("mcl_core:leaves", {
 	description = "Oak Leaves",
 	drawtype = "allfaces_optional",
+	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	visual_scale = 1.3,
 	tiles = {"default_leaves.png"},
 	paramtype = "light",
@@ -688,6 +689,7 @@ minetest.register_node("mcl_core:darksapling", {
 minetest.register_node("mcl_core:darkleaves", {
 	description = "Dark Oak Leaves",
 	drawtype = "allfaces_optional",
+	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	visual_scale = 1.3,
 	tiles = {"default_leaves_big_oak.png"},
 	paramtype = "light",
@@ -774,6 +776,7 @@ minetest.register_node("mcl_core:junglewood", {
 minetest.register_node("mcl_core:jungleleaves", {
 	description = "Jungle Leaves",
 	drawtype = "allfaces_optional",
+	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	visual_scale = 1.3,
 	tiles = {"default_jungleleaves.png"},
 	paramtype = "light",
@@ -796,6 +799,7 @@ minetest.register_node("mcl_core:jungleleaves", {
 minetest.register_node("mcl_core:junglesapling", {
 	description = "Jungle Sapling",
 	drawtype = "plantlike",
+	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	visual_scale = 1.0,
 	tiles = {"default_junglesapling.png"},
 	inventory_image = "default_junglesapling.png",
@@ -846,6 +850,7 @@ minetest.register_node("mcl_core:acaciawood", {
 minetest.register_node("mcl_core:acacialeaves", {
 	description = "Acacia Leaves",
 	drawtype = "allfaces_optional",
+	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	visual_scale = 1.3,
 	tiles = {"default_acacialeaves.png"},
 	paramtype = "light",
@@ -917,6 +922,7 @@ minetest.register_node("mcl_core:sprucewood", {
 minetest.register_node("mcl_core:spruceleaves", {
 	description = "Spruce Leaves",
 	drawtype = "allfaces_optional",
+	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	visual_scale = 1.3,
 	tiles = {"default_spruceleaves.png"},
 	paramtype = "light",
@@ -994,6 +1000,7 @@ minetest.register_node("mcl_core:birchwood", {
 minetest.register_node("mcl_core:birchleaves", {
 	description = "Birch Leaves",
 	drawtype = "allfaces_optional",
+	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	visual_scale = 1.3,
 	tiles = {"default_leaves_birch.png"},
 	paramtype = "light",

@@ -518,16 +518,15 @@ minetest.register_abm({
 	chance = 5,
 
 	action = function(p0, node, _, _)
-		--print("leafdecay ABM at "..p0.x..", "..p0.y..", "..p0.z..")")
 		local do_preserve = false
 		local d = minetest.registered_nodes[node.name].groups.leafdecay
 		if not d or d == 0 then
-			--print("not groups.leafdecay")
 			return
 		end
 		local n0 = minetest.get_node(p0)
 		if n0.param2 ~= 0 then
-			--print("param2 ~= 0")
+			-- Prevent leafdecay for player-placed leaves.
+			-- param2 is set to 1 after it was placed by the player
 			return
 		end
 		local p0_hash = nil
@@ -539,10 +538,8 @@ minetest.register_abm({
 				local reg = minetest.registered_nodes[n.name]
 				-- Assume ignore is a trunk, to make the thing work at the border of the active area
 				if n.name == "ignore" or (reg and reg.groups.tree and reg.groups.tree ~= 0) then
-					--print("cached trunk still exists")
 					return
 				end
-				--print("cached trunk is invalid")
 				-- Cache is invalid
 				table.remove(mcl_core.leafdecay_trunk_cache, p0_hash)
 			end
@@ -557,7 +554,6 @@ minetest.register_abm({
 		if p1 then
 			do_preserve = true
 			if mcl_core.leafdecay_enable_cache then
-				--print("caching trunk")
 				-- Cache the trunk
 				mcl_core.leafdecay_trunk_cache[p0_hash] = p1
 			end
