@@ -334,8 +334,8 @@ function mcl_core.generate_tree(pos, trunk, leaves, typearbre)
 		-- make leaves
 		node = {name = leaves}
 		pos.y = pos.y+tree_size-4
-		for dx=-5,5 do
-			for dz=-5,5 do
+		for dx=-4,4 do
+			for dz=-4,4 do
 				for dy=0,3 do
 					pos.x = pos.x+dx
 					pos.y = pos.y+dy
