@@ -39,7 +39,6 @@ mobs:register_mob("mobs_mc:chicken", {
 	fall_damage = false,
 	fear_height = 4,
 	jump_height = 4.5,
-	floats = true,
 	sounds = {
 		random = "mobs_chicken",
 		death = "Chickenhurt1",
