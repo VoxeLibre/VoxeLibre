@@ -3,7 +3,7 @@ local init = os.clock()
 local block = {}
 
 block.dyes = {
-	{"white",      "White",      "white"},
+	{"white",      "White",      "white", true},
 	{"grey",       "Grey",       "dark_grey"},
 	{"silver",     "Light Grey", "grey"},
 	{"black",      "Black",      "black"},
@@ -18,7 +18,7 @@ block.dyes = {
 	{"brown",      "Brown",      "brown"},
 	{"pink",       "Pink",       "pink"},
 	{"lime",       "Lime",       "green"},
-	{"light_blue", "Light Blue", "lightblue"},
+	{"light_blue", "Light Blue", "lightblue", true},
 }
 
 minetest.register_node("mcl_colorblocks:hardened_clay", {
