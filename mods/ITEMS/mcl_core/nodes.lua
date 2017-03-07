@@ -601,6 +601,10 @@ minetest.register_node("mcl_core:sapling", {
 	stack_max = 64,
 	groups = {dig_immediate=3, sapling=1,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		meta:set_int("stage", 0)
+	end,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -673,6 +677,10 @@ minetest.register_node("mcl_core:darksapling", {
 	stack_max = 64,
 	groups = {dig_immediate=3, sapling=1,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		meta:set_int("stage", 0)
+	end,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -801,6 +809,10 @@ minetest.register_node("mcl_core:junglesapling", {
 	stack_max = 64,
 	groups = {dig_immediate=3, sapling=1,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		meta:set_int("stage", 0)
+	end,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -866,6 +878,10 @@ minetest.register_node("mcl_core:acaciasapling", {
 		type = "fixed",
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
+	on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		meta:set_int("stage", 0)
+	end,
 	stack_max = 64,
 	groups = {dig_immediate=3, sapling=1,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
@@ -942,6 +958,10 @@ minetest.register_node("mcl_core:sprucesapling", {
 	stack_max = 64,
 	groups = {dig_immediate=3, sapling=1,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		meta:set_int("stage", 0)
+	end,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -1010,6 +1030,10 @@ minetest.register_node("mcl_core:birchsapling", {
 	stack_max = 64,
 	groups = {dig_immediate=3, sapling=1,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		meta:set_int("stage", 0)
+	end,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })

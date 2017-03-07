@@ -166,11 +166,11 @@ minetest.register_on_dignode(function(pos, node)
 	end
 end)
 
-local function air_leave()
+local function air_leaf(leaftype)
 	if math.random(0, 50) == 3 then
 		return {name = "air"}
 	else
-		return {name = "mcl_core:leaves"}
+		return {name = leaftype}
 	end
 end
 
@@ -217,23 +217,23 @@ function mcl_core.generate_tree(pos, trunk, leaves, typearbre)
 					if dx == 0 and dz == 0 and dy==3 then
 						if minetest.get_node(pos).name == "air" and math.random(1, 5) <= 4 then
 							minetest.add_node(pos, node)
-							minetest.add_node(pos, air_leave())
+							minetest.add_node(pos, air_leaf(leaves))
 						end
 					elseif dx == 0 and dz == 0 and dy==4 then
 						if minetest.get_node(pos).name == "air" and math.random(1, 5) <= 4 then
 							minetest.add_node(pos, node)
-							minetest.add_node(pos, air_leave())
+							minetest.add_node(pos, air_leaf(leaves))
 						end
 					elseif math.abs(dx) ~= 2 and math.abs(dz) ~= 2 then
 						if minetest.get_node(pos).name == "air" then
 							minetest.add_node(pos, node)
-							minetest.add_node(pos, air_leave())
+							minetest.add_node(pos, air_leaf(leaves))
 						end
 					else
 						if math.abs(dx) ~= 2 or math.abs(dz) ~= 2 then
 							if minetest.get_node(pos).name == "air" and math.random(1, 5) <= 4 then
 								minetest.add_node(pos, node)
-								minetest.add_node(pos, air_leave())
+								minetest.add_node(pos, air_leaf(leaves))
 							end
 						end
 					end
@@ -348,7 +348,7 @@ function mcl_core.generate_tree(pos, trunk, leaves, typearbre)
 					elseif dx == 0 and dz == 0 and dy==4 then
 						if minetest.get_node(pos).name == "air" or minetest.get_node(pos).name == "mcl_core:vine"  and math.random(1, 5) == 1 then
 							minetest.add_node(pos, node)
-								minetest.add_node(pos, air_leave())
+								minetest.add_node(pos, air_leaf(leaves))
 						end
 					elseif math.abs(dx) ~= 2 and math.abs(dz) ~= 2 then
 						if minetest.get_node(pos).name == "air" or minetest.get_node(pos).name == "mcl_core:vine"  then
@@ -413,19 +413,30 @@ minetest.register_abm({
 --------------------------
 -- TODO: Acacia, dark oak, spruce, birch
 
--- Normal tree
+local treelight = 9
+
+-- Oak tree
 minetest.register_abm({
 	nodenames = {"mcl_core:sapling"},
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
-	chance = 20,
+	chance = 1,
 	action = function(pos)
 		local light = minetest.get_node_light(pos)
 		local soilnode = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
 		local soiltype = minetest.get_item_group(soilnode.name, "soil_sapling")
-		if soiltype >= 1 and light and light >= 9 then
-			minetest.add_node(pos, {name="air"})
-			mcl_core.generate_tree(pos, "mcl_core:tree", "mcl_core:leaves", 1)
+		if soiltype >= 1 and light and light >= treelight then
+			-- Increase and check growth stage
+			local meta = minetest.get_meta(pos)
+			local stage = meta:get_int("stage")
+			if stage == nil then stage = 0 end
+			stage = stage + 1
+			if stage == 2 then
+				minetest.set_node(pos, {name="air"})
+				mcl_core.generate_tree(pos, "mcl_core:tree", "mcl_core:leaves", 1)
+			else
+				meta:set_int("stage", stage)
+			end
 		end
 	end,
 })
@@ -435,14 +446,23 @@ minetest.register_abm({
 	nodenames = {"mcl_core:junglesapling"},
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
-	chance = 20,
+	chance = 1,
 	action = function(pos)
 		local light = minetest.get_node_light(pos)
 		local soilnode = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
 		local soiltype = minetest.get_item_group(soilnode.name, "soil_sapling")
-		if soiltype == 2 and light and light >= 9 then
-			minetest.add_node(pos, {name="air"})
-			mcl_core.generate_tree(pos, "mcl_core:jungletree", "mcl_core:jungleleaves", 2)
+		if soiltype == 2 and light and light >= treelight then
+			-- Increase and check growth stage
+			local meta = minetest.get_meta(pos)
+			local stage = meta:get_int("stage")
+			if stage == nil then stage = 0 end
+			stage = stage + 1
+			if stage == 2 then
+				minetest.set_node(pos, {name="air"})
+				mcl_core.generate_tree(pos, "mcl_core:jungletree", "mcl_core:jungleleaves", 1)
+			else
+				meta:set_int("stage", stage)
+			end
 		end
 	end,
 })
