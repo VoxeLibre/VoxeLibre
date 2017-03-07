@@ -1270,7 +1270,7 @@ minetest.register_node("mcl_core:vine", {
 	after_dig_node = function(pos, oldnode, oldmetadata, user)
 		local item = user:get_wielded_item()
 		if item:get_name() == "mcl_tools:shears" then
-			user:get_inventory():add_item("main", ItemStack(oldnode.name))
+			minetest.add_item(pos, oldnode.name)
 		end
 	end,
 	_mcl_blast_resistance = 1,
@@ -1593,7 +1593,7 @@ minetest.register_node("mcl_core:tallgrass", {
 	after_dig_node = function(pos, oldnode, oldmetadata, user)
 		local item = user:get_wielded_item()
 		if item:get_name() == "mcl_tools:shears" then
-			user:get_inventory():add_item("main", ItemStack(oldnode.name))
+			minetest.add_item(pos, oldnode.name)
 		end
 	end,
 	_mcl_blast_resistance = 0,
