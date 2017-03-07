@@ -616,7 +616,7 @@ minetest.register_node("mcl_core:leaves", {
 	tiles = {"default_leaves.png"},
 	paramtype = "light",
 	stack_max = 64,
-	groups = {handy=1,shearsy=1,swordy=1, leafdecay=3, flammable=2, leaves=1, deco_block=1},
+	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1},
 	drop = {
 		max_items = 1,
 		items = {
@@ -692,7 +692,7 @@ minetest.register_node("mcl_core:darkleaves", {
 	tiles = {"default_leaves_big_oak.png"},
 	paramtype = "light",
 	stack_max = 64,
-	groups = {handy=1,shearsy=1,swordy=1, leafdecay=3, flammable=2, leaves=1, deco_block=1},
+	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1},
 	drop = {
 		max_items = 1,
 		items = {
@@ -778,7 +778,7 @@ minetest.register_node("mcl_core:jungleleaves", {
 	tiles = {"default_jungleleaves.png"},
 	paramtype = "light",
 	stack_max = 64,
-	groups = {handy=1,shearsy=1,swordy=1, leafdecay=3, flammable=2, leaves=1, deco_block=1},
+	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1},
 	drop = {
 		max_items = 1,
 		items = {
@@ -850,7 +850,7 @@ minetest.register_node("mcl_core:acacialeaves", {
 	tiles = {"default_acacialeaves.png"},
 	paramtype = "light",
 	stack_max = 64,
-	groups = {handy=1,shearsy=1,swordy=1, leafdecay=3, flammable=2, leaves=1, deco_block=1},
+	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1},
 	drop = {
 		max_items = 1,
 		items = {
@@ -921,7 +921,7 @@ minetest.register_node("mcl_core:spruceleaves", {
 	tiles = {"default_spruceleaves.png"},
 	paramtype = "light",
 	stack_max = 64,
-	groups = {handy=1,shearsy=1,swordy=1, leafdecay=3, flammable=2, leaves=1, deco_block=1},
+	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1},
 	drop = {
 		max_items = 1,
 		items = {
@@ -998,7 +998,7 @@ minetest.register_node("mcl_core:birchleaves", {
 	tiles = {"default_leaves_birch.png"},
 	paramtype = "light",
 	stack_max = 64,
-	groups = {handy=1,shearsy=1,swordy=1, leafdecay=3, flammable=2, leaves=1, deco_block=1},
+	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1},
 	drop = {
 		max_items = 1,
 		items = {
