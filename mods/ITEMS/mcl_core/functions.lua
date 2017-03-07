@@ -459,7 +459,7 @@ minetest.register_abm({
 			stage = stage + 1
 			if stage == 2 then
 				minetest.set_node(pos, {name="air"})
-				mcl_core.generate_tree(pos, "mcl_core:jungletree", "mcl_core:jungleleaves", 1)
+				mcl_core.generate_tree(pos, "mcl_core:jungletree", "mcl_core:jungleleaves", 2)
 			else
 				meta:set_int("stage", stage)
 			end
