@@ -417,8 +417,8 @@ minetest.register_abm({
 minetest.register_abm({
 	nodenames = {"mcl_core:sapling"},
 	neighbors = {"group:soil_sapling"},
-	interval = 30,
-	chance = 15,
+	interval = 20,
+	chance = 20,
 	action = function(pos)
 		local light = minetest.get_node_light(pos)
 		local soilnode = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
@@ -434,8 +434,8 @@ minetest.register_abm({
 minetest.register_abm({
 	nodenames = {"mcl_core:junglesapling"},
 	neighbors = {"group:soil_sapling"},
-	interval = 30,
-	chance = 15,
+	interval = 20,
+	chance = 20,
 	action = function(pos)
 		local light = minetest.get_node_light(pos)
 		local soilnode = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
