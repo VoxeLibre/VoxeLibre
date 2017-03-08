@@ -411,8 +411,6 @@ minetest.register_abm({
 --------------------------
 -- Try generate tree   ---
 --------------------------
--- TODO: Acacia, dark oak, spruce, birch
-
 local treelight = 9
 
 local sapling_grow_action = function(trunknode, leafnode, tree_id, soil_needed)
@@ -436,6 +434,9 @@ local sapling_grow_action = function(trunknode, leafnode, tree_id, soil_needed)
 	end
 end
 
+-- TODO: Use better tree models for everything
+-- TODO: Support 2×2 saplings
+
 -- Oak tree
 minetest.register_abm({
 	nodenames = {"mcl_core:sapling"},
@@ -445,6 +446,15 @@ minetest.register_abm({
 	action = sapling_grow_action("mcl_core:tree", "mcl_core:leaves", 1, 1),
 })
 
+-- Dark oak tree
+minetest.register_abm({
+	nodenames = {"mcl_core:darksapling"},
+	neighbors = {"group:soil_sapling"},
+	interval = 20,
+	chance = 1,
+	action = sapling_grow_action("mcl_core:darktree", "mcl_core:darkleaves", 1, 2),
+})
+
 -- Jungle Tree
 minetest.register_abm({
 	nodenames = {"mcl_core:junglesapling"},
@@ -452,6 +462,33 @@ minetest.register_abm({
 	interval = 20,
 	chance = 1,
 	action = sapling_grow_action("mcl_core:jungletree", "mcl_core:jungleleaves", 1, 2)
+})
+
+-- Spruce tree
+minetest.register_abm({
+	nodenames = {"mcl_core:sprucesapling"},
+	neighbors = {"group:soil_sapling"},
+	interval = 20,
+	chance = 1,
+	action = sapling_grow_action("mcl_core:sprucetree", "mcl_core:spruceleaves", 1, 1),
+})
+
+-- Birch tree
+minetest.register_abm({
+	nodenames = {"mcl_core:birchsapling"},
+	neighbors = {"group:soil_sapling"},
+	interval = 20,
+	chance = 1,
+	action = sapling_grow_action("mcl_core:birchtree", "mcl_core:birchleaves", 1, 1),
+})
+
+-- Acacia tree
+minetest.register_abm({
+	nodenames = {"mcl_core:acaciasapling"},
+	neighbors = {"group:soil_sapling"},
+	interval = 20,
+	chance = 1,
+	action = sapling_grow_action("mcl_core:acaciatree", "mcl_core:acacialeaves", 1, 2),
 })
 
 ---------------------
