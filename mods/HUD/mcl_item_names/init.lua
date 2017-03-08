@@ -6,6 +6,7 @@ local dtimes = {}
 local dlimit = 3  -- HUD element will be hidden after this many seconds
 
 local function set_hud(player)
+	if not player:is_player() then return end
 	local player_name = player:get_player_name() 
 	local off = {x=0, y=-136}
 	huds[player_name] = player:hud_add({
@@ -19,7 +20,7 @@ local function set_hud(player)
 end
 
 minetest.register_on_joinplayer(function(player)
-	minetest.after(0, set_hud, player)
+	set_hud(player)
 end)
 
 minetest.register_globalstep(function(dtime)
