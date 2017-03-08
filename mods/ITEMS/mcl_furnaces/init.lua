@@ -140,6 +140,7 @@ local function furnace_node_timer(pos, elapsed)
 	local meta = minetest.get_meta(pos)
 	local fuel_time = meta:get_float("fuel_time") or 0
 	local src_time = meta:get_float("src_time") or 0
+	local src_item = meta:get_string("src_item") or ""
 	local fuel_totaltime = meta:get_float("fuel_totaltime") or 0
 
 	local inv = meta:get_inventory()
@@ -164,8 +165,13 @@ local function furnace_node_timer(pos, elapsed)
 		cooked, aftercooked = minetest.get_craft_result({method = "cooking", width = 1, items = srclist})
 		cookable = cooked.time ~= 0
 
+		-- Check if src item has been changed
+		if srclist[1]:get_name() ~= src_item then
+			-- Reset cooking progress in this case
+			src_time = 0
+
 		-- Check if we have enough fuel to burn
-		if fuel_time < fuel_totaltime then
+		elseif fuel_time < fuel_totaltime then
 			-- The furnace is currently active and has enough fuel
 			fuel_time = fuel_time + elapsed
 			-- If there is a cookable item then check if it is ready yet
@@ -254,6 +260,7 @@ local function furnace_node_timer(pos, elapsed)
 	meta:set_float("fuel_totaltime", fuel_totaltime)
 	meta:set_float("fuel_time", fuel_time)
 	meta:set_float("src_time", src_time)
+	meta:set_string("src_item", srclist[1]:get_name())
 	meta:set_string("formspec", formspec)
 
 	return result
