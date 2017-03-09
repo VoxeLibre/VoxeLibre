@@ -1,7 +1,5 @@
 mcl_core
 mcl_player
-inventory_plus?
-unified_inventory?
 fire?
 ethereal?
 bakedclay?
