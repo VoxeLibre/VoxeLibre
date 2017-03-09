@@ -1,7 +1,2 @@
 awards
-mcl_tools
-mcl_core
-mcl_cake
-mcl_mobitems
-mcl_flowerpots
 intllib?
