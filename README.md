@@ -205,7 +205,7 @@ The license of this texture pack is the MIT license.
 
 License of all main menu images: WTFPL
 
-All other files fall under:
+All other files, unless mentioned otherwise, fall under:
 Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
 http://creativecommons.org/licenses/by-sa/3.0/
 
