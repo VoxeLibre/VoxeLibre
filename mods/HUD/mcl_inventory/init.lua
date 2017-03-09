@@ -148,7 +148,6 @@ end)
 
 minetest.register_on_joinplayer(function(player)
 	--init inventory
-	set_inventory(player)
 	player:get_inventory():set_width("main", 9)
 	player:get_inventory():set_size("main", 36)
 
@@ -159,13 +158,19 @@ minetest.register_on_joinplayer(function(player)
  	player:hud_set_hotbar_selected_image("crafting_hotbar_selected.png")
 
 	if show_armor then
-		local armor_orginal = armor.set_player_armor
+		local set_player_armor_original = armor.set_player_armor
+		local update_inventory_original = armor.update_inventory
 		armor.set_player_armor = function(self, player)
-			armor_orginal(self, player)
+			set_player_armor_original(self, player)
 			update_armor(player)
+		end
+		armor.update_inventory = function(self, player)
+			update_inventory_original(self, player)
 			set_inventory(player, true)
 		end
 	end
+
+	set_inventory(player)
 
 	--[[ Make sure the crafting grid is empty. Why? Because the player might have
 	items remaining in the crafting grid from the previous join; this is likely
