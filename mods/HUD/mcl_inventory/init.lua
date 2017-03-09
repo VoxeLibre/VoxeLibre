@@ -35,9 +35,14 @@ local function update_armor(player)
 	return
 end
 
-local function set_inventory(player)
+local function set_inventory(player, armor_change_only)
 	if minetest.setting_getbool("creative_mode") then
-		mcl_inventory.set_creative_formspec(player, 0, 1)
+		if armor_change_only then
+			-- Stay on survival inventory plage if only the armor has been changed
+			mcl_inventory.set_creative_formspec(player, 0, 0, nil, "inv")
+		else
+			mcl_inventory.set_creative_formspec(player, 0, 1)
+		end
 		return
 	end
 	local inv = player:get_inventory()
@@ -158,7 +163,7 @@ minetest.register_on_joinplayer(function(player)
 		armor.set_player_armor = function(self, player)
 			armor_orginal(self, player)
 			update_armor(player)
-			set_inventory(player)
+			set_inventory(player, true)
 		end
 	end
 
