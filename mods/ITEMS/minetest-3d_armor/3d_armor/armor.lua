@@ -288,8 +288,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		return
 	end
 	if fields.armor then
-		local formspec = armor:get_armor_formspec(name)
-		inventory_plus.set_inventory_formspec(player, formspec)
 		return
 	end
 	for field, _ in pairs(fields) do
