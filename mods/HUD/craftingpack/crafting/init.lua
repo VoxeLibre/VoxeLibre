@@ -40,8 +40,9 @@ local function set_inventory(player)
 		crafting.set_creative_formspec(player, 0, 1)
 		return
 	end
-	player:get_inventory():set_width("craft", 2)
-	player:get_inventory():set_size("craft", 4)
+	local inv = player:get_inventory()
+	inv:set_width("craft", 2)
+	inv:set_size("craft", 4)
 
 	local player_name = player:get_player_name()
 	-- TODO: Use player.png to allow for custom skins
@@ -64,19 +65,24 @@ local function set_inventory(player)
 		img_element = "image[1.1,0.2;2,4;"..img.."]"
 	end
 
+	local armor_slots = {"head", "torso", "legs", "feet"}
+	local armor_slot_imgs = ""
+	for a=1,4 do
+		if inv:get_stack("armor", a+1):is_empty() then
+			armor_slot_imgs = armor_slot_imgs .. "image[0,"..(a-1)..";1,1;crafting_slot_"..armor_slots[a]..".png]"
+		end
+	end
+
 	local form = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory.png"..armor_img.."]"..
 	mcl_vars.inventory_header..
 	img_element..
 	--armor
-	"image[0,0;1,1;crafting_slot_head.png]"..
-	"image[0,1;1,1;crafting_slot_torso.png]"..
-	"image[0,2;1,1;crafting_slot_legs.png]"..
-	"image[0,3;1,1;crafting_slot_feet.png]"..
 	"list[detached:"..player_name.."_armor;armor;0,0;1,1;1]"..
 	"list[detached:"..player_name.."_armor;armor;0,1;1,1;2]"..
 	"list[detached:"..player_name.."_armor;armor;0,2;1,1;3]"..
 	"list[detached:"..player_name.."_armor;armor;0,3;1,1;4]"..
+	armor_slot_imgs..
 	-- craft and inventory
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
