@@ -353,6 +353,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if not minetest.setting_getbool("creative_mode") then
 		return
 	end
+	if formname ~= "" then
+		return
+	end
 
 	local name = player:get_player_name()
 
