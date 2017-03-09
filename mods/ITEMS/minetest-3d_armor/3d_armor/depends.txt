@@ -1,5 +1,5 @@
 mcl_core
 mcl_player
-fire?
+mcl_fire?
 ethereal?
 bakedclay?
