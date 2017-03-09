@@ -5,6 +5,7 @@ compatable with Mobs Redo API
 
 ## LICENSING
 Note: In the following file name lists, the asterisk (“`*`”) is a placeholder which stands for any sequence of characters.
+Everything not explicitly mentioned or with no license mentioned falls under the license of the MineClone 2 project (see README.md in the top directory of MineClone 2).
 
 ### Code
 MIT License
@@ -14,7 +15,7 @@ by PilzAdam and others
 ### Sound files
 
 - `mobs_mc_squid_hurt.ogg`
-	- !!! UNKNOWN LICENSE !!! Author: daufinsyd
+	- Author: daufinsyd
 - `mobs_mc_chicken_lay_egg.ogg`
 	- WTFPL, by PilzAdam and Wuzzy
 - `mobs_mc_cow.ogg`
@@ -24,7 +25,7 @@ by PilzAdam and others
 	- MIT License, from `mobs_animal` and `mobs_monster` by TenPlus1
 - `blaze_breath.ogg`
 - `blaze_died1.ogg`
-	- !!! UNKNOWN LICENSE !!! Author: daufinsyd
+	- Author: daufinsyd
 - `blaze_hurt1.ogg`
 	- CC0, by freesound.org user thefilmbakery
 	- Source: <https://freesound.org/people/thefilmbakery/sounds/137836/>
@@ -40,7 +41,7 @@ by PilzAdam and others
 	- MIT License, by ExeterDad
 - `spawn_egg_squid.png`
 - `spawn_egg_blaze.png`
-	- !!! UNKNOWN LICENSE !!! Author: daufinsyd
+	- Author: daufinsyd
 - `spawn_egg_rabbit.png`
 	- MIT License, by Wuzzy
 
