@@ -53,7 +53,7 @@ local function set_inventory(player)
 			img = img .. player_armor[player_name]
 		end
 	end
-	local img_element = "image[1,0;3,4;"..img.."]"
+	local img_element = "image[0.6,0.2;3,4;"..img.."]"
 	if show_armor and armor.textures[player_name] and armor.textures[player_name].preview then
 		img = armor.textures[player_name].preview
 		local s1 = img:find("character_preview")
@@ -61,7 +61,7 @@ local function set_inventory(player)
 			s1 = img:sub(s1+21)
 			img = "crafting_player2d.png"..s1
 		end
-		img_element = "image[1.5,0;2,4;"..img.."]"
+		img_element = "image[1.1,0.2;2,4;"..img.."]"
 	end
 
 	local form = "size[9,8.75]"..
@@ -69,6 +69,10 @@ local function set_inventory(player)
 	mcl_vars.inventory_header..
 	img_element..
 	--armor
+	"image[0,0;1,1;crafting_slot_head.png]"..
+	"image[0,1;1,1;crafting_slot_torso.png]"..
+	"image[0,2;1,1;crafting_slot_legs.png]"..
+	"image[0,3;1,1;crafting_slot_feet.png]"..
 	"list[detached:"..player_name.."_armor;armor;0,0;1,1;1]"..
 	"list[detached:"..player_name.."_armor;armor;0,1;1,1;2]"..
 	"list[detached:"..player_name.."_armor;armor;0,2;1,1;3]"..
@@ -105,7 +109,7 @@ local function set_workbench(player)
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
 	"list[current_player;craft;1.75,0.5;3,3;]"..
-	"list[current_player;craftpreview;5.75,1.5;1,1;]"..
+	"list[current_player;craftpreview;6.1,1.5;1,1;]"..
 	"image_button[8,0;1,1;craftguide_book.png;__mcl_craftguide;]"..
 	"tooltip[__mcl_craftguide;Show crafting recipes]"..
 	"listring[current_player;main]"..
