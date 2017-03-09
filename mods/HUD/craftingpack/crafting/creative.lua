@@ -209,15 +209,26 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 	bg[name] = "crafting_creative_bg.png"
 		local inv_bg = "crafting_inventory_creative.png"
 		if name == "inv" then
+			inv_bg = "crafting_inventory_creative_survival.png"
 			-- Survival inventory slots
-			main_list = "image[-0.2,1.7;11.35,2.33;crafting_creative_bg.png]"..
-				"list[current_player;main;0,3.75;9,3;9]"..
+			main_list = "list[current_player;main;0,3.75;9,3;9]"..
+				-- armor
+				"list[detached:"..playername.."_armor;armor;2.5,1.3;1,1;1]"..
+				"list[detached:"..playername.."_armor;armor;2.5,2.75;1,1;2]"..
+				"list[detached:"..playername.."_armor;armor;5.5,1.3;1,1;3]"..
+				"list[detached:"..playername.."_armor;armor;5.5,2.75;1,1;4]"..
+				--TODO: armor_slot_imgs..
 				-- crafting guide button
 				"image_button[9,1;1,1;craftguide_book.png;__mcl_craftguide;]"..
 				"tooltip[__mcl_craftguide;Show crafting recipes]"..
 				-- achievements button
 				"image_button[9,2;1,1;mcl_achievements_button.png;__mcl_achievements;]"..
 				"tooltip[__mcl_achievements;Achievements]"
+
+			-- For shortcuts
+			listrings = listrings ..
+				"listring[detached:"..playername.."_armor;armor]"..
+				"listring[current_player;main]"
 		else
 			inv_bg = inv_bg .. "^crafting_inventory_creative_scroll.png"
 			-- Creative inventory slots
@@ -236,6 +247,10 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 			end
 			return "image[" .. offset[check] .. ";1.5,1.44;" .. img .. hoch[check].. "]" ..
 				"image[" .. boffset[check] .. ";1,1;crafting_creative_marker.png]"
+		end
+		local fnt = ""
+		if name ~= "inv" then
+			fnt = "image[0,1;5,0.75;fnt_"..name..".png]"
 		end
 		formspec = "size[10,9.3]"..
 			mcl_vars.inventory_header..
@@ -259,7 +274,7 @@ crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, 
 			"item_image_button[9.19,0;1,1;mcl_compass:compass;nix;]"..	--search
 			tab(name, "nix") ..
 			"tooltip[nix;Search Items]"..
-			"image[0,1;5,0.75;fnt_"..name..".png]"..
+			fnt..
 			"list[current_player;main;0,7;9,1;]"..
 			main_list..
 			"item_image_button[-0.1,8.37;1,1;mcl_core:apple;food;]"..	--foodstuff
