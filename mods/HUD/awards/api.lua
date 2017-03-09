@@ -306,7 +306,7 @@ function awards.unlock(name, award)
 		local two = player:hud_add({
 			hud_elem_type = "text",
 			name = "award_au",
-			number = 0xFFFFFF,
+			number = 0xFFFF00,
 			scale = {x = 100, y = 20},
 			text = hud_announce,
 			position = {x = 0.5, y = 0},
