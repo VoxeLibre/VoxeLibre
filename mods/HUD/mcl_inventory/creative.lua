@@ -210,6 +210,22 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, show, p
 		if name == "inv" then
 			inv_bg = "crafting_inventory_creative_survival.png"
 
+			-- Show armor and player image
+			local show_armor = minetest.get_modpath("3d_armor")
+			-- TODO: Use player.png to allow for custom skins
+			local img = "crafting_player2d.png"
+			local armor_img = ""
+			local player_preview = "image[3.9,1.4;1.2333,2.4666;"..img.."]"
+			if show_armor and armor.textures[playername] and armor.textures[playername].preview then
+				img = armor.textures[playername].preview
+				local s1 = img:find("character_preview")
+				if s1 ~= nil then
+					s1 = img:sub(s1+21)
+					img = "crafting_player2d.png"..s1
+				end
+				player_preview = "image[3.9,1.4;1.2333,2.4666;"..img.."]"
+			end
+
 			-- Background images for armor slots (hide if occupied)
 			local armor_slot_imgs = ""
 			local inv = player:get_inventory()
@@ -234,6 +250,8 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, show, p
 				"list[detached:"..playername.."_armor;armor;5.5,1.3;1,1;3]"..
 				"list[detached:"..playername.."_armor;armor;5.5,2.75;1,1;4]"..
 				armor_slot_imgs..
+				-- player preview
+				player_preview..
 				-- crafting guide button
 				"image_button[9,1;1,1;craftguide_book.png;__mcl_craftguide;]"..
 				"tooltip[__mcl_craftguide;Show crafting recipes]"..
