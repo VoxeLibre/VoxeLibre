@@ -169,6 +169,8 @@ local function furnace_node_timer(pos, elapsed)
 		if srclist[1]:get_name() ~= src_item then
 			-- Reset cooking progress in this case
 			src_time = 0
+			src_item = srclist[1]:get_name()
+			update = true
 
 		-- Check if we have enough fuel to burn
 		elseif fuel_time < fuel_totaltime then
