@@ -1,5 +1,4 @@
-crafting = {}
-crafting.creative_inventory_size = 0
+mcl_inventory.creative_inventory_size = 0
 
 -- Prepare player info table
 local players = {}
@@ -77,7 +76,7 @@ local function set_inv(filter, player)
 	for _,itemstring in ipairs(creative_list) do
 		inv:add_item("main", ItemStack(itemstring))
 	end
-	crafting.creative_inventory_size = #creative_list
+	mcl_inventory.creative_inventory_size = #creative_list
 end
 
 local function init(player)
@@ -186,10 +185,10 @@ local function reset_menu_item_bg()
 end
 
 
-crafting.set_creative_formspec = function(player, start_i, pagenum, show, page, filter)
+mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, show, page, filter)
 	reset_menu_item_bg()
 	pagenum = math.floor(pagenum) or 1
-	local pagemax = math.floor((crafting.creative_inventory_size-1) / (9*5) + 1)
+	local pagemax = math.floor((mcl_inventory.creative_inventory_size-1) / (9*5) + 1)
 	local slider_height
 	if pagemax == 1 then
 		slider_height = 4.525
@@ -386,10 +385,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if start_i < 0 then
 		start_i = start_i + 9*5
 	end
-	if start_i >= crafting.creative_inventory_size then
+	if start_i >= mcl_inventory.creative_inventory_size then
 		start_i = start_i - 9*5
 	end		
-	if start_i < 0 or start_i >= crafting.creative_inventory_size then
+	if start_i < 0 or start_i >= mcl_inventory.creative_inventory_size then
 		start_i = 0
 	end
 	players[name].start_i = start_i
@@ -400,7 +399,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		players[name].filter = filter
 	end
 
-	crafting.set_creative_formspec(player, start_i, start_i / (9*5) + 1, false, page, filter)
+	mcl_inventory.set_creative_formspec(player, start_i, start_i / (9*5) + 1, false, page, filter)
 end)
 
 

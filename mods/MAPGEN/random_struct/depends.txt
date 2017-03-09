@@ -6,6 +6,6 @@ mcl_colorblocks
 mcl_wool
 mcl_fences
 mcl_chests
-crafting
+mcl_inventory
 mesecons_pressureplates
 mcl_tnt

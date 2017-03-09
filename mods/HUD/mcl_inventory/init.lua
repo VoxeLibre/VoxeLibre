@@ -1,3 +1,5 @@
+mcl_inventory = {}
+
 local show_armor = false
 if minetest.get_modpath("3d_armor") ~= nil then show_armor = true end
 
@@ -37,7 +39,7 @@ end
 
 local function set_inventory(player)
 	if minetest.setting_getbool("creative_mode") then
-		crafting.set_creative_formspec(player, 0, 1)
+		mcl_inventory.set_creative_formspec(player, 0, 1)
 		return
 	end
 	local inv = player:get_inventory()
@@ -173,7 +175,7 @@ minetest.register_on_joinplayer(function(player)
 	drop_fields(player, "craft")
 end)
 
-minetest.register_node("crafting:workbench", {
+minetest.register_node("mcl_inventory:workbench", {
 	description = "Crafting Table",
 	tiles = {"crafting_workbench_top.png", "default_wood.png", "crafting_workbench_side.png",
 		"crafting_workbench_side.png", "crafting_workbench_front.png", "crafting_workbench_front.png"},
@@ -189,7 +191,7 @@ minetest.register_node("crafting:workbench", {
 })
 
 minetest.register_craft({
-	output = "crafting:workbench",
+	output = "mcl_inventory:workbench",
 	recipe = {
 		{"group:wood", "group:wood"},
 		{"group:wood", "group:wood"}
@@ -198,11 +200,12 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "crafting:workbench",
+	recipe = "mcl_inventory:workbench",
 	burntime = 15,
 })
 
-if minetest.setting_getbool("creative_mode") then
-	dofile(minetest.get_modpath("crafting").."/creative.lua")
-end
+minetest.register_alias("crafting:workbench", "mcl_inventory:workbench")
 
+if minetest.setting_getbool("creative_mode") then
+	dofile(minetest.get_modpath("mcl_inventory").."/creative.lua")
+end
