@@ -1,6 +1,6 @@
 # HUD bar for `3d_armor` [`hbarmor`]
 
-* Version: 0.2.0
+* Version: 0.3.0
 
 ## Description
 This mod adds a simple HUD bar which displays the current damage

@@ -93,7 +93,7 @@ function hbarmor.set_armor(player_name, ges_state, items)
 		lvl = 0
 	end
 
-	hbarmor.armor[player_name] = math.min(lvl* (items * (100 / max_items)), 100)
+	hbarmor.armor[player_name] = math.max(0, math.min(lvl* (items * (100 / max_items)), 100))
 end
 
 -- update hud elemtens if value has changed
