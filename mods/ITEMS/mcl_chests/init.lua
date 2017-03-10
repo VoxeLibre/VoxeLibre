@@ -24,6 +24,8 @@ end
 
 minetest.register_node("mcl_chests:chest", {
 	description = "Chest",
+	_doc_items_longdesc = "Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other.",
+	_doc_items_usagehelp = "To acccess the inventory of a chest or large chest, rightclick it. When broken, the items of the chest will drop out.",
 	tiles = {"default_chest_top.png", "default_chest_top.png", "default_chest_side.png",
 		"default_chest_side.png", "default_chest_side.png", "default_chest_front.png"},
 	paramtype2 = "facedir",
@@ -138,6 +140,11 @@ minetest.register_node("mcl_chests:chest", {
 })
 
 minetest.register_node("mcl_chests:chest_left", {
+	_doc_items_create_entry = true,
+	_doc_items_entry_name = "Large Chest",
+	_doc_items_longdesc = "Large chests are two block wide containers providing 52 inventory slots. Chests can be turned into (small) chests with half the capacity by breaking one of its blocks.",
+	_doc_items_usagehelp = "To acccess the inventory of a large chest, rightclick it. The left part of the large chest corresponds to the first 27 inventory slots and the right part to the rest. When broken, the items which correspond to the broken part of the half chest will pop out.",
+
 	tiles = {"default_chest_top_big.png", "default_chest_top_big.png", "default_chest_side.png",
 		"default_chest_side.png", "default_chest_side_big.png^[transformFX", "default_chest_front_big.png"},
 	paramtype2 = "facedir",
@@ -276,6 +283,8 @@ minetest.register_craft({
 
 minetest.register_node("mcl_chests:ender_chest", {
 	description = "Ender Chest",
+	_doc_items_longdesc = "Ender chests grant you access to a single personal interdimensional inventory with 27 slots. This inventory is the same no matter from which ender chest you access it from. If you put one item into one ender chest, you will find it in all other ender chetss worldwide. Each player will only see their own items, but not the items of other players.",
+	_doc_items_usagehelp = "Rightclick the ender chest to access your personal interdimensional inventory.",
 	tiles = {"mcl_chests_ender_chest_top.png", "mcl_chests_ender_chest_bottom.png",
 		"mcl_chests_ender_chest_right.png", "mcl_chests_ender_chest_left.png",
 		"mcl_chests_ender_chest_back.png", "mcl_chests_ender_chest_front.png"},
@@ -342,6 +351,8 @@ local boxtypes = {
 for color, desc in pairs(boxtypes) do
 	minetest.register_node("mcl_chests:"..color.."_shulker_box", {
 		description = desc,
+		_doc_items_longdesc = "A shulker box is a portable container which provides 27 inventory slots for any item except shulker boxes. Shulker boxes keep their inventory when broken, so shulker boxes as well as their contents can be taken as a single item. Shulker boxes come in many different colors.",
+		_doc_items_usagehelp = "To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out. Place the shulker box again to be able to retrieve its contents.",
 		tiles = {"mcl_chests_"..color.."_shulker_box_top.png", "mcl_chests_"..color.."_shulker_box_bottom.png",
 			"mcl_chests_"..color.."_shulker_box_side.png", "mcl_chests_"..color.."_shulker_box_side.png",
 			"mcl_chests_"..color.."_shulker_box_side.png", "mcl_chests_"..color.."_shulker_box_side.png"},
