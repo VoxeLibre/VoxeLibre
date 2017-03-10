@@ -66,6 +66,7 @@ minetest.register_node("mcl_core:void", {
 
 minetest.register_node("mcl_core:stone", {
 	description = "Stone",
+	_doc_items_longdesc = "A very common block in the world of MineClone 2, almost the entire underground consists of stone. It sometimes contains ores. Stone may be created when water meets lava.",
 	tiles = {"default_stone.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -78,6 +79,7 @@ minetest.register_node("mcl_core:stone", {
 
 minetest.register_node("mcl_core:stone_with_coal", {
 	description = "Coal Ore",
+	_doc_items_longdesc = "Some coal contained in stone, it is very common and can be found inside stone in medium to large clusters at nearly every height.",
 	tiles = {"default_stone.png^default_mineral_coal.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -90,6 +92,7 @@ minetest.register_node("mcl_core:stone_with_coal", {
 
 minetest.register_node("mcl_core:stone_with_iron", {
 	description = "Iron Ore",
+	_doc_items_longdesc = "Some iron contained in stone, it is prety common and can be found below sea level.",
 	tiles = {"default_stone.png^default_mineral_iron.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -103,6 +106,7 @@ minetest.register_node("mcl_core:stone_with_iron", {
 
 minetest.register_node("mcl_core:stone_with_gold", {
 	description = "Gold Ore",
+	_doc_items_longdesc = "This stone contains pure gold, a rare metal.",
 	tiles = {"default_stone.png^default_mineral_gold.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -121,6 +125,7 @@ local redstone_ore_activate = function(pos)
 end
 minetest.register_node("mcl_core:stone_with_redstone", {
 	description = "Redstone Ore",
+	_doc_items_longdesc = "Redstone ore is commonly found near the bottom of the world. It glows when it is punched or walked upon.",
 	tiles = {"default_stone.png^default_mineral_redstone.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -184,6 +189,7 @@ minetest.register_node("mcl_core:stone_with_redstone_lit", {
 
 minetest.register_node("mcl_core:stone_with_lapis", {
 	description = "Lapis Lazuli Ore",
+	_doc_items_longdesc = "Lapis lazuli ore is the ore of lapis lazuli. It can be rarely found in clusters near the bottom of the world.",
 	tiles = {"default_stone.png^default_mineral_lapis.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -205,6 +211,7 @@ minetest.register_node("mcl_core:stone_with_lapis", {
 
 minetest.register_node("mcl_core:stone_with_emerald", {
 	description = "Emerald Ore",
+	_doc_items_longdesc = "Emerald ore is the ore of emeralds. It is very rare and can be found alone, not in clusters.",
 	tiles = {"default_stone.png^default_mineral_emerald.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -217,6 +224,7 @@ minetest.register_node("mcl_core:stone_with_emerald", {
 
 minetest.register_node("mcl_core:stone_with_diamond", {
 	description = "Diamond Ore",
+	_doc_items_longdesc = "Diamond ore is rare and can be found in clusters near the bottom of the world.",
 	tiles = {"default_stone.png^default_mineral_diamond.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -271,6 +279,7 @@ minetest.register_node("mcl_core:stonebrickmossy", {
 
 minetest.register_node("mcl_core:granite", {
 	description = "Granite",
+	_doc_items_longdesc = "Granite is an igneous rock.",
 	tiles = {"default_granite.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -282,6 +291,7 @@ minetest.register_node("mcl_core:granite", {
 
 minetest.register_node("mcl_core:granite_smooth", {
 	description = "Polished Granite",
+	_doc_items_longdesc = "Polished granite is a decorational building block made from granite.",
 	tiles = {"default_granite_smooth.png"},
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, building_block=1},
@@ -292,6 +302,7 @@ minetest.register_node("mcl_core:granite_smooth", {
 
 minetest.register_node("mcl_core:andesite", {
 	description = "Andesite",
+	_doc_items_longdesc = "Andesite is an igneous rock.",
 	tiles = {"default_andesite.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -303,6 +314,7 @@ minetest.register_node("mcl_core:andesite", {
 
 minetest.register_node("mcl_core:andesite_smooth", {
 	description = "Polished Andesite",
+	_doc_items_longdesc = "Polished andesite is a decorational building block made from andesite.",
 	tiles = {"default_andesite_smooth.png"},
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, building_block=1},
@@ -313,6 +325,7 @@ minetest.register_node("mcl_core:andesite_smooth", {
 
 minetest.register_node("mcl_core:diorite", {
 	description = "Diorite",
+	_doc_items_longdesc = "Diorite is an igneous rock.",
 	tiles = {"default_diorite.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -324,6 +337,7 @@ minetest.register_node("mcl_core:diorite", {
 
 minetest.register_node("mcl_core:diorite_smooth", {
 	description = "Polished Diorite",
+	_doc_items_longdesc = "Polished diorite is a decorational building block made from diorite.",
 	tiles = {"default_diorite_smooth.png"},
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, building_block=1},
@@ -334,6 +348,7 @@ minetest.register_node("mcl_core:diorite_smooth", {
 
 minetest.register_node("mcl_core:dirt_with_grass", {
 	description = "Grass Block",
+	_doc_items_longdesc = "A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel.",
 	tiles = {"default_grass.png", "default_dirt.png", "default_dirt.png^default_grass_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -349,6 +364,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 minetest.register_node("mcl_core:grass_path", {
 	tiles = {"mcl_core_grass_path_top.png", "mcl_core_grass_path_side.png"},
 	description = "Grass Path",
+	_doc_items_longdesc = "Grass paths are a decorational variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created with a shovel.",
 	drop = "mcl_core:dirt",
 	is_ground_content = true,
 	drawtype = "nodebox",
@@ -397,6 +413,7 @@ minetest.register_node("mcl_core:podzol", {
 
 minetest.register_node("mcl_core:dirt", {
 	description = "Dirt",
+	_doc_items_longdesc = "Dirt acts asa soil for a few plants. When in light, it will turn into a grass block eventually.",
 	tiles = {"default_dirt.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -408,6 +425,7 @@ minetest.register_node("mcl_core:dirt", {
 
 minetest.register_node("mcl_core:coarse_dirt", {
 	description = "Coarse Dirt",
+	_doc_items_longdesc = "Coarse dirt acts as a soil for some plants and is similar to dirt, but it will never turn into a grass block.",
 	tiles = {"default_coarse_dirt.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -419,6 +437,7 @@ minetest.register_node("mcl_core:coarse_dirt", {
 
 minetest.register_node("mcl_core:gravel", {
 	description = "Gravel",
+	_doc_items_longdesc = "This block consists of a couple of loose stones and can't support itself.",
 	tiles = {"default_gravel.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -440,6 +459,7 @@ minetest.register_node("mcl_core:gravel", {
 -- sandstone --
 minetest.register_node("mcl_core:sand", {
 	description = "Sand",
+	_doc_items_longdesc = "Sand is found in large quantities at beaches and deserts.",
 	tiles = {"default_sand.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -451,6 +471,7 @@ minetest.register_node("mcl_core:sand", {
 
 minetest.register_node("mcl_core:sandstone", {
 	description = "Sandstone",
+	_doc_items_longdesc = "Sandstone is compressed sand and is a rather soft kind of stone.",
 	tiles = {"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_normal.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -462,6 +483,7 @@ minetest.register_node("mcl_core:sandstone", {
 
 minetest.register_node("mcl_core:sandstonesmooth", {
 	description = "Smooth Sandstone",
+	_doc_items_longdesc = "Smooth sandstone is a decorational building block.",
 	tiles = {"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_smooth.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -473,6 +495,7 @@ minetest.register_node("mcl_core:sandstonesmooth", {
 
 minetest.register_node("mcl_core:sandstonecarved", {
 	description = "Chiseled Sandstone",
+	_doc_items_longdesc = "Chiseled sandstone is a decorational building block.",
 	tiles = {"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_carved.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -486,6 +509,7 @@ minetest.register_node("mcl_core:sandstonecarved", {
 
 minetest.register_node("mcl_core:redsand", {
 	description = "Red Sand",
+	_doc_items_longdesc = "Red sand is found in large quantities at beaches and deserts.",
 	tiles = {"default_red_sand.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -497,6 +521,7 @@ minetest.register_node("mcl_core:redsand", {
 
 minetest.register_node("mcl_core:redsandstone", {
 	description = "Red Sandstone",
+	_doc_items_longdesc = "Red sandstone is compressed red sand and is a rather soft kind of stone.",
 	tiles = {"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_normal.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -508,6 +533,7 @@ minetest.register_node("mcl_core:redsandstone", {
 
 minetest.register_node("mcl_core:redsandstonesmooth", {
 	description = "Smooth Red Sandstone",
+	_doc_items_longdesc = "Smooth red sandstone is a decorational building block.",
 	tiles = {"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_smooth.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -519,6 +545,7 @@ minetest.register_node("mcl_core:redsandstonesmooth", {
 
 minetest.register_node("mcl_core:redsandstonecarved", {
 	description = "Chiseled Red Sandstone",
+	_doc_items_longdesc = "Chiseled red sandstone is a decorational building block.",
 	tiles = {"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_carved.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -533,6 +560,7 @@ minetest.register_node("mcl_core:redsandstonecarved", {
 minetest.register_node("mcl_core:clay", {
 	-- Original name: Clay
 	description = "Block of Clay",
+	_doc_items_longdesc = "A block of clay is a versatile kind of earth commonly found at beaches underwater.",
 	tiles = {"default_clay.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -548,6 +576,7 @@ minetest.register_node("mcl_core:clay", {
 minetest.register_node("mcl_core:brick_block", {
 	-- Original name: “Bricks”
 	description = "Brick Block",
+	_doc_items_longdesc = "Brick blocks are a good building material for building solid houses and can take quite a punch.",
 	tiles = {"default_brick.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -575,6 +604,7 @@ minetest.register_node("mcl_core:bone_block", {
 -- Oak --
 minetest.register_node("mcl_core:tree", {
 	description = "Oak Wood",
+	_doc_items_longdesc = "The trunk of an oak tree.",
 	tiles = {"default_tree_top.png", "default_tree_top.png", "default_tree.png"},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
@@ -587,6 +617,7 @@ minetest.register_node("mcl_core:tree", {
 
 minetest.register_node("mcl_core:sapling", {
 	description = "Oak Sapling",
+	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, an oak sapling will grow into an oak tree after some time. If the tree can't grow it it is too dark, the sapling will uproot.",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
 	tiles = {"default_sapling.png"},
@@ -611,6 +642,7 @@ minetest.register_node("mcl_core:sapling", {
 
 minetest.register_node("mcl_core:leaves", {
 	description = "Oak Leaves",
+	_doc_items_longdesc = "Oak leaves are grown from oak trees.",
 	drawtype = "allfaces_optional",
 	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	visual_scale = 1.3,
@@ -652,6 +684,7 @@ minetest.register_node("mcl_core:wood", {
 -- Dark oak --
 minetest.register_node("mcl_core:darktree", {
 	description = "Dark Oak Wood",
+	_doc_items_longdesc = "The trunk of a dark oak tree.",
 	tiles = {"default_log_big_oak_top.png", "default_log_big_oak_top.png", "default_log_big_oak.png"},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
@@ -664,6 +697,7 @@ minetest.register_node("mcl_core:darktree", {
 
 minetest.register_node("mcl_core:darksapling", {
 	description = "Dark Oak Sapling",
+	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, a dark oak sapling will grow into a dark oak tree after some time. If the tree can't grow it it is too dark, the sapling will uproot.",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
 	tiles = {"default_sapling_big_oak.png"},
@@ -688,6 +722,7 @@ minetest.register_node("mcl_core:darksapling", {
 
 minetest.register_node("mcl_core:darkleaves", {
 	description = "Dark Oak Leaves",
+	_doc_items_longdesc = "Dark oak leaves are grown from dark oak trees.",
 	drawtype = "allfaces_optional",
 	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	visual_scale = 1.3,
@@ -730,6 +765,7 @@ minetest.register_node("mcl_core:darkwood", {
 
 minetest.register_node("mcl_core:jungletree", {
 	description = "Jungle Wood",
+	_doc_items_longdesc = "The trunk of a jungle tree.",
 	tiles = {"default_jungletree_top.png", "default_jungletree_top.png", "default_jungletree.png"},
 	stack_max = 64,
 	paramtype2 = "facedir",
@@ -775,6 +811,7 @@ minetest.register_node("mcl_core:junglewood", {
 
 minetest.register_node("mcl_core:jungleleaves", {
 	description = "Jungle Leaves",
+	_doc_items_longdesc = "Jungle leaves are grown from jungle trees.",
 	drawtype = "allfaces_optional",
 	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	visual_scale = 1.3,
@@ -798,6 +835,7 @@ minetest.register_node("mcl_core:jungleleaves", {
 
 minetest.register_node("mcl_core:junglesapling", {
 	description = "Jungle Sapling",
+	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, a jungle sapling will grow into a jungle tree after some time. If the tree can't grow it it is too dark, the sapling will uproot.",
 	drawtype = "plantlike",
 	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	visual_scale = 1.0,
@@ -826,6 +864,7 @@ minetest.register_node("mcl_core:junglesapling", {
 
 minetest.register_node("mcl_core:acaciatree", {
 	description = "Acacia Wood",
+	_doc_items_longdesc = "The trunk of an acacia.",
 	tiles = {"default_acaciatree_top.png", "default_acaciatree_top.png", "default_acaciatree.png"},
 	stack_max = 64,
 	paramtype2 = "facedir",
@@ -849,6 +888,7 @@ minetest.register_node("mcl_core:acaciawood", {
 
 minetest.register_node("mcl_core:acacialeaves", {
 	description = "Acacia Leaves",
+	_doc_items_longdesc = "Acacia leaves are grown from acacia trees.",
 	drawtype = "allfaces_optional",
 	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	visual_scale = 1.3,
@@ -872,6 +912,7 @@ minetest.register_node("mcl_core:acacialeaves", {
 
 minetest.register_node("mcl_core:acaciasapling", {
 	description = "Acacia Sapling",
+	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, an acacia sapling will grow into an acacia tree after some time. If the tree can't grow it it is too dark, the sapling will uproot.",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
 	tiles = {"default_acaciasapling.png"},
@@ -898,6 +939,7 @@ minetest.register_node("mcl_core:acaciasapling", {
 
 minetest.register_node("mcl_core:sprucetree", {
 	description = "Spruce Wood",
+	_doc_items_longdesc = "The trunk of a spruce tree.",
 	tiles = {"default_sprucetree_top.png", "default_sprucetree_top.png", "default_sprucetree.png"},
 	stack_max = 64,
 	paramtype2 = "facedir",
@@ -921,6 +963,7 @@ minetest.register_node("mcl_core:sprucewood", {
 
 minetest.register_node("mcl_core:spruceleaves", {
 	description = "Spruce Leaves",
+	_doc_items_longdesc = "Spruce leaves are grown from spruce trees.",
 	drawtype = "allfaces_optional",
 	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	visual_scale = 1.3,
@@ -950,6 +993,7 @@ minetest.register_node("mcl_core:spruceleaves", {
 
 minetest.register_node("mcl_core:sprucesapling", {
 	description = "Spruce Sapling",
+	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, a spruce sapling will grow into a spruce tree after some time. If the tree can't grow it it is too dark, the sapling will uproot.",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
 	tiles = {"default_sprucesapling.png"},
@@ -976,6 +1020,7 @@ minetest.register_node("mcl_core:sprucesapling", {
 
 minetest.register_node("mcl_core:birchtree", {
 	description = "Birch Wood",
+	_doc_items_longdesc = "The trunk of a birch tree.",
 	tiles = {"default_log_birch_top.png", "default_log_birch_top.png", "default_log_birch.png"},
 	stack_max = 64,
 	paramtype2 = "facedir",
@@ -999,6 +1044,7 @@ minetest.register_node("mcl_core:birchwood", {
 
 minetest.register_node("mcl_core:birchleaves", {
 	description = "Birch Leaves",
+	_doc_items_longdesc = "Birch leaves are grown from birch trees.",
 	drawtype = "allfaces_optional",
 	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	visual_scale = 1.3,
@@ -1023,6 +1069,7 @@ minetest.register_node("mcl_core:birchleaves", {
 
 minetest.register_node("mcl_core:birchsapling", {
 	description = "Birch Sapling",
+	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, a birch sapling will grow into a birch tree after some time. If the tree can't grow it it is too dark, the sapling will uproot.",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
 	tiles = {"default_sapling_birch.png"},
@@ -1047,6 +1094,7 @@ minetest.register_node("mcl_core:birchsapling", {
 
 minetest.register_node("mcl_core:cactus", {
 	description = "Cactus",
+	_doc_items_longdesc = "This is a piece of cactus commonly found in dry areas, especially deserts. Over time, cacti will grow up to 3 blocks high on sand or red sand. A cactus hurts living beings touching it with a damage of 1 HP every half second. When a cactus block is broken, all cactus blocks connected above it will break as well.",
 	drawtype = "nodebox",
 	tiles = {"default_cactus_top.png", "default_cactus_bottom.png", "default_cactus_side.png","default_cactus_side.png","default_cactus_side.png","default_cactus_side.png"},
 	is_ground_content = true,
@@ -1076,6 +1124,7 @@ minetest.register_node("mcl_core:cactus", {
 
 minetest.register_node("mcl_core:reeds", {
 	description = "Sugar Canes",
+	_doc_items_longdesc = "Sugar canes are a plant which has some uses in crafting. Sugar canes will slowly grow up to 3 blocks when they are next to water and are placed on a grass block, dirt, sand, red sand, podzol or coarse dirt. When a sugar cane is broken, all sugar canes connected above will break as well.",
 	drawtype = "plantlike",
 	tiles = {"default_papyrus.png"},
 	inventory_image = "default_sugar_cane.png",
@@ -1109,6 +1158,7 @@ minetest.register_node("mcl_core:reeds", {
 
 minetest.register_node("mcl_core:bedrock", {
 	description = "Bedrock",
+	_doc_items_longdesc = "Bedrock is a very hard type of rock. It can not be broken, destroyed, collected or moved by normal means, unless in Creative Mode.",
 	tiles = {"default_bedrock.png"},
 	stack_max = 64,
 	groups = {creative_breakable=1, building_block=1},
@@ -1122,6 +1172,7 @@ minetest.register_node("mcl_core:bedrock", {
 
 minetest.register_node("mcl_core:slimeblock", {
 	description = "Slime Block",
+	_doc_items_longdesc = "Slime blocks are very bouncy and prevent fall damage.",
 	drawtype = "nodebox",
 	paramtype = "light",
 	is_ground_content = false,
@@ -1146,6 +1197,7 @@ minetest.register_node("mcl_core:slimeblock", {
 
 minetest.register_node("mcl_core:glass", {
 	description = "Glass",
+	_doc_items_longdesc = "A decorational and mostly transparent block.",
 	drawtype = "glasslike",
 	is_ground_content = false,
 	tiles = {"default_glass.png"},
@@ -1179,6 +1231,8 @@ mcl_core.add_glass( "Cyan Stained Glass",  "basecolor_cyan", "cyan")
 
 minetest.register_node("mcl_core:ladder", {
 	description = "Ladder",
+	_doc_items_longdesc = "A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks and not on glass, leaves, ice, slabs, glowstone, nor sea lanterns.",
+	_doc_items_usagehelp = "You hold on the ladder as soon as you enter the block. Hold the “jump” key to move upwards and the “sneak” or “use” key (depending on settings) to move downwards.",
 	drawtype = "signlike",
 	is_ground_content = false,
 	tiles = {"default_ladder.png"},
@@ -1280,6 +1334,7 @@ minetest.register_node("mcl_core:vine", {
 
 minetest.register_node("mcl_core:water_flowing", {
 	description = "Flowing Water",
+	_doc_items_create_entry = false,
 	inventory_image = minetest.inventorycube("default_water.png"),
 	drawtype = "flowingliquid",
 	tiles = {name="default_water_flowing_animated.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=2.0}},
@@ -1319,6 +1374,8 @@ minetest.register_node("mcl_core:water_flowing", {
 
 minetest.register_node("mcl_core:water_source", {
 	description = "Still Water",
+	_doc_items_entry_name = "Water",
+	_doc_items_longdesc = "Water is abundant in oceans and may also appear in small quantities in underground water pockets. You can swim easily in water, but you need to catch your breath from time to time. Water will turn nearby lava into obsidian or stone.",
 	inventory_image = minetest.inventorycube("default_water.png"),
 	drawtype = "liquid",
 	tiles = {
@@ -1356,6 +1413,7 @@ minetest.register_node("mcl_core:water_source", {
 
 minetest.register_node("mcl_core:lava_flowing", {
 	description = "Flowing Lava",
+	_doc_items_create_entry = false,
 	inventory_image = minetest.inventorycube("default_lava.png"),
 	drawtype = "flowingliquid",
 	tiles = {"default_lava.png"},
@@ -1400,6 +1458,8 @@ minetest.register_node("mcl_core:lava_flowing", {
 
 minetest.register_node("mcl_core:lava_source", {
 	description = "Still Lava",
+	_doc_items_entry_name = "Lava",
+	_doc_items_longdesc = "Lava is found deep underground and rather dangerous. Don't touch it, it will hurt you a lot and once you're in, it is hard to get out. Lava will also destroy all dropped items it touches. When a lava source meets water, it turns into obsidian. Flowing lava turns into stone instead.",
 	inventory_image = minetest.inventorycube("default_lava.png"),
 	drawtype = "liquid",
 	tiles = {
@@ -1461,6 +1521,7 @@ minetest.register_node("mcl_core:mossycobble", {
 
 minetest.register_node("mcl_core:coalblock", {
 	description = "Block of Coal",
+	_doc_items_longdesc = "Blocks of coal are useful as a compact storage of coal and very useful as a furnace fuel. A block of coal is as efficient as 10 coal.",
 	tiles = {"default_coal_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -1472,6 +1533,7 @@ minetest.register_node("mcl_core:coalblock", {
 
 minetest.register_node("mcl_core:ironblock", {
 	description = "Block of Iron",
+	_doc_items_longdesc = "A block of iron is mostly a decorational block but also useful as a compact storage of iron ingots.",
 	tiles = {"default_steel_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -1483,6 +1545,7 @@ minetest.register_node("mcl_core:ironblock", {
 
 minetest.register_node("mcl_core:goldblock", {
 	description = "Block of Gold",
+	_doc_items_longdesc = "A block of gold is mostly a shiny decorational block but also useful as a compact storage of gold ingots.",
 	tiles = {"default_gold_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -1494,6 +1557,7 @@ minetest.register_node("mcl_core:goldblock", {
 
 minetest.register_node("mcl_core:diamondblock", {
 	description = "Block of Diamond",
+	_doc_items_longdesc = "A block of diamond mostly a shiny decorational block but also useful as a compact storage of diamonds.",
 	tiles = {"default_diamond_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -1505,6 +1569,7 @@ minetest.register_node("mcl_core:diamondblock", {
 
 minetest.register_node("mcl_core:lapisblock", {
 	description = "Lapis Lazuli Block",
+	_doc_items_longdesc = "A lapis lazuli block is mostly a decorational block but also useful as a compact storage of lapis lazuli.",
 	tiles = {"default_lapis_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -1516,6 +1581,7 @@ minetest.register_node("mcl_core:lapisblock", {
 
 minetest.register_node("mcl_core:emeraldblock", {
 	description = "Block of Emerald",
+	_doc_items_longdesc = "A block of emerald is mostly a shiny decorational block but also useful as a compact storage of emeralds.",
 	tiles = {"default_emerald_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -1527,6 +1593,7 @@ minetest.register_node("mcl_core:emeraldblock", {
 
 minetest.register_node("mcl_core:obsidian", {
 	description = "Obsidian",
+	_doc_items_longdesc = "Obsidian is an extremely hard mineral with an enourmous blast-resistance. Obsidian is formed when water meets lava.",
 	tiles = {"default_obsidian.png"},
 	is_ground_content = true,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
@@ -1725,6 +1792,7 @@ minetest.register_node("mcl_core:snowblock", {
 
 minetest.register_node("mcl_core:cobweb", {
        description = "Cobweb",
+	_doc_items_longdesc = "Cobwebs can be walked through, but significantly slow you down.",
        drawtype = "plantlike",
 	paramtype2 = "degrotate",
        visual_scale = 1.1,
