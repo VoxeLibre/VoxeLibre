@@ -14,12 +14,22 @@ local recorddata = {
 local records = #recorddata
 
 for r=1, records do
+	local doc = false
+	local entryname, longdesc, useahelp
+	if r == 1 then
+		doc = true
+		entryname = "Music Disc"
+		longdesc = "A music disc holds a single music track which can be used in a jukebox to play music."
+		usagehelp = "Rightclick an empty jukebox with the music disc in your hand to play the music. Rightclick the jukebox again to retrieve the music disc. The music can only be heard by you, not by other players."
+	end
 	minetest.register_craftitem("mcl_jukebox:record_"..r, {
 		description =
 			core.colorize("#55FFFF", "Music Disc") .. "\n" ..
 			core.colorize("#989898", recorddata[r][2] .. "—" .. recorddata[r][1]),
-		_doc_items_create_entry = r == 1,
-		_doc_items_entry_name = "Music Disc",
+		_doc_items_create_entry = doc,
+		_doc_items_entry_name = entryname,
+		_doc_items_longdesc = longdesc,
+		_doc_items_usagehelp = usagehelp,
 		inventory_image = "mcl_jukebox_record_"..recorddata[r][3]..".png",
 		stack_max = 1,
 		groups = { music_record = r },
@@ -77,6 +87,8 @@ minetest.register_craft({
 -- Jukebox
 minetest.register_node("mcl_jukebox:jukebox", {
 	description = "Jukebox",
+	_doc_items_longdesc = "Jukeboxes play music when they're supplied with a music disc.",
+	_doc_items_usagehelp = "Place a music disc into an empty jukebox to insert the music disc and play music. If the jukebox already has a music disc, you will retrieve this music disc first. The music can only be heard by you, not by other players.",
 	tiles = {"mcl_jukebox_top.png", "mcl_jukebox_side.png", "mcl_jukebox_side.png"},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	groups = {handy=1,axey=1, deco_block=1},
