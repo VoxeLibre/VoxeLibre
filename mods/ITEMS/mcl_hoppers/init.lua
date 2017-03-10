@@ -15,6 +15,13 @@ local mcl_hoppers_formspec =
 minetest.register_node("mcl_hoppers:hopper", {
 	description = "Hopper",
 	inventory_image = "mcl_hoppers_item.png",
+	_doc_items_longdesc = [[Hoppers are containers with 5 inventory slots. They collect dropped items from above, take items from a container above and attempts to put its items it into an adjacent container. Hoppers can go either downwards or sideways. Hoppers interact with chests, droppers, dispensers, shulker boxes, furnaces and hoppers.
+
+Hoppers interact with containers the following way:
+• Furnaces: Hoppers from above will put items into the source slot. Hoppers from below take items from the output slot. They also take items from the fuel slot when they can't be used as a fuel. Sideway hoppers put items into the fuel slot
+• Ender chests: Hoppers don't interact with ender chests
+• Other containers: Hoppers interact with them normally]],
+	_doc_items_usagehelp = "To place a hopper vertically, place it on the floor or a ceiling. To place it sideways, place it at the side of a block. Remember you can place at usable blocks (such as chests) with sneak + right-click. The hopper will keep its orientation when the blocks around it are changed. To access the hopper's inventory, rightclick it.",
 	wield_image = "mcl_hoppers_item.png",
 	groups = {pickaxey=1, container=2,deco_block=1,},
 	drawtype = "nodebox",
