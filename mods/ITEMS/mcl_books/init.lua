@@ -1,6 +1,7 @@
 -- Book
 minetest.register_craftitem("mcl_books:book", {
 	description = "Book",
+	_doc_items_longdesc = "Books are used to make bookshelves and book and quills.",
 	inventory_image = "default_book.png",
 	stack_max = 64,
 	groups = { book=1 },
@@ -61,6 +62,8 @@ end
 -- Book and Quill
 minetest.register_craftitem("mcl_books:writable_book", {
 	description = "Book and Quill",
+	_doc_items_longdesc = "This item can be used to write down some notes.",
+	_doc_items_usagehelp = "Hold it in the hand, then rightclick to read the current notes and edit then. You can edit the text as often as you like. You can also sign the book which turns it into a written book which can't be edited anymore.",
 	inventory_image = "mcl_books_book_writable.png",
 	groups = { book=1 },
 	stack_max = 1,
@@ -129,6 +132,8 @@ minetest.register_craft({
 -- Written Book
 minetest.register_craftitem("mcl_books:written_book", {
 	description = "Written Book",
+	_doc_items_longdesc = "Written books contain some text written by someone. They can be read and copied, but not edited.",
+	_doc_items_usagehelp = "Hold it in your hand, then rightclick to read the book. To copy the book, place it into the crafting grid together with a book and quill. Performing the craft will turn the book and quill into a copy of the written book.",
 	inventory_image = "mcl_books_book_written.png",
 	groups = { not_in_creative_inventory=1, book=1 },
 	-- TODO: Increase to 16 when this mod is ready

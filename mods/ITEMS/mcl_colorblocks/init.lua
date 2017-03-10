@@ -21,8 +21,14 @@ block.dyes = {
 	{"light_blue", "Light Blue", "lightblue", true},
 }
 
+local hc_desc = "Hardened clay is natural in deserts and a basic building material. It comes in many different colors."
+local gt_desc = "Glazed terracotta is a decorational block with a complex pattern on it. It can be rotated by placing it in different directions."
+local cp_desc = "Concrete powder is used for creating concrete, but it can also be used as decoration itself. It comes in different colors. Concrete powder turns into concrete of the same color when it comes in contact with water."
+local conc_desc = "Concrete is a decorational block which comes in many different colors. It is notable for having a very strong and clean color.",
+
 minetest.register_node("mcl_colorblocks:hardened_clay", {
 	description = "Hardened Clay",
+	_doc_items_longdesc = "Hardened clay is natural to deserts and a basic building material.",
 	tiles = {"hardened_clay.png"},
 	stack_max = 64,
 	groups = {pickaxey=1, hardened_clay=1,building_block=1},
@@ -48,6 +54,7 @@ for _, row in ipairs(block.dyes) do
 	-- Node Definition
 	minetest.register_node("mcl_colorblocks:hardened_clay_"..name, {
 		description = desc.." Hardened Clay",
+		_doc_items_longdesc = hc_desc,
 		tiles = {"hardened_clay_stained_"..name..".png"},
 		groups = {pickaxey=1, hardened_clay=1,building_block=1},
 		stack_max = 64,
@@ -58,6 +65,7 @@ for _, row in ipairs(block.dyes) do
 
 	minetest.register_node("mcl_colorblocks:concrete_powder_"..name, {
 		description = desc.." Concrete Powder",
+		_doc_items_longdesc = cp_desc,
 		tiles = {"mcl_colorblocks_concrete_powder_"..name..".png"},
 		groups = {handy=1,shovely=1, concrete_powder=1,building_block=1,falling_node=1},
 		stack_max = 64,
@@ -72,6 +80,7 @@ for _, row in ipairs(block.dyes) do
 
 	minetest.register_node("mcl_colorblocks:concrete_"..name, {
 		description = desc.." Concrete",
+		_doc_items_longdesc = conc_desc,
 		tiles = {"mcl_colorblocks_concrete_"..name..".png"},
 		groups = {handy=1,pickaxey=1, concrete=1,building_block=1},
 		stack_max = 64,
@@ -86,6 +95,7 @@ for _, row in ipairs(block.dyes) do
 		local texes = { tex, tex, tex.."^[transformR180", tex, tex.."^[transformR270", tex.."^[transformR90" }
 		minetest.register_node("mcl_colorblocks:glazed_terracotta_"..name, {
 			description = desc.." Glazed Terracotta",
+			_doc_items_longdesc = gt_desc,
 			tiles = texes,
 			groups = {handy=1,pickaxey=1, glazed_terracotta=1,building_block=1},
 			paramtype2 = "facedir",
