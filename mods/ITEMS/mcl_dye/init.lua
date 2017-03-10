@@ -94,6 +94,8 @@ for _, row in ipairs(dyelocal.dyes) do
 		minetest.register_craftitem(item_name, {
 			inventory_image = item_image,
 			description = description,
+			_doc_items_longdesc = "This item is a dye which is used for dyeing and crafting.",
+			_doc_items_usagehelp = "Rightclick on a sheep to dye its wool. Other things are dyed by crafting.",
 			groups = groups,
 			stack_max = 64,
 		})
@@ -214,6 +216,8 @@ end
 minetest.register_craftitem("mcl_dye:white", {
 	inventory_image = "dye_white.png",
 	description = "Bone Meal",
+	_doc_items_longdesc = "Bone meal is a white dye and also useful as a fertilizer to speed up the growth of many plants.",
+	_doc_items_usagehelp = "Rightclick a sheep to turn its wool white. Rightclick a plant to speed up its growth. Note that not all plants can be fertilized like this. When you rightclick a grass block, tall grass and flowers will grow all over the place.",
 	stack_max = 64,
 	groups = dyelocal.dyes[1][3],
 	on_place = function(itemstack, user, pointed_thing) 
@@ -235,6 +239,8 @@ minetest.register_craftitem("mcl_dye:white", {
 
 minetest.register_craftitem("mcl_dye:brown", {
 	inventory_image = "dye_brown.png",
+	_doc_items_longdesc = "Cocoa beans are a brown dye and can be used to plant cocoas.",
+	_doc_items_usagehelp = "Rightclick a sheep to turn its wool brown. Rightclick on the side of a jungle tree trunk (Jungle Wood) to plant a young cocoa.",
 	description = "Cocoa Beans",
 	stack_max = 64,
 	groups = dyelocal.dyes[4][3],
