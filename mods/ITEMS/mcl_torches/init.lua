@@ -91,7 +91,9 @@ mcl_torches.register_torch = function(substring, description, icon, mesh_floor, 
 				end
 			end
 
-			local fakestack = itemstack
+			local itemstring = itemstack:get_name()
+			local fakestack = ItemStack(itemstack)
+			local idef = fakestack:get_definition()
 			local retval
 
 			if wdir == 0 then
@@ -109,7 +111,6 @@ mcl_torches.register_torch = function(substring, description, icon, mesh_floor, 
 			itemstack, success = minetest.item_place(fakestack, placer, pointed_thing, wdir)
 			itemstack:set_name(itemstring)
 
-			local idef = itemstack:get_definition()
 			if success and idef.sounds and idef.sounds.place then
 				minetest.sound_play(idef.sounds.place, {pos=under, gain=1})
 			end
