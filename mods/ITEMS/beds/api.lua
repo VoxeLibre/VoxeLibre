@@ -22,9 +22,24 @@ local function destruct_bed(pos, n)
 	end
 end
 
+local beddesc = "Beds allow you to sleep at night and waste some time. Survival in this world does not demand sleep, but sleeping might have some other uses. "
+local beduse = "Right-click on the bed to try to sleep in it. This only works at night. While being in it, you can right-click the bed again to get up early."
+if minetest.setting_getbool("enable_bed_respawn") == false then
+	beddesc = beddesc .. "In local folklore, legends are told of other worlds where setting the start point for your next would be possible. But this world is not one of them. "
+else
+	beddesc = beddesc .. "By sleeping in a bed, you set the starting point for your next life. "
+end
+if minetest.setting_getbool("enable_bed_night_skip") == false then
+	beddesc = beddesc .. "In this strange world, the time will not pass faster for you when you sleep."
+else
+	beddesc = beddesc .. "Going into bed seems to make time pass faster: The night will be skipped when you go sleep and you're alone in this world. If you're not alone, the night is skipped when all humans in this world went to sleep."
+end
+
 function beds.register_bed(name, def)
 	minetest.register_node(name .. "_bottom", {
 		description = def.description,
+		_doc_items_longdesc = def._doc_items_longdesc or beddesc,
+		_doc_items_usagehelp = def._doc_items_usagehelp or beduse,
 		inventory_image = def.inventory_image,
 		wield_image = def.wield_image,
 		drawtype = "nodebox",
