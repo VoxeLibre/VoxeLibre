@@ -28,6 +28,8 @@ local cubes = {
 
 minetest.register_node("mcl_flowerpots:flower_pot", {
 	description = "Flower Pot",
+	_doc_items_longdesc = "Flower pots are decorational blocks in which flowers and other small plants can be placed.",
+	_doc_items_usagehelp = "Rightclick an empty flower pot while you wield a plant to place the plant. Flower pots can hold small flowers (not higher than 1 block), saplings, ferns, dead bushes and cacti. Rightclick a potted plant to retrieve the plant.",
 	drawtype = "mesh",
 	mesh = "flowerpot.obj",
 	tiles = {
