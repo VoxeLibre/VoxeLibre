@@ -18,6 +18,7 @@ end
 
 minetest.register_node("mcl_sponges:sponge", {
 	description = "Sponge",
+	_doc_items_longdesc = "Sponges are blocks which remove water around them when they are placed or come in contact with water, turning it into a wet sponge.",
 	drawtype = "normal",
 	is_ground_content = false,
 	tiles = {"mcl_sponges_sponge.png"},
@@ -74,6 +75,7 @@ minetest.register_node("mcl_sponges:sponge", {
 
 minetest.register_node("mcl_sponges:sponge_wet", {
 	description = "Wet Sponge",
+	_doc_items_longdesc = "Wet sponges can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of a furnace, water will pour into the bucket.",
 	drawtype = "normal",
 	is_ground_content = false,
 	tiles = {"mcl_sponges_sponge_wet.png"},
