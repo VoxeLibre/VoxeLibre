@@ -540,7 +540,7 @@ local function register_mgv6_decorations()
 			octaves = 3,
 			persist = 0.6
 		},
-		y_min = 3,
+		y_min = 4,
 		y_max = 30,
 		decoration = "mcl_core:cactus",
 		height = 1,
@@ -580,7 +580,7 @@ local function register_mgv6_decorations()
 			octaves = 3,
 			persist = 0.6
 		},
-		y_min = 3,
+		y_min = 4,
 		y_max = 50,
 		decoration = "mcl_core:deadbush",
 	})
