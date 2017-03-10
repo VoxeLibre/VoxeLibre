@@ -2,6 +2,7 @@
 
 minetest.register_craftitem("mcl_mobitems:rotten_flesh", {
 	description = "Rotten Flesh",
+	_doc_items_longdesc = "Yuck! This piece of flesh clearly has seen better days. If you're really desperate, you can eat it for 4 hunger points, but it will poison and hurt you for a while.",
 	inventory_image = "mcl_mobitems_rotten_flesh.png",
 	wield_image = "mcl_mobitems_rotten_flesh.png",
 	on_place = minetest.item_eat(4),
@@ -12,6 +13,7 @@ minetest.register_craftitem("mcl_mobitems:rotten_flesh", {
 
 minetest.register_craftitem("mcl_mobitems:mutton", {
 	description = "Raw Mutton",
+	_doc_items_longdesc = "Raw mutton is the flesh from sheep and can be eaten for 2 hunger points.",
 	inventory_image = "mcl_mobitems_mutton_raw.png",
 	wield_image = "mcl_mobitems_mutton_raw.png",
 	on_place = minetest.item_eat(2),
@@ -22,6 +24,7 @@ minetest.register_craftitem("mcl_mobitems:mutton", {
 
 minetest.register_craftitem("mcl_mobitems:cooked_mutton", {
 	description = "Cooked Mutton",
+	_doc_items_longdesc = "This is a food item which can be eaten for 6 hunger points.",
 	inventory_image = "mcl_mobitems_mutton_cooked.png",
 	wield_image = "mcl_mobitems_mutton_cooked.png",
 	on_place = minetest.item_eat(6),
@@ -32,6 +35,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_mutton", {
 
 minetest.register_craftitem("mcl_mobitems:beef", {
 	description = "Raw Beef",
+	_doc_items_longdesc = "Raw beef is the flesh from cows and can be eaten for 3 hunger points.",
 	inventory_image = "mcl_mobitems_beef_raw.png",
 	wield_image = "mcl_mobitems_beef_raw.png",
 	on_place = minetest.item_eat(3),
@@ -42,6 +46,7 @@ minetest.register_craftitem("mcl_mobitems:beef", {
 
 minetest.register_craftitem("mcl_mobitems:cooked_beef", {
 	description = "Steak",
+	_doc_items_longdesc = "Steak is cooked beef from cows and can be eaten for 8 hunger points.",
 	inventory_image = "mcl_mobitems_beef_cooked.png",
 	wield_image = "mcl_mobitems_beef_cooked.png",
 	on_place = minetest.item_eat(8),
@@ -52,6 +57,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_beef", {
 
 minetest.register_craftitem("mcl_mobitems:chicken", {
 	description = "Raw Chicken",
+	_doc_items_longdesc = "This is a food item which can be eaten for 2 hunger points.",
 	inventory_image = "mcl_mobitems_chicken_raw.png",
 	wield_image = "mcl_mobitems_chicken_raw.png",
 	on_place = minetest.item_eat(2),
@@ -62,6 +68,7 @@ minetest.register_craftitem("mcl_mobitems:chicken", {
 
 minetest.register_craftitem("mcl_mobitems:cooked_chicken", {
 	description = "Cooked Chicken",
+	_doc_items_longdesc = "This is a food item which can be eaten for 6 hunger points.",
 	inventory_image = "mcl_mobitems_chicken_cooked.png",
 	wield_image = "mcl_mobitems_chicken_cooked.png",
 	on_place = minetest.item_eat(6),
@@ -72,6 +79,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_chicken", {
 
 minetest.register_craftitem("mcl_mobitems:porkchop", {
 	description = "Raw Porkchop",
+	_doc_items_longdesc = "A raw porkchop is the flesh from a pig and can be eaten for 3 hunger points.",
 	inventory_image = "mcl_mobitems_porkchop_raw.png",
 	wield_image = "mcl_mobitems_porkchop_raw.png",
 	on_place = minetest.item_eat(3),
@@ -82,6 +90,7 @@ minetest.register_craftitem("mcl_mobitems:porkchop", {
 
 minetest.register_craftitem("mcl_mobitems:cooked_porkchop", {
 	description = "Cooked Porkchop",
+	_doc_items_longdesc = "This is a food item which can be eaten for 8 hunger points.",
 	inventory_image = "mcl_mobitems_porkchop_cooked.png",
 	wield_image = "mcl_mobitems_porkchop_cooked.png",
 	on_place = minetest.item_eat(8),
@@ -92,6 +101,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_porkchop", {
 
 minetest.register_craftitem("mcl_mobitems:rabbit", {
 	description = "Raw Rabbit",
+	_doc_items_longdesc = "This is a food item which can be eaten for 3 hunger points.",
 	inventory_image = "mcl_mobitems_rabbit_raw.png",
 	wield_image = "mcl_mobitems_rabbit_raw.png",
 	on_place = minetest.item_eat(3),
@@ -102,6 +112,7 @@ minetest.register_craftitem("mcl_mobitems:rabbit", {
 
 minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
 	description = "Cooked Rabbit",
+	_doc_items_longdesc = "This is a food item which can be eaten for 5 hunger points.",
 	inventory_image = "mcl_mobitems_rabbit_cooked.png",
 	wield_image = "mcl_mobitems_rabbit_cooked.png",
 	on_place = minetest.item_eat(5),
@@ -113,6 +124,8 @@ minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
 -- TODO: Clear status effects
 minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 	description = "Milk",
+	_doc_items_longdesc = "Milk is very refreshing can be obtained by using a bucket on a cow. Drinking it will clear all status effects (TODO), but restores no hunger points.",
+	_doc_items_usagehelp = "Rightclick to drink the milk.",
 	inventory_image = "mcl_mobitems_bucket_milk.png",
 	wield_image = "mcl_mobitems_bucket_milk.png",
 	on_place = minetest.item_eat(0, "bucket:bucket_empty"),
@@ -123,6 +136,7 @@ minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 
 minetest.register_craftitem("mcl_mobitems:spider_eye", {
 	description = "Spider Eye",
+	_doc_items_longdesc = "Spider eyes are used mainly in crafting and brewing. If you're really desperate, you can eat a spider eye for 2 hunger points, but it will poison you.",
 	inventory_image = "mcl_mobitems_spider_eye.png",
 	wield_image = "mcl_mobitems_spider_eye.png",
 	on_place = minetest.item_eat(2),
@@ -133,6 +147,8 @@ minetest.register_craftitem("mcl_mobitems:spider_eye", {
 
 minetest.register_craftitem("mcl_mobitems:bone", {
 	description = "Bone",
+	_doc_items_longdesc = "Bones can be used to tame wolves so they will protect you. They are also useful as a crafting ingredient.",
+	_doc_items_usagehelp = "Hold the bone in your hand near wolves to attract them. Rightclick the wolf to give it a bone and tame it. You can then give commands to the tamed wolf by rightclicking it.",
 	inventory_image = "mcl_mobitems_bone.png",
 	stack_max = 64,
 	groups = { craftitem=1 },
@@ -140,6 +156,7 @@ minetest.register_craftitem("mcl_mobitems:bone", {
 
 minetest.register_craftitem("mcl_mobitems:string",{
 	description = "String",
+	_doc_items_usagehelp = "Strings are used in crafting.",
 	inventory_image = "mcl_mobitems_string.png",
 	stack_max = 64,
 	groups = { craftitem = 1 },
@@ -203,6 +220,7 @@ minetest.register_craftitem("mcl_mobitems:feather", {
 
 minetest.register_craftitem("mcl_mobitems:rabbit_hide", {
 	description = "Rabbit Hide",
+	_doc_items_longdesc = "Rabbit hide is used to create leather.",
 	wield_image = "mcl_mobitems_rabbit_hide.png",
 	inventory_image = "mcl_mobitems_rabbit_hide.png",
 	groups = { craftitem = 1 },
@@ -211,6 +229,7 @@ minetest.register_craftitem("mcl_mobitems:rabbit_hide", {
 
 minetest.register_craftitem("mcl_mobitems:rabbit_foot", {
 	description = "Rabbit's Foot",
+	_doc_items_longdesc = "This item is used in brewing.",
 	wield_image = "mcl_mobitems_rabbit_foot.png",
 	inventory_image = "mcl_mobitems_rabbit_foot.png",
 	groups = { brewitem = 1 },
@@ -219,6 +238,8 @@ minetest.register_craftitem("mcl_mobitems:rabbit_foot", {
 
 minetest.register_craftitem("mcl_mobitems:saddle", {
 	description = "Saddle",
+	_doc_items_longdesc = "Saddles can be put on horses and pigs in order to mount them.",
+	_doc_items_usagehelp = "Rightclick a horse or pig with a saddle to put on the saddle. You can now mount the animal by rightclicking it again.",
 	wield_image = "mcl_mobitems_saddle.png",
 	inventory_image = "mcl_mobitems_saddle.png",
 	stack_max = 1,
@@ -226,6 +247,7 @@ minetest.register_craftitem("mcl_mobitems:saddle", {
 
 minetest.register_craftitem("mcl_mobitems:rabbit_stew", {
 	description = "Rabbit Stew",
+	_doc_items_longdesc = "Rabbit stew is a very nutricious food item which can be consumed for 10 hunger points.",
 	wield_image = "mcl_mobitems_rabbit_stew.png",
 	inventory_image = "mcl_mobitems_rabbit_stew.png",
 	stack_max = 1,
@@ -255,6 +277,8 @@ minetest.register_craftitem("mcl_mobitems:gunpowder", {
 
 minetest.register_tool("mcl_mobitems:carrot_on_a_stick", {
 	description = "Carrot on a Stick",
+	_doc_items_longdesc = "A carrot on a stick can be used on saddled pigs to ride them.",
+	_doc_items_usagehelp = "Rightclick a saddled pig with the carrot on a stick to mount it. You can now ride it like a horse (TODO). Pigs will also walk towards you when you just wield the carrot on a stick.",
 	wield_image = "mcl_mobitems_carrot_on_a_stick.png",
 	inventory_image = "mcl_mobitems_carrot_on_a_stick.png",
 	groups = { transport = 1 },
