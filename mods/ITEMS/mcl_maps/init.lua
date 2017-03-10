@@ -17,6 +17,8 @@ end
 
 minetest.register_craftitem("mcl_maps:empty_map", {
 	description = "Empty Map",
+	_doc_items_longdesc = "Empty maps are not useful as maps, but they can be stacked and turned to maps which can be used.",
+	_doc_items_usagehelp = "Rightclick to start using the map (which can't be stacked anymore).",
 	inventory_image = "mcl_maps_map_empty.png",
 	groups = { not_in_creative_inventory = 1 },
 	on_place = make_filled_map,
@@ -30,6 +32,8 @@ minetest.register_craftitem("mcl_maps:empty_map", {
 -- has a very greatly zoomed-out version and even a radar mode
 minetest.register_craftitem("mcl_maps:filled_map", {
 	description = "Map",
+	_doc_items_longdesc = "Maps show your surroundings as you explore the world. They can even show you the world like a radar. MAGIC!\nNote: Maps are incomplete and subject to change in future versions of MineClone 2.",
+	_doc_items_usagehelp = "Hold the map in any of the hotbar slots. This allows you to access the minimap by pressing the minimap key ([F9] by default).",
 	inventory_image = "mcl_maps_map_filled.png^(mcl_maps_map_filled_markings.png^[colorize:#000000)",
 	stack_max = 1,
 })
