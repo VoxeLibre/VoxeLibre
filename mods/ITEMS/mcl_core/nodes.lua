@@ -1232,9 +1232,9 @@ minetest.register_node("mcl_core:ladder", {
 		if under.y ~= above.y then
 			return itemstack
 		end
+		local idef = itemstack:get_definition()
 		local success = minetest.item_place_node(itemstack, placer, pointed_thing)
 
-		local idef = itemstack:get_definition()
 		if success then
 			if idef.sounds and idef.sounds.place then
 				minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
