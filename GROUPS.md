@@ -67,7 +67,8 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 ### Declarative groups
 These groups are used mostly for informational purposes
 
-* `solid=1`: Solid block (automatically assigned)
+* `solid=1`: Solid full-cube block (automatically assigned)
+* `opaque=1`: Opaque block (automatically assigned)
 * `not_solid=1`: Block is sold (only assign this group for nodes which are automatically detected as “solid” in error
 * `water=1`: Water
 * `lava=1`: Lava

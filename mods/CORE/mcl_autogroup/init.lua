@@ -82,6 +82,11 @@ local overwrite = function()
 				newgroups.solid = 1
 				groups_changed = true
 			end
+			-- Automatically assign the “opaque” group for opaque nodes
+			if not (ndef.paramtype == "light" or ndef.sunlight_propagates) then
+				newgroups.opaque = 1
+				groups_changed = true
+			end
 
 			local function calculate_group(hardness, material, diggroup, newgroups, actual_rating, expected_rating)
 				local time, validity_factor
