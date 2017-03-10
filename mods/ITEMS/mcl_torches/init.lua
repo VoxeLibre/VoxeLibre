@@ -49,7 +49,6 @@ mcl_torches.register_torch = function(substring, description, icon, mesh_floor, 
 			local under = pointed_thing.under
 			local node = minetest.get_node(under)
 			local def = minetest.registered_nodes[node.name]
-			local node = minetest.get_node(pointed_thing.under)
 
 			-- Call on_rightclick if the pointed node defines it
 			if placer and not placer:get_player_control().sneak then
@@ -60,7 +59,39 @@ mcl_torches.register_torch = function(substring, description, icon, mesh_floor, 
 
 			local above = pointed_thing.above
 			local wdir = minetest.dir_to_wallmounted({x = under.x - above.x, y = under.y - above.y, z = under.z - above.z})
-				local fakestack = itemstack
+
+			-- Torch placement rules: Disallow placement on some nodes. General rule: Solid, opaque, full cube collision box nodes are allowed.
+			-- Special allowed nodes:
+			-- * soul sand
+			-- * end portal frame (TODO)
+			-- * monster spawner
+			-- * Fence, wall, glass, hopper: Only on top
+			-- * Monster spawner
+			-- * Slab: Only on top if upside down (TODO)
+			-- * Stairs: Only on top if upside down (TODO)
+
+			-- Special forbidden nodes:
+			-- * Piston
+			-- * Sticky piston
+			if not def.buildable_to then
+				if node.name ~= "mcl_nether:soul_sand" and node.name ~= "mobs:spawner" and
+						((not def.groups.solid) or (not def.groups.opaque)) then
+					-- Only allow top placement on these nodes
+					if def.groups.glass or node.name == "mcl_hoppers:hopper" or node.name == "mcl_hoppers:hopper_side" or def.groups.fence or def.groups.wall then
+						if wdir ~= 1 then
+							return itemstack
+						end
+					else
+						return itemstack
+					end
+				elseif node.name == "mesecons_pistons:piston_up_normal_off" or node.name == "mesecons_pistons:piston_up_sticky_off" or
+						node.name == "mesecons_pistons:piston_normal_off" or node.name == "mesecons_pistons:piston_sticky_off" or
+						node.name == "mesecons_pistons:piston_down_normal_off" or node.name == "mesecons_pistons:piston_down_sticky_off" then
+					return itemstack
+				end
+			end
+
+			local fakestack = itemstack
 			local retval
 
 			if wdir == 0 then
