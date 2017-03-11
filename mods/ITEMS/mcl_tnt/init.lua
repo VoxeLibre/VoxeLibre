@@ -92,8 +92,8 @@ function TNT:on_step(dtime)
 	})
 	self.timer = self.timer + dtime
 	self.blinktimer = self.blinktimer + dtime
-	if self.blinktimer > 0.5 then
-		self.blinktimer = self.blinktimer - 0.5
+	if self.blinktimer > 0.25 then
+		self.blinktimer = self.blinktimer - 0.25
 		if self.blinkstatus then
 			self.object:settexturemod("")
 		else
