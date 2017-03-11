@@ -45,8 +45,7 @@ local go_fishing = function(itemstack, user, pointed_thing)
 				elseif r <= 52 then
 					itemname = "mcl_mobitems:string"
 				elseif r <= 62 then
-					itemname = "mcl_potions:glass_bottle"
-					--TODO itemname = "mcl_potions:bottle_water"
+					itemname = "mcl_potions:potion_water"
 				elseif r <= 72 then
 					itemname = "mcl_mobitems:bone"
 				elseif r <= 73 then
@@ -60,14 +59,14 @@ local go_fishing = function(itemstack, user, pointed_thing)
 				-- Treasure
 				r = math.random(1, 6)
 					if r == 1 then
-					-- TODO: Enchanted
+					-- TODO: Enchanted bow
 					itemname = "mcl_throwing:bow"
 					itemwear = math.random(49144, 65535)	-- 75%-100% damaged
 				elseif r == 2 then
 					-- TODO: Enchanted book
 					itemname = "mcl_books:book"
 				elseif r == 3 then
-					-- TODO: Enchanted
+					-- TODO: Enchanted fishing rod
 					itemname = "mcl_fishing:fishing_rod"
 					itemwear = math.random(49144, 65535)	-- 75%-100% damaged
 				elseif r == 4 then
