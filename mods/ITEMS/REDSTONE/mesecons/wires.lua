@@ -33,12 +33,25 @@ for zmy=0, 1 do
 	local nodeid = 	tostring(xp )..tostring(zp )..tostring(xm )..tostring(zm )..
 			tostring(xpy)..tostring(zpy)..tostring(xmy)..tostring(zmy)
 
+	local wirehelp
+	local longdesc
+	local usagehelp
 	if nodeid == "00000000" then
 		groups = {dig_immediate = 3, mesecon_conductor_craftable = 1, attached_node = 1, dig_by_water = 1}
 		wiredesc = "Redstone"
+		wirehelp = nodeid == "00000000"
+		if wirehelp then
+			longdesc = [[Redstone is a versatile conductive mineral which transmits redstone power. It can be placed on trail the ground as a trail.
+A redstone trail can be in two states: Powered or not powered. A powered redstone trail will power (and thus activate) adjacent redstone components.
+Redstone power can be received from various redstone components, such as a block of redstone or a button. Redstone power is used to activate numerous mechanisms, such as redstone lamps or pistons.]]
+			usagehelp = [[Place redstone on the ground to build a redstone trail. The trails will connect to each other automatically and it can also go over hills. An easy way to power a redstone trail is by placing a redstone torch.
+
+Read the help entries on the other redstone components to learn how redstone components interact.]]
+		end
 	else
 		groups = {dig_immediate = 3, not_in_creative_inventory = 1, attached_node = 1, dig_by_water = 1}
 		wiredesc = "Redstone Trail (ID: "..nodeid..")"
+		wirehelp = false
 	end
 
 	local nodebox = {}
@@ -97,7 +110,9 @@ for zmy=0, 1 do
 
 	minetest.register_node("mesecons:wire_"..nodeid.."_off", {
 		description = "Redstone",
-		_doc_items_create_entry = nodeid == "00000000",
+		_doc_items_create_entry = wirehelp,
+		_doc_items_longdesc = longdesc,
+		_doc_items_usagehelp = usagehelp,
 		drawtype = "nodebox",
 		tiles = tiles_off,
 		is_ground_content = false,
@@ -128,7 +143,7 @@ for zmy=0, 1 do
 	})
 
 	minetest.register_node("mesecons:wire_"..nodeid.."_on", {
-		description = "Redstone",
+		description = "Redstone (Powered)",
 		_doc_items_create_entry = false,
 		drawtype = "nodebox",
 		tiles = tiles_on,
