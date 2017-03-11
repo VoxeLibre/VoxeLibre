@@ -128,7 +128,7 @@ minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 	groups = groups,
 	paramtype = "light",
 	paramtype2 = "facedir",
-	sunlight_propagates = true,
+	sunlight_propagates = false,
 	is_ground_content = false,
 	drop = 'mesecons_delayer:delayer_off_1',
 	on_rightclick = function (pos, node)
@@ -188,7 +188,7 @@ minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
 	groups = {dig_immediate = 3, dig_by_water=1, attached_node=1, not_in_creative_inventory = 1},
 	paramtype = "light",
 	paramtype2 = "facedir",
-	sunlight_propagates = true,
+	sunlight_propagates = false,
 	is_ground_content = false,
 	drop = 'mesecons_delayer:delayer_off_1',
 	on_rightclick = function (pos, node)
