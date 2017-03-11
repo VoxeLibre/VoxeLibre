@@ -1,6 +1,6 @@
 minetest.register_node("mesecons_noteblock:noteblock", {
 	description = "Note Block",
-	_doc_items_longdesc = "A note block is a musical block which plays one of many musical notes when it punched or supplied with redstone power.",
+	_doc_items_longdesc = "A note block is a musical block which plays one of many musical notes when it is punched or supplied with redstone power.",
 	_doc_items_usagehelp = [[Rightclick the note block to choose the next musical note (there are 24 half notes, or 2 octaves). The intrument played depends on the material of the block below the note block:
 
 • Glass: Sticks
