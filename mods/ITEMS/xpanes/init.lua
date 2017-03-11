@@ -98,6 +98,10 @@ function xpanes.register_pane(name, def)
 	flatgroups.deco_block = 1
 	minetest.register_node(":xpanes:" .. name .. "_flat", {
 		description = def.description,
+		_doc_items_create_entry = def._doc_items_create_entry,
+		_doc_items_entry_name = def._doc_items_entry_name,
+		_doc_items_longdesc = def._doc_items_longdesc,
+		_doc_items_usagehelp = def._doc_items_usagehelp,
 		drawtype = "nodebox",
 		paramtype = "light",
 		is_ground_content = false,
@@ -161,6 +165,7 @@ end
 local pane = function(description, node, append)
 	xpanes.register_pane("pane"..append, {
 		description = description,
+		_doc_items_longdesc = "Glass panes are thin layers of glass which neatly connect to their neighbors as you build them.",
 		textures = {"xpanes_pane_glass"..append..".png","xpanes_pane_half_glass"..append..".png","xpanes_top_glass"..append..".png"},
 		use_texture_alpha = true,
 		inventory_image = "xpanes_pane_glass"..append..".png",
@@ -180,6 +185,7 @@ end
 -- Iron Bar
 xpanes.register_pane("bar", {
 	description = "Iron Bars",
+	_doc_items_longdesc = "Iron bars neatly connect to their neighbors as you build them.",
 	textures = {"xpanes_pane_iron.png","xpanes_pane_half_iron.png","xpanes_top_iron.png"},
 	inventory_image = "xpanes_pane_iron.png",
 	wield_image = "xpanes_pane_iron.png",

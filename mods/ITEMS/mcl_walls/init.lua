@@ -201,6 +201,7 @@ function mcl_walls.register_wall(nodename, description, craft_material, tiles, i
 	-- Inventory item
 	minetest.register_node(nodename, {
 		description = description,
+		_doc_items_longdesc = "A piece of wall. It cannot be jumped over with a simple jump. When multiple of these are placed to next to each other, they will automatically build a nice wall structure.",
 		paramtype = "light",
 		is_ground_content = false,
 		groups = main_node_groups,

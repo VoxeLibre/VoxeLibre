@@ -772,7 +772,7 @@ minetest.register_node("mcl_core:darkwood", {
 
 minetest.register_node("mcl_core:jungletree", {
 	description = "Jungle Wood",
-	_doc_items_longdesc = "The trunk of a jungle tree.",
+	_doc_items_longdesc = "The trunk of a jungle tree. Cocoa beans can be placed on the side of it to plant a cocoa.",
 	tiles = {"default_jungletree_top.png", "default_jungletree_top.png", "default_jungletree.png"},
 	stack_max = 64,
 	paramtype2 = "facedir",
