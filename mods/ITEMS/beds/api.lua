@@ -23,7 +23,7 @@ local function destruct_bed(pos, n)
 end
 
 local beddesc = "Beds allow you to sleep at night and waste some time. Survival in this world does not demand sleep, but sleeping might have some other uses. "
-local beduse = "Right-click on the bed to try to sleep in it. This only works at night. While being in it, you can right-click the bed again to get up early."
+local beduse = "Right-click on the bed to try to sleep in it. This only works when the sun sets or at night."
 if minetest.setting_getbool("enable_bed_respawn") == false then
 	beddesc = beddesc .. "In local folklore, legends are told of other worlds where setting the start point for your next would be possible. But this world is not one of them. "
 else
