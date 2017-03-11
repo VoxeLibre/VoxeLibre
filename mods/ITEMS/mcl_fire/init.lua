@@ -9,8 +9,12 @@ mcl_fire = {}
 
 -- Flame nodes
 
+local fire_help = "Fire is a damaging and destructive but short-lived kind of block. It will destroy and spread towards near flammable blocks, but fire will disappear when there is nothing to burn left. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it."
+local eternal_fire_help = "Eternal fire is a damaging and destructive block. It will create fire around it when flammable blocks are nearby. Other than (normal) fire, an eternal fire will not go out by time alone. An eternal fire is still extinguished by punching it, by nearby water or by rain. Punching is is safe, but it hurts if you stand inside."
+
 minetest.register_node("mcl_fire:fire", {
 	description = "Fire",
+	_doc_items_longdesc = fire_help,
 	drawtype = "firelike",
 	tiles = {
 		{
@@ -51,6 +55,7 @@ minetest.register_node("mcl_fire:fire", {
 
 minetest.register_node("mcl_fire:eternal_fire", {
 	description = "Eternal Fire",
+	_doc_items_longdesc = eternal_fire_help,
 	drawtype = "firelike",
 	tiles = {
 		{
