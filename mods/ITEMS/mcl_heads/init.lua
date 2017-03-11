@@ -40,6 +40,7 @@ end
 -- Add heads
 addhead("zombie", "Zombie Head")
 addhead("creeper", "Creeper Head")
-addhead("steve", "Head")
+-- Original Minecraft name: “Head”
+addhead("steve", "Human Head")
 addhead("skeleton", "Skeleton Skull")
 addhead("wither_skeleton", "Wither Skeleton Skull")
