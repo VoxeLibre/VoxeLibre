@@ -1,5 +1,6 @@
 minetest.register_node("mcl_farming:melon", {
 	description = "Melon",
+	_doc_items_longdesc = "A melon is a block which has been grown from melon seeds. It has reached its full size and can be harvested for melon slices.",
 	stack_max = 64,
 	tiles = {"farming_melon_top.png", "farming_melon_top.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png"},
 	groups = {handy=1,axey=1, building_block=1},

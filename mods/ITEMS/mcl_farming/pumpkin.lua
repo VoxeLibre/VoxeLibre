@@ -74,6 +74,7 @@ minetest.register_node("mcl_farming:pumpkin_2", {
 
 minetest.register_node("mcl_farming:pumpkin_face", {
 	description = "Pumpkin",
+	_doc_items_longdesc = "A pumpkin is a block which can be grown from pumpkin seeds.",
 	stack_max = 64,
 	paramtype2 = "facedir",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"},
