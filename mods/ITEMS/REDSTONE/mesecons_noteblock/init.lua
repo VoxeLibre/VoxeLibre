@@ -12,10 +12,9 @@ minetest.register_node("mesecons_noteblock:noteblock", {
 		minetest.add_node(pos, {name="mesecons_noteblock:noteblock", param2=0})
 	end,
 	on_rightclick = function (pos, node) -- change sound when punched
-		local param2 = node.param2+1
-		if param2==12 then param2=0 end
-		minetest.add_node(pos, {name = node.name, param2 = param2})
-		mesecon.noteblock_play(pos, param2)
+		node.param2 = (node.param2+1)%24
+		mesecon.noteblock_play(pos, node.param2)
+		minetest.set_node(pos, node)
 	end,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	mesecons = {effector = { -- play sound when activated
@@ -42,34 +41,41 @@ minetest.register_craft({
 	burntime = 15
 })
 
+local soundnames_piano = {
+	[0] = "mesecons_noteblock_c",
+	"mesecons_noteblock_csharp",
+	"mesecons_noteblock_d",
+	"mesecons_noteblock_dsharp",
+	"mesecons_noteblock_e",
+	"mesecons_noteblock_f",
+	"mesecons_noteblock_fsharp",
+	"mesecons_noteblock_g",
+	"mesecons_noteblock_gsharp",
+	"mesecons_noteblock_a",
+	"mesecons_noteblock_asharp",
+	"mesecons_noteblock_b",
+
+	"mesecons_noteblock_c2",
+	"mesecons_noteblock_csharp2",
+	"mesecons_noteblock_d2",
+	"mesecons_noteblock_dsharp2",
+	"mesecons_noteblock_e2",
+	"mesecons_noteblock_f2",
+	"mesecons_noteblock_fsharp2",
+	"mesecons_noteblock_g2",
+	"mesecons_noteblock_gsharp2",
+	"mesecons_noteblock_a2",
+	"mesecons_noteblock_asharp2",
+	"mesecons_noteblock_b2",
+
+}
+
 mesecon.noteblock_play = function (pos, param2)
 	local soundname
-	-- TODO: 24 piano notes
-	if param2==8 then
-		soundname="mesecons_noteblock_a"
-	elseif param2==9 then
-		soundname="mesecons_noteblock_asharp"
-	elseif param2==10 then
-		soundname="mesecons_noteblock_b"
-	elseif param2==11 then
-		soundname="mesecons_noteblock_c"
-	elseif param2==0 then
-		soundname="mesecons_noteblock_csharp"
-	elseif param2==1 then
-		soundname="mesecons_noteblock_d"
-	elseif param2==2 then
-		soundname="mesecons_noteblock_dsharp"
-	elseif param2==3 then
-		soundname="mesecons_noteblock_e"
-	elseif param2==4 then
-		soundname="mesecons_noteblock_f"
-	elseif param2==5 then
-		soundname="mesecons_noteblock_fsharp"
-	elseif param2==6 then
-		soundname="mesecons_noteblock_g"
-	elseif param2==7 then
-		soundname="mesecons_noteblock_gsharp"
-	end
+
+	-- Default: One of 24 piano notes
+	soundname = soundnames_piano[param2]
+
 	local block_below_name = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name
 	if minetest.get_item_group(block_below_name, "material_glass") ~= 0 then
 		-- TODO: Sticks and clicks
