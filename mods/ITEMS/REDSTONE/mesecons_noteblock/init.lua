@@ -1,5 +1,7 @@
 minetest.register_node("mesecons_noteblock:noteblock", {
 	description = "Note Block",
+	_doc_items_longdesc = "A note block is a redstone component which plays a musical note when it is supplied with redstone power.",
+	_doc_items_usagehelp = "Rightclick the note block to choose one of many possible notes to play.",
 	tiles = {"mesecons_noteblock.png"},
 	groups = {handy=1,axey=1, material_wood=1},
 	drawtype = "allfaces_optional",
@@ -42,6 +44,7 @@ minetest.register_craft({
 
 mesecon.noteblock_play = function (pos, param2)
 	local soundname
+	-- TODO: 24 piano notes
 	if param2==8 then
 		soundname="mesecons_noteblock_a"
 	elseif param2==9 then
@@ -68,20 +71,18 @@ mesecon.noteblock_play = function (pos, param2)
 		soundname="mesecons_noteblock_gsharp"
 	end
 	local block_below_name = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name
-	if block_below_name == "mcl_core:glass" then
-		soundname="mesecons_noteblock_hihat"
-	end
-	if block_below_name == "mcl_core:stone" then
+	if minetest.get_item_group(block_below_name, "material_glass") ~= 0 then
+		-- TODO: Sticks and clicks
 		soundname="mesecons_noteblock_kick"
-	end
-	if block_below_name == "mcl_core:chest" then
-		soundname="mesecons_noteblock_snare"
-	end
-	if block_below_name == "mcl_core:tree" then
+	elseif minetest.get_item_group(block_below_name, "material_wood") ~= 0 then
+		-- TODO: Bass guitar
 		soundname="mesecons_noteblock_crash"
-	end
-	if block_below_name == "mcl_core:wood" then
-		soundname="mesecons_noteblock_litecrash"
+	elseif minetest.get_item_group(block_below_name, "material_sand") ~= 0 then
+		-- TODO: 24 Snare drum sounds
+		soundname="mesecons_noteblock_snare"
+	elseif minetest.get_item_group(block_below_name, "material_stone") ~= 0 then
+		-- TODO: Bass drum
+		soundname="mesecons_noteblock_snare"
 	end
 	minetest.sound_play(soundname,
 	{pos = pos, gain = 1.0, max_hear_distance = 32,})
