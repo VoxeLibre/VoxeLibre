@@ -71,6 +71,7 @@ function mesecon:register_pressure_plate(offstate, onstate, description, texture
 		groups = groups_off,
 		is_ground_content = false,
 	    	description = description,
+		_doc_items_longdesc = "A pressure place is a redstone component which supplies its surrounding blocks with redstone power while someone or something rests on top of it.",
 		pressureplate = ppspec,
 		on_timer = pp_on_timer,
 		sounds = sounds,
