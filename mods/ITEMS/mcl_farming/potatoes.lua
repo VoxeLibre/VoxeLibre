@@ -58,6 +58,8 @@ minetest.register_node("mcl_farming:potato", {
 
 minetest.register_craftitem("mcl_farming:potato_item", {
 	description = "Potato",
+	_doc_items_longdesc = "Potatoes are food items which can be eaten, cooked in the furnace and planted. Eating a potato restores 1 hunger point. Pigs like potatoes.",
+	_doc_items_usagehelp = "Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant it. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it.",
 	inventory_image = "farming_potato.png",
 	groups = { food = 2, eatable = 1 },
 	stack_max = 64,
@@ -74,6 +76,7 @@ minetest.register_craftitem("mcl_farming:potato_item", {
 
 minetest.register_craftitem("mcl_farming:potato_item_baked", {
 	description = "Baked Potato",
+	_doc_items_longdesc = "Baked potatoes are foot items which can be eaten for 6 hunger points.",
 	stack_max = 64,
 	inventory_image = "farming_potato_baked.png",
 	on_place = minetest.item_eat(6),
@@ -83,6 +86,8 @@ minetest.register_craftitem("mcl_farming:potato_item_baked", {
 
 minetest.register_craftitem("mcl_farming:potato_item_poison", {
 	description = "Poisonous Potato",
+	_doc_items_longdesc = "This potato doesn't look healthy. Eating it will only poison you.",
+	_doc_items_usagehelp = "Hold it in your hand and rightclick to eat it. But why would you want to do this?",
 	stack_max = 64,
 	inventory_image = "farming_potato_poison.png",
 	-- TODO: Cause status effects

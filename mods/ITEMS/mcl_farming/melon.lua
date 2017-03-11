@@ -248,6 +248,8 @@ minetest.register_node("mcl_farming:melontige_linked_b", {
 
 minetest.register_craftitem("mcl_farming:melon_seeds", {
 	description = "Melon Seeds",
+	_doc_items_longdesc = "Grows into a melon. Chickens like melon seeds.",
+	_doc_items_usagehelp = "Place the melon seeds on farmland (which can be created with a hoe) to plant a melon stem. Melons grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it melon seeds.",
 	stack_max = 64,
 	groups = { craftitem=1 },
 	inventory_image = "farming_melon_seed.png",

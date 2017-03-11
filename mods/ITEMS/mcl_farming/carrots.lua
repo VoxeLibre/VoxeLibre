@@ -77,6 +77,8 @@ minetest.register_node("mcl_farming:carrot", {
 
 minetest.register_craftitem("mcl_farming:carrot_item", {
 	description = "Carrot",
+	_doc_items_longdesc = "Carrots can be eaten and planted. When eaten, a carrot restores 3 hunger points. Pigs and rabbits like carrots.",
+	_doc_items_usagehelp = "Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant the carrot. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it.",
 	inventory_image = "farming_carrot.png",
 	groups = { food = 2, eatable = 3 },
 	on_secondary_use = minetest.item_eat(3),

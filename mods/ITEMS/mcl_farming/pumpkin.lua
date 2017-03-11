@@ -1,5 +1,7 @@
 minetest.register_craftitem("mcl_farming:pumpkin_seeds", {
 	description = "Pumpkin Seeds",
+	_doc_items_longdesc = "Grows into a pumpkin. Chickens like pumpkin seeds.",
+	_doc_items_usagehelp = "Place the pumpkin seeds on farmland (which can be created with a hoe) to plant a pumpkin stem. Pumpkins grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it pumpkin seeds.",
 	stack_max = 64,
 	inventory_image = "farming_pumpkin_seed.png",
 	groups = { craftitem=1 },
@@ -306,6 +308,7 @@ minetest.register_abm({
 
 minetest.register_node("mcl_farming:pumpkin_face_light", {
 	description = "Jack o'Lantern",
+	_doc_items_longdesc = "A Jack o'lantern is a traditional halloween decoration made from a pumpkin and glows brightly.",
 	is_ground_content = false,
 	stack_max = 64,
 	paramtype2 = "facedir",
@@ -331,6 +334,7 @@ minetest.register_craft({
 
 minetest.register_craftitem("mcl_farming:pumpkin_pie", {
 	description = "Pumpkin Pie",
+	_doc_items_longdesc = "A pumpkin pie is very filling and can be eaten for 8 hunger points.",
 	stack_max = 64,
 	inventory_image = "mcl_farming_pumpkin_pie.png",
 	wield_image = "mcl_farming_pumpkin_pie.png",

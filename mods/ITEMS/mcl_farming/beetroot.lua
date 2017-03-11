@@ -1,5 +1,7 @@
 minetest.register_craftitem("mcl_farming:beetroot_seeds", {
 	description = "Beetroot Seeds",
+	_doc_items_longdesc = "Grows into a beetroot plant. Chickens like beetroot seeds.",
+	_doc_items_usagehelp = "Place the beetroot seeds on farmland (which can be created with a hoe) to plant a beetroot plant. They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it beetroot seeds.",
 	groups = { craftitem=1 },
 	inventory_image = "mcl_farming_beetroot_seeds.png",
 	wield_image = "mcl_farming_beetroot_seeds.png",
@@ -93,6 +95,8 @@ minetest.register_node("mcl_farming:beetroot", {
 
 minetest.register_craftitem("mcl_farming:beetroot_item", {
 	description = "Beetroot",
+	_doc_items_longdesc = "Beetroots can be eaten for 1 hunger point. Pigs like beetroots, too.",
+	_doc_items_usagehelp = "Hold it in your hand and right-click to eat it. Rightclick an animal to feed it.",
 	inventory_image = "mcl_farming_beetroot.png",
 	wield_image = "mcl_farming_beetroot.png",
 	on_place = minetest.item_eat(1),
@@ -102,6 +106,7 @@ minetest.register_craftitem("mcl_farming:beetroot_item", {
 
 minetest.register_craftitem("mcl_farming:beetroot_soup", {
 	description = "Beetroot Soup",
+	_doc_items_longdesc = "Beetroot soup is a healthy soup which can be consumed for 6 hunger points.",
 	stack_max = 1,
 	inventory_image = "mcl_farming_beetroot_soup.png",
 	wield_image = "mcl_farming_beetroot_soup.png",
