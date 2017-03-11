@@ -178,6 +178,7 @@ minetest.register_craftitem("mcl_farming:bread", {
 
 minetest.register_node("mcl_farming:hay_block", {
 	description = "Hay Bale",
+	_doc_items_longdesc = "Hay bales are decorative blocks made from wheat.",
 	tiles = {"mcl_farming_hayblock_top.png", "mcl_farming_hayblock_top.png", "mcl_farming_hayblock_side.png"},
 	is_ground_content = false,
 	stack_max = 64,
