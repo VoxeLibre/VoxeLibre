@@ -1,6 +1,6 @@
 -- Function that get the input/output rules of the delayer
 local delayer_get_output_rules = function(node)
-	local rules = {{x = 0, y = 0, z = 1}}
+	local rules = {{x = -1, y = 0, z = 0}}
 	for i = 0, node.param2 do
 		rules = mesecon:rotate_rules_left(rules)
 	end
@@ -8,7 +8,7 @@ local delayer_get_output_rules = function(node)
 end
 
 local delayer_get_input_rules = function(node)
-	local rules = {{x = 0, y = 0, z = -1}}
+	local rules = {{x = 1, y = 0, z = 0}}
 	for i = 0, node.param2 do
 		rules = mesecon:rotate_rules_left(rules)
 	end
@@ -62,26 +62,26 @@ local boxes
 if i == 1 then
 boxes = {
 	{ -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },		-- the main slab
-	{ 6/16, -6/16, -1/16, 4/16, -1/16, 1/16},     -- still torch
-	{ 0/16, -6/16, -1/16, 2/16, -1/16, 1/16},     -- moved torch 
+	{ -1/16, -6/16, 6/16, 1/16, -1/16, 4/16},     -- still torch
+	{ -1/16, -6/16, 0/16, 1/16, -1/16, 2/16},     -- moved torch 
 }
 elseif i == 2 then
 boxes = {
 	{ -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },		-- the main slab
-	{ 6/16, -6/16, -1/16, 4/16, -1/16, 1/16},     -- still torch
-	{ -2/16, -6/16, -1/16, 0/16, -1/16, 1/16},     -- moved torch 
+	{ -1/16, -6/16, 6/16, 1/16, -1/16, 4/16},     -- still torch
+	{ -1/16, -6/16, -2/16, 1/16, -1/16, 0/16},     -- moved torch 
 }
 elseif i == 3 then
 boxes = {
 	{ -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },		-- the main slab
-	{ 6/16, -6/16, -1/16, 4/16, -1/16, 1/16},     -- still torch
-	{ -4/16, -6/16, -1/16, -2/16, -1/16, 1/16},     -- moved torch 
+	{ -1/16, -6/16, 6/16, 1/16, -1/16, 4/16},     -- still torch
+	{ -1/16, -6/16, -4/16, 1/16, -1/16, -2/16},     -- moved torch 
 }
 elseif i == 4 then
 boxes = {
 	{ -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },		-- the main slab
-	{ 6/16, -6/16, -1/16, 4/16, -1/16, 1/16},     -- still torch
-	{ -6/16, -6/16, -1/16, -4/16, -1/16, 1/16},     -- moved torch 
+	{ -1/16, -6/16, 6/16, 1/16, -1/16, 4/16},     -- still torch
+	{ -1/16, -6/16, -6/16, 1/16, -1/16, -4/16},     -- moved torch 
 }
 end
 
@@ -100,11 +100,11 @@ minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 	drawtype = "nodebox",
 	tiles = {
 		"mesecons_delayer_off.png",
-		"mesecons_delayer_bottom.png",
-		"mesecons_delayer_ends_off.png",
-		"mesecons_delayer_ends_off.png",
+		"stairs_stone_slab_top.png",
 		"mesecons_delayer_sides_off.png",
-		"mesecons_delayer_sides_off.png"
+		"mesecons_delayer_sides_off.png",
+		"mesecons_delayer_ends_off.png",
+		"mesecons_delayer_ends_off.png",
 		},
 	wield_image = "mesecons_delayer_off.png",
 	walkable = true,
@@ -156,16 +156,16 @@ minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 
 
 minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
-	description = "You hacker you",
+	description = "Redstone Repeater (Powered)",
 	_doc_items_create_entry = false,
 	drawtype = "nodebox",
 	tiles = {
 		"mesecons_delayer_on.png",
-		"mesecons_delayer_bottom.png",
-		"mesecons_delayer_ends_on.png",
-		"mesecons_delayer_ends_on.png",
+		"stairs_stone_slab_top.png",
 		"mesecons_delayer_sides_on.png",
-		"mesecons_delayer_sides_on.png"
+		"mesecons_delayer_sides_on.png",
+		"mesecons_delayer_ends_on.png",
+		"mesecons_delayer_ends_on.png",
 		},
 	walkable = true,
 	selection_box = {
