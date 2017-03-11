@@ -6,10 +6,13 @@ minetest.register_node("mesecons_noteblock:noteblock", {
 	groups = {handy=1,axey=1, material_wood=1},
 	is_ground_content = false,
 	place_param2 = 0,
-	on_rightclick = function (pos, node) -- change sound when punched
+	on_rightclick = function (pos, node) -- change sound when rightclicked
 		node.param2 = (node.param2+1)%24
 		mesecon.noteblock_play(pos, node.param2)
 		minetest.set_node(pos, node)
+	end,
+	on_punch = function (pos, node) -- play current sound when punched
+		mesecon.noteblock_play(pos, node.param2)
 	end,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	mesecons = {effector = { -- play sound when activated
