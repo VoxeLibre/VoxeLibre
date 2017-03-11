@@ -268,6 +268,11 @@ end
 minetest.register_entity("mcl_minecarts:minecart", mcl_minecarts.cart)
 minetest.register_craftitem("mcl_minecarts:minecart", {
 	description = "Minecart",
+	_doc_items_longdesc = "Minecarts can be used for a quick transportion on rails." .. "\n" ..
+			"Minecarts only ride on rails and always follow the tracks. At a T-junction with no straight way ahead, they turn left. The speed is affected by the rail type.",
+	_doc_items_usagehelp = "You can place the minecart on rails. Right-click it to enter it. Punch it to get it moving." .. "\n" ..
+			"To obtain the minecart, punch it while holding down the sneak key.",
+
 	inventory_image = "mcl_minecarts_minecart_normal.png",
 	wield_image = "mcl_minecarts_minecart_normal.png",
 	stack_max = 1,

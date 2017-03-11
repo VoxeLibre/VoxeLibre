@@ -1,6 +1,10 @@
+local railuse = "Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed."
+
 -- Normal rail
 minetest.register_node("mcl_minecarts:rail", {
 	description = "Rail",
+	_doc_items_longdesc = "Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction.",
+	_doc_items_usagehelp = railuse,
 	drawtype = "raillike",
 	tiles = {"default_rail.png", "default_rail_curved.png", "default_rail_t_junction.png", "default_rail_crossing.png"},
 	is_ground_content = false,
@@ -32,6 +36,8 @@ minetest.register_craft({
 -- Rail to speed up
 minetest.register_node("mcl_minecarts:golden_rail", {
 	description = "Powered Rail",
+	_doc_items_longdesc = "Rails can be used to build transport tracks for minecarts. Powered rails will accelerate moving minecarts, up to a maximum speed.",
+	_doc_items_usagehelp = railuse,
 	drawtype = "raillike",
 	tiles = {"carts_rail_pwr.png", "carts_rail_curved_pwr.png", "carts_rail_t_junction_pwr.png", "carts_rail_crossing_pwr.png"},
 	inventory_image = "carts_rail_pwr.png",
