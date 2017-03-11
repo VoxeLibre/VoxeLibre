@@ -4,13 +4,8 @@ minetest.register_node("mesecons_noteblock:noteblock", {
 	_doc_items_usagehelp = "Rightclick the note block to choose one of many possible notes to play.",
 	tiles = {"mesecons_noteblock.png"},
 	groups = {handy=1,axey=1, material_wood=1},
-	drawtype = "allfaces_optional",
-	visual_scale = 1.3,
-	paramtype="light",
 	is_ground_content = false,
-	after_place_node = function(pos)
-		minetest.add_node(pos, {name="mesecons_noteblock:noteblock", param2=0})
-	end,
+	place_param2 = 0,
 	on_rightclick = function (pos, node) -- change sound when punched
 		node.param2 = (node.param2+1)%24
 		mesecon.noteblock_play(pos, node.param2)
