@@ -188,6 +188,8 @@ end
 
 minetest.register_node("signs:sign_wall", {
     description = "Sign",
+	_doc_items_longdesc = "Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them.",
+	_doc_items_usagehelp = "Place the sign at the side to build a wall sign, place it on top of another block to build a sign with a sign post. Rightclick the sign to edit its text.",
     inventory_image = "default_sign.png",
 	walkable = false,
 	is_ground_content = false,
