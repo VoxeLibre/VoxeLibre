@@ -2,6 +2,7 @@
 
 minetest.register_node("mcl_ocean:sea_lantern", {
 	description = "Sea Lantern",
+	_doc_items_longdesc = "Sea lanterns are decorative light sources which look great underwater but can be placed anywhere.",
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	stack_max = 64,
