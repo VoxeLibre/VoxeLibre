@@ -1,13 +1,15 @@
 minetest.register_node("mesecons_noteblock:noteblock", {
 	description = "Note Block",
-	_doc_items_longdesc = "A note block is a musical block which plays one of many musical notes when it is punched or supplied with redstone power.",
+	_doc_items_longdesc = "A note block is a musical block which plays one of many musical notes and different intruments when it is punched or supplied with redstone power.",
 	_doc_items_usagehelp = [[Rightclick the note block to choose the next musical note (there are 24 half notes, or 2 octaves). The intrument played depends on the material of the block below the note block:
 
 • Glass: Sticks
 • Wood: Bass guitar
 • Stone: Bass drum
 • Sand or gravel: Snare drum
-• Anything else: Piano]],
+• Anything else: Piano
+
+The note block will only play a note when it is below air, otherwise, it stays silent.]],
 	tiles = {"mesecons_noteblock.png"},
 	groups = {handy=1,axey=1, material_wood=1},
 	is_ground_content = false,
@@ -75,12 +77,17 @@ local soundnames_piano = {
 }
 
 mesecon.noteblock_play = function (pos, param2)
-	local soundname
+	local block_above_name = minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z}).name
+	if block_above_name ~= "air" then
+		-- Don't play sound if no air is above
+		return
+	end
 
 	-- Default: One of 24 piano notes
-	soundname = soundnames_piano[param2]
+	local soundname = soundnames_piano[param2]
 
 	local block_below_name = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name
+
 	if minetest.get_item_group(block_below_name, "material_glass") ~= 0 then
 		-- TODO: 24 sticks and clicks
 		soundname="mesecons_noteblock_temp_stick"
