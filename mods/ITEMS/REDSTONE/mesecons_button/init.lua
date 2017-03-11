@@ -20,6 +20,7 @@ end
 local boxes_off = { -4/16, -2/16, 8/16, 4/16, 2/16, 6/16 } -- The button
 local  boxes_on = { -4/16, -2/16, 8/16, 4/16, 2/16, 7/16 }  -- The button
 
+local buttonuse = "Rightclick the button to push it and send a redstone impulse."
 minetest.register_node("mesecons_button:button_stone_off", {
 	drawtype = "nodebox",
 	tiles = {"default_stone.png"},
@@ -40,6 +41,8 @@ minetest.register_node("mesecons_button:button_stone_off", {
 	},
 	groups = {handy=1,pickaxey=1, attached_node=1, dig_by_water=1},
 	description = "Stone Button",
+	_doc_items_longdesc = "A stone button is a redstone component made out of stone which gives a short impulse to a redstone component behind it when it pushed.",
+	_doc_items_usagehelp = buttonuse,
 	on_rightclick = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_button:button_stone_on")
 		mesecon:receptor_on(pos, mesecon.rules.buttonlike_get(node))
@@ -106,6 +109,8 @@ minetest.register_node("mesecons_button:button_wood_off", {
 	},
 	groups = {handy=1,axey=1, attached_node=1, dig_by_water=1},
 	description = "Wooden Button",
+	_doc_items_longdesc = "A wooden button is a redstone component made out of wood which gives a short impulse to a redstone component behind it when it pushed.",
+	_doc_items_usagehelp = buttonuse,
 	on_rightclick = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_button:button_wood_on")
 		mesecon:receptor_on(pos, mesecon.rules.buttonlike_get(node))
