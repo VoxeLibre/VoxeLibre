@@ -151,7 +151,7 @@ local pistonspec_normal = {
 	piston_up   = "mesecons_pistons:piston_up_normal_off",
 }
 
-local usagehelp_piston = "This block can have one of 6 possible orientations. On placement, the pusher will face towards your reverse looking direction."
+local usagehelp_piston = "This block can have one of 6 possible orientations. On placement, the pusher will face you."
 
 -- offstate
 minetest.register_node("mesecons_pistons:piston_normal_off", {
