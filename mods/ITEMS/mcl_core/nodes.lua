@@ -394,6 +394,7 @@ minetest.register_node("mcl_core:grass_path", {
 -- TODO: Add particles
 minetest.register_node("mcl_core:mycelium", {
 	description = "Mycelium",
+	_doc_items_longdesc = "Mycelium is a type of dirt and the ideal soil for mushrooms. Unlike other dirt-type blocks, it can not be turned into farmland with a hoe.",
 	tiles = {"default_mycelium_top.png", "default_dirt.png", "default_mycelium_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -408,6 +409,7 @@ minetest.register_node("mcl_core:mycelium", {
 
 minetest.register_node("mcl_core:podzol", {
 	description = "Podzol",
+	_doc_items_longdesc = "Podzol is a type of dirt found in taiga forests. Only a few plants are able to survive on it.",
 	tiles = {"default_dirt_podzol_top.png", "default_dirt.png", "default_dirt_podzol_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -420,7 +422,7 @@ minetest.register_node("mcl_core:podzol", {
 
 minetest.register_node("mcl_core:dirt", {
 	description = "Dirt",
-	_doc_items_longdesc = "Dirt acts asa soil for a few plants. When in light, it will turn into a grass block eventually.",
+	_doc_items_longdesc = "Dirt acts as a soil for a few plants. When in light, it will turn into a grass block eventually.",
 	tiles = {"default_dirt.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -1239,7 +1241,6 @@ mcl_core.add_glass( "Cyan Stained Glass",  "basecolor_cyan", "cyan")
 minetest.register_node("mcl_core:ladder", {
 	description = "Ladder",
 	_doc_items_longdesc = "A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks and not on glass, leaves, ice, slabs, glowstone, nor sea lanterns.",
-	_doc_items_usagehelp = "You hold on the ladder as soon as you enter the block. Hold the “jump” key to move upwards and the “sneak” or “use” key (depending on settings) to move downwards.",
 	drawtype = "signlike",
 	is_ground_content = false,
 	tiles = {"default_ladder.png"},
@@ -1311,6 +1312,7 @@ minetest.register_node("mcl_core:ladder", {
 
 minetest.register_node("mcl_core:vine", {
 	description = "Vines",
+	_doc_items_longdesc = "Vines are climbable blocks which can be placed on the sides and the top of solid blocks.",
 	drawtype = "signlike",
 	tiles = {"default_vine.png"},
 	inventory_image = "default_vine.png",
@@ -1656,6 +1658,7 @@ minetest.register_node("mcl_core:obsidian", {
 
 minetest.register_node("mcl_core:deadbush", {
 	description = "Dead Bush",
+	_doc_items_longdesc = "Dead bushes are unremarkable plants often found in dry areas. They can be harvested for sticks.",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
 	tiles = {"default_dry_shrub.png"},
@@ -1689,6 +1692,7 @@ minetest.register_node("mcl_core:deadbush", {
 
 minetest.register_node("mcl_core:tallgrass", {
 	description = "Tall Grass",
+	_doc_items_longdesc = "Tall grass is a small plant which often occours on the surface of grasslands. It can be harvested for wheat seeds.",
 	drawtype = "plantlike",
 	tiles = {"default_tallgrass.png"},
 	inventory_image = "default_tallgrass.png",
@@ -1720,6 +1724,7 @@ minetest.register_node("mcl_core:tallgrass", {
 
 minetest.register_node("mcl_core:ice", {
 	description = "Ice",
+	_doc_items_longdesc = "Ice is a translucent solid block usually found in cold areas.",
 	drawtype = "glasslike",
 	tiles = {"default_ice.png"},
 	is_ground_content = true,
@@ -1735,6 +1740,7 @@ minetest.register_node("mcl_core:ice", {
 
 minetest.register_node("mcl_core:packed_ice", {
 	description = "Packed Ice",
+	_doc_items_longdesc = "Packed ice is a compressed form of ice. It is opaque and solid.",
 	drawtype = "glasslike",
 	tiles = {"default_ice_packed.png"},
 	is_ground_content = true,
@@ -1770,9 +1776,15 @@ for i=0,3 do
 			end
 		end
 	end
+	local doc = i == 0
+	local longdesc
+	if doc then
+		longdesc = "Frosted ice is a short-lived solid translucent block. It melts into a water source within a few seconds."
+	end
 	minetest.register_node("mcl_core:frosted_ice_"..i, {
 		description = "Frosted Ice",
-		_doc_items_create_entry = i == 0,
+		_doc_items_create_entry = doc,
+		_doc_items_longdesc = longdesc,
 		drawtype = "glasslike",
 		tiles = {"default_frosted_ice_"..i..".png"},
 		is_ground_content = false,
@@ -1806,6 +1818,7 @@ end
 
 minetest.register_node("mcl_core:snow", {
 	description = "Top Snow",
+	_doc_items_longdesc = "Top snow is a thin layer of snow.",
 	tiles = {"default_snow.png"},
 	wield_image = "default_snow.png",
 	wield_scale = { x=1, y=1, z=1 },
@@ -1831,6 +1844,7 @@ minetest.register_node("mcl_core:snow", {
 
 minetest.register_node("mcl_core:snowblock", {
 	description = "Snow",
+	_doc_items_longdesc = "This is a full block of snow. Snow of this thickness is usually found in areas of extreme cold.",
 	tiles = {"default_snow.png"},
 	is_ground_content = true,
 	stack_max = 64,
