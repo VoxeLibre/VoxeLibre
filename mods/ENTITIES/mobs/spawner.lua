@@ -11,6 +11,7 @@ minetest.register_node("mobs:spawner", {
 	paramtype = "light",
 	walkable = true,
 	description = S("Monster Spawner"),
+	_doc_items_longdesc = S("A monster spawner is a block which regularily causes monsters and animals to appear around it."),
 	groups = {pickaxey=1, not_in_creative_inventory = 1, material_stone=1},
 	is_ground_content = false,
 	drop = "",
