@@ -1,0 +1,8 @@
+Licensing information
+
+* All code: GPLv3 by Mesecons Mod Developer Team, contributors and Wuzzy
+* mesecons_noteblock_temp_bass_guitar.ogg: CC0
+* mesecons_noteblock_temp_stick.ogg: CC0
+* Other sounds and data: CC BY-SA 3.0 (http://creativecommons.org/licenses/by-sa/3.0/) by Mesecons Mod Developer Team and contributors
+
+Note: All “temp” sounds are subject to be replaced in later versions.

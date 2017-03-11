@@ -4,8 +4,8 @@ minetest.register_node("mesecons_noteblock:noteblock", {
 	_doc_items_usagehelp = [[Rightclick the note block to choose the next musical note (there are 24 half notes, or 2 octaves). The intrument played depends on the material of the block below the note block:
 
 • Glass: Sticks
-• Wood: Crash
-• Stone: Hi-hat
+• Wood: Bass guitar
+• Stone: Bass drum
 • Sand or gravel: Snare drum
 • Anything else: Piano]],
 	tiles = {"mesecons_noteblock.png"},
@@ -82,17 +82,17 @@ mesecon.noteblock_play = function (pos, param2)
 
 	local block_below_name = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name
 	if minetest.get_item_group(block_below_name, "material_glass") ~= 0 then
-		-- TODO: Sticks and clicks
-		soundname="mesecons_noteblock_kick"
+		-- TODO: 24 sticks and clicks
+		soundname="mesecons_noteblock_temp_stick"
 	elseif minetest.get_item_group(block_below_name, "material_wood") ~= 0 then
-		-- TODO: Bass guitar
-		soundname="mesecons_noteblock_crash"
+		-- TODO: 24 bass guitar sounds
+		soundname="mesecons_noteblock_temp_bass_guitar"
 	elseif minetest.get_item_group(block_below_name, "material_sand") ~= 0 then
-		-- TODO: 24 Snare drum sounds
-		soundname="mesecons_noteblock_snare"
+		-- TODO: 24 snare drum sounds
+		soundname="mesecons_noteblock_temp_snare"
 	elseif minetest.get_item_group(block_below_name, "material_stone") ~= 0 then
-		-- TODO: Bass drum
-		soundname="mesecons_noteblock_hihat"
+		-- TODO: 24 bass drum sounds
+		soundname="mesecons_noteblock_temp_kick"
 	end
 	minetest.sound_play(soundname,
 	{pos = pos, gain = 1.0, max_hear_distance = 48,})
