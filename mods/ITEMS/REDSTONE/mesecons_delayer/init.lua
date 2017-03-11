@@ -112,6 +112,10 @@ minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 		type = "fixed",
 		fixed = { -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },
 	},
+	collision_box = {
+		type = "fixed",
+		fixed = { -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },
+	},
 	node_box = {
 		type = "fixed",
 		fixed = boxes
@@ -165,6 +169,10 @@ minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
 		},
 	walkable = true,
 	selection_box = {
+		type = "fixed",
+		fixed = { -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },
+	},
+	collision_box = {
 		type = "fixed",
 		fixed = { -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },
 	},
