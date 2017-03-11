@@ -5,7 +5,7 @@
 
 mcl_torches = {}
 
-mcl_torches.register_torch = function(substring, description, icon, mesh_floor, mesh_wall, tiles, light, groups, sounds, moredef)
+mcl_torches.register_torch = function(substring, description, doc_items_longdesc, doc_items_usagehelp, icon, mesh_floor, mesh_wall, tiles, light, groups, sounds, moredef)
 	local itemstring = minetest.get_current_modname()..":"..substring
 	local itemstring_wall = minetest.get_current_modname()..":"..substring.."_wall"
 
@@ -20,6 +20,8 @@ mcl_torches.register_torch = function(substring, description, icon, mesh_floor, 
 
 	local floordef = {
 		description = description,
+		_doc_items_longdesc = doc_items_longdesc,
+		_doc_items_usagehelp = doc_items_usagehelp,
 		drawtype = "mesh",
 		mesh = mesh_floor,
 		inventory_image = icon,
@@ -156,7 +158,14 @@ mcl_torches.register_torch = function(substring, description, icon, mesh_floor, 
 	minetest.register_node(itemstring_wall, walldef)
 end
 
-mcl_torches.register_torch("torch", "Torch", "default_torch_on_floor.png",
+mcl_torches.register_torch("torch",
+	"Torch",
+	"Torches are light sources which can be placed at the side or on the top of most blocks.",
+	[[Torches can generally be placed on full solid opaque blocks. The following exceptions apply:
+• Glass, fence, wall, hopper: Can only be placed on top
+• Soul sand, monster spawner: Placement possible
+• Glowstone and pistons: No placement possible]],
+	"default_torch_on_floor.png",
 	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",
 	{{
 		name = "default_torch_on_floor_animated.png",
