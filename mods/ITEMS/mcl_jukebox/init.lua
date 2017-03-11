@@ -92,6 +92,7 @@ minetest.register_node("mcl_jukebox:jukebox", {
 	tiles = {"mcl_jukebox_top.png", "mcl_jukebox_side.png", "mcl_jukebox_side.png"},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	groups = {handy=1,axey=1, deco_block=1, material_wood=1},
+	is_ground_content = false,
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()

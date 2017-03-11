@@ -306,6 +306,7 @@ minetest.register_abm({
 
 minetest.register_node("mcl_farming:pumpkin_face_light", {
 	description = "Jack o'Lantern",
+	is_ground_content = false,
 	stack_max = 64,
 	paramtype2 = "facedir",
 	-- Real light level: 15 (Minetest caps at 14)

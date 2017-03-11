@@ -241,6 +241,7 @@ minetest.register_node("mcl_core:stonebrick", {
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, stonebrick=1, building_block=1, deco_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
+	is_ground_content = false,
 	_mcl_blast_resistance = 30,
 	_mcl_hardness = 1.5,
 })
@@ -252,6 +253,7 @@ minetest.register_node("mcl_core:stonebrickcarved", {
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, stonebrick=1, building_block=1, deco_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
+	is_ground_content = false,
 	_mcl_blast_resistance = 30,
 	_mcl_hardness = 1.5,
 })
@@ -263,6 +265,7 @@ minetest.register_node("mcl_core:stonebrickcracked", {
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, stonebrick=1, building_block=1, deco_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
+	is_ground_content = false,
 	_mcl_blast_resistance = 30,
 	_mcl_hardness = 1.5,
 })
@@ -273,6 +276,7 @@ minetest.register_node("mcl_core:stonebrickmossy", {
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, stonebrick=1, building_block=1, deco_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
+	is_ground_content = false,
 	_mcl_blast_resistance = 30,
 	_mcl_hardness = 1.5,
 })
@@ -294,6 +298,7 @@ minetest.register_node("mcl_core:granite_smooth", {
 	_doc_items_longdesc = "Polished granite is a decorational building block made from granite.",
 	tiles = {"default_granite_smooth.png"},
 	stack_max = 64,
+	is_ground_content = false,
 	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 30,
@@ -316,6 +321,7 @@ minetest.register_node("mcl_core:andesite_smooth", {
 	description = "Polished Andesite",
 	_doc_items_longdesc = "Polished andesite is a decorational building block made from andesite.",
 	tiles = {"default_andesite_smooth.png"},
+	is_ground_content = false,
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
@@ -339,6 +345,7 @@ minetest.register_node("mcl_core:diorite_smooth", {
 	description = "Polished Diorite",
 	_doc_items_longdesc = "Polished diorite is a decorational building block made from diorite.",
 	tiles = {"default_diorite_smooth.png"},
+	is_ground_content = false,
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
@@ -1500,7 +1507,7 @@ minetest.register_node("mcl_core:lava_source", {
 minetest.register_node("mcl_core:cobble", {
 	description = "Cobblestone",
 	tiles = {"default_cobble.png"},
-	is_ground_content = true,
+	is_ground_content = false,
 	stack_max = 64,
 	groups = {pickaxey=1, building_block=1, deco_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
@@ -1511,7 +1518,7 @@ minetest.register_node("mcl_core:cobble", {
 minetest.register_node("mcl_core:mossycobble", {
 	description = "Moss Stone",
 	tiles = {"default_mossycobble.png"},
-	is_ground_content = true,
+	is_ground_content = false,
 	stack_max = 64,
 	groups = {pickaxey=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),

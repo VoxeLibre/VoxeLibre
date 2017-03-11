@@ -12,6 +12,7 @@ minetest.register_node("mobs:spawner", {
 	walkable = true,
 	description = S("Monster Spawner"),
 	groups = {pickaxey=1, not_in_creative_inventory = 1, material_stone=1},
+	is_ground_content = false,
 	drop = "",
 
 	on_construct = function(pos)

@@ -185,6 +185,7 @@ minetest.register_node("mcl_inventory:workbench", {
 	description = "Crafting Table",
 	_doc_items_longdesc = "A crafting table is a block which grants you access to a 3×3 crafting grid which allows you to perform advanced crafts.",
 	_doc_items_usagehelp = "Rightclick the crafting table to access the 3×3 crafting grid.",
+	is_ground_content = false,
 	tiles = {"crafting_workbench_top.png", "default_wood.png", "crafting_workbench_side.png",
 		"crafting_workbench_side.png", "crafting_workbench_front.png", "crafting_workbench_front.png"},
 	paramtype2 = "facedir",

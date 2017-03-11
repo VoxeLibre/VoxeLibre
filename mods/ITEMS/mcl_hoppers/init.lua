@@ -43,6 +43,7 @@ Hoppers interact with containers the following way:
 			{-0.15, -0.3, -0.15, 0.15, -0.5, 0.15},
 			},
 		},
+	is_ground_content = false,
 
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -156,6 +157,7 @@ minetest.register_node("mcl_hoppers:hopper_side", {
 			{-0.7, -0.3, -0.15, 0.15, 0.0, 0.15},
 			},
 		},
+	is_ground_content = false,
 
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)

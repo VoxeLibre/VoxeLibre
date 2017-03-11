@@ -37,7 +37,7 @@ minetest.register_node("mcl_minecarts:golden_rail", {
 	inventory_image = "carts_rail_pwr.png",
 	wield_image = "carts_rail_pwr.png",
 	paramtype = "light",
-	is_ground_content = true,
+	is_ground_content = false,
 	walkable = false,
 	selection_box = {
 		type = "fixed",
