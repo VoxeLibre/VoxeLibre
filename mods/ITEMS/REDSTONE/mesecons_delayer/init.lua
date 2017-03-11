@@ -85,9 +85,18 @@ boxes = {
 }
 end
 
+local help = i == 1
+local longdesc, usagehelp
+if help then
+	longdesc = "Redstone repeaters are versatile redstone components which delay redstone signals and only allow redstone signals to travel through one direction. The delay of the signal is indicated by the redstone torches and is between 0.1 and 0.4 seconds long."
+	usagehelp = "To power a redstone repeater, send a signal in “arrow” direction. To change the delay, rightclick the redstone repeater. The delay is changed in steps of 0.1 seconds."
+end
+
 minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 	description = "Redstone Repeater",
-	_doc_items_create_entry = i == 1,
+	_doc_items_create_entry = help,
+	_doc_items_longdesc = longdesc,
+	_doc_items_usagehelp = usagehelp,
 	drawtype = "nodebox",
 	tiles = {
 		"mesecons_delayer_off.png",
