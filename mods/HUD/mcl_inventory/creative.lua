@@ -99,16 +99,6 @@ local function init(player)
 				return 0
 			end
 		end,
-		on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
-		end,
-		on_put = function(inv, listname, index, stack, player)
-		end,
-		on_take = function(inv, listname, index, stack, player)
-			print(player:get_player_name().." takes item from creative inventory; listname="..dump(listname)..", index="..dump(index)..", stack="..dump(stack))
-			if stack then
-				print("stack:get_name()="..dump(stack:get_name())..", stack:get_count()="..dump(stack:get_count()))
-			end
-		end,
 	}, playername)
 	set_inv("\0all", player)
 end
