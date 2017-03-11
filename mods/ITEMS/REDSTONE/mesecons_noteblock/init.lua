@@ -85,5 +85,5 @@ mesecon.noteblock_play = function (pos, param2)
 		soundname="mesecons_noteblock_snare"
 	end
 	minetest.sound_play(soundname,
-	{pos = pos, gain = 1.0, max_hear_distance = 32,})
+	{pos = pos, gain = 1.0, max_hear_distance = 48,})
 end
