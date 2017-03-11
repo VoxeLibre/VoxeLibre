@@ -1,5 +1,6 @@
 minetest.register_node("mcl_nether:glowstone", {
 	description = "Glowstone",
+	_doc_items_longdesc = "Glowstone is a naturally-glowing block which is home to the Nether.",
 	tiles = {"mcl_nether_glowstone.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -21,6 +22,7 @@ minetest.register_node("mcl_nether:glowstone", {
 
 minetest.register_node("mcl_nether:quartz_ore", {
 	description = "Nether Quartz Ore",
+	_doc_items_longdesc = "Nether quartz ore is an ore containing nether quartz. It is commonly found around netherrack in the Nether.",
 	stack_max = 64,
 	tiles = {"mcl_nether_quartz_ore.png"},
 	is_ground_content = true,
@@ -33,6 +35,7 @@ minetest.register_node("mcl_nether:quartz_ore", {
 
 minetest.register_node("mcl_nether:netherrack", {
 	description = "Netherrack",
+	_doc_items_longdesc = "Netherrack is a stone-like block home to the Nether.",
 	stack_max = 64,
 	tiles = {"mcl_nether_netherrack.png"},
 	is_ground_content = true,
@@ -105,6 +108,7 @@ minetest.register_node("mcl_nether:red_nether_brick", {
 
 minetest.register_node("mcl_nether:nether_wart_block", {
 	description = "Nether Wart Block",
+	_doc_items_longdesc = "A nether wart block is a purely decorational block made from nether wart.",
 	stack_max = 64,
 	tiles = {"mcl_nether_nether_wart_block.png"},
 	is_ground_content = false,
@@ -158,6 +162,7 @@ minetest.register_node("mcl_nether:quartz_pillar", {
 
 minetest.register_craftitem("mcl_nether:glowstone_dust", {
 	description = "Glowstone Dust",
+	_doc_items_longdesc = "Glowstone dust is the dust which comes out of broken glowstones. It is mainly used in crafting and brewing.",
 	inventory_image = "mcl_nether_glowstone_dust.png",
 	stack_max = 64,
 	groups = { craftitem=1 },
@@ -165,6 +170,7 @@ minetest.register_craftitem("mcl_nether:glowstone_dust", {
 
 minetest.register_craftitem("mcl_nether:quartz", {
 	description = "Nether Quartz",
+	_doc_items_longdesc = "Nether quartz is a versatile crafting ingredient.",
 	inventory_image = "mcl_nether_quartz.png",
 	stack_max = 64,
 	groups = { craftitem = 1 },
@@ -172,6 +178,7 @@ minetest.register_craftitem("mcl_nether:quartz", {
 
 minetest.register_craftitem("mcl_nether:netherbrick", {
 	description = "Nether Brick",
+	_doc_items_longdesc = "Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences.",
 	inventory_image = "mcl_nether_netherbrick.png",
 	stack_max = 64,
 	groups = { craftitem = 1 },
