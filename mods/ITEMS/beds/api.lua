@@ -32,7 +32,7 @@ end
 if minetest.setting_getbool("enable_bed_night_skip") == false then
 	beddesc = beddesc .. "In this strange world, the time will not pass faster for you when you sleep."
 else
-	beddesc = beddesc .. "Going into bed seems to make time pass faster: The night will be skipped when you go sleep and you're alone in this world. If you're not alone, the night is skipped when all humans in this world went to sleep."
+	beddesc = beddesc .. "Going into bed seems to make time pass faster: The night will be skipped when you go sleep and you're alone in this world. If you're not alone, the night is skipped when all players in this world went to sleep."
 end
 
 function beds.register_bed(name, def)
