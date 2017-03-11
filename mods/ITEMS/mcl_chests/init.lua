@@ -30,7 +30,7 @@ minetest.register_node("mcl_chests:chest", {
 		"default_chest_side.png", "default_chest_side.png", "default_chest_front.png"},
 	paramtype2 = "facedir",
 	stack_max = 64,
-	groups = {handy=1,axey=1, container=2, deco_block=1},
+	groups = {handy=1,axey=1, container=2, deco_block=1, material_wood=1},
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_construct = function(pos)
@@ -148,7 +148,7 @@ minetest.register_node("mcl_chests:chest_left", {
 	tiles = {"default_chest_top_big.png", "default_chest_top_big.png", "default_chest_side.png",
 		"default_chest_side.png", "default_chest_side_big.png^[transformFX", "default_chest_front_big.png"},
 	paramtype2 = "facedir",
-	groups = {handy=1,axey=1, container=2,not_in_creative_inventory=1},
+	groups = {handy=1,axey=1, container=2,not_in_creative_inventory=1, material_wood=1},
 	drop = "mcl_chests:chest",
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -209,7 +209,7 @@ minetest.register_node("mcl_chests:chest_right", {
 	tiles = {"default_chest_top_big.png^[transformFX", "default_chest_top_big.png^[transformFX", "default_chest_side.png",
 		"default_chest_side.png", "default_chest_side_big.png", "default_chest_front_big.png^[transformFX"},
 	paramtype2 = "facedir",
-	groups = {handy=1,axey=1, container=2,not_in_creative_inventory=1},
+	groups = {handy=1,axey=1, container=2,not_in_creative_inventory=1, material_wood=1},
 	drop = "mcl_chests:chest",
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -290,7 +290,7 @@ minetest.register_node("mcl_chests:ender_chest", {
 		"mcl_chests_ender_chest_back.png", "mcl_chests_ender_chest_front.png"},
 	-- Note: The “container” group is missing here because the ender chest does not
 	-- have an inventory on its own
-	groups = {pickaxey=1, deco_block=1},
+	groups = {pickaxey=1, deco_block=1, material_stone=1},
 	is_ground_content = false,
 	paramtype = "light",
 	light_source = 7,

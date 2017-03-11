@@ -20,7 +20,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_on", {
 	drop = "mesecons_solarpanel:solar_panel_off",
 	description="Daylight Sensor",
 	_doc_items_create_entry = false,
-	groups = {dig_immediate=3, not_in_creative_inventory = 1},
+	groups = {dig_immediate=3, not_in_creative_inventory = 1, material_wood=1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.on
@@ -49,7 +49,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_off", {
 		type = "fixed",
 		fixed = boxes
 	},
-	groups = {dig_immediate=3},
+	groups = {dig_immediate=3, material_wood=1},
 	description="Daylight Sensor",
 	_doc_items_longdesc = "Daylight sensors are redstone components which provide redstone power when they are in sunlight and no power otherwise. They can also be inverted.",
 	_doc_items_usagehelp = "Rightclick the daylight sensor to turn it into an inverted daylight sensor, which supplies redstone energy when it is in moonlight.",
@@ -123,7 +123,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_on", {
 		fixed = boxes
 	},
 	drop = "mesecons_solarpanel:solar_panel_off",
-	groups = {dig_immediate=3, not_in_creative_inventory = 1},
+	groups = {dig_immediate=3, not_in_creative_inventory = 1, material_wood=1},
     	description="Inverted Daylight Sensor",
 	_doc_items_create_entry = false,
 	sounds = mcl_sounds.node_sound_glass_defaults(),
@@ -155,7 +155,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
 		fixed = boxes
 	},
 	drop = "mesecons_solarpanel:solar_panel_off",
-	groups = {dig_immediate=3, not_in_creative_inventory=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1, material_wood=1},
     	description="Inverted Daylight Sensor",
 	_doc_items_longdesc = "An inverted daylight sensor is a variant of the daylight sensor. It is a redstone component which provides redstone power when it in moonlight and no power otherwise. It can turned back into an ordinary daylight sensor.",
 	_doc_items_usagehelp = "Rightclick the daylight sensor to turn it into a daylight sensor.",

@@ -278,7 +278,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 		"default_furnace_side.png", "default_furnace_front.png"
 	},
 	paramtype2 = "facedir",
-	groups = {pickaxey=1, container=4, deco_block=1},
+	groups = {pickaxey=1, container=4, deco_block=1, material_stone=1},
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 
@@ -335,7 +335,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	paramtype2 = "facedir",
 	light_source = 13,
 	drop = "mcl_furnaces:furnace",
-	groups = {pickaxey=1, container=4, deco_block=1, not_in_creative_inventory=1},
+	groups = {pickaxey=1, container=4, deco_block=1, not_in_creative_inventory=1, material_stone=1},
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_timer = furnace_node_timer,

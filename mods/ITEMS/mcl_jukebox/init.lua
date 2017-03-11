@@ -91,7 +91,7 @@ minetest.register_node("mcl_jukebox:jukebox", {
 	_doc_items_usagehelp = "Place a music disc into an empty jukebox to insert the music disc and play music. If the jukebox already has a music disc, you will retrieve this music disc first. The music can only be heard by you, not by other players.",
 	tiles = {"mcl_jukebox_top.png", "mcl_jukebox_side.png", "mcl_jukebox_side.png"},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	groups = {handy=1,axey=1, deco_block=1},
+	groups = {handy=1,axey=1, deco_block=1, material_wood=1},
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()

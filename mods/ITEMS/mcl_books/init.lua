@@ -179,7 +179,7 @@ minetest.register_node("mcl_books:bookshelf", {
 	tiles = {"default_wood.png", "default_wood.png", "default_bookshelf.png"},
 	stack_max = 64,
 	is_ground_content = false,
-	groups = {handy=1,axey=1, flammable=3,building_block=1},
+	groups = {handy=1,axey=1, flammable=3,building_block=1, material_wood=1},
 	drop = "mcl_books:book 3",
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 7.5,

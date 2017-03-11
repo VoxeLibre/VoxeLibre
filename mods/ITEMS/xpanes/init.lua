@@ -166,7 +166,7 @@ local pane = function(description, node, append)
 		inventory_image = "xpanes_pane_glass"..append..".png",
 		wield_image = "xpanes_pane_glass"..append..".png",
 		sounds = mcl_sounds.node_sound_glass_defaults(),
-		groups = {handy=1},
+		groups = {handy=1, material_glass=1},
 		recipe = {
 			{node, node, node},
 			{node, node, node},

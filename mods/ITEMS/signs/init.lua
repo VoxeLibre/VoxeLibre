@@ -137,7 +137,7 @@ local signs_yard = {
     {delta = {x = 0.05, y = 0, z = 0}, yaw = math.pi / 2},
 }
 
-local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1}
+local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1, material_wood=1}
 
 local construct_sign = function(pos)
     local meta = minetest.get_meta(pos)

@@ -187,7 +187,7 @@ minetest.register_node("mcl_inventory:workbench", {
 		"crafting_workbench_side.png", "crafting_workbench_front.png", "crafting_workbench_front.png"},
 	paramtype2 = "facedir",
 	paramtype = "light",
-	groups = {handy=1,axey=1, deco_block=1},
+	groups = {handy=1,axey=1, deco_block=1, material_wood=1},
 	on_rightclick = function(pos, node, clicker, itemstack)
 		set_workbench(clicker)
 	end,

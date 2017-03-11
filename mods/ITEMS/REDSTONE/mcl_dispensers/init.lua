@@ -378,7 +378,7 @@ horizontal_def.tiles = {
 	"default_furnace_side.png", "mcl_dispensers_dispenser_front_horizontal.png"
 }
 horizontal_def.paramtype2 = "facedir"
-horizontal_def.groups = {pickaxey=1, container=2}
+horizontal_def.groups = {pickaxey=1, container=2, material_stone=1}
 
 minetest.register_node("mcl_dispensers:dispenser", horizontal_def)
 
@@ -391,7 +391,7 @@ down_def.tiles = {
 	"default_furnace_side.png", "default_furnace_side.png",
 	"default_furnace_side.png", "default_furnace_side.png"
 }
-down_def.groups = {pickaxey=1, container=2,not_in_creative_inventory=1}
+down_def.groups = {pickaxey=1, container=2,not_in_creative_inventory=1, material_stone=1}
 down_def._doc_items_create_entry = false
 down_def.drop = "mcl_dispensers:dispenser"
 minetest.register_node("mcl_dispensers:dispenser_down", down_def)

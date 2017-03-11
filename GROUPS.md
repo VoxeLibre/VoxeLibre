@@ -64,6 +64,18 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `carpet=1:` (Wool) carpet
 * `stick=1`: Stick
 
+### Material groups
+
+These groups correspond to the Minecraft materials. They classify the block into a type, indicating what the block is “made off”.
+
+* `material_stone=1`: Stone
+* `material_wood=1`: Wood
+* `material_sand=1`: Sand
+* `material_glass=1`: Glass
+
+Currently, these groups are used for the note block.
+Note that not all Minecraft materials are used so far. More Minecraft materials will lilely only be added when they are needed for a concrete use case.
+
 ### Declarative groups
 These groups are used mostly for informational purposes
 
