@@ -610,6 +610,7 @@ function mcl_core.add_glass(desc, recipeitem, color)
 
 	minetest.register_node("mcl_core:glass_"..color, {
 		description = desc,
+		_doc_items_longdesc = "Stained glass is a decorational and mostly transparent block which comes in various different colors.",
 		drawtype = "glasslike",
 		is_ground_content = false,
 		tiles = {"xpanes_pane_glass_"..color..".png"},

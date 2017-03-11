@@ -7,10 +7,12 @@ flower_tmp={}
 --- Fleur Simple (une case) ---
 -------------------------------
 
+local smallflowerlongdesc = "This is a small flower. Small flowers are mainly used for dye production and can also be potted."
 
 local function add_simple_flower(name, desc, image, color)
 	minetest.register_node("mcl_flowers:"..name, {
 		description = desc,
+		_doc_items_longdesc = smallflowerlongdesc,
 		drawtype = "plantlike",
 		tiles = { image..".png" },
 		inventory_image = image..".png",
@@ -36,6 +38,7 @@ add_simple_flower("tulip_orange", "Orange Tulip", "flowers_tulip", "color_orange
 
 minetest.register_node("mcl_flowers:tulip_pink", {
 	description = "Pink Tulip",
+	_doc_items_longdesc = smallflowerlongdesc,
 	drawtype = "plantlike",
 	tiles = { "mcl_flowers_tulip_pink.png" },
 	inventory_image = "mcl_flowers_tulip_pink.png",
@@ -55,6 +58,7 @@ minetest.register_node("mcl_flowers:tulip_pink", {
 
 minetest.register_node("mcl_flowers:tulip_red", {
 	description = "Red Tulip",
+	_doc_items_longdesc = smallflowerlongdesc,
 	drawtype = "plantlike",
 	tiles = { "mcl_flowers_tulip_red.png" },
 	inventory_image = "mcl_flowers_tulip_red.png",
@@ -75,6 +79,7 @@ minetest.register_node("mcl_flowers:tulip_red", {
 
 minetest.register_node("mcl_flowers:tulip_white", {
 	description = "White Tulip",
+	_doc_items_longdesc = smallflowerlongdesc,
 	drawtype = "plantlike",
 	tiles = { "mcl_flowers_tulip_white.png" },
 	inventory_image = "mcl_flowers_tulip_white.png",
@@ -97,6 +102,7 @@ minetest.register_node("mcl_flowers:tulip_white", {
 
 minetest.register_node("mcl_flowers:allium", {
 	description = "Allium",
+	_doc_items_longdesc = smallflowerlongdesc,
 	drawtype = "plantlike",
 	tiles = { "mcl_flowers_allium.png" },
 	inventory_image = "mcl_flowers_allium.png",
@@ -140,6 +146,7 @@ minetest.register_node("mcl_flowers:peony", {
 
 minetest.register_node("mcl_flowers:azure_bluet", {
 	description = "Azure Bluet",
+	_doc_items_longdesc = smallflowerlongdesc,
 	drawtype = "plantlike",
 	tiles = { "mcl_flowers_azure_bluet.png" },
 	inventory_image = "mcl_flowers_azure_bluet.png",
@@ -161,6 +168,7 @@ minetest.register_node("mcl_flowers:azure_bluet", {
 
 minetest.register_node("mcl_flowers:blue_orchid", {
 	description = "Blue Orchid",
+	_doc_items_longdesc = smallflowerlongdesc,
 	drawtype = "plantlike",
 	tiles = { "mcl_flowers_blue_orchid.png" },
 	inventory_image = "mcl_flowers_blue_orchid.png",
@@ -182,6 +190,7 @@ minetest.register_node("mcl_flowers:blue_orchid", {
 
 minetest.register_node("mcl_flowers:fern", {
 	description = "Fern",
+	_doc_items_longdesc = "Ferns are small plants which occour naturally in grasslands. They can be harvested for wheat seeds.",
 	drawtype = "plantlike",
 	tiles = { "mcl_flowers_fern.png" },
 	inventory_image = "mcl_flowers_fern.png",
@@ -272,6 +281,7 @@ end
 -- Lily Pad
 minetest.register_node("mcl_flowers:waterlily", {
 	description = "Lily Pad",
+	_doc_items_longdesc = "A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice.",
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",

@@ -32,6 +32,7 @@ mcl_fences.register_fence = function(id, fence_name, texture, groups, hardness, 
 	table.insert(connects_to, fence_id)
 	minetest.register_node(fence_id, {
 		description = fence_name,
+		_doc_items_longdesc = "Fences are structures which block the way. Fences will connect to each other and solid blocks. They cannot be jumped over with a simple jump.",
 		tiles = {texture},
 		inventory_image = "mcl_fences_fence_mask.png^" .. texture .. "^mcl_fences_fence_mask.png^[makealpha:255,126,126",
 		wield_image = "mcl_fences_fence_mask.png^" .. texture .. "^mcl_fences_fence_mask.png^[makealpha:255,126,126",
@@ -162,6 +163,8 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 	cgroups_closed.mesecon_effector_off = nil
 	minetest.register_node(gate_id, {
 		description = fence_gate_name,
+		_doc_items_longdesc = "Fence gates can be opened or closed and can't be jumped over. Fences will connect nicely to fence gates.",
+		_doc_items_usagehelp = "Right-click the fence gate to open or close it.",
 		tiles = {texture},
 		inventory_image = "mcl_fences_fence_gate_mask.png^" .. texture .. "^mcl_fences_fence_gate_mask.png^[makealpha:255,126,126",
 		wield_image = "mcl_fences_fence_gate_mask.png^" .. texture .. "^mcl_fences_fence_gate_mask.png^[makealpha:255,126,126",

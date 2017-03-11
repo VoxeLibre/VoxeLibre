@@ -14,6 +14,7 @@ function stairs.register_stair(subname, recipeitem, groups, images, description,
 	groups.building_block = 1
 	minetest.register_node(":stairs:stair_" .. subname, {
 		description = description,
+		_doc_items_longdesc = "Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the ceiling will be placed upside down.",
 		drawtype = "mesh",
 		mesh = "stairs_stair.obj",
 		tiles = images,
@@ -107,8 +108,15 @@ local slab_trans_dir_place = {[0] = 0, 20, 12, 16, 4, 8}
 function stairs.register_slab(subname, recipeitem, groups, images, description, sounds, hardness, double_description, full_node)
 	groups.slab = 1
 	groups.building_block = 1
+	local longdesc = "Slabs are half as high as their full block counterparts. Slabs can be easily stepped on without needing to jump. They are useful to create long staircases and many other structures. Slabs can be placed on the ceiling of another block will be upside-down."
+	if double_description then
+		longdesc = longdesc .. " When a slab of this particular type is placed on another slab of the same type, a double slab is created."
+	else
+		longdesc = longdesc .. " When a slab of this particular type is placed on another slab of the same type, a new full block is created."
+	end
 	minetest.register_node(":stairs:slab_" .. subname, {
 		description = description,
+		_doc_items_longdesc = longdesc,
 		drawtype = "nodebox",
 		tiles = images,
 		paramtype = "light",
@@ -195,6 +203,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 	if double_description then
 		minetest.register_node(":stairs:slab_" .. subname .. "_double",  {
 			description = double_description,
+			_doc_items_longdesc = "Double slabs are full blocks which are created by placing two slabs of the same kind on each other.",
 			paramtype2 = "facedir",
 			tiles = images,
 			is_ground_content = false,

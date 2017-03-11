@@ -52,6 +52,7 @@ local rod_box = {
 }
 minetest.register_node("mcl_end:end_rod", {
 	description = "End Rod",
+	_doc_items_longdesc = "End rods are decorational light sources.",
 	tiles = {
 		"mcl_end_end_rod_top.png",
 		"mcl_end_end_rod_bottom.png",
