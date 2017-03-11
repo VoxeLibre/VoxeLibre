@@ -1,6 +1,8 @@
 -- Fire Charge
 minetest.register_craftitem("mcl_fire:fire_charge", {
 	description = "Fire Charge",
+	_doc_items_longdesc = "Fire charges are primarily projectiles which can be launched from dispensers, they will fly in a straight line and burst into a fire on impact. Alternatively, they can be used to ignite fires directly.",
+	_doc_items_usagehelp = "Put the fire charge into a dispenser and supply it with redstone power to launch it. To ignite a fire directly, simply place the fire charge on the ground, which uses it up.",
 	inventory_image = "mcl_fire_fire_charge.png",
 	liquids_pointable = false,
 	stack_max = 64,

@@ -340,6 +340,26 @@ local dispenserdef = {
 
 local horizontal_def = table.copy(dispenserdef)
 horizontal_def.description = "Dispenser"
+horizontal_def._doc_items_longdesc = "A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots."
+horizontal_def._doc_items_usagehelp = [[Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Rightclick the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a single random item.
+
+The dispenser will do different things, depending on the dispensed item:
+
+• Arrows: Are launched
+• Eggs and snowballs: Are thrown
+• Fire charges: Are fired in a straight line
+• Armor: Will be equipped to players and armor stands
+• Boats: Are placed on water or are dropped
+• Minecart: Are placed on rails or are dropped
+• Bone meal: Is applied on the block it is facint
+• Empty buckets: Are used to collect a liquid source
+• Filled buckets: Are used to place a liquid source
+• Heads, pumpkins or shulker boxes: Are placed as a block
+• TNT: Is placed and ignited
+• Flint and steel: Is used to ignite a fire in air and to ignite TNT
+• Spawn eggs: Will summon the mob they contain
+• Other items: Are simply dropped]]
+
 horizontal_def.after_place_node = function(pos, placer, itemstack, pointed_thing)
 	setup_dispenser(pos)
 
