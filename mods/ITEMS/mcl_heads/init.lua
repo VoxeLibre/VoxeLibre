@@ -1,8 +1,9 @@
 -- Heads system
 
-local function addhead(node, desc)
+local function addhead(node, desc, longdesc)
 	minetest.register_node("mcl_heads:"..node, {
 		description = desc,
+		_doc_items_longdesc = longdesc,
     		drawtype = "nodebox",
 		is_ground_content = false,
 		node_box = {
@@ -38,9 +39,9 @@ local function addhead(node, desc)
 end
 
 -- Add heads
-addhead("zombie", "Zombie Head")
-addhead("creeper", "Creeper Head")
+addhead("zombie", "Zombie Head", "A zombie heads is a small decorative block which resembles the head of a zombie.")
+addhead("creeper", "Creeper Head", "A creeper heads is a small decorative block which resembles the head of a creeper.")
 -- Original Minecraft name: “Head”
-addhead("steve", "Human Head")
-addhead("skeleton", "Skeleton Skull")
-addhead("wither_skeleton", "Wither Skeleton Skull")
+addhead("steve", "Human Head", "A human head is a small decorative block which resembles the head of a human (i.e. a player character).")
+addhead("skeleton", "Skeleton Skull", "A skeleton skull is a small decorative block which resembles the head of a skeleton.")
+addhead("wither_skeleton", "Wither Skeleton Skull", "A wither skeleton skull is a small decorative block which resembles the head of a wither skeleton.")
