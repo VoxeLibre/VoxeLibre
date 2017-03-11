@@ -52,10 +52,10 @@ else
 end
 
 local delaytime
-if 		i == 1 then delaytime = 0.1
-elseif	i == 2 then delaytime = 0.3
-elseif	i == 3 then delaytime = 0.5
-elseif	i == 4 then delaytime = 1.0 
+if i == 1 then delaytime = 0.1
+elseif	i == 2 then delaytime = 0.2
+elseif	i == 3 then delaytime = 0.3
+elseif	i == 4 then delaytime = 0.4
 end
 
 local boxes
