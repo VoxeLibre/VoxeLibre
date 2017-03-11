@@ -5,7 +5,7 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 	liquids_pointable = false,
 	stack_max = 1,
 	groups = { tool = 1 },
-	on_use = function(itemstack, user, pointed_thing)
+	on_place = function(itemstack, user, pointed_thing)
 		local idef = itemstack:get_definition()
 		minetest.sound_play(
 			"fire_flint_and_steel",
