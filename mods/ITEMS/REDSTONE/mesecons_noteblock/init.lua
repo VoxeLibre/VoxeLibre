@@ -1,7 +1,13 @@
 minetest.register_node("mesecons_noteblock:noteblock", {
 	description = "Note Block",
-	_doc_items_longdesc = "A note block is a redstone component which plays a musical note when it is supplied with redstone power.",
-	_doc_items_usagehelp = "Rightclick the note block to choose one of many possible notes to play.",
+	_doc_items_longdesc = "A note block is a musical block which plays one of many musical notes when it punched or supplied with redstone power.",
+	_doc_items_usagehelp = [[Rightclick the note block to choose the next musical note (there are 24 half notes, or 2 octaves). The intrument played depends on the material of the block below the note block:
+
+• Glass: Sticks
+• Wood: Crash
+• Stone: Hi-hat
+• Sand or gravel: Snare drum
+• Anything else: Piano]],
 	tiles = {"mesecons_noteblock.png"},
 	groups = {handy=1,axey=1, material_wood=1},
 	is_ground_content = false,
@@ -86,7 +92,7 @@ mesecon.noteblock_play = function (pos, param2)
 		soundname="mesecons_noteblock_snare"
 	elseif minetest.get_item_group(block_below_name, "material_stone") ~= 0 then
 		-- TODO: Bass drum
-		soundname="mesecons_noteblock_snare"
+		soundname="mesecons_noteblock_hihat"
 	end
 	minetest.sound_play(soundname,
 	{pos = pos, gain = 1.0, max_hear_distance = 48,})
