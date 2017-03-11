@@ -73,6 +73,7 @@ mcl_torches.register_torch("mesecon_torch_on", "Redstone Torch", "jeija_torches_
 
 minetest.register_node("mesecons_torch:redstoneblock", {
 	description = "Block of Redstone",
+	_doc_items_longdesc = "A block of redstone permanently supplies redstone power to its surrounding blocks.",
 	tiles = {"redstone_redstone_block.png"},
 	stack_max = 64,
 	groups = {pickaxey=1},
