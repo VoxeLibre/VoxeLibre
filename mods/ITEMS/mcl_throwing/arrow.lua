@@ -1,5 +1,6 @@
 minetest.register_craftitem("mcl_throwing:arrow", {
 	description = "Arrow",
+	_doc_items_longdescs = "Arrows are ammunition for bows and dispensers.",
 	inventory_image = "mcl_throwing_arrow_inv.png",
 	groups = { ammo=1, ammo_bow=1 },
 })
