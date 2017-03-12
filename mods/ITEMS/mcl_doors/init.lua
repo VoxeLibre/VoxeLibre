@@ -44,8 +44,28 @@ function mcl_doors:register_door(name, def)
 		def.selection_box_top = box
 	end
 
+	local longdesc, usagehelp
+	longdesc = def._doc_items_longdesc
+	if not longdesc then
+		if def.only_redstone_can_open then
+			longdesc = "This door is a 2-block high barrier which can be opened or closed by hand or by redstone power."
+		else
+			longdesc = "This door is a 2-block high barrier which can only be opened by redstone power, not by hand."
+		end
+	end
+	usagehelp = def._doc_items_usagehelp
+	if not usagehelp then
+		if def.only_redstone_can_open then
+			usagehelp = "To open or close this door, send a redstone signal to its bottom half."
+		else
+			usagehelp = "To open or close this door, rightclick it or send a redstone signal to its bottom half."
+		end
+	end
+
 	minetest.register_craftitem(name, {
 		description = def.description,
+		_doc_items_longdesc = def._doc_items_longdesc,
+		_doc_items_usagehelp = def._doc_items_usagehelp,
 		inventory_image = def.inventory_image,
 		stack_max = 64,
 		groups = { mesecon_conductor_craftable = 1 },
@@ -346,9 +366,14 @@ function mcl_doors:register_door(name, def)
 
 end
 
+local wood_longdesc = "Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal."
+local wood_usagehelp = "To open or close a wooden door, rightclick it or supply its lower half with a redstone signal."
+
 --- Normal Door ---
 mcl_doors:register_door("mcl_doors:wooden_door", {
 	description = "Oak Door",
+	_doc_items_longdesc = wood_longdesc,
+	_doc_items_usagehelp = wood_usagehelp,
 	inventory_image = "door_wood.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
 	_mcl_hardness = 3,
@@ -369,6 +394,8 @@ minetest.register_craft({
 --- Accacia Door --
 mcl_doors:register_door("mcl_doors:acacia_door", {
 	description = "Acacia Door",
+	_doc_items_longdesc = wood_longdesc,
+	_doc_items_usagehelp = wood_usagehelp,
 	inventory_image = "door_acacia.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
 	_mcl_hardness = 3,
@@ -389,6 +416,8 @@ minetest.register_craft({
 --- birch Door --
 mcl_doors:register_door("mcl_doors:birch_door", {
 	description = "Birch Door",
+	_doc_items_longdesc = wood_longdesc,
+	_doc_items_usagehelp = wood_usagehelp,
 	inventory_image = "door_birch.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
 	_mcl_hardness = 3,
@@ -409,6 +438,8 @@ minetest.register_craft({
 --- dark oak Door --
 mcl_doors:register_door("mcl_doors:dark_oak_door", {
 	description = "Dark Oak Door",
+	_doc_items_longdesc = wood_longdesc,
+	_doc_items_usagehelp = wood_usagehelp,
 	inventory_image = "door_dark_oak.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
 	_mcl_hardness = 3,
@@ -429,6 +460,8 @@ minetest.register_craft({
 --- jungle Door --
 mcl_doors:register_door("mcl_doors:jungle_door", {
 	description = "Jungle Door",
+	_doc_items_longdesc = wood_longdesc,
+	_doc_items_usagehelp = wood_usagehelp,
 	inventory_image = "door_jungle.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
 	_mcl_hardness = 3,
@@ -449,6 +482,8 @@ minetest.register_craft({
 --- spruce Door --
 mcl_doors:register_door("mcl_doors:spruce_door", {
 	description = "Spruce Door",
+	_doc_items_longdesc = wood_longdesc,
+	_doc_items_usagehelp = wood_usagehelp,
 	inventory_image = "door_spruce.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
 	_mcl_hardness = 3,
@@ -500,6 +535,8 @@ minetest.register_craft({
 --- Door in Iron ---
 mcl_doors:register_door("mcl_doors:iron_door", {
 	description = "Iron Door",
+	_doc_items_longdesc = "Iron doors are 2-block high barriers which can only be opened or closed by a redstone signal, but not by hand.",
+	_doc_items_usagehelp = "To open or close an iron door, supply its lower half with a redstone signal.",
 	inventory_image = "door_steel.png",
 	groups = {pickaxey=1, door=1,mesecon_effector_on=1},
 	_mcl_hardness = 5,
@@ -562,8 +599,25 @@ function mcl_doors:register_trapdoor(name, def)
 		end
 	end
 
+	-- Default help texts
+	local longdesc, usagehelp
+	longdesc = def._doc_items_longdesc
+	if not longdesc then
+		if def.only_redstone_can_open then
+			longdesc = "Trapdoors are floor covers which can be opened or closed. This trapdoor can only be opened or closed by redstone power."
+		else
+			longdesc = "Trapdoors are floor covers which can be opened or closed. This trapdoor can only be opened by hand and by redstone power."
+		end
+	end
+	usagehelp = def._doc_items_usagehelp
+	if not usagehelp and not def.only_redstone_can_open then
+		usagehelp = "To open or close this door, rightclick it or send a redstone signal to it."
+	end
+
 	minetest.register_node(name, {
 		description = def.description,
+		_doc_items_longdesc = longdesc,
+		_doc_items_usagehelp = usagehelp,
 		drawtype = "nodebox",
 		tiles = def.tiles,
 		inventory_image = def.inventory_image,
@@ -622,6 +676,8 @@ end
 
 mcl_doors:register_trapdoor("mcl_doors:trapdoor", {
 	description = "Wooden Trapdoor",
+	_doc_items_longdesc = "Wooden trapdoors are floor covers which can be opened and closed by hand or a redstone signal.",
+	_doc_items_usagehelp = "To open or close the trapdoor, rightclick it or send a redstone signal to it.",
 	tiles = {"door_trapdoor.png"},
 	wield_image = "door_trapdoor.png",
 	groups = {handy=1,axey=1, mesecon_effector_on=1,door=2, material_wood=1},
@@ -645,6 +701,7 @@ minetest.register_craft({
 
 mcl_doors:register_trapdoor("mcl_doors:iron_trapdoor", {
 	description = "Iron Trapdoor",
+	_doc_items_longdesc = "Iron trapdoors are floor covers which can only be opened and closed by redstone signals, but not by hand.",
 	tiles = {"iron_trapdoor.png"},
 	wield_image = "iron_trapdoor.png",
 	groups = {pickaxey=1, mesecon_effector_on=1,door=2},
