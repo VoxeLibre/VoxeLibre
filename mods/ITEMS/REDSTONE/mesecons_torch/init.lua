@@ -90,7 +90,14 @@ minetest.register_node("mesecons_torch:redstoneblock", {
 	is_ground_content = false,
 	mesecons = {receptor = {
 		state = mesecon.state.on,
-		rules = torch_get_output_rules
+		rules = {
+			{x = 1,  y = 0, z = 0},
+			{x = -1,  y = 0, z = 0},
+			{x = 0,  y = 0, z = 1},
+			{x = 0,  y = 0, z =-1},
+			{x = 0,  y = 1, z = 0},
+			{x = 0,  y =-1, z = 0}
+		}
 	}},
 	mcl_blast_resistance = 30,
 	mcl_hardness = 5,
