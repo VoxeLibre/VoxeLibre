@@ -500,10 +500,6 @@ function mcl_doors:register_trapdoor(name, def)
 		minetest.set_node(pos, node)
 	end
 
-	local me
-	local meta
-	local state = 0
-
 	if not def.sound_open then
 		def.sound_open = "doors_door_open"
 	end
@@ -512,9 +508,9 @@ function mcl_doors:register_trapdoor(name, def)
 	end
 
 	local function punch(pos)
-		meta = minetest.get_meta(pos)
-		state = meta:get_int("state")
-		me = minetest.get_node(pos)
+		local meta = minetest.get_meta(pos)
+		local state = meta:get_int("state")
+		local me = minetest.get_node(pos)
 		local tmp_node
 		local tmp_node2
 		local oben = {x=pos.x, y=pos.y+1, z=pos.z}
@@ -550,8 +546,9 @@ function mcl_doors:register_trapdoor(name, def)
 			fixed = {
 			{-8/16, -8/16, -8/16, 8/16, -5/16, 8/16},},
 		},
-		on_creation = function(pos)
-			state = 0
+		on_construct = function(pos)
+			local meta = minetest.get_meta(pos)
+			meta:set_int("state", 0)
 		end,
 		mesecons = {effector = {
 			action_on = (function(pos, node)
@@ -583,9 +580,9 @@ function mcl_doors:register_trapdoor(name, def)
 			punch(pos)
 		end,
 		mesecons = {effector = {
-		action_on = (function(pos, node)
-			punch(pos)
-		end),
+			action_on = (function(pos, node)
+				punch(pos)
+			end),
 		}},
 	})
 
