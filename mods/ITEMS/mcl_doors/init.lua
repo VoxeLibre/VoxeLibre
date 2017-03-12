@@ -28,9 +28,9 @@ function mcl_doors:register_door(name, def)
 	if not def.sound_close then
 		def.sound_close = "doors_door_close"
 	end
-	
+
 	local box = {{-8/16, -8/16, -8/16, 8/16, 8/16, -5/16}}
-	
+
 	if not def.node_box_bottom then
 		def.node_box_bottom = box
 	end
@@ -43,7 +43,7 @@ function mcl_doors:register_door(name, def)
 	if not def.selection_box_top then
 		def.selection_box_top = box
 	end
-	
+
 	minetest.register_craftitem(name, {
 		description = def.description,
 		inventory_image = def.inventory_image,
@@ -62,7 +62,7 @@ function mcl_doors:register_door(name, def)
 					if minetest.registered_nodes[nu.name].on_rightclick then
 						return minetest.registered_nodes[nu.name].on_rightclick(ptu, nu, placer, itemstack)
 					end
-					
+
 					local pt = pointed_thing.above
 					local pt2 = {x=pt.x, y=pt.y, z=pt.z}
 					pt2.y = pt2.y+1
@@ -74,7 +74,7 @@ function mcl_doors:register_door(name, def)
 					then
 						return itemstack
 					end
-					
+
 					local p2 = minetest.dir_to_facedir(placer:get_look_dir())
 					local pt3 = {x=pt.x, y=pt.y, z=pt.z}
 					if p2 == 0 then
@@ -96,7 +96,7 @@ function mcl_doors:register_door(name, def)
 					if def.sounds and def.sounds.place then
 						minetest.sound_play(def.sounds.place, {pos=pt})
 					end
-					
+
 					if def.only_placer_can_open then
 						local meta = minetest.get_meta(pt)
 						meta:set_string("doors_owner", "")
@@ -109,24 +109,24 @@ function mcl_doors:register_door(name, def)
 					meta:set_int("is_open", 0)
 					meta = minetest.get_meta(pt2)
 					meta:set_int("is_open", 0)
-					
+
 					if not minetest.setting_getbool("creative_mode") then
 						itemstack:take_item()
 					end
 				return itemstack
 		end,
 	})
-	
+
 	local tt = def.tiles_top
 	local tb = def.tiles_bottom
-	
+
 	local function after_dig_node(pos, name, digger)
 		local node = minetest.get_node(pos)
 		if node.name == name then
 			minetest.node_dig(pos, node, digger)
 		end
 	end
-	
+
 	local function on_open_close(pos, dir, check_name, replace, replace_dir, params)
 		pos.y = pos.y+dir
 		if not minetest.get_node(pos).name == check_name then
@@ -134,11 +134,11 @@ function mcl_doors:register_door(name, def)
 		end
 		local p2 = minetest.get_node(pos).param2
 		local np2 = params[p2+1]
-		
+
 		local meta = minetest.get_meta(pos):to_table()
 		minetest.set_node(pos, {name=replace_dir, param2=np2})
 		minetest.get_meta(pos):from_table(meta)
-		
+
 		pos.y = pos.y-dir
 		meta = minetest.get_meta(pos):to_table()
 		minetest.set_node(pos, {name=replace, param2=np2})
@@ -163,7 +163,7 @@ function mcl_doors:register_door(name, def)
 	local function on_mesecons_signal_close (pos, node)
 		on_open_close(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1", {3,0,1,2})
 	end
-	
+
 	local function check_player_priv(pos, player)
 		if not def.only_placer_can_open then
 			return true
@@ -182,7 +182,7 @@ function mcl_doors:register_door(name, def)
 			end
 		end
 	end
-	
+
 	minetest.register_node(name.."_b_1", {
 		tiles = {tt[2].."^[transformFY", tt[2], tb[2].."^[transformFX", tb[2], tb[1], tb[1].."^[transformFX"},
 		paramtype = "light",
@@ -202,21 +202,21 @@ function mcl_doors:register_door(name, def)
 		groups = def.groups,
 		_mcl_hardness = def._mcl_hardness,
 		sounds = def.sounds,
-		
+
 		after_dig_node = function(pos, oldnode, oldmetadata, digger)
 			pos.y = pos.y+1
 			after_dig_node(pos, name.."_t_1", digger)
 		end,
-		
+
 		on_rightclick = on_rightclick,
 
 		mesecons = { effector = {
 			action_on = on_mesecons_signal_open
 		}},
-		
+
 		can_dig = check_player_priv,
 	})
-	
+
 	if def.only_redstone_can_open then
 		on_rightclick = nil
 	else
@@ -226,7 +226,7 @@ function mcl_doors:register_door(name, def)
 			end
 		end
 	end
-	
+
 	minetest.register_node(name.."_t_1", {
 		tiles = {tt[2].."^[transformFY", tt[2], tt[2].."^[transformFX", tt[2], tt[1], tt[1].."^[transformFX"},
 		paramtype = "light",
@@ -246,12 +246,12 @@ function mcl_doors:register_door(name, def)
 		groups = def.groups,
 		_mcl_hardness = def._mcl_hardness,
 		sounds = def.sounds,
-		
+
 		after_dig_node = function(pos, oldnode, oldmetadata, digger)
 			pos.y = pos.y-1
 			after_dig_node(pos, name.."_b_1", digger)
 		end,
-		
+
 		on_rightclick = on_rightclick,
 
 		can_dig = check_player_priv,
@@ -266,7 +266,7 @@ function mcl_doors:register_door(name, def)
 			end
 		end
 	end
-	
+
 	minetest.register_node(name.."_b_2", {
 		tiles = {tt[2].."^[transformFY", tt[2], tb[2].."^[transformFX", tb[2], tb[1].."^[transformFX", tb[1]},
 		paramtype = "light",
@@ -286,18 +286,18 @@ function mcl_doors:register_door(name, def)
 		groups = def.groups,
 		_mcl_hardness = def._mcl_hardness,
 		sounds = def.sounds,
-		
+
 		after_dig_node = function(pos, oldnode, oldmetadata, digger)
 			pos.y = pos.y+1
 			after_dig_node(pos, name.."_t_2", digger)
 		end,
-		
+
 		on_rightclick = on_rightclick,
 
 		mesecons = { effector = {
 			action_on = on_mesecons_signal_close
 		}},
-		
+
 		can_dig = check_player_priv,
 	})
 
@@ -340,7 +340,7 @@ function mcl_doors:register_door(name, def)
 
 		can_dig = check_player_priv,
 	})
-	
+
 end
 
 --- Normal Door ---
