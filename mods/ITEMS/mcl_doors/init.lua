@@ -37,7 +37,7 @@ function mcl_doors:register_door(name, def)
 		def.sound_close = "doors_door_close"
 	end
 	
-	local box = {{-8/16, -8/16, -8/16, 8/16, 8/16, -6.5/16}}
+	local box = {{-8/16, -8/16, -8/16, 8/16, 8/16, -5/16}}
 	
 	if not def.node_box_bottom then
 		def.node_box_bottom = box
@@ -539,7 +539,7 @@ function mcl_doors:register_trapdoor(name, def)
 		node_box = {
 			type = "fixed",
 			fixed = {
-			{-8/16, -8/16, -8/16, 8/16, -6/16, 8/16},},
+			{-8/16, -8/16, -8/16, 8/16, -5/16, 8/16},},
 		},
 		on_creation = function(pos)
 			state = 0
@@ -567,11 +567,7 @@ function mcl_doors:register_trapdoor(name, def)
 		drop = name,
 		node_box = {
 			type = "fixed",
-			fixed = {-0.5, -0.5, 0.4, 0.5, 0.5, 0.5}
-		},
-		selection_box = {
-			type = "fixed",
-			fixed = {-0.5, -0.5, 0.4, 0.5, 0.5, 0.5}
+			fixed = {-0.5, -0.5, 5/16, 0.5, 0.5, 0.5}
 		},
 		on_rightclick = function(pos, node, clicker)
 			punch(pos)
