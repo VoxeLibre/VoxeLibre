@@ -1,6 +1,6 @@
 mcl_core
 xpanes
-doors
+mcl_doors
 stairs
 mcl_colorblocks
 mcl_wool
