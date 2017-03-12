@@ -16,6 +16,8 @@ mcl_doors = {}
 --    selection_box_top
 --    only_placer_can_open: if true only the player who placed the door can
 --                          open it
+--    only_redstone_can_open: if true, the door can only be opened by redstone,
+--                            not by rightclicking it
 
 function mcl_doors:register_door(name, def)
 	def.groups.not_in_creative_inventory = 1
@@ -125,7 +127,7 @@ function mcl_doors:register_door(name, def)
 		end
 	end
 	
-	local function on_rightclick(pos, dir, check_name, replace, replace_dir, params)
+	local function on_open_close(pos, dir, check_name, replace, replace_dir, params)
 		pos.y = pos.y+dir
 		if not minetest.get_node(pos).name == check_name then
 			return
@@ -155,11 +157,11 @@ function mcl_doors:register_door(name, def)
 	end
 
 	local function on_mesecons_signal_open (pos, node)
-		on_rightclick(pos, 1, name.."_t_1", name.."_b_2", name.."_t_2", {1,2,3,0})
+		on_open_close(pos, 1, name.."_t_1", name.."_b_2", name.."_t_2", {1,2,3,0})
 	end
 
 	local function on_mesecons_signal_close (pos, node)
-		on_rightclick(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1", {3,0,1,2})
+		on_open_close(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1", {3,0,1,2})
 	end
 	
 	local function check_player_priv(pos, player)
@@ -169,6 +171,16 @@ function mcl_doors:register_door(name, def)
 		local meta = minetest.get_meta(pos)
 		local pn = player:get_player_name()
 		return meta:get_string("doors_owner") == pn
+	end
+
+	local on_rightclick
+	-- Disable on_rightclick if this is a redstone-only door
+	if not def.only_redstone_can_open then
+		on_rightclick = function(pos, node_clicker)
+			if check_player_priv(pos, clicker) then
+				on_open_close(pos, 1, name.."_t_1", name.."_b_2", name.."_t_2", {1,2,3,0})
+			end
+		end
 	end
 	
 	minetest.register_node(name.."_b_1", {
@@ -196,11 +208,7 @@ function mcl_doors:register_door(name, def)
 			after_dig_node(pos, name.."_t_1", digger)
 		end,
 		
-		on_rightclick = function(pos, node, clicker)
-			if check_player_priv(pos, clicker) then
-				on_rightclick(pos, 1, name.."_t_1", name.."_b_2", name.."_t_2", {1,2,3,0})
-			end
-		end,
+		on_rightclick = on_rightclick,
 
 		mesecons = { effector = {
 			action_on = on_mesecons_signal_open
@@ -208,6 +216,16 @@ function mcl_doors:register_door(name, def)
 		
 		can_dig = check_player_priv,
 	})
+	
+	if def.only_redstone_can_open then
+		on_rightclick = nil
+	else
+		on_rightclick = function(pos, node_clicker)
+			if check_player_priv(pos, clicker) then
+				on_open_close(pos, -1, name.."_b_1", name.."_t_2", name.."_b_2", {1,2,3,0})
+			end
+		end
+	end
 	
 	minetest.register_node(name.."_t_1", {
 		tiles = {tt[2].."^[transformFY", tt[2], tt[2].."^[transformFX", tt[2], tt[1], tt[1].."^[transformFX"},
@@ -234,14 +252,20 @@ function mcl_doors:register_door(name, def)
 			after_dig_node(pos, name.."_b_1", digger)
 		end,
 		
-		on_rightclick = function(pos, node, clicker)
-			if check_player_priv(pos, clicker) then
-				on_rightclick(pos, -1, name.."_b_1", name.."_t_2", name.."_b_2", {1,2,3,0})
-			end
-		end,
+		on_rightclick = on_rightclick,
 
 		can_dig = check_player_priv,
 	})
+
+	if def.only_redstone_can_open then
+		on_rightclick = nil
+	else
+		on_rightclick = function(pos, node_clicker)
+			if check_player_priv(pos, clicker) then
+				on_open_close(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1", {3,0,1,2})
+			end
+		end
+	end
 	
 	minetest.register_node(name.."_b_2", {
 		tiles = {tt[2].."^[transformFY", tt[2], tb[2].."^[transformFX", tb[2], tb[1].."^[transformFX", tb[1]},
@@ -268,11 +292,7 @@ function mcl_doors:register_door(name, def)
 			after_dig_node(pos, name.."_t_2", digger)
 		end,
 		
-		on_rightclick = function(pos, node, clicker)
-			if check_player_priv(pos, clicker) then
-				on_rightclick(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1", {3,0,1,2})
-			end
-		end,
+		on_rightclick = on_rightclick,
 
 		mesecons = { effector = {
 			action_on = on_mesecons_signal_close
@@ -280,6 +300,16 @@ function mcl_doors:register_door(name, def)
 		
 		can_dig = check_player_priv,
 	})
+
+	if def.only_redstone_can_open then
+		on_rightclick = nil
+	else
+		on_rightclick = function(pos, node_clicker)
+			if check_player_priv(pos, clicker) then
+				on_open_close(pos, -1, name.."_b_2", name.."_t_1", name.."_b_1", {3,0,1,2})
+			end
+		end
+	end
 
 	minetest.register_node(name.."_t_2", {
 		tiles = {tt[2].."^[transformFY", tt[2], tt[2].."^[transformFX", tt[2], tt[1].."^[transformFX", tt[1]},
@@ -306,11 +336,7 @@ function mcl_doors:register_door(name, def)
 			after_dig_node(pos, name.."_b_2", digger)
 		end,
 
-		on_rightclick = function(pos, node, clicker)
-			if check_player_priv(pos, clicker) then
-				on_rightclick(pos, -1, name.."_b_2", name.."_t_1", name.."_b_1", {3,0,1,2})
-			end
-		end,
+		on_rightclick = on_rightclick,
 
 		can_dig = check_player_priv,
 	})
@@ -479,6 +505,8 @@ mcl_doors:register_door("mcl_doors:iron_door", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	sound_open = "doors_steel_door_open",
 	sound_close = "doors_steel_door_close",
+
+	only_redstone_can_open = true,
 })
 
 minetest.register_craft({
@@ -524,6 +552,13 @@ function mcl_doors:register_trapdoor(name, def)
 		meta:set_int("state", state)
 	end
 
+	local on_rightclick
+	if not def.only_redstone_can_open then
+		on_rightclick = function(pos, node, clicker)
+			punch(pos)
+		end
+	end
+
 	minetest.register_node(name, {
 		description = def.description,
 		drawtype = "nodebox",
@@ -552,9 +587,7 @@ function mcl_doors:register_trapdoor(name, def)
 				punch(pos)
 			end),
 		}},
-		on_rightclick = function(pos, node, clicker)
-			punch(pos)
-		end,
+		on_rightclick = on_rightclick,
 	})
 
 	minetest.register_node(name.."_open", {
@@ -573,9 +606,7 @@ function mcl_doors:register_trapdoor(name, def)
 			type = "fixed",
 			fixed = {-0.5, -0.5, 5/16, 0.5, 0.5, 0.5}
 		},
-		on_rightclick = function(pos, node, clicker)
-			punch(pos)
-		end,
+		on_rightclick = on_rightclick,
 		mesecons = {effector = {
 			action_on = (function(pos, node)
 				punch(pos)
@@ -618,6 +649,8 @@ mcl_doors:register_trapdoor("mcl_doors:iron_trapdoor", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	sound_open = "doors_steel_door_open",
 	sound_close = "doors_steel_door_close",
+
+	only_redstone_can_open = true,
 })
 
 minetest.register_craft({
