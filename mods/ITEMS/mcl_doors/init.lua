@@ -17,16 +17,6 @@ mcl_doors = {}
 --    only_placer_can_open: if true only the player who placed the door can
 --                          open it
 
-local function is_right(pos) 
-	local r1 = minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z})
-	local r2 = minetest.get_node({x=pos.x, y=pos.y, z=pos.z+1})
-	if string.find(r1.name, "door_") or string.find(r2.name, "door_") then
-		return true
-	else
-		return false
-	end
-end
-
 function mcl_doors:register_door(name, def)
 	def.groups.not_in_creative_inventory = 1
 
@@ -105,14 +95,17 @@ function mcl_doors:register_door(name, def)
 					end
 					
 					if def.only_placer_can_open then
-						local pn = placer:get_player_name()
 						local meta = minetest.get_meta(pt)
 						meta:set_string("doors_owner", "")
-						--meta:set_string("infotext", "Owned by "..pn)
 						meta = minetest.get_meta(pt2)
 						meta:set_string("doors_owner", "")
-						--meta:set_string("infotext", "Owned by "..pn)
 					end
+
+					-- Save open state. 1 = open. 0 = closed
+					local meta = minetest.get_meta(pt)
+					meta:set_int("is_open", 0)
+					meta = minetest.get_meta(pt2)
+					meta:set_int("is_open", 0)
 					
 					if not minetest.setting_getbool("creative_mode") then
 						itemstack:take_item()
@@ -149,10 +142,13 @@ function mcl_doors:register_door(name, def)
 		minetest.get_meta(pos):from_table(meta)
 
 		local door_switching_sound
-		if p2 == 1 or p2 == 3 then
-			door_switching_sound = def.sound_open
-		else
+		local meta = minetest.get_meta(pos)
+		if meta:get_int("is_open") == 1 then
 			door_switching_sound = def.sound_close
+			meta:set_int("is_open", 0)
+		else
+			door_switching_sound = def.sound_open
+			meta:set_int("is_open", 1)
 		end
 		minetest.sound_play(door_switching_sound, {pos = pos, gain = 0.5, max_hear_distance = 16})
 	end
