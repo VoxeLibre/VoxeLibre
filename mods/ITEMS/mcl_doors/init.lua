@@ -159,7 +159,7 @@ function mcl_doors:register_door(name, def)
 	end
 	
 	minetest.register_node(name.."_b_1", {
-		tiles = {tb[2], tb[2], tb[2], tb[2], tb[1], tb[1].."^[transformfx"},
+		tiles = {tt[2].."^[transformFY", tt[2], tb[2].."^[transformFX", tb[2], tb[1], tb[1].."^[transformFX"},
 		paramtype = "light",
 		paramtype2 = "facedir",
 		is_ground_content = false,
@@ -197,7 +197,7 @@ function mcl_doors:register_door(name, def)
 	})
 	
 	minetest.register_node(name.."_t_1", {
-		tiles = {tt[2], tt[2], tt[2], tt[2], tt[1], tt[1].."^[transformfx"},
+		tiles = {tt[2].."^[transformFY", tt[2], tt[2].."^[transformFX", tt[2], tt[1], tt[1].."^[transformFX"},
 		paramtype = "light",
 		paramtype2 = "facedir",
 		is_ground_content = false,
@@ -235,7 +235,7 @@ function mcl_doors:register_door(name, def)
 	})
 	
 	minetest.register_node(name.."_b_2", {
-		tiles = {tb[2], tb[2], tb[2], tb[2], tb[1].."^[transformfx", tb[1]},
+		tiles = {tt[2].."^[transformFY", tt[2], tb[2].."^[transformFX", tb[2], tb[1].."^[transformFX", tb[1]},
 		paramtype = "light",
 		paramtype2 = "facedir",
 		is_ground_content = false,
@@ -273,7 +273,7 @@ function mcl_doors:register_door(name, def)
 	})
 	
 	minetest.register_node(name.."_t_2", {
-		tiles = {tt[2], tt[2], tt[2], tt[2], tt[1].."^[transformfx", tt[1]},
+		tiles = {tt[2].."^[transformFY", tt[2], tt[2].."^[transformFX", tt[2], tt[1].."^[transformFX", tt[1]},
 		paramtype = "light",
 		paramtype2 = "facedir",
 		is_ground_content = false,
@@ -318,8 +318,8 @@ mcl_doors:register_door("mcl_doors:wooden_door", {
 	inventory_image = "door_wood.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
 	_mcl_hardness = 3,
-	tiles_bottom = {"door_wood_b.png", "door_brown.png"},
-	tiles_top = {"door_wood_a.png", "door_brown.png"},
+	tiles_bottom = {"door_wood_b.png", "door_wood_b.png"},
+	tiles_top = {"door_wood_a.png", "door_wood_a.png"},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -338,8 +338,8 @@ mcl_doors:register_door("mcl_doors:acacia_door", {
 	inventory_image = "door_acacia.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
 	_mcl_hardness = 3,
-	tiles_bottom = {"door_acacia_b.png", "door_brown.png"},
-	tiles_top = {"door_acacia_a.png", "door_brown.png"},
+	tiles_bottom = {"door_acacia_b.png", "door_acacia_b.png"},
+	tiles_top = {"door_acacia_a.png", "door_acacia_a.png"},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -358,8 +358,8 @@ mcl_doors:register_door("mcl_doors:birch_door", {
 	inventory_image = "door_birch.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
 	_mcl_hardness = 3,
-	tiles_bottom = {"door_birch_b.png", "door_brown.png"},
-	tiles_top = {"door_birch_a.png", "door_brown.png"},
+	tiles_bottom = {"door_birch_b.png", "door_birch_b.png"},
+	tiles_top = {"door_birch_a.png", "door_birch_a.png"},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -378,8 +378,8 @@ mcl_doors:register_door("mcl_doors:dark_oak_door", {
 	inventory_image = "door_dark_oak.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
 	_mcl_hardness = 3,
-	tiles_bottom = {"door_dark_oak_b.png", "door_brown.png"},
-	tiles_top = {"door_dark_oak_a.png", "door_brown.png"},
+	tiles_bottom = {"door_dark_oak_b.png", "door_dark_oak_b.png"},
+	tiles_top = {"door_dark_oak_a.png", "door_dark_oak_a.png"},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -398,8 +398,8 @@ mcl_doors:register_door("mcl_doors:jungle_door", {
 	inventory_image = "door_jungle.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
 	_mcl_hardness = 3,
-	tiles_bottom = {"door_jungle_b.png", "door_brown.png"},
-	tiles_top = {"door_jungle_a.png", "door_brown.png"},
+	tiles_bottom = {"door_jungle_b.png", "door_jungle_b.png"},
+	tiles_top = {"door_jungle_a.png", "door_jungle_a.png"},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -418,8 +418,8 @@ mcl_doors:register_door("mcl_doors:spruce_door", {
 	inventory_image = "door_spruce.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
 	_mcl_hardness = 3,
-	tiles_bottom = {"door_spruce_b.png", "door_brown.png"},
-	tiles_top = {"door_spruce_a.png", "door_brown.png"},
+	tiles_bottom = {"door_spruce_b.png", "door_spruce_b.png"},
+	tiles_top = {"door_spruce_a.png", "door_spruce_a.png"},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -469,8 +469,8 @@ mcl_doors:register_door("mcl_doors:iron_door", {
 	inventory_image = "door_steel.png",
 	groups = {pickaxey=1, door=1,mesecon_effector_on=1},
 	_mcl_hardness = 5,
-	tiles_bottom = {"door_steel_b.png", "door_grey.png"},
-	tiles_top = {"door_steel_a.png", "door_grey.png"},
+	tiles_bottom = {"door_steel_b.png^[transformFX", "door_steel_b.png^[transformFX"},
+	tiles_top = {"door_steel_a.png^[transformFX", "door_steel_a.png^[transformFX"},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	sound_open = "doors_steel_door_open",
 	sound_close = "doors_steel_door_close",
