@@ -383,7 +383,7 @@ minetest.register_node("mcl_core:grass_path", {
 			{-0.5, -0.5, -0.5, 0.5, 0.4375, 0.5},
 		}
 	},
-	groups = {handy=1,shovely=1, not_in_creative_inventory=1, },
+	groups = {handy=1,shovely=1, cultivatable=2, not_in_creative_inventory=1, },
 	sounds = mcl_sounds.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
