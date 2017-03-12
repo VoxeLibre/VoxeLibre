@@ -128,30 +128,33 @@ function mcl_doors:register_door(name, def)
 	end
 
 	local function on_open_close(pos, dir, check_name, replace, replace_dir, params)
+		local meta1 = minetest.get_meta(pos)
 		pos.y = pos.y+dir
+		local meta2 = minetest.get_meta(pos)
 		if not minetest.get_node(pos).name == check_name then
 			return
 		end
 		local p2 = minetest.get_node(pos).param2
 		local np2 = params[p2+1]
 
-		local meta = minetest.get_meta(pos):to_table()
+		local metatable = minetest.get_meta(pos):to_table()
 		minetest.set_node(pos, {name=replace_dir, param2=np2})
-		minetest.get_meta(pos):from_table(meta)
+		minetest.get_meta(pos):from_table(metatable)
 
 		pos.y = pos.y-dir
-		meta = minetest.get_meta(pos):to_table()
+		metatable = minetest.get_meta(pos):to_table()
 		minetest.set_node(pos, {name=replace, param2=np2})
-		minetest.get_meta(pos):from_table(meta)
+		minetest.get_meta(pos):from_table(metatable)
 
 		local door_switching_sound
-		local meta = minetest.get_meta(pos)
-		if meta:get_int("is_open") == 1 then
+		if meta1:get_int("is_open") == 1 then
 			door_switching_sound = def.sound_close
-			meta:set_int("is_open", 0)
+			meta1:set_int("is_open", 0)
+			meta2:set_int("is_open", 0)
 		else
 			door_switching_sound = def.sound_open
-			meta:set_int("is_open", 1)
+			meta1:set_int("is_open", 1)
+			meta2:set_int("is_open", 1)
 		end
 		minetest.sound_play(door_switching_sound, {pos = pos, gain = 0.5, max_hear_distance = 16})
 	end
