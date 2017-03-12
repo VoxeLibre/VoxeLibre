@@ -33,6 +33,7 @@ else
 end
 minetest.register_item(":", {
 	type = "none",
+	_doc_items_longdesc = "You use your bare hand whenever you are not wielding any item. With your hand you can mine the weakest blocks and deal minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are better than the hand. When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching. In Creative Mode, the hand is able to break all blocks instantly.",
 	wield_image = "wieldhand.png",
 	wield_scale = {x=1,y=1,z=2.5},
 	-- According to Minecraft Wiki, the exact range is 3.975.
