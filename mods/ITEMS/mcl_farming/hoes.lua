@@ -21,8 +21,13 @@ local function create_soil(pos, inv)
 	return false
 end
 
+local hoe_longdesc = "Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch."
+local hoe_usagehelp = "Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt."
+
 minetest.register_tool("mcl_farming:hoe_wood", {
 	description = "Wood Hoe",
+	_doc_items_longdesc = hoe_longdesc,
+	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_woodhoe.png",
 	on_place = function(itemstack, user, pointed_thing)
 		-- Call on_rightclick if the pointed node defines it
@@ -71,6 +76,8 @@ minetest.register_craft({
 
 minetest.register_tool("mcl_farming:hoe_stone", {
 	description = "Stone Hoe",
+	_doc_items_longdesc = hoe_longdesc,
+	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_stonehoe.png",
 	on_place = function(itemstack, user, pointed_thing)
 		-- Call on_rightclick if the pointed node defines it
@@ -114,6 +121,8 @@ minetest.register_craft({
 
 minetest.register_tool("mcl_farming:hoe_iron", {
 	description = "Iron Hoe",
+	_doc_items_longdesc = hoe_longdesc,
+	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_steelhoe.png",
 	on_place = function(itemstack, user, pointed_thing)
 		-- Call on_rightclick if the pointed node defines it
@@ -165,6 +174,8 @@ minetest.register_craft({
 
 minetest.register_tool("mcl_farming:hoe_gold", {
 	description = "Golden Hoe",
+	_doc_items_longdesc = hoe_longdesc,
+	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_goldhoe.png",
 	on_place = function(itemstack, user, pointed_thing)
 		-- Call on_rightclick if the pointed node defines it
@@ -217,6 +228,8 @@ minetest.register_craft({
 
 minetest.register_tool("mcl_farming:hoe_diamond", {
 	description = "Diamond Hoe",
+	_doc_items_longdesc = hoe_longdesc,
+	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_diamondhoe.png",
 	on_place = function(itemstack, user, pointed_thing)
 		-- Call on_rightclick if the pointed node defines it

@@ -46,9 +46,19 @@ minetest.register_item(":", {
 	}
 })
 
+-- Help texts
+local pickaxe_longdesc = "Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient."
+local axe_longdesc = "An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow."
+local sword_longdesc = "Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs."
+local shovel_longdesc = "Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak."
+local shovel_use = "To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the side of a grass block. This only works when nothing is above the grass block."
+local shears_longdesc = "Shears are tools to shear sheep and to mine a few block types."
+local shears_use = "To shear a sheep and obtain its wool, rightclick it while holding the shears. Mining works are usual."
+
 -- Picks
 minetest.register_tool("mcl_tools:pick_wood", {
 	description = "Wooden Pickaxe",
+	_doc_items_longdesc = pickaxe_longdesc,
 	inventory_image = "default_tool_woodpick.png",
 	groups = { tool=1 },
 	tool_capabilities = {
@@ -64,6 +74,7 @@ minetest.register_tool("mcl_tools:pick_wood", {
 })
 minetest.register_tool("mcl_tools:pick_stone", {
 	description = "Stone Pickaxe",
+	_doc_items_longdesc = pickaxe_longdesc,
 	inventory_image = "default_tool_stonepick.png",
 	groups = { tool=1 },
 	tool_capabilities = {
@@ -79,6 +90,7 @@ minetest.register_tool("mcl_tools:pick_stone", {
 })
 minetest.register_tool("mcl_tools:pick_iron", {
 	description = "Iron Pickaxe",
+	_doc_items_longdesc = pickaxe_longdesc,
 	inventory_image = "default_tool_steelpick.png",
 	groups = { tool=1 },
 	tool_capabilities = {
@@ -94,6 +106,7 @@ minetest.register_tool("mcl_tools:pick_iron", {
 })
 minetest.register_tool("mcl_tools:pick_gold", {
 	description = "Golden Pickaxe",
+	_doc_items_longdesc = pickaxe_longdesc,
 	inventory_image = "default_tool_goldpick.png",
 	groups = { tool=1 },
 	tool_capabilities = {
@@ -109,6 +122,7 @@ minetest.register_tool("mcl_tools:pick_gold", {
 })
 minetest.register_tool("mcl_tools:pick_diamond", {
 	description = "Diamond Pickaxe",
+	_doc_items_longdesc = pickaxe_longdesc,
 	inventory_image = "default_tool_diamondpick.png",
 	groups = { tool=1 },
 	tool_capabilities = {
@@ -175,6 +189,8 @@ end
 -- Shovels
 minetest.register_tool("mcl_tools:shovel_wood", {
 	description = "Wooden Shovel",
+	_doc_items_longdesc = shovel_longdesc,
+	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_woodshovel.png",
 	wield_image = "default_tool_woodshovel.png^[transformR90",
 	groups = { tool=1 },
@@ -191,6 +207,8 @@ minetest.register_tool("mcl_tools:shovel_wood", {
 })
 minetest.register_tool("mcl_tools:shovel_stone", {
 	description = "Stone Shovel",
+	_doc_items_longdesc = shovel_longdesc,
+	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_stoneshovel.png",
 	wield_image = "default_tool_stoneshovel.png^[transformR90",
 	groups = { tool=1 },
@@ -207,6 +225,8 @@ minetest.register_tool("mcl_tools:shovel_stone", {
 })
 minetest.register_tool("mcl_tools:shovel_iron", {
 	description = "Iron Shovel",
+	_doc_items_longdesc = shovel_longdesc,
+	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_steelshovel.png",
 	wield_image = "default_tool_steelshovel.png^[transformR90",
 	groups = { tool=1 },
@@ -223,6 +243,8 @@ minetest.register_tool("mcl_tools:shovel_iron", {
 })
 minetest.register_tool("mcl_tools:shovel_gold", {
 	description = "Golden Shovel",
+	_doc_items_longdesc = shovel_longdesc,
+	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_goldshovel.png",
 	wield_image = "default_tool_goldshovel.png^[transformR90",
 	groups = { tool=1 },
@@ -239,6 +261,8 @@ minetest.register_tool("mcl_tools:shovel_gold", {
 })
 minetest.register_tool("mcl_tools:shovel_diamond", {
 	description = "Diamond Shovel",
+	_doc_items_longdesc = shovel_longdesc,
+	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_diamondshovel.png",
 	wield_image = "default_tool_diamondshovel.png^[transformR90",
 	groups = { tool=1 },
@@ -257,6 +281,7 @@ minetest.register_tool("mcl_tools:shovel_diamond", {
 -- Axes
 minetest.register_tool("mcl_tools:axe_wood", {
 	description = "Wooden Axe",
+	_doc_items_longdesc = axe_longdesc,
 	inventory_image = "default_tool_woodaxe.png",
 	groups = { tool=1 },
 	tool_capabilities = {
@@ -271,6 +296,7 @@ minetest.register_tool("mcl_tools:axe_wood", {
 })
 minetest.register_tool("mcl_tools:axe_stone", {
 	description = "Stone Axe",
+	_doc_items_longdesc = axe_longdesc,
 	inventory_image = "default_tool_stoneaxe.png",
 	groups = { tool=1 },
 	tool_capabilities = {
@@ -285,6 +311,7 @@ minetest.register_tool("mcl_tools:axe_stone", {
 })
 minetest.register_tool("mcl_tools:axe_iron", {
 	description = "Iron Axe",
+	_doc_items_longdesc = axe_longdesc,
 	inventory_image = "default_tool_steelaxe.png",
 	groups = { tool=1 },
 	tool_capabilities = {
@@ -300,6 +327,7 @@ minetest.register_tool("mcl_tools:axe_iron", {
 })
 minetest.register_tool("mcl_tools:axe_gold", {
 	description = "Golden Axe",
+	_doc_items_longdesc = axe_longdesc,
 	inventory_image = "default_tool_goldaxe.png",
 	groups = { tool=1 },
 	tool_capabilities = {
@@ -314,6 +342,7 @@ minetest.register_tool("mcl_tools:axe_gold", {
 })
 minetest.register_tool("mcl_tools:axe_diamond", {
 	description = "Diamond Axe",
+	_doc_items_longdesc = axe_longdesc,
 	inventory_image = "default_tool_diamondaxe.png",
 	groups = { tool=1 },
 	tool_capabilities = {
@@ -330,6 +359,7 @@ minetest.register_tool("mcl_tools:axe_diamond", {
 -- Swords
 minetest.register_tool("mcl_tools:sword_wood", {
 	description = "Wooden Sword",
+	_doc_items_longdesc = sword_longdesc,
 	inventory_image = "default_tool_woodsword.png",
 	groups = { weapon=1 },
 	tool_capabilities = {
@@ -345,6 +375,7 @@ minetest.register_tool("mcl_tools:sword_wood", {
 })
 minetest.register_tool("mcl_tools:sword_stone", {
 	description = "Stone Sword",
+	_doc_items_longdesc = sword_longdesc,
 	inventory_image = "default_tool_stonesword.png",
 	groups = { weapon=1 },
 	tool_capabilities = {
@@ -360,6 +391,7 @@ minetest.register_tool("mcl_tools:sword_stone", {
 })
 minetest.register_tool("mcl_tools:sword_iron", {
 	description = "Iron Sword",
+	_doc_items_longdesc = sword_longdesc,
 	inventory_image = "default_tool_steelsword.png",
 	groups = { weapon=1 },
 	tool_capabilities = {
@@ -375,6 +407,7 @@ minetest.register_tool("mcl_tools:sword_iron", {
 })
 minetest.register_tool("mcl_tools:sword_gold", {
 	description = "Golden Sword",
+	_doc_items_longdesc = sword_longdesc,
 	inventory_image = "default_tool_goldsword.png",
 	groups = { weapon=1 },
 	tool_capabilities = {
@@ -390,6 +423,7 @@ minetest.register_tool("mcl_tools:sword_gold", {
 })
 minetest.register_tool("mcl_tools:sword_diamond", {
 	description = "Diamond Sword",
+	_doc_items_longdesc = sword_longdesc,
 	inventory_image = "default_tool_diamondsword.png",
 	groups = { weapon=1 },
 	tool_capabilities = {
@@ -407,6 +441,8 @@ minetest.register_tool("mcl_tools:sword_diamond", {
 --Shears
 minetest.register_tool("mcl_tools:shears", {
 	description = "Shears",
+	_doc_items_longdesc = shears_longdesc,
+	_doc_items_usagehelp = shears_use,
 	inventory_image = "default_tool_shears.png",
 	wield_image = "default_tool_shears.png",
 	stack_max = 1,
