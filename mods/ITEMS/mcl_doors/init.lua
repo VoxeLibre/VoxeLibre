@@ -17,7 +17,7 @@ mcl_doors = {}
 --    only_placer_can_open: if true only the player who placed the door can
 --                          open it
 
-local function is_right(pos, clicker) 
+local function is_right(pos) 
 	local r1 = minetest.get_node({x=pos.x+1, y=pos.y, z=pos.z})
 	local r2 = minetest.get_node({x=pos.x, y=pos.y, z=pos.z+1})
 	if string.find(r1.name, "door_") or string.find(r2.name, "door_") then
@@ -137,16 +137,32 @@ function mcl_doors:register_door(name, def)
 			return
 		end
 		local p2 = minetest.get_node(pos).param2
-		p2 = params[p2+1]
+		local np2 = params[p2+1]
 		
 		local meta = minetest.get_meta(pos):to_table()
-		minetest.set_node(pos, {name=replace_dir, param2=p2})
+		minetest.set_node(pos, {name=replace_dir, param2=np2})
 		minetest.get_meta(pos):from_table(meta)
 		
 		pos.y = pos.y-dir
 		meta = minetest.get_meta(pos):to_table()
-		minetest.set_node(pos, {name=replace, param2=p2})
+		minetest.set_node(pos, {name=replace, param2=np2})
 		minetest.get_meta(pos):from_table(meta)
+
+		local door_switching_sound
+		if p2 == 1 or p2 == 3 then
+			door_switching_sound = def.sound_open
+		else
+			door_switching_sound = def.sound_close
+		end
+		minetest.sound_play(door_switching_sound, {pos = pos, gain = 0.5, max_hear_distance = 16})
+	end
+
+	local function on_mesecons_signal_open (pos, node)
+		on_rightclick(pos, 1, name.."_t_1", name.."_b_2", name.."_t_2", {1,2,3,0})
+	end
+
+	local function on_mesecons_signal_close (pos, node)
+		on_rightclick(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1", {3,0,1,2})
 	end
 	
 	local function check_player_priv(pos, player)
@@ -185,14 +201,13 @@ function mcl_doors:register_door(name, def)
 		
 		on_rightclick = function(pos, node, clicker)
 			if check_player_priv(pos, clicker) then
-			on_rightclick(pos, 1, name.."_t_1", name.."_b_2", name.."_t_2", {1,2,3,0})
-				if is_right(pos, clicker) then
-					minetest.sound_play(def.sound_close, {pos = pos, gain = 0.5, max_hear_distance = 10})
-				else
-					minetest.sound_play(def.sound_open, {pos = pos, gain = 0.5, max_hear_distance = 10})
-				end
+				on_rightclick(pos, 1, name.."_t_1", name.."_b_2", name.."_t_2", {1,2,3,0})
 			end
 		end,
+
+		mesecons = { effector = {
+			action_on = on_mesecons_signal_open
+		}},
 		
 		can_dig = check_player_priv,
 	})
@@ -225,14 +240,9 @@ function mcl_doors:register_door(name, def)
 		on_rightclick = function(pos, node, clicker)
 			if check_player_priv(pos, clicker) then
 				on_rightclick(pos, -1, name.."_b_1", name.."_t_2", name.."_b_2", {1,2,3,0})
-				if is_right(pos, clicker) then
-					minetest.sound_play(def.sound_close, {pos = pos, gain = 0.5, max_hear_distance = 10})
-				else
-					minetest.sound_play(def.sound_open, {pos = pos, gain = 0.5, max_hear_distance = 10})
-				end
 			end
 		end,
-		
+
 		can_dig = check_player_priv,
 	})
 	
@@ -264,17 +274,16 @@ function mcl_doors:register_door(name, def)
 		on_rightclick = function(pos, node, clicker)
 			if check_player_priv(pos, clicker) then
 				on_rightclick(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1", {3,0,1,2})
-				if is_right(pos, clicker) then
-					minetest.sound_play(def.sound_open, {pos = pos, gain = 0.5, max_hear_distance = 10})
-				else
-					minetest.sound_play(def.sound_close, {pos = pos, gain = 0.5, max_hear_distance = 10})
-				end
 			end
 		end,
+
+		mesecons = { effector = {
+			action_on = on_mesecons_signal_close
+		}},
 		
 		can_dig = check_player_priv,
 	})
-	
+
 	minetest.register_node(name.."_t_2", {
 		tiles = {tt[2].."^[transformFY", tt[2], tt[2].."^[transformFX", tt[2], tt[1].."^[transformFX", tt[1]},
 		paramtype = "light",
@@ -294,23 +303,18 @@ function mcl_doors:register_door(name, def)
 		groups = def.groups,
 		_mcl_hardness = def._mcl_hardness,
 		sounds = def.sounds,
-		
+
 		after_dig_node = function(pos, oldnode, oldmetadata, digger)
 			pos.y = pos.y-1
 			after_dig_node(pos, name.."_b_2", digger)
 		end,
-		
+
 		on_rightclick = function(pos, node, clicker)
 			if check_player_priv(pos, clicker) then
 				on_rightclick(pos, -1, name.."_b_2", name.."_t_1", name.."_b_1", {3,0,1,2})
-				if is_right(pos, clicker) then
-					minetest.sound_play(def.sound_open, {pos=pos, gain = 0.5, max_hear_distance = 10})
-				else
-					minetest.sound_play(def.sound_close, {pos=pos, gain = 0.5, max_hear_distance = 10})
-				end
 			end
 		end,
-		
+
 		can_dig = check_player_priv,
 	})
 	
