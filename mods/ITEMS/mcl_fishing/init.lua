@@ -98,6 +98,8 @@ end
 -- Fishing Rod
 minetest.register_tool("mcl_fishing:fishing_rod", {
 	description = "Fishing Rod",
+	_doc_items_longdesc = "Fishing rods can be used to catch fish.",
+	_doc_items_usagehelp = "Rightclick a water source to try to go fishing. Who knows what you're going to catch?",
 	groups = { tool=1 },
 	inventory_image = "mcl_fishing_fishing_rod.png",
 	stack_max = 1,
