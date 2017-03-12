@@ -1,5 +1,5 @@
 local init = os.clock()
-doors = {}
+mcl_doors = {}
 
 -- Registers a door
 --  name: The name of the door
@@ -27,7 +27,7 @@ local function is_right(pos, clicker)
 	end
 end
 
-function doors:register_door(name, def)
+function mcl_doors:register_door(name, def)
 	def.groups.not_in_creative_inventory = 1
 
 	if not def.sound_open then
@@ -313,7 +313,7 @@ function doors:register_door(name, def)
 end
 
 --- Normal Door ---
-doors:register_door("doors:door_wood", {
+mcl_doors:register_door("mcl_doors:wooden_door", {
 	description = "Oak Door",
 	inventory_image = "door_wood.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
@@ -324,7 +324,7 @@ doors:register_door("doors:door_wood", {
 })
 
 minetest.register_craft({
-	output = "doors:door_wood 3",
+	output = "mcl_doors:wooden_door 3",
 	recipe = {
 		{"mcl_core:wood", "mcl_core:wood"},
 		{"mcl_core:wood", "mcl_core:wood"},
@@ -333,7 +333,7 @@ minetest.register_craft({
 })
 
 --- Accacia Door --
-doors:register_door("doors:door_acacia", {
+mcl_doors:register_door("mcl_doors:acacia_door", {
 	description = "Acacia Door",
 	inventory_image = "door_acacia.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
@@ -344,7 +344,7 @@ doors:register_door("doors:door_acacia", {
 })
 
 minetest.register_craft({
-	output = "doors:door_acacia 3",
+	output = "mcl_doors:acacia_door 3",
 	recipe = {
 		{"mcl_core:acaciawood", "mcl_core:acaciawood"},
 		{"mcl_core:acaciawood", "mcl_core:acaciawood"},
@@ -353,7 +353,7 @@ minetest.register_craft({
 })
 
 --- birch Door --
-doors:register_door("doors:door_birch", {
+mcl_doors:register_door("mcl_doors:birch_door", {
 	description = "Birch Door",
 	inventory_image = "door_birch.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
@@ -364,7 +364,7 @@ doors:register_door("doors:door_birch", {
 })
 
 minetest.register_craft({
-	output = "doors:door_birch 3",
+	output = "mcl_doors:birch_door 3",
 	recipe = {
 		{"mcl_core:birchwood", "mcl_core:birchwood"},
 		{"mcl_core:birchwood", "mcl_core:birchwood"},
@@ -373,7 +373,7 @@ minetest.register_craft({
 })
 
 --- dark oak Door --
-doors:register_door("doors:door_dark_oak", {
+mcl_doors:register_door("mcl_doors:dark_oak_door", {
 	description = "Dark Oak Door",
 	inventory_image = "door_dark_oak.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
@@ -384,7 +384,7 @@ doors:register_door("doors:door_dark_oak", {
 })
 
 minetest.register_craft({
-	output = "doors:door_dark_oak 3",
+	output = "mcl_doors:dark_oak_door 3",
 	recipe = {
 		{"mcl_core:darkwood", "mcl_core:darkwood"},
 		{"mcl_core:darkwood", "mcl_core:darkwood"},
@@ -393,7 +393,7 @@ minetest.register_craft({
 })
 
 --- jungle Door --
-doors:register_door("doors:door_jungle", {
+mcl_doors:register_door("mcl_doors:jungle_door", {
 	description = "Jungle Door",
 	inventory_image = "door_jungle.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
@@ -404,7 +404,7 @@ doors:register_door("doors:door_jungle", {
 })
 
 minetest.register_craft({
-	output = "doors:door_jungle 3",
+	output = "mcl_doors:jungle_door 3",
 	recipe = {
 		{"mcl_core:junglewood", "mcl_core:junglewood"},
 		{"mcl_core:junglewood", "mcl_core:junglewood"},
@@ -413,7 +413,7 @@ minetest.register_craft({
 })
 
 --- spruce Door --
-doors:register_door("doors:door_spruce", {
+mcl_doors:register_door("mcl_doors:spruce_door", {
 	description = "Spruce Door",
 	inventory_image = "door_spruce.png",
 	groups = {handy=1,axey=1, door=1, material_wood=1},
@@ -424,7 +424,7 @@ doors:register_door("doors:door_spruce", {
 })
 
 minetest.register_craft({
-	output = "doors:door_spruce 3",
+	output = "mcl_doors:spruce_door 3",
 	recipe = {
 		{"mcl_core:sprucewood", "mcl_core:sprucewood"},
 		{"mcl_core:sprucewood", "mcl_core:sprucewood"},
@@ -434,37 +434,37 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "doors:door_wood",
+	recipe = "mcl_doors:wooden_door",
 	burntime = 10,
 })
 minetest.register_craft({
 	type = "fuel",
-	recipe = "doors:door_jungle",
+	recipe = "mcl_doors:jungle_door",
 	burntime = 10,
 })
 minetest.register_craft({
 	type = "fuel",
-	recipe = "doors:door_dark_oak",
+	recipe = "mcl_doors:dark_oak_door",
 	burntime = 10,
 })
 minetest.register_craft({
 	type = "fuel",
-	recipe = "doors:door_birch",
+	recipe = "mcl_doors:birch_door",
 	burntime = 10,
 })
 minetest.register_craft({
 	type = "fuel",
-	recipe = "doors:door_acacia",
+	recipe = "mcl_doors:acacia_door",
 	burntime = 10,
 })
 minetest.register_craft({
 	type = "fuel",
-	recipe = "doors:door_spruce",
+	recipe = "mcl_doors:spruce_door",
 	burntime = 10,
 })
 
 --- Door in Iron ---
-doors:register_door("doors:door_iron", {
+mcl_doors:register_door("mcl_doors:iron_door", {
 	description = "Iron Door",
 	inventory_image = "door_steel.png",
 	groups = {pickaxey=1, door=1,mesecon_effector_on=1},
@@ -477,7 +477,7 @@ doors:register_door("doors:door_iron", {
 })
 
 minetest.register_craft({
-	output = "doors:door_iron 3",
+	output = "mcl_doors:iron_door 3",
 	recipe = {
 		{"mcl_core:iron_ingot", "mcl_core:iron_ingot"},
 		{"mcl_core:iron_ingot", "mcl_core:iron_ingot"},
@@ -485,15 +485,9 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_alias("doors:door_wood_a_c", "doors:door_wood_t_1")
-minetest.register_alias("doors:door_wood_a_o", "doors:door_wood_t_1")
-minetest.register_alias("doors:door_wood_b_c", "doors:door_wood_b_1")
-minetest.register_alias("doors:door_wood_b_o", "doors:door_wood_b_1")
-
-
 ---- Trapdoor ----
 
-function doors:register_trapdoor(name, def)
+function mcl_doors:register_trapdoor(name, def)
 	local function update_door(pos, node) 
 		minetest.set_node(pos, node)
 	end
@@ -592,7 +586,7 @@ function doors:register_trapdoor(name, def)
 
 end
 
-doors:register_trapdoor("doors:trapdoor", {
+mcl_doors:register_trapdoor("mcl_doors:trapdoor", {
 	description = "Wooden Trapdoor",
 	tiles = {"door_trapdoor.png"},
 	wield_image = "door_trapdoor.png",
@@ -602,7 +596,7 @@ doors:register_trapdoor("doors:trapdoor", {
 })
 
 minetest.register_craft({
-	output = 'doors:trapdoor 2',
+	output = 'mcl_doors:trapdoor 2',
 	recipe = {
 		{'group:wood', 'group:wood', 'group:wood'},
 		{'group:wood', 'group:wood', 'group:wood'},
@@ -611,11 +605,11 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "doors:trapdoor",
+	recipe = "mcl_doors:trapdoor",
 	burntime = 15,
 })
 
-doors:register_trapdoor("doors:iron_trapdoor", {
+mcl_doors:register_trapdoor("mcl_doors:iron_trapdoor", {
 	description = "Iron Trapdoor",
 	tiles = {"iron_trapdoor.png"},
 	wield_image = "iron_trapdoor.png",
@@ -627,12 +621,37 @@ doors:register_trapdoor("doors:iron_trapdoor", {
 })
 
 minetest.register_craft({
-	output = 'doors:iron_trapdoor',
+	output = 'mcl_doors:iron_trapdoor',
 	recipe = {
 		{'mcl_core:iron_ingot', 'mcl_core:iron_ingot'},
 		{'mcl_core:iron_ingot', 'mcl_core:iron_ingot'},
 	}
 })
 
+-- Register aliases
+local doornames = {
+	["door"] = "wooden_door",
+	["door_jungle"] = "jungle_door",
+	["door_spruce"] = "spruce_door",
+	["door_dark_oak"] = "dark_oak_door",
+	["door_birch"] = "birch_door",
+	["door_acacia"] = "acacia_door",
+	["door_iron"] = "iron_door",
+}
+
+for oldname, newname in pairs(doornames) do
+	minetest.register_alias("doors:"..oldname, "mcl_doors:"..newname)
+	minetest.register_alias("doors:"..oldname.."_t_1", "mcl_doors:"..newname.."_t_1")
+	minetest.register_alias("doors:"..oldname.."_b_1", "mcl_doors:"..newname.."_b_1")
+	minetest.register_alias("doors:"..oldname.."_t_2", "mcl_doors:"..newname.."_t_2")
+	minetest.register_alias("doors:"..oldname.."_b_2", "mcl_doors:"..newname.."_b_2")
+end
+
+minetest.register_alias("doors:trapdoor", "mcl_doors:trapdoor")
+minetest.register_alias("doors:trapdoor_open", "mcl_doors:trapdoor_open")
+minetest.register_alias("doors:iron_trapdoor", "mcl_doors:iron_trapdoor")
+minetest.register_alias("doors:iron_trapdoor_open", "mcl_doors:iron_trapdoor_open")
+
+-- Debug info
 local time_to_load= os.clock() - init
-print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
+minetest.log("action", (string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load)))
