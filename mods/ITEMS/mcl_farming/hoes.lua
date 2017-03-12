@@ -9,12 +9,14 @@ local function create_soil(pos, inv)
 		if above.name == "air" then
 			node.name = "mcl_farming:soil"
 			minetest.set_node(pos, node)
+			minetest.sound_play("default_dig_crumbly", { pos = pos, gain = 0.5 })
 			return true
 		end
 	elseif minetest.get_item_group(name, "cultivatable") == 1 then
 		if above.name == "air" then
 			node.name = "mcl_core:dirt"
 			minetest.set_node(pos, node)
+			minetest.sound_play("default_dig_crumbly", { pos = pos, gain = 0.6 })
 			return true
 		end
 	end
