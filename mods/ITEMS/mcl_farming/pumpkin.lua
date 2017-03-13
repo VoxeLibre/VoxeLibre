@@ -271,12 +271,15 @@ minetest.register_abm({
 					or n.name=="mcl_core:dirt" and nod.name=="air" and have_change == 0
 					or (soilgroup == 2 or soilgroup == 3) and nod.name=="air" and have_change == 0 then
 				have_change = 1
-				minetest.add_node(newpos, {name="mcl_farming:pumpkin_face"})
+				local p2
 				if x == 1 then
 					minetest.add_node(pos, {name="mcl_farming:pumpkintige_linked_r" })
+					p2 = 3
 				else
 					minetest.add_node(pos, {name="mcl_farming:pumpkintige_linked_l"})
+					p2 = 1
 				end
+				minetest.add_node(newpos, {name="mcl_farming:pumpkin_face", param2=p2})
 			end
 		end
 		if have_change == 0 then
@@ -290,12 +293,16 @@ minetest.register_abm({
 						or n.name=="mcl_core:dirt" and nod2.name=="air" and have_change == 0
 						or (soilgroup == 2 or soilgroup == 3) and nod2.name=="air" and have_change == 0 then
 					have_change = 1
-					minetest.add_node(newpos, {name="mcl_farming:pumpkin_face"})
+
+					local p2
 					if z == 1 then
 						minetest.add_node(pos, {name="mcl_farming:pumpkintige_linked_t" })
+						p2 = 2
 					else
 						minetest.add_node(pos, {name="mcl_farming:pumpkintige_linked_b" })
+						p2 = 0
 					end
+					minetest.add_node(newpos, {name="mcl_farming:pumpkin_face", param2=p2})
 				end
 			end
 		end
