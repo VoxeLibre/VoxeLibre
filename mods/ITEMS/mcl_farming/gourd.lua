@@ -9,7 +9,7 @@
 - grow_chance: Chance of 1/grow_chance to grow a gourd next to the full unconnected stem after grow_interval has passed. Must be a natural number
 ]]
 
-function mcl_farming.register_gourd(full_unconnected_stem, connected_stem_basename, stemdrop, gourd_itemstring, gourd_def, grow_interval, grow_chance)
+function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, stemdrop, gourd_itemstring, gourd_def, grow_interval, grow_chance)
 
 	local connected_stem_names = { 
 		connected_stem_basename .. "_r",

@@ -116,7 +116,7 @@ minetest.register_node("mcl_farming:melontige_unconnect", {
 mcl_farming:add_plant("mcl_farming:melontige_unconnect", {"mcl_farming:melontige_1", "mcl_farming:melontige_2"}, 50, 20)
 
 -- Register actual melon, connected stems and stem-to-melon growth
-mcl_farming.register_gourd("mcl_farming:melontige_unconnect", "mcl_farming:melontige_linked", stemdrop, "mcl_farming:melon", melon_base_def, 25, 15)
+mcl_farming:add_gourd("mcl_farming:melontige_unconnect", "mcl_farming:melontige_linked", stemdrop, "mcl_farming:melon", melon_base_def, 25, 15)
 
 -- Items and crafting
 minetest.register_craftitem("mcl_farming:melon_item", {
