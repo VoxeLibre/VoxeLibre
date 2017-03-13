@@ -129,7 +129,6 @@ minetest.register_node("mcl_farming:pumpkintige_linked_r", {
 	drop = stemdrop,
 	drawtype = "nodebox",
 	paramtype = "light",
-	paramtype2 = "wallmounted",
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -162,7 +161,6 @@ minetest.register_node("mcl_farming:pumpkintige_linked_l", {
 	drop = stemdrop,
 	drawtype = "nodebox",
 	paramtype = "light",
-	paramtype2 = "wallmounted",
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -195,7 +193,6 @@ minetest.register_node("mcl_farming:pumpkintige_linked_t", {
 	drop = stemdrop,
 	drawtype = "nodebox",
 	paramtype = "light",
-	paramtype2 = "wallmounted",
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -228,7 +225,6 @@ minetest.register_node("mcl_farming:pumpkintige_linked_b", {
 	drop = stemdrop,
 	drawtype = "nodebox",
 	paramtype = "light",
-	paramtype2 = "wallmounted",
 	node_box = {
 		type = "fixed",
 		fixed = {
