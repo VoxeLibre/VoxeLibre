@@ -4,10 +4,12 @@
 - connected_stem_basename: prefix of the itemstrings used for the 4 connected stem nodes to create
 - stemdrop: Drop probability table for all stem
 - gourd_itemstring: Desired itemstring of the full gourd node
-- gourd_def: (almost) full definition of the gourd node, except for
+- gourd_def: (almost) full definition of the gourd node. This function will add after_dig_node to the definition for unconnecting any connected stems
+- grow_interval: Will attempt to grow a gourd periodically at this interval in seconds
+- grow_chance: Chance of 1/grow_chance to grow a gourd next to the full unconnected stem after grow_interval has passed. Must be a natural number
 ]]
 
-function mcl_farming.register_gourd(full_unconnected_stem, connected_stem_basename, stemdrop, gourd_itemstring, gourd_def)
+function mcl_farming.register_gourd(full_unconnected_stem, connected_stem_basename, stemdrop, gourd_itemstring, gourd_def, grow_interval, grow_chance)
 
 	local connected_stem_names = { 
 		connected_stem_basename .. "_r",
@@ -106,9 +108,8 @@ function mcl_farming.register_gourd(full_unconnected_stem, connected_stem_basena
 		label = "Grow gourd stem to gourd ("..full_unconnected_stem.." → "..gourd_itemstring..")",
 		nodenames = {full_unconnected_stem},
 		neighbors = {"air"},
-		-- FIXME: Times
-		interval = 1,
-		chance = 1,
+		interval = grow_interval,
+		chance = grow_chance,
 		action = function(stempos)
 			local light = minetest.get_node_light(stempos)
 			if light and light > 10 then
