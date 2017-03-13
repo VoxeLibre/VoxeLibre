@@ -84,6 +84,9 @@ dofile(minetest.get_modpath("mcl_farming").."/hoes.lua")
 -- ========= WHEAT =========
 dofile(minetest.get_modpath("mcl_farming").."/wheat.lua")
 
+-- = HELPER FUNCTION FOR PUMPKIN AND MELON =
+dofile(minetest.get_modpath("mcl_farming").."/gourd.lua")
+
 -- ========= PUMPKIN =========
 dofile(minetest.get_modpath("mcl_farming").."/pumpkin.lua")
 
