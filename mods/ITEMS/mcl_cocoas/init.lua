@@ -77,7 +77,7 @@ Using meshes will also clean up the texture mess.
 local crop_def = {
 	description = "Premature Cocoa",
 	_doc_items_create_entry = true,
-	_doc_items_longdesc = "Cocoas are plants which grow on the side of jungle trees. There are 3 growth stages.",
+	_doc_items_longdesc = "Cocoas are plants which grow on the side of jungle trees in 3 stages.",
 	drawtype = "nodebox",
 	tiles = {
 		"[combine:32x32:12,2=mcl_cocoas_cocoa_stage_0.png", "[combine:32x32:12,22=mcl_cocoas_cocoa_stage_0.png",
@@ -152,7 +152,7 @@ minetest.register_node("mcl_cocoas:cocoa_2", table.copy(crop_def))
 
 -- Final stage
 crop_def.description = "Mature Cocoa"
-crop_def._doc_items_longdesc = "A mature cocoa is a plant which grew on a jungle tree to its full size and it is ready to be harvested."
+crop_def._doc_items_longdesc = "A mature cocoa is a plant which grew on a jungle tree to its full size and it is ready to be harvested for cocoa beans. It won't grow any further."
 crop_def._doc_items_create_entry = true
 crop_def.groups.cocoa = 3
 crop_def.tiles = {

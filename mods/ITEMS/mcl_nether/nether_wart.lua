@@ -1,4 +1,6 @@
 minetest.register_node("mcl_nether:nether_wart_0", {
+	description = "Premature Nether Wart",
+	_doc_items_longdesc = "A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 3 stages. Although nether wart is home to the Nether, it grows in any dimension.",
 	paramtype = "light",
 	walkable = false,
 	buildable_to = true,
@@ -16,8 +18,6 @@ minetest.register_node("mcl_nether:nether_wart_0", {
 })
 
 minetest.register_node("mcl_nether:nether_wart_1", {
-	description = "Premature Nether Wart",
-	_doc_items_longdesc = "A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 3 stages. Although nether wart is home to the Nether, it grows in any dimension.",
 	paramtype = "light",
 	walkable = false,
 	buildable_to = true,
@@ -55,7 +55,7 @@ minetest.register_node("mcl_nether:nether_wart_2", {
 
 minetest.register_node("mcl_nether:nether_wart", {
 	description = "Mature Nether Wart",
-	_doc_items_longdesc = "Mature nether wart has been grown successfully on soul sand and is ready to be harvested for its items.",
+	_doc_items_longdesc = "The mature nether wart is a plant from the Nether and reached its full size and won't grow any further. It is ready to be harvested for its items.",
 	paramtype = "light",
 	walkable = false,
 	buildable_to = true,
