@@ -224,7 +224,11 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 						minetest.set_node(stempos, {name=connected_stem_names[4]})
 						p2 = 0
 					end
-					minetest.add_node(blockpos, {name=gourd_itemstring, param2=p2})
+					if gourd_def.paramtype2 == "facedir" then
+						minetest.add_node(blockpos, {name=gourd_itemstring, param2=p2})
+					else
+						minetest.add_node(blockpos, {name=gourd_itemstring})
+					end
 				end
 			end
 		end,
