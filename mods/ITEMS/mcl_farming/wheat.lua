@@ -21,6 +21,8 @@ minetest.register_node("mcl_farming:wheat_1", {
 	paramtype = "light",
 	drop = "mcl_farming:wheat_seeds",
 	tiles = {"farming_wheat_1.png"},
+	inventory_image = "farming_wheat_1.png",
+	wield_image = "farming_wheat_1.png",
 	selection_box = {
 		type = "fixed",
 		fixed = {
@@ -51,6 +53,8 @@ minetest.register_node("mcl_farming:wheat_2", {
 	paramtype = "light",
 	drop = "mcl_farming:wheat_seeds",
 	tiles = {"farming_wheat_2.png"},
+	inventory_image = "farming_wheat_2.png",
+	wield_image = "farming_wheat_2.png",
 	selection_box = {
 		type = "fixed",
 		fixed = {
@@ -81,6 +85,8 @@ minetest.register_node("mcl_farming:wheat_3", {
 	paramtype = "light",
 	drop = "mcl_farming:wheat_seeds",
 	tiles = {"farming_wheat_3.png"},
+	inventory_image = "farming_wheat_3.png",
+	wield_image = "farming_wheat_3.png",
 	selection_box = {
 		type = "fixed",
 		fixed = {
@@ -110,6 +116,8 @@ minetest.register_node("mcl_farming:wheat", {
 	drawtype = "nodebox",
 	paramtype = "light",
 	tiles = {"farming_wheat.png"},
+	inventory_image = "farming_wheat.png",
+	wield_image = "farming_wheat.png",
 	drop = {
 		max_items = 4,
 		items = {
