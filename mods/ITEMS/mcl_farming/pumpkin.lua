@@ -254,47 +254,49 @@ mcl_farming:add_plant("mcl_farming:pumpkintige_unconnect", {"mcl_farming:pumpkin
 minetest.register_abm({
 	nodenames = {"mcl_farming:pumpkintige_unconnect"},
 	neighbors = {"air"},
-	interval = 30,
-	chance = 15,
+	interval = 1,
+	chance = 1,
 	action = function(pos)
 	local have_change = 0
 	local newpos = {x=pos.x, y=pos.y, z=pos.z}
 	local light = minetest.get_node_light(pos)
 	if light or light > 10 then
 		for x=-1,1 do
-				local p = {x=pos.x+x, y=pos.y-1, z=pos.z}
-				newpos = {x=pos.x+x, y=pos.y, z=pos.z}
-				local n = minetest.get_node(p)
-				local nod = minetest.get_node(newpos)
-			if n.name=="mcl_core:dirt_with_grass" and nod.name=="air" and have_change == 0 
-			or n.name=="mcl_core:dirt" and nod.name=="air" and have_change == 0
-			or string.find(n.name, "mcl_farming:soil") and nod.name=="air" and have_change == 0 then
-					have_change = 1
-					minetest.add_node(newpos, {name="mcl_farming:pumpkin_face"})
-					if x == 1 then
-						minetest.add_node(pos, {name="mcl_farming:pumpkintige_linked_r" })
-					else
-						minetest.add_node(pos, {name="mcl_farming:pumpkintige_linked_l"})
-					end
+			local p = {x=pos.x+x, y=pos.y-1, z=pos.z}
+			newpos = {x=pos.x+x, y=pos.y, z=pos.z}
+			local n = minetest.get_node(p)
+			local nod = minetest.get_node(newpos)
+			local soilgroup = minetest.get_item_group(n.name, "soil")
+			if n.name=="mcl_core:dirt_with_grass" and nod.name=="air" and have_change == 0
+					or n.name=="mcl_core:dirt" and nod.name=="air" and have_change == 0
+					or (soilgroup == 2 or soilgroup == 3) and nod.name=="air" and have_change == 0 then
+				have_change = 1
+				minetest.add_node(newpos, {name="mcl_farming:pumpkin_face"})
+				if x == 1 then
+					minetest.add_node(pos, {name="mcl_farming:pumpkintige_linked_r" })
+				else
+					minetest.add_node(pos, {name="mcl_farming:pumpkintige_linked_l"})
+				end
 			end
 		end
 		if have_change == 0 then
 			for z=-1,1 do
-					local p = {x=pos.x, y=pos.y-1, z=pos.z+z}
-					newpos = {x=pos.x, y=pos.y, z=pos.z+z}
-					local n = minetest.get_node(p)
-					local nod2 = minetest.get_node(newpos)
-					if n.name=="mcl_core:dirt_with_grass" and nod2.name=="air" and have_change == 0 
-					or n.name=="mcl_core:dirt" and nod2.name=="air" and have_change == 0 
-					or string.find(n.name, "mcl_farming:soil") and nod2.name=="air" and have_change == 0 then
-						have_change = 1
-						minetest.add_node(newpos, {name="mcl_farming:pumpkin_face"})
+				local p = {x=pos.x, y=pos.y-1, z=pos.z+z}
+				newpos = {x=pos.x, y=pos.y, z=pos.z+z}
+				local n = minetest.get_node(p)
+				local nod2 = minetest.get_node(newpos)
+				local soilgroup = minetest.get_item_group(n.name, "soil")
+				if n.name=="mcl_core:dirt_with_grass" and nod2.name=="air" and have_change == 0
+						or n.name=="mcl_core:dirt" and nod2.name=="air" and have_change == 0
+						or (soilgroup == 2 or soilgroup == 3) and nod2.name=="air" and have_change == 0 then
+					have_change = 1
+					minetest.add_node(newpos, {name="mcl_farming:pumpkin_face"})
 					if z == 1 then
 						minetest.add_node(pos, {name="mcl_farming:pumpkintige_linked_t" })
 					else
 						minetest.add_node(pos, {name="mcl_farming:pumpkintige_linked_b" })
 					end
-					end
+				end
 			end
 		end
 	end
