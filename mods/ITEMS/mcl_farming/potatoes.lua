@@ -1,6 +1,7 @@
 minetest.register_node("mcl_farming:potato_1", {
 	description = "Premature Potato Plant (First Stage)",
 	_doc_items_entry_name = "Premature Potato Plant",
+	_doc_items_longdesc = "Potato plants are plants which grow on farmland under sunlight in 3 stages. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.",
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
@@ -38,6 +39,7 @@ minetest.register_node("mcl_farming:potato_2", {
 
 minetest.register_node("mcl_farming:potato", {
 	description = "Mature Potato Plant",
+	_doc_items_longdesc = "Mature potato plants are ready to be harvested for potatoes. They won't grow any further.",
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",

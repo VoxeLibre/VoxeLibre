@@ -13,6 +13,7 @@ minetest.register_craftitem("mcl_farming:wheat_seeds", {
 minetest.register_node("mcl_farming:wheat_1", {
 	description = "Premature Wheat Plant (First Stage)",
 	_doc_items_entry_name = "Premature Wheat Plant",
+	_doc_items_longdesc = "Premature wheat plants grow on farmland under sunlight in 4 stages. On hydrated farmland, they grow faster. They can be harvested at any time but will only yield a profit when mature.",
 	paramtype = "light",
 	sunlight_propagates = true,
 	walkable = false,
@@ -102,6 +103,7 @@ minetest.register_node("mcl_farming:wheat_3", {
 
 minetest.register_node("mcl_farming:wheat", {
 	description = "Mature Wheat Plant",
+	_doc_items_longdesc = "Mature wheat plants are ready to be harvested for wheat and wheat seeds. They won't grow any further.",
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,

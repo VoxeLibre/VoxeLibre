@@ -1,6 +1,7 @@
 minetest.register_node("mcl_farming:carrot_1", {
 	description = "Premature Carrot Plant (First Stage)",
-	_doc_items_entry_name = "Carrot Plant",
+	_doc_items_entry_name = "Premature Carrot Plant",
+	_doc_items_longdesc = "Carrot plants are plants which grow on farmland under sunlight in 4 stages. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.",
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
@@ -57,6 +58,7 @@ minetest.register_node("mcl_farming:carrot_3", {
 
 minetest.register_node("mcl_farming:carrot", {
 	description = "Mature Carrot Plant",
+	_doc_items_longdesc = "Mature carrot plants are ready to be harvested for carrots. They won't grow any further.",
 	paramtype = "light",
 	walkable = false,
 	drawtype = "plantlike",
