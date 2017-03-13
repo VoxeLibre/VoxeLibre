@@ -1,3 +1,75 @@
+function mcl_farming:add_plant(full_grown, names, interval, chance)
+	minetest.register_abm({
+		nodenames = names,
+		interval = interval,
+		chance = chance,
+		action = function(pos, node)
+			pos.y = pos.y-1
+			if minetest.get_node(pos).name ~= "mcl_farming:soil_wet" and math.random(0, 9) > 0 then
+				return
+			end
+			pos.y = pos.y+1
+			if not minetest.get_node_light(pos) then
+				return
+			end
+			if minetest.get_node_light(pos) < 10 then
+				return
+			end
+			local step = nil
+			for i,name in ipairs(names) do
+				if name == node.name then
+					step = i
+					break
+				end
+			end
+			if step == nil then
+				return
+			end
+			local new_node = {name=names[step+1]}
+			if new_node.name == nil then
+				new_node.name = full_grown
+			end
+			minetest.set_node(pos, new_node)
+		end
+	})
+end
+
+function mcl_farming:place_seed(itemstack, placer, pointed_thing, plantname)
+	local pt = pointed_thing
+	if not pt then
+		return
+	end
+	if pt.type ~= "node" then
+		return
+	end
+
+	-- Use pointed node's on_rightclick function first, if present
+	local node = minetest.get_node(pt.under)
+	if placer and not placer:get_player_control().sneak then
+		if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+			return minetest.registered_nodes[node.name].on_rightclick(pt.under, node, placer, itemstack) or itemstack
+		end
+	end
+	
+	local pos = {x=pt.above.x, y=pt.above.y-1, z=pt.above.z}
+	local farmland = minetest.get_node(pos)
+	pos= {x=pt.above.x, y=pt.above.y, z=pt.above.z}
+	local place_s = minetest.get_node(pos)
+
+	
+	if string.find(farmland.name, "mcl_farming:soil") and string.find(place_s.name, "air")  then
+		minetest.add_node(pos, {name=plantname})
+	else
+		return
+	end
+
+	if not minetest.setting_getbool("creative_mode") then
+		itemstack:take_item()
+	end
+	return itemstack
+end
+
+
 --[[ Helper function to create a gourd (e.g. melon, pumpkin), the connected stem nodes as
 
 - full_unconnected_stem: itemstring of the full-grown but unconnceted stem node. This node must already be done
