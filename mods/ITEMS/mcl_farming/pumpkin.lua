@@ -79,24 +79,21 @@ minetest.register_node("mcl_farming:pumpkin_face", {
 	paramtype2 = "facedir",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"},
 	groups = {handy=1,axey=1, building_block=1},
-	after_dig_node = function(pos, oldnode, oldmetadata, user)
-		local have_change = 0
-		for x=-1,1 do
-				local p = {x=pos.x+x, y=pos.y, z=pos.z}
-				local n = minetest.get_node(p)
-			if string.find(n.name, "pumpkintige_linked_") and have_change == 0 then
-					have_change = 1
-					minetest.add_node(p, {name="mcl_farming:pumpkintige_unconnect"})
-			end
-		end
-		if have_change == 0 then
-			for z=-1,1 do
-				local p = {x=pos.x, y=pos.y, z=pos.z+z}
-				local n = minetest.get_node(p)
-				if string.find(n.name, "pumpkintige_linked_") and have_change == 0 then
-						have_change = 1
-						minetest.add_node(p, {name="mcl_farming:pumpkintige_unconnect"})
-				end
+	after_dig_node = function(blockpos, oldnode, oldmetadata, user)
+		-- Disconnect any connected stems, turning them back to normal stems
+		local neighbors = {
+			{ { x=-1, y=0, z=0 }, "mcl_farming:pumpkintige_linked_r" },
+			{ { x=1, y=0, z=0 }, "mcl_farming:pumpkintige_linked_l" },
+			{ { x=0, y=0, z=-1 }, "mcl_farming:pumpkintige_linked_t" },
+			{ { x=0, y=0, z=1 }, "mcl_farming:pumpkintige_linked_b" },
+		}
+		for n=1, #neighbors do
+			local offset = neighbors[n][1]
+			local expected_stem = neighbors[n][2]
+			local stempos = vector.add(blockpos, offset)
+			local stem = minetest.get_node(stempos)
+			if stem.name == expected_stem then
+				minetest.add_node(stempos, {name="mcl_farming:pumpkintige_unconnect"})
 			end
 		end
 	end,
@@ -256,57 +253,51 @@ minetest.register_abm({
 	neighbors = {"air"},
 	interval = 1,
 	chance = 1,
-	action = function(pos)
-	local have_change = 0
-	local newpos = {x=pos.x, y=pos.y, z=pos.z}
-	local light = minetest.get_node_light(pos)
-	if light or light > 10 then
-		for x=-1,1 do
-			local p = {x=pos.x+x, y=pos.y-1, z=pos.z}
-			newpos = {x=pos.x+x, y=pos.y, z=pos.z}
-			local n = minetest.get_node(p)
-			local nod = minetest.get_node(newpos)
-			local soilgroup = minetest.get_item_group(n.name, "soil")
-			if n.name=="mcl_core:dirt_with_grass" and nod.name=="air" and have_change == 0
-					or n.name=="mcl_core:dirt" and nod.name=="air" and have_change == 0
-					or (soilgroup == 2 or soilgroup == 3) and nod.name=="air" and have_change == 0 then
-				have_change = 1
-				local p2
-				if x == 1 then
-					minetest.add_node(pos, {name="mcl_farming:pumpkintige_linked_r" })
-					p2 = 3
-				else
-					minetest.add_node(pos, {name="mcl_farming:pumpkintige_linked_l"})
-					p2 = 1
+	action = function(stempos)
+		local light = minetest.get_node_light(stempos)
+		if light and light > 10 then
+			-- Check the four neighbors and filter out neighbors where pumpkins can't grow
+			local neighbors = {
+				{ x=-1, y=0, z=0 },
+				{ x=1, y=0, z=0 },
+				{ x=0, y=0, z=-1 },
+				{ x=0, y=0, z=1 },
+			}
+			for n=#neighbors, 1, -1 do
+				local offset = neighbors[n]
+				local blockpos = vector.add(stempos, offset)
+				local floorpos = { x=blockpos.x, y=blockpos.y-1, z=blockpos.z }
+				local floor = minetest.get_node(floorpos)
+				local block = minetest.get_node(blockpos)
+				local soilgroup = minetest.get_item_group(floor.name, "soil")
+				if not ((floor.name=="mcl_core:dirt_with_grass" or floor.name=="mcl_core:dirt" or soilgroup == 2 or soilgroup == 3) and block.name == "air") then
+					table.remove(neighbors, n)
 				end
-				minetest.add_node(newpos, {name="mcl_farming:pumpkin_face", param2=p2})
 			end
-		end
-		if have_change == 0 then
-			for z=-1,1 do
-				local p = {x=pos.x, y=pos.y-1, z=pos.z+z}
-				newpos = {x=pos.x, y=pos.y, z=pos.z+z}
-				local n = minetest.get_node(p)
-				local nod2 = minetest.get_node(newpos)
-				local soilgroup = minetest.get_item_group(n.name, "soil")
-				if n.name=="mcl_core:dirt_with_grass" and nod2.name=="air" and have_change == 0
-						or n.name=="mcl_core:dirt" and nod2.name=="air" and have_change == 0
-						or (soilgroup == 2 or soilgroup == 3) and nod2.name=="air" and have_change == 0 then
-					have_change = 1
 
-					local p2
-					if z == 1 then
-						minetest.add_node(pos, {name="mcl_farming:pumpkintige_linked_t" })
-						p2 = 2
-					else
-						minetest.add_node(pos, {name="mcl_farming:pumpkintige_linked_b" })
-						p2 = 0
-					end
-					minetest.add_node(newpos, {name="mcl_farming:pumpkin_face", param2=p2})
+			-- Pumpkins need at least 1 free neighbor to grow
+			if #neighbors > 0 then
+				-- From the remaining neighbors, grow randomly
+				local r = math.random(1, #neighbors)
+				local offset = neighbors[r]
+				local blockpos = vector.add(stempos, offset)
+				local p2
+				if offset.x == 1 then
+					minetest.set_node(stempos, {name="mcl_farming:pumpkintige_linked_r" })
+					p2 = 3
+				elseif offset.x == -1 then
+					minetest.set_node(stempos, {name="mcl_farming:pumpkintige_linked_l"})
+					p2 = 1
+				elseif offset.z == 1 then
+					minetest.set_node(stempos, {name="mcl_farming:pumpkintige_linked_t"})
+					p2 = 2
+				elseif offset.z == -1 then
+					minetest.set_node(stempos, {name="mcl_farming:pumpkintige_linked_b"})
+					p2 = 0
 				end
+				minetest.add_node(blockpos, {name="mcl_farming:pumpkin_face", param2=p2})
 			end
 		end
-	end
 	end,
 })
 
