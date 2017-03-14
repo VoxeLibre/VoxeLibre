@@ -112,7 +112,7 @@ minetest.register_node("itemframes:frame",{
 		local meta = minetest.get_meta(pos)
 		if clicker:get_player_name() == meta:get_string("owner") then
 			drop_item(pos,node)
-			meta:set_string("item",itemstack:to_string())
+			meta:set_string("item", itemstack:get_name())
 			update_item(pos,node)
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:take_item()
