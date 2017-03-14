@@ -50,7 +50,7 @@ local wheat_seed_drop = {
 			rarity = 8,
 		},
 	}
-},
+}
 
 -- Tall Grass
 minetest.register_node("mcl_flowers:tallgrass", {
