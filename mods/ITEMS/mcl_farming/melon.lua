@@ -35,7 +35,7 @@ local melon_base_def = {
 }
 
 -- Drop proabilities for melon stem
-local stemdrop = {
+local stem_drop = {
 	max_items = 1,
 	-- FIXME: The probabilities are slightly off from the original.
 	-- Update this drop list when the Minetest drop probability system
@@ -64,7 +64,7 @@ for s=1,7 do
 		walkable = false,
 		drawtype = "plantlike",
 		sunlight_propagates = true,
-		drop = stemdrop,
+		drop = stem_drop,
 		tiles = {"mcl_farming_melontige_"..s..".png"},
 		selection_box = {
 			type = "fixed",
@@ -79,31 +79,17 @@ for s=1,7 do
 end
 
 -- Full melon stem, able to spawn melons
-minetest.register_node("mcl_farming:melontige_unconnect", {
+local stem_def = {
 	description = "Mature Melon Stem",
 	_doc_items_create_entry = false,
-	paramtype = "light",
-	walkable = false,
-	sunlight_propagates = true,
-	drop = stemdrop,
-	drawtype = "plantlike",
 	tiles = {"mcl_farming_melontige_8.png"},
-	selection_box = {
-		type = "fixed",
-		fixed = {
-			{-0.15, -0.5, -0.15, 0.15, 0.5, 0.15}
-		},
-	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	_mcl_blast_resistance = 0,
-})
+}
 
 -- Register stem growth
 mcl_farming:add_plant("mcl_farming:melontige_unconnect", {"mcl_farming:melontige_1", "mcl_farming:melontige_2", "mcl_farming:melontige_3", "mcl_farming:melontige_4", "mcl_farming:melontige_5", "mcl_farming:melontige_6", "mcl_farming:melontige_7"}, 50, 20)
 
 -- Register actual melon, connected stems and stem-to-melon growth
-mcl_farming:add_gourd("mcl_farming:melontige_unconnect", "mcl_farming:melontige_linked", stemdrop, "mcl_farming:melon", melon_base_def, 25, 15)
+mcl_farming:add_gourd("mcl_farming:melontige_unconnect", "mcl_farming:melontige_linked", "mcl_farming:melontige_unconnect", stem_def, stemdrop, "mcl_farming:melon", melon_base_def, 25, 15)
 
 -- Items and crafting
 minetest.register_craftitem("mcl_farming:melon_item", {

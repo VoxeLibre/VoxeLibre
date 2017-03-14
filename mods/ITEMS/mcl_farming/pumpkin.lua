@@ -11,7 +11,7 @@ minetest.register_craftitem("mcl_farming:pumpkin_seeds", {
 	end
 })
 
-local stemdrop = {
+local stem_drop = {
 	max_items = 1,
 	-- FIXME: The probabilities are slightly off from the original.
 	-- Update this drop list when the Minetest drop probability system
@@ -41,7 +41,7 @@ for s=1,7 do
 		walkable = false,
 		drawtype = "plantlike",
 		sunlight_propagates = true,
-		drop = stemdrop,
+		drop = stem_drop,
 		tiles = {"mcl_farming_pumpkintige_"..s..".png"},
 		selection_box = {
 			type = "fixed",
@@ -56,25 +56,11 @@ for s=1,7 do
 end
 
 -- Full stem (not connected)
-minetest.register_node("mcl_farming:pumpkintige_unconnect", {
+local stem_def = {
 	description = "Mature Pumpkin Stem",
 	_doc_items_create_entry = false,
-	paramtype = "light",
-	walkable = false,
-	sunlight_propagates = true,
-	drop = stemdrop,
-	drawtype = "plantlike",
 	tiles = {"mcl_farming_pumpkintige_8.png"},
-	selection_box = {
-		type = "fixed",
-		fixed = {
-			{-0.15, -0.5, -0.15, 0.15, 0.5, 0.15}
-		},
-	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	_mcl_blast_resistance = 0,
-})
+}
 
 -- Template for pumpkin
 local pumpkin_base_def = {
@@ -93,7 +79,7 @@ local pumpkin_base_def = {
 mcl_farming:add_plant("mcl_farming:pumpkintige_unconnect", {"mcl_farming:pumpkin_1", "mcl_farming:pumpkin_2", "mcl_farming:pumpkin_3", "mcl_farming:pumpkin_4", "mcl_farming:pumpkin_5", "mcl_farming:pumpkin_6", "mcl_farming:pumpkin_7"}, 80, 20)
 
 -- Register actual pumpkin, connected stems and stem-to-pumpkin growth
-mcl_farming:add_gourd("mcl_farming:pumpkintige_unconnect", "mcl_farming:pumpkintige_linked", stemdrop, "mcl_farming:pumpkin_face", pumpkin_base_def, 30, 15)
+mcl_farming:add_gourd("mcl_farming:pumpkintige_unconnect", "mcl_farming:pumpkintige_linked", "mcl_farming:pumpkintige_unconnect", stem_def, stem_drop, "mcl_farming:pumpkin_face", pumpkin_base_def, 30, 15)
 
 
 

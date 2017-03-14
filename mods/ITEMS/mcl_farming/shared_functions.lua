@@ -74,14 +74,16 @@ end
 
 - full_unconnected_stem: itemstring of the full-grown but unconnceted stem node. This node must already be done
 - connected_stem_basename: prefix of the itemstrings used for the 4 connected stem nodes to create
-- stemdrop: Drop probability table for all stem
+- stem_itemstring: Desired itemstring of the fully-grown unconnected stem node
+- stem_def: Partial node definition of the fully-grown unconnected stem node. Many fields are already defined. You need to add `tiles` and `description` at minimum. Don't define on_construct without good reason
+- stem_drop: Drop probability table for all stem
 - gourd_itemstring: Desired itemstring of the full gourd node
 - gourd_def: (almost) full definition of the gourd node. This function will add after_dig_node to the definition for unconnecting any connected stems
 - grow_interval: Will attempt to grow a gourd periodically at this interval in seconds
 - grow_chance: Chance of 1/grow_chance to grow a gourd next to the full unconnected stem after grow_interval has passed. Must be a natural number
 ]]
 
-function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, stemdrop, gourd_itemstring, gourd_def, grow_interval, grow_chance)
+function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, stem_itemstring, stem_def, stem_drop, gourd_itemstring, gourd_def, grow_interval, grow_chance)
 
 	local connected_stem_names = { 
 		connected_stem_basename .. "_r",
@@ -97,7 +99,8 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 		{ x=0, y=0, z=1 },
 	}
 
-	-- Connect a stem to the first neighboring gourd block
+	-- Connect the stem at stempos to the first neighboring gourd block.
+	-- No-op if not a stem or no gourd block found
 	local try_connect_stem = function(stempos)
 		local stem = minetest.get_node(stempos)
 		if stem.name ~= full_unconnected_stem then
@@ -143,11 +146,52 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 			-- Connect all unconnected stems at full size
 			for n=1, #neighbors do
 				local stempos = vector.add(blockpos, neighbors[n])
-				connect_stem(stempos)
+				try_connect_stem(stempos)
 			end
 		end
 	end
 	minetest.register_node(gourd_itemstring, gourd_def)
+
+	-- Register unconnected stem
+
+	-- Default values for the stem definition
+	if not stem_def.selection_box then
+		stem_def.selection_box = {
+			type = "fixed",
+			fixed = {
+				{-0.15, -0.5, -0.15, 0.15, 0.5, 0.15}
+			},
+		}
+	end
+	if not stem_def.paramtype then
+		stem_def.paramtype = "light"
+	end
+	if not stem_def.drawtype then
+		stem_def.drawtype = "plantlike"
+	end
+	if stem_def.walkable == nil then
+		stem_def.walkable = false
+	end
+	if stem_def.sunlight_propagates == nil then
+		stem_def.sunlight_propagates = true
+	end
+	if stem_def.drop == nil then
+		stem_def.drop = stem_drop
+	end
+	if stem_def.groups == nil then
+		stem_def.groups = {dig_immediate=3, not_in_creative_inventory=1, attached_node=1, dig_by_water=1}
+	end
+	if stem_def.sounds == nil then
+		stem_def.sounds = mcl_sounds.node_sound_leaves_defaults()
+	end
+
+	if not stem_def.on_construct then
+		stem_def.on_construct = function(stempos)
+			-- Connect stem to gourd (if possible)
+			try_connect_stem(stempos)
+		end
+	end
+	minetest.register_node(stem_itemstring, stem_def)
 
 	-- Register connected stems
 
@@ -200,7 +244,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 			paramtype = "light",
 			sunlight_propagates = true,
 			walkable = false,
-			drop = stemdrop,
+			drop = stem_drop,
 			drawtype = "nodebox",
 			paramtype = "light",
 			node_box = {
