@@ -41,6 +41,17 @@ add_simple_flower("allium", "Allium", "mcl_flowers_allium", { -0.2, -0.5, -0.2, 
 add_simple_flower("azure_bluet", "Azure Bluet", "mcl_flowers_azure_bluet", { -3/16, -0.5, -3/16, 3/16, 2/16, 3/16 })
 add_simple_flower("blue_orchid", "Blue Orchid", "mcl_flowers_blue_orchid", { -5/16, -0.5, -5/16, 5/16, 6/16, 5/16 })
 
+
+local wheat_seed_drop = {
+	max_items = 1,
+	items = {
+		{
+			items = {'mcl_farming:wheat_seeds'},
+			rarity = 8,
+		},
+	}
+},
+
 --- Fern ---
 minetest.register_node("mcl_flowers:fern", {
 	description = "Fern",
@@ -56,22 +67,14 @@ minetest.register_node("mcl_flowers:fern", {
 	groups = {dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1,deco_block=1},
 	buildable_to = true,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	drop = wheat_seed_drop,
 	selection_box = {
 		type = "fixed",
 		fixed = { -4/16, -0.5, -4/16, 4/16, 7/16, 4/16 },
 	},
-	drop = {
-		max_items = 1,
-		items = {
-			{
-				items = {'mcl_farming:wheat_seeds'},
-				rarity = 8,
-			},
-		}
-	},
 })
 
-local function add_large_flower(name, desc, longdesc, bottom_img, top_img, inv_img)
+local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_img, drop)
 	if not inv_img then
 		inv_img = top_img
 	end
@@ -85,6 +88,7 @@ local function add_large_flower(name, desc, longdesc, bottom_img, top_img, inv_i
 		sunlight_propagates = true,
 		paramtype = "light",
 		walkable = false,
+		drop = drop,
 		node_placement_prediction = "",
 		on_place = function(itemstack, placer, pointed_thing)
 			-- We can only place on nodes
@@ -149,9 +153,12 @@ local function add_large_flower(name, desc, longdesc, bottom_img, top_img, inv_i
 	})
 end
 
-add_large_flower("peony", "Peony", nil, "mcl_flowers_double_plant_paeonia_bottom.png", "mcl_flowers_double_plant_paeonia_top.png")
-add_large_flower("rose_bush", "Rose Bush", nil, "mcl_flowers_double_plant_rose_bottom.png", "mcl_flowers_double_plant_rose_top.png")
-add_large_flower("lilac", "Lilac", nil, "mcl_flowers_double_plant_syringa_bottom.png", "mcl_flowers_double_plant_syringa_top.png")
+add_large_plant("peony", "Peony", nil, "mcl_flowers_double_plant_paeonia_bottom.png", "mcl_flowers_double_plant_paeonia_top.png")
+add_large_plant("rose_bush", "Rose Bush", nil, "mcl_flowers_double_plant_rose_bottom.png", "mcl_flowers_double_plant_rose_top.png")
+add_large_plant("lilac", "Lilac", nil, "mcl_flowers_double_plant_syringa_bottom.png", "mcl_flowers_double_plant_syringa_top.png")
+
+add_large_plant("double_grass", "Double Tallgrass", nil, "mcl_flowers_double_plant_grass_bottom.png", "mcl_flowers_double_plant_grass_top.png", nil, wheat_seed_drop)
+add_large_plant("double_fern", "Large Fern", nil, "mcl_flowers_double_plant_fern_bottom.png", "mcl_flowers_double_plant_fern_top.png", nil, wheat_seed_drop)
 
 -- Lily Pad
 minetest.register_node("mcl_flowers:waterlily", {
