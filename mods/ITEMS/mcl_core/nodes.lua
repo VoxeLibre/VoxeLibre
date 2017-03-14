@@ -1667,6 +1667,7 @@ minetest.register_node("mcl_core:deadbush", {
 	paramtype = "light",
 	walkable = false,
 	stack_max = 64,
+	buildable_to = true,
 	groups = {dig_immediate=3, flammable=3,attached_node=1,dig_by_water=1,deco_block=1},
 	drop = {
 		max_items = 1,
@@ -1684,7 +1685,7 @@ minetest.register_node("mcl_core:deadbush", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = {-1/3, -1/2, -1/3, 1/3, 1/6, 1/3},
+		fixed = {-6/16, -8/16, -6/16, 6/16, 8/16, 6/16},
 	},
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
