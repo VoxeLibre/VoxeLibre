@@ -3,13 +3,10 @@
 local init = os.clock()
 flower_tmp={}
 
--------------------------------
---- Fleur Simple (une case) ---
--------------------------------
-
+-- Simple flower template
 local smallflowerlongdesc = "This is a small flower. Small flowers are mainly used for dye production and can also be potted."
 
-local function add_simple_flower(name, desc, image, color)
+local function add_simple_flower(name, desc, image, simple_selection_box)
 	minetest.register_node("mcl_flowers:"..name, {
 		description = desc,
 		_doc_items_longdesc = smallflowerlongdesc,
@@ -21,173 +18,31 @@ local function add_simple_flower(name, desc, image, color)
 		paramtype = "light",
 		walkable = false,
 		stack_max = 64,
-		groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,dig_by_water=1,color=1,deco_block=1},
+		groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,dig_by_water=1,deco_block=1},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		buildable_to = true,
 		selection_box = {
 			type = "fixed",
-			fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
+			fixed = simple_selection_box,
 		},
 	})
 end
 
-add_simple_flower("poppy", "Poppy", "mcl_flowers_poppy", "color_red")
-add_simple_flower("dandelion", "Dandelion", "flowers_dandelion_yellow", "color_yellow")
-add_simple_flower("oxeye_daisy", "Oxeye Daisy", "mcl_flowers_oxeye_daisy", "color_yellow")
-add_simple_flower("tulip_orange", "Orange Tulip", "flowers_tulip", "color_orange")
+local box_tulip = { -0.15, -0.5, -0.15, 0.15, 5/16, 0.15 }
 
-minetest.register_node("mcl_flowers:tulip_pink", {
-	description = "Pink Tulip",
-	_doc_items_longdesc = smallflowerlongdesc,
-	drawtype = "plantlike",
-	tiles = { "mcl_flowers_tulip_pink.png" },
-	inventory_image = "mcl_flowers_tulip_pink.png",
-	wield_image = "mcl_flowers_tulip_pink.png",
-	sunlight_propagates = true,
-	paramtype = "light",
-	walkable = false,
-	stack_max = 64,
-	groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,color_pink=1,dig_by_water=1,deco_block=1},
-	buildable_to = true,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
-	},
-})
-
-minetest.register_node("mcl_flowers:tulip_red", {
-	description = "Red Tulip",
-	_doc_items_longdesc = smallflowerlongdesc,
-	drawtype = "plantlike",
-	tiles = { "mcl_flowers_tulip_red.png" },
-	inventory_image = "mcl_flowers_tulip_red.png",
-	wield_image = "mcl_flowers_tulip_red.png",
-	sunlight_propagates = true,
-	paramtype = "light",
-	walkable = false,
-	stack_max = 64,
-	groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,color_red=1,dig_by_water=1,deco_block=1},
-	buildable_to = true,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
-	},
-})
-
-
-minetest.register_node("mcl_flowers:tulip_white", {
-	description = "White Tulip",
-	_doc_items_longdesc = smallflowerlongdesc,
-	drawtype = "plantlike",
-	tiles = { "mcl_flowers_tulip_white.png" },
-	inventory_image = "mcl_flowers_tulip_white.png",
-	wield_image = "mcl_flowers_tulip_white.png",
-	sunlight_propagates = true,
-	paramtype = "light",
-	walkable = false,
-	stack_max = 64,
-	groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,color_white=1,dig_by_water=1,deco_block=1},
-	buildable_to = true,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
-	},
-})
-
-
---- allium ---
-
-minetest.register_node("mcl_flowers:allium", {
-	description = "Allium",
-	_doc_items_longdesc = smallflowerlongdesc,
-	drawtype = "plantlike",
-	tiles = { "mcl_flowers_allium.png" },
-	inventory_image = "mcl_flowers_allium.png",
-	wield_image = "mcl_flowers_allium.png",
-	sunlight_propagates = true,
-	paramtype = "light",
-	walkable = false,
-	stack_max = 64,
-	groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,color_pink=1,dig_by_water=1,deco_block=1},
-	buildable_to = true,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
-	},
-})
-
---- peony ---
-
-minetest.register_node("mcl_flowers:peony", {
-	description = "Peony",
-	drawtype = "plantlike",
-	tiles = { "mcl_flowers_peony.png" },
-	inventory_image = "mcl_flowers_peony.png",
-	wield_image = "mcl_flowers_peony.png",
-	sunlight_propagates = true,
-	paramtype = "light",
-	walkable = false,
-	stack_max = 64,
-	groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,color_pink=1,dig_by_water=1,deco_block=1},
-	buildable_to = true,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
-	},
-})
-
-
---- azure bluet ---
-
-minetest.register_node("mcl_flowers:azure_bluet", {
-	description = "Azure Bluet",
-	_doc_items_longdesc = smallflowerlongdesc,
-	drawtype = "plantlike",
-	tiles = { "mcl_flowers_azure_bluet.png" },
-	inventory_image = "mcl_flowers_azure_bluet.png",
-	wield_image = "mcl_flowers_azure_bluet.png",
-	sunlight_propagates = true,
-	paramtype = "light",
-	walkable = false,
-	stack_max = 64,
-	groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,color_white=1,dig_by_water=1,deco_block=1},
-	buildable_to = true,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
-	},
-})
-
----blue_orchid ---
-
-minetest.register_node("mcl_flowers:blue_orchid", {
-	description = "Blue Orchid",
-	_doc_items_longdesc = smallflowerlongdesc,
-	drawtype = "plantlike",
-	tiles = { "mcl_flowers_blue_orchid.png" },
-	inventory_image = "mcl_flowers_blue_orchid.png",
-	wield_image = "mcl_flowers_blue_orchid.png",
-	sunlight_propagates = true,
-	paramtype = "light",
-	walkable = false,
-	stack_max = 64,
-	groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,color_blue=1,dig_by_water=1,deco_block=1},
-	buildable_to = true,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	selection_box = {
-		type = "fixed",
-		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
-	},
-})
+add_simple_flower("poppy", "Poppy", "mcl_flowers_poppy", { -0.15, -0.5, -0.15, 0.15, 3/16, 0.15 })
+add_simple_flower("dandelion", "Dandelion", "flowers_dandelion_yellow", { -0.15, -0.5, -0.15, 0.15, 0, 0.15 })
+add_simple_flower("oxeye_daisy", "Oxeye Daisy", "mcl_flowers_oxeye_daisy", { -0.15, -0.5, -0.15, 0.15, 5/16, 0.15 })
+add_simple_flower("tulip_orange", "Orange Tulip", "flowers_tulip", box_tulip)
+add_simple_flower("tulip_pink", "Pink Tulip", "mcl_flowers_tulip_pink", box_tulip)
+add_simple_flower("tulip_red", "Red Tulip", "mcl_flowers_tulip_red", box_tulip)
+add_simple_flower("tulip_white", "White Tulip", "mcl_flowers_tulip_white", box_tulip)
+add_simple_flower("allium", "Allium", "mcl_flowers_allium", { -0.2, -0.5, -0.2, 0.2, 6/16, 0.2 })
+add_simple_flower("peony", "Peony", "mcl_flowers_peony", { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 })
+add_simple_flower("azure_bluet", "Azure Bluet", "mcl_flowers_azure_bluet", { -3/16, -0.5, -3/16, 3/16, 2/16, 3/16 })
+add_simple_flower("blue_orchid", "Blue Orchid", "mcl_flowers_blue_orchid", { -5/16, -0.5, -5/16, 5/16, 6/16, 5/16 })
 
 --- Fern ---
-
 minetest.register_node("mcl_flowers:fern", {
 	description = "Fern",
 	_doc_items_longdesc = "Ferns are small plants which occour naturally in grasslands. They can be harvested for wheat seeds.",
@@ -199,12 +54,12 @@ minetest.register_node("mcl_flowers:fern", {
 	paramtype = "light",
 	walkable = false,
 	stack_max = 64,
-	groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1,deco_block=1},
 	buildable_to = true,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 },
+		fixed = { -4/16, -0.5, -4/16, 4/16, 7/16, 4/16 },
 	},
 	drop = {
 		max_items = 1,
