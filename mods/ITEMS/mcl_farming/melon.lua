@@ -102,7 +102,7 @@ local stem_def = {
 mcl_farming:add_plant("mcl_farming:melontige_unconnect", {"mcl_farming:melontige_1", "mcl_farming:melontige_2", "mcl_farming:melontige_3", "mcl_farming:melontige_4", "mcl_farming:melontige_5", "mcl_farming:melontige_6", "mcl_farming:melontige_7"}, 50, 20)
 
 -- Register actual melon, connected stems and stem-to-melon growth
-mcl_farming:add_gourd("mcl_farming:melontige_unconnect", "mcl_farming:melontige_linked", "mcl_farming:melontige_unconnect", stem_def, stemdrop, "mcl_farming:melon", melon_base_def, 25, 15)
+mcl_farming:add_gourd("mcl_farming:melontige_unconnect", "mcl_farming:melontige_linked", "mcl_farming:melontige_unconnect", stem_def, stem_drop, "mcl_farming:melon", melon_base_def, 25, 15)
 
 -- Items and crafting
 minetest.register_craftitem("mcl_farming:melon_item", {
