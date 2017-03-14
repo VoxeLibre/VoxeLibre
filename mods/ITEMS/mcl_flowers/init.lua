@@ -55,7 +55,7 @@ local wheat_seed_drop = {
 -- Tall Grass
 minetest.register_node("mcl_flowers:tallgrass", {
 	description = "Tall Grass",
-	_doc_items_longdesc = "Tall grass is a small plant which often occours on the surface of grasslands. It can be harvested for wheat seeds.",
+	_doc_items_longdesc = "Tall grass is a small plant which often occours on the surface of grasslands. It can be harvested for wheat seeds. By using bone meal, tall grass can be turned into double tallgrass which is two blocks high.",
 	drawtype = "plantlike",
 	tiles = {"mcl_flowers_tallgrass.png"},
 	inventory_image = "mcl_flowers_tallgrass.png",
@@ -80,7 +80,7 @@ minetest.register_node("mcl_flowers:tallgrass", {
 --- Fern ---
 minetest.register_node("mcl_flowers:fern", {
 	description = "Fern",
-	_doc_items_longdesc = "Ferns are small plants which occour naturally in grasslands. They can be harvested for wheat seeds.",
+	_doc_items_longdesc = "Ferns are small plants which occour naturally in grasslands. They can be harvested for wheat seeds. By using bone meal, a fern can be turned into a large fern which is two blocks high.",
 	drawtype = "plantlike",
 	tiles = { "mcl_flowers_fern.png" },
 	inventory_image = "mcl_flowers_fern.png",
