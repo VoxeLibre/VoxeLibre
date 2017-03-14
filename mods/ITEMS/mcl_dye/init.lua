@@ -214,8 +214,23 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 			end
 		end
 		return true
+
+	-- Double flowers: Drop corresponding item
+	elseif n.name == "mcl_flowers:rose_bush" or n.name == "mcl_flowers:rose_bush_top" then
+		minetest.add_item(pos, "mcl_flowers:rose_bush")
+		return true
+	elseif n.name == "mcl_flowers:peony" or n.name == "mcl_flowers:peony_top" then
+		minetest.add_item(pos, "mcl_flowers:peony")
+		return true
+	elseif n.name == "mcl_flowers:lilac" or n.name == "mcl_flowers:lilac_top" then
+		minetest.add_item(pos, "mcl_flowers:lilac")
+		return true
+	elseif n.name == "mcl_flowers:sunflower" or n.name == "mcl_flowers:sunflower_top" then
+		minetest.add_item(pos, "mcl_flowers:sunflower")
+		return true
+
+	-- Grow tall grass into double tallgrass
 	elseif n.name == "mcl_core:tallgrass" then
-		-- Grow tall grass into double tallgrass
 		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
 		local topnode = minetest.get_node(toppos)
 		if minetest.registered_nodes[topnode.name].buildable_to then
@@ -223,8 +238,9 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 			minetest.set_node(toppos, { name = "mcl_flowers:double_grass_top" })
 			return true
 		end
+
+	-- Grow fern into large fern
 	elseif n.name == "mcl_flowers:fern" then
-		-- Grow fern into large fern
 		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
 		local topnode = minetest.get_node(toppos)
 		if minetest.registered_nodes[topnode.name].buildable_to then
