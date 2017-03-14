@@ -188,6 +188,9 @@ add_large_plant("peony", "Peony", nil, "mcl_flowers_double_plant_paeonia_bottom.
 add_large_plant("rose_bush", "Rose Bush", nil, "mcl_flowers_double_plant_rose_bottom.png", "mcl_flowers_double_plant_rose_top.png")
 add_large_plant("lilac", "Lilac", nil, "mcl_flowers_double_plant_syringa_bottom.png", "mcl_flowers_double_plant_syringa_top.png")
 
+-- TODO: Make the sunflower face East. Requires a mesh for the top node.
+add_large_plant("sunflower", "Sunflower", nil, "mcl_flowers_double_plant_sunflower_bottom.png", "mcl_flowers_double_plant_sunflower_top.png^mcl_flowers_double_plant_sunflower_front.png", "mcl_flowers_double_plant_sunflower_front.png")
+
 add_large_plant("double_grass", "Double Tallgrass", nil, "mcl_flowers_double_plant_grass_bottom.png", "mcl_flowers_double_plant_grass_top.png", nil, wheat_seed_drop)
 add_large_plant("double_fern", "Large Fern", nil, "mcl_flowers_double_plant_fern_bottom.png", "mcl_flowers_double_plant_fern_top.png", nil, wheat_seed_drop)
 
