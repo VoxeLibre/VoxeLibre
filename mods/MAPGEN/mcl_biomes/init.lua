@@ -153,7 +153,7 @@ local function register_grass_decoration(offset, scale)
 		biomes = {"plains"},
 		y_min = 1,
 		y_max = 31000,
-		decoration = "mcl_core:tallgrass",
+		decoration = "mcl_flowers:tallgrass",
 	})
 end
 

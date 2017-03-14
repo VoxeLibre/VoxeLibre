@@ -1691,38 +1691,6 @@ minetest.register_node("mcl_core:deadbush", {
 	_mcl_hardness = 0,
 })
 
-minetest.register_node("mcl_core:tallgrass", {
-	description = "Tall Grass",
-	_doc_items_longdesc = "Tall grass is a small plant which often occours on the surface of grasslands. It can be harvested for wheat seeds.",
-	drawtype = "plantlike",
-	tiles = {"default_tallgrass.png"},
-	inventory_image = "default_tallgrass.png",
-	wield_image = "default_tallgrass.png",
-	drop = {
-		max_items = 1,
-		items = {
-			{
-				items = {'mcl_farming:wheat_seeds'},
-				rarity = 8,
-			},
-		}
-	},
-	paramtype = "light",
-	walkable = false,
-	buildable_to = true,
-	is_ground_content = true,
-	groups = {dig_immediate=3, flammable=3,attached_node=1,dig_by_water=1,deco_block=1},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	after_dig_node = function(pos, oldnode, oldmetadata, user)
-		local item = user:get_wielded_item()
-		if item:get_name() == "mcl_tools:shears" then
-			minetest.add_item(pos, oldnode.name)
-		end
-	end,
-	_mcl_blast_resistance = 0,
-	_mcl_hardness = 0,
-})
-
 minetest.register_node("mcl_core:ice", {
 	description = "Ice",
 	_doc_items_longdesc = "Ice is a translucent solid block usually found in cold areas.",

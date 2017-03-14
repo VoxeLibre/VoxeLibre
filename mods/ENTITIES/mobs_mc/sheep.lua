@@ -77,7 +77,7 @@ mobs:register_mob("mobs_mc:sheep", {
 	view_range = 5,
 
 	replace_rate = 10,
-	replace_what = {"mcl_core:dirt_with_grass", "mcl_core:tallgrass"},
+	replace_what = {"mcl_core:dirt_with_grass", "mcl_flowers:tallgrass"},
 	replace_with = "air",
 	do_custom = function(self)
 		if not self.initial_color_set then

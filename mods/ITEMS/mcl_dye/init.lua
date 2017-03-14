@@ -107,11 +107,11 @@ end
 mcl_dye.apply_bone_meal = function(pointed_thing)
 	local plant_tab = {
 		"air",
-		"mcl_core:tallgrass",
-		"mcl_core:tallgrass",
-		"mcl_core:tallgrass",
-		"mcl_core:tallgrass",
-		"mcl_core:tallgrass",
+		"mcl_flowers:tallgrass",
+		"mcl_flowers:tallgrass",
+		"mcl_flowers:tallgrass",
+		"mcl_flowers:tallgrass",
+		"mcl_flowers:tallgrass",
 		"mcl_flowers:dandelion",
 		"mcl_flowers:blue_orchid",
 		"mcl_flowers:oxeye_daisy",
@@ -230,7 +230,7 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		return true
 
 	-- Grow tall grass into double tallgrass
-	elseif n.name == "mcl_core:tallgrass" then
+	elseif n.name == "mcl_flowers:tallgrass" then
 		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
 		local topnode = minetest.get_node(toppos)
 		if minetest.registered_nodes[topnode.name].buildable_to then

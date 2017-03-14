@@ -24,7 +24,7 @@ minetest.register_alias("mapgen_clay", "mcl_core:clay")
 minetest.register_alias("mapgen_lava_source", "mcl_core:lava_source")
 minetest.register_alias("mapgen_cobble", "mcl_core:cobble")
 minetest.register_alias("mapgen_mossycobble", "mcl_core:mossycobble")
-minetest.register_alias("mapgen_junglegrass", "mcl_core:tallgrass")
+minetest.register_alias("mapgen_junglegrass", "mcl_flowers:tallgrass")
 minetest.register_alias("mapgen_stone_with_coal", "mcl_core:stone_with_coal")
 minetest.register_alias("mapgen_stone_with_iron", "mcl_core:stone_with_iron")
 minetest.register_alias("mapgen_desert_sand", "mcl_core:sand")
@@ -563,7 +563,7 @@ local function register_mgv6_decorations()
 		},
 		y_min = 1,
 		y_max = 30,
-		decoration = "mcl_core:tallgrass",
+		decoration = "mcl_flowers:tallgrass",
 	})
 
 	-- Dead bushes

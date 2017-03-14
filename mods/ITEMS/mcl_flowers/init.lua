@@ -52,6 +52,31 @@ local wheat_seed_drop = {
 	}
 },
 
+-- Tall Grass
+minetest.register_node("mcl_flowers:tallgrass", {
+	description = "Tall Grass",
+	_doc_items_longdesc = "Tall grass is a small plant which often occours on the surface of grasslands. It can be harvested for wheat seeds.",
+	drawtype = "plantlike",
+	tiles = {"mcl_flowers_tallgrass.png"},
+	inventory_image = "mcl_flowers_tallgrass.png",
+	wield_image = "mcl_flowers_tallgrass.png",
+	paramtype = "light",
+	walkable = false,
+	buildable_to = true,
+	is_ground_content = true,
+	groups = {dig_immediate=3, flammable=3,attached_node=1,dig_by_water=1,deco_block=1},
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	drop = wheat_seed_drop,
+	after_dig_node = function(pos, oldnode, oldmetadata, user)
+		local item = user:get_wielded_item()
+		if item:get_name() == "mcl_tools:shears" then
+			minetest.add_item(pos, oldnode.name)
+		end
+	end,
+	_mcl_blast_resistance = 0,
+	_mcl_hardness = 0,
+})
+
 --- Fern ---
 minetest.register_node("mcl_flowers:fern", {
 	description = "Fern",
@@ -67,6 +92,12 @@ minetest.register_node("mcl_flowers:fern", {
 	groups = {dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1,deco_block=1},
 	buildable_to = true,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	after_dig_node = function(pos, oldnode, oldmetadata, user)
+		local item = user:get_wielded_item()
+		if item:get_name() == "mcl_tools:shears" then
+			minetest.add_item(pos, oldnode.name)
+		end
+	end,
 	drop = wheat_seed_drop,
 	selection_box = {
 		type = "fixed",
@@ -224,5 +255,9 @@ minetest.register_node("mcl_flowers:waterlily", {
 	end
 })
 
+-- Legacy support
+minetest.register_alias("mcl_core:tallgrass", "mcl_flowers:tallgrass")
+
+-- Show loading time
 local time_to_load= os.clock() - init
 print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))

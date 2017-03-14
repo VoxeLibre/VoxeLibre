@@ -41,7 +41,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 						if nn == "mcl_core:dirt_with_grass" then
 							--local flower_choice = pr:next(1, 11)
 							local flower_choice = math.random(0, 10)
-							local flower = "mcl_core:tallgrass"
+							local flower = "mcl_flowers:tallgrass"
 							if flower_choice == 1 then
 								flower = "mcl_flowers:dandelion"
 								minetest.set_node(p, {name=flower})
@@ -76,7 +76,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 								flower = "mcl_flowers:blue_orchid"
 								minetest.set_node(p, {name=flower})
 							else
-								flower = "mcl_core:tallgrass"
+								flower = "mcl_flowers:tallgrass"
 								minetest.set_node(p, {name=flower})
 							end
 							
