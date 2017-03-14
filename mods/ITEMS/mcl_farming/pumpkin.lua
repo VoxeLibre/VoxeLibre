@@ -36,7 +36,17 @@ local stem_drop = {
 
 for s=1,7 do
 	local h = s / 8
+	local doc = s == 1
+	local longdesc, entry_name
+	if doc then
+		entry_name = "Premature Pumpkin Stem"
+		longdesc = "Pumpkin stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature pumpkin stems are able to grow pumpkins."
+	end
 	minetest.register_node("mcl_farming:pumpkin_"..s, {
+		description = string.format("Premature Pumpkin Stem (Stage %d)", s),
+		_doc_items_entry_name = entry_name,
+		_doc_items_create_entry = doc,
+		_doc_items_longdesc = longdesc,
 		paramtype = "light",
 		walkable = false,
 		drawtype = "plantlike",
@@ -58,14 +68,14 @@ end
 -- Full stem (not connected)
 local stem_def = {
 	description = "Mature Pumpkin Stem",
-	_doc_items_create_entry = false,
+	_doc_items_longdesc = "A mature pumpkin stem attempts to grow a pumpkin at one of its four adjacent blocks. A pumpkin can only grow on top of farmland, dirt or a grass block. When a pumpkin is next to a pumpkin stem, the pumpkin stem immediately bends and connects to the pumpkin. A connected pumpkin stem can't grow another pumpkin. As soon all pumpkins around the stem have been removed, it loses the connection and is ready to grow another pumpkin.",
 	tiles = {"mcl_farming_pumpkintige_8.png"},
 }
 
 -- Template for pumpkin
 local pumpkin_base_def = {
 	description = "Pumpkin",
-	_doc_items_longdesc = "A pumpkin is a block which can be grown from pumpkin seeds.",
+	_doc_items_longdesc = "A pumpkin is a naturally occouring block from the grasslands and is remarkable for its strange face-like cavity, which is developed naturally. Pumpkins are grown from pumpkin stems, which in turn are grown from pumpkin seeds.",
 	stack_max = 64,
 	paramtype2 = "facedir",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"},

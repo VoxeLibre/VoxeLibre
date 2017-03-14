@@ -15,7 +15,7 @@ minetest.register_craftitem("mcl_farming:melon_seeds", {
 
 local melon_base_def = {
 	description = "Melon",
-	_doc_items_longdesc = "A melon is a block which has been grown from melon seeds. It has reached its full size and can be harvested for melon slices.",
+	_doc_items_longdesc = "A melon is a block which can be grown from melon stems, which in turn are grown from melon seeds. It can be harvested for melon slices.",
 	stack_max = 64,
 	tiles = {"farming_melon_top.png", "farming_melon_top.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png"},
 	groups = {handy=1,axey=1, building_block=1},
@@ -57,9 +57,21 @@ local stem_drop = {
 }
 
 -- Growing unconnected stems
+
+
 for s=1,7 do
 	local h = s / 8
+	local doc = s == 1
+	local longdesc, entry_name
+	if doc then
+		entry_name = "Premature Melon Stem"
+		longdesc = "Melon stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature melon stems are able to grow melons."
+	end
 	minetest.register_node("mcl_farming:melontige_"..s, {
+		description = string.format("Premature Melon Stem (Stage %d)", s),
+		_doc_items_create_entry = doc,
+		_doc_items_entry_name = entry_name,
+		_doc_items_longdesc = longdesc,
 		paramtype = "light",
 		walkable = false,
 		drawtype = "plantlike",
@@ -81,7 +93,8 @@ end
 -- Full melon stem, able to spawn melons
 local stem_def = {
 	description = "Mature Melon Stem",
-	_doc_items_create_entry = false,
+	_doc_items_create_entry = true,
+	_doc_items_longdesc = "A mature melon stem attempts to grow a melon at one of its four adjacent blocks. A melon can only grow on top of farmland, dirt, or a grass block. When a melon is next to a melon stem, the melon stem immediately bends and connects to the melon. While connected, a melon stem can't grow another melon. As soon all melons around the stem have been removed, it loses the connection and is ready to grow another melon.",
 	tiles = {"mcl_farming_melontige_8.png"},
 }
 
