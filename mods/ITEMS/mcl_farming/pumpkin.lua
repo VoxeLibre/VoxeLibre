@@ -42,7 +42,7 @@ for s=1,7 do
 		drawtype = "plantlike",
 		sunlight_propagates = true,
 		drop = stemdrop,
-		tiles = {"[combine:32x32:0,"..(32-4*s).."=farming_tige_end.png"},
+		tiles = {"mcl_farming_pumpkintige_"..s..".png"},
 		selection_box = {
 			type = "fixed",
 			fixed = {
@@ -64,7 +64,7 @@ minetest.register_node("mcl_farming:pumpkintige_unconnect", {
 	sunlight_propagates = true,
 	drop = stemdrop,
 	drawtype = "plantlike",
-	tiles = {"farming_tige_end.png"},
+	tiles = {"mcl_farming_pumpkintige_8.png"},
 	selection_box = {
 		type = "fixed",
 		fixed = {
