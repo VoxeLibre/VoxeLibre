@@ -38,7 +38,6 @@ add_simple_flower("tulip_pink", "Pink Tulip", "mcl_flowers_tulip_pink", box_tuli
 add_simple_flower("tulip_red", "Red Tulip", "mcl_flowers_tulip_red", box_tulip)
 add_simple_flower("tulip_white", "White Tulip", "mcl_flowers_tulip_white", box_tulip)
 add_simple_flower("allium", "Allium", "mcl_flowers_allium", { -0.2, -0.5, -0.2, 0.2, 6/16, 0.2 })
-add_simple_flower("peony", "Peony", "mcl_flowers_peony", { -0.15, -0.5, -0.15, 0.15, 0.2, 0.15 })
 add_simple_flower("azure_bluet", "Azure Bluet", "mcl_flowers_azure_bluet", { -3/16, -0.5, -3/16, 3/16, 2/16, 3/16 })
 add_simple_flower("blue_orchid", "Blue Orchid", "mcl_flowers_blue_orchid", { -5/16, -0.5, -5/16, 5/16, 6/16, 5/16 })
 
@@ -72,65 +71,82 @@ minetest.register_node("mcl_flowers:fern", {
 	},
 })
 
-function register_large(name, desc, inv_img, bot_img, colr) --change in function
-    minetest.register_node("mcl_flowers:"..name.."_bottom", {
-        description = desc.." Bottom",
-        drawtype = "plantlike",
-        tiles = { "double_plant_"..name.."_bottom.png" },
-        inventory_image = "flowers_"..inv_img..".png",
-        wield_image = "flowers_"..inv_img..".png",
-        sunlight_propagates = true,
-        paramtype = "light",
-        walkable = false,
-        buildable_to = true,
-        --[[
-        on_place = function(itemstack, placer, pointed_thing)
-            pointed_thing.under = pointed_thing.under-1
-            local name = minetest.get_node({x=pointed_thing.under, y=pointed_thing.under-1, z=pointed_thing.under}).name
-            if minetest.get_item_group(name, "soil") ~= 0 then
-                pointed_thing.under = pointed_thing.under+1
-                local height = 0
-                while minetest.get_node(pointed_thing.under).name == "mcl_flowers:"..name.."_bottom" and height < 2 do
-                    height = height+1
-                    pointed_thing.under = pointed_thing.under+1
-                end
-                if height <2 then
-                    if minetest.get_node(pointed_thing.under).name == "air" then
-                        minetest.set_node(pointed_thing.under, {name="mcl_flowers:"..name.."_top"})
-                    end
-                end
-            end
-        end,
-        ]]
-        drop = "mcl_flowers:"..name,
-        groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,colr=1, dig_by_water=1, double_bottom =1,deco_block=1,deco_block=1},
-        sounds = mcl_sounds.node_sound_leaves_defaults(),
-        selection_box = {
-            type = "fixed",
-            fixed = { -0.25, -0.5, -0.25, 0.25, 0.5, 0.25 },
-        },
-    })
+local function add_large_flower(name, desc, longdesc, inv_img, bottom_img, top_img)
+	minetest.register_node("mcl_flowers:"..name, {
+		description = desc,
+		_doc_items_longdesc = longdesc,
+		drawtype = "plantlike",
+		tiles = { bottom_img },
+		inventory_image = inv_img,
+		wield_image = inv_img,
+		sunlight_propagates = true,
+		paramtype = "light",
+		walkable = false,
+		node_placement_prediction = "",
+		on_place = function(itemstack, placer, pointed_thing)
+			-- We can only place on nodes
+			if pointed_thing.type ~= "node" then
+				--return
+			end
+			-- Check for a floor and a space of 1×2×1
+			local ptu_node = minetest.get_node(pointed_thing.under)
+			local bottom
+			if minetest.registered_nodes[ptu_node.name].buildable_to then
+				bottom = pointed_thing.under
+			else
+				bottom = pointed_thing.above
+			end
+			local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
+			local bottom_buildable = minetest.registered_nodes[minetest.get_node(bottom).name].buildable_to
+			local top_buildable = minetest.registered_nodes[minetest.get_node(top).name].buildable_to
+			local floorname = minetest.get_node({x=bottom.x, y=bottom.y-1, z=bottom.z}).name
+			if minetest.registered_nodes[floorname].walkable and bottom_buildable and top_buildable then
+				-- Success! We can now place the flower
+				minetest.sound_play(minetest.registered_nodes["mcl_flowers:"..name].sounds.place, {pos = bottom, gain=1})
+				minetest.set_node(bottom, {name="mcl_flowers:"..name})
+				minetest.set_node(top, {name="mcl_flowers:"..name.."_top"})
+				if not minetest.setting_getbool("creative_mode") then
+					itemstack:take_item()
+				end
+			end
+			return itemstack
+		end,
+		after_destruct = function(pos, oldnode)
+			-- Remove top half of flower (if it exists)
+			local bottom = pos
+			local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
+			if minetest.get_node(top).name == "mcl_flowers:"..name.."_top" then
+				minetest.remove_node(top)
+			end
+		end,
+		groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1, dig_by_water=1, double_plant=1,deco_block=1},
+		sounds = mcl_sounds.node_sound_leaves_defaults(),
+	})
 
-    -- Top
-    minetest.register_node("mcl_flowers:"..name.."_top", {
-        description = desc.." Top",
-        drawtype = "plantlike",
-        tiles = { "double_plant_"..name.."_top.png" },
-        inventory_image = "double_plant_"..inv_img.."_top.png",
-        wield_image = "double_plant_"..inv_img.."_top.png",
-        sunlight_propagates = true,
-        paramtype = "light",
-        walkable = false,
-        buildable_to = true,
-        drop = "mcl_flowers:"..name,
-        groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,colr=1, dig_by_water=1, not_in_creative_inventory = 1, double_top =1},
-        sounds = mcl_sounds.node_sound_leaves_defaults(),
-        selection_box = {
-            type = "fixed",
-            fixed = { -0.25, -0.5, -0.25, 0.25, 0.5, 0.25 },
-        },
-    })
+	-- Top
+	minetest.register_node("mcl_flowers:"..name.."_top", {
+		description = desc.." (Top Part)",
+		_doc_items_create_entry = false,
+		drawtype = "plantlike",
+		tiles = { top_img },
+		sunlight_propagates = true,
+		paramtype = "light",
+		walkable = false,
+		drop = "",
+		after_destruct = function(pos, oldnode)
+			-- "Dig" bottom half of flower (if it exists)
+			local top = pos
+			local bottom = { x = top.x, y = top.y - 1, z = top.z }
+			if minetest.get_node(bottom).name == "mcl_flowers:"..name then
+				minetest.dig_node(bottom)
+			end
+		end,
+		groups = {dig_immediate=3,flammable=2,flower=1, dig_by_water=1, not_in_creative_inventory = 1, double_plant=2},
+		sounds = mcl_sounds.node_sound_leaves_defaults(),
+	})
 end
+
+add_large_flower("peony", "Peony", nil, "mcl_flowers_double_plant_paeonia_top.png", "mcl_flowers_double_plant_paeonia_bottom.png", "mcl_flowers_double_plant_paeonia_top.png")
 
 
 -- Lily Pad

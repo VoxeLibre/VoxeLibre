@@ -18,7 +18,6 @@ local wip_items = {
 	"mcl_end:chorus_fruit",
 	"mcl_end:chorus_flower",
 	"mcl_end:chorus_flower_dead",
-	"mcl_flowers:peony",
 	"mcl_fishing:fishing_rod",
 	"mcl_fishing:pufferfish_raw",
 	"mcl_maps:filled_map",
