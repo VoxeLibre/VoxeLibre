@@ -66,7 +66,7 @@ minetest.register_node("mcl_core:void", {
 
 minetest.register_node("mcl_core:stone", {
 	description = "Stone",
-	_doc_items_longdesc = "A very common block in the world of MineClone 2, almost the entire underground consists of stone. It sometimes contains ores. Stone may be created when water meets lava.",
+	_doc_items_longdesc = "One of the most common blocks in the world, almost the entire underground consists of stone. It sometimes contains ores. Stone may be created when water meets lava.",
 	tiles = {"default_stone.png"},
 	is_ground_content = true,
 	stack_max = 64,
