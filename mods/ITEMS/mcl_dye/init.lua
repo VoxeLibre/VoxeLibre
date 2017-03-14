@@ -214,9 +214,27 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 			end
 		end
 		return true
-	else
-		return false
+	elseif n.name == "mcl_core:tallgrass" then
+		-- Grow tall grass into double tallgrass
+		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
+		local topnode = minetest.get_node(toppos)
+		if minetest.registered_nodes[topnode.name].buildable_to then
+			minetest.set_node(pos, { name = "mcl_flowers:double_grass" })
+			minetest.set_node(toppos, { name = "mcl_flowers:double_grass_top" })
+			return true
+		end
+	elseif n.name == "mcl_flowers:fern" then
+		-- Grow fern into large fern
+		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
+		local topnode = minetest.get_node(toppos)
+		if minetest.registered_nodes[topnode.name].buildable_to then
+			minetest.set_node(pos, { name = "mcl_flowers:double_fern" })
+			minetest.set_node(toppos, { name = "mcl_flowers:double_fern_top" })
+			return true
+		end
 	end
+
+	return false
 end
 
 minetest.register_craftitem("mcl_dye:white", {
