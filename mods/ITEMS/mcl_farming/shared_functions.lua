@@ -151,6 +151,12 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 		{0, -0.5, -0.5, 0, 0.5, 0.5},
 		{0, -0.5, -0.5, 0, 0.5, 0.5},
 	}
+	local connected_stem_selectionbox = {
+		{-0.1, -0.5, -0.1, 0.5, 0.2, 0.1},
+		{-0.5, -0.5, -0.1, 0.1, 0.2, 0.1},
+		{-0.1, -0.5, -0.1, 0.1, 0.2, 0.5},
+		{-0.1, -0.5, -0.5, 0.1, 0.2, 0.1},
+	}
 
 	for i=1, 4 do
 		minetest.register_node(connected_stem_names[i], {
@@ -167,7 +173,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 			},
 			selection_box = {
 				type = "fixed",
-				fixed = {-0.2, -0.5, -0.2, 0.2, 0.2, 0.2}
+				fixed = connected_stem_selectionbox[i]
 			},
 			tiles = connected_stem_tiles[i],
 			groups = {dig_immediate=3, not_in_creative_inventory=1 ,dig_by_water=1},
