@@ -29,6 +29,8 @@ function mcl_farming:add_plant(full_grown, names, interval, chance)
 			if new_node.name == nil then
 				new_node.name = full_grown
 			end
+			new_node.param = node.param
+			new_node.param2 = node.param2
 			minetest.set_node(pos, new_node)
 		end
 	})
@@ -58,7 +60,7 @@ function mcl_farming:place_seed(itemstack, placer, pointed_thing, plantname)
 
 
 	if string.find(farmland.name, "mcl_farming:soil") and string.find(place_s.name, "air")  then
-		minetest.add_node(pos, {name=plantname})
+		minetest.add_node(pos, {name=plantname, param2 = minetest.registered_nodes[plantname].place_param2})
 	else
 		return
 	end

@@ -15,10 +15,11 @@ minetest.register_node("mcl_farming:wheat_1", {
 	_doc_items_entry_name = "Premature Wheat Plant",
 	_doc_items_longdesc = "Premature wheat plants grow on farmland under sunlight in 4 stages. On hydrated farmland, they grow faster. They can be harvested at any time but will only yield a profit when mature.",
 	paramtype = "light",
+	paramtype2 = "meshoptions",
+	place_param2 = 3,
 	sunlight_propagates = true,
 	walkable = false,
-	drawtype = "nodebox",
-	paramtype = "light",
+	drawtype = "plantlike",
 	drop = "mcl_farming:wheat_seeds",
 	tiles = {"farming_wheat_1.png"},
 	inventory_image = "farming_wheat_1.png",
@@ -31,15 +32,6 @@ minetest.register_node("mcl_farming:wheat_1", {
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1, dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-0.3125, -0.5, -0.5, -0.3125, 0.375, 0.5}, -- NodeBox1
-			{0.3125, -0.5, -0.5, 0.3125, 0.375, 0.5}, -- NodeBox2
-			{-0.5, -0.5, 0.375, 0.5, 0.375, 0.375}, -- NodeBox3
-			{-0.5, -0.5, -0.25, 0.5, 0.375, -0.25}, -- NodeBox4
-		}
-	},
 	_mcl_blast_resistance = 0,
 })
 
@@ -48,9 +40,10 @@ minetest.register_node("mcl_farming:wheat_2", {
 	_doc_items_create_entry = false,
 	sunlight_propagates = true,
 	paramtype = "light",
+	paramtype2 = "meshoptions",
+	place_param2 = 3,
 	walkable = false,
-	drawtype = "nodebox",
-	paramtype = "light",
+	drawtype = "plantlike",
 	drop = "mcl_farming:wheat_seeds",
 	tiles = {"farming_wheat_2.png"},
 	inventory_image = "farming_wheat_2.png",
@@ -63,15 +56,6 @@ minetest.register_node("mcl_farming:wheat_2", {
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1, dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-0.3125, -0.5, -0.5, -0.3125, 0.375, 0.5}, -- NodeBox1
-			{0.3125, -0.5, -0.5, 0.3125, 0.375, 0.5}, -- NodeBox2
-			{-0.5, -0.5, 0.375, 0.5, 0.375, 0.375}, -- NodeBox3
-			{-0.5, -0.5, -0.25, 0.5, 0.375, -0.25}, -- NodeBox4
-		}
-	},
 	_mcl_blast_resistance = 0,
 })
 
@@ -80,9 +64,10 @@ minetest.register_node("mcl_farming:wheat_3", {
 	_doc_items_create_entry = false,
 	sunlight_propagates = true,
 	paramtype = "light",
+	paramtype2 = "meshoptions",
+	place_param2 = 3,
 	walkable = false,
-	drawtype = "nodebox",
-	paramtype = "light",
+	drawtype = "plantlike",
 	drop = "mcl_farming:wheat_seeds",
 	tiles = {"farming_wheat_3.png"},
 	inventory_image = "farming_wheat_3.png",
@@ -95,15 +80,6 @@ minetest.register_node("mcl_farming:wheat_3", {
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1, dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-0.3125, -0.5, -0.5, -0.3125, 0.375, 0.5}, -- NodeBox1
-			{0.3125, -0.5, -0.5, 0.3125, 0.375, 0.5}, -- NodeBox2
-			{-0.5, -0.5, 0.375, 0.5, 0.375, 0.375}, -- NodeBox3
-			{-0.5, -0.5, -0.25, 0.5, 0.375, -0.25}, -- NodeBox4
-		}
-	},
 	_mcl_blast_resistance = 0,
 })
 
@@ -112,9 +88,10 @@ minetest.register_node("mcl_farming:wheat", {
 	_doc_items_longdesc = "Mature wheat plants are ready to be harvested for wheat and wheat seeds. They won't grow any further.",
 	sunlight_propagates = true,
 	paramtype = "light",
+	paramtype2 = "meshoptions",
+	place_param2 = 3,
 	walkable = false,
-	drawtype = "nodebox",
-	paramtype = "light",
+	drawtype = "plantlike",
 	tiles = {"farming_wheat.png"},
 	inventory_image = "farming_wheat.png",
 	wield_image = "farming_wheat.png",
@@ -135,15 +112,6 @@ minetest.register_node("mcl_farming:wheat", {
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1, dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-0.3125, -0.5, -0.5, -0.3125, 0.375, 0.5}, -- NodeBox1
-			{0.3125, -0.5, -0.5, 0.3125, 0.375, 0.5}, -- NodeBox2
-			{-0.5, -0.5, 0.375, 0.5, 0.375, 0.375}, -- NodeBox3
-			{-0.5, -0.5, -0.25, 0.5, 0.375, -0.25}, -- NodeBox4
-		}
-	},
 	_mcl_blast_resistance = 0,
 })
 
