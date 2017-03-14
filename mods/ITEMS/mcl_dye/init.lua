@@ -153,17 +153,17 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 	elseif string.find(n.name, "mcl_farming:beetroot_") ~= nil then
 		stage = tonumber(string.sub(n.name, -1))
 		if stage == 1 then
-			minetest.add_node(pos, {name="mcl_farming:beetroot_"..math.random(stage,2)})
+			minetest.add_node(pos, {name="mcl_farming:beetroot_"..math.random(stage,2), param = n.param, param2 = n.param2})
 		else
-			minetest.add_node(pos, {name="mcl_farming:beetroot"})
+			minetest.add_node(pos, {name="mcl_farming:beetroot", param = n.param, param2 = n.param2})
 		end
 		return true
 	elseif string.find(n.name, "mcl_farming:carrot_") ~= nil then
 		stage = tonumber(string.sub(n.name, -1))
 		if stage == 1 then
-			minetest.add_node(pos, {name="mcl_farming:carrot_"..math.random(stage,2)})
+			minetest.add_node(pos, {name="mcl_farming:carrot_"..math.random(stage,2), param = n.param, param2 = n.param2})
 		else
-			minetest.add_node(pos, {name="mcl_farming:carrot"})
+			minetest.add_node(pos, {name="mcl_farming:carrot", param = n.param, param2 = n.param2})
 		end
 		return true
 	elseif string.find(n.name, "mcl_farming:pumpkin_") ~= nil then

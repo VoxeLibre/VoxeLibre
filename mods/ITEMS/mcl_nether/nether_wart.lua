@@ -2,6 +2,8 @@ minetest.register_node("mcl_nether:nether_wart_0", {
 	description = "Premature Nether Wart",
 	_doc_items_longdesc = "A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages. Although nether wart is home to the Nether, it grows in any dimension.",
 	paramtype = "light",
+	paramtype2 = "meshoptions",
+	place_param2 = 3,
 	walkable = false,
 	buildable_to = true,
 	drawtype = "plantlike",
@@ -18,7 +20,11 @@ minetest.register_node("mcl_nether:nether_wart_0", {
 })
 
 minetest.register_node("mcl_nether:nether_wart_1", {
+	description = "Premature Nether Wart (Stage 2)",
+	_doc_items_create_entry = false,
 	paramtype = "light",
+	paramtype2 = "meshoptions",
+	place_param2 = 3,
 	walkable = false,
 	buildable_to = true,
 	drawtype = "plantlike",
@@ -35,9 +41,11 @@ minetest.register_node("mcl_nether:nether_wart_1", {
 })
 
 minetest.register_node("mcl_nether:nether_wart_2", {
-	description = "Premature Nether Wart (Stage 2)",
+	description = "Premature Nether Wart (Stage 3)",
 	_doc_items_create_entry = false,
 	paramtype = "light",
+	paramtype2 = "meshoptions",
+	place_param2 = 3,
 	walkable = false,
 	buildable_to = true,
 	drawtype = "plantlike",
@@ -57,6 +65,8 @@ minetest.register_node("mcl_nether:nether_wart", {
 	description = "Mature Nether Wart",
 	_doc_items_longdesc = "The mature nether wart is a plant from the Nether and reached its full size and won't grow any further. It is ready to be harvested for its items.",
 	paramtype = "light",
+	paramtype2 = "meshoptions",
+	place_param2 = 3,
 	walkable = false,
 	buildable_to = true,
 	drawtype = "plantlike",
@@ -109,7 +119,7 @@ minetest.register_craftitem("mcl_nether:nether_wart_item", {
 			if minetest.registered_items[minetest.get_node(placepos).name].buildable_to then
 				-- Place nether wart
 				minetest.sound_play({name="default_place_node", gain=1.0}, {pos=placepos})
-				minetest.set_node(placepos, {name="mcl_nether:nether_wart_0"})
+				minetest.set_node(placepos, {name="mcl_nether:nether_wart_0", param2 = 3})
 
 				if not minetest.setting_getbool("creative_mode") then
 					itemstack:take_item()
@@ -148,7 +158,9 @@ minetest.register_abm({
 		if new_node.name == nil then
 			new_node.name = "mcl_nether:nether_wart"
 		end
-		minetest.swap_node(pos, new_node)
+		new_node.param = node.param
+		new_node.param2 = node.param2
+		minetest.set_node(pos, new_node)
 	end
 })
 
