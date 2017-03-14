@@ -33,7 +33,6 @@ mobs:register_mob("mobs_mc:dog", {
 	run_velocity = 4,
 	stepheight = 1.1,
 	damage = 4,
-	group_attack = true,
 	armor = 100,
 	attacks_monsters = true,
 	attack_type = "dogfight",
