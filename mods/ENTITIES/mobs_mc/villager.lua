@@ -21,8 +21,6 @@ mobs:register_mob("mobs_mc:villager", {
 	damage = 0,
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
-	group_attack = true,
-	attack_type = "dogfight",
 	drops = {},
 	armor = 100,
 	sounds = {
