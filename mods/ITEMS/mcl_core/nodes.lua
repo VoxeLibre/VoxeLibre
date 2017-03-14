@@ -518,7 +518,7 @@ minetest.register_node("mcl_core:sandstonecarved", {
 
 minetest.register_node("mcl_core:redsand", {
 	description = "Red Sand",
-	_doc_items_longdesc = "Red sand is found in large quantities at beaches and deserts.",
+	_doc_items_longdesc = "Red sand is found in large quantities in mesa biomes.",
 	tiles = {"default_red_sand.png"},
 	is_ground_content = true,
 	stack_max = 64,
