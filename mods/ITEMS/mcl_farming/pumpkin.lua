@@ -32,47 +32,28 @@ local stemdrop = {
 	},
 }
 
--- Growing unconnected stem
+-- Unconnected immature stem
 
-minetest.register_node("mcl_farming:pumpkin_1", {
-	description = "Pumpkin Stem (First Stage)",
-	_doc_items_entry_name = "Pumpkin Stem",
-	paramtype = "light",
-	walkable = false,
-	drawtype = "plantlike",
-	sunlight_propagates = true,
-	drop = stemdrop,
-	tiles = {"farming_tige_1.png"},
-	selection_box = {
-		type = "fixed",
-		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, -0.5+6/16, 0.5}
+for s=1,7 do
+	local h = s / 8
+	minetest.register_node("mcl_farming:pumpkin_"..s, {
+		paramtype = "light",
+		walkable = false,
+		drawtype = "plantlike",
+		sunlight_propagates = true,
+		drop = stemdrop,
+		tiles = {"[combine:32x32:0,"..(32-4*s).."=farming_tige_end.png"},
+		selection_box = {
+			type = "fixed",
+			fixed = {
+				{-0.15, -0.5, -0.15, 0.15, -0.5+h, 0.15}
+			},
 		},
-	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1 ,dig_by_water=1},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	_mcl_blast_resistance = 0,
-})
-
-minetest.register_node("mcl_farming:pumpkin_2", {
-	description = "Pumpkin Stem (Second Stage)",
-	_doc_items_create_entry = false,
-	paramtype = "light",
-	walkable = false,
-	drawtype = "plantlike",
-	sunlight_propagates = true,
-	drop = stemdrop,
-	tiles = {"farming_tige_2.png"},
-	selection_box = {
-		type = "fixed",
-		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, -0.5+9/16, 0.5}
-		},
-	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1 ,dig_by_water=1},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	_mcl_blast_resistance = 0,
-})
+		groups = {dig_immediate=3, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
+		sounds = mcl_sounds.node_sound_leaves_defaults(),
+		_mcl_blast_resistance = 0,
+	})
+end
 
 -- Full stem (not connected)
 minetest.register_node("mcl_farming:pumpkintige_unconnect", {
@@ -84,7 +65,13 @@ minetest.register_node("mcl_farming:pumpkintige_unconnect", {
 	drop = stemdrop,
 	drawtype = "plantlike",
 	tiles = {"farming_tige_end.png"},
-	groups = {dig_immediate=3, not_in_creative_inventory=1 ,dig_by_water=1},
+	selection_box = {
+		type = "fixed",
+		fixed = {
+			{-0.15, -0.5, -0.15, 0.15, 0.5, 0.15}
+		},
+	},
+	groups = {dig_immediate=3, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -103,7 +90,7 @@ local pumpkin_base_def = {
 }
 
 -- Register stem growth
-mcl_farming:add_plant("mcl_farming:pumpkintige_unconnect", {"mcl_farming:pumpkin_1", "mcl_farming:pumpkin_2"}, 80, 20)
+mcl_farming:add_plant("mcl_farming:pumpkintige_unconnect", {"mcl_farming:pumpkin_1", "mcl_farming:pumpkin_2", "mcl_farming:pumpkin_3", "mcl_farming:pumpkin_4", "mcl_farming:pumpkin_5", "mcl_farming:pumpkin_6", "mcl_farming:pumpkin_7"}, 80, 20)
 
 -- Register actual pumpkin, connected stems and stem-to-pumpkin growth
 mcl_farming:add_gourd("mcl_farming:pumpkintige_unconnect", "mcl_farming:pumpkintige_linked", stemdrop, "mcl_farming:pumpkin_face", pumpkin_base_def, 30, 15)

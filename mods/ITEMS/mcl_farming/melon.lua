@@ -57,45 +57,26 @@ local stemdrop = {
 }
 
 -- Growing unconnected stems
-minetest.register_node("mcl_farming:melontige_1", {
-	description = "Melon Stem (1)",
-	_doc_items_entry_name = "Melon Stem",
-	paramtype = "light",
-	walkable = false,
-	drawtype = "plantlike",
-	sunlight_propagates = true,
-	drop = stemdrop,
-	tiles = {"farming_tige_1.png"},
-	selection_box = {
-		type = "fixed",
-		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, -0.5+6/16, 0.5}
+for s=1,7 do
+	local h = s / 8
+	minetest.register_node("mcl_farming:melontige_"..s, {
+		paramtype = "light",
+		walkable = false,
+		drawtype = "plantlike",
+		sunlight_propagates = true,
+		drop = stemdrop,
+		tiles = {"[combine:32x32:0,"..(32-4*s).."=farming_tige_end.png"},
+		selection_box = {
+			type = "fixed",
+			fixed = {
+				{-0.15, -0.5, -0.15, 0.15, -0.5+h, 0.15}
+			},
 		},
-	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1 ,dig_by_water=1},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	_mcl_blast_resistance = 0,
-})
-
-minetest.register_node("mcl_farming:melontige_2", {
-	description = "Melon Stem (2)",
-	_doc_items_create_entry = false,
-	paramtype = "light",
-	walkable = false,
-	drawtype = "plantlike",
-	sunlight_propagates = true,
-	drop = stemdrop,
-	tiles = {"farming_tige_2.png"},
-	selection_box = {
-		type = "fixed",
-		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, -0.5+9/16, 0.5}
-		},
-	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1 ,dig_by_water=1},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	_mcl_blast_resistance = 0,
-})
+		groups = {dig_immediate=3, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
+		sounds = mcl_sounds.node_sound_leaves_defaults(),
+		_mcl_blast_resistance = 0,
+	})
+end
 
 -- Full melon stem, able to spawn melons
 minetest.register_node("mcl_farming:melontige_unconnect", {
@@ -107,13 +88,19 @@ minetest.register_node("mcl_farming:melontige_unconnect", {
 	drop = stemdrop,
 	drawtype = "plantlike",
 	tiles = {"farming_tige_end.png"},
-	groups = {dig_immediate=3, not_in_creative_inventory=1 ,dig_by_water=1},
+	selection_box = {
+		type = "fixed",
+		fixed = {
+			{-0.15, -0.5, -0.15, 0.15, 0.5, 0.15}
+		},
+	},
+	groups = {dig_immediate=3, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
 
 -- Register stem growth
-mcl_farming:add_plant("mcl_farming:melontige_unconnect", {"mcl_farming:melontige_1", "mcl_farming:melontige_2"}, 50, 20)
+mcl_farming:add_plant("mcl_farming:melontige_unconnect", {"mcl_farming:melontige_1", "mcl_farming:melontige_2", "mcl_farming:melontige_3", "mcl_farming:melontige_4", "mcl_farming:melontige_5", "mcl_farming:melontige_6", "mcl_farming:melontige_7"}, 50, 20)
 
 -- Register actual melon, connected stems and stem-to-melon growth
 mcl_farming:add_gourd("mcl_farming:melontige_unconnect", "mcl_farming:melontige_linked", stemdrop, "mcl_farming:melon", melon_base_def, 25, 15)
