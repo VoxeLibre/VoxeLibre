@@ -71,7 +71,10 @@ minetest.register_node("mcl_flowers:fern", {
 	},
 })
 
-local function add_large_flower(name, desc, longdesc, inv_img, bottom_img, top_img)
+local function add_large_flower(name, desc, longdesc, bottom_img, top_img, inv_img)
+	if not inv_img then
+		inv_img = top_img
+	end
 	minetest.register_node("mcl_flowers:"..name, {
 		description = desc,
 		_doc_items_longdesc = longdesc,
@@ -146,8 +149,9 @@ local function add_large_flower(name, desc, longdesc, inv_img, bottom_img, top_i
 	})
 end
 
-add_large_flower("peony", "Peony", nil, "mcl_flowers_double_plant_paeonia_top.png", "mcl_flowers_double_plant_paeonia_bottom.png", "mcl_flowers_double_plant_paeonia_top.png")
-
+add_large_flower("peony", "Peony", nil, "mcl_flowers_double_plant_paeonia_bottom.png", "mcl_flowers_double_plant_paeonia_top.png")
+add_large_flower("rose_bush", "Rose Bush", nil, "mcl_flowers_double_plant_rose_bottom.png", "mcl_flowers_double_plant_rose_top.png")
+add_large_flower("lilac", "Lilac", nil, "mcl_flowers_double_plant_syringa_bottom.png", "mcl_flowers_double_plant_syringa_top.png")
 
 -- Lily Pad
 minetest.register_node("mcl_flowers:waterlily", {
