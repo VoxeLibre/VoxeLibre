@@ -50,13 +50,13 @@ function mcl_farming:place_seed(itemstack, placer, pointed_thing, plantname)
 			return minetest.registered_nodes[node.name].on_rightclick(pt.under, node, placer, itemstack) or itemstack
 		end
 	end
-	
+
 	local pos = {x=pt.above.x, y=pt.above.y-1, z=pt.above.z}
 	local farmland = minetest.get_node(pos)
 	pos= {x=pt.above.x, y=pt.above.y, z=pt.above.z}
 	local place_s = minetest.get_node(pos)
 
-	
+
 	if string.find(farmland.name, "mcl_farming:soil") and string.find(place_s.name, "air")  then
 		minetest.add_node(pos, {name=plantname})
 	else
@@ -90,16 +90,42 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 		connected_stem_basename .. "_b",
 	}
 
+	local neighbors = {
+		{ x=-1, y=0, z=0 },
+		{ x=1, y=0, z=0 },
+		{ x=0, y=0, z=-1 },
+		{ x=0, y=0, z=1 },
+	}
+
+	-- Connect a stem to the first neighboring gourd block
+	local try_connect_stem = function(stempos)
+		local stem = minetest.get_node(stempos)
+		if stem.name ~= full_unconnected_stem then
+			return false
+		end
+		for n=1, #neighbors do
+			local offset = neighbors[n]
+			local blockpos = vector.add(stempos, offset)
+			local block = minetest.get_node(blockpos)
+			if block.name == gourd_itemstring then
+				if offset.x == 1 then
+					minetest.set_node(stempos, {name=connected_stem_names[1]})
+				elseif offset.x == -1 then
+					minetest.set_node(stempos, {name=connected_stem_names[2]})
+				elseif offset.z == 1 then
+					minetest.set_node(stempos, {name=connected_stem_names[3]})
+				elseif offset.z == -1 then
+					minetest.set_node(stempos, {name=connected_stem_names[4]})
+				end
+				return true
+			end
+		end
+	end
+
 	-- Register gourd
 	if not gourd_def.after_dig_node then
 		gourd_def.after_dig_node = function(blockpos, oldnode, oldmetadata, user)
 			-- Disconnect any connected stems, turning them back to normal stems
-			local neighbors = {
-				{ x=-1, y=0, z=0 },
-				{ x=1, y=0, z=0 },
-				{ x=0, y=0, z=-1 },
-				{ x=0, y=0, z=1 },
-			}
 			for n=1, #neighbors do
 				local offset = neighbors[n]
 				local expected_stem = connected_stem_names[n]
@@ -107,7 +133,17 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 				local stem = minetest.get_node(stempos)
 				if stem.name == expected_stem then
 					minetest.add_node(stempos, {name=full_unconnected_stem})
+					try_connect_stem(stempos)
 				end
+			end
+		end
+	end
+	if not gourd_def.on_construct then
+		gourd_def.on_construct = function(blockpos)
+			-- Connect all unconnected stems at full size
+			for n=1, #neighbors do
+				local stempos = vector.add(blockpos, neighbors[n])
+				connect_stem(stempos)
 			end
 		end
 	end
