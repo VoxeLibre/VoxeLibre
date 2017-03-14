@@ -91,16 +91,15 @@ minetest.register_globalstep(function(dtime)
 		-- TODO: Resolve conflict
 		player:set_physics_override(def.speed, def.jump, def.gravity)
 
-		-- Is player suffocating inside node? (Only for solid full cube type nodes without damage
-		-- and without group disable_suffocation=1.)
+		-- Is player suffocating inside node? (Only for solid full opaque cube type nodes
+		-- without group disable_suffocation=1)
 		local ndef = minetest.registered_nodes[playerplus[name].nod_head]
 
 		if (ndef.walkable == nil or ndef.walkable == true)
-		and (ndef.drowning == nil or ndef.drowning == 0)
-		and (ndef.damage_per_second == nil or ndef.damage_per_second <= 0)
 		and (ndef.collision_box == nil or ndef.collision_box.type == "regular")
 		and (ndef.node_box == nil or ndef.node_box.type == "regular")
 		and (ndef.groups.disable_suffocation ~= 1)
+		and (ndef.groups.opaque == 1)
 		-- Check privilege, too
 		and (not minetest.check_player_privs(name, {noclip = true})) then
 			if player:get_hp() > 0 then
