@@ -96,7 +96,7 @@ mcl_farming:add_gourd("mcl_farming:pumpkintige_unconnect", "mcl_farming:pumpkint
 -- Jack o'Lantern
 minetest.register_node("mcl_farming:pumpkin_face_light", {
 	description = "Jack o'Lantern",
-	_doc_items_longdesc = "A Jack o'lantern is a traditional halloween decoration made from a pumpkin and glows brightly.",
+	_doc_items_longdesc = "A jack o'lantern is a traditional Halloween decoration made from a pumpkin. It glows brightly.",
 	is_ground_content = false,
 	stack_max = 64,
 	paramtype2 = "facedir",
