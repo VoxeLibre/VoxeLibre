@@ -547,32 +547,6 @@ local function register_mgv6_decorations()
 	        height_max = 3,
 	})
 
-	-- Doubletall grass
-	minetest.register_decoration({
-		deco_type = "schematic",
-		schematic = {
-			size = { x=1, y=3, z=1 },
-			data = {
-				{ name = "air", prob = 0 },
-				{ name = "mcl_flowers:double_grass", param1=255, },
-				{ name = "mcl_flowers:double_grass_top", param1=255, },
-			},
-		},
-		place_on = {"mcl_core:dirt_with_grass"},
-		sidelen = 8,
-		noise_params = {
-			offset = -0.05,
-			scale = 0.03,
-			spread = {x = 500, y = 500, z = 500},
-			seed = 420,
-			octaves = 2,
-			persist = 0.8,
-		},
-		y_min = 1,
-		y_max = 40,
-		flags = "",
-	})
-
 	-- Tall grass
 	minetest.register_decoration({
 		deco_type = "simple",
@@ -590,6 +564,80 @@ local function register_mgv6_decorations()
 		y_max = 50,
 		decoration = "mcl_flowers:tallgrass",
 	})
+
+	-- Add a small amount of tall grass everywhere to avoid areas completely empty devoid of tall grass
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 8,
+		fill_ratio = 0.001,
+		y_min = 1,
+		y_max = 50,
+		decoration = "mcl_flowers:tallgrass",
+	})
+
+	-- Doubletall grass
+	minetest.register_decoration({
+		deco_type = "schematic",
+		schematic = {
+			size = { x=1, y=3, z=1 },
+			data = {
+				{ name = "air", prob = 0 },
+				{ name = "mcl_flowers:double_grass", param1=255, },
+				{ name = "mcl_flowers:double_grass_top", param1=255, },
+			},
+		},
+		replacements = {
+			["mcl_flowers:tallgrass"] = "mcl_flowers:double_grass"
+		},
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 8,
+		noise_params = {
+			offset = -0.05,
+			scale = 0.025,
+			spread = {x = 500, y = 500, z = 500},
+			seed = 420,
+			octaves = 2,
+			persist = 0.63,
+		},
+		y_min = 1,
+		y_max = 40,
+		flags = "",
+	})
+
+	-- Large ferns
+	minetest.register_decoration({
+		deco_type = "schematic",
+		schematic = {
+			size = { x=1, y=3, z=1 },
+			data = {
+				{ name = "air", prob = 0 },
+				{ name = "mcl_flowers:double_fern", param1=255, },
+				{ name = "mcl_flowers:double_fern_top", param1=255, },
+			},
+		},
+		replacements = {
+			["mcl_flowers:fern"] = "mcl_flowers:double_fern"
+		},
+		-- This makes sure large ferns only appear in jungles
+		spawn_by = { "mcl_core:jungletree", "mcl_flowers:fern" },
+		num_spawn_by = 1,
+		place_on = {"mcl_core:dirt_with_grass"},
+
+		sidelen = 16,
+		noise_params = {
+			offset = 0,
+			scale = 0.01,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 333,
+			octaves = 2,
+			persist = 0.66,
+		},
+		y_min = 1,
+		y_max = 30,
+		flags = "",
+	})
+
 
 
 	-- Dead bushes
