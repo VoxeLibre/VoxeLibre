@@ -24,7 +24,7 @@ minetest.register_alias("mapgen_clay", "mcl_core:clay")
 minetest.register_alias("mapgen_lava_source", "mcl_core:lava_source")
 minetest.register_alias("mapgen_cobble", "mcl_core:cobble")
 minetest.register_alias("mapgen_mossycobble", "mcl_core:mossycobble")
-minetest.register_alias("mapgen_junglegrass", "mcl_flowers:tallgrass")
+minetest.register_alias("mapgen_junglegrass", "mcl_flowers:fern")
 minetest.register_alias("mapgen_stone_with_coal", "mcl_core:stone_with_coal")
 minetest.register_alias("mapgen_stone_with_iron", "mcl_core:stone_with_iron")
 minetest.register_alias("mapgen_desert_sand", "mcl_core:sand")
@@ -547,6 +547,32 @@ local function register_mgv6_decorations()
 	        height_max = 3,
 	})
 
+	-- Doubletall grass
+	minetest.register_decoration({
+		deco_type = "schematic",
+		schematic = {
+			size = { x=1, y=3, z=1 },
+			data = {
+				{ name = "air", prob = 0 },
+				{ name = "mcl_flowers:double_grass", param1=255, },
+				{ name = "mcl_flowers:double_grass_top", param1=255, },
+			},
+		},
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 8,
+		noise_params = {
+			offset = -0.05,
+			scale = 0.03,
+			spread = {x = 500, y = 500, z = 500},
+			seed = 420,
+			octaves = 2,
+			persist = 0.8,
+		},
+		y_min = 1,
+		y_max = 40,
+		flags = "",
+	})
+
 	-- Tall grass
 	minetest.register_decoration({
 		deco_type = "simple",
@@ -564,25 +590,6 @@ local function register_mgv6_decorations()
 		y_max = 50,
 		decoration = "mcl_flowers:tallgrass",
 	})
-
-	-- Ferns
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_core:dirt_with_grass"},
-		sidelen = 16,
-		noise_params = {
-			offset = -0.013,
-			scale = 0.020,
-			spread = {x = 100, y = 100, z = 100},
-			seed = 16,
-			octaves = 4,
-			persist = 0.6
-		},
-		y_min = 1,
-		y_max = 30,
-		decoration = "mcl_flowers:fern",
-	})
-
 
 
 	-- Dead bushes
