@@ -721,6 +721,24 @@ local function register_mgv6_decorations()
 	register_mgv6_flower("oxeye_daisy", 3490)
 	register_mgv6_flower("poppy", 9439)
 
+	-- Pumpkin
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 666,
+		noise_params = {
+			offset = -0.005,
+			scale = 0.00666,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 666,
+			octaves = 6,
+			persist = 0.666
+		},
+		y_min = 3,
+		y_max = 29,
+		decoration = "mcl_farming:pumpkin_face",
+	})
+
 end
 
 minetest.register_on_generated(function(minp, maxp, seed)
