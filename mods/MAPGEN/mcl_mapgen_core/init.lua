@@ -547,24 +547,43 @@ local function register_mgv6_decorations()
 	        height_max = 3,
 	})
 
-	-- Tall grasses
-
+	-- Tall grass
 	minetest.register_decoration({
 		deco_type = "simple",
 		place_on = {"mcl_core:dirt_with_grass"},
 		sidelen = 8,
 		noise_params = {
 			offset = 0,
-			scale = 0.05,
-			spread = {x = 50, y = 50, z = 50},
+			scale = 0.3,
+			spread = {x = 500, y = 500, z = 500},
 			seed = 420,
 			octaves = 2,
 			persist = 0.6
 		},
 		y_min = 1,
-		y_max = 30,
+		y_max = 50,
 		decoration = "mcl_flowers:tallgrass",
 	})
+
+	-- Ferns
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.013,
+			scale = 0.020,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 16,
+			octaves = 4,
+			persist = 0.6
+		},
+		y_min = 1,
+		y_max = 30,
+		decoration = "mcl_flowers:fern",
+	})
+
+
 
 	-- Dead bushes
 

@@ -46,7 +46,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 								flower = "mcl_flowers:dandelion"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 2 then
-								flower = "mcl_flowers:fern"
+								flower = "mcl_flowers:tallgrass"
 								minetest.set_node(p, {name=flower})
 							elseif flower_choice == 3 then
 								flower = "mcl_flowers:oxeye_daisy"
