@@ -124,22 +124,6 @@ minetest.register_craft({
 		{"mcl_farming:hay_block","mcl_farming:wheat_seeds"},
 	},
 })
-minetest.register_craft({
-	output = "mcl_farming:melon_seeds",
-	recipe = {
-		{"mcl_farming:beetroot_soup", "mcl_farming:beetroot_soup", "mcl_farming:beetroot_soup"},
-		{"mcl_farming:beetroot_soup", "mcl_farming:carrot_item", "mcl_farming:beetroot_soup"},
-		{"mcl_farming:beetroot_soup", "mcl_farming:beetroot_soup", "mcl_farming:beetroot_soup"},
-	},
-})
-minetest.register_craft({
-	output = "mcl_farming:pumpkin_seeds",
-	recipe = {
-		{"mcl_farming:potato_item","mcl_farming:potato_item","mcl_farming:potato_item"},
-		{"mcl_farming:potato_item","mcl_farming:potato_item","mcl_farming:potato_item"},
-		{"mcl_farming:potato_item","mcl_farming:potato_item","mcl_farming:potato_item"},
-	},
-})
 
 minetest.register_craft({
 	output = "mcl_jukebox:record_1",
