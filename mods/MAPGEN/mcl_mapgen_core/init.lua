@@ -659,6 +659,36 @@ local function register_mgv6_decorations()
 		decoration = "mcl_core:deadbush",
 	})
 
+	local function register_mgv6_flower(name, seed)
+		minetest.register_decoration({
+			deco_type = "simple",
+			place_on = {"mcl_core:dirt_with_grass"},
+			sidelen = 16,
+			noise_params = {
+				offset = 0,
+				scale = 0.006,
+				spread = {x = 100, y = 100, z = 100},
+				seed = seed,
+				octaves = 3,
+				persist = 0.6
+			},
+			y_min = 1,
+			y_max = 30,
+			decoration = "mcl_flowers:"..name,
+		})
+	end
+
+	register_mgv6_flower("tulip_red",  436)
+	register_mgv6_flower("tulip_orange", 536)
+	register_mgv6_flower("tulip_pink", 636)
+	register_mgv6_flower("tulip_white", 736)
+	register_mgv6_flower("azure_bluet", 800)
+	register_mgv6_flower("dandelion", 8)
+	register_mgv6_flower("allium", 0)
+	register_mgv6_flower("blue_orchid", 64500)
+	register_mgv6_flower("oxeye_daisy", 3490)
+	register_mgv6_flower("poppy", 9439)
+
 end
 
 minetest.register_on_generated(function(minp, maxp, seed)
