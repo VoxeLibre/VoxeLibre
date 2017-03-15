@@ -727,7 +727,7 @@ local function register_mgv6_decorations()
 		place_on = {"mcl_core:dirt_with_grass"},
 		sidelen = 16,
 		noise_params = {
-			offset = -0.007,
+			offset = -0.0055,
 			scale = 0.00666,
 			spread = {x = 250, y = 250, z = 250},
 			seed = 666,
