@@ -44,12 +44,6 @@ minetest.register_node("mcl_end:purpur_pillar", {
 	_mcl_hardness = 1.5,
 })
 
-local rod_box = {
-	type = "wallmounted",
-	wall_top = {-0.125, -0.5, -0.125, 0.125, 0.5, 0.125},
-	wall_side = {-0.5, -0.125, -0.125, 0.5, 0.125, 0.125},
-	wall_bottom = {-0.125, -0.5, -0.125, 0.125, 0.5, 0.125},
-}
 minetest.register_node("mcl_end:end_rod", {
 	description = "End Rod",
 	_doc_items_longdesc = "End rods are decorational light sources.",
@@ -64,7 +58,7 @@ minetest.register_node("mcl_end:end_rod", {
 	drawtype = "nodebox",
 	is_ground_content = false,
 	paramtype = "light",
-	paramtype2 = "wallmounted",
+	paramtype2 = "facedir",
 	light_source = 14,
 	sunlight_propagates = true,
 	groups = { dig_immediate=3, deco_block=1, },
@@ -75,9 +69,52 @@ minetest.register_node("mcl_end:end_rod", {
 			{-0.0625, -0.4375, -0.0625, 0.0625, 0.5, 0.0625}, -- Rod
 		},
 	},
-	selection_box = rod_box,
-	-- FIXME: Collision box does not seem to rotate correctly
-	collision_box = rod_box,
+	selection_box = {
+		type = "fixed",
+		fixed = {
+			{-0.125, -0.5, -0.125, 0.125, 0.5, 0.125}, -- Base
+		},
+	},
+	collision_box = {
+		type = "fixed",
+		fixed = {
+			{-0.125, -0.5, -0.125, 0.125, 0.5, 0.125}, -- Base
+		},
+	},
+	on_place = function(itemstack, placer, pointed_thing)
+		if pointed_thing.type ~= "node" then
+			return itemstack
+		end
+
+		local p0 = pointed_thing.under
+		local p1 = pointed_thing.above
+		local param2 = 0
+
+		local placer_pos = placer:getpos()
+		if placer_pos then
+			local dir = {
+				x = p1.x - placer_pos.x,
+				y = p1.y - placer_pos.y,
+				z = p1.z - placer_pos.z
+			}
+			param2 = minetest.dir_to_facedir(dir)
+		end
+
+		if p0.y - 1 == p1.y then
+			param2 = 20
+		elseif p0.x - 1 == p1.x then
+			param2 = 16
+		elseif p0.x + 1 == p1.x then
+			param2 = 12
+		elseif p0.z - 1 == p1.z then
+			param2 = 8
+		elseif p0.z + 1 == p1.z then
+			param2 = 4
+		end
+
+		return minetest.item_place(itemstack, placer, pointed_thing, param2)
+	end,
+
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	_mcl_blast_resistance = 0,
 })
