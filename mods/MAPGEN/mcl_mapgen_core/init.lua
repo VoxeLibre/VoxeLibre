@@ -553,7 +553,7 @@ local function register_mgv6_decorations()
 		place_on = {"mcl_core:dirt_with_grass"},
 		sidelen = 8,
 		noise_params = {
-			offset = 0,
+			offset = 0.01,
 			scale = 0.3,
 			spread = {x = 500, y = 500, z = 500},
 			seed = 420,
@@ -638,7 +638,39 @@ local function register_mgv6_decorations()
 		flags = "",
 	})
 
+	-- Large flowers
+	local register_large_flower = function(name, seed, offset)
+		minetest.register_decoration({
+			deco_type = "schematic",
+			schematic = {
+				size = { x=1, y=3, z=1 },
+				data = {
+					{ name = "air", prob = 0 },
+					{ name = "mcl_flowers:"..name, param1=255, },
+					{ name = "mcl_flowers:"..name.."_top", param1=255, },
+				},
+			},
+			place_on = {"mcl_core:dirt_with_grass"},
 
+			sidelen = 16,
+			noise_params = {
+				offset = offset,
+				scale = 0.01,
+				spread = {x = 300, y = 300, z = 300},
+				seed = seed,
+				octaves = 5,
+				persist = 0.62,
+			},
+			y_min = 1,
+			y_max = 30,
+			flags = "",
+		})
+	end
+
+	register_large_flower("rose_bush", 9350, -0.008)
+	register_large_flower("peony", 10450, -0.008)
+	register_large_flower("lilac", 10600, -0.007)
+	register_large_flower("sunflower", 2940, -0.005)
 
 	-- Dead bushes
 
