@@ -211,11 +211,15 @@ minetest.register_abm({
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 
-		for _,object in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
+		for _,object in ipairs(minetest.get_objects_inside_radius(pos, 2)) do
 			if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" then
 				if inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
+					-- Item must get sucked in when the item just TOUCHES the block above the hopper
+					-- This is the reason for the Y calculation.
+					-- Test: Items on farmland and slabs get sucked, but items on full blocks don't
 					local posob = object:getpos()
-					if math.abs(posob.x-pos.x) <= 0.5 and (posob.y-pos.y <= 0.85 and posob.y-pos.y >= 0.3) then
+					local posob_miny = posob.y + object:get_properties().collisionbox[2]
+					if math.abs(posob.x-pos.x) <= 0.5 and (posob_miny-pos.y < 1.5 and posob.y-pos.y >= 0.3) then
 						inv:add_item("main", ItemStack(object:get_luaentity().itemstring))
 						object:get_luaentity().itemstring = ""
 						object:remove()
