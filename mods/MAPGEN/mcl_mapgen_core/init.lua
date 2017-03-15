@@ -725,9 +725,9 @@ local function register_mgv6_decorations()
 	minetest.register_decoration({
 		deco_type = "simple",
 		place_on = {"mcl_core:dirt_with_grass"},
-		sidelen = 666,
+		sidelen = 16,
 		noise_params = {
-			offset = -0.005,
+			offset = -0.007,
 			scale = 0.00666,
 			spread = {x = 250, y = 250, z = 250},
 			seed = 666,
@@ -738,6 +738,28 @@ local function register_mgv6_decorations()
 		y_max = 29,
 		decoration = "mcl_farming:pumpkin_face",
 	})
+
+	-- Melon
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.002,
+			scale = 0.006,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 333,
+			octaves = 3,
+			persist = 0.6
+		},
+		-- Small trick to make sure melon spawn in jungles
+		spawn_by = { "mcl_core:jungletree", "mcl_flowers:fern" },
+		num_spawn_by = 1,
+		y_min = 1,
+		y_max = 40,
+		decoration = "mcl_farming:melon",
+	})
+
 
 end
 
