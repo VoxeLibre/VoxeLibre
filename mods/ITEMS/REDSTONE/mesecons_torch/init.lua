@@ -99,8 +99,8 @@ minetest.register_node("mesecons_torch:redstoneblock", {
 			{x = 0,  y =-1, z = 0}
 		}
 	}},
-	mcl_blast_resistance = 30,
-	mcl_hardness = 5,
+	_mcl_blast_resistance = 30,
+	_mcl_hardness = 5,
 })
 
 minetest.register_craft({
