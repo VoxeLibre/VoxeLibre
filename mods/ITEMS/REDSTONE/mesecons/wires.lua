@@ -163,7 +163,7 @@ Read the help entries on the other redstone components to learn how redstone com
 			type = "fixed",
 			fixed = nodebox
 		},
-		groups = {dig_immediate = 3, mesecon = 2, dig_by_water = 1, not_in_creative_inventory = 1},
+		groups = {dig_immediate = 3, mesecon = 2, dig_by_water = 1, attached_node = 1, not_in_creative_inventory = 1},
 		walkable = false,
 		stack_max = 64,
 		drop = "mesecons:wire_00000000_off",
