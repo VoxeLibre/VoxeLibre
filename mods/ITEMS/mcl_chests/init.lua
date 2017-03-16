@@ -22,7 +22,7 @@ local function get_chest_neighborpos(pos, param2, side)
 	end
 end
 
-local register_chest = function(basename, desc, longdesc, usagehelp, large_desc, large_longdesc, large_usagehelp)
+local register_chest = function(basename, desc, longdesc, usagehelp, mesecons)
 
 minetest.register_node("mcl_chests:"..basename, {
 	description = desc,
@@ -139,6 +139,8 @@ minetest.register_node("mcl_chests:"..basename, {
 	end,
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5,
+
+	mesecons = mesecons,
 })
 
 minetest.register_node("mcl_chests:"..basename.."_left", {
@@ -200,6 +202,9 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 	end,
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5,
+
+
+	mesecons = mesecons,
 })
 
 minetest.register_node("mcl_chests:"..basename.."_right", {
@@ -261,7 +266,9 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 	end,
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5,
-	})
+
+	mesecons = mesecons,
+})
 end
 
 register_chest("chest",
@@ -273,7 +280,31 @@ register_chest("chest",
 register_chest("trapped_chest",
 	"Trapped Chest",
 	"A trapped chest is a container which provides 27 inventory slots. It looks identical to a regular chest, but when it is opened, it sends a redstone signal to its adjacent blocks. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other.",
-	"To acccess the inventory of a trapped chest or a large trapped chest, rightclick it. When broken, the items will drop out."
+	"To acccess the inventory of a trapped chest or a large trapped chest, rightclick it. When broken, the items will drop out.",
+	{receptor = {
+		state = mesecon.state.off,
+		rules = {
+			{x = 1,  y = 0, z = 0},
+			{x = -1,  y = 0, z = 0},
+			{x = 0,  y = 0, z = 1},
+			{x = 0,  y = 0, z =-1},
+			{x = 0,  y =-1, z = 0}
+		}
+	}}
+)
+
+register_chest("trapped_chest_on",
+	nil, nil, nil,
+	{receptor = {
+		state = mesecon.state.on,
+		rules = {
+			{x = 1,  y = 0, z = 0},
+			{x = -1,  y = 0, z = 0},
+			{x = 0,  y = 0, z = 1},
+			{x = 0,  y = 0, z =-1},
+			{x = 0,  y =-1, z = 0}
+		}
+	}}
 )
 
 minetest.register_craft({

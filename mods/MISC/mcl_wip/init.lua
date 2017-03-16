@@ -30,6 +30,7 @@ local wip_items = {
 	"gemalde:node_1",
 	"mcl_observers:observer",
 	"mcl_farming:potato_item_poison",
+	"mcl_chests:trapped_chest",
 }
 
 for i=1,#wip_items do
