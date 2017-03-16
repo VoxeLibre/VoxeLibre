@@ -22,10 +22,12 @@ local function get_chest_neighborpos(pos, param2, side)
 	end
 end
 
-minetest.register_node("mcl_chests:chest", {
-	description = "Chest",
-	_doc_items_longdesc = "Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other.",
-	_doc_items_usagehelp = "To acccess the inventory of a chest or large chest, rightclick it. When broken, the items of the chest will drop out.",
+local register_chest = function(basename, desc, longdesc, usagehelp, large_desc, large_longdesc, large_usagehelp)
+
+minetest.register_node("mcl_chests:"..basename, {
+	description = desc,
+	_doc_items_longdesc = longdesc,
+	_doc_items_usagehelp = usagehelp,
 	tiles = {"default_chest_top.png", "default_chest_top.png", "default_chest_side.png",
 		"default_chest_side.png", "default_chest_side.png", "default_chest_front.png"},
 	paramtype2 = "facedir",
@@ -36,8 +38,8 @@ minetest.register_node("mcl_chests:chest", {
 	on_construct = function(pos)
 		local param2 = minetest.get_node(pos).param2
 		local meta = minetest.get_meta(pos)
-		if minetest.get_node(get_chest_neighborpos(pos, param2, "right")).name == "mcl_chests:chest" then
-			minetest.set_node(pos, {name="mcl_chests:chest_right",param2=param2})
+		if minetest.get_node(get_chest_neighborpos(pos, param2, "right")).name == "mcl_chests:"..basename then
+			minetest.set_node(pos, {name="mcl_chests:"..basename.."_right",param2=param2})
 			local p = get_chest_neighborpos(pos, param2, "right")
 			meta:set_string("formspec",
 					"size[9,11.5]"..
@@ -51,7 +53,7 @@ minetest.register_node("mcl_chests:chest", {
 					"listring[nodemeta:"..p.x..","..p.y..","..p.z..";main]"..
 					"listring[current_player;main]"..
 					"listring[current_name;main]")
-			minetest.swap_node(p, { name = "mcl_chests:chest_left", param2 = param2 })
+			minetest.swap_node(p, { name = "mcl_chests:"..basename.."_left", param2 = param2 })
 			local m = minetest.get_meta(p)
 			m:set_string("formspec",
 					"size[9,11.5]"..
@@ -65,8 +67,8 @@ minetest.register_node("mcl_chests:chest", {
 					"listring[current_name;main]"..
 					"listring[current_player;main]"..
 					"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]")
-		elseif minetest.get_node(get_chest_neighborpos(pos, param2, "left")).name == "mcl_chests:chest" then
-			minetest.set_node(pos, {name="mcl_chests:chest_left",param2=param2})
+		elseif minetest.get_node(get_chest_neighborpos(pos, param2, "left")).name == "mcl_chests:"..basename then
+			minetest.set_node(pos, {name="mcl_chests:"..basename.."_left",param2=param2})
 			local p = get_chest_neighborpos(pos, param2, "left")
 			meta:set_string("formspec",
 					"size[9,11.5]"..
@@ -80,7 +82,7 @@ minetest.register_node("mcl_chests:chest", {
 					"listring[current_name;main]"..
 					"listring[current_player;main]"..
 					"listring[nodemeta:"..p.x..","..p.y..","..p.z..";main]")
-			minetest.swap_node(p, { name = "mcl_chests:chest_right", param2 = param2 })
+			minetest.swap_node(p, { name = "mcl_chests:"..basename.."_right", param2 = param2 })
 			local m = minetest.get_meta(p)
 			m:set_string("formspec",
 					"size[9,11.5]"..
@@ -127,11 +129,11 @@ minetest.register_node("mcl_chests:chest", {
 		minetest.log("action", player:get_player_name()..
 				" moves stuff in chest at "..minetest.pos_to_string(pos))
 	end,
-    on_metadata_inventory_put = function(pos, listname, index, stack, player)
+	on_metadata_inventory_put = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
 				" moves stuff to chest at "..minetest.pos_to_string(pos))
 	end,
-    on_metadata_inventory_take = function(pos, listname, index, stack, player)
+	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
 				" takes stuff from chest at "..minetest.pos_to_string(pos))
 	end,
@@ -139,27 +141,22 @@ minetest.register_node("mcl_chests:chest", {
 	_mcl_hardness = 2.5,
 })
 
-minetest.register_node("mcl_chests:chest_left", {
-	_doc_items_create_entry = true,
-	_doc_items_entry_name = "Large Chest",
-	_doc_items_longdesc = "Large chests are two block wide containers providing 52 inventory slots. Chests can be turned into (small) chests with half the capacity by breaking one of its blocks.",
-	_doc_items_usagehelp = "To acccess the inventory of a large chest, rightclick it. The left part of the large chest corresponds to the first 27 inventory slots and the right part to the rest. When broken, the items which correspond to the broken part of the half chest will pop out.",
-
+minetest.register_node("mcl_chests:"..basename.."_left", {
 	tiles = {"default_chest_top_big.png", "default_chest_top_big.png", "default_chest_side.png",
 		"default_chest_side.png", "default_chest_side_big.png^[transformFX", "default_chest_front_big.png"},
 	paramtype2 = "facedir",
 	groups = {handy=1,axey=1, container=2,not_in_creative_inventory=1, material_wood=1},
-	drop = "mcl_chests:chest",
+	drop = "mcl_chests:"..basename,
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_destruct = function(pos)
 		local n = minetest.get_node(pos)
-		if n.name == "mcl_chests:chest" then
+		if n.name == "mcl_chests:"..basename then
 			return
 		end
 		local param2 = n.param2
 		local p = get_chest_neighborpos(pos, param2, "left")
-		if not p or minetest.get_node(p).name ~= "mcl_chests:chest_right" then
+		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_right" then
 			return
 		end
 		local meta = minetest.get_meta(p)
@@ -173,7 +170,7 @@ minetest.register_node("mcl_chests:chest_left", {
 				"list[current_player;main;0,7.74;9,1;]"..
 				"listring[current_name;main]"..
 				"listring[current_player;main]")
-		minetest.swap_node(p, { name = "mcl_chests:chest", param2 = param2 })
+		minetest.swap_node(p, { name = "mcl_chests:"..basename, param2 = param2 })
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)
@@ -193,11 +190,11 @@ minetest.register_node("mcl_chests:chest_left", {
 		minetest.log("action", player:get_player_name()..
 				" moves stuff in chest at "..minetest.pos_to_string(pos))
 	end,
-    on_metadata_inventory_put = function(pos, listname, index, stack, player)
+	on_metadata_inventory_put = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
 				" moves stuff to chest at "..minetest.pos_to_string(pos))
 	end,
-    on_metadata_inventory_take = function(pos, listname, index, stack, player)
+	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
 				" takes stuff from chest at "..minetest.pos_to_string(pos))
 	end,
@@ -205,22 +202,22 @@ minetest.register_node("mcl_chests:chest_left", {
 	_mcl_hardness = 2.5,
 })
 
-minetest.register_node("mcl_chests:chest_right", {
+minetest.register_node("mcl_chests:"..basename.."_right", {
 	tiles = {"default_chest_top_big.png^[transformFX", "default_chest_top_big.png^[transformFX", "default_chest_side.png",
 		"default_chest_side.png", "default_chest_side_big.png", "default_chest_front_big.png^[transformFX"},
 	paramtype2 = "facedir",
 	groups = {handy=1,axey=1, container=2,not_in_creative_inventory=1, material_wood=1},
-	drop = "mcl_chests:chest",
+	drop = "mcl_chests:"..basename,
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_destruct = function(pos)
 		local n = minetest.get_node(pos)
-		if n.name == "mcl_chests:chest" then
+		if n.name == "mcl_chests:"..basename then
 			return
 		end
 		local param2 = n.param2
 		local p = get_chest_neighborpos(pos, param2, "right")
-		if not p or minetest.get_node(p).name ~= "mcl_chests:chest_left" then
+		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_left" then
 			return
 		end
 		local meta = minetest.get_meta(p)
@@ -234,7 +231,7 @@ minetest.register_node("mcl_chests:chest_right", {
 				"list[current_player;main;0,7.74;9,1;]"..
 				"listring[current_name;main]"..
 				"listring[current_player;main]")
-		minetest.swap_node(p, { name = "mcl_chests:chest", param2 = param2 })
+		minetest.swap_node(p, { name = "mcl_chests:"..basename, param2 = param2 })
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)
@@ -254,17 +251,30 @@ minetest.register_node("mcl_chests:chest_right", {
 		minetest.log("action", player:get_player_name()..
 				" moves stuff in chest at "..minetest.pos_to_string(pos))
 	end,
-    on_metadata_inventory_put = function(pos, listname, index, stack, player)
+	on_metadata_inventory_put = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
 				" moves stuff to chest at "..minetest.pos_to_string(pos))
 	end,
-    on_metadata_inventory_take = function(pos, listname, index, stack, player)
+	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
 				" takes stuff from chest at "..minetest.pos_to_string(pos))
 	end,
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5,
-})
+	})
+end
+
+register_chest("chest",
+	"Chest",
+	"Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other.",
+	"To acccess the inventory of a chest or large chest, rightclick it. When broken, the items of the chest will drop out."
+)
+
+register_chest("trapped_chest",
+	"Trapped Chest",
+	"A trapped chest is a container which provides 27 inventory slots. It looks identical to a regular chest, but when it is opened, it sends a redstone signal to its adjacent blocks. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other.",
+	"To acccess the inventory of a trapped chest or a large trapped chest, rightclick it. When broken, the items will drop out."
+)
 
 minetest.register_craft({
 	output = 'mcl_chests:chest',
@@ -278,6 +288,12 @@ minetest.register_craft({
 minetest.register_craft({
 	type = 'fuel',
 	recipe = 'mcl_chests:chest',
+	burntime = 15
+})
+
+minetest.register_craft({
+	type = 'fuel',
+	recipe = 'mcl_chests:trapped_chest',
 	burntime = 15
 })
 
