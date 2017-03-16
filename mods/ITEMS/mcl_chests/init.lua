@@ -22,6 +22,7 @@ local function get_chest_neighborpos(pos, param2, side)
 	end
 end
 
+-- This is a helper function to register both chests and trapped chests. Trapped chests will make use of the additional parameters
 local register_chest = function(basename, desc, longdesc, usagehelp, mesecons, on_rightclick_addendum, on_rightclick_addendum_left, on_rightclick_addendum_right, drop)
 
 if not drop then
