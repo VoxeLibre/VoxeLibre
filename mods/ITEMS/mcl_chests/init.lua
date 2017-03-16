@@ -22,7 +22,13 @@ local function get_chest_neighborpos(pos, param2, side)
 	end
 end
 
-local register_chest = function(basename, desc, longdesc, usagehelp, mesecons)
+local register_chest = function(basename, desc, longdesc, usagehelp, mesecons, on_rightclick_addendum, on_rightclick_addendum_left, on_rightclick_addendum_right, drop)
+
+if not drop then
+	drop = "mcl_chests:"..basename
+else
+	drop = "mcl_chests:"..drop
+end
 
 minetest.register_node("mcl_chests:"..basename, {
 	description = desc,
@@ -32,6 +38,7 @@ minetest.register_node("mcl_chests:"..basename, {
 		"default_chest_side.png", "default_chest_side.png", "default_chest_front.png"},
 	paramtype2 = "facedir",
 	stack_max = 64,
+	drop = drop,
 	groups = {handy=1,axey=1, container=2, deco_block=1, material_wood=1},
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -41,72 +48,11 @@ minetest.register_node("mcl_chests:"..basename, {
 		if minetest.get_node(get_chest_neighborpos(pos, param2, "right")).name == "mcl_chests:"..basename then
 			minetest.set_node(pos, {name="mcl_chests:"..basename.."_right",param2=param2})
 			local p = get_chest_neighborpos(pos, param2, "right")
-			meta:set_string("formspec",
-					"size[9,11.5]"..
-					"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
-					mcl_vars.inventory_header..
-					"list[nodemeta:"..p.x..","..p.y..","..p.z..";main;0,0.5;9,3;]"..
-					"list[current_name;main;0,3.5;9,3;]"..
-					"list[current_player;main;0,7.5;9,3;9]"..
-					"list[current_player;main;0,10.75;9,1;]"..
-					"listring[current_player;main]"..
-					"listring[nodemeta:"..p.x..","..p.y..","..p.z..";main]"..
-					"listring[current_player;main]"..
-					"listring[current_name;main]")
 			minetest.swap_node(p, { name = "mcl_chests:"..basename.."_left", param2 = param2 })
-			local m = minetest.get_meta(p)
-			m:set_string("formspec",
-					"size[9,11.5]"..
-					"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
-					mcl_vars.inventory_header..
-					"list[current_name;main;0,0.5;9,3;]"..
-					"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3.5;9,3;]"..
-					"list[current_player;main;0,7.5;9,3;9]"..
-					"list[current_player;main;0,10.75;9,1;]"..
-					"listring[current_player;main]"..
-					"listring[current_name;main]"..
-					"listring[current_player;main]"..
-					"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]")
 		elseif minetest.get_node(get_chest_neighborpos(pos, param2, "left")).name == "mcl_chests:"..basename then
 			minetest.set_node(pos, {name="mcl_chests:"..basename.."_left",param2=param2})
 			local p = get_chest_neighborpos(pos, param2, "left")
-			meta:set_string("formspec",
-					"size[9,11.5]"..
-					"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
-					mcl_vars.inventory_header..
-					"list[current_name;main;0,0.5;9,3;]"..
-					"list[nodemeta:"..p.x..","..p.y..","..p.z..";main;0,3.5;9,3;]"..
-					"list[current_player;main;0,7.5;9,3;9]"..
-					"list[current_player;main;0,10.75;9,1;]"..
-					"listring[current_player;main]"..
-					"listring[current_name;main]"..
-					"listring[current_player;main]"..
-					"listring[nodemeta:"..p.x..","..p.y..","..p.z..";main]")
 			minetest.swap_node(p, { name = "mcl_chests:"..basename.."_right", param2 = param2 })
-			local m = minetest.get_meta(p)
-			m:set_string("formspec",
-					"size[9,11.5]"..
-					"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
-					mcl_vars.inventory_header..
-					"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
-					"list[current_name;main;0,3.5;9,3;]"..
-					"list[current_player;main;0,7.5;9,3;9]"..
-					"list[current_player;main;0,10.75;9,1;]"..
-					"listring[current_player;main]"..
-					"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]"..
-					"listring[current_player;main]"..
-					"listring[current_name;main]")
-		else
-			meta:set_string("formspec",
-					"size[9,8.75]"..
-					mcl_vars.inventory_header..
-					"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
-					"image[0,-0.2;5,0.75;fnt_chest.png]"..
-					"list[current_name;main;0,0.5;9,3;]"..
-					"list[current_player;main;0,4.5;9,3;9]"..
-					"list[current_player;main;0,7.74;9,1;]"..
-					"listring[current_name;main]"..
-					"listring[current_player;main]")
 		end
 		local inv = meta:get_inventory()
 		inv:set_size("main", 9*3)
@@ -140,6 +86,23 @@ minetest.register_node("mcl_chests:"..basename, {
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5,
 
+	on_rightclick = function(pos, node, clicker)
+		minetest.show_formspec(clicker:get_player_name(),
+		"mcl_chests:"..basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
+		"size[9,8.75]"..
+		mcl_vars.inventory_header..
+		"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
+		"image[0,-0.2;5,0.75;fnt_chest.png]"..
+		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
+		"list[current_player;main;0,4.5;9,3;9]"..
+		"list[current_player;main;0,7.74;9,1;]"..
+		"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]"..
+		"listring[current_player;main]")
+
+		if on_rightclick_addendum then
+			on_rightclick_addendum(pos, node, clicker)
+		end
+	end,
 	mesecons = mesecons,
 })
 
@@ -148,7 +111,7 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		"default_chest_side.png", "default_chest_side_big.png^[transformFX", "default_chest_front_big.png"},
 	paramtype2 = "facedir",
 	groups = {handy=1,axey=1, container=2,not_in_creative_inventory=1, material_wood=1},
-	drop = "mcl_chests:"..basename,
+	drop = drop,
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_destruct = function(pos)
@@ -161,17 +124,6 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_right" then
 			return
 		end
-		local meta = minetest.get_meta(p)
-		meta:set_string("formspec",
-				"size[9,8.75]"..
-				"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
-				"image[0,-0.2;5,0.75;fnt_chest.png]"..
-				mcl_vars.inventory_header..
-				"list[current_name;main;0,0.5;9,3;]"..
-				"list[current_player;main;0,4.5;9,3;9]"..
-				"list[current_player;main;0,7.74;9,1;]"..
-				"listring[current_name;main]"..
-				"listring[current_player;main]")
 		minetest.swap_node(p, { name = "mcl_chests:"..basename, param2 = param2 })
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
@@ -203,7 +155,27 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5,
 
+	on_rightclick = function(pos, node, clicker)
+		local pos_other = get_chest_neighborpos(pos, node.param2, "left")
 
+		minetest.show_formspec(clicker:get_player_name(),
+		"mcl_chests:"..basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
+		"size[9,11.5]"..
+		"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
+		mcl_vars.inventory_header..
+		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
+		"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,3.5;9,3;]"..
+		"list[current_player;main;0,7.5;9,3;9]"..
+		"list[current_player;main;0,10.75;9,1;]"..
+		"listring[current_player;main]"..
+		"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]"..
+		"listring[current_player;main]"..
+		"listring[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main]")
+
+		if on_rightclick_addendum_left then
+			on_rightclick_addendum_left(pos, node, clicker)
+		end
+	end,
 	mesecons = mesecons,
 })
 
@@ -212,7 +184,7 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		"default_chest_side.png", "default_chest_side_big.png", "default_chest_front_big.png^[transformFX"},
 	paramtype2 = "facedir",
 	groups = {handy=1,axey=1, container=2,not_in_creative_inventory=1, material_wood=1},
-	drop = "mcl_chests:"..basename,
+	drop = drop,
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_destruct = function(pos)
@@ -225,17 +197,6 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_left" then
 			return
 		end
-		local meta = minetest.get_meta(p)
-		meta:set_string("formspec",
-				"size[9,8.75]"..
-				"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
-				"image[0,-0.2;5,0.75;fnt_chest.png]"..
-				mcl_vars.inventory_header..
-				"list[current_name;main;0,0.5;9,3;]"..
-				"list[current_player;main;0,4.5;9,3;9]"..
-				"list[current_player;main;0,7.74;9,1;]"..
-				"listring[current_name;main]"..
-				"listring[current_player;main]")
 		minetest.swap_node(p, { name = "mcl_chests:"..basename, param2 = param2 })
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
@@ -267,6 +228,28 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5,
 
+	on_rightclick = function(pos, node, clicker)
+		local pos_other = get_chest_neighborpos(pos, node.param2, "right")
+
+		minetest.show_formspec(clicker:get_player_name(),
+		"mcl_chests:"..basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
+
+		"size[9,11.5]"..
+		"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
+		mcl_vars.inventory_header..
+		"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,0.5;9,3;]"..
+		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3.5;9,3;]"..
+		"list[current_player;main;0,7.5;9,3;9]"..
+		"list[current_player;main;0,10.75;9,1;]"..
+		"listring[current_player;main]"..
+		"listring[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main]"..
+		"listring[current_player;main]"..
+		"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]")
+
+		if on_rightclick_addendum_right then
+			on_rightclick_addendum_right(pos, node, clicker)
+		end
+	end,
 	mesecons = mesecons,
 })
 end
@@ -277,35 +260,137 @@ register_chest("chest",
 	"To acccess the inventory of a chest or large chest, rightclick it. When broken, the items of the chest will drop out."
 )
 
+local trapped_chest_mesecons_rules = {
+	{x = 1,  y = 0, z = 0},
+	{x = -1,  y = 0, z = 0},
+	{x = 0,  y = 0, z = 1},
+	{x = 0,  y = 0, z =-1},
+	{x = 0,  y =-1, z = 0}
+}
+
 register_chest("trapped_chest",
 	"Trapped Chest",
 	"A trapped chest is a container which provides 27 inventory slots. It looks identical to a regular chest, but when it is opened, it sends a redstone signal to its adjacent blocks. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other.",
 	"To acccess the inventory of a trapped chest or a large trapped chest, rightclick it. When broken, the items will drop out.",
 	{receptor = {
 		state = mesecon.state.off,
-		rules = {
-			{x = 1,  y = 0, z = 0},
-			{x = -1,  y = 0, z = 0},
-			{x = 0,  y = 0, z = 1},
-			{x = 0,  y = 0, z =-1},
-			{x = 0,  y =-1, z = 0}
-		}
-	}}
+		rules = trapped_chest_mesecons_rules,
+	}},
+	function(pos, node, clicker)
+		local meta = minetest.get_meta(pos)
+		meta:set_int("players", 1)
+		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_on", param2 = node.param2})
+		mesecon:receptor_on(pos, trapped_chest_mesecons_rules)
+	end,
+	function(pos, node, clicker)
+		local meta = minetest.get_meta(pos)
+		meta:set_int("players", 1)
+
+		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_on_left", param2 = node.param2})
+		mesecon:receptor_on(pos, trapped_chest_mesecons_rules)
+
+		local pos_other = get_chest_neighborpos(pos, node.param2, "left")
+		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_on_right", param2 = node.param2})
+		mesecon:receptor_on(pos_other, trapped_chest_mesecons_rules)
+	end,
+	function(pos, node, clicker)
+		local pos_other = get_chest_neighborpos(pos, node.param2, "right")
+
+		-- Save number of players in left part of the chest only
+		local meta = minetest.get_meta(pos_other)
+		meta:set_int("players", 1)
+
+		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_on_right", param2 = node.param2})
+		mesecon:receptor_on(pos, trapped_chest_mesecons_rules)
+
+		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_on_left", param2 = node.param2})
+		mesecon:receptor_on(pos_other, trapped_chest_mesecons_rules)
+	end
 )
 
 register_chest("trapped_chest_on",
 	nil, nil, nil,
 	{receptor = {
 		state = mesecon.state.on,
-		rules = {
-			{x = 1,  y = 0, z = 0},
-			{x = -1,  y = 0, z = 0},
-			{x = 0,  y = 0, z = 1},
-			{x = 0,  y = 0, z =-1},
-			{x = 0,  y =-1, z = 0}
-		}
-	}}
+		rules = trapped_chest_mesecons_rules,
+	}},
+	function(pos, node, clicker)
+		local meta = minetest.get_meta(pos)
+		local players = meta:get_int("players")
+		players = players + 1
+		meta:set_int("players", players)
+	end,
+	function(pos, node, clicker)
+		local meta = minetest.get_meta(pos)
+		local players = meta:get_int("players")
+		players = players + 1
+		meta:set_int("players", players)
+	end,
+	function(pos, node, clicker)
+		local pos_other = get_chest_neighborpos(pos, node.param2, "right")
+		local meta = minetest.get_meta(pos_other)
+		local players = meta:get_int("players")
+		players = players + 1
+		meta:set_int("players", players)
+	end,
+	"trapped_chest"
 )
+
+-- Disable trapped chest when it has been closed
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	if formname:find("mcl_chests:trapped_chest_") == 1 then
+		if fields.quit then
+			local x, y, z = formname:match("mcl_chests:trapped_chest_(.-)_(.-)_(.*)")
+			local pos = {x=tonumber(x), y=tonumber(y), z=tonumber(z)}
+			if not pos or not pos.x or not pos.y or not pos.z then return end
+			local node = minetest.get_node(pos)
+			local meta, players, pos_other
+			if node.name == "mcl_chests:trapped_chest_on" or node.name == "mcl_chests:trapped_chest_on_left" then
+				meta = minetest.get_meta(pos)
+				players = meta:get_int("players")
+				players = players - 1
+			elseif node.name == "mcl_chests:trapped_chest_on_right" then
+				pos_other = get_chest_neighborpos(pos, node.param2, "right")
+				meta = minetest.get_meta(pos_other)
+				players = meta:get_int("players")
+				players = players - 1
+			end
+
+			if node.name == "mcl_chests:trapped_chest_on" then
+				if players <= 0 then
+					meta:set_int("players", 0)
+					minetest.swap_node(pos, {name="mcl_chests:trapped_chest", param2 = node.param2})
+					mesecon:receptor_off(pos, trapped_chest_mesecons_rules)
+				else
+					meta:set_int("players", players)
+				end
+			elseif node.name == "mcl_chests:trapped_chest_on_left" then
+				if players <= 0 then
+					meta:set_int("players", 0)
+					minetest.swap_node(pos, {name="mcl_chests:trapped_chest_left", param2 = node.param2})
+					mesecon:receptor_off(pos, trapped_chest_mesecons_rules)
+
+					pos_other = get_chest_neighborpos(pos, node.param2, "left")
+					minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_right", param2 = node.param2})
+					mesecon:receptor_off(pos_other, trapped_chest_mesecons_rules)
+				else
+					meta:set_int("players", players)
+				end
+			elseif node.name == "mcl_chests:trapped_chest_on_right" then
+				if players <= 0 then
+					meta:set_int("players", 0)
+					minetest.swap_node(pos, {name="mcl_chests:trapped_chest_right", param2 = node.param2})
+					mesecon:receptor_off(pos, trapped_chest_mesecons_rules)
+
+					minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_left", param2 = node.param2})
+					mesecon:receptor_off(pos_other, trapped_chest_mesecons_rules)
+				else
+					meta:set_int("players", players)
+				end
+			end
+		end
+	end
+end)
 
 minetest.register_craft({
 	output = 'mcl_chests:chest',
@@ -330,7 +415,7 @@ minetest.register_craft({
 
 minetest.register_node("mcl_chests:ender_chest", {
 	description = "Ender Chest",
-	_doc_items_longdesc = "Ender chests grant you access to a single personal interdimensional inventory with 27 slots. This inventory is the same no matter from which ender chest you access it from. If you put one item into one ender chest, you will find it in all other ender chetss worldwide. Each player will only see their own items, but not the items of other players.",
+	_doc_items_longdesc = "Ender chests grant you access to a single personal interdimensional inventory with 27 slots. This inventory is the same no matter from which ender chest you access it from. If you put one item into one ender chest, you will find it in all other ender chets worldwide. Each player will only see their own items, but not the items of other players.",
 	_doc_items_usagehelp = "Rightclick the ender chest to access your personal interdimensional inventory.",
 	tiles = {"mcl_chests_ender_chest_top.png", "mcl_chests_ender_chest_bottom.png",
 		"mcl_chests_ender_chest_right.png", "mcl_chests_ender_chest_left.png",
