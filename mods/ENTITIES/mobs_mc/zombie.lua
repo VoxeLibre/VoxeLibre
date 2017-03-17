@@ -38,16 +38,6 @@ local zombie = {
 		chance = 11,
 		min = 1,
 		max = 1,},
-		{name = "mcl_core:shovel_iron",
-		-- approximation to 8.5%
-		chance = 11,
-		min = 1,
-		max = 1,},
-		{name = "mcl_core:sword_iron",
-		-- approximation to 8.5%
-		chance = 11,
-		min = 1,
-		max = 1,},
 		{name = "mcl_farming:carrot_item",
 		-- approximation to 8.5%
 		chance = 11,
