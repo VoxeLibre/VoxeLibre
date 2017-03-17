@@ -25,7 +25,11 @@ mcl_fences.register_fence = function(id, fence_name, texture, groups, hardness, 
 	if cgroups == nil then cgroups = {} end
 	cgroups.fence = 1
 	cgroups.deco_block = 1
-	if connects_to == nil then connects_to = {} end
+	if connects_to == nil then
+		connects_to = {}
+	else
+		connects_to = table.copy(connects_to)
+	end
 	local fence_id = minetest.get_current_modname()..":"..id
 	table.insert(connects_to, "group:solid")
 	table.insert(connects_to, "group:fence_gate")
