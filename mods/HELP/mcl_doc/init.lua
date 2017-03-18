@@ -76,3 +76,14 @@ doc.sub.items.register_factoid(nil, "use", function(itemstring, def)
 	end
 	return ""
 end)
+
+-- Hardness
+doc.sub.items.register_factoid("nodes", "mining", function(itemstring, def)
+	local hardness = def._mcl_hardness
+	if not hardness then
+		hardness = 0
+	end
+	return string.format("Hardness: %.2f", hardness)
+end)
+
+-- TODO: Blast resistance (omitted for now because explosions ignore hardness)
