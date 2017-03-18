@@ -84,6 +84,7 @@ minetest.register_node("mcl_nether:soul_sand", {
 minetest.register_node("mcl_nether:nether_brick", {
 	-- Original name: Nether Brick
 	description = "Nether Brick Block",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	stack_max = 64,
 	tiles = {"mcl_nether_nether_brick.png"},
 	is_ground_content = false,
@@ -96,6 +97,7 @@ minetest.register_node("mcl_nether:nether_brick", {
 minetest.register_node("mcl_nether:red_nether_brick", {
 	-- Original name: Red Nether Brick
 	description = "Red Nether Brick Block",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	stack_max = 64,
 	tiles = {"mcl_nether_red_nether_brick.png"},
 	is_ground_content = false,
@@ -125,6 +127,7 @@ minetest.register_node("mcl_nether:nether_wart_block", {
 
 minetest.register_node("mcl_nether:quartz_block", {
 	description = "Block of Quartz",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {"mcl_nether_quartz_block_top.png", "mcl_nether_quartz_block_bottom.png", "mcl_nether_quartz_block_side.png"},
@@ -136,6 +139,7 @@ minetest.register_node("mcl_nether:quartz_block", {
 
 minetest.register_node("mcl_nether:quartz_chiseled", {
 	description = "Chiseled Quartz Block",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {"mcl_nether_quartz_chiseled_top.png", "mcl_nether_quartz_chiseled_top.png", "mcl_nether_quartz_chiseled_side.png"},
@@ -147,6 +151,7 @@ minetest.register_node("mcl_nether:quartz_chiseled", {
 
 minetest.register_node("mcl_nether:quartz_pillar", {
 	description = "Pillar Quartz Block",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	stack_max = 64,
 	paramtype2 = "facedir",
 	is_ground_content = false,

@@ -39,8 +39,8 @@ local function addhead(node, desc, longdesc)
 end
 
 -- Add heads
-addhead("zombie", "Zombie Head", "A zombie heads is a small decorative block which resembles the head of a zombie.")
-addhead("creeper", "Creeper Head", "A creeper heads is a small decorative block which resembles the head of a creeper.")
+addhead("zombie", "Zombie Head", "A zombie head is a small decorative block which resembles the head of a zombie.")
+addhead("creeper", "Creeper Head", "A creeper head is a small decorative block which resembles the head of a creeper.")
 -- Original Minecraft name: “Head”
 addhead("steve", "Human Head", "A human head is a small decorative block which resembles the head of a human (i.e. a player character).")
 addhead("skeleton", "Skeleton Skull", "A skeleton skull is a small decorative block which resembles the head of a skeleton.")

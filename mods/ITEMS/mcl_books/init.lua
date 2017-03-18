@@ -176,6 +176,7 @@ end)
 -- Bookshelf
 minetest.register_node("mcl_books:bookshelf", {
 	description = "Bookshelf",
+	_doc_items_longdesc = "Bookshelves are used for decoration.",
 	tiles = {"default_wood.png", "default_wood.png", "default_bookshelf.png"},
 	stack_max = 64,
 	is_ground_content = false,

@@ -237,6 +237,7 @@ minetest.register_node("mcl_core:stone_with_diamond", {
 
 minetest.register_node("mcl_core:stonebrick", {
 	description = "Stone Bricks",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"default_stone_brick.png"},
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, stonebrick=1, building_block=1, deco_block=1, material_stone=1},
@@ -248,6 +249,7 @@ minetest.register_node("mcl_core:stonebrick", {
 
 minetest.register_node("mcl_core:stonebrickcarved", {
 	description = "Chiseled Stone Bricks",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"default_stonebrick_carved.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -260,6 +262,7 @@ minetest.register_node("mcl_core:stonebrickcarved", {
 
 minetest.register_node("mcl_core:stonebrickcracked", {
 	description = "Cracked Stone Bricks",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"default_stonebrick_cracked.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -272,6 +275,7 @@ minetest.register_node("mcl_core:stonebrickcracked", {
 
 minetest.register_node("mcl_core:stonebrickmossy", {
 	description = "Mossy Stone Bricks",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"default_stonebrick_mossy.png"},
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, stonebrick=1, building_block=1, deco_block=1, material_stone=1},
@@ -597,6 +601,7 @@ minetest.register_node("mcl_core:brick_block", {
 
 minetest.register_node("mcl_core:bone_block", {
 	description = "Bone Block",
+	_doc_items_longdesc = "Bone blocks are decorational blocks and a compact storage of bone meal.",
 	tiles = {"mcl_core_bone_block_top.png", "mcl_core_bone_block_top.png", "mcl_core_bone_block_side.png"},
 	is_ground_content = false,
 	paramtype2 = "facedir",
@@ -681,6 +686,7 @@ minetest.register_node("mcl_core:leaves", {
 
 minetest.register_node("mcl_core:wood", {
 	description = "Oak Wood Planks",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"default_wood.png"},
 	stack_max = 64,
 	is_ground_content = false,
@@ -761,6 +767,7 @@ minetest.register_node("mcl_core:darkleaves", {
 
 minetest.register_node("mcl_core:darkwood", {
 	description = "Dark Oak Wood Planks",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"default_planks_big_oak.png"},
 	stack_max = 64,
 	is_ground_content = false,
@@ -809,6 +816,7 @@ minetest.register_node("mcl_core:jungletree", {
 
 minetest.register_node("mcl_core:junglewood", {
 	description = "Jungle Wood Planks",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"default_junglewood.png"},
 	stack_max = 64,
 	is_ground_content = false,
@@ -886,6 +894,7 @@ minetest.register_node("mcl_core:acaciatree", {
 
 minetest.register_node("mcl_core:acaciawood", {
 	description = "Acacia Wood Planks",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"default_acaciawood.png"},
 	stack_max = 64,
 	is_ground_content = false,
@@ -961,6 +970,7 @@ minetest.register_node("mcl_core:sprucetree", {
 
 minetest.register_node("mcl_core:sprucewood", {
 	description = "Spruce Wood Planks",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"default_sprucewood.png"},
 	stack_max = 64,
 	is_ground_content = false,
@@ -1042,6 +1052,7 @@ minetest.register_node("mcl_core:birchtree", {
 
 minetest.register_node("mcl_core:birchwood", {
 	description = "Birch Wood Planks",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"default_planks_birch.png"},
 	stack_max = 64,
 	is_ground_content = false,
@@ -1552,6 +1563,7 @@ minetest.register_node("mcl_core:lava_source", {
 
 minetest.register_node("mcl_core:cobble", {
 	description = "Cobblestone",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"default_cobble.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -1563,6 +1575,7 @@ minetest.register_node("mcl_core:cobble", {
 
 minetest.register_node("mcl_core:mossycobble", {
 	description = "Moss Stone",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"default_mossycobble.png"},
 	is_ground_content = false,
 	stack_max = 64,
