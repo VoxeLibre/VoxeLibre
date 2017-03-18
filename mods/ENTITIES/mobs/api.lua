@@ -2826,6 +2826,8 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 	minetest.register_craftitem(mob, {
 
 		description = desc,
+		_doc_items_longdesc = "So called “spawn eggs” are items which are used to spawn a single monster or animal.",
+		_doc_items_usagehelp = "Place the spawn egg on any block to make a mob appear at this position.",
 		inventory_image = invimg,
 		groups = grp,
 
