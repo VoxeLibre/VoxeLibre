@@ -1,0 +1,1 @@
+Adds some help texts explaining how to use Minetest.
