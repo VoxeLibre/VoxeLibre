@@ -56,7 +56,7 @@ mobs:register_mob("mobs_mc:sheep", {
 	sounds = {
 		random = "mobs_sheep",
 		death = "mobs_sheep",
---		damage = "mobs_sheep",
+		damage = "mobs_sheep",
 	},
 	animation = {
 		speed_normal = 24,

@@ -31,6 +31,8 @@ by PilzAdam and others
 	- Source: <https://freesound.org/people/thefilmbakery/sounds/137836/>
 - `slime_*.ogg`
 	- MIT License 
+- `mobs_sheep.ogg`
+	- [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/), created by the Blender Foundation
 
 ### Textures
 
