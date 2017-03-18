@@ -170,18 +170,19 @@ minetest.register_tool("doc_identifier:identifier_liquid", {
 	on_secondary_use = doc_identifier.solid_mode,
 })
 
-minetest.register_craft({
-	output = "doc_identifier:identifier_solid",
-	recipe = { {"group:stick", "group:stick" },
-		   {"", "group:stick"},
-		   {"group:stick", ""} }
-})
-
-if minetest.get_modpath("default") ~= nil then
+-- TODO: These crafting recipes are temporary. Add a different way to obtain the lookup tool
+if minetest.get_modpath("mcl_core") ~= nil then
 	minetest.register_craft({
 		output = "doc_identifier:identifier_solid",
-		recipe = { { "default:glass" }, 
-			   { "group:stick" } }
+		recipe = { {"mcl_core:stick", "mcl_core:stick" },
+			   {"", "mcl_core:stick"},
+			   {"mcl_core:stick", ""} }
+	})
+
+	minetest.register_craft({
+		output = "doc_identifier:identifier_solid",
+		recipe = { { "mcl_core:glass" }, 
+			   { "mcl_core:stick" } }
 	})
 end
 
