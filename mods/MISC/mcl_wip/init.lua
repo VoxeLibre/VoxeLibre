@@ -43,3 +43,20 @@ for i=1,#wip_items do
 	new_description = new_description .. "\n"..core.colorize("#FF0000", "(WIP)")
 	minetest.override_item(wip_items[i], { description = new_description })
 end
+
+local experimental_items = {
+	"doc_identifier:identifier_solid",
+	"doc_identifier:identifier_liquid",
+}
+for i=1,#experimental_items do
+	local def = minetest.registered_items[experimental_items[i]]
+	if not def then
+		minetest.log("error", "[mcl_wip] Unknown item: "..experimental_items[i])
+		break
+	end
+	local new_description = def.description
+	new_description = new_description .. "\n"..core.colorize("#FFFF00", "(Experimental)")
+	minetest.override_item(experimental_items[i], { description = new_description })
+end
+
+

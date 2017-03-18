@@ -2,7 +2,6 @@ mcl_boats
 mcl_anvils
 mcl_core
 mcl_end
-mcl_flowers
 mcl_fishing
 mcl_maps
 mcl_mobitems
@@ -11,3 +10,4 @@ mcl_sponges
 gemalde
 signs
 mcl_observers
+doc_identifier
