@@ -113,7 +113,7 @@ These groups are used mostly for informational purposes
     * `food=2`: Food
     * `food=3`: Drink (including soups)
     * `food=1`: Other/unsure
-* `eatable`: Item can be *directly* eaten by wielding + left click (`on_use=item_eat`). Rating is the satiation gain
+* `eatable`: Item can be *directly* eaten by wielding + right click (`on_use=item_eat`). Rating is the satiation gain
 * `cocoa`: Node is a cocoa pod (rating is growth stage, ranging from 1 to 3)
 * `ammo=1`: Item is used as ammo for a weapon
 * `ammo_bow=1`: Item is used as ammo for bows

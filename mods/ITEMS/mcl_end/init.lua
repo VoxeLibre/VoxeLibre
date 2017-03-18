@@ -245,6 +245,7 @@ minetest.register_node("mcl_end:chorus_plant", {
 -- Craftitems
 minetest.register_craftitem("mcl_end:chorus_fruit", {
 	description = "Chorus Fruit",
+	_doc_items_longdesc = "Chorus fruits can be eaten to restore 4 hunger points.",
 	wield_image = "mcl_end_chorus_fruit.png",
 	inventory_image = "mcl_end_chorus_fruit.png",
 	-- TODO: Teleport player

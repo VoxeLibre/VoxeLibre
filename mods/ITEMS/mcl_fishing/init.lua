@@ -135,6 +135,7 @@ minetest.register_craft({
 -- Fish
 minetest.register_craftitem("mcl_fishing:fish_raw", {
 	description = "Raw Fish",
+	_doc_items_longdesc = "This is a raw food item which can be eaten for 2 hunger points. But cooking it is better.",
 	inventory_image = "mcl_fishing_fish_raw.png",
 	on_place = minetest.item_eat(2),
 	on_secondary_use = minetest.item_eat(2),
@@ -144,6 +145,7 @@ minetest.register_craftitem("mcl_fishing:fish_raw", {
 
 minetest.register_craftitem("mcl_fishing:fish_cooked", {
 	description = "Cooked Fish",
+	_doc_items_longdesc = "Mmh, fish! This food item can be eaten for 5 hunger points.",
 	inventory_image = "mcl_fishing_fish_cooked.png",
 	on_place = minetest.item_eat(5),
 	on_secondary_use = minetest.item_eat(5),
@@ -161,6 +163,7 @@ minetest.register_craft({
 -- Salmon
 minetest.register_craftitem("mcl_fishing:salmon_raw", {
 	description = "Raw Salmon",
+	_doc_items_longdesc = "This is a raw food item which can be eaten for 2 hunger points. But cooking it is better.",
 	inventory_image = "mcl_fishing_salmon_raw.png",
 	on_place = minetest.item_eat(2),
 	on_secondary_use = minetest.item_eat(2),
@@ -170,6 +173,7 @@ minetest.register_craftitem("mcl_fishing:salmon_raw", {
 
 minetest.register_craftitem("mcl_fishing:salmon_cooked", {
 	description = "Cooked Salmon",
+	_doc_items_longdesc = "This is a food item which can be eaten for 6 hunger points.",
 	inventory_image = "mcl_fishing_salmon_cooked.png",
 	on_place = minetest.item_eat(6),
 	on_secondary_use = minetest.item_eat(6),
@@ -187,6 +191,7 @@ minetest.register_craft({
 -- Clownfish
 minetest.register_craftitem("mcl_fishing:clownfish_raw", {
 	description = "Clownfish",
+	_doc_items_longdesc = "This is a food item which can be eaten for 1 hunger point.",
 	inventory_image = "mcl_fishing_clownfish_raw.png",
 	on_place = minetest.item_eat(1),
 	on_secondary_use = minetest.item_eat(1),
@@ -198,6 +203,7 @@ minetest.register_craftitem("mcl_fishing:clownfish_raw", {
 -- TODO: Add status effect
 minetest.register_craftitem("mcl_fishing:pufferfish_raw", {
 	description = "Pufferfish",
+	_doc_items_longdesc = "Pufferfish are a common species of fish, but they are dangerous to eat. Eating a pufferfish restores 1 hunger point, but it makes you very sick (which drains your health non-fatally).",
 	inventory_image = "mcl_fishing_pufferfish_raw.png",
 	on_place = minetest.item_eat(1),
 	on_secondary_use = minetest.item_eat(1),

@@ -14,6 +14,8 @@ minetest.register_craft({
 
 minetest.register_craftitem("mcl_potions:glass_bottle", {
 	description = "Glass Bottle",
+	_doc_items_longdesc = "A glass bottle is used as a container for potions and can be used to collect water directly.",
+	_doc_items_usagehelp = "To collect water, it on a cauldron with water (which removes a level of water) or a water source (which removes no water).",
 	inventory_image = "mcl_potions_potion_bottle_empty.png",
 	wield_image = "mcl_potions_potion_bottle_empty.png",
 	groups = {brewitem=1},
@@ -89,6 +91,8 @@ end
 
 minetest.register_craftitem("mcl_potions:potion_water", {
 	description = "Water Bottle",
+	_doc_items_longdesc = "Water bottles can be used to brew potions and to fill cauldron. Drinking water has no effect.",
+	_doc_items_usagehelp = "Wield it and rightclick to drink it. Rightclick a cauldron to put the water into the cauldron.",
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
@@ -123,8 +127,13 @@ minetest.register_craftitem("mcl_potions:potion_water", {
 	end,
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
+
+local how_to_drink = "To drink it, wield it, then rightclick."
+
 minetest.register_craftitem("mcl_potions:potion_awkward", {
 	description = "Awkward Potion",
+	_doc_items_longdesc = "This potion has an awkward taste and is used for brewing more potions. Drinking it has no effect.",
+	_doc_items_usagehelp = how_to_drink,
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
@@ -134,6 +143,8 @@ minetest.register_craftitem("mcl_potions:potion_awkward", {
 })
 minetest.register_craftitem("mcl_potions:potion_mundane", {
 	description = "Mundane Potion",
+	_doc_items_longdesc = "This potion has a clean taste and is used for brewing more potions. Drinking it has no effect.",
+	_doc_items_usagehelp = how_to_drink,
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
@@ -143,6 +154,8 @@ minetest.register_craftitem("mcl_potions:potion_mundane", {
 })
 minetest.register_craftitem("mcl_potions:potion_thick", {
 	description = "Thick Potion",
+	_doc_items_longdesc = "This potion has a bitter taste and is used for brewing more potions. Drinking it has no effect.",
+	_doc_items_usagehelp = how_to_drink,
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),

@@ -95,7 +95,6 @@ minetest.register_craftitem("mcl_farming:potato_item_baked", {
 minetest.register_craftitem("mcl_farming:potato_item_poison", {
 	description = "Poisonous Potato",
 	_doc_items_longdesc = "This potato doesn't look healthy. Eating it will only poison you.",
-	_doc_items_usagehelp = "Hold it in your hand and rightclick to eat it. But why would you want to do this?",
 	stack_max = 64,
 	inventory_image = "farming_potato_poison.png",
 	-- TODO: Cause status effects

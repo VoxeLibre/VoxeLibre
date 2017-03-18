@@ -104,10 +104,11 @@ minetest.register_craftitem("mcl_farming:carrot_item", {
 
 minetest.register_craftitem("mcl_farming:carrot_item_gold", {
 	description = "Golden Carrot",
+	_doc_items_longdesc = "This is a food item which can be eaten for 6 hunger points.",
 	inventory_image = "farming_carrot_gold.png",
-	on_place = minetest.item_eat(3),
-	on_secondary_use = minetest.item_eat(3),
-	groups = { brewitem = 1, food = 2, eatable = 3 },
+	on_place = minetest.item_eat(6),
+	on_secondary_use = minetest.item_eat(6),
+	groups = { brewitem = 1, food = 2, eatable = 6 },
 })
 
 minetest.register_craft({

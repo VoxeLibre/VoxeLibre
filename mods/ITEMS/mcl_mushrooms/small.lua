@@ -37,6 +37,7 @@ minetest.register_node("mcl_mushrooms:mushroom_red", {
 
 minetest.register_craftitem("mcl_mushrooms:mushroom_stew", {
 	description = "Mushroom Stew",
+	_doc_items_longdesc = "Mushroom stew is a healthy soup which can be consumed for 6 hunger points.",
 	inventory_image = "farming_mushroom_stew.png",
 	on_place = minetest.item_eat(6, "mcl_core:bowl"),
 	on_secondary_use = minetest.item_eat(6, "mcl_core:bowl"),

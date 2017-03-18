@@ -1512,7 +1512,7 @@ minetest.register_node("mcl_core:lava_flowing", {
 minetest.register_node("mcl_core:lava_source", {
 	description = "Still Lava",
 	_doc_items_entry_name = "Lava",
-	_doc_items_longdesc = "Lava is found deep underground and rather dangerous. Don't touch it, it will hurt you a lot and once you're in, it is hard to get out. Lava will also destroy all dropped items it touches. When a lava source meets water, it turns into obsidian. Flowing lava turns into stone instead.",
+	_doc_items_longdesc = "Lava is found deep underground and rather dangerous. Don't touch it, it will hurt you a lot and once you're in, it is hard to get out. When a lava source meets water, it turns into obsidian. Flowing lava turns into stone instead.",
 	inventory_image = minetest.inventorycube("default_lava.png"),
 	drawtype = "liquid",
 	tiles = {
