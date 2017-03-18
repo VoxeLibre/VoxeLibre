@@ -1,0 +1,13 @@
+Error: This node, item or object is undefined. This is always an error.\\nThis can happen for the following reasons:\\n• The mod which is required for it is not enabled\\n• The author of the subgame or a mod has made a mistake =
+It appears to originate from the mod “%s”, which is enabled. =
+It appears to originate from the mod “%s”, which is not enabled! =
+Its identifier is “%s”. =
+Lookup tool =
+No help entry for this block could be found. =
+No help entry for this item could be found. =
+No help entry for this object could be found. =
+OK =
+Punch any block, item or other thing about you wish to learn more about. This will open up the appropriate help entry. The tool comes in two modes which are changed by a rightclick. In liquid mode (blue) this tool points to liquids as well while in solid mode (red) this is not the case. Liquid mode is required if you want to identify a liquid. =
+This block cannot be identified because the world has not materialized at this point yet. Try again in a few seconds. =
+This is a player. =
+This useful little helper can be used to quickly learn more about about one's closer environment. It identifies and analyzes blocks, items and other things and it shows extensive information about the thing on which it is used. =

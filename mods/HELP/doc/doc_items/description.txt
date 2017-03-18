@@ -1,0 +1,1 @@
+Adds automatically generated help texts for items.

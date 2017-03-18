@@ -1,0 +1,1 @@
+Provides an extensible in-game help with texts about gameplay basics (such a crafting), items and advanced usage.

@@ -1,0 +1,1 @@
+A simple in-game documentation system which enables mods to add help entries based on templates.

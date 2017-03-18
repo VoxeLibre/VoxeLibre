@@ -1,0 +1,16 @@
+#This feature is experimental!
+#If enabled, the mod will show alternative group names which are a bit
+#more readable than the internally used (but canonical) group names. For
+#example, the group “wood” may be rendered as “Wood”, “leaves” as
+#“Leaves and Needles”, “oddly_breakable_by_hand” as “Hand-breakable”,
+#and so on. Note that these alternative names are only used for better
+#understanding, they are not official.
+#This feature might be removed in later versions if it becomes obsolete.
+doc_items_friendly_group_names (Show “friendly” group names) bool false
+
+#If enabled, the mod will show the itemstring of the entry for each item to
+#all players. If disabled, the itemstring will only be shown to players
+#with the “give” or “debug” privilege.
+#The itemstring is useful to power users and programmers and
+#is used e.g. for the /give and /giveme commands.
+doc_items_show_itemstrings (Show itemstrings) bool false

@@ -1,0 +1,1 @@
+Adds a tool which shows help entries about almost anything which it punches.

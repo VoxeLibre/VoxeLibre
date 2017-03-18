@@ -1,0 +1,190 @@
+-- Boilerplate to support localized strings if intllib mod is installed.
+local S
+if minetest.get_modpath("intllib") then
+	S = intllib.Getter()
+else
+	S = function(s) return s end
+end
+
+local doc_identifier = {}
+
+doc_identifier.registered_objects = {}
+
+-- API
+doc.sub.identifier = {}
+doc.sub.identifier.register_object = function(object_name, category_id, entry_id)
+	doc_identifier.registered_objects[object_name] = { category = category_id, entry = entry_id }
+end
+
+-- END OF API
+
+doc_identifier.identify = function(itemstack, user, pointed_thing)
+	local username = user:get_player_name()
+	local show_message = function(username, itype, param)
+		local vsize = 2
+		local message
+		if itype == "error_item" then
+			message = S("No help entry for this item could be found.")
+		elseif itype == "error_node" then
+			message = S("No help entry for this block could be found.")
+		elseif itype == "error_unknown" then
+			vsize = vsize + 3
+			local mod
+			if param ~= nil then
+				local colon = string.find(param, ":")
+				if colon ~= nil and colon > 1 then
+					mod = string.sub(param,1,colon-1)
+				end
+			end
+			message = S("Error: This node, item or object is undefined. This is always an error.\nThis can happen for the following reasons:\n• The mod which is required for it is not enabled\n• The author of the subgame or a mod has made a mistake")
+			message = message .. "\n\n"
+
+			if mod ~= nil then
+				if minetest.get_modpath(mod) ~= nil then
+					message = message .. string.format(S("It appears to originate from the mod “%s”, which is enabled."), mod)
+					message = message .. "\n"
+				else
+					message = message .. string.format(S("It appears to originate from the mod “%s”, which is not enabled!"), mod)
+					message = message .. "\n"
+				end
+			end
+			if param ~= nil then
+				message = message .. string.format(S("Its identifier is “%s”."), param)
+			end
+		elseif itype == "error_ignore" then
+			message = S("This block cannot be identified because the world has not materialized at this point yet. Try again in a few seconds.")
+		elseif itype == "error_object" or itype == "error_unknown_thing" then
+			message = S("No help entry for this object could be found.")
+		elseif itype == "player" then
+			message = S("This is a player.")
+		end
+		minetest.show_formspec(
+			username,
+			"doc_identifier:error_missing_item_info",
+			"size[12,"..vsize..";]" ..
+			"label[0,0.2;"..minetest.formspec_escape(message).."]" ..
+			"button_exit[4.5,"..(-0.5+vsize)..";3,1;okay;"..minetest.formspec_escape(S("OK")).."]"
+		)
+	end
+	if pointed_thing.type == "node" then
+		local pos = pointed_thing.under
+		local node = minetest.get_node(pos)
+		if minetest.registered_nodes[node.name] ~= nil then
+			local nodedef = minetest.registered_nodes[node.name]
+			if(node.name == "ignore") then
+				show_message(username, "error_ignore")
+			elseif doc.entry_exists("nodes", node.name) then
+				doc.show_entry(username, "nodes", node.name, true)
+			else
+				show_message(username, "error_node")
+			end
+		else
+			show_message(username, "error_unknown", node.name)
+		end
+	elseif pointed_thing.type == "object" then
+		local object = pointed_thing.ref
+		local le = object:get_luaentity()
+		if object:is_player() then
+			if minetest.get_modpath("doc_basics") ~= nil and doc.entry_exists("basics", "players") then
+				doc.show_entry(username, "basics", "players", true)
+			else
+				-- Fallback message
+				show_message(username, "player")
+			end
+		-- luaentity exists
+		elseif le ~= nil then
+			local ro = doc_identifier.registered_objects[le.name]
+			-- Dropped items
+			if le.name == "__builtin:item" then
+				local itemstring = ItemStack(minetest.deserialize(le:get_staticdata()).itemstring):get_name()
+				if doc.entry_exists("nodes", itemstring) then
+					doc.show_entry(username, "nodes", itemstring, true)
+				elseif doc.entry_exists("tools", itemstring) then
+					doc.show_entry(username, "tools", itemstring, true)
+				elseif doc.entry_exists("craftitems", itemstring) then
+					doc.show_entry(username, "craftitems", itemstring, true)
+				elseif minetest.registered_items[itemstring] == nil or itemstring == "unknown" then
+					show_message(username, "error_unknown", itemstring)
+				else
+					show_message(username, "error_item")
+				end
+			-- Falling nodes
+			elseif le.name == "__builtin:falling_node" then
+				local itemstring = minetest.deserialize(le:get_staticdata()).name
+				if doc.entry_exists("nodes", itemstring) then
+					doc.show_entry(username, "nodes", itemstring, true)
+				end
+			-- A known registered object
+			elseif ro ~= nil then
+				doc.show_entry(username, ro.category, ro.entry, true)
+			-- Undefined object (error)
+			elseif minetest.registered_entities[le.name] == nil then
+				show_message(username, "error_unknown", le.name)
+			-- Other object (undocumented)
+			else
+				show_message(username, "error_object")
+			end
+		else
+			--show_message(username, "error_object")
+			show_message(username, "error_unknown")
+		end
+	elseif pointed_thing.type ~= "nothing" then
+		show_message(username, "error_unknown_thing")
+	end
+	return itemstack
+end
+
+function doc_identifier.solid_mode(itemstack, user, pointed_thing)
+	return ItemStack("doc_identifier:identifier_solid")
+end
+
+function doc_identifier.liquid_mode(itemstack, user, pointed_thing)
+	return ItemStack("doc_identifier:identifier_liquid")
+end
+
+minetest.register_tool("doc_identifier:identifier_solid", {
+	description = S("Lookup tool"),
+	_doc_items_longdesc = S("This useful little helper can be used to quickly learn more about about one's closer environment. It identifies and analyzes blocks, items and other things and it shows extensive information about the thing on which it is used."),
+	_doc_items_usagehelp = S("Punch any block, item or other thing about you wish to learn more about. This will open up the appropriate help entry. The tool comes in two modes which are changed by a rightclick. In liquid mode (blue) this tool points to liquids as well while in solid mode (red) this is not the case. Liquid mode is required if you want to identify a liquid."),
+	_doc_items_hidden = false,
+	tool_capabilities = {},
+	range = 10,
+	wield_image = "doc_identifier_identifier.png",
+	inventory_image = "doc_identifier_identifier.png",
+	liquids_pointable = false,
+	on_use = doc_identifier.identify,
+	on_place = doc_identifier.liquid_mode,
+	on_secondary_use = doc_identifier.liquid_mode,
+})
+minetest.register_tool("doc_identifier:identifier_liquid", {
+	description = S("Lookup tool"),
+	_doc_items_create_entry = false,
+	tool_capabilities = {},
+	range = 10,
+	groups = { not_in_creative_inventory = 1, not_in_craft_guide = 1 },
+	wield_image = "doc_identifier_identifier_liquid.png",
+	inventory_image = "doc_identifier_identifier_liquid.png",
+	liquids_pointable = true,
+	on_use = doc_identifier.identify,
+	on_place = doc_identifier.solid_mode,
+	on_secondary_use = doc_identifier.solid_mode,
+})
+
+minetest.register_craft({
+	output = "doc_identifier:identifier_solid",
+	recipe = { {"group:stick", "group:stick" },
+		   {"", "group:stick"},
+		   {"group:stick", ""} }
+})
+
+if minetest.get_modpath("default") ~= nil then
+	minetest.register_craft({
+		output = "doc_identifier:identifier_solid",
+		recipe = { { "default:glass" }, 
+			   { "group:stick" } }
+	})
+end
+
+minetest.register_alias("doc_identifier:identifier", "doc_identifier:identifier_solid")
+
+doc.add_entry_alias("tools", "doc_identifier:identifier_solid", "tools", "doc_identifier:identifier_liquid")
