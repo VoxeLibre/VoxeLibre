@@ -24,6 +24,7 @@ minetest.register_node("mcl_ocean:sea_lantern", {
 
 minetest.register_node("mcl_ocean:prismarine", {
 	description = "Prismarine",
+	_doc_items_longdesc = "Prismarine is used as a building block. It slowly changes its color.",
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {{name="mcl_ocean_prismarine_anim.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=45.0}}},
@@ -35,6 +36,7 @@ minetest.register_node("mcl_ocean:prismarine", {
 
 minetest.register_node("mcl_ocean:prismarine_brick", {
 	description = "Prismarine Bricks",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {"mcl_ocean_prismarine_bricks.png"},
@@ -46,6 +48,7 @@ minetest.register_node("mcl_ocean:prismarine_brick", {
 
 minetest.register_node("mcl_ocean:prismarine_dark", {
 	description = "Dark Prismarine",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	stack_max = 64,
 	is_ground_content = false,
 	tiles = {"mcl_ocean_prismarine_dark.png"},
@@ -59,6 +62,7 @@ minetest.register_node("mcl_ocean:prismarine_dark", {
 
 minetest.register_craftitem("mcl_ocean:prismarine_crystals", {
 	description = "Prismarine Crystals",
+	_doc_items_longdesc = doc.sub.items.temp.craftitem,
 	inventory_image = "mcl_ocean_prismarine_crystals.png",
 	stack_max = 64,
 	groups = { craftitem = 1 },
@@ -66,6 +70,7 @@ minetest.register_craftitem("mcl_ocean:prismarine_crystals", {
 
 minetest.register_craftitem("mcl_ocean:prismarine_shard", {
 	description = "Prismarine Shard",
+	_doc_items_longdesc = doc.sub.items.temp.craftitem,
 	inventory_image = "mcl_ocean_prismarine_shard.png",
 	stack_max = 64,
 	groups = { craftitem = 1 },

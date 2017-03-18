@@ -119,6 +119,8 @@ mcl_farming:add_plant("mcl_farming:wheat", {"mcl_farming:wheat_1", "mcl_farming:
 
 minetest.register_craftitem("mcl_farming:wheat_item", {
 	description = "Wheat",
+	_doc_items_longdesc = "Wheat is used in crafting. Some animals like wheat.",
+	_doc_items_usagehelp = "Rightclick an animal to try to feed it wheat.",
 	inventory_image = "farming_wheat_harvested.png",
 	groups = { craftitem = 1 },
 })

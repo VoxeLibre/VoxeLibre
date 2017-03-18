@@ -144,6 +144,8 @@ for w=1, #woods do
 
 	minetest.register_craftitem("mcl_boats:boat"..woods[w], {
 		description = names[w],
+		_doc_items_longdesc = "Boats are used to travel on the surface of water.",
+		_doc_items_usagehelp = "Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Rightclick the boat again to leave it, punch the boat to collect it.",
 		inventory_image = "mcl_boats_"..images[w].."_boat.png",
 		liquids_pointable = true,
 		groups = { boat = 1, transport = 1},

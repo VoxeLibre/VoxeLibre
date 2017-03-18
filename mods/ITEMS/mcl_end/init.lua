@@ -1,6 +1,7 @@
 -- Nodes
 minetest.register_node("mcl_end:end_stone", {
 	description = "End Stone",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"mcl_end_end_stone.png"},
 	stack_max = 64,
 	groups = {pickaxey=1, building_block=1, material_stone=1},
@@ -11,6 +12,7 @@ minetest.register_node("mcl_end:end_stone", {
 
 minetest.register_node("mcl_end:end_bricks", {
 	description = "End Stone Bricks",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"mcl_end_end_bricks.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -22,6 +24,7 @@ minetest.register_node("mcl_end:end_bricks", {
 
 minetest.register_node("mcl_end:purpur_block", {
 	description = "Purpur Block",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"mcl_end_purpur_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -33,6 +36,7 @@ minetest.register_node("mcl_end:purpur_block", {
 
 minetest.register_node("mcl_end:purpur_pillar", {
 	description = "Purpur Pillar",
+	_doc_items_longdesc = doc.sub.items.temp.build,
 	stack_max = 64,
 	paramtype2 = "facedir",
 	is_ground_content = false,
@@ -121,6 +125,7 @@ minetest.register_node("mcl_end:end_rod", {
 
 minetest.register_node("mcl_end:dragon_egg", {
 	description = "Dragon Egg",
+	_doc_items_longdesc = "A dragon egg is a decorational item which can be placed.",
 	tiles = {
 		"mcl_end_dragon_egg.png",
 		"mcl_end_dragon_egg.png",
@@ -257,6 +262,7 @@ minetest.register_craftitem("mcl_end:chorus_fruit", {
 
 minetest.register_craftitem("mcl_end:chorus_fruit_popped", {
 	description = "Popped Chorus Fruit",
+	_doc_items_longdesc = doc.sub.items.temp.craftitem,
 	wield_image = "mcl_end_chorus_fruit_popped.png",
 	inventory_image = "mcl_end_chorus_fruit_popped.png",
 	groups = { craftitem = 1 },
@@ -265,6 +271,7 @@ minetest.register_craftitem("mcl_end:chorus_fruit_popped", {
 
 minetest.register_craftitem("mcl_end:ender_eye", {
 	description = "Eye of Ender",
+	_doc_items_longdesc = doc.sub.items.temp.craftitem,
 	wield_image = "mcl_end_ender_eye.png",
 	inventory_image = "mcl_end_ender_eye.png",
 	stack_max = 64,

@@ -1,5 +1,8 @@
+local brewhelp = "This item is used in potion brewing."
+
 minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 	description = "Fermented Spider Eye",
+	_doc_items_longdesc = brewhelp,
 	wield_image = "mcl_potions_spider_eye_fermented.png",
 	inventory_image = "mcl_potions_spider_eye_fermented.png",
 	groups = { brewitem = 1 },
@@ -166,6 +169,7 @@ minetest.register_craftitem("mcl_potions:potion_thick", {
 
 minetest.register_craftitem("mcl_potions:speckled_melon", {
 	description = "Glistering Melon",
+	_doc_items_longdesc = brewhelp,
 	stack_max = 64,
 	groups = { brewitem = 1 },
 	inventory_image = "mcl_potions_melon_speckled.png",
@@ -182,6 +186,7 @@ minetest.register_craft({
 
 minetest.register_craftitem("mcl_potions:dragon_breath", {
 	description = "Dragon's Breath",
+	_doc_items_longdesc = brewhelp,
 	wield_image = "mcl_potions_dragon_breath.png",
 	inventory_image = "mcl_potions_dragon_breath.png",
 	groups = { brewitem = 1 },

@@ -156,7 +156,7 @@ minetest.register_craftitem("mcl_mobitems:bone", {
 
 minetest.register_craftitem("mcl_mobitems:string",{
 	description = "String",
-	_doc_items_usagehelp = "Strings are used in crafting.",
+	_doc_items_longdesc = "Strings are used in crafting.",
 	inventory_image = "mcl_mobitems_string.png",
 	stack_max = 64,
 	groups = { craftitem = 1 },
@@ -164,6 +164,7 @@ minetest.register_craftitem("mcl_mobitems:string",{
 
 minetest.register_craftitem("mcl_mobitems:blaze_rod", {
 	description = "Blaze Rod",
+	_doc_items_longdesc = "This is a crafting component dropped from dead blazes.",
 	wield_image = "mcl_mobitems_blaze_rod.png",
 	inventory_image = "mcl_mobitems_blaze_rod.png",
 	groups = { craftitem = 1 },
@@ -172,6 +173,7 @@ minetest.register_craftitem("mcl_mobitems:blaze_rod", {
 
 minetest.register_craftitem("mcl_mobitems:blaze_powder", {
 	description = "Blaze Powder",
+	_doc_items_longdesc = "This item is mainly used for brewing potions and crafting.",
 	wield_image = "mcl_mobitems_blaze_powder.png",
 	inventory_image = "mcl_mobitems_blaze_powder.png",
 	groups = { brewitem = 1 },
@@ -180,6 +182,7 @@ minetest.register_craftitem("mcl_mobitems:blaze_powder", {
 
 minetest.register_craftitem("mcl_mobitems:magma_cream", {
 	description = "Magma Cream",
+	_doc_items_longdesc = "Magma cream is a crafting component.",
 	wield_image = "mcl_mobitems_magma_cream.png",
 	inventory_image = "mcl_mobitems_magma_cream.png",
 	groups = { brewitem = 1 },
@@ -188,6 +191,7 @@ minetest.register_craftitem("mcl_mobitems:magma_cream", {
 
 minetest.register_craftitem("mcl_mobitems:ghast_tear", {
 	description = "Ghast Tear",
+	_doc_items_longdesc = "A ghast tear is an item used in potion brewing. It is dropped from dead ghasts.",
 	wield_image = "mcl_mobitems_ghast_tear.png",
 	inventory_image = "mcl_mobitems_ghast_tear.png",
 	groups = { brewitem = 1 },
@@ -196,6 +200,7 @@ minetest.register_craftitem("mcl_mobitems:ghast_tear", {
 
 minetest.register_craftitem("mcl_mobitems:nether_star", {
 	description = "Nether Star",
+	_doc_items_longdesc = "A nether star is a crafting component. It is dropped from the Wither.",
 	wield_image = "mcl_mobitems_nether_star.png",
 	inventory_image = "mcl_mobitems_nether_star.png",
 	groups = { craftitem = 1 },
@@ -204,6 +209,7 @@ minetest.register_craftitem("mcl_mobitems:nether_star", {
 
 minetest.register_craftitem("mcl_mobitems:leather", {
 	description = "Leather",
+	_doc_items_longdesc = "Leather is a versatile crafting component.",
 	wield_image = "mcl_mobitems_leather.png",
 	inventory_image = "mcl_mobitems_leather.png",
 	groups = { craftitem = 1 },
@@ -212,6 +218,7 @@ minetest.register_craftitem("mcl_mobitems:leather", {
 
 minetest.register_craftitem("mcl_mobitems:feather", {
 	description = "Feather",
+	_doc_items_longdesc = "Feathers are used in crafting and are dropped from chickens.",
 	wield_image = "mcl_mobitems_feather.png",
 	inventory_image = "mcl_mobitems_feather.png",
 	groups = { craftitem = 1 },
@@ -258,18 +265,21 @@ minetest.register_craftitem("mcl_mobitems:rabbit_stew", {
 
 minetest.register_craftitem("mcl_mobitems:shulker_shell", {
 	description = "Shulker Shell",
+	_doc_items_longdesc = "Shulker shells are used in crafting. They are dropped from dead shulkers.",
 	inventory_image = "mcl_mobitems_shulker_shell.png",
 	groups = { craftitem = 1 },
 })
 
 minetest.register_craftitem("mcl_mobitems:slimeball", {
 	description = "Slimeball",
+	_doc_items_longdesc = "Slimeballs are used in crafting. They are dropped from slimes.",
 	inventory_image = "mcl_mobitems_slimeball.png",
 	groups = { craftitem = 1 },
 })
 
 minetest.register_craftitem("mcl_mobitems:gunpowder", {
 	description = "Gunpowder",
+	_doc_items_longdesc = doc.sub.items.temp.craftitem,
 	inventory_image = "default_gunpowder.png",
 	stack_max = 64,
 	groups = { craftitem=1 },

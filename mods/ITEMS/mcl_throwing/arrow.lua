@@ -1,6 +1,7 @@
 minetest.register_craftitem("mcl_throwing:arrow", {
 	description = "Arrow",
-	_doc_items_longdescs = "Arrows are ammunition for bows and dispensers.",
+	_doc_items_longdesc = "Arrows are ammunition for bows and dispensers.",
+	_doc_items_usagehelp = "To use arrows as ammunition for a bow, just put them anywhere in your inventory, they will be used up automatically. To use arrows as ammunition for a dispenser, place them in the dispenser's inventory.",
 	inventory_image = "mcl_throwing_arrow_inv.png",
 	groups = { ammo=1, ammo_bow=1 },
 })
