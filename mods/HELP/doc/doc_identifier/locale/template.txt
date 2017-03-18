@@ -2,7 +2,7 @@ Error: This node, item or object is undefined. This is always an error.\\nThis c
 It appears to originate from the mod “%s”, which is enabled. =
 It appears to originate from the mod “%s”, which is not enabled! =
 Its identifier is “%s”. =
-Lookup tool =
+Lookup Tool =
 No help entry for this block could be found. =
 No help entry for this item could be found. =
 No help entry for this object could be found. =

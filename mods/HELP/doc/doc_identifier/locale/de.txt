@@ -2,7 +2,7 @@ Error: This node, item or object is undefined. This is always an error.\nThis ca
 It appears to originate from the mod “%s”, which is enabled. = Es scheint von der Mod »%s« zu stammen. Sie ist aktiv.
 It appears to originate from the mod “%s”, which is not enabled! = Es scheint von der Mod »%s« zu stammen. Sie ist nicht aktiv!
 Its identifier is “%s”. = Der Identifkator ist »%s«.
-Lookup tool = Nachschlagewerkzeug
+Lookup Tool = Nachschlagewerkzeug
 No help entry for this block could be found. = Für diesen Block konnte kein Hilfseintrag gefunden werden.
 No help entry for this item could be found. = Für diesen Gegenstand konnte kein Hilfseintrag gefunden werden.
 No help entry for this object could be found. = Für dieses Objekt konnte kein Hilfseintrag gefunden werden.
