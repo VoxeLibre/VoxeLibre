@@ -226,7 +226,7 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 	return gate_id, open_gate_id
 end
 
-mcl_fences.register_fence_and_fence_gate = function(id, fence_name, fence_gate_name, texture, groups, hardness, blast_reistance, connects_to, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close)
+mcl_fences.register_fence_and_fence_gate = function(id, fence_name, fence_gate_name, texture, groups, hardness, blast_resistance, connects_to, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close)
 	local fence_id = mcl_fences.register_fence(id, fence_name, texture, groups, hardness, blast_resistance, connects_to, sounds)
 	local gate_id, open_gate_id = mcl_fences.register_fence_gate(id, fence_gate_name, texture, groups, hardness, blast_resistance, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close)
 	return fence_id, gate_id, open_gate_id

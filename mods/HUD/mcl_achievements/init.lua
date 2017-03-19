@@ -1,7 +1,7 @@
 -- Settings
 
 -- If true, activates achievements from other Minecraft editions (XBox, PS, etc.)
-local non_pc_achievement = false
+local non_pc_achievements = false
 
 local S
 if minetest.get_modpath("intllib") then

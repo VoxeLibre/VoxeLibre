@@ -313,12 +313,6 @@ mobs:register_spawn("mobs_mc:horse", {"mcl_core:dirt_with_grass", "mcl_core:dirt
 mobs:register_spawn("mobs_mc:horse2", {"mcl_core:dirt_with_grass", "mcl_core:dirt"}, 20, 9, 23000, 1, 31000)
 mobs:register_spawn("mobs_mc:horse3", {"mcl_core:sand", "mcl_core:redsand"}, 20, 9, 17000, 1, 5)
 
-
--- compatibility
-mobs:alias_mob("mobs:horse", "mobs_mc:horse")
-mobs:alias_mob("mobs:horse2", "mobs_mc:horse2")
-mobs:alias_mob("mobs:horse3", "mobs_mc:horse3")
-
 -- spawn eggs
 -- KPV wild horse spawn eggs
 mobs:register_egg("mobs_mc:horse", "Spawn Brown Horse", "spawn_egg_horse.png", 0)
