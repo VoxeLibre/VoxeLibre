@@ -55,6 +55,7 @@ for _, row in ipairs(wool.dyes) do
 			groups = {handy=1, carpet=1,attached_node=1,deco_block=1},
 			sounds = mcl_sounds.node_sound_defaults(),
 			paramtype = "light",
+			sunlight_propagates = true,
 			stack_max = 64,
 			drawtype = "nodebox",
 			node_box = {
