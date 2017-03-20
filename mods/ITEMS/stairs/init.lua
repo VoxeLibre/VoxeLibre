@@ -108,7 +108,7 @@ local slab_trans_dir_place = {[0] = 0, 20, 12, 16, 4, 8}
 function stairs.register_slab(subname, recipeitem, groups, images, description, sounds, hardness, double_description, full_node)
 	groups.slab = 1
 	groups.building_block = 1
-	local longdesc = "Slabs are half as high as their full block counterparts. Slabs can be easily stepped on without needing to jump. They are useful to create long staircases and many other structures. Slabs can be placed on the ceiling of another block will be upside-down."
+	local longdesc = "Slabs are half as high as their full block counterparts. Slabs can be easily stepped on without needing to jump. They are useful to create long staircases and many other structures. Slabs placed on the ceiling of another block will be upside-down."
 	if double_description then
 		longdesc = longdesc .. " When a slab of this particular type is placed on another slab of the same type, a double slab is created."
 	else
