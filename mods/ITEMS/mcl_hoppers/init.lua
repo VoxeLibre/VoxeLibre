@@ -26,6 +26,7 @@ Hoppers interact with containers the following way:
 	groups = {pickaxey=1, container=2,deco_block=1,},
 	drawtype = "nodebox",
 	paramtype = "light",
+	sunlight_propagates = true,
 	tiles = {"mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_inside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png"},
 	selection_box = {type="regular"},
 	node_box = {
@@ -139,6 +140,7 @@ minetest.register_node("mcl_hoppers:hopper_side", {
 	groups = {pickaxey=1, container=2,not_in_creative_inventory=1},
 	drawtype = "nodebox",
 	paramtype = "light",
+	sunlight_propagates = true,
 	paramtype2 = "facedir",
 	tiles = {"mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_inside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png"},
 	selection_box = {type="regular"},
