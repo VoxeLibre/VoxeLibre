@@ -83,7 +83,11 @@ doc.sub.items.register_factoid("nodes", "mining", function(itemstring, def)
 	if not hardness then
 		hardness = 0
 	end
-	return string.format("Hardness: %.2f", hardness)
+	if hardness == -1 then
+		return "Hardness: ∞"
+	else
+		return string.format("Hardness: %.2f", hardness)
+	end
 end)
 
 -- TODO: Blast resistance (omitted for now because explosions ignore hardness)
