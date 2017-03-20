@@ -50,6 +50,7 @@ function beds.register_bed(name, def)
 		stack_max = 1,
 		groups = {handy=1, flammable = 3, bed = 1},
 		_mcl_hardness = 0.2,
+		_mcl_blast_resistance = 1,
 		sounds = def.sounds or mcl_sounds.node_sound_wood_defaults(),
 		node_box = {
 			type = "fixed",
@@ -164,6 +165,7 @@ function beds.register_bed(name, def)
 		pointable = false,
 		groups = {handy = 1, flammable = 3, bed = 2},
 		_mcl_hardness = 0.2,
+		_mcl_blast_resistance = 1,
 		sounds = def.sounds or mcl_sounds.node_sound_wood_defaults(),
 		drop = name .. "_bottom",
 		node_box = {
