@@ -76,6 +76,16 @@ local register_mushroom = function(color, template, d_cap_top, d_cap_side, d_cap
 	cap_side.tiles = { "mcl_mushrooms_mushroom_block_skin_"..color..".png", "mcl_mushrooms_mushroom_block_inside.png", "mcl_mushrooms_mushroom_block_inside.png", "mcl_mushrooms_mushroom_block_inside.png", "mcl_mushrooms_mushroom_block_inside.png", "mcl_mushrooms_mushroom_block_skin_"..color..".png" }
 	minetest.register_node("mcl_mushrooms:"..color.."_mushroom_block_cap_side", cap_side)
 
+	-- Add entry aliases for the Help
+	if minetest.get_modpath("doc") then
+		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_pores_full", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full")
+		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_stem_full", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full")
+		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_stem", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full")
+		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_corner", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full")
+		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_top", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full")
+		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_side", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full")
+	end
+
 end
 
 local longdesc_red = "Huge red mushroom blocks are the plant parts of huge red mushrooms. This includes caps, pores and stems of huge red mushrooms; and these blocks come in some variants."

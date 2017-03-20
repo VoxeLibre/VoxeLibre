@@ -160,6 +160,10 @@ function xpanes.register_pane(name, def)
 		output = "xpanes:" .. name .. "_flat 16",
 		recipe = def.recipe
 	})
+
+	if minetest.get_modpath("doc") then
+		doc.add_entry_alias("nodes", "xpanes:" .. name .. "_flat", "nodes", "xpanes:" .. name)
+	end
 end
 
 local pane = function(description, node, append)

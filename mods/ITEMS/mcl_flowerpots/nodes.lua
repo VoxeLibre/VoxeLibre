@@ -122,6 +122,10 @@ minetest.register_node("mcl_flowerpots:flower_pot_"..flower, {
 		}
 	},
 })
+-- Add entry alias for the Help
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mcl_flowerpots:flower_pot", "nodes", "mcl_flowerpots:flower_pot_"..flower)
+end
 end
 
 for _, row in ipairs(cubes) do
@@ -159,5 +163,12 @@ minetest.register_node("mcl_flowerpots:flower_pot_"..flower, {
 			{ items = { "mcl_flowerpots:flower_pot", flower_node } }
 		}
 	},
+
+
 })
+
+-- Add entry alias for the Help
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mcl_flowerpots:flower_pot", "nodes", "mcl_flowerpots:flower_pot_"..flower)
+end
 end

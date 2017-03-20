@@ -357,5 +357,10 @@ minetest.register_craft({
 	}
 })
 
+-- Add entry aliases for the Help
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mcl_hoppers:hopper", "nodes", "mcl_hoppers:hopper_side")
+end
+
 -- Legacy
 minetest.register_alias("mcl_hoppers:hopper_item", "mcl_hoppers:hopper")

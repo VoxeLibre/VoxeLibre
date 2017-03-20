@@ -345,3 +345,6 @@ minetest.register_craft({
 	}
 })
 
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "signs:sign_wall", "nodes", "signs:sign_yard")
+end

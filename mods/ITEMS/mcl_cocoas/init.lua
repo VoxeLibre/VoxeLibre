@@ -241,3 +241,8 @@ minetest.register_abm({
 		end
 }	)
 
+-- Add entry aliases for the Help
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mcl_cocoas:cocoa_1", "nodes", "mcl_cocoas:cocoa_2")
+end
+

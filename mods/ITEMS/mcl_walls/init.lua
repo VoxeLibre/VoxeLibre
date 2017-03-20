@@ -156,6 +156,11 @@ function mcl_walls.register_wall(nodename, description, craft_material, tiles, i
 			_mcl_blast_resistance = 30,
 			_mcl_hardness = 2,
 		})
+
+		-- Add entry alias for the Help
+		if minetest.get_modpath("doc") then
+			doc.add_entry_alias("nodes", nodename, "nodes", nodename.."_"..i)
+		end
 	end
 
 	minetest.register_node(nodename.."_16", {
@@ -177,6 +182,10 @@ function mcl_walls.register_wall(nodename, description, craft_material, tiles, i
 		_mcl_blast_resistance = 30,
 		_mcl_hardness = 2,
 	})
+	-- Add entry alias for the Help
+	if minetest.get_modpath("doc") then
+		doc.add_entry_alias("nodes", nodename, "nodes", nodename.."_16")
+	end
 
 	minetest.register_node(nodename.."_21", {
 		drawtype = "nodebox",
@@ -197,6 +206,10 @@ function mcl_walls.register_wall(nodename, description, craft_material, tiles, i
 		_mcl_blast_resistance = 30,
 		_mcl_hardness = 2,
 	})
+	-- Add entry alias for the Help
+	if minetest.get_modpath("doc") then
+		doc.add_entry_alias("nodes", nodename, "nodes", nodename.."_21")
+	end
 
 	-- Inventory item
 	minetest.register_node(nodename, {

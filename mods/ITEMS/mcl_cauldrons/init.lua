@@ -87,6 +87,11 @@ local register_filled_cauldron = function(water_level, description)
 		_mcl_hardness = 2,
 		_mcl_blast_resistance = 10,
 	})
+
+	-- Add entry aliases for the Help
+	if minetest.get_modpath("doc") then
+		doc.add_entry_alias("nodes", "mcl_cauldrons:cauldron", "nodes", "mcl_cauldrons:cauldron_"..water_level)
+	end
 end
 
 -- Filled crauldrons (3 levels)

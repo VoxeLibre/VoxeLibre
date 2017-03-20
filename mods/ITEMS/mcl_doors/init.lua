@@ -364,6 +364,14 @@ function mcl_doors:register_door(name, def)
 		can_dig = check_player_priv,
 	})
 
+	-- Add entry aliases for the Help
+	if minetest.get_modpath("doc") then
+		doc.add_entry_alias("craftitems", name, "nodes", name.."_b_1")
+		doc.add_entry_alias("craftitems", name, "nodes", name.."_b_2")
+		doc.add_entry_alias("craftitems", name, "nodes", name.."_t_1")
+		doc.add_entry_alias("craftitems", name, "nodes", name.."_t_2")
+	end
+
 end
 
 local wood_longdesc = "Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal."
@@ -671,6 +679,9 @@ function mcl_doors:register_trapdoor(name, def)
 		}},
 	})
 
+	if minetest.get_modpath("doc") then
+		doc.add_entry_alias("nodes", name, "nodes", name.."_open")
+	end
 
 end
 

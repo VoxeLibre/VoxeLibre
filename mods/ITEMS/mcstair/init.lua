@@ -642,6 +642,11 @@ function mcstair.add(name, stairtiles)
 		after_dig_node = function(pos, oldnode) after_dig_node(pos, oldnode) end,
 		_mcl_hardness = node_def._mcl_hardness,
 	})
+
+	if minetest.get_modpath("doc") then
+		doc.add_entry_alias("nodes", name, "nodes", name.."_inner")
+		doc.add_entry_alias("nodes", name, "nodes", name.."_outer")
+	end
 end
 
 for _,v in ipairs({

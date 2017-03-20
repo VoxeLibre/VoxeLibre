@@ -156,6 +156,13 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 		end
 	end
 	minetest.register_node(itemstring_wall, walldef)
+
+
+	-- Add entry alias for the Help
+	if minetest.get_modpath("doc") then
+		doc.add_entry_alias("nodes", itemstring, "nodes", itemstring_wall)
+	end
+
 end
 
 mcl_torches.register_torch("torch",

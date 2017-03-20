@@ -223,6 +223,10 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 		_mcl_hardness = hardness,
 	})
 
+	if minetest.get_modpath("doc") then
+		doc.add_entry_alias("nodes", gate_id, "nodes", open_gate_id)
+	end
+
 	return gate_id, open_gate_id
 end
 

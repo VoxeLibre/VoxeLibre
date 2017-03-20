@@ -183,6 +183,11 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		groups = {dig_immediate=3,flammable=2,flower=1, dig_by_water=1, not_in_creative_inventory = 1, double_plant=2},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 	})
+
+	if minetest.get_modpath("doc") then
+		doc.add_entry_alias("nodes", "mcl_flowers:"..name, "nodes", "mcl_flowers:"..name.."_top")
+	end
+
 end
 
 add_large_plant("peony", "Peony", "A peony is a large plant which occupies two blocks. It is mainly used in dye protection.", "mcl_flowers_double_plant_paeonia_bottom.png", "mcl_flowers_double_plant_paeonia_top.png")

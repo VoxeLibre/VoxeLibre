@@ -254,6 +254,12 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 	end,
 	mesecons = mesecons,
 })
+
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mcl_chests:"..basename, "nodes", "mcl_chests:"..basename.."_left")
+	doc.add_entry_alias("nodes", "mcl_chests:"..basename, "nodes", "mcl_chests:"..basename.."_right")
+end
+
 end
 
 register_chest("chest",

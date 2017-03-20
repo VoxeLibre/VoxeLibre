@@ -1772,14 +1772,14 @@ for i=0,3 do
 			end
 		end
 	end
-	local doc = i == 0
+	local use_doc = i == 0
 	local longdesc
-	if doc then
+	if use_doc then
 		longdesc = "Frosted ice is a short-lived solid translucent block. It melts into a water source within a few seconds."
 	end
 	minetest.register_node("mcl_core:frosted_ice_"..i, {
 		description = "Frosted Ice",
-		_doc_items_create_entry = doc,
+		_doc_items_create_entry = use_doc,
 		_doc_items_longdesc = longdesc,
 		drawtype = "glasslike",
 		tiles = {"default_frosted_ice_"..i..".png"},
@@ -1810,6 +1810,11 @@ for i=0,3 do
 		_mcl_blast_resistance = 2.5,
 		_mcl_hardness = 0.5,
 	})
+
+	-- Add entry aliases for the Help
+	if minetest.get_modpath("doc") and i > 0 then
+		doc.add_entry_alias("nodes", "mcl_core:frosted_ice_0", "nodes", "mcl_core:frosted_ice_"..i)
+	end
 end
 
 minetest.register_node("mcl_core:snow", {

@@ -197,3 +197,12 @@ minetest.register_craft({
 	recipe = "mcl_throwing:bow",
 	burntime = 15,
 })
+
+-- Add entry aliases for the Help
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("tools", "mcl_throwing:bow", "tools", "mcl_throwing:bow_0")
+	doc.add_entry_alias("tools", "mcl_throwing:bow", "tools", "mcl_throwing:bow_1")
+	doc.add_entry_alias("tools", "mcl_throwing:bow", "tools", "mcl_throwing:bow_2")
+end
+
+

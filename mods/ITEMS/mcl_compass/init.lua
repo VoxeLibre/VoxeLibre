@@ -49,20 +49,23 @@ for frame=0,31 do
 	table.insert(images, "mcl_compass_compass.png^[verticalframe:32:"..frame)
 end
 
+local doc_mod = minetest.get_modpath("doc") ~= nil
+
 local stereotype_frame = 18
 for i,img in ipairs(images) do
 	local inv = 1
 	if i == stereotype_frame then
 		inv = 0
 	end
-	local doc, longdesc, usagehelp
-	doc = i == stereotype_frame
-	if doc then
+	local use_doc, longdesc, usagehelp
+	use_doc = i == stereotype_frame
+	if use_doc then
 		longdesc = "Compasses are tools which point to the world origin (X=0, Z=0) or the spawn point in the Overworld."
 	end
-	minetest.register_craftitem("mcl_compass:"..(i-1), {
+	local itemstring = "mcl_compass:"..(i-1)
+	minetest.register_craftitem(itemstring, {
 		description = "Compass",
-		_doc_items_create_entry = doc,
+		_doc_items_create_entry = use_doc,
 		_doc_items_longdesc = longdesc,
 		_doc_items_usagehelp = usagehelp,
 		inventory_image = img,
@@ -70,6 +73,11 @@ for i,img in ipairs(images) do
 		stack_max = 64,
 		groups = {not_in_creative_inventory=inv, compass=i, tool=1}
 	})
+
+	-- Help aliases. Makes sure the lookup tool works correctly
+	if not use_doc and doc_mod then
+		doc.add_entry_alias("craftitems", "mcl_compass:"..(stereotype_frame-1), "craftitems", itemstring)
+	end
 end
 
 minetest.register_craft({
