@@ -644,7 +644,7 @@ minetest.register_node("mcl_core:tree", {
 
 minetest.register_node("mcl_core:sapling", {
 	description = "Oak Sapling",
-	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, an oak sapling will grow into an oak tree after some time. If the tree can't grow it it is too dark, the sapling will uproot.",
+	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, an oak sapling will grow into an oak tree after some time. If the tree can't grow because of darkness, the sapling will uproot.",
 	_doc_items_hidden = false,
 	drawtype = "plantlike",
 	visual_scale = 1.0,
@@ -652,6 +652,7 @@ minetest.register_node("mcl_core:sapling", {
 	inventory_image = "default_sapling.png",
 	wield_image = "default_sapling.png",
 	paramtype = "light",
+	sunlight_propagates = true,
 	walkable = false,
 	selection_box = {
 		type = "fixed",
@@ -728,13 +729,14 @@ minetest.register_node("mcl_core:darktree", {
 
 minetest.register_node("mcl_core:darksapling", {
 	description = "Dark Oak Sapling",
-	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, a dark oak sapling will grow into a dark oak tree after some time. If the tree can't grow it it is too dark, the sapling will uproot.",
+	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, a dark oak sapling will grow into a dark oak tree after some time. If the tree can't grow because of darkness, the sapling will uproot.",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
 	tiles = {"default_sapling_big_oak.png"},
 	inventory_image = "default_sapling_big_oak.png",
 	wield_image = "default_sapling_big_oak.png",
 	paramtype = "light",
+	sunlight_propagates = true,
 	walkable = false,
 	selection_box = {
 		type = "fixed",
@@ -868,7 +870,7 @@ minetest.register_node("mcl_core:jungleleaves", {
 
 minetest.register_node("mcl_core:junglesapling", {
 	description = "Jungle Sapling",
-	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, a jungle sapling will grow into a jungle tree after some time. If the tree can't grow it it is too dark, the sapling will uproot.",
+	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, a jungle sapling will grow into a jungle tree after some time. If the tree can't grow because of darkness, the sapling will uproot.",
 	drawtype = "plantlike",
 	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	visual_scale = 1.0,
@@ -876,6 +878,7 @@ minetest.register_node("mcl_core:junglesapling", {
 	inventory_image = "default_junglesapling.png",
 	wield_image = "default_junglesapling.png",
 	paramtype = "light",
+	sunlight_propagates = true,
 	walkable = false,
 	selection_box = {
 		type = "fixed",
@@ -946,13 +949,14 @@ minetest.register_node("mcl_core:acacialeaves", {
 
 minetest.register_node("mcl_core:acaciasapling", {
 	description = "Acacia Sapling",
-	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, an acacia sapling will grow into an acacia tree after some time. If the tree can't grow it it is too dark, the sapling will uproot.",
+	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, an acacia sapling will grow into an acacia tree after some time. If the tree can't grow because of darkness, the sapling will uproot.",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
 	tiles = {"default_acaciasapling.png"},
 	inventory_image = "default_acaciasapling.png",
 	wield_image = "default_acaciasapling.png",
 	paramtype = "light",
+	sunlight_propagates = true,
 	walkable = false,
 	selection_box = {
 		type = "fixed",
@@ -1028,13 +1032,14 @@ minetest.register_node("mcl_core:spruceleaves", {
 
 minetest.register_node("mcl_core:sprucesapling", {
 	description = "Spruce Sapling",
-	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, a spruce sapling will grow into a spruce tree after some time. If the tree can't grow it it is too dark, the sapling will uproot.",
+	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, a spruce sapling will grow into a spruce tree after some time. If the tree can't grow because of darkness, the sapling will uproot.",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
 	tiles = {"default_sprucesapling.png"},
 	inventory_image = "default_sprucesapling.png",
 	wield_image = "default_sprucesapling.png",
 	paramtype = "light",
+	sunlight_propagates = true,
 	walkable = false,
 	selection_box = {
 		type = "fixed",
@@ -1105,13 +1110,14 @@ minetest.register_node("mcl_core:birchleaves", {
 
 minetest.register_node("mcl_core:birchsapling", {
 	description = "Birch Sapling",
-	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, a birch sapling will grow into a birch tree after some time. If the tree can't grow it it is too dark, the sapling will uproot.",
+	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, a birch sapling will grow into a birch tree after some time. If the tree can't grow because of darkness, the sapling will uproot.",
 	drawtype = "plantlike",
 	visual_scale = 1.0,
 	tiles = {"default_sapling_birch.png"},
 	inventory_image = "default_sapling_birch.png",
 	wield_image = "default_sapling_birch.png",
 	paramtype = "light",
+	sunlight_propagates = true,
 	walkable = false,
 	selection_box = {
 		type = "fixed",
