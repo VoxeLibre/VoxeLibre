@@ -9,6 +9,7 @@ minetest.register_node("mobs:spawner", {
 	tiles = {"mob_spawner.png"},
 	drawtype = "glasslike",
 	paramtype = "light",
+	sunlight_propagates = true,
 	walkable = true,
 	description = S("Monster Spawner"),
 	_doc_items_longdesc = S("A monster spawner is a block which regularily causes monsters and animals to appear around it."),
