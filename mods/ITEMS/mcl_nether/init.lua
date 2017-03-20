@@ -122,7 +122,7 @@ minetest.register_node("mcl_nether:nether_wart_block", {
 		}
 	),
 	_mcl_blast_resistance = 5,
-	_mcl_hardness = 1.5,
+	_mcl_hardness = 1,
 })
 
 minetest.register_node("mcl_nether:quartz_block", {
