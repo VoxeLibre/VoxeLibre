@@ -35,6 +35,7 @@ minetest.register_node("mcl_cake:cake", {
 	inventory_image = "cake.png",
 	wield_image = "cake.png",
 	paramtype = "light",
+	sunlight_propagates = true,
 	is_ground_content = false,
 	drawtype = "nodebox",
 	selection_box = {
@@ -80,6 +81,7 @@ local register_slice = function(level, nodebox, desc)
 		_doc_items_create_entry = false,
 		tiles = cake_texture,
 		paramtype = "light",
+		sunlight_propagates = true,
 		is_ground_content = false,
 		drawtype = "nodebox",
 		selection_box = {
