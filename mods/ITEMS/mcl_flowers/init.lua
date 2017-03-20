@@ -62,6 +62,7 @@ minetest.register_node("mcl_flowers:tallgrass", {
 	inventory_image = "mcl_flowers_tallgrass.png",
 	wield_image = "mcl_flowers_tallgrass.png",
 	paramtype = "light",
+	sunlight_propagates = true,
 	walkable = false,
 	buildable_to = true,
 	is_ground_content = true,

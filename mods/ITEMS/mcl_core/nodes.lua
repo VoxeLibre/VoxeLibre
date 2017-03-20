@@ -1697,6 +1697,7 @@ minetest.register_node("mcl_core:deadbush", {
 	inventory_image = "default_dry_shrub.png",
 	wield_image = "default_dry_shrub.png",
 	paramtype = "light",
+	sunlight_propagates = true,
 	walkable = false,
 	stack_max = 64,
 	buildable_to = true,
