@@ -56,6 +56,7 @@ local wheat_seed_drop = {
 minetest.register_node("mcl_flowers:tallgrass", {
 	description = "Tall Grass",
 	_doc_items_longdesc = "Tall grass is a small plant which often occours on the surface of grasslands. It can be harvested for wheat seeds. By using bone meal, tall grass can be turned into double tallgrass which is two blocks high.",
+	_doc_items_hidden = false,
 	drawtype = "plantlike",
 	tiles = {"mcl_flowers_tallgrass.png"},
 	inventory_image = "mcl_flowers_tallgrass.png",

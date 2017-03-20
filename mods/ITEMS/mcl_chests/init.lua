@@ -23,7 +23,7 @@ local function get_chest_neighborpos(pos, param2, side)
 end
 
 -- This is a helper function to register both chests and trapped chests. Trapped chests will make use of the additional parameters
-local register_chest = function(basename, desc, longdesc, usagehelp, mesecons, on_rightclick_addendum, on_rightclick_addendum_left, on_rightclick_addendum_right, drop)
+local register_chest = function(basename, desc, longdesc, usagehelp, hidden, mesecons, on_rightclick_addendum, on_rightclick_addendum_left, on_rightclick_addendum_right, drop)
 
 if not drop then
 	drop = "mcl_chests:"..basename
@@ -35,6 +35,7 @@ minetest.register_node("mcl_chests:"..basename, {
 	description = desc,
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usagehelp,
+	_doc_items_hidden = hidden,
 	tiles = {"default_chest_top.png", "default_chest_top.png", "default_chest_side.png",
 		"default_chest_side.png", "default_chest_side.png", "default_chest_front.png"},
 	paramtype2 = "facedir",
@@ -258,7 +259,8 @@ end
 register_chest("chest",
 	"Chest",
 	"Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other.",
-	"To acccess the inventory of a chest or large chest, rightclick it. When broken, the items of the chest will drop out."
+	"To acccess the inventory of a chest or large chest, rightclick it. When broken, the items of the chest will drop out.",
+	false
 )
 
 local trapped_chest_mesecons_rules = {
@@ -273,6 +275,7 @@ register_chest("trapped_chest",
 	"Trapped Chest",
 	"A trapped chest is a container which provides 27 inventory slots. It looks identical to a regular chest, but when it is opened, it sends a redstone signal to its adjacent blocks. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other.",
 	"To acccess the inventory of a trapped chest or a large trapped chest, rightclick it. When broken, the items will drop out.",
+	nil,
 	{receptor = {
 		state = mesecon.state.off,
 		rules = trapped_chest_mesecons_rules,

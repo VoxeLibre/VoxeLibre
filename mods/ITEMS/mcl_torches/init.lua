@@ -173,7 +173,8 @@ mcl_torches.register_torch("torch",
 	}},
 	14,
 	{dig_immediate=3, torch=1, dig_by_water=1, deco_block=1},
-	mcl_sounds.node_sound_wood_defaults())
+	mcl_sounds.node_sound_wood_defaults(),
+	{_doc_items_hidden = false})
 	
 
 minetest.register_craft({

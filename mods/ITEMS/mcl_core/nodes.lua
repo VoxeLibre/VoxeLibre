@@ -67,6 +67,7 @@ minetest.register_node("mcl_core:void", {
 minetest.register_node("mcl_core:stone", {
 	description = "Stone",
 	_doc_items_longdesc = "One of the most common blocks in the world, almost the entire underground consists of stone. It sometimes contains ores. Stone may be created when water meets lava.",
+	_doc_items_hidden = false,
 	tiles = {"default_stone.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -80,6 +81,7 @@ minetest.register_node("mcl_core:stone", {
 minetest.register_node("mcl_core:stone_with_coal", {
 	description = "Coal Ore",
 	_doc_items_longdesc = "Some coal contained in stone, it is very common and can be found inside stone in medium to large clusters at nearly every height.",
+	_doc_items_hidden = false,
 	tiles = {"default_stone.png^default_mineral_coal.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -360,6 +362,7 @@ minetest.register_node("mcl_core:diorite_smooth", {
 minetest.register_node("mcl_core:dirt_with_grass", {
 	description = "Grass Block",
 	_doc_items_longdesc = "A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel.",
+	_doc_items_hidden = false,
 	tiles = {"default_grass.png", "default_dirt.png", "default_dirt.png^default_grass_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -427,6 +430,7 @@ minetest.register_node("mcl_core:podzol", {
 minetest.register_node("mcl_core:dirt", {
 	description = "Dirt",
 	_doc_items_longdesc = "Dirt acts as a soil for a few plants. When in light, it will turn into a grass block eventually.",
+	_doc_items_hidden = false,
 	tiles = {"default_dirt.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -473,6 +477,7 @@ minetest.register_node("mcl_core:gravel", {
 minetest.register_node("mcl_core:sand", {
 	description = "Sand",
 	_doc_items_longdesc = "Sand is found in large quantities at beaches and deserts.",
+	_doc_items_hidden = false,
 	tiles = {"default_sand.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -484,6 +489,7 @@ minetest.register_node("mcl_core:sand", {
 
 minetest.register_node("mcl_core:sandstone", {
 	description = "Sandstone",
+	_doc_items_hidden = false,
 	_doc_items_longdesc = "Sandstone is compressed sand and is a rather soft kind of stone.",
 	tiles = {"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_normal.png"},
 	is_ground_content = true,
@@ -574,6 +580,7 @@ minetest.register_node("mcl_core:clay", {
 	-- Original name: Clay
 	description = "Block of Clay",
 	_doc_items_longdesc = "A block of clay is a versatile kind of earth commonly found at beaches underwater.",
+	_doc_items_hidden = false,
 	tiles = {"default_clay.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -619,6 +626,7 @@ minetest.register_node("mcl_core:bone_block", {
 minetest.register_node("mcl_core:tree", {
 	description = "Oak Wood",
 	_doc_items_longdesc = "The trunk of an oak tree.",
+	_doc_items_hidden = false,
 	tiles = {"default_tree_top.png", "default_tree_top.png", "default_tree.png"},
 	paramtype2 = "facedir",
 	on_place = mcl_util.rotate_axis,
@@ -632,6 +640,7 @@ minetest.register_node("mcl_core:tree", {
 minetest.register_node("mcl_core:sapling", {
 	description = "Oak Sapling",
 	_doc_items_longdesc = "When placed on soil (such as dirt) and exposed to light, an oak sapling will grow into an oak tree after some time. If the tree can't grow it it is too dark, the sapling will uproot.",
+	_doc_items_hidden = false,
 	drawtype = "plantlike",
 	visual_scale = 1.0,
 	tiles = {"default_sapling.png"},
@@ -657,6 +666,7 @@ minetest.register_node("mcl_core:sapling", {
 minetest.register_node("mcl_core:leaves", {
 	description = "Oak Leaves",
 	_doc_items_longdesc = "Oak leaves are grown from oak trees.",
+	_doc_items_hidden = false,
 	drawtype = "allfaces_optional",
 	place_param2 = 1, -- Prevent leafdecay for placed nodes
 	visual_scale = 1.3,
@@ -687,6 +697,7 @@ minetest.register_node("mcl_core:leaves", {
 minetest.register_node("mcl_core:wood", {
 	description = "Oak Wood Planks",
 	_doc_items_longdesc = doc.sub.items.temp.build,
+	_doc_items_hidden = false,
 	tiles = {"default_wood.png"},
 	stack_max = 64,
 	is_ground_content = false,
@@ -1440,6 +1451,7 @@ minetest.register_node("mcl_core:water_source", {
 	description = "Still Water",
 	_doc_items_entry_name = "Water",
 	_doc_items_longdesc = "Water is abundant in oceans and may also appear in small quantities in underground water pockets. You can swim easily in water, but you need to catch your breath from time to time. Water will turn nearby lava into obsidian or stone.",
+	_doc_items_hidden = false,
 	inventory_image = minetest.inventorycube("default_water.png"),
 	drawtype = "liquid",
 	tiles = {
@@ -1564,6 +1576,7 @@ minetest.register_node("mcl_core:lava_source", {
 minetest.register_node("mcl_core:cobble", {
 	description = "Cobblestone",
 	_doc_items_longdesc = doc.sub.items.temp.build,
+	_doc_items_hidden = false,
 	tiles = {"default_cobble.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -1672,6 +1685,7 @@ minetest.register_node("mcl_core:obsidian", {
 minetest.register_node("mcl_core:deadbush", {
 	description = "Dead Bush",
 	_doc_items_longdesc = "Dead bushes are unremarkable plants often found in dry areas. They can be harvested for sticks.",
+	_doc_items_hidden = false,
 	drawtype = "plantlike",
 	visual_scale = 1.0,
 	tiles = {"default_dry_shrub.png"},
@@ -1801,6 +1815,7 @@ end
 minetest.register_node("mcl_core:snow", {
 	description = "Top Snow",
 	_doc_items_longdesc = "Top snow is a thin layer of snow.",
+	_doc_items_hidden = false,
 	tiles = {"default_snow.png"},
 	wield_image = "default_snow.png",
 	wield_scale = { x=1, y=1, z=1 },
@@ -1827,6 +1842,7 @@ minetest.register_node("mcl_core:snow", {
 minetest.register_node("mcl_core:snowblock", {
 	description = "Snow",
 	_doc_items_longdesc = "This is a full block of snow. Snow of this thickness is usually found in areas of extreme cold.",
+	_doc_items_hidden = false,
 	tiles = {"default_snow.png"},
 	is_ground_content = true,
 	stack_max = 64,

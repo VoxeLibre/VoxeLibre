@@ -30,6 +30,7 @@ minetest.register_tool("mcl_farming:hoe_wood", {
 	description = "Wood Hoe",
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
+	_doc_items_hidden = false,
 	inventory_image = "farming_tool_woodhoe.png",
 	on_place = function(itemstack, user, pointed_thing)
 		-- Call on_rightclick if the pointed node defines it

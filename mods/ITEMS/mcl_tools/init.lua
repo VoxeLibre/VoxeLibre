@@ -60,6 +60,7 @@ local shears_use = "To shear a sheep and obtain its wool, rightclick it while ho
 minetest.register_tool("mcl_tools:pick_wood", {
 	description = "Wooden Pickaxe",
 	_doc_items_longdesc = pickaxe_longdesc,
+	_doc_items_hidden = false,
 	inventory_image = "default_tool_woodpick.png",
 	groups = { tool=1 },
 	tool_capabilities = {
@@ -192,6 +193,7 @@ minetest.register_tool("mcl_tools:shovel_wood", {
 	description = "Wooden Shovel",
 	_doc_items_longdesc = shovel_longdesc,
 	_doc_items_usagehelp = shovel_use,
+	_doc_items_hidden = false,
 	inventory_image = "default_tool_woodshovel.png",
 	wield_image = "default_tool_woodshovel.png^[transformR90",
 	groups = { tool=1 },
@@ -283,6 +285,7 @@ minetest.register_tool("mcl_tools:shovel_diamond", {
 minetest.register_tool("mcl_tools:axe_wood", {
 	description = "Wooden Axe",
 	_doc_items_longdesc = axe_longdesc,
+	_doc_items_hidden = false,
 	inventory_image = "default_tool_woodaxe.png",
 	groups = { tool=1 },
 	tool_capabilities = {
@@ -361,6 +364,7 @@ minetest.register_tool("mcl_tools:axe_diamond", {
 minetest.register_tool("mcl_tools:sword_wood", {
 	description = "Wooden Sword",
 	_doc_items_longdesc = sword_longdesc,
+	_doc_items_hidden = false,
 	inventory_image = "default_tool_woodsword.png",
 	groups = { weapon=1 },
 	tool_capabilities = {

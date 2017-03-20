@@ -272,6 +272,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 	description = "Furnace",
 	_doc_items_longdesc = "Furnaces cook or smelt several items, using a furnace fuel, into something else.",
 	_doc_items_usagehelp =  "Right-click the furnace to view it. Place a furnace fuel in the lower slot and the source material in the upper slot. The furnace will slowly use its fuel to smelt the item. The result will be placed into the output slot at the right side.",
+	_doc_items_hidden = false,
 	tiles = {
 		"default_furnace_top.png", "default_furnace_bottom.png",
 		"default_furnace_side.png", "default_furnace_side.png",

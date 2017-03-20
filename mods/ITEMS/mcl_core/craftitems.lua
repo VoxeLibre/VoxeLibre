@@ -7,6 +7,7 @@
 minetest.register_craftitem("mcl_core:stick", {
 	description = "Stick",
 	_doc_items_longdesc = "Sticks are a very versatile crafting material; used in countless crafting recipes.",
+	_doc_items_hidden = false,
 	inventory_image = "default_stick.png",
 	stack_max = 64,
 	groups = { craftitem=1, stick=1 },
@@ -23,6 +24,7 @@ minetest.register_craftitem("mcl_core:paper", {
 minetest.register_craftitem("mcl_core:coal_lump", {
 	description = "Coal",
 	_doc_items_longdesc = "“Coal” refers to coal lumps obtained by digging coal ore which can be found underground. Coal is your standard furnace fuel, but it can also be used to make torches, coal blocks and a few other things.",
+	_doc_items_hidden = false,
 	groups = { coal=1 },
 	inventory_image = "default_coal_lump.png",
 	stack_max = 64,
@@ -32,6 +34,7 @@ minetest.register_craftitem("mcl_core:coal_lump", {
 minetest.register_craftitem("mcl_core:charcoal_lump", {
 	description = "Charcoal",
 	_doc_items_longdesc = "Charcoal is an alternative furnace fuel created by cooking wood in a furnace. It has the same burning time as coal and also shares many of its crafting recipes, but it can not be used to create coal blocks.",
+	_doc_items_hidden = false,
 	groups = { coal=1 },
 	inventory_image = "default_charcoal_lump.png",
 	stack_max = 64,
@@ -65,6 +68,7 @@ minetest.register_craftitem("mcl_core:diamond", {
 minetest.register_craftitem("mcl_core:clay_lump", {
 	description = "Clay",
 	_doc_items_longdesc = "Clay is a raw material.",
+	_doc_items_hidden = false,
 	inventory_image = "default_clay_lump.png",
 	stack_max = 64,
 	groups = { craftitem=1 },
