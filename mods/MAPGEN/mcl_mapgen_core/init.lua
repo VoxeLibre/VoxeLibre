@@ -723,7 +723,14 @@ local function register_mgv6_decorations()
 
 	-- Pumpkin
 	minetest.register_decoration({
-		deco_type = "simple",
+		deco_type = "schematic",
+		schematic = {
+			size = { x=1, y=2, z=1 },
+			data = {
+				{ name = "air", prob = 0 },
+				{ name = "mcl_farming:pumpkin_face", param1=255, },
+			},
+		},
 		place_on = {"mcl_core:dirt_with_grass"},
 		sidelen = 16,
 		noise_params = {
@@ -736,7 +743,7 @@ local function register_mgv6_decorations()
 		},
 		y_min = 3,
 		y_max = 29,
-		decoration = "mcl_farming:pumpkin_face",
+		rotation = "random",
 	})
 
 	-- Melon
