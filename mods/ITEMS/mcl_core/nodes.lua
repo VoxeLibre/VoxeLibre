@@ -189,6 +189,11 @@ minetest.register_node("mcl_core:stone_with_redstone_lit", {
 	_mcl_hardness = 3,
 })
 
+-- Add entry alias for the Help
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mcl_core:stone_with_redstone", "nodes", "mcl_core:stone_with_redstone_lit")
+end
+
 minetest.register_node("mcl_core:stone_with_lapis", {
 	description = "Lapis Lazuli Ore",
 	_doc_items_longdesc = "Lapis lazuli ore is the ore of lapis lazuli. It can be rarely found in clusters near the bottom of the world.",
