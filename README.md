@@ -53,9 +53,8 @@ Or you can play in “creative mode” in which you can build almost anything in
 * See tooltips in crafting guide to learn about fuels and smeltable items
 
 ### Additional help
-To learn more about the blocks in MineClone 2, see the
-[Minecraft Wiki](http://minecraft.gamepedia.com/Minecraft_Wiki) for now.
-It is planned to eventually add a sophisticated in-game help system.
+More help about the gameplay, blocks items and much more can be found from inside
+the game. You can access the help from your inventory menu.
 
 ## Installation
 This game requires [Minetest](http://minetest.net) 0.4.15 (or later) to run,
@@ -105,7 +104,6 @@ The following main features are available:
 The following features are incomplete:
 
 * Monsters and NPCs
-* Digging times
 * Some redstone-related things
 * The Nether
 * The End
@@ -117,10 +115,11 @@ The following features are incomplete:
 * Trees, biomes, generated structures
 * A couple of non-trivial blocks and items
 
-Additional features:
+Bonus features (not found in Minecraft):
 
 * Built-in crafting guide which shows you crafting and smelting recipes
-* New temporary crafting recipes. For example, you can craft ender pearls (impossible in Minecraft). They only exist to make some otherwise unaccessible items available when you're not in creative mode. These recipes will be removed as development goes on an more features become available
+* In-game help system containing extensive help about gameplay basics, blocks, items and more
+* New temporary crafting recipes. They only exist to make some otherwise unaccessible items available when you're not in creative mode. These recipes will be removed as development goes on an more features become available
 
 Technical differences from Minecraft:
 
@@ -142,8 +141,7 @@ Ideally, no gameplay features will be added or removed.
 A secondary goal is to make modding easy as pie. Minetest is of great help here!
 Trying to stay faithful to the original look and feel is a side goal, but not an important one.
 If deemed neccessary, MineClone 2 *will* deviate from Minecraft in interface issues.
-There's already a built-in crafting guide. And a full-blown in-game help system is a planned
-core feature.
+There's already a built-in crafting guide and a full-blown in-game help system.
 Finally, any limitations found in Minetest (the game engine) will be written down in the course
 of development.
 
