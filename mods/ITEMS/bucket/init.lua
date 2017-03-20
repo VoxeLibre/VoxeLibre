@@ -92,6 +92,9 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 						return itemstack
 					end
 					place_liquid(pointed_thing.under, node, source, flowing, fullness)
+					if doc.entry_exists("nodes", source) then
+						doc.mark_entry_as_revealed(user:get_player_name(), "nodes", source)
+					end
 				else
 					-- not buildable to; place the liquid above
 					-- check if the node above can be replaced
@@ -102,6 +105,9 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 							return itemstack
 						end
 						place_liquid(pointed_thing.above, node, source, flowing, fullness)
+						if doc.entry_exists("nodes", source) then
+							doc.mark_entry_as_revealed(user:get_player_name(), "nodes", source)
+						end
 					else
 						-- do not remove the bucket with the liquid
 						return
@@ -165,6 +171,10 @@ minetest.register_craftitem("bucket:bucket_empty", {
 			new_bucket = ItemStack({name = liquiddef.itemname, metadata = tostring(node.param2)})
 
 			minetest.add_node(pointed_thing.under, {name="air"})
+
+			if doc.entry_exists("nodes", nn) then
+				doc.mark_entry_as_revealed(user:get_player_name(), "nodes", nn)
+			end
 
 		elseif nn == "mcl_cauldrons:cauldron_3" then
 			-- Take water out of full cauldron
