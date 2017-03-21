@@ -147,7 +147,7 @@ minetest.register_abm({
 -- Papyrus and cactus drop
 --
 
-local timber_nodenames={"mcl_core:reeds", "mcl_core:cactus"}
+local timber_nodenames={"mcl_core:reeds"}
 
 minetest.register_on_dignode(function(pos, node)
 	local i=1

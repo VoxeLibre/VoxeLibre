@@ -1137,13 +1137,15 @@ minetest.register_node("mcl_core:birchsapling", {
 minetest.register_node("mcl_core:cactus", {
 	description = "Cactus",
 	_doc_items_longdesc = "This is a piece of cactus commonly found in dry areas, especially deserts. Over time, cacti will grow up to 3 blocks high on sand or red sand. A cactus hurts living beings touching it with a damage of 1 HP every half second. When a cactus block is broken, all cactus blocks connected above it will break as well.",
+	_doc_items_usagehelp = "A cactus can only be placed on top of another cactus or any sand.",
 	drawtype = "nodebox",
 	tiles = {"default_cactus_top.png", "default_cactus_bottom.png", "default_cactus_side.png","default_cactus_side.png","default_cactus_side.png","default_cactus_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {handy=1, deco_block=1},
+	groups = {handy=1, attached_node=1, deco_block=1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	paramtype = "light",
+	node_placement_prediction = "",
 	node_box = {
 		type = "fixed",
 		fixed = {
@@ -1160,6 +1162,32 @@ minetest.register_node("mcl_core:cactus", {
 			{-7/16, -8/16, -7/16, 7/16, 8/16, 7/16},
 		},
 	},
+	-- Only allow to place cactus on sand or cactus
+	on_place = function(itemstack, placer, pointed_thing)
+		if pointed_thing.type ~= "node" then
+			-- no interaction possible with entities
+			return itemstack
+		end
+
+		local a = pointed_thing.above
+		local node_above = minetest.get_node(a)
+		local node_below = minetest.get_node({x=a.x, y=a.y-1, z=a.z})
+		local def = minetest.registered_nodes[node_below.name]
+		local def2 = minetest.registered_nodes[node_above.name]
+
+		if (node_below.name == "mcl_core:cactus" or (def.groups and def.groups.sand)) and def2.buildable_to then
+			local idef = itemstack:get_definition()
+			local success = minetest.item_place_node(itemstack, placer, pointed_thing)
+
+			if success then
+				if idef.sounds and idef.sounds.place then
+					minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
+				end
+			end
+		end
+
+		return itemstack
+	end,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
 })
