@@ -173,6 +173,14 @@ Read the help entries on the other redstone components to learn how redstone com
 		}},
 		sounds = mcl_sounds.node_sound_defaults(),
 	})
+
+	-- Add Help entry aliases for e.g. making it identifiable by the lookup tool [doc_identifier]
+	if minetest.get_modpath("doc") then
+		if nodeid ~= "00000000" then
+			doc.add_entry_alias("nodes", "mesecons:wire_00000000_off", "nodes", "mesecons:wire_"..nodeid.."_off")
+		end
+		doc.add_entry_alias("nodes", "mesecons:wire_00000000_off", "nodes", "mesecons:wire_"..nodeid.."_on")
+	end
 end
 end
 end
