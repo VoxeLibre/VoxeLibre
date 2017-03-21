@@ -138,3 +138,9 @@ minetest.register_craft({
 	output = "mcl_farming:pumpkin_pie",
 	recipe = {"mcl_farming:pumpkin_face", "mcl_core:sugar", "mcl_throwing:egg"},
 })
+
+if minetest.get_modpath("doc") then
+	for i=2,8 do
+		doc.add_entry_alias("nodes", "mcl_farming:pumpkin_1", "nodes", "mcl_farming:pumpkin_"..i)
+	end
+end

@@ -125,3 +125,9 @@ minetest.register_craft({
 })
 
 mcl_farming:add_plant("mcl_farming:carrot", {"mcl_farming:carrot_1", "mcl_farming:carrot_2", "mcl_farming:carrot_3"}, 50, 20)
+
+if minetest.get_modpath("doc") then
+	for i=2,3 do
+		doc.add_entry_alias("nodes", "mcl_farming:carrot_1", "nodes", "mcl_farming:carrot_"..i)
+	end
+end

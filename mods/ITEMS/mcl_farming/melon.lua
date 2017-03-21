@@ -130,4 +130,8 @@ minetest.register_craft({
 	}
 })
 
-
+if minetest.get_modpath("doc") then
+	for i=2,8 do
+		doc.add_entry_alias("nodes", "mcl_farming:melontige_1", "nodes", "mcl_farming:melontige_"..i)
+	end
+end

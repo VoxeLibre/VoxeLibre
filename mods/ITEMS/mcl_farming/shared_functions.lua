@@ -262,6 +262,10 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 			sounds = mcl_sounds.node_sound_leaves_defaults(),
 			_mcl_blast_resistance = 0,
 		})
+
+		if minetest.get_modpath("doc") then
+			doc.add_entry_alias("nodes", full_unconnected_stem, "nodes", connected_stem_names[i])
+		end
 	end
 
 	minetest.register_abm({
