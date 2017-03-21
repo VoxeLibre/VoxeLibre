@@ -153,3 +153,7 @@ minetest.register_craft({
 		{'mcl_mobitems:gunpowder','group:sand','mcl_mobitems:gunpowder'}
 	}
 })
+
+if minetest.get_modpath("doc_identifier") then
+	doc.sub.identifier.register_object("mcl_tnt:tnt", "nodes", "mcl_tnt:tnt")
+end
