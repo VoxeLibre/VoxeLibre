@@ -547,35 +547,6 @@ local function register_mgv6_decorations()
 	        height_max = 3,
 	})
 
-	-- Tall grass
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_core:dirt_with_grass"},
-		sidelen = 8,
-		noise_params = {
-			offset = 0.01,
-			scale = 0.3,
-			spread = {x = 500, y = 500, z = 500},
-			seed = 420,
-			octaves = 2,
-			persist = 0.6
-		},
-		y_min = 1,
-		y_max = 50,
-		decoration = "mcl_flowers:tallgrass",
-	})
-
-	-- Add a small amount of tall grass everywhere to avoid areas completely empty devoid of tall grass
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_core:dirt_with_grass"},
-		sidelen = 8,
-		fill_ratio = 0.001,
-		y_min = 1,
-		y_max = 50,
-		decoration = "mcl_flowers:tallgrass",
-	})
-
 	-- Doubletall grass
 	minetest.register_decoration({
 		deco_type = "schematic",
@@ -671,6 +642,35 @@ local function register_mgv6_decorations()
 	register_large_flower("peony", 10450, -0.008)
 	register_large_flower("lilac", 10600, -0.007)
 	register_large_flower("sunflower", 2940, -0.005)
+
+	-- Tall grass
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 8,
+		noise_params = {
+			offset = 0.01,
+			scale = 0.3,
+			spread = {x = 500, y = 500, z = 500},
+			seed = 420,
+			octaves = 2,
+			persist = 0.6
+		},
+		y_min = 1,
+		y_max = 50,
+		decoration = "mcl_flowers:tallgrass",
+	})
+
+	-- Add a small amount of tall grass everywhere to avoid areas completely empty devoid of tall grass
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 8,
+		fill_ratio = 0.001,
+		y_min = 1,
+		y_max = 50,
+		decoration = "mcl_flowers:tallgrass",
+	})
 
 	-- Dead bushes
 
