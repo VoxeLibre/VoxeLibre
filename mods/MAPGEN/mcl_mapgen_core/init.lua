@@ -530,7 +530,7 @@ local function register_mgv6_decorations()
 
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:sand", "mcl_core:redsand"},
+		place_on = {"group:sand"},
 		sidelen = 16,
 		noise_params = {
 			offset = -0.012,
@@ -676,7 +676,7 @@ local function register_mgv6_decorations()
 
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:sand", "mcl_core:redsand", "mcl_core:podzol", "mcl_core:coarse_dirt", "mcl_colorblocks:hardened_clay"},
+		place_on = {"group:sand", "mcl_core:podzol", "mcl_core:coarse_dirt", "mcl_colorblocks:hardened_clay"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0,
