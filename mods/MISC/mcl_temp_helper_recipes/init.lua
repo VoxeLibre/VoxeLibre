@@ -132,6 +132,40 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "3d_armor:helmet_chain",
+	recipe = {
+		{ "xpanes:bar_flat", "mcl_core:iron_ingot", "xpanes:bar_flat" },
+		{ "xpanes:bar_flat", "", "xpanes:bar_flat" },
+	}
+})
+
+minetest.register_craft({
+	output = "3d_armor:leggings_chain",
+	recipe = {
+		{ "xpanes:bar_flat", "mcl_core:iron_ingot", "xpanes:bar_flat" },
+		{ "xpanes:bar_flat", "", "xpanes:bar_flat" },
+		{ "xpanes:bar_flat", "", "xpanes:bar_flat" },
+	}
+})
+
+minetest.register_craft({
+	output = "3d_armor:boots_chain",
+	recipe = {
+		{ "xpanes:bar_flat", "", "xpanes:bar_flat" },
+		{ "xpanes:bar_flat", "", "xpanes:bar_flat" },
+	}
+})
+
+minetest.register_craft({
+	output = "3d_armor:chestplate_chain",
+	recipe = {
+		{ "xpanes:bar_flat", "", "xpanes:bar_flat" },
+		{ "xpanes:bar_flat", "mcl_core:iron_ingot", "xpanes:bar_flat" },
+		{ "xpanes:bar_flat", "xpanes:bar_flat", "xpanes:bar_flat" },
+	}
+})
+
+minetest.register_craft({
 	output = "mcl_jukebox:record_1",
 	recipe = {
 		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
