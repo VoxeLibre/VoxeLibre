@@ -160,3 +160,8 @@ minetest.register_abm({
 	end
 })
 
+if minetest.get_modpath("doc") then
+	for i=1,2 do
+		doc.add_entry_alias("nodes", "mcl_nether:nether_wart_0", "nodes", "mcl_nether:nether_wart_"..i)
+	end
+end
