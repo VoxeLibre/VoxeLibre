@@ -111,6 +111,7 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 				return itemstack
 			end
 
+			local success
 			itemstack, success = minetest.item_place(fakestack, placer, pointed_thing, wdir)
 			itemstack:set_name(itemstring)
 
