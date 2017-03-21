@@ -956,7 +956,7 @@ if mg_name == "v6" then
 	register_mgv6_decorations()
 end
 if mg_name == "flat" then
-	minetest.set_mapgen_setting("mg_flags", "nocaves,nodungeons,nodecorations")
+	minetest.set_mapgen_setting("mg_flags", "nocaves,nodungeons,nodecorations,light", true)
 else
-	minetest.set_mapgen_setting("mg_flags", "nodungeons")
+	minetest.set_mapgen_setting("mg_flags", "caves,nodungeons,decorations,light", true)
 end
