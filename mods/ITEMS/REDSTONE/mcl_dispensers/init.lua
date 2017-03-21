@@ -438,3 +438,9 @@ end
 
 minetest.register_on_craft(check_craft)
 minetest.register_craft_predict(check_craft)
+
+-- Add entry aliases for the Help
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mcl_dispensers:dispenser", "nodes", "mcl_dispensers:dispenser_down")
+	doc.add_entry_alias("nodes", "mcl_dispensers:dispenser", "nodes", "mcl_dispensers:dispenser_up")
+end

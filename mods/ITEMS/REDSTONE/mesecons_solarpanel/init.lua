@@ -206,3 +206,7 @@ minetest.register_craft({
 	burntime = 15
 })
 
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mesecons_solarpanel:solar_panel_off", "nodes", "mesecons_solarpanel:solar_panel_on")
+	doc.add_entry_alias("nodes", "mesecons_solarpanel:solar_panel_inverted_off", "nodes", "mesecons_solarpanel:solar_panel_inverted_on")
+end

@@ -226,3 +226,14 @@ minetest.register_craft({
 		{"mcl_core:stone","mcl_core:stone", "mcl_core:stone"},
 	}
 })
+
+-- Add entry aliases for the Help
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mesecons_delayer:delayer_off_1", "nodes", "mesecons_delayer:delayer_off_2")
+	doc.add_entry_alias("nodes", "mesecons_delayer:delayer_off_1", "nodes", "mesecons_delayer:delayer_off_3")
+	doc.add_entry_alias("nodes", "mesecons_delayer:delayer_off_1", "nodes", "mesecons_delayer:delayer_off_4")
+	doc.add_entry_alias("nodes", "mesecons_delayer:delayer_off_1", "nodes", "mesecons_delayer:delayer_on_1")
+	doc.add_entry_alias("nodes", "mesecons_delayer:delayer_off_1", "nodes", "mesecons_delayer:delayer_on_2")
+	doc.add_entry_alias("nodes", "mesecons_delayer:delayer_off_1", "nodes", "mesecons_delayer:delayer_on_3")
+	doc.add_entry_alias("nodes", "mesecons_delayer:delayer_off_1", "nodes", "mesecons_delayer:delayer_on_4")
+end

@@ -150,10 +150,7 @@ minetest.register_abm({
 	end
 })
 
--- Param2 Table (Block Attached To)
--- 5 = z-1
--- 3 = x-1
--- 4 = z+1
--- 2 = x+1
--- 0 = y+1
--- 1 = y-1
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mesecons_torch:mesecon_torch_on", "nodes", "mesecons_torch:mesecon_torch_off")
+	doc.add_entry_alias("nodes", "mesecons_torch:mesecon_torch_on", "nodes", "mesecons_torch:mesecon_torch_off_wall")
+end

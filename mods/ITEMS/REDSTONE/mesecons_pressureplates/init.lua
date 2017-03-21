@@ -122,6 +122,10 @@ function mesecon:register_pressure_plate(offstate, onstate, description, texture
 		output = offstate,
 		recipe = recipe,
 	})
+
+	if minetest.get_modpath("doc") then
+		doc.add_entry_alias("nodes", offstate, "nodes", onstate)
+	end
 end
 
 mesecon:register_pressure_plate(
@@ -149,3 +153,4 @@ minetest.register_craft({
 	recipe = "mesecons_pressureplates:pressure_plate_wood_off",
 	burntime = 15
 })
+

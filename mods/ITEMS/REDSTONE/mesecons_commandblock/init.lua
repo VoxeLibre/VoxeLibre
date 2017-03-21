@@ -221,3 +221,8 @@ minetest.register_node("mesecons_commandblock:commandblock_on", {
 	}},
 	mcl_blast_resistance = 18000000,
 })
+
+-- Add entry alias for the Help
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mesecons_commandblock:commandblock_off", "nodes", "mesecons_commandblock:commandblock_on")
+end

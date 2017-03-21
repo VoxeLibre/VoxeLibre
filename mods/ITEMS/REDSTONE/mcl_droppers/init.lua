@@ -156,3 +156,9 @@ minetest.register_craft({
 		{"mcl_core:cobble", "mesecons:redstone", "mcl_core:cobble",},
 	}
 })
+
+-- Add entry aliases for the Help
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mcl_droppers:dropper", "nodes", "mcl_droppers:dropper_down")
+	doc.add_entry_alias("nodes", "mcl_droppers:dropper", "nodes", "mcl_droppers:dropper_up")
+end

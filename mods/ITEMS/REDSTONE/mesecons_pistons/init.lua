@@ -816,3 +816,25 @@ minetest.register_craft({
 		{"mesecons_pistons:piston_normal_off"},
 	}
 })
+
+-- Add entry aliases for the Help
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mesecons_pistons:piston_normal_off", "nodes", "mesecons_pistons:piston_normal_on")
+	doc.add_entry_alias("nodes", "mesecons_pistons:piston_normal_off", "nodes", "mesecons_pistons:piston_up_normal_off")
+	doc.add_entry_alias("nodes", "mesecons_pistons:piston_normal_off", "nodes", "mesecons_pistons:piston_up_normal_on")
+	doc.add_entry_alias("nodes", "mesecons_pistons:piston_normal_off", "nodes", "mesecons_pistons:piston_down_normal_off")
+	doc.add_entry_alias("nodes", "mesecons_pistons:piston_normal_off", "nodes", "mesecons_pistons:piston_down_normal_on")
+	doc.add_entry_alias("nodes", "mesecons_pistons:piston_normal_off", "nodes", "mesecons_pistons:piston_pusher_normal")
+	doc.add_entry_alias("nodes", "mesecons_pistons:piston_normal_off", "nodes", "mesecons_pistons:piston_up_pusher_normal")
+	doc.add_entry_alias("nodes", "mesecons_pistons:piston_normal_off", "nodes", "mesecons_pistons:piston_down_pusher_normal")
+
+	doc.add_entry_alias("nodes", "mesecons_pistons:piston_sticky_off", "nodes", "mesecons_pistons:piston_sticky_on")
+	doc.add_entry_alias("nodes", "mesecons_pistons:piston_sticky_off", "nodes", "mesecons_pistons:piston_up_sticky_off")
+	doc.add_entry_alias("nodes", "mesecons_pistons:piston_sticky_off", "nodes", "mesecons_pistons:piston_up_sticky_on")
+	doc.add_entry_alias("nodes", "mesecons_pistons:piston_sticky_off", "nodes", "mesecons_pistons:piston_down_sticky_off")
+	doc.add_entry_alias("nodes", "mesecons_pistons:piston_sticky_off", "nodes", "mesecons_pistons:piston_down_sticky_on")
+	doc.add_entry_alias("nodes", "mesecons_pistons:piston_sticky_off", "nodes", "mesecons_pistons:piston_pusher_sticky")
+	doc.add_entry_alias("nodes", "mesecons_pistons:piston_sticky_off", "nodes", "mesecons_pistons:piston_up_pusher_sticky")
+	doc.add_entry_alias("nodes", "mesecons_pistons:piston_sticky_off", "nodes", "mesecons_pistons:piston_down_pusher_sticky")
+end
+

@@ -177,3 +177,8 @@ minetest.register_craft({
 	burntime = 5,
 })
 
+-- Add entry aliases for the Help
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mesecons_button:button_wood_off", "nodes", "mesecons_button:button_wood_on")
+	doc.add_entry_alias("nodes", "mesecons_button:button_stone_off", "nodes", "mesecons_button:button_stone_on")
+end

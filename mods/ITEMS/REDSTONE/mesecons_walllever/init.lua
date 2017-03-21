@@ -96,3 +96,7 @@ minetest.register_craft({
 		{'mcl_core:cobble'},
 	}
 })
+
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mesecons_walllever:wall_lever_off", "nodes", "mesecons_walllever:wall_lever_on")
+end
