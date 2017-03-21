@@ -301,6 +301,10 @@ minetest.register_craftitem("mcl_minecarts:minecart", {
 	groups = { minecart = 1, transport = 1},
 })
 
+if minetest.get_modpath("doc_identifier") ~= nil then
+	doc.sub.identifier.register_object("mcl_minecarts:minecart", "craftitems", "mcl_minecarts:minecart")
+end
+
 minetest.register_craft({
 	output = "mcl_minecarts:minecart",
 	recipe = {
