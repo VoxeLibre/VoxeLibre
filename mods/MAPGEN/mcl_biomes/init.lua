@@ -11,9 +11,9 @@ local function register_classic_superflat_biome()
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
-		depth_filler = 2,
-		y_min = 1,
-		y_max = 31000,
+		depth_filler = 3,
+		y_min = -512,
+		y_max = 512,
 		heat_point = 50,
 		humidity_point = 50,
 	})
@@ -245,6 +245,9 @@ end
 --
 local mg_name = minetest.get_mapgen_setting("mg_name")
 if mg_name ~= "v6" and mg_name ~= "flat" then
+	minetest.clear_registered_biomes()
+	minetest.clear_registered_decorations()
+	minetest.clear_registered_schematics()
 	register_biomes()
 	register_decorations()
 elseif mg_name == "flat" then
