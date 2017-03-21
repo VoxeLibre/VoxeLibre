@@ -1158,13 +1158,7 @@ minetest.register_node("mcl_core:cactus", {
 	},
 	collision_box = {
 		type = "fixed",
-		fixed = {
-			{-7/16, -8/16, -7/16,  7/16, 7/16,  7/16}, -- Main body. slightly lower than node box
-			{-8/16, -8/16, -7/16,  8/16, 8/16, -7/16}, -- Spikes
-			{-8/16, -8/16,  7/16,  8/16, 8/16,  7/16}, -- Spikes
-			{-7/16, -8/16, -8/16, -7/16, 8/16,  8/16}, -- Spikes
-			{7/16,  -8/16,  8/16,  7/16, 8/16, -8/16}, -- Spikes
-		},
+		fixed = {-7/16, -8/16, -7/16,  7/16, 7/16,  7/16}, -- Main body. slightly lower than node box
 	},
 	selection_box = {
 		type = "fixed",
