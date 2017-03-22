@@ -189,11 +189,6 @@ minetest.register_node("mcl_core:stone_with_redstone_lit", {
 	_mcl_hardness = 3,
 })
 
--- Add entry alias for the Help
-if minetest.get_modpath("doc") then
-	doc.add_entry_alias("nodes", "mcl_core:stone_with_redstone", "nodes", "mcl_core:stone_with_redstone_lit")
-end
-
 minetest.register_node("mcl_core:stone_with_lapis", {
 	description = "Lapis Lazuli Ore",
 	_doc_items_longdesc = "Lapis lazuli ore is the ore of lapis lazuli. It can be rarely found in clusters near the bottom of the world.",
@@ -1926,3 +1921,9 @@ minetest.register_node("mcl_core:cobweb", {
 	_mcl_hardness = 4,
 })
 
+-- Add entry aliases for the Help
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mcl_core:stone_with_redstone", "nodes", "mcl_core:stone_with_redstone_lit")
+	doc.add_entry_alias("nodes", "mcl_core:water_source", "nodes", "mcl_core:water_flowing")
+	doc.add_entry_alias("nodes", "mcl_core:lava_source", "nodes", "mcl_core:lava_flowing")
+end
