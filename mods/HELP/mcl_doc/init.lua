@@ -77,17 +77,66 @@ doc.sub.items.register_factoid(nil, "use", function(itemstring, def)
 	return ""
 end)
 
--- Hardness
+-- Mining, hardness and all that
 doc.sub.items.register_factoid("nodes", "mining", function(itemstring, def)
+	local pickaxey = { "Diamond Pickaxe", "Iron Pickaxe", "Stone Pickaxe", "Golden Pickaxe", "Wooden Pickaxe" }
+	local axey = { "Diamond Axe", "Iron Axe", "Stone Axe", "Golden Axe", "Wooden Axe" }
+	local shovely = { "Diamond Shovel", "Iron Shovel", "Stone Shovel", "Golden Shovel", "Wooden Shovel" }
+
+	local datastring = ""
+	local groups = def.groups
+	if groups then
+		if groups.dig_immediate == 3 then
+			datastring = datastring .. "This block can be mined by any tool instantly." .. "\n"
+		else
+			local tool_minable = false
+
+			if groups.pickaxey then
+				for g=1, 6-groups.pickaxey do
+					datastring = datastring .. "• " .. pickaxey[g] .. "\n"
+				end
+				tool_minable = true
+			end
+			if groups.axey then
+				for g=1, 6-groups.axey do
+					datastring = datastring .. "• " .. axey[g] .. "\n"
+				end
+				tool_minable = true
+			end
+			if groups.shovely then
+				for g=1, 6-groups.shovely do
+					datastring = datastring .. "• " .. shovely[g] .. "\n"
+				end
+				tool_minable = true
+			end
+			if groups.shearsy then
+				datastring = datastring .. "• Shears" .. "\n"
+				tool_minable = true
+			end
+			if groups.swordy then
+				datastring = datastring .. "• Sword" .. "\n"
+				tool_minable = true
+			end
+			if groups.handy then
+				datastring = datastring .. "• Hand" .. "\n"
+				tool_minable = true
+			end
+
+			if tool_minable then
+				datastring = "This block can be mined by:\n" .. datastring .. "\n"
+			end
+		end
+	end
 	local hardness = def._mcl_hardness
 	if not hardness then
 		hardness = 0
 	end
 	if hardness == -1 then
-		return "Hardness: ∞"
+		datastring = datastring .. "Hardness: ∞"
 	else
-		return string.format("Hardness: %.2f", hardness)
+		datastring = datastring .. string.format("Hardness: %.2f", hardness)
 	end
+	return datastring
 end)
 
 -- TODO: Blast resistance (omitted for now because explosions ignore hardness)
