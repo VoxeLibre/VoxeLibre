@@ -17,8 +17,18 @@ mesecon.button_turnoff = function (pos)
 	end
 end
 
-local boxes_off = { -4/16, -2/16, 8/16, 4/16, 2/16, 6/16 } -- The button
-local  boxes_on = { -4/16, -2/16, 8/16, 4/16, 2/16, 7/16 }  -- The button
+local boxes_off = {
+	type = "wallmounted",
+	wall_side = { -8/16, -2/16, -4/16, -6/16, 2/16, 4/16 },
+	wall_bottom = { -4/16, -8/16, -2/16, 4/16, -6/16, 2/16 },
+	wall_top = { -4/16, 6/16, -2/16, 4/16, 8/16, 2/16 },
+}
+local boxes_on = {
+	type = "wallmounted",
+	wall_side = { -8/16, -2/16, -4/16, -7/16, 2/16, 4/16 },
+	wall_bottom = { -4/16, -8/16, -2/16, 4/16, -7/16, 2/16 },
+	wall_top = { -4/16, 7/16, -2/16, 4/16, 8/16, 2/16 },
+}
 
 local buttonuse = "Rightclick the button to push it and send a redstone impulse."
 minetest.register_node("mesecons_button:button_stone_off", {
@@ -27,18 +37,11 @@ minetest.register_node("mesecons_button:button_stone_off", {
 	wield_image = "default_stone.png^[mask:mesecons_button_wield_mask.png",
 	wield_scale = { x=1, y=1, z=1},
 	paramtype = "light",
-	paramtype2 = "facedir",
+	paramtype2 = "wallmounted",
 	is_ground_content = false,
 	walkable = false,
 	sunlight_propagates = true,
-	selection_box = {
-	type = "fixed",
-		fixed = boxes_off
-	},
-	node_box = {
-		type = "fixed",	
-		fixed = boxes_off	-- the button itself
-	},
+	node_box = boxes_off,
 	groups = {handy=1,pickaxey=1, attached_node=1, dig_by_water=1},
 	description = "Stone Button",
 	_doc_items_longdesc = "A stone button is a redstone component made out of stone which gives a short impulse to a redstone component behind it when it pushed.",
@@ -64,18 +67,11 @@ minetest.register_node("mesecons_button:button_stone_on", {
 	wield_image = "default_stone.png^[mask:mesecons_button_wield_mask.png",
 	wield_scale = { x=1, y=1, z=0.5},
 	paramtype = "light",
-	paramtype2 = "facedir",
+	paramtype2 = "wallmounted",
 	is_ground_content = false,
 	walkable = false,
 	sunlight_propagates = true,
-	selection_box = {
-	type = "fixed",
-		fixed = boxes_on
-	},
-	node_box = {
-		type = "fixed",	
-		fixed = boxes_on	-- the button itself
-	},
+	node_box = boxes_on,
 	groups = {handy=1,pickaxey=1, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
 	drop = 'mesecons_button:button_stone_off',
 	description = "Stone Button",
@@ -95,18 +91,11 @@ minetest.register_node("mesecons_button:button_wood_off", {
 	wield_image = "default_wood.png^[mask:mesecons_button_wield_mask.png",
 	wield_scale = { x=1, y=1, z=1},
 	paramtype = "light",
-	paramtype2 = "facedir",
+	paramtype2 = "wallmounted",
 	is_ground_content = false,
 	walkable = false,
 	sunlight_propagates = true,
-	selection_box = {
-	type = "fixed",
-		fixed = boxes_off
-	},
-	node_box = {
-		type = "fixed",	
-		fixed = boxes_off	-- the button itself
-	},
+	node_box = boxes_off,
 	groups = {handy=1,axey=1, attached_node=1, dig_by_water=1},
 	description = "Wooden Button",
 	_doc_items_longdesc = "A wooden button is a redstone component made out of wood which gives a short impulse to a redstone component behind it when it pushed.",
@@ -132,18 +121,11 @@ minetest.register_node("mesecons_button:button_wood_on", {
 	wield_image = "default_wood.png^[mask:mesecons_button_wield_mask.png",
 	wield_scale = { x=1, y=1, z=0.5},
 	paramtype = "light",
-	paramtype2 = "facedir",
+	paramtype2 = "wallmounted",
 	is_ground_content = false,
 	walkable = false,
 	sunlight_propagates = true,
-	selection_box = {
-		type = "fixed",
-		fixed = boxes_on
-	},
-	node_box = {
-		type = "fixed",	
-		fixed = boxes_on	-- the button itself
-	},
+	node_box = boxes_on,
 	groups = {handy=1,axey=1, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
 	drop = 'mesecons_button:button_wood_off',
 	description = "Wooden Button",
