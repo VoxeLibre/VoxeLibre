@@ -2,18 +2,31 @@
 -- A button that when pressed emits power for 1 second
 -- and then turns off again
 
+-- FIXME: Power lower/upper nodes as well
+local button_get_output_rules = function(node)
+	local rules = {
+		{x = -1, y = 0, z = 0},
+		{x = 1, y = 0, z = 0},
+		{x = 0, y = 0, z = -1},
+		{x = 0, y = 0, z = 1},
+		{x = 0, y = -1, z = 0},
+	}
+	if minetest.wallmounted_to_dir(node.param2).y == 1 then
+		table.insert(rules, {x=0, y=1, z=1})
+	end
+	return rules
+end
+
 mesecon.button_turnoff = function (pos)
 	local node = minetest.get_node(pos)
 	if node.name=="mesecons_button:button_stone_on" then --has not been dug
 		mesecon:swap_node(pos, "mesecons_button:button_stone_off")
 		minetest.sound_play("mesecons_button_pop", {pos=pos})
-		local rules = mesecon.rules.buttonlike_get(node)
-		mesecon:receptor_off(pos, rules)
+		mesecon:receptor_off(pos, button_get_output_rules(node))
 	elseif node.name=="mesecons_button:button_wood_on" then --has not been dug
 		mesecon:swap_node(pos, "mesecons_button:button_wood_off")
 		minetest.sound_play("mesecons_button_pop", {pos=pos})
-		local rules = mesecon.rules.buttonlike_get(node)
-		mesecon:receptor_off(pos, rules)
+		mesecon:receptor_off(pos, button_get_output_rules(node))
 	end
 end
 
@@ -50,14 +63,14 @@ minetest.register_node("mesecons_button:button_stone_off", {
 	_doc_items_usagehelp = buttonuse,
 	on_rightclick = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_button:button_stone_on")
-		mesecon:receptor_on(pos, mesecon.rules.buttonlike_get(node))
+		mesecon:receptor_on(pos, button_get_output_rules(node))
 		minetest.sound_play("mesecons_button_push", {pos=pos})
 		minetest.after(1, mesecon.button_turnoff, pos)
 	end,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.off,
-		rules = mesecon.rules.buttonlike_get
+		rules = button_get_output_rules,
 	}},
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
@@ -82,7 +95,7 @@ minetest.register_node("mesecons_button:button_stone_on", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.on,
-		rules = mesecon.rules.buttonlike_get
+		rules = button_get_output_rules
 	}},
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
@@ -106,14 +119,14 @@ minetest.register_node("mesecons_button:button_wood_off", {
 	_doc_items_usagehelp = buttonuse,
 	on_rightclick = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_button:button_wood_on")
-		mesecon:receptor_on(pos, mesecon.rules.buttonlike_get(node))
+		mesecon:receptor_on(pos, button_get_output_rules(node))
 		minetest.sound_play("mesecons_button_push", {pos=pos})
 		minetest.after(1.5, mesecon.button_turnoff, pos)
 	end,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.off,
-		rules = mesecon.rules.buttonlike_get
+		rules = button_get_output_rules,
 	}},
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
@@ -138,7 +151,7 @@ minetest.register_node("mesecons_button:button_wood_on", {
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.on,
-		rules = mesecon.rules.buttonlike_get
+		rules = button_get_output_rules,
 	}},
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
