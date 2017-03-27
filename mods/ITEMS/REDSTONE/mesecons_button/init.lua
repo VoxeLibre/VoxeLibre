@@ -30,7 +30,7 @@ local boxes_on = {
 	wall_top = { -4/16, 7/16, -2/16, 4/16, 8/16, 2/16 },
 }
 
-local buttonuse = "Rightclick the button to push it and send a redstone impulse."
+local buttonuse = "Rightclick the button to push it."
 minetest.register_node("mesecons_button:button_stone_off", {
 	drawtype = "nodebox",
 	tiles = {"default_stone.png"},
@@ -44,7 +44,7 @@ minetest.register_node("mesecons_button:button_stone_off", {
 	node_box = boxes_off,
 	groups = {handy=1,pickaxey=1, attached_node=1, dig_by_water=1},
 	description = "Stone Button",
-	_doc_items_longdesc = "A stone button is a redstone component made out of stone which gives a short impulse to a redstone component behind it when it pushed.",
+	_doc_items_longdesc = "A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.",
 	_doc_items_usagehelp = buttonuse,
 	on_rightclick = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_button:button_stone_on")
@@ -98,13 +98,13 @@ minetest.register_node("mesecons_button:button_wood_off", {
 	node_box = boxes_off,
 	groups = {handy=1,axey=1, attached_node=1, dig_by_water=1},
 	description = "Wooden Button",
-	_doc_items_longdesc = "A wooden button is a redstone component made out of wood which gives a short impulse to a redstone component behind it when it pushed.",
+	_doc_items_longdesc = "A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds.",
 	_doc_items_usagehelp = buttonuse,
 	on_rightclick = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_button:button_wood_on")
 		mesecon:receptor_on(pos, mesecon.rules.buttonlike_get(node))
 		minetest.sound_play("mesecons_button_push", {pos=pos})
-		minetest.after(1, mesecon.button_turnoff, pos)
+		minetest.after(1.5, mesecon.button_turnoff, pos)
 	end,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	mesecons = {receptor = {
