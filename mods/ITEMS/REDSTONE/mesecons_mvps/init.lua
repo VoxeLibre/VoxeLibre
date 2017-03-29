@@ -1,6 +1,8 @@
---register stoppers for movestones/pistons
-
+-- Register stoppers for pistons
 mesecon.mvps_stoppers={}
+
+-- Register nodes which drop as item when pushed or pulled
+mesecon.mvps_droppers={}
 
 function mesecon:is_mvps_stopper(node, pushdir, stack, stackid)
 	local get_stopper = mesecon.mvps_stoppers[node.name]
@@ -15,6 +17,21 @@ function mesecon:register_mvps_stopper(nodename, get_stopper)
 			get_stopper = true
 	end
 	mesecon.mvps_stoppers[nodename] = get_stopper
+end
+
+function mesecon:is_mvps_dropper(node, pushdir, stack, stackid)
+	local get_dropper = mesecon.mvps_droppers[node.name]
+	if type (get_dropper) == "function" then
+		get_dropper = get_dropper(node, pushdir, stack, stackid)
+	end
+	return get_dropper
+end
+
+function mesecon:register_mvps_dropper(nodename, get_dropper)
+	if get_dropper == nil then
+		get_dropper = true
+	end
+	mesecon.mvps_droppers[nodename] = get_dropper
 end
 
 function mesecon:mvps_process_stack(stack)
@@ -55,26 +72,47 @@ function mesecon:mvps_push(pos, dir, maximum) -- pos: pos of mvps; dir: directio
 		end
 	end
 
+	local first_dropper = nil
 	-- remove all nodes
-	for _, n in ipairs(nodes) do
+	for id, n in ipairs(nodes) do
 		n.meta = minetest.get_meta(n.pos):to_table()
+		local is_dropper = mesecon:is_mvps_dropper(n.node, dir, nodes, id)
+		if is_dropper then
+			minetest.log("error", "DROPPER @ "..minetest.pos_to_string(n.pos))
+			local drops = minetest.get_node_drops(n.node.name, "")
+			local droppos = vector.add(n.pos, dir)
+			minetest.handle_node_drops(droppos, drops, nil)
+		end
 		minetest.remove_node(n.pos)
+		if is_dropper then
+			first_dropper = id
+			break
+		end
 	end
 
 	-- update mesecons for removed nodes ( has to be done after all nodes have been removed )
-	for _, n in ipairs(nodes) do
+	for id, n in ipairs(nodes) do
+		if first_dropper and id >= first_dropper then
+			break
+		end
 		mesecon.on_dignode(n.pos, n.node)
 		mesecon:update_autoconnect(n.pos)
 	end
 
 	-- add nodes
-	for _, n in ipairs(nodes) do
+	for id, n in ipairs(nodes) do
+		if first_dropper and id >= first_dropper then
+			break
+		end
 		np = mesecon:addPosRule(n.pos, dir)
 		minetest.add_node(np, n.node)
 		minetest.get_meta(np):from_table(n.meta)
 	end
 
 	for i in ipairs(nodes) do
+		if first_dropper and i >= first_dropper then
+			break
+		end
 		nodes[i].pos = mesecon:addPosRule(nodes[i].pos, dir)
 	end
 
@@ -86,7 +124,8 @@ function mesecon:mvps_pull_single(pos, dir) -- pos: pos of mvps; direction: dire
 	nn = minetest.get_node(np)
 
 	if minetest.registered_nodes[nn.name].liquidtype == "none"
-	and not mesecon:is_mvps_stopper(nn, {x = -dir.x, y = -dir.y, z = -dir.z}, {{pos = np, node = nn}}, 1) then
+	and not mesecon:is_mvps_stopper(nn, {x = -dir.x, y = -dir.y, z = -dir.z}, {{pos = np, node = nn}}, 1)
+	and not mesecon:is_mvps_dropper(nn, {x = -dir.x, y = -dir.y, z = -dir.z}, {{pos = np, node = nn}}, 1) then
 		local meta = minetest.get_meta(np):to_table()
 		minetest.remove_node(np)
 		minetest.add_node(pos, nn)
@@ -154,3 +193,10 @@ mesecon:register_mvps_stopper("mesecons_solarpanel:solar_panel_on")
 mesecon:register_mvps_stopper("mesecons_solarpanel:solar_panel_inverted_off")
 mesecon:register_mvps_stopper("mesecons_solarpanel:solar_panel_inverted_on")
 mesecon:register_mvps_stopper("mesecons_noteblock:noteblock")
+
+mesecon:register_mvps_dropper("mcl_core:cactus")
+mesecon:register_mvps_dropper("mcl_core:cobweb")
+mesecon:register_mvps_dropper("mcl_farming:melon")
+mesecon:register_mvps_dropper("mcl_farming:pumpkin")
+mesecon:register_mvps_dropper("beds:bed_top")
+mesecon:register_mvps_dropper("beds:bed_bottom")
