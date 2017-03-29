@@ -28,7 +28,7 @@ minetest.register_node("mcl_farming:beetroot_0", {
 			{-0.5, -0.5, -0.5, 0.5, -0.125, 0.5}
 		},
 	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1,dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -50,7 +50,7 @@ minetest.register_node("mcl_farming:beetroot_1", {
 			{-0.5, -0.5, -0.5, 0.5, -0.125, 0.5}
 		},
 	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1,dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -72,7 +72,7 @@ minetest.register_node("mcl_farming:beetroot_2", {
 			{-0.5, -0.5, -0.5, 0.5, -0.125, 0.5}
 		},
 	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1,dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -103,7 +103,7 @@ minetest.register_node("mcl_farming:beetroot", {
 			{-0.5, -0.5, -0.5, 0.5, -0.125, 0.5}
 		},
 	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1,dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })

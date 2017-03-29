@@ -17,6 +17,7 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 	groups.attached_node = 1
 	groups.torch = 1
 	groups.dig_by_water = 1
+	groups.dig_by_piston = 1
 
 	local floordef = {
 		description = description,

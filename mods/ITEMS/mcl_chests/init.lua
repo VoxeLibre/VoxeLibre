@@ -504,7 +504,7 @@ for color, desc in pairs(boxtypes) do
 		tiles = {"mcl_chests_"..color.."_shulker_box_top.png", "mcl_chests_"..color.."_shulker_box_bottom.png",
 			"mcl_chests_"..color.."_shulker_box_side.png", "mcl_chests_"..color.."_shulker_box_side.png",
 			"mcl_chests_"..color.."_shulker_box_side.png", "mcl_chests_"..color.."_shulker_box_side.png"},
-		groups = {handy=1,pickaxey=1, container=3, deco_block=1, shulker_box=1},
+		groups = {handy=1,pickaxey=1, container=3, deco_block=1, dig_by_piston=1, shulker_box=1},
 		is_ground_content = false,
 		sounds = mcl_sounds.node_sound_stone_defaults(),
 		stack_max = 1,

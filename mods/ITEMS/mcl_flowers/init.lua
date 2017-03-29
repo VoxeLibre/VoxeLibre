@@ -18,7 +18,7 @@ local function add_simple_flower(name, desc, image, simple_selection_box)
 		paramtype = "light",
 		walkable = false,
 		stack_max = 64,
-		groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,dig_by_water=1,deco_block=1},
+		groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,dig_by_water=1,dig_by_piston=1,deco_block=1},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		buildable_to = true,
 		selection_box = {
@@ -66,6 +66,7 @@ minetest.register_node("mcl_flowers:tallgrass", {
 	walkable = false,
 	buildable_to = true,
 	is_ground_content = true,
+	-- CHECKME: How does tall grass behave when pushed by a piston?
 	groups = {dig_immediate=3, flammable=3,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	drop = wheat_seed_drop,
@@ -91,6 +92,7 @@ minetest.register_node("mcl_flowers:fern", {
 	paramtype = "light",
 	walkable = false,
 	stack_max = 64,
+	-- CHECKME: How does a fern behave when pushed by a piston?
 	groups = {dig_immediate=3,flammable=2,attached_node=1,dig_by_water=1,deco_block=1},
 	buildable_to = true,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
@@ -159,7 +161,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 				minetest.remove_node(top)
 			end
 		end,
-		groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1, dig_by_water=1, double_plant=1,deco_block=1},
+		groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1, dig_by_water=1,dig_by_piston=1, double_plant=1,deco_block=1},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 	})
 
@@ -181,7 +183,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 				minetest.dig_node(bottom)
 			end
 		end,
-		groups = {dig_immediate=3,flammable=2,flower=1, dig_by_water=1, not_in_creative_inventory = 1, double_plant=2},
+		groups = {dig_immediate=3,flammable=2,flower=1, dig_by_water=1,dig_by_piston=1, not_in_creative_inventory = 1, double_plant=2},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 	})
 
@@ -214,7 +216,7 @@ minetest.register_node("mcl_flowers:waterlily", {
 	liquids_pointable = true,
 	walkable = true,
 	sunlight_propagates = true,
-	groups = {dig_immediate = 3, dig_by_water = 1, deco_block=1},
+	groups = {dig_immediate = 3, dig_by_water = 1, dig_by_piston = 1, deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	node_placement_prediction = "",
 	node_box = {

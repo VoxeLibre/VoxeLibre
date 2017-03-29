@@ -100,7 +100,7 @@ minetest.register_node("itemframes:frame",{
 	paramtype = "light",
 	paramtype2 = "facedir",
 	sunlight_propagates = true,
-	groups = { dig_immediate=3,deco_block=1},
+	groups = { dig_immediate=3,deco_block=1,dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_defaults(),
 	after_place_node = function(pos, placer, itemstack)
 		local meta = minetest.get_meta(pos)

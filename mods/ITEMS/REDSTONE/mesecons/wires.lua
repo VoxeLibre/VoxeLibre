@@ -37,7 +37,7 @@ for zmy=0, 1 do
 	local longdesc
 	local usagehelp
 	if nodeid == "00000000" then
-		groups = {dig_immediate = 3, mesecon_conductor_craftable = 1, attached_node = 1, dig_by_water = 1}
+		groups = {dig_immediate = 3, mesecon_conductor_craftable = 1, attached_node = 1, dig_by_water = 1, dig_by_piston = 1}
 		wiredesc = "Redstone"
 		wirehelp = nodeid == "00000000"
 		if wirehelp then
@@ -49,7 +49,7 @@ Redstone power can be received from various redstone components, such as a block
 Read the help entries on the other redstone components to learn how redstone components interact.]]
 		end
 	else
-		groups = {dig_immediate = 3, not_in_creative_inventory = 1, attached_node = 1, dig_by_water = 1}
+		groups = {dig_immediate = 3, not_in_creative_inventory = 1, attached_node = 1, dig_by_water = 1, dig_by_piston = 1}
 		wiredesc = "Redstone Trail (ID: "..nodeid..")"
 		wirehelp = false
 	end
@@ -163,7 +163,7 @@ Read the help entries on the other redstone components to learn how redstone com
 			type = "fixed",
 			fixed = nodebox
 		},
-		groups = {dig_immediate = 3, mesecon = 2, dig_by_water = 1, attached_node = 1, not_in_creative_inventory = 1},
+		groups = {dig_immediate = 3, mesecon = 2, dig_by_water = 1, dig_by_piston = 1, attached_node = 1, not_in_creative_inventory = 1},
 		walkable = false,
 		stack_max = 64,
 		drop = "mesecons:wire_00000000_off",

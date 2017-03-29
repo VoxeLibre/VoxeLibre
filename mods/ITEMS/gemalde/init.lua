@@ -16,9 +16,9 @@ N = N - 1
 -- register for each picture
 for n=1, N do
 
-local groups = {dig_immediate=3, picture=1, not_in_creative_inventory=1}
+local groups = {dig_immediate=3, picture=1, not_in_creative_inventory=1, dig_by_piston=1}
 if n == 1 then
-	groups = {dig_immediate=3, picture=1, deco_block=1}
+	groups = {dig_immediate=3, picture=1, deco_block=1, dig_by_piston=1}
 end
 
 local desc, doc, longdesc, usagehelp

@@ -35,7 +35,7 @@ minetest.register_node("mcl_fire:fire", {
 	buildable_to = true,
 	sunlight_propagates = true,
 	damage_per_second = 1,
-	groups = {igniter = 1, dig_immediate = 3, not_in_creative_inventory = 1},
+	groups = {igniter = 1, dig_immediate = 3, not_in_creative_inventory = 1, dig_by_piston=1},
 	on_timer = function(pos)
 		local f = minetest.find_node_near(pos, 1, {"group:flammable"})
 		if not f then
@@ -76,7 +76,7 @@ minetest.register_node("mcl_fire:eternal_fire", {
 	buildable_to = true,
 	sunlight_propagates = true,
 	damage_per_second = 1,
-	groups = {igniter = 1, dig_immediate = 3, not_in_creative_inventory = 1},
+	groups = {igniter = 1, dig_immediate = 3, not_in_creative_inventory = 1, dig_by_piston = 1},
 	sounds = {},
 	drop = "",
 	_mcl_blast_resistance = 0,

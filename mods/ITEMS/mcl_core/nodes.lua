@@ -674,7 +674,7 @@ minetest.register_node("mcl_core:leaves", {
 	tiles = {"default_leaves.png"},
 	paramtype = "light",
 	stack_max = 64,
-	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1},
+	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1, dig_by_piston=1},
 	drop = {
 		max_items = 1,
 		items = {
@@ -757,7 +757,7 @@ minetest.register_node("mcl_core:darkleaves", {
 	tiles = {"default_leaves_big_oak.png"},
 	paramtype = "light",
 	stack_max = 64,
-	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1},
+	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1, dig_by_piston=1},
 	drop = {
 		max_items = 1,
 		items = {
@@ -848,7 +848,7 @@ minetest.register_node("mcl_core:jungleleaves", {
 	tiles = {"default_jungleleaves.png"},
 	paramtype = "light",
 	stack_max = 64,
-	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1},
+	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1, dig_by_piston=1},
 	drop = {
 		max_items = 1,
 		items = {
@@ -927,7 +927,7 @@ minetest.register_node("mcl_core:acacialeaves", {
 	tiles = {"default_acacialeaves.png"},
 	paramtype = "light",
 	stack_max = 64,
-	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1},
+	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1, dig_by_piston=1},
 	drop = {
 		max_items = 1,
 		items = {
@@ -1004,7 +1004,7 @@ minetest.register_node("mcl_core:spruceleaves", {
 	tiles = {"default_spruceleaves.png"},
 	paramtype = "light",
 	stack_max = 64,
-	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1},
+	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1, dig_by_piston=1},
 	drop = {
 		max_items = 1,
 		items = {
@@ -1087,7 +1087,7 @@ minetest.register_node("mcl_core:birchleaves", {
 	tiles = {"default_leaves_birch.png"},
 	paramtype = "light",
 	stack_max = 64,
-	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1},
+	groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1, dig_by_piston=1},
 	drop = {
 		max_items = 1,
 		items = {
@@ -1137,7 +1137,7 @@ minetest.register_node("mcl_core:cactus", {
 	tiles = {"default_cactus_top.png", "default_cactus_bottom.png", "default_cactus_side.png","default_cactus_side.png","default_cactus_side.png","default_cactus_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {handy=1, attached_node=1, deco_block=1},
+	groups = {handy=1, attached_node=1, deco_block=1, dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	paramtype = "light",
 	node_placement_prediction = "",
@@ -1218,7 +1218,7 @@ minetest.register_node("mcl_core:reeds", {
 		},
 	},
 	stack_max = 64,
-	groups = {dig_immediate=3, craftitem=1},
+	groups = {dig_immediate=3, craftitem=1, dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
@@ -1320,7 +1320,7 @@ minetest.register_node("mcl_core:ladder", {
 		wall_side = { -0.5, -0.5, -0.5, -7/16, 0.5, 0.5 },
 	},
 	stack_max = 64,
-	groups = {handy=1,axey=1, attached_node=1, deco_block=1},
+	groups = {handy=1,axey=1, attached_node=1, deco_block=1, dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	node_placement_prediction = "",
 	-- Restrict placement of ladders
@@ -1387,7 +1387,7 @@ minetest.register_node("mcl_core:vine", {
 		type = "wallmounted",
 	},
 	stack_max = 64,
-	groups = {handy=1,axey=1,shearsy=1,swordy=1, flammable=2,deco_block=1},
+	groups = {handy=1,axey=1,shearsy=1,swordy=1, flammable=2,deco_block=1,dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	drop = "",
 	after_dig_node = function(pos, oldnode, oldmetadata, user)
@@ -1479,7 +1479,7 @@ minetest.register_node("mcl_core:water_flowing", {
 	liquid_range = 7,
 	freezemelt = "mcl_core:snow",
 	post_effect_color = {a=64, r=100, g=100, b=200},
-	groups = { water=3, liquid=3, puts_out_fire=1, not_in_creative_inventory=1, freezes=1, melt_around=1},
+	groups = { water=3, liquid=3, puts_out_fire=1, not_in_creative_inventory=1, freezes=1, melt_around=1, dig_by_piston=1},
 	_mcl_blast_resistance = 500,
 	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
 	_mcl_hardness = -1,
@@ -1519,7 +1519,7 @@ minetest.register_node("mcl_core:water_source", {
 	freezemelt = "mcl_core:ice",
 	post_effect_color = {a=64, r=100, g=100, b=200},
 	stack_max = 64,
-	groups = { water=3, liquid=3, puts_out_fire=1, freezes=1, not_in_creative_inventory=1},
+	groups = { water=3, liquid=3, puts_out_fire=1, freezes=1, not_in_creative_inventory=1, dig_by_piston=1},
 	_mcl_blast_resistance = 500,
 	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
 	_mcl_hardness = -1,
@@ -1564,7 +1564,7 @@ minetest.register_node("mcl_core:lava_flowing", {
 	liquid_range = 4,
 	damage_per_second = 4*2,
 	post_effect_color = {a=192, r=255, g=64, b=0},
-	groups = { lava=3, liquid=2, igniter=3, destroys_items=1, not_in_creative_inventory=1},
+	groups = { lava=3, liquid=2, igniter=3, destroys_items=1, not_in_creative_inventory=1, dig_by_piston=1},
 	_mcl_blast_resistance = 500,
 	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
 	_mcl_hardness = -1,
@@ -1605,7 +1605,7 @@ minetest.register_node("mcl_core:lava_source", {
 	damage_per_second = 4*2,
 	post_effect_color = {a=192, r=255, g=64, b=0},
 	stack_max = 64,
-	groups = { lava=3, liquid=2, igniter=3, destroys_items=1, not_in_creative_inventory=1},
+	groups = { lava=3, liquid=2, igniter=3, destroys_items=1, not_in_creative_inventory=1, dig_by_piston=1},
 	_mcl_blast_resistance = 500,
 	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
 	_mcl_hardness = -1,
@@ -1876,7 +1876,7 @@ minetest.register_node("mcl_core:snow", {
 			{-0.5, -0.5, -0.5,  0.5, -0.5+2/16, 0.5},
 		},
 	},
-	groups = {shovely=1, attached_node=1,deco_block=1},
+	groups = {shovely=1, attached_node=1,deco_block=1, dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_snow_defaults(),
 	drop = "mcl_throwing:snowball 2",
 	_mcl_blast_resistance = 0.5,
@@ -1915,7 +1915,7 @@ minetest.register_node("mcl_core:cobweb", {
 	liquid_renewable = false,
 	liquid_range = 0,
 	walkable = false,
-	groups = {swordy_cobweb=1,shearsy=1, deco_block=1},
+	groups = {swordy_cobweb=1,shearsy=1, deco_block=1, dig_by_piston=1},
 	drop = "mcl_mobitems:string",
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 20,

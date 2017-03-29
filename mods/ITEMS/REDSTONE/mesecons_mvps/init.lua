@@ -24,6 +24,9 @@ function mesecon:is_mvps_dropper(node, pushdir, stack, stackid)
 	if type (get_dropper) == "function" then
 		get_dropper = get_dropper(node, pushdir, stack, stackid)
 	end
+	if not get_dropper then
+		get_dropper = minetest.get_item_group(node.name, "dig_by_piston") == 1
+	end
 	return get_dropper
 end
 
@@ -78,7 +81,6 @@ function mesecon:mvps_push(pos, dir, maximum) -- pos: pos of mvps; dir: directio
 		n.meta = minetest.get_meta(n.pos):to_table()
 		local is_dropper = mesecon:is_mvps_dropper(n.node, dir, nodes, id)
 		if is_dropper then
-			minetest.log("error", "DROPPER @ "..minetest.pos_to_string(n.pos))
 			local drops = minetest.get_node_drops(n.node.name, "")
 			local droppos = vector.add(n.pos, dir)
 			minetest.handle_node_drops(droppos, drops, nil)
@@ -193,10 +195,3 @@ mesecon:register_mvps_stopper("mesecons_solarpanel:solar_panel_on")
 mesecon:register_mvps_stopper("mesecons_solarpanel:solar_panel_inverted_off")
 mesecon:register_mvps_stopper("mesecons_solarpanel:solar_panel_inverted_on")
 mesecon:register_mvps_stopper("mesecons_noteblock:noteblock")
-
-mesecon:register_mvps_dropper("mcl_core:cactus")
-mesecon:register_mvps_dropper("mcl_core:cobweb")
-mesecon:register_mvps_dropper("mcl_farming:melon")
-mesecon:register_mvps_dropper("mcl_farming:pumpkin")
-mesecon:register_mvps_dropper("beds:bed_top")
-mesecon:register_mvps_dropper("beds:bed_bottom")

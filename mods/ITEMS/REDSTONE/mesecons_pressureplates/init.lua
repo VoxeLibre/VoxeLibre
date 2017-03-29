@@ -59,6 +59,7 @@ function mesecon:register_pressure_plate(offstate, onstate, description, texture
 
 	local groups_off = table.copy(plusgroups)
 	groups_off.attached_node = 1
+	groups_off.dig_by_piston = 1
 
 	minetest.register_node(offstate, {
 		drawtype = "nodebox",

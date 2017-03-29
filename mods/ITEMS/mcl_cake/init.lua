@@ -46,7 +46,7 @@ minetest.register_node("mcl_cake:cake", {
 		fixed = full_cake
 	},
 	stack_max = 1,
-	groups = {handy=1, food=2,attached_node=1},
+	groups = {handy=1, food=2,attached_node=1, dig_by_piston=1},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		minetest.do_item_eat(2, ItemStack("mcl_cake:cake_6"), ItemStack("mcl_cake:cake"), clicker, {type="nothing"})
@@ -90,7 +90,7 @@ local register_slice = function(level, nodebox, desc)
 			type = "fixed",
 			fixed = nodebox,
 			},
-		groups = {handy=1, food=2,attached_node=1,not_in_creative_inventory=1},
+		groups = {handy=1, food=2,attached_node=1,not_in_creative_inventory=1,dig_by_piston=1},
 		drop = '',
 		on_rightclick = on_rightclick,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
