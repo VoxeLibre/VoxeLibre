@@ -1168,6 +1168,14 @@ minetest.register_node("mcl_core:cactus", {
 			return itemstack
 		end
 
+		-- Call on_rightclick if the pointed node defines it
+		local node = minetest.get_node(pointed_thing.under)
+		if placer and not placer:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+			end
+		end
+
 		local a = pointed_thing.above
 		local node_above = minetest.get_node(a)
 		local node_below = minetest.get_node({x=a.x, y=a.y-1, z=a.z})
