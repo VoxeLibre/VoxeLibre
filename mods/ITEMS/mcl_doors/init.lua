@@ -141,13 +141,6 @@ function mcl_doors:register_door(name, def)
 	local tt = def.tiles_top
 	local tb = def.tiles_bottom
 
-	local function after_dig_node(pos, name, digger)
-		local node = minetest.get_node(pos)
-		if node.name == name then
-			minetest.node_dig(pos, node, digger)
-		end
-	end
-
 	local function on_open_close(pos, dir, check_name, replace, replace_dir, params)
 		local meta1 = minetest.get_meta(pos)
 		pos.y = pos.y+dir
@@ -227,9 +220,11 @@ function mcl_doors:register_door(name, def)
 		_mcl_hardness = def._mcl_hardness,
 		sounds = def.sounds,
 
-		after_dig_node = function(pos, oldnode, oldmetadata, digger)
-			pos.y = pos.y+1
-			after_dig_node(pos, name.."_t_1", digger)
+		after_destruct = function(bottom, oldnode)
+			local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
+			if minetest.get_node(bottom).name == "air" and minetest.get_node(top).name == name.."_t_1" then
+				minetest.remove_node(top)
+			end
 		end,
 
 		on_rightclick = on_rightclick,
@@ -271,9 +266,11 @@ function mcl_doors:register_door(name, def)
 		_mcl_hardness = def._mcl_hardness,
 		sounds = def.sounds,
 
-		after_dig_node = function(pos, oldnode, oldmetadata, digger)
-			pos.y = pos.y-1
-			after_dig_node(pos, name.."_b_1", digger)
+		after_destruct = function(top, oldnode)
+			local bottom = { x = top.x, y = top.y - 1, z = top.z }
+			if minetest.get_node(top).name == "air" and minetest.get_node(bottom).name == name.."_b_1" and oldnode.name == name.."_t_1" then
+				minetest.dig_node(bottom)
+			end
 		end,
 
 		on_rightclick = on_rightclick,
@@ -311,9 +308,11 @@ function mcl_doors:register_door(name, def)
 		_mcl_hardness = def._mcl_hardness,
 		sounds = def.sounds,
 
-		after_dig_node = function(pos, oldnode, oldmetadata, digger)
-			pos.y = pos.y+1
-			after_dig_node(pos, name.."_t_2", digger)
+		after_destruct = function(bottom, oldnode)
+			local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
+			if minetest.get_node(bottom).name == "air" and minetest.get_node(top).name == name.."_t_2" then
+				minetest.remove_node(top)
+			end
 		end,
 
 		on_rightclick = on_rightclick,
@@ -355,9 +354,11 @@ function mcl_doors:register_door(name, def)
 		_mcl_hardness = def._mcl_hardness,
 		sounds = def.sounds,
 
-		after_dig_node = function(pos, oldnode, oldmetadata, digger)
-			pos.y = pos.y-1
-			after_dig_node(pos, name.."_b_2", digger)
+		after_destruct = function(top, oldnode)
+			local bottom = { x = top.x, y = top.y - 1, z = top.z }
+			if minetest.get_node(top).name == "air" and minetest.get_node(bottom).name == name.."_b_2" and oldnode.name == name.."_t_2" then
+				minetest.dig_node(bottom)
+			end
 		end,
 
 		on_rightclick = on_rightclick,
