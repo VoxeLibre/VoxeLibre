@@ -30,6 +30,7 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 ### Groups for interactions
 
 * `dig_by_water=1`: Blocks with this group will drop when they are near flowing water
+* `dig_by_piston=1`: Blocks which will drop as an item when pushed by a piston. They also cannot be pulled by sticky pistons
 * `cultivatable=2`: Block will be turned into Farmland by using a hoe on it
 * `cultivatable=1`: Block will be turned into Dirt by using a hoe on it
 * `flammable`: Block helps spreading fire and gets destroyed by nearby fire (rating doesn't matter)
