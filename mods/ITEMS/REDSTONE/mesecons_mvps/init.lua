@@ -164,7 +164,6 @@ function mesecon:mvps_pull_all(pos, direction) -- pos: pos of mvps; direction: d
 		minetest.remove_node(oldpos)
 end
 
-mesecon:register_mvps_stopper("mcl_core:sign")
 mesecon:register_mvps_stopper("mcl_core:obsidian")
 mesecon:register_mvps_stopper("mcl_core:bedrock")
 mesecon:register_mvps_stopper("mcl_core:barrier")
@@ -188,6 +187,8 @@ mesecon:register_mvps_stopper("mcl_anvils:anvil_damage_1")
 mesecon:register_mvps_stopper("mcl_anvils:anvil_damage_2")
 mesecon:register_mvps_stopper("mcl_jukebox:jukebox")
 mesecon:register_mvps_stopper("mobs:spawner")
+mesecon:register_mvps_stopper("signs:sign_yard")
+mesecon:register_mvps_stopper("signs:sign_wall")
 mesecon:register_mvps_stopper("mesecons_commandblock:commandblock_off")
 mesecon:register_mvps_stopper("mesecons_commandblock:commandblock_on")
 mesecon:register_mvps_stopper("mesecons_solarpanel:solar_panel_off")
