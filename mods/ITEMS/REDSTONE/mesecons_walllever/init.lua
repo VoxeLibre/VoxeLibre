@@ -27,7 +27,7 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 		fixed = {{ -2/16, -3/16,  8/16, 2/16, 3/16,  4/16 },	-- the base
 			 { -1/16, -8/16, 7/16, 1/16, 0/16,  5/16 }}	-- the lever itself.
 	},
-	groups = {handy=1, dig_by_water=1},
+	groups = {handy=1, dig_by_water=1, dig_by_piston=1},
 	is_ground_content = false,
 	description="Lever",
 	_doc_items_longdesc = "A lever is a redstone component which can be flipped on and off. It supplies redstone power to the blocks behind while it is in the “on” state.",
@@ -70,7 +70,7 @@ minetest.register_node("mesecons_walllever:wall_lever_on", {
 		fixed = {{ -2/16, -3/16,  8/16, 2/16, 3/16,  4/16 },	-- the base
 			 { -1/16, 0/16, 7/16, 1/16, 8/16,  5/16 }}	-- the lever itself.
 	},
-	groups = {handy=1, not_in_creative_inventory = 1, dig_by_water=1},
+	groups = {handy=1, not_in_creative_inventory = 1, dig_by_water=1, dig_by_piston=1},
 	is_ground_content = false,
 	drop = '"mesecons_walllever:wall_lever_off" 1',
 	description="Lever",
