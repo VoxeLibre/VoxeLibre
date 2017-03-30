@@ -6,7 +6,7 @@ block.dyes = {
 	{"white",      "White",      "white", true},
 	{"grey",       "Grey",       "dark_grey"},
 	{"silver",     "Light Grey", "grey"},
-	{"black",      "Black",      "black"},
+	{"black",      "Black",      "black", true},
 	{"red",        "Red",        "red"},
 	{"yellow",     "Yellow",     "yellow", true},
 	{"green",      "Green",      "dark_green"},
