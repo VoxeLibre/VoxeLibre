@@ -319,7 +319,7 @@ register_chest("trapped_chest",
 )
 
 register_chest("trapped_chest_on",
-	nil, nil, nil,
+	nil, nil, nil, true,
 	{receptor = {
 		state = mesecon.state.on,
 		rules = trapped_chest_mesecons_rules,
