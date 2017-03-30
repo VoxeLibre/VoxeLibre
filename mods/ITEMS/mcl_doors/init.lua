@@ -71,7 +71,7 @@ function mcl_doors:register_door(name, def)
 		stack_max = 64,
 		groups = { mesecon_conductor_craftable = 1 },
 		on_place = function(itemstack, placer, pointed_thing)
-			if not pointed_thing.type == "node" then
+			if not pointed_thing.type == "node" or not placer or not placer:is_player() then
 				return itemstack
 			end
 			local pn = placer:get_player_name()
@@ -84,14 +84,17 @@ function mcl_doors:register_door(name, def)
 						return minetest.registered_nodes[nu.name].on_rightclick(ptu, nu, placer, itemstack)
 					end
 
-					local pt = pointed_thing.above
+					local pt
+					if minetest.registered_nodes[minetest.get_node(ptu).name].buildable_to then
+						pt = pointed_thing.under
+					else
+						pt = pointed_thing.above
+					end
 					local pt2 = {x=pt.x, y=pt.y, z=pt.z}
 					pt2.y = pt2.y+1
 					if
-						not minetest.registered_nodes[minetest.get_node(pt).name].buildable_to or
-						not minetest.registered_nodes[minetest.get_node(pt2).name].buildable_to or
-						not placer or
-						not placer:is_player()
+						(not minetest.registered_nodes[minetest.get_node(pt).name].buildable_to) or
+						(not minetest.registered_nodes[minetest.get_node(pt2).name].buildable_to)
 					then
 						return itemstack
 					end
