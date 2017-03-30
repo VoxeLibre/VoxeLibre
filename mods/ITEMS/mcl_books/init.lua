@@ -118,7 +118,7 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 		local book = player:get_wielded_item()
 		local name = player:get_player_name()
 		if book:get_name() == "mcl_books:writable_book" then
-			write(book, player)
+			write(book, player, { type = "nothing" })
 		end
 	end
 end)
