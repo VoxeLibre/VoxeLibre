@@ -52,17 +52,11 @@ minetest.register_node("mcl_chests:"..basename, {
 		if minetest.get_node(get_chest_neighborpos(pos, param2, "right")).name == "mcl_chests:"..basename then
 			minetest.swap_node(pos, {name="mcl_chests:"..basename.."_right",param2=param2})
 			local p = get_chest_neighborpos(pos, param2, "right")
-			minetest.set_node(p, { name = "mcl_chests:"..basename.."_left", param2 = param2 })
-			meta = minetest.get_meta(p)
-			inv = meta:get_inventory()
-			inv:set_size("main", 9*3)
+			minetest.swap_node(p, { name = "mcl_chests:"..basename.."_left", param2 = param2 })
 		elseif minetest.get_node(get_chest_neighborpos(pos, param2, "left")).name == "mcl_chests:"..basename then
 			minetest.swap_node(pos, {name="mcl_chests:"..basename.."_left",param2=param2})
 			local p = get_chest_neighborpos(pos, param2, "left")
-			minetest.set_node(p, { name = "mcl_chests:"..basename.."_right", param2 = param2 })
-			meta = minetest.get_meta(p)
-			inv = meta:get_inventory()
-			inv:set_size("main", 9*3)
+			minetest.swap_node(p, { name = "mcl_chests:"..basename.."_right", param2 = param2 })
 		end
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
