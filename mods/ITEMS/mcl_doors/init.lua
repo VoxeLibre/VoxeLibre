@@ -81,7 +81,8 @@ function mcl_doors:register_door(name, def)
 				end
 					local ptu = pointed_thing.under
 					local nu = minetest.get_node(ptu)
-					if minetest.registered_nodes[nu.name].on_rightclick then
+					-- Pointed thing's rightclick action takes precedence, unless player holds down the sneak key
+					if minetest.registered_nodes[nu.name].on_rightclick and not placer:get_player_control().sneak then
 						return minetest.registered_nodes[nu.name].on_rightclick(ptu, nu, placer, itemstack)
 					end
 
