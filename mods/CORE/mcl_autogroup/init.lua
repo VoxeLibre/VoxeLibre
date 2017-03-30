@@ -72,7 +72,7 @@ local overwrite = function()
 	for nname, ndef in pairs(minetest.registered_nodes) do
 		local groups_changed = false
 		local newgroups = table.copy(ndef.groups)
-		if (nname ~= "ignore") then
+		if (nname ~= "ignore" and ndef.diggable) then
 			-- Automatically assign the “solid” group for solid nodes
 			if (ndef.walkable == nil or ndef.walkable == true)
 					and (ndef.collision_box == nil or ndef.collision_box.type == "regular")
