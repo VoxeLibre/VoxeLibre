@@ -541,9 +541,8 @@ for color, desc in pairs(boxtypes) do
 				return nil
 			end
 		end,
-		after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		on_destruct = function(pos)
 			local meta = minetest.get_meta(pos)
-			meta:from_table(oldmetadata)
 			local inv = meta:get_inventory()
 			local items = {}
 			for i=1, inv:get_size("main") do
