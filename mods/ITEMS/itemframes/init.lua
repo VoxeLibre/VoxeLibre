@@ -75,8 +75,7 @@ local update_item = function(pos, node)
 	end
 end
 
-local drop_item = function(pos, node)
-	local meta = minetest.get_meta(pos)
+local drop_item = function(pos, node, meta)
 	if meta:get_string("item") ~= "" then
 		if node.name == "itemframes:frame" and not minetest.setting_getbool("creative_mode") then
 			minetest.add_item(pos, meta:get_string("item"))
@@ -111,7 +110,7 @@ minetest.register_node("itemframes:frame",{
 		if not itemstack then return end
 		local meta = minetest.get_meta(pos)
 		if clicker:get_player_name() == meta:get_string("owner") then
-			drop_item(pos,node)
+			drop_item(pos, node, meta)
 			meta:set_string("item", itemstack:get_name())
 			update_item(pos,node)
 			if not minetest.setting_getbool("creative_mode") then
@@ -120,11 +119,10 @@ minetest.register_node("itemframes:frame",{
 		end
 		return itemstack
 	end,
-	on_punch = function(pos,node,puncher)
+	on_destruct = function(pos)
 		local meta = minetest.get_meta(pos)
-		if puncher:get_player_name() == meta:get_string("owner") then
-			drop_item(pos, node)
-		end
+		local node = minetest.get_node(pos)
+		drop_item(pos, node, meta)
 	end,
 	can_dig = function(pos,player)
 		
