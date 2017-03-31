@@ -59,7 +59,7 @@ end
 
 local longdesc = [[Mushrooms are fungi which grow and spread in darkness, but are sensitive to light.
 
-A single mushroom will slowly spread over time towards a random solid opaque block with a light level of 12 or lower in a 5×5×5 cube around the mushroom. A mushroom stops spreading when there are 5 or more mushrooms of the same color within an area of 9×3×9 blocks around the mushroom.
+A single mushroom will slowly spread over time towards a random solid opaque block with a light level of 12 or lower in a 3×3×3 cube around the mushroom. A mushroom stops spreading when there are 5 or more mushrooms of the same color within an area of 9×3×9 blocks around the mushroom.
 Mushrooms will eventually uproot at a light level of 12 or higher. On mycelium or podzol, they survive and spread at any light level.]]
 
 local usagehelp = "Mushrooms can be placed on mycelium and podzol at any light level. They can also be placed on blocks which are both solid and opaque, as long as the light level at daytime is not higher than 12."
