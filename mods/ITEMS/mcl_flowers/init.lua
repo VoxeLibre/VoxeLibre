@@ -20,7 +20,6 @@ local function add_simple_flower(name, desc, image, simple_selection_box)
 		stack_max = 64,
 		groups = {dig_immediate=3,flammable=2,flower=1,attached_node=1,dig_by_water=1,dig_by_piston=1,deco_block=1},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
-		buildable_to = true,
 		selection_box = {
 			type = "fixed",
 			fixed = simple_selection_box,
