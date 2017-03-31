@@ -125,7 +125,7 @@ minetest.register_abm({
 	chance = 50,
 	action = function(pos, node)
 		if minetest.get_node_light(pos, nil) > 12 then
-			minetest.remove_node(pos)
+			minetest.dig_node(pos)
 			return
 		end
 
