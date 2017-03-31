@@ -13,22 +13,37 @@ local on_place = function(itemstack, placer, pointed_thing)
 	end
 
 	local a = pointed_thing.above
+	local u = pointed_thing.under
 	local node_above = minetest.get_node(a)
-	local node_below = minetest.get_node({x=a.x, y=a.y-1, z=a.z})
-	local def = minetest.registered_nodes[node_below.name]
-	local def2 = minetest.registered_nodes[node_above.name]
+	local node_under = minetest.get_node(u)
+	local def_above = minetest.registered_nodes[node_above.name]
+	local def_under = minetest.registered_nodes[node_under.name]
+
+	local place_pos, soil_node, place_node, soil_def, place_def
+	if def_under.buildable_to then
+		place_pos = u
+		place_node = node_under
+		place_def = def_under
+	elseif def_above.buildable_to then
+		place_pos = a
+		place_node = node_above
+		place_def = def_above
+	else
+		return itemstack
+	end
+	soil_node = minetest.get_node({x=place_pos.x, y=place_pos.y-1, z=place_pos.z})
+	soil_def = minetest.registered_nodes[soil_node.name]
 
 	-- Placement rules:
 	-- * Always allowed on podzol or mycelimu
 	-- * Otherwise, must be solid, opaque and have daylight light level <= 12
-	local light = minetest.get_node_light(a, 0.5)
+	local light = minetest.get_node_light(place_pos, 0.5)
 	local light_ok = false
 	if light and light <= 12 then
 		light_ok = true
 	end
-	if (node_below.name == "mcl_core:podzol" or node_below.name == "mcl_core:mycelium") or
-			(light_ok and (def.groups and def.groups.solid and def.groups.opaque)) and
-			def2.buildable_to then
+	if (soil_node.name == "mcl_core:podzol" or soil_node.name == "mcl_core:mycelium") or
+			(light_ok and (soil_def.groups and soil_def.groups.solid and soil_def.groups.opaque)) then
 		local idef = itemstack:get_definition()
 		local success = minetest.item_place_node(itemstack, placer, pointed_thing)
 
