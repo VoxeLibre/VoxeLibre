@@ -56,7 +56,7 @@ minetest.register_node("mcl_mushrooms:mushroom_brown", {
 	light_source = 1,
 	selection_box = {
 		type = "fixed",
-		fixed = { -0.15, -0.5, -0.15, 0.15, 0.015, 0.15 },
+		fixed = { -3/16, -0.5, -3/16, 3/16, -2/16, 3/16 },
 	},
 	node_placement_prediction = "",
 	on_place = on_place,
@@ -76,7 +76,7 @@ minetest.register_node("mcl_mushrooms:mushroom_red", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = { -0.15, -0.5, -0.15, 0.15, 0.015, 0.15 },
+		fixed = { -3/16, -0.5, -3/16, 3/16, -2/16, 3/16 },
 	},
 	node_placement_prediction = "",
 	on_place = on_place,
