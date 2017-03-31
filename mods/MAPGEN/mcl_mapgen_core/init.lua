@@ -919,6 +919,7 @@ local BEDROCK_MAX = mcl_vars.mg_bedrock_overworld_max
 -- Below the bedrock, generate air/void
 
 minetest.register_on_generated(function(minp, maxp)
+	-- Generate bedrock layers
 	if minp.y <= BEDROCK_MAX then
 		local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
 		local data = vm:get_data()
@@ -971,6 +972,27 @@ minetest.register_on_generated(function(minp, maxp)
 		vm:calc_lighting()
 		vm:update_liquids()
 		vm:write_to_map()
+	end
+
+	-- Generate rare underground mushrooms
+	-- TODO: Make them appear in groups, use Perlin noise
+	if minp.y > 0 or maxp.y < -32 then
+		return
+	end
+
+	local bpos
+	local stone = minetest.find_nodes_in_area_under_air(minp, maxp, {"mcl_core:stone", "mcl_core:dirt", "mcl_core:mycelium", "mcl_core:podzol", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite", "mcl_core:stone_with_coal", "mcl_core:stone_with_iron", "mcl_core:stone_with_gold"})
+
+	for n = 1, #stone do
+		bpos = {x = stone[n].x, y = stone[n].y + 1, z = stone[n].z }
+
+		if math.random(1,1000) < 4 and minetest.get_node_light(bpos, 0.5) <= 12 then
+			if math.random(1,2) == 1 then
+				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
+			else
+				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_red"})
+			end
+		end
 	end
 end)
 
