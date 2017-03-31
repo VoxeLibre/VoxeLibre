@@ -122,6 +122,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		sunlight_propagates = true,
 		paramtype = "light",
 		walkable = false,
+		buildable_to = true,
 		drop = drop,
 		node_placement_prediction = "",
 		on_place = function(itemstack, placer, pointed_thing)
@@ -165,7 +166,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 			-- Remove top half of flower (if it exists)
 			local bottom = pos
 			local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
-			if minetest.get_node(top).name == "mcl_flowers:"..name.."_top" then
+			if minetest.get_node(bottom).name ~= "mcl_flowers:"..name and minetest.get_node(top).name == "mcl_flowers:"..name.."_top" then
 				minetest.remove_node(top)
 			end
 		end,
@@ -182,12 +183,13 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		sunlight_propagates = true,
 		paramtype = "light",
 		walkable = false,
+		buildable_to = true,
 		drop = "",
 		after_destruct = function(pos, oldnode)
 			-- "Dig" bottom half of flower (if it exists)
 			local top = pos
 			local bottom = { x = top.x, y = top.y - 1, z = top.z }
-			if minetest.get_node(bottom).name == "mcl_flowers:"..name then
+			if minetest.get_node(top).name ~= "mcl_flowers:"..name.."_top" and minetest.get_node(bottom).name == "mcl_flowers:"..name then
 				minetest.dig_node(bottom)
 			end
 		end,
