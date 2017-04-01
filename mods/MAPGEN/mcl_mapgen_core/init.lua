@@ -847,36 +847,9 @@ minetest.register_on_generated(function(minp, maxp, seed)
 			end
 		end
 		end
-		-- Generate reeds
-		local perlin1 = minetest.get_perlin(354, 3, 0.7, 100)
-		-- Assume X and Z lengths are equal
-		local divlen = 8
-		local divs = (maxp.x-minp.x)/divlen+1;
-		for divx=0,divs-1 do
-		for divz=0,divs-1 do
-			local x0 = minp.x + math.floor((divx+0)*divlen)
-			local z0 = minp.z + math.floor((divz+0)*divlen)
-			local x1 = minp.x + math.floor((divx+1)*divlen)
-			local z1 = minp.z + math.floor((divz+1)*divlen)
-			-- Determine reeds amount from perlin noise
-			local reeds_amount = math.floor(perlin1:get2d({x=x0, y=z0}) * 45 - 20)
-			-- Find random positions for reeds based on this random
-			local pr = PseudoRandom(seed+1)
-			for i=0,reeds_amount do
-				local x = pr:next(x0, x1)
-				local z = pr:next(z0, z1)
-				local p = {x=x,y=1,z=z}
-				if minetest.get_node(p).name == "mcl_core:sand" then
-					if math.random(0,1000) == 1 then -- 0,12000
-						-- Spawn sand temple
-						random_struct.call_struct(p,2)
-					end
-				end
-
-			end
-		end
-		end
-		-- Generate grass
+	end
+	if maxp.y >= 3 and minp.y <= 64 then
+		-- Generate desert temples
 		local perlin1 = minetest.get_perlin(329, 3, 0.6, 100)
 		-- Assume X and Z lengths are equal
 		local divlen = 5
@@ -887,16 +860,16 @@ minetest.register_on_generated(function(minp, maxp, seed)
 			local z0 = minp.z + math.floor((divz+0)*divlen)
 			local x1 = minp.x + math.floor((divx+1)*divlen)
 			local z1 = minp.z + math.floor((divz+1)*divlen)
-			-- Determine grass amount from perlin noise
-			local grass_amount = math.floor(perlin1:get2d({x=x0, y=z0}) * 9)
-			-- Find random positions for grass based on this random
+			-- Determine amount from perlin noise
+			local amount = math.floor(perlin1:get2d({x=x0, y=z0}) * 9)
+			-- Find random positions based on this random
 			local pr = PseudoRandom(seed+1)
-			for i=0,grass_amount do
+			for i=0, amount do
 				local x = pr:next(x0, x1)
 				local z = pr:next(z0, z1)
-				-- Find ground level (0...15)
+				-- Find ground level
 				local ground_y = nil
-				for y=30,0,-1 do
+				for y=64,3,-1 do
 					if minetest.get_node({x=x,y=y,z=z}).name ~= "air" then
 						ground_y = y
 						break
@@ -910,12 +883,10 @@ minetest.register_on_generated(function(minp, maxp, seed)
 					if minetest.registered_nodes[nn] and
 						minetest.registered_nodes[nn].buildable_to then
 						nn = minetest.get_node({x=x,y=ground_y,z=z}).name
-						if nn == "mcl_core:dirt_with_grass" then
+						if nn == "mcl_core:sand" or nn == "mcl_core:sandstone" then
 							if math.random(0,12000) == 1 then 
-								-- Spawn town
-								-- TODO: Re-enable random_struct
-								-- Towns often float around in air which doesn't look nice
-								--random_struct.call_struct(p,1)
+								-- Spawn desert temple
+								random_struct.call_struct(p,2)
 							end
 						end
 					end
