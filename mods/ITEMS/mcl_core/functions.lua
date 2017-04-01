@@ -415,7 +415,7 @@ minetest.register_abm({
 	nodenames = {"mcl_core:dirt_with_grass_snow", "mcl_core:podzol_snow", "mcl_core:mycelium_snow"},
 	neighbors = {"air"},
 	interval = 68.1,
-	chance = 2,
+	chance = 18,
 	action = function(pos, node)
 		if pos == nil then
 			return
