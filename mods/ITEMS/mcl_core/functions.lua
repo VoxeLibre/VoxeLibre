@@ -409,6 +409,31 @@ minetest.register_abm({
 	end,
 })
 
+-- Occassionally remove the snow covers from the snowy variants of grass block, podzol and mycelium
+minetest.register_abm({
+	label = "Remove snow cover",
+	nodenames = {"mcl_core:dirt_with_grass_snow", "mcl_core:podzol_snow", "mcl_core:mycelium_snow"},
+	neighbors = {"air"},
+	interval = 68.1,
+	chance = 18,
+	action = function(pos, node)
+		if pos == nil then
+			return
+		end
+		local p = {x=pos.x, y=pos.y+1, z=pos.z}
+		local n = minetest.get_node(p)
+		if (n.name=="air") then
+			if node.name == "mcl_core:dirt_with_grass_snow" then
+				minetest.swap_node(pos, {name="mcl_core:dirt_with_grass"})
+			elseif node.name == "mcl_core:podzol_snow" then
+				minetest.swap_node(pos, {name="mcl_core:podzol"})
+			elseif node.name == "mcl_core:mycelium_snow" then
+				minetest.swap_node(pos, {name="mcl_core:mycelium"})
+			end
+		end
+	end,
+})
+
 --------------------------
 -- Try generate tree   ---
 --------------------------
