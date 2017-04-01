@@ -1,69 +1,50 @@
-minetest.register_node("mcl_farming:carrot_1", {
-	description = "Premature Carrot Plant (First Stage)",
-	_doc_items_entry_name = "Premature Carrot Plant",
-	_doc_items_longdesc = "Carrot plants are plants which grow on farmland under sunlight in 4 stages. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.",
-	paramtype = "light",
-	sunlight_propagates = true,
-	paramtype2 = "meshoptions",
-	place_param2 = 3,
-	walkable = false,
-	drawtype = "plantlike",
-	drop = "mcl_farming:carrot_item",
-	tiles = {"farming_carrot_1.png"},
-	selection_box = {
-		type = "fixed",
-		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, -0.125, 0.5}
-		},
-	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1,dig_by_piston=1},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	_mcl_blast_resistance = 0,
-})
+for i=1, 7 do
+	local texture, sel_height
+	if i < 3 then
+		sel_height = -5/16
+		texture = "farming_carrot_1.png"
+	elseif i < 5 then
+		sel_height = -3/16
+		texture = "farming_carrot_2.png"
+	else
+		sel_height = 2/16
+		texture = "farming_carrot_3.png"
+	end
 
-minetest.register_node("mcl_farming:carrot_2", {
-	description = "Premature Carrot Plant (Second Stage)",
-	_doc_items_create_entry = false,
-	paramtype = "light",
-	sunlight_propagates = true,
-	walkable = false,
-	drawtype = "plantlike",
-	paramtype2 = "meshoptions",
-	place_param2 = 3,
-	drop = "mcl_farming:carrot_item",
-	tiles = {"farming_carrot_2.png"},
-	selection_box = {
-		type = "fixed",
-		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, -0.125, 0.5}
+	local create, name, longdesc
+	if i == 1 then
+		create = true
+		name = "Premature Carrot Plant"
+		longdesc = "Carrot plants are plants which grow on farmland under sunlight in 8 stages. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature."
+	else
+		create = false
+	end
+	minetest.register_node("mcl_farming:carrot_"..i, {
+		description = string.format("Premature Carrot Plant (Stage %d)", i),
+		_doc_items_create_entry = create,
+		_doc_items_entry_name = name,
+		_doc_items_longdesc = longdesc,
+		paramtype = "light",
+		sunlight_propagates = true,
+		paramtype2 = "meshoptions",
+		place_param2 = 3,
+		walkable = false,
+		drawtype = "plantlike",
+		drop = "mcl_farming:carrot_item",
+		tiles = {texture},
+		inventory_image = texture,
+		wield_image = texture,
+		selection_box = {
+			type = "fixed",
+			fixed = {
+				{-0.5, -0.5, -0.5, 0.5, sel_height, 0.5}
+			},
 		},
-	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1,dig_by_piston=1},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	_mcl_blast_resistance = 0,
-})
-
-minetest.register_node("mcl_farming:carrot_3", {
-	description = "Premature Carrot Plant (Third Stage)",
-	_doc_items_create_entry = false,
-	paramtype = "light",
-	sunlight_propagates = true,
-	paramtype2 = "meshoptions",
-	place_param2 = 3,
-	walkable = false,
-	drawtype = "plantlike",
-	drop = "mcl_farming:carrot_item",
-	tiles = {"farming_carrot_3.png"},
-	selection_box = {
-		type = "fixed",
-		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, -0.125, 0.5}
-		},
-	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1,dig_by_piston=1},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	_mcl_blast_resistance = 0,
-})
+		groups = {dig_immediate=3, not_in_creative_inventory=1,attached_node=1,dig_by_water=1,dig_by_piston=1},
+		sounds = mcl_sounds.node_sound_leaves_defaults(),
+		_mcl_blast_resistance = 0,
+	})
+end
 
 minetest.register_node("mcl_farming:carrot", {
 	description = "Mature Carrot Plant",
@@ -75,6 +56,8 @@ minetest.register_node("mcl_farming:carrot", {
 	walkable = false,
 	drawtype = "plantlike",
 	tiles = {"farming_carrot_4.png"},
+	inventory_image = "farming_carrot_4.png",
+	wield_image = "farming_carrot_4.png",
 	drop = {
 		max_items = 1,
 		items = {
@@ -84,7 +67,7 @@ minetest.register_node("mcl_farming:carrot", {
 			{ items = {'mcl_farming:carrot_item 1'} },
 		}
 	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1,dig_by_piston=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1,attached_node=1,dig_by_water=1,dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -124,10 +107,10 @@ minetest.register_craft({
 	}
 })
 
-mcl_farming:add_plant("plant_carrot", "mcl_farming:carrot", {"mcl_farming:carrot_1", "mcl_farming:carrot_2", "mcl_farming:carrot_3"}, 50, 20)
+mcl_farming:add_plant("plant_carrot", "mcl_farming:carrot", {"mcl_farming:carrot_1", "mcl_farming:carrot_2", "mcl_farming:carrot_3", "mcl_farming:carrot_4", "mcl_farming:carrot_5", "mcl_farming:carrot_6", "mcl_farming:carrot_7"}, 25, 20)
 
 if minetest.get_modpath("doc") then
-	for i=2,3 do
+	for i=2,7 do
 		doc.add_entry_alias("nodes", "mcl_farming:carrot_1", "nodes", "mcl_farming:carrot_"..i)
 	end
 end
