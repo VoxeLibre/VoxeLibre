@@ -715,13 +715,16 @@ local function register_mgv6_decorations()
 		decoration = "mcl_core:deadbush",
 	})
 
-	local function register_mgv6_flower(name, seed)
+	local function register_mgv6_flower(name, seed, offset)
+		if offset == nil then
+			offset = 0
+		end
 		minetest.register_decoration({
 			deco_type = "simple",
 			place_on = {"mcl_core:dirt_with_grass"},
 			sidelen = 16,
 			noise_params = {
-				offset = 0,
+				offset = offset,
 				scale = 0.006,
 				spread = {x = 100, y = 100, z = 100},
 				seed = seed,
@@ -740,8 +743,10 @@ local function register_mgv6_decorations()
 	register_mgv6_flower("tulip_white", 736)
 	register_mgv6_flower("azure_bluet", 800)
 	register_mgv6_flower("dandelion", 8)
-	register_mgv6_flower("allium", 0)
-	register_mgv6_flower("blue_orchid", 64500)
+	--[[ Allium and blue orchid are made slightly rarer in v6
+	to compensate for missing biomes. In Minecraft, those flowers only appear in special biomes. ]]
+	register_mgv6_flower("allium", 0, -0.001)
+	register_mgv6_flower("blue_orchid", 64500, -0.001)
 	register_mgv6_flower("oxeye_daisy", 3490)
 	register_mgv6_flower("poppy", 9439)
 
