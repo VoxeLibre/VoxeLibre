@@ -384,7 +384,10 @@ minetest.register_node("mcl_core:dirt_with_grass_snow", {
 	stack_max = 64,
 	groups = {handy=1,shovely=1, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, building_block=1, not_in_creative_inventory=1},
 	drop = 'mcl_core:dirt',
-	sounds = mcl_sounds.node_sound_snow_defaults(),
+	sounds = mcl_sounds.node_sound_snow_defaults({
+		dug = {name="default_dirt_footstep", gain=1.5},
+		dig = {name="default_dig_crumbly", gain=1.0}
+	}),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 0.6,
 })
@@ -438,7 +441,10 @@ minetest.register_node("mcl_core:mycelium_snow", {
 	stack_max = 64,
 	groups = {handy=1,shovely=1, building_block=1, not_in_creative_inventory=1},
 	drop = 'mcl_core:dirt',
-	sounds = mcl_sounds.node_sound_snow_defaults(),
+	sounds = mcl_sounds.node_sound_snow_defaults({
+		dug = {name="default_dirt_footstep", gain=1.5},
+		dig = {name="default_dig_crumbly", gain=1.0}
+	}),
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.6,
 })
@@ -465,7 +471,10 @@ minetest.register_node("mcl_core:podzol_snow", {
 	stack_max = 64,
 	groups = {handy=1,shovely=3, soil=1, soil_sapling=2, soil_sugarcane=1, building_block=1, not_in_creative_inventory=1},
 	drop = 'mcl_core:dirt',
-	sounds = mcl_sounds.node_sound_snow_defaults(),
+	sounds = mcl_sounds.node_sound_snow_defaults({
+		dug = {name="default_dirt_footstep", gain=1.5},
+		dig = {name="default_dig_crumbly", gain=1.0}
+	}),
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.6,
 })
