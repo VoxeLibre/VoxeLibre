@@ -1,48 +1,54 @@
-minetest.register_node("mcl_farming:potato_1", {
-	description = "Premature Potato Plant (First Stage)",
-	_doc_items_entry_name = "Premature Potato Plant",
-	_doc_items_longdesc = "Potato plants are plants which grow on farmland under sunlight in 3 stages. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.",
-	paramtype = "light",
-	paramtype2 = "meshoptions",
-	sunlight_propagates = true,
-	place_param2 = 3,
-	walkable = false,
-	drawtype = "plantlike",
-	drop = "mcl_farming:potato_item",
-	tiles = {"farming_potato_1.png"},
-	selection_box = {
-		type = "fixed",
-		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, -0.125, 0.5}
-		},
-	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1,dig_by_piston=1},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	_mcl_blast_resistance = 0,
-})
+-- Premature potato plants
 
-minetest.register_node("mcl_farming:potato_2", {
-	description = "Premature Potato Plant (Second Stage)",
-	_doc_items_create_entry = false,
-	paramtype = "light",
-	paramtype2 = "meshoptions",
-	sunlight_propagates = true,
-	place_param2 = 3,
-	walkable = false,
-	drawtype = "plantlike",
-	drop = "mcl_farming:potato_item",
-	tiles = {"farming_potato_2.png"},
-	selection_box = {
-		type = "fixed",
-		fixed = {
-			{-0.5, -0.5, -0.5, 0.5, -0.125, 0.5}
-		},
-	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1,dig_by_piston=1},
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	_mcl_blast_resistance = 0,
-})
+for i=1, 7 do
+	local texture, selbox
+	if i < 3 then
+		texture = "mcl_farming_potatoes_stage_0.png"
+		selbox = { -0.5, -0.5, -0.5, 0.5, -5/16, 0.5 }
+	elseif i < 5 then
+		texture = "mcl_farming_potatoes_stage_1.png"
+		selbox = { -0.5, -0.5, -0.5, 0.5, -2/16, 0.5 }
+	else
+		texture = "mcl_farming_potatoes_stage_2.png"
+		selbox = { -0.5, -0.5, -0.5, 0.5, 2/16, 0.5 }
+	end
 
+	local create, name, longdesc
+	if i==1 then
+		create = true
+		name = "Premature Potato Plant"
+		longdesc = "Potato plants are plants which grow on farmland under sunlight in 8 stages. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature."
+	else
+		create = false
+		if minetest.get_modpath("doc") then
+			doc.add_entry_alias("nodes", "mcl_farming:potato_1", "nodes", "mcl_farming:potato_"..i)
+		end
+	end
+
+	minetest.register_node("mcl_farming:potato_"..i, {
+		description = string.format("Premature Potato Plant (Stage %d)", i),
+		_doc_items_create_entry = create,
+		_doc_items_entry_name = name,
+		_doc_items_longdesc = longdesc,
+		paramtype = "light",
+		paramtype2 = "meshoptions",
+		sunlight_propagates = true,
+		place_param2 = 3,
+		walkable = false,
+		drawtype = "plantlike",
+		drop = "mcl_farming:potato_item",
+		tiles = { texture },
+		selection_box = {
+			type = "fixed",
+			fixed = { selbox },
+		},
+		groups = {dig_immediate=3, not_in_creative_inventory=1,attached_node=1,dig_by_water=1,dig_by_piston=1},
+		sounds = mcl_sounds.node_sound_leaves_defaults(),
+		_mcl_blast_resistance = 0,
+	})
+end
+
+-- Mature plant
 minetest.register_node("mcl_farming:potato", {
 	description = "Mature Potato Plant",
 	_doc_items_longdesc = "Mature potato plants are ready to be harvested for potatoes. They won't grow any further.",
@@ -52,7 +58,7 @@ minetest.register_node("mcl_farming:potato", {
 	place_param2 = 3,
 	walkable = false,
 	drawtype = "plantlike",
-	tiles = {"farming_potato_3.png"},
+	tiles = {"mcl_farming_potatoes_stage_3.png"},
 	drop = {
 		items = {
 			{ items = {'mcl_farming:potato_item 1'} },
@@ -62,7 +68,13 @@ minetest.register_node("mcl_farming:potato", {
 			{ items = {'mcl_farming:potato_item_poison 1'}, rarity = 50 }
 		}
 	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1,dig_by_piston=1},
+	selection_box = {
+		type = "fixed",
+		fixed = {
+			{ -0.5, -0.5, -0.5, 0.5, 1/16, 0.5 }
+		}
+	},
+	groups = {dig_immediate=3, not_in_creative_inventory=1,attached_node=1,dig_by_water=1,dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -114,8 +126,6 @@ minetest.register_craft({
 	cooktime = 10,
 })
 
-mcl_farming:add_plant("plant_potato", "mcl_farming:potato", {"mcl_farming:potato_1", "mcl_farming:potato_2"}, 50, 20)
+mcl_farming:add_plant("plant_potato", "mcl_farming:potato", {"mcl_farming:potato_1", "mcl_farming:potato_2", "mcl_farming:potato_3", "mcl_farming:potato_4", "mcl_farming:potato_5", "mcl_farming:potato_6", "mcl_farming:potato_7"}, 50, 20)
 
-if minetest.get_modpath("doc") then
-	doc.add_entry_alias("nodes", "mcl_farming:potato_1", "nodes", "mcl_farming:potato_2")
-end
+
