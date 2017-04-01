@@ -66,11 +66,11 @@ local function set_inventory(player, armor_change_only)
 		player_preview = "image[1.1,0.2;2,4;"..img.."]"
 	end
 
-	local armor_slots = {"head", "torso", "legs", "feet"}
+	local armor_slots = {"helmet", "chestplate", "leggings", "boots"}
 	local armor_slot_imgs = ""
 	for a=1,4 do
 		if inv:get_stack("armor", a+1):is_empty() then
-			armor_slot_imgs = armor_slot_imgs .. "image[0,"..(a-1)..";1,1;crafting_slot_"..armor_slots[a]..".png]"
+			armor_slot_imgs = armor_slot_imgs .. "image[0,"..(a-1)..";1,1;mcl_inventory_empty_armor_slot_"..armor_slots[a]..".png]"
 		end
 	end
 

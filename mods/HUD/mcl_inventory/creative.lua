@@ -220,16 +220,16 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, show, p
 			local armor_slot_imgs = ""
 			local inv = player:get_inventory()
 			if inv:get_stack("armor", 2):is_empty() then
-				armor_slot_imgs = armor_slot_imgs .. "image[2.5,1.3;1,1;crafting_slot_head.png]"
+				armor_slot_imgs = armor_slot_imgs .. "image[2.5,1.3;1,1;mcl_inventory_empty_armor_slot_helmet.png]"
 			end
 			if inv:get_stack("armor", 3):is_empty() then
-				armor_slot_imgs = armor_slot_imgs .. "image[2.5,2.75;1,1;crafting_slot_torso.png]"
+				armor_slot_imgs = armor_slot_imgs .. "image[2.5,2.75;1,1;mcl_inventory_empty_armor_slot_chestplate.png]"
 			end
 			if inv:get_stack("armor", 4):is_empty() then
-				armor_slot_imgs = armor_slot_imgs .. "image[5.5,1.3;1,1;crafting_slot_legs.png]"
+				armor_slot_imgs = armor_slot_imgs .. "image[5.5,1.3;1,1;mcl_inventory_empty_armor_slot_leggings.png]"
 			end
 			if inv:get_stack("armor", 5):is_empty() then
-				armor_slot_imgs = armor_slot_imgs .. "image[5.5,2.75;1,1;crafting_slot_feet.png]"
+				armor_slot_imgs = armor_slot_imgs .. "image[5.5,2.75;1,1;mcl_inventory_empty_armor_slot_boots.png]"
 			end
 
 			-- Survival inventory slots
