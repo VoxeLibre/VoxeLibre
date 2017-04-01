@@ -363,7 +363,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	description = "Grass Block",
 	_doc_items_longdesc = "A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel.",
 	_doc_items_hidden = false,
-	tiles = {"default_grass.png", "default_dirt.png", "default_dirt.png^default_grass_side.png"},
+	tiles = {"default_grass.png", "default_dirt.png", "default_grass_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {handy=1,shovely=1, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, building_block=1},
@@ -371,6 +371,20 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	sounds = mcl_sounds.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
+	_mcl_blast_resistance = 3,
+	_mcl_hardness = 0.6,
+})
+
+
+minetest.register_node("mcl_core:dirt_with_grass_snow", {
+	description = "Snowy Grass Block",
+	_doc_items_create_entry = false,
+	tiles = {"default_snow.png", "default_dirt.png", "mcl_core_grass_side_snowed.png"},
+	is_ground_content = true,
+	stack_max = 64,
+	groups = {handy=1,shovely=1, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, building_block=1, not_in_creative_inventory=1},
+	drop = 'mcl_core:dirt',
+	sounds = mcl_sounds.node_sound_snow_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 0.6,
 })
@@ -414,6 +428,20 @@ minetest.register_node("mcl_core:mycelium", {
 	_mcl_hardness = 0.6,
 })
 
+minetest.register_node("mcl_core:mycelium_snow", {
+	description = "Snowy Mycelium",
+	_doc_items_create_entry = false,
+	-- CHECKME: Are the sides of snowy mycelium supposed to look like this?
+	tiles = {"default_snow.png", "default_dirt.png", "mcl_core_grass_side_snowed.png"},
+	is_ground_content = true,
+	stack_max = 64,
+	groups = {handy=1,shovely=1, building_block=1, not_in_creative_inventory=1},
+	drop = 'mcl_core:dirt',
+	sounds = mcl_sounds.node_sound_snow_defaults(),
+	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.6,
+})
+
 minetest.register_node("mcl_core:podzol", {
 	description = "Podzol",
 	_doc_items_longdesc = "Podzol is a type of dirt found in taiga forests. Only a few plants are able to survive on it.",
@@ -426,6 +454,20 @@ minetest.register_node("mcl_core:podzol", {
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.6,
 })
+
+minetest.register_node("mcl_core:podzol_snow", {
+	description = "Snowy Podzol",
+	_doc_items_create_entry = false,
+	tiles = {"default_snow.png", "default_dirt.png", "mcl_core_grass_side_snowed.png"},
+	is_ground_content = true,
+	stack_max = 64,
+	groups = {handy=1,shovely=3, soil=1, soil_sapling=2, soil_sugarcane=1, building_block=1, not_in_creative_inventory=1},
+	drop = 'mcl_core:dirt',
+	sounds = mcl_sounds.node_sound_dirt_defaults(),
+	_mcl_blast_resistance = 2.5,
+	_mcl_hardness = 0.6,
+})
+
 
 minetest.register_node("mcl_core:dirt", {
 	description = "Dirt",
@@ -1935,4 +1977,7 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_core:stone_with_redstone", "nodes", "mcl_core:stone_with_redstone_lit")
 	doc.add_entry_alias("nodes", "mcl_core:water_source", "nodes", "mcl_core:water_flowing")
 	doc.add_entry_alias("nodes", "mcl_core:lava_source", "nodes", "mcl_core:lava_flowing")
+	doc.add_entry_alias("nodes", "mcl_core:dirt_with_grass", "nodes", "mcl_core:dirt_with_grass_snow")
+	doc.add_entry_alias("nodes", "mcl_core:podzol", "nodes", "mcl_core:podzol_snow")
+	doc.add_entry_alias("nodes", "mcl_core:mycelium", "nodes", "mcl_core:mycelium_snow")
 end
