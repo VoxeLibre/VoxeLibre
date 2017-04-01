@@ -310,7 +310,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 					local floor = minetest.get_node(floorpos)
 					local block = minetest.get_node(blockpos)
 					local soilgroup = minetest.get_item_group(floor.name, "soil")
-					if not ((floor.name=="mcl_core:dirt_with_grass" or floor.name=="mcl_core:dirt" or soilgroup == 2 or soilgroup == 3) and block.name == "air") then
+					if not ((floor.name=="mcl_core:dirt_with_grass" or floor.name=="mcl_core:dirt_with_grass_snow" or floor.name=="mcl_core:dirt" or soilgroup == 2 or soilgroup == 3) and block.name == "air") then
 						table.remove(neighbors, n)
 					end
 				end

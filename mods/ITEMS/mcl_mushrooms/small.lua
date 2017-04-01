@@ -42,7 +42,7 @@ local on_place = function(itemstack, placer, pointed_thing)
 	if light and light <= 12 then
 		light_ok = true
 	end
-	if (soil_node.name == "mcl_core:podzol" or soil_node.name == "mcl_core:mycelium") or
+	if (soil_node.name == "mcl_core:podzol" or soil_node.name == "mcl_core:podzol_snow" or soil_node.name == "mcl_core:mycelium" or soil_node == "mcl_core:mycelium_snow") or
 			(light_ok and (soil_def.groups and soil_def.groups.solid and soil_def.groups.opaque)) then
 		local idef = itemstack:get_definition()
 		local success = minetest.item_place_node(itemstack, placer, pointed_thing)

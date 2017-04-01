@@ -375,7 +375,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	_mcl_hardness = 0.6,
 })
 
-
+-- NOTE: This block is to be considered equivalent to the grass block
 minetest.register_node("mcl_core:dirt_with_grass_snow", {
 	description = "Snowy Grass Block",
 	_doc_items_create_entry = false,
@@ -428,6 +428,7 @@ minetest.register_node("mcl_core:mycelium", {
 	_mcl_hardness = 0.6,
 })
 
+-- NOTE: This block is to be considered equivalent to mycelium
 minetest.register_node("mcl_core:mycelium_snow", {
 	description = "Snowy Mycelium",
 	_doc_items_create_entry = false,
@@ -455,6 +456,7 @@ minetest.register_node("mcl_core:podzol", {
 	_mcl_hardness = 0.6,
 })
 
+-- NOTE: This block is to be considered equivalent to podzol
 minetest.register_node("mcl_core:podzol_snow", {
 	description = "Snowy Podzol",
 	_doc_items_create_entry = false,
@@ -463,11 +465,10 @@ minetest.register_node("mcl_core:podzol_snow", {
 	stack_max = 64,
 	groups = {handy=1,shovely=3, soil=1, soil_sapling=2, soil_sugarcane=1, building_block=1, not_in_creative_inventory=1},
 	drop = 'mcl_core:dirt',
-	sounds = mcl_sounds.node_sound_dirt_defaults(),
+	sounds = mcl_sounds.node_sound_snow_defaults(),
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.6,
 })
-
 
 minetest.register_node("mcl_core:dirt", {
 	description = "Dirt",

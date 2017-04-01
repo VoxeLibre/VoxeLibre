@@ -158,7 +158,7 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		-- Cocoa: Advance by 1 stage
 		mcl_cocoas.grow(pos)
 		return true
-	elseif n.name == "mcl_core:dirt_with_grass" then
+	elseif n.name == "mcl_core:dirt_with_grass" or n.name == "mcl_core:dirt_with_grass_snow" then
 		-- Grass Block: Generate tall grass and random flowers all over the place
 		for i = -2, 3, 1 do
 			for j = -3, 2, 1 do
@@ -167,7 +167,7 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 				n = minetest.get_node(pos)
 				n2 = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
 
-				if n.name ~= ""  and n.name == "air" and n2.name == "mcl_core:dirt_with_grass" then
+				if n.name ~= "" and n.name == "air" and (n2.name == "mcl_core:dirt_with_grass" or n2.name == "mcl_core:dirt_with_grass_snow") then
 					if math.random(0,5) > 3 then
 						minetest.add_node(pos, {name=plant_tab[math.random(1, #plant_tab)]})
 					else

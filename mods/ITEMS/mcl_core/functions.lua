@@ -261,14 +261,17 @@ function mcl_core.generate_tree(pos, trunk, leaves, typearbre)
 			for dz=0,1 do
 					pos.z = pos.z + dz
 					--> 0
-					if minetest.get_node(pos).name == "mcl_core:dirt_with_grass" 
-					or  minetest.get_node(pos).name == "mcl_core:dirt" then else
+					local name = minetest.get_node(pos).name
+					if name == "mcl_core:dirt_with_grass"
+					or name == "mcl_core:dirt_with_grass_snow"
+					or  name == "mcl_core:dirt" then else
 							return
 					end
 					pos.x = pos.x+1
 					--> 1
-					if minetest.get_node(pos).name == "mcl_core:dirt_with_grass" 
-					or  minetest.get_node(pos).name == "mcl_core:dirt" then else
+					if name == "mcl_core:dirt_with_grass"
+					or name == "mcl_core:dirt_with_grass_snow"
+					or  name == "mcl_core:dirt" then else
 							return
 					end
 					pos.x = pos.x-1
