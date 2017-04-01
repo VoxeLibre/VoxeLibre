@@ -128,10 +128,11 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 	n = minetest.get_node(pos)
 	if n.name == "" then return false end
 	local stage = ""
-	if n.name == "mcl_core:sapling" then
-		minetest.add_node(pos, {name="air"})
-		mcl_core.generate_tree(pos, "mcl_core:tree", "mcl_core:leaves", 1)
-		return true
+	if minetest.get_item_group(n.name, "sapling") >= 1 then
+		-- 45% chance to advance growth stage of sapling
+		if math.random(1,100) <= 45 then
+			return mcl_core.grow_sapling(pos, n)
+		end
 	elseif string.find(n.name, "mcl_farming:wheat_") ~= nil then
 		stage = string.sub(n.name, -1)
 		if stage == "3" then

@@ -434,6 +434,33 @@ local sapling_grow_action = function(trunknode, leafnode, tree_id, soil_needed)
 	end
 end
 
+-- Attempts to grow the sapling at the specified position
+-- pos: Position
+-- node: Node table of the node at this position, from minetest.get_node
+-- Returns true on success and false on failure
+mcl_core.grow_sapling = function(pos, node)
+	local grow
+	if node.name == "mcl_core:sapling" then
+		grow = sapling_grow_action("mcl_core:tree", "mcl_core:leaves", 1, 1)
+	elseif node.name == "mcl_core:darksapling" then
+		grow = sapling_grow_action("mcl_core:darktree", "mcl_core:darkleaves", 1, 2)
+	elseif node.name == "mcl_core:junglesapling" then
+		grow = sapling_grow_action("mcl_core:jungletree", "mcl_core:jungleleaves", 1, 2)
+	elseif node.name == "mcl_core:acaciasapling" then
+		grow = sapling_grow_action("mcl_core:acaciatree", "mcl_core:acacialeaves", 1, 2)
+	elseif node.name == "mcl_core:sprucesapling" then
+		grow = sapling_grow_action("mcl_core:sprucetree", "mcl_core:spruceleaves", 1, 1)
+	elseif node.name == "mcl_core:birchsapling" then
+		grow = sapling_grow_action("mcl_core:birchtree", "mcl_core:birchleaves", 1, 1)
+	end
+	if grow then
+		grow(pos)
+		return true
+	else
+		return false
+	end
+end
+
 -- TODO: Use better tree models for everything
 -- TODO: Support 2×2 saplings
 
