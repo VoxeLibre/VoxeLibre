@@ -1,39 +1,58 @@
-function mcl_farming:add_plant(full_grown, names, interval, chance)
+local plant_lists = {}
+
+function mcl_farming:add_plant(identifier, full_grown, names, interval, chance)
+	plant_lists[identifier] = {}
+	plant_lists[identifier].full_grown = full_grown
+	plant_lists[identifier].names = names
 	minetest.register_abm({
 		nodenames = names,
 		interval = interval,
 		chance = chance,
 		action = function(pos, node)
-			pos.y = pos.y-1
-			if minetest.get_node(pos).name ~= "mcl_farming:soil_wet" and math.random(0, 9) > 0 then
+			if minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name ~= "mcl_farming:soil_wet" and math.random(0, 9) > 0 then
 				return
+			else
+				mcl_farming:grow_plant(identifier, pos, node)
 			end
-			pos.y = pos.y+1
-			if not minetest.get_node_light(pos) then
-				return
-			end
-			if minetest.get_node_light(pos) < 10 then
-				return
-			end
-			local step = nil
-			for i,name in ipairs(names) do
-				if name == node.name then
-					step = i
-					break
-				end
-			end
-			if step == nil then
-				return
-			end
-			local new_node = {name=names[step+1]}
-			if new_node.name == nil then
-				new_node.name = full_grown
-			end
-			new_node.param = node.param
-			new_node.param2 = node.param2
-			minetest.set_node(pos, new_node)
-		end
+		end,
 	})
+end
+
+-- Attempts to advance a plant at pos by one or more growth stages (if possible)
+-- identifier: Identifier of plant as defined by mcl_farming:add_plant
+-- pos: Position
+-- node: Node table
+-- stages: Number of stages to advance (optional, defaults to 1)
+function mcl_farming:grow_plant(identifier, pos, node, stages)
+	if not minetest.get_node_light(pos) then
+		return
+	end
+	if minetest.get_node_light(pos) < 10 then
+		return
+	end
+
+	local plant_info = plant_lists[identifier]
+	local step = nil
+
+	for i, name in ipairs(plant_info.names) do
+		if name == node.name then
+			step = i
+			break
+		end
+	end
+	if step == nil then
+		return
+	end
+	if not stages then
+		stages = 1
+	end
+	local new_node = {name = plant_info.names[step+stages]}
+	if new_node.name == nil then
+		new_node.name = plant_info.full_grown
+	end
+	new_node.param = node.param
+	new_node.param2 = node.param2
+	minetest.set_node(pos, new_node)
 end
 
 function mcl_farming:place_seed(itemstack, placer, pointed_thing, plantname)

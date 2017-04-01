@@ -103,7 +103,7 @@ minetest.register_node("mcl_farming:beetroot", {
 			{-0.5, -0.5, -0.5, 0.5, -0.125, 0.5}
 		},
 	},
-	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1,dig_by_piston=1},
+	groups = {dig_immediate=3, not_in_creative_inventory=1,dig_by_water=1,dig_by_piston=1,beetroot=4},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 })
@@ -139,7 +139,7 @@ minetest.register_craft({
 	},
 })
 
-mcl_farming:add_plant("mcl_farming:beetroot", {"mcl_farming:beetroot_0", "mcl_farming:beetroot_1", "mcl_farming:beetroot_2"}, 68, 3)
+mcl_farming:add_plant("plant_beetroot", "mcl_farming:beetroot", {"mcl_farming:beetroot_0", "mcl_farming:beetroot_1", "mcl_farming:beetroot_2"}, 68, 3)
 
 if minetest.get_modpath("doc") then
 	for i=1,2 do

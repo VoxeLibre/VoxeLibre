@@ -127,76 +127,39 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 	pos = pointed_thing.under
 	n = minetest.get_node(pos)
 	if n.name == "" then return false end
-	local stage = ""
 	if minetest.get_item_group(n.name, "sapling") >= 1 then
-		-- 45% chance to advance growth stage of sapling
+		-- Saplings: 45% chance to advance growth stage
 		if math.random(1,100) <= 45 then
 			return mcl_core.grow_sapling(pos, n)
 		end
+	-- Wheat, Potato, Carrot, Pumpkin Stem, Melon Stem: Advance by 2-5 stages
 	elseif string.find(n.name, "mcl_farming:wheat_") ~= nil then
-		stage = string.sub(n.name, -1)
-		if stage == "3" then
-			minetest.add_node(pos, {name="mcl_farming:wheat", param = n.param, param2 = n.param2})
-		elseif math.random(1,5) < 3 then
-			minetest.add_node(pos, {name="mcl_farming:wheat", param = n.param, param2 = n.param2})
-		else
-			minetest.add_node(pos, {name="mcl_farming:wheat_"..math.random(2,3), param = n.param, param2 = n.param2})
-		end
-		return true
+		local stages = math.random(2, 5)
+		return mcl_farming:grow_plant("plant_wheat", pos, n, stages)
 	elseif string.find(n.name, "mcl_farming:potato_") ~= nil then
-		stage = tonumber(string.sub(n.name, -1))
-		if stage == 1 then
-			minetest.add_node(pos, {name="mcl_farming:potato_"..math.random(stage,2), param = n.param, param2 = n.param2})
-		else
-			minetest.add_node(pos, {name="mcl_farming:potato", param = n.param, param2 = n.param2})
-		end
-		return true
-	elseif string.find(n.name, "mcl_farming:beetroot_") ~= nil then
-		stage = tonumber(string.sub(n.name, -1))
-		if stage == 1 then
-			minetest.add_node(pos, {name="mcl_farming:beetroot_"..math.random(stage,2), param = n.param, param2 = n.param2})
-		else
-			minetest.add_node(pos, {name="mcl_farming:beetroot", param = n.param, param2 = n.param2})
-		end
-		return true
+		local stages = math.random(2, 5)
+		return mcl_farming:grow_plant("plant_potato", pos, n, stages)
 	elseif string.find(n.name, "mcl_farming:carrot_") ~= nil then
-		stage = tonumber(string.sub(n.name, -1))
-		if stage == 1 then
-			minetest.add_node(pos, {name="mcl_farming:carrot_"..math.random(stage,2), param = n.param, param2 = n.param2})
-		else
-			minetest.add_node(pos, {name="mcl_farming:carrot", param = n.param, param2 = n.param2})
-		end
-		return true
+		local stages = math.random(2, 5)
+		return mcl_farming:grow_plant("plant_carrot", pos, n, stages)
 	elseif string.find(n.name, "mcl_farming:pumpkin_") ~= nil then
-		stage = tonumber(string.sub(n.name, -1))
-		if stage then
-			stage = stage + math.random(2,5)
-			if stage >= 8 then
-				minetest.add_node(pos, {name="mcl_farming:pumpkintige_unconnect"})
-			else
-				minetest.add_node(pos, {name="mcl_farming:pumpkin_"..stage})
-			end
-		end
-		return true
+		local stages = math.random(2, 5)
+		return mcl_farming:grow_plant("plant_pumpkin_stem", pos, n, stages)
 	elseif string.find(n.name, "mcl_farming:melontige_") ~= nil then
-		stage = tonumber(string.sub(n.name, -1))
-		if stage then
-			stage = stage + math.random(2,5)
-			if stage >= 8 then
-				minetest.add_node(pos, {name="mcl_farming:melontige_unconnect"})
-			else
-				minetest.add_node(pos, {name="mcl_farming:melontige_"..stage})
-			end
+		local stages = math.random(2, 5)
+		return mcl_farming:grow_plant("plant_melon_stem", pos, n, stages)
+
+	elseif string.find(n.name, "mcl_farming:beetroot_") ~= nil then
+		-- Beetroot: 75% chance to advance to next stage
+		if math.random(1,100) <= 75 then
+			return mcl_farming:grow_plant("plant_beetroot", pos, n)
 		end
-		return true
 	elseif n.name == "mcl_cocoas:cocoa_1" or n.name == "mcl_cocoas:cocoa_2" then
+		-- Cocoa: Advance by 1 stage
 		mcl_cocoas.grow(pos)
 		return true
-	elseif n.name ~= ""  and n.name == "mcl_core:junglesapling" then
-		minetest.add_node(pos, {name="air"})
-		mcl_core.generate_tree(pos, "mcl_core:jungletree", "mcl_core:jungleleaves", 2)
-		return true
 	elseif n.name == "mcl_core:dirt_with_grass" then
+		-- Grass Block: Generate tall grass and random flowers all over the place
 		for i = -2, 3, 1 do
 			for j = -3, 2, 1 do
 				pos = pointed_thing.above
@@ -230,8 +193,8 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		minetest.add_item(pos, "mcl_flowers:sunflower")
 		return true
 
-	-- Grow tall grass into double tallgrass
 	elseif n.name == "mcl_flowers:tallgrass" then
+		-- Tall Grass: Grow into double tallgrass
 		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
 		local topnode = minetest.get_node(toppos)
 		if minetest.registered_nodes[topnode.name].buildable_to then
@@ -240,8 +203,8 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 			return true
 		end
 
-	-- Grow fern into large fern
 	elseif n.name == "mcl_flowers:fern" then
+		-- Fern: Grow into large fern
 		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
 		local topnode = minetest.get_node(toppos)
 		if minetest.registered_nodes[topnode.name].buildable_to then

@@ -114,7 +114,7 @@ minetest.register_craft({
 	cooktime = 10,
 })
 
-mcl_farming:add_plant("mcl_farming:potato", {"mcl_farming:potato_1", "mcl_farming:potato_2"}, 50, 20)
+mcl_farming:add_plant("plant_potato", "mcl_farming:potato", {"mcl_farming:potato_1", "mcl_farming:potato_2"}, 50, 20)
 
 if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_farming:potato_1", "nodes", "mcl_farming:potato_2")

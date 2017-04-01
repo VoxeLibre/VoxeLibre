@@ -115,7 +115,7 @@ minetest.register_node("mcl_farming:wheat", {
 	_mcl_blast_resistance = 0,
 })
 
-mcl_farming:add_plant("mcl_farming:wheat", {"mcl_farming:wheat_1", "mcl_farming:wheat_2", "mcl_farming:wheat_3"}, 50, 20)
+mcl_farming:add_plant("plant_wheat", "mcl_farming:wheat", {"mcl_farming:wheat_1", "mcl_farming:wheat_2", "mcl_farming:wheat_3"}, 50, 20)
 
 minetest.register_craftitem("mcl_farming:wheat_item", {
 	description = "Wheat",
