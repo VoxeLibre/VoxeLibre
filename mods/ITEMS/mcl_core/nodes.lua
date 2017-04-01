@@ -1927,7 +1927,12 @@ local on_snow_construct = function(pos)
 		minetest.swap_node(npos, {name="mcl_core:mycelium_snow"})
 	end
 end
-local on_snow_destruct = function(pos)
+local after_snow_destruct = function(pos, oldnode)
+	local nn = minetest.get_node(pos).name
+	-- No-op if snow was replaced with snow
+	if nn == "mcl_core:snow" or nn == "mcl_core:snowblock" then
+		return
+	end
 	local npos = {x=pos.x, y=pos.y-1, z=pos.z}
 	local node = minetest.get_node(npos)
 	if node.name == "mcl_core:dirt_with_grass_snow" then
@@ -1962,7 +1967,7 @@ minetest.register_node("mcl_core:snow", {
 	groups = {shovely=1, attached_node=1,deco_block=1, dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_snow_defaults(),
 	on_construct = on_snow_construct,
-	on_destruct = on_snow_destruct,
+	after_destruct = after_snow_destruct,
 	drop = "mcl_throwing:snowball 2",
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.1,
@@ -1978,7 +1983,7 @@ minetest.register_node("mcl_core:snowblock", {
 	groups = {shovely=1, building_block=1},
 	sounds = mcl_sounds.node_sound_snow_defaults(),
 	on_construct = on_snow_construct,
-	on_destruct = on_snow_destruct,
+	after_destruct = after_snow_destruct,
 	drop = "mcl_throwing:snowball 4",
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 0.2,
