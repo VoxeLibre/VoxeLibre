@@ -909,10 +909,10 @@ minetest.register_on_generated(function(minp, maxp)
 	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
 	local data = vm:get_data()
 	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
+	local lvm_used = false
 
 	-- Generate bedrock layers
 	if minp.y <= BEDROCK_MAX then
-		lvm = true
 		local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
 		local c_void = minetest.get_content_id("mcl_core:void")
 
@@ -955,10 +955,31 @@ minetest.register_on_generated(function(minp, maxp)
 
 					if setdata then
 						data[p_pos] = setdata
+						lvm_used = true
 					end
 				end
 			end
 		end
+	end
+
+	-- Put top snow on grassy snow blocks created by the v6 mapgen
+	-- This is because the snowy grass block must only be used when it is below snow or top snow
+	if mg_name == "v6" then
+		local c_top_snow = minetest.get_content_id("mcl_core:snow")
+		local snowdirt = minetest.find_nodes_in_area_under_air(minp, maxp, "mcl_core:dirt_with_grass_snow")
+		for n = 1, #snowdirt do
+			-- CHECKME: What happens at chunk borders?
+			local p_pos = area:index(snowdirt[n].x, snowdirt[n].y + 1, snowdirt[n].z)
+			if p_pos then
+				data[p_pos] = c_top_snow
+			end
+		end
+		if #snowdirt > 1 then
+			lvm_used = true
+		end
+	end
+
+	if lvm_used then
 		vm:set_data(data)
 		vm:calc_lighting()
 		vm:update_liquids()
