@@ -209,3 +209,30 @@ minetest.register_craft({
 -- 2 discs are dropped by creeper
 -- 1 disc is droppd by zombie
 -- TODO: Remove/fix these drops when creeper drops music discs properly
+
+minetest.register_craft({
+	output = "mcl_core:darksapling",
+	recipe = {
+		{ "mcl_core:sapling", "mcl_core:sapling", "mcl_core:sapling" },
+		{ "mcl_core:sapling", "mcl_core:sapling", "mcl_core:sapling" },
+		{ "mcl_core:sapling", "mcl_core:sapling", "mcl_core:sapling" },
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_core:acaciasapling",
+	recipe = {
+		{ "mcl_core:junglesapling", "mcl_core:junglesapling", "mcl_core:junglesapling" },
+		{ "mcl_core:junglesapling", "mcl_core:junglesapling", "mcl_core:junglesapling" },
+		{ "mcl_core:junglesapling", "mcl_core:junglesapling", "mcl_core:junglesapling" },
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_core:birchsapling",
+	recipe = {
+		{ "mcl_core:sprucesapling", "mcl_core:sprucesapling", "mcl_core:sprucesapling" },
+		{ "mcl_core:sprucesapling", "mcl_core:sprucesapling", "mcl_core:sprucesapling" },
+		{ "mcl_core:sprucesapling", "mcl_core:sprucesapling", "mcl_core:sprucesapling" },
+	},
+})
