@@ -190,16 +190,19 @@ function doc.mark_entry_as_revealed(playername, category_id, entry_id)
 		doc.data.players[playername].stored_data.revealed_count[category_id] = doc.data.players[playername].stored_data.revealed_count[category_id] + 1
 		-- Needed because a new entry is added to the list of visible entries
 		doc.data.players[playername].entry_textlist_needs_updating = true
-		if minetest.get_modpath("central_message") ~= nil then
-			local cat = doc.data.categories[category_id]
-			cmsg.push_message_player(minetest.get_player_by_name(playername), S("New help entry unlocked: @1 > @2", cat.def.name, entry.name))
-		end
-		-- To avoid sound spamming, don't play sound more than once per second
-		local last_sound = doc.data.players[playername].last_reveal_sound
-		if last_sound == nil or os.difftime(os.time(), last_sound) >= 1 then
-			-- Play notification sound
-			minetest.sound_play({ name = "doc_reveal", gain = 0.2 }, { to_player = playername })
-			doc.data.players[playername].last_reveal_sound = os.time()
+		-- Notify player of entry revelation
+		if doc.data.players[playername].stored_data.notify_on_reveal == true then
+			if minetest.get_modpath("central_message") ~= nil then
+				local cat = doc.data.categories[category_id]
+				cmsg.push_message_player(minetest.get_player_by_name(playername), S("New help entry unlocked: @1 > @2", cat.def.name, entry.name))
+			end
+			-- To avoid sound spamming, don't play sound more than once per second
+			local last_sound = doc.data.players[playername].last_reveal_sound
+			if last_sound == nil or os.difftime(os.time(), last_sound) >= 1 then
+				-- Play notification sound
+				minetest.sound_play({ name = "doc_reveal", gain = 0.2 }, { to_player = playername })
+				doc.data.players[playername].last_reveal_sound = os.time()
+			end
 		end
 	end
 end
@@ -734,6 +737,7 @@ end
 
 function doc.formspec_main(playername)
 	local formstring = "label[0,0;"..minetest.formspec_escape(DOC_INTRO) .. "\n"
+	local notify_checkbox_x, notify_checkbox_y
 	if doc.get_category_count() >= 1 then
 		formstring = formstring .. F("Please select a category you wish to learn more about:").."]"
 		if doc.get_category_count() <= (CATEGORYFIELDSIZE.WIDTH * CATEGORYFIELDSIZE.HEIGHT)  then
@@ -761,6 +765,8 @@ function doc.formspec_main(playername)
 					end
 				end
 			end
+			notify_checkbox_x = 0
+			notify_checkbox_y = doc.FORMSPEC.HEIGHT-0.5
 		else
 			formstring = formstring .. "textlist[0,1;"..(doc.FORMSPEC.WIDTH-0.2)..","..(doc.FORMSPEC.HEIGHT-2)..";doc_mainlist;"
 			for c=1,#doc.data.category_order do
@@ -778,7 +784,17 @@ function doc.formspec_main(playername)
 			end
 			formstring = formstring .. "]"
 			formstring = formstring .. "button[0,"..(doc.FORMSPEC.HEIGHT-1)..";3,1;doc_button_goto_category;"..F("Show category").."]"
+			notify_checkbox_x = 3.5
+			notify_checkbox_y = doc.FORMSPEC.HEIGHT-1
 		end
+		local text
+		if minetest.get_modpath("central_message") then
+			text = F("Notify me when new help is available")
+		else
+			text = F("Play notification sound when new help is available")
+		end
+		formstring = formstring .. "checkbox["..notify_checkbox_x..","..notify_checkbox_y..";doc_setting_notify_on_reveal;"..text..";"..
+		tostring(doc.data.players[playername].stored_data.notify_on_reveal == true) .. "]"
 	else
 		formstring = formstring .. "]"
 	end
@@ -1065,6 +1081,9 @@ function doc.process_form(player,formname,fields)
 			doc.data.players[playername].entry_textlist_needs_updating = true
 			local formspec = doc.formspec_core(2)..doc.formspec_category(cid, playername)
 			minetest.show_formspec(playername, "doc:category", formspec)
+		end
+		if fields["doc_setting_notify_on_reveal"] then
+			doc.data.players[playername].stored_data.notify_on_reveal = fields["doc_setting_notify_on_reveal"] == "true"
 		end
 	elseif(formname == "doc:category") then
 		if fields["doc_button_goto_entry"] then
