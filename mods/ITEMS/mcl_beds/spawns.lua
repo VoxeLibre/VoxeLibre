@@ -11,21 +11,21 @@ if cf ~= nil then
 	bkwd = true
 end
 
-function beds.save_spawns()
-	if not beds.spawn then
+function mcl_beds.save_spawns()
+	if not mcl_beds.spawn then
 		return
 	end
 	local data = {}
 	local output = io.open(org_file, "w")
-	for k, v in pairs(beds.spawn) do
+	for k, v in pairs(mcl_beds.spawn) do
 		table.insert(data, string.format("%.1f %.1f %.1f %s\n", v.x, v.y, v.z, k))
 	end
 	output:write(table.concat(data))
 	io.close(output)
 end
 
-function beds.read_spawns()
-	local spawns = beds.spawn
+function mcl_beds.read_spawns()
+	local spawns = mcl_beds.spawn
 	local input = io.open(file, "r")
 	if input and not bkwd then
 		repeat
@@ -40,24 +40,24 @@ function beds.read_spawns()
 		until input:read(0) == nil
 		io.close(input)
 	elseif input and bkwd then
-		beds.spawn = minetest.deserialize(input:read("*all"))
+		mcl_beds.spawn = minetest.deserialize(input:read("*all"))
 		input:close()
-		beds.save_spawns()
+		mcl_beds.save_spawns()
 		os.rename(file, file .. ".backup")
 		file = org_file
 	end
 end
 
-beds.read_spawns()
+mcl_beds.read_spawns()
 
-function beds.set_spawns()
-	for name,_ in pairs(beds.player) do
+function mcl_beds.set_spawns()
+	for name,_ in pairs(mcl_beds.player) do
 		local player = minetest.get_player_by_name(name)
 		local p = player:getpos()
 		-- but don't change spawn location if borrowing a bed
 		if not minetest.is_protected(p, name) then
-			beds.spawn[name] = p
+			mcl_beds.spawn[name] = p
 		end
 	end
-	beds.save_spawns()
+	mcl_beds.save_spawns()
 end

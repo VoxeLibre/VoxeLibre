@@ -35,7 +35,7 @@ else
 	beddesc = beddesc .. "Going into bed seems to make time pass faster: The night will be skipped when you go sleep and you're alone in this world. If you're not alone, the night is skipped when all players in this world went to sleep."
 end
 
-function beds.register_bed(name, def)
+function mcl_beds.register_bed(name, def)
 	minetest.register_node(name .. "_bottom", {
 		description = def.description,
 		_doc_items_longdesc = def._doc_items_longdesc or beddesc,
@@ -59,9 +59,8 @@ function beds.register_bed(name, def)
 		},
 		selection_box = {
 			type = "fixed",
-			fixed = def.selectionbox,
+			fixed = def.selectionbox.bottom,
 		},
-
 		on_place = function(itemstack, placer, pointed_thing)
 			local under = pointed_thing.under
 
@@ -119,7 +118,7 @@ function beds.register_bed(name, def)
 		end,
 
 		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
-			beds.on_rightclick(pos, clicker)
+			mcl_beds.on_rightclick(pos, clicker)
 			return itemstack
 		end,
 
@@ -164,7 +163,6 @@ function beds.register_bed(name, def)
 		paramtype2 = "facedir",
 		sunlight_propagates = true,
 		is_ground_content = false,
-		pointable = false,
 		groups = {handy = 1, flammable = 3, bed = 2, dig_by_piston=1, fall_damage_add_percent=-50},
 		_mcl_hardness = 0.2,
 		_mcl_blast_resistance = 1,
@@ -173,6 +171,10 @@ function beds.register_bed(name, def)
 		node_box = {
 			type = "fixed",
 			fixed = def.nodebox.top,
+		},
+		selection_box = {
+			type = "fixed",
+			fixed = def.selectionbox.top,
 		},
 		on_destruct = function(pos)
 			destruct_bed(pos, 2)

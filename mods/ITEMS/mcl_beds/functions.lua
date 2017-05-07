@@ -30,7 +30,7 @@ local function is_night_skip_enabled()
 end
 
 local function check_in_beds(players)
-	local in_bed = beds.player
+	local in_bed = mcl_beds.player
 	if not players then
 		players = minetest.get_connected_players()
 	end
@@ -55,9 +55,9 @@ local function lay_down(player, pos, bed_pos, state, skip)
 
 	-- stand up
 	if state ~= nil and not state then
-		local p = beds.pos[name] or nil
-		if beds.player[name] ~= nil then
-			beds.player[name] = nil
+		local p = mcl_beds.pos[name] or nil
+		if mcl_beds.player[name] ~= nil then
+			mcl_beds.player[name] = nil
 			player_in_bed = player_in_bed - 1
 		end
 		-- skip here to prevent sending player specific changes (used for leaving players)
@@ -78,8 +78,8 @@ local function lay_down(player, pos, bed_pos, state, skip)
 
 	-- lay down
 	else
-		beds.player[name] = 1
-		beds.pos[name] = pos
+		mcl_beds.player[name] = 1
+		mcl_beds.pos[name] = pos
 		player_in_bed = player_in_bed + 1
 
 		-- physics, eye_offset, etc
@@ -104,42 +104,42 @@ local function update_formspecs(finished)
 	local all_in_bed = ges == player_in_bed
 
 	if finished then
-		form_n = beds.formspec .. "label[2.7,11; Good morning.]"
+		form_n = mcl_beds.formspec .. "label[2.7,11; Good morning.]"
 	else
-		form_n = beds.formspec .. "label[2.2,11;" .. tostring(player_in_bed) ..
+		form_n = mcl_beds.formspec .. "label[2.2,11;" .. tostring(player_in_bed) ..
 			" of " .. tostring(ges) .. " players are in bed]"
 		if all_in_bed and is_night_skip_enabled() then
 			form_n = form_n .. "button_exit[2,8;4,0.75;force;Force night skip]"
 		end
 	end
 
-	for name,_ in pairs(beds.player) do
-		minetest.show_formspec(name, "beds_form", form_n)
+	for name,_ in pairs(mcl_beds.player) do
+		minetest.show_formspec(name, "mcl_beds_form", form_n)
 	end
 end
 
 
 -- Public functions
 
-function beds.kick_players()
-	for name, _ in pairs(beds.player) do
+function mcl_beds.kick_players()
+	for name, _ in pairs(mcl_beds.player) do
 		local player = minetest.get_player_by_name(name)
 		lay_down(player, nil, nil, false)
 	end
 end
 
-function beds.skip_night()
+function mcl_beds.skip_night()
 	minetest.set_timeofday(0.25) -- tod = 6000
 end
 
-function beds.on_rightclick(pos, player)
+function mcl_beds.on_rightclick(pos, player)
 	local name = player:get_player_name()
 	local ppos = player:getpos()
 	local tod = minetest.get_timeofday() * 24000
 
 	-- Values taken from Minecraft Wiki with offset of +6000
 	if tod < 18541 and tod > 5458 then
-		if beds.player[name] then
+		if mcl_beds.player[name] then
 			lay_down(player, nil, nil, false)
 		end
 		minetest.chat_send_player(name, "You can only sleep at night.")
@@ -147,9 +147,9 @@ function beds.on_rightclick(pos, player)
 	end
 
 	-- move to bed
-	if not beds.player[name] then
+	if not mcl_beds.player[name] then
 		lay_down(player, ppos, pos)
-		beds.set_spawns() -- save respawn positions when entering bed
+		mcl_beds.set_spawns() -- save respawn positions when entering bed
 	else
 		lay_down(player, nil, nil, false)
 	end
@@ -165,8 +165,8 @@ function beds.on_rightclick(pos, player)
 				update_formspecs(is_night_skip_enabled())
 			end
 			if is_night_skip_enabled() then
-				beds.skip_night()
-				beds.kick_players()
+				mcl_beds.skip_night()
+				mcl_beds.kick_players()
 			end
 		end)
 	end
@@ -179,7 +179,7 @@ if enable_respawn then
 	-- respawn player at bed if enabled and valid position is found
 	minetest.register_on_respawnplayer(function(player)
 		local name = player:get_player_name()
-		local pos = beds.spawn[name]
+		local pos = mcl_beds.spawn[name]
 		if pos then
 			player:setpos(pos)
 			return true
@@ -190,20 +190,20 @@ end
 minetest.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
 	lay_down(player, nil, nil, false, true)
-	beds.player[name] = nil
+	mcl_beds.player[name] = nil
 	if check_in_beds() then
 		minetest.after(2, function()
 			update_formspecs(is_night_skip_enabled())
 			if is_night_skip_enabled() then
-				beds.skip_night()
-				beds.kick_players()
+				mcl_beds.skip_night()
+				mcl_beds.kick_players()
 			end
 		end)
 	end
 end)
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-	if formname ~= "beds_form" then
+	if formname ~= "mcl_beds_form" then
 		return
 	end
 	if fields.quit or fields.leave then
@@ -214,8 +214,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.force then
 		update_formspecs(is_night_skip_enabled())
 		if is_night_skip_enabled() then
-			beds.skip_night()
-			beds.kick_players()
+			mcl_beds.skip_night()
+			mcl_beds.kick_players()
 		end
 	end
 end)
