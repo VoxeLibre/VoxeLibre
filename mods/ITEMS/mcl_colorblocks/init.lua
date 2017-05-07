@@ -17,7 +17,7 @@ block.dyes = {
 	{"purple",     "Purple",     "violet", true},
 	{"brown",      "Brown",      "brown", true},
 	{"pink",       "Pink",       "pink"},
-	{"lime",       "Lime",       "green"},
+	{"lime",       "Lime",       "green", true},
 	{"light_blue", "Light Blue", "lightblue", true},
 }
 
