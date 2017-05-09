@@ -176,6 +176,11 @@ function mcl_beds.register_bed(name, def)
 			type = "fixed",
 			fixed = def.selectionbox.top,
 		},
+		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+			mcl_beds.on_rightclick(pos, clicker)
+			return itemstack
+		end,
+		on_rotate = false,
 		on_destruct = function(pos)
 			destruct_bed(pos, 2)
 		end,
@@ -187,4 +192,6 @@ function mcl_beds.register_bed(name, def)
 		output = name,
 		recipe = def.recipe
 	})
+
+	doc.add_entry_alias("nodes", name.."_bottom", "nodes", name.."_top")
 end
