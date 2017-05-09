@@ -657,7 +657,7 @@ doc.add_category("nodes", {
 			datastring = newline2(datastring)
 
 			---- Movement
-			if forbidden_core_factoids.node_movement then
+			if not forbidden_core_factoids.node_movement then
 				if data.def.groups.disable_jump == 1 then
 					datastring = datastring .. S("You can not jump while standing on this block.").."\n"
 				end
