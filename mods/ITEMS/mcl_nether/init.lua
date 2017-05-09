@@ -35,7 +35,7 @@ minetest.register_node("mcl_nether:quartz_ore", {
 
 minetest.register_node("mcl_nether:netherrack", {
 	description = "Netherrack",
-	_doc_items_longdesc = "Netherrack is a stone-like block home to the Nether.",
+	_doc_items_longdesc = "Netherrack is a stone-like block home to the Nether. Using flint on steel on netherrack will create eternal fire instead of normal fire.",
 	stack_max = 64,
 	tiles = {"mcl_nether_netherrack.png"},
 	is_ground_content = true,

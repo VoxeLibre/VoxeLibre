@@ -2,7 +2,7 @@
 minetest.register_tool("mcl_fire:flint_and_steel", {
 	description = "Flint and Steel",
 	_doc_items_longdesc = "Flint and steel is a tool to start fires and ignite blocks.",
-	_doc_items_usagehelp = "Rightclick the surface of a block to attempt to light a fire in front of it. TNT will get ignited instead.",
+	_doc_items_usagehelp = "Rightclick the surface of a block to attempt to light a fire in front of it. On netherrack it will start an eternal fire. Using it on TNT will ignite it.",
 	inventory_image = "mcl_fire_flint_and_steel.png",
 	liquids_pointable = false,
 	stack_max = 1,
