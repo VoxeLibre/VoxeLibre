@@ -83,6 +83,7 @@ These groups are used mostly for informational purposes
 * `solid=1`: Solid full-cube block (automatically assigned)
 * `opaque=1`: Opaque block (automatically assigned)
 * `not_solid=1`: Block is sold (only assign this group for nodes which are automatically detected as “solid” in error
+* `fire=1`: Fire
 * `water=1`: Water
 * `lava=1`: Lava
 * `torch`: Torch or torch-like node
