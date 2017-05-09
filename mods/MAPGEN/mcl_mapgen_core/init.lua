@@ -810,6 +810,11 @@ else
 	minetest.set_mapgen_setting("mg_flags", "caves,nodungeons,decorations,light", true)
 end
 
+-- Perlin noise objects
+local perlin
+
+-- Generate clay and structures
+-- TODO: Try to use more efficient structure generating code
 minetest.register_on_generated(function(minp, maxp, seed)
 	if maxp.y >= 2 and minp.y <= 0 then
 		-- Generate clay
@@ -850,7 +855,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	end
 	if maxp.y >= 3 and minp.y <= 64 then
 		-- Generate desert temples
-		local perlin1 = minetest.get_perlin(329, 3, 0.6, 100)
+		perlin = perlin or minetest.get_perlin(329, 3, 0.6, 100)
 		-- Assume X and Z lengths are equal
 		local divlen = 5
 		local divs = (maxp.x-minp.x)/divlen+1;
@@ -861,7 +866,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 			local x1 = minp.x + math.floor((divx+1)*divlen)
 			local z1 = minp.z + math.floor((divz+1)*divlen)
 			-- Determine amount from perlin noise
-			local amount = math.floor(perlin1:get2d({x=x0, y=z0}) * 9)
+			local amount = math.floor(perlin:get2d({x=x0, y=z0}) * 9)
 			-- Find random positions based on this random
 			local pr = PseudoRandom(seed+1)
 			for i=0, amount do
@@ -903,11 +908,13 @@ end)
 local BEDROCK_MIN = mcl_vars.mg_bedrock_overworld_min
 local BEDROCK_MAX = mcl_vars.mg_bedrock_overworld_max
 
--- Below the bedrock, generate air/void
+-- Buffer for LuaVoxelManip
+local lvm_buffer = {}
 
+-- Below the bedrock, generate air/void
 minetest.register_on_generated(function(minp, maxp)
 	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
-	local data = vm:get_data()
+	local data = vm:get_data(lvm_buffer)
 	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
 	local lvm_used = false
 
