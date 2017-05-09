@@ -13,21 +13,21 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 			"fire_flint_and_steel",
 			{pos = pointed_thing.above, gain = 0.5, max_hear_distance = 8}
 		)
+		local used = false
 		if pointed_thing.type == "node" then
-			if minetest.get_node(pointed_thing.under).name == "mcl_tnt:tnt" then
-				tnt.ignite(pointed_thing.under)
-				if not minetest.setting_getbool("creative_mode") then
-					itemstack:add_wear(65535/65) -- 65 uses
-				end
+			local nodedef = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
+			if nodedef._on_ignite then
+				nodedef._on_ignite(pointed_thing.under, user)
 			else
 				mcl_fire.set_fire(pointed_thing)
-				if not minetest.setting_getbool("creative_mode") then
-					itemstack:add_wear(65535/65) -- 65 uses
-				end
 			end
+			used = true
 		end
 		if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then
 			minetest.sound_play(idef.sound.breaks, {pos=user:getpos(), gain=0.5})
+		end
+		if not minetest.setting_getbool("creative_mode") and used == true then
+			itemstack:add_wear(65535/65) -- 65 uses
 		end
 		return itemstack
 	end,

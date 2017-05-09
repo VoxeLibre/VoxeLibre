@@ -54,6 +54,9 @@ minetest.register_node("mcl_tnt:tnt", {
 	mesecons = {effector = {
 		action_on = tnt.ignite
 	}},
+	_on_ignite = function(pos, player)
+		tnt.ignite(pos)
+	end,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 

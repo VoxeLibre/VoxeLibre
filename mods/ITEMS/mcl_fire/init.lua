@@ -291,7 +291,28 @@ else -- Fire enabled
 
 end
 
--- Set pointed_thing on fire
+-- Spawn eternal fire when using flint and steel on netherrack
+
+local eternal_override = {
+	after_destruct = function(pos, oldnode)
+		pos.y = pos.y + 1
+		if minetest.get_node(pos).name == "mcl_fire:eternal_fire" then
+			minetest.remove_node(pos)
+		end
+	end,
+	_on_ignite = function(pos, player)
+		local flame_pos = {x = pos.x, y = pos.y + 1, z = pos.z}
+		if minetest.get_node(flame_pos).name == "air" then
+			minetest.set_node(flame_pos, {name = "mcl_fire:eternal_fire"})
+		end
+	end,
+}
+
+if minetest.get_modpath("mcl_nether") then
+	minetest.override_item("mcl_nether:netherrack", eternal_override)
+end
+
+-- Set pointed_thing on (normal) fire
 mcl_fire.set_fire = function(pointed_thing)
 	local n = minetest.get_node(pointed_thing.above)
 	if n.name ~= ""  and n.name == "air" and not minetest.is_protected(pointed_thing.above, "fire") then
