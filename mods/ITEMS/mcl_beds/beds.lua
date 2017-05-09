@@ -48,6 +48,11 @@ for c=1, #colors do
 			bottom = {-0.5, -0.5, -0.5, 0.5, 0.06, 0.5},
 			top = {-0.5, -0.5, -0.5, 0.5, 0.06, 0.5},
 		},
+		-- Simplified collision box because Minetest acts weird if we use the nodebox one
+		collisionbox = {
+			bottom = {-0.5, -0.5, -0.5, 0.5, 0.06, 0.5},
+			top = {-0.5, -0.5, -0.5, 0.5, 0.06, 0.5},
+		},
 		recipe = {
 			{colors[c][3], colors[c][3], colors[c][3]},
 			{"group:wood", "group:wood", "group:wood"}

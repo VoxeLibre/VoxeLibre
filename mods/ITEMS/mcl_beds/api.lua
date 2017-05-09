@@ -36,6 +36,16 @@ else
 end
 
 function mcl_beds.register_bed(name, def)
+	local node_box_bottom, selection_box_bottom, collision_box_bottom
+	if def.nodebox and def.nodebox.bottom then
+		node_box_bottom = { type = "fixed", fixed = def.nodebox.bottom }
+	end
+	if def.selectionbox and def.selectionbox.bottom then
+		selection_box_bottom = { type = "fixed", fixed = def.selectionbox.bottom }
+	end
+	if def.collisionbox and def.collisionbox.bottom then
+		collision_box_bottom = { type = "fixed", fixed = def.collisionbox.bottom }
+	end
 	minetest.register_node(name .. "_bottom", {
 		description = def.description,
 		_doc_items_longdesc = def._doc_items_longdesc or beddesc,
@@ -53,14 +63,9 @@ function mcl_beds.register_bed(name, def)
 		_mcl_hardness = 0.2,
 		_mcl_blast_resistance = 1,
 		sounds = def.sounds or mcl_sounds.node_sound_wood_defaults(),
-		node_box = {
-			type = "fixed",
-			fixed = def.nodebox.bottom,
-		},
-		selection_box = {
-			type = "fixed",
-			fixed = def.selectionbox.bottom,
-		},
+		node_box = node_box_bottom,
+		selection_box = selection_box_bottom,
+		collision_box = collision_box_bottom,
 		on_place = function(itemstack, placer, pointed_thing)
 			local under = pointed_thing.under
 
@@ -156,6 +161,17 @@ function mcl_beds.register_bed(name, def)
 		end,
 	})
 
+	local node_box_top, selection_box_top, collision_box_top
+	if def.nodebox and def.nodebox.top then
+		node_box_top = { type = "fixed", fixed = def.nodebox.top }
+	end
+	if def.selectionbox and def.selectionbox.top then
+		selection_box_top = { type = "fixed", fixed = def.selectionbox.top }
+	end
+	if def.collisionbox and def.collisionbox.top then
+		collision_box_top = { type = "fixed", fixed = def.collisionbox.top }
+	end
+
 	minetest.register_node(name .. "_top", {
 		drawtype = "nodebox",
 		tiles = def.tiles.top,
@@ -168,14 +184,9 @@ function mcl_beds.register_bed(name, def)
 		_mcl_blast_resistance = 1,
 		sounds = def.sounds or mcl_sounds.node_sound_wood_defaults(),
 		drop = name .. "_bottom",
-		node_box = {
-			type = "fixed",
-			fixed = def.nodebox.top,
-		},
-		selection_box = {
-			type = "fixed",
-			fixed = def.selectionbox.top,
-		},
+		node_box = node_box_top,
+		selection_box = selection_box_top,
+		collision_box = collision_box_top,
 		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 			mcl_beds.on_rightclick(pos, clicker)
 			return itemstack
