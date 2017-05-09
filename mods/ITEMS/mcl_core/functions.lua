@@ -90,7 +90,8 @@ local function drop_attached_node(p)
 	end
 end
 
--- Remove attached nodes next to flowing water
+-- Remove attached nodes next to and below water.
+-- TODO: This is just an approximation! Attached nodes should be removed if water wants to flow INTO that space.
 minetest.register_abm({
 	nodenames = {"group:dig_by_water"},
 	neighbors = {"group:water"},
@@ -102,18 +103,18 @@ minetest.register_abm({
 				local p = {x=pos.x+xp, y=pos.y, z=pos.z+zp}
 				local n = minetest.get_node(p)
 				local d = minetest.registered_nodes[n.name]
-				if (d.groups.water and d.liquidtype == "flowing") then
+				if (d.groups.water) then
 					drop_attached_node(pos)
 					minetest.dig_node(pos)
 					break
 				end
 			end
 		end
-		for yp=-1,1 do
+		for yp=-1,0 do
 			local p = {x=pos.x, y=pos.y+yp, z=pos.z}
 			local n = minetest.get_node(p)
 			local d = minetest.registered_nodes[n.name]
-			if (d.groups.water and d.liquidtype == "flowing") then
+			if (d.groups.water) then
 				drop_attached_node(pos)
 				minetest.dig_node(pos)
 				break
