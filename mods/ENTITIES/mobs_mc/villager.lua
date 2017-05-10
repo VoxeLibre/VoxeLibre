@@ -49,6 +49,7 @@ mobs:register_mob("mobs_mc:villager", {
 	light_damage = 0,
 	view_range = 16,
 	fear_height = 5,
+	-- TODO: Add trading menu
 	--[[
 	on_rightclick = function(self, clicker)
 		local inv
@@ -165,7 +166,7 @@ mobs:register_mob("mobs_mc:villager", {
 	
 	]]
 })
-mobs:register_spawn("mobs_mc:villager", {"mcl_core:gravel"}, 20, 0, 500, 2, 31000)
+-- TODO: Spawn villager
 
 
 -- compatibility
