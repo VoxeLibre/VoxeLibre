@@ -30,12 +30,9 @@ end
 -- MineClone 2's treasure function. Gets all treasures for a single chest.
 -- Based on information from Minecraft Wiki.
 function tsm_railcorridors.get_treasures(pr)
-	local r1 = pr:next(1,71)
-	local r2 = pr:next(1,83)
-	local r3 = pr:next(1,50)
-
 	local items = {}
 	-- First roll
+	local r1 = pr:next(1,71)
 	if r1 <= 30 then
 		table.insert(items, "mobs:nametag")
 	elseif r1 <= 50 then
@@ -55,6 +52,7 @@ function tsm_railcorridors.get_treasures(pr)
 	-- Second roll
 	local r2stacks = pr:next(2,4)
 	for i=1, r2stacks do
+		local r2 = pr:next(1,83)
 		if r2 <= 15 then
 			table.insert(items, "mcl_farming:bread "..pr:next(1,3))
 		elseif r2 <= 25 then
@@ -80,6 +78,7 @@ function tsm_railcorridors.get_treasures(pr)
 
 	-- Third roll
 	for i=1, 3 do
+		local r3 = pr:next(1,50)
 		if r3 <= 20 then
 			table.insert(items, "mcl_minecarts:rail "..pr:next(4,8))
 		elseif r3 <= 35 then
