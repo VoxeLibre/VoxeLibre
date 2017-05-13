@@ -20,6 +20,8 @@ local function add_simple_flower(name, desc, image, simple_selection_box)
 		stack_max = 64,
 		groups = {dig_immediate=3,flammable=2,flower=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,dig_by_piston=1,deco_block=1},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
+		node_placement_prediction = "",
+		on_place = mcl_util.on_place_non_mycelium_plant,
 		selection_box = {
 			type = "fixed",
 			fixed = simple_selection_box,
@@ -75,6 +77,8 @@ minetest.register_node("mcl_flowers:tallgrass", {
 			minetest.add_item(pos, oldnode.name)
 		end
 	end,
+	node_placement_prediction = "",
+	on_place = mcl_util.on_place_non_mycelium_plant,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -102,6 +106,8 @@ minetest.register_node("mcl_flowers:fern", {
 		end
 	end,
 	drop = wheat_seed_drop,
+	node_placement_prediction = "",
+	on_place = mcl_util.on_place_non_mycelium_plant,
 	selection_box = {
 		type = "fixed",
 		fixed = { -4/16, -0.5, -4/16, 4/16, 7/16, 4/16 },
@@ -151,7 +157,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 			local bottom_buildable = minetest.registered_nodes[minetest.get_node(bottom).name].buildable_to
 			local top_buildable = minetest.registered_nodes[minetest.get_node(top).name].buildable_to
 			local floorname = minetest.get_node({x=bottom.x, y=bottom.y-1, z=bottom.z}).name
-			if minetest.registered_nodes[floorname].walkable and bottom_buildable and top_buildable then
+			if floorname ~= "mcl_core:mycelium" and minetest.registered_nodes[floorname].walkable and bottom_buildable and top_buildable then
 				-- Success! We can now place the flower
 				minetest.sound_play(minetest.registered_nodes["mcl_flowers:"..name].sounds.place, {pos = bottom, gain=1})
 				minetest.set_node(bottom, {name="mcl_flowers:"..name})

@@ -712,6 +712,8 @@ minetest.register_node("mcl_core:sapling", {
 		local meta = minetest.get_meta(pos)
 		meta:set_int("stage", 0)
 	end,
+	node_placement_prediction = "",
+	on_place = mcl_util.on_place_non_mycelium_plant,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -796,6 +798,8 @@ minetest.register_node("mcl_core:darksapling", {
 		local meta = minetest.get_meta(pos)
 		meta:set_int("stage", 0)
 	end,
+	node_placement_prediction = "",
+	on_place = mcl_util.on_place_non_mycelium_plant,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -938,6 +942,8 @@ minetest.register_node("mcl_core:junglesapling", {
 		local meta = minetest.get_meta(pos)
 		meta:set_int("stage", 0)
 	end,
+	node_placement_prediction = "",
+	on_place = mcl_util.on_place_non_mycelium_plant,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -1013,6 +1019,8 @@ minetest.register_node("mcl_core:acaciasapling", {
 		local meta = minetest.get_meta(pos)
 		meta:set_int("stage", 0)
 	end,
+	node_placement_prediction = "",
+	on_place = mcl_util.on_place_non_mycelium_plant,
 	stack_max = 64,
 	groups = {dig_immediate=3, sapling=1,non_mycelium_plant=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
@@ -1099,6 +1107,8 @@ minetest.register_node("mcl_core:sprucesapling", {
 		local meta = minetest.get_meta(pos)
 		meta:set_int("stage", 0)
 	end,
+	node_placement_prediction = "",
+	on_place = mcl_util.on_place_non_mycelium_plant,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -1177,6 +1187,8 @@ minetest.register_node("mcl_core:birchsapling", {
 		local meta = minetest.get_meta(pos)
 		meta:set_int("stage", 0)
 	end,
+	node_placement_prediction = "",
+	on_place = mcl_util.on_place_non_mycelium_plant,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -1280,6 +1292,8 @@ minetest.register_node("mcl_core:reeds", {
 	stack_max = 64,
 	groups = {dig_immediate=3, craftitem=1, non_mycelium_plant=1, dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	node_placement_prediction = "",
+	on_place = mcl_util.on_place_non_mycelium_plant,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -1813,6 +1827,8 @@ minetest.register_node("mcl_core:deadbush", {
 		type = "fixed",
 		fixed = {-6/16, -8/16, -6/16, 6/16, 8/16, 6/16},
 	},
+	node_placement_prediction = "",
+	on_place = mcl_util.on_place_non_mycelium_plant,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })

@@ -228,3 +228,48 @@ end
 function mcl_util.layer_to_y(layer, minecraft_dimension)
 	return layer + mcl_vars.mg_overworld_min
 end
+
+-- on_place function for plants which can't grow on mycelium
+
+function mcl_util.on_place_non_mycelium_plant(itemstack, placer, pointed_thing)
+	if pointed_thing.type ~= "node" then
+		-- no interaction possible with entities
+		return itemstack
+	end
+
+	-- Call on_rightclick if the pointed node defines it
+	local node = minetest.get_node(pointed_thing.under)
+	if placer and not placer:get_player_control().sneak then
+		if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+			return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+		end
+	end
+
+	local place_pos, soil_node
+	local def_under = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
+	local def_above = minetest.registered_nodes[minetest.get_node(pointed_thing.above).name]
+	if def_under.buildable_to then
+		place_pos = pointed_thing.under
+	elseif def_above.buildable_to then
+		place_pos = pointed_thing.above
+	else
+		return itemstack
+	end
+	soil_node = minetest.get_node({x=place_pos.x, y=place_pos.y-1, z=place_pos.z})
+
+	-- Placement rules:
+	-- * Allowed on everything except mycelium
+	if soil_node.name ~= "mcl_core:mycelium" then
+		local idef = itemstack:get_definition()
+		local new_itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing)
+
+		if success then
+			if idef.sounds and idef.sounds.place then
+				minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
+			end
+		end
+		itemstack = new_itemstack
+	end
+
+	return itemstack
+end
