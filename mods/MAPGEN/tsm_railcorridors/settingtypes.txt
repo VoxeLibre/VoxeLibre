@@ -1,0 +1,30 @@
+#Probability (0.0 to 1.0) for every newly generated chunk to get rail corridors.
+tsm_railcorridors_probability_railcaves_in_chunk (Rail corridor probability) float 0.33333 0.0 1.0
+
+#Minimum rail corridor path length (excludes forks).
+tsm_railcorridors_way_min (Minimum rail corridor length) int 4 1
+
+#Maximum rail corridor path length (excludes forks).
+tsm_railcorridors_way_max (Maximum rail corridor length) int 7 1
+
+#Probability (0.0 to 1.0) for every horizontal part of a rail corridor to have torches.
+tsm_railcorridors_probability_torches_in_segment (Torch probability) float 0.5 0.0 1.0
+
+#Probability (0.0 to 1.0) for every part of a rail corridor to go up or down.
+tsm_railcorridors_probability_up_or_down (Stairway probability) float 0.2 0.0 1.0
+
+#Probability (0.0 to 1.0) for every part of a rail corridor to fork.
+#Caution! Too high values may cause Minetest to hang.
+tsm_railcorridors_probability_fork (Fork probability) float 0.04 0.0 1.0
+
+#Probability (0.0 to 1.0) for every part of a rail corridor to contain a treasure chest.
+tsm_railcorridors_probability_chest (Chest probability) float 0.05 0.0 1.0
+
+#Probability (0.0 to 1.0) for a rail corridor system to have damaged/incomplete railways
+tsm_railcorridors_probability_damage (Damaged railway probability) float 0.90 0.0 1.0
+
+#If enabled, rail corridors continue to generate through obstacles such
+#as other rail corridors (without destroying them, mostly). This may lead
+#to pretty chaotic rail corridors, but they are also more free to spread.
+#If disabled, rail corridors spread in a orderly fashion.
+tsm_railcorridors_chaos (Chaos Mode) bool false
