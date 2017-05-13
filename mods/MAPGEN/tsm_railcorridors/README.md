@@ -1,4 +1,5 @@
-# Railway corridors for Treasurer [`tsm_railcorridors`]
+# Railway corridors [`tsm_railcorridors`]
+MineClone 2 adaption. NO TREASURER SUPPORT!
 
 * Current version 0.11.0
 

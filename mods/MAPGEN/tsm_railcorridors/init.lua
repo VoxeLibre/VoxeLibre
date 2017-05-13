@@ -197,49 +197,15 @@ end
 
 -- Random chest items
 -- Zufälliger Kisteninhalt
-local function rci()
-	if(minetest.get_modpath("treasurer") ~= nil) then
-		local treasures
-		if pr:next(0,100) < 3 then
-			treasures = treasurer.select_random_treasures(1,2,4)
-		elseif pr:next(0,100) < 5 then
-			if pr:next(0,100) < 50 then
-				treasures = treasurer.select_random_treasures(1,2,4,"seed")
-			else
-				treasures = treasurer.select_random_treasures(1,2,4,"seed")
-			end
-		elseif pr:next(0,1000) < 5 then
-			if minetest.get_modpath("tnt") then
-				return "tnt:tnt "..pr:next(1,3)
-			end
-		elseif pr:next(0,1000) < 3 then
-			if pr:next(0,1000) < 800 then
-				treasures = treasurer.select_random_treasures(1,3,6,"mineral")
-			else
-				treasures = treasurer.select_random_treasures(1,5,9,"mineral")
-			end
-		end
 
-		if(treasures ~= nil) then
-			if(#treasures>=1) then
-				return treasures[1]:get_name()
-			else
-				return ""
-			end
-		else
-			return ""
-		end
-	else
-		return tsm_railcorridors.get_default_treasure(pr)
-	end
-end
 -- chests
 local function Place_Chest(pos, param2)
 	if SetNodeIfCanBuild(pos, {name=tsm_railcorridors.nodes.chest, param2=param2}) then
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
-		for i=1, inv:get_size("main") do
-			inv:set_stack("main", i, ItemStack(rci()))
+		local items = tsm_railcorridors.get_treasures(pr)
+		for i=1, math.min(#items, inv:get_size("main")) do
+			inv:set_stack("main", i, ItemStack(items[i]))
 		end
 	end
 end

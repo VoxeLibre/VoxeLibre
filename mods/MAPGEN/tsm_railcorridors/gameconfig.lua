@@ -24,30 +24,76 @@ tsm_railcorridors.nodes = {
 -- only if the Treasurer mod is not found.
 -- pr: A PseudoRandom object
 function tsm_railcorridors.get_default_treasure(pr)
-	if pr:next(0,1000) < 30 then
-		return "mcl_farming:bread "..pr:next(1,3)
-	elseif pr:next(0,1000) < 50 then
-		if pr:next(0,1000) < 500 then
-			return "mcl_farming:pumpkin_seeds "..pr:next(1,5)
-		else
-			return "mcl_farming:melon_seeds "..pr:next(1,5)
-		end
-	elseif pr:next(0,1000) < 5 then
-		return "mcl_tools:pick_iron"
-	elseif pr:next(0,1000) < 3 then
-		local r = pr:next(0, 1000)
-		if r < 400 then
-			return "mcl_core:iron_ingot "..pr:next(1,5)
-		elseif r < 800 then
-			return "mcl_core:gold_ingot "..pr:next(1,3)
-		else
-			return "mcl_core:diamond "..pr:next(1,2)
-		end
-	elseif pr:next(0,1000) < 30 then
-		return "mcl_torches:torch "..pr:next(1,16)
-	elseif pr:next(0,1000) < 20 then
-		return "mcl_core:coal_lump "..pr:next(3,8)
+	-- UNUSED IN MINECLONE 2!
+end
+
+-- MineClone 2's treasure function. Gets all treasures for a single chest.
+-- Based on information from Minecraft Wiki.
+function tsm_railcorridors.get_treasures(pr)
+	local r1 = pr:next(1,71)
+	local r2 = pr:next(1,83)
+	local r3 = pr:next(1,50)
+
+	local items = {}
+	-- First roll
+	if r1 <= 30 then
+		table.insert(items, "mobs:nametag")
+	elseif r1 <= 50 then
+		table.insert(items, "mcl_core:apple_gold")
+	elseif r1 <= 60 then
+		-- TODO: Enchanted Book
+		table.insert(items, "mcl_books:book")
+	elseif r1 <= 65 then
+		-- Nothing!
+	elseif r1 <= 70 then
+		table.insert(items, "mcl_tools:pick_iron")
 	else
-		return ""
+		-- TODO: Enchanted Golden Apple
+		table.insert(items, "mcl_core:apple_gold")
 	end
+
+	-- Second roll
+	local r2stacks = pr:next(2,4)
+	for i=1, r2stacks do
+		if r2 <= 15 then
+			table.insert(items, "mcl_farming:bread "..pr:next(1,3))
+		elseif r2 <= 25 then
+			table.insert(items, "mcl_core:coal_lump "..pr:next(3,8))
+		elseif r2 <= 35 then
+			table.insert(items, "mcl_farming:beetroot_seeds "..pr:next(2,4))
+		elseif r2 <= 45 then
+			table.insert(items, "mcl_farming:melon_seeds "..pr:next(2,4))
+		elseif r2 <= 55 then
+			table.insert(items, "mcl_farming:pumpkin_seeds "..pr:next(2,4))
+		elseif r2 <= 65 then
+			table.insert(items, "mcl_core:iron_ingot "..pr:next(1,5))
+		elseif r2 <= 70 then
+			table.insert(items, "mcl_dye:blue "..pr:next(4,9))
+		elseif r2 <= 75 then
+			table.insert(items, "mesecons:redstone "..pr:next(4,9))
+		elseif r2 <= 80 then
+			table.insert(items, "mcl_core:gold_ingot "..pr:next(1,3))
+		else
+			table.insert(items, "mcl_core:diamond "..pr:next(1,2))
+		end
+	end
+
+	-- Third roll
+	for i=1, 3 do
+		if r3 <= 20 then
+			table.insert(items, "mcl_minecarts:rail "..pr:next(4,8))
+		elseif r3 <= 35 then
+			table.insert(items, "mcl_torches:torch "..pr:next(1,16))
+		elseif r3 <= 40 then
+			-- TODO: Activator Rail
+			table.insert(items, "mcl_minecarts:rail "..pr:next(1,4))
+		elseif r3 <= 45 then
+			-- TODO: Detector Rail
+			table.insert(items, "mcl_minecarts:rail "..pr:next(1,4))
+		else
+			table.insert(items, "mcl_minecarts:golden_rail "..pr:next(1,4))
+		end
+	end
+
+	return items
 end
