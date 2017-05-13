@@ -34,6 +34,7 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `cultivatable=2`: Block will be turned into Farmland by using a hoe on it
 * `cultivatable=1`: Block will be turned into Dirt by using a hoe on it
 * `flammable`: Block helps spreading fire and gets destroyed by nearby fire (rating doesn't matter)
+* `spreading_dirt_type=1`: A dirt-type block with a cover (e.g. grass) which may spread to neighbor dirt blocks
 * `soil=1`: Saplings and other small plants can grow on it
 * `soil_sapling=2`: Soil for saplings. Intended to be natural soil. All saplings will grow on this
 * `soil_sapling=1`: Artificial soil (such as farmland) for saplings. Some saplings will not grow on this

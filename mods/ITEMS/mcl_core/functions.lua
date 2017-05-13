@@ -379,35 +379,44 @@ function mcl_core.generate_tree(pos, trunk, leaves, typearbre)
 end
 
 ------------------------------
--- Try generate grass dirt ---
+-- Spread grass blocks and mycelium on neighbor dirt
 ------------------------------
--- turn dirt to dirt with grass
 minetest.register_abm({
 	nodenames = {"mcl_core:dirt"},
-	neighbors = {"air"},
+	neighbors = {"air", "mcl_core:dirt_with_grass", "mcl_core:mycelium"},
 	interval = 30,
 	chance = 20,
 	action = function(pos)
-	if pos == nil then
-		return
-	end
-	local can_change = 0
-	for i=1,4 do
-			local p = {x=pos.x, y=pos.y+i, z=pos.z}
-			local n = minetest.get_node(p)
-			-- On verifie si il y a de l'air
-			if (n.name=="air") then
-				can_change = can_change + 1
-			end
-	end
-		if can_change > 3 then
-			local light = minetest.get_node_light(pos)
-			if light or light > 10 then
-				minetest.add_node(pos, {name="mcl_core:dirt_with_grass"})
-			end
-			
+		if pos == nil then
+			return
 		end
-	end,
+		local can_change = false
+		local above = {x=pos.x, y=pos.y+1, z=pos.z}
+		local abovenode = minetest.get_node(above)
+		if (abovenode.name=="air") then
+			can_change = true
+		end
+		if can_change then
+			local light = minetest.get_node_light(above)
+			local p2 = minetest.find_node_near(pos, 1, "group:spreading_dirt_type")
+			if not p2 then
+				return
+			end
+			local n2 = minetest.get_node(p2)
+
+			-- Light level for grass block and others
+			local minlight = 4
+			if n2.name == "mcl_core:mycelium" then
+				-- Light level for mycelium
+				minlight = 9
+			end
+
+			if light >= minlight then
+				-- Spread the grass/mycelium!
+				minetest.set_node(pos, {name=n2.name})
+			end
+		end
+	end
 })
 
 --------------------------
