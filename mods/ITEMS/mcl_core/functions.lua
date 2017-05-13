@@ -393,30 +393,34 @@ minetest.register_abm({
 		local can_change = false
 		local above = {x=pos.x, y=pos.y+1, z=pos.z}
 		local abovenode = minetest.get_node(above)
-		if (abovenode.name=="air") then
-			can_change = true
+		local light_self = minetest.get_node_light(above)
+		if not light_self then return end
+		--[[ Try to find a spreading dirt-type block (e.g. grass block or mycelium)
+		within a 3×5×3 area, with the source block being on the 2nd-topmost layer.
+		First we look around the source block, if we find nothing, we look below. ]]
+		local p2 = minetest.find_node_near(pos, 1, "group:spreading_dirt_type")
+		if not p2 then
+			p2 = minetest.find_node_near({x=pos.x,y=pos.y+2,z=pos.z}, 1, "group:spreading_dirt_type")
+			-- Nothing found on 2nd attempt? Bail out!
+			if not p2 then return end
 		end
-		if can_change then
-			local light_self = minetest.get_node_light(above)
-			if not light_self then return end
-			--[[ Try to find a spreading dirt-type block (e.g. grass block or mycelium)
-			within a 3×5×3 area, with the source block being on the 2nd-topmost layer.
-			First we look around the source block, if we find nothing, we look below. ]]
-			local p2 = minetest.find_node_near(pos, 1, "group:spreading_dirt_type")
-			if not p2 then
-				p2 = minetest.find_node_near({x=pos.x,y=pos.y+2,z=pos.z}, 1, "group:spreading_dirt_type")
-				-- Nothing found on 2nd attempt? Bail out!
-				if not p2 then return end
-			end
 
-			-- Found it! Now check light levels!
-			local light_target = minetest.get_node_light({x=p2.x, y=p2.y+1, z=p2.z})
-			if not light_target then return end
+		-- Found it! Now check light levels!
+		local source_above = {x=p2.x, y=p2.y+1, z=p2.z}
+		local light_source = minetest.get_node_light(source_above)
+		if not light_source then return end
 
-			if light_self >= 9 and light_target >= 4 then
-				-- All checks passed! Let's spread the grass/mycelium!
-				local n2 = minetest.get_node(p2)
-				minetest.set_node(pos, {name=n2.name})
+		if light_self >= 4 and light_source >= 9 then
+			-- All checks passed! Let's spread the grass/mycelium!
+			local n2 = minetest.get_node(p2)
+			minetest.set_node(pos, {name=n2.name})
+
+			-- If this was mycelium, uproot plant above
+			if n2.name == "mcl_core:mycelium" then
+				local tad = minetest.registered_nodes[minetest.get_node(above).name]
+				if tad.groups and tad.groups.non_mycelium_plant then
+					minetest.dig_node(above)
+				end
 			end
 		end
 	end
