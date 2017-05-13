@@ -547,7 +547,7 @@ local function place_corridors(main_cave_coords, psra)
 
 	-- Determine if this corridor system is “damaged” (some rails removed) and to which extent
 	local damage = 0
-	if pr:next() > probability_damage then
+	if pr:next() < probability_damage then
 		damage = pr:next(10, 50)
 	end
 	--[[ Starter cube: A big hollow dirt cube from which the corridors will extend.
