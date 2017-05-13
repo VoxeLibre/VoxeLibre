@@ -1278,7 +1278,7 @@ minetest.register_node("mcl_core:reeds", {
 		},
 	},
 	stack_max = 64,
-	groups = {dig_immediate=3, craftitem=1, dig_by_piston=1},
+	groups = {dig_immediate=3, craftitem=1, non_mycelium_plant=1, dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
