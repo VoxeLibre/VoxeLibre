@@ -397,22 +397,25 @@ minetest.register_abm({
 			can_change = true
 		end
 		if can_change then
-			local light = minetest.get_node_light(above)
+			local light_self = minetest.get_node_light(above)
+			if not light_self then return end
+			--[[ Try to find a spreading dirt-type block (e.g. grass block or mycelium)
+			within a 3×5×3 area, with the source block being on the 2nd-topmost layer.
+			First we look around the source block, if we find nothing, we look below. ]]
 			local p2 = minetest.find_node_near(pos, 1, "group:spreading_dirt_type")
 			if not p2 then
-				return
-			end
-			local n2 = minetest.get_node(p2)
-
-			-- Light level for grass block and others
-			local minlight = 4
-			if n2.name == "mcl_core:mycelium" then
-				-- Light level for mycelium
-				minlight = 9
+				p2 = minetest.find_node_near({x=pos.x,y=pos.y+2,z=pos.z}, 1, "group:spreading_dirt_type")
+				-- Nothing found on 2nd attempt? Bail out!
+				if not p2 then return end
 			end
 
-			if light >= minlight then
-				-- Spread the grass/mycelium!
+			-- Found it! Now check light levels!
+			local light_target = minetest.get_node_light({x=p2.x, y=p2.y+1, z=p2.z})
+			if not light_target then return end
+
+			if light_self >= 9 and light_target >= 4 then
+				-- All checks passed! Let's spread the grass/mycelium!
+				local n2 = minetest.get_node(p2)
 				minetest.set_node(pos, {name=n2.name})
 			end
 		end
