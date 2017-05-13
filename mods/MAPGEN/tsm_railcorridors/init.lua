@@ -14,7 +14,7 @@ end
 
 -- Wahrscheinlichkeit für jeden Chunk, solche Gänge mit Schienen zu bekommen
 -- Probability for every newly generated chunk to get corridors
-local probability_railcaves_in_chunk = P(0.33333)
+local probability_railcaves_in_chunk = P(0.2)
 setting = tonumber(minetest.setting_get("tsm_railcorridors_probability_railcaves_in_chunk"))
 if setting then
 	probability_railcaves_in_chunk = P(setting)
