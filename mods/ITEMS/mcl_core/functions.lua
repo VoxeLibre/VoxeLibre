@@ -445,21 +445,16 @@ minetest.register_abm({
 	end
 })
 
-minetest.register_abm({
-	label = "Turn Grass Path below solid block into Dirt",
-	nodenames = {"mcl_core:grass_path"},
-	neighbors = {"group:solid"},
-	interval = 8,
-	chance = 50,
-	action = function(pos, node)
-		local above = {x = pos.x, y = pos.y + 1, z = pos.z}
-		local name = minetest.get_node(above).name
-		local nodedef = minetest.registered_nodes[name]
-		if name ~= "ignore" and nodedef and (nodedef.groups and nodedef.groups.solid) then
-			minetest.set_node(pos, {name = "mcl_core:dirt"})
+-- Turn Grass Path and similar nodes to Dirt if a solid node is placed above it
+minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
+	if minetest.get_item_group(newnode.name, "solid") ~= 0 then
+		local below = {x=pos.x, y=pos.y-1, z=pos.z}
+		local belownode = minetest.get_node(below)
+		if minetest.get_item_group(belownode.name, "dirtifies_below_solid") == 1 then
+			minetest.set_node(below, {name="mcl_core:dirt"})
 		end
 	end
-})
+end)
 
 --------------------------
 -- Try generate tree   ---
