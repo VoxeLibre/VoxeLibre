@@ -727,6 +727,7 @@ function mcl_core.add_glass(desc, recipeitem, color)
 		tiles = {"xpanes_pane_glass_"..color..".png"},
 		inventory_image = minetest.inventorycube("xpanes_pane_glass_"..color..".png"),
 		paramtype = "light",
+		sunlight_propagates = "true",
 		use_texture_alpha = true,
 		stack_max = 64,
 		groups = {handy=1, glass=1, building_block=1, material_glass=1},
