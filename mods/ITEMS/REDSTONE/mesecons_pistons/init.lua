@@ -81,6 +81,10 @@ local piston_on = function (pos, node)
 	if success then
 		minetest.add_node(pos, {param2 = node.param2, name = pistonspec.onname})
 		minetest.add_node(np, {param2 = node.param2, name = pistonspec.pusher})
+		local below = minetest.get_node({x=np.x,y=np.y-1,z=np.z})
+		if below.name == "mcl_farming:soil" or below.name == "mcl_farming:soil_wet" then
+			minetest.set_node({x=np.x,y=np.y-1,z=np.z}, {name = "mcl_core:dirt"})
+		end
 		mesecon:mvps_process_stack(stack)
 		minetest.sound_play("piston_extend", {
 			pos = pos,
