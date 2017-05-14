@@ -128,6 +128,9 @@ These groups are used mostly for informational purposes
    * `container=1`: Other/unspecified container type
 * `spawn_egg=1`: Spawn egg
 
+* `plant=1`: Plant or part of a plant
+* `double_plant`: Part of a double-sized plant. 1 = lower part, 2 = upper part
+
 * `weapon=1`: Item is primarily (!) a weapon
 * `tool=1`: Item is primarily (!) a tool
 * `craftitem=1`: Item is primarily (!) used for crafting

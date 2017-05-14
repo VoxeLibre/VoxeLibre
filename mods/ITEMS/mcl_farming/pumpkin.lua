@@ -59,7 +59,7 @@ for s=1,7 do
 				{-0.15, -0.5, -0.15, 0.15, -0.5+h, 0.15}
 			},
 		},
-		groups = {dig_immediate=3, not_in_creative_inventory=1, attached_node=1, dig_by_water=1},
+		groups = {dig_immediate=3, not_in_creative_inventory=1, plant=1,attached_node=1, dig_by_water=1},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 0,
 	})
@@ -79,7 +79,7 @@ local pumpkin_base_def = {
 	stack_max = 64,
 	paramtype2 = "facedir",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"},
-	groups = {handy=1,axey=1, building_block=1, dig_by_piston=1},
+	groups = {handy=1,axey=1, plant=1,building_block=1, dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 5,
 	_mcl_hardness = 1,

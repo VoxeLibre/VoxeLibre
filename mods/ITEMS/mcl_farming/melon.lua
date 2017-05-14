@@ -18,7 +18,7 @@ local melon_base_def = {
 	_doc_items_longdesc = "A melon is a block which can be grown from melon stems, which in turn are grown from melon seeds. It can be harvested for melon slices.",
 	stack_max = 64,
 	tiles = {"farming_melon_top.png", "farming_melon_top.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png"},
-	groups = {handy=1,axey=1, building_block=1,dig_by_piston=1},
+	groups = {handy=1,axey=1, plant=1,building_block=1,dig_by_piston=1},
 	drop = {
 		max_items = 1,
 		items = {
@@ -84,7 +84,7 @@ for s=1,7 do
 				{-0.15, -0.5, -0.15, 0.15, -0.5+h, 0.15}
 			},
 		},
-		groups = {dig_immediate=3, not_in_creative_inventory=1, attached_node=1, dig_by_water=1, plant_melon_stem=s},
+		groups = {dig_immediate=3, not_in_creative_inventory=1, plant=1,attached_node=1, dig_by_water=1, plant_melon_stem=s},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 0,
 	})
