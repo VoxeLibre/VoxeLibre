@@ -1,7 +1,7 @@
 minetest.register_node("mcl_farming:soil", {
 	tiles = {"farming_soil.png", "default_dirt.png", "default_dirt.png", "default_dirt.png", "default_dirt.png", "default_dirt.png"},
 	description = "Farmland",
-	_doc_items_longdesc = "Farmland is used for farming, a necessary surface to plant crops. It is created when a hoe is used on dirt or a similar block. Plants are able to grow on farmland, but slowly. Farmland will become hydrated farmland (on which plants grow faster) when it rains or a water source is nearby.",
+	_doc_items_longdesc = "Farmland is used for farming, a necessary surface to plant crops. It is created when a hoe is used on dirt or a similar block. Plants are able to grow on farmland, but slowly. Farmland will become hydrated farmland (on which plants grow faster) when it rains or a water source is nearby. This block will turn back to dirt when a solid block appears above it or a piston arm extends above it.",
 	drop = "mcl_core:dirt",
 	drawtype = "nodebox",
 	paramtype = "light",
@@ -25,7 +25,7 @@ minetest.register_node("mcl_farming:soil", {
 minetest.register_node("mcl_farming:soil_wet", {
 	tiles = {"farming_soil_wet.png", "default_dirt.png", "default_dirt.png", "default_dirt.png", "default_dirt.png", "default_dirt.png"},
 	description = "Hydrated Farmland",
-	_doc_items_longdesc = "Hydrated farmland is used in farming, this is where you can plant and grow some plants. It is created when farmlands is under rain or near water.",
+	_doc_items_longdesc = "Hydrated farmland is used in farming, this is where you can plant and grow some plants. It is created when farmlands is under rain or near water. Without water, this block will dry out eventually. This block will turn back to dirt when a solid block appears above it or a piston arm extends above it.",
 	drop = "mcl_core:dirt",
 	drawtype = "nodebox",
 	paramtype = "light",
