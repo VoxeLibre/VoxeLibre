@@ -62,6 +62,16 @@ minetest.register_abm({
 			end
 		end
 
+		-- Turn back into dirt when covered by solid node
+		local above_node = minetest.get_node_or_nil({x=pos.x,y=pos.y+1,z=pos.z})
+		if above_node then
+			if minetest.get_item_group(above_node.name, "solid") then
+				node.name = "mcl_core:dirt"
+				minetest.set_node(pos, node)
+				return
+			end
+		end
+
 		-- Check an area of 9×2×9 around the node for nodename
 		local check_surroundings = function(pos, nodename)
 			local nodes = minetest.find_nodes_in_area({x=pos.x-4,y=pos.y-1,z=pos.z-4}, {x=pos.x+4,y=pos.y,z=pos.z+4}, {nodename})
