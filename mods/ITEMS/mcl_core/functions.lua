@@ -456,6 +456,22 @@ minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack
 	end
 end)
 
+minetest.register_abm({
+	label = "Turn Grass Path below solid block into Dirt",
+	nodenames = {"mcl_core:grass_path"},
+	neighbors = {"group:solid"},
+	interval = 8,
+	chance = 50,
+	action = function(pos, node)
+		local above = {x = pos.x, y = pos.y + 1, z = pos.z}
+		local name = minetest.get_node(above).name
+		local nodedef = minetest.registered_nodes[name]
+		if name ~= "ignore" and nodedef and (nodedef.groups and nodedef.groups.solid) then
+			minetest.set_node(pos, {name = "mcl_core:dirt"})
+		end
+	end,
+})
+
 --------------------------
 -- Try generate tree   ---
 --------------------------
