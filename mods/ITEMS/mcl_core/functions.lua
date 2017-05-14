@@ -113,7 +113,7 @@ minetest.register_abm({
 				end
 			end
 		end
-		for yp=-1,0 do
+		for yp=0,1 do
 			local p = {x=pos.x, y=pos.y+yp, z=pos.z}
 			local n = minetest.get_node(p)
 			local d = minetest.registered_nodes[n.name]
