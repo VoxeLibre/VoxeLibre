@@ -84,7 +84,9 @@ minetest.register_entity("drippingwater:drop_lava", {
 --Create drop
 
 minetest.register_abm(
-        {nodenames = {"group:solid"},
+        {
+	label = "Create water drops",
+	nodenames = {"group:solid"},
 	neighbors = {"group:water"},
         interval = 2,
         chance = 22,
@@ -100,7 +102,9 @@ minetest.register_abm(
 --Create lava drop
 
 minetest.register_abm(
-        {nodenames = {"group:solid"},
+        {
+	label = "Create lava drops",
+	nodenames = {"group:solid"},
 	neighbors = {"group:lava"},
         interval = 2,
         chance = 22,

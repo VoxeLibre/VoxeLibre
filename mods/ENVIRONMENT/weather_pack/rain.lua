@@ -173,6 +173,7 @@ end
 if weather.allow_abm then
 	-- ABM for extinguish fire
 	minetest.register_abm({
+		label = "Rain extinguishes fire",
 		nodenames = {"mcl_fire:fire"},
 		interval = 4.0,
 		chance = 2,
@@ -188,6 +189,7 @@ if weather.allow_abm then
 
 	-- Slowly fill up cauldrons
 	minetest.register_abm({
+		label = "Rain fills cauldrons with water",
 		nodenames = {"mcl_cauldrons:cauldron", "mcl_cauldrons:cauldron_1", "mcl_cauldrons:cauldron_2"},
 		interval = 56.0,
 		chance = 1,
@@ -206,6 +208,7 @@ if weather.allow_abm then
 
 	-- Wetten the soil
 	minetest.register_abm({
+		label = "Rain hydrates farmland",
 		nodenames = {"mcl_farming:soil"},
 		interval = 22.0,
 		chance = 3,

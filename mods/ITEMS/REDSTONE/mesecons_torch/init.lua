@@ -120,6 +120,7 @@ minetest.register_craft({
 })
 
 minetest.register_abm({
+	label = "Redstone torch inversion",
 	nodenames = {"mesecons_torch:mesecon_torch_off","mesecons_torch:mesecon_torch_off_wall","mesecons_torch:mesecon_torch_on","mesecons_torch:mesecon_torch_on_wall"},
 	interval = 1,
 	chance = 1,

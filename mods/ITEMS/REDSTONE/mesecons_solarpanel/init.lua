@@ -75,8 +75,9 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_abm(
-	{nodenames = {"mesecons_solarpanel:solar_panel_off"},
+minetest.register_abm({
+	label = "Daylight turns on solar panels",
+	nodenames = {"mesecons_solarpanel:solar_panel_off"},
 	interval = 1,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -89,8 +90,9 @@ minetest.register_abm(
 	end,
 })
 
-minetest.register_abm(
-	{nodenames = {"mesecons_solarpanel:solar_panel_on"},
+minetest.register_abm({
+	label = "Darkness turns off solar panels",
+	nodenames = {"mesecons_solarpanel:solar_panel_on"},
 	interval = 1,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -172,8 +174,9 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
 	_mcl_hardness = 0.2,
 })
 
-minetest.register_abm(
-	{nodenames = {"mesecons_solarpanel:solar_panel_inverted_off"},
+minetest.register_abm({
+	label = "Darkness turns on inverted solar panels",
+	nodenames = {"mesecons_solarpanel:solar_panel_inverted_off"},
 	interval = 1,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -186,8 +189,9 @@ minetest.register_abm(
 	end,
 })
 
-minetest.register_abm(
-	{nodenames = {"mesecons_solarpanel:solar_panel_inverted_on"},
+minetest.register_abm({
+	label = "Daylight turns off inverted solar panels",
+	nodenames = {"mesecons_solarpanel:solar_panel_inverted_on"},
 	interval = 1,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)

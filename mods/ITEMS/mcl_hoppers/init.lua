@@ -201,6 +201,7 @@ minetest.register_node("mcl_hoppers:hopper_side", {
 
 -- Make hoppers suck in dropped items
 minetest.register_abm({
+	label = "Hoppers suck in dropped items",
 	nodenames = {"mcl_hoppers:hopper","mcl_hoppers:hopper_side"},
 	interval = 1.0,
 	chance = 1,
@@ -253,6 +254,7 @@ local is_not_shulker_box = function(itemstack)
 end
 
 minetest.register_abm({
+	label = "Hopper/container item exchange",
 	nodenames = {"mcl_hoppers:hopper"},
 	neighbors = {"group:container"},
 	interval = 1.0,
@@ -296,6 +298,7 @@ minetest.register_abm({
 
 
 minetest.register_abm({
+	label = "Side-hopper/container item exchange",
 	nodenames = {"mcl_hoppers:hopper_side"},
 	neighbors = {"group:container"},
 	interval = 1.0,

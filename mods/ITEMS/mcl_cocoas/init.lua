@@ -231,6 +231,7 @@ minetest.register_on_generated(function(minp, maxp)
 end)
 
 minetest.register_abm({
+		label = "Cocoa growth",
 		nodenames = {"mcl_cocoas:cocoa_1", "mcl_cocoas:cocoa_2"},
 		-- Same as potatoes
 		-- TODO: Tweak/balance the growth speed

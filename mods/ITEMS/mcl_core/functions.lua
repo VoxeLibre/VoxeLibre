@@ -11,6 +11,7 @@ mcl_core.cool_lava_flowing = function(pos)
 end
 
 minetest.register_abm({
+	label = "Flowing lava cooling",
 	nodenames = {"mcl_core:lava_flowing"},
 	neighbors = {"group:water"},
 	interval = 1,
@@ -21,6 +22,7 @@ minetest.register_abm({
 })
 
 minetest.register_abm({
+	label = "Lava source cooling",
 	nodenames = {"mcl_core:lava_source"},
 	neighbors = {"group:water"},
 	interval = 1,
@@ -93,6 +95,7 @@ end
 -- Remove attached nodes next to and below water.
 -- TODO: This is just an approximation! Attached nodes should be removed if water wants to flow INTO that space.
 minetest.register_abm({
+	label = "Detach dig_by_water nodes near water",
 	nodenames = {"group:dig_by_water"},
 	neighbors = {"group:water"},
 	interval = 1,
@@ -125,6 +128,7 @@ minetest.register_abm({
 })
 
 minetest.register_abm({
+	label = "Cactus growth",
 	nodenames = {"mcl_core:cactus"},
 	neighbors = {"group:sand"},
 	interval = 25,
@@ -135,6 +139,7 @@ minetest.register_abm({
 })
 
 minetest.register_abm({
+	label = "Sugar canes growth",
 	nodenames = {"mcl_core:reeds"},
 	neighbors = {"group:soil_sugarcane"},
 	interval = 25,
@@ -534,6 +539,7 @@ end
 
 -- Oak tree
 minetest.register_abm({
+	label = "Oak tree growth",
 	nodenames = {"mcl_core:sapling"},
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
@@ -543,6 +549,7 @@ minetest.register_abm({
 
 -- Dark oak tree
 minetest.register_abm({
+	label = "Dark oak tree growth",
 	nodenames = {"mcl_core:darksapling"},
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
@@ -552,6 +559,7 @@ minetest.register_abm({
 
 -- Jungle Tree
 minetest.register_abm({
+	label = "Jungle tree growth",
 	nodenames = {"mcl_core:junglesapling"},
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
@@ -561,6 +569,7 @@ minetest.register_abm({
 
 -- Spruce tree
 minetest.register_abm({
+	label = "Spruce tree growth",
 	nodenames = {"mcl_core:sprucesapling"},
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
@@ -570,6 +579,7 @@ minetest.register_abm({
 
 -- Birch tree
 minetest.register_abm({
+	label = "Birch tree growth",
 	nodenames = {"mcl_core:birchsapling"},
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
@@ -579,6 +589,7 @@ minetest.register_abm({
 
 -- Acacia tree
 minetest.register_abm({
+	label = "Acacia tree growth",
 	nodenames = {"mcl_core:acaciasapling"},
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
@@ -590,6 +601,7 @@ minetest.register_abm({
 -- Vine generating --
 ---------------------
 minetest.register_abm({
+	label = "Vines growth",
 	nodenames = {"mcl_core:vine"},
 	interval = 80,
 	chance = 5,
@@ -630,6 +642,7 @@ minetest.register_globalstep(function(dtime)
 end)
 
 minetest.register_abm({
+	label = "Leaf decay",
 	nodenames = {"group:leafdecay"},
 	neighbors = {"air", "group:liquid"},
 	-- A low interval and a high inverse chance spreads the load

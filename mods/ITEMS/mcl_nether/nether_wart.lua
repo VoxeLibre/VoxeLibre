@@ -130,6 +130,7 @@ minetest.register_craftitem("mcl_nether:nether_wart_item", {
 local names = {"mcl_nether:nether_wart_0", "mcl_nether:nether_wart_1", "mcl_nether:nether_wart_2"}
 
 minetest.register_abm({
+	label = "Nether wart growth",
 	nodenames = {"mcl_nether:nether_wart_0", "mcl_nether:nether_wart_1", "mcl_nether:nether_wart_2"},
 	neighbors = {"group:soil_nether_wart"},
 	interval = 35,
