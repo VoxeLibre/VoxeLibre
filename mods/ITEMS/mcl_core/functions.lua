@@ -386,6 +386,7 @@ minetest.register_abm({
 	neighbors = {"air", "mcl_core:dirt_with_grass", "mcl_core:mycelium"},
 	interval = 30,
 	chance = 20,
+	catch_up = false,
 	action = function(pos)
 		if pos == nil then
 			return
