@@ -92,7 +92,7 @@ local function drop_attached_node(p)
 	end
 end
 
--- Remove attached nodes next to and below water.
+-- Remove attached nodes next to and below water (excluding diagonals)
 -- TODO: This is just an approximation! Attached nodes should be removed if water wants to flow INTO that space.
 minetest.register_abm({
 	label = "Detach dig_by_water nodes near water",
@@ -101,29 +101,32 @@ minetest.register_abm({
 	interval = 1,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		for xp=-1,1 do
-			for zp=-1,1 do
-				local p = {x=pos.x+xp, y=pos.y, z=pos.z+zp}
-				local n = minetest.get_node(p)
-				local d = minetest.registered_nodes[n.name]
-				if (d.groups.water) then
-					drop_attached_node(pos)
-					minetest.dig_node(pos)
-					break
-				end
-			end
-		end
-		for yp=0,1 do
-			local p = {x=pos.x, y=pos.y+yp, z=pos.z}
+		local check_detach = function(pos, xp, yp, zp)
+			local p = {x=pos.x+xp, y=pos.y+yp, z=pos.z+zp}
 			local n = minetest.get_node(p)
 			local d = minetest.registered_nodes[n.name]
 			if (d.groups.water) then
 				drop_attached_node(pos)
 				minetest.dig_node(pos)
-				break
+				return true
+			else
+				return false
 			end
 		end
-		
+		local dug = false
+		for xp=-1,1 do
+			if check_detach(pos, xp, 0, 0) then dug = true; break end
+		end
+		if not dug then
+			for zp=-1,1 do
+				if check_detach(pos, 0, 0, zp) then dug = true; break end
+			end
+			if not dug then
+				for yp=0,1 do
+					if check_detach(pos, 0, yp, 0) then break end
+				end
+			end
+		end
 	end,
 })
 
