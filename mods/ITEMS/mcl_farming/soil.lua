@@ -72,9 +72,9 @@ minetest.register_abm({
 			end
 		end
 
-		-- Check an area of 9×2×9 around the node for nodename
+		-- Check an area of 9×2×9 around the node for nodename (9×9 on same level and 9×9 below)
 		local check_surroundings = function(pos, nodename)
-			local nodes = minetest.find_nodes_in_area({x=pos.x-4,y=pos.y-1,z=pos.z-4}, {x=pos.x+4,y=pos.y,z=pos.z+4}, {nodename})
+			local nodes = minetest.find_nodes_in_area({x=pos.x-4,y=pos.y,z=pos.z-4}, {x=pos.x+4,y=pos.y+1,z=pos.z+4}, {nodename})
 			return #nodes > 0
 		end
 
