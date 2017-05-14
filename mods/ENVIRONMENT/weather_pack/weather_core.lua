@@ -137,12 +137,18 @@ minetest.register_chatcommand("weather", {
   description = "Changes the weather to the specified parameter.",
   privs = {weather_manager = true},
   func = function(name, param)
+    if (param == "") then
+      minetest.chat_send_player(name, "Error: No weather specified.")
+      return
+    end
+    local success = false
     if (param == "clear") then
       if (weather.state ~= nil and weather.reg_weathers[weather.state] ~= nil) then
         weather.reg_weathers[weather.state].clear()
-        weather.state = param
       end
       weather.state = "none"
+      success = true
+      return
     end
   
     if (weather.reg_weathers ~= nil and weather.reg_weathers[param] ~= nil) then
@@ -150,6 +156,9 @@ minetest.register_chatcommand("weather", {
         weather.reg_weathers[weather.state].clear()
       end
       weather.state = param
+      return
+    else
+      minetest.chat_send_player(name, "Error: Invalid weather specified. Use “clear”, “rain”, “snow” or “thunder”.")
     end
   end
 })
