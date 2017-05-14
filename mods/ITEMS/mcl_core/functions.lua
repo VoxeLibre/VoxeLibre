@@ -426,6 +426,25 @@ minetest.register_abm({
 	end
 })
 
+-- Grass/mycelium death in darkness
+minetest.register_abm({
+	label = "Grass Block / Mycelium in darkness",
+	nodenames = {"group:spreading_dirt_type"},
+	interval = 8,
+	chance = 50,
+	catch_up = false,
+	action = function(pos, node)
+		local above = {x = pos.x, y = pos.y + 1, z = pos.z}
+		local name = minetest.get_node(above).name
+		local nodedef = minetest.registered_nodes[name]
+		-- Kill grass/mycelium when below opaque block or liquid
+		if name ~= "ignore" and nodedef and ((nodedef.groups and nodedef.groups.opaque) or nodedef.liquidtype ~= "none") then
+			minetest.set_node(pos, {name = "mcl_core:dirt"})
+		end
+	end
+})
+
+
 --------------------------
 -- Try generate tree   ---
 --------------------------
