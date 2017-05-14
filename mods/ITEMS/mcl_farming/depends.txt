@@ -3,4 +3,5 @@ mcl_sounds
 bucket
 mcl_wool
 mcl_torches
+weather_pack
 doc?

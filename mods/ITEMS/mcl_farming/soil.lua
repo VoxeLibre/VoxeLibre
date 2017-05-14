@@ -84,9 +84,16 @@ minetest.register_abm({
 				node.name = "mcl_farming:soil_wet"
 				minetest.set_node(pos, node)
 			end
-		else
-			-- Decay if no water is nearby.
-			-- But not near unloaded areas since thse might include water.
+		else -- No water nearby.
+			-- The decay branch (make farmland dry or turn back to dirt)
+
+			-- Don't decay while it's raining
+			if rain.raining then
+				if weather.is_outdoor(pos) then
+					return
+				end
+			end
+			-- No decay near unloaded areas since these might include water.
 			if not check_surroundings(pos, "ignore") then
 				if wet <= 0 then
 					local n_def = minetest.registered_nodes[node.name] or nil
