@@ -361,7 +361,7 @@ minetest.register_node("mcl_core:diorite_smooth", {
 
 minetest.register_node("mcl_core:dirt_with_grass", {
 	description = "Grass Block",
-	_doc_items_longdesc = "A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel.",
+	_doc_items_longdesc = "A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel. In light, the grass slowly spreads onto dirt nearby. Under an opaque block or a liquid, a grass block may turn back to dirt.",
 	_doc_items_hidden = false,
 	tiles = {"default_grass.png", "default_dirt.png", "default_grass_side.png"},
 	is_ground_content = true,
@@ -418,7 +418,7 @@ minetest.register_node("mcl_core:grass_path", {
 -- TODO: Add particles
 minetest.register_node("mcl_core:mycelium", {
 	description = "Mycelium",
-	_doc_items_longdesc = "Mycelium is a type of dirt and the ideal soil for mushrooms. Unlike other dirt-type blocks, it can not be turned into farmland with a hoe.",
+	_doc_items_longdesc = "Mycelium is a type of dirt and the ideal soil for mushrooms. Unlike other dirt-type blocks, it can not be turned into farmland with a hoe. In light, mycelium slowly spreads over nearby dirt. Under an opaque block or a liquid, it eventually turns back into dirt.",
 	tiles = {"default_mycelium_top.png", "default_dirt.png", "default_mycelium_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -481,7 +481,7 @@ minetest.register_node("mcl_core:podzol_snow", {
 
 minetest.register_node("mcl_core:dirt", {
 	description = "Dirt",
-	_doc_items_longdesc = "Dirt acts as a soil for a few plants. When in light, it will turn into a grass block eventually.",
+	_doc_items_longdesc = "Dirt acts as a soil for a few plants. When in light, this block may grow a grass or mycelium cover if such blocks are nearby.",
 	_doc_items_hidden = false,
 	tiles = {"default_dirt.png"},
 	is_ground_content = true,
@@ -494,7 +494,7 @@ minetest.register_node("mcl_core:dirt", {
 
 minetest.register_node("mcl_core:coarse_dirt", {
 	description = "Coarse Dirt",
-	_doc_items_longdesc = "Coarse dirt acts as a soil for some plants and is similar to dirt, but it will never turn into a grass block.",
+	_doc_items_longdesc = "Coarse dirt acts as a soil for some plants and is similar to dirt, but it will never grow a cover.",
 	tiles = {"default_coarse_dirt.png"},
 	is_ground_content = true,
 	stack_max = 64,
