@@ -378,10 +378,13 @@ function mcl_core.generate_tree(pos, trunk, leaves, typearbre)
 	end
 end
 
+local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_params().seed)
+
 ------------------------------
 -- Spread grass blocks and mycelium on neighbor dirt
 ------------------------------
 minetest.register_abm({
+	label = "Grass Block and Mycelium spread",
 	nodenames = {"mcl_core:dirt"},
 	neighbors = {"air", "mcl_core:dirt_with_grass", "mcl_core:mycelium"},
 	interval = 30,
@@ -397,13 +400,14 @@ minetest.register_abm({
 		local light_self = minetest.get_node_light(above)
 		if not light_self then return end
 		--[[ Try to find a spreading dirt-type block (e.g. grass block or mycelium)
-		within a 3×5×3 area, with the source block being on the 2nd-topmost layer.
-		First we look around the source block, if we find nothing, we look below. ]]
-		local p2 = minetest.find_node_near(pos, 1, "group:spreading_dirt_type")
-		if not p2 then
-			p2 = minetest.find_node_near({x=pos.x,y=pos.y+2,z=pos.z}, 1, "group:spreading_dirt_type")
-			-- Nothing found on 2nd attempt? Bail out!
-			if not p2 then return end
+		within a 3×5×3 area, with the source block being on the 2nd-topmost layer. ]]
+		local nodes = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+3, z=pos.z+1}, "group:spreading_dirt_type")
+		local p2
+		-- Nothing found ? Bail out!
+		if #nodes <= 0 then
+			return
+		else
+			p2 = nodes[grass_spread_randomizer:next(1, #nodes)]
 		end
 
 		-- Found it! Now check light levels!
