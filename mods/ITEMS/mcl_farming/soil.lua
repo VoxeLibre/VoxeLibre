@@ -65,7 +65,7 @@ minetest.register_abm({
 		-- Turn back into dirt when covered by solid node
 		local above_node = minetest.get_node_or_nil({x=pos.x,y=pos.y+1,z=pos.z})
 		if above_node then
-			if minetest.get_item_group(above_node.name, "solid") then
+			if minetest.get_item_group(above_node.name, "solid") ~= 0 then
 				node.name = "mcl_core:dirt"
 				minetest.set_node(pos, node)
 				return
