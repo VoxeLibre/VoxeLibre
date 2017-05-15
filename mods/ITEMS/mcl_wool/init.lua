@@ -9,29 +9,30 @@ local wool = {}
 -- colors, and then some recipes using more specific colors for a few non-base
 -- colors available. When crafting, the last recipes will be checked first.
 wool.dyes = {
-	{"white",      "white",		"White",      nil},
-	{"grey",       "dark_grey",	"Grey",       "unicolor_darkgrey"},
-	{"silver",     "grey",		"Light Grey", "basecolor_grey"},
-	{"black",      "black",		"Black",      "basecolor_black"},
-	{"red",        "red",		"Red",        "basecolor_red"},
-	{"yellow",     "yellow",	"Yellow",     "basecolor_yellow"},
-	{"green",      "green",		"Green",      "unicolor_dark_green"},
-	{"cyan",       "cyan",		"Cyan",       "basecolor_cyan"},
-	{"blue",       "blue",		"Blue",       "basecolor_blue"},
-	{"magenta",    "magenta",	"Magenta",    "basecolor_magenta"},
-	{"orange",     "orange",	"Orange",     "excolor_orange"},
-	{"purple",     "violet",	"Purple",     "excolor_violet"},
-	{"brown",      "brown",		"Brown",      "unicolor_dark_orange"},
-	{"pink",       "pink",		"Pink",       "unicolor_light_red"},
-	{"lime",       "lime",		"Lime",       "basecolor_green"},
-	{"light_blue", "light_blue",	"Light Blue", "unicolor_light_blue"},
+	{"white",      "white",		"White",      nil,		"basecolor_white"},
+	{"grey",       "dark_grey",	"Grey",       "dark_grey",	"unicolor_darkgrey"},
+	{"silver",     "grey",		"Light Grey", "grey",		"basecolor_grey"},
+	{"black",      "black",		"Black",      "black",		"basecolor_black"},
+	{"red",        "red",		"Red",        "red",		"basecolor_red"},
+	{"yellow",     "yellow",	"Yellow",     "yellow",		"basecolor_yellow"},
+	{"green",      "green",		"Green",      "dark_green",	"unicolor_dark_green"},
+	{"cyan",       "cyan",		"Cyan",       "cyan",		"basecolor_cyan"},
+	{"blue",       "blue",		"Blue",       "blue",		"basecolor_blue"},
+	{"magenta",    "magenta",	"Magenta",    "magenta",	"basecolor_magenta"},
+	{"orange",     "orange",	"Orange",     "orange",		"excolor_orange"},
+	{"purple",     "violet",	"Purple",     "violet",		"excolor_violet"},
+	{"brown",      "brown",		"Brown",      "brown",		"unicolor_dark_orange"},
+	{"pink",       "pink",		"Pink",       "pink",		"unicolor_light_red"},
+	{"lime",       "lime",		"Lime",       "green",		"basecolor_green"},
+	{"light_blue", "light_blue",	"Light Blue", "lightblue",	"unicolor_light_blue"},
 }
 
 for _, row in ipairs(wool.dyes) do
 	local name = row[1]
 	local texture = row[2]
 	local desc = row[3]
-	local craft_color_group = row[4]
+	local dye = row[4]
+	local color_group = row[5]
 	-- Node Definition
 		minetest.register_node("mcl_wool:"..name, {
 			description = desc.." Wool",
@@ -67,12 +68,12 @@ for _, row in ipairs(wool.dyes) do
 			_mcl_hardness = 0.1,
 			_mcl_blast_resistance = 0.5,
 		})
-	if craft_color_group then
+	if dye then
 	-- Crafting from dye and white wool
 		minetest.register_craft({
 			type = "shapeless",
 			output = 'mcl_wool:'..name,
-			recipe = {'group:dye,'..craft_color_group, 'mcl_wool:white'},
+			recipe = {"mcl_dye:"..dye, 'mcl_wool:white'},
 		})
 		minetest.register_craft({
 			output = 'mcl_wool:'..name..'_carpet 3',
