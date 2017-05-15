@@ -66,7 +66,7 @@ if setting then
 end
 
 -- Probability for a rail corridor system to be damaged
-local probability_damage = P(0.90)
+local probability_damage = P(1.0)
 setting = tonumber(minetest.setting_get("tsm_railcorridors_probability_damage"))
 if setting then
 	probability_damage = P(setting)
