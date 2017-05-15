@@ -25,7 +25,7 @@ local function register_biomes()
 	minetest.register_biome({
 		name = "ice_plains",
 		node_dust = "mcl_core:snow",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:dirt_with_grass_snow",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 3,
@@ -39,7 +39,8 @@ local function register_biomes()
 
 	minetest.register_biome({
 		name = "ice_plains2",
-		node_top = "mcl_core:snowblock",
+		node_dust = "mcl_core:snowblock",
+		node_top = "mcl_core:dirt_with_grass_snow",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 3,
