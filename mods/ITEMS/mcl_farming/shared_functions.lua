@@ -304,11 +304,12 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 					{ x=0, y=0, z=-1 },
 					{ x=0, y=0, z=1 },
 				}
+				local floorpos, floor
 				for n=#neighbors, 1, -1 do
 					local offset = neighbors[n]
 					local blockpos = vector.add(stempos, offset)
-					local floorpos = { x=blockpos.x, y=blockpos.y-1, z=blockpos.z }
-					local floor = minetest.get_node(floorpos)
+					floorpos = { x=blockpos.x, y=blockpos.y-1, z=blockpos.z }
+					floor = minetest.get_node(floorpos)
 					local block = minetest.get_node(blockpos)
 					local soilgroup = minetest.get_item_group(floor.name, "soil")
 					if not ((floor.name=="mcl_core:dirt_with_grass" or floor.name=="mcl_core:dirt_with_grass_snow" or floor.name=="mcl_core:dirt" or soilgroup == 2 or soilgroup == 3) and block.name == "air") then
@@ -316,7 +317,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 					end
 				end
 
-				-- Pumpkins need at least 1 free neighbor to grow
+				-- Gourd needs at least 1 free neighbor to grow
 				if #neighbors > 0 then
 					-- From the remaining neighbors, grow randomly
 					local r = math.random(1, #neighbors)
@@ -336,10 +337,15 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 						minetest.set_node(stempos, {name=connected_stem_names[4]})
 						p2 = 0
 					end
+					-- Place the gourd
 					if gourd_def.paramtype2 == "facedir" then
 						minetest.add_node(blockpos, {name=gourd_itemstring, param2=p2})
 					else
 						minetest.add_node(blockpos, {name=gourd_itemstring})
+					end
+					-- Reset farmland to dirt when the gourd grows on top
+					if floor.name == "mcl_farming:soil" or floor.name == "mcl_farming:soil_wet" then
+						minetest.set_node(floorpos, {name = "mcl_core:dirt"})
 					end
 				end
 			end
