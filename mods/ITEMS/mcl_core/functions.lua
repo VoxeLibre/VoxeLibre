@@ -717,7 +717,7 @@ minetest.register_abm({
 ------------------------
 -- Create Color Glass -- 
 ------------------------
-function mcl_core.add_glass(desc, recipeitem, color)
+function mcl_core.add_glass(desc, recipeitem, colorgroup, color)
 
 	minetest.register_node("mcl_core:glass_"..color, {
 		description = desc,
@@ -730,6 +730,7 @@ function mcl_core.add_glass(desc, recipeitem, color)
 		sunlight_propagates = "true",
 		use_texture_alpha = true,
 		stack_max = 64,
+		-- TODO: Add color to groups
 		groups = {handy=1, glass=1, building_block=1, material_glass=1},
 		sounds = mcl_sounds.node_sound_glass_defaults(),
 		drop = "",
@@ -741,7 +742,7 @@ function mcl_core.add_glass(desc, recipeitem, color)
 		output = 'mcl_core:glass_'..color..' 8',
 		recipe = {
 			{'mcl_core:glass','mcl_core:glass','mcl_core:glass'},
-			{'mcl_core:glass','group:dye,'..recipeitem,'mcl_core:glass'},
+			{'mcl_core:glass',recipeitem,'mcl_core:glass'},
 			{'mcl_core:glass','mcl_core:glass','mcl_core:glass'},
 		}
 	})
