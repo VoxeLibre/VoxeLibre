@@ -38,62 +38,7 @@ mcl_structures.allocate_WE  = function(originpos, value)
 	local originx, originy, originz = originpos.x, originpos.y, originpos.z
 	local count = 0
 	local version = mcl_structures.valueversion_WE (value)
-	if version == 1 or version == 2 then --flat table format
-		--obtain the node table
-		local get_tables = loadstring(value)
-		if get_tables then --error loading value
-			return originpos, originpos, count
-		end
-		local tables = get_tables()
-
-		--transform the node table into an array of nodes
-		for i = 1, #tables do
-			for j, v in pairs(tables[i]) do
-				if type(v) == "table" then
-					tables[i][j] = tables[v[1]]
-				end
-			end
-		end
-		local nodes = tables[1]
-
-		--check the node array
-		count = #nodes
-		if version == 1 then --original flat table format
-			for index = 1, count do
-				local entry = nodes[index]
-				local pos = entry[1]
-				local x, y, z = originx - pos.x, originy - pos.y, originz - pos.z
-				if x < pos1x then pos1x = x end
-				if y < pos1y then pos1y = y end
-				if z < pos1z then pos1z = z end
-				if x > pos2x then pos2x = x end
-				if y > pos2y then pos2y = y end
-				if z > pos2z then pos2z = z end
-			end
-		else --previous meta flat table format
-			for index = 1, count do
-				local entry = nodes[index]
-				local x, y, z = originx - entry.x, originy - entry.y, originz - entry.z
-				if x < pos1x then pos1x = x end
-				if y < pos1y then pos1y = y end
-				if z < pos1z then pos1z = z end
-				if x > pos2x then pos2x = x end
-				if y > pos2y then pos2y = y end
-				if z > pos2z then pos2z = z end
-			end
-		end
-	elseif version == 3 then --previous list format
-		for x, y, z, name, param1, param2 in value:gmatch("([+-]?%d+)%s+([+-]?%d+)%s+([+-]?%d+)%s+([^%s]+)%s+(%d+)%s+(%d+)[^\r\n]*[\r\n]*") do --match node entries
-			local x, y, z = originx + tonumber(x), originy + tonumber(y), originz + tonumber(z)
-			if x < pos1x then pos1x = x end
-			if y < pos1y then pos1y = y end
-			if z < pos1z then pos1z = z end
-			if x > pos2x then pos2x = x end
-			if y > pos2y then pos2y = y end
-			if z > pos2z then pos2z = z end
-			count = count + 1
-		end
-	elseif version == 4 then --current nested table format
+	if version == 4 then --current nested table format
 		--wip: this is a filthy hack that works surprisingly well
 		value = value:gsub("return%s*{", "", 1):gsub("}%s*$", "", 1)
 		local escaped = value:gsub("\\\\", "@@"):gsub("\\\"", "@@"):gsub("(\"[^\"]*\")", function(s) return string.rep("@", #s) end)
@@ -123,6 +68,9 @@ mcl_structures.allocate_WE  = function(originpos, value)
 			if y > pos2y then pos2y = y end
 			if z > pos2z then pos2z = z end
 		end
+	else
+		minetest.log("error", "[mcl_structures] Unsupported WorldEdit file format ("..version..")")
+		return
 	end
 	local pos1 = {x=pos1x, y=pos1y, z=pos1z}
 	local pos2 = {x=pos2x, y=pos2y, z=pos2z}
@@ -131,6 +79,9 @@ end
 mcl_structures.deserialise_WE = function(originpos, value)
 	--make area stay loaded
 	local pos1, pos2 = mcl_structures.allocate_WE(originpos, value)
+	if not pos1 then
+		return 0
+	end
 	local manip = minetest.get_voxel_manip()
 	manip:read_from_map(pos1, pos2)
 
@@ -138,51 +89,7 @@ mcl_structures.deserialise_WE = function(originpos, value)
 	local count = 0
 	local add_node, get_meta = minetest.add_node, minetest.get_meta
 	local version = mcl_structures.valueversion_WE(value)
-	if version == 1 or version == 2 then --original flat table format
-		--obtain the node table
-		local get_tables = loadstring(value)
-		if not get_tables then --error loading value
-			return count
-		end
-		local tables = get_tables()
-
-		--transform the node table into an array of nodes
-		for i = 1, #tables do
-			for j, v in pairs(tables[i]) do
-				if type(v) == "table" then
-					tables[i][j] = tables[v[1]]
-				end
-			end
-		end
-		local nodes = tables[1]
-
-		--load the node array
-		count = #nodes
-		if version == 1 then --original flat table format
-			for index = 1, count do
-				local entry = nodes[index]
-				local pos = entry[1]
-				pos.x, pos.y, pos.z = originx - pos.x, originy - pos.y, originz - pos.z
-				add_node(pos, entry[2])
-			end
-		else --previous meta flat table format
-			for index = 1, #nodes do
-				local entry = nodes[index]
-				entry.x, entry.y, entry.z = originx + entry.x, originy + entry.y, originz + entry.z
-				add_node(entry, entry) --entry acts both as position and as node
-				get_meta(entry):from_table(entry.meta)
-			end
-		end
-	elseif version == 3 then --previous list format
-		local pos = {x=0, y=0, z=0}
-		local node = {name="", param1=0, param2=0}
-		for x, y, z, name, param1, param2 in value:gmatch("([+-]?%d+)%s+([+-]?%d+)%s+([+-]?%d+)%s+([^%s]+)%s+(%d+)%s+(%d+)[^\r\n]*[\r\n]*") do --match node entries
-			pos.x, pos.y, pos.z = originx + tonumber(x), originy + tonumber(y), originz + tonumber(z)
-			node.name, node.param1, node.param2 = name, param1, param2
-			add_node(pos, node)
-			count = count + 1
-		end
-	elseif version == 4 then --current nested table format
+	if version == 4 then --current nested table format
 		--wip: this is a filthy hack that works surprisingly well
 		value = value:gsub("return%s*{", "", 1):gsub("}%s*$", "", 1)
 		local escaped = value:gsub("\\\\", "@@"):gsub("\\\"", "@@"):gsub("(\"[^\"]*\")", function(s) return string.rep("@", #s) end)
