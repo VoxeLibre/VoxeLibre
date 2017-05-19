@@ -503,6 +503,77 @@ minetest.register_ore({
 	y_max          = mcl_util.layer_to_y(32),
 })
 
+-- Water and lava springs (single blocks of lava/water source)
+-- Water appears at nearly every height, but not near the bottom
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "mcl_core:water_source",
+	wherein         = {"mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite", "mcl_core:dirt"},
+	clust_scarcity = 9000,
+	clust_num_ores = 1,
+	clust_size     = 1,
+	y_min          = mcl_util.layer_to_y(5),
+	y_max          = mcl_util.layer_to_y(128),
+})
+
+-- Lava springs are rather common at -31 and below
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "mcl_core:lava_source",
+	wherein         = stonelike,
+	clust_scarcity = 4000,
+	clust_num_ores = 1,
+	clust_size     = 1,
+	y_min          = mcl_util.layer_to_y(1),
+	y_max          = mcl_util.layer_to_y(10),
+})
+
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "mcl_core:lava_source",
+	wherein         = stonelike,
+	clust_scarcity = 9000,
+	clust_num_ores = 1,
+	clust_size     = 1,
+	y_min          = mcl_util.layer_to_y(11),
+	y_max          = mcl_util.layer_to_y(31),
+})
+
+-- Lava springs will become gradually rarer with increasing height
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "mcl_core:lava_source",
+	wherein         = stonelike,
+	clust_scarcity = 32000,
+	clust_num_ores = 1,
+	clust_size     = 1,
+	y_min          = mcl_util.layer_to_y(32),
+	y_max          = mcl_util.layer_to_y(47),
+})
+
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "mcl_core:lava_source",
+	wherein         = stonelike,
+	clust_scarcity = 72000,
+	clust_num_ores = 1,
+	clust_size     = 1,
+	y_min          = mcl_util.layer_to_y(48),
+	y_max          = mcl_util.layer_to_y(61),
+})
+
+-- Lava may even appear above surface, but this is very rare
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "mcl_core:lava_source",
+	wherein         = stonelike,
+	clust_scarcity = 96000,
+	clust_num_ores = 1,
+	clust_size     = 1,
+	y_min          = mcl_util.layer_to_y(62),
+	y_max          = mcl_util.layer_to_y(127),
+})
+
 local function register_mgv6_decorations()
 
 	-- Sugar canes
