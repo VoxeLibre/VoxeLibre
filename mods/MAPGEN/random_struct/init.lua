@@ -262,17 +262,22 @@ minetest.register_chatcommand("spawnstruct", {
 		if not pos then
 			return
 		end
-		if param == "" or param == "help" then
-			minetest.chat_send_player(name, "Please use “/spawnstruct <type>”.")
-			minetest.chat_send_player(name, "Avaiable types: desert_temple, village")
-		end
+		local errord = false
 		if param == "village" then
 			random_struct.generate_village(pos)
 			minetest.chat_send_player(name, "Village created.")
-		end
-		if param == "desert_temple" then
+		elseif param == "desert_temple" then
 			random_struct.generate_desert_temple(pos)
 			minetest.chat_send_player(name, "Desert temple created.")
+		elseif param == "" then
+			minetest.chat_send_player(name, "Error: No structure type given. Please use “/spawnstruct <type>”.")
+			errord = true
+		else
+			minetest.chat_send_player(name, "Error: Unknown structure type. Please use “/spawnstruct <type>”.")
+			errord = true
+		end
+		if errord then
+			minetest.chat_send_player(name, "Avaiable types: desert_temple, village")
 		end
 	end
 })
