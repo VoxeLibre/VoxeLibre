@@ -891,7 +891,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 						if nn == "mcl_core:sand" or nn == "mcl_core:sandstone" then
 							if math.random(0,12000) == 1 then 
 								-- Spawn desert temple
-								random_struct.call_struct(p,2)
+								mcl_structures.call_struct(p,2)
 							end
 						end
 					end

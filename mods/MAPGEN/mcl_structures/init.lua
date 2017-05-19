@@ -1,11 +1,11 @@
 local init = os.clock()
-random_struct ={}
+mcl_structures ={}
 
-random_struct.get_struct = function(file)
-	local localfile = minetest.get_modpath("random_struct").."/build/"..file
+mcl_structures.get_struct = function(file)
+	local localfile = minetest.get_modpath("mcl_structures").."/build/"..file
 	local file, errorload = io.open(localfile, "rb")
 	if errorload ~= nil then
-	    minetest.log("action", '[Random_Struct] error: could not open this struct "' .. localfile .. '"')
+	    minetest.log("error", '[mcl_structures] Could not open this struct: ' .. localfile)
 	    return nil
 	end
 
@@ -18,7 +18,7 @@ end
 
 -- World edit function
 
-random_struct.valueversion_WE = function(value)
+mcl_structures.valueversion_WE = function(value)
 	if value:find("([+-]?%d+)%s+([+-]?%d+)%s+([+-]?%d+)") and not value:find("%{") then --previous list format
 		return 3
 	elseif value:find("^[^\"']+%{%d+%}") then
@@ -31,13 +31,13 @@ random_struct.valueversion_WE = function(value)
 	end
 	return 0 --unknown format
 end
-random_struct.allocate_WE  = function(originpos, value)
+mcl_structures.allocate_WE  = function(originpos, value)
 	local huge = math.huge
 	local pos1x, pos1y, pos1z = huge, huge, huge
 	local pos2x, pos2y, pos2z = -huge, -huge, -huge
 	local originx, originy, originz = originpos.x, originpos.y, originpos.z
 	local count = 0
-	local version = random_struct.valueversion_WE (value)
+	local version = mcl_structures.valueversion_WE (value)
 	if version == 1 or version == 2 then --flat table format
 		--obtain the node table
 		local get_tables = loadstring(value)
@@ -128,16 +128,16 @@ random_struct.allocate_WE  = function(originpos, value)
 	local pos2 = {x=pos2x, y=pos2y, z=pos2z}
 	return pos1, pos2, count
 end
-random_struct.deserialise_WE = function(originpos, value)
+mcl_structures.deserialise_WE = function(originpos, value)
 	--make area stay loaded
-	local pos1, pos2 = random_struct.allocate_WE(originpos, value)
+	local pos1, pos2 = mcl_structures.allocate_WE(originpos, value)
 	local manip = minetest.get_voxel_manip()
 	manip:read_from_map(pos1, pos2)
 
 	local originx, originy, originz = originpos.x, originpos.y, originpos.z
 	local count = 0
 	local add_node, get_meta = minetest.add_node, minetest.get_meta
-	local version = random_struct.valueversion_WE(value)
+	local version = mcl_structures.valueversion_WE(value)
 	if version == 1 or version == 2 then --original flat table format
 		--obtain the node table
 		local get_tables = loadstring(value)
@@ -222,33 +222,33 @@ end
 
 
 -- The call of Struct
-random_struct.call_struct= function(pos, struct_style)	
+mcl_structures.call_struct= function(pos, struct_style)
 			-- 1: Village , 2: Desert temple
 			if struct_style == 1 then
-			  random_struct.geerate_village(pos)
+			  mcl_structures.geerate_village(pos)
 			elseif struct_style == 2 then
-			  random_struct.generate_desert_temple(pos)
+			  mcl_structures.generate_desert_temple(pos)
 			end
 end
 
-random_struct.generate_village = function(pos)
+mcl_structures.generate_village = function(pos)
 	-- No Generating for the moment only place it :D
-	local city = random_struct.get_struct("pnj_town_1.we")
+	local city = mcl_structures.get_struct("pnj_town_1.we")
 	local newpos = {x=pos.x,y=pos.y,z=pos.z}
 	if newpos == nil then
 		return
 	end
-	random_struct.deserialise_WE(newpos, city )
+	mcl_structures.deserialise_WE(newpos, city )
 end
 
-random_struct.generate_desert_temple = function(pos)
+mcl_structures.generate_desert_temple = function(pos)
 	-- No Generating for the temple ... Why using it ? No Change
-	local temple = random_struct.get_struct("desert_temple.we")
+	local temple = mcl_structures.get_struct("desert_temple.we")
 	local newpos = {x=pos.x,y=pos.y-12,z=pos.z}
 	if newpos == nil then
 		return
 	end
-	random_struct.deserialise_WE(newpos, temple)
+	mcl_structures.deserialise_WE(newpos, temple)
 end
 
 
@@ -264,10 +264,10 @@ minetest.register_chatcommand("spawnstruct", {
 		end
 		local errord = false
 		if param == "village" then
-			random_struct.generate_village(pos)
+			mcl_structures.generate_village(pos)
 			minetest.chat_send_player(name, "Village created.")
 		elseif param == "desert_temple" then
-			random_struct.generate_desert_temple(pos)
+			mcl_structures.generate_desert_temple(pos)
 			minetest.chat_send_player(name, "Desert temple created.")
 		elseif param == "" then
 			minetest.chat_send_player(name, "Error: No structure type given. Please use “/spawnstruct <type>”.")

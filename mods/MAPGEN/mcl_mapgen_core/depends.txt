@@ -2,4 +2,4 @@ mcl_init
 mcl_util
 mcl_core
 stairs
-random_struct
+mcl_structures
