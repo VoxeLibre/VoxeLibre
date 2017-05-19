@@ -12,73 +12,59 @@ local go_fishing = function(itemstack, user, pointed_thing)
 			local itemname
 			local itemcount = 1
 			local itemwear = 0
-			local r = math.random(1, 100)
+			-- FIXME: Maybe use a better seeding
+			local pr = PseudoRandom(os.time() * math.random(1, 100))
+			local r = pr:next(1, 100)
 			if r <= 85 then
 				-- Fish
-				r = math.random(1, 100)
-				if r <= 60 then
-					itemname = "mcl_fishing:fish_raw"
-				elseif r <= 85 then
-					itemname = "mcl_fishing:salmon_raw"
-				elseif r <= 87 then
-					itemname = "mcl_fishing:clownfish_raw"
-				else
-					itemname = "mcl_fishing:pufferfish_raw"
-				end
+				items = mcl_loot.get_loot({
+					items = {
+						{ itemstring = "mcl_fishing:fish_raw", weight = 60 },
+						{ itemstring = "mcl_fishing:salmon_raw", weight = 25 },
+						{ itemstring = "mcl_fishing:clownfish_raw", weight = 2 },
+						{ itemstring = "mcl_fishing:pufferfish_raw", weight = 13 },
+					}
+				}, pr)
 			elseif r <= 95 then
 				-- Junk
-				r = math.random(1, 83)
-				if r <= 10 then
-					itemname = "mcl_core:bowl"
-				elseif r <= 12 then
-					itemname = "mcl_fishing:fishing_rod"
-					itemwear = math.random(6554, 65535)	-- 10%-100% damaged
-				elseif r <= 22 then
-					itemname = "mcl_mobitems:leather"
-				elseif r <= 32 then
-					itemname = "3d_armor:boots_leather"
-					itemwear = math.random(6554, 65535)	-- 10%-100% damaged
-				elseif r <= 42 then
-					itemname = "mcl_mobitems:rotten_flesh"
-				elseif r <= 47 then
-					itemname = "mcl_core:stick"
-				elseif r <= 52 then
-					itemname = "mcl_mobitems:string"
-				elseif r <= 62 then
-					itemname = "mcl_potions:potion_water"
-				elseif r <= 72 then
-					itemname = "mcl_mobitems:bone"
-				elseif r <= 73 then
-					itemname = "mcl_dye:black"
-				itemcount = 10
-				else
-					-- TODO: Tripwire hook
-					itemname = "mcl_mobitems:string"
-				end
+				items = mcl_loot.get_loot({
+					items = {
+						{ itemstring = "mcl_core:bowl", weight = 10 },
+						{ itemstring = "mcl_fishing:fishing_rod", weight = 2, wear_min = 6554, wear_max = 65535 }, -- 10%-100% damage
+						{ itemstring = "mcl_mobitems:leather", weight = 10 },
+						{ itemstring = "3d_armor:boots_leather", weight = 10, wear_min = 6554, wear_max = 65535 }, -- 10%-100% damage
+						{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10 },
+						{ itemstring = "mcl_core:stick", weight = 5 },
+						{ itemstring = "mcl_mobitems:string", weight = 5 },
+						{ itemstring = "mcl_potions:potion_water", weight = 10 },
+						{ itemstring = "mcl_mobitems:bone", weight = 10 },
+						{ itemstring = "mcl_dye:black", weight = 1, amount_min = 10, amount_max = 10 },
+						{ itemstring = "mcl_mobitems:string", weight = 10 }, -- TODO: Tripwire Hook
+					}
+				}, pr)
 			else
 				-- Treasure
-				r = math.random(1, 6)
-					if r == 1 then
-					-- TODO: Enchanted bow
-					itemname = "mcl_throwing:bow"
-					itemwear = math.random(49144, 65535)	-- 75%-100% damaged
-				elseif r == 2 then
-					-- TODO: Enchanted book
-					itemname = "mcl_books:book"
-				elseif r == 3 then
-					-- TODO: Enchanted fishing rod
-					itemname = "mcl_fishing:fishing_rod"
-					itemwear = math.random(49144, 65535)	-- 75%-100% damaged
-				elseif r == 4 then
-					itemname = "mobs:nametag"
-				elseif r == 5 then
-					itemname = "mcl_mobitems:saddle"
-				elseif r == 6 then
-					itemname = "mcl_flowers:waterlily"
-				end
+				items = mcl_loot.get_loot({
+					items = {
+						-- TODO: Enchanted Bow
+						{ itemstring = "mcl_throwing:bow", wear_min = 49144, wear_max = 65535 }, -- 75%-100% damage
+						-- TODO: Enchanted Book
+						{ itemstring = "mcl_books:book" },
+						-- TODO: Enchanted Fishing Rod
+						{ itemstring = "mcl_fishing:fishing_rod", wear_min = 49144, wear_max = 65535 }, -- 75%-100% damage
+						{ itemstring = "mobs:nametag", },
+						{ itemstring = "mcl_mobitems:saddle", },
+						{ itemstring = "mcl_flowers:waterlily", },
+					}
+				}, pr)
+			end
+			local item
+			if #items >= 1 then
+				item = ItemStack(items[1])
+			else
+				item = ItemStack()
 			end
 			local inv = user:get_inventory()
-			local item = {name=itemname, count=itemcount, wear=itemwear, metadata=""}
 			if inv:room_for_item("main", item) then
 				inv:add_item("main", item)
 			end
