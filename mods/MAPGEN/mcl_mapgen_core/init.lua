@@ -21,7 +21,7 @@ minetest.register_alias("mapgen_dirt_with_snow", "mcl_core:dirt_with_grass_snow"
 minetest.register_alias("mapgen_sand", "mcl_core:sand")
 minetest.register_alias("mapgen_gravel", "mcl_core:gravel")
 minetest.register_alias("mapgen_clay", "mcl_core:clay")
-minetest.register_alias("mapgen_lava_source", "mcl_core:lava_source")
+minetest.register_alias("mapgen_lava_source", "air") -- Built-in lava generator is too unpredictable, we generate lava on our own
 minetest.register_alias("mapgen_cobble", "mcl_core:cobble")
 minetest.register_alias("mapgen_mossycobble", "mcl_core:mossycobble")
 minetest.register_alias("mapgen_junglegrass", "mcl_flowers:fern")
@@ -521,7 +521,7 @@ minetest.register_ore({
 	ore_type       = "scatter",
 	ore            = "mcl_core:lava_source",
 	wherein         = stonelike,
-	clust_scarcity = 4000,
+	clust_scarcity = 2000,
 	clust_num_ores = 1,
 	clust_size     = 1,
 	y_min          = mcl_util.layer_to_y(1),
@@ -980,6 +980,7 @@ end)
 -- Generate bedrock layer or layers
 local BEDROCK_MIN = mcl_vars.mg_bedrock_overworld_min
 local BEDROCK_MAX = mcl_vars.mg_bedrock_overworld_max
+local GEN_MAX = mcl_vars.mg_lava_overworld_max or BEDROCK_MAX
 
 -- Buffer for LuaVoxelManip
 local lvm_buffer = {}
@@ -991,12 +992,14 @@ minetest.register_on_generated(function(minp, maxp)
 	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
 	local lvm_used = false
 
-	-- Generate bedrock layers
-	if minp.y <= BEDROCK_MAX then
+	-- Generate bedrock and lava layers
+	if minp.y <= GEN_MAX then
 		local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
 		local c_void = minetest.get_content_id("mcl_core:void")
+		local c_lava = minetest.get_content_id("mcl_core:lava_source")
+		local c_air = minetest.get_content_id("air")
 
-		local max_y = math.min(maxp.y, BEDROCK_MAX)
+		local max_y = math.min(maxp.y, GEN_MAX)
 
 		for y = minp.y, max_y do
 			for x = minp.x, maxp.x do
@@ -1035,6 +1038,11 @@ minetest.register_on_generated(function(minp, maxp)
 
 					if setdata then
 						data[p_pos] = setdata
+						lvm_used = true
+					elseif mcl_vars.mg_lava and y <= mcl_vars.mg_lava_overworld_max then
+						if data[p_pos] == c_air then
+							data[p_pos] = c_lava
+						end
 						lvm_used = true
 					end
 				end

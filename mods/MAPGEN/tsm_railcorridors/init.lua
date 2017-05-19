@@ -73,7 +73,12 @@ if setting then
 end
 
 -- Max. and min. heights between rail corridors are generated
-local height_min = mcl_vars.mg_bedrock_overworld_max + 5 -- FIXME: Above lava layers
+local height_min
+if mcl_vars.mg_lava then
+	height_min = mcl_vars.mg_lava_overworld_max + 2
+else
+	height_min = mcl_vars.mg_bedrock_overworld_max + 2
+end
 local height_max = mcl_util.layer_to_y(60)
 
 -- Chaos Mode: If enabled, rail corridors don't stop generating when hitting obstacles
@@ -567,9 +572,9 @@ minetest.register_on_generated(function(minp, maxp, blockseed)
 	if minp.y < height_max and maxp.y > height_min and pr:next() < probability_railcaves_in_chunk then
 		-- Get semi-random height in chunk
 
-		local buffer = 5
-		local y = pr:next(minp.y + buffer, maxp.y - buffer)
-		y = math.floor(math.max(height_min, math.min(height_max, y)))
+		local buffer = 4
+		local y = pr:next(minp.y, maxp.y)
+		y = math.floor(math.max(height_min + buffer, math.min(height_max - buffer, y)))
 		local p = {x=minp.x+(maxp.x-minp.x)/2, y=y, z=minp.z+(maxp.z-minp.z)/2}
 		-- Haupthöhle und alle weiteren
 		-- Corridors; starting with main cave out of dirt
