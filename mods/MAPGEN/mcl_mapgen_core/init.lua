@@ -43,30 +43,6 @@ minetest.register_alias("mapgen_stair_sandstonebrick", "stairs:stair_sandstone")
 -- Ore generation
 --
 
--- Gravel
-minetest.register_ore({
-	ore_type       = "blob",
-	ore            = "mcl_core:gravel",
-	wherein        = {"mcl_core:stone"},
-	clust_scarcity = 14*14*14,
-	clust_num_ores = 33,
-	clust_size     = 5,
-	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_util.layer_to_y(111),
-})
-
--- Dirt
-minetest.register_ore({
-	ore_type       = "blob",
-	ore            = "mcl_core:dirt",
-	wherein        = {"mcl_core:stone"},
-	clust_scarcity = 15*15*15,
-	clust_num_ores = 33,
-	clust_size     = 4,
-	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_vars.mg_overworld_max,
-})
-
 -- Diorite, andesite and granite
 local specialstones = { "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite" }
 for s=1, #specialstones do
@@ -92,6 +68,30 @@ for s=1, #specialstones do
 		y_max          = mcl_vars.mg_overworld_max,
 	})
 end
+
+-- Dirt
+minetest.register_ore({
+	ore_type       = "blob",
+	ore            = "mcl_core:dirt",
+	wherein        = {"mcl_core:stone"},
+	clust_scarcity = 15*15*15,
+	clust_num_ores = 33,
+	clust_size     = 4,
+	y_min          = mcl_vars.mg_overworld_min,
+	y_max          = mcl_vars.mg_overworld_max,
+})
+
+-- Gravel
+minetest.register_ore({
+	ore_type       = "blob",
+	ore            = "mcl_core:gravel",
+	wherein        = {"mcl_core:stone"},
+	clust_scarcity = 14*14*14,
+	clust_num_ores = 33,
+	clust_size     = 5,
+	y_min          = mcl_vars.mg_overworld_min,
+	y_max          = mcl_util.layer_to_y(111),
+})
 
 --
 -- Coal
