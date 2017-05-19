@@ -223,15 +223,15 @@ end
 
 -- The call of Struct
 random_struct.call_struct= function(pos, struct_style)	
-			-- 1 : City , 2 : Temple Sand
+			-- 1: Village , 2: Desert temple
 			if struct_style == 1 then
-			  random_struct.generatecity(pos)
+			  random_struct.geerate_village(pos)
 			elseif struct_style == 2 then
-			  random_struct.generate_sand_temple(pos)
+			  random_struct.generate_desert_temple(pos)
 			end
 end
 
-random_struct.generatecity = function(pos)
+random_struct.generate_village = function(pos)
 	-- No Generating for the moment only place it :D
 	local city = random_struct.get_struct("pnj_town_1.we")
 	local newpos = {x=pos.x,y=pos.y,z=pos.z}
@@ -241,7 +241,7 @@ random_struct.generatecity = function(pos)
 	random_struct.deserialise_WE(newpos, city )
 end
 
-random_struct.generate_sand_temple = function(pos)
+random_struct.generate_desert_temple = function(pos)
 	-- No Generating for the temple ... Why using it ? No Change
 	local temple = random_struct.get_struct("desert_temple.we")
 	local newpos = {x=pos.x,y=pos.y-12,z=pos.z}
@@ -254,7 +254,7 @@ end
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
-	params = "town | sand_temple",
+	params = "desert_temple | village",
 	description = "Generate a pre-defined structure near your position.",
 	privs = {debug = true},
 	func = function(name, param)
@@ -264,15 +264,15 @@ minetest.register_chatcommand("spawnstruct", {
 		end
 		if param == "" or param == "help" then
 			minetest.chat_send_player(name, "Please use “/spawnstruct <type>”.")
-			minetest.chat_send_player(name, "Avaiable types: town, sand_temple")
+			minetest.chat_send_player(name, "Avaiable types: desert_temple, village")
 		end
-		if param == "town" then
-			random_struct.generatecity(pos)
-			minetest.chat_send_player(name, "Town created.")
+		if param == "village" then
+			random_struct.generate_village(pos)
+			minetest.chat_send_player(name, "Village created.")
 		end
-		if param == "sand_temple" then
-			random_struct.generate_sand_temple(pos)
-			minetest.chat_send_player(name, "Sand temple created")
+		if param == "desert_temple" then
+			random_struct.generate_desert_temple(pos)
+			minetest.chat_send_player(name, "Desert temple created.")
 		end
 	end
 })
