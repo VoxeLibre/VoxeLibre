@@ -76,17 +76,25 @@ mcl_structures.allocate_WE  = function(originpos, value)
 	local pos2 = {x=pos2x, y=pos2y, z=pos2z}
 	return pos1, pos2, count
 end
+
+--[[
+Deserialize WorldEdit string and set the nodes in the world.
+Returns: count, chests
+* count: Number of nodes set
+* chests: Table of chest positions (use these to spawn treasures
+]]
 mcl_structures.deserialise_WE = function(originpos, value)
 	--make area stay loaded
 	local pos1, pos2 = mcl_structures.allocate_WE(originpos, value)
+	local count = 0
+	local chests = {} -- Remember positions of all chests
 	if not pos1 then
-		return 0
+		return count, chests
 	end
 	local manip = minetest.get_voxel_manip()
 	manip:read_from_map(pos1, pos2)
 
 	local originx, originy, originz = originpos.x, originpos.y, originpos.z
-	local count = 0
 	local add_node, get_meta = minetest.add_node, minetest.get_meta
 	local version = mcl_structures.valueversion_WE(value)
 	if version == 4 then --current nested table format
@@ -108,12 +116,15 @@ mcl_structures.deserialise_WE = function(originpos, value)
 
 		--local nodes = minetest.deserialize(value) --wip: this is broken for larger tables in the current version of LuaJIT
 
-		--load the nodes
+		--load the nodes and remember chests
 		count = #nodes
 		for index = 1, count do
 			local entry = nodes[index]
 			entry.x, entry.y, entry.z = originx + entry.x, originy + entry.y, originz + entry.z
 			add_node(entry, entry) --entry acts both as position and as node
+			if entry.name == "mcl_chests:chest" then
+				table.insert(chests, {x=entry.x, y=entry.y, z=entry.z})
+			end
 		end
 
 		--load the metadata
@@ -122,7 +133,7 @@ mcl_structures.deserialise_WE = function(originpos, value)
 			get_meta(entry):from_table(entry.meta)
 		end
 	end
-	return count
+	return count, chests
 end
 
 -- End of world edit deserialise part
@@ -155,7 +166,57 @@ mcl_structures.generate_desert_temple = function(pos)
 	if newpos == nil then
 		return
 	end
-	mcl_structures.deserialise_WE(newpos, temple)
+	local count, chests = mcl_structures.deserialise_WE(newpos, temple)
+
+	-- Add desert temple loot into chests
+	for c=1, #chests do
+		-- FIXME: Use better seeding
+		local pr = PseudoRandom(math.random(0, 4294967295))
+		local lootitems = mcl_loot.get_multi_loot({
+		{
+			stacks_min = 2,
+			stacks_max = 4,
+			items = {
+				{ itemstring = "mcl_mobitems:bone", weight = 25, amount_min = 4, amount_max=6 },
+				{ itemstring = "mcl_mobitems:rotten_flesh", weight = 25, amount_min = 3, amount_max=7 },
+				{ itemstring = "mcl_mobitems:spider_eye", weight = 25, amount_min = 1, amount_max=3 },
+				-- TODO: Enchanted Book
+				{ itemstring = "mcl_books:book", weight = 20, },
+				{ itemstring = "mcl_mobitems:saddle", weight = 20, },
+				{ itemstring = "mcl_core:apple_gold", weight = 20, },
+				{ itemstring = "mcl_core:gold_ingot", weight = 15, amount_min = 2, amount_max = 7 },
+				{ itemstring = "mcl_core:iron_ingot", weight = 15, amount_min = 1, amount_max = 5 },
+				{ itemstring = "mcl_core:emerald", weight = 15, amount_min = 1, amount_max = 3 },
+				{ itemstring = "", weight = 15, },
+				-- TODO: Iron Horse Armor
+				{ itemstring = "mcl_core:iron_ingot", weight = 15, },
+				-- TODO: Golden Horse Armor
+				{ itemstring = "mcl_core:gold_ingot", weight = 10, },
+				-- TODO: Diamond Horse Armor
+				{ itemstring = "mcl_core:diamond", weight = 5, },
+				{ itemstring = "mcl_core:diamond", weight = 5, amount_min = 1, amount_max = 3 },
+				-- TODO: Enchanted Golden Apple
+				{ itemstring = "mcl_core:apple_gold", weight = 2, },
+			}
+		},
+		{
+			stacks_min = 4,
+			stacks_max = 4,
+			items = {
+				{ itemstring = "mcl_mobitems:bone", weight = 10, amount_min = 1, amount_max = 8 },
+				{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10, amount_min = 1, amount_max = 8 },
+				{ itemstring = "mcl_mobitems:gunpowder", weight = 10, amount_min = 1, amount_max = 8 },
+				{ itemstring = "mcl_core:sand", weight = 10, amount_min = 1, amount_max = 8 },
+				{ itemstring = "mcl_mobitems:string", weight = 10, amount_min = 1, amount_max = 8 },
+			}
+		}}, pr)
+
+		local meta = minetest.get_meta(chests[c])
+		local inv = meta:get_inventory()
+		for i=1, #lootitems do
+			inv:add_item("main", lootitems[i])
+		end
+	end
 end
 
 

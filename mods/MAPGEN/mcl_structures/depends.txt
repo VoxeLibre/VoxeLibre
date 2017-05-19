@@ -1,4 +1,5 @@
 mcl_core
+mcl_loot
 xpanes
 mcl_doors
 stairs
