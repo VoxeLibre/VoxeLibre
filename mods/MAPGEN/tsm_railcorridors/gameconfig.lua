@@ -30,69 +30,46 @@ end
 -- MineClone 2's treasure function. Gets all treasures for a single chest.
 -- Based on information from Minecraft Wiki.
 function tsm_railcorridors.get_treasures(pr)
-	local items = {}
-	-- First roll
-	local r1 = pr:next(1,71)
-	if r1 <= 30 then
-		table.insert(items, "mobs:nametag")
-	elseif r1 <= 50 then
-		table.insert(items, "mcl_core:apple_gold")
-	elseif r1 <= 60 then
-		-- TODO: Enchanted Book
-		table.insert(items, "mcl_books:book")
-	elseif r1 <= 65 then
-		-- Nothing!
-	elseif r1 <= 70 then
-		table.insert(items, "mcl_tools:pick_iron")
-	else
-		-- TODO: Enchanted Golden Apple
-		table.insert(items, "mcl_core:apple_gold")
-	end
-
-	-- Second roll
-	local r2stacks = pr:next(2,4)
-	for i=1, r2stacks do
-		local r2 = pr:next(1,83)
-		if r2 <= 15 then
-			table.insert(items, "mcl_farming:bread "..pr:next(1,3))
-		elseif r2 <= 25 then
-			table.insert(items, "mcl_core:coal_lump "..pr:next(3,8))
-		elseif r2 <= 35 then
-			table.insert(items, "mcl_farming:beetroot_seeds "..pr:next(2,4))
-		elseif r2 <= 45 then
-			table.insert(items, "mcl_farming:melon_seeds "..pr:next(2,4))
-		elseif r2 <= 55 then
-			table.insert(items, "mcl_farming:pumpkin_seeds "..pr:next(2,4))
-		elseif r2 <= 65 then
-			table.insert(items, "mcl_core:iron_ingot "..pr:next(1,5))
-		elseif r2 <= 70 then
-			table.insert(items, "mcl_dye:blue "..pr:next(4,9))
-		elseif r2 <= 75 then
-			table.insert(items, "mesecons:redstone "..pr:next(4,9))
-		elseif r2 <= 80 then
-			table.insert(items, "mcl_core:gold_ingot "..pr:next(1,3))
-		else
-			table.insert(items, "mcl_core:diamond "..pr:next(1,2))
-		end
-	end
-
-	-- Third roll
-	for i=1, 3 do
-		local r3 = pr:next(1,50)
-		if r3 <= 20 then
-			table.insert(items, "mcl_minecarts:rail "..pr:next(4,8))
-		elseif r3 <= 35 then
-			table.insert(items, "mcl_torches:torch "..pr:next(1,16))
-		elseif r3 <= 40 then
-			-- TODO: Activator Rail
-			table.insert(items, "mcl_minecarts:rail "..pr:next(1,4))
-		elseif r3 <= 45 then
-			-- TODO: Detector Rail
-			table.insert(items, "mcl_minecarts:rail "..pr:next(1,4))
-		else
-			table.insert(items, "mcl_minecarts:golden_rail "..pr:next(1,4))
-		end
-	end
+	local items = mcl_loot.get_multi_loot({
+	{
+		stacks_min = 1,
+		stacks_max = 1,
+		items = {
+			{ itemstring = "mobs:nametag", weight = 30 },
+			{ itemstring = "mcl_core:apple_gold", weight = 20 },
+			{ itemstring = "mcl_books:book", weight = 10 }, -- TODO: Enchanted Book
+			{ itemstring = "", weight = 5},
+			{ itemstring = "mcl_core:pick_iron", weight = 5 },
+			{ itemstring = "mcl:core:apple_gold", weight = 1 }, -- TODO: Enchanted Golden Apple
+		}
+	},
+	{
+		stacks_min = 2,
+		stacks_max = 4,
+		items = {
+			{ itemstring = "mcl_farming:bread", weight = 15, amount_min = 1, amount_max = 3 },
+			{ itemstring = "mcl_core:coal_lump", weight = 10, amount_min = 3, amount_max = 8 },
+			{ itemstring = "mcl_farming:beetroot_seeds", weight = 10, amount_min = 2, amount_max = 4 },
+			{ itemstring = "mcl_farming:melon_seeds", weight = 10, amount_min = 2, amount_max = 4 },
+			{ itemstring = "mcl_farming:pumpkin_seeds", weight = 10, amount_min = 2, amount_max = 4 },
+			{ itemstring = "mcl_core:iron_ingot", weight = 10, amount_min = 1, amount_max = 5 },
+			{ itemstring = "mcl_dye:bye", weight = 5, amount_min = 4, amount_max = 9 },
+			{ itemstring = "mesecons:redstone", weight = 5, amount_min = 4, amount_max = 9 },
+			{ itemstring = "mcl_core:gold_ingot", weight = 5, amount_min = 1, amount_max = 3 },
+			{ itemstring = "mcl_core:diamond", weight = 3, amount_min = 1, amount_max = 2 },
+		}
+	},
+	{
+		stacks_min = 3,
+		stacks_max = 3,
+		items = {
+			{ itemstring = "mcl_minecarts:rail", weight = 20, amount_min = 4, amount_max = 8 },
+			{ itemstring = "mcl_torches:torch", weight = 15, amount_min = 1, amount_max = 16 },
+			{ itemstring = "mcl_minecarts:rail", weight = 5, amount_min = 1, amount_max = 4 }, -- TODO: Activator Rail
+			{ itemstring = "mcl_minecarts:rail", weight = 5, amount_min = 1, amount_max = 4 }, -- TODO: Detector Rail
+			{ itemstring = "mcl_minecarts:golden_rail", weight = 5, amount_min = 1, amount_max = 4 },
+		}
+	}}, pr)
 
 	return items
 end

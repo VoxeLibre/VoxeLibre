@@ -1,5 +1,6 @@
 mcl_init
 mcl_util
 mcl_core
+mcl_loot
 mcl_tnt
 mcl_farming
