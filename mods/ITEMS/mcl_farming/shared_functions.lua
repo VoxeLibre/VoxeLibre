@@ -343,8 +343,8 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 					else
 						minetest.add_node(blockpos, {name=gourd_itemstring})
 					end
-					-- Reset farmland to dirt when the gourd grows on top
-					if floor.name == "mcl_farming:soil" or floor.name == "mcl_farming:soil_wet" then
+					-- Reset farmland, etc. to dirt when the gourd grows on top
+					if minetest.get_item_group(floor.name, "dirtifies_below_solid") == 1 then
 						minetest.set_node(floorpos, {name = "mcl_core:dirt"})
 					end
 				end
