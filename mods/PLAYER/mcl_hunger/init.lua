@@ -108,7 +108,7 @@ mcl_hunger.set_hunger_raw = function(player)
 	if not inv  or not value then return nil end
 	if value > 20 then value = 20 end
 	if value < 0 then value = 0 end
-	
+
 	inv:set_stack("hunger", 1, ItemStack({name=":", count=value+1}))
 
 	return true
@@ -141,16 +141,33 @@ minetest.register_on_respawnplayer(function(player)
 end)
 
 function mcl_hunger.exhaust(playername, increase)
-	mcl_hunger.exhaustion[playername] = math.min(mcl_hunger.exhaustion[playername] + increase, 4.0)
-	hb.change_hudbar(minetest.get_player_by_name(playername), "exhaustion", mcl_hunger.exhaustion[playername])
+	local player = minetest.get_player_by_name(playername)
+	mcl_hunger.exhaustion[playername] = mcl_hunger.exhaustion[playername] + increase
+	if mcl_hunger.exhaustion[playername] >= 4.0 then
+		mcl_hunger.exhaustion[playername] = 0.0
+		local h = nil
+		local satuchanged = false
+		if mcl_hunger.saturation[playername] > 0.0 then
+			mcl_hunger.saturation[playername] = math.max(mcl_hunger.saturation[playername] - 1.0, 0.0)
+			satuchanged = true
+		end
+		if mcl_hunger.saturation[playername] < 0.0001 then
+			h = mcl_hunger.get_hunger_raw(player)
+			h = h-1
+			mcl_hunger.hunger[playername] = h
+			mcl_hunger.set_hunger_raw(player)
+			satuchanged = true
+		end
+		if satuchanged then
+			hb.change_hudbar(player, "saturation", mcl_hunger.saturation[playername], h)
+		end
+	end
+	hb.change_hudbar(player, "exhaustion", mcl_hunger.exhaustion[playername])
 end
 
 function mcl_hunger.saturate(playername, increase)
 	local player = minetest.get_player_by_name(playername)
-	mcl_hunger.saturation[playername] = mcl_hunger.saturation[playername] + increase
-	if mcl_hunger.saturation[playername] > mcl_hunger.get_hunger(player) then
-		mcl_hunger.saturation[playername] = mcl_hunger.get_hunger(player)
-	end
+	mcl_hunger.saturation[playername] = math.min(mcl_hunger.saturation[playername] + increase, mcl_hunger.get_hunger(player))
 	hb.change_hudbar(player, "saturation", mcl_hunger.saturation[playername], mcl_hunger.get_hunger(player))
 end
 
@@ -188,24 +205,6 @@ minetest.register_globalstep(function(dtime)
 				end
 			end
 
-			if h > 0 then
-				if mcl_hunger.exhaustion[name] >= 4.0 then
-					if mcl_hunger.saturation[name] > 0.0 then
-						mcl_hunger.saturation[name] = math.max(mcl_hunger.saturation[name] - 1.0, 0.0)
-						mcl_hunger.exhaustion[name] = 0.0
-						hb.change_hudbar(player, "exhaustion", mcl_hunger.exhaustion[name])
-						hb.change_hudbar(player, "saturation", mcl_hunger.saturation[name])
-					elseif timerMult == 0 then
-						h = h-1
-						mcl_hunger.hunger[name] = h
-						mcl_hunger.set_hunger_raw(player)
-					end
-				end
-			end
-
-			-- update all hud elements
-			update_hud(player)
-			
 			local controls = player:get_player_control()
 			-- Determine if the player is moving
 			if controls.up or controls.down or controls.left or controls.right then
@@ -216,6 +215,14 @@ minetest.register_globalstep(function(dtime)
 			if controls.jump then
 				mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_JUMP)
 			end
+
+			-- Reduce hunter if 0 saturation
+			if timerMult == 0 and h > 0 and  mcl_hunger.saturation[name] < 0.0001 then
+			end
+
+			-- update all hud elements
+			update_hud(player)
+
 		end
 		end
 	end
