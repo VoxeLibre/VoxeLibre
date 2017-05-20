@@ -152,7 +152,7 @@ function mcl_hunger.exhaust(playername, increase)
 			satuchanged = true
 		elseif mcl_hunger.saturation[playername] < 0.0001 then
 			h = mcl_hunger.get_hunger_raw(player)
-			h = h-1
+			h = math.max(h-1, 0)
 			mcl_hunger.hunger[playername] = h
 			mcl_hunger.set_hunger_raw(player)
 			satuchanged = true
