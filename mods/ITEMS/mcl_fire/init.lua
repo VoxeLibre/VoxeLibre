@@ -118,6 +118,37 @@ minetest.register_node("mcl_fire:eternal_fire", {
 	_mcl_blast_resistance = 0,
 })
 
+-- Also make lava set fire to air blocks above
+minetest.override_item("mcl_core:lava_source", {
+	on_timer = function(pos)
+		local function try_ignite(airs)
+			while #airs > 0 do
+				local r = math.random(1, #airs)
+				if minetest.find_node_near(airs[r], 1, {"group:flammable", "group:flammable_lava"}) then
+					minetest.set_node(airs[r], {name="mcl_fire:fire"})
+					return true
+				else
+					table.remove(airs, r)
+				end
+			end
+			return false
+		end
+		local airs1 = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y+1, z=pos.z-1}, {x=pos.x+1, y=pos.y+1, z=pos.z+1}, {"air"})
+		minetest.log("error", dump(airs1))
+		local ok = try_ignite(airs1)
+		if not ok then
+			local airs2 = minetest.find_nodes_in_area({x=pos.x-2, y=pos.y+2, z=pos.z-2}, {x=pos.x+2, y=pos.y+2, z=pos.z+2}, {"air"})
+			try_ignite(airs2)
+		end
+
+		-- Restart timer
+		minetest.get_node_timer(pos):start(math.random(5, 10))
+	end,
+	on_construct = function(pos)
+		minetest.get_node_timer(pos):start(math.random(5, 10))
+	end
+})
+
 --
 -- Sound
 --
@@ -267,15 +298,44 @@ end
 
 if not fire_enabled then
 
-	-- Remove basic flames only if fire disabled
-
+	-- Remove fire only if fire disabled
 	minetest.register_abm({
 		label = "Remove disabled fire",
-		nodenames = {"fire:basic_flame"},
+		nodenames = {"mcl_fire:fire"},
 		interval = 7,
 		chance = 1,
 		catch_up = false,
 		action = minetest.remove_node,
+	})
+
+	-- Set fire to air nodes (inverse pyramid pattern) above lava source
+	minetest.register_abm({
+		label = "Ignite fire by lava",
+		nodenames = {"mcl_core:lava_source"},
+		interval = 7,
+		chance = 2,
+		catch_up = false,
+		action = function(pos)
+			function try_ignite(airs)
+				while #airs > 0 do
+					local r = math.random(1, #airs)
+					if minetest.find_node_near(airs[r], 1, {"group:flammable", "group:flammable_lava"}) then
+						minetest.set_node(airs[r], {name="mcl_fire:fire"})
+						return true
+					else
+						table.remove(airs, r)
+					end
+				end
+				return false
+			end
+			local airs1 = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y+1, z=pos.z-1}, {x=pos.x+1, y=pos.y+1, z=pos.z+1}, {"air"})
+			minetest.log("error", dump(airs1))
+			local ok = try_ignite(airs1)
+			if not ok then
+				local airs2 = minetest.find_nodes_in_area({x=pos.x-2, y=pos.y+2, z=pos.z-2}, {x=pos.x+2, y=pos.y+2, z=pos.z+2}, {"air"})
+				try_ignite(airs2)
+			end
+		end,
 	})
 
 else -- Fire enabled
