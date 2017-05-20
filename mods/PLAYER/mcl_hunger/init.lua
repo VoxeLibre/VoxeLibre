@@ -140,12 +140,20 @@ minetest.register_globalstep(function(dtime)
 		local hp = player:get_hp()
 		if timer > 0.5 then
 			-- Quick heal (every 0.5s)
-			if h >= 20 and hp > 0 then
+			if h >= 20 and hp > 0 and hp < 20 then
+				-- +1 HP, -3 food points
 				player:set_hp(hp+1)
+				h = h-3
+				mcl_hunger.hunger[name] = h
+				mcl_hunger.set_hunger_raw(player)
 			-- Slow heal, and hunger damage (every 4s)
 			elseif timerMult == 0 then
-				if h >= 18 and hp > 0 then
+				if h >= 18 and hp > 0 and hp < 20 then
+					-- +1 HP, -3 food points
 					player:set_hp(hp+1)
+					h = h-3
+					mcl_hunger.hunger[name] = h
+					mcl_hunger.set_hunger_raw(player)
 				elseif h == 0 then
 				-- Damage hungry player down to 1 HP
 					if hp-1 >= 0 then
