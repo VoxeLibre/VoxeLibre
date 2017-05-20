@@ -10,6 +10,8 @@ if minetest.setting_getbool("enable_damage") then
 mcl_hunger = {}
 mcl_hunger.food = {}
 
+local debug = true -- Debug Mode. If enabled, saturation and exhaustion are shown as well
+
 --[[ Data value format notes:
 	Hunger values is identical to Minecraft's and ranges from 0 to 20.
 	Exhaustion and saturation values are stored as integers, unlike in Minecraft.
@@ -41,6 +43,7 @@ mcl_hunger.EXHAUST_LVL = 4000 -- at what exhaustion player saturation gets lower
 
 mcl_hunger.SATURATION_INIT = 50 -- Initial saturation for new/respawning players
 
+
 --load custom settings
 local set = io.open(minetest.get_modpath("mcl_hunger").."/mcl_hunger.conf", "r")
 if set then
@@ -50,17 +53,36 @@ end
 
 local function init_hud(player)
 	hb.init_hudbar(player, "food", mcl_hunger.get_hunger(player))
-	hb.init_hudbar(player, "saturation", mcl_hunger.get_saturation(player), mcl_hunger.get_hunger(player)*10)
-	hb.init_hudbar(player, "exhaustion", mcl_hunger.get_exhaustion(player))
+	if debug then
+		hb.init_hudbar(player, "saturation", mcl_hunger.get_saturation(player), mcl_hunger.get_hunger(player)*10)
+		hb.init_hudbar(player, "exhaustion", mcl_hunger.get_exhaustion(player))
+	end
+end
+
+-- HUD updating functions for Debug Mode. No-op if not in Debug Mode
+function mcl_hunger.update_saturation_hud(player, saturation, hunger)
+	if debug then
+		local satulimit
+		if hunger then
+			satulimit = hunger * 10
+		end
+		hb.change_hudbar(player, "saturation", saturation, satulimit)
+	end
+end
+function mcl_hunger.update_exhaustion_hud(player, exhaustion)
+	if debug then
+		hb.change_hudbar(player, "exhaustion", exhaustion)
+	end
 end
 
 dofile(minetest.get_modpath("mcl_hunger").."/hunger.lua")
 
 -- register saturation hudbar
 hb.register_hudbar("food", 0xFFFFFF, S("Food"), { icon = "hbhunger_icon.png", bgicon = "hbhunger_bgicon.png",  bar = "hbhunger_bar.png" }, 20, 20, false)
-hb.register_hudbar("saturation", 0xFFFFFF, S("Saturation"), { icon = "hbhunger_icon.png", bgicon = "hbhunger_bgicon.png",  bar = "hbhunger_bar.png" }, mcl_hunger.SATURATION_INIT, 200, false, S("%s: %d/%d"))
-hb.register_hudbar("exhaustion", 0xFFFFFF, S("Exhaust."), { icon = "hbhunger_icon.png", bgicon = "hbhunger_bgicon.png",  bar = "hbhunger_bar.png" }, 0, mcl_hunger.EXHAUST_LVL, false, S("%s: %d/%d"))
-
+if debug then
+	hb.register_hudbar("saturation", 0xFFFFFF, S("Saturation"), { icon = "hbhunger_icon.png", bgicon = "hbhunger_bgicon.png",  bar = "hbhunger_bar.png" }, mcl_hunger.SATURATION_INIT, 200, false, S("%s: %d/%d"))
+	hb.register_hudbar("exhaustion", 0xFFFFFF, S("Exhaust."), { icon = "hbhunger_icon.png", bgicon = "hbhunger_bgicon.png",  bar = "hbhunger_bar.png" }, 0, mcl_hunger.EXHAUST_LVL, false, S("%s: %d/%d"))
+end
 
 local RAW_VALUE_FOOD = 1
 local RAW_VALUE_SATURATION = 2
@@ -105,7 +127,7 @@ mcl_hunger.set_hunger = function(player, hunger, update_hudbars)
 
 	if update_hudbars ~= false then
 		hb.change_hudbar(player, "food", hunger)
-		hb.change_hudbar(player, "saturation", nil, hunger*10)
+		mcl_hunger.update_saturation_hud(player, nil, hunger)
 	end
 	return true
 end
@@ -117,7 +139,7 @@ mcl_hunger.set_saturation = function(player, saturation, update_hudbar)
 	if not ok then return false end
 
 	if update_hudbar ~= false then
-		hb.change_hudbar(player, "saturation", saturation)
+		mcl_hunger.update_saturation_hud(player, saturation)
 	end
 	return true
 end
@@ -129,7 +151,7 @@ mcl_hunger.set_exhaustion = function(player, exhaustion, update_hudbar)
 	if not ok then return false end
 
 	if update_hudbar ~= false then
-		hb.change_hudbar(player, "exhaustion", exhaustion)
+		mcl_hunger.update_exhaustion_hud(player, exhaustion)
 	end
 	return true
 end
@@ -143,9 +165,6 @@ minetest.register_on_joinplayer(function(player)
 	local inv = player:get_inventory()
 	inv:set_size("hunger", 3)
 	mcl_hunger.poisonings[name] = 0
-	local h = mcl_hunger.get_hunger(player)
-	local s = mcl_hunger.get_saturation(player)
-	local e = mcl_hunger.get_exhaustion(player)
 	init_hud(player)
 end)
 
@@ -157,8 +176,8 @@ minetest.register_on_respawnplayer(function(player)
 	mcl_hunger.set_saturation(player, s, false)
 	mcl_hunger.set_exhaustion(player, e, false)
 	hb.change_hudbar(player, "food", h)
-	hb.change_hudbar(player, "saturation", s, h*10)
-	hb.change_hudbar(player, "exhaustion", e)
+	mcl_hunger.update_saturation_hud(player, s, h)
+	mcl_hunger.update_exhaustion_hud(player, e)
 end)
 
 function mcl_hunger.exhaust(playername, increase)
@@ -181,10 +200,10 @@ function mcl_hunger.exhaust(playername, increase)
 		end
 		if satuchanged then
 			if h ~= nil then h = h*10 end
-			hb.change_hudbar(player, "saturation", mcl_hunger.get_saturation(player), h)
+			mcl_hunger.update_saturation_hud(player, mcl_hunger.get_saturation(player), h)
 		end
 	end
-	hb.change_hudbar(player, "exhaustion", mcl_hunger.get_exhaustion(player))
+	mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
 	return true
 end
 
@@ -192,7 +211,7 @@ function mcl_hunger.saturate(playername, increase, update_hudbar)
 	local player = minetest.get_player_by_name(playername)
 	mcl_hunger.set_saturation(player, math.min(mcl_hunger.get_saturation(player) + increase, mcl_hunger.get_hunger(player)*10))
 	if update_hudbar ~= false then
-		hb.change_hudbar(player, "saturation", mcl_hunger.get_saturation(player), mcl_hunger.get_hunger(player)*10)
+		mcl_hunger.update_saturation_hud(player, mcl_hunger.get_saturation(player), mcl_hunger.get_hunger(player))
 	end
 end
 
@@ -221,7 +240,7 @@ minetest.register_globalstep(function(dtime)
 					-- +1 HP, +exhaustion
 					player:set_hp(hp+1)
 					mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_REGEN)
-					hb.change_hudbar(player, "exhaustion", mcl_hunger.get_exhaustion(player))
+					mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
 				elseif h == 0 then
 				-- Damage hungry player down to 1 HP
 					if hp-1 >= 0 then
