@@ -2,7 +2,7 @@
 
 minetest.register_craftitem("mcl_mobitems:rotten_flesh", {
 	description = "Rotten Flesh",
-	_doc_items_longdesc = "Yuck! This piece of flesh clearly has seen better days. If you're really desperate, you can eat it for 4 hunger points, but there's a 80% chance it makes you hungry.",
+	_doc_items_longdesc = "Yuck! This piece of flesh clearly has seen better days. If you're really desperate, you can eat it for 4 hunger points, but there's a 80% chance it causes food poisoning, which increases your hunger for a while.",
 	inventory_image = "mcl_mobitems_rotten_flesh.png",
 	wield_image = "mcl_mobitems_rotten_flesh.png",
 	on_place = minetest.item_eat(4),
@@ -62,7 +62,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_beef", {
 
 minetest.register_craftitem("mcl_mobitems:chicken", {
 	description = "Raw Chicken",
-	_doc_items_longdesc = "This chicken is raw and unprocessed and should be rather eaten in cooked form. You can still eat it for 2 hunger points. But beware: There's a 30% chance that this will make you more hungry for a while.",
+	_doc_items_longdesc = "This chicken is raw and unprocessed and should be rather eaten in cooked form. You can still eat it for 2 hunger points. But beware: There's a 30% chance that this gives you food poisoning, which increases your hunger rate for a while.",
 	inventory_image = "mcl_mobitems_chicken_raw.png",
 	wield_image = "mcl_mobitems_chicken_raw.png",
 	on_place = minetest.item_eat(2),
@@ -135,7 +135,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
 -- TODO: Clear *all* status effects
 minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 	description = "Milk",
-	_doc_items_longdesc = "Milk is very refreshing can be obtained by using a bucket on a cow. Drinking it will cure food poisoning (in later versions: all status effects), but restores no hunger points.",
+	_doc_items_longdesc = "Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will cure all forms of poisoning (in later versions: all status effects), but restores no hunger points.",
 	_doc_items_usagehelp = "Rightclick to drink the milk.",
 	inventory_image = "mcl_mobitems_bucket_milk.png",
 	wield_image = "mcl_mobitems_bucket_milk.png",
