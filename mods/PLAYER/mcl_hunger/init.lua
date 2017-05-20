@@ -15,6 +15,9 @@ mcl_hunger.food = {}
 	Exhaustion and saturation values are stored as integers, unlike in Minecraft.
 	Exhaustion is Minecraft exhaustion times 1000 and ranges from 0 to 4000.
 	Saturation is Minecraft exhaustion times 10 and ranges from 0 to 200.
+
+	Food saturation is stored in the custom item definition field _mcl_saturation.
+	This field uses the original Minecraft value.
 ]]
 
 -- Count number of poisonings a player has at once
