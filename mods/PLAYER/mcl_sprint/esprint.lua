@@ -16,6 +16,8 @@ minetest.register_on_joinplayer(function(player)
 		sprinting = false,
 		timeOut = 0, 
 		shouldSprint = false,
+		lastPos = player:getpos(),
+		sprintDistance = 0,
 	}
 end)
 minetest.register_on_leaveplayer(function(player)
@@ -37,10 +39,22 @@ minetest.register_globalstep(function(dtime)
 				players[playerName]["shouldSprint"] = false
 			end
 			
-			--If the player is sprinting, create particles behind him/her 
+			local playerPos = player:getpos()
+			--If the player is sprinting, create particles behind and cause exhaustion
 			if playerInfo["sprinting"] == true and gameTime % 0.1 == 0 then
+
+				-- Exhaust player for sprinting
+				local lastPos = players[playerName].lastPos
+				local dist = vector.distance({x=lastPos.x, y=0, z=lastPos.z}, {x=playerPos.x, y=0, z=playerPos.z})
+				players[playerName].sprintDistance = players[playerName].sprintDistance + dist
+				if players[playerName].sprintDistance >= 1 then
+					local superficial = math.floor(players[playerName].sprintDistance)
+					mcl_hunger.exhaust(playerName, mcl_hunger.EXHAUST_SPRINT * superficial)
+					players[playerName].sprintDistance = players[playerName].sprintDistance - superficial
+				end
+
+				-- Sprint dirt particles
 				local numParticles = math.random(1, 2)
-				local playerPos = player:getpos()
 				local playerNode = minetest.get_node({x=playerPos["x"], y=playerPos["y"]-1, z=playerPos["z"]})
 				if playerNode["name"] ~= "air" then
 					for i=1, numParticles, 1 do
@@ -59,6 +73,7 @@ minetest.register_globalstep(function(dtime)
 			end
 
 			--Adjust player states
+			players[playerName].lastPos = playerPos
 			if players[playerName]["shouldSprint"] == true then --Stopped
 				local sprinting
 				-- Prevent sprinting if standing on soul sand or hungry
