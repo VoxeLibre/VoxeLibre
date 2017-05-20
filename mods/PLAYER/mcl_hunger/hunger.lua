@@ -77,7 +77,6 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sou
 		local itemname = itemstack:get_name()
 		if itemstack:take_item() ~= nil and user ~= nil then
 			local name = user:get_player_name()
-			local h = tonumber(mcl_hunger.get_hunger(user))
 			local hp = user:get_hp()
 
 			local pos = user:getpos()
@@ -141,13 +140,15 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sou
 				mcl_hunger.saturate(name, saturation, false)
 
 				-- Add food points
+				local h = mcl_hunger.get_hunger(user)
 				if h < 20 and hunger_change then
 					h = h + hunger_change
 					if h > 20 then h = 20 end
-					mcl_hunger.set_hunger(user, h)
+					mcl_hunger.set_hunger(user, h, false)
 				end
 
-				hb.change_hudbar(user, "saturation", mcl_hunger.saturation[name], mcl_hunger.get_hunger(user))
+				hb.change_hudbar(user, "food", h)
+				hb.change_hudbar(user, "saturation", mcl_hunger.saturation[name], h)
 			end
 			-- Poison
 			if poisen then

@@ -54,35 +54,49 @@ hb.register_hudbar("food", 0xFFFFFF, S("Food"), { icon = "hbhunger_icon.png", bg
 hb.register_hudbar("saturation", 0xFFFFFF, S("Saturation"), { icon = "hbhunger_icon.png", bgicon = "hbhunger_bgicon.png",  bar = "hbhunger_bar.png" }, 5, 20, false, S("%s: %.1f/%d"))
 hb.register_hudbar("exhaustion", 0xFFFFFF, S("Exhaustion"), { icon = "hbhunger_icon.png", bgicon = "hbhunger_bgicon.png",  bar = "hbhunger_bar.png" }, 0, 4, false, S("%s: %.3f/%d"))
 
--- API START --
-mcl_hunger.get_hunger = function(player)
+
+local RAW_VALUE_FOOD = 1
+local RAW_VALUE_SATURATION = 2
+local RAW_VALUE_EXHAUSTION = 3
+
+local get_player_value_raw = function(player, id, default)
 	local inv = player:get_inventory()
 	if not inv then return nil end
-	local hgp = inv:get_stack("hunger", 1):get_count()
-	if hgp == 0 then
-		hgp = 21
-		inv:set_stack("hunger", 1, ItemStack({name=":", count=hgp}))
+
+	local value = inv:get_stack("hunger", id):get_count()
+	if value == 0 then
+		inv:set_stack("hunger", id, ItemStack({name=":", count=default+1}))
+		return default
 	else
-		hgp = hgp
+		return value - 1
 	end
-	return hgp-1
+end
+
+local set_player_value_raw = function(player, id, value)
+	local inv = player:get_inventory()
+	inv:set_stack("hunger", id, ItemStack({name=":", count=value+1}))
+	return true
+end
+
+-- API START --
+mcl_hunger.get_hunger = function(player)
+	return get_player_value_raw(player, RAW_VALUE_FOOD, 20)
 end
 
 mcl_hunger.set_hunger = function(player, hunger, update_hudbars)
-	local name = player:get_player_name()
-	local inv = player:get_inventory()
-	local name = player:get_player_name()
-	if not inv  or not hunger then return nil end
 	if hunger > 20 then hunger = 20 end
 	if hunger < 0 then hunger = 0 end
 
-	inv:set_stack("hunger", 1, ItemStack({name=":", count=hunger+1}))
-
+	local ok = set_player_value_raw(player, RAW_VALUE_FOOD, hunger)
+	if not ok then
+		return false
+	end
 
 	if update_hudbars ~= false then
 		hb.change_hudbar(player, "food", hunger)
 		hb.change_hudbar(player, "saturation", nil, hunger)
 	end
+	return true
 end
 
 -- END OF API --
@@ -90,7 +104,7 @@ end
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	local inv = player:get_inventory()
-	inv:set_size("hunger",1)
+	inv:set_size("hunger", 3)
 	mcl_hunger.exhaustion[name] = 0.0
 	mcl_hunger.saturation[name] = 5.0
 	mcl_hunger.poisonings[name] = 0
