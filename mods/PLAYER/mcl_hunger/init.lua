@@ -35,13 +35,13 @@ local hunger_hud = {}
 mcl_hunger.HUD_TICK = 0.1
 
 -- Exhaustion increase
-mcl_hunger.EXHAUST_DIG = 5  -- exhaustion increased this value after digged node
+mcl_hunger.EXHAUST_DIG = 5  -- after digging node
 mcl_hunger.EXHAUST_JUMP = 50 -- jump
-mcl_hunger.EXHAUST_SPRINT_JUMP = 200 -- jump while sprinting
-mcl_hunger.EXHAUST_ATTACK = 100 -- attack
-mcl_hunger.EXHAUST_SWIM = 10 -- player movement in water
+mcl_hunger.EXHAUST_SPRINT_JUMP = 200 -- TODO: jump while sprinting
+mcl_hunger.EXHAUST_ATTACK = 100 -- TODO: hit an enemy
+mcl_hunger.EXHAUST_SWIM = 10 -- TODO: player movement in water
 mcl_hunger.EXHAUST_SPRINT = 100 -- sprint (per node)
-mcl_hunger.EXHAUST_DAMAGE = 100 -- taking damage (protected by armor)
+mcl_hunger.EXHAUST_DAMAGE = 100 -- TODO: taking damage (protected by armor)
 mcl_hunger.EXHAUST_REGEN = 6000 -- Regenerate 1 HP
 mcl_hunger.EXHAUST_LVL = 4000 -- at what exhaustion player saturation gets lowered
 
