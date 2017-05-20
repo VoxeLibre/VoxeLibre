@@ -4,10 +4,12 @@
 
 mcl_core.cool_lava_source = function(pos)
 	minetest.set_node(pos, {name="mcl_core:obsidian"})
+	minetest.sound_play("fire_extinguish_flame", {gain = 0.25, max_hear_distance = 16})
 end
 
 mcl_core.cool_lava_flowing = function(pos)
 	minetest.set_node(pos, {name="mcl_core:stone"})
+	minetest.sound_play("fire_extinguish_flame", {gain = 0.25, max_hear_distance = 16})
 end
 
 minetest.register_abm({
