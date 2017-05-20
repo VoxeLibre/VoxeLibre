@@ -889,6 +889,8 @@ local perlin
 -- Generate clay and structures
 -- TODO: Try to use more efficient structure generating code
 minetest.register_on_generated(function(minp, maxp, seed)
+	local chunk_has_desert_well = false
+	local chunk_has_desert_temple = false
 	if maxp.y >= 2 and minp.y <= 0 then
 		-- Generate clay
 		-- Assume X and Z lengths are equal
@@ -961,10 +963,30 @@ minetest.register_on_generated(function(minp, maxp, seed)
 					if minetest.registered_nodes[nn] and
 						minetest.registered_nodes[nn].buildable_to then
 						nn = minetest.get_node({x=x,y=ground_y,z=z}).name
-						if nn == "mcl_core:sand" or nn == "mcl_core:sandstone" then
-							if math.random(0,12000) == 1 then 
+						local struct = false
+						-- Desert temples and desert wells
+						if nn == "mcl_core:sand" or (nn == "mcl_core:sandstone") then
+							if not chunk_has_desert_temple and not chunk_has_desert_well then
 								-- Spawn desert temple
-								mcl_structures.call_struct(p,2)
+								-- TODO: Check surface
+								if math.random(1,12000) == 1 then
+									mcl_structures.call_struct(p, "desert_temple")
+									chunk_has_desert_temple = true
+								end
+							end
+							if not chunk_has_desert_temple and not chunk_has_desert_well then
+								-- Minecraft probability: 1/1000 per Minecraft chunk (16×16).
+								-- We adjust the probability to Minetest's MapBlock size.
+								local desert_well_prob = 1000 * (((maxp.x-minp.x+1)*(maxp.z-minp.z+1)) / 256)
+								-- Spawn desert well
+								if math.random(1, desert_well_prob) == 1 then
+									-- Check surface
+									local surface = minetest.find_nodes_in_area({x=p.x,y=p.y-1,z=p.z}, {x=p.x+5, y=p.y-1, z=p.z+5}, "mcl_core:sand")
+									if #surface >= 25 then
+										mcl_structures.call_struct(p, "desert_well")
+										chunk_has_desert_well = true
+									end
+								end
 							end
 						end
 					end

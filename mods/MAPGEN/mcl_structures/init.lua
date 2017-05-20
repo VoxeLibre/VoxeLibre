@@ -141,12 +141,13 @@ end
 
 -- The call of Struct
 mcl_structures.call_struct= function(pos, struct_style)
-			-- 1: Village , 2: Desert temple
-			if struct_style == 1 then
-			  mcl_structures.geerate_village(pos)
-			elseif struct_style == 2 then
-			  mcl_structures.generate_desert_temple(pos)
-			end
+	if struct_style == "village" then
+		mcl_structures.geerate_village(pos)
+	elseif struct_style == "desert_temple" then
+		mcl_structures.generate_desert_temple(pos)
+	elseif struct_style == "desert_well" then
+		mcl_structures.generate_desert_well(pos)
+	end
 end
 
 mcl_structures.generate_village = function(pos)
