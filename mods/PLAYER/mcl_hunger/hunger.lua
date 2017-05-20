@@ -139,18 +139,17 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sou
 				})
 			end
 
-			-- Saturation
+			-- Food points
 			if h < 20 and hunger_change then
 				h = h + hunger_change
 				if h > 20 then h = 20 end
 				mcl_hunger.hunger[name] = h
 				mcl_hunger.set_hunger_raw(user)
 			end
-			-- Healing
-			if hp < 20 and heal then
-				hp = hp + heal
-				if hp > 20 then hp = 20 end
-				user:set_hp(hp)
+			-- Dummy saturation (= hunger change)
+			-- TODO: Use food's actual saturation value
+			if hunger_change then
+				mcl_hunger.saturate(name, hunger_change)
 			end
 			-- Poison
 			if poisen then

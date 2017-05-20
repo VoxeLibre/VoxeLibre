@@ -150,11 +150,11 @@ end
 
 function mcl_hunger.saturate(playername, increase)
 	local player = minetest.get_player_by_name(playername)
-	mcl_hunger.exhaustion[playername] = mcl_hunger.exhaustion[playername] + increase
+	mcl_hunger.saturation[playername] = mcl_hunger.saturation[playername] + increase
 	if mcl_hunger.saturation[playername] > mcl_hunger.get_hunger(player) then
 		mcl_hunger.saturation[playername] = mcl_hunger.get_hunger(player)
 	end
-	hb.change_hudbar(player, "saturation", mcl_hunger.saturation[playername])
+	hb.change_hudbar(player, "saturation", mcl_hunger.saturation[playername], mcl_hunger.get_hunger(player))
 end
 
 local main_timer = 0
@@ -213,6 +213,9 @@ minetest.register_globalstep(function(dtime)
 			-- Determine if the player is moving
 			if controls.up or controls.down or controls.left or controls.right then
 				-- TODO: Add exhaustion for moving in water
+			end
+			if controls.jump then
+				mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_JUMP)
 			end
 		end
 		end
