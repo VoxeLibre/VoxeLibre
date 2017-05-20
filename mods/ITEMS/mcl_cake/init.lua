@@ -73,6 +73,7 @@ local register_slice = function(level, nodebox, desc)
 		on_rightclick = function(pos, node, clicker, itemstack)
 			minetest.do_item_eat(2, ItemStack("mcl:cake:cake 0"), ItemStack("mcl_cake:cake_1"), clicker, {type="nothing"})
 			minetest.remove_node(pos)
+			core.check_for_falling(pos)
 		end
 	end
 
