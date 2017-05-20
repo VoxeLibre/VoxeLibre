@@ -164,10 +164,12 @@ function mcl_hunger.exhaust(playername, increase)
 	hb.change_hudbar(player, "exhaustion", mcl_hunger.exhaustion[playername])
 end
 
-function mcl_hunger.saturate(playername, increase)
+function mcl_hunger.saturate(playername, increase, update_hudbar)
 	local player = minetest.get_player_by_name(playername)
 	mcl_hunger.saturation[playername] = math.min(mcl_hunger.saturation[playername] + increase, mcl_hunger.get_hunger(player))
-	hb.change_hudbar(player, "saturation", mcl_hunger.saturation[playername], mcl_hunger.get_hunger(player))
+	if update_hudbar ~= false then
+		hb.change_hudbar(player, "saturation", mcl_hunger.saturation[playername], mcl_hunger.get_hunger(player))
+	end
 end
 
 local main_timer = 0
