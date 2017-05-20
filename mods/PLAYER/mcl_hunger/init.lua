@@ -141,10 +141,7 @@ minetest.register_on_respawnplayer(function(player)
 end)
 
 function mcl_hunger.exhaust(playername, increase)
-	mcl_hunger.exhaustion[playername] = mcl_hunger.exhaustion[playername] + increase
-	if mcl_hunger.exhaustion[playername] > 4.0 then
-		mcl_hunger.exhaustion[playername] = 4.0
-	end
+	mcl_hunger.exhaustion[playername] = math.min(mcl_hunger.exhaustion[playername] + increase, 4.0)
 	hb.change_hudbar(minetest.get_player_by_name(playername), "exhaustion", mcl_hunger.exhaustion[playername])
 end
 
@@ -194,7 +191,7 @@ minetest.register_globalstep(function(dtime)
 			if h > 0 then
 				if mcl_hunger.exhaustion[name] >= 4.0 then
 					if mcl_hunger.saturation[name] > 0.0 then
-						mcl_hunger.saturation[name] = mcl_hunger.saturation[name] - 1.0
+						mcl_hunger.saturation[name] = math.max(mcl_hunger.saturation[name] - 1.0, 0.0)
 						mcl_hunger.exhaustion[name] = 0.0
 						hb.change_hudbar(player, "exhaustion", mcl_hunger.exhaustion[name])
 						hb.change_hudbar(player, "saturation", mcl_hunger.saturation[name])
