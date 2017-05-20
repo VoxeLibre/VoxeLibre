@@ -110,7 +110,7 @@ local function SetNodeIfCanBuild(pos, node, check_above)
 	end
 	local name = minetest.get_node(pos).name
 	local def = minetest.registered_nodes[name]
-	if name ~= "unknown" and name ~= "ignore" and def.is_ground_content and def.liquidtype == "none" then
+	if name ~= "unknown" and name ~= "ignore" and def.is_ground_content then
 		minetest.set_node(pos, node)
 		return true
 	else
