@@ -56,7 +56,7 @@ if set then
 end
 
 local function init_hud(player)
-	hb.init_hudbar(player, "food", mcl_hunger.get_hunger(player))
+	hb.init_hudbar(player, "hunger", mcl_hunger.get_hunger(player))
 	if debug then
 		hb.init_hudbar(player, "saturation", mcl_hunger.get_saturation(player), mcl_hunger.get_hunger(player)*10)
 		hb.init_hudbar(player, "exhaustion", mcl_hunger.get_exhaustion(player))
@@ -82,7 +82,7 @@ end
 dofile(minetest.get_modpath("mcl_hunger").."/hunger.lua")
 
 -- register saturation hudbar
-hb.register_hudbar("food", 0xFFFFFF, S("Food"), { icon = "hbhunger_icon.png", bgicon = "hbhunger_bgicon.png",  bar = "hbhunger_bar.png" }, 20, 20, false)
+hb.register_hudbar("hunger", 0xFFFFFF, S("Food"), { icon = "hbhunger_icon.png", bgicon = "hbhunger_bgicon.png",  bar = "hbhunger_bar.png" }, 20, 20, false)
 if debug then
 	hb.register_hudbar("saturation", 0xFFFFFF, S("Saturation"), { icon = "mcl_hunger_icon_saturation.png", bgicon = "mcl_hunger_bgicon_saturation.png", bar = "mcl_hunger_bar_saturation.png" }, mcl_hunger.SATURATION_INIT, 200, false, S("%s: %d/%d"))
 	hb.register_hudbar("exhaustion", 0xFFFFFF, S("Exhaust."), { icon = "mcl_hunger_icon_exhaustion.png", bgicon = "mcl_hunger_bgicon_exhaustion.png", bar = "mcl_hunger_bar_exhaustion.png" }, 0, mcl_hunger.EXHAUST_LVL, false, S("%s: %d/%d"))
@@ -130,7 +130,7 @@ mcl_hunger.set_hunger = function(player, hunger, update_hudbars)
 	if not ok then return false end
 
 	if update_hudbars ~= false then
-		hb.change_hudbar(player, "food", hunger)
+		hb.change_hudbar(player, "hunger", hunger)
 		mcl_hunger.update_saturation_hud(player, nil, hunger)
 	end
 	return true
@@ -179,7 +179,7 @@ minetest.register_on_respawnplayer(function(player)
 	mcl_hunger.set_hunger(player, h, false)
 	mcl_hunger.set_saturation(player, s, false)
 	mcl_hunger.set_exhaustion(player, e, false)
-	hb.change_hudbar(player, "food", h)
+	hb.change_hudbar(player, "hunger", h)
 	mcl_hunger.update_saturation_hud(player, s, h)
 	mcl_hunger.update_exhaustion_hud(player, e)
 end)

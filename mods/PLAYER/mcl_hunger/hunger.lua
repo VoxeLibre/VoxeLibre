@@ -82,7 +82,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sou
 			local pos = user:getpos()
 			-- player height
 			pos.y = pos.y + 1.5
-			local foodtype = minetest.get_item_group(itemname, "food")
+			local foodtype = minetest.get_item_group(itemname, "hunger")
 			if foodtype == 3 then
 				-- Item is a drink, only play drinking sound (no particle)
 				minetest.sound_play("survival_thirst_drink", {
@@ -147,7 +147,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sou
 					mcl_hunger.set_hunger(user, h, false)
 				end
 
-				hb.change_hudbar(user, "food", h)
+				hb.change_hudbar(user, "hunger", h)
 				mcl_hunger.update_saturation_hud(user, mcl_hunger.get_saturation(user), h)
 			end
 			-- Poison
