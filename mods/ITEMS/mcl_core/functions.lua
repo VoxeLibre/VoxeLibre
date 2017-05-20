@@ -94,80 +94,63 @@ local function drop_attached_node(p)
 	end
 end
 
--- Remove attached nodes next to and below water (excluding diagonals)
--- TODO: This is just an approximation! Attached nodes should be removed if water wants to flow INTO that space.
+-- Helper function for node actions for liquid flow
+local liquid_flow_action = function(pos, group, action)
+	local check_detach = function(pos, xp, yp, zp)
+		local p = {x=pos.x+xp, y=pos.y+yp, z=pos.z+zp}
+		local n = minetest.get_node_or_nil(p)
+		if not n then
+			return false
+		end
+		local d = minetest.registered_nodes[n.name]
+		--[[ Check if we want to perform the liquid action.
+		* 1: Item must be in liquid group
+		* 2a: If target node is below liquid, always succeed
+		* 2b: If target node is horizontal to liquid, check param2 for horizontal flow direction ]]
+		if (minetest.get_item_group(n.name, group) ~= 0) and ((yp > 0) or (yp == 0 and n.param2 > (8-minetest.registered_nodes[n.name].liquid_range) and n.param2 < 9)) then
+			action(pos)
+		end
+	end
+	local posses = {
+		{ x=-1, y=0, z=0 },
+		{ x=1, y=0, z=0 },
+		{ x=0, y=0, z=-1 },
+		{ x=0, y=0, z=1 },
+		{ x=0, y=1, z=0 },
+	}
+	for p=1,#posses do
+		check_detach(pos, posses[p].x, posses[p].y, posses[p].z)
+	end
+end
+
+-- Drop some nodes next to flowing water, if it would flow into the node
 minetest.register_abm({
-	label = "Detach dig_by_water nodes near water",
+	label = "Wash away dig_by_water nodes by water flow",
 	nodenames = {"group:dig_by_water"},
 	neighbors = {"group:water"},
 	interval = 1,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		local check_detach = function(pos, xp, yp, zp)
-			local p = {x=pos.x+xp, y=pos.y+yp, z=pos.z+zp}
-			local n = minetest.get_node(p)
-			local d = minetest.registered_nodes[n.name]
-			if (d.groups.water) then
-				drop_attached_node(pos)
-				minetest.dig_node(pos)
-				return true
-			else
-				return false
-			end
-		end
-		local dug = false
-		for xp=-1,1 do
-			if check_detach(pos, xp, 0, 0) then dug = true; break end
-		end
-		if not dug then
-			for zp=-1,1 do
-				if check_detach(pos, 0, 0, zp) then dug = true; break end
-			end
-			if not dug then
-				for yp=0,1 do
-					if check_detach(pos, 0, yp, 0) then break end
-				end
-			end
-		end
+		liquid_flow_action(pos, "water", function(pos)
+			drop_attached_node(pos)
+			minetest.dig_node(pos)
+		end)
 	end,
 })
 
--- Destroy some nodes next to and below lava (excluding diagonals)
--- TODO: This is just an approximation! Attached nodes should be removed if lava wants to flow INTO that space.
+-- Destroy some nodes next to flowing lava, if it would flow into the node
 minetest.register_abm({
-	label = "Destroy destroy_by_lava_flow nodes next to lava",
+	label = "Destroy destroy_by_lava_flow nodes by lava flow",
 	nodenames = {"group:destroy_by_lava_flow"},
 	neighbors = {"group:lava"},
 	interval = 1,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		local check_destroy = function(pos, xp, yp, zp)
-			local p = {x=pos.x+xp, y=pos.y+yp, z=pos.z+zp}
-			local n = minetest.get_node(p)
-			local d = minetest.registered_nodes[n.name]
-			if (d.groups.lava) then
-				minetest.remove_node(pos)
-				minetest.sound_play("builtin_item_lava", {pos = pos, gain = 0.25, max_hear_distance = 16})
-				core.check_for_falling(pos)
-				return true
-			else
-				return false
-			end
-		end
-		local dug = false
-		for xp=-1,1 do
-			if check_destroy(pos, xp, 0, 0) then dug = true; break end
-		end
-		if not dug then
-			for zp=-1,1 do
-				if check_destroy(pos, 0, 0, zp) then dug = true; break end
-			end
-			if not dug then
-				for yp=0,1 do
-					if check_destroy(pos, 0, yp, 0) then break end
-				end
-			end
-		end
+		liquid_flow_action(pos, "lava", function(pos)
+			minetest.remove_node(pos)
+			minetest.sound_play("builtin_item_lava", {pos = pos, gain = 0.25, max_hear_distance = 16})
+			core.check_for_falling(pos)
+		end)
 	end,
 })
 
