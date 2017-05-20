@@ -41,10 +41,10 @@ if set then
 	set:close()
 end
 
-local function custom_hud(player)
+local function init_hud(player)
 	hb.init_hudbar(player, "food", mcl_hunger.get_hunger(player))
-	hb.init_hudbar(player, "saturation", mcl_hunger.saturation[player:get_player_name()], mcl_hunger.get_hunger(player))
-	hb.init_hudbar(player, "exhaustion", mcl_hunger.exhaustion[player:get_player_name()])
+	hb.init_hudbar(player, "saturation", mcl_hunger.get_saturation(player), mcl_hunger.get_hunger(player))
+	hb.init_hudbar(player, "exhaustion", mcl_hunger.get_exhaustion(player))
 end
 
 dofile(minetest.get_modpath("mcl_hunger").."/hunger.lua")
@@ -62,7 +62,6 @@ local RAW_VALUE_EXHAUSTION = 3
 local get_player_value_raw = function(player, id, default)
 	local inv = player:get_inventory()
 	if not inv then return nil end
-
 	local value = inv:get_stack("hunger", id):get_count()
 	if value == 0 then
 		inv:set_stack("hunger", id, ItemStack({name=":", count=default+1}))
@@ -83,14 +82,19 @@ mcl_hunger.get_hunger = function(player)
 	return get_player_value_raw(player, RAW_VALUE_FOOD, 20)
 end
 
+mcl_hunger.get_saturation = function(player)
+	return get_player_value_raw(player, RAW_VALUE_SATURATION, 50) / 10
+end
+
+mcl_hunger.get_exhaustion = function(player)
+	return get_player_value_raw(player, RAW_VALUE_EXHAUSTION, 0) / 1000
+end
+
 mcl_hunger.set_hunger = function(player, hunger, update_hudbars)
-	if hunger > 20 then hunger = 20 end
-	if hunger < 0 then hunger = 0 end
+	hunger = math.min(20, math.max(0, hunger))
 
 	local ok = set_player_value_raw(player, RAW_VALUE_FOOD, hunger)
-	if not ok then
-		return false
-	end
+	if not ok then return false end
 
 	if update_hudbars ~= false then
 		hb.change_hudbar(player, "food", hunger)
@@ -99,58 +103,88 @@ mcl_hunger.set_hunger = function(player, hunger, update_hudbars)
 	return true
 end
 
+mcl_hunger.set_saturation = function(player, saturation, update_hudbar)
+	saturation = math.min(mcl_hunger.get_hunger(player), math.max(0, saturation))
+
+	local ok = set_player_value_raw(player, RAW_VALUE_SATURATION, math.floor(saturation * 10))
+	if not ok then return false end
+
+	if update_hudbar ~= false then
+		hb.change_hudbar(player, "saturation", saturation)
+	end
+	return true
+end
+
+mcl_hunger.set_exhaustion = function(player, exhaustion, update_hudbar)
+	exhaustion = math.min(4.0, math.max(0.0, exhaustion))
+
+	local ok = set_player_value_raw(player, RAW_VALUE_EXHAUSTION, math.floor(exhaustion * 1000))
+	if not ok then return false end
+
+	if update_hudbar ~= false then
+		hb.change_hudbar(player, "exhaustion", exhaustion)
+	end
+	return true
+end
+
+
+
 -- END OF API --
 
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	local inv = player:get_inventory()
 	inv:set_size("hunger", 3)
-	mcl_hunger.exhaustion[name] = 0.0
-	mcl_hunger.saturation[name] = 5.0
 	mcl_hunger.poisonings[name] = 0
-	custom_hud(player)
+	local h = mcl_hunger.get_hunger(player)
+	local s = mcl_hunger.get_saturation(player)
+	local e = mcl_hunger.get_exhaustion(player)
+	init_hud(player)
 end)
 
 minetest.register_on_respawnplayer(function(player)
 	-- reset hunger (and save)
 	local name = player:get_player_name()
-	local h = 20
+	local h, s, e = 20, 5.0, 0.0
 	mcl_hunger.set_hunger(player, h, false)
-	mcl_hunger.exhaustion[name] = 0.0
-	mcl_hunger.saturation[name] = 5.0
-	hb.change_hudbar(player, "exhaustion", mcl_hunger.exhaustion[name])
-	hb.change_hudbar(player, "saturation", mcl_hunger.saturation[name], h)
+	mcl_hunger.set_saturation(player, s, false)
+	mcl_hunger.set_exhaustion(player, e, false)
 	hb.change_hudbar(player, "food", h)
+	hb.change_hudbar(player, "saturation", s, h)
+	hb.change_hudbar(player, "exhaustion", e)
 end)
 
 function mcl_hunger.exhaust(playername, increase)
 	local player = minetest.get_player_by_name(playername)
-	mcl_hunger.exhaustion[playername] = mcl_hunger.exhaustion[playername] + increase
-	if mcl_hunger.exhaustion[playername] >= 4.0 then
-		mcl_hunger.exhaustion[playername] = 0.0
+	if not player then return false end
+	mcl_hunger.set_exhaustion(player, mcl_hunger.get_exhaustion(player) + increase)
+	if mcl_hunger.get_exhaustion(player) >= 4.0 then
+		mcl_hunger.set_exhaustion(player, 0.0)
 		local h = nil
 		local satuchanged = false
-		if mcl_hunger.saturation[playername] > 0.0 then
-			mcl_hunger.saturation[playername] = math.max(mcl_hunger.saturation[playername] - 1.0, 0.0)
+		local s = mcl_hunger.get_saturation(player)
+		if s > 0.0 then
+			mcl_hunger.set_saturation(player, math.max(s - 1.0, 0.0))
 			satuchanged = true
-		elseif mcl_hunger.saturation[playername] < 0.0001 then
+		elseif s < 0.0001 then
 			h = mcl_hunger.get_hunger(player)
 			h = math.max(h-1, 0)
 			mcl_hunger.set_hunger(player, h)
 			satuchanged = true
 		end
 		if satuchanged then
-			hb.change_hudbar(player, "saturation", mcl_hunger.saturation[playername], h)
+			hb.change_hudbar(player, "saturation", mcl_hunger.get_saturation(player), h)
 		end
 	end
-	hb.change_hudbar(player, "exhaustion", mcl_hunger.exhaustion[playername])
+	hb.change_hudbar(player, "exhaustion", mcl_hunger.get_exhaustion(player))
+	return true
 end
 
 function mcl_hunger.saturate(playername, increase, update_hudbar)
 	local player = minetest.get_player_by_name(playername)
-	mcl_hunger.saturation[playername] = math.min(mcl_hunger.saturation[playername] + increase, mcl_hunger.get_hunger(player))
+	mcl_hunger.set_saturation(player, math.min(mcl_hunger.get_saturation(player) + increase, mcl_hunger.get_hunger(player)))
 	if update_hudbar ~= false then
-		hb.change_hudbar(player, "saturation", mcl_hunger.saturation[playername], mcl_hunger.get_hunger(player))
+		hb.change_hudbar(player, "saturation", mcl_hunger.get_saturation(player), mcl_hunger.get_hunger(player))
 	end
 end
 
@@ -179,7 +213,7 @@ minetest.register_globalstep(function(dtime)
 					-- +1 HP, +6 exhaustion
 					player:set_hp(hp+1)
 					mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_REGEN)
-					hb.change_hudbar(player, "exhaustion", mcl_hunger.exhaustion[name])
+					hb.change_hudbar(player, "exhaustion", mcl_hunger.get_exhaustion(player))
 				elseif h == 0 then
 				-- Damage hungry player down to 1 HP
 					if hp-1 >= 0 then

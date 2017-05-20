@@ -148,7 +148,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sou
 				end
 
 				hb.change_hudbar(user, "food", h)
-				hb.change_hudbar(user, "saturation", mcl_hunger.saturation[name], h)
+				hb.change_hudbar(user, "saturation", mcl_hunger.get_saturation(user), h)
 			end
 			-- Poison
 			if poisen then
