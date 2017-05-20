@@ -706,7 +706,7 @@ minetest.register_node("mcl_core:sapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -792,7 +792,7 @@ minetest.register_node("mcl_core:darksapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -936,7 +936,7 @@ minetest.register_node("mcl_core:junglesapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -1022,7 +1022,7 @@ minetest.register_node("mcl_core:acaciasapling", {
 	node_placement_prediction = "",
 	on_place = mcl_util.on_place_non_mycelium_plant,
 	stack_max = 64,
-	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
@@ -1101,7 +1101,7 @@ minetest.register_node("mcl_core:sprucesapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -1181,7 +1181,7 @@ minetest.register_node("mcl_core:birchsapling", {
 		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
 	},
 	stack_max = 64,
-	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,deco_block=1},
+	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -1461,7 +1461,7 @@ minetest.register_node("mcl_core:vine", {
 		type = "wallmounted",
 	},
 	stack_max = 64,
-	groups = {handy=1,axey=1,shearsy=1,swordy=1, flammable=2,deco_block=1,dig_by_piston=1},
+	groups = {handy=1,axey=1,shearsy=1,swordy=1, flammable=2,deco_block=1,destroy_by_lava_flow=1,dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	drop = "",
 	after_dig_node = function(pos, oldnode, oldmetadata, user)
@@ -1808,7 +1808,7 @@ minetest.register_node("mcl_core:deadbush", {
 	walkable = false,
 	stack_max = 64,
 	buildable_to = true,
-	groups = {dig_immediate=3, flammable=3,attached_node=1,plant=1,non_mycelium_plant=1,dig_by_water=1,deco_block=1},
+	groups = {dig_immediate=3, flammable=3,attached_node=1,plant=1,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
 	drop = {
 		max_items = 1,
 		items = {
@@ -2023,7 +2023,7 @@ minetest.register_node("mcl_core:cobweb", {
 	liquid_renewable = false,
 	liquid_range = 0,
 	walkable = false,
-	groups = {swordy_cobweb=1,shearsy=1, deco_block=1, dig_by_piston=1},
+	groups = {swordy_cobweb=1,shearsy=1, deco_block=1, dig_by_piston=1, destroy_by_lava_flow=1,},
 	drop = "mcl_mobitems:string",
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 20,

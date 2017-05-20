@@ -65,7 +65,7 @@ minetest.register_node("mcl_end:end_rod", {
 	paramtype2 = "facedir",
 	light_source = 14,
 	sunlight_propagates = true,
-	groups = { dig_immediate=3, deco_block=1, },
+	groups = { dig_immediate=3, deco_block=1, destroy_by_lava_flow=1, },
 	node_box = {
 		type = "fixed",
 		fixed = {

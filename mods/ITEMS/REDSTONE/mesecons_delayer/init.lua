@@ -46,9 +46,9 @@ end
 for i = 1, 4 do
 local groups = {}
 if i == 1 then 
-	groups = {dig_immediate=3,dig_by_water=1,dig_by_piston=1,attached_node=1}
+	groups = {dig_immediate=3,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,attached_node=1}
 else
-	groups = {dig_immediate=3,dig_by_water=1,dig_by_piston=1,attached_node=1, not_in_creative_inventory=1}
+	groups = {dig_immediate=3,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,attached_node=1, not_in_creative_inventory=1}
 end
 
 local delaytime
@@ -185,7 +185,7 @@ minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
 		type = "fixed",
 		fixed = boxes
 	},
-	groups = {dig_immediate = 3, dig_by_water=1, dig_by_piston=1, attached_node=1, not_in_creative_inventory = 1},
+	groups = {dig_immediate = 3, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1, attached_node=1, not_in_creative_inventory = 1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	sunlight_propagates = false,

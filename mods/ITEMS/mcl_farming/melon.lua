@@ -84,7 +84,7 @@ for s=1,7 do
 				{-0.15, -0.5, -0.15, 0.15, -0.5+h, 0.15}
 			},
 		},
-		groups = {dig_immediate=3, not_in_creative_inventory=1, plant=1,attached_node=1, dig_by_water=1, plant_melon_stem=s},
+		groups = {dig_immediate=3, not_in_creative_inventory=1, plant=1,attached_node=1, dig_by_water=1,destroy_by_lava_flow=1, plant_melon_stem=s},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 0,
 	})

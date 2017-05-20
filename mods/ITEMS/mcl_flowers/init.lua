@@ -18,7 +18,7 @@ local function add_simple_flower(name, desc, image, simple_selection_box)
 		paramtype = "light",
 		walkable = false,
 		stack_max = 64,
-		groups = {dig_immediate=3,flammable=2,plant=1,flower=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,dig_by_piston=1,deco_block=1},
+		groups = {dig_immediate=3,flammable=2,plant=1,flower=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		node_placement_prediction = "",
 		on_place = mcl_util.on_place_non_mycelium_plant,
@@ -68,7 +68,7 @@ minetest.register_node("mcl_flowers:tallgrass", {
 	buildable_to = true,
 	is_ground_content = true,
 	-- CHECKME: How does tall grass behave when pushed by a piston?
-	groups = {dig_immediate=3, flammable=3,attached_node=1,plant=1,non_mycelium_plant=1,dig_by_water=1,deco_block=1},
+	groups = {dig_immediate=3, flammable=3,attached_node=1,plant=1,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	drop = wheat_seed_drop,
 	after_dig_node = function(pos, oldnode, oldmetadata, user)
@@ -96,7 +96,7 @@ minetest.register_node("mcl_flowers:fern", {
 	walkable = false,
 	stack_max = 64,
 	-- CHECKME: How does a fern behave when pushed by a piston?
-	groups = {dig_immediate=3,flammable=2,attached_node=1,plant=1,non_mycelium_plant=1,dig_by_water=1,deco_block=1},
+	groups = {dig_immediate=3,flammable=2,attached_node=1,plant=1,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
 	buildable_to = true,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	after_dig_node = function(pos, oldnode, oldmetadata, user)
@@ -183,7 +183,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 				minetest.remove_node(top)
 			end
 		end,
-		groups = {dig_immediate=3,flammable=2,flower=flowergroup,non_mycelium_plant=1,attached_node=1, dig_by_water=1,dig_by_piston=1, plant=1,double_plant=1,deco_block=1},
+		groups = {dig_immediate=3,flammable=2,flower=flowergroup,non_mycelium_plant=1,attached_node=1, dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, plant=1,double_plant=1,deco_block=1},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 	})
 
@@ -206,7 +206,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 				minetest.dig_node(bottom)
 			end
 		end,
-		groups = {dig_immediate=3,flammable=2,flower=flowergroup,non_mycelium_plant=1,dig_by_water=1,dig_by_piston=1, not_in_creative_inventory = 1, plant=1,double_plant=2},
+		groups = {dig_immediate=3,flammable=2,flower=flowergroup,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, not_in_creative_inventory = 1, plant=1,double_plant=2},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 	})
 
@@ -239,7 +239,7 @@ minetest.register_node("mcl_flowers:waterlily", {
 	liquids_pointable = true,
 	walkable = true,
 	sunlight_propagates = true,
-	groups = {dig_immediate = 3, plant=1, dig_by_water = 1, dig_by_piston = 1, deco_block=1},
+	groups = {dig_immediate = 3, plant=1, dig_by_water = 1,destroy_by_lava_flow=1, dig_by_piston = 1, deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	node_placement_prediction = "",
 	node_box = {

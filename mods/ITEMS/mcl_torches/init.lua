@@ -17,6 +17,7 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 	groups.attached_node = 1
 	groups.torch = 1
 	groups.dig_by_water = 1
+	groups.destroy_by_lava_flow = 1
 	groups.dig_by_piston = 1
 
 	local floordef = {
@@ -181,7 +182,7 @@ mcl_torches.register_torch("torch",
 		animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 3.3}
 	}},
 	14,
-	{dig_immediate=3, torch=1, dig_by_water=1, deco_block=1},
+	{dig_immediate=3, torch=1, deco_block=1},
 	mcl_sounds.node_sound_wood_defaults(),
 	{_doc_items_hidden = false})
 	

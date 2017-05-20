@@ -70,7 +70,7 @@ mcl_torches.register_torch("mesecon_torch_on", "Redstone Torch",
 	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",
 	{"jeija_torches_on.png"},
 	7,
-	{dig_immediate=3, dig_by_water=1},
+	{dig_immediate=3, dig_by_water=1,},
 	mcl_sounds.node_sound_wood_defaults(),
 	{
 		mesecons = {receptor = {

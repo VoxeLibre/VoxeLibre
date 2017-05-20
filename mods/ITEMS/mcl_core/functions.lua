@@ -4,12 +4,12 @@
 
 mcl_core.cool_lava_source = function(pos)
 	minetest.set_node(pos, {name="mcl_core:obsidian"})
-	minetest.sound_play("fire_extinguish_flame", {gain = 0.25, max_hear_distance = 16})
+	minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
 end
 
 mcl_core.cool_lava_flowing = function(pos)
 	minetest.set_node(pos, {name="mcl_core:stone"})
-	minetest.sound_play("fire_extinguish_flame", {gain = 0.25, max_hear_distance = 16})
+	minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
 end
 
 minetest.register_abm({
@@ -126,6 +126,45 @@ minetest.register_abm({
 			if not dug then
 				for yp=0,1 do
 					if check_detach(pos, 0, yp, 0) then break end
+				end
+			end
+		end
+	end,
+})
+
+-- Destroy some nodes next to and below lava (excluding diagonals)
+-- TODO: This is just an approximation! Attached nodes should be removed if lava wants to flow INTO that space.
+minetest.register_abm({
+	label = "Destroy destroy_by_lava_flow nodes next to lava",
+	nodenames = {"group:destroy_by_lava_flow"},
+	neighbors = {"group:lava"},
+	interval = 1,
+	chance = 1,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		local check_destroy = function(pos, xp, yp, zp)
+			local p = {x=pos.x+xp, y=pos.y+yp, z=pos.z+zp}
+			local n = minetest.get_node(p)
+			local d = minetest.registered_nodes[n.name]
+			if (d.groups.lava) then
+				minetest.remove_node(pos)
+				minetest.sound_play("builtin_item_lava", {pos = pos, gain = 0.25, max_hear_distance = 16})
+				core.check_for_falling(pos)
+				return true
+			else
+				return false
+			end
+		end
+		local dug = false
+		for xp=-1,1 do
+			if check_destroy(pos, xp, 0, 0) then dug = true; break end
+		end
+		if not dug then
+			for zp=-1,1 do
+				if check_destroy(pos, 0, 0, zp) then dug = true; break end
+			end
+			if not dug then
+				for yp=0,1 do
+					if check_destroy(pos, 0, yp, 0) then break end
 				end
 			end
 		end

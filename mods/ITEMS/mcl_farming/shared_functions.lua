@@ -201,7 +201,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 		stem_def.drop = stem_drop
 	end
 	if stem_def.groups == nil then
-		stem_def.groups = {dig_immediate=3, not_in_creative_inventory=1, plant=1,attached_node=1, dig_by_water=1}
+		stem_def.groups = {dig_immediate=3, not_in_creative_inventory=1, plant=1,attached_node=1, dig_by_water=1,destroy_by_lava_flow=1,}
 	end
 	if stem_def.sounds == nil then
 		stem_def.sounds = mcl_sounds.node_sound_leaves_defaults()
@@ -278,7 +278,7 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 				fixed = connected_stem_selectionbox[i]
 			},
 			tiles = connected_stem_tiles[i],
-			groups = {dig_immediate=3, not_in_creative_inventory=1, plant=1,attached_node=1, dig_by_water=1},
+			groups = {dig_immediate=3, not_in_creative_inventory=1, plant=1,attached_node=1, dig_by_water=1,destroy_by_lava_flow=1,},
 			sounds = mcl_sounds.node_sound_leaves_defaults(),
 			_mcl_blast_resistance = 0,
 		})
