@@ -147,6 +147,8 @@ mcl_structures.call_struct= function(pos, struct_style)
 		mcl_structures.generate_desert_temple(pos)
 	elseif struct_style == "desert_well" then
 		mcl_structures.generate_desert_well(pos)
+	elseif struct_style == "igloo" then
+		mcl_structures.generate_igloo_top(pos)
 	end
 end
 
@@ -164,6 +166,14 @@ mcl_structures.generate_desert_well = function(pos)
 	local newpos = {x=pos.x,y=pos.y-2,z=pos.z}
 	local path = minetest.get_modpath("mcl_structures").."/build/desert_well.mts"
 	minetest.place_schematic(newpos, path, "0", nil, true)
+end
+
+mcl_structures.generate_igloo_top = function(pos)
+	-- FIXME: This spawns bookshelf instead of furnace. Fix this!
+	-- Furnace does ot work atm because apparently meta is not set. :-(
+	local newpos = {x=pos.x,y=pos.y-2,z=pos.z}
+	local path = minetest.get_modpath("mcl_structures").."/build/igloo_top.mts"
+	minetest.place_schematic(newpos, path, "random", nil, true)
 end
 
 mcl_structures.generate_desert_temple = function(pos)
@@ -229,7 +239,7 @@ end
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
-	params = "desert_temple | desert_well | village",
+	params = "desert_temple | desert_well | igloo | village",
 	description = "Generate a pre-defined structure near your position.",
 	privs = {debug = true},
 	func = function(name, param)
@@ -247,6 +257,9 @@ minetest.register_chatcommand("spawnstruct", {
 		elseif param == "desert_well" then
 			mcl_structures.generate_desert_well(pos)
 			minetest.chat_send_player(name, "Desert well created.")
+		elseif param == "igloo" then
+			mcl_structures.generate_igloo_top(pos)
+			minetest.chat_send_player(name, "Igloo created.")
 		elseif param == "" then
 			minetest.chat_send_player(name, "Error: No structure type given. Please use “/spawnstruct <type>”.")
 			errord = true
@@ -255,7 +268,7 @@ minetest.register_chatcommand("spawnstruct", {
 			errord = true
 		end
 		if errord then
-			minetest.chat_send_player(name, "Avaiable types: desert_temple, desert_well, village")
+			minetest.chat_send_player(name, "Avaiable types: desert_temple, desert_well, igloo, village")
 		end
 	end
 })
