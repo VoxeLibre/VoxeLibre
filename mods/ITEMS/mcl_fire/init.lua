@@ -37,18 +37,37 @@ minetest.register_node("mcl_fire:fire", {
 	damage_per_second = 1,
 	groups = {igniter = 1, fire = 1, dig_immediate = 3, not_in_creative_inventory = 1, dig_by_piston=1},
 	on_timer = function(pos)
-		local f = minetest.find_node_near(pos, 1, {"group:flammable"})
-		if not f then
+		local airs = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+4, z=pos.z+1}, {"air"})
+		if #airs == 0 then
 			minetest.remove_node(pos)
 			return
 		end
+		local burned = false
+		if math.random(1,2) == 1 then
+			while #airs > 0 do
+				local r = math.random(1, #airs)
+				if minetest.find_node_near(airs[r], 1, {"group:flammable"}) then
+					minetest.set_node(airs[r], {name="mcl_fire:fire"})
+					burned = true
+					break
+				else
+					table.remove(airs, r)
+				end
+			end
+		end
+		if not burned then
+			if math.random(1,3) == 1 then
+				minetest.remove_node(pos)
+				return
+			end
+		end
 		-- Restart timer
-		return true
+		minetest.get_node_timer(pos):start(math.random(3, 7))
 	end,
 	drop = "",
 	sounds = {},
 	on_construct = function(pos)
-		minetest.get_node_timer(pos):start(math.random(30, 60))
+		minetest.get_node_timer(pos):start(math.random(3, 7))
 	end,
 	_mcl_blast_resistance = 0,
 })
@@ -77,6 +96,23 @@ minetest.register_node("mcl_fire:eternal_fire", {
 	sunlight_propagates = true,
 	damage_per_second = 1,
 	groups = {igniter = 1, fire = 1, dig_immediate = 3, not_in_creative_inventory = 1, dig_by_piston = 1},
+	on_timer = function(pos)
+		local airs = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+4, z=pos.z+1}, {"air"})
+		while #airs > 0 do
+			local r = math.random(1, #airs)
+			if minetest.find_node_near(airs[r], 1, {"group:flammable"}) then
+				minetest.set_node(airs[r], {name="mcl_fire:fire"})
+				break
+			else
+				table.remove(airs, r)
+			end
+		end
+		-- Restart timer
+		minetest.get_node_timer(pos):start(math.random(3, 7))
+	end,
+	on_construct = function(pos)
+		minetest.get_node_timer(pos):start(math.random(3, 7))
+	end,
 	sounds = {},
 	drop = "",
 	_mcl_blast_resistance = 0,
@@ -203,7 +239,7 @@ end
 -- ABMs
 --
 
--- Extinguish all flames quickly with water, snow, ice
+-- Extinguish all flames quickly with water and such
 
 minetest.register_abm({
 	label = "Extinguish flame",
@@ -244,33 +280,11 @@ if not fire_enabled then
 
 else -- Fire enabled
 
-	-- Ignite neighboring nodes, add basic flames
-
-	minetest.register_abm({
-		label = "Ignite flame",
-		nodenames = {"group:flammable"},
-		neighbors = {"group:igniter"},
-		interval = 7,
-		chance = 12,
-		catch_up = false,
-		action = function(pos, node, active_object_count, active_object_count_wider)
-			-- If there is water or stuff like that around node, don't ignite
-			if minetest.find_node_near(pos, 1, {"group:puts_out_fire"}) then
-				return
-			end
-			local p = minetest.find_node_near(pos, 1, {"air"})
-			if p then
-				minetest.set_node(p, {name = "mcl_fire:fire"})
-			end
-		end,
-	})
-
-	-- Remove flammable nodes around fire
-
+	-- Turn flammable nodes around fire into fire
 	minetest.register_abm({
 		label = "Remove flammable nodes",
-		nodenames = {"mcl_fire:fire"},
-		neighbors = {"group:fire"},
+		nodenames = {"group:fire"},
+		neighbors = {"group:flammable"},
 		interval = 5,
 		chance = 18,
 		catch_up = false,
@@ -282,7 +296,7 @@ else -- Fire enabled
 				if def.on_burn then
 					def.on_burn(p)
 				else
-					minetest.remove_node(p)
+					minetest.set_node(p, {name="mcl_fire:fire"})
 					minetest.check_for_falling(p)
 				end
 			end
