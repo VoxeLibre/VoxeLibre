@@ -53,6 +53,15 @@ function mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_t
 	return func(itemstack, user, pointed_thing)
 end
 
+-- Reset HUD bars after poisoning
+local function reset_bars(player)
+	hb.change_hudbar(player, "health", nil, nil, "hudbars_icon_health.png", nil, "hudbars_bar_health.png")
+	hb.change_hudbar(player, "hunger", nil, nil, "hbhunger_icon.png", nil, "hbhunger_bar.png")
+	if mcl_hunger.debug then
+		hb.change_hudbar(player, "exhaustion", nil, nil, nil, nil, "mcl_hunger_bar_exhaustion.png")
+	end
+end
+
 -- Poison player
 local function poisonp(tick, time, time_left, damage, exhaustion, player)
 	-- First check if player is still there
@@ -69,8 +78,7 @@ local function poisonp(tick, time, time_left, damage, exhaustion, player)
 	else
 		mcl_hunger.poisonings[player:get_player_name()] = mcl_hunger.poisonings[player:get_player_name()] - 1
 		if mcl_hunger.poisonings[player:get_player_name()] <= 0 then
-			-- Reset HUD bar color
-			hb.change_hudbar(player, "health", nil, nil, "hudbars_icon_health.png", nil, "hudbars_bar_health.png")
+			reset_bars(player)
 		end
 	end
 
@@ -85,7 +93,7 @@ end
 -- Immediately stop all poisonings for this player
 function mcl_hunger.stop_poison(player)
 	mcl_hunger.poisonings[player:get_player_name()] = 0
-	hb.change_hudbar(player, "health", nil, nil, "hudbars_icon_health.png", nil, "hudbars_bar_health.png")
+	reset_bars(player)
 end
 
 local poisonrandomizer = PseudoRandom(os.time())
@@ -181,8 +189,16 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 					do_poison = true
 				end
 				if do_poison then
-					-- Set poison bar
-					hb.change_hudbar(user, "health", nil, nil, "hbhunger_icon_health_poison.png", nil, "hbhunger_bar_health_poison.png")
+					-- Set poison bars
+					if poison and poison > 0 then
+						hb.change_hudbar(user, "health", nil, nil, "hbhunger_icon_health_poison.png", nil, "hbhunger_bar_health_poison.png")
+					end
+					if exhaust and exhaust > 0 then
+						hb.change_hudbar(user, "hunger", nil, nil, "mcl_hunger_icon_foodpoison.png", nil, "mcl_hunger_bar_foodpoison.png")
+						if mcl_hunger.debug then
+							hb.change_hudbar(user, "exhaustion", nil, nil, nil, nil, "mcl_hunger_bar_foodpoison.png")
+						end
+					end
 					mcl_hunger.poisonings[name] = mcl_hunger.poisonings[name] + 1
 					poisonp(1, poisontime, 0, poison, exhaust, user)
 				end

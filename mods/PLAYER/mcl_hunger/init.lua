@@ -10,10 +10,12 @@ if minetest.setting_getbool("enable_damage") then
 mcl_hunger = {}
 mcl_hunger.food = {}
 
--- Debug Mode. If enabled, saturation and exhaustion are shown as well
-local debug = minetest.setting_getbool("mcl_hunger_debug")
-if debug == nil then
-	debug = false
+-- Debug Mode. If enabled, saturation and exhaustion are shown as well.
+-- NOTE: Read-only. The setting should only be read at the beginning, this mod is not
+-- prepared to change this setting later.
+mcl_hunger.debug = minetest.setting_getbool("mcl_hunger_debug")
+if mcl_hunger.debug == nil then
+	mcl_hunger.debug = false
 end
 
 --[[ Data value format notes:
@@ -57,7 +59,7 @@ end
 
 local function init_hud(player)
 	hb.init_hudbar(player, "hunger", mcl_hunger.get_hunger(player))
-	if debug then
+	if mcl_hunger.debug then
 		hb.init_hudbar(player, "saturation", mcl_hunger.get_saturation(player), mcl_hunger.get_hunger(player)*10)
 		hb.init_hudbar(player, "exhaustion", mcl_hunger.get_exhaustion(player))
 	end
@@ -65,7 +67,7 @@ end
 
 -- HUD updating functions for Debug Mode. No-op if not in Debug Mode
 function mcl_hunger.update_saturation_hud(player, saturation, hunger)
-	if debug then
+	if mcl_hunger.debug then
 		local satulimit
 		if hunger then
 			satulimit = hunger * 10
@@ -74,7 +76,7 @@ function mcl_hunger.update_saturation_hud(player, saturation, hunger)
 	end
 end
 function mcl_hunger.update_exhaustion_hud(player, exhaustion)
-	if debug then
+	if mcl_hunger.debug then
 		hb.change_hudbar(player, "exhaustion", exhaustion)
 	end
 end
@@ -83,7 +85,7 @@ dofile(minetest.get_modpath("mcl_hunger").."/hunger.lua")
 
 -- register saturation hudbar
 hb.register_hudbar("hunger", 0xFFFFFF, S("Food"), { icon = "hbhunger_icon.png", bgicon = "hbhunger_bgicon.png",  bar = "hbhunger_bar.png" }, 20, 20, false)
-if debug then
+if mcl_hunger.debug then
 	hb.register_hudbar("saturation", 0xFFFFFF, S("Saturation"), { icon = "mcl_hunger_icon_saturation.png", bgicon = "mcl_hunger_bgicon_saturation.png", bar = "mcl_hunger_bar_saturation.png" }, mcl_hunger.SATURATION_INIT, 200, false, S("%s: %d/%d"))
 	hb.register_hudbar("exhaustion", 0xFFFFFF, S("Exhaust."), { icon = "mcl_hunger_icon_exhaustion.png", bgicon = "mcl_hunger_bgicon_exhaustion.png", bar = "mcl_hunger_bar_exhaustion.png" }, 0, mcl_hunger.EXHAUST_LVL, false, S("%s: %d/%d"))
 end
