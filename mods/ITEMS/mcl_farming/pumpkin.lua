@@ -131,6 +131,7 @@ minetest.register_craftitem("mcl_farming:pumpkin_pie", {
 	on_place = minetest.item_eat(8),
 	on_secondary_use = minetest.item_eat(8),
 	groups = { food = 2, eatable = 8 },
+	_mcl_saturation = 4.8,
 })
 
 minetest.register_craft({

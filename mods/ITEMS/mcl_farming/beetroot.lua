@@ -125,6 +125,7 @@ minetest.register_craftitem("mcl_farming:beetroot_item", {
 	on_place = minetest.item_eat(1),
 	on_secondary_use = minetest.item_eat(1),
 	groups = { food = 2, eatable = 1 },
+	_mcl_saturation = 1.2,
 })
 
 minetest.register_craftitem("mcl_farming:beetroot_soup", {
@@ -136,6 +137,7 @@ minetest.register_craftitem("mcl_farming:beetroot_soup", {
 	on_place = minetest.item_eat(6, "mcl_core:bowl"),
 	on_secondary_use = minetest.item_eat(6, "mcl_core:bowl"),
 	groups = { food = 3, eatable = 6 },
+	_mcl_saturation = 7.2,
 })
 
 minetest.register_craft({

@@ -146,10 +146,14 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sou
 				mcl_hunger.hunger[name] = h
 				mcl_hunger.set_hunger_raw(user)
 			end
-			-- Dummy saturation (= hunger change)
-			-- TODO: Use food's actual saturation value
+			-- Add saturation (must be defined in item table)
 			if hunger_change then
-				mcl_hunger.saturate(name, hunger_change)
+				local saturation = minetest.registered_items[itemname]._mcl_saturation
+				if not saturation then
+					saturation = 0.0
+					minetest.log("warning", "[mcl_hunger] No saturation defined for item “"..itemname.."”!")
+				end
+				mcl_hunger.saturate(name, saturation)
 			end
 			-- Poison
 			if poisen then

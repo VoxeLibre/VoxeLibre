@@ -214,6 +214,8 @@ minetest.register_globalstep(function(dtime)
 			if controls.up or controls.down or controls.left or controls.right then
 				-- TODO: Add exhaustion for moving in water
 			end
+			-- Jumping
+			-- FIXME: This is quite hacky and doesn't check if the player is actually jumping
 			if controls.jump then
 				mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_JUMP)
 			end

@@ -1,5 +1,6 @@
 mcl_core
 mcl_sounds
+mcl_hunger
 bucket
 mcl_farming
 mcl_mobitems

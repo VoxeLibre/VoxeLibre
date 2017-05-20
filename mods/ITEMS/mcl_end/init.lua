@@ -257,6 +257,7 @@ minetest.register_craftitem("mcl_end:chorus_fruit", {
 	on_place = minetest.item_eat(4),
 	on_secondary_use = minetest.item_eat(4),
 	groups = { food = 2, eatable = 4 },
+	_mcl_saturation = 2.4,
 	stack_max = 64,
 })
 

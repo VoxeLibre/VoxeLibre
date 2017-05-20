@@ -85,6 +85,7 @@ minetest.register_craftitem("mcl_farming:potato_item", {
 	_doc_items_usagehelp = "Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant it. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it.",
 	inventory_image = "farming_potato.png",
 	groups = { food = 2, eatable = 1 },
+	_mcl_saturation = 0.6,
 	stack_max = 64,
 	on_secondary_use = minetest.item_eat(1),
 	on_place = function(itemstack, placer, pointed_thing)
@@ -105,6 +106,7 @@ minetest.register_craftitem("mcl_farming:potato_item_baked", {
 	on_place = minetest.item_eat(6),
 	on_secondary_use = minetest.item_eat(6),
 	groups = { food = 2, eatable = 6 },
+	_mcl_saturation = 6.0,
 })
 
 minetest.register_craftitem("mcl_farming:potato_item_poison", {
@@ -117,6 +119,7 @@ minetest.register_craftitem("mcl_farming:potato_item_poison", {
 	on_place = minetest.item_eat(0),
 	on_secondary_use = minetest.item_eat(0),
 	groups = { food = 2, eatable = 0 },
+	_mcl_saturation = 1.2,
 })
 
 minetest.register_craft({

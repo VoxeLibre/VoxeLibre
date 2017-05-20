@@ -8,6 +8,7 @@ minetest.register_craftitem("mcl_mobitems:rotten_flesh", {
 	on_place = minetest.item_eat(4),
 	on_secondary_use = minetest.item_eat(4),
 	groups = { food = 2, eatable = 4 },
+	_mcl_saturation = 0.8,
 	stack_max = 64,
 })
 
@@ -19,6 +20,7 @@ minetest.register_craftitem("mcl_mobitems:mutton", {
 	on_place = minetest.item_eat(2),
 	on_secondary_use = minetest.item_eat(2),
 	groups = { food = 2, eatable = 2 },
+	_mcl_saturation = 1.2,
 	stack_max = 64,
 })
 
@@ -30,6 +32,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_mutton", {
 	on_place = minetest.item_eat(6),
 	on_secondary_use = minetest.item_eat(6),
 	groups = { food = 2, eatable = 6 },
+	_mcl_saturation = 9.6,
 	stack_max = 64,
 })
 
@@ -41,6 +44,7 @@ minetest.register_craftitem("mcl_mobitems:beef", {
 	on_place = minetest.item_eat(3),
 	on_secondary_use = minetest.item_eat(3),
 	groups = { food = 2, eatable = 3 },
+	_mcl_saturation = 1.8,
 	stack_max = 64,
 })
 
@@ -52,6 +56,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_beef", {
 	on_place = minetest.item_eat(8),
 	on_secondary_use = minetest.item_eat(8),
 	groups = { food = 2, eatable = 8 },
+	_mcl_saturation = 12.8,
 	stack_max = 64,
 })
 
@@ -63,6 +68,7 @@ minetest.register_craftitem("mcl_mobitems:chicken", {
 	on_place = minetest.item_eat(2),
 	on_secondary_use = minetest.item_eat(2),
 	groups = { food = 2, eatable = 2 },
+	_mcl_saturation = 1.2,
 	stack_max = 64,
 })
 
@@ -74,6 +80,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_chicken", {
 	on_place = minetest.item_eat(6),
 	on_secondary_use = minetest.item_eat(6),
 	groups = { food = 2, eatable = 6 },
+	_mcl_saturation = 7.2,
 	stack_max = 64,
 })
 
@@ -85,6 +92,7 @@ minetest.register_craftitem("mcl_mobitems:porkchop", {
 	on_place = minetest.item_eat(3),
 	on_secondary_use = minetest.item_eat(3),
 	groups = { food = 2, eatable = 3 },
+	_mcl_saturation = 1.8,
 	stack_max = 64,
 })
 
@@ -96,6 +104,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_porkchop", {
 	on_place = minetest.item_eat(8),
 	on_secondary_use = minetest.item_eat(8),
 	groups = { food = 2, eatable = 8 },
+	_mcl_saturation = 12.8,
 	stack_max = 64,
 })
 
@@ -107,6 +116,7 @@ minetest.register_craftitem("mcl_mobitems:rabbit", {
 	on_place = minetest.item_eat(3),
 	on_secondary_use = minetest.item_eat(3),
 	groups = { food = 2, eatable = 3 },
+	_mcl_saturation = 1.8,
 	stack_max = 64,
 })
 
@@ -118,6 +128,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
 	on_place = minetest.item_eat(5),
 	on_secondary_use = minetest.item_eat(5),
 	groups = { food = 2, eatable = 5 },
+	_mcl_saturation = 6.0,
 	stack_max = 64,
 })
 
@@ -142,6 +153,7 @@ minetest.register_craftitem("mcl_mobitems:spider_eye", {
 	on_place = minetest.item_eat(2),
 	on_secondary_use = minetest.item_eat(2),
 	groups = { food = 2, eatable = 2 },
+	_mcl_saturation = 3.2,
 	stack_max = 64,
 })
 
@@ -261,6 +273,7 @@ minetest.register_craftitem("mcl_mobitems:rabbit_stew", {
 	on_place = minetest.item_eat(10, "mcl_core:bowl"),
 	on_secondary_use = minetest.item_eat(10, "mcl_core:bowl"),
 	groups = { food = 3, eatable = 10 },
+	_mcl_saturation = 6.0,
 })
 
 minetest.register_craftitem("mcl_mobitems:shulker_shell", {

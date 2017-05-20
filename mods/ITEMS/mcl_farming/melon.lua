@@ -114,6 +114,7 @@ minetest.register_craftitem("mcl_farming:melon_item", {
 	on_place = minetest.item_eat(2),
 	on_secondary_use = minetest.item_eat(2),
 	groups = { food = 2, eatable = 2 },
+	_mcl_saturation = 1.2,
 })
 
 minetest.register_craft({

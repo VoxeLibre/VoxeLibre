@@ -139,6 +139,7 @@ minetest.register_craftitem("mcl_core:apple", {
 	on_place = minetest.item_eat(4),
 	on_secondary_use = minetest.item_eat(4),
 	groups = { food = 2, eatable = 4 },
+	_mcl_saturation = 2.4,
 })
 
 minetest.register_craftitem("mcl_core:apple_gold", {
@@ -150,4 +151,5 @@ minetest.register_craftitem("mcl_core:apple_gold", {
 	on_place = minetest.item_eat(8),
 	on_secondary_use = minetest.item_eat(8),
 	groups = { food = 2, eatable = 8 },
+	_mcl_saturation = 9.6,
 })

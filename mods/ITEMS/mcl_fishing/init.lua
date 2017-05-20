@@ -127,6 +127,7 @@ minetest.register_craftitem("mcl_fishing:fish_raw", {
 	on_secondary_use = minetest.item_eat(2),
 	stack_max = 64,
 	groups = { food=2, eatable = 2 },
+	_mcl_saturation = 0.4,
 })
 
 minetest.register_craftitem("mcl_fishing:fish_cooked", {
@@ -137,6 +138,7 @@ minetest.register_craftitem("mcl_fishing:fish_cooked", {
 	on_secondary_use = minetest.item_eat(5),
 	stack_max = 64,
 	groups = { food=2, eatable=5 },
+	_mcl_saturation = 9.6,
 })
 
 minetest.register_craft({
@@ -155,6 +157,7 @@ minetest.register_craftitem("mcl_fishing:salmon_raw", {
 	on_secondary_use = minetest.item_eat(2),
 	stack_max = 64,
 	groups = { food=2, eatable = 2 },
+	_mcl_saturation = 0.4,
 })
 
 minetest.register_craftitem("mcl_fishing:salmon_cooked", {
@@ -165,6 +168,7 @@ minetest.register_craftitem("mcl_fishing:salmon_cooked", {
 	on_secondary_use = minetest.item_eat(6),
 	stack_max = 64,
 	groups = { food=2, eatable=6 },
+	_mcl_saturation = 9.6,
 })
 
 minetest.register_craft({
@@ -183,6 +187,7 @@ minetest.register_craftitem("mcl_fishing:clownfish_raw", {
 	on_secondary_use = minetest.item_eat(1),
 	stack_max = 64,
 	groups = { food=2, eatable = 1 },
+	_mcl_saturation = 0.2,
 })
 
 -- Pufferfish
@@ -195,5 +200,6 @@ minetest.register_craftitem("mcl_fishing:pufferfish_raw", {
 	on_secondary_use = minetest.item_eat(1),
 	stack_max = 64,
 	groups = { food=2, eatable=1 },
+	_mcl_saturation = 0.2,
 })
 
