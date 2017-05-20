@@ -35,7 +35,7 @@ minetest.register_node("mcl_fire:fire", {
 	buildable_to = true,
 	sunlight_propagates = true,
 	damage_per_second = 1,
-	groups = {igniter = 1, fire = 1, dig_immediate = 3, not_in_creative_inventory = 1, dig_by_piston=1},
+	groups = {fire = 1, dig_immediate = 3, not_in_creative_inventory = 1, dig_by_piston=1},
 	on_timer = function(pos)
 		local airs = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+4, z=pos.z+1}, {"air"})
 		if #airs == 0 then
@@ -95,7 +95,7 @@ minetest.register_node("mcl_fire:eternal_fire", {
 	buildable_to = true,
 	sunlight_propagates = true,
 	damage_per_second = 1,
-	groups = {igniter = 1, fire = 1, dig_immediate = 3, not_in_creative_inventory = 1, dig_by_piston = 1},
+	groups = {fire = 1, dig_immediate = 3, not_in_creative_inventory = 1, dig_by_piston = 1},
 	on_timer = function(pos)
 		local airs = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+4, z=pos.z+1}, {"air"})
 		while #airs > 0 do
