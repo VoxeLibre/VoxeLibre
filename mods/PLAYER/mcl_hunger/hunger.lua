@@ -57,6 +57,10 @@ local function poisonp(tick, time, time_left, damage, exhaustion, player)
 	if not player:is_player() then
 		return
 	end
+	-- Abort if poisonings have been stopped
+	if mcl_hunger.poisonings[player:get_player_name()] == 0 then
+		return
+	end
 	time_left = time_left + tick
 	if time_left < time then
 		minetest.after(tick, poisonp, tick, time, time_left, damage, exhaustion, player)
@@ -74,6 +78,12 @@ local function poisonp(tick, time, time_left, damage, exhaustion, player)
 	end
 	mcl_hunger.exhaust(player:get_player_name(), exhaustion)
 	
+end
+
+-- Immediately stop all poisonings for this player
+function mcl_hunger.stop_poison(player)
+	mcl_hunger.poisonings[player:get_player_name()] = 0
+	hb.change_hudbar(player, "health", nil, nil, "hudbars_icon_health.png", nil, "hudbars_bar_health.png")
 end
 
 function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poison, exhaust, sound)
@@ -184,14 +194,11 @@ end)
 
 -- Apply simple poison effect as long there are no real status effect
 -- TODO: Remove this when status effects are in place
-if minetest.get_modpath("mcl_farming") then
-	mcl_hunger.register_food("mcl_farming:potato_item_poison", 1, "", 4, 1, 0)
-end
-if minetest.get_modpath("mcl_mobitems") then
-	mcl_hunger.register_food("mcl_mobitems:rotten_flesh", 2, "", 8, 1, 100)
-	mcl_hunger.register_food("mcl_mobitems:chicken_raw", 2, "", 30, 0, 100)
-	mcl_hunger.register_food("mcl_mobitems:spider_eye", 0, "", 4, 1, 0)
-end
-if minetest.get_modpath("mcl_fishing") then
-	mcl_hunger.register_food("mcl_fishing:pufferfish_raw", 0, "", 60, 1, 300)
-end
+
+mcl_hunger.register_food("mcl_farming:potato_item_poison", 1, "", 4, 1, 0)
+
+mcl_hunger.register_food("mcl_mobitems:rotten_flesh", 2, "", 8, 1, 100)
+mcl_hunger.register_food("mcl_mobitems:chicken_raw", 2, "", 30, 0, 100)
+mcl_hunger.register_food("mcl_mobitems:spider_eye", 0, "", 4, 1, 0)
+
+mcl_hunger.register_food("mcl_fishing:pufferfish_raw", 0, "", 60, 1, 300)

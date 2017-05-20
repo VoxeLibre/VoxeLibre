@@ -132,15 +132,22 @@ minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
 	stack_max = 64,
 })
 
--- TODO: Clear status effects
+-- TODO: Clear *all* status effects
 minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 	description = "Milk",
-	_doc_items_longdesc = "Milk is very refreshing can be obtained by using a bucket on a cow. Drinking it will clear all status effects (TODO), but restores no hunger points.",
+	_doc_items_longdesc = "Milk is very refreshing can be obtained by using a bucket on a cow. Drinking it will cure food poisoning (in later versions: all status effects), but restores no hunger points.",
 	_doc_items_usagehelp = "Rightclick to drink the milk.",
 	inventory_image = "mcl_mobitems_bucket_milk.png",
 	wield_image = "mcl_mobitems_bucket_milk.png",
-	on_place = minetest.item_eat(0, "bucket:bucket_empty"),
-	on_secondary_use = minetest.item_eat(0, "bucket:bucket_empty"),
+	-- Clear poisoning when used
+	on_place = function(itemstack, player, pointed_thing)
+		mcl_hunger.stop_poison(player)
+		return minetest.do_item_eat(0, "bucket:bucket_empty", itemstack, player, pointed_thing)
+	end,
+	on_secondary_use = function(itemstack, player, pointed_thing)
+		mcl_hunger.stop_poison(player)
+		return minetest.do_item_eat(0, "bucket:bucket_empty", itemstack, player, pointed_thing)
+	end,
 	stack_max = 1,
 	groups = { food = 3 },
 })
