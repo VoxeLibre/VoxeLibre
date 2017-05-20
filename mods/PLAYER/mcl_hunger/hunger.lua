@@ -25,14 +25,16 @@ end
 -- food functions
 local food = mcl_hunger.food
 
-function mcl_hunger.register_food(name, hunger_change, replace_with_item, poisontime, poison, exhaust, sound)
+function mcl_hunger.register_food(name, hunger_change, replace_with_item, poisontime, poison, exhaust, poisonchance, sound)
 	food[name] = {}
 	food[name].saturation = hunger_change	-- hunger points added
 	food[name].replace = replace_with_item	-- what item is given back after eating
-	food[name].poisontime = poisontime			-- time its poisoning
-	food[name].poison = poison				-- poison damage per tick for poisonous food
-	food[name].exhaust = exhaust				-- exhaustion per tick for poisonous food
-	food[name].sound = sound				-- special sound that is played when eating
+	food[name].poisontime = poisontime	-- time it is poisoning. If this is set, this item is considered poisonous,
+						-- otherwise the following poison/exhaust fields are ignored
+	food[name].poison = poison		-- poison damage per tick for poisonous food
+	food[name].exhaust = exhaust		-- exhaustion per tick for poisonous food
+	food[name].poisonchance = poisonchance	-- chance percentage that this item poisons the player (default: 100% if poisoning is enabled)
+	food[name].sound = sound		-- special sound that is played when eating
 end
 
 function mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_thing)
@@ -47,7 +49,7 @@ function mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_t
 		def.saturation = hp_change
 		def.replace = replace_with_item
 	end
-	local func = mcl_hunger.item_eat(def.saturation, def.replace, def.poisontime, def.poison, def.exhaust, def.sound)
+	local func = mcl_hunger.item_eat(def.saturation, def.replace, def.poisontime, def.poison, def.exhaust, def.poisonchance, def.sound)
 	return func(itemstack, user, pointed_thing)
 end
 
@@ -86,7 +88,9 @@ function mcl_hunger.stop_poison(player)
 	hb.change_hudbar(player, "health", nil, nil, "hudbars_icon_health.png", nil, "hudbars_bar_health.png")
 end
 
-function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poison, exhaust, sound)
+local poisonrandomizer = PseudoRandom(os.time())
+
+function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poison, exhaust, poisonchance, sound)
 	return function(itemstack, user, pointed_thing)
 		local itemname = itemstack:get_name()
 		if itemstack:take_item() ~= nil and user ~= nil then
@@ -167,11 +171,21 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 				mcl_hunger.update_saturation_hud(user, mcl_hunger.get_saturation(user), h)
 			end
 			-- Poison
-			if poison then
-				-- Set poison bar
-				hb.change_hudbar(user, "health", nil, nil, "hbhunger_icon_health_poison.png", nil, "hbhunger_bar_health_poison.png")
-				mcl_hunger.poisonings[name] = mcl_hunger.poisonings[name] + 1
-				poisonp(1, poisontime, 0, poison, exhaust, user)
+			if poisontime then
+				local do_poison = false
+				if poisonchance then
+					if poisonrandomizer:next(0,100) < poisonchance then
+						do_poison = true
+					end
+				else
+					do_poison = true
+				end
+				if do_poison then
+					-- Set poison bar
+					hb.change_hudbar(user, "health", nil, nil, "hbhunger_icon_health_poison.png", nil, "hbhunger_bar_health_poison.png")
+					mcl_hunger.poisonings[name] = mcl_hunger.poisonings[name] + 1
+					poisonp(1, poisontime, 0, poison, exhaust, user)
+				end
 			end
 
 			--sound:eat
@@ -195,10 +209,10 @@ end)
 -- Apply simple poison effect as long there are no real status effect
 -- TODO: Remove this when status effects are in place
 
-mcl_hunger.register_food("mcl_farming:potato_item_poison", 2, "", 4, 1, 0)
+mcl_hunger.register_food("mcl_farming:potato_item_poison",	2, "",  4, 1,   0, 60)
 
-mcl_hunger.register_food("mcl_mobitems:rotten_flesh", 4, "", 30, 0, 100)
-mcl_hunger.register_food("mcl_mobitems:chicken", 2, "", 30, 0, 100)
-mcl_hunger.register_food("mcl_mobitems:spider_eye", 2, "", 4, 1, 0)
+mcl_hunger.register_food("mcl_mobitems:rotten_flesh",		4, "", 30, 0, 100, 80)
+mcl_hunger.register_food("mcl_mobitems:chicken",		2, "", 30, 0, 100, 30)
+mcl_hunger.register_food("mcl_mobitems:spider_eye",		2, "", 4,  1,   0)
 
-mcl_hunger.register_food("mcl_fishing:pufferfish_raw", 1, "", 60, 1, 300)
+mcl_hunger.register_food("mcl_fishing:pufferfish_raw",		1, "", 60, 1, 300)
