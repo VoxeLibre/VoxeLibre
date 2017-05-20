@@ -168,34 +168,15 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sou
 end
 
 -- player-action based hunger changes
-function mcl_hunger.handle_node_actions(pos, oldnode, player, ext)
+minetest.register_on_dignode(function(pos, oldnode, player)
 	-- is_fake_player comes from the pipeworks, we are not interested in those
 	if not player or not player:is_player() or player.is_fake_player == true then
 		return
 	end
 	local name = player:get_player_name()
-	local exhaus = mcl_hunger.exhaustion[name]
-	if exhaus == nil then return end
-	local new = mcl_hunger.EXHAUST_PLACE
-	-- placenode event
-	if not ext then
-		new = mcl_hunger.EXHAUST_DIG
-	end
-	-- assume its send by main timer when movement detected
-	if not pos and not oldnode then
-		new = mcl_hunger.EXHAUST_MOVE
-	end
-	exhaus = exhaus + new
-	if exhaus > mcl_hunger.EXHAUST_LVL then
-		exhaus = 0
-		local h = tonumber(mcl_hunger.hunger[name])
-		h = h - 1
-		if h < 0 then h = 0 end
-		mcl_hunger.hunger[name] = h
-		mcl_hunger.set_hunger_raw(player)
-	end
-	mcl_hunger.exhaustion[name] = exhaus
-end
+	-- dig event
+	mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_DIG)
+end)
 
 -- Apply simple poison effect as long there are no real status effect
 -- TODO: Remove this when status effects are in place
@@ -209,6 +190,3 @@ end
 if minetest.get_modpath("mcl_fishing") then
 	mcl_hunger.register_food("mcl_fishing:pufferfish_raw", 0, "", 60)
 end
-
-minetest.register_on_placenode(mcl_hunger.handle_node_actions)
-minetest.register_on_dignode(mcl_hunger.handle_node_actions)
