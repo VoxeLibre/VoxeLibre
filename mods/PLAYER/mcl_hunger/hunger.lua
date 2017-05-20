@@ -25,11 +25,11 @@ end
 -- food functions
 local food = mcl_hunger.food
 
-function mcl_hunger.register_food(name, hunger_change, replace_with_item, poisen, heal, sound)
+function mcl_hunger.register_food(name, hunger_change, replace_with_item, poison, heal, sound)
 	food[name] = {}
 	food[name].saturation = hunger_change	-- hunger points added
 	food[name].replace = replace_with_item	-- what item is given back after eating
-	food[name].poisen = poisen				-- time its poisening
+	food[name].poison = poison				-- time its poisoning
 	food[name].healing = heal				-- amount of HP
 	food[name].sound = sound				-- special sound that is played when eating
 end
@@ -46,19 +46,19 @@ function mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_t
 		def.saturation = hp_change
 		def.replace = replace_with_item
 	end
-	local func = mcl_hunger.item_eat(def.saturation, def.replace, def.poisen, def.healing, def.sound)
+	local func = mcl_hunger.item_eat(def.saturation, def.replace, def.poison, def.healing, def.sound)
 	return func(itemstack, user, pointed_thing)
 end
 
 -- Poison player
-local function poisenp(tick, time, time_left, player)
+local function poisonp(tick, time, time_left, player)
 	-- First check if player is still there
 	if not player:is_player() then
 		return
 	end
 	time_left = time_left + tick
 	if time_left < time then
-		minetest.after(tick, poisenp, tick, time, time_left, player)
+		minetest.after(tick, poisonp, tick, time, time_left, player)
 	else
 		mcl_hunger.poisonings[player:get_player_name()] = mcl_hunger.poisonings[player:get_player_name()] - 1
 		if mcl_hunger.poisonings[player:get_player_name()] <= 0 then
@@ -72,7 +72,7 @@ local function poisenp(tick, time, time_left, player)
 	
 end
 
-function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sound)
+function mcl_hunger.item_eat(hunger_change, replace_with_item, poison, heal, sound)
 	return function(itemstack, user, pointed_thing)
 		local itemname = itemstack:get_name()
 		if itemstack:take_item() ~= nil and user ~= nil then
@@ -151,11 +151,11 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sou
 				mcl_hunger.update_saturation_hud(user, mcl_hunger.get_saturation(user), h)
 			end
 			-- Poison
-			if poisen then
+			if poison then
 				-- Set poison bar
 				hb.change_hudbar(user, "health", nil, nil, "hbhunger_icon_health_poison.png", nil, "hbhunger_bar_health_poison.png")
 				mcl_hunger.poisonings[name] = mcl_hunger.poisonings[name] + 1
-				poisenp(1, poisen, 0, user)
+				poisonp(1, poison, 0, user)
 			end
 
 			--sound:eat
