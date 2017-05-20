@@ -19,15 +19,11 @@ local wip_items = {
 	"mcl_end:chorus_flower",
 	"mcl_end:chorus_flower_dead",
 	"mcl_fishing:fishing_rod",
-	"mcl_fishing:pufferfish_raw",
 	"mcl_maps:filled_map",
 	"mcl_maps:empty_map",
-	"mcl_mobitems:rotten_flesh",
-	"mcl_mobitems:spider_eye",
 	"mcl_minecarts:golden_rail",
 	"gemalde:node_1",
 	"mcl_observers:observer",
-	"mcl_farming:potato_item_poison",
 	"mcl_chests:trapped_chest",
 }
 
