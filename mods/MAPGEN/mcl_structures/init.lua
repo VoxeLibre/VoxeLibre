@@ -159,6 +159,12 @@ mcl_structures.generate_village = function(pos)
 	mcl_structures.deserialise_WE(newpos, city )
 end
 
+mcl_structures.generate_desert_well = function(pos)
+	local newpos = {x=pos.x,y=pos.y-2,z=pos.z}
+	local path = minetest.get_modpath("mcl_structures").."/build/desert_well.mts"
+	minetest.place_schematic(newpos, path, "0", nil, true)
+end
+
 mcl_structures.generate_desert_temple = function(pos)
 	-- No Generating for the temple ... Why using it ? No Change
 	local temple = mcl_structures.get_struct("desert_temple.we")
@@ -222,7 +228,7 @@ end
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
-	params = "desert_temple | village",
+	params = "desert_temple | desert_well | village",
 	description = "Generate a pre-defined structure near your position.",
 	privs = {debug = true},
 	func = function(name, param)
@@ -237,6 +243,9 @@ minetest.register_chatcommand("spawnstruct", {
 		elseif param == "desert_temple" then
 			mcl_structures.generate_desert_temple(pos)
 			minetest.chat_send_player(name, "Desert temple created.")
+		elseif param == "desert_well" then
+			mcl_structures.generate_desert_well(pos)
+			minetest.chat_send_player(name, "Desert well created.")
 		elseif param == "" then
 			minetest.chat_send_player(name, "Error: No structure type given. Please use “/spawnstruct <type>”.")
 			errord = true
@@ -245,7 +254,7 @@ minetest.register_chatcommand("spawnstruct", {
 			errord = true
 		end
 		if errord then
-			minetest.chat_send_player(name, "Avaiable types: desert_temple, village")
+			minetest.chat_send_player(name, "Avaiable types: desert_temple, desert_well, village")
 		end
 	end
 })
