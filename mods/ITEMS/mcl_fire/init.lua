@@ -134,7 +134,6 @@ minetest.override_item("mcl_core:lava_source", {
 			return false
 		end
 		local airs1 = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y+1, z=pos.z-1}, {x=pos.x+1, y=pos.y+1, z=pos.z+1}, {"air"})
-		minetest.log("error", dump(airs1))
 		local ok = try_ignite(airs1)
 		if not ok then
 			local airs2 = minetest.find_nodes_in_area({x=pos.x-2, y=pos.y+2, z=pos.z-2}, {x=pos.x+2, y=pos.y+2, z=pos.z+2}, {"air"})
@@ -329,7 +328,6 @@ if not fire_enabled then
 				return false
 			end
 			local airs1 = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y+1, z=pos.z-1}, {x=pos.x+1, y=pos.y+1, z=pos.z+1}, {"air"})
-			minetest.log("error", dump(airs1))
 			local ok = try_ignite(airs1)
 			if not ok then
 				local airs2 = minetest.find_nodes_in_area({x=pos.x-2, y=pos.y+2, z=pos.z-2}, {x=pos.x+2, y=pos.y+2, z=pos.z+2}, {"air"})
