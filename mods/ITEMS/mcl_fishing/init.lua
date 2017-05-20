@@ -191,10 +191,10 @@ minetest.register_craftitem("mcl_fishing:clownfish_raw", {
 })
 
 -- Pufferfish
--- TODO: Add status effect
+-- TODO: Add real status effect
 minetest.register_craftitem("mcl_fishing:pufferfish_raw", {
 	description = "Pufferfish",
-	_doc_items_longdesc = "Pufferfish are a common species of fish, but they are dangerous to eat. Eating a pufferfish restores 1 hunger point, but it makes you very sick (which drains your health non-fatally).",
+	_doc_items_longdesc = "Pufferfish are a common species of fish, but they not fit for consumption by humans. Eating a pufferfish restores 1 hunger point, but it makes you very sick (which drains your health non-fatally) and hungry (which drains your satiation).",
 	inventory_image = "mcl_fishing_pufferfish_raw.png",
 	on_place = minetest.item_eat(1),
 	on_secondary_use = minetest.item_eat(1),

@@ -111,14 +111,13 @@ minetest.register_craftitem("mcl_farming:potato_item_baked", {
 
 minetest.register_craftitem("mcl_farming:potato_item_poison", {
 	description = "Poisonous Potato",
-	_doc_items_longdesc = "This potato doesn't look healthy. Eating it will only poison you.",
+	_doc_items_longdesc = "This potato doesn't look too healthy. You can eat if for 2 hunger points, but there's a 60% chance it will poison you.",
 	stack_max = 64,
 	inventory_image = "farming_potato_poison.png",
 	-- TODO: Cause status effects
-	-- TODO: Raise to 2
-	on_place = minetest.item_eat(0),
-	on_secondary_use = minetest.item_eat(0),
-	groups = { food = 2, eatable = 0 },
+	on_place = minetest.item_eat(2),
+	on_secondary_use = minetest.item_eat(2),
+	groups = { food = 2, eatable = 2 },
 	_mcl_saturation = 1.2,
 })
 

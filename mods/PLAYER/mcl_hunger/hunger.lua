@@ -195,10 +195,10 @@ end)
 -- Apply simple poison effect as long there are no real status effect
 -- TODO: Remove this when status effects are in place
 
-mcl_hunger.register_food("mcl_farming:potato_item_poison", 1, "", 4, 1, 0)
+mcl_hunger.register_food("mcl_farming:potato_item_poison", 2, "", 4, 1, 0)
 
-mcl_hunger.register_food("mcl_mobitems:rotten_flesh", 2, "", 8, 1, 100)
-mcl_hunger.register_food("mcl_mobitems:chicken_raw", 2, "", 30, 0, 100)
-mcl_hunger.register_food("mcl_mobitems:spider_eye", 0, "", 4, 1, 0)
+mcl_hunger.register_food("mcl_mobitems:rotten_flesh", 4, "", 30, 0, 100)
+mcl_hunger.register_food("mcl_mobitems:chicken", 2, "", 30, 0, 100)
+mcl_hunger.register_food("mcl_mobitems:spider_eye", 2, "", 4, 1, 0)
 
-mcl_hunger.register_food("mcl_fishing:pufferfish_raw", 0, "", 60, 1, 300)
+mcl_hunger.register_food("mcl_fishing:pufferfish_raw", 1, "", 60, 1, 300)
