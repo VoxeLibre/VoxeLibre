@@ -25,12 +25,13 @@ end
 -- food functions
 local food = mcl_hunger.food
 
-function mcl_hunger.register_food(name, hunger_change, replace_with_item, poison, heal, sound)
+function mcl_hunger.register_food(name, hunger_change, replace_with_item, poisontime, poison, exhaust, sound)
 	food[name] = {}
 	food[name].saturation = hunger_change	-- hunger points added
 	food[name].replace = replace_with_item	-- what item is given back after eating
-	food[name].poison = poison				-- time its poisoning
-	food[name].healing = heal				-- amount of HP
+	food[name].poisontime = poisontime			-- time its poisoning
+	food[name].poison = poison				-- poison damage per tick for poisonous food
+	food[name].exhaust = exhaust				-- exhaustion per tick for poisonous food
 	food[name].sound = sound				-- special sound that is played when eating
 end
 
@@ -46,19 +47,19 @@ function mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_t
 		def.saturation = hp_change
 		def.replace = replace_with_item
 	end
-	local func = mcl_hunger.item_eat(def.saturation, def.replace, def.poison, def.healing, def.sound)
+	local func = mcl_hunger.item_eat(def.saturation, def.replace, def.poisontime, def.poison, def.exhaust, def.sound)
 	return func(itemstack, user, pointed_thing)
 end
 
 -- Poison player
-local function poisonp(tick, time, time_left, player)
+local function poisonp(tick, time, time_left, damage, exhaustion, player)
 	-- First check if player is still there
 	if not player:is_player() then
 		return
 	end
 	time_left = time_left + tick
 	if time_left < time then
-		minetest.after(tick, poisonp, tick, time, time_left, player)
+		minetest.after(tick, poisonp, tick, time, time_left, damage, exhaustion, player)
 	else
 		mcl_hunger.poisonings[player:get_player_name()] = mcl_hunger.poisonings[player:get_player_name()] - 1
 		if mcl_hunger.poisonings[player:get_player_name()] <= 0 then
@@ -66,13 +67,16 @@ local function poisonp(tick, time, time_left, player)
 			hb.change_hudbar(player, "health", nil, nil, "hudbars_icon_health.png", nil, "hudbars_bar_health.png")
 		end
 	end
-	if player:get_hp()-1 > 0 then
-		player:set_hp(player:get_hp()-1)
+
+	-- Deal damage and exhaust player
+	if player:get_hp()-damage > 0 then
+		player:set_hp(player:get_hp()-damage)
 	end
+	mcl_hunger.exhaust(player:get_player_name(), exhaustion)
 	
 end
 
-function mcl_hunger.item_eat(hunger_change, replace_with_item, poison, heal, sound)
+function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poison, exhaust, sound)
 	return function(itemstack, user, pointed_thing)
 		local itemname = itemstack:get_name()
 		if itemstack:take_item() ~= nil and user ~= nil then
@@ -155,7 +159,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poison, heal, sou
 				-- Set poison bar
 				hb.change_hudbar(user, "health", nil, nil, "hbhunger_icon_health_poison.png", nil, "hbhunger_bar_health_poison.png")
 				mcl_hunger.poisonings[name] = mcl_hunger.poisonings[name] + 1
-				poisonp(1, poison, 0, user)
+				poisonp(1, poisontime, 0, poison, exhaust, user)
 			end
 
 			--sound:eat
@@ -179,12 +183,13 @@ end)
 -- Apply simple poison effect as long there are no real status effect
 -- TODO: Remove this when status effects are in place
 if minetest.get_modpath("mcl_farming") then
-	mcl_hunger.register_food("mcl_farming:potato_item_poison", 1, "", 3)
+	mcl_hunger.register_food("mcl_farming:potato_item_poison", 1, "", 4, 1, 0)
 end
 if minetest.get_modpath("mcl_mobitems") then
-	mcl_hunger.register_food("mcl_mobitems:rotten_flesh", 2, "", 8)
-	mcl_hunger.register_food("mcl_mobitems:spider_eye", 0, "", 4)
+	mcl_hunger.register_food("mcl_mobitems:rotten_flesh", 2, "", 8, 1, 100)
+	mcl_hunger.register_food("mcl_mobitems:chicken_raw", 2, "", 30, 0, 100)
+	mcl_hunger.register_food("mcl_mobitems:spider_eye", 0, "", 4, 1, 0)
 end
 if minetest.get_modpath("mcl_fishing") then
-	mcl_hunger.register_food("mcl_fishing:pufferfish_raw", 0, "", 60)
+	mcl_hunger.register_food("mcl_fishing:pufferfish_raw", 0, "", 60, 1, 300)
 end
