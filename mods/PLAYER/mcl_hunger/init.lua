@@ -10,7 +10,11 @@ if minetest.setting_getbool("enable_damage") then
 mcl_hunger = {}
 mcl_hunger.food = {}
 
-local debug = true -- Debug Mode. If enabled, saturation and exhaustion are shown as well
+-- Debug Mode. If enabled, saturation and exhaustion are shown as well
+local debug = minetest.setting_getbool("mcl_hunger_debug")
+if debug == nil then
+	debug = false
+end
 
 --[[ Data value format notes:
 	Hunger values is identical to Minecraft's and ranges from 0 to 20.
