@@ -136,10 +136,12 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 
 			if hunger_change then
 				-- Add saturation (must be defined in item table)
-				local saturation = math.floor(minetest.registered_items[itemname]._mcl_saturation * 10)
-				if not saturation then
+				local _mcl_saturation = minetest.registered_items[itemname]._mcl_saturation
+				local saturation
+				if not _mcl_saturation then
 					saturation = 0
-					minetest.log("warning", "[mcl_hunger] No saturation defined for item “"..itemname.."”!")
+				else
+					saturation = math.floor(minetest.registered_items[itemname]._mcl_saturation * 10)
 				end
 				mcl_hunger.saturate(name, saturation, false)
 
