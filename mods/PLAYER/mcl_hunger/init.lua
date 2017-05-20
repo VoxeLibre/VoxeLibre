@@ -47,7 +47,7 @@ end
 
 local function custom_hud(player)
 	hb.init_hudbar(player, "food", mcl_hunger.get_hunger_raw(player))
-	hb.init_hudbar(player, "saturation", mcl_hunger.saturation[player:get_player_name()])
+	hb.init_hudbar(player, "saturation", mcl_hunger.saturation[player:get_player_name()], mcl_hunger.get_hunger_raw(player))
 	hb.init_hudbar(player, "exhaustion", mcl_hunger.exhaustion[player:get_player_name()])
 end
 
@@ -67,6 +67,7 @@ local function update_hud(player)
 	if h_out ~= h then
 		mcl_hunger.hunger_out[name] = h
 		hb.change_hudbar(player, "food", h)
+		hb.change_hudbar(player, "saturation", nil, h)
 	end
 end
 
@@ -129,18 +130,31 @@ end)
 minetest.register_on_respawnplayer(function(player)
 	-- reset hunger (and save)
 	local name = player:get_player_name()
-	mcl_hunger.hunger[name] = 20
+	local h = 20
+	mcl_hunger.hunger[name] = h
 	mcl_hunger.set_hunger_raw(player)
 	mcl_hunger.exhaustion[name] = 0.0
 	mcl_hunger.saturation[name] = 5.0
+	hb.change_hudbar(player, "exhaustion", mcl_hunger.exhaustion[name])
+	hb.change_hudbar(player, "saturation", mcl_hunger.saturation[name], h)
+	hb.change_hudbar(player, "food", h)
 end)
 
 function mcl_hunger.exhaust(playername, increase)
 	mcl_hunger.exhaustion[playername] = mcl_hunger.exhaustion[playername] + increase
-	if mcl_hunger.exhaustion[playername] > 4 then
-		mcl_hunger.exhaustion[playername] = 4
+	if mcl_hunger.exhaustion[playername] > 4.0 then
+		mcl_hunger.exhaustion[playername] = 4.0
 	end
 	hb.change_hudbar(minetest.get_player_by_name(playername), "exhaustion", mcl_hunger.exhaustion[playername])
+end
+
+function mcl_hunger.saturate(playername, increase)
+	local player = minetest.get_player_by_name(playername)
+	mcl_hunger.exhaustion[playername] = mcl_hunger.exhaustion[playername] + increase
+	if mcl_hunger.saturation[playername] > mcl_hunger.get_hunger(player) then
+		mcl_hunger.saturation[playername] = mcl_hunger.get_hunger(player)
+	end
+	hb.change_hudbar(player, "saturation", mcl_hunger.saturation[playername])
 end
 
 local main_timer = 0
@@ -184,7 +198,7 @@ minetest.register_globalstep(function(dtime)
 						mcl_hunger.exhaustion[name] = 0.0
 						hb.change_hudbar(player, "exhaustion", mcl_hunger.exhaustion[name])
 						hb.change_hudbar(player, "saturation", mcl_hunger.saturation[name])
-					else
+					elseif timerMult == 0 then
 						h = h-1
 						mcl_hunger.hunger[name] = h
 						mcl_hunger.set_hunger_raw(player)
