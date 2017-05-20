@@ -1,11 +1,3 @@
--- Keep these for backwards compatibility
-function mcl_hunger.save_hunger(player)
-	mcl_hunger.set_hunger_raw(player)
-end
-function mcl_hunger.load_hunger(player)
-	mcl_hunger.get_hunger_raw(player)
-end
-
 -- wrapper for minetest.item_eat (this way we make sure other mods can't break this one)
 local org_eat = core.do_item_eat
 core.do_item_eat = function(hp_change, replace_with_item, itemstack, user, pointed_thing)
@@ -85,7 +77,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sou
 		local itemname = itemstack:get_name()
 		if itemstack:take_item() ~= nil and user ~= nil then
 			local name = user:get_player_name()
-			local h = tonumber(mcl_hunger.hunger[name])
+			local h = tonumber(mcl_hunger.get_hunger(user))
 			local hp = user:get_hp()
 
 			local pos = user:getpos()
@@ -152,8 +144,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisen, heal, sou
 				if h < 20 and hunger_change then
 					h = h + hunger_change
 					if h > 20 then h = 20 end
-					mcl_hunger.hunger[name] = h
-					mcl_hunger.set_hunger_raw(user)
+					mcl_hunger.set_hunger(user, h)
 				end
 
 				hb.change_hudbar(user, "saturation", mcl_hunger.saturation[name], mcl_hunger.get_hunger(user))
