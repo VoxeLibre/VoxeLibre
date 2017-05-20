@@ -171,7 +171,7 @@ end
 mcl_structures.generate_igloo_top = function(pos)
 	-- FIXME: This spawns bookshelf instead of furnace. Fix this!
 	-- Furnace does ot work atm because apparently meta is not set. :-(
-	local newpos = {x=pos.x,y=pos.y-2,z=pos.z}
+	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
 	local path = minetest.get_modpath("mcl_structures").."/build/igloo_top.mts"
 	minetest.place_schematic(newpos, path, "random", nil, true)
 end

@@ -891,6 +891,7 @@ local perlin
 minetest.register_on_generated(function(minp, maxp, seed)
 	local chunk_has_desert_well = false
 	local chunk_has_desert_temple = false
+	local chunk_has_igloo = false
 	if maxp.y >= 2 and minp.y <= 0 then
 		-- Generate clay
 		-- Assume X and Z lengths are equal
@@ -986,6 +987,15 @@ minetest.register_on_generated(function(minp, maxp, seed)
 										mcl_structures.call_struct(p, "desert_well")
 										chunk_has_desert_well = true
 									end
+								end
+							end
+						elseif not chunk_has_igloo and nn == "mcl_core:snowblock" then
+							if math.random(1, 4400) == 1 then
+								-- Check surface
+								local surface = minetest.find_nodes_in_area({x=p.x,y=p.y-1,z=p.z}, {x=p.x+9, y=p.y-1, z=p.z+9}, "mcl_core:snowblock")
+								if #surface >= 63 then
+									mcl_structures.call_struct(p, "igloo")
+									chunk_has_igloo = true
 								end
 							end
 						end
