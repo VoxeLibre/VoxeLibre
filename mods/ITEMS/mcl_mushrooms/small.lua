@@ -116,6 +116,7 @@ minetest.register_craftitem("mcl_mushrooms:mushroom_stew", {
 	on_place = minetest.item_eat(6, "mcl_core:bowl"),
 	on_secondary_use = minetest.item_eat(6, "mcl_core:bowl"),
 	groups = { food = 3, eatable = 6 },
+	_mcl_saturation = 7.2,
 	stack_max = 1,
 })
 

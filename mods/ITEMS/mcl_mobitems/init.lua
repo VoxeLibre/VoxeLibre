@@ -280,7 +280,7 @@ minetest.register_craftitem("mcl_mobitems:rabbit_stew", {
 	on_place = minetest.item_eat(10, "mcl_core:bowl"),
 	on_secondary_use = minetest.item_eat(10, "mcl_core:bowl"),
 	groups = { food = 3, eatable = 10 },
-	_mcl_saturation = 6.0,
+	_mcl_saturation = 12.0,
 })
 
 minetest.register_craftitem("mcl_mobitems:shulker_shell", {

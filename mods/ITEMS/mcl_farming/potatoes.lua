@@ -100,12 +100,12 @@ minetest.register_craftitem("mcl_farming:potato_item", {
 
 minetest.register_craftitem("mcl_farming:potato_item_baked", {
 	description = "Baked Potato",
-	_doc_items_longdesc = "Baked potatoes are food items which can be eaten for 6 hunger points.",
+	_doc_items_longdesc = "Baked potatoes are food items which can be eaten for 5 hunger points.",
 	stack_max = 64,
 	inventory_image = "farming_potato_baked.png",
-	on_place = minetest.item_eat(6),
-	on_secondary_use = minetest.item_eat(6),
-	groups = { food = 2, eatable = 6 },
+	on_place = minetest.item_eat(5),
+	on_secondary_use = minetest.item_eat(5),
+	groups = { food = 2, eatable = 5 },
 	_mcl_saturation = 6.0,
 })
 

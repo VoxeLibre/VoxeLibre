@@ -29,7 +29,7 @@ minetest.register_craft({
 
 minetest.register_node("mcl_cake:cake", {
 	description = "Cake",
-	_doc_items_longdesc = "Cakes can be placed and eaten to restore hunger points. A cake has 7 slices and each slice restores 2 hunger points. Cakes will be destroyed when dug or when the block below them is broken.",
+	_doc_items_longdesc = "Cakes can be placed and eaten to restore hunger points. A cake has 7 slices. Each slice restores 2 hunger points and 0.4 saturation points. Cakes will be destroyed when dug or when the block below them is broken.",
 	_doc_items_usagehelp = "Place the cake anywhere, then rightclick it to eat a single slice.",
 	tiles = {"cake_top.png","cake_bottom.png","cake_side.png","cake_side.png","cake_side.png","cake_side.png"},
 	inventory_image = "cake.png",

@@ -138,7 +138,7 @@ minetest.register_craftitem("mcl_fishing:fish_cooked", {
 	on_secondary_use = minetest.item_eat(5),
 	stack_max = 64,
 	groups = { food=2, eatable=5 },
-	_mcl_saturation = 9.6,
+	_mcl_saturation = 6,
 })
 
 minetest.register_craft({
