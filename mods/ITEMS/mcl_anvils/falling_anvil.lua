@@ -36,6 +36,9 @@ local on_step_add = function(self, dtime)
 						hp = 0
 					end
 					v:set_hp(hp)
+					if v:is_player() then
+						mcl_hunger.exhaust(v:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+					end
 					if hp == 0 then
 						kill = true
 					end
