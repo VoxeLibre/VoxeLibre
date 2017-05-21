@@ -24,8 +24,9 @@ local function do_tnt_physics(tnt_np,tntr)
             if v ~= nil then
                 obj:setvelocity({x=(p.x - tnt_np.x) + (tntr / 4) + v.x, y=(p.y - tnt_np.y) + (tntr / 2) + v.y, z=(p.z - tnt_np.z) + (tntr / 4) + v.z})
             else
-                if obj:get_player_name() ~= nil then
+                if obj:is_player() ~= nil then
                     obj:set_hp(obj:get_hp() - 1)
+                    mcl_hunger.exhaust(obj:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
                 end
             end
         end

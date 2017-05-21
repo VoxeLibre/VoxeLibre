@@ -1,4 +1,5 @@
 mcl_core
 mcl_sounds
 mcl_fire
+mcl_hunger
 doc_identifier?
