@@ -115,6 +115,9 @@ minetest.register_globalstep(function(dtime)
 			for _,object in pairs(minetest.get_objects_inside_radius(near, 1.1)) do
 				if object:get_hp() > 0 then
 					object:set_hp(object:get_hp() - 1)
+					if object:is_player() then
+						mcl_hunger.exhaust(object:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+					end
 				end
 			end
 
