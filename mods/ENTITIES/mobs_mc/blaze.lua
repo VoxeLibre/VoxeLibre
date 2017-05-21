@@ -82,6 +82,7 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 5},
 		}, nil)
+		mcl_hunger.exhaust(player:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
 	end,
 
 	hit_mob = function(self, player)
