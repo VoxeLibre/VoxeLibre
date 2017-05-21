@@ -40,15 +40,14 @@ mcl_hunger.HUD_TICK = 0.1
 mcl_hunger.EXHAUST_DIG = 5  -- after digging node
 mcl_hunger.EXHAUST_JUMP = 50 -- jump
 mcl_hunger.EXHAUST_SPRINT_JUMP = 200 -- TODO: jump while sprinting
-mcl_hunger.EXHAUST_ATTACK = 100 -- TODO: hit an enemy
+mcl_hunger.EXHAUST_ATTACK = 100 -- hit an enemy
 mcl_hunger.EXHAUST_SWIM = 10 -- TODO: player movement in water
 mcl_hunger.EXHAUST_SPRINT = 100 -- sprint (per node)
-mcl_hunger.EXHAUST_DAMAGE = 100 -- TODO: taking damage (protected by armor)
+mcl_hunger.EXHAUST_DAMAGE = 100 -- TODO (mostly done): taking damage (protected by armor)
 mcl_hunger.EXHAUST_REGEN = 6000 -- Regenerate 1 HP
 mcl_hunger.EXHAUST_LVL = 4000 -- at what exhaustion player saturation gets lowered
 
 mcl_hunger.SATURATION_INIT = 50 -- Initial saturation for new/respawning players
-
 
 --load custom settings
 local set = io.open(minetest.get_modpath("mcl_hunger").."/mcl_hunger.conf", "r")
@@ -184,6 +183,14 @@ minetest.register_on_respawnplayer(function(player)
 	hb.change_hudbar(player, "hunger", h)
 	mcl_hunger.update_saturation_hud(player, s, h)
 	mcl_hunger.update_exhaustion_hud(player, e)
+end)
+
+-- PvP combat exhaustion
+minetest.register_on_punchplayer(function(victim, puncher, time_from_last_punch, tool_capabilities, dir, damage)
+	if victim:is_player() and puncher:is_player() then
+		mcl_hunger.exhaust(victim:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+		mcl_hunger.exhaust(puncher:get_player_name(), mcl_hunger.EXHAUST_ATTACK)
+	end
 end)
 
 function mcl_hunger.exhaust(playername, increase)
