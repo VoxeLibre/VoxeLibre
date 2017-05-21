@@ -577,6 +577,7 @@ local function entity_physics(pos, radius)
 
 		if objs[n]:is_player() then
 			objs[n]:set_hp(objs[n]:get_hp() - damage)
+			mcl_hunger.exhaust(objs[n]:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
 
 		else --if ent.health then
 
@@ -1693,6 +1694,7 @@ local do_states = function(self, dtime)
 								full_punch_interval = 1.0,
 								damage_groups = {fleshy = self.damage}
 							}, nil)
+							mcl_hunger.exhaust(self.attack:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
 						end
 					end
 				else	-- call custom attack every second
@@ -1874,6 +1876,11 @@ end
 			* tmp * ((armor[group] or 0) / 100.0)
 	end
 
+	-- Exhaust attacker
+	if hitter:is_player() then
+		mcl_hunger.exhaust(hitter:get_player_name(), mcl_hunger.EXHAUST_ATTACK)
+	end
+
 	-- check for tool immunity or special damage
 	for n = 1, #self.immune_to do
 
@@ -1902,6 +1909,7 @@ end
 	and weapon:get_definition().tool_capabilities then
 		weapon:add_wear(floor((punch_interval / 75) * 9000))
 		hitter:set_wielded_item(weapon)
+
 	end
 
 -- only play hit sound and show blood effects if damage is 1 or over
@@ -2248,6 +2256,9 @@ local do_tnt = function(obj, damage)
 		full_punch_interval = 1.0,
 		damage_groups = {fleshy = damage},
 	}, nil)
+	if obj.object:is_player() then
+		mcl_hunger.exhaust(obj.object:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+	end
 
 	return false, true, {}
 end
