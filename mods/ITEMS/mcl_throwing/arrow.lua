@@ -62,6 +62,9 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 						full_punch_interval=1.0,
 						damage_groups={fleshy=self._damage},
 					}, nil)
+					if obj:is_player() then
+						mcl_hunger.exhaust(obj:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+					end
 
 					-- Achievement for hitting skeleton, wither skeleton or stray (TODO) with an arrow at least 50 meters away
 					-- TODO: This achievement should be given for the kill, not just a hit
@@ -77,6 +80,10 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 					full_punch_interval=1.0,
 					damage_groups={fleshy=self._damage},
 				}, nil)
+				if obj:is_player() then
+					mcl_hunger.exhaust(obj:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+				end
+
 				self.object:remove()
 			end
 		end
