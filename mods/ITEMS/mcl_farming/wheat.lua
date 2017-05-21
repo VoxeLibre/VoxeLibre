@@ -109,7 +109,7 @@ minetest.register_craft({
 
 minetest.register_craftitem("mcl_farming:cookie", {
 	description = "Cookie",
-	_doc_items_longdesc = "This is a food item which can be eaten for 2 hunger points.",
+	_doc_items_longdesc = "This is a food item which can be eaten.",
 	inventory_image = "farming_cookie.png",
 	groups = {food=2, eatable=2},
 	_mcl_saturation = 0.4,
@@ -120,7 +120,7 @@ minetest.register_craftitem("mcl_farming:cookie", {
 
 minetest.register_craftitem("mcl_farming:bread", {
 	description = "Bread",
-	_doc_items_longdesc = "This is a food item which can be eaten for 5 hunger points.",
+	_doc_items_longdesc = "This is a food item which can be eaten.",
 	inventory_image = "farming_bread.png",
 	groups = {food=2, eatable=5},
 	_mcl_saturation = 6.0,

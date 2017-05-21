@@ -2,7 +2,7 @@
 
 minetest.register_craftitem("mcl_mobitems:rotten_flesh", {
 	description = "Rotten Flesh",
-	_doc_items_longdesc = "Yuck! This piece of flesh clearly has seen better days. If you're really desperate, you can eat it for 4 hunger points, but there's a 80% chance it causes food poisoning, which increases your hunger for a while.",
+	_doc_items_longdesc = "Yuck! This piece of flesh clearly has seen better days. If you're really desperate, you can eat it to restore a few hunger points, but there's a 80% chance it causes food poisoning, which increases your hunger for a while.",
 	inventory_image = "mcl_mobitems_rotten_flesh.png",
 	wield_image = "mcl_mobitems_rotten_flesh.png",
 	on_place = minetest.item_eat(4),
@@ -14,7 +14,7 @@ minetest.register_craftitem("mcl_mobitems:rotten_flesh", {
 
 minetest.register_craftitem("mcl_mobitems:mutton", {
 	description = "Raw Mutton",
-	_doc_items_longdesc = "Raw mutton is the flesh from sheep and can be eaten for 2 hunger points.",
+	_doc_items_longdesc = "Raw mutton is the flesh from a sheep and can be eaten safely. Cooking it will greatly increase its nutritional value.",
 	inventory_image = "mcl_mobitems_mutton_raw.png",
 	wield_image = "mcl_mobitems_mutton_raw.png",
 	on_place = minetest.item_eat(2),
@@ -26,7 +26,7 @@ minetest.register_craftitem("mcl_mobitems:mutton", {
 
 minetest.register_craftitem("mcl_mobitems:cooked_mutton", {
 	description = "Cooked Mutton",
-	_doc_items_longdesc = "This is a food item which can be eaten for 6 hunger points.",
+	_doc_items_longdesc = "Cooked mutton is the cooked flesh from a sheep and is used as food.",
 	inventory_image = "mcl_mobitems_mutton_cooked.png",
 	wield_image = "mcl_mobitems_mutton_cooked.png",
 	on_place = minetest.item_eat(6),
@@ -38,7 +38,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_mutton", {
 
 minetest.register_craftitem("mcl_mobitems:beef", {
 	description = "Raw Beef",
-	_doc_items_longdesc = "Raw beef is the flesh from cows and can be eaten for 3 hunger points.",
+	_doc_items_longdesc = "Raw beef is the flesh from cows and can be eaten safely. Cooking it will greatly increase its nutritional value.",
 	inventory_image = "mcl_mobitems_beef_raw.png",
 	wield_image = "mcl_mobitems_beef_raw.png",
 	on_place = minetest.item_eat(3),
@@ -50,7 +50,7 @@ minetest.register_craftitem("mcl_mobitems:beef", {
 
 minetest.register_craftitem("mcl_mobitems:cooked_beef", {
 	description = "Steak",
-	_doc_items_longdesc = "Steak is cooked beef from cows and can be eaten for 8 hunger points.",
+	_doc_items_longdesc = "Steak is cooked beef from cows and can be eaten.",
 	inventory_image = "mcl_mobitems_beef_cooked.png",
 	wield_image = "mcl_mobitems_beef_cooked.png",
 	on_place = minetest.item_eat(8),
@@ -62,7 +62,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_beef", {
 
 minetest.register_craftitem("mcl_mobitems:chicken", {
 	description = "Raw Chicken",
-	_doc_items_longdesc = "This chicken is raw and unprocessed and should be rather eaten in cooked form. You can still eat it for 2 hunger points. But beware: There's a 30% chance that this gives you food poisoning, which increases your hunger rate for a while.",
+	_doc_items_longdesc = "Raw chicken is a food item which is not safe to consume. You can eat it to restore a few hunger points, but there's a 30% chance to suffer from food poisoning, which increases your hunger rate for a while. Cooking raw chicken will make it safe to eat and increases its nutritional value.",
 	inventory_image = "mcl_mobitems_chicken_raw.png",
 	wield_image = "mcl_mobitems_chicken_raw.png",
 	on_place = minetest.item_eat(2),
@@ -74,7 +74,7 @@ minetest.register_craftitem("mcl_mobitems:chicken", {
 
 minetest.register_craftitem("mcl_mobitems:cooked_chicken", {
 	description = "Cooked Chicken",
-	_doc_items_longdesc = "This is a food item which can be eaten for 6 hunger points.",
+	_doc_items_longdesc = "A cooked chicken is a healthy food item which can be eaten.",
 	inventory_image = "mcl_mobitems_chicken_cooked.png",
 	wield_image = "mcl_mobitems_chicken_cooked.png",
 	on_place = minetest.item_eat(6),
@@ -86,7 +86,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_chicken", {
 
 minetest.register_craftitem("mcl_mobitems:porkchop", {
 	description = "Raw Porkchop",
-	_doc_items_longdesc = "A raw porkchop is the flesh from a pig and can be eaten for 3 hunger points.",
+	_doc_items_longdesc = "A raw porkchop is the flesh from a pig and can be eaten safely. Cooking it will greatly increase its nutritional value.",
 	inventory_image = "mcl_mobitems_porkchop_raw.png",
 	wield_image = "mcl_mobitems_porkchop_raw.png",
 	on_place = minetest.item_eat(3),
@@ -98,7 +98,7 @@ minetest.register_craftitem("mcl_mobitems:porkchop", {
 
 minetest.register_craftitem("mcl_mobitems:cooked_porkchop", {
 	description = "Cooked Porkchop",
-	_doc_items_longdesc = "This is a food item which can be eaten for 8 hunger points.",
+	_doc_items_longdesc = "Cooked porkchop is the cooked flesh of a pig and is used as food.",
 	inventory_image = "mcl_mobitems_porkchop_cooked.png",
 	wield_image = "mcl_mobitems_porkchop_cooked.png",
 	on_place = minetest.item_eat(8),
@@ -110,7 +110,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_porkchop", {
 
 minetest.register_craftitem("mcl_mobitems:rabbit", {
 	description = "Raw Rabbit",
-	_doc_items_longdesc = "This is a food item which can be eaten for 3 hunger points.",
+	_doc_items_longdesc = "Raw rabbit is a food item from a dead rabbit. It can be eaten safely. Cooking it will increase its nutritional value.",
 	inventory_image = "mcl_mobitems_rabbit_raw.png",
 	wield_image = "mcl_mobitems_rabbit_raw.png",
 	on_place = minetest.item_eat(3),
@@ -122,7 +122,7 @@ minetest.register_craftitem("mcl_mobitems:rabbit", {
 
 minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
 	description = "Cooked Rabbit",
-	_doc_items_longdesc = "This is a food item which can be eaten for 5 hunger points.",
+	_doc_items_longdesc = "This is a food item which can be eaten.",
 	inventory_image = "mcl_mobitems_rabbit_cooked.png",
 	wield_image = "mcl_mobitems_rabbit_cooked.png",
 	on_place = minetest.item_eat(5),
@@ -154,7 +154,7 @@ minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 
 minetest.register_craftitem("mcl_mobitems:spider_eye", {
 	description = "Spider Eye",
-	_doc_items_longdesc = "Spider eyes are used mainly in crafting and brewing. If you're really desperate, you can eat a spider eye for 2 hunger points, but it will poison you.",
+	_doc_items_longdesc = "Spider eyes are used mainly in crafting and brewing. If you're really desperate, you can eat a spider eye, but it will poison you briefly.",
 	inventory_image = "mcl_mobitems_spider_eye.png",
 	wield_image = "mcl_mobitems_spider_eye.png",
 	on_place = minetest.item_eat(2),
@@ -273,7 +273,7 @@ minetest.register_craftitem("mcl_mobitems:saddle", {
 
 minetest.register_craftitem("mcl_mobitems:rabbit_stew", {
 	description = "Rabbit Stew",
-	_doc_items_longdesc = "Rabbit stew is a very nutricious food item which can be consumed for 10 hunger points.",
+	_doc_items_longdesc = "Rabbit stew is a very nutricious food item.",
 	wield_image = "mcl_mobitems_rabbit_stew.png",
 	inventory_image = "mcl_mobitems_rabbit_stew.png",
 	stack_max = 1,

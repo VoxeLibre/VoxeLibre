@@ -108,7 +108,7 @@ mcl_farming:add_gourd("mcl_farming:melontige_unconnect", "mcl_farming:melontige_
 minetest.register_craftitem("mcl_farming:melon_item", {
 	-- Original name: “Melon”
 	description = "Melon Slice",
-	_doc_items_longdesc = "This is a food item which can be eaten for 2 hunger points.",
+	_doc_items_longdesc = "This is a food item which can be eaten.",
 	stack_max = 64,
 	inventory_image = "farming_melon.png",
 	on_place = minetest.item_eat(2),

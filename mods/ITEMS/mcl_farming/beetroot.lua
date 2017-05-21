@@ -118,7 +118,7 @@ minetest.register_node("mcl_farming:beetroot", {
 
 minetest.register_craftitem("mcl_farming:beetroot_item", {
 	description = "Beetroot",
-	_doc_items_longdesc = "Beetroots can be eaten for 1 hunger point. Pigs like beetroots, too.",
+	_doc_items_longdesc = "Beetroots are both used as food item and a dye ingredient. Pigs like beetroots, too.",
 	_doc_items_usagehelp = "Hold it in your hand and right-click to eat it. Rightclick an animal to feed it.",
 	inventory_image = "mcl_farming_beetroot.png",
 	wield_image = "mcl_farming_beetroot.png",
@@ -130,7 +130,7 @@ minetest.register_craftitem("mcl_farming:beetroot_item", {
 
 minetest.register_craftitem("mcl_farming:beetroot_soup", {
 	description = "Beetroot Soup",
-	_doc_items_longdesc = "Beetroot soup is a healthy soup which can be consumed for 6 hunger points.",
+	_doc_items_longdesc = "Beetroot soup is a food item.",
 	stack_max = 1,
 	inventory_image = "mcl_farming_beetroot_soup.png",
 	wield_image = "mcl_farming_beetroot_soup.png",

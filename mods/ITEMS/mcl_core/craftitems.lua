@@ -132,7 +132,7 @@ minetest.register_craftitem("mcl_core:bowl",{
 
 minetest.register_craftitem("mcl_core:apple", {
 	description = "Apple",
-	_doc_items_longdesc = "Apples can be eaten to restore 4 hunger points.",
+	_doc_items_longdesc = "Apples are food items which can be eaten.",
 	wield_image = "default_apple.png",
 	inventory_image = "default_apple.png",
 	stack_max = 64,
@@ -142,12 +142,14 @@ minetest.register_craftitem("mcl_core:apple", {
 	_mcl_saturation = 2.4,
 })
 
+-- TODO: Status effects
 minetest.register_craftitem("mcl_core:apple_gold", {
 	description = core.colorize("#55FFFF", "Golden Apple"),
-	_doc_items_longdesc = "Golden apples can be eaten to restore 8 hunger points.",
+	_doc_items_longdesc = "Golden apples are precious food items which can be eaten.",
 	wield_image = "default_apple_gold.png",
 	inventory_image = "default_apple_gold.png",
 	stack_max = 64,
+	-- TODO: Reduce to 4 when it's ready
 	on_place = minetest.item_eat(8),
 	on_secondary_use = minetest.item_eat(8),
 	groups = { food = 2, eatable = 8 },

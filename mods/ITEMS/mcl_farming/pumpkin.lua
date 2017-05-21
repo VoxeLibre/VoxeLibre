@@ -124,7 +124,7 @@ minetest.register_craft({
 
 minetest.register_craftitem("mcl_farming:pumpkin_pie", {
 	description = "Pumpkin Pie",
-	_doc_items_longdesc = "A pumpkin pie is very filling and can be eaten for 8 hunger points.",
+	_doc_items_longdesc = "A pumpkin pie is a tasty food item which can be eaten.",
 	stack_max = 64,
 	inventory_image = "mcl_farming_pumpkin_pie.png",
 	wield_image = "mcl_farming_pumpkin_pie.png",

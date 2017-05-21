@@ -121,7 +121,7 @@ minetest.register_craft({
 -- Fish
 minetest.register_craftitem("mcl_fishing:fish_raw", {
 	description = "Raw Fish",
-	_doc_items_longdesc = "This is a raw food item which can be eaten for 2 hunger points. But cooking it is better.",
+	_doc_items_longdesc = "Raw fish is obtained by fishing and is a food item which can be eaten safely. Cooking it improves its nutritional value.",
 	inventory_image = "mcl_fishing_fish_raw.png",
 	on_place = minetest.item_eat(2),
 	on_secondary_use = minetest.item_eat(2),
@@ -132,7 +132,7 @@ minetest.register_craftitem("mcl_fishing:fish_raw", {
 
 minetest.register_craftitem("mcl_fishing:fish_cooked", {
 	description = "Cooked Fish",
-	_doc_items_longdesc = "Mmh, fish! This food item can be eaten for 5 hunger points.",
+	_doc_items_longdesc = "Mmh, fish! This is a healthy food item.",
 	inventory_image = "mcl_fishing_fish_cooked.png",
 	on_place = minetest.item_eat(5),
 	on_secondary_use = minetest.item_eat(5),
@@ -151,7 +151,7 @@ minetest.register_craft({
 -- Salmon
 minetest.register_craftitem("mcl_fishing:salmon_raw", {
 	description = "Raw Salmon",
-	_doc_items_longdesc = "This is a raw food item which can be eaten for 2 hunger points. But cooking it is better.",
+	_doc_items_longdesc = "Raw salmon is obtained by fishing and is a food item which can be eaten safely. Cooking it improves its nutritional value.",
 	inventory_image = "mcl_fishing_salmon_raw.png",
 	on_place = minetest.item_eat(2),
 	on_secondary_use = minetest.item_eat(2),
@@ -162,7 +162,7 @@ minetest.register_craftitem("mcl_fishing:salmon_raw", {
 
 minetest.register_craftitem("mcl_fishing:salmon_cooked", {
 	description = "Cooked Salmon",
-	_doc_items_longdesc = "This is a food item which can be eaten for 6 hunger points.",
+	_doc_items_longdesc = "This is a healthy food item which can be eaten.",
 	inventory_image = "mcl_fishing_salmon_cooked.png",
 	on_place = minetest.item_eat(6),
 	on_secondary_use = minetest.item_eat(6),
@@ -181,7 +181,7 @@ minetest.register_craft({
 -- Clownfish
 minetest.register_craftitem("mcl_fishing:clownfish_raw", {
 	description = "Clownfish",
-	_doc_items_longdesc = "This is a food item which can be eaten for 1 hunger point.",
+	_doc_items_longdesc = "Clownfish may be obtained by fishing (and luck) and is a food item which can be eaten safely.",
 	inventory_image = "mcl_fishing_clownfish_raw.png",
 	on_place = minetest.item_eat(1),
 	on_secondary_use = minetest.item_eat(1),
@@ -194,7 +194,7 @@ minetest.register_craftitem("mcl_fishing:clownfish_raw", {
 -- TODO: Add real status effect
 minetest.register_craftitem("mcl_fishing:pufferfish_raw", {
 	description = "Pufferfish",
-	_doc_items_longdesc = "Pufferfish are a common species of fish, but they not fit for consumption by humans. Eating a pufferfish restores 1 hunger point, but it will poison you very badly (which drains your health non-fatally) and causes serious food poisoning (which increases your hunger).",
+	_doc_items_longdesc = "Pufferfish are a common species of fish and can be obtained by fishing. They can technically be eaten, but they are very bad for humans. Eating a pufferfish only 1 hunger point and will poison you very badly (which drains your health non-fatally) and causes serious food poisoning (which increases your hunger).",
 	inventory_image = "mcl_fishing_pufferfish_raw.png",
 	on_place = minetest.item_eat(1),
 	on_secondary_use = minetest.item_eat(1),
