@@ -77,6 +77,17 @@ doc.sub.items.register_factoid(nil, "use", function(itemstring, def)
 	return ""
 end)
 
+doc.sub.items.register_factoid(nil, "groups", function(itemstring, def)
+	local s = ""
+	if def.groups.eatable and def.groups.eatable > 0 then
+		s = s .. string.format("Hunger points restored: %d", def.groups.eatable)
+	end
+	if def._mcl_saturation and def._mcl_saturation > 0 then
+		s = s .. "\n" .. string.format("Saturation points restored: %.1f", def._mcl_saturation)
+	end
+	return s
+end)
+
 -- Mining, hardness and all that
 doc.sub.items.register_factoid("nodes", "mining", function(itemstring, def)
 	local pickaxey = { "Diamond Pickaxe", "Iron Pickaxe", "Stone Pickaxe", "Golden Pickaxe", "Wooden Pickaxe" }
