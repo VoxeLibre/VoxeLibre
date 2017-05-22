@@ -198,7 +198,7 @@ minetest.register_globalstep(function(dtime)
 		--[[ Swimming: Cause exhaustion.
 		NOTE: As of 0.4.15, it only counts as swimming when you are with the feet inside the liquid!
 		Head alone does not count. We respect that for now. ]]
-		if minetest.get_item_group(playerplus[name].nod_feet, "liquid") ~= 0 and
+		if minetest.get_item_group(playerplus[name].nod_feet, "liquid") ~= 0 or
 				minetest.get_item_group(playerplus[name].nod_stand, "liquid") ~= 0 then
 			local lastPos = playerplus_internal[name].lastPos
 			if lastPos then
