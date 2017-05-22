@@ -1,12 +1,8 @@
---[[
-	PlayerPlus by TenPlus1
-]]
-
 -- Player state for public API
-playerplus = {}
+mcl_playerplus = {}
 
 -- Internal player state
-local playerplus_internal = {}
+local mcl_playerplus_internal = {}
 
 -- get node but use fallback for nil or unknown
 local function node_ok(pos, fallback)
@@ -35,16 +31,16 @@ local get_player_nodes = function(player_pos)
 
 	-- what is around me?
 	work_pos.y = work_pos.y - 0.1 -- standing on
-	local nod_stand = node_ok(work_pos)
-	local nod_stand_below = node_ok({x=work_pos.x, y=work_pos.y-1, z=work_pos.z})
+	local node_stand = node_ok(work_pos)
+	local node_stand_below = node_ok({x=work_pos.x, y=work_pos.y-1, z=work_pos.z})
 
 	work_pos.y = work_pos.y + 1.5 -- head level
-	local nod_head = node_ok(work_pos)
+	local node_head = node_ok(work_pos)
 
 	work_pos.y = work_pos.y - 1.2 -- feet level
-	local nod_feet = node_ok(work_pos)
+	local node_feet = node_ok(work_pos)
 
-	return nod_stand, nod_stand_below, nod_head, nod_feet
+	return node_stand, node_stand_below, node_head, node_feet
 end
 
 minetest.register_globalstep(function(dtime)
@@ -55,14 +51,14 @@ minetest.register_globalstep(function(dtime)
 	-- WARNING: This section is HACKY as hell since it is all just based on heuristics.
 	for _,player in pairs(minetest.get_connected_players()) do
 		local name = player:get_player_name()
-		if playerplus_internal[name].jump_cooldown > 0 then
-			playerplus_internal[name].jump_cooldown = playerplus_internal[name].jump_cooldown - dtime
+		if mcl_playerplus_internal[name].jump_cooldown > 0 then
+			mcl_playerplus_internal[name].jump_cooldown = mcl_playerplus_internal[name].jump_cooldown - dtime
 		end
-		if player:get_player_control().jump and playerplus_internal[name].jump_cooldown <= 0 then
+		if player:get_player_control().jump and mcl_playerplus_internal[name].jump_cooldown <= 0 then
 
 			local pos = player:getpos()
 
-			local nod_stand, nod_stand_below, nod_head, nod_feet = get_player_nodes(pos)
+			local node_stand, node_stand_below, node_head, node_feet = get_player_nodes(pos)
 
 			-- Cause buggy exhaustion for jumping
 
@@ -77,18 +73,18 @@ minetest.register_globalstep(function(dtime)
 			as of 0.4.15.
 			]]
 
-			if minetest.get_item_group(nod_feet, "liquid") == 0 and
-					minetest.get_item_group(nod_stand, "liquid") == 0 and
-					not minetest.registered_nodes[nod_feet].climbable and
-					not minetest.registered_nodes[nod_stand].climbable and
-					(minetest.registered_nodes[nod_stand].walkable or minetest.registered_nodes[nod_stand_below].walkable)
-					and minetest.get_item_group(nod_stand, "disable_jump") == 0
-					and minetest.get_item_group(nod_stand_below, "disable_jump") == 0 then
+			if minetest.get_item_group(node_feet, "liquid") == 0 and
+					minetest.get_item_group(node_stand, "liquid") == 0 and
+					not minetest.registered_nodes[node_feet].climbable and
+					not minetest.registered_nodes[node_stand].climbable and
+					(minetest.registered_nodes[node_stand].walkable or minetest.registered_nodes[node_stand_below].walkable)
+					and minetest.get_item_group(node_stand, "disable_jump") == 0
+					and minetest.get_item_group(node_stand_below, "disable_jump") == 0 then
 			-- Cause exhaustion for jumping
 			mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_JUMP)
 
 			-- Reset cooldown timer
-				playerplus_internal[name].jump_cooldown = 0.45
+				mcl_playerplus_internal[name].jump_cooldown = 0.45
 			end
 		end
 	end
@@ -111,11 +107,11 @@ minetest.register_globalstep(function(dtime)
 		local pos = player:getpos()
 
 		-- what is around me?
-		local nod_stand, nod_stand_below, nod_head, nod_feet = get_player_nodes(pos)
-		playerplus[name].nod_stand = nod_stand
-		playerplus[name].nod_stand_below = nod_stand_below
-		playerplus[name].nod_head = nod_head
-		playerplus[name].nod_feet = nod_feet
+		local node_stand, node_stand_below, node_head, node_feet = get_player_nodes(pos)
+		mcl_playerplus[name].node_stand = node_stand
+		mcl_playerplus[name].node_stand_below = node_stand_below
+		mcl_playerplus[name].node_head = node_head
+		mcl_playerplus[name].node_feet = node_feet
 
 		-- set defaults
 		def.speed = 1
@@ -131,11 +127,11 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		-- standing on soul sand? if so walk slower
-		if playerplus[name].nod_stand == "mcl_nether:soul_sand" then
+		if mcl_playerplus[name].node_stand == "mcl_nether:soul_sand" then
 			-- TODO: Tweak walk speed
 			-- TODO: Also slow down mobs
 			-- FIXME: This whole speed thing is a giant hack. We need a proper framefork for cleanly handling player speeds
-			local below = playerplus[name].nod_stand_below 
+			local below = mcl_playerplus[name].node_stand_below 
 			if below == "mcl_core:ice" or below == "mcl_core:packed_ice" or below == "mcl_core:slimeblock" then
 				def.speed = def.speed - 0.9
 			else
@@ -149,7 +145,7 @@ minetest.register_globalstep(function(dtime)
 
 		-- Is player suffocating inside node? (Only for solid full opaque cube type nodes
 		-- without group disable_suffocation=1)
-		local ndef = minetest.registered_nodes[playerplus[name].nod_head]
+		local ndef = minetest.registered_nodes[mcl_playerplus[name].node_head]
 
 		if (ndef.walkable == nil or ndef.walkable == true)
 		and (ndef.collision_box == nil or ndef.collision_box.type == "regular")
@@ -198,23 +194,23 @@ minetest.register_globalstep(function(dtime)
 		--[[ Swimming: Cause exhaustion.
 		NOTE: As of 0.4.15, it only counts as swimming when you are with the feet inside the liquid!
 		Head alone does not count. We respect that for now. ]]
-		if minetest.get_item_group(playerplus[name].nod_feet, "liquid") ~= 0 or
-				minetest.get_item_group(playerplus[name].nod_stand, "liquid") ~= 0 then
-			local lastPos = playerplus_internal[name].lastPos
+		if minetest.get_item_group(mcl_playerplus[name].node_feet, "liquid") ~= 0 or
+				minetest.get_item_group(mcl_playerplus[name].node_stand, "liquid") ~= 0 then
+			local lastPos = mcl_playerplus_internal[name].lastPos
 			if lastPos then
 				local dist = vector.distance(lastPos, pos)
-				playerplus_internal[name].swimDistance = playerplus_internal[name].swimDistance + dist
-				if playerplus_internal[name].swimDistance >= 1 then
-					local superficial = math.floor(playerplus_internal[name].swimDistance)
+				mcl_playerplus_internal[name].swimDistance = mcl_playerplus_internal[name].swimDistance + dist
+				if mcl_playerplus_internal[name].swimDistance >= 1 then
+					local superficial = math.floor(mcl_playerplus_internal[name].swimDistance)
 					mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_SWIM * superficial)
-					playerplus_internal[name].swimDistance = playerplus_internal[name].swimDistance - superficial
+					mcl_playerplus_internal[name].swimDistance = mcl_playerplus_internal[name].swimDistance - superficial
 				end
 			end
 
 		end
 
 		-- Underwater: Spawn bubble particles
-		if minetest.get_item_group(playerplus[name].nod_head, "water") ~= 0 then
+		if minetest.get_item_group(mcl_playerplus[name].node_head, "water") ~= 0 then
 
 			minetest.add_particlespawner({
 				amount = 10,
@@ -265,7 +261,7 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		-- Update internal values
-		playerplus_internal[name].lastPos = pos
+		mcl_playerplus_internal[name].lastPos = pos
 
 	end
 
@@ -275,13 +271,14 @@ end)
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 
-	playerplus[name] = {
-		nod_head = "",
-		nod_feet = "",
-		nod_stand = "",
+	mcl_playerplus[name] = {
+		node_head = "",
+		node_feet = "",
+		node_stand = "",
+		node_stand_below = "",
 	}
 
-	playerplus_internal[name] = {
+	mcl_playerplus_internal[name] = {
 		lastPos = nil,
 		swimDistance = 0,
 		jump_cooldown = -1,	-- Cooldown timer for jumping, we need this to prevent the jump exhaustion to increase rapidly
@@ -292,6 +289,6 @@ end)
 minetest.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
 
-	playerplus[name] = nil
-	playerplus_internal[name] = nil
+	mcl_playerplus[name] = nil
+	mcl_playerplus_internal[name] = nil
 end)

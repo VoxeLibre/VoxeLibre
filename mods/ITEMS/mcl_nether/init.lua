@@ -78,7 +78,7 @@ minetest.register_node("mcl_nether:soul_sand", {
 	sounds = mcl_sounds.node_sound_sand_defaults(),
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
-	-- Movement handling is done in playerplus mod
+	-- Movement handling is done in mcl_playerplus mod
 })
 
 minetest.register_node("mcl_nether:nether_brick", {

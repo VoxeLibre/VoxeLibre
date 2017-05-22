@@ -39,7 +39,7 @@ minetest.register_node("mcl_core:barrier", {
 	end,
 })
 
--- The void below the bedrock. Void damage is handled in playerplus.
+-- The void below the bedrock. Void damage is handled in mcl_playerplus.
 -- The void does not exist as a block in Minecraft but we register it as a
 -- block here to make things easier for us.
 minetest.register_node("mcl_core:void", {

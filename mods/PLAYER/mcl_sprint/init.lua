@@ -82,7 +82,7 @@ minetest.register_globalstep(function(dtime)
 			if players[playerName]["shouldSprint"] == true then --Stopped
 				local sprinting
 				-- Prevent sprinting if standing on soul sand or hungry
-				if playerplus[playerName].nod_stand == "mcl_nether:soul_sand" or (mcl_hunger.active and mcl_hunger.get_hunger(player) <= 6) then
+				if mcl_playerplus[playerName].node_stand == "mcl_nether:soul_sand" or (mcl_hunger.active and mcl_hunger.get_hunger(player) <= 6) then
 					sprinting = false
 				else
 					sprinting = true
@@ -101,7 +101,7 @@ function setSprinting(playerName, sprinting) --Sets the state of a player (0=sto
 	if players[playerName] then
 		players[playerName]["sprinting"] = sprinting
 		-- Don't overwrite physics when standing on soul sand
-		if playerplus[playerName].nod_stand ~= "mcl_nether:soul_sand" then
+		if mcl_playerplus[playerName].node_stand ~= "mcl_nether:soul_sand" then
 			if sprinting == true then
 				player:set_physics_override({speed=mcl_sprint.SPEED})
 			elseif sprinting == false then
