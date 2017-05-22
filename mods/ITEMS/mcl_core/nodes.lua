@@ -1637,7 +1637,7 @@ minetest.register_node("mcl_core:lava_flowing", {
 	liquid_renewable = false,
 	liquid_range = 4,
 	damage_per_second = 4*2,
-	post_effect_color = {a=192, r=255, g=64, b=0},
+	post_effect_color = {a=245, r=208, g=73, b=10},
 	groups = { lava=3, liquid=2, destroys_items=1, not_in_creative_inventory=1, dig_by_piston=1},
 	_mcl_blast_resistance = 500,
 	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
@@ -1677,7 +1677,7 @@ minetest.register_node("mcl_core:lava_source", {
 	liquid_renewable = false,
 	liquid_range = 4,
 	damage_per_second = 4*2,
-	post_effect_color = {a=192, r=255, g=64, b=0},
+	post_effect_color = {a=245, r=208, g=73, b=10},
 	stack_max = 64,
 	groups = { lava=3, liquid=2, destroys_items=1, not_in_creative_inventory=1, dig_by_piston=1},
 	_mcl_blast_resistance = 500,
