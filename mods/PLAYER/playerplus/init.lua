@@ -143,9 +143,8 @@ minetest.register_globalstep(function(dtime)
 			end
 		end
 
-		-- Underwater: Spawn bubble particles, cause exhaustion
-
-		if minetest.get_item_group(playerplus[name].nod_head, "water") ~= 0 then
+		-- Swimming: Cause exhaustion
+		if minetest.get_item_group(playerplus[name].nod_head, "liquid") ~= 0 or minetest.get_item_group(playerplus[name].nod_feet, "liquid") ~= 0 or minetest.get_item_group(playerplus[name].nod_stand, "liquid") ~= 0 then
 			local lastPos = playerplus_internal[name].lastPos
 			if lastPos then
 				local dist = vector.distance(lastPos, pos)
@@ -156,6 +155,10 @@ minetest.register_globalstep(function(dtime)
 					playerplus_internal[name].swimDistance = playerplus_internal[name].swimDistance - superficial
 				end
 			end
+		end
+
+		-- Underwater: Spawn bubble particles
+		if minetest.get_item_group(playerplus[name].nod_head, "water") ~= 0 then
 
 			minetest.add_particlespawner({
 				amount = 10,
