@@ -28,7 +28,6 @@ mcl_hunger.active = false
 
 if minetest.setting_getbool("enable_damage") then
 mcl_hunger.active = true
-mcl_hunger.food = {}
 
 -- Debug Mode. If enabled, saturation and exhaustion are shown as well.
 -- NOTE: Read-only. The setting should only be read at the beginning, this mod is not
@@ -50,6 +49,9 @@ end
 
 -- Count number of poisonings a player has at once
 mcl_hunger.poisonings = {}
+
+-- Cooldown timers for each player, to force a short delay between consuming 2 food items
+mcl_hunger.last_eat = {}
 
 -- HUD item ids
 local hunger_hud = {}
@@ -175,12 +177,15 @@ minetest.register_on_joinplayer(function(player)
 	local inv = player:get_inventory()
 	inv:set_size("hunger", 3)
 	mcl_hunger.poisonings[name] = 0
+	mcl_hunger.last_eat[name] = -1
 	init_hud(player)
 end)
 
 minetest.register_on_respawnplayer(function(player)
 	-- reset hunger (and save)
 	local name = player:get_player_name()
+	mcl_hunger.last_eat[name] = -1
+
 	local h, s, e = 20, mcl_hunger.SATURATION_INIT, 0
 	mcl_hunger.set_hunger(player, h, false)
 	mcl_hunger.set_saturation(player, s, false)

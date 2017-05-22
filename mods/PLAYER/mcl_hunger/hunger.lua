@@ -12,18 +12,30 @@ core.do_item_eat = function(hp_change, replace_with_item, itemstack, user, point
 	end
 
 	local old_itemstack = itemstack
-	itemstack = mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_thing)
-	for _, callback in pairs(core.registered_on_item_eats) do
-		local result = callback(hp_change, replace_with_item, itemstack, user, pointed_thing, old_itemstack)
-		if result then
-			return result
+
+	local name = user:get_player_name()
+
+	-- Allow eating only after a delay of 2 seconds.
+	-- This prevents eating as an excessive speed.
+	-- Yes, os.time() is not a precise timer but it is good enough for our purposes.
+	-- FIXME: In singleplayer, there's a cheat to circumvent this, simply by pausing the game between eats.
+	-- This is because os.time() obviously does not care about the pause. A fix needs a different timer mechanism.
+	if (mcl_hunger.last_eat[name] < 0) or (os.difftime(os.time(), mcl_hunger.last_eat[name]) >= 2)  then
+		itemstack = mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_thing)
+		for _, callback in pairs(core.registered_on_item_eats) do
+			local result = callback(hp_change, replace_with_item, itemstack, user, pointed_thing, old_itemstack)
+			if result then
+				return result
+			end
 		end
+		mcl_hunger.last_eat[name] = os.time()
 	end
+
 	return itemstack
 end
 
 -- food functions
-local food = mcl_hunger.food
+local food = {}
 
 function mcl_hunger.register_food(name, hunger_change, replace_with_item, poisontime, poison, exhaust, poisonchance, sound)
 	food[name] = {}
@@ -87,7 +99,7 @@ local function poisonp(tick, time, time_left, damage, exhaustion, player)
 		player:set_hp(player:get_hp()-damage)
 	end
 	mcl_hunger.exhaust(player:get_player_name(), exhaustion)
-	
+
 end
 
 -- Immediately stop all poisonings for this player
@@ -101,6 +113,7 @@ local poisonrandomizer = PseudoRandom(os.time())
 function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poison, exhaust, poisonchance, sound)
 	return function(itemstack, user, pointed_thing)
 		local itemname = itemstack:get_name()
+
 		if itemstack:take_item() ~= nil and user ~= nil then
 			local name = user:get_player_name()
 			local hp = user:get_hp()
