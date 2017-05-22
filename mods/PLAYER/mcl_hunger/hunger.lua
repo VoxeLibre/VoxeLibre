@@ -15,12 +15,15 @@ core.do_item_eat = function(hp_change, replace_with_item, itemstack, user, point
 
 	local name = user:get_player_name()
 
-	-- Allow eating only after a delay of 2 seconds.
-	-- This prevents eating as an excessive speed.
-	-- Yes, os.time() is not a precise timer but it is good enough for our purposes.
+	-- Special foodstuffs like the cake may disable the eating delay
+	local no_eat_delay = minetest.get_item_group(itemstack:get_name(), "no_eat_delay") == 1
+
+	-- Allow eating only after a delay of 2 seconds. This prevents eating as an excessive speed.
+	-- FIXME: time() is not a precise timer, so the actual delay may be +- 1 second, depending on which fraction
+	-- of the second the player made the first eat.
 	-- FIXME: In singleplayer, there's a cheat to circumvent this, simply by pausing the game between eats.
 	-- This is because os.time() obviously does not care about the pause. A fix needs a different timer mechanism.
-	if (mcl_hunger.last_eat[name] < 0) or (os.difftime(os.time(), mcl_hunger.last_eat[name]) >= 2)  then
+	if no_eat_delay or (mcl_hunger.last_eat[name] < 0) or (os.difftime(os.time(), mcl_hunger.last_eat[name]) >= 2)  then
 		itemstack = mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_thing)
 		for _, callback in pairs(core.registered_on_item_eats) do
 			local result = callback(hp_change, replace_with_item, itemstack, user, pointed_thing, old_itemstack)

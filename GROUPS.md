@@ -45,6 +45,7 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `soil_nether_wart=1`: Nether wart will grow on this
 * `disable_suffocation=1`: Disables suffocation for full solid cubes (1)
 * `destroys_items=1`: If an item happens to be *inside* this node, the item will be destroyed
+* `no_eat_delay=1`: Only for foodstuffs. When eating this, all eating delays are ignored.
 
 #### Footnotes
 
