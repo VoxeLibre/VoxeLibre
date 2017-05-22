@@ -34,7 +34,58 @@ minetest.register_globalstep(function(dtime)
 
 	time = time + dtime
 
-	-- every 0.5 seconds
+	-- Update jump status immediately since we need this info in real time.
+	-- WARNING: This section is HACKY as hell since it is all just based on heuristics.
+	for _,player in pairs(minetest.get_connected_players()) do
+		local name = player:get_player_name()
+		if playerplus_internal[name].jump_cooldown > 0 then
+			playerplus_internal[name].jump_cooldown = playerplus_internal[name].jump_cooldown - dtime
+		end
+		if player:get_player_control().jump and playerplus_internal[name].jump_cooldown <= 0 then
+
+			local pos = player:getpos()
+
+			-- what is around me?
+			pos.y = pos.y - 0.1 -- standing on
+			local nod_stand = node_ok(pos)
+			local nod_stand_below = node_ok({x=pos.x, y=pos.y-1, z=pos.z})
+
+			pos.y = pos.y + 1.5 -- head level
+			local nod_head = node_ok(pos)
+
+			pos.y = pos.y - 1.2 -- feet level
+			local nod_feet = node_ok(pos)
+
+			-- Cause buggy exhaustion for jumping
+
+			--[[ Checklist we check to know the player *actually* jumped:
+				* Not on or in liquid
+				* Not on or at climbable
+				* On walkable
+				* Not on disable_jump
+			FIXME: This code is pretty hacky and it is possible to miss some jumps or detect false
+			jumps because of delays, rounding errors, etc.
+			What this code *really* needs is some kind of jumping “callback” which this engine lacks
+			as of 0.4.15.
+			]]
+
+			if minetest.get_item_group(nod_feet, "liquid") == 0 and
+					minetest.get_item_group(nod_stand, "liquid") == 0 and
+					not minetest.registered_nodes[nod_feet].climbable and
+					not minetest.registered_nodes[nod_stand].climbable and
+					(minetest.registered_nodes[nod_stand].walkable or minetest.registered_nodes[nod_stand_below].walkable)
+					and minetest.get_item_group(nod_stand, "disable_jump") == 0
+					and minetest.get_item_group(nod_stand_below, "disable_jump") == 0 then
+			-- Cause exhaustion for jumping
+			mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_JUMP)
+
+			-- Reset cooldown timer
+				playerplus_internal[name].jump_cooldown = 0.45
+			end
+		end
+	end
+
+	-- Run the rest of the code every 0.5 seconds
 	if time < 0.5 then
 		return
 	end
@@ -45,7 +96,6 @@ minetest.register_globalstep(function(dtime)
 
 	-- check players
 	for _,player in pairs(minetest.get_connected_players()) do
-
 		-- who am I?
 		local name = player:get_player_name()
 
@@ -64,6 +114,11 @@ minetest.register_globalstep(function(dtime)
 		playerplus[name].nod_feet = node_ok(pos)
 
 		pos.y = pos.y - 0.2 -- reset pos
+
+		-- Set jump status
+		if player:get_player_control().jump then
+			playerplus_internal[name].jumped = true
+		end
 
 		-- set defaults
 		def.speed = 1
@@ -159,19 +214,6 @@ minetest.register_globalstep(function(dtime)
 				end
 			end
 
-		-- Cause buggy exhaustion for jumping
-		elseif not minetest.registered_nodes[playerplus[name].nod_feet].climbable and
-				not minetest.registered_nodes[playerplus[name].nod_stand].climbable then
-			--[[ No exhaustion for “jumping” in a liquid or at a climbable node since those
-			treat the jump key differently. ]]
-
-			-- Cause exhaustion for jumping
-			local controls = player:get_player_control()
-			-- FIXME: This is quite hacky and doesn't check if the player is actually jumping
-			-- FIXME: Sometimes this exhaustion is caused for holding down the jump key on the top of water
-			if controls.jump then
-				mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_JUMP)
-			end
 		end
 
 		-- Underwater: Spawn bubble particles
@@ -245,6 +287,7 @@ minetest.register_on_joinplayer(function(player)
 	playerplus_internal[name] = {
 		lastPos = nil,
 		swimDistance = 0,
+		jump_cooldown = -1,	-- Cooldown timer for jumping, we need this to prevent the jump exhaustion to increase rapidly
 	}
 end)
 
