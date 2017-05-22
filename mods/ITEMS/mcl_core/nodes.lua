@@ -638,9 +638,7 @@ minetest.register_node("mcl_core:clay", {
 	stack_max = 64,
 	groups = {handy=1,shovely=1, building_block=1},
 	drop = 'mcl_core:clay_lump 4',
-	sounds = mcl_sounds.node_sound_dirt_defaults({
-		footstep = "",
-	}),
+	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 0.6,
 })
