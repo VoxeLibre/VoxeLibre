@@ -2,7 +2,11 @@
 	PlayerPlus by TenPlus1
 ]]
 
+-- Player state for public API
 playerplus = {}
+
+-- Internal player state
+local playerplus_internal = {}
 
 -- get node but use fallback for nil or unknown
 local function node_ok(pos, fallback)
@@ -139,9 +143,20 @@ minetest.register_globalstep(function(dtime)
 			end
 		end
 
-		-- Spawn bubble particles when underwater
+		-- Underwater: Spawn bubble particles, cause exhaustion
 
 		if minetest.get_item_group(playerplus[name].nod_head, "water") ~= 0 then
+			local lastPos = playerplus_internal[name].lastPos
+			if lastPos then
+				local dist = vector.distance(lastPos, pos)
+				playerplus_internal[name].swimDistance = playerplus_internal[name].swimDistance + dist
+				if playerplus_internal[name].swimDistance >= 1 then
+					local superficial = math.floor(playerplus_internal[name].swimDistance)
+					mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_SWIM * superficial)
+					playerplus_internal[name].swimDistance = playerplus_internal[name].swimDistance - superficial
+				end
+			end
+
 			minetest.add_particlespawner({
 				amount = 10,
 				time = 0.15,
@@ -182,13 +197,16 @@ minetest.register_globalstep(function(dtime)
 						expirationtime = 1,
 						size = 8,
 						texture = "default_barrier.png",
-						playername = player:get_player_name()
+						playername = name
 					})
 				end
 			end
 			end
 			end
 		end
+
+		-- Update internal values
+		playerplus_internal[name].lastPos = pos
 
 	end
 
@@ -198,14 +216,22 @@ end)
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 
-	playerplus[name] = {}
-	playerplus[name].nod_head = ""
-	playerplus[name].nod_feet = ""
-	playerplus[name].nod_stand = ""
+	playerplus[name] = {
+		nod_head = "",
+		nod_feet = "",
+		nod_stand = "",
+	}
+
+	playerplus_internal[name] = {
+		lastPos = nil,
+		swimDistance = 0,
+	}
 end)
 
 -- clear when player leaves
 minetest.register_on_leaveplayer(function(player)
+	local name = player:get_player_name()
 
-	playerplus[ player:get_player_name() ] = nil
+	playerplus[name] = nil
+	playerplus_internal[name] = nil
 end)
