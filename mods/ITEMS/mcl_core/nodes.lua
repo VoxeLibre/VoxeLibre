@@ -1552,7 +1552,7 @@ minetest.register_node("mcl_core:water_flowing", {
 	liquid_viscosity = WATER_VISC,
 	liquid_range = 7,
 	freezemelt = "mcl_core:snow",
-	post_effect_color = {a=64, r=100, g=100, b=200},
+	post_effect_color = {a=64, r=45, g=63, b=244},
 	groups = { water=3, liquid=3, puts_out_fire=1, not_in_creative_inventory=1, freezes=1, melt_around=1, dig_by_piston=1},
 	_mcl_blast_resistance = 500,
 	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
@@ -1591,7 +1591,7 @@ minetest.register_node("mcl_core:water_source", {
 	liquid_viscosity = WATER_VISC,
 	liquid_range = 7,
 	freezemelt = "mcl_core:ice",
-	post_effect_color = {a=64, r=100, g=100, b=200},
+	post_effect_color = {a=64, r=45, g=63, b=244},
 	stack_max = 64,
 	groups = { water=3, liquid=3, puts_out_fire=1, freezes=1, not_in_creative_inventory=1, dig_by_piston=1},
 	_mcl_blast_resistance = 500,
