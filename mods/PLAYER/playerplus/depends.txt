@@ -1,5 +1,6 @@
 mcl_init
 mcl_util
 mcl_core
+mcl_particles
 mcl_hunger
 3d_armor?

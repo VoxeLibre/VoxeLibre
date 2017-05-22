@@ -202,33 +202,6 @@ minetest.register_globalstep(function(dtime)
 				player_set_animation(player, "stand", animation_speed_mod)
 			end
 
-			-- Spawn bubble particles when underwater
-
-			local pos = player:getpos()
-			local head_pos = {
-				x = math.floor(pos.x+0.5),
-				y = math.ceil(pos.y+1.0),
-				z = math.floor(pos.z+0.5)
-			}
-
-			if minetest.get_item_group(minetest.get_node(head_pos).name, "water") ~= 0 then
-				minetest.add_particlespawner({
-					amount = 2,
-					time = 0.15,
-					minpos = { x = -0.25, y = 0.3, z = -0.25 },
-					maxpos = { x = 0.25, y = 0.7, z = 0.75 },
-					attached = player,
-					minvel = {x = -0.2, y = 0, z = -0.2},
-					maxvel = {x = 0.5, y = 0, z = 0.5},
-					minacc = {x = -0.4, y = 4, z = -0.4},
-					maxacc = {x = 0.5, y = 1, z = 0.5},
-					minexptime = 0.3,
-					maxexptime = 0.8,
-					minsize = 0.7,
-					maxsize = 2.4,
-					texture = "mcl_particles_bubble.png"
-				})
-			end
 		end
 	end
 end)
