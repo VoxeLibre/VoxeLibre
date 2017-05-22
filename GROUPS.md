@@ -104,6 +104,7 @@ These groups are used mostly for informational purposes
 * `flower_pot`: Flower pot
    * `flower_pot=1`: Empty flower pot
    * `flower_pot=2`: Flower pot with a plant or flower
+* `cake`: Cake (rating = slices left)
 * `book=1`: Book
 * `pane=1`: Node is a “pane”-like node glass pane or iron bars
 * `bed=1`: Bed
