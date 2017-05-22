@@ -188,7 +188,7 @@ minetest.register_node("mcl_end:chorus_flower", {
 	node_box = chorus_flower_box,
 	selection_box = { type = "regular" },
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	groups = {handy=1,axey=1, deco_block = 1, dig_by_piston = 1},
+	groups = {handy=1,axey=1, deco_block = 1, dig_by_piston = 1, destroy_by_lava_flow = 1,},
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
 })
@@ -209,7 +209,7 @@ minetest.register_node("mcl_end:chorus_flower_dead", {
 	selection_box = { type = "regular" },
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	drop = "mcl_end:chorus_flower",
-	groups = {handy=1,axey=1, deco_block = 1, dig_by_piston = 1},
+	groups = {handy=1,axey=1, deco_block = 1, dig_by_piston = 1, destroy_by_lava_flow = 1,},
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
 })
@@ -242,7 +242,7 @@ minetest.register_node("mcl_end:chorus_plant", {
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	-- TODO: Check drop probability
 	drop = { items = { {items = { "mcl_end:chorus_fruit", rarity = 4 } } } },
-	groups = {handy=1,axey=1, not_in_creative_inventory = 1, dig_by_piston = 1 },
+	groups = {handy=1,axey=1, not_in_creative_inventory = 1, dig_by_piston = 1, destroy_by_lava_flow = 1 },
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
 })
