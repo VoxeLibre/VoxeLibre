@@ -30,6 +30,23 @@ local armor_mod = minetest.get_modpath("3d_armor")
 local def = {}
 local time = 0
 
+local get_player_nodes = function(player_pos)
+	local work_pos = table.copy(player_pos)
+
+	-- what is around me?
+	work_pos.y = work_pos.y - 0.1 -- standing on
+	local nod_stand = node_ok(work_pos)
+	local nod_stand_below = node_ok({x=work_pos.x, y=work_pos.y-1, z=work_pos.z})
+
+	work_pos.y = work_pos.y + 1.5 -- head level
+	local nod_head = node_ok(work_pos)
+
+	work_pos.y = work_pos.y - 1.2 -- feet level
+	local nod_feet = node_ok(work_pos)
+
+	return nod_stand, nod_stand_below, nod_head, nod_feet
+end
+
 minetest.register_globalstep(function(dtime)
 
 	time = time + dtime
@@ -45,16 +62,7 @@ minetest.register_globalstep(function(dtime)
 
 			local pos = player:getpos()
 
-			-- what is around me?
-			pos.y = pos.y - 0.1 -- standing on
-			local nod_stand = node_ok(pos)
-			local nod_stand_below = node_ok({x=pos.x, y=pos.y-1, z=pos.z})
-
-			pos.y = pos.y + 1.5 -- head level
-			local nod_head = node_ok(pos)
-
-			pos.y = pos.y - 1.2 -- feet level
-			local nod_feet = node_ok(pos)
+			local nod_stand, nod_stand_below, nod_head, nod_feet = get_player_nodes(pos)
 
 			-- Cause buggy exhaustion for jumping
 
@@ -103,22 +111,11 @@ minetest.register_globalstep(function(dtime)
 		local pos = player:getpos()
 
 		-- what is around me?
-		pos.y = pos.y - 0.1 -- standing on
-		playerplus[name].nod_stand = node_ok(pos)
-		playerplus[name].nod_stand_below = node_ok({x=pos.x, y=pos.y-1, z=pos.z})
-
-		pos.y = pos.y + 1.5 -- head level
-		playerplus[name].nod_head = node_ok(pos)
-	
-		pos.y = pos.y - 1.2 -- feet level
-		playerplus[name].nod_feet = node_ok(pos)
-
-		pos.y = pos.y - 0.2 -- reset pos
-
-		-- Set jump status
-		if player:get_player_control().jump then
-			playerplus_internal[name].jumped = true
-		end
+		local nod_stand, nod_stand_below, nod_head, nod_feet = get_player_nodes(pos)
+		playerplus[name].nod_stand = nod_stand
+		playerplus[name].nod_stand_below = nod_stand_below
+		playerplus[name].nod_head = nod_head
+		playerplus[name].nod_feet = nod_feet
 
 		-- set defaults
 		def.speed = 1
