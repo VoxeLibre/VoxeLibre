@@ -106,8 +106,10 @@ local liquid_flow_action = function(pos, group, action)
 		--[[ Check if we want to perform the liquid action.
 		* 1: Item must be in liquid group
 		* 2a: If target node is below liquid, always succeed
-		* 2b: If target node is horizontal to liquid, check param2 for horizontal flow direction ]]
-		if (minetest.get_item_group(n.name, group) ~= 0) and ((yp > 0) or (yp == 0 and n.param2 > (8-minetest.registered_nodes[n.name].liquid_range) and n.param2 < 9)) then
+		* 2b: If target node is horizontal to liquid: succeed if source, otherwise check param2 for horizontal flow direction ]]
+		if (minetest.get_item_group(n.name, group) ~= 0) and
+				((yp > 0) or
+				(yp == 0 and ((d.liquidtype == "source") or (n.param2 > (8-d.liquid_range) and n.param2 < 9)))) then
 			action(pos)
 		end
 	end
