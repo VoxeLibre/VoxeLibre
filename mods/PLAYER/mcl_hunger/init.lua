@@ -5,9 +5,29 @@ else
 	S = function ( s ) return s end
 end
 
-if minetest.setting_getbool("enable_damage") then
 
 mcl_hunger = {}
+mcl_hunger.exhaust = function() end
+
+mcl_hunger.HUD_TICK = 0.1
+
+-- Exhaustion increase
+mcl_hunger.EXHAUST_DIG = 5  -- after digging node
+mcl_hunger.EXHAUST_JUMP = 50 -- jump
+mcl_hunger.EXHAUST_SPRINT_JUMP = 200 -- TODO: jump while sprinting
+mcl_hunger.EXHAUST_ATTACK = 100 -- hit an enemy
+mcl_hunger.EXHAUST_SWIM = 10 -- TODO: player movement in water
+mcl_hunger.EXHAUST_SPRINT = 100 -- sprint (per node)
+mcl_hunger.EXHAUST_DAMAGE = 100 -- TODO (mostly done): taking damage (protected by armor)
+mcl_hunger.EXHAUST_REGEN = 6000 -- Regenerate 1 HP
+mcl_hunger.EXHAUST_LVL = 4000 -- at what exhaustion player saturation gets lowered
+
+mcl_hunger.SATURATION_INIT = 50 -- Initial saturation for new/respawning players
+
+mcl_hunger.active = false
+
+if minetest.setting_getbool("enable_damage") then
+mcl_hunger.active = true
 mcl_hunger.food = {}
 
 -- Debug Mode. If enabled, saturation and exhaustion are shown as well.
@@ -33,21 +53,6 @@ mcl_hunger.poisonings = {}
 
 -- HUD item ids
 local hunger_hud = {}
-
-mcl_hunger.HUD_TICK = 0.1
-
--- Exhaustion increase
-mcl_hunger.EXHAUST_DIG = 5  -- after digging node
-mcl_hunger.EXHAUST_JUMP = 50 -- jump
-mcl_hunger.EXHAUST_SPRINT_JUMP = 200 -- TODO: jump while sprinting
-mcl_hunger.EXHAUST_ATTACK = 100 -- hit an enemy
-mcl_hunger.EXHAUST_SWIM = 10 -- TODO: player movement in water
-mcl_hunger.EXHAUST_SPRINT = 100 -- sprint (per node)
-mcl_hunger.EXHAUST_DAMAGE = 100 -- TODO (mostly done): taking damage (protected by armor)
-mcl_hunger.EXHAUST_REGEN = 6000 -- Regenerate 1 HP
-mcl_hunger.EXHAUST_LVL = 4000 -- at what exhaustion player saturation gets lowered
-
-mcl_hunger.SATURATION_INIT = 50 -- Initial saturation for new/respawning players
 
 --load custom settings
 local set = io.open(minetest.get_modpath("mcl_hunger").."/mcl_hunger.conf", "r")
