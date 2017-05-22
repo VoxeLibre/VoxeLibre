@@ -143,8 +143,11 @@ minetest.register_globalstep(function(dtime)
 			end
 		end
 
-		-- Swimming: Cause exhaustion
-		if minetest.get_item_group(playerplus[name].nod_head, "liquid") ~= 0 or minetest.get_item_group(playerplus[name].nod_feet, "liquid") ~= 0 or minetest.get_item_group(playerplus[name].nod_stand, "liquid") ~= 0 then
+		--[[ Swimming: Cause exhaustion.
+		NOTE: As of 0.4.15, it only counts as swimming when you are with the feet inside the liquid!
+		Head alone does not count. We respect that for now. ]]
+		if minetest.get_item_group(playerplus[name].nod_feet, "liquid") ~= 0 and
+				minetest.get_item_group(playerplus[name].nod_stand, "liquid") ~= 0 then
 			local lastPos = playerplus_internal[name].lastPos
 			if lastPos then
 				local dist = vector.distance(lastPos, pos)
@@ -154,6 +157,20 @@ minetest.register_globalstep(function(dtime)
 					mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_SWIM * superficial)
 					playerplus_internal[name].swimDistance = playerplus_internal[name].swimDistance - superficial
 				end
+			end
+
+		-- Cause buggy exhaustion for jumping
+		elseif not minetest.registered_nodes[playerplus[name].nod_feet].climbable and
+				not minetest.registered_nodes[playerplus[name].nod_stand].climbable then
+			--[[ No exhaustion for “jumping” in a liquid or at a climbable node since those
+			treat the jump key differently. ]]
+
+			-- Cause exhaustion for jumping
+			local controls = player:get_player_control()
+			-- FIXME: This is quite hacky and doesn't check if the player is actually jumping
+			-- FIXME: Sometimes this exhaustion is caused for holding down the jump key on the top of water
+			if controls.jump then
+				mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_JUMP)
 			end
 		end
 
