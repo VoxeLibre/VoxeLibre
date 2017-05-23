@@ -1,36 +1,41 @@
 --
--- Lavacooling
+-- Lava vs water interactions
 --
 
-mcl_core.cool_lava_source = function(pos)
-	minetest.set_node(pos, {name="mcl_core:obsidian"})
-	minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
-end
-
-mcl_core.cool_lava_flowing = function(pos)
-	minetest.set_node(pos, {name="mcl_core:stone"})
-	minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
-end
-
 minetest.register_abm({
-	label = "Flowing lava cooling",
-	nodenames = {"mcl_core:lava_flowing"},
+	label = "Lava cooling",
+	nodenames = {"group:lava"},
 	neighbors = {"group:water"},
 	interval = 1,
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
-		mcl_core.cool_lava_flowing(pos, node, active_object_count, active_object_count_wider)
-	end,
-})
+		local water = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+1, z=pos.z+1}, "group:water")
 
-minetest.register_abm({
-	label = "Lava source cooling",
-	nodenames = {"mcl_core:lava_source"},
-	neighbors = {"group:water"},
-	interval = 1,
-	chance = 1,
-	action = function(pos, node, active_object_count, active_object_count_wider)
-		mcl_core.cool_lava_source(pos, node, active_object_count, active_object_count_wider)
+		local lavatype = minetest.registered_nodes[node.name].liquidtype
+
+		for w=1, #water do
+			local waternode = minetest.get_node(water[w])
+			local watertype = minetest.registered_nodes[waternode.name].liquidtype
+			-- Lava on top of water: Water turns into stone
+			if water[w].y < pos.y and water[w].x == pos.x and water[w].z == pos.z then
+				minetest.set_node(water[w], {name="mcl_core:stone"})
+				minetest.sound_play("fire_extinguish_flame", {pos = water[w], gain = 0.25, max_hear_distance = 16})
+			-- Flowing lava vs water on same level: Lava turns into cobblestone
+			elseif lavatype == "flowing" and water[w].y == pos.y and (water[w].x == pos.x or water[w].z == pos.z) then
+				minetest.set_node(pos, {name="mcl_core:cobble"})
+				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
+			-- Still lava vs flowing water above or horizontally neighbored: Lava turns into obsidian
+			elseif lavatype == "source" and
+					((water[w].y > pos.y and water[w].x == pos.x and water[w].z == pos.z) or
+					(water[w].y == pos.y and (water[w].x == pos.x or water[w].z == pos.z))) then
+				minetest.set_node(pos, {name="mcl_core:obsidian"})
+				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
+			-- Flowing water above flowing lava: Lava turns into cobblestone
+			elseif watertype == "flowing" and lavatype == "flowing" and water[w].y > pos.y and water[w].x == pos.x and water[w].z == pos.z then
+				minetest.set_node(pos, {name="mcl_core:cobble"})
+				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
+			end
+		end
 	end,
 })
 
