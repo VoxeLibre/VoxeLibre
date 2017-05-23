@@ -132,6 +132,15 @@ minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
 	stack_max = 64,
 })
 
+local drink_milk = function(itemstack, player, pointed_thing)
+	local bucket = minetest.do_item_eat(0, "bucket:bucket_empty", itemstack, player, pointed_thing)
+	-- Check if we were allowed to drink this (eat delay check)
+	if bucket:get_name() ~= "mcl_mobitems:milk_bucket" then
+		mcl_hunger.stop_poison(player)
+	end
+	return bucket
+end
+
 -- TODO: Clear *all* status effects
 minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 	description = "Milk",
@@ -140,14 +149,8 @@ minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 	inventory_image = "mcl_mobitems_bucket_milk.png",
 	wield_image = "mcl_mobitems_bucket_milk.png",
 	-- Clear poisoning when used
-	on_place = function(itemstack, player, pointed_thing)
-		mcl_hunger.stop_poison(player)
-		return minetest.do_item_eat(0, "bucket:bucket_empty", itemstack, player, pointed_thing)
-	end,
-	on_secondary_use = function(itemstack, player, pointed_thing)
-		mcl_hunger.stop_poison(player)
-		return minetest.do_item_eat(0, "bucket:bucket_empty", itemstack, player, pointed_thing)
-	end,
+	on_place = drink_milk,
+	on_secondary_use = drink_milk,
 	stack_max = 1,
 	groups = { food = 3, can_eat_when_full = 1 },
 })
