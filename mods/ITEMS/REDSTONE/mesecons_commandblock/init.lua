@@ -44,49 +44,20 @@ minetest.register_chatcommand("hp", {
 
 local function initialize_data(meta)
 	local commands = minetest.formspec_escape(meta:get_string("commands"))
-	meta:set_string("formspec",
-		"invsize[9,5;]" ..
-		"textarea[0.5,0.5;8.5,4;commands;Commands;"..commands.."]" ..
-		"label[1,3.8;@nearest, @farthest, and @random are replaced by the respective player names]" ..
-		"button_exit[3.3,4.5;2,1;submit;Submit]")
-	local owner = meta:get_string("owner")
-	if owner == "" then
-		owner = "not owned"
-	else
-		owner = "owned by " .. owner
-	end
 end
 
 local function construct(pos)
 	local meta = minetest.get_meta(pos)
 
 	meta:set_string("commands", "")
-
-	meta:set_string("owner", "")
-
 	initialize_data(meta)
 end
 
 local function after_place(pos, placer)
 	if placer then
 		local meta = minetest.get_meta(pos)
-		meta:set_string("owner", placer:get_player_name())
 		initialize_data(meta)
 	end
-end
-
-local function receive_fields(pos, formname, fields, sender)
-	if not fields.submit then
-		return
-	end
-	local meta = minetest.get_meta(pos)
-	local owner = meta:get_string("owner")
-	if owner ~= "" and sender:get_player_name() ~= owner then
-		return
-	end
-	meta:set_string("commands", fields.commands)
-
-	initialize_data(meta)
 end
 
 local function resolve_commands(commands, pos)
@@ -132,10 +103,6 @@ local function commandblock_action_on(pos, node)
 	minetest.swap_node(pos, {name = "mesecons_commandblock:commandblock_on"})
 
 	local meta = minetest.get_meta(pos)
-	local owner = meta:get_string("owner")
-	if owner == "" then
-		return
-	end
 
 	local commands = resolve_commands(meta:get_string("commands"), pos)
 	for _, command in pairs(commands:split("\n")) do
@@ -147,18 +114,12 @@ local function commandblock_action_on(pos, node)
 		end
 		local cmddef = minetest.chatcommands[cmd]
 		if not cmddef then
-			minetest.chat_send_player(owner, "The command "..cmd.." does not exist")
+			-- Invalid chat command
+			-- TODO: Somehow report this error
 			return
 		end
-		local has_privs, missing_privs = minetest.check_player_privs(owner, cmddef.privs)
-		if not has_privs then
-			minetest.chat_send_player(owner, "You don't have permission "
-					.."to run "..cmd
-					.." (missing privileges: "
-					..table.concat(missing_privs, ", ")..")")
-			return
-		end
-		cmddef.func(owner, param)
+		local dummy_player = ""
+		cmddef.func(dummy_player, param)
 	end
 end
 
@@ -169,9 +130,22 @@ local function commandblock_action_off(pos, node)
 end
 
 local function can_dig(pos, player)
+	return minetest.setting_getbool("creative_mode")
+end
+
+local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
+	-- Only allow access in Creative Mode
+	if not minetest.setting_getbool("creative_mode") then
+		return
+	end
+
 	local meta = minetest.get_meta(pos)
-	local owner = meta:get_string("owner")
-	return owner == "" or owner == player:get_player_name()
+	local commands = meta:get_string("commands")
+	local formspec = "invsize[9,5;]" ..
+	"textarea[0.5,0.5;8.5,4;commands;Commands;"..commands.."]" ..
+	"label[1,3.8;@nearest, @farthest, and @random are replaced by the respective player names]" ..
+	"button_exit[3.3,4.5;2,1;submit;Submit]"
+	minetest.show_formspec(player:get_player_name(), "commandblock_"..pos.x.."_"..pos.y.."_"..pos.z, formspec)
 end
 
 minetest.register_node("mesecons_commandblock:commandblock_off", {
@@ -196,8 +170,8 @@ To execute the commands, supply the command block with redstone power once. To e
 	on_construct = construct,
 	is_ground_content = false,
 	after_place_node = after_place,
-	on_receive_fields = receive_fields,
 	can_dig = can_dig,
+	on_rightclick = on_rightclick,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {effector = {
 		action_on = commandblock_action_on
@@ -213,14 +187,35 @@ minetest.register_node("mesecons_commandblock:commandblock_on", {
 	on_construct = construct,
 	is_ground_content = false,
 	after_place_node = after_place,
-	on_receive_fields = receive_fields,
 	can_dig = can_dig,
+	on_rightclick = on_rightclick,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {effector = {
 		action_off = commandblock_action_off
 	}},
 	mcl_blast_resistance = 18000000,
 })
+
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	if not fields.submit then
+		return
+	end
+	if string.sub(formname, 1, 13) == "commandblock_" then
+		local index, _, x, y, z = string.find(formname, "commandblock_(-?%d+)_(-?%d+)_(-?%d+)")
+		if index ~= nil and x ~= nil and y ~= nil and z ~= nil then
+			local pos = {x=tonumber(x), y=tonumber(y), z=tonumber(z)}
+			local meta = minetest.get_meta(pos)
+			if not minetest.setting_getbool("creative_mode") then
+				minetest.chat_send_player(player:get_player_name(), "Editing the command block has failed! You can only change the command block in Creative Mode!")
+				return
+			end
+			meta:set_string("commands", fields.commands)
+			initialize_data(meta)
+		else
+			minetest.chat_send_player(player:get_player_name(), "Editing the command block has failed! The command block is gone.")
+		end
+	end
+end)
 
 -- Add entry alias for the Help
 if minetest.get_modpath("doc") then
