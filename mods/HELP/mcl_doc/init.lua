@@ -65,16 +65,31 @@ end)
 
 -- Comestibles
 doc.sub.items.register_factoid(nil, "use", function(itemstring, def)
+	local s = ""
 	if def.groups.eatable and not def._doc_items_usagehelp then
 		if def.groups.food == 2 then
-			return "To eat it, wield it, then rightclick."
+			s = s .. "To eat it, wield it, then rightclick."
+			if def.groups.can_eat_when_full == 1 then
+				s = s .. "\n" .. "You can eat this even when your hunger bar is full."
+			else
+				s = s .. "\n" .. "You cannot eat this when your hunger bar is full."
+			end
 		elseif def.groups.food == 3 then
-			return "To drink it, wield it, then rightclick."
+			s = s .. "To drink it, wield it, then rightclick."
+			if def.groups.can_eat_when_full ~= 1 then
+				s = s .. "\n" .. "You cannot drink this when your hunger bar is full."
+			end
 		else
-			return "To consume it, wield it, then rightclick."
+			s = s .. "To consume it, wield it, then rightclick."
+			if def.groups.can_eat_when_full ~= 1 then
+				s = s .. "\n" .. "You cannot consume this when your hunger bar is full."
+			end
+		end
+		if def.groups.no_eat_delay ~= 1 then
+			s = s .. "\n" .. "You have to wait for about 2 seconds before you can eat or drink again."
 		end
 	end
-	return ""
+	return s
 end)
 
 doc.sub.items.register_factoid(nil, "groups", function(itemstring, def)
