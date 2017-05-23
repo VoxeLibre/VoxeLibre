@@ -92,8 +92,7 @@ minetest.register_abm(
         chance = 22,
         action = function(pos)
 		if minetest.get_item_group(minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z}).name, "water") ~= 0 and
-				minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name == "air" and 
-				minetest.get_node({x=pos.x, y=pos.y-2, z=pos.z}).name == "air" then
+				minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name == "air" then
 			local i = math.random(-45,45) / 100
 			minetest.add_entity({x=pos.x + i, y=pos.y - 0.501, z=pos.z + i}, "drippingwater:drop_water")
 		end
@@ -111,8 +110,7 @@ minetest.register_abm(
         chance = 22,
         action = function(pos)
 		if minetest.get_item_group(minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z}).name, "lava") ~= 0 and
-				minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name == "air" and 
-				minetest.get_node({x=pos.x, y=pos.y-2, z=pos.z}).name == "air" then
+				minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name == "air" then
 			local i = math.random(-45,45) / 100
 			minetest.add_entity({x=pos.x + i, y=pos.y - 0.501, z=pos.z + i}, "drippingwater:drop_lava")
 		end
