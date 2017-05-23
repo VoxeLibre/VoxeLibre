@@ -127,9 +127,8 @@ minetest.register_globalstep(function(dtime)
 end)
 
 function minetest.handle_node_drops(pos, drops, digger)
-	local inv
-	if minetest.setting_getbool("creative_mode") and digger and digger:is_player() then
-		inv = digger:get_inventory()
+	if minetest.setting_getbool("creative_mode") then
+		return
 	end
 	for _,item in ipairs(drops) do
 		local count, name
@@ -140,22 +139,20 @@ function minetest.handle_node_drops(pos, drops, digger)
 			count = item:get_count()
 			name = item:get_name()
 		end
-		if not inv or not inv:contains_item("main", ItemStack(name)) then
-			for i=1,count do
-				local obj = minetest.add_item(pos, name)
-				if obj ~= nil then
-					obj:get_luaentity().collect = true
-					local x = math.random(1, 5)
-					if math.random(1,2) == 1 then
-						x = -x
-					end
-					local z = math.random(1, 5)
-					if math.random(1,2) == 1 then
-						z = -z
-					end
-					obj:setvelocity({x=1/x, y=obj:getvelocity().y, z=1/z})
-					obj:get_luaentity().age = 0.6
+		for i=1,count do
+			local obj = minetest.add_item(pos, name)
+			if obj ~= nil then
+				obj:get_luaentity().collect = true
+				local x = math.random(1, 5)
+				if math.random(1,2) == 1 then
+					x = -x
 				end
+				local z = math.random(1, 5)
+				if math.random(1,2) == 1 then
+					z = -z
+				end
+				obj:setvelocity({x=1/x, y=obj:getvelocity().y, z=1/z})
+				obj:get_luaentity().age = 0.6
 			end
 		end
 	end
