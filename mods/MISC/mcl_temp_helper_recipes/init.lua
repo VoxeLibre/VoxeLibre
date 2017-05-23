@@ -117,21 +117,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_farming:beetroot_seeds",
-	recipe = {
-		{"mcl_farming:hay_block","mcl_farming:wheat_seeds"},
-		{"mcl_farming:wheat_seeds","mcl_farming:hay_block"},
-	},
-})
-minetest.register_craft({
-	output = "mcl_farming:beetroot_seeds",
-	recipe = {
-		{"mcl_farming:wheat_seeds","mcl_farming:hay_block"},
-		{"mcl_farming:hay_block","mcl_farming:wheat_seeds"},
-	},
-})
-
-minetest.register_craft({
 	output = "3d_armor:helmet_chain",
 	recipe = {
 		{ "xpanes:bar_flat", "mcl_core:iron_ingot", "xpanes:bar_flat" },
