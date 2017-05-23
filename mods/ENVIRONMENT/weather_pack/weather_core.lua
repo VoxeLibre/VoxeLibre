@@ -163,6 +163,29 @@ minetest.register_chatcommand("weather", {
   end
 })
 
+minetest.register_chatcommand("toggledownfall", {
+  params = "",
+  description = "Toggles between clear weather and weather with downfall (randomly rain, thunderstorm or snow)",
+  privs = {weather_manager = true},
+  func = function(name, param)
+    -- Currently rain/thunder/snow: Set weather to clear
+    if weather.state ~= "none" then
+       if (weather.state ~= nil and weather.state ~= "none" and weather.reg_weathers[weather.state] ~= nil) then
+         weather.reg_weathers[weather.state].clear()
+       end
+       weather.state = "none"
+    -- Currently clear: Set weather randomly to rain/thunder/snow
+    else
+       local new = { "rain", "thunder", "snow" }
+       local r = math.random(1, #new)
+       if (weather.state ~= nil and weather.state ~= "none" and weather.reg_weathers[weather.state] ~= nil) then
+         weather.reg_weathers[weather.state].clear()
+       end
+       weather.state = new[r]
+    end
+  end
+})
+
 -- Configuration setting which allows user to disable ABM for weathers (if they use it).
 -- Weather mods expected to be use this flag before registering ABM.
 local weather_allow_abm = minetest.setting_getbool("weather_allow_abm")
