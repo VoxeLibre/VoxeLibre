@@ -25,6 +25,7 @@ local wip_items = {
 	"gemalde:node_1",
 	"mcl_observers:observer",
 	"mcl_chests:trapped_chest",
+	"mcl_core:cobweb",
 }
 
 for i=1,#wip_items do
