@@ -58,11 +58,13 @@ the game. You can access the help from your inventory menu.
 
 ## Installation
 This game requires [Minetest](http://minetest.net) 0.4.15 (or later) to run,
-so you need to install Minetest first. To install MineClone 2, move this
-directory into the “games” directory of your Minetest data directory.
-Consult the help of Minetest to learn more.
+so you need to install Minetest first. Only stable versions of Minetest are
+officially supported. There is no support whatsoever for running MineClone 2
+in development versions of Minetest.
+To install MineClone 2, move this directory into the “games” directory of
+your Minetest data directory. Consult the help of Minetest to learn more.
 
-The logo of MineClone 2 has two grass blocks.
+The MineClone 2 icon has two grass blocks.
 
 ## Completion status
 This game is very unfinished at this moment. Expect bugs! Expect chaos
@@ -73,7 +75,7 @@ The following main features are available:
 * Tools, weapons and armor
 * Crafting system: 2×2 grid, crafting table (3×3 grid), furnace, including a crafting guide
 * Chests, large chests, ender chests, shulker boxes
-* Hunger (incomplete)
+* Hunger
 * All ores from Minecraft
 * Most blocks in the overworld
 * Water and lava
@@ -86,7 +88,7 @@ The following main features are available:
 * Compass
 * Sponge
 * Slime block (incomplete)
-* A variety of flowers
+* All flowers and grasses
 * Dyes
 * Deco blocks: Glass, stained glass, glass panes, iron bars, hardened clay (and colors), heads and more
 * Item frames
@@ -94,7 +96,7 @@ The following main features are available:
 * Beds
 * Inventory menu
 * Creative inventory
-* Farming (needs balancing)
+* Farming
 * Bookshelves
 * Books
 * More server commands
@@ -103,7 +105,8 @@ The following main features are available:
 
 The following features are incomplete:
 
-* Monsters and NPCs
+* Trees, biomes, generated structures
+* Monsters, animals and NPCs
 * Some redstone-related things
 * The Nether
 * The End
@@ -112,7 +115,6 @@ The following features are incomplete:
 * Status effects
 * Brewing, potions, tipped arrows
 * Anvil
-* Trees, biomes, generated structures
 * A couple of non-trivial blocks and items
 
 Bonus features (not found in Minecraft 1.11):
@@ -130,8 +132,8 @@ Technical differences from Minecraft:
 * Different music for jukebox
 * Different textures (Faithful 1.11)
 * Different engine
-* Height limit of ca. 31000 blocks
-* Horizontal world size is ca. 62000×62000 blocks
+* Height limit of ca. 31000 blocks (much higher than in Minecraft)
+* Horizontal world size is ca. 62000×62000 blocks (much smaller than in Minecraft, but it is still very large)
 
 
 ## Project description
