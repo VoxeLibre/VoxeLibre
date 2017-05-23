@@ -37,7 +37,7 @@ local function set_inv(filter, player)
 						table.insert(creative_list, name)
 					end
 				elseif filter == "\0food" then
-					if def.groups.food or def.groups.eatable then
+					if (def.groups.food and not def.groups.brewitem) or def.groups.eatable then
 						table.insert(creative_list, name)
 					end
 				elseif filter == "\0tools" then
