@@ -168,7 +168,10 @@ minetest.register_craftitem("bucket:bucket_empty", {
 		if liquiddef ~= nil and liquiddef.itemname ~= nil and (nn == liquiddef.source or
 			(nn == liquiddef.flowing and minetest.setting_getbool("liquid_finite"))) then
 
-			new_bucket = ItemStack({name = liquiddef.itemname, metadata = tostring(node.param2)})
+			-- Fill bucket, but not in Creative Mode
+			if not minetest.setting_getbool("creative_mode") then
+				new_bucket = ItemStack({name = liquiddef.itemname, metadata = tostring(node.param2)})
+			end
 
 			minetest.add_node(pointed_thing.under, {name="air"})
 
@@ -179,7 +182,9 @@ minetest.register_craftitem("bucket:bucket_empty", {
 		elseif nn == "mcl_cauldrons:cauldron_3" then
 			-- Take water out of full cauldron
 			minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
-			new_bucket = ItemStack("bucket:bucket_water")
+			if not minetest.setting_getbool("creative_mode") then
+				new_bucket = ItemStack("bucket:bucket_water")
+			end
 		end
 
 		-- Add liquid bucket and put it into inventory, if possible.
