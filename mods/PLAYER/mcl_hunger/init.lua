@@ -254,13 +254,10 @@ minetest.register_globalstep(function(dtime)
 		local h = tonumber(mcl_hunger.get_hunger(player))
 		local hp = player:get_hp()
 		if timer > 0.5 then
-			-- Quick heal (every 0.5s)
-			if h >= 20 and hp > 0 and hp < 20 then
-				-- +1 HP, +exhaustion
-				player:set_hp(hp+1)
-				mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_REGEN)
-			-- Slow heal, and hunger damage (every 4s)
-			elseif timerMult == 0 then
+			-- Slow health regeneration, and hunger damage (every 4s).
+			-- Regeneration rate based on tutorial video <https://www.youtube.com/watch?v=zs2t-xCVHBo>.
+			-- Minecraft Wiki seems to be wrong in claiming that full hunger gives 0.5s regen rate.
+			if timerMult == 0 then
 				if h >= 18 and hp > 0 and hp < 20 then
 					-- +1 HP, +exhaustion
 					player:set_hp(hp+1)
