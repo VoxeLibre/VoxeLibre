@@ -95,6 +95,22 @@ local function resolve_commands(commands, pos)
 	return commands
 end
 
+local function check_commands(commands)
+	for _, command in pairs(commands:split("\n")) do
+		local pos = command:find(" ")
+		local cmd, param = command, ""
+		if pos then
+			cmd = command:sub(1, pos - 1)
+		end
+		local cmddef = minetest.chatcommands[cmd]
+		if not cmddef then
+			-- Invalid chat command
+			return false, cmd
+		end
+	end
+	return true
+end
+
 local function commandblock_action_on(pos, node)
 	if node.name ~= "mesecons_commandblock:commandblock_off" then
 		return
@@ -115,7 +131,6 @@ local function commandblock_action_on(pos, node)
 		local cmddef = minetest.chatcommands[cmd]
 		if not cmddef then
 			-- Invalid chat command
-			-- TODO: Somehow report this error
 			return
 		end
 		local dummy_player = ""
@@ -205,6 +220,20 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				minetest.chat_send_player(player:get_player_name(), "Editing the command block has failed! You can only change the command block in Creative Mode!")
 				return
 			end
+			local check, bad_command = check_commands(fields.commands)
+			if check == false then
+				local msg
+				if bad_command ~= nil and bad_command ~= "" then
+					msg = "Warning: The command “"..bad_command.."” does not exist; your command block won't do anything. See the help command for a list of available commands."
+					if string.sub(bad_command, 1, 1) == "/" then
+						msg = msg .. " Hint: Try to remove the trailing slash"
+					end
+				else
+					msg = "Warning: You have entered an unknown command; your command block won't do anything.. See the help command for a list of available commands."
+				end
+				minetest.chat_send_player(player:get_player_name(), msg)
+			end
+
 			meta:set_string("commands", fields.commands)
 			initialize_data(meta)
 		else
