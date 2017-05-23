@@ -23,15 +23,19 @@ core.do_item_eat = function(hp_change, replace_with_item, itemstack, user, point
 	-- of the second the player made the first eat.
 	-- FIXME: In singleplayer, there's a cheat to circumvent this, simply by pausing the game between eats.
 	-- This is because os.time() obviously does not care about the pause. A fix needs a different timer mechanism.
-	if no_eat_delay or (mcl_hunger.last_eat[name] < 0) or (os.difftime(os.time(), mcl_hunger.last_eat[name]) >= 2)  then
-		itemstack = mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_thing)
-		for _, callback in pairs(core.registered_on_item_eats) do
-			local result = callback(hp_change, replace_with_item, itemstack, user, pointed_thing, old_itemstack)
-			if result then
-				return result
+	if no_eat_delay or (mcl_hunger.last_eat[name] < 0) or (os.difftime(os.time(), mcl_hunger.last_eat[name]) >= 2) then
+		local can_eat_when_full = minetest.get_item_group(itemstack:get_name(), "can_eat_when_full") == 1
+		-- Don't allow eating when player has full hunger bar (some exceptional items apply)
+		if can_eat_when_full or (mcl_hunger.get_hunger(user) < 20) then
+			itemstack = mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_thing)
+			for _, callback in pairs(core.registered_on_item_eats) do
+				local result = callback(hp_change, replace_with_item, itemstack, user, pointed_thing, old_itemstack)
+				if result then
+					return result
+				end
 			end
+			mcl_hunger.last_eat[name] = os.time()
 		end
-		mcl_hunger.last_eat[name] = os.time()
 	end
 
 	return itemstack

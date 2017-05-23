@@ -256,7 +256,7 @@ minetest.register_craftitem("mcl_end:chorus_fruit", {
 	-- TODO: Teleport player
 	on_place = minetest.item_eat(4),
 	on_secondary_use = minetest.item_eat(4),
-	groups = { food = 2, eatable = 4 },
+	groups = { food = 2, eatable = 4, can_eat_when_full = 1 },
 	_mcl_saturation = 2.4,
 	stack_max = 64,
 })

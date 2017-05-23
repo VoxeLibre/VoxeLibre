@@ -99,7 +99,7 @@ minetest.register_craftitem("mcl_potions:potion_water", {
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
-	groups = {brewitem=1, food=3},
+	groups = {brewitem=1, food=3, can_eat_when_full=1},
 	on_place = function(itemstack, placer, pointed_thing)
 		if pointed_thing.type == "node" then
 			local node = minetest.get_node(pointed_thing.under)
@@ -140,7 +140,7 @@ minetest.register_craftitem("mcl_potions:potion_awkward", {
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
-	groups = {brewitem=1, food=3},
+	groups = {brewitem=1, food=3, can_eat_when_full=1},
 	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
@@ -151,7 +151,7 @@ minetest.register_craftitem("mcl_potions:potion_mundane", {
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
-	groups = {brewitem=1, food=3},
+	groups = {brewitem=1, food=3, can_eat_when_full=1},
 	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
@@ -162,7 +162,7 @@ minetest.register_craftitem("mcl_potions:potion_thick", {
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
-	groups = {brewitem=1, food=3},
+	groups = {brewitem=1, food=3, can_eat_when_full=1},
 	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })

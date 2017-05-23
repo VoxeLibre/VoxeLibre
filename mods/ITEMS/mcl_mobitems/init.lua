@@ -149,7 +149,7 @@ minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 		return minetest.do_item_eat(0, "bucket:bucket_empty", itemstack, player, pointed_thing)
 	end,
 	stack_max = 1,
-	groups = { food = 3 },
+	groups = { food = 3, can_eat_when_full = 1 },
 })
 
 minetest.register_craftitem("mcl_mobitems:spider_eye", {
