@@ -129,10 +129,6 @@ local function commandblock_action_off(pos, node)
 	end
 end
 
-local function can_dig(pos, player)
-	return minetest.setting_getbool("creative_mode")
-end
-
 local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 	-- Only allow access in Creative Mode
 	if not minetest.setting_getbool("creative_mode") then
@@ -170,13 +166,13 @@ To execute the commands, supply the command block with redstone power once. To e
 	on_construct = construct,
 	is_ground_content = false,
 	after_place_node = after_place,
-	can_dig = can_dig,
 	on_rightclick = on_rightclick,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {effector = {
 		action_on = commandblock_action_on
 	}},
-	mcl_blast_resistance = 18000000,
+	_mcl_blast_resistance = 18000000,
+	_mcl_hardness = -1,
 })
 
 minetest.register_node("mesecons_commandblock:commandblock_on", {
@@ -187,13 +183,13 @@ minetest.register_node("mesecons_commandblock:commandblock_on", {
 	on_construct = construct,
 	is_ground_content = false,
 	after_place_node = after_place,
-	can_dig = can_dig,
 	on_rightclick = on_rightclick,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {effector = {
 		action_off = commandblock_action_off
 	}},
-	mcl_blast_resistance = 18000000,
+	_mcl_blast_resistance = 18000000,
+	_mcl_hardness = -1,
 })
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
