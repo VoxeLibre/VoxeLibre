@@ -182,8 +182,10 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 minetest.register_on_respawnplayer(function(player)
-	-- reset hunger (and save)
+	-- reset hunger, related values and poison
 	local name = player:get_player_name()
+
+	mcl_hunger.stop_poison(player)
 	mcl_hunger.last_eat[name] = -1
 
 	local h, s, e = 20, mcl_hunger.SATURATION_INIT, 0
