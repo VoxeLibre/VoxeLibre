@@ -124,7 +124,10 @@ function TNT:on_step(dtime)
 					if x*x+y*y+z*z <= TNT_RANGE * TNT_RANGE + TNT_RANGE then
 						local np={x=pos.x+x,y=pos.y+y,z=pos.z+z}
 						local n = minetest.get_node(np)
-						if n.name ~= "air" and n.name ~= "mcl_core:obsidian" and n.name ~= "mcl_core:bedrock" and n.name ~= "protector:protect" then
+						local def = minetest.registered_nodes[n.name]
+						-- Simple blast resistance check (for now). This keeps the important blocks like bedrock, command block, etc. intact.
+						-- TODO: Implement the real blast resistance algorithm
+						if n.name ~= "air" and n.name ~= "ignore" and (def._mcl_blast_resistance == nil or def._mcl_blast_resistance < 1000) then
 							activate_if_tnt(n.name, np, pos, 3)
 							minetest.remove_node(np)
 							core.check_for_falling(np)
