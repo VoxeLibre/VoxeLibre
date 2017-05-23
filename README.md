@@ -56,6 +56,18 @@ Or you can play in “creative mode” in which you can build almost anything in
 More help about the gameplay, blocks items and much more can be found from inside
 the game. You can access the help from your inventory menu.
 
+### Special blocks
+The following blocks are interesting for Creative Mode and for adventure
+map builders. They can not be obtained in-game or in the creative inventory.
+
+* Barrier: `mcl_core:barrier`
+* Command Block: `mesecons_commandblock:commandblock_off`
+* Monster Spawner (WIP): `mobs:spawner`
+* Huge mushroom blocks: See `mods/ITEMS/mcl_mushrooms/README.md`
+
+Use the `/giveme` chat command to obtain them. See the in-game help for
+an explanation.
+
 ## Installation
 This game requires [Minetest](http://minetest.net) 0.4.15 (or later) to run,
 so you need to install Minetest first. Only stable versions of Minetest are
