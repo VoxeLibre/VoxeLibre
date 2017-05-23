@@ -26,6 +26,7 @@ local wip_items = {
 	"mcl_observers:observer",
 	"mcl_chests:trapped_chest",
 	"mcl_core:cobweb",
+	"mobs:spawner",
 }
 
 for i=1,#wip_items do
