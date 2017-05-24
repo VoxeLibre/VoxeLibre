@@ -1,9 +1,26 @@
-
 local S = mobs.intllib
 
--- mob spawner
+local default_mob = "mobs_mc:chicken"
 
-local spawner_default = "mobs_mc:chicken 10 15 3 0"
+-- mob spawner
+local spawner_default = default_mob.." 10 15 3 0"
+
+local function get_mob_textures(mob)
+	-- FIXME: Ummm … wtf? Why isn't there a textures attribute?
+	return minetest.registered_entities[mob].texture_list[1]
+end
+
+-- Find doll entity at pos
+local function find_doll(pos)
+	for  _,obj in ipairs(minetest.env:get_objects_inside_radius(pos, 1)) do
+		if not obj:is_player() then
+			if obj ~= nil and obj:get_luaentity().name == "mobs:spawner_mob_doll" then
+				return obj
+			end
+		end
+	end
+	return nil
+end
 
 minetest.register_node("mobs:spawner", {
 	tiles = {"mob_spawner.png"},
@@ -26,6 +43,13 @@ minetest.register_node("mobs:spawner", {
 			"field[text;" .. S("Mob MinLight MaxLight Amount PlayerDist") .. ";${command}]")
 		meta:set_string("infotext", S("Spawner Not Active (enter settings)"))
 		meta:set_string("command", spawner_default)
+
+		pos.y = pos.y - 0.28
+	end,
+
+	on_destruct = function(pos)
+		local obj = find_doll(pos)
+		obj:remove()
 	end,
 
 	on_right_click = function(pos, placer)
@@ -67,6 +91,18 @@ minetest.register_node("mobs:spawner", {
 			meta:set_string("command", fields.text)
 			meta:set_string("infotext", S("Spawner Active (@1)", mob))
 
+			-- Create or update doll
+			local doll = find_doll(pos)
+			if not doll then
+				doll = minetest.add_entity(pos, "mobs:spawner_mob_doll")
+			end
+			local prop = {
+				_mob = mob,
+				mesh = minetest.registered_entities[mob].mesh,
+				textures = get_mob_textures(mob),
+			}
+			doll:set_properties(prop)
+
 		else
 			minetest.chat_send_player(name, S("Mob Spawner settings failed!"))
 			minetest.chat_send_player(name,
@@ -77,6 +113,64 @@ minetest.register_node("mobs:spawner", {
 	_mcl_blast_resistance = 25,
 	_mcl_hardness = 5,
 })
+
+-- Mob spawner doll (rotating icon inside cage)
+
+local spawner_mob_doll_def = {
+	hp_max = 1,
+	physical = true,
+	collisionbox = {0,0,0,0,0,0},
+	visual = "mesh",
+	visual_size = {x=0.6,y=0.6},
+	makes_footstep_sound = false,
+	timer = 0,
+	automatic_rotate = math.pi * 2.9,
+
+	_mob = default_mob, -- name of the mob this doll represents
+}
+
+spawner_mob_doll_def.get_staticdata = function(self)
+	return self._mob
+end
+
+spawner_mob_doll_def.on_activate = function(self, staticdata, dtime_s)
+	local mob = staticdata
+	local prop
+	if mob ~= nil and mob ~= "" then
+		prop = {
+			_mob = mob,
+			mesh = minetest.registered_entities[mob].mesh,
+			textures = get_mob_textures(mob),
+		}
+	else
+		prop = {
+			_mob = default_mob,
+			mesh = minetest.registered_entities[default_mob].mesh,
+			textures = get_mob_textures(default_mob),
+		}
+	end
+	self.object:set_properties(prop)
+	self.object:setvelocity({x=0, y=0, z=0})
+	self.object:setacceleration({x=0, y=0, z=0})
+	self.object:set_armor_groups({immortal=1})
+
+end
+
+spawner_mob_doll_def.on_step = function(self, dtime)
+	-- Check if spawner is still present. If not, delete the entity
+	self.timer = self.timer + 0.01
+	local n = minetest.get_node_or_nil(self.object:getpos())
+	if self.timer > 1 then
+		if n and n.name and n.name ~= "mobs:spawner" then
+			self.object:remove()
+		end
+	end
+end
+
+spawner_mob_doll_def.on_punch = function(self, hitter) end
+
+minetest.register_entity("mobs:spawner_mob_doll", spawner_mob_doll_def)
+
 
 
 local max_per_block = tonumber(minetest.setting_get("max_objects_per_block") or 99)
