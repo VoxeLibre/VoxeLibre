@@ -55,7 +55,7 @@ local get_loot = function()
 
 	return items
 end
-	
+
 
 -- Buffer for LuaVoxelManip
 local lvm_buffer = {}
@@ -153,31 +153,34 @@ minetest.register_on_generated(function(minp, maxp)
 		end
 
 		-- Check conditions. If okay, start generating
-
-		-- But prepare random chest positions beforehand
-		-- We assign each position at the wall a number and each chest gets one of these numbers randomly
-		local totalChests = 2
-		local totalChestSlots = (dim.x-1) * (dim.z-1)
-		local chestSlots = {}
-		-- There is a small chance that both chests have the same slot.
-		-- In that case, we give a 2nd chance for the 2nd chest to get spawned.
-		-- If it failed again, tough luck! We stick with only 1 chest spawned.
-		local lastRandom
-		local secondChance = true -- second chance is still available
-		for i=1, totalChests do
-			local r = math.random(1, totalChestSlots)
-			if r == lastRandom and secondChance then
-				-- Oops! Same slot selected. Try again.
-				r = math.random(1, totalChestSlots)
-				secondChance = false
-			end
-			lastRandom = r
-			table.insert(chestSlots, r)
-		end
-		table.sort(chestSlots)
-		local currentChest = 1
-
 		if ceilingfloor_ok and openings >= 1 and openings <= 5 then
+			-- Okay! Spawning starts!
+
+			-- First prepare random chest positions.
+			-- Chests spawn at wall
+
+			-- We assign each position at the wall a number and each chest gets one of these numbers randomly
+			local totalChests = 2
+			local totalChestSlots = (dim.x-1) * (dim.z-1)
+			local chestSlots = {}
+			-- There is a small chance that both chests have the same slot.
+			-- In that case, we give a 2nd chance for the 2nd chest to get spawned.
+			-- If it failed again, tough luck! We stick with only 1 chest spawned.
+			local lastRandom
+			local secondChance = true -- second chance is still available
+			for i=1, totalChests do
+				local r = math.random(1, totalChestSlots)
+				if r == lastRandom and secondChance then
+					-- Oops! Same slot selected. Try again.
+					r = math.random(1, totalChestSlots)
+					secondChance = false
+				end
+				lastRandom = r
+				table.insert(chestSlots, r)
+			end
+			table.sort(chestSlots)
+			local currentChest = 1
+
 			-- Ceiling and floor
 			local maxx, maxy, maxz = x+dim.x+1, y+dim.y+1, z+dim.z+1
 			local chestSlotCounter = 1
@@ -185,7 +188,7 @@ minetest.register_on_generated(function(minp, maxp)
 				for tz = z, maxz do
 					for ty = y, maxy do
 						local p_pos = area:index(tx, ty, tz)
-	
+
 						-- Floor
 						if ty == y then
 							if math.random(1,4) == 1 then
