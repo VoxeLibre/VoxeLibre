@@ -1,5 +1,4 @@
--- FIXME: Rarely, dungoens can overlap and destroy each other
--- FIXME: Rarely, if chests spawn as neighbors in a corner, the corner chest might face not outward
+-- FIXME: Chests may appear at openings
 
 -- TODO: Add monster spawner
 
