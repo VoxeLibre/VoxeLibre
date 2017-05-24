@@ -62,6 +62,7 @@ end
 
 -- Buffer for LuaVoxelManip
 local lvm_buffer = {}
+local lvm_buffer2 = {} -- for param2
 
 -- Below the bedrock, generate air/void
 minetest.register_on_generated(function(minp, maxp)
@@ -77,6 +78,7 @@ minetest.register_on_generated(function(minp, maxp)
 	local c_air = minetest.get_content_id("air")
 	local c_cobble = minetest.get_content_id("mcl_core:cobble")
 	local c_mossycobble = minetest.get_content_id("mcl_core:mossycobble")
+	local c_chest = minetest.get_content_id("mcl_chests:chest")
 
 	-- Remember chest positions to set metadata later
 	local chest_posses = {}
@@ -163,7 +165,7 @@ minetest.register_on_generated(function(minp, maxp)
 			-- Chests spawn at wall
 
 			-- We assign each position at the wall a number and each chest gets one of these numbers randomly
-			local totalChests = 2
+			local totalChests = 2 -- this code strongly relies on this number being 2
 			local totalChestSlots = (dim.x-1) * (dim.z-1)
 			local chestSlots = {}
 			-- There is a small chance that both chests have the same slot.
@@ -189,9 +191,9 @@ minetest.register_on_generated(function(minp, maxp)
 			local chestSlotCounter = 1
 			for tx = x, maxx do
 				for tz = z, maxz do
+
 					for ty = y, maxy do
 						local p_pos = area:index(tx, ty, tz)
-
 						-- Floor
 						if ty == y then
 							if math.random(1,4) == 1 then
@@ -217,7 +219,7 @@ minetest.register_on_generated(function(minp, maxp)
 								elseif (tx==maxx-1) then p2 = 1
 								elseif (tz==z+1) then p2 = 2
 								else p2 = 0 end
-								table.insert(chest_posses, {pos={x=tx, y=ty, z=tz}, param2=p2})
+								table.insert(chest_posses, {x=tx, y=ty, z=tz})
 								currentChest = currentChest + 1
 							else
 								data[p_pos] = c_air
@@ -235,20 +237,65 @@ minetest.register_on_generated(function(minp, maxp)
 	end
 
 	if lvm_used then
+		local chest_param2 = {}
+		-- Determine correct chest rotation (must pointi outwards)
+		for c=1, #chest_posses do
+			local cpos = chest_posses[c]
+
+			-- Check surroundings of chest to determine correct rotation
+			local surround_vectors = {
+				{ x=-1, y=0, z=0 },
+				{ x=1, y=0, z=0 },
+				{ x=0, y=0, z=-1 },
+				{ x=0, y=0, z=1 },
+			}
+			local surroundings = {}
+
+			for s=1, #surround_vectors do
+				-- Detect the 4 horizontal neighbors
+				local spos = vector.add(cpos, surround_vectors[s])
+				local wpos = vector.subtract(cpos, surround_vectors[s])
+				local p_pos = area:index(spos.x, spos.y, spos.z)
+				local p_pos2 = area:index(wpos.x, wpos.y, wpos.z)
+
+				local nodename = minetest.get_name_from_content_id(data[p_pos])
+				local nodename2 = minetest.get_name_from_content_id(data[p_pos2])
+				local nodedef = minetest.registered_nodes[nodename]
+				local nodedef2 = minetest.registered_nodes[nodename2]
+				-- The chest needs an open space in front of it and a walkable node (except chest) behind it
+				if nodedef and nodedef.walkable == false and nodedef2 and nodedef2.walkable == true and nodename2 ~= "mcl_chests:chest" then
+					table.insert(surroundings, spos)
+				end
+			end
+			-- Set param2 (=facedir) of this chest
+			local facedir
+			if #surroundings <= 0 then
+				-- Fallback if chest ended up in the middle of a room for some reason
+				facedir = math.random(0, 0)
+			else
+				-- 1 or multiple possible open directions: Choose random facedir
+				local face_to = surroundings[math.random(1, #surroundings)]
+				facedir = minetest.dir_to_facedir(vector.subtract(cpos, face_to))
+			end
+			chest_param2[c] = facedir
+		end
+
+		-- Actually generate the dungeon all at once (except the chests and the spawner)
 		vm:set_data(data)
 		vm:calc_lighting()
 		vm:update_liquids()
 		vm:write_to_map()
-	end
 
-	for c=1, #chest_posses do
-		local cpos = chest_posses[c].pos
-		minetest.set_node(cpos, {name="mcl_chests:chest", param2=chest_posses[c].param2})
-		local meta = minetest.get_meta(cpos)
-		local inv = meta:get_inventory()
-		local items = get_loot()
-		for i=1, math.min(#items, inv:get_size("main")) do
-			inv:set_stack("main", i, ItemStack(items[i]))
+		-- Chests are placed seperately
+		for c=1, #chest_posses do
+			local cpos = chest_posses[c]
+			minetest.set_node(cpos, {name="mcl_chests:chest", param2=chest_param2[c]})
+			local meta = minetest.get_meta(cpos)
+			local inv = meta:get_inventory()
+			local items = get_loot()
+			for i=1, math.min(#items, inv:get_size("main")) do
+				inv:set_stack("main", i, ItemStack(items[i]))
+			end
 		end
 	end
 
