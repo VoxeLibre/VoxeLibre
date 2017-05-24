@@ -57,16 +57,17 @@ local on_place = function(itemstack, placer, pointed_thing)
 	return itemstack
 end
 
-local longdesc = [[Mushrooms are fungi which grow and spread in darkness, but are sensitive to light. Mushrooms are inedible as such, but they can be used to craft food items.
+local longdesc_intro_brown = [[Brown mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.]]
+local longdesc_intro_red = [[Red mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.]]
 
-A single mushroom will slowly spread over time towards a random solid opaque block with a light level of 12 or lower in a 3×3×3 cube around the mushroom. A mushroom stops spreading when there are 5 or more mushrooms of the same color within an area of 9×3×9 blocks around the mushroom.
+local longdesc_append = [[A single mushroom of this species will slowly spread over time towards a random solid opaque block with a light level of 12 or lower in a 3×3×3 cube around the mushroom. It stops spreading when there are 5 or more mushrooms of the same species within an area of 9×3×9 blocks around the mushroom.
 Mushrooms will eventually uproot at a light level of 12 or higher. On mycelium or podzol, they survive and spread at any light level.]]
 
-local usagehelp = "Mushrooms can be placed on mycelium and podzol at any light level. They can also be placed on blocks which are both solid and opaque, as long as the light level at daytime is not higher than 12."
+local usagehelp = "This mushroom can be placed on mycelium and podzol at any light level. They can also be placed on blocks which are both solid and opaque, as long as the light level at daytime is not higher than 12."
 
 minetest.register_node("mcl_mushrooms:mushroom_brown", {
 	description = "Brown Mushroom",
-	_doc_items_longdesc = longdesc,
+	_doc_items_longdesc = longdesc_intro_brown .. "\n\n" .. longdesc_append,
 	_doc_items_usagehelp = usagehelp,
 	drawtype = "plantlike",
 	tiles = { "farming_mushroom_brown.png" },
@@ -89,7 +90,7 @@ minetest.register_node("mcl_mushrooms:mushroom_brown", {
 
 minetest.register_node("mcl_mushrooms:mushroom_red", {
 	description = "Red Mushroom",
-	_doc_items_longdesc = longdesc,
+	_doc_items_longdesc = longdesc_intro_red .. "\n\n" .. longdesc,
 	_doc_items_usagehelp = usagehelp,
 	drawtype = "plantlike",
 	tiles = { "farming_mushroom_red.png" },
