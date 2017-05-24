@@ -176,6 +176,12 @@ mcl_structures.generate_igloo_top = function(pos)
 	minetest.place_schematic(newpos, path, "random", nil, true)
 end
 
+mcl_structures.generate_igloo_basement = function(pos, orientation)
+	-- TODO: Add brewing stand
+	local path = minetest.get_modpath("mcl_structures").."/build/igloo_basement.mts"
+	minetest.place_schematic(pos, path, orientation, nil, true)
+end
+
 mcl_structures.generate_desert_temple = function(pos)
 	-- No Generating for the temple ... Why using it ? No Change
 	local temple = mcl_structures.get_struct("desert_temple.we")
