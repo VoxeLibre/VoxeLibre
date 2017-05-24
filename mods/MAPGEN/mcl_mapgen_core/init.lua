@@ -989,11 +989,13 @@ minetest.register_on_generated(function(minp, maxp, seed)
 									end
 								end
 							end
-						elseif not chunk_has_igloo and nn == "mcl_core:snowblock" then
+						elseif not chunk_has_igloo and (nn == "mcl_core:snowblock" or nn == "mcl_core:snow" or nn == "mcl_core:dirt_with_grass_snow") then
 							if math.random(1, 4400) == 1 then
 								-- Check surface
-								local surface = minetest.find_nodes_in_area({x=p.x,y=p.y-1,z=p.z}, {x=p.x+9, y=p.y-1, z=p.z+9}, "mcl_core:snowblock")
-								if #surface >= 63 then
+								local floor = {x=p.x+9, y=p.y-1, z=p.z+9}
+								local surface = minetest.find_nodes_in_area({x=p.x,y=p.y-1,z=p.z}, floor, "mcl_core:snowblock")
+								local surface2 = minetest.find_nodes_in_area({x=p.x,y=p.y-1,z=p.z}, floor, "mcl_core:dirt_with_grass_snow")
+								if #surface + #surface2 >= 63 then
 									mcl_structures.call_struct(p, "igloo")
 									chunk_has_igloo = true
 								end
