@@ -90,7 +90,7 @@ minetest.register_node("mcl_mushrooms:mushroom_brown", {
 
 minetest.register_node("mcl_mushrooms:mushroom_red", {
 	description = "Red Mushroom",
-	_doc_items_longdesc = longdesc_intro_red .. "\n\n" .. longdesc,
+	_doc_items_longdesc = longdesc_intro_red .. "\n\n" .. longdesc_append,
 	_doc_items_usagehelp = usagehelp,
 	drawtype = "plantlike",
 	tiles = { "farming_mushroom_red.png" },
