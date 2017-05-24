@@ -1,4 +1,7 @@
 -- FIXME: Rarely, dungoens can overlap and destroy each other
+-- FIXME: Rarely, if chests spawn as neighbors in a corner, the corner chest might face not outward
+
+-- TODO: Add monster spawner
 
 local pr = PseudoRandom(os.time())
 
