@@ -191,43 +191,48 @@ minetest.register_on_generated(function(minp, maxp)
 			local chestSlotCounter = 1
 			for tx = x, maxx do
 				for tz = z, maxz do
-
 					for ty = y, maxy do
 						local p_pos = area:index(tx, ty, tz)
-						-- Floor
-						if ty == y then
-							if math.random(1,4) == 1 then
+
+						-- Do not overwrite nodes with is_ground_content == false (e.g. bedrock)
+						local name = minetest.get_name_from_content_id(data[p_pos])
+						if minetest.registered_nodes[name].is_ground_content then
+							-- Floor
+							if ty == y then
+								if math.random(1,4) == 1 then
+									data[p_pos] = c_cobble
+								else
+									data[p_pos] = c_mossycobble
+								end
+
+							-- Wall or ceiling
+							elseif ty == maxy or (ty > y and (tx == x or tx == maxx) or (tz == z or tz == maxz)) then
 								data[p_pos] = c_cobble
+
+							-- Room interiour
 							else
-								data[p_pos] = c_mossycobble
-							end
+								local forChest = ty==y+1 and (tx==x+1 or tx==maxx-1 or tz==z+1 or tz==maxz-1)
 
-						-- Wall or ceiling
-						elseif ty == maxy or (ty > y and (tx == x or tx == maxx) or (tz == z or tz == maxz)) then
-							data[p_pos] = c_cobble
+								-- Place next chest at the wall (if it was its chosen wall slot)
+								if forChest and (currentChest < totalChests + 1) and (chestSlots[currentChest] == chestSlotCounter) then
+									local p2
 
-						-- Room interiour
-						else
-							local forChest = ty==y+1 and (tx==x+1 or tx==maxx-1 or tz==z+1 or tz==maxz-1)
-
-							-- Place next chest at the wall (if it was its chosen wall slot)
-							if forChest and (currentChest < totalChests + 1) and (chestSlots[currentChest] == chestSlotCounter) then
-								local p2
-
-								-- Select rotation so the chest faces away from wall
-								if (tx==x+1) then p2 = 3
-								elseif (tx==maxx-1) then p2 = 1
-								elseif (tz==z+1) then p2 = 2
-								else p2 = 0 end
-								table.insert(chest_posses, {x=tx, y=ty, z=tz})
-								currentChest = currentChest + 1
-							else
-								data[p_pos] = c_air
-							end
-							if forChest then
-								chestSlotCounter = chestSlotCounter + 1
+									-- Select rotation so the chest faces away from wall
+									if (tx==x+1) then p2 = 3
+									elseif (tx==maxx-1) then p2 = 1
+									elseif (tz==z+1) then p2 = 2
+									else p2 = 0 end
+									table.insert(chest_posses, {x=tx, y=ty, z=tz})
+									currentChest = currentChest + 1
+								else
+									data[p_pos] = c_air
+								end
+								if forChest then
+									chestSlotCounter = chestSlotCounter + 1
+								end
 							end
 						end
+
 					end
 				end
 			end
