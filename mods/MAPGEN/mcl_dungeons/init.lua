@@ -126,7 +126,9 @@ minetest.register_on_generated(function(minp, maxp)
 		end
 
 		-- Check for air openings (2 stacked air at ground level) in wall positions
-		local openings = 0
+		local openings_counter = 0
+		-- Store positions of openings; walls will not be generated here
+		local openings = {}
 		if ceilingfloor_ok then
 
 			local walls = {
@@ -144,13 +146,16 @@ minetest.register_on_generated(function(minp, maxp)
 					pos[wall[4]] = wall[5]
 					pos.y = y+1
 
+					if openings[pos.x] == nil then openings[pos.x] = {} end
+
 					local door1 = area:index(pos.x, pos.y, pos.z)
 					pos.y = y+2
 					local door2 = area:index(pos.x, pos.y, pos.z)
 					local doorname1 = minetest.get_name_from_content_id(data[door1])
 					local doorname2 = minetest.get_name_from_content_id(data[door2])
 					if doorname1 == "air" and doorname2 == "air" then
-						openings = openings + 1
+						openings_counter = openings_counter + 1
+						openings[pos.x][pos.z] = true
 					end
 				end
 			end
@@ -158,7 +163,7 @@ minetest.register_on_generated(function(minp, maxp)
 		end
 
 		-- Check conditions. If okay, start generating
-		if ceilingfloor_ok and openings >= 1 and openings <= 5 then
+		if ceilingfloor_ok and openings_counter >= 1 and openings_counter <= 5 then
 			-- Okay! Spawning starts!
 
 			-- First prepare random chest positions.
@@ -207,7 +212,11 @@ minetest.register_on_generated(function(minp, maxp)
 
 							-- Wall or ceiling
 							elseif ty == maxy or (ty > y and (tx == x or tx == maxx) or (tz == z or tz == maxz)) then
-								data[p_pos] = c_cobble
+								-- Check if it's an opening first
+								if not (ty < maxy-1 and openings[tx][tz] == true) then
+									data[p_pos] = c_cobble
+								end
+								-- No-op if it was an opening
 
 							-- Room interiour
 							else
