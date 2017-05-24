@@ -177,7 +177,7 @@ minetest.register_on_generated(function(minp, maxp)
 		table.sort(chestSlots)
 		local currentChest = 1
 
-		if ceilingfloor_ok and openings >= 0 and openings <= 5000 then
+		if ceilingfloor_ok and openings >= 1 and openings <= 5 then
 			-- Ceiling and floor
 			local maxx, maxy, maxz = x+dim.x+1, y+dim.y+1, z+dim.z+1
 			local chestSlotCounter = 1
