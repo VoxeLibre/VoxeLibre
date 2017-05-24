@@ -3,7 +3,7 @@ local S = mobs.intllib
 
 -- mob spawner
 
-local spawner_default = "mobs_mc:chicken 10 15 0 0"
+local spawner_default = "mobs_mc:chicken 10 15 3 0"
 
 minetest.register_node("mobs:spawner", {
 	tiles = {"mob_spawner.png"},
