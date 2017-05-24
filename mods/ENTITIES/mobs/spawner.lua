@@ -103,10 +103,17 @@ minetest.register_node("mobs:spawner", {
 		and yof and yof > -10 and yof < 10 then
 
 			-- Activate monster spawner and disable editing functionality
-			meta:set_string("command", fields.text)
+			meta:set_string("Mob", mob)
+			meta:set_int("MinLight", mlig)
+			meta:set_int("MaxLight", xlig)
+			meta:set_int("MaxMobsInArea", num)
+			meta:set_int("PlayerDistance", pla)
+			meta:set_int("YOffset", yof)
+
 			meta:set_int("active", 1)
 			meta:set_string("infotext", "")
 			meta:set_string("formspec", "")
+			meta:set_string("command", "")
 
 			-- Create or update doll
 			local doll = find_doll(pos)
@@ -196,15 +203,14 @@ minetest.register_abm({
 			-- Spawner not active yet, do nothing
 			return
 		end
-		local comm = meta:get_string("command"):split(" ")
 
-		-- get settings from command
-		local mob = comm[1]
-		local mlig = tonumber(comm[2])
-		local xlig = tonumber(comm[3])
-		local num = tonumber(comm[4])
-		local pla = tonumber(comm[5]) or 0
-		local yof = tonumber(comm[6]) or 0
+		-- get settings
+		local mob = meta:get_string("Mob")
+		local mlig = meta:get_int("MinLight")
+		local xlig = meta:get_int("MaxLight")
+		local num = meta:get_int("MaxMobsInArea")
+		local pla = meta:get_int("PlayerDistance")
+		local yof = meta:get_int("YOffset")
 
 		-- if amount is 0 then do nothing
 		if num == 0 then
