@@ -38,7 +38,7 @@ mobs:register_mob("mobs_mc:spider", {
 	jump = true,
 	jump_height = 5,
 	view_range = 15,
-	floats = 0,
+	floats = 1,
 	group_attack = true,
 	peaceful = false,
 	drops = {
