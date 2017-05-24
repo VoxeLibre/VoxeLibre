@@ -115,7 +115,7 @@ minetest.register_abm({
 
 		-- are we spawning a registered mob?
 		if not mobs.spawning_mobs[mob] then
-			print ("--- mob doesn't exist", mob)
+			minetest.log("error", "[mobs] Monster Spawner: Mob doesn't exist: "..mob)
 			return
 		end
 
