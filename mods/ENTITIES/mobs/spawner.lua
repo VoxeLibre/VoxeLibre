@@ -22,6 +22,20 @@ local function find_doll(pos)
 	return nil
 end
 
+local function set_doll_properties(doll, mob)
+	local mobinfo = minetest.registered_entities[mob]
+	local prop = {
+		_mob = mob,
+		mesh = mobinfo.mesh,
+		textures = get_mob_textures(mob),
+		visual_size = {
+			x = mobinfo.visual_size.x * 0.5,
+			y = mobinfo.visual_size.y * 0.5,
+		}
+	}
+	doll:set_properties(prop)
+end
+
 minetest.register_node("mobs:spawner", {
 	tiles = {"mob_spawner.png"},
 	drawtype = "glasslike",
@@ -44,7 +58,6 @@ minetest.register_node("mobs:spawner", {
 		meta:set_string("infotext", S("Spawner Not Active (enter settings)"))
 		meta:set_string("command", spawner_default)
 
-		pos.y = pos.y - 0.28
 	end,
 
 	on_destruct = function(pos)
@@ -94,15 +107,9 @@ minetest.register_node("mobs:spawner", {
 			-- Create or update doll
 			local doll = find_doll(pos)
 			if not doll then
-				doll = minetest.add_entity(pos, "mobs:spawner_mob_doll")
+				doll = minetest.add_entity({x=pos.x, y=pos.y-0.3, z=pos.z}, "mobs:spawner_mob_doll")
 			end
-			local prop = {
-				_mob = mob,
-				mesh = minetest.registered_entities[mob].mesh,
-				textures = get_mob_textures(mob),
-			}
-			doll:set_properties(prop)
-
+			set_doll_properties(doll, mob)
 		else
 			minetest.chat_send_player(name, S("Mob Spawner settings failed!"))
 			minetest.chat_send_player(name,
@@ -121,7 +128,6 @@ local spawner_mob_doll_def = {
 	physical = true,
 	collisionbox = {0,0,0,0,0,0},
 	visual = "mesh",
-	visual_size = {x=0.6,y=0.6},
 	makes_footstep_sound = false,
 	timer = 0,
 	automatic_rotate = math.pi * 2.9,
@@ -135,21 +141,10 @@ end
 
 spawner_mob_doll_def.on_activate = function(self, staticdata, dtime_s)
 	local mob = staticdata
-	local prop
-	if mob ~= nil and mob ~= "" then
-		prop = {
-			_mob = mob,
-			mesh = minetest.registered_entities[mob].mesh,
-			textures = get_mob_textures(mob),
-		}
-	else
-		prop = {
-			_mob = default_mob,
-			mesh = minetest.registered_entities[default_mob].mesh,
-			textures = get_mob_textures(default_mob),
-		}
+	if mob == "" or mob == nil then
+		mob = default_mob
 	end
-	self.object:set_properties(prop)
+	set_doll_properties(self.object, mob)
 	self.object:setvelocity({x=0, y=0, z=0})
 	self.object:setacceleration({x=0, y=0, z=0})
 	self.object:set_armor_groups({immortal=1})
