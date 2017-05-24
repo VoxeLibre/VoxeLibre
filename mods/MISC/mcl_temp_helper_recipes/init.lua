@@ -151,14 +151,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_jukebox:record_1",
-	recipe = {
-		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
-		{ "mcl_core:glass_black", "mcl_ocean:sea_lantern", "mcl_core:glass_black", },
-		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
-	}
-})
-minetest.register_craft({
 	output = "mcl_jukebox:record_2",
 	recipe = {
 		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
@@ -171,14 +163,6 @@ minetest.register_craft({
 	recipe = {
 		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
 		{ "mcl_core:glass_black", "mcl_core:emerald", "mcl_core:glass_black", },
-		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
-	}
-})
-minetest.register_craft({
-	output = "mcl_jukebox:record_4",
-	recipe = {
-		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
-		{ "mcl_core:glass_black", "mcl_end:ender_eye", "mcl_core:glass_black", },
 		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
 	}
 })
