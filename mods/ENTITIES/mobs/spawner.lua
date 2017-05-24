@@ -78,6 +78,9 @@ minetest.register_node("mobs:spawner", {
 	_mcl_hardness = 5,
 })
 
+
+local max_per_block = tonumber(minetest.setting_get("max_objects_per_block") or 99)
+
 -- spawner abm
 minetest.register_abm({
 	label = "Monster Spawner spawning a monster",
@@ -87,6 +90,11 @@ minetest.register_abm({
 	catch_up = false,
 
 	action = function(pos, node, active_object_count, active_object_count_wider)
+
+		-- return if too many entities already
+		if active_object_count_wider >= max_per_block then
+			return
+		end
 
 		-- get meta and command
 		local meta = minetest.get_meta(pos)
@@ -105,17 +113,23 @@ minetest.register_abm({
 			return
 		end
 
+		-- are we spawning a registered mob?
+		if not mobs.spawning_mobs[mob] then
+			print ("--- mob doesn't exist", mob)
+			return
+		end
+
 		-- check objects inside 9x9 area around spawner
 		local objs = minetest.get_objects_inside_radius(pos, 9)
 		local count = 0
 		local ent = nil
 
 		-- count mob objects of same type in area
-		for k, obj in pairs(objs) do
+		for k, obj in ipairs(objs) do
 
 			ent = obj:get_luaentity()
 
-			if ent and ent.name == mob then
+			if ent and ent.name and ent.name == mob then
 				count = count + 1
 			end
 		end
