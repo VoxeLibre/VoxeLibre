@@ -154,10 +154,23 @@ minetest.register_on_generated(function(minp, maxp)
 
 		-- Check conditions. If okay, start generating
 
-		local chestsLeft = 2
+		-- But prepare random chest positions beforehand
+		-- We assign each position at the wall a number and each chest gets one of these numbers randomly
+		local totalChests = 2
+		local totalChestSlots = (dim.x-1) * (dim.z-1)
+		local chestSlots = {}
+		-- There is a small chance that both chests have the same slot.
+		-- In this case, only 1 chest is spawned. This intended.
+		for i=1, totalChests do
+			table.insert(chestSlots, math.random(1, totalChestSlots))
+		end
+		table.sort(chestSlots)
+		local currentChest = 1
+
 		if ceilingfloor_ok and openings >= 0 and openings <= 5000 then
 			-- Ceiling and floor
 			local maxx, maxy, maxz = x+dim.x+1, y+dim.y+1, z+dim.z+1
+			local chestSlotCounter = 1
 			for tx = x, maxx do
 				for tz = z, maxz do
 					for ty = y, maxy do
@@ -177,13 +190,17 @@ minetest.register_on_generated(function(minp, maxp)
 
 						-- Room interiour
 						else
+							local forChest = ty==y+1 and (tx==x+1 or tx==maxx-1 or tz==z+1 or tz==maxz-1)
 
-							-- Chest
-							if ty == y + 1 and chestsLeft > 0 and math.random(1,6) == 1 then
-								chestsLeft = chestsLeft - 1
+							-- Place next chest at the wall (if it was its chosen wall slot)
+							if forChest and (currentChest < totalChests + 1) and (chestSlots[currentChest] == chestSlotCounter) then
+								currentChest = currentChest + 1
 								table.insert(chest_posses, {x=tx, y=ty, z=tz})
 							else
 								data[p_pos] = c_air
+							end
+							if forChest then
+								chestSlotCounter = chestSlotCounter + 1
 							end
 						end
 					end
