@@ -191,8 +191,8 @@ minetest.register_on_generated(function(minp, maxp)
 			table.sort(chestSlots)
 			local currentChest = 1
 
-			-- Ceiling and floor
-			local maxx, maxy, maxz = x+dim.x+1, y+dim.y+1, z+dim.z+1
+			-- Wall and floor
+			local maxx, maxy, maxz = x+dim.x+1, y+dim.y, z+dim.z+1
 			local chestSlotCounter = 1
 			for tx = x, maxx do
 				for tz = z, maxz do
@@ -211,13 +211,17 @@ minetest.register_on_generated(function(minp, maxp)
 									data[p_pos] = c_mossycobble
 								end
 
-							-- Wall or ceiling
-							elseif ty == maxy or (ty > y and (tx == x or tx == maxx) or (tz == z or tz == maxz)) then
+							-- Generate walls
+							--[[ Note: No cobblestone additional ceiling is generated. This is intentional.
+							The solid blocks above the dungeon are considered as the “ceiling”.
+							It is possible (but rare) for a dungeon to generate below sand or gravel. ]]
+
+							elseif ty > y and (tx == x or tx == maxx or (tz == z or tz == maxz)) then
 								-- Check if it's an opening first
-								if not (ty < maxy-1 and openings[tx][tz] == true) then
+								if (not openings[tx][tz]) or ty == maxy then
 									data[p_pos] = c_cobble
 								end
-								-- No-op if it was an opening
+								-- If it was an opening, the lower 3 blocks are not touched at all
 
 							-- Room interiour
 							else
