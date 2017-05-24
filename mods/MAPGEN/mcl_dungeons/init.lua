@@ -160,9 +160,19 @@ minetest.register_on_generated(function(minp, maxp)
 		local totalChestSlots = (dim.x-1) * (dim.z-1)
 		local chestSlots = {}
 		-- There is a small chance that both chests have the same slot.
-		-- In this case, only 1 chest is spawned. This intended.
+		-- In that case, we give a 2nd chance for the 2nd chest to get spawned.
+		-- If it failed again, tough luck! We stick with only 1 chest spawned.
+		local lastRandom
+		local secondChance = true -- second chance is still available
 		for i=1, totalChests do
-			table.insert(chestSlots, math.random(1, totalChestSlots))
+			local r = math.random(1, totalChestSlots)
+			if r == lastRandom and secondChance then
+				-- Oops! Same slot selected. Try again.
+				r = math.random(1, totalChestSlots)
+				secondChance = false
+			end
+			lastRandom = r
+			table.insert(chestSlots, r)
 		end
 		table.sort(chestSlots)
 		local currentChest = 1
@@ -194,8 +204,15 @@ minetest.register_on_generated(function(minp, maxp)
 
 							-- Place next chest at the wall (if it was its chosen wall slot)
 							if forChest and (currentChest < totalChests + 1) and (chestSlots[currentChest] == chestSlotCounter) then
+								local p2
+
+								-- Select rotation so the chest faces away from wall
+								if (tx==x+1) then p2 = 3
+								elseif (tx==maxx-1) then p2 = 1
+								elseif (tz==z+1) then p2 = 2
+								else p2 = 0 end
+								table.insert(chest_posses, {pos={x=tx, y=ty, z=tz}, param2=p2})
 								currentChest = currentChest + 1
-								table.insert(chest_posses, {x=tx, y=ty, z=tz})
 							else
 								data[p_pos] = c_air
 							end
@@ -219,8 +236,9 @@ minetest.register_on_generated(function(minp, maxp)
 	end
 
 	for c=1, #chest_posses do
-		minetest.set_node(chest_posses[c], {name="mcl_chests:chest", param2=3})
-		local meta = minetest.get_meta(chest_posses[c])
+		local cpos = chest_posses[c].pos
+		minetest.set_node(cpos, {name="mcl_chests:chest", param2=chest_posses[c].param2})
+		local meta = minetest.get_meta(cpos)
 		local inv = meta:get_inventory()
 		local items = get_loot()
 		for i=1, math.min(#items, inv:get_size("main")) do
