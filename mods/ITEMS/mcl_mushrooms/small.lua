@@ -57,7 +57,7 @@ local on_place = function(itemstack, placer, pointed_thing)
 	return itemstack
 end
 
-local longdesc = [[Mushrooms are fungi which grow and spread in darkness, but are sensitive to light.
+local longdesc = [[Mushrooms are fungi which grow and spread in darkness, but are sensitive to light. Mushrooms are inedible as such, but they can be used to craft food items.
 
 A single mushroom will slowly spread over time towards a random solid opaque block with a light level of 12 or lower in a 3×3×3 cube around the mushroom. A mushroom stops spreading when there are 5 or more mushrooms of the same color within an area of 9×3×9 blocks around the mushroom.
 Mushrooms will eventually uproot at a light level of 12 or higher. On mycelium or podzol, they survive and spread at any light level.]]
