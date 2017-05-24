@@ -55,8 +55,9 @@ minetest.register_node("mobs:spawner", {
 		-- text entry formspec
 		meta:set_string("formspec",
 			"field[text;" .. S("Mob MinLight MaxLight Amount PlayerDist") .. ";${command}]")
-		meta:set_string("infotext", S("Spawner Not Active (enter settings)"))
+		meta:set_string("infotext", S("Monster spawner not active (Rightclick to enter settings)"))
 		meta:set_string("command", spawner_default)
+		meta:set_int("active", 0)
 
 	end,
 
@@ -101,8 +102,11 @@ minetest.register_node("mobs:spawner", {
 		and pla and pla >=0 and pla <= 20
 		and yof and yof > -10 and yof < 10 then
 
+			-- Activate monster spawner and disable editing functionality
 			meta:set_string("command", fields.text)
-			meta:set_string("infotext", S("Spawner Active (@1)", mob))
+			meta:set_int("active", 1)
+			meta:set_string("infotext", "")
+			meta:set_string("formspec", "")
 
 			-- Create or update doll
 			local doll = find_doll(pos)
@@ -187,6 +191,11 @@ minetest.register_abm({
 
 		-- get meta and command
 		local meta = minetest.get_meta(pos)
+		local active = meta:get_int("active")
+		if active == 0 then
+			-- Spawner not active yet, do nothing
+			return
+		end
 		local comm = meta:get_string("command"):split(" ")
 
 		-- get settings from command
