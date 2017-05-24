@@ -3,14 +3,13 @@ local S = mobs.intllib
 local default_mob = "mobs_mc:chicken"
 
 -- mob spawner
-local spawner_default = default_mob.." 10 15 3 0"
+local spawner_default = default_mob.." 0 15 3 0"
 
 local function get_mob_textures(mob)
 	-- FIXME: Ummm … wtf? Why isn't there a textures attribute?
 	return minetest.registered_entities[mob].texture_list[1]
 end
 
--- Find doll entity at pos
 local function find_doll(pos)
 	for  _,obj in ipairs(minetest.env:get_objects_inside_radius(pos, 1)) do
 		if not obj:is_player() then
@@ -36,6 +35,46 @@ local function set_doll_properties(doll, mob)
 	doll:set_properties(prop)
 end
 
+--[[ Public function: Setup the spawner at pos.
+This function blindly assumes there's actually a spawner at pos.
+If not, then the results are undefined.
+
+* Mob: ID of mob to spawn
+
+All the following arguments are optional!
+
+* MinLight: Minimum light to spawn (default: 0)
+* MaxLight: Maximum light to spawn (default: 15)
+* MaxMobsInArea: How many mobs are allowed in the area around the spawner (default: 3)
+* PlayerDistance: Spawn mobs only if a player is within this distance; 0 to disable (default: 0)
+* YOffset: Y offset to spawn mobs; 0 to disable (default: 0)
+]]
+
+function mobs.setup_spawner(pos, Mob, MinLight, MaxLight, MaxMobsInArea, PlayerDistance, YOffset)
+	-- Activate monster spawner and disable editing functionality
+	if MinLight == nil then MinLight = 0 end
+	if MaxLight == nil then MinLight = 15 end
+	if MaxMobsInArea == nil then MinLight = 3  end
+	if PlayerDistance == nil then PlayerDistance = 0 end
+	if YOffset == nil then YOffset = 0 end
+	local meta = minetest.get_meta(pos)
+	meta:set_string("Mob", Mob)
+	meta:set_int("MinLight", MinLight)
+	meta:set_int("MaxLight", MaxLight)
+	meta:set_int("MaxMobsInArea", MaxMobsInArea)
+	meta:set_int("PlayerDistance", PlayerDistance)
+	meta:set_int("YOffset", YOffset)
+
+	meta:set_int("active", 1)
+	meta:set_string("infotext", "")
+	meta:set_string("formspec", "")
+	meta:set_string("command", "")
+
+	-- Create doll
+	local doll = minetest.add_entity({x=pos.x, y=pos.y-0.3, z=pos.z}, "mobs:spawner_mob_doll")
+	set_doll_properties(doll, Mob)
+end
+
 minetest.register_node("mobs:spawner", {
 	tiles = {"mob_spawner.png"},
 	drawtype = "glasslike",
@@ -54,7 +93,7 @@ minetest.register_node("mobs:spawner", {
 
 		-- text entry formspec
 		meta:set_string("formspec",
-			"field[text;" .. S("Mob MinLight MaxLight Amount PlayerDist") .. ";${command}]")
+			"field[text;" .. S("Mob MinLight MaxLight MaxMobsInArea PlayerDistance YOffset") .. ";${command}]")
 		meta:set_string("infotext", S("Monster spawner not active (Rightclick to enter settings)"))
 		meta:set_string("command", spawner_default)
 		meta:set_int("active", 0)
@@ -62,8 +101,11 @@ minetest.register_node("mobs:spawner", {
 	end,
 
 	on_destruct = function(pos)
-		local obj = find_doll(pos)
-		obj:remove()
+		local meta = minetest.get_meta(pos)
+		if meta:get_int("active") == 1 then
+			local obj = find_doll(pos)
+			obj:remove()
+		end
 	end,
 
 	on_right_click = function(pos, placer)
@@ -102,25 +144,7 @@ minetest.register_node("mobs:spawner", {
 		and pla and pla >=0 and pla <= 20
 		and yof and yof > -10 and yof < 10 then
 
-			-- Activate monster spawner and disable editing functionality
-			meta:set_string("Mob", mob)
-			meta:set_int("MinLight", mlig)
-			meta:set_int("MaxLight", xlig)
-			meta:set_int("MaxMobsInArea", num)
-			meta:set_int("PlayerDistance", pla)
-			meta:set_int("YOffset", yof)
-
-			meta:set_int("active", 1)
-			meta:set_string("infotext", "")
-			meta:set_string("formspec", "")
-			meta:set_string("command", "")
-
-			-- Create or update doll
-			local doll = find_doll(pos)
-			if not doll then
-				doll = minetest.add_entity({x=pos.x, y=pos.y-0.3, z=pos.z}, "mobs:spawner_mob_doll")
-			end
-			set_doll_properties(doll, mob)
+			mobs.setup_spawner(pos, mob, mlig, xlig, num, pla, yof)
 		else
 			minetest.chat_send_player(name, S("Mob Spawner settings failed!"))
 			minetest.chat_send_player(name,
