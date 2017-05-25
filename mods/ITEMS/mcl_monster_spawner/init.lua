@@ -106,7 +106,9 @@ minetest.register_node("mcl_monster_spawner:spawner", {
 		local meta = minetest.get_meta(pos)
 		if meta:get_int("active") == 1 then
 			local obj = find_doll(pos)
-			obj:remove()
+			if obj then
+				obj:remove()
+			end
 		end
 	end,
 
