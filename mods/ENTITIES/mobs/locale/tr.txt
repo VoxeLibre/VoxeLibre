@@ -1,0 +1,39 @@
+# Türkçe çeviri by Admicos
+# Turkish translation by Admicos
+
+# Son düzenleme: 26 Nisan 2017
+# Last edit: 26 April 2017
+
+#init.lua
+[MOD] Mobs Redo loaded = [MOD] Mobs Red yüklendi
+
+#api.lua
+[MOBS] mod profiling enabled, damage not enabled =  [MOBS] profilleme açık, zarar kapalı
+lifetimer expired, removed @1 = Can zamanlayıcısı bitti, @1 silindi
+[Mobs Redo] @1 has spawning disabled = @1 yaratılması kapandı
+[Mobs Redo] Chance setting for @1 is now @2 = [Mobs Redo] @1'in şans ayarı şimdi @2
+[mobs] @1 failed to spawn at @2 = @1, @2'de yaratılamadı
+Not tamed! = Evcil değil!
+@1 is owner! = Sahibi @1!
+Missed! = Kaçırdın!
+@1 at full health (@2) = @1 tam canında (@2)
+@1 has been tamed! = @1 tamamen evcilleştirilmiştir!
+Enter name: = İsim gir:
+Rename = Yeniden adlandır
+
+#crafts.lua
+Nametag = İsim etiketi
+Leather = Deri
+Raw Meat = Çiğ et
+Meat = Et
+Magic Lasso (right-click animal to put in inventory) = Sihirli kement (hayvana sağ tıklayarak envantere koy)
+Net (right-click animal to put in inventory) = Ağ (hayvana sağ tıklayarak envantere koy)
+Steel Shears (right-click to shear) = Çelik makas (sağ tıklayarak kes)
+
+#spawner.lua
+Mob Spawner = Canavar Yaratıcı
+Mob MinLight MaxLight Amount PlayerDist = Mob MinIşık MaxIşık Miktar OyuncuMesafesi
+Spawner Not Active (enter settings) = Yaratıcı aktif değil (ayarlara gir)
+Spawner Active (@1) = Yaratıcı aktif (@1)
+Mob Spawner settings failed! = Yaratıcı ayarları uygulanamadı.
+> name min_light[0-14] max_light[0-14] max_mobs_in_area[0 to disable] distance[1-20] y_offset[-10 to 10] = > isim min_isik[0-14] max_isik[0-14] alandaki_max_canavar_sayisi[kapatmak icin 0] mesafe[1-20] y_cikinti[-10 ve 10 arası]

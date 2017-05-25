@@ -21,7 +21,7 @@ Enter name: = Namen eingeben:
 Rename = Umbenennen
 
 #crafts.lua
-Name Tag = Namensschild
+Nametag = Namensschild
 Leather = Leder
 Raw Meat = Rohes Fleisch
 Meat = Fleisch
@@ -30,7 +30,7 @@ Net (right-click animal to put in inventory) = Netz (Rechtsklick auf Tier,\num e
 Steel Shears (right-click to shear) = Stahlschere (Rechtsklick zum Scheren)
 
 #spawner.lua
-Monster Spawner = Monsterspawner
+Mob Spawner = Mobspawner
 Mob MinLight MaxLight Amount PlayerDist = Mob MinLicht MaxLicht Menge SpielerEntfng
 Spawner Not Active (enter settings) = Spawner nicht aktiv (Einstellungen eintragen)
 Spawner Active (@1) = Spawner aktiv (@1)

@@ -1,6 +1,6 @@
 mcl_core
-mcl_sounds
 mcl_hunger
+mcl_sounds
 invisibility?
 intllib?
 lucky_block?
