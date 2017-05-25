@@ -299,17 +299,24 @@ minetest.register_abm({
 			{x = pos.x + 4, y = pos.y + 1 + yof, z = pos.z + 4},
 			{"air"})
 
-		-- spawn in random air block
-		if air and #air > 0 then
+		-- spawn up to 4 mobs in random air blocks
+		if air then
+			for a=1, 4 do
+				if #air <= 0 then
+					-- We're out of space! Stop spawning
+					break
+				end
+				local air_index = math.random(#air)
+				local pos2 = air[air_index]
+				local lig = minetest.get_node_light(pos2) or 0
 
-			local pos2 = air[math.random(#air)]
-			local lig = minetest.get_node_light(pos2) or 0
+				pos2.y = pos2.y + 0.5
 
-			pos2.y = pos2.y + 0.5
-
-			-- only if light levels are within range
-			if lig >= mlig and lig <= xlig then
-				minetest.add_entity(pos2, mob)
+				-- only if light levels are within range
+				if lig >= mlig and lig <= xlig then
+					minetest.add_entity(pos2, mob)
+				end
+				table.remove(air, air_index)
 			end
 		end
 

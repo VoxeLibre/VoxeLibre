@@ -79,8 +79,9 @@ minetest.register_on_generated(function(minp, maxp)
 	local c_mossycobble = minetest.get_content_id("mcl_core:mossycobble")
 	local c_chest = minetest.get_content_id("mcl_chests:chest")
 
-	-- Remember chest positions to set metadata later
+	-- Remember spawner chest positions to set metadata later
 	local chest_posses = {}
+	local spawner_posses = {}
 
 	-- Calculate the number of dungeon spawn attempts
 	local sizevector = vector.subtract(maxp, minp)
@@ -190,7 +191,11 @@ minetest.register_on_generated(function(minp, maxp)
 			table.sort(chestSlots)
 			local currentChest = 1
 
-			-- Wall and floor
+			-- Calculate the monster spawner position, to be re-used for later
+			local spawner_pos = {x = x + math.ceil(dim.x/2), y = y+1, z = z + math.ceil(dim.z/2)}
+			table.insert(spawner_posses, spawner_pos)
+
+			-- Generate walls and floor
 			local maxx, maxy, maxz = x+dim.x+1, y+dim.y, z+dim.z+1
 			local chestSlotCounter = 1
 			for tx = x, maxx do
@@ -298,7 +303,7 @@ minetest.register_on_generated(function(minp, maxp)
 			chest_param2[c] = facedir
 		end
 
-		-- Actually generate the dungeon all at once (except the chests and the spawner)
+		-- Finally generate the dungeons all at once (except the chests and the spawners)
 		vm:set_data(data)
 		vm:calc_lighting()
 		vm:update_liquids()
@@ -315,6 +320,28 @@ minetest.register_on_generated(function(minp, maxp)
 				inv:set_stack("main", i, ItemStack(items[i]))
 			end
 		end
+
+		-- Monster spawners are placed seperately, too
+		-- We don't want to destroy non-ground nodes
+		for s=1, #spawner_posses do
+			local sp = spawner_posses[s]
+			local n = minetest.get_name_from_content_id(data[area:index(sp.x,sp.y,sp.z)])
+			if minetest.registered_nodes[n].is_ground_content then
+
+				-- ... and place it and select a random mob
+				minetest.set_node(sp, {name = "mcl_monster_spawner:spawner"})
+				local mobs = {
+					"mobs_mc:zombie",
+					"mobs_mc:zombie",
+					"mobs_mc:spider",
+					"mobs_mc:skeleton",
+				}
+				local spawner_mob = mobs[math.random(1, #mobs)]
+
+				mcl_monster_spawner.setup_spawner(sp, spawner_mob)
+			end
+		end
+
 	end
 
 end)
