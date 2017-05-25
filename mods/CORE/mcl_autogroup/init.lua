@@ -9,7 +9,7 @@ Specifically, this mod has 2 purposes:
 --[[ Mining times. Yeah, mining times … Alright, this is going to be FUN!
 
 This mod does include a HACK to make 100% sure the digging times of all tools match Minecraft's perfectly.
-The digging times system of Minetest is very different, so this weird group trickery has to be used.so this weird group trickery has to be used.so this weird group trickery has to be used.so this weird group trickery has to be used.
+The digging times system of Minetest is very different, so this weird group trickery has to be used.
 In Minecraft, each block has a hardness and the actual Minecraft digging time is determined by this:
 1) The block's hardness
 2) The tool being used
