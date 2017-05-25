@@ -62,7 +62,7 @@ map builders. They can not be obtained in-game or in the creative inventory.
 
 * Barrier: `mcl_core:barrier`
 * Command Block: `mesecons_commandblock:commandblock_off`
-* Monster Spawner (WIP): `mcl_monster_spawners:spawner`
+* Monster Spawner (WIP): `mcl_mobspawners:spawner`
 * Huge mushroom blocks: See `mods/ITEMS/mcl_mushrooms/README.md`
 
 Use the `/giveme` chat command to obtain them. See the in-game help for

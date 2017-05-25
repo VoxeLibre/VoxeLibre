@@ -79,7 +79,7 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 			-- * Piston
 			-- * Sticky piston
 			if not def.buildable_to then
-				if node.name ~= "mcl_nether:soul_sand" and node.name ~= "mcl_monster_spawners:spawner" and
+				if node.name ~= "mcl_nether:soul_sand" and node.name ~= "mcl_mobspawners:spawner" and
 						((not def.groups.solid) or (not def.groups.opaque)) then
 					-- Only allow top placement on these nodes
 					if def.groups.glass or node.name == "mcl_hoppers:hopper" or node.name == "mcl_hoppers:hopper_side" or def.groups.fence or def.groups.wall then

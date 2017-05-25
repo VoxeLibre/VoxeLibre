@@ -2842,6 +2842,8 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 		inventory_image = invimg,
 		groups = grp,
 
+		_mobs_spawns_mob = mob,
+
 		on_place = function(itemstack, placer, pointed_thing)
 
 			-- Call on_rightclick if the pointed node defines it
