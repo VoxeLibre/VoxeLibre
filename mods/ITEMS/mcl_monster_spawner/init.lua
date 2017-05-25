@@ -37,6 +37,8 @@ local function set_doll_properties(doll, mob)
 	doll:get_luaentity()._mob = mob
 end
 
+
+
 --[[ Public function: Setup the spawner at pos.
 This function blindly assumes there's actually a spawner at pos.
 If not, then the results are undefined.
@@ -75,6 +77,121 @@ function mcl_monster_spawner.setup_spawner(pos, Mob, MinLight, MaxLight, MaxMobs
 	-- Create doll
 	local doll = minetest.add_entity({x=pos.x, y=pos.y-0.3, z=pos.z}, "mcl_monster_spawner:doll")
 	set_doll_properties(doll, Mob)
+
+	-- Start spawning very soon
+	local t = minetest.get_node_timer(pos)
+	t:start(2)
+end
+
+-- Spawn monsters around pos
+-- NOTE: The node is timer-based, rather than ABM-based.
+local spawn_monsters = function(pos, elapsed)
+
+	-- get meta
+	local meta = minetest.get_meta(pos)
+	local active = meta:get_int("active")
+	if active == 0 then
+		-- Spawner not active yet, do nothing
+		return
+	end
+
+	-- get settings
+	local mob = meta:get_string("Mob")
+	local mlig = meta:get_int("MinLight")
+	local xlig = meta:get_int("MaxLight")
+	local num = meta:get_int("MaxMobsInArea")
+	local pla = meta:get_int("PlayerDistance")
+	local yof = meta:get_int("YOffset")
+
+	-- if amount is 0 then do nothing
+	if num == 0 then
+		return
+	end
+
+	-- are we spawning a registered mob?
+	if not mobs.spawning_mobs[mob] then
+		minetest.log("error", "[mobs] Monster Spawner: Mob doesn't exist: "..mob)
+		return
+	end
+
+	-- check objects inside 8×8 area around spawner
+	local objs = minetest.get_objects_inside_radius(pos, 8)
+	local count = 0
+	local ent = nil
+
+
+	local timer = minetest.get_node_timer(pos)
+
+	-- spawn mob if player detected and in range
+	if pla > 0 then
+
+		local in_range = 0
+		local objs = minetest.get_objects_inside_radius(pos, pla)
+
+		for _,oir in pairs(objs) do
+
+			if oir:is_player() then
+
+				in_range = 1
+
+				break
+			end
+		end
+
+		-- player not found
+		if in_range == 0 then
+			-- Try again quickly
+			timer:start(2)
+			return
+		end
+	end
+
+	-- count mob objects of same type in area
+	for k, obj in ipairs(objs) do
+
+		ent = obj:get_luaentity()
+
+		if ent and ent.name and ent.name == mob then
+			count = count + 1
+		end
+	end
+
+	-- Are there too many of same type? then fail
+	if count >= num then
+		timer:start(math.random(5, 20))
+		return
+	end
+
+	-- find air blocks within 8×3×8 nodes of spawner
+	local air = minetest.find_nodes_in_area(
+		{x = pos.x - 4, y = pos.y - 1 + yof, z = pos.z - 4},
+		{x = pos.x + 4, y = pos.y + 1 + yof, z = pos.z + 4},
+		{"air"})
+
+	-- spawn up to 4 mobs in random air blocks
+	if air then
+		for a=1, 4 do
+			if #air <= 0 then
+				-- We're out of space! Stop spawning
+				break
+			end
+			local air_index = math.random(#air)
+			local pos2 = air[air_index]
+			local lig = minetest.get_node_light(pos2) or 0
+
+			pos2.y = pos2.y + 0.5
+
+			-- only if light levels are within range
+			if lig >= mlig and lig <= xlig then
+				minetest.add_entity(pos2, mob)
+			end
+			table.remove(air, air_index)
+		end
+	end
+
+	-- Spawn attempt done. Next spawn attempt much later
+	timer:start(math.random(10, 39.95))
+
 end
 
 minetest.register_node("mcl_monster_spawner:spawner", {
@@ -111,6 +228,8 @@ minetest.register_node("mcl_monster_spawner:spawner", {
 			end
 		end
 	end,
+
+	on_timer = spawn_monsters,
 
 	on_receive_fields = function(pos, formname, fields, sender)
 
@@ -200,118 +319,3 @@ minetest.register_entity("mcl_monster_spawner:doll", doll_def)
 
 
 
-local max_per_block = tonumber(minetest.setting_get("max_objects_per_block") or 99)
-
--- spawner abm
-minetest.register_abm({
-	label = "Monster Spawner spawning a monster",
-	nodenames = {"mcl_monster_spawner:spawner"},
-	interval = 10,
-	chance = 4,
-	catch_up = false,
-
-	action = function(pos, node, active_object_count, active_object_count_wider)
-
-		-- return if too many entities already
-		if active_object_count_wider >= max_per_block then
-			return
-		end
-
-		-- get meta and command
-		local meta = minetest.get_meta(pos)
-		local active = meta:get_int("active")
-		if active == 0 then
-			-- Spawner not active yet, do nothing
-			return
-		end
-
-		-- get settings
-		local mob = meta:get_string("Mob")
-		local mlig = meta:get_int("MinLight")
-		local xlig = meta:get_int("MaxLight")
-		local num = meta:get_int("MaxMobsInArea")
-		local pla = meta:get_int("PlayerDistance")
-		local yof = meta:get_int("YOffset")
-
-		-- if amount is 0 then do nothing
-		if num == 0 then
-			return
-		end
-
-		-- are we spawning a registered mob?
-		if not mobs.spawning_mobs[mob] then
-			minetest.log("error", "[mobs] Monster Spawner: Mob doesn't exist: "..mob)
-			return
-		end
-
-		-- check objects inside 8×8 area around spawner
-		local objs = minetest.get_objects_inside_radius(pos, 8)
-		local count = 0
-		local ent = nil
-
-		-- count mob objects of same type in area
-		for k, obj in ipairs(objs) do
-
-			ent = obj:get_luaentity()
-
-			if ent and ent.name and ent.name == mob then
-				count = count + 1
-			end
-		end
-
-		-- is there too many of same type?
-		if count >= num then
-			return
-		end
-
-		-- spawn mob if player detected and in range
-		if pla > 0 then
-
-			local in_range = 0
-			local objs = minetest.get_objects_inside_radius(pos, pla)
-
-			for _,oir in pairs(objs) do
-
-				if oir:is_player() then
-
-					in_range = 1
-
-					break
-				end
-			end
-
-			-- player not found
-			if in_range == 0 then
-				return
-			end
-		end
-
-		-- find air blocks within 8×3×8 nodes of spawner
-		local air = minetest.find_nodes_in_area(
-			{x = pos.x - 4, y = pos.y - 1 + yof, z = pos.z - 4},
-			{x = pos.x + 4, y = pos.y + 1 + yof, z = pos.z + 4},
-			{"air"})
-
-		-- spawn up to 4 mobs in random air blocks
-		if air then
-			for a=1, 4 do
-				if #air <= 0 then
-					-- We're out of space! Stop spawning
-					break
-				end
-				local air_index = math.random(#air)
-				local pos2 = air[air_index]
-				local lig = minetest.get_node_light(pos2) or 0
-
-				pos2.y = pos2.y + 0.5
-
-				-- only if light levels are within range
-				if lig >= mlig and lig <= xlig then
-					minetest.add_entity(pos2, mob)
-				end
-				table.remove(air, air_index)
-			end
-		end
-
-	end
-})
