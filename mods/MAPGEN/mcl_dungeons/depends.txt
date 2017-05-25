@@ -2,3 +2,4 @@ mcl_init
 mcl_core
 mcl_chests
 mcl_monster_spawners
+mobs_mc
