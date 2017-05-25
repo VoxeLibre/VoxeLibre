@@ -23,6 +23,10 @@ local function find_doll(pos)
 	return nil
 end
 
+local function spawn_doll(pos)
+	return minetest.add_entity({x=pos.x, y=pos.y-0.3, z=pos.z}, "mcl_mobspawners:doll")
+end
+
 local function set_doll_properties(doll, mob)
 	local mobinfo = minetest.registered_entities[mob]
 	local prop = {
@@ -69,8 +73,9 @@ function mcl_mobspawners.setup_spawner(pos, Mob, MinLight, MaxLight, MaxMobsInAr
 	meta:set_int("YOffset", YOffset)
 
 	-- Create doll
-	local doll = minetest.add_entity({x=pos.x, y=pos.y-0.3, z=pos.z}, "mcl_mobspawners:doll")
+	local doll = spawn_doll(pos)
 	set_doll_properties(doll, Mob)
+
 
 	-- Start spawning very soon
 	local t = minetest.get_node_timer(pos)
@@ -133,6 +138,19 @@ local spawn_monsters = function(pos, elapsed)
 			timer:start(2)
 			return
 		end
+	end
+
+	--[[ HACK!
+	The doll may not stay spawned if the monster spawner is placed far away from
+	players, so we will check for its existance periodically when a player is nearby.
+	This would happen almost always when the monster spawner is placed by the mapgen.
+	FIXME: Find out why the doll does not seem to spawn / despawns immediately when
+	monster spawner is placed by mapgen.
+	]]
+	local doll = find_doll(pos)
+	if not doll then
+		doll = spawn_doll(pos)
+		set_doll_properties(doll, mob)
 	end
 
 	-- count mob objects of same type in area
