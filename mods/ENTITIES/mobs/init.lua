@@ -8,7 +8,7 @@ dofile(path .. "/api.lua")
 dofile(path .. "/crafts.lua")
 
 -- Mob Spawner
-dofile(path .. "/spawner.lua")
+-- moved into other mod (MCL2 change)
 
 -- Lucky Blocks
 dofile(path .. "/lucky_block.lua")

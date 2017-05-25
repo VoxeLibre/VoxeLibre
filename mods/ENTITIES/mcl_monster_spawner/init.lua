@@ -13,7 +13,7 @@ end
 local function find_doll(pos)
 	for  _,obj in ipairs(minetest.env:get_objects_inside_radius(pos, 1)) do
 		if not obj:is_player() then
-			if obj ~= nil and obj:get_luaentity().name == "mobs:spawner_mob_doll" then
+			if obj ~= nil and obj:get_luaentity().name == "mcl_monster_spawner:doll" then
 				return obj
 			end
 		end
@@ -71,11 +71,11 @@ function mobs.setup_spawner(pos, Mob, MinLight, MaxLight, MaxMobsInArea, PlayerD
 	meta:set_string("command", "")
 
 	-- Create doll
-	local doll = minetest.add_entity({x=pos.x, y=pos.y-0.3, z=pos.z}, "mobs:spawner_mob_doll")
+	local doll = minetest.add_entity({x=pos.x, y=pos.y-0.3, z=pos.z}, "mcl_monster_spawner:doll")
 	set_doll_properties(doll, Mob)
 end
 
-minetest.register_node("mobs:spawner", {
+minetest.register_node("mcl_monster_spawner:spawner", {
 	tiles = {"mob_spawner.png"},
 	drawtype = "glasslike",
 	paramtype = "light",
@@ -158,7 +158,7 @@ minetest.register_node("mobs:spawner", {
 
 -- Mob spawner doll (rotating icon inside cage)
 
-local spawner_mob_doll_def = {
+local doll_def = {
 	hp_max = 1,
 	physical = true,
 	collisionbox = {0,0,0,0,0,0},
@@ -170,11 +170,11 @@ local spawner_mob_doll_def = {
 	_mob = default_mob, -- name of the mob this doll represents
 }
 
-spawner_mob_doll_def.get_staticdata = function(self)
+doll_def.get_staticdata = function(self)
 	return self._mob
 end
 
-spawner_mob_doll_def.on_activate = function(self, staticdata, dtime_s)
+doll_def.on_activate = function(self, staticdata, dtime_s)
 	local mob = staticdata
 	if mob == "" or mob == nil then
 		mob = default_mob
@@ -186,20 +186,20 @@ spawner_mob_doll_def.on_activate = function(self, staticdata, dtime_s)
 
 end
 
-spawner_mob_doll_def.on_step = function(self, dtime)
+doll_def.on_step = function(self, dtime)
 	-- Check if spawner is still present. If not, delete the entity
 	self.timer = self.timer + 0.01
 	local n = minetest.get_node_or_nil(self.object:getpos())
 	if self.timer > 1 then
-		if n and n.name and n.name ~= "mobs:spawner" then
+		if n and n.name and n.name ~= "mcl_monster_spawner:spawner" then
 			self.object:remove()
 		end
 	end
 end
 
-spawner_mob_doll_def.on_punch = function(self, hitter) end
+doll_def.on_punch = function(self, hitter) end
 
-minetest.register_entity("mobs:spawner_mob_doll", spawner_mob_doll_def)
+minetest.register_entity("mcl_monster_spawner:doll", doll_def)
 
 
 
@@ -208,7 +208,7 @@ local max_per_block = tonumber(minetest.setting_get("max_objects_per_block") or 
 -- spawner abm
 minetest.register_abm({
 	label = "Monster Spawner spawning a monster",
-	nodenames = {"mobs:spawner"},
+	nodenames = {"mcl_monster_spawner:spawner"},
 	interval = 10,
 	chance = 4,
 	catch_up = false,
