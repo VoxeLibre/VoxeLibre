@@ -26,7 +26,6 @@ end
 local function set_doll_properties(doll, mob)
 	local mobinfo = minetest.registered_entities[mob]
 	local prop = {
-		_mob = mob,
 		mesh = mobinfo.mesh,
 		textures = get_mob_textures(mob),
 		visual_size = {
@@ -35,6 +34,7 @@ local function set_doll_properties(doll, mob)
 		}
 	}
 	doll:set_properties(prop)
+	doll:get_luaentity()._mob = mob
 end
 
 --[[ Public function: Setup the spawner at pos.
@@ -150,7 +150,7 @@ minetest.register_node("mcl_monster_spawner:spawner", {
 		else
 			minetest.chat_send_player(name, S("Mob Spawner settings failed!"))
 			minetest.chat_send_player(name,
-				S("> name min_light[0-14] max_light[0-14] max_mobs_in_area[0 to disable] distance[1-20] y_offset[-10 to 10]"))
+				S("Syntax: name min_light[0-14] max_light[0-14] max_mobs_in_area[0 to disable] distance[1-20] y_offset[-10 to 10]"))
 		end
 	end,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
