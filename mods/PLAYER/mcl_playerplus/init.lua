@@ -251,7 +251,7 @@ minetest.register_globalstep(function(dtime)
 						pos = {x=x, y=y, z=z},
 						expirationtime = 1,
 						size = 8,
-						texture = "default_barrier.png",
+						texture = "mcl_core_barrier.png",
 						playername = name
 					})
 				end

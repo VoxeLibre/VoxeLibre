@@ -242,11 +242,11 @@ local wood_sounds = mcl_sounds.node_sound_wood_defaults()
 
 local woods = {
 	{"", "Oak Fence", "Oak Fence Gate", "default_wood.png", "mcl_core:wood"},
-	{"spruce", "Spruce Fence", "Spruce Fence Gate", "default_sprucewood.png", "mcl_core:sprucewood"},
-	{"birch", "Birch Fence", "Birch Fence Gate", "default_planks_birch.png", "mcl_core:birchwood"},
+	{"spruce", "Spruce Fence", "Spruce Fence Gate", "mcl_core_planks_spruce.png", "mcl_core:sprucewood"},
+	{"birch", "Birch Fence", "Birch Fence Gate", "mcl_core_planks_birch.png", "mcl_core:birchwood"},
 	{"jungle", "Jungle Fence", "Jungle Fence Gate", "default_junglewood.png", "mcl_core:junglewood"},
-	{"dark_oak", "Dark Oak Fence", "Dark Oak Fence Gate", "default_planks_big_oak.png", "mcl_core:darkwood"},
-	{"acacia", "Acacia Fence", "Acacia Fence Gate", "default_acaciawood.png", "mcl_core:acaciawood"},
+	{"dark_oak", "Dark Oak Fence", "Dark Oak Fence Gate", "mcl_core_planks_big_oak.png", "mcl_core:darkwood"},
+	{"acacia", "Acacia Fence", "Acacia Fence Gate", "default_acacia_wood.png", "mcl_core:acaciawood"},
 }
 
 for w=1, #woods do

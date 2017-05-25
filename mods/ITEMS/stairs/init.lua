@@ -284,53 +284,53 @@ stairs.register_slab("junglewood", "mcl_core:junglewood",
 
 stairs.register_stair("acaciawood", "mcl_core:acaciawood",
 		{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
-		{"default_acaciawood.png"},
+		{"default_acacia_wood.png"},
 		"Acacia Wood Stairs",
 		mcl_sounds.node_sound_wood_defaults(),
 		2)
 
 stairs.register_slab("acaciawood", "mcl_core:acaciawood",
 		{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1},
-		{"default_acaciawood.png"},
+		{"default_acacia_wood.png"},
 		"Acacia Wood Slab",
 		mcl_sounds.node_sound_wood_defaults(),
 		2)
 	
 stairs.register_stair("sprucewood", "mcl_core:sprucewood",
 		{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
-		{"default_sprucewood.png"},
+		{"mcl_core_planks_spruce.png"},
 		"Spruce Wood Stairs",
 		mcl_sounds.node_sound_wood_defaults(),
 		2)
 stairs.register_slab("sprucewood", "mcl_core:sprucewood",
 		{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1},
-		{"default_sprucewood.png"},
+		{"mcl_core_planks_spruce.png"},
 		"Spruce Wood Slab",
 		mcl_sounds.node_sound_wood_defaults(),
 		2)
 
 stairs.register_stair("birchwood", "mcl_core:birchwood",
 		{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
-		{"default_planks_birch.png"},
+		{"mcl_core_planks_birch.png"},
 		"Birch Wood Stairs",
 		mcl_sounds.node_sound_wood_defaults(),
 		2)
 stairs.register_slab("birchwood", "mcl_core:birchwood",
 		{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1},
-		{"default_planks_birch.png"},
+		{"mcl_core_planks_birch.png"},
 		"Birch Wood Slab",
 		mcl_sounds.node_sound_wood_defaults(),
 		2)
 
 stairs.register_stair("darkwood", "mcl_core:darkwood",
 		{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
-		{"default_planks_big_oak.png"},
+		{"mcl_core_planks_big_oak.png"},
 		"Dark Oak Wood Stairs",
 		mcl_sounds.node_sound_wood_defaults(),
 		2)
 stairs.register_slab("darkwood", "mcl_core:darkwood",
 		{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1},
-		{"default_planks_big_oak.png"},
+		{"mcl_core_planks_big_oak.png"},
 		"Dark Oak Wood Slab",
 		mcl_sounds.node_sound_wood_defaults(),
 		2)
@@ -348,23 +348,23 @@ stairs.register_stair_and_slab_simple("brick_block", "mcl_core:brick_block", "Br
 
 stairs.register_stair("sandstone", "group:sandstone",
 		{pickaxey=1, material_stone=1},
-		{"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_normal.png"},
+		{"mcl_core_sandstone_top.png", "mcl_core_sandstone_bottom.png", "mcl_core_sandstone_normal.png"},
 		"Sandstone Stairs",
 		mcl_sounds.node_sound_stone_defaults(), 0.8, nil, "mcl_core:sandstone")
 stairs.register_slab("sandstone", "group:sandstone",
 		{pickaxey=1, material_stone=1},
-		{"default_sandstone_top.png", "default_sandstone_bottom.png", "default_sandstone_normal.png"},
+		{"mcl_core_sandstone_top.png", "mcl_core_sandstone_bottom.png", "mcl_core_sandstone_normal.png"},
 		"Sandstone Slab",
 		mcl_sounds.node_sound_stone_defaults(), 2, nil, "mcl_core:sandstone")
 
 stairs.register_stair("redsandstone", "group:redsandstone",
 		{pickaxey=1, material_stone=1},
-		{"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_normal.png"},
+		{"mcl_core_red_sandstone_top.png", "mcl_core_red_sandstone_bottom.png", "mcl_core_red_sandstone_normal.png"},
 		"Red Sandstone Stairs",
 		mcl_sounds.node_sound_stone_defaults(), 0.8, nil, "mcl_core:redsandstone")
 stairs.register_slab("redsandstone", "group:redsandstone",
 		{pickaxey=1, material_stone=1},
-		{"default_redsandstone_top.png", "default_redsandstone_bottom.png", "default_redsandstone_normal.png"},
+		{"mcl_core_red_sandstone_top.png", "mcl_core_red_sandstone_bottom.png", "mcl_core_red_sandstone_normal.png"},
 		"Red Sandstone Slab",
 		mcl_sounds.node_sound_stone_defaults(), 2, nil, "mcl_core:redsandstone")
 

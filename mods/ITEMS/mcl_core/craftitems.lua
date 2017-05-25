@@ -36,7 +36,7 @@ minetest.register_craftitem("mcl_core:charcoal_lump", {
 	_doc_items_longdesc = "Charcoal is an alternative furnace fuel created by cooking wood in a furnace. It has the same burning time as coal and also shares many of its crafting recipes, but it can not be used to create coal blocks.",
 	_doc_items_hidden = false,
 	groups = { coal=1 },
-	inventory_image = "default_charcoal_lump.png",
+	inventory_image = "mcl_core_charcoal.png",
 	stack_max = 64,
 	groups = { craftitem=1, coal=1 },
 })
@@ -44,7 +44,7 @@ minetest.register_craftitem("mcl_core:charcoal_lump", {
 minetest.register_craftitem("mcl_core:iron_nugget", {
 	description = "Iron Nugget",
 	_doc_items_longdesc = "Iron nuggets are very small pieces of molten iron; the main purpose is to create iron ingots.",
-	inventory_image = "default_iron_nugget.png",
+	inventory_image = "mcl_core_iron_nugget.png",
 	stack_max = 64,
 	groups = { craftitem=1 },
 })
@@ -52,7 +52,7 @@ minetest.register_craftitem("mcl_core:iron_nugget", {
 minetest.register_craftitem("mcl_core:gold_nugget", {
 	description = "Gold Nugget",
 	_doc_items_longdesc = "Gold nuggets are very small pieces of molten gold; the main purpose is to create gold ingots.",
-	inventory_image = "default_gold_nugget.png",
+	inventory_image = "mcl_core_gold_nugget.png",
 	stack_max = 64,
 	groups = { craftitem=1 },
 })
@@ -93,7 +93,7 @@ minetest.register_craftitem("mcl_core:gold_ingot", {
 minetest.register_craftitem("mcl_core:emerald", {
 	description = "Emerald",
 	_doc_items_longdesc = "Emeralds are not very useful on their own, but many villagers have a love for emeralds and often use it as a currency in trading.",
-	inventory_image = "default_emerald.png",
+	inventory_image = "mcl_core_emerald.png",
 	stack_max = 64,
 	groups = { craftitem=1 },
 })
@@ -117,7 +117,7 @@ minetest.register_craftitem("mcl_core:flint", {
 minetest.register_craftitem("mcl_core:sugar", {
 	description = "Sugar",
 	_doc_items_longdesc = "Sugar comes from sugar canes and is used to make sweet foods.",
-	inventory_image = "default_sugar.png",
+	inventory_image = "mcl_core_sugar.png",
 	stack_max = 64,
 	groups = { craftitem = 1 },
 })
@@ -125,7 +125,7 @@ minetest.register_craftitem("mcl_core:sugar", {
 minetest.register_craftitem("mcl_core:bowl",{
 	description = "Bowl",
 	_doc_items_longdesc = "Bowls are mainly used to hold tasty soups.",
-	inventory_image = "default_bowl.png",
+	inventory_image = "mcl_core_bowl.png",
 	stack_max = 64,
 	groups = { craftitem = 1 },
 })
@@ -146,8 +146,8 @@ minetest.register_craftitem("mcl_core:apple", {
 minetest.register_craftitem("mcl_core:apple_gold", {
 	description = core.colorize("#55FFFF", "Golden Apple"),
 	_doc_items_longdesc = "Golden apples are precious food items which can be eaten.",
-	wield_image = "default_apple_gold.png",
-	inventory_image = "default_apple_gold.png",
+	wield_image = "mcl_core_apple_golden.png",
+	inventory_image = "mcl_core_apple_golden.png",
 	stack_max = 64,
 	-- TODO: Reduce to 4 when it's ready
 	on_place = minetest.item_eat(8),
