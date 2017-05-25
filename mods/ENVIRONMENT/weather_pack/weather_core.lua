@@ -192,16 +192,3 @@ local weather_allow_abm = minetest.setting_getbool("weather_allow_abm")
 if weather_allow_abm ~= nil and weather_allow_abm == false then
   weather.allow_abm = false
 end 
-
--- Overrides nodes 'sunlight_propagates' attribute for efficient indoor check (e.g. for glass roof).
--- Controlled from minetest.conf setting and by default it is disabled.
--- To enable set weather_allow_override_nodes to true. 
--- Only new nodes will be effected (glass roof needs to be rebuilded).
-if minetest.setting_getbool("weather_allow_override_nodes") then
-  if minetest.registered_nodes["default:glass"] then
-    minetest.override_item("default:glass", {sunlight_propagates = false})
-  end
-  if minetest.registered_nodes["default:meselamp"] then
-    minetest.override_item("default:meselamp", {sunlight_propagates = false})
-  end
-end
