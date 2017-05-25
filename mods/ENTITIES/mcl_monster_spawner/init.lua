@@ -50,7 +50,7 @@ All the following arguments are optional!
 * YOffset: Y offset to spawn mobs; 0 to disable (default: 0)
 ]]
 
-function mobs.setup_spawner(pos, Mob, MinLight, MaxLight, MaxMobsInArea, PlayerDistance, YOffset)
+function mcl_monster_spawner.setup_spawner(pos, Mob, MinLight, MaxLight, MaxMobsInArea, PlayerDistance, YOffset)
 	-- Activate monster spawner and disable editing functionality
 	if MinLight == nil then MinLight = 0 end
 	if MaxLight == nil then MinLight = 15 end
@@ -144,7 +144,7 @@ minetest.register_node("mcl_monster_spawner:spawner", {
 		and pla and pla >=0 and pla <= 20
 		and yof and yof > -10 and yof < 10 then
 
-			mobs.setup_spawner(pos, mob, mlig, xlig, num, pla, yof)
+			mcl_monster_spawner.setup_spawner(pos, mob, mlig, xlig, num, pla, yof)
 		else
 			minetest.chat_send_player(name, S("Mob Spawner settings failed!"))
 			minetest.chat_send_player(name,
