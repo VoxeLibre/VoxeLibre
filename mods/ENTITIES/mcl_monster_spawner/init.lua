@@ -1,8 +1,10 @@
 local S = mobs.intllib
 
+mcl_monster_spawner = {}
+
 local default_mob = "mobs_mc:chicken"
 
--- mob spawner
+-- Monster spawner
 local spawner_default = default_mob.." 0 15 3 0"
 
 local function get_mob_textures(mob)
