@@ -1,5 +1,6 @@
-Minetest 0.4 mod: default (with lot's of custom ...)
-==========================
+MineClone 2 core mod
+====================
+Originally forked from Minetest Game's default mod in the distant past
 
 License of source code:
 -----------------------
@@ -12,8 +13,8 @@ the Free Software Foundation; either version 2.1 of the License, or
 
 http://www.gnu.org/licenses/lgpl-2.1.html
 
-License of textures
-===================
+License of all textures and sounds
+==================================
 MIT License.
 
 The textures are taken from the Minecraft resource pack “Faithful 1.11” by Vattic and
@@ -21,5 +22,5 @@ xMrVizzy and contributers.
 
 Sounds
 ======
-
-The sounds can be found in the mod `mcl_sounds`.
+All sounds included in this mod are under the MIT License.
+The other sounds used in this mod can be found in CORE/mcl_sounds.
