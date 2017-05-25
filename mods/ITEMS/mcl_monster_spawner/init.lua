@@ -42,11 +42,9 @@ end
 --[[ Public function: Setup the spawner at pos.
 This function blindly assumes there's actually a spawner at pos.
 If not, then the results are undefined.
+All the arguments are optional!
 
-* Mob: ID of mob to spawn
-
-All the following arguments are optional!
-
+* Mob: ID of mob to spawn (default: mobs_mc:pig)
 * MinLight: Minimum light to spawn (default: 0)
 * MaxLight: Maximum light to spawn (default: 15)
 * MaxMobsInArea: How many mobs are allowed in the area around the spawner (default: 4)
@@ -56,6 +54,7 @@ All the following arguments are optional!
 
 function mcl_monster_spawner.setup_spawner(pos, Mob, MinLight, MaxLight, MaxMobsInArea, PlayerDistance, YOffset)
 	-- Activate monster spawner and disable editing functionality
+	if Mob == nil then Mob = default_mob end
 	if MinLight == nil then MinLight = 0 end
 	if MaxLight == nil then MaxLight = 15 end
 	if MaxMobsInArea == nil then MaxMobsInArea = 4  end
@@ -68,11 +67,6 @@ function mcl_monster_spawner.setup_spawner(pos, Mob, MinLight, MaxLight, MaxMobs
 	meta:set_int("MaxMobsInArea", MaxMobsInArea)
 	meta:set_int("PlayerDistance", PlayerDistance)
 	meta:set_int("YOffset", YOffset)
-
-	meta:set_int("active", 1)
-	meta:set_string("infotext", "")
-	meta:set_string("formspec", "")
-	meta:set_string("command", "")
 
 	-- Create doll
 	local doll = minetest.add_entity({x=pos.x, y=pos.y-0.3, z=pos.z}, "mcl_monster_spawner:doll")
@@ -89,11 +83,6 @@ local spawn_monsters = function(pos, elapsed)
 
 	-- get meta
 	local meta = minetest.get_meta(pos)
-	local active = meta:get_int("active")
-	if active == 0 then
-		-- Spawner not active yet, do nothing
-		return
-	end
 
 	-- get settings
 	local mob = meta:get_string("Mob")
@@ -206,26 +195,13 @@ minetest.register_node("mcl_monster_spawner:spawner", {
 	is_ground_content = false,
 	drop = "",
 
-	on_construct = function(pos)
-
-		local meta = minetest.get_meta(pos)
-
-		-- text entry formspec
-		meta:set_string("formspec",
-			"field[text;" .. S("Mob MinLight MaxLight MaxMobsInArea PlayerDistance YOffset") .. ";${command}]")
-		meta:set_string("infotext", S("Monster spawner not active (Rightclick to enter settings)"))
-		meta:set_string("command", spawner_default)
-		meta:set_int("active", 0)
-
-	end,
+	on_construct = mcl_monster_spawner.setup_spawner,
 
 	on_destruct = function(pos)
 		local meta = minetest.get_meta(pos)
-		if meta:get_int("active") == 1 then
-			local obj = find_doll(pos)
-			if obj then
-				obj:remove()
-			end
+		local obj = find_doll(pos)
+		if obj then
+			obj:remove()
 		end
 	end,
 
