@@ -1333,7 +1333,6 @@ minetest.register_node("mcl_core:slimeblock", {
 	-- bouncy=44 makes the player bounce up to 49.6. This value was chosen by experiment.
 	groups = {dig_immediate=3, bouncy=44,fall_damage_add_percent=-100,deco_block=1},
 	sounds = {
-		dig = {name="slimenodes_dig", gain=0.3},
 		dug = {name="slimenodes_dug", gain=0.6},
 		place = {name="slimenodes_place", gain=0.6},
 		footstep = {name="slimenodes_step", gain=0.3},
