@@ -11,4 +11,4 @@ gemalde
 signs
 mcl_observers
 doc_identifier
-mcl_monster_spawner
+mcl_monster_spawners

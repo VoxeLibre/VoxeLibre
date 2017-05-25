@@ -1,6 +1,6 @@
 local S = mobs.intllib
 
-mcl_monster_spawner = {}
+mcl_monster_spawners = {}
 
 local default_mob = "mobs_mc:pig"
 
@@ -15,7 +15,7 @@ end
 local function find_doll(pos)
 	for  _,obj in ipairs(minetest.env:get_objects_inside_radius(pos, 1)) do
 		if not obj:is_player() then
-			if obj ~= nil and obj:get_luaentity().name == "mcl_monster_spawner:doll" then
+			if obj ~= nil and obj:get_luaentity().name == "mcl_monster_spawners:doll" then
 				return obj
 			end
 		end
@@ -52,7 +52,7 @@ All the arguments are optional!
 * YOffset: Y offset to spawn mobs; 0 to disable (default: 0)
 ]]
 
-function mcl_monster_spawner.setup_spawner(pos, Mob, MinLight, MaxLight, MaxMobsInArea, PlayerDistance, YOffset)
+function mcl_monster_spawners.setup_spawner(pos, Mob, MinLight, MaxLight, MaxMobsInArea, PlayerDistance, YOffset)
 	-- Activate monster spawner and disable editing functionality
 	if Mob == nil then Mob = default_mob end
 	if MinLight == nil then MinLight = 0 end
@@ -69,7 +69,7 @@ function mcl_monster_spawner.setup_spawner(pos, Mob, MinLight, MaxLight, MaxMobs
 	meta:set_int("YOffset", YOffset)
 
 	-- Create doll
-	local doll = minetest.add_entity({x=pos.x, y=pos.y-0.3, z=pos.z}, "mcl_monster_spawner:doll")
+	local doll = minetest.add_entity({x=pos.x, y=pos.y-0.3, z=pos.z}, "mcl_monster_spawners:doll")
 	set_doll_properties(doll, Mob)
 
 	-- Start spawning very soon
@@ -183,7 +183,7 @@ local spawn_monsters = function(pos, elapsed)
 
 end
 
-minetest.register_node("mcl_monster_spawner:spawner", {
+minetest.register_node("mcl_monster_spawners:spawner", {
 	tiles = {"mob_spawner.png"},
 	drawtype = "glasslike",
 	paramtype = "light",
@@ -195,7 +195,7 @@ minetest.register_node("mcl_monster_spawner:spawner", {
 	is_ground_content = false,
 	drop = "",
 
-	on_construct = mcl_monster_spawner.setup_spawner,
+	on_construct = mcl_monster_spawners.setup_spawner,
 
 	on_destruct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -236,7 +236,7 @@ minetest.register_node("mcl_monster_spawner:spawner", {
 		and pla and pla >=0 and pla <= 20
 		and yof and yof > -10 and yof < 10 then
 
-			mcl_monster_spawner.setup_spawner(pos, mob, mlig, xlig, num, pla, yof)
+			mcl_monster_spawners.setup_spawner(pos, mob, mlig, xlig, num, pla, yof)
 		else
 			minetest.chat_send_player(name, S("Mob Spawner settings failed!"))
 			minetest.chat_send_player(name,
@@ -283,7 +283,7 @@ doll_def.on_step = function(self, dtime)
 	self.timer = self.timer + 0.01
 	local n = minetest.get_node_or_nil(self.object:getpos())
 	if self.timer > 1 then
-		if n and n.name and n.name ~= "mcl_monster_spawner:spawner" then
+		if n and n.name and n.name ~= "mcl_monster_spawners:spawner" then
 			self.object:remove()
 		end
 	end
@@ -291,7 +291,7 @@ end
 
 doll_def.on_punch = function(self, hitter) end
 
-minetest.register_entity("mcl_monster_spawner:doll", doll_def)
+minetest.register_entity("mcl_monster_spawners:doll", doll_def)
 
 
 

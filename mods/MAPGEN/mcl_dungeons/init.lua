@@ -329,7 +329,7 @@ minetest.register_on_generated(function(minp, maxp)
 			if minetest.registered_nodes[n].is_ground_content then
 
 				-- ... and place it and select a random mob
-				minetest.set_node(sp, {name = "mcl_monster_spawner:spawner"})
+				minetest.set_node(sp, {name = "mcl_monster_spawners:spawner"})
 				local mobs = {
 					"mobs_mc:zombie",
 					"mobs_mc:zombie",
@@ -338,7 +338,7 @@ minetest.register_on_generated(function(minp, maxp)
 				}
 				local spawner_mob = mobs[math.random(1, #mobs)]
 
-				mcl_monster_spawner.setup_spawner(sp, spawner_mob)
+				mcl_monster_spawners.setup_spawner(sp, spawner_mob)
 			end
 		end
 
