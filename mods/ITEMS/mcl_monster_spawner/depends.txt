@@ -1,3 +1,2 @@
-mobs
-mobs_mc
 mcl_sounds
+mobs
