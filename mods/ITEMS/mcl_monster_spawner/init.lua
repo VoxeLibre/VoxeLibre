@@ -112,13 +112,6 @@ minetest.register_node("mcl_monster_spawner:spawner", {
 		end
 	end,
 
-	on_right_click = function(pos, placer)
-
-		if minetest.is_protected(pos, placer:get_player_name()) then
-			return
-		end
-	end,
-
 	on_receive_fields = function(pos, formname, fields, sender)
 
 		if not fields.text or fields.text == "" then
