@@ -29,8 +29,8 @@ local function set_doll_properties(doll, mob)
 		mesh = mobinfo.mesh,
 		textures = get_mob_textures(mob),
 		visual_size = {
-			x = mobinfo.visual_size.x * 0.5,
-			y = mobinfo.visual_size.y * 0.5,
+			x = mobinfo.visual_size.x * 0.33333,
+			y = mobinfo.visual_size.y * 0.33333,
 		}
 	}
 	doll:set_properties(prop)
