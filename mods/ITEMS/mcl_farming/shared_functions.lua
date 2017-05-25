@@ -24,12 +24,15 @@ end
 -- pos: Position
 -- node: Node table
 -- stages: Number of stages to advance (optional, defaults to 1)
+
+-- Returns true if plant has been grown by 1 or more stages.
+-- Returns false if nothing changed.
 function mcl_farming:grow_plant(identifier, pos, node, stages)
 	if not minetest.get_node_light(pos) then
-		return
+		return false
 	end
 	if minetest.get_node_light(pos) < 10 then
-		return
+		return false
 	end
 
 	local plant_info = plant_lists[identifier]
@@ -42,7 +45,7 @@ function mcl_farming:grow_plant(identifier, pos, node, stages)
 		end
 	end
 	if step == nil then
-		return
+		return false
 	end
 	if not stages then
 		stages = 1
@@ -54,6 +57,7 @@ function mcl_farming:grow_plant(identifier, pos, node, stages)
 	new_node.param = node.param
 	new_node.param2 = node.param2
 	minetest.set_node(pos, new_node)
+	return true
 end
 
 function mcl_farming:place_seed(itemstack, placer, pointed_thing, plantname)
