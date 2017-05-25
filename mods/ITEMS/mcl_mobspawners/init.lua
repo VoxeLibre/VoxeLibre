@@ -99,7 +99,7 @@ local spawn_monsters = function(pos, elapsed)
 
 	-- are we spawning a registered mob?
 	if not mobs.spawning_mobs[mob] then
-		minetest.log("error", "[mobs] Monster Spawner: Mob doesn't exist: "..mob)
+		minetest.log("error", "[mcl_mobspawners] Monster Spawner: Mob doesn't exist: "..mob)
 		return
 	end
 
