@@ -5,7 +5,7 @@ mcl_monster_spawner = {}
 local default_mob = "mobs_mc:pig"
 
 -- Monster spawner
-local spawner_default = default_mob.." 0 15 3 0"
+local spawner_default = default_mob.." 0 15 4 15"
 
 local function get_mob_textures(mob)
 	-- FIXME: Ummm … wtf? Why isn't there a textures attribute?
@@ -47,17 +47,17 @@ All the following arguments are optional!
 
 * MinLight: Minimum light to spawn (default: 0)
 * MaxLight: Maximum light to spawn (default: 15)
-* MaxMobsInArea: How many mobs are allowed in the area around the spawner (default: 3)
-* PlayerDistance: Spawn mobs only if a player is within this distance; 0 to disable (default: 0)
+* MaxMobsInArea: How many mobs are allowed in the area around the spawner (default: 4)
+* PlayerDistance: Spawn mobs only if a player is within this distance; 0 to disable (default: 15)
 * YOffset: Y offset to spawn mobs; 0 to disable (default: 0)
 ]]
 
 function mcl_monster_spawner.setup_spawner(pos, Mob, MinLight, MaxLight, MaxMobsInArea, PlayerDistance, YOffset)
 	-- Activate monster spawner and disable editing functionality
 	if MinLight == nil then MinLight = 0 end
-	if MaxLight == nil then MinLight = 15 end
-	if MaxMobsInArea == nil then MinLight = 3  end
-	if PlayerDistance == nil then PlayerDistance = 0 end
+	if MaxLight == nil then MaxLight = 15 end
+	if MaxMobsInArea == nil then MaxMobsInArea = 4  end
+	if PlayerDistance == nil then PlayerDistance = 15 end
 	if YOffset == nil then YOffset = 0 end
 	local meta = minetest.get_meta(pos)
 	meta:set_string("Mob", Mob)
@@ -251,8 +251,8 @@ minetest.register_abm({
 			return
 		end
 
-		-- check objects inside 9x9 area around spawner
-		local objs = minetest.get_objects_inside_radius(pos, 9)
+		-- check objects inside 8×8 area around spawner
+		local objs = minetest.get_objects_inside_radius(pos, 8)
 		local count = 0
 		local ent = nil
 
@@ -293,10 +293,10 @@ minetest.register_abm({
 			end
 		end
 
-		-- find air blocks within 5 nodes of spawner
+		-- find air blocks within 8×3×8 nodes of spawner
 		local air = minetest.find_nodes_in_area(
-			{x = pos.x - 5, y = pos.y + yof, z = pos.z - 5},
-			{x = pos.x + 5, y = pos.y + yof, z = pos.z + 5},
+			{x = pos.x - 4, y = pos.y - 1 + yof, z = pos.z - 4},
+			{x = pos.x + 4, y = pos.y + 1 + yof, z = pos.z + 4},
 			{"air"})
 
 		-- spawn in random air block
