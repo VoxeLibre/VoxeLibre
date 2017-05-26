@@ -168,7 +168,11 @@ local pearl_on_step = function(self, dtime)
 
 	-- Destroy when hitting a solid node
 	if self._lastpos.x~=nil then
-		if (def and def.walkable) or not def then
+		-- No teleport for hitting ignore for now. Otherwise the player could get stuck.
+		-- FIXME: This also means the player loses an ender pearl for throwing into unloaded areas
+		if node.name == "ignore" then
+			self.object:remove()
+		elseif (def and def.walkable) or not def then
 			local player = minetest.get_player_by_name(self._thrower)
 			if player then
 				-- Teleport and hurt player
