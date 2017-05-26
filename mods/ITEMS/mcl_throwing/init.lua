@@ -100,7 +100,7 @@ minetest.register_tool("mcl_throwing:bow", {
 The higher the charge, the faster the arrow will go and the higher the damage. A successful hit deals 1-5 HP of damage."]],
 	inventory_image = "mcl_throwing_bow.png",
 	stack_max = 1,
-	range = 0, -- Pointing range to 0 to prevent punching with bow :D
+	-- Range not set to 0 (unlike the others) so it can be placed into item frames
 	on_place = powerup_function("mcl_throwing:bow_0"),
 	on_secondary_use = powerup_function("mcl_throwing:bow_0"),
 	groups = {weapon=1,weapon_ranged=1},
@@ -111,7 +111,7 @@ minetest.register_tool("mcl_throwing:bow_0", {
 	_doc_items_create_entry = false,
 	inventory_image = "mcl_throwing_bow_0.png",
 	stack_max = 1,
-	range = 0,
+	range = 0, -- Pointing range to 0 to prevent punching with bow :D
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
 	on_place = powerup_function("mcl_throwing:bow_1"),
 	on_secondary_use = powerup_function("mcl_throwing:bow_1"),
