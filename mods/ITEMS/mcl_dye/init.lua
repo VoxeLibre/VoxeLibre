@@ -105,14 +105,12 @@ end
 -- Bone Meal
 
 mcl_dye.apply_bone_meal = function(pointed_thing)
-	local plant_tab = {
-		"air",
-		"mcl_flowers:tallgrass",
-		"mcl_flowers:tallgrass",
-		"mcl_flowers:tallgrass",
-		"mcl_flowers:tallgrass",
-		"mcl_flowers:tallgrass",
+	-- TODO: Use biome-specific flowers
+	local flowers_table = {
 		"mcl_flowers:dandelion",
+		"mcl_flowers:dandelion",
+		"mcl_flowers:poppy",
+
 		"mcl_flowers:blue_orchid",
 		"mcl_flowers:oxeye_daisy",
 		"mcl_flowers:tulip_orange",
@@ -120,7 +118,6 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		"mcl_flowers:tulip_white",
 		"mcl_flowers:tulip_pink",
 		"mcl_flowers:allium",
-		"mcl_flowers:poppy",
 		"mcl_flowers:azure_bluet",
 	}
 
@@ -168,12 +165,15 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 				n2 = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
 
 				if n.name ~= "" and n.name == "air" and (n2.name == "mcl_core:dirt_with_grass" or n2.name == "mcl_core:dirt_with_grass_snow") then
-					if math.random(0,5) > 3 then
-						minetest.add_node(pos, {name=plant_tab[math.random(1, #plant_tab)]})
-					else
-						minetest.add_node(pos, {name=plant_tab[math.random(1, 6)]})
+					-- Randomly generate flowers, tall grass or nothing
+					if math.random(1,100) <= 90 then
+						-- 90% tall grass, 10% flower
+						if math.random(1,100) <= 90 then
+							minetest.add_node(pos, {name="mcl_core:tallgrass"})
+						else
+							minetest.add_node(pos, {name=flowers_table[math.random(1, #flowers_table)]})
+						end
 					end
-
 				end
 			end
 		end
