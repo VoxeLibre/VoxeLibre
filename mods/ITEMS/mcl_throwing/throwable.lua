@@ -162,6 +162,7 @@ end
 local pearl_on_step = function(self, dtime)
 	self.timer=self.timer+dtime
 	local pos = self.object:getpos()
+	pos.y = math.floor(pos.y)
 	local node = minetest.get_node(pos)
 	local def = minetest.registered_nodes[node.name]
 
@@ -171,7 +172,7 @@ local pearl_on_step = function(self, dtime)
 			local player = minetest.get_player_by_name(self._thrower)
 			if player then
 				-- Teleport and hurt player
-				player:setpos(pos)
+				player:setpos({x=pos.x, y=pos.y+0.5, z=pos.z})
 				player:set_hp(player:get_hp() - 5)
 			end
 			self.object:remove()
