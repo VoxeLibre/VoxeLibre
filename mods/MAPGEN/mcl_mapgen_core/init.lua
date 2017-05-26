@@ -1128,6 +1128,122 @@ minetest.register_on_generated(function(minp, maxp)
 			end
 		end
 	end
+
+	-- Generate cocoas and vines at jungle trees (v6 only)
+	if minetest.get_mapgen_setting("mg_name") == "v6" then
+
+		if maxp.y < 0 then
+			return
+		end
+
+		local pos, treepos, dir
+		local jungletree = minetest.find_nodes_in_area(minp, maxp, "mcl_core:jungletree")
+		local jungleleaves = minetest.find_nodes_in_area(minp, maxp, "mcl_core:jungleleaves")
+
+		-- Pass 1: Generate cocoas
+		for n = 1, #jungletree do
+
+			pos = jungletree[n]
+			treepos = table.copy(pos)
+
+			if minetest.find_node_near(pos, 1, {"mcl_core:jungleleaves"}) then
+
+				dir = math.random(1, 40)
+
+				if dir == 1 then
+					pos.z = pos.z + 1
+				elseif dir == 2 then
+					pos.z = pos.z - 1
+				elseif dir == 3 then
+					pos.x = pos.x + 1
+				elseif dir == 4 then
+					pos.x = pos.x -1
+				end
+
+				local nn = minetest.get_node(pos).name
+
+				if dir < 5
+				and nn == "air"
+				and minetest.get_node_light(pos) > 12 then
+					minetest.swap_node(pos, {
+						name = "mcl_cocoas:cocoa_" .. tostring(math.random(1, 3)),
+						param2 = minetest.dir_to_facedir(vector.subtract(treepos, pos))
+					})
+				end
+
+			end
+		end
+
+		-- Pass 2: Generate vines at jungle wood and jungle leaves
+		local junglething
+		for i=1, 2 do
+			if i==1 then junglething = jungletree
+			else junglething = jungleleaves end
+
+			for n = 1, #junglething do
+
+				pos = junglething[n]
+				treepos = table.copy(pos)
+
+				dir = math.random(1, 4)
+
+				if dir == 1 then
+					pos.z = pos.z + 1
+				elseif dir == 2 then
+					pos.z = pos.z - 1
+				elseif dir == 3 then
+					pos.x = pos.x + 1
+				elseif dir == 4 then
+					pos.x = pos.x -1
+				end
+
+				local nn = minetest.get_node(pos).name
+
+				if math.random(1,3) == 1 and nn == "air" then
+					local newnode = {
+						name = "mcl_core:vine",
+						param2 = minetest.dir_to_wallmounted(vector.subtract(treepos, pos))
+					}
+
+					-- Determine growth direction
+					local grow_upwards = false
+					-- Only possible on the wood, not on the leaves
+					if i == 1 then
+						grow_upwards = math.random(1,8) == 1
+					end
+					if grow_upwards then
+						-- Grow vines up 1-4 nodes, even through jungleleaves.
+						-- This may give climbing access all the way to the top of the tree :-)
+						-- But this will be fairly rare.
+						local length = math.random(1, 4)
+						for l=0, length-1 do
+							local tnn = minetest.get_node(treepos).name
+							local nn = minetest.get_node(pos).name
+							if (nn == "air" or nn == "mcl_core:jungleleaves") and mcl_core.supports_vines(tnn) then
+								minetest.set_node(pos, newnode)
+							else
+								break
+							end
+							pos.y = pos.y + 1
+							treepos.y = treepos.y + 1
+						end
+					else
+						-- Grow vines down 1-7 nodes
+						local length = math.random(1, 7)
+						for l=0, length-1 do
+							if minetest.get_node(pos).name == "air" then
+								minetest.set_node(pos, newnode)
+							else
+								break
+							end
+							pos.y = pos.y - 1
+						end
+					end
+				end
+			end
+		end
+	end
+
 end)
 
 
