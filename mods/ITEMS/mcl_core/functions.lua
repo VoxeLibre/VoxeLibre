@@ -416,6 +416,8 @@ function mcl_core.generate_tree(pos, trunk, leaves, typearbre)
 		end
 	elseif typearbre == 3 then
 		mcl_core.generate_spruce_tree(pos)
+	elseif typearbre == 4 then
+		mcl_core.grow_new_acacia_tree(pos)
 	end
 end
 
@@ -528,6 +530,14 @@ function mcl_core.generate_spruce_tree(pos)
 end
 
 -- END of spruce tree functions --
+
+-- Acacia tree grow function from Minetest Game 0.4.15
+function mcl_core.grow_new_acacia_tree(pos)
+	local path = minetest.get_modpath("mcl_core") ..
+		"/schematics/acacia_tree_from_sapling.mts"
+	minetest.place_schematic({x = pos.x - 4, y = pos.y - 1, z = pos.z - 4}, path, "random", nil, false)
+end
+
 
 local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_params().seed)
 
@@ -666,7 +676,7 @@ mcl_core.grow_sapling = function(pos, node)
 	elseif node.name == "mcl_core:junglesapling" then
 		grow = sapling_grow_action("mcl_core:jungletree", "mcl_core:jungleleaves", 1, 2)
 	elseif node.name == "mcl_core:acaciasapling" then
-		grow = sapling_grow_action("mcl_core:acaciatree", "mcl_core:acacialeaves", 1, 2)
+		grow = sapling_grow_action("mcl_core:acaciatree", "mcl_core:acacialeaves", 4, 2)
 	elseif node.name == "mcl_core:sprucesapling" then
 		grow = sapling_grow_action("mcl_core:sprucetree", "mcl_core:spruceleaves", 3, 1)
 	elseif node.name == "mcl_core:birchsapling" then

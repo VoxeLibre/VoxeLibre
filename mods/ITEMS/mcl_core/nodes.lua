@@ -2051,3 +2051,9 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_core:podzol", "nodes", "mcl_core:podzol_snow")
 	doc.add_entry_alias("nodes", "mcl_core:mycelium", "nodes", "mcl_core:mycelium_snow")
 end
+
+-- Node aliases
+
+minetest.register_alias("default:acacia_tree", "mcl_core:acaciatree")
+minetest.register_alias("default:acacia_leaves", "mcl_core:acacialeaves")
+
