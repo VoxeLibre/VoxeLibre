@@ -1449,7 +1449,7 @@ minetest.register_node("mcl_core:ladder", {
 
 minetest.register_node("mcl_core:vine", {
 	description = "Vines",
-	_doc_items_longdesc = "Vines are climbable blocks which can be placed on the sides and the top of solid blocks.",
+	_doc_items_longdesc = "Vines are climbable blocks which can be placed on the sides solid full-cube blocks. Vines very slowly grow upwards and downwards.",
 	drawtype = "signlike",
 	tiles = {"mcl_core_vine.png"},
 	inventory_image = "mcl_core_vine.png",
@@ -1499,10 +1499,15 @@ minetest.register_node("mcl_core:vine", {
 			return itemstack
 		end
 
+		-- Only place on full cubes
+		if not mcl_core.supports_vines(node.name) then
+			return
+		end
+
 		local above = pointed_thing.above
 
-		-- Vines may not be placed on the ceiling
-		if under.y > above.y then
+		-- Vines may not be placed on top or below another block
+		if under.y ~= above.y then
 			return itemstack
 		end
 		local idef = itemstack:get_definition()
