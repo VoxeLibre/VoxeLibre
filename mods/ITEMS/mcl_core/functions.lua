@@ -785,7 +785,6 @@ minetest.register_abm({
 				local backup_dir = minetest.facedir_to_dir(node.param2)
 				local backup = vector.add(up, backup_dir)
 				local backupnodename = minetest.get_node(backup).name
-				minetest.log("error" , minetest.pos_to_string(backup))
 
 				-- Check if the block above is supported
 				if mcl_core.supports_vines(backupnodename) then
