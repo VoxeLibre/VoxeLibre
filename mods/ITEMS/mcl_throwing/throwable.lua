@@ -176,8 +176,47 @@ local pearl_on_step = function(self, dtime)
 			local player = minetest.get_player_by_name(self._thrower)
 			if player then
 				-- Teleport and hurt player
-				player:setpos({x=pos.x, y=pos.y+0.5, z=pos.z})
+
+				-- But first determine good teleport position
+				local v = self.object:getvelocity()
+				v = vector.normalize(v)
+
+				-- Zero-out the two axes with a lower absolute value than
+				-- the axis with the strongest force
+				local lv, ld
+				lv, ld = math.abs(v.y), "y"
+				if math.abs(v.x) > lv then
+					lv, ld = math.abs(v.x), "x"
+				end
+				if math.abs(v.z) > lv then
+					lv, ld = math.abs(v.z), "z"
+				end
+				if ld ~= "x" then v.x = 0 end
+				if ld ~= "y" then v.y = 0 end
+				if ld ~= "z" then v.z = 0 end
+
+				-- Final tweaks to the teleporting pos, based on direction
+				local dir = {x=0, y=0, z=0}
+
+				-- Impact from the side
+				dir.x = v.x * -1
+				dir.z = v.z * -1
+
+				-- Special case: top or bottom of node
+				if v.y > 0 then
+					-- We need more space when impact is from below
+					dir.y = -2.3
+				elseif v.y < 0 then
+					-- Standing on top
+					dir.y = 0.5
+				end
+
+				-- Final teleportation position
+				local telepos = vector.add(pos, dir)
+
+				player:setpos(telepos)
 				player:set_hp(player:get_hp() - 5)
+
 			end
 			self.object:remove()
 			return
