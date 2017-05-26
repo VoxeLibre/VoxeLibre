@@ -9,6 +9,8 @@ local arrows = {
 
 local GRAVITY = 9.81
 
+local bow_durability = 385
+
 mcl_throwing.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damage)
 	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, arrows[arrow_item])
 	if power == nil then
@@ -102,7 +104,12 @@ The arrow speed and damage increase with the charge level:
 • Low charge: 1 damage
 • Medium charge: 2 damage
 • High charge: 4-5 damage (20% chance for 5 damage)]],
+	_doc_items_durability = bow_durability,
 	inventory_image = "mcl_throwing_bow.png",
+	tool_capabilities = {
+		groupcaps = {},
+		damage_groups = {},
+	},
 	stack_max = 1,
 	-- Range not set to 0 (unlike the others) so it can be placed into item frames
 	on_place = powerup_function("mcl_throwing:bow_0"),
@@ -125,7 +132,7 @@ minetest.register_tool("mcl_throwing:bow_0", {
 		itemstack:set_wear(wear)
 		if player_shoot_arrow(itemstack, user, 4, 1) then
 			if not minetest.setting_getbool("creative_mode") then
-				itemstack:add_wear(65535/385)
+				itemstack:add_wear(65535/bow_durability)
 			end
 		end
 		return itemstack
@@ -147,7 +154,7 @@ minetest.register_tool("mcl_throwing:bow_1", {
 		itemstack:set_wear(wear)
 		if player_shoot_arrow(itemstack, user, 16, 2) then
 			if not minetest.setting_getbool("creative_mode") then
-				itemstack:add_wear(65535/385)
+				itemstack:add_wear(65535/bow_durability)
 			end
 		end
 		return itemstack
@@ -177,7 +184,7 @@ minetest.register_tool("mcl_throwing:bow_2", {
 		end
 		if player_shoot_arrow(itemstack, user, 26, damage) then
 			if not minetest.setting_getbool("creative_mode") then
-				itemstack:add_wear(65535/385)
+				itemstack:add_wear(65535/bow_durability)
 			end
 		end
 		return itemstack
