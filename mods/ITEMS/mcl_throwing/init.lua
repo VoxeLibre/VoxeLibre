@@ -83,7 +83,8 @@ local powerup_function = function(nextbow)
 			end
 		end
 
-		if get_arrow(placer) ~= nil then
+		-- Check for arrow or Creative Mode
+		if minetest.setting_getbool("creative_mode") or get_arrow(placer) ~= nil then
 			local wear = itemstack:get_wear()
 			itemstack:replace(nextbow)
 			itemstack:set_wear(wear)
