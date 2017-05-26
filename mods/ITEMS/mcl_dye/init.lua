@@ -160,8 +160,8 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		return true
 	elseif n.name == "mcl_core:dirt_with_grass" or n.name == "mcl_core:dirt_with_grass_snow" then
 		-- Grass Block: Generate tall grass and random flowers all over the place
-		for i = -2, 3, 1 do
-			for j = -3, 2, 1 do
+		for i = -2, 2 do
+			for j = -2, 2 do
 				pos = pointed_thing.above
 				pos = {x=pos.x+i, y=pos.y, z=pos.z+j}
 				n = minetest.get_node(pos)
