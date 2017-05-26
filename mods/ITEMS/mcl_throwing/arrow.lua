@@ -40,7 +40,6 @@ local THROWING_ARROW_ENTITY={
 	textures = {"mcl_throwing:arrow_box"},
 	collisionbox = {0,0,0,0,0,0},
 
-	_timer=0,
 	_lastpos={},
 	_startpos=nil,
 	_damage=1,	-- Damage on impact
@@ -48,11 +47,11 @@ local THROWING_ARROW_ENTITY={
 }
 
 THROWING_ARROW_ENTITY.on_step = function(self, dtime)
-	self._timer=self._timer+dtime
 	local pos = self.object:getpos()
 	local node = minetest.get_node(pos)
 
-	if self._timer>0.2 then
+	-- Check for object collision. Done every tick (hopefully this is not too stressing)
+	do
 		local objs = minetest.get_objects_inside_radius(pos, 2)
 		local closest_object
 		local closest_distance
@@ -118,6 +117,7 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 		end
 	end
 
+	-- Check for node collision
 	if self._lastpos.x~=nil then
 		local def = minetest.registered_nodes[node.name]
 		if (def and def.walkable) or not def then
@@ -127,6 +127,8 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 			self.object:remove()
 		end
 	end
+
+	-- Update internal variable
 	self._lastpos={x=pos.x, y=pos.y, z=pos.z}
 end
 
