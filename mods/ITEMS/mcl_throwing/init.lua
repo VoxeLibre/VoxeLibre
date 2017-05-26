@@ -96,8 +96,12 @@ end
 minetest.register_tool("mcl_throwing:bow", {
 	description = "Bow",
 	_doc_items_longdesc = "Bows are ranged weapons to shoot arrows at your foes.",
-	_doc_items_usagehelp = [[To use the bow, you first need to have at least one arrow anywhere in your inventory. Rightclick one to three times to charge the bow. Leftclick to shoot.
-The higher the charge, the faster the arrow will go and the higher the damage. A successful hit deals 1-5 HP of damage."]],
+	_doc_items_usagehelp = [[To use the bow, you first need to have at least one arrow anywhere in your inventory (unless in Creative Mode). Rightclick one to three times to charge the bow. Leftclick to shoot.
+
+The arrow speed and damage increase with the charge level:
+• Low charge: 1 damage
+• Medium charge: 2 damage
+• High charge: 4-5 damage (20% chance for 5 damage)]],
 	inventory_image = "mcl_throwing_bow.png",
 	stack_max = 1,
 	-- Range not set to 0 (unlike the others) so it can be placed into item frames
