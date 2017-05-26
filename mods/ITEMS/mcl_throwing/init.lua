@@ -106,11 +106,10 @@ The arrow speed and damage increase with the charge level:
 • High charge: 4-5 damage (20% chance for 5 damage)]],
 	_doc_items_durability = bow_durability,
 	inventory_image = "mcl_throwing_bow.png",
-	tool_capabilities = {
-		groupcaps = {},
-		damage_groups = {},
-	},
 	stack_max = 1,
+	-- Trick to disable melee damage to entities.
+	-- FIXME: The bows is still able to dig like the hand for some reason. :-(
+	tool_capabilities = {},
 	-- Range not set to 0 (unlike the others) so it can be placed into item frames
 	on_place = powerup_function("mcl_throwing:bow_0"),
 	on_secondary_use = powerup_function("mcl_throwing:bow_0"),
@@ -122,6 +121,7 @@ minetest.register_tool("mcl_throwing:bow_0", {
 	_doc_items_create_entry = false,
 	inventory_image = "mcl_throwing_bow_0.png",
 	stack_max = 1,
+	tool_capabilities = {},
 	range = 0, -- Pointing range to 0 to prevent punching with bow :D
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
 	on_place = powerup_function("mcl_throwing:bow_1"),
@@ -144,6 +144,7 @@ minetest.register_tool("mcl_throwing:bow_1", {
 	_doc_items_create_entry = false,
 	inventory_image = "mcl_throwing_bow_1.png",
 	stack_max = 1,
+	tool_capabilities = {},
 	range = 0,
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
 	on_place = powerup_function("mcl_throwing:bow_2"),
@@ -166,6 +167,7 @@ minetest.register_tool("mcl_throwing:bow_2", {
 	_doc_items_create_entry = false,
 	inventory_image = "mcl_throwing_bow_2.png",
 	stack_max = 1,
+	tool_capabilities = {},
 	range = 0,
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
 	on_use = function(itemstack, user, pointed_thing)
