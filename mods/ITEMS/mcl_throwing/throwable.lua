@@ -184,35 +184,36 @@ local pearl_on_step = function(self, dtime)
 				-- First determine good teleport position
 				local dir = {x=0, y=0, z=0}
 
+				local v = self.object:getvelocity()
 				if walkable then
+					local vc = table.copy(v) -- vector for calculating
 					-- Node is walkable, we have to find a place somewhere outside of that node
-					local v = self.object:getvelocity()
-					v = vector.normalize(v)
+					vc = vector.normalize(vc)
 
 					-- Zero-out the two axes with a lower absolute value than
 					-- the axis with the strongest force
 					local lv, ld
-					lv, ld = math.abs(v.y), "y"
-					if math.abs(v.x) > lv then
-						lv, ld = math.abs(v.x), "x"
+					lv, ld = math.abs(vc.y), "y"
+					if math.abs(vc.x) > lv then
+						lv, ld = math.abs(vc.x), "x"
 					end
-					if math.abs(v.z) > lv then
-						lv, ld = math.abs(v.z), "z"
+					if math.abs(vc.z) > lv then
+						lv, ld = math.abs(vc.z), "z"
 					end
-					if ld ~= "x" then v.x = 0 end
-					if ld ~= "y" then v.y = 0 end
-					if ld ~= "z" then v.z = 0 end
+					if ld ~= "x" then vc.x = 0 end
+					if ld ~= "y" then vc.y = 0 end
+					if ld ~= "z" then vc.z = 0 end
 
 					-- Final tweaks to the teleporting pos, based on direction
 					-- Impact from the side
-					dir.x = v.x * -1
-					dir.z = v.z * -1
+					dir.x = vc.x * -1
+					dir.z = vc.z * -1
 
 					-- Special case: top or bottom of node
-					if v.y > 0 then
+					if vc.y > 0 then
 						-- We need more space when impact is from below
 						dir.y = -2.3
-					elseif v.y < 0 then
+					elseif vc.y < 0 then
 						-- Standing on top
 						dir.y = 0.5
 					end
@@ -221,6 +222,18 @@ local pearl_on_step = function(self, dtime)
 
 				-- Final teleportation position
 				local telepos = vector.add(pos, dir)
+				local telenode = minetest.get_node(telepos)
+
+				--[[ It may be possible that telepos is walkable due to the algorithm.
+				Especially when the ender pearl is faster horizontally than vertical.
+				This applies final fixing, just to be sure we're not in a walkable node ]]
+				if minetest.registered_nodes[telenode.name].walkable then
+					if v.y < 0 then
+						telepos.y = telepos.y + 0.5
+					else
+						telepos.y = telepos.y - 2.3
+					end
+				end
 
 				player:setpos(telepos)
 				player:set_hp(player:get_hp() - 5)
