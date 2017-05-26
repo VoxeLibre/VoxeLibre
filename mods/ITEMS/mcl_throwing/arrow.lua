@@ -53,11 +53,40 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 	local node = minetest.get_node(pos)
 
 	if self._timer>0.2 then
-		local objs = minetest.get_objects_inside_radius({x=pos.x,y=pos.y,z=pos.z}, 2)
+		local objs = minetest.get_objects_inside_radius(pos, 2)
+		local closest_object
+		local closest_distance
+		local ok = false
+
+		-- Iterate through all objects and remember the closest attackable object
 		for k, obj in pairs(objs) do
 			if obj:get_luaentity() ~= nil then
 				local entity_name = obj:get_luaentity().name
-				if obj ~= self._shooter and entity_name ~= "mcl_throwing:arrow_entity" and entity_name ~= "__builtin:item" then
+				if obj ~= self._shooter and entity_name ~= "mcl_throwing:arrow_entity" and entity_name ~= "__builtin:item" and entity_name ~= "__builtin:falling_node" then
+					ok = true
+				end
+			elseif obj ~= self._shooter then
+				ok = true
+			end
+
+			if ok then
+				local dist = vector.distance(pos, obj:getpos())
+				if not closest_object or not closest_distance then
+					closest_object = obj
+					closest_distance = dist
+				elseif dist < closest_distance then
+					closest_object = obj
+					closest_distance = dist
+				end
+			end
+		end
+
+		-- If an attackable object was found, we will damage the closest one only
+		if closest_object ~= nil then
+			local obj = closest_object
+			if obj:get_luaentity() ~= nil then
+				local entity_name = obj:get_luaentity().name
+				if obj ~= self._shooter and entity_name ~= "mcl_throwing:arrow_entity" and entity_name ~= "__builtin:item" and entity_name ~= "__builtin:falling_node" then
 					obj:punch(self.object, 1.0, {
 						full_punch_interval=1.0,
 						damage_groups={fleshy=self._damage},
