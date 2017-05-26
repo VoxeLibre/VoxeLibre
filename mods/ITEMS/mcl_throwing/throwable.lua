@@ -164,6 +164,7 @@ local pearl_on_step = function(self, dtime)
 	local pos = self.object:getpos()
 	pos.y = math.floor(pos.y)
 	local node = minetest.get_node(pos)
+	local nn = node.name
 	local def = minetest.registered_nodes[node.name]
 
 	-- Destroy when hitting a solid node
@@ -172,7 +173,8 @@ local pearl_on_step = function(self, dtime)
 		-- FIXME: This also means the player loses an ender pearl for throwing into unloaded areas
 		if node.name == "ignore" then
 			self.object:remove()
-		elseif (def and def.walkable) or not def then
+		-- Activate when hitting a solid node or a plant
+		elseif nn == "mcl_core:vine" or nn == "mcl_core:deadbush" or minetest.get_item_group(nn, "flower") ~= 0 or minetest.get_item_group(nn, "sapling") ~= 0 or minetest.get_item_group(nn, "plant") ~= 0 or minetest.get_item_group(nn, "mushroom") ~= 0 or (def and def.walkable) or not def then
 			local player = minetest.get_player_by_name(self._thrower)
 			if player then
 				-- Teleport and hurt player
