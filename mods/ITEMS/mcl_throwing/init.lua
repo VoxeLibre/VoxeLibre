@@ -99,6 +99,7 @@ minetest.register_tool("mcl_throwing:bow", {
 The higher the charge, the faster the arrow will go and the higher the damage. A successful hit deals 1-5 HP of damage."]],
 	inventory_image = "mcl_throwing_bow.png",
 	stack_max = 1,
+	range = 0, -- Pointing range to 0 to prevent punching with bow :D
 	on_place = powerup_function("mcl_throwing:bow_0"),
 	on_secondary_use = powerup_function("mcl_throwing:bow_0"),
 	groups = {weapon=1,weapon_ranged=1},
@@ -109,6 +110,7 @@ minetest.register_tool("mcl_throwing:bow_0", {
 	_doc_items_create_entry = false,
 	inventory_image = "mcl_throwing_bow_0.png",
 	stack_max = 1,
+	range = 0,
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
 	on_place = powerup_function("mcl_throwing:bow_1"),
 	on_secondary_use = powerup_function("mcl_throwing:bow_1"),
@@ -130,6 +132,7 @@ minetest.register_tool("mcl_throwing:bow_1", {
 	_doc_items_create_entry = false,
 	inventory_image = "mcl_throwing_bow_1.png",
 	stack_max = 1,
+	range = 0,
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
 	on_place = powerup_function("mcl_throwing:bow_2"),
 	on_secondary_use = powerup_function("mcl_throwing:bow_2"),
@@ -151,6 +154,7 @@ minetest.register_tool("mcl_throwing:bow_2", {
 	_doc_items_create_entry = false,
 	inventory_image = "mcl_throwing_bow_2.png",
 	stack_max = 1,
+	range = 0,
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
 	on_use = function(itemstack, user, pointed_thing)
 		local wear = itemstack:get_wear()
