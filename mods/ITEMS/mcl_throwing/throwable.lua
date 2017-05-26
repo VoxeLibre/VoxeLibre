@@ -169,49 +169,55 @@ local pearl_on_step = function(self, dtime)
 
 	-- Destroy when hitting a solid node
 	if self._lastpos.x~=nil then
+		local walkable = (def and def.walkable)
+
 		-- No teleport for hitting ignore for now. Otherwise the player could get stuck.
 		-- FIXME: This also means the player loses an ender pearl for throwing into unloaded areas
 		if node.name == "ignore" then
 			self.object:remove()
 		-- Activate when hitting a solid node or a plant
-		elseif nn == "mcl_core:vine" or nn == "mcl_core:deadbush" or minetest.get_item_group(nn, "flower") ~= 0 or minetest.get_item_group(nn, "sapling") ~= 0 or minetest.get_item_group(nn, "plant") ~= 0 or minetest.get_item_group(nn, "mushroom") ~= 0 or (def and def.walkable) or not def then
+		elseif walkable or nn == "mcl_core:vine" or nn == "mcl_core:deadbush" or minetest.get_item_group(nn, "flower") ~= 0 or minetest.get_item_group(nn, "sapling") ~= 0 or minetest.get_item_group(nn, "plant") ~= 0 or minetest.get_item_group(nn, "mushroom") ~= 0 or not def then
 			local player = minetest.get_player_by_name(self._thrower)
 			if player then
 				-- Teleport and hurt player
 
-				-- But first determine good teleport position
-				local v = self.object:getvelocity()
-				v = vector.normalize(v)
-
-				-- Zero-out the two axes with a lower absolute value than
-				-- the axis with the strongest force
-				local lv, ld
-				lv, ld = math.abs(v.y), "y"
-				if math.abs(v.x) > lv then
-					lv, ld = math.abs(v.x), "x"
-				end
-				if math.abs(v.z) > lv then
-					lv, ld = math.abs(v.z), "z"
-				end
-				if ld ~= "x" then v.x = 0 end
-				if ld ~= "y" then v.y = 0 end
-				if ld ~= "z" then v.z = 0 end
-
-				-- Final tweaks to the teleporting pos, based on direction
+				-- First determine good teleport position
 				local dir = {x=0, y=0, z=0}
 
-				-- Impact from the side
-				dir.x = v.x * -1
-				dir.z = v.z * -1
+				if walkable then
+					-- Node is walkable, we have to find a place somewhere outside of that node
+					local v = self.object:getvelocity()
+					v = vector.normalize(v)
 
-				-- Special case: top or bottom of node
-				if v.y > 0 then
-					-- We need more space when impact is from below
-					dir.y = -2.3
-				elseif v.y < 0 then
-					-- Standing on top
-					dir.y = 0.5
+					-- Zero-out the two axes with a lower absolute value than
+					-- the axis with the strongest force
+					local lv, ld
+					lv, ld = math.abs(v.y), "y"
+					if math.abs(v.x) > lv then
+						lv, ld = math.abs(v.x), "x"
+					end
+					if math.abs(v.z) > lv then
+						lv, ld = math.abs(v.z), "z"
+					end
+					if ld ~= "x" then v.x = 0 end
+					if ld ~= "y" then v.y = 0 end
+					if ld ~= "z" then v.z = 0 end
+
+					-- Final tweaks to the teleporting pos, based on direction
+					-- Impact from the side
+					dir.x = v.x * -1
+					dir.z = v.z * -1
+
+					-- Special case: top or bottom of node
+					if v.y > 0 then
+						-- We need more space when impact is from below
+						dir.y = -2.3
+					elseif v.y < 0 then
+						-- Standing on top
+						dir.y = 0.5
+					end
 				end
+				-- If node was not walkable, no modification to pos is made.
 
 				-- Final teleportation position
 				local telepos = vector.add(pos, dir)
