@@ -95,8 +95,9 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 					end
 
 					-- Achievement for hitting skeleton, wither skeleton or stray (TODO) with an arrow at least 50 meters away
+					-- NOTE: Range has been reduced because mobs unload much earlier than that ... >_>
 					-- TODO: This achievement should be given for the kill, not just a hit
-					if self._shooter and self._shooter:is_player() and vector.distance(pos, self._startpos) >= 50 then
+					if self._shooter and self._shooter:is_player() and vector.distance(pos, self._startpos) >= 20 then
 						if (entity_name == "mobs_mc:skeleton" or entity_name == "mobs_mc:skeleton2") then
 							awards.unlock(self._shooter:get_player_name(), "mcl:snipeSkeleton")
 						end

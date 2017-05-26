@@ -156,7 +156,8 @@ awards.register_achievement("mcl:onARail", {
 awards.register_achievement("mcl:snipeSkeleton", {
 	title = S("Sniper Duel"),
 	-- TODO: This achievement should be for killing, not hitting
-	description = S("Hit a skeleton, wither skeleton or stray by bow and arrow from a distance of at least 50 meters."),
+	-- TODO: The range should be 50, not 20. Nerfed because of reduced bow range
+	description = S("Hit a skeleton, wither skeleton or stray by bow and arrow from a distance of at least 20 meters."),
 	icon = "mcl_throwing_bow.png",
 })
 
