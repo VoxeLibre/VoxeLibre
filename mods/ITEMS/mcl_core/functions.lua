@@ -414,8 +414,120 @@ function mcl_core.generate_tree(pos, trunk, leaves, typearbre)
 				end
 			end
 		end
+	elseif typearbre == 3 then
+		mcl_core.generate_spruce_tree(pos)
 	end
 end
+
+-- BEGIN of spruce tree generation functions --
+-- Copied from Minetest Game 0.4.15 from the pine tree (default.generate_pine_tree)
+
+-- Pine tree (=spruce tree in MCL2) from mg mapgen mod, design by sfan5, pointy top added by paramat
+local function add_spruce_leaves(data, vi, c_air, c_ignore, c_snow, c_spruce_leaves)
+	local node_id = data[vi]
+	if node_id == c_air or node_id == c_ignore or node_id == c_snow then
+		data[vi] = c_spruce_leaves
+	end
+end
+
+function mcl_core.generate_spruce_tree(pos)
+	local x, y, z = pos.x, pos.y, pos.z
+	local maxy = y + math.random(9, 13) -- Trunk top
+
+	local c_air = minetest.get_content_id("air")
+	local c_ignore = minetest.get_content_id("ignore")
+	local c_spruce_tree = minetest.get_content_id("mcl_core:sprucetree")
+	local c_spruce_leaves  = minetest.get_content_id("mcl_core:spruceleaves")
+	local c_snow = minetest.get_content_id("mcl_core:snow")
+
+	local vm = minetest.get_voxel_manip()
+	local minp, maxp = vm:read_from_map(
+		{x = x - 3, y = y, z = z - 3},
+		{x = x + 3, y = maxy + 3, z = z + 3}
+	)
+	local a = VoxelArea:new({MinEdge = minp, MaxEdge = maxp})
+	local data = vm:get_data()
+
+	-- Upper branches layer
+	local dev = 3
+	for yy = maxy - 1, maxy + 1 do
+		for zz = z - dev, z + dev do
+			local vi = a:index(x - dev, yy, zz)
+			local via = a:index(x - dev, yy + 1, zz)
+			for xx = x - dev, x + dev do
+				if math.random() < 0.95 - dev * 0.05 then
+					add_spruce_leaves(data, vi, c_air, c_ignore, c_snow,
+						c_spruce_leaves)
+				end
+				vi  = vi + 1
+				via = via + 1
+			end
+		end
+		dev = dev - 1
+	end
+
+	-- Centre top nodes
+	add_spruce_leaves(data, a:index(x, maxy + 1, z), c_air, c_ignore, c_snow,
+		c_spruce_leaves)
+	add_spruce_leaves(data, a:index(x, maxy + 2, z), c_air, c_ignore, c_snow,
+		c_spruce_leaves) -- Paramat added a pointy top node
+
+	-- Lower branches layer
+	local my = 0
+	for i = 1, 20 do -- Random 2x2 squares of leaves
+		local xi = x + math.random(-3, 2)
+		local yy = maxy + math.random(-6, -5)
+		local zi = z + math.random(-3, 2)
+		if yy > my then
+			my = yy
+		end
+		for zz = zi, zi+1 do
+			local vi = a:index(xi, yy, zz)
+			local via = a:index(xi, yy + 1, zz)
+			for xx = xi, xi + 1 do
+				add_spruce_leaves(data, vi, c_air, c_ignore, c_snow,
+					c_spruce_leaves)
+				vi  = vi + 1
+				via = via + 1
+			end
+		end
+	end
+
+	dev = 2
+	for yy = my + 1, my + 2 do
+		for zz = z - dev, z + dev do
+			local vi = a:index(x - dev, yy, zz)
+			local via = a:index(x - dev, yy + 1, zz)
+			for xx = x - dev, x + dev do
+				if math.random() < 0.95 - dev * 0.05 then
+					add_spruce_leaves(data, vi, c_air, c_ignore, c_snow,
+						c_spruce_leaves)
+				end
+				vi  = vi + 1
+				via = via + 1
+			end
+		end
+		dev = dev - 1
+	end
+
+	-- Trunk
+	-- Force-place lowest trunk node to replace sapling
+	data[a:index(x, y, z)] = c_spruce_tree
+	for yy = y + 1, maxy do
+		local vi = a:index(x, yy, z)
+		local node_id = data[vi]
+		if node_id == c_air or node_id == c_ignore or
+				node_id == c_spruce_leaves or node_id == c_snow then
+			data[vi] = c_spruce_tree
+		end
+	end
+
+	vm:set_data(data)
+	vm:write_to_map()
+	vm:update_map()
+end
+
+-- END of spruce tree functions --
 
 local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_params().seed)
 
@@ -556,7 +668,7 @@ mcl_core.grow_sapling = function(pos, node)
 	elseif node.name == "mcl_core:acaciasapling" then
 		grow = sapling_grow_action("mcl_core:acaciatree", "mcl_core:acacialeaves", 1, 2)
 	elseif node.name == "mcl_core:sprucesapling" then
-		grow = sapling_grow_action("mcl_core:sprucetree", "mcl_core:spruceleaves", 1, 1)
+		grow = sapling_grow_action("mcl_core:sprucetree", "mcl_core:spruceleaves", 3, 1)
 	elseif node.name == "mcl_core:birchsapling" then
 		grow = sapling_grow_action("mcl_core:birchtree", "mcl_core:birchleaves", 1, 1)
 	end
