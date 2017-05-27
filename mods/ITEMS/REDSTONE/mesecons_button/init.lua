@@ -89,7 +89,7 @@ local on_button_place = function(itemstack, placer, pointed_thing)
 	return itemstack
 end
 
-local buttonuse = "Rightclick the button to push it."
+local buttonuse = "Rightclick the button to push it. Buttons can only be placed on solid opaque full cubes (like cobblestone)."
 minetest.register_node("mesecons_button:button_stone_off", {
 	drawtype = "nodebox",
 	tiles = {"default_stone.png"},
