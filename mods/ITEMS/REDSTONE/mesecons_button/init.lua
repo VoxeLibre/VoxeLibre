@@ -79,17 +79,17 @@ local on_button_place = function(itemstack, placer, pointed_thing)
 	local above = pointed_thing.above
 
 	local idef = itemstack:get_definition()
-	local success = minetest.item_place_node(itemstack, placer, pointed_thing)
+	local itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing)
 
 	if success then
 		if idef.sounds and idef.sounds.place then
-			minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
+			--minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
 		end
 	end
 	return itemstack
 end
 
-local buttonuse = "Rightclick the button to push it. Buttons can only be placed on solid opaque full cubes (like cobblestone)."
+local buttonuse = "Rightclick the button to push it."
 minetest.register_node("mesecons_button:button_stone_off", {
 	drawtype = "nodebox",
 	tiles = {"default_stone.png"},
@@ -105,9 +105,10 @@ minetest.register_node("mesecons_button:button_stone_off", {
 	node_box = boxes_off,
 	groups = {handy=1,pickaxey=1, attached_node=1, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1},
 	description = "Stone Button",
-	_doc_items_longdesc = "A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.",
+	_doc_items_longdesc = "A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second. It can only be placed on solid opaque full cubes (like cobblestone).",
 	_doc_items_usagehelp = buttonuse,
 	on_place = on_button_place,
+	node_placement_prediction = "",
 	on_rightclick = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_button:button_stone_on")
 		mesecon:receptor_on(pos, button_get_output_rules(node))
@@ -139,6 +140,7 @@ minetest.register_node("mesecons_button:button_stone_on", {
 	drop = 'mesecons_button:button_stone_off',
 	description = "Stone Button",
 	_doc_items_create_entry = false,
+	node_placement_prediction = "",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.on,
@@ -162,9 +164,10 @@ minetest.register_node("mesecons_button:button_wood_off", {
 	node_box = boxes_off,
 	groups = {handy=1,axey=1, attached_node=1, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1},
 	description = "Wooden Button",
-	_doc_items_longdesc = "A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds.",
+	_doc_items_longdesc = "A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. It can only be placed on solid opaque full cubes (like cobblestone).",
 	_doc_items_usagehelp = buttonuse,
 	on_place = on_button_place,
+	node_placement_prediction = "",
 	on_rightclick = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_button:button_wood_on")
 		mesecon:receptor_on(pos, button_get_output_rules(node))
@@ -196,6 +199,7 @@ minetest.register_node("mesecons_button:button_wood_on", {
 	drop = 'mesecons_button:button_wood_off',
 	description = "Wooden Button",
 	_doc_items_create_entry = false,
+	node_placement_prediction = "",
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.on,
