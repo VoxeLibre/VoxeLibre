@@ -26,11 +26,11 @@ else
 	if not ground then
 		ground = 8
 	end
-	mcl_vars.mg_overworld_min = ground - 1
+	mcl_vars.mg_overworld_min = ground - 3
 	mcl_vars.mg_overworld_max = mcl_vars.mg_overworld_min + minecraft_height_limit
 
 	-- 1 perfectly flat bedrock layer
-	mcl_vars.mg_bedrock_overworld_min = mcl_vars.mg_overworld_min - 2
+	mcl_vars.mg_bedrock_overworld_min = mcl_vars.mg_overworld_min
 	mcl_vars.mg_bedrock_overworld_max = mcl_vars.mg_bedrock_overworld_min
 	mcl_vars.mg_lava = false
 	mcl_vars.mg_bedrock_is_rough = false
