@@ -883,7 +883,7 @@ end
 
 -- Perlin noise objects
 local perlin_structures
-local perlin_vines, perlin_vines_fine, perlin_vines_upwards, perlin_vines_length
+local perlin_vines, perlin_vines_fine, perlin_vines_upwards, perlin_vines_length, perlin_vines_density
 
 -- Generate clay and structures
 -- TODO: Try to use more efficient structure generating code
@@ -1175,9 +1175,10 @@ minetest.register_on_generated(function(minp, maxp)
 
 		-- Pass 2: Generate vines at jungle wood and jungle leaves
 		perlin_vines = perlin_vines or minetest.get_perlin(555, 4, 0.6, 500)
-		perlin_vines_fine = perlin_vines_fine or minetest.get_perlin(43000, 4, 0.6, 2)
-		perlin_vines_length = perlin_vines_length or minetest.get_perlin(435, 4, 0.6, 5)
-		perlin_vines_upwards = perlin_vines_upwards or minetest.get_perlin(436, 3, 0.6, 400)
+		perlin_vines_fine = perlin_vines_fine or minetest.get_perlin(43000, 3, 0.6, 1)
+		perlin_vines_length = perlin_vines_length or minetest.get_perlin(435, 4, 0.6, 75)
+		perlin_vines_upwards = perlin_vines_upwards or minetest.get_perlin(436, 3, 0.6, 10)
+		perlin_vines_density = perlin_vines_density or minetest.get_perlin(436, 3, 0.6, 500)
 		local junglething
 		for i=1, 2 do
 			if i==1 then junglething = jungletree
@@ -1200,7 +1201,7 @@ minetest.register_on_generated(function(minp, maxp)
 
 				local nn = minetest.get_node(pos).name
 
-				if perlin_vines:get2d(pos) > -0.1 and perlin_vines_fine:get3d(pos) > 0.4 and nn == "air" then
+				if perlin_vines:get2d(pos) > 0.1 and perlin_vines_fine:get3d(pos) > math.max(0.3333, perlin_vines_density:get2d(pos)) and nn == "air" then
 
 					local newnode = {
 						name = "mcl_core:vine",
