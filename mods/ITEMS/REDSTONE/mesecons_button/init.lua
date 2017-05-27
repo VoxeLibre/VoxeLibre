@@ -62,6 +62,15 @@ local on_button_place = function(itemstack, placer, pointed_thing)
 		end
 	end
 
+	-- If the pointed node is buildable, let's look at the node *behind* that node
+	if def.buildable_to then
+		local dir = vector.subtract(pointed_thing.above, pointed_thing.under)
+		local actual = vector.subtract(under, dir)
+		local actualnode = minetest.get_node(actual)
+		def = minetest.registered_nodes[actualnode.name]
+		groups = def.groups
+	end
+
 	-- Only allow placement on full-cube solid opaque nodes
 	if (not groups) or (not groups.solid) or (not groups.opaque) or (def.node_box and def.node_box.type ~= "regular") then
 		return itemstack
