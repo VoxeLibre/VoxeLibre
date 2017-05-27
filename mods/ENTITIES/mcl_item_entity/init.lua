@@ -12,6 +12,8 @@ item_drop_settings.random_item_velocity  = true --this sets random item velocity
 item_drop_settings.drop_single_item      = false --if true, the drop control drops 1 item instead of the entire stack, and sneak+drop drops the stack
 -- drop_single_item is disabled by default because it is annoying to throw away items from the intentory screen
 
+item_drop_settings.follow_time           = 1 -- how many seconds an item follows the player before giving up
+
 local check_pickup_achievements = function(object, player)
 	local itemname = ItemStack(object:get_luaentity().itemstring):get_name()
 	if minetest.get_item_group(itemname, "tree") ~= 0 then
@@ -82,9 +84,12 @@ minetest.register_globalstep(function(dtime)
 							})
 
 							--fix eternally falling items
-							minetest.after(0, function()
-								object:setacceleration({x=0, y=0, z=0})
-							end)
+							minetest.after(0, function(object)
+								local lua = object:get_luaentity()
+								if lua then
+									object:setacceleration({x=0, y=0, z=0})
+								end
+							end, object)
 
 
 							--this is a safety to prevent items flying away on laggy servers
@@ -92,8 +97,10 @@ minetest.register_globalstep(function(dtime)
 								if object:get_luaentity().init ~= true then
 									object:get_luaentity().init = true
 									minetest.after(1, function(args)
+										local player = args.player
+										local object = args.object
 										local lua = object:get_luaentity()
-										if object == nil or lua == nil or lua.itemstring == nil then
+										if player == nil or not player:is_player() or object == nil or lua == nil or lua.itemstring == nil then
 											return
 										end
 										if inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
@@ -246,7 +253,10 @@ core.register_entity(":__builtin:item", {
 			self.collect = true
 		end
 		if item_drop_settings.random_item_velocity == true then
-			minetest.after(0, function()
+			minetest.after(0, function(self)
+				if not self or not self.object or not self.object:get_luaentity() then
+					return
+				end
 				local vel = self.object:getvelocity()
 				if vel and vel.x == 0 and vel.z == 0 then
 					local x = math.random(1, 5)
@@ -260,7 +270,7 @@ core.register_entity(":__builtin:item", {
 					local y = math.random(2,4)
 					self.object:setvelocity({x=1/x, y=y, z=1/z})
 				end
-			end)
+			end, self)
 		end
 
 	end,
