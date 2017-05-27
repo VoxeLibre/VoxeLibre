@@ -558,6 +558,10 @@ minetest.register_abm({
 		local can_change = false
 		local above = {x=pos.x, y=pos.y+1, z=pos.z}
 		local abovenode = minetest.get_node(above)
+		if minetest.get_item_group(abovenode.name, "liquid") ~= 0 or minetest.get_item_group(abovenode.name, "opaque") == 1 then
+			-- Never grow directly below liquids or opaque blocks
+			return
+		end
 		local light_self = minetest.get_node_light(above)
 		if not light_self then return end
 		--[[ Try to find a spreading dirt-type block (e.g. grass block or mycelium)
@@ -602,9 +606,8 @@ minetest.register_abm({
 	action = function(pos, node)
 		local above = {x = pos.x, y = pos.y + 1, z = pos.z}
 		local name = minetest.get_node(above).name
-		local nodedef = minetest.registered_nodes[name]
 		-- Kill grass/mycelium when below opaque block or liquid
-		if name ~= "ignore" and nodedef and ((nodedef.groups and nodedef.groups.opaque) or nodedef.liquidtype ~= "none") then
+		if name ~= "ignore" and (minetest.get_item_group(name, "opaque") == 1 or minetest.get_item_group(name, "liquid") ~= 0) then
 			minetest.set_node(pos, {name = "mcl_core:dirt"})
 		end
 	end
