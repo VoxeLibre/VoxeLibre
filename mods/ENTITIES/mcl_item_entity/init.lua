@@ -14,6 +14,10 @@ item_drop_settings.drop_single_item      = false --if true, the drop control dro
 
 item_drop_settings.follow_time           = 1 -- how many seconds an item follows the player before giving up
 
+local get_gravity = function()
+	return tonumber(minetest.setting_get("movement_gravity")) or 9.81
+end
+
 local check_pickup_achievements = function(object, player)
 	local itemname = ItemStack(object:get_luaentity().itemstring):get_name()
 	if minetest.get_item_group(itemname, "tree") ~= 0 then
@@ -307,7 +311,7 @@ core.register_entity(":__builtin:item", {
 		end
 		self.object:set_armor_groups({immortal = 1})
 		self.object:setvelocity({x = 0, y = 2, z = 0})
-		self.object:setacceleration({x = 0, y = -10, z = 0})
+		self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
 		self:set_item(self.itemstring)
 	end,
 
@@ -410,7 +414,7 @@ core.register_entity(":__builtin:item", {
 				self.object:setacceleration({x = 0, y = 0, z = 0})
 				self.object:setvelocity({x = newv.x, y = -0.22, z = newv.z})
 
-				self.object:setacceleration({x = 0, y = -10, z = 0})
+				self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
 				self.physical_state = true
 				self.object:set_properties({
 					physical = true
@@ -445,7 +449,7 @@ core.register_entity(":__builtin:item", {
 		else
 			if not self.physical_state then
 				self.object:setvelocity({x = 0, y = 0, z = 0})
-				self.object:setacceleration({x = 0, y = -10, z = 0})
+				self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
 				self.physical_state = true
 				self.object:set_properties({physical = true})
 			end
