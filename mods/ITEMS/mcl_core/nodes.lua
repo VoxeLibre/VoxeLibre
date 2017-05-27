@@ -1511,7 +1511,7 @@ minetest.register_node("mcl_core:vine", {
 			return itemstack
 		end
 		local idef = itemstack:get_definition()
-		local success = minetest.item_place_node(itemstack, placer, pointed_thing)
+		local itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing)
 
 		if success then
 			if idef.sounds and idef.sounds.place then
