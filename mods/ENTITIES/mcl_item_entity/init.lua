@@ -393,12 +393,6 @@ core.register_entity(":__builtin:item", {
 			self.physical_state = false
 			self.object:set_properties({physical = false})
 			return
-		elseif self.physical_state == false then
-			-- Start falling again if map has been loaded again
-			self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
-			self.physical_state = true
-			self.object:set_properties({physical = true})
-			return
 		end
 
 		-- Destroy item in lava or special nodes
