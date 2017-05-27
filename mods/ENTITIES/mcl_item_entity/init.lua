@@ -68,7 +68,7 @@ minetest.register_globalstep(function(dtime)
 				if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and object:get_luaentity().collect and object:get_luaentity().age > item_drop_settings.age then
 					object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
 					if object:get_luaentity()._magnet_timer > 0 and object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time then
-						if inv and inv:room_for_item("main", ItemStack(itemstring)) then
+						if inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
 
 							object:get_luaentity()._magnet_active = true
 							object:get_luaentity()._collector_timer = 0
@@ -134,11 +134,7 @@ minetest.register_globalstep(function(dtime)
 									end, {player, object})
 								end
 							end
-						else
-							object:get_luaentity()._magnet_active = false
 						end
-					else
-						object:get_luaentity()._magnet_active = false
 					end
 
 					if object:get_luaentity()._magnet_timer > 1 then
