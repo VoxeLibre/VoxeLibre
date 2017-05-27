@@ -2,8 +2,6 @@
 -- Aliases for map generator outputs
 --
 
-mcl_mapgen_core = {}
-
 minetest.register_alias("mapgen_air", "air")
 minetest.register_alias("mapgen_stone", "mcl_core:stone")
 minetest.register_alias("mapgen_tree", "mcl_core:tree")
@@ -884,7 +882,8 @@ else
 end
 
 -- Perlin noise objects
-local perlin
+local perlin_structures
+local perlin_vines, perlin_vines_fine, perlin_vines_upwards, perlin_vines_length
 
 -- Generate clay and structures
 -- TODO: Try to use more efficient structure generating code
@@ -931,7 +930,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	end
 	if maxp.y >= 3 and minp.y <= 64 then
 		-- Generate desert temples
-		perlin = perlin or minetest.get_perlin(329, 3, 0.6, 100)
+		perlin_structures = perlin_structures or minetest.get_perlin(329, 3, 0.6, 100)
 		-- Assume X and Z lengths are equal
 		local divlen = 5
 		local divs = (maxp.x-minp.x)/divlen+1;
@@ -942,7 +941,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 			local x1 = minp.x + math.floor((divx+1)*divlen)
 			local z1 = minp.z + math.floor((divz+1)*divlen)
 			-- Determine amount from perlin noise
-			local amount = math.floor(perlin:get2d({x=x0, y=z0}) * 9)
+			local amount = math.floor(perlin_structures:get2d({x=x0, y=z0}) * 9)
 			-- Find random positions based on this random
 			local pr = PseudoRandom(seed+1)
 			for i=0, amount do
@@ -1175,31 +1174,34 @@ minetest.register_on_generated(function(minp, maxp)
 		end
 
 		-- Pass 2: Generate vines at jungle wood and jungle leaves
+		perlin_vines = perlin_vines or minetest.get_perlin(555, 4, 0.6, 500)
+		perlin_vines_fine = perlin_vines_fine or minetest.get_perlin(43000, 4, 0.6, 2)
+		perlin_vines_length = perlin_vines_length or minetest.get_perlin(435, 4, 0.6, 5)
+		perlin_vines_upwards = perlin_vines_upwards or minetest.get_perlin(436, 3, 0.6, 400)
 		local junglething
 		for i=1, 2 do
 			if i==1 then junglething = jungletree
 			else junglething = jungleleaves end
 
 			for n = 1, #junglething do
-
 				pos = junglething[n]
+
 				treepos = table.copy(pos)
 
-				dir = math.random(1, 4)
+				local dirs = {
+					{x=1,y=0,z=0},
+					{x=-1,y=0,z=0},
+					{x=0,y=0,z=1},
+					{x=0,y=0,z=-1},
+				}
 
-				if dir == 1 then
-					pos.z = pos.z + 1
-				elseif dir == 2 then
-					pos.z = pos.z - 1
-				elseif dir == 3 then
-					pos.x = pos.x + 1
-				elseif dir == 4 then
-					pos.x = pos.x -1
-				end
+				for d = 1, #dirs do
+				local pos = vector.add(pos, dirs[d])
 
 				local nn = minetest.get_node(pos).name
 
-				if math.random(1,3) == 1 and nn == "air" then
+				if perlin_vines:get2d(pos) > -0.1 and perlin_vines_fine:get3d(pos) > 0.4 and nn == "air" then
+
 					local newnode = {
 						name = "mcl_core:vine",
 						param2 = minetest.dir_to_wallmounted(vector.subtract(treepos, pos))
@@ -1209,13 +1211,13 @@ minetest.register_on_generated(function(minp, maxp)
 					local grow_upwards = false
 					-- Only possible on the wood, not on the leaves
 					if i == 1 then
-						grow_upwards = math.random(1,8) == 1
+						grow_upwards = perlin_vines_upwards:get3d(pos) > 0.8
 					end
 					if grow_upwards then
 						-- Grow vines up 1-4 nodes, even through jungleleaves.
 						-- This may give climbing access all the way to the top of the tree :-)
 						-- But this will be fairly rare.
-						local length = math.random(1, 4)
+						local length = math.ceil(math.abs(perlin_vines_length:get3d(pos)) * 4)
 						for l=0, length-1 do
 							local tnn = minetest.get_node(treepos).name
 							local nn = minetest.get_node(pos).name
@@ -1229,7 +1231,7 @@ minetest.register_on_generated(function(minp, maxp)
 						end
 					else
 						-- Grow vines down 1-7 nodes
-						local length = math.random(1, 7)
+						local length = math.ceil(math.abs(perlin_vines_length:get3d(pos)) * 7)
 						for l=0, length-1 do
 							if minetest.get_node(pos).name == "air" then
 								minetest.set_node(pos, newnode)
@@ -1239,6 +1241,7 @@ minetest.register_on_generated(function(minp, maxp)
 							pos.y = pos.y - 1
 						end
 					end
+				end
 				end
 			end
 		end
