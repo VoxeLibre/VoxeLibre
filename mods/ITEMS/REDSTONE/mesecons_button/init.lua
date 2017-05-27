@@ -43,6 +43,43 @@ local boxes_on = {
 	wall_top = { -4/16, 7/16, -2/16, 4/16, 8/16, 2/16 },
 }
 
+local on_button_place = function(itemstack, placer, pointed_thing)
+	if pointed_thing.type ~= "node" then
+		-- no interaction possible with entities
+		return itemstack
+	end
+
+	local under = pointed_thing.under
+	local node = minetest.get_node(under)
+	local def = minetest.registered_nodes[node.name]
+	local groups = def.groups
+
+	-- Check special rightclick action of pointed node
+	if def and def.on_rightclick then
+		if not placer:get_player_control().sneak then
+			return def.on_rightclick(under, node, placer, itemstack,
+				pointed_thing) or itemstack, false
+		end
+	end
+
+	-- Only allow placement on full-cube solid opaque nodes
+	if (not groups) or (not groups.solid) or (not groups.opaque) or (def.node_box and def.node_box.type ~= "regular") then
+		return itemstack
+	end
+
+	local above = pointed_thing.above
+
+	local idef = itemstack:get_definition()
+	local success = minetest.item_place_node(itemstack, placer, pointed_thing)
+
+	if success then
+		if idef.sounds and idef.sounds.place then
+			minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
+		end
+	end
+	return itemstack
+end
+
 local buttonuse = "Rightclick the button to push it."
 minetest.register_node("mesecons_button:button_stone_off", {
 	drawtype = "nodebox",
@@ -61,6 +98,7 @@ minetest.register_node("mesecons_button:button_stone_off", {
 	description = "Stone Button",
 	_doc_items_longdesc = "A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second.",
 	_doc_items_usagehelp = buttonuse,
+	on_place = on_button_place,
 	on_rightclick = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_button:button_stone_on")
 		mesecon:receptor_on(pos, button_get_output_rules(node))
@@ -117,6 +155,7 @@ minetest.register_node("mesecons_button:button_wood_off", {
 	description = "Wooden Button",
 	_doc_items_longdesc = "A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds.",
 	_doc_items_usagehelp = buttonuse,
+	on_place = on_button_place,
 	on_rightclick = function (pos, node)
 		mesecon:swap_node(pos, "mesecons_button:button_wood_on")
 		mesecon:receptor_on(pos, button_get_output_rules(node))
