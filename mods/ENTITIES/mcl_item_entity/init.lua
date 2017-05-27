@@ -375,12 +375,18 @@ core.register_entity(":__builtin:item", {
 		local p = self.object:getpos()
 		local node = core.get_node_or_nil(p)
 		local in_unloaded = (node == nil)
-		if in_unloaded then
+		if in_unloaded and self.physical_state == true then
 			-- Don't infinetly fall into unloaded map
 			self.object:setvelocity({x = 0, y = 0, z = 0})
 			self.object:setacceleration({x = 0, y = 0, z = 0})
 			self.physical_state = false
 			self.object:set_properties({physical = false})
+			return
+		elseif self.physical_state == false then
+			-- Start falling again if map has been loaded again
+			self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
+			self.physical_state = true
+			self.object:set_properties({physical = true})
 			return
 		end
 
