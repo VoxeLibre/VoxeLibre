@@ -108,9 +108,10 @@ The arrow speed and damage increase with the charge level:
 	inventory_image = "mcl_throwing_bow.png",
 	stack_max = 1,
 	-- Trick to disable melee damage to entities.
-	-- FIXME: The bows is still able to dig like the hand for some reason. :-(
 	-- Range not set to 0 (unlike the others) so it can be placed into item frames
 	range = 1,
+	-- Trick to disable digging as well
+	on_use = function() end,
 	on_place = powerup_function("mcl_throwing:bow_0"),
 	on_secondary_use = powerup_function("mcl_throwing:bow_0"),
 	groups = {weapon=1,weapon_ranged=1},
