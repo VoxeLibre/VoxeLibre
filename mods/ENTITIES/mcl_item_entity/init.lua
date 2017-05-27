@@ -12,7 +12,7 @@ item_drop_settings.random_item_velocity  = true --this sets random item velocity
 item_drop_settings.drop_single_item      = false --if true, the drop control drops 1 item instead of the entire stack, and sneak+drop drops the stack
 -- drop_single_item is disabled by default because it is annoying to throw away items from the intentory screen
 
-item_drop_settings.follow_time           = 1 -- how many seconds an item follows the player before giving up
+item_drop_settings.magnet_time           = 0.5 -- how many seconds an item follows the player before giving up
 
 local get_gravity = function()
 	return tonumber(minetest.setting_get("movement_gravity")) or 9.81
@@ -65,9 +65,10 @@ minetest.register_globalstep(function(dtime)
 
 			--magnet
 			for _,object in ipairs(minetest.get_objects_inside_radius({x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}, item_drop_settings.radius_magnet)) do
-				if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" then
-					if object:get_luaentity().collect and object:get_luaentity().age > item_drop_settings.age then
-						if inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
+				if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and object:get_luaentity().collect and object:get_luaentity().age > item_drop_settings.age then
+					object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
+					if object:get_luaentity()._magnet_timer > 0 and object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time then
+						if inv and inv:room_for_item("main", ItemStack(itemstring)) then
 
 							--modified simplemobs api
 
@@ -86,6 +87,7 @@ minetest.register_globalstep(function(dtime)
 							object:get_luaentity().object:set_properties({
 								physical = false
 							})
+
 
 							--fix eternally falling items
 							minetest.after(0, function(object)
@@ -131,8 +133,16 @@ minetest.register_globalstep(function(dtime)
 							end
 						end
 					end
+
+					if object:get_luaentity()._magnet_timer > 1 then
+						object:get_luaentity()._magnet_timer = -item_drop_settings.magnet_time
+					elseif object:get_luaentity()._magnet_timer < 0 then
+						object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
+					end
+
 				end
 			end
+
 		end
 	end
 end)
@@ -309,6 +319,7 @@ core.register_entity(":__builtin:item", {
 		else
 			self.itemstring = staticdata
 		end
+		self._magnet_timer = 0
 		self.object:set_armor_groups({immortal = 1})
 		self.object:setvelocity({x = 0, y = 2, z = 0})
 		self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
