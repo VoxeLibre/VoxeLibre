@@ -2,7 +2,7 @@
 local item_drop_settings                 = {} --settings table
 item_drop_settings.age                   = 1 --how old an item has to be before collecting
 item_drop_settings.radius_magnet         = 2 --radius of item magnet
-item_drop_settings.radius_collect        = 0.1 --radius of collection
+item_drop_settings.radius_collect        = 0.2 --radius of collection
 item_drop_settings.player_collect_height = 0.5 --added to their pos y value
 item_drop_settings.collection_safety     = false --do this to prevent items from flying away on laggy servers
 item_drop_settings.collect_by_default    = true --make item entities automatically collect in the item entity code
