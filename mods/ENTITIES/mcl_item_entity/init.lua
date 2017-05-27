@@ -70,6 +70,9 @@ minetest.register_globalstep(function(dtime)
 					if object:get_luaentity()._magnet_timer > 0 and object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time then
 						if inv and inv:room_for_item("main", ItemStack(itemstring)) then
 
+							object:get_luaentity()._magnet_active = true
+							object:get_luaentity()._collector_timer = 0
+
 							--modified simplemobs api
 
 							local pos1 = pos
@@ -131,7 +134,11 @@ minetest.register_globalstep(function(dtime)
 									end, {player, object})
 								end
 							end
+						else
+							object:get_luaentity()._magnet_active = false
 						end
+					else
+						object:get_luaentity()._magnet_active = false
 					end
 
 					if object:get_luaentity()._magnet_timer > 1 then
@@ -320,6 +327,9 @@ core.register_entity(":__builtin:item", {
 			self.itemstring = staticdata
 		end
 		self._magnet_timer = 0
+		self._magnet_active = false
+		-- How long ago the last possible collector was detected. nil = none in this session
+		self._collector_timer = nil
 		self.object:set_armor_groups({immortal = 1})
 		self.object:setvelocity({x = 0, y = 2, z = 0})
 		self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
@@ -378,6 +388,9 @@ core.register_entity(":__builtin:item", {
 
 	on_step = function(self, dtime)
 		self.age = self.age + dtime
+		if self._collector_timer ~= nil then
+			self._collector_timer = self._collector_timer + dtime
+		end
 		if time_to_live > 0 and self.age > time_to_live then
 			self.itemstring = ''
 			self.object:remove()
@@ -386,6 +399,11 @@ core.register_entity(":__builtin:item", {
 		local p = self.object:getpos()
 		local node = core.get_node_or_nil(p)
 		local in_unloaded = (node == nil)
+
+		-- If no collector was found for a long enough time, declare the magnet as disabled
+		if self._magnet_active and (self._collector_timer == nil or (self._collector_timer > item_drop_settings.magnet_time)) then
+			self._magnet_active = false
+		end
 		if in_unloaded and self.physical_state == true then
 			-- Don't infinetly fall into unloaded map
 			self.object:setvelocity({x = 0, y = 0, z = 0})
@@ -458,7 +476,7 @@ core.register_entity(":__builtin:item", {
 				self.object:set_properties({physical = false})
 			end
 		else
-			if not self.physical_state then
+			if not self.physical_state and self._magnet_active == false then
 				self.object:setvelocity({x = 0, y = 0, z = 0})
 				self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
 				self.physical_state = true
