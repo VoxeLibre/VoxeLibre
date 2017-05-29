@@ -465,9 +465,9 @@ core.register_entity(":__builtin:item", {
 			self.object:setvelocity(newv)
 
 			self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
-			self.physical_state = true
+			self.physical_state = false
 			self.object:set_properties({
-				physical = true
+				physical = false
 			})
 			return
 		end
