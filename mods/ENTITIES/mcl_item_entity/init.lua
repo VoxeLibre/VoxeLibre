@@ -204,7 +204,7 @@ end
 
 local time_to_live = tonumber(core.setting_get("item_entity_ttl"))
 if not time_to_live then
-	time_to_live = 900
+	time_to_live = 300
 end
 
 core.register_entity(":__builtin:item", {
