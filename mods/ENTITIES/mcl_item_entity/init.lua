@@ -411,6 +411,66 @@ core.register_entity(":__builtin:item", {
 			return
 		end
 
+		-- Push item out when stuck inside solid opaque node
+		if def and def.walkable and def.groups and def.groups.opaque == 1 then
+			local shootdir
+			local cx = p.x % 1
+			local cz = p.z % 1
+			local order = {}
+
+			-- First prepare the order in which the 4 sides are to be checked.
+			-- 1st: closest
+			-- 2nd: other direction
+			-- 3rd and 4th: other axis
+			local cxcz = function(o, cw, one, zero)
+				if cw > 0 then
+					table.insert(o, { [one]=1, y=0, [zero]=0 })
+					table.insert(o, { [one]=-1, y=0, [zero]=0 })
+				else
+					table.insert(o, { [one]=-1, y=0, [zero]=0 })
+					table.insert(o, { [one]=1, y=0, [zero]=0 })
+				end
+				return o
+			end
+			if math.abs(cx) > math.abs(cz) then
+				order = cxcz(order, cx, "x", "z")
+				order = cxcz(order, cz, "z", "x")
+			else
+				order = cxcz(order, cz, "z", "x")
+				order = cxcz(order, cx, "x", "z")
+			end
+
+			-- Check which one of the 4 sides is free
+			for o=1, #order do
+				local nn = minetest.get_node(vector.add(p, order[o])).name
+				local def = minetest.registered_nodes[nn]
+				if def and def.walkable == false and nn ~= "ignore" then
+					shootdir = order[o]
+				end
+			end
+			-- If none of the 4 sides is free, shoot upwards
+			if shootdir == nil then
+				shootdir = { x=0, y=1, z=0 }
+				local nn = minetest.get_node(vector.add(p, shootdir)).name
+				if nn == "ignore" then
+					-- Do not push into ignore
+					return
+				end
+			end
+
+			-- Set new item moving speed accordingly
+			local newv = vector.multiply(shootdir, 3)
+			self.object:setacceleration({x = 0, y = 0, z = 0})
+			self.object:setvelocity(newv)
+
+			self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
+			self.physical_state = true
+			self.object:set_properties({
+				physical = true
+			})
+			return
+		end
+
 		-- Move item around on flowing liquids
 		if def and def.liquidtype == "flowing" then
 
