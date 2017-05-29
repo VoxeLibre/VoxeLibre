@@ -2794,7 +2794,7 @@ function mobs:explosion(pos, radius, fire, smoke, sound)
 					minetest.set_node(p, {name = "air"})
 
 					if smoke > 0 then
-						effect(p, 2, "tnt_smoke.png")
+						effect(p, 2, "tnt_smoke.png", 3*radius, 5*radius, radius, 0)
 					end
 				end
 			end
