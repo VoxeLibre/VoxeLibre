@@ -288,7 +288,6 @@ core.register_entity(":__builtin:item", {
 			always_collect = self.always_collect,
 			age = self.age,
 			dropped_by = self.dropped_by,
-			collect = self._collect
 		})
 	end,
 
@@ -440,8 +439,7 @@ core.register_entity(":__builtin:item", {
 		end
 
 		-- If node is not registered or node is walkably solid and resting on nodebox
-		p.y = p.y - 0.5
-		local nn = minetest.get_node(p).name
+		local nn = minetest.get_node({x=p.x, y=p.y-0.5, z=p.z}).name
 		local v = self.object:getvelocity()
 
 		if not core.registered_nodes[nn] or core.registered_nodes[nn].walkable and v.y == 0 then
