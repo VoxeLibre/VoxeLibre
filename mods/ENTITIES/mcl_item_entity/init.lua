@@ -9,7 +9,7 @@ item_drop_settings.random_item_velocity  = true --this sets random item velocity
 item_drop_settings.drop_single_item      = false --if true, the drop control drops 1 item instead of the entire stack, and sneak+drop drops the stack
 -- drop_single_item is disabled by default because it is annoying to throw away items from the intentory screen
 
-item_drop_settings.magnet_time           = 0.5 -- how many seconds an item follows the player before giving up
+item_drop_settings.magnet_time           = 0.75 -- how many seconds an item follows the player before giving up
 
 local get_gravity = function()
 	return tonumber(minetest.setting_get("movement_gravity")) or 9.81
