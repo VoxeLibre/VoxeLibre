@@ -5,9 +5,6 @@ item_drop_settings.radius_magnet         = 2 --radius of item magnet
 item_drop_settings.radius_collect        = 0.2 --radius of collection
 item_drop_settings.player_collect_height = 0.5 --added to their pos y value
 item_drop_settings.collection_safety     = false --do this to prevent items from flying away on laggy servers
-item_drop_settings.collect_by_default    = true --make item entities automatically collect in the item entity code
-                                                --versus setting it in the item drop code, setting true might interfere with
-                                                --mods that use item entities (like pipeworks)
 item_drop_settings.random_item_velocity  = true --this sets random item velocity if velocity is 0
 item_drop_settings.drop_single_item      = false --if true, the drop control drops 1 item instead of the entire stack, and sneak+drop drops the stack
 -- drop_single_item is disabled by default because it is annoying to throw away items from the intentory screen
@@ -41,7 +38,7 @@ minetest.register_globalstep(function(dtime)
 
 			for _,object in ipairs(minetest.get_objects_inside_radius({x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}, item_drop_settings.radius_collect)) do
 				if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" then
-					if object:get_luaentity().collect and object:get_luaentity().age > item_drop_settings.age then
+					if object:get_luaentity()._insta_collect or (object:get_luaentity().age > item_drop_settings.age) then
 						if inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
 
 							if object:get_luaentity().itemstring ~= "" then
@@ -65,7 +62,7 @@ minetest.register_globalstep(function(dtime)
 
 			--magnet
 			for _,object in ipairs(minetest.get_objects_inside_radius({x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}, item_drop_settings.radius_magnet)) do
-				if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and object:get_luaentity().collect and object:get_luaentity().age > item_drop_settings.age then
+				if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and (object:get_luaentity()._insta_collect or (object:get_luaentity().age > item_drop_settings.age)) then
 					object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
 					if object:get_luaentity()._magnet_timer > 0 and object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time then
 						if inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
@@ -166,7 +163,6 @@ function minetest.handle_node_drops(pos, drops, digger)
 		for i=1,count do
 			local obj = minetest.add_item(pos, name)
 			if obj ~= nil then
-				obj:get_luaentity().collect = true
 				local x = math.random(1, 5)
 				if math.random(1,2) == 1 then
 					x = -x
@@ -177,31 +173,29 @@ function minetest.handle_node_drops(pos, drops, digger)
 				end
 				obj:setvelocity({x=1/x, y=obj:getvelocity().y, z=1/z})
 				obj:get_luaentity().age = 0.6
+				obj:get_luaentity()._insta_collect = true
 			end
 		end
 	end
 end
 
-if item_drop_settings.drop_single_item then
-	-- Drop single items by default
-	function minetest.item_drop(itemstack, dropper, pos)
-		if dropper and dropper:is_player() then
-			local v = dropper:get_look_dir()
-			local p = {x=pos.x, y=pos.y+1.2, z=pos.z}
-			local cs = 1
-			if dropper:get_player_control().sneak then
-				cs = itemstack:get_count()
-			end
-			local item = itemstack:take_item(cs)
-			local obj = core.add_item(p, item)
-			if obj then
-				v.x = v.x*4
-				v.y = v.y*4 + 2
-				v.z = v.z*4
-				obj:setvelocity(v)
-				obj:get_luaentity().collect = true
-				return itemstack
-			end
+-- Drop single items by default
+function minetest.item_drop(itemstack, dropper, pos)
+	if dropper and dropper:is_player() then
+		local v = dropper:get_look_dir()
+		local p = {x=pos.x, y=pos.y+1.2, z=pos.z}
+		local cs = itemstack:get_count()
+		if dropper:get_player_control().sneak then
+			cs = 1
+		end
+		local item = itemstack:take_item(cs)
+		local obj = core.add_item(p, item)
+		if obj then
+			v.x = v.x*4
+			v.y = v.y*4 + 2
+			v.z = v.z*4
+			obj:setvelocity(v)
+			return itemstack
 		end
 	end
 end
@@ -266,9 +260,6 @@ core.register_entity(":__builtin:item", {
 			infotext = description,
 		}
 		self.object:set_properties(prop)
-		if item_drop_settings.collect_by_default then
-			self.collect = true
-		end
 		if item_drop_settings.random_item_velocity == true then
 			minetest.after(0, function(self)
 				if not self or not self.object or not self.object:get_luaentity() then
@@ -298,7 +289,7 @@ core.register_entity(":__builtin:item", {
 			always_collect = self.always_collect,
 			age = self.age,
 			dropped_by = self.dropped_by,
-			collect = self.collect
+			collect = self._collect
 		})
 	end,
 
@@ -314,8 +305,9 @@ core.register_entity(":__builtin:item", {
 					self.age = dtime_s
 				end
 				--remember collection data
-				if data.collect then
-					self.collect = data.collect
+				if data._insta_collect then
+					-- If true, can collect item without delay
+					self._insta_collect = data._insta_collect
 				end
 				self.dropped_by = data.dropped_by
 			end
