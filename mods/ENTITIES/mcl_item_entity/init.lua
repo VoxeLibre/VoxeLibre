@@ -287,7 +287,7 @@ core.register_entity(":__builtin:item", {
 			itemstring = self.itemstring,
 			always_collect = self.always_collect,
 			age = self.age,
-			dropped_by = self.dropped_by,
+			_insta_collect = self._insta_collect,
 		})
 	end,
 
@@ -307,7 +307,6 @@ core.register_entity(":__builtin:item", {
 					-- If true, can collect item without delay
 					self._insta_collect = data._insta_collect
 				end
-				self.dropped_by = data.dropped_by
 			end
 		else
 			self.itemstring = staticdata
