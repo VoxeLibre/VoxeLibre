@@ -446,6 +446,7 @@ core.register_entity(":__builtin:item", {
 				local def = minetest.registered_nodes[nn]
 				if def and def.walkable == false and nn ~= "ignore" then
 					shootdir = order[o]
+					break
 				end
 			end
 			-- If none of the 4 sides is free, shoot upwards
