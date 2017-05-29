@@ -172,7 +172,6 @@ function minetest.handle_node_drops(pos, drops, digger)
 					z = -z
 				end
 				obj:setvelocity({x=1/x, y=obj:getvelocity().y, z=1/z})
-				obj:get_luaentity().age = 0.6
 				obj:get_luaentity()._insta_collect = true
 			end
 		end
