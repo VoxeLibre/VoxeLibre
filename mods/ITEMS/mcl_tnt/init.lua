@@ -83,6 +83,55 @@ function TNT:on_activate(staticdata)
 	self.object:settexturemod("^mcl_tnt_blink.png")
 end
 
+local function add_effects(pos, radius, drops)
+	minetest.add_particlespawner({
+		amount = 64,
+		time = 0.5,
+		minpos = vector.subtract(pos, radius / 2),
+		maxpos = vector.add(pos, radius / 2),
+		minvel = {x = -10, y = -10, z = -10},
+		maxvel = {x = 10, y = 10, z = 10},
+		minacc = vector.new(),
+		maxacc = vector.new(),
+		minexptime = 1,
+		maxexptime = 2.5,
+		minsize = radius * 1,
+		maxsize = radius * 3,
+		texture = "tnt_smoke.png",
+	})
+
+	-- we just dropped some items. Look at the items entities and pick
+	-- one of them to use as texture
+	local texture = "tnt_smoke.png" --fallback texture
+	local most = 0
+	for name, stack in pairs(drops) do
+		local count = stack:get_count()
+		if count > most then
+			most = count
+			local def = minetest.registered_nodes[name]
+			if def and def.tiles and def.tiles[1] then
+				texture = def.tiles[1]
+			end
+		end
+	end
+
+	minetest.add_particlespawner({
+		amount = 32,
+		time = 0.1,
+		minpos = vector.subtract(pos, radius / 2),
+		maxpos = vector.add(pos, radius / 2),
+		minvel = {x = -3, y = 0, z = -3},
+		maxvel = {x = 3, y = 5,  z = 3},
+		minacc = {x = 0, y = -10, z = 0},
+		minexptime = 0.8,
+		maxexptime = 2.0,
+		minsize = radius * 0.66,
+		maxsize = radius * 2,
+		texture = texture,
+		collisiondetection = true,
+	})
+end
+
 function TNT:on_step(dtime)
 	local pos = self.object:getpos()
 	minetest.add_particle({
@@ -133,19 +182,20 @@ function TNT:on_step(dtime)
 							core.check_for_falling(np)
 							if n.name ~= "mcl_tnt:tnt" and math.random() > 0.9 then
 								local drop = minetest.get_node_drops(n.name, "")
-									for _,item in ipairs(drop) do
-										if type(item) == "string" then
-											if math.random(1,100) > 40 then
-												local obj = minetest.add_item(np, item)
-											end
+								for _,item in ipairs(drop) do
+									if type(item) == "string" then
+										if math.random(1,100) > 40 then
+											local obj = minetest.add_item(np, item)
 										end
 									end
+								end
 							end
 						end
 					end
 				end
 			end
 			self.object:remove()
+			add_effects(pos, TNT_RANGE, {})
 		end
 	end
 end
