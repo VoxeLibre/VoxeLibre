@@ -412,14 +412,12 @@ core.register_entity(":__builtin:item", {
 		end
 
 		-- Move item around on flowing liquids
-		if minetest.registered_nodes[nn] and minetest.registered_nodes[nn].liquidtype == "flowing" then
+		if def and def.liquidtype == "flowing" then
 
-			local pos = self.object:getpos()
-			local node = minetest.get_node(pos)
 			--[[ Get flowing direction (function call from flowlib), if there's a liquid.
 			NOTE: According to Qwertymine, flowlib.quickflow is only reliable for liquids with a flowing distance of 7.
 			Luckily, this is exactly what we need if we only care about water, which has this flowing distance. ]]
-			local vec = flowlib.quick_flow(pos, node)
+			local vec = flowlib.quick_flow(p, node)
 			-- Just to make sure we don't manipulate the speed for no reason
 			if vec.x ~= 0 or vec.y ~= 0 or vec.z ~= 0 then
 				-- Minecraft Wiki: Flowing speed is "about 1.39 meters per second"
