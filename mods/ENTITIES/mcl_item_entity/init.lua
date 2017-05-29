@@ -303,10 +303,9 @@ core.register_entity(":__builtin:item", {
 					self.age = dtime_s
 				end
 				--remember collection data
-				if data._insta_collect then
-					-- If true, can collect item without delay
-					self._insta_collect = data._insta_collect
-				end
+				-- If true, can collect item without delay
+				self._insta_collect = data._insta_collect
+
 			end
 		else
 			self.itemstring = staticdata
@@ -315,6 +314,11 @@ core.register_entity(":__builtin:item", {
 		self._magnet_active = false
 		-- How long ago the last possible collector was detected. nil = none in this session
 		self._collector_timer = nil
+		-- Used to apply additional force
+		self._force = nil
+		self._forcestart = nil
+		self._forcetimer = 0
+
 		self.object:set_armor_groups({immortal = 1})
 		self.object:setvelocity({x = 0, y = 2, z = 0})
 		self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
@@ -463,11 +467,50 @@ core.register_entity(":__builtin:item", {
 			self.object:setacceleration({x = 0, y = 0, z = 0})
 			self.object:setvelocity(newv)
 
-			self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
 			self.physical_state = false
 			self.object:set_properties({
 				physical = false
 			})
+
+			if shootdir.y == 0 then
+				self._force = newv
+				p.x = math.floor(p.x)
+				p.y = math.floor(p.y)
+				p.z = math.floor(p.z)
+				self._forcestart = p
+				self._forcetimer = 1
+			end
+			return
+		end
+
+		-- This code is run after the entity got a push from above “push away” code.
+		-- It is responsible for making sure the entity is entirely outside the solid node
+		-- (with its full collision box), not just its center.
+		if self._forcetimer > 0 then
+			local cbox = self.object:get_properties().collisionbox
+			local ok = false
+			if self._force.x > 0 and (p.x > (self._forcestart.x + 0.5 + (cbox[4] - cbox[1])/2)) then ok = true
+			elseif self._force.x < 0 and (p.x < (self._forcestart.x + 0.5 - (cbox[4] - cbox[1])/2)) then ok = true
+			elseif self._force.z > 0 and (p.z > (self._forcestart.z + 0.5 + (cbox[6] - cbox[3])/2)) then ok = true
+			elseif self._force.z < 0 and (p.z < (self._forcestart.z + 0.5 - (cbox[6] - cbox[3])/2)) then ok = true end
+			-- Item was successfully forced out. No more pushing
+			if ok then
+				self._forcetimer = -1
+				self._force = nil
+				self.object:setvelocity({x=0,y=0,z=0})
+				self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
+				self.physical_state = true
+				self.object:set_properties({physical = true})
+			else
+				self._forcetimer = self._forcetimer - dtime
+			end
+			return
+		elseif self._force then
+			self._force = nil
+			self.object:setvelocity({x=0,y=0,z=0})
+			self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
+			self.physical_state = true
+			self.object:set_properties({physical = true})
 			return
 		end
 
