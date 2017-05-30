@@ -2943,55 +2943,6 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 			"^[mask:mobs_chicken_egg_overlay.png)"
 	end
 
-	-- register new spawn egg containing mob information
-	minetest.register_craftitem(mob .. "_set", {
-
-		description = desc .. " (Tamed)",
-		inventory_image = invimg,
-		groups = {not_in_creative_inventory = 1},
-		stack_max = 1,
-
-		on_place = function(itemstack, placer, pointed_thing)
-
-			local pos = pointed_thing.above
-
-			-- am I clicking on something with existing on_rightclick function?
-			local under = minetest.get_node(pointed_thing.under)
-			local def = minetest.registered_nodes[under.name]
-			if def and def.on_rightclick then
-				return def.on_rightclick(pointed_thing.under, under, placer, itemstack)
-			end
-
-			if pos
-			and within_limits(pos, 0)
-			and not minetest.is_protected(pos, placer:get_player_name()) then
-
-				pos.y = pos.y + 1
-
-				local data = itemstack:get_metadata()
-				local mob = minetest.add_entity(pos, mob, data)
-				local ent = mob:get_luaentity()
-
-				if not ent then
-					mob:remove()
-					return
-				end
-
-				if ent.type ~= "monster" then
-					-- set owner and tame if not monster
-					ent.owner = placer:get_player_name()
-					ent.tamed = true
-				end
-
-				-- since mob is unique we remove egg once spawned
-				itemstack:take_item()
-			end
-
-			return itemstack
-		end,
-	})
-
-
 	-- register old stackable mob egg
 	minetest.register_craftitem(mob, {
 
