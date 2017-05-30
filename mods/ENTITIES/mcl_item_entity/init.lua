@@ -1,6 +1,6 @@
 --basic settings
 local item_drop_settings                 = {} --settings table
-item_drop_settings.age                   = 1 --how old an item has to be before collecting
+item_drop_settings.age                   = 1 --how old a dropped item (_insta_collect==false) has to be before collecting
 item_drop_settings.radius_magnet         = 2 --radius of item magnet
 item_drop_settings.radius_collect        = 0.2 --radius of collection
 item_drop_settings.player_collect_height = 1.0 --added to their pos y value
@@ -172,7 +172,6 @@ function minetest.handle_node_drops(pos, drops, digger)
 					z = -z
 				end
 				obj:setvelocity({x=1/x, y=obj:getvelocity().y, z=1/z})
-				obj:get_luaentity()._insta_collect = true
 			end
 		end
 	end
@@ -194,6 +193,8 @@ function minetest.item_drop(itemstack, dropper, pos)
 			v.y = v.y*4 + 2
 			v.z = v.z*4
 			obj:setvelocity(v)
+			-- Force collection delay
+			obj:get_luaentity()._insta_collect = false
 			return itemstack
 		end
 	end
@@ -309,6 +310,10 @@ core.register_entity(":__builtin:item", {
 			end
 		else
 			self.itemstring = staticdata
+		end
+		if self._insta_collect == nil then
+			-- Intentionally default, since delayed collection is rare
+			self._insta_collect = true
 		end
 		self._magnet_timer = 0
 		self._magnet_active = false
