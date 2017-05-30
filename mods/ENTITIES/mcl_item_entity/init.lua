@@ -103,8 +103,8 @@ minetest.register_globalstep(function(dtime)
 								if object:get_luaentity().init ~= true then
 									object:get_luaentity().init = true
 									minetest.after(1, function(args)
-										local player = args.player
-										local object = args.object
+										local player = args[1]
+										local object = args[2]
 										local lua = object:get_luaentity()
 										if player == nil or not player:is_player() or object == nil or lua == nil or lua.itemstring == nil then
 											return
