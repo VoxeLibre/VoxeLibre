@@ -733,7 +733,7 @@ minetest.register_abm({
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
 	chance = 1,
-	action = sapling_grow_action("mcl_core:sprucetree", "mcl_core:spruceleaves", 1, 1),
+	action = sapling_grow_action("mcl_core:sprucetree", "mcl_core:spruceleaves", 3, 1),
 })
 
 -- Birch tree
@@ -753,7 +753,7 @@ minetest.register_abm({
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
 	chance = 1,
-	action = sapling_grow_action("mcl_core:acaciatree", "mcl_core:acacialeaves", 1, 2),
+	action = sapling_grow_action("mcl_core:acaciatree", "mcl_core:acacialeaves", 4, 2),
 })
 
 ---------------------
