@@ -111,7 +111,7 @@ awards.register_achievement("mcl:bookcase", {
 awards.register_achievement("mcl:diamonds", {
 	title = S("DIAMONDS!"),
 	description = S("Pick up a diamond from the floor."),
-	icon = "default_stone.png^default_mineral_diamond.png",
+	icon = "mcl_core_diamond_ore.png",
 })
 awards.register_achievement("mcl:blazeRod", {
 	title = S("Into Fire"),
