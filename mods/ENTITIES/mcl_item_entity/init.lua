@@ -392,6 +392,11 @@ core.register_entity(":__builtin:item", {
 		-- If no collector was found for a long enough time, declare the magnet as disabled
 		if self._magnet_active and (self._collector_timer == nil or (self._collector_timer > item_drop_settings.magnet_time)) then
 			self._magnet_active = false
+			self.object:setvelocity({x=0,y=0,z=0})
+			self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
+			self.physical_state = true
+			self.object:set_properties({physical = true})
+			return
 		end
 		if in_unloaded and self.physical_state == true then
 			-- Don't infinetly fall into unloaded map
