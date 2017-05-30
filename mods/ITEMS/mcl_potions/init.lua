@@ -94,7 +94,7 @@ end
 
 minetest.register_craftitem("mcl_potions:potion_water", {
 	description = "Water Bottle",
-	_doc_items_longdesc = "Water bottles can be used to brew potions and to fill cauldron. Drinking water has no effect.",
+	_doc_items_longdesc = "Water bottles can be used to brew potions and to fill cauldrons. Drinking water has no effect.",
 	_doc_items_usagehelp = "Wield it and rightclick to drink it. Rightclick a cauldron to put the water into the cauldron.",
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
