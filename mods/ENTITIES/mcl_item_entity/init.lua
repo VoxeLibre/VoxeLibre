@@ -398,12 +398,14 @@ core.register_entity(":__builtin:item", {
 			self.object:set_properties({physical = true})
 			return
 		end
-		if in_unloaded and self.physical_state == true then
-			-- Don't infinetly fall into unloaded map
-			self.object:setvelocity({x = 0, y = 0, z = 0})
-			self.object:setacceleration({x = 0, y = 0, z = 0})
-			self.physical_state = false
-			self.object:set_properties({physical = false})
+		if in_unloaded then
+			if self.physical_state == true then
+				-- Don't infinetly fall into unloaded map
+				self.object:setvelocity({x = 0, y = 0, z = 0})
+				self.object:setacceleration({x = 0, y = 0, z = 0})
+				self.physical_state = false
+				self.object:set_properties({physical = false})
+			end
 			return
 		end
 
