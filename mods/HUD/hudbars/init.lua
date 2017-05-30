@@ -86,13 +86,16 @@ hb.settings.autohide_breath = hb.load_setting("hudbars_autohide_breath", "bool",
 local sorting = minetest.setting_get("hudbars_sorting")
 if sorting ~= nil then
 	hb.settings.sorting = {}
+	hb.settings.sorting_reverse = {}
 	for k,v in string.gmatch(sorting, "(%w+)=(%w+)") do
 		hb.settings.sorting[k] = tonumber(v)
+		hb.settings.sorting_reverse[tonumber(v)] = k
 	end
 else
 	sorting = ""
 	hb.settings.sorting = { ["health"] = 0, ["hunger"] = 1, ["armor"] = 2, ["saturation"] = 3, ["breath"] = 4, ["exhaustion"] = 5 }
 end
+
 hb.settings.sorting_reverse = {}
 for k,v in string.gmatch(sorting, "(%w+)=(%w+)") do
 	hb.settings.sorting_reverse[tonumber(v)] = k
@@ -238,7 +241,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, default_sta
 		local bar_image, bar_size
 		if hb.settings.bar_type == "progress_bar" then
 			bar_image = textures.bar
-			bar_size = nil
+			bar_size = {x=2, y=16}
 		elseif hb.settings.bar_type == "statbar_classic" or hb.settings.bar_type == "statbar_modern" then
 			bar_image = textures.icon
 			bar_size = {x=24, y=24}

@@ -11,7 +11,7 @@ this mod will place them accordingly.
 position should be displayed correctly on every screen size.
 
 ## Current version
-The current version is 1.7.1.
+The current version is 1.8.0.
 
 This software uses [semantic versioning](http://semver.org), as defined by version 2.0.0 of the SemVer
 standard.
@@ -34,6 +34,7 @@ Translations:
 
 * German: Wuzzy
 * Portuguese: BrunoMine
+* Turkish: admicos
 
 This program is free software. It comes without any warranty, to
 the extent permitted by applicable law. You can redistribute it

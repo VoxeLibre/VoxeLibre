@@ -1,0 +1,3 @@
+Health = Can
+Breath = Nefes
+%s: %d/%d = %s: %d/%d
