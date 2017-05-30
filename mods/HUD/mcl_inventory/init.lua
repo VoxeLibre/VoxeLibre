@@ -15,6 +15,7 @@ local function item_drop(itemstack, dropper, pos)
 			v.y = v.y*4 + 2
 			v.z = v.z*4
 			obj:setvelocity(v)
+			obj:get_luaentity()._insta_collect = false
 		end
 	else
 		minetest.add_item(pos, itemstack)
