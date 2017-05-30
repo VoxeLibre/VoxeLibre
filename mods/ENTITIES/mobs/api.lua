@@ -542,8 +542,8 @@ do_env_damage = function(self)
 		-- lava or fire
 		elseif self.lava_damage ~= 0
 		and (nodef.groups.lava
-		or self.standing_in == "fire:basic_flame"
-		or self.standing_in == "fire:permanent_flame") then
+		or self.standing_in == "mcl_fire:fire"
+		or self.standing_in == "mcl_fire:eternal_fire") then
 
 			self.health = self.health - self.lava_damage
 
@@ -1603,7 +1603,7 @@ local do_states = function(self, dtime)
 
 					pos.y = pos.y - 1
 
-					mobs:explosion(pos, radius, 1, 1, self.sounds.explode)
+					mobs:explosion(pos, radius, 0, 1, self.sounds.explode)
 
 					self.object:remove()
 
@@ -2789,7 +2789,7 @@ function mobs:explosion(pos, radius, fire, smoke, sound)
 				and (minetest.registered_nodes[n].groups.flammable
 				or random(1, 100) <= 30) then
 
-					minetest.set_node(p, {name = "fire:basic_flame"})
+					minetest.set_node(p, {name = "mcl_fire:fire"})
 				else
 					minetest.set_node(p, {name = "air"})
 
