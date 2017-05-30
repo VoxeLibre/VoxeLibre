@@ -87,26 +87,32 @@ mobs:register_mob("mobs_mc:sheep", {
 				-- 81.836%
 				self.color = colors["white"][1]
 				textures = colors["white"][2]
+				self.base_texture = colors["white"][2]
 			elseif r <= 81836 + 5000 then
 				-- 5%
 				self.color = colors["grey"][1]
 				textures = colors["grey"][2]
+				self.base_texture = colors["grey"][2]
 			elseif r <= 81836 + 5000 + 5000 then
 				-- 5%
 				self.color = colors["dark_grey"][1]
 				textures = colors["dark_grey"][2]
+				self.base_texture = colors["dark_grey"][2]
 			elseif r <= 81836 + 5000 + 5000 + 5000 then
 				-- 5%
 				self.color = colors["black"][1]
 				textures = colors["black"][2]
+				self.base_texture = colors["black"][2]
 			elseif r <= 81836 + 5000 + 5000 + 5000 + 3000 then
 				-- 3%
 				self.color = colors["brown"][1]
 				textures = colors["brown"][2]
+				self.base_texture = colors["brown"][2]
 			else
 				-- 0.164%
 				self.color = colors["pink"][1]
 				textures = colors["pink"][2]
+				self.base_texture = colors["pink"][2]
 			end
 			self.textures = { textures },
 			self.object:set_properties({ textures = textures })
@@ -156,6 +162,7 @@ print(item:get_name(), minetest.get_item_group(item:get_name(), "dye"))
 			self.object:set_properties({
 				textures = colors[pname][2],
 			})
+			self.base_texture = colors[pname][2]
 			self.color = colors[pname][1]
 			self.drops = {
 				{name = "mcl_mobitems:mutton",
