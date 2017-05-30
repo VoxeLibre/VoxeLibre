@@ -80,6 +80,7 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 	paramtype = "light",
 	paramtype2 = "facedir",
 	walkable = false,
+	is_ground_content = false,
 	stack_max = 16,
 	selection_box = {
 		type = "fixed",
