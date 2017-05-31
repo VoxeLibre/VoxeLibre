@@ -1869,11 +1869,8 @@ minetest.register_node("mcl_core:ice", {
 minetest.register_node("mcl_core:packed_ice", {
 	description = "Packed Ice",
 	_doc_items_longdesc = "Packed ice is a compressed form of ice. It is opaque and solid.",
-	drawtype = "glasslike",
 	tiles = {"mcl_core_ice_packed.png"},
 	is_ground_content = true,
-	paramtype = "light",
-	use_texture_alpha = true,
 	stack_max = 64,
 	groups = {handy=1,pickaxey=1, building_block=1},
 	drop = "",
