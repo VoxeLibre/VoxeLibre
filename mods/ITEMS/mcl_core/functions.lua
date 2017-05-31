@@ -950,7 +950,6 @@ function mcl_core.add_glass(desc, recipeitem, colorgroup, color)
 		drawtype = "glasslike",
 		is_ground_content = false,
 		tiles = {"xpanes_pane_glass_"..color..".png"},
-		inventory_image = minetest.inventorycube("xpanes_pane_glass_"..color..".png"),
 		paramtype = "light",
 		sunlight_propagates = "true",
 		use_texture_alpha = true,
