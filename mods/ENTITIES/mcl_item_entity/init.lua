@@ -64,7 +64,7 @@ minetest.register_globalstep(function(dtime)
 			for _,object in ipairs(minetest.get_objects_inside_radius({x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}, item_drop_settings.radius_magnet)) do
 				if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and (object:get_luaentity()._insta_collect or (object:get_luaentity().age > item_drop_settings.age)) then
 					object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
-					if object:get_luaentity()._magnet_timer > 0 and object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time then
+					if object:get_luaentity()._magnet_timer >= 0 and object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time then
 						if inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
 
 							object:get_luaentity()._magnet_active = true
