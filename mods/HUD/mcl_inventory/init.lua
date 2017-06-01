@@ -132,7 +132,7 @@ end
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.quit then
 		drop_fields(player,"craft")
-		if not minetest.setting_getbool("creative_mode") and formname == "" then
+		if not minetest.setting_getbool("creative_mode") and (formname == "" or formname == "main") then
 			set_inventory(player)
 		end
 	end
