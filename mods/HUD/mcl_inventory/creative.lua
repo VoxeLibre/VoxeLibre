@@ -335,8 +335,6 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, show, p
 			end
 			if pagenum ~= nil then formspec = formspec .. "p"..tostring(pagenum) end
 
-			-- inventory marker
-			formspec = formspec .. "cin"
 			
 	player:set_inventory_formspec(formspec)
 end

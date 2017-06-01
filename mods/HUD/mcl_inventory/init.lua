@@ -103,10 +103,8 @@ local function set_inventory(player, armor_change_only)
 	"listring[current_player;main]"..
 	"listring[current_player;craft]"..
 	"listring[current_player;main]"..
-	"listring[detached:"..player_name.."_armor;armor]"..
-	-- inventory marker
-	"inv"
-	
+	"listring[detached:"..player_name.."_armor;armor]"
+
 	player:set_inventory_formspec(form)
 end
 
@@ -124,22 +122,17 @@ local function set_workbench(player)
 	"image_button[8,0;1,1;craftguide_book.png;__mcl_craftguide;]"..
 	"tooltip[__mcl_craftguide;Show crafting recipes]"..
 	"listring[current_player;main]"..
-	"listring[current_player;craft]"..
-	-- inventory marker
-	"wob"
+	"listring[current_player;craft]"
 
 	--player:set_inventory_formspec(form)
 	minetest.show_formspec(player:get_player_name(), "main", form)
 end
 
---drop craf items and reset inventory on closing
+-- Drop items in craft grid and reset inventory on closing
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.quit then
-		local formspec = player:get_inventory_formspec()
-		local size = string.len(formspec)
-		local marker = string.sub(formspec,size-2)
-		if marker == "inv" or marker == "wob" or marker == "cin" then
-			drop_fields(player,"craft")			
+		drop_fields(player,"craft")
+		if not minetest.setting_getbool("creative_mode") and formname == "" then
 			set_inventory(player)
 		end
 	end
