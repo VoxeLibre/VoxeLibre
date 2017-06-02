@@ -930,7 +930,17 @@ function smart_mobs(self, s, p, dist, dtime)
 		p1.y = floor(p1.y + 0.5)
 		p1.z = floor(p1.z + 0.5)
 
-		self.path.way = minetest.find_path(s, p1, 16, 2, 6)
+		local drop_height = self.fear_height
+		if not drop_height then
+			drop_height = 4
+		end
+		local jump_height
+		if self.jump_height then
+			jump_height = math.max(1, self.jump_height/3)
+		else
+			jump_height = 1
+		end
+		self.path.way = minetest.find_path(s, p1, self.view_range + 1, jump_height, drop_height, "A*_noprefetch")
 
 		-- attempt to unstick mob that is "daydreaming"
 		self.object:setpos({
