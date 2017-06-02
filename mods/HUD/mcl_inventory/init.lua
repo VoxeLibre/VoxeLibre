@@ -40,7 +40,7 @@ local function set_inventory(player, armor_change_only)
 	if minetest.setting_getbool("creative_mode") then
 		if armor_change_only then
 			-- Stay on survival inventory plage if only the armor has been changed
-			mcl_inventory.set_creative_formspec(player, 0, 0, nil, "inv")
+			mcl_inventory.set_creative_formspec(player, 0, 0, nil, nil, "inv")
 		else
 			mcl_inventory.set_creative_formspec(player, 0, 1)
 		end

@@ -1,5 +1,3 @@
-mcl_inventory.creative_inventory_size = 0
-
 -- Prepare player info table
 local players = {}
 
@@ -82,7 +80,9 @@ local function set_inv_search(filter, player)
 
 	inv:set_size("main", #creative_list)
 	inv:set_list("main", creative_list)
-	mcl_inventory.creative_inventory_size = #creative_list
+
+	-- Return number of items
+	return #creative_list
 end
 
 local function set_inv_page(page, player)
@@ -95,7 +95,9 @@ local function set_inv_page(page, player)
 	end
 	inv:set_size("main", #creative_list)
 	inv:set_list("main", creative_list)
-	mcl_inventory.creative_inventory_size = #creative_list
+
+	-- Return number of items
+	return #creative_list
 end
 
 local function init(player)
@@ -194,10 +196,23 @@ local function reset_menu_item_bg()
 end
 
 
-mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, show, page, filter)
+mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_size, show, page, filter)
 	reset_menu_item_bg()
 	pagenum = math.floor(pagenum) or 1
-	local pagemax = math.floor((mcl_inventory.creative_inventory_size-1) / (9*5) + 1)
+
+	local playername = player:get_player_name()
+
+	if not inv_size then
+		if page == "nix" then
+			local inv = minetest.get_inventory({type="detached", name="creative_"..playername})
+			inv_size = inv:get_size("main")
+		elseif page ~= nil and page ~= "inv" then
+			inv_size = #(inventory_lists[page])
+		else
+			inv_size = 0
+		end
+	end
+	local pagemax = math.floor((inv_size-1) / (9*5) + 1)
 	local slider_height
 	if pagemax == 1 then
 		slider_height = 4.525
@@ -208,7 +223,6 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, show, p
 	local name = "nix"
 	local formspec = ""
 	local main_list
-	local playername = player:get_player_name()
 	local listrings = "listring[detached:creative_"..playername..";main]"..
 		"listring[current_player;main]"..
 		"listring[detached:trash;main]"
@@ -354,7 +368,7 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, show, p
 			end
 			if pagenum ~= nil then formspec = formspec .. "p"..tostring(pagenum) end
 
-			
+
 	player:set_inventory_formspec(formspec)
 end
 
@@ -370,21 +384,22 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	local name = player:get_player_name()
 
+	local size = 0
 	if fields.blocks then
 		if players[name].page == "blocks" then return end
-		set_inv_page("blocks",player)
-		page = "blocks"		
+		size = set_inv_page("blocks",player)
+		page = "blocks"
 	elseif fields.deco then
 		if players[name].page == "deco" then return end
-		set_inv_page("deco",player)
+		size = set_inv_page("deco",player)
 		page = "deco"
 	elseif fields.redstone then
 		if players[name].page == "redstone" then return end
-		set_inv_page("redstone",player)
+		size = set_inv_page("redstone",player)
 		page = "redstone"
 	elseif fields.rail then
 		if players[name].page == "rail" then return end
-		set_inv_page("rail",player)
+		size = set_inv_page("rail",player)
 		page = "rail"
 	elseif fields.misc then
 		if players[name].page == "misc" then return end
@@ -396,32 +411,32 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		page = "nix"
 	elseif fields.food then
 		if players[name].page == "food" then return end
-		set_inv_page("food",player)
+		size = set_inv_page("food",player)
 		page = "food"
 	elseif fields.tools then
 		if players[name].page == "tools" then return end
-		set_inv_page("tools",player)
+		size = set_inv_page("tools",player)
 		page = "tools"
 	elseif fields.combat then
 		if players[name].page == "combat" then return end
-		set_inv_page("combat",player)
+		size = set_inv_page("combat",player)
 		page = "combat"
 	elseif fields.brew then
 		if players[name].page == "brew" then return end
-		set_inv_page("brew",player)
+		size = set_inv_page("brew",player)
 		page = "brew"
 	elseif fields.matr then
 		if players[name].page == "matr" then return end
-		set_inv_page("matr",player)
+		size = set_inv_page("matr",player)
 		page = "matr"
 	elseif fields.inv then
 		if players[name].page == "inv" then return end
 		page = "inv"
 	elseif fields.suche == "" and not fields.creative_next and not fields.creative_prev then
-		set_inv_page("all", player)
+		size = set_inv_page("all", player)
 		page = "nix"
 	elseif fields.suche ~= nil and not fields.creative_next and not fields.creative_prev then
-		set_inv_search(string.lower(fields.suche),player)
+		size = set_inv_search(string.lower(fields.suche),player)
 		page = "nix"
 	end
 
@@ -432,11 +447,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		page = players[name].page
 	end
 
-	-- Figure out current page from formspec
+	-- Figure out current scroll bar from formspec
 	local formspec = player:get_inventory_formspec()
 
-	local size = string.len(formspec)
 	local start_i = players[name].start_i
+
 	if fields.creative_prev then
 		start_i = start_i - 9*5
 	end
@@ -446,10 +461,21 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if start_i < 0 then
 		start_i = start_i + 9*5
 	end
-	if start_i >= mcl_inventory.creative_inventory_size then
+
+	local inv_size
+	if page == "nix" then
+		local inv = minetest.get_inventory({type="detached", name="creative_"..name})
+		inv_size = inv:get_size("main")
+	elseif page ~= nil and page ~= "inv" then
+		inv_size = #(inventory_lists[page])
+	else
+		inv_size = 0
+	end
+
+	if start_i >= inv_size then
 		start_i = start_i - 9*5
-	end		
-	if start_i < 0 or start_i >= mcl_inventory.creative_inventory_size then
+	end
+	if start_i < 0 or start_i >= inv_size then
 		start_i = 0
 	end
 	players[name].start_i = start_i
@@ -460,7 +486,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		players[name].filter = filter
 	end
 
-	mcl_inventory.set_creative_formspec(player, start_i, start_i / (9*5) + 1, false, page, filter)
+	mcl_inventory.set_creative_formspec(player, start_i, start_i / (9*5) + 1, inv_size, false, page, filter)
 end)
 
 
@@ -470,7 +496,7 @@ if minetest.setting_getbool("creative_mode") then
 		local group = minetest.get_item_group(itemstack:get_name(), "shulker_box")
 		return group == 0 or group == nil
 	end)
-	
+
 	function minetest.handle_node_drops(pos, drops, digger)
 		if not digger or not digger:is_player() then
 			return
@@ -485,7 +511,7 @@ if minetest.setting_getbool("creative_mode") then
 			end
 		end
 	end
-	
+
 end
 
 minetest.register_on_joinplayer(function(player)
