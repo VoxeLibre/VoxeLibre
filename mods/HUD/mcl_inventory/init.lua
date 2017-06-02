@@ -168,7 +168,10 @@ minetest.register_on_joinplayer(function(player)
 		armor:update_inventory(player)
 	end
 
-	set_inventory(player)
+	-- In Creative Mode, the initial inventory setup is handled in creative.lua
+	if not minetest.setting_get("creative_mode") then
+		set_inventory(player)
+	end
 
 	--[[ Make sure the crafting grid is empty. Why? Because the player might have
 	items remaining in the crafting grid from the previous join; this is likely

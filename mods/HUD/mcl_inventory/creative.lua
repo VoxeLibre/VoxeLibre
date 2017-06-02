@@ -509,6 +509,7 @@ if minetest.setting_getbool("creative_mode") then
 end
 
 minetest.register_on_joinplayer(function(player)
+	-- Initialize variables and inventory
 	local name = player:get_player_name()
 	if not players[name] then
 		players[name] = {}
@@ -517,4 +518,5 @@ minetest.register_on_joinplayer(function(player)
 		players[name].start_i = 0
 	end
 	init(player)
+	mcl_inventory.set_creative_formspec(player, 0, 1, nil, false, "nix", "")
 end)
