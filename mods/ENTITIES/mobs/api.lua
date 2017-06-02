@@ -930,7 +930,7 @@ function smart_mobs(self, s, p, dist, dtime)
 		p1.y = floor(p1.y + 0.5)
 		p1.z = floor(p1.z + 0.5)
 
-		self.path.way = minetest.find_path(s, p1, 16, 2, 6, "Dijkstra")
+		self.path.way = minetest.find_path(s, p1, 16, 2, 6)
 
 		-- attempt to unstick mob that is "daydreaming"
 		self.object:setpos({
