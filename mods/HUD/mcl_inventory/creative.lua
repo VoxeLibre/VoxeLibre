@@ -446,9 +446,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	if fields.creative_prev then
 		start_i = start_i - 9*5
-	end
-	if fields.creative_next then
+	elseif fields.creative_next then
 		start_i = start_i + 9*5
+	else
+		-- Reset scroll bar if not scrolled
+		start_i = 0
 	end
 	if start_i < 0 then
 		start_i = start_i + 9*5
