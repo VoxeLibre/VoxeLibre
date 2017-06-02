@@ -399,7 +399,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		set_inv_page("misc",player)
 		page = "misc"
 	elseif fields.nix then
-		if players[name].page == "all" then return end
 		set_inv_page("all",player)
 		page = "nix"
 	elseif fields.food then
@@ -473,8 +472,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 	players[name].start_i = start_i
 
-	local filter
-	if fields.suche ~= nil and fields.suche ~= "" then
+	local filter = ""
+	if not fields.nix and fields.suche ~= nil and fields.suche ~= "" then
 		filter = fields.suche
 		players[name].filter = filter
 	end
