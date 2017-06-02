@@ -358,7 +358,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if not minetest.setting_getbool("creative_mode") then
 		return
 	end
-	if formname ~= "" then
+	if formname ~= "" or fields.quit == "true" then
+		-- No-op if formspec closed or not player inventory (formname == "")
 		return
 	end
 
