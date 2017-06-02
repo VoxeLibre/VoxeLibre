@@ -81,9 +81,7 @@ local function set_inv_search(filter, player)
 	table.sort(creative_list)
 
 	inv:set_size("main", #creative_list)
-	for _,itemstring in ipairs(creative_list) do
-		inv:add_item("main", ItemStack(itemstring))
-	end
+	inv:set_list("main", creative_list)
 	mcl_inventory.creative_inventory_size = #creative_list
 end
 
@@ -96,9 +94,7 @@ local function set_inv_page(page, player)
 		creative_list = inventory_lists[page]
 	end
 	inv:set_size("main", #creative_list)
-	for _,itemstring in ipairs(creative_list) do
-		inv:add_item("main", ItemStack(itemstring))
-	end
+	inv:set_list("main", creative_list)
 	mcl_inventory.creative_inventory_size = #creative_list
 end
 
