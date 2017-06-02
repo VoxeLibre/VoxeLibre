@@ -163,7 +163,6 @@ minetest.register_on_joinplayer(function(player)
 		end
 		armor.update_inventory = function(self, player)
 			update_inventory_original(self, player)
-			set_inventory(player, true)
 		end
 		armor:set_player_armor(player)
 		armor:update_inventory(player)
