@@ -206,7 +206,7 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 			inv_size = 0
 		end
 	end
-	local pagemax = math.floor((inv_size-1) / (9*5) + 1)
+	local pagemax = math.max(1, math.floor((inv_size-1) / (9*5) + 1))
 	local slider_height
 	if pagemax == 1 then
 		slider_height = 4.525
