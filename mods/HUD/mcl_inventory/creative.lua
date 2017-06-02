@@ -351,39 +351,50 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local name = player:get_player_name()
 
 	if fields.blocks then
+		if players[name].page == "blocks" then return end
 		set_inv("\0blocks",player)
 		page = "blocks"		
 	elseif fields.deco then
+		if players[name].page == "deco" then return end
 		set_inv("\0deco",player)
 		page = "deco"
 	elseif fields.redstone then
+		if players[name].page == "redstone" then return end
 		set_inv("\0redstone",player)
 		page = "redstone"
 	elseif fields.rail then
+		if players[name].page == "rail" then return end
 		set_inv("\0rail",player)
 		page = "rail"
 	elseif fields.misc then
+		if players[name].page == "misc" then return end
 		set_inv("\0misc",player)
 		page = "misc"
 	elseif fields.nix then
 		set_inv("\0all",player)
 		page = "nix"
 	elseif fields.food then
+		if players[name].page == "food" then return end
 		set_inv("\0food",player)
 		page = "food"
 	elseif fields.tools then
+		if players[name].page == "tools" then return end
 		set_inv("\0tools",player)
 		page = "tools"
 	elseif fields.combat then
+		if players[name].page == "combat" then return end
 		set_inv("\0combat",player)
 		page = "combat"
 	elseif fields.brew then
+		if players[name].page == "brew" then return end
 		set_inv("\0brew",player)
 		page = "brew"
 	elseif fields.matr then
+		if players[name].page == "matr" then return end
 		set_inv("\0matr",player)
 		page = "matr"
 	elseif fields.inv then
+		if players[name].page == "inv" then return end
 		page = "inv"
 	elseif fields.suche == "" and not fields.creative_next and not fields.creative_prev then
 		set_inv("\0all", player)
