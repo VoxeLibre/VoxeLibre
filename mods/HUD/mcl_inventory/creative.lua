@@ -7,7 +7,7 @@ local players = {}
 local inventory_lists = {}
 
 -- Create tables
-local builtin_filter_ids = {"\0blocks","\0deco","\0redstone","\0rail","\0food","\0tools","\0combat","\0brew","\0matr","\0misc","\0all"}
+local builtin_filter_ids = {"blocks","deco","redstone","rail","food","tools","combat","brew","matr","misc","all"}
 for _, f in pairs(builtin_filter_ids) do
 	inventory_lists[f] = {}
 end
@@ -28,37 +28,37 @@ do
 				return def.groups.weapon or def.groups.weapon_ranged or def.groups.ammo or def.groups.armor_head or def.groups.armor_torso or def.groups.armor_legs or def.groups.armor_feet
 			end
 			if def.groups.building_block then
-				table.insert(inventory_lists["\0blocks"], name)
+				table.insert(inventory_lists["blocks"], name)
 			end
 			if def.groups.deco_block then
-				table.insert(inventory_lists["\0deco"], name)
+				table.insert(inventory_lists["deco"], name)
 			end
 			if is_redstone(def) then
-				table.insert(inventory_lists["\0redstone"], name)
+				table.insert(inventory_lists["redstone"], name)
 			end
 			if def.groups.transport then
-				table.insert(inventory_lists["\0rail"], name)
+				table.insert(inventory_lists["rail"], name)
 			end
 			if (def.groups.food and not def.groups.brewitem) or def.groups.eatable then
-				table.insert(inventory_lists["\0food"], name)
+				table.insert(inventory_lists["food"], name)
 			end
 			if is_tool(def) then
-				table.insert(inventory_lists["\0tools"], name)
+				table.insert(inventory_lists["tools"], name)
 			end
 			if is_weapon(def) then
-				table.insert(inventory_lists["\0combat"], name)
+				table.insert(inventory_lists["combat"], name)
 			end
 			if def.groups.brewitem then
-				table.insert(inventory_lists["\0brew"], name)
+				table.insert(inventory_lists["brew"], name)
 			end
 			if def.groups.craftitem then
-				table.insert(inventory_lists["\0matr"], name)
+				table.insert(inventory_lists["matr"], name)
 			end
 			if not def.groups.building_block and not def.groups.deco_block and not is_redstone(def) and not def.groups.transport and not def.groups.food and not def.groups.eatable and not is_tool(def) and not is_weapon(def) and not def.groups.craftitem and not def.groups.brewitem then
-				table.insert(inventory_lists["\0misc"], name)
+				table.insert(inventory_lists["misc"], name)
 			end
 
-			table.insert(inventory_lists["\0all"], name)
+			table.insert(inventory_lists["all"], name)
 		end
 	end
 
@@ -67,24 +67,33 @@ do
 	end
 end
 
-local function set_inv(filter, player)
+local function set_inv_search(filter, player)
+	local playername = player:get_player_name()
+	local inv = minetest.get_inventory({type="detached", name="creative_"..playername})
+	local creative_list = {}
+	for name,def in pairs(minetest.registered_items) do
+		if (not def.groups.not_in_creative_inventory or def.groups.not_in_creative_inventory == 0) and def.description and def.description ~= "" then
+			if string.find(string.lower(def.name), filter) or string.find(string.lower(def.description), filter) then
+				table.insert(creative_list, name)
+			end
+		end
+	end
+	table.sort(creative_list)
+
+	inv:set_size("main", #creative_list)
+	for _,itemstring in ipairs(creative_list) do
+		inv:add_item("main", ItemStack(itemstring))
+	end
+	mcl_inventory.creative_inventory_size = #creative_list
+end
+
+local function set_inv_page(page, player)
 	local playername = player:get_player_name()
 	local inv = minetest.get_inventory({type="detached", name="creative_"..playername})
 	inv:set_size("main", 0)
 	local creative_list = {}
-	if filter ~= "" then
-		if inventory_lists[filter] then -- Standard filter
-			creative_list = inventory_lists[filter]
-		else -- Search
-			for name,def in pairs(minetest.registered_items) do
-				if (not def.groups.not_in_creative_inventory or def.groups.not_in_creative_inventory == 0) and def.description and def.description ~= "" then
-					if string.find(string.lower(def.name), filter) or string.find(string.lower(def.description), filter) then
-						table.insert(creative_list, name)
-					end
-				end
-			end
-			table.sort(creative_list)
-		end
+	if inventory_lists[page] then -- Standard filter
+		creative_list = inventory_lists[page]
 	end
 	inv:set_size("main", #creative_list)
 	for _,itemstring in ipairs(creative_list) do
@@ -114,7 +123,7 @@ local function init(player)
 			end
 		end,
 	}, playername)
-	set_inv("\0all", player)
+	set_inv_page("all", player)
 end
 
 -- Create the trash field
@@ -367,55 +376,56 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	if fields.blocks then
 		if players[name].page == "blocks" then return end
-		set_inv("\0blocks",player)
+		set_inv_page("blocks",player)
 		page = "blocks"		
 	elseif fields.deco then
 		if players[name].page == "deco" then return end
-		set_inv("\0deco",player)
+		set_inv_page("deco",player)
 		page = "deco"
 	elseif fields.redstone then
 		if players[name].page == "redstone" then return end
-		set_inv("\0redstone",player)
+		set_inv_page("redstone",player)
 		page = "redstone"
 	elseif fields.rail then
 		if players[name].page == "rail" then return end
-		set_inv("\0rail",player)
+		set_inv_page("rail",player)
 		page = "rail"
 	elseif fields.misc then
 		if players[name].page == "misc" then return end
-		set_inv("\0misc",player)
+		set_inv_page("misc",player)
 		page = "misc"
 	elseif fields.nix then
-		set_inv("\0all",player)
+		if players[name].page == "all" then return end
+		set_inv_page("all",player)
 		page = "nix"
 	elseif fields.food then
 		if players[name].page == "food" then return end
-		set_inv("\0food",player)
+		set_inv_page("food",player)
 		page = "food"
 	elseif fields.tools then
 		if players[name].page == "tools" then return end
-		set_inv("\0tools",player)
+		set_inv_page("tools",player)
 		page = "tools"
 	elseif fields.combat then
 		if players[name].page == "combat" then return end
-		set_inv("\0combat",player)
+		set_inv_page("combat",player)
 		page = "combat"
 	elseif fields.brew then
 		if players[name].page == "brew" then return end
-		set_inv("\0brew",player)
+		set_inv_page("brew",player)
 		page = "brew"
 	elseif fields.matr then
 		if players[name].page == "matr" then return end
-		set_inv("\0matr",player)
+		set_inv_page("matr",player)
 		page = "matr"
 	elseif fields.inv then
 		if players[name].page == "inv" then return end
 		page = "inv"
 	elseif fields.suche == "" and not fields.creative_next and not fields.creative_prev then
-		set_inv("\0all", player)
+		set_inv_page("all", player)
 		page = "nix"
 	elseif fields.suche ~= nil and not fields.creative_next and not fields.creative_prev then
-		set_inv(string.lower(fields.suche),player)
+		set_inv_search(string.lower(fields.suche),player)
 		page = "nix"
 	end
 
