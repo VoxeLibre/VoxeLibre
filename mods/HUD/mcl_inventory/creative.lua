@@ -80,9 +80,6 @@ local function set_inv_search(filter, player)
 
 	inv:set_size("main", #creative_list)
 	inv:set_list("main", creative_list)
-
-	-- Return number of items
-	return #creative_list
 end
 
 local function set_inv_page(page, player)
@@ -95,9 +92,6 @@ local function set_inv_page(page, player)
 	end
 	inv:set_size("main", #creative_list)
 	inv:set_list("main", creative_list)
-
-	-- Return number of items
-	return #creative_list
 end
 
 local function init(player)
@@ -384,22 +378,21 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	local name = player:get_player_name()
 
-	local size = 0
 	if fields.blocks then
 		if players[name].page == "blocks" then return end
-		size = set_inv_page("blocks",player)
+		set_inv_page("blocks",player)
 		page = "blocks"
 	elseif fields.deco then
 		if players[name].page == "deco" then return end
-		size = set_inv_page("deco",player)
+		set_inv_page("deco",player)
 		page = "deco"
 	elseif fields.redstone then
 		if players[name].page == "redstone" then return end
-		size = set_inv_page("redstone",player)
+		set_inv_page("redstone",player)
 		page = "redstone"
 	elseif fields.rail then
 		if players[name].page == "rail" then return end
-		size = set_inv_page("rail",player)
+		set_inv_page("rail",player)
 		page = "rail"
 	elseif fields.misc then
 		if players[name].page == "misc" then return end
@@ -411,32 +404,32 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		page = "nix"
 	elseif fields.food then
 		if players[name].page == "food" then return end
-		size = set_inv_page("food",player)
+		set_inv_page("food",player)
 		page = "food"
 	elseif fields.tools then
 		if players[name].page == "tools" then return end
-		size = set_inv_page("tools",player)
+		set_inv_page("tools",player)
 		page = "tools"
 	elseif fields.combat then
 		if players[name].page == "combat" then return end
-		size = set_inv_page("combat",player)
+		set_inv_page("combat",player)
 		page = "combat"
 	elseif fields.brew then
 		if players[name].page == "brew" then return end
-		size = set_inv_page("brew",player)
+		set_inv_page("brew",player)
 		page = "brew"
 	elseif fields.matr then
 		if players[name].page == "matr" then return end
-		size = set_inv_page("matr",player)
+		set_inv_page("matr",player)
 		page = "matr"
 	elseif fields.inv then
 		if players[name].page == "inv" then return end
 		page = "inv"
 	elseif fields.suche == "" and not fields.creative_next and not fields.creative_prev then
-		size = set_inv_page("all", player)
+		set_inv_page("all", player)
 		page = "nix"
 	elseif fields.suche ~= nil and not fields.creative_next and not fields.creative_prev then
-		size = set_inv_search(string.lower(fields.suche),player)
+		set_inv_search(string.lower(fields.suche),player)
 		page = "nix"
 	end
 
