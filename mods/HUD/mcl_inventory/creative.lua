@@ -3,75 +3,89 @@ mcl_inventory.creative_inventory_size = 0
 -- Prepare player info table
 local players = {}
 
+-- Containing all the items for each Creative Mode tab
+local inventory_lists = {}
+
+-- Create tables
+local builtin_filter_ids = {"\0blocks","\0deco","\0redstone","\0rail","\0food","\0tools","\0combat","\0brew","\0matr","\0misc","\0all"}
+for _, f in pairs(builtin_filter_ids) do
+	inventory_lists[f] = {}
+end
+
+--[[ Populate all the item tables. We only do this once. Note this mod must be
+loaded after mcl_autogroup for this to work, because it required certain
+groups to be set. ]]
+do
+	for name,def in pairs(minetest.registered_items) do
+		if (not def.groups.not_in_creative_inventory or def.groups.not_in_creative_inventory == 0) and def.description and def.description ~= "" then
+			local is_redstone = function(def)
+				return def.mesecons or def.groups.mesecon or def.groups.mesecon_conductor_craftable or def.groups.mesecon_effecor_off
+			end
+			local is_tool = function(def)
+				return def.groups.tool or (def.tool_capabilities ~= nil and def.tool_capabilities.damage_groups == nil)
+			end
+			local is_weapon = function(def)
+				return def.groups.weapon or def.groups.weapon_ranged or def.groups.ammo or def.groups.armor_head or def.groups.armor_torso or def.groups.armor_legs or def.groups.armor_feet
+			end
+			if def.groups.building_block then
+				table.insert(inventory_lists["\0blocks"], name)
+			end
+			if def.groups.deco_block then
+				table.insert(inventory_lists["\0deco"], name)
+			end
+			if is_redstone(def) then
+				table.insert(inventory_lists["\0redstone"], name)
+			end
+			if def.groups.transport then
+				table.insert(inventory_lists["\0rail"], name)
+			end
+			if (def.groups.food and not def.groups.brewitem) or def.groups.eatable then
+				table.insert(inventory_lists["\0food"], name)
+			end
+			if is_tool(def) then
+				table.insert(inventory_lists["\0tools"], name)
+			end
+			if is_weapon(def) then
+				table.insert(inventory_lists["\0combat"], name)
+			end
+			if def.groups.brewitem then
+				table.insert(inventory_lists["\0brew"], name)
+			end
+			if def.groups.craftitem then
+				table.insert(inventory_lists["\0matr"], name)
+			end
+			if not def.groups.building_block and not def.groups.deco_block and not is_redstone(def) and not def.groups.transport and not def.groups.food and not def.groups.eatable and not is_tool(def) and not is_weapon(def) and not def.groups.craftitem and not def.groups.brewitem then
+				table.insert(inventory_lists["\0misc"], name)
+			end
+
+			table.insert(inventory_lists["\0all"], name)
+		end
+	end
+
+	for _, to_sort in pairs(inventory_lists) do
+		table.sort(to_sort)
+	end
+end
+
 local function set_inv(filter, player)
 	local playername = player:get_player_name()
 	local inv = minetest.get_inventory({type="detached", name="creative_"..playername})
 	inv:set_size("main", 0)
 	local creative_list = {}
-	for name,def in pairs(minetest.registered_items) do
-		if (not def.groups.not_in_creative_inventory or def.groups.not_in_creative_inventory == 0) and def.description and def.description ~= "" then
-			if filter ~= "" then
-				local is_redstone = function(def)
-					return def.mesecons or def.groups.mesecon or def.groups.mesecon_conductor_craftable or def.groups.mesecon_effecor_off
-				end
-				local is_tool = function(def)
-					return def.groups.tool or (def.tool_capabilities ~= nil and def.tool_capabilities.damage_groups == nil)
-				end
-				local is_weapon = function(def)
-					return def.groups.weapon or def.groups.weapon_ranged or def.groups.ammo or def.groups.armor_head or def.groups.armor_torso or def.groups.armor_legs or def.groups.armor_feet
-				end
-				if filter == "\0blocks" then
-					if def.groups.building_block then
-						table.insert(creative_list, name)
-					end
-				elseif filter == "\0deco" then
-					if def.groups.deco_block then
-						table.insert(creative_list, name)
-					end
-				elseif filter == "\0redstone" then
-					if is_redstone(def) then
-						table.insert(creative_list, name)
-					end
-				elseif filter == "\0rail" then
-					if def.groups.transport then
-						table.insert(creative_list, name)
-					end
-				elseif filter == "\0food" then
-					if (def.groups.food and not def.groups.brewitem) or def.groups.eatable then
-						table.insert(creative_list, name)
-					end
-				elseif filter == "\0tools" then
-					if is_tool(def) then
-						table.insert(creative_list, name)
-					end
-				elseif filter == "\0combat" then
-					if is_weapon(def) then
-						table.insert(creative_list, name)
-					end
-				elseif filter == "\0brew" then
-					if def.groups.brewitem then
-						table.insert(creative_list, name)
-					end
-				elseif filter == "\0matr" then
-					if def.groups.craftitem then
-						table.insert(creative_list, name)
-					end
-				elseif filter == "\0misc" then
-					if not def.groups.building_block and not def.groups.deco_block and not is_redstone(def) and not def.groups.transport and not def.groups.food and not def.groups.eatable and not is_tool(def) and not is_weapon(def) and not def.groups.craftitem and not def.groups.brewitem then
-
-						table.insert(creative_list, name)
-					end
-				elseif filter == "\0all" then
-					table.insert(creative_list, name)
-				else --for all other
+	if filter ~= "" then
+		if inventory_lists[filter] then -- Standard filter
+			creative_list = inventory_lists[filter]
+		else -- Search
+			for name,def in pairs(minetest.registered_items) do
+				if (not def.groups.not_in_creative_inventory or def.groups.not_in_creative_inventory == 0) and def.description and def.description ~= "" then
 					if string.find(string.lower(def.name), filter) or string.find(string.lower(def.description), filter) then
 						table.insert(creative_list, name)
 					end
 				end
 			end
+			table.sort(creative_list)
 		end
 	end
-	table.sort(creative_list)
 	inv:set_size("main", #creative_list)
 	for _,itemstring in ipairs(creative_list) do
 		inv:add_item("main", ItemStack(itemstring))
