@@ -418,6 +418,8 @@ function mcl_core.generate_tree(pos, trunk, leaves, typearbre)
 		mcl_core.generate_spruce_tree(pos)
 	elseif typearbre == 4 then
 		mcl_core.grow_new_acacia_tree(pos)
+	elseif typearbre == 5 then
+		mcl_core.generate_jungle_tree(pos)
 	end
 end
 
@@ -537,6 +539,103 @@ function mcl_core.grow_new_acacia_tree(pos)
 		"/schematics/acacia_tree_from_sapling.mts"
 	minetest.place_schematic({x = pos.x - 4, y = pos.y - 1, z = pos.z - 4}, path, "random", nil, false)
 end
+
+-- Helper function for jungle tree, form Minetest Game 0.4.15
+local function add_trunk_and_leaves(data, a, pos, tree_cid, leaves_cid,
+		height, size, iters)
+	local x, y, z = pos.x, pos.y, pos.z
+	local c_air = minetest.CONTENT_AIR
+	local c_ignore = minetest.CONTENT_IGNORE
+
+	-- Trunk
+	data[a:index(x, y, z)] = tree_cid -- Force-place lowest trunk node to replace sapling
+	for yy = y + 1, y + height - 1 do
+		local vi = a:index(x, yy, z)
+		local node_id = data[vi]
+		if node_id == c_air or node_id == c_ignore or node_id == leaves_cid then
+			data[vi] = tree_cid
+		end
+	end
+
+	-- Force leaves near the trunk
+	for z_dist = -1, 1 do
+	for y_dist = -size, 1 do
+		local vi = a:index(x - 1, y + height + y_dist, z + z_dist)
+		for x_dist = -1, 1 do
+			if data[vi] == c_air or data[vi] == c_ignore then
+				data[vi] = leaves_cid
+			end
+			vi = vi + 1
+		end
+	end
+	end
+
+	-- Randomly add leaves in 2x2x2 clusters.
+	for i = 1, iters do
+		local clust_x = x + math.random(-size, size - 1)
+		local clust_y = y + height + math.random(-size, 0)
+		local clust_z = z + math.random(-size, size - 1)
+
+		for xi = 0, 1 do
+		for yi = 0, 1 do
+		for zi = 0, 1 do
+			local vi = a:index(clust_x + xi, clust_y + yi, clust_z + zi)
+			if data[vi] == c_air or data[vi] == c_ignore then
+				data[vi] = leaves_cid
+			end
+		end
+		end
+		end
+	end
+end
+
+-- Old jungle tree grow function from Minetest Game 0.4.15, imitating v6 jungle trees
+function mcl_core.generate_jungle_tree(pos)
+	--[[
+		NOTE: Jungletree-placing code is currently duplicated in the engine
+		and in games that have saplings; both are deprecated but not
+		replaced yet
+	--]]
+
+	local x, y, z = pos.x, pos.y, pos.z
+	local height = math.random(8, 12)
+	local c_air = minetest.get_content_id("air")
+	local c_ignore = minetest.get_content_id("ignore")
+	local c_jungletree = minetest.get_content_id("mcl_core:jungletree")
+	local c_jungleleaves = minetest.get_content_id("mcl_core:jungleleaves")
+
+	local vm = minetest.get_voxel_manip()
+	local minp, maxp = vm:read_from_map(
+		{x = x - 3, y = y - 1, z = z - 3},
+		{x = x + 3, y = y + height + 1, z = z + 3}
+	)
+	local a = VoxelArea:new({MinEdge = minp, MaxEdge = maxp})
+	local data = vm:get_data()
+
+	add_trunk_and_leaves(data, a, pos, c_jungletree, c_jungleleaves, height, 3, 30)
+
+	-- Roots
+	for z_dist = -1, 1 do
+		local vi_1 = a:index(x - 1, y - 1, z + z_dist)
+		local vi_2 = a:index(x - 1, y, z + z_dist)
+		for x_dist = -1, 1 do
+			if math.random(1, 3) >= 2 then
+				if data[vi_1] == c_air or data[vi_1] == c_ignore then
+					data[vi_1] = c_jungletree
+				elseif data[vi_2] == c_air or data[vi_2] == c_ignore then
+					data[vi_2] = c_jungletree
+				end
+			end
+			vi_1 = vi_1 + 1
+			vi_2 = vi_2 + 1
+		end
+	end
+
+	vm:set_data(data)
+	vm:write_to_map()
+	vm:update_map()
+end
+
 
 
 local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_params().seed)
@@ -677,7 +776,7 @@ mcl_core.grow_sapling = function(pos, node)
 	elseif node.name == "mcl_core:darksapling" then
 		grow = sapling_grow_action("mcl_core:darktree", "mcl_core:darkleaves", 1, 2)
 	elseif node.name == "mcl_core:junglesapling" then
-		grow = sapling_grow_action("mcl_core:jungletree", "mcl_core:jungleleaves", 1, 2)
+		grow = sapling_grow_action("mcl_core:jungletree", "mcl_core:jungleleaves", 5, 1)
 	elseif node.name == "mcl_core:acaciasapling" then
 		grow = sapling_grow_action("mcl_core:acaciatree", "mcl_core:acacialeaves", 4, 2)
 	elseif node.name == "mcl_core:sprucesapling" then
@@ -723,7 +822,7 @@ minetest.register_abm({
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
 	chance = 1,
-	action = sapling_grow_action("mcl_core:jungletree", "mcl_core:jungleleaves", 1, 2)
+	action = sapling_grow_action("mcl_core:jungletree", "mcl_core:jungleleaves", 5, 1)
 })
 
 -- Spruce tree
