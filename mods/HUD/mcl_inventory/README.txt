@@ -23,12 +23,7 @@ inventory and a support for stu's 3d armor mod (To use the armor and a preview o
 Left items in the crafting slots are dropped infront of you.
 
 
-Workbench
+Crafting table
 _________
 
-With following recipe you craft a workbench (aka crafting table):
-
-wood wood
-wood wood
-
-The workbench has a 3x3 crafting grid, that allows to use all recipes.
+Has been moved to mcl_crafting_table

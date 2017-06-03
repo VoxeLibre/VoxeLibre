@@ -1,1 +1,1 @@
-Adds the player inventory, creative inventory and crafting table.
+Adds the player inventory and creative inventory.
