@@ -2,7 +2,7 @@
 local item_drop_settings                 = {} --settings table
 item_drop_settings.age                   = 1.0 --how old a dropped item (_insta_collect==false) has to be before collecting
 item_drop_settings.radius_magnet         = 2.0 --radius of item magnet. MUST BE LARGER THAN radius_collect!
-item_drop_settings.radius_collect        = 0.08 --radius of collection
+item_drop_settings.radius_collect        = 0.2 --radius of collection
 item_drop_settings.player_collect_height = 1.0 --added to their pos y value
 item_drop_settings.collection_safety     = false --do this to prevent items from flying away on laggy servers
 item_drop_settings.random_item_velocity  = true --this sets random item velocity if velocity is 0
@@ -38,7 +38,6 @@ minetest.register_globalstep(function(dtime)
 			--magnet and collection
 			for _,object in ipairs(minetest.get_objects_inside_radius(checkpos, item_drop_settings.radius_magnet)) do
 				if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and (object:get_luaentity()._insta_collect or (object:get_luaentity().age > item_drop_settings.age)) then
-
 					object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
 					if object:get_luaentity()._magnet_timer >= 0 and object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time and inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
 
@@ -68,7 +67,12 @@ minetest.register_globalstep(function(dtime)
 
 							--modified simplemobs api
 
-							object:moveto(checkpos)
+							local pos1 = checkpos
+							local pos2 = object:getpos()
+							local vec = vector.subtract(pos1, pos2)
+
+							vec = vector.add(pos2, vec)
+							object:moveto(vec)
 
 							object:get_luaentity().physical_state = false
 							object:get_luaentity().object:set_properties({
