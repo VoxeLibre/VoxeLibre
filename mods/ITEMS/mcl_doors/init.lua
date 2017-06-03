@@ -198,7 +198,7 @@ function mcl_doors:register_door(name, def)
 	local on_rightclick
 	-- Disable on_rightclick if this is a redstone-only door
 	if not def.only_redstone_can_open then
-		on_rightclick = function(pos, node_clicker)
+		on_rightclick = function(pos, node, clicker)
 			if check_player_priv(pos, clicker) then
 				on_open_close(pos, 1, name.."_t_1", name.."_b_2", name.."_t_2", {1,2,3,0})
 			end
@@ -244,7 +244,7 @@ function mcl_doors:register_door(name, def)
 	if def.only_redstone_can_open then
 		on_rightclick = nil
 	else
-		on_rightclick = function(pos, node_clicker)
+		on_rightclick = function(pos, node, clicker)
 			if check_player_priv(pos, clicker) then
 				on_open_close(pos, -1, name.."_b_1", name.."_t_2", name.."_b_2", {1,2,3,0})
 			end
@@ -286,7 +286,7 @@ function mcl_doors:register_door(name, def)
 	if def.only_redstone_can_open then
 		on_rightclick = nil
 	else
-		on_rightclick = function(pos, node_clicker)
+		on_rightclick = function(pos, node, clicker)
 			if check_player_priv(pos, clicker) then
 				on_open_close(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1", {3,0,1,2})
 			end
@@ -332,7 +332,7 @@ function mcl_doors:register_door(name, def)
 	if def.only_redstone_can_open then
 		on_rightclick = nil
 	else
-		on_rightclick = function(pos, node_clicker)
+		on_rightclick = function(pos, node, clicker)
 			if check_player_priv(pos, clicker) then
 				on_open_close(pos, -1, name.."_b_2", name.."_t_1", name.."_b_1", {3,0,1,2})
 			end
