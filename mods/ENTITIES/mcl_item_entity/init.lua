@@ -67,18 +67,16 @@ minetest.register_globalstep(function(dtime)
 
 							--modified simplemobs api
 
-							local pos1 = checkpos
-							local pos2 = object:getpos()
-							local vec = vector.subtract(pos1, pos2)
-
-							vec = vector.add(pos2, vec)
+							-- Move object to player
+							local opos = object:getpos()
+							local vec = vector.subtract(checkpos, opos)
+							vec = vector.add(opos, vector.divide(vec, 2))
 							object:moveto(vec)
 
 							object:get_luaentity().physical_state = false
 							object:get_luaentity().object:set_properties({
 								physical = false
 							})
-
 
 							--fix eternally falling items
 							minetest.after(0, function(object)
