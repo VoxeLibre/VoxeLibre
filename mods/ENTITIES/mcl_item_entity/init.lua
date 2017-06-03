@@ -1,7 +1,7 @@
 --basic settings
 local item_drop_settings                 = {} --settings table
-item_drop_settings.age                   = 1 --how old a dropped item (_insta_collect==false) has to be before collecting
-item_drop_settings.radius_magnet         = 2 --radius of item magnet
+item_drop_settings.age                   = 1.0 --how old a dropped item (_insta_collect==false) has to be before collecting
+item_drop_settings.radius_magnet         = 2.0 --radius of item magnet. MUST BE LARGER THAN radius_collect!
 item_drop_settings.radius_collect        = 0.2 --radius of collection
 item_drop_settings.player_collect_height = 1.0 --added to their pos y value
 item_drop_settings.collection_safety     = false --do this to prevent items from flying away on laggy servers
@@ -33,13 +33,18 @@ minetest.register_globalstep(function(dtime)
 		if player:get_hp() > 0 or not minetest.setting_getbool("enable_damage") then
 			local pos = player:getpos()
 			local inv = player:get_inventory()
+			local checkpos = {x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}
 
-			--collection
+			--magnet and collection
+			for _,object in ipairs(minetest.get_objects_inside_radius(checkpos, item_drop_settings.radius_magnet)) do
+				if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and (object:get_luaentity()._insta_collect or (object:get_luaentity().age > item_drop_settings.age)) then
+					object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
+					if object:get_luaentity()._magnet_timer >= 0 and object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time and inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
 
-			for _,object in ipairs(minetest.get_objects_inside_radius({x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}, item_drop_settings.radius_collect)) do
-				if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" then
-					if object:get_luaentity()._insta_collect or (object:get_luaentity().age > item_drop_settings.age) then
-						if inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
+						local collected = false
+
+						-- Collection
+						if vector.distance(checkpos, object:getpos()) <= item_drop_settings.radius_collect then
 
 							if object:get_luaentity().itemstring ~= "" then
 								inv:add_item("main", ItemStack(object:get_luaentity().itemstring))
@@ -51,37 +56,23 @@ minetest.register_globalstep(function(dtime)
 								check_pickup_achievements(object, player)
 								object:get_luaentity().itemstring = ""
 								object:remove()
+								collected = true
 							end
 
-
-						end
-					end
-				end
-			end
-
-
-			--magnet
-			for _,object in ipairs(minetest.get_objects_inside_radius({x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}, item_drop_settings.radius_magnet)) do
-				if not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "__builtin:item" and (object:get_luaentity()._insta_collect or (object:get_luaentity().age > item_drop_settings.age)) then
-					object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
-					if object:get_luaentity()._magnet_timer >= 0 and object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time then
-						if inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
+						-- Magnet
+						else
 
 							object:get_luaentity()._magnet_active = true
 							object:get_luaentity()._collector_timer = 0
 
 							--modified simplemobs api
 
-							local pos1 = pos
+							local pos1 = checkpos
 							local pos2 = object:getpos()
-							local vec = {x=pos1.x-pos2.x, y=(pos1.y+item_drop_settings.player_collect_height)-pos2.y, z=pos1.z-pos2.z}
+							local vec = vector.subtract(pos1, pos2)
 
-							vec.x = pos2.x + (vec.x/3)
-							vec.y = pos2.y + (vec.y/3)
-							vec.z = pos2.z + (vec.z/3)
+							vec = vector.add(pos2, vec)
 							object:moveto(vec)
-
-
 
 							object:get_luaentity().physical_state = false
 							object:get_luaentity().object:set_properties({
@@ -134,10 +125,12 @@ minetest.register_globalstep(function(dtime)
 						end
 					end
 
-					if object:get_luaentity()._magnet_timer > 1 then
-						object:get_luaentity()._magnet_timer = -item_drop_settings.magnet_time
-					elseif object:get_luaentity()._magnet_timer < 0 then
-						object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
+					if not collected then
+						if object:get_luaentity()._magnet_timer > 1 then
+							object:get_luaentity()._magnet_timer = -item_drop_settings.magnet_time
+						elseif object:get_luaentity()._magnet_timer < 0 then
+							object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
+						end
 					end
 
 				end
