@@ -150,7 +150,7 @@ minetest.register_on_joinplayer(function(player)
 	end
 
 	-- In Creative Mode, the initial inventory setup is handled in creative.lua
-	if not minetest.setting_get("creative_mode") then
+	if not minetest.setting_getbool("creative_mode") then
 		set_inventory(player)
 	end
 
