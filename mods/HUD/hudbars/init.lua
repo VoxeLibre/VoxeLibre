@@ -93,7 +93,7 @@ if sorting ~= nil then
 	end
 else
 	sorting = ""
-	hb.settings.sorting = { ["health"] = 0, ["hunger"] = 1, ["armor"] = 2, ["saturation"] = 3, ["breath"] = 4, ["exhaustion"] = 5 }
+	hb.settings.sorting = { ["health"] = 0, ["hunger"] = 1, ["armor"] = 2, ["breath"] = 3, ["exhaustion"] = 4, ["saturation"] = 5 }
 end
 
 hb.settings.sorting_reverse = {}
