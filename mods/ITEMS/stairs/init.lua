@@ -6,6 +6,31 @@
 
 stairs = {}
 
+local function rotate_and_place(itemstack, placer, pointed_thing)
+	local p0 = pointed_thing.under
+	local p1 = pointed_thing.above
+	local param2 = 0
+
+	local placer_pos = placer:getpos()
+	if placer_pos then
+		param2 = minetest.dir_to_facedir(vector.subtract(p1, placer_pos))
+	end
+
+	local finepos = minetest.pointed_thing_to_face_pos(placer, pointed_thing)
+	local fpos = finepos.y % 1
+
+	if p0.y - 1 == p1.y or (fpos > 0 and fpos < 0.5)
+			or (fpos < -0.5 and fpos > -0.999999999) then
+		param2 = param2 + 20
+		if param2 == 21 then
+			param2 = 23
+		elseif param2 == 23 then
+			param2 = 21
+		end
+	end
+	return minetest.item_place(itemstack, placer, pointed_thing, param2)
+end
+
 -- Register stairs.
 -- Node will be called stairs:stair_<subname>
 
@@ -43,30 +68,7 @@ function stairs.register_stair(subname, recipeitem, groups, images, description,
 				return itemstack
 			end
 
-			local p0 = pointed_thing.under
-			local p1 = pointed_thing.above
-			local param2 = 0
-
-			local placer_pos = placer:getpos()
-			if placer_pos then
-				local dir = {
-					x = p1.x - placer_pos.x,
-					y = p1.y - placer_pos.y,
-					z = p1.z - placer_pos.z
-				}
-				param2 = minetest.dir_to_facedir(dir)
-			end
-
-			if p0.y - 1 == p1.y then
-				param2 = param2 + 20
-				if param2 == 21 then
-					param2 = 23
-				elseif param2 == 23 then
-					param2 = 21
-				end
-			end
-
-			return minetest.item_place(itemstack, placer, pointed_thing, param2)
+			return rotate_and_place(itemstack, placer, pointed_thing)
 		end,
 		_mcl_hardness = hardness,
 	})
@@ -132,6 +134,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 		on_place = function(itemstack, placer, pointed_thing)
 			local under = minetest.get_node(pointed_thing.under)
 			local wield_item = itemstack:get_name()
+			local creative_enabled = minetest.setting_getbool("creative_mode")
 
 			if under and wield_item == under.name then
 				-- place slab using under node orientation
@@ -141,7 +144,9 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 				local p2 = under.param2
 
 				-- combine two slabs if possible
-				if slab_trans_dir[math.floor(p2 / 4)] == dir then
+				if slab_trans_dir[math.floor(p2 / 4)] == dir
+						and wield_item == under.name then
+
 					if not recipeitem then
 						return itemstack
 					end
@@ -161,7 +166,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 						newnode = recipeitem
 					end
 					minetest.set_node(pointed_thing.under, {name = newnode, param2 = p2})
-					if not minetest.setting_getbool("creative_mode") then
+					if not creative_enabled then
 						itemstack:take_item()
 					end
 					return itemstack
@@ -177,21 +182,12 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 
 				-- else attempt to place node with proper param2
 				minetest.item_place_node(ItemStack(wield_item), placer, pointed_thing, p2)
-				if not minetest.setting_getbool("creative_mode") then
+				if not creative_enabled then
 					itemstack:take_item()
 				end
 				return itemstack
 			else
-				-- place slab using look direction of player
-				local dir = minetest.dir_to_wallmounted(vector.subtract(
-					pointed_thing.above, pointed_thing.under), true)
-
-				local rot = slab_trans_dir_place[dir]
-				if rot == 0 or rot == 20 then
-					rot = rot + minetest.dir_to_facedir(placer:get_look_dir())
-				end
-
-				return minetest.item_place(itemstack, placer, pointed_thing, rot)
+				return rotate_and_place(itemstack, placer, pointed_thing)
 			end
 		end,
 		_mcl_hardness = hardness,
@@ -223,6 +219,29 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 		})
 
 	end
+end
+
+
+-- Optionally replace old "upside_down" nodes with new param2 versions.
+-- Disabled by default.
+
+if replace then
+	minetest.register_abm({
+		label = "Slab replace",
+		nodenames = {"group:slabs_replace"},
+		interval = 16,
+		chance = 1,
+		action = function(pos, node)
+			node.name = minetest.registered_nodes[node.name].replace_name
+			node.param2 = node.param2 + 20
+			if node.param2 == 21 then
+				node.param2 = 23
+			elseif node.param2 == 23 then
+				node.param2 = 21
+			end
+			minetest.set_node(pos, node)
+		end,
+	})
 end
 
 
