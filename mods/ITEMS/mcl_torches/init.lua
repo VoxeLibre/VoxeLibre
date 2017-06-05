@@ -73,7 +73,7 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 			-- * Fence, wall, glass, hopper: Only on top
 			-- * Monster spawner
 			-- * Slab: Only on top if upside down
-			-- * Stairs: Only on top if upside down (TODO)
+			-- * Stairs: Only on top if upside down
 
 			-- Special forbidden nodes:
 			-- * Piston
@@ -82,7 +82,7 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 				if node.name ~= "mcl_nether:soul_sand" and node.name ~= "mcl_mobspawners:spawner" and
 						((not def.groups.solid) or (not def.groups.opaque)) then
 					-- Only allow top placement on these nodes
-					if def.groups.glass or node.name == "mcl_hoppers:hopper" or node.name == "mcl_hoppers:hopper_side" or def.groups.fence == 1 or def.groups.wall or def.groups.slab_top == 1 then
+					if def.groups.glass or node.name == "mcl_hoppers:hopper" or node.name == "mcl_hoppers:hopper_side" or def.groups.fence == 1 or def.groups.wall or def.groups.slab_top == 1 or (def.groups.stair == 1 and minetest.facedir_to_dir(node.param2).y ~= 0) then
 						if wdir ~= 1 then
 							return itemstack
 						end
@@ -173,6 +173,7 @@ mcl_torches.register_torch("torch",
 	"Torches are light sources which can be placed at the side or on the top of most blocks.",
 	[[Torches can generally be placed on full solid opaque blocks. The following exceptions apply:
 • Glass, fence, wall, hopper: Can only be placed on top
+• Upside-down slab/stair: Can only be placed on top
 • Soul sand, monster spawner: Placement possible
 • Glowstone and pistons: No placement possible]],
 	"default_torch_on_floor.png",

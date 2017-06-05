@@ -64,6 +64,7 @@ mcl_torches.register_torch("mesecon_torch_on", "Redstone Torch",
 	"Redstone torches are redstone components which invert the signal of surrounding redstone components. An active component will become inactive, and an inactive component will become active. Redstone torches can be used as a quick and easy way to send a redstone to a redstone trail.",
 	[[Redstone torches can generally be placed at the side and on the top of full solid opaque blocks. The following exceptions apply:
 • Glass, fence, wall, hopper: Can only be placed on top
+• Upside-down slab/stair: Can only be placed on top
 • Soul sand, monster spawner: Placement possible
 • Glowstone and pistons: No placement possible]],
 	"jeija_torches_on_inv.png",
