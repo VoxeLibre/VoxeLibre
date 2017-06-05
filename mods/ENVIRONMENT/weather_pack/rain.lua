@@ -33,6 +33,9 @@ rain.set_sky_box = function()
     {r=85, g=86, b=98},
     {r=0, g=0, b=0}})
   skycolor.active = true
+  for _, player in pairs(minetest.get_connected_players()) do
+    player:set_clouds({color="#3D3D3FE8"})
+  end
 end
 
 -- creating manually parctiles instead of particles spawner because of easier to control
@@ -133,6 +136,7 @@ rain.clear = function()
   rain.init_done = false
   skycolor.remove_layer("weather-pack-rain-sky")
   for _, player in ipairs(minetest.get_connected_players()) do
+    player:set_clouds({color="#FFF0FEF"})
     rain.remove_sound(player)
     rain.remove_player(player)
   end
