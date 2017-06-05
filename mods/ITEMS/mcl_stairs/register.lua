@@ -94,9 +94,9 @@ mcl_stairs.register_slab("stone", "mcl_core:stone",
 		"Stone Slab",
 		mcl_sounds.node_sound_stone_defaults(), 2, "Double Stone Slab")
 
-mcl_stairs.register_stair_and_slab_simple("cobble", "mcl_core:cobble", "Cobblestone Stairs", "Cobblestone Slab", nil, nil, "Double Cobblestone Slab")
+mcl_stairs.register_stair_and_slab_simple("cobble", "mcl_core:cobble", "Cobblestone Stairs", "Cobblestone Slab", "Double Cobblestone Slab")
 
-mcl_stairs.register_stair_and_slab_simple("brick_block", "mcl_core:brick_block", "Brick Stairs", "Brick Slab", nil, nil, "Double Brick Slab")
+mcl_stairs.register_stair_and_slab_simple("brick_block", "mcl_core:brick_block", "Brick Stairs", "Brick Slab", "Double Brick Slab")
 
 
 mcl_stairs.register_stair("sandstone", "group:sandstone",
