@@ -128,6 +128,7 @@ function mcl_doors:register_trapdoor(name, def)
 		pointable = true,
 		groups = def.groups,
 		_mcl_hardness = def._mcl_hardness,
+		_mcl_blast_resistance = def._mcl_blast_resistance,
 		sounds = def.sounds,
 		drop = name,
 		node_box = {

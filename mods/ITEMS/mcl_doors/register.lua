@@ -204,6 +204,7 @@ mcl_doors:register_trapdoor("mcl_doors:trapdoor", {
 	wield_image = "door_trapdoor.png",
 	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1},
 	_mcl_hardness = 3,
+	_mcl_blast_resistance = 15,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 })
 
@@ -228,6 +229,7 @@ mcl_doors:register_trapdoor("mcl_doors:iron_trapdoor", {
 	wield_image = "iron_trapdoor.png",
 	groups = {pickaxey=1, mesecon_effector_on=1},
 	_mcl_hardness = 5,
+	_mcl_blast_resistance = 25,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	sound_open = "doors_steel_door_open",
 	sound_close = "doors_steel_door_close",
