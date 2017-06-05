@@ -216,6 +216,9 @@ local initsky = function(player)
 	if (skycolor.active) then
 		skycolor.force_update = true
 	end
+
+	-- MC-style clouds: Layer 127, thickness 4, fly to the “West”
+	player:set_clouds({height=mcl_util.layer_to_y(127), speed={x=-2, y=0}, thickness=4})
 end
 
 minetest.register_on_joinplayer(initsky)
