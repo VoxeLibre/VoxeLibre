@@ -105,7 +105,6 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 				meta:set_string("text", fields.text)
 				player:set_wielded_item(stack)
 
-				local text = get_text(stack)
 				local name = player:get_player_name()
 				local formspec = "size[8,9]"..
 					"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
@@ -130,6 +129,10 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 			meta:set_string("title", fields.title)
 			meta:set_string("author", name)
 			meta:set_string("text", text)
+			meta:set_string("description", string.format("“%s”",fields.title) .. "\n" .. string.format("by %s", name))
+
+			-- The book copy counter. 0 = original, 1 = copy of original, 2 = copy of copy of original, …
+			meta:set_int("generation", 0)
 
 			player:set_wielded_item(newbook)
 		else
@@ -137,7 +140,6 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 		end
 	elseif ((formname == "mcl_books:signing") and fields and fields.cancel) then
 		local book = player:get_wielded_item()
-		local name = player:get_player_name()
 		if book:get_name() == "mcl_books:writable_book" then
 			write(book, player, { type = "nothing" })
 		end
@@ -194,11 +196,35 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 		local copymeta = original:get_metadata()
 		itemstack:set_metadata(copymeta)
 	else
+		-- Copy metadata
 		local ometa = original:get_meta()
 		local imeta = itemstack:get_meta()
-		imeta:set_string("title", ometa:get_string("title"))
-		imeta:set_string("author", ometa:get_string("author"))
+		local title = ometa:get_string("title")
+		local author = ometa:get_string("author")
+		imeta:set_string("title", title)
+		imeta:set_string("author", author)
 		imeta:set_string("text", text)
+
+		-- Increase book generation and update description
+		local generation = ometa:get_int("generation")
+
+		local desc
+		if generation == 0 then
+			desc = string.format("Copy of “%s”", title)
+		elseif generation == 1 then
+			desc = string.format("Copy of Copy of “%s”", title)
+		else
+			desc = "Tattered Book"
+		end
+		desc = desc .. "\n" .. string.format("by %s", author)
+
+		generation = generation + 1
+		if generation < 1 then
+			generation = 1
+		end
+
+		imeta:set_string("description", desc)
+		imeta:set_int("generation", generation)
 	end
 	-- put the book with metadata back in the craft grid
 	craft_inv:set_stack("craft", index, original)
