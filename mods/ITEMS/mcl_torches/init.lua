@@ -72,7 +72,7 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 			-- * monster spawner
 			-- * Fence, wall, glass, hopper: Only on top
 			-- * Monster spawner
-			-- * Slab: Only on top if upside down (TODO)
+			-- * Slab: Only on top if upside down
 			-- * Stairs: Only on top if upside down (TODO)
 
 			-- Special forbidden nodes:
@@ -82,7 +82,7 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 				if node.name ~= "mcl_nether:soul_sand" and node.name ~= "mcl_mobspawners:spawner" and
 						((not def.groups.solid) or (not def.groups.opaque)) then
 					-- Only allow top placement on these nodes
-					if def.groups.glass or node.name == "mcl_hoppers:hopper" or node.name == "mcl_hoppers:hopper_side" or def.groups.fence or def.groups.wall then
+					if def.groups.glass or node.name == "mcl_hoppers:hopper" or node.name == "mcl_hoppers:hopper_side" or def.groups.fence == 1 or def.groups.wall or def.groups.slab_top == 1 then
 						if wdir ~= 1 then
 							return itemstack
 						end
