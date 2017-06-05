@@ -6,7 +6,27 @@
 
 stairs = {}
 
-local function rotate_and_place(itemstack, placer, pointed_thing)
+local function place_slab(itemstack, placer, pointed_thing)
+	local p0 = pointed_thing.under
+	local p1 = pointed_thing.above
+
+	local placer_pos = placer:getpos()
+
+	local finepos = minetest.pointed_thing_to_face_pos(placer, pointed_thing)
+	local fpos = finepos.y % 1
+
+	local place = ItemStack(itemstack)
+	local origname = itemstack:get_name()
+	if p0.y - 1 == p1.y or (fpos > 0 and fpos < 0.5)
+			or (fpos < -0.5 and fpos > -0.999999999) then
+		place:set_name(origname .. "_top")
+	end
+	local ret = minetest.item_place(place, placer, pointed_thing, 0)
+	ret:set_name(origname)
+	return ret
+end
+
+local function place_stair(itemstack, placer, pointed_thing)
 	local p0 = pointed_thing.under
 	local p1 = pointed_thing.above
 	local param2 = 0
@@ -68,7 +88,7 @@ function stairs.register_stair(subname, recipeitem, groups, images, description,
 				return itemstack
 			end
 
-			return rotate_and_place(itemstack, placer, pointed_thing)
+			return place_stair(itemstack, placer, pointed_thing)
 		end,
 		_mcl_hardness = hardness,
 	})
@@ -114,13 +134,14 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 	else
 		longdesc = longdesc .. " When a slab of this particular type is placed on another slab of the same type, a new full block is created."
 	end
-	minetest.register_node(":stairs:slab_" .. subname, {
+
+	local slabdef = {
 		description = description,
 		_doc_items_longdesc = longdesc,
 		drawtype = "nodebox",
 		tiles = images,
 		paramtype = "light",
-		paramtype2 = "facedir",
+		-- Facedir intentionally left out (see below)
 		sunlight_propagates = false,
 		is_ground_content = false,
 		groups = groups,
@@ -142,8 +163,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 				local p2 = under.param2
 
 				-- combine two slabs if possible
-				if slab_trans_dir[math.floor(p2 / 4)] == dir
-						and wield_item == under.name then
+				if wield_item == under.name then
 
 					if not recipeitem then
 						return itemstack
@@ -185,11 +205,36 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 				end
 				return itemstack
 			else
-				return rotate_and_place(itemstack, placer, pointed_thing)
+				return place_slab(itemstack, placer, pointed_thing)
 			end
 		end,
 		_mcl_hardness = hardness,
-	})
+	}
+
+	minetest.register_node(":stairs:slab_" .. subname, slabdef)
+
+	-- Register the upper slab.
+	-- Using facedir is not an option, as this would rotate the textures as well and would make
+	-- e.g. upper sandstone slabs look completely wrong.
+	local topdef = table.copy(slabdef)
+	topdef.groups.slab = 1
+	topdef.groups.slab_top = 1
+	topdef.groups.not_in_creative_inventory = 1
+	topdef.description = string.format("Upper %s", description)
+	topdef._doc_items_create_entry = false
+	topdef._doc_items_longdesc = nil
+	topdef._doc_items_usagehelp = nil
+	topdef.drop = "stairs:slab_" .. subname
+	topdef.node_box = {
+		type = "fixed",
+		fixed = {-0.5, 0, -0.5, 0.5, 0.5, 0.5},
+	}
+	topdef.selection_box = {
+		type = "fixed",
+		fixed = {-0.5, 0, -0.5, 0.5, 0.5, 0.5},
+	}
+	minetest.register_node(":stairs:slab_" .. subname .. "_top", topdef)
+
 
 	-- Double slab node
 	local dgroups = table.copy(groups)
@@ -216,6 +261,11 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 			},
 		})
 
+	end
+
+	-- Help alias for the upper slab
+	if minetest.get_modpath("doc") then
+		doc.add_entry_alias("nodes", "stairs:slab_" .. subname, "nodes", "stairs:slab_" .. subname .. "_top")
 	end
 end
 
@@ -289,7 +339,7 @@ stairs.register_slab("acaciawood", "mcl_core:acaciawood",
 		"Acacia Wood Slab",
 		mcl_sounds.node_sound_wood_defaults(),
 		2)
-	
+
 stairs.register_stair("sprucewood", "mcl_core:sprucewood",
 		{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
 		{"mcl_core_planks_spruce.png"},
@@ -449,3 +499,5 @@ minetest.register_craft({
 	-- Original burn time: 7.5 (PC edition)
 	burntime = 8,
 })
+
+
