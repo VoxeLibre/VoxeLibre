@@ -126,6 +126,10 @@ local slab_trans_dir = {[0] = 8, 0, 2, 1, 3, 4}
 -- double_description: If set, add a separate “double slab” node. The description is the name of this new node
 -- full_node: If set, this node is used when two nodes are placed on top of each other. Use this if recipeitem is a group
 function stairs.register_slab(subname, recipeitem, groups, images, description, sounds, hardness, double_description, full_node)
+	local lower_slab = "stairs:slab_"..subname
+	local upper_slab = lower_slab.."_top"
+	local double_slab = lower_slab.."_double"
+
 	groups.slab = 1
 	groups.building_block = 1
 	local longdesc = "Slabs are half as high as their full block counterparts. Slabs can be easily stepped on without needing to jump. They are useful to create long staircases and many other structures. Slabs placed on the ceiling of another block will be upside-down."
@@ -179,7 +183,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 					if full_node then
 						newnode = full_node
 					elseif double_description then
-						newnode = "stairs:slab_"..subname.."_double"
+						newnode = double_slab
 					else
 						newnode = recipeitem
 					end
@@ -211,7 +215,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 		_mcl_hardness = hardness,
 	}
 
-	minetest.register_node(":stairs:slab_" .. subname, slabdef)
+	minetest.register_node(":"..lower_slab, slabdef)
 
 	-- Register the upper slab.
 	-- Using facedir is not an option, as this would rotate the textures as well and would make
@@ -224,7 +228,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 	topdef._doc_items_create_entry = false
 	topdef._doc_items_longdesc = nil
 	topdef._doc_items_usagehelp = nil
-	topdef.drop = "stairs:slab_" .. subname
+	topdef.drop = lower_slab
 	topdef.node_box = {
 		type = "fixed",
 		fixed = {-0.5, 0, -0.5, 0.5, 0.5, 0.5},
@@ -233,14 +237,14 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 		type = "fixed",
 		fixed = {-0.5, 0, -0.5, 0.5, 0.5, 0.5},
 	}
-	minetest.register_node(":stairs:slab_" .. subname .. "_top", topdef)
+	minetest.register_node(":"..upper_slab, topdef)
 
 
 	-- Double slab node
 	local dgroups = table.copy(groups)
 	dgroups.not_in_creative_inventory = 1
 	if double_description then
-		minetest.register_node(":stairs:slab_" .. subname .. "_double",  {
+		minetest.register_node(":"..double_slab, {
 			description = double_description,
 			_doc_items_longdesc = "Double slabs are full blocks which are created by placing two slabs of the same kind on each other.",
 			paramtype2 = "facedir",
@@ -248,14 +252,14 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 			is_ground_content = false,
 			groups = dgroups,
 			sounds = sounds,
-			drop = "stairs:slab_"..subname.." 2",
+			drop = lower_slab .. " 2",
 			_mcl_hardness = hardness,
 		})
 	end
 
 	if recipeitem then
 		minetest.register_craft({
-			output = 'stairs:slab_' .. subname .. ' 6',
+			output = lower_slab .. " 6",
 			recipe = {
 				{recipeitem, recipeitem, recipeitem},
 			},
@@ -265,7 +269,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 
 	-- Help alias for the upper slab
 	if minetest.get_modpath("doc") then
-		doc.add_entry_alias("nodes", "stairs:slab_" .. subname, "nodes", "stairs:slab_" .. subname .. "_top")
+		doc.add_entry_alias("nodes", lower_slab, "nodes", upper_slab)
 	end
 end
 
