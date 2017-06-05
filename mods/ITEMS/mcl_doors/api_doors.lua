@@ -220,6 +220,7 @@ function mcl_doors:register_door(name, def)
 		},
 		groups = def.groups,
 		_mcl_hardness = def._mcl_hardness,
+		_mcl_blast_resistance = def._mcl_blast_resistance,
 		sounds = def.sounds,
 
 		after_destruct = function(bottom, oldnode)
@@ -266,6 +267,7 @@ function mcl_doors:register_door(name, def)
 		},
 		groups = def.groups,
 		_mcl_hardness = def._mcl_hardness,
+		_mcl_blast_resistance = def._mcl_blast_resistance,
 		sounds = def.sounds,
 
 		after_destruct = function(top, oldnode)
@@ -308,6 +310,7 @@ function mcl_doors:register_door(name, def)
 		},
 		groups = def.groups,
 		_mcl_hardness = def._mcl_hardness,
+		_mcl_blast_resistance = def._mcl_blast_resistance,
 		sounds = def.sounds,
 
 		after_destruct = function(bottom, oldnode)
@@ -354,6 +357,7 @@ function mcl_doors:register_door(name, def)
 		},
 		groups = def.groups,
 		_mcl_hardness = def._mcl_hardness,
+		_mcl_blast_resistance = def._mcl_blast_resistance,
 		sounds = def.sounds,
 
 		after_destruct = function(top, oldnode)
