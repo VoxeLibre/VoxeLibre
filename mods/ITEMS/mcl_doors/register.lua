@@ -198,7 +198,7 @@ minetest.register_craft({
 
 mcl_doors:register_trapdoor("mcl_doors:trapdoor", {
 	description = "Wooden Trapdoor",
-	_doc_items_longdesc = "Wooden trapdoors are floor covers which can be opened and closed by hand or a redstone signal.",
+	_doc_items_longdesc = "Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed.",
 	_doc_items_usagehelp = "To open or close the trapdoor, rightclick it or send a redstone signal to it.",
 	tiles = {"door_trapdoor.png"},
 	wield_image = "door_trapdoor.png",
@@ -224,7 +224,7 @@ minetest.register_craft({
 
 mcl_doors:register_trapdoor("mcl_doors:iron_trapdoor", {
 	description = "Iron Trapdoor",
-	_doc_items_longdesc = "Iron trapdoors are floor covers which can only be opened and closed by redstone signals, but not by hand.",
+	_doc_items_longdesc = "Iron trapdoors are horizontal barriers which can only be opened and closed by redstone signals, but not by hand. They occupy the upper or lower part of a block, depending on how they have been placed.",
 	tiles = {"iron_trapdoor.png"},
 	wield_image = "iron_trapdoor.png",
 	groups = {pickaxey=1, mesecon_effector_on=1},

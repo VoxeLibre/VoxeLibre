@@ -49,14 +49,14 @@ function mcl_doors:register_trapdoor(name, def)
 	longdesc = def._doc_items_longdesc
 	if not longdesc then
 		if def.only_redstone_can_open then
-			longdesc = "Trapdoors are floor covers which can be opened or closed. This trapdoor can only be opened or closed by redstone power."
+			longdesc = "Trapdoors are horizontal barriers which can be opened or closed. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can only be opened or closed by redstone power."
 		else
-			longdesc = "Trapdoors are floor covers which can be opened or closed. This trapdoor can only be opened by hand and by redstone power."
+			longdesc = "Trapdoors are horizontal barriers which can be opened or closed. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can be opened or closed by hand or redstone power."
 		end
 	end
 	usagehelp = def._doc_items_usagehelp
 	if not usagehelp and not def.only_redstone_can_open then
-		usagehelp = "To open or close this door, rightclick it or send a redstone signal to it."
+		usagehelp = "To open or close this trapdoor, rightclick it or send a redstone signal to it."
 	end
 
 	minetest.register_node(name, {
