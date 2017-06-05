@@ -111,7 +111,8 @@ These groups are used mostly for informational purposes
 * `pane=1`: Node is a “pane”-like node glass pane or iron bars
 * `bed=1`: Bed
 * `door=1`: Door
-* `door=2`: Trapdoor
+* `trapdoor=1`: Closed trapdoor
+* `trapdoor=2`: Open trapdoor
 * `glass=1`: Glass (full cubes only)
 * `rail=1`: Rail
 * `music_record`: Music Disc (rating is track ID)

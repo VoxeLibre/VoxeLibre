@@ -1,14 +1,10 @@
 ---- Trapdoor ----
 
 function mcl_doors:register_trapdoor(name, def)
-	local function update_door(pos, node) 
-		minetest.set_node(pos, node)
+	local groups = table.copy(def.groups)
+	if groups == nil then
+		groups = {}
 	end
-
-	if def.groups == nil then
-		def.groups = {}
-	end
-	def.groups.door = 2
 
 	if not def.sound_open then
 		def.sound_open = "doors_door_open"
@@ -18,23 +14,18 @@ function mcl_doors:register_trapdoor(name, def)
 	end
 
 	local function punch(pos)
-		local meta = minetest.get_meta(pos)
-		local state = meta:get_int("state")
 		local me = minetest.get_node(pos)
 		local tmp_node
-		local tmp_node2
-		local oben = {x=pos.x, y=pos.y+1, z=pos.z}
-		if state == 1 then
-			state = 0
+		-- Close
+		if minetest.get_item_group(me.name, "trapdoor") == 2 then
 			minetest.sound_play(def.sound_close, {pos = pos, gain = 0.3, max_hear_distance = 16})
 			tmp_node = {name=name, param1=me.param1, param2=me.param2}
+		-- Open
 		else
-			state = 1
 			minetest.sound_play(def.sound_open, {pos = pos, gain = 0.3, max_hear_distance = 16})
 			tmp_node = {name=name.."_open", param1=me.param1, param2=me.param2}
 		end
-		update_door(pos, tmp_node)
-		meta:set_int("state", state)
+		minetest.set_node(pos, tmp_node)
 	end
 
 	local on_rightclick
@@ -59,6 +50,10 @@ function mcl_doors:register_trapdoor(name, def)
 		usagehelp = "To open or close this trapdoor, rightclick it or send a redstone signal to it."
 	end
 
+	-- Closed trapdoor
+
+	local groups_closed = groups
+	groups_closed.trapdoor = 1
 	minetest.register_node(name, {
 		description = def.description,
 		_doc_items_longdesc = longdesc,
@@ -72,7 +67,7 @@ function mcl_doors:register_trapdoor(name, def)
 		stack_max = 64,
 		paramtype2 = "facedir",
 		sunlight_propagates = true,
-		groups = def.groups,
+		groups = groups_closed,
 		_mcl_hardness = def._mcl_hardness,
 		_mcl_blast_resistance = def._mcl_blast_resistance,
 		sounds = def.sounds,
@@ -81,10 +76,6 @@ function mcl_doors:register_trapdoor(name, def)
 			fixed = {
 			{-8/16, -8/16, -8/16, 8/16, -5/16, 8/16},},
 		},
-		on_construct = function(pos)
-			local meta = minetest.get_meta(pos)
-			meta:set_int("state", 0)
-		end,
 		mesecons = {effector = {
 			action_on = (function(pos, node)
 				punch(pos)
@@ -119,6 +110,10 @@ function mcl_doors:register_trapdoor(name, def)
 		on_rightclick = on_rightclick,
 	})
 
+	-- Open trapdoor
+
+	local groups_open = table.copy(groups)
+	groups_open.trapdoor = 2
 	minetest.register_node(name.."_open", {
 		drawtype = "nodebox",
 		tiles = def.tiles,
@@ -127,7 +122,7 @@ function mcl_doors:register_trapdoor(name, def)
 		paramtype2 = "facedir",
 		sunlight_propagates = true,
 		pointable = true,
-		groups = def.groups,
+		groups = groups_open,
 		_mcl_hardness = def._mcl_hardness,
 		_mcl_blast_resistance = def._mcl_blast_resistance,
 		sounds = def.sounds,
