@@ -13,6 +13,35 @@ minetest.register_craft({
 	recipe = { 'mcl_core:paper', 'mcl_core:paper', 'mcl_core:paper', 'mcl_mobitems:leather', }
 })
 
+-- Get the included text out of the book item
+-- itemstack: Book item
+-- meta: Meta of book (optional)
+local get_text = function(itemstack)
+	-- Grab the text
+	local meta = itemstack:get_meta()
+	local text = meta:get_string("text")
+
+	-- Backwards-compability with MCL2 0.21.0
+	-- Remember that get_metadata is deprecated since MT 0.4.16!
+	if text == nil or text == "" then
+		local meta_legacy = itemstack:get_metadata()
+		if itemstack:get_name() == "mcl_books:written_book" then
+			local des = minetest.deserialize(meta_legacy)
+			if des then
+				text = des.text
+			end
+		else
+			text = meta_legacy
+		end
+	end
+
+	-- Security check
+	if not text then
+		text = ""
+	end
+	return text
+end
+
 local write = function(itemstack, user, pointed_thing)
 	-- Call on_rightclick if the pointed node defines it
 	if pointed_thing.type == "node" then
@@ -24,7 +53,7 @@ local write = function(itemstack, user, pointed_thing)
 		end
 	end
 
-	local text = itemstack:get_metadata()
+	local text = get_text(itemstack)
 	local formspec = "size[8,9]"..
 		"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
 		"textarea[0.5,0.25;7.5,9.25;text;;"..minetest.formspec_escape(text).."]"..
@@ -44,14 +73,7 @@ local read = function(itemstack, user, pointed_thing)
 		end
 	end
 
-	local meta = minetest.deserialize(itemstack:get_metadata())
-	local text
-	if meta ~= nil then
-		text = meta.text
-	end
-	if text == nil then
-		text = ""
-	end
+	local text = get_text(itemstack)
 	local formspec = "size[8,9]"..
 		"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
 		"textarea[0.5,0.25;7.5,9.25;;"..core.colorize("#000000", minetest.formspec_escape(text))..";]"..
@@ -75,16 +97,15 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 	if ((formname == "mcl_books:writable_book") and fields and fields.text) then
 		local stack = player:get_wielded_item()
 		if (stack:get_name() and (stack:get_name() == "mcl_books:writable_book")) then
+			local meta = stack:get_meta()
 			if fields.ok then
-				local t = stack:to_table()
-				t.metadata = fields.text
-				player:set_wielded_item(ItemStack(t))
+				meta:set_string("text", fields.text)
+				player:set_wielded_item(stack)
 			elseif fields.sign then
-				local t = stack:to_table()
-				t.metadata = fields.text
-				player:set_wielded_item(ItemStack(t))
+				meta:set_string("text", fields.text)
+				player:set_wielded_item(stack)
 
-				local text = stack:get_metadata()
+				local text = get_text(stack)
 				local name = player:get_player_name()
 				local formspec = "size[8,9]"..
 					"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
@@ -104,12 +125,12 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 			if fields.title == "" then
 				fields.title = "Nameless Book"
 			end
-			local meta = {
-				title = fields.title,
-				author = name,
-				text = book:get_metadata()
-			}
-			newbook:set_metadata(minetest.serialize(meta))
+			local meta = newbook:get_meta()
+			local text = get_text(book)
+			meta:set_string("title", fields.title)
+			meta:set_string("author", name)
+			meta:set_string("text", text)
+
 			player:set_wielded_item(newbook)
 		else
 			minetest.log("error", "[mcl_books] "..name.." failed to sign a book!")
@@ -166,9 +187,19 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 	if not original then
 		return
 	end
-	local copymeta = original:get_metadata()
-	-- copy of the book held by player's mouse cursor
-	itemstack:set_metadata(copymeta)
+
+	-- copy of the book
+	local text = get_text(original)
+	if not text or text == "" then
+		local copymeta = original:get_metadata()
+		itemstack:set_metadata(copymeta)
+	else
+		local ometa = original:get_meta()
+		local imeta = itemstack:get_meta()
+		imeta:set_string("title", ometa:get_string("title"))
+		imeta:set_string("author", ometa:get_string("author"))
+		imeta:set_string("text", text)
+	end
 	-- put the book with metadata back in the craft grid
 	craft_inv:set_stack("craft", index, original)
 end)
