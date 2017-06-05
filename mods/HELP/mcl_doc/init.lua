@@ -162,6 +162,13 @@ doc.sub.items.register_factoid("nodes", "mining", function(itemstring, def)
 	else
 		datastring = datastring .. string.format("Hardness: %.2f", hardness)
 	end
+	local blast = def._mcl_blast_resistance
+	if not blast then
+		blast = 0
+	end
+	if blast >= 1000 then
+		datastring = datastring .. "\n" .. "This block will not be destroyed by TNT explosions."
+	end
 	return datastring
 end)
 
