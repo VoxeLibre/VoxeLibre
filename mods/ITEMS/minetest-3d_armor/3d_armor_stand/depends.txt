@@ -1,5 +1,5 @@
 3d_armor
 mcl_core
 mcl_sounds
-stairs
+mcl_stairs
 doc_identifier?

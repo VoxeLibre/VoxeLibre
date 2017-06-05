@@ -2,5 +2,5 @@ mcl_init
 mcl_util
 mcl_core
 mcl_cocoas
-stairs
+mcl_stairs
 mcl_structures

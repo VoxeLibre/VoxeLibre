@@ -105,7 +105,7 @@ minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 	drawtype = "nodebox",
 	tiles = {
 		"mesecons_delayer_off.png",
-		"stairs_stone_slab_top.png",
+		"mcl_stairs_stone_slab_top.png",
 		"mesecons_delayer_sides_off.png",
 		"mesecons_delayer_sides_off.png",
 		"mesecons_delayer_ends_off.png",
@@ -166,7 +166,7 @@ minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
 	drawtype = "nodebox",
 	tiles = {
 		"mesecons_delayer_on.png",
-		"stairs_stone_slab_top.png",
+		"mcl_stairs_stone_slab_top.png",
 		"mesecons_delayer_sides_on.png",
 		"mesecons_delayer_sides_on.png",
 		"mesecons_delayer_ends_on.png",

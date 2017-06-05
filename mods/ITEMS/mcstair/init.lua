@@ -658,7 +658,7 @@ for _,v in ipairs({
 	"darkwood"
 }) do
 	local t = minetest.registered_nodes["mcl_core:"..v].tiles[1]
-	mcstair.add("stairs:stair_"..v, {
+	mcstair.add("mcl_stairs:stair_"..v, {
 		{
 			t.."^("..t.."^[transformR90^mcstair_turntexture.png^[makealpha:255,0,255)",
 			t.."^("..t.."^mcstair_turntexture.png^[transformR270^[makealpha:255,0,255)",
@@ -682,5 +682,5 @@ for _,v in ipairs({
 	"purpur_block",
 	"nether_brick",
 }) do
-	mcstair.add("stairs:stair_"..v)
+	mcstair.add("mcl_stairs:stair_"..v)
 end

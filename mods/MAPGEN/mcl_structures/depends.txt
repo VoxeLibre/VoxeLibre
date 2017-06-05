@@ -2,7 +2,7 @@ mcl_core
 mcl_loot
 xpanes
 mcl_doors
-stairs
+mcl_stairs
 mcl_colorblocks
 mcl_wool
 mcl_fences

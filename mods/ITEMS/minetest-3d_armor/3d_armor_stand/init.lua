@@ -226,7 +226,7 @@ minetest.register_craft({
 	recipe = {
 		{"mcl_core:stick", "mcl_core:stick", "mcl_core:stick"},
 		{"", "mcl_core:stick", ""},
-		{"mcl_core:stick", "stairs:slab_stone", "mcl_core:stick"},
+		{"mcl_core:stick", "mcl_stairs:slab_stone", "mcl_core:stick"},
 	}
 })
 

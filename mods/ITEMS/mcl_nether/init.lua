@@ -205,14 +205,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = 'mcl_nether:quartz_chiseled 2',
-	recipe = {
-		{'stairs:slab_quartzblock'},
-		{'stairs:slab_quartzblock'},
-	}
-})
-
-minetest.register_craft({
 	output = 'mcl_nether:quartz_pillar 2',
 	recipe = {
 		{'mcl_nether:quartz_block'},
