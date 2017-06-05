@@ -40,7 +40,11 @@ minetest.register_globalstep(function(dtime)
 			dtimes[player_name] = 0
 			if huds[player_name] then 
 				local def = minetest.registered_items[wstack]
-				local desc = def and def.description or ""
+				local desc = def and def.description
+				if not desc or desc == "" then
+					-- Use itemstring as fallback
+					desc = wstack
+				end
 				-- Cut off item description after first newline
 				local firstnewline = string.find(desc, "\n")
 				if firstnewline then
