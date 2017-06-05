@@ -6,7 +6,7 @@
 
 stairs = {}
 
-local function place_slab(itemstack, placer, pointed_thing)
+local function place_slab_normal(itemstack, placer, pointed_thing)
 	local p0 = pointed_thing.under
 	local p1 = pointed_thing.above
 
@@ -159,60 +159,47 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 			local wield_item = itemstack:get_name()
 			local creative_enabled = minetest.setting_getbool("creative_mode")
 
-			if under and wield_item == under.name then
-				-- place slab using under node orientation
-				local dir = minetest.dir_to_facedir(vector.subtract(
-					pointed_thing.above, pointed_thing.under), true)
+			-- place slab using under node orientation
+			local dir = vector.subtract(pointed_thing.above, pointed_thing.under)
 
-				local p2 = under.param2
+			local p2 = under.param2
 
-				-- combine two slabs if possible
-				if wield_item == under.name then
+			-- combine two slabs if possible
+			-- Requirements: Same slab material, must be placed on top of lower slab, or on bottom of upper slab
+			if (wield_item == under.name or wield_item == minetest.registered_nodes[under.name]._mcl_other_slab_half) and
+					not ((dir.y >= 0 and minetest.get_item_group(under.name, "slab_top") == 1) or
+					(dir.y <= 0 and minetest.get_item_group(under.name, "slab_top") == 0)) then
 
-					if not recipeitem then
-						return itemstack
-					end
-					local player_name = placer:get_player_name()
-					if minetest.is_protected(pointed_thing.under, player_name) and not
-							minetest.check_player_privs(placer, "protection_bypass") then
-						minetest.record_protection_violation(pointed_thing.under,
-							player_name)
-						return
-					end
-					local newnode
-					if full_node then
-						newnode = full_node
-					elseif double_description then
-						newnode = double_slab
-					else
-						newnode = recipeitem
-					end
-					minetest.set_node(pointed_thing.under, {name = newnode, param2 = p2})
-					if not creative_enabled then
-						itemstack:take_item()
-					end
+				if not recipeitem then
 					return itemstack
 				end
-
-				-- Placing a slab on an upside down slab should make it right-side up.
-				if p2 >= 20 and dir == 8 then
-					p2 = p2 - 20
-				-- same for the opposite case: slab below normal slab
-				elseif p2 <= 3 and dir == 4 then
-					p2 = p2 + 20
+				local player_name = placer:get_player_name()
+				if minetest.is_protected(pointed_thing.under, player_name) and not
+						minetest.check_player_privs(placer, "protection_bypass") then
+					minetest.record_protection_violation(pointed_thing.under,
+						player_name)
+					return
 				end
-
-				-- else attempt to place node with proper param2
-				minetest.item_place_node(ItemStack(wield_item), placer, pointed_thing, p2)
+				local newnode
+				if full_node then
+					newnode = full_node
+				elseif double_description then
+					newnode = double_slab
+				else
+					newnode = recipeitem
+				end
+				minetest.set_node(pointed_thing.under, {name = newnode, param2 = p2})
 				if not creative_enabled then
 					itemstack:take_item()
 				end
 				return itemstack
+			-- No combination possible: Place slab normally
 			else
-				return place_slab(itemstack, placer, pointed_thing)
+				return place_slab_normal(itemstack, placer, pointed_thing)
 			end
 		end,
 		_mcl_hardness = hardness,
+		_mcl_other_slab_half = upper_slab,
 	}
 
 	minetest.register_node(":"..lower_slab, slabdef)
@@ -230,6 +217,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 	topdef._doc_items_longdesc = nil
 	topdef._doc_items_usagehelp = nil
 	topdef.drop = lower_slab
+	topdef._mcl_other_slab_half = lower_slab
 	topdef.node_box = {
 		type = "fixed",
 		fixed = {-0.5, 0, -0.5, 0.5, 0.5, 0.5},
