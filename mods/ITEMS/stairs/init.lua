@@ -59,7 +59,7 @@ function stairs.register_stair(subname, recipeitem, groups, images, description,
 	groups.building_block = 1
 	minetest.register_node(":stairs:stair_" .. subname, {
 		description = description,
-		_doc_items_longdesc = "Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the ceiling will be placed upside down.",
+		_doc_items_longdesc = "Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the bottom or at the upper half of the side of a block will be placed upside down.",
 		drawtype = "mesh",
 		mesh = "stairs_stair.obj",
 		tiles = images,
@@ -137,7 +137,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 
 	groups.slab = 1
 	groups.building_block = 1
-	local longdesc = "Slabs are half as high as their full block counterparts. Slabs can be easily stepped on without needing to jump. They are useful to create long staircases and many other structures. Slabs placed on the ceiling of another block will be upside-down. When a slab of this particular type is placed on another slab of the same type, a double slab is created."
+	local longdesc = "Slabs are half as high as their full block counterparts and occupy either the lower or upper part of a block, depending on how it was placed. Slabs can be easily stepped on without needing to jump. When a slab is placed on another slab of the same type, a double slab is created."
 
 	local slabdef = {
 		description = description,
@@ -225,6 +225,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 	-- Double slab node
 	local dgroups = table.copy(groups)
 	dgroups.not_in_creative_inventory = 1
+	dgroups.not_in_craft_guide = 1
 	dgroups.slab = nil
 	dgroups.double_slab = 1
 	minetest.register_node(":"..double_slab, {
