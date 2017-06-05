@@ -224,6 +224,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 	topdef.groups.slab = 1
 	topdef.groups.slab_top = 1
 	topdef.groups.not_in_creative_inventory = 1
+	topdef.groups.not_in_craft_guide = 1
 	topdef.description = string.format("Upper %s", description)
 	topdef._doc_items_create_entry = false
 	topdef._doc_items_longdesc = nil
