@@ -122,22 +122,22 @@ local slab_trans_dir = {[0] = 8, 0, 2, 1, 3, 4}
 -- Register slabs.
 -- Node will be called stairs:slab_<subname>
 
--- double_description, full_node: NEW arguments, not supported in Minetest Game
--- double_description: If set, add a separate “double slab” node. The description is the name of this new node
--- full_node: If set, this node is used when two nodes are placed on top of each other. Use this if recipeitem is a group
-function stairs.register_slab(subname, recipeitem, groups, images, description, sounds, hardness, double_description, full_node)
+-- double_description: NEW argument, not supported in Minetest Game
+-- double_description: Description of double slab
+function stairs.register_slab(subname, recipeitem, groups, images, description, sounds, hardness, double_description)
 	local lower_slab = "stairs:slab_"..subname
 	local upper_slab = lower_slab.."_top"
 	local double_slab = lower_slab.."_double"
 
+	-- Automatically generate double slab description
+	if not double_description then
+		double_description = string.format("Double %s", description)
+		minetest.log("warning", "[stairs] No explicit description for double slab '"..double_slab.."' added. Using auto-generated description.")
+	end
+
 	groups.slab = 1
 	groups.building_block = 1
-	local longdesc = "Slabs are half as high as their full block counterparts. Slabs can be easily stepped on without needing to jump. They are useful to create long staircases and many other structures. Slabs placed on the ceiling of another block will be upside-down."
-	if double_description then
-		longdesc = longdesc .. " When a slab of this particular type is placed on another slab of the same type, a double slab is created."
-	else
-		longdesc = longdesc .. " When a slab of this particular type is placed on another slab of the same type, a new full block is created."
-	end
+	local longdesc = "Slabs are half as high as their full block counterparts. Slabs can be easily stepped on without needing to jump. They are useful to create long staircases and many other structures. Slabs placed on the ceiling of another block will be upside-down. When a slab of this particular type is placed on another slab of the same type, a double slab is created."
 
 	local slabdef = {
 		description = description,
@@ -180,14 +180,7 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 						player_name)
 					return
 				end
-				local newnode
-				if full_node then
-					newnode = full_node
-				elseif double_description then
-					newnode = double_slab
-				else
-					newnode = recipeitem
-				end
+				local newnode = double_slab
 				minetest.set_node(pointed_thing.under, {name = newnode, param2 = p2})
 				if not creative_enabled then
 					itemstack:take_item()
@@ -232,19 +225,18 @@ function stairs.register_slab(subname, recipeitem, groups, images, description, 
 	-- Double slab node
 	local dgroups = table.copy(groups)
 	dgroups.not_in_creative_inventory = 1
-	if double_description then
-		minetest.register_node(":"..double_slab, {
-			description = double_description,
-			_doc_items_longdesc = "Double slabs are full blocks which are created by placing two slabs of the same kind on each other.",
-			paramtype2 = "facedir",
-			tiles = images,
-			is_ground_content = false,
-			groups = dgroups,
-			sounds = sounds,
-			drop = lower_slab .. " 2",
-			_mcl_hardness = hardness,
-		})
-	end
+	dgroups.slab = nil
+	dgroups.double_slab = 1
+	minetest.register_node(":"..double_slab, {
+		description = double_description,
+		_doc_items_longdesc = "Double slabs are full blocks which are created by placing two slabs of the same kind on each other.",
+		tiles = images,
+		is_ground_content = false,
+		groups = dgroups,
+		sounds = sounds,
+		drop = lower_slab .. " 2",
+		_mcl_hardness = hardness,
+	})
 
 	if recipeitem then
 		minetest.register_craft({
@@ -268,14 +260,14 @@ end
 
 function stairs.register_stair_and_slab(subname, recipeitem,
 		groups, images, desc_stair, desc_slab, sounds, hardness,
-		double_description, full_node)
+		double_description)
 	stairs.register_stair(subname, recipeitem, groups, images, desc_stair, sounds, hardness)
-	stairs.register_slab(subname, recipeitem, groups, images, desc_slab, sounds, hardness, double_description, full_node)
+	stairs.register_slab(subname, recipeitem, groups, images, desc_slab, sounds, hardness, double_description)
 end
 
 -- Very simple registration function
 -- Makes stair and slab out of a source node
-function stairs.register_stair_and_slab_simple(subname, sourcenode, desc_stair, desc_slab)
+function stairs.register_stair_and_slab_simple(subname, sourcenode, desc_stair, desc_slab, desc_double_slab)
 	local def = minetest.registered_nodes[sourcenode]
 	local groups = {}
 	-- Only allow a strict set of groups to be added to stairs and slabs for more predictable results
@@ -285,7 +277,7 @@ function stairs.register_stair_and_slab_simple(subname, sourcenode, desc_stair, 
 			groups[allowed_groups[a]] = def.groups[allowed_groups[a]]
 		end
 	end
-	stairs.register_stair_and_slab(subname, sourcenode, groups, def.tiles, desc_stair, desc_slab, def.sounds, def._mcl_hardness)
+	stairs.register_stair_and_slab(subname, sourcenode, groups, def.tiles, desc_stair, desc_slab, def.sounds, def._mcl_hardness, desc_double_slab)
 end
 
 -- Register all Minecraft stairs and slabs
@@ -304,7 +296,8 @@ stairs.register_slab("wood", "mcl_core:wood",
 		{"default_wood.png"},
 		"Oak Wood Slab",
 		mcl_sounds.node_sound_wood_defaults(),
-		2)
+		2,
+		"Double Oak Wood Slab")
 
 stairs.register_stair("junglewood", "mcl_core:junglewood",
 		{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
@@ -317,7 +310,8 @@ stairs.register_slab("junglewood", "mcl_core:junglewood",
 		{"default_junglewood.png"},
 		"Jungle Wood Slab",
 		mcl_sounds.node_sound_wood_defaults(),
-		2)
+		2,
+		"Double Jungle Wood Slab")
 
 stairs.register_stair("acaciawood", "mcl_core:acaciawood",
 		{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
@@ -331,7 +325,8 @@ stairs.register_slab("acaciawood", "mcl_core:acaciawood",
 		{"default_acacia_wood.png"},
 		"Acacia Wood Slab",
 		mcl_sounds.node_sound_wood_defaults(),
-		2)
+		2,
+		"Double Acacia Wood Slab")
 
 stairs.register_stair("sprucewood", "mcl_core:sprucewood",
 		{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
@@ -344,7 +339,8 @@ stairs.register_slab("sprucewood", "mcl_core:sprucewood",
 		{"mcl_core_planks_spruce.png"},
 		"Spruce Wood Slab",
 		mcl_sounds.node_sound_wood_defaults(),
-		2)
+		2,
+		"Double Spruce Wood Slab")
 
 stairs.register_stair("birchwood", "mcl_core:birchwood",
 		{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
@@ -357,7 +353,8 @@ stairs.register_slab("birchwood", "mcl_core:birchwood",
 		{"mcl_core_planks_birch.png"},
 		"Birch Wood Slab",
 		mcl_sounds.node_sound_wood_defaults(),
-		2)
+		2,
+		"Double Birch Wood Slab")
 
 stairs.register_stair("darkwood", "mcl_core:darkwood",
 		{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
@@ -370,7 +367,8 @@ stairs.register_slab("darkwood", "mcl_core:darkwood",
 		{"mcl_core_planks_big_oak.png"},
 		"Dark Oak Wood Slab",
 		mcl_sounds.node_sound_wood_defaults(),
-		2)
+		2,
+		"Double Dark Oak Wood Slab")
 
 stairs.register_slab("stone", "mcl_core:stone",
 		{pickaxey=1, material_stone=1},
@@ -378,9 +376,9 @@ stairs.register_slab("stone", "mcl_core:stone",
 		"Stone Slab",
 		mcl_sounds.node_sound_stone_defaults(), 2, "Double Stone Slab")
 
-stairs.register_stair_and_slab_simple("cobble", "mcl_core:cobble", "Cobblestone Stairs", "Cobblestone Slab")
+stairs.register_stair_and_slab_simple("cobble", "mcl_core:cobble", "Cobblestone Stairs", "Cobblestone Slab", nil, nil, "Double Cobblestone Slab")
 
-stairs.register_stair_and_slab_simple("brick_block", "mcl_core:brick_block", "Brick Stairs", "Brick Slab")
+stairs.register_stair_and_slab_simple("brick_block", "mcl_core:brick_block", "Brick Stairs", "Brick Slab", nil, nil, "Double Brick Slab")
 
 
 stairs.register_stair("sandstone", "group:sandstone",
@@ -392,7 +390,7 @@ stairs.register_slab("sandstone", "group:sandstone",
 		{pickaxey=1, material_stone=1},
 		{"mcl_core_sandstone_top.png", "mcl_core_sandstone_bottom.png", "mcl_core_sandstone_normal.png"},
 		"Sandstone Slab",
-		mcl_sounds.node_sound_stone_defaults(), 2, nil, "mcl_core:sandstone")
+		mcl_sounds.node_sound_stone_defaults(), 2, "Double Sandstone Slab", "mcl_core:sandstone")
 
 stairs.register_stair("redsandstone", "group:redsandstone",
 		{pickaxey=1, material_stone=1},
@@ -403,7 +401,7 @@ stairs.register_slab("redsandstone", "group:redsandstone",
 		{pickaxey=1, material_stone=1},
 		{"mcl_core_red_sandstone_top.png", "mcl_core_red_sandstone_bottom.png", "mcl_core_red_sandstone_normal.png"},
 		"Red Sandstone Slab",
-		mcl_sounds.node_sound_stone_defaults(), 2, nil, "mcl_core:redsandstone")
+		mcl_sounds.node_sound_stone_defaults(), 2, "Double Red Sandstone Slab", "mcl_core:redsandstone")
 
 stairs.register_stair("stonebrick", "group:stonebrick",
 		{pickaxey=1, material_stone=1},
@@ -414,7 +412,7 @@ stairs.register_slab("stonebrick", "group:stonebrick",
 		{pickaxey=1, material_stone=1},
 		{"default_stone_brick.png"},
 		"Stone Bricks Slab",
-		mcl_sounds.node_sound_stone_defaults(), 2, nil, "mcl_core:stonebrick")
+		mcl_sounds.node_sound_stone_defaults(), 2, "Double Stone Bricks Slab", "mcl_core:stonebrick")
 
 stairs.register_stair("quartzblock", "group:quartz_block",
 		{pickaxey=1, material_stone=1},
@@ -425,7 +423,7 @@ stairs.register_slab("quartzblock", "group:quartz_block",
 		{pickaxey=1, material_stone=1},
 		{"mcl_nether_quartz_block_top.png", "mcl_nether_quartz_block_bottom.png", "mcl_nether_quartz_block_side.png"},
 		"Quartz Slab",
-		mcl_sounds.node_sound_stone_defaults(), 2, nil, "mcl_nether:quartz_block")
+		mcl_sounds.node_sound_stone_defaults(), 2, "Double Quarzt Slab", "mcl_nether:quartz_block")
 
 stairs.register_stair_and_slab("nether_brick", "mcl_nether:nether_brick",
 		{pickaxey=1, material_stone=1},
@@ -433,7 +431,8 @@ stairs.register_stair_and_slab("nether_brick", "mcl_nether:nether_brick",
 		"Nether Brick Stairs",
 		"Nether Brick Slab",
 		mcl_sounds.node_sound_stone_defaults(),
-		2)
+		2,
+		"Double Nether Brick Slab")
 
 stairs.register_stair("purpur_block", "mcl_end:purpur_block",
 		{pickaxey=1, material_stone=1},
@@ -446,7 +445,8 @@ stairs.register_slab("purpur_block", "mcl_end:purpur_block",
 		{"mcl_end_purpur_block.png"},
 		"Purpur Slab",
 		mcl_sounds.node_sound_stone_defaults(),
-		2)
+		2,
+		"Double Purpur Slab")
 
 minetest.register_craft({
 	output = 'mcl_core:sandstonecarved',
