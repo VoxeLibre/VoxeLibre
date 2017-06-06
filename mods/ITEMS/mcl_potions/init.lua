@@ -55,6 +55,7 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 				-- Replace with water bottle, if possible, otherwise
 				-- place the water potion at a place where's space
 				local water_bottle = ItemStack("mcl_potions:potion_water")
+				minetest.sound_play("mcl_potions_bottle_fill", {pos=pointed_thing.under, gain=0.5, max_hear_range=16})
 				if itemstack:get_count() == 1 then
 					return water_bottle
 				else
@@ -115,12 +116,15 @@ minetest.register_craftitem("mcl_potions:potion_water", {
 			-- Increase water level of cauldron by 1
 			if node.name == "mcl_cauldrons:cauldron" then
 				minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_1"})
+				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16})
 				return "mcl_potions:glass_bottle"
 			elseif node.name == "mcl_cauldrons:cauldron_1" then
 				minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_2"})
+				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16})
 				return "mcl_potions:glass_bottle"
 			elseif node.name == "mcl_cauldrons:cauldron_2" then
 				minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_3"})
+				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16})
 				return "mcl_potions:glass_bottle"
 			end
 		end
