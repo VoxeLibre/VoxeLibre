@@ -171,7 +171,9 @@ minetest.register_craft({
 minetest.register_craftitem("mcl_books:written_book", {
 	description = "Written Book",
 	_doc_items_longdesc = "Written books contain some text written by someone. They can be read and copied, but not edited.",
-	_doc_items_usagehelp = "Hold it in your hand, then rightclick to read the book. To copy the book, place it into the crafting grid together with a book and quill. Performing the craft will turn the book and quill into a copy of the written book.",
+	_doc_items_usagehelp = [[Hold it in your hand, then rightclick to read the book.
+
+To copy the book, place it into the crafting grid together with a book and quill (or multiple of those) and craft. You can not copy a written book which is a copy of a copy of the original.]],
 	inventory_image = "mcl_books_book_written.png",
 	groups = { not_in_creative_inventory=1, book=1 },
 	stack_max = 16,
