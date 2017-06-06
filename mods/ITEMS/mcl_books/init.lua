@@ -174,19 +174,33 @@ minetest.register_craftitem("mcl_books:written_book", {
 	_doc_items_usagehelp = "Hold it in your hand, then rightclick to read the book. To copy the book, place it into the crafting grid together with a book and quill. Performing the craft will turn the book and quill into a copy of the written book.",
 	inventory_image = "mcl_books_book_written.png",
 	groups = { not_in_creative_inventory=1, book=1 },
-	-- TODO: Increase to 16 when this mod is ready
-	stack_max = 1,
+	stack_max = 16,
 	on_place = read,
 	on_secondary_use = read
 })
 
 -- Copy books
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_books:written_book",
-	recipe = {"mcl_books:writable_book", "mcl_books:written_book"}
-})
--- TODO: Add copy recipes to copy 2-8 books at once
+
+-- This adds 8 recipes
+local baq = "mcl_books:writable_book"
+local wb = "mcl_books:written_book"
+local recipes = {
+	{wb, baq},
+	{baq, baq, wb},
+	{baq, baq, wb, baq},
+	{baq, baq, baq, baq, wb},
+	{baq, baq, baq, baq, wb, baq},
+	{baq, baq, baq, baq, wb, baq, baq},
+	{baq, baq, baq, baq, wb, baq, baq, baq},
+	{baq, baq, baq, baq, wb, baq, baq, baq, baq},
+}
+for r=#recipes, 1, -1 do
+	minetest.register_craft({
+		type = "shapeless",
+		output = "mcl_books:written_book "..r,
+		recipe = recipes[r],
+	})
+end
 
 minetest.register_craft_predict(function(itemstack, player, old_craft_grid, craft_inv)
 	if itemstack:get_name() ~= "mcl_books:written_book" then
