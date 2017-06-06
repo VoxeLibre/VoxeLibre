@@ -26,7 +26,8 @@ end)
 minetest.register_globalstep(function(dtime)
 	for _, player in pairs(minetest.get_connected_players()) do
 		local player_name = player:get_player_name()
-		local wstack = player:get_wielded_item():get_name()
+		local wstack = player:get_wielded_item()
+		local wname = wstack:get_name()
 
 		if dtimes[player_name] and dtimes[player_name] < dlimit then
 			dtimes[player_name] = dtimes[player_name] + dtime
@@ -35,15 +36,23 @@ minetest.register_globalstep(function(dtime)
 			end
 		end
 
-		if wstack ~= wield[player_name] then
-			wield[player_name] = wstack
+		if wname ~= wield[player_name] then
+			wield[player_name] = wname
 			dtimes[player_name] = 0
 			if huds[player_name] then 
-				local def = minetest.registered_items[wstack]
-				local desc = def and def.description
-				if not desc or desc == "" then
-					-- Use itemstring as fallback
-					desc = wstack
+				local def = minetest.registered_items[wname]
+				local meta = wstack:get_meta()
+
+				--[[ Get description. Order of preference:
+				* description from metadata
+				* description from item definition
+				* itemstring ]]
+				local desc = meta:get_string("description")
+				if (desc == nil or desc == "") and def then
+					desc = def.description
+				end
+				if desc == nil or desc == "" then
+					desc = wname
 				end
 				-- Cut off item description after first newline
 				local firstnewline = string.find(desc, "\n")
