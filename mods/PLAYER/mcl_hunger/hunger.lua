@@ -183,7 +183,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 				if not _mcl_saturation then
 					saturation = 0
 				else
-					saturation = math.floor(minetest.registered_items[itemname]._mcl_saturation * 10)
+					saturation = minetest.registered_items[itemname]._mcl_saturation
 				end
 				mcl_hunger.saturate(name, saturation, false)
 
