@@ -56,13 +56,6 @@ mcl_hunger.last_eat = {}
 -- HUD item ids
 local hunger_hud = {}
 
---load custom settings
-local set = io.open(minetest.get_modpath("mcl_hunger").."/mcl_hunger.conf", "r")
-if set then
-	dofile(minetest.get_modpath("mcl_hunger").."/mcl_hunger.conf")
-	set:close()
-end
-
 local function init_hud(player)
 	hb.init_hudbar(player, "hunger", mcl_hunger.get_hunger(player))
 	if mcl_hunger.debug then
