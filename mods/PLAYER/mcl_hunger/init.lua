@@ -48,7 +48,8 @@ end
 ]]
 
 -- Count number of poisonings a player has at once
-mcl_hunger.poisonings = {}
+mcl_hunger.poison_damage = {} -- damaging poison
+mcl_hunger.poison_hunger = {} -- food poisoning, increasing hunger
 
 -- Cooldown timers for each player, to force a short delay between consuming 2 food items
 mcl_hunger.last_eat = {}
@@ -139,7 +140,8 @@ end)
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	init_hud(player)
-	mcl_hunger.poisonings[name] = 0
+	mcl_hunger.poison_damage[name] = 0
+	mcl_hunger.poison_hunger[name] = 0
 	mcl_hunger.last_eat[name] = -1
 end)
 

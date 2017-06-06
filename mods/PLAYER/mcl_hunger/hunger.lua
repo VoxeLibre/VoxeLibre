@@ -73,8 +73,11 @@ function mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_t
 end
 
 -- Reset HUD bars after poisoning
-local function reset_bars(player)
+local function reset_bars_poison_damage(player)
 	hb.change_hudbar(player, "health", nil, nil, "hudbars_icon_health.png", nil, "hudbars_bar_health.png")
+end
+
+local function reset_bars_poison_hunger(player)
 	hb.change_hudbar(player, "hunger", nil, nil, "hbhunger_icon.png", nil, "hbhunger_bar.png")
 	if mcl_hunger.debug then
 		hb.change_hudbar(player, "exhaustion", nil, nil, nil, nil, "mcl_hunger_bar_exhaustion.png")
@@ -87,17 +90,26 @@ local function poisonp(tick, time, time_left, damage, exhaustion, player)
 	if not player:is_player() then
 		return
 	end
+	local name = player:get_player_name()
 	-- Abort if poisonings have been stopped
-	if mcl_hunger.poisonings[player:get_player_name()] == 0 then
+	if mcl_hunger.poison_damage[name] == 0 and mcl_hunger.poison_hunger[name] == 0 then
 		return
 	end
 	time_left = time_left + tick
 	if time_left < time then
 		minetest.after(tick, poisonp, tick, time, time_left, damage, exhaustion, player)
 	else
-		mcl_hunger.poisonings[player:get_player_name()] = mcl_hunger.poisonings[player:get_player_name()] - 1
-		if mcl_hunger.poisonings[player:get_player_name()] <= 0 then
-			reset_bars(player)
+		if damage > 0 then
+			mcl_hunger.poison_damage[name] = mcl_hunger.poison_damage[name] - 1
+		end
+		if exhaustion > 0 then
+			mcl_hunger.poison_hunger [name] = mcl_hunger.poison_hunger[name] - 1
+		end
+		if mcl_hunger.poison_damage[name] <= 0 then
+			reset_bars_poison_damage(player)
+		end
+		if mcl_hunger.poison_hunger[name] <= 0 then
+			reset_bars_poison_hunger(player)
 		end
 	end
 
@@ -105,14 +117,17 @@ local function poisonp(tick, time, time_left, damage, exhaustion, player)
 	if player:get_hp()-damage > 0 then
 		player:set_hp(player:get_hp()-damage)
 	end
-	mcl_hunger.exhaust(player:get_player_name(), exhaustion)
+
+	mcl_hunger.exhaust(name, exhaustion)
 
 end
 
 -- Immediately stop all poisonings for this player
 function mcl_hunger.stop_poison(player)
-	mcl_hunger.poisonings[player:get_player_name()] = 0
-	reset_bars(player)
+	mcl_hunger.poison_damage[player:get_player_name()] = 0
+	mcl_hunger.poison_hunger[player:get_player_name()] = 0
+	reset_bars_poison_damage(player)
+	reset_bars_poison_hunger(player)
 end
 
 local poisonrandomizer = PseudoRandom(os.time())
@@ -212,14 +227,15 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 					-- Set poison bars
 					if poison and poison > 0 then
 						hb.change_hudbar(user, "health", nil, nil, "hbhunger_icon_health_poison.png", nil, "hbhunger_bar_health_poison.png")
+						mcl_hunger.poison_damage[name] = mcl_hunger.poison_damage[name] + 1
 					end
 					if exhaust and exhaust > 0 then
 						hb.change_hudbar(user, "hunger", nil, nil, "mcl_hunger_icon_foodpoison.png", nil, "mcl_hunger_bar_foodpoison.png")
 						if mcl_hunger.debug then
 							hb.change_hudbar(user, "exhaustion", nil, nil, nil, nil, "mcl_hunger_bar_foodpoison.png")
 						end
+						mcl_hunger.poison_hunger[name] = mcl_hunger.poison_hunger[name] + 1
 					end
-					mcl_hunger.poisonings[name] = mcl_hunger.poisonings[name] + 1
 					poisonp(1, poisontime, 0, poison, exhaust, user)
 				end
 			end
