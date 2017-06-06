@@ -127,6 +127,10 @@ function mcl_sounds.node_sound_water_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or
 			{name = "default_water_footstep", gain = 0.2}
+	table.place = table.place or
+			{name = "mcl_sounds_place_node_water", gain = 1.0}
+	table.dug = table.dug or
+			{name = "mcl_sounds_dug_water", gain = 1.0}
 	mcl_sounds.node_sound_defaults(table)
 	return table
 end

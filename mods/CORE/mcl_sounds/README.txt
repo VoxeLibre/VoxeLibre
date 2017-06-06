@@ -69,4 +69,9 @@ blukotek (CC0 1.0)
 https://www.freesound.org/people/blukotek/sounds/251660/
   default_dig_snappy.ogg
 
+Voxelands project <http://www.voxelands.com/> (CC BY-SA 3.0)
+  mcl_sounds_place_node_water.ogg
+  mcl_sounds_dug_water.ogg
 
+(Note: Artists from the Voxelands project include: sdzen, darkrose, sapier,
+      Tom Peter, Telaron, juskiddink)

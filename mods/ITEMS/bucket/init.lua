@@ -18,6 +18,21 @@ minetest.register_craft({
 bucket = {}
 bucket.liquids = {}
 
+-- Sound helper functions for placing and taking liquids
+local sound_place = function(itemname, pos)
+	local def = minetest.registered_nodes[itemname]
+	if def and def.sounds and def.sounds.place then
+		minetest.sound_play(def.sounds.place, {gain=1.0, pos = pos})
+	end
+end
+
+local sound_take = function(itemname, pos)
+	local def = minetest.registered_nodes[itemname]
+	if def and def.sounds and def.sounds.dug then
+		minetest.sound_play(def.sounds.dug, {gain=1.0, pos = pos})
+	end
+end
+
 -- Register a new liquid
 --   source = name of the source node
 --   flowing = name of the flowing node
@@ -56,6 +71,7 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 				end
 
 				local place_liquid = function(pos, node, source, flowing, fullness)
+					sound_place(source, pos)
 					if math.floor(fullness/128) == 1 or (not minetest.setting_getbool("liquid_finite")) then
 						minetest.add_node(pos, {name=source, param2=fullness})
 						return
@@ -83,8 +99,10 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 						nn == "mcl_cauldrons:cauldron_2") then
 					-- Put water into cauldron
 					minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_3"})
+
+					sound_place("mcl_core:water_source", pos)
 				elseif item == "bucket:bucket_water" and nn == "mcl_cauldrons:cauldron_3" then
-					-- No-op (just empty the bucket)
+					sound_place("mcl_core:water_source", pos)
 				elseif minetest.registered_nodes[nn].buildable_to then
 					-- buildable; replace the node
 					local pns = user:get_player_name()
@@ -116,7 +134,7 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 
 				-- Handle bucket item and inventory stuff
 				if not minetest.setting_getbool("creative_mode") then
-					-- Add empty bucket and put it into invntory, if possible.
+					-- Add empty bucket and put it into inventory, if possible.
 					-- Drop empty bucket otherwise.
 					local new_bucket = ItemStack("bucket:bucket_empty")
 					if itemstack:get_count() == 1 then
@@ -174,6 +192,7 @@ minetest.register_craftitem("bucket:bucket_empty", {
 			end
 
 			minetest.add_node(pointed_thing.under, {name="air"})
+			sound_take(nn, pointed_thing.under)
 
 			if doc.entry_exists("nodes", nn) then
 				doc.mark_entry_as_revealed(user:get_player_name(), "nodes", nn)
@@ -185,6 +204,7 @@ minetest.register_craftitem("bucket:bucket_empty", {
 			if not minetest.setting_getbool("creative_mode") then
 				new_bucket = ItemStack("bucket:bucket_water")
 			end
+			sound_take("mcl_core:water_source", pointed_thing.under)
 		end
 
 		-- Add liquid bucket and put it into inventory, if possible.
