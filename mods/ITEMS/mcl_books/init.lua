@@ -207,9 +207,26 @@ minetest.register_craft_predict(function(itemstack, player, old_craft_grid, craf
 
 	local ometa = original:get_meta()
 	local generation = ometa:get_int("generation")
+
 	-- Check generation, don't allow crafting with copy of copy of book
 	if generation >= 2 then
 		return ItemStack("")
+	else
+		-- Valid copy. Let's update the description field of the result item
+		-- so it is properly displayed in the crafting grid.
+		local imeta = itemstack:get_meta()
+		local title = ometa:get_string("title")
+		local author = ometa:get_string("author")
+
+		-- Increase book generation and update description
+		generation = generation + 1
+		if generation < 1 then
+			generation = 1
+		end
+
+		local desc = make_description(title, author, generation)
+		imeta:set_string("description", desc)
+		return itemstack
 	end
 end)
 
