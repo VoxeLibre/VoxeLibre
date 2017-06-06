@@ -1,13 +1,16 @@
-License of sounds
+Licenses of sounds
 -----------------
+
+Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
+http://creativecommons.org/licenses/by-sa/3.0/
+
+Creative Commons Attribution 3.0 Unported (CC BY-SA 3.0)
+http://creativecommons.org/licenses/by/3.0/
 
 Glass breaking sounds (CC BY 3.0):
    1: http://www.freesound.org/people/cmusounddesign/sounds/71947/
    2: http://www.freesound.org/people/Tomlija/sounds/97669/
    3: http://www.freesound.org/people/lsprice/sounds/88808/
-
-Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
-http://creativecommons.org/licenses/by-sa/3.0/
 
 default_tool_breaks.ogg by EdgardEdition (CC BY 3.0), http://www.freesound.org/people/EdgardEdition
 
@@ -44,4 +47,26 @@ Mito551 (sounds) (CC BY-SA 3.0):
   default_dirt_footstep.1.ogg
   default_dirt_footstep.2.ogg
   default_glass_footstep.ogg
+
+Metal sounds:
+  default_dig_metal.ogg - yadronoff - CC-BY-3.0
+  - https://www.freesound.org/people/yadronoff/sounds/320397/
+  default_dug_metal.*.ogg - Iwan Gabovitch - qubodup - CC0
+  - http://opengameart.org/users/qubodup
+  default_metal_footstep.*.ogg - Ottomaani138 - CC0
+  - https://www.freesound.org/people/Ottomaani138/sounds/232692/
+  default_place_node_metal.*.ogg - Ogrebane - CC0
+  - http://opengameart.org/content/wood-and-metal-sound-effects-volume-2
+
+AGFX (CC BY 3.0)
+https://www.freesound.org/people/AGFX/packs/1253/
+  default_water_footstep.1.ogg
+  default_water_footstep.2.ogg
+  default_water_footstep.3.ogg
+(default_water_footstep.4.ogg is silent)
+
+blukotek (CC0 1.0)
+https://www.freesound.org/people/blukotek/sounds/251660/
+  default_dig_snappy.ogg
+
 

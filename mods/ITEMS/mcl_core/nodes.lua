@@ -1545,6 +1545,7 @@ minetest.register_node("mcl_core:water_flowing", {
 			animation={type="vertical_frames", aspect_w=64, aspect_h=64, length=2.0}
 		},
 	},
+	sounds = mcl_sounds.node_sound_water_defaults(table),
 	alpha = WATER_ALPHA,
 	paramtype = "light",
 	paramtype2 = "flowingliquid",
@@ -1589,6 +1590,7 @@ Water interacts with lava in various ways:
 			backface_culling = false,
 		}
 	},
+	sounds = mcl_sounds.node_sound_water_defaults(table),
 	alpha = WATER_ALPHA,
 	paramtype = "light",
 	walkable = false,
@@ -1746,7 +1748,7 @@ minetest.register_node("mcl_core:ironblock", {
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {pickaxey=2, building_block=1},
-	sounds = mcl_sounds.node_sound_stone_defaults(),
+	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 30,
 	_mcl_hardness = 5,
 })
@@ -1758,7 +1760,7 @@ minetest.register_node("mcl_core:goldblock", {
 	is_ground_content = false,
 	stack_max = 64,
 	groups = {pickaxey=4, building_block=1},
-	sounds = mcl_sounds.node_sound_stone_defaults(),
+	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 30,
 	_mcl_hardness = 5,
 })

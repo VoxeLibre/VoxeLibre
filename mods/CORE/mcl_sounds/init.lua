@@ -29,8 +29,19 @@ function mcl_sounds.node_sound_stone_defaults(table)
 	return table
 end
 
--- TODO: Maybe add custom metal sounds
-mcl_sounds.node_sound_metal_defaults = mcl_sounds.node_sound_stone_defaults
+function mcl_sounds.node_sound_metal_defaults(table)
+	table = table or {}
+	table.footstep = table.footstep or
+			{name="default_metal_footstep", gain=0.5}
+	table.dug = table.dug or
+			{name="default_dug_metal", gain=1.0}
+	table.dig = table.dig or
+			{name="default_dig_metal", gain=1.0}
+	table.place = table.place or
+			{name="default_place_node_metal", gain=1.0}
+	mcl_sounds.node_sound_defaults(table)
+	return table
+end
 
 function mcl_sounds.node_sound_dirt_defaults(table)
 	table = table or {}
@@ -91,9 +102,9 @@ function mcl_sounds.node_sound_leaves_defaults(table)
 	table.footstep = table.footstep or
 			{name="default_grass_footstep", gain=0.35}
 	table.dug = table.dug or
-			{name="default_grass_footstep", gain=0.85}
+			{name="default_dig_snappy", gain=0.85}
 	table.dig = table.dig or
-			{name="default_dig_crumbly", gain=0.4}
+			{name="default_dig_snappy", gain=0.4}
 	table.place = table.place or
 			{name="default_place_node", gain=1.0}
 	mcl_sounds.node_sound_defaults(table)
@@ -108,6 +119,14 @@ function mcl_sounds.node_sound_glass_defaults(table)
 			{name="default_break_glass", gain=1.0}
 	table.dig = table.dig or
 			{name="default_dig_cracky", gain=1.0}
+	mcl_sounds.node_sound_defaults(table)
+	return table
+end
+
+function mcl_sounds.node_sound_water_defaults(table)
+	table = table or {}
+	table.footstep = table.footstep or
+			{name = "default_water_footstep", gain = 0.2}
 	mcl_sounds.node_sound_defaults(table)
 	return table
 end
