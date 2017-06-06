@@ -74,9 +74,9 @@ end
 function mcl_sounds.node_sound_snow_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or
-			{name="default_snow_footstep", gain=0.5}
+			{name="pedology_snow_soft_footstep", gain=0.7}
 	table.dug = table.dug or
-			{name="default_snow_footstep", gain=1.0}
+			{name="pedology_snow_soft_footstep", gain=1.0}
 	table.dig = table.dig or
 			{name="default_dig_crumbly", gain=1.0}
 	table.place = table.place or

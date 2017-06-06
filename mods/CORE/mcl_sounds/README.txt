@@ -35,8 +35,6 @@ Mito551 (sounds) (CC BY-SA 3.0):
   default_place_node.3.ogg
   default_place_node_hard.1.ogg
   default_place_node_hard.2.ogg
-  default_snow_footstep.1.ogg
-  default_snow_footstep.2.ogg
   default_hard_footstep.1.ogg
   default_hard_footstep.2.ogg
   default_hard_footstep.3.ogg
@@ -76,3 +74,6 @@ Voxelands project <http://www.voxelands.com/> (CC BY-SA 3.0)
 
 (Note: Artists from the Voxelands project include: sdzen, darkrose, sapier,
       Tom Peter, Telaron, juskiddink)
+
+Unknown authors (WTFPL):
+  pedology_snow_soft_footstep.*.ogg
