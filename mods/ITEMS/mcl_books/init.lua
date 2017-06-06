@@ -100,7 +100,7 @@ end
 minetest.register_craftitem("mcl_books:writable_book", {
 	description = "Book and Quill",
 	_doc_items_longdesc = "This item can be used to write down some notes.",
-	_doc_items_usagehelp = "Hold it in the hand, then rightclick to read the current notes and edit then. You can edit the text as often as you like. You can also sign the book which turns it into a written book which can't be edited anymore.",
+	_doc_items_usagehelp = "Hold it in the hand, then rightclick to read the current notes and edit then. You can edit the text as often as you like. You can also sign the book which turns it into a written book which you can stack, but it can't be edited anymore.",
 	inventory_image = "mcl_books_book_writable.png",
 	groups = { book=1 },
 	stack_max = 1,
