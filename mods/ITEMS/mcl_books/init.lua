@@ -188,6 +188,31 @@ minetest.register_craft({
 })
 -- TODO: Add copy recipes to copy 2-8 books at once
 
+minetest.register_craft_predict(function(itemstack, player, old_craft_grid, craft_inv)
+	if itemstack:get_name() ~= "mcl_books:written_book" then
+		return
+	end
+
+	local original
+	local index
+	for i = 1, player:get_inventory():get_size("craft") do
+		if old_craft_grid[i]:get_name() == "mcl_books:written_book" then
+			original = old_craft_grid[i]
+			index = i
+		end
+	end
+	if not original then
+		return
+	end
+
+	local ometa = original:get_meta()
+	local generation = ometa:get_int("generation")
+	-- Check generation, don't allow crafting with copy of copy of book
+	if generation >= 2 then
+		return ItemStack("")
+	end
+end)
+
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
 	if itemstack:get_name() ~= "mcl_books:written_book" then
 		return
@@ -211,8 +236,15 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 		local copymeta = original:get_metadata()
 		itemstack:set_metadata(copymeta)
 	else
-		-- Copy metadata
 		local ometa = original:get_meta()
+		local generation = ometa:get_int("generation")
+
+		-- No copy of copy of copy of book allowed
+		if generation >= 2 then
+			return ItemStack("")
+		end
+
+		-- Copy metadata
 		local imeta = itemstack:get_meta()
 		local title = ometa:get_string("title")
 		local author = ometa:get_string("author")
@@ -221,7 +253,6 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 		imeta:set_string("text", text)
 
 		-- Increase book generation and update description
-		local generation = ometa:get_int("generation")
 		generation = generation + 1
 		if generation < 1 then
 			generation = 1
