@@ -42,6 +42,21 @@ local get_text = function(itemstack)
 	return text
 end
 
+local make_description = function(title, author, generation)
+	local desc
+	if generation == 0 then
+		desc = string.format("“%s”", title)
+	elseif generation == 1 then
+		desc = string.format("Copy of “%s”", title)
+	elseif generation == 2 then
+		desc = string.format("Copy of Copy of “%s”", title)
+	else
+		desc = "Tattered Book"
+	end
+	desc = desc .. "\n" .. core.colorize("#AAAAAA", string.format("by %s", author))
+	return desc
+end
+
 local write = function(itemstack, user, pointed_thing)
 	-- Call on_rightclick if the pointed node defines it
 	if pointed_thing.type == "node" then
@@ -129,7 +144,7 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 			meta:set_string("title", fields.title)
 			meta:set_string("author", name)
 			meta:set_string("text", text)
-			meta:set_string("description", string.format("“%s”",fields.title) .. "\n" .. string.format("by %s", name))
+			meta:set_string("description", make_description(fields.title, name, 0))
 
 			-- The book copy counter. 0 = original, 1 = copy of original, 2 = copy of copy of original, …
 			meta:set_int("generation", 0)
@@ -207,21 +222,12 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 
 		-- Increase book generation and update description
 		local generation = ometa:get_int("generation")
-
-		local desc
-		if generation == 0 then
-			desc = string.format("Copy of “%s”", title)
-		elseif generation == 1 then
-			desc = string.format("Copy of Copy of “%s”", title)
-		else
-			desc = "Tattered Book"
-		end
-		desc = desc .. "\n" .. string.format("by %s", author)
-
 		generation = generation + 1
 		if generation < 1 then
 			generation = 1
 		end
+
+		local desc = make_description(title, author, generation)
 
 		imeta:set_string("description", desc)
 		imeta:set_int("generation", generation)
