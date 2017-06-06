@@ -72,6 +72,7 @@ https://www.freesound.org/people/blukotek/sounds/251660/
 Voxelands project <http://www.voxelands.com/> (CC BY-SA 3.0)
   mcl_sounds_place_node_water.ogg
   mcl_sounds_dug_water.ogg
+  player_damage.ogg
 
 (Note: Artists from the Voxelands project include: sdzen, darkrose, sapier,
       Tom Peter, Telaron, juskiddink)
