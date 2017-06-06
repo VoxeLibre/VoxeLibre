@@ -118,7 +118,7 @@ minetest.register_node("mcl_flowers:fern", {
 	},
 })
 
-local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_img, drop, is_flower)
+local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_img, selbox_radius, selbox_top_height, drop, is_flower)
 	if not inv_img then
 		inv_img = top_img
 	end
@@ -142,6 +142,10 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		buildable_to = true,
 		drop = drop,
 		node_placement_prediction = "",
+		selection_box = {
+			type = "fixed",
+			fixed = { -selbox_radius, -0.5, -selbox_radius, selbox_radius, 0.5, selbox_radius },
+		},
 		on_place = function(itemstack, placer, pointed_thing)
 			-- We can only place on nodes
 			if pointed_thing.type ~= "node" then
@@ -201,6 +205,10 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		paramtype = "light",
 		walkable = false,
 		buildable_to = true,
+		selection_box = {
+			type = "fixed",
+			fixed = { -selbox_radius, -0.5, -selbox_radius, selbox_radius, selbox_top_height, selbox_radius },
+		},
 		drop = "",
 		after_destruct = function(pos, oldnode)
 			-- "Dig" bottom half of flower (if it exists)
@@ -220,15 +228,15 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 
 end
 
-add_large_plant("peony", "Peony", "A peony is a large plant which occupies two blocks. It is mainly used in dye protection.", "mcl_flowers_double_plant_paeonia_bottom.png", "mcl_flowers_double_plant_paeonia_top.png")
-add_large_plant("rose_bush", "Rose Bush", "A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye protection.", "mcl_flowers_double_plant_rose_bottom.png", "mcl_flowers_double_plant_rose_top.png")
-add_large_plant("lilac", "Lilac", "A lilac is a large plant which occupies two blocks. It is mainly used in dye production.", "mcl_flowers_double_plant_syringa_bottom.png", "mcl_flowers_double_plant_syringa_top.png")
+add_large_plant("peony", "Peony", "A peony is a large plant which occupies two blocks. It is mainly used in dye protection.", "mcl_flowers_double_plant_paeonia_bottom.png", "mcl_flowers_double_plant_paeonia_top.png", nil, 5/16, 4/16)
+add_large_plant("rose_bush", "Rose Bush", "A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye protection.", "mcl_flowers_double_plant_rose_bottom.png", "mcl_flowers_double_plant_rose_top.png", nil, 6/16, 7/16)
+add_large_plant("lilac", "Lilac", "A lilac is a large plant which occupies two blocks. It is mainly used in dye production.", "mcl_flowers_double_plant_syringa_bottom.png", "mcl_flowers_double_plant_syringa_top.png", nil, 6/16, 7/16)
 
 -- TODO: Make the sunflower face East. Requires a mesh for the top node.
-add_large_plant("sunflower", "Sunflower", "A sunflower is a large plant which occupies two blocks. It is mainly used in dye production.", "mcl_flowers_double_plant_sunflower_bottom.png", "mcl_flowers_double_plant_sunflower_top.png^mcl_flowers_double_plant_sunflower_front.png", "mcl_flowers_double_plant_sunflower_front.png")
+add_large_plant("sunflower", "Sunflower", "A sunflower is a large plant which occupies two blocks. It is mainly used in dye production.", "mcl_flowers_double_plant_sunflower_bottom.png", "mcl_flowers_double_plant_sunflower_top.png^mcl_flowers_double_plant_sunflower_front.png", "mcl_flowers_double_plant_sunflower_front.png", 3/16, 4/16)
 
-add_large_plant("double_grass", "Double Tallgrass", "Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds.", "mcl_flowers_double_plant_grass_bottom.png", "mcl_flowers_double_plant_grass_top.png", nil, wheat_seed_drop, false)
-add_large_plant("double_fern", "Large Fern", "Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds.", "mcl_flowers_double_plant_fern_bottom.png", "mcl_flowers_double_plant_fern_top.png", nil, wheat_seed_drop, false)
+add_large_plant("double_grass", "Double Tallgrass", "Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds.", "mcl_flowers_double_plant_grass_bottom.png", "mcl_flowers_double_plant_grass_top.png", nil, 5/16, 7/16, wheat_seed_drop, false)
+add_large_plant("double_fern", "Large Fern", "Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds.", "mcl_flowers_double_plant_fern_bottom.png", "mcl_flowers_double_plant_fern_top.png", nil, 6/16, 5/16, wheat_seed_drop, false)
 
 -- Lily Pad
 minetest.register_node("mcl_flowers:waterlily", {
