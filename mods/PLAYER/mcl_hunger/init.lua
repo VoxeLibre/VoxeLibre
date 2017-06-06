@@ -88,15 +88,18 @@ end
 
 -- API START --
 mcl_hunger.get_hunger = function(player)
-	return tonumber(player:get_attribute("mcl_hunger:hunger")) or 20
+	local hunger = player:get_attribute("mcl_hunger:hunger") or 20
+	return tonumber(hunger)
 end
 
 mcl_hunger.get_saturation = function(player)
-	return tonumber(player:get_attribute("mcl_hunger:saturation")) or mcl_hunger.SATURATION_INIT
+	local saturation = player:get_attribute("mcl_hunger:saturation") or mcl_hunger.SATURATION_INIT
+	return tonumber(saturation)
 end
 
 mcl_hunger.get_exhaustion = function(player)
-	return tonumber(player:get_attribute("mcl_hunger:exhaustion")) or 0
+	local exhaustion = player:get_attribute("mcl_hunger:exhaustion") or 0
+	return tonumber(exhaustion)
 end
 
 mcl_hunger.set_hunger = function(player, hunger, update_hudbars)
