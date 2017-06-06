@@ -62,6 +62,10 @@ minetest.register_node("mcl_flowers:tallgrass", {
 	tiles = {"mcl_flowers_tallgrass.png"},
 	inventory_image = "mcl_flowers_tallgrass.png",
 	wield_image = "mcl_flowers_tallgrass.png",
+	selection_box = {
+		type = "fixed",
+		fixed = {{ -6/16, -8/16, -6/16, 6/16, 8/16, 6/16 }},
+	},
 	paramtype = "light",
 	sunlight_propagates = true,
 	walkable = false,

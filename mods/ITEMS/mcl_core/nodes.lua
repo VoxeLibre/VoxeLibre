@@ -701,7 +701,7 @@ minetest.register_node("mcl_core:sapling", {
 	walkable = false,
 	selection_box = {
 		type = "fixed",
-		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
+		fixed = {-6/16, -0.5, -6/16, 6/16, 0.5, 6/16}
 	},
 	stack_max = 64,
 	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
@@ -787,7 +787,7 @@ minetest.register_node("mcl_core:darksapling", {
 	walkable = false,
 	selection_box = {
 		type = "fixed",
-		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
+		fixed = {-5.5/16, -0.5, -5.5/16, 5.5/16, 0.5, 5.5/16}
 	},
 	stack_max = 64,
 	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
@@ -931,7 +931,7 @@ minetest.register_node("mcl_core:junglesapling", {
 	walkable = false,
 	selection_box = {
 		type = "fixed",
-		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
+		fixed = {-4/16, -0.5, -4/16, 4/16, 0.5, 4/16}
 	},
 	stack_max = 64,
 	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
@@ -1176,7 +1176,7 @@ minetest.register_node("mcl_core:birchsapling", {
 	walkable = false,
 	selection_box = {
 		type = "fixed",
-		fixed = {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3}
+		fixed = {-6/16, -0.5, -6/16, 6/16, 0.5, 6/16}
 	},
 	stack_max = 64,
 	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
@@ -1284,7 +1284,7 @@ minetest.register_node("mcl_core:reeds", {
 	selection_box = {
 		type = "fixed",
 		fixed = {
-			{-7/16, -8/16, -7/16, 7/16, 8/16, 7/16},
+			{-6/16, -8/16, -6/16, 6/16, 8/16, 6/16},
 		},
 	},
 	stack_max = 64,
