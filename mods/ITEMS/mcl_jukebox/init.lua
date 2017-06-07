@@ -10,6 +10,7 @@ local recorddata = {
 	{ "Moonsong (Jordach's Mix)", "HeroOfTheWinds", "strad" },
 	{ "Synthgroove (Jordach's Mix)", "HeroOfTheWinds", "mellohi" },
 	{ "The Clueless Frog (Jordach's Mix)", "SoundHelix", "mall" },
+	{ "Winter Feeling", "Tom Peter", "ward" },
 }
 local records = #recorddata
 
