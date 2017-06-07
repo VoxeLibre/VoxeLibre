@@ -120,6 +120,10 @@ function mcl_doors:register_trapdoor(name, def)
 		is_ground_content = false,
 		paramtype = "light",
 		paramtype2 = "facedir",
+		-- TODO: Implement Minecraft behaviour: Climbable if directly above
+		-- ladder w/ matching orientation.
+		-- Current behavour: Always climbable
+		climbable = true,
 		sunlight_propagates = true,
 		pointable = true,
 		groups = groups_open,
