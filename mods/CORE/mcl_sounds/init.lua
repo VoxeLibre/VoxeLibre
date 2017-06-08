@@ -102,7 +102,7 @@ function mcl_sounds.node_sound_leaves_defaults(table)
 	table.footstep = table.footstep or
 			{name="default_grass_footstep", gain=0.35}
 	table.dug = table.dug or
-			{name="default_dig_snappy", gain=0.85}
+			{name="default_grass_footstep", gain=0.85}
 	table.dig = table.dig or
 			{name="default_dig_snappy", gain=0.4}
 	table.place = table.place or
