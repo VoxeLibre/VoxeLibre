@@ -382,6 +382,7 @@ local eternal_override = {
 
 if minetest.get_modpath("mcl_nether") then
 	minetest.override_item("mcl_nether:netherrack", eternal_override)
+	minetest.override_item("mcl_nether:magma", eternal_override)
 end
 
 -- Set pointed_thing on (normal) fire
