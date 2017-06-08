@@ -1,7 +1,13 @@
 mcl_craftguide = {}
 
 local craftguide, datas, mt = {}, {}, minetest
-local progressive_mode = mt.setting_getbool("craftguide_progressive_mode")
+-- Progressive Mode:
+-- true: Only show recipes which include at least one of the items the player posesses
+-- false: Show all crafting recipes
+local progressive_mode = true
+if mt.setting_getbool("craftguide_progressive_mode") == false then
+	progressive_mode = false
+end
 local get_recipe = mt.get_craft_recipe
 local get_result, show_formspec = mt.get_craft_result, mt.show_formspec
 local reg_items = mt.registered_items
@@ -365,7 +371,7 @@ function craftguide:recipe_in_inv(inv, item_name, recipes_f)
 	local show_item_recipes = {}
 
 	for i=1, #recipes do
-		show_item_recipes[i] = true
+		show_item_recipes[i] = false
 		for _, item in pairs(recipes[i].items) do
 			local group_in_inv = false
 			if item:sub(1,6) == "group:" then
@@ -376,8 +382,8 @@ function craftguide:recipe_in_inv(inv, item_name, recipes_f)
 					end
 				end
 			end
-			if not group_in_inv and not item_in_inv(inv, item) then
-				show_item_recipes[i] = false
+			if group_in_inv or item_in_inv(inv, item) then
+				show_item_recipes[i] = true
 			end
 		end
 	end
