@@ -7,10 +7,9 @@ local recorddata = {
 	{ "Eastern Feeling", "Jordach", "blocks"},
 	{ "Minetest", "Jordach", "far" },
 	{ "Credit Roll (Jordach's HD Mix)", "Junichi Masuda", "chirp" },
-	{ "Moonsong (Jordach's Mix)", "HeroOfTheWinds", "strad" },
+	{ "Winter Feeling", "Tom Peter", "strad" },
 	{ "Synthgroove (Jordach's Mix)", "HeroOfTheWinds", "mellohi" },
 	{ "The Clueless Frog (Jordach's Mix)", "SoundHelix", "mall" },
-	{ "Winter Feeling", "Tom Peter", "ward" },
 }
 local records = #recorddata
 

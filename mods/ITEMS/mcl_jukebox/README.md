@@ -8,7 +8,7 @@ Based on the jdukebox mod by Jordach.
 Music by Jordach, HeroOfTheWinds and Junichi Masuda
 (see in-game item tooltip for details).
 
-`mcl_jukebox_track_9.ogg`
+`mcl_jukebox_track_6.ogg`
 “Winter Feeling”, by Tom Peter
 Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) <http://creativecommons.org/licenses/by-sa/3.0/>
 Source: <https://opengameart.org/content/winter-feeling>
