@@ -21,14 +21,14 @@ block.dyes = {
 	{"light_blue", "Light Blue", "lightblue", true},
 }
 
-local hc_desc = "Hardened clay is natural in deserts and a basic building material. It comes in many different colors."
-local gt_desc = "Glazed terracotta is a decorational block with a complex pattern on it. It can be rotated by placing it in different directions."
+local hc_desc = "Terracotta is a basic building material. It comes in many different colors."
+local gt_desc = "Glazed terracotta is a decorational block with a complex pattern. It can be rotated by placing it in different directions."
 local cp_desc = "Concrete powder is used for creating concrete, but it can also be used as decoration itself. It comes in different colors. Concrete powder turns into concrete of the same color when it comes in contact with water."
 local conc_desc = "Concrete is a decorational block which comes in many different colors. It is notable for having a very strong and clean color.",
 
 minetest.register_node("mcl_colorblocks:hardened_clay", {
-	description = "Hardened Clay",
-	_doc_items_longdesc = "Hardened clay is natural to deserts and a basic building material.",
+	description = "Terracotta",
+	_doc_items_longdesc = "Terracotta is a basic building material.",
 	tiles = {"hardened_clay.png"},
 	stack_max = 64,
 	groups = {pickaxey=1, hardened_clay=1,building_block=1, material_stone=1},
@@ -53,7 +53,7 @@ for _, row in ipairs(block.dyes) do
 	local terracotta = row[4]
 	-- Node Definition
 	minetest.register_node("mcl_colorblocks:hardened_clay_"..name, {
-		description = desc.." Hardened Clay",
+		description = desc.." Terracotta",
 		_doc_items_longdesc = hc_desc,
 		tiles = {"hardened_clay_stained_"..name..".png"},
 		groups = {pickaxey=1, hardened_clay=1,building_block=1, material_stone=1},
