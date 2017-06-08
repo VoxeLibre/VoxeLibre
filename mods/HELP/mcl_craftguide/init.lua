@@ -301,9 +301,13 @@ function craftguide:get_formspec(player_name, is_fuel)
 	local xoffset = data.iX / 2 + (even_num and 0.5 or 0) + 2
 
 	if not next(data.items) then
-		formspec = formspec..
-			"label["..(xoffset - (even_num and 1.5 or 1))..
-				",2;No item to show]"
+		local msg = ""
+		if data.filter == "" then
+			msg = "You don't know any crafting recipes yet.\nCollect some items and open the recipe book again."
+		else
+			msg = "No crafting recipes found.\nReset the search and try again."
+		end
+		formspec = formspec.."label[0,2;"..mt.formspec_escape(msg).."]"
 	end
 
 	local first_item = (data.pagenum - 1) * ipp
