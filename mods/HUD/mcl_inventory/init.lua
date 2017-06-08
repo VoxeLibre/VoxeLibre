@@ -92,7 +92,7 @@ local function set_inventory(player, armor_change_only)
 	"list[current_player;craftpreview;7,1.5;1,1;]"..
 	-- crafting guide button
 	"image_button[4.5,3;1,1;craftguide_book.png;__mcl_craftguide;]"..
-	"tooltip[__mcl_craftguide;Show crafting recipes]"..
+	"tooltip[__mcl_craftguide;Recipe book]"..
 	-- help button
 	"image_button[8,3;1,1;doc_button_icon_lores.png;__mcl_doc;]"..
 	"tooltip[__mcl_doc;Help]"..
