@@ -20,7 +20,7 @@ minetest.register_node("mcl_crafting_table:crafting_table", {
 		"list[current_player;main;0,7.74;9,1;]"..
 		"list[current_player;craft;1.75,0.5;3,3;]"..
 		"list[current_player;craftpreview;6.1,1.5;1,1;]"..
-		"image_button[8,0;1,1;craftguide_book.png;__mcl_craftguide;]"..
+		"image_button[0.75,1.5;1,1;craftguide_book.png;__mcl_craftguide;]"..
 		"tooltip[__mcl_craftguide;Show crafting recipes]"..
 		"listring[current_player;main]"..
 		"listring[current_player;craft]"
