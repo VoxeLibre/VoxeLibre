@@ -1,0 +1,4 @@
+# This allows zooming by default for all players.
+# More specifically, players get the zoom privilege automatically granted on
+# when they join.
+allow_zoom (Allow zooming) bool true
