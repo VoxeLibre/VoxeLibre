@@ -1218,39 +1218,11 @@ minetest.register_node("mcl_core:cactus", {
 		},
 	},
 	-- Only allow to place cactus on sand or cactus
-	on_place = function(itemstack, placer, pointed_thing)
-		if pointed_thing.type ~= "node" then
-			-- no interaction possible with entities
-			return itemstack
-		end
-
-		-- Call on_rightclick if the pointed node defines it
-		local node = minetest.get_node(pointed_thing.under)
-		if placer and not placer:get_player_control().sneak then
-			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
-			end
-		end
-
-		local a = pointed_thing.above
-		local node_above = minetest.get_node(a)
-		local node_below = minetest.get_node({x=a.x, y=a.y-1, z=a.z})
-		local def = minetest.registered_nodes[node_below.name]
-		local def2 = minetest.registered_nodes[node_above.name]
-
-		if (node_below.name == "mcl_core:cactus" or (def.groups and def.groups.sand)) and def2.buildable_to then
-			local idef = itemstack:get_definition()
-			local success = minetest.item_place_node(itemstack, placer, pointed_thing)
-
-			if success then
-				if idef.sounds and idef.sounds.place then
-					minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
-				end
-			end
-		end
-
-		return itemstack
-	end,
+	on_place = mcl_util.generate_on_place_plant_function(function(pos, node)
+		local node_below = minetest.get_node_or_nil({x=pos.x,y=pos.y-1,z=pos.z})
+		if not node_below then return false end
+		return (node_below.name == "mcl_core:cactus" or minetest.get_item_group(node_below.name, "sand") == 1)
+	end),
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
 })
