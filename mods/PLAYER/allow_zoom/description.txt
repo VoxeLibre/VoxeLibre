@@ -1,1 +1,0 @@
-Allows zooming by default for all players.

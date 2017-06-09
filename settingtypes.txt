@@ -44,11 +44,6 @@ enable_bed_respawn (Respawn at bed) bool true
 # This setting is only read at startup.
 enable_bed_night_skip (Skip night when sleeping) bool true
 
-# This allows zooming by default for all players.
-# More specifically, players get the zoom privilege automatically granted on
-# when they join.
-allow_zoom (Allow zooming) bool true
-
 # If enabled, the recipe book will only show recipes which require one
 # item which the player has currently in possession.
 # If disabled, the recipe book shows all crafting recipes.
