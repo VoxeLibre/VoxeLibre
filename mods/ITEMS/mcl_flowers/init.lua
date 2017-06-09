@@ -250,6 +250,25 @@ add_large_plant("sunflower", "Sunflower", "A sunflower is a large plant which oc
 add_large_plant("double_grass", "Double Tallgrass", "Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds.", "mcl_flowers_double_plant_grass_bottom.png", "mcl_flowers_double_plant_grass_top.png", nil, 5/16, 7/16, wheat_seed_drop, false)
 add_large_plant("double_fern", "Large Fern", "Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds.", "mcl_flowers_double_plant_fern_bottom.png", "mcl_flowers_double_plant_fern_top.png", nil, 6/16, 5/16, wheat_seed_drop, false)
 
+minetest.register_abm({
+	label = "Pop out small plants",
+	nodenames = {"group:plant"},
+	interval = 12,
+	chance = 2,
+	action = function(pos, node)
+		local below = minetest.get_node_or_nil({x=pos.x, y=pos.y-1, z=pos.z})
+		if not below then
+			return
+		end
+		-- Pop out flower if not on dirt, grass block or too low brightness
+		if (below.name ~= "mcl_core:dirt" and below.name ~= "mcl_core:dirt_with_grass" and below.name ~= "mcl_core:dirt_with_grass_snow") or (minetest.get_node_light(pos, 0.5) < 8) then
+			minetest.dig_node(pos)
+			return
+		end
+	end,
+})
+
+
 -- Lily Pad
 minetest.register_node("mcl_flowers:waterlily", {
 	description = "Lily Pad",
