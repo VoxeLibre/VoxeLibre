@@ -6,6 +6,8 @@
 # Items are not used up, and blocks do not drop.
 # Some of the functionality is only available if this setting is present
 # at startup.
+# This setting may be removed in later version in favor of
+# per-player Creative Mode.
 creative_mode (Creative mode) bool false
 
 # Fire spreads and flammable nodes will be ignited by nearby fire.
