@@ -32,10 +32,6 @@ local function drop_fields(player, name)
 	end
 end
 
-local function update_armor(player)
-	return
-end
-
 local function set_inventory(player, armor_change_only)
 	if minetest.setting_getbool("creative_mode") then
 		if armor_change_only then
@@ -139,7 +135,6 @@ minetest.register_on_joinplayer(function(player)
 		local update_inventory_original = armor.update_inventory
 		armor.set_player_armor = function(self, player)
 			set_player_armor_original(self, player)
-			update_armor(player)
 		end
 		armor.update_inventory = function(self, player)
 			update_inventory_original(self, player)
