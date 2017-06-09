@@ -19,14 +19,14 @@ flame_sound (Flame sound) bool true
 
 # If enabled, breaking blocks will cause them to drop as item.
 # Note that blocks never have drops when in Creative Mode.
-mcl_do_tile_drops (Blocks have drops) bool true
+mcl_doTileDrops (Blocks have drops) bool true
 
 # Normally, players drop all their items when they die. Enable this
 # setting, so players always keep their inventory on death.
-mcl_keep_inventory_on_death (Keep inventory on death) bool false
+mcl_keepInventory (Keep inventory on death) bool false
 
 # If enabled, chat messages are shown to everyone when a player dies.
-mcl_show_death_messages (Show death messages) bool true
+mcl_showDeathMessages (Show death messages) bool true
 
 # If enabled, only peaceful mobs will appear naturally. This does not
 # affect monster spawners.

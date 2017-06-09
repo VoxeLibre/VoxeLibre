@@ -1,5 +1,5 @@
 minetest.register_on_dieplayer(function(player)
-	local keep = minetest.setting_getbool("mcl_keep_inventory_on_death")
+	local keep = minetest.setting_getbool("mcl_keepInventory")
 	if keep == false then
 		local inv = player:get_inventory()
 		local pos = player:getpos()
@@ -20,7 +20,7 @@ minetest.register_on_dieplayer(function(player)
 	end
 
 	-- Death message
-	local message = minetest.setting_getbool("mcl_show_death_messages")
+	local message = minetest.setting_getbool("mcl_showDeathMessages")
 	if message == nil then message = true end
 	if message then
 		local name = player:get_player_name()
