@@ -47,6 +47,16 @@ minetest.register_node("mcl_chests:"..basename, {
 	on_construct = function(pos)
 		local param2 = minetest.get_node(pos).param2
 		local meta = minetest.get_meta(pos)
+		--[[ This is a workaround for Minetest issue 5894
+		<https://github.com/minetest/minetest/issues/5894>.
+		Apparently if we don't do this, double chests initially don't work when
+		placed at chunk borders, and some chests randomly don't work after
+		placing. ]]
+		-- FIXME: Remove this workaround when the bug has been fixed.
+		-- BEGIN OF WORKAROUND --
+		meta:set_string("workaround", "ignore_me")
+		meta:set_string("workaround", nil) -- Done to keep metadata clean
+		-- END OF WORKAROUND --
 		local inv = meta:get_inventory()
 		inv:set_size("main", 9*3)
 		if minetest.get_node(get_chest_neighborpos(pos, param2, "right")).name == "mcl_chests:"..basename then
