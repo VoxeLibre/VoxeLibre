@@ -1258,6 +1258,7 @@ minetest.register_node("mcl_core:cactus", {
 minetest.register_node("mcl_core:reeds", {
 	description = "Sugar Canes",
 	_doc_items_longdesc = "Sugar canes are a plant which has some uses in crafting. Sugar canes will slowly grow up to 3 blocks when they are next to water and are placed on a grass block, dirt, sand, red sand, podzol or coarse dirt. When a sugar cane is broken, all sugar canes connected above will break as well.",
+	_doc_items_usagehelp = "Sugar canes can only be placed on blocks on which they would grow.",
 	drawtype = "plantlike",
 	tiles = {"default_papyrus.png"},
 	inventory_image = "mcl_core_reeds.png",
@@ -1285,6 +1286,37 @@ minetest.register_node("mcl_core:reeds", {
 	groups = {dig_immediate=3, craftitem=1, plant=1, non_mycelium_plant=1, dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	node_placement_prediction = "",
+	on_place = mcl_util.generate_on_place_plant_function(function(place_pos, place_node)
+		local soil_pos = {x=place_pos.x, y=place_pos.y-1, z=place_pos.z}
+		local soil_node = minetest.get_node_or_nil(soil_pos)
+		if not soil_node then return false end
+		local snn = soil_node.name -- soil node name
+
+		-- Placement rules:
+		-- * On group:soil_sugarcane
+		-- * Next to water or frosted ice
+		if minetest.get_item_group(snn, "soil_sugarcane") == 0 then
+			return false
+		end
+
+		local posses = {
+			{ x=0, y=0, z=1},
+			{ x=0, y=0, z=-1},
+			{ x=1, y=0, z=0},
+			{ x=-1, y=0, z=0},
+		}
+		for p=1, #posses do
+			local checknode = minetest.get_node(vector.add(soil_pos, posses[p]))
+			if minetest.get_item_group(checknode.name, "water") ~= 0 or minetest.get_item_group(checknode.name, "frosted_ice") ~= 0 then
+				-- Water found! Sugar canes are happy! :-)
+				return true
+			end
+		end
+
+		-- No water found! Sugar canes are not amuzed and refuses to be placed. :-(
+		return false
+
+	end),
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
