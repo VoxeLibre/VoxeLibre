@@ -257,9 +257,18 @@ function mcl_util.on_place_non_mycelium_plant(itemstack, placer, pointed_thing)
 	end
 	soil_node = minetest.get_node({x=place_pos.x, y=place_pos.y-1, z=place_pos.z})
 
+
+	local light_night = minetest.get_node_light(place_pos, 0.0)
+	local light_day = minetest.get_node_light(place_pos, 0.5)
+	local light_ok = false
+	if (light_night and light_night >= 8) or (light_day and light_day >= minetest.LIGHT_MAX) then
+		light_ok = true
+	end
+
 	-- Placement rules:
-	-- * Allowed on everything except mycelium
-	if soil_node.name ~= "mcl_core:mycelium" then
+	-- * Allowed on dirt or grass block
+	-- * Only with light level >= 8
+	if (soil_node.name == "mcl_core:dirt" or soil_node.name == "mcl_core:dirt_with_grass" or soil_node.name == "mcl_core:dirt_with_grass_snow") and light_ok then
 		local idef = itemstack:get_definition()
 		local new_itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing)
 
