@@ -44,3 +44,9 @@ enable_bed_respawn (Respawn at bed) bool true
 # This setting is only read at startup.
 enable_bed_night_skip (Skip night when sleeping) bool true
 
+# If enabled, the recipe book will only show recipes which require one
+# item which the player has currently in possession.
+# If disabled, the recipe book shows all crafting recipes.
+# This setting is experimental and may be changed in later versions.
+# Feedback is appreciated.
+craftguide_progressive_mode (EXPERIMENTAL: Enable recipe book progressive mode) bool true
