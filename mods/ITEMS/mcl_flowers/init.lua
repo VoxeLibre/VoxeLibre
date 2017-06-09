@@ -5,6 +5,7 @@ flower_tmp={}
 
 -- Simple flower template
 local smallflowerlongdesc = "This is a small flower. Small flowers are mainly used for dye production and can also be potted."
+local flowerusagehelp = "It can only be placed on a block on which it would also survive."
 
 -- on_place function for flowers
 local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, node)
@@ -29,6 +30,7 @@ local function add_simple_flower(name, desc, image, simple_selection_box)
 	minetest.register_node("mcl_flowers:"..name, {
 		description = desc,
 		_doc_items_longdesc = smallflowerlongdesc,
+		_doc_items_usagehelp = flowerusagehelp,
 		drawtype = "plantlike",
 		tiles = { image..".png" },
 		inventory_image = image..".png",
@@ -141,16 +143,18 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 	if not inv_img then
 		inv_img = top_img
 	end
-	local flowergroup
+	local flowergroup, usagehelp
 	if is_flower == nil then
 		is_flower = true
 	end
 	if is_flower then
 		flowergroup = 1
+		usagehelp = flowerusagehelp
 	end
 	minetest.register_node("mcl_flowers:"..name, {
 		description = desc,
 		_doc_items_longdesc = longdesc,
+		_doc_items_usagehelp = usagehelp,
 		drawtype = "plantlike",
 		tiles = { bottom_img },
 		inventory_image = inv_img,

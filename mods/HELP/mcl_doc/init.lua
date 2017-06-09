@@ -46,6 +46,15 @@ doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
 	return datastring
 end)
 
+-- flower
+doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
+	local datastring = ""
+	if def.groups.flower == 1 then
+		return "This is a flower which can grow on dirt, grass blocks and podzol. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher."
+	end
+	return ""
+end)
+
 -- flammable
 doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
 	if def.groups.flammable then
