@@ -229,56 +229,52 @@ function mcl_util.layer_to_y(layer, minecraft_dimension)
 	return layer + mcl_vars.mg_overworld_min
 end
 
--- on_place function for plants which can't grow on mycelium
-
-function mcl_util.on_place_non_mycelium_plant(itemstack, placer, pointed_thing)
-	if pointed_thing.type ~= "node" then
-		-- no interaction possible with entities
-		return itemstack
-	end
-
-	-- Call on_rightclick if the pointed node defines it
-	local node = minetest.get_node(pointed_thing.under)
-	if placer and not placer:get_player_control().sneak then
-		if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-			return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+-- Returns a on_place function for plants
+-- * condition: function(pos, node)
+--    * A function which is called by the on_place function to check if the node can be placed
+--    * Must return true, if placement is allowed, false otherwise
+--    * pos, node: Position and node table of plant node
+function mcl_util.generate_on_place_plant_function(condition)
+	return function(itemstack, placer, pointed_thing)
+		if pointed_thing.type ~= "node" then
+			-- no interaction possible with entities
+			return itemstack
 		end
-	end
 
-	local place_pos, soil_node
-	local def_under = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
-	local def_above = minetest.registered_nodes[minetest.get_node(pointed_thing.above).name]
-	if def_under.buildable_to then
-		place_pos = pointed_thing.under
-	elseif def_above.buildable_to then
-		place_pos = pointed_thing.above
-	else
-		return itemstack
-	end
-	soil_node = minetest.get_node({x=place_pos.x, y=place_pos.y-1, z=place_pos.z})
-
-
-	local light_night = minetest.get_node_light(place_pos, 0.0)
-	local light_day = minetest.get_node_light(place_pos, 0.5)
-	local light_ok = false
-	if (light_night and light_night >= 8) or (light_day and light_day >= minetest.LIGHT_MAX) then
-		light_ok = true
-	end
-
-	-- Placement rules:
-	-- * Allowed on dirt or grass block
-	-- * Only with light level >= 8
-	if (soil_node.name == "mcl_core:dirt" or soil_node.name == "mcl_core:dirt_with_grass" or soil_node.name == "mcl_core:dirt_with_grass_snow") and light_ok then
-		local idef = itemstack:get_definition()
-		local new_itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing)
-
-		if success then
-			if idef.sounds and idef.sounds.place then
-				minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
+		-- Call on_rightclick if the pointed node defines it
+		local node = minetest.get_node(pointed_thing.under)
+		if placer and not placer:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
 			end
 		end
-		itemstack = new_itemstack
-	end
 
-	return itemstack
+		local place_pos
+		local def_under = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
+		local def_above = minetest.registered_nodes[minetest.get_node(pointed_thing.above).name]
+		if def_under.buildable_to then
+			place_pos = pointed_thing.under
+		elseif def_above.buildable_to then
+			place_pos = pointed_thing.above
+		else
+			return itemstack
+		end
+
+		-- Check placement rules
+		if (condition(place_pos, node) == true) then
+			local idef = itemstack:get_definition()
+			local new_itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing)
+
+			if success then
+				if idef.sounds and idef.sounds.place then
+					minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
+				end
+			end
+			itemstack = new_itemstack
+		end
+
+		return itemstack
+	end
 end
+
+

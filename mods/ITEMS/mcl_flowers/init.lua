@@ -6,6 +6,25 @@ flower_tmp={}
 -- Simple flower template
 local smallflowerlongdesc = "This is a small flower. Small flowers are mainly used for dye production and can also be potted."
 
+-- on_place function for flowers
+local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, node)
+	local below = {x=pos.x, y=pos.y-1, z=pos.z}
+	local soil_node = minetest.get_node_or_nil(below)
+	if not soil_node then return end
+
+--[[	Placement requirements:
+	* Dirt or grass block
+	* Light level >= 8 at any time or exposed to sunlight at day
+]]
+	local light_night = minetest.get_node_light(pos, 0.0)
+	local light_day = minetest.get_node_light(pos, 0.5)
+	local light_ok = false
+	if (light_night and light_night >= 8) or (light_day and light_day >= minetest.LIGHT_MAX) then
+		light_ok = true
+	end
+	return (soil_node.name == "mcl_core:dirt" or soil_node.name == "mcl_core:dirt_with_grass" or soil_node.name == "mcl_core:dirt_with_grass_snow") and light_ok
+end)
+
 local function add_simple_flower(name, desc, image, simple_selection_box)
 	minetest.register_node("mcl_flowers:"..name, {
 		description = desc,
@@ -21,7 +40,7 @@ local function add_simple_flower(name, desc, image, simple_selection_box)
 		groups = {dig_immediate=3,flammable=2,plant=1,flower=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		node_placement_prediction = "",
-		on_place = mcl_util.on_place_non_mycelium_plant,
+		on_place = on_place_flower,
 		selection_box = {
 			type = "fixed",
 			fixed = simple_selection_box,
@@ -82,7 +101,7 @@ minetest.register_node("mcl_flowers:tallgrass", {
 		end
 	end,
 	node_placement_prediction = "",
-	on_place = mcl_util.on_place_non_mycelium_plant,
+	on_place = on_place_flower,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -111,7 +130,7 @@ minetest.register_node("mcl_flowers:fern", {
 	end,
 	drop = wheat_seed_drop,
 	node_placement_prediction = "",
-	on_place = mcl_util.on_place_non_mycelium_plant,
+	on_place = on_place_flower,
 	selection_box = {
 		type = "fixed",
 		fixed = { -4/16, -0.5, -4/16, 4/16, 7/16, 4/16 },
