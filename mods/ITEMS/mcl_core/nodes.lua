@@ -711,7 +711,6 @@ minetest.register_node("mcl_core:sapling", {
 		meta:set_int("stage", 0)
 	end,
 	node_placement_prediction = "",
-	on_place = mcl_util.on_place_non_mycelium_plant,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -797,7 +796,6 @@ minetest.register_node("mcl_core:darksapling", {
 		meta:set_int("stage", 0)
 	end,
 	node_placement_prediction = "",
-	on_place = mcl_util.on_place_non_mycelium_plant,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -941,7 +939,6 @@ minetest.register_node("mcl_core:junglesapling", {
 		meta:set_int("stage", 0)
 	end,
 	node_placement_prediction = "",
-	on_place = mcl_util.on_place_non_mycelium_plant,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -1018,7 +1015,6 @@ minetest.register_node("mcl_core:acaciasapling", {
 		meta:set_int("stage", 0)
 	end,
 	node_placement_prediction = "",
-	on_place = mcl_util.on_place_non_mycelium_plant,
 	stack_max = 64,
 	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
@@ -1106,7 +1102,6 @@ minetest.register_node("mcl_core:sprucesapling", {
 		meta:set_int("stage", 0)
 	end,
 	node_placement_prediction = "",
-	on_place = mcl_util.on_place_non_mycelium_plant,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -1186,7 +1181,6 @@ minetest.register_node("mcl_core:birchsapling", {
 		meta:set_int("stage", 0)
 	end,
 	node_placement_prediction = "",
-	on_place = mcl_util.on_place_non_mycelium_plant,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -1291,7 +1285,6 @@ minetest.register_node("mcl_core:reeds", {
 	groups = {dig_immediate=3, craftitem=1, plant=1, non_mycelium_plant=1, dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	node_placement_prediction = "",
-	on_place = mcl_util.on_place_non_mycelium_plant,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -1848,7 +1841,6 @@ minetest.register_node("mcl_core:deadbush", {
 		fixed = {-6/16, -8/16, -6/16, 6/16, 8/16, 6/16},
 	},
 	node_placement_prediction = "",
-	on_place = mcl_util.on_place_non_mycelium_plant,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })

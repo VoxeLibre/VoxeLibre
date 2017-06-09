@@ -172,7 +172,19 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 			local bottom_buildable = minetest.registered_nodes[minetest.get_node(bottom).name].buildable_to
 			local top_buildable = minetest.registered_nodes[minetest.get_node(top).name].buildable_to
 			local floorname = minetest.get_node({x=bottom.x, y=bottom.y-1, z=bottom.z}).name
-			if floorname ~= "mcl_core:mycelium" and minetest.registered_nodes[floorname].walkable and bottom_buildable and top_buildable then
+
+			local light_night = minetest.get_node_light(bottom, 0.0)
+			local light_day = minetest.get_node_light(bottom, 0.5)
+			local light_ok = false
+			if (light_night and light_night >= 8) or (light_day and light_day >= minetest.LIGHT_MAX) then
+				light_ok = true
+			end
+
+			-- Placement rules:
+			-- * Allowed on dirt or grass block
+			-- * Only with light level >= 8
+			-- * Only if two enough space
+			if (floorname == "mcl_core:dirt" or floorname == "mcl_core:dirt_with_grass" or floorname == "mcl_core:dirt_with_grass_snow") and bottom_buildable and top_buildable and light_ok then
 				-- Success! We can now place the flower
 				minetest.sound_play(minetest.registered_nodes["mcl_flowers:"..name].sounds.place, {pos = bottom, gain=1})
 				minetest.set_node(bottom, {name="mcl_flowers:"..name})
