@@ -17,6 +17,7 @@ minetest.register_on_dieplayer(function(player)
 				pos.z = pos.z - z
 			end
 		end
+		armor:update_inventory(player)
 	end
 
 	-- Death message
