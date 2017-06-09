@@ -1,38 +1,8 @@
-local on_place = function(itemstack, placer, pointed_thing)
-	if pointed_thing.type ~= "node" then
-		-- no interaction possible with entities
-		return itemstack
-	end
-
-	-- Call on_rightclick if the pointed node defines it
-	local node = minetest.get_node(pointed_thing.under)
-	if placer and not placer:get_player_control().sneak then
-		if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-			return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
-		end
-	end
-
-	local a = pointed_thing.above
-	local u = pointed_thing.under
-	local node_above = minetest.get_node(a)
-	local node_under = minetest.get_node(u)
-	local def_above = minetest.registered_nodes[node_above.name]
-	local def_under = minetest.registered_nodes[node_under.name]
-
-	local place_pos, soil_node, place_node, soil_def, place_def
-	if def_under.buildable_to then
-		place_pos = u
-		place_node = node_under
-		place_def = def_under
-	elseif def_above.buildable_to then
-		place_pos = a
-		place_node = node_above
-		place_def = def_above
-	else
-		return itemstack
-	end
-	soil_node = minetest.get_node({x=place_pos.x, y=place_pos.y-1, z=place_pos.z})
-	soil_def = minetest.registered_nodes[soil_node.name]
+local on_place = mcl_util.generate_on_place_plant_function(function(place_pos, place_node)
+	local soil_node = minetest.get_node_or_nil({x=place_pos.x, y=place_pos.y-1, z=place_pos.z})
+	if not soil_node then return false end
+	local snn = soil_node.name -- soil node name
+	local sd = minetest.registered_nodes[snn] -- soil definition
 
 	-- Placement rules:
 	-- * Always allowed on podzol or mycelimu
@@ -42,20 +12,8 @@ local on_place = function(itemstack, placer, pointed_thing)
 	if light and light <= 12 then
 		light_ok = true
 	end
-	if (soil_node.name == "mcl_core:podzol" or soil_node.name == "mcl_core:podzol_snow" or soil_node.name == "mcl_core:mycelium" or soil_node == "mcl_core:mycelium_snow") or
-			(light_ok and (soil_def.groups and soil_def.groups.solid and soil_def.groups.opaque)) then
-		local idef = itemstack:get_definition()
-		local success = minetest.item_place_node(itemstack, placer, pointed_thing)
-
-		if success then
-			if idef.sounds and idef.sounds.place then
-				minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
-			end
-		end
-	end
-
-	return itemstack
-end
+	return ((snn == "mcl_core:podzol" or snn == "mcl_core:podzol_snow" or snn == "mcl_core:mycelium" or snn == "mcl_core:mycelium_snow") or (light_ok and minetest.get_item_group(snn, "solid") == 1 and minetest.get_item_group(snn, "opaque") == 1))
+end)
 
 local longdesc_intro_brown = [[Brown mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.]]
 local longdesc_intro_red = [[Red mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.]]
