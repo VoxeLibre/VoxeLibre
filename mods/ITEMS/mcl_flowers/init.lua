@@ -102,8 +102,6 @@ minetest.register_node("mcl_flowers:tallgrass", {
 			minetest.add_item(pos, oldnode.name)
 		end
 	end,
-	node_placement_prediction = "",
-	on_place = on_place_flower,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -131,8 +129,6 @@ minetest.register_node("mcl_flowers:fern", {
 		end
 	end,
 	drop = wheat_seed_drop,
-	node_placement_prediction = "",
-	on_place = on_place_flower,
 	selection_box = {
 		type = "fixed",
 		fixed = { -4/16, -0.5, -4/16, 4/16, 7/16, 4/16 },

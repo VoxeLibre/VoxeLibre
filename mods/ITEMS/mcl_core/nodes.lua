@@ -1844,7 +1844,6 @@ minetest.register_node("mcl_core:deadbush", {
 		type = "fixed",
 		fixed = {-6/16, -8/16, -6/16, 6/16, 8/16, 6/16},
 	},
-	node_placement_prediction = "",
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
