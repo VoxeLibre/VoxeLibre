@@ -16,15 +16,22 @@ enable_fire (Fire) bool true
 # Enable flame sound.
 flame_sound (Flame sound) bool true
 
+# Normally, players drop all their items when they die. Enable this
+# setting, so players always keep their inventory on death.
+mcl_keep_inventory_on_death (Keep inventory on death) bool false
+
+# If enabled, chat messages are shown to everyone when a player dies.
+mcl_show_death_messages (Show death messages) bool true
+
+# If enabled, only peaceful mobs will appear naturally. This does not
+# affect monster spawners.
+only_peaceful_mobs (Spawn only peaceful mobs) bool false
+
 # If enabled, players respawn at the bed they last lay on instead of normal
 # spawn.
 # This setting is only read at startup.
 enable_bed_respawn (Respawn at bed) bool true
 
-# If enabled, the night can be skipped if more than half of the players are
-# in beds.
+# If enabled, the night can be skipped if all players are in bed.
 enable_bed_night_skip (Skip night when sleeping) bool true
 
-# Normally, players drop all their items when they die. Enable this
-# setting, so players always keep their inventory on death.
-mcl_keep_inventory_on_death (Keep inventory on death) bool false
