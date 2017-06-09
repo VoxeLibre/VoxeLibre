@@ -10,7 +10,7 @@ local smallflowerlongdesc = "This is a small flower. Small flowers are mainly us
 local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, node)
 	local below = {x=pos.x, y=pos.y-1, z=pos.z}
 	local soil_node = minetest.get_node_or_nil(below)
-	if not soil_node then return end
+	if not soil_node then return false end
 
 --[[	Placement requirements:
 	* Dirt or grass block
@@ -22,7 +22,7 @@ local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, 
 	if (light_night and light_night >= 8) or (light_day and light_day >= minetest.LIGHT_MAX) then
 		light_ok = true
 	end
-	return (soil_node.name == "mcl_core:dirt" or soil_node.name == "mcl_core:dirt_with_grass" or soil_node.name == "mcl_core:dirt_with_grass_snow") and light_ok
+	return (soil_node.name == "mcl_core:dirt" or soil_node.name == "mcl_core:dirt_with_grass" or soil_node.name == "mcl_core:dirt_with_grass_snow" or soil_node.name == "mcl_core:coarse_dirt" or soil_node.name == "mcl_core:podzol" or soil_node.name == "mcl_core:podzol_snow") and light_ok
 end)
 
 local function add_simple_flower(name, desc, image, simple_selection_box)
@@ -203,7 +203,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 			-- * Allowed on dirt or grass block
 			-- * Only with light level >= 8
 			-- * Only if two enough space
-			if (floorname == "mcl_core:dirt" or floorname == "mcl_core:dirt_with_grass" or floorname == "mcl_core:dirt_with_grass_snow") and bottom_buildable and top_buildable and light_ok then
+			if (floorname == "mcl_core:dirt" or floorname == "mcl_core:dirt_with_grass" or floorname == "mcl_core:dirt_with_grass_snow" or floorname == "mcl_core:coarse_dirt" or floorname == "mcl_core:podzol" or floorname == "mcl_core:podzol_snow") and bottom_buildable and top_buildable and light_ok then
 				-- Success! We can now place the flower
 				minetest.sound_play(minetest.registered_nodes["mcl_flowers:"..name].sounds.place, {pos = bottom, gain=1})
 				minetest.set_node(bottom, {name="mcl_flowers:"..name})
@@ -270,8 +270,8 @@ add_large_plant("double_grass", "Double Tallgrass", "Double tallgrass a variant 
 add_large_plant("double_fern", "Large Fern", "Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds.", "mcl_flowers_double_plant_fern_bottom.png", "mcl_flowers_double_plant_fern_top.png", nil, 6/16, 5/16, wheat_seed_drop, false)
 
 minetest.register_abm({
-	label = "Pop out small plants",
-	nodenames = {"group:plant"},
+	label = "Pop out flowers",
+	nodenames = {"group:flower"},
 	interval = 12,
 	chance = 2,
 	action = function(pos, node)
