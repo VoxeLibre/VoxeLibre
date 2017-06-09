@@ -1,4 +1,4 @@
---if minetest.setting_get("keepInventory") == false then
+if minetest.setting_getbool("mcl_keep_inventory_on_death") == false then
 	minetest.register_on_dieplayer(function(player)
 		local inv = player:get_inventory()
 		local pos = player:getpos()
@@ -17,4 +17,4 @@
 			end
 		end
 	end)
---end
+end
