@@ -24,6 +24,7 @@ Authors of media files:
 
 Zeg9:
   cart.x
+kingoscargames:
   cart.png
 
 Wuzzy (based on Faithful 1.11):
