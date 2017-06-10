@@ -14,7 +14,7 @@ mobs:register_mob("mobs_mc:pigman", {
 	collisionbox = {-0.3, -1.0, -0.3, 0.3, 0.8, 0.3},
 	visual = "mesh",
 	mesh = "3d_armor_character.b3d",
-	textures = {{"Original_Zombiepig_Man_by_Fedora_P.png",
+	textures = {{"mobs_mc_zombiepig.png",
 			"3d_armor_trans.png",
 				minetest.registered_items["mcl_tools:sword_gold"].inventory_image,
 			}},
