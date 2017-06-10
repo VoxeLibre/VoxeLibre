@@ -46,6 +46,9 @@ by PilzAdam and others
 	- Author: daufinsyd
 - `spawn_egg_rabbit.png`
 	- MIT License, by Wuzzy
+- `mobs_skeleton2.png`
+	- MIT License, originally from Faithful texture pack
+	  (see MineClone 2 main readme file), edited by kingoscargames
 
 ### Models
 - `mobs_bunny.b3d`
