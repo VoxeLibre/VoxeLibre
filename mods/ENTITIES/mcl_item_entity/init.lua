@@ -88,15 +88,14 @@ minetest.register_globalstep(function(dtime)
 							object:get_luaentity()._magnet_active = true
 							object:get_luaentity()._collector_timer = 0
 
-							--modified simplemobs api
-
 							-- Move object to player
+							disable_physics(object, object:get_luaentity())
+
 							local opos = object:getpos()
 							local vec = vector.subtract(checkpos, opos)
 							vec = vector.add(opos, vector.divide(vec, 2))
 							object:moveto(vec)
 
-							disable_physics(object, object:get_luaentity(), false, false)
 
 							--fix eternally falling items
 							minetest.after(0, function(object)
