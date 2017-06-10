@@ -11,9 +11,7 @@ dofile(path .. "/chicken.lua") -- Mesh and animation by Pavel_S
 dofile(path .. "/cow.lua") -- Mesh by Morn76 Animation by Pavel_S
 dofile(path .. "/sheep.lua") -- Mesh and animation by Pavel_S
 dofile(path .. "/pig.lua") -- Mesh and animation by Pavel_S
-dofile(path .. "/horse.lua") -- KrupnoPavel
 dofile(path .. "/wolf.lua") -- KrupnoPavel
-dofile(path .. "/horse.lua") -- KrupnoPavel
 dofile(path .. "/squid.lua") -- Animation, sound and egg texture by daufinsyd
 
 -- NPC
@@ -30,5 +28,7 @@ dofile(path .. "/enderman.lua") -- maikerumine
 dofile(path .. "/ghast.lua") -- maikerumine
 
 dofile(path .. "/blaze.lua")  -- Animation by daufinsyd
+
+dofile(path .. "/old_mobs.lua")  -- Compability with old removed mobs. To be removed later
 
 print ("[MOD] Mobs Redo 'MC' loaded")
