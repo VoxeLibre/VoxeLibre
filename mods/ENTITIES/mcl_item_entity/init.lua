@@ -231,6 +231,11 @@ core.register_entity(":__builtin:item", {
 
 	itemstring = '',
 	physical_state = true,
+	_flowing = false, -- item entity is currently flowing
+	-- States:
+	-- * "magnet": Attracted to a nearby player or item
+	-- * "flowing": Moving in a flowing liquid
+	-- * "normal": Affected by gravitiy
 	age = 0,
 
 	set_item = function(self, itemstring)
@@ -296,6 +301,7 @@ core.register_entity(":__builtin:item", {
 			always_collect = self.always_collect,
 			age = self.age,
 			_insta_collect = self._insta_collect,
+			_flowing = self._flowing,
 		})
 	end,
 
@@ -313,7 +319,7 @@ core.register_entity(":__builtin:item", {
 				--remember collection data
 				-- If true, can collect item without delay
 				self._insta_collect = data._insta_collect
-
+				self._flowing = data._flowing
 			end
 		else
 			self.itemstring = staticdata
@@ -321,6 +327,9 @@ core.register_entity(":__builtin:item", {
 		if self._insta_collect == nil then
 			-- Intentionally default, since delayed collection is rare
 			self._insta_collect = true
+		end
+		if self._flowing == nil then
+			self._flowing = false
 		end
 		self._magnet_timer = 0
 		self._magnet_active = false
@@ -530,16 +539,20 @@ core.register_entity(":__builtin:item", {
 				-- Set new item moving speed into the direciton of the liquid
 				local newv = vector.multiply(vec, f)
 				self.object:setacceleration({x = 0, y = 0, z = 0})
-				-- FIXME: This makes the item wiggle on flowing water
 				self.object:setvelocity({x = newv.x, y = -0.22, z = newv.z})
 
-				self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
 				self.physical_state = true
+				self._flowing = true
 				self.object:set_properties({
 					physical = true
 				})
 				return
 			end
+		elseif self._flowing == true then
+			-- Disable flowing physics if not on/in flowing liquid
+			self._flowing = false
+			enable_physics(self.object, self)
+			return
 		end
 
 		-- If node is not registered or node is walkably solid and resting on nodebox
