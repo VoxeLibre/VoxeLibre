@@ -28,8 +28,8 @@ local check_pickup_achievements = function(object, player)
 	end
 end
 
-local enable_physics = function(object, luaentity)
-	if luaentity.physical_state == false then
+local enable_physics = function(object, luaentity, ignore_check)
+	if luaentity.physical_state == false or ignore_check == true then
 		luaentity.physical_state = true
 		object:set_properties({
 			physical = true
@@ -39,8 +39,8 @@ local enable_physics = function(object, luaentity)
 	end
 end
 
-local disable_physics = function(object, luaentity, reset_movement)
-	if luaentity.physical_state == true then
+local disable_physics = function(object, luaentity, ignore_check, reset_movement)
+	if luaentity.physical_state == true or ignore_check == true then
 		luaentity.physical_state = false
 		object:set_properties({
 			physical = false
@@ -96,7 +96,7 @@ minetest.register_globalstep(function(dtime)
 							vec = vector.add(opos, vector.divide(vec, 2))
 							object:moveto(vec)
 
-							disable_physics(object, object:get_luaentity(), false)
+							disable_physics(object, object:get_luaentity(), false, false)
 
 							--fix eternally falling items
 							minetest.after(0, function(object)
@@ -487,7 +487,7 @@ core.register_entity(":__builtin:item", {
 			self.object:setacceleration({x = 0, y = 0, z = 0})
 			self.object:setvelocity(newv)
 
-			disable_physics(self.object, self, false)
+			disable_physics(self.object, self, false, false)
 
 			if shootdir.y == 0 then
 				self._force = newv
@@ -551,7 +551,7 @@ core.register_entity(":__builtin:item", {
 		elseif self._flowing == true then
 			-- Disable flowing physics if not on/in flowing liquid
 			self._flowing = false
-			enable_physics(self.object, self)
+			enable_physics(self.object, self, true)
 			return
 		end
 
