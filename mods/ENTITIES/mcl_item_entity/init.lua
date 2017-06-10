@@ -142,6 +142,7 @@ minetest.register_globalstep(function(dtime)
 					if not collected then
 						if object:get_luaentity()._magnet_timer > 1 then
 							object:get_luaentity()._magnet_timer = -item_drop_settings.magnet_time
+							enable_physics(object, object:get_luaentity())
 						elseif object:get_luaentity()._magnet_timer < 0 then
 							object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
 						end
