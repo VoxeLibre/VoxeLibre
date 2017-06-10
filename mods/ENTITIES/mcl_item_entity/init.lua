@@ -28,6 +28,30 @@ local check_pickup_achievements = function(object, player)
 	end
 end
 
+local enable_physics = function(object, luaentity)
+	if luaentity.physical_state == false then
+		luaentity.physical_state = true
+		object:set_properties({
+			physical = true
+		})
+		object:set_velocity({x=0,y=0,z=0})
+		object:set_acceleration({x=0,y=-get_gravity(),z=0})
+	end
+end
+
+local disable_physics = function(object, luaentity, reset_movement)
+	if luaentity.physical_state == true then
+		luaentity.physical_state = false
+		object:set_properties({
+			physical = false
+		})
+		if reset_movement ~= false then
+			object:set_velocity({x=0,y=0,z=0})
+			object:set_acceleration({x=0,y=0,z=0})
+		end
+	end
+end
+
 minetest.register_globalstep(function(dtime)
 	for _,player in ipairs(minetest.get_connected_players()) do
 		if player:get_hp() > 0 or not minetest.setting_getbool("enable_damage") then
@@ -72,10 +96,7 @@ minetest.register_globalstep(function(dtime)
 							vec = vector.add(opos, vector.divide(vec, 2))
 							object:moveto(vec)
 
-							object:get_luaentity().physical_state = false
-							object:get_luaentity().object:set_properties({
-								physical = false
-							})
+							disable_physics(object, object:get_luaentity(), false)
 
 							--fix eternally falling items
 							minetest.after(0, function(object)
@@ -110,11 +131,7 @@ minetest.register_globalstep(function(dtime)
 											object:get_luaentity().itemstring = ""
 											object:remove()
 										else
-											object:setvelocity({x=0,y=0,z=0})
-											object:get_luaentity().physical_state = true
-											object:get_luaentity().object:set_properties({
-												physical = true
-											})
+											enable_physics(object, object:get_luaentity())
 										end
 									end, {player, object})
 								end
@@ -387,20 +404,12 @@ core.register_entity(":__builtin:item", {
 		-- If no collector was found for a long enough time, declare the magnet as disabled
 		if self._magnet_active and (self._collector_timer == nil or (self._collector_timer > item_drop_settings.magnet_time)) then
 			self._magnet_active = false
-			self.object:setvelocity({x=0,y=0,z=0})
-			self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
-			self.physical_state = true
-			self.object:set_properties({physical = true})
+			enable_physics(self.object, self)
 			return
 		end
 		if in_unloaded then
-			if self.physical_state == true then
-				-- Don't infinetly fall into unloaded map
-				self.object:setvelocity({x = 0, y = 0, z = 0})
-				self.object:setacceleration({x = 0, y = 0, z = 0})
-				self.physical_state = false
-				self.object:set_properties({physical = false})
-			end
+			-- Don't infinetly fall into unloaded map
+			disable_physics(self.object, self)
 			return
 		end
 
@@ -469,10 +478,7 @@ core.register_entity(":__builtin:item", {
 			self.object:setacceleration({x = 0, y = 0, z = 0})
 			self.object:setvelocity(newv)
 
-			self.physical_state = false
-			self.object:set_properties({
-				physical = false
-			})
+			disable_physics(self.object, self, false)
 
 			if shootdir.y == 0 then
 				self._force = newv
@@ -499,20 +505,14 @@ core.register_entity(":__builtin:item", {
 			if ok then
 				self._forcetimer = -1
 				self._force = nil
-				self.object:setvelocity({x=0,y=0,z=0})
-				self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
-				self.physical_state = true
-				self.object:set_properties({physical = true})
+				enable_physics(self.object, self)
 			else
 				self._forcetimer = self._forcetimer - dtime
 			end
 			return
 		elseif self._force then
 			self._force = nil
-			self.object:setvelocity({x=0,y=0,z=0})
-			self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
-			self.physical_state = true
-			self.object:set_properties({physical = true})
+			enable_physics(self.object, self)
 			return
 		end
 
@@ -530,6 +530,7 @@ core.register_entity(":__builtin:item", {
 				-- Set new item moving speed into the direciton of the liquid
 				local newv = vector.multiply(vec, f)
 				self.object:setacceleration({x = 0, y = 0, z = 0})
+				-- FIXME: This makes the item wiggle on flowing water
 				self.object:setvelocity({x = newv.x, y = -0.22, z = newv.z})
 
 				self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
@@ -558,17 +559,11 @@ core.register_entity(":__builtin:item", {
 						end
 					end
 				end
-				self.object:setvelocity({x = 0, y = 0, z = 0})
-				self.object:setacceleration({x = 0, y = 0, z = 0})
-				self.physical_state = false
-				self.object:set_properties({physical = false})
+				disable_physics(self.object, self)
 			end
 		else
-			if not self.physical_state and self._magnet_active == false then
-				self.object:setvelocity({x = 0, y = 0, z = 0})
-				self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
-				self.physical_state = true
-				self.object:set_properties({physical = true})
+			if self._magnet_active == false then
+				enable_physics(self.object, self)
 			end
 		end
 	end,
