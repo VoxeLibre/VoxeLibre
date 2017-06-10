@@ -1,9 +1,13 @@
 MineClone 2 mod: mcl_player
 ==========================
+Adds the 3D player model, taken from Minetest Game 0.4.16.
 
-License of source code:
------------------------
-Copyright (C) 2011-2012 celeron55, Perttu Ahola <celeron55@gmail.com>
+Programmers: See `game_api.txt` for the API definition.
+
+Authors of source code
+----------------------
+Originally by celeron55, Perttu Ahola <celeron55@gmail.com> (LGPL 2.1)
+Various Minetest developers and contributors (LGPL 2.1)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +18,7 @@ http://www.gnu.org/licenses/lgpl-2.1.html
 
 Authors of media files
 -----------------------
-MirceaKitsune (WTFPL):
-  character.x
+MirceaKitsune (CC BY-SA 3.0):
+  character.b3d
 
 Textures from Faithful 1.11 resource pack (see main readme file)
