@@ -76,6 +76,7 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 	drawtype = "mesh",
 	mesh = "3d_armor_stand.obj",
 	inventory_image = "3d_armor_stand_item.png",
+	wield_image = "3d_armor_stand_item.png",
 	tiles = {"default_wood.png", "default_steel_block.png"},
 	paramtype = "light",
 	paramtype2 = "facedir",
