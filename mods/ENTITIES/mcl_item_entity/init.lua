@@ -73,8 +73,8 @@ minetest.register_globalstep(function(dtime)
 								inv:add_item("main", ItemStack(object:get_luaentity().itemstring))
 								minetest.sound_play("item_drop_pickup", {
 									pos = pos,
-									max_hear_distance = 100,
-									gain = 10.0,
+									max_hear_distance = 16,
+									gain = 1.0,
 								})
 								check_pickup_achievements(object, player)
 								object:get_luaentity().itemstring = ""
@@ -123,8 +123,8 @@ minetest.register_globalstep(function(dtime)
 											if object:get_luaentity().itemstring ~= "" then
 												minetest.sound_play("item_drop_pickup", {
 													pos = pos,
-													max_hear_distance = 100,
-													gain = 10.0,
+													max_hear_distance = 16,
+													gain = 1.0,
 												})
 											end
 											check_pickup_achievements(object, player)
