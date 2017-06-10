@@ -18,7 +18,7 @@ local velocities = {
 
 mcl_throwing.throw = function(throw_item, pos, dir, velocity)
 	if velocity == nil then
-		velocity = velocities[entity_name]
+		velocity = velocities[throw_item]
 	end
 	if velocity == nil then
 		velocity = 22

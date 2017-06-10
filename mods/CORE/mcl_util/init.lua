@@ -267,7 +267,7 @@ function mcl_util.generate_on_place_plant_function(condition)
 
 			if success then
 				if idef.sounds and idef.sounds.place then
-					minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
+					minetest.sound_play(idef.sounds.place, {pos=pointed_thing.above, gain=1})
 				end
 			end
 			itemstack = new_itemstack

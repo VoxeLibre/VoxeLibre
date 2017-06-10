@@ -55,9 +55,9 @@ piston_get_direction = function (dir, node)
 end
 
 local piston_remove_pusher = function (pos, node)
-	pistonspec = minetest.registered_nodes[node.name].mesecons_piston
+	local pistonspec = minetest.registered_nodes[node.name].mesecons_piston
 
-	dir = piston_get_direction(pistonspec.dir, node)
+	local dir = piston_get_direction(pistonspec.dir, node)
 	local pusherpos = mesecon:addPosRule(pos, dir)
 	local pushername = minetest.get_node(pusherpos).name
 

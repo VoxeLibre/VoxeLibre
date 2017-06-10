@@ -141,7 +141,7 @@ minetest.register_on_joinplayer(function(player)
 			set_inventory(player, true)
 		end
 		armor:set_player_armor(player)
-		update_inventory_original(self, player)
+		armor:update_inventory(player)
 	end
 
 	-- In Creative Mode, the initial inventory setup is handled in creative.lua
