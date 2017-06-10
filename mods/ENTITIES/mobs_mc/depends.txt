@@ -5,3 +5,4 @@ mcl_fire
 mobs
 mcl_tnt
 mcl_mobitems
+3d_armor?
