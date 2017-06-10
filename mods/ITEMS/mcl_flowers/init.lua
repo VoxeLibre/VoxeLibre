@@ -275,6 +275,10 @@ minetest.register_abm({
 	interval = 12,
 	chance = 2,
 	action = function(pos, node)
+		-- Ignore the upper part of double plants
+		if minetest.get_item_group(node.name, "double_plant") == 2 then
+			return
+		end
 		local below = minetest.get_node_or_nil({x=pos.x, y=pos.y-1, z=pos.z})
 		if not below then
 			return
