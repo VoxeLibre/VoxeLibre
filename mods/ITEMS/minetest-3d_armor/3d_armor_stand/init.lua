@@ -113,6 +113,7 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 	end,
 	-- Drop all armor on the ground when it got destroyed
 	on_destruct = drop_armor,
+	-- Put piece of armor on armor stand, or take one away
 	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 		-- Check if player wields armor
 		local name = itemstack:get_name()
@@ -130,8 +131,10 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 		local wielditem = clicker:get_wielded_item()
 		if not inv then return end
 		if list then
-			if inv:room_for_item(list, itemstack) then
-				inv:add_item(list, itemstack)
+			-- ... but only if the slot is free
+			local single_item = itemstack:get_name()
+			if inv:is_empty(list) then
+				inv:add_item(list, single_item)
 				update_entity(pos)
 				itemstack:take_item()
 			end
