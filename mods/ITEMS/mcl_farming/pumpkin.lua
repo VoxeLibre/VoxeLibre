@@ -79,7 +79,7 @@ local pumpkin_base_def = {
 	stack_max = 64,
 	paramtype2 = "facedir",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"},
-	groups = {handy=1,axey=1, plant=1,building_block=1, armor_head=1, dig_by_piston=1},
+	groups = {handy=1,axey=1, plant=1,building_block=1, armor_head=1,non_combat_armor=1, dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 5,
 	_mcl_hardness = 1,

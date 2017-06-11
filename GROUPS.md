@@ -127,6 +127,7 @@ These groups are used mostly for informational purposes
 * `cocoa`: Node is a cocoa pod (rating is growth stage, ranging from 1 to 3)
 * `ammo=1`: Item is used as ammo for a weapon
 * `ammo_bow=1`: Item is used as ammo for bows
+* `non_combat_armor=1`: Item can be equipped as armor, but is not made for combat (e.g. zombie head, pumpkin)
 * `container`: Node is a container which physically stores items within and has at least 1 inventory
    * `container=2`: Has one inventory with list name `"main"`. Items can be placed and taken freely
    * `container=3`: Same as `container=2`, but shulker boxes can not be inserted

@@ -12,7 +12,7 @@ local function addhead(node, desc, longdesc)
 				{ -0.25, -0.5, -0.25, 0.25, 0.0, 0.25, },   			
 			},
 		},
-		groups = {handy=1, armor_head=1, head=1, deco_block=1, dig_by_piston=1},
+		groups = {handy=1, armor_head=1,non_combat_armor=1, head=1, deco_block=1, dig_by_piston=1},
 		tiles = {
 			"head_"..node.."_top.png",
 			"head_"..node.."_top.png",
