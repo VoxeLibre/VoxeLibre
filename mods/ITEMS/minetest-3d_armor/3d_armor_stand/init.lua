@@ -137,21 +137,33 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 				inv:add_item(list, single_item)
 				update_entity(pos)
 				itemstack:take_item()
+				return itmstack
 			end
-			return itemstack
-		elseif wielditem:get_name() == "" then
-		-- If player does not wield anything, take the first available armor from the armor stand
-		-- and give it to the player
-			for e=1, #elements do
-				local stand_armor = inv:get_stack("armor_" .. elements[e], 1)
-				if not stand_armor:is_empty() then
-					local pinv = clicker:get_inventory()
+		end
+
+		-- Take armor from stand if player has a free hand or wields the same armor type (if stackable)
+		for e=1, #elements do
+			local stand_armor = inv:get_stack("armor_" .. elements[e], 1)
+			if not stand_armor:is_empty() then
+				local pinv = clicker:get_inventory()
+				local taken = false
+				-- Empty hand
+				if wielditem:get_name() == "" then
 					pinv:set_stack("main", clicker:get_wield_index(), stand_armor)
+					taken = true
+				-- Stackable armor type (if not already full). This is the case for e.g. mob heads.
+				-- This is done purely for convenience.
+				elseif (wielditem:get_name() == stand_armor:get_name() and wielditem:get_count() < wielditem:get_stack_max()) then
+					wielditem:set_count(wielditem:get_count()+1)
+					pinv:set_stack("main", clicker:get_wield_index(), wielditem)
+					taken = true
+				end
+				if taken then
 					stand_armor:take_item()
 					inv:set_stack("armor_" .. elements[e], 1, stand_armor)
 					update_entity(pos)
-					return clicker:get_wielded_item()
 				end
+				return clicker:get_wielded_item()
 			end
 		end
 		return itemstack
