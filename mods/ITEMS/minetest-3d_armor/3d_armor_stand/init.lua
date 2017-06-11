@@ -90,7 +90,7 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 	mesh = "3d_armor_stand.obj",
 	inventory_image = "3d_armor_stand_item.png",
 	wield_image = "3d_armor_stand_item.png",
-	tiles = {"default_wood.png", "default_steel_block.png"},
+	tiles = {"default_wood.png", "mcl_stairs_stone_slab_top.png"},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	walkable = false,
