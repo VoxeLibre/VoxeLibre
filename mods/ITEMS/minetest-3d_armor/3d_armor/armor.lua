@@ -337,7 +337,9 @@ minetest.register_on_joinplayer(function(player)
 			elseif index == 5 then
 				g = minetest.get_item_group(iname, "armor_feet")
 			end
-			if g ~= 0 and g ~= nil and inv:get_stack(listname, index):is_empty() then
+			-- Minor FIXME: If player attempts to place stack into occupied slot, this is rejected.
+			-- It would be better if 1 item is placed in exchanged for the item in the slot.
+			if g ~= 0 and g ~= nil and (inv:get_stack(listname, index):is_empty() or (inv:get_stack(listname, index):get_name() ~= stack:get_name()) and stack:get_count() <= 1) then
 				return 1
 			else
 				return 0
