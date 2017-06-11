@@ -337,8 +337,8 @@ minetest.register_on_joinplayer(function(player)
 			elseif index == 5 then
 				g = minetest.get_item_group(iname, "armor_feet")
 			end
-			if g ~= 0 and g ~= nil then
-				return stack:get_count()
+			if g ~= 0 and g ~= nil and inv:get_stack(listname, index):is_empty() then
+				return 1
 			else
 				return 0
 			end
