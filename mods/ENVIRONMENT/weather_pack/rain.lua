@@ -92,7 +92,7 @@ end
 rain.remove_player = function(player)
   local player_meta = weather.players[player:get_player_name()]
   if player_meta ~= nil and player_meta.origin_sky ~= nil then
-    player:set_sky(player_meta.origin_sky[1], player_meta.origin_sky[2], player_meta.origin_sky[3])
+    player:set_sky(player_meta.origin_sky[1], player_meta.origin_sky[2], player_meta.origin_sky[3], true)
     player:set_clouds({color="#FFF0F0E5"})
     weather.players[player:get_player_name()] = nil
   end

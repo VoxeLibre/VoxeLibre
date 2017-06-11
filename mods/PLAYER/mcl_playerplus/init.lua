@@ -178,7 +178,7 @@ minetest.register_globalstep(function(dtime)
 		-- Apply black sky in the Void and deal Void damage
 		if pos.y < mcl_vars.mg_bedrock_overworld_max then
 			-- Player reached the void, set black sky box
-			player:set_sky("#000000", "plain")
+			player:set_sky("#000000", "plain", nil, false)
 			-- FIXME: Sky handling in MCL2 is held together with lots of duct tape.
 			-- This only works beause weather_pack currently does not touch the sky for players below the height used for this check.
 			-- There should be a real skybox API.
