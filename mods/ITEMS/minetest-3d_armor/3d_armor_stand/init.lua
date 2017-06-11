@@ -84,7 +84,7 @@ end
 -- FIXME: The armor stand should be an entity
 minetest.register_node("3d_armor_stand:armor_stand", {
 	description = "Armor Stand",
-	_doc_items_longdesc = "An armor stand is a decorative object which displays different pieces of armor.",
+	_doc_items_longdesc = "An armor stand is a decorative object which can display different pieces of armor. Anything which players can wear as armor can also be put on an armor stand.",
 	_doc_items_usagehelp = "Hold an armor item in your hand and rightclick the armor stand to put it on the armor stand. To take a piece of armor from the armor stand, select your hand and rightclick the armor stand. You'll retrieve the first armor item from above.",
 	drawtype = "mesh",
 	mesh = "3d_armor_stand.obj",
