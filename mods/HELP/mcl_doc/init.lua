@@ -46,11 +46,11 @@ doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
 	return datastring
 end)
 
--- flower
+-- nodes which have flower placement rules
 doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
 	local datastring = ""
-	if def.groups.flower == 1 then
-		return "This is a flower which can grow on dirt, grass blocks and podzol. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher."
+	if def.groups.place_flowerlike == 1 then
+		return "This plant can only grow on dirt, grass blocks and podzol. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher."
 	end
 	return ""
 end)
