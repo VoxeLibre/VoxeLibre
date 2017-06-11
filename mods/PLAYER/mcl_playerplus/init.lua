@@ -139,9 +139,10 @@ minetest.register_globalstep(function(dtime)
 			end
 		end
 
-		-- set player physics
-		-- TODO: Resolve conflict
-		player:set_physics_override(def.speed, def.jump, def.gravity)
+		-- Set player physics if there's no conflict
+		if player:get_attribute("mcl_beds:sleeping") ~= "true" then
+			player:set_physics_override(def.speed, def.jump, def.gravity)
+		end
 
 		-- Is player suffocating inside node? (Only for solid full opaque cube type nodes
 		-- without group disable_suffocation=1)

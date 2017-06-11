@@ -100,8 +100,8 @@ function setSprinting(playerName, sprinting) --Sets the state of a player (0=sto
 	local player = minetest.get_player_by_name(playerName)
 	if players[playerName] then
 		players[playerName]["sprinting"] = sprinting
-		-- Don't overwrite physics when standing on soul sand
-		if mcl_playerplus[playerName].node_stand ~= "mcl_nether:soul_sand" then
+		-- Don't overwrite physics when standing on soul sand or sleeping
+		if mcl_playerplus[playerName].node_stand ~= "mcl_nether:soul_sand" and player:get_attribute("mcl_beds:sleeping") ~= "true" then
 			if sprinting == true then
 				player:set_physics_override({speed=mcl_sprint.SPEED})
 			elseif sprinting == false then

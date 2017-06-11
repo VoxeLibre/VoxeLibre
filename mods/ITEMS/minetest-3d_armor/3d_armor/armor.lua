@@ -174,7 +174,7 @@ armor.set_player_armor = function(self, player)
 		armor_groups.radiation = 100 - armor_radiation
 	end
 	player:set_armor_groups(armor_groups)
-	player:set_physics_override(physics_o)
+	-- Physics override intentionally removed because of possible conflicts
 	self.textures[name].armor = armor_texture
 	self.textures[name].preview = preview
 	self.def[name].state = state
