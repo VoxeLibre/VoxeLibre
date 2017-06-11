@@ -367,7 +367,8 @@ The dispenser will do different things, depending on the dispensed item:
 • Bone meal: Is applied on the block it is facint
 • Empty buckets: Are used to collect a liquid source
 • Filled buckets: Are used to place a liquid source
-• Heads, pumpkins or shulker boxes: Are placed as a block
+• Heads, pumpkins: Equipped to players and armor stands, or placed as a block
+• Shulker boxes: Are placed as a block
 • TNT: Is placed and ignited
 • Flint and steel: Is used to ignite a fire in air and to ignite TNT
 • Spawn eggs: Will summon the mob they contain
