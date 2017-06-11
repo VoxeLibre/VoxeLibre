@@ -68,6 +68,19 @@ local function update_entity(pos)
 	end
 end
 
+-- Drop all armor of the armor stand on the ground
+local drop_armor = function(pos)
+	local meta = minetest.get_meta(pos)
+	local inv = meta:get_inventory()
+	for _, element in pairs(elements) do
+		local stack = inv:get_stack("armor_"..element, 1)
+		if not stack:is_empty() then
+			local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
+			minetest.add_item(p, stack)
+		end
+	end
+end
+
 -- FIXME: The armor stand should be an entity
 minetest.register_node("3d_armor_stand:armor_stand", {
 	description = "Armor Stand",
@@ -98,16 +111,8 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 			inv:set_size("armor_"..element, 1)
 		end
 	end,
-	can_dig = function(pos, player)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		for _, element in pairs(elements) do
-			if not inv:is_empty("armor_"..element) then
-				return false
-			end
-		end
-		return true
-	end,
+	-- Drop all armor on the ground when it got destroyed
+	on_destruct = drop_armor,
 	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 		-- Check if player wields armor
 		local name = itemstack:get_name()
