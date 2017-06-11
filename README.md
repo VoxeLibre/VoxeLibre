@@ -69,7 +69,7 @@ Use the `/giveme` chat command to obtain them. See the in-game help for
 an explanation.
 
 ## Installation
-This game requires [Minetest](http://minetest.net) 0.4.15 (or later) to run,
+This game requires [Minetest](http://minetest.net) 0.4.16 (or later) to run,
 so you need to install Minetest first. Only stable versions of Minetest are
 officially supported. There is no support whatsoever for running MineClone 2
 in development versions of Minetest.
