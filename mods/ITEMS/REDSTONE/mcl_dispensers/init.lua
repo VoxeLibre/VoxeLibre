@@ -188,15 +188,6 @@ local dispenserdef = {
 						end
 					end
 
-				elseif igroups.head or igroups.shulker_box or iname == "mcl_farming:pumpkin_face" then
-					-- Place head, shulker box, or pumpkin
-					if dropnodedef.buildable_to then
-						minetest.set_node(droppos, {name = iname, param2 = node.param2})
-
-						stack:take_item()
-						inv:set_stack("main", stack_id, stack)
-					end
-
 				elseif iname == "mcl_dye:white" then
 					-- Apply bone meal, if possible
 					if dropnode.name == "air" then
@@ -239,6 +230,7 @@ local dispenserdef = {
 
 				elseif igroups.armor_head or igroups.armor_torso or igroups.armor_legs or igroups.armor_feet then
 					local armor_type, armor_slot
+					local armor_dispensed = false
 					if igroups.armor_head then
 						armor_type = "armor_head"
 						armor_slot = 2
@@ -273,6 +265,7 @@ local dispenserdef = {
 							minetest.registered_nodes["3d_armor_stand:armor_stand"].on_metadata_inventory_put(standpos)
 							stack:take_item()
 							inv:set_stack("main", stack_id, stack)
+							armor_dispensed = true
 						end
 					else
 						-- Put armor on nearby player
@@ -308,8 +301,28 @@ local dispenserdef = {
 
 								stack:take_item()
 								inv:set_stack("main", stack_id, stack)
+								armor_dispensed = true
 							end
 						end
+
+						-- Place head or pumpkin as node, if equipping it as armor has failed
+						if not armor_dispensed then
+							if igroups.head or iname == "mcl_farming:pumpkin_face" then
+								if dropnodedef.buildable_to then
+									minetest.set_node(droppos, {name = iname, param2 = node.param2})
+									stack:take_item()
+									inv:set_stack("main", stack_id, stack)
+								end
+							end
+						end
+					end
+
+				elseif igroups.head or igroups.shulker_box or iname == "mcl_farming:pumpkin_face" then
+					-- Place head, shulker box, or pumpkin as node
+					if dropnodedef.buildable_to then
+						minetest.set_node(droppos, {name = iname, param2 = node.param2})
+						stack:take_item()
+						inv:set_stack("main", stack_id, stack)
 					end
 
 				elseif igroups.spawn_egg then
