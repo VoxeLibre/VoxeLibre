@@ -164,7 +164,7 @@ local function register_decorations()
 
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:sand", "mcl_oore:redsand"},
+		place_on = {"mcl_core:sand", "mcl_core:redsand"},
 		sidelen = 16,
 		noise_params = {
 			offset = -0.0003,
