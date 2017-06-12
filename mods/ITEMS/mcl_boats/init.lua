@@ -120,10 +120,9 @@ function boat.on_punch(self, puncher)
 	end
 	if not self.driver then
 		self.removed = true
-		local inv = puncher:get_inventory()
 		-- Drop boat as item on the ground after punching
 		if not minetest.setting_getbool("creative_mode") then
-			minetest.add_item(self.object:getpos(), leftover)
+			minetest.add_item(self.object:getpos(), self._itemstring)
 		end
 		self.object:remove()
 	end
