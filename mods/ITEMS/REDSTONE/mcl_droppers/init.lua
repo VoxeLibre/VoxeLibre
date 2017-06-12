@@ -75,7 +75,8 @@ local dropperdef = {
 			if #stacks >= 1 then
 				local r = math.random(1, #stacks)
 				local stack = stacks[r].stack
-				local dropitem = ItemStack(stack:get_name())
+				local dropitem = ItemStack(stack)
+				dropitem:set_count(1)
 				local stack_id = stacks[r].stackpos
 
 				-- If it's a container, attempt to put it into the container
