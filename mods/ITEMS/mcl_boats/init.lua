@@ -39,7 +39,7 @@ local boat = {
 	collisionbox = {-0.5, -0.35, -0.5, 0.5, 0.3, 0.5},
 	visual = "mesh",
 	mesh = "boat.b3d",
-	textures = {"boat.png"},
+	textures = {"mcl_boats_texture_oak_boat.png"},
 	visual_size = {x=3, y=3},
 	  rotate = -180,
 		animation = {
@@ -48,6 +48,7 @@ local boat = {
 		walk_start = 0,		walk_end = 40,
 		run_start = 0,		run_end = 40,
 	},
+
 	driver = nil,
 	v = 0,
 	last_v = 0,
@@ -94,15 +95,19 @@ end
 
 function boat.on_activate(self, staticdata, dtime_s)
 	self.object:set_armor_groups({immortal = 1})
-	if staticdata then
-		self.v = tonumber(staticdata)
+	if type(staticdata) == "table" then
+		self.v = staticdata.v
+		self._itemstring = staticdata._itemstring
 	end
 	self.last_v = self.v
 end
 
 
 function boat.get_staticdata(self)
-	return tostring(self.v)
+	return {
+		v = self.v,
+		_itemstring = self._itemstring,
+	}
 end
 
 
@@ -118,14 +123,9 @@ function boat.on_punch(self, puncher)
 	if not self.driver then
 		self.removed = true
 		local inv = puncher:get_inventory()
-		if not (creative and creative.is_enabled_for
-				and creative.is_enabled_for(puncher:get_player_name()))
-				or not inv:contains_item("main", "mcl_boats:boat") then
-			local leftover = inv:add_item("main", "mcl_boats:boat")
-			-- if no room in inventory add a replacement boat to the world
-			if not leftover:is_empty() then
-				minetest.add_item(self.object:getpos(), leftover)
-			end
+		-- Drop boat as item on the ground after punching
+		if not minetest.setting_getbool("creative_mode") then
+			minetest.add_item(self.object:getpos(), leftover)
 		end
 		-- delay remove to ensure player is detached
 		minetest.after(0.1, function()
@@ -253,7 +253,9 @@ for b=1, #boat_ids do
 				return
 			end
 			pointed_thing.under.y = pointed_thing.under.y+0.5
-			minetest.add_entity(pointed_thing.under, itemstring)
+			local boat = minetest.add_entity(pointed_thing.under, itemstring)
+			boat:get_luaentity()._itemstring = itemstring
+			boat:set_properties({textures = { "mcl_boats_texture_"..images[b].."_boat.png" }})
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:take_item()
 			end
