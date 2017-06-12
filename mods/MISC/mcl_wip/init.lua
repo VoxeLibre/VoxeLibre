@@ -1,10 +1,4 @@
 local wip_items = {
-	"mcl_boats:boat_dark",
-	"mcl_boats:boat_spruce",
-	"mcl_boats:boat_acacia",
-	"mcl_boats:boat_jungle",
-	"mcl_boats:boat_birch",
-	"mcl_boats:boat",
 	"mcl_anvils:anvil",
 	"mcl_anvils:anvil_damage_1",
 	"mcl_anvils:anvil_damage_2",
