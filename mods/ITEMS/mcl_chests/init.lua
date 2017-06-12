@@ -59,6 +59,16 @@ minetest.register_node("mcl_chests:"..basename, {
 		-- END OF WORKAROUND --
 		local inv = meta:get_inventory()
 		inv:set_size("main", 9*3)
+		--[[ The "input" list is *another* workaround (hahahaha!) around the fact that Minetest
+		does not support listrings to put items into an alternative list if the first one
+		happens to be full. See <https://github.com/minetest/minetest/issues/5343>.
+		This list is a hidden input-only list and immediately puts items into the appropriate chest.
+		It is only used for listrings and hoppers. This workaround is not that bad because it only
+		requires a simple “inventory allows” check for large chests.]]
+		-- FIXME: Refactor the listrings as soon Minetest supports alternative listrings
+		-- BEGIN OF LISTRING WORKAROUND
+		inv:set_size("input", 1)
+		-- END OF LISTRING WORKAROUND
 		if minetest.get_node(get_chest_neighborpos(pos, param2, "right")).name == "mcl_chests:"..basename then
 			minetest.swap_node(pos, {name="mcl_chests:"..basename.."_right",param2=param2})
 			local p = get_chest_neighborpos(pos, param2, "right")
@@ -90,6 +100,12 @@ minetest.register_node("mcl_chests:"..basename, {
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
 				" moves stuff to chest at "..minetest.pos_to_string(pos))
+		-- BEGIN OF LISTRING WORKAROUND
+		if listname == "input" then
+			local inv = minetest.get_inventory({type="node", pos=pos})
+			inv:add_item("main", stack)
+		end
+		-- END OF LISTRING WORKAROUND
 	end,
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
@@ -152,6 +168,26 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		end
 		meta:from_table(meta2:to_table())
 	end,
+	-- BEGIN OF LISTRING WORKAROUND
+	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+		if listname == "input" then
+			local inv = minetest.get_inventory({type="node", pos=pos})
+			if inv:room_for_item("main", stack) then
+				return -1
+			else
+				local other_pos = get_chest_neighborpos(pos, minetest.get_node(pos).param2, "left")
+				local other_inv = minetest.get_inventory({type="node", pos=other_pos})
+				if other_inv:room_for_item("main", stack) then
+					return -1
+				else
+					return 0
+				end
+			end
+		else
+			return stack:get_count()
+		end
+	end,
+	-- END OF LISTRING WORKAROUND
 	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 		minetest.log("action", player:get_player_name()..
 				" moves stuff in chest at "..minetest.pos_to_string(pos))
@@ -159,6 +195,17 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
 				" moves stuff to chest at "..minetest.pos_to_string(pos))
+		-- BEGIN OF LISTRING WORKAROUND
+		if listname == "input" then
+			local inv = minetest.get_inventory({type="node", pos=pos})
+			local leftover = inv:add_item("main", stack)
+			if not leftover:is_empty() then
+				local other_pos = get_chest_neighborpos(pos, minetest.get_node(pos).param2, "left")
+				local other_inv = minetest.get_inventory({type="node", pos=other_pos})
+				other_inv:add_item("main", stack)
+			end
+		end
+		-- END OF LISTRING WORKAROUND
 	end,
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
@@ -179,6 +226,10 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,3.5;9,3;]"..
 		"list[current_player;main;0,7.5;9,3;9]"..
 		"list[current_player;main;0,10.75;9,1;]"..
+		-- BEGIN OF LISTRING WORKAROUND
+		"listring[current_player;main]"..
+		"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";input]"..
+		-- END OF LISTRING WORKAROUND
 		"listring[current_player;main]"..
 		"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]"..
 		"listring[current_player;main]"..
@@ -225,6 +276,26 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		end
 		meta:from_table(meta2:to_table())
 	end,
+	-- BEGIN OF LISTRING WORKAROUND
+	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+		if listname == "input" then
+			local other_pos = get_chest_neighborpos(pos, minetest.get_node(pos).param2, "right")
+			local other_inv = minetest.get_inventory({type="node", pos=other_pos})
+			if other_inv:room_for_item("main", stack) then
+				return -1
+			else
+				local inv = minetest.get_inventory({type="node", pos=pos})
+				if inv:room_for_item("main", stack) then
+					return -1
+				else
+					return 0
+				end
+			end
+		else
+			return stack:get_count()
+		end
+	end,
+	-- END OF LISTRING WORKAROUND
 	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 		minetest.log("action", player:get_player_name()..
 				" moves stuff in chest at "..minetest.pos_to_string(pos))
@@ -232,6 +303,15 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
 				" moves stuff to chest at "..minetest.pos_to_string(pos))
+		-- BEGIN OF LISTRING WORKAROUND
+		local other_pos = get_chest_neighborpos(pos, minetest.get_node(pos).param2, "right")
+		local other_inv = minetest.get_inventory({type="node", pos=other_pos})
+		local leftover = other_inv:add_item("main", stack)
+		if not leftover:is_empty() then
+			local inv = minetest.get_inventory({type="node", pos=pos})
+			inv:add_item("main", stack)
+		end
+		-- END OF LISTRING WORKAROUND
 	end,
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
@@ -253,6 +333,10 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3.5;9,3;]"..
 		"list[current_player;main;0,7.5;9,3;9]"..
 		"list[current_player;main;0,10.75;9,1;]"..
+		-- BEGIN OF LISTRING WORKAROUND
+		"listring[current_player;main]"..
+		"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";input]"..
+		-- END OF LISTRING WORKAROUND
 		"listring[current_player;main]"..
 		"listring[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main]"..
 		"listring[current_player;main]"..
