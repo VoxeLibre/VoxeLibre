@@ -218,6 +218,9 @@ function boat.on_step(self, dtime)
 	self.object:setacceleration(new_acce)
 end
 
+-- Register one entity for all boat types
+minetest.register_entity("mcl_boats:boat", boat)
+
 local boat_ids = { "boat", "boat_spruce", "boat_birch", "boat_jungle", "boat_acacia", "boat_dark_oak" }
 local names = { "Oak Boat", "Spruce Boat", "Birch Boat", "Jungle Boat", "Acacia Boat", "Dark Oak Boat" }
 local craftstuffs = { "mcl_core:wood", "mcl_core:sprucewood", "mcl_core:birchwood", "mcl_core:junglewood", "mcl_core:acaciawood", "mcl_core:darkwood" }
@@ -225,7 +228,6 @@ local images = { "oak", "spruce", "birch", "jungle", "acacia", "dark_oak" }
 
 for b=1, #boat_ids do
 	local itemstring = "mcl_boats:"..boat_ids[b]
-	minetest.register_entity(itemstring, boat)
 
 	minetest.register_craftitem(itemstring, {
 		description = names[b],
@@ -252,7 +254,7 @@ for b=1, #boat_ids do
 				return
 			end
 			pointed_thing.under.y = pointed_thing.under.y+0.5
-			local boat = minetest.add_entity(pointed_thing.under, itemstring)
+			local boat = minetest.add_entity(pointed_thing.under, "mcl_boats:boat")
 			boat:get_luaentity()._itemstring = itemstring
 			boat:set_properties({textures = { "mcl_boats_texture_"..images[b].."_boat.png" }})
 			if not minetest.setting_getbool("creative_mode") then
