@@ -235,12 +235,12 @@ minetest.register_abm({
 
 -- Iterates through all items in the given inventory and
 -- return the slot of the first item which matches a condition
-local get_eligible_transfer_item = function(inventory, list, condition)
-	local size = inventory:get_size(list)
+local get_eligible_transfer_item = function(src_inventory, src_list, dst_inventory, dst_list, condition)
+	local size = src_inventory:get_size(src_list)
 	local stack
 	for i=1, size do
-		stack = inventory:get_stack(list, i)
-		if not stack:is_empty() and condition(stack) then
+		stack = src_inventory:get_stack(src_list, i)
+		if not stack:is_empty() and condition(stack, src_inventory, src_list, dst_inventory, dst_list) then
 			return i
 		end
 	end
@@ -252,6 +252,21 @@ local is_not_shulker_box = function(itemstack)
 	local g = minetest.get_item_group(itemstack:get_name(), "shulker_box")
 	return g == 0 or g == nil
 end
+
+-- Returns true if itemstack is fuel, but not for lava bucket if destination already has one
+local is_transferrable_fuel = function(itemstack, src_inventory, src_list, dst_inventory, dst_list)
+	if mcl_util.is_fuel(itemstack) then
+		if itemstack:get_name() == "bucket:bucket_lava" then
+			return dst_inventory:is_empty(dst_list)
+		else
+			return true
+		end
+	else
+		return false
+	end
+end
+
+
 
 minetest.register_abm({
 	label = "Hopper/container item exchange",
@@ -288,14 +303,14 @@ minetest.register_abm({
 		if g == 3 then
 			-- For shulker boxes, only select non-shulker boxes
 			local sinv = minetest.get_inventory({type="node", pos = pos})
-			slot_id = get_eligible_transfer_item(sinv, "main", is_not_shulker_box)
+			local dinv = minetest.get_inventory({type="node", pos = downpos})
+			slot_id = get_eligible_transfer_item(sinv, "main", dinv, "main", is_not_shulker_box)
 		end
 		if slot_id then
 			mcl_util.move_item_container(pos, "main", slot_id, downpos)
 		end
 	end,
 })
-
 
 minetest.register_abm({
 	label = "Side-hopper/container item exchange",
@@ -338,14 +353,16 @@ minetest.register_abm({
 		elseif g == 3 then
 			-- Put non-shulker boxes into shulker box
 			local sinv = minetest.get_inventory({type="node", pos = pos})
-			local slot_id = get_eligible_transfer_item(sinv, "main", is_not_shulker_box)
+			local dinv = minetest.get_inventory({type="node", pos = front})
+			local slot_id = get_eligible_transfer_item(sinv, "main", dinv, "main", is_not_shulker_box)
 			if slot_id then
 				mcl_util.move_item_container(pos, "main", slot_id, front)
 			end
 		elseif g == 4 then
 			-- Put fuel into fuel slot
 			local sinv = minetest.get_inventory({type="node", pos = pos})
-			local slot_id = get_eligible_transfer_item(sinv, "main", mcl_util.is_fuel)
+			local dinv = minetest.get_inventory({type="node", pos = front})
+			local slot_id, stack = get_eligible_transfer_item(sinv, "main", dinv, "fuel", is_transferrable_fuel)
 			if slot_id then
 				mcl_util.move_item_container(pos, "main", slot_id, front, "fuel")
 			end
