@@ -93,19 +93,22 @@ end
 
 function boat.on_activate(self, staticdata, dtime_s)
 	self.object:set_armor_groups({immortal = 1})
-	if type(staticdata) == "table" then
-		self.v = staticdata.v
-		self._itemstring = staticdata._itemstring
+	local data = minetest.deserialize(staticdata)
+	if type(data) == "table" then
+		self.v = data.v
+		self.last_v = self.v
+		self._itemstring = data.itemstring
+		self.object:set_properties({textures=data.textures})
 	end
-	self.last_v = self.v
 end
 
 
 function boat.get_staticdata(self)
-	return {
+	return minetest.serialize({
 		v = self.v,
-		_itemstring = self._itemstring,
-	}
+		itemstring = self._itemstring,
+		textures = self.object:get_properties().textures
+	})
 end
 
 
