@@ -308,6 +308,10 @@ minetest.register_abm({
 		end
 		if slot_id then
 			mcl_util.move_item_container(pos, "main", slot_id, downpos)
+			if g == 4 then
+				-- Start furnace's timer function, it will sort out whether furnace can burn or not.
+				minetest.get_node_timer(downpos):start(1.0)
+			end
 		end
 	end,
 })
@@ -366,6 +370,8 @@ minetest.register_abm({
 			if slot_id then
 				mcl_util.move_item_container(pos, "main", slot_id, front, "fuel")
 			end
+			-- Start furnace's timer function, it will sort out whether furnace can burn or not.
+			minetest.get_node_timer(front):start(1.0)
 		end
 	end
 })

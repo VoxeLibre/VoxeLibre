@@ -133,7 +133,9 @@ These groups are used mostly for informational purposes
 * `container`: Node is a container which physically stores items within and has at least 1 inventory
    * `container=2`: Has one inventory with list name `"main"`. Items can be placed and taken freely
    * `container=3`: Same as `container=2`, but shulker boxes can not be inserted
-   * `container=4`: Furnace-like, has lists `"src"`, `"fuel"` and `"dst"`
+   * `container=4`: Furnace-like, has lists `"src"`, `"fuel"` and `"dst"`.
+                    It is expected that this also reacts on `on_timer`;
+                    the node timer must be started from other mods when they add into `"src"` or `"fuel"`
    * `container=1`: Other/unspecified container type
 * `spawn_egg=1`: Spawn egg
 
