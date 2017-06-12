@@ -67,9 +67,7 @@ function boat.on_rightclick(self, clicker)
 		mcl_player.player_set_animation(clicker, "stand" , 30)
 		local pos = clicker:getpos()
 		pos = {x = pos.x, y = pos.y + 0.2, z = pos.z}
-		minetest.after(0.1, function()
-			clicker:setpos(pos)
-		end)
+		clicker:setpos(pos)
 	elseif not self.driver then
 		local attach = clicker:get_attach()
 		if attach and attach:get_luaentity() then
@@ -127,10 +125,7 @@ function boat.on_punch(self, puncher)
 		if not minetest.setting_getbool("creative_mode") then
 			minetest.add_item(self.object:getpos(), leftover)
 		end
-		-- delay remove to ensure player is detached
-		minetest.after(0.1, function()
-			self.object:remove()
-		end)
+		self.object:remove()
 	end
 end
 
