@@ -317,12 +317,15 @@ local dispenserdef = {
 						end
 					end
 
-				elseif igroups.head or igroups.shulker_box or iname == "mcl_farming:pumpkin_face" then
-					-- Place head, shulker box, or pumpkin as node
+				elseif igroups.shulker_box then
+					-- Place shulker box as node
 					if dropnodedef.buildable_to then
 						minetest.set_node(droppos, {name = iname, param2 = node.param2})
+						local imeta = stack:get_metadata()
+						local iinv_main = minetest.deserialize(imeta)
+						local ninv = minetest.get_inventory({type="node", pos=droppos})
+						ninv:set_list("main", iinv_main)
 						stack:take_item()
-						inv:set_stack("main", stack_id, stack)
 					end
 
 				elseif igroups.spawn_egg then
