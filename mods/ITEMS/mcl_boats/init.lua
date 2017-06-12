@@ -38,7 +38,7 @@ local boat = {
 	-- lowering it causes the boat to fall through the world if underwater
 	collisionbox = {-0.5, -0.35, -0.5, 0.5, 0.3, 0.5},
 	visual = "mesh",
-	mesh = "boat.b3d",
+	mesh = "mcl_boats_boat.b3d",
 	textures = {"mcl_boats_texture_oak_boat.png"},
 	visual_size = {x=3, y=3},
 	  rotate = -180,
