@@ -304,12 +304,14 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		minetest.log("action", player:get_player_name()..
 				" moves stuff to chest at "..minetest.pos_to_string(pos))
 		-- BEGIN OF LISTRING WORKAROUND
-		local other_pos = get_chest_neighborpos(pos, minetest.get_node(pos).param2, "right")
-		local other_inv = minetest.get_inventory({type="node", pos=other_pos})
-		local leftover = other_inv:add_item("main", stack)
-		if not leftover:is_empty() then
-			local inv = minetest.get_inventory({type="node", pos=pos})
-			inv:add_item("main", leftover)
+		if listname == "input" then
+			local other_pos = get_chest_neighborpos(pos, minetest.get_node(pos).param2, "right")
+			local other_inv = minetest.get_inventory({type="node", pos=other_pos})
+			local leftover = other_inv:add_item("main", stack)
+			if not leftover:is_empty() then
+				local inv = minetest.get_inventory({type="node", pos=pos})
+				inv:add_item("main", leftover)
+			end
 		end
 		-- END OF LISTRING WORKAROUND
 	end,
