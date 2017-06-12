@@ -230,10 +230,22 @@ local images = { "oak", "spruce", "birch", "jungle", "acacia", "dark_oak" }
 for b=1, #boat_ids do
 	local itemstring = "mcl_boats:"..boat_ids[b]
 
+	local longdesc, usagehelp, help, helpname
+	help = false
+	-- Only create one help entry for all boats
+	if b == 1 then
+		help = true
+		longdesc = "Boats are used to travel on the surface of water."
+		usagehelp = "Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Rightclick the boat again to leave it, punch the boat to make it drop as an item."
+		helpname = "Boat"
+	end
+
 	minetest.register_craftitem(itemstring, {
 		description = names[b],
-		_doc_items_longdesc = "Boats are used to travel on the surface of water.",
-		_doc_items_usagehelp = "Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Rightclick the boat again to leave it, punch the boat to make it drop as an item.",
+		_doc_items_create_entry = help,
+		_doc_items_entry_name = helpname,
+		_doc_items_longdesc = longdesc,
+		_doc_items_usagehelp = usagehelp,
 		inventory_image = "mcl_boats_"..images[b].."_boat.png",
 		liquids_pointable = true,
 		groups = { boat = 1, transport = 1},
