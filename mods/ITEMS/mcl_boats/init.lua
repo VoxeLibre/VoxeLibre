@@ -229,6 +229,8 @@ for b=1, #boat_ids do
 
 	minetest.register_craftitem(itemstring, {
 		description = names[b],
+		_doc_items_longdesc = "Boats are used to travel on the surface of water.",
+		_doc_items_usagehelp = "Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Rightclick the boat again to leave it, punch the boat to make it drop as an item.",
 		inventory_image = "mcl_boats_"..images[b].."_boat.png",
 		liquids_pointable = true,
 		groups = { boat = 1, transport = 1},
@@ -276,3 +278,6 @@ minetest.register_craft({
 	burntime = 20,
 })
 
+if minetest.get_modpath("doc_identifier") ~= nil then
+	doc.sub.identifier.register_object("mcl_boats:boat", "craftitems", "mcl_boats:boat")
+end
