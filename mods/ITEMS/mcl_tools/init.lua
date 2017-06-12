@@ -52,7 +52,7 @@ local pickaxe_longdesc = "Pickaxes are mining tools to mine hard blocks, such as
 local axe_longdesc = "An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow."
 local sword_longdesc = "Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs."
 local shovel_longdesc = "Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak."
-local shovel_use = "To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the side of a grass block. This only works when nothing is above the grass block."
+local shovel_use = "To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the top or side of a grass block. This only works when there's air above the grass block."
 local shears_longdesc = "Shears are tools to shear sheep and to mine a few block types."
 local shears_use = "To shear a sheep and obtain its wool, rightclick it while holding the shears. Mining works are usual."
 
@@ -166,7 +166,7 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 		end
 	end
 
-	if (node.name == "mcl_core:dirt_with_grass" or node.name == "mcl_core:dirt_with_grass_snow") and pointed_thing.above.y == pointed_thing.under.y then
+	if (node.name == "mcl_core:dirt_with_grass" or node.name == "mcl_core:dirt_with_grass_snow") then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
 		if minetest.get_node(above).name == "air" then
