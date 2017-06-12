@@ -49,10 +49,11 @@ local boat = {
 		run_start = 0,		run_end = 40,
 	},
 
-	driver = nil,
-	v = 0,
-	last_v = 0,
-	removed = false
+	_driver = nil, -- Attached driver (player) or nil if none
+	_v = 0, -- Speed
+	_last_v = 0, -- Temporary speed variable
+	_removed = false, -- If true, boat entity is considered removed (e.g. after punch) and should be ignored
+	_itemstring = "mcl_boats:boat", -- Itemstring of the boat item (implies boat type)
 }
 
 function boat.on_rightclick(self, clicker)
@@ -60,24 +61,24 @@ function boat.on_rightclick(self, clicker)
 		return
 	end
 	local name = clicker:get_player_name()
-	if self.driver and clicker == self.driver then
-		self.driver = nil
+	if self._driver and clicker == self._driver then
+		self._driver = nil
 		clicker:set_detach()
 		mcl_player.player_attached[name] = false
 		mcl_player.player_set_animation(clicker, "stand" , 30)
 		local pos = clicker:getpos()
 		pos = {x = pos.x, y = pos.y + 0.2, z = pos.z}
 		clicker:setpos(pos)
-	elseif not self.driver then
+	elseif not self._driver then
 		local attach = clicker:get_attach()
 		if attach and attach:get_luaentity() then
 			local luaentity = attach:get_luaentity()
-			if luaentity.driver then
-				luaentity.driver = nil
+			if luaentity._driver then
+				luaentity._driver = nil
 			end
 			clicker:set_detach()
 		end
-		self.driver = clicker
+		self._driver = clicker
 		clicker:set_attach(self.object, "",
 			{x = 0, y = 11, z = -3}, {x = 0, y = 0, z = 0})
 		mcl_player.player_attached[name] = true
@@ -95,8 +96,8 @@ function boat.on_activate(self, staticdata, dtime_s)
 	self.object:set_armor_groups({immortal = 1})
 	local data = minetest.deserialize(staticdata)
 	if type(data) == "table" then
-		self.v = data.v
-		self.last_v = self.v
+		self._v = data.v
+		self._last_v = self._v
 		self._itemstring = data.itemstring
 		self.object:set_properties({textures=data.textures})
 	end
@@ -105,7 +106,7 @@ end
 
 function boat.get_staticdata(self)
 	return minetest.serialize({
-		v = self.v,
+		v = self._v,
 		itemstring = self._itemstring,
 		textures = self.object:get_properties().textures
 	})
@@ -113,16 +114,16 @@ end
 
 
 function boat.on_punch(self, puncher)
-	if not puncher or not puncher:is_player() or self.removed then
+	if not puncher or not puncher:is_player() or self._removed then
 		return
 	end
-	if self.driver and puncher == self.driver then
-		self.driver = nil
+	if self._driver and puncher == self._driver then
+		self._driver = nil
 		puncher:set_detach()
 		mcl_player.player_attached[puncher:get_player_name()] = false
 	end
-	if not self.driver then
-		self.removed = true
+	if not self._driver then
+		self._removed = true
 		-- Drop boat as item on the ground after punching
 		if not minetest.setting_getbool("creative_mode") then
 			minetest.add_item(self.object:getpos(), self._itemstring)
@@ -133,23 +134,23 @@ end
 
 
 function boat.on_step(self, dtime)
-	self.v = get_v(self.object:getvelocity()) * get_sign(self.v)
-	if self.driver then
-		local ctrl = self.driver:get_player_control()
+	self._v = get_v(self.object:getvelocity()) * get_sign(self._v)
+	if self._driver then
+		local ctrl = self._driver:get_player_control()
 		local yaw = self.object:getyaw()
 		if ctrl.up then
-			self.v = self.v + 0.1
+			self._v = self._v + 0.1
 		elseif ctrl.down then
-			self.v = self.v - 0.1
+			self._v = self._v - 0.1
 		end
 		if ctrl.left then
-			if self.v < 0 then
+			if self._v < 0 then
 				self.object:setyaw(yaw - (1 + dtime) * 0.03)
 			else
 				self.object:setyaw(yaw + (1 + dtime) * 0.03)
 			end
 		elseif ctrl.right then
-			if self.v < 0 then
+			if self._v < 0 then
 				self.object:setyaw(yaw + (1 + dtime) * 0.03)
 			else
 				self.object:setyaw(yaw - (1 + dtime) * 0.03)
@@ -157,19 +158,19 @@ function boat.on_step(self, dtime)
 		end
 	end
 	local velo = self.object:getvelocity()
-	if self.v == 0 and velo.x == 0 and velo.y == 0 and velo.z == 0 then
+	if self._v == 0 and velo.x == 0 and velo.y == 0 and velo.z == 0 then
 		self.object:setpos(self.object:getpos())
 		return
 	end
-	local s = get_sign(self.v)
-	self.v = self.v - 0.02 * s
-	if s ~= get_sign(self.v) then
+	local s = get_sign(self._v)
+	self._v = self._v - 0.02 * s
+	if s ~= get_sign(self._v) then
 		self.object:setvelocity({x = 0, y = 0, z = 0})
-		self.v = 0
+		self._v = 0
 		return
 	end
-	if math.abs(self.v) > 5 then
-		self.v = 5 * get_sign(self.v)
+	if math.abs(self._v) > 5 then
+		self._v = 5 * get_sign(self._v)
 	end
 
 	local p = self.object:getpos()
@@ -179,12 +180,12 @@ function boat.on_step(self, dtime)
 	if not is_water(p) then
 		local nodedef = minetest.registered_nodes[minetest.get_node(p).name]
 		if (not nodedef) or nodedef.walkable then
-			self.v = 0
+			self._v = 0
 			new_acce = {x = 0, y = 1, z = 0}
 		else
 			new_acce = {x = 0, y = -9.8, z = 0}
 		end
-		new_velo = get_velocity(self.v, self.object:getyaw(),
+		new_velo = get_velocity(self._v, self.object:getyaw(),
 			self.object:getvelocity().y)
 		self.object:setpos(self.object:getpos())
 	else
@@ -198,7 +199,7 @@ function boat.on_step(self, dtime)
 			else
 				new_acce = {x = 0, y = 5, z = 0}
 			end
-			new_velo = get_velocity(self.v, self.object:getyaw(), y)
+			new_velo = get_velocity(self._v, self.object:getyaw(), y)
 			self.object:setpos(self.object:getpos())
 		else
 			new_acce = {x = 0, y = 0, z = 0}
@@ -206,9 +207,9 @@ function boat.on_step(self, dtime)
 				local pos = self.object:getpos()
 				pos.y = math.floor(pos.y) + 0.5
 				self.object:setpos(pos)
-				new_velo = get_velocity(self.v, self.object:getyaw(), 0)
+				new_velo = get_velocity(self._v, self.object:getyaw(), 0)
 			else
-				new_velo = get_velocity(self.v, self.object:getyaw(),
+				new_velo = get_velocity(self._v, self.object:getyaw(),
 					self.object:getvelocity().y)
 				self.object:setpos(self.object:getpos())
 			end
