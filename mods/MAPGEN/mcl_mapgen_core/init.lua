@@ -39,6 +39,8 @@ minetest.register_alias("mapgen_stair_sandstonebrick", "mcl_stairs:stair_sandsto
 minetest.register_alias("mapgen_stair_sandstone_block", "mcl_stairs:stair_sandstone")
 minetest.register_alias("mapgen_stair_desert_stone", "mcl_stairs:stair_sandstone")
 
+local mg_name = minetest.get_mapgen_setting("mg_name")
+
 --
 -- Ore generation
 --
@@ -503,6 +505,8 @@ minetest.register_ore({
 	y_max          = mcl_util.layer_to_y(32),
 })
 
+if mg_name ~= "flat" then
+
 -- Water and lava springs (single blocks of lava/water source)
 -- Water appears at nearly every height, but not near the bottom
 minetest.register_ore({
@@ -573,6 +577,8 @@ minetest.register_ore({
 	y_min          = mcl_util.layer_to_y(62),
 	y_max          = mcl_util.layer_to_y(127),
 })
+
+end
 
 local function register_mgv6_decorations()
 
@@ -873,7 +879,6 @@ local function register_mgv6_decorations()
 end
 
 -- Apply mapgen-specific mapgen code
-local mg_name = minetest.get_mapgen_setting("mg_name")
 if mg_name == "v6" then
 	register_mgv6_decorations()
 end
