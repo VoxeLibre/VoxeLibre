@@ -370,7 +370,19 @@ local function item_in_inv(inv, item)
 	return inv:contains_item("main", item)
 end
 
-function craftguide:recipe_in_inv(inv, item_name, recipes_f)
+-- Returns true if player knows the item. Used for progressive mode (EXPERIMENTAL).
+local function knows_item(playername, item)
+	local has_item = doc.entry_exists("nodes", item) and doc.entry_revealed(playername, "nodes", item)
+	if not has_item then
+		has_item = doc.entry_exists("tools", item) and doc.entry_revealed(playername, "tools", item)
+	end
+	if not has_item then
+		has_item = doc.entry_exists("craftitems", item) and doc.entry_revealed(playername, "craftitems", item)
+	end
+	return has_item
+end
+
+function craftguide:recipe_in_inv(inv, item_name, recipes_f, playername)
 	local recipes = recipes_f or get_recipes(item_name) or {}
 	local show_item_recipes = {}
 
@@ -386,7 +398,7 @@ function craftguide:recipe_in_inv(inv, item_name, recipes_f)
 					end
 				end
 			end
-			if group_in_inv or item_in_inv(inv, item) then
+			if group_in_inv or item_in_inv(inv, item) or knows_item(playername, item) then
 				show_item_recipes[i] = true
 			end
 		end
@@ -435,7 +447,7 @@ function craftguide:get_filter_items(data, player)
 				filtered_list[counter] = item
 			end
 		elseif progressive_mode then
-			local _, has_item = self:recipe_in_inv(inv, item)
+			local _, has_item = self:recipe_in_inv(inv, item, nil, player:get_player_name())
 			if has_item then
 				counter = counter + 1
 				filtered_list[counter] = item
@@ -504,12 +516,10 @@ mt.register_on_player_receive_fields(function(player, formname, fields)
 
 				if progressive_mode then
 					local inv = player:get_inventory()
-					local _, has_item =
-						craftguide:recipe_in_inv(inv, item)
+					local _, has_item = craftguide:recipe_in_inv(inv, item, nil, player:get_player_name())
 
 					if not has_item then return end
-					recipes = craftguide:recipe_in_inv(
-								inv, item, recipes)
+					recipes = craftguide:recipe_in_inv(inv, item, recipes, player_name)
 				end
 
 				data.item = item
