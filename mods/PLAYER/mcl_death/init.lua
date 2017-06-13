@@ -1,5 +1,5 @@
 minetest.register_on_dieplayer(function(player)
-	local keep = minetest.setting_getbool("mcl_keepInventory")
+	local keep = minetest.setting_getbool("mcl_keepInventory") or false
 	if keep == false then
 		local inv = player:get_inventory()
 		local pos = player:getpos()

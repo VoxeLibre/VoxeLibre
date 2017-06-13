@@ -155,7 +155,8 @@ minetest.register_globalstep(function(dtime)
 end)
 
 function minetest.handle_node_drops(pos, drops, digger)
-	if minetest.setting_getbool("creative_mode") or minetest.setting_getbool("mcl_doTileDrops") == false then
+	local doTileDrops = minetest.setting_getbool("mcl_doTileDrops") or true
+	if minetest.setting_getbool("creative_mode") or doTileDrops == false then
 		return
 	end
 	for _,item in ipairs(drops) do
