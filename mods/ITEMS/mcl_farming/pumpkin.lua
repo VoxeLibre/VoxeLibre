@@ -77,6 +77,7 @@ local pumpkin_base_def = {
 	description = "Pumpkin",
 	_doc_items_longdesc = "A pumpkin is a naturally occouring block from the grasslands and is remarkable for its strange face-like cavity, which is developed naturally. A pumpkin can be worn as a helmet for fun, but it doesn't offer any protection. Pumpkins are grown from pumpkin stems, which in turn are grown from pumpkin seeds.",
 	stack_max = 64,
+	paramtype = "light",
 	paramtype2 = "facedir",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"},
 	groups = {handy=1,axey=1, plant=1,building_block=1, armor_head=1,non_combat_armor=1, dig_by_piston=1},
@@ -99,6 +100,7 @@ minetest.register_node("mcl_farming:pumpkin_face_light", {
 	_doc_items_longdesc = "A jack o'lantern is a traditional Halloween decoration made from a pumpkin. It glows brightly.",
 	is_ground_content = false,
 	stack_max = 64,
+	paramtype = "light",
 	paramtype2 = "facedir",
 	-- Real light level: 15 (Minetest caps at 14)
 	light_source = 14,
