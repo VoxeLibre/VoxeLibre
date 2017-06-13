@@ -602,7 +602,9 @@ for color, desc in pairs(boxtypes) do
 		paramtype = "light",
 		sunlight_propagates = true,
 		paramtype2 = "facedir",
-		on_place = minetest.rotate_node,
+--		TODO: Make shulker boxes rotatable
+--		This doesn't work, it just destroys the inventory:
+--		on_place = minetest.rotate_node,
 		on_construct = function(pos)
 			local meta = minetest.get_meta(pos)
 			meta:set_string("formspec",
