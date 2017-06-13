@@ -18,7 +18,7 @@ awards.register_achievement("mcl_buildWorkBench", {
 	icon = "crafting_workbench_front.png",
 	trigger = {
 		type = "craft",
-		item = "mcl_inventory:workbench",
+		item = "mcl_crafting_table:crafting_table",
 		target = 1
 	}
 })
