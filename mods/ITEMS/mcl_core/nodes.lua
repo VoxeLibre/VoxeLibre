@@ -1196,6 +1196,7 @@ minetest.register_node("mcl_core:cactus", {
 	groups = {handy=1, attached_node=1, plant=1, deco_block=1, dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	paramtype = "light",
+	sunlight_propagates = true,
 	node_placement_prediction = "",
 	node_box = {
 		type = "fixed",
@@ -1629,6 +1630,7 @@ minetest.register_node("mcl_core:lava_flowing", {
 		},
 	},
 	paramtype = "light",
+	sunlight_propagates = true,
 	paramtype2 = "flowingliquid",
 	-- Real light level: 15 (but Minetest caps at 14)
 	light_source = 14,
@@ -1679,6 +1681,7 @@ Lava interacts with water various ways:
 		}
 	},
 	paramtype = "light",
+	sunlight_propagates = true,
 	-- Real light level: 15 (but Minetest caps at 14)
 	light_source = 14,
 	walkable = false,

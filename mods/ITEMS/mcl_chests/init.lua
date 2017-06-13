@@ -599,6 +599,8 @@ for color, desc in pairs(boxtypes) do
 		sounds = mcl_sounds.node_sound_stone_defaults(),
 		stack_max = 1,
 		drop = "",
+		paramtype = "light",
+		sunlight_propagates = true,
 		paramtype2 = "facedir",
 		on_place = minetest.rotate_node,
 		on_construct = function(pos)

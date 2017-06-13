@@ -334,6 +334,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 		"default_furnace_side.png", "default_furnace_front_active.png",
 	},
 	paramtype2 = "facedir",
+	paramtype = "light",
 	light_source = 13,
 	drop = "mcl_furnaces:furnace",
 	groups = {pickaxey=1, container=4, deco_block=1, not_in_creative_inventory=1, material_stone=1},

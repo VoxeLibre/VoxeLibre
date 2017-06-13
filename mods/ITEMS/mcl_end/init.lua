@@ -185,6 +185,7 @@ minetest.register_node("mcl_end:chorus_flower", {
 	},
 	drawtype = "nodebox",
 	paramtype = "light",
+	sunlight_propagates = true,
 	node_box = chorus_flower_box,
 	selection_box = { type = "regular" },
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -205,6 +206,7 @@ minetest.register_node("mcl_end:chorus_flower_dead", {
 	},
 	drawtype = "nodebox",
 	paramtype = "light",
+	sunlight_propagates = true,
 	node_box = chorus_flower_box,
 	selection_box = { type = "regular" },
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -226,6 +228,7 @@ minetest.register_node("mcl_end:chorus_plant", {
 	},
 	drawtype = "nodebox",
 	paramtype = "light",
+	sunlight_propagates = true,
 	-- TODO: Maybe improve nodebox a bit to look more “natural”
 	node_box = {
 		type = "connected",

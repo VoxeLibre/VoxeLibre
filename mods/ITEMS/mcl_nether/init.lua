@@ -13,6 +13,8 @@ minetest.register_node("mcl_nether:glowstone", {
 			{items = {'mcl_nether:glowstone_dust 2'}},
 		}
 	},
+	paramtype = "light",
+	sunlight_propagates = true,
 	-- Real light level: 15 (but Minetest caps at 14)
 	light_source = 14,
 	sounds = mcl_sounds.node_sound_glass_defaults(),

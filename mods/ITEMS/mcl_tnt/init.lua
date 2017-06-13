@@ -49,6 +49,8 @@ minetest.register_node("mcl_tnt:tnt", {
 	is_ground_content = false,
 	stack_max = 64,
 	description = "TNT",
+	paramtype = "light",
+	sunlight_propagates = true,
 	_doc_items_longdesc = string.format("An explosive device. When it explodes, it will hurt living beings, destroy blocks around it, throw blocks affected by gravity all over the place and light fires. A single TNT has an explosion radius of %d. With a small chance, blocks may drop as an item (as if being mined) rather than being destroyed. TNT can be ignited by tools, explosions, fire, lava and redstone signals.", TNT_RANGE),
 	_doc_items_usagehelp = "Place the TNT on the ground and ignite it with one of the methods above. Quickly get in safe distance quickly. The TNT will start to be affected by gravity and explodes in 4 seconds.",
 	groups = { dig_immediate = 3, tnt = 1, },
