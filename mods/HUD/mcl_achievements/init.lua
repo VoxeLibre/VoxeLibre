@@ -219,13 +219,12 @@ if non_pc_achievements then
 
 	awards.register_achievement("mcl:n_emeralds", {
 		title = S("The Haggler"),
-		-- TODO: Should also count emeralds bought from villagers
-		description = S("Mine 30 emerald ore."),
+		description = S("Mine emerald ore."),
 		icon = "default_emerald.png",
 		trigger = {
 			type = "dig",
 			node = "mcl_core:stone_with_emerald",
-			target = 30,
+			target = 1,
 		}
 	})
 end
