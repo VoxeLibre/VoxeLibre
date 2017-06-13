@@ -12,6 +12,7 @@ local function register_classic_superflat_biome()
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 3,
+		node_stone = "mcl_core:dirt",
 		y_min = -512,
 		y_max = 512,
 		heat_point = 50,
