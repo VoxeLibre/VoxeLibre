@@ -29,7 +29,11 @@ by PilzAdam and others
 - `blaze_hurt1.ogg`
 	- CC0, by freesound.org user thefilmbakery
 	- Source: <https://freesound.org/people/thefilmbakery/sounds/137836/>
-- `slime_*.ogg`
+- `green_slime_death.ogg`
+	- CC BY 3.0 <http://creativecommons.org/licenses/by/3.0/>
+        - By freesound.org user DrMinky
+        - Source: <https://freesound.org/people/DrMinky/sounds/167074/>
+- `green_slime_*.ogg`
 	- MIT License 
 - `mobs_sheep.ogg`
 	- [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/), created by the Blender Foundation
