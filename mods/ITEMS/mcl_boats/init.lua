@@ -28,6 +28,10 @@ local function get_v(v)
 	return math.sqrt(v.x ^ 2 + v.z ^ 2)
 end
 
+local boat_visual_size = {x = 3, y = 3}
+-- Note: This mod assumes the default player visual_size is {x=1, y=1}
+local driver_visual_size = { x = 1/boat_visual_size.x, y = 1/boat_visual_size.y }
+
 --
 -- Boat entity
 --
@@ -40,7 +44,7 @@ local boat = {
 	visual = "mesh",
 	mesh = "mcl_boats_boat.b3d",
 	textures = {"mcl_boats_texture_oak_boat.png"},
-	visual_size = {x=3, y=3},
+	visual_size = boat_visual_size,
 	  rotate = -180,
 		animation = {
 		speed_normal = 25,		speed_run = 50,
@@ -64,6 +68,7 @@ function boat.on_rightclick(self, clicker)
 	if self._driver and clicker == self._driver then
 		self._driver = nil
 		clicker:set_detach()
+		clicker:set_properties({visual_size = {x=1, y=1}})
 		mcl_player.player_attached[name] = false
 		mcl_player.player_set_animation(clicker, "stand" , 30)
 		local pos = clicker:getpos()
@@ -77,10 +82,12 @@ function boat.on_rightclick(self, clicker)
 				luaentity._driver = nil
 			end
 			clicker:set_detach()
+			clicker:set_properties({visual_size = {x=1, y=1}})
 		end
 		self._driver = clicker
 		clicker:set_attach(self.object, "",
-			{x = 0, y = 11, z = -3}, {x = 0, y = 0, z = 0})
+			{x = 0, y = 3.75, z = -1}, {x = 0, y = 0, z = 0})
+		clicker:set_properties({ visual_size = driver_visual_size })
 		mcl_player.player_attached[name] = true
 		minetest.after(0.2, function(clicker)
 			if clicker:is_player() then
@@ -120,6 +127,7 @@ function boat.on_punch(self, puncher)
 	if self._driver and puncher == self._driver then
 		self._driver = nil
 		puncher:set_detach()
+		puncher:set_properties({visual_size = {x=1, y=1}})
 		mcl_player.player_attached[puncher:get_player_name()] = false
 	end
 	if not self._driver then
