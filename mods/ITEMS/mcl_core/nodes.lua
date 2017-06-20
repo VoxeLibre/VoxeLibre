@@ -1958,7 +1958,17 @@ local on_snow_construct = function(pos)
 		minetest.swap_node(npos, {name="mcl_core:mycelium_snow"})
 	end
 end
-local after_snow_destruct = function(pos, oldnode)
+local clear_snow_dirt = function(pos, node)
+	if node.name == "mcl_core:dirt_with_grass_snow" then
+		minetest.swap_node(pos, {name="mcl_core:dirt_with_grass"})
+	elseif node.name == "mcl_core:podzol_snow" then
+		minetest.swap_node(pos, {name="mcl_core:podzol"})
+	elseif node.name == "mcl_core:mycelium_snow" then
+		minetest.swap_node(pos, {name="mcl_core:mycelium"})
+	end
+
+end
+local after_snow_destruct = function(pos)
 	local nn = minetest.get_node(pos).name
 	-- No-op if snow was replaced with snow
 	if nn == "mcl_core:snow" or nn == "mcl_core:snowblock" then
@@ -1966,13 +1976,7 @@ local after_snow_destruct = function(pos, oldnode)
 	end
 	local npos = {x=pos.x, y=pos.y-1, z=pos.z}
 	local node = minetest.get_node(npos)
-	if node.name == "mcl_core:dirt_with_grass_snow" then
-		minetest.swap_node(npos, {name="mcl_core:dirt_with_grass"})
-	elseif node.name == "mcl_core:podzol_snow" then
-		minetest.swap_node(npos, {name="mcl_core:podzol"})
-	elseif node.name == "mcl_core:mycelium_snow" then
-		minetest.swap_node(npos, {name="mcl_core:mycelium"})
-	end
+	clear_snow_dirt(npos, node)
 end
 
 minetest.register_node("mcl_core:snow", {
@@ -1989,6 +1993,11 @@ minetest.register_node("mcl_core:snow", {
 	drawtype = "nodebox",
 	stack_max = 64,
 	floodable = true,
+	on_flood = function(pos, oldnode, newnode)
+		local npos = {x=pos.x, y=pos.y-1, z=pos.z}
+		local node = minetest.get_node(npos)
+		clear_snow_dirt(npos, node)
+	end,
 	node_box = {
 		type = "fixed",
 		fixed = {
