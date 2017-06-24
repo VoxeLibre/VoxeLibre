@@ -131,11 +131,27 @@ local egg_on_step = function(self, dtime)
 	if self._lastpos.x~=nil then
 		if (def and def.walkable) or not def then
 			-- 1/8 chance to spawn a chick
-			-- FIXME: Spawn chicks instead of chickens
 			-- FIXME: Chicks have a quite good chance to spawn in walls
 			local r = math.random(1,8)
+
+			-- Turn given object into a child
+			local make_child= function(object)
+				local ent = object:get_luaentity()
+				object:set_properties({
+					visual_size = { x = ent.base_size.x/2, y = ent.base_size.y/2 },
+					collisionbox = {
+						ent.base_colbox[1]/2,
+						ent.base_colbox[2]/2,
+						ent.base_colbox[3]/2,
+						ent.base_colbox[4]/2,
+						ent.base_colbox[5]/2,
+						ent.base_colbox[6]/2,
+					}
+				})
+				ent.child = true
+			end
 			if r == 1 then
-				minetest.add_entity(self._lastpos, "mobs_mc:chicken")
+				make_child(minetest.add_entity(self._lastpos, "mobs_mc:chicken"))
 
 				-- BONUS ROUND: 1/32 chance to spawn 3 additional chicks
 				local r = math.random(1,32)
@@ -147,7 +163,7 @@ local egg_on_step = function(self, dtime)
 					}
 					for o=1, 3 do
 						local pos = vector.add(self._lastpos, offsets[o])
-						minetest.add_entity(pos, "mobs_mc:chicken")
+						make_child(minetest.add_entity(pos, "mobs_mc:chicken"))
 					end
 				end
 			end
