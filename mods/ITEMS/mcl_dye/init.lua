@@ -75,7 +75,7 @@ dyelocal.dyes = {
 	{"dark_green", "Cactus Green",{dye=1, craftitem=1, basecolor_green=1,   excolor_green=1,     unicolor_dark_green=1}},
 	{"green",      "Lime Dye",     {dye=1, craftitem=1, basecolor_green=1,   excolor_green=1,     unicolor_green=1}},
 	{"yellow",     "Dandelion Yellow",    {dye=1, craftitem=1, basecolor_yellow=1,  excolor_yellow=1,    unicolor_yellow=1}},
-	{"brown",      "Cocoa Beans",     {dye=1, craftitem=1, basecolor_yellow=1,  excolor_orange=1,    unicolor_dark_orange=1}},
+	{"brown",      "Cocoa Beans",     {dye=1, craftitem=1, basecolor_brown=1,  excolor_orange=1,    unicolor_dark_orange=1}},
 	{"orange",     "Orange Dye",    {dye=1, craftitem=1, basecolor_orange=1,  excolor_orange=1,    unicolor_orange=1}},
 	{"red",        "Rose Red",       {dye=1, craftitem=1, basecolor_red=1,     excolor_red=1,       unicolor_red=1}},
 	{"magenta",    "Magenta Dye",   {dye=1, craftitem=1, basecolor_magenta=1, excolor_red_violet=1,unicolor_red_violet=1}},
@@ -247,7 +247,7 @@ minetest.register_craftitem("mcl_dye:brown", {
 	_doc_items_usagehelp = "Rightclick a sheep to turn its wool brown. Rightclick on the side of a jungle tree trunk (Jungle Wood) to plant a young cocoa.",
 	description = "Cocoa Beans",
 	stack_max = 64,
-	groups = dyelocal.dyes[4][3],
+	groups = dyelocal.dyes[12][3],
 	on_place = function(itemstack, placer, pointed_thing)
 		return mcl_cocoas.place(itemstack, placer, pointed_thing, "mcl_cocoas:cocoa_1")
 	end,
