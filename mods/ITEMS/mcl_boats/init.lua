@@ -45,8 +45,7 @@ local boat = {
 	mesh = "mcl_boats_boat.b3d",
 	textures = {"mcl_boats_texture_oak_boat.png"},
 	visual_size = boat_visual_size,
-	  rotate = -180,
-		animation = {
+	animation = {
 		speed_normal = 25,		speed_run = 50,
 		stand_start = 0,		stand_end = 0,
 		walk_start = 0,		walk_end = 40,

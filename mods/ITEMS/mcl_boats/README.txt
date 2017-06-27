@@ -3,7 +3,7 @@ This mod adds drivable boats.
 
 # Credits
 ## Mesh
-Boat mesh (`models/boat.b3d`) created by 22i.
+Boat mesh (`models/mcl_boats_boat.b3d`) created by 22i.
 Source: https://github.com/22i/minecraft-voxel-blender-models
 
 License of boat model:
