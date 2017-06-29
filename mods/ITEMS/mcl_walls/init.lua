@@ -40,7 +40,8 @@ local function update_wall(pos)
 	for i = 1, 4 do
 		local dir = directions[i]
 		local node = minetest.get_node({x = pos.x + dir.x, y = pos.y + dir.y, z = pos.z + dir.z})
-		if minetest.registered_nodes[node.name].walkable then
+		local def = minetest.registered_nodes[node.name]
+		if def and def.walkable then
 			sum = sum + 2 ^ (i - 1)
 		end
 	end
@@ -48,7 +49,8 @@ local function update_wall(pos)
 	-- Torches or walkable nodes above the wall
 	local upnode = minetest.get_node({x = pos.x, y = pos.y+1, z = pos.z})
 	if sum == 5 or sum == 10 then
-		if minetest.registered_nodes[upnode.name].walkable or upnode.name == "mcl_torches:torch" then
+		local def = minetest.registered_nodes[upnode.name]
+		if (def and def.walkable) or upnode.name == "mcl_torches:torch" then
 			sum = sum + 11
 		end
 	end
