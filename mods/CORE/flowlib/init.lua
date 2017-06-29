@@ -64,9 +64,15 @@ flowlib.node_is_liquid = node_is_liquid
 --This code is more efficient
 local function quick_flow_logic(node,pos_testing,direction)
 	local name = node.name
+	if not minetest.registered_nodes[name] then
+		return 0
+	end
 	if minetest.registered_nodes[name].liquidtype == "source" then
 		local node_testing = minetest.get_node(pos_testing)
 		local param2_testing = node_testing.param2
+		if not minetest.registered_nodes[node_testing.name] then
+			return 0
+		end
 		if minetest.registered_nodes[node_testing.name].liquidtype 
 		~= "flowing" then
 			return 0
@@ -76,6 +82,9 @@ local function quick_flow_logic(node,pos_testing,direction)
 	elseif minetest.registered_nodes[name].liquidtype == "flowing" then
 		local node_testing = minetest.get_node(pos_testing)
 		local param2_testing = node_testing.param2
+		if not minetest.registered_nodes[node_testing.name] then
+			return 0
+		end
 		if minetest.registered_nodes[node_testing.name].liquidtype 
 		== "source" then
 			return -direction
