@@ -220,6 +220,9 @@ function mcstair.add(name, stairtiles)
 			if not v.connect then
 				local node = minetest.get_node(v.pos)
 				local node_def = minetest.registered_nodes[node.name]
+				if not node_def then
+					return
+				end
 				if node_def.stairs then
 					t[i].stairs = node_def.stairs
 					t[i].connect = stair_param_to_connect(get_stair_param(node), ceiling)
@@ -369,6 +372,9 @@ function mcstair.add(name, stairtiles)
 				if not v.connect then
 					local node = minetest.get_node(v.pos)
 					local node_def = minetest.registered_nodes[node.name]
+					if not node_def then
+						return
+					end
 					if node_def.stairs then
 						t[i].stairs = node_def.stairs
 						t[i].connect = stair_param_to_connect(get_stair_param(node), ceiling)
