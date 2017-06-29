@@ -78,7 +78,8 @@ function mcl_beds.register_bed(name, def)
 			end
 
 			local pos
-			if minetest.registered_items[minetest.get_node(under).name].buildable_to then
+			local undername = minetest.get_node(under).name
+			if minetest.registered_items[undername] and minetest.registered_items[undername].buildable_to then
 				pos = under
 			else
 				pos = pointed_thing.above

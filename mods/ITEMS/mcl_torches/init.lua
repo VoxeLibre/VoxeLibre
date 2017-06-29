@@ -54,6 +54,7 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 			local under = pointed_thing.under
 			local node = minetest.get_node(under)
 			local def = minetest.registered_nodes[node.name]
+			if not def then return itemstack end
 
 			-- Call on_rightclick if the pointed node defines it
 			if placer and not placer:get_player_control().sneak then

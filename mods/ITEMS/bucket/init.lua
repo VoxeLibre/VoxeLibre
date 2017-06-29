@@ -103,7 +103,7 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 					sound_place("mcl_core:water_source", pos)
 				elseif item == "bucket:bucket_water" and nn == "mcl_cauldrons:cauldron_3" then
 					sound_place("mcl_core:water_source", pos)
-				elseif minetest.registered_nodes[nn].buildable_to then
+				elseif minetest.registered_nodes[nn] and minetest.registered_nodes[nn].buildable_to then
 					-- buildable; replace the node
 					local pns = user:get_player_name()
 					if minetest.is_protected(pointed_thing.under, pns) then
@@ -117,7 +117,7 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 					-- not buildable to; place the liquid above
 					-- check if the node above can be replaced
 					local abovenode = minetest.get_node(pointed_thing.above)
-					if minetest.registered_nodes[abovenode.name].buildable_to then
+					if minetest.registered_nodes[abovenode.name] and minetest.registered_nodes[abovenode.name].buildable_to then
 						local pn = user:get_player_name()
 						if minetest.is_protected(pointed_thing.above, pn) then
 							return itemstack

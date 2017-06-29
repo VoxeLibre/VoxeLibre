@@ -186,15 +186,24 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 			-- Check for a floor and a space of 1×2×1
 			local ptu_node = minetest.get_node(pointed_thing.under)
 			local bottom
+			if not minetest.registered_nodes[ptu_node.name] then
+				return itemstack
+			end
 			if minetest.registered_nodes[ptu_node.name].buildable_to then
 				bottom = pointed_thing.under
 			else
 				bottom = pointed_thing.above
 			end
+			if not minetest.registered_nodes[minetest.get_node(bottom).name] then
+				return itemstack
+			end
 			local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
 			local bottom_buildable = minetest.registered_nodes[minetest.get_node(bottom).name].buildable_to
 			local top_buildable = minetest.registered_nodes[minetest.get_node(top).name].buildable_to
 			local floorname = minetest.get_node({x=bottom.x, y=bottom.y-1, z=bottom.z}).name
+			if not minetest.registered_nodes[floorname] then
+				return itemstack
+			end
 
 			local light_night = minetest.get_node_light(bottom, 0.0)
 			local light_day = minetest.get_node_light(bottom, 0.5)

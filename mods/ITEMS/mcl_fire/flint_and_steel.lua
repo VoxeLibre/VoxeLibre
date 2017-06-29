@@ -16,7 +16,7 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 		local used = false
 		if pointed_thing.type == "node" then
 			local nodedef = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
-			if nodedef._on_ignite then
+			if nodedef and nodedef._on_ignite then
 				nodedef._on_ignite(pointed_thing.under, user)
 			else
 				mcl_fire.set_fire(pointed_thing)

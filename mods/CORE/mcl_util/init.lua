@@ -252,6 +252,9 @@ function mcl_util.generate_on_place_plant_function(condition)
 		local place_pos
 		local def_under = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
 		local def_above = minetest.registered_nodes[minetest.get_node(pointed_thing.above).name]
+		if not def_under or not def_above then
+			return itemstack
+		end
 		if def_under.buildable_to then
 			place_pos = pointed_thing.under
 		elseif def_above.buildable_to then

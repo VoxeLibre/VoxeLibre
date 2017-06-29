@@ -52,6 +52,7 @@ local on_button_place = function(itemstack, placer, pointed_thing)
 	local under = pointed_thing.under
 	local node = minetest.get_node(under)
 	local def = minetest.registered_nodes[node.name]
+	if not def then return end
 	local groups = def.groups
 
 	-- Check special rightclick action of pointed node

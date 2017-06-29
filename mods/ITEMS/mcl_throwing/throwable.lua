@@ -243,7 +243,7 @@ local pearl_on_step = function(self, dtime)
 				--[[ It may be possible that telepos is walkable due to the algorithm.
 				Especially when the ender pearl is faster horizontally than vertical.
 				This applies final fixing, just to be sure we're not in a walkable node ]]
-				if minetest.registered_nodes[telenode.name].walkable then
+				if not minetest.registered_nodes[telenode.name] or minetest.registered_nodes[telenode.name].walkable then
 					if v.y < 0 then
 						telepos.y = telepos.y + 0.5
 					else

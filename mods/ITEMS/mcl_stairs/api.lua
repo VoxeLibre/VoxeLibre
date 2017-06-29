@@ -158,7 +158,7 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 
 			-- combine two slabs if possible
 			-- Requirements: Same slab material, must be placed on top of lower slab, or on bottom of upper slab
-			if (wield_item == under.name or wield_item == minetest.registered_nodes[under.name]._mcl_other_slab_half) and
+			if (wield_item == under.name or (minetest.registered_nodes[under.name] and wield_item == minetest.registered_nodes[under.name]._mcl_other_slab_half)) and
 					not ((dir.y >= 0 and minetest.get_item_group(under.name, "slab_top") == 1) or
 					(dir.y <= 0 and minetest.get_item_group(under.name, "slab_top") == 0)) then
 

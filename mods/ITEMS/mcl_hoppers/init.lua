@@ -59,7 +59,7 @@ Hoppers interact with containers the following way:
 
 		local uposnode = minetest.get_node(upos)
 		local uposnodedef = minetest.registered_nodes[uposnode.name]
-
+		if not uposnodedef then return itemstack end
 		-- Use pointed node's on_rightclick function first, if present
 		if placer and not placer:get_player_control().sneak then
 			if uposnodedef and uposnodedef.on_rightclick then
@@ -72,6 +72,7 @@ Hoppers interact with containers the following way:
 			bpos = upos
 		else
 			local aposnodedef = minetest.registered_nodes[minetest.get_node(apos).name]
+			if not aposnodedef then return itemstack end
 			if aposnodedef.buildable_to then
 				bpos = apos
 			end
@@ -207,6 +208,7 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		local abovenode = minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z})
+		if not minetest.registered_items[abovenode.name] then return end
 		-- Don't bother checking item enties if node above is a container (should save some CPU)
 		if minetest.registered_items[abovenode.name].groups.container then
 			return
@@ -281,6 +283,7 @@ minetest.register_abm({
 
 		-- Suck an item from the container above into the hopper
 		local upnode = minetest.get_node(uppos)
+		if not minetest.registered_nodes[upnode.name] then return end
 		local g = minetest.registered_nodes[upnode.name].groups.container
 		if g == 2 or g == 3 then
 			-- Typical container inventory
@@ -298,6 +301,7 @@ minetest.register_abm({
 
 		-- Move an item from the hopper into container below
 		local downnode = minetest.get_node(downpos)
+		if not minetest.registered_nodes[downnode.name] then return end
 		g = minetest.registered_nodes[downnode.name].groups.container
 		local slot_id = -1
 		if g == 3 then
@@ -338,9 +342,11 @@ minetest.register_abm({
 		local above = {x=pos.x,y=pos.y+1,z=pos.z}
 
 		local frontnode = minetest.get_node(front)
+		if not minetest.registered_nodes[frontnode.name] then return end
 
 		-- Suck an item from the container above into the hopper
 		local abovenode = minetest.get_node(above)
+		if not minetest.registered_nodes[abovenode.name] then return end
 		local g = minetest.registered_nodes[abovenode.name].groups.container
 		if g == 2 or g == 3 then
 			-- Typical container inventory

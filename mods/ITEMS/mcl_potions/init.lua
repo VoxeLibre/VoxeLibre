@@ -37,7 +37,9 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 
 			-- Try to fill glass bottle with water
 			local get_water = false
-			if def.groups and def.groups.water and def.liquidtype == "source" then
+			if not def then
+				-- Unknown node: no-op
+			elseif def.groups and def.groups.water and def.liquidtype == "source" then
 				-- Water source
 				get_water = true
 			-- Or reduce water level of cauldron by 1

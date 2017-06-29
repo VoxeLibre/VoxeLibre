@@ -1409,6 +1409,9 @@ minetest.register_node("mcl_core:ladder", {
 		local under = pointed_thing.under
 		local node = minetest.get_node(under)
 		local def = minetest.registered_nodes[node.name]
+		if not def then
+			return itemstack
+		end
 		local groups = def.groups
 
 		-- Don't allow to place the ladder at particular nodes
@@ -1483,6 +1486,7 @@ minetest.register_node("mcl_core:vine", {
 		local under = pointed_thing.under
 		local node = minetest.get_node(under)
 		local def = minetest.registered_nodes[node.name]
+		if not def then return itemstack end
 		local groups = def.groups
 
 		-- Check special rightclick action of pointed node
