@@ -108,6 +108,9 @@ local liquid_flow_action = function(pos, group, action)
 			return false
 		end
 		local d = minetest.registered_nodes[n.name]
+		if not d then
+			return false
+		end
 		--[[ Check if we want to perform the liquid action.
 		* 1: Item must be in liquid group
 		* 2a: If target node is below liquid, always succeed
