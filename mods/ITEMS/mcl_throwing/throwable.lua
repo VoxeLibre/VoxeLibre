@@ -280,12 +280,6 @@ minetest.register_craftitem("mcl_throwing:snowball", {
 	inventory_image = "mcl_throwing_snowball.png",
 	stack_max = 16,
 	on_use = throw_function("mcl_throwing:snowball_entity"),
-	on_construct = function(pos)
-	pos.y = pos.y - 1
-		if minetest.get_node(pos).name == "default:dirt_with_grass" then
-			minetest.set_node(pos, {name="default:dirt_with_snow"})
-		end
-	end,
 })
 
 -- Egg
