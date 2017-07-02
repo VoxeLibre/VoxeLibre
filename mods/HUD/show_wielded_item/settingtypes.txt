@@ -1,0 +1,5 @@
+#Use this setting to manually set the vertical offset of the label which shows
+#the name of the wielded item. The offset is in pixels from the bottom of the
+#screen.
+#Set this to -1 to let the mod guess the offset automatically (recommended).
+show_wielded_item_y_offset (Vertical offset of wielded item name display) int -1 -1

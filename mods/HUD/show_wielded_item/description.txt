@@ -1,0 +1,1 @@
+Displays the name of the wielded item.
