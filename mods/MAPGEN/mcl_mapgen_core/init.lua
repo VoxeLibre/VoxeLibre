@@ -884,6 +884,7 @@ if mg_name == "v6" then
 end
 if mg_name == "flat" then
 	minetest.set_mapgen_setting("mg_flags", "nocaves,nodungeons,nodecorations,light", true)
+	minetest.set_mapgen_setting("mgflat_spflags", "nolakes,nohills", true)
 else
 	minetest.set_mapgen_setting("mg_flags", "caves,nodungeons,decorations,light", true)
 end
