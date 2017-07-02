@@ -50,3 +50,12 @@ enable_bed_night_skip (Skip night when sleeping) bool true
 # This setting is experimental and may be changed in later versions.
 # Feedback is appreciated.
 craftguide_progressive_mode (EXPERIMENTAL: Enable recipe book progressive mode) bool true
+
+# If enabled, the “flat” map generator generates a “classic” superflat map:
+# Completely flat, 1 layer of grass blocks on top of 2 layers of dirt on
+# top of a final layer of bedrock.
+# Note if this is enabled, the setting “mgflat_flags” is ignored. To
+# customize the “flat” map generator, you must disable this setting.
+# Warning: Disabling this setting is currently EXPERIMENTAL! The generated map
+# may not be that pretty.
+mcl_superflat_classic (Classic superflat map generation) bool true

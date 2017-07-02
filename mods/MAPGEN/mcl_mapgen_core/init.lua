@@ -883,8 +883,19 @@ if mg_name == "v6" then
 	register_mgv6_decorations()
 end
 if mg_name == "flat" then
-	minetest.set_mapgen_setting("mg_flags", "nocaves,nodungeons,nodecorations,light", true)
-	minetest.set_mapgen_setting("mgflat_spflags", "nolakes,nohills", true)
+	local classic = minetest.get_mapgen_setting("mcl_superflat_classic")
+	if classic == nil then
+		classic = minetest.settings:get_bool("mcl_superflat_classic")
+		minetest.set_mapgen_setting("mcl_superflat_classic", "true", true)
+	end
+	if classic ~= "false" then
+		-- Enforce superflat-like mapgen: No hills, lakes or caves
+		minetest.set_mapgen_setting("mg_flags", "nocaves,nodungeons,nodecorations,light", true)
+		minetest.set_mapgen_setting("mgflat_spflags", "nolakes,nohills", true)
+	else
+		-- If superflat mode is disabled, mapgen is way more liberal
+		minetest.set_mapgen_setting("mg_flags", "caves,nodungeons,nodecorations,light", true)
+	end
 else
 	minetest.set_mapgen_setting("mg_flags", "caves,nodungeons,decorations,light", true)
 end
