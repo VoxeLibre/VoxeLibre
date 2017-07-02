@@ -78,9 +78,11 @@ end
 local drop_item = function(pos, node, meta)
 	if meta:get_string("item") ~= "" then
 		if node.name == "itemframes:frame" and not minetest.setting_getbool("creative_mode") then
-			minetest.add_item(pos, meta:get_string("item"))
+			local item = ItemStack(minetest.deserialize(meta:get_string("itemdata")))
+			minetest.add_item(pos, item)
 		end
 		meta:set_string("item","")
+		meta:set_string("itemdata","")
 	end
 	remove_item(pos, node)
 end
@@ -111,7 +113,11 @@ minetest.register_node("itemframes:frame",{
 		local meta = minetest.get_meta(pos)
 		if clicker:get_player_name() == meta:get_string("owner") then
 			drop_item(pos, node, meta)
+			-- item holds the itemstring
 			meta:set_string("item", itemstack:get_name())
+			local itemdata = minetest.serialize(itemstack:to_table())
+			-- itemdata holds the serialized itemstack in table form
+			meta:set_string("itemdata", itemdata)
 			update_item(pos,node)
 			if not minetest.setting_getbool("creative_mode") then
 				itemstack:take_item()
