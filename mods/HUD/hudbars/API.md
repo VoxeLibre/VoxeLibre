@@ -170,7 +170,7 @@ Makes a previously hidden HUD bar visible again to a player.
 
 
 ## Reading HUD bar information
-It is also possible to read information about an active HUD bar.
+It is also possible to read information about existing HUD bars.
 
 ### `hb.get_hudbar_state(player, identifier)`
 Returns the current state of the active player's HUD bar.
@@ -191,3 +191,6 @@ hold by the table is only true for the moment you called this function. The fiel
 * `text`: The text shown on the HUD bar. This fiels is meaningless if the HUD bar is currently hidden.
 
 If the player does not exist, returns `nil` instead.
+
+### `hb.get_hudbar_identifiers()`
+Returns a table of all currently registered HUD bar identifiers.

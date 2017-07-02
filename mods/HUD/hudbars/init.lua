@@ -20,11 +20,11 @@ hb.settings = {}
 function hb.load_setting(sname, stype, defaultval, valid_values)
 	local sval
 	if stype == "string" then
-		sval = minetest.setting_get(sname)
+		sval = minetest.settings:get(sname)
 	elseif stype == "bool" then
-		sval = minetest.setting_getbool(sname)
+		sval = minetest.settings:get_bool(sname)
 	elseif stype == "number" then
-		sval = tonumber(minetest.setting_get(sname))
+		sval = tonumber(minetest.settings:get(sname))
 	end
 	if sval ~= nil then
 		if valid_values ~= nil then
@@ -48,58 +48,8 @@ function hb.load_setting(sname, stype, defaultval, valid_values)
 	end
 end
 
--- (hardcoded) default settings
-hb.settings.max_bar_length = 160
-hb.settings.statbar_length = 20
-
--- statbar positions
-hb.settings.pos_left = {}
-hb.settings.pos_right = {}
-hb.settings.start_offset_left = {}
-hb.settings.start_offset_right= {}
-hb.settings.pos_left.x = hb.load_setting("hudbars_pos_left_x", "number", 0.5)
-hb.settings.pos_left.y = hb.load_setting("hudbars_pos_left_y", "number", 1)
-hb.settings.pos_right.x = hb.load_setting("hudbars_pos_right_x", "number", 0.5)
-hb.settings.pos_right.y = hb.load_setting("hudbars_pos_right_y", "number", 1)
-hb.settings.bar_type = hb.load_setting("hudbars_bar_type", "string", "statbar_modern", {"progress_bar", "statbar_classic", "statbar_modern"})
-if hb.settings.bar_type == "progress_bar" then
-	hb.settings.start_offset_left.x = hb.load_setting("hudbars_start_offset_left_x", "number", -175)
-	hb.settings.start_offset_left.y = hb.load_setting("hudbars_start_offset_left_y", "number", -86)
-	hb.settings.start_offset_right.x = hb.load_setting("hudbars_start_offset_right_x", "number", 15)
-	hb.settings.start_offset_right.y = hb.load_setting("hudbars_start_offset_right_y", "number", -86)
-else
-	hb.settings.start_offset_left.x = hb.load_setting("hudbars_start_statbar_offset_left_x", "number", -265)
-	hb.settings.start_offset_left.y = hb.load_setting("hudbars_start_statbar_offset_left_y", "number", -90)
-	hb.settings.start_offset_right.x = hb.load_setting("hudbars_start_statbar_offset_right_x", "number", 25)
-	hb.settings.start_offset_right.y = hb.load_setting("hudbars_start_statbar_offset_right_y", "number", -90)
-end
-hb.settings.vmargin  = hb.load_setting("hudbars_vmargin", "number", 32)
-hb.settings.tick = hb.load_setting("hudbars_tick", "number", 0.1)
-
--- experimental setting: Changing this setting is not officially supported, do NOT rely on it!
-hb.settings.forceload_default_hudbars = hb.load_setting("hudbars_forceload_default_hudbars", "bool", true)
-
--- Misc. settings
-hb.settings.alignment_pattern = hb.load_setting("hudbars_alignment_pattern", "string", "zigzag", {"zigzag", "stack_up", "stack_down"})
-hb.settings.autohide_breath = hb.load_setting("hudbars_autohide_breath", "bool", true)
-
-local sorting = minetest.setting_get("hudbars_sorting")
-if sorting ~= nil then
-	hb.settings.sorting = {}
-	hb.settings.sorting_reverse = {}
-	for k,v in string.gmatch(sorting, "(%w+)=(%w+)") do
-		hb.settings.sorting[k] = tonumber(v)
-		hb.settings.sorting_reverse[tonumber(v)] = k
-	end
-else
-	sorting = ""
-	hb.settings.sorting = { ["health"] = 0, ["hunger"] = 1, ["armor"] = 2, ["breath"] = 3, ["exhaustion"] = 4, ["saturation"] = 5 }
-end
-
-hb.settings.sorting_reverse = {}
-for k,v in string.gmatch(sorting, "(%w+)=(%w+)") do
-	hb.settings.sorting_reverse[tonumber(v)] = k
-end
+-- Load default settings
+dofile(minetest.get_modpath("hudbars").."/default_settings.lua")
 
 local function player_exists(player)
 	return player ~= nil and player:is_player()
@@ -468,8 +418,16 @@ function hb.get_hudbar_state(player, identifier)
 	return copy
 end
 
+function hb.get_hudbar_identifiers()
+	local ids = {}
+	for id, _ in pairs(hb.hudtables) do
+		table.insert(ids, id)
+	end
+	return ids
+end
+
 --register built-in HUD bars
-if minetest.setting_getbool("enable_damage") or hb.settings.forceload_default_hudbars then
+if minetest.settings:get_bool("enable_damage") or hb.settings.forceload_default_hudbars then
 	hb.register_hudbar("health", 0xFFFFFF, S("Health"), { bar = "hudbars_bar_health.png", icon = "hudbars_icon_health.png", bgicon = "hudbars_bgicon_health.png" }, 20, 20, false)
 	hb.register_hudbar("breath", 0xFFFFFF, S("Breath"), { bar = "hudbars_bar_breath.png", icon = "hudbars_icon_breath.png", bgicon = "hudbars_bgicon_breath.png" }, 10, 10, true)
 end
@@ -483,9 +441,9 @@ end
 
 
 local function custom_hud(player)
-	if minetest.setting_getbool("enable_damage") or hb.settings.forceload_default_hudbars then
+	if minetest.settings:get_bool("enable_damage") or hb.settings.forceload_default_hudbars then
 		local hide
-		if minetest.setting_getbool("enable_damage") then
+		if minetest.settings:get_bool("enable_damage") then
 			hide = false
 		else
 			hide = true
@@ -505,7 +463,7 @@ end
 -- update built-in HUD bars
 local function update_hud(player)
 	if not player_exists(player) then return end
-	if minetest.setting_getbool("enable_damage") then
+	if minetest.settings:get_bool("enable_damage") then
 		if hb.settings.forceload_default_hudbars then
 			hb.unhide_hudbar(player, "health")
 		end
@@ -555,7 +513,7 @@ minetest.register_globalstep(function(dtime)
 	if main_timer > hb.settings.tick or timer > 4 then
 		if main_timer > hb.settings.tick then main_timer = 0 end
 		-- only proceed if damage is enabled
-		if minetest.setting_getbool("enable_damage") or hb.settings.forceload_default_hudbars then
+		if minetest.settings:get_bool("enable_damage") or hb.settings.forceload_default_hudbars then
 			for _, player in pairs(hb.players) do
 				-- update all hud elements
 				update_hud(player)
