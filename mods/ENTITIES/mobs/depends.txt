@@ -4,3 +4,4 @@ mcl_sounds
 invisibility?
 intllib?
 lucky_block?
+cmi?

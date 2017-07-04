@@ -1,7 +1,7 @@
 
 -- lib_mount by Blert2112 (edited by TenPlus1)
 
-local enable_crash = true
+local enable_crash = false
 local crash_threshold = 6.5 -- ignored if enable_crash=false
 
 ------------------------------------------------------------------------------
@@ -10,9 +10,23 @@ local crash_threshold = 6.5 -- ignored if enable_crash=false
 -- Helper functions
 --
 
+local node_ok = function(pos, fallback)
+
+	fallback = fallback or "mcl_core:dirt"
+
+	local node = minetest.get_node_or_nil(pos)
+
+	if node and minetest.registered_nodes[node.name] then
+		return node
+	end
+
+	return {name = fallback}
+end
+
+
 local function node_is(pos)
 
-	local node = minetest.get_node(pos)
+	local node = node_ok(pos)
 
 	if node.name == "air" then
 		return "air"
@@ -26,7 +40,7 @@ local function node_is(pos)
 		return "liquid"
 	end
 
-	if minetest.get_item_group(node.name, "walkable") ~= 0 then
+	if minetest.registered_nodes[node.name].walkable == true then
 		return "walkable"
 	end
 
@@ -241,7 +255,7 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 	if entity.v == 0 and velo.x == 0 and velo.y == 0 and velo.z == 0 then
 
 		if stand_anim then
-			set_animation(entity, stand_anim)
+			mobs:set_animation(entity, stand_anim)
 		end
 
 		return
@@ -249,7 +263,7 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 	
 	-- set moving animation
 	if moving_anim then
-		set_animation(entity, moving_anim)
+		mobs:set_animation(entity, moving_anim)
 	end
 
 	-- Stop!
@@ -429,9 +443,9 @@ function mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_anim)
 	-- change animation if stopped
 	if velo.x == 0 and velo.y == 0 and velo.z == 0 then
 
-		set_animation(entity, stand_anim)
+		mobs:set_animation(entity, stand_anim)
 	else
 		-- moving animation
-		set_animation(entity, moving_anim)
+		mobs:set_animation(entity, moving_anim)
 	end
 end

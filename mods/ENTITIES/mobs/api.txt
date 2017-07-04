@@ -1,5 +1,5 @@
 
-MOB API (12th May 2017)
+MOB API (4th July 2017)
 
 The mob api is a function that can be called on by other mods to add new animals or monsters into minetest.
 
@@ -20,7 +20,7 @@ This functions registers a new mob as a Minetest entity.
 
     'name' is the name of the mob (e.g. "mobs:dirt_monster")
     definition is a table with the following fields
-        'type' the type of the mob ("monster", "animal" or "npc")
+        'type' the type of the mob ("monster", "animal" or "npc") where monsters attack players and npc's, animals and npc's tend to wander around and can attack when hit 1st.
         'passive' will mob defend itself, set to false to attack
         'docile_by_day' when true, mob will not attack during daylight hours unless provoked
         'attacks_monsters' usually for npc's to attack monsters in area
@@ -41,9 +41,9 @@ This functions registers a new mob as a Minetest entity.
         'mesh' same is in minetest.register_entity()
         'gotten_mesh' alternative mesh for when self.gotten is true (used for sheep)
         'makes_footstep_sound' same is in minetest.register_entity()
-        'follow' item when held will cause mob to follow player, can be single string "default:apple" or table {"default:apple", "default:diamond"}
-        'view_range' the range in that the monster will see the playerand follow him
-        'walk_chance' chance of mob walking around, set above to 0 for jumping mob only
+        'follow' item when held will cause mob to follow player, can be single string "default:apple" or table {"default:apple", "default:diamond"}.  These are also items that are used to feed and tame mob.
+        'view_range' the range in which the mob will follow or attack player
+        'walk_chance' chance of mob walking around (0 to 100), set to 0 for jumping mob only
         'walk_velocity' the velocity when the monster is walking around
         'run_velocity' the velocity when the monster is attacking a player
         'runaway' when true mob will turn and run away when punched
@@ -52,8 +52,8 @@ This functions registers a new mob as a Minetest entity.
         'jump_height' height mob can jump, default is 6 (0 to disable jump)
         'fly' can mob fly, true or false (used for swimming mobs also)
         'fly_in' node name that mob flys inside, e.g "air", "default:water_source" for fish
-        'damage' the damage per second
-        'recovery_time' how much time from when mob is hit to recovery (default: 0.5)
+        'damage' the damage mobs inflict per melee attack.
+        'recovery_time' how much time from when mob is hit to recovery (default: 0.5 seconds)
         'knock_back' strength of knock-back when mob hit (default: 3)
         'immune_to' table holding special tool/item names and damage the incur e.g.
             {"default:sword_wood", 0}, {"default:gold_lump", -10} immune to sword, gold lump heals
@@ -64,14 +64,15 @@ This functions registers a new mob as a Minetest entity.
             'chance' the inverted chance (same as in abm) to get the item
             'min' the minimum number of items
             'max' the maximum number of items
-        'armor' the armor (integer)(3=lowest; 1=highest)(fleshy group is used)
+        'armor' this integer holds armor strength with 100 being normal, with lower numbers hardening the armor and higher numbers making it weaker (weird I know but compatible with simple mobs)
         'drawtype' "front" or "side" (DEPRECATED, replaced with below)
         'rotate' set mob rotation, 0=front, 90=side, 180=back, 270=other side
         'water_damage' the damage per second if the mob is in water
         'lava_damage' the damage per second if the mob is in lava
         'light_damage' the damage per second if the mob is in light
+        'suffocation' health value mob loses when inside a solid node
         'fall_damage' will mob be hurt when falling from height
-        'fall_speed' speed mob falls (default: -10 and has to be lower than -2)
+        'fall_speed' maximum falling velocity of mob (default is -10 and must be below -2)
         'fear_height' when mob walks near a drop then anything over this value makes it stop and turn back (default is 0 to disable)
         'on_die' a function that is called when the mob is killed the parameters are (self, pos)
         'floats' 1 to float in water, 0 to sink
@@ -85,11 +86,11 @@ This functions registers a new mob as a Minetest entity.
         'dogshoot_switch' allows switching between shoot and dogfight modes inside dogshoot using timer (1 = shoot, 2 = dogfight)
         'dogshoot_count_max' number of seconds before switching to dogfight mode.
         'dogshoot_count2_max' number of seconds before switching back to shoot mode.
-        'custom_attack' is a function that is called when mob is in range to attack player, parameters are (self, to_attack)
+        'custom_attack' when set this function is called instead of the normal mob melee attack, parameters are (self, to_attack)
         'double_melee_attack' if false then api will choose randomly between 'punch' and 'punch2' attack animations
-        'on_blast' is called when TNT explodes near mob, function uses (object, damage) and returns (do_damage, do_knockback, drops)
+        'on_blast' is called when an explosion happens near mob when using TNT functions, parameters are (object, damage) and returns (do_damage, do_knockback, drops)
         'explosion_radius' radius of explosion attack (defaults to 1)
-        'arrow' if the attack_type is "shoot" or "dogshoot" then the entity name of the arrow is required
+        'arrow' if the attack_type is "shoot" or "dogshoot" then the entity name of a pre-defined arrow is required, see below for arrow definition.
         'shoot_interval' the minimum shoot interval
         'shoot_offset' +/- value to position arrow/fireball when fired
         'reach' how far a reach this mob has, default is 3
@@ -104,12 +105,21 @@ This functions registers a new mob as a Minetest entity.
             'explode' sound when exploding
             'distance' maximum distance sounds are heard from (default is 10)
 
-Mobs can look for specific nodes as they walk and replace them to mimic eating
+Mobs can look for specific nodes as they walk and replace them to mimic eating.
 
         'replace_what' group if items to replace e.g. {"farming:wheat_8", "farming:carrot_8"}
         'replace_with' replace with what e.g. "air" or in chickens case "mobs:egg"
         'replace_rate' how random should the replace rate be (typically 10)
         'replace_offset' +/- value to check specific node to replace
+       	'on_replace(self, pos, oldnode, newnode)' gets called when mob is about to replace a node
+	    self: ObjectRef of mob
+	    pos: Position of node to replace
+	    oldnode: Current node
+	    newnode: What the node will become after replacing
+
+	    If false is returned, the mob will not replace the node.
+
+	    By default, replacing sets self.gotten to true and resets the object properties.
 
 The 'replace_what' has been updated to use tables for what, with and y_offset e.g.
 
@@ -126,13 +136,20 @@ can be added to the mob definition under pre-defined mob animation names like:
       'punch_start', 'punch_end', 'punch_speed' when mob attacks
       'punch2_start', 'punch2_end', 'punch2_speed' when mob attacks (alternative)
       'die_start', 'die_end', 'die_speed' when mob dies
+      '*_loop' bool value to determine if any set animation loops e.g (die_loop = false)
+      defaults to true if not set
 also  'speed_normal' for compatibility with older mobs for animation speed (deprecated)
 
 
 The mob api also has some preset variables and functions that it will remember for each mob
 
+    'self.health' contains current health of mob (cannot exceed self.hp_max)
+    'self.texture_list' contains list of all mob textures
+    'self.child_texture' contains mob child texture when growing up
+    'self.base_texture' contains current skin texture which was randomly selected from textures list
     'self.gotten' this is used for obtaining milk from cow and wool from sheep
     'self.horny' when animal fed enough it is set to true and animal can breed with same animal
+    'self.hornytimer' background timer that controls breeding functions and mob childhood timings
     'self.child' used for when breeding animals have child, will use child_texture and be half size
     'self.owner' string used to set owner of npc mobs, typically used for dogs
     'self.order' set to "follow" or "stand" so that npc will follow owner or stand it's ground
@@ -201,7 +218,7 @@ This function registers a arrow for mobs with the attack type shoot.
     'on_step' is a custom function when arrow is active, nil for default.
 
 
-mobs:register_egg(name, description, background, addegg)
+mobs:register_egg(name, description, background, addegg, no_creative)
 
 This function registers a spawn egg which can be used by admin to properly spawn in a mob.
 
@@ -236,7 +253,7 @@ This function is generally called inside the on_rightclick section of the mob ap
     'replacewith' once captured replace mob with this item instead (overrides new mob eggs with saved information)
 
 
-mobs:feed_tame(self, clicker, feed_count, breed)
+mobs:feed_tame(self, clicker, feed_count, breed, tame)
 
 This function allows the mob to be fed the item inside self.follow be it apple, wheat or whatever a set number of times and be tamed or bred as a result.  Will return true when mob is fed with item it likes.
 
@@ -253,17 +270,6 @@ This function can be used to right-click any tamed mob with mobs:protector item,
 
     'self' mob information
     'clicker' player information
-
-
-Useful Internal Variables
-
-    'self.health' contains current health of mob
-    'self.texture_list' contains list of all mob textures
-    'self.child_texture' contains mob child texture when growing up
-    'self.base_texture' contains current skin texture which was randomly selected from textures list
-    'self.gotten' true when sheep have been sheared or cows have been milked, a toggle switch which can be used for many functions
-    'self.child' true when mob is currently a child (when two mobs have bred and current mob is the outcome)
-    'self.hornytimer' background timer that controls breeding functions and mob childhood timings
 
 
 Mobs can now be ridden by players and the following shows the functions and usage:
@@ -305,13 +311,23 @@ This function allows an attached player to fly the mob around using directional 
     'speed' speed of flight
     'can_shoot' true if mob can fire arrow (sneak and left mouse button fires)
     'arrow_entity' name of arrow entity used for firing
-    'move_animation' string containing movement animation e.g. "walk"
-    'stand_animation' string containing movement animation e.g. "stand"
+    'move_animation' string containing name of pre-defined animation e.g. "walk" or "fly" etc.
+    'stand_animation' string containing name of pre-defined animation e.g. "stand" or "blink" etc.
+
+    Note: animation names above are from the pre-defined animation lists inside mob registry without extensions.
+
+
+mobs:set_animation(self, name)
+
+This function sets the current animation for mob, defaulting to "stand" if not found.
+
+    'self' mob information
+    'name' name of animation
 
 
 Certain variables need to be set before using the above functions:
 
-    'self.v2' toggle switch
+    'self.v2' toggle switch used to define below values for the first time
     'self.max_speed_forward' max speed mob can move forward
     'self.max_speed_reverse' max speed mob can move backwards
     'self.accel' acceleration speed

@@ -22,6 +22,8 @@ Lucky Blocks: 9
 
 
 Changelog:
+- 1.37- Added support for Raymoo's CMI (common mob interface) mod: https://forum.minetest.net/viewtopic.php?f=9&t=15448
+- 1.36- Death check added, if mob dies in fire/lava/with lava pick then drops are cooked
 - 1.35- Added owner_loyal flag for owned mobs to attack player enemies, also fixed group_attack
 - 1.34- Added function to fly mob using directional movement (thanks D00Med for flying code)
 - 1.33- Added functions to mount ride mobs (mobs.attach, mobs.detach, mobs.drive) many thanks to Blert2112

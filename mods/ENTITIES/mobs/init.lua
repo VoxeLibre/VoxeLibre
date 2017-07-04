@@ -16,4 +16,4 @@ dofile(path .. "/crafts.lua")
 -- Lucky Blocks
 dofile(path .. "/lucky_block.lua")
 
-print ("[MOD] Mobs Redo loaded")
+minetest.log("action", "[MOD] Mobs Redo loaded")
