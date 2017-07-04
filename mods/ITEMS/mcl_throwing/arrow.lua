@@ -29,7 +29,7 @@ minetest.register_node("mcl_throwing:arrow_box", {
 			{7.5/17, -2.5/17, -2.5/17, 8.5/17, -3.5/17, -3.5/17},
 		}
 	},
-	tiles = {"mcl_throwing_arrow.png", "mcl_throwing_arrow.png", "mcl_throwing_arrow_back.png", "mcl_throwing_arrow_front.png", "mcl_throwing_arrow_2.png", "mcl_throwing_arrow.png"},
+	tiles = {"mcl_throwing_arrow.png^[transformFX", "mcl_throwing_arrow.png^[transformFX", "mcl_throwing_arrow_back.png", "mcl_throwing_arrow_front.png", "mcl_throwing_arrow.png", "mcl_throwing_arrow.png^[transformFX"},
 	groups = {not_in_creative_inventory=1},
 })
 
