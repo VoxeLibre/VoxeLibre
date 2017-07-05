@@ -15,6 +15,9 @@ if minetest.get_modpath("default") then
 end
 
 local function addhead(mobname, desc, longdesc)
+	if not mobs_mc.is_item_variable_overridden("head_"..mobname) then
+		return
+	end
 	minetest.register_node("mobs_mc:head_"..mobname, {
 		description = desc,
 		_doc_items_longdesc = longdesc,
