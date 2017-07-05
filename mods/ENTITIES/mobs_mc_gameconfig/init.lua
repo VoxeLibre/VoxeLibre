@@ -155,12 +155,13 @@ mobs_mc.replace = {
 		{ "mcl_flowers:tallgrass", "air", 0 },
 	},
 	-- Silverfish populate stone, etc. with monster eggs
-	-- TODO: add nodes
 	silverfish = {
-		{"mcl_core:stone", "mobs_mc:monster_egg_stone", -1},
-		{"mcl_core:cobble", "mobs_mc:monster_egg_cobble", -1},
-		{"mcl_core:stonebrick", "mobs_mc:monster_egg_stonebrick", -1},
-		{"mcl_core:mossystonebrick", "mobs_mc:monster_egg_mossystonebrick", -1},
+		{"mcl_core:stone", "mcl_monster_eggs:monster_egg_stone", -1},
+		{"mcl_core:cobble", "mcl_monster_eggs:monster_egg_cobble", -1},
+		{"mcl_core:stonebrick", "mcl_monster_eggs:monster_egg_stonebrick", -1},
+		{"mcl_core:stonebrickmossy", "mcl_monster_eggs:monster_egg_stonebrickmossy", -1},
+		{"mcl_core:stonebrickcracked", "mcl_monster_eggs:monster_egg_stonebrickcracked", -1},
+		{"mcl_core:stonebrickcarved", "mcl_monster_eggs:monster_egg_stonebrickcarved", -1},
 	},
 }
 
