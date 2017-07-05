@@ -121,7 +121,7 @@ if c("beef_raw") and c("beef_cooked") then
 end
 
 
-if c("milk_bucket") then
+if c("milk") then
 	-- milk
 	minetest.register_craftitem("mobs_mc:milk_bucket", {
 		description = S("Milk"),
