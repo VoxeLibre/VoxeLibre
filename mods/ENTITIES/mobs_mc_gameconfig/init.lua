@@ -62,6 +62,7 @@ mobs_mc.override.items = {
 	emerald = "mcl_core:emerald",
 	iron_axe = "mcl_tools:axe_iron",
 	gold_sword = "mcl_tools:sword_gold",
+	gold_ingot = "mcl_core:gold_ingot",
 	gold_nugget = "mcl_core:gold_nugget",
 	glowstone_dust = "mcl_nether:glowstone_dust",
 	redstone = "mesecons:redstone",
@@ -80,6 +81,8 @@ mobs_mc.override.items = {
 
 	-- Other
 	nether_brick_block = "mcl_nether:nether_brick",
+	netherrack = "mcl_nether:netherrack",
+	nether_star = "mcl_mobitems:nether_star",
 	mycelium = "mcl_core:mycelium",
 	carrot = "mcl_farming:carrot_item",
 	golden_carrot = "mcl_farming:carrot_item_gold",
