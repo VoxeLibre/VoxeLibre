@@ -54,9 +54,12 @@ mobs_mc.items = {
 	nether_star = "mobs_mc:nether_star",
 	bone = "mobs_mc:bone",
 	slimeball = "mobs_mc:slimeball",
-
 	arrow = "mobs_mc:arrow",
 	bow = "mobs_mc:bow_wood",
+	head_creeper = "mobs_mc:head_creeper",
+	head_zombie = "mobs_mc:head_zombie",
+	head_skeleton = "mobs_mc:head_skeleton",
+	head_wither_skeleton = "mobs_mc:head_wither_skeleton",
 
 	-- External items
 	-- Mobs Redo
@@ -114,8 +117,6 @@ mobs_mc.items = {
 	clownfish_raw = "fishing:clownfish_raw",
 	pufferfish_raw = "fishing:pike_raw",
 
-	bone = "bonemeal:bone",
-	slimeball = "mesecons_materials:glue",
 	cookie = "farming:cookie",
 
 
@@ -158,10 +159,15 @@ mobs_mc.follow = {
 	pig = { mobs_mc.items.potato, mobs_mc.items.carrot, mobs_mc.items.carrot_on_a_stick,
 		mobs_mc.items.apple, -- Minetest Game extra
 	},
-	rabbit = { mobs_mc.items.dandelion, mobs_mc.items.carrot, mobs_mc.items.carrot_gold, "farming_plus:carrot_item", },
+	rabbit = { mobs_mc.items.dandelion, mobs_mc.items.carrot, mobs_mc.items.golden_carrot, "farming_plus:carrot_item", },
 	ocelot = { mobs_mc.items.fish_raw, mobs_mc.items.salmon_raw, mobs_mc.items.clownfish_raw, mobs_mc.items.pufferfish_raw,
 		mobs_mc.items.chicken_raw, -- Minetest Game extra
 	},
+	wolf = { mobs_mc.items.bone },
+	dog = { mobs_mc.items.rabbit_raw, mobs_mc.items.rabbit_cooked, mobs_mc.items.mutton_raw, mobs_mc.items.mutton_cooked, mobs_mc.items.beef_raw, mobs_mc.items.beef_cooked, mobs_mc.items.chicken_raw, mobs_mc.items.chicken_cooked, mobs_mc.items.rotten_flesh,
+	-- Mobs Redo items
+	"mobs:meat", "mobs:meat_raw" },
+e
 }
 
 -- Contents for replace_what

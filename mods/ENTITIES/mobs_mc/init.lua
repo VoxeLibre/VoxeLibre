@@ -55,7 +55,7 @@ end
 dofile(path .. "/3_shared.lua")
 
 --Mob heads
-dofile(path .. "/heads.lua") -- maikerumine
+dofile(path .. "/4_heads.lua")
 
 -- Animals
 dofile(path .. "/bat.lua") -- Mesh and animation by toby109tt  / https://github.com/22i

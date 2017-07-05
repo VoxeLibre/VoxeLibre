@@ -52,9 +52,12 @@ local skeleton = {
 		chance = 1,
 		min = 0,
 		max = 2,},
-		{name = "mobs_mc:skeleton_head",
-		chance = 200,
-		min = 0,
+
+		-- Head
+		-- TODO: Only drop if killed by charged creeper
+		{name = mobs_mc.items.head_skeleton,
+		chance = 200, -- 0.5% chance
+		min = 1,
 		max = 1,},
 	},
 	animation = {

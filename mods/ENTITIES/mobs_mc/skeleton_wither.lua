@@ -48,9 +48,11 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 		chance = 1,
 		min = 0,
 		max = 2,},
-		{name = "mobs_mc:skeleton_head2",
-		chance = 200,
-		min = 0,
+
+		-- Head
+		{name = mobs_mc.items.head_wither_skeleton,
+		chance = 40, -- 2.5% chance
+		min = 1,
 		max = 1,},
 	},
 	animation = {
@@ -71,8 +73,8 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 		hurt_end = 120,
 	},
 	water_damage = 0,
-	lava_damage = 4,
-	light_damage = 1,
+	lava_damage = 0,
+	light_damage = 0,
 	view_range = 16,
 	attack_type = "dogfight",
 	arrow = "mobs_mc:arrow_entity",

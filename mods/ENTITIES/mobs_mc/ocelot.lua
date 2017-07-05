@@ -24,6 +24,7 @@ local is_food = function(itemstring)
 			return true
 		end
 	end
+	return false
 end
 
 -- Ocelot

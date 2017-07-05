@@ -134,6 +134,8 @@ end
 if c("arrow") then
 	minetest.register_craftitem("mobs_mc:arrow", {
 		description = S("Arrow"),
+		_doc_items_longdesc = S("Arrows are ammunition for bows."),
+		_doc_items_usagehelp = S("To use arrows as ammunition for a bow, put them in the inventory slot following the bow. Slots are counted left to right, top to bottom."),
 		inventory_image = "mcl_throwing_arrow_inv.png",
 	})
 end
@@ -152,6 +154,8 @@ end
 if c("bow") then
 	minetest.register_tool("mobs_mc:bow_wood", {
 		description = S("Bow"),
+		_doc_items_longdesc = S("Bows are ranged weapons to shoot arrows at your foes."),
+		_doc_items_usagehelp = S("To use the bow, you first need to have at least one arrow in slot following the bow. Leftclick to shoot. Each hit deals 3 damage."),
 		inventory_image = "mcl_throwing_bow.png",
 		on_use = function(itemstack, user, pointed_thing)
 			if throwing_shoot_arrow(itemstack, user, pointed_thing) then
@@ -172,6 +176,8 @@ if c("bow") then
 		}
 	})
 end
+
+local how_to_throw = "Hold it in your and and leftclick to throw."
 
 -- egg throwing item
 -- egg entity
@@ -287,6 +293,8 @@ if c("egg") then
 
 	minetest.register_craftitem("mobs_mc:egg", {
 		description = S("Egg"),
+		_doc_items_longdesc = S("Eggs can be thrown and break on impact. There is a small chance that 1 or even 4 chicks will pop out"),
+		_doc_items_usagehelp = how_to_throw,
 		inventory_image = "mobs_chicken_egg.png",
 		on_use = mobs_shoot_egg,
 	})
@@ -370,6 +378,7 @@ if c("snowball") then
 	minetest.register_craftitem("mobs_mc:snowball", {
 		description = S("Snowball"),
 		_doc_items_longdesc = S("Snowballs can be thrown at your enemies. A snowball deals 3 damage to blazes, but is harmless to anything else."),
+		_doc_items_usagehelp = how_to_throw,
 		inventory_image = "mcl_throwing_snowball.png",
 		on_use = mobs_shoot_snowball,
 	})

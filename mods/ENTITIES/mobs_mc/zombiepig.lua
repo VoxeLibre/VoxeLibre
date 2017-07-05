@@ -56,10 +56,6 @@ local pigman = {
 		chance = 12, -- 8.333%, approximation to 8.5%
 		min = 1,
 		max = 1,},
-		{name = "mobs_mc:zombiepig_head",
-		chance = 200,
-		min = 0,
-		max = 1,},
 	},
 	animation = {
 		stnd_speed = 25, walk_speed = 25, run_speed = 50, punch_speed = 25,

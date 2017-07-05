@@ -8,20 +8,15 @@ local default_walk_chance = 50
 
 local pr = PseudoRandom(os.time()*10)
 
-local is_flesh = function(itemstring)
-	-- Minecraft items
-	return (itemstring == mobs_mc.items.rabbit_raw or
-	itemstring == mobs_mc.items.rabbit_cooked or
-	itemstring == mobs_mc.items.mutton_raw or
-	itemstring == mobs_mc.items.mutton_cooked or
-	itemstring == mobs_mc.items.beef_raw or
-	itemstring == mobs_mc.items.beef_cooked or
-	itemstring == mobs_mc.items.chicken_raw or
-	itemstring == mobs_mc.items.chicken_cooked or
-	itemstring == mobs_mc.items.rotten_flesh or
-	-- Mobs Redo items
-	itemstring == "mobs:meat" or
-	itemstring == "mobs:meat_raw")
+local is_food = function(itemstring)
+	for f=1, #mobs_mc.follow.dog do
+		if itemstring == mobs_mc.follow.dog[f] then
+			return true
+		elseif string.sub(itemstring, 1, 6) == "group:" and minetest.get_item_group(itemstring, string.sub(itemstring, 7, -1)) ~= 0 then
+			return true
+		end
+	end
+	return false
 end
 
 -- Wolf
@@ -57,12 +52,13 @@ local wolf = {
 	water_damage = 0,
 	lava_damage = 4,
 	light_damage = 0,
+	follow = mobs_mc.follow.wolf,
 	on_rightclick = function(self, clicker)
 		-- Try to tame wolf (intentionally does NOT use mobs:feed_tame)
 		local tool = clicker:get_wielded_item()
 
 		local dog, ent
-		if is_flesh(tool:get_name()) then
+		if tool:get_name() == mobs_mc.items.bone then
 
 			if not minetest.settings:get_bool("creative_mode") then
 				tool:take_item()
@@ -135,6 +131,7 @@ dog.order = "roam"
 dog.owner_loyal = true
 -- Automatically teleport dog to owner
 dog.do_custom = mobs_mc.make_owner_teleport_function(12)
+dog.follow = mobs_mc.follow.dog
 dog.on_rightclick = function(self, clicker)
 	local item = clicker:get_wielded_item()
 
@@ -142,15 +139,28 @@ dog.on_rightclick = function(self, clicker)
 		return
 	elseif item:get_name() ~= "" and mobs:capture_mob(self, clicker, 0, 2, 80, false, nil) then
 		return
-	elseif is_flesh(item:get_name()) then
-		-- Feed
-		local hp = self.object:get_hp()
-		if hp + 4 > self.hp_max then return end
+	elseif is_food(item:get_name()) then
+		-- Feed to increase health
+		local hp = self.health
+		local hp_add = 0
+		-- Use eatable group to determine health boost
+		local eatable = minetest.get_item_group(item, "eatable")
+		if eatable > 0 then
+			hp_add = eatable
+		elseif item:get_name() == mobs_mc.items.rotten_flesh then
+			hp_add = 4
+		else
+			hp_add = 4
+		end
+		local new_hp = hp + hp_add
+		if new_hp > self.hp_max then
+			new_hp = self.hp_max
+		end
 		if not minetest.settings:get_bool("creative_mode") then
 			item:take_item()
 			clicker:set_wielded_item(item)
 		end
-		self.object:set_hp(hp+4)
+		self.health = new_hp
 		return
 	elseif minetest.get_item_group(item:get_name(), "dye") == 1 then
 		-- Dye (if possible)

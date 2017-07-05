@@ -89,8 +89,10 @@ mobs:register_mob("mobs_mc:creeper", {
 		min = 0,
 		max = 2,},
 
-		{name = "mobs_mc:creeper_head",
-		chance = 200,
+		-- Head
+		-- TODO: Only drop if killed by charged creeper
+		{name = mobs_mc.items.head_creeper,
+		chance = 200, -- 0.5%
 		min = 1,
 		max = 1,},
 	},

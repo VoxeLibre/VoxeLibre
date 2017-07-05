@@ -4,7 +4,6 @@
 
 The following media licenses are used:
 
-* **Unknown license :-(**
 * [CC0](https://creativecommons.org/choose/zero/)
 * [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)
 * [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)
@@ -28,7 +27,6 @@ Origin of those models:
     * Author: [XSSheep](https://www.planetminecraft.com/member/xssheep/)
     * License: CC BY-SA 4.0
 * “Spawn egg” textures (`mobs_mc_spawn_icon_*`) by 22i
-* Mob head textures: **UNKNOWN!**
 * Any other texture not mentioned here are licensed under the MIT License
 
 ## Sounds

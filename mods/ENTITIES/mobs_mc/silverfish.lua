@@ -30,7 +30,7 @@ mobs:register_mob("mobs_mc:silverfish", {
 	lava_damage = 4,
 	light_damage = 0,
 	fear_height = 4,
-	replace_what = mobs_mc.replace_silverfish,
+	replace_what = mobs_mc.replace.silverfish,
 	replace_rate = 2,
 	animation = {
 		speed_normal = 25,		speed_run = 50,

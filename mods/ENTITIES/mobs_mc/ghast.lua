@@ -83,7 +83,7 @@ mobs:spawn_specific("mobs_mc:ghast", mobs_mc.spawn.nether, {"air"},0, minetest.L
 mobs:register_arrow(":mobs_monster:fireball", {
 	visual = "sprite",
 	visual_size = {x = 0.5, y = 0.5},
-	textures = {"mcl_mobitems_fire_charge.png"},
+	textures = {"mcl_fire_fire_charge.png"},
 	velocity = 6,
 
 	-- direct hit, no fire... just plenty of pain
