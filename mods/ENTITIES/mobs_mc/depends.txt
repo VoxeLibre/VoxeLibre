@@ -1,8 +1,0 @@
-mcl_core
-mcl_tools
-mcl_hunger
-mcl_fire
-mobs
-mcl_tnt
-mcl_mobitems
-3d_armor?
