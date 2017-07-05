@@ -137,6 +137,33 @@ mobs_mc.override.follow = {
 	rabbit = { mobs_mc.override.items.dandelion, mobs_mc.override.items.carrot, mobs_mc.override.items.golden_carrot },
 }
 
+mobs_mc.replace = {
+	-- Rabbits reduce carrot growth stage by 1
+	rabbit = {
+		{"mcl_farming:carrot", "farming:carrot_7", 0},
+		{"mcl_farming:carrot_7", "farming:carrot_6", 0},
+		{"mcl_farming:carrot_6", "farming:carrot_5", 0},
+		{"mcl_farming:carrot_5", "farming:carrot_4", 0},
+		{"mcl_farming:carrot_4", "farming:carrot_3", 0},
+		{"mcl_farming:carrot_3", "farming:carrot_2", 0},
+		{"mcl_farming:carrot_2", "farming:carrot_1", 0},
+		{"mcl_farming:carrot_1", "air", 0},
+	},
+	-- Sheep eat grass
+	sheep = {
+		{ "mcl_core:dirt_with_grass", "mcl_core:dirt", -1 },
+		{ "mcl_flowers:tallgrass", "air", 0 },
+	},
+	-- Silverfish populate stone, etc. with monster eggs
+	-- TODO: add nodes
+	silverfish = {
+		{"mcl_core:stone", "mobs_mc:monster_egg_stone", -1},
+		{"mcl_core:cobble", "mobs_mc:monster_egg_cobble", -1},
+		{"mcl_core:stonebrick", "mobs_mc:monster_egg_stonebrick", -1},
+		{"mcl_core:mossystonebrick", "mobs_mc:monster_egg_mossystonebrick", -1},
+	},
+}
+
 -- List of nodes which endermen can take
 mobs_mc.override.enderman_takable = {
 	-- Generic handling, useful for entensions
