@@ -1,0 +1,450 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-02 20:52+0200\n"
+"PO-Revision-Date: 2017-07-02 16:20+0200\n"
+"Last-Translator: Wuzzy <almikes@aol.com>\n"
+"Language-Team: \n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: 1_items_default.lua
+msgid "Blaze Rod"
+msgstr "Lohenrute"
+
+#: 1_items_default.lua
+msgid "This is a crafting component dropped from dead blazes."
+msgstr "Dies ist eine Fertigungskomponente, welche von toten Lohen abfällt."
+
+#: 1_items_default.lua
+msgid "Blaze Powder"
+msgstr "Lohenstaub"
+
+#: 1_items_default.lua
+msgid "This item is mainly used for brewing potions and crafting."
+msgstr ""
+"Dieser Gegenstand wird hauptsächlich für die Trankzubereitung und die "
+"Fertigung benutzt."
+
+#: 1_items_default.lua
+msgid "Raw Chicken"
+msgstr "Rohes Hühnchen"
+
+#: 1_items_default.lua
+msgid "Cooked Chicken"
+msgstr "Gebratenes Hühnchen"
+
+#: 1_items_default.lua
+msgid "Feather"
+msgstr "Feder"
+
+#: 1_items_default.lua
+msgid "Raw Beef"
+msgstr "Rohes Rindfleisch"
+
+#: 1_items_default.lua
+msgid "Steak"
+msgstr "Steak"
+
+#: 1_items_default.lua
+msgid "Milk"
+msgstr "Milch"
+
+#: 1_items_default.lua
+msgid "Bowl"
+msgstr "Schale"
+
+#: 1_items_default.lua
+msgid "Mushroom Stew"
+msgstr "Pilzsuppe"
+
+#: 1_items_default.lua
+msgid "Dragon Egg"
+msgstr "Drachenei"
+
+#: 1_items_default.lua
+msgid "Eye of Ender"
+msgstr "Enderauge"
+
+#: 1_items_default.lua
+msgid "Ghast Tear"
+msgstr "Ghastträne"
+
+#: 1_items_default.lua
+msgid ""
+"A ghast tear is an item used in potion brewing. It is dropped from dead "
+"ghasts."
+msgstr ""
+"Eine Ghastträne kann für die Trankzubereitung benutzt werden. Sie wird von "
+"toten Ghasts abgeworfen."
+
+#: 1_items_default.lua
+msgid "Saddle"
+msgstr "Sattel"
+
+#: 1_items_default.lua
+msgid "Iron Horse Armor"
+msgstr "Eiserne Pferderüstung"
+
+#: 1_items_default.lua
+msgid "Golden Horse Armor"
+msgstr "Goldene Pferderüstung"
+
+#: 1_items_default.lua
+msgid "Diamond Horse Armor"
+msgstr "Diamantene Pferderüstung"
+
+#: 1_items_default.lua
+msgid "Raw Porkchop"
+msgstr "Rohes Schweinefleisch"
+
+#: 1_items_default.lua
+msgid "Cooked Porkchop"
+msgstr "Gebratenes Schweinefleisch"
+
+#: 1_items_default.lua
+msgid "Carrot on a Stick"
+msgstr "Karottenrute"
+
+#: 1_items_default.lua
+msgid "Raw Rabbit"
+msgstr "Rohes Kaninchen"
+
+#: 1_items_default.lua
+msgid "Cooked Rabbit"
+msgstr "Gebratenes Kaninchen"
+
+#: 1_items_default.lua
+msgid "Rabbit Hide"
+msgstr "Kaninchenfell"
+
+#: 1_items_default.lua
+msgid "Rabbit's Foot"
+msgstr "Hasenpfote"
+
+#: 1_items_default.lua
+msgid "Raw Mutton"
+msgstr "Rohes Hammelfleisch"
+
+#: 1_items_default.lua
+msgid "Cooked Mutton"
+msgstr "Gebratenes Hammelfleisch"
+
+#: 1_items_default.lua
+msgid "Shulker Shell"
+msgstr "Shulkerschale"
+
+#: 1_items_default.lua
+msgid "Magma Cream"
+msgstr "Magmacreme"
+
+#: 1_items_default.lua
+msgid "Magma cream is a crafting component."
+msgstr "Magmacreme wird zum Fertigen benutzt."
+
+#: 1_items_default.lua
+msgid "Spider Eye"
+msgstr "Spinnenauge"
+
+#: 1_items_default.lua
+msgid ""
+"Spider eyes are used mainly in crafting and brewing. Spider eyes can be "
+"eaten, but they poison you and reduce your health by 2 hit points."
+msgstr ""
+"Spinnenaugen werden hauptsächlich für die Fertigung und die Trankzubereitung "
+"benutzt. Spinnenaugen können gegessen werden, aber sie vergiften Sie und Sie "
+"verlieren 2 Trefferpunkte."
+
+#: 1_items_default.lua
+msgid "Totem of Undying"
+msgstr "Totem der Unsterblichkeit"
+
+#: 1_items_default.lua
+msgid "Rotten Flesh"
+msgstr "Verrottetes Fleisch"
+
+#: 1_items_default.lua
+msgid "Nether Star"
+msgstr "Netherstern"
+
+#: 2_throwing.lua
+msgid "Arrow"
+msgstr "Pfeil"
+
+#: 2_throwing.lua
+msgid "Bow"
+msgstr "Bogen"
+
+#: 2_throwing.lua
+msgid "Egg"
+msgstr "Ei"
+
+#: 2_throwing.lua
+msgid "Snowball"
+msgstr "Schneeball"
+
+#: 2_throwing.lua
+msgid ""
+"Snowballs can be thrown at your enemies. A snowball deals 3 damage to "
+"blazes, but is harmless to anything else."
+msgstr ""
+"Werfen Sie Schnebälle auf Ihre Feinde. Ein Schneeball richtet gegenüber "
+"Lohen 3 Schaden an, ist aber harmlos für alles andere."
+
+#: bat.lua
+msgid "Bat"
+msgstr "Fledermaus"
+
+#: blaze.lua
+msgid "Blaze"
+msgstr "Lohe"
+
+#: chicken.lua
+msgid "Chicken"
+msgstr "Huhn"
+
+#: cow+mooshroom.lua
+msgid "Cow"
+msgstr "Kuh"
+
+#: cow+mooshroom.lua
+msgid "Mooshroom"
+msgstr "Mooshroom"
+
+#: creeper.lua
+msgid "Creeper"
+msgstr "Creeper"
+
+#: ender_dragon.lua
+msgid "Ender Dragon"
+msgstr "Enderdrache"
+
+#: enderman.lua
+msgid "Enderman"
+msgstr "Enderman"
+
+#: endermite.lua
+msgid "Endermite"
+msgstr "Endermite"
+
+#: ghast.lua
+msgid "Ghast"
+msgstr "Ghast"
+
+#: guardian_elder.lua
+msgid "Elder Guardian"
+msgstr "Großer Wächter"
+
+#: guardian.lua
+msgid "Guardian"
+msgstr "Wächter"
+
+#: heads.lua
+msgid "Creeper Head (WIP)"
+msgstr "Creeperkopf (unfertig)"
+
+#: heads.lua
+msgid "Enderman Head (WIP)"
+msgstr "Endermankopf (unfertig)"
+
+#: heads.lua
+msgid "Ghast Head (WIP)"
+msgstr "Ghastkopf (unfertig)"
+
+#: heads.lua
+msgid "Skeleton Skull (WIP)"
+msgstr "Skelettschädel (unfertig)"
+
+#: heads.lua
+msgid "Wither Skeleton Skull (WIP)"
+msgstr "Witherskelettschädel (unfertig)"
+
+#: heads.lua
+msgid "Spider Head (WIP)"
+msgstr "Spinnenkopf (unfertig)"
+
+#: heads.lua
+msgid "Zombie Head (WIP)"
+msgstr "Zombiekopf (unfertig)"
+
+#: heads.lua
+msgid "Zombie Pigman Head (WIP)"
+msgstr "Schweinezombiekopf (unfertig)"
+
+#: horse.lua
+msgid "Horse"
+msgstr "Pferd"
+
+#: horse.lua
+msgid "Skeleton Horse"
+msgstr "Skelettpferd"
+
+#: horse.lua
+msgid "Zombie Horse"
+msgstr "Zombiepferd"
+
+#: horse.lua
+msgid "Donkey"
+msgstr "Esel"
+
+#: horse.lua
+msgid "Mule"
+msgstr "Maultier"
+
+#: iron_golem.lua
+msgid "Iron Golem"
+msgstr "Eisengolem"
+
+#: llama.lua
+msgid "Llama"
+msgstr "Lama"
+
+#: ocelot.lua
+msgid "Ocelot"
+msgstr "Ozelot"
+
+#: parrot.lua
+msgid "Parrot"
+msgstr "Papagei"
+
+#: pig.lua
+msgid "Pig"
+msgstr "Schwein"
+
+#: polar_bear.lua
+msgid "Polar Bear"
+msgstr "Eisbär"
+
+#: rabbit.lua
+msgid "Rabbit"
+msgstr "Kaninchen"
+
+#: rabbit.lua
+msgid "Killer Bunny"
+msgstr "Killer-Kaninchen"
+
+#: sheep.lua
+msgid "Sheep"
+msgstr "Schaf"
+
+#: shulker.lua
+msgid "Shulker"
+msgstr "Shulker"
+
+#: silverfish.lua
+msgid "Silverfish"
+msgstr "Silberfischchen"
+
+#: silverfish.lua
+msgid "Stone Monster Egg"
+msgstr "Silberfischchen-Stein"
+
+#: silverfish.lua
+msgid "Cobblestone Monster Egg"
+msgstr "Silberfischchen-Bruchstein"
+
+#: silverfish.lua
+msgid "Mossy Cobblestone Monster Egg"
+msgstr "Bemooster Silberfischchen-Bruchstein"
+
+#: silverfish.lua
+msgid "Stone Brick Monster Egg"
+msgstr "Silberfischchen-Steinziegel"
+
+#: silverfish.lua
+msgid "Stone Block Monster Egg"
+msgstr "Silberfischchen-Steinblock"
+
+#: skeleton.lua
+msgid "Skeleton"
+msgstr "Skelett"
+
+#: skeleton_stray.lua
+msgid "Stray"
+msgstr "Eiswanderer"
+
+#: skeleton_wither.lua
+msgid "Wither Skeleton"
+msgstr "Witherskelett"
+
+#: slime+magma_cube.lua
+msgid "Magma Cube"
+msgstr "Magmawürfel"
+
+#: slime+magma_cube.lua
+msgid "Slime"
+msgstr "Schleim"
+
+#: snowman.lua
+msgid "Snow Golem"
+msgstr "Schneegolem"
+
+#: spider.lua
+msgid "Spider"
+msgstr "Spinne"
+
+#: spider.lua
+msgid "Cave Spider"
+msgstr "Höhlenspinne"
+
+#: squid.lua
+msgid "Squid"
+msgstr "Tintenfisch"
+
+#: vex.lua
+msgid "Vex"
+msgstr "Plagegeist"
+
+#: villager_evoker.lua
+msgid "Evoker"
+msgstr "Magier"
+
+#: villager_illusioner.lua
+msgid "Illusioner"
+msgstr "Illusionist"
+
+#: villager.lua
+msgid "Villager"
+msgstr "Dorfbewohner"
+
+#: villager_vindicator.lua
+msgid "Vindicator"
+msgstr "Diener"
+
+#: villager_zombie.lua
+msgid "Zombie Villager"
+msgstr "Dorfbewohnerzombie"
+
+#: witch.lua
+msgid "Witch"
+msgstr "Hexe"
+
+#: wither.lua
+msgid "Wither"
+msgstr "Wither"
+
+#: wolf.lua
+msgid "Wolf"
+msgstr "Wolf"
+
+#: zombie.lua
+msgid "Husk"
+msgstr "Wüstenzombie"
+
+#: zombie.lua
+msgid "Zombie"
+msgstr "Zombie"
+
+#: zombiepig.lua
+msgid "Zombie Pigman"
+msgstr "Schweinezombie"
