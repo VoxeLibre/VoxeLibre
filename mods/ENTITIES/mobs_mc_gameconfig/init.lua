@@ -140,13 +140,13 @@ mobs_mc.override.follow = {
 mobs_mc.override.replace = {
 	-- Rabbits reduce carrot growth stage by 1
 	rabbit = {
-		{"mcl_farming:carrot", "farming:carrot_7", 0},
-		{"mcl_farming:carrot_7", "farming:carrot_6", 0},
-		{"mcl_farming:carrot_6", "farming:carrot_5", 0},
-		{"mcl_farming:carrot_5", "farming:carrot_4", 0},
-		{"mcl_farming:carrot_4", "farming:carrot_3", 0},
-		{"mcl_farming:carrot_3", "farming:carrot_2", 0},
-		{"mcl_farming:carrot_2", "farming:carrot_1", 0},
+		{"mcl_farming:carrot", "mcl_farming:carrot_7", 0},
+		{"mcl_farming:carrot_7", "mcl_farming:carrot_6", 0},
+		{"mcl_farming:carrot_6", "mcl_farming:carrot_5", 0},
+		{"mcl_farming:carrot_5", "mcl_farming:carrot_4", 0},
+		{"mcl_farming:carrot_4", "mcl_farming:carrot_3", 0},
+		{"mcl_farming:carrot_3", "mcl_farming:carrot_2", 0},
+		{"mcl_farming:carrot_2", "mcl_farming:carrot_1", 0},
 		{"mcl_farming:carrot_1", "air", 0},
 	},
 	-- Sheep eat grass
