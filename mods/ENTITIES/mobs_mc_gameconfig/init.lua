@@ -137,7 +137,7 @@ mobs_mc.override.follow = {
 	rabbit = { mobs_mc.override.items.dandelion, mobs_mc.override.items.carrot, mobs_mc.override.items.golden_carrot },
 }
 
-mobs_mc.replace = {
+mobs_mc.override.replace = {
 	-- Rabbits reduce carrot growth stage by 1
 	rabbit = {
 		{"mcl_farming:carrot", "farming:carrot_7", 0},
