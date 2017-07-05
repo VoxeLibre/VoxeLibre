@@ -16,7 +16,7 @@ local register_block = function(subname, description, tiles, is_ground_content)
 	if is_ground_content == nil then
 		is_ground_content = false
 	end
-	minetest.register_node("mcl_monster_eggs:monter_egg_"..subname, {
+	minetest.register_node("mcl_monster_eggs:monster_egg_"..subname, {
 		description = description,
 		tiles = tiles,
 		is_ground_content = is_ground_content,
