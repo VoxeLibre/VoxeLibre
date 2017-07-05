@@ -41,7 +41,7 @@ minetest.register_node("mcl_nether:netherrack", {
 	stack_max = 64,
 	tiles = {"mcl_nether_netherrack.png"},
 	is_ground_content = true,
-	groups = {pickaxey=1, building_block=1, material_stone=1},
+	groups = {pickaxey=1, building_block=1, material_stone=1, enderman_takable=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
