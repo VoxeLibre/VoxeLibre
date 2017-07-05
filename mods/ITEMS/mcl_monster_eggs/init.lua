@@ -25,6 +25,7 @@ local register_block = function(subname, description, tiles, is_ground_content)
 		is_ground_content = false,
 		sounds = mcl_sounds.node_sound_stone_defaults(),
 		after_dig_node = spawn_silverfish,
+		_doc_items_longdesc = S("A monster egg is a block from which a silverfish will pop out when it is broken. It looks identical to its “normal” counterpart."),
 		_mcl_hardness = 0.75,
 		_mcl_blast_resistance = 3.75,
 	})
