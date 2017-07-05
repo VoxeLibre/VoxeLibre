@@ -68,6 +68,7 @@ mobs_mc.override.items = {
 	glass_bottle = "mcl_potions:glass_bottle",
 	sugar = "mcl_core:sugar",
 	wheat = "mcl_farming:wheat_item",
+	cookie = "mcl_farming:cookie",
 	potato = "mcl_farming:potato_item",
 	hay_bale = "mcl_farming:hay_bale",
 	prismarine_shard = "mcl_ocean:prismarine_shard",
@@ -75,6 +76,7 @@ mobs_mc.override.items = {
 	apple = "mcl_core:apple",
 	golden_apple = "mcl_core:apple_gold",
 	rabbit_foot = "mcl_mobitems:rabbit_foot",
+	wet_sponge = "mcl_sponges:sponge_wet",
 
 	-- Other
 	nether_brick_block = "mcl_nether:nether_brick",
