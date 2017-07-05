@@ -126,6 +126,10 @@ mobs_mc.override.follow = {
 	parrot = { "mcl_farming:seed_wheat", "mcl_farming:seed_beetroot", "mcl_farming:seed_pumpkin", "mcl_farming:seed_melon" }, -- seeds in general
 	pig = { mobs_mc.override.items.potato, mobs_mc.override.items.carrot, "mcl_farming:beetroot_item", mobs_mc.override.items.carrot_on_a_stick},
 	ocelot = { mobs_mc.override.items.fish_raw, mobs_mc.override.items.salmon_raw, mobs_mc.override.items.clownfish_raw, mobs_mc.override.items.pufferfish_raw, },
+	sheep = { mobs_mc.override.items.wheat },
+	cow = { mobs_mc.override.items.wheat },
+	horse = { mobs_mc.override.items.apple, mobs_mc.override.items.sugar, mobs_mc.override.items.wheat, mobs_mc.override.items.hay_bale, mobs_mc.override.items.golden_apple, mobs_mc.override.items.golden_carrot },
+	rabbit = { mobs_mc.override.items.dandelion, mobs_mc.override.items.carrot, mobs_mc.override.items.golden_carrot },
 }
 
 -- List of nodes which endermen can take
