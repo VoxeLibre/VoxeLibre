@@ -23,7 +23,7 @@ do
 				return def.groups.tool or (def.tool_capabilities ~= nil and def.tool_capabilities.damage_groups == nil)
 			end
 			local is_weapon_or_armor = function(def)
-				return def.groups.weapon or def.groups.weapon_ranged or def.groups.ammo or ((def.groups.armor_head or def.groups.armor_torso or def.groups.armor_legs or def.groups.armor_feet) and def.groups.non_combat_armor ~= 1)
+				return def.groups.weapon or def.groups.weapon_ranged or def.groups.ammo or ((def.groups.armor_head or def.groups.armor_torso or def.groups.armor_legs or def.groups.armor_feet or def.groups.horse_armor) and def.groups.non_combat_armor ~= 1)
 			end
 			if def.groups.building_block then
 				table.insert(inventory_lists["blocks"], name)
