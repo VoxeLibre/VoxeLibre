@@ -32,10 +32,13 @@ mobs_mc.override.items = {
 	rotten_flesh = "mcl_mobitems:rotten_flesh",
 	snowball = "mcl_throwing:snowball",
 	top_snow = "mcl_core:snow",
-	snowblock = "mcl_core:snowblock",
-
+	snow_block = "mcl_core:snowblock",
 	arrow = "mcl_throwing:arrow",
 	bow = "mcl_throwing:bow",
+	head_zombie = "mcl_heads:zombie",
+	head_creeper = "mcl_heads:creeper",
+	head_skeleton = "mcl_heads:skeleton",
+	head_wither_skeleton = "mcl_heads:wither_skeleton",
 
 	leather = "mcl_mobitems:leather",
 	shears = "mcl_tools:shears",
@@ -47,6 +50,7 @@ mobs_mc.override.items = {
 	stick = "mcl_core:stick",
 	flint = "mcl_core:flint",
 	iron_ingot = "mcl_core:iron_ingot",
+	iron_block = "mcl_core:ironblock",
 	fire = "mcl_fire:fire",
 	gunpowder = "mcl_mobitems:gunpowder",
 	flint_and_steel = "mcl_fire:flint_and_steel",
