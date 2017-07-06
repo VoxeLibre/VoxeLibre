@@ -88,6 +88,7 @@ The following main features are available:
 * Crafting system: 2×2 grid, crafting table (3×3 grid), furnace, including a crafting guide
 * Chests, large chests, ender chests, shulker boxes
 * Hunger
+* Most monsters and animals
 * All ores from Minecraft
 * Most blocks in the overworld
 * Water and lava
@@ -118,7 +119,8 @@ The following main features are available:
 The following features are incomplete:
 
 * Trees, biomes, generated structures
-* Monsters, animals and NPCs
+* NPCs
+* Some monsters and animals
 * Some redstone-related things
 * The Nether
 * The End
@@ -209,11 +211,13 @@ See `README.txt` or `README.md` in each mod directory for information about othe
 ### License of media (textures and sounds)
 The textures, unless otherwise noted, are taken from the Faithful 1.11 resource pack for Minecraft,
 authored by Vattic, xMrVizzy and many others.
-
 Source:
 http://www.minecraftforum.net/topic/72747-/
 
 The license of this texture pack is the MIT license.
+
+The textures for the mobs are from the Pixel Perfection resource pack for Minecraft.
+See `ENTITIES/mobs_mc/README.md` for detailed information.
 
 License of all main menu images: WTFPL
 
@@ -221,4 +225,4 @@ All other files, unless mentioned otherwise, fall under:
 Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
 http://creativecommons.org/licenses/by-sa/3.0/
 
-See README.txt in each mod directory for information about other authors.
+See README.txt in each mod directory for detailed information about other authors.
