@@ -88,8 +88,6 @@ mobs:register_mob("mobs_mc:parrot", {
 
 
 --spawn
--- TODO: Increase spawn chance if polished
-mobs:spawn_specific("mobs_mc:parrot", mobs_mc.spawn.jungle, {"air"}, 0, minetest.LIGHT_MAX+1, 20, 20000, 2, 15, 20)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:parrot", S("Parrot"), "mobs_mc_spawn_icon_parrot.png", 0)
