@@ -211,12 +211,9 @@ mcl_structures.generate_desert_temple = function(pos)
 				{ itemstring = "mcl_core:iron_ingot", weight = 15, amount_min = 1, amount_max = 5 },
 				{ itemstring = "mcl_core:emerald", weight = 15, amount_min = 1, amount_max = 3 },
 				{ itemstring = "", weight = 15, },
-				-- TODO: Iron Horse Armor
-				{ itemstring = "mcl_core:iron_ingot", weight = 15, },
-				-- TODO: Golden Horse Armor
-				{ itemstring = "mcl_core:gold_ingot", weight = 10, },
-				-- TODO: Diamond Horse Armor
-				{ itemstring = "mcl_core:diamond", weight = 5, },
+				{ itemstring = "mobs_mc:iron_horse_armor", weight = 15, },
+				{ itemstring = "mobs_mc:gold_horse_armor", weight = 10, },
+				{ itemstring = "mobs_mc:diamond_horse_armor", weight = 5, },
 				{ itemstring = "mcl_core:diamond", weight = 5, amount_min = 1, amount_max = 3 },
 				-- TODO: Enchanted Golden Apple
 				{ itemstring = "mcl_core:apple_gold", weight = 2, },

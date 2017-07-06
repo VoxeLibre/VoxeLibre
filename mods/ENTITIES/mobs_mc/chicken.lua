@@ -1,107 +1,105 @@
---MCmobs v0.2
---maikerumine
---made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
+
+-- intllib
+local MP = minetest.get_modpath(minetest.get_current_modname())
+local S, NS = dofile(MP.."/intllib.lua")
 
 
 --dofile(minetest.get_modpath("mobs").."/api.lua")
 
+--###################
+--################### CHICKEN
+--###################
+
+
 
 mobs:register_mob("mobs_mc:chicken", {
 	type = "animal",
+
 	hp_min = 4,
 	hp_max = 4,
-	-- The x/z size is slightly bigger than in Minecraft (MC: 0.4×0.4; MCL2: 0.5×0.5)
-	collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.69, 0.25},
-	
+	collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.69, 0.2},
+	runaway = true,
+	floats = 1,
 	visual = "mesh",
-	visual_size = {x=0.7, y=0.7},
-	mesh = "mobs_mc_chicken.x",
+	mesh = "mobs_mc_chicken.b3d",
 	textures = {
-	{"mobs_mc_chicken.png"}
+		{"mobs_mc_chicken.png"},
 	},
+	visual_size = {x=2.2, y=2.2},
+
 	makes_footstep_sound = true,
 	walk_velocity = 1,
-	armor = 100,
 	drops = {
-		{name = "mcl_mobitems:chicken",
+		{name = mobs_mc.items.chicken_raw,
 		chance = 1,
 		min = 1,
 		max = 1,},
-		{name = "mcl_mobitems:feather",
+		{name = mobs_mc.items.feather,
 		chance = 1,
 		min = 0,
 		max = 2,},
 	},
-	drawtype = "front",
-	lava_damage = minetest.registered_nodes["mcl_core:lava_source"].damage_per_second,
+	water_damage = 1,
+	lava_damage = 4,
 	light_damage = 0,
-	fall_damage = false,
-	fear_height = 4,
-	jump_height = 4.5,
+	fall_damage = 0,
+	fall_speed = -2.25,
 	sounds = {
 		random = "mobs_chicken",
-		death = "Chickenhurt1",
-		hurt = "Chickenhurt1",
+		death = "Chickenhurt1", -- TODO: replace
+		damage = "Chickenhurt1", -- TODO: replace
+		distance = 16,
 	},
 	animation = {
-		speed_normal = 24,
-		stand_start = 0,
-		stand_end = 23,
-		walk_start = 24,
-		walk_end = 49,
-		hurt_start = 118,
-		hurt_end = 154,
-		death_start = 154,
-		death_end = 179,
-		eat_start = 49,
-		eat_end = 78,
-		look_start = 78,
-		look_end = 108,
-		fly_start = 181,
-		fly_end = 187,
+		stand_speed = 25, walk_speed = 25, run_speed = 50,
+		stand_start = 0,		stand_end = 0,
+		walk_start = 0,		walk_end = 40,
+		run_start = 0,		run_end = 40,
 	},
-	--from mobs_animals
-	follow = {"mcl_farming:wheat_seeds", "mcl_farming:beetroot_seeds", "mcl_farming:pumpkin_seeds", "mcl_farming:melon_seeds"},
-	view_range = 5,
+
+	follow = mobs_mc.follow.chicken,
+	view_range = 16,
+	fear_height = 4,
 
 	on_rightclick = function(self, clicker)
-
-		if mobs:feed_tame(self, clicker, 1, true, true) then
-			return
-		end
+		if mobs:feed_tame(self, clicker, 1, true, true) then return end
+		if mobs:protect(self, clicker) then return end
+		if mobs:capture_mob(self, clicker, 0, 60, 5, false, nil) then return end
 	end,
 
-	do_custom = function(self)
+	do_custom = function(self, dtime)
+
+		self.egg_timer = (self.egg_timer or 0) + dtime
+		if self.egg_timer < 10 then
+			return
+		end
+		self.egg_timer = 0
 
 		if self.child
-		or math.random(1, 5000) > 1 then
+		or math.random(1, 100) > 1 then
 			return
 		end
 
 		local pos = self.object:getpos()
 
-		minetest.add_item(pos, "mcl_throwing:egg")
+		minetest.add_item(pos, mobs_mc.items.egg)
 
 		minetest.sound_play("mobs_mc_chicken_lay_egg", {
 			pos = pos,
 			gain = 1.0,
-			max_hear_distance = 5,
+			max_hear_distance = 16,
 		})
 	end,	
 	
 })
 
-mobs:register_spawn("mobs_mc:chicken", {"mcl_core:dirt_with_grass"}, 20, 9, 7000, 1, 31000)
-
-
--- compatibility
-mobs:alias_mob("mobs:chicken", "mobs_mc:chicken")
+--spawn
+mobs:register_spawn("mobs_mc:chicken", mobs_mc.spawn.grassland, minetest.LIGHT_MAX+1, 9, 17000, 3, 31000)
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:chicken", "Spawn Chicken", "spawn_egg_chicken.png")
+mobs:register_egg("mobs_mc:chicken", S("Chicken"), "mobs_mc_spawn_icon_chicken.png", 0)
 
-
-if minetest.setting_get("log_mods") then
+if minetest.settings:get_bool("log_mods") then
 	minetest.log("action", "MC chicken loaded")
 end

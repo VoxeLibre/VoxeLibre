@@ -1,64 +1,88 @@
-MC MOBS
-WIP
-assembled by maikerumine
-compatable with Mobs Redo API
+# MC-like mobs [`mobs_mc`]
 
-## LICENSING
-Note: In the following file name lists, the asterisk (“`*`”) is a placeholder which stands for any sequence of characters.
-Everything not explicitly mentioned or with no license mentioned falls under the license of the MineClone 2 project (see README.md in the top directory of MineClone 2).
+This mod adds mobs which closely resemble the mobs from the game Minecraft, version 1.12.
 
-### Code
-MIT License
+## Credits
 
-by PilzAdam and others
+* [maikerumine](https://github.com/maikerumine): Coding behaviour, spawning, drops, and misc.
+* [Wuzzy2](https://github.com/Wuzzy2): Zombies, husks, item textures, and code
+* [toby109tt](https://github.com/tobyplowy): Mapping fixes - better 2D planes
+* [22i](https://github.com/22i): Models (done in Blender) and mob icons for spawn eggs
+* [XSSheep](https://www.planetminecraft.com/member/xssheep/): Mob and item textures (from [Pixel Perfection](https://www.planetminecraft.com/texture_pack/131pixel-perfection/)
+* See `LICENSE_media.md` for detailed credits about each file
 
-### Sound files
+## Licensing
 
-- `mobs_mc_squid_hurt.ogg`
-	- Author: daufinsyd
-- `mobs_mc_chicken_lay_egg.ogg`
-	- WTFPL, by PilzAdam and Wuzzy
-- `mobs_mc_cow.ogg`
-	- CC0, by Freesound.org user Zozzy
-	- Source: <https://www.freesound.org/people/Zozzy/sounds/59245/>
-- `mobs_*.ogg` (except the files above)
-	- MIT License, from `mobs_animal` and `mobs_monster` by TenPlus1
-- `blaze_breath.ogg`
-- `blaze_died1.ogg`
-	- Author: daufinsyd
-- `blaze_hurt1.ogg`
-	- CC0, by freesound.org user thefilmbakery
-	- Source: <https://freesound.org/people/thefilmbakery/sounds/137836/>
-- `green_slime_death.ogg`
-	- CC BY 3.0 <http://creativecommons.org/licenses/by/3.0/>
-        - By freesound.org user DrMinky
-        - Source: <https://freesound.org/people/DrMinky/sounds/167074/>
-- `green_slime_*.ogg`
-	- MIT License 
-- `mobs_sheep.ogg`
-	- [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/), created by the Blender Foundation
+* Code: GNU General Public License, version 3 (see `LICENSE`)
+* Media: MIT, CC0, CC BY 3.0 CC BY-SA 4.0, LGPLv2.1, GPLv3. See `LICENSE_media.md` for details
 
-### Textures
+## Useful information for developers
 
-- `mobs_squid.png`
-- `mobs_blaze.png`
-	- GPLv3 by 22i
-- `mobs_bunny_*.png`
-	- MIT License, by ExeterDad
-- `spawn_egg_squid.png`
-- `spawn_egg_blaze.png`
-	- Author: daufinsyd
-- `spawn_egg_rabbit.png`
-	- MIT License, by Wuzzy
-- `mobs_skeleton2.png`
-	- MIT License, originally from Faithful texture pack
-	  (see MineClone 2 main readme file), edited by kingoscargames
+### Subgame integration
+Want to include this mod in your subgame? Read `gameconfig.md`.
 
-### Models
-- `mobs_bunny.b3d`
-	- MIT License, by ExeterDad
+### Links
 
-Everything else:
+* [`mobs_mc`](https://github.com/maikerumine/mobs_mc)
+* [Blender models](https://github.com/22i/minecraft-voxel-blender-models)
+* [How to recreate mobs from textures with Blender and Gimp](http://imgur.com/a/Iqg88)
 
-Faithful 1.11
-	- MIT License, by Vattic, xMrVizzy and contributors
+## List of mobs
+
+**Note**: Many of these are incomplete.
+
+### Monsters
+
+* Zombie
+* Husk
+* Skeleton
+* Stray
+* Creeper
+* Slime
+* Spider
+* Cave Spider
+* Enderman
+* Zombie Villager
+* Zombie Pigman
+* Wither Skeleton
+* Magma Cube
+* Blaze
+* Ghast
+* Evoker
+* Vex
+* Vindicator
+* Witch
+* Guardian
+* Silverfish
+* Endermite
+* Shulker
+* Ender Dragon
+* Wither
+* Elder Guardian
+
+### Peaceful mobs
+
+* Chicken
+* Cow
+* Pig
+* Rabbit
+* Sheep
+* Squid
+* Polar Bear
+* Bat
+* Mooshroom
+* Horse
+* Donkey
+* Llama
+* Mule
+* Skeleton Horse
+* Zombie Horse
+
+### Helpful mobs
+
+* Wolf
+* Villager
+* Iron golem
+* Snow golem
+* Ocelot/Cat
+* Parrot

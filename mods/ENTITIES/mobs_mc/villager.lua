@@ -1,55 +1,56 @@
---MCmobs v0.2
+--MCmobs v0.4
 --maikerumine
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
+-- intllib
+local MP = minetest.get_modpath(minetest.get_current_modname())
+local S, NS = dofile(MP.."/intllib.lua")
 
 --dofile(minetest.get_modpath("mobs").."/api.lua")
+--###################
+--################### VILLAGER
+--###################
+
 
 
 mobs:register_mob("mobs_mc:villager", {
 	type = "npc",
 	hp_min = 20,
 	hp_max = 20,
-	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.95, 0.4},
-	textures = {
-	{"mobs_farmer.png"}
-	},
+	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
-	mesh = "mobs_villager.x",
+	mesh = "mobs_mc_villager.b3d",
+	textures = {
+		{"mobs_mc_villager.png"},
+		{"mobs_mc_villager_farmer.png"},
+		{"mobs_mc_villager_priest.png"},
+		{"mobs_mc_villager_librarian.png"},
+		{"mobs_mc_villager_butcher.png"},
+		{"mobs_mc_villager_smith.png"},
+	},
+	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
-	damage = 0,
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
 	drops = {},
-	armor = 100,
 	sounds = {
 		random = "Villager1",
 		death = "Villagerdead",
 		damage = "Villagerhurt1",
+		distance = 16,
 	},
 	animation = {
-		speed_normal = 30,
-		speed_run = 60,
-		stand_start = 0,
-		stand_end = 23,
-		walk_start = 24,
-		walk_end = 49,
-		run_start = 24,
-		run_end = 49,
-		hurt_start = 85,
-		hurt_end = 115,
-		death_start = 117,
-		death_end = 145,
-		shoot_start = 50,
-		shoot_end = 82,
+		stand_speed = 25, walk_speed = 25, run_speed = 50,
+		stand_start = 0,		stand_end = 0,
+		walk_start = 0,		walk_end = 40,
+		run_start = 0,		run_end = 40,
 	},
-	drawtype = "front",
-	lava_damage = minetest.registered_nodes["mcl_core:lava_source"].damage_per_second,
+	water_damage = 0,
+	lava_damage = 4,
 	light_damage = 0,
 	view_range = 16,
-	fear_height = 5,
-	-- TODO: Add trading menu
+	fear_height = 4,
 	--[[
 	on_rightclick = function(self, clicker)
 		local inv
@@ -111,39 +112,39 @@ mobs:register_mob("mobs_mc:villager", {
 		inv:set_size("offered", 1)
 
 		local trades = {
-			{"mcl_core:apple 12",			"mcl_core:clay_lump 1"},
-			{"mcl_core:coal_lump 20",		"mcl_core:clay_lump 1"},
-			{"mcl_core:paper 30",			"mcl_core:clay_lump 1"},
-			{"mobs:leather 10",			"mcl_core:clay_lump 1"},
-			{"mcl_core:book 2",			"mcl_core:clay_lump 1"},
-			{"mcl_core:clay_lump 3",		"mcl_core:clay_lump 1"},
-			{"farming:potato 15",		"mcl_core:clay_lump 1"},
-			{"farming:wheat 20",			"mcl_core:clay_lump 1"},
-			{"farming:carrot 15",			"mcl_core:clay_lump 1"},
-			{"farming:melon_8 8",		"mcl_core:clay_lump 1"},
-			{"mobs:rotten_flesh 40",		"mcl_core:clay_lump 1"},
-			{"mcl_core:gold_ingot 10",		"mcl_core:clay_lump 1"},
-			{"farming:cotton 10",			"mcl_core:clay_lump 1"},
-			{"mcl_wool:white 15",			"mcl_core:clay_lump 1"},
-			{"farming:pumpkin 8",		"mcl_core:clay_lump 1"},
+			{"default:apple 12",			"default:clay_lump 1"},
+			{"default:coal_lump 20",		"default:clay_lump 1"},
+			{"default:paper 30",			"default:clay_lump 1"},
+			{"mobs:leather 10",			"default:clay_lump 1"},
+			{"default:book 2",			"default:clay_lump 1"},
+			{"default:clay_lump 3",		"default:clay_lump 1"},
+			{"farming:potato 15",		"default:clay_lump 1"},
+			{"farming:wheat 20",			"default:clay_lump 1"},
+			{"farming:carrot 15",			"default:clay_lump 1"},
+			{"farming:melon_8 8",		"default:clay_lump 1"},
+			{"mobs:rotten_flesh 40",		"default:clay_lump 1"},
+			{"default:gold_ingot 10",		"default:clay_lump 1"},
+			{"farming:cotton 10",			"default:clay_lump 1"},
+			{"wool:white 15",			"default:clay_lump 1"},
+			{"farming:pumpkin 8",		"default:clay_lump 1"},
 
-			{"mcl_core:clay_lump 1",		"mobs:beef_cooked 5"},
-			{"mcl_core:clay_lump 1",		"mobs:chicken_cooked 7"},
-			{"mcl_core:clay_lump 1",		"farming:cookie 6"},
-			{"mcl_core:clay_lump 1",		"farming:pumpkin_bread 3"},
-			{"mcl_core:clay_lump 1",		"mobs:arrow 10"},
-			{"mcl_core:clay_lump 3",		"mobs:bow_wood 1"},
-			{"mcl_core:clay_lump 8",		"fishing:pole_wood 1"},
-			--{"mcl_core:clay_lump 4",		"potionspack:healthii 1"},
-			{"mcl_core:clay_lump 1",		"cake:cake 1"},
-			{"mcl_core:clay_lump 10",		"mobs:saddle 1"},
-			{"mcl_core:clay_lump 10",		"clock:1 1"},
-			{"mcl_core:clay_lumpd 10",		"compass:0 1"},
-			{"mcl_core:clay_lump 1",		"mcl_core:glass 5"},
-			{"mcl_core:clay_lump 1",		"nether:glowstone 3"},
-			{"mcl_core:clay_lump 3",		"mobs:shears 1"},
-			{"mcl_core:clay_lump 10",		"mcl_core:sword_diamond 1"},
-			{"mcl_core:clay_lump 20",		"3d_armor:chestplate_diamond 1"},
+			{"default:clay_lump 1",		"mobs:beef_cooked 5"},
+			{"default:clay_lump 1",		"mobs:chicken_cooked 7"},
+			{"default:clay_lump 1",		"farming:cookie 6"},
+			{"default:clay_lump 1",		"farming:pumpkin_bread 3"},
+			{"default:clay_lump 1",		"mobs:arrow 10"},
+			{"default:clay_lump 3",		"mobs:bow_wood 1"},
+			{"default:clay_lump 8",		"fishing:pole_wood 1"},
+			--{"default:clay_lump 4",		"potionspack:healthii 1"},
+			{"default:clay_lump 1",		"cake:cake 1"},
+			{"default:clay_lump 10",		"mobs:saddle 1"},
+			{"default:clay_lump 10",		"clock:1 1"},
+			{"default:clay_lumpd 10",		"compass:0 1"},
+			{"default:clay_lump 1",		"default:glass 5"},
+			{"default:clay_lump 1",		"nether:glowstone 3"},
+			{"default:clay_lump 3",		"mobs:shears 1"},
+			{"default:clay_lump 10",		"default:sword_diamond 1"},
+			{"default:clay_lump 20",		"3d_armor:chestplate_diamond 1"},
 		}
 		local tradenum = math.random(#trades)
 		inv:set_stack("wanted", 1, ItemStack(trades[tradenum][1]))
@@ -166,16 +167,16 @@ mobs:register_mob("mobs_mc:villager", {
 	
 	]]
 })
--- TODO: Spawn villager
 
+--mobs:register_spawn("mobs_mc:villager", {"default:gravel"},  7, -1, 4090, 4, 31000)
+mobs:register_spawn("mobs_mc:villager", {"mg_villages:road"}, minetest.LIGHT_MAX+1, -1,8000, 4, 31000)
 
 -- compatibility
 mobs:alias_mob("mobs:villager", "mobs_mc:villager")
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:villager", "Spawn Villager", "spawn_egg_villager.png")
+mobs:register_egg("mobs_mc:villager", S("Villager"), "mobs_mc_spawn_icon_villager.png", 0)
 
-
-if minetest.setting_get("log_mods") then
+if minetest.settings:get_bool("log_mods") then
 	minetest.log("action", "MC mobs loaded")
 end

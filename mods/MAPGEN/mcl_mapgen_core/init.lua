@@ -580,6 +580,26 @@ minetest.register_ore({
 
 end
 
+-- Rarely replace stone with stone monster eggs
+local scarcity
+if mg_name == "v6" then
+	monster_egg_scarcity = 28 * 28 * 28
+else
+	monster_egg_scarcity = 22 * 22 * 22
+end
+minetest.register_ore({
+	ore_type       = "scatter",
+	ore            = "mcl_monster_eggs:monster_egg_stone",
+	wherein        = "mcl_core:stone",
+	clust_scarcity = monster_egg_scarcity,
+	clust_num_ores = 3,
+	clust_size     = 2,
+	y_min          = -31000,
+	y_max          = 31000,
+	-- TODO: Limit by biome
+})
+
+
 local function register_mgv6_decorations()
 
 	-- Sugar canes

@@ -3,4 +3,5 @@ mcl_util
 mcl_core
 mcl_cocoas
 mcl_stairs
+mcl_monster_eggs
 mcl_structures

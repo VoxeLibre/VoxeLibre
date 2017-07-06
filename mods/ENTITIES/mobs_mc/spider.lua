@@ -1,64 +1,82 @@
---MCmobs v0.2
+--MCmobs v0.4
 --maikerumine
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
+-- intllib
+local MP = minetest.get_modpath(minetest.get_current_modname())
+local S, NS = dofile(MP.."/intllib.lua")
 
 --dofile(minetest.get_modpath("mobs").."/api.lua")
 
+--###################
+--################### SPIDER
+--###################
+
+
 -- Spider by AspireMint (fishyWET (CC-BY-SA 3.0 license for texture)
-mobs:register_mob("mobs_mc:spider", {
+
+local spider = {
 	type = "monster",
 	passive = false,
+	docile_by_day = true,
 	attack_type = "dogfight",
 	pathfinding = 1,
 	damage = 2,
-	docile_by_day = true,
 	hp_min = 16,
 	hp_max = 16,
-	armor = 100,
-	--[[ MC: 1.5×1×1.5, MCL2: 1.5×0.5×1.5
-	The MC model is surprisingly high because the MC body is
-	high above the ground while in MCL2 the body touches the
-	ground. ]]
-	collisionbox = {-0.75, -0.01, -0.75, 0.75, 0.49, 0.75},
+	collisionbox = {-0.7, -0.01, -0.7, 0.7, 0.89, 0.7},
 	visual = "mesh",
-	mesh = "mobs_spider.x",
+	mesh = "mobs_mc_spider.b3d",
 	textures = {
-		{"mobs_spider.png"}
+		{"mobs_mc_spider.png^(mobs_mc_spider_eyes.png^[makealpha:0,0,0)"},
 	},
-	visual_size = {x=5,y=5},
+	visual_size = {x=3, y=3},
 	makes_footstep_sound = false,
 	sounds = {
 		random = "mobs_spider",
 		attack = "mobs_spider",
+		distance = 16,
 	},
-	walk_velocity = 1.7,
-	run_velocity = 3.3,
+	walk_velocity = 3.9,
 	jump = true,
-	jump_height = 5,
-	view_range = 15,
+	jump_height = 2,
+	view_range = 16,
 	floats = 1,
-	group_attack = true,
-	peaceful = false,
 	drops = {
-		{name = "mcl_mobitems:string",
-		chance = 1, min = 0, max = 2,},
-		{name = "mcl_mobitems:spider_eye",
-		chance = 3, min = 1, max = 1,},
+		{name = mobs_mc.items.string, chance = 1, min = 0, max = 2,},
+		{name = mobs_mc.items.spider_eye, chance = 3, min = 1, max = 1,},
 	},
-	lava_damage = minetest.registered_nodes["mcl_core:lava_source"].damage_per_second,
+	specific_attack = { "player", "mobs_mc:iron_golem" },
+	water_damage = 0,
+	lava_damage = 4,
 	light_damage = 0,
-	fear_height = 14,
+	fear_height = 4,
 	animation = {
-		speed_normal = 15,		speed_run = 15,
-		stand_start = 1,		stand_end = 1,
-		walk_start = 20,		walk_end = 40,
-		run_start = 20,			run_end = 40,
-		punch_start = 50,		punch_end = 90,
+		speed_normal = 25,		speed_run = 50,
+		stand_start = 40,		stand_end = 80,
+		walk_start = 0,		walk_end = 40,
+		run_start = 0,		run_end = 40,
 	},
-})
-mobs:register_spawn("mobs_mc:spider", {"group:solid"}, 4, -1, 17000, 2, 3000)
+	blood_amount = 0,
+}
+mobs:register_mob("mobs_mc:spider", spider)
+
+-- Cave spider
+local cave_spider = table.copy(spider)
+cave_spider.textures = { {"mobs_mc_cave_spider.png^(mobs_mc_spider_eyes.png^[makealpha:0,0,0)"} }
+-- TODO: Poison damage
+-- TODO: Revert damage to 2
+cave_spider.damage = 3 -- damage increased to undo non-existing poison
+cave_spider.hp_min = 1
+cave_spider.hp_max = 12
+cave_spider.collisionbox = {-0.35, -0.01, -0.35, 0.35, 0.49, 0.35}
+cave_spider.visual_size = {x=1.66666, y=1.5}
+cave_spider.walk_velocity = 4.1
+mobs:register_mob("mobs_mc:cave_spider", cave_spider)
+
+
+mobs:register_spawn("mobs_mc:spider", mobs_mc.spawn.solid, 7, 0, 19500, 2, 3000)
 
 
 -- compatibility
@@ -66,9 +84,9 @@ mobs:alias_mob("mobs:spider", "mobs_mc:spider")
 mobs:alias_mob("esmobs:spider", "mobs_mc:spider")
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:spider", "Spawn Spider", "spawn_egg_spider.png", 0)
+mobs:register_egg("mobs_mc:spider", S("Spider"), "mobs_mc_spawn_icon_spider.png", 0)
+mobs:register_egg("mobs_mc:cave_spider", S("Cave Spider"), "mobs_mc_spawn_icon_cave_spider.png", 0)
 
-
-if minetest.setting_get("log_mods") then
+if minetest.settings:get_bool("log_mods") then
 	minetest.log("action", "MC Spiders loaded")
 end

@@ -1,10 +1,18 @@
---MCmobs v0.2
+--MCmobs v0.4
 --maikerumine
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
+-- intllib
+local MP = minetest.get_modpath(minetest.get_current_modname())
+local S, NS = dofile(MP.."/intllib.lua")
 
 --dofile(minetest.get_modpath("mobs").."/api.lua")
+
+--###################
+--################### GHAST
+--###################
+
 
 mobs:register_mob("mobs_mc:ghast", {
 	type = "monster",
@@ -12,15 +20,13 @@ mobs:register_mob("mobs_mc:ghast", {
 	group_attack = true,
 	hp_min = 10,
 	hp_max = 10,
-	collisionbox = {-1.45, -1.45, -1.45 ,1.45, 1.45, 1.45},
-	visual_size = {x=3.0, y=3.0},
+	collisionbox = {-2, 5, -2, 2, 9, 2},
+	visual = "mesh",
+	mesh = "mobs_mc_ghast.b3d",
 	textures = {
-	{"ghast_white.png", "ghast_white.png", "ghast_front.png", "ghast_white.png", "ghast_white.png", "ghast_white.png"}
+		{"mobs_mc_ghast.png"},
 	},
-	visual = "cube",
-	blood_texture ="mobs_blood.png",
-	rotate = 270,
-	makes_footstep_sound = true,
+	visual_size = {x=12, y=12},
 	sounds = {
 		shoot = "mobs_fireball",
 		death = "zombiedeath",
@@ -28,42 +34,31 @@ mobs:register_mob("mobs_mc:ghast", {
 		attack = "mobs_fireball",
 		random = "mobs_eerie",
 	},
-	walk_velocity = .8,
-	run_velocity = 2.6,
-	damage = 1,
-	armor = 100,
+	walk_velocity = 1.6,
+	run_velocity = 3.2,
 	drops = {
-		{name = "mcl_mobitems:ghast_tear",
-		chance = 1,
-		min = 0,
-		max = 1,},
-		{name = "mcl_mobitems:gunpowder",
+		{name = mobs_mc.items.gunpowder,
 		chance = 1,
 		min = 0,
 		max = 2,},
+		{name = mobs_mc.items.ghast_tear,
+		chance = 1,
+		min = 0,
+		max = 1,},
 	},
 	animation = {
-		speed_normal = 24,
-		speed_run = 48,
-		stand_start = 0,
-		stand_end = 23,
-		walk_start = 24,
-		walk_end = 47,
-		run_start = 48,
-		run_end = 62,
-		hurt_start = 64,
-		hurt_end = 86,
-		death_start = 88,
-		death_end = 118,
+		stand_speed = 50, walk_speed = 50, run_speed = 50,
+		stand_start = 0,		stand_end = 40,
+		walk_start = 0,		walk_end = 40,
+		run_start = 0,		run_end = 40,
 	},
-	drawtype = "front",
-	lava_damage = 0,
+	lava_damage = 4,
 	light_damage = 0,
 	fall_damage = 0,
 	view_range = 100,
 	--attack_type = "dogshoot",
 	attack_type = "dogshoot",
-	arrow = "mobs_mc:ghast_fireball",
+	arrow = "mobs_monster:fireball",
 	shoot_interval = 3.5,
 	shoot_offset = 1,
 		--'dogshoot_switch' allows switching between shoot and dogfight modes inside dogshoot using timer (1 = shoot, 2 = dogfight)
@@ -75,17 +70,19 @@ mobs:register_mob("mobs_mc:ghast", {
 	jump_height = 4,
 	floats=1,
 	fly = true,
+	fly_in = {"air"},
 	jump_chance = 98,
 	fear_height = 120,	
+	blood_amount = 0,
 })
 
 
-mobs:register_spawn("mobs_mc:ghast", {"mcl_core:lava_flowing", "mcl_nether:netherrack", "air"}, 17, -1, 5000, 1, -2000)
-
--- Ghast fireball
-mobs:register_arrow("mobs_mc:ghast_fireball", {
+--mobs:register_spawn("mobs_mc:ghast", {"default:flowing_lava", "nether:rack","air"}, 17, -1, 5000, 1, -2000)
+mobs:spawn_specific("mobs_mc:ghast", mobs_mc.spawn.nether, {"air"},0, minetest.LIGHT_MAX+1, 0, 18000, 2, -3610, -2100)
+-- fireball (weapon)
+mobs:register_arrow(":mobs_monster:fireball", {
 	visual = "sprite",
-	visual_size = {x = 0.8, y = 0.8},
+	visual_size = {x = 0.5, y = 0.5},
 	textures = {"mcl_fire_fire_charge.png"},
 	velocity = 6,
 
@@ -93,15 +90,14 @@ mobs:register_arrow("mobs_mc:ghast_fireball", {
 	hit_player = function(self, player)
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
-			damage_groups = {fleshy = 6},
+			damage_groups = {fleshy = 8},
 		}, nil)
-		mcl_hunger.exhaust(player:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
 	end,
 
 	hit_mob = function(self, player)
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
-			damage_groups = {fleshy = 6},
+			damage_groups = {fleshy = 8},
 		}, nil)
 	end,
 
@@ -113,10 +109,10 @@ mobs:register_arrow("mobs_mc:ghast_fireball", {
 
 
 
+
 -- spawn eggs
-mobs:register_egg("mobs_mc:ghast", "Spawn Ghast", "spawn_egg_ghast.png")
+mobs:register_egg("mobs_mc:ghast", S("Ghast"), "mobs_mc_spawn_icon_ghast.png", 0)
 
-
-if minetest.setting_get("log_mods") then
+if minetest.settings:get_bool("log_mods") then
 	minetest.log("action", "MC Ghast loaded")
 end

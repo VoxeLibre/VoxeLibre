@@ -3,37 +3,40 @@
 -- Model and mobs_blaze.png see https://github.com/22i/minecraft-voxel-blender-models
 -- blaze.lua partial copy of mobs_mc/ghast.lua
 
-
+-- intllib
+local MP = minetest.get_modpath(minetest.get_current_modname())
+local S, NS = dofile(MP.."/intllib.lua")
 
 --dofile(minetest.get_modpath("mobs").."/api.lua")
-
+--###################
+--################### BLAZE
+--###################
 
 
 mobs:register_mob("mobs_mc:blaze", {
 	type = "monster",
 	hp_min = 20,
 	hp_max = 20,
-	collisionbox = {-0.4, 0.4, -0.4, 0.4, 1.9, 0.4},
-	textures = {
-	{"mobs_blaze.png"}
-	},
+	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.79, 0.3},
+	rotate = -180,
 	visual = "mesh",
-	mesh = "mobs_blaze.b3d",
-	makes_footstep_sound = true,
+	mesh = "mobs_mc_blaze.b3d",
+	textures = {
+		{"mobs_mc_blaze.png"},
+	},
+	visual_size = {x=3, y=3},
 	sounds = {
-		random = "blaze_breath",
-		death = "blaze_died",
-		damage = "blaze_hurt1",
-		attack = "default_punch3",
+		random = "mobs_mc_blaze_breath",
+		death = "mobs_mc_blaze_died",
+		damage = "mobs_mc_blaze_hurt",
+		distance = 16,
 	},
 	walk_velocity = .8,
 	run_velocity = 1.6,
-	damage = 2.5,
+	damage = 6,
 	pathfinding = 1,
-	group_attack = true,
-	armor = 80,
 	drops = {
-		{name = "mcl_mobitems:blaze_rod",
+		{name = mobs_mc.items.blaze_rod,
 		chance = 1,
 		min = 0,
 		max = 1,},
@@ -45,30 +48,30 @@ mobs:register_mob("mobs_mc:blaze", {
 		walk_end = 40,
 		run_start = 1,
 		run_end = 40,
-        shoot_start = 1,
-        shoot_end = 40,
+		shoot_start = 1,
+		shoot_end = 40,
 	},
-	drawtype = "front",
-	-- MC Wiki: 1 damage every half second
+	-- MC Wiki: takes 1 damage every half second while in water
 	water_damage = 2,
 	lava_damage = 0,
 	fall_damage = 0,
+	fall_speed = -2.25,
 	light_damage = 0,
 	view_range = 16,
-	attack_type = "shoot",
-    arrow = "mobs_mc:blaze_fireball",
-    shoot_interval = 3.5,
-    passive = false,
-    jump = true,
+	attack_type = "dogshoot",
+	arrow = "mobs_mc:blaze_fireball",
+	shoot_interval = 3.5,
+	passive = false,
+	jump = true,
 	jump_height = 4,
-    floats = 1,
-    fly = true,
-    jump_chance = 98,
-    fear_height = 120,
+	fly = true,
+	jump_chance = 98,
+	fear_height = 120,
+	blood_amount = 0,
 })
 
-mobs:register_spawn("mobs_mc:blaze", {"mcl_core:lava_flowing", "mcl_nether:netherrack","air"}, 30, -1, 5000, 1, -1000)
-
+mobs:register_spawn("mobs_mc:blaze", mobs_mc.spawn.nether_fortress, minetest.LIGHT_MAX+1, 0, 5000, 1, -1000, true)
+	
 -- Blaze fireball
 mobs:register_arrow("mobs_mc:blaze_fireball", {
 	visual = "sprite",
@@ -82,7 +85,6 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 5},
 		}, nil)
-		mcl_hunger.exhaust(player:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
 	end,
 
 	hit_mob = function(self, player)
@@ -96,15 +98,19 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 	hit_node = function(self, pos, node)
 		local pos_above = {x=pos.x, y=pos.y+1, z=pos.z}
 		if minetest.registered_nodes[minetest.get_node(pos_above).name].buildable_to then
-			minetest.set_node(pos_above, {name="mcl_fire:fire"})
+			minetest.set_node(pos_above, {name=mobs_mc.items.fire})
 		end
 	end
 })
 
 -- spawn eggs
-mobs:register_egg("mobs_mc:blaze", "Spawn Blaze", "spawn_egg_blaze.png")
+mobs:register_egg("mobs_mc:blaze", S("Blaze"), "mobs_mc_spawn_icon_blaze.png", 0)
 
 
-if minetest.setting_get("log_mods") then
+
+
+
+
+if minetest.settings:get_bool("log_mods") then
 	minetest.log("action", "MC Blaze loaded")
 end

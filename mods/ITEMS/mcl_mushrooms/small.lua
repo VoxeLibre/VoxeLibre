@@ -34,7 +34,7 @@ minetest.register_node("mcl_mushrooms:mushroom_brown", {
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
-	groups = {dig_immediate=3,mushroom=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1},
+	groups = {dig_immediate=3,mushroom=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,enderman_takable=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	light_source = 1,
 	selection_box = {
@@ -57,7 +57,7 @@ minetest.register_node("mcl_mushrooms:mushroom_red", {
 	sunlight_propagates = true,
 	paramtype = "light",
 	walkable = false,
-	groups = {dig_immediate=3,mushroom=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,deco_block=1},
+	groups = {dig_immediate=3,mushroom=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,enderman_takable=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",

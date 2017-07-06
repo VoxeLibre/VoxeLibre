@@ -1,1 +1,1 @@
-Adds Minecraft-like monsters and animals.
+Adds MC like monsters and animals.

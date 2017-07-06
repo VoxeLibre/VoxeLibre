@@ -15,15 +15,12 @@ local get_loot = function()
 			{ itemstring = "mcl_mobitems:saddle", weight = 20 },
 			{ itemstring = "mcl_jukebox:record_1", weight = 15 },
 			{ itemstring = "mcl_jukebox:record_4", weight = 15 },
-			-- TODO: Iron Horse Armor
-			{ itemstring = "mcl_core:iron_ingot", weight = 15 },
+			{ itemstring = "mobs_mc:iron_horse_armor", weight = 15 },
 			{ itemstring = "mcl_core:apple_gold", weight = 15 },
 			-- TODO: Enchanted Book
 			{ itemstring = "mcl_books:book", weight = 10 },
-			-- TODO: Gold Horse Armor
-			{ itemstring = "mcl_core:gold_ingot", weight = 5 },
-			-- TODO: Diamond Horse Armor
-			{ itemstring = "mcl_core:diamond", weight = 5 },
+			{ itemstring = "mobs_mc:gold_horse_armor", weight = 10 },
+			{ itemstring = "mobs_mc:diamond_horse_armor", weight = 5 },
 			-- TODO: Enchanted Golden Apple
 			{ itemstring = "mcl_core:apple_gold", weight = 2 },
 		}

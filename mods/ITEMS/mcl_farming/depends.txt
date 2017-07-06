@@ -4,4 +4,5 @@ bucket
 mcl_wool
 mcl_torches
 weather_pack
+mobs_mc
 doc?
