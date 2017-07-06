@@ -90,7 +90,7 @@ mobs:register_mob("mobs_mc:zombie", zombie)
 
 local baby_zombie = table.copy(zombie)
 baby_zombie.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
-baby_zombie.visual_size = {x=0.75, y=0.75}
+baby_zombie.visual_size = {x=zombie.visual_size.x/2, y=zombie.visual_size.y/2}
 baby_zombie.walk_velocity = 1.2
 baby_zombie.run_velocity = 2.4
 baby_zombie.light_damage = 0
@@ -111,7 +111,7 @@ mobs:register_mob("mobs_mc:husk", husk)
 -- A smaller and more dangerous variant of the husk
 local baby_husk = table.copy(husk)
 baby_husk.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
-baby_husk.visual_size = {x=0.75, y=0.75}
+baby_husk.visual_size = {x=zombie.visual_size.x/2, y=zombie.visual_size.y/2}
 baby_husk.walk_velocity = 1.2
 baby_husk.run_velocity = 2.4
 
