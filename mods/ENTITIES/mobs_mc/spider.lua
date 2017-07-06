@@ -76,7 +76,7 @@ cave_spider.walk_velocity = 4.1
 mobs:register_mob("mobs_mc:cave_spider", cave_spider)
 
 
-mobs:register_spawn("mobs_mc:spider", mobs_mc.spawn.solid, 7, 0, 19500, 2, 3000)
+mobs:register_spawn("mobs_mc:spider", mobs_mc.spawn.solid, 7, 0, 7000, 2, 3000)
 
 
 -- compatibility

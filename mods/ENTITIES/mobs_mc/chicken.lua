@@ -95,7 +95,7 @@ mobs:register_mob("mobs_mc:chicken", {
 })
 
 --spawn
-mobs:register_spawn("mobs_mc:chicken", mobs_mc.spawn.grassland, minetest.LIGHT_MAX+1, 9, 17000, 3, 31000)
+mobs:register_spawn("mobs_mc:chicken", mobs_mc.spawn.grassland, minetest.LIGHT_MAX+1, 9, 7000, 3, 31000)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:chicken", S("Chicken"), "mobs_mc_spawn_icon_chicken.png", 0)

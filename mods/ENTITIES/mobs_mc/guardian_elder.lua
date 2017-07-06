@@ -85,7 +85,7 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 	blood_amount = 0,
 })
 
-mobs:register_spawn("mobs_mc:guardian_elder", mobs_mc.spawn.water, minetest.LIGHT_MAX+1, 0, 5000, 2, -1000, true)
+mobs:register_spawn("mobs_mc:guardian_elder", mobs_mc.spawn.water, minetest.LIGHT_MAX+1, 0, 50000, 2, -1000, true)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:guardian_elder", S("Elder Guardian"), "mobs_mc_spawn_icon_guardian_elder.png", 0)

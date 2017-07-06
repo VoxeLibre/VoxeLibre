@@ -104,7 +104,7 @@ mobs:register_mob("mobs_mc:killer_bunny", killer_bunny)
 
 local spawn = {
 	name = "mobs_mc:rabbit",
-	chance = 15000,
+	chance = 5000,
 	active_object_count = 99,
 	min_light = 0,
 	max_light = minetest.LIGHT_MAX+1,

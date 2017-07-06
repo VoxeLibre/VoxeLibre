@@ -139,7 +139,7 @@ mobs:register_mob("mobs_mc:llama", {
 })
 
 --spawn
-mobs:register_spawn("mobs_mc:llama", mobs_mc.spawn.savanna, minetest.LIGHT_MAX+1, 0, 15000, 1, 40)
+mobs:register_spawn("mobs_mc:llama", mobs_mc.spawn.savanna, minetest.LIGHT_MAX+1, 0, 6500, 1, 40)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:llama", S("Llama"), "mobs_mc_spawn_icon_llama.png", 0)
