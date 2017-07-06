@@ -49,7 +49,7 @@ enable_bed_night_skip (Skip night when sleeping) bool true
 # If disabled, the recipe book shows all crafting recipes.
 # This setting is experimental and may be changed in later versions.
 # Feedback is appreciated.
-craftguide_progressive_mode (EXPERIMENTAL: Enable recipe book progressive mode) bool true
+craftguide_progressive_mode (EXPERIMENTAL: Enable recipe book progressive mode) bool false
 
 # If enabled, the “flat” map generator generates a “classic” superflat map:
 # Completely flat, 1 layer of grass blocks on top of 2 layers of dirt on
