@@ -1,3 +1,5 @@
+-- Glass nodes
+
 minetest.register_node("mcl_core:glass", {
 	description = "Glass",
 	_doc_items_longdesc = "A decorational and mostly transparent block.",

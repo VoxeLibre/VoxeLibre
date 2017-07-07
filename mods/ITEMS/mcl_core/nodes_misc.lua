@@ -1,3 +1,5 @@
+-- Other nodes
+
 minetest.register_node("mcl_core:bone_block", {
 	description = "Bone Block",
 	_doc_items_longdesc = "Bone blocks are decorational blocks and a compact storage of bone meal.",
@@ -67,6 +69,44 @@ minetest.register_node("mcl_core:cobweb", {
 	_mcl_hardness = 4,
 })
 
+
+minetest.register_node("mcl_core:deadbush", {
+	description = "Dead Bush",
+	_doc_items_longdesc = "Dead bushes are unremarkable plants often found in dry areas. They can be harvested for sticks.",
+	_doc_items_hidden = false,
+	drawtype = "plantlike",
+	visual_scale = 1.0,
+	tiles = {"default_dry_shrub.png"},
+	inventory_image = "default_dry_shrub.png",
+	wield_image = "default_dry_shrub.png",
+	paramtype = "light",
+	sunlight_propagates = true,
+	walkable = false,
+	stack_max = 64,
+	buildable_to = true,
+	groups = {dig_immediate=3, flammable=3,attached_node=1,plant=1,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
+	drop = {
+		max_items = 1,
+		items = {
+			{
+				items = {"mcl_core:stick 2"},
+				rarity = 2,
+			},
+			{
+				items = {"mcl_core:stick 1"},
+				rarity = 2,
+			},
+		}
+	},
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	selection_box = {
+		type = "fixed",
+		fixed = {-6/16, -8/16, -6/16, 6/16, 8/16, 6/16},
+	},
+	_mcl_blast_resistance = 0,
+	_mcl_hardness = 0,
+})
+
 minetest.register_node("mcl_core:barrier", {
 	description = "Barrier",
 	_doc_items_longdesc = "Barriers are invisble walkable blocks. They are used to create boundaries of adventure maps and the like. Monsters and animals won't appear on barriers, and fences do not connect to barriers. Other blocks can be built on barriers like on any other block.",
@@ -96,4 +136,30 @@ minetest.register_node("mcl_core:barrier", {
 			playername = placer:get_player_name()
 		})
 	end,
+})
+
+
+-- The void below the bedrock. Void damage is handled in mcl_playerplus.
+-- The void does not exist as a block in Minecraft but we register it as a
+-- block here to make things easier for us.
+minetest.register_node("mcl_core:void", {
+	description = "Void",
+	_doc_items_create_entry = false,
+	drawtype = "airlike",
+	paramtype = "light",
+	pointable = false,
+	walkable = false,
+	floodable = false,
+	buildable_to = false,
+	inventory_image = "mcl_core_void.png",
+	wield_image = "mcl_core_void.png",
+	stack_max = 64,
+	sunlight_propagates = true,
+	is_ground_content = false,
+	groups = { not_in_creative_inventory = 1 },
+	on_blast = function() end,
+	drop = "",
+	-- Infinite blast resistance; it should never be destroyed by explosions
+	_mcl_blast_resistance = -1,
+	_mcl_hardness = -1,
 })
