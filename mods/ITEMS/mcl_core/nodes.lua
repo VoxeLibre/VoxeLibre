@@ -710,6 +710,14 @@ minetest.register_node("mcl_core:sapling", {
 		local meta = minetest.get_meta(pos)
 		meta:set_int("stage", 0)
 	end,
+	on_place = mcl_util.generate_on_place_plant_function(function(pos, node)
+		local node_below = minetest.get_node_or_nil({x=pos.x,y=pos.y-1,z=pos.z})
+		if not node_below then return false end
+		local nn = node_below.name
+		return (nn=="mcl_core:dirt_with_grass" or nn=="mcl_core:dirt_with_grass_snow" or
+				nn=="mcl_core:podzol" or nn=="mcl_core:podzol_snow" or
+				nn=="mcl_core:dirt")
+	end),
 	node_placement_prediction = "",
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
@@ -795,6 +803,14 @@ minetest.register_node("mcl_core:darksapling", {
 		local meta = minetest.get_meta(pos)
 		meta:set_int("stage", 0)
 	end,
+	on_place = mcl_util.generate_on_place_plant_function(function(pos, node)
+		local node_below = minetest.get_node_or_nil({x=pos.x,y=pos.y-1,z=pos.z})
+		if not node_below then return false end
+		local nn = node_below.name
+		return (nn=="mcl_core:dirt_with_grass" or nn=="mcl_core:dirt_with_grass_snow" or
+				nn=="mcl_core:podzol" or nn=="mcl_core:podzol_snow" or
+				nn=="mcl_core:dirt")
+	end),
 	node_placement_prediction = "",
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
@@ -938,6 +954,14 @@ minetest.register_node("mcl_core:junglesapling", {
 		local meta = minetest.get_meta(pos)
 		meta:set_int("stage", 0)
 	end,
+	on_place = mcl_util.generate_on_place_plant_function(function(pos, node)
+		local node_below = minetest.get_node_or_nil({x=pos.x,y=pos.y-1,z=pos.z})
+		if not node_below then return false end
+		local nn = node_below.name
+		return (nn=="mcl_core:dirt_with_grass" or nn=="mcl_core:dirt_with_grass_snow" or
+				nn=="mcl_core:podzol" or nn=="mcl_core:podzol_snow" or
+				nn=="mcl_core:dirt")
+	end),
 	node_placement_prediction = "",
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
@@ -1014,6 +1038,14 @@ minetest.register_node("mcl_core:acaciasapling", {
 		local meta = minetest.get_meta(pos)
 		meta:set_int("stage", 0)
 	end,
+	on_place = mcl_util.generate_on_place_plant_function(function(pos, node)
+		local node_below = minetest.get_node_or_nil({x=pos.x,y=pos.y-1,z=pos.z})
+		if not node_below then return false end
+		local nn = node_below.name
+		return (nn=="mcl_core:dirt_with_grass" or nn=="mcl_core:dirt_with_grass_snow" or
+				nn=="mcl_core:podzol" or nn=="mcl_core:podzol_snow" or
+				nn=="mcl_core:dirt")
+	end),
 	node_placement_prediction = "",
 	stack_max = 64,
 	groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
@@ -1101,6 +1133,14 @@ minetest.register_node("mcl_core:sprucesapling", {
 		local meta = minetest.get_meta(pos)
 		meta:set_int("stage", 0)
 	end,
+	on_place = mcl_util.generate_on_place_plant_function(function(pos, node)
+		local node_below = minetest.get_node_or_nil({x=pos.x,y=pos.y-1,z=pos.z})
+		if not node_below then return false end
+		local nn = node_below.name
+		return (nn=="mcl_core:dirt_with_grass" or nn=="mcl_core:dirt_with_grass_snow" or
+				nn=="mcl_core:podzol" or nn=="mcl_core:podzol_snow" or
+				nn=="mcl_core:dirt")
+	end),
 	node_placement_prediction = "",
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
@@ -1180,6 +1220,14 @@ minetest.register_node("mcl_core:birchsapling", {
 		local meta = minetest.get_meta(pos)
 		meta:set_int("stage", 0)
 	end,
+	on_place = mcl_util.generate_on_place_plant_function(function(pos, node)
+		local node_below = minetest.get_node_or_nil({x=pos.x,y=pos.y-1,z=pos.z})
+		if not node_below then return false end
+		local nn = node_below.name
+		return (nn=="mcl_core:dirt_with_grass" or nn=="mcl_core:dirt_with_grass_snow" or
+				nn=="mcl_core:podzol" or nn=="mcl_core:podzol_snow" or
+				nn=="mcl_core:dirt")
+	end),
 	node_placement_prediction = "",
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
