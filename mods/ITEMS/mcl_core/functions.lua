@@ -1042,37 +1042,3 @@ minetest.register_abm({
 	end
 })
 
-------------------------
--- Create Color Glass -- 
-------------------------
-function mcl_core.add_glass(desc, recipeitem, colorgroup, color)
-
-	minetest.register_node("mcl_core:glass_"..color, {
-		description = desc,
-		_doc_items_longdesc = "Stained glass is a decorational and mostly transparent block which comes in various different colors.",
-		drawtype = "glasslike",
-		is_ground_content = false,
-		tiles = {"xpanes_pane_glass_"..color..".png"},
-		paramtype = "light",
-		sunlight_propagates = "true",
-		use_texture_alpha = true,
-		stack_max = 64,
-		-- TODO: Add color to groups
-		groups = {handy=1, glass=1, building_block=1, material_glass=1},
-		sounds = mcl_sounds.node_sound_glass_defaults(),
-		drop = "",
-		_mcl_blast_resistance = 1.5,
-		_mcl_hardness = 0.3,
-	})
-	
-	minetest.register_craft({
-		output = 'mcl_core:glass_'..color..' 8',
-		recipe = {
-			{'mcl_core:glass','mcl_core:glass','mcl_core:glass'},
-			{'mcl_core:glass',recipeitem,'mcl_core:glass'},
-			{'mcl_core:glass','mcl_core:glass','mcl_core:glass'},
-		}
-	})
-end
-
-
