@@ -1,4 +1,5 @@
 mcl_core
 mcl_compass
 mcl_clock
+mcl_furnaces
 doc

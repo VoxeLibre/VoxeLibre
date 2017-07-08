@@ -337,7 +337,7 @@ function craftguide:get_formspec(player_name, is_fuel)
 					";1,1;"..data.item..";"..data.item..";]"..
 				tooltip..
 				"image["..(xoffset)..","..
-					(iY+1.98)..";1,1;craftguide_fire.png]"
+					(iY+1.98)..";1,1;default_furnace_fire_fg.png]"
 		else
 			formspec = formspec..self:get_recipe(
 					iY, xoffset, tooltip_raw, data.item,
