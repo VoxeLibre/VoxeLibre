@@ -41,7 +41,7 @@ Hoppers interact with containers the following way:
 			{-0.5, 0.0, -0.5, 0.5, 0.1, 0.5},
 			--spout
 			{-0.3, -0.3, -0.3, 0.3, 0.0, 0.3},
-			{-0.15, -0.3, -0.15, 0.15, -0.5, 0.15},
+			{-0.1, -0.3, -0.1, 0.1, -0.5, 0.1},
 			},
 		},
 	is_ground_content = false,
@@ -157,7 +157,7 @@ minetest.register_node("mcl_hoppers:hopper_side", {
 			{-0.5, 0.0, -0.5, 0.5, 0.1, 0.5},
 			--spout
 			{-0.3, -0.3, -0.3, 0.3, 0.0, 0.3},
-			{-0.5, -0.3, -0.15, 0.15, 0.0, 0.15},
+			{-0.5, -0.3, -0.1, 0.1, -0.1, 0.1},
 			},
 		},
 	is_ground_content = false,
