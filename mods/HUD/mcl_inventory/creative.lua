@@ -228,7 +228,6 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 			local show_armor = minetest.get_modpath("3d_armor")
 			-- TODO: Use player.png to allow for custom skins
 			local img = "crafting_player2d.png"
-			local armor_img = ""
 			local player_preview = "image[3.9,1.4;1.2333,2.4666;"..img.."]"
 			if show_armor and armor.textures[playername] and armor.textures[playername].preview then
 				img = armor.textures[playername].preview

@@ -51,7 +51,6 @@ local function set_inventory(player, armor_change_only)
 	-- Show armor and player image
 	-- TODO: Use player.png to allow for custom skins
 	local img = "crafting_player2d.png"
-	local armor_img = ""
 	local player_preview = "image[0.6,0.2;2,4;"..img.."]"
 	if show_armor and armor.textures[player_name] and armor.textures[player_name].preview then
 		img = armor.textures[player_name].preview
@@ -72,7 +71,7 @@ local function set_inventory(player, armor_change_only)
 	end
 
 	local form = "size[9,8.75]"..
-	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory.png"..armor_img.."]"..
+	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png]"..
 	mcl_vars.inventory_header..
 	player_preview..
 	--armor
