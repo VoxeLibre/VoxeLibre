@@ -718,7 +718,7 @@ minetest.register_node("mcl_core:obsidian", {
 
 minetest.register_node("mcl_core:ice", {
 	description = "Ice",
-	_doc_items_longdesc = "Ice is a translucent solid block usually found in cold areas.",
+	_doc_items_longdesc = "Ice is a translucent solid block usually found in cold areas. When it is broken while resting on top of another block, it will turn into still water.",
 	drawtype = "glasslike",
 	tiles = {"default_ice.png"},
 	is_ground_content = true,
@@ -728,6 +728,14 @@ minetest.register_node("mcl_core:ice", {
 	groups = {handy=1,pickaxey=1, building_block=1},
 	drop = "",
 	sounds = mcl_sounds.node_sound_glass_defaults(),
+	after_destruct = function(pos, oldnode)
+		-- Create a water source if ice is destroyed and there was something below it
+		local below = {x=pos.x, y=pos.y-1, z=pos.z}
+		local belownode = minetest.get_node(below)
+		if belownode.name ~= "air" and belownode.name ~= "ignore" and belownode.name ~= "mcl_core:void" then
+			minetest.set_node(pos, {name="mcl_core:water_source"})
+		end
+	end,
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
 })
