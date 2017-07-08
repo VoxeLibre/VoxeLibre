@@ -166,6 +166,10 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 		end
 	end
 
+	-- Only make grass path if tool used on side or top of target node
+	if pointed_thing.above.y < pointed_thing.under.y then
+		return
+	end
 	if (node.name == "mcl_core:dirt_with_grass" or node.name == "mcl_core:dirt_with_grass_snow") then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
