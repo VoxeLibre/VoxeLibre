@@ -31,6 +31,8 @@ end
 local boat_visual_size = {x = 3, y = 3}
 -- Note: This mod assumes the default player visual_size is {x=1, y=1}
 local driver_visual_size = { x = 1/boat_visual_size.x, y = 1/boat_visual_size.y }
+local paddling_speed = 22
+local boat_y_offset = 0.35
 
 --
 -- Boat entity
@@ -134,8 +136,6 @@ function boat.on_punch(self, puncher)
 	end
 end
 
-local paddling_speed = 22
-
 function boat.on_step(self, dtime)
 	self._v = get_v(self.object:getvelocity()) * get_sign(self._v)
 	if self._driver then
@@ -203,7 +203,7 @@ function boat.on_step(self, dtime)
 	end
 
 	local p = self.object:getpos()
-	p.y = p.y - 0.5
+	p.y = p.y - boat_y_offset
 	local new_velo
 	local new_acce = {x = 0, y = 0, z = 0}
 	if not is_water(p) then
@@ -234,7 +234,7 @@ function boat.on_step(self, dtime)
 			new_acce = {x = 0, y = 0, z = 0}
 			if math.abs(self.object:getvelocity().y) < 1 then
 				local pos = self.object:getpos()
-				pos.y = math.floor(pos.y) + 0.5
+				pos.y = math.floor(pos.y) + boat_y_offset
 				self.object:setpos(pos)
 				new_velo = get_velocity(self._v, self.object:getyaw(), 0)
 			else
@@ -295,7 +295,7 @@ for b=1, #boat_ids do
 			if not is_water(pointed_thing.under) then
 				return
 			end
-			pointed_thing.under.y = pointed_thing.under.y+0.5
+			pointed_thing.under.y = pointed_thing.under.y + boat_y_offset
 			local boat = minetest.add_entity(pointed_thing.under, "mcl_boats:boat")
 			boat:get_luaentity()._itemstring = itemstring
 			boat:set_properties({textures = { "mcl_boats_texture_"..images[b].."_boat.png" }})
