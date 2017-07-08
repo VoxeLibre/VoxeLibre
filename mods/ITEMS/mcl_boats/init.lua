@@ -45,18 +45,13 @@ local boat = {
 	mesh = "mcl_boats_boat.b3d",
 	textures = {"mcl_boats_texture_oak_boat.png"},
 	visual_size = boat_visual_size,
-	animation = {
-		speed_normal = 25,		speed_run = 50,
-		stand_start = 0,		stand_end = 0,
-		walk_start = 0,		walk_end = 40,
-		run_start = 0,		run_end = 40,
-	},
 
 	_driver = nil, -- Attached driver (player) or nil if none
 	_v = 0, -- Speed
 	_last_v = 0, -- Temporary speed variable
 	_removed = false, -- If true, boat entity is considered removed (e.g. after punch) and should be ignored
 	_itemstring = "mcl_boats:boat", -- Itemstring of the boat item (implies boat type)
+	_animation = 0, -- 0: not animated; 1: paddling forwards; -1: paddling forwards
 }
 
 function boat.on_rightclick(self, clicker)
@@ -139,6 +134,7 @@ function boat.on_punch(self, puncher)
 	end
 end
 
+local paddling_speed = 22
 
 function boat.on_step(self, dtime)
 	self._v = get_v(self.object:getvelocity()) * get_sign(self._v)
@@ -146,9 +142,29 @@ function boat.on_step(self, dtime)
 		local ctrl = self._driver:get_player_control()
 		local yaw = self.object:getyaw()
 		if ctrl.up then
+			-- Forwards
 			self._v = self._v + 0.1
+
+			-- Paddling animation
+			if self._animation ~= 1 then
+				self.object:set_animation({x=0, y=40}, paddling_speed, 0, true)
+				self._animation = 1
+			end
 		elseif ctrl.down then
+			-- Backwards
 			self._v = self._v - 0.1
+
+			-- Paddling animation, reversed
+			if self._animation ~= -1 then
+				self.object:set_animation({x=0, y=40}, -paddling_speed, 0, true)
+				self._animation = -1
+			end
+		else
+			-- Stop paddling animation if no control pressed
+			if self._animation ~= 0 then
+				self.object:set_animation({x=0, y=40}, 0, 0, true)
+				self._animation = 0
+			end
 		end
 		if ctrl.left then
 			if self._v < 0 then
@@ -162,6 +178,12 @@ function boat.on_step(self, dtime)
 			else
 				self.object:setyaw(yaw - (1 + dtime) * 0.03)
 			end
+		end
+	else
+		-- Stop paddling without driver
+		if self._animation ~= 0 then
+			self.object:set_animation({x=0, y=40}, 0, 0, true)
+			self._animation = 0
 		end
 	end
 	local velo = self.object:getvelocity()
