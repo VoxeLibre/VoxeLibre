@@ -301,7 +301,7 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 		end
 		local fnt = ""
 		if name ~= "inv" then
-			fnt = "image[0,1;5,0.75;fnt_"..name..".png]"
+			fnt = "image[0,1;5,0.75;mcl_inventory_fnt_"..name..".png]"
 		end
 		formspec = "size[10,9.3]"..
 			mcl_vars.inventory_header..

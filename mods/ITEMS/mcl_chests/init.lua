@@ -119,8 +119,8 @@ minetest.register_node("mcl_chests:"..basename, {
 		"mcl_chests:"..basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 		"size[9,8.75]"..
 		mcl_vars.inventory_header..
-		"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
-		"image[0,-0.2;5,0.75;fnt_chest.png]"..
+		"background[-0.19,-0.25;9.41,10.48;mcl_chests_inventory_chest.png]"..
+		"image[0,-0.2;5,0.75;mcl_chests_fnt_chest.png]"..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
 		"list[current_player;main;0,4.5;9,3;9]"..
 		"list[current_player;main;0,7.74;9,1;]"..
@@ -220,7 +220,7 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		minetest.show_formspec(clicker:get_player_name(),
 		"mcl_chests:"..basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 		"size[9,11.5]"..
-		"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
+		"background[-0.19,-0.25;9.41,12.5;mcl_chests_inventory_chest_large.png]"..
 		mcl_vars.inventory_header..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
 		"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,3.5;9,3;]"..
@@ -329,7 +329,7 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		"mcl_chests:"..basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 
 		"size[9,11.5]"..
-		"background[-0.19,-0.25;9.41,12.5;crafting_inventory_chest_large.png]"..
+		"background[-0.19,-0.25;9.41,12.5;mcl_chests_inventory_chest_large.png]"..
 		mcl_vars.inventory_header..
 		"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,0.5;9,3;]"..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3.5;9,3;]"..
@@ -540,8 +540,8 @@ minetest.register_node("mcl_chests:ender_chest", {
 		meta:set_string("formspec", 
 				"size[9,8.75]"..
 				mcl_vars.inventory_header..
-				"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
-				"image[0,-0.2;5,0.75;fnt_ender_chest.png]"..
+				"background[-0.19,-0.25;9.41,10.48;mcl_chests_inventory_chest.png]"..
+				"image[0,-0.2;5,0.75;mcl_chests_fnt_ender_chest.png]"..
 				"list[current_player;enderchest;0,0.5;9,3;]"..
 				"list[current_player;main;0,4.5;9,3;9]"..
 				"list[current_player;main;0,7.74;9,1;]"..
@@ -610,8 +610,8 @@ for color, desc in pairs(boxtypes) do
 			meta:set_string("formspec",
 					"size[9,8.75]"..
 					mcl_vars.inventory_header..
-					"background[-0.19,-0.25;9.41,10.48;crafting_inventory_chest.png]"..
-					"image[0,-0.2;5,0.75;fnt_shulker_box.png]"..
+					"background[-0.19,-0.25;9.41,10.48;mcl_chests_inventory_chest.png]"..
+					"image[0,-0.2;5,0.75;mcl_chests_fnt_shulker_box.png]"..
 					"list[current_name;main;0,0.5;9,3;]"..
 					"list[current_player;main;0,4.5;9,3;9]"..
 					"list[current_player;main;0,7.74;9,1;]"..
