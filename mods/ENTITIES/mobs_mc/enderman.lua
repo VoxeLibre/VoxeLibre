@@ -21,7 +21,7 @@ local place_frequency = 10
 mobs:register_mob("mobs_mc:enderman", {
 	type = "monster",
 	runaway = true,
-	pathfinding = 2,
+	pathfinding = 1,
 	stepheight = 1.2,
 	hp_min = 40,
 	hp_max = 40,

@@ -169,6 +169,6 @@ mobs:register_egg("mobs_mc:killer_bunny", S("Killer Bunny"), "mobs_mc_spawn_icon
 -- compatibility
 mobs:alias_mob("mobs:bunny", "mobs_mc:rabbit")
 
-if minetest.setting_get("log_mods") then
+if minetest.settings:get_bool("log_mods") then
 	minetest.log("action", "MC Bunny loaded")
 end

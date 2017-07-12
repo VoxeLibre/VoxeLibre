@@ -99,7 +99,7 @@ mooshroom_def.on_rightclick = function(self, clicker)
 		local cow = minetest.add_entity(pos, "mobs_mc:cow")
 		cow:setyaw(oldyaw)
 
-		if not minetest.setting_getbool("creative_mode") then
+		if not minetest.settings:get_bool("creative_mode") then
 			item:add_wear(mobs_mc.misc.shears_wear)
 			clicker:get_inventory():set_stack("main", clicker:get_wield_index(), item)
 		end
@@ -145,6 +145,6 @@ mobs:alias_mob("mobs_animal:cow", "mobs_mc:cow")
 mobs:register_egg("mobs_mc:cow", S("Cow"), "mobs_mc_spawn_icon_cow.png", 0)
 mobs:register_egg("mobs_mc:mooshroom", S("Mooshroom"), "mobs_mc_spawn_icon_mooshroom.png", 0)
 
-if minetest.setting_get("log_mods") then
+if minetest.settings:get_bool("log_mods") then
 	minetest.log("action", "MC Cow loaded")
 end

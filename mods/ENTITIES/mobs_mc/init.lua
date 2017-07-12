@@ -113,5 +113,6 @@ COLISIONBOX in minetest press f5 to see where you are looking at then put these 
 --
 --
 
-
-print ("[MOD] Mobs Redo 'MC' loaded")
+if minetest.settings:get_bool("log_mods") then
+	minetest.log("action", "[MOD] Mobs Redo 'MC' loaded")
+end

@@ -49,7 +49,7 @@ mobs:register_egg("mobs_mc:silverfish", S("Silverfish"), "mobs_mc_spawn_icon_sil
 -- Monster egg blocks (Minetest Game)
 if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then
 	local spawn_silverfish = function(pos, oldnode, oldmetadata, digger)
-		if not minetest.setting_getbool("creative_mode") then
+		if not minetest.settings:get_bool("creative_mode") then
 			minetest.add_entity(pos, "mobs_mc:silverfish")
 		end
 	end

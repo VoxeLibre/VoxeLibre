@@ -40,7 +40,7 @@ mobs:register_mob("mobs_mc:creeper", {
 	attack_type = "explode",
 	
 	explosion_radius = 3,
-	-- TODO: Disable Mobs Redo fire
+	explosion_fire = false,
 
 	-- Force-ignite creeper with flint and steel and explode after 1.5 seconds.
 	-- TODO: Make creeper flash after doing this as well.

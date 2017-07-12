@@ -177,9 +177,6 @@ mobs:alias_mob("mobs:pig", "mobs_mc:pig")
 mobs:register_egg("mobs_mc:pig", S("Pig"), "mobs_mc_spawn_icon_pig.png", 0)
 
 
-if minetest.settings:get("log_mods") then
-
-
-
+if minetest.settings:get_bool("log_mods") then
 	minetest.log("action", "MC Pig loaded")
 end

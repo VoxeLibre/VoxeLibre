@@ -31,7 +31,7 @@ mobs:register_mob("mobs_mc:witch", {
 	damage = 2,
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
-	pathfinding = 2,
+	pathfinding = 1,
 	group_attack = true,
 	attack_type = "dogshoot",
 	arrow = "mobs:potion_arrow",

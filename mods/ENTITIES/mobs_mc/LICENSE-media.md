@@ -23,7 +23,7 @@ Origin of those models:
 
 ## Textures
 
-* Most mob and item textures from [Pixel Perfection](https://www.planetminecraft.com/texture_pack/131pixel-perfection/), a texture pack for Minecraft.
+* Mob and item textures from [Pixel Perfection](https://www.planetminecraft.com/texture_pack/131pixel-perfection/), a texture pack for Minecraft.
     * Author: [XSSheep](https://www.planetminecraft.com/member/xssheep/)
     * License: CC BY-SA 4.0
 * “Spawn egg” textures (`mobs_mc_spawn_icon_*`) by 22i

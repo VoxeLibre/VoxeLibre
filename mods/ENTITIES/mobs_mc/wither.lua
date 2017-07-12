@@ -58,7 +58,7 @@ mobs:register_mob("mobs_mc:wither", {
 	light_damage = 0,
 	attack_type = "dogshoot",
 	explosion_radius = 3,
-	explosion_fire = 0,
+	explosion_fire = false,
 	dogshoot_stop = true,
 	arrow = "mobs_mc:fireball",
 	reach = 5,
@@ -83,7 +83,7 @@ mobs:register_arrow("mobs_mc:roar_of_the_dragon", {
 
 		local pos = self.object:getpos()
 
-		local n = minetest.env:get_node(pos).name
+		local n = minetest.get_node(pos).name
 
 		if self.timer == 0 then
 			self.timer = os.time()
@@ -93,7 +93,7 @@ mobs:register_arrow("mobs_mc:roar_of_the_dragon", {
 			self.object:remove()
 		end
 
-		local objects = minetest.env:get_objects_inside_radius(pos, 1)
+		local objects = minetest.get_objects_inside_radius(pos, 1)
 	    for _,obj in ipairs(objects) do
 			local name = obj:get_entity_name()
 			if name~="mobs_mc:roar_of_the_dragon" and name ~= "mobs_mc:wither" then
@@ -106,13 +106,13 @@ mobs:register_arrow("mobs_mc:roar_of_the_dragon", {
 			end
 	    end
 
-		minetest.env:set_node(pos, {name="air"})
+		minetest.set_node(pos, {name="air"})
 		if math.random(1,2)==1 then
 			dx = math.random(-1,1)
 			dy = math.random(-1,1)
 			dz = math.random(-1,1)
 			local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-			minetest.env:set_node(p, {name="air"})
+			minetest.set_node(p, {name="air"})
 		end
 	end
 })
@@ -120,8 +120,9 @@ mobs:register_arrow("mobs_mc:roar_of_the_dragon", {
 -- fireball (weapon)
 mobs:register_arrow(":mobs_mc:fireball", {
 	visual = "sprite",
-	visual_size = {x = 1.5, y = 1.5},
-	textures = {"mobs_skeleton2_front.png^[makealpha:255,255,255 "},
+	visual_size = {x = 0.75, y = 0.75},
+	-- TODO: 3D projectile, replace tetxture
+	textures = {"mobs_mc_TEMP_wither_projectile.png"},
 	velocity = 6,
 
 	-- direct hit, no fire... just plenty of pain

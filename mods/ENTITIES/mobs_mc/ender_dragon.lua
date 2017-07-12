@@ -108,7 +108,7 @@ mobs:register_arrow("mobs_mc:roar_of_the_dragon2", {
 
 		local pos = self.object:getpos()
 
-		local n = minetest.env:get_node(pos).name
+		local n = minetest.get_node(pos).name
 
 		if self.timer == 0 then
 			self.timer = os.time()
@@ -118,7 +118,7 @@ mobs:register_arrow("mobs_mc:roar_of_the_dragon2", {
 			self.object:remove()
 		end
 
-		local objects = minetest.env:get_objects_inside_radius(pos, 1)
+		local objects = minetest.get_objects_inside_radius(pos, 1)
 	    for _,obj in ipairs(objects) do
 			local name = obj:get_entity_name()
 			if name~="mobs_mc:roar_of_the_dragon2" and name ~= "mobs_mc:enderdragon" then
@@ -131,13 +131,13 @@ mobs:register_arrow("mobs_mc:roar_of_the_dragon2", {
 			end
 	    end
 
-		minetest.env:set_node(pos, {name="air"})
+		minetest.set_node(pos, {name="air"})
 		if math.random(1,2)==1 then
 			dx = math.random(-1,1)
 			dy = math.random(-1,1)
 			dz = math.random(-1,1)
 			local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-			minetest.env:set_node(p, {name="air"})
+			minetest.set_node(p, {name="air"})
 		end
 	end
 })
@@ -146,7 +146,7 @@ mobs:register_arrow("mobs_mc:roar_of_the_dragon2", {
 mobs:register_arrow(":mobs_mc:fireball2", {
 	visual = "sprite",
 	visual_size = {x = 1.5, y = 1.5},
-	textures = {"fire_basic_flame.png"},
+	textures = {"mobs_mc_dragon_fireball.png"},
 	--textures = {"mobs_skeleton2_front.png^[makealpha:255,255,255 "},
 	velocity = 6,
 
@@ -171,7 +171,7 @@ mobs:register_arrow(":mobs_mc:fireball2", {
 
 	-- node hit, bursts into flame
 	hit_node = function(self, pos, node)
-		mobs:explosion(pos, 3, 1, 1)
+		mobs:explosion(pos, 3, 0, 1)
 		--from tnt
 		minetest.sound_play("tnt_explode", {pos = pos, gain = 1.5, max_hear_distance = 2*64})
 		
@@ -179,4 +179,3 @@ mobs:register_arrow(":mobs_mc:fireball2", {
 })
 
 mobs:register_egg("mobs_mc:enderdragon", S("Ender Dragon"), "mobs_mc_spawn_icon_dragon.png", 0)
-

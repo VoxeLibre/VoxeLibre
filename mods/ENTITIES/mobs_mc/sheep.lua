@@ -85,10 +85,10 @@ mobs:register_mob("mobs_mc:sheep", {
 	replace_what = mobs_mc.replace.sheep,
 	-- Properly regrow wool after eating grass
 	on_replace = function(self, pos, oldnode, newnode)
-		self.gotten = false
 		if not self.color or not colors[self.color] then
 			self.color = "unicolor_white"
 		end
+		self.gotten = false
 		self.drops = {
 		{name = mobs_mc.items.mutton_raw,
 		chance = 1,

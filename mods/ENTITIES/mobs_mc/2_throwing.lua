@@ -114,7 +114,6 @@ local throwing_shoot_arrow = function(itemstack, player)
 				player:get_inventory():remove_item("main", arrow[1])
 			end
 			local playerpos = player:getpos()
-			--local obj = minetest.env:add_entity({x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, arrow[2]) --current
 			local obj = minetest.add_entity({x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, arrow[2])  --mc
 			local dir = player:get_look_dir()
 			obj:setvelocity({x=dir.x*22, y=dir.y*22, z=dir.z*22})
