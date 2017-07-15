@@ -80,9 +80,9 @@ local crop_def = {
 	_doc_items_longdesc = "Cocoas are plants which grow on the side of jungle trees in 3 stages.",
 	drawtype = "nodebox",
 	tiles = {
-		"[combine:32x32:12,2=mcl_cocoas_cocoa_stage_0.png", "[combine:32x32:12,22=mcl_cocoas_cocoa_stage_0.png",
+		"[combine:16x16:6,1=mcl_cocoas_cocoa_stage_0.png", "[combine:16x16:6,11=mcl_cocoas_cocoa_stage_0.png",
 		"mcl_cocoas_cocoa_stage_0.png", "mcl_cocoas_cocoa_stage_0.png^[transformFX",
-		"[combine:32x32:-10,0=mcl_cocoas_cocoa_stage_0.png", "[combine:32x32:-10,0=mcl_cocoas_cocoa_stage_0.png",
+		"[combine:16x16:-5,0=mcl_cocoas_cocoa_stage_0.png", "[combine:16x16:-5,0=mcl_cocoas_cocoa_stage_0.png",
 	},
 	paramtype = "light",
 	sunlight_propagates = true,
@@ -124,9 +124,9 @@ crop_def.description = "Medium Cocoa"
 crop_def._doc_items_create_entry = false
 crop_def.groups.cocoa = 2
 crop_def.tiles = {
-	"[combine:32x32:10,2=mcl_cocoas_cocoa_stage_1.png", "[combine:32x32:10,18=mcl_cocoas_cocoa_stage_1.png",
+	"[combine:16x16:5,1=mcl_cocoas_cocoa_stage_1.png", "[combine:16x16:5,9=mcl_cocoas_cocoa_stage_1.png",
 	"mcl_cocoas_cocoa_stage_1.png", "mcl_cocoas_cocoa_stage_1.png^[transformFX",
-	"[combine:32x32:-8,0=mcl_cocoas_cocoa_stage_1.png", "[combine:32x32:-8,0=mcl_cocoas_cocoa_stage_1.png",
+	"[combine:16x16:-4,0=mcl_cocoas_cocoa_stage_1.png", "[combine:16x16:-4,0=mcl_cocoas_cocoa_stage_1.png",
 }
 crop_def.node_box = {
 	type = "fixed",
@@ -160,7 +160,7 @@ crop_def.tiles = {
 	-- TODO: Find a way to *only* use the base texture
 	"mcl_cocoas_cocoa_top_stage_2.png", "mcl_cocoas_cocoa_top_stage_2.png^[transformFY",
 	"mcl_cocoas_cocoa_stage_2.png", "mcl_cocoas_cocoa_stage_2.png^[transformFX",
-	"[combine:32x32:-6,0=mcl_cocoas_cocoa_stage_2.png", "[combine:32x32:-6,0=mcl_cocoas_cocoa_stage_2.png",
+	"[combine:16x16:-3,0=mcl_cocoas_cocoa_stage_2.png", "[combine:16x16:-3,0=mcl_cocoas_cocoa_stage_2.png",
 }
 crop_def.node_box = {
 	type = "fixed",
