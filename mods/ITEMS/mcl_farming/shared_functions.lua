@@ -107,9 +107,10 @@ end
 - gourd_def: (almost) full definition of the gourd node. This function will add after_dig_node to the definition for unconnecting any connected stems
 - grow_interval: Will attempt to grow a gourd periodically at this interval in seconds
 - grow_chance: Chance of 1/grow_chance to grow a gourd next to the full unconnected stem after grow_interval has passed. Must be a natural number
+- connected_stem_texture: Texture of the connected stem
 ]]
 
-function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, stem_itemstring, stem_def, stem_drop, gourd_itemstring, gourd_def, grow_interval, grow_chance)
+function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, stem_itemstring, stem_def, stem_drop, gourd_itemstring, gourd_def, grow_interval, grow_chance, connected_stem_texture)
 
 	local connected_stem_names = { 
 		connected_stem_basename .. "_r",
@@ -226,27 +227,27 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 		"blank.png", -- bottom
 		"blank.png", -- right
 		"blank.png", -- left
-		"farming_tige_connect.png", -- back
-		"farming_tige_connect.png^[transformFX90" --front
+		connected_stem_texture, -- back
+		connected_stem_texture.."^[transformFX90" --front
 		},
 		{ "blank.png", --top
 		"blank.png", -- bottom
 		"blank.png", -- right
 		"blank.png", -- left
-		"farming_tige_connect.png^[transformFX90", --back
-		"farming_tige_connect.png", -- front
+		connected_stem_texture.."^[transformFX90", --back
+		connected_stem_texture, -- front
 		},
 		{ "blank.png", --top
 		"blank.png", -- bottom
-		"farming_tige_connect.png^[transformFX90", -- right
-		"farming_tige_connect.png", -- left
+		connected_stem_texture.."^[transformFX90", -- right
+		connected_stem_texture, -- left
 		"blank.png", --back
 		"blank.png", -- front
 		},
 		{ "blank.png", --top
 		"blank.png", -- bottom
-		"farming_tige_connect.png", -- right
-		"farming_tige_connect.png^[transformFX90", -- left
+		connected_stem_texture, -- right
+		connected_stem_texture.."^[transformFX90", -- left
 		"blank.png", --back
 		"blank.png", -- front
 		}
