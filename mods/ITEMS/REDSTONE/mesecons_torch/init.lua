@@ -67,7 +67,7 @@ mcl_torches.register_torch("mesecon_torch_on", "Redstone Torch",
 • Upside-down slab/stair: Can only be placed on top
 • Soul sand, monster spawner: Placement possible
 • Glowstone and pistons: No placement possible]],
-	"jeija_torches_on_inv.png",
+	"jeija_torches_on.png",
 	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",
 	{"jeija_torches_on.png"},
 	7,
