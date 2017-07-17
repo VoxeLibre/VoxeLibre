@@ -78,7 +78,7 @@ local register_filled_cauldron = function(water_level, description)
 		collision_box = cauldron_nodeboxes[0],
 		selection_box = { type = "regular" },
 		tiles = {
-			"default_water.png^mcl_cauldrons_cauldron_top.png",
+			"(default_water_source_animated.png^[verticalframe:16:0)^mcl_cauldrons_cauldron_top.png",
 			"mcl_cauldrons_cauldron_inner.png^mcl_cauldrons_cauldron_bottom.png",
 			"mcl_cauldrons_cauldron_side.png"
 		},

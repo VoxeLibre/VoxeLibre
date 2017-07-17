@@ -7,6 +7,7 @@
 
 --water
 
+local water_tex = "default_water_source_animated.png^[verticalframe:16:0"
 minetest.register_entity("drippingwater:drop_water", {
 	hp_max = 1,
 	physical = true,
@@ -14,7 +15,7 @@ minetest.register_entity("drippingwater:drop_water", {
 	collisionbox = {0,0,0,0,0,0},
 	visual = "cube",
 	visual_size = {x=0.05, y=0.1},
-	textures = {"default_water.png","default_water.png","default_water.png","default_water.png", "default_water.png", 	"default_water.png"},
+	textures = {water_tex, water_tex, water_tex, water_tex, water_tex, water_tex},
 	spritediv = {x=1, y=1},
 	initial_sprite_basepos = {x=0, y=0},
 
@@ -44,6 +45,7 @@ minetest.register_entity("drippingwater:drop_water", {
 
 --lava
 
+local lava_tex = "default_lava_source_animated.png^[verticalframe:16:0"
 minetest.register_entity("drippingwater:drop_lava", {
 	hp_max = 1,
 	physical = true,
@@ -51,7 +53,7 @@ minetest.register_entity("drippingwater:drop_lava", {
 	collisionbox = {0,0,0,0,0,0},
 	visual = "cube",
 	visual_size = {x=0.05, y=0.1},
-	textures = {"default_lava.png","default_lava.png","default_lava.png","default_lava.png", "default_lava.png", "default_lava.png"},
+	textures = {lava_tex, lava_tex, lava_tex, lava_tex, lava_tex, lava_tex},
 	spritediv = {x=1, y=1},
 	initial_sprite_basepos = {x=0, y=0},
 

@@ -7,19 +7,19 @@ local LAVA_VISC = 7
 minetest.register_node("mcl_core:water_flowing", {
 	description = "Flowing Water",
 	_doc_items_create_entry = false,
-	inventory_image = minetest.inventorycube("default_water.png"),
+	wield_image = "default_water_flowing_animated.png^[verticalframe:64:0",
 	drawtype = "flowingliquid",
-	tiles = {name="default_water_flowing_animated.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=2.0}},
+	tiles = {"default_water_flowing_animated.png^[verticalframe:64:0"},
 	special_tiles = {
 		{
 			image="default_water_flowing_animated.png",
 			backface_culling=false,
-			animation={type="vertical_frames", aspect_w=64, aspect_h=64, length=2.0}
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=4.0}
 		},
 		{
 			image="default_water_flowing_animated.png",
 			backface_culling=true,
-			animation={type="vertical_frames", aspect_w=64, aspect_h=64, length=2.0}
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=4.0}
 		},
 	},
 	sounds = mcl_sounds.node_sound_water_defaults(table),
@@ -54,16 +54,15 @@ Water interacts with lava in various ways:
 • When flowing water touches flowing lava either from above or horizontally, the lava turns into cobblestone.
 • When water is directly below lava, the water turns into stone.]],
 	_doc_items_hidden = false,
-	inventory_image = minetest.inventorycube("default_water.png"),
 	drawtype = "liquid",
 	tiles = {
-		{name="default_water_source_animated.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=5.0}}
+		{name="default_water_source_animated.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=5.0}}
 	},
 	special_tiles = {
 		-- New-style water source material (mostly unused)
 		{
 			name="default_water_source_animated.png",
-			animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=5.0},
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=5.0},
 			backface_culling = false,
 		}
 	},
@@ -92,19 +91,19 @@ Water interacts with lava in various ways:
 minetest.register_node("mcl_core:lava_flowing", {
 	description = "Flowing Lava",
 	_doc_items_create_entry = false,
-	inventory_image = minetest.inventorycube("default_lava.png"),
+	wield_image = "default_lava_flowing_animated.png^[verticalframe:64:0",
 	drawtype = "flowingliquid",
-	tiles = {"default_lava.png"},
+	tiles = {"default_lava_flowing_animated.png^[verticalframe:64:0"},
 	special_tiles = {
 		{
 			image="default_lava_flowing_animated.png",
 			backface_culling=false,
-			animation={type="vertical_frames", aspect_w=64, aspect_h=64, length=3.3}
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=6.6}
 		},
 		{
 			image="default_lava_flowing_animated.png",
 			backface_culling=true,
-			animation={type="vertical_frames", aspect_w=64, aspect_h=64, length=3.3}
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=6.6}
 		},
 	},
 	paramtype = "light",
@@ -145,7 +144,6 @@ Lava interacts with water various ways:
 • When still lava is directly below or horizontally next to water, the lava turns into obsidian.
 • When flowing water touches flowing lava either from above or horizontally, the lava turns into cobblestone.
 • When lava is directly above water, the water turns into stone.]],
-	inventory_image = minetest.inventorycube("default_lava.png"),
 	drawtype = "liquid",
 	tiles = {
 		{name="default_lava_source_animated.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=3.0}}
@@ -154,7 +152,7 @@ Lava interacts with water various ways:
 		-- New-style lava source material (mostly unused)
 		{
 			name="default_lava_source_animated.png",
-			animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=3.0},
+			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=3.0},
 			backface_culling = false,
 		}
 	},
