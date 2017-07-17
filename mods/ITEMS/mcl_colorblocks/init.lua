@@ -3,22 +3,22 @@ local init = os.clock()
 local block = {}
 
 block.dyes = {
-	{"white",      "White",      "white", true},
+	{"white",      "White",      "white"},
 	{"grey",       "Grey",       "dark_grey"},
 	{"silver",     "Light Grey", "grey"},
-	{"black",      "Black",      "black", true},
+	{"black",      "Black",      "black"},
 	{"red",        "Red",        "red"},
-	{"yellow",     "Yellow",     "yellow", true},
+	{"yellow",     "Yellow",     "yellow"},
 	{"green",      "Green",      "dark_green"},
-	{"cyan",       "Cyan",       "cyan", true},
-	{"blue",       "Blue",       "blue", true},
-	{"magenta",    "Magenta",    "magenta", true},
-	{"orange",     "Orange",     "orange", true},
-	{"purple",     "Purple",     "violet", true},
-	{"brown",      "Brown",      "brown", true},
-	{"pink",       "Pink",       "pink", true},
-	{"lime",       "Lime",       "green", true},
-	{"light_blue", "Light Blue", "lightblue", true},
+	{"cyan",       "Cyan",       "cyan"},
+	{"blue",       "Blue",       "blue"},
+	{"magenta",    "Magenta",    "magenta"},
+	{"orange",     "Orange",     "orange"},
+	{"purple",     "Purple",     "violet"},
+	{"brown",      "Brown",      "brown"},
+	{"pink",       "Pink",       "pink"},
+	{"lime",       "Lime",       "green"},
+	{"light_blue", "Light Blue", "lightblue"},
 }
 
 local hc_desc = "Terracotta is a basic building material. It comes in many different colors."
@@ -49,8 +49,6 @@ for _, row in ipairs(block.dyes) do
 	local name = row[1]
 	local desc = row[2]
 	local craft_color_group = row[3]
-	-- TODO: Remove when all 16 terracotta textures are available
-	local terracotta = row[4]
 	-- Node Definition
 	minetest.register_node("mcl_colorblocks:hardened_clay_"..name, {
 		description = desc.." Terracotta",
@@ -90,22 +88,20 @@ for _, row in ipairs(block.dyes) do
 		_mcl_hardness = 1.8,
 	})
 
-	if terracotta then
-		local tex = "mcl_colorblocks_glazed_terracotta_"..name..".png"
-		local texes = { tex, tex, tex.."^[transformR180", tex, tex.."^[transformR270", tex.."^[transformR90" }
-		minetest.register_node("mcl_colorblocks:glazed_terracotta_"..name, {
-			description = desc.." Glazed Terracotta",
-			_doc_items_longdesc = gt_desc,
-			tiles = texes,
-			groups = {handy=1,pickaxey=1, glazed_terracotta=1,building_block=1, material_stone=1},
-			paramtype2 = "facedir",
-			stack_max = 64,
-			is_ground_content = false,
-			sounds = mcl_sounds.node_sound_stone_defaults(),
-			_mcl_blast_resistance = 7,
-			_mcl_hardness = 1.4,
-		})
-	end
+	local tex = "mcl_colorblocks_glazed_terracotta_"..name..".png"
+	local texes = { tex, tex, tex.."^[transformR180", tex, tex.."^[transformR270", tex.."^[transformR90" }
+	minetest.register_node("mcl_colorblocks:glazed_terracotta_"..name, {
+		description = desc.." Glazed Terracotta",
+		_doc_items_longdesc = gt_desc,
+		tiles = texes,
+		groups = {handy=1,pickaxey=1, glazed_terracotta=1,building_block=1, material_stone=1},
+		paramtype2 = "facedir",
+		stack_max = 64,
+		is_ground_content = false,
+		sounds = mcl_sounds.node_sound_stone_defaults(),
+		_mcl_blast_resistance = 7,
+		_mcl_hardness = 1.4,
+	})
 
 	-- Crafting recipes
 	if craft_color_group then
@@ -127,14 +123,12 @@ for _, row in ipairs(block.dyes) do
 			}
 		})
 
-		if terracotta then
-			minetest.register_craft({
-				type = "cooking",
-				output = "mcl_colorblocks:glazed_terracotta_"..name,
-				recipe = "mcl_colorblocks:hardened_clay_"..name,
-				cooktime = 10,
-			})
-		end
+		minetest.register_craft({
+			type = "cooking",
+			output = "mcl_colorblocks:glazed_terracotta_"..name,
+			recipe = "mcl_colorblocks:hardened_clay_"..name,
+			cooktime = 10,
+		})
 	end
 end
 
