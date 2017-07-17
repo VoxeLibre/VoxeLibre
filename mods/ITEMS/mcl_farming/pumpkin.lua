@@ -82,11 +82,6 @@ local pumpkin_base_def = {
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"},
 	groups = {handy=1,axey=1, plant=1,building_block=1, armor_head=1,non_combat_armor=1, dig_by_piston=1, enderman_takable=1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	on_construct = function(pos)
-		-- Attempt to spawn iron golem or snow golem
-		mobs_mc.tools.check_iron_golem_summon(pos)
-		mobs_mc.tools.check_snow_golem_summon(pos)
-	end,
 	_mcl_blast_resistance = 5,
 	_mcl_hardness = 1,
 }
@@ -95,7 +90,12 @@ local pumpkin_base_def = {
 mcl_farming:add_plant("plant_pumpkin_stem", "mcl_farming:pumpkintige_unconnect", {"mcl_farming:pumpkin_1", "mcl_farming:pumpkin_2", "mcl_farming:pumpkin_3", "mcl_farming:pumpkin_4", "mcl_farming:pumpkin_5", "mcl_farming:pumpkin_6", "mcl_farming:pumpkin_7"}, 30, 5)
 
 -- Register actual pumpkin, connected stems and stem-to-pumpkin growth
-mcl_farming:add_gourd("mcl_farming:pumpkintige_unconnect", "mcl_farming:pumpkintige_linked", "mcl_farming:pumpkintige_unconnect", stem_def, stem_drop, "mcl_farming:pumpkin_face", pumpkin_base_def, 30, 15, "mcl_farming_pumpkin_stem_connected.png")
+mcl_farming:add_gourd("mcl_farming:pumpkintige_unconnect", "mcl_farming:pumpkintige_linked", "mcl_farming:pumpkintige_unconnect", stem_def, stem_drop, "mcl_farming:pumpkin_face", pumpkin_base_def, 30, 15, "mcl_farming_pumpkin_stem_connected.png",
+function(pos)
+	-- Attempt to spawn iron golem or snow golem
+	mobs_mc.tools.check_iron_golem_summon(pos)
+	mobs_mc.tools.check_snow_golem_summon(pos)
+end)
 
 -- Jack o'Lantern
 minetest.register_node("mcl_farming:pumpkin_face_light", {

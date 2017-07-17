@@ -104,13 +104,14 @@ end
 - stem_def: Partial node definition of the fully-grown unconnected stem node. Many fields are already defined. You need to add `tiles` and `description` at minimum. Don't define on_construct without good reason
 - stem_drop: Drop probability table for all stem
 - gourd_itemstring: Desired itemstring of the full gourd node
-- gourd_def: (almost) full definition of the gourd node. This function will add after_dig_node to the definition for unconnecting any connected stems
+- gourd_def: (almost) full definition of the gourd node. This function will add on_construct and after_dig_node to the definition for unconnecting any connected stems
 - grow_interval: Will attempt to grow a gourd periodically at this interval in seconds
 - grow_chance: Chance of 1/grow_chance to grow a gourd next to the full unconnected stem after grow_interval has passed. Must be a natural number
 - connected_stem_texture: Texture of the connected stem
+- gourd_on_construct_extra: Custom on_construct extra function for the gourd. Will be called after the stem check code
 ]]
 
-function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, stem_itemstring, stem_def, stem_drop, gourd_itemstring, gourd_def, grow_interval, grow_chance, connected_stem_texture)
+function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, stem_itemstring, stem_def, stem_drop, gourd_itemstring, gourd_def, grow_interval, grow_chance, connected_stem_texture, gourd_on_construct_extra)
 
 	local connected_stem_names = { 
 		connected_stem_basename .. "_r",
@@ -174,6 +175,10 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 			for n=1, #neighbors do
 				local stempos = vector.add(blockpos, neighbors[n])
 				try_connect_stem(stempos)
+			end
+			-- Call custom on_construct
+			if gourd_on_construct_extra then
+				gourd_on_construct_extra(blockpos)
 			end
 		end
 	end
