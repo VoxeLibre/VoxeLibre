@@ -26,7 +26,7 @@ function mcl_core.add_glass(desc, recipeitem, colorgroup, color)
 		_doc_items_longdesc = "Stained glass is a decorational and mostly transparent block which comes in various different colors.",
 		drawtype = "glasslike",
 		is_ground_content = false,
-		tiles = {"xpanes_pane_glass_"..color..".png"},
+		tiles = {"mcl_core_glass_"..color..".png"},
 		paramtype = "light",
 		sunlight_propagates = "true",
 		use_texture_alpha = true,

@@ -166,14 +166,23 @@ function xpanes.register_pane(name, def)
 	end
 end
 
+-- Register glass pane (stained and unstained)
 local pane = function(description, node, append)
+	local texture1
+
+	-- Special case: Default (unstained) glass texture
+	if append == "_natural" then
+		texture1 = "default_glass.png"
+	else
+		texture1 = "mcl_core_glass"..append..".png"
+	end
 	xpanes.register_pane("pane"..append, {
 		description = description,
 		_doc_items_longdesc = "Glass panes are thin layers of glass which neatly connect to their neighbors as you build them.",
-		textures = {"xpanes_pane_glass"..append..".png","xpanes_pane_half_glass"..append..".png","xpanes_top_glass"..append..".png"},
+		textures = {texture1, "xpanes_pane_half_glass"..append..".png", "xpanes_top_glass"..append..".png"},
 		use_texture_alpha = true,
-		inventory_image = "xpanes_pane_glass"..append..".png",
-		wield_image = "xpanes_pane_glass"..append..".png",
+		inventory_image = texture1,
+		wield_image = texture1,
 		sounds = mcl_sounds.node_sound_glass_defaults(),
 		groups = {handy=1, material_glass=1},
 		recipe = {
@@ -186,7 +195,7 @@ local pane = function(description, node, append)
 	})
 end
 
--- Iron Bar
+-- Iron Bars
 xpanes.register_pane("bar", {
 	description = "Iron Bars",
 	_doc_items_longdesc = "Iron bars neatly connect to their neighbors as you build them.",
@@ -203,8 +212,10 @@ xpanes.register_pane("bar", {
 	_mcl_hardness = 5,
 })
 
--- Glass
-pane("Glass Pane", "mcl_core:glass", "_natural")
+-- Glass Pane
+pane("Glass Pane", "mcl_core:glass", "_natural") -- triggers special case
+
+-- Stained Glass Pane
 pane("Red Stained Glass Pane", "mcl_core:glass_red", "_red")
 pane("Green Stained Glass Pane", "mcl_core:glass_green", "_green")
 pane("Blue Stained Glass Pane", "mcl_core:glass_blue", "_blue")
