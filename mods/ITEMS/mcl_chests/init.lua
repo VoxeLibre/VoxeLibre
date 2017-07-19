@@ -586,14 +586,39 @@ local boxtypes = {
 	black = "Black Shulker Box",
 }
 
+local shulker_mob_textures = {
+	white = "mobs_mc_shulker_white.png",
+	grey = "mobs_mc_shulker_silver.png",
+	orange = "mobs_mc_shulker_orange.png",
+	cyan = "mobs_mc_shulker_cyan.png",
+	magenta = "mobs_mc_shulker_magenta.png",
+	violet = "mobs_mc_shulker_purple.png",
+	lightblue = "mobs_mc_shulker_light_blue.png",
+	blue = "mobs_mc_shulker_blue.png",
+	yellow = "mobs_mc_shulker_yellow.png",
+	brown = "mobs_mc_shulker_brown.png",
+	green = "mobs_mc_shulker_lime.png",
+	dark_green = "mobs_mc_shulker_green.png",
+	pink = "mobs_mc_shulker_pink.png",
+	red = "mobs_mc_shulker_red.png",
+	dark_grey = "mobs_mc_shulker_gray.png",
+	black = "mobs_mc_shulker_black.png",
+}
+
 for color, desc in pairs(boxtypes) do
+	local mob_texture = shulker_mob_textures[color]
 	minetest.register_node("mcl_chests:"..color.."_shulker_box", {
 		description = desc,
 		_doc_items_longdesc = "A shulker box is a portable container which provides 27 inventory slots for any item except shulker boxes. Shulker boxes keep their inventory when broken, so shulker boxes as well as their contents can be taken as a single item. Shulker boxes come in many different colors.",
 		_doc_items_usagehelp = "To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out. Place the shulker box again to be able to retrieve its contents.",
-		tiles = {"mcl_chests_"..color.."_shulker_box_top.png", "mcl_chests_"..color.."_shulker_box_bottom.png",
-			"mcl_chests_"..color.."_shulker_box_side.png", "mcl_chests_"..color.."_shulker_box_side.png",
-			"mcl_chests_"..color.."_shulker_box_side.png", "mcl_chests_"..color.."_shulker_box_side.png"},
+		tiles = {
+			"mcl_chests_"..color.."_shulker_box_top.png", -- top
+			"[combine:16x16:-32,-28="..mob_texture, -- bottom
+			"[combine:16x16:0,-36="..mob_texture..":0,-16="..mob_texture, -- side
+			"[combine:16x16:-32,-36="..mob_texture..":-32,-16="..mob_texture, -- side
+			"[combine:16x16:-16,-36="..mob_texture..":-16,-16="..mob_texture, -- side
+			"[combine:16x16:-48,-36="..mob_texture..":-48,-16="..mob_texture, -- side
+		},
 		groups = {handy=1,pickaxey=1, container=3, deco_block=1, dig_by_piston=1, shulker_box=1},
 		is_ground_content = false,
 		sounds = mcl_sounds.node_sound_stone_defaults(),
