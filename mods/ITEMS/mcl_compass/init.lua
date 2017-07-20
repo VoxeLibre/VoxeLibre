@@ -46,7 +46,8 @@ end)
 
 local images = {}
 for frame=0,31 do
-	table.insert(images, "mcl_compass_compass.png^[verticalframe:32:"..frame)
+	local s = string.format("%02d", frame)
+	table.insert(images, "mcl_compass_compass_"..s..".png")
 end
 
 local doc_mod = minetest.get_modpath("doc") ~= nil
