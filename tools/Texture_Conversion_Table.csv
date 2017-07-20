@@ -763,3 +763,5 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt
 /assets/minecraft/textures/blocks,shulker_top_white.png,/mods/ITEMS/mcl_chests/textures,mcl_chests_white_shulker_box_top.png,,,,,,
 /assets/minecraft/textures/blocks,shulker_top_yellow.png,/mods/ITEMS/mcl_chests/textures,mcl_chests_yellow_shulker_box_top.png,,,,,,
 /assets/minecraft/textures/items,flower_pot.png,/mods/ITEMS/mcl_flowerpots/textures,mcl_flowerpots_flowerpot_inventory.png,,,,,,
+/assets/minecraft/textures/gui,widgets.png,/mods/HUD/mcl_inventory/textures,gui_hotbar.png,0,0,182,22,0,0
+/assets/minecraft/textures/gui,widgets.png,/mods/HUD/mcl_inventory/textures,gui_hotbar_selected.png,0,22,24,24,0,0
