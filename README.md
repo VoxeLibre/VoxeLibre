@@ -209,15 +209,18 @@ Mods credit:
 See `README.txt` or `README.md` in each mod directory for information about other authors.
 
 ### License of media (textures and sounds)
-The textures, unless otherwise noted, are taken from the Faithful 1.11 resource pack for Minecraft,
-authored by Vattic, xMrVizzy and many others.
-Source:
-http://www.minecraftforum.net/topic/72747-/
+No non-free licenses are used anywhere.
 
-The license of this texture pack is the MIT license.
+The textures, unless otherwise noted, are based on the Pixel Perfection resource pack for Minecraft 1.11,
+authored by XSSheep. Most textures are verbatim copies, while some textures have been changed or redone
+from scratch.
+Unless otherwise noted, the license of all textures is CC BY-SA 3.0.
+Source: <https://www.planetminecraft.com/texture_pack/131pixel-perfection/>
 
-The textures for the mobs are from the Pixel Perfection resource pack for Minecraft.
-See `ENTITIES/mobs_mc/README.md` for detailed information.
+MineClone 2 is currently in the processs of changing all the textures, so
+a few textures from Faithful 1.11 (authored by Vattic, xMrVizzy and many others) are remaining.
+Source: <http://www.minecraftforum.net/topic/72747-/>
+The license of Faithful 1.11 is the MIT license.
 
 License of all main menu images: WTFPL
 
