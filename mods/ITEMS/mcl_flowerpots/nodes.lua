@@ -96,7 +96,7 @@ minetest.register_node("mcl_flowerpots:flower_pot_"..flower, {
 	drawtype = "mesh",
 	mesh = "flowerpot.obj",
 	tiles = {
-		"[combine:64x64:0,0=mcl_flowerpots_flowerpot.png:0,0="..texture[1],
+		"[combine:32x32:0,0=mcl_flowerpots_flowerpot.png:0,0="..texture[1],
 	},
 	visual_scale = 0.5,
 	wield_scale = {x=1.0, y=1.0, z=1.0},
