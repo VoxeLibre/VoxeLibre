@@ -39,6 +39,7 @@ minetest.register_node("mcl_flowerpots:flower_pot", {
 	wield_image = "mcl_flowerpots_flowerpot_inventory.png",
 	wield_scale = {x=1.0, y=1.0, z=1.0},
 	paramtype = "light",
+	sunlight_propagates = true,
 	selection_box = {
 		type = "fixed",
 		fixed = {-0.2, -0.5, -0.2, 0.2, -0.1, 0.2}
@@ -101,6 +102,7 @@ minetest.register_node("mcl_flowerpots:flower_pot_"..flower, {
 	visual_scale = 0.5,
 	wield_scale = {x=1.0, y=1.0, z=1.0},
 	paramtype = "light",
+	sunlight_propagates = true,
 	selection_box = {
 		type = "fixed",
 		fixed = {-0.2, -0.5, -0.2, 0.2, -0.1, 0.2}
@@ -143,6 +145,7 @@ minetest.register_node("mcl_flowerpots:flower_pot_"..flower, {
 	visual_scale = 0.5,
 	wield_scale = {x=1.0, y=1.0, z=1.0},
 	paramtype = "light",
+	sunlight_propagates = true,
 	selection_box = {
 		type = "fixed",
 		fixed = {-0.2, -0.5, -0.2, 0.2, -0.1, 0.2}
