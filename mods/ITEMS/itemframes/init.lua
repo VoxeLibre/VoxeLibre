@@ -95,7 +95,7 @@ minetest.register_node("itemframes:frame",{
 	is_ground_content = false,
 	node_box = { type = "fixed", fixed = {-0.5, -0.5, 7/16, 0.5, 0.5, 0.5} },
 	selection_box = { type = "fixed", fixed = {-0.5, -0.5, 7/16, 0.5, 0.5, 0.5} },
-	tiles = {"itemframe_background.png"},
+	tiles = {"itemframe_background.png", "itemframe_background.png", "itemframe_background.png", "itemframe_background.png", "default_wood.png", "itemframe_background.png"},
 	inventory_image = "itemframes_frame.png",
 	wield_image = "itemframes_frame.png",
 	paramtype = "light",
