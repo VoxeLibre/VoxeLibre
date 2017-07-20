@@ -27,16 +27,16 @@ for c=1, #colors do
 		wield_image = "mcl_beds_bed_"..colorid..".png",
 		tiles = {
 			bottom = {
-				"mcl_beds_bed_top_bottom_"..colorid..".png",
-				"mcl_beds_bed_bottom_bottom.png",
+				"mcl_beds_bed_top_bottom_"..colorid..".png^[transformR90",
+				"default_wood.png^mcl_beds_bed_bottom_bottom.png",
 				"mcl_beds_bed_side_bottom_r_"..colorid..".png",
 				"mcl_beds_bed_side_bottom_r_"..colorid..".png^[transformfx",
 				"mcl_beds_bed_side_top_"..colorid..".png",
 				"mcl_beds_bed_side_bottom_"..colorid..".png"
 			},
 			top = {
-				"mcl_beds_bed_top_top_"..colorid..".png",
-				"mcl_beds_bed_bottom_top.png",
+				"mcl_beds_bed_top_top_"..colorid..".png^[transformR90",
+				"default_wood.png^mcl_beds_bed_bottom_top.png",
 				"mcl_beds_bed_side_top_r_"..colorid..".png",
 				"mcl_beds_bed_side_top_r_"..colorid..".png^[transformfx",
 				"mcl_beds_bed_side_top_"..colorid..".png",
