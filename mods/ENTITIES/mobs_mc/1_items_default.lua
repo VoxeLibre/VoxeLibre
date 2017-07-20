@@ -335,8 +335,8 @@ end
 if c("porkchop_raw") and c("porkchop_cooked") then
 	minetest.register_craft({
 		type = "cooking",
-		output = "mobs_mc:porkchop_raw",
-		recipe = "mobs_mc:porkchop_cooked",
+		output = "mobs_mc:porkchop_cooked",
+		recipe = "mobs_mc:porkchop_raw",
 		cooktime = 5,
 	})
 end

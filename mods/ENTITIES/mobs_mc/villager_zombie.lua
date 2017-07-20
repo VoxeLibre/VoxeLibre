@@ -59,9 +59,10 @@ mobs:register_mob("mobs_mc:villager_zombie", {
 		max = 1,},
 	},
 	sounds = {
-		random = "Villager1",
-		death = "Villagerdead",
-		damage = "Villagerhurt1",
+		random = "mobs_mc_zombie_idle",
+		war_cry = "mobs_mc_zombie_idle",
+		death = "mobs_mc_zombie_death",
+		damage = "mobs_mc_zombie_hurt",
 		distance = 16,
 	},
 	animation = {

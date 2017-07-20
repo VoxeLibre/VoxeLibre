@@ -23,9 +23,28 @@ Origin of those models:
 
 ## Textures
 
-* Mob and item textures from [Pixel Perfection](https://www.planetminecraft.com/texture_pack/131pixel-perfection/), a texture pack for Minecraft.
-    * Author: [XSSheep](https://www.planetminecraft.com/member/xssheep/)
-    * License: CC BY-SA 4.0
+* Mob and item textures are heavily based on [Pixel Perfection](https://www.planetminecraft.com/texture_pack/131pixel-perfection/), a texture pack for Minecraft.
+    * Original author: [XSSheep](https://www.planetminecraft.com/member/xssheep/)
+    * License (if not mentioned otherwise): CC BY-SA 4.0
+    * Some textures have been modified or added
+    * Modifications by MysticTempest:
+        * `mobs_mc_cave_spider.png`
+        * `mobs_mc_enderman_eyes.png`
+        * `mobs_mc_enderman.png`
+        * `mobs_mc_ghast.png`
+        * `mobs_mc_skeleton.png`
+        * `mobs_mc_slime.png`
+        * `mobs_mc_spider_eyes.png`
+        * `mobs_mc_spider.png`
+        * `mobs_mc_squid.png`
+        * `mobs_mc_zombie.png`
+    * Additions by MysticTempest:
+        * `mobs_mc_parrot_blue.png`
+        * `mobs_mc_parrot_green.png`
+        * `mobs_mc_parrot_grey.png`
+        * `mobs_mc_parrot_red_blue.png`
+        * `mobs_mc_parrot_yellow_blue.png`
+
 * “Spawn egg” textures (`mobs_mc_spawn_icon_*`) by 22i
 * Any other texture not mentioned here are licensed under the MIT License
 
@@ -67,4 +86,11 @@ Origin of those models:
     * `mobs_spider.ogg`
 * BrandonReese (LGPL v2.1)
     * `mobs_eerie.ogg`
-
+* [Under7dude](https://freesound.org/people/Under7dude/) (CC0)
+    * `mobs_mc_zombie_idle.ogg`
+        * Source: <https://freesound.org/people/Under7dude/sounds/163445/>
+* [haratman](https://freesound.org/people/haratman/) (CC0)
+    * `mobs_mc_zombie_death.ogg`
+        * Source: <https://freesound.org/people/haratman/sounds/393749/>
+    * `mobs_mc_zombie_hurt.ogg`
+        * Source: <https://freesound.org/people/haratman/sounds/393749/>

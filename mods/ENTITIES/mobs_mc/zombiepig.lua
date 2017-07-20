@@ -29,9 +29,10 @@ local pigman = {
 	textures = {{"mobs_mc_zombie_pigman.png^mobs_mc_zombie_pigman_sword.png"}},
 	visual_size = {x=3, y=3},
 	sounds = {
-		random = "zombie1", -- TODO: replace
-		death = "zombiedeath", -- TODO: replace
-		damage = "zombiehurt1", -- TODO: replace
+		random = "mobs_mc_zombie_idle",
+		war_cry = "mobs_mc_zombie_idle",
+		death = "mobs_mc_zombie_death",
+		damage = "mobs_mc_zombie_hurt",
 		distance = 16,
 	},
 	jump = true,
