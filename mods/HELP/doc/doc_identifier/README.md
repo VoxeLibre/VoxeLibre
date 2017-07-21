@@ -26,8 +26,7 @@ For the lookup tool to be able to work on custom objects/entities, you have to
 use the tiny API of this mod, see `API.md`.
 
 ## Credits
-32×32 pixel icons created by kingoscargames for MineClone 2.
-Source code written by Wuzzy.
+Everything created by Wuzzy.
 
 ## License
 Everything in this mod is licensed under the MIT License.
