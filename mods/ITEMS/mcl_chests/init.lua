@@ -136,8 +136,8 @@ minetest.register_node("mcl_chests:"..basename, {
 })
 
 minetest.register_node("mcl_chests:"..basename.."_left", {
-	tiles = {"default_chest_top_big.png", "default_chest_top_big.png", "default_chest_side.png",
-		"default_chest_side.png", "default_chest_side_big.png^[transformFX", "default_chest_front_big.png"},
+	tiles = {"default_chest_top_big.png", "default_chest_top_big.png", "mcl_chests_chest_right.png",
+		"mcl_chests_chest_left.png", "default_chest_side_big.png^[transformFX", "default_chest_front_big.png"},
 	paramtype2 = "facedir",
 	groups = {handy=1,axey=1, container=2,not_in_creative_inventory=1, material_wood=1},
 	drop = drop,
@@ -244,8 +244,8 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 })
 
 minetest.register_node("mcl_chests:"..basename.."_right", {
-	tiles = {"default_chest_top_big.png^[transformFX", "default_chest_top_big.png^[transformFX", "default_chest_side.png",
-		"default_chest_side.png", "default_chest_side_big.png", "default_chest_front_big.png^[transformFX"},
+	tiles = {"default_chest_top_big.png^[transformFX", "default_chest_top_big.png^[transformFX", "mcl_chests_chest_right.png",
+		"mcl_chests_chest_left.png", "default_chest_side_big.png", "default_chest_front_big.png^[transformFX"},
 	paramtype2 = "facedir",
 	groups = {handy=1,axey=1, container=2,not_in_creative_inventory=1, material_wood=1},
 	drop = drop,
