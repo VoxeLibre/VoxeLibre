@@ -66,44 +66,24 @@ Read the help entries on the other redstone components to learn how redstone com
 	if xmy == 1 then table.insert(nodebox, box_xmy) end
 	if zmy == 1 then table.insert(nodebox, box_zmy) end
 
+	local ratio_off = 128
+	local ratio_on = 192
+	local crossing_off = "(redstone_redstone_dust_dot.png^redstone_redstone_dust_line0.png^(redstone_redstone_dust_line1.png^[transformR90))^[colorize:#FF0000:"..ratio_off
+	local crossing_on = "(redstone_redstone_dust_dot.png^redstone_redstone_dust_line0.png^(redstone_redstone_dust_line1.png^[transformR90))^[colorize:#FF0000:"..ratio_on
+	local straight0_off = "redstone_redstone_dust_line0.png^[colorize:#FF0000:"..ratio_off
+	local straight0_on = "redstone_redstone_dust_line0.png^[colorize:#FF0000:"..ratio_on
+	local straight1_off = "redstone_redstone_dust_line0.png^[colorize:#FF0000:"..ratio_off
+	local straight1_on = "redstone_redstone_dust_line0.png^[colorize:#FF0000:"..ratio_on
+
 	if adjx and adjz and (xp + zp + xm + zm > 2) then
 		table.insert(nodebox, box_bump1)
-		tiles_off = {
-			"jeija_mesecon_crossing_off.png",
-			"jeija_mesecon_crossing_off.png",
-			"jeija_mesecon_off.png",
-			"jeija_mesecon_off.png",
-			"jeija_mesecon_off.png",
-			"jeija_mesecon_off.png"
-		}
-		tiles_on = {
-			"jeija_mesecon_crossing_on.png",
-			"jeija_mesecon_crossing_on.png",
-			"jeija_mesecon_on.png",
-			"jeija_mesecon_on.png",
-			"jeija_mesecon_on.png",
-			"jeija_mesecon_on.png"
-		}
+		tiles_off = { crossing_off, crossing_off, "blank.png", "blank.png", "blank.png", "blank.png" }
+		tiles_on = { crossing_on, crossing_on, "blank.png", "blank.png", "blank.png", "blank.png" }
 	else
 		table.insert(nodebox, box_center)
-		tiles_off = {
-			"jeija_mesecon_crossing_off.png",
-			"jeija_mesecon_crossing_off.png",
-			"jeija_mesecon_off.png",
-			"jeija_mesecon_off.png",
-			"jeija_mesecon_off.png",
-			"jeija_mesecon_off.png"
-		}
-		tiles_on = {
-			"jeija_mesecon_crossing_on.png",
-			"jeija_mesecon_crossing_on.png",
-			"jeija_mesecon_on.png",
-			"jeija_mesecon_on.png",
-			"jeija_mesecon_on.png",
-			"jeija_mesecon_on.png"
-		}
+		tiles_off = { crossing_off, crossing_off, straight0_off, straight1_off, straight0_off, straight1_off, }
+		tiles_on = { crossing_on, crossing_on, straight0_on, straight1_on, straight0_on, straight1_on, }
 	end
-
 	if nodeid == "00000000" then
 		nodebox = {-8/16, -.5, -1/16, 8/16, -.5+1/16, 1/16}
 	end
