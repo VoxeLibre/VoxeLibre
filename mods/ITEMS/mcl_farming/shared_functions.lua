@@ -363,3 +363,19 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 	})
 end
 
+-- Used for growing gourd stems. Returns the intermediate color between startcolor and endcolor at a step
+-- * startcolor: ColorSpec in table form for the stem in its lowest growing stage
+-- * endcolor: ColorSpec in table form for the stem in its final growing stage
+-- * step: The nth growth step. Counting starts at 1
+-- * step_count: The number of total growth steps
+function mcl_farming:stem_color(startcolor, endcolor, step, step_count)
+	local color = {}
+	local function get_component(startt, endd, step, step_count)
+		return math.floor(math.max(0, math.min(255, (startt + (((step-1)/step_count) * endd)))))
+	end
+	color.r = get_component(startcolor.r, endcolor.r, step, step_count)
+	color.g = get_component(startcolor.g, endcolor.g, step, step_count)
+	color.b = get_component(startcolor.b, endcolor.b, step, step_count)
+	local colorstring = string.format("#%02X%02X%02X", color.r, color.g, color.b)
+	return colorstring
+end

@@ -34,6 +34,9 @@ local stem_drop = {
 
 -- Unconnected immature stem
 
+local startcolor = { r = 0x2E , g = 0x9D, b = 0x2E }
+local endcolor = { r = 0xFF , g = 0xA8, b = 0x00 }
+
 for s=1,7 do
 	local h = s / 8
 	local doc = s == 1
@@ -42,6 +45,7 @@ for s=1,7 do
 		entry_name = "Premature Pumpkin Stem"
 		longdesc = "Pumpkin stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature pumpkin stems are able to grow pumpkins."
 	end
+	local colorstring = mcl_farming:stem_color(startcolor, endcolor, s, 8)
 	minetest.register_node("mcl_farming:pumpkin_"..s, {
 		description = string.format("Premature Pumpkin Stem (Stage %d)", s),
 		_doc_items_entry_name = entry_name,
@@ -52,7 +56,7 @@ for s=1,7 do
 		drawtype = "plantlike",
 		sunlight_propagates = true,
 		drop = stem_drop,
-		tiles = {"mcl_farming_pumpkintige_"..s..".png"},
+		tiles = {"([combine:16x16:0,"..((8-s)*2).."=mcl_farming_pumpkin_stem_disconnected.png)^[colorize:"..colorstring..":127"},
 		selection_box = {
 			type = "fixed",
 			fixed = {
@@ -69,7 +73,7 @@ end
 local stem_def = {
 	description = "Mature Pumpkin Stem",
 	_doc_items_longdesc = "A mature pumpkin stem attempts to grow a pumpkin at one of its four adjacent blocks. A pumpkin can only grow on top of farmland, dirt or a grass block. When a pumpkin is next to a pumpkin stem, the pumpkin stem immediately bends and connects to the pumpkin. A connected pumpkin stem can't grow another pumpkin. As soon all pumpkins around the stem have been removed, it loses the connection and is ready to grow another pumpkin.",
-	tiles = {"mcl_farming_pumpkintige_8.png"},
+	tiles = {"mcl_farming_pumpkin_stem_disconnected.png^[colorize:#FFA800:127"},
 }
 
 -- Template for pumpkin
@@ -90,7 +94,7 @@ local pumpkin_base_def = {
 mcl_farming:add_plant("plant_pumpkin_stem", "mcl_farming:pumpkintige_unconnect", {"mcl_farming:pumpkin_1", "mcl_farming:pumpkin_2", "mcl_farming:pumpkin_3", "mcl_farming:pumpkin_4", "mcl_farming:pumpkin_5", "mcl_farming:pumpkin_6", "mcl_farming:pumpkin_7"}, 30, 5)
 
 -- Register actual pumpkin, connected stems and stem-to-pumpkin growth
-mcl_farming:add_gourd("mcl_farming:pumpkintige_unconnect", "mcl_farming:pumpkintige_linked", "mcl_farming:pumpkintige_unconnect", stem_def, stem_drop, "mcl_farming:pumpkin_face", pumpkin_base_def, 30, 15, "mcl_farming_pumpkin_stem_connected.png",
+mcl_farming:add_gourd("mcl_farming:pumpkintige_unconnect", "mcl_farming:pumpkintige_linked", "mcl_farming:pumpkintige_unconnect", stem_def, stem_drop, "mcl_farming:pumpkin_face", pumpkin_base_def, 30, 15, "mcl_farming_pumpkin_stem_connected.png^[colorize:#FFA800:127",
 function(pos)
 	-- Attempt to spawn iron golem or snow golem
 	mobs_mc.tools.check_iron_golem_summon(pos)

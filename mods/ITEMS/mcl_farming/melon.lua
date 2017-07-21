@@ -60,6 +60,10 @@ local stem_drop = {
 -- Growing unconnected stems
 
 
+local startcolor = { r = 0x2E , g = 0x9D, b = 0x2E }
+local endcolor = { r = 0xFF , g = 0xA8, b = 0x00 }
+
+
 for s=1,7 do
 	local h = s / 8
 	local doc = s == 1
@@ -68,6 +72,7 @@ for s=1,7 do
 		entry_name = "Premature Melon Stem"
 		longdesc = "Melon stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature melon stems are able to grow melons."
 	end
+	local colorstring = mcl_farming:stem_color(startcolor, endcolor, s, 8)
 	minetest.register_node("mcl_farming:melontige_"..s, {
 		description = string.format("Premature Melon Stem (Stage %d)", s),
 		_doc_items_create_entry = doc,
@@ -78,7 +83,7 @@ for s=1,7 do
 		drawtype = "plantlike",
 		sunlight_propagates = true,
 		drop = stem_drop,
-		tiles = {"mcl_farming_melontige_"..s..".png"},
+		tiles = {"([combine:16x16:0,"..((8-s)*2).."=mcl_farming_melon_stem_disconnected.png)^[colorize:"..colorstring..":127"},
 		selection_box = {
 			type = "fixed",
 			fixed = {
@@ -96,14 +101,14 @@ local stem_def = {
 	description = "Mature Melon Stem",
 	_doc_items_create_entry = true,
 	_doc_items_longdesc = "A mature melon stem attempts to grow a melon at one of its four adjacent blocks. A melon can only grow on top of farmland, dirt, or a grass block. When a melon is next to a melon stem, the melon stem immediately bends and connects to the melon. While connected, a melon stem can't grow another melon. As soon all melons around the stem have been removed, it loses the connection and is ready to grow another melon.",
-	tiles = {"mcl_farming_melontige_8.png"},
+	tiles = {"mcl_farming_melon_stem_disconnected.png^[colorize:#FFA800:127"},
 }
 
 -- Register stem growth
 mcl_farming:add_plant("plant_melon_stem", "mcl_farming:melontige_unconnect", {"mcl_farming:melontige_1", "mcl_farming:melontige_2", "mcl_farming:melontige_3", "mcl_farming:melontige_4", "mcl_farming:melontige_5", "mcl_farming:melontige_6", "mcl_farming:melontige_7"}, 30, 5)
 
 -- Register actual melon, connected stems and stem-to-melon growth
-mcl_farming:add_gourd("mcl_farming:melontige_unconnect", "mcl_farming:melontige_linked", "mcl_farming:melontige_unconnect", stem_def, stem_drop, "mcl_farming:melon", melon_base_def, 25, 15, "mcl_farming_melon_stem_connected.png")
+mcl_farming:add_gourd("mcl_farming:melontige_unconnect", "mcl_farming:melontige_linked", "mcl_farming:melontige_unconnect", stem_def, stem_drop, "mcl_farming:melon", melon_base_def, 25, 15, "mcl_farming_melon_stem_connected.png^[colorize:#FFA800:127")
 
 -- Items and crafting
 minetest.register_craftitem("mcl_farming:melon_item", {
