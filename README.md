@@ -217,10 +217,10 @@ from scratch.
 Unless otherwise noted, the license of all textures is CC BY-SA 3.0.
 Source: <https://www.planetminecraft.com/texture_pack/131pixel-perfection/>
 
-MineClone 2 is currently in the processs of changing all the textures, so
-a few textures from Faithful 1.11 (authored by Vattic, xMrVizzy and many others) are remaining.
-Source: <http://www.minecraftforum.net/topic/72747-/>
-The license of Faithful 1.11 is the MIT license.
+MineClone 2 is currently in the processs of changing all the textures.
+The textures for the glazed terracotta come from Faithful Vanilla.
+(authored by Vattic, xMrVizzy and many others).
+Source: <https://minecraft.curseforge.com/projects/faithful-vanilla>
 
 License of all main menu images: WTFPL
 
