@@ -27,7 +27,7 @@ else
 	hb.settings.start_offset_right.y = hb.load_setting("hudbars_start_statbar_offset_right_y", "number", -90)
 end
 -- Modified in MCL2!
-hb.settings.vmargin  = hb.load_setting("hudbars_vmargin", "number", 32)
+hb.settings.vmargin  = hb.load_setting("hudbars_vmargin", "number", 28)
 hb.settings.tick = hb.load_setting("hudbars_tick", "number", 0.1)
 
 -- Experimental setting: Changing this setting is not officially supported, do NOT rely on it!

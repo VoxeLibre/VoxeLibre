@@ -110,7 +110,7 @@ hudbars_start_statbar_offset_right_x (Right HUD statbar x offset) int 25
 hudbars_start_statbar_offset_right_y (Right HUD statbar y offset) int -90
 
 # The vertical distance between two HUD bars, in pixels.
-hudbars_vmargin (Vertical distance between HUD bars) int 24 0
+hudbars_vmargin (Vertical distance between HUD bars) int 28 0
 
 [Performance]
 # The of seconds which need to pass before the server updates the default HUD bars
