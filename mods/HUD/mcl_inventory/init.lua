@@ -49,15 +49,14 @@ local function set_inventory(player, armor_change_only)
 	local player_name = player:get_player_name()
 
 	-- Show armor and player image
-	-- TODO: Use player.png to allow for custom skins
-	local img = "crafting_player2d.png"
+	local img = "player.png"
 	local player_preview = "image[0.6,0.2;2,4;"..img.."]"
 	if show_armor and armor.textures[player_name] and armor.textures[player_name].preview then
 		img = armor.textures[player_name].preview
 		local s1 = img:find("character_preview")
 		if s1 ~= nil then
 			s1 = img:sub(s1+21)
-			img = "crafting_player2d.png"..s1
+			img = "player.png"..s1
 		end
 		player_preview = "image[1.1,0.2;2,4;"..img.."]"
 	end
