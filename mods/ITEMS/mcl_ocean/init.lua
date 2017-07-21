@@ -27,6 +27,7 @@ minetest.register_node("mcl_ocean:prismarine", {
 	_doc_items_longdesc = "Prismarine is used as a building block. It slowly changes its color.",
 	stack_max = 64,
 	is_ground_content = false,
+	-- Texture should have 22 frames for smooth transitions.
 	tiles = {{name="mcl_ocean_prismarine_anim.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=45.0}}},
 	groups = {pickaxey=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
