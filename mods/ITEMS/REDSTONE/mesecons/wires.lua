@@ -3,8 +3,8 @@
 -- 1 = there is one; 0 = there is none
 -- y always means y+
 
-box_center = {-1/16, -.5, -1/16, 1/16, -.5+1/64, 1/16}
-box_bump1 =  { -2/16, -.5,  -2/16, 2/16, -.5+1/64, 2/16 }
+box_center = {-1/16, -.5, -1/16, 1/16, -.5+1/64, 1/16} -- filler for curves and straight lines
+box_bump1 =  { -3/16, -.5,  -3/16, 3/16, -.5+1/64, 3/16 } -- filler for redstone dust “dot”
 
 box_xp = {1/16, -.5, -1/16, 8/16, -.5+1/64, 1/16}
 box_zp = {-1/16, -.5, 1/16, 1/16, -.5+1/64, 8/16}
@@ -77,19 +77,22 @@ Read the help entries on the other redstone components to learn how redstone com
 	local dot_off = "redstone_redstone_dust_dot.png^[colorize:#FF0000:"..ratio_off
 	local dot_on = "redstone_redstone_dust_dot.png^[colorize:#FF0000:"..ratio_on
 
-	if adjx and adjz and (xp + zp + xm + zm > 2) then
+	if nodeid == "00000000" then
+		-- Non-connected redstone wire
+		nodebox = {-8/16, -.5, -8/16, 8/16, -.5+1/16, 8/16}
+		-- “Dot” texture
+		tiles_off = { dot_off, dot_off, "blank.png", "blank.png", "blank.png", "blank.png" }
+		tiles_on = { dot_on, dot_on, "blank.png", "blank.png", "blank.png", "blank.png" }
+	elseif adjx and adjz and (xp + zp + xm + zm > 2) then
+		-- Connected redstone wire (crossing or t-junction)
 		table.insert(nodebox, box_bump1)
-		tiles_off = { crossing_off, crossing_off, "blank.png", "blank.png", "blank.png", "blank.png" }
-		tiles_on = { crossing_on, crossing_on, "blank.png", "blank.png", "blank.png", "blank.png" }
+		tiles_off = { crossing_off, crossing_off, straight0_off, straight1_off, straight0_off, straight1_off, }
+		tiles_on = { crossing_on, crossing_on, straight0_on, straight1_on, straight0_on, straight1_on, }
 	else
+		-- Connected redstone wire (straight line or curve)
 		table.insert(nodebox, box_center)
 		tiles_off = { crossing_off, crossing_off, straight0_off, straight1_off, straight0_off, straight1_off, }
 		tiles_on = { crossing_on, crossing_on, straight0_on, straight1_on, straight0_on, straight1_on, }
-	end
-	if nodeid == "00000000" then
-		nodebox = {-8/16, -.5, -8/16, 8/16, -.5+1/16, 8/16}
-		tiles_off = { dot_off, dot_off, "blank.png", "blank.png", "blank.png", "blank.png" }
-		tiles_on = { dot_on, dot_on, "blank.png", "blank.png", "blank.png", "blank.png" }
 	end
 
 	minetest.register_node("mesecons:wire_"..nodeid.."_off", {
