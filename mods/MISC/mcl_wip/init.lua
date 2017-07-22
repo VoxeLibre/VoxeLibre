@@ -16,12 +16,7 @@ local wip_items = {
 	"mcl_observers:observer",
 	"mcl_chests:trapped_chest",
 	"mcl_core:cobweb",
-	"mobs_mc:vindicator",
-	"mobs_mc:evoker",
-	"mobs_mc:vex",
 	"mobs_mc:llama",
-	"mobs_mc:illusioner",
-	"mobs_mc:skeleton_horse",
 	"mobs_mc:totem",
 }
 
