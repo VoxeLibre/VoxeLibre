@@ -214,7 +214,6 @@ No non-free licenses are used anywhere.
 The textures, unless otherwise noted, are based on the Pixel Perfection resource pack for Minecraft 1.11,
 authored by XSSheep. Most textures are verbatim copies, while some textures have been changed or redone
 from scratch.
-Unless otherwise noted, the license of all textures is CC BY-SA 3.0.
 Source: <https://www.planetminecraft.com/texture_pack/131pixel-perfection/>
 
 MineClone 2 is currently in the processs of changing all the textures.
@@ -225,7 +224,7 @@ Source: <https://minecraft.curseforge.com/projects/faithful-vanilla>
 License of all main menu images: WTFPL
 
 All other files, unless mentioned otherwise, fall under:
-Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
-http://creativecommons.org/licenses/by-sa/3.0/
+Attribution-ShareAlike 3.0 Unported (CC BY-SA 4.0)
+http://creativecommons.org/licenses/by-sa/4.0/
 
 See README.txt in each mod directory for detailed information about other authors.
