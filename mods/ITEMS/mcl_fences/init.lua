@@ -100,11 +100,11 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 		local tmp_node2
 		if state2 == 1 then
 			state2 = 0
-			minetest.sound_play(sound_close, {gain = sound_gain_close, max_hear_distance = 10})
+			minetest.sound_play(sound_close, {gain = sound_gain_close, max_hear_distance = 10, pos = pos})
 			tmp_node2 = {name=gate_id, param1=node.param1, param2=node.param2}
 		else
 			state2 = 1
-			minetest.sound_play(sound_open, {gain = sound_gain_open, max_hear_distance = 10})
+			minetest.sound_play(sound_open, {gain = sound_gain_open, max_hear_distance = 10, pos = pos})
 			tmp_node2 = {name=open_gate_id, param1=node.param1, param2=node.param2}
 		end
 		update_gate(pos, tmp_node2)
