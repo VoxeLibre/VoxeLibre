@@ -230,9 +230,12 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 	return gate_id, open_gate_id
 end
 
-mcl_fences.register_fence_and_fence_gate = function(id, fence_name, fence_gate_name, texture, groups, hardness, blast_resistance, connects_to, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close)
-	local fence_id = mcl_fences.register_fence(id, fence_name, texture, groups, hardness, blast_resistance, connects_to, sounds)
-	local gate_id, open_gate_id = mcl_fences.register_fence_gate(id, fence_gate_name, texture, groups, hardness, blast_resistance, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close)
+mcl_fences.register_fence_and_fence_gate = function(id, fence_name, fence_gate_name, texture_fence, groups, hardness, blast_resistance, connects_to, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close, texture_fence_gate)
+	if texture_fence_gate == nil then
+		texture_fence_gate = texture_fence
+	end
+	local fence_id = mcl_fences.register_fence(id, fence_name, texture_fence, groups, hardness, blast_resistance, connects_to, sounds)
+	local gate_id, open_gate_id = mcl_fences.register_fence_gate(id, fence_gate_name, texture_fence_gate, groups, hardness, blast_resistance, sounds, sound_open, sound_close, sound_gain_open, sound_gain_close)
 	return fence_id, gate_id, open_gate_id
 end
 
@@ -241,12 +244,12 @@ local wood_connect = {"group:fence_wood"}
 local wood_sounds = mcl_sounds.node_sound_wood_defaults()
 
 local woods = {
-	{"", "Oak Fence", "Oak Fence Gate", "default_wood.png", "mcl_core:wood"},
-	{"spruce", "Spruce Fence", "Spruce Fence Gate", "mcl_core_planks_spruce.png", "mcl_core:sprucewood"},
-	{"birch", "Birch Fence", "Birch Fence Gate", "mcl_core_planks_birch.png", "mcl_core:birchwood"},
-	{"jungle", "Jungle Fence", "Jungle Fence Gate", "default_junglewood.png", "mcl_core:junglewood"},
-	{"dark_oak", "Dark Oak Fence", "Dark Oak Fence Gate", "mcl_core_planks_big_oak.png", "mcl_core:darkwood"},
-	{"acacia", "Acacia Fence", "Acacia Fence Gate", "default_acacia_wood.png", "mcl_core:acaciawood"},
+	{"", "Oak Fence", "Oak Fence Gate", "mcl_fences_fence_oak.png", "mcl_fences_fence_gate_oak.png", "mcl_core:wood"},
+	{"spruce", "Spruce Fence", "Spruce Fence Gate", "mcl_fences_fence_spruce.png", "mcl_fences_fence_gate_spruce.png", "mcl_core:sprucewood"},
+	{"birch", "Birch Fence", "Birch Fence Gate", "mcl_fences_fence_birch.png", "mcl_fences_fence_gate_birch.png", "mcl_core:birchwood"},
+	{"jungle", "Jungle Fence", "Jungle Fence Gate", "mcl_fences_fence_jungle.png", "mcl_fences_fence_gate_jungle.png", "mcl_core:junglewood"},
+	{"dark_oak", "Dark Oak Fence", "Dark Oak Fence Gate", "mcl_fences_fence_big_oak.png", "mcl_fences_fence_gate_big_oak.png", "mcl_core:darkwood"},
+	{"acacia", "Acacia Fence", "Acacia Fence Gate", "mcl_fences_fence_acacia.png", "mcl_fences_fence_gate_acacia.png", "mcl_core:acaciawood"},
 }
 
 for w=1, #woods do
@@ -279,7 +282,7 @@ end
 
 
 -- Nether Brick Fence (without fence gate!)
-mcl_fences.register_fence("nether_brick_fence", "Nether Brick Fence", "mcl_nether_nether_brick.png", {pickaxey=1, deco_block=1, fence_nether_brick=1}, 2, 30, {"group:fence_nether_brick"}, mcl_sounds.node_sound_stone_defaults())
+mcl_fences.register_fence("nether_brick_fence", "Nether Brick Fence", "mcl_fences_fence_nether_brick.png", {pickaxey=1, deco_block=1, fence_nether_brick=1}, 2, 30, {"group:fence_nether_brick"}, mcl_sounds.node_sound_stone_defaults())
 
 minetest.register_craft({
 	output = 'mcl_fences:nether_brick_fence 6',
