@@ -123,18 +123,22 @@ local generate_texture = function(lines)
     return texture
 end
 
+local n = 7/16 - 1/128
+
 local signs = {
-    {delta = {x = 0, y = 0, z = 0.399}, yaw = 0},
-    {delta = {x = 0.399, y = 0, z = 0}, yaw = math.pi / -2},
-    {delta = {x = 0, y = 0, z = -0.399}, yaw = math.pi},
-    {delta = {x = -0.399, y = 0, z = 0}, yaw = math.pi / 2},
+    {delta = {x = 0, y = 0, z = n}, yaw = 0},
+    {delta = {x = n, y = 0, z = 0}, yaw = math.pi / -2},
+    {delta = {x = 0, y = 0, z = -n}, yaw = math.pi},
+    {delta = {x = -n, y = 0, z = 0}, yaw = math.pi / 2},
 }
 
+local m = 1/16 + 1/128
+
 local signs_yard = {
-    {delta = {x = 0, y = 0, z = -0.05}, yaw = 0},
-    {delta = {x = -0.05, y = 0, z = 0}, yaw = math.pi / -2},
-    {delta = {x = 0, y = 0, z = 0.05}, yaw = math.pi},
-    {delta = {x = 0.05, y = 0, z = 0}, yaw = math.pi / 2},
+    {delta = {x = 0, y = 0, z = -m}, yaw = 0},
+    {delta = {x = -m, y = 0, z = 0}, yaw = math.pi / -2},
+    {delta = {x = 0, y = 0, z = m}, yaw = math.pi},
+    {delta = {x = m, y = 0, z = 0}, yaw = math.pi / 2},
 }
 
 local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1, material_wood=1}
@@ -199,8 +203,7 @@ minetest.register_node("signs:sign_wall", {
 	sunlight_propagates = true,
     paramtype2 = "facedir",
     drawtype = "nodebox",
-    node_box = {type = "fixed", fixed = {-0.45, -0.15, 0.4, 0.45, 0.45, 0.498}},
-    selection_box = {type = "fixed", fixed = {-0.45, -0.15, 0.4, 0.45, 0.45, 0.498}},
+    node_box = {type = "fixed", fixed = {-7/16, -1/16, 7/16, 7/16, 7/16, 0.498}},
     tiles = {"signs_top.png", "signs_bottom.png", "signs_side.png", "signs_side.png", "signs_back.png", "signs_front.png"},
     groups = sign_groups,
 	stack_max = 16,
@@ -288,10 +291,11 @@ minetest.register_node("signs:sign_yard", {
     paramtype2 = "facedir",
     drawtype = "nodebox",
     node_box = {type = "fixed", fixed = {
-        {-0.45, -0.15, -0.049, 0.45, 0.45, 0.049},
-        {-0.05, -0.5, -0.049, 0.05, -0.15, 0.049}
+        {-7/16, -1/16, -1/16, 7/16, 7/16, 0},
+        {-1/16, -0.5, -1/16, 1/16, -1/16, 0},
+        {-1/16, 7/16, -1/16, 1/16, 0.5, 0},
     }},
-    selection_box = {type = "fixed", fixed = {-0.45, -0.15, -0.049, 0.45, 0.45, 0.049}},
+    selection_box = {type = "fixed", fixed = {-7/16, -0.5, -1/16, 7/16, 0.5, 0}},
     tiles = {"signs_top.png", "signs_bottom.png", "signs_side.png", "signs_side.png", "signs_back.png", "signs_front.png"},
     groups = sign_groups,
     drop = "signs:sign_wall",
