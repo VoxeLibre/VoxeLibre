@@ -1,4 +1,12 @@
 local function place_slab_normal(itemstack, placer, pointed_thing)
+	-- Use pointed node's on_rightclick function first, if present
+	local node = minetest.get_node(pointed_thing.under)
+	if placer and not placer:get_player_control().sneak then
+		if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+			return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+		end
+	end
+
 	local p0 = pointed_thing.under
 	local p1 = pointed_thing.above
 
@@ -19,6 +27,14 @@ local function place_slab_normal(itemstack, placer, pointed_thing)
 end
 
 local function place_stair(itemstack, placer, pointed_thing)
+	-- Use pointed node's on_rightclick function first, if present
+	local node = minetest.get_node(pointed_thing.under)
+	if placer and not placer:get_player_control().sneak then
+		if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+			return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+		end
+	end
+
 	local p0 = pointed_thing.under
 	local p1 = pointed_thing.above
 	local param2 = 0
