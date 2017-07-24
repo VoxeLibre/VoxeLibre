@@ -151,12 +151,10 @@ local update_sign = function(pos, fields, sender)
 	if not meta then
 		return
 	end
-	local owner = meta:get_string("owner")
 	local text = meta:get_string("text")
-	if fields and (sender:get_player_name() == owner or (text == "" and fields.text)) then
+	if fields and (text == "" and fields.text) then
 		meta:set_string("text", fields.text)
 		text = fields.text
-		meta:set_string("owner", sender:get_player_name() or "")
 	end
 	if text == nil then
 		text = ""
