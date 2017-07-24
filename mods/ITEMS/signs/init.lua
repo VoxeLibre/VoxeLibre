@@ -21,7 +21,7 @@ end
 local SIGN_WIDTH = 115
 local SIGN_PADDING = 14
 
-local LINE_LENGTH = 16
+local LINE_LENGTH = 15
 local NUMBER_OF_LINES = 4
 
 local LINE_HEIGHT = 14
