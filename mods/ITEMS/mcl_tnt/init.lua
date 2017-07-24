@@ -24,11 +24,13 @@ local function do_tnt_physics(tnt_np,tntr)
             if v ~= nil then
                 obj:setvelocity({x=(p.x - tnt_np.x) + (tntr / 4) + v.x, y=(p.y - tnt_np.y) + (tntr / 2) + v.y, z=(p.z - tnt_np.z) + (tntr / 4) + v.z})
             else
+                local dist = math.max(1, vector.distance(tnt_np, p))
+                local damage = (4 / dist) * tntr
                 if obj:is_player() == true then
                     mcl_death_messages.player_damage(obj, string.format("%s was caught in an explosion.", obj:get_player_name()))
-                    obj:set_hp(obj:get_hp() - 1)
                     mcl_hunger.exhaust(obj:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
                 end
+                obj:set_hp(obj:get_hp() - damage)
             end
         end
     end
@@ -75,8 +77,6 @@ local TNT = {
 			"default_tnt_side.png", "default_tnt_side.png"},
 	-- Initial value for our timer
 	timer = 0,
-	-- Number of punches required to defuse
-	health = 1,
 	blinktimer = 0,
 	blinkstatus = true,}
 
