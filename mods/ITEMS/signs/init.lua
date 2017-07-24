@@ -18,8 +18,8 @@ else
 end
 
 -- CONSTANTS
-local SIGN_WIDTH = 110
-local SIGN_PADDING = 8
+local SIGN_WIDTH = 115
+local SIGN_PADDING = 14
 
 local LINE_LENGTH = 16
 local NUMBER_OF_LINES = 4
@@ -94,7 +94,7 @@ local generate_line = function(s, ypos)
 	width = width - 1
 
 	local texture = ""
-	local xpos = math.floor((SIGN_WIDTH - 2 * SIGN_PADDING - width) / 2 + SIGN_PADDING)
+	local xpos = math.floor((SIGN_WIDTH - SIGN_PADDING - width) / 2)
 	for i = 1, #parsed do
 		texture = texture..":"..xpos..","..ypos.."="..parsed[i]..".png"
 		xpos = xpos + CHAR_WIDTH + 1
