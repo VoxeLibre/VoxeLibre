@@ -8,6 +8,14 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 	stack_max = 1,
 	groups = { tool = 1 },
 	on_place = function(itemstack, user, pointed_thing)
+		-- Use pointed node's on_rightclick function first, if present
+		local node = minetest.get_node(pointed_thing.under)
+		if user and not user:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
+			end
+		end
+
 		local idef = itemstack:get_definition()
 		minetest.sound_play(
 			"fire_flint_and_steel",
