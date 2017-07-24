@@ -5,7 +5,7 @@ minetest.register_node("mesecons_lightstone:lightstone_off", {
 	is_ground_content = false,
 	description= "Redstone Lamp",
 	_doc_items_longdesc = "Redstone lamps are simple redstone components which glow brightly (light level 14) when they receive redstone power.",
-	sounds = mcl_sounds.node_sound_stone_defaults(),
+	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {effector = {
 		action_on = function (pos, node)
 			mesecon:swap_node(pos, "mesecons_lightstone:lightstone_on")
@@ -24,7 +24,7 @@ minetest.register_node("mesecons_lightstone:lightstone_on", {
 	paramtype = "light",
 	-- Real light level: 15 (Minetest caps at 14)
 	light_source = 14,
-	sounds = mcl_sounds.node_sound_stone_defaults(),
+	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {effector = {
 		action_off = function (pos, node)
 			mesecon:swap_node(pos, "mesecons_lightstone:lightstone_off")
