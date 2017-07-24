@@ -1,12 +1,10 @@
+mcl_death_messages = {}
+
 -- Death messages
 local msgs = {
 	["arrow"] = {
 		"%s was fatally hit by an arrow.",
 		"%s has been killed with an arrow.",
-	},
-	["cactus"] = {
-		"%s was killed by a cactus.",
-		"%s was pricked to death.",
 	},
 	["fire"] = {
 		"%s has been cooked crisp.",
@@ -123,45 +121,9 @@ local mmsg = function(mtype, ...)
 	end
 end
 
-local last_punches = { }
+local last_damages = { }
 
 minetest.register_on_dieplayer(function(player)
-	local keep = minetest.setting_getbool("mcl_keepInventory") or false
-	if keep == false then
-		-- Drop inventory, crafting grid and armor
-		local inv = player:get_inventory()
-		local pos = player:getpos()
-		local name, player_armor_inv, armor_armor_inv, pos = armor:get_valid_player(player, "[on_dieplayer]")
-		local lists = {
-			{ inv = inv, listname = "main", drop = true },
-			{ inv = inv, listname = "craft", drop = true },
-			{ inv = player_armor_inv, listname = "armor", drop = true },
-			{ inv = armor_armor_inv, listname = "armor", drop = false },
-		}
-		for l=1,#lists do
-			local inv = lists[l].inv
-			local listname = lists[l].listname
-			local drop = lists[l].drop
-			if inv ~= nil then
-				for i, stack in ipairs(inv:get_list(listname)) do
-					local x = math.random(0, 9)/3
-					local z = math.random(0, 9)/3
-					pos.x = pos.x + x
-					pos.z = pos.z + z
-					if drop then
-						minetest.add_item(pos, stack)
-					end
-					stack:clear()
-					inv:set_stack(listname, i, stack)
-					pos.x = pos.x - x
-					pos.z = pos.z - z
-				end
-			end
-		end
-		armor:set_player_armor(player)
-		armor:update_inventory(player)
-	end
-
 	-- Death message
 	local message = minetest.setting_getbool("mcl_showDeathMessages")
 	if message == nil then message = true end
@@ -185,31 +147,31 @@ minetest.register_on_dieplayer(function(player)
 		-- Void
 		elseif node.name == "mcl_core:void" then
 			msg = dmsg("void", name)
-		-- Cactus
-		elseif node.name == "mcl_core:cactus" then
-			msg = dmsg("cactus", name)
 		-- Other
 		else
 			-- Killed by entity
-			if last_punches[name] then
+			if last_damages[name] then
 				-- Mob
-				if last_punches[name].hittertype == "mob" then
-					if last_punches[name].hittername then
-						msg = dmsg("murder", name, last_punches[name].hittername)
+				if last_damages[name].hittertype == "mob" then
+					if last_damages[name].hittername then
+						msg = dmsg("murder", name, last_damages[name].hittername)
 					else
-						msg = mmsg(last_punches[name].hittersubtype, name)
+						msg = mmsg(last_damages[name].hittersubtype, name)
 					end
 				-- Player
-				elseif last_punches[name].hittertype == "player" then
-					msg = dmsg("murder", name, last_punches[name].hittername)
+				elseif last_damages[name].hittertype == "player" then
+					msg = dmsg("murder", name, last_damages[name].hittername)
 				-- Arrow
-				elseif last_punches[name].hittertype == "arrow" then
+				elseif last_damages[name].hittertype == "arrow" then
 					msg = dmsg("arrow", name)
 				-- Fireball
-				elseif last_punches[name].hittertype == "blaze_fireball" then
+				elseif last_damages[name].hittertype == "blaze_fireball" then
 					msg = dmsg("blaze_fireball", name)
-				elseif last_punches[name].hittertype == "ghast_fireball" then
+				elseif last_damages[name].hittertype == "ghast_fireball" then
 					msg = dmsg("ghast_fireball", name)
+				-- Custom death message
+				elseif last_damages[name].custom then
+					msg = last_damages[name].message
 				end
 			-- Other reason
 			else
@@ -222,6 +184,11 @@ minetest.register_on_dieplayer(function(player)
 	end
 end)
 
+local start_damage_reset_countdown = function (player)
+	minetest.after(1, function(playername)
+		last_damages[playername] = nil
+	end, player:get_player_name())
+end
 
 minetest.register_on_punchplayer(function(player, hitter)
 	if not player or not player:is_player() or not hitter then
@@ -256,8 +223,12 @@ minetest.register_on_punchplayer(function(player, hitter)
 		return
 	end
 
-	last_punches[player:get_player_name()] = { shooter = shooter, hittername = hittername, hittertype = hittertype, hittersubtype = hittersubtype }
-	minetest.after(1, function(playername)
-		last_punches[playername] = nil
-	end, player:get_player_name())
+	last_damages[player:get_player_name()] = { shooter = shooter, hittername = hittername, hittertype = hittertype, hittersubtype = hittersubtype }
+	start_damage_reset_countdown(player)
 end)
+
+-- To be called to notify this mod that a player has been damaged, with a custom death message if the player died
+function mcl_death_messages.player_damage(player, message)
+	last_damages[player:get_player_name()] = { custom = true, message = message }
+	start_damage_reset_countdown(player)
+end

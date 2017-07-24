@@ -60,7 +60,10 @@ minetest.register_node("mcl_nether:magma", {
 	-- From walkover mod
 	on_walk_over = function(loc, nodeiamon, player)
 		-- Hurt players standing on top of this block
-		player:set_hp(player:get_hp() - 1)
+		if player:get_hp() > 0 then
+			mcl_death_messages.player_damage(player, string.format("%s stood too long on a magma block.", player:get_player_name()))
+			player:set_hp(player:get_hp() - 1)
+		end
 	end,
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,

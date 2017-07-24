@@ -167,10 +167,11 @@ minetest.register_globalstep(function(dtime)
 			-- am I touching the cactus? if so it hurts
 			for _,object in pairs(minetest.get_objects_inside_radius(near, 1.1)) do
 				if object:get_hp() > 0 then
-					object:set_hp(object:get_hp() - 1)
 					if object:is_player() then
+						mcl_death_messages.player_damage(object, string.format("%s was prickled by a cactus", object:get_player_name()))
 						mcl_hunger.exhaust(object:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
 					end
+					object:set_hp(object:get_hp() - 1)
 				end
 			end
 
