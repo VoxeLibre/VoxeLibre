@@ -6,6 +6,9 @@ local msgs = {
 		"%s was fatally hit by an arrow.",
 		"%s has been killed with an arrow.",
 	},
+	["arrow_name"] = {
+		"%s was shot by an arrow from %s.",
+	},
 	["fire"] = {
 		"%s has been cooked crisp.",
 		"%s felt the burn.",
@@ -152,7 +155,17 @@ minetest.register_on_dieplayer(function(player)
 					end
 				-- Arrow
 				elseif last_damages[name].hittertype == "arrow" then
-					msg = dmsg("arrow", name)
+					if last_damages[name].hitter:is_player() then
+						msg = dmsg("arrow_name", name, last_damages[name].hitter:get_player_name())
+					elseif last_damages[name].hitter:get_luaentity()._cmi_is_mob then
+						if last_damages[name].hitter:get_luaentity().nametag ~= "" then
+							msg = dmsg("arrow_name", name, last_damages[name].hitter:get_player_name())
+						else
+							msg = dmsg("arrow", name)
+						end
+					else
+						msg = dmsg("arrow", name)
+					end
 				-- Fireball
 				elseif last_damages[name].hittertype == "blaze_fireball" then
 					msg = dmsg("blaze_fireball", name)
