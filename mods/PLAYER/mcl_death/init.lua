@@ -108,7 +108,6 @@ end
 
 -- Select death message for death by mob
 local mmsg = function(mtype, ...)
-	minetest.log("error", dump(mtype))
 	if mobkills[mtype] then
 		return string.format(mobkills[mtype], ...)
 	else
