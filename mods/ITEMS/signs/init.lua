@@ -312,11 +312,16 @@ minetest.register_entity("signs:text", {
 	collisionbox = { 0, 0, 0, 0, 0, 0 },
 	visual = "upright_sprite",
 	textures = {},
+	physical = false,
+	collide_with_objects = false,
 
 	on_activate = function(self)
 		local meta = minetest.get_meta(self.object:getpos())
 		local text = meta:get_string("text")
-		self.object:set_properties({textures={generate_texture(create_lines(text))}})
+		self.object:set_properties({
+			textures={generate_texture(create_lines(text))},
+		})
+		self.object:set_armor_groups({ immortal = 1 })
 	end
 })
 
