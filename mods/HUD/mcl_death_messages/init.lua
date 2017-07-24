@@ -36,6 +36,9 @@ local msgs = {
 		"%s was burned to death by a blaze's fireball.",
 		"%s was killed by a fireball from a blaze.",
 	},
+	["fire_charge"] = {
+		"%s was hit by a fire charge.",
+	},
 	["ghast_fireball"] = {
 		"A ghast scared %s to death.",
 		"%s has been fireballed by a ghast.",
@@ -63,7 +66,6 @@ mobkills = {
 	["mobs_mc:ocelot"] = "%s was killed by an ocelot.",
 	["mobs_mc:ender_dragon"] = "%s was killed by an ender dragon.",
 	["mobs_mc:wither"] = "%s was killed by a wither.",
-	["mobs_mc:blaze"] = "%s was killed by a blaze.",
 	["mobs_mc:enderman"] = "%s was killed by an enderman.",
 	["mobs_mc:endermite"] = "%s was killed by an endermite.",
 	["mobs_mc:ghast"] = "%s was killed by a ghast.",
@@ -150,6 +152,8 @@ minetest.register_on_dieplayer(function(player)
 					msg = dmsg("blaze_fireball", name)
 				elseif last_damages[name].hittertype == "ghast_fireball" then
 					msg = dmsg("ghast_fireball", name)
+				elseif last_damages[name].hittertype == "fire_charge" then
+					msg = dmsg("fire_charge", name)
 				-- Custom death message
 				elseif last_damages[name].custom then
 					msg = last_damages[name].message
@@ -196,7 +200,11 @@ minetest.register_on_punchplayer(function(player, hitter)
 		end
 	-- Blaze fireball
 	elseif hitter:get_luaentity().name == "mobs_mc:blaze_fireball" then
-		hittertype = "blaze_fireball"
+		if hitter:get_luaentity()._shot_from_dispenser then
+			hittertype = "fire_charge"
+		else
+			hittertype = "blaze_fireball"
+		end
 	-- Ghast fireball
 	elseif hitter:get_luaentity().name == "mobs_monster:fireball" then
 		hittertype = "ghast_fireball"

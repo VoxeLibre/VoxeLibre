@@ -106,6 +106,7 @@ local dispenserdef = {
 					local shootpos = vector.add(pos, vector.multiply(dropdir, 0.51))
 					local fireball = minetest.add_entity(shootpos, "mobs_mc:blaze_fireball")
 					local ent = fireball:get_luaentity()
+					ent._shot_from_dispenser = true
 					local v = ent.velocity or 1
 					fireball:setvelocity(vector.multiply(dropdir, v))
 					ent.switch = 1
