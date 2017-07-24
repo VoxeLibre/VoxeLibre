@@ -5,7 +5,7 @@ local chars_file = io.open(minetest.get_modpath("signs").."/characters", "r")
 local charmap = {}
 local max_chars = 16
 if not chars_file then
-    print("[signs] E: character map file not found")
+    minetest.log("error", "[signs] : character map file not found")
 else
     while true do
         local char = chars_file:read("*l")
@@ -93,7 +93,7 @@ local generate_line = function(s, ypos)
             file = charmap[s:sub(i, i + 1)]
             i = i + 2
         else
-            print("[signs] W: unknown symbol in '"..s.."' at "..i.." (probably "..s:sub(i, i)..")")
+            minetest.log("warning", "[signs] Unknown symbol in '"..s.."' at "..i.." (probably "..s:sub(i, i)..")")
             i = i + 1
         end
         if file ~= nil then
