@@ -19,7 +19,7 @@ else
 end
 
 -- CONSTANTS
-local SIGN_WITH = 110
+local SIGN_WIDTH = 110
 local SIGN_PADDING = 8
 
 local LINE_LENGTH = 16
@@ -56,7 +56,7 @@ local create_lines = function(text)
 	local line_num = 1
 	local tab = {}
 	for _,word in ipairs(string_to_word_array(text)) do
-		if string.len(line)+string.len(word) < LINE_LENGTH and word ~= "|" then
+		if string.len(line)+string.len(word) <= LINE_LENGTH and word ~= "|" then
 			if line ~= "" then
 				line = line.." "..word
 			else
@@ -105,7 +105,7 @@ local generate_line = function(s, ypos)
 	width = width - 1
 
 	local texture = ""
-	local xpos = math.floor((SIGN_WITH - 2 * SIGN_PADDING - width) / 2 + SIGN_PADDING)
+	local xpos = math.floor((SIGN_WIDTH - 2 * SIGN_PADDING - width) / 2 + SIGN_PADDING)
 	for i = 1, #parsed do
 		texture = texture..":"..xpos..","..ypos.."="..parsed[i]..".png"
 		xpos = xpos + CHAR_WIDTH + 1
@@ -114,7 +114,7 @@ local generate_line = function(s, ypos)
 end
 
 local generate_texture = function(lines)
-	local texture = "[combine:"..SIGN_WITH.."x"..SIGN_WITH
+	local texture = "[combine:"..SIGN_WIDTH.."x"..SIGN_WIDTH
 	local ypos = 12
 	for i = 1, #lines do
 		texture = texture..generate_line(lines[i], ypos)
