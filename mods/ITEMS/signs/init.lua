@@ -148,6 +148,9 @@ end
 
 local update_sign = function(pos, fields, sender)
 	local meta = minetest.get_meta(pos)
+	if not meta then
+		return
+	end
 	local owner = meta:get_string("owner")
 	local text = meta:get_string("text")
 	if fields and sender:get_player_name() == owner or text == "" and fields then
