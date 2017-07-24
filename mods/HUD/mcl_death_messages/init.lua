@@ -143,7 +143,13 @@ minetest.register_on_dieplayer(function(player)
 					end
 				-- Player
 				elseif last_damages[name].hittertype == "player" then
-					msg = dmsg("murder", name, last_damages[name].hittername)
+					if last_damages[name].hittername == name then
+						-- Workaround when player somehow punches self. Caused by creeper explosions in mobs mod.
+						-- FIXME: Remove when self-punching is no longer buggy.
+						msg = dmsg("other", name)
+					else
+						msg = dmsg("murder", name, last_damages[name].hittername)
+					end
 				-- Arrow
 				elseif last_damages[name].hittertype == "arrow" then
 					msg = dmsg("arrow", name)
