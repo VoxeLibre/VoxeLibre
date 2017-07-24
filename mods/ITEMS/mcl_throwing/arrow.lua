@@ -59,13 +59,13 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 
 		-- Iterate through all objects and remember the closest attackable object
 		for k, obj in pairs(objs) do
-			if obj:get_luaentity() ~= nil then
-				local entity_name = obj:get_luaentity().name
-				if obj ~= self._shooter and entity_name ~= "mcl_throwing:arrow_entity" and entity_name ~= "__builtin:item" and entity_name ~= "__builtin:falling_node" then
+			-- Arrows can only damage players and mobs
+			if obj ~= self._shooter and obj:is_player() then
+				ok = true
+			elseif obj:get_luaentity() ~= nil then
+				if obj ~= self._shooter and obj:get_luaentity()._cmi_is_mob then
 					ok = true
 				end
-			elseif obj ~= self._shooter then
-				ok = true
 			end
 
 			if ok then
@@ -83,36 +83,28 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 		-- If an attackable object was found, we will damage the closest one only
 		if closest_object ~= nil then
 			local obj = closest_object
-			if obj:get_luaentity() ~= nil then
-				local entity_name = obj:get_luaentity().name
-				if obj ~= self._shooter and entity_name ~= "mcl_throwing:arrow_entity" and entity_name ~= "__builtin:item" and entity_name ~= "__builtin:falling_node" then
-					obj:punch(self.object, 1.0, {
-						full_punch_interval=1.0,
-						damage_groups={fleshy=self._damage},
-					}, nil)
-					if obj:is_player() then
-						mcl_hunger.exhaust(obj:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
-					end
-
-					-- Achievement for hitting skeleton, wither skeleton or stray (TODO) with an arrow at least 50 meters away
-					-- NOTE: Range has been reduced because mobs unload much earlier than that ... >_>
-					-- TODO: This achievement should be given for the kill, not just a hit
-					if self._shooter and self._shooter:is_player() and vector.distance(pos, self._startpos) >= 20 then
-						if (entity_name == "mobs_mc:skeleton" or entity_name == "mobs_mc:skeleton2") then
-							awards.unlock(self._shooter:get_player_name(), "mcl:snipeSkeleton")
-						end
-					end
-					self.object:remove()
-				end
-			elseif obj ~= self._shooter then
+			local is_player = obj:is_player()
+			local lua = obj:get_luaentity()
+			if obj ~= self._shooter and (is_player or (lua and lua._cmi_is_mob)) then
 				obj:punch(self.object, 1.0, {
 					full_punch_interval=1.0,
 					damage_groups={fleshy=self._damage},
 				}, nil)
-				if obj:is_player() then
+				if is_player then
 					mcl_hunger.exhaust(obj:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
 				end
 
+				if lua then
+					local entity_name = lua.name
+					-- Achievement for hitting skeleton, wither skeleton or stray (TODO) with an arrow at least 50 meters away
+					-- NOTE: Range has been reduced because mobs unload much earlier than that ... >_>
+					-- TODO: This achievement should be given for the kill, not just a hit
+					if self._shooter and self._shooter:is_player() and vector.distance(pos, self._startpos) >= 20 then
+						if (entity_name == "mobs_mc:skeleton" or entity_name == "mobs_mc:stray" or entity_name == "mobs_mc:witherskeleton") then
+							awards.unlock(self._shooter:get_player_name(), "mcl:snipeSkeleton")
+						end
+					end
+				end
 				self.object:remove()
 			end
 		end
