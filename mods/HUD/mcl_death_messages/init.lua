@@ -12,9 +12,6 @@ local msgs = {
 		"%s died in the flames.",
 		"%s died in a fire.",
 	},
-	["explosion"] = {
-		"%s was caught in an explosion.",
-	},
 	["lava"] = {
 		"%s melted in lava.",
 		"%s took a bath in a hot lava tub.",
@@ -25,12 +22,6 @@ local msgs = {
 		"%s forgot to breathe.",
 		"%s drowned.",
 		"%s ran out of oxygen.",
-	},
-	["void"] = {
-		"%s fell into the endless void.",
-	},
-	["suffocation"] = {
-		"%s suffocated to death.",
 	},
 	["starve"] = {
 		"%s starved.",
@@ -48,13 +39,6 @@ local msgs = {
 	["ghast_fireball"] = {
 		"A ghast scared %s to death.",
 		"%s has been fireballed by a ghast.",
-	},
-	["falling_anvil"] = {
-		"%s was smashed by a falling anvil!",
-	},
-	["falling_block"] = {
-		"%s was smashed by a falling block.",
-		"%s was buried under a falling block.",
 	},
 	["fall_damage"] = {
 		"%s fell from a high cliff.",
@@ -144,9 +128,6 @@ minetest.register_on_dieplayer(function(player)
 		-- Fire
 		elseif minetest.get_item_group(node.name, "fire") ~= 0 then
 			msg = dmsg("fire", name)
-		-- Void
-		elseif node.name == "mcl_core:void" then
-			msg = dmsg("void", name)
 		-- Other
 		else
 			-- Killed by entity
@@ -227,7 +208,7 @@ minetest.register_on_punchplayer(function(player, hitter)
 	start_damage_reset_countdown(player)
 end)
 
--- To be called to notify this mod that a player has been damaged, with a custom death message if the player died
+-- To be called BEFORE damaging a player. If the player died, then message will be used as the death message.
 function mcl_death_messages.player_damage(player, message)
 	last_damages[player:get_player_name()] = { custom = true, message = message }
 	start_damage_reset_countdown(player)

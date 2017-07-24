@@ -35,10 +35,11 @@ local on_step_add = function(self, dtime)
 					if hp < 0 then
 						hp = 0
 					end
-					v:set_hp(hp)
 					if v:is_player() then
+						mcl_death_messages.player_damage(v, string.format("%s was smashed by a falling anvil.", v:get_player_name()))
 						mcl_hunger.exhaust(v:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
 					end
+					v:set_hp(hp)
 					if hp == 0 then
 						kill = true
 					end

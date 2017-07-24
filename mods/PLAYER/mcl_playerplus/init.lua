@@ -156,6 +156,7 @@ minetest.register_globalstep(function(dtime)
 		-- Check privilege, too
 		and (not minetest.check_player_privs(name, {noclip = true})) then
 			if player:get_hp() > 0 then
+				mcl_death_messages.player_damage(player, string.format("%s suffocated to death.", player:get_player_name()))
 				player:set_hp(player:get_hp() - 1)
 			end
 		end
@@ -168,7 +169,7 @@ minetest.register_globalstep(function(dtime)
 			for _,object in pairs(minetest.get_objects_inside_radius(near, 1.1)) do
 				if object:get_hp() > 0 then
 					if object:is_player() then
-						mcl_death_messages.player_damage(object, string.format("%s was prickled by a cactus", object:get_player_name()))
+						mcl_death_messages.player_damage(object, string.format("%s was prickled by a cactus.", object:get_player_name()))
 						mcl_hunger.exhaust(object:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
 					end
 					object:set_hp(object:get_hp() - 1)
@@ -189,6 +190,7 @@ minetest.register_globalstep(function(dtime)
 		if void_deadly then
 			-- Player is deep into the void, deal void damage
 			if player:get_hp() > 0 then
+				mcl_death_messages.player_damage(player, string.format("%s fell into the endless void.", player:get_player_name()))
 				player:set_hp(player:get_hp() - 4)
 			end
 		end
