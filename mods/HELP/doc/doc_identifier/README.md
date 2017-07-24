@@ -25,8 +25,5 @@ and Item Help [`doc_items`] for getting the item documentation right.
 For the lookup tool to be able to work on custom objects/entities, you have to
 use the tiny API of this mod, see `API.md`.
 
-## Credits
-Everything created by Wuzzy.
-
 ## License
 Everything in this mod is licensed under the MIT License.
