@@ -3,7 +3,6 @@
 -- load characters map
 local chars_file = io.open(minetest.get_modpath("signs").."/characters", "r")
 local charmap = {}
-local max_chars = 16
 if not chars_file then
 	minetest.log("error", "[signs] : character map file not found")
 else
@@ -36,46 +35,36 @@ local string_to_array = function(str)
 	return tab
 end
 
-local string_to_word_array = function(str)
+local string_to_line_array = function(str)
 	local tab = {}
 	local current = 1
+	local linechar = 1
 	tab[1] = ""
 	for _,char in ipairs(string_to_array(str)) do
-		if char ~= " " then
-			tab[current] = tab[current]..char
-		else
-			current = current+1
+		-- New line
+		if char == "\n" then
+			current = current + 1
 			tab[current] = ""
+			linechar = 1
+		-- This check cuts off overlong lines
+		elseif linechar <= LINE_LENGTH then
+			tab[current] = tab[current]..char
+			linechar = linechar + 1
 		end
 	end
 	return tab
 end
 
 local create_lines = function(text)
-	local line = ""
 	local line_num = 1
 	local tab = {}
-	for _,word in ipairs(string_to_word_array(text)) do
-		if string.len(line)+string.len(word) <= LINE_LENGTH and word ~= "|" then
-			if line ~= "" then
-				line = line.." "..word
-			else
-				line = word
-			end
-		else
-			table.insert(tab, line)
-			if word ~= "|" then
-				line = word
-			else
-				line = ""
-			end
-			line_num = line_num+1
-			if line_num > NUMBER_OF_LINES then
-				return tab
-			end
+	for _, line in ipairs(string_to_line_array(text)) do
+		if line_num > NUMBER_OF_LINES then
+			break
 		end
+		table.insert(tab, line)
+		line_num = line_num + 1
 	end
-	table.insert(tab, line)
 	return tab
 end
 
@@ -84,7 +73,7 @@ local generate_line = function(s, ypos)
 	local parsed = {}
 	local width = 0
 	local chars = 0
-	while chars < max_chars and i <= #s do
+	while chars <= LINE_LENGTH and i <= #s do
 		local file = nil
 		if charmap[s:sub(i, i)] ~= nil then
 			file = charmap[s:sub(i, i)]
@@ -115,7 +104,7 @@ end
 
 local generate_texture = function(lines)
 	local texture = "[combine:"..SIGN_WIDTH.."x"..SIGN_WIDTH
-	local ypos = 12
+	local ypos = 9
 	for i = 1, #lines do
 		texture = texture..generate_line(lines[i], ypos)
 		ypos = ypos + LINE_HEIGHT
@@ -145,7 +134,7 @@ local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1, material_wood=1}
 
 local construct_sign = function(pos)
 	local meta = minetest.get_meta(pos)
-	meta:set_string("formspec", "field[text;;${text}]")
+	meta:set_string("formspec", "size[6,3]textarea[0.25,0;6,1.5;text;;]button_exit[2,2;2,1;submit;Write]")
 end
 
 local destruct_sign = function(pos)
@@ -163,9 +152,9 @@ local update_sign = function(pos, fields, sender)
 	local text = meta:get_string("text")
 	if fields and sender:get_player_name() == owner or text == "" and fields then
 		meta:set_string("text", fields.text)
+		text = fields.text
 		meta:set_string("owner", sender:get_player_name() or "")
 	end
-	text = meta:get_string("text")
 	local objects = minetest.get_objects_inside_radius(pos, 0.5)
 	for _, v in ipairs(objects) do
 		if v:get_entity_name() == "signs:text" then
@@ -184,10 +173,10 @@ local update_sign = function(pos, fields, sender)
 	if sign_info == nil then
 		return
 	end
-	local text = minetest.add_entity({x = pos.x + sign_info.delta.x,
+	local text_entity = minetest.add_entity({x = pos.x + sign_info.delta.x,
 										y = pos.y + sign_info.delta.y,
 										z = pos.z + sign_info.delta.z}, "signs:text")
-	text:setyaw(sign_info.yaw)
+	text_entity:setyaw(sign_info.yaw)
 end
 
 minetest.register_node("signs:sign_wall", {
