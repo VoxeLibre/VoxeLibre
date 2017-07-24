@@ -121,7 +121,7 @@ local signs = {
 	{delta = {x = -n, y = 0, z = 0}, yaw = math.pi / 2},
 }
 
-local m = 1/16 + 1/128
+local m = 1/32 + 1/128
 
 local signs_yard = {
 	{delta = {x = 0, y = 0, z = -m}, yaw = 0},
@@ -281,11 +281,11 @@ minetest.register_node("signs:sign_yard", {
 	paramtype2 = "facedir",
 	drawtype = "nodebox",
 	node_box = {type = "fixed", fixed = {
-		{-7/16, -1/16, -1/16, 7/16, 7/16, 0},
-		{-1/16, -0.5, -1/16, 1/16, -1/16, 0},
-		{-1/16, 7/16, -1/16, 1/16, 0.5, 0},
+		{-7/16, -1/16, -1/32, 7/16, 7/16, 1/32},
+		{-1/16, -0.5, -1/32, 1/16, -1/16, 1/32},
+		{-1/16, 7/16, -1/32, 1/16, 0.5, 1/32},
 	}},
-	selection_box = {type = "fixed", fixed = {-7/16, -0.5, -1/16, 7/16, 0.5, 0}},
+	selection_box = {type = "fixed", fixed = {-7/16, -0.5, -1/32, 7/16, 0.5, 1/32}},
 	tiles = {"signs_top.png", "signs_bottom.png", "signs_side.png", "signs_side.png", "signs_back.png", "signs_front.png"},
 	groups = sign_groups,
 	drop = "signs:sign_wall",
