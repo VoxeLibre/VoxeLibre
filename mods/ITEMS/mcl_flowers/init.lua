@@ -353,8 +353,13 @@ minetest.register_node("mcl_flowers:waterlily", {
 					(minetest.get_item_group(nodename, "frosted_ice") > 0)) and
 					(def_above.buildable_to and minetest.get_item_group(node_above, "liquid") == 0) then
 				if not minetest.is_protected(pos, player_name) then
-					minetest.set_node(pos, {name = "mcl_flowers:waterlily",
-						param2 = math.random(0, 3)})
+					minetest.set_node(pos, {name = "mcl_flowers:waterlily", param2 = math.random(0, 3)})
+					local idef = itemstack:get_definition()
+
+					if idef.sounds and idef.sounds.place then
+						minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
+					end
+
 					if not minetest.setting_getbool("creative_mode") then
 						itemstack:take_item()
 					end
