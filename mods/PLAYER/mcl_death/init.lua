@@ -43,6 +43,14 @@ local msgs = {
 	["mob_kill"] = {
 		"%s was killed by a mob.",
 	},
+	["blaze_fireball"] = {
+		"%s was burned to death by a blaze's fireball.",
+		"%s was killed by a fireball from a blaze.",
+	},
+	["ghast_fireball"] = {
+		"A ghast scared %s to death.",
+		"%s has been fireballed by a ghast.",
+	},
 	["falling_anvil"] = {
 		"%s was smashed by a falling anvil!",
 	},
@@ -197,6 +205,11 @@ minetest.register_on_dieplayer(function(player)
 				-- Arrow
 				elseif last_punches[name].hittertype == "arrow" then
 					msg = dmsg("arrow", name)
+				-- Fireball
+				elseif last_punches[name].hittertype == "blaze_fireball" then
+					msg = dmsg("blaze_fireball", name)
+				elseif last_punches[name].hittertype == "ghast_fireball" then
+					msg = dmsg("ghast_fireball", name)
 				end
 			-- Other reason
 			else
@@ -233,6 +246,12 @@ minetest.register_on_punchplayer(function(player, hitter)
 		if hitter:get_luaentity()._shooter then
 			shooter = hitter:get_luaentity()._shooter
 		end
+	-- Blaze fireball
+	elseif hitter:get_luaentity().name == "mobs_mc:blaze_fireball" then
+		hittertype = "blaze_fireball"
+	-- Ghast fireball
+	elseif hitter:get_luaentity().name == "mobs_monster:fireball" then
+		hittertype = "ghast_fireball"
 	else
 		return
 	end
