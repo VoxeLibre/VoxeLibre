@@ -132,11 +132,6 @@ local signs_yard = {
 
 local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1, material_wood=1}
 
-local construct_sign = function(pos)
-	local meta = minetest.get_meta(pos)
-	meta:set_string("formspec", "size[6,3]textarea[0.25,0;6,1.5;text;;]button_exit[2,2;2,1;submit;Write]")
-end
-
 local destruct_sign = function(pos)
 	local objects = minetest.get_objects_inside_radius(pos, 0.5)
 	for _, v in ipairs(objects) do
@@ -182,6 +177,21 @@ local update_sign = function(pos, fields, sender)
 										z = pos.z + sign_info.delta.z}, "signs:text")
 	text_entity:setyaw(sign_info.yaw)
 end
+
+local show_formspec = function(player, pos)
+	minetest.show_formspec(player:get_player_name(), "signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z, "size[6,3]textarea[0.25,0;6,1.5;text;;]button_exit[2,2;2,1;submit;Done]")
+end
+
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	if formname:find("signs:set_text_") == 1 then
+		local x, y, z = formname:match("signs:set_text_(.-)_(.-)_(.*)")
+		local pos = {x=tonumber(x), y=tonumber(y), z=tonumber(z)}
+		if not pos or not pos.x or not pos.y or not pos.z then return end
+		update_sign(pos, fields, player)
+	end
+end)
+
+
 
 minetest.register_node("signs:sign_wall", {
 	description = "Sign",
@@ -238,35 +248,35 @@ minetest.register_node("signs:sign_wall", {
 		local fdir = minetest.dir_to_facedir(dir)
 
 		local sign_info
+		local place_pos
 		if wdir == 0 then
 			--how would you add sign to ceiling?
-		return itemstack
+			return itemstack
 		elseif wdir == 1 then
-			minetest.add_node(above, {name = "signs:sign_yard", param2 = fdir})
+			place_pos = above
+			minetest.add_node(place_pos, {name = "signs:sign_yard", param2 = fdir})
 			sign_info = signs_yard[fdir + 1]
 		else
-			minetest.add_node(above, {name = "signs:sign_wall", param2 = fdir})
+			place_pos = above
+			minetest.add_node(place_pos, {name = "signs:sign_wall", param2 = fdir})
 			sign_info = signs[fdir + 1]
 		end
 
 		local text = minetest.add_entity({
-			x = above.x + sign_info.delta.x,
-			y = above.y + sign_info.delta.y,
-			z = above.z + sign_info.delta.z}, "signs:text")
+			x = place_pos.x + sign_info.delta.x,
+			y = place_pos.y + sign_info.delta.y,
+			z = place_pos.z + sign_info.delta.z}, "signs:text")
 		text:setyaw(sign_info.yaw)
 
-	if not minetest.setting_getbool("creative_mode") then
-		itemstack:take_item()
-	end
-	minetest.sound_play({name="default_place_node_hard", gain=1.0}, {pos = under})
+		if not minetest.setting_getbool("creative_mode") then
+			itemstack:take_item()
+		end
+		minetest.sound_play({name="default_place_node_hard", gain=1.0}, {pos = place_pos})
+
+		show_formspec(placer, place_pos)
 		return itemstack
 	end,
-	on_construct = function(pos)
-		construct_sign(pos)
-	end,
-	on_destruct = function(pos)
-		destruct_sign(pos)
-	end,
+	on_destruct = destruct_sign,
 	on_receive_fields = function(pos, formname, fields, sender)
 		update_sign(pos, fields, sender)
 	end,
@@ -296,12 +306,7 @@ minetest.register_node("signs:sign_yard", {
 	stack_max = 16,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 
-	on_construct = function(pos)
-		construct_sign(pos)
-	end,
-	on_destruct = function(pos)
-		destruct_sign(pos)
-	end,
+	on_destruct = destruct_sign,
 	on_receive_fields = function(pos, formname, fields, sender)
 		update_sign(pos, fields, sender)
 	end,
