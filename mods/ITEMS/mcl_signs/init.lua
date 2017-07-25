@@ -309,9 +309,8 @@ minetest.register_node("mcl_signs:standing_sign", {
 	node_box = {type = "fixed", fixed = {
 		{-7/16, -1/16, -1/32, 7/16, 7/16, 1/32},
 		{-1/16, -0.5, -1/32, 1/16, -1/16, 1/32},
-		{-1/16, 7/16, -1/32, 1/16, 0.5, 1/32},
 	}},
-	selection_box = {type = "fixed", fixed = {-7/16, -0.5, -1/32, 7/16, 0.5, 1/32}},
+	selection_box = {type = "fixed", fixed = {-7/16, -0.5, -1/32, 7/16, 7/16, 1/32}},
 	tiles = {"signs_top.png", "signs_bottom.png", "signs_side.png", "signs_side.png", "signs_back.png", "signs_front.png"},
 	groups = sign_groups,
 	drop = "mcl_signs:wall_sign",
