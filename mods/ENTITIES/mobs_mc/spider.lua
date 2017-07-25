@@ -23,6 +23,7 @@ local spider = {
 	attack_type = "dogfight",
 	pathfinding = 1,
 	damage = 2,
+	reach = 2,
 	hp_min = 16,
 	hp_max = 16,
 	collisionbox = {-0.7, -0.01, -0.7, 0.7, 0.89, 0.7},

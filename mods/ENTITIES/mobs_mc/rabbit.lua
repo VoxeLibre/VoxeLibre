@@ -7,7 +7,7 @@ local S, NS = dofile(MP.."/intllib.lua")
 local rabbit = {
 	type = "animal",
 	passive = true,
-	reach = 2,
+	reach = 1,
 
 	hp_min = 3,
 	hp_max = 3,

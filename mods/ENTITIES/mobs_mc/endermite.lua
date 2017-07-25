@@ -33,6 +33,7 @@ mobs:register_mob("mobs_mc:endermite", {
 	fear_height = 4,
 	view_range = 16,
 	damage = 2,
+	reach = 1,
 	blood_amount = 0,
 })
 

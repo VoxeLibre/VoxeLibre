@@ -47,6 +47,7 @@ local wolf = {
 	run_velocity = 3,
 	stepheight = 1.1,
 	damage = 4,
+	reach = 2,
 	attack_type = "dogfight",
 	fear_height = 4,
 	water_damage = 0,

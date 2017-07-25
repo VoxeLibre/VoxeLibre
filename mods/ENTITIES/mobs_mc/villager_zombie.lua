@@ -33,6 +33,7 @@ mobs:register_mob("mobs_mc:villager_zombie", {
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
 	damage = 3,
+	reach = 2,
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
 	attack_type = "dogfight",

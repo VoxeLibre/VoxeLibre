@@ -34,6 +34,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	walk_velocity = .8,
 	run_velocity = 1.6,
 	damage = 6,
+	reach = 2,
 	pathfinding = 1,
 	drops = {
 		{name = mobs_mc.items.blaze_rod,

@@ -31,6 +31,7 @@ mobs:register_mob("mobs_mc:vex", {
 	},
 	visual_size = {x=1.25, y=1.25},
 	damage = 9,
+	reach = 2,
 	view_range = 16,
 	walk_velocity = 3.2,
 	run_velocity = 5.9,

@@ -39,6 +39,7 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
 	damage = 7,
+	reach = 2,
 	drops = {
 		{name = mobs_mc.items.coal,
 		chance = 1,
@@ -58,17 +59,19 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 	animation = {
 		stand_start = 0,
 		stand_end = 40,
-		speed_stand = 5,
+		stand_speed = 5,
 		walk_start = 40,
 		walk_end = 60,
-		speed_walk = 50,
+		walk_speed = 50,
 		shoot_start = 70,
 		shoot_end = 90,
 		punch_start = 70,
 		punch_end = 90,
 		die_start = 120,
 		die_end = 130,
-		speed_die = 5,
+		die_loop = false,
+
+		-- Not supported yet
 		hurt_start = 100,
 		hurt_end = 120,
 	},

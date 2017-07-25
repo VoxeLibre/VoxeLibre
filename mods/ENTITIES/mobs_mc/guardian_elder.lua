@@ -19,6 +19,7 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 	walk_velocity = 2,
 	run_velocity = 4,
 	damage = 8,
+	reach = 3,
 	collisionbox = {-0.99875, 0.5, -0.99875, 0.99875, 2.4975, 0.99875},
 	visual = "mesh",
 	mesh = "mobs_mc_guardian.b3d",

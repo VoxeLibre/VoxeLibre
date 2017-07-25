@@ -23,6 +23,7 @@ local pigman = {
 	attack_type = "dogfight",
 	group_attack = true,
 	damage = 9,
+	reach = 2,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_zombie_pigman.b3d",

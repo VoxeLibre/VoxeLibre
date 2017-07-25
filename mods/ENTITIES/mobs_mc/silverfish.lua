@@ -41,6 +41,7 @@ mobs:register_mob("mobs_mc:silverfish", {
 	view_range = 16,
 	attack_type = "dogfight",
 	damage = 1,
+	reach = 1,
 	blood_amount = 0,
 })
 

@@ -64,6 +64,7 @@ local ocelot = {
 	attack_type = "dogfight",
 	pathfinding = 1,
 	damage = 2,
+	reach = 1,
 	attack_animals = true,
 	specific_attack = { "mobs_mc:chicken" },
 	on_rightclick = function(self, clicker)

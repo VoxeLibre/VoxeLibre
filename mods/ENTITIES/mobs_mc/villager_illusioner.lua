@@ -28,19 +28,16 @@ mobs:register_mob("mobs_mc:illusioner", {
 	animation = {
 		walk_speed = 25,
 		run_speed = 25,
-		shoot_speed = 25,
 		stand_start = 40,
 		stand_end = 59,
-		stand_speed = 5,
 		walk_start = 0,
 		walk_end = 40,
-		--speed_walk = 50,
 		shoot_start = 90,
 		shoot_end = 110,
 		die_start = 110,
 		die_end = 130,
-		die_speed = 5,
-        -- 60-80 magic arm swinging, 80-90 transition between magic to bow shooting
+		die_loop = false,
+		-- 60-80 magic arm swinging, 80-90 transition between magic to bow shooting
 	},
 	view_range = 16,
 	fear_height = 4,

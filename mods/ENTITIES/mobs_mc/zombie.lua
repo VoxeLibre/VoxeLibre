@@ -38,6 +38,7 @@ local zombie = {
 	walk_velocity = .8,
 	run_velocity = 1.6,
 	damage = 3,
+	reach = 2,
 	fear_height = 4,
 	pathfinding = 1,
 	jump = true,

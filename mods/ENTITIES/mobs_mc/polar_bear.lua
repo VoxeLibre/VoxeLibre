@@ -27,6 +27,7 @@ mobs:register_mob("mobs_mc:polar_bear", {
 	visual_size = {x=3.0, y=3.0},
 	makes_footstep_sound = true,
 	damage = 6,
+	reach = 2,
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
 	group_attack = true,

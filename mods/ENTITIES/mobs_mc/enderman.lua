@@ -42,6 +42,7 @@ mobs:register_mob("mobs_mc:enderman", {
 	walk_velocity = 0.2,
 	run_velocity = 3.4,
 	damage = 7,
+	reach = 2,
 	drops = {
 		{name = mobs_mc.items.ender_pearl,
 		chance = 1,

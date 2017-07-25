@@ -49,7 +49,7 @@ Origin of those models:
         * `mobs_mc_parrot_grey.png`
         * `mobs_mc_parrot_red_blue.png`
         * `mobs_mc_parrot_yellow_blue.png`
-        * `mobs_mc_evoker_base.png`
+        * `mobs_mc_evoker_base.png` (modified by kingoscargames)
         * `mobs_mc_illusionist_bow.png`
         * `mobs_mc_illusionist.png`
         * `mobs_mc_vindicator_axe.png`
@@ -58,6 +58,13 @@ Origin of those models:
     * Additions by kingoscargames:
         * `mobs_mc_vex.png`
         * `mobs_mc_vex_charging.png`
+        * `mobs_mc_llama.png`
+        * `mobs_mc_llama_creamy.png`
+        * `mobs_mc_llama_brown.png`
+        * `mobs_mc_llama_white.png`
+        * `mobs_mc_llama_gray.png`
+        * `mobs_mc_llama_chest.png`
+        * `mobs_mc_endermite.png`
 
 * “Spawn egg” textures (`mobs_mc_spawn_icon_*`) by 22i
 * Any other texture not mentioned here are licensed under the MIT License

@@ -40,6 +40,7 @@ mobs:register_mob("mobs_mc:iron_golem", {
 	run_velocity = 1.2,
 	-- Approximation
 	damage = 14,
+	reach = 3,
 	group_attack = true,
 	attacks_monsters = true,
 	attack_type = "dogfight",
