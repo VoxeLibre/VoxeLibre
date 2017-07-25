@@ -12,7 +12,7 @@ local crash_threshold = 6.5 -- ignored if enable_crash=false
 
 local node_ok = function(pos, fallback)
 
-	fallback = fallback or "mcl_core:dirt"
+	fallback = fallback or mobs.fallback_node
 
 	local node = minetest.get_node_or_nil(pos)
 

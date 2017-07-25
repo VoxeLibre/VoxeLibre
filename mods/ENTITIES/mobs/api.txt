@@ -1,5 +1,5 @@
 
-MOB API (4th July 2017)
+MOB API (13th July 2017)
 
 The mob api is a function that can be called on by other mods to add new animals or monsters into minetest.
 
@@ -8,7 +8,7 @@ The mob api is a function that can be called on by other mods to add new animals
     'enable_damage' if true monsters will attack players (default is true)
     'only_peaceful_mobs' if true only animals will spawn in game (default is false)
     'mobs_disable_blood' if false blood effects appear when mob is hit (default is false)
-    'mobs_spawn_protected' if set to 1 then mobs will not spawn in protected areas (default is 0)
+    'mobs_spawn_protected' if set to false then mobs will not spawn in protected areas (default is true)
     'remove_far_mobs' if true then mobs that are outside players visual range will be removed (default is false)
     'mobname' can change specific mob chance rate (0 to disable) and spawn number e.g. mobs_animal:cow = 1000,5
     'mob_difficulty' sets difficulty level (health and hit damage multiplied by this number), defaults to 1.0.
@@ -229,15 +229,14 @@ This function registers a spawn egg which can be used by admin to properly spawn
     'no_creative' when set to true this stops spawn egg appearing in creative mode for destructive mobs like Dungeon Masters
 
 
-mobs:explosion(pos, radius, fire, smoke)
+mobs:explosion(pos, radius) -- DEPRECATED!!!  use mobs:boom() instead
 
-This function generates an explosion which removes nodes in a specific radius and replace them with fire or air. Protection nodes, obsidian and locked chests will not be destroyed although a normal chest will drop it's contents.
+mobs:boom(self, pos, radius)
+This function generates an explosion which removes nodes in a specific radius and damages any entity caught inside the blast radius.  Protection will limit node destruction but not entity damage.
 
+    'self' mob entity
     'pos' centre position of explosion
     'radius' radius of explosion (typically set to 3)
-    'fire' should fire appear in explosion (1=yes, 0=no)
-    'smoke' should smoke appear in explosion (1=yes, 0=no)
-    'sound' sound played when mob explodes
 
 
 mobs:capture_mob(self, clicker, chance_hand, chance_net, chance_lasso, force_take, replacewith)
