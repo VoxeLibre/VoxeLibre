@@ -76,11 +76,22 @@ in development versions of Minetest.
 To install MineClone 2, move this directory into the “games” directory of
 your Minetest data directory. Consult the help of Minetest to learn more.
 
-The MineClone 2 icon has two grass blocks.
+## Project description
+The main goal of **MineClone 2** is to be a clone of Minecraft and to be released as free software.
+
+* **Target of development: Minecraft, PC Edition, version 1.11** (later known as “Java Edition”)
+* Features of later Minecraft versions might sneak in, but they have a low priority
+* In general, Minecraft is aimed to be cloned as good as Minetest currently permits (no hacks)
+* Cloning the gameplay has highest priority
+* MineClone 2 will use different graphics and sounds, but with a similar style
+* Cloning the interface has no priority. It will only be roughly imitated
+* Limitations found in Minetest will be written down and reported in the course of development
 
 ## Completion status
-This game is very unfinished at this moment. Expect bugs! Expect chaos
-and destruction to rain down on your worlds whenever you update! ;-)
+This game is currently in **alpha** stage.
+It is playable, but very unfinished, many bugs are to be expected.
+Backwards-compability is *not* guaranteed, updating your world might cause small and
+big bugs (such as “missing node” errors or even crashes).
 
 The following main features are available:
 
@@ -95,13 +106,14 @@ The following main features are available:
 * Weather
 * Redstone circuits (partially): Redstone ore, redstone, redstone repeater, levers, buttons, redstone blocks, redstone lamps
 * Minecarts (partial)
+* Boats
 * Fire
 * Buidling blocks: Stairs, slabs, doors, trapdoors, fences, fence gates, walls
 * Clock
 * Compass
 * Sponge
-* Slime block (incomplete)
-* All flowers and grasses
+* Slime block (does not interact with redstone)
+* Small plants and saplings
 * Dyes
 * Deco blocks: Glass, stained glass, glass panes, iron bars, hardened clay (and colors), heads and more
 * Item frames
@@ -110,10 +122,9 @@ The following main features are available:
 * Inventory menu
 * Creative inventory
 * Farming
-* Bookshelves
-* Books
-* More server commands
-* 3D torches
+* Bookshelves (deco only)
+* Writable books
+* A few server commands
 * And more!
 
 The following features are incomplete:
@@ -135,34 +146,23 @@ Bonus features (not found in Minecraft 1.11):
 
 * Built-in crafting guide which shows you crafting and smelting recipes
 * In-game help system containing extensive help about gameplay basics, blocks, items and more
-* New temporary crafting recipes. They only exist to make some otherwise unaccessible items available when you're not in creative mode. These recipes will be removed as development goes on an more features become available
+* Temporary crafting recipes. They only exist to make some otherwise unaccessible items available when you're not in creative mode. These recipes will be removed as development goes on an more features become available
 
 Technical differences from Minecraft:
 
-* Still very, very incomplete and buggy
-* Many blocks, items, enemies and other features are missing
-* A few items have slightly different names to make them easier to distinguish
-* Free software (“free” as in freedom *and* free beer)
-* Different music for jukebox
-* Different textures (Faithful 1.11)
-* Different engine
 * Height limit of ca. 31000 blocks (much higher than in Minecraft)
 * Horizontal world size is ca. 62000×62000 blocks (much smaller than in Minecraft, but it is still very large)
-
-
-## Project description
-The main goal of **MineClone 2** is to be a clone of Minecraft and to be released as free software.
-The focus on this clone lies especially on gameplay and to reflect it as good as possible.
-Ideally, no gameplay features will be added or removed.
-A secondary goal is to make modding easy as pie. Minetest is of great help here!
-Trying to stay faithful to the original look and feel is a side goal, but not an important one.
-If deemed neccessary, MineClone 2 *will* deviate from Minecraft in interface issues.
-There's already a built-in crafting guide and a full-blown in-game help system.
-Finally, any limitations found in Minetest (the game engine) will be written down in the course
-of development.
+* Still very, very incomplete and buggy
+* Blocks, items, enemies and other features are missing
+* A few items have slightly different names to make them easier to distinguish
+* Different music for jukebox
+* Different textures (Pixel Perfection)
+* Different sounds (various sources)
+* Different engine (Minetest)
+* Free software (“free” as in freedom *and* free beer)
 
 ## Reporting bugs
-Report all bugs and missing Minecraft features here:
+Please report all bugs and missing Minecraft features here:
 
 <https://github.com/Wuzzy2/MineClone2-Bugs>
 
@@ -174,7 +174,7 @@ Report all bugs and missing Minecraft features here:
 * `API.md`: For Minetest modders who want to mod this game
 
 ## Credits
-There are so many people to list (sorry).
+There are so many people to list (sorry). Check out the respective mod directories for details.
 
 ### Mods
 TO BE WRITTEN.
@@ -188,8 +188,9 @@ TO BE WRITTEN.
 * Bob Lennon because it's a pyro-barbare
 * Minetest's modding community for providing a huge selection of mods, some of which ended up in MineClone 2
 * Jordach for the jukebox music compilation from Big Freaking Dig
-* The workaholics who spent hours writing for the Minecraft Wiki. It's an invaluable resource for creating this game
-* Notch and Jeb for being the bigg
+* The workaholics who spent way too much time writing for the Minecraft Wiki. It's an invaluable resource for creating this game
+* Notch and Jeb for being the major forces behind Minecraft
+* XSSheep for creating the Pixel Perfection resource pack
 
 ## Info for programmers
 You find interesting and useful infos in `API.md`.
