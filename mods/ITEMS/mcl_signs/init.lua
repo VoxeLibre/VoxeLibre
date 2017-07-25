@@ -2,6 +2,7 @@
 
 -- load characters map
 local chars_file = io.open(minetest.get_modpath("mcl_signs").."/characters", "r")
+-- FIXME: Support more characters (many characters are missing)
 local charmap = {}
 if not chars_file then
 	minetest.log("error", "[mcl_signs] : character map file not found")
