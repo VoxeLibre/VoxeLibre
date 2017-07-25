@@ -19,7 +19,6 @@ end
 
 -- CONSTANTS
 local SIGN_WIDTH = 115
-local SIGN_PADDING = 14
 
 local LINE_LENGTH = 15
 local NUMBER_OF_LINES = 4
@@ -73,6 +72,7 @@ local generate_line = function(s, ypos)
 	local parsed = {}
 	local width = 0
 	local chars = 0
+	local printed_char_width = CHAR_WIDTH + 1
 	while chars <= LINE_LENGTH and i <= #s do
 		local file = nil
 		if charmap[s:sub(i, i)] ~= nil then
@@ -86,7 +86,7 @@ local generate_line = function(s, ypos)
 			i = i + 1
 		end
 		if file ~= nil then
-			width = width + CHAR_WIDTH
+			width = width + printed_char_width
 			table.insert(parsed, file)
 			chars = chars + 1
 		end
@@ -94,10 +94,10 @@ local generate_line = function(s, ypos)
 	width = width - 1
 
 	local texture = ""
-	local xpos = math.floor((SIGN_WIDTH - SIGN_PADDING - width) / 2)
+	local xpos = math.floor((SIGN_WIDTH - width) / 2)
 	for i = 1, #parsed do
 		texture = texture..":"..xpos..","..ypos.."="..parsed[i]..".png"
-		xpos = xpos + CHAR_WIDTH + 1
+		xpos = xpos + printed_char_width
 	end
 	return texture
 end
