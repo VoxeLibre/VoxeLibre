@@ -179,7 +179,11 @@ local update_sign = function(pos, fields, sender)
 end
 
 local show_formspec = function(player, pos)
-	minetest.show_formspec(player:get_player_name(), "signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z, "size[6,3]textarea[0.25,0;6,1.5;text;;]button_exit[2,2;2,1;submit;Done]")
+	minetest.show_formspec(
+		player:get_player_name(),
+		"signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z,
+		"size[6,3]textarea[0.25,0.25;6,1.5;text;Edit sign text:;]label[0,1.5;Maximum line length: 15\nMaximum lines: 4]button_exit[0,2.5;6,1;submit;Done]"
+	)
 end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
