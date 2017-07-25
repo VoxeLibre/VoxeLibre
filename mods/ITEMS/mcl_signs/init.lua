@@ -258,11 +258,19 @@ minetest.register_node("mcl_signs:wall_sign", {
 			return itemstack
 		elseif wdir == 1 then
 			place_pos = above
-			minetest.add_node(place_pos, {name = "mcl_signs:standing_sign", param2 = fdir})
+			local stand = ItemStack(itemstack)
+			stand:set_name("mcl_signs:standing_sign")
+			local _, success = minetest.item_place_node(stand, placer, pointed_thing, fdir)
+			if not success then
+				return itemstack
+			end
 			sign_info = signs_yard[fdir + 1]
 		else
 			place_pos = above
-			minetest.add_node(place_pos, {name = "mcl_signs:wall_sign", param2 = fdir})
+			local _, success = minetest.item_place_node(itemstack, placer, pointed_thing, fdir)
+			if not success then
+				return itemstack
+			end
 			sign_info = signs[fdir + 1]
 		end
 
