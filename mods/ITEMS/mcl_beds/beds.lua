@@ -38,8 +38,9 @@ for c=1, #colors do
 
 	-- Recoloring recipe for white bed
 	minetest.register_craft({
+		type = "shapeless",
 		output = "mcl_beds:bed_"..colorid.."_bottom",
-		recipe = { { "mcl_beds:bed_white_bottom", colors[c][4] } },
+		recipe = { "mcl_beds:bed_white_bottom", colors[c][4] },
 	})
 
 	-- Register bed
