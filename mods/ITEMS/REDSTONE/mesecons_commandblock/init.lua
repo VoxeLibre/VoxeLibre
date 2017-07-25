@@ -112,7 +112,9 @@ local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 	local formspec = "invsize[9,5;]" ..
 	"textarea[0.5,0.5;8.5,4;commands;Commands;"..commands.."]" ..
 	"label[1,3.8;@nearest, @farthest, and @random are replaced by the respective player names]" ..
-	"button_exit[3.3,4.5;2,1;submit;Submit]"
+	"button_exit[3.3,4.5;2,1;submit;Submit]" ..
+	"image_button[8,4.5;1,1;doc_button_icon_lores.png;doc;]" ..
+	"tooltip[doc;Help]"
 	minetest.show_formspec(player:get_player_name(), "commandblock_"..pos.x.."_"..pos.y.."_"..pos.z, formspec)
 end
 
@@ -165,10 +167,14 @@ minetest.register_node("mesecons_commandblock:commandblock_on", {
 })
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-	if not fields.submit then
-		return
-	end
 	if string.sub(formname, 1, 13) == "commandblock_" then
+		if not fields.submit and not fields.doc then
+			return
+		end
+		if fields.doc and minetest.get_modpath("doc") then
+			doc.show_entry(player:get_player_name(), "nodes", "mesecons_commandblock:commandblock_off", true)
+			return
+		end
 		local index, _, x, y, z = string.find(formname, "commandblock_(-?%d+)_(-?%d+)_(-?%d+)")
 		if index ~= nil and x ~= nil and y ~= nil and z ~= nil then
 			local pos = {x=tonumber(x), y=tonumber(y), z=tonumber(z)}
