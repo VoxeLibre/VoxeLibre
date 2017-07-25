@@ -1,10 +1,10 @@
 -- Font: 04.jp.org
 
 -- load characters map
-local chars_file = io.open(minetest.get_modpath("signs").."/characters", "r")
+local chars_file = io.open(minetest.get_modpath("mcl_signs").."/characters", "r")
 local charmap = {}
 if not chars_file then
-	minetest.log("error", "[signs] : character map file not found")
+	minetest.log("error", "[mcl_signs] : character map file not found")
 else
 	while true do
 		local char = chars_file:read("*l")
@@ -82,7 +82,7 @@ local generate_line = function(s, ypos)
 			file = charmap[s:sub(i, i + 1)]
 			i = i + 2
 		else
-			minetest.log("warning", "[signs] Unknown symbol in '"..s.."' at "..i.." (probably "..s:sub(i, i)..")")
+			minetest.log("warning", "[mcl_signs] Unknown symbol in '"..s.."' at "..i.." (probably "..s:sub(i, i)..")")
 			i = i + 1
 		end
 		if file ~= nil then
@@ -135,7 +135,7 @@ local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1, material_wood=1}
 local destruct_sign = function(pos)
 	local objects = minetest.get_objects_inside_radius(pos, 0.5)
 	for _, v in ipairs(objects) do
-		if v:get_entity_name() == "signs:text" then
+		if v:get_entity_name() == "mcl_signs:text" then
 			v:remove()
 		end
 	end
@@ -156,7 +156,7 @@ local update_sign = function(pos, fields, sender)
 	end
 	local objects = minetest.get_objects_inside_radius(pos, 0.5)
 	for _, v in ipairs(objects) do
-		if v:get_entity_name() == "signs:text" then
+		if v:get_entity_name() == "mcl_signs:text" then
 			v:set_properties({textures={generate_texture(create_lines(text))}})
 			return
 		end
@@ -164,9 +164,9 @@ local update_sign = function(pos, fields, sender)
 	
 	-- if there is no entity
 	local sign_info
-	if minetest.get_node(pos).name == "signs:sign_yard" then
+	if minetest.get_node(pos).name == "mcl_signs:standing_sign" then
 		sign_info = signs_yard[minetest.get_node(pos).param2 + 1]
-	elseif minetest.get_node(pos).name == "signs:sign_wall" then
+	elseif minetest.get_node(pos).name == "mcl_signs:wall_sign" then
 		sign_info = signs[minetest.get_node(pos).param2 + 1]
 	end
 	if sign_info == nil then
@@ -174,21 +174,21 @@ local update_sign = function(pos, fields, sender)
 	end
 	local text_entity = minetest.add_entity({x = pos.x + sign_info.delta.x,
 										y = pos.y + sign_info.delta.y,
-										z = pos.z + sign_info.delta.z}, "signs:text")
+										z = pos.z + sign_info.delta.z}, "mcl_signs:text")
 	text_entity:setyaw(sign_info.yaw)
 end
 
 local show_formspec = function(player, pos)
 	minetest.show_formspec(
 		player:get_player_name(),
-		"signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z,
+		"mcl_signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z,
 		"size[6,3]textarea[0.25,0.25;6,1.5;text;Edit sign text:;]label[0,1.5;Maximum line length: 15\nMaximum lines: 4]button_exit[0,2.5;6,1;submit;Done]"
 	)
 end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-	if formname:find("signs:set_text_") == 1 then
-		local x, y, z = formname:match("signs:set_text_(.-)_(.-)_(.*)")
+	if formname:find("mcl_signs:set_text_") == 1 then
+		local x, y, z = formname:match("mcl_signs:set_text_(.-)_(.-)_(.*)")
 		local pos = {x=tonumber(x), y=tonumber(y), z=tonumber(z)}
 		if not pos or not pos.x or not pos.y or not pos.z then return end
 		update_sign(pos, fields, player)
@@ -197,7 +197,7 @@ end)
 
 
 
-minetest.register_node("signs:sign_wall", {
+minetest.register_node("mcl_signs:wall_sign", {
 	description = "Sign",
 	_doc_items_longdesc = "Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them.",
 	_doc_items_usagehelp = "Place the sign at the side to build a wall sign, place it on top of another block to build a sign with a sign post.\nAfter placing the sign, you can write something on it. You have 4 lines of text with up to 15 characters for each line; anything beyond these limits is lost. The text can not be changed once it has been written; you have to break and place the sign again.",
@@ -258,18 +258,18 @@ minetest.register_node("signs:sign_wall", {
 			return itemstack
 		elseif wdir == 1 then
 			place_pos = above
-			minetest.add_node(place_pos, {name = "signs:sign_yard", param2 = fdir})
+			minetest.add_node(place_pos, {name = "mcl_signs:standing_sign", param2 = fdir})
 			sign_info = signs_yard[fdir + 1]
 		else
 			place_pos = above
-			minetest.add_node(place_pos, {name = "signs:sign_wall", param2 = fdir})
+			minetest.add_node(place_pos, {name = "mcl_signs:wall_sign", param2 = fdir})
 			sign_info = signs[fdir + 1]
 		end
 
 		local text = minetest.add_entity({
 			x = place_pos.x + sign_info.delta.x,
 			y = place_pos.y + sign_info.delta.y,
-			z = place_pos.z + sign_info.delta.z}, "signs:text")
+			z = place_pos.z + sign_info.delta.z}, "mcl_signs:text")
 		text:setyaw(sign_info.yaw)
 
 		if not minetest.setting_getbool("creative_mode") then
@@ -291,7 +291,7 @@ minetest.register_node("signs:sign_wall", {
 	_mcl_blast_resistance = 5,
 })
 
-minetest.register_node("signs:sign_yard", {
+minetest.register_node("mcl_signs:standing_sign", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	walkable = false,
@@ -306,7 +306,7 @@ minetest.register_node("signs:sign_yard", {
 	selection_box = {type = "fixed", fixed = {-7/16, -0.5, -1/32, 7/16, 0.5, 1/32}},
 	tiles = {"signs_top.png", "signs_bottom.png", "signs_side.png", "signs_side.png", "signs_back.png", "signs_front.png"},
 	groups = sign_groups,
-	drop = "signs:sign_wall",
+	drop = "mcl_signs:wall_sign",
 	stack_max = 16,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 
@@ -321,7 +321,7 @@ minetest.register_node("signs:sign_yard", {
 	_mcl_blast_resistance = 5,
 })
 
-minetest.register_entity("signs:text", {
+minetest.register_entity("mcl_signs:text", {
 	collisionbox = { 0, 0, 0, 0, 0, 0 },
 	visual = "upright_sprite",
 	textures = {},
@@ -339,17 +339,17 @@ minetest.register_entity("signs:text", {
 })
 
 if minetest.setting_get("log_mods") then
-	minetest.log("action", "signs loaded")
+	minetest.log("action", "[mcl_signs] loaded")
 end
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "signs:sign_wall",
+	recipe = "mcl_signs:wall_sign",
 	burntime = 10,
 })
 
 minetest.register_craft({
-	output = 'signs:sign_wall 3',
+	output = 'mcl_signs:wall_sign 3',
 	recipe = {
 		{'group:wood', 'group:wood', 'group:wood'},
 		{'group:wood', 'group:wood', 'group:wood'},
@@ -358,5 +358,8 @@ minetest.register_craft({
 })
 
 if minetest.get_modpath("doc") then
-	doc.add_entry_alias("nodes", "signs:sign_wall", "nodes", "signs:sign_yard")
+	doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign")
 end
+
+minetest.register_alias("signs:sign_wall", "mcl_signs:wall_sign")
+minetest.register_alias("signs:sign_yard", "mcl_signs:standing_sign")

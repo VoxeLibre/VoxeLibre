@@ -3042,7 +3042,7 @@ function mobs:register_arrow(name, def)
 					and entity ~= "__builtin:item"
 					and entity ~= "__builtin:falling_node"
 					and entity ~= "gauges:hp_bar"
-					and entity ~= "signs:text"
+					and entity ~= "mcl_signs:text"
 					and entity ~= "itemframes:item" then
 
 						self.hit_mob(self, player)

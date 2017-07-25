@@ -6,7 +6,6 @@ mcl_maps
 mcl_minecarts
 mcl_chests
 gemalde
-signs
 mcl_observers
 doc_identifier
 mobs_mc
