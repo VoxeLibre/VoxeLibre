@@ -16,8 +16,10 @@ local function active_formspec(fuel_percent, item_percent)
 	(100-fuel_percent)..":default_furnace_fire_fg.png]"..
 	"image[4.1,1.5;1.5,1;gui_furnace_arrow_bg.png^[lowpart:"..
 	(item_percent)..":gui_furnace_arrow_fg.png^[transformR270]"..
-	"image_button[8,0;1,1;craftguide_book.png;__mcl_craftguide;]"..
-	"tooltip[__mcl_craftguide;Recipe book]"..
+	"image_button[8,0;1,1;craftguide_book.png;craftguide;]"..
+	"image_button[8,1;1,1;doc_button_icon_lores.png;doc;]"..
+	"tooltip[craftguide;Recipe book]"..
+	"tooltip[doc;Help]"..
 	"listring[current_name;dst]"..
 	"listring[current_player;main]"..
 	"listring[current_name;src]"..
@@ -36,8 +38,10 @@ local inactive_formspec = "size[9,8.75]"..
 	"list[current_name;dst;5.75,1.5;1,1;]"..
 	"image[2.75,1.5;1,1;default_furnace_fire_bg.png]"..
 	"image[4.1,1.5;1.5,1;gui_furnace_arrow_bg.png^[transformR270]"..
-	"image_button[8,0;1,1;craftguide_book.png;__mcl_craftguide;]"..
-	"tooltip[__mcl_craftguide;Recipe book]"..
+	"image_button[8,0;1,1;craftguide_book.png;craftguide;]"..
+	"image_button[8,1;1,1;doc_button_icon_lores.png;doc;]"..
+	"tooltip[craftguide;Recipe book]"..
+	"tooltip[doc;Help]"..
 	"listring[current_name;dst]"..
 	"listring[current_player;main]"..
 	"listring[current_name;src]"..
@@ -45,9 +49,11 @@ local inactive_formspec = "size[9,8.75]"..
 	"listring[current_name;fuel]"..
 	"listring[current_player;main]"
 
-local craftguide = function(pos, formname, fields, sender)
-	if fields.__mcl_craftguide then
+local receive_fields = function(pos, formname, fields, sender)
+	if fields.craftguide then
 		mcl_craftguide.show_craftguide(sender)
+	elseif fields.doc and minetest.get_modpath("doc") then
+		doc.show_entry(sender:get_player_name(), "nodes", "mcl_furnaces:furnace", true)
 	end
 end
 
@@ -320,7 +326,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
 	on_metadata_inventory_take = on_metadata_inventory_take,
-	on_receive_fields = craftguide,
+	on_receive_fields = receive_fields,
 	_mcl_blast_resistance = 17.5,
 	_mcl_hardness = 3.5,
 })
@@ -362,7 +368,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
 	on_metadata_inventory_take = on_metadata_inventory_take,
-	on_receive_fields = craftguide,
+	on_receive_fields = receive_fields,
 	_mcl_blast_resistance = 17.5,
 	_mcl_hardness = 3.5,
 })
