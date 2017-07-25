@@ -158,38 +158,50 @@ function TNT:on_step(dtime)
 		self.blinkstatus = not self.blinkstatus
 	end
 	if self.timer > 4 then
-		local pos = self.object:getpos()
-        pos.x = math.floor(pos.x+0.5)
-        pos.y = math.floor(pos.y+0.5)
-        pos.z = math.floor(pos.z+0.5)
-        do_tnt_physics(pos, TNT_RANGE)
-		local meta = minetest.get_meta(pos)
-        minetest.sound_play("tnt_explode", {pos = pos,gain = 1.0,max_hear_distance = 16,})
-        if minetest.get_node(pos).name == "mcl_core:water_source" or minetest.get_node(pos).name == "mcl_core:water_flowing" or minetest.get_node(pos).name == "mcl_core:bedrock" or minetest.get_node(pos).name == "protector:display" or minetest.is_protected(pos, "tnt") then
-            -- Cancel the Explosion
-            self.object:remove()
-            return
+		tnt.boom(self.object:getpos(), TNT_RANGE)
+		self.object:remove()
+	end
+end
+
+tnt.boom = function(pos, info)
+	local range = info.radius
+	local damage_range = info.damage_radius
+
+	pos.x = math.floor(pos.x+0.5)
+	pos.y = math.floor(pos.y+0.5)
+	pos.z = math.floor(pos.z+0.5)
+	do_tnt_physics(pos, range)
+	local meta = minetest.get_meta(pos)
+	local sound
+	if not info.sound then
+		sound = "tnt_explode"
+	else
+		sound = info.sound
+	end
+	minetest.sound_play(sound, {pos = pos,gain = 1.0,max_hear_distance = 16,})
+	if minetest.get_node(pos).name == "mcl_core:water_source" or minetest.get_node(pos).name == "mcl_core:water_flowing" or minetest.get_node(pos).name == "mcl_core:bedrock" or minetest.get_node(pos).name == "protector:display" or minetest.is_protected(pos, "tnt") then
+		-- Cancel the Explosion
+		return
         end
-        for x=-TNT_RANGE,TNT_RANGE do
-			for y=-TNT_RANGE,TNT_RANGE do
-				for z=-TNT_RANGE,TNT_RANGE do
-					if x*x+y*y+z*z <= TNT_RANGE * TNT_RANGE + TNT_RANGE then
-						local np={x=pos.x+x,y=pos.y+y,z=pos.z+z}
-						local n = minetest.get_node(np)
-						local def = minetest.registered_nodes[n.name]
-						-- Simple blast resistance check (for now). This keeps the important blocks like bedrock, command block, etc. intact.
-						-- TODO: Implement the real blast resistance algorithm
-						if def and n.name ~= "air" and n.name ~= "ignore" and (def._mcl_blast_resistance == nil or def._mcl_blast_resistance < 1000) then
-							activate_if_tnt(n.name, np, pos, 3)
-							minetest.remove_node(np)
-							core.check_for_falling(np)
-							if n.name ~= "mcl_tnt:tnt" and math.random() > 0.9 then
-								local drop = minetest.get_node_drops(n.name, "")
-								for _,item in ipairs(drop) do
-									if type(item) == "string" then
-										if math.random(1,100) > 40 then
-											local obj = minetest.add_item(np, item)
-										end
+	for x=-range,range do
+		for y=-range,range do
+			for z=-range,range do
+				if x*x+y*y+z*z <= range * range + range then
+					local np={x=pos.x+x,y=pos.y+y,z=pos.z+z}
+					local n = minetest.get_node(np)
+					local def = minetest.registered_nodes[n.name]
+					-- Simple blast resistance check (for now). This keeps the important blocks like bedrock, command block, etc. intact.
+					-- TODO: Implement the real blast resistance algorithm
+					if def and n.name ~= "air" and n.name ~= "ignore" and (def._mcl_blast_resistance == nil or def._mcl_blast_resistance < 1000) then
+						activate_if_tnt(n.name, np, pos, 3)
+						minetest.remove_node(np)
+						core.check_for_falling(np)
+						if n.name ~= "mcl_tnt:tnt" and math.random() > 0.9 then
+							local drop = minetest.get_node_drops(n.name, "")
+							for _,item in ipairs(drop) do
+								if type(item) == "string" then
+									if math.random(1,100) > 40 then
+										local obj = minetest.add_item(np, item)
 									end
 								end
 							end
@@ -197,9 +209,8 @@ function TNT:on_step(dtime)
 					end
 				end
 			end
-			self.object:remove()
-			add_effects(pos, TNT_RANGE, {})
 		end
+		add_effects(pos, range, {})
 	end
 end
 
