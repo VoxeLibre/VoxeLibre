@@ -130,7 +130,7 @@ local signs_yard = {
 	{delta = {x = m, y = 0, z = 0}, yaw = math.pi / 2},
 }
 
-local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1, material_wood=1}
+local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1, material_wood=1, attached_node=1}
 
 local destruct_sign = function(pos)
 	local objects = minetest.get_objects_inside_radius(pos, 0.5)
@@ -208,10 +208,10 @@ minetest.register_node("mcl_signs:wall_sign", {
 	node_placement_prediction = "",
 	paramtype = "light",
 	sunlight_propagates = true,
-	paramtype2 = "facedir",
+	paramtype2 = "wallmounted",
 	drawtype = "nodebox",
-	node_box = {type = "fixed", fixed = {-7/16, -1/16, 7/16, 7/16, 7/16, 0.498}},
-	tiles = {"signs_top.png", "signs_bottom.png", "signs_side.png", "signs_side.png", "signs_back.png", "signs_front.png"},
+	node_box = {type = "wallmounted", wall_side = {-0.499, -1/16, -7/16, -7/16, 7/16, 7/16}},
+	tiles = {"signs_wall.png"},
 	groups = sign_groups,
 	stack_max = 16,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -267,7 +267,7 @@ minetest.register_node("mcl_signs:wall_sign", {
 			sign_info = signs_yard[fdir + 1]
 		else
 			place_pos = above
-			local _, success = minetest.item_place_node(itemstack, placer, pointed_thing, fdir)
+			local _, success = minetest.item_place_node(itemstack, placer, pointed_thing, wdir)
 			if not success then
 				return itemstack
 			end
