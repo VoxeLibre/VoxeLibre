@@ -13,9 +13,23 @@ local nodebox = {
 	},
 }
 
--- TODO: All 16 bed colors
 local colors = {
-	{ "red", "Bed", "group:wool" },
+	{ "red", "Red Bed", "mcl_wool:red" },
+	{ "blue", "Blue Bed", "mcl_wool:blue" },
+	{ "cyan", "Cyan Bed", "mcl_wool:cyan" },
+	{ "grey", "Grey Bed", "mcl_wool:grey" },
+	{ "silver", "Light Grey Bed", "mcl_wool:silver" },
+	{ "black", "Black Bed", "mcl_wool:black" },
+	{ "yellow", "Yellow Bed", "mcl_wool:yellow" },
+	{ "green", "Green Bed", "mcl_wool:green" },
+	{ "magenta", "Magenta Bed", "mcl_wool:magenta" },
+	{ "orange", "Orange Bed", "mcl_wool:orange" },
+	{ "purple", "Purple Bed", "mcl_wool:purple" },
+	{ "brown", "Brown Bed", "mcl_wool:brown" },
+	{ "pink", "Pink Bed", "mcl_wool:pink" },
+	{ "lime", "Lime Bed", "mcl_wool:lime" },
+	{ "light_blue", "Light Blue Bed", "mcl_wool:light_blue" },
+	{ "white", "White Bed", "mcl_wool:white" },
 }
 
 for c=1, #colors do
