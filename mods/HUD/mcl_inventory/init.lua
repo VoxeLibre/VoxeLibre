@@ -3,30 +3,39 @@ mcl_inventory = {}
 local show_armor = false
 if minetest.get_modpath("3d_armor") ~= nil then show_armor = true end
 
-local function item_drop(itemstack, dropper, pos)
+-- Returns a single itemstack in the given inventory to the main inventory, or drop it when there's no space left
+local function return_item(itemstack, dropper, pos, inv)
 	if dropper:is_player() then
-		local v = dropper:get_look_dir()
-		local p = {x=pos.x, y=pos.y+1.2, z=pos.z}
-		p.x = p.x+(math.random(1,3)*0.2)
-		p.z = p.z+(math.random(1,3)*0.2)
-		local obj = minetest.add_item(p, itemstack)
-		if obj then
-			v.x = v.x*4
-			v.y = v.y*4 + 2
-			v.z = v.z*4
-			obj:setvelocity(v)
-			obj:get_luaentity()._insta_collect = false
+		-- Return to main inventory
+		if inv:room_for_item("main", itemstack) then
+			inv:add_item("main", itemstack)
+		else
+			-- Drop item on the ground
+			local v = dropper:get_look_dir()
+			local p = {x=pos.x, y=pos.y+1.2, z=pos.z}
+			p.x = p.x+(math.random(1,3)*0.2)
+			p.z = p.z+(math.random(1,3)*0.2)
+			local obj = minetest.add_item(p, itemstack)
+			if obj then
+				v.x = v.x*4
+				v.y = v.y*4 + 2
+				v.z = v.z*4
+				obj:setvelocity(v)
+				obj:get_luaentity()._insta_collect = false
+			end
 		end
 	else
+		-- Fallback for unexpected cases
 		minetest.add_item(pos, itemstack)
 	end
 	return itemstack
 end
 
-local function drop_fields(player, name)
+-- Return items in the given inventory list (name) to the main inventory, or drop them if there is no space left
+local function return_fields(player, name)
 	local inv = player:get_inventory()
 	for i,stack in ipairs(inv:get_list(name)) do
-		item_drop(stack, player, player:getpos())
+		return_item(stack, player, player:getpos(), inv)
 		stack:clear()
 		inv:set_stack(name, i, stack)
 	end
@@ -105,7 +114,7 @@ end
 -- Drop items in craft grid and reset inventory on closing
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.quit then
-		drop_fields(player,"craft")
+		return_fields(player,"craft")
 		if not minetest.setting_getbool("creative_mode") and (formname == "" or formname == "main") then
 			set_inventory(player)
 		end
@@ -114,7 +123,7 @@ end)
 
 -- Drop crafting grid items on leaving
 minetest.register_on_leaveplayer(function(player)
-	drop_fields(player, "craft")
+	return_fields(player, "craft")
 end)
 
 minetest.register_on_joinplayer(function(player)
@@ -151,7 +160,7 @@ minetest.register_on_joinplayer(function(player)
 	items remaining in the crafting grid from the previous join; this is likely
 	when the server has been shutdown and the server didn't clean up the player
 	inventories. ]]
-	drop_fields(player, "craft")
+	return_fields(player, "craft")
 end)
 
 if minetest.setting_getbool("creative_mode") then
