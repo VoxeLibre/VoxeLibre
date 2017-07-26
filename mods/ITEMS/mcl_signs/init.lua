@@ -27,6 +27,13 @@ local NUMBER_OF_LINES = 4
 local LINE_HEIGHT = 14
 local CHAR_WIDTH = 5
 
+
+-- Helper functions
+local function round(num, idp)
+	local mult = 10^(idp or 0)
+	return math.floor(num * mult + 0.5) / mult
+end
+
 local string_to_array = function(str)
 	local tab = {}
 	for i=1,string.len(str) do
@@ -103,9 +110,14 @@ local generate_line = function(s, ypos)
 	return texture
 end
 
-local generate_texture = function(lines)
+local generate_texture = function(lines, signnodename)
 	local texture = "[combine:"..SIGN_WIDTH.."x"..SIGN_WIDTH
-	local ypos = 9
+	local ypos
+	if signnodename == "mcl_signs:wall_sign" then
+		ypos = 29
+	else
+		ypos = -2
+	end
 	for i = 1, #lines do
 		texture = texture..generate_line(lines[i], ypos)
 		ypos = ypos + LINE_HEIGHT
@@ -113,23 +125,35 @@ local generate_texture = function(lines)
 	return texture
 end
 
-local n = 7/16 - 1/128
+local n = 23/56 - 1/128
 
-local signs = {
+local signtext_info_wall = {
 	{delta = {x = 0, y = 0, z = n}, yaw = 0},
 	{delta = {x = n, y = 0, z = 0}, yaw = math.pi / -2},
 	{delta = {x = 0, y = 0, z = -n}, yaw = math.pi},
 	{delta = {x = -n, y = 0, z = 0}, yaw = math.pi / 2},
 }
 
-local m = 1/32 + 1/128
+local signtext_info_standing = {}
 
-local signs_yard = {
-	{delta = {x = 0, y = 0, z = -m}, yaw = 0},
-	{delta = {x = -m, y = 0, z = 0}, yaw = math.pi / -2},
-	{delta = {x = 0, y = 0, z = m}, yaw = math.pi},
-	{delta = {x = m, y = 0, z = 0}, yaw = math.pi / 2},
-}
+local m = -1/16 + 1/64
+for rot=0, 15 do
+	local yaw = math.pi*2 - (((math.pi*2) / 16) * rot)
+	local delta = vector.multiply(minetest.yaw_to_dir(yaw), m)
+	table.insert(signtext_info_standing, { delta = delta, yaw = yaw })
+end
+
+local function get_rotation_level(facedir, nodename)
+	local rl = facedir * 4
+	if nodename == "mcl_signs:standing_sign22_5" then
+		rl = rl + 1
+	elseif nodename == "mcl_signs:standing_sign45" then
+		rl = rl + 2
+	elseif nodename == "mcl_signs:standing_sign67_5" then
+		rl = rl + 3
+	end
+	return rl
+end
 
 local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1, material_wood=1, attached_node=1}
 
@@ -158,24 +182,36 @@ local update_sign = function(pos, fields, sender)
 	local objects = minetest.get_objects_inside_radius(pos, 0.5)
 	for _, v in ipairs(objects) do
 		if v:get_entity_name() == "mcl_signs:text" then
-			v:set_properties({textures={generate_texture(create_lines(text))}})
+			v:set_properties({textures={generate_texture(create_lines(text), v:get_luaentity()._signnodename)}})
 			return
 		end
 	end
 	
 	-- if there is no entity
 	local sign_info
-	if minetest.get_node(pos).name == "mcl_signs:standing_sign" then
-		sign_info = signs_yard[minetest.get_node(pos).param2 + 1]
-	elseif minetest.get_node(pos).name == "mcl_signs:wall_sign" then
-		sign_info = signs[minetest.get_node(pos).param2 + 1]
+	local n = minetest.get_node(pos)
+	local nn = n.name
+	if nn == "mcl_signs:standing_sign" or nn == "mcl_signs:standing_sign22_5" or nn == "mcl_signs:standing_sign45" or nn == "mcl_signs:standing_sign67_5" then
+		sign_info = signtext_info_standing[get_rotation_level(n.param2, nn) + 1]
+	elseif nn == "mcl_signs:wall_sign" then
+		sign_info = signtext_info_wall[n.param2 + 1]
 	end
 	if sign_info == nil then
 		return
 	end
-	local text_entity = minetest.add_entity({x = pos.x + sign_info.delta.x,
-										y = pos.y + sign_info.delta.y,
-										z = pos.z + sign_info.delta.z}, "mcl_signs:text")
+	local text_entity = minetest.add_entity({
+			x = pos.x + sign_info.delta.x,
+			y = pos.y + sign_info.delta.y,
+			z = pos.z + sign_info.delta.z}, "mcl_signs:text")
+	if nn == "mcl_signs:standing_sign22_5" then
+		sign_info.yaw = sign_info.yaw + math.pi / 8
+	elseif nn == "mcl_signs:standing_sign45" then
+		sign_info.yaw = sign_info.yaw + 2 * (math.pi / 8)
+	elseif nn == "mcl_signs:standing_sign67_5" then
+		sign_info.yaw = sign_info.yaw + 3 * (math.pi / 8)
+	end
+	text_entity:get_luaentity()._signnodename = nn
+
 	text_entity:setyaw(sign_info.yaw)
 end
 
@@ -210,9 +246,10 @@ minetest.register_node("mcl_signs:wall_sign", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	paramtype2 = "wallmounted",
-	drawtype = "nodebox",
-	node_box = {type = "wallmounted", wall_side = {-0.499, -1/16, -7/16, -7/16, 7/16, 7/16}},
-	tiles = {"signs_wall.png"},
+	drawtype = "mesh",
+	mesh = "mcl_signs_signonwallmount.obj",
+	selection_box = {type = "wallmounted", wall_side = {-0.5, -7/28, -0.5, -23/56, 7/28, 0.5}},
+	tiles = {"mcl_signs_sign.png"},
 	groups = sign_groups,
 	stack_max = 16,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -222,16 +259,14 @@ minetest.register_node("mcl_signs:wall_sign", {
 		local under = pointed_thing.under
 
 		-- Use pointed node's on_rightclick function first, if present
-		local node = minetest.get_node(under)
+		local node_under = minetest.get_node(under)
 		if placer and not placer:get_player_control().sneak then
-			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+			if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
+				return minetest.registered_nodes[node_under.name].on_rightclick(under, node_under, placer, itemstack) or itemstack
 			end
 		end
 
-		local dir = {x = under.x - above.x,
-					 y = under.y - above.y,
-					 z = under.z - above.z}
+		local dir = vector.subtract(under, above)
 
 		-- Only build when it's legal
 		local abovenodedef = minetest.registered_nodes[minetest.get_node(above).name]
@@ -242,44 +277,73 @@ minetest.register_node("mcl_signs:wall_sign", {
 		local wdir = minetest.dir_to_wallmounted(dir)
 
 		local placer_pos = placer:getpos()
-		if placer_pos then
-			dir = {
-				x = above.x - placer_pos.x,
-				y = above.y - placer_pos.y,
-				z = above.z - placer_pos.z
-			}
-		end
 
 		local fdir = minetest.dir_to_facedir(dir)
 
 		local sign_info
-		local place_pos
+		local nodeitem = ItemStack(itemstack)
+		-- Ceiling
 		if wdir == 0 then
 			--how would you add sign to ceiling?
 			return itemstack
+		-- Floor
 		elseif wdir == 1 then
-			place_pos = above
-			local stand = ItemStack(itemstack)
-			stand:set_name("mcl_signs:standing_sign")
-			local _, success = minetest.item_place_node(stand, placer, pointed_thing, fdir)
+			-- Standing sign
+
+			-- Determine the sign rotation based on player's yaw
+			local yaw = math.pi*2 - placer:get_look_horizontal()
+
+			-- Select one of 16 possible rotations (0-15)
+			local rotation_level = round((yaw / (math.pi*2)) * 16)
+
+			if rotation_level > 15 then
+				rotation_level = 0
+			elseif rotation_level < 0 then
+				rotation_level = 15
+			end
+
+			-- The actual rotation is a combination of predefined mesh and facedir (see node definition)
+			if rotation_level % 4 == 0 then
+				nodeitem:set_name("mcl_signs:standing_sign")
+			elseif rotation_level % 4 == 1 then
+				nodeitem:set_name("mcl_signs:standing_sign22_5")
+			elseif rotation_level % 4 == 2 then
+				nodeitem:set_name("mcl_signs:standing_sign45")
+			elseif rotation_level % 4 == 3 then
+				nodeitem:set_name("mcl_signs:standing_sign67_5")
+			end
+			fdir = math.floor(rotation_level / 4)
+
+			-- Place the node!
+			local _, success = minetest.item_place_node(nodeitem, placer, pointed_thing, fdir)
 			if not success then
 				return itemstack
 			end
-			sign_info = signs_yard[fdir + 1]
+			sign_info = signtext_info_standing[rotation_level + 1]
+		-- Side
 		else
-			place_pos = above
+			-- Wall sign
 			local _, success = minetest.item_place_node(itemstack, placer, pointed_thing, wdir)
 			if not success then
 				return itemstack
 			end
-			sign_info = signs[fdir + 1]
+			sign_info = signtext_info_wall[fdir + 1]
 		end
 
-		local text = minetest.add_entity({
+		-- Determine spawn position of entity
+		local place_pos
+		if minetest.registered_nodes[node_under.name].buildable_to then
+			place_pos = under
+		else
+			place_pos = above
+		end
+
+		local text_entity = minetest.add_entity({
 			x = place_pos.x + sign_info.delta.x,
 			y = place_pos.y + sign_info.delta.y,
 			z = place_pos.z + sign_info.delta.z}, "mcl_signs:text")
-		text:setyaw(sign_info.yaw)
+		text_entity:setyaw(sign_info.yaw)
+		text_entity:get_luaentity()._signnodename = nodeitem:get_name()
 
 		if not minetest.setting_getbool("creative_mode") then
 			itemstack:take_item()
@@ -300,19 +364,23 @@ minetest.register_node("mcl_signs:wall_sign", {
 	_mcl_blast_resistance = 5,
 })
 
-minetest.register_node("mcl_signs:standing_sign", {
+
+-- Standing sign nodes.
+-- 4 rotations at 0°, 22.5°, 45° and 67.5°.
+-- These are 4 out of 16 possible rotations.
+-- With facedir the remaining 12 rotations are constructed.
+
+-- 0°
+local ssign = {
 	paramtype = "light",
 	sunlight_propagates = true,
 	walkable = false,
 	is_ground_content = false,
 	paramtype2 = "facedir",
-	drawtype = "nodebox",
-	node_box = {type = "fixed", fixed = {
-		{-7/16, -1/16, -1/32, 7/16, 7/16, 1/32},
-		{-1/16, -0.5, -1/32, 1/16, -1/16, 1/32},
-	}},
-	selection_box = {type = "fixed", fixed = {-7/16, -0.5, -1/32, 7/16, 7/16, 1/32}},
-	tiles = {"signs_top.png", "signs_bottom.png", "signs_side.png", "signs_side.png", "signs_back.png", "signs_front.png"},
+	drawtype = "mesh",
+	mesh = "mcl_signs_1sign0.obj",
+	selection_box = {type = "fixed", fixed = {-0.2, -0.5, -0.2, 0.2, 0.5, 0.2}},
+	tiles = {"mcl_signs_sign.png"},
 	groups = sign_groups,
 	drop = "mcl_signs:wall_sign",
 	stack_max = 16,
@@ -327,7 +395,24 @@ minetest.register_node("mcl_signs:standing_sign", {
 	end,
 	_mcl_hardness = 1,
 	_mcl_blast_resistance = 5,
-})
+}
+
+-- 22.5°
+minetest.register_node("mcl_signs:standing_sign", ssign)
+local ssign22_5 = table.copy(ssign)
+ssign22_5.mesh = "mcl_signs_1sign22.5.obj"
+
+-- 45°
+minetest.register_node("mcl_signs:standing_sign22_5", ssign22_5)
+local ssign45 = table.copy(ssign)
+ssign45.mesh = "mcl_signs_1sign45.obj"
+minetest.register_node("mcl_signs:standing_sign45", ssign45)
+
+-- 67.5°
+local ssign67 = table.copy(ssign)
+ssign67.mesh = "mcl_signs_1sign67.5.obj"
+minetest.register_node("mcl_signs:standing_sign67_5", ssign67)
+
 
 minetest.register_entity("mcl_signs:text", {
 	collisionbox = { 0, 0, 0, 0, 0, 0 },
@@ -336,19 +421,27 @@ minetest.register_entity("mcl_signs:text", {
 	physical = false,
 	collide_with_objects = false,
 
-	on_activate = function(self)
+	_signnodename = nil, -- node name of sign node to which the text belongs
+
+	on_activate = function(self, staticdata)
+		if staticdata ~= nil and staticdata ~= "" then
+			local des = minetest.deserialize(staticdata)
+			if des then
+				self._signnodename = des._signnodename
+			end
+		end
 		local meta = minetest.get_meta(self.object:getpos())
 		local text = meta:get_string("text")
 		self.object:set_properties({
-			textures={generate_texture(create_lines(text))},
+			textures={generate_texture(create_lines(text), self._signnodename)},
 		})
 		self.object:set_armor_groups({ immortal = 1 })
-	end
+	end,
+	get_staticdata = function(self)
+		local out = { _signnodename = self._signnodename }
+		return minetest.serialize(out)
+	end,
 })
-
-if minetest.setting_get("log_mods") then
-	minetest.log("action", "[mcl_signs] loaded")
-end
 
 minetest.register_craft({
 	type = "fuel",
@@ -371,3 +464,8 @@ end
 
 minetest.register_alias("signs:sign_wall", "mcl_signs:wall_sign")
 minetest.register_alias("signs:sign_yard", "mcl_signs:standing_sign")
+
+
+if minetest.setting_get("log_mods") then
+	minetest.log("action", "[mcl_signs] loaded")
+end
