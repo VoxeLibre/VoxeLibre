@@ -110,9 +110,14 @@ local generate_line = function(s, ypos)
 	return texture
 end
 
-local generate_texture = function(lines)
+local generate_texture = function(lines, signnodename)
 	local texture = "[combine:"..SIGN_WIDTH.."x"..SIGN_WIDTH
-	local ypos = 9
+	local ypos
+	if signnodename == "mcl_signs:wall_sign" then
+		ypos = 27
+	else
+		ypos = 9
+	end
 	for i = 1, #lines do
 		texture = texture..generate_line(lines[i], ypos)
 		ypos = ypos + LINE_HEIGHT
@@ -120,7 +125,7 @@ local generate_texture = function(lines)
 	return texture
 end
 
-local n = 7/16 - 1/128
+local n = 23/56 - 1/128
 
 local signtext_info_wall = {
 	{delta = {x = 0, y = 0, z = n}, yaw = 0},
@@ -178,7 +183,7 @@ local update_sign = function(pos, fields, sender)
 	local objects = minetest.get_objects_inside_radius(pos, 0.5)
 	for _, v in ipairs(objects) do
 		if v:get_entity_name() == "mcl_signs:text" then
-			v:set_properties({textures={generate_texture(create_lines(text))}})
+			v:set_properties({textures={generate_texture(create_lines(text), v:get_luaentity()._signnodename)}})
 			return
 		end
 	end
@@ -206,6 +211,7 @@ local update_sign = function(pos, fields, sender)
 	elseif nn == "mcl_signs:standing_sign67_5" then
 		sign_info.yaw = sign_info.yaw + 3 * (math.pi / 8)
 	end
+	text_entity:get_luaentity()._signnodename = nn
 
 	text_entity:setyaw(sign_info.yaw)
 end
@@ -241,9 +247,10 @@ minetest.register_node("mcl_signs:wall_sign", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	paramtype2 = "wallmounted",
-	drawtype = "nodebox",
-	node_box = {type = "wallmounted", wall_side = {-0.499, -1/16, -7/16, -7/16, 7/16, 7/16}},
-	tiles = {"mcl_signs_sign_wall.png"},
+	drawtype = "mesh",
+	mesh = "mcl_signs_signonwallmount.obj",
+	selection_box = {type = "wallmounted", wall_side = {-0.5, -7/28, -0.5, -23/56, 7/28, 0.5}},
+	tiles = {"mcl_signs_sign.png"},
 	groups = sign_groups,
 	stack_max = 16,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -276,6 +283,7 @@ minetest.register_node("mcl_signs:wall_sign", {
 
 		local sign_info
 		local place_pos
+		local nodeitem = ItemStack(itemstack)
 		-- Ceiling
 		if wdir == 0 then
 			--how would you add sign to ceiling?
@@ -286,7 +294,6 @@ minetest.register_node("mcl_signs:wall_sign", {
 			place_pos = above
 
 			-- Determine the sign rotation based on player's yaw
-			local stand = ItemStack(itemstack)
 			local yaw = math.pi*2 - placer:get_look_horizontal()
 
 			-- Select one of 16 possible rotations (0-15)
@@ -300,18 +307,18 @@ minetest.register_node("mcl_signs:wall_sign", {
 
 			-- The actual rotation is a combination of predefined mesh and facedir (see node definition)
 			if rotation_level % 4 == 0 then
-				stand:set_name("mcl_signs:standing_sign")
+				nodeitem:set_name("mcl_signs:standing_sign")
 			elseif rotation_level % 4 == 1 then
-				stand:set_name("mcl_signs:standing_sign22_5")
+				nodeitem:set_name("mcl_signs:standing_sign22_5")
 			elseif rotation_level % 4 == 2 then
-				stand:set_name("mcl_signs:standing_sign45")
+				nodeitem:set_name("mcl_signs:standing_sign45")
 			elseif rotation_level % 4 == 3 then
-				stand:set_name("mcl_signs:standing_sign67_5")
+				nodeitem:set_name("mcl_signs:standing_sign67_5")
 			end
 			fdir = math.floor(rotation_level / 4)
 
 			-- Place the node!
-			local _, success = minetest.item_place_node(stand, placer, pointed_thing, fdir)
+			local _, success = minetest.item_place_node(nodeitem, placer, pointed_thing, fdir)
 			if not success then
 				return itemstack
 			end
@@ -327,11 +334,12 @@ minetest.register_node("mcl_signs:wall_sign", {
 			sign_info = signtext_info_wall[fdir + 1]
 		end
 
-		local text = minetest.add_entity({
+		local text_entity = minetest.add_entity({
 			x = place_pos.x + sign_info.delta.x,
 			y = place_pos.y + sign_info.delta.y,
 			z = place_pos.z + sign_info.delta.z}, "mcl_signs:text")
-		text:setyaw(sign_info.yaw)
+		text_entity:setyaw(sign_info.yaw)
+		text_entity:get_luaentity()._signnodename = nodeitem:get_name()
 
 		if not minetest.setting_getbool("creative_mode") then
 			itemstack:take_item()
@@ -409,14 +417,23 @@ minetest.register_entity("mcl_signs:text", {
 	physical = false,
 	collide_with_objects = false,
 
-	on_activate = function(self)
+	_signnodename = nil, -- node name of sign node to which the text belongs
+
+	on_activate = function(self, staticdata)
+		if staticdata then
+			self._signnodename = staticdata._signnodename
+		end
 		local meta = minetest.get_meta(self.object:getpos())
 		local text = meta:get_string("text")
 		self.object:set_properties({
-			textures={generate_texture(create_lines(text))},
+			textures={generate_texture(create_lines(text), self._signnodename)},
 		})
 		self.object:set_armor_groups({ immortal = 1 })
-	end
+	end,
+	get_staticdata = function(self)
+		local out = { self._signnodename }
+		return minetest.serialize(out)
+	end,
 })
 
 minetest.register_craft({
