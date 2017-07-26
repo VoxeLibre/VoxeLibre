@@ -67,6 +67,10 @@ minetest.register_node("mcl_fire:fire", {
 	drop = "",
 	sounds = {},
 	on_construct = function(pos)
+		local under = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name
+		if under == "mcl_nether:magma" or under == "mcl_nether:netherrack" then
+			minetest.swap_node(pos, {name = "mcl_fire:eternal_fire"})
+		end
 		minetest.get_node_timer(pos):start(math.random(3, 7))
 	end,
 	_mcl_blast_resistance = 0,
@@ -363,7 +367,7 @@ else -- Fire enabled
 
 end
 
--- Spawn eternal fire when using flint and steel on netherrack
+-- Spawn eternal fire when using flint and steel on netherrack or magma block
 
 local eternal_override = {
 	after_destruct = function(pos, oldnode)
