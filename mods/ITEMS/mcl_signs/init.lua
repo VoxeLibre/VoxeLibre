@@ -260,9 +260,7 @@ minetest.register_node("mcl_signs:wall_sign", {
 			end
 		end
 
-		local dir = {x = under.x - above.x,
-					 y = under.y - above.y,
-					 z = under.z - above.z}
+		local dir = vector.subtract(under, above)
 
 		-- Only build when it's legal
 		local abovenodedef = minetest.registered_nodes[minetest.get_node(above).name]
@@ -273,13 +271,6 @@ minetest.register_node("mcl_signs:wall_sign", {
 		local wdir = minetest.dir_to_wallmounted(dir)
 
 		local placer_pos = placer:getpos()
-		if placer_pos then
-			dir = {
-				x = above.x - placer_pos.x,
-				y = above.y - placer_pos.y,
-				z = above.z - placer_pos.z
-			}
-		end
 
 		local fdir = minetest.dir_to_facedir(dir)
 
