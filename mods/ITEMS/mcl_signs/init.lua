@@ -140,6 +140,8 @@ local m = -1/16 + 1/64
 for rot=0, 15 do
 	local yaw = math.pi*2 - (((math.pi*2) / 16) * rot)
 	local delta = vector.multiply(minetest.yaw_to_dir(yaw), m)
+	-- Offset because sign is a bit above node boundaries
+	delta.y = delta.y + 2/28
 	table.insert(signtext_info_standing, { delta = delta, yaw = yaw })
 end
 
@@ -381,7 +383,7 @@ local ssign = {
 	is_ground_content = false,
 	paramtype2 = "facedir",
 	drawtype = "mesh",
-	mesh = "mcl_signs_1sign0.obj",
+	mesh = "mcl_signs_sign.obj",
 	selection_box = {type = "fixed", fixed = {-0.2, -0.5, -0.2, 0.2, 0.5, 0.2}},
 	tiles = {"mcl_signs_sign.png"},
 	groups = sign_groups,
@@ -403,17 +405,17 @@ local ssign = {
 -- 22.5°
 minetest.register_node("mcl_signs:standing_sign", ssign)
 local ssign22_5 = table.copy(ssign)
-ssign22_5.mesh = "mcl_signs_1sign22.5.obj"
+ssign22_5.mesh = "mcl_signs_sign22.5.obj"
 
 -- 45°
 minetest.register_node("mcl_signs:standing_sign22_5", ssign22_5)
 local ssign45 = table.copy(ssign)
-ssign45.mesh = "mcl_signs_1sign45.obj"
+ssign45.mesh = "mcl_signs_sign45.obj"
 minetest.register_node("mcl_signs:standing_sign45", ssign45)
 
 -- 67.5°
 local ssign67 = table.copy(ssign)
-ssign67.mesh = "mcl_signs_1sign67.5.obj"
+ssign67.mesh = "mcl_signs_sign67.5.obj"
 minetest.register_node("mcl_signs:standing_sign67_5", ssign67)
 
 
