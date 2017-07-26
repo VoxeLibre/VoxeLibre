@@ -1,3 +1,6 @@
+local mod_mcl_hunger = minetest.get_modpath("mcl_hunger")
+local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
+
 minetest.register_craftitem("mcl_throwing:arrow", {
 	description = "Arrow",
 	_doc_items_longdesc = "Arrows are ammunition for bows and dispensers.",
@@ -90,7 +93,7 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 					full_punch_interval=1.0,
 					damage_groups={fleshy=self._damage},
 				}, nil)
-				if is_player then
+				if mod_mcl_hunger and is_player then
 					mcl_hunger.exhaust(obj:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
 				end
 
@@ -100,7 +103,7 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 					-- NOTE: Range has been reduced because mobs unload much earlier than that ... >_>
 					-- TODO: This achievement should be given for the kill, not just a hit
 					if self._shooter and self._shooter:is_player() and vector.distance(pos, self._startpos) >= 20 then
-						if (entity_name == "mobs_mc:skeleton" or entity_name == "mobs_mc:stray" or entity_name == "mobs_mc:witherskeleton") then
+						if mod_awards and (entity_name == "mobs_mc:skeleton" or entity_name == "mobs_mc:stray" or entity_name == "mobs_mc:witherskeleton") then
 							awards.unlock(self._shooter:get_player_name(), "mcl:snipeSkeleton")
 						end
 					end
@@ -127,11 +130,13 @@ end
 
 minetest.register_entity("mcl_throwing:arrow_entity", THROWING_ARROW_ENTITY)
 
-minetest.register_craft({
-	output = 'mcl_throwing:arrow 4',
-	recipe = {
-		{'mcl_core:flint'},
-		{'mcl_core:stick'},
-		{'mcl_mobitems:feather'}
-	}
-})
+if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
+	minetest.register_craft({
+		output = 'mcl_throwing:arrow 4',
+		recipe = {
+			{'mcl_core:flint'},
+			{'mcl_core:stick'},
+			{'mcl_mobitems:feather'}
+		}
+	})
+end

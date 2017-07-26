@@ -1,4 +1,6 @@
-mcl_core
-mcl_hunger
-mcl_achievements
+awards?
+mcl_achievements?
+mcl_hunger?
+mcl_core?
+mcl_mobitems?
 doc?
