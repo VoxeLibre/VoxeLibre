@@ -433,7 +433,7 @@ minetest.register_entity("mcl_signs:text", {
 		self.object:set_armor_groups({ immortal = 1 })
 	end,
 	get_staticdata = function(self)
-		local out = { self._signnodename }
+		local out = { _signnodename = self._signnodename }
 		return minetest.serialize(out)
 	end,
 })
