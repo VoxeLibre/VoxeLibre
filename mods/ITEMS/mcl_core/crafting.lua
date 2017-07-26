@@ -243,6 +243,20 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	type = "cooking",
+	output = 'mcl_core:iron_nugget',
+	recipe = 'mobs_mc:iron_horse_armor',
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	type = "cooking",
+	output = 'mcl_core:gold_nugget',
+	recipe = 'mobs_mc:gold_horse_armor',
+	cooktime = 10,
+})
+
+minetest.register_craft({
 	output = 'mcl_core:sandstone',
 	recipe = {
 		{'mcl_core:sand', 'mcl_core:sand'},
