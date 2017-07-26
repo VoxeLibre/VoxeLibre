@@ -122,21 +122,34 @@ end
 
 local n = 7/16 - 1/128
 
-local signs = {
+local signtext_info_wall = {
 	{delta = {x = 0, y = 0, z = n}, yaw = 0},
 	{delta = {x = n, y = 0, z = 0}, yaw = math.pi / -2},
 	{delta = {x = 0, y = 0, z = -n}, yaw = math.pi},
 	{delta = {x = -n, y = 0, z = 0}, yaw = math.pi / 2},
 }
 
-local m = 1/16 + 1/128
+local signtext_info_standing = {}
 
-local signs_yard = {
-	{delta = {x = 0, y = 5/32, z = -m}, yaw = 0},
-	{delta = {x = -m, y = 5/32, z = 0}, yaw = math.pi / -2},
-	{delta = {x = 0, y = 5/32, z = m}, yaw = math.pi},
-	{delta = {x = m, y = 5/32, z = 0}, yaw = math.pi / 2},
-}
+local m = -1/16 + 1/64
+for rot=0, 15 do
+	local yaw = math.pi*2 - (((math.pi*2) / 16) * rot)
+	local delta = vector.multiply(minetest.yaw_to_dir(yaw), m)
+	delta.y = 5/32
+	table.insert(signtext_info_standing, { delta = delta, yaw = yaw })
+end
+
+local function get_rotation_level(facedir, nodename)
+	local rl = facedir * 4
+	if nodename == "mcl_signs:standing_sign22_5" then
+		rl = rl + 1
+	elseif nodename == "mcl_signs:standing_sign45" then
+		rl = rl + 2
+	elseif nodename == "mcl_signs:standing_sign67_5" then
+		rl = rl + 3
+	end
+	return rl
+end
 
 local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1, material_wood=1, attached_node=1}
 
@@ -172,18 +185,20 @@ local update_sign = function(pos, fields, sender)
 	
 	-- if there is no entity
 	local sign_info
-	local nn = minetest.get_node(pos).name
+	local n = minetest.get_node(pos)
+	local nn = n.name
 	if nn == "mcl_signs:standing_sign" or nn == "mcl_signs:standing_sign22_5" or nn == "mcl_signs:standing_sign45" or nn == "mcl_signs:standing_sign67_5" then
-		sign_info = signs_yard[minetest.get_node(pos).param2 + 1]
+		sign_info = signtext_info_standing[get_rotation_level(n.param2, nn) + 1]
 	elseif nn == "mcl_signs:wall_sign" then
-		sign_info = signs[minetest.get_node(pos).param2 + 1]
+		sign_info = signtext_info_wall[n.param2 + 1]
 	end
 	if sign_info == nil then
 		return
 	end
-	local text_entity = minetest.add_entity({x = pos.x + sign_info.delta.x,
-										y = pos.y + sign_info.delta.y,
-										z = pos.z + sign_info.delta.z}, "mcl_signs:text")
+	local text_entity = minetest.add_entity({
+			x = pos.x + sign_info.delta.x,
+			y = pos.y + sign_info.delta.y,
+			z = pos.z + sign_info.delta.z}, "mcl_signs:text")
 	if nn == "mcl_signs:standing_sign22_5" then
 		sign_info.yaw = sign_info.yaw + math.pi / 8
 	elseif nn == "mcl_signs:standing_sign45" then
@@ -309,7 +324,7 @@ minetest.register_node("mcl_signs:wall_sign", {
 			if not success then
 				return itemstack
 			end
-			sign_info = signs_yard[fdir + 1]
+			sign_info = signtext_info_standing[rotation_level + 1]
 		-- Side
 		else
 			-- Wall sign
@@ -318,7 +333,7 @@ minetest.register_node("mcl_signs:wall_sign", {
 			if not success then
 				return itemstack
 			end
-			sign_info = signs[fdir + 1]
+			sign_info = signtext_info_wall[fdir + 1]
 		end
 
 		local text = minetest.add_entity({
