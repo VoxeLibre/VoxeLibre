@@ -112,10 +112,7 @@ def convert_textures():
 \( -clone 0 -crop "+str(CHPX)+"x"+str((PXSIZE/16)*10)+"+"+str(CHPX)+"+"+str((2*CHPX) + ((PXSIZE/16)*5))+" \) -geometry +0+"+str((PXSIZE/16)*5)+" -composite \
 -extent "+str(CHPX)+"x"+str(CHPX)+" "+target_dir("/mods/ITEMS/mcl_chests/textures")+"/default_chest_front.png")
 
-		os.system("convert " + chest_file + " \
-\( -clone 0 -crop "+str(CHPX)+"x"+str((PXSIZE/16)*5)+"+"+str(2*CHPX)+"+"+str(CHPX)+" \) -geometry +0+0 -composite \
-\( -clone 0 -crop "+str(CHPX)+"x"+str((PXSIZE/16)*10)+"+"+str(2*CHPX)+"+"+str((2*CHPX) + ((PXSIZE/16)*5))+" \) -geometry +0+"+str((PXSIZE/16)*5)+" -composite \
--extent "+str(CHPX)+"x"+str(CHPX)+" "+target_dir("/mods/ITEMS/mcl_chests/textures")+"/default_chest_side.png")
+		# TODO: Convert other chest sides
 
 	# Convert grass
 	grass_file = tex_dir + "/blocks/grass_top.png"
