@@ -428,10 +428,6 @@ minetest.register_entity("mcl_signs:text", {
 	end
 })
 
-if minetest.setting_get("log_mods") then
-	minetest.log("action", "[mcl_signs] loaded")
-end
-
 minetest.register_craft({
 	type = "fuel",
 	recipe = "mcl_signs:wall_sign",
@@ -453,3 +449,8 @@ end
 
 minetest.register_alias("signs:sign_wall", "mcl_signs:wall_sign")
 minetest.register_alias("signs:sign_yard", "mcl_signs:standing_sign")
+
+
+if minetest.setting_get("log_mods") then
+	minetest.log("action", "[mcl_signs] loaded")
+end
