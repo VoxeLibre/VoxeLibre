@@ -7,13 +7,18 @@ minetest.register_alias("bucket", "bucket:bucket_empty")
 minetest.register_alias("bucket_water", "bucket:bucket_water")
 minetest.register_alias("bucket_lava", "bucket:bucket_lava")
 
-minetest.register_craft({
-	output = 'bucket:bucket_empty 1',
-	recipe = {
-		{'mcl_core:iron_ingot', '', 'mcl_core:iron_ingot'},
-		{'', 'mcl_core:iron_ingot', ''},
-	}
-})
+local mod_doc = minetest.get_modpath("doc")
+local mod_mcl_core = minetest.get_modpath("mcl_core")
+
+if mod_mcl_core then
+	minetest.register_craft({
+		output = 'bucket:bucket_empty 1',
+		recipe = {
+			{'mcl_core:iron_ingot', '', 'mcl_core:iron_ingot'},
+			{'', 'mcl_core:iron_ingot', ''},
+		}
+	})
+end
 
 bucket = {}
 bucket.liquids = {}
@@ -110,7 +115,7 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 						return itemstack
 					end
 					place_liquid(pointed_thing.under, node, source, flowing, fullness)
-					if doc.entry_exists("nodes", source) then
+					if mod_doc and doc.entry_exists("nodes", source) then
 						doc.mark_entry_as_revealed(user:get_player_name(), "nodes", source)
 					end
 				else
@@ -123,7 +128,7 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 							return itemstack
 						end
 						place_liquid(pointed_thing.above, node, source, flowing, fullness)
-						if doc.entry_exists("nodes", source) then
+						if mod_doc and doc.entry_exists("nodes", source) then
 							doc.mark_entry_as_revealed(user:get_player_name(), "nodes", source)
 						end
 					else
@@ -194,7 +199,7 @@ minetest.register_craftitem("bucket:bucket_empty", {
 			minetest.add_node(pointed_thing.under, {name="air"})
 			sound_take(nn, pointed_thing.under)
 
-			if doc.entry_exists("nodes", nn) then
+			if mod_doc and doc.entry_exists("nodes", nn) then
 				doc.mark_entry_as_revealed(user:get_player_name(), "nodes", nn)
 			end
 
@@ -228,25 +233,27 @@ minetest.register_craftitem("bucket:bucket_empty", {
 	end,
 })
 
-bucket.register_liquid(
-	"mcl_core:water_source",
-	"mcl_core:water_flowing",
-	"bucket:bucket_water",
-	"bucket_water.png",
-	"Water Bucket",
-	"A bucket can be used to collect and release liquids. This one is filled with water.",
-	"Right-click on any block to empty the bucket and put a water source on this spot."
-)
+if mod_mcl_ore then
+	bucket.register_liquid(
+		"mcl_core:water_source",
+		"mcl_core:water_flowing",
+		"bucket:bucket_water",
+		"bucket_water.png",
+		"Water Bucket",
+		"A bucket can be used to collect and release liquids. This one is filled with water.",
+		"Right-click on any block to empty the bucket and put a water source on this spot."
+	)
 
-bucket.register_liquid(
-	"mcl_core:lava_source",
-	"mcl_core:lava_flowing",
-	"bucket:bucket_lava",
-	"bucket_lava.png",
-	"Lava Bucket",
-	"A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution.",
-	"Choose a place where you want to empty the bucket, then get in a safe spot somewhere above it. Be prepared to run away when something goes wrong as the lava will soon start to flow after placing. To empty the bucket (which places a lava source), right-click on your chosen place."
-)
+	bucket.register_liquid(
+		"mcl_core:lava_source",
+		"mcl_core:lava_flowing",
+		"bucket:bucket_lava",
+		"bucket_lava.png",
+		"Lava Bucket",
+		"A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution.",
+		"Choose a place where you want to empty the bucket, then get in a safe spot somewhere above it. Be prepared to run away when something goes wrong as the lava will soon start to flow after placing. To empty the bucket (which places a lava source), right-click on your chosen place."
+	)
+end
 
 minetest.register_craft({
 	type = "fuel",
