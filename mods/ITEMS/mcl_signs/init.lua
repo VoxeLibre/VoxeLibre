@@ -376,7 +376,7 @@ local ssign = {
 	paramtype2 = "facedir",
 	drawtype = "mesh",
 	mesh = "mcl_signs_sign.obj",
-	selection_box = {type = "fixed", fixed = {-7/16, -0.5, -1/32, 7/16, 7/16, 1/32}},
+	selection_box = {type = "fixed", fixed = {-0.2, -0.5, -0.2, 0.2, 0.5, 0.2}},
 	tiles = {"mcl_signs_sign.png"},
 	groups = sign_groups,
 	drop = "mcl_signs:wall_sign",
