@@ -832,3 +832,4 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt
 /assets/minecraft/textures/blocks,fence_nether_brick.png,/mods/ITEMS/mcl_fences/textures,mcl_fences_fence_nether_brick.png,,,,,,
 /assets/minecraft/textures/blocks,fence_oak.png,/mods/ITEMS/mcl_fences/textures,mcl_fences_fence_oak.png,,,,,,
 /assets/minecraft/textures/blocks,fence_spruce.png,/mods/ITEMS/mcl_fences/textures,mcl_fences_fence_spruce.png,,,,,,
+/assets/minecraft/textures/entity,sign.png,/mods/ITEMS/mcl_signs/textures,mcl_signs_sign.png,,,,,,
