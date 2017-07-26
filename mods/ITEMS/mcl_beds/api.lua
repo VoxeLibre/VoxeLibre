@@ -35,6 +35,11 @@ else
 	beddesc = beddesc .. "Going into bed seems to make time pass faster: The night will be skipped when you go sleep and you're alone in this world. If you're not alone, the night is skipped when all players in this world went to sleep."
 end
 
+local default_sounds
+if minetest.get_modpath("mcl_sounds") then
+	default_sounds = mcl_sounds.node_sound_wood_defaults()
+end
+
 function mcl_beds.register_bed(name, def)
 	local node_box_bottom, selection_box_bottom, collision_box_bottom
 	if def.nodebox and def.nodebox.bottom then
@@ -62,7 +67,7 @@ function mcl_beds.register_bed(name, def)
 		groups = {handy=1, flammable = 3, bed = 1, dig_by_piston=1, bouncy=66, fall_damage_add_percent=-50},
 		_mcl_hardness = 0.2,
 		_mcl_blast_resistance = 1,
-		sounds = def.sounds or mcl_sounds.node_sound_wood_defaults(),
+		sounds = def.sounds or default_sounds,
 		node_box = node_box_bottom,
 		selection_box = selection_box_bottom,
 		collision_box = collision_box_bottom,
@@ -184,7 +189,7 @@ function mcl_beds.register_bed(name, def)
 		groups = {handy = 1, flammable = 3, bed = 2, dig_by_piston=1, bouncy=33, fall_damage_add_percent=-50},
 		_mcl_hardness = 0.2,
 		_mcl_blast_resistance = 1,
-		sounds = def.sounds or mcl_sounds.node_sound_wood_defaults(),
+		sounds = def.sounds or default_sounds,
 		drop = name .. "_bottom",
 		node_box = node_box_top,
 		selection_box = selection_box_top,
@@ -201,10 +206,12 @@ function mcl_beds.register_bed(name, def)
 
 	minetest.register_alias(name, name .. "_bottom")
 
-	minetest.register_craft({
-		output = name,
-		recipe = def.recipe
-	})
+	if def.recipe then
+		minetest.register_craft({
+			output = name,
+			recipe = def.recipe
+		})
+	end
 
 	doc.add_entry_alias("nodes", name.."_bottom", "nodes", name.."_top")
 end

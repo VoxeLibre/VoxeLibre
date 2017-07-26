@@ -37,11 +37,22 @@ for c=1, #colors do
 	local colorid = colors[c][1]
 
 	-- Recoloring recipe for white bed
-	minetest.register_craft({
-		type = "shapeless",
-		output = "mcl_beds:bed_"..colorid.."_bottom",
-		recipe = { "mcl_beds:bed_white_bottom", colors[c][4] },
-	})
+	if minetest.get_modpath("mcl_dye") then
+		minetest.register_craft({
+			type = "shapeless",
+			output = "mcl_beds:bed_"..colorid.."_bottom",
+			recipe = { "mcl_beds:bed_white_bottom", colors[c][4] },
+		})
+	end
+
+	-- Main bed recipe
+	local main_recipe
+	if minetest.get_modpath("mcl_wool") then
+		main_recipe = {
+			{colors[c][3], colors[c][3], colors[c][3]},
+			{"group:wood", "group:wood", "group:wood"}
+		}
+	end
 
 	-- Register bed
 	mcl_beds.register_bed("mcl_beds:bed_"..colorid, {
@@ -76,11 +87,7 @@ for c=1, #colors do
 			bottom = {-0.5, -0.5, -0.5, 0.5, 0.06, 0.5},
 			top = {-0.5, -0.5, -0.5, 0.5, 0.06, 0.5},
 		},
-		-- Main bed recipe
-		recipe = {
-			{colors[c][3], colors[c][3], colors[c][3]},
-			{"group:wood", "group:wood", "group:wood"}
-		},
+		recipe = main_recipe,
 	})
 
 end
