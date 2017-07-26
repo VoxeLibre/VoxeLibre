@@ -114,9 +114,9 @@ local generate_texture = function(lines, signnodename)
 	local texture = "[combine:"..SIGN_WIDTH.."x"..SIGN_WIDTH
 	local ypos
 	if signnodename == "mcl_signs:wall_sign" then
-		ypos = 27
+		ypos = 29
 	else
-		ypos = 0
+		ypos = -2
 	end
 	for i = 1, #lines do
 		texture = texture..generate_line(lines[i], ypos)
@@ -419,8 +419,11 @@ minetest.register_entity("mcl_signs:text", {
 	_signnodename = nil, -- node name of sign node to which the text belongs
 
 	on_activate = function(self, staticdata)
-		if staticdata then
-			self._signnodename = staticdata._signnodename
+		if staticdata ~= nil and staticdata ~= "" then
+			local des = minetest.deserialize(staticdata)
+			if des then
+				self._signnodename = des._signnodename
+			end
 		end
 		local meta = minetest.get_meta(self.object:getpos())
 		local text = meta:get_string("text")
