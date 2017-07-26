@@ -243,7 +243,7 @@ minetest.register_node("mcl_signs:wall_sign", {
 	paramtype2 = "wallmounted",
 	drawtype = "nodebox",
 	node_box = {type = "wallmounted", wall_side = {-0.499, -1/16, -7/16, -7/16, 7/16, 7/16}},
-	tiles = {"signs_wall.png"},
+	tiles = {"mcl_signs_sign_wall.png"},
 	groups = sign_groups,
 	stack_max = 16,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
