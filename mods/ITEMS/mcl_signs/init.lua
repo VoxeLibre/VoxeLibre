@@ -232,7 +232,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 end)
 
-
+local node_sounds
+if minetest.get_modpath("mcl_sounds") then
+	node_sounds = mcl_sounds.node_sound_wood_defaults()
+end
 
 minetest.register_node("mcl_signs:wall_sign", {
 	description = "Sign",
@@ -252,7 +255,7 @@ minetest.register_node("mcl_signs:wall_sign", {
 	tiles = {"mcl_signs_sign.png"},
 	groups = sign_groups,
 	stack_max = 16,
-	sounds = mcl_sounds.node_sound_wood_defaults(),
+	sounds = node_sounds,
 
 	on_place = function(itemstack, placer, pointed_thing)
 		local above = pointed_thing.above
@@ -384,7 +387,7 @@ local ssign = {
 	groups = sign_groups,
 	drop = "mcl_signs:wall_sign",
 	stack_max = 16,
-	sounds = mcl_sounds.node_sound_wood_defaults(),
+	sounds = node_sounds,
 
 	on_destruct = destruct_sign,
 	on_receive_fields = function(pos, formname, fields, sender)
@@ -449,17 +452,22 @@ minetest.register_craft({
 	burntime = 10,
 })
 
-minetest.register_craft({
-	output = 'mcl_signs:wall_sign 3',
-	recipe = {
-		{'group:wood', 'group:wood', 'group:wood'},
-		{'group:wood', 'group:wood', 'group:wood'},
-		{'', 'mcl_core:stick', ''},
-	}
-})
+if minetest.get_modpath("mcl_core") then
+	minetest.register_craft({
+		output = 'mcl_signs:wall_sign 3',
+		recipe = {
+			{'group:wood', 'group:wood', 'group:wood'},
+			{'group:wood', 'group:wood', 'group:wood'},
+			{'', 'mcl_core:stick', ''},
+		}
+	})
+end
 
 if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign")
+	doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign22_5")
+	doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign45")
+	doc.add_entry_alias("nodes", "mcl_signs:wall_sign", "nodes", "mcl_signs:standing_sign67_5")
 end
 
 minetest.register_alias("signs:sign_wall", "mcl_signs:wall_sign")
