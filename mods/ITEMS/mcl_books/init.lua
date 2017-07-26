@@ -7,11 +7,13 @@ minetest.register_craftitem("mcl_books:book", {
 	groups = { book=1 },
 })
 
-minetest.register_craft({
-	type = 'shapeless',
-	output = 'mcl_books:book',
-	recipe = { 'mcl_core:paper', 'mcl_core:paper', 'mcl_core:paper', 'mcl_mobitems:leather', }
-})
+if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
+	minetest.register_craft({
+		type = 'shapeless',
+		output = 'mcl_books:book',
+		recipe = { 'mcl_core:paper', 'mcl_core:paper', 'mcl_core:paper', 'mcl_mobitems:leather', }
+	})
+end
 
 -- Get the included text out of the book item
 -- itemstack: Book item
@@ -161,11 +163,13 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 	end
 end)
 
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_books:writable_book",
-	recipe = { "mcl_books:book", "mcl_dye:black", "mcl_mobitems:feather" },
-})
+if minetest.get_modpath("mcl_dye") and minetest.get_modpath("mcl_mobitems") then
+	minetest.register_craft({
+		type = "shapeless",
+		output = "mcl_books:writable_book",
+		recipe = { "mcl_books:book", "mcl_dye:black", "mcl_mobitems:feather" },
+	})
+end
 
 -- Written Book
 minetest.register_craftitem("mcl_books:written_book", {
@@ -300,6 +304,11 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 	craft_inv:set_stack("craft", index, original)
 end)
 
+local wood_sound
+if minetest.get_modpath("mcl_sounds") then
+	wood_sound = mcl_sounds.node_sound_wood_defaults()
+end
+
 -- Bookshelf
 minetest.register_node("mcl_books:bookshelf", {
 	description = "Bookshelf",
@@ -309,7 +318,7 @@ minetest.register_node("mcl_books:bookshelf", {
 	is_ground_content = false,
 	groups = {handy=1,axey=1, flammable=3,building_block=1, material_wood=1},
 	drop = "mcl_books:book 3",
-	sounds = mcl_sounds.node_sound_wood_defaults(),
+	sounds = wood_sound,
 	_mcl_blast_resistance = 7.5,
 	_mcl_hardness = 1.5,
 })
