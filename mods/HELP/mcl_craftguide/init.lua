@@ -338,7 +338,7 @@ function craftguide:get_formspec(player_name, is_fuel)
 				tooltip..
 				"image["..(xoffset)..","..
 					-- TODO: Remove fire icon, find better way to represent fuel
-					(iY+1.98)..";1,1;default_furnace_fire_fg.png]"
+					(iY+1.98)..";1,1;mcl_craftguide_fuel.png]"
 		else
 			formspec = formspec..self:get_recipe(
 					iY, xoffset, tooltip_raw, data.item,
