@@ -233,7 +233,7 @@ minetest.register_craftitem("bucket:bucket_empty", {
 	end,
 })
 
-if mod_mcl_ore then
+if mod_mcl_core then
 	bucket.register_liquid(
 		"mcl_core:water_source",
 		"mcl_core:water_flowing",
