@@ -232,7 +232,7 @@ minetest.register_globalstep(function(dtime)
 					mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
 				elseif h == 0 then
 				-- Damage hungry player down to 1 HP
-					if hp-1 >= 0 then
+					if hp-1 > 0 then
 						player:set_hp(hp-1)
 					end
 				end
