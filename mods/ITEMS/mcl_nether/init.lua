@@ -37,7 +37,7 @@ minetest.register_node("mcl_nether:quartz_ore", {
 
 minetest.register_node("mcl_nether:netherrack", {
 	description = "Netherrack",
-	_doc_items_longdesc = "Netherrack is a stone-like block home to the Nether. Using flint on steel on netherrack will create eternal fire instead of normal fire.",
+	_doc_items_longdesc = "Netherrack is a stone-like block home to the Nether. Starting a fire on this block will create an eternal fire.",
 	stack_max = 64,
 	tiles = {"mcl_nether_netherrack.png"},
 	is_ground_content = true,
@@ -49,7 +49,7 @@ minetest.register_node("mcl_nether:netherrack", {
 
 minetest.register_node("mcl_nether:magma", {
 	description = "Magma Block",
-	_doc_items_longdesc = "Magma blocks are hot solid blocks which hurt anyone standing on it, unless they have fire resistance.",
+	_doc_items_longdesc = "Magma blocks are hot solid blocks which hurt anyone standing on it, unless they have fire resistance. Starting a fire on this block will create an eternal fire.",
 	stack_max = 64,
 	tiles = {{name="mcl_nether_magma.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=1.5}}},
 	is_ground_content = true,
