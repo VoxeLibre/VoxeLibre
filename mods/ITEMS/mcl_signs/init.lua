@@ -259,10 +259,10 @@ minetest.register_node("mcl_signs:wall_sign", {
 		local under = pointed_thing.under
 
 		-- Use pointed node's on_rightclick function first, if present
-		local node = minetest.get_node(under)
+		local node_under = minetest.get_node(under)
 		if placer and not placer:get_player_control().sneak then
-			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+			if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
+				return minetest.registered_nodes[node_under.name].on_rightclick(under, node_under, placer, itemstack) or itemstack
 			end
 		end
 
@@ -281,7 +281,6 @@ minetest.register_node("mcl_signs:wall_sign", {
 		local fdir = minetest.dir_to_facedir(dir)
 
 		local sign_info
-		local place_pos
 		local nodeitem = ItemStack(itemstack)
 		-- Ceiling
 		if wdir == 0 then
@@ -290,7 +289,6 @@ minetest.register_node("mcl_signs:wall_sign", {
 		-- Floor
 		elseif wdir == 1 then
 			-- Standing sign
-			place_pos = above
 
 			-- Determine the sign rotation based on player's yaw
 			local yaw = math.pi*2 - placer:get_look_horizontal()
@@ -325,12 +323,19 @@ minetest.register_node("mcl_signs:wall_sign", {
 		-- Side
 		else
 			-- Wall sign
-			place_pos = above
 			local _, success = minetest.item_place_node(itemstack, placer, pointed_thing, wdir)
 			if not success then
 				return itemstack
 			end
 			sign_info = signtext_info_wall[fdir + 1]
+		end
+
+		-- Determine spawn position of entity
+		local place_pos
+		if minetest.registered_nodes[node_under.name].buildable_to then
+			place_pos = under
+		else
+			place_pos = above
 		end
 
 		local text_entity = minetest.add_entity({
