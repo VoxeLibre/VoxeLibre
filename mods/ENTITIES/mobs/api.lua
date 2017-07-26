@@ -1,9 +1,9 @@
 
--- Mobs Api (14th July 2017)
+-- Mobs Api (26th July 2017)
 
 mobs = {}
 mobs.mod = "redo"
-mobs.version = "20170714"
+mobs.version = "20170726"
 
 
 -- Intllib
@@ -160,7 +160,7 @@ end
 
 
 -- above function exported for mount.lua
-function mobs:set_animation(anim)
+function mobs:set_animation(self, anim)
 	set_animation(self, anim)
 end
 
@@ -2408,6 +2408,7 @@ local mob_activate = function(self, staticdata, def, dtime)
 	self.object:set_properties(self)
 	set_yaw(self.object, (random(0, 360) - 180) / 180 * pi)
 	update_tag(self)
+	set_animation(self, "stand")
 
 	if use_cmi then
 		self._cmi_components = cmi.activate_components(self.serialized_cmi_components)
