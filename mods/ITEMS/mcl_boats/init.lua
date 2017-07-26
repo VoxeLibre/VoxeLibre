@@ -253,7 +253,10 @@ minetest.register_entity("mcl_boats:boat", boat)
 
 local boat_ids = { "boat", "boat_spruce", "boat_birch", "boat_jungle", "boat_acacia", "boat_dark_oak" }
 local names = { "Oak Boat", "Spruce Boat", "Birch Boat", "Jungle Boat", "Acacia Boat", "Dark Oak Boat" }
-local craftstuffs = { "mcl_core:wood", "mcl_core:sprucewood", "mcl_core:birchwood", "mcl_core:junglewood", "mcl_core:acaciawood", "mcl_core:darkwood" }
+local craftstuffs = {}
+if minetest.get_modpath("mcl_core") then
+	craftstuffs = { "mcl_core:wood", "mcl_core:sprucewood", "mcl_core:birchwood", "mcl_core:junglewood", "mcl_core:acaciawood", "mcl_core:darkwood" }
+end
 local images = { "oak", "spruce", "birch", "jungle", "acacia", "dark_oak" }
 
 for b=1, #boat_ids do
