@@ -52,7 +52,7 @@ minetest.register_node("mcl_banners:standing_banner_white", {
 		end
 		place_pos.y = place_pos.y - 0.5
 
-		local banner = minetest.add_entity(place_pos, "mcl_banners:banner")
+		local banner = minetest.add_entity(place_pos, "mcl_banners:standing_banner")
 
 		-- Determine the rotation based on player's yaw
 		local yaw = placer:get_look_horizontal()
@@ -71,7 +71,7 @@ minetest.register_node("mcl_banners:standing_banner_white", {
 	on_destruct = function(pos)
 		local objects = minetest.get_objects_inside_radius(pos, 0.5)
 		for _, v in ipairs(objects) do
-			if v:get_entity_name() == "mcl_banners:banner" then
+			if v:get_entity_name() == "mcl_banners:standing_banner" then
 				v:remove()
 			end
 		end
