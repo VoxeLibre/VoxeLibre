@@ -29,11 +29,17 @@ local colors = {
 	["unicolor_light_blue"] = {"light_blue", "Light Blue Banner", "mcl_wool:light_blue", "#4040CFE0" },
 }
 
+-- After destroying the standing banner node
 local on_destruct_standing_banner = function(pos)
+	if not minetest.settings:get_bool("creative_mode") then
+		return
+	end
+
+	-- Find this node's banner entity and make it drop as an item
 	local objects = minetest.get_objects_inside_radius(pos, 0.5)
 	for _, v in ipairs(objects) do
 		if v:get_entity_name() == "mcl_banners:standing_banner" then
-			v:remove()
+			v:get_luaentity():_drop()
 		end
 	end
 end
@@ -50,13 +56,37 @@ local make_banner_texture = function(colorid)
 	end
 end
 
+-- Standing banner node.
+-- This is an invisible node which is only used to destroy the banner entity.
+-- All the important banner information (such as color) is stored in the entity.
+-- It is used only used internally.
+minetest.register_node("mcl_banners:standing_banner", {
+	walkable = false,
+	is_ground_content = false,
+	paramtype = "light",
+	sunlight_propagates = true,
+	drawtype = "airlike",
+	inventory_image = "mcl_banners_item_base.png",
+	wield_image = "mcl_banners_item_base.png",
+	tiles = { "blank.png" },
+	selection_box = {type = "fixed", fixed= {-0.2, -0.5, -0.2, 0.2, 0.5, 0.2} },
+	groups = { banner = 1, deco_block = 1, attached_node = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1, },
+	stack_max = 16,
+	sounds = node_sounds,
+	drop = "", -- Item drops are handled in entity code
+
+	on_destruct = on_destruct_standing_banner,
+	_mcl_hardness = 1,
+	_mcl_blast_resistance = 5,
+})
+
 for colorid, colortab in pairs(colors) do
 	local itemid = colortab[1]
 	local desc = colortab[2]
 	local wool = colortab[3]
 	local colorize = colortab[4]
 
-	local itemstring_standing = "mcl_banners:standding_banner_"..itemid
+	local itemstring = "mcl_banners:banner_item_"..itemid
 	local inv
 	if colorize then
 		inv = "mcl_banners_item_base.png^(mcl_banners_item_overlay.png^[colorize:"..colorize..")"
@@ -64,22 +94,17 @@ for colorid, colortab in pairs(colors) do
 		inv = "mcl_banners_item_base.png^mcl_banners_item_overlay.png"
 	end
 
-	-- Banner node
-	minetest.register_node("mcl_banners:standing_banner", {
+	-- Banner items.
+	-- This is the player-visible banner item. It comes in 16 base colors.
+	-- The multiple items are really only needed for the different item images.
+	-- TODO: Combine the items into only 1 item.
+	minetest.register_craftitem(itemstring, {
 		description = desc,
 		_doc_items_longdesc = "Banners are tall decorative blocks which can be placed on the floor.",
-		walkable = false,
-		is_ground_content = false,
-		paramtype = "light",
-		sunlight_propagates = true,
-		drawtype = "airlike",
 		inventory_image = inv,
 		wield_image = inv,
-		tiles = { "blank.png" },
-		selection_box = {type = "fixed", fixed= {-0.2, -0.5, -0.2, 0.2, 0.5, 0.2} },
-		groups = { banner = 1, deco_block = 1, attached_node = 1 },
+		groups = { banner = 1, deco_block = 1, },
 		stack_max = 16,
-		sounds = node_sounds,
 
 		on_place = function(itemstack, placer, pointed_thing)
 			local above = pointed_thing.above
@@ -94,7 +119,7 @@ for colorid, colortab in pairs(colors) do
 			end
 
 			-- Place the node!
-			local _, success = minetest.item_place_node(itemstack, placer, pointed_thing)
+			local _, success = minetest.item_place_node(ItemStack("mcl_banners:standing_banner"), placer, pointed_thing)
 			if not success then
 				return itemstack
 			end
@@ -125,84 +150,11 @@ for colorid, colortab in pairs(colors) do
 
 			return itemstack
 		end,
-
-		on_destruct = on_destruct_standing_banner,
-		_mcl_hardness = 1,
-		_mcl_blast_resistance = 5,
-	})
-
-
-
-	-- Banner node
-	minetest.register_node(itemstring_standing, {
-		description = desc,
-		_doc_items_longdesc = "Banners are tall decorative blocks which can be placed on the floor.",
-		walkable = false,
-		is_ground_content = false,
-		paramtype = "light",
-		sunlight_propagates = true,
-		drawtype = "airlike",
-		inventory_image = inv,
-		wield_image = inv,
-		tiles = { "blank.png" },
-		selection_box = {type = "fixed", fixed= {-0.2, -0.5, -0.2, 0.2, 0.5, 0.2} },
-		groups = { banner = 1, deco_block = 1, attached_node = 1 },
-		stack_max = 16,
-		sounds = node_sounds,
-
-		on_place = function(itemstack, placer, pointed_thing)
-			local above = pointed_thing.above
-			local under = pointed_thing.under
-
-			-- Use pointed node's on_rightclick function first, if present
-			local node_under = minetest.get_node(under)
-			if placer and not placer:get_player_control().sneak then
-				if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
-					return minetest.registered_nodes[node_under.name].on_rightclick(under, node_under, placer, itemstack) or itemstack
-				end
-			end
-
-			-- Place the node!
-			local _, success = minetest.item_place_node(itemstack, placer, pointed_thing)
-			if not success then
-				return itemstack
-			end
-
-			local place_pos
-			if minetest.registered_nodes[node_under.name].buildable_to then
-				place_pos = under
-			else
-				place_pos = above
-			end
-			place_pos.y = place_pos.y - 0.5
-
-			local banner = minetest.add_entity(place_pos, "mcl_banners:standing_banner")
-			banner:set_properties({textures=make_banner_texture(colorid)})
-			banner:get_luaentity()._base_color = colorid
-
-			-- Determine the rotation based on player's yaw
-			local yaw = placer:get_look_horizontal()
-			-- Select one of 16 possible rotations (0-15)
-			local rotation_level = round((yaw / (math.pi*2)) * 16)
-			local final_yaw = (rotation_level * (math.pi/8)) + math.pi
-			banner:set_yaw(final_yaw)
-
-			if not minetest.settings:get_bool("creative_mode") then
-				itemstack:take_item()
-			end
-			minetest.sound_play({name="default_place_node_hard", gain=1.0}, {pos = place_pos})
-
-			return itemstack
-		end,
-
-		on_destruct = on_destruct_standing_banner,
-		_mcl_hardness = 1,
-		_mcl_blast_resistance = 5,
 	})
 
 	if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_wool") then
 		minetest.register_craft({
-			output = itemstring_standing,
+			output = itemstring,
 			recipe = {
 				{ wool, wool, wool },
 				{ wool, wool, wool },
@@ -234,6 +186,20 @@ minetest.register_entity("mcl_banners:standing_banner", {
 			self.object:set_properties({textures = make_banner_texture(self._base_color)})
 		end
 		self.object:set_armor_groups({immortal=1})
+	end,
+
+	-- This is a custom function which causes the banner to be dropped as item and destroys the entity.
+	_drop = function(self)
+		-- Drop as item when the entity is destroyed.
+		if not self._base_color then
+			return
+		end
+		local pos = self.object:getpos()
+		pos.y = pos.y + 1
+		minetest.add_item(pos, "mcl_banners:banner_item_"..colors[self._base_color][1])
+
+		-- Destroy entity
+		self:remove()
 	end,
 })
 
