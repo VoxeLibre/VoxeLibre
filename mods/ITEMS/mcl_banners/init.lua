@@ -31,7 +31,7 @@ local colors = {
 
 -- After destroying the standing banner node
 local on_destruct_standing_banner = function(pos)
-	if not minetest.settings:get_bool("creative_mode") then
+	if minetest.settings:get_bool("creative_mode") then
 		return
 	end
 
