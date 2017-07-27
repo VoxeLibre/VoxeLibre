@@ -199,7 +199,7 @@ minetest.register_entity("mcl_banners:standing_banner", {
 		minetest.add_item(pos, "mcl_banners:banner_item_"..colors[self._base_color][1])
 
 		-- Destroy entity
-		self:remove()
+		self.object:remove()
 	end,
 })
 
