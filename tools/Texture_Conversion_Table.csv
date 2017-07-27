@@ -842,5 +842,7 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt
 /assets/minecraft/textures/painting,paintings_kristoffer_zetterstrand.png,/mods/ITEMS/gemalde/textures,gemalde_24.png,128,192,64,64,0,0
 /assets/minecraft/textures/painting,paintings_kristoffer_zetterstrand.png,/mods/ITEMS/gemalde/textures,gemalde_25.png,192,64,64,48,0,0
 /assets/minecraft/textures/painting,paintings_kristoffer_zetterstrand.png,/mods/ITEMS/gemalde/textures,gemalde_26.png,192,112,64,48,0,0
+/assets/minecraft/textures/entity,banner_base.png,/mods/ITEMS/mcl_banners/textures,mcl_banners_banner_base.png,,,,,,
+/assets/minecraft/textures/entity/banner,base.png,/mods/ITEMS/mcl_banners/textures,mcl_banners_base.png,,,,,,
 /assets/minecraft/textures/items,banner_base.png,/mods/ITEMS/mcl_banners/textures,mcl_banners_item_base.png,,,,,,
 /assets/minecraft/textures/items,banner_overlay.png,/mods/ITEMS/mcl_banners/textures,mcl_banners_item_overlay.png,,,,,,
