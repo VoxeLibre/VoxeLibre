@@ -40,13 +40,32 @@ local on_destruct_standing_banner = function(pos)
 	end
 end
 
-local make_banner_texture = function(colorid)
+local make_banner_texture = function(base_color, layers)
 	local colorize
-	if colors[colorid] then
-		colorize = colors[colorid][4]
+	if colors[base_color] then
+		colorize = colors[base_color][4]
 	end
 	if colorize then
-		return { "(mcl_banners_banner_base.png^[mask:mcl_banners_base_inverted.png)^((mcl_banners_banner_base.png^[colorize:"..colorize..")^[mask:mcl_banners_base.png)" }
+		-- Base texture with base color
+		local base = "(mcl_banners_banner_base.png^[mask:mcl_banners_base_inverted.png)^((mcl_banners_banner_base.png^[colorize:"..colorize..")^[mask:mcl_banners_base.png)"
+
+		-- Optional pattern layers
+		-- TODO: Add entity support
+		if layers then
+			local finished_banner = base
+			for l=1, #layers do
+				local layerinfo = layers[l]
+				local pattern = layerinfo.pattern .. ".png"
+				local color = colors[layerinfo.color][4]
+
+				-- Generate layer texture
+				local layer = "(("..pattern.."^[colorize:"..color..")^[mask:"..pattern..")"
+
+				finished_banner = finished_banner .. "^" .. layer
+			end
+			return { finished_banner }
+		end
+		return { base }
 	else
 		return { "mcl_banners_banner_base.png" }
 	end
