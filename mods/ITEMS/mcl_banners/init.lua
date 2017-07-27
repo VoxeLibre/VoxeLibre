@@ -31,10 +31,6 @@ local colors = {
 
 -- After destroying the standing banner node
 local on_destruct_standing_banner = function(pos)
-	if minetest.settings:get_bool("creative_mode") then
-		return
-	end
-
 	-- Find this node's banner entity and make it drop as an item
 	local objects = minetest.get_objects_inside_radius(pos, 0.5)
 	for _, v in ipairs(objects) do
@@ -196,7 +192,10 @@ minetest.register_entity("mcl_banners:standing_banner", {
 		end
 		local pos = self.object:getpos()
 		pos.y = pos.y + 1
-		minetest.add_item(pos, "mcl_banners:banner_item_"..colors[self._base_color][1])
+
+		if not minetest.settings:get_bool("creative_mode") then
+			minetest.add_item(pos, "mcl_banners:banner_item_"..colors[self._base_color][1])
+		end
 
 		-- Destroy entity
 		self.object:remove()
