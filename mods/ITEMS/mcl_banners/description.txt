@@ -1,1 +1,1 @@
-Adds decorative banners.
+Adds decorative banners in different colors.
