@@ -9,3 +9,4 @@ gemalde
 mcl_observers
 doc_identifier
 mobs_mc
+mcl_paintings

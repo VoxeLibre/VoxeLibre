@@ -18,6 +18,7 @@ local wip_items = {
 	"mcl_core:cobweb",
 	"mobs_mc:llama",
 	"mobs_mc:totem",
+	"mcl_paintings:painting",
 }
 
 for i=1,#wip_items do
