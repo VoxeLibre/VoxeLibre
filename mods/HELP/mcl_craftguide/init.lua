@@ -53,6 +53,7 @@ local group_stereotypes = {
 	coal         = "mcl_core:coal_lump",
 	shulker_box  = "mcl_chests:violet_shulker_box",
 	quartz_block = "mcl_nether:quartz_block",
+	banner       = "mcl_banners:standing_banner_white",
 	mesecon_conductor_craftable = "mesecons:wire_00000000_off",
 	compass      = mcl_compass.stereotype,
 	clock        = mcl_clock.sterotype,
