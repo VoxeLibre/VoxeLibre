@@ -16,10 +16,12 @@ minetest.register_craftitem("mcl_paintings:painting", {
 
 		local under = pointed_thing.under
 		local above = pointed_thing.above
-		-- Am I right-clicking on something that has a custom on_rightclick set?
+
+		-- Use pointed node's on_rightclick function first, if present
+		local node_under = minetest.get_node(under)
 		if placer and not placer:get_player_control().sneak then
-			if minetest.registered_nodes[under.name] and minetest.registered_nodes[under.name].on_rightclick then
-				return minetest.registered_nodes[under.name].on_rightclick(pointed_thing.under, under, placer, itemstack) or itemstack
+			if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
+				return minetest.registered_nodes[node_under.name].on_rightclick(under, node_under, placer, itemstack) or itemstack
 			end
 		end
 
@@ -28,8 +30,7 @@ minetest.register_craftitem("mcl_paintings:painting", {
 			return itemstack
 		end
 		-- Can only be placed on solid nodes
-		local undernode = minetest.get_node(under)
-		if minetest.get_item_group(undernode.name, "solid") == 0 then
+		if minetest.get_item_group(node_under.name, "solid") == 0 then
 			return itemstack
 		end
 
