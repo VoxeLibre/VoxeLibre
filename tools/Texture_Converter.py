@@ -149,6 +149,13 @@ def convert_textures():
 		convert_alphatex(GRASS, tex_dir+"/blocks/double_plant_grass_bottom.png", "70+120", str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_double_plant_grass_bottom.png")
 		convert_alphatex(GRASS, tex_dir+"/blocks/double_plant_grass_top.png", "70+120", str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_double_plant_grass_top.png")
 
+#	TODO: Convert banner masks
+#	if os.path.isdir(tex_dir + "/entity/banner"):
+# These are the ImageMagick commands needed to convert the mask images
+#		os.system("mogrify -transparent-color "+filename)
+#		os.system("mogrify -clip-mask "+tex_dir+"/entity/banner/base.png"+" -alpha Copy "+filename)
+#		os.system("mogrify -fill white -colorize 100 "+filename)
+
 if make_texture_pack and not os.path.isdir("./texture_pack"):
 	os.mkdir("texture_pack")
 
