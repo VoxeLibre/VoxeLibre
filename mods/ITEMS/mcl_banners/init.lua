@@ -14,7 +14,7 @@ local colors = {
 	["unicolor_white"] = {"white",      "White Banner",      "mcl_wool:white", nil },
 	["unicolor_darkcolor"] = {"grey",       "Grey Banner",       "mcl_wool:grey", "#303030D0" },
 	["unicolor_grey"] = {"silver",     "Light Grey Banner", "mcl_wool:silver", "#5B5B5BD0" },
-	["unicolor_black"] = {"black",      "Black Banner",      "mcl_wool:black", "#000000D0" },
+	["unicolor_black"] = {"black",      "Black Banner",      "mcl_wool:black", "#000000E0" },
 	["unicolor_red"] = {"red",        "Red Banner",        "mcl_wool:red", "#CC0000D0" },
 	["unicolor_yellow"] = {"yellow",     "Yellow Banner",     "mcl_wool:yellow", "#CCCC00D0" },
 	["unicolor_dark_green"] = {"green",      "Green Banner",      "mcl_wool:green", "#008000D0" },
@@ -44,7 +44,7 @@ local make_banner_texture = function(colorid)
 		colorize = colors[colorid][4]
 	end
 	if colorize then
-		return { "mcl_banners_banner_base.png^((mcl_banners_banner_base.png^[mask:mcl_banners_base.png)^[colorize:"..colorize..")" }
+		return { "(mcl_banners_banner_base.png^[mask:mcl_banners_base_inverted.png)^((mcl_banners_banner_base.png^[colorize:"..colorize..")^[mask:mcl_banners_base.png)" }
 	else
 		return { "mcl_banners_banner_base.png" }
 	end
