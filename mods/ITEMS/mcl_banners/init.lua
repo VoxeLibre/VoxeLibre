@@ -100,7 +100,7 @@ for colorid, colortab in pairs(colors) do
 	-- TODO: Combine the items into only 1 item.
 	minetest.register_craftitem(itemstring, {
 		description = desc,
-		_doc_items_longdesc = "Banners are tall decorative blocks which can be placed on the floor.",
+		_doc_items_longdesc = "Banners are tall decorative blocks with a solid color. They can be placed on the floor. Banners can not be emblazoned (yet).",
 		inventory_image = inv,
 		wield_image = inv,
 		groups = { banner = 1, deco_block = 1, },
