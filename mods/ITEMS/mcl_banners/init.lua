@@ -80,7 +80,7 @@ minetest.register_node("mcl_banners:standing_banner_white", {
 	_mcl_blast_resistance = 5,
 })
 
-minetest.register_entity("mcl_banners:banner", {
+minetest.register_entity("mcl_banners:standing_banner", {
 	physical = false,
 	collide_with_objects = false,
 	visual = "mesh",
