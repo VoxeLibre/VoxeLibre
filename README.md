@@ -174,23 +174,37 @@ Please report all bugs and missing Minecraft features here:
 * `API.md`: For Minetest modders who want to mod this game
 
 ## Credits
-There are so many people to list (sorry). Check out the respective mod directories for details.
+There are so many people to list (sorry). Check out the respective mod directories for details. This section is only a rough overview of the core authors of this game.
 
-### Mods
-TO BE WRITTEN.
+### Coding
+* [Wuzzy](https://forum.minetest.net/memberlist.php?mode=viewprofile&u=3082): Main programmer of most mods
+* daredevils: Creator of MineClone on which MineClone 2 is based on
+* Lots of other people: TO BE WRITTEN (see mod directories for details)
+
+### Textures
+* [XSSheep](http://www.minecraftforum.net/members/XSSheep): Main author; creator of the Pixel Perfection resource pack of Minecraft 1.11
+* [Wuzzy](https://forum.minetest.net/memberlist.php?mode=viewprofile&u=3082): Main menu imagery and various edits and additions of texture pack
+* [kingoscargames](https://github.com/kingoscargames): Various edits and additions of existing textures
+* [leorockway](https://github.com/leorockway): Some edits of mob textures
+* [xMrVizzy](https://minecraft.curseforge.com/members/xMrVizzy): Glazed terracotta (textures are subject to be replaced later)
+* Other authors: GUI images,
+
+### Models
+* [22i](https://github.com/22i): Creator of all models
+
+### Sounds and music
+Various sources. See the respective mod directories for details.
 
 ### Special thanks
 
-* daredevils for starting this project
-* Tox82, MinetestForFun & Calinou for help in dev
-* GravGun & Obani for Help in Build struct
+* daredevils for starting MineClone, the original version of this game
 * celeron55 for creating Minetest
-* Bob Lennon because it's a pyro-barbare
 * Minetest's modding community for providing a huge selection of mods, some of which ended up in MineClone 2
 * Jordach for the jukebox music compilation from Big Freaking Dig
 * The workaholics who spent way too much time writing for the Minecraft Wiki. It's an invaluable resource for creating this game
 * Notch and Jeb for being the major forces behind Minecraft
 * XSSheep for creating the Pixel Perfection resource pack
+* [22i](https://github.com/22i) for providing great models and support
 
 ## Info for programmers
 You find interesting and useful infos in `API.md`.
@@ -216,6 +230,7 @@ The textures, unless otherwise noted, are based on the Pixel Perfection resource
 authored by XSSheep. Most textures are verbatim copies, while some textures have been changed or redone
 from scratch.
 Source: <https://www.planetminecraft.com/texture_pack/131pixel-perfection/>
+License: [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/)
 
 MineClone 2 is currently in the processs of changing all the textures.
 The textures for the glazed terracotta come from Faithful Vanilla.
