@@ -15,13 +15,13 @@ local colors = {
 	["unicolor_darkgrey"] = {"grey",       "Grey Banner",       "mcl_wool:grey", "#303030E0" },
 	["unicolor_grey"] = {"silver",     "Light Grey Banner", "mcl_wool:silver", "#5B5B5BE0" },
 	["unicolor_black"] = {"black",      "Black Banner",      "mcl_wool:black", "#000000E0" },
-	["unicolor_red"] = {"red",        "Red Banner",        "mcl_wool:red", "#AC0000E0" },
-	["unicolor_yellow"] = {"yellow",     "Yellow Banner",     "mcl_wool:yellow", "#AC9800E0" },
+	["unicolor_red"] = {"red",        "Red Banner",        "mcl_wool:red", "#BC0000E0" },
+	["unicolor_yellow"] = {"yellow",     "Yellow Banner",     "mcl_wool:yellow", "#BCA800E0" },
 	["unicolor_dark_green"] = {"green",      "Green Banner",      "mcl_wool:green", "#006000E0" },
 	["unicolor_cyan"] = {"cyan",       "Cyan Banner",       "mcl_wool:cyan", "#00ACACE0" },
 	["unicolor_blue"] = {"blue",       "Blue Banner",       "mcl_wool:blue", "#0000ACE0" },
 	["unicolor_red_violet"] = {"magenta",    "Magenta Banner",    "mcl_wool:magenta", "#AC007CE0" },
-	["unicolor_orange"] = {"orange",     "Orange Banner",     "mcl_wool:orange", "#AC5900E0" },
+	["unicolor_orange"] = {"orange",     "Orange Banner",     "mcl_wool:orange", "#BC6900E0" },
 	["unicolor_violet"] = {"purple",     "Purple Banner",     "mcl_wool:purple", "#6400ACE0" },
 	["unicolor_brown"] = {"brown",      "Brown Banner",      "mcl_wool:brown", "#402100E0" },
 	["unicolor_pink"] = {"pink",       "Pink Banner",       "mcl_wool:pink", "#DE557CE0" },
@@ -63,6 +63,75 @@ for colorid, colortab in pairs(colors) do
 	else
 		inv = "mcl_banners_item_base.png^mcl_banners_item_overlay.png"
 	end
+
+	-- Banner node
+	minetest.register_node("mcl_banners:standing_banner", {
+		description = desc,
+		_doc_items_longdesc = "Banners are tall decorative blocks which can be placed on the floor.",
+		walkable = false,
+		is_ground_content = false,
+		paramtype = "light",
+		sunlight_propagates = true,
+		drawtype = "airlike",
+		inventory_image = inv,
+		wield_image = inv,
+		tiles = { "blank.png" },
+		selection_box = {type = "fixed", fixed= {-0.2, -0.5, -0.2, 0.2, 0.5, 0.2} },
+		groups = { banner = 1, deco_block = 1, attached_node = 1 },
+		stack_max = 16,
+		sounds = node_sounds,
+
+		on_place = function(itemstack, placer, pointed_thing)
+			local above = pointed_thing.above
+			local under = pointed_thing.under
+
+			-- Use pointed node's on_rightclick function first, if present
+			local node_under = minetest.get_node(under)
+			if placer and not placer:get_player_control().sneak then
+				if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
+					return minetest.registered_nodes[node_under.name].on_rightclick(under, node_under, placer, itemstack) or itemstack
+				end
+			end
+
+			-- Place the node!
+			local _, success = minetest.item_place_node(itemstack, placer, pointed_thing)
+			if not success then
+				return itemstack
+			end
+
+			local place_pos
+			if minetest.registered_nodes[node_under.name].buildable_to then
+				place_pos = under
+			else
+				place_pos = above
+			end
+			place_pos.y = place_pos.y - 0.5
+
+			local banner = minetest.add_entity(place_pos, "mcl_banners:standing_banner")
+			banner:set_properties({textures=make_banner_texture(colorid)})
+			banner:get_luaentity()._base_color = colorid
+
+			-- Determine the rotation based on player's yaw
+			local yaw = placer:get_look_horizontal()
+			-- Select one of 16 possible rotations (0-15)
+			local rotation_level = round((yaw / (math.pi*2)) * 16)
+			local final_yaw = (rotation_level * (math.pi/8)) + math.pi
+			banner:set_yaw(final_yaw)
+
+			if not minetest.settings:get_bool("creative_mode") then
+				itemstack:take_item()
+			end
+			minetest.sound_play({name="default_place_node_hard", gain=1.0}, {pos = place_pos})
+
+			return itemstack
+		end,
+
+		on_destruct = on_destruct_standing_banner,
+		_mcl_hardness = 1,
+		_mcl_blast_resistance = 5,
+	})
+
+
 
 	-- Banner node
 	minetest.register_node(itemstring_standing, {
