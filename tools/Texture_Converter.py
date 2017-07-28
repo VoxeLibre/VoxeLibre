@@ -169,10 +169,10 @@ def convert_textures():
 
 		print("Textures conversion COMPLETE!")
 		if failed_conversions > 0:
-			print("Number of missing files in original resource pack: "+str(failed_conversions))
-		print("WARNING: Please keep in mind this script does not reliably convert all the textures yet.")
+			print("WARNING: Number of missing files in original resource pack: "+str(failed_conversions))
+		print("NOTE: Please keep in mind this script does not reliably convert all the textures yet.")
 		if make_texture_pack:
-			print("Retrieve the texture pack in "+working_dir+"/texture_pack/")
+			print("You can now retrieve the texture pack in "+working_dir+"/texture_pack/")
 
 # ENTRY POINT
 if make_texture_pack and not os.path.isdir("./texture_pack"):
