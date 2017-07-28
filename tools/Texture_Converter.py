@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-# Texture pack movement utility.
+# EXPERIMENTAL texture pack copying utility.
 # This Python script helps in converting Minecraft texture packs. It has 2 main features:
-# - Can create a Minetest texture pack
+# - Can create a Minetest texture pack (default)
 # - Can update the MineClone 2 textures
 # This script is currently incomplete, not all textures are converted.
 #
@@ -25,7 +25,7 @@ dry_run = False
 
 # If True, textures will be put into a texture pack directory structure.
 # If False, textures will be put into MineClone 2 directories.
-make_texture_pack = False
+make_texture_pack = True
 
 ### END OF SETTINGS ###
 
