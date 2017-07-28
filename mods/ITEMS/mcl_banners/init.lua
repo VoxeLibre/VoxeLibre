@@ -159,7 +159,6 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 						local layers_raw = imeta:get_string("layers")
 						local layers = minetest.deserialize(layers_raw)
 						if type(layers) == "table" and #layers > 0 then
-							minetest.log("error", dump(layers))
 							table.remove(layers)
 							imeta:set_string("layers", minetest.serialize(layers))
 							local newdesc = mcl_banners.make_advanced_banner_description(itemstack:get_definition().description, layers)
