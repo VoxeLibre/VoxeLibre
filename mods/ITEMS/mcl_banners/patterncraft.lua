@@ -19,7 +19,7 @@ local patterns = {
 		{ e, "mcl_core:brick_block", d },
 	},
 	["circle"] = {
-		name = "%s Circle",
+		name = "%s Roundel",
 		{ e, e, e },
 		{ e, d, e },
 		{ e, e, e },
@@ -344,7 +344,31 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 			end
 
 		elseif pattern.type == "shapeless" then
-			-- TODO
+			local orig = pattern[1]
+			local no_mismatches_so_far = true
+			-- This code compares the craft grid with the required items
+			for o=1, #orig do
+				local item_ok = false
+				for i=1, max_i do
+					local itemname = old_craft_grid[i]:get_name()
+					if (orig[o] == e) or -- Empty slot: Always wins
+							(orig[o] ~= e and orig[o] == itemname) or -- non-empty slot: Exact item match required
+							(orig[o] == d and minetest.get_item_group(itemname, "dye") == 1) then -- Dye slot
+						item_ok = true
+						break
+					end
+				end
+				-- Sorry, item not found. :-(
+				if not item_ok then
+					no_mismatches_so_far = false
+					break
+				end
+			end
+			-- Ladies and Gentlemen, we have a winner!
+			if no_mismatches_so_far then
+				matching_pattern = pattern_name
+				break
+			end
 		end
 
 		if matching_pattern then
