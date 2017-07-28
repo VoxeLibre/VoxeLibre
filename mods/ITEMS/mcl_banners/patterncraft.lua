@@ -190,6 +190,35 @@ local patterns = {
 	},
 }
 
+-- Number of maximum lines in the descriptions for the banner layers.
+-- To avoid huge tooltips.
+local max_layer_lines = 6
+
+-- Create a banner description containing all the layer names
+local make_advanced_banner_description = function(description, layers)
+	if layers == nil or #layers == 0 then
+		-- No layers, revert to default
+		return ""
+	else
+		local d = description
+		local layerstrings = {}
+		for l=1, #layers do
+			if l > max_layer_lines then
+				break
+			end
+			table.insert(layerstrings, string.format("%s %s", layers[l].color, layers[l].pattern))
+		end
+		if #layers == max_layer_lines + 1 then
+			table.insert(layerstrings, "And one addional layer")
+		elseif #layers > max_layer_lines + 1 then
+			table.insert(layerstrings, string.format("And %d addional layers", #layers - max_layer_lines))
+		end
+		local append = table.concat(layerstrings, "\n")
+		d = d .. "\n" .. core.colorize("#8F8F8F", append)
+		return d
+	end
+end
+
 -- This is for handling all those complex pattern crafting recipes
 local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_inv)
 	if minetest.get_item_group(itemstack:get_name(), "banner") ~= 1 then
@@ -267,14 +296,15 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 		return ItemStack("")
 	end
 
-	-- Add the new layer
-
+	-- Add the new layer and update other metadata
 	table.insert(layers, {pattern=matching_pattern, color="unicolor_yellow"})
 
 	local imeta = itemstack:get_meta()
 	imeta:set_string("layers", minetest.serialize(layers))
 
-	imeta:set_string("description", "Emblazoned Banner ("..matching_pattern..")")
+	local odesc = itemstack:get_definition().description
+	local description = make_advanced_banner_description(odesc, layers)
+	imeta:set_string("description", description)
 	return itemstack
 end
 
