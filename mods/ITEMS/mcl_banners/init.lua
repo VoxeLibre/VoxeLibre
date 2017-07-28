@@ -9,24 +9,26 @@ local function round(num, idp)
 	return math.floor(num * mult + 0.5) / mult
 end
 
-local colors = {
-	-- ID, description, wool, unified dyes color group, overlay color,
-	["unicolor_white"] = {"white",      "White Banner",      "mcl_wool:white", "#FFFFFF" },
-	["unicolor_darkgrey"] = {"grey",       "Grey Banner",       "mcl_wool:grey", "#303030" },
-	["unicolor_grey"] = {"silver",     "Light Grey Banner", "mcl_wool:silver", "#5B5B5B" },
-	["unicolor_black"] = {"black",      "Black Banner",      "mcl_wool:black", "#000000" },
-	["unicolor_red"] = {"red",        "Red Banner",        "mcl_wool:red", "#BC0000" },
-	["unicolor_yellow"] = {"yellow",     "Yellow Banner",     "mcl_wool:yellow", "#BCA800" },
-	["unicolor_dark_green"] = {"green",      "Green Banner",      "mcl_wool:green", "#006000" },
-	["unicolor_cyan"] = {"cyan",       "Cyan Banner",       "mcl_wool:cyan", "#00ACAC" },
-	["unicolor_blue"] = {"blue",       "Blue Banner",       "mcl_wool:blue", "#0000AC" },
-	["unicolor_red_violet"] = {"magenta",    "Magenta Banner",    "mcl_wool:magenta", "#AC007C" },
-	["unicolor_orange"] = {"orange",     "Orange Banner",     "mcl_wool:orange", "#BC6900" },
-	["unicolor_violet"] = {"purple",     "Purple Banner",     "mcl_wool:purple", "#6400AC" },
-	["unicolor_brown"] = {"brown",      "Brown Banner",      "mcl_wool:brown", "#402100" },
-	["unicolor_pink"] = {"pink",       "Pink Banner",       "mcl_wool:pink", "#DE557C" },
-	["unicolor_lime"] = {"lime",       "Lime Banner",       "mcl_wool:lime", "#30AC00"},
-	["unicolor_light_blue"] = {"light_blue", "Light Blue Banner", "mcl_wool:light_blue", "#4040CF" },
+mcl_banners = {}
+
+mcl_banners.colors = {
+	-- ID, description, wool, unified dyes color group, overlay color, dye
+	["unicolor_white"] = {"white",      "White Banner",      "mcl_wool:white", "#FFFFFF", "mcl_dye:white" },
+	["unicolor_darkgrey"] = {"grey",       "Grey Banner",       "mcl_wool:grey", "#303030", "mcl_dye:dark_grey" },
+	["unicolor_grey"] = {"silver",     "Light Grey Banner", "mcl_wool:silver", "#5B5B5B", "mcl_dye:grey" },
+	["unicolor_black"] = {"black",      "Black Banner",      "mcl_wool:black", "#000000", "mcl_dye:black" },
+	["unicolor_red"] = {"red",        "Red Banner",        "mcl_wool:red", "#BC0000", "mcl_dye:red" },
+	["unicolor_yellow"] = {"yellow",     "Yellow Banner",     "mcl_wool:yellow", "#BCA800", "mcl_dye:yellow" },
+	["unicolor_dark_green"] = {"green",      "Green Banner",      "mcl_wool:green", "#006000", "mcl_dye:dark_green" },
+	["unicolor_cyan"] = {"cyan",       "Cyan Banner",       "mcl_wool:cyan", "#00ACAC", "mcl_dye:cyan" },
+	["unicolor_blue"] = {"blue",       "Blue Banner",       "mcl_wool:blue", "#0000AC", "mcl_dye:blue" },
+	["unicolor_red_violet"] = {"magenta",    "Magenta Banner",    "mcl_wool:magenta", "#AC007C", "mcl_dye:magenta" },
+	["unicolor_orange"] = {"orange",     "Orange Banner",     "mcl_wool:orange", "#BC6900", "mcl_dye:orange" },
+	["unicolor_violet"] = {"purple",     "Purple Banner",     "mcl_wool:purple", "#6400AC", "mcl_dye:violet" },
+	["unicolor_brown"] = {"brown",      "Brown Banner",      "mcl_wool:brown", "#402100", "mcl_dye:brown" },
+	["unicolor_pink"] = {"pink",       "Pink Banner",       "mcl_wool:pink", "#DE557C", "mcl_dye:pink" },
+	["unicolor_lime"] = {"lime",       "Lime Banner",       "mcl_wool:lime", "#30AC00", "mcl_dye:green" },
+	["unicolor_light_blue"] = {"light_blue", "Light Blue Banner", "mcl_wool:light_blue", "#4040CF", "mcl_dye:lightblue" },
 }
 -- Overlay ratios (0-255)
 local base_color_ratio = 224
@@ -45,8 +47,8 @@ end
 
 local make_banner_texture = function(base_color, layers)
 	local colorize
-	if colors[base_color] then
-		colorize = colors[base_color][4]
+	if mcl_banners.colors[base_color] then
+		colorize = mcl_banners.colors[base_color][4]
 	end
 	if colorize then
 		-- Base texture with base color
@@ -58,7 +60,7 @@ local make_banner_texture = function(base_color, layers)
 			for l=1, #layers do
 				local layerinfo = layers[l]
 				local pattern = "mcl_banners_" .. layerinfo.pattern .. ".png"
-				local color = colors[layerinfo.color][4]
+				local color = mcl_banners.colors[layerinfo.color][4]
 
 				-- Generate layer texture
 				local layer = "(("..pattern.."^[colorize:"..color..":"..layer_ratio..")^[mask:"..pattern..")"
@@ -97,7 +99,7 @@ minetest.register_node("mcl_banners:standing_banner", {
 	_mcl_blast_resistance = 5,
 })
 
-for colorid, colortab in pairs(colors) do
+for colorid, colortab in pairs(mcl_banners.colors) do
 	local itemid = colortab[1]
 	local desc = colortab[2]
 	local wool = colortab[3]
@@ -221,7 +223,7 @@ minetest.register_entity("mcl_banners:standing_banner", {
 		pos.y = pos.y + 1
 
 		if not minetest.settings:get_bool("creative_mode") and self._base_color then
-			minetest.add_item(pos, "mcl_banners:banner_item_"..colors[self._base_color][1])
+			minetest.add_item(pos, "mcl_banners:banner_item_"..mcl_banners.colors[self._base_color][1])
 		end
 
 		-- Destroy entity
