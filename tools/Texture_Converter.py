@@ -29,7 +29,7 @@ make_texture_pack = True
 
 ### END OF SETTINGS ###
 
-import shutil, csv, os
+import shutil, csv, os, tempfile
 from PIL import Image
 
 # Helper variables
@@ -39,10 +39,12 @@ working_dir = os.getcwd()
 base_dir = home + "/tmp/pp"
 tex_dir = base_dir + "/assets/minecraft/textures"
 
+# FUNCTION DEFINITIONS
+
 def convert_alphatex(one, two, three, four, five):
-	os.system("convert "+one+" -crop 1x1+"+three+" -depth 8 -resize "+four+"x"+four+" "+working_dir+"/__TEMP__.png")
-	os.system("composite -compose Multiply "+working_dir+"/__TEMP__.png "+two+" "+working_dir+"/__TEMP2__.png")
-	os.system("composite -compose Dst_In "+two+" "+working_dir+"/__TEMP2__.png -alpha Set "+five)
+	os.system("convert "+one+" -crop 1x1+"+three+" -depth 8 -resize "+four+"x"+four+" "+tempfile1.name)
+	os.system("composite -compose Multiply "+tempfile1.name+" "+two+" "+tempfile2.name)
+	os.system("composite -compose Dst_In "+two+" "+tempfile1.name+" -alpha Set "+five)
 
 def target_dir(directory):
 	if make_texture_pack:
@@ -120,8 +122,8 @@ def convert_textures():
 		FOLIAG = tex_dir+"/colormap/foliage.png"
 		GRASS = tex_dir+"/colormap/grass.png"
 
-		os.system("convert "+GRASS+" -crop 1x1+70+120 -depth 8 -resize "+str(PXSIZE)+"x"+str(PXSIZE)+" "+working_dir+"/__TEMP__.png")
-		os.system("composite -compose Multiply "+working_dir+"/__TEMP__.png "+tex_dir+"/blocks/grass_top.png "+target_dir("/mods/ITEMS/mcl_core/textures")+"/default_grass.png")
+		os.system("convert "+GRASS+" -crop 1x1+70+120 -depth 8 -resize "+str(PXSIZE)+"x"+str(PXSIZE)+" "+tempfile1.name)
+		os.system("composite -compose Multiply "+tempfile1.name+" "+tex_dir+"/blocks/grass_top.png "+target_dir("/mods/ITEMS/mcl_core/textures")+"/default_grass.png")
 
 
 		convert_alphatex(GRASS, tex_dir+"/blocks/grass_side_overlay.png", "70+120", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_grass_side.png")
@@ -159,4 +161,12 @@ def convert_textures():
 if make_texture_pack and not os.path.isdir("./texture_pack"):
 	os.mkdir("texture_pack")
 
+# ENTRY POINT
+
+tempfile1 = tempfile.NamedTemporaryFile()
+tempfile2 = tempfile.NamedTemporaryFile()
+
 convert_textures()
+
+tempfile1.close()
+tempfile2.close()
