@@ -29,6 +29,48 @@ local colors = {
 	["unicolor_light_blue"] = {"light_blue", "Light Blue Banner", "mcl_wool:light_blue", "#4040CFE0" },
 }
 
+local patterns = {
+	"base",
+	"border",
+	"bricks",
+	"circle",
+	"creeper",
+	"cross",
+	"curly_border",
+	"diagonal_left",
+	"diagonal_right",
+	"diagonal_up_left",
+	"diagonal_up_right",
+	"flower",	
+	"gradient",
+	"gradient_up",
+	"half_horizontal_bottom",
+	"half_horizontal",
+	"half_vertical",
+	"half_vertical_right",
+	"thing",
+	"rhombus",
+	"skull",
+	"small_stripes",
+	"square_bottom_left",
+	"square_bottom_right",
+	"square_top_left",
+	"square_top_right",
+	"straight_cross",
+	"stripe_bottom",
+	"stripe_center",
+	"stripe_downleft",
+	"stripe_downright",
+	"stripe_left",
+	"stripe_middle",
+	"stripe_right",
+	"stripe_top",
+	"triangle_bottom",
+	"triangles_bottom",
+	"triangles_top",
+	"triangle_top",
+}
+
 -- After destroying the standing banner node
 local on_destruct_standing_banner = function(pos)
 	-- Find this node's banner entity and make it drop as an item
