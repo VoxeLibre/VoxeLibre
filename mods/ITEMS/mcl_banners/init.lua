@@ -128,7 +128,7 @@ minetest.register_node("mcl_banners:standing_banner", {
 	wield_image = "mcl_banners_item_base.png",
 	tiles = { "blank.png" },
 	selection_box = {type = "fixed", fixed= {-0.2, -0.5, -0.2, 0.2, 0.5, 0.2} },
-	groups = { banner = 1, deco_block = 1, attached_node = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1, },
+	groups = { deco_block = 1, attached_node = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1, },
 	stack_max = 16,
 	sounds = node_sounds,
 	drop = "", -- Item drops are handled in entity code
@@ -161,6 +161,8 @@ for colorid, colortab in pairs(colors) do
 		_doc_items_longdesc = "Banners are tall decorative blocks with a solid color. They can be placed on the floor. Banners can not be emblazoned (yet).",
 		inventory_image = inv,
 		wield_image = inv,
+		-- Banner group groups together the banner items, but not the nodes.
+		-- Used for crafting.
 		groups = { banner = 1, deco_block = 1, },
 		stack_max = 16,
 
@@ -191,7 +193,11 @@ for colorid, colortab in pairs(colors) do
 			place_pos.y = place_pos.y - 0.5
 
 			local banner = minetest.add_entity(place_pos, "mcl_banners:standing_banner")
-			banner:get_luaentity():_set_textures(colorid)
+			local imeta = itemstack:get_meta()
+			local layers_raw = imeta:get_string("layers")
+			local layers = minetest.deserialize(layers_raw)
+			banner:get_luaentity():_set_textures(colorid, layers)
+
 
 			-- Determine the rotation based on player's yaw
 			local yaw = placer:get_look_horizontal()
@@ -276,6 +282,109 @@ minetest.register_entity("mcl_banners:standing_banner", {
 		end
 		self.object:set_properties({textures = make_banner_texture(self._base_color, self._layers)})
 	end,
+})
+
+minetest.register_craft_predict(function(itemstack, player, old_craft_grid, craft_inv)
+	if minetest.get_item_group(itemstack:get_name(), "banner") ~= 1 then
+		return
+	end
+
+	local original
+	local index
+	for i = 1, player:get_inventory():get_size("craft") do
+		if minetest.get_item_group(old_craft_grid[i]:get_name(), "banner") == 1 then
+			original = old_craft_grid[i]
+			index = i
+		end
+	end
+	if not original then
+		return
+	end
+
+	local imeta = itemstack:get_meta()
+
+	imeta:set_string("description", "Emblazoned Banner")
+	return itemstack
+end)
+
+
+minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
+	if minetest.get_item_group(itemstack:get_name(), "banner") ~= 1 then
+		return
+	end
+
+	local original
+	local index
+	for i = 1, player:get_inventory():get_size("craft") do
+		local itemname = old_craft_grid[i]:get_name()
+		if minetest.get_item_group(itemname, "banner") == 1 then
+			original = old_craft_grid[i]
+			index = i
+		end
+	end
+	if not original then
+		return
+	end
+
+	local ometa = original:get_meta()
+	local layers_raw = ometa:get_string("layers")
+	local layers = minetest.deserialize(layers_raw)
+	if type(layers) ~= "table" then
+		layers = {}
+	end
+
+	table.insert(layers, {pattern="circle", color = "unicolor_yellow"})
+
+	local imeta = itemstack:get_meta()
+	imeta:set_string("layers", minetest.serialize(layers))
+
+	imeta:set_string("description", "Emblazoned Banner")
+	return itemstack
+end)
+
+minetest.register_craft({
+	recipe = {
+		{ "", "", "" },
+		{ "", "mcl_banners:banner_item_red", "" },
+		{ "mcl_dye:yellow", "mcl_dye:yellow", "mcl_dye:yellow" },
+	},
+	output = "mcl_banners:banner_item_red",
+})
+
+minetest.register_craft({
+	recipe = {
+		{ "mcl_dye:yellow", "mcl_dye:yellow", "mcl_dye:yellow" },
+		{ "", "mcl_banners:banner_item_red", "" },
+		{ "", "", "" },
+	},
+	output = "mcl_banners:banner_item_red",
+})
+
+minetest.register_craft({
+	recipe = {
+		{ "mcl_dye:yellow", "", "" },
+		{ "mcl_dye:yellow", "mcl_banners:banner_item_red", "" },
+		{ "mcl_dye:yellow", "", "" },
+	},
+	output = "mcl_banners:banner_item_red",
+})
+
+minetest.register_craft({
+	recipe = {
+		{ "", "mcl_dye:yellow", "" },
+		{ "", "mcl_dye:yellow", "mcl_banners:banner_item_red", },
+		{ "", "mcl_dye:yellow", "" },
+	},
+	output = "mcl_banners:banner_item_red",
+})
+
+minetest.register_craft({
+	recipe = {
+		{ "", "", "mcl_dye:yellow", },
+		{ "", "mcl_banners:banner_item_red", "mcl_dye:yellow", },
+		{ "", "", "mcl_dye:yellow" },
+	},
+	output = "mcl_banners:banner_item_red",
 })
 
 minetest.register_craft({
