@@ -40,9 +40,9 @@ base_dir = home + "/tmp/pp"
 tex_dir = base_dir + "/assets/minecraft/textures"
 
 def convert_alphatex(one, two, three, four, five):
-	os.system("convert "+one+" -crop 1x1+"+three+" -depth 8 -resize "+four+"x"+four+" "+base_dir+"/__TEMP__.png")
-	os.system("composite -compose Multiply "+base_dir+"/__TEMP__.png "+two+" "+base_dir+"/__TEMP2__.png")
-	os.system("composite -compose Dst_In "+two+" "+base_dir+"/__TEMP2__.png -alpha Set "+five)
+	os.system("convert "+one+" -crop 1x1+"+three+" -depth 8 -resize "+four+"x"+four+" "+working_dir+"/__TEMP__.png")
+	os.system("composite -compose Multiply "+working_dir+"/__TEMP__.png "+two+" "+working_dir+"/__TEMP2__.png")
+	os.system("composite -compose Dst_In "+two+" "+working_dir+"/__TEMP2__.png -alpha Set "+five)
 
 def target_dir(directory):
 	if make_texture_pack:
@@ -120,8 +120,8 @@ def convert_textures():
 		FOLIAG = tex_dir+"/colormap/foliage.png"
 		GRASS = tex_dir+"/colormap/grass.png"
 
-		os.system("convert "+GRASS+" -crop 1x1+70+120 -depth 8 -resize "+str(PXSIZE)+"x"+str(PXSIZE)+" "+base_dir+"/__TEMP__.png")
-		os.system("composite -compose Multiply "+base_dir+"/__TEMP__.png "+tex_dir+"/blocks/grass_top.png "+target_dir("/mods/ITEMS/mcl_core/textures")+"/default_grass.png")
+		os.system("convert "+GRASS+" -crop 1x1+70+120 -depth 8 -resize "+str(PXSIZE)+"x"+str(PXSIZE)+" "+working_dir+"/__TEMP__.png")
+		os.system("composite -compose Multiply "+working_dir+"/__TEMP__.png "+tex_dir+"/blocks/grass_top.png "+target_dir("/mods/ITEMS/mcl_core/textures")+"/default_grass.png")
 
 
 		convert_alphatex(GRASS, tex_dir+"/blocks/grass_side_overlay.png", "70+120", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_grass_side.png")
