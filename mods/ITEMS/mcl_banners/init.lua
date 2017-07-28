@@ -30,6 +30,10 @@ mcl_banners.colors = {
 	["unicolor_lime"] = {"lime",       "Lime Banner",       "mcl_wool:lime", "#30AC00", "mcl_dye:green" },
 	["unicolor_light_blue"] = {"light_blue", "Light Blue Banner", "mcl_wool:light_blue", "#4040CF", "mcl_dye:lightblue" },
 }
+
+-- Add pattern/emblazoning crafting recipes
+dofile(minetest.get_modpath("mcl_banners").."/patterncraft.lua")
+
 -- Overlay ratios (0-255)
 local base_color_ratio = 224
 local layer_ratio = 255
@@ -244,8 +248,6 @@ minetest.register_entity("mcl_banners:standing_banner", {
 		self.object:set_properties({textures = make_banner_texture(self._base_color, self._layers)})
 	end,
 })
-
-dofile(minetest.get_modpath("mcl_banners").."/patterncraft.lua")
 
 minetest.register_craft({
 	type = "fuel",
