@@ -190,40 +190,8 @@ local patterns = {
 	},
 }
 
-minetest.register_craft_predict(function(itemstack, player, old_craft_grid, craft_inv)
-	if minetest.get_item_group(itemstack:get_name(), "banner") ~= 1 then
-		return
-	end
-
-	local banner
-	local dye
-	local banner_index
-	for i = 1, player:get_inventory():get_size("craft") do
-		local itemname = old_craft_grid[i]:get_name()
-		if minetest.get_item_group(itemname, "banner") == 1 then
-			banner = old_craft_grid[i]
-			banner_index = i
-		-- Check if all dyes are equal
-		elseif minetest.get_item_group(itemname, "dye") == 1 then
-			if dye == nil then
-				dye = itemname
-			elseif itemname ~= dye then
-				return ItemStack("")
-			end
-		end
-	end
-	if not banner then
-		return ItemStack("")
-	end
-
-	local imeta = itemstack:get_meta()
-
-	imeta:set_string("description", "Emblazoned Banner")
-	return itemstack
-end)
-
 -- This is for handling all those complex pattern crafting recipes
-minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
+local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_inv)
 	if minetest.get_item_group(itemstack:get_name(), "banner") ~= 1 then
 		return
 	end
@@ -308,7 +276,11 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 
 	imeta:set_string("description", "Emblazoned Banner ("..matching_pattern..")")
 	return itemstack
-end)
+end
+
+minetest.register_craft_predict(banner_pattern_craft)
+minetest.register_on_craft(banner_pattern_craft)
+
 
 -- Register crafting recipes for all the patterns
 for pattern_name, pattern in pairs(patterns) do
