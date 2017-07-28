@@ -11,23 +11,26 @@ end
 
 local colors = {
 	-- ID, description, wool, unified dyes color group, overlay color,
-	["unicolor_white"] = {"white",      "White Banner",      "mcl_wool:white", "#FFFFFFE0" },
-	["unicolor_darkgrey"] = {"grey",       "Grey Banner",       "mcl_wool:grey", "#303030E0" },
-	["unicolor_grey"] = {"silver",     "Light Grey Banner", "mcl_wool:silver", "#5B5B5BE0" },
-	["unicolor_black"] = {"black",      "Black Banner",      "mcl_wool:black", "#000000E0" },
-	["unicolor_red"] = {"red",        "Red Banner",        "mcl_wool:red", "#BC0000E0" },
-	["unicolor_yellow"] = {"yellow",     "Yellow Banner",     "mcl_wool:yellow", "#BCA800E0" },
-	["unicolor_dark_green"] = {"green",      "Green Banner",      "mcl_wool:green", "#006000E0" },
-	["unicolor_cyan"] = {"cyan",       "Cyan Banner",       "mcl_wool:cyan", "#00ACACE0" },
-	["unicolor_blue"] = {"blue",       "Blue Banner",       "mcl_wool:blue", "#0000ACE0" },
-	["unicolor_red_violet"] = {"magenta",    "Magenta Banner",    "mcl_wool:magenta", "#AC007CE0" },
-	["unicolor_orange"] = {"orange",     "Orange Banner",     "mcl_wool:orange", "#BC6900E0" },
-	["unicolor_violet"] = {"purple",     "Purple Banner",     "mcl_wool:purple", "#6400ACE0" },
-	["unicolor_brown"] = {"brown",      "Brown Banner",      "mcl_wool:brown", "#402100E0" },
-	["unicolor_pink"] = {"pink",       "Pink Banner",       "mcl_wool:pink", "#DE557CE0" },
-	["unicolor_lime"] = {"lime",       "Lime Banner",       "mcl_wool:lime", "#30AC00E0"},
-	["unicolor_light_blue"] = {"light_blue", "Light Blue Banner", "mcl_wool:light_blue", "#4040CFE0" },
+	["unicolor_white"] = {"white",      "White Banner",      "mcl_wool:white", "#FFFFFF" },
+	["unicolor_darkgrey"] = {"grey",       "Grey Banner",       "mcl_wool:grey", "#303030" },
+	["unicolor_grey"] = {"silver",     "Light Grey Banner", "mcl_wool:silver", "#5B5B5B" },
+	["unicolor_black"] = {"black",      "Black Banner",      "mcl_wool:black", "#000000" },
+	["unicolor_red"] = {"red",        "Red Banner",        "mcl_wool:red", "#BC0000" },
+	["unicolor_yellow"] = {"yellow",     "Yellow Banner",     "mcl_wool:yellow", "#BCA800" },
+	["unicolor_dark_green"] = {"green",      "Green Banner",      "mcl_wool:green", "#006000" },
+	["unicolor_cyan"] = {"cyan",       "Cyan Banner",       "mcl_wool:cyan", "#00ACAC" },
+	["unicolor_blue"] = {"blue",       "Blue Banner",       "mcl_wool:blue", "#0000AC" },
+	["unicolor_red_violet"] = {"magenta",    "Magenta Banner",    "mcl_wool:magenta", "#AC007C" },
+	["unicolor_orange"] = {"orange",     "Orange Banner",     "mcl_wool:orange", "#BC6900" },
+	["unicolor_violet"] = {"purple",     "Purple Banner",     "mcl_wool:purple", "#6400AC" },
+	["unicolor_brown"] = {"brown",      "Brown Banner",      "mcl_wool:brown", "#402100" },
+	["unicolor_pink"] = {"pink",       "Pink Banner",       "mcl_wool:pink", "#DE557C" },
+	["unicolor_lime"] = {"lime",       "Lime Banner",       "mcl_wool:lime", "#30AC00"},
+	["unicolor_light_blue"] = {"light_blue", "Light Blue Banner", "mcl_wool:light_blue", "#4040CF" },
 }
+-- Overlay ratios (0-255)
+local base_color_ratio = 224
+local layer_ratio = 255
 
 local patterns = {
 	"border",
@@ -88,7 +91,7 @@ local make_banner_texture = function(base_color, layers)
 	end
 	if colorize then
 		-- Base texture with base color
-		local base = "(mcl_banners_banner_base.png^[mask:mcl_banners_base_inverted.png)^((mcl_banners_banner_base.png^[colorize:"..colorize..")^[mask:mcl_banners_base.png)"
+		local base = "(mcl_banners_banner_base.png^[mask:mcl_banners_base_inverted.png)^((mcl_banners_banner_base.png^[colorize:"..colorize..":"..base_color_ratio..")^[mask:mcl_banners_base.png)"
 
 		-- Optional pattern layers
 		if layers then
@@ -99,7 +102,7 @@ local make_banner_texture = function(base_color, layers)
 				local color = colors[layerinfo.color][4]
 
 				-- Generate layer texture
-				local layer = "(("..pattern.."^[colorize:"..color..")^[mask:"..pattern..")"
+				local layer = "(("..pattern.."^[colorize:"..color..":"..layer_ratio..")^[mask:"..pattern..")"
 
 				finished_banner = finished_banner .. "^" .. layer
 			end
