@@ -1,6 +1,6 @@
 -- List of patterns with crafting rules
 
-local d = "%D" -- dye
+local d = "group:dye" -- dye
 local e = "" -- empty slot (one of them must contain the banner)
 local patterns = {
 	["border"] = {
@@ -10,7 +10,7 @@ local patterns = {
 	},
 	["bricks"] = {
 		type = "shapeless",
-		{ "mcl_core:brick_block", d },
+		{ e, "mcl_core:brick_block", d },
 	},
 	["circle"] = {
 		{ e, e, e },
@@ -19,7 +19,7 @@ local patterns = {
 	},
 	["creeper"] = {
 		type = "shapeless",
-		{ "mcl_heads:creeper", d },
+		{ e, "mcl_heads:creeper", d },
 	},
 	["cross"] = {
 		{ d, e, d },
@@ -27,8 +27,8 @@ local patterns = {
 		{ d, e, d },
 	},
 	["curly_border"] = {
-		type = "shapless",
-		{ "mcl_core:vine", d },
+		type = "shapeless",
+		{ e, "mcl_core:vine", d },
 	},
 	["diagonal_left"] = {
 		{ e, e, e },
@@ -52,7 +52,7 @@ local patterns = {
 	},
 	["flower"] = {
 		type = "shapeless",
-		{ "mcl_flowers:oxeye_daisy", d },
+		{ e, "mcl_flowers:oxeye_daisy", d },
 	},
 	["gradient"] = {
 		{ d, e, d },
@@ -86,7 +86,8 @@ local patterns = {
 	},
 	["thing"] = {
 		type = "shapeless",
-		{ "mcl_core:apple_gold", d },
+		-- TODO: Replace with enchanted golden apple
+		{ e, "mcl_core:apple_gold", d },
 	},
 	["rhombus"] = {
 		{ e, d, e },
@@ -95,7 +96,7 @@ local patterns = {
 	},
 	["skull"] = {
 		type = "shapeless",
-		{ "mcl_heads:wither_skeleton", d },
+		{ e, "mcl_heads:wither_skeleton", d },
 	},
 	["small_stripes"] = {
 		{ d, e, d },
@@ -249,6 +250,7 @@ end)
 
 -- Register crafting recipes for all the patterns
 for pattern_name, pattern in pairs(patterns) do
+	-- Shaped and fixed recipes
 	if pattern.type == nil then
 		for colorid, colortab in pairs(mcl_banners.colors) do
 			local banner = "mcl_banners:banner_item_"..colortab[1]
@@ -258,9 +260,7 @@ for pattern_name, pattern in pairs(patterns) do
 				local row = pattern[row_id]
 				local newrow = {}
 				for r=1, #row do
-					if row[r] == d then
-						newrow[r] = "group:dye"
-					elseif row[r] == e and not bannered then
+					if row[r] == e and not bannered then
 						newrow[r] = banner
 						bannered = true
 					else
@@ -270,12 +270,30 @@ for pattern_name, pattern in pairs(patterns) do
 				table.insert(recipe, newrow)
 			end
 			minetest.register_craft({
-				output = "mcl_banners:banner_item_"..colortab[1],
+				output = banner,
 				recipe = recipe,
 			})
 		end
+	-- Shapeless recipes
 	elseif pattern.type == "shapeless" then
-		-- TODO
+		for colorid, colortab in pairs(mcl_banners.colors) do
+			local banner = "mcl_banners:banner_item_"..colortab[1]
+			local orig = pattern[1]
+			local recipe = {}
+			for r=1, #orig do
+				if orig[r] == e then
+					recipe[r] = banner
+				else
+					recipe[r] = orig[r]
+				end
+			end
+
+			minetest.register_craft({
+				type = "shapeless",
+				output = banner,
+				recipe = recipe,
+			})
+		end
 	end
 end
 
