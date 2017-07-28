@@ -14,6 +14,7 @@
 # - Put extracted texture pack into $HOME/tmp/pp
 # - Make sure the file “Texture_Conversion_Table.csv” is in the same directory as the script
 # - Run the script in its directory
+# - If everything worked, retrieve texture pack in texture_pack/
 
 __author__ = "Wuzzy"
 __license__ = "WTFPL"
@@ -54,6 +55,7 @@ def target_dir(directory):
 
 # Copy texture files
 def convert_textures():
+	print("Texture conversion BEGINS HERE!")
 	with open("Texture_Conversion_Table.csv", newline="") as csvfile:
 		reader = csv.reader(csvfile, delimiter=",", quotechar='"')
 		first_row = True
@@ -158,10 +160,15 @@ def convert_textures():
 #		os.system("mogrify -clip-mask "+tex_dir+"/entity/banner/base.png"+" -alpha Copy "+filename)
 #		os.system("mogrify -fill white -colorize 100 "+filename)
 
-if make_texture_pack and not os.path.isdir("./texture_pack"):
-	os.mkdir("texture_pack")
+		print("")
+		print("Textures conversion COMPLETE!")
+		print("WARNING: Please keep in mind this script does not reliably convert all the textures yet.")
+		if make_texture_pack:
+			print("Retrieve the texture pack in "+working_dir+"/texture_pack/")
 
 # ENTRY POINT
+if make_texture_pack and not os.path.isdir("./texture_pack"):
+	os.mkdir("texture_pack")
 
 tempfile1 = tempfile.NamedTemporaryFile()
 tempfile2 = tempfile.NamedTemporaryFile()
