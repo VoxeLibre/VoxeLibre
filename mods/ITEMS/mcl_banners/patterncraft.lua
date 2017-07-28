@@ -248,7 +248,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 end
 
 -- Create a banner description containing all the layer names
-local make_advanced_banner_description = function(description, layers)
+mcl_banners.make_advanced_banner_description = function(description, layers)
 	if layers == nil or #layers == 0 then
 		-- No layers, revert to default
 		return ""
@@ -393,7 +393,7 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 	imeta:set_string("layers", minetest.serialize(layers))
 
 	local odesc = itemstack:get_definition().description
-	local description = make_advanced_banner_description(odesc, layers)
+	local description = mcl_banners.make_advanced_banner_description(odesc, layers)
 	imeta:set_string("description", description)
 	return itemstack
 end

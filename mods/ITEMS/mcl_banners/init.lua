@@ -136,13 +136,44 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 			local above = pointed_thing.above
 			local under = pointed_thing.under
 
-			-- Use pointed node's on_rightclick function first, if present
 			local node_under = minetest.get_node(under)
 			if placer and not placer:get_player_control().sneak then
+				-- Use pointed node's on_rightclick function first, if present
 				if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
 					return minetest.registered_nodes[node_under.name].on_rightclick(under, node_under, placer, itemstack) or itemstack
 				end
+
+				if minetest.get_modpath("mcl_cauldrons") then
+					-- Use banner on cauldron to remove the top-most layer. This reduces the water level by 1.
+					local new_node
+					if node_under.name == "mcl_cauldrons:cauldron_3" then
+						new_node = "mcl_cauldrons:cauldron_2"
+					elseif node_under.name == "mcl_cauldrons:cauldron_2" then
+						new_node = "mcl_cauldrons:cauldron_1"
+					elseif node_under.name == "mcl_cauldrons:cauldron_1" then
+						new_node = "mcl_cauldrons:cauldron"
+					end
+					if new_node then
+						local imeta = itemstack:get_meta()
+						local layers_raw = imeta:get_string("layers")
+						local layers = minetest.deserialize(layers_raw)
+						if type(layers) == "table" and #layers > 0 then
+							minetest.log("error", dump(layers))
+							table.remove(layers)
+							imeta:set_string("layers", minetest.serialize(layers))
+							local newdesc = mcl_banners.make_advanced_banner_description(itemstack:get_definition().description, layers)
+							imeta:set_string("description", newdesc)
+						end
+
+						-- Washing off reduces the water level by 1.
+						-- (It is possible to waste water if the banner had 0 layers.)
+						minetest.set_node(pointed_thing.under, {name=new_node})
+
+						return itemstack
+					end
+				end
 			end
+
 
 			-- Place the node!
 			local _, success = minetest.item_place_node(ItemStack("mcl_banners:standing_banner"), placer, pointed_thing)
