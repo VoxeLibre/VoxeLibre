@@ -5,6 +5,10 @@
 -- Maximum number of layers which can be put on a banner by crafting.
 local max_layers_crafting = 6
 
+-- Max. number lines in the descriptions for the banner layers.
+-- This is done to avoid huge tooltips.
+local max_layer_lines = 6
+
 -- List of patterns with crafting rules
 local d = "group:dye" -- dye
 local e = "" -- empty slot (one of them must contain the banner)
@@ -241,6 +245,38 @@ local patterns = {
 local dye_to_colorid_mapping = {}
 for colorid, colortab in pairs(mcl_banners.colors) do
 	dye_to_colorid_mapping[colortab[5]] = colorid
+end
+
+-- Create a banner description containing all the layer names
+mcl_banners.make_advanced_banner_description = function(description, layers)
+	if layers == nil or #layers == 0 then
+		-- No layers, revert to default
+		return ""
+	else
+		local layerstrings = {}
+		for l=1, #layers do
+			-- Prevent excess length description
+			if l > max_layer_lines then
+				break
+			end
+			-- Layer text line.
+			local color = mcl_banners.colors[layers[l].color][6]
+			local pattern_name = patterns[layers[l].pattern].name
+			-- The pattern name is a format string (e.g. “%s Base”)
+			table.insert(layerstrings, string.format(pattern_name, color))
+		end
+		-- Warn about missing information
+		if #layers == max_layer_lines + 1 then
+			table.insert(layerstrings, "And one addional layer")
+		elseif #layers > max_layer_lines + 1 then
+			table.insert(layerstrings, string.format("And %d addional layers", #layers - max_layer_lines))
+		end
+
+		-- Final string concatenations: Just a list of strings
+		local append = table.concat(layerstrings, "\n")
+		description = description .. "\n" .. core.colorize("#8F8F8F", append)
+		return description
+	end
 end
 
 -- This is for handling all those complex pattern crafting recipes
