@@ -50,7 +50,7 @@ local patterns = {
 	"half_horizontal",
 	"half_vertical",
 	"half_vertical_right",
-	"thing",
+	"thing", -- Symbol used: U+1F65D 🙝
 	"rhombus",
 	"skull",
 	"small_stripes",
