@@ -1,5 +1,9 @@
--- List of patterns with crafting rules
+-- Pattern crafting. This file contains the code for crafting all the
+-- emblazonings you can put on the banners. It's quite complicated;
+-- normal 08/15 crafting won't work here.
 
+
+-- List of patterns with crafting rules
 local d = "group:dye" -- dye
 local e = "" -- empty slot (one of them must contain the banner)
 local patterns = {
@@ -230,6 +234,13 @@ local patterns = {
 	},
 }
 
+-- Just a simple reverse-lookup table from dye itemstring to banner color ID
+-- to avoid some pointless future iterations.
+local dye_to_colorid_mapping = {}
+for colorid, colortab in pairs(mcl_banners.colors) do
+	dye_to_colorid_mapping[colortab[5]] = colorid
+end
+
 -- Number of maximum lines in the descriptions for the banner layers.
 -- To avoid huge tooltips.
 local max_layer_lines = 6
@@ -272,8 +283,9 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 		return
 	end
 
-	local banner, dye
-	local banner_index
+	local banner -- banner item
+	local dye -- itemstring of the dye being used
+	local banner_index -- crafting inventory index of the banner
 	for i = 1, player:get_inventory():get_size("craft") do
 		local itemname = old_craft_grid[i]:get_name()
 		if minetest.get_item_group(itemname, "banner") == 1 then
@@ -344,7 +356,8 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 	end
 
 	-- Add the new layer and update other metadata
-	table.insert(layers, {pattern=matching_pattern, color="unicolor_yellow"})
+	local color = dye_to_colorid_mapping[dye]
+	table.insert(layers, {pattern=matching_pattern, color=color})
 
 	local imeta = itemstack:get_meta()
 	imeta:set_string("layers", minetest.serialize(layers))
