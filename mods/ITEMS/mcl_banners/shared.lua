@@ -24,6 +24,10 @@ mcl_banners.colors = {
 	["unicolor_light_blue"] = {"light_blue", "Light Blue Banner", "mcl_wool:light_blue", "#4040CF", "mcl_dye:lightblue", "Light Blue" },
 }
 
+-- Max. number lines in the descriptions for the banner layers.
+-- This is done to avoid huge tooltips.
+local max_layer_lines = 6
+
 -- Returns a banner description containing all the layer names.
 -- description: Base description (from item definition)
 -- layers: Table of layers

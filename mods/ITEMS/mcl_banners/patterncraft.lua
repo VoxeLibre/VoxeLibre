@@ -2,10 +2,6 @@
 -- emblazonings you can put on the banners. It's quite complicated;
 -- normal 08/15 crafting won't work here.
 
--- Number of maximum lines in the descriptions for the banner layers.
--- To avoid huge tooltips.
-local max_layer_lines = 6
-
 -- Maximum number of layers which can be put on a banner by crafting.
 local max_layers_crafting = 6
 
