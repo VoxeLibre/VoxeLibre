@@ -195,16 +195,25 @@ minetest.register_craft_predict(function(itemstack, player, old_craft_grid, craf
 		return
 	end
 
-	local original
+	local banner
+	local dye
 	local index
 	for i = 1, player:get_inventory():get_size("craft") do
-		if minetest.get_item_group(old_craft_grid[i]:get_name(), "banner") == 1 then
-			original = old_craft_grid[i]
+		local itemname = old_craft_grid[i]:get_name()
+		if minetest.get_item_group(itemname, "banner") == 1 then
+			banner = old_craft_grid[i]
 			index = i
+		-- Check if all dyes are equal
+		elseif minetest.get_item_group(itemname, "dye") == 1 then
+			if dye == nil then
+				dye = itemname
+			elseif itemname ~= dye then
+				return ItemStack("")
+			end
 		end
 	end
-	if not original then
-		return
+	if not banner then
+		return ItemStack("")
 	end
 
 	local imeta = itemstack:get_meta()
@@ -219,27 +228,34 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 		return
 	end
 
-	local original
+	local banner, dye
 	local index
 	for i = 1, player:get_inventory():get_size("craft") do
 		local itemname = old_craft_grid[i]:get_name()
 		if minetest.get_item_group(itemname, "banner") == 1 then
-			original = old_craft_grid[i]
+			banner = old_craft_grid[i]
 			index = i
+		-- Check if all dyes are equal
+		elseif minetest.get_item_group(itemname, "dye") == 1 then
+			if dye == nil then
+				dye = itemname
+			elseif itemname ~= dye then
+				return ItemStack("")
+			end
 		end
 	end
-	if not original then
-		return
+	if not banner then
+		return ItemStack("")
 	end
 
-	local ometa = original:get_meta()
+	local ometa = banner:get_meta()
 	local layers_raw = ometa:get_string("layers")
 	local layers = minetest.deserialize(layers_raw)
 	if type(layers) ~= "table" then
 		layers = {}
 	end
 
-	table.insert(layers, {pattern="circle", color = "unicolor_yellow"})
+	table.insert(layers, {pattern="circle", color="unicolor_yellow"})
 
 	local imeta = itemstack:get_meta()
 	imeta:set_string("layers", minetest.serialize(layers))
