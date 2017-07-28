@@ -9,69 +9,35 @@ local function round(num, idp)
 	return math.floor(num * mult + 0.5) / mult
 end
 
-local colors = {
-	-- ID, description, wool, unified dyes color group, overlay color,
-	["unicolor_white"] = {"white",      "White Banner",      "mcl_wool:white", "#FFFFFF" },
-	["unicolor_darkgrey"] = {"grey",       "Grey Banner",       "mcl_wool:grey", "#303030" },
-	["unicolor_grey"] = {"silver",     "Light Grey Banner", "mcl_wool:silver", "#5B5B5B" },
-	["unicolor_black"] = {"black",      "Black Banner",      "mcl_wool:black", "#000000" },
-	["unicolor_red"] = {"red",        "Red Banner",        "mcl_wool:red", "#BC0000" },
-	["unicolor_yellow"] = {"yellow",     "Yellow Banner",     "mcl_wool:yellow", "#BCA800" },
-	["unicolor_dark_green"] = {"green",      "Green Banner",      "mcl_wool:green", "#006000" },
-	["unicolor_cyan"] = {"cyan",       "Cyan Banner",       "mcl_wool:cyan", "#00ACAC" },
-	["unicolor_blue"] = {"blue",       "Blue Banner",       "mcl_wool:blue", "#0000AC" },
-	["unicolor_red_violet"] = {"magenta",    "Magenta Banner",    "mcl_wool:magenta", "#AC007C" },
-	["unicolor_orange"] = {"orange",     "Orange Banner",     "mcl_wool:orange", "#BC6900" },
-	["unicolor_violet"] = {"purple",     "Purple Banner",     "mcl_wool:purple", "#6400AC" },
-	["unicolor_brown"] = {"brown",      "Brown Banner",      "mcl_wool:brown", "#402100" },
-	["unicolor_pink"] = {"pink",       "Pink Banner",       "mcl_wool:pink", "#DE557C" },
-	["unicolor_lime"] = {"lime",       "Lime Banner",       "mcl_wool:lime", "#30AC00"},
-	["unicolor_light_blue"] = {"light_blue", "Light Blue Banner", "mcl_wool:light_blue", "#4040CF" },
+mcl_banners = {}
+
+mcl_banners.colors = {
+	-- Format:
+	-- [ID] = { banner description, wool, unified dyes color group, overlay color, dye, color name for emblazonings }
+	["unicolor_white"] =      {"white",      "White Banner",      "mcl_wool:white", "#FFFFFF", "mcl_dye:white", "White" },
+	["unicolor_darkgrey"] =   {"grey",       "Grey Banner",       "mcl_wool:grey", "#303030", "mcl_dye:dark_grey", "Grey" },
+	["unicolor_grey"] =       {"silver",     "Light Grey Banner", "mcl_wool:silver", "#5B5B5B", "mcl_dye:grey", "Light Grey" },
+	["unicolor_black"] =      {"black",      "Black Banner",      "mcl_wool:black", "#000000", "mcl_dye:black", "Black" },
+	["unicolor_red"] =        {"red",        "Red Banner",        "mcl_wool:red", "#BC0000", "mcl_dye:red", "Red" },
+	["unicolor_yellow"] =     {"yellow",     "Yellow Banner",     "mcl_wool:yellow", "#BCA800", "mcl_dye:yellow", "Yellow" },
+	["unicolor_dark_green"] = {"green",      "Green Banner",      "mcl_wool:green", "#006000", "mcl_dye:dark_green", "Green" },
+	["unicolor_cyan"] =       {"cyan",       "Cyan Banner",       "mcl_wool:cyan", "#00ACAC", "mcl_dye:cyan", "Cyan" },
+	["unicolor_blue"] =       {"blue",       "Blue Banner",       "mcl_wool:blue", "#0000AC", "mcl_dye:blue", "Blue" },
+	["unicolor_red_violet"] = {"magenta",    "Magenta Banner",    "mcl_wool:magenta", "#AC007C", "mcl_dye:magenta", "Magenta"},
+	["unicolor_orange"] =     {"orange",     "Orange Banner",     "mcl_wool:orange", "#BC6900", "mcl_dye:orange", "Orange" },
+	["unicolor_violet"] =     {"purple",     "Purple Banner",     "mcl_wool:purple", "#6400AC", "mcl_dye:violet", "Violet" },
+	["unicolor_brown"] =      {"brown",      "Brown Banner",      "mcl_wool:brown", "#402100", "mcl_dye:brown", "Brown" },
+	["unicolor_pink"] =       {"pink",       "Pink Banner",       "mcl_wool:pink", "#DE557C", "mcl_dye:pink", "Pink" },
+	["unicolor_lime"] =       {"lime",       "Lime Banner",       "mcl_wool:lime", "#30AC00", "mcl_dye:green", "Lime" },
+	["unicolor_light_blue"] = {"light_blue", "Light Blue Banner", "mcl_wool:light_blue", "#4040CF", "mcl_dye:lightblue", "Light Blue" },
 }
+
+-- Add pattern/emblazoning crafting recipes
+dofile(minetest.get_modpath("mcl_banners").."/patterncraft.lua")
+
 -- Overlay ratios (0-255)
 local base_color_ratio = 224
 local layer_ratio = 255
-
-local patterns = {
-	"border",
-	"bricks",
-	"circle",
-	"creeper",
-	"cross",
-	"curly_border",
-	"diagonal_left",
-	"diagonal_right",
-	"diagonal_up_left",
-	"diagonal_up_right",
-	"flower",	
-	"gradient",
-	"gradient_up",
-	"half_horizontal_bottom",
-	"half_horizontal",
-	"half_vertical",
-	"half_vertical_right",
-	"thing", -- Symbol used: U+1F65D 🙝
-	"rhombus",
-	"skull",
-	"small_stripes",
-	"square_bottom_left",
-	"square_bottom_right",
-	"square_top_left",
-	"square_top_right",
-	"straight_cross",
-	"stripe_bottom",
-	"stripe_center",
-	"stripe_downleft",
-	"stripe_downright",
-	"stripe_left",
-	"stripe_middle",
-	"stripe_right",
-	"stripe_top",
-	"triangle_bottom",
-	"triangles_bottom",
-	"triangles_top",
-	"triangle_top",
-}
 
 -- After destroying the standing banner node
 local on_destruct_standing_banner = function(pos)
@@ -86,8 +52,8 @@ end
 
 local make_banner_texture = function(base_color, layers)
 	local colorize
-	if colors[base_color] then
-		colorize = colors[base_color][4]
+	if mcl_banners.colors[base_color] then
+		colorize = mcl_banners.colors[base_color][4]
 	end
 	if colorize then
 		-- Base texture with base color
@@ -99,7 +65,7 @@ local make_banner_texture = function(base_color, layers)
 			for l=1, #layers do
 				local layerinfo = layers[l]
 				local pattern = "mcl_banners_" .. layerinfo.pattern .. ".png"
-				local color = colors[layerinfo.color][4]
+				local color = mcl_banners.colors[layerinfo.color][4]
 
 				-- Generate layer texture
 				local layer = "(("..pattern.."^[colorize:"..color..":"..layer_ratio..")^[mask:"..pattern..")"
@@ -128,7 +94,7 @@ minetest.register_node("mcl_banners:standing_banner", {
 	wield_image = "mcl_banners_item_base.png",
 	tiles = { "blank.png" },
 	selection_box = {type = "fixed", fixed= {-0.2, -0.5, -0.2, 0.2, 0.5, 0.2} },
-	groups = { banner = 1, deco_block = 1, attached_node = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1, },
+	groups = { deco_block = 1, attached_node = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1, },
 	stack_max = 16,
 	sounds = node_sounds,
 	drop = "", -- Item drops are handled in entity code
@@ -138,7 +104,7 @@ minetest.register_node("mcl_banners:standing_banner", {
 	_mcl_blast_resistance = 5,
 })
 
-for colorid, colortab in pairs(colors) do
+for colorid, colortab in pairs(mcl_banners.colors) do
 	local itemid = colortab[1]
 	local desc = colortab[2]
 	local wool = colortab[3]
@@ -161,6 +127,8 @@ for colorid, colortab in pairs(colors) do
 		_doc_items_longdesc = "Banners are tall decorative blocks with a solid color. They can be placed on the floor. Banners can not be emblazoned (yet).",
 		inventory_image = inv,
 		wield_image = inv,
+		-- Banner group groups together the banner items, but not the nodes.
+		-- Used for crafting.
 		groups = { banner = 1, deco_block = 1, },
 		stack_max = 16,
 
@@ -191,7 +159,11 @@ for colorid, colortab in pairs(colors) do
 			place_pos.y = place_pos.y - 0.5
 
 			local banner = minetest.add_entity(place_pos, "mcl_banners:standing_banner")
-			banner:get_luaentity():_set_textures(colorid)
+			local imeta = itemstack:get_meta()
+			local layers_raw = imeta:get_string("layers")
+			local layers = minetest.deserialize(layers_raw)
+			banner:get_luaentity():_set_textures(colorid, layers)
+
 
 			-- Determine the rotation based on player's yaw
 			local yaw = placer:get_look_horizontal()
@@ -256,7 +228,7 @@ minetest.register_entity("mcl_banners:standing_banner", {
 		pos.y = pos.y + 1
 
 		if not minetest.settings:get_bool("creative_mode") and self._base_color then
-			minetest.add_item(pos, "mcl_banners:banner_item_"..colors[self._base_color][1])
+			minetest.add_item(pos, "mcl_banners:banner_item_"..mcl_banners.colors[self._base_color][1])
 		end
 
 		-- Destroy entity
