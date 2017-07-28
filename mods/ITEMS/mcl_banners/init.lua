@@ -249,14 +249,10 @@ minetest.register_entity("mcl_banners:standing_banner", {
 
 	-- This is a custom function which causes the banner to be dropped as item and destroys the entity.
 	_drop = function(self)
-		-- Drop as item when the entity is destroyed.
-		if not self._base_color then
-			return
-		end
 		local pos = self.object:getpos()
 		pos.y = pos.y + 1
 
-		if not minetest.settings:get_bool("creative_mode") then
+		if not minetest.settings:get_bool("creative_mode") and self._base_color then
 			minetest.add_item(pos, "mcl_banners:banner_item_"..colors[self._base_color][1])
 		end
 
@@ -269,15 +265,13 @@ minetest.register_entity("mcl_banners:standing_banner", {
 	-- * self: Lua entity reference to entity.
 	-- * other parameters: Same meaning as in make_banner_texture
 	_set_textures = function(self, base_color, layers)
-		if self._base_color then
-			self._base_color = colorid
+		if base_color then
+			self._base_color = base_color
 		end
-		if self._layers then
+		if layers then
 			self._layers = layers
 		end
-
-		local textures = make_banner_texture(self._base_color, self._layers)
-		self:set_properties({textures=textures})
+		self.object:set_properties({textures = make_banner_texture(self._base_color, self._layers)})
 	end,
 })
 
