@@ -28,6 +28,9 @@ dry_run = False
 # If False, textures will be put into MineClone 2 directories.
 make_texture_pack = True
 
+# If True, prints all copying actions
+verbose = False
+
 ### END OF SETTINGS ###
 
 import shutil, csv, os, tempfile
@@ -55,7 +58,8 @@ def target_dir(directory):
 
 # Copy texture files
 def convert_textures():
-	print("Texture conversion BEGINS HERE!")
+	failed_conversions = 0
+	print("Texture conversion BEGINS NOW!")
 	with open("Texture_Conversion_Table.csv", newline="") as csvfile:
 		reader = csv.reader(csvfile, delimiter=",", quotechar='"')
 		first_row = True
@@ -85,6 +89,7 @@ def convert_textures():
 
 			if src_file_exists == False:
 				print("WARNING: Source file does not exist: "+src_file)
+				failed_conversions = failed_conversions + 1
 				continue
 
 			if xs != None:
@@ -94,12 +99,14 @@ def convert_textures():
 					region = image.crop((xs, ys, xs+xl, ys+yl))
 					region.load()
 					region.save(dst_file)
-				print(src_file + " → " + dst_file)
+				if verbose:
+					print(src_file + " → " + dst_file)
 			else:
 				# Copy image verbatim
 				if not dry_run:
 					shutil.copy2(src_file, dst_file)
-				print(src_file + " → " + dst_file)
+				if verbose:
+					print(src_file + " → " + dst_file)
 
 	# Convert chest textures (requires ImageMagick)
 	PXSIZE = 16
@@ -160,8 +167,9 @@ def convert_textures():
 #		os.system("mogrify -clip-mask "+tex_dir+"/entity/banner/base.png"+" -alpha Copy "+filename)
 #		os.system("mogrify -fill white -colorize 100 "+filename)
 
-		print("")
 		print("Textures conversion COMPLETE!")
+		if failed_conversions > 0:
+			print("Number of missing files in original resource pack: "+str(failed_conversions))
 		print("WARNING: Please keep in mind this script does not reliably convert all the textures yet.")
 		if make_texture_pack:
 			print("Retrieve the texture pack in "+working_dir+"/texture_pack/")
