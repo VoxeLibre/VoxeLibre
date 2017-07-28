@@ -4,188 +4,226 @@ local d = "group:dye" -- dye
 local e = "" -- empty slot (one of them must contain the banner)
 local patterns = {
 	["border"] = {
+		name = "%s Bordure",
 		{ d, d, d },
 		{ d, e, d },
 		{ d, d, d },
 	},
 	["bricks"] = {
+		name = "%s Bricks",
 		type = "shapeless",
 		{ e, "mcl_core:brick_block", d },
 	},
 	["circle"] = {
+		name = "%s Circle",
 		{ e, e, e },
 		{ e, d, e },
 		{ e, e, e },
 	},
 	["creeper"] = {
+		name = "%s Creeper Charge",
 		type = "shapeless",
 		{ e, "mcl_heads:creeper", d },
 	},
 	["cross"] = {
+		name = "%s Saltire",
 		{ d, e, d },
 		{ e, d, e },
 		{ d, e, d },
 	},
 	["curly_border"] = {
+		name = "%s Intented Bordure",
 		type = "shapeless",
 		{ e, "mcl_core:vine", d },
 	},
 	["diagonal_left"] = {
+		name = "%s Inverted Per Bend",
 		{ e, e, e },
 		{ d, e, e },
 		{ d, d, e },
 	},
 	["diagonal_right"] = {
+		name = "%s Inverted Per Bend Sinister",
 		{ e, e, e },
 		{ e, e, d },
 		{ e, d, d },
 	},
 	["diagonal_up_left"] = {
+		name = "%s Per Bend",
 		{ e, d, d },
 		{ e, e, d },
 		{ e, e, e },
 	},
 	["diagonal_up_right"] = {
+		name = "%s Per Bend Sinister",
 		{ d, d, e },
 		{ d, e, e },
 		{ e, e, e },
 	},
 	["flower"] = {
+		name = "%s Flower Charge",
 		type = "shapeless",
 		{ e, "mcl_flowers:oxeye_daisy", d },
 	},
 	["gradient"] = {
+		name = "%s Gradient",
 		{ d, e, d },
 		{ e, d, e },
 		{ e, d, e },
 	},
 	["gradient_up"] = {
+		name = "%s Base Gradient",
 		{ e, d, e },
 		{ e, d, e },
 		{ d, e, d },
 	},
 	["half_horizontal_bottom"] = {
+		name = "%s Inverted Per Fess",
 		{ e, e, e },
 		{ d, d, d },
 		{ d, d, d },
 	},
 	["half_horizontal"] = {
+		name = "%s Per Fess",
 		{ d, d, d },
 		{ d, d, d },
 		{ e, e, e },
 	},
 	["half_vertical"] = {
+		name = "%s Per Pale",
 		{ d, d, e },
 		{ d, d, e },
 		{ d, d, e },
 	},
 	["half_vertical_right"] = {
+		name = "%s Inverted Per Pale",
 		{ e, d, d },
 		{ e, d, d },
 		{ e, d, d },
 	},
 	["thing"] = {
+		name = "%s Thing",
 		type = "shapeless",
 		-- TODO: Replace with enchanted golden apple
 		{ e, "mcl_core:apple_gold", d },
 	},
 	["rhombus"] = {
+		name = "%s Lozenge",
 		{ e, d, e },
 		{ d, e, d },
 		{ e, d, e },
 	},
 	["skull"] = {
+		name = "%s Skull Charge",
 		type = "shapeless",
 		{ e, "mcl_heads:wither_skeleton", d },
 	},
 	["small_stripes"] = {
+		name = "%s Paly",
 		{ d, e, d },
 		{ d, e, d },
 		{ e, e, e },
 	},
 	["square_bottom_left"] = {
+		name = "%s Base Dexter Canton",
 		{ e, e, e },
 		{ e, e, e },
 		{ d, e, e },
 	},
 	["square_bottom_right"] = {
+		name = "%s Base Sinister Canton",
 		{ e, e, e },
 		{ e, e, e },
 		{ e, e, d },
 	},
 	["square_top_left"] = {
+		name = "%s Chief Dexter Canton",
 		{ d, e, e },
 		{ e, e, e },
 		{ e, e, e },
 	},
 	["square_top_right"] = {
+		name = "%s Chief Sinister Canton",
 		{ e, e, d },
 		{ e, e, e },
 		{ e, e, e },
 	},
 	["straight_cross"] = {
+		name = "%s Cross",
 		{ e, d, e },
 		{ d, d, d },
 		{ e, d, e },
 	},
 	["stripe_bottom"] = {
+		name = "%s Base",
 		{ e, e, e },
 		{ e, e, e },
 		{ d, d, d },
 	},
 	["stripe_center"] = {
+		name = "%s Fess",
 		{ e, e, e },
 		{ d, d, d },
 		{ e, e, e },
 	},
 	["stripe_downleft"] = {
+		name = "%s Bend Sinister",
 		{ e, e, d },
 		{ e, d, e },
 		{ d, e, e },
 	},
 	["stripe_downright"] = {
+		name = "%s Bend",
 		{ d, e, e },
 		{ e, d, e },
 		{ e, e, d },
 	},
 	["stripe_left"] = {
+		name = "%s Pale Dexter",
 		{ d, e, e },
 		{ d, e, e },
 		{ d, e, e },
 	},
 	["stripe_middle"] = {
+		name = "%s Pale",
 		{ e, d, e },
 		{ e, d, e },
 		{ e, d, e },
 	},
 	["stripe_right"] = {
+		name = "%s Pale Sinister",
 		{ e, e, d },
 		{ e, e, d },
 		{ e, e, d },
 	},
 	["stripe_top"] = {
+		name = "%s Chief",
 		{ d, d, d },
 		{ e, e, e },
 		{ e, e, e },
 	},
 	["triangle_bottom"] = {
+		name = "%s Chevron",
 		{ e, e, e },
 		{ e, d, e },
 		{ d, e, d },
 	},
+	["triangle_top"] = {
+		name = "%s Inverted Chevron",
+		{ d, e, d },
+		{ e, d, e },
+		{ e, e, e },
+	},
 	["triangles_bottom"] = {
+		name = "%s Base Indented",
 		{ e, e, e },
 		{ d, e, d },
 		{ e, d, e },
 	},
 	["triangles_top"] = {
+		name = "%s Chief Indented",
 		{ e, d, e },
 		{ d, e, d },
-		{ e, e, e },
-	},
-	["triangle_top"] = {
-		{ d, e, d },
-		{ e, d, e },
 		{ e, e, e },
 	},
 }
@@ -200,22 +238,29 @@ local make_advanced_banner_description = function(description, layers)
 		-- No layers, revert to default
 		return ""
 	else
-		local d = description
 		local layerstrings = {}
 		for l=1, #layers do
+			-- Prevent excess length description
 			if l > max_layer_lines then
 				break
 			end
-			table.insert(layerstrings, string.format("%s %s", layers[l].color, layers[l].pattern))
+			-- Layer text line.
+			local color = mcl_banners.colors[layers[l].color][6]
+			local pattern_name = patterns[layers[l].pattern].name
+			-- The pattern name is a format string (e.g. “%s Base”)
+			table.insert(layerstrings, string.format(pattern_name, color))
 		end
+		-- Warn about missing information
 		if #layers == max_layer_lines + 1 then
 			table.insert(layerstrings, "And one addional layer")
 		elseif #layers > max_layer_lines + 1 then
 			table.insert(layerstrings, string.format("And %d addional layers", #layers - max_layer_lines))
 		end
+
+		-- Final string concatenations: Just a list of strings
 		local append = table.concat(layerstrings, "\n")
-		d = d .. "\n" .. core.colorize("#8F8F8F", append)
-		return d
+		description = description .. "\n" .. core.colorize("#8F8F8F", append)
+		return description
 	end
 end
 
