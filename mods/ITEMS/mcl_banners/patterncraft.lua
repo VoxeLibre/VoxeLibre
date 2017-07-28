@@ -197,12 +197,12 @@ minetest.register_craft_predict(function(itemstack, player, old_craft_grid, craf
 
 	local banner
 	local dye
-	local index
+	local banner_index
 	for i = 1, player:get_inventory():get_size("craft") do
 		local itemname = old_craft_grid[i]:get_name()
 		if minetest.get_item_group(itemname, "banner") == 1 then
 			banner = old_craft_grid[i]
-			index = i
+			banner_index = i
 		-- Check if all dyes are equal
 		elseif minetest.get_item_group(itemname, "dye") == 1 then
 			if dye == nil then
@@ -222,19 +222,19 @@ minetest.register_craft_predict(function(itemstack, player, old_craft_grid, craf
 	return itemstack
 end)
 
-
+-- This is for handling all those complex pattern crafting recipes
 minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
 	if minetest.get_item_group(itemstack:get_name(), "banner") ~= 1 then
 		return
 	end
 
 	local banner, dye
-	local index
+	local banner_index
 	for i = 1, player:get_inventory():get_size("craft") do
 		local itemname = old_craft_grid[i]:get_name()
 		if minetest.get_item_group(itemname, "banner") == 1 then
 			banner = old_craft_grid[i]
-			index = i
+			banner_index = i
 		-- Check if all dyes are equal
 		elseif minetest.get_item_group(itemname, "dye") == 1 then
 			if dye == nil then
@@ -248,6 +248,7 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 		return ItemStack("")
 	end
 
+	-- Get old layers
 	local ometa = banner:get_meta()
 	local layers_raw = ometa:get_string("layers")
 	local layers = minetest.deserialize(layers_raw)
@@ -255,12 +256,57 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 		layers = {}
 	end
 
-	table.insert(layers, {pattern="circle", color="unicolor_yellow"})
+	local matching_pattern
+	local max_i = player:get_inventory():get_size("craft")
+	-- Find the matching pattern
+	for pattern_name, pattern in pairs(patterns) do
+		-- Shaped / fixed
+		if pattern.type == nil then
+			local pattern_ok = true
+			local inv_i = 1
+			-- This complex code just iterates through the pattern slots one-by-one and compares them with the pattern
+			for p=1, #pattern do
+				local row = pattern[p]
+				if inv_i > max_i then
+					break
+				end
+				for r=1, #row do
+					local itemname = old_craft_grid[inv_i]:get_name()
+					local pitem = row[r]
+					if (pitem == d and minetest.get_item_group(itemname, "dye") == 0) or (pitem == e and itemname ~= e and inv_i ~= banner_index) then
+						pattern_ok = false
+						break
+					else
+					end
+					inv_i = inv_i + 1
+				end
+			end
+			-- Everything matched! We found our pattern!
+			if pattern_ok then
+				matching_pattern = pattern_name
+				break
+			end
+
+		elseif pattern.type == "shapeless" then
+			-- TODO
+		end
+
+		if matching_pattern then
+			break
+		end
+	end
+	if not matching_pattern then
+		return ItemStack("")
+	end
+
+	-- Add the new layer
+
+	table.insert(layers, {pattern=matching_pattern, color="unicolor_yellow"})
 
 	local imeta = itemstack:get_meta()
 	imeta:set_string("layers", minetest.serialize(layers))
 
-	imeta:set_string("description", "Emblazoned Banner")
+	imeta:set_string("description", "Emblazoned Banner ("..matching_pattern..")")
 	return itemstack
 end)
 
@@ -312,5 +358,4 @@ for pattern_name, pattern in pairs(patterns) do
 		end
 	end
 end
-
 
