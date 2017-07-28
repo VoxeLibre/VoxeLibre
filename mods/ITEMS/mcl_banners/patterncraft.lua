@@ -2,6 +2,12 @@
 -- emblazonings you can put on the banners. It's quite complicated;
 -- normal 08/15 crafting won't work here.
 
+-- Number of maximum lines in the descriptions for the banner layers.
+-- To avoid huge tooltips.
+local max_layer_lines = 6
+
+-- Maximum number of layers which can be put on a banner by crafting.
+local max_layers_crafting = 6
 
 -- List of patterns with crafting rules
 local d = "group:dye" -- dye
@@ -241,10 +247,6 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 	dye_to_colorid_mapping[colortab[5]] = colorid
 end
 
--- Number of maximum lines in the descriptions for the banner layers.
--- To avoid huge tooltips.
-local max_layer_lines = 6
-
 -- Create a banner description containing all the layer names
 local make_advanced_banner_description = function(description, layers)
 	if layers == nil or #layers == 0 then
@@ -310,6 +312,10 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 	local layers = minetest.deserialize(layers_raw)
 	if type(layers) ~= "table" then
 		layers = {}
+	end
+	-- Disallow crafting when a certain number of layers is reached or exceeded
+	if #layers >= max_layers_crafting then
+		return ItemStack("")
 	end
 
 	local matching_pattern
