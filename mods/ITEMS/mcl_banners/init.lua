@@ -30,7 +30,6 @@ local colors = {
 }
 
 local patterns = {
-	"base",
 	"border",
 	"bricks",
 	"circle",
@@ -92,12 +91,11 @@ local make_banner_texture = function(base_color, layers)
 		local base = "(mcl_banners_banner_base.png^[mask:mcl_banners_base_inverted.png)^((mcl_banners_banner_base.png^[colorize:"..colorize..")^[mask:mcl_banners_base.png)"
 
 		-- Optional pattern layers
-		-- TODO: Add entity support
 		if layers then
 			local finished_banner = base
 			for l=1, #layers do
 				local layerinfo = layers[l]
-				local pattern = layerinfo.pattern .. ".png"
+				local pattern = "mcl_banners_" .. layerinfo.pattern .. ".png"
 				local color = colors[layerinfo.color][4]
 
 				-- Generate layer texture
@@ -190,8 +188,7 @@ for colorid, colortab in pairs(colors) do
 			place_pos.y = place_pos.y - 0.5
 
 			local banner = minetest.add_entity(place_pos, "mcl_banners:standing_banner")
-			banner:set_properties({textures=make_banner_texture(colorid)})
-			banner:get_luaentity()._base_color = colorid
+			banner:get_luaentity():_set_textures(colorid)
 
 			-- Determine the rotation based on player's yaw
 			local yaw = placer:get_look_horizontal()
@@ -230,17 +227,22 @@ minetest.register_entity("mcl_banners:standing_banner", {
 	textures = make_banner_texture(),
 	collisionbox = { 0, 0, 0, 0, 0, 0 },
 
-	_base_color = nil,
+	_base_color = nil, -- base color of banner
+	_layers = nil, -- table of layers painted over the base color.
+		-- This is a table of tables with each table having the following fields:
+			-- color: layer color ID (see colors table above)
+			-- pattern: name of pattern (see list above)
 
 	get_staticdata = function(self)
-		local out = { _base_color = self._base_color }
+		local out = { _base_color = self._base_color, _layers = self._layers }
 		return minetest.serialize(out)
 	end,
 	on_activate = function(self, staticdata)
 		if staticdata and staticdata ~= "" then
 			local inp = minetest.deserialize(staticdata)
 			self._base_color = inp._base_color
-			self.object:set_properties({textures = make_banner_texture(self._base_color)})
+			self._layers = inp._layers
+			self.object:set_properties({textures = make_banner_texture(self._base_color, self._layers)})
 		end
 		self.object:set_armor_groups({immortal=1})
 	end,
@@ -260,6 +262,22 @@ minetest.register_entity("mcl_banners:standing_banner", {
 
 		-- Destroy entity
 		self.object:remove()
+	end,
+
+	-- Set the banner textures. This function can be used by external mods.
+	-- Meaning of parameters:
+	-- * self: Lua entity reference to entity.
+	-- * other parameters: Same meaning as in make_banner_texture
+	_set_textures = function(self, base_color, layers)
+		if self._base_color then
+			self._base_color = colorid
+		end
+		if self._layers then
+			self._layers = layers
+		end
+
+		local textures = make_banner_texture(self._base_color, self._layers)
+		self:set_properties({textures=textures})
 	end,
 })
 
