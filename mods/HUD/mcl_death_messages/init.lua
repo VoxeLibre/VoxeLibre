@@ -155,11 +155,13 @@ minetest.register_on_dieplayer(function(player)
 					end
 				-- Arrow
 				elseif last_damages[name].hittertype == "arrow" then
-					if last_damages[name].hitter:is_player() then
-						msg = dmsg("arrow_name", name, last_damages[name].hitter:get_player_name())
-					elseif last_damages[name].hitter:get_luaentity()._cmi_is_mob then
-						if last_damages[name].hitter:get_luaentity().nametag ~= "" then
-							msg = dmsg("arrow_name", name, last_damages[name].hitter:get_player_name())
+					if last_damages[name].shooter == nil then
+						msg = dmsg("arrow", name)
+					elseif last_damages[name].shooter:is_player() then
+						msg = dmsg("arrow_name", name, last_damages[name].shooter:get_player_name())
+					elseif last_damages[name].shooter:get_luaentity()._cmi_is_mob then
+						if last_damages[name].shooter:get_luaentity().nametag ~= "" then
+							msg = dmsg("arrow_name", name, last_damages[name].shooter:get_player_name())
 						else
 							msg = dmsg("arrow", name)
 						end
