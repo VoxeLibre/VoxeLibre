@@ -286,13 +286,20 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 	end
 
 	local banner -- banner item
+	local banner2 -- second banner item (used when copying)
 	local dye -- itemstring of the dye being used
 	local banner_index -- crafting inventory index of the banner
 	for i = 1, player:get_inventory():get_size("craft") do
 		local itemname = old_craft_grid[i]:get_name()
 		if minetest.get_item_group(itemname, "banner") == 1 then
-			banner = old_craft_grid[i]
-			banner_index = i
+			if not banner then
+				banner = old_craft_grid[i]
+				banner_index = i
+			elseif not banner2 then
+				banner2 = old_craft_grid[i]
+			else
+				return
+			end
 		-- Check if all dyes are equal
 		elseif minetest.get_item_group(itemname, "dye") == 1 then
 			if dye == nil then
@@ -303,8 +310,43 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 		end
 	end
 	if not banner then
-		return ItemStack("")
+		return
 	end
+
+	if banner2 then
+		-- Two banners found: This means copying!
+
+		local b1meta = banner:get_meta()
+		local b2meta = banner2:get_meta()
+		local b1layers_raw = b1meta:get_string("layers")
+		local b2layers_raw = b2meta:get_string("layers")
+		local b1layers = minetest.deserialize(b1layers_raw)
+		local b2layers = minetest.deserialize(b2layers_raw)
+
+		-- For copying to be allowed, one banner has to have no layers while the other one has at least 1 layer.
+		-- The banner with layers will be used as a source.
+		local dst_banner, src_banner
+		if (type(b1layers) ~= "table" or (type(b1layers) == "table" and #b1layers == 0)) and type(b2layers) == "table" and #b2layers > 0 then
+			src_layers_raw = b2layers_raw
+			src_desc = b2meta:get_string("description")
+		elseif (type(b2layers) ~= "table" or (type(b2layers) == "table" and #b2layers == 0)) and type(b1layers) == "table" and #b1layers > 0 then
+			src_layers_raw = b1layers_raw
+			src_desc = b1meta:get_string("description")
+		else
+			return ItemStack("")
+		end
+
+		-- Set output metadata
+		local imeta = itemstack:get_meta()
+		imeta:set_string("layers", src_layers_raw)
+		imeta:set_string("description", src_desc)
+
+		-- TODO: Don't destroy source banner, otherwise this recipe is pointless
+
+		return itemstack
+	end
+
+	-- No two banners found: From here on we check which banner pattern should be added
 
 	-- Get old layers
 	local ometa = banner:get_meta()
@@ -451,3 +493,12 @@ for pattern_name, pattern in pairs(patterns) do
 	end
 end
 
+-- Register crafting recipe for copying the banner pattern
+for colorid, colortab in pairs(mcl_banners.colors) do
+	local banner = "mcl_banners:banner_item_"..colortab[1]
+	minetest.register_craft({
+		type = "shapeless",
+		output = banner,
+		recipe = { banner, banner },
+	})
+end
