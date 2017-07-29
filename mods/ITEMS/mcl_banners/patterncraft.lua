@@ -42,18 +42,18 @@ local patterns = {
 		{ d, e, d },
 	},
 	["curly_border"] = {
-		name = "%s Intented Bordure",
+		name = "%s Bordure Indented",
 		type = "shapeless",
 		{ e, "mcl_core:vine", d },
 	},
 	["diagonal_up_left"] = {
-		name = "%s Inverted Per Bend",
+		name = "%s Per Bend Inverted",
 		{ e, e, e },
 		{ d, e, e },
 		{ d, d, e },
 	},
 	["diagonal_up_right"] = {
-		name = "%s Inverted Per Bend Sinister",
+		name = "%s Per Bend Sinister Inverted",
 		{ e, e, e },
 		{ e, e, d },
 		{ e, d, d },
@@ -88,7 +88,7 @@ local patterns = {
 		{ d, e, d },
 	},
 	["half_horizontal_bottom"] = {
-		name = "%s Inverted Per Fess",
+		name = "%s Per Fess Inverted",
 		{ e, e, e },
 		{ d, d, d },
 		{ d, d, d },
@@ -106,7 +106,7 @@ local patterns = {
 		{ d, d, e },
 	},
 	["half_vertical_right"] = {
-		name = "%s Inverted Per Pale",
+		name = "%s Per Pale Inverted",
 		{ e, d, d },
 		{ e, d, d },
 		{ e, d, d },
@@ -221,7 +221,7 @@ local patterns = {
 		{ d, e, d },
 	},
 	["triangle_top"] = {
-		name = "%s Inverted Chevron",
+		name = "%s Chevron Inverted",
 		{ d, e, d },
 		{ e, d, e },
 		{ e, e, e },
