@@ -284,6 +284,11 @@ minetest.register_entity("mcl_banners:standing_banner", {
 	end,
 })
 
+if minetest.get_modpath("doc") then
+	-- This is a crappy alias, because it always shows the white banner help page, regardless of the true banner color.
+	doc.add_entry_alias("craftitems", "mcl_banners:banner_item_white", "nodes", "mcl_banners:standing_banner")
+end
+
 minetest.register_craft({
 	type = "fuel",
 	recipe = "group:banner",
