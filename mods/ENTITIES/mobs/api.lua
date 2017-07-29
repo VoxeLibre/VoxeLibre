@@ -1658,7 +1658,11 @@ local do_states = function(self, dtime)
 					set_velocity(self, self.run_velocity)
 				end
 
-				set_animation(self, "run")
+				if self.animation and self.animation.run_start then
+					set_animation(self, "run")
+				else
+					set_animation(self, "walk")
+				end
 			else
 				set_velocity(self, 0)
 				set_animation(self, "punch")
@@ -1831,7 +1835,11 @@ local do_states = function(self, dtime)
 						set_velocity(self, self.run_velocity)
 					end
 
-					set_animation(self, "run")
+					if self.animation and self.animation.run_start then
+						set_animation(self, "run")
+					else
+						set_animation(self, "walk")
+					end
 				end
 
 			else -- rnd: if inside reach range
