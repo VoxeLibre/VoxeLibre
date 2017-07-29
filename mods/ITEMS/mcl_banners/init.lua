@@ -125,7 +125,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 	minetest.register_craftitem(itemstring, {
 		description = desc,
 		_doc_items_longdesc = "Banners are tall colorful decorative blocks. They can be placed on the floor. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.",
-		_doc_items_usagehelp = "Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 6 layers on a banner that way. Use a banner on a cauldron with water to wash off its top-most layer.",
+		_doc_items_usagehelp = "Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 6 layers on a banner that way. You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.",
 		inventory_image = inv,
 		wield_image = inv,
 		-- Banner group groups together the banner items, but not the nodes.
