@@ -271,7 +271,13 @@ minetest.register_entity("mcl_banners:standing_banner", {
 		pos.y = pos.y + 1
 
 		if not minetest.settings:get_bool("creative_mode") and self._base_color then
-			minetest.add_item(pos, "mcl_banners:banner_item_"..mcl_banners.colors[self._base_color][1])
+			-- Spawn item
+			local banner = ItemStack("mcl_banners:banner_item_"..mcl_banners.colors[self._base_color][1])
+			local meta = banner:get_meta()
+			meta:set_string("layers", minetest.serialize(self._layers))
+			meta:set_string("description", mcl_banners.make_advanced_banner_description(banner:get_definition().description, self._layers))
+
+			minetest.add_item(pos, banner)
 		end
 
 		-- Destroy entity
