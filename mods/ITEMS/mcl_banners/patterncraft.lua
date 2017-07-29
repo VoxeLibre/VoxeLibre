@@ -114,7 +114,7 @@ local patterns = {
 	["thing"] = {
 		-- Symbol used for the “Thing”: U+1F65D 🙝
 
-		name = "%s Thing",
+		name = "%s Thing Charge",
 		type = "shapeless",
 		-- TODO: Replace with enchanted golden apple
 		{ e, "mcl_core:apple_gold", d },
