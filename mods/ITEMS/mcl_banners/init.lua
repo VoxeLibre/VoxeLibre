@@ -39,10 +39,13 @@ dofile(minetest.get_modpath("mcl_banners").."/patterncraft.lua")
 local base_color_ratio = 224
 local layer_ratio = 255
 
+local banner_entity_offset = { x=0, y=-0.499, z=0 }
+
 -- After destroying the standing banner node
 local on_destruct_standing_banner = function(pos)
 	-- Find this node's banner entity and make it drop as an item
-	local objects = minetest.get_objects_inside_radius(pos, 0.5)
+	local checkpos = vector.add(pos, banner_entity_offset)
+	local objects = minetest.get_objects_inside_radius(checkpos, 0.5)
 	for _, v in ipairs(objects) do
 		if v:get_entity_name() == "mcl_banners:standing_banner" then
 			v:get_luaentity():_drop()
@@ -194,7 +197,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 			else
 				place_pos = above
 			end
-			place_pos.y = place_pos.y - 0.5
+			place_pos = vector.add(place_pos, banner_entity_offset)
 
 			local banner = minetest.add_entity(place_pos, "mcl_banners:standing_banner")
 			local imeta = itemstack:get_meta()
