@@ -2,7 +2,7 @@
 An unofficial Minecraft-like game for Minetest. Forked from MineClone by daredevils.
 Developed by Wuzzy and contributors. Not developed or endorsed by Mojang AB.
 
-Version: 0.24.0
+Version: 0.25.0
 
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
@@ -115,6 +115,7 @@ The following main features are available:
 * Slime block (does not interact with redstone)
 * Small plants and saplings
 * Dyes
+* Banners
 * Deco blocks: Glass, stained glass, glass panes, iron bars, hardened clay (and colors), heads and more
 * Item frames
 * Jukeboxes
