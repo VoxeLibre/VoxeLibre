@@ -70,9 +70,9 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 		shoot_end = 90,
 		punch_start = 70,
 		punch_end = 90,
-		die_start = 120,
-		die_end = 130,
-		die_loop = false,
+		--die_start = 120,
+		--die_end = 130,
+		--die_loop = false,
 
 		-- Not supported yet
 		hurt_start = 100,
