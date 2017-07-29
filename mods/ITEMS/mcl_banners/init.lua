@@ -84,7 +84,12 @@ end
 -- This is an invisible node which is only used to destroy the banner entity.
 -- All the important banner information (such as color) is stored in the entity.
 -- It is used only used internally.
+-- It is also used for the help entry to avoid spamming the help with 16 entries.
 minetest.register_node("mcl_banners:standing_banner", {
+	_doc_items_entry_name = "Banner",
+	_doc_items_image = "mcl_banners_item_base.png^mcl_banners_item_overlay.png",
+	_doc_items_longdesc = "Banners are tall colorful decorative blocks. They can be placed on the floor. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.",
+	_doc_items_usagehelp = "Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 6 layers on a banner that way. You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.",
 	walkable = false,
 	is_ground_content = false,
 	paramtype = "light",
@@ -124,8 +129,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 	-- TODO: Combine the items into only 1 item.
 	minetest.register_craftitem(itemstring, {
 		description = desc,
-		_doc_items_longdesc = "Banners are tall colorful decorative blocks. They can be placed on the floor. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.",
-		_doc_items_usagehelp = "Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 6 layers on a banner that way. You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.",
+		_doc_items_create_entry = false,
 		inventory_image = inv,
 		wield_image = inv,
 		-- Banner group groups together the banner items, but not the nodes.
@@ -225,6 +229,11 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 			}
 		})
 	end
+
+	if minetest.get_modpath("doc") then
+		-- Add item to node alias
+		doc.add_entry_alias("nodes", "mcl_banners:standing_banner", "craftitems", itemstring)
+	end
 end
 
 minetest.register_entity("mcl_banners:standing_banner", {
@@ -283,11 +292,6 @@ minetest.register_entity("mcl_banners:standing_banner", {
 		self.object:set_properties({textures = make_banner_texture(self._base_color, self._layers)})
 	end,
 })
-
-if minetest.get_modpath("doc") then
-	-- This is a crappy alias, because it always shows the white banner help page, regardless of the true banner color.
-	doc.add_entry_alias("craftitems", "mcl_banners:banner_item_white", "nodes", "mcl_banners:standing_banner")
-end
 
 minetest.register_craft({
 	type = "fuel",
