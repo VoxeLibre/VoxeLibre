@@ -395,9 +395,6 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 			-- This complex code just iterates through the pattern slots one-by-one and compares them with the pattern
 			for p=1, #pattern do
 				local row = pattern[p]
-				if inv_i > max_i then
-					break
-				end
 				for r=1, #row do
 					local itemname = old_craft_grid[inv_i]:get_name()
 					local pitem = row[r]
@@ -407,6 +404,12 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 					else
 					end
 					inv_i = inv_i + 1
+					if inv_i > max_i then
+						break
+					end
+				end
+				if inv_i > max_i then
+					break
 				end
 			end
 			-- Everything matched! We found our pattern!
