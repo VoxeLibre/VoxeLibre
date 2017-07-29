@@ -46,25 +46,25 @@ local patterns = {
 		type = "shapeless",
 		{ e, "mcl_core:vine", d },
 	},
-	["diagonal_left"] = {
+	["diagonal_up_left"] = {
 		name = "%s Inverted Per Bend",
 		{ e, e, e },
 		{ d, e, e },
 		{ d, d, e },
 	},
-	["diagonal_right"] = {
+	["diagonal_up_right"] = {
 		name = "%s Inverted Per Bend Sinister",
 		{ e, e, e },
 		{ e, e, d },
 		{ e, d, d },
 	},
-	["diagonal_up_left"] = {
+	["diagonal_right"] = {
 		name = "%s Per Bend",
 		{ e, d, d },
 		{ e, e, d },
 		{ e, e, e },
 	},
-	["diagonal_up_right"] = {
+	["diagonal_left"] = {
 		name = "%s Per Bend Sinister",
 		{ d, d, e },
 		{ d, e, e },
@@ -173,10 +173,10 @@ local patterns = {
 		{ d, d, d },
 	},
 	["stripe_center"] = {
-		name = "%s Fess",
-		{ e, e, e },
-		{ d, d, d },
-		{ e, e, e },
+		name = "%s Pale",
+		{ e, d, e },
+		{ e, d, e },
+		{ e, d, e },
 	},
 	["stripe_downleft"] = {
 		name = "%s Bend Sinister",
@@ -197,10 +197,10 @@ local patterns = {
 		{ d, e, e },
 	},
 	["stripe_middle"] = {
-		name = "%s Pale",
-		{ e, d, e },
-		{ e, d, e },
-		{ e, d, e },
+		name = "%s Fess",
+		{ e, e, e },
+		{ d, d, d },
+		{ e, e, e },
 	},
 	["stripe_right"] = {
 		name = "%s Pale Sinister",
