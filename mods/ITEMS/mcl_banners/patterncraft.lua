@@ -279,16 +279,22 @@ mcl_banners.make_advanced_banner_description = function(description, layers)
 	end
 end
 
--- This is for handling all those complex pattern crafting recipes
-local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_inv)
+--[[ This is for handling all those complex pattern crafting recipes.
+Parameters same as for minetest.register_craft_predict.
+craft_predict is set true when called from minetest.craft_preview, in this case, this function
+MUST NOT change the crafting grid.
+]]
+local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_inv, craft_predict)
 	if minetest.get_item_group(itemstack:get_name(), "banner") ~= 1 then
 		return
 	end
 
+	--[[ Basic item checks: Banners and dyes ]]
 	local banner -- banner item
 	local banner2 -- second banner item (used when copying)
 	local dye -- itemstring of the dye being used
 	local banner_index -- crafting inventory index of the banner
+	local banner2_index
 	for i = 1, player:get_inventory():get_size("craft") do
 		local itemname = old_craft_grid[i]:get_name()
 		if minetest.get_item_group(itemname, "banner") == 1 then
@@ -297,6 +303,7 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 				banner_index = i
 			elseif not banner2 then
 				banner2 = old_craft_grid[i]
+				banner2_index = i
 			else
 				return
 			end
@@ -313,6 +320,7 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 		return
 	end
 
+	--[[ Check copy ]]
 	if banner2 then
 		-- Two banners found: This means copying!
 
@@ -322,16 +330,26 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 		local b2layers_raw = b2meta:get_string("layers")
 		local b1layers = minetest.deserialize(b1layers_raw)
 		local b2layers = minetest.deserialize(b2layers_raw)
+		if type(b1layers) ~= "table" then
+			b1layers = {}
+		end
+		if type(b2layers) ~= "table" then
+			b2layers = {}
+		end
 
 		-- For copying to be allowed, one banner has to have no layers while the other one has at least 1 layer.
 		-- The banner with layers will be used as a source.
-		local dst_banner, src_banner
-		if (type(b1layers) ~= "table" or (type(b1layers) == "table" and #b1layers == 0)) and type(b2layers) == "table" and #b2layers > 0 then
+		local src_banner, src_layers, src_desc, src_index
+		if #b1layers == 0 and #b2layers > 0 then
+			src_banner = banner2
 			src_layers_raw = b2layers_raw
 			src_desc = b2meta:get_string("description")
-		elseif (type(b2layers) ~= "table" or (type(b2layers) == "table" and #b2layers == 0)) and type(b1layers) == "table" and #b1layers > 0 then
+			src_index = banner2_index
+		elseif #b2layers == 0 and #b1layers > 0 then
+			src_banner = banner
 			src_layers_raw = b1layers_raw
 			src_desc = b1meta:get_string("description")
+			src_index = banner_index
 		else
 			return ItemStack("")
 		end
@@ -341,12 +359,18 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 		imeta:set_string("layers", src_layers_raw)
 		imeta:set_string("description", src_desc)
 
-		-- TODO: Don't destroy source banner, otherwise this recipe is pointless
+		if not craft_predict then
+			-- Don't destroy source banner so this recipe is a true copy
+			craft_inv:set_stack("craft", src_index, src_banner)
+		end
 
 		return itemstack
 	end
 
-	-- No two banners found: From here on we check which banner pattern should be added
+	-- No two banners found
+	-- From here on we check which banner pattern should be added
+
+	--[[ Check patterns ]]
 
 	-- Get old layers
 	local ometa = banner:get_meta()
@@ -440,9 +464,12 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 	return itemstack
 end
 
-minetest.register_craft_predict(banner_pattern_craft)
-minetest.register_on_craft(banner_pattern_craft)
-
+minetest.register_craft_predict(function(itemstack, player, old_craft_grid, craft_inv)
+	return banner_pattern_craft(itemstack, player, old_craft_grid, craft_inv, true)
+end)
+minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
+	return banner_pattern_craft(itemstack, player, old_craft_grid, craft_inv, false)
+end)
 
 -- Register crafting recipes for all the patterns
 for pattern_name, pattern in pairs(patterns) do
