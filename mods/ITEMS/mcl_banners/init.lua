@@ -99,7 +99,7 @@ minetest.register_node("mcl_banners:standing_banner", {
 	wield_image = "mcl_banners_item_base.png",
 	tiles = { "blank.png" },
 	selection_box = {type = "fixed", fixed= {-0.2, -0.5, -0.2, 0.2, 0.5, 0.2} },
-	groups = { deco_block = 1, attached_node = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1, },
+	groups = {axey=1,handy=1, deco_block = 1, attached_node = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1, },
 	stack_max = 16,
 	sounds = node_sounds,
 	drop = "", -- Item drops are handled in entity code
