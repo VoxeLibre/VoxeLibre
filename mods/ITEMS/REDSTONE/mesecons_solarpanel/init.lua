@@ -28,7 +28,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_on", {
 	}},
 	on_rightclick = function(pos, node, clicker, pointed_thing)
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_inverted_off"})
-		mesecon:receptor_off(pos)
+		mesecon.receptor_off(pos)
 	end,
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 0.2,
@@ -62,7 +62,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_off", {
 	}},
 	on_rightclick = function(pos, node, clicker, pointed_thing)
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_inverted_on"})
-		mesecon:receptor_on(pos)
+		mesecon.receptor_on(pos)
 	end,
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 0.2,
@@ -87,7 +87,7 @@ minetest.register_abm({
 
 		if light >= 12 and minetest.get_timeofday() > 0.2 and minetest.get_timeofday() < 0.8 then
 			minetest.set_node(pos, {name="mesecons_solarpanel:solar_panel_on", param2=node.param2})
-			mesecon:receptor_on(pos)
+			mesecon.receptor_on(pos)
 		end
 	end,
 })
@@ -102,7 +102,7 @@ minetest.register_abm({
 
 		if light < 12 then
 			minetest.set_node(pos, {name="mesecons_solarpanel:solar_panel_off", param2=node.param2})
-			mesecon:receptor_off(pos)
+			mesecon.receptor_off(pos)
 		end
 	end,
 })
@@ -137,7 +137,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_on", {
 	}},
 	on_rightclick = function(pos, node, clicker, pointed_thing)
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_off"})
-		mesecon:receptor_off(pos)
+		mesecon.receptor_off(pos)
 	end,
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 0.2,
@@ -172,7 +172,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
 	}},
 	on_rightclick = function(pos, node, clicker, pointed_thing)
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_on"})
-		mesecon:receptor_on(pos)
+		mesecon.receptor_on(pos)
 	end,
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 0.2,
@@ -188,7 +188,7 @@ minetest.register_abm({
 
 		if light < 12 then
 			minetest.set_node(pos, {name="mesecons_solarpanel:solar_panel_inverted_on", param2=node.param2})
-			mesecon:receptor_on(pos)
+			mesecon.receptor_on(pos)
 		end
 	end,
 })
@@ -203,7 +203,7 @@ minetest.register_abm({
 
 		if light >= 12 and minetest.get_timeofday() > 0.8 and minetest.get_timeofday() < 0.2 then
 			minetest.set_node(pos, {name="mesecons_solarpanel:solar_panel_inverted_off", param2=node.param2})
-			mesecon:receptor_off(pos)
+			mesecon.receptor_off(pos)
 		end
 	end,
 })

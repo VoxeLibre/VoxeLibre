@@ -8,7 +8,7 @@ minetest.register_node("mesecons_lightstone:lightstone_off", {
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {effector = {
 		action_on = function (pos, node)
-			mesecon:swap_node(pos, "mesecons_lightstone:lightstone_on")
+			minetest.swap_node(pos, {name="mesecons_lightstone:lightstone_on", param2 = node.param2})
 		end
 	}},
 	_mcl_blast_resistance = 1.5,
@@ -27,7 +27,7 @@ minetest.register_node("mesecons_lightstone:lightstone_on", {
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {effector = {
 		action_off = function (pos, node)
-			mesecon:swap_node(pos, "mesecons_lightstone:lightstone_off")
+			minetest.swap_node(pos, {name="mesecons_lightstone:lightstone_off", param2 = node.param2})
 		end
 	}},
 	_mcl_blast_resistance = 1.5,
