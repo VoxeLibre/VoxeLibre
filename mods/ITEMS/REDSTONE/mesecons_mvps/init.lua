@@ -322,5 +322,6 @@ mesecon.register_mvps_stopper("mesecons_solarpanel:solar_panel_inverted_off")
 mesecon.register_mvps_stopper("mesecons_solarpanel:solar_panel_inverted_on")
 mesecon.register_mvps_stopper("mesecons_noteblock:noteblock")
 mesecon.register_mvps_stopper("3d_armor_stand:armor_stand")
+mesecon.register_mvps_stopper("mcl_banners:standing_banner")
 
 mesecon.register_on_mvps_move(mesecon.move_hot_nodes)
