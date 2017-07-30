@@ -3049,6 +3049,7 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 		inventory_image = invimg,
 		groups = grp,
 
+		-- FIXME: Provide a function to place a mob without the on_place thingie
 		on_place = function(itemstack, placer, pointed_thing)
 
 			local pos = pointed_thing.above
@@ -3056,13 +3057,13 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 			-- am I clicking on something with existing on_rightclick function?
 			local under = minetest.get_node(pointed_thing.under)
 			local def = minetest.registered_nodes[under.name]
-			if def and def.on_rightclick then
+			if def and def.on_rightclick and placer then
 				return def.on_rightclick(pointed_thing.under, under, placer, itemstack)
 			end
 
 			if pos
 			and within_limits(pos, 0)
-			and not minetest.is_protected(pos, placer:get_player_name()) then
+			and ((not placer or not minetest.is_protected(pos, placer:get_player_name()))) then
 
 				pos.y = pos.y + 1
 
@@ -3075,7 +3076,7 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 				end
 
 				if ent.type ~= "monster"
-				and not placer:get_player_control().sneak then
+				and (placer and not placer:get_player_control().sneak) then
 					-- set owner and tame if not monster
 					ent.owner = placer:get_player_name()
 					ent.tamed = true
