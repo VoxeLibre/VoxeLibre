@@ -77,9 +77,9 @@ end
 local piston_on = function (pos, node)
 	local pistonspec = minetest.registered_nodes[node.name].mesecons_piston
 
-	dir = piston_get_direction(pistonspec.dir, node)
+	local dir = piston_get_direction(pistonspec.dir, node)
 	local np = vector.add(pos, dir)
-	success, stack = mesecon.mvps_push(np, dir, PISTON_MAXIMUM_PUSH)
+	local success, stack, oldstack = mesecon.mvps_push(np, dir, PISTON_MAXIMUM_PUSH)
 	if success then
 		minetest.add_node(pos, {param2 = node.param2, name = pistonspec.onname})
 		minetest.add_node(np, {param2 = node.param2, name = pistonspec.pusher})
@@ -88,6 +88,7 @@ local piston_on = function (pos, node)
 			minetest.set_node({x=np.x,y=np.y-1,z=np.z}, {name = "mcl_core:dirt"})
 		end
 		mesecon.mvps_process_stack(stack)
+		mesecon.mvps_move_objects(np, dir, oldstack)
 		minetest.sound_play("piston_extend", {
 			pos = pos,
 			max_hear_distance = 20,
@@ -102,10 +103,10 @@ local piston_off = function (pos, node)
 	piston_remove_pusher (pos, node)
 
 	if pistonspec.sticky then
-		dir = piston_get_direction(pistonspec.dir, node)
-		pullpos = vector.add(pos, dir)
-		stack = mesecon.mvps_pull_single(pullpos, dir)
-		mesecon.mvps_process_stack(stack)
+		local dir = piston_get_direction(pistonspec.dir, node)
+		local pullpos = vector.add(pos, vector.multiply(dir, 2))
+		local stack = mesecon.mvps_pull_single(pullpos, vector.multiply(dir, -1), PISTON_MAXIMUM_PUSH)
+		mesecon.mvps_process_stack(pos, dir, stack)
 	end
 end
 
