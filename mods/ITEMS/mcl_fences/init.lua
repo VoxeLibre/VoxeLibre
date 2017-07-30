@@ -267,15 +267,15 @@ for w=1, #woods do
 	minetest.register_craft({
 		output = 'mcl_fences:'..id..' 3',
 		recipe = {
-			{wood[5], 'mcl_core:stick', wood[5]},
-			{wood[5], 'mcl_core:stick', wood[5]},
+			{wood[6], 'mcl_core:stick', wood[6]},
+			{wood[6], 'mcl_core:stick', wood[6]},
 		}
 	})
 	minetest.register_craft({
 		output = 'mcl_fences:'..id_gate,
 		recipe = {
-			{'mcl_core:stick', wood[5], 'mcl_core:stick'},
-			{'mcl_core:stick', wood[5], 'mcl_core:stick'},
+			{'mcl_core:stick', wood[6], 'mcl_core:stick'},
+			{'mcl_core:stick', wood[6], 'mcl_core:stick'},
 		}
 	})
 end
