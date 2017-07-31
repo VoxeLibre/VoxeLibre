@@ -264,6 +264,9 @@ minetest.register_entity("mcl_banners:standing_banner", {
 			self._base_color = inp._base_color
 			self._layers = inp._layers
 			self.object:set_properties({textures = make_banner_texture(self._base_color, self._layers)})
+
+			-- Make banner slowly swing
+			self.object:set_animation({x=0, y=80}, 25)
 		end
 		self.object:set_armor_groups({immortal=1})
 	end,
