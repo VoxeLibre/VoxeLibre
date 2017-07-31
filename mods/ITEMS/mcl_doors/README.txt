@@ -1,7 +1,3 @@
-Minetest 0.4 mod: doors
-=======================
-version: 1.2.2
-
 License of source code:
 -----------------------
 Copyright (C) 2012 PilzAdam
@@ -25,4 +21,11 @@ Steel door sounds open & close (CC-BY-3.0) by HazMatt
   doors_steel_door_open.ogg
   doors_steel_door_close.ogg
 
+License/authors of texture files
+--------------------------------------
+Same as media license for MineClone 2 (see root directory).
 
+With modifications by GitHub user kingoscargames:
+- `doors_item_steel.png`
+- `mcl_doors_door_iron_lower.png`
+- `mcl_doors_door_iron_upper.png`
