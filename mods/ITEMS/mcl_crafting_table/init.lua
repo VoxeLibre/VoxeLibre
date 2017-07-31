@@ -7,7 +7,6 @@ minetest.register_node("mcl_crafting_table:crafting_table", {
 	tiles = {"crafting_workbench_top.png", "default_wood.png", "crafting_workbench_side.png",
 		"crafting_workbench_side.png", "crafting_workbench_front.png", "crafting_workbench_front.png"},
 	paramtype2 = "facedir",
-	paramtype = "light",
 	groups = {handy=1,axey=1, deco_block=1, material_wood=1},
 	on_rightclick = function(pos, node, player, itemstack)
 		player:get_inventory():set_width("craft", 3)
