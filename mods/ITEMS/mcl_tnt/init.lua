@@ -158,14 +158,15 @@ function TNT:on_step(dtime)
 		self.blinkstatus = not self.blinkstatus
 	end
 	if self.timer > 4 then
-		tnt.boom(self.object:getpos(), TNT_RANGE)
+		tnt.boom(self.object:getpos())
 		self.object:remove()
 	end
 end
 
 tnt.boom = function(pos, info)
-	local range = info.radius
-	local damage_range = info.damage_radius
+	if not info then info = {} end
+	local range = info.radius or TNT_RANGE
+	local damage_range = info.damage_radius or TNT_RANGE
 
 	pos.x = math.floor(pos.x+0.5)
 	pos.y = math.floor(pos.y+0.5)
