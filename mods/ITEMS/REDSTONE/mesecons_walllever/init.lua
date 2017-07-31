@@ -2,30 +2,21 @@
 -- Basically a switch that can be attached to a wall
 -- Powers the block 2 nodes behind (using a receiver)
 minetest.register_node("mesecons_walllever:wall_lever_off", {
-	drawtype = "nodebox",
+	drawtype = "mesh",
 	tiles = {
-		"jeija_wall_lever_tb.png",
-		"jeija_wall_lever_bottom.png",
-		"jeija_wall_lever_sides.png",
-		"jeija_wall_lever_sides.png",
-		"jeija_wall_lever_back.png",
-		"jeija_wall_lever_off.png",
+		"jeija_wall_lever_lever_light_on.png",
 	},
 	inventory_image = "jeija_wall_lever.png",
 	wield_image = "jeija_wall_lever.png",
 	paramtype = "light",
 	paramtype2 = "facedir",
+	drawtype = "mesh",
+	mesh = "jeija_wall_lever_off.obj",
 	sunlight_propagates = true,
 	walkable = false,
 	selection_box = {
 		type = "fixed",
-		fixed = {{ -2/16, -3/16,  8/16, 2/16, 3/16,  4/16 },
-			 { -1/16, -8/16, 7/16, 1/16, 0/16,  5/16 }},
-	},
-	node_box = {
-		type = "fixed",
-		fixed = {{ -2/16, -3/16,  8/16, 2/16, 3/16,  4/16 },	-- the base
-			 { -1/16, -8/16, 7/16, 1/16, 0/16,  5/16 }}	-- the lever itself.
+		fixed = { -3/16, -8/16,  -4/16, 3/16, -2/16,  4/16 },
 	},
 	groups = {handy=1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1},
 	is_ground_content = false,
@@ -37,7 +28,7 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 		mesecon:receptor_on(pos, mesecon.rules.buttonlike_get(node))
 		minetest.sound_play("mesecons_lever", {pos=pos})
 	end,
-	sounds = mcl_sounds.node_sound_wood_defaults(),
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {receptor = {
 		rules = mesecon.rules.buttonlike_get,
 		state = mesecon.state.off
@@ -46,29 +37,19 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 	_mcl_hardness = 0.5,
 })
 minetest.register_node("mesecons_walllever:wall_lever_on", {
-	drawtype = "nodebox",
+	drawtype = "mesh",
 	tiles = {
-		"jeija_wall_lever_top.png",
-		"jeija_wall_lever_tb.png",
-		"jeija_wall_lever_sides.png",
-		"jeija_wall_lever_sides.png",
-		"jeija_wall_lever_back.png",
-		"jeija_wall_lever_on.png",
+		"jeija_wall_lever_lever_light_on.png",
 	},
 	inventory_image = "jeija_wall_lever.png",
 	paramtype = "light",
 	paramtype2 = "facedir",
+	mesh = "jeija_wall_lever_on.obj",
 	sunlight_propagates = true,
 	walkable = false,
 	selection_box = {
 		type = "fixed",
-		fixed = {{ -2/16, -3/16,  8/16, 2/16, 3/16,  4/16 },
-			 { -1/16, 0, 7/16, 1/16, 8/16,  5/16 }},
-	},
-	node_box = {
-		type = "fixed",
-		fixed = {{ -2/16, -3/16,  8/16, 2/16, 3/16,  4/16 },	-- the base
-			 { -1/16, 0/16, 7/16, 1/16, 8/16,  5/16 }}	-- the lever itself.
+		fixed = { -3/16, -8/16,  -4/16, 3/16, -2/16,  4/16 },
 	},
 	groups = {handy=1, not_in_creative_inventory = 1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1},
 	is_ground_content = false,
@@ -80,7 +61,7 @@ minetest.register_node("mesecons_walllever:wall_lever_on", {
 		mesecon:receptor_off(pos, mesecon.rules.buttonlike_get(node))
 		minetest.sound_play("mesecons_lever", {pos=pos})
 	end,
-	sounds = mcl_sounds.node_sound_wood_defaults(),
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {receptor = {
 		rules = mesecon.rules.buttonlike_get,
 		state = mesecon.state.on
