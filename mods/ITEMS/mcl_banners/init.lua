@@ -221,8 +221,14 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 
 			-- Place the node!
 			local hanging = false
+
+			-- Standing or hanging banner. The placement rules are enforced by the node definitions
 			local _, success = minetest.item_place_node(ItemStack("mcl_banners:standing_banner"), placer, pointed_thing)
 			if not success then
+				-- Forbidden on ceiling
+				if pointed_thing.under.y ~= pointed_thing.above.y then
+					return itemstack
+				end
 				_, success = minetest.item_place_node(ItemStack("mcl_banners:hanging_banner"), placer, pointed_thing)
 				if not success then
 					return itemstack
