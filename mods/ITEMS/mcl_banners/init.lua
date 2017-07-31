@@ -58,7 +58,7 @@ local on_destruct_hanging_banner = function(pos)
 	local checkpos = vector.add(pos, hanging_banner_entity_offset)
 	local objects = minetest.get_objects_inside_radius(checkpos, 0.5)
 	for _, v in ipairs(objects) do
-		if v:get_entity_name() == "mcl_banners:standing_banner" then
+		if v:get_entity_name() == "mcl_banners:hanging_banner" then
 			v:get_luaentity():_drop()
 		end
 	end
@@ -242,10 +242,11 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 				place_pos = vector.add(place_pos, standing_banner_entity_offset)
 			end
 
-			local banner = minetest.add_entity(place_pos, "mcl_banners:standing_banner")
+			local banner 
 			if hanging then
-				banner:set_properties({mesh="amc_banner_hanging.b3d"})
-				banner:get_luaentity()._banner_type = "hanging"
+				banner = minetest.add_entity(place_pos, "mcl_banners:hanging_banner")
+			else
+				banner = minetest.add_entity(place_pos, "mcl_banners:standing_banner")
 			end
 			local imeta = itemstack:get_meta()
 			local layers_raw = imeta:get_string("layers")
@@ -293,8 +294,8 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 	end
 end
 
--- Banner entity. Used for standing AND hanging banners!
-minetest.register_entity("mcl_banners:standing_banner", {
+-- Banner entities.
+local entity_standing = {
 	physical = false,
 	collide_with_objects = false,
 	visual = "mesh",
@@ -308,7 +309,6 @@ minetest.register_entity("mcl_banners:standing_banner", {
 		-- This is a table of tables with each table having the following fields:
 			-- color: layer color ID (see colors table above)
 			-- pattern: name of pattern (see list above)
-	_banner_type = "standing", -- standing or hanging
 
 	get_staticdata = function(self)
 		local out = { _base_color = self._base_color, _layers = self._layers }
@@ -319,13 +319,7 @@ minetest.register_entity("mcl_banners:standing_banner", {
 			local inp = minetest.deserialize(staticdata)
 			self._base_color = inp._base_color
 			self._layers = inp._layers
-			self._banner_type = inp._banner_type
-			local mesh
-			if self._banner_type == "hanging" then
-				mesh = "amc_banner_hanging.b3d"
-			end
 			self.object:set_properties({
-				mesh = mesh,
 				textures = make_banner_texture(self._base_color, self._layers),
 			})
 		end
@@ -366,7 +360,12 @@ minetest.register_entity("mcl_banners:standing_banner", {
 		end
 		self.object:set_properties({textures = make_banner_texture(self._base_color, self._layers)})
 	end,
-})
+}
+minetest.register_entity("mcl_banners:standing_banner", entity_standing)
+
+local entity_hanging = table.copy(entity_standing)
+entity_hanging.mesh = "amc_banner_hanging.b3d"
+minetest.register_entity("mcl_banners:hanging_banner", entity_hanging)
 
 minetest.register_craft({
 	type = "fuel",
