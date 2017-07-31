@@ -39,12 +39,23 @@ dofile(minetest.get_modpath("mcl_banners").."/patterncraft.lua")
 local base_color_ratio = 224
 local layer_ratio = 255
 
-local banner_entity_offset = { x=0, y=-0.499, z=0 }
+local standing_banner_entity_offset = { x=0, y=-0.499, z=0 }
+local hanging_banner_entity_offset = { x=0, y=-1.7, z=0 }
 
--- After destroying the standing banner node
 local on_destruct_standing_banner = function(pos)
 	-- Find this node's banner entity and make it drop as an item
-	local checkpos = vector.add(pos, banner_entity_offset)
+	local checkpos = vector.add(pos, standing_banner_entity_offset)
+	local objects = minetest.get_objects_inside_radius(checkpos, 0.5)
+	for _, v in ipairs(objects) do
+		if v:get_entity_name() == "mcl_banners:standing_banner" then
+			v:get_luaentity():_drop()
+		end
+	end
+end
+
+local on_destruct_hanging_banner = function(pos)
+	-- Find this node's banner entity and make it drop as an item
+	local checkpos = vector.add(pos, hanging_banner_entity_offset)
 	local objects = minetest.get_objects_inside_radius(checkpos, 0.5)
 	for _, v in ipairs(objects) do
 		if v:get_entity_name() == "mcl_banners:standing_banner" then
@@ -83,11 +94,13 @@ local make_banner_texture = function(base_color, layers)
 	end
 end
 
--- Standing banner node.
--- This is an invisible node which is only used to destroy the banner entity.
+-- Banner nodes.
+-- These are an invisible nodes which are only used to destroy the banner entity.
 -- All the important banner information (such as color) is stored in the entity.
 -- It is used only used internally.
--- It is also used for the help entry to avoid spamming the help with 16 entries.
+
+-- Standing banner node
+-- This one is also used for the help entry to avoid spamming the help with 16 entries.
 minetest.register_node("mcl_banners:standing_banner", {
 	_doc_items_entry_name = "Banner",
 	_doc_items_image = "mcl_banners_item_base.png^mcl_banners_item_overlay.png",
@@ -102,12 +115,34 @@ minetest.register_node("mcl_banners:standing_banner", {
 	wield_image = "mcl_banners_item_base.png",
 	tiles = { "blank.png" },
 	selection_box = {type = "fixed", fixed= {-0.2, -0.5, -0.2, 0.2, 0.5, 0.2} },
-	groups = {axey=1,handy=1, deco_block = 1, attached_node = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1, },
+	groups = {axey=1,handy=1, attached_node = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1, },
 	stack_max = 16,
 	sounds = node_sounds,
 	drop = "", -- Item drops are handled in entity code
 
 	on_destruct = on_destruct_standing_banner,
+	_mcl_hardness = 1,
+	_mcl_blast_resistance = 5,
+})
+
+-- Hanging banner node
+minetest.register_node("mcl_banners:hanging_banner", {
+	walkable = false,
+	is_ground_content = false,
+	paramtype = "light",
+	paramtype2 = "wallmounted",
+	sunlight_propagates = true,
+	drawtype = "airlike",
+	inventory_image = "mcl_banners_item_base.png",
+	wield_image = "mcl_banners_item_base.png",
+	tiles = { "blank.png" },
+	selection_box = {type = "wallmounted", wall_side = {-0.5, -0.5, -0.5, -4/16, 0.5, 0.5} },
+	groups = {axey=1,handy=1, attached_node = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1, },
+	stack_max = 16,
+	sounds = node_sounds,
+	drop = "", -- Item drops are handled in entity code
+
+	on_destruct = on_destruct_hanging_banner,
 	_mcl_hardness = 1,
 	_mcl_blast_resistance = 5,
 })
@@ -184,11 +219,15 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 				end
 			end
 
-
 			-- Place the node!
+			local hanging = false
 			local _, success = minetest.item_place_node(ItemStack("mcl_banners:standing_banner"), placer, pointed_thing)
 			if not success then
-				return itemstack
+				_, success = minetest.item_place_node(ItemStack("mcl_banners:hanging_banner"), placer, pointed_thing)
+				if not success then
+					return itemstack
+				end
+				hanging = true
 			end
 
 			local place_pos
@@ -197,20 +236,34 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 			else
 				place_pos = above
 			end
-			place_pos = vector.add(place_pos, banner_entity_offset)
+			if hanging then
+				place_pos = vector.add(place_pos, hanging_banner_entity_offset)
+			else
+				place_pos = vector.add(place_pos, standing_banner_entity_offset)
+			end
 
 			local banner = minetest.add_entity(place_pos, "mcl_banners:standing_banner")
+			if hanging then
+				banner:set_properties({mesh="amc_banner_hanging.b3d"})
+				banner:get_luaentity()._banner_type = "hanging"
+			end
 			local imeta = itemstack:get_meta()
 			local layers_raw = imeta:get_string("layers")
 			local layers = minetest.deserialize(layers_raw)
 			banner:get_luaentity():_set_textures(colorid, layers)
 
-
-			-- Determine the rotation based on player's yaw
-			local yaw = placer:get_look_horizontal()
-			-- Select one of 16 possible rotations (0-15)
-			local rotation_level = round((yaw / (math.pi*2)) * 16)
-			local final_yaw = (rotation_level * (math.pi/8)) + math.pi
+			-- Set rotation
+			local final_yaw
+			if hanging then
+				local pdir = vector.direction(pointed_thing.under, pointed_thing.above)
+				final_yaw = minetest.dir_to_yaw(pdir)
+			else
+				-- Determine the rotation based on player's yaw
+				local yaw = placer:get_look_horizontal()
+				-- Select one of 16 possible rotations (0-15)
+				local rotation_level = round((yaw / (math.pi*2)) * 16)
+				final_yaw = (rotation_level * (math.pi/8)) + math.pi
+			end
 			banner:set_yaw(final_yaw)
 
 			if not minetest.settings:get_bool("creative_mode") then
@@ -236,9 +289,11 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 	if minetest.get_modpath("doc") then
 		-- Add item to node alias
 		doc.add_entry_alias("nodes", "mcl_banners:standing_banner", "craftitems", itemstring)
+		doc.add_entry_alias("nodes", "mcl_banners:hanging_banner", "craftitems", itemstring)
 	end
 end
 
+-- Banner entity. Used for standing AND hanging banners!
 minetest.register_entity("mcl_banners:standing_banner", {
 	physical = false,
 	collide_with_objects = false,
@@ -253,6 +308,7 @@ minetest.register_entity("mcl_banners:standing_banner", {
 		-- This is a table of tables with each table having the following fields:
 			-- color: layer color ID (see colors table above)
 			-- pattern: name of pattern (see list above)
+	_banner_type = "standing", -- standing or hanging
 
 	get_staticdata = function(self)
 		local out = { _base_color = self._base_color, _layers = self._layers }
@@ -263,11 +319,18 @@ minetest.register_entity("mcl_banners:standing_banner", {
 			local inp = minetest.deserialize(staticdata)
 			self._base_color = inp._base_color
 			self._layers = inp._layers
-			self.object:set_properties({textures = make_banner_texture(self._base_color, self._layers)})
-
-			-- Make banner slowly swing
-			self.object:set_animation({x=0, y=80}, 25)
+			self._banner_type = inp._banner_type
+			local mesh
+			if self._banner_type == "hanging" then
+				mesh = "amc_banner_hanging.b3d"
+			end
+			self.object:set_properties({
+				mesh = mesh,
+				textures = make_banner_texture(self._base_color, self._layers),
+			})
 		end
+		-- Make banner slowly swing
+		self.object:set_animation({x=0, y=80}, 25)
 		self.object:set_armor_groups({immortal=1})
 	end,
 
