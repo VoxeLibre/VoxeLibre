@@ -114,7 +114,7 @@ minetest.register_node("mcl_banners:standing_banner", {
 	inventory_image = "mcl_banners_item_base.png",
 	wield_image = "mcl_banners_item_base.png",
 	tiles = { "blank.png" },
-	selection_box = {type = "fixed", fixed= {-0.2, -0.5, -0.2, 0.2, 0.5, 0.2} },
+	selection_box = {type = "fixed", fixed= {-0.3, -0.5, -0.3, 0.3, 0.5, 0.3} },
 	groups = {axey=1,handy=1, attached_node = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1, },
 	stack_max = 16,
 	sounds = node_sounds,
