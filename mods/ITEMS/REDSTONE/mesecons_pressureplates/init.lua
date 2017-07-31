@@ -26,7 +26,7 @@ pp_on_timer = function (pos, elapsed)
 		if not mesecon:connected_to_receptor(two_below) then
 			mesecon:turnoff(two_below)
 		end
-	else
+	elseif node.name == ppspec.offstate then
 		for k, obj in pairs(objs) do
 			local objpos = obj:getpos()
 			if objpos.y > pos.y-1 and objpos.y < pos.y then
