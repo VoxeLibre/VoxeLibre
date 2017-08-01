@@ -1,7 +1,6 @@
 -- Minetest 0.4 mod: default
 -- See README.txt for licensing and other information.
 local init = os.clock()
-flower_tmp={}
 
 -- Simple flower template
 local smallflowerlongdesc = "This is a small flower. Small flowers are mainly used for dye production and can also be potted."

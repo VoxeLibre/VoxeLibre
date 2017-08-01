@@ -63,8 +63,8 @@ function mcl_doors:register_door(name, def)
 
 	minetest.register_craftitem(name, {
 		description = def.description,
-		_doc_items_longdesc = def._doc_items_longdesc,
-		_doc_items_usagehelp = def._doc_items_usagehelp,
+		_doc_items_longdesc = longdesc,
+		_doc_items_usagehelp = usagehelp,
 		inventory_image = def.inventory_image,
 		stack_max = 64,
 		groups = { mesecon_conductor_craftable = 1 },

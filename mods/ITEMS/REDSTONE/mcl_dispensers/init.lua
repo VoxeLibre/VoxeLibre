@@ -416,7 +416,7 @@ minetest.register_node("mcl_dispensers:dispenser_down", down_def)
 
 -- Up dispenser
 -- The up dispenser is almost identical to the down dispenser , it only differs in textures
-up_def = table.copy(down_def)
+local up_def = table.copy(down_def)
 up_def.description = "Upwards-Facing Dispenser"
 up_def.tiles = {
 	"mcl_dispensers_dispenser_front_vertical.png", "default_furnace_bottom.png",

@@ -15,7 +15,7 @@ local records = #recorddata
 
 for r=1, records do
 	local doc = false
-	local entryname, longdesc, useahelp
+	local entryname, longdesc, usagehelp
 	if r == 1 then
 		doc = true
 		entryname = "Music Disc"

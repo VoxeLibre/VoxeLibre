@@ -137,7 +137,7 @@ minetest.register_node("mcl_droppers:dropper_down", down_def)
 
 -- Up dropper
 -- The up dropper is almost identical to the down dropper, it only differs in textures
-up_def = table.copy(down_def)
+local up_def = table.copy(down_def)
 up_def.description = "Upwards-Facing Dropper"
 up_def.tiles = {
 	"mcl_droppers_dropper_front_vertical.png", "default_furnace_bottom.png",

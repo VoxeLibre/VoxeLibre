@@ -581,7 +581,7 @@ minetest.register_ore({
 end
 
 -- Rarely replace stone with stone monster eggs
-local scarcity
+local monster_egg_scarcity
 if mg_name == "v6" then
 	monster_egg_scarcity = 28 * 28 * 28
 else

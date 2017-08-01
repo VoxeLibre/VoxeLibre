@@ -56,7 +56,7 @@ local msgs = {
 	}
 }
 
-mobkills = {
+local mobkills = {
 	["mobs_mc:zombie"] = "%s was killed by a zombie.",
 	["mobs_mc:blaze"] = "%s was killed by a blaze.",
 	["mobs_mc:slime"] = "%s was killed by a slime.",
