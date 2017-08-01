@@ -273,3 +273,4 @@ minetest.register_craft({
 })
 
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/nether_wart.lua")
+dofile(minetest.get_modpath(minetest.get_current_modname()).."/lava.lua")
