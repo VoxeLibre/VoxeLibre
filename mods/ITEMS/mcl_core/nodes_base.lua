@@ -482,7 +482,7 @@ minetest.register_node("mcl_core:sandstone", {
 	tiles = {"mcl_core_sandstone_top.png", "mcl_core_sandstone_bottom.png", "mcl_core_sandstone_normal.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {pickaxey=2, sandstone=1, building_block=1, material_stone=1},
+	groups = {pickaxey=1, sandstone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 4,
 	_mcl_hardness = 0.8,
