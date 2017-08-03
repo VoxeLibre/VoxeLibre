@@ -128,7 +128,7 @@ minetest.register_node("mcl_flowers:fern", {
 	},
 })
 
-local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_img, selbox_radius, selbox_top_height, drop, is_flower)
+local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_img, selbox_radius, selbox_top_height, drop, shears_drop, is_flower)
 	if not inv_img then
 		inv_img = top_img
 	end
@@ -153,6 +153,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		walkable = false,
 		buildable_to = true,
 		drop = drop,
+		_mcl_shears_drop = shears_drop,
 		node_placement_prediction = "",
 		selection_box = {
 			type = "fixed",
@@ -242,13 +243,14 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 			type = "fixed",
 			fixed = { -selbox_radius, -0.5, -selbox_radius, selbox_radius, selbox_top_height, selbox_radius },
 		},
-		drop = "",
+		drop = drop,
+		_mcl_shears_drop = shears_drop,
 		after_destruct = function(pos, oldnode)
-			-- "Dig" bottom half of flower (if it exists)
+			-- Remove bottom half of flower (if it exists)
 			local top = pos
 			local bottom = { x = top.x, y = top.y - 1, z = top.z }
 			if minetest.get_node(top).name ~= "mcl_flowers:"..name.."_top" and minetest.get_node(bottom).name == "mcl_flowers:"..name then
-				minetest.dig_node(bottom)
+				minetest.remove_node(bottom)
 			end
 		end,
 		groups = {dig_immediate=3,flammable=2,flower=flowergroup,place_flowerlike=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, not_in_creative_inventory = 1, plant=1,double_plant=2},
@@ -268,8 +270,8 @@ add_large_plant("lilac", "Lilac", "A lilac is a large plant which occupies two b
 -- TODO: Make the sunflower face East. Requires a mesh for the top node.
 add_large_plant("sunflower", "Sunflower", "A sunflower is a large plant which occupies two blocks. It is mainly used in dye production.", "mcl_flowers_double_plant_sunflower_bottom.png", "mcl_flowers_double_plant_sunflower_top.png^mcl_flowers_double_plant_sunflower_front.png", "mcl_flowers_double_plant_sunflower_front.png", 3/16, 4/16)
 
-add_large_plant("double_grass", "Double Tallgrass", "Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds.", "mcl_flowers_double_plant_grass_bottom.png", "mcl_flowers_double_plant_grass_top.png", nil, 5/16, 7/16, wheat_seed_drop, false)
-add_large_plant("double_fern", "Large Fern", "Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds.", "mcl_flowers_double_plant_fern_bottom.png", "mcl_flowers_double_plant_fern_top.png", nil, 6/16, 5/16, wheat_seed_drop, false)
+add_large_plant("double_grass", "Double Tallgrass", "Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds.", "mcl_flowers_double_plant_grass_bottom.png", "mcl_flowers_double_plant_grass_top.png", nil, 5/16, 7/16, wheat_seed_drop, {"mcl_flowers:tallgrass 2"}, false)
+add_large_plant("double_fern", "Large Fern", "Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds.", "mcl_flowers_double_plant_fern_bottom.png", "mcl_flowers_double_plant_fern_top.png", nil, 6/16, 5/16, wheat_seed_drop, {"mcl_flowers:fern 2"}, false)
 
 minetest.register_abm({
 	label = "Pop out flowers",
