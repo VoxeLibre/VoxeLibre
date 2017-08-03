@@ -1,4 +1,11 @@
-local function get_chest_neighborpos(pos, param2, side)
+mcl_chests = {}
+
+-- Returns position of the neighbor of a large chest node.
+-- This function assumes that the large chest is actually intact
+-- * pos: Position of the node to investigate
+-- * param2: param2 of that node
+-- * side: Which "half" the investigated node is. "right" or "left"
+function mcl_chests.get_large_chest_neighbor_pos(pos, param2, side)
 	if side == "right" then
 		if param2 == 0 then
 			return {x=pos.x-1, y=pos.y, z=pos.z}
@@ -70,13 +77,13 @@ minetest.register_node("mcl_chests:"..basename, {
 		-- BEGIN OF LISTRING WORKAROUND
 		inv:set_size("input", 1)
 		-- END OF LISTRING WORKAROUND
-		if minetest.get_node(get_chest_neighborpos(pos, param2, "right")).name == "mcl_chests:"..basename then
+		if minetest.get_node(mcl_chests.get_large_chest_neighbor_pos(pos, param2, "right")).name == "mcl_chests:"..basename then
 			minetest.swap_node(pos, {name="mcl_chests:"..basename.."_right",param2=param2})
-			local p = get_chest_neighborpos(pos, param2, "right")
+			local p = mcl_chests.get_large_chest_neighbor_pos(pos, param2, "right")
 			minetest.swap_node(p, { name = "mcl_chests:"..basename.."_left", param2 = param2 })
-		elseif minetest.get_node(get_chest_neighborpos(pos, param2, "left")).name == "mcl_chests:"..basename then
+		elseif minetest.get_node(mcl_chests.get_large_chest_neighbor_pos(pos, param2, "left")).name == "mcl_chests:"..basename then
 			minetest.swap_node(pos, {name="mcl_chests:"..basename.."_left",param2=param2})
-			local p = get_chest_neighborpos(pos, param2, "left")
+			local p = mcl_chests.get_large_chest_neighbor_pos(pos, param2, "left")
 			minetest.swap_node(p, { name = "mcl_chests:"..basename.."_right", param2 = param2 })
 		end
 	end,
@@ -149,7 +156,7 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 			return
 		end
 		local param2 = n.param2
-		local p = get_chest_neighborpos(pos, param2, "left")
+		local p = mcl_chests.get_large_chest_neighbor_pos(pos, param2, "left")
 		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_right" then
 			return
 		end
@@ -176,7 +183,7 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 			if inv:room_for_item("main", stack) then
 				return -1
 			else
-				local other_pos = get_chest_neighborpos(pos, minetest.get_node(pos).param2, "left")
+				local other_pos = mcl_chests.get_large_chest_neighbor_pos(pos, minetest.get_node(pos).param2, "left")
 				local other_inv = minetest.get_inventory({type="node", pos=other_pos})
 				if other_inv:room_for_item("main", stack) then
 					return -1
@@ -201,7 +208,7 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 			local inv = minetest.get_inventory({type="node", pos=pos})
 			local leftover = inv:add_item("main", stack)
 			if not leftover:is_empty() then
-				local other_pos = get_chest_neighborpos(pos, minetest.get_node(pos).param2, "left")
+				local other_pos = mcl_chests.get_large_chest_neighbor_pos(pos, minetest.get_node(pos).param2, "left")
 				local other_inv = minetest.get_inventory({type="node", pos=other_pos})
 				other_inv:add_item("main", leftover)
 			end
@@ -216,7 +223,7 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 	_mcl_hardness = 2.5,
 
 	on_rightclick = function(pos, node, clicker)
-		local pos_other = get_chest_neighborpos(pos, node.param2, "left")
+		local pos_other = mcl_chests.get_large_chest_neighbor_pos(pos, node.param2, "left")
 
 		minetest.show_formspec(clicker:get_player_name(),
 		"mcl_chests:"..basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
@@ -257,7 +264,7 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 			return
 		end
 		local param2 = n.param2
-		local p = get_chest_neighborpos(pos, param2, "right")
+		local p = mcl_chests.get_large_chest_neighbor_pos(pos, param2, "right")
 		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_left" then
 			return
 		end
@@ -280,7 +287,7 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 	-- BEGIN OF LISTRING WORKAROUND
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 		if listname == "input" then
-			local other_pos = get_chest_neighborpos(pos, minetest.get_node(pos).param2, "right")
+			local other_pos = mcl_chests.get_large_chest_neighbor_pos(pos, minetest.get_node(pos).param2, "right")
 			local other_inv = minetest.get_inventory({type="node", pos=other_pos})
 			if other_inv:room_for_item("main", stack) then
 				return -1
@@ -306,7 +313,7 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 				" moves stuff to chest at "..minetest.pos_to_string(pos))
 		-- BEGIN OF LISTRING WORKAROUND
 		if listname == "input" then
-			local other_pos = get_chest_neighborpos(pos, minetest.get_node(pos).param2, "right")
+			local other_pos = mcl_chests.get_large_chest_neighbor_pos(pos, minetest.get_node(pos).param2, "right")
 			local other_inv = minetest.get_inventory({type="node", pos=other_pos})
 			local leftover = other_inv:add_item("main", stack)
 			if not leftover:is_empty() then
@@ -324,7 +331,7 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 	_mcl_hardness = 2.5,
 
 	on_rightclick = function(pos, node, clicker)
-		local pos_other = get_chest_neighborpos(pos, node.param2, "right")
+		local pos_other = mcl_chests.get_large_chest_neighbor_pos(pos, node.param2, "right")
 
 		minetest.show_formspec(clicker:get_player_name(),
 		"mcl_chests:"..basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
@@ -396,12 +403,12 @@ register_chest("trapped_chest",
 		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_on_left", param2 = node.param2})
 		mesecon:receptor_on(pos, trapped_chest_mesecons_rules)
 
-		local pos_other = get_chest_neighborpos(pos, node.param2, "left")
+		local pos_other = mcl_chests.get_large_chest_neighbor_pos(pos, node.param2, "left")
 		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_on_right", param2 = node.param2})
 		mesecon:receptor_on(pos_other, trapped_chest_mesecons_rules)
 	end,
 	function(pos, node, clicker)
-		local pos_other = get_chest_neighborpos(pos, node.param2, "right")
+		local pos_other = mcl_chests.get_large_chest_neighbor_pos(pos, node.param2, "right")
 
 		-- Save number of players in left part of the chest only
 		local meta = minetest.get_meta(pos_other)
@@ -434,7 +441,7 @@ register_chest("trapped_chest_on",
 		meta:set_int("players", players)
 	end,
 	function(pos, node, clicker)
-		local pos_other = get_chest_neighborpos(pos, node.param2, "right")
+		local pos_other = mcl_chests.get_large_chest_neighbor_pos(pos, node.param2, "right")
 		local meta = minetest.get_meta(pos_other)
 		local players = meta:get_int("players")
 		players = players + 1
@@ -457,7 +464,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				players = meta:get_int("players")
 				players = players - 1
 			elseif node.name == "mcl_chests:trapped_chest_on_right" then
-				pos_other = get_chest_neighborpos(pos, node.param2, "right")
+				pos_other = mcl_chests.get_large_chest_neighbor_pos(pos, node.param2, "right")
 				meta = minetest.get_meta(pos_other)
 				players = meta:get_int("players")
 				players = players - 1
@@ -477,7 +484,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 					minetest.swap_node(pos, {name="mcl_chests:trapped_chest_left", param2 = node.param2})
 					mesecon:receptor_off(pos, trapped_chest_mesecons_rules)
 
-					pos_other = get_chest_neighborpos(pos, node.param2, "left")
+					pos_other = mcl_chests.get_large_chest_neighbor_pos(pos, node.param2, "left")
 					minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_right", param2 = node.param2})
 					mesecon:receptor_off(pos_other, trapped_chest_mesecons_rules)
 				else
