@@ -181,4 +181,26 @@ doc.sub.items.register_factoid("nodes", "mining", function(itemstring, def)
 	return datastring
 end)
 
+-- Special drops when mined by shears
+doc.sub.items.register_factoid("nodes", "drops", function(itemstring, def)
+	if def._mcl_shears_drop == true then
+		return "This block drops itself when mined by shears."
+	elseif type(def._mcl_shears_drop) == "table" then
+		local drops = {}
+		for i=1, #def._mcl_shears_drop do
+			local desc = minetest.registered_items[def._mcl_shears_drop[i]].description
+			if desc then
+				table.insert(drops)
+			else
+				table.insert(def._mcl_shears_drop[i])
+			end
+		end
+		local ret = string.format("This blocks drops the following when mined by shears: %s", table.concat(drops, ", "))
+		return ret
+	end
+	return ""
+end)
+
+
+
 -- TODO: Blast resistance (omitted for now because explosions ignore hardness)
