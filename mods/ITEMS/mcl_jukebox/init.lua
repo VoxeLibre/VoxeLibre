@@ -1,7 +1,16 @@
+-- Player name-indexed table containing the currently heard track
 local active_tracks = {}
+
+-- Player name-indexed table containing the current used HUD ID for the “Now playing” message.
 local active_huds = {}
 
+-- Player name-indexed table for the “Now playing” message.
+-- Used to make sure that minetest.after only applies to the latest HUD change event
+local hud_sequence_numbers = {}
+
+-- List of music
 local recorddata = {
+	-- { title, author, identifier }
 	{ "The Evil Sister (Jordach's Mix)", "SoundHelix", "13" } ,
 	{ "The Energetic Rat (Jordach's Mix)", "SoundHelix", "wait" },
 	{ "Eastern Feeling", "Jordach", "blocks"},
@@ -37,12 +46,20 @@ for r=1, records do
 end
 
 local function now_playing(player, track_id)
-	local hud = active_huds[player:get_player_name()]
+	local playername = player:get_player_name()
+	local hud = active_huds[playername]
 	local text = "Now playing: " .. recorddata[track_id][2] .. "—" .. recorddata[track_id][1]
+
+	if not hud_sequence_numbers[playername] then
+		hud_sequence_numbers[playername] = 1
+	else
+		hud_sequence_numbers[playername] = hud_sequence_numbers[playername] + 1
+	end
 
 	local id
 	if hud ~= nil then
-		player:hud_change(active_huds[player:get_player_name()], "text", text)
+		id = hud
+		player:hud_change(id, "text", text)
 	else
 		id = player:hud_add({
 			hud_elem_type = "text",
@@ -52,25 +69,28 @@ local function now_playing(player, track_id)
 			number = 0x55FFFF,
 			text = text,
 		})
-		active_huds[player:get_player_name()] = id
+		active_huds[playername] = id
 	end
 	minetest.after(5, function(tab)
 		local player = tab[1]
+		local playername = player:get_player_name()
 		local id = tab[2]
-		if not player or not player:is_player() or not active_huds[player:get_player_name()] then
+		local seq = tab[3]
+		if not player or not player:is_player() or not active_huds[playername] or not hud_sequence_numbers[playername] or seq ~= hud_sequence_numbers[playername] then
 			return
 		end
-		if id == active_huds[player:get_player_name()] then
-			player:hud_remove(active_huds[player:get_player_name()])
-			active_huds[player:get_player_name()] = nil
+		if id == active_huds[playername] then
+			player:hud_remove(active_huds[playername])
+			active_huds[playername] = nil
 		end
-	end, {player, id})
+	end, {player, id, hud_sequence_numbers[playername]})
 	
 end
 
 minetest.register_on_leaveplayer(function(player)
 	active_tracks[player:get_player_name()] = nil
 	active_huds[player:get_player_name()] = nil
+	hud_sequence_numbers[player:get_player_name()] = nil
 end)
 
 -- Jukebox crafting
