@@ -163,10 +163,11 @@ end
 -- Moves a single item from one container node into another. Performs a variety of high-level
 -- checks to prevent invalid transfers such as shulker boxes into shulker boxes
 --- source_pos: Position ({x,y,z}) of the node to take the item from
---- source_list: List name of the source inventory from which to take the item
+--- source_list: (optional) List name of the source inventory from which to take the item. Default is normally "main"; "dst" for furnace
+
 --- source_stack_id: The inventory position ID of the source inventory to take the item from (-1 for first occupied slot)
 --- destination_pos: Position ({x,y,z}) of the node to put the item into
---- destination_list: (optional) list name of the destination inventory. If not set, the main or source list will be used
+--- destination_list: (optional) list name of the destination inventory. Default is normalls "main"; "dst" for furnace
 -- Returns true on success and false on failure
 function mcl_util.move_item_container(source_pos, source_list, source_stack_id, destination_pos, destination_list)
 	local dpos = table.copy(destination_pos)
@@ -174,6 +175,7 @@ function mcl_util.move_item_container(source_pos, source_list, source_stack_id, 
 	local dnode = minetest.get_node(destination_pos)
 
 	local dctype = minetest.get_item_group(dnode.name, "container")
+	local sctype = minetest.get_item_group(dnode.name, "container")
 
 	-- Normalize double container by forcing to always use the left segment first
 	if dctype == 6 then
@@ -183,7 +185,7 @@ function mcl_util.move_item_container(source_pos, source_list, source_stack_id, 
 		end
 		dnode = minetest.get_node(dpos)
 		dctype = minetest.get_item_group(dnode.name, "container")
-		-- The left segment seems incorrect. We better bail out!
+		-- The left segment seems incorrect? We better bail out!
 		if dctype ~= 5 then
 			return false
 		end
@@ -195,6 +197,17 @@ function mcl_util.move_item_container(source_pos, source_list, source_stack_id, 
 	local sinv = smeta:get_inventory()
 	local dinv = dmeta:get_inventory()
 
+	-- Default source lists
+	if not source_list then
+		-- Main inventory for most container types
+		if sctype == 2 or sctype == 3 or sctype == 5 or sctype == 6 then
+			source_list = "main"
+		-- Furnace: output
+		elseif sctype == 4 then
+			destination_list = "dst"
+		end
+	end
+
 	if source_stack_id == -1 then
 		source_stack_id = mcl_util.get_first_occupied_inventory_slot(sinv, source_list)
 		if source_stack_id == nil then
@@ -202,7 +215,7 @@ function mcl_util.move_item_container(source_pos, source_list, source_stack_id, 
 		end
 	end
 
-	-- Abort transfer if shulker box
+	-- Abort transfer if shulker box wants to go into shulker box
 	if dctype == 3 then
 		local stack = sinv:get_stack(source_list, source_stack_id)
 		if stack and minetest.get_item_group(stack:get_name(), "shulker_box") == 1 then
