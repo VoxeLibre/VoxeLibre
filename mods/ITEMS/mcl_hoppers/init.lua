@@ -285,7 +285,7 @@ minetest.register_abm({
 		local upnode = minetest.get_node(uppos)
 		if not minetest.registered_nodes[upnode.name] then return end
 		local g = minetest.registered_nodes[upnode.name].groups.container
-		if g == 2 or g == 3 then
+		if g == 2 or g == 3 or g == 5 or g == 6 then
 			-- Typical container inventory
 			mcl_util.move_item_container(uppos, "main", -1, pos)
 		elseif g == 4 then
@@ -348,17 +348,17 @@ minetest.register_abm({
 		local abovenode = minetest.get_node(above)
 		if not minetest.registered_nodes[abovenode.name] then return end
 		local g = minetest.registered_nodes[abovenode.name].groups.container
-		if g == 2 or g == 3 then
-			-- Typical container inventory
-			mcl_util.move_item_container(above, "main", -1, pos)
-		elseif g == 4 then
+		if g == 4 then
 			-- Furnace output
 			mcl_util.move_item_container(above, "dst", -1, pos)
+		else
+			-- Typical container inventory
+			mcl_util.move_item_container(above, "main", -1, pos)
 		end
 
 		-- Move an item from the hopper into the container to which the hopper points to
 		local g = minetest.registered_nodes[frontnode.name].groups.container
-		if g == 2 then
+		if g == 2 or g == 5 or g == 6 then
 			mcl_util.move_item_container(pos, "main", -1, front)
 		elseif g == 3 then
 			-- Put non-shulker boxes into shulker box

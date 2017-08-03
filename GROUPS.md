@@ -137,6 +137,9 @@ These groups are used mostly for informational purposes
    * `container=4`: Furnace-like, has lists `"src"`, `"fuel"` and `"dst"`.
                     It is expected that this also reacts on `on_timer`;
                     the node timer must be started from other mods when they add into `"src"` or `"fuel"`
+   * `container=5`: Left part of a 2-part horizontal connected container. Both parts have a `"main"` inventory
+                    list. Both inventories are considered to belong together. This is used for large chests.
+   * `container=6`: Same as above, but for the right part.
    * `container=1`: Other/unspecified container type
 * `spawn_egg=1`: Spawn egg
 
