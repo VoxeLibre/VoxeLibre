@@ -140,8 +140,13 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		flowergroup = 1
 		usagehelp = flowerusagehelp
 	end
+	-- Drop itself by default
+	local drop_bottom, drop_top
 	if not drop then
-		drop = "mcl_flowers:"..name
+		drop_top = "mcl_flowers:"..name
+	else
+		drop_top = drop
+		drop_bottom = drop
 	end
 	minetest.register_node("mcl_flowers:"..name, {
 		description = desc,
@@ -155,7 +160,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		paramtype = "light",
 		walkable = false,
 		buildable_to = true,
-		drop = drop,
+		drop = drop_bottom,
 		_mcl_shears_drop = shears_drop,
 		node_placement_prediction = "",
 		selection_box = {
@@ -246,7 +251,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 			type = "fixed",
 			fixed = { -selbox_radius, -0.5, -selbox_radius, selbox_radius, selbox_top_height, selbox_radius },
 		},
-		drop = drop,
+		drop = drop_top,
 		_mcl_shears_drop = shears_drop,
 		after_destruct = function(pos, oldnode)
 			-- Remove bottom half of flower (if it exists)
