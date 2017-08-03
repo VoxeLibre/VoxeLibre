@@ -3,7 +3,7 @@ local tmp = {}
 minetest.register_entity("itemframes:item",{
 	hp_max = 1,
 	visual="wielditem",
-	visual_size={x=.33,y=.33},
+	visual_size={x=0.3,y=0.3},
 	collisionbox = {0,0,0,0,0,0},
 	physical=false,
 	textures={"air"},
