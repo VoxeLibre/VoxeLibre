@@ -129,6 +129,54 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		if math.random(1,100) <= 45 then
 			return mcl_core.grow_sapling(pos, n)
 		end
+	elseif minetest.get_item_group(n.name, "mushroom") == 1 then
+		-- Try to grow huge mushroom
+
+		-- Must be on a dirt-type block
+		local below = minetest.get_node({x=pos.x,y=pos.y-1,z=pos.z})
+		if below.name ~= "mcl_core:mycelium" and below.name ~= "mcl_core:dirt" and below.name ~= "mcl_core:dirt_with_grass" and below.name ~= "mcl_core:coarse_dirt" and below.name ~= "mcl_core:podzol" then
+			return false
+		end
+
+		-- Select schematic
+		local schematic, offset, height
+		if n.name == "mcl_mushrooms:mushroom_brown" then
+			schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_brown.mts"
+			offset = { x = -3, y = 0, z = -3 }
+			height = 8
+		elseif n.name == "mcl_mushrooms:mushroom_red" then
+			schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_red.mts"
+			offset = { x = -2, y = 0, z = -2 }
+			height = 8
+		else
+			return false
+		end
+		-- 40% chance
+		if math.random(1,100) <= 40 then
+			-- Check space requirements
+			for i=1,3 do
+				local cpos = vector.add(pos, {x=0, y=i, z=0})
+				if minetest.get_node(cpos).name ~= "air" then
+					return false
+				end
+			end
+			local yoff = 3
+			local minp, maxp = {x=pos.x-3, y=pos.y+yoff, z=pos.z-3}, {x=pos.x+3, y=pos.y+yoff+(height-3), z=pos.z+3}
+			local diff = vector.subtract(maxp, minp)
+			diff = vector.add(diff, {x=1,y=1,z=1})
+			local totalnodes = diff.x * diff.y * diff.z
+			local goodnodes = minetest.find_nodes_in_area(minp, maxp, {"air", "group:leaves"})
+			if #goodnodes < totalnodes then
+				return false
+			end
+
+			-- Place the huge mushroom
+			minetest.remove_node(pos)
+			local place_pos = vector.add(pos, offset)
+			local ok = minetest.place_schematic(place_pos, schematic, 0, nil, false)
+			return ok ~= nil
+		end
+		return false
 	-- Wheat, Potato, Carrot, Pumpkin Stem, Melon Stem: Advance by 2-5 stages
 	elseif string.find(n.name, "mcl_farming:wheat_") ~= nil then
 		local stages = math.random(2, 5)
