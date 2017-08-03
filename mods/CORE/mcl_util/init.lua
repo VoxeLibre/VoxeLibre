@@ -97,7 +97,7 @@ function mcl_util.rotate_axis(itemstack, placer, pointed_thing)
 	return itemstack
 end
 
--- Moves a single item from one inventory to another
+-- Moves a single item from one inventory to another.
 --- source_inventory: Inventory to take the item from
 --- source_list: List name of the source inventory from which to take the item
 --- source_stack_id: The inventory position ID of the source inventory to take the item from (-1 for first occupied slot)
@@ -130,7 +130,8 @@ function mcl_util.move_item(source_inventory, source_list, source_stack_id, dest
 	return false
 end
 
--- Moves a single item from one container node into another.
+-- Moves a single item from one container node into another. Performs a variety of high-level
+-- checks to prevent invalid transfers such as shulker boxes into shulker boxes
 --- source_pos: Position ({x,y,z}) of the node to take the item from
 --- source_list: List name of the source inventory from which to take the item
 --- source_stack_id: The inventory position ID of the source inventory to take the item from (-1 for first occupied slot)
@@ -138,14 +139,31 @@ end
 --- destination_list: (optional) list name of the destination inventory. If not set, the main or source list will be used
 -- Returns true on success and false on failure
 function mcl_util.move_item_container(source_pos, source_list, source_stack_id, destination_pos, destination_list)
+	local dpos = table.copy(destination_pos)
+	local snode = minetest.get_node(source_pos)
+	local dnode = minetest.get_node(destination_pos)
+
+	local dctype = minetest.get_item_group(dnode.name, "container")
+
+	-- Normalize double container by forcing to always use the left segment first
+	if dctype == 6 then
+		dpos = mcl_chests.get_large_chest_neighbor_pos(destination_pos, dnode.param2, "right")
+		if not dpos then
+			return false
+		end
+		dnode = minetest.get_node(dpos)
+		dctype = minetest.get_item_group(dnode.name, "container")
+		-- The left segment seems incorrect. We better bail out!
+		if dctype ~= 5 then
+			return false
+		end
+	end
+
 	local smeta = minetest.get_meta(source_pos)
-	local dmeta = minetest.get_meta(destination_pos)
+	local dmeta = minetest.get_meta(dpos)
 
 	local sinv = smeta:get_inventory()
 	local dinv = dmeta:get_inventory()
-
-	local snodedef = minetest.registered_nodes[minetest.get_node(source_pos).name]
-	local dnodedef = minetest.registered_nodes[minetest.get_node(destination_pos).name]
 
 	if source_stack_id == -1 then
 		source_stack_id = mcl_util.get_first_occupied_inventory_slot(sinv, source_list)
@@ -154,24 +172,46 @@ function mcl_util.move_item_container(source_pos, source_list, source_stack_id, 
 		end
 	end
 
+	-- Abort transfer if shulker box
+	if dctype == 3 then
+		local stack = sinv:get_stack(source_list, source_stack_id)
+		if stack and minetest.get_item_group(stack:get_name(), "shulker_box") == 1 then
+			return false
+		end
+	end
+
 	-- If it's a container, put it into the container
-	if dnodedef.groups.container then
+	if dctype ~= 0 then
 		-- Automatically select a destination list if omitted
 		if not destination_list then
-			if dnodedef.groups.container == 2 or snodedef.groups.continer == 3 then
+			-- Main inventory for most container types
+			if dctype == 2 or dctype == 3 or dctype == 5 or dctype == 6 then
 				destination_list = "main"
-			elseif dnodedef.groups.container == 3 then
-				local stack = sinv:get_stack(source_list, source_stack_id)
-				local def = minetest.registered_nodes[stack:get_name()]
-				if stack and (not stack:is_empty()) and (not (def and def.groups and def.groups.shulker_box)) then
-					destination_list = "main"
-				end
-			elseif dnodedef.groups.container == 4 then
+			-- Furnace source slot
+			elseif dctype == 4 then
 				destination_list = "src"
 			end
 		end
 		if destination_list then
-			return mcl_util.move_item(sinv, source_list, source_stack_id, dinv, destination_list)
+			-- Move item
+			local ok = mcl_util.move_item(sinv, source_list, source_stack_id, dinv, destination_list)
+
+			-- Try transfer to neighbor node if transfer failed and double container
+			if not ok and dctype == 5 then
+				dpos = mcl_chests.get_large_chest_neighbor_pos(dpos, dnode.param2, "left")
+				dmeta = minetest.get_meta(dpos)
+				dinv = dmeta:get_inventory()
+
+				ok = mcl_util.move_item(sinv, source_list, source_stack_id, dinv, destination_list)
+			end
+
+			-- Update furnace
+			if ok and dctype == 4 then
+				-- Start furnace's timer function, it will sort out whether furnace can burn or not.
+				minetest.get_node_timer(dpos):start(1.0)
+			end
+
+			return ok
 		end
 	end
 	return false
