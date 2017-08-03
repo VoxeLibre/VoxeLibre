@@ -95,14 +95,9 @@ minetest.register_node("mcl_flowers:tallgrass", {
 	groups = {dig_immediate=3, flammable=3,attached_node=1,plant=1,place_flowerlike=1,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	drop = wheat_seed_drop,
+	_mcl_shears_drop = true,
 	node_placement_prediction = "",
 	on_place = on_place_flower,
-	after_dig_node = function(pos, oldnode, oldmetadata, user)
-		local item = user:get_wielded_item()
-		if item:get_name() == "mcl_tools:shears" then
-			minetest.add_item(pos, oldnode.name)
-		end
-	end,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
 })
@@ -125,13 +120,8 @@ minetest.register_node("mcl_flowers:fern", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	node_placement_prediction = "",
 	on_place = on_place_flower,
-	after_dig_node = function(pos, oldnode, oldmetadata, user)
-		local item = user:get_wielded_item()
-		if item:get_name() == "mcl_tools:shears" then
-			minetest.add_item(pos, oldnode.name)
-		end
-	end,
 	drop = wheat_seed_drop,
+	_mcl_shears_drop = true,
 	selection_box = {
 		type = "fixed",
 		fixed = { -4/16, -0.5, -4/16, 4/16, 7/16, 4/16 },

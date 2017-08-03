@@ -72,6 +72,7 @@ local register_leaves = function(subname, description, longdesc, tiles, drop1, d
 		stack_max = 64,
 		groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1, dig_by_piston=1},
 		drop = drop,
+		_mcl_shears_drop = true,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 1,
 		_mcl_hardness = 0.2,

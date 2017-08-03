@@ -95,12 +95,7 @@ minetest.register_node("mcl_core:vine", {
 	groups = {handy=1,axey=1,shearsy=1,swordy=1, flammable=2,deco_block=1,destroy_by_lava_flow=1,dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	drop = "",
-	after_dig_node = function(pos, oldnode, oldmetadata, user)
-		local item = user:get_wielded_item()
-		if item:get_name() == "mcl_tools:shears" then
-			minetest.add_item(pos, oldnode.name)
-		end
-	end,
+	_mcl_shears_drop = true,
 	node_placement_prediction = "",
 	-- Restrict placement of vines
 	on_place = function(itemstack, placer, pointed_thing)

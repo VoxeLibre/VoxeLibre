@@ -217,6 +217,21 @@ function minetest.handle_node_drops(pos, drops, digger)
 		return
 	end
 
+	--[[ Special node drops when dug by shears by reading _mcl_shears_drop
+	from the node definition.
+	Definition of _mcl_shears_drop:
+	* true: Drop itself when dug by shears
+	* table: Drop every itemstring in this table when dub by shears
+	]]
+	local nodedef = minetest.registered_nodes[dug_node.name]
+	if toolcaps.groupcaps and toolcaps.groupcaps.shearsy_dig and nodedef._mcl_shears_drop then
+		if nodedef._mcl_shears_drop == true then
+			drops = { dug_node.name }
+		else
+			drops = nodedef._mcl_shears_drop
+		end
+	end
+
 	for _,item in ipairs(drops) do
 		local count, name
 		if type(item) == "string" then

@@ -98,6 +98,7 @@ minetest.register_node("mcl_core:deadbush", {
 			},
 		}
 	},
+	_mcl_shears_drop = true,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
