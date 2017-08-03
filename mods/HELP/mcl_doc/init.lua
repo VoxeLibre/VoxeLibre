@@ -187,13 +187,21 @@ doc.sub.items.register_factoid("nodes", "drops", function(itemstring, def)
 		return "This block drops itself when mined by shears."
 	elseif type(def._mcl_shears_drop) == "table" then
 		local drops = {}
-		for i=1, #def._mcl_shears_drop do
-			local desc = minetest.registered_items[def._mcl_shears_drop[i]].description
-			if desc then
-				table.insert(drops)
+		for d=1, #def._mcl_shears_drop do
+			local item = ItemStack(def._mcl_shears_drop[d])
+			local itemname = item:get_name()
+			local itemcount = item:get_count()
+			local idef = minetest.registered_items[itemname]
+			local text = ""
+			if idef.description and idef.description ~= "" then
+				text = idef.description
 			else
-				table.insert(def._mcl_shears_drop[i])
+				text = itemname
 			end
+			if itemcount > 1 then
+				text = string.format("%d×%s", itemcount, text)
+			end
+			table.insert(drops, text)
 		end
 		local ret = string.format("This blocks drops the following when mined by shears: %s", table.concat(drops, ", "))
 		return ret
