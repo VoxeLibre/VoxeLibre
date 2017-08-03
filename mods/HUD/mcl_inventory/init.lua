@@ -3,6 +3,15 @@ mcl_inventory = {}
 local show_armor = false
 if minetest.get_modpath("3d_armor") ~= nil then show_armor = true end
 
+
+-- Sadly, using worldedit_gui breaks the inventory, making it incompatible.
+-- Print error message if this mod was found.
+-- FIXME: Find a way to make worldedit_gui compatble.
+if minetest.get_modpath("worldedit_gui") then
+	minetest.log("error", "The mod “worldedit_gui” is enabled. This mod is known to break the inventory in MineClone 2. Please disable worldedit_gui and restart the game.")
+end
+
+
 -- Returns a single itemstack in the given inventory to the main inventory, or drop it when there's no space left
 local function return_item(itemstack, dropper, pos, inv)
 	if dropper:is_player() then
@@ -166,3 +175,4 @@ end)
 if minetest.setting_getbool("creative_mode") then
 	dofile(minetest.get_modpath("mcl_inventory").."/creative.lua")
 end
+
