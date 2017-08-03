@@ -97,6 +97,36 @@ function mcl_util.rotate_axis(itemstack, placer, pointed_thing)
 	return itemstack
 end
 
+-- Returns position of the neighbor of a double chest node
+-- or nil if node is invalid.
+-- This function assumes that the large chest is actually intact
+-- * pos: Position of the node to investigate
+-- * param2: param2 of that node
+-- * side: Which "half" the investigated node is. "left" or "right"
+function mcl_util.get_double_container_neighbor_pos(pos, param2, side)
+	if side == "right" then
+		if param2 == 0 then
+			return {x=pos.x-1, y=pos.y, z=pos.z}
+		elseif param2 == 1 then
+			return {x=pos.x, y=pos.y, z=pos.z+1}
+		elseif param2 == 2 then
+			return {x=pos.x+1, y=pos.y, z=pos.z}
+		elseif param2 == 3 then
+			return {x=pos.x, y=pos.y, z=pos.z-1}
+		end
+	else
+		if param2 == 0 then
+			return {x=pos.x+1, y=pos.y, z=pos.z}
+		elseif param2 == 1 then
+			return {x=pos.x, y=pos.y, z=pos.z-1}
+		elseif param2 == 2 then
+			return {x=pos.x-1, y=pos.y, z=pos.z}
+		elseif param2 == 3 then
+			return {x=pos.x, y=pos.y, z=pos.z+1}
+		end
+	end
+end
+
 -- Moves a single item from one inventory to another.
 --- source_inventory: Inventory to take the item from
 --- source_list: List name of the source inventory from which to take the item
@@ -147,7 +177,7 @@ function mcl_util.move_item_container(source_pos, source_list, source_stack_id, 
 
 	-- Normalize double container by forcing to always use the left segment first
 	if dctype == 6 then
-		dpos = mcl_chests.get_large_chest_neighbor_pos(destination_pos, dnode.param2, "right")
+		dpos = mcl_util.get_double_container_neighbor_pos(destination_pos, dnode.param2, "right")
 		if not dpos then
 			return false
 		end
@@ -198,7 +228,7 @@ function mcl_util.move_item_container(source_pos, source_list, source_stack_id, 
 
 			-- Try transfer to neighbor node if transfer failed and double container
 			if not ok and dctype == 5 then
-				dpos = mcl_chests.get_large_chest_neighbor_pos(dpos, dnode.param2, "left")
+				dpos = mcl_util.get_double_container_neighbor_pos(dpos, dnode.param2, "left")
 				dmeta = minetest.get_meta(dpos)
 				dinv = dmeta:get_inventory()
 
