@@ -140,6 +140,9 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		flowergroup = 1
 		usagehelp = flowerusagehelp
 	end
+	if not drop then
+		drop = "mcl_flowers:"..name
+	end
 	minetest.register_node("mcl_flowers:"..name, {
 		description = desc,
 		_doc_items_longdesc = longdesc,
