@@ -317,7 +317,7 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 			"item_image_button[3.693,0;1,1;mcl_minecarts:golden_rail;rail;]"..	--transportation
 			tab(name, "rail") ..
 			"tooltip[rail;Transportation]"..
-			"item_image_button[4.93,0;1,1;bucket:bucket_lava;misc;]"..	--miscellaneous
+			"item_image_button[4.93,0;1,1;mcl_buckets:bucket_lava;misc;]"..	--miscellaneous
 			tab(name, "misc") ..
 			"tooltip[misc;Miscellaneous]"..
 			"item_image_button[9.19,0;1,1;mcl_compass:compass;nix;]"..	--search

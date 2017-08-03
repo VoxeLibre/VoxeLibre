@@ -3,16 +3,16 @@
 
 local LIQUID_MAX = 8  --The number of water levels when liquid_finite is enabled
 
-minetest.register_alias("bucket", "bucket:bucket_empty")
-minetest.register_alias("bucket_water", "bucket:bucket_water")
-minetest.register_alias("bucket_lava", "bucket:bucket_lava")
+minetest.register_alias("bucket:bucket_empty", "mcl_buckets:bucket_empty")
+minetest.register_alias("bucket:bucket_water", "mcl_buckets:bucket_water")
+minetest.register_alias("bucket:bucket_lava", "mcl_buckets:bucket_lava")
 
 local mod_doc = minetest.get_modpath("doc")
 local mod_mcl_core = minetest.get_modpath("mcl_core")
 
 if mod_mcl_core then
 	minetest.register_craft({
-		output = 'bucket:bucket_empty 1',
+		output = 'mcl_buckets:bucket_empty 1',
 		recipe = {
 			{'mcl_core:iron_ingot', '', 'mcl_core:iron_ingot'},
 			{'', 'mcl_core:iron_ingot', ''},
@@ -20,8 +20,8 @@ if mod_mcl_core then
 	})
 end
 
-bucket = {}
-bucket.liquids = {}
+mcl_buckets = {}
+mcl_buckets.liquids = {}
 
 -- Sound helper functions for placing and taking liquids
 local sound_place = function(itemname, pos)
@@ -44,13 +44,13 @@ end
 --   itemname = name of the new bucket item (or nil if liquid is not takeable)
 --   inventory_image = texture of the new bucket item (ignored if itemname == nil)
 -- This function can be called from any mod (that depends on bucket).
-function bucket.register_liquid(source, flowing, itemname, inventory_image, name, longdesc, usagehelp)
-	bucket.liquids[source] = {
+function mcl_buckets.register_liquid(source, flowing, itemname, inventory_image, name, longdesc, usagehelp)
+	mcl_buckets.liquids[source] = {
 		source = source,
 		flowing = flowing,
 		itemname = itemname,
 	}
-	bucket.liquids[flowing] = bucket.liquids[source]
+	mcl_buckets.liquids[flowing] = mcl_buckets.liquids[source]
 
 	if itemname ~= nil then
 		minetest.register_craftitem(itemname, {
@@ -98,7 +98,7 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 				if not fullness then fullness = LIQUID_MAX end
 				local item = itemstack:get_name()
 
-				if item == "bucket:bucket_water" and
+				if item == "mcl_buckets:bucket_water" and
 						(nn == "mcl_cauldrons:cauldron" or
 						nn == "mcl_cauldrons:cauldron_1" or
 						nn == "mcl_cauldrons:cauldron_2") then
@@ -106,7 +106,7 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 					minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_3"})
 
 					sound_place("mcl_core:water_source", pos)
-				elseif item == "bucket:bucket_water" and nn == "mcl_cauldrons:cauldron_3" then
+				elseif item == "mcl_buckets:bucket_water" and nn == "mcl_cauldrons:cauldron_3" then
 					sound_place("mcl_core:water_source", pos)
 				elseif minetest.registered_nodes[nn] and minetest.registered_nodes[nn].buildable_to then
 					-- buildable; replace the node
@@ -141,7 +141,7 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 				if not minetest.setting_getbool("creative_mode") then
 					-- Add empty bucket and put it into inventory, if possible.
 					-- Drop empty bucket otherwise.
-					local new_bucket = ItemStack("bucket:bucket_empty")
+					local new_bucket = ItemStack("mcl_buckets:bucket_empty")
 					if itemstack:get_count() == 1 then
 						return new_bucket
 					else
@@ -162,7 +162,7 @@ function bucket.register_liquid(source, flowing, itemname, inventory_image, name
 	end
 end
 
-minetest.register_craftitem("bucket:bucket_empty", {
+minetest.register_craftitem("mcl_buckets:bucket_empty", {
 	description = "Empty Bucket",
 	_doc_items_longdesc = "A bucket can be used to collect and release liquids.",
 	_doc_items_usagehelp = "Punch a liquid source to collect the liquid. With the filled bucket, you can right-click somewhere to empty the bucket which will create a liquid source at the position you've clicked at.",
@@ -186,7 +186,7 @@ minetest.register_craftitem("bucket:bucket_empty", {
 		end
 
 		-- Check if pointing to a liquid source
-		liquiddef = bucket.liquids[nn]
+		liquiddef = mcl_buckets.liquids[nn]
 		local new_bucket
 		if liquiddef ~= nil and liquiddef.itemname ~= nil and (nn == liquiddef.source or
 			(nn == liquiddef.flowing and minetest.setting_getbool("liquid_finite"))) then
@@ -207,7 +207,7 @@ minetest.register_craftitem("bucket:bucket_empty", {
 			-- Take water out of full cauldron
 			minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
 			if not minetest.setting_getbool("creative_mode") then
-				new_bucket = ItemStack("bucket:bucket_water")
+				new_bucket = ItemStack("mcl_buckets:bucket_water")
 			end
 			sound_take("mcl_core:water_source", pointed_thing.under)
 		end
@@ -234,20 +234,20 @@ minetest.register_craftitem("bucket:bucket_empty", {
 })
 
 if mod_mcl_core then
-	bucket.register_liquid(
+	mcl_buckets.register_liquid(
 		"mcl_core:water_source",
 		"mcl_core:water_flowing",
-		"bucket:bucket_water",
+		"mcl_buckets:bucket_water",
 		"bucket_water.png",
 		"Water Bucket",
 		"A bucket can be used to collect and release liquids. This one is filled with water.",
 		"Right-click on any block to empty the bucket and put a water source on this spot."
 	)
 
-	bucket.register_liquid(
+	mcl_buckets.register_liquid(
 		"mcl_core:lava_source",
 		"mcl_core:lava_flowing",
-		"bucket:bucket_lava",
+		"mcl_buckets:bucket_lava",
 		"bucket_lava.png",
 		"Lava Bucket",
 		"A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution.",
@@ -257,7 +257,7 @@ end
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "bucket:bucket_lava",
+	recipe = "mcl_buckets:bucket_lava",
 	burntime = 1000,
-	replacements = {{"bucket:bucket_lava", "bucket:bucket_empty"}},
+	replacements = {{"mcl_buckets:bucket_lava", "mcl_buckets:bucket_empty"}},
 })

@@ -21,9 +21,9 @@ minetest.register_craft({
 		{'mcl_farming:wheat_item', 'mcl_farming:wheat_item', 'mcl_farming:wheat_item'},
 	},
 	replacements = {
-		{"mcl_mobitems:milk_bucket", "bucket:bucket_empty"},
-		{"mcl_mobitems:milk_bucket", "bucket:bucket_empty"},
-		{"mcl_mobitems:milk_bucket", "bucket:bucket_empty"},
+		{"mcl_mobitems:milk_bucket", "mcl_buckets:bucket_empty"},
+		{"mcl_mobitems:milk_bucket", "mcl_buckets:bucket_empty"},
+		{"mcl_mobitems:milk_bucket", "mcl_buckets:bucket_empty"},
 	},
 })
 

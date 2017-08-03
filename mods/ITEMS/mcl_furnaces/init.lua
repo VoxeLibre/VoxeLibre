@@ -69,7 +69,7 @@ local function allow_metadata_inventory_put(pos, listname, index, stack, player)
 	local inv = meta:get_inventory()
 	if listname == "fuel" then
 		-- Special case: empty bucket (not a fuel, but used for sponge drying)
-		if stack:get_name() == "bucket:bucket_empty" then
+		if stack:get_name() == "mcl_buckets:bucket_empty" then
 			if inv:get_stack(listname, index):get_count() == 0 then
 				return 1
 			else
@@ -195,8 +195,8 @@ local function furnace_node_timer(pos, elapsed)
 
 						-- Unique recipe: Put water into empty bucket after cooking wet sponge
 						if srclist[1]:get_name() == "mcl_sponges:sponge_wet" then
-							if inv:get_stack("fuel", 1):get_name() == "bucket:bucket_empty" then
-								inv:set_stack("fuel", 1, "bucket:bucket_water")
+							if inv:get_stack("fuel", 1):get_name() == "mcl_buckets:bucket_empty" then
+								inv:set_stack("fuel", 1, "mcl_buckets:bucket_water")
 							end
 						end
 					end

@@ -1,5 +1,5 @@
-Minetest 0.4 mod: bucket
-=========================
+Bucket mod.
+Originally taken from Minetest Game, adapted for MineClone 2.
 
 License of source code:
 -----------------------

@@ -44,7 +44,7 @@ mobs_mc.override.items = {
 	shears = "mcl_tools:shears",
 
 	mushroom_red = "mcl_mushrooms:mushroom_red",
-	bucket = "bucket:bucket_empty",
+	bucket = "mcl_buckets:bucket_empty",
 	grass_block = "mcl_core:dirt_with_grass",
 	string = "mcl_mobitems:string",
 	stick = "mcl_core:stick",

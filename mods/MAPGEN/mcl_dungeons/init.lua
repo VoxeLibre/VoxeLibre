@@ -37,7 +37,7 @@ local get_loot = function()
 			{ itemstring = "mcl_farming:melon_seeds", weight = 10, amount_min = 2, amount_max = 4 },
 			{ itemstring = "mcl_farming:pumpkin_seeds", weight = 10, amount_min = 2, amount_max = 4 },
 			{ itemstring = "mcl_core:iron_ingot", weight = 10, amount_min = 1, amount_max = 4 },
-			{ itemstring = "bucket:bucket_empty", weight = 10 },
+			{ itemstring = "mcl_buckets:bucket_empty", weight = 10 },
 			{ itemstring = "mcl_core:gold_ingot", weight = 5, amount_min = 1, amount_max = 4 },
 		},
 	},

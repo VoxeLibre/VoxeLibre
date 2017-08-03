@@ -258,7 +258,7 @@ end
 -- Returns true if itemstack is fuel, but not for lava bucket if destination already has one
 local is_transferrable_fuel = function(itemstack, src_inventory, src_list, dst_inventory, dst_list)
 	if mcl_util.is_fuel(itemstack) then
-		if itemstack:get_name() == "bucket:bucket_lava" then
+		if itemstack:get_name() == "mcl_buckets:bucket_lava" then
 			return dst_inventory:is_empty(dst_list)
 		else
 			return true
