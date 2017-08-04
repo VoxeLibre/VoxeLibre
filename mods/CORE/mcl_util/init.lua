@@ -163,19 +163,18 @@ end
 -- Moves a single item from one container node into another. Performs a variety of high-level
 -- checks to prevent invalid transfers such as shulker boxes into shulker boxes
 --- source_pos: Position ({x,y,z}) of the node to take the item from
---- source_list: (optional) List name of the source inventory from which to take the item. Default is normally "main"; "dst" for furnace
-
---- source_stack_id: The inventory position ID of the source inventory to take the item from (-1 for first occupied slot)
 --- destination_pos: Position ({x,y,z}) of the node to put the item into
---- destination_list: (optional) list name of the destination inventory. Default is normalls "main"; "dst" for furnace
--- Returns true on success and false on failure
-function mcl_util.move_item_container(source_pos, source_list, source_stack_id, destination_pos, destination_list)
+--- source_list (optional): List name of the source inventory from which to take the item. Default is normally "main"; "dst" for furnace
+--- source_stack_id (optional): The inventory position ID of the source inventory to take the item from (-1 for first occupied slot; -1 is default)
+--- destination_list (optional): List name of the destination inventory. Default is normally "main"; "src" for furnace
+-- Returns true on success and false on failure.
+function mcl_util.move_item_container(source_pos, destination_pos, source_list, source_stack_id, destination_list)
 	local dpos = table.copy(destination_pos)
 	local snode = minetest.get_node(source_pos)
 	local dnode = minetest.get_node(destination_pos)
 
 	local dctype = minetest.get_item_group(dnode.name, "container")
-	local sctype = minetest.get_item_group(dnode.name, "container")
+	local sctype = minetest.get_item_group(snode.name, "container")
 
 	-- Normalize double container by forcing to always use the left segment first
 	if dctype == 6 then
@@ -204,10 +203,16 @@ function mcl_util.move_item_container(source_pos, source_list, source_stack_id, 
 			source_list = "main"
 		-- Furnace: output
 		elseif sctype == 4 then
-			destination_list = "dst"
+			source_list = "dst"
+		-- Unknown source container type. Bail out
+		else
+			return false
 		end
 	end
 
+	if not source_stack_id then
+		source_stack_id = -1
+	end
 	if source_stack_id == -1 then
 		source_stack_id = mcl_util.get_first_occupied_inventory_slot(sinv, source_list)
 		if source_stack_id == nil then

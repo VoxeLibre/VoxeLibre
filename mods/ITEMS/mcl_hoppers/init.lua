@@ -285,17 +285,13 @@ minetest.register_abm({
 		local upnode = minetest.get_node(uppos)
 		if not minetest.registered_nodes[upnode.name] then return end
 		local g = minetest.registered_nodes[upnode.name].groups.container
-		if g == 2 or g == 3 or g == 5 or g == 6 then
-			-- Typical container inventory
-			mcl_util.move_item_container(uppos, "main", -1, pos)
-		elseif g == 4 then
-			-- Furnace output
-			mcl_util.move_item_container(uppos, "dst", -1, pos)
+		mcl_util.move_item_container(uppos, pos)
 
-			-- Also suck in non-fuel items from fuel slot
+		-- Also suck in non-fuel items from furnace fuel slot
+		if g == 4 then
 			local finv = minetest.get_inventory({type="node", pos=uppos})
 			if finv and not mcl_util.is_fuel(finv:get_stack("fuel", 1)) then
-				mcl_util.move_item_container(uppos, "fuel", -1, pos)
+				mcl_util.move_item_container(uppos, pos, "fuel")
 			end
 		end
 
@@ -311,7 +307,7 @@ minetest.register_abm({
 			slot_id = get_eligible_transfer_item(sinv, "main", dinv, "main", is_not_shulker_box)
 		end
 		if slot_id then
-			mcl_util.move_item_container(pos, "main", slot_id, downpos)
+			mcl_util.move_item_container(pos, downpos, nil, slot_id)
 		end
 	end,
 })
@@ -344,25 +340,19 @@ minetest.register_abm({
 		local abovenode = minetest.get_node(above)
 		if not minetest.registered_nodes[abovenode.name] then return end
 		local g = minetest.registered_nodes[abovenode.name].groups.container
-		if g == 4 then
-			-- Furnace output
-			mcl_util.move_item_container(above, "dst", -1, pos)
-		else
-			-- Typical container inventory
-			mcl_util.move_item_container(above, "main", -1, pos)
-		end
+		mcl_util.move_item_container(above, pos)
 
 		-- Move an item from the hopper into the container to which the hopper points to
 		local g = minetest.registered_nodes[frontnode.name].groups.container
 		if g == 2 or g == 5 or g == 6 then
-			mcl_util.move_item_container(pos, "main", -1, front)
+			mcl_util.move_item_container(pos, front)
 		elseif g == 3 then
 			-- Put non-shulker boxes into shulker box
 			local sinv = minetest.get_inventory({type="node", pos = pos})
 			local dinv = minetest.get_inventory({type="node", pos = front})
 			local slot_id = get_eligible_transfer_item(sinv, "main", dinv, "main", is_not_shulker_box)
 			if slot_id then
-				mcl_util.move_item_container(pos, "main", slot_id, front)
+				mcl_util.move_item_container(pos, front, nil, slot_id)
 			end
 		elseif g == 4 then
 			-- Put fuel into fuel slot
@@ -370,7 +360,7 @@ minetest.register_abm({
 			local dinv = minetest.get_inventory({type="node", pos = front})
 			local slot_id, stack = get_eligible_transfer_item(sinv, "main", dinv, "fuel", is_transferrable_fuel)
 			if slot_id then
-				mcl_util.move_item_container(pos, "main", slot_id, front, "fuel")
+				mcl_util.move_item_container(pos, front, nil, slot_id, "fuel")
 			end
 		end
 	end

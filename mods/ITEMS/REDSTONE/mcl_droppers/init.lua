@@ -80,7 +80,7 @@ local dropperdef = {
 				local stack_id = stacks[r].stackpos
 
 				-- If it's a container, attempt to put it into the container
-				local dropped = mcl_util.move_item_container(pos, "main", stack_id, droppos)
+				local dropped = mcl_util.move_item_container(pos, droppos, nil, stack_id)
 				-- No container?
 				if not dropped and not dropnodedef.groups.container then
 					-- Drop item normally
