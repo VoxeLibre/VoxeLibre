@@ -14,7 +14,7 @@ mcl_hunger.HUD_TICK = 0.1
 -- Exhaustion increase
 mcl_hunger.EXHAUST_DIG = 5  -- after digging node
 mcl_hunger.EXHAUST_JUMP = 50 -- jump
-mcl_hunger.EXHAUST_SPRINT_JUMP = 200 -- TODO: jump while sprinting
+mcl_hunger.EXHAUST_SPRINT_JUMP = 200 -- jump while sprinting
 mcl_hunger.EXHAUST_ATTACK = 100 -- hit an enemy
 mcl_hunger.EXHAUST_SWIM = 10 -- player movement in water
 mcl_hunger.EXHAUST_SPRINT = 100 -- sprint (per node)

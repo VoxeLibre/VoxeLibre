@@ -49,7 +49,11 @@ minetest.register_globalstep(function(dtime)
 					and minetest.get_item_group(node_stand, "disable_jump") == 0
 					and minetest.get_item_group(node_stand_below, "disable_jump") == 0 then
 			-- Cause exhaustion for jumping
-			mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_JUMP)
+			if mcl_sprint.is_sprinting(name) then
+				mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_SPRINT_JUMP)
+			else
+				mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_JUMP)
+			end
 
 			-- Reset cooldown timer
 				mcl_playerplus_internal[name].jump_cooldown = 0.45
