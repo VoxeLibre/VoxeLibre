@@ -127,6 +127,34 @@ function mcl_util.get_double_container_neighbor_pos(pos, param2, side)
 	end
 end
 
+-- Iterates through all items in the given inventory and
+-- returns the slot of the first item which matches a condition.
+-- Returns nil if no item was found.
+--- source_inventory: Inventory to take the item from
+--- source_list: List name of the source inventory from which to take the item
+--- destination_inventory: Put item into this inventory
+--- destination_list: List name of the destination inventory to which to put the item into
+--- condition: Function which takes an itemstack and returns true if it matches the desired item condition.
+---            If set to nil, the slot of the first item stack will be taken unconditionally.
+-- dst_inventory and dst_list can also be nil if condition is nil.
+function mcl_util.get_eligible_transfer_item_slot(src_inventory, src_list, dst_inventory, dst_list, condition)
+	local size = src_inventory:get_size(src_list)
+	local stack
+	for i=1, size do
+		stack = src_inventory:get_stack(src_list, i)
+		if not stack:is_empty() and (condition == nil or condition(stack, src_inventory, src_list, dst_inventory, dst_list)) then
+			return i
+		end
+	end
+	return nil
+end
+
+-- Returns true if given itemstack is a shulker box
+local is_not_shulker_box = function(itemstack)
+	local g = minetest.get_item_group(itemstack:get_name(), "shulker_box")
+	return g == 0 or g == nil
+end
+
 -- Moves a single item from one inventory to another.
 --- source_inventory: Inventory to take the item from
 --- source_list: List name of the source inventory from which to take the item
@@ -165,7 +193,7 @@ end
 --- source_pos: Position ({x,y,z}) of the node to take the item from
 --- destination_pos: Position ({x,y,z}) of the node to put the item into
 --- source_list (optional): List name of the source inventory from which to take the item. Default is normally "main"; "dst" for furnace
---- source_stack_id (optional): The inventory position ID of the source inventory to take the item from (-1 for first occupied slot; -1 is default)
+--- source_stack_id (optional): The inventory position ID of the source inventory to take the item from (-1 for slot of the first valid item; -1 is default)
 --- destination_list (optional): List name of the destination inventory. Default is normally "main"; "src" for furnace
 -- Returns true on success and false on failure.
 function mcl_util.move_item_container(source_pos, destination_pos, source_list, source_stack_id, destination_list)
@@ -210,11 +238,17 @@ function mcl_util.move_item_container(source_pos, destination_pos, source_list, 
 		end
 	end
 
+	-- Automatically select stack ID if set to automatic
 	if not source_stack_id then
 		source_stack_id = -1
 	end
 	if source_stack_id == -1 then
-		source_stack_id = mcl_util.get_first_occupied_inventory_slot(sinv, source_list)
+		local cond = nil
+		-- Prevent shulker box inception
+		if dctype == 3 then
+			cond = is_not_shulker_box
+		end
+		source_stack_id = mcl_util.get_eligible_transfer_item_slot(sinv, source_list, dinv, destination_list, cond)
 		if source_stack_id == nil then
 			return false
 		end
@@ -268,13 +302,7 @@ end
 -- Returns the ID of the first non-empty slot in the given inventory list
 -- or nil, if inventory is empty.
 function mcl_util.get_first_occupied_inventory_slot(inventory, listname)
-	for i=1, inventory:get_size(listname) do
-		local stack = inventory:get_stack(listname, i)
-		if not stack:is_empty() then
-			return i
-		end
-	end
-	return nil
+	return mcl_util.get_eligible_transfer_item_slot(inventory, listname)
 end
 
 -- Returns true if item (itemstring or ItemStack) can be used as a furnace fuel.
