@@ -76,7 +76,6 @@ minetest.register_node("gemalde:node_"..n.."", {
 			end
 		end
 
-		print("[gemalde] number is "..number.."")
 		node.name = "gemalde:node_"..number..""
 		minetest.set_node(pos, node)
 	end,
