@@ -218,8 +218,12 @@ Copying is an act of love. Please copy and share! <3
 But, oh well, if you insist, here is the legalese for you:
 
 ### License of source code
-MineClone source code:
-LGPL v2.1 (daredevils and others) (see `LICENSE.txt`)
+MineClone 2 is a clean-room implementation of Minecraft
+and licensed under the
+GNU LGPL v2.1 (Wuzzy, daredevils and countless others) (see `LICENSE.txt`).
+
+MineClone 2 is a direct continuation of the discontinued MineClone
+project by daredevils which fell under the same license.
 
 Mods credit:
 See `README.txt` or `README.md` in each mod directory for information about other authors.
