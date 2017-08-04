@@ -265,10 +265,10 @@ minetest.register_abm({
 		local upnode = minetest.get_node(uppos)
 		if not minetest.registered_nodes[upnode.name] then return end
 		local g = minetest.registered_nodes[upnode.name].groups.container
-		mcl_util.move_item_container(uppos, pos)
+		local sucked = mcl_util.move_item_container(uppos, pos)
 
 		-- Also suck in non-fuel items from furnace fuel slot
-		if g == 4 then
+		if not sucked and g == 4 then
 			local finv = minetest.get_inventory({type="node", pos=uppos})
 			if finv and not mcl_util.is_fuel(finv:get_stack("fuel", 1)) then
 				mcl_util.move_item_container(uppos, pos, "fuel")
