@@ -198,27 +198,35 @@ end
 -- Returns true on success and false on failure.
 function mcl_util.move_item_container(source_pos, destination_pos, source_list, source_stack_id, destination_list)
 	local dpos = table.copy(destination_pos)
-	local snode = minetest.get_node(source_pos)
-	local dnode = minetest.get_node(destination_pos)
+	local spos = table.copy(source_pos)
+	local snode = minetest.get_node(spos)
+	local dnode = minetest.get_node(dpos)
 
 	local dctype = minetest.get_item_group(dnode.name, "container")
 	local sctype = minetest.get_item_group(snode.name, "container")
 
 	-- Normalize double container by forcing to always use the left segment first
-	if dctype == 6 then
-		dpos = mcl_util.get_double_container_neighbor_pos(destination_pos, dnode.param2, "right")
-		if not dpos then
-			return false
+	local normalize_double_container = function(pos, node, ctype)
+		if ctype == 6 then
+			pos = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
+			if not pos then
+				return false
+			end
+			node = minetest.get_node(pos)
+			ctype = minetest.get_item_group(node.name, "container")
+			-- The left segment seems incorrect? We better bail out!
+			if ctype ~= 5 then
+				return false
+			end
 		end
-		dnode = minetest.get_node(dpos)
-		dctype = minetest.get_item_group(dnode.name, "container")
-		-- The left segment seems incorrect? We better bail out!
-		if dctype ~= 5 then
-			return false
-		end
+		return pos, node, ctype
 	end
 
-	local smeta = minetest.get_meta(source_pos)
+	spos, snode, sctype = normalize_double_container(spos, snode, sctype)
+	dpos, dnode, dctype = normalize_double_container(dpos, dnode, dctype)
+	if not spos or not dpos then return false end
+
+	local smeta = minetest.get_meta(spos)
 	local dmeta = minetest.get_meta(dpos)
 
 	local sinv = smeta:get_inventory()
@@ -238,7 +246,7 @@ function mcl_util.move_item_container(source_pos, destination_pos, source_list, 
 		end
 	end
 
-	-- Automatically select stack ID if set to automatic
+	-- Automatically select stack slot ID if set to automatic
 	if not source_stack_id then
 		source_stack_id = -1
 	end
@@ -248,9 +256,21 @@ function mcl_util.move_item_container(source_pos, destination_pos, source_list, 
 		if dctype == 3 then
 			cond = is_not_shulker_box
 		end
-		source_stack_id = mcl_util.get_eligible_transfer_item_slot(sinv, source_list, dinv, destination_list, cond)
-		if source_stack_id == nil then
-			return false
+		source_stack_id = mcl_util.get_eligible_transfer_item_slot(sinv, source_list, dinv, dpos, cond)
+		if not source_stack_id then
+			-- Try again if source is a double container
+			if sctype == 5 then
+				spos = mcl_util.get_double_container_neighbor_pos(spos, snode.param2, "left")
+				smeta = minetest.get_meta(spos)
+				sinv = smeta:get_inventory()
+
+				source_stack_id = mcl_util.get_eligible_transfer_item_slot(sinv, source_list, dinv, dpos, cond)
+				if not source_stack_id then
+					return false
+				end
+			else
+				return false
+			end
 		end
 	end
 
