@@ -759,7 +759,7 @@ local sapling_grow_action = function(trunknode, leafnode, tree_id, soil_needed)
 			local stage = meta:get_int("stage")
 			if stage == nil then stage = 0 end
 			stage = stage + 1
-			if stage == 2 then
+			if stage >= 3 then
 				minetest.set_node(pos, {name="air"})
 				mcl_core.generate_tree(pos, trunknode, leafnode, tree_id)
 			else
