@@ -805,7 +805,7 @@ minetest.register_abm({
 	nodenames = {"mcl_core:sapling"},
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
-	chance = 1,
+	chance = 2,
 	action = sapling_grow_action("mcl_core:tree", "mcl_core:leaves", 1, 1),
 })
 
@@ -815,7 +815,7 @@ minetest.register_abm({
 	nodenames = {"mcl_core:darksapling"},
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
-	chance = 1,
+	chance = 2,
 	action = sapling_grow_action("mcl_core:darktree", "mcl_core:darkleaves", 1, 2),
 })
 
@@ -835,7 +835,7 @@ minetest.register_abm({
 	nodenames = {"mcl_core:sprucesapling"},
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
-	chance = 1,
+	chance = 2,
 	action = sapling_grow_action("mcl_core:sprucetree", "mcl_core:spruceleaves", 3, 1),
 })
 
@@ -845,7 +845,7 @@ minetest.register_abm({
 	nodenames = {"mcl_core:birchsapling"},
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
-	chance = 1,
+	chance = 2,
 	action = sapling_grow_action("mcl_core:birchtree", "mcl_core:birchleaves", 1, 1),
 })
 
@@ -855,7 +855,7 @@ minetest.register_abm({
 	nodenames = {"mcl_core:acaciasapling"},
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
-	chance = 1,
+	chance = 2,
 	action = sapling_grow_action("mcl_core:acaciatree", "mcl_core:acacialeaves", 4, 2),
 })
 
