@@ -22,3 +22,10 @@ lava_flow_def.liquid_range = 7
 lava_flow_def.liquid_alternative_flowing = "mcl_nether:nether_lava_flowing"
 lava_flow_def.liquid_alternative_source = "mcl_nether:nether_lava_source"
 minetest.register_node("mcl_nether:nether_lava_flowing", lava_flow_def)
+
+-- Add entry aliases for the Help
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mcl_core:lava_source", "nodes", "mcl_nether:nether_lava_source")
+	doc.add_entry_alias("nodes", "mcl_core:lava_source", "nodes", "mcl_nether:nether_lava_flowing")
+end
+
