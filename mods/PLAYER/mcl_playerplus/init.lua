@@ -1,47 +1,9 @@
--- Player state for public API
-mcl_playerplus = {}
-
 -- Internal player state
 local mcl_playerplus_internal = {}
-
--- get node but use fallback for nil or unknown
-local function node_ok(pos, fallback)
-
-	fallback = fallback or "air"
-
-	local node = minetest.get_node_or_nil(pos)
-
-	if not node then
-		return fallback
-	end
-
-	if minetest.registered_nodes[node.name] then
-		return node.name
-	end
-
-	return fallback
-end
 
 local armor_mod = minetest.get_modpath("3d_armor")
 local def = {}
 local time = 0
-
-local get_player_nodes = function(player_pos)
-	local work_pos = table.copy(player_pos)
-
-	-- what is around me?
-	work_pos.y = work_pos.y - 0.1 -- standing on
-	local node_stand = node_ok(work_pos)
-	local node_stand_below = node_ok({x=work_pos.x, y=work_pos.y-1, z=work_pos.z})
-
-	work_pos.y = work_pos.y + 1.5 -- head level
-	local node_head = node_ok(work_pos)
-
-	work_pos.y = work_pos.y - 1.2 -- feet level
-	local node_feet = node_ok(work_pos)
-
-	return node_stand, node_stand_below, node_head, node_feet
-end
 
 minetest.register_globalstep(function(dtime)
 
@@ -58,7 +20,13 @@ minetest.register_globalstep(function(dtime)
 
 			local pos = player:getpos()
 
-			local node_stand, node_stand_below, node_head, node_feet = get_player_nodes(pos)
+			local node_stand = mcl_playerinfo[name].node_stand
+			local node_stand_below = mcl_playerinfo[name].node_stand_below
+			local node_head = mcl_playerinfo[name].node_head
+			local node_feet = mcl_playerinfo[name].node_feet
+			if not node_stand or not node_stand_below or not node_head or not node_feet then
+				return
+			end
 
 			-- Cause buggy exhaustion for jumping
 
@@ -107,11 +75,13 @@ minetest.register_globalstep(function(dtime)
 		local pos = player:getpos()
 
 		-- what is around me?
-		local node_stand, node_stand_below, node_head, node_feet = get_player_nodes(pos)
-		mcl_playerplus[name].node_stand = node_stand
-		mcl_playerplus[name].node_stand_below = node_stand_below
-		mcl_playerplus[name].node_head = node_head
-		mcl_playerplus[name].node_feet = node_feet
+		local node_stand = mcl_playerinfo[name].node_stand
+		local node_stand_below = mcl_playerinfo[name].node_stand_below
+		local node_head = mcl_playerinfo[name].node_head
+		local node_feet = mcl_playerinfo[name].node_feet
+		if not node_stand or not node_stand_below or not node_head or not node_feet then
+			return
+		end
 
 		-- set defaults
 		def.speed = 1
@@ -127,12 +97,11 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		-- standing on soul sand? if so walk slower
-		if mcl_playerplus[name].node_stand == "mcl_nether:soul_sand" then
+		if node_stand == "mcl_nether:soul_sand" then
 			-- TODO: Tweak walk speed
 			-- TODO: Also slow down mobs
 			-- FIXME: This whole speed thing is a giant hack. We need a proper framefork for cleanly handling player speeds
-			local below = mcl_playerplus[name].node_stand_below 
-			if below == "mcl_core:ice" or below == "mcl_core:packed_ice" or below == "mcl_core:slimeblock" then
+			if node_stand_below == "mcl_core:ice" or node_stand_below == "mcl_core:packed_ice" or node_stand_below == "mcl_core:slimeblock" then
 				def.speed = def.speed - 0.9
 			else
 				def.speed = def.speed - 0.6
@@ -146,7 +115,7 @@ minetest.register_globalstep(function(dtime)
 
 		-- Is player suffocating inside node? (Only for solid full opaque cube type nodes
 		-- without group disable_suffocation=1)
-		local ndef = minetest.registered_nodes[mcl_playerplus[name].node_head]
+		local ndef = minetest.registered_nodes[node_head]
 
 		if (ndef.walkable == nil or ndef.walkable == true)
 		and (ndef.collision_box == nil or ndef.collision_box.type == "regular")
@@ -198,8 +167,8 @@ minetest.register_globalstep(function(dtime)
 		--[[ Swimming: Cause exhaustion.
 		NOTE: As of 0.4.15, it only counts as swimming when you are with the feet inside the liquid!
 		Head alone does not count. We respect that for now. ]]
-		if minetest.get_item_group(mcl_playerplus[name].node_feet, "liquid") ~= 0 or
-				minetest.get_item_group(mcl_playerplus[name].node_stand, "liquid") ~= 0 then
+		if minetest.get_item_group(node_feet, "liquid") ~= 0 or
+				minetest.get_item_group(node_stand, "liquid") ~= 0 then
 			local lastPos = mcl_playerplus_internal[name].lastPos
 			if lastPos then
 				local dist = vector.distance(lastPos, pos)
@@ -214,7 +183,7 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		-- Underwater: Spawn bubble particles
-		if minetest.get_item_group(mcl_playerplus[name].node_head, "water") ~= 0 then
+		if minetest.get_item_group(node_head, "water") ~= 0 then
 
 			minetest.add_particlespawner({
 				amount = 10,
@@ -275,13 +244,6 @@ end)
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 
-	mcl_playerplus[name] = {
-		node_head = "",
-		node_feet = "",
-		node_stand = "",
-		node_stand_below = "",
-	}
-
 	mcl_playerplus_internal[name] = {
 		lastPos = nil,
 		swimDistance = 0,
@@ -293,6 +255,5 @@ end)
 minetest.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
 
-	mcl_playerplus[name] = nil
 	mcl_playerplus_internal[name] = nil
 end)

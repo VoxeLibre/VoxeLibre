@@ -1,2 +1,2 @@
-mcl_playerplus
+mcl_playerinfo
 mcl_hunger
