@@ -158,8 +158,8 @@ These groups are used mostly for informational purposes
 These groups put similar items together which should all be treated by the gameplay or the GUI as a single item.
 You should not add custom items to these groups for no good reason, this is likely to cause a ton of conflicts.
 
-* `clock=1`: Clock
-* `compass`: Compass (rating doesn't matter)
+* `clock`: Clock (rating indicates the “frame”)
+* `compass`: Compass (rating indicates the “frame”)
 
 This has the following implication: If you want to use a compass or clock in a crafting recipe, you *must*
 use `group:compass` or `group:clock`, respectively.

@@ -32,7 +32,7 @@ end
 local doc_mod = minetest.get_modpath("doc") ~= nil
 
 -- Register items
-function watch.register_item(name, image, creative)
+function watch.register_item(name, image, creative, frame)
 	local g = 1
 	if creative then
 		g = 0
@@ -52,7 +52,7 @@ function watch.register_item(name, image, creative)
 		_doc_items_longdesc = longdesc,
 		_doc_items_usagehelp = usagehelp,
 		inventory_image = image,
-		groups = {not_in_creative_inventory=g, tool=1, clock=1},
+		groups = {not_in_creative_inventory=g, tool=1, clock=frame},
 		wield_image = "",
 		stack_max = 64,
 	})
@@ -104,7 +104,7 @@ minetest.register_craft({
 })
 
 -- Clock tool
-watch.register_item(mcl_clock.stereotype, watch.images[1], true)
+watch.register_item(mcl_clock.stereotype, watch.images[1], true, 1)
 
 -- Faces
 for a=0,63,1 do
@@ -114,6 +114,6 @@ for a=0,63,1 do
 	else
 		b = b + 32
 	end
-	watch.register_item("mcl_clock:clock_"..tostring(a), watch.images[b+1], false)
+	watch.register_item("mcl_clock:clock_"..tostring(a), watch.images[b+1], false, a+1)
 end
 
