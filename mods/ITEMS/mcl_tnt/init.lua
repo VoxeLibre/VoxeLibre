@@ -180,7 +180,8 @@ tnt.boom = function(pos, info)
 		sound = info.sound
 	end
 	minetest.sound_play(sound, {pos = pos,gain = 1.0,max_hear_distance = 16,})
-	if minetest.get_node(pos).name == "mcl_core:water_source" or minetest.get_node(pos).name == "mcl_core:water_flowing" or minetest.get_node(pos).name == "mcl_core:bedrock" or minetest.get_node(pos).name == "protector:display" or minetest.is_protected(pos, "tnt") then
+	local node = minetest.get_node(pos)
+	if minetest.get_item_group("water") == 1 or minetest.get_item_group("lava") == 1 or minetest.get_node(pos).name == "mcl_core:bedrock" or minetest.get_node(pos).name == "protector:display" or minetest.is_protected(pos, "tnt") then
 		-- Cancel the Explosion
 		return
         end
