@@ -190,16 +190,20 @@ local function furnace_node_timer(pos, elapsed)
 					if inv:room_for_item("dst", cooked.item) then
 						inv:add_item("dst", cooked.item)
 						inv:set_stack("src", 1, aftercooked.items[1])
-						src_time = src_time - cooked.time
-						update = true
 
-						-- Unique recipe: Put water into empty bucket after cooking wet sponge
+						-- Unique recipe: Put water into empty bucket after cooking wet sponge successfully
 						if srclist[1]:get_name() == "mcl_sponges:sponge_wet" then
 							if inv:get_stack("fuel", 1):get_name() == "mcl_buckets:bucket_empty" then
 								inv:set_stack("fuel", 1, "mcl_buckets:bucket_water")
 							end
 						end
 					end
+					-- Note: If there was not enough space in the output, the item is not
+					-- cooked and the cooking progress is lost.
+
+					-- Always reset cooking time
+					src_time = 0
+					update = true
 				end
 			end
 		else
