@@ -3013,7 +3013,7 @@ end
 -- make explosion with protection and tnt mod check
 function mobs:boom(self, pos, radius)
 
-	if minetest.get_modpath("tnt") and tnt and tnt.boom
+	if minetest.get_modpath("mcl_tnt") and tnt and tnt.boom
 	and not minetest.is_protected(pos, "") then
 
 		tnt.boom(pos, {
