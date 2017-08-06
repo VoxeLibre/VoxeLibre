@@ -103,7 +103,7 @@ end
 
 minetest.register_entity("mobs_mc:arrow_entity", THROWING_ARROW_ENTITY)
 
-arrows = {
+local arrows = {
 	{"mobs_mc:arrow", "mobs_mc:arrow_entity" },
 }
 
@@ -188,7 +188,7 @@ if c("egg") then
 		visual = "sprite",
 		visual_size = {x=.5, y=.5},
 		textures = {"mobs_chicken_egg.png"},
-		velocity = egg_velocity,
+		velocity = egg_VELOCITY,
 
 		hit_player = function(self, player)
 			player:punch(minetest.get_player_by_name(self.playername) or self.object, 1.0, {

@@ -146,10 +146,8 @@ mobs:register_arrow(":mobs_mc:fireball", {
 
 	-- node hit, bursts into flame
 	hit_node = function(self, pos, node)
+		-- FIXME: Deprecated, switch to mobs:boom instead
 		mobs:explosion(pos, 3, 0, 1)
-		--from tnt
-		minetest.sound_play("tnt_explode", {pos = pos, gain = 1.5, max_hear_distance = 16})
-		
 	end
 })
 --Spawn egg

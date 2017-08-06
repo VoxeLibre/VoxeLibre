@@ -112,9 +112,9 @@ local spawn = {
 
 local spawn_desert = table.copy(spawn)
 spawn_desert.nodes = mobs_mc.spawn.desert
-on_spawn = function(self, pos)
+local on_spawn = function(self, pos)
 	local ent = self:get_luaentity()
-	texture = "mobs_mc_rabbit_gold.png"
+	local texture = "mobs_mc_rabbit_gold.png"
 	ent.base_texture = { "mobs_mc_rabbit_gold.png" }
 	self:set_properties({textures = ent.base_texture})
 end

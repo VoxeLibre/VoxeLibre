@@ -34,6 +34,7 @@ mobs:register_mob("mobs_mc:illusioner", {
 		walk_end = 40,
 		shoot_start = 90,
 		shoot_end = 110,
+		-- TODO: Implement and fix death animation
 		--die_start = 110,
 		--die_end = 130,
 		--die_loop = false,

@@ -56,8 +56,8 @@ mobs:register_mob("mobs_mc:creeper", {
 				local wdef = item:get_definition()
 				item:add_wear(1000)
 				-- Tool break sound
-				if itemstack:get_count() == 0 and wdef.sound and wdef.sound.breaks then
-					minetest.sound_play(wdef.sound.breaks, {pos = pt.above, gain = 0.5})
+				if item:get_count() == 0 and wdef.sound and wdef.sound.breaks then
+					minetest.sound_play(wdef.sound.breaks, {pos = clicker:getpos(), gain = 0.5})
 				end
 				clicker:set_wielded_item(item)
 			end

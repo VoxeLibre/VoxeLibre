@@ -109,8 +109,8 @@ mobs:register_arrow(":mobs:potion_arrow", {
 	end
 })
 
---KEEP
-mobs:spawn_specific("mobs_mc:witch", mobs_mc.spawn.jungle, {"air"}, 0, minetest.LIGHT_MAX-6, 12, 20000, 2, 1, 30)
+-- TODO: Spawn when witch works properly
+--mobs:spawn_specific("mobs_mc:witch", mobs_mc.spawn.jungle, {"air"}, 0, minetest.LIGHT_MAX-6, 12, 20000, 2, 1, 30)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:witch", S("Witch"), "mobs_mc_spawn_icon_witch.png", 0)
