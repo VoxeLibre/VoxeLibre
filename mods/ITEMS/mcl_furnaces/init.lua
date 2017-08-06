@@ -184,10 +184,12 @@ local function furnace_node_timer(pos, elapsed)
 			fuel_time = fuel_time + elapsed
 			-- If there is a cookable item then check if it is ready yet
 			if cookable then
-				src_time = src_time + elapsed
-				if src_time >= cooked.time then
-					-- Place result in dst list if possible
-					if inv:room_for_item("dst", cooked.item) then
+				-- Successful cooking requires space in dst slot and time
+				if inv:room_for_item("dst", cooked.item) then
+					src_time = src_time + elapsed
+
+					-- Place result in dst list if done
+					if src_time >= cooked.time then
 						inv:add_item("dst", cooked.item)
 						inv:set_stack("src", 1, aftercooked.items[1])
 
@@ -197,11 +199,12 @@ local function furnace_node_timer(pos, elapsed)
 								inv:set_stack("fuel", 1, "mcl_buckets:bucket_water")
 							end
 						end
-					end
-					-- Note: If there was not enough space in the output, the item is not
-					-- cooked and the cooking progress is lost.
 
-					-- Always reset cooking time
+						src_time = 0
+						update = true
+					end
+				elseif src_time ~= 0 then
+					-- If output slot is occupied, stop cooking
 					src_time = 0
 					update = true
 				end
