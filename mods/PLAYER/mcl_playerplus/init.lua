@@ -208,7 +208,8 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		-- Show positions of barriers when player is wielding a barrier
-		if player:get_wielded_item():get_name() == "mcl_core:barrier" then
+		local wi = player:get_wielded_item():get_name()
+		if wi == "mcl_core:barrier" or wi == "mcl_core:realm_barrier" then
 			local pos = vector.round(player:getpos())
 			local r = 8
 			local vm = minetest.get_voxel_manip()
@@ -221,14 +222,20 @@ minetest.register_globalstep(function(dtime)
 			for x=pos.x-r, pos.x+r do
 			for y=pos.y-r, pos.y+r do
 			for z=pos.z-r, pos.z+r do
-				local vi = area:indexp(pos)
-				local node = minetest.get_name_from_content_id(data[vi])
-				if minetest.get_node({x=x,y=y,z=z}).name == "mcl_core:barrier" then
+				local vi = area:indexp({x=x, y=y, z=z})
+				local nodename = minetest.get_name_from_content_id(data[vi])
+				local tex
+				if nodename == "mcl_core:barrier" then
+					tex = "mcl_core_barrier.png"
+				elseif nodename == "mcl_core:realm_barrier" then
+					tex = "mcl_core_barrier.png^[colorize:#FF00FF:127^[transformFX"
+				end
+				if tex then
 					minetest.add_particle({
 						pos = {x=x, y=y, z=z},
 						expirationtime = 1,
 						size = 8,
-						texture = "mcl_core_barrier.png",
+						texture = tex,
 						playername = name
 					})
 				end

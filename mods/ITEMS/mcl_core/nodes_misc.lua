@@ -140,6 +140,43 @@ minetest.register_node("mcl_core:barrier", {
 	end,
 })
 
+-- Same as barrier, but non-pointable. This node is only to be used internally to separate realms.
+-- It must NOT be used for anything else.
+-- This node only exists because Minetest does not have support for “dimensions” yet and needs to
+-- be removed when support for this is implemented. 
+minetest.register_node("mcl_core:realm_barrier", {
+	description = "Realm Barrier",
+	_doc_items_create_entry = false,
+	drawtype = "airlike",
+	paramtype = "light",
+	inventory_image = "mcl_core_barrier.png^[colorize:#FF00FF:127^[transformFX",
+	wield_image = "mcl_core_barrier.png^[colorize:#FF00FF:127^[transformFX",
+	tiles = { "blank.png" },
+	stack_max = 64,
+	sunlight_propagates = true,
+	is_ground_content = false,
+	pointable = false,
+	groups = {not_in_creative_inventory = 1, not_solid = 1 },
+	on_blast = function() end,
+	drop = "",
+	_mcl_blast_resistance = 18000003,
+	_mcl_hardness = -1,
+	after_place_node = function (pos, placer, itemstack, pointed_thing)
+		if placer == nil then
+			return
+		end
+		minetest.add_particle({
+			pos = pos,
+			expirationtime = 1,
+			size = 8,
+			texture = "mcl_core_barrier.png^[colorize:#FF00FF:127^[transformFX",
+			playername = placer:get_player_name()
+		})
+	end,
+})
+
+
+
 
 -- The void below the bedrock. Void damage is handled in mcl_playerplus.
 -- The void does not exist as a block in Minecraft but we register it as a
