@@ -161,17 +161,11 @@ minetest.register_node("mcl_core:realm_barrier", {
 	drop = "",
 	_mcl_blast_resistance = 18000003,
 	_mcl_hardness = -1,
-	after_place_node = function (pos, placer, itemstack, pointed_thing)
-		if placer == nil then
-			return
-		end
-		minetest.add_particle({
-			pos = pos,
-			expirationtime = 1,
-			size = 8,
-			texture = "mcl_core_barrier.png^[colorize:#FF00FF:127^[transformFX",
-			playername = placer:get_player_name()
-		})
+	-- Prevent placement to protect player from screwing up the world, because the node is not pointable and hard to get rid of.
+	node_placement_prediction = "",
+	on_place = function(pos, placer, itemstack, pointed_thing)
+		minetest.chat_send_player(placer:get_player_name(), core.colorize("#FF0000", "You can't just place a realm barrier by hand!"))
+		return
 	end,
 })
 
@@ -197,6 +191,12 @@ minetest.register_node("mcl_core:void", {
 	is_ground_content = false,
 	groups = { not_in_creative_inventory = 1 },
 	on_blast = function() end,
+	-- Prevent placement to protect player from screwing up the world, because the node is not pointable and hard to get rid of.
+	node_placement_prediction = "",
+	on_place = function(pos, placer, itemstack, pointed_thing)
+		minetest.chat_send_player(placer:get_player_name(), core.colorize("#FF0000", "You can't just place the void by hand!"))
+		return
+	end,
 	drop = "",
 	-- Infinite blast resistance; it should never be destroyed by explosions
 	_mcl_blast_resistance = -1,
