@@ -192,6 +192,7 @@ There are so many people to list (sorry). Check out the respective mod directori
 
 ### Models
 * [22i](https://github.com/22i): Creator of all models
+* [tobyplowy](https://github.com/tobyplowy): UV-mapping fixes to said models
 
 ### Sounds and music
 Various sources. See the respective mod directories for details.
