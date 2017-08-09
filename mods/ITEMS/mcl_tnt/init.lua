@@ -1,3 +1,6 @@
+local mod_death_messages = minetest.get_modpath("mcl_death_messages")
+local mod_hunger = minetest.get_modpath("mcl_hunger")
+
 local function spawn_tnt(pos, entname)
 	minetest.sound_play("tnt_ignite", {pos = pos,gain = 1.0,max_hear_distance = 15,})
 	local tnt = minetest.add_entity(pos, entname)
@@ -27,8 +30,12 @@ local function do_tnt_physics(tnt_np,tntr)
                 local dist = math.max(1, vector.distance(tnt_np, p))
                 local damage = (4 / dist) * tntr
                 if obj:is_player() == true then
-                    mcl_death_messages.player_damage(obj, string.format("%s was caught in an explosion.", obj:get_player_name()))
-                    mcl_hunger.exhaust(obj:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+                    if mod_death_messages then
+                        mcl_death_messages.player_damage(obj, string.format("%s was caught in an explosion.", obj:get_player_name()))
+                    end
+                    if mod_hunger then
+                        mcl_hunger.exhaust(obj:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+                    end
                 end
                 obj:set_hp(obj:get_hp() - damage)
             end
@@ -45,6 +52,10 @@ end
 
 local TNT_RANGE = 3
 
+local sounds
+if minetest.get_modpath("mcl_sounds") then
+	sounds = mcl_sounds.node_sound_wood_defaults()
+end
 minetest.register_node("mcl_tnt:tnt", {
 	tiles = {"default_tnt_top.png", "default_tnt_bottom.png",
 			"default_tnt_side.png", "default_tnt_side.png",
@@ -63,7 +74,7 @@ minetest.register_node("mcl_tnt:tnt", {
 	_on_ignite = function(pos, player)
 		tnt.ignite(pos)
 	end,
-	sounds = mcl_sounds.node_sound_wood_defaults(),
+	sounds = sounds,
 })
 
 local TNT = {
@@ -218,14 +229,16 @@ end
 
 minetest.register_entity("mcl_tnt:tnt", TNT)
 
-minetest.register_craft({
-	output = "mcl_tnt:tnt",
-	recipe = {
-		{'mcl_mobitems:gunpowder','group:sand','mcl_mobitems:gunpowder'},
-		{'group:sand','mcl_mobitems:gunpowder','group:sand'},
-		{'mcl_mobitems:gunpowder','group:sand','mcl_mobitems:gunpowder'}
-	}
-})
+if minetest.get_modpath("mcl_mobitems") then
+	minetest.register_craft({
+		output = "mcl_tnt:tnt",
+		recipe = {
+			{'mcl_mobitems:gunpowder','group:sand','mcl_mobitems:gunpowder'},
+			{'group:sand','mcl_mobitems:gunpowder','group:sand'},
+			{'mcl_mobitems:gunpowder','group:sand','mcl_mobitems:gunpowder'}
+		}
+	})
+end
 
 if minetest.get_modpath("doc_identifier") then
 	doc.sub.identifier.register_object("mcl_tnt:tnt", "nodes", "mcl_tnt:tnt")
