@@ -362,7 +362,7 @@ rest of the game.
 #### Parameters
 * `playername`: Name of the player for whom to reveal the entries
 
-### `doc.add_entry_alias(category_id_orig, entry_id_orig, category_id_alias, entry_id_orig)`
+### `doc.add_entry_alias(category_id_orig, entry_id_orig, category_id_alias, entry_id_alias)`
 Adds a single alias for an entry. If an entry has an alias, supplying the
 alias to a function which demand `category_id` and `entry_id` will work as expected.
 When using this function, you must make sure the category already exists.
