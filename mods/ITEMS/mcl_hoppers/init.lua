@@ -97,7 +97,7 @@ Hoppers interact with containers the following way:
 		else
 			minetest.set_node(bpos, {name="mcl_hoppers:hopper", param2=0})
 		end
-		if not minetest.setting_getbool("creative_mode") then
+		if not minetest.settings:get_bool("creative_mode") then
 			itemstack:take_item()
 		end
 		return itemstack

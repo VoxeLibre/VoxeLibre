@@ -92,7 +92,7 @@ end
 -- Similar to minetest.rotate_node.
 function mcl_util.rotate_axis(itemstack, placer, pointed_thing)
 	mcl_util.rotate_axis_and_place(itemstack, placer, pointed_thing,
-		core.setting_getbool("creative_mode"),
+		minetest.settings:get_bool("creative_mode"),
 		placer:get_player_control().sneak)
 	return itemstack
 end

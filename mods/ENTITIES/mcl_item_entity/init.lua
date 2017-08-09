@@ -12,7 +12,7 @@ item_drop_settings.drop_single_item      = false --if true, the drop control dro
 item_drop_settings.magnet_time           = 0.75 -- how many seconds an item follows the player before giving up
 
 local get_gravity = function()
-	return tonumber(minetest.setting_get("movement_gravity")) or 9.81
+	return tonumber(minetest.settings:get("movement_gravity")) or 9.81
 end
 
 local check_pickup_achievements = function(object, player)
@@ -54,7 +54,7 @@ end
 
 minetest.register_globalstep(function(dtime)
 	for _,player in ipairs(minetest.get_connected_players()) do
-		if player:get_hp() > 0 or not minetest.setting_getbool("enable_damage") then
+		if player:get_hp() > 0 or not minetest.settings:get_bool("enable_damage") then
 			local pos = player:getpos()
 			local inv = player:get_inventory()
 			local checkpos = {x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}
@@ -203,8 +203,8 @@ local check_can_drop = function(node_name, tool_capabilities)
 end
 
 function minetest.handle_node_drops(pos, drops, digger)
-	local doTileDrops = minetest.setting_getbool("mcl_doTileDrops") or true
-	if minetest.setting_getbool("creative_mode") or doTileDrops == false then
+	local doTileDrops = minetest.settings:get_bool("mcl_doTileDrops") or true
+	if minetest.settings:get_bool("creative_mode") or doTileDrops == false then
 		return
 	end
 
@@ -658,6 +658,6 @@ core.register_entity(":__builtin:item", {
 	-- Note: on_punch intentionally left out. The player should *not* be able to collect items by punching
 })
 
-if minetest.setting_get("log_mods") then
+if minetest.settings:get_bool("log_mods") then
 	minetest.log("action", "mcl_item_entity loaded")
 end

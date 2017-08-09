@@ -5,7 +5,7 @@ local craftguide, datas, mt = {}, {}, minetest
 -- true: Only show recipes which include at least one of the items the player posesses
 -- false: Show all crafting recipes
 local progressive_mode = false
-if mt.setting_getbool("craftguide_progressive_mode") == true then
+if mt.settings:get_bool("craftguide_progressive_mode") == true then
 	progressive_mode = true
 end
 local get_recipe = mt.get_craft_recipe

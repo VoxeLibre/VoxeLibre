@@ -24,12 +24,12 @@ end
 
 local beddesc = "Beds allow you to sleep at night and waste some time. Survival in this world does not demand sleep, but sleeping might have some other uses. "
 local beduse = "Right-click on the bed to try to sleep in it. This only works when the sun sets or at night."
-if minetest.setting_getbool("enable_bed_respawn") == false then
+if minetest.settings:get_bool("enable_bed_respawn") == false then
 	beddesc = beddesc .. "In local folklore, legends are told of other worlds where setting the start point for your next would be possible. But this world is not one of them. "
 else
 	beddesc = beddesc .. "By sleeping in a bed, you set the starting point for your next life. "
 end
-if minetest.setting_getbool("enable_bed_night_skip") == false then
+if minetest.settings:get_bool("enable_bed_night_skip") == false then
 	beddesc = beddesc .. "In this strange world, the time will not pass faster for you when you sleep."
 else
 	beddesc = beddesc .. "Going into bed seems to make time pass faster: The night will be skipped when you go sleep and you're alone in this world. If you're not alone, the night is skipped when all players in this world went to sleep."
@@ -118,7 +118,7 @@ function mcl_beds.register_bed(name, def)
 			minetest.set_node(pos, {name = name .. "_bottom", param2 = dir})
 			minetest.set_node(botpos, {name = name .. "_top", param2 = dir})
 
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:take_item()
 			end
 			return itemstack

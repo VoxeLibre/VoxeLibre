@@ -18,12 +18,12 @@ minetest.register_craftitem("mcl_fire:fire_charge", {
 		if pointed_thing.type == "node" then
 			if minetest.get_node(pointed_thing.under).name == "mcl_tnt:tnt" then
 				tnt.ignite(pointed_thing.under)
-				if not minetest.setting_getbool("creative_mode") then
+				if not minetest.settings:get_bool("creative_mode") then
 					itemstack:take_item()
 				end
 			else
 				mcl_fire.set_fire(pointed_thing)
-				if not minetest.setting_getbool("creative_mode") then
+				if not minetest.settings:get_bool("creative_mode") then
 					itemstack:take_item()
 				end
 			end

@@ -68,7 +68,7 @@ local go_fishing = function(itemstack, user, pointed_thing)
 			if inv:room_for_item("main", item) then
 				inv:add_item("main", item)
 			end
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				local idef = itemstack:get_definition()
 				itemstack:add_wear(65535/65) -- 65 uses
 				if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then

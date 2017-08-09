@@ -2,7 +2,7 @@
 -- Snowballs and other throwable items
 --
 
-local GRAVITY = tonumber(minetest.setting_get("movement_gravity"))
+local GRAVITY = tonumber(minetest.settings:get("movement_gravity"))
 
 local entity_mapping = {
 	["mcl_throwing:snowball"] = "mcl_throwing:snowball_entity",
@@ -38,7 +38,7 @@ local throw_function = function(entity_name, velocity)
 		local dir = player:get_look_dir()
 		local obj = mcl_throwing.throw(item, {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, velocity)
 		obj:get_luaentity()._thrower = player:get_player_name()
-		if not minetest.setting_getbool("creative_mode") then
+		if not minetest.settings:get_bool("creative_mode") then
 			item:take_item()
 		end
 		return item

@@ -219,7 +219,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 				minetest.sound_play(minetest.registered_nodes["mcl_flowers:"..name].sounds.place, {pos = bottom, gain=1})
 				minetest.set_node(bottom, {name="mcl_flowers:"..name})
 				minetest.set_node(top, {name="mcl_flowers:"..name.."_top"})
-				if not minetest.setting_getbool("creative_mode") then
+				if not minetest.settings:get_bool("creative_mode") then
 					itemstack:take_item()
 				end
 			end
@@ -359,7 +359,7 @@ minetest.register_node("mcl_flowers:waterlily", {
 						minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
 					end
 
-					if not minetest.setting_getbool("creative_mode") then
+					if not minetest.settings:get_bool("creative_mode") then
 						itemstack:take_item()
 					end
 				else

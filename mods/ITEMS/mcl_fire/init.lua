@@ -156,7 +156,7 @@ minetest.override_item("mcl_core:lava_source", {
 -- Sound
 --
 
-local flame_sound = minetest.setting_getbool("flame_sound")
+local flame_sound = minetest.settings:get_bool("flame_sound")
 if flame_sound == nil then
 	-- Enable if no setting present
 	flame_sound = true
@@ -292,11 +292,11 @@ minetest.register_abm({
 
 -- Enable the following ABMs according to 'enable fire' setting
 
-local fire_enabled = minetest.setting_getbool("enable_fire")
+local fire_enabled = minetest.settings:get_bool("enable_fire")
 if fire_enabled == nil then
 	-- New setting not specified, check for old setting.
 	-- If old setting is also not specified, 'not nil' is true.
-	fire_enabled = not minetest.setting_getbool("disable_fire")
+	fire_enabled = not minetest.settings:get_bool("disable_fire")
 end
 
 if not fire_enabled then

@@ -350,7 +350,7 @@ minetest.register_node("mcl_signs:wall_sign", {
 		text_entity:setyaw(sign_info.yaw)
 		text_entity:get_luaentity()._signnodename = nodeitem:get_name()
 
-		if not minetest.setting_getbool("creative_mode") then
+		if not minetest.settings:get_bool("creative_mode") then
 			itemstack:take_item()
 		end
 		minetest.sound_play({name="default_place_node_hard", gain=1.0}, {pos = place_pos})
@@ -476,6 +476,6 @@ minetest.register_alias("signs:sign_wall", "mcl_signs:wall_sign")
 minetest.register_alias("signs:sign_yard", "mcl_signs:standing_sign")
 
 
-if minetest.setting_get("log_mods") then
+if minetest.settings:get_bool("log_mods") then
 	minetest.log("action", "[mcl_signs] loaded")
 end

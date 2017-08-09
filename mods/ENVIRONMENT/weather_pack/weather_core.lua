@@ -188,7 +188,7 @@ minetest.register_chatcommand("toggledownfall", {
 
 -- Configuration setting which allows user to disable ABM for weathers (if they use it).
 -- Weather mods expected to be use this flag before registering ABM.
-local weather_allow_abm = minetest.setting_getbool("weather_allow_abm")
+local weather_allow_abm = minetest.settings:get_bool("weather_allow_abm")
 if weather_allow_abm ~= nil and weather_allow_abm == false then
   weather.allow_abm = false
 end 

@@ -17,7 +17,7 @@
 
 -- The hand
 local groupcaps
-if minetest.setting_getbool("creative_mode") then
+if minetest.settings:get_bool("creative_mode") then
 	-- Instant breaking in creative mode
 	groupcaps = {
 		creative_breakable = {times={[1]=0}, uses=0},
@@ -174,7 +174,7 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
 		if minetest.get_node(above).name == "air" then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				-- Add wear, as if digging a level 0 shovely node
 				local toolname = itemstack:get_name()
 				local def = minetest.registered_items[toolname]

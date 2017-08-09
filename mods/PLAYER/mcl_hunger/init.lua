@@ -26,13 +26,13 @@ mcl_hunger.SATURATION_INIT = 5 -- Initial saturation for new/respawning players
 
 mcl_hunger.active = false
 
-if minetest.setting_getbool("enable_damage") then
+if minetest.settings:get_bool("enable_damage") then
 mcl_hunger.active = true
 
 -- Debug Mode. If enabled, saturation and exhaustion are shown as well.
 -- NOTE: Read-only. The setting should only be read at the beginning, this mod is not
 -- prepared to change this setting later.
-mcl_hunger.debug = minetest.setting_getbool("mcl_hunger_debug")
+mcl_hunger.debug = minetest.settings:get_bool("mcl_hunger_debug")
 if mcl_hunger.debug == nil then
 	mcl_hunger.debug = false
 end

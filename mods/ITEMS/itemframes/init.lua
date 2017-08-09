@@ -77,7 +77,7 @@ end
 
 local drop_item = function(pos, node, meta)
 	if meta:get_string("item") ~= "" then
-		if node.name == "itemframes:frame" and not minetest.setting_getbool("creative_mode") then
+		if node.name == "itemframes:frame" and not minetest.settings:get_bool("creative_mode") then
 			local item = ItemStack(minetest.deserialize(meta:get_string("itemdata")))
 			minetest.add_item(pos, item)
 		end
@@ -120,7 +120,7 @@ minetest.register_node("itemframes:frame",{
 			-- itemdata holds the serialized itemstack in table form
 			meta:set_string("itemdata", itemdata)
 			update_item(pos,node)
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:take_item()
 			end
 		end

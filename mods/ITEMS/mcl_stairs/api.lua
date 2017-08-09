@@ -165,7 +165,7 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 		on_place = function(itemstack, placer, pointed_thing)
 			local under = minetest.get_node(pointed_thing.under)
 			local wield_item = itemstack:get_name()
-			local creative_enabled = minetest.setting_getbool("creative_mode")
+			local creative_enabled = minetest.settings:get_bool("creative_mode")
 
 			-- place slab using under node orientation
 			local dir = vector.subtract(pointed_thing.above, pointed_thing.under)

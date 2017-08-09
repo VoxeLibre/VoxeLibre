@@ -1,6 +1,6 @@
 mcl_compass = {}
 
-local default_spawn_settings = minetest.setting_get("static_spawnpoint")
+local default_spawn_settings = minetest.settings:get("static_spawnpoint")
 
 minetest.register_globalstep(function(dtime)
 	local players  = minetest.get_connected_players()
@@ -15,7 +15,7 @@ minetest.register_globalstep(function(dtime)
 		end
 		if has_compass(player) then
 			local spawn = {x=0,y=0,z=0}
-			local s = minetest.setting_get("static_spawnpoint")
+			local s = minetest.settings:get("static_spawnpoint")
 			if s then
 				local numbers = string.split(s, ",")
 				spawn.x = tonumber(numbers[1])

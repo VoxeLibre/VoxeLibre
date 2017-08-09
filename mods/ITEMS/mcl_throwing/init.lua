@@ -53,7 +53,7 @@ end
 local player_shoot_arrow = function(itemstack, player, power, damage)
 	local arrow_stack, arrow_stack_id = get_arrow(player)
 	local arrow_itemstring
-	if not minetest.setting_getbool("creative_mode") then
+	if not minetest.settings:get_bool("creative_mode") then
 		if not arrow_stack then
 			return false
 		end
@@ -86,7 +86,7 @@ local powerup_function = function(nextbow)
 		end
 
 		-- Check for arrow or Creative Mode
-		if minetest.setting_getbool("creative_mode") or get_arrow(placer) ~= nil then
+		if minetest.settings:get_bool("creative_mode") or get_arrow(placer) ~= nil then
 			local wear = itemstack:get_wear()
 			itemstack:replace(nextbow)
 			itemstack:set_wear(wear)
@@ -131,7 +131,7 @@ minetest.register_tool("mcl_throwing:bow_0", {
 		itemstack:replace("mcl_throwing:bow")
 		itemstack:set_wear(wear)
 		if player_shoot_arrow(itemstack, user, 4, 1) then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:add_wear(65535/bow_durability)
 			end
 		end
@@ -153,7 +153,7 @@ minetest.register_tool("mcl_throwing:bow_1", {
 		itemstack:replace("mcl_throwing:bow")
 		itemstack:set_wear(wear)
 		if player_shoot_arrow(itemstack, user, 16, 2) then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:add_wear(65535/bow_durability)
 			end
 		end
@@ -183,7 +183,7 @@ minetest.register_tool("mcl_throwing:bow_2", {
 			damage = 4
 		end
 		if player_shoot_arrow(itemstack, user, 26, damage) then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:add_wear(65535/bow_durability)
 			end
 		end

@@ -117,7 +117,7 @@ minetest.register_craftitem("mcl_nether:nether_wart_item", {
 				minetest.sound_play({name="default_place_node", gain=1.0}, {pos=placepos})
 				minetest.set_node(placepos, {name="mcl_nether:nether_wart_0", param2 = 3})
 
-				if not minetest.setting_getbool("creative_mode") then
+				if not minetest.settings:get_bool("creative_mode") then
 					itemstack:take_item()
 				end
 				return itemstack

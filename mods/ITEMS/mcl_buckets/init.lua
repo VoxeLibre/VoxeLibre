@@ -77,7 +77,7 @@ function mcl_buckets.register_liquid(source, flowing, itemname, inventory_image,
 
 				local place_liquid = function(pos, node, source, flowing, fullness)
 					sound_place(source, pos)
-					if math.floor(fullness/128) == 1 or (not minetest.setting_getbool("liquid_finite")) then
+					if math.floor(fullness/128) == 1 or (not minetest.settings:get_bool("liquid_finite")) then
 						minetest.add_node(pos, {name=source, param2=fullness})
 						return
 					elseif node.name == flowing then
@@ -138,7 +138,7 @@ function mcl_buckets.register_liquid(source, flowing, itemname, inventory_image,
 				end
 
 				-- Handle bucket item and inventory stuff
-				if not minetest.setting_getbool("creative_mode") then
+				if not minetest.settings:get_bool("creative_mode") then
 					-- Add empty bucket and put it into inventory, if possible.
 					-- Drop empty bucket otherwise.
 					local new_bucket = ItemStack("mcl_buckets:bucket_empty")
@@ -189,10 +189,10 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 		liquiddef = mcl_buckets.liquids[nn]
 		local new_bucket
 		if liquiddef ~= nil and liquiddef.itemname ~= nil and (nn == liquiddef.source or
-			(nn == liquiddef.flowing and minetest.setting_getbool("liquid_finite"))) then
+			(nn == liquiddef.flowing and minetest.settings:get_bool("liquid_finite"))) then
 
 			-- Fill bucket, but not in Creative Mode
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				new_bucket = ItemStack({name = liquiddef.itemname, metadata = tostring(node.param2)})
 			end
 
@@ -206,7 +206,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 		elseif nn == "mcl_cauldrons:cauldron_3" then
 			-- Take water out of full cauldron
 			minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				new_bucket = ItemStack("mcl_buckets:bucket_water")
 			end
 			sound_take("mcl_core:water_source", pointed_thing.under)
@@ -224,7 +224,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 				else
 					minetest.add_item(user:getpos(), new_bucket)
 				end
-				if not minetest.setting_getbool("creative_mode") then
+				if not minetest.settings:get_bool("creative_mode") then
 					itemstack:take_item()
 				end
 				return itemstack

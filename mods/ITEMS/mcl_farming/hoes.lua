@@ -42,7 +42,7 @@ minetest.register_tool("mcl_farming:hoe_wood", {
 		end
 
 		if create_soil(pointed_thing.under, user:get_inventory()) then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:add_wear(65535/60)
 			end
 			return itemstack
@@ -92,7 +92,7 @@ minetest.register_tool("mcl_farming:hoe_stone", {
 		end
 
 		if create_soil(pointed_thing.under, user:get_inventory()) then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:add_wear(65535/132)
 			end
 			return itemstack
@@ -137,7 +137,7 @@ minetest.register_tool("mcl_farming:hoe_iron", {
 		end
 
 		if create_soil(pointed_thing.under, user:get_inventory()) then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:add_wear(65535/251)
 			end
 			return itemstack
@@ -190,7 +190,7 @@ minetest.register_tool("mcl_farming:hoe_gold", {
 		end
 
 		if create_soil(pointed_thing.under, user:get_inventory()) then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:add_wear(65535/33)
 			end
 			return itemstack
@@ -244,7 +244,7 @@ minetest.register_tool("mcl_farming:hoe_diamond", {
 		end
 
 		if create_soil(pointed_thing.under, user:get_inventory()) then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:add_wear(65535/1562)
 			end
 			return itemstack

@@ -117,7 +117,7 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 	if self._lastpos.x~=nil then
 		local def = minetest.registered_nodes[node.name]
 		if (def and def.walkable) or not def then
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				minetest.add_item(self._lastpos, 'mcl_throwing:arrow')
 			end
 			self.object:remove()

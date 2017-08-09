@@ -114,7 +114,7 @@ local last_damages = { }
 
 minetest.register_on_dieplayer(function(player)
 	-- Death message
-	local message = minetest.setting_getbool("mcl_showDeathMessages")
+	local message = minetest.settings:get_bool("mcl_showDeathMessages")
 	if message == nil then message = true end
 	if message then
 		local name = player:get_player_name()

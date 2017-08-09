@@ -51,7 +51,7 @@ local function return_fields(player, name)
 end
 
 local function set_inventory(player, armor_change_only)
-	if minetest.setting_getbool("creative_mode") then
+	if minetest.settings:get_bool("creative_mode") then
 		if armor_change_only then
 			-- Stay on survival inventory plage if only the armor has been changed
 			mcl_inventory.set_creative_formspec(player, 0, 0, nil, nil, "inv")
@@ -124,7 +124,7 @@ end
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.quit then
 		return_fields(player,"craft")
-		if not minetest.setting_getbool("creative_mode") and (formname == "" or formname == "main") then
+		if not minetest.settings:get_bool("creative_mode") and (formname == "" or formname == "main") then
 			set_inventory(player)
 		end
 	end
@@ -161,7 +161,7 @@ minetest.register_on_joinplayer(function(player)
 	end
 
 	-- In Creative Mode, the initial inventory setup is handled in creative.lua
-	if not minetest.setting_getbool("creative_mode") then
+	if not minetest.settings:get_bool("creative_mode") then
 		set_inventory(player)
 	end
 
@@ -172,7 +172,7 @@ minetest.register_on_joinplayer(function(player)
 	return_fields(player, "craft")
 end)
 
-if minetest.setting_getbool("creative_mode") then
+if minetest.settings:get_bool("creative_mode") then
 	dofile(minetest.get_modpath("mcl_inventory").."/creative.lua")
 end
 

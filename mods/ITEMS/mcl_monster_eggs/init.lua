@@ -6,7 +6,7 @@ local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP .. "/intllib.lua")
 
 local spawn_silverfish = function(pos, oldnode, oldmetadata, digger)
-	if not minetest.setting_getbool("creative_mode") then
+	if not minetest.settings:get_bool("creative_mode") then
 		minetest.add_entity(pos, "mobs_mc:silverfish")
 	end
 end

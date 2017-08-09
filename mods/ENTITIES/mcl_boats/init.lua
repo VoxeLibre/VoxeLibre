@@ -129,7 +129,7 @@ function boat.on_punch(self, puncher)
 	if not self._driver then
 		self._removed = true
 		-- Drop boat as item on the ground after punching
-		if not minetest.setting_getbool("creative_mode") then
+		if not minetest.settings:get_bool("creative_mode") then
 			minetest.add_item(self.object:getpos(), self._itemstring)
 		end
 		self.object:remove()
@@ -302,7 +302,7 @@ for b=1, #boat_ids do
 			local boat = minetest.add_entity(pointed_thing.under, "mcl_boats:boat")
 			boat:get_luaentity()._itemstring = itemstring
 			boat:set_properties({textures = { "mcl_boats_texture_"..images[b].."_boat.png" }})
-			if not minetest.setting_getbool("creative_mode") then
+			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:take_item()
 			end
 			return itemstack

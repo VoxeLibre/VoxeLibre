@@ -135,7 +135,7 @@ function mcl_doors:register_door(name, def)
 					meta = minetest.get_meta(pt2)
 					meta:set_int("is_open", 0)
 
-					if not minetest.setting_getbool("creative_mode") then
+					if not minetest.settings:get_bool("creative_mode") then
 						itemstack:take_item()
 					end
 				return itemstack

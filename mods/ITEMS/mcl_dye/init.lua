@@ -282,7 +282,7 @@ minetest.register_craftitem("mcl_dye:white", {
 		end
 
 		-- Use the bone meal on the ground
-		if(mcl_dye.apply_bone_meal(pointed_thing) and not minetest.setting_getbool("creative_mode")) then
+		if(mcl_dye.apply_bone_meal(pointed_thing) and not minetest.settings:get_bool("creative_mode")) then
 			itemstack:take_item()
 		end
 		return itemstack

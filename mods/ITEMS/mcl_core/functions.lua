@@ -200,7 +200,7 @@ minetest.register_on_dignode(function(pos, node)
 			local np={x=pos.x, y=pos.y+1, z=pos.z}
 			while minetest.get_node(np).name==timber_nodenames[i] do
 				minetest.remove_node(np)
-				if not minetest.setting_getbool("creative_mode") then
+				if not minetest.settings:get_bool("creative_mode") then
 					minetest.add_item(np, timber_nodenames[i])
 				end
 				np={x=np.x, y=np.y+1, z=np.z}
