@@ -149,6 +149,14 @@ mcl_structures.call_struct= function(pos, struct_style)
 		mcl_structures.generate_desert_well(pos)
 	elseif struct_style == "igloo" then
 		mcl_structures.generate_igloo_top(pos)
+	elseif struct_style == "witch_hut" then
+		mcl_structures.generate_witch_hut(pos)
+	elseif struct_style == "ice_spike_small" then
+		mcl_structures.generate_ice_spike_small(pos)
+	elseif struct_style == "boulder" then
+		mcl_structures.generate_boulder(pos)
+	elseif struct_style == "fossil" then
+		mcl_structures.generate_fossil(pos)
 	end
 end
 
@@ -174,6 +182,45 @@ mcl_structures.generate_igloo_top = function(pos)
 	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
 	local path = minetest.get_modpath("mcl_structures").."/build/igloo_top.mts"
 	minetest.place_schematic(newpos, path, "random", nil, true)
+end
+
+mcl_structures.generate_igloo_basement = function(pos, orientation)
+	-- TODO: Add brewing stand
+	local path = minetest.get_modpath("mcl_structures").."/build/igloo_basement.mts"
+	minetest.place_schematic(pos, path, orientation, nil, true)
+end
+
+mcl_structures.generate_boulder = function(pos)
+	local path = minetest.get_modpath("mcl_structures").."/build/mcl_structures_boulder.mts"
+	minetest.place_schematic(pos, path, "random", nil, false)
+end
+
+mcl_structures.generate_witch_hut = function(pos)
+	local path = minetest.get_modpath("mcl_structures").."/build/mcl_structures_witch_hut.mts"
+	minetest.place_schematic(pos, path, "random", nil, true)
+end
+
+mcl_structures.generate_ice_spike_small = function(pos)
+	local path = minetest.get_modpath("mcl_structures").."/build/mcl_structures_ice_spike_small.mts"
+	minetest.place_schematic(pos, path, "random", nil, true)
+end
+
+mcl_structures.generate_fossil = function(pos)
+	-- Generates one out of 8 possible fossil pieces
+	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
+	local fossils = {
+		"mcl_structures_fossil_skull_1.mts",
+		"mcl_structures_fossil_skull_2.mts",
+		"mcl_structures_fossil_skull_3.mts",
+		"mcl_structures_fossil_skull_4.mts",
+		"mcl_structures_fossil_spine_1.mts",
+		"mcl_structures_fossil_spine_2.mts",
+		"mcl_structures_fossil_spine_3.mts",
+		"mcl_structures_fossil_spine_4.mts",
+	}
+	local r = math.random(1, #fossils)
+	local path = minetest.get_modpath("mcl_structures").."/build/"..fossils[r]
+	minetest.place_schematic(newpos, path, "random", nil, false)
 end
 
 mcl_structures.generate_igloo_basement = function(pos, orientation)
@@ -242,7 +289,7 @@ end
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
-	params = "desert_temple | desert_well | igloo | village",
+	params = "desert_temple | desert_well | igloo | village | witch_hut | boulder | ice_spike_small | fossil",
 	description = "Generate a pre-defined structure near your position.",
 	privs = {debug = true},
 	func = function(name, param)
@@ -253,16 +300,28 @@ minetest.register_chatcommand("spawnstruct", {
 		local errord = false
 		if param == "village" then
 			mcl_structures.generate_village(pos)
-			minetest.chat_send_player(name, "Village created.")
+			minetest.chat_send_player(name, "Village built.")
 		elseif param == "desert_temple" then
 			mcl_structures.generate_desert_temple(pos)
-			minetest.chat_send_player(name, "Desert temple created.")
+			minetest.chat_send_player(name, "Desert temple built.")
 		elseif param == "desert_well" then
 			mcl_structures.generate_desert_well(pos)
-			minetest.chat_send_player(name, "Desert well created.")
+			minetest.chat_send_player(name, "Desert well built.")
 		elseif param == "igloo" then
 			mcl_structures.generate_igloo_top(pos)
-			minetest.chat_send_player(name, "Igloo created.")
+			minetest.chat_send_player(name, "Igloo built.")
+		elseif param == "witch_hut" then
+			mcl_structures.generate_witch_hut(pos)
+			minetest.chat_send_player(name, "Witch hut built.")
+		elseif param == "boulder" then
+			mcl_structures.generate_boulder(pos)
+			minetest.chat_send_player(name, "Moss stone boulder placed.")
+		elseif param == "fossil" then
+			mcl_structures.generate_fossil(pos)
+			minetest.chat_send_player(name, "Fossil placed.")
+		elseif param == "ice_spike_small" then
+			mcl_structures.generate_ice_spike_small(pos)
+			minetest.chat_send_player(name, "Small ice spike placed.")
 		elseif param == "" then
 			minetest.chat_send_player(name, "Error: No structure type given. Please use “/spawnstruct <type>”.")
 			errord = true
@@ -271,7 +330,7 @@ minetest.register_chatcommand("spawnstruct", {
 			errord = true
 		end
 		if errord then
-			minetest.chat_send_player(name, "Avaiable types: desert_temple, desert_well, igloo, village")
+			minetest.chat_send_player(name, "Use /help spawnstruct to see a list of avaiable types.")
 		end
 	end
 })
