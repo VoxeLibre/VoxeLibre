@@ -172,7 +172,7 @@ end
 
 mcl_structures.generate_desert_well = function(pos)
 	local newpos = {x=pos.x,y=pos.y-2,z=pos.z}
-	local path = minetest.get_modpath("mcl_structures").."/build/desert_well.mts"
+	local path = minetest.get_modpath("mcl_structures").."/build/mcl_structures_desert_well.mts"
 	minetest.place_schematic(newpos, path, "0", nil, true)
 end
 
@@ -180,13 +180,13 @@ mcl_structures.generate_igloo_top = function(pos)
 	-- FIXME: This spawns bookshelf instead of furnace. Fix this!
 	-- Furnace does ot work atm because apparently meta is not set. :-(
 	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
-	local path = minetest.get_modpath("mcl_structures").."/build/igloo_top.mts"
+	local path = minetest.get_modpath("mcl_structures").."/build/mcl_structures_igloo_top.mts"
 	minetest.place_schematic(newpos, path, "random", nil, true)
 end
 
 mcl_structures.generate_igloo_basement = function(pos, orientation)
 	-- TODO: Add brewing stand
-	local path = minetest.get_modpath("mcl_structures").."/build/igloo_basement.mts"
+	local path = minetest.get_modpath("mcl_structures").."/build/mcl_structures_igloo_basement.mts"
 	minetest.place_schematic(pos, path, orientation, nil, true)
 end
 
@@ -223,15 +223,9 @@ mcl_structures.generate_fossil = function(pos)
 	minetest.place_schematic(newpos, path, "random", nil, false)
 end
 
-mcl_structures.generate_igloo_basement = function(pos, orientation)
-	-- TODO: Add brewing stand
-	local path = minetest.get_modpath("mcl_structures").."/build/igloo_basement.mts"
-	minetest.place_schematic(pos, path, orientation, nil, true)
-end
-
 mcl_structures.generate_desert_temple = function(pos)
 	-- No Generating for the temple ... Why using it ? No Change
-	local temple = mcl_structures.get_struct("desert_temple.we")
+	local temple = mcl_structures.get_struct("mcl_structures_desert_temple.we")
 	local newpos = {x=pos.x,y=pos.y-12,z=pos.z}
 	if newpos == nil then
 		return
