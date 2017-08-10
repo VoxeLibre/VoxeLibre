@@ -2,7 +2,7 @@ local init = os.clock()
 mcl_structures ={}
 
 mcl_structures.get_struct = function(file)
-	local localfile = minetest.get_modpath("mcl_structures").."/build/"..file
+	local localfile = minetest.get_modpath("mcl_structures").."/schematics/"..file
 	local file, errorload = io.open(localfile, "rb")
 	if errorload ~= nil then
 	    minetest.log("error", '[mcl_structures] Could not open this struct: ' .. localfile)
@@ -153,6 +153,8 @@ mcl_structures.call_struct= function(pos, struct_style)
 		mcl_structures.generate_witch_hut(pos)
 	elseif struct_style == "ice_spike_small" then
 		mcl_structures.generate_ice_spike_small(pos)
+	elseif struct_style == "ice_spike_large" then
+		mcl_structures.generate_ice_spike_large(pos)
 	elseif struct_style == "boulder" then
 		mcl_structures.generate_boulder(pos)
 	elseif struct_style == "fossil" then
@@ -172,7 +174,7 @@ end
 
 mcl_structures.generate_desert_well = function(pos)
 	local newpos = {x=pos.x,y=pos.y-2,z=pos.z}
-	local path = minetest.get_modpath("mcl_structures").."/build/mcl_structures_desert_well.mts"
+	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_desert_well.mts"
 	minetest.place_schematic(newpos, path, "0", nil, true)
 end
 
@@ -180,29 +182,75 @@ mcl_structures.generate_igloo_top = function(pos)
 	-- FIXME: This spawns bookshelf instead of furnace. Fix this!
 	-- Furnace does ot work atm because apparently meta is not set. :-(
 	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
-	local path = minetest.get_modpath("mcl_structures").."/build/mcl_structures_igloo_top.mts"
+	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_igloo_top.mts"
 	minetest.place_schematic(newpos, path, "random", nil, true)
 end
 
 mcl_structures.generate_igloo_basement = function(pos, orientation)
 	-- TODO: Add brewing stand
-	local path = minetest.get_modpath("mcl_structures").."/build/mcl_structures_igloo_basement.mts"
+	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_igloo_basement.mts"
 	minetest.place_schematic(pos, path, orientation, nil, true)
 end
 
 mcl_structures.generate_boulder = function(pos)
-	local path = minetest.get_modpath("mcl_structures").."/build/mcl_structures_boulder.mts"
+	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder.mts"
 	minetest.place_schematic(pos, path, "random", nil, false)
 end
 
 mcl_structures.generate_witch_hut = function(pos)
-	local path = minetest.get_modpath("mcl_structures").."/build/mcl_structures_witch_hut.mts"
+	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_witch_hut.mts"
 	minetest.place_schematic(pos, path, "random", nil, true)
 end
 
 mcl_structures.generate_ice_spike_small = function(pos)
-	local path = minetest.get_modpath("mcl_structures").."/build/mcl_structures_ice_spike_small.mts"
+	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_small.mts"
 	minetest.place_schematic(pos, path, "random", nil, true)
+end
+
+mcl_structures.generate_ice_spike_large = function(pos)
+	local h = math.random(20, 40)
+	local r = math.random(1,3)
+	local top = false
+	local simple_spike_bonus = 2
+	-- Decide between MTS file-based top or simple top
+	if r == 1 then
+		-- MTS file
+		top = true
+	else
+		-- Simple top, just some stacked nodes
+		h = h + simple_spike_bonus
+	end
+	local w = 3
+	local data = {}
+	local middle = 2
+	for z=1, w do
+	for y=1, h do
+	for x=1, w do
+		local prob
+		-- This creates a simple 1 node wide spike top
+		if not top and ((y > h - simple_spike_bonus) and (x==1 or x==w or z==1 or z==w)) then
+			prob = 0
+		-- Chance to leave out ice spike piece at corners, but never at bottom
+		elseif y~=1 and ((x==1 and z==1) or (x==1 and z==w) or (x==w and z==1) or (x==w and z==w)) then
+			prob = 140 -- 54.6% chance to stay
+		end
+		table.insert(data, {name = "mcl_core:packed_ice", prob = prob })
+	end
+	end
+	end
+
+	local base_schematic = {
+		size = { x=w, y=h, z=w},
+		data = data,
+	}
+
+	minetest.place_schematic(pos, base_schematic)
+
+	if top then
+		local toppos = {x=pos.x-1, y=pos.y+h, z=pos.z-1}
+		local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_large_top.mts"
+		minetest.place_schematic(toppos, path, "random", nil, true)
+	end
 end
 
 mcl_structures.generate_fossil = function(pos)
@@ -219,7 +267,7 @@ mcl_structures.generate_fossil = function(pos)
 		"mcl_structures_fossil_spine_4.mts",
 	}
 	local r = math.random(1, #fossils)
-	local path = minetest.get_modpath("mcl_structures").."/build/"..fossils[r]
+	local path = minetest.get_modpath("mcl_structures").."/schematics/"..fossils[r]
 	minetest.place_schematic(newpos, path, "random", nil, false)
 end
 
@@ -283,7 +331,7 @@ end
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
-	params = "desert_temple | desert_well | igloo | village | witch_hut | boulder | ice_spike_small | fossil",
+	params = "desert_temple | desert_well | igloo | village | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil",
 	description = "Generate a pre-defined structure near your position.",
 	privs = {debug = true},
 	func = function(name, param)
@@ -316,6 +364,9 @@ minetest.register_chatcommand("spawnstruct", {
 		elseif param == "ice_spike_small" then
 			mcl_structures.generate_ice_spike_small(pos)
 			minetest.chat_send_player(name, "Small ice spike placed.")
+		elseif param == "ice_spike_large" then
+			mcl_structures.generate_ice_spike_large(pos)
+			minetest.chat_send_player(name, "Large ice spike placed.")
 		elseif param == "" then
 			minetest.chat_send_player(name, "Error: No structure type given. Please use “/spawnstruct <type>”.")
 			errord = true
