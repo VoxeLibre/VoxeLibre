@@ -204,7 +204,7 @@ end
 
 mcl_structures.generate_ice_spike_small = function(pos)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_small.mts"
-	minetest.place_schematic(pos, path, "random", nil, true)
+	minetest.place_schematic(pos, path, "random", nil, false)
 end
 
 mcl_structures.generate_ice_spike_large = function(pos)
@@ -249,7 +249,7 @@ mcl_structures.generate_ice_spike_large = function(pos)
 	if top then
 		local toppos = {x=pos.x-1, y=pos.y+h, z=pos.z-1}
 		local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_large_top.mts"
-		minetest.place_schematic(toppos, path, "random", nil, true)
+		minetest.place_schematic(toppos, path, "random")
 	end
 end
 
