@@ -145,6 +145,21 @@ minetest.register_node("mcl_core:vine", {
 		return itemstack
 	end,
 
+	-- If destroyed, also a “dependant” vine below it.
+	-- A vine is dependant if it hangs from this node and has no supporting block.
+	after_destruct = function(pos, oldnode)
+		local below = {x=pos.x, y=pos.y-1, z=pos.z}
+		local belownode = minetest.get_node(below)
+		if belownode.name == oldnode.name and belownode.param2 == belownode.param2 then
+			local dir = minetest.wallmounted_to_dir(belownode.param2)
+			local support = vector.add(below, dir)
+			local supportnode = minetest.get_node(support)
+			if not minetest.registered_nodes[supportnode.name].walkable then
+				minetest.remove_node(below)
+			end
+		end
+	end,
+
 
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 0.2,
