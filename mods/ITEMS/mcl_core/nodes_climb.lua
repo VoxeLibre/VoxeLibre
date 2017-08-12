@@ -154,7 +154,8 @@ minetest.register_node("mcl_core:vine", {
 			local dir = minetest.wallmounted_to_dir(belownode.param2)
 			local support = vector.add(below, dir)
 			local supportnode = minetest.get_node(support)
-			if not minetest.registered_nodes[supportnode.name].walkable then
+			-- supporting block = walkable + solid
+			if not minetest.registered_nodes[supportnode.name].walkable and minetest.get_item_group(supportnode.name, "solid") ~= 1 then
 				minetest.remove_node(below)
 			end
 		end
