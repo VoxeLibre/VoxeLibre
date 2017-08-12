@@ -126,11 +126,16 @@ minetest.register_on_generated(function(minp, maxp)
 		local openings_counter = 0
 		-- Store positions of openings; walls will not be generated here
 		local openings = {}
+		-- Corners are stored because a corner-only opening needs to be increased,
+		-- so entities can get through.
+		local corners = {}
 		if ceilingfloor_ok then
 
 			local walls = {
+				-- walls along x axis (contain corners)
 				{ x, x+dim.x+1, "x", "z", z },
 				{ x, x+dim.x+1, "x", "z", z+dim.z+1 },
+				-- walls along z axis (exclude corners)
 				{ z+1, z+dim.z, "z", "x", x },
 				{ z+1, z+dim.z, "z", "x", x+dim.x+1 },
 			}
@@ -153,10 +158,45 @@ minetest.register_on_generated(function(minp, maxp)
 					if doorname1 == "air" and doorname2 == "air" then
 						openings_counter = openings_counter + 1
 						openings[pos.x][pos.z] = true
+
+						-- Record corners
+						if wall[3] == "x" and (iter == wall[1] or iter == wall[2]) then
+							table.insert(corners, {x=pos.x, z=pos.z})
+						end
 					end
 				end
 			end
 
+		end
+
+		-- If all openings are only at corners, the dungeon can't be accessed yet.
+		-- This code extends the openings of corners so they can be entered.
+		if openings_counter >= 1 and openings_counter == #corners then
+			for c=1, #corners do
+				-- Prevent creating too many openings because this would lead to dungeon rejection
+				if openings_counter >= 5 then
+					break
+				end
+				-- A corner is widened by adding openings to both neighbors
+				local cx, cz = corners[c].x, corners[c].z
+				local cxn, czn = cx, cz
+				if x == cx then
+					cxn = cxn + 1
+				else
+					cxn = cxn - 1
+				end
+				if z == cz then
+					czn = czn + 1
+				else
+					czn = czn - 1
+				end
+				openings[cx][czn] = true
+				openings_counter = openings_counter + 1
+				if openings_counter < 5 then
+					openings[cxn][cz] = true
+					openings_counter = openings_counter + 1
+				end
+			end
 		end
 
 		-- Check conditions. If okay, start generating
@@ -201,7 +241,7 @@ minetest.register_on_generated(function(minp, maxp)
 						local p_pos = area:index(tx, ty, tz)
 
 						-- Do not overwrite nodes with is_ground_content == false (e.g. bedrock)
-						-- Exceptions cobblestone and moss stone so neighborings dungeons nicely connect to each other
+						-- Exceptions: cobblestone and moss stone so neighborings dungeons nicely connect to each other
 						local name = minetest.get_name_from_content_id(data[p_pos])
 						if name == "mcl_core:cobble" or name == "mcl_core:mossycobble" or minetest.registered_nodes[name].is_ground_content then
 							-- Floor
@@ -213,13 +253,21 @@ minetest.register_on_generated(function(minp, maxp)
 								end
 
 							-- Generate walls
-							--[[ Note: No cobblestone additional ceiling is generated. This is intentional.
+							--[[ Note: No additional cobblestone ceiling is generated. This is intentional.
 							The solid blocks above the dungeon are considered as the “ceiling”.
 							It is possible (but rare) for a dungeon to generate below sand or gravel. ]]
 
 							elseif ty > y and (tx == x or tx == maxx or (tz == z or tz == maxz)) then
 								-- Check if it's an opening first
 								if (not openings[tx][tz]) or ty == maxy then
+									-- Place wall or ceiling
+									data[p_pos] = c_cobble
+								elseif ty < maxy - 1 then
+									-- Normally the openings are already clear, but not if it is a corner
+									-- widening. Make sure to clear at least the bottom 2 nodes of an opening.
+									data[p_pos] = c_air
+								elseif ty == maxy - 1 and data[p_pos] ~= c_air then
+									-- This allows for variation between 2-node and 3-node high openings.
 									data[p_pos] = c_cobble
 								end
 								-- If it was an opening, the lower 3 blocks are not touched at all
