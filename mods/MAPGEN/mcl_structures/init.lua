@@ -193,8 +193,68 @@ mcl_structures.generate_igloo_basement = function(pos, orientation)
 end
 
 mcl_structures.generate_boulder = function(pos)
-	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder.mts"
-	minetest.place_schematic(pos, path, "random", nil, false)
+	-- Choose between 2 boulder sizes (2×2×2 or 3×3×3)
+	local r = math.random(1, 10)
+	local w
+	if r <= 3 then
+		w = 2
+	else
+		w = 3
+	end
+	local data, yslice_prob
+	if w == 2 then
+		local a = { name = "mcl_core:mossycobble" }
+		local p = { name = "mcl_core:mossycobble", prob = 127 }
+		data = {
+			a, a,
+			p, p,
+
+			a, a,
+			p, p,
+		}
+	elseif w == 3 then
+		local a = { name = "mcl_core:mossycobble" } -- bottom layer
+		local x = { name = "mcl_core:mossycobble", prob = 192 } -- corner in middle layer
+		local b, c -- middle and top layer
+		local e = { name = "air", prob = 0 } -- empty
+		-- This selects the amount of erosion (random removal of blocks)
+		if r == 10 then
+			-- Erosion occours on top 2 layers
+			-- Top layer is completely eroded and middle layer is randomly eroded
+			b = { name = "mcl_core:mossycobble", prob = 127 }
+			x.prob = 127
+			c = e
+		else
+			-- Erosion occours randomly on top layer only
+			b = a
+			c = { name = "mcl_core:mossycobble", prob = 127 }
+		end
+		local e = { name = "air", prob = 0 }
+		data = {
+			e, a, e,
+			x, b, x,
+			e, c, e,
+
+			a, a, a,
+			b, b, b,
+			c, c, c,
+
+			e, a, e,
+			x, b, x,
+			e, c, e,
+		}
+
+		-- Chance to destroy the bottom slice
+		yslice_prob = { { ypos=1, prob=140 } }
+	end
+
+	local schematic = {
+		size = { x=w, y=w, z=w},
+		data = data,
+		yslice_prob = yslice_prob,
+	}
+
+	minetest.place_schematic(pos, schematic)
 end
 
 mcl_structures.generate_witch_hut = function(pos)
