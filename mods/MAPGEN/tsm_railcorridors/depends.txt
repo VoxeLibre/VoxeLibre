@@ -4,3 +4,4 @@ mcl_core
 mcl_loot
 mcl_tnt
 mcl_farming
+mcl_mobspawners

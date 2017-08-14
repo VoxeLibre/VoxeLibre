@@ -10,6 +10,8 @@ tsm_railcorridors.nodes = {
 	rail = "mcl_minecarts:rail",
 	torch_floor = "mcl_torches:torch",
 	torch_wall = "mcl_torches:torch_wall",
+	cobweb = "mcl_core:cobweb",
+	spawner = "mcl_mobspawners:spawner",
 
 	--[[ Wood types for the corridors. Corridors are made out of full wood blocks
 	and posts. For each corridor system, a random wood type is chosen with the chance
@@ -25,6 +27,11 @@ tsm_railcorridors.nodes = {
 -- pr: A PseudoRandom object
 function tsm_railcorridors.get_default_treasure(pr)
 	-- UNUSED IN MINECLONE 2!
+end
+
+-- All spawners spawn cave spiders
+function tsm_railcorridors.on_construct_spawner(pos)
+	mcl_mobspawners.setup_spawner(pos, "mobs_mc:cave_spider")
 end
 
 -- MineClone 2's treasure function. Gets all treasures for a single chest.
