@@ -20,6 +20,9 @@ tsm_railcorridors_probability_fork (Fork probability) float 0.04 0.0 1.0
 #Probability (0.0 to 1.0) for every part of a rail corridor to contain a treasure chest.
 tsm_railcorridors_probability_chest (Chest probability) float 0.05 0.0 1.0
 
+#Probability (0.0 to 1.0) for every part of a rail corridor to include a cart.
+tsm_railcorridors_probability_cart (Cart probability) float 0.05 0.0 1.0
+
 #Probability (0.0 to 1.0) for a rail corridor system to have damaged/incomplete railways
 tsm_railcorridors_probability_damage (Damaged railway probability) float 1.0 0.0 1.0
 
@@ -28,3 +31,7 @@ tsm_railcorridors_probability_damage (Damaged railway probability) float 1.0 0.0
 #to pretty chaotic rail corridors, but they are also more free to spread.
 #If disabled, rail corridors spread in a orderly fashion.
 tsm_railcorridors_chaos (Chaos Mode) bool false
+
+#If enabled, cobwebs may be placed in some corridors.
+#Currently, cobwebs are only supported with the Mobs Redo mod.
+tsm_railcorridors_place_cobwebs (Cobwebs) bool true
