@@ -22,6 +22,13 @@ tsm_railcorridors.nodes = {
 	},
 }
 
+-- TODO: Use minecart with chest instead of normal minecart
+tsm_railcorridors.carts = { "mcl_minecarts:minecart" }
+
+function tsm_railcorridors.on_construct_cart(pos, cart)
+	-- TODO: Fill cart with treasures
+end
+
 -- Fallback function. Returns a random treasure. This function is called for chests
 -- only if the Treasurer mod is not found.
 -- pr: A PseudoRandom object

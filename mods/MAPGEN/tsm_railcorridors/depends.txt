@@ -5,3 +5,4 @@ mcl_loot
 mcl_tnt
 mcl_farming
 mcl_mobspawners
+mcl_minecarts

@@ -65,6 +65,13 @@ if setting then
 	probability_chest = P(setting)
 end
 
+-- Probability for every part of a corridor to contain a cart
+local probability_cart = P(0.05)
+setting = tonumber(minetest.settings:get("tsm_railcorridors_probability_cart"))
+if setting then
+	probability_cart = P(setting)
+end
+
 -- Probability for a rail corridor system to be damaged
 local probability_damage = P(1.0)
 setting = tonumber(minetest.settings:get("tsm_railcorridors_probability_damage"))
@@ -227,7 +234,7 @@ local function Platform(p, radius, node)
 	end
 end
 
--- chests
+-- Chests
 local function PlaceChest(pos, param2)
 	if SetNodeIfCanBuild(pos, {name=tsm_railcorridors.nodes.chest, param2=param2}) then
 		local meta = minetest.get_meta(pos)
@@ -237,6 +244,39 @@ local function PlaceChest(pos, param2)
 			inv:set_stack("main", i, ItemStack(items[i]))
 		end
 	end
+end
+
+-- This function checks if a cart has ACTUALLY been spawned.
+-- If not, it tries to spawn it again, and again, until it succeeded or
+-- it failed too often.
+-- To be calld by minetest.after.
+-- This is a HORRIBLE workaround thanks to the fact that minetest.add_entity is unreliable as fuck
+-- See: https://github.com/minetest/minetest/issues/4759
+-- FIXME: Kill this horrible hack with fire as soon you can.
+local function RecheckCartHack(params)
+	local pos = params[1]
+	local cart_id = params[2]
+	local tries = params[3]
+	tries = tries - 1
+	-- Find cart
+	for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
+		if obj ~= nil and obj:get_luaentity().name == cart_id then
+			-- Cart found! We can now safely call the callback func.
+			-- (calling it earlier has the danger of failing)
+			tsm_railcorridors.on_construct_cart(pos, obj)
+			return
+		end
+	end
+	if tries <= 0 then
+		-- Abort if too many tries to avoid excessive function calls
+		return
+	end
+	-- No cart found! :-( Try again …
+	if minetest.get_node(pos).name == tsm_railcorridors.nodes.rail then
+		minetest.add_entity(pos, cart_id)
+		minetest.after(5, RecheckCartHack, {pos, cart_id, tries})
+	end
+	-- The rail may have been destroyed in the meantime, that's why the node is checked.
 end
 
 -- Try to place a cobweb.
@@ -289,7 +329,7 @@ end
 -- Returns <success>, <segments>
 -- success: true if corridor could be placed entirely
 -- segments: Number of segments successfully placed
-local function corridor_part(start_point, segment_vector, segment_count, wood, post, is_final, up_or_down_prev)
+local function corridor_part(start_point, segment_vector, segment_count, wood, post, first_or_final, up_or_down_prev)
 	local p = {x=start_point.x, y=start_point.y, z=start_point.z}
 	local torches = pr:next() < probability_torches_in_segment
 	local dir = {0, 0}
@@ -411,7 +451,7 @@ local function corridor_part(start_point, segment_vector, segment_count, wood, p
 	return true, segment_count
 end
 
-local function corridor_func(waypoint, coord, sign, up_or_down, up_or_down_next, up_or_down_prev, up, wood, post, is_final, damage, no_spawner)
+local function corridor_func(waypoint, coord, sign, up_or_down, up_or_down_next, up_or_down_prev, up, wood, post, first_or_final, damage, no_spawner)
 	local segamount = 3
 	if up_or_down then
 		segamount = 1
@@ -443,7 +483,7 @@ local function corridor_func(waypoint, coord, sign, up_or_down, up_or_down_next,
 	if up_or_down and up == false then
 		Cube(waypoint, 1, {name="air"})
 	end
-	local corridor_dug, corridor_segments_dug = corridor_part(start, vek, segcount, wood, post, is_final, up_or_down_prev)
+	local corridor_dug, corridor_segments_dug = corridor_part(start, vek, segcount, wood, post, first_or_final, up_or_down_prev)
 	local corridor_vek = {x=vek.x*segcount, y=vek.y*segcount, z=vek.z*segcount}
 
 	-- nachträglich Schienen legen
@@ -464,9 +504,22 @@ local function corridor_func(waypoint, coord, sign, up_or_down, up_or_down_next,
 			vek.y = -1
 		end
 	end
+	-- Calculate chest and cart position
 	local chestplace = -1
-	if corridor_dug and not up_or_down and pr:next() < probability_chest then
-		chestplace = pr:next(1,segcount+1)
+	local cartplace = -1
+	local minseg
+	if first_or_final == "first" then
+		minseg = 2
+	else
+		minseg = 1
+	end
+	if corridor_dug and not up_or_down then
+		if pr:next() < probability_chest then
+			chestplace = pr:next(minseg, segcount+1)
+		end
+		if tsm_railcorridors.carts and #tsm_railcorridors.carts > 0 and pr:next() < probability_cart then
+			cartplace = pr:next(minseg, segcount+1)
+		end
 	end
 	local railsegcount
 	if not chaos_mode and not corridor_dug then
@@ -477,21 +530,62 @@ local function corridor_func(waypoint, coord, sign, up_or_down, up_or_down_next,
 		railsegcount = segcount
 	end
 	for i=1,railsegcount do
-		-- Precalculate chest position
 		local p = {x=waypoint.x+vek.x*i, y=waypoint.y+vek.y*i-1, z=waypoint.z+vek.z*i}
+
+		-- Randomly returns either the left or right side of the main rail.
+		-- Also returns offset as second return value.
+		local left_or_right = function(pos, vek)
+			local off, facedir
+			if pr:next(1, 2) == 1 then
+				-- left
+				off = {x = -vek.z, y= 0, z = vek.x}
+			else
+				-- right
+				off = {x=vek.z, y= 0, z= -vek.x}
+			end
+			return vector.add(pos, off), off
+		end
+
 		if (minetest.get_node({x=p.x,y=p.y-1,z=p.z}).name=="air" and minetest.get_node({x=p.x,y=p.y-3,z=p.z}).name~=tsm_railcorridors.nodes.rail) then
 			p.y = p.y - 1;
 			if i == chestplace then
 				chestplace = chestplace + 1
 			end
+			if i == cartplace then
+				cartplace = cartplace + 1
+			end
 		end
 
 		-- Chest
 		if i == chestplace then
-			if minetest.get_node({x=p.x+vek.z,y=p.y-1,z=p.z-vek.x}).name == post then
+			local cpos, offset = left_or_right(p, vek)
+			if minetest.get_node(cpos).name == post then
 				chestplace = chestplace + 1
 			else
-				PlaceChest({x=p.x+vek.z,y=p.y,z=p.z-vek.x}, minetest.dir_to_facedir(vek))
+				PlaceChest(cpos, minetest.dir_to_facedir(offset))
+			end
+		end
+
+		-- Rail and cart
+		if i == cartplace then
+			local cpos = left_or_right(p, vek)
+			if minetest.get_node(cpos).name == post then
+				cartplace = cartplace + 1
+			else
+				local placed = PlaceRail(cpos, damage)
+				if placed then
+					local cart_type = pr:next(1, #tsm_railcorridors.carts)
+					-- FIXME: The cart sometimes fails to spawn
+					-- See <https://github.com/minetest/minetest/issues/4759>
+					local cart_id = tsm_railcorridors.carts[cart_type]
+					local cart = minetest.add_entity(cpos, cart_id)
+
+					-- This checks if the cart is actually spawned, it's a giant hack!
+					-- Note that the callback function is also called there.
+					-- TODO: Move callback function to this position when the
+					-- minetest.add_entity bug has been fixed.
+					minetest.after(2, RecheckCartHack, {cpos, cart_id, 10})
+				end
 			end
 		end
 
@@ -610,7 +704,13 @@ local function start_corridor(waypoint, coord, sign, length, psra, wood, post, d
 			udn = false
 		end
 		-- Make corridor / Korridor graben
-		wp, no_spawner = corridor_func(wp,c,s, ud, udn, udp, up, wood, post, i == length, damage, no_spawner)
+		local first_or_final
+		if i == length then
+			first_or_final = "final"
+		elseif i == 1 then
+			first_or_final = "first"
+		end
+		wp, no_spawner = corridor_func(wp,c,s, ud, udn, udp, up, wood, post, first_or_final, damage, no_spawner)
 		if wp == false then return end
 		-- Verzweigung?
 		-- Fork?
