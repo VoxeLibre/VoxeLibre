@@ -144,8 +144,9 @@ local spawn_monsters = function(pos, elapsed)
 	The doll may not stay spawned if the monster spawner is placed far away from
 	players, so we will check for its existance periodically when a player is nearby.
 	This would happen almost always when the monster spawner is placed by the mapgen.
-	FIXME: Find out why the doll does not seem to spawn / despawns immediately when
-	monster spawner is placed by mapgen.
+	This is probably caused by a Minetest bug:
+	https://github.com/minetest/minetest/issues/4759
+	FIXME: Fix this horrible hack.
 	]]
 	local doll = find_doll(pos)
 	if not doll then
