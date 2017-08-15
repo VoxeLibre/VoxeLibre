@@ -1057,117 +1057,9 @@ local GEN_MAX = mcl_vars.mg_lava_overworld_max or BEDROCK_MAX
 -- Buffer for LuaVoxelManip
 local lvm_buffer = {}
 
--- Below the bedrock, generate air/void
-minetest.register_on_generated(function(minp, maxp)
-	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
-	local data = vm:get_data(lvm_buffer)
-	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
-	local lvm_used = false
 
-	-- Generate bedrock and lava layers
-	if minp.y <= GEN_MAX then
-		local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
-		local c_void = minetest.get_content_id("mcl_core:void")
-		local c_lava = minetest.get_content_id("mcl_core:lava_source")
-		local c_air = minetest.get_content_id("air")
-
-		local max_y = math.min(maxp.y, GEN_MAX)
-
-		for y = minp.y, max_y do
-			for x = minp.x, maxp.x do
-				for z = minp.z, maxp.z do
-					local p_pos = area:index(x, y, z)
-					local setdata = nil
-					if mcl_vars.mg_bedrock_is_rough then
-						-- Bedrock layers with increasing levels of roughness, until a perfecly flat bedrock later at the bottom layer
-						-- This code assumes a bedrock height of 5 layers.
-						if y == BEDROCK_MAX then
-							-- 50% bedrock chance
-							if math.random(1,2) == 1 then setdata = c_bedrock end
-						elseif y == BEDROCK_MAX -1 then
-							-- 66.666...%
-							if math.random(1,3) <= 2 then setdata = c_bedrock end
-						elseif y == BEDROCK_MAX -2 then
-							-- 75%
-							if math.random(1,4) <= 3 then setdata = c_bedrock end
-						elseif y == BEDROCK_MAX -3 then
-							-- 90%
-							if math.random(1,10) <= 9 then setdata = c_bedrock end
-						elseif y == BEDROCK_MAX -4 then
-							-- 100%
-							setdata = c_bedrock
-						elseif y < BEDROCK_MIN then
-							setdata = c_void
-						end
-					else
-						-- Perfectly flat bedrock layer(s)
-						if y >= BEDROCK_MIN and y <= BEDROCK_MAX then
-							setdata = c_bedrock
-						elseif y < BEDROCK_MIN then
-							setdata = c_void
-						end
-					end
-
-					if setdata then
-						data[p_pos] = setdata
-						lvm_used = true
-					elseif mcl_vars.mg_lava and y <= mcl_vars.mg_lava_overworld_max then
-						if data[p_pos] == c_air then
-							data[p_pos] = c_lava
-						end
-						lvm_used = true
-					end
-				end
-			end
-		end
-	end
-
-	-- Put top snow on grassy snow blocks created by the v6 mapgen
-	-- This is because the snowy grass block must only be used when it is below snow or top snow
-	if mg_name == "v6" then
-		local c_top_snow = minetest.get_content_id("mcl_core:snow")
-		local snowdirt = minetest.find_nodes_in_area_under_air(minp, maxp, "mcl_core:dirt_with_grass_snow")
-		for n = 1, #snowdirt do
-			-- CHECKME: What happens at chunk borders?
-			local p_pos = area:index(snowdirt[n].x, snowdirt[n].y + 1, snowdirt[n].z)
-			if p_pos then
-				data[p_pos] = c_top_snow
-			end
-		end
-		if #snowdirt > 1 then
-			lvm_used = true
-		end
-	end
-
-	if lvm_used then
-		vm:set_data(data)
-		vm:calc_lighting()
-		vm:update_liquids()
-		vm:write_to_map()
-	end
-
-	-- Generate rare underground mushrooms
-	-- TODO: Make them appear in groups, use Perlin noise
-	if minp.y > 0 or maxp.y < -32 then
-		return
-	end
-
-	local bpos
-	local stone = minetest.find_nodes_in_area_under_air(minp, maxp, {"mcl_core:stone", "mcl_core:dirt", "mcl_core:mycelium", "mcl_core:podzol", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite", "mcl_core:stone_with_coal", "mcl_core:stone_with_iron", "mcl_core:stone_with_gold"})
-
-	for n = 1, #stone do
-		bpos = {x = stone[n].x, y = stone[n].y + 1, z = stone[n].z }
-
-		if math.random(1,1000) < 4 and minetest.get_node_light(bpos, 0.5) <= 12 then
-			if math.random(1,2) == 1 then
-				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
-			else
-				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_red"})
-			end
-		end
-	end
-
-	-- Generate cocoas and vines at jungle trees (v6 only)
+-- Generate cocoas and vines at jungle trees within the bounding box
+local function generate_jungle_tree_decorations(minp, maxp)
 	if minetest.get_mapgen_setting("mg_name") == "v6" then
 
 		if maxp.y < 0 then
@@ -1286,7 +1178,124 @@ minetest.register_on_generated(function(minp, maxp)
 			end
 		end
 	end
+end
 
+-- Generate mushrooms in caves
+local generate_underground_mushrooms = function(minp, maxp)
+	-- Generate rare underground mushrooms
+	-- TODO: Make them appear in groups, use Perlin noise
+	if minp.y > 0 or maxp.y < -32 then
+		return
+	end
+
+	local bpos
+	local stone = minetest.find_nodes_in_area_under_air(minp, maxp, {"mcl_core:stone", "mcl_core:dirt", "mcl_core:mycelium", "mcl_core:podzol", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite", "mcl_core:stone_with_coal", "mcl_core:stone_with_iron", "mcl_core:stone_with_gold"})
+
+	for n = 1, #stone do
+		bpos = {x = stone[n].x, y = stone[n].y + 1, z = stone[n].z }
+
+		if math.random(1,1000) < 4 and minetest.get_node_light(bpos, 0.5) <= 12 then
+			if math.random(1,2) == 1 then
+				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
+			else
+				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_red"})
+			end
+		end
+	end
+end
+
+
+-- Below the bedrock, generate air/void
+minetest.register_on_generated(function(minp, maxp)
+	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
+	local data = vm:get_data(lvm_buffer)
+	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
+	local lvm_used = false
+
+	-- Generate bedrock and lava layers
+	if minp.y <= GEN_MAX then
+		local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
+		local c_void = minetest.get_content_id("mcl_core:void")
+		local c_lava = minetest.get_content_id("mcl_core:lava_source")
+		local c_air = minetest.get_content_id("air")
+
+		local max_y = math.min(maxp.y, GEN_MAX)
+
+		for y = minp.y, max_y do
+			for x = minp.x, maxp.x do
+				for z = minp.z, maxp.z do
+					local p_pos = area:index(x, y, z)
+					local setdata = nil
+					if mcl_vars.mg_bedrock_is_rough then
+						-- Bedrock layers with increasing levels of roughness, until a perfecly flat bedrock later at the bottom layer
+						-- This code assumes a bedrock height of 5 layers.
+						if y == BEDROCK_MAX then
+							-- 50% bedrock chance
+							if math.random(1,2) == 1 then setdata = c_bedrock end
+						elseif y == BEDROCK_MAX -1 then
+							-- 66.666...%
+							if math.random(1,3) <= 2 then setdata = c_bedrock end
+						elseif y == BEDROCK_MAX -2 then
+							-- 75%
+							if math.random(1,4) <= 3 then setdata = c_bedrock end
+						elseif y == BEDROCK_MAX -3 then
+							-- 90%
+							if math.random(1,10) <= 9 then setdata = c_bedrock end
+						elseif y == BEDROCK_MAX -4 then
+							-- 100%
+							setdata = c_bedrock
+						elseif y < BEDROCK_MIN then
+							setdata = c_void
+						end
+					else
+						-- Perfectly flat bedrock layer(s)
+						if y >= BEDROCK_MIN and y <= BEDROCK_MAX then
+							setdata = c_bedrock
+						elseif y < BEDROCK_MIN then
+							setdata = c_void
+						end
+					end
+
+					if setdata then
+						data[p_pos] = setdata
+						lvm_used = true
+					elseif mcl_vars.mg_lava and y <= mcl_vars.mg_lava_overworld_max then
+						if data[p_pos] == c_air then
+							data[p_pos] = c_lava
+						end
+						lvm_used = true
+					end
+				end
+			end
+		end
+	end
+
+	-- Put top snow on grassy snow blocks created by the v6 mapgen
+	-- This is because the snowy grass block must only be used when it is below snow or top snow
+	if mg_name == "v6" then
+		local c_top_snow = minetest.get_content_id("mcl_core:snow")
+		local snowdirt = minetest.find_nodes_in_area_under_air(minp, maxp, "mcl_core:dirt_with_grass_snow")
+		for n = 1, #snowdirt do
+			-- CHECKME: What happens at chunk borders?
+			local p_pos = area:index(snowdirt[n].x, snowdirt[n].y + 1, snowdirt[n].z)
+			if p_pos then
+				data[p_pos] = c_top_snow
+			end
+		end
+		if #snowdirt > 1 then
+			lvm_used = true
+		end
+	end
+
+	if lvm_used then
+		vm:set_data(data)
+		vm:calc_lighting()
+		vm:update_liquids()
+		vm:write_to_map()
+	end
+
+	generate_underground_mushrooms(minp, maxp)
+	generate_jungle_tree_decorations(minp, maxp)
 end)
 
 
