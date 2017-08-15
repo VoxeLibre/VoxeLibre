@@ -229,30 +229,31 @@ function mcl_minecarts.cart:on_step(dtime)
 		end
 	end
 
-	if self._punched then
-		self._punched = false
-	end
-
 	-- Give achievement when player reached a distance of 1000 nodes from the start position
 	if self._driver and (vector.distance(self._start_pos, pos) >= 1000) then
 		awards.unlock(self._driver, "mcl:onARail")
+	end
+
+	if update.pos or self._punched then
+		local yaw = 0
+		if dir.x < 0 then
+			yaw = 0.5
+		elseif dir.x > 0 then
+			yaw = 1.5
+		elseif dir.z < 0 then
+			yaw = 1
+		end
+		self.object:setyaw(yaw * math.pi)
+	end
+
+	if self._punched then
+		self._punched = false
 	end
 	
 	if not (update.vel or update.pos) then
 		return
 	end
 	
-	local yaw = 0
-	if dir.x < 0 then
-		yaw = 0.5
-	elseif dir.x > 0 then
-		yaw = 1.5
-	elseif dir.z < 0 then
-		yaw = 1
-	end
-	if update.pos then
-		self.object:setyaw(yaw * math.pi)
-	end
 	
 	local anim = {x=0, y=0}
 	if dir.y == -1 then
