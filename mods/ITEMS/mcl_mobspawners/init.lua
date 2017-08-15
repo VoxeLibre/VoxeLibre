@@ -214,7 +214,20 @@ minetest.register_node("mcl_mobspawners:spawner", {
 	is_ground_content = false,
 	drop = "",
 
-	on_construct = mcl_mobspawners.setup_spawner,
+	on_place = function(itemstack, placer, pointed_thing)
+		local node_under = minetest.get_node(pointed_thing.under)
+		local new_itemstack, success = minetest.item_place(itemstack, placer, pointed_thing)
+		if success then
+			local placepos
+			if minetest.registered_nodes[node_under.name].buildable_to then
+				placepos = pointed_thing.under
+			else
+				placepos = pointed_thing.above
+			end
+			mcl_mobspawners.setup_spawner(placepos)
+		end
+		return new_itemstack
+	end,
 
 	on_destruct = function(pos)
 		local meta = minetest.get_meta(pos)
