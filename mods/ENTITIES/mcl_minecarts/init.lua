@@ -250,7 +250,9 @@ function mcl_minecarts.cart:on_step(dtime)
 	elseif dir.z < 0 then
 		yaw = 1
 	end
-	self.object:setyaw(yaw * math.pi)
+	if update.pos then
+		self.object:setyaw(yaw * math.pi)
+	end
 	
 	local anim = {x=0, y=0}
 	if dir.y == -1 then
@@ -291,11 +293,18 @@ minetest.register_craftitem("mcl_minecarts:minecart", {
 			end
 		end
 
+		local railpos
 		if mcl_minecarts:is_rail(pointed_thing.under) then
-			minetest.add_entity(pointed_thing.under, "mcl_minecarts:minecart")
+			railpos = pointed_thing.under
 		elseif mcl_minecarts:is_rail(pointed_thing.above) then
-			minetest.add_entity(pointed_thing.above, "mcl_minecarts:minecart")
-		else return end
+			railpos = pointed_thing.under
+		else
+			return
+		end
+		local cart = minetest.add_entity(railpos, "mcl_minecarts:minecart")
+		local railtype = minetest.get_item_group(node.name, "connect_to_raillike")
+		local cart_dir = mcl_minecarts:get_rail_direction(railpos, {x=1, y=0, z=0}, nil, nil, railtype)
+		cart:setyaw(minetest.dir_to_yaw(cart_dir))
 		
 		if not minetest.settings:get_bool("creative_mode") then
 			itemstack:take_item()
