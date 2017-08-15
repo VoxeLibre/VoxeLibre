@@ -15,11 +15,11 @@ dofile(mcl_minecarts.modpath.."/rails.lua")
 
 mcl_minecarts.cart = {
 	physical = false,
-	collisionbox = {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
+	collisionbox = {-10/16., -0.5, -10/16, 10/16, 0.25, 10/16},
 	visual = "mesh",
-	mesh = "cart.x",
+	mesh = "mcl_minecarts_minecart.b3d",
 	visual_size = {x=1, y=1},
-	textures = {"cart.png"},
+	textures = {"mcl_minecarts_minecart.png"},
 	
 	_driver = nil,
 	_punched = false, -- used to re-send _velocity and position
