@@ -19,6 +19,9 @@ local get_recipes = function(query_item)
 	-- doesn't return repairing recipes)
 	if minetest.get_modpath("mcl_core") then
 		local def = minetest.registered_items[query_item]
+		if not def then
+			return
+		end
 		if def.type == "tool" then
 			if recipes == nil then
 				recipes = {}
