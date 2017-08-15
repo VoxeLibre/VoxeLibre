@@ -660,19 +660,20 @@ local function register_biomelike_ores()
 		ore_type       = "blob",
 		ore            = "mcl_core:mossycobble",
 		wherein        = "mcl_core:podzol",
-			clust_scarcity  = 16 * 16 * 16,
-			clust_size      = 3,
-			y_min           = 25,
-			y_max           = 31000,
-			noise_threshold = 0.0,
-			noise_params    = {
-				offset = 0.5,
-				scale = 0.2,
-				spread = {x = 3, y = 3, z = 3},
-				seed = 17676,
-				octaves = 1,
-				persist = 0.0
-			},
+		biomes         = {"taiga"},
+		clust_scarcity  = 16 * 16 * 16,
+		clust_size      = 3,
+		y_min           = 25,
+		y_max           = 31000,
+		noise_threshold = 0.0,
+		noise_params    = {
+			offset = 0.5,
+			scale = 0.2,
+			spread = {x = 3, y = 3, z = 3},
+			seed = 17676,
+			octaves = 1,
+			persist = 0.0
+		},
 	})
 
 	--mcl_core STRATA
