@@ -202,6 +202,12 @@ local spawn_monsters = function(pos, elapsed)
 
 end
 
+-- The monster spawner node.
+-- PLACEMENT INSTRUCTIONS:
+-- If this node is placed by a player, minetest.item_place, etc. default settings are applied
+-- automatially.
+-- IF this node is placed by ANY other method (e.g. minetest.set_node, LuaVoxelManip), you
+-- MUST call mcl_mobspawners.setup_spawner right after the spawner has been placed.
 minetest.register_node("mcl_mobspawners:spawner", {
 	tiles = {"mob_spawner.png"},
 	drawtype = "glasslike",
@@ -214,6 +220,7 @@ minetest.register_node("mcl_mobspawners:spawner", {
 	is_ground_content = false,
 	drop = "",
 
+	-- If placed by player, setup spawner with default settings
 	on_place = function(itemstack, placer, pointed_thing)
 		local node_under = minetest.get_node(pointed_thing.under)
 		local new_itemstack, success = minetest.item_place(itemstack, placer, pointed_thing)
