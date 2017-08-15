@@ -82,8 +82,10 @@ function mcl_minecarts.cart:on_punch(puncher, time_from_last_punch, tool_capabil
 			end
 		end
 		
+		if not minetest.settings:get_bool("creative_mode") then
+			minetest.add_item(self.object:getpos(), "mcl_minecarts:minecart")
+		end
 		self.object:remove()
-		puncher:get_inventory():add_item("main", "mcl_minecarts:minecart")
 		return
 	end
 	
@@ -295,7 +297,9 @@ minetest.register_craftitem("mcl_minecarts:minecart", {
 			minetest.add_entity(pointed_thing.above, "mcl_minecarts:minecart")
 		else return end
 		
-		itemstack:take_item()
+		if not minetest.settings:get_bool("creative_mode") then
+			itemstack:take_item()
+		end
 		return itemstack
 	end,
 	groups = { minecart = 1, transport = 1},
