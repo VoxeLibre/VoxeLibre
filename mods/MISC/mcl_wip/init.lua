@@ -15,7 +15,6 @@ local wip_items = {
 	"gemalde:node_1",
 	"mcl_observers:observer",
 	"mcl_chests:trapped_chest",
-	"mcl_core:cobweb",
 	"mobs_mc:llama",
 	"mobs_mc:totem",
 	"mcl_paintings:painting",
