@@ -116,11 +116,13 @@ end
 
 local function find_end_target3_y2(target3_x, target3_z)
 	local start_y = END_DEPTH + math.random(20, 120) -- Search start
-	local nobj_cave_point = minetest.get_perlin(np_cave)
+	if not nobj_cave then
+		nobj_cave = minetest.get_perlin(np_cave)
+	end
 	local air = 0 -- Consecutive air nodes found
 
 	for y = start_y, start_y - 120, -1 do
-		local nval_cave = nobj_cave_point:get3d({x = target3_x, y = y, z = target3_z})
+		local nval_cave = nobj_cave:get3d({x = target3_x, y = y, z = target3_z})
 
 		if nval_cave > TCAVE then -- Cavern
 			air = air + 1

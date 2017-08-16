@@ -118,11 +118,13 @@ end
 
 local function find_nether_target_y(target_x, target_z)
 	local start_y = NETHER_DEPTH + math.random(38, 117) -- Search start
-	local nobj_cave_point = minetest.get_perlin(np_cave)
+	if not nobj_cave then
+		nobj_cave = minetest.get_perlin(np_cave)
+	end
 	local air = 4
 
 	for y = start_y, start_y -117, -1 do
-		local nval_cave = nobj_cave_point:get3d({x = target_x, y = y, z = target_z})
+		local nval_cave = nobj_cave:get3d({x = target_x, y = y, z = target_z})
 
 		if nval_cave > TCAVE then -- Cavern
 			air = air + 1
