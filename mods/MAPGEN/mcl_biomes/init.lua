@@ -554,7 +554,6 @@ local function register_biomes()
 	--[[ REALMS ]]
 	-- TODO: Make these work in v6, too.
 
-
 	--[[ THE NETHER ]]
 
 	minetest.register_biome({
@@ -565,34 +564,24 @@ local function register_biomes()
 		-- FIXME: For some reason the Nether stops generating early if this constant is not added.
 		-- Figure out why.
 		y_max = mcl_vars.mg_nether_max + 80,
-		heat_point = 50,
-		humidity_point = 50,
+		heat_point = 100,
+		humidity_point = 0,
 	})
 
-	-- TODO: Giant Nether lava seas
-	--[[ The End ]]
+	--[[ THE END ]]
 
 	minetest.register_biome({
 		name = "end",
 		node_filler = "mcl_end:end_stone",
 		node_stone = "mcl_end:end_stone",
 		y_min = mcl_vars.mg_end_min,
-		y_max = mcl_vars.mg_end_max,
+		-- FIXME: For some reason the Nether stops generating early if this constant is not added.
+		-- Figure out why.
+		y_max = mcl_vars.mg_end_max + 80,
 		heat_point = 50,
 		humidity_point = 50,
 	})
 
-	-- Realm barrier to separate the top of the End realm from the void below the Overworld
-	-- TODO: Implement differently
-	minetest.register_biome({
-		name = "end_barrier",
-		node_filler = "mcl_core:realm_barrier",
-		node_stone =  "mcl_core:realm_barrier",
-		y_min = mcl_vars.mg_end_max + 1,
-		y_max = mcl_vars.mg_end_max + 12,
-		heat_point = 50,
-		humidity_point = 50,
-	})
 
 end
 
@@ -841,17 +830,6 @@ local function register_biomelike_ores()
 
 	--[[ NETHER GENERATION ]]
 
-	minetest.register_ore({
-		ore_type       = "scatter",
-		ore            = "mcl_nether:quartz_ore",
-		wherein        = {"mcl_nether:netherrack"},
-		clust_scarcity = 10*10*10,
-		clust_num_ores = 6,
-		clust_size     = 5,
-		y_min     = mcl_vars.mg_nether_min,
-		y_max     = mcl_vars.mg_nether_max,
-	})
-
 	-- Soul sand
 	minetest.register_ore({
 		ore_type        = "sheet",
@@ -860,7 +838,7 @@ local function register_biomelike_ores()
 		clust_scarcity  = 13 * 13 * 13,
 		clust_size      = 5,
 		y_min           = mcl_vars.mg_nether_min,
-		y_max           = mcl_vars.mg_nether_max,
+		y_max           = mcl_util.layer_to_y(64, "nether"),
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
@@ -874,34 +852,24 @@ local function register_biomelike_ores()
 
 	-- Magma blocks
 	minetest.register_ore({
-		ore_type        = "sheet",
-		ore             = "mcl_nether:magma",
-		wherein         = {"mcl_nether:netherrack", "mcl_core:lava_source"},
-		clust_scarcity  = 13 * 13 * 13,
-		clust_size      = 5,
-		y_min           = mcl_vars.mg_nether_min,
-		y_max           = mcl_vars.mg_nether_max,
-		noise_threshold = 0.0,
-		noise_params    = {
-			offset = 0.5,
-			scale = 0.1,
-			spread = {x = 5, y = 5, z = 5},
-			seed = 2316,
-			octaves = 1,
-			persist = 0.0
-		},
+		ore_type       = "blob",
+		ore            = "mcl_nether:magma",
+		wherein        = {"mcl_nether:netherrack"},
+		clust_scarcity = 15*15*15,
+		clust_num_ores = 33,
+		clust_size     = 5,
+		y_min          = mcl_util.layer_to_y(23, "nether"),
+		y_max          = mcl_util.layer_to_y(37, "nether"),
 	})
 
-
 	-- Glowstone
-
 	minetest.register_ore({
 		ore_type        = "blob",
 		ore             = "mcl_nether:glowstone",
 		wherein         = {"mcl_nether:netherrack"},
 		clust_scarcity  = 26 * 26 * 26,
 		clust_size      = 5,
-		y_min           = mcl_vars.mg_nether_min,
+		y_min           = mcl_vars.mg_lava_nether_max + 10,
 		y_max           = mcl_vars.mg_nether_max,
 		noise_threshold = 0.0,
 		noise_params    = {
@@ -914,21 +882,42 @@ local function register_biomelike_ores()
 		},
 	})
 
-	-- Gravel
+	-- Nether quartz
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "mcl_nether:quartz_ore",
+		wherein        = {"mcl_nether:netherrack"},
+		clust_scarcity = 850,
+		clust_num_ores = 4, -- MC cluster amount: 4-10
+		clust_size     = 3,
+		y_min = mcl_vars.mg_nether_min,
+		y_max = mcl_vars.mg_nether_max,
+	})
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "mcl_nether:quartz_ore",
+		wherein        = {"mcl_nether:netherrack"},
+		clust_scarcity = 1650,
+		clust_num_ores = 8, -- MC cluster amount: 4-10
+		clust_size     = 4,
+		y_min = mcl_vars.mg_nether_min,
+		y_max = mcl_vars.mg_nether_max,
+	})
 
+	-- Gravel (Nether)
 	minetest.register_ore({
 		ore_type        = "sheet",
 		ore             = "mcl_core:gravel",
 		wherein         = {"mcl_nether:netherrack"},
 		clust_scarcity  = 16 * 16 * 16,
 		clust_size      = 5,
-		y_min           = mcl_vars.mg_nether_min,
-		y_max           = mcl_vars.mg_nether_max,
+		y_min           = mcl_util.layer_to_y(63, "nether"),
+		y_max           = mcl_util.layer_to_y(65, "nether"),
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
 			scale = 0.2,
-			spread = {x = 5, y = 5, z = 5},
+			spread = {x = 5, y = 1, z = 5},
 			seed = 766,
 			octaves = 1,
 			persist = 0.0
@@ -936,11 +925,10 @@ local function register_biomelike_ores()
 	})
 
 	-- Lava in the Nether
-
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_nether:nether_lava_source",
-		wherein        = {"mcl_nether:netherrack", "air"},
+		wherein        = {"mcl_nether:netherrack"},
 		clust_scarcity = 12 *12 * 12,
 		clust_num_ores = 2,
 		clust_size     = 2,
@@ -949,7 +937,7 @@ local function register_biomelike_ores()
 	})
 
 
-	--Fire in the Nether
+	-- Fire in the Nether
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_fire:eternal_fire",

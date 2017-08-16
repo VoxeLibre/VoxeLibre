@@ -1215,6 +1215,7 @@ minetest.register_on_generated(function(minp, maxp)
 		local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
 		local c_void = minetest.get_content_id("mcl_core:void")
 		local c_lava = minetest.get_content_id("mcl_core:lava_source")
+		local c_nether_lava = minetest.get_content_id("mcl_nether:nether_lava_source")
 		local c_air = minetest.get_content_id("air")
 
 		local max_y = math.min(maxp.y, GEN_MAX)
@@ -1275,11 +1276,14 @@ minetest.register_on_generated(function(minp, maxp)
 					if setdata then
 						data[p_pos] = setdata
 						lvm_used = true
-					elseif mcl_vars.mg_lava and y <= mcl_vars.mg_lava_overworld_max and y >= mcl_vars.mg_overworld_min then
-						if data[p_pos] == c_air then
+					elseif mcl_vars.mg_lava and data[p_pos] == c_air then
+						if y <= mcl_vars.mg_lava_overworld_max and y >= mcl_vars.mg_overworld_min then
 							data[p_pos] = c_lava
+							lvm_used = true
+						elseif y <= mcl_vars.mg_lava_nether_max and y >= mcl_vars.mg_nether_min then
+							data[p_pos] = c_nether_lava
+							lvm_used = true
 						end
-						lvm_used = true
 					end
 				end
 			end

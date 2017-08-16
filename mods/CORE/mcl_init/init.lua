@@ -59,6 +59,7 @@ mcl_vars.mg_bedrock_nether_bottom_min = mcl_vars.mg_nether_min
 mcl_vars.mg_bedrock_nether_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min + 4
 mcl_vars.mg_bedrock_nether_top_max = mcl_vars.mg_nether_max
 mcl_vars.mg_bedrock_nether_top_min = mcl_vars.mg_bedrock_nether_top_max - 4
+mcl_vars.mg_lava_nether_max = mcl_vars.mg_nether_min + 31
 
 -- The End
 mcl_vars.mg_end_min = mcl_vars.mg_nether_max + 2000
