@@ -168,8 +168,7 @@ mobs:register_mob("mobs_mc:villager", {
 	]]
 })
 
---mobs:register_spawn("mobs_mc:villager", {"default:gravel"},  7, -1, 4090, 4, 31000)
-mobs:register_spawn("mobs_mc:villager", {"mg_villages:road"}, minetest.LIGHT_MAX+1, -1,8000, 4, 31000)
+mobs:spawn_specific("mobs_mc:villager", mobs_mc.spawn.village, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 8000, 4, mobs_mc.spawn_height.water+1, mobs_mc.spawn_height.overworld_max)
 
 -- compatibility
 mobs:alias_mob("mobs:villager", "mobs_mc:villager")

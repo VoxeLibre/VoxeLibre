@@ -71,8 +71,8 @@ mobs:register_mob("mobs_mc:blaze", {
 	blood_amount = 0,
 })
 
-mobs:register_spawn("mobs_mc:blaze", mobs_mc.spawn.nether_fortress, minetest.LIGHT_MAX+1, 0, 5000, 1, -1000, true)
-	
+mobs:spawn_specific("mobs_mc:blaze", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 5000, 3, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
+
 -- Blaze fireball
 mobs:register_arrow("mobs_mc:blaze_fireball", {
 	visual = "sprite",

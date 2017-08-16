@@ -104,10 +104,13 @@ mobs:register_mob("mobs_mc:killer_bunny", killer_bunny)
 
 local spawn = {
 	name = "mobs_mc:rabbit",
+	neighbors = {"air"},
 	chance = 15000,
 	active_object_count = 99,
 	min_light = 0,
 	max_light = minetest.LIGHT_MAX+1,
+	min_height = mobs_mc.spawn_height.overworld_min,
+	max_height = mobs_mc.spawn_height.overworld_max,
 }
 
 local spawn_desert = table.copy(spawn)

@@ -330,9 +330,8 @@ mobs:register_mob("mobs_mc:mule", mule)
 
 --===========================
 --Spawn Function
-mobs:register_spawn("mobs_mc:horse", mobs_mc.spawn.grassland_savanna, minetest.LIGHT_MAX+1, 0, 15000, 12, 31000)
-mobs:register_spawn("mobs_mc:donkey", mobs_mc.spawn.grassland_savanna, minetest.LIGHT_MAX+1, 0, 15000, 12, 31000)
-
+mobs:spawn_specific("mobs_mc:horse", mobs_mc.spawn.grassland_savanna, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 15000, 12, mobs_mc.spawn_height.water+3, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific("mobs_mc:donkey", mobs_mc.spawn.grassland_savanna, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 15000, 12, mobs_mc.spawn_height.water+3, mobs_mc.spawn_height.overworld_max)
 
 -- compatibility
 mobs:alias_mob("mobs:horse", "mobs_mc:horse")

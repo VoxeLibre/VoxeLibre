@@ -83,11 +83,8 @@ mobs:register_mob("mobs_mc:villager_zombie", {
 	fear_height = 5,
 
 })
---mobs:register_spawn("mobs_mc:villager", {"default:gravel"},  7, -1, 4090, 4, 31000)
-mobs:register_spawn("mobs_mc:villager_zombie", {"mg_villages:road"}, 7, -1, 4090, 4, 31000)
 
-
-
+mobs:spawn_specific("mobs_mc:villager_zombie", mobs_mc.spawn.village, {"air"}, 0, 7, 30, 4090, 4, mobs_mc.spawn_height.water+1, mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:villager_zombie", S("Zombie Villager"), "mobs_mc_spawn_icon_zombie_villager.png", 0)

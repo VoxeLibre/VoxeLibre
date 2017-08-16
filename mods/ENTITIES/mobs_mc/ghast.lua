@@ -77,8 +77,8 @@ mobs:register_mob("mobs_mc:ghast", {
 })
 
 
---mobs:register_spawn("mobs_mc:ghast", {"default:flowing_lava", "nether:rack","air"}, 17, -1, 5000, 1, -2000)
-mobs:spawn_specific("mobs_mc:ghast", mobs_mc.spawn.nether, {"air"},0, minetest.LIGHT_MAX+1, 0, 18000, 2, -3610, -2100)
+mobs:spawn_specific("mobs_mc:ghast", mobs_mc.spawn.nether, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 18000, 2, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
+
 -- fireball (weapon)
 mobs:register_arrow(":mobs_monster:fireball", {
 	visual = "sprite",

@@ -207,7 +207,7 @@ end
 mobs:register_mob("mobs_mc:dog", dog)
 
 -- Spawn
-mobs:register_spawn("mobs_mc:wolf", mobs_mc.spawn.wolf, minetest.LIGHT_MAX+1, 0, 9000, 20, 31000)
+mobs:spawn_specific("mobs_mc:wolf", mobs_mc.spawn.wolf, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 9000, 20, mobs_mc.spawn_height.water+3, mobs_mc.spawn_height.overworld_max)
 
 -- Compatibility
 mobs:alias_mob("mobs:wolf", "mobs_mc:wolf")

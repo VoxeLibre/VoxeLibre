@@ -122,12 +122,11 @@ mobs:register_mob("mobs_mc:baby_husk", baby_husk)
 
 -- Spawning
 
-mobs:register_spawn("mobs_mc:zombie", mobs_mc.spawn.solid, 7, 0, 6000, 4, 31000)
+mobs:spawn_specific("mobs_mc:zombie", mobs_mc.spawn.solid, {"air"}, 0, 7, 30, 6000, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 -- Baby zombie is 20 times less likely than regular zombies
-mobs:register_spawn("mobs_mc:baby_zombie", mobs_mc.spawn.solid, 7, 0, 60000, 4, 31000)
-mobs:register_spawn("mobs_mc:husk", mobs_mc.spawn.desert, 7, 0, 6500, 4, 31000)
-mobs:register_spawn("mobs_mc:baby_husk", mobs_mc.spawn.desert, 7, 0, 65000, 4, 31000)
-
+mobs:spawn_specific("mobs_mc:baby_zombie", mobs_mc.spawn.solid, {"air"}, 0, 7, 30, 60000, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific("mobs_mc:husk", mobs_mc.spawn.desert, {"air"}, 0, 7, 30, 6500, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific("mobs_mc:baby_husk", mobs_mc.spawn.desert, {"air"}, 0, 7, 30, 65000, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 
 -- Compatibility
 mobs:alias_mob("mobs:zombie", "mobs_mc:zombie")

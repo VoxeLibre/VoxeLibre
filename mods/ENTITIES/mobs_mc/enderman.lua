@@ -146,12 +146,13 @@ mobs:register_mob("mobs_mc:enderman", {
 })
 
 
+-- End spawn
+mobs:spawn_specific("mobs_mc:enderman", mobs_mc.spawn.solid, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 3000, 4, mobs_mc.spawn_height.end_min, mobs_mc.spawn_height.end_max)
+-- Overworld spawn
+mobs:spawn_specific("mobs_mc:enderman", mobs_mc.spawn.solid, {"air"}, 0, 7, 30, 9000, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+-- Nether spawn (rare)
+mobs:spawn_specific("mobs_mc:enderman", mobs_mc.spawn.solid, {"air"}, 0, 7, 30, 27500, 4, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
 
---spawn on solid blocks
-mobs:register_spawn("mobs_mc:enderman", mobs_mc.spawn.desert, 7, 0, 9000, -31000, 31000)
---mobs:register_spawn("mobs_mc:enderman", mobs_mc.end_city, minetest.LIGHT_MAX+1, 0, 9000, -31000, -5000)
-mobs:spawn_specific("mobs_mc:enderman",  "mcl_end:end_stone", {"air"}, 0, minetest.LIGHT_MAX+1, 5, 20, 2, -31000, -5000)
-mobs:spawn_specific("mobs_mc:enderman",  "mcl_end:end_stone", {"mcl_portals:void"}, 0, minetest.LIGHT_MAX+1, 5, 20, 2, -31000, -5000)
 -- spawn eggs
 mobs:register_egg("mobs_mc:enderman", S("Enderman"), "mobs_mc_spawn_icon_enderman.png", 0)
 
