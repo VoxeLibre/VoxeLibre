@@ -829,6 +829,18 @@ local function register_biomelike_ores()
 
 
 	--[[ NETHER GENERATION ]]
+	-- Generate holes in Nether
+	-- TODO: Is this a good idea?
+	minetest.register_ore({
+		ore_type       = "puff",
+		ore            = "air",
+		wherein        = {"mcl_nether:netherrack"},
+		clust_scarcity = 666,
+		clust_size     = 4,
+		y_min           = mcl_vars.mg_nether_min,
+		y_max           = mcl_vars.mg_nether_max,
+		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=24, octaves=3, persist=0.60}
+	})
 
 	-- Soul sand
 	minetest.register_ore({
@@ -882,6 +894,26 @@ local function register_biomelike_ores()
 		},
 	})
 
+	-- Gravel (Nether)
+	minetest.register_ore({
+		ore_type        = "sheet",
+		ore             = "mcl_core:gravel",
+		wherein         = {"mcl_nether:netherrack"},
+		column_height_min = 1,
+		column_height_max = 1,
+		y_min           = mcl_util.layer_to_y(63, "nether"),
+		y_max           = mcl_util.layer_to_y(65, "nether"),
+		noise_threshold = 0.0,
+		noise_params    = {
+			offset = 0.0,
+			scale = 0.2,
+			spread = {x = 50, y = 50, z = 50},
+			seed = 766,
+			octaves = 1,
+			persist = 0.6,
+		},
+	})
+
 	-- Nether quartz
 	minetest.register_ore({
 		ore_type       = "scatter",
@@ -902,26 +934,6 @@ local function register_biomelike_ores()
 		clust_size     = 4,
 		y_min = mcl_vars.mg_nether_min,
 		y_max = mcl_vars.mg_nether_max,
-	})
-
-	-- Gravel (Nether)
-	minetest.register_ore({
-		ore_type        = "sheet",
-		ore             = "mcl_core:gravel",
-		wherein         = {"mcl_nether:netherrack"},
-		clust_scarcity  = 16 * 16 * 16,
-		clust_size      = 5,
-		y_min           = mcl_util.layer_to_y(63, "nether"),
-		y_max           = mcl_util.layer_to_y(65, "nether"),
-		noise_threshold = 0.0,
-		noise_params    = {
-			offset = 0.5,
-			scale = 0.2,
-			spread = {x = 5, y = 1, z = 5},
-			seed = 766,
-			octaves = 1,
-			persist = 0.0
-		},
 	})
 
 	-- Lava springs in the Nether
@@ -979,22 +991,6 @@ local function register_biomelike_ores()
 		y_min           = mcl_vars.mg_nether_min,
 		y_max           = mcl_vars.mg_nether_max,
 	})
-
-	-- Generate holes in Nether
-	-- TODO: Is this a good idea?
-	minetest.register_ore({
-		ore_type       = "sheet",
-		ore            = "air",
-		wherein        = {"mcl_nether:netherrack"},
-		clust_scarcity = 1,
-		clust_num_ores = 32,
-		clust_size     = 10,
-		y_min           = mcl_vars.mg_nether_min,
-		y_max           = mcl_vars.mg_nether_max,
-		noise_threshold = 0.2,
-		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=24, octaves=3, persist=0.70}
-	})
-
 
 	--[[ THE END ]]
 
