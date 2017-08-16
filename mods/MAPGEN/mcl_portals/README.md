@@ -6,4 +6,10 @@ End portal: Build an upright frame of red nether brick blocks, 4 blocks wide and
 
 ## Credits
 Created by maikerumine and Wuzzy.
-License: MIT License (see `LICENSE`).
+Code license: MIT License (see `LICENSE`).
+
+Texture license: See main MineClone 2 directory.
+
+License of sound: [CC BY 3.0](http://creativecommons.org/licenses/by/3.0/)
+Authors: [FreqMan](https://freesound.org/people/FreqMan/) and Wuzzy
+Source: <https://freesound.org/people/FreqMan/sounds/32541/>

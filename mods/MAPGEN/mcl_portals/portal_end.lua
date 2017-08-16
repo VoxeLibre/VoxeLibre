@@ -278,9 +278,7 @@ minetest.register_abm({
 							return
 						end
 
-						obj:setpos(target3)
-						minetest.sound_play("tng_transporter1", {pos=target3,gain=0.5,max_hear_distance = 8,}) -- maikerumine added sound when travel
-
+						-- Build destination
 						local function check_and_build_end_portal(pos, target3)
 							local n = minetest.get_node_or_nil(target3)
 							if n and n.name ~= "mcl_portals:portal_end" then
@@ -293,6 +291,10 @@ minetest.register_abm({
 						end
 
 						minetest.after(1, check_and_build_end_portal, pos, target3)
+
+						-- Teleport
+						obj:setpos(target3)
+						minetest.sound_play("mcl_portals_teleport", {pos=target3, gain=0.5, max_hear_distance = 16})
 
 					end, obj, pos, target3)
 				end
