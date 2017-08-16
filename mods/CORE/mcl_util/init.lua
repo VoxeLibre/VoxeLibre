@@ -335,9 +335,23 @@ end
 -- 1st return value: true if pos is in void
 -- 2nd return value: true if it is in the deadly part of the void
 function mcl_util.is_in_void(pos)
-	local void, void_deadly
-	void = pos.y < mcl_vars.mg_overworld_min
-	void_deadly = pos.y < mcl_vars.mg_overworld_min - 64
+	local void =
+		not ((pos.y < mcl_vars.mg_overworld_max and pos.y > mcl_vars.mg_overworld_min) or
+		(pos.y < mcl_vars.mg_nether_max and pos.y > mcl_vars.mg_nether_min) or
+		(pos.y < mcl_vars.mg_end_max and pos.y > mcl_vars.mg_end_min))
+
+	local void_deadly = false
+	local deadly_tolerance = 64 -- the player must be this many nodes “deep” into the void to be damaged
+	if void then
+		-- Overworld → Void → End → Void → Nether → Void
+		if pos.y < mcl_vars.mg_overworld_min and pos.y > mcl_vars.mg_end_max then
+			void_deadly = pos.y < mcl_vars.mg_overworld_min - deadly_tolerance
+		elseif pos.y < mcl_vars.mg_end_min and pos.y > mcl_vars.mg_nether_max then
+			void_deadly = pos.y < mcl_vars.mg_end_min - deadly_tolerance
+		elseif pos.y < mcl_vars.mg_nether_min then
+			void_deadly = pos.y < mcl_vars.mg_nether_min - deadly_tolerance
+		end
+	end
 	return void, void_deadly
 end
 
@@ -351,6 +365,10 @@ end
 function mcl_util.y_to_layer(y)
 	if y >= mcl_vars.mg_overworld_min then
 		return y - mcl_vars.mg_overworld_min, "overworld"
+	elseif y >= mcl_vars.mg_nether_min and y <= mcl_vars.mg_nether_max then
+		return y - mcl_vars.mg_nether_min, "nether"
+	elseif y >= mcl_vars.mg_end_min and y <= mcl_vars.mg_end_max then
+		return y - mcl_vars.mg_end_min, "end"
 	else
 		return nil, "void"
 	end
@@ -359,10 +377,15 @@ end
 -- Takes a Minecraft layer and a “dimension” name
 -- and returns the corresponding Y coordinate for
 -- MineClone 2.
--- minecraft_dimension parameter is ignored at the moment
--- TODO: Implement dimensions
-function mcl_util.layer_to_y(layer, minecraft_dimension)
-	return layer + mcl_vars.mg_overworld_min
+-- mc_dimension is one of "overworld", "nether", "end" (default: "overworld").
+function mcl_util.layer_to_y(layer, mc_dimension)
+	if mc_dimension == "overworld" or mc_dimension == nil then
+		return layer + mcl_vars.mg_overworld_min
+	elseif mc_dimension == "nether" then
+		return layer + mcl_vars.mg_nether_min
+	elseif mc_dimension == "end" then
+		return layer + mcl_vars.mg_end_min
+	end
 end
 
 -- Returns a on_place function for plants

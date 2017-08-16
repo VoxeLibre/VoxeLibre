@@ -1227,33 +1227,49 @@ minetest.register_on_generated(function(minp, maxp)
 					local p_pos = area:index(x, y, z)
 					local setdata = nil
 					if mcl_vars.mg_bedrock_is_rough then
-						-- Bedrock layers with increasing levels of roughness, until a perfecly flat bedrock later at the bottom layer
-						-- This code assumes a bedrock height of 5 layers.
-						if y == BEDROCK_MAX then
-							-- 50% bedrock chance
-							if math.random(1,2) == 1 then setdata = c_bedrock end
-						elseif y == BEDROCK_MAX -1 then
-							-- 66.666...%
-							if math.random(1,3) <= 2 then setdata = c_bedrock end
-						elseif y == BEDROCK_MAX -2 then
-							-- 75%
-							if math.random(1,4) <= 3 then setdata = c_bedrock end
-						elseif y == BEDROCK_MAX -3 then
-							-- 90%
-							if math.random(1,10) <= 9 then setdata = c_bedrock end
-						elseif y == BEDROCK_MAX -4 then
-							-- 100%
+						local is_bedrock = function(y)
+							-- Bedrock layers with increasing levels of roughness, until a perfecly flat bedrock later at the bottom layer
+							-- This code assumes a bedrock height of 5 layers.
+
+							local diff = mcl_vars.mg_bedrock_overworld_max - y -- Overworld bedrock
+							local ndiff1 = mcl_vars.mg_bedrock_nether_bottom_max - y -- Nether bedrock, bottom
+							local ndiff2 = mcl_vars.mg_bedrock_nether_top_max - y -- Nether bedrock, ceiling
+
+							local top
+							if diff == 0 or ndiff1 == 0 or ndiff2 == 4 then
+								-- 50% bedrock chance
+								top = 2
+							elseif diff == 1 or ndiff1 == 1 or ndiff2 == 3 then
+								-- 66.666...%
+								top = 3
+							elseif diff == 2 or ndiff1 == 2 or ndiff2 == 2 then
+								-- 75%
+								top = 4
+							elseif diff == 3 or ndiff1 == 3 or ndiff2 == 1 then
+								-- 90%
+								top = 10
+							elseif diff == 4 or ndiff1 == 4 or ndiff2 == 0 then
+								-- 100%
+								return true
+							else
+								-- Not in bedrock layer
+								return false
+							end
+
+							return math.random(1, top) <= top-1
+						end
+						if is_bedrock(y) then
 							setdata = c_bedrock
-						elseif y < BEDROCK_MIN and y > -1000 then
+						elseif mcl_util.is_in_void({x=x,y=y,z=z}) then
 							setdata = c_void
-						elseif y > 1000 and y < 2000 then
-							setdata = c_stone
 						end
 					else
 						-- Perfectly flat bedrock layer(s)
-						if y >= BEDROCK_MIN and y <= BEDROCK_MAX then
+						if (y >= mcl_vars.mg_bedrock_overworld_min and y <= mcl_vars.mg_bedrock_overworld_max) or
+								(y >= mcl_vars.mg_bedrock_nether_bottom_min or y <= mcl_vars.mg_bedrock_bottom_max) or
+								(y >= mcl_vars.mg_bedrock_nether_top_min or y <= mcl_vars.mg_bedrock_top_max) then
 							setdata = c_bedrock
-						elseif y < BEDROCK_MIN and y > -1000 then
+						elseif mcl_util.is_in_void({x=x,y=y,z=z}) then
 							setdata = c_void
 						end
 					end
