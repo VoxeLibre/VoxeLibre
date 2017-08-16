@@ -1,6 +1,5 @@
 -- Parameters
 
-local END_DEPTH = mcl_vars.mg_end_min
 local TCAVE = 0.6
 local nobj_cave = nil
 -- 3D noise
@@ -118,7 +117,7 @@ local function build_end_portal(pos, target3)
 end
 
 local function find_end_target3_y2(target3_x, target3_z)
-	local start_y = END_DEPTH + math.random(20, 120) -- Search start
+	local start_y = mcl_vars.mg_end_min + math.random(20, 120) -- Search start
 	if not nobj_cave then
 		nobj_cave = minetest.get_perlin(np_cave)
 	end
@@ -229,8 +228,8 @@ local function make_end_portal(pos)
 
 	local target3 = {x = p1.x, y = p1.y, z = p1.z}
 	target3.x = target3.x + 1
-	if target3.y < END_DEPTH then
-		target3.y = math.random(-52, 100)
+	if target3.y < mcl_vars.mg_end_max and target3.y > mcl_vars.mg_end_min then
+		target3.y = math.random(mcl_vars.mg_overworld_min + 40, mcl_vars.mg_overworld_min + 96)
 	else
 		target3.y = find_end_target3_y2(target3.x, target3.z)
 	end

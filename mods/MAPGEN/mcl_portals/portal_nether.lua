@@ -1,6 +1,5 @@
 -- Parameters
 
-local NETHER_DEPTH = mcl_vars.mg_nether_min
 local TCAVE = 0.6
 local nobj_cave = nil
 
@@ -117,7 +116,7 @@ local function build_portal(pos, target)
 end
 
 local function find_nether_target_y(target_x, target_z)
-	local start_y = NETHER_DEPTH + math.random(38, 117) -- Search start
+	local start_y = mcl_vars.mg_nether_min + math.random(38, 117) -- Search start
 	if not nobj_cave then
 		nobj_cave = minetest.get_perlin(np_cave)
 	end
@@ -228,8 +227,8 @@ local function make_portal(pos)
 
 	local target = {x = p1.x, y = p1.y, z = p1.z}
 	target.x = target.x + 1
-	if target.y < NETHER_DEPTH then
-		target.y = math.random(-52, 100)
+	if target.y < mcl_vars.mg_nether_max and target.y > mcl_vars.mg_nether_min then
+		target.y = math.random(mcl_vars.mg_overworld_min + 40, mcl_vars.mg_overworld_min + 96)
 	else
 		target.y = find_nether_target_y(target.x, target.z)
 	end
