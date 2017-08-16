@@ -372,17 +372,18 @@ minetest.override_item("mcl_end:ender_eye", {
 	on_place = function(itemstack, user, pointed_thing)
 		local nodedef = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]  --new
 
+		-- If used on frame, open portal
 		if pointed_thing.under and minetest.get_node(pointed_thing.under).name == "mcl_nether:red_nether_brick" then
 			make_end_portal(pointed_thing.under)
 			minetest.sound_play(
 				"fire_flint_and_steel",
 				{pos = pointed_thing.above, gain = 0.5, max_hear_distance = 8}
 			)
+			if not minetest.setting_getbool("creative_mode") and used == true then
+				itemstack:take_item() -- 1 use
+			end
 		end
 
-		if not minetest.setting_getbool("creative_mode") and used == true then
-			itemstack:take_item() -- 1 use
-		end
 		return itemstack
 	end,
 })

@@ -398,7 +398,7 @@ minetest.override_item("mcl_fire:flint_and_steel", {
 		local used = false
 
 		if pointed_thing.under and minetest.get_node(pointed_thing.under).name == "mcl_core:obsidian" then
-			done = make_portal(pointed_thing.under)
+			make_portal(pointed_thing.under)
 		else
 			if pointed_thing.type == "node" then
 				local nodedef = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
