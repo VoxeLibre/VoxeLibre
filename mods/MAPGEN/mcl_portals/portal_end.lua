@@ -274,11 +274,11 @@ minetest.register_abm({
 						minetest.emerge_area(
 							vector.subtract(target3, 4), vector.add(target3, 4))
 					end
+
 					-- teleport the player
 					minetest.after(3, function(obj, pos, target3)
 						local objpos = obj:getpos()
 						if objpos == nil then return end --maikerumine added for objects to travel
-						objpos.y = objpos.y + 0.1 -- Fix some glitches at -8000. FIXME: WTF?
 						if minetest.get_node(objpos).name ~= "mcl_portals:portal_end" then
 							return
 						end
@@ -289,13 +289,12 @@ minetest.register_abm({
 							if n and n.name ~= "mcl_portals:portal_end" then
 								build_end_portal(target3, pos)
 								minetest.after(2, check_and_build_end_portal, pos, target3)
-								minetest.after(4, check_and_build_end_portal, pos, target3)
 							elseif not n then
 								minetest.after(1, check_and_build_end_portal, pos, target3)
 							end
 						end
 
-						minetest.after(1, check_and_build_end_portal, pos, target3)
+						check_and_build_end_portal(pos, target3)
 
 						-- Teleport
 						obj:setpos(target3)
