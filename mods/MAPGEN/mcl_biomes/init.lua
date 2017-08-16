@@ -1078,7 +1078,6 @@ local function register_biomelike_ores()
 		},
 	})
 
-
 end
 
 
@@ -1487,7 +1486,7 @@ local function register_decorations()
 		deco_type = "simple",
 		place_on = {"mcl_nether:netherrack"},
 		sidelen = 80,
-		fill_ratio = 0.4,
+		fill_ratio = 0.01,
 		biomes = {"nether"},
 		y_min = -6000,
 		y_max = 31000,
@@ -1498,20 +1497,19 @@ local function register_decorations()
 		deco_type = "simple",
 		place_on = {"mcl_nether:netherrack"},
 		sidelen = 80,
-		fill_ratio = 0.3,
+		fill_ratio = 0.01,
 		biomes = {"nether"},
 		y_min = -6000,
 		y_max = 31000,
 		decoration = "mcl_mushrooms:mushroom_brown",
 	})
 
-	-- FIXME: Does the placement of eternal fire and nether wart actually work?
-	--Fire
+	--Eternal Fire
 	minetest.register_decoration({
 		deco_type = "simple",
 		place_on = {"mcl_nether:netherrack"},
-		sidelen = 8,
-		fill_ratio = 0.9,
+		sidelen = 16,
+		fill_ratio = 0.2,
 		biomes = {"nether"},
 		y_min = -6000,
 		y_max = 31000,

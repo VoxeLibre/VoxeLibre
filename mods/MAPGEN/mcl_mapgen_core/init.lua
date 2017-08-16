@@ -1244,14 +1244,16 @@ minetest.register_on_generated(function(minp, maxp)
 						elseif y == BEDROCK_MAX -4 then
 							-- 100%
 							setdata = c_bedrock
-						elseif y < BEDROCK_MIN then
+						elseif y < BEDROCK_MIN and y > -1000 then
 							setdata = c_void
+						elseif y > 1000 and y < 2000 then
+							setdata = c_stone
 						end
 					else
 						-- Perfectly flat bedrock layer(s)
 						if y >= BEDROCK_MIN and y <= BEDROCK_MAX then
 							setdata = c_bedrock
-						elseif y < BEDROCK_MIN then
+						elseif y < BEDROCK_MIN and y > -1000 then
 							setdata = c_void
 						end
 					end
@@ -1259,7 +1261,7 @@ minetest.register_on_generated(function(minp, maxp)
 					if setdata then
 						data[p_pos] = setdata
 						lvm_used = true
-					elseif mcl_vars.mg_lava and y <= mcl_vars.mg_lava_overworld_max then
+					elseif mcl_vars.mg_lava and y <= mcl_vars.mg_lava_overworld_max and y >= mcl_vars.mg_overworld_min then
 						if data[p_pos] == c_air then
 							data[p_pos] = c_lava
 						end
