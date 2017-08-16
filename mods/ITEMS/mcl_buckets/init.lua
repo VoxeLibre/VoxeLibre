@@ -1,8 +1,6 @@
 -- Minetest 0.4 mod: bucket
 -- See README.txt for licensing and other information.
 
-local LIQUID_MAX = 8  --The number of water levels when liquid_finite is enabled
-
 minetest.register_alias("bucket:bucket_empty", "mcl_buckets:bucket_empty")
 minetest.register_alias("bucket:bucket_water", "mcl_buckets:bucket_water")
 minetest.register_alias("bucket:bucket_lava", "mcl_buckets:bucket_lava")
@@ -39,18 +37,29 @@ local sound_take = function(itemname, pos)
 end
 
 -- Register a new liquid
---   source = name of the source node
---   flowing = name of the flowing node
---   itemname = name of the new bucket item (or nil if liquid is not takeable)
+--   source_place = a string or function.
+--      * string: name of the node to place
+--      * function(pos): will returns name of the node to place with pos being the placement position
+--   source_take = table of liquid source node names to take
+--   itemname = itemstring of the new bucket item (or nil if liquid is not takeable)
 --   inventory_image = texture of the new bucket item (ignored if itemname == nil)
--- This function can be called from any mod (that depends on bucket).
-function mcl_buckets.register_liquid(source, flowing, itemname, inventory_image, name, longdesc, usagehelp)
-	mcl_buckets.liquids[source] = {
-		source = source,
-		flowing = flowing,
-		itemname = itemname,
-	}
-	mcl_buckets.liquids[flowing] = mcl_buckets.liquids[source]
+--   name = user-visible bucket description
+--   longdesc = long explanatory description (for help)
+--   usagehelp = short usage explanation (for help)
+--   extra_check = optional function(pos) which can returns false to avoid placing the liquid
+--
+-- This function can be called from any mod (which depends on this one)
+function mcl_buckets.register_liquid(source_place, source_take, itemname, inventory_image, name, longdesc, usagehelp, extra_check)
+	for i=1, #source_take do
+		mcl_buckets.liquids[source_take[i]] = {
+			source_place = source_place,
+			source_take = source_take[i],
+			itemname = itemname,
+		}
+		if type(source_place) == "string" then
+			mcl_buckets.liquids[source_place] = mcl_buckets.liquids[source_take[i]]
+		end
+	end
 
 	if itemname ~= nil then
 		minetest.register_craftitem(itemname, {
@@ -67,43 +76,38 @@ function mcl_buckets.register_liquid(source, flowing, itemname, inventory_image,
 				end
 
 				local node = minetest.get_node(pointed_thing.under)
+				local place_pos = pointed_thing.under
 				local nn = node.name
 				-- Call on_rightclick if the pointed node defines it
 				if user and not user:get_player_control().sneak then
 					if minetest.registered_nodes[nn] and minetest.registered_nodes[nn].on_rightclick then
-						return minetest.registered_nodes[nn].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
+						return minetest.registered_nodes[nn].on_rightclick(place_pos, node, user, itemstack) or itemstack
 					end
 				end
 
-				local place_liquid = function(pos, node, source, flowing, fullness)
-					sound_place(source, pos)
-					if math.floor(fullness/128) == 1 or (not minetest.settings:get_bool("liquid_finite")) then
-						minetest.add_node(pos, {name=source, param2=fullness})
-						return
-					elseif node.name == flowing then
-						fullness = fullness + node.param2
-					elseif node.name == source then
-						fullness = LIQUID_MAX
-					end
-
-					if fullness >= LIQUID_MAX then
-						minetest.add_node(pos, {name=source, param2=LIQUID_MAX})
-					else
-						minetest.add_node(pos, {name=flowing, param2=fullness})
-					end
+				local place_liquid = function(pos, itemstring)
+					local fullness = minetest.registered_nodes[itemstring].liquid_range
+					sound_place(itemstring, pos)
+					minetest.add_node(pos, {name=itemstring, param2=fullness})
 				end
 
+				local node_place
+				if type(source_place) == "function" then
+					node_place = source_place(place_pos)
+				else
+					node_place = source_place
+				end
 				-- Check if pointing to a buildable node
-				local fullness = tonumber(itemstack:get_metadata())
-				if not fullness then fullness = LIQUID_MAX end
 				local item = itemstack:get_name()
 
-				if item == "mcl_buckets:bucket_water" and
+				if extra_check and extra_check(place_pos) == false then
+					-- Fail placement of liquid
+				elseif item == "mcl_buckets:bucket_water" and
 						(nn == "mcl_cauldrons:cauldron" or
 						nn == "mcl_cauldrons:cauldron_1" or
 						nn == "mcl_cauldrons:cauldron_2") then
 					-- Put water into cauldron
-					minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_3"})
+					minetest.set_node(place_pos, {name="mcl_cauldrons:cauldron_3"})
 
 					sound_place("mcl_core:water_source", pos)
 				elseif item == "mcl_buckets:bucket_water" and nn == "mcl_cauldrons:cauldron_3" then
@@ -111,12 +115,12 @@ function mcl_buckets.register_liquid(source, flowing, itemname, inventory_image,
 				elseif minetest.registered_nodes[nn] and minetest.registered_nodes[nn].buildable_to then
 					-- buildable; replace the node
 					local pns = user:get_player_name()
-					if minetest.is_protected(pointed_thing.under, pns) then
+					if minetest.is_protected(place_pos, pns) then
 						return itemstack
 					end
-					place_liquid(pointed_thing.under, node, source, flowing, fullness)
-					if mod_doc and doc.entry_exists("nodes", source) then
-						doc.mark_entry_as_revealed(user:get_player_name(), "nodes", source)
+					place_liquid(place_pos, node_place)
+					if mod_doc and doc.entry_exists("nodes", node_place) then
+						doc.mark_entry_as_revealed(user:get_player_name(), "nodes", node_place)
 					end
 				else
 					-- not buildable to; place the liquid above
@@ -127,9 +131,9 @@ function mcl_buckets.register_liquid(source, flowing, itemname, inventory_image,
 						if minetest.is_protected(pointed_thing.above, pn) then
 							return itemstack
 						end
-						place_liquid(pointed_thing.above, node, source, flowing, fullness)
-						if mod_doc and doc.entry_exists("nodes", source) then
-							doc.mark_entry_as_revealed(user:get_player_name(), "nodes", source)
+						place_liquid(pointed_thing.above, node_place)
+						if mod_doc and doc.entry_exists("nodes", node_place) then
+							doc.mark_entry_as_revealed(user:get_player_name(), "nodes", node_place)
 						end
 					else
 						-- do not remove the bucket with the liquid
@@ -188,8 +192,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 		-- Check if pointing to a liquid source
 		liquiddef = mcl_buckets.liquids[nn]
 		local new_bucket
-		if liquiddef ~= nil and liquiddef.itemname ~= nil and (nn == liquiddef.source or
-			(nn == liquiddef.flowing and minetest.settings:get_bool("liquid_finite"))) then
+		if liquiddef ~= nil and liquiddef.itemname ~= nil and (nn == liquiddef.source_take) then
 
 			-- Fill bucket, but not in Creative Mode
 			if not minetest.settings:get_bool("creative_mode") then
@@ -234,19 +237,37 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 })
 
 if mod_mcl_core then
+	-- Water bucket
 	mcl_buckets.register_liquid(
 		"mcl_core:water_source",
-		"mcl_core:water_flowing",
+		{"mcl_core:water_source"},
 		"mcl_buckets:bucket_water",
 		"bucket_water.png",
 		"Water Bucket",
 		"A bucket can be used to collect and release liquids. This one is filled with water.",
-		"Right-click on any block to empty the bucket and put a water source on this spot."
+		"Right-click on any block to empty the bucket and put a water source on this spot.",
+		function(pos)
+			local _, dim = mcl_util.y_to_layer(pos.y)
+			if dim == "nether" then
+				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
+				return false
+			else
+				return true
+			end
+		end
 	)
 
+	-- Lava bucket
 	mcl_buckets.register_liquid(
-		"mcl_core:lava_source",
-		"mcl_core:lava_flowing",
+		function(pos)
+			local _, dim = mcl_util.y_to_layer(pos.y)
+			if dim == "nether" then
+				return "mcl_nether:nether_lava_source"
+			else
+				return "mcl_core:lava_source"
+			end
+		end,
+		{"mcl_core:lava_source", "mcl_nether:nether_lava_source"},
 		"mcl_buckets:bucket_lava",
 		"bucket_lava.png",
 		"Lava Bucket",
