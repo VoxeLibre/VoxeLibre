@@ -13,8 +13,8 @@ local function register_classic_superflat_biome()
 		node_filler = "mcl_core:dirt",
 		depth_filler = 3,
 		node_stone = "mcl_core:dirt",
-		y_min = -512,
-		y_max = 512,
+		y_min = mcl_vars.mg_overworld_min - 512,
+		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 50,
 		humidity_point = 50,
 	})
@@ -23,6 +23,7 @@ end
 -- All mapgens except mgv6, flat and singlenode
 local function register_biomes()
 
+	local upper_limit = mcl_vars.mg_overworld_max
 	--[[ OVERWORLD ]]
 
 	-- Icesheet
@@ -54,7 +55,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_water_top = "mcl_core:ice",
 		depth_water_top = 10,
-		y_min = -112,
+		y_min = mcl_vars.mg_overworld_min,
 		y_max = -9,
 		heat_point = 0,
 		humidity_point = 73,
@@ -95,7 +96,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:gravel",
 		depth_riverbed = 2,
-		y_min = -112,
+		y_min = mcl_vars.mg_overworld_min,
 		y_max = -4,
 		heat_point = 0,
 		humidity_point = 40,
@@ -124,7 +125,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:stone",
 		depth_riverbed = 2,
-		y_min = -112,
+		y_min = mcl_vars.mg_overworld_min,
 		y_max = 1,
 		heat_point = 26,
 		humidity_point = 72,
@@ -155,7 +156,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:stone",
 		depth_riverbed = 2,
-		y_min = -112,
+		y_min = mcl_vars.mg_overworld_min,
 		y_max = 4,
 		heat_point = 13,
 		humidity_point = 79,
@@ -200,7 +201,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:stone",
 		depth_riverbed = 2,
-		y_min = -112,
+		y_min = mcl_vars.mg_overworld_min,
 		y_max = 0,
 		heat_point = 26,
 		humidity_point = 45,
@@ -244,7 +245,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:stone",
 		depth_riverbed = 2,
-		y_min = -112,
+		y_min = mcl_vars.mg_overworld_min,
 		y_max = 0,
 		heat_point = 47,
 		humidity_point = 73,  --was 70
@@ -289,7 +290,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:stone",
 		depth_riverbed = 2,
-		y_min = -112,
+		y_min = mcl_vars.mg_overworld_min,
 		y_max = -2,
 		heat_point = 33,
 		humidity_point = 44,  --was 68
@@ -321,7 +322,7 @@ local function register_biomes()
 		node_stone = "mcl_core:stone",
 		node_riverbed = "mcl_core:stone",
 		depth_riverbed = 2,
-		y_min = -112,
+		y_min = mcl_vars.mg_overworld_min,
 		y_max = 0,
 		heat_point = 64,
 		humidity_point = 37,  --was 16
@@ -353,7 +354,7 @@ local function register_biomes()
 		node_stone = "mcl_core:stone",
 		node_riverbed = "mcl_core:stone",
 		depth_riverbed = 2,
-		y_min = -112,
+		y_min = mcl_vars.mg_overworld_min,
 		y_max = 4,
 		heat_point = 57,
 		humidity_point = 0,  --was 0
@@ -384,7 +385,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:stone",
 		depth_riverbed = 2,
-		y_min = -112,
+		y_min = mcl_vars.mg_overworld_min,
 		y_max = 4,
 		heat_point = 26,
 		humidity_point = 0,  --was 0
@@ -399,7 +400,7 @@ local function register_biomes()
 		depth_filler = 1,
 		node_stone = "mcl_colorblocks:hardened_clay_orange",
 		y_min = -35,
-		y_max = 31000,
+		y_max = upper_limit,
 		heat_point = 88,
 		humidity_point = 20,  --was 40
 	})
@@ -442,7 +443,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:stone",
 		depth_riverbed = 2,
-		y_min = -112,
+		y_min = mcl_vars.mg_overworld_min,
 		y_max = -2,
 		heat_point = 50,
 		humidity_point = 46,  --was 42
@@ -486,7 +487,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		y_min = -112,
+		y_min = mcl_vars.mg_overworld_min,
 		y_max = -2,
 		heat_point = 90,
 		humidity_point =  91,
@@ -515,7 +516,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:coarse_dirt",
 		depth_riverbed = 2,
-		y_min = -112,
+		y_min = mcl_vars.mg_overworld_min,
 		y_max = 0,
 		heat_point = 99,
 		humidity_point = 99,
@@ -533,7 +534,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:stone",
 		depth_riverbed = 2,
 		y_min = 56,
-		y_max = 900,
+		y_max = upper_limit,
 		heat_point = -13,
 		humidity_point = 30,
 	})
@@ -543,8 +544,8 @@ local function register_biomes()
 	-- Underground in Overworld
 	minetest.register_biome({
 		name = "underground",
-		y_min = -31000,
-		y_max = -10000,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_util.y_to_layer(61),
 		heat_point = 50,
 		humidity_point = 50,
 	})
@@ -553,98 +554,42 @@ local function register_biomes()
 	--[[ REALMS ]]
 	-- TODO: Make these work in v6, too.
 
-	-- Separation void 1
-	minetest.register_biome({
-		name = "void_1",
-		node_stone =  "mcl_core:void",
-		y_min = -2989,
-		y_max = -82,
-		heat_point = 50,
-		humidity_point = 50,
-	})
-
 
 	--[[ THE NETHER ]]
-	minetest.register_biome({
-		name = "nether_roof",
-		node_stone =  "mcl_core:bedrock",
-		y_min = -3000,
-		y_max = -2990,
-		heat_point = 50,
-		humidity_point = 50,
-	})
 
 	minetest.register_biome({
 		name = "nether",
 		node_filler = "mcl_nether:netherrack",
-		node_stone =  "mcl_nether:netherrack",
-		y_min = -3369,
-		y_max = -3001,
+		node_stone = "mcl_nether:netherrack",
+		y_min = mcl_vars.mg_nether_min,
+		-- FIXME: For some reason the Nether stops generating early if this constant is not added.
+		-- Figure out why.
+		y_max = mcl_vars.mg_nether_max + 80,
 		heat_point = 50,
 		humidity_point = 50,
 	})
 
-	-- TODO: Different lava algorithm
-	minetest.register_biome({
-		name = "nether_lava",
-		node_filler = "mcl_nether:nether_lava_source",
-		node_stone =  "mcl_nether:nether_lava_source",
-		y_min = -3399,
-		y_max = -3370,
-		heat_point = 50,
-		humidity_point = 50,
-	})
-
-	minetest.register_biome({
-	name = "nether_floor",
-		node_filler = "mcl_core:bedrock",
-		node_stone =  "mcl_core:bedrock",
-		y_min = -3430,
-		y_max = -3400,
-		heat_point = 50,
-		humidity_point = 50,
-	})
-
-	-- Separation void 2
-	minetest.register_biome({
-		name = "void_2",
-		node_stone =  "mcl_core:void",
-		y_min = -4900,
-		y_max = -3431,
-		heat_point = 50,
-		humidity_point = 50,
-	})
-
-
+	-- TODO: Giant Nether lava seas
 	--[[ The End ]]
 
 	minetest.register_biome({
 		name = "end",
 		node_filler = "mcl_end:end_stone",
-		node_stone =  "air",
-		y_min = -6200,
-		y_max = -6000,
+		node_stone = "mcl_end:end_stone",
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max,
 		heat_point = 50,
 		humidity_point = 50,
 	})
 
-	-- Separation void 3
-	minetest.register_biome({
-		name = "void_3",
-		node_stone =  "mcl_core:void",
-		y_min = -6700,
-		y_max = -6201,
-		heat_point = 50,
-		humidity_point = 50,
-	})
-
-	-- Realm barrier to separate the top of the End realm with the separation void
+	-- Realm barrier to separate the top of the End realm from the void below the Overworld
+	-- TODO: Implement differently
 	minetest.register_biome({
 		name = "end_barrier",
 		node_filler = "mcl_core:realm_barrier",
 		node_stone =  "mcl_core:realm_barrier",
-		y_min = -6800,
-		y_max = -6701,
+		y_min = mcl_vars.mg_end_max + 1,
+		y_max = mcl_vars.mg_end_max + 12,
 		heat_point = 50,
 		humidity_point = 50,
 	})
@@ -899,26 +844,23 @@ local function register_biomelike_ores()
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_nether:quartz_ore",
-		--wherein        = "mcl_nether:rack",
-		wherein        = {"mcl_nether:netherrack","mcl_core:stone"},
+		wherein        = {"mcl_nether:netherrack"},
 		clust_scarcity = 10*10*10,
 		clust_num_ores = 6,
 		clust_size     = 5,
-		y_min     = -3390,
-		y_max     = -3000,
-		--y_max     = NETHER_DEPTH,
+		y_min     = mcl_vars.mg_nether_min,
+		y_max     = mcl_vars.mg_nether_max,
 	})
 
 	-- Soul sand
 	minetest.register_ore({
 		ore_type        = "sheet",
 		ore             = "mcl_nether:soul_sand",
-		wherein         = {"mcl_nether:netherrack", "mcl_core:lava_source",
-			"mcl_core:redsandstone"},
+		wherein         = {"mcl_nether:netherrack"},
 		clust_scarcity  = 13 * 13 * 13,
 		clust_size      = 5,
-		y_min           = -3390,
-		y_max           = -3000,
+		y_min           = mcl_vars.mg_nether_min,
+		y_max           = mcl_vars.mg_nether_max,
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
@@ -934,12 +876,11 @@ local function register_biomelike_ores()
 	minetest.register_ore({
 		ore_type        = "sheet",
 		ore             = "mcl_nether:magma",
-		wherein         = {"mcl_nether:netherrack", "mcl_core:lava_source",
-			"mcl_core:redsandstone"},
+		wherein         = {"mcl_nether:netherrack", "mcl_core:lava_source"},
 		clust_scarcity  = 13 * 13 * 13,
 		clust_size      = 5,
-		y_min           = -3390,
-		y_max           = -3000,
+		y_min           = mcl_vars.mg_nether_min,
+		y_max           = mcl_vars.mg_nether_max,
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
@@ -957,11 +898,11 @@ local function register_biomelike_ores()
 	minetest.register_ore({
 		ore_type        = "blob",
 		ore             = "mcl_nether:glowstone",
-		wherein         = {"mcl_nether:netherrack", "mcl_portals:nether_air"},
+		wherein         = {"mcl_nether:netherrack"},
 		clust_scarcity  = 26 * 26 * 26,
 		clust_size      = 5,
-		y_min           = -3390,
-		y_max           = -3000,
+		y_min           = mcl_vars.mg_nether_min,
+		y_max           = mcl_vars.mg_nether_max,
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
@@ -981,8 +922,8 @@ local function register_biomelike_ores()
 		wherein         = {"mcl_nether:netherrack"},
 		clust_scarcity  = 16 * 16 * 16,
 		clust_size      = 5,
-		y_min           = -3390,
-		y_max           = -3000,
+		y_min           = mcl_vars.mg_nether_min,
+		y_max           = mcl_vars.mg_nether_max,
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
@@ -999,12 +940,12 @@ local function register_biomelike_ores()
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_nether:nether_lava_source",
-		wherein        = "mcl_nether:netherrack",
-		clust_scarcity =12 *12 * 12,
+		wherein        = {"mcl_nether:netherrack", "air"},
+		clust_scarcity = 12 *12 * 12,
 		clust_num_ores = 2,
 		clust_size     = 2,
-		y_min           = -3390,
-		y_max           = -3000,
+		y_min           = mcl_vars.mg_nether_min,
+		y_max           = mcl_vars.mg_nether_min + 15,
 	})
 
 
@@ -1016,20 +957,21 @@ local function register_biomelike_ores()
 		clust_scarcity =12 *22 * 12,
 		clust_num_ores = 5,
 		clust_size     = 5,
-		y_min           = -3390,
-		y_max           = -3000,
+		y_min           = mcl_vars.mg_nether_min,
+		y_max           = mcl_vars.mg_nether_max,
 	})
 
 	-- Generate holes in Nether
+	-- TODO: Is this a good idea?
 	minetest.register_ore({
 		ore_type       = "sheet",
 		ore            = "air",
-		wherein        ={"mcl_nether:netherrack"},
+		wherein        = {"mcl_nether:netherrack"},
 		clust_scarcity = 1,
 		clust_num_ores = 32,
 		clust_size     = 10,
-		y_min           = -3390,
-		y_max           = -3000,
+		y_min           = mcl_vars.mg_nether_min,
+		y_max           = mcl_vars.mg_nether_max,
 		noise_threshold = 0.2,
 		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=24, octaves=3, persist=0.70}
 	})
@@ -1043,11 +985,11 @@ local function register_biomelike_ores()
 	minetest.register_ore({
 		ore_type        = "blob",
 		ore             = "mcl_end:end_stone",
-		wherein         = {"mcl_core:void", "air"},
+		wherein         = {"air", "mcl_core:stone"},
 		clust_scarcity  = 30 * 30 * 30,
 		clust_size      = 17,
-		y_min           = -5750,
-		y_max           = -5701,
+		y_min           = mcl_vars.mg_end_min,
+		y_max           = mcl_vars.mg_end_max,
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
@@ -1062,11 +1004,11 @@ local function register_biomelike_ores()
 	minetest.register_ore({
 		ore_type        = "scatter",
 		ore             = "mcl_end:end_stone",
-		wherein         = {"mcl_core:void", "air"},
+		wherein         = {"air", "mcl_core:stone"},
 		clust_scarcity  = 30 * 30 * 30,
 		clust_size      = 34,
-		y_min           = -5780,
-		y_max           = -5711,
+		y_min           = mcl_vars.mg_end_min,
+		y_max           = mcl_vars.mg_end_max,
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
@@ -1479,54 +1421,6 @@ local function register_decorations()
 		y_max = 31000,
 		decoration = "mcl_core:mossycobble",
 	})
-
-	--Nether Decorations
-	--Red Mushroom
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_nether:netherrack"},
-		sidelen = 80,
-		fill_ratio = 0.01,
-		biomes = {"nether"},
-		y_min = -6000,
-		y_max = 31000,
-		decoration = "mcl_mushrooms:mushroom_red",
-	})
-	--Brown Mushroom
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_nether:netherrack"},
-		sidelen = 80,
-		fill_ratio = 0.01,
-		biomes = {"nether"},
-		y_min = -6000,
-		y_max = 31000,
-		decoration = "mcl_mushrooms:mushroom_brown",
-	})
-
-	--Eternal Fire
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_nether:netherrack"},
-		sidelen = 16,
-		fill_ratio = 0.2,
-		biomes = {"nether"},
-		y_min = -6000,
-		y_max = 31000,
-		decoration = "mcl_fire:eternal_fire",
-	})
-	-- Nether Wart
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_nether:soul_sand"},
-		sidelen = 80,
-		fill_ratio = 0.1,
-		biomes = {"nether"},
-		y_min = -6000,
-		y_max = 31000,
-		decoration = "mcl_nether:nether_wart",
-	})
-
 	-- Cactus
 
 	minetest.register_decoration({
@@ -1603,6 +1497,55 @@ local function register_decorations()
 		y_max = 31000,
 		decoration = "mcl_core:deadbush",
 		height = 1,
+	})
+
+
+	--[[ NETHER decorations ]]
+
+	-- Red Mushroom
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:netherrack"},
+		sidelen = 80,
+		fill_ratio = 0.01,
+		biomes = {"nether"},
+		y_min = mcl_vars.mg_nether_min,
+		y_max = mcl_vars.mg_nether_max,
+		decoration = "mcl_mushrooms:mushroom_red",
+	})
+	-- Brown Mushroom
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:netherrack"},
+		sidelen = 80,
+		fill_ratio = 0.01,
+		biomes = {"nether"},
+		y_min = mcl_vars.mg_nether_min,
+		y_max = mcl_vars.mg_nether_max,
+		decoration = "mcl_mushrooms:mushroom_brown",
+	})
+
+	-- Eternal Fire
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:netherrack"},
+		sidelen = 16,
+		fill_ratio = 0.2,
+		biomes = {"nether"},
+		y_min = mcl_vars.mg_nether_min,
+		y_max = mcl_vars.mg_nether_max,
+		decoration = "mcl_fire:eternal_fire",
+	})
+	-- Nether Wart
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_nether:soul_sand"},
+		sidelen = 80,
+		fill_ratio = 0.1,
+		biomes = {"nether"},
+		y_min = mcl_vars.mg_nether_min,
+		y_max = mcl_vars.mg_nether_max,
+		decoration = "mcl_nether:nether_wart",
 	})
 
 end

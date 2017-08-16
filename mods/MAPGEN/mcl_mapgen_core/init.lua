@@ -1050,9 +1050,7 @@ end)
 
 
 -- Generate bedrock layer or layers
-local BEDROCK_MIN = mcl_vars.mg_bedrock_overworld_min
-local BEDROCK_MAX = mcl_vars.mg_bedrock_overworld_max
-local GEN_MAX = mcl_vars.mg_lava_overworld_max or BEDROCK_MAX
+local GEN_MAX = mcl_vars.mg_lava_overworld_max or mcl_vars.mg_bedrock_overworld_max
 
 -- Buffer for LuaVoxelManip
 local lvm_buffer = {}
