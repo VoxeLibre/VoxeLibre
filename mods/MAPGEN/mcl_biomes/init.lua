@@ -924,18 +924,49 @@ local function register_biomelike_ores()
 		},
 	})
 
-	-- Lava in the Nether
+	-- Lava springs in the Nether
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_nether:nether_lava_source",
 		wherein        = {"mcl_nether:netherrack"},
-		clust_scarcity = 12 *12 * 12,
-		clust_num_ores = 2,
-		clust_size     = 2,
+		clust_scarcity = 500,
+		clust_num_ores = 1,
+		clust_size     = 1,
 		y_min           = mcl_vars.mg_nether_min,
-		y_max           = mcl_vars.mg_nether_min + 15,
+		y_max           = mcl_vars.mg_lava_nether_max + 1,
 	})
 
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "mcl_nether:nether_lava_source",
+		wherein        = {"mcl_nether:netherrack"},
+		clust_scarcity = 1000,
+		clust_num_ores = 1,
+		clust_size     = 1,
+		y_min           = mcl_vars.mg_lava_nether_max + 2,
+		y_max           = mcl_vars.mg_lava_nether_max + 12,
+	})
+
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "mcl_nether:nether_lava_source",
+		wherein        = {"mcl_nether:netherrack"},
+		clust_scarcity = 2000,
+		clust_num_ores = 1,
+		clust_size     = 1,
+		y_min           = mcl_vars.mg_lava_nether_max + 13,
+		y_max           = mcl_vars.mg_lava_nether_max + 48,
+	})
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "mcl_nether:nether_lava_source",
+		wherein        = {"mcl_nether:netherrack"},
+		clust_scarcity = 3500,
+		clust_num_ores = 1,
+		clust_size     = 1,
+		y_min           = mcl_vars.mg_lava_nether_max + 49,
+		y_max           = mcl_vars.mg_nether_max,
+	})
 
 	-- Fire in the Nether
 	minetest.register_ore({
