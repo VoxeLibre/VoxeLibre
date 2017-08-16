@@ -50,7 +50,7 @@ else
 	mcl_vars.mg_bedrock_is_rough = false
 end
 
-mcl_vars.mg_overworld_max = math.huge
+mcl_vars.mg_overworld_max = 31000
 
 -- The Nether
 mcl_vars.mg_nether_min = -29000

@@ -545,7 +545,7 @@ local function register_biomes()
 	minetest.register_biome({
 		name = "underground",
 		y_min = mcl_vars.mg_overworld_min,
-		y_max = mcl_util.y_to_layer(61),
+		y_max = mcl_util.layer_to_y(61),
 		heat_point = 50,
 		humidity_point = 50,
 	})
