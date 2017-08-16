@@ -14,6 +14,9 @@ local np_cave = {
 	persist = 0.7
 }
 
+-- Portal frame material
+local portal_frame = "mcl_nether:quartz_block"
+
 -- Nodes
 minetest.register_node("mcl_portals:portal_end", {
 	description = "End Portal",
@@ -71,19 +74,19 @@ local function build_end_portal(pos, target3)
 	local p2 = {x = p1.x + 3, y = p1.y + 4, z = p1.z}
 
 	for i = 1, 4 do
-		minetest.set_node(p, {name = "mcl_nether:red_nether_brick"})
+		minetest.set_node(p, {name = portal_frame})
 		p.y = p.y + 1
 	end
 	for i = 1, 3 do
-		minetest.set_node(p, {name = "mcl_nether:red_nether_brick"})
+		minetest.set_node(p, {name = portal_frame})
 		p.x = p.x + 1
 	end
 	for i = 1, 4 do
-		minetest.set_node(p, {name = "mcl_nether:red_nether_brick"})
+		minetest.set_node(p, {name = portal_frame})
 		p.y = p.y - 1
 	end
 	for i = 1, 3 do
-		minetest.set_node(p, {name = "mcl_nether:red_nether_brick"})
+		minetest.set_node(p, {name = portal_frame})
 		p.x = p.x - 1
 	end
 
@@ -144,7 +147,7 @@ local function move_check2(p1, max, dir)
 
 	while p[dir] ~= max do
 		p[dir] = p[dir] + d
-		if minetest.get_node(p).name ~= "mcl_nether:red_nether_brick" then
+		if minetest.get_node(p).name ~= portal_frame then
 			return false
 		end
 	end
@@ -309,7 +312,7 @@ minetest.register_abm({
 --[[ ITEM OVERRIDES ]]
 
 -- Frame material
-minetest.override_item("mcl_nether:red_nether_brick", {
+minetest.override_item(portal_frame, {
 	on_destruct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local p1 = minetest.string_to_pos(meta:get_string("p1"))
@@ -323,7 +326,7 @@ minetest.override_item("mcl_nether:red_nether_brick", {
 		for y = p1.y, p2.y do
 		for z = p1.z, p2.z do
 			local nn = minetest.get_node({x = x, y = y, z = z}).name
-			if nn == "mcl_nether:red_nether_brick" or nn == "mcl_portals:portal_end" then
+			if nn == portal_frame or nn == "mcl_portals:portal_end" then
 				if nn == "mcl_portals:portal_end" then
 					minetest.remove_node({x = x, y = y, z = z})
 				end
@@ -350,7 +353,7 @@ minetest.override_item("mcl_nether:red_nether_brick", {
 		for y = p1.y, p2.y do
 		for z = p1.z, p2.z do
 			local nn = minetest.get_node({x = x, y = y, z = z}).name
-			if nn == "mcl_nether:red_nether_brick" or nn == "mcl_portals:portal_end" then
+			if nn == portal_frame or nn == "mcl_portals:portal_end" then
 				if nn == "mcl_portals:portal_end" then
 					minetest.remove_node({x = x, y = y, z = z})
 				end
@@ -368,12 +371,12 @@ minetest.override_item("mcl_nether:red_nether_brick", {
 -- Portal opener
 minetest.override_item("mcl_end:ender_eye", {
 	_doc_items_longdesc = "An eye of ander can be used to open a portal to the End.",
-	_doc_items_usagehelp = "To open an End portal, place an upright frame of red nether brick blocks with a length of 4 and a height of 5 blocks, leaving only air in the center. After placing this frame, use the nether quartz on the frame.",
+	_doc_items_usagehelp = "To open an End portal, place an upright frame of quartz blocks with a length of 4 and a height of 5 blocks, leaving only air in the center. After placing this frame, use the eye of ender on the frame.",
 	on_place = function(itemstack, user, pointed_thing)
 		local nodedef = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]  --new
 
 		-- If used on frame, open portal
-		if pointed_thing.under and minetest.get_node(pointed_thing.under).name == "mcl_nether:red_nether_brick" then
+		if pointed_thing.under and minetest.get_node(pointed_thing.under).name == portal_frame then
 			make_end_portal(pointed_thing.under)
 			minetest.sound_play(
 				"fire_flint_and_steel",
