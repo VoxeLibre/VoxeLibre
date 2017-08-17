@@ -13,6 +13,52 @@ local np_cave = {
 	persist = 0.7
 }
 
+-- Destroy portal if pos (portal frame or portal node) got destroyed
+local destroy_portal = function(pos)
+	-- Deactivate Nether portal
+	local meta = minetest.get_meta(pos)
+	local p1 = minetest.string_to_pos(meta:get_string("p1"))
+	local p2 = minetest.string_to_pos(meta:get_string("p2"))
+	if not p1 or not p2 then
+		return
+	end
+
+	local first = true
+
+	-- p1 metadata of first node
+	local mp1
+	for x = p1.x, p2.x do
+	for y = p1.y, p2.y do
+	for z = p1.z, p2.z do
+		local p = vector.new(x, y, z)
+		local m = minetest.get_meta(p)
+		if first then
+			--[[ Only proceed if the first node still has metadata.
+			If it doesn't have metadata, another node propably triggred the delection
+			routine earlier, so we bail out earlier to avoid an infinite cascade
+			of on_destroy events. ]]
+			mp1 = minetest.string_to_pos(m:get_string("p1"))
+			if not mp1 then
+				return
+			end
+		end
+		local nn = minetest.get_node(p).name
+		if nn == "mcl_core:obsidian" or nn == "mcl_portals:portal" then
+			-- Remove portal nodes, but not myself
+			if nn == "mcl_portals:portal" and not vector.equals(p, pos) then
+				minetest.remove_node(p)
+			end
+			-- Clear metadata of portal nodes and the frame
+			m:set_string("p1", "")
+			m:set_string("p2", "")
+			m:set_string("target", "")
+		end
+		first = false
+	end
+	end
+	end
+end
+
 minetest.register_node("mcl_portals:portal", {
 	description = "Nether Portal",
 	tiles = {
@@ -59,10 +105,12 @@ minetest.register_node("mcl_portals:portal", {
 			{-0.5, -0.5, -0.1,  0.5, 0.5, 0.1},
 		},
 	},
-	groups = {not_in_creative_inventory = 1}
+	groups = {not_in_creative_inventory = 1},
+	on_destruct = destroy_portal,
+
+	_mcl_hardness = -1,
+	_mcl_blast_resistance = 0,
 })
-
-
 
 -- Functions
 --Build arrival portal
@@ -327,59 +375,7 @@ minetest.register_abm({
 
 -- Frame material
 minetest.override_item("mcl_core:obsidian", {
-	on_destruct = function(pos)
-		local meta = minetest.get_meta(pos)
-		local p1 = minetest.string_to_pos(meta:get_string("p1"))
-		local p2 = minetest.string_to_pos(meta:get_string("p2"))
-		local target = minetest.string_to_pos(meta:get_string("target"))
-		if not p1 or not p2 then
-			return
-		end
-
-		for x = p1.x, p2.x do
-		for y = p1.y, p2.y do
-		for z = p1.z, p2.z do
-			local nn = minetest.get_node({x = x, y = y, z = z}).name
-			if nn == "mcl_core:obsidian" or nn == "mcl_portals:portal" then
-				if nn == "mcl_portals:portal" then
-					minetest.remove_node({x = x, y = y, z = z})
-				end
-				local m = minetest.get_meta({x = x, y = y, z = z})
-				m:set_string("p1", "")
-				m:set_string("p2", "")
-				m:set_string("target", "")
-			end
-		end
-		end
-		end
-
-		meta = minetest.get_meta(target)
-		if not meta then
-			return
-		end
-		p1 = minetest.string_to_pos(meta:get_string("p1"))
-		p2 = minetest.string_to_pos(meta:get_string("p2"))
-		if not p1 or not p2 then
-			return
-		end
-
-		for x = p1.x, p2.x do
-		for y = p1.y, p2.y do
-		for z = p1.z, p2.z do
-			local nn = minetest.get_node({x = x, y = y, z = z}).name
-			if nn == "mcl_core:obsidian" or nn == "mcl_portals:portal" then
-				if nn == "mcl_portals:portal" then
-					minetest.remove_node({x = x, y = y, z = z})
-				end
-				local m = minetest.get_meta({x = x, y = y, z = z})
-				m:set_string("p1", "")
-				m:set_string("p2", "")
-				m:set_string("target", "")
-			end
-		end
-		end
-		end
-	end,
+	on_destruct = destroy_portal,
 })
 
 -- Portal opener
@@ -396,6 +392,9 @@ minetest.override_item("mcl_fire:flint_and_steel", {
 
 		if pointed_thing.under and minetest.get_node(pointed_thing.under).name == "mcl_core:obsidian" then
 			make_portal(pointed_thing.under)
+			if minetest.get_modpath("doc") then
+				doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:portal")
+			end
 		else
 			if pointed_thing.type == "node" then
 				local nodedef = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
