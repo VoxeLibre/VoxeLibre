@@ -12,10 +12,17 @@ mcl_clock.stereotype = "mcl_clock:clock"
 local watch = {}
 watch.old_time = -1
 
--- Image of all 64 possible faces
+local clock_frames = 64
+
+-- Timer for random clock spinning
+local random_timer = 0.0
+local random_timer_trigger = 1.0 -- random clock spinning tick in seconds. Increase if there are performance problems
+local random_frame = math.random(0, clock_frames-1)
+
+-- Image of all possible faces
 watch.images = {}
-for frame=0,63 do
-	table.insert(watch.images, "mcl_clock_clock.png^[verticalframe:64:"..frame)
+for frame=0, clock_frames-1 do
+	table.insert(watch.images, "mcl_clock_clock.png^[verticalframe:"..clock_frames..":"..frame)
 end
 
 local function round(num)
@@ -23,9 +30,9 @@ local function round(num)
 end
 
 function watch.get_clock_frame()
-	local t = 64 * minetest.get_timeofday()
+	local t = clock_frames * minetest.get_timeofday()
 	t = round(t)
-	if t == 64 then t = 0 end
+	if t == clock_frames then t = 0 end
 	return tostring(t)
 end
 
@@ -65,6 +72,12 @@ local force_clock_update_timer = 0
 minetest.register_globalstep(function(dtime)
 	local now = watch.get_clock_frame()
 	force_clock_update_timer = force_clock_update_timer + dtime
+	random_timer = random_timer + dtime
+	-- This causes the random spinning of the clock
+	if random_timer >= random_timer_trigger then
+		random_frame = (random_frame + math.random(-4, 4)) % clock_frames
+		random_timer = 0
+	end
 
 	if watch.old_time == now and force_clock_update_timer < 60 then
 		return
@@ -77,14 +90,18 @@ minetest.register_globalstep(function(dtime)
 	for p, player in ipairs(players) do
 		for s, stack in ipairs(player:get_inventory():get_list("main")) do
 			local _, dim = mcl_util.y_to_layer(player:getpos().y)
+			local frame
 			-- Clocks do not work in the End, Nether or the Void
-			if dim ~= "end" and dim ~= "nether" and dim ~= "void" then
-				local count = stack:get_count()
-				if stack:get_name() == mcl_clock.stereotype then
-					player:get_inventory():set_stack("main", s, "mcl_clock:clock_"..now.." "..count)
-				elseif string.sub(stack:get_name(), 1, 16) == "mcl_clock:clock_" then
-					player:get_inventory():set_stack("main", s, "mcl_clock:clock_"..now.." "..count)
-				end
+			if dim == "end" or dim == "nether" or dim == "void" then
+				frame = random_frame
+			else
+				frame = now
+			end
+			local count = stack:get_count()
+			if stack:get_name() == mcl_clock.stereotype then
+				player:get_inventory():set_stack("main", s, "mcl_clock:clock_"..frame.." "..count)
+			elseif minetest.get_item_group(stack:get_name(), "clock") ~= 0 then
+				player:get_inventory():set_stack("main", s, "mcl_clock:clock_"..frame.." "..count)
 			end
 		end
 	end
@@ -111,7 +128,7 @@ minetest.register_craft({
 watch.register_item(mcl_clock.stereotype, watch.images[1], true, 1)
 
 -- Faces
-for a=0,63,1 do
+for a=0,clock_frames-1,1 do
 	local b = a
 	if b > 31 then
 		b = b - 32
