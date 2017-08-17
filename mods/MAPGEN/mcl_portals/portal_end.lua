@@ -20,8 +20,8 @@ local portal_frame = "mcl_nether:quartz_block"
 local destroy_portal = function(pos)
 	-- Deactivate Nether portal
 	local meta = minetest.get_meta(pos)
-	local p1 = minetest.string_to_pos(meta:get_string("p1"))
-	local p2 = minetest.string_to_pos(meta:get_string("p2"))
+	local p1 = minetest.string_to_pos(meta:get_string("portal_frame1"))
+	local p2 = minetest.string_to_pos(meta:get_string("portal_frame2"))
 	if not p1 or not p2 then
 		return
 	end
@@ -40,7 +40,7 @@ local destroy_portal = function(pos)
 			If it doesn't have metadata, another node propably triggred the delection
 			routine earlier, so we bail out earlier to avoid an infinite cascade
 			of on_destroy events. ]]
-			mp1 = minetest.string_to_pos(m:get_string("p1"))
+			mp1 = minetest.string_to_pos(m:get_string("portal_frame1"))
 			if not mp1 then
 				return
 			end
@@ -52,9 +52,9 @@ local destroy_portal = function(pos)
 				minetest.remove_node(p)
 			end
 			-- Clear metadata of portal nodes and the frame
-			m:set_string("p1", "")
-			m:set_string("p2", "")
-			m:set_string("target", "")
+			m:set_string("portal_frame1", "")
+			m:set_string("portal_frame2", "")
+			m:set_string("portal_target", "")
 		end
 		first = false
 	end
@@ -146,9 +146,9 @@ local function build_end_portal(pos, target3)
 			minetest.set_node(p, {name = "mcl_portals:portal_end", param2 = 0})
 		end
 		local meta = minetest.get_meta(p)
-		meta:set_string("p1", minetest.pos_to_string(p1))
-		meta:set_string("p2", minetest.pos_to_string(p2))
-		meta:set_string("target3", minetest.pos_to_string(target3))
+		meta:set_string("portal_frame1", minetest.pos_to_string(p1))
+		meta:set_string("portal_frame2", minetest.pos_to_string(p2))
+		meta:set_string("portal_target", minetest.pos_to_string(target3))
 
 		if y ~= p1.y then
 			for z = -2, 2 do
@@ -296,9 +296,13 @@ local function make_end_portal(pos)
 			minetest.set_node(p, {name = "mcl_portals:portal_end", param2 = param2})
 		end
 		local meta = minetest.get_meta(p)
-		meta:set_string("p1", minetest.pos_to_string(p1))
-		meta:set_string("p2", minetest.pos_to_string(p2))
-		meta:set_string("target3", minetest.pos_to_string(target3))
+
+		-- Portal frame corners
+		meta:set_string("portal_frame1", minetest.pos_to_string(p1))
+		meta:set_string("portal_frame2", minetest.pos_to_string(p2))
+
+		-- Portal target coordinates
+		meta:set_string("portal_target", minetest.pos_to_string(target3))
 	end
 	end
 
@@ -315,7 +319,7 @@ minetest.register_abm({
 		local lua_entity = obj:get_luaentity() --maikerumine added for objects to travel
 			if obj:is_player() or lua_entity then
 				local meta = minetest.get_meta(pos)
-				local target3 = minetest.string_to_pos(meta:get_string("target3"))
+				local target3 = minetest.string_to_pos(meta:get_string("portal_target"))
 				if target3 then
 					-- force emerge of target3 area
 					minetest.get_voxel_manip():read_from_map(target3, target3)
