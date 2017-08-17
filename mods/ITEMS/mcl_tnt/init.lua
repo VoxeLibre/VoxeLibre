@@ -71,8 +71,8 @@ minetest.register_node("mcl_tnt:tnt", {
 	mesecons = {effector = {
 		action_on = tnt.ignite
 	}},
-	_on_ignite = function(pos, player)
-		tnt.ignite(pos)
+	_on_ignite = function(player, pointed_thing)
+		tnt.ignite(pointed_thing.under)
 	end,
 	sounds = sounds,
 })

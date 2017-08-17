@@ -376,7 +376,8 @@ local eternal_override = {
 			minetest.remove_node(pos)
 		end
 	end,
-	_on_ignite = function(pos, player)
+	_on_ignite = function(player, pointed_thing)
+		local pos = pointed_thing.under
 		local flame_pos = {x = pos.x, y = pos.y + 1, z = pos.z}
 		if minetest.get_node(flame_pos).name == "air" then
 			minetest.set_node(flame_pos, {name = "mcl_fire:eternal_fire"})

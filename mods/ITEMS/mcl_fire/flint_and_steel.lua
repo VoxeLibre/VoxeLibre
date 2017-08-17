@@ -1,8 +1,8 @@
 -- Flint and Steel
 minetest.register_tool("mcl_fire:flint_and_steel", {
 	description = "Flint and Steel",
-	_doc_items_longdesc = "Flint and steel is a tool to start fires and ignite blocks.",
-	_doc_items_usagehelp = "Rightclick the surface of a block to attempt to light a fire in front of it. On netherrack and magma blocks it will start an eternal fire. Using it on TNT will ignite it.",
+	_doc_items_longdesc = "Flint and steel is a tool to start fires, ignite blocks and open portals.",
+	_doc_items_usagehelp = "Rightclick the surface of a block to attempt to light a fire in front of it. On netherrack it will start an eternal fire. Using it on TNT will ignite it. To open a Nether portal, place an upright frame of obsidian with a length of 4 and a height of 5 blocks, leaving only air in the center. After placing this frame, use the flint and steel on inside of the frame.",
 	inventory_image = "mcl_fire_flint_and_steel.png",
 	liquids_pointable = false,
 	stack_max = 1,
@@ -25,7 +25,7 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 		if pointed_thing.type == "node" then
 			local nodedef = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
 			if nodedef and nodedef._on_ignite then
-				nodedef._on_ignite(pointed_thing.under, user)
+				nodedef._on_ignite(user, pointed_thing)
 			else
 				mcl_fire.set_fire(pointed_thing)
 			end

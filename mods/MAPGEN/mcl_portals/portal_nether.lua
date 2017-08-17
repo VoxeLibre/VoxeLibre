@@ -380,43 +380,17 @@ minetest.register_abm({
 -- Frame material
 minetest.override_item("mcl_core:obsidian", {
 	on_destruct = destroy_portal,
-})
-
--- Portal opener
-minetest.override_item("mcl_fire:flint_and_steel", {
-	_doc_items_longdesc = "Flint and steel is a tool to start fires, ignite blocks and open portals.",
-	_doc_items_usagehelp = "Rightclick the surface of a block to attempt to light a fire in front of it. On netherrack it will start an eternal fire. Using it on TNT will ignite it. To open a Nether portal, place an upright frame of obsidian with a length of 4 and a height of 5 blocks, leaving only air in the center. After placing this frame, use the flint and steel on inside of the frame.",
-	on_place = function(itemstack, user, pointed_thing)
-		local idef = itemstack:get_definition()
-		minetest.sound_play(
-			"fire_flint_and_steel",
-			{pos = pointed_thing.above, gain = 0.5, max_hear_distance = 8}
-		)
-		local used = false
-
-		if pointed_thing.under and minetest.get_node(pointed_thing.under).name == "mcl_core:obsidian" then
-			make_portal(pointed_thing.under)
-			if minetest.get_modpath("doc") then
-				doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:portal")
-			end
+	_on_ignite = function(user, pointed_thing)
+		local pos = pointed_thing.under
+		local portal_placed = make_portal(pos)
+		if portal_placed and minetest.get_modpath("doc") then
+			doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:portal")
 		else
-			if pointed_thing.type == "node" then
-				local nodedef = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
-				if nodedef._on_ignite then
-					nodedef._on_ignite(pointed_thing.under, user)
-				else
-					mcl_fire.set_fire(pointed_thing)
-				end
-				used = true
+			local node = minetest.get_node(pointed_thing.above)
+			if node.name ~= "mcl_portals:portal" then
+				mcl_fire.set_fire(pointed_thing)
 			end
 		end
-		if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then
-			minetest.sound_play(idef.sound.breaks, {pos=user:getpos(), gain=0.5})
-		end
-		if not minetest.setting_getbool("creative_mode") and used == true then
-			itemstack:add_wear(65535/65) -- 65 uses
-		end
-		return itemstack
 	end,
 })
 

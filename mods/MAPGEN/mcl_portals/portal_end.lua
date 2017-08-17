@@ -373,20 +373,27 @@ minetest.override_item("mcl_end:ender_eye", {
 	_doc_items_longdesc = "An eye of ander can be used to open a portal to the End.",
 	_doc_items_usagehelp = "To open an End portal, place an upright frame of quartz blocks with a length of 4 and a height of 5 blocks, leaving only air in the center. After placing this frame, use the eye of ender on the frame.",
 	on_place = function(itemstack, user, pointed_thing)
-		local nodedef = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]  --new
-
-		-- If used on frame, open portal
-		if pointed_thing.under and minetest.get_node(pointed_thing.under).name == portal_frame then
-			make_end_portal(pointed_thing.under)
-			if minetest.get_modpath("doc") then
-				doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:portal_end")
+		-- Use pointed node's on_rightclick function first, if present
+		local node = minetest.get_node(pointed_thing.under)
+		if user and not user:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
 			end
-			minetest.sound_play(
-				"fire_flint_and_steel",
-				{pos = pointed_thing.above, gain = 0.5, max_hear_distance = 8}
-			)
-			if not minetest.setting_getbool("creative_mode") and used == true then
-				itemstack:take_item() -- 1 use
+		end
+
+		-- If used on portal frame, open a portal
+		if pointed_thing.under and node.name == portal_frame then
+			local opened = make_end_portal(pointed_thing.under)
+			if opened then
+				if minetest.get_modpath("doc") then
+					doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:portal_end")
+				end
+				minetest.sound_play(
+					"fire_flint_and_steel",
+					{pos = pointed_thing.above, gain = 0.5, max_hear_distance = 16})
+				if not minetest.settings:get_bool("creative_mode") then
+					itemstack:take_item() -- 1 use
+				end
 			end
 		end
 
