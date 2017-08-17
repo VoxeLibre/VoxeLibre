@@ -12,9 +12,13 @@ local np_cave = {
 	octaves = 5,
 	persist = 0.7
 }
-
 -- Portal frame material
 local portal_frame = "mcl_nether:quartz_block"
+
+-- Table of objects (including players) which recently teleported by a
+-- End portal. Those objects have a brief cooloff period before they
+-- can teleport again. This prevents annoying back-and-forth teleportation.
+local portal_cooloff = {}
 
 -- Destroy portal if pos (portal frame or portal node) got destroyed
 local destroy_portal = function(pos)
@@ -326,6 +330,10 @@ minetest.register_abm({
 		for _,obj in ipairs(minetest.get_objects_inside_radius(pos,1)) do --maikerumine added for objects to travel
 		local lua_entity = obj:get_luaentity() --maikerumine added for objects to travel
 			if obj:is_player() or lua_entity then
+				-- No rapid back-and-forth teleportatio
+				if portal_cooloff[obj] then
+					return
+				end
 				local meta = minetest.get_meta(pos)
 				local target3 = minetest.string_to_pos(meta:get_string("portal_target"))
 				if target3 then
@@ -336,8 +344,12 @@ minetest.register_abm({
 							vector.subtract(target3, 4), vector.add(target3, 4))
 					end
 
-					-- teleport the player
+					-- teleport the object
 					minetest.after(3, function(obj, pos, target3)
+						-- No rapid back-and-forth teleportatio
+						if portal_cooloff[obj] then
+							return
+						end
 						local objpos = obj:getpos()
 						if objpos == nil then
 							return
@@ -365,6 +377,12 @@ minetest.register_abm({
 						-- Teleport
 						obj:setpos(target3)
 						minetest.sound_play("mcl_portals_teleport", {pos=target3, gain=0.5, max_hear_distance = 16})
+
+						-- Enable teleportation cooloff to prevent frequent back-and-forth teleportation
+						portal_cooloff[obj] = true
+						minetest.after(3, function(o)
+							portal_cooloff[o] = false
+						end, obj)
 
 					end, obj, pos, target3)
 				end
