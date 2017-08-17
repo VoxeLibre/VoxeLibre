@@ -76,11 +76,15 @@ minetest.register_globalstep(function(dtime)
 	local players = minetest.get_connected_players()
 	for p, player in ipairs(players) do
 		for s, stack in ipairs(player:get_inventory():get_list("main")) do
-			local count = stack:get_count()
-			if stack:get_name() == mcl_clock.stereotype then
-				player:get_inventory():set_stack("main", s, "mcl_clock:clock_"..now.." "..count)
-			elseif string.sub(stack:get_name(), 1, 16) == "mcl_clock:clock_" then
-				player:get_inventory():set_stack("main", s, "mcl_clock:clock_"..now.." "..count)
+			local _, dim = mcl_util.y_to_layer(player:getpos().y)
+			-- Clocks do not work in the End, Nether or the Void
+			if dim ~= "end" and dim ~= "nether" and dim ~= "void" then
+				local count = stack:get_count()
+				if stack:get_name() == mcl_clock.stereotype then
+					player:get_inventory():set_stack("main", s, "mcl_clock:clock_"..now.." "..count)
+				elseif string.sub(stack:get_name(), 1, 16) == "mcl_clock:clock_" then
+					player:get_inventory():set_stack("main", s, "mcl_clock:clock_"..now.." "..count)
+				end
 			end
 		end
 	end

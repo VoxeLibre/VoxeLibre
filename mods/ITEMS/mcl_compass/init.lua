@@ -26,18 +26,22 @@ minetest.register_globalstep(function(dtime)
 				end
 			end
 			local pos = player:getpos()
-			local dir = player:get_look_horizontal()
-			local angle_north = math.deg(math.atan2(spawn.x - pos.x, spawn.z - pos.z))
-			if angle_north < 0 then angle_north = angle_north + 360 end
-			local angle_dir = -math.deg(dir)
-			local angle_relative = (angle_north - angle_dir + 180) % 360
-			local compass_image = math.floor((angle_relative/11.25) + 0.5)%32
+			local _, dim = mcl_util.y_to_layer(pos.y)
+			-- Compasses do not work in the End, Nether or the Void
+			if dim ~= "end" and dim ~= "nether" and dim ~= "void" then
+				local dir = player:get_look_horizontal()
+				local angle_north = math.deg(math.atan2(spawn.x - pos.x, spawn.z - pos.z))
+				if angle_north < 0 then angle_north = angle_north + 360 end
+				local angle_dir = -math.deg(dir)
+				local angle_relative = (angle_north - angle_dir + 180) % 360
+				local compass_image = math.floor((angle_relative/11.25) + 0.5)%32
 
-			for j,stack in ipairs(player:get_inventory():get_list("main")) do
-				if minetest.get_item_group(stack:get_name(), "compass") ~= 0 and
-						minetest.get_item_group(stack:get_name(), "compass")-1 ~= compass_image then
-					local count = stack:get_count()
-					player:get_inventory():set_stack("main", j, ItemStack("mcl_compass:"..compass_image.." "..count))
+				for j,stack in ipairs(player:get_inventory():get_list("main")) do
+					if minetest.get_item_group(stack:get_name(), "compass") ~= 0 and
+							minetest.get_item_group(stack:get_name(), "compass")-1 ~= compass_image then
+						local count = stack:get_count()
+						player:get_inventory():set_stack("main", j, ItemStack("mcl_compass:"..compass_image.." "..count))
+					end
 				end
 			end
 		end
