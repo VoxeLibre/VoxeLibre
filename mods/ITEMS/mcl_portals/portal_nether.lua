@@ -23,17 +23,17 @@ local destroy_portal = function(pos)
 		return
 	end
 
-	local first = true
+	local counter = 1
 
-	-- p1 metadata of first node
 	local mp1
 	for x = p1.x, p2.x do
 	for y = p1.y, p2.y do
 	for z = p1.z, p2.z do
 		local p = vector.new(x, y, z)
 		local m = minetest.get_meta(p)
-		if first then
-			--[[ Only proceed if the first node still has metadata.
+		if counter == 2 then
+			--[[ Only proceed if the second node still has metadata.
+			(first node is a corner and not needed for the portal)
 			If it doesn't have metadata, another node propably triggred the delection
 			routine earlier, so we bail out earlier to avoid an infinite cascade
 			of on_destroy events. ]]
@@ -53,7 +53,7 @@ local destroy_portal = function(pos)
 			m:set_string("portal_frame2", "")
 			m:set_string("portal_target", "")
 		end
-		first = false
+		counter = counter + 1
 	end
 	end
 	end
@@ -139,13 +139,15 @@ local function build_portal(pos, target)
 	for x = p1.x, p2.x do
 	for y = p1.y, p2.y do
 		p = {x = x, y = y, z = p1.z}
-		if not (x == p1.x or x == p2.x or y == p1.y or y == p2.y) then
-			minetest.set_node(p, {name = "mcl_portals:portal", param2 = 0})
+		if not ((x == p1.x or x == p2.x) and (y == p1.y or y == p2.y)) then
+			if not (x == p1.x or x == p2.x or y == p1.y or y == p2.y) then
+				minetest.set_node(p, {name = "mcl_portals:portal", param2 = 0})
+			end
+			local meta = minetest.get_meta(p)
+			meta:set_string("portal_frame1", minetest.pos_to_string(p1))
+			meta:set_string("portal_frame2", minetest.pos_to_string(p2))
+			meta:set_string("portal_target", minetest.pos_to_string(target))
 		end
-		local meta = minetest.get_meta(p)
-		meta:set_string("portal_frame1", minetest.pos_to_string(p1))
-		meta:set_string("portal_frame2", minetest.pos_to_string(p2))
-		meta:set_string("portal_target", minetest.pos_to_string(target))
 
 		if y ~= p1.y then
 			for z = -2, 2 do
@@ -189,20 +191,25 @@ end
 
 local function move_check(p1, max, dir)
 	local p = {x = p1.x, y = p1.y, z = p1.z}
-	local d = math.abs(max - p1[dir]) / (max - p1[dir])
+	local d = math.sign(max - p1[dir])
+	local min = p[dir]
 
-	while p[dir] ~= max do
-		p[dir] = p[dir] + d
-		if minetest.get_node(p).name ~= "mcl_core:obsidian" then
+	for k = min, max, d do
+		p[dir] = k
+		local node = minetest.get_node(p)
+		-- Check for obsidian (except at corners)
+		if k ~= min and k ~= max and node.name ~= "mcl_core:obsidian" then
 			return false
 		end
 		-- Abort if any of the portal frame blocks already has metadata.
 		-- This mod does not yet portals which neighbor each other directly.
 		-- TODO: Reorganize the way how portal frame coordinates are stored.
-		local meta = minetest.get_meta(p)
-		local p1 = meta:get_string("portal_frame1")
-		if minetest.string_to_pos(p1) ~= nil then
-			return false
+		if node.name == "mcl_core:obsidian" then
+			local meta = minetest.get_meta(p)
+			local pframe1 = meta:get_string("portal_frame1")
+			if minetest.string_to_pos(pframe1) ~= nil then
+				return false
+			end
 		end
 	end
 
@@ -289,16 +296,17 @@ local function make_portal(pos)
 		target.y = find_nether_target_y(target.x, target.z)
 	end
 
-	for d = 0, 3 do
-	for y = p1.y, p2.y do
-		local p = {}
+	local dmin, dmax, ymin, ymax = 0, 3, p1.y, p2.y
+	for d = dmin, dmax do
+	for y = ymin, ymax do
+	if not ((d == dmin or d == dmax) and (y == ymin or y == ymax)) then
+		local p
 		if param2 == 0 then
 			p = {x = p1.x + d, y = y, z = p1.z}
 		else
 			p = {x = p1.x, y = y, z = p1.z + d}
 		end
-		if minetest.get_node(p).name == "air"
-		then
+		if minetest.get_node(p).name == "air" then
 			minetest.set_node(p, {name = "mcl_portals:portal", param2 = param2})
 		end
 		local meta = minetest.get_meta(p)
@@ -309,6 +317,7 @@ local function make_portal(pos)
 
 		-- Portal target coordinates
 		meta:set_string("portal_target", minetest.pos_to_string(target))
+	end
 	end
 	end
 
