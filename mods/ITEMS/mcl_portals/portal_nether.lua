@@ -72,6 +72,9 @@ end
 
 minetest.register_node("mcl_portals:portal", {
 	description = "Nether Portal",
+	_doc_items_longdesc = "A Nether portal teleports creatures and objects to the hot and dangerous Nether dimension (and back!). Enter at your own risk!",
+	_doc_items_usagehelp = "Stand in the portal for a moment to activate the teleportation. Entering a Nether portal for the first time will also create a new portal in the other dimension. If a Nether portal has been built in the Nether, it will lead to the Overworld. A Nether portal is destroyed if the any of the obsidian which surrounds it is destroyed, or if it was caught in an explosion.",
+
 	tiles = {
 		"blank.png",
 		"blank.png",

@@ -69,6 +69,8 @@ end
 -- Nodes
 minetest.register_node("mcl_portals:portal_end", {
 	description = "End Portal",
+	_doc_items_longdesc = "An End portal teleports creatures and objects to the mysterious End dimension (and back!).",
+	_doc_items_usagehelp = "Stand in the portal for a moment to activate the teleportation. Entering such a portal for the first time will create a new portal in your destination. End portal which were built in the End will lead back to the Overworld. An End portal is destroyed if any of its surrounding frame blocks is destroyed.",
 	tiles = {
 		"blank.png",
 		"blank.png",
