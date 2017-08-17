@@ -429,8 +429,13 @@ minetest.register_abm({
 
 --[[ ITEM OVERRIDES ]]
 
--- Frame material
+local longdesc = minetest.registered_nodes["mcl_core:obsidian"]._doc_items_longdesc
+longdesc = longdesc .. "\n" .. "Obsidian is also used as the frame of Nether portals."
+local usagehelp = "To open a Nether portal, place an upright frame of obsidian with a width of 4 blocks and a height of 5 blocks, leaving only air in the center. After placing this frame, ignite the obsidian with an appropriate tool, such as flint of steel."
+
 minetest.override_item("mcl_core:obsidian", {
+	_doc_items_longdesc = longdesc,
+	_doc_items_usagehelp = usagehelp,
 	on_destruct = destroy_portal,
 	_on_ignite = function(user, pointed_thing)
 		local pos = pointed_thing.under

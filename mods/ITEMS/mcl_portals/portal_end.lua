@@ -396,15 +396,19 @@ minetest.register_abm({
 
 --[[ ITEM OVERRIDES ]]
 
+local portal_open_help = "To open an End portal, place an upright frame of quartz blocks with a length of 4 blocks and a height of 5 blocks, leaving only air in the center. After placing this frame, use an eye of ender on the frame. The eye of ender is destroyed in the process."
+
 -- Frame material
 minetest.override_item(portal_frame, {
+	_doc_items_longdesc = "A block of quartz can be used to create End portals.",
+	_doc_items_usagehelp = portal_open_help,
 	on_destruct = destroy_portal,
 })
 
 -- Portal opener
 minetest.override_item("mcl_end:ender_eye", {
-	_doc_items_longdesc = "An eye of ander can be used to open a portal to the End.",
-	_doc_items_usagehelp = "To open an End portal, place an upright frame of quartz blocks with a length of 4 and a height of 5 blocks, leaving only air in the center. After placing this frame, use the eye of ender on the frame.",
+	_doc_items_longdesc = "An eye of ender can be used to open End portals.",
+	_doc_items_usagehelp = portal_open_help,
 	on_place = function(itemstack, user, pointed_thing)
 		-- Use pointed node's on_rightclick function first, if present
 		local node = minetest.get_node(pointed_thing.under)
