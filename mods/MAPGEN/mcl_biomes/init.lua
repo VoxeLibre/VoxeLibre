@@ -829,18 +829,6 @@ local function register_biomelike_ores()
 
 
 	--[[ NETHER GENERATION ]]
-	-- Generate holes in Nether
-	-- TODO: Is this a good idea?
-	minetest.register_ore({
-		ore_type       = "puff",
-		ore            = "air",
-		wherein        = {"mcl_nether:netherrack"},
-		clust_scarcity = 666,
-		clust_size     = 4,
-		y_min           = mcl_vars.mg_nether_min,
-		y_max           = mcl_vars.mg_nether_max,
-		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=24, octaves=3, persist=0.60}
-	})
 
 	-- Soul sand
 	minetest.register_ore({
