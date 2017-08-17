@@ -344,7 +344,14 @@ minetest.register_abm({
 					end
 					-- teleport the player
 					minetest.after(3, function(obj, pos, target)
-						local objpos = obj:getpos()   if objpos == nil then return end	--maikerumine added for objects to travel
+						local objpos = obj:getpos()
+						if objpos == nil then
+							return
+						end
+						-- If player stands, player is at ca. something+0.5
+						-- which might cause precision problems, so we used ceil.
+						objpos.y = math.ceil(objpos.y)
+
 						if minetest.get_node(objpos).name ~= "mcl_portals:portal" then
 							return
 						end
