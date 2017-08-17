@@ -1218,6 +1218,7 @@ minetest.register_on_generated(function(minp, maxp)
 		local c_sand = minetest.get_content_id("mcl_core:sand")
 		local c_void = minetest.get_content_id("mcl_core:void")
 		local c_lava = minetest.get_content_id("mcl_core:lava_source")
+		local c_water = minetest.get_content_id("mcl_core:water_source")
 		local c_soul_sand = minetest.get_content_id("mcl_nether:soul_sand")
 		local c_netherrack = minetest.get_content_id("mcl_nether:netherrack")
 		local c_nether_lava = minetest.get_content_id("mcl_nether:nether_lava_source")
@@ -1290,6 +1291,9 @@ minetest.register_on_generated(function(minp, maxp)
 							data[p_pos] = c_nether_lava
 							lvm_used = true
 						end
+					-- Water in the Nether? No way!
+					elseif data[p_pos] == c_water and y <= mcl_vars.mg_nether_max and y >= mcl_vars.mg_nether_min then
+						data[p_pos] = c_nether_lava
 					-- Realm barrier between the Overworld void and the End
 					elseif y >= mcl_vars.mg_realm_barrier_overworld_end_min and y <= mcl_vars.mg_realm_barrier_overworld_end_max then
 						data[p_pos] = c_realm_barrier
