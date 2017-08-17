@@ -199,6 +199,14 @@ local function move_check2(p1, max, dir)
 		if minetest.get_node(p).name ~= portal_frame then
 			return false
 		end
+		-- Abort if any of the portal frame blocks already has metadata.
+		-- This mod does not yet portals which neighbor each other directly.
+		-- TODO: Reorganize the way how portal frame coordinates are stored.
+		local meta = minetest.get_meta(p)
+		local p1 = meta:get_string("portal_frame1")
+		if minetest.string_to_pos(p1) ~= nil then
+			return false
+		end
 	end
 
 	return true
