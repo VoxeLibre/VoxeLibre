@@ -834,7 +834,9 @@ local function register_dimension_ores()
 	minetest.register_ore({
 		ore_type        = "sheet",
 		ore             = "mcl_nether:soul_sand",
-		wherein         = {"mcl_nether:netherrack"},
+		-- Note: Stone is included only for v6 mapgen support. Netherrack is not generated naturally
+		-- in v6, but instead set with the on_generated function in mcl_mapgen_core.
+		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
 		clust_scarcity  = 13 * 13 * 13,
 		clust_size      = 5,
 		y_min           = mcl_vars.mg_nether_min,
@@ -854,7 +856,7 @@ local function register_dimension_ores()
 	minetest.register_ore({
 		ore_type       = "blob",
 		ore            = "mcl_nether:magma",
-		wherein        = {"mcl_nether:netherrack"},
+		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
 		clust_scarcity = 14*14*14,
 		clust_num_ores = 35,
 		clust_size     = 4,
@@ -876,7 +878,7 @@ local function register_dimension_ores()
 	minetest.register_ore({
 		ore_type        = "blob",
 		ore             = "mcl_nether:glowstone",
-		wherein         = {"mcl_nether:netherrack"},
+		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
 		clust_scarcity  = 26 * 26 * 26,
 		clust_size      = 5,
 		y_min           = mcl_vars.mg_lava_nether_max + 10,
@@ -896,7 +898,7 @@ local function register_dimension_ores()
 	minetest.register_ore({
 		ore_type        = "sheet",
 		ore             = "mcl_core:gravel",
-		wherein         = {"mcl_nether:netherrack"},
+		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
 		column_height_min = 1,
 		column_height_max = 1,
 		y_min           = mcl_util.layer_to_y(63, "nether"),
@@ -916,7 +918,7 @@ local function register_dimension_ores()
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_nether:quartz_ore",
-		wherein        = {"mcl_nether:netherrack"},
+		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
 		clust_scarcity = 850,
 		clust_num_ores = 4, -- MC cluster amount: 4-10
 		clust_size     = 3,
@@ -926,7 +928,7 @@ local function register_dimension_ores()
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_nether:quartz_ore",
-		wherein        = {"mcl_nether:netherrack"},
+		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
 		clust_scarcity = 1650,
 		clust_num_ores = 8, -- MC cluster amount: 4-10
 		clust_size     = 4,
@@ -938,7 +940,7 @@ local function register_dimension_ores()
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_nether:nether_lava_source",
-		wherein        = {"mcl_nether:netherrack"},
+		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
 		clust_scarcity = 500,
 		clust_num_ores = 1,
 		clust_size     = 1,
@@ -949,7 +951,7 @@ local function register_dimension_ores()
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_nether:nether_lava_source",
-		wherein        = {"mcl_nether:netherrack"},
+		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
 		clust_scarcity = 1000,
 		clust_num_ores = 1,
 		clust_size     = 1,
@@ -960,7 +962,7 @@ local function register_dimension_ores()
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_nether:nether_lava_source",
-		wherein        = {"mcl_nether:netherrack"},
+		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
 		clust_scarcity = 2000,
 		clust_num_ores = 1,
 		clust_size     = 1,
@@ -970,7 +972,7 @@ local function register_dimension_ores()
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_nether:nether_lava_source",
-		wherein        = {"mcl_nether:netherrack"},
+		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
 		clust_scarcity = 3500,
 		clust_num_ores = 1,
 		clust_size     = 1,
@@ -978,11 +980,12 @@ local function register_dimension_ores()
 		y_max           = mcl_vars.mg_nether_max,
 	})
 
-	-- Fire in the Nether
+	-- Fire in the Nether (hacky)
+	-- FIXME: Remove this when fire as decoration is available
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_fire:eternal_fire",
-		wherein        = "mcl_nether:netherrack",
+		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
 		clust_scarcity =12 *22 * 12,
 		clust_num_ores = 5,
 		clust_size     = 5,

@@ -594,8 +594,8 @@ minetest.register_ore({
 	clust_scarcity = monster_egg_scarcity,
 	clust_num_ores = 3,
 	clust_size     = 2,
-	y_min          = -31000,
-	y_max          = 31000,
+	y_min          = mcl_vars.mg_overworld_min,
+	y_max          = mcl_vars.mg_overworld_max,
 	-- TODO: Limit by biome
 })
 
@@ -1058,7 +1058,7 @@ local lvm_buffer = {}
 
 -- Generate cocoas and vines at jungle trees within the bounding box
 local function generate_jungle_tree_decorations(minp, maxp)
-	if minetest.get_mapgen_setting("mg_name") == "v6" then
+	if mg_name == "v6" then
 
 		if maxp.y < 0 then
 			return
@@ -1213,10 +1213,16 @@ minetest.register_on_generated(function(minp, maxp)
 	-- Generate bedrock and lava layers
 	if minp.y <= GEN_MAX then
 		local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
+		local c_stone = minetest.get_content_id("mcl_core:stone")
+		local c_dirt = minetest.get_content_id("mcl_core:dirt")
+		local c_sand = minetest.get_content_id("mcl_core:sand")
 		local c_void = minetest.get_content_id("mcl_core:void")
 		local c_lava = minetest.get_content_id("mcl_core:lava_source")
-		local c_realm_barrier = minetest.get_content_id("mcl_core:realm_barrier")
+		local c_soul_sand = minetest.get_content_id("mcl_nether:soul_sand")
+		local c_netherrack = minetest.get_content_id("mcl_nether:netherrack")
 		local c_nether_lava = minetest.get_content_id("mcl_nether:nether_lava_source")
+		local c_end_stone = minetest.get_content_id("mcl_end:end_stone")
+		local c_realm_barrier = minetest.get_content_id("mcl_core:realm_barrier")
 		local c_air = minetest.get_content_id("air")
 
 		local max_y = math.min(maxp.y, GEN_MAX)
@@ -1260,8 +1266,6 @@ minetest.register_on_generated(function(minp, maxp)
 						end
 						if is_bedrock(y) then
 							setdata = c_bedrock
-						elseif mcl_util.is_in_void({x=x,y=y,z=z}) then
-							setdata = c_void
 						end
 					else
 						-- Perfectly flat bedrock layer(s)
@@ -1269,14 +1273,14 @@ minetest.register_on_generated(function(minp, maxp)
 								(y >= mcl_vars.mg_bedrock_nether_bottom_min and y <= mcl_vars.mg_bedrock_nether_bottom_max) or
 								(y >= mcl_vars.mg_bedrock_nether_top_min and y <= mcl_vars.mg_bedrock_nether_top_max) then
 							setdata = c_bedrock
-						elseif mcl_util.is_in_void({x=x,y=y,z=z}) then
-							setdata = c_void
 						end
 					end
 
 					if setdata then
 						data[p_pos] = setdata
 						lvm_used = true
+					elseif mcl_util.is_in_void({x=x,y=y,z=z}) then
+						setdata = c_void
 					-- Big lava seas by replacing air below a certain height
 					elseif mcl_vars.mg_lava and data[p_pos] == c_air then
 						if y <= mcl_vars.mg_lava_overworld_max and y >= mcl_vars.mg_overworld_min then
@@ -1290,6 +1294,17 @@ minetest.register_on_generated(function(minp, maxp)
 					elseif y >= mcl_vars.mg_realm_barrier_overworld_end_min and y <= mcl_vars.mg_realm_barrier_overworld_end_max then
 						data[p_pos] = c_realm_barrier
 						lvm_used = true
+					-- Nether and End support for v6 because v6 does not support the biomes API
+					elseif mg_name == "v6" then
+						if y <= mcl_vars.mg_nether_max and y >= mcl_vars.mg_nether_min then
+							if data[p_pos] == c_stone then
+								data[p_pos] = c_netherrack
+							elseif data[p_pos] == c_sand or data[p_pos] == c_dirt then
+								data[p_pos] = c_soul_sand
+							end
+						elseif y <= mcl_vars.mg_end_max and y >= mcl_vars.mg_end_min and (data[p_pos] == c_stone or data[p_pos] == c_dirt or data[p_pos] == c_sand) then
+							data[p_pos] = c_end_stone
+						end
 					end
 				end
 			end
