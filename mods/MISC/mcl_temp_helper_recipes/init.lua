@@ -18,12 +18,12 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_core:redsand 8",
-	recipe = {
-		{ "mcl_core:sand", "mcl_core:sand", "mcl_core:sand" },
-		{ "mcl_core:sand", "mcl_dye:red", "mcl_core:sand" },
-		{ "mcl_core:sand", "mcl_core:sand", "mcl_core:sand" },
-	}
+	output = "mcl_end:end_stone",
+		recipe = {
+		{ "mcl_core:sandstone", "mcl_core:stone", "mcl_core:sandstone" },
+		{ "mcl_core:stone", "mcl_core:sandstone", "mcl_core:stone" },
+		{ "mcl_core:sandstone", "mcl_core:stone", "mcl_core:sandstone" },
+	},
 })
 
 minetest.register_craft({
@@ -49,37 +49,11 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_end:end_stone",
-	recipe = {
-		{ "mcl_core:sandstone", "mcl_core:stone", "mcl_core:sandstone" },
-		{ "mcl_core:stone", "mcl_core:sandstone", "mcl_core:stone" },
-		{ "mcl_core:sandstone", "mcl_core:stone", "mcl_core:sandstone" },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_mobitems:blaze_rod",
-	recipe = {
-		 { "mcl_fire:flint_and_steel", "mcl_fire:flint_and_steel", "mcl_fire:flint_and_steel"},
-		 { "mcl_fire:flint_and_steel", "mcl_core:stick", "mcl_fire:flint_and_steel" },
-		 { "mcl_fire:flint_and_steel", "mcl_fire:flint_and_steel", "mcl_fire:flint_and_steel"},
-	}
-})
-minetest.register_craft({
 	output = "mcl_mobitems:shulker_shell",
 	recipe = {
 		 { "mcl_end:purpur_block", "mcl_end:purpur_block", "mcl_end:purpur_block", },
 		 { "mcl_end:purpur_block", "mcl_core:emerald", "mcl_end:purpur_block", },
 		 { "mcl_end:purpur_block", "", "mcl_end:purpur_block", },
-	}
-})
-
-minetest.register_craft({
-	output = "mcl_nether:quartz",
-	recipe = {
-		{"group:sand", "group:sand", "group:sand"},
-		{"group:sand", "group:sand", "group:sand"},
-		{"group:sand", "group:sand", "group:sand"},
 	}
 })
 
@@ -90,30 +64,6 @@ minetest.register_craft({
 		{"mcl_core:obsidian", "mcl_core:goldblock", "mcl_core:obsidian"},
 		{"mcl_nether:soul_sand", "mcl_core:obsidian", "mcl_nether:soul_sand"},
 	}
-})
-
-minetest.register_craft({
-	type = "shapeless",
-	output = "mcl_nether:netherrack",
-	recipe = {"mcl_core:stone", "group:redsandstone"},
-})
-
-minetest.register_craft({
-	output = "mcl_nether:glowstone_dust",
-	recipe = {
-		{"mcl_torches:torch", "mcl_torches:torch", "mcl_torches:torch",},
-		{"mcl_torches:torch", "mcl_core:coalblock", "mcl_torches:torch",},
-		{"mcl_torches:torch", "mcl_torches:torch", "mcl_torches:torch",},
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_nether:soul_sand",
-	recipe = {
-		{"mcl_core:redsand","mcl_nether:netherrack","mcl_core:redsand"},
-		{"mcl_nether:netherrack","mcl_core:redsand","mcl_nether:netherrack"},
-		{"mcl_core:redsand","mcl_nether:netherrack","mcl_core:redsand"},
-	},
 })
 
 minetest.register_craft({

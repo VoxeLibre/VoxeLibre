@@ -4,7 +4,6 @@ local wip_items = {
 	"mcl_anvils:anvil_damage_2",
 	"mcl_core:darksapling",
 	"mcl_core:apple_gold",
-	"mcl_end:ender_eye",
 	"mcl_end:chorus_fruit",
 	"mcl_end:chorus_flower",
 	"mcl_end:chorus_flower_dead",
@@ -15,7 +14,6 @@ local wip_items = {
 	"gemalde:node_1",
 	"mcl_observers:observer",
 	"mcl_chests:trapped_chest",
-	"mobs_mc:llama",
 	"mobs_mc:totem",
 	"mcl_paintings:painting",
 }

@@ -1,4 +1,6 @@
 mcl_core
 mcl_mobitems
-mcl_dye
 mcl_end
+mcl_nether
+mcl_ocean
+xpanes
