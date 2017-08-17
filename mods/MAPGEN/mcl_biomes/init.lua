@@ -1,7 +1,6 @@
 
 --
--- Register biomes for mapgens other than v6
--- EXPERIMENTAL!
+-- Register biomes
 --
 
 local function register_classic_superflat_biome()
@@ -549,13 +548,13 @@ local function register_biomes()
 		heat_point = 50,
 		humidity_point = 50,
 	})
+end
 
-
+-- Register biomes of non-Overworld biomes
+local function register_dimension_biomes()
 	--[[ REALMS ]]
-	-- TODO: Make these work in v6, too.
 
 	--[[ THE NETHER ]]
-
 	minetest.register_biome({
 		name = "nether",
 		node_filler = "mcl_nether:netherrack",
@@ -569,19 +568,17 @@ local function register_biomes()
 	})
 
 	--[[ THE END ]]
-
 	minetest.register_biome({
 		name = "end",
 		node_filler = "mcl_end:end_stone",
 		node_stone = "mcl_end:end_stone",
-		y_min = mcl_vars.mg_end_min,
-		-- FIXME: For some reason the Nether stops generating early if this constant is not added.
+		-- FIXME: For some reason the End stops generating early if this constant is not added.
 		-- Figure out why.
+		y_min = mcl_vars.mg_end_min,
 		y_max = mcl_vars.mg_end_max + 80,
 		heat_point = 50,
 		humidity_point = 50,
 	})
-
 
 end
 
@@ -826,7 +823,10 @@ local function register_biomelike_ores()
 		noise_threshold = 0.0,
 		noise_params = {offset=0, scale=1, spread= {x=3100, y=3100, z=3100}, seed=23, octaves=3, persist=0.70} ,
 	})
+end
 
+-- Non-Overworld ores
+local function register_dimension_ores()
 
 	--[[ NETHER GENERATION ]]
 
@@ -1513,6 +1513,10 @@ local function register_decorations()
 	})
 
 
+end
+
+-- Decorations in non-Overworld dimensions
+local function register_dimension_decorations()
 	--[[ NETHER decorations ]]
 
 	-- Red Mushroom
@@ -1560,9 +1564,7 @@ local function register_decorations()
 		y_max = mcl_vars.mg_nether_max,
 		decoration = "mcl_nether:nether_wart",
 	})
-
 end
-
 
 --
 -- Detect mapgen to select functions
@@ -1582,4 +1584,10 @@ elseif mg_name == "flat" then
 	minetest.clear_registered_schematics()
 	register_classic_superflat_biome()
 end
--- v6 decorations are handled in mcl_mapgen_core
+
+-- Non-overworld stuff is registered independently
+register_dimension_biomes()
+register_dimension_ores()
+register_dimension_decorations()
+
+-- Overworld decorations for v6 are handled in mcl_mapgen_core

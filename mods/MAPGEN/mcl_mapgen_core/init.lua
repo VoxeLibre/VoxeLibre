@@ -1266,8 +1266,8 @@ minetest.register_on_generated(function(minp, maxp)
 					else
 						-- Perfectly flat bedrock layer(s)
 						if (y >= mcl_vars.mg_bedrock_overworld_min and y <= mcl_vars.mg_bedrock_overworld_max) or
-								(y >= mcl_vars.mg_bedrock_nether_bottom_min or y <= mcl_vars.mg_bedrock_bottom_max) or
-								(y >= mcl_vars.mg_bedrock_nether_top_min or y <= mcl_vars.mg_bedrock_top_max) then
+								(y >= mcl_vars.mg_bedrock_nether_bottom_min and y <= mcl_vars.mg_bedrock_nether_bottom_max) or
+								(y >= mcl_vars.mg_bedrock_nether_top_min and y <= mcl_vars.mg_bedrock_nether_top_max) then
 							setdata = c_bedrock
 						elseif mcl_util.is_in_void({x=x,y=y,z=z}) then
 							setdata = c_void
