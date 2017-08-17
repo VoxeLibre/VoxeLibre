@@ -1215,6 +1215,7 @@ minetest.register_on_generated(function(minp, maxp)
 		local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
 		local c_void = minetest.get_content_id("mcl_core:void")
 		local c_lava = minetest.get_content_id("mcl_core:lava_source")
+		local c_realm_barrier = minetest.get_content_id("mcl_core:realm_barrier")
 		local c_nether_lava = minetest.get_content_id("mcl_nether:nether_lava_source")
 		local c_air = minetest.get_content_id("air")
 
@@ -1276,6 +1277,7 @@ minetest.register_on_generated(function(minp, maxp)
 					if setdata then
 						data[p_pos] = setdata
 						lvm_used = true
+					-- Big lava seas by replacing air below a certain height
 					elseif mcl_vars.mg_lava and data[p_pos] == c_air then
 						if y <= mcl_vars.mg_lava_overworld_max and y >= mcl_vars.mg_overworld_min then
 							data[p_pos] = c_lava
@@ -1284,6 +1286,10 @@ minetest.register_on_generated(function(minp, maxp)
 							data[p_pos] = c_nether_lava
 							lvm_used = true
 						end
+					-- Realm barrier between the Overworld void and the End
+					elseif y >= mcl_vars.mg_realm_barrier_overworld_end_min and y <= mcl_vars.mg_realm_barrier_overworld_end_max then
+						data[p_pos] = c_realm_barrier
+						lvm_used = true
 					end
 				end
 			end

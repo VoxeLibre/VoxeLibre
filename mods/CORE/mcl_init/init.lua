@@ -65,6 +65,9 @@ mcl_vars.mg_lava_nether_max = mcl_vars.mg_nether_min + 31
 mcl_vars.mg_end_min = mcl_vars.mg_nether_max + 2000
 mcl_vars.mg_end_max_official = mcl_vars.mg_end_min + minecraft_height_limit
 mcl_vars.mg_end_max = mcl_vars.mg_overworld_min - 2000
+-- Realm barrier used to safely separate the End from the void below the Overworld
+mcl_vars.mg_realm_barrier_overworld_end_max = mcl_vars.mg_end_max
+mcl_vars.mg_realm_barrier_overworld_end_min = mcl_vars.mg_end_max - 11
 
 -- Set default stack sizes
 minetest.nodedef_default.stack_max = 64
