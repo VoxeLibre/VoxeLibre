@@ -3,6 +3,12 @@
 local TCAVE = 0.6
 local nobj_cave = nil
 
+-- Portal frame sizes
+local FRAME_SIZE_X_MIN = 4
+local FRAME_SIZE_Y_MIN = 5
+local FRAME_SIZE_X_MAX = 23
+local FRAME_SIZE_Y_MAX = 23
+
 -- 3D noise
 local np_cave = {
 	offset = 0,
@@ -119,19 +125,19 @@ local function build_portal(pos, target)
 	local p1 = {x = pos.x - 1, y = pos.y - 1, z = pos.z}
 	local p2 = {x = p1.x + 3, y = p1.y + 4, z = p1.z}
 
-	for i = 1, 4 do
+	for i = 1, FRAME_SIZE_Y_MIN - 1 do
 		minetest.set_node(p, {name = "mcl_core:obsidian"})
 		p.y = p.y + 1
 	end
-	for i = 1, 3 do
+	for i = 1, FRAME_SIZE_X_MIN - 1 do
 		minetest.set_node(p, {name = "mcl_core:obsidian"})
 		p.x = p.x + 1
 	end
-	for i = 1, 4 do
+	for i = 1, FRAME_SIZE_Y_MIN - 1 do
 		minetest.set_node(p, {name = "mcl_core:obsidian"})
 		p.y = p.y - 1
 	end
-	for i = 1, 3 do
+	for i = 1, FRAME_SIZE_X_MIN - 1 do
 		minetest.set_node(p, {name = "mcl_core:obsidian"})
 		p.x = p.x - 1
 	end
@@ -246,16 +252,17 @@ local function check_portal(p1, p2)
 end
 
 local function is_portal(pos)
-	for d = -3, 3 do
-		for y = -4, 4 do
+	local xsize, ysize = FRAME_SIZE_X_MIN-1, FRAME_SIZE_Y_MIN-1
+	for d = -xsize, xsize do
+		for y = -ysize, ysize do
 			local px = {x = pos.x + d, y = pos.y + y, z = pos.z}
 			local pz = {x = pos.x, y = pos.y + y, z = pos.z + d}
 
-			if check_portal(px, {x = px.x + 3, y = px.y + 4, z = px.z}) then
-				return px, {x = px.x + 3, y = px.y + 4, z = px.z}
+			if check_portal(px, {x = px.x + xsize, y = px.y + ysize, z = px.z}) then
+				return px, {x = px.x + xsize, y = px.y + ysize, z = px.z}
 			end
-			if check_portal(pz, {x = pz.x, y = pz.y + 4, z = pz.z + 3}) then
-				return pz, {x = pz.x, y = pz.y + 4, z = pz.z + 3}
+			if check_portal(pz, {x = pz.x, y = pz.y + ysize, z = pz.z + xsize}) then
+				return pz, {x = pz.x, y = pz.y + ysize, z = pz.z + xsize}
 			end
 		end
 	end
@@ -296,7 +303,7 @@ local function make_portal(pos)
 		target.y = find_nether_target_y(target.x, target.z)
 	end
 
-	local dmin, dmax, ymin, ymax = 0, 3, p1.y, p2.y
+	local dmin, dmax, ymin, ymax = 0, FRAME_SIZE_X_MIN - 1, p1.y, p2.y
 	for d = dmin, dmax do
 	for y = ymin, ymax do
 	if not ((d == dmin or d == dmax) and (y == ymin or y == ymax)) then
