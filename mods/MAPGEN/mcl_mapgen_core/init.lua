@@ -1291,10 +1291,18 @@ minetest.register_on_generated(function(minp, maxp)
 							data[p_pos] = c_nether_lava
 							lvm_used = true
 						end
-					-- Water in the Nether? No way!
-					elseif data[p_pos] == c_water and y <= mcl_vars.mg_nether_max and y >= mcl_vars.mg_nether_min then
-						data[p_pos] = c_nether_lava
-						lvm_used = true
+					-- Water in the Nether or End? No way!
+					elseif data[p_pos] == c_water then
+						if y <= mcl_vars.mg_nether_max and y >= mcl_vars.mg_nether_min then
+							data[p_pos] = c_nether_lava
+							lvm_used = true
+						elseif y <= mcl_vars.mg_end_min + 104 and y >= mcl_vars.mg_end_min + 40 then
+							data[p_pos] = c_end_stone
+							lvm_used = true
+						elseif y <= mcl_vars.mg_end_max and y >= mcl_vars.mg_end_min then
+							data[p_pos] = c_air
+							lvm_used = true
+						end
 					-- Realm barrier between the Overworld void and the End
 					elseif y >= mcl_vars.mg_realm_barrier_overworld_end_min and y <= mcl_vars.mg_realm_barrier_overworld_end_max then
 						data[p_pos] = c_realm_barrier
@@ -1338,6 +1346,13 @@ minetest.register_on_generated(function(minp, maxp)
 		end
 	end
 
+	if minp.y >= mcl_vars.mg_end_min and maxp.y <= mcl_vars.mg_end_max then
+--		local min, max = table.copy(minp), table.copy(maxp)
+--		min.y = math.max(minp.y, mcl_vars.mg_end_min)
+--		max.y = math.min(maxp.y, mcl_vars.mg_end_max)
+		vm:set_lighting({day=14, night=14})
+		lvm_used = true
+	end
 	if lvm_used then
 		vm:set_data(data)
 		vm:calc_lighting()
