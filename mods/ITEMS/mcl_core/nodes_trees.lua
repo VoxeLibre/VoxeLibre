@@ -34,7 +34,7 @@ local register_wooden_planks = function(subname, description, tiles)
 end
 
 local register_leaves = function(subname, description, longdesc, tiles, drop1, drop1_rarity, drop2, drop2_rarity)
-	local drops
+	local drop
 	if drop2 then
 		drop = {
 			max_items = 1,
