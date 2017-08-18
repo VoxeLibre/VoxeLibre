@@ -95,7 +95,7 @@ mobs:register_arrow("mobs_mc:roar_of_the_dragon", {
 
 		local objects = minetest.get_objects_inside_radius(pos, 1)
 	    for _,obj in ipairs(objects) do
-			local name = obj:get_entity_name()
+			local name = self.name
 			if name~="mobs_mc:roar_of_the_dragon" and name ~= "mobs_mc:wither" then
 		        obj:set_hp(obj:get_hp()-0.05)
 		        if (obj:get_hp() <= 0) then

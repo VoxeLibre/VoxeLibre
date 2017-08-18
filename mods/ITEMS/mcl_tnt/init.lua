@@ -18,10 +18,10 @@ end
 local function do_tnt_physics(tnt_np,tntr)
     local objs = minetest.get_objects_inside_radius(tnt_np, tntr)
     for k, obj in pairs(objs) do
-        local oname = obj:get_entity_name()
+        local ent = obj:get_luaentity()
         local v = obj:getvelocity()
         local p = obj:getpos()
-        if oname == "mcl_tnt:tnt" then
+        if ent and ent.name == "mcl_tnt:tnt" then
             obj:setvelocity({x=(p.x - tnt_np.x) + (tntr / 2) + v.x, y=(p.y - tnt_np.y) + tntr + v.y, z=(p.z - tnt_np.z) + (tntr / 2) + v.z})
         else
             if v ~= nil then

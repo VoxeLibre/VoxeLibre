@@ -47,7 +47,8 @@ local on_destruct_standing_banner = function(pos)
 	local checkpos = vector.add(pos, standing_banner_entity_offset)
 	local objects = minetest.get_objects_inside_radius(checkpos, 0.5)
 	for _, v in ipairs(objects) do
-		if v:get_entity_name() == "mcl_banners:standing_banner" then
+		local ent = v:get_luaentity()
+		if ent and ent.name == "mcl_banners:standing_banner" then
 			v:get_luaentity():_drop()
 		end
 	end
@@ -58,7 +59,8 @@ local on_destruct_hanging_banner = function(pos)
 	local checkpos = vector.add(pos, hanging_banner_entity_offset)
 	local objects = minetest.get_objects_inside_radius(checkpos, 0.5)
 	for _, v in ipairs(objects) do
-		if v:get_entity_name() == "mcl_banners:hanging_banner" then
+		local ent = v:get_luaentity()
+		if ent and ent.name == "mcl_banners:hanging_banner" then
 			v:get_luaentity():_drop()
 		end
 	end

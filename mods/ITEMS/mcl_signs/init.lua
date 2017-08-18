@@ -162,7 +162,8 @@ local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1, material_wood=1,
 local destruct_sign = function(pos)
 	local objects = minetest.get_objects_inside_radius(pos, 0.5)
 	for _, v in ipairs(objects) do
-		if v:get_entity_name() == "mcl_signs:text" then
+		local ent = v:get_luaentity()
+		if ent and ent.name == "mcl_signs:text" then
 			v:remove()
 		end
 	end
@@ -183,7 +184,8 @@ local update_sign = function(pos, fields, sender)
 	end
 	local objects = minetest.get_objects_inside_radius(pos, 0.5)
 	for _, v in ipairs(objects) do
-		if v:get_entity_name() == "mcl_signs:text" then
+		local ent = v:get_luaentity()
+		if ent and ent.name == "mcl_signs:text" then
 			v:set_properties({textures={generate_texture(create_lines(text), v:get_luaentity()._signnodename)}})
 			return
 		end
