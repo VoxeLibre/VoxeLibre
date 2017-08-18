@@ -57,8 +57,8 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 
 	minetest.add_particle({
 		pos = pos,
-		vel = {x=0, y=0, z=0},
-		acc = {x=0, y=0, z=0},
+		velocity = {x=0, y=0, z=0},
+		acceleration = {x=0, y=0, z=0},
 		expirationtime = .3,
 		size = 1,
 		collisiondetection = false,

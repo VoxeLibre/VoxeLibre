@@ -75,8 +75,8 @@ minetest.register_globalstep(function(dtime)
 					for i=1, numParticles, 1 do
 						minetest.add_particle({
 							pos = {x=playerPos["x"]+math.random(-1,1)*math.random()/2,y=playerPos["y"]+0.1,z=playerPos["z"]+math.random(-1,1)*math.random()/2},
-							vel = {x=0, y=5, z=0},
-							acc = {x=0, y=-13, z=0},
+							velocity = {x=0, y=5, z=0},
+							acceleration = {x=0, y=-13, z=0},
 							expirationtime = math.random(),
 							size = math.random()+0.5,
 							collisiondetection = true,
