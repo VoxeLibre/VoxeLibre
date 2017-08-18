@@ -158,8 +158,11 @@ minetest.register_globalstep(function(dtime)
 		-- FIXME: Sky handling in MCL2 is held together with lots of duct tape.
 		-- This only works beause weather_pack currently does not touch the sky for players below the height used for this check.
 		-- There should be a real skybox API.
-		if dim == "void" or dim == "end" then
+		if dim == "void" then
 			player:set_sky("#000000", "plain", nil, false)
+		elseif dim == "end" then
+			local t = "mcl_playerplus_end_sky.png"
+			player:set_sky("#000000", "skybox", {t,t,t,t,t,t}, false)
 		elseif dim == "nether" then
 			player:set_sky("#300810", "plain", nil, false)
 		end
