@@ -1222,7 +1222,6 @@ minetest.register_on_generated(function(minp, maxp)
 		local c_soul_sand = minetest.get_content_id("mcl_nether:soul_sand")
 		local c_netherrack = minetest.get_content_id("mcl_nether:netherrack")
 		local c_nether_lava = minetest.get_content_id("mcl_nether:nether_lava_source")
-		local c_end_stone = minetest.get_content_id("mcl_end:end_stone")
 		local c_realm_barrier = minetest.get_content_id("mcl_core:realm_barrier")
 		local c_air = minetest.get_content_id("air")
 
@@ -1281,7 +1280,7 @@ minetest.register_on_generated(function(minp, maxp)
 						data[p_pos] = setdata
 						lvm_used = true
 					elseif mcl_util.is_in_void({x=x,y=y,z=z}) then
-						setdata = c_void
+						data[p_pos] = c_void
 						lvm_used = true
 					-- Big lava seas by replacing air below a certain height
 					elseif mcl_vars.mg_lava and data[p_pos] == c_air then
@@ -1300,11 +1299,7 @@ minetest.register_on_generated(function(minp, maxp)
 					elseif y >= mcl_vars.mg_realm_barrier_overworld_end_min and y <= mcl_vars.mg_realm_barrier_overworld_end_max then
 						data[p_pos] = c_realm_barrier
 						lvm_used = true
-					-- Clear the End
-					elseif y <= mcl_vars.mg_end_max and y >= mcl_vars.mg_end_min then
-						--data[p_pos] = c_air
-						--lvm_used = true
-					-- Nether support for v6 because v6 does not support the biomes API
+					-- Nether and End support for v6 because v6 does not support the biomes API
 					elseif mg_name == "v6" then
 						if y <= mcl_vars.mg_nether_max and y >= mcl_vars.mg_nether_min then
 							if data[p_pos] == c_stone then
@@ -1312,6 +1307,11 @@ minetest.register_on_generated(function(minp, maxp)
 								lvm_used = true
 							elseif data[p_pos] == c_sand or data[p_pos] == c_dirt then
 								data[p_pos] = c_soul_sand
+								lvm_used = true
+							end
+						elseif y <= mcl_vars.mg_end_max and y >= mcl_vars.mg_end_min then
+							if data[p_pos] == c_stone or data[p_pos] == c_dirt or data[p_pos] == c_sand then
+								data[p_pos] = c_air
 								lvm_used = true
 							end
 						end

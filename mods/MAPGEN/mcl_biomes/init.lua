@@ -571,8 +571,8 @@ local function register_dimension_biomes()
 	minetest.register_biome({
 		name = "end",
 		node_stone = "air",
-		node_filler = "mcl_end:end_stone",
-		node_water = "mcl_end:end_stone",
+		node_filler = "air",
+		node_water = "air",
 		node_river_water = "air",
 		-- FIXME: For some reason the End stops generating early if this constant is not added.
 		-- Figure out why.
