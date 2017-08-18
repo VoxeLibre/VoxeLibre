@@ -160,15 +160,19 @@ local function build_end_portal(pos, target3)
 		meta:set_string("portal_frame2", minetest.pos_to_string(p2))
 		meta:set_string("portal_target", minetest.pos_to_string(target3))
 
-		if y ~= p1.y then
-			for z = -2, 2 do
-				if z ~= 0 then
-					p.z = p.z + z
+		for z = -2, 2 do
+			if z ~= 0 then
+				local newp = {x=p.x, y=p.y, z=p.z+z}
+				if y ~= p1.y then
 					if minetest.registered_nodes[
-							minetest.get_node(p).name].is_ground_content then
-						minetest.remove_node(p)
+							minetest.get_node(newp).name].is_ground_content then
+						minetest.remove_node(newp)
 					end
-					p.z = p.z - z
+				else
+					if minetest.get_node(newp).name == "air" then
+						minetest.set_node(newp, {name="mcl_core:obsidian"})
+					end
+
 				end
 			end
 		end
