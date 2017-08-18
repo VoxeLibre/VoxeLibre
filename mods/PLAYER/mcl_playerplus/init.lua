@@ -164,7 +164,7 @@ minetest.register_globalstep(function(dtime)
 			local t = "mcl_playerplus_end_sky.png"
 			player:set_sky("#000000", "skybox", {t,t,t,t,t,t}, false)
 		elseif dim == "nether" then
-			player:set_sky("#300810", "plain", nil, false)
+			player:set_sky("#300808", "plain", nil, false)
 		end
 		if void_deadly then
 			-- Player is deep into the void, deal void damage
