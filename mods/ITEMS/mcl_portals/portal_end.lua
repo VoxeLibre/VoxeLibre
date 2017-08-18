@@ -2,6 +2,10 @@
 
 local TCAVE = 0.6
 local nobj_cave = nil
+
+local SPAWN_MIN = mcl_vars.mg_end_min+70
+local SPAWN_MAX = mcl_vars.mg_end_min+98
+
 -- 3D noise
 
 local np_cave = {
@@ -173,13 +177,13 @@ local function build_end_portal(pos, target3)
 end
 
 local function find_end_target3_y2(target3_x, target3_z)
-	local start_y = mcl_vars.mg_end_min + math.random(20, 120) -- Search start
+	local start_y = math.random(SPAWN_MIN, SPAWN_MAX) -- Search start
 	if not nobj_cave then
 		nobj_cave = minetest.get_perlin(np_cave)
 	end
 	local air = 0 -- Consecutive air nodes found
 
-	for y = start_y, start_y - 120, -1 do
+	for y = start_y, SPAWN_MIN, -1 do
 		local nval_cave = nobj_cave:get3d({x = target3_x, y = y, z = target3_z})
 
 		if nval_cave > TCAVE then -- Cavern

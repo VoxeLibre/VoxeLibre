@@ -1300,7 +1300,11 @@ minetest.register_on_generated(function(minp, maxp)
 					elseif y >= mcl_vars.mg_realm_barrier_overworld_end_min and y <= mcl_vars.mg_realm_barrier_overworld_end_max then
 						data[p_pos] = c_realm_barrier
 						lvm_used = true
-					-- Nether and End support for v6 because v6 does not support the biomes API
+					-- Clear the End
+					elseif y <= mcl_vars.mg_end_max and y >= mcl_vars.mg_end_min then
+						--data[p_pos] = c_air
+						--lvm_used = true
+					-- Nether support for v6 because v6 does not support the biomes API
 					elseif mg_name == "v6" then
 						if y <= mcl_vars.mg_nether_max and y >= mcl_vars.mg_nether_min then
 							if data[p_pos] == c_stone then
@@ -1310,9 +1314,6 @@ minetest.register_on_generated(function(minp, maxp)
 								data[p_pos] = c_soul_sand
 								lvm_used = true
 							end
-						elseif y <= mcl_vars.mg_end_max and y >= mcl_vars.mg_end_min and (data[p_pos] == c_stone or data[p_pos] == c_dirt or data[p_pos] == c_sand) then
-							data[p_pos] = c_end_stone
-							lvm_used = true
 						end
 					end
 				end

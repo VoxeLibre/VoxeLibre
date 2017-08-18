@@ -570,12 +570,14 @@ local function register_dimension_biomes()
 	--[[ THE END ]]
 	minetest.register_biome({
 		name = "end",
+		node_stone = "air",
 		node_filler = "mcl_end:end_stone",
-		node_stone = "mcl_end:end_stone",
+		node_water = "mcl_end:end_stone",
+		node_river_water = "air",
 		-- FIXME: For some reason the End stops generating early if this constant is not added.
 		-- Figure out why.
 		y_min = mcl_vars.mg_end_min,
-		y_max = mcl_vars.mg_end_max + 80,
+		y_max = mcl_vars.mg_end_max,
 		heat_point = 50,
 		humidity_point = 50,
 	})
@@ -609,7 +611,7 @@ local function register_biomelike_ores()
 
 	--mcl_core STRATA
 	minetest.register_ore({
-		ore_type       = "sheet",
+		ore_type       = "blob",
 		ore            = "mcl_core:stone",
 		wherein        = {"mcl_colorblocks:hardened_clay_orange"},
 		clust_scarcity = 1,
@@ -996,44 +998,46 @@ local function register_dimension_ores()
 	--[[ THE END ]]
 
 	-- Generate fake End
-	-- TODO: Remove both "ores" when there's a better End
+	-- TODO: Remove both "ores" when there's a better End generator
 
 	minetest.register_ore({
-		ore_type        = "blob",
+		ore_type        = "sheet",
 		ore             = "mcl_end:end_stone",
-		wherein         = {"air", "mcl_core:stone"},
-		clust_scarcity  = 30 * 30 * 30,
-		clust_size      = 17,
-		y_min           = mcl_vars.mg_end_min,
-		y_max           = mcl_vars.mg_end_max,
-		noise_threshold = 0.0,
-		noise_params    = {
-			offset = 0.5,
-			scale = 0.1,
-			spread = {x = 5, y = 5, z = 5},
-			seed = 16,
-			octaves = 1,
-			persist = 0.0
+		wherein         = {"air"},
+		y_min           = mcl_vars.mg_end_min+64,
+		y_max           = mcl_vars.mg_end_min+94,
+		column_height_min = 6,
+		column_height_max = 7,
+		column_midpoint_factor = 0.0,
+		noise_params = {
+			offset  = -2,
+			scale   = 8,
+			spread  = {x=100, y=100, z=100},
+			seed    = 2999,
+			octaves = 5,
+			persist = 0.55,
 		},
+		noise_threshold = 0,
 	})
 
 	minetest.register_ore({
-		ore_type        = "scatter",
+		ore_type        = "sheet",
 		ore             = "mcl_end:end_stone",
-		wherein         = {"air", "mcl_core:stone"},
-		clust_scarcity  = 30 * 30 * 30,
-		clust_size      = 34,
-		y_min           = mcl_vars.mg_end_min,
-		y_max           = mcl_vars.mg_end_max,
-		noise_threshold = 0.0,
-		noise_params    = {
-			offset = 0.5,
-			scale = 0.1,
-			spread = {x = 70, y = 15, z = 70},
-			seed = 16,
-			octaves = 1,
-			persist = 0.0
+		wherein         = {"air"},
+		y_min           = mcl_vars.mg_end_min+64,
+		y_max           = mcl_vars.mg_end_min+94,
+		column_height_min = 4,
+		column_height_max = 4,
+		column_midpoint_factor = 0.0,
+		noise_params = {
+			offset  = -4,
+			scale   = 3,
+			spread  = {x=200, y=200, z=200},
+			seed    = 5390,
+			octaves = 5,
+			persist = 0.6,
 		},
+		noise_threshold = 0,
 	})
 
 end
