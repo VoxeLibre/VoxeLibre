@@ -25,12 +25,12 @@ hbarmor.tick = 0.1
 hbarmor.autohide = true
 
 --load custom settings
-local set = minetest.setting_getbool("hbarmor_autohide")
+local set = minetest.settings:get_bool("hbarmor_autohide")
 if set ~= nil then
 	hbarmor.autohide = set
 end
 
-set = minetest.setting_get("hbarmor_tick")
+set = minetest.settings:get("hbarmor_tick")
 if tonumber(set) ~= nil then
 	hbarmor.tick = tonumber(set)
 end
@@ -47,7 +47,7 @@ end
 local function custom_hud(player)
 	local name = player:get_player_name()
 
-	if minetest.setting_getbool("enable_damage") then
+	if minetest.settings:get_bool("enable_damage") then
 		local ret = hbarmor.get_armor(player)
 		if ret == false then
 			minetest.log("error", "[hbarmor] Call to hbarmor.get_armor in custom_hud returned with false!")
@@ -135,7 +135,7 @@ minetest.register_globalstep(function(dtime)
 	main_timer = main_timer + dtime
 	timer = timer + dtime
 	if main_timer > hbarmor.tick or timer > 4 then
-		if minetest.setting_getbool("enable_damage") then
+		if minetest.settings:get_bool("enable_damage") then
 			if main_timer > hbarmor.tick then main_timer = 0 end
 			for _,player in ipairs(minetest.get_connected_players()) do
 				local name = player:get_player_name()
