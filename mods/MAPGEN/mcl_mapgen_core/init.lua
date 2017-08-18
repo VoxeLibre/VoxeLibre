@@ -901,8 +901,7 @@ end
 -- Apply mapgen-specific mapgen code
 if mg_name == "v6" then
 	register_mgv6_decorations()
-end
-if mg_name == "flat" then
+elseif mg_name == "flat" then
 	local classic = minetest.get_mapgen_setting("mcl_superflat_classic")
 	if classic == nil then
 		classic = minetest.settings:get_bool("mcl_superflat_classic")
@@ -1209,6 +1208,7 @@ minetest.register_on_generated(function(minp, maxp)
 	local data = vm:get_data(lvm_buffer)
 	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
 	local lvm_used = false
+	local liquids_used = false
 
 	-- Generate bedrock and lava layers
 	if minp.y <= GEN_MAX then
@@ -1287,15 +1287,18 @@ minetest.register_on_generated(function(minp, maxp)
 						if y <= mcl_vars.mg_lava_overworld_max and y >= mcl_vars.mg_overworld_min then
 							data[p_pos] = c_lava
 							lvm_used = true
+							liquids_used = true
 						elseif y <= mcl_vars.mg_lava_nether_max and y >= mcl_vars.mg_nether_min then
 							data[p_pos] = c_nether_lava
 							lvm_used = true
+							liquids_used = true
 						end
 					-- Water in the Nether or End? No way!
 					elseif data[p_pos] == c_water then
 						if y <= mcl_vars.mg_nether_max and y >= mcl_vars.mg_nether_min then
 							data[p_pos] = c_nether_lava
 							lvm_used = true
+							liquids_used = true
 						elseif y <= mcl_vars.mg_end_min + 104 and y >= mcl_vars.mg_end_min + 40 then
 							data[p_pos] = c_end_stone
 							lvm_used = true
@@ -1355,7 +1358,9 @@ minetest.register_on_generated(function(minp, maxp)
 	if lvm_used then
 		vm:set_data(data)
 		vm:calc_lighting()
-		vm:update_liquids()
+		if liquids_used then
+			vm:update_liquids()
+		end
 		vm:write_to_map()
 	end
 
