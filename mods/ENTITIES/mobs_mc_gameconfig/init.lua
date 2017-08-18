@@ -178,7 +178,8 @@ mobs_mc.override.spawn = {
 	desert = { "group:sand" },
 	jungle = { "mcl_core:podzol", "mcl_core:jungletree", "mcl_core:jungleleaves", "mcl_flowers:fern" },
 	snow = { "mcl_core:snow", "mcl_core:snowblock", "mcl_core:dirt_with_grass_snow" },
-	end_city = { "mcl_end:purpur_block" },
+	-- End stone added for shulkers because End cities don't generate yet
+	end_city = { "mcl_end:end_stone", "mcl_end:purpur_block" },
 	nether = { "mcl_nether:netherrack", "mcl_nether:quartz_ore" },
 	-- Netherrack added because there are no Nether fortresses yet. TODO: Remove netherrac from list as soon they're available
 	nether_fortress = { "mcl_nether:nether_brick", "mcl_nether:netherrack" },
