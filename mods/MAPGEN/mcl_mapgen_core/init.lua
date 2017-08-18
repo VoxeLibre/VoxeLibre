@@ -1346,10 +1346,9 @@ minetest.register_on_generated(function(minp, maxp)
 		end
 	end
 
+	-- Set high light level in the End. This is very hacky and messes up the shadows below the End islands.
+	-- FIXME: Find a better way to do light.
 	if minp.y >= mcl_vars.mg_end_min and maxp.y <= mcl_vars.mg_end_max then
---		local min, max = table.copy(minp), table.copy(maxp)
---		min.y = math.max(minp.y, mcl_vars.mg_end_min)
---		max.y = math.min(maxp.y, mcl_vars.mg_end_max)
 		vm:set_lighting({day=14, night=14})
 		lvm_used = true
 	end
