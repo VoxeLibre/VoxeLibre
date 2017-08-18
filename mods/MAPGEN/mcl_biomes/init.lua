@@ -559,6 +559,8 @@ local function register_dimension_biomes()
 		name = "nether",
 		node_filler = "mcl_nether:netherrack",
 		node_stone = "mcl_nether:netherrack",
+		node_water = "air",
+		node_river_water = "air",
 		y_min = mcl_vars.mg_nether_min,
 		-- FIXME: For some reason the Nether stops generating early if this constant is not added.
 		-- Figure out why.
@@ -574,8 +576,6 @@ local function register_dimension_biomes()
 		node_filler = "air",
 		node_water = "air",
 		node_river_water = "air",
-		-- FIXME: For some reason the End stops generating early if this constant is not added.
-		-- Figure out why.
 		y_min = mcl_vars.mg_end_min,
 		y_max = mcl_vars.mg_end_max,
 		heat_point = 50,
