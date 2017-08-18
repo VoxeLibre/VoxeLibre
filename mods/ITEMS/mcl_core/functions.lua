@@ -642,7 +642,7 @@ end
 
 
 
-local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_params().seed)
+local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_setting("seed"))
 
 ------------------------------
 -- Spread grass blocks and mycelium on neighbor dirt
