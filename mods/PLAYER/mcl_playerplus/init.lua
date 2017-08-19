@@ -165,6 +165,8 @@ minetest.register_globalstep(function(dtime)
 			player:set_sky("#000000", "skybox", {t,t,t,t,t,t}, false)
 		elseif dim == "nether" then
 			player:set_sky("#300808", "plain", nil, false)
+		else
+			skycolor.update_sky_color({player})
 		end
 		if void_deadly then
 			-- Player is deep into the void, deal void damage

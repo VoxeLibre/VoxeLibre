@@ -6,3 +6,4 @@ mcl_hunger
 mcl_death_messages
 mcl_playerinfo
 3d_armor?
+weather_pack
