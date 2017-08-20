@@ -1222,6 +1222,7 @@ minetest.register_on_generated(function(minp, maxp)
 		local c_soul_sand = minetest.get_content_id("mcl_nether:soul_sand")
 		local c_netherrack = minetest.get_content_id("mcl_nether:netherrack")
 		local c_nether_lava = minetest.get_content_id("mcl_nether:nether_lava_source")
+		local c_end_stone = minetest.get_content_id("mcl_end:end_stone")
 		local c_realm_barrier = minetest.get_content_id("mcl_core:realm_barrier")
 		local c_air = minetest.get_content_id("air")
 
