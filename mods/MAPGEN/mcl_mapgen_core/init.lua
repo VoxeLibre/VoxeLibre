@@ -1231,6 +1231,21 @@ local generate_nether_decorations = function(minp, maxp)
 
 end
 
+local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
+local c_stone = minetest.get_content_id("mcl_core:stone")
+local c_dirt = minetest.get_content_id("mcl_core:dirt")
+local c_sand = minetest.get_content_id("mcl_core:sand")
+local c_void = minetest.get_content_id("mcl_core:void")
+local c_lava = minetest.get_content_id("mcl_core:lava_source")
+local c_water = minetest.get_content_id("mcl_core:water_source")
+local c_soul_sand = minetest.get_content_id("mcl_nether:soul_sand")
+local c_netherrack = minetest.get_content_id("mcl_nether:netherrack")
+local c_nether_lava = minetest.get_content_id("mcl_nether:nether_lava_source")
+local c_end_stone = minetest.get_content_id("mcl_end:end_stone")
+local c_realm_barrier = minetest.get_content_id("mcl_core:realm_barrier")
+local c_top_snow = minetest.get_content_id("mcl_core:snow")
+local c_air = minetest.get_content_id("air")
+
 -- Below the bedrock, generate air/void
 minetest.register_on_generated(function(minp, maxp)
 	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
@@ -1241,20 +1256,6 @@ minetest.register_on_generated(function(minp, maxp)
 
 	-- Generate bedrock and lava layers
 	if minp.y <= GEN_MAX then
-		local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
-		local c_stone = minetest.get_content_id("mcl_core:stone")
-		local c_dirt = minetest.get_content_id("mcl_core:dirt")
-		local c_sand = minetest.get_content_id("mcl_core:sand")
-		local c_void = minetest.get_content_id("mcl_core:void")
-		local c_lava = minetest.get_content_id("mcl_core:lava_source")
-		local c_water = minetest.get_content_id("mcl_core:water_source")
-		local c_soul_sand = minetest.get_content_id("mcl_nether:soul_sand")
-		local c_netherrack = minetest.get_content_id("mcl_nether:netherrack")
-		local c_nether_lava = minetest.get_content_id("mcl_nether:nether_lava_source")
-		local c_end_stone = minetest.get_content_id("mcl_end:end_stone")
-		local c_realm_barrier = minetest.get_content_id("mcl_core:realm_barrier")
-		local c_air = minetest.get_content_id("air")
-
 		local max_y = math.min(maxp.y, GEN_MAX)
 
 		for y = minp.y, max_y do
@@ -1365,7 +1366,6 @@ minetest.register_on_generated(function(minp, maxp)
 	-- Put top snow on grassy snow blocks created by the v6 mapgen
 	-- This is because the snowy grass block must only be used when it is below snow or top snow
 	if mg_name == "v6" then
-		local c_top_snow = minetest.get_content_id("mcl_core:snow")
 		local snowdirt = minetest.find_nodes_in_area_under_air(minp, maxp, "mcl_core:dirt_with_grass_snow")
 		for n = 1, #snowdirt do
 			-- CHECKME: What happens at chunk borders?
