@@ -357,7 +357,7 @@ local function register_biomes()
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 1,
-		node_riverbed = "mcl_core:dirt",
+		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 5,
 		y_max = mcl_vars.mg_overworld_max,
