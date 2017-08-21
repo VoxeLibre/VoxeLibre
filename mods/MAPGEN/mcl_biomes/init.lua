@@ -565,8 +565,10 @@ local function register_dimension_biomes()
 		node_filler = "air",
 		node_water = "air",
 		node_river_water = "air",
+		-- FIXME: For some reason the End stops generating early if this constant is not added.
+		-- Figure out why.
 		y_min = mcl_vars.mg_end_min,
-		y_max = mcl_vars.mg_end_max,
+		y_max = mcl_vars.mg_end_max + 80,
 		heat_point = 50,
 		humidity_point = 50,
 	})
@@ -958,7 +960,7 @@ local function register_dimension_ores()
 		ore             = "mcl_end:end_stone",
 		wherein         = {"air"},
 		y_min           = mcl_vars.mg_end_min+64,
-		y_max           = mcl_vars.mg_end_min+94,
+		y_max           = mcl_vars.mg_end_min+80,
 		column_height_min = 6,
 		column_height_max = 7,
 		column_midpoint_factor = 0.0,
@@ -978,7 +980,7 @@ local function register_dimension_ores()
 		ore             = "mcl_end:end_stone",
 		wherein         = {"air"},
 		y_min           = mcl_vars.mg_end_min+64,
-		y_max           = mcl_vars.mg_end_min+94,
+		y_max           = mcl_vars.mg_end_min+80,
 		column_height_min = 4,
 		column_height_max = 4,
 		column_midpoint_factor = 0.0,

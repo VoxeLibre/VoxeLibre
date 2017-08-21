@@ -1320,15 +1320,21 @@ minetest.register_on_generated(function(minp, maxp)
 					elseif mcl_util.is_in_void({x=x,y=y,z=z}) then
 						data[p_pos] = c_void
 						lvm_used = true
+					-- Realm barrier between the Overworld void and the End
+					elseif y >= mcl_vars.mg_realm_barrier_overworld_end_min and y <= mcl_vars.mg_realm_barrier_overworld_end_max then
+						data[p_pos] = c_realm_barrier
+						lvm_used = true
+					-- Flat Nether
+					elseif mg_name == "flat" and y >= mcl_vars.mg_bedrock_nether_bottom_max + 4 and y <= mcl_vars.mg_bedrock_nether_bottom_max + 52 then
+						data[p_pos] = c_air
+						lvm_used = true
 					-- Big lava seas by replacing air below a certain height
-					elseif mcl_vars.mg_lava and data[p_pos] == c_air then
-						if y <= mcl_vars.mg_lava_overworld_max and y >= mcl_vars.mg_overworld_min then
-							data[p_pos] = c_lava
-							lvm_used = true
-						elseif y <= mcl_vars.mg_lava_nether_max and y >= mcl_vars.mg_nether_min then
-							data[p_pos] = c_nether_lava
-							lvm_used = true
-						end
+					elseif mcl_vars.mg_lava and data[p_pos] == c_air and y <= mcl_vars.mg_lava_overworld_max and y >= mcl_vars.mg_overworld_min then
+						data[p_pos] = c_lava
+						lvm_used = true
+					elseif mcl_vars.mg_lava and data[p_pos] == c_air and y <= mcl_vars.mg_lava_nether_max and y >= mcl_vars.mg_nether_min then
+						data[p_pos] = c_nether_lava
+						lvm_used = true
 					-- Water in the Nether or End? No way!
 					elseif data[p_pos] == c_water then
 						if y <= mcl_vars.mg_nether_max and y >= mcl_vars.mg_nether_min then
@@ -1341,14 +1347,6 @@ minetest.register_on_generated(function(minp, maxp)
 							data[p_pos] = c_air
 							lvm_used = true
 						end
-					-- Realm barrier between the Overworld void and the End
-					elseif y >= mcl_vars.mg_realm_barrier_overworld_end_min and y <= mcl_vars.mg_realm_barrier_overworld_end_max then
-						data[p_pos] = c_realm_barrier
-						lvm_used = true
-					-- Flat Nether
-					elseif mg_name == "flat" and y >= mcl_vars.mg_bedrock_nether_bottom_max + 4 and y <= mcl_vars.mg_bedrock_nether_bottom_max + 52 then
-						data[p_pos] = c_air
-						lvm_used = true
 					-- Nether and End support for v6 because v6 does not support the biomes API
 					elseif mg_name == "v6" then
 						if y <= mcl_vars.mg_nether_max and y >= mcl_vars.mg_nether_min then
@@ -1387,15 +1385,20 @@ minetest.register_on_generated(function(minp, maxp)
 		end
 	end
 
-	-- Set high light level in the End. This is very hacky and messes up the shadows below the End islands.
-	-- FIXME: Find a better way to do light.
-	if minp.y >= mcl_vars.mg_end_min and maxp.y <= mcl_vars.mg_end_max then
-		vm:set_lighting({day=14, night=14})
+	local shadow
+	-- Set sun light level in the End
+	-- -26912 is at a mapchunk border
+	if minp.y >= -26912 and maxp.y <= mcl_vars.mg_end_max then
+		vm:set_lighting({day=15, night=15})
+		lvm_used = true
+	end
+	if minp.y >= mcl_vars.mg_end_min and maxp.y <= -26911 then
+		shadow = false
 		lvm_used = true
 	end
 	if lvm_used then
 		vm:set_data(data)
-		vm:calc_lighting()
+		vm:calc_lighting(nil, nil, shadow)
 		vm:update_liquids()
 		vm:write_to_map()
 	end
