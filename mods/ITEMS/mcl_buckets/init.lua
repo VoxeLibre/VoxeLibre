@@ -102,16 +102,6 @@ function mcl_buckets.register_liquid(source_place, source_take, itemname, invent
 
 				if extra_check and extra_check(place_pos) == false then
 					-- Fail placement of liquid
-				elseif item == "mcl_buckets:bucket_water" and
-						(nn == "mcl_cauldrons:cauldron" or
-						nn == "mcl_cauldrons:cauldron_1" or
-						nn == "mcl_cauldrons:cauldron_2") then
-					-- Put water into cauldron
-					minetest.set_node(place_pos, {name="mcl_cauldrons:cauldron_3"})
-
-					sound_place("mcl_core:water_source", pos)
-				elseif item == "mcl_buckets:bucket_water" and nn == "mcl_cauldrons:cauldron_3" then
-					sound_place("mcl_core:water_source", pos)
 				elseif minetest.registered_nodes[nn] and minetest.registered_nodes[nn].buildable_to then
 					-- buildable; replace the node
 					local pns = user:get_player_name()
@@ -247,12 +237,25 @@ if mod_mcl_core then
 		"A bucket can be used to collect and release liquids. This one is filled with water.",
 		"Right-click on any block to empty the bucket and put a water source on this spot.",
 		function(pos)
-			local _, dim = mcl_util.y_to_layer(pos.y)
-			if dim == "nether" then
-				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
+			local nn = minetest.get_node(pos).name
+			-- Pour water into cauldron
+			if (nn == "mcl_cauldrons:cauldron" or
+					nn == "mcl_cauldrons:cauldron_1" or
+					nn == "mcl_cauldrons:cauldron_2") then
+				-- Put water into cauldron
+				minetest.set_node(pos, {name="mcl_cauldrons:cauldron_3"})
+				sound_place("mcl_core:water_source", pos)
 				return false
+			elseif nn == "mcl_cauldrons:cauldron_3" then
+				sound_place("mcl_core:water_source", pos)
+				return false
+			-- Evaporate water if used in Nether (except on cauldron)
 			else
-				return true
+				local _, dim = mcl_util.y_to_layer(pos.y)
+				if dim == "nether" then
+					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
+					return false
+				end
 			end
 		end
 	)
