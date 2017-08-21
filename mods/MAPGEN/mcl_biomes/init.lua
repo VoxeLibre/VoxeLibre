@@ -1081,9 +1081,9 @@ local function register_shared_decorations()
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_grass_snow"},
 		sidelen = 16,
 		noise_params = {
-			offset = 55,---0.01,
+			offset = -0.01,
 			scale = 0.03,
-			spread = {x = 500, y = 500, z = 500},
+			spread = {x = 300, y = 300, z = 300},
 			seed = 420,
 			octaves = 2,
 			persist = 0.6,
@@ -1759,13 +1759,13 @@ end
 --
 -- Detect mapgen to select functions
 --
+minetest.clear_registered_biomes()
+minetest.clear_registered_decorations()
+minetest.clear_registered_schematics()
 if mg_name ~= "flat" then
 	register_shared_decorations()
 end
 if mg_name ~= "v6" and mg_name ~= "flat" then
-	minetest.clear_registered_biomes()
-	minetest.clear_registered_decorations()
-	minetest.clear_registered_schematics()
 	register_biomes()
 	register_biomelike_ores()
 	register_decorations()
