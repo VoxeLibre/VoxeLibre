@@ -1063,7 +1063,7 @@ local function register_decorations()
 		place_on = {"mcl_core:dirt_with_grass"},
 		sidelen = 16,
 		noise_params = {
-			offset = 0.0036,
+			offset = 0.025,
 			scale = 0.0022,
 			spread = {x = 250, y = 250, z = 250},
 			seed = 2,
@@ -1279,14 +1279,14 @@ local function register_decorations()
 	})
 
 
-	-- Aspen tree and log
+	-- Birch tree and log
 
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass"},
 		sidelen = 16,
 		noise_params = {
-			offset = 0.0,
+			offset = 0.001,
 			scale = -0.0015,
 			spread = {x = 250, y = 250, z = 250},
 			seed = 2,
