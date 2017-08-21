@@ -1360,6 +1360,19 @@ local function register_decorations()
 		deco_type = "schematic",
 		place_on = {"mcl_core:mycelium", "mcl_core:mycelium_snow"},
 		sidelen = 80,
+		fill_ratio = 0.0001,
+		biomes = { "deciduous_forest" },
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_brown.mts",
+		flags = "place_center_x",
+		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:mycelium", "mcl_core:mycelium_snow"},
+		sidelen = 80,
 		fill_ratio = 0.002,
 		biomes = {"mushroom", "mushroom_cold"},
 		y_min = mcl_vars.mg_overworld_min,
@@ -1374,8 +1387,21 @@ local function register_decorations()
 		deco_type = "schematic",
 		place_on = { "mcl_core:dirt_with_grass"},
 		sidelen = 50,
-		fill_ratio = 0.0002,
-		biomes = { "deciduous_forest"},
+		fill_ratio = 0.0001,
+		biomes = { "deciduous_forest" },
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_red.mts",
+		flags = "place_center_x",
+		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = { "mcl_core:mycelium", "mcl_core:mycelium_snow" },
+		sidelen = 50,
+		fill_ratio = 0.002,
+		biomes = { "mushroom", "mushroom_cold" },
 		y_min = mcl_vars.mg_overworld_min,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_red.mts",
