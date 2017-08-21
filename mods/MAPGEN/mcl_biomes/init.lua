@@ -1061,8 +1061,9 @@ local function register_decorations()
 		biomes = {"deciduous_forest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_v6.mts",
 		flags = "place_center_x, place_center_z",
+		rotation = "random",
 	})
 
 	minetest.register_decoration({
