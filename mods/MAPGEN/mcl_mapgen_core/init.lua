@@ -1307,9 +1307,11 @@ minetest.register_on_generated(function(minp, maxp)
 						end
 					end
 
+					-- Bedrock, defined above
 					if setdata then
 						data[p_pos] = setdata
 						lvm_used = true
+					-- The void
 					elseif mcl_util.is_in_void({x=x,y=y,z=z}) then
 						data[p_pos] = c_void
 						lvm_used = true
@@ -1340,6 +1342,10 @@ minetest.register_on_generated(function(minp, maxp)
 					-- Realm barrier between the Overworld void and the End
 					elseif y >= mcl_vars.mg_realm_barrier_overworld_end_min and y <= mcl_vars.mg_realm_barrier_overworld_end_max then
 						data[p_pos] = c_realm_barrier
+						lvm_used = true
+					-- Flat Nether
+					elseif mg_name == "flat" and y >= mcl_vars.mg_bedrock_nether_bottom_max + 4 and y <= mcl_vars.mg_bedrock_nether_bottom_max + 52 then
+						data[p_pos] = c_air
 						lvm_used = true
 					-- Nether and End support for v6 because v6 does not support the biomes API
 					elseif mg_name == "v6" then

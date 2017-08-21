@@ -6,6 +6,8 @@ local nobj_cave = nil
 local SPAWN_MIN = mcl_vars.mg_end_min+70
 local SPAWN_MAX = mcl_vars.mg_end_min+98
 
+local mg_name = minetest.get_mapgen_setting("mg_name")
+
 -- 3D noise
 
 local np_cave = {
@@ -169,7 +171,10 @@ local function build_end_portal(pos, target3)
 						minetest.remove_node(newp)
 					end
 				else
-					if minetest.get_node(newp).name == "air" then
+					-- Build obsidian platform if floating
+					local newp_below = table.copy(newp)
+					newp_below.y = newp.y - 1
+					if minetest.get_node(newp).name == "air" and minetest.get_node(newp_below).name == "air" then
 						minetest.set_node(newp, {name="mcl_core:obsidian"})
 					end
 
@@ -301,7 +306,11 @@ local function make_end_portal(pos)
 	local target3 = {x = p1.x, y = p1.y, z = p1.z}
 	target3.x = target3.x + 1
 	if target3.y < mcl_vars.mg_end_max and target3.y > mcl_vars.mg_end_min then
-		target3.y = math.random(mcl_vars.mg_overworld_min + 40, mcl_vars.mg_overworld_min + 96)
+		if mg_name == "flat" then
+			target3.y = mcl_vars.mg_bedrock_overworld_max + 5
+		else
+			target3.y = math.random(mcl_vars.mg_overworld_min + 40, mcl_vars.mg_overworld_min + 96)
+		end
 	else
 		target3.y = find_end_target3_y2(target3.x, target3.z)
 	end

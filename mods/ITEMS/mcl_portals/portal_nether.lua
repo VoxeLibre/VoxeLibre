@@ -9,6 +9,8 @@ local FRAME_SIZE_Y_MIN = 5
 local FRAME_SIZE_X_MAX = 23
 local FRAME_SIZE_Y_MAX = 23
 
+local mg_name = minetest.get_mapgen_setting("mg_name")
+
 -- 3D noise
 local np_cave = {
 	offset = 0,
@@ -180,6 +182,9 @@ local function build_portal(pos, target, is_rebuilding)
 end
 
 local function find_nether_target_y(target_x, target_z)
+	if mg_name == "flat" then
+		return mcl_vars.mg_bedrock_nether_bottom_max + 5
+	end
 	local start_y = mcl_vars.mg_nether_min + math.random(38, 117) -- Search start
 	if not nobj_cave then
 		nobj_cave = minetest.get_perlin(np_cave)
@@ -306,7 +311,11 @@ local function make_portal(pos)
 	local target = {x = p1.x, y = p1.y, z = p1.z}
 	target.x = target.x + 1
 	if target.y < mcl_vars.mg_nether_max and target.y > mcl_vars.mg_nether_min then
-		target.y = math.random(mcl_vars.mg_overworld_min + 40, mcl_vars.mg_overworld_min + 96)
+		if mg_name == "flat" then
+			target.y = mcl_vars.mg_bedrock_overworld_max + 5
+		else
+			target.y = math.random(mcl_vars.mg_overworld_min + 40, mcl_vars.mg_overworld_min + 96)
+		end
 	else
 		target.y = find_nether_target_y(target.x, target.z)
 	end
