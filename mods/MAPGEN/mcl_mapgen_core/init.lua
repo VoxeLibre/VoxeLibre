@@ -602,112 +602,6 @@ minetest.register_ore({
 
 local function register_mgv6_decorations()
 
-	-- Sugar canes
-
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_core:dirt_with_grass"},
-		sidelen = 16,
-		noise_params = {
-			offset = -0.3,
-			scale = 0.7,
-			spread = {x = 100, y = 100, z = 100},
-			seed = 2,
-			octaves = 3,
-			persist = 0.7
-		},
-		y_min = 1,
-		y_max = 1,
-		decoration = "mcl_core:reeds",
-		height = 2,
-		height_max = 4,
-		spawn_by = "mcl_core:water_source",
-		num_spawn_by = 1,
-	})
-
-	-- Cacti
-
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"group:sand"},
-		sidelen = 16,
-		noise_params = {
-			offset = -0.012,
-			scale = 0.024,
-			spread = {x = 100, y = 100, z = 100},
-			seed = 257,
-			octaves = 3,
-			persist = 0.6
-		},
-		y_min = 4,
-		y_max = 30,
-		decoration = "mcl_core:cactus",
-		height = 1,
-	        height_max = 3,
-	})
-
-	-- Doubletall grass
-	minetest.register_decoration({
-		deco_type = "schematic",
-		schematic = {
-			size = { x=1, y=3, z=1 },
-			data = {
-				{ name = "air", prob = 0 },
-				{ name = "mcl_flowers:double_grass", param1=255, },
-				{ name = "mcl_flowers:double_grass_top", param1=255, },
-			},
-		},
-		replacements = {
-			["mcl_flowers:tallgrass"] = "mcl_flowers:double_grass"
-		},
-		place_on = {"mcl_core:dirt_with_grass"},
-		sidelen = 8,
-		noise_params = {
-			offset = -0.01,
-			scale = 0.03,
-			spread = {x = 500, y = 500, z = 500},
-			seed = 420,
-			octaves = 2,
-			persist = 0.6,
-		},
-		y_min = 1,
-		y_max = 40,
-		flags = "",
-	})
-
-	-- Large ferns
-	minetest.register_decoration({
-		deco_type = "schematic",
-		schematic = {
-			size = { x=1, y=3, z=1 },
-			data = {
-				{ name = "air", prob = 0 },
-				{ name = "mcl_flowers:double_fern", param1=255, },
-				{ name = "mcl_flowers:double_fern_top", param1=255, },
-			},
-		},
-		replacements = {
-			["mcl_flowers:fern"] = "mcl_flowers:double_fern"
-		},
-		-- This makes sure large ferns only appear in jungles
-		spawn_by = { "mcl_core:jungletree", "mcl_flowers:fern" },
-		num_spawn_by = 1,
-		place_on = {"mcl_core:dirt_with_grass"},
-
-		sidelen = 16,
-		noise_params = {
-			offset = 0,
-			scale = 0.01,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 333,
-			octaves = 2,
-			persist = 0.66,
-		},
-		y_min = 1,
-		y_max = 30,
-		flags = "",
-	})
-
 	-- Large flowers
 	local register_large_flower = function(name, seed, offset)
 		minetest.register_decoration({
@@ -796,10 +690,9 @@ local function register_mgv6_decorations()
 	end
 
 	-- Dead bushes
-
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"group:sand", "mcl_core:podzol", "mcl_core:coarse_dirt", "mcl_colorblocks:hardened_clay"},
+		place_on = {"group:sand", "mcl_core:podzol", "mcl_core:podzol_snow", "mcl_core:dirt", "mcl_core:coarse_dirt", "group:hardened_clay"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0,
@@ -848,53 +741,6 @@ local function register_mgv6_decorations()
 	register_mgv6_flower("blue_orchid", 64500, -0.001)
 	register_mgv6_flower("oxeye_daisy", 3490)
 	register_mgv6_flower("poppy", 9439)
-
-	-- Pumpkin
-	minetest.register_decoration({
-		deco_type = "schematic",
-		schematic = {
-			size = { x=1, y=2, z=1 },
-			data = {
-				{ name = "air", prob = 0 },
-				{ name = "mcl_farming:pumpkin_face", param1=255, },
-			},
-		},
-		place_on = {"mcl_core:dirt_with_grass"},
-		sidelen = 16,
-		noise_params = {
-			offset = -0.008,
-			scale = 0.00666,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 666,
-			octaves = 6,
-			persist = 0.666
-		},
-		y_min = 3,
-		y_max = 29,
-		rotation = "random",
-	})
-
-	-- Melon
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_core:dirt_with_grass"},
-		sidelen = 16,
-		noise_params = {
-			offset = 0.003,
-			scale = 0.006,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 333,
-			octaves = 3,
-			persist = 0.6
-		},
-		-- Small trick to make sure melon spawn in jungles
-		spawn_by = { "mcl_core:jungletree", "mcl_flowers:fern" },
-		num_spawn_by = 1,
-		y_min = 1,
-		y_max = 40,
-		decoration = "mcl_farming:melon",
-	})
-
 
 end
 
@@ -952,7 +798,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 					num_water_around = num_water_around + 1 end
 				if num_water_around >= 2 then
 					is_shallow = false
-				end	
+				end
 				if is_shallow then
 					for x1=-divlen,divlen do
 					for z1=-divlen,divlen do
@@ -993,7 +839,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 						break
 					end
 				end
-				
+
 				if ground_y then
 					local p = {x=x,y=ground_y+1,z=z}
 					local nn = minetest.get_node(p).name
@@ -1040,7 +886,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 						end
 					end
 				end
-				
+
 			end
 		end
 		end
