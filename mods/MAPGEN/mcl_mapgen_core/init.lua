@@ -602,6 +602,108 @@ minetest.register_ore({
 
 local function register_mgv6_decorations()
 
+	-- Cacti
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:sand"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.012,
+			scale = 0.024,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 257,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_core:cactus",
+		height = 1,
+		height_max = 3,
+	})
+
+	-- Sugar canes
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt", "mcl_core:dirt_with_grass", "group:sand", "mcl_core:podzol"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.3,
+			scale = 0.7,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 2,
+			octaves = 3,
+			persist = 0.7
+		},
+		y_min = 1,
+		y_max = 1,
+		decoration = "mcl_core:reeds",
+		height = 1,
+		height_max = 3,
+		spawn_by = { "mcl_core:water_source", "group:frosted_ice" },
+		num_spawn_by = 1,
+	})
+
+	-- Doubletall grass
+	minetest.register_decoration({
+		deco_type = "schematic",
+		schematic = {
+			size = { x=1, y=3, z=1 },
+			data = {
+				{ name = "air", prob = 0 },
+				{ name = "mcl_flowers:double_grass", param1=255, },
+				{ name = "mcl_flowers:double_grass_top", param1=255, },
+			},
+		},
+		replacements = {
+			["mcl_flowers:tallgrass"] = "mcl_flowers:double_grass"
+		},
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.01,
+			scale = 0.03,
+			spread = {x = 300, y = 300, z = 300},
+			seed = 420,
+			octaves = 2,
+			persist = 0.6,
+		},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+	})
+
+	-- Large ferns
+	minetest.register_decoration({
+		deco_type = "schematic",
+		schematic = {
+			size = { x=1, y=3, z=1 },
+			data = {
+				{ name = "air", prob = 0 },
+				{ name = "mcl_flowers:double_fern", param1=255, },
+				{ name = "mcl_flowers:double_fern_top", param1=255, },
+			},
+		},
+		replacements = {
+			["mcl_flowers:fern"] = "mcl_flowers:double_fern"
+		},
+		-- v6 hack: This makes sure large ferns only appear in jungles
+		spawn_by = { "mcl_core:jungletree", "mcl_flowers:fern" },
+		num_spawn_by = 1,
+		place_on = {"mcl_core:podzol"},
+
+		sidelen = 16,
+		noise_params = {
+			offset = 0,
+			scale = 0.01,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 333,
+			octaves = 2,
+			persist = 0.66,
+		},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+	})
+
 	-- Large flowers
 	local register_large_flower = function(name, seed, offset)
 		minetest.register_decoration({
@@ -636,6 +738,31 @@ local function register_mgv6_decorations()
 	register_large_flower("lilac", 10600, -0.007)
 	register_large_flower("sunflower", 2940, -0.005)
 
+	-- Pumpkin
+	minetest.register_decoration({
+		deco_type = "schematic",
+		schematic = {
+			size = { x=1, y=2, z=1 },
+			data = {
+				{ name = "air", prob = 0 },
+				{ name = "mcl_farming:pumpkin_face", param1=255, },
+			},
+		},
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.008,
+			scale = 0.00666,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 666,
+			octaves = 6,
+			persist = 0.666
+		},
+		y_min = 3,
+		y_max = 29,
+		rotation = "random",
+	})
+
 	-- Tall grass
 	minetest.register_decoration({
 		deco_type = "simple",
@@ -665,10 +792,34 @@ local function register_mgv6_decorations()
 		decoration = "mcl_flowers:tallgrass",
 	})
 
+	local mushrooms = {"mcl_mushrooms:mushroom_red", "mcl_mushrooms:mushroom_brown"}
+	local mseeds = { 7133, 8244 }
+	for m=1, #mushrooms do
+		-- Mushrooms next to trees
+		minetest.register_decoration({
+			deco_type = "simple",
+			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol", "mcl_core:mycelium", "mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite"},
+			sidelen = 16,
+			noise_params = {
+				offset = 0,
+				scale = 0.04,
+				spread = {x = 100, y = 100, z = 100},
+				seed = mseeds[m],
+				octaves = 3,
+				persist = 0.6
+			},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			decoration = mushrooms[m],
+			spawn_by = { "mcl_core:tree", "mcl_core:sprucetree", "mcl_core:darktree", "mcl_core:birchtree", "mcl_core:jungletree", },
+			num_spawn_by = 1,
+		})
+	end
+
 	-- Dead bushes
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"group:sand", "mcl_core:podzol", "mcl_core:podzol_snow", "mcl_core:dirt", "mcl_core:coarse_dirt", "group:hardened_clay"},
+		place_on = {"group:sand", "mcl_core:podzol", "mcl_core:dirt", "mcl_core:coarse_dirt", "group:hardened_clay"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0,
