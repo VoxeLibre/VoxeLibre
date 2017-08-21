@@ -27,7 +27,6 @@ Or you can play in “creative mode” in which you can build almost anything in
 
 ## How to play (quick start)
 ### Getting started
-* **Use the world generator “v6”!**
 * **Punch a tree** trunk until it breaks and collect wood
 * Place the **wood into the 2×2 grid** (your “crafting grid” in your inventory menu and craft 4 wood planks
 * Place the 4 wood planks in a 2×2 shape in the crafting grid to **make a crafting table**
