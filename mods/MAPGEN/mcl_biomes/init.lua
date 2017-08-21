@@ -1724,7 +1724,7 @@ local function register_decorations()
 			place_on = {"mcl_core:dirt_with_grass", "mcl_core:podzol"},
 			sidelen = 16,
 			noise_params = {
-				offset = 0.0,
+				offset = 0.0008,
 				scale = 0.006,
 				spread = {x = 100, y = 100, z = 100},
 				seed = seed,
