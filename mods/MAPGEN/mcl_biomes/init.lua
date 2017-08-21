@@ -1047,7 +1047,7 @@ local function register_grass_decoration(offset, scale)
 	})
 
 	local noise_fern = table.copy(noise_grass)
-	noise_fern.seed = 923,
+	noise_fern.seed = 923
 
 	minetest.register_decoration({
 		deco_type = "simple",
@@ -1090,7 +1090,6 @@ local function register_shared_decorations()
 		},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		flags = "",
 		biomes = {"grassland", "snowy_grassland", "coniferous_forest", "deciduous_forest", "savanna"},
 	})
 
@@ -1116,7 +1115,7 @@ local function register_shared_decorations()
 		},
 		spawn_by = spawn_by,
 		num_spawn_by = num_spawn_by,
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:podzol"},
+		place_on = {"mcl_core:podzol", "mcl_core:podzol_snow"},
 
 		sidelen = 16,
 		noise_params = {
@@ -1127,10 +1126,9 @@ local function register_shared_decorations()
 			octaves = 2,
 			persist = 0.66,
 		},
+		biomes = { "rainforest", "taiga", "cold_taiga", "mega_taiga" },
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		flags = "",
-		biomes = { "rainforest", "taiga", "cold_taiga", "mega_taiga" },
 	})
 
 	-- Cacti
