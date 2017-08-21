@@ -401,11 +401,11 @@ local function register_biomes()
 	-- Savanna
 	minetest.register_biome({
 		name = "savanna",
-		node_top = "mcl_core:coarse_dirt",
+		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
 		node_filler = "mcl_core:coarse_dirt",
-		depth_filler = 1,
-		node_riverbed = "mcl_core:dirt",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:coarse_dirt",
 		depth_riverbed = 2,
 		y_min = 1,
 		y_max = upper_limit,
