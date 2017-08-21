@@ -128,7 +128,7 @@ minetest.register_node("mcl_portals:portal", {
 
 -- Functions
 --Build arrival portal
-local function build_portal(pos, target)
+local function build_portal(pos, target, is_rebuilding)
 	local p = {x = pos.x - 1, y = pos.y - 1, z = pos.z}
 	local p1 = {x = pos.x - 1, y = pos.y - 1, z = pos.z}
 	local p2 = {x = p1.x + 3, y = p1.y + 4, z = p1.z}
@@ -163,7 +163,7 @@ local function build_portal(pos, target)
 			meta:set_string("portal_target", minetest.pos_to_string(target))
 		end
 
-		if y ~= p1.y then
+		if y ~= p1.y and not is_rebuilding then
 			for z = -2, 2 do
 				if z ~= 0 then
 					p.z = p.z + z
@@ -397,17 +397,21 @@ minetest.register_abm({
 						end
 
 						-- Build target portal
-						local function check_and_build_portal(pos, target)
+						local function check_and_build_portal(pos, target, is_rebuilding)
+							-- FIXME: This is a horrible hack and a desparate attempt to make sure
+							-- the portal has *really* been placed. Replace this hack!
 							local n = minetest.get_node_or_nil(target)
 							if n and n.name ~= "mcl_portals:portal" then
-								build_portal(target, pos)
-								minetest.after(2, check_and_build_portal, pos, target)
+								build_portal(target, pos, is_rebuilding)
+								is_rebuilding = true
+								minetest.after(2, check_and_build_portal, pos, target, is_rebuilding)
 							elseif not n then
-								minetest.after(1, check_and_build_portal, pos, target)
+								is_rebuilding = true
+								minetest.after(1, check_and_build_portal, pos, target, is_rebuilding)
 							end
 						end
 
-						check_and_build_portal(pos, target)
+						check_and_build_portal(pos, target, false)
 
 						-- Teleport
 						obj:setpos(target)
