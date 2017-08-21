@@ -801,7 +801,7 @@ local function register_mgv6_decorations()
 			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol", "mcl_core:mycelium", "mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite"},
 			sidelen = 16,
 			noise_params = {
-				offset = 0,
+				offset = 0.04,
 				scale = 0.04,
 				spread = {x = 100, y = 100, z = 100},
 				seed = mseeds[m],

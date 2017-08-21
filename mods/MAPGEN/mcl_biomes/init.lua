@@ -349,21 +349,20 @@ local function register_biomes()
 		humidity_point = 0,  --was 0
 	})
 
-	-- TODO: Remove cold desert
-	-- Cold desert
+	-- Roofed forest
 	minetest.register_biome({
-		name = "cold_desert",
+		name = "roofed_forest",
 		--node_dust = "",
-		node_top = "mcl_core:coarse_dirt",
+		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
-		node_filler = "mcl_core:coarse_dirt",
+		node_filler = "mcl_core:dirt",
 		depth_filler = 1,
-		node_riverbed = "mcl_core:stone",
+		node_riverbed = "mcl_core:dirt",
 		depth_riverbed = 2,
 		y_min = 5,
 		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 26,
-		humidity_point = 0,  --was 0
+		humidity_point = 0,
 	})
 
 	minetest.register_biome({
@@ -372,12 +371,10 @@ local function register_biomes()
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 1,
-		node_riverbed = "mcl_core:stone",
-		depth_riverbed = 2,
 		y_min = mcl_vars.mg_overworld_min,
 		y_max = 4,
 		heat_point = 26,
-		humidity_point = 0,  --was 0
+		humidity_point = 0,
 	})
 
 	-- Hot biomes
@@ -1037,7 +1034,7 @@ local function register_grass_decoration(offset, scale)
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_grass_snow"},
 		sidelen = 16,
 		noise_params = noise_grass,
-		biomes = {"grassland", "coniferous_forest", "deciduous_forest", "savanna"},
+		biomes = {"grassland", "coniferous_forest", "deciduous_forest", "roofed_forest", "savanna"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_flowers:tallgrass",
@@ -1337,9 +1334,25 @@ local function register_decorations()
 	})
 
 
-	--Big dark oak  W.I.P.
-
-	--TODO  MAKE SCHEMATICS
+	-- Dark Oak
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.05,
+			scale = 0.0015,
+			spread = {x = 125, y = 125, z = 125},
+			seed = 223,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"roofed_forest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_dark_oak.mts",
+		flags = "place_center_x, place_center_z",
+	})
 
 
 	--Huge Brown Mushroom
@@ -1440,7 +1453,7 @@ local function register_decorations()
 		},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		biomes = {"grassland", "coniferous_forest", "deciduous_forest", "savanna"},
+		biomes = {"grassland", "coniferous_forest", "deciduous_forest", "roofed_forest", "savanna"},
 	})
 
 	-- Large ferns
@@ -1503,9 +1516,9 @@ local function register_decorations()
 		})
 	end
 
-	register_large_flower("rose_bush", {"deciduous_forest", "coniferous_forest", "flower_forest"}, 9350, -0.008)
-	register_large_flower("peony", {"deciduous_forest", "coniferous_forest", "flower_forest"}, 10450, -0.008)
-	register_large_flower("lilac", {"deciduous_forest", "coniferous_forest", "flower_forest"}, 10600, -0.007)
+	register_large_flower("rose_bush", {"deciduous_forest", "coniferous_forest", "roofed_forest", "flower_forest"}, 9350, -0.008)
+	register_large_flower("peony", {"deciduous_forest", "coniferous_forest", "roofed_forest", "flower_forest"}, 10450, -0.008)
+	register_large_flower("lilac", {"deciduous_forest", "coniferous_forest", "roofed_forest", "flower_forest"}, 10600, -0.007)
 	-- TODO: Make exclusive to sunflower plains
 	register_large_flower("sunflower", {"grassland", "sunflower_plains"}, 2940, -0.005)
 
@@ -1593,8 +1606,7 @@ local function register_decorations()
 		},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
-		-- TODO: Remove cold desert
-		biomes = {"desert", "sandstone_desert", "mesa", "taiga", "mega_taiga", "cold_desert"},
+		biomes = {"desert", "sandstone_desert", "mesa", "taiga", "mega_taiga"},
 		decoration = "mcl_core:deadbush",
 		height = 1,
 	})
@@ -1667,7 +1679,7 @@ local function register_decorations()
 		})
 	end
 
-	local flower_biomes1 = {"grassland", "sunflower_plains", "flower_forest", "deciduous_forest", "coniferous_forest", "taiga"}
+	local flower_biomes1 = {"grassland", "sunflower_plains", "flower_forest", "roofed_forest", "deciduous_forest", "coniferous_forest", "taiga"}
 
 	register_flower("dandelion", flower_biomes1, 8)
 	register_flower("poppy", flower_biomes1, 9439)
@@ -1681,9 +1693,9 @@ local function register_decorations()
 	register_flower("oxeye_daisy", flower_biomes2, 3490)
 
 	-- TODO: Make exclusive to flower forest
-	register_flower("allium", {"deciduous_forest", "flower_forest"}, 0)
+	register_flower("allium", {"deciduous_forest", "flower_forest", "roofed_forest"}, 0)
 	-- TODO: Make exclusive to swamp
-	register_flower("blue_orchid", {"coniferous_forest", "swamp"}, 64500)
+	register_flower("blue_orchid", {"roofed_forest", "swamp"}, 64500)
 
 
 end
