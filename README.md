@@ -207,6 +207,7 @@ Various sources. See the respective mod directories for details.
 * Notch and Jeb for being the major forces behind Minecraft
 * XSSheep for creating the Pixel Perfection resource pack
 * [22i](https://github.com/22i) for providing great models and support
+* [maikerumine](http://github.com/maikerumine) for kicking off mobs and biomes
 
 ## Info for programmers
 You find interesting and useful infos in `API.md`.
