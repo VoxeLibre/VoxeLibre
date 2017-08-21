@@ -47,6 +47,7 @@ else
 	mcl_vars.mg_bedrock_overworld_min = mcl_vars.mg_overworld_min
 	mcl_vars.mg_bedrock_overworld_max = mcl_vars.mg_bedrock_overworld_min
 	mcl_vars.mg_lava = false
+	mcl_vars.mg_lava_overworld_max = mcl_vars.mg_overworld_min
 	mcl_vars.mg_bedrock_is_rough = false
 end
 
