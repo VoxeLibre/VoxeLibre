@@ -111,7 +111,7 @@ minetest.register_node("mcl_portals:portal", {
 	is_ground_content = false,
 	drop = "",
 	light_source = 11,
-	post_effect_color = {a = 180, r = 128, g = 23, b = 23},
+	post_effect_color = {a = 180, r = 51, g = 7, b = 89},
 	alpha = 192,
 	node_box = {
 		type = "fixed",
