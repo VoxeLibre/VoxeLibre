@@ -326,12 +326,13 @@ local function register_biomes()
 	-- Desert (Sand)
 	minetest.register_biome({
 		name = "desert",
-		node_top = "mcl_core:redsand",
+		node_top = "mcl_core:sand",
 		depth_top = 1,
-		node_filler = "mcl_core:redsand",
+		node_filler = "mcl_core:sand",
 		depth_filler = 2,
-		node_riverbed = "mcl_core:redsand",
+		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		node_stone = "mcl_core:sandstone",
 		y_min = 0,
 		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 57,
