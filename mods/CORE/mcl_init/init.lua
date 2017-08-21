@@ -52,8 +52,8 @@ end
 
 mcl_vars.mg_overworld_max = 31000
 
--- The Nether
-mcl_vars.mg_nether_min = -29000
+-- The Nether (around Y = -29000)
+mcl_vars.mg_nether_min = -29067 -- Carefully chosen to be at a mapchunk border
 mcl_vars.mg_nether_max = mcl_vars.mg_nether_min + 128
 mcl_vars.mg_bedrock_nether_bottom_min = mcl_vars.mg_nether_min
 mcl_vars.mg_bedrock_nether_bottom_max = mcl_vars.mg_bedrock_nether_bottom_min + 4
@@ -61,8 +61,8 @@ mcl_vars.mg_bedrock_nether_top_max = mcl_vars.mg_nether_max
 mcl_vars.mg_bedrock_nether_top_min = mcl_vars.mg_bedrock_nether_top_max - 4
 mcl_vars.mg_lava_nether_max = mcl_vars.mg_nether_min + 31
 
--- The End
-mcl_vars.mg_end_min = mcl_vars.mg_nether_max + 2000
+-- The End (surface at ca. Y = -27000)
+mcl_vars.mg_end_min = -27073 -- Carefully chosen to be at a mapchunk border
 mcl_vars.mg_end_max_official = mcl_vars.mg_end_min + minecraft_height_limit
 mcl_vars.mg_end_max = mcl_vars.mg_overworld_min - 2000
 -- Realm barrier used to safely separate the End from the void below the Overworld
