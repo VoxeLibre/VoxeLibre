@@ -843,3 +843,6 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt
 /assets/minecraft/textures/entity/banner,base.png,/mods/ITEMS/mcl_banners/textures,mcl_banners_base.png,,,,,,
 /assets/minecraft/textures/items,banner_base.png,/mods/ITEMS/mcl_banners/textures,mcl_banners_item_base.png,,,,,,
 /assets/minecraft/textures/items,banner_overlay.png,/mods/ITEMS/mcl_banners/textures,mcl_banners_item_overlay.png,,,,,,
+/assets/minecraft/textures/blocks,portal.png,/mods/ITEMS/mcl_portals/textures,mcl_portals_portal.png,,,,,,
+/assets/minecraft/textures/entity,end_portal.png,/mods/ITEMS/mcl_portals/textures,mcl_portals_end_portal.png,,,,,,
+/assets/minecraft/textures/environment,end_sky.png,/mods/PLAYER/mcl_playerplus/textures,mcl_playerplus_end_sky.png,,,,,,

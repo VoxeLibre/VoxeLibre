@@ -2,7 +2,7 @@
 minetest.register_tool("mcl_fire:flint_and_steel", {
 	description = "Flint and Steel",
 	_doc_items_longdesc = "Flint and steel is a tool to start fires and ignite blocks.",
-	_doc_items_usagehelp = "Rightclick the surface of a block to attempt to light a fire in front of it. On netherrack and magma blocks it will start an eternal fire. Using it on TNT will ignite it.",
+	_doc_items_usagehelp = "Rightclick the surface of a block to attempt to light a fire in front of it or ignite the block. A few blocks have an unique reaction when ignited.",
 	inventory_image = "mcl_fire_flint_and_steel.png",
 	liquids_pointable = false,
 	stack_max = 1,
@@ -25,7 +25,7 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 		if pointed_thing.type == "node" then
 			local nodedef = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
 			if nodedef and nodedef._on_ignite then
-				nodedef._on_ignite(pointed_thing.under, user)
+				nodedef._on_ignite(user, pointed_thing)
 			else
 				mcl_fire.set_fire(pointed_thing)
 			end

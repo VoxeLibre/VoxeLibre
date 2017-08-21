@@ -249,8 +249,9 @@ mobs_mc.spawn = {
 	desert = { "default:desert_sand", "group:sand" },
 	jungle = { "default:dirt_with_rainforest_litter", "default:jungleleaves", "default:junglewood", "mcl_core:jungleleaves", "mcl_core:junglewood" },
 	snow = { "default:snow", "default:snowblock", "default:dirt_with_snow" },
-	end_city = { "default:cobble", "mcl_end:purpur_block", "mcl_end:end_stone", "mcl_portals:void"},
+	end_city = { "default:sandstonebrick", "mcl_end:purpur_block", "mcl_end:end_stone" },
 	wolf = { mobs_mc.items.grass_block, "default:dirt_with_rainforest_litter", "default:dirt", "default:dirt_with_snow", "default:snow", "default:snowblock" },
+	village = { "mg_villages:road" },
 
 	-- These probably don't need overrides
 	mushroom_island = { mobs_mc.items.mycelium, "mcl_core:mycelium" },
@@ -260,13 +261,31 @@ mobs_mc.spawn = {
 	water = { mobs_mc.items.water_source, "mcl_core:water_source", "default:water_source" },
 }
 
+-- This table contains important spawn height references for the mob spawn height.
+-- Please base your mob spawn height on these numbers to keep things clean.
+mobs_mc.spawn_height = {
+	water = tonumber(minetest.setting_get("water_level")) or 0, -- Water level in the Overworld
+
+	-- Overworld boundaries (inclusive)
+	overworld_min = -2999,
+	overworld_max = 31000,
+
+	-- Nether boundaries (inclusive)
+	nether_min = -3369,
+	nether_max = -3000,
+
+	-- End boundaries (inclusive)
+	end_min = -6200,
+	end_max = -6000,
+}
+
 mobs_mc.misc = {
 	shears_wear = 276, -- Wear to add per shears usage (238 uses)
 }
 
 -- Item name overrides from mobs_mc_gameconfig (if present)
 if minetest.get_modpath("mobs_mc_gameconfig") and mobs_mc.override then
-	local tables = {"items", "follow", "replace", "spawn", "misc"}
+	local tables = {"items", "follow", "replace", "spawn", "spawn_height", "misc"}
 	for t=1, #tables do
 		local tbl = tables[t]
 		if mobs_mc.override[tbl] then

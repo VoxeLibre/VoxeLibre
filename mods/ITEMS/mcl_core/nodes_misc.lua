@@ -153,6 +153,8 @@ minetest.register_node("mcl_core:realm_barrier", {
 	wield_image = "mcl_core_barrier.png^[colorize:#FF00FF:127^[transformFX",
 	tiles = { "blank.png" },
 	stack_max = 64,
+	-- To avoid players getting stuck forever between realms
+	damage_per_second = 8,
 	sunlight_propagates = true,
 	is_ground_content = false,
 	pointable = false,

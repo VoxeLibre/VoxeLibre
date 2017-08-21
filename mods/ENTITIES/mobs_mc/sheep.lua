@@ -202,7 +202,7 @@ mobs:register_mob("mobs_mc:sheep", {
 		if mobs:capture_mob(self, clicker, 0, 5, 70, false, nil) then return end
 	end,
 })
-mobs:register_spawn("mobs_mc:sheep", mobs_mc.spawn.grassland, minetest.LIGHT_MAX+1, 0, 15000, 3, 31000)
+mobs:spawn_specific("mobs_mc:sheep", mobs_mc.spawn.grassland, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 15000, 3, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 
 -- compatibility
 mobs:alias_mob("mobs_animal:sheep", "mobs_mc:sheep")

@@ -1,9 +1,23 @@
 mcl_compass = {}
 
+local compass_frames = 32
+
 local default_spawn_settings = minetest.settings:get("static_spawnpoint")
 
+-- Timer for random compass spinning
+local random_timer = 0
+local random_timer_trigger = 0.5 -- random compass spinning tick in seconds. Increase if there are performance problems
+
+local random_frame = math.random(0, compass_frames-1)
+
 minetest.register_globalstep(function(dtime)
+	random_timer = random_timer + dtime
 	local players  = minetest.get_connected_players()
+
+	if random_timer >= random_timer_trigger then
+		random_frame = (random_frame + math.random(-1, 1)) % compass_frames
+		random_timer = 0
+	end
 	for i,player in ipairs(players) do
 		local function has_compass(player)
 			for _,stack in ipairs(player:get_inventory():get_list("main")) do
@@ -14,24 +28,31 @@ minetest.register_globalstep(function(dtime)
 			return false
 		end
 		if has_compass(player) then
-			local spawn = {x=0,y=0,z=0}
-			local s = minetest.settings:get("static_spawnpoint")
-			if s then
-				local numbers = string.split(s, ",")
-				spawn.x = tonumber(numbers[1])
-				spawn.y = tonumber(numbers[2])
-				spawn.z = tonumber(numbers[3])
-				if type(spawn.x) ~= "number" and type(spawn.y) ~= "number" and type(spawn.z) ~= "number" then
-					spawn = {x=0,y=0,z=0}
-				end
-			end
 			local pos = player:getpos()
-			local dir = player:get_look_horizontal()
-			local angle_north = math.deg(math.atan2(spawn.x - pos.x, spawn.z - pos.z))
-			if angle_north < 0 then angle_north = angle_north + 360 end
-			local angle_dir = -math.deg(dir)
-			local angle_relative = (angle_north - angle_dir + 180) % 360
-			local compass_image = math.floor((angle_relative/11.25) + 0.5)%32
+			local _, dim = mcl_util.y_to_layer(pos.y)
+			local compass_image
+			-- Compasses do not work in the End, Nether or the Void
+			if dim == "end" or dim == "nether" or dim == "void" then
+				compass_image = random_frame
+			else
+				local spawn = {x=0,y=0,z=0}
+				local s = minetest.settings:get("static_spawnpoint")
+				if s then
+					local numbers = string.split(s, ",")
+					spawn.x = tonumber(numbers[1])
+					spawn.y = tonumber(numbers[2])
+					spawn.z = tonumber(numbers[3])
+					if type(spawn.x) ~= "number" and type(spawn.y) ~= "number" and type(spawn.z) ~= "number" then
+						spawn = {x=0,y=0,z=0}
+					end
+				end
+				local dir = player:get_look_horizontal()
+				local angle_north = math.deg(math.atan2(spawn.x - pos.x, spawn.z - pos.z))
+				if angle_north < 0 then angle_north = angle_north + 360 end
+				local angle_dir = -math.deg(dir)
+				local angle_relative = (angle_north - angle_dir + 180) % 360
+				compass_image = math.floor((angle_relative/11.25) + 0.5) % compass_frames
+			end
 
 			for j,stack in ipairs(player:get_inventory():get_list("main")) do
 				if minetest.get_item_group(stack:get_name(), "compass") ~= 0 and
@@ -45,7 +66,7 @@ minetest.register_globalstep(function(dtime)
 end)
 
 local images = {}
-for frame=0,31 do
+for frame = 0, compass_frames-1 do
 	local s = string.format("%02d", frame)
 	table.insert(images, "mcl_compass_compass_"..s..".png")
 end

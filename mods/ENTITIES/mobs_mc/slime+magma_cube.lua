@@ -118,11 +118,12 @@ slime_tiny.on_die = nil
 
 mobs:register_mob("mobs_mc:slime_tiny", slime_tiny)
 
+local smin = mobs_mc.spawn_height.overworld_min
+local smax = mobs_mc.spawn_height.water - 23
 
-mobs:register_spawn("mobs_mc:slime_tiny", mobs_mc.spawn.solid, minetest.LIGHT_MAX+1, 0, 35000, 4, -12)
-mobs:register_spawn("mobs_mc:slime_small", mobs_mc.spawn.solid, minetest.LIGHT_MAX+1, 0, 35000, 4, -12)
-mobs:register_spawn("mobs_mc:slime_big", mobs_mc.spawn.solid, minetest.LIGHT_MAX+1, 0, 35000, 4, -12)
-
+mobs:spawn_specific("mobs_mc:slime_tiny", mobs_mc.spawn.solid, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 12000, 4, smin, smax)
+mobs:spawn_specific("mobs_mc:slime_small", mobs_mc.spawn.solid, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 8500, 4, smin, smax)
+mobs:spawn_specific("mobs_mc:slime_big", mobs_mc.spawn.solid, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 10000, 4, smin, smax)
 
 -- Magma cube
 local magma_cube_big = {
@@ -240,14 +241,17 @@ magma_cube_tiny.on_die = nil
 mobs:register_mob("mobs_mc:magma_cube_tiny", magma_cube_tiny)
 
 
+local mmin = mobs_mc.spawn_height.nether_min
+local mmax = mobs_mc.spawn_height.nether_max
 
-mobs:register_spawn("mobs_mc:magma_cube_tiny", mobs_mc.spawn.nether, minetest.LIGHT_MAX+1, 0, 15000, 4, -1000)
-mobs:register_spawn("mobs_mc:magma_cube_small", mobs_mc.spawn.nether, minetest.LIGHT_MAX+1, 0, 15500, 4, -1000)
-mobs:register_spawn("mobs_mc:magma_cube_big", mobs_mc.spawn.nether, minetest.LIGHT_MAX+1, 0, 16000, 4, -1000)
+mobs:spawn_specific("mobs_mc:magma_cube_tiny", mobs_mc.spawn.nether, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 15000, 4, mmin, mmax)
+mobs:spawn_specific("mobs_mc:magma_cube_small", mobs_mc.spawn.nether, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 15500, 4, mmin, mmax)
+mobs:spawn_specific("mobs_mc:magma_cube_big", mobs_mc.spawn.nether, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 16000, 4, mmin, mmax)
 
-mobs:register_spawn("mobs_mc:magma_cube_tiny", mobs_mc.spawn.nether_fortress, minetest.LIGHT_MAX+1, 0, 11000, 4, -1000)
-mobs:register_spawn("mobs_mc:magma_cube_small", mobs_mc.spawn.nether_fortress, minetest.LIGHT_MAX+1, 0, 11100, 4, -1000)
-mobs:register_spawn("mobs_mc:magma_cube_big", mobs_mc.spawn.nether_fortress, minetest.LIGHT_MAX+1, 0, 11200, 4, -1000)
+mobs:spawn_specific("mobs_mc:magma_cube_tiny", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11000, 4, mmin, mmax)
+mobs:spawn_specific("mobs_mc:magma_cube_small", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11100, 4, mmin, mmax)
+mobs:spawn_specific("mobs_mc:magma_cube_big", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11200, 4, mmin, mmax)
+
 
 -- Compability
 mobs:alias_mob("mobs_mc:greensmall", "mobs_mc:slime_tiny")

@@ -178,7 +178,28 @@ mobs_mc.override.spawn = {
 	desert = { "group:sand" },
 	jungle = { "mcl_core:podzol", "mcl_core:jungletree", "mcl_core:jungleleaves", "mcl_flowers:fern" },
 	snow = { "mcl_core:snow", "mcl_core:snowblock", "mcl_core:dirt_with_grass_snow" },
-	end_city = { "mcl_end:purpur_block" },
+	-- End stone added for shulkers because End cities don't generate yet
+	end_city = { "mcl_end:end_stone", "mcl_end:purpur_block" },
+	nether = { "mcl_nether:netherrack", "mcl_nether:quartz_ore" },
+	-- Netherrack added because there are no Nether fortresses yet. TODO: Remove netherrac from list as soon they're available
+	nether_fortress = { "mcl_nether:nether_brick", "mcl_nether:netherrack" },
 	wolf = { mobs_mc.override.items.grass_block, "mcl_core:dirt", "mcl_core:dirt_with_grass_snow", "mcl_core:snow", "mcl_core:snowblock", "mcl_core:podzol" },
+}
+
+-- This table contains important spawn height references for the mob spawn height.
+mobs_mc.override.spawn_height = {
+	water = tonumber(minetest.setting_get("water_level")) or 0, -- Water level in the Overworld
+
+	-- Overworld boundaries (inclusive)
+	overworld_min = mcl_vars.mg_overworld_min,
+	overworld_max = mcl_vars.mg_overworld_max,
+
+	-- Nether boundaries (inclusive)
+	nether_min = mcl_vars.mg_nether_min,
+	nether_max = mcl_vars.mg_nether_max,
+
+	-- End boundaries (inclusive)
+	end_min = mcl_vars.mg_end_min,
+	end_max = mcl_vars.mg_end_max,
 }
 

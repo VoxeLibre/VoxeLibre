@@ -136,6 +136,17 @@ function mcl_beds.skip_night()
 end
 
 function mcl_beds.on_rightclick(pos, player)
+	if minetest.get_modpath("mcl_init") then
+		local _, dim = mcl_util.y_to_layer(pos.y)
+		if dim == "nether" or dim == "end" then
+			-- Bed goes BOOM in the Nether or End.
+			minetest.remove_node(pos)
+			if minetest.get_modpath("mcl_tnt") then
+				tnt.boom(pos, {radius = 4, damage_radius = 4})
+			end
+			return
+		end
+	end
 	local name = player:get_player_name()
 	local ppos = player:getpos()
 	local tod = minetest.get_timeofday() * 24000

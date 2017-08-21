@@ -168,7 +168,7 @@ mobs:register_mob("mobs_mc:pig", {
 	end,
 })
 
-mobs:register_spawn("mobs_mc:pig", mobs_mc.spawn.grassland, minetest.LIGHT_MAX+1, 9, 15000, 30, 31000)
+mobs:spawn_specific("mobs_mc:pig", mobs_mc.spawn.grassland, {"air"}, 9, minetest.LIGHT_MAX+1, 30, 15000, 30, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 
 -- compatibility
 mobs:alias_mob("mobs:pig", "mobs_mc:pig")

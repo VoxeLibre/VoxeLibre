@@ -140,12 +140,13 @@ local base_spawn_chance = 5000
 mobs:spawn({
 	name = "mobs_mc:ocelot",
 	nodes = mobs_mc.spawn.jungle,
+	neighbors = {"air"},
 	light_max = minetest.LIGHT_MAX+1,
 	light_min = 0,
 	chance = math.ceil(base_spawn_chance * 1.5), -- emulates 1/3 spawn failure rate
 	active_object_count = 12,
-	min_height = 1, -- Right above ocean level
-	max_height = 31000,
+	min_height = mobs_mc.spawn_height.water+1, -- Right above ocean level
+	max_height = mobs_mc.spawn_height.overworld_max,
 	on_spawn = function(self, pos)
 		--[[ Note: Minecraft has a 1/3 spawn failure rate.
 		In this mod it is emulated by reducing the spawn rate accordingly (see above). ]]

@@ -122,10 +122,15 @@ mobs:register_mob("mobs_mc:stray", stray)
 -- compatibility
 mobs:alias_mob("mobs:skeleton", "mobs_mc:skeleton")
 
---spawn
-mobs:spawn_specific("mobs_mc:skeleton", mobs_mc.spawn.solid,{"air"}, 0, 7, 20, 17000, 2, -110, 31000)
+-- Overworld spawn
+mobs:spawn_specific("mobs_mc:skeleton", mobs_mc.spawn.solid, {"air"}, 0, 7, 20, 17000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+-- Nether spawn
+mobs:spawn_specific("mobs_mc:skeleton", mobs_mc.spawn.nether_fortress, {"air"}, 0, 7, 30, 10000, 3, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
+
+-- Stray spawn
 -- TODO: Spawn directly under the sky
-mobs:spawn_specific("mobs_mc:stray", mobs_mc.spawn.snow, {"air"}, 0, 7, 20, 19000, 2, -110, 31000)
+mobs:spawn_specific("mobs_mc:stray", mobs_mc.spawn.snow, {"air"}, 0, 7, 20, 19000, 2, mobs_mc.spawn_height.water, mobs_mc.spawn_height.overworld_max)
+
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:skeleton", S("Skeleton"), "mobs_mc_spawn_icon_skeleton.png", 0)
