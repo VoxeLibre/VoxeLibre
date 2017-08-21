@@ -293,9 +293,9 @@ local function register_biomes()
 		humidity_point = 44,  --was 68
 	})
 
-	-- Desert
+	-- Desert (Red Sand)
 	minetest.register_biome({
-		name = "desert",
+		name = "red_desert",
 		node_top = "mcl_core:redsand",
 		depth_top = 1,
 		node_filler = "mcl_core:redsand",
@@ -310,7 +310,7 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "desert_ocean",
+		name = "red_desert_ocean",
 		node_top = "mcl_core:redsand",
 		depth_top = 1,
 		node_filler = "mcl_core:redsand",
@@ -323,9 +323,9 @@ local function register_biomes()
 		humidity_point = 37,  --was 16
 	})
 
-	-- Sandstone desert
+	-- Desert (Sand)
 	minetest.register_biome({
-		name = "sandstone_desert",
+		name = "desert",
 		node_top = "mcl_core:redsand",
 		depth_top = 1,
 		node_filler = "mcl_core:redsand",
@@ -339,7 +339,7 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "sandstone_desert_ocean",
+		name = "desert_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
 		node_filler = "mcl_core:sand",
@@ -369,13 +369,13 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "cold_desert_ocean",
+		name = "roofed_forest_ocean",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 1,
 		y_min = mcl_vars.mg_overworld_min,
-		y_max = 4,
+		y_max = 1,
 		heat_point = 26,
 		humidity_point = 0,
 	})
@@ -1418,7 +1418,7 @@ local function register_decorations()
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_core:cactus",
-		biomes = {"desert","sandstone_desert","grassland_dunes", "coniferous_forest_dunes"},
+		biomes = {"red_desert","desert","grassland_dunes", "coniferous_forest_dunes"},
 		height = 1,
 		height_max = 3,
 	})
@@ -1436,7 +1436,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.7
 		},
-		biomes = {"grassland", "beach", "desert", "sandstone_desert", "swamp"},
+		biomes = {"grassland", "beach", "red_desert", "desert", "swamp"},
 		y_min = 1,
 		y_max = 1,
 		decoration = "mcl_core:reeds",
@@ -1642,7 +1642,7 @@ local function register_decorations()
 		},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
-		biomes = {"desert", "sandstone_desert", "mesa", "taiga", "mega_taiga"},
+		biomes = {"red_desert", "desert", "mesa", "taiga", "mega_taiga"},
 		decoration = "mcl_core:deadbush",
 		height = 1,
 	})
