@@ -350,13 +350,14 @@ local function register_biomes()
 		humidity_point = 0,  --was 0
 	})
 
+	-- TODO: Remove cold desert
 	-- Cold desert
 	minetest.register_biome({
 		name = "cold_desert",
 		--node_dust = "",
-		node_top = "mcl_core:stone",
+		node_top = "mcl_core:coarse_dirt",
 		depth_top = 1,
-		node_filler = "mcl_core:stone",
+		node_filler = "mcl_core:coarse_dirt",
 		depth_filler = 1,
 		node_riverbed = "mcl_core:stone",
 		depth_riverbed = 2,
@@ -368,10 +369,10 @@ local function register_biomes()
 
 	minetest.register_biome({
 		name = "cold_desert_ocean",
-		node_top = "mcl_core:stone",
+		node_top = "mcl_core:dirt",
 		depth_top = 1,
-		node_filler = "mcl_core:stone",
-		depth_filler = 3,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 1,
 		node_riverbed = "mcl_core:stone",
 		depth_riverbed = 2,
 		y_min = mcl_vars.mg_overworld_min,
@@ -1654,7 +1655,8 @@ local function register_decorations()
 		},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
-		biomes = {"desert", "sandstone_desert", "mesa", "taiga", "mega_taiga"},
+		-- TODO: Remove cold desert
+		biomes = {"desert", "sandstone_desert", "mesa", "taiga", "mega_taiga", "cold_desert"},
 		decoration = "mcl_core:deadbush",
 		height = 1,
 	})
