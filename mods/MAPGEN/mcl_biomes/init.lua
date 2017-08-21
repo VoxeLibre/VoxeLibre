@@ -23,7 +23,6 @@ end
 -- All mapgens except mgv6, flat and singlenode
 local function register_biomes()
 
-	local upper_limit = mcl_vars.mg_overworld_max
 	--[[ OVERWORLD ]]
 
 	-- Icesheet
@@ -41,7 +40,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:gravel",
 		depth_riverbed = 2,
 		y_min = -8,
-		y_max = upper_limit,
+		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 0,
 		humidity_point = 73,
 	})
@@ -69,7 +68,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:gravel",
 		depth_riverbed = 2,
 		y_min = 2,
-		y_max = upper_limit,
+		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 0,
 		humidity_point = 40,
 	})
@@ -112,7 +111,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 15,
-		y_max = upper_limit,
+		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 26,
 		humidity_point = 72,
 	})
@@ -142,7 +141,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 5,
-		y_max = upper_limit,
+		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 13,
 		humidity_point = 79,
 	})
@@ -171,7 +170,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 6,
-		y_max = upper_limit,
+		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 26,
 		humidity_point = 45,
 	})
@@ -215,7 +214,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 6,
-		y_max = upper_limit,
+		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 47,
 		humidity_point = 73,  --was 70
 	})
@@ -258,7 +257,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = upper_limit,
+		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 33,
 		humidity_point = 44,  --was 68
 	})
@@ -302,7 +301,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = upper_limit,
+		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 64,
 		humidity_point = 37,  --was 16
 	})
@@ -331,7 +330,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:redsand",
 		depth_riverbed = 2,
 		y_min = 0,
-		y_max = upper_limit,
+		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 57,
 		humidity_point = 0,  --was 0
 	})
@@ -362,7 +361,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:stone",
 		depth_riverbed = 2,
 		y_min = 5,
-		y_max = upper_limit,
+		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 26,
 		humidity_point = 0,  --was 0
 	})
@@ -390,7 +389,7 @@ local function register_biomes()
 		depth_filler = 1,
 		node_stone = "mcl_colorblocks:hardened_clay_orange",
 		y_min = -35,
-		y_max = upper_limit,
+		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 88,
 		humidity_point = 20,  --was 40
 	})
@@ -406,7 +405,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:coarse_dirt",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = upper_limit,
+		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 50,
 		humidity_point = 46,  --was 42
 	})
@@ -449,7 +448,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = upper_limit,
+		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 90,
 		humidity_point = 91,
 	})
@@ -523,7 +522,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:stone",
 		depth_riverbed = 2,
 		y_min = 56,
-		y_max = upper_limit,
+		y_max = mcl_vars.mg_overworld_max,
 		heat_point = -13,
 		humidity_point = 30,
 	})
@@ -1076,7 +1075,7 @@ local function register_decorations()
 		},
 		biomes = {"deciduous_forest"},
 		y_min = 1,
-		y_max = 31000,
+		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/apple_tree.mts",
 		flags = "place_center_x, place_center_z",
 	})
@@ -1095,7 +1094,7 @@ local function register_decorations()
 		},
 		biomes = {"deciduous_forest"},
 		y_min = 1,
-		y_max = 31000,
+		y_max = mcl_vars.mg_overworld_max,
 		schematic = {
 			size = {x = 3, y = 3, z = 1},
 			data = {
@@ -1123,7 +1122,7 @@ local function register_decorations()
 		fill_ratio = 0.09,
 		biomes = {"rainforest", "rainforest_swamp"},
 		y_min = 0,
-		y_max = 31000,
+		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/jungle_tree.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -1136,7 +1135,7 @@ local function register_decorations()
 		fill_ratio = 0.01,
 		biomes = {"rainforest", "rainforest_swamp"},
 		y_min = 1,
-		y_max = 31000,
+		y_max = mcl_vars.mg_overworld_max,
 		schematic = {
 			size = {x = 3, y = 3, z = 1},
 			data = {
@@ -1171,7 +1170,7 @@ local function register_decorations()
 		},
 		biomes = {"taiga", "coniferous_forest","coniferous_forest_dunes"},
 		y_min = 2,
-		y_max = 31000,
+		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/pine_tree.mts",
 		flags = "place_center_x, place_center_z",
 	})
@@ -1190,7 +1189,7 @@ local function register_decorations()
 		},
 		biomes = {"taiga", "coniferous_forest","coniferous_forest_dunes"},
 		y_min = 1,
-		y_max = 31000,
+		y_max = mcl_vars.mg_overworld_max,
 		schematic = {
 			size = {x = 3, y = 3, z = 1},
 			data = {
@@ -1225,7 +1224,7 @@ local function register_decorations()
 		},
 		biomes = {"savanna"},
 		y_min = 1,
-		y_max = 31000,
+		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/acacia_tree.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -1245,7 +1244,7 @@ local function register_decorations()
 		},
 		biomes = {"savanna"},
 		y_min = 1,
-		y_max = 31000,
+		y_max = mcl_vars.mg_overworld_max,
 		schematic = {
 			size = {x = 3, y = 2, z = 1},
 			data = {
@@ -1276,7 +1275,7 @@ local function register_decorations()
 		},
 		biomes = {"savanna"},
 		y_min = 7,
-		y_max = 31000,
+		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/acacia_tree.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
@@ -1299,7 +1298,7 @@ local function register_decorations()
 		},
 		biomes = {"deciduous_forest"},
 		y_min = 1,
-		y_max = 31000,
+		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/aspen_tree.mts",
 		flags = "place_center_x, place_center_z",
 	})
@@ -1318,7 +1317,7 @@ local function register_decorations()
 		},
 		biomes = {"deciduous_forest"},
 		y_min = 1,
-		y_max = 31000,
+		y_max = mcl_vars.mg_overworld_max,
 		schematic = {
 			size = {x = 3, y = 3, z = 1},
 			data = {
@@ -1350,8 +1349,8 @@ local function register_decorations()
 		sidelen = 80,
 		fill_ratio = 0.002,
 		biomes = {"mushroom", "mushroom_cold"},
-		y_min = -6000,
-		y_max = 31000,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_brown.mts",
 		flags = "place_center_x",
 		rotation = "random",
@@ -1364,8 +1363,8 @@ local function register_decorations()
 		sidelen = 50,
 		fill_ratio = 0.0002,
 		biomes = { "deciduous_forest"},
-		y_min = -6000,
-		y_max = 31000,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_red.mts",
 		flags = "place_center_x",
 		rotation = "random",
@@ -1563,7 +1562,7 @@ local function register_decorations()
 		fill_ratio = 0.004,
 		biomes = {"taiga"},
 		y_min = 10,
-		y_max = 31000,
+		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_core:mossycobble",
 	})
 
@@ -1607,8 +1606,8 @@ local function register_decorations()
 		sidelen = 80,
 		fill_ratio = 0.003,
 		biomes = {"mushroom"},
-		y_min = -6000,
-		y_max = 31000,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_mushrooms:mushroom_red",
 	})
 

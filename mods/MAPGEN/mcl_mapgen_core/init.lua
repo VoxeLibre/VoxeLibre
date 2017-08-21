@@ -728,7 +728,7 @@ local function register_mgv6_decorations()
 				persist = 0.62,
 			},
 			y_min = 1,
-			y_max = 30,
+			y_max = mcl_vars.overworld_max,
 			flags = "",
 		})
 	end
@@ -759,7 +759,7 @@ local function register_mgv6_decorations()
 			persist = 0.666
 		},
 		y_min = 3,
-		y_max = 29,
+		y_max = mcl_vars.overworld_max,
 		rotation = "random",
 	})
 
@@ -777,7 +777,7 @@ local function register_mgv6_decorations()
 			persist = 0.6
 		},
 		y_min = 1,
-		y_max = 50,
+		y_max = mcl_vars.overworld_max,
 		decoration = "mcl_flowers:tallgrass",
 	})
 
@@ -788,7 +788,7 @@ local function register_mgv6_decorations()
 		sidelen = 8,
 		fill_ratio = 0.001,
 		y_min = 1,
-		y_max = 50,
+		y_max = mcl_vars.overworld_max,
 		decoration = "mcl_flowers:tallgrass",
 	})
 
@@ -830,7 +830,7 @@ local function register_mgv6_decorations()
 			persist = 0.6
 		},
 		y_min = 4,
-		y_max = 50,
+		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_core:deadbush",
 	})
 
@@ -851,7 +851,7 @@ local function register_mgv6_decorations()
 				persist = 0.6
 			},
 			y_min = 1,
-			y_max = 30,
+			y_max = mcl_vars.mg_overworld_max,
 			decoration = "mcl_flowers:"..name,
 		})
 	end
