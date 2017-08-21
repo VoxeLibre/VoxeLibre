@@ -288,11 +288,11 @@ function mcl_core.generate_tree(pos, trunk, leaves, typearbre)
 			end
 		end
 	elseif typearbre == 2 then
-		-- EMPTY
+		mcl_core.generate_dark_oak_tree(pos)
 	elseif typearbre == 3 then
 		mcl_core.generate_spruce_tree(pos)
 	elseif typearbre == 4 then
-		mcl_core.grow_new_acacia_tree(pos)
+		mcl_core.generate_acacia_tree(pos)
 	elseif typearbre == 5 then
 		mcl_core.generate_jungle_tree(pos)
 	end
@@ -409,9 +409,15 @@ end
 -- END of spruce tree functions --
 
 -- Acacia tree grow function from Minetest Game 0.4.15
-function mcl_core.grow_new_acacia_tree(pos)
+function mcl_core.generate_acacia_tree(pos)
 	local path = minetest.get_modpath("mcl_core") ..
 		"/schematics/acacia_tree_from_sapling.mts"
+	minetest.place_schematic({x = pos.x - 4, y = pos.y - 1, z = pos.z - 4}, path, "random", nil, false)
+end
+
+function mcl_core.generate_dark_oak_tree(pos)
+	local path = minetest.get_modpath("mcl_core") ..
+		"/schematics/mcl_core_dark_oak.mts"
 	minetest.place_schematic({x = pos.x - 4, y = pos.y - 1, z = pos.z - 4}, path, "random", nil, false)
 end
 
@@ -649,7 +655,7 @@ mcl_core.grow_sapling = function(pos, node)
 	if node.name == "mcl_core:sapling" then
 		grow = sapling_grow_action("mcl_core:tree", "mcl_core:leaves", 1, 1)
 	elseif node.name == "mcl_core:darksapling" then
-		grow = sapling_grow_action("mcl_core:darktree", "mcl_core:darkleaves", 1, 2)
+		grow = sapling_grow_action("mcl_core:darktree", "mcl_core:darkleaves", 2, 2)
 	elseif node.name == "mcl_core:junglesapling" then
 		grow = sapling_grow_action("mcl_core:jungletree", "mcl_core:jungleleaves", 5, 1)
 	elseif node.name == "mcl_core:acaciasapling" then
@@ -687,7 +693,7 @@ minetest.register_abm({
 	neighbors = {"group:soil_sapling"},
 	interval = 25,
 	chance = 2,
-	action = sapling_grow_action("mcl_core:darktree", "mcl_core:darkleaves", 1, 2),
+	action = sapling_grow_action("mcl_core:darktree", "mcl_core:darkleaves", 2, 2),
 })
 
 -- Jungle Tree
