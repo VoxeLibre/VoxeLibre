@@ -58,15 +58,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_nether:nether_wart_item",
-	recipe = {
-		{"mcl_nether:soul_sand", "mcl_core:obsidian", "mcl_nether:soul_sand"},
-		{"mcl_core:obsidian", "mcl_core:goldblock", "mcl_core:obsidian"},
-		{"mcl_nether:soul_sand", "mcl_core:obsidian", "mcl_nether:soul_sand"},
-	}
-})
-
-minetest.register_craft({
 	output = "3d_armor:helmet_chain",
 	recipe = {
 		{ "xpanes:bar_flat", "mcl_core:iron_ingot", "xpanes:bar_flat" },
@@ -124,34 +115,39 @@ minetest.register_craft({
 		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
 	}
 })
-
 -- 2 discs are dropped by creeper
 -- 1 disc is droppd by zombie
 -- TODO: Remove/fix these drops when creeper drops music discs properly
 
-minetest.register_craft({
-	output = "mcl_core:darksapling",
-	recipe = {
-		{ "mcl_core:sapling", "mcl_core:sapling", "mcl_core:sapling" },
-		{ "mcl_core:sapling", "mcl_core:sapling", "mcl_core:sapling" },
-		{ "mcl_core:sapling", "mcl_core:sapling", "mcl_core:sapling" },
-	},
-})
 
-minetest.register_craft({
-	output = "mcl_core:acaciasapling",
-	recipe = {
-		{ "mcl_core:junglesapling", "mcl_core:junglesapling", "mcl_core:junglesapling" },
-		{ "mcl_core:junglesapling", "mcl_core:junglesapling", "mcl_core:junglesapling" },
-		{ "mcl_core:junglesapling", "mcl_core:junglesapling", "mcl_core:junglesapling" },
-	},
-})
+-- Saplings, to complete the set of saplings in v6 mapgen.
+-- 3 tree species are missing in v6.
+local mg_name = minetest.get_mapgen_setting("mg_name")
+if mg_name == "v6" then
+	minetest.register_craft({
+		output = "mcl_core:darksapling",
+		recipe = {
+			{ "mcl_core:sapling", "mcl_core:sapling", "mcl_core:sapling" },
+			{ "mcl_core:sapling", "mcl_core:sapling", "mcl_core:sapling" },
+			{ "mcl_core:sapling", "mcl_core:sapling", "mcl_core:sapling" },
+		},
+	})
 
-minetest.register_craft({
-	output = "mcl_core:birchsapling",
-	recipe = {
-		{ "mcl_core:sprucesapling", "mcl_core:sprucesapling", "mcl_core:sprucesapling" },
-		{ "mcl_core:sprucesapling", "mcl_core:sprucesapling", "mcl_core:sprucesapling" },
-		{ "mcl_core:sprucesapling", "mcl_core:sprucesapling", "mcl_core:sprucesapling" },
-	},
-})
+	minetest.register_craft({
+		output = "mcl_core:acaciasapling",
+		recipe = {
+			{ "mcl_core:junglesapling", "mcl_core:junglesapling", "mcl_core:junglesapling" },
+			{ "mcl_core:junglesapling", "mcl_core:junglesapling", "mcl_core:junglesapling" },
+			{ "mcl_core:junglesapling", "mcl_core:junglesapling", "mcl_core:junglesapling" },
+		},
+	})
+
+	minetest.register_craft({
+		output = "mcl_core:birchsapling",
+		recipe = {
+			{ "mcl_core:sprucesapling", "mcl_core:sprucesapling", "mcl_core:sprucesapling" },
+			{ "mcl_core:sprucesapling", "mcl_core:sprucesapling", "mcl_core:sprucesapling" },
+			{ "mcl_core:sprucesapling", "mcl_core:sprucesapling", "mcl_core:sprucesapling" },
+		},
+	})
+end
