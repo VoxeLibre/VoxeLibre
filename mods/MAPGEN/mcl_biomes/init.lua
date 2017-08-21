@@ -1038,7 +1038,7 @@ local function register_grass_decoration(offset, scale)
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_grass_snow"},
 		sidelen = 16,
 		noise_params = noise_grass,
-		biomes = {"grassland", "snowy_grassland", "coniferous_forest", "deciduous_forest", "savanna"},
+		biomes = {"grassland", "coniferous_forest", "deciduous_forest", "savanna"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_flowers:tallgrass",
@@ -1088,7 +1088,7 @@ local function register_shared_decorations()
 		},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		biomes = {"grassland", "snowy_grassland", "coniferous_forest", "deciduous_forest", "savanna"},
+		biomes = {"grassland", "coniferous_forest", "deciduous_forest", "savanna"},
 	})
 
 	-- v6 hack: This makes sure large ferns only appear in jungles
@@ -1163,7 +1163,7 @@ local function register_shared_decorations()
 			octaves = 3,
 			persist = 0.7
 		},
-		biomes = {"grassland", "snowy_grassland", "beach", "desert", "sandstone_desert", "swamp"},
+		biomes = {"grassland", "beach", "desert", "sandstone_desert", "swamp"},
 		y_min = 1,
 		y_max = 1,
 		decoration = "mcl_core:reeds",
@@ -1681,12 +1681,12 @@ local function register_decorations()
 		})
 	end
 
-	local flower_biomes1 = {"grassland", "snowy_grassland", "sunflower_plains", "flower_forest", "deciduous_forest", "coniferous_forest", "taiga"}
+	local flower_biomes1 = {"grassland", "sunflower_plains", "flower_forest", "deciduous_forest", "coniferous_forest", "taiga"}
 
 	register_flower("dandelion", flower_biomes1, 8)
 	register_flower("poppy", flower_biomes1, 9439)
 
-	local flower_biomes2 = {"grassland", "snowy_grassland", "sunflower_plains", "flower_forest"}
+	local flower_biomes2 = {"grassland", "sunflower_plains", "flower_forest"}
 	register_flower("tulip_red", flower_biomes2, 436)
 	register_flower("tulip_orange", flower_biomes2, 536)
 	register_flower("tulip_pink", flower_biomes2, 636)
