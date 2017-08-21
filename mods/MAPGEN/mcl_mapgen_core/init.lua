@@ -903,121 +903,118 @@ local lvm_buffer = {}
 
 -- Generate cocoas and vines at jungle trees within the bounding box
 local function generate_jungle_tree_decorations(minp, maxp)
-	if mg_name == "v6" then
+	if maxp.y < 0 then
+		return
+	end
 
-		if maxp.y < 0 then
-			return
+	local pos, treepos, dir
+	local jungletree = minetest.find_nodes_in_area(minp, maxp, "mcl_core:jungletree")
+	local jungleleaves = minetest.find_nodes_in_area(minp, maxp, "mcl_core:jungleleaves")
+
+	-- Pass 1: Generate cocoas
+	for n = 1, #jungletree do
+
+		pos = jungletree[n]
+		treepos = table.copy(pos)
+
+		if minetest.find_node_near(pos, 1, {"mcl_core:jungleleaves"}) then
+
+			dir = math.random(1, 40)
+
+			if dir == 1 then
+				pos.z = pos.z + 1
+			elseif dir == 2 then
+				pos.z = pos.z - 1
+			elseif dir == 3 then
+				pos.x = pos.x + 1
+			elseif dir == 4 then
+				pos.x = pos.x -1
+			end
+
+			local nn = minetest.get_node(pos).name
+
+			if dir < 5
+			and nn == "air"
+			and minetest.get_node_light(pos) > 12 then
+				minetest.swap_node(pos, {
+					name = "mcl_cocoas:cocoa_" .. tostring(math.random(1, 3)),
+					param2 = minetest.dir_to_facedir(vector.subtract(treepos, pos))
+				})
+			end
+
 		end
+	end
 
-		local pos, treepos, dir
-		local jungletree = minetest.find_nodes_in_area(minp, maxp, "mcl_core:jungletree")
-		local jungleleaves = minetest.find_nodes_in_area(minp, maxp, "mcl_core:jungleleaves")
+	-- Pass 2: Generate vines at jungle wood and jungle leaves
+	perlin_vines = perlin_vines or minetest.get_perlin(555, 4, 0.6, 500)
+	perlin_vines_fine = perlin_vines_fine or minetest.get_perlin(43000, 3, 0.6, 1)
+	perlin_vines_length = perlin_vines_length or minetest.get_perlin(435, 4, 0.6, 75)
+	perlin_vines_upwards = perlin_vines_upwards or minetest.get_perlin(436, 3, 0.6, 10)
+	perlin_vines_density = perlin_vines_density or minetest.get_perlin(436, 3, 0.6, 500)
+	local junglething
+	for i=1, 2 do
+		if i==1 then junglething = jungletree
+		else junglething = jungleleaves end
 
-		-- Pass 1: Generate cocoas
-		for n = 1, #jungletree do
+		for n = 1, #junglething do
+			pos = junglething[n]
 
-			pos = jungletree[n]
 			treepos = table.copy(pos)
 
-			if minetest.find_node_near(pos, 1, {"mcl_core:jungleleaves"}) then
+			local dirs = {
+				{x=1,y=0,z=0},
+				{x=-1,y=0,z=0},
+				{x=0,y=0,z=1},
+				{x=0,y=0,z=-1},
+			}
 
-				dir = math.random(1, 40)
+			for d = 1, #dirs do
+			local pos = vector.add(pos, dirs[d])
 
-				if dir == 1 then
-					pos.z = pos.z + 1
-				elseif dir == 2 then
-					pos.z = pos.z - 1
-				elseif dir == 3 then
-					pos.x = pos.x + 1
-				elseif dir == 4 then
-					pos.x = pos.x -1
-				end
+			local nn = minetest.get_node(pos).name
 
-				local nn = minetest.get_node(pos).name
+			if perlin_vines:get2d(pos) > 0.1 and perlin_vines_fine:get3d(pos) > math.max(0.3333, perlin_vines_density:get2d(pos)) and nn == "air" then
 
-				if dir < 5
-				and nn == "air"
-				and minetest.get_node_light(pos) > 12 then
-					minetest.swap_node(pos, {
-						name = "mcl_cocoas:cocoa_" .. tostring(math.random(1, 3)),
-						param2 = minetest.dir_to_facedir(vector.subtract(treepos, pos))
-					})
-				end
-
-			end
-		end
-
-		-- Pass 2: Generate vines at jungle wood and jungle leaves
-		perlin_vines = perlin_vines or minetest.get_perlin(555, 4, 0.6, 500)
-		perlin_vines_fine = perlin_vines_fine or minetest.get_perlin(43000, 3, 0.6, 1)
-		perlin_vines_length = perlin_vines_length or minetest.get_perlin(435, 4, 0.6, 75)
-		perlin_vines_upwards = perlin_vines_upwards or minetest.get_perlin(436, 3, 0.6, 10)
-		perlin_vines_density = perlin_vines_density or minetest.get_perlin(436, 3, 0.6, 500)
-		local junglething
-		for i=1, 2 do
-			if i==1 then junglething = jungletree
-			else junglething = jungleleaves end
-
-			for n = 1, #junglething do
-				pos = junglething[n]
-
-				treepos = table.copy(pos)
-
-				local dirs = {
-					{x=1,y=0,z=0},
-					{x=-1,y=0,z=0},
-					{x=0,y=0,z=1},
-					{x=0,y=0,z=-1},
+				local newnode = {
+					name = "mcl_core:vine",
+					param2 = minetest.dir_to_wallmounted(vector.subtract(treepos, pos))
 				}
 
-				for d = 1, #dirs do
-				local pos = vector.add(pos, dirs[d])
-
-				local nn = minetest.get_node(pos).name
-
-				if perlin_vines:get2d(pos) > 0.1 and perlin_vines_fine:get3d(pos) > math.max(0.3333, perlin_vines_density:get2d(pos)) and nn == "air" then
-
-					local newnode = {
-						name = "mcl_core:vine",
-						param2 = minetest.dir_to_wallmounted(vector.subtract(treepos, pos))
-					}
-
-					-- Determine growth direction
-					local grow_upwards = false
-					-- Only possible on the wood, not on the leaves
-					if i == 1 then
-						grow_upwards = perlin_vines_upwards:get3d(pos) > 0.8
+				-- Determine growth direction
+				local grow_upwards = false
+				-- Only possible on the wood, not on the leaves
+				if i == 1 then
+					grow_upwards = perlin_vines_upwards:get3d(pos) > 0.8
+				end
+				if grow_upwards then
+					-- Grow vines up 1-4 nodes, even through jungleleaves.
+					-- This may give climbing access all the way to the top of the tree :-)
+					-- But this will be fairly rare.
+					local length = math.ceil(math.abs(perlin_vines_length:get3d(pos)) * 4)
+					for l=0, length-1 do
+						local tnn = minetest.get_node(treepos).name
+						local nn = minetest.get_node(pos).name
+						if (nn == "air" or nn == "mcl_core:jungleleaves") and mcl_core.supports_vines(tnn) then
+							minetest.set_node(pos, newnode)
+						else
+							break
+						end
+						pos.y = pos.y + 1
+						treepos.y = treepos.y + 1
 					end
-					if grow_upwards then
-						-- Grow vines up 1-4 nodes, even through jungleleaves.
-						-- This may give climbing access all the way to the top of the tree :-)
-						-- But this will be fairly rare.
-						local length = math.ceil(math.abs(perlin_vines_length:get3d(pos)) * 4)
-						for l=0, length-1 do
-							local tnn = minetest.get_node(treepos).name
-							local nn = minetest.get_node(pos).name
-							if (nn == "air" or nn == "mcl_core:jungleleaves") and mcl_core.supports_vines(tnn) then
-								minetest.set_node(pos, newnode)
-							else
-								break
-							end
-							pos.y = pos.y + 1
-							treepos.y = treepos.y + 1
+				else
+					-- Grow vines down 1-7 nodes
+					local length = math.ceil(math.abs(perlin_vines_length:get3d(pos)) * 7)
+					for l=0, length-1 do
+						if minetest.get_node(pos).name == "air" then
+							minetest.set_node(pos, newnode)
+						else
+							break
 						end
-					else
-						-- Grow vines down 1-7 nodes
-						local length = math.ceil(math.abs(perlin_vines_length:get3d(pos)) * 7)
-						for l=0, length-1 do
-							if minetest.get_node(pos).name == "air" then
-								minetest.set_node(pos, newnode)
-							else
-								break
-							end
-							pos.y = pos.y - 1
-						end
+						pos.y = pos.y - 1
 					end
 				end
-				end
+			end
 			end
 		end
 	end
