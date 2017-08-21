@@ -732,7 +732,8 @@ minetest.register_node("mcl_core:ice", {
 		-- Create a water source if ice is destroyed and there was something below it
 		local below = {x=pos.x, y=pos.y-1, z=pos.z}
 		local belownode = minetest.get_node(below)
-		if belownode.name ~= "air" and belownode.name ~= "ignore" and belownode.name ~= "mcl_core:void" then
+		local _, dim = mcl_util.y_to_layer(below.y)
+		if dim ~= "nether" and belownode.name ~= "air" and belownode.name ~= "ignore" and belownode.name ~= "mcl_core:void" then
 			minetest.set_node(pos, {name="mcl_core:water_source"})
 		end
 	end,
@@ -760,14 +761,17 @@ for i=0,3 do
 		-- Increase age of frosted age or turn to water source if too old
 		local nn = minetest.get_node(pos).name
 		local age = tonumber(string.sub(nn, -1))
+		local _, dim = mcl_util.y_to_layer(pos.y)
 		if age == nil then return end
-		local nextnode
 		if age < 3 then
-			nextnode = "mcl_core:frosted_ice_"..(age+1)
+			minetest.swap_node(pos, { name = "mcl_core:frosted_ice_"..(age+1) })
 		else
-			nextnode = "mcl_core:water_source"
+			if dim ~= "nether" then
+				minetest.set_node(pos, { name = "mcl_core:water_source" })
+			else
+				minetest.remove_node(pos)
+			end
 		end
-		minetest.swap_node(pos, { name = nextnode })
 		-- Spread aging to neighbor blocks, but not recursively
 		if first_melt and i == 3 then
 			for j=1, #ice_near do
