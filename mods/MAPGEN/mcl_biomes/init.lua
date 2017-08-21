@@ -239,7 +239,7 @@ local function register_biomes()
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 3,
-		node_riverbed = "mcl_core:dirt",
+		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = mcl_vars.mg_overworld_min,
 		y_max = 0,
@@ -282,7 +282,7 @@ local function register_biomes()
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 3,
-		node_riverbed = "mcl_core:dirt",
+		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = mcl_vars.mg_overworld_min,
 		y_max = -2,
@@ -380,11 +380,11 @@ local function register_biomes()
 	-- Hot biomes
 	minetest.register_biome({
 		name = "mesa",
-		node_top = "mcl_colorblocks:hardened_clay_orange",
+		node_top = "mcl_colorblocks:hardened_clay",
 		depth_top = 1,
-		node_filler = "mcl_colorblocks:hardened_clay_orange",
+		node_filler = "mcl_colorblocks:hardened_clay",
 		depth_filler = 1,
-		node_stone = "mcl_colorblocks:hardened_clay_orange",
+		node_stone = "mcl_colorblocks:hardened_clay",
 		y_min = -35,
 		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 88,
@@ -595,185 +595,171 @@ local function register_biomelike_ores()
 		},
 	})
 
-	--mcl_core STRATA
-	minetest.register_ore({
-		ore_type       = "blob",
-		ore            = "mcl_core:stone",
-		wherein        = {"mcl_colorblocks:hardened_clay_orange"},
-		clust_scarcity = 1,
-		clust_num_ores = 3,
-		clust_size     = 4,
-		y_min     = 50,
-		y_max     = 90,
-		noise_threshold = 0.4,
-		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=24, octaves=3, persist=0.70}
-	})
-
-	minetest.register_ore({
-		ore_type       = "sheet",
-		ore            = "mcl_core:clay",
-		wherein        = {"mcl_colorblocks:hardened_clay_orange"},
-		clust_scarcity = 1,
-		clust_num_ores = 12,
-		clust_size     = 8,
-		y_min     = 24,
-		y_max     = 50,
-		noise_threshold = 0.4,
-		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=24, octaves=3, persist=0.70}
-	})
-
+	-- Mesa ores
 	minetest.register_ore({
 		ore_type       = "sheet",
 		ore            = "mcl_core:sandstone",
-		wherein        ={"mcl_colorblocks:hardened_clay_orange"},
+		wherein        ={"mcl_colorblocks:hardened_clay"},
 		clust_scarcity = 1,
 		clust_num_ores = 12,
 		clust_size     = 10,
 		y_min     = 10,
 		y_max     = 30,
 		noise_threshold = 0.2,
-		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=24, octaves=3, persist=0.70}
+		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=24, octaves=3, persist=0.70},
+		biomes = { "mesa" },
 	})
 
 	minetest.register_ore({
 		ore_type       = "sheet",
 		ore            = "mcl_core:dirt",
-		wherein        = {"mcl_colorblocks:hardened_clay_orange"},
+		wherein        = {"mcl_colorblocks:hardened_clay"},
 		clust_scarcity = 1,
 		clust_num_ores = 12,
 		clust_size     = 4,
 		y_min     = -12,
 		y_max     = 7,
 		noise_threshold = 0.4,
-		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=24, octaves=3, persist=0.70}
+		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=24, octaves=3, persist=0.70},
+		biomes = { "mesa" },
 	})
 
 	minetest.register_ore({
 		ore_type       = "sheet",
 		ore            = "mcl_core:redsand",
-		wherein        = { "mcl_colorblocks:hardened_clay_orange"},
+		wherein        = { "mcl_colorblocks:hardened_clay"},
 		clust_scarcity = 1,
 		clust_num_ores = 12,
 		clust_size     = 10,
 		y_min     = 44,
 		y_max     = 70,
 		noise_threshold = 0.7,
-		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=24, octaves=3, persist=0.70}
+		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=24, octaves=3, persist=0.70},
+		biomes = { "mesa" },
 	})
 
-
-	-- MESA STRATA
 	minetest.register_ore({
 		ore_type       = "sheet",
 		ore            = "mcl_core:redsand",
-		wherein        = {"mcl_core:redsandstone", "mcl_colorblocks:hardened_clay_orange"},
+		wherein        = {"mcl_core:redsandstone", "mcl_colorblocks:hardened_clay"},
 		clust_scarcity = 1,
 		clust_num_ores = 8,
 		clust_size     = 4,
 		y_min     = 4,
 		y_max     = 70,
 		noise_threshold = 0.4,
-		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=24, octaves=3, persist=0.70}
+		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=24, octaves=3, persist=0.70},
+		biomes = { "mesa" },
 	})
 
+	-- Mesa strata
 	minetest.register_ore({
 		ore_type       = "sheet",
-		ore            = "mcl_colorblocks:hardened_clay_white",
-		wherein        = {"mcl_colorblocks:hardened_clay_orange"},
+		ore            = "mcl_colorblocks:hardened_clay_silver",
+		wherein        = {"mcl_colorblocks:hardened_clay"},
 		clust_size     = 1,
 		y_min     = 5,
 		y_max     = 14,
 		noise_threshold = 0.0,
 		noise_params =     {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=23, octaves=3, persist=0.70} ,
-	})
-
-	minetest.register_ore({
-		ore_type       = "sheet",
-		ore            = "mcl_colorblocks:hardened_clay_black",
-		wherein        = {"mcl_colorblocks:hardened_clay_orange"},
-		clust_size     = 1,
-		y_min     = 15,
-		y_max     = 17,
-		noise_threshold = 0.0,
-		noise_params =     {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=23, octaves=3, persist=0.70},
+		biomes = { "mesa" },
 	})
 
 	minetest.register_ore({
 		ore_type       = "sheet",
 		ore            = "mcl_colorblocks:hardened_clay_brown",
-		wherein        = {"mcl_colorblocks:hardened_clay_orange"},
+		wherein        = {"mcl_colorblocks:hardened_clay"},
+		clust_size     = 1,
+		y_min     = 15,
+		y_max     = 17,
+		noise_threshold = 0.0,
+		noise_params =     {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=23, octaves=3, persist=0.70},
+		biomes = { "mesa" },
+	})
+
+	minetest.register_ore({
+		ore_type       = "sheet",
+		ore            = "mcl_colorblocks:hardened_clay_orange",
+		wherein        = {"mcl_colorblocks:hardened_clay"},
 		clust_size     = 6,
 		y_min     = 20,
 		y_max     = 29,
 		noise_threshold = 0.0,
 		noise_params =     {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=23, octaves=3, persist=0.70} ,
+		biomes = { "mesa" },
 	})
 
 	minetest.register_ore({
 		ore_type       = "sheet",
 		ore            = "mcl_colorblocks:hardened_clay_red",
-		wherein        = {"mcl_colorblocks:hardened_clay_orange"},
+		wherein        = {"mcl_colorblocks:hardened_clay"},
 		clust_size     = 2,
 		y_min     = 34,
 		y_max     = 37,
 		noise_threshold = 0.0,
 		noise_params =     {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=23, octaves=3, persist=0.70} ,
+		biomes = { "mesa" },
 	})
 
 	minetest.register_ore({
 		ore_type       = "sheet",
 		ore            = "mcl_colorblocks:hardened_clay_yellow",
-		wherein        = {"mcl_colorblocks:hardened_clay_orange"},
+		wherein        = {"mcl_colorblocks:hardened_clay"},
 		clust_size     = 1,
 		y_min     = 42,
 		y_max     = 43,
 		noise_threshold = 0.0,
 		noise_params =     {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=23, octaves=3, persist=0.70} ,
+		biomes = { "mesa" },
 	})
 	minetest.register_ore({
 		ore_type       = "sheet",
-		ore            = "mcl_colorblocks:hardened_clay_blue",
-		wherein        = {"mcl_colorblocks:hardened_clay_orange"},
+		ore            = "mcl_colorblocks:hardened_clay_orange",
+		wherein        = {"mcl_colorblocks:hardened_clay"},
 		clust_size     = 1,
 		y_min = 43,
 		y_max = 44,
 		noise_threshold = 0.0,
 		noise_params = {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=23, octaves=3, persist=0.70} ,
+		biomes = { "mesa" },
 	})
 	minetest.register_ore({
 		ore_type       = "sheet",
-		ore            = "mcl_colorblocks:hardened_clay_yellow",
-		wherein        = {"mcl_colorblocks:hardened_clay_orange"},
+		ore            = "mcl_colorblocks:hardened_clay_brown",
+		wherein        = {"mcl_colorblocks:hardened_clay"},
 		clust_size     = 1,
 		y_min = 44,
 		y_max = 45,
 		noise_threshold = 0.0,
 		noise_params =     {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=23, octaves=3, persist=0.70} ,
+		biomes = { "mesa" },
 	})
 	minetest.register_ore({
 		ore_type       = "sheet",
 		ore            = "mcl_colorblocks:hardened_clay_yellow",
-		wherein        = {"mcl_colorblocks:hardened_clay_orange"},
+		wherein        = {"mcl_colorblocks:hardened_clay"},
 		clust_size     = 1,
 		y_min     = 45,
 		y_max     = 47,
 		noise_threshold = 0.0,
 		noise_params =     {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=23, octaves=3, persist=0.70} ,
+		biomes = { "mesa" },
 	})
 	minetest.register_ore({
 		ore_type       = "sheet",
-		ore            = "mcl_colorblocks:hardened_clay_light_blue",
-		wherein        = {"mcl_colorblocks:hardened_clay_orange"},
+		ore            = "mcl_colorblocks:hardened_clay_white",
+		wherein        = {"mcl_colorblocks:hardened_clay"},
 		clust_size     = 1,
 		y_min     = 49,
 		y_max     = 52,
 		noise_threshold = 0.0,
 		noise_params =     {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=23, octaves=3, persist=0.70} ,
+		biomes = { "mesa" },
 	})
 	minetest.register_ore({
 		ore_type       = "sheet",
 		ore            = "mcl_colorblocks:hardened_clay_yellow",
-		wherein        = {"mcl_colorblocks:hardened_clay_orange"},
+		wherein        = {"mcl_colorblocks:hardened_clay"},
 		clust_size = 4,
 		y_min = 53,
 		y_max = 59,
@@ -783,22 +769,24 @@ local function register_biomelike_ores()
 	minetest.register_ore({
 		ore_type       = "sheet",
 		ore            = "mcl_colorblocks:hardened_clay_white",
-		wherein        = {"mcl_colorblocks:hardened_clay_orange"},
+		wherein        = {"mcl_colorblocks:hardened_clay"},
 		clust_size     = 8,
 		y_min = 61,
 		y_max = 70,
 		noise_threshold = 0.0,
 		noise_params = {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=23, octaves=3, persist=0.70} ,
+		biomes = { "mesa" },
 	})
 	minetest.register_ore({
 		ore_type       = "sheet",
-		ore            = "mcl_colorblocks:hardened_clay_purple",
-		wherein        = {"mcl_colorblocks:hardened_clay_orange"},
+		ore            = "mcl_colorblocks:hardened_clay_silver",
+		wherein        = {"mcl_colorblocks:hardened_clay"},
 		clust_size     = 8,
 		y_min     = 66,
 		y_max     = 75,
 		noise_threshold = 0.0,
 		noise_params = {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=23, octaves=3, persist=0.70} ,
+		biomes = { "mesa" },
 	})
 end
 
@@ -1073,7 +1061,7 @@ local function register_decorations()
 		biomes = {"deciduous_forest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/apple_tree.mts",
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 	})
 
@@ -1112,6 +1100,18 @@ local function register_decorations()
 
 	-- Jungle tree and log
 
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol"},
+		sidelen = 80,
+		fill_ratio = 0.002,
+		biomes = {"rainforest"},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_tree_huge.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol"},
