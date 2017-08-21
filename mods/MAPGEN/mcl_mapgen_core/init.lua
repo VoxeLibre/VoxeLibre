@@ -1199,17 +1199,10 @@ local generate_nether_decorations = function(minp, maxp)
 
 	end
 
+	-- Eternal fire on netherrack
 	special_deco(rack, function(bpos)
-		-- Mushrooms on netherrack
-		if bpos.y > mcl_vars.mg_lava_nether_max + 6 and minetest.get_node_light(bpos, 0.5) <= 12 and pr_nether:next(1,1000) <= 4 then
-			-- TODO: Make mushrooms appear in groups, use Perlin noise
-			if pr_nether:next(1,2) == 1 then
-				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
-			else
-				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_red"})
-			end
 		-- Eternal fire on netherrack
-		elseif pr_nether:next(1,100) <= 3 then
+		if pr_nether:next(1,100) <= 3 then
 			minetest.set_node(bpos, {name = "mcl_fire:eternal_fire"})
 		end
 	end)
@@ -1218,6 +1211,19 @@ local generate_nether_decorations = function(minp, maxp)
 	special_deco(magma, function(bpos)
 		if pr_nether:next(1,150) == 1 then
 			minetest.set_node(bpos, {name = "mcl_fire:eternal_fire"})
+		end
+	end)
+
+	-- Mushrooms on netherrack
+	-- Note: Spawned *after* the fire because of light level checks
+	special_deco(rack, function(bpos)
+		if bpos.y > mcl_vars.mg_lava_nether_max + 6 and minetest.get_node_light(bpos, 0.5) <= 12 and pr_nether:next(1,1000) <= 4 then
+			-- TODO: Make mushrooms appear in groups, use Perlin noise
+			if pr_nether:next(1,2) == 1 then
+				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
+			else
+				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_red"})
+			end
 		end
 	end)
 
