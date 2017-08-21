@@ -948,19 +948,6 @@ local function register_dimension_ores()
 		y_max           = mcl_vars.mg_nether_max,
 	})
 
-	-- Fire in the Nether (hacky)
-	-- FIXME: Remove this when fire as decoration is available
-	minetest.register_ore({
-		ore_type       = "scatter",
-		ore            = "mcl_fire:eternal_fire",
-		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
-		clust_scarcity =12 *22 * 12,
-		clust_num_ores = 5,
-		clust_size     = 5,
-		y_min           = mcl_vars.mg_nether_min,
-		y_max           = mcl_vars.mg_nether_max,
-	})
-
 	--[[ THE END ]]
 
 	-- Generate fake End
@@ -1761,53 +1748,7 @@ end
 
 -- Decorations in non-Overworld dimensions
 local function register_dimension_decorations()
-	--[[ NETHER decorations ]]
-
-	-- Red Mushroom
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_nether:netherrack"},
-		sidelen = 80,
-		fill_ratio = 0.01,
-		biomes = {"nether"},
-		y_min = mcl_vars.mg_nether_min,
-		y_max = mcl_vars.mg_nether_max,
-		decoration = "mcl_mushrooms:mushroom_red",
-	})
-	-- Brown Mushroom
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_nether:netherrack"},
-		sidelen = 80,
-		fill_ratio = 0.01,
-		biomes = {"nether"},
-		y_min = mcl_vars.mg_nether_min,
-		y_max = mcl_vars.mg_nether_max,
-		decoration = "mcl_mushrooms:mushroom_brown",
-	})
-
-	-- Eternal Fire
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_nether:netherrack"},
-		sidelen = 16,
-		fill_ratio = 0.2,
-		biomes = {"nether"},
-		y_min = mcl_vars.mg_nether_min,
-		y_max = mcl_vars.mg_nether_max,
-		decoration = "mcl_fire:eternal_fire",
-	})
-	-- Nether Wart
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_nether:soul_sand"},
-		sidelen = 80,
-		fill_ratio = 0.1,
-		biomes = {"nether"},
-		y_min = mcl_vars.mg_nether_min,
-		y_max = mcl_vars.mg_nether_max,
-		decoration = "mcl_nether:nether_wart",
-	})
+	-- TODO
 end
 
 --

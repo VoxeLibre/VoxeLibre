@@ -1147,11 +1147,14 @@ local function generate_jungle_tree_decorations(minp, maxp)
 	end
 end
 
--- Generate mushrooms in caves
+local pr_shroom = PseudoRandom(os.time()-24359)
+-- Generate mushrooms in caves manually.
+-- Minetest's API does not support decorations in caves yet. :-(
 local generate_underground_mushrooms = function(minp, maxp)
 	-- Generate rare underground mushrooms
 	-- TODO: Make them appear in groups, use Perlin noise
-	if minp.y > 0 or maxp.y < -32 then
+	local min, max = mcl_vars.mg_lava_overworld_max + 4, 0
+	if minp.y > max or maxp.y < min then
 		return
 	end
 
@@ -1161,8 +1164,8 @@ local generate_underground_mushrooms = function(minp, maxp)
 	for n = 1, #stone do
 		bpos = {x = stone[n].x, y = stone[n].y + 1, z = stone[n].z }
 
-		if math.random(1,1000) < 4 and minetest.get_node_light(bpos, 0.5) <= 12 then
-			if math.random(1,2) == 1 then
+		if bpos.y >= min and bpos.y <= max and minetest.get_node_light(bpos, 0.5) <= 12 and pr_shroom:next(1,1000) < 4 then
+			if pr_shroom:next(1,2) == 1 then
 				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
 			else
 				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_red"})
@@ -1171,6 +1174,62 @@ local generate_underground_mushrooms = function(minp, maxp)
 	end
 end
 
+local pr_nether = PseudoRandom(os.time()+667)
+-- Generate Nether decorations manually: Eternal fire, mushrooms, nether wart
+-- Minetest's API does not support decorations in caves yet. :-(
+local generate_nether_decorations = function(minp, maxp)
+	if minp.y > mcl_vars.mg_nether_max or maxp.y < mcl_vars.mg_nether_min then
+		return
+	end
+
+	-- TODO: Generate everything based on Perlin noise instead of PseudoRandom
+
+	local bpos
+	local rack = minetest.find_nodes_in_area_under_air(minp, maxp, {"mcl_nether:netherrack"})
+	local magma = minetest.find_nodes_in_area_under_air(minp, maxp, {"mcl_nether:magma"})
+	local ssand = minetest.find_nodes_in_area_under_air(minp, maxp, {"mcl_nether:soul_sand"})
+
+	-- Helper function to spawn “fake” decoration
+	local special_deco = function(nodes, spawn_func)
+		for n = 1, #nodes do
+			bpos = {x = nodes[n].x, y = nodes[n].y + 1, z = nodes[n].z }
+
+			spawn_func(bpos)
+		end
+
+	end
+
+	special_deco(rack, function(bpos)
+		-- Mushrooms on netherrack
+		if bpos.y > mcl_vars.mg_lava_nether_max + 6 and minetest.get_node_light(bpos, 0.5) <= 12 and pr_nether:next(1,1000) <= 4 then
+			-- TODO: Make mushrooms appear in groups, use Perlin noise
+			if pr_nether:next(1,2) == 1 then
+				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
+			else
+				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_red"})
+			end
+		-- Eternal fire on netherrack
+		elseif pr_nether:next(1,100) <= 3 then
+			minetest.set_node(bpos, {name = "mcl_fire:eternal_fire"})
+		end
+	end)
+
+	-- Eternal fire on magma cubes
+	special_deco(magma, function(bpos)
+		if pr_nether:next(1,150) == 1 then
+			minetest.set_node(bpos, {name = "mcl_fire:eternal_fire"})
+		end
+	end)
+
+	-- Nether wart on soul sand
+	-- TODO: Spawn in Nether fortresses
+	special_deco(ssand, function(bpos)
+		if pr_nether:next(1,170) == 1 then
+			minetest.set_node(bpos, {name = "mcl_nether:nether_wart"})
+		end
+	end)
+
+end
 
 -- Below the bedrock, generate air/void
 minetest.register_on_generated(function(minp, maxp)
@@ -1337,6 +1396,7 @@ minetest.register_on_generated(function(minp, maxp)
 
 	generate_underground_mushrooms(minp, maxp)
 	generate_jungle_tree_decorations(minp, maxp)
+	generate_nether_decorations(minp, maxp)
 end)
 
 
