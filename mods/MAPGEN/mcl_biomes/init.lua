@@ -1599,9 +1599,9 @@ local function register_decorations()
 	})
 
 	-- Grasses and ferns
-	local grass_full = {"grassland", "coniferous_forest", "deciduous_forest", "roofed_forest", "flower_forest", "savanna"}
+	local grass_minimal = {"grassland", "coniferous_forest", "deciduous_forest", "roofed_forest", "flower_forest", "savanna"}
 	local grass_forest = {"grassland", "coniferous_forest", "deciduous_forest", "roofed_forest", "flower_forest" }
-	local grass_minimal = {"grassland"}
+	local grass_full = {"grassland"}
 	register_grass_decoration("mcl_flowers:tallgrass", -0.03,  0.09, grass_minimal)
 	register_grass_decoration("mcl_flowers:tallgrass", -0.015, 0.075, grass_minimal)
 	register_grass_decoration("mcl_flowers:tallgrass", 0,      0.06, grass_forest)
@@ -1613,14 +1613,14 @@ local function register_decorations()
 	register_grass_decoration("mcl_flowers:tallgrass", 0.07, -0.01, grass_full)
 	register_grass_decoration("mcl_flowers:tallgrass", 0.09, -0.03, grass_full)
 
-	local fern_full = { "rainforest", "taiga", "cold_taiga", "mega_taiga" }
-	local fern_low = { "taiga", "cold_taiga", "mega_taiga" }
-	local fern_minimal = { "cold_taiga" }
+	local fern_minimal = { "rainforest", "taiga", "mega_taiga", "cold_taiga" }
+	local fern_low = { "rainforest", "taiga", "mega_taiga" }
+	local fern_full = { "rainforest" }
 	register_grass_decoration("mcl_flowers:fern", -0.03,  0.09, fern_minimal, {"mcl_core:podzol"})
 	register_grass_decoration("mcl_flowers:fern", -0.015, 0.075, fern_minimal, {"mcl_core:podzol"})
 	register_grass_decoration("mcl_flowers:fern", 0,      0.06, fern_low, {"mcl_core:podzol"})
-	register_grass_decoration("mcl_flowers:fern", 0.015,  0.045, fern_low, {"mcl_core:podzol"})
-	register_grass_decoration("mcl_flowers:fern", 0.03,   0.03, fern_low, {"mcl_core:podzol"})
+	register_grass_decoration("mcl_flowers:fern", 0.015,  0.045, fern_full, {"mcl_core:podzol"})
+	register_grass_decoration("mcl_flowers:fern", 0.03,   0.03, fern_full, {"mcl_core:podzol"})
 	register_grass_decoration("mcl_flowers:fern", 0.01, 0.05, fern_full, {"mcl_core:podzol"})
 	register_grass_decoration("mcl_flowers:fern", 0.03, 0.03, fern_full, {"mcl_core:podzol"})
 	register_grass_decoration("mcl_flowers:fern", 0.05, 0.01, fern_full, {"mcl_core:podzol"})
