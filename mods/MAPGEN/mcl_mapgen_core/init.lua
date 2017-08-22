@@ -651,8 +651,8 @@ local function register_mgv6_decorations()
 			size = { x=1, y=3, z=1 },
 			data = {
 				{ name = "air", prob = 0 },
-				{ name = "mcl_flowers:double_grass", param1=255, },
-				{ name = "mcl_flowers:double_grass_top", param1=255, },
+				{ name = "mcl_flowers:double_grass", param1 = 255, },
+				{ name = "mcl_flowers:double_grass_top", param1 = 255, },
 			},
 		},
 		replacements = {
@@ -738,6 +738,32 @@ local function register_mgv6_decorations()
 	register_large_flower("lilac", 10600, -0.007)
 	register_large_flower("sunflower", 2940, -0.005)
 
+	-- Lily pad
+	minetest.register_decoration({
+		deco_type = "schematic",
+		schematic = {
+			size = { x=1, y=3, z=1 },
+			data = {
+				{ name = "mcl_core:water_source", prob = 0 },
+				{ name = "mcl_core:water_source" },
+				{ name = "mcl_flowers:waterlily", param1 = 255 },
+			},
+		},
+		place_on = "mcl_core:dirt",
+		sidelen = 16,
+		noise_params = {
+			offset = -0.12,
+			scale = 0.3,
+			spread = {x = 200, y = 200, z = 200},
+			seed = 503,
+			octaves = 6,
+			persist = 0.7,
+		},
+		y_min = 0,
+		y_max = 0,
+		rotation = "random",
+	})
+
 	-- Pumpkin
 	minetest.register_decoration({
 		deco_type = "schematic",
@@ -745,7 +771,7 @@ local function register_mgv6_decorations()
 			size = { x=1, y=2, z=1 },
 			data = {
 				{ name = "air", prob = 0 },
-				{ name = "mcl_farming:pumpkin_face", param1=255, },
+				{ name = "mcl_farming:pumpkin_face" },
 			},
 		},
 		place_on = {"mcl_core:dirt_with_grass"},

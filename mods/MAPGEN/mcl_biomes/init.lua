@@ -1537,6 +1537,35 @@ local function register_decorations()
 	-- TODO: Make exclusive to sunflower plains
 	register_large_flower("sunflower", {"grassland", "sunflower_plains"}, 2940, -0.005)
 
+	-- Lily pad
+	-- Spawn on Sea level in swamps only
+	minetest.register_decoration({
+		deco_type = "schematic",
+		schematic = {
+			size = { x=1, y=3, z=1 },
+			data = {
+				{ name = "mcl_core:water_source", prob = 0 },
+				{ name = "mcl_core:water_source" },
+				{ name = "mcl_flowers:waterlily", param1 = 255 },
+			},
+		},
+		place_on = "mcl_core:dirt",
+		sidelen = 16,
+		noise_params = {
+			offset = -0.12,
+			scale = 0.3,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 503,
+			octaves = 6,
+			persist = 0.7,
+		},
+		y_min = 0,
+		y_max = 0,
+		-- TODO: optimize spawn in real swamps
+		biomes = { "rainforest_swamp", "swamp" },
+		rotation = "random",
+	})
+
 	-- Melon
 	minetest.register_decoration({
 		deco_type = "simple",
