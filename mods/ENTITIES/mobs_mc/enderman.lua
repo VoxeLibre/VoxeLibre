@@ -78,7 +78,7 @@ mobs:register_mob("mobs_mc:enderman", {
 					-- TODO: Update enderman model (enderman holding block)
 					local def = minetest.registered_nodes[self._taken_node]
 					if def.sounds and def.sounds.dug then
-						minetest.sound_play(def.sounds.dug, {pos = place_pos, max_hear_distance = 16})
+						minetest.sound_play(def.sounds.dug, {pos = take_pos, max_hear_distance = 16})
 					end
 				end
 			end
