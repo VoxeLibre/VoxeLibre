@@ -624,11 +624,11 @@ local function register_mgv6_decorations()
 
 	-- Sugar canes
 	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt", "mcl_core:dirt_with_grass", "group:sand", "mcl_core:podzol"},
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "mcl_core:dirt_with_grass", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
 		sidelen = 16,
 		noise_params = {
-			offset = -0.3,
+			offset = 0.3,
 			scale = 0.7,
 			spread = {x = 100, y = 100, z = 100},
 			seed = 2,
@@ -636,7 +636,7 @@ local function register_mgv6_decorations()
 			persist = 0.7
 		},
 		y_min = 1,
-		y_max = 1,
+		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_core:reeds",
 		height = 1,
 		height_max = 3,
