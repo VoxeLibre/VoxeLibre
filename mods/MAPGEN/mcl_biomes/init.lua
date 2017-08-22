@@ -54,6 +54,9 @@ local function register_biomes()
 		depth_filler = 3,
 		node_water_top = "mcl_core:ice",
 		depth_water_top = 10,
+		node_river_water = "mcl_core:ice",
+		node_riverbed = "mcl_core:gravel",
+		depth_riverbed = 2,
 		y_min = mcl_vars.mg_overworld_min,
 		y_max = -9,
 		heat_point = 0,
@@ -111,7 +114,7 @@ local function register_biomes()
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 3,
-		node_riverbed = "mcl_core:sand",
+		node_riverbed = "mcl_core:dirt",
 		depth_riverbed = 2,
 		y_min = 15,
 		y_max = mcl_vars.mg_overworld_max,
@@ -136,13 +139,13 @@ local function register_biomes()
 	-- Snowy grassland
 	minetest.register_biome({
 		name = "snowy_grassland",
-		node_dust = "mcl_core:snow",
 		node_top = "mcl_core:dirt_with_grass_snow",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		node_dust = "mcl_core:snow",
 		y_min = 5,
 		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 13,
@@ -300,9 +303,9 @@ local function register_biomes()
 		depth_top = 1,
 		node_filler = "mcl_core:redsand",
 		depth_filler = 2,
-		node_stone = "mcl_core:redsandstone",
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
+		node_stone = "mcl_core:redsandstone",
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 64,
@@ -356,7 +359,6 @@ local function register_biomes()
 	-- Roofed forest
 	minetest.register_biome({
 		name = "roofed_forest",
-		--node_dust = "",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -375,8 +377,10 @@ local function register_biomes()
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 1,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
 		y_min = mcl_vars.mg_overworld_min,
-		y_max = 1,
+		y_max = 0,
 		heat_point = 26,
 		humidity_point = 0,
 	})
@@ -388,11 +392,13 @@ local function register_biomes()
 		depth_top = 1,
 		node_filler = "mcl_colorblocks:hardened_clay",
 		depth_filler = 1,
+		node_riverbed = "mcl_core:redsand",
+		depth_riverbed = 2,
 		node_stone = "mcl_colorblocks:hardened_clay",
 		y_min = -35,
 		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 88,
-		humidity_point = 20,  --was 40
+		humidity_point = 20,
 	})
 
 
@@ -408,7 +414,7 @@ local function register_biomes()
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 50,
-		humidity_point = 46,  --was 42
+		humidity_point = 46,
 	})
 
 	minetest.register_biome({
@@ -422,7 +428,7 @@ local function register_biomes()
 		y_min = -1,
 		y_max = 0,
 		heat_point = 50,
-		humidity_point = 46,  --was 42
+		humidity_point = 46,
 	})
 
 	minetest.register_biome({
@@ -436,7 +442,7 @@ local function register_biomes()
 		y_min = mcl_vars.mg_overworld_min,
 		y_max = -2,
 		heat_point = 50,
-		humidity_point = 46,  --was 42
+		humidity_point = 46,
 	})
 
 	-- Rainforest
@@ -520,7 +526,7 @@ local function register_biomes()
 		depth_top = 1,
 		node_filler = "mcl_core:coarse_dirt",
 		depth_filler = 3,
-		node_riverbed = "mcl_core:stone",
+		node_riverbed = "mcl_core:dirt",
 		depth_riverbed = 2,
 		y_min = 56,
 		y_max = mcl_vars.mg_overworld_max,
