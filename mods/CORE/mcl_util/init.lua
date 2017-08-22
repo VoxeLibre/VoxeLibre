@@ -398,7 +398,7 @@ end
 function mcl_util.compass_works(pos)
 	-- It doesn't work in Nether and the End, but it works in the Overworld and in the high part of the void below
 	local _, dim = mcl_util.y_to_layer(pos.y)
-	if dim ~= "nether" or dim ~= "end" then
+	if dim == "nether" or dim == "end" then
 		return false
 	elseif dim == "void" then
 		return pos.y <= mcl_vars.mg_overworld_max and pos.y >= mcl_vars.mg_overworld_min - 64
