@@ -188,7 +188,7 @@ minetest.register_abm({
 })
 
 --
--- Papyrus and cactus drop
+-- Sugar canes drop
 --
 
 local timber_nodenames={"mcl_core:reeds"}
@@ -196,15 +196,11 @@ local timber_nodenames={"mcl_core:reeds"}
 minetest.register_on_dignode(function(pos, node)
 	local i=1
 	while timber_nodenames[i]~=nil do
-		if node.name==timber_nodenames[i] then
-			local np={x=pos.x, y=pos.y+1, z=pos.z}
-			while minetest.get_node(np).name==timber_nodenames[i] do
-				minetest.remove_node(np)
-				if not minetest.settings:get_bool("creative_mode") then
-					minetest.add_item(np, timber_nodenames[i])
-				end
-				np={x=np.x, y=np.y+1, z=np.z}
-			end
+		local np={x=pos.x, y=pos.y+1, z=pos.z}
+		while minetest.get_node(np).name==timber_nodenames[i] do
+			minetest.remove_node(np)
+			minetest.add_item(np, timber_nodenames[i])
+			np={x=np.x, y=np.y+1, z=np.z}
 		end
 		i=i+1
 	end
