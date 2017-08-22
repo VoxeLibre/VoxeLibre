@@ -388,6 +388,28 @@ function mcl_util.layer_to_y(layer, mc_dimension)
 	end
 end
 
+-- Takes a position and returns true if this position can have weather
+function mcl_util.has_weather(pos)
+	-- Weather in the Overworld and the high part of the void below
+	return pos.y <= mcl_vars.mg_overworld_max and pos.y >= mcl_vars.mg_overworld_min - 64
+end
+
+-- Takes a position (pos) and returns true if compasses are working here
+function mcl_util.compass_works(pos)
+	-- It doesn't work in Nether and the End, but it works in the Overworld and in the high part of the void below
+	local _, dim = mcl_util.y_to_layer(pos.y)
+	if dim ~= "nether" or dim ~= "end" then
+		return false
+	elseif dim == "void" then
+		return pos.y <= mcl_vars.mg_overworld_max and pos.y >= mcl_vars.mg_overworld_min - 64
+	else
+		return true
+	end
+end
+
+-- Takes a position (pos) and returns true if clocks are working here
+mcl_util.clock_works = mcl_util.compass_works
+
 -- Returns a on_place function for plants
 -- * condition: function(pos, node)
 --    * A function which is called by the on_place function to check if the node can be placed

@@ -31,8 +31,8 @@ minetest.register_globalstep(function(dtime)
 			local pos = player:getpos()
 			local _, dim = mcl_util.y_to_layer(pos.y)
 			local compass_image
-			-- Compasses do not work in the End, Nether or the Void
-			if dim == "end" or dim == "nether" or dim == "void" then
+			-- Compasses do not work in certain zones
+			if not mcl_util.compass_works(player:getpos()) then
 				compass_image = random_frame
 			else
 				local spawn = {x=0,y=0,z=0}

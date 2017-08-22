@@ -1,21 +1,21 @@
 rain = {
-  -- max rain particles created at time 
+  -- max rain particles created at time
   particles_count = 35,
 
-  -- flag to turn on/off extinguish fire for rain 
+  -- flag to turn on/off extinguish fire for rain
   extinguish_fire = true,
-  
+
   -- flag useful when mixing weathers
   raining = false,
 
-  -- keeping last timeofday value (rounded). 
+  -- keeping last timeofday value (rounded).
   -- Defaulted to non-existing value for initial comparing.
   sky_last_update = -1,
 
   init_done = false,
 }
 
-rain.sound_handler = function(player) 
+rain.sound_handler = function(player)
   return minetest.sound_play("weather_rain", {
     object = player,
     max_hear_distance = 2,
@@ -77,7 +77,7 @@ rain.get_texture = function()
   return texture_name;
 end
 
--- register player for rain weather. 
+-- register player for rain weather.
 -- basically needs for origin sky reference and rain sound controls.
 rain.add_player = function(player)
   if weather.players[player:get_player_name()] == nil then
@@ -99,7 +99,7 @@ rain.remove_player = function(player)
 end
 
 -- adds and removes rain sound depending how much rain particles around player currently exist.
--- have few seconds delay before each check to avoid on/off sound too often 
+-- have few seconds delay before each check to avoid on/off sound too often
 -- when player stay on 'edge' where sound should play and stop depending from random raindrop appearance.
 rain.update_sound = function(player)
   local player_meta = weather.players[player:get_player_name()]
@@ -107,16 +107,16 @@ rain.update_sound = function(player)
     if player_meta.sound_updated ~= nil and player_meta.sound_updated + 5 > os.time() then
       return false
     end
-  
+
     if player_meta.sound_handler ~= nil then
       if rain.last_rp_count == 0 then
         minetest.sound_stop(player_meta.sound_handler)
         player_meta.sound_handler = nil
       end
     elseif rain.last_rp_count > 0 then
-      player_meta.sound_handler = rain.sound_handler(player)      
+      player_meta.sound_handler = rain.sound_handler(player)
     end
-    
+
     player_meta.sound_updated = os.time()
   end
 end
@@ -131,7 +131,7 @@ rain.remove_sound = function(player)
 end
 
 -- callback function for removing rain
-rain.clear = function() 
+rain.clear = function()
   rain.raining = false
   rain.sky_last_update = -1
   rain.init_done = false
@@ -143,10 +143,10 @@ rain.clear = function()
 end
 
 minetest.register_globalstep(function(dtime)
-  if weather.state ~= "rain" then 
+  if weather.state ~= "rain" then
     return false
   end
-  
+
   rain.make_weather()
 end)
 
@@ -158,7 +158,7 @@ rain.make_weather = function()
   end
 
   for _, player in ipairs(minetest.get_connected_players()) do
-    if (weather.is_underwater(player)) then 
+    if (weather.is_underwater(player) or not mcl_util.has_weather(player:getpos())) then
       return false
     end
     rain.add_player(player)

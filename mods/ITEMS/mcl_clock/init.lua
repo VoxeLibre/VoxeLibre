@@ -91,8 +91,8 @@ minetest.register_globalstep(function(dtime)
 		for s, stack in ipairs(player:get_inventory():get_list("main")) do
 			local _, dim = mcl_util.y_to_layer(player:getpos().y)
 			local frame
-			-- Clocks do not work in the End, Nether or the Void
-			if dim == "end" or dim == "nether" or dim == "void" then
+			-- Clocks do not work in certain zones
+			if not mcl_util.clock_works(player:getpos()) then
 				frame = random_frame
 			else
 				frame = now
