@@ -46,7 +46,7 @@ minetest.register_node("mcl_core:cactus", {
 minetest.register_node("mcl_core:reeds", {
 	description = "Sugar Canes",
 	_doc_items_longdesc = "Sugar canes are a plant which has some uses in crafting. Sugar canes will slowly grow up to 3 blocks when they are next to water and are placed on a grass block, dirt, sand, red sand, podzol or coarse dirt. When a sugar cane is broken, all sugar canes connected above will break as well.",
-	_doc_items_usagehelp = "Sugar canes can only be placed on blocks on which they would grow.",
+	_doc_items_usagehelp = "Sugar canes can only be placed top of other sugar canes and on top of blocks on which they would grow.",
 	drawtype = "plantlike",
 	tiles = {"default_papyrus.png"},
 	inventory_image = "mcl_core_reeds.png",
@@ -81,9 +81,11 @@ minetest.register_node("mcl_core:reeds", {
 		local snn = soil_node.name -- soil node name
 
 		-- Placement rules:
-		-- * On group:soil_sugarcane
-		-- * Next to water or frosted ice
-		if minetest.get_item_group(snn, "soil_sugarcane") == 0 then
+		-- * On top of group:soil_sugarcane AND next to water or frosted ice. OR
+		-- * On top of sugar canes
+		if snn == "mcl_core:reeds" then
+			return true
+		elseif minetest.get_item_group(snn, "soil_sugarcane") == 0 then
 			return false
 		end
 
