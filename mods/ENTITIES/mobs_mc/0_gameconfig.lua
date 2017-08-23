@@ -241,6 +241,13 @@ mobs_mc.enderman_takable = {
 	"nether:rack",
 }
 
+-- A table which can be used to override block textures of blocks carried by endermen.
+-- Only works for cube-shaped nodes and nodeboxes.
+-- Key: itemstrings of the blocks to replace
+-- Value: A table with the texture overrides (6 textures)
+mobs_mc.enderman_block_texture_overrides = {
+}
+
 -- List of nodes on which mobs can spawn
 mobs_mc.spawn = {
 	solid = { "group:cracky", "group:crumbly", "group:shovely", "group:pickaxey" }, -- spawn on "solid" nodes (this is mostly just guessing)
@@ -299,6 +306,9 @@ if minetest.get_modpath("mobs_mc_gameconfig") and mobs_mc.override then
 
 	if mobs_mc.override.enderman_takable then
 		mobs_mc.enderman_takable = mobs_mc.override.enderman_takable
+	end
+	if mobs_mc.enderman_block_texture_overrides then
+		mobs_mc.enderman_block_texture_overrides = mobs_mc.override.enderman_block_texture_overrides
 	end
 end
 

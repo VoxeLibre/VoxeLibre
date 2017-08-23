@@ -169,6 +169,24 @@ mobs_mc.override.enderman_takable = {
 	"group:enderman_takable",
 }
 
+
+-- Texuture overrides for enderman block. Required for cactus because it's original is a nodebox
+-- and the textures have tranparent pixels.
+local cbackground = "mobs_mc_gameconfig_enderman_cactus_background.png"
+local ctiles = minetest.registered_nodes["mcl_core:cactus"].tiles
+
+local ctable = {}
+local last
+for i=1, 6 do
+	if ctiles[i] then
+		last = ctiles[i]
+	end
+	table.insert(ctable, cbackground .. "^" .. last)
+end
+mobs_mc.override.enderman_block_texture_overrides = {
+	["mcl_core:cactus"] = ctable,
+}
+
 -- List of nodes on which mobs can spawn
 mobs_mc.override.spawn = {
 	solid = { "group:solid", }, -- spawn on "solid" nodes

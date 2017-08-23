@@ -39,15 +39,21 @@ local create_enderman_textures = function(block_type, itemstring)
 		local tiles = minetest.registered_nodes[itemstring].tiles
 		local textures = {}
 		local last
-		for i = 1, 6 do
-			if type(tiles[i]) == "string" then
-				last = tiles[i]
-			elseif type(tiles[i]) == "table" then
-				if tiles[i].name then
-					last = tiles[i].name
+		if mobs_mc.enderman_block_texture_overrides[itemstring] then
+			-- Texture override available? Use these instead!
+			textures = mobs_mc.enderman_block_texture_overrides[itemstring]
+		else
+			-- Extract the texture names
+			for i = 1, 6 do
+				if type(tiles[i]) == "string" then
+					last = tiles[i]
+				elseif type(tiles[i]) == "table" then
+					if tiles[i].name then
+						last = tiles[i].name
+					end
 				end
+				table.insert(textures, last)
 			end
-			table.insert(textures, last)
 		end
 		return {
 			"blank.png",
