@@ -1,36 +1,70 @@
 # API
 ## Groups
-MineClone 2 makes very extensive use of groups. Making sure your items and objects are members of the correct group is a good and easy way to ensure compability without using any function calls.
+MineClone 2 makes very extensive use of groups. Making sure your items and objects have the correct group memberships is very important.
 Groups are explained in `GROUPS.md`.
 
-## APIs for adding simple things
-You can add simple things by calling functions in the various MineClone 2 mods.
+## Mod naming convention
+Mods mods in MineClone 2 follow a simple naming convention: Mods with the prefix “`mcl_`” are specific to MineClone 2, although they may be based on an existing standalone. Mods which lack this prefix are *usually* verbatim copies of a standalone mod. Some modifications may still have been applied, but the APIs are held compatible.
 
-* Fences and fence gates: See `mods/ITEMS/mcl_fences/API.md`.
-* Walls: See `mods/ITEMS/mcl_walls/API.md`
+## Adding items
+### Special fields
 
-### Undocumented APIs
-You can also add stuff for the following thins, but the APIs are currently undocumented. These mods are very similar to Minetest Game.
+All nodes can have these fields:
 
-* Doors: See `mods/ITEMS/doors`
-* Stairs and slabs: See `mods/ITEMS/stairs` and `mods/ITEMS/mcstair`
-* Beds: See `mods/ITEMS/beds`
-* Buckets (for new liquids): See `mods/ITEMS/bucket`
-* Panes (like glass panes and iron bars): See `mods/ITEMS/xpanes`
+* `_mcl_hardness`: Hardness of the block, ranges from 0 to infinity (represented by -1). Determines digging times. Default: 0
+* `_mcl_blast_resistance`: How well this block blocks and resistst explosions. Default: 0
 
-WARNING! These 5 mods may be renamed or changed in future releases, and compability could be broken.
+Use the `mcl_sounds` mod for the sounds.
+
+## APIs
+A lot of things are possible by using one of the APIs in the mods. Note that not all APIs are documented yet, but it is planned. The following APIs should be more or less stable but keep in mind that MineClone 2 is still unfinished. All directory names are relative to `mods/`
+
+### Items
+* Doors: `ITEMS/mcl_doors`
+* Fences and fence gates: `ITEMS/mcl_fences`
+* Walls: `ITEMS/mcl_walls`
+* Beds: `ITEMS/mcl_beds`
+* Buckets: `ITEMS/mcl_buckets`
 
 ## Mobs
-This mod uses Mobs Redo [`mobs`] by TenPlus1, a very powerful mod for adding mods of various kinds.
-There are minor modificiations for MineClone 2 compability and some items have been removed or moved to other mods, but the API is identical to the original.
+* Mobs: `ENTITIES/mods`
+
+MineClone 2 uses Mobs Redo [`mobs`] by TenPlus1, a very powerful mod for adding mods of various types.
+There are modificiations from the original mod for MineClone 2 compability. Some items have been removed or moved to other mods, but the API is identical.
 You can add your own mobs, spawn eggs and spawning rules with this mod.
-API documnetation is included in `mods/ENTITIES/mobs/api.txt`.
+API documnetation is included in `ENTITIES/mobs/api.txt`.
 
-Note that mobs in MineClone 2 are still very experimental, everything about mobs may change radically at any time!
+### Help
+* Item help texts: `HELP/doc/doc_items`
+* Low-level help entry and category framework: `HELP/doc/doc`
+* Support for lookup tool (required for all entities): `HELP/doc/doc_identifier`
 
-## Other APIs
-* Statbars / HUD bars: See `mods/HUD/hudbars`
-* Hunger: See `mods/PLAYER/mcl_hunger/API.md`
+### HUD
+* Statbars: `HUD/hudbars`
 
-## Other things of interest
-Mods found in `mods/CORE` contain important core APIs and utility functions, used throughout the subgame.
+### Utility APIs
+* Select random treasures: `CORE/mcl_loot`
+* Get flowing direction of liquids: `CORE/flowlib`
+* `on_walk_over` callback for nodes: `CORE/walkover` 
+* Get node names close to player (to reduce constant querying): `PLAYER/mcl_playerinfo`
+
+### Unstable APIs
+These APIs may be subject to change in future. You could already use these APIs but there will probably be breaking changes in the future, or the API is not as fleshed out as it should be. Use at your own risk!
+
+* Panes (like glass panes and iron bars): `ITEMS/xpanes`
+* Slabs and stairs: `ITEM/mcl_stairs` **and** `ITEMS/mcstair`
+* `_on_ignite` callback: `ITEMS/mcl_fire`
+* Farming: `ITEMS/mcl_farming`
+* Other mods not listed above
+
+### Planned APIs
+
+* Flowers
+* Saplings and trees
+* Custom banner patterns
+* Custom dimensions
+* Custom portals
+* Music discs
+* Dispenser and dropper support
+* Proper sky and weather APIs
+* Explosion API
