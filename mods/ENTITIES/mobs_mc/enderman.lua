@@ -250,15 +250,17 @@ mobs:register_mob("mobs_mc:enderman", {
 			local place_pos = vector.subtract(pos, minetest.facedir_to_dir(minetest.dir_to_facedir(minetest.yaw_to_dir(yaw))))
 			if minetest.get_node(place_pos).name == "air" then
 				-- ... but only if there's a free space
-				minetest.place_node(place_pos, {name = self._taken_node})
-				local def = minetest.registered_nodes[self._taken_node]
-				-- Update animation accordingly (removes visible block)
-				self.animation = select_enderman_animation("normal")
-				mobs:set_animation(self, self.animation.current)
-				if def.sounds and def.sounds.place then
-					minetest.sound_play(def.sounds.place, {pos = place_pos, max_hear_distance = 16})
+				local success = minetest.place_node(place_pos, {name = self._taken_node})
+				if success then
+					local def = minetest.registered_nodes[self._taken_node]
+					-- Update animation accordingly (removes visible block)
+					self.animation = select_enderman_animation("normal")
+					mobs:set_animation(self, self.animation.current)
+					if def.sounds and def.sounds.place then
+						minetest.sound_play(def.sounds.place, {pos = place_pos, max_hear_distance = 16})
+					end
+					self._taken_node = ""
 				end
-				self._taken_node = ""
 			end
 		end
 	end,
