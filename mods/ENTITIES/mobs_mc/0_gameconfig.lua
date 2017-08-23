@@ -228,7 +228,9 @@ mobs_mc.enderman_takable = {
 	"default:dirt_with_snow",
 	"default:dirt_with_rainforest_litter",
 	"default:dirt_with_grass_footsteps",
-	"default:cactus",
+-- FIXME: For some reason, Minetest has a Lua error when an enderman tries to place a Minetest Game cactus.
+-- Maybe this is because default:cactus has rotate_and_place?
+--	"default:cactus", -- TODO: Re-enable cactus when it works again
 	"default:gravel",
 	"default:clay",
 	"flowers:mushroom_red",

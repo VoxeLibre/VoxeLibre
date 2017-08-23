@@ -18,6 +18,139 @@ local pr = PseudoRandom(os.time()*(-334))
 local take_frequency = 10
 local place_frequency = 10
 
+-- Create the textures table for the enderman, depending on which kind of block
+-- the enderman holds (if any).
+local create_enderman_textures = function(block_type, itemstring)
+	local base = "mobs_mc_enderman.png^mobs_mc_enderman_eyes.png"
+
+	--[[ Order of the textures in the texture table:
+		Flower, 90 degrees
+		Flower, 45 degrees
+		Held block, backside
+		Held block, bottom
+		Held block, front
+		Held block, left
+		Held block, right
+		Held block, top
+		Enderman texture (base)
+	]]
+	-- Regular cube
+	if block_type == "cube" then
+		local tiles = minetest.registered_nodes[itemstring].tiles
+		local textures = {}
+		local last
+		for i = 1, 6 do
+			if type(tiles[i]) == "string" then
+				last = tiles[i]
+			elseif type(tiles[i]) == "table" then
+				if tiles[i].name then
+					last = tiles[i].name
+				end
+			end
+			table.insert(textures, last)
+		end
+		return {
+			"blank.png",
+			"blank.png",
+			textures[5],
+			textures[2],
+			textures[6],
+			textures[3],
+			textures[4],
+			textures[1],
+			base, -- Enderman texture
+		}
+	-- Node of plantlike drawtype, 45° (recommended)
+	elseif block_type == "plantlike45" then
+		local textures = minetest.registered_nodes[itemstring].tiles
+		return {
+			"blank.png",
+			textures[1],
+			"blank.png",
+			"blank.png",
+			"blank.png",
+			"blank.png",
+			"blank.png",
+			"blank.png",
+			base,
+		}
+	-- Node of plantlike drawtype, 90°
+	elseif block_type == "plantlike90" then
+		local textures = minetest.registered_nodes[itemstring].tiles
+		return {
+			textures[1],
+			"blank.png",
+			"blank.png",
+			"blank.png",
+			"blank.png",
+			"blank.png",
+			"blank.png",
+			"blank.png",
+			base,
+		}
+	elseif block_type == "unknown" then
+		return {
+			"blank.png",
+			"blank.png",
+			"unknown_node.png",
+			"unknown_node.png",
+			"unknown_node.png",
+			"unknown_node.png",
+			"unknown_node.png",
+			"unknown_node.png",
+			base, -- Enderman texture
+		}
+	-- No block held (for initial texture)
+	elseif block_type == "nothing" or block_type == nil then
+		return {
+			"blank.png",
+			"blank.png",
+			"blank.png",
+			"blank.png",
+			"blank.png",
+			"blank.png",
+			"blank.png",
+			"blank.png",
+			base, -- Enderman texture
+		}
+	end
+end
+
+-- Select a new animation definition.
+local select_enderman_animation = function(animation_type)
+	-- Enderman holds a block
+	if animation_type == "block" then
+		return {
+			walk_speed = 25,
+			run_speed = 50,
+			stand_speed = 25,
+			stand_start = 200,
+			stand_end = 200,
+			walk_start = 161,
+			walk_end = 200,
+			run_start = 161,
+			run_end = 200,
+			punch_start = 121,
+			punch_end = 160,
+		}
+	-- Enderman doesn't hold a block
+	elseif animation_type == "normal" or animation_type == nil then
+		return {
+			walk_speed = 25,
+			run_speed = 50,
+			stand_speed = 25,
+			stand_start = 40,
+			stand_end = 80,
+			walk_start = 0,
+			walk_end = 40,
+			run_start = 0,
+			run_end = 40,
+			punch_start = 81,
+			punch_end = 120,
+		}
+	end
+end
+
 mobs:register_mob("mobs_mc:enderman", {
 	type = "monster",
 	runaway = true,
@@ -28,9 +161,7 @@ mobs:register_mob("mobs_mc:enderman", {
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 2.89, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_enderman.b3d",
-	textures = {
-		{"mobs_mc_enderman.png^(mobs_mc_enderman_eyes.png^[makealpha:0,0,0)"},
-	},
+	textures = create_enderman_textures(),
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
 	sounds = {
@@ -49,12 +180,7 @@ mobs:register_mob("mobs_mc:enderman", {
 		min = 0,
 		max = 1,},
 	},
-	animation = {
-		speed_normal = 25,		speed_run = 50,
-		stand_start = 40,		stand_end = 80,
-		walk_start = 0,		walk_end = 40,
-		run_start = 0,		run_end = 40,
-	},
+	animation = select_enderman_animation("normal"),
 	_taken_node = "",
 	do_custom = function(self, dtime)
 		-- Take and put nodes
@@ -63,7 +189,7 @@ mobs:register_mob("mobs_mc:enderman", {
 			return
 		end
 		self._take_place_timer = self._take_place_timer + dtime
-		if (self._taken_node == nil or self._taken_node == "") and self._take_place_timer >= take_frequency  then
+		if (self._taken_node == nil or self._taken_node == "") and self._take_place_timer >= take_frequency then
 			-- Take random node
 			self._take_place_timer = 0
 			local pos = self.object:getpos()
@@ -75,8 +201,35 @@ mobs:register_mob("mobs_mc:enderman", {
 				local dug = minetest.dig_node(take_pos)
 				if dug then
 					self._taken_node = node.name
-					-- TODO: Update enderman model (enderman holding block)
 					local def = minetest.registered_nodes[self._taken_node]
+					-- Update animation and texture accordingly (adds visibly carried block)
+					local block_type
+					-- Cube-shaped
+					if def.drawtype == "normal" or
+							def.drawtype == "nodebox" or
+							def.drawtype == "liquid" or
+							def.drawtype == "flowingliquid" or
+							def.drawtype == "glasslike" or
+							def.drawtype == "glasslike_framed" or
+							def.drawtype == "glasslike_framed_optional" or
+							def.drawtype == "allfaces" or
+							def.drawtype == "allfaces_optional" or
+							def.drawtype == nil then
+						block_type = "cube"
+					elseif def.drawtype == "plantlike" then
+						-- Flowers and stuff
+						block_type = "plantlike45"
+					elseif def.drawtype == "airlike" then
+						-- Just air
+						block_type = nil
+					else
+						-- Fallback for complex drawtypes
+						block_type = "unknown"
+					end
+					self.base_texture = create_enderman_textures(block_type, self._taken_node)
+					self.object:set_properties({ textures = self.base_texture })
+					self.animation = select_enderman_animation("block")
+					mobs:set_animation(self, self.animation.current)
 					if def.sounds and def.sounds.dug then
 						minetest.sound_play(def.sounds.dug, {pos = take_pos, max_hear_distance = 16})
 					end
@@ -93,6 +246,9 @@ mobs:register_mob("mobs_mc:enderman", {
 				-- ... but only if there's a free space
 				minetest.place_node(place_pos, {name = self._taken_node})
 				local def = minetest.registered_nodes[self._taken_node]
+				-- Update animation accordingly (removes visible block)
+				self.animation = select_enderman_animation("normal")
+				mobs:set_animation(self, self.animation.current)
 				if def.sounds and def.sounds.place then
 					minetest.sound_play(def.sounds.place, {pos = place_pos, max_hear_distance = 16})
 				end
@@ -147,7 +303,7 @@ mobs:register_mob("mobs_mc:enderman", {
 
 
 -- End spawn
-mobs:spawn_specific("mobs_mc:enderman", mobs_mc.spawn.solid, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 3000, 18, mobs_mc.spawn_height.end_min, mobs_mc.spawn_height.end_max)
+mobs:spawn_specific("mobs_mc:enderman", mobs_mc.spawn.solid, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 3000, 12, mobs_mc.spawn_height.end_min, mobs_mc.spawn_height.end_max)
 -- Overworld spawn
 mobs:spawn_specific("mobs_mc:enderman", mobs_mc.spawn.solid, {"air"}, 0, 7, 30, 9000, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 -- Nether spawn (rare)
