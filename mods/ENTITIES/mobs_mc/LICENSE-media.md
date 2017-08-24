@@ -65,6 +65,7 @@ Origin of those models:
         * `mobs_mc_llama_gray.png`
         * `mobs_mc_llama_chest.png`
         * `mobs_mc_endermite.png`
+        * `mobs_mc_magmacube.png`
 
 * “Spawn egg” textures (`mobs_mc_spawn_icon_*`) by 22i
 * Any other texture not mentioned here are licensed under the MIT License
