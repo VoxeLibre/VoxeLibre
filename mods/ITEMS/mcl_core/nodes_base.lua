@@ -725,7 +725,7 @@ minetest.register_node("mcl_core:ice", {
 	paramtype = "light",
 	use_texture_alpha = true,
 	stack_max = 64,
-	groups = {handy=1,pickaxey=1, building_block=1},
+	groups = {handy=1,pickaxey=1, slippery=3, building_block=1},
 	drop = "",
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	after_destruct = function(pos, oldnode)
@@ -747,7 +747,7 @@ minetest.register_node("mcl_core:packed_ice", {
 	tiles = {"mcl_core_ice_packed.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {handy=1,pickaxey=1, building_block=1},
+	groups = {handy=1,pickaxey=1, slippery=3, building_block=1},
 	drop = "",
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	_mcl_blast_resistance = 2.5,
@@ -794,7 +794,7 @@ for i=0,3 do
 		paramtype = "light",
 		use_texture_alpha = true,
 		stack_max = 64,
-		groups = {handy=1, frosted_ice=1, not_in_creative_inventory=1},
+		groups = {handy=1, frosted_ice=1, slippery=3, not_in_creative_inventory=1},
 		drop = "",
 		sounds = mcl_sounds.node_sound_glass_defaults(),
 		on_construct = function(pos)
