@@ -118,12 +118,12 @@ end
 
 -- compute tile depending on state and mode
 local get_tiles = function(state, mode)
-	local top = "mcl_comparator_"..state..".png^"..
-		"mcl_comparator_"..mode..".png"
-	local sides = "mcl_comparator_sides_"..state..".png^"..
-		"mcl_comparator_sides_"..mode..".png"
-	local ends = "mcl_comparator_ends_"..state..".png^"..
-		"mcl_comparator_ends_"..mode..".png"
+	local top = "mcl_comparators_"..state..".png^"..
+		"mcl_comparators_"..mode..".png"
+	local sides = "mcl_comparators_sides_"..state..".png^"..
+		"mcl_comparators_sides_"..mode..".png"
+	local ends = "mcl_comparators_ends_"..state..".png^"..
+		"mcl_comparators_ends_"..mode..".png"
 	return {
 		top, "mcl_stairs_stone_slab_top.png",
 		sides, sides.."^[transformFX",
@@ -140,7 +140,7 @@ end
 
 local make_rightclick_handler = function(state, mode)
 	local newnodename =
-		"mcl_comparator:comparator_"..state.."_"..flipmode(mode)
+		"mcl_comparators:comparator_"..state.."_"..flipmode(mode)
 	return function (pos, node)
 		mesecon:swap_node(pos,newnodename)
 	end
@@ -155,7 +155,7 @@ local longdesc = "Redstone comparators are redstone components which "..
 local usagehelp = "To power a redstone comparater, send a signal in “arrow” "..
 	"direction, or place the block to measure there.  Send the signal "..
 	"to compare with in from the side."
-local icon = "mcl_comparator_item.png"
+local icon = "mcl_comparators_item.png"
 
 local node_boxes = {
 	comp = {
@@ -202,7 +202,7 @@ for _, mode in pairs{"comp", "sub"} do
 for _, state in pairs{mesecon.state.on, mesecon.state.off} do
 	local state_str = state_strs[state]
 	local nodename =
-		"mcl_comparator:comparator_"..state_strs[state].."_"..mode
+		"mcl_comparators:comparator_"..state_strs[state].."_"..mode
 
 	local nodedef = {
 		description = "Redstone Comparator",
@@ -212,7 +212,7 @@ for _, state in pairs{mesecon.state.on, mesecon.state.off} do
 		_doc_items_usagehelp = usagehelp,
 		drawtype = "nodebox",
 		tiles = get_tiles(state_strs[state], mode),
-		wield_image = "mcl_comparator_off.png",
+		wield_image = "mcl_comparators_off.png",
 		walkable = true,
 		selection_box = collision_box,
 		collision_box = collision_box,
@@ -225,13 +225,13 @@ for _, state in pairs{mesecon.state.on, mesecon.state.off} do
 		paramtype2 = "facedir",
 		sunlight_propagates = false,
 		is_ground_content = false,
-		drop = 'mcl_comparator:comparator_off_comp',
+		drop = 'mcl_comparators:comparator_off_comp',
 		on_construct = update_self,
 		on_rightclick =
 			make_rightclick_handler(state_strs[state], mode),
 		comparator_mode = mode,
-		comparator_onstate = "mcl_comparator:comparator_on_"..mode,
-		comparator_offstate = "mcl_comparator:comparator_off_"..mode,
+		comparator_onstate = "mcl_comparators:comparator_on_"..mode,
+		comparator_offstate = "mcl_comparators:comparator_off_"..mode,
 		sounds = mcl_sounds.node_sound_stone_defaults(),
 		mesecons = {
 			receptor = {
@@ -272,7 +272,7 @@ local quartz  = "mcl_nether:quartz"
 local stone   = "mcl_core:stone"
 
 minetest.register_craft({
-	output = "mcl_comparator:comparator_off_comp",
+	output = "mcl_comparators:comparator_off_comp",
 	recipe = {
 		{ "",      rstorch, ""      },
 		{ rstorch, quartz,  rstorch },
@@ -284,8 +284,8 @@ minetest.register_craft({
 minetest.register_abm({
 	label = "Comparator check for containers",
 	nodenames = {
-		"mcl_comparator:comparator_off_comp",
-		"mcl_comparator:comparator_off_sub",
+		"mcl_comparators:comparator_off_comp",
+		"mcl_comparators:comparator_off_sub",
 	},
 	neighbors = {"group:container"},
 	interval = 1,
@@ -296,8 +296,8 @@ minetest.register_abm({
 minetest.register_abm({
 	label = "Comparator check for no containers",
 	nodenames = {
-		"mcl_comparator:comparator_on_comp",
-		"mcl_comparator:comparator_on_sub",
+		"mcl_comparators:comparator_on_comp",
+		"mcl_comparators:comparator_on_sub",
 	},
 	-- needs to run regardless of neighbors to make sure we detect when a
 	-- container is dug
@@ -309,10 +309,10 @@ minetest.register_abm({
 
 -- Add entry aliases for the Help
 if minetest.get_modpath("doc") then
-	doc.add_entry_alias("nodes", "mcl_comparator:comparator_off_comp",
-			    "nodes", "mcl_comparator:comparator_off_sub")
-	doc.add_entry_alias("nodes", "mcl_comparator:comparator_off_comp",
-			    "nodes", "mcl_comparator:comparator_on_comp")
-	doc.add_entry_alias("nodes", "mcl_comparator:comparator_off_comp",
-			    "nodes", "mcl_comparator:comparator_on_sub")
+	doc.add_entry_alias("nodes", "mcl_comparators:comparator_off_comp",
+			    "nodes", "mcl_comparators:comparator_off_sub")
+	doc.add_entry_alias("nodes", "mcl_comparators:comparator_off_comp",
+			    "nodes", "mcl_comparators:comparator_on_comp")
+	doc.add_entry_alias("nodes", "mcl_comparators:comparator_off_comp",
+			    "nodes", "mcl_comparators:comparator_on_sub")
 end
