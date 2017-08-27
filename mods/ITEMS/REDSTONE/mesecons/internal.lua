@@ -46,6 +46,7 @@
 -- mesecon:connected_to_receptor(pos)   --> Returns true if pos is connected to a receptor directly or via conductors; calls itself if pos is a conductor --> recursive
 -- mesecon:rules_link(output, input, dug_outputrules) --> Returns true if outputposition + outputrules = inputposition and inputposition + inputrules = outputposition (if the two positions connect)
 -- mesecon:rules_link_anydir(outp., inp., d_outpr.)   --> Same as rules mesecon:rules_link but also returns true if output and input are swapped
+-- mesecon:is_powered_from(pos,rule)    --> Returns true if pos is powered by a receptor or a conductor at pos+rule
 -- mesecon:is_powered(pos)              --> Returns true if pos is powered by a receptor or a conductor
 
 -- RULES ROTATION helpsers
@@ -408,19 +409,24 @@ function mesecon:rules_link_anydir(pos1, pos2)
 	return mesecon:rules_link(pos1, pos2) or mesecon:rules_link(pos2, pos1)
 end
 
+function mesecon:is_powered_from(pos, rule)
+	local np = mesecon:addPosRule(pos, rule)
+	local nn = minetest.get_node(np)
+
+	if (mesecon:is_conductor_on (nn.name) or mesecon:is_receptor_on (nn.name))
+	   and mesecon:rules_link(np, pos)
+	then
+		return true
+	end
+end
+
 function mesecon:is_powered(pos)
 	local node = minetest.get_node(pos)
 	local rules = mesecon:get_any_inputrules(node)
 	if not rules then return false end
 
 	for _, rule in ipairs(rules) do
-		local np = mesecon:addPosRule(pos, rule)
-		local nn = minetest.get_node(np)
-
-		if (mesecon:is_conductor_on (nn.name) or mesecon:is_receptor_on (nn.name))
-		and mesecon:rules_link(np, pos) then
-			return true
-		end
+		if mesecon:is_powered_from(pos, rule) then return true end
 	end
 	
 	return false
