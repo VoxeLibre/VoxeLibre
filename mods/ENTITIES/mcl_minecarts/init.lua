@@ -31,6 +31,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 		_start_pos = nil, -- Used to calculate distance for “On A Rail” achievement
 		_old_dir = {x=0, y=0, z=0},
 		_old_pos = nil,
+		_old_vel = {x=0, y=0, z=0},
 		_old_switch = 0,
 		_railtype = nil,
 	}
@@ -128,6 +129,18 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 				ctrl = player:get_player_control()
 			end
 		end
+
+		-- Stop cart if velocity vector flips
+		if self._old_vel and self._old_vel.y == 0 and
+				(self._old_vel.x * vel.x < 0 or self._old_vel.z * vel.z < 0) then
+			self._old_vel = {x = 0, y = 0, z = 0}
+			self._old_pos = pos
+			self.object:setvelocity(vector.new())
+			self.object:setacceleration(vector.new())
+			return
+		end
+		self._old_vel = vector.new(vel)
+
 		if self._old_pos then
 			local diff = vector.subtract(self._old_pos, pos)
 			for _,v in ipairs({"x","y","z"}) do
@@ -187,17 +200,9 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 			-- Slow down or speed up
 			local acc = dir.y * -1.8
 
-			local speed_mod = tonumber(minetest.get_meta(pos):get_string("cart_acceleration"))
+			local speed_mod = minetest.registered_nodes[minetest.get_node(pos).name]._rail_acceleration
 			if speed_mod and speed_mod ~= 0 then
-				if speed_mod > 0 then
-					for _,v in ipairs({"x","y","z"}) do
-						if math.abs(vel[v]) >= max_vel then
-							speed_mod = 0
-							break
-						end
-					end
-				end
-				acc = acc + (speed_mod * 8)
+				acc = acc + speed_mod
 			else
 				acc = acc - 0.4
 			end
@@ -214,6 +219,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 		for _,v in ipairs({"x","y","z"}) do
 			if math.abs(vel[v]) > max_vel then
 				vel[v] = mcl_minecarts:get_sign(vel[v]) * max_vel
+				new_acc[v] = 0
 				update.vel = true
 			end
 		end

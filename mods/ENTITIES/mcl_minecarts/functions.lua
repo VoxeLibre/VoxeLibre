@@ -138,13 +138,3 @@ function mcl_minecarts:get_rail_direction(pos_, dir, ctrl, old_switch, railtype)
 	return {x=0, y=0, z=0}
 end
 
-function mcl_minecarts:boost_rail(pos, amount)
-	minetest.get_meta(pos):set_string("cart_acceleration", tostring(amount))
-	for _,obj_ in ipairs(minetest.get_objects_inside_radius(pos, 0.5)) do
-		if not obj_:is_player() and
-				obj_:get_luaentity() and
-				obj_:get_luaentity().name == "mcl_minecarts:minecart" then
-			obj_:get_luaentity():on_punch()
-		end
-	end
-end
