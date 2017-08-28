@@ -20,13 +20,13 @@ end
 mesecon.button_turnoff = function (pos)
 	local node = minetest.get_node(pos)
 	if node.name=="mesecons_button:button_stone_on" then --has not been dug
-		mesecon:swap_node(pos, "mesecons_button:button_stone_off")
+		minetest.swap_node(pos, {name="mesecons_button:button_stone_off",param2=node.param2})
 		minetest.sound_play("mesecons_button_pop", {pos=pos})
-		mesecon:receptor_off(pos, button_get_output_rules(node))
+		mesecon.receptor_off(pos, button_get_output_rules(node))
 	elseif node.name=="mesecons_button:button_wood_on" then --has not been dug
-		mesecon:swap_node(pos, "mesecons_button:button_wood_off")
+		minetest.swap_node(pos, {name="mesecons_button:button_wood_off",param2=node.param2})
 		minetest.sound_play("mesecons_button_pop", {pos=pos})
-		mesecon:receptor_off(pos, button_get_output_rules(node))
+		mesecon.receptor_off(pos, button_get_output_rules(node))
 	end
 end
 
@@ -111,8 +111,8 @@ minetest.register_node("mesecons_button:button_stone_off", {
 	on_place = on_button_place,
 	node_placement_prediction = "",
 	on_rightclick = function (pos, node)
-		mesecon:swap_node(pos, "mesecons_button:button_stone_on")
-		mesecon:receptor_on(pos, button_get_output_rules(node))
+		minetest.swap_node(pos, {name="mesecons_button:button_stone_on", param2=node.param2})
+		mesecon.receptor_on(pos, button_get_output_rules(node))
 		minetest.sound_play("mesecons_button_push", {pos=pos})
 		minetest.after(1, mesecon.button_turnoff, pos)
 	end,
@@ -170,8 +170,8 @@ minetest.register_node("mesecons_button:button_wood_off", {
 	on_place = on_button_place,
 	node_placement_prediction = "",
 	on_rightclick = function (pos, node)
-		mesecon:swap_node(pos, "mesecons_button:button_wood_on")
-		mesecon:receptor_on(pos, button_get_output_rules(node))
+		minetest.swap_node(pos, {name="mesecons_button:button_wood_on", param2=node.param2})
+		mesecon.receptor_on(pos, button_get_output_rules(node))
 		minetest.sound_play("mesecons_button_push", {pos=pos})
 		minetest.after(1.5, mesecon.button_turnoff, pos)
 	end,

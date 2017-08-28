@@ -363,18 +363,18 @@ register_chest("trapped_chest",
 		local meta = minetest.get_meta(pos)
 		meta:set_int("players", 1)
 		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_on", param2 = node.param2})
-		mesecon:receptor_on(pos, trapped_chest_mesecons_rules)
+		mesecon.receptor_on(pos, trapped_chest_mesecons_rules)
 	end,
 	function(pos, node, clicker)
 		local meta = minetest.get_meta(pos)
 		meta:set_int("players", 1)
 
 		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_on_left", param2 = node.param2})
-		mesecon:receptor_on(pos, trapped_chest_mesecons_rules)
+		mesecon.receptor_on(pos, trapped_chest_mesecons_rules)
 
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
 		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_on_right", param2 = node.param2})
-		mesecon:receptor_on(pos_other, trapped_chest_mesecons_rules)
+		mesecon.receptor_on(pos_other, trapped_chest_mesecons_rules)
 	end,
 	function(pos, node, clicker)
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
@@ -384,10 +384,10 @@ register_chest("trapped_chest",
 		meta:set_int("players", 1)
 
 		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_on_right", param2 = node.param2})
-		mesecon:receptor_on(pos, trapped_chest_mesecons_rules)
+		mesecon.receptor_on(pos, trapped_chest_mesecons_rules)
 
 		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_on_left", param2 = node.param2})
-		mesecon:receptor_on(pos_other, trapped_chest_mesecons_rules)
+		mesecon.receptor_on(pos_other, trapped_chest_mesecons_rules)
 	end
 )
 
@@ -443,7 +443,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				if players <= 0 then
 					meta:set_int("players", 0)
 					minetest.swap_node(pos, {name="mcl_chests:trapped_chest", param2 = node.param2})
-					mesecon:receptor_off(pos, trapped_chest_mesecons_rules)
+					mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
 				else
 					meta:set_int("players", players)
 				end
@@ -451,11 +451,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				if players <= 0 then
 					meta:set_int("players", 0)
 					minetest.swap_node(pos, {name="mcl_chests:trapped_chest_left", param2 = node.param2})
-					mesecon:receptor_off(pos, trapped_chest_mesecons_rules)
+					mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
 
 					pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
 					minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_right", param2 = node.param2})
-					mesecon:receptor_off(pos_other, trapped_chest_mesecons_rules)
+					mesecon.receptor_off(pos_other, trapped_chest_mesecons_rules)
 				else
 					meta:set_int("players", players)
 				end
@@ -463,10 +463,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				if players <= 0 then
 					meta:set_int("players", 0)
 					minetest.swap_node(pos, {name="mcl_chests:trapped_chest_right", param2 = node.param2})
-					mesecon:receptor_off(pos, trapped_chest_mesecons_rules)
+					mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
 
 					minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_left", param2 = node.param2})
-					mesecon:receptor_off(pos_other, trapped_chest_mesecons_rules)
+					mesecon.receptor_off(pos_other, trapped_chest_mesecons_rules)
 				else
 					meta:set_int("players", players)
 				end
