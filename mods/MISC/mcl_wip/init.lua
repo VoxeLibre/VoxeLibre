@@ -21,8 +21,6 @@ local wip_items = {
 	"mcl_minecarts:chest_minecart",
 	"mcl_minecarts:furnace_minecart",
 	"mcl_minecarts:tnt_minecart",
-	"mcl_minecarts:detector_rail",
-	"mcl_minecarts:detector_rail_on",
 	"mcl_minecarts:activator_rail",
 	"mcl_minecarts:activator_rail_on",
 }

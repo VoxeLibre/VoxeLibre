@@ -2,14 +2,6 @@ mcl_minecarts = {}
 mcl_minecarts.modpath = minetest.get_modpath("mcl_minecarts")
 mcl_minecarts.speed_max = 10
 
-local vector_floor = function(v)
-	return {
-		x = math.floor(v.x),
-		y = math.floor(v.y),
-		z = math.floor(v.z)
-	}
-end
-
 dofile(mcl_minecarts.modpath.."/functions.lua")
 dofile(mcl_minecarts.modpath.."/rails.lua")
 
@@ -43,7 +35,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 	function cart:on_punch(puncher, time_from_last_punch, tool_capabilities, direction)
 		local pos = self.object:getpos()
 		if not self._railtype then
-			local node = minetest.get_node(vector_floor(pos)).name
+			local node = minetest.get_node(vector.floor(pos)).name
 			self._railtype = minetest.get_item_group(node, "connect_to_raillike")
 		end
 
@@ -70,11 +62,22 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 				end
 			end
 
+			-- Disable detector rail
+			local rou_pos = vector.round(pos)
+			local node = minetest.get_node(rou_pos)
+			if node.name == "mcl_minecarts:detector_rail_on" then
+				local newnode = {name="mcl_minecarts:detector_rail", param2 = node.param2}
+				minetest.swap_node(rou_pos, newnode)
+				mesecon.receptor_off(rou_pos)
+			end
+
+			-- Drop items and remove cart entity
 			if not minetest.settings:get_bool("creative_mode") then
 				for d=1, #drop do
 					minetest.add_item(self.object:getpos(), drop[d])
 				end
 			end
+
 			self.object:remove()
 			return
 		end
@@ -115,10 +118,28 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 		local dir, last_switch = nil, nil
 		local pos = self.object:getpos()
 		if self._old_pos and not self._punched then
-			local flo_pos = vector_floor(pos)
-			local flo_old = vector_floor(self._old_pos)
+			local flo_pos = vector.floor(pos)
+			local flo_old = vector.floor(self._old_pos)
 			if vector.equals(flo_pos, flo_old) then
 				return
+				-- Prevent querying the same node over and over again
+			end
+
+			-- Update detector rails
+			local rou_pos = vector.round(pos)
+			local rou_old = vector.round(self._old_pos)
+			local node = minetest.get_node(rou_pos)
+			local node_old = minetest.get_node(rou_old)
+
+			if node.name == "mcl_minecarts:detector_rail" then
+				local newnode = {name="mcl_minecarts:detector_rail_on", param2 = node.param2}
+				minetest.swap_node(rou_pos, newnode)
+				mesecon.receptor_on(rou_pos)
+			end
+			if node_old.name == "mcl_minecarts:detector_rail_on" then
+				local newnode = {name="mcl_minecarts:detector_rail", param2 = node_old.param2}
+				minetest.swap_node(rou_old, newnode)
+				mesecon.receptor_off(rou_old)
 			end
 		end
 
@@ -229,6 +250,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 			awards.unlock(self._driver, "mcl:onARail")
 		end
 
+
 		if update.pos or self._punched then
 			local yaw = 0
 			if dir.x < 0 then
@@ -288,10 +310,19 @@ local register_craftitem = function(itemstring, entity_id, description, longdesc
 			if mcl_minecarts:is_rail(pointed_thing.under) then
 				railpos = pointed_thing.under
 			elseif mcl_minecarts:is_rail(pointed_thing.above) then
-				railpos = pointed_thing.under
+				railpos = pointed_thing.above
+				node = minetest.get_node(pointed_thing.above)
 			else
 				return
 			end
+
+			-- Activate detector rail
+			if node.name == "mcl_minecarts:detector_rail" then
+				local newnode = {name="mcl_minecarts:detector_rail_on", param2 = node.param2}
+				minetest.swap_node(railpos, newnode)
+				mesecon.receptor_on(railpos)
+			end
+
 			local cart = minetest.add_entity(railpos, entity_id)
 			local railtype = minetest.get_item_group(node.name, "connect_to_raillike")
 			local cart_dir = mcl_minecarts:get_rail_direction(railpos, {x=1, y=0, z=0}, nil, nil, railtype)
