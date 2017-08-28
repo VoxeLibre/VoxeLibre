@@ -7,5 +7,5 @@ mcl_furnaces
 mesecons_commandblock
 mcl_hoppers
 mcl_tnt
-mesecons?
+mesecons
 doc_identifier?
