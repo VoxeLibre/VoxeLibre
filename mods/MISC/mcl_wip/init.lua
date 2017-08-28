@@ -10,7 +10,6 @@ local wip_items = {
 	"mcl_fishing:fishing_rod",
 	"mcl_maps:filled_map",
 	"mcl_maps:empty_map",
-	"mcl_minecarts:golden_rail",
 	"gemalde:node_1",
 	"mcl_observers:observer",
 	"mcl_chests:trapped_chest",
