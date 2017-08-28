@@ -16,6 +16,7 @@ local wip_items = {
 	"mcl_chests:trapped_chest",
 	"mobs_mc:totem",
 	"mcl_paintings:painting",
+	"mcl_comparators:comparator_off_comp",
 }
 
 for i=1,#wip_items do
