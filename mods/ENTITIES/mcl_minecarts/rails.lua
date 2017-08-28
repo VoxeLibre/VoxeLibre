@@ -76,6 +76,67 @@ register_rail("mcl_minecarts:golden_rail_on",
 )
 
 
+-- Activator rail (off)
+register_rail("mcl_minecarts:activator_rail",
+	{"mcl_minecarts_rail_activator.png", "default_rail_curved.png^[colorize:#FF0000:96", "default_rail_t_junction.png^[colorize:#FF0000:96", "default_rail_crossing.png^[colorize:#FF0000:96"},
+	{
+		description = "Activator Rail",
+		_doc_items_longdesc = "Rails can be used to build transport tracks for minecarts. Activator rails are used to activate special minecarts.",
+		_doc_items_usagehelp = railuse .. "\n" .. "To make this rail activate minecarts, power it with redstone power and send a minecart over this piece of rail.",
+		mesecons = {
+			conductor = {
+				state = mesecon.state.off,
+				onstate = "mcl_minecarts:activator_rail_on",
+			},
+		},
+	}
+)
+
+-- Activator rail (on)
+register_rail("mcl_minecarts:activator_rail_on",
+	{"mcl_minecarts_rail_activator_powered.png", "default_rail_curved.png^[colorize:#FF0000:128", "default_rail_t_junction.png^[colorize:#FF0000:128", "default_rail_crossing.png^[colorize:#FF0000:128"},
+	{
+		_doc_items_create_entry = false,
+		mesecons = {
+			conductor = {
+				state = mesecon.state.on,
+				offstate = "mcl_minecarts:activator_rail",
+			},
+		},
+	},
+	false
+)
+
+-- Detector rail (off)
+register_rail("mcl_minecarts:detector_rail",
+	{"mcl_minecarts_rail_detector.png", "default_rail_curved.png^[colorize:#FFFFFF:96", "default_rail_t_junction.png^[colorize:#FFFFFF:96", "default_rail_crossing.png^[colorize:#FFFFFF:96"},
+	{
+		description = "Detector Rail",
+		_doc_items_longdesc = "Rails can be used to build transport tracks for minecarts. A detector rail is able to detect a minecart above it and powers redstone mechanisms.",
+		_doc_items_usagehelp = railuse .. "\n" .. "To detect a minecart and provide redstone power, connect it to redstone trails or redstone mechanisms and send any minecart over the rail.",
+		mesecons = {
+			receptor = {
+				state = mesecon.state.off,
+			},
+		},
+	}
+)
+
+-- Detector rail (on)
+register_rail("mcl_minecarts:detector_rail_on",
+	{"mcl_minecarts_rail_detector_powered.png", "default_rail_curved.png^[colorize:#FFFFFF:128", "default_rail_t_junction.png^[colorize:#FFFFFF:128", "default_rail_crossing.png^[colorize:#FFFFFF:128"},
+	{
+		_doc_items_create_entry = false,
+		mesecons = {
+			receptor = {
+				state = mesecon.state.on,
+			},
+		},
+	},
+	false
+)
+
+
 -- Crafting
 minetest.register_craft({
 	output = 'mcl_minecarts:rail 16',
@@ -94,6 +155,25 @@ minetest.register_craft({
 		{"mcl_core:gold_ingot", "mesecons:redstone", "mcl_core:gold_ingot"},
 	}
 })
+
+minetest.register_craft({
+	output = "mcl_minecarts:activator_rail 6",
+	recipe = {
+		{"mcl_core:iron_ingot", "mcl_core:stick", "mcl_core:iron_ingot"},
+		{"mcl_core:iron_ingot", "mesecons_torch:mesecon_torch_on", "mcl_core:iron_ingot"},
+		{"mcl_core:iron_ingot", "mcl_core:stick", "mcl_core:iron_ingot"},
+	}
+})
+
+minetest.register_craft({
+	output = "mcl_minecarts:detector_rail 6",
+	recipe = {
+		{"mcl_core:iron_ingot", "", "mcl_core:iron_ingot"},
+		{"mcl_core:iron_ingot", "mesecons_pressureplates:pressure_plate_stone_off", "mcl_core:iron_ingot"},
+		{"mcl_core:iron_ingot", "mesecons:redstone", "mcl_core:iron_ingot"},
+	}
+})
+
 
 -- Aliases
 if minetest.get_modpath("doc") then
