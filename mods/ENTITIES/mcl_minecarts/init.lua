@@ -262,78 +262,6 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 	minetest.register_entity(entity_id, cart)
 end
 
-register_entity("mcl_minecarts:minecart",
-	"mcl_minecarts_minecart.b3d",
-	{"mcl_minecarts_minecart.png"},
-	{"mcl_minecarts:minecart"},
-	function(self, clicker)
-		if not clicker or not clicker:is_player() then
-			return
-		end
-		local player_name = clicker:get_player_name()
-		if self._driver and player_name == self._driver then
-			self._driver = nil
-			self._start_pos = nil
-			clicker:set_detach()
-		elseif not self._driver then
-			self._driver = player_name
-			self._start_pos = self.object:getpos()
-			mcl_player.player_attached[player_name] = true
-			clicker:set_attach(self.object, "", {x=0, y=3, z=0}, {x=0, y=0, z=0})
-		end
-	end
-)
-
-register_entity("mcl_minecarts:chest_minecart",
-	"mcl_minecarts_minecart_chest.b3d",
-	{ "mcl_chests_normal.png", "mcl_minecarts_minecart.png" },
-	{"mcl_minecarts:minecart", "mcl_chests:chest"})
-register_entity("mcl_minecarts:furnace_minecart",
-	"mcl_minecarts_minecart_block.b3d",
-	{
-		"default_furnace_top.png",
-		"default_furnace_top.png",
-		"default_furnace_front.png",
-		"default_furnace_side.png",
-		"default_furnace_side.png",
-		"default_furnace_side.png",
-		"mcl_minecarts_minecart.png",
-	},
-	{"mcl_minecarts:minecart", "mcl_furnaces:furnace"})
-register_entity("mcl_minecarts:tnt_minecart",
-	"mcl_minecarts_minecart_block.b3d",
-	{
-		"default_tnt_top.png",
-		"default_tnt_bottom.png",
-		"default_tnt_side.png",
-		"default_tnt_side.png",
-		"default_tnt_side.png",
-		"default_tnt_side.png",
-		"mcl_minecarts_minecart.png",
-	},
-	{"mcl_minecarts:minecart", "mcl_tnt:tnt"})
-register_entity("mcl_minecarts:hopper_minecart",
-	"mcl_minecarts_minecart_hopper.b3d",
-	{
-		"mcl_hoppers_hopper_inside.png",
-		"mcl_minecarts_minecart.png",
-		"mcl_hoppers_hopper_outside.png",
-		"mcl_hoppers_hopper_top.png",
-	},
-	{"mcl_minecarts:minecart", "mcl_hoppers:hopper"})
-register_entity("mcl_minecarts:command_block_minecart",
-	"mcl_minecarts_minecart_block.b3d",
-	{
-		"jeija_commandblock_off.png^[verticalframe:2:0",
-		"jeija_commandblock_off.png^[verticalframe:2:0",
-		"jeija_commandblock_off.png^[verticalframe:2:0",
-		"jeija_commandblock_off.png^[verticalframe:2:0",
-		"jeija_commandblock_off.png^[verticalframe:2:0",
-		"jeija_commandblock_off.png^[verticalframe:2:0",
-		"mcl_minecarts_minecart.png",
-	},
-	{"mcl_minecarts:minecart"})
-
 local register_craftitem = function(itemstring, entity_id, description, longdesc, usagehelp, icon)
 	local def = {
 		stack_max = 1,
@@ -371,65 +299,139 @@ local register_craftitem = function(itemstring, entity_id, description, longdesc
 		groups = { minecart = 1, transport = 1},
 	}
 	def.description = description
-	def._doc_items_longdec = longdesc
+	def._doc_items_longdesc = longdesc
 	def._doc_items_usagehelp = usagehelp
 	def.inventory_image = icon
 	def.wield_image = icon
 	minetest.register_craftitem(itemstring, def)
 end
 
-register_craftitem(
+local function register_minecart(itemstring, entity_id, description, longdesc, usagehelp, mesh, textures, icon, drop, on_rightclick)
+	register_entity(entity_id, mesh, textures, drop, on_rightclick)
+	register_craftitem(itemstring, entity_id, description, longdesc, usagehelp, icon)
+	if minetest.get_modpath("doc_identifier") ~= nil then
+		doc.sub.identifier.register_object(entity_id, "craftitems", itemstring)
+	end
+end
+
+-- Minecart
+register_minecart(
 	"mcl_minecarts:minecart",
 	"mcl_minecarts:minecart",
 	"Minecart",
 	"Minecarts can be used for a quick transportion on rails." .. "\n" ..
 	"Minecarts only ride on rails and always follow the tracks. At a T-junction with no straight way ahead, they turn left. The speed is affected by the rail type.",
-
 	"You can place the minecart on rails. Right-click it to enter it. Punch it to get it moving." .. "\n" ..
 	"To obtain the minecart, punch it while holding down the sneak key.",
-	"mcl_minecarts_minecart_normal.png"
+	"mcl_minecarts_minecart.b3d",
+	{"mcl_minecarts_minecart.png"},
+	"mcl_minecarts_minecart_normal.png",
+	{"mcl_minecarts:minecart"},
+	function(self, clicker)
+		if not clicker or not clicker:is_player() then
+			return
+		end
+		local player_name = clicker:get_player_name()
+		if self._driver and player_name == self._driver then
+			self._driver = nil
+			self._start_pos = nil
+			clicker:set_detach()
+		elseif not self._driver then
+			self._driver = player_name
+			self._start_pos = self.object:getpos()
+			mcl_player.player_attached[player_name] = true
+			clicker:set_attach(self.object, "", {x=0, y=3, z=0}, {x=0, y=0, z=0})
+		end
+	end
 )
 
-register_craftitem(
-	"mcl_minecarts:hopper_minecart",
-	"mcl_minecarts:hopper_minecart",
-	"Minecart with Hopper",
-	nil, nil,
-	"mcl_minecarts_minecart_hopper.png"
-)
-
-register_craftitem(
-	"mcl_minecarts:tnt_minecart",
-	"mcl_minecarts:tnt_minecart",
-	"Minecart with TNT",
-	nil, nil,
-	"mcl_minecarts_minecart_tnt.png"
-)
-
-register_craftitem(
+-- Minecart with Chest
+register_minecart(
 	"mcl_minecarts:chest_minecart",
 	"mcl_minecarts:chest_minecart",
 	"Minecart with Chest",
 	nil, nil,
-	"mcl_minecarts_minecart_chest.png"
-)
+	"mcl_minecarts_minecart_chest.b3d",
+	{ "mcl_chests_normal.png", "mcl_minecarts_minecart.png" },
+	"mcl_minecarts_minecart_chest.png",
+	{"mcl_minecarts:minecart", "mcl_chests:chest"})
 
-register_craftitem(
+-- Minecart with Furnace
+register_minecart(
 	"mcl_minecarts:furnace_minecart",
 	"mcl_minecarts:furnace_minecart",
 	"Minecart with Furnace",
 	nil, nil,
-	"mcl_minecarts_minecart_furnace.png"
+	"mcl_minecarts_minecart_block.b3d",
+	{
+		"default_furnace_top.png",
+		"default_furnace_top.png",
+		"default_furnace_front.png",
+		"default_furnace_side.png",
+		"default_furnace_side.png",
+		"default_furnace_side.png",
+		"mcl_minecarts_minecart.png",
+	},
+	"mcl_minecarts_minecart_furnace.png",
+	{"mcl_minecarts:minecart", "mcl_furnaces:furnace"}
 )
 
-register_craftitem(
+-- Minecart with Command Block
+register_minecart(
 	"mcl_minecarts:command_block_minecart",
 	"mcl_minecarts:command_block_minecart",
 	"Minecart with Command Block",
 	nil, nil,
-	"mcl_minecarts_minecart_command_block.png"
+	"mcl_minecarts_minecart_block.b3d",
+	{
+		"jeija_commandblock_off.png^[verticalframe:2:0",
+		"jeija_commandblock_off.png^[verticalframe:2:0",
+		"jeija_commandblock_off.png^[verticalframe:2:0",
+		"jeija_commandblock_off.png^[verticalframe:2:0",
+		"jeija_commandblock_off.png^[verticalframe:2:0",
+		"jeija_commandblock_off.png^[verticalframe:2:0",
+		"mcl_minecarts_minecart.png",
+	},
+	"mcl_minecarts_minecart_command_block.png",
+	{"mcl_minecarts:minecart"}
 )
 
+-- Minecart with Hopper
+register_minecart(
+	"mcl_minecarts:hopper_minecart",
+	"mcl_minecarts:hopper_minecart",
+	"Minecart with Hopper",
+	nil, nil,
+	"mcl_minecarts_minecart_hopper.b3d",
+	{
+		"mcl_hoppers_hopper_inside.png",
+		"mcl_minecarts_minecart.png",
+		"mcl_hoppers_hopper_outside.png",
+		"mcl_hoppers_hopper_top.png",
+	},
+	"mcl_minecarts_minecart_hopper.png",
+	{"mcl_minecarts:minecart", "mcl_hoppers:hopper"}
+)
+
+-- Minecart with TNT
+register_minecart(
+	"mcl_minecarts:tnt_minecart",
+	"mcl_minecarts:tnt_minecart",
+	"Minecart with TNT",
+	nil, nil,
+	"mcl_minecarts_minecart_block.b3d",
+	{
+		"default_tnt_top.png",
+		"default_tnt_bottom.png",
+		"default_tnt_side.png",
+		"default_tnt_side.png",
+		"default_tnt_side.png",
+		"default_tnt_side.png",
+		"mcl_minecarts_minecart.png",
+	},
+	"mcl_minecarts_minecart_tnt.png",
+	{"mcl_minecarts:minecart", "mcl_tnt:tnt"}
+)
 
 
 minetest.register_craft({
