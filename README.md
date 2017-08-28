@@ -180,6 +180,7 @@ There are so many people to list (sorry). Check out the respective mod directori
 ### Coding
 * [Wuzzy](https://forum.minetest.net/memberlist.php?mode=viewprofile&u=3082): Main programmer of most mods
 * daredevils: Creator of MineClone on which MineClone 2 is based on
+* [ex-bart](https://github.com/ex-bart): Redstone comparators
 * Lots of other people: TO BE WRITTEN (see mod directories for details)
 
 ### Textures
