@@ -298,9 +298,14 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 	if minetest.get_modpath("doc") then
 		-- Add item to node alias
 		doc.add_entry_alias("nodes", "mcl_banners:standing_banner", "craftitems", itemstring)
-		doc.add_entry_alias("nodes", "mcl_banners:hanging_banner", "craftitems", itemstring)
 	end
 end
+
+if minetest.get_modpath("doc") then
+	-- Add item to node alias
+	doc.add_entry_alias("nodes", "mcl_banners:standing_banner", "nodes", "mcl_banners:hanging_banner")
+end
+
 
 -- Banner entities.
 local entity_standing = {
