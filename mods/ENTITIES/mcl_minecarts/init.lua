@@ -14,7 +14,7 @@ dofile(mcl_minecarts.modpath.."/functions.lua")
 dofile(mcl_minecarts.modpath.."/rails.lua")
 
 
-local function register_entity(entity_id, mesh, textures, drop)
+local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 	local cart = {
 		physical = false,
 		collisionbox = {-10/16., -0.5, -10/16, 10/16, 0.25, 10/16},
@@ -23,7 +23,9 @@ local function register_entity(entity_id, mesh, textures, drop)
 		visual_size = {x=1, y=1},
 		textures = textures,
 
-		_driver = nil,
+		on_rightclick = on_rightclick,
+
+		_driver = nil, -- player who sits in and controls the minecart (only for minecart!)
 		_punched = false, -- used to re-send _velocity and position
 		_velocity = {x=0, y=0, z=0}, -- only used on punch
 		_start_pos = nil, -- Used to calculate distance for “On A Rail” achievement
@@ -32,23 +34,6 @@ local function register_entity(entity_id, mesh, textures, drop)
 		_old_switch = 0,
 		_railtype = nil,
 	}
-
-	function cart:on_rightclick(clicker)
-		if not clicker or not clicker:is_player() then
-			return
-		end
-		local player_name = clicker:get_player_name()
-		if self._driver and player_name == self._driver then
-			self._driver = nil
-			self._start_pos = nil
-			clicker:set_detach()
-		elseif not self._driver then
-			self._driver = player_name
-			self._start_pos = self.object:getpos()
-			mcl_player.player_attached[player_name] = true
-			clicker:set_attach(self.object, "", {x=0, y=3, z=0}, {x=0, y=0, z=0})
-		end
-	end
 
 	function cart:on_activate(staticdata, dtime_s)
 		self.object:set_armor_groups({immortal=1})
@@ -280,7 +265,25 @@ end
 register_entity("mcl_minecarts:minecart",
 	"mcl_minecarts_minecart.b3d",
 	{"mcl_minecarts_minecart.png"},
-	{"mcl_minecarts:minecart"})
+	{"mcl_minecarts:minecart"},
+	function(self, clicker)
+		if not clicker or not clicker:is_player() then
+			return
+		end
+		local player_name = clicker:get_player_name()
+		if self._driver and player_name == self._driver then
+			self._driver = nil
+			self._start_pos = nil
+			clicker:set_detach()
+		elseif not self._driver then
+			self._driver = player_name
+			self._start_pos = self.object:getpos()
+			mcl_player.player_attached[player_name] = true
+			clicker:set_attach(self.object, "", {x=0, y=3, z=0}, {x=0, y=0, z=0})
+		end
+	end
+)
+
 register_entity("mcl_minecarts:chest_minecart",
 	"mcl_minecarts_minecart_chest.b3d",
 	{ "mcl_chests_normal.png", "mcl_minecarts_minecart.png" },
