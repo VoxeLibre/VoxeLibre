@@ -17,6 +17,11 @@ local wip_items = {
 	"mobs_mc:totem",
 	"mcl_paintings:painting",
 	"mcl_comparators:comparator_off_comp",
+	"mcl_minecarts:hopper_minecart",
+	"mcl_minecarts:command_block_minecart",
+	"mcl_minecarts:chest_minecart",
+	"mcl_minecarts:furnace_minecart",
+	"mcl_minecarts:tnt_minecart",
 }
 
 for i=1,#wip_items do
