@@ -149,12 +149,6 @@ end
 
 -- Register the 2 (states) x 2 (modes) comparators
 
-local longdesc = "Redstone comparators are redstone components which "..
-	"compare redstone signals and measure various node states, such as "..
-	"how full inventories are."
-local usagehelp = "To power a redstone comparater, send a signal in “arrow” "..
-	"direction, or place the block to measure there.  Send the signal "..
-	"to compare with in from the side."
 local icon = "mcl_comparators_item.png"
 
 local node_boxes = {
@@ -204,10 +198,25 @@ for _, state in pairs{mesecon.state.on, mesecon.state.off} do
 	local nodename =
 		"mcl_comparators:comparator_"..state_strs[state].."_"..mode
 
+	-- Help
+	local longdesc, usagehelp, use_help
+	if state_strs[state] == "off" and mode == "comp" then
+		longdesc = "Redstone comparators are redstone components which "..
+		"compare redstone signals and measure various node states, such as "..
+		"how full inventories are."
+
+		usagehelp = "To power a redstone comparater, send a signal in “arrow” "..
+		"direction, or place the block to measure there.  Send the signal "..
+		"to compare with in from the side."
+	else
+		use_help = false
+	end
+
 	local nodedef = {
 		description = "Redstone Comparator",
 		inventory_image = icon,
 		wield_image = icon,
+		_doc_items_create_entry = use_help,
 		_doc_items_longdesc = longdesc,
 		_doc_items_usagehelp = usagehelp,
 		drawtype = "nodebox",
