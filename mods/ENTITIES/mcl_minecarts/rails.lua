@@ -33,22 +33,8 @@ minetest.register_craft({
 	}
 })
 
--- Function that get the input/output rules of the powered rails
-local get_input_rules = function()
-	return {
-		{x = -1, y = 0, z = 0},
-		{x = 1, y = 0, z = 0},
-		{x = 0, y = 0, z = -1},
-		{x = 0, y = 0, z = 1},
-	}
-end
-
-local get_output_rules = function()
-	return {}
-end
 
 -- Powered rail
-
 local powered_rail_template = {
 	description = "Powered Rail",
 	_doc_items_longdesc = "Rails can be used to build transport tracks for minecarts. Powered rails are able to accelerate and brake minecarts.",
@@ -68,15 +54,9 @@ local powered_rail_template = {
 
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	mesecons = {
-		effector = {
-			action_on = function(pos, node)
-				minetest.swap_node(pos, {name = "mcl_minecarts:golden_rail_on", param2 = node.param2 })
-				mesecon:receptor_on(pos, get_input_rules())
-			end,
-		},
-		receptor = {
+		conductor = {
 			state = mesecon.state.off,
-			rules = get_output_rules,
+			onstate = "mcl_minecarts:golden_rail_on",
 		},
 	},
 
@@ -99,15 +79,9 @@ powered_rail_on.wield_image = "mcl_minecarts_rail_golden_powered.png"
 powered_rail_on.groups.not_in_creative_inventory = 1
 powered_rail_on.groups.transport = nil
 powered_rail_on.mesecons = {
-	effector = {
-		action_off = function(pos, node)
-			minetest.swap_node(pos, {name = "mcl_minecarts:golden_rail", param2 = node.param2 })
-			mesecon:receptor_off(pos, get_input_rules())
-		end,
-	},
-	receptor = {
+	conductor = {
 		state = mesecon.state.on,
-		rules = get_output_rules,
+		offstate = "mcl_minecarts:golden_rail",
 	}
 }
 powered_rail_on._rail_acceleration = 4
