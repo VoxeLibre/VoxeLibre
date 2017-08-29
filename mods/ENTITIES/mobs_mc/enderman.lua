@@ -158,8 +158,9 @@ local select_enderman_animation = function(animation_type)
 end
 
 mobs:register_mob("mobs_mc:enderman", {
-	type = "monster",
-	runaway = true,
+	-- TODO: Make endermen attack when looked at
+	type = "animal",
+	passive = false,
 	pathfinding = 1,
 	stepheight = 1.2,
 	hp_min = 40,
@@ -313,7 +314,7 @@ mobs:register_mob("mobs_mc:enderman", {
 -- End spawn
 mobs:spawn_specific("mobs_mc:enderman", mobs_mc.spawn.solid, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 3000, 12, mobs_mc.spawn_height.end_min, mobs_mc.spawn_height.end_max)
 -- Overworld spawn
-mobs:spawn_specific("mobs_mc:enderman", mobs_mc.spawn.solid, {"air"}, 0, 7, 30, 9000, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
+mobs:spawn_specific("mobs_mc:enderman", mobs_mc.spawn.solid, {"air"}, 0, 7, 30, 19000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 -- Nether spawn (rare)
 mobs:spawn_specific("mobs_mc:enderman", mobs_mc.spawn.solid, {"air"}, 0, 7, 30, 27500, 4, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
 
