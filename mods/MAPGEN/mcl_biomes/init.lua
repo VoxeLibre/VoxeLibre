@@ -146,7 +146,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		node_dust = "mcl_core:snow",
-		y_min = 5,
+		y_min = 0,
 		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 13,
 		humidity_point = 79,
@@ -1112,6 +1112,24 @@ local function register_decorations()
 		schematic = minetest.get_modpath("mcl_core").."/schematics/jungle_tree.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.0096,
+			scale = 0.025,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2930,
+			octaves = 4,
+			persist = 0.6,
+		},
+		biomes = {"rainforest"},
+		y_min = 3,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_bush.mts",
+		flags = "place_center_x, place_center_z",
 	})
 
 	minetest.register_decoration({
