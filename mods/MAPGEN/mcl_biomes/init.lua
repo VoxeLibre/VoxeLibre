@@ -146,7 +146,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		node_dust = "mcl_core:snow",
-		y_min = 0,
+		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 13,
 		humidity_point = 79,
@@ -161,7 +161,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:dirt",
 		depth_riverbed = 2,
 		y_min = mcl_vars.mg_overworld_min,
-		y_max = 4,
+		y_max = 0,
 		heat_point = 13,
 		humidity_point = 79,
 	})
