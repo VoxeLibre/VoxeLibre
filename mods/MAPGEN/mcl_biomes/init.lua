@@ -1211,7 +1211,7 @@ local function register_decorations()
 		biomes = {"savanna"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/acacia_tree.mts",
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_acacia_classic_2.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -1243,27 +1243,6 @@ local function register_decorations()
 			},
 		},
 		flags = "place_center_x",
-		rotation = "random",
-	})
-
-
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:sand"},
-		sidelen = 16,
-		noise_params = {
-			offset = 0,
-			scale = 0.0002,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 2,
-			octaves = 3,
-			persist = 0.66
-		},
-		biomes = {"savanna"},
-		y_min = 7,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/acacia_tree.mts",
-		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
 
