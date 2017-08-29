@@ -191,6 +191,7 @@ local dispenserdef = {
 
 				elseif iname == "mcl_dye:white" then
 					-- Apply bone meal, if possible
+					local pointed_thing
 					if dropnode.name == "air" then
 						pointed_thing = { above = droppos, under = { x=droppos.x, y=droppos.y-1, z=droppos.z } }
 					else
@@ -202,15 +203,17 @@ local dispenserdef = {
 						inv:set_stack("main", stack_id, stack)
 					end
 
-				elseif iname == "mcl_minecarts:minecart" then
+				elseif minetest.get_item_group(iname, "minecart") == 1 then
 					-- Place minecart as entity on rail
+					local placed
 					if dropnodedef.groups.rail then
-						minetest.add_entity(droppos, "mcl_minecarts:minecart")
-
-					else
+						-- FIXME: This places minecarts even if the spot is already occupied
+						local pointed_thing = { under = droppos, above = { x=droppos.x, y=droppos.y+1, z=droppos.z } }
+						placed = mcl_minecarts.place_minecart(stack, pointed_thing)
+					end
+					if placed == nil then
 						-- Drop item
 						minetest.add_item(droppos, dropitem)
-
 					end
 
 					stack:take_item()

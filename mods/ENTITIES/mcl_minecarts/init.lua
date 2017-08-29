@@ -5,6 +5,8 @@ mcl_minecarts.speed_max = 10
 dofile(mcl_minecarts.modpath.."/functions.lua")
 dofile(mcl_minecarts.modpath.."/rails.lua")
 
+-- Table for item-to-entity mapping. Keys: itemstring, Values: Corresponding entity ID
+local entity_mapping = {}
 
 local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 	local cart = {
@@ -290,7 +292,45 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 	minetest.register_entity(entity_id, cart)
 end
 
+-- Place a minecart at pointed_thing
+mcl_minecarts.place_minecart = function(itemstack, pointed_thing)
+	if not pointed_thing.type == "node" then
+		return
+	end
+
+	local railpos, node
+	if mcl_minecarts:is_rail(pointed_thing.under) then
+		railpos = pointed_thing.under
+		node = minetest.get_node(pointed_thing.under)
+	elseif mcl_minecarts:is_rail(pointed_thing.above) then
+		railpos = pointed_thing.above
+		node = minetest.get_node(pointed_thing.above)
+	else
+		return
+	end
+
+	-- Activate detector rail
+	if node.name == "mcl_minecarts:detector_rail" then
+		local newnode = {name="mcl_minecarts:detector_rail_on", param2 = node.param2}
+		minetest.swap_node(railpos, newnode)
+		mesecon.receptor_on(railpos)
+	end
+
+	local entity_id = entity_mapping[itemstack:get_name()]
+	local cart = minetest.add_entity(railpos, entity_id)
+	local railtype = minetest.get_item_group(node.name, "connect_to_raillike")
+	local cart_dir = mcl_minecarts:get_rail_direction(railpos, {x=1, y=0, z=0}, nil, nil, railtype)
+	cart:setyaw(minetest.dir_to_yaw(cart_dir))
+
+	if not minetest.settings:get_bool("creative_mode") then
+		itemstack:take_item()
+	end
+	return itemstack
+end
+
 local register_craftitem = function(itemstring, entity_id, description, longdesc, usagehelp, icon)
+	entity_mapping[itemstring] = entity_id
+
 	local def = {
 		stack_max = 1,
 		on_place = function(itemstack, placer, pointed_thing)
@@ -306,32 +346,7 @@ local register_craftitem = function(itemstring, entity_id, description, longdesc
 				end
 			end
 
-			local railpos
-			if mcl_minecarts:is_rail(pointed_thing.under) then
-				railpos = pointed_thing.under
-			elseif mcl_minecarts:is_rail(pointed_thing.above) then
-				railpos = pointed_thing.above
-				node = minetest.get_node(pointed_thing.above)
-			else
-				return
-			end
-
-			-- Activate detector rail
-			if node.name == "mcl_minecarts:detector_rail" then
-				local newnode = {name="mcl_minecarts:detector_rail_on", param2 = node.param2}
-				minetest.swap_node(railpos, newnode)
-				mesecon.receptor_on(railpos)
-			end
-
-			local cart = minetest.add_entity(railpos, entity_id)
-			local railtype = minetest.get_item_group(node.name, "connect_to_raillike")
-			local cart_dir = mcl_minecarts:get_rail_direction(railpos, {x=1, y=0, z=0}, nil, nil, railtype)
-			cart:setyaw(minetest.dir_to_yaw(cart_dir))
-
-			if not minetest.settings:get_bool("creative_mode") then
-				itemstack:take_item()
-			end
-			return itemstack
+			return mcl_minecarts.place_minecart(itemstack, pointed_thing)
 		end,
 		groups = { minecart = 1, transport = 1},
 	}
@@ -410,7 +425,30 @@ register_minecart(
 		"mcl_minecarts_minecart.png",
 	},
 	"mcl_minecarts_minecart_furnace.png",
-	{"mcl_minecarts:minecart", "mcl_furnaces:furnace"}
+	{"mcl_minecarts:minecart", "mcl_furnaces:furnace"},
+	-- Feed furnace with coal
+	function(self, clicker)
+		if not clicker or not clicker:is_player() then
+			return
+		end
+		if not self._fueltime then
+			self._fueltime = 0
+		end
+		local held = clicker:get_wielded_item()
+		if minetest.get_item_group(held:get_name(), "coal") == 1 then
+			self._fueltime = self._fueltime + 180
+
+			if not minetest.settings:get_bool("creative_mode") then
+				held:take_item()
+				local index = clicker:get_wielded_index()
+				local inv = clicker:get_inventory()
+				inv:set_stack("main", index, held)
+			end
+
+			-- DEBUG
+			minetest.chat_send_player(clicker:get_player_name(), "Fuel: " .. tostring(self._fueltime))
+		end
+	end
 )
 
 -- Minecart with Command Block
