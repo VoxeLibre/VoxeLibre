@@ -51,7 +51,7 @@ function mesecon.register_pressure_plate(basename, description, textures_off, te
 	local groups_off = table.copy(plusgroups)
 	groups_off.attached_node = 1
 	groups_off.dig_by_piston = 1
-	groups_on = table.copy(groups_off)
+	local groups_on = table.copy(groups_off)
 	groups_on.not_in_creative_inventory = 1
 
 	mesecon.register_node(basename, {

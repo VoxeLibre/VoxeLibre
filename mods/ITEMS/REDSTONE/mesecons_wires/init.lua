@@ -220,13 +220,8 @@ local function register_wires()
 			-- “Dot” texture
 			tiles_off = { dot_off, dot_off, "blank.png", "blank.png", "blank.png", "blank.png" }
 			tiles_on = { dot_on, dot_on, "blank.png", "blank.png", "blank.png", "blank.png" }
-		elseif adjx and adjz and (xp + zp + xm + zm > 2) then
-			-- Connected redstone wire (crossing or t-junction)
-			table.insert(nodebox, box_bump1)
-			tiles_off = { crossing_off, crossing_off, straight0_off, straight1_off, straight0_off, straight1_off, }
-			tiles_on = { crossing_on, crossing_on, straight0_on, straight1_on, straight0_on, straight1_on, }
 		else
-			-- Connected redstone wire (straight line or curve)
+			-- Connected redstone wire
 			table.insert(nodebox, box_center)
 			tiles_off = { crossing_off, crossing_off, straight0_off, straight1_off, straight0_off, straight1_off, }
 			tiles_on = { crossing_on, crossing_on, straight0_on, straight1_on, straight0_on, straight1_on, }
