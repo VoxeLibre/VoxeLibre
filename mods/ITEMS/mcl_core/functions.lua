@@ -404,11 +404,38 @@ end
 
 -- END of spruce tree functions --
 
--- Acacia tree grow function from Minetest Game 0.4.15
+-- Acacia tree (2 variants)
 function mcl_core.generate_acacia_tree(pos)
-	local path = minetest.get_modpath("mcl_core") ..
-		"/schematics/acacia_tree_from_sapling.mts"
-	minetest.place_schematic({x = pos.x - 4, y = pos.y - 1, z = pos.z - 4}, path, "random", nil, false)
+	local r = math.random(1, 2)
+	local rot = math.random(0, 3)
+	local offset, path
+	if r == 1 then
+		path = minetest.get_modpath("mcl_core") ..
+			"/schematics/mcl_core_acacia_classic_1.mts"
+		if rot == 0 then
+			offset = { x = pos.x - 4, y = pos.y, z = pos.z - 2 }
+		elseif rot == 1 then
+			offset = { x = pos.x - 2, y = pos.y, z = pos.z - 4 }
+		elseif rot == 2 then
+			offset = { x = pos.x - 4, y = pos.y, z = pos.z - 2 }
+		else
+			offset = { x = pos.x - 2, y = pos.y, z = pos.z - 4 }
+		end
+	else
+		path = minetest.get_modpath("mcl_core") ..
+			"/schematics/mcl_core_acacia_classic_2.mts"
+		if rot == 0 then
+			offset = { x = pos.x - 2, y = pos.y, z = pos.z - 2 }
+		elseif rot == 1 then
+			offset = { x = pos.x - 2, y = pos.y, z = pos.z - 4 }
+		elseif rot == 2 then
+			offset = { x = pos.x - 4, y = pos.y, z = pos.z - 4 }
+		else
+			offset = { x = pos.x - 4, y = pos.y, z = pos.z - 2 }
+		end
+	end
+	local angle = tostring(rot * 90)
+	minetest.place_schematic(offset, path, angle, nil, false)
 end
 
 function mcl_core.generate_dark_oak_tree(pos)
