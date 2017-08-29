@@ -145,7 +145,7 @@ local dispenserdef = {
 					if dropnode.name == "mcl_core:water_source" then
 						collect_liquid = true
 						bucket_id = "mcl_buckets:bucket_water"
-					elseif dropnode.name == "mcl_core:lava_source" then
+					elseif dropnode.name == "mcl_core:lava_source" or dropnode.name == "mcl_nether:nether_lava_source" then
 						collect_liquid = true
 						bucket_id = "mcl_buckets:bucket_lava"
 					end
@@ -173,10 +173,19 @@ local dispenserdef = {
 				elseif iname == "mcl_buckets:bucket_water" or iname == "mcl_buckets:bucket_lava" then
 					-- Place water/lava source
 					if dropnodedef.buildable_to then
+						local _, dim = mcl_util.y_to_layer(droppos.y)
 						if iname == "mcl_buckets:bucket_water" then
-							minetest.set_node(droppos, {name = "mcl_core:water_source"})
+							if dim == "nether" then
+								minetest.sound_play("fire_extinguish_flame", {pos = droppos, gain = 0.25, max_hear_distance = 16})
+							else
+								minetest.set_node(droppos, {name = "mcl_core:water_source"})
+							end
 						elseif iname == "mcl_buckets:bucket_lava" then
-							minetest.set_node(droppos, {name = "mcl_core:lava_source"})
+							if dim == "nether" then
+								minetest.set_node(droppos, {name = "mcl_nether:nether_lava_source"})
+							else
+								minetest.set_node(droppos, {name = "mcl_core:lava_source"})
+							end
 						end
 
 						stack:take_item()

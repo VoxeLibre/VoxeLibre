@@ -2,6 +2,9 @@ mcl_init
 mesecons
 mcl_sounds
 mcl_tnt
+mcl_util
+mcl_core
+mcl_nether
 3d_armor_stand
 3d_armor
 doc?
