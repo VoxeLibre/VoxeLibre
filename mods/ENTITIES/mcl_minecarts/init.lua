@@ -328,9 +328,13 @@ mcl_minecarts.place_minecart = function(itemstack, pointed_thing)
 	return itemstack
 end
 
-local register_craftitem = function(itemstring, entity_id, description, longdesc, usagehelp, icon)
+local register_craftitem = function(itemstring, entity_id, description, longdesc, usagehelp, icon, creative)
 	entity_mapping[itemstring] = entity_id
 
+	local groups = { minecart = 1, transport = 1 }
+	if creative == false then
+		groups.not_in_creative_inventory = 1
+	end
 	local def = {
 		stack_max = 1,
 		on_place = function(itemstack, placer, pointed_thing)
@@ -348,7 +352,7 @@ local register_craftitem = function(itemstring, entity_id, description, longdesc
 
 			return mcl_minecarts.place_minecart(itemstack, pointed_thing)
 		end,
-		groups = { minecart = 1, transport = 1},
+		groups = groups,
 	}
 	def.description = description
 	def._doc_items_longdesc = longdesc
@@ -358,9 +362,9 @@ local register_craftitem = function(itemstring, entity_id, description, longdesc
 	minetest.register_craftitem(itemstring, def)
 end
 
-local function register_minecart(itemstring, entity_id, description, longdesc, usagehelp, mesh, textures, icon, drop, on_rightclick)
+local function register_minecart(itemstring, entity_id, description, longdesc, usagehelp, mesh, textures, icon, drop, on_rightclick, creative)
 	register_entity(entity_id, mesh, textures, drop, on_rightclick)
-	register_craftitem(itemstring, entity_id, description, longdesc, usagehelp, icon)
+	register_craftitem(itemstring, entity_id, description, longdesc, usagehelp, icon, creative)
 	if minetest.get_modpath("doc_identifier") ~= nil then
 		doc.sub.identifier.register_object(entity_id, "craftitems", itemstring)
 	end
@@ -468,7 +472,9 @@ register_minecart(
 		"mcl_minecarts_minecart.png",
 	},
 	"mcl_minecarts_minecart_command_block.png",
-	{"mcl_minecarts:minecart"}
+	{"mcl_minecarts:minecart"},
+	nil,
+	false
 )
 
 -- Minecart with Hopper

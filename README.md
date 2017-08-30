@@ -55,14 +55,15 @@ Or you can play in “creative mode” in which you can build almost anything in
 More help about the gameplay, blocks items and much more can be found from inside
 the game. You can access the help from your inventory menu.
 
-### Special blocks
-The following blocks are interesting for Creative Mode and for adventure
+### Special items
+The following items are interesting for Creative Mode and for adventure
 map builders. They can not be obtained in-game or in the creative inventory.
 
 * Barrier: `mcl_core:barrier`
 * Command Block: `mesecons_commandblock:commandblock_off`
-* Monster Spawner (WIP): `mcl_mobspawners:spawner`
+* Monster Spawner: `mcl_mobspawners:spawner`
 * Huge mushroom blocks: See `mods/ITEMS/mcl_mushrooms/README.md`
+* Minecart with Command Block: `mcl_minecarts:command_block_minecart`
 
 Use the `/giveme` chat command to obtain them. See the in-game help for
 an explanation.
