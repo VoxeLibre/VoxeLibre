@@ -214,7 +214,7 @@ local function air_leaf(leaftype)
 	end
 end
 
-function mcl_core.generate_tree(pos, trunk, leaves, typearbre)
+function mcl_core.generate_tree(pos, tree_type)
 	pos.y = pos.y-1
 	local nodename = minetest.get_node(pos).name
 		
@@ -223,75 +223,91 @@ function mcl_core.generate_tree(pos, trunk, leaves, typearbre)
 		return
 	end
 	local node
-	if typearbre == nil or typearbre == 1 then
-		node = {name = ""}
-		for dy=1,4 do
-			pos.y = pos.y+dy
-			if minetest.get_node(pos).name ~= "air" then
-				return
-			end
-			pos.y = pos.y-dy
-		end
-		node = {name = trunk}
-		for dy=0,4 do
-			pos.y = pos.y+dy
-			if minetest.get_node(pos).name == "air" then
-				minetest.add_node(pos, node)
-			end
-			pos.y = pos.y-dy
-		end
 
-		node = {name = leaves}
-		pos.y = pos.y+3
-		local rarity = 0
-		if math.random(0, 10) == 3 then
-			rarity = 1
-		end
-		for dx=-2,2 do
-			for dz=-2,2 do
-				for dy=0,3 do
-					pos.x = pos.x+dx
-					pos.y = pos.y+dy
-					pos.z = pos.z+dz
+	if tree_type == nil or tree_type == 1 then
+		mcl_core.generate_oak_tree(pos)
+	elseif tree_type == 2 then
+		mcl_core.generate_dark_oak_tree(pos)
+	elseif tree_type == 3 then
+		mcl_core.generate_spruce_tree(pos)
+	elseif tree_type == 4 then
+		mcl_core.generate_acacia_tree(pos)
+	elseif tree_type == 5 then
+		mcl_core.generate_jungle_tree(pos)
+	elseif tree_type == 6 then
+		mcl_core.generate_birch_tree(pos)
+	end
+end
 
-					if dx == 0 and dz == 0 and dy==3 then
+-- For oak and birch
+local function generate_oaklike_tree(pos, trunk, leaves)
+	node = {name = ""}
+	for dy=1,4 do
+		pos.y = pos.y+dy
+		if minetest.get_node(pos).name ~= "air" then
+			return
+		end
+		pos.y = pos.y-dy
+	end
+	node = {name = trunk}
+	for dy=0,4 do
+		pos.y = pos.y+dy
+		if minetest.get_node(pos).name == "air" then
+			minetest.add_node(pos, node)
+		end
+		pos.y = pos.y-dy
+	end
+
+	node = {name = leaves}
+	pos.y = pos.y+3
+	local rarity = 0
+	if math.random(0, 10) == 3 then
+		rarity = 1
+	end
+	for dx=-2,2 do
+		for dz=-2,2 do
+			for dy=0,3 do
+				pos.x = pos.x+dx
+				pos.y = pos.y+dy
+				pos.z = pos.z+dz
+
+				if dx == 0 and dz == 0 and dy==3 then
+					if minetest.get_node(pos).name == "air" and math.random(1, 5) <= 4 then
+						minetest.add_node(pos, node)
+						minetest.add_node(pos, air_leaf(leaves))
+					end
+				elseif dx == 0 and dz == 0 and dy==4 then
+					if minetest.get_node(pos).name == "air" and math.random(1, 5) <= 4 then
+						minetest.add_node(pos, node)
+						minetest.add_node(pos, air_leaf(leaves))
+					end
+				elseif math.abs(dx) ~= 2 and math.abs(dz) ~= 2 then
+					if minetest.get_node(pos).name == "air" then
+						minetest.add_node(pos, node)
+						minetest.add_node(pos, air_leaf(leaves))
+					end
+				else
+					if math.abs(dx) ~= 2 or math.abs(dz) ~= 2 then
 						if minetest.get_node(pos).name == "air" and math.random(1, 5) <= 4 then
 							minetest.add_node(pos, node)
 							minetest.add_node(pos, air_leaf(leaves))
-						end
-					elseif dx == 0 and dz == 0 and dy==4 then
-						if minetest.get_node(pos).name == "air" and math.random(1, 5) <= 4 then
-							minetest.add_node(pos, node)
-							minetest.add_node(pos, air_leaf(leaves))
-						end
-					elseif math.abs(dx) ~= 2 and math.abs(dz) ~= 2 then
-						if minetest.get_node(pos).name == "air" then
-							minetest.add_node(pos, node)
-							minetest.add_node(pos, air_leaf(leaves))
-						end
-					else
-						if math.abs(dx) ~= 2 or math.abs(dz) ~= 2 then
-							if minetest.get_node(pos).name == "air" and math.random(1, 5) <= 4 then
-								minetest.add_node(pos, node)
-								minetest.add_node(pos, air_leaf(leaves))
-							end
 						end
 					end
-					pos.x = pos.x-dx
-					pos.y = pos.y-dy
-					pos.z = pos.z-dz
 				end
+				pos.x = pos.x-dx
+				pos.y = pos.y-dy
+				pos.z = pos.z-dz
 			end
 		end
-	elseif typearbre == 2 then
-		mcl_core.generate_dark_oak_tree(pos)
-	elseif typearbre == 3 then
-		mcl_core.generate_spruce_tree(pos)
-	elseif typearbre == 4 then
-		mcl_core.generate_acacia_tree(pos)
-	elseif typearbre == 5 then
-		mcl_core.generate_jungle_tree(pos)
 	end
+end
+
+function mcl_core.generate_oak_tree(pos)
+	generate_oaklike_tree(pos, "mcl_core:tree", "mcl_core:leaves")
+end
+
+function mcl_core.generate_birch_tree(pos)
+	generate_oaklike_tree(pos, "mcl_core:birchtree", "mcl_core:birchleaves")
 end
 
 -- BEGIN of spruce tree generation functions --
@@ -648,7 +664,7 @@ minetest.register_abm({
 --------------------------
 local treelight = 9
 
-local sapling_grow_action = function(trunknode, leafnode, tree_id, soil_needed)
+local sapling_grow_action = function(tree_id, soil_needed)
 	return function(pos)
 		local light = minetest.get_node_light(pos)
 		local soilnode = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
@@ -661,13 +677,20 @@ local sapling_grow_action = function(trunknode, leafnode, tree_id, soil_needed)
 			stage = stage + 1
 			if stage >= 3 then
 				minetest.set_node(pos, {name="air"})
-				mcl_core.generate_tree(pos, trunknode, leafnode, tree_id)
+				mcl_core.generate_tree(pos, tree_id)
 			else
 				meta:set_int("stage", stage)
 			end
 		end
 	end
 end
+
+local grow_oak = sapling_grow_action(1, 1)
+local grow_dark_oak = sapling_grow_action(2, 2)
+local grow_jungle_tree = sapling_grow_action(5, 1)
+local grow_acacia = sapling_grow_action(4, 2)
+local grow_spruce = sapling_grow_action(3, 1)
+local grow_birch = sapling_grow_action(6, 1)
 
 -- Attempts to grow the sapling at the specified position
 -- pos: Position
@@ -676,17 +699,17 @@ end
 mcl_core.grow_sapling = function(pos, node)
 	local grow
 	if node.name == "mcl_core:sapling" then
-		grow = sapling_grow_action("mcl_core:tree", "mcl_core:leaves", 1, 1)
+		grow = grow_oak
 	elseif node.name == "mcl_core:darksapling" then
-		grow = sapling_grow_action("mcl_core:darktree", "mcl_core:darkleaves", 2, 2)
+		grow = grow_dark_oak
 	elseif node.name == "mcl_core:junglesapling" then
-		grow = sapling_grow_action("mcl_core:jungletree", "mcl_core:jungleleaves", 5, 1)
+		grow = grow_jungle_tree
 	elseif node.name == "mcl_core:acaciasapling" then
-		grow = sapling_grow_action("mcl_core:acaciatree", "mcl_core:acacialeaves", 4, 2)
+		grow = grow_acacia
 	elseif node.name == "mcl_core:sprucesapling" then
-		grow = sapling_grow_action("mcl_core:sprucetree", "mcl_core:spruceleaves", 3, 1)
+		grow = grow_spruce
 	elseif node.name == "mcl_core:birchsapling" then
-		grow = sapling_grow_action("mcl_core:birchtree", "mcl_core:birchleaves", 1, 1)
+		grow = grow_birch
 	end
 	if grow then
 		grow(pos)
@@ -706,7 +729,7 @@ minetest.register_abm({
 	neighbors = {"group:soil_sapling"},
 	interval = 25,
 	chance = 2,
-	action = sapling_grow_action("mcl_core:tree", "mcl_core:leaves", 1, 1),
+	action = grow_oak,
 })
 
 -- Dark oak tree
@@ -716,7 +739,7 @@ minetest.register_abm({
 	neighbors = {"group:soil_sapling"},
 	interval = 25,
 	chance = 2,
-	action = sapling_grow_action("mcl_core:darktree", "mcl_core:darkleaves", 2, 2),
+	action = grow_dark_oak,
 })
 
 -- Jungle Tree
@@ -726,7 +749,7 @@ minetest.register_abm({
 	neighbors = {"group:soil_sapling"},
 	interval = 25,
 	chance = 2,
-	action = sapling_grow_action("mcl_core:jungletree", "mcl_core:jungleleaves", 5, 1)
+	action = grow_jungle_tree,
 })
 
 -- Spruce tree
@@ -736,7 +759,7 @@ minetest.register_abm({
 	neighbors = {"group:soil_sapling"},
 	interval = 25,
 	chance = 2,
-	action = sapling_grow_action("mcl_core:sprucetree", "mcl_core:spruceleaves", 3, 1),
+	action = grow_spruce
 })
 
 -- Birch tree
@@ -746,7 +769,7 @@ minetest.register_abm({
 	neighbors = {"group:soil_sapling"},
 	interval = 25,
 	chance = 2,
-	action = sapling_grow_action("mcl_core:birchtree", "mcl_core:birchleaves", 1, 1),
+	action = grow_birch,
 })
 
 -- Acacia tree
@@ -756,7 +779,7 @@ minetest.register_abm({
 	neighbors = {"group:soil_sapling"},
 	interval = 20,
 	chance = 2,
-	action = sapling_grow_action("mcl_core:acaciatree", "mcl_core:acacialeaves", 4, 2),
+	action = grow_acacia,
 })
 
 ---------------------
