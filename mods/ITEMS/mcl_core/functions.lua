@@ -214,7 +214,7 @@ local function air_leaf(leaftype)
 	end
 end
 
-function mcl_core.generate_tree(pos, tree_type)
+function mcl_core.generate_tree(pos, tree_type, two_by_two)
 	pos.y = pos.y-1
 	local nodename = minetest.get_node(pos).name
 		
@@ -226,14 +226,22 @@ function mcl_core.generate_tree(pos, tree_type)
 
 	if tree_type == nil or tree_type == 1 then
 		mcl_core.generate_oak_tree(pos)
-	elseif tree_type == 2 then
+	elseif tree_type == 2 and two_by_two then
 		mcl_core.generate_dark_oak_tree(pos)
 	elseif tree_type == 3 then
-		mcl_core.generate_spruce_tree(pos)
+		if two_by_two then
+			mcl_core.generate_huge_spruce_tree(pos)
+		else
+			mcl_core.generate_spruce_tree(pos)
+		end
 	elseif tree_type == 4 then
 		mcl_core.generate_acacia_tree(pos)
 	elseif tree_type == 5 then
-		mcl_core.generate_jungle_tree(pos)
+		if two_by_two then
+			mcl_core.generate_huge_jungle_tree(pos)
+		else
+			mcl_core.generate_jungle_tree(pos)
+		end
 	elseif tree_type == 6 then
 		mcl_core.generate_birch_tree(pos)
 	end
@@ -418,6 +426,10 @@ function mcl_core.generate_spruce_tree(pos)
 	vm:update_map()
 end
 
+-- Now this just generates a “boring” 1×1 spruce tree.
+-- TODO: Generate huge spruce tree with 2×2 trunk.
+mcl_core.generate_huge_spruce_tree = mcl_core.generate_spruce_tree
+
 -- END of spruce tree functions --
 
 -- Acacia tree (2 variants)
@@ -454,10 +466,12 @@ function mcl_core.generate_acacia_tree(pos)
 	minetest.place_schematic(offset, path, angle, nil, false)
 end
 
+-- Generate dark oak tree with 2×2 trunk.
+-- With pos being the lower X and the higher Z value of the trunk
 function mcl_core.generate_dark_oak_tree(pos)
 	local path = minetest.get_modpath("mcl_core") ..
 		"/schematics/mcl_core_dark_oak.mts"
-	minetest.place_schematic({x = pos.x - 4, y = pos.y - 1, z = pos.z - 4}, path, "random", nil, false)
+	minetest.place_schematic({x = pos.x - 3, y = pos.y - 1, z = pos.z - 4}, path, "random", nil, false)
 end
 
 -- Helper function for jungle tree, form Minetest Game 0.4.15
@@ -556,6 +570,13 @@ function mcl_core.generate_jungle_tree(pos)
 	vm:update_map()
 end
 
+-- Generate huge jungle tree with 2×2 trunk.
+-- With pos being the lower X and the higher Z value of the trunk.
+function mcl_core.generate_huge_jungle_tree(pos)
+	local path = minetest.get_modpath("mcl_core") ..
+		"/schematics/mcl_core_jungle_tree_huge.mts"
+	minetest.place_schematic({x = pos.x - 6, y = pos.y - 1, z = pos.z - 7}, path, "random", nil, false)
+end
 
 
 local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_setting("seed"))
@@ -664,20 +685,47 @@ minetest.register_abm({
 --------------------------
 local treelight = 9
 
-local sapling_grow_action = function(tree_id, soil_needed)
+local sapling_grow_action = function(tree_id, soil_needed, one_by_one, two_by_two, sapling)
 	return function(pos)
-		local light = minetest.get_node_light(pos)
-		local soilnode = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
-		local soiltype = minetest.get_item_group(soilnode.name, "soil_sapling")
-		if soiltype >= soil_needed and light and light >= treelight then
+		-- Checks if the sapling at pos has enough light and the correct soil
+		local sapling_is_growable = function(pos)
+			local light = minetest.get_node_light(pos)
+			local soilnode = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
+			local soiltype = minetest.get_item_group(soilnode.name, "soil_sapling")
+			return soiltype >= soil_needed and light and light >= treelight
+		end
+		if sapling_is_growable(pos) then
 			-- Increase and check growth stage
 			local meta = minetest.get_meta(pos)
 			local stage = meta:get_int("stage")
 			if stage == nil then stage = 0 end
 			stage = stage + 1
 			if stage >= 3 then
-				minetest.set_node(pos, {name="air"})
-				mcl_core.generate_tree(pos, tree_id)
+				-- This sapling grows in a special way when there are 4 saplings in a 2×2 pattern
+				if two_by_two then
+					-- Check the other 3 saplings we haven't checked yet
+					local p2 = {x=pos.x+1, y=pos.y, z=pos.z}
+					local p3 = {x=pos.x, y=pos.y, z=pos.z-1}
+					local p4 = {x=pos.x+1, y=pos.y, z=pos.z-1}
+					local is_sapling = function(pos, sapling)
+						return minetest.get_node(pos).name == sapling
+					end
+					if is_sapling(p2, sapling) and is_sapling(p3, sapling) and is_sapling(p4, sapling) then
+						minetest.remove_node(pos, {name="air"})
+						minetest.remove_node(p2, {name="air"})
+						minetest.remove_node(p3, {name="air"})
+						minetest.remove_node(p4, {name="air"})
+						mcl_core.generate_tree(pos, tree_id, true)
+						return
+					end
+				end
+				-- If this sapling can grow alone
+				if one_by_one then
+					-- Single sapling
+					minetest.set_node(pos, {name="air"})
+					mcl_core.generate_tree(pos, tree_id)
+					return
+				end
 			else
 				meta:set_int("stage", stage)
 			end
@@ -685,12 +733,13 @@ local sapling_grow_action = function(tree_id, soil_needed)
 	end
 end
 
-local grow_oak = sapling_grow_action(1, 1)
-local grow_dark_oak = sapling_grow_action(2, 2)
-local grow_jungle_tree = sapling_grow_action(5, 1)
-local grow_acacia = sapling_grow_action(4, 2)
-local grow_spruce = sapling_grow_action(3, 1)
-local grow_birch = sapling_grow_action(6, 1)
+local grow_oak = sapling_grow_action(1, 1, true, false)
+local grow_dark_oak = sapling_grow_action(2, 2, false, true, "mcl_core:darksapling")
+local grow_jungle_tree = sapling_grow_action(5, 1, true, true, "mcl_core:junglesapling")
+local grow_acacia = sapling_grow_action(4, 2, true, false)
+-- TODO: Activate 2×2 mode for spruce when 2×2 spruce schematic is available
+local grow_spruce = sapling_grow_action(3, 1, true, false, "mcl_core:sprucesapling")
+local grow_birch = sapling_grow_action(6, 1, true, false)
 
 -- Attempts to grow the sapling at the specified position
 -- pos: Position
