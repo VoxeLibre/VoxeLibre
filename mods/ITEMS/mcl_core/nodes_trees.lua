@@ -33,8 +33,11 @@ local register_wooden_planks = function(subname, description, tiles)
 	})
 end
 
-local register_leaves = function(subname, description, longdesc, tiles, drop1, drop1_rarity, drop2, drop2_rarity)
+local register_leaves = function(subname, description, longdesc, tiles, drop1, drop1_rarity, drop2, drop2_rarity, leafdecay_distance)
 	local drop
+	if leafdecay_distance == nil then
+		leafdecay_distance = 4
+	end
 	if drop2 then
 		drop = {
 			max_items = 1,
@@ -70,7 +73,7 @@ local register_leaves = function(subname, description, longdesc, tiles, drop1, d
 		tiles = tiles,
 		paramtype = "light",
 		stack_max = 64,
-		groups = {handy=1,shearsy=1,swordy=1, leafdecay=4, flammable=2, leaves=1, deco_block=1, dig_by_piston=1},
+		groups = {handy=1,shearsy=1,swordy=1, leafdecay=leafdecay_distance, flammable=2, leaves=1, deco_block=1, dig_by_piston=1},
 		drop = drop,
 		_mcl_shears_drop = true,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
@@ -170,7 +173,8 @@ register_sapling("birchsapling", "Birch Sapling", "When placed on soil (such as 
 
 register_leaves("leaves", "Oak Leaves", "Oak leaves are grown from oak trees.", {"default_leaves.png"}, "mcl_core:sapling", 20, "mcl_core:apple", 200)
 register_leaves("darkleaves", "Dark Oak Leaves", "Dark oak leaves are grown from dark oak trees.", {"mcl_core_leaves_big_oak.png"}, "mcl_core:darksapling", 20, "mcl_core:apple", 200)
-register_leaves("jungleleaves", "Jungle Leaves", "Jungle leaves are grown from jungle trees.", {"default_jungleleaves.png"}, "mcl_core:junglesapling", 40)
+-- FIXME: Jungle leaves decay distance should be default, not 6. Distance of 6 was chosen to make the huge jungle tree work.
+register_leaves("jungleleaves", "Jungle Leaves", "Jungle leaves are grown from jungle trees.", {"default_jungleleaves.png"}, "mcl_core:junglesapling", 40, nil, nil, 6)
 register_leaves("acacialeaves", "Acacia Leaves", "Acacia leaves are grown from acacia trees.", {"default_acacia_leaves.png"}, "mcl_core:acaciasapling", 20)
 register_leaves("spruceleaves", "Spruce Leaves", "Spruce leaves are grown from spruce trees.", {"mcl_core_leaves_spruce.png"}, "mcl_core:sprucesapling", 20)
 register_leaves("birchleaves", "Birch Leaves", "Birch leaves are grown from birch trees.", {"mcl_core_leaves_birch.png"}, "mcl_core:birchsapling", 20)
