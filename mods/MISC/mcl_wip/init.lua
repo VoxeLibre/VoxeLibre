@@ -7,7 +7,6 @@ local wip_items = {
 	"mcl_end:chorus_flower",
 	"mcl_end:chorus_flower_dead",
 	"mcl_fishing:fishing_rod",
-	"mcl_maps:filled_map",
 	"mcl_maps:empty_map",
 	"gemalde:node_1",
 	"mcl_observers:observer",
