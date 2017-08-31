@@ -450,7 +450,7 @@ function mcl_core.generate_spruce_tree(pos)
 end
 
 mcl_core.generate_huge_spruce_tree = function(pos)
-	local r = math.random(1, 2)
+	local r = math.random(1, 3)
 	local path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_spruce_huge_"..r..".mts"
 	minetest.place_schematic({ x = pos.x - 4, y = pos.y - 1, z = pos.z - 5 }, path, "0", nil, false)
 end
