@@ -137,7 +137,7 @@ minetest.register_node("mcl_farming:hay_block", {
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	on_place = mcl_util.rotate_axis,
-	groups = {handy=1, flammable=2, building_block=1},
+	groups = {handy=1, flammable=2, building_block=1, fall_damage_add_percent=-80},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
