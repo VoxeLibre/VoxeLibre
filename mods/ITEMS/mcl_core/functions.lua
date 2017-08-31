@@ -703,19 +703,55 @@ local sapling_grow_action = function(tree_id, soil_needed, one_by_one, two_by_tw
 			if stage >= 3 then
 				-- This sapling grows in a special way when there are 4 saplings in a 2×2 pattern
 				if two_by_two then
-					-- Check the other 3 saplings we haven't checked yet
-					local p2 = {x=pos.x+1, y=pos.y, z=pos.z}
-					local p3 = {x=pos.x, y=pos.y, z=pos.z-1}
-					local p4 = {x=pos.x+1, y=pos.y, z=pos.z-1}
+					-- Check 8 surrounding saplings and try to find a 2×2 pattern
 					local is_sapling = function(pos, sapling)
 						return minetest.get_node(pos).name == sapling
 					end
-					if is_sapling(p2, sapling) and is_sapling(p3, sapling) and is_sapling(p4, sapling) then
+					local p2 = {x=pos.x+1, y=pos.y, z=pos.z}
+					local p3 = {x=pos.x, y=pos.y, z=pos.z-1}
+					local p4 = {x=pos.x+1, y=pos.y, z=pos.z-1}
+					local p5 = {x=pos.x-1, y=pos.y, z=pos.z-1}
+					local p6 = {x=pos.x-1, y=pos.y, z=pos.z}
+					local p7 = {x=pos.x-1, y=pos.y, z=pos.z+1}
+					local p8 = {x=pos.x, y=pos.y, z=pos.z+1}
+					local p9 = {x=pos.x+1, y=pos.y, z=pos.z+1}
+					local s2 = is_sapling(p2, sapling)
+					local s3 = is_sapling(p3, sapling)
+					local s4 = is_sapling(p4, sapling)
+					local s5 = is_sapling(p5, sapling)
+					local s6 = is_sapling(p6, sapling)
+					local s7 = is_sapling(p7, sapling)
+					local s8 = is_sapling(p8, sapling)
+					local s9 = is_sapling(p9, sapling)
+					-- In a 9×9 field there are 4 possible 2×2 squares. We check them all.
+					if s2 and s3 and s4 then
+						-- Success: Remove saplings and place tree
 						minetest.remove_node(pos, {name="air"})
 						minetest.remove_node(p2, {name="air"})
 						minetest.remove_node(p3, {name="air"})
 						minetest.remove_node(p4, {name="air"})
 						mcl_core.generate_tree(pos, tree_id, true)
+						return
+					elseif s3 and s5 and s6 then
+						minetest.remove_node(pos, {name="air"})
+						minetest.remove_node(p3, {name="air"})
+						minetest.remove_node(p5, {name="air"})
+						minetest.remove_node(p6, {name="air"})
+						mcl_core.generate_tree(p6, tree_id, true)
+						return
+					elseif s6 and s7 and s8 then
+						minetest.remove_node(pos, {name="air"})
+						minetest.remove_node(p6, {name="air"})
+						minetest.remove_node(p7, {name="air"})
+						minetest.remove_node(p8, {name="air"})
+						mcl_core.generate_tree(p7, tree_id, true)
+						return
+					elseif s2 and s8 and s9 then
+						minetest.remove_node(pos, {name="air"})
+						minetest.remove_node(p2, {name="air"})
+						minetest.remove_node(p8, {name="air"})
+						minetest.remove_node(p9, {name="air"})
+						mcl_core.generate_tree(p8, tree_id, true)
 						return
 					end
 				end
