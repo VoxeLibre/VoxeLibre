@@ -46,6 +46,18 @@ doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
 	return datastring
 end)
 
+doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
+	local formstring = ""
+	if def.groups.leafdecay ~= nil then
+		if def.drop ~= "" and def.drop ~= nil and def.drop ~= itemstring then
+			formstring = string.format("This block quickly decays when there is no wood block of any species within a distance of %d. When decaying, it disappears and may drop one of its regular drops. The block does not decay when the block has been placed by a player.", def.groups.leafdecay)
+		else
+			formstring = string.format("This block quickly decays and disappears when there is no wood block of any species within a distance of %d. The block does not decay when the block has been placed by a player.", def.groups.leafdecay)
+		end
+	end
+	return formstring
+end)
+
 -- nodes which have flower placement rules
 doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
 	local datastring = ""
