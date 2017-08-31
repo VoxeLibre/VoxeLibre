@@ -383,16 +383,16 @@ local function register_biomes()
 		humidity_point = 0,
 	})
 
-	-- Hot biomes
+	-- Mesa
 	minetest.register_biome({
 		name = "mesa",
 		node_top = "mcl_colorblocks:hardened_clay",
 		depth_top = 1,
 		node_filler = "mcl_colorblocks:hardened_clay",
-		depth_filler = 1,
+		depth_filler = 35,
 		node_riverbed = "mcl_core:redsand",
 		depth_riverbed = 2,
-		node_stone = "mcl_core:stone",
+		node_stone = "mcl_colorblocks:hardened_clay",
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 88,
@@ -402,9 +402,9 @@ local function register_biomes()
 	minetest.register_biome({
 		name = "mesa_ocean",
 		node_top = "mcl_core:redsand",
-		depth_top = 1,
-		node_filler = "mcl_core:redsand",
-		depth_filler = 2,
+		depth_top = 3,
+		node_filler = "mcl_colorblocks:hardened_clay",
+		depth_filler = 1,
 		node_riverbed = "mcl_core:redsand",
 		depth_riverbed = 2,
 		y_min = mcl_vars.mg_overworld_min,
