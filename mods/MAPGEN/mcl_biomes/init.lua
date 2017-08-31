@@ -1018,7 +1018,7 @@ end
 
 local function register_decorations()
 
-	-- Oak tree and log
+	-- Oak
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass"},
@@ -1039,41 +1039,7 @@ local function register_decorations()
 		rotation = "random",
 	})
 
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass"},
-		sidelen = 16,
-		noise_params = {
-			offset = 0.00018,
-			scale = 0.00011,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 2,
-			octaves = 3,
-			persist = 0.66
-		},
-		biomes = {"deciduous_forest"},
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = {
-			size = {x = 3, y = 3, z = 1},
-			data = {
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "mcl_core:tree", param2 = 12, prob = 191},
-				{name = "mcl_core:tree", param2 = 12},
-				{name = "mcl_core:tree", param2 = 12, prob = 127},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-			},
-		},
-		flags = "place_center_x",
-		rotation = "random",
-	})
-
-	-- Jungle tree and log
-
+	-- Jungle tree
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol"},
@@ -1117,34 +1083,7 @@ local function register_decorations()
 		flags = "place_center_x, place_center_z",
 	})
 
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol"},
-		sidelen = 80,
-		fill_ratio = 0.01,
-		biomes = {"rainforest", "rainforest_swamp"},
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = {
-			size = {x = 3, y = 3, z = 1},
-			data = {
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "mcl_core:jungletree", param2 = 12, prob = 191},
-				{name = "mcl_core:jungletree", param2 = 12},
-				{name = "mcl_core:jungletree", param2 = 12, prob = 127},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-			},
-		},
-		flags = "place_center_x",
-		rotation = "random",
-	})
-
-	-- Taiga and temperate coniferous forest pine tree and log
-
+	-- Spruce
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
@@ -1164,41 +1103,7 @@ local function register_decorations()
 		flags = "place_center_x, place_center_z",
 	})
 
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
-		sidelen = 80,
-		noise_params = {
-			offset = 0.00018,
-			scale = 0.00011,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 2,
-			octaves = 3,
-			persist = 0.66
-		},
-		biomes = {"taiga", "coniferous_forest","coniferous_forest_dunes"},
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = {
-			size = {x = 3, y = 3, z = 1},
-			data = {
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "mcl_core:sprucetree", param2 = 12, prob = 191},
-				{name = "mcl_core:sprucetree", param2 = 12},
-				{name = "mcl_core:sprucetree", param2 = 12, prob = 127},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-			},
-		},
-		flags = "place_center_x",
-		rotation = "random",
-	})
-
-	-- Acacia tree and log
-
+	-- Acacia
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:coarse_dirt"},
@@ -1219,39 +1124,7 @@ local function register_decorations()
 		rotation = "random",
 	})
 
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass"},
-		sidelen = 16,
-		noise_params = {
-			offset = 0,
-			scale = 0.001,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 2,
-			octaves = 3,
-			persist = 0.66
-		},
-		biomes = {"savanna"},
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = {
-			size = {x = 3, y = 2, z = 1},
-			data = {
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "mcl_core:acaciatree", param2 = 12, prob = 191},
-				{name = "mcl_core:acaciatree", param2 = 12},
-				{name = "mcl_core:acaciatree", param2 = 12, prob = 127},
-			},
-		},
-		flags = "place_center_x",
-		rotation = "random",
-	})
-
-
-	-- Birch tree and log
-
+	-- Birch
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass"},
@@ -1270,40 +1143,6 @@ local function register_decorations()
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_birch.mts",
 		flags = "place_center_x, place_center_z",
 	})
-
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass"},
-		sidelen = 16,
-		noise_params = {
-			offset = 0.0,
-			scale = -0.00008,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 2,
-			octaves = 3,
-			persist = 0.66
-		},
-		biomes = {"deciduous_forest"},
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = {
-			size = {x = 3, y = 3, z = 1},
-			data = {
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "mcl_core:birchtree", param2 = 12},
-				{name = "mcl_core:birchtree", param2 = 12},
-				{name = "mcl_core:birchtree", param2 = 12, prob = 127},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-			},
-		},
-		flags = "place_center_x",
-		rotation = "random",
-	})
-
 
 	-- Dark Oak
 	minetest.register_decoration({
@@ -1518,6 +1357,162 @@ local function register_decorations()
 	register_large_flower("lilac", {"deciduous_forest", "coniferous_forest", "roofed_forest", "flower_forest"}, 10600, -0.007)
 	-- TODO: Make exclusive to sunflower plains
 	register_large_flower("sunflower", {"grassland", "sunflower_plains"}, 2940, -0.005)
+
+	-- Fallen logs
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.00018,
+			scale = 0.00011,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"taiga", "coniferous_forest","coniferous_forest_dunes"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = {
+			size = {x = 3, y = 3, z = 1},
+			data = {
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "mcl_core:sprucetree", param2 = 12, prob = 191},
+				{name = "mcl_core:sprucetree", param2 = 12},
+				{name = "mcl_core:sprucetree", param2 = 12, prob = 127},
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+			},
+		},
+		flags = "place_center_x",
+		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.0,
+			scale = -0.00008,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"deciduous_forest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = {
+			size = {x = 3, y = 3, z = 1},
+			data = {
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "mcl_core:birchtree", param2 = 12},
+				{name = "mcl_core:birchtree", param2 = 12},
+				{name = "mcl_core:birchtree", param2 = 12, prob = 127},
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+			},
+		},
+		flags = "place_center_x",
+		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0,
+			scale = 0.001,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"savanna"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = {
+			size = {x = 3, y = 2, z = 1},
+			data = {
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "mcl_core:acaciatree", param2 = 12, prob = 191},
+				{name = "mcl_core:acaciatree", param2 = 12},
+				{name = "mcl_core:acaciatree", param2 = 12, prob = 127},
+			},
+		},
+		flags = "place_center_x",
+		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol"},
+		sidelen = 80,
+		fill_ratio = 0.01,
+		biomes = {"rainforest", "rainforest_swamp"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = {
+			size = {x = 3, y = 3, z = 1},
+			data = {
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "mcl_core:jungletree", param2 = 12, prob = 191},
+				{name = "mcl_core:jungletree", param2 = 12},
+				{name = "mcl_core:jungletree", param2 = 12, prob = 127},
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+			},
+		},
+		flags = "place_center_x",
+		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.00018,
+			scale = 0.00011,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"deciduous_forest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = {
+			size = {x = 3, y = 3, z = 1},
+			data = {
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "mcl_core:tree", param2 = 12, prob = 191},
+				{name = "mcl_core:tree", param2 = 12},
+				{name = "mcl_core:tree", param2 = 12, prob = 127},
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+			},
+		},
+		flags = "place_center_x",
+		rotation = "random",
+	})
 
 	-- Lily pad
 	-- Spawn on Sea level in swamps only
