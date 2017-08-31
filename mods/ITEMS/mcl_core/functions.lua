@@ -324,8 +324,14 @@ end
 
 -- Oak
 function mcl_core.generate_oak_tree(pos)
-	local path = minetest.get_modpath("mcl_core") ..
-		"/schematics/mcl_core_oak_classic.mts"
+	local r = math.random(1, 12)
+	local path
+	if r == 1 then
+		path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_oak_balloon_small.mts"
+	else
+		path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_oak_classic.mts"
+
+	end
 	minetest.place_schematic({x = pos.x - 2, y = pos.y - 1 , z = pos.z - 2}, path, "random", nil, false)
 end
 

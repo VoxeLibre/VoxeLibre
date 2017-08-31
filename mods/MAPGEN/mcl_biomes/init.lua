@@ -1040,6 +1040,25 @@ local function register_decorations()
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.002083,
+			scale = 0.0022,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 3,
+			octaves = 3,
+			persist = 0.6,
+		},
+		biomes = {"deciduous_forest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_balloon_small.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
 
 	-- Jungle tree
 	minetest.register_decoration({
