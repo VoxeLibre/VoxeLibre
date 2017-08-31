@@ -1064,24 +1064,6 @@ local function register_decorations()
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol"},
-		sidelen = 80,
-		noise_params = {
-			offset = 0.0096,
-			scale = 0.025,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 2930,
-			octaves = 4,
-			persist = 0.6,
-		},
-		biomes = {"rainforest"},
-		y_min = 3,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_bush.mts",
-		flags = "place_center_x, place_center_z",
-	})
 
 	-- Spruce
 	minetest.register_decoration({
@@ -1357,6 +1339,26 @@ local function register_decorations()
 	register_large_flower("lilac", {"deciduous_forest", "coniferous_forest", "roofed_forest", "flower_forest"}, 10600, -0.007)
 	-- TODO: Make exclusive to sunflower plains
 	register_large_flower("sunflower", {"grassland", "sunflower_plains"}, 2940, -0.005)
+
+	-- Jungle bush
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.0096,
+			scale = 0.025,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2930,
+			octaves = 4,
+			persist = 0.6,
+		},
+		biomes = {"rainforest"},
+		y_min = 3,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_bush.mts",
+		flags = "place_center_x, place_center_z",
+	})
 
 	-- Fallen logs
 	minetest.register_decoration({
