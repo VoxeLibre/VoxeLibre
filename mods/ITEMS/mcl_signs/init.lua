@@ -326,6 +326,9 @@ minetest.register_node("mcl_signs:wall_sign", {
 			if not success then
 				return itemstack
 			end
+			if not minetest.settings:get_bool("creative_mode") then
+				itemstack:take_item()
+			end
 			sign_info = signtext_info_standing[rotation_level + 1]
 		-- Side
 		else
@@ -352,9 +355,6 @@ minetest.register_node("mcl_signs:wall_sign", {
 		text_entity:setyaw(sign_info.yaw)
 		text_entity:get_luaentity()._signnodename = nodeitem:get_name()
 
-		if not minetest.settings:get_bool("creative_mode") then
-			itemstack:take_item()
-		end
 		minetest.sound_play({name="default_place_node_hard", gain=1.0}, {pos = place_pos})
 
 		show_formspec(placer, place_pos)
