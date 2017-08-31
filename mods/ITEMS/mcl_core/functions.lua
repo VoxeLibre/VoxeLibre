@@ -2,6 +2,8 @@
 -- Lava vs water interactions
 --
 
+local mg_name = minetest.get_mapgen_setting("mg_name")
+
 minetest.register_abm({
 	label = "Lava cooling",
 	nodenames = {"group:lava"},
@@ -247,8 +249,10 @@ function mcl_core.generate_tree(pos, tree_type, two_by_two)
 	end
 end
 
--- For oak and birch
-local function generate_oaklike_tree(pos, trunk, leaves)
+-- Classic oak in v6 style
+local function generate_v6_oak(pos)
+	local trunk = "mcl_core:tree"
+	local leaves = "mcl_core:leaves"
 	node = {name = ""}
 	for dy=1,4 do
 		pos.y = pos.y+dy
@@ -310,12 +314,22 @@ local function generate_oaklike_tree(pos, trunk, leaves)
 	end
 end
 
+-- Oak
 function mcl_core.generate_oak_tree(pos)
-	generate_oaklike_tree(pos, "mcl_core:tree", "mcl_core:leaves")
+	if mg_name == "v6" then
+		generate_v6_oak_tree(pos)
+	else
+		local path = minetest.get_modpath("mcl_core") ..
+			"/schematics/mcl_core_oak_classic.mts"
+		minetest.place_schematic({x = pos.x - 2, y = pos.y - 1 , z = pos.z - 2}, path, "random", nil, false)
+	end
 end
 
+-- Birch
 function mcl_core.generate_birch_tree(pos)
-	generate_oaklike_tree(pos, "mcl_core:birchtree", "mcl_core:birchleaves")
+	local path = minetest.get_modpath("mcl_core") ..
+		"/schematics/mcl_core_birch.mts"
+	minetest.place_schematic({x = pos.x - 2, y = pos.y - 1, z = pos.z - 2}, path, "random", nil, false)
 end
 
 -- BEGIN of spruce tree generation functions --

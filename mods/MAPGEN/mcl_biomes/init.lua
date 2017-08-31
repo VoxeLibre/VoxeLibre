@@ -28,9 +28,10 @@ local function register_biomes()
 	-- Icesheet
 	minetest.register_biome({
 		name = "icesheet",
-		node_top = "mcl_core:gravel",
+		node_dust = "mcl_core:snowblock",
+		node_top = "mcl_core:snowblock",
 		depth_top = 2,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:snowblock",
 		depth_filler = 3,
 		node_stone = "mcl_core:packed_ice",
 		node_water_top = "mcl_core:ice",
@@ -38,7 +39,7 @@ local function register_biomes()
 		node_river_water = "mcl_core:ice",
 		node_riverbed = "mcl_core:gravel",
 		depth_riverbed = 2,
-		y_min = 0,
+		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 0,
 		humidity_point = 73,
@@ -56,7 +57,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:gravel",
 		depth_riverbed = 2,
 		y_min = mcl_vars.mg_overworld_min,
-		y_max = -1,
+		y_max = 0,
 		heat_point = 0,
 		humidity_point = 73,
 	})
@@ -1033,7 +1034,7 @@ local function register_decorations()
 		biomes = {"deciduous_forest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_v6.mts",
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -1266,7 +1267,7 @@ local function register_decorations()
 		biomes = {"deciduous_forest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/aspen_tree.mts",
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_birch.mts",
 		flags = "place_center_x, place_center_z",
 	})
 
