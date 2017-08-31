@@ -460,7 +460,7 @@ local function register_biomes()
 	-- Rainforest
 	minetest.register_biome({
 		name = "rainforest",
-		node_top = "mcl_core:podzol",
+		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 3,
@@ -1290,7 +1290,7 @@ local function register_decorations()
 		replacements = {
 			["mcl_flowers:fern"] = "mcl_flowers:double_fern"
 		},
-		place_on = {"mcl_core:podzol", "mcl_core:podzol_snow"},
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:podzol", "mcl_core:podzol_snow"},
 
 		sidelen = 16,
 		noise_params = {
@@ -1345,7 +1345,7 @@ local function register_decorations()
 	-- Jungle bush
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol"},
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 80,
 		noise_params = {
 			offset = 0.0096,
@@ -1440,7 +1440,7 @@ local function register_decorations()
 
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol"},
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.005,
 		biomes = {"rainforest"},
@@ -1541,7 +1541,7 @@ local function register_decorations()
 	-- Melon
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:podzol"},
+		place_on = {"mcl_core:dirt_with_grass"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.003,
@@ -1613,16 +1613,17 @@ local function register_decorations()
 	local fern_minimal = { "rainforest", "taiga", "mega_taiga", "cold_taiga" }
 	local fern_low = { "rainforest", "taiga", "mega_taiga" }
 	local fern_full = { "rainforest" }
-	register_grass_decoration("mcl_flowers:fern", -0.03,  0.09, fern_minimal, {"mcl_core:podzol"})
-	register_grass_decoration("mcl_flowers:fern", -0.015, 0.075, fern_minimal, {"mcl_core:podzol"})
-	register_grass_decoration("mcl_flowers:fern", 0,      0.06, fern_minimal, {"mcl_core:podzol"})
-	register_grass_decoration("mcl_flowers:fern", 0.015,  0.045, fern_low, {"mcl_core:podzol"})
-	register_grass_decoration("mcl_flowers:fern", 0.03,   0.03, fern_low, {"mcl_core:podzol"})
-	register_grass_decoration("mcl_flowers:fern", 0.01, 0.05, fern_full, {"mcl_core:podzol"})
-	register_grass_decoration("mcl_flowers:fern", 0.03, 0.03, fern_full, {"mcl_core:podzol"})
-	register_grass_decoration("mcl_flowers:fern", 0.05, 0.01, fern_full, {"mcl_core:podzol"})
-	register_grass_decoration("mcl_flowers:fern", 0.07, -0.01, fern_full, {"mcl_core:podzol"})
-	register_grass_decoration("mcl_flowers:fern", 0.09, -0.03, fern_full, {"mcl_core:podzol"})
+	local fern_surf = {"mcl_core:dirt_with_grass", "mcl_core:podzol"}
+	register_grass_decoration("mcl_flowers:fern", -0.03,  0.09, fern_minimal, fern_surf)
+	register_grass_decoration("mcl_flowers:fern", -0.015, 0.075, fern_minimal, fern_surf)
+	register_grass_decoration("mcl_flowers:fern", 0,      0.06, fern_minimal, fern_surf)
+	register_grass_decoration("mcl_flowers:fern", 0.015,  0.045, fern_low, fern_surf)
+	register_grass_decoration("mcl_flowers:fern", 0.03,   0.03, fern_low, fern_surf)
+	register_grass_decoration("mcl_flowers:fern", 0.01, 0.05, fern_full, fern_surf)
+	register_grass_decoration("mcl_flowers:fern", 0.03, 0.03, fern_full, fern_surf)
+	register_grass_decoration("mcl_flowers:fern", 0.05, 0.01, fern_full, fern_surf)
+	register_grass_decoration("mcl_flowers:fern", 0.07, -0.01, fern_full, fern_surf)
+	register_grass_decoration("mcl_flowers:fern", 0.09, -0.03, fern_full, fern_surf)
 
 	-- Dead bushes
 	minetest.register_decoration({
@@ -1735,7 +1736,7 @@ local function register_decorations()
 		})
 	end
 
-	local flower_biomes1 = {"grassland", "sunflower_plains", "flower_forest", "roofed_forest", "deciduous_forest", "coniferous_forest", "taiga"}
+	local flower_biomes1 = {"grassland", "sunflower_plains", "flower_forest", "roofed_forest", "deciduous_forest", "coniferous_forest", "taiga", "rainforest"}
 
 	register_flower("dandelion", flower_biomes1, 8)
 	register_flower("poppy", flower_biomes1, 9439)

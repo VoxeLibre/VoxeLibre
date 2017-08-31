@@ -194,7 +194,7 @@ mobs_mc.override.spawn = {
 	savanna = { "group:sand", "mcl_core:sandstone", "mcl_core:redsandstone" },
 	grassland_savanna = { mobs_mc.override.items.grass_block, "group:sand", "mcl_core:sandstone", "mcl_core:redsandstone" },
 	desert = { "group:sand" },
-	jungle = { "mcl_core:podzol", "mcl_core:jungletree", "mcl_core:jungleleaves", "mcl_flowers:fern" },
+	jungle = { "mcl_core:jungletree", "mcl_core:jungleleaves", "mcl_flowers:fern", "mcl_core:vine" },
 	snow = { "mcl_core:snow", "mcl_core:snowblock", "mcl_core:dirt_with_grass_snow" },
 	-- End stone added for shulkers because End cities don't generate yet
 	end_city = { "mcl_end:end_stone", "mcl_end:purpur_block" },
