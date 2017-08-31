@@ -447,7 +447,6 @@ function mcl_core.generate_spruce_tree(pos)
 
 	vm:set_data(data)
 	vm:write_to_map()
-	vm:update_map()
 end
 
 mcl_core.generate_huge_spruce_tree = function(pos)
@@ -593,7 +592,6 @@ function mcl_core.generate_v6_jungle_tree(pos)
 
 	vm:set_data(data)
 	vm:write_to_map()
-	vm:update_map()
 end
 
 function mcl_core.generate_jungle_tree(pos)
