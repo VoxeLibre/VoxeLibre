@@ -114,7 +114,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:dirt",
 		depth_riverbed = 2,
-		y_min = 15,
+		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 26,
 		humidity_point = 72,
@@ -129,7 +129,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:dirt",
 		depth_riverbed = 2,
 		y_min = mcl_vars.mg_overworld_min,
-		y_max = 1,
+		y_max = 0,
 		heat_point = 26,
 		humidity_point = 72,
 	})
@@ -232,14 +232,14 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 1,
-		y_max = 56,
+		y_max = 3,
 		heat_point = 47,
 		humidity_point = 73,  --was 70
 	})
 
 	minetest.register_biome({
 		name = "coniferous_forest_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:sand",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 3,
@@ -334,7 +334,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		node_stone = "mcl_core:sandstone",
-		y_min = 0,
+		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 57,
 		humidity_point = 0,  --was 0
@@ -349,7 +349,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = mcl_vars.mg_overworld_min,
-		y_max = 4,
+		y_max = 0,
 		heat_point = 57,
 		humidity_point = 0,  --was 0
 	})
@@ -392,13 +392,26 @@ local function register_biomes()
 		depth_filler = 1,
 		node_riverbed = "mcl_core:redsand",
 		depth_riverbed = 2,
-		node_stone = "mcl_colorblocks:hardened_clay",
-		y_min = -35,
+		node_stone = "mcl_core:stone",
+		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 88,
 		humidity_point = 20,
 	})
 
+	minetest.register_biome({
+		name = "mesa_ocean",
+		node_top = "mcl_core:redsand",
+		depth_top = 1,
+		node_filler = "mcl_core:redsand",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:redsand",
+		depth_riverbed = 2,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = 0,
+		heat_point = 88,
+		humidity_point = 20,
+	})
 
 	-- Savanna
 	minetest.register_biome({
@@ -515,33 +528,6 @@ local function register_biomes()
 		humidity_point = 99,
 	})
 
-
-	--cold
-	minetest.register_biome({
-		name = "mushroom_cold",
-		node_dust = "mcl_core:snow",
-		node_top = "mcl_core:mycelium_snow",
-		depth_top = 1,
-		node_filler = "mcl_core:coarse_dirt",
-		depth_filler = 3,
-		node_riverbed = "mcl_core:dirt",
-		depth_riverbed = 2,
-		y_min = 56,
-		y_max = mcl_vars.mg_overworld_max,
-		heat_point = -13,
-		humidity_point = 30,
-	})
-
-
-
-	-- Underground in Overworld
-	minetest.register_biome({
-		name = "underground",
-		y_min = mcl_vars.mg_overworld_min,
-		y_max = mcl_util.layer_to_y(61),
-		heat_point = 50,
-		humidity_point = 50,
-	})
 end
 
 -- Register biomes of non-Overworld biomes
@@ -1409,7 +1395,7 @@ local function register_decorations()
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_core:cactus",
-		biomes = {"red_desert","desert","grassland_dunes", "coniferous_forest_dunes"},
+		biomes = {"red_desert","desert"},
 		height = 1,
 		height_max = 3,
 	})

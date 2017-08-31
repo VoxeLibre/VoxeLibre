@@ -938,7 +938,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 			local cx = minp.x + math.floor((divx+0.5)*divlen)
 			local cz = minp.z + math.floor((divz+0.5)*divlen)
 			if minetest.get_node({x=cx,y=1,z=cz}).name == "mcl_core:water_source" and
-					minetest.get_node({x=cx,y=0,z=cz}).name == "mcl_core:sand" then
+					minetest.get_item_group(minetest.get_node({x=cx,y=0,z=cz}).name, "sand") == 1 then
 				local is_shallow = true
 				local num_water_around = 0
 				if minetest.get_node({x=cx-divlen*2,y=1,z=cz+0}).name == "mcl_core:water_source" then
@@ -955,7 +955,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 				if is_shallow then
 					for x1=-divlen,divlen do
 					for z1=-divlen,divlen do
-						if minetest.get_node({x=cx+x1,y=0,z=cz+z1}).name == "mcl_core:sand" or minetest.get_node({x=cx+x1,y=0,z=cz+z1}).name == "mcl_core:sandstone" then
+						if minetest.get_item_group(minetest.get_node({x=cx+x1,y=0,z=cz+z1}).name, "sand") == 1 then
 							minetest.set_node({x=cx+x1,y=0,z=cz+z1}, {name="mcl_core:clay"})
 						end
 					end
