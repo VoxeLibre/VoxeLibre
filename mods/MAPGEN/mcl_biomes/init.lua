@@ -1108,14 +1108,32 @@ local function register_decorations()
 			offset = 0.0096,
 			scale = 0.0022,
 			spread = {x = 250, y = 250, z = 250},
-			seed = 2,
+			seed = 2500,
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"taiga", "coniferous_forest","coniferous_forest_dunes"},
+		biomes = {"taiga", "coniferous_forest"},
 		y_min = 2,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/pine_tree.mts",
+		flags = "place_center_x, place_center_z",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.0025,
+			scale = 0.0022,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2500,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"taiga", "coniferous_forest"},
+		y_min = 2,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_lollipop.mts",
 		flags = "place_center_x, place_center_z",
 	})
 
