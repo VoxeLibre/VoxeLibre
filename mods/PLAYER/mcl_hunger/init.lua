@@ -7,6 +7,13 @@ end
 
 
 mcl_hunger = {}
+
+-- This variable tells you if the hunger gameplay mechanic is active.
+-- IMPORTANT: If damage is disabled on load time, most of the functions are NOT
+-- available! Check if mcl_hunger is active before using the API.
+mcl_hunger.active = false
+
+
 mcl_hunger.exhaust = function() end
 
 mcl_hunger.HUD_TICK = 0.1
@@ -23,8 +30,6 @@ mcl_hunger.EXHAUST_REGEN = 6000 -- Regenerate 1 HP
 mcl_hunger.EXHAUST_LVL = 4000 -- at what exhaustion player saturation gets lowered
 
 mcl_hunger.SATURATION_INIT = 5 -- Initial saturation for new/respawning players
-
-mcl_hunger.active = false
 
 if minetest.settings:get_bool("enable_damage") then
 mcl_hunger.active = true

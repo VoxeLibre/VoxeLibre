@@ -135,7 +135,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
 local drink_milk = function(itemstack, player, pointed_thing)
 	local bucket = minetest.do_item_eat(0, "mcl_buckets:bucket_empty", itemstack, player, pointed_thing)
 	-- Check if we were allowed to drink this (eat delay check)
-	if bucket:get_name() ~= "mcl_mobitems:milk_bucket" then
+	if bucket:get_name() ~= "mcl_mobitems:milk_bucket" and mcl_hunger.active then
 		mcl_hunger.stop_poison(player)
 	end
 	return bucket
