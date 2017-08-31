@@ -227,7 +227,11 @@ function mcl_core.generate_tree(pos, tree_type, two_by_two)
 	local node
 
 	if tree_type == nil or tree_type == 1 then
-		mcl_core.generate_oak_tree(pos)
+		if mg_name == "v6" then
+			mcl_core.generate_v6_oak_tree(pos)
+		else
+			mcl_core.generate_oak_tree(pos)
+		end
 	elseif tree_type == 2 and two_by_two then
 		mcl_core.generate_dark_oak_tree(pos)
 	elseif tree_type == 3 then
@@ -242,7 +246,11 @@ function mcl_core.generate_tree(pos, tree_type, two_by_two)
 		if two_by_two then
 			mcl_core.generate_huge_jungle_tree(pos)
 		else
-			mcl_core.generate_jungle_tree(pos)
+			if mg_name == "v6" then
+				mcl_core.generate_v6_jungle_tree(pos)
+			else
+				mcl_core.generate_jungle_tree(pos)
+			end
 		end
 	elseif tree_type == 6 then
 		mcl_core.generate_birch_tree(pos)
@@ -250,7 +258,7 @@ function mcl_core.generate_tree(pos, tree_type, two_by_two)
 end
 
 -- Classic oak in v6 style
-local function generate_v6_oak(pos)
+function mcl_core.generate_v6_oak_tree(pos)
 	local trunk = "mcl_core:tree"
 	local leaves = "mcl_core:leaves"
 	node = {name = ""}
@@ -316,13 +324,9 @@ end
 
 -- Oak
 function mcl_core.generate_oak_tree(pos)
-	if mg_name == "v6" then
-		generate_v6_oak_tree(pos)
-	else
-		local path = minetest.get_modpath("mcl_core") ..
-			"/schematics/mcl_core_oak_classic.mts"
-		minetest.place_schematic({x = pos.x - 2, y = pos.y - 1 , z = pos.z - 2}, path, "random", nil, false)
-	end
+	local path = minetest.get_modpath("mcl_core") ..
+		"/schematics/mcl_core_oak_classic.mts"
+	minetest.place_schematic({x = pos.x - 2, y = pos.y - 1 , z = pos.z - 2}, path, "random", nil, false)
 end
 
 -- Birch
@@ -538,7 +542,7 @@ local function add_trunk_and_leaves(data, a, pos, tree_cid, leaves_cid,
 end
 
 -- Old jungle tree grow function from Minetest Game 0.4.15, imitating v6 jungle trees
-function mcl_core.generate_jungle_tree(pos)
+function mcl_core.generate_v6_jungle_tree(pos)
 	--[[
 		NOTE: Jungletree-placing code is currently duplicated in the engine
 		and in games that have saplings; both are deprecated but not
@@ -582,6 +586,12 @@ function mcl_core.generate_jungle_tree(pos)
 	vm:set_data(data)
 	vm:write_to_map()
 	vm:update_map()
+end
+
+function mcl_core.generate_jungle_tree(pos)
+	local path = minetest.get_modpath("mcl_core") ..
+		"/schematics/mcl_core_jungle_tree.mts"
+	minetest.place_schematic({x = pos.x - 2, y = pos.y - 1, z = pos.z - 2}, path, "random", nil, false)
 end
 
 -- Generate huge jungle tree with 2×2 trunk.

@@ -1023,7 +1023,7 @@ local function register_decorations()
 	-- Oak
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass"},
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.025,
@@ -1044,9 +1044,9 @@ local function register_decorations()
 	-- Jungle tree
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol"},
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 80,
-		fill_ratio = 0.002,
+		fill_ratio = 0.0025,
 		biomes = {"rainforest"},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
@@ -1056,13 +1056,26 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol"},
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 80,
-		fill_ratio = 0.09,
+		fill_ratio = 0.045,
 		biomes = {"rainforest", "rainforest_swamp"},
-		y_min = 0,
+		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/jungle_tree.mts",
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_tree.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	-- Oak in jungle
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.004,
+		biomes = {"rainforest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -1348,7 +1361,7 @@ local function register_decorations()
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 80,
 		noise_params = {
-			offset = 0.0096,
+			offset = 0.0196,
 			scale = 0.025,
 			spread = {x = 250, y = 250, z = 250},
 			seed = 2930,
