@@ -863,15 +863,17 @@ local function register_dimension_ores()
 		wherein         = {"mcl_nether:netherrack", "mcl_core:stone"},
 		column_height_min = 1,
 		column_height_max = 1,
+		column_midpoint_factor = 0,
 		y_min           = mcl_util.layer_to_y(63, "nether"),
-		y_max           = mcl_util.layer_to_y(65, "nether"),
-		noise_threshold = 0.0,
+		-- This should be 65, but for some reason with this setting, the sheet ore really stops at 65. o_O
+		y_max           = mcl_util.layer_to_y(65+2, "nether"),
+		noise_threshold = 0.2,
 		noise_params    = {
 			offset = 0.0,
-			scale = 0.2,
-			spread = {x = 50, y = 50, z = 50},
+			scale = 0.5,
+			spread = {x = 20, y = 20, z = 20},
 			seed = 766,
-			octaves = 1,
+			octaves = 3,
 			persist = 0.6,
 		},
 	})
