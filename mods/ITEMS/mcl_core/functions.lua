@@ -450,9 +450,11 @@ function mcl_core.generate_spruce_tree(pos)
 	vm:update_map()
 end
 
--- Now this just generates a “boring” 1×1 spruce tree.
--- TODO: Generate huge spruce tree with 2×2 trunk.
-mcl_core.generate_huge_spruce_tree = mcl_core.generate_spruce_tree
+mcl_core.generate_huge_spruce_tree = function(pos)
+	local r = math.random(1, 2)
+	local path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_spruce_huge_"..r..".mts"
+	minetest.place_schematic({ x = pos.x - 4, y = pos.y - 1, z = pos.z - 5 }, path, "0", nil, false)
+end
 
 -- END of spruce tree functions --
 
@@ -803,8 +805,7 @@ local grow_oak = sapling_grow_action(1, 1, true, false)
 local grow_dark_oak = sapling_grow_action(2, 2, false, true, "mcl_core:darksapling")
 local grow_jungle_tree = sapling_grow_action(5, 1, true, true, "mcl_core:junglesapling")
 local grow_acacia = sapling_grow_action(4, 2, true, false)
--- TODO: Activate 2×2 mode for spruce when 2×2 spruce schematic is available
-local grow_spruce = sapling_grow_action(3, 1, true, false, "mcl_core:sprucesapling")
+local grow_spruce = sapling_grow_action(3, 1, true, true, "mcl_core:sprucesapling")
 local grow_birch = sapling_grow_action(6, 1, true, false)
 
 -- Attempts to grow the sapling at the specified position
