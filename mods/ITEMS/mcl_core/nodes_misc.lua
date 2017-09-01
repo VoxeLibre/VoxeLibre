@@ -26,6 +26,9 @@ minetest.register_node("mcl_core:slimeblock", {
 			{-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
 		}
 	},
+	selection_box = {
+		type = "regular",
+	},
 	tiles = {"mcl_core_slime.png"},
 	paramtype = "light",
 	use_texture_alpha = true,
