@@ -81,7 +81,7 @@ minetest.register_globalstep(function(dtime)
 							-- If this happens, itemstring was "" (=hand). This is always a bug, the hand must never drop as item.
 							else
 								-- Scream this to the error log because this is bad.
-								minetest.log("error", "Player "..player:get_player_name().." collected a hand at "..minetest.pos_to_string(object:getpos()).."!")
+								minetest.log("error", "Player "..player:get_player_name().." collected a hand at "..minetest.pos_to_string(object:getpos()).." (age="..object:get_luaentity().age..")!")
 
 							end
 
