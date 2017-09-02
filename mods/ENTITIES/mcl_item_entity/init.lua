@@ -67,7 +67,7 @@ minetest.register_globalstep(function(dtime)
 					if object:get_luaentity()._magnet_timer >= 0 and object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time and inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
 
 						-- Collection
-						if vector.distance(checkpos, object:getpos()) <= item_drop_settings.radius_collect then
+						if vector.distance(checkpos, object:getpos()) <= item_drop_settings.radius_collect and not object:get_luaentity()._collected then
 
 							if object:get_luaentity().itemstring ~= "" then
 								inv:add_item("main", ItemStack(object:get_luaentity().itemstring))
@@ -77,10 +77,20 @@ minetest.register_globalstep(function(dtime)
 									gain = 1.0,
 								})
 								check_pickup_achievements(object, player)
-								object:get_luaentity().itemstring = ""
-								object:remove()
-								collected = true
+
+							-- If this happens, itemstring was "" (=hand). This is always a bug, the hand must never drop as item.
+							else
+								-- Scream this to the error log because this is bad.
+								minetest.log("error", "Player "..player:get_player_name().." collected a hand at "..minetest.pos_to_string(object:getpos()).."!")
+
 							end
+
+							-- Destroy entity
+
+							-- This just prevents this sectino to be run again because object:remove() doesn't remove the item immediately.
+							object:get_luaentity()._collected = true
+							object:remove()
+							collected = true
 
 						-- Magnet
 						else
@@ -119,7 +129,7 @@ minetest.register_globalstep(function(dtime)
 										end
 										if inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
 											inv:add_item("main", ItemStack(object:get_luaentity().itemstring))
-											if object:get_luaentity().itemstring ~= "" then
+											if not object:get_luaentity()._collected then
 												minetest.sound_play("item_drop_pickup", {
 													pos = pos,
 													max_hear_distance = 16,
@@ -127,7 +137,7 @@ minetest.register_globalstep(function(dtime)
 												})
 											end
 											check_pickup_achievements(object, player)
-											object:get_luaentity().itemstring = ""
+											object:get_luaentity()._collected = true
 											object:remove()
 										else
 											enable_physics(object, object:get_luaentity())
@@ -480,6 +490,13 @@ core.register_entity(":__builtin:item", {
 			self.object:remove()
 			return
 		end
+		-- If, for some reason, an item entity with itemstring == "" (hand) appears, this is very bad.
+		if not self._hand_bug_detected and self.age > 1 and self.itemstring == "" then
+			-- We must this scream this into the error console. The bug is rare an
+			minetest.log("error", "A hand item entity appeared at "..minetest.pos_to_string(self.object:getpos()).. "!")
+			self._hand_bug_detected = true
+		end
+
 		local p = self.object:getpos()
 		local node = core.get_node_or_nil(p)
 		local in_unloaded = (node == nil)
