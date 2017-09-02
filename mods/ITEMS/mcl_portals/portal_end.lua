@@ -72,7 +72,8 @@ local destroy_portal = function(pos)
 	end
 end
 
--- Nodes
+-- Fake end portal
+-- TODO: Create real end portal
 minetest.register_node("mcl_portals:portal_end", {
 	description = "End Portal",
 	_doc_items_longdesc = "An End portal teleports creatures and objects to the mysterious End dimension (and back!).",
@@ -441,6 +442,17 @@ minetest.register_node("mcl_portals:end_portal_frame", {
 	light_source = 1,
 	_mcl_blast_resistance = 18000000,
 	_mcl_hardness = -1,
+	-- Place eye of ender into end portal frame.
+	-- TODO: Activate end portal if portal is complete.
+	on_rightclick = function(pos, node, user, itemstack)
+		if itemstack:get_name() == "mcl_end:ender_eye" then
+			minetest.swap_node(pos, { name = "mcl_portals:end_portal_frame_eye", param2 = node.param2 })
+			if not minetest.settings:get_bool("creative_mode") then
+				itemstack:take_item()
+			end
+		end
+		return itemstack
+	end,
 })
 
 minetest.register_node("mcl_portals:end_portal_frame_eye", {
@@ -464,6 +476,7 @@ minetest.register_node("mcl_portals:end_portal_frame_eye", {
 	light_source = 1,
 	_mcl_blast_resistance = 18000000,
 	_mcl_hardness = -1,
+	-- TODO: Destroy end portal if this block got destroyed
 })
 
 if minetest.get_modpath("doc") then
