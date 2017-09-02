@@ -109,7 +109,7 @@ register_rail("mcl_minecarts:activator_rail_on",
 
 -- Detector rail (off)
 register_rail("mcl_minecarts:detector_rail",
-	{"mcl_minecarts_rail_detector.png", "default_rail_curved.png^[colorize:#FFFFFF:96", "default_rail_t_junction.png^[colorize:#FFFFFF:96", "default_rail_crossing.png^[colorize:#FFFFFF:96"},
+	{"mcl_minecarts_rail_detector.png", "mcl_minecarts_rail_detector_curved.png", "mcl_minecarts_rail_detector_t_junction.png", "mcl_minecarts_rail_detector_crossing.png"},
 	{
 		description = "Detector Rail",
 		_doc_items_longdesc = "Rails can be used to build transport tracks for minecarts. A detector rail is able to detect a minecart above it and powers redstone mechanisms.",
@@ -124,7 +124,7 @@ register_rail("mcl_minecarts:detector_rail",
 
 -- Detector rail (on)
 register_rail("mcl_minecarts:detector_rail_on",
-	{"mcl_minecarts_rail_detector_powered.png", "default_rail_curved.png^[colorize:#FFFFFF:128", "default_rail_t_junction.png^[colorize:#FFFFFF:128", "default_rail_crossing.png^[colorize:#FFFFFF:128"},
+	{"mcl_minecarts_rail_detector_powered.png", "mcl_minecarts_rail_detector_curved_powered.png", "mcl_minecarts_rail_detector_t_junction_powered.png", "mcl_minecarts_rail_detector_crossing_powered.png"},
 	{
 		_doc_items_create_entry = false,
 		mesecons = {
