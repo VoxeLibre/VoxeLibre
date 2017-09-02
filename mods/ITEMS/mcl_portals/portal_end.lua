@@ -88,7 +88,7 @@ minetest.register_node("mcl_portals:portal_end", {
 				type = "vertical_frames",
 				aspect_w = 16,
 				aspect_h = 16,
-				length = 2.0,
+				length = 1.0,
 			},
 		},
 		{
@@ -97,7 +97,7 @@ minetest.register_node("mcl_portals:portal_end", {
 				type = "vertical_frames",
 				aspect_w = 16,
 				aspect_h = 16,
-				length = 2.0,
+				length = 1.0,
 			},
 		},
 	},
