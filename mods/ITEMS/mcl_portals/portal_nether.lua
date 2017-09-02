@@ -369,7 +369,7 @@ minetest.register_abm({
 			1, --minsize
 			2, --maxsize
 			false, --collisiondetection
-			"mcl_portals_particle.png" --texture
+			"mcl_particles_teleport.png" --texture
 		)
 		for _,obj in ipairs(minetest.get_objects_inside_radius(pos,1)) do		--maikerumine added for objects to travel
 			local lua_entity = obj:get_luaentity() --maikerumine added for objects to travel
