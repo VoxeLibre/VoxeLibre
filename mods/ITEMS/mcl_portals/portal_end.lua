@@ -427,6 +427,7 @@ minetest.override_item(portal_frame, {
 -- End Portal Frame (TODO)
 minetest.register_node("mcl_portals:end_portal_frame", {
 	description = "End Portal Frame",
+	_doc_items_longdesc = "This block is currently only used for decoration. You can place an eye of ender into it for fun, but nothing will happen.",
 	groups = { creative_breakable = 1, deco_block = 1 },
 	tiles = { "mcl_portals_endframe_top.png", "mcl_portals_endframe_bottom.png", "mcl_portals_endframe_side.png" },
 	paramtype2 = "facedir",
