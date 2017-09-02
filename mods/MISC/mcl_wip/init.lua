@@ -20,7 +20,6 @@ local wip_items = {
 	"mcl_minecarts:furnace_minecart",
 	"mcl_minecarts:tnt_minecart",
 	"mcl_minecarts:activator_rail",
-	"mcl_minecarts:detector_rail",
 	"mcl_portals:end_portal_frame",
 	"mcl_portals:end_portal_frame_eye",
 }
