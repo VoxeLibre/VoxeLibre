@@ -415,12 +415,61 @@ minetest.register_abm({
 
 local portal_open_help = "To open an End portal, place an upright frame of quartz blocks with a length of 4 blocks and a height of 5 blocks, leaving only air in the center. After placing this frame, use an eye of ender on the frame. The eye of ender is destroyed in the process."
 
--- Frame material
+-- Fake frame material
 minetest.override_item(portal_frame, {
 	_doc_items_longdesc = "A block of quartz can be used to create End portals.",
 	_doc_items_usagehelp = portal_open_help,
 	on_destruct = destroy_portal,
 })
+
+
+-- End Portal Frame (TODO)
+minetest.register_node("mcl_portals:end_portal_frame", {
+	description = "End Portal Frame",
+	groups = { creative_breakable = 1, deco_block = 1 },
+	tiles = { "mcl_portals_endframe_top.png", "mcl_portals_endframe_top.png", "mcl_portals_endframe_side.png" },
+	paramtype2 = "facedir",
+	drawtype = "nodebox",
+	node_box = {
+		type = "fixed",
+		fixed = { -0.5, -0.5, -0.5, 0.5, 5/16, 0.5 },
+	},
+	is_ground_content = false,
+	sounds = mcl_sounds.node_sound_stone_defaults(),
+	paramtype = "light",
+	sunlight_propagates = false,
+	light_source = 1,
+	_mcl_blast_resistance = 18000000,
+	_mcl_hardness = -1,
+})
+
+minetest.register_node("mcl_portals:end_portal_frame_eye", {
+	description = "End Portal Frame with Eye of Ender",
+	_doc_items_create_entry = false,
+	groups = { creative_breakable = 1, not_in_creative_inventory = 1 },
+	tiles = { "mcl_portals_endframe_top.png^[lowpart:75:mcl_portals_endframe_eye.png", "mcl_portals_endframe_top.png", "mcl_portals_endframe_eye.png^mcl_portals_endframe_side.png" },
+	paramtype2 = "facedir",
+	drawtype = "nodebox",
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{ -0.5, -0.5, -0.5, 0.5, 5/16, 0.5 }, -- Frame
+			{ -4/16, 5/16, -4/16, 4/16, 0.5, 4/16 }, -- Eye
+		},
+	},
+	is_ground_content = false,
+	sounds = mcl_sounds.node_sound_stone_defaults(),
+	paramtype = "light",
+	sunlight_propagates = false,
+	light_source = 1,
+	_mcl_blast_resistance = 18000000,
+	_mcl_hardness = -1,
+})
+
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mcl_portals:end_portal_frame", "nodes", "mcl_portals:end_portal_frame_eye")
+end
+
 
 -- Portal opener
 minetest.override_item("mcl_end:ender_eye", {
