@@ -19,7 +19,7 @@ local np_cave = {
 	persist = 0.7
 }
 -- Portal frame material
-local portal_frame = "mcl_nether:quartz_block"
+local fake_portal_frame = "mcl_nether:quartz_block"
 
 -- Table of objects (including players) which recently teleported by a
 -- End portal. Those objects have a brief cooloff period before they
@@ -56,7 +56,7 @@ local destroy_portal = function(pos)
 			end
 		end
 		local nn = minetest.get_node(p).name
-		if nn == portal_frame or nn == "mcl_portals:portal_end" then
+		if nn == fake_portal_frame or nn == "mcl_portals:portal_end" then
 			-- Remove portal nodes, but not myself
 			if nn == "mcl_portals:portal_end" and not vector.equals(p, pos) then
 				minetest.remove_node(p)
@@ -136,19 +136,19 @@ local function build_end_portal(pos, target3)
 	local p2 = {x = p1.x + 3, y = p1.y + 4, z = p1.z}
 
 	for i = 1, 4 do
-		minetest.set_node(p, {name = portal_frame})
+		minetest.set_node(p, {name = fake_portal_frame})
 		p.y = p.y + 1
 	end
 	for i = 1, 3 do
-		minetest.set_node(p, {name = portal_frame})
+		minetest.set_node(p, {name = fake_portal_frame})
 		p.x = p.x + 1
 	end
 	for i = 1, 4 do
-		minetest.set_node(p, {name = portal_frame})
+		minetest.set_node(p, {name = fake_portal_frame})
 		p.y = p.y - 1
 	end
 	for i = 1, 3 do
-		minetest.set_node(p, {name = portal_frame})
+		minetest.set_node(p, {name = fake_portal_frame})
 		p.x = p.x - 1
 	end
 
@@ -216,7 +216,7 @@ local function move_check2(p1, max, dir)
 
 	while p[dir] ~= max do
 		p[dir] = p[dir] + d
-		if minetest.get_node(p).name ~= portal_frame then
+		if minetest.get_node(p).name ~= fake_portal_frame then
 			return false
 		end
 		-- Abort if any of the portal frame blocks already has metadata.
@@ -417,7 +417,7 @@ minetest.register_abm({
 local portal_open_help = "To open an End portal, place an upright frame of quartz blocks with a length of 4 blocks and a height of 5 blocks, leaving only air in the center. After placing this frame, use an eye of ender on the frame. The eye of ender is destroyed in the process."
 
 -- Fake frame material
-minetest.override_item(portal_frame, {
+minetest.override_item(fake_portal_frame, {
 	_doc_items_longdesc = "A block of quartz can be used to create End portals.",
 	_doc_items_usagehelp = portal_open_help,
 	on_destruct = destroy_portal,
@@ -443,17 +443,6 @@ minetest.register_node("mcl_portals:end_portal_frame", {
 	light_source = 1,
 	_mcl_blast_resistance = 18000000,
 	_mcl_hardness = -1,
-	-- Place eye of ender into end portal frame.
-	-- TODO: Activate end portal if portal is complete.
-	on_rightclick = function(pos, node, user, itemstack)
-		if itemstack:get_name() == "mcl_end:ender_eye" then
-			minetest.swap_node(pos, { name = "mcl_portals:end_portal_frame_eye", param2 = node.param2 })
-			if not minetest.settings:get_bool("creative_mode") then
-				itemstack:take_item()
-			end
-		end
-		return itemstack
-	end,
 })
 
 minetest.register_node("mcl_portals:end_portal_frame_eye", {
@@ -499,7 +488,8 @@ minetest.override_item("mcl_end:ender_eye", {
 		end
 
 		-- If used on portal frame, open a portal
-		if pointed_thing.under and node.name == portal_frame then
+		-- FIXME: This is the fake portal. Remove when the real end portal frame works
+		if pointed_thing.under and node.name == fake_portal_frame then
 			local opened = make_end_portal(pointed_thing.under)
 			if opened then
 				if minetest.get_modpath("doc") then
@@ -512,8 +502,21 @@ minetest.override_item("mcl_end:ender_eye", {
 					itemstack:take_item() -- 1 use
 				end
 			end
-		end
 
+		-- Place eye of ender into end portal frame
+		elseif pointed_thing.under and node.name == "mcl_portals:end_portal_frame" then
+			-- TODO: Open real end portal
+			minetest.swap_node(pointed_thing.under, { name = "mcl_portals:end_portal_frame_eye", param2 = node.param2 })
+			if minetest.get_modpath("doc") then
+				doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:end_portal_frame")
+			end
+			minetest.sound_play(
+				"default_place_node_hard",
+				{pos = pointed_thing.under, gain = 0.5, max_hear_distance = 16})
+			if not minetest.settings:get_bool("creative_mode") then
+				itemstack:take_item() -- 1 use
+			end
+		end
 		return itemstack
 	end,
 })
