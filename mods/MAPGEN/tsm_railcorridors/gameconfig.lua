@@ -80,7 +80,7 @@ function tsm_railcorridors.get_treasures(pr)
 			{ itemstring = "mcl_minecarts:rail", weight = 20, amount_min = 4, amount_max = 8 },
 			{ itemstring = "mcl_torches:torch", weight = 15, amount_min = 1, amount_max = 16 },
 			{ itemstring = "mcl_minecarts:rail", weight = 5, amount_min = 1, amount_max = 4 }, -- TODO: Activator Rail
-			{ itemstring = "mcl_minecarts:rail", weight = 5, amount_min = 1, amount_max = 4 }, -- TODO: Detector Rail
+			{ itemstring = "mcl_minecarts:detector_rail", weight = 5, amount_min = 1, amount_max = 4 },
 			{ itemstring = "mcl_minecarts:golden_rail", weight = 5, amount_min = 1, amount_max = 4 },
 		}
 	}}, pr)
