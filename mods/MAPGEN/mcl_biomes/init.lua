@@ -1837,7 +1837,7 @@ local function register_decorations()
 			y_min = 1,
 			y_max = mcl_vars.mg_overworld_max,
 			decoration = mushrooms[m],
-			spawn_by = { "mcl_core:tree", "mcl_core:sprucetree", "mcl_core:darktree", "mcl_core:birchtree", "mcl_core:jungletree", },
+			spawn_by = { "mcl_core:tree", "mcl_core:sprucetree", "mcl_core:darktree", "mcl_core:birchtree" },
 			num_spawn_by = 1,
 		})
 	end
