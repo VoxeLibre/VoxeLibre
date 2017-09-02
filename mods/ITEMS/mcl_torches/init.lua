@@ -40,8 +40,8 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 		drop = itemstring,
 		selection_box = {
 			type = "wallmounted",
-			wall_top = {-1/16, -2/16, -1/16, 1/16, 0.5, 1/16},
-			wall_bottom = {-1/16, -0.5, -1/16, 1/16, 2/16, 1/16},
+			wall_top = {-1/16, -1/16, -1/16, 1/16, 0.5, 1/16},
+			wall_bottom = {-1/16, -0.5, -1/16, 1/16, 1/16, 1/16},
 		},
 		sounds = sounds,
 		node_placement_prediction = "",

@@ -31,9 +31,8 @@ License:
 ~~~~~~~~
 (c) Copyright BlockMen (2013-2015)
 
-Textures and Meshes/Models:
-CC-BY 3.0 BlockMen
-Note that the models were entirely done from scratch by sofar.
+Models:
+CC-BY 3.0 by 22i
 
 Code:
 Licensed under the GNU LGPL version 2.1 or higher.
