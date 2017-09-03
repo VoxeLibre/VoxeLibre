@@ -570,28 +570,6 @@ end
 -- Register “fake” ores directly related to the biomes
 local function register_biomelike_ores()
 
-	-- Fake moss stone boulder
-	-- TODO: Remove when real boulders are added
-	minetest.register_ore({
-		ore_type       = "blob",
-		ore            = "mcl_core:mossycobble",
-		wherein        = "mcl_core:podzol",
-		biomes         = {"taiga"},
-		clust_scarcity  = 16 * 16 * 16,
-		clust_size      = 3,
-		y_min           = 25,
-		y_max           = mcl_vars.mg_overworld_max,
-		noise_threshold = 0.0,
-		noise_params    = {
-			offset = 0.5,
-			scale = 0.2,
-			spread = {x = 3, y = 3, z = 3},
-			seed = 17676,
-			octaves = 1,
-			persist = 0.0
-		},
-	})
-
 	-- Mesa ores
 	minetest.register_ore({
 		ore_type       = "sheet",
@@ -1344,6 +1322,44 @@ local function register_decorations()
 		rotation = "random",
 	})
 
+	-- Moss stone boulder (3×3)
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:podzol", "mcl_core:dirt", "mcl_core:coarse_dirt"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.00015,
+			scale = 0.001,
+			spread = {x = 300, y = 300, z = 300},
+			seed = 775703,
+			octaves = 4,
+			persist = 0.63,
+		},
+		biomes = {"taiga"},
+		y_min = 7,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder.mts",
+	})
+
+	-- Small moss stone boulder (2×2)
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:podzol", "mcl_core:dirt", "mcl_core:coarse_dirt"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.001,
+			scale = 0.001,
+			spread = {x = 300, y = 300, z = 300},
+			seed = 775703,
+			octaves = 4,
+			persist = 0.63,
+		},
+		biomes = {"taiga"},
+		y_min = 6,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder_small.mts",
+	})
+
 	-- Cacti
 	minetest.register_decoration({
 		deco_type = "simple",
@@ -1707,18 +1723,6 @@ local function register_decorations()
 		y_min = 3,
 		y_max = 29,
 		rotation = "random",
-	})
-
-	-- Simple 1×1×1 moss stone
-	minetest.register_decoration({
-		deco_type = "simple",
-		place_on = {"mcl_core:podzol"},
-		sidelen = 80,
-		fill_ratio = 0.004,
-		biomes = {"taiga"},
-		y_min = 10,
-		y_max = mcl_vars.mg_overworld_max,
-		decoration = "mcl_core:mossycobble",
 	})
 
 	-- Grasses and ferns
