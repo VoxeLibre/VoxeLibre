@@ -1335,8 +1335,8 @@ local function register_decorations()
 			octaves = 4,
 			persist = 0.63,
 		},
-		biomes = {"taiga"},
-		y_min = 7,
+		biomes = {"taiga", "mega_taiga"},
+		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder.mts",
 	})
@@ -1354,8 +1354,8 @@ local function register_decorations()
 			octaves = 4,
 			persist = 0.63,
 		},
-		biomes = {"taiga"},
-		y_min = 6,
+		biomes = {"taiga", "mega_taiga"},
+		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder_small.mts",
 	})
