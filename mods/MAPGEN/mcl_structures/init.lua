@@ -195,66 +195,14 @@ end
 mcl_structures.generate_boulder = function(pos)
 	-- Choose between 2 boulder sizes (2×2×2 or 3×3×3)
 	local r = math.random(1, 10)
-	local w
+	local path
 	if r <= 3 then
-		w = 2
+		path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder_small.mts"
 	else
-		w = 3
-	end
-	local data, yslice_prob
-	if w == 2 then
-		local a = { name = "mcl_core:mossycobble" }
-		local p = { name = "mcl_core:mossycobble", prob = 127 }
-		data = {
-			a, a,
-			p, p,
-
-			a, a,
-			p, p,
-		}
-	elseif w == 3 then
-		local a = { name = "mcl_core:mossycobble" } -- bottom layer
-		local x = { name = "mcl_core:mossycobble", prob = 192 } -- corner in middle layer
-		local b, c -- middle and top layer
-		local e = { name = "air", prob = 0 } -- empty
-		-- This selects the amount of erosion (random removal of blocks)
-		if r == 10 then
-			-- Erosion occours on top 2 layers
-			-- Top layer is completely eroded and middle layer is randomly eroded
-			b = { name = "mcl_core:mossycobble", prob = 127 }
-			x.prob = 127
-			c = e
-		else
-			-- Erosion occours randomly on top layer only
-			b = a
-			c = { name = "mcl_core:mossycobble", prob = 127 }
-		end
-		local e = { name = "air", prob = 0 }
-		data = {
-			e, a, e,
-			x, b, x,
-			e, c, e,
-
-			a, a, a,
-			b, b, b,
-			c, c, c,
-
-			e, a, e,
-			x, b, x,
-			e, c, e,
-		}
-
-		-- Chance to destroy the bottom slice
-		yslice_prob = { { ypos=1, prob=140 } }
+		path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder.mts"
 	end
 
-	local schematic = {
-		size = { x=w, y=w, z=w},
-		data = data,
-		yslice_prob = yslice_prob,
-	}
-
-	minetest.place_schematic(pos, schematic)
+	minetest.place_schematic(pos, path)
 end
 
 mcl_structures.generate_witch_hut = function(pos)
@@ -268,49 +216,8 @@ mcl_structures.generate_ice_spike_small = function(pos)
 end
 
 mcl_structures.generate_ice_spike_large = function(pos)
-	local h = math.random(20, 40)
-	local r = math.random(1,3)
-	local top = false
-	local simple_spike_bonus = 2
-	-- Decide between MTS file-based top or simple top
-	if r == 1 then
-		-- MTS file
-		top = true
-	else
-		-- Simple top, just some stacked nodes
-		h = h + simple_spike_bonus
-	end
-	local w = 3
-	local data = {}
-	local middle = 2
-	for z=1, w do
-	for y=1, h do
-	for x=1, w do
-		local prob
-		-- This creates a simple 1 node wide spike top
-		if not top and ((y > h - simple_spike_bonus) and (x==1 or x==w or z==1 or z==w)) then
-			prob = 0
-		-- Chance to leave out ice spike piece at corners, but never at bottom
-		elseif y~=1 and ((x==1 and z==1) or (x==1 and z==w) or (x==w and z==1) or (x==w and z==w)) then
-			prob = 140 -- 54.6% chance to stay
-		end
-		table.insert(data, {name = "mcl_core:packed_ice", prob = prob })
-	end
-	end
-	end
-
-	local base_schematic = {
-		size = { x=w, y=h, z=w},
-		data = data,
-	}
-
-	minetest.place_schematic(pos, base_schematic)
-
-	if top then
-		local toppos = {x=pos.x-1, y=pos.y+h, z=pos.z-1}
-		local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_large_top.mts"
-		minetest.place_schematic(toppos, path, "random")
-	end
+	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_large.mts"
+	minetest.place_schematic(pos, path, "random", nil, false)
 end
 
 mcl_structures.generate_fossil = function(pos)
