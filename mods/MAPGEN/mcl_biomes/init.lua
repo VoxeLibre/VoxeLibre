@@ -28,9 +28,8 @@ local function register_biomes()
 	-- Icesheet
 	minetest.register_biome({
 		name = "icesheet",
-		node_dust = "mcl_core:snowblock",
 		node_top = "mcl_core:snowblock",
-		depth_top = 2,
+		depth_top = 3,
 		node_filler = "mcl_core:snowblock",
 		depth_filler = 3,
 		node_stone = "mcl_core:packed_ice",
@@ -998,6 +997,48 @@ end
 
 local function register_decorations()
 
+	-- Large ice spike
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:snowblock"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.00040,
+			scale = 0.001,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 1133,
+			octaves = 4,
+			persist = 0.67,
+		},
+		biomes = {"icesheet"},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_large.mts",
+		rotation = "random",
+		flags = "place_center_x, place_center_z",
+	})
+
+	-- Small ice spike
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:snowblock"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.005,
+			scale = 0.001,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 1133,
+			octaves = 4,
+			persist = 0.67,
+		},
+		biomes = {"icesheet"},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_small.mts",
+		rotation = "random",
+		flags = "place_center_x, place_center_z",
+	})
+
 	-- Oak
 	minetest.register_decoration({
 		deco_type = "schematic",
@@ -1339,6 +1380,7 @@ local function register_decorations()
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder.mts",
+		flags = "place_center_x, place_center_z",
 	})
 
 	-- Small moss stone boulder (2×2)
@@ -1358,6 +1400,7 @@ local function register_decorations()
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder_small.mts",
+		flags = "place_center_x, place_center_z",
 	})
 
 	-- Cacti
