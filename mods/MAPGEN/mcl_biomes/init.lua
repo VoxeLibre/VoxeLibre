@@ -1275,6 +1275,7 @@ local function register_decorations()
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_dark_oak.mts",
 		flags = "place_center_x, place_center_z",
+		rotation = "random",
 	})
 
 
