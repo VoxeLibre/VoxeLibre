@@ -1126,7 +1126,7 @@ local function generate_jungle_tree_decorations(minp, maxp)
 
 			local nn = minetest.get_node(pos).name
 
-			if perlin_vines:get2d(pos) > 0.1 and perlin_vines_fine:get3d(pos) > math.max(0.3333, perlin_vines_density:get2d(pos)) and nn == "air" then
+			if perlin_vines:get2d(pos) > -0.1 and perlin_vines_fine:get3d(pos) > math.max(0.3333, perlin_vines_density:get2d(pos)) and nn == "air" then
 
 				local newnode = {
 					name = "mcl_core:vine",
