@@ -330,13 +330,31 @@ end
 function mcl_core.generate_oak_tree(pos)
 	local r = math.random(1, 12)
 	local path
+	local offset
+	-- Balloon oak
 	if r == 1 then
-		path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_oak_balloon_small.mts"
+		local s = math.random(1, 12)
+		if s == 1 then
+			-- Small balloon oak
+			path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_oak_balloon.mts"
+			offset = { x = -2, y = -1, z = -2 }
+		else
+			-- Large balloon oak
+			local t = math.random(1, 2)
+			path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_oak_large_"..t..".mts"
+			if t == 1 then
+				offset = { x = -3, y = -1, z = -3 }
+			elseif t == 2 then
+				offset = { x = -4, y = -1, z = -4 }
+			end
+		end
+	-- Classic oak
 	else
 		path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_oak_classic.mts"
+		offset = { x = -2, y = -1, z = -2 }
 
 	end
-	minetest.place_schematic({x = pos.x - 2, y = pos.y - 1 , z = pos.z - 2}, path, "random", nil, false)
+	minetest.place_schematic(vector.add(pos, offset), path, "random", nil, false)
 end
 
 -- Birch
