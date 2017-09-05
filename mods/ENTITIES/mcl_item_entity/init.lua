@@ -67,7 +67,7 @@ minetest.register_globalstep(function(dtime)
 					if object:get_luaentity()._magnet_timer >= 0 and object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time and inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
 
 						-- Collection
-						if vector.distance(checkpos, object:getpos()) <= item_drop_settings.radius_collect and not object:get_luaentity()._collected then
+						if vector.distance(checkpos, object:getpos()) <= item_drop_settings.radius_collect and not object:get_luaentity()._removed then
 
 							if object:get_luaentity().itemstring ~= "" then
 								inv:add_item("main", ItemStack(object:get_luaentity().itemstring))
@@ -88,7 +88,7 @@ minetest.register_globalstep(function(dtime)
 							-- Destroy entity
 
 							-- This just prevents this sectino to be run again because object:remove() doesn't remove the item immediately.
-							object:get_luaentity()._collected = true
+							object:get_luaentity()._removed = true
 							object:remove()
 							collected = true
 
@@ -129,7 +129,7 @@ minetest.register_globalstep(function(dtime)
 										end
 										if inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
 											inv:add_item("main", ItemStack(object:get_luaentity().itemstring))
-											if not object:get_luaentity()._collected then
+											if not object:get_luaentity()._removed then
 												minetest.sound_play("item_drop_pickup", {
 													pos = pos,
 													max_hear_distance = 16,
@@ -137,7 +137,7 @@ minetest.register_globalstep(function(dtime)
 												})
 											end
 											check_pickup_achievements(object, player)
-											object:get_luaentity()._collected = true
+											object:get_luaentity()._removed = true
 											object:remove()
 										else
 											enable_physics(object, object:get_luaentity())
@@ -252,7 +252,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 			name = item:get_name()
 		end
 		for i=1,count do
-			local obj = minetest.add_item(pos, name)
+			local obj = core.add_item(pos, name)
 			if obj ~= nil then
 				local x = math.random(1, 5)
 				if math.random(1,2) == 1 then
@@ -386,6 +386,7 @@ core.register_entity(":__builtin:item", {
 			age = self.age,
 			_insta_collect = self._insta_collect,
 			_flowing = self._flowing,
+			_removed = self._removed,
 		})
 	end,
 
@@ -404,9 +405,15 @@ core.register_entity(":__builtin:item", {
 				-- If true, can collect item without delay
 				self._insta_collect = data._insta_collect
 				self._flowing = data._flowing
+				self._removed = data._removed
 			end
 		else
 			self.itemstring = staticdata
+		end
+		if self._removed then
+			self._removed = true
+			self.object:remove()
+			return
 		end
 		if self._insta_collect == nil then
 			-- Intentionally default, since delayed collection is rare
@@ -439,8 +446,6 @@ core.register_entity(":__builtin:item", {
 			if count > max_count then
 				overflow = true
 				count = count - max_count
-			else
-				self.itemstring = ''
 			end
 			local pos = object:getpos()
 			pos.y = pos.y + (count - stack:get_count()) / max_count * 0.15
@@ -456,6 +461,7 @@ core.register_entity(":__builtin:item", {
 					visual_size = {x = s, y = s},
 					collisionbox = {-c, -c, -c, c, c, c}
 				})
+				self._removed = true
 				self.object:remove()
 				-- merging succeeded
 				return true
@@ -481,12 +487,15 @@ core.register_entity(":__builtin:item", {
 	end,
 
 	on_step = function(self, dtime)
+		if self._removed then
+			return
+		end
 		self.age = self.age + dtime
 		if self._collector_timer ~= nil then
 			self._collector_timer = self._collector_timer + dtime
 		end
 		if time_to_live > 0 and self.age > time_to_live then
-			self.itemstring = ''
+			self._removed = true
 			self.object:remove()
 			return
 		end
@@ -521,6 +530,7 @@ core.register_entity(":__builtin:item", {
 			if def.groups.lava then
 				minetest.sound_play("builtin_item_lava", {pos = self.object:getpos(), gain = 0.5})
 			end
+			self._removed = true
 			self.object:remove()
 			return
 		end
