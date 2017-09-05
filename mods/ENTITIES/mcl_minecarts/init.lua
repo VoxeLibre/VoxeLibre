@@ -289,6 +289,10 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 		update = nil
 	end
 
+	function cart:get_staticdata()
+		return ""
+	end
+
 	minetest.register_entity(entity_id, cart)
 end
 
