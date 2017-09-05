@@ -900,6 +900,7 @@ end
 -- Apply mapgen-specific mapgen code
 if mg_name == "v6" then
 	register_mgv6_decorations()
+	minetest.set_mapgen_setting("mg_flags", "caves,nodungeons,decorations,light", true)
 elseif mg_name == "flat" then
 	local classic = minetest.get_mapgen_setting("mcl_superflat_classic")
 	if classic == nil then
