@@ -1181,7 +1181,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"mega_taiga", "taiga"},
+		biomes = {"mega_taiga", "taiga", "cold_taiga"},
 		y_min = 2,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_1.mts",
@@ -1199,7 +1199,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"mega_taiga", "taiga"},
+		biomes = {"mega_taiga", "taiga", "cold_taiga"},
 		y_min = 2,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_2.mts",
@@ -1217,7 +1217,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"mega_taiga", "taiga"},
+		biomes = {"mega_taiga", "taiga", "cold_taiga"},
 		y_min = 2,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_3.mts",
@@ -1237,7 +1237,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"mega_taiga", "taiga"},
+		biomes = {"mega_taiga", "taiga", "cold_taiga"},
 		y_min = 2,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_lollipop.mts",
@@ -1257,7 +1257,7 @@ local function register_decorations()
 			octaves = 5,
 			persist = 0.60,
 		},
-		biomes = {"taiga"},
+		biomes = {"taiga", "cold_taiga"},
 		y_min = 3,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_matchstick.mts",
