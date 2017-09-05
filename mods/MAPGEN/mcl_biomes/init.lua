@@ -1119,6 +1119,8 @@ local function register_decorations()
 	})
 
 	-- Spruce
+
+	-- Common spruces
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
@@ -1173,6 +1175,8 @@ local function register_decorations()
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_3.mts",
 		flags = "place_center_x, place_center_z",
 	})
+
+	-- Small lollipop spruce
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
@@ -1192,82 +1196,13 @@ local function register_decorations()
 		flags = "place_center_x, place_center_z",
 	})
 
-
-	local a = {name = "air", prob = 0}
-	local t = {name = "mcl_core:sprucetree" }
-	local l = {name = "mcl_core:spruceleaves" }
-	local matchstick = {
-		size = {x = 3, y = 16, z = 3},
-		data = {
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,l,a,
-			a,l,a,
-			a,l,a,
-			a,a,a,
-
-			a,t,a,
-			a,t,a,
-			a,t,a,
-			a,t,a,
-			a,t,a,
-			a,t,a,
-			a,t,a,
-			a,t,a,
-			a,t,a,
-			a,t,a,
-			a,t,a,
-			a,t,a,
-			l,t,l,
-			l,t,l,
-			l,t,l,
-			a,l,a,
-
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,a,a,
-			a,l,a,
-			a,l,a,
-			a,l,a,
-			a,a,a,
-		},
-		yslice_prob = {
-			-- 8-13 trunk-only levels
-			{ ypos = 0, prob = 127 },
-			{ ypos = 1, prob = 127 },
-			{ ypos = 2, prob = 127 },
-			{ ypos = 3, prob = 95 },
-			{ ypos = 4, prob = 63 },
-			{ ypos = 5, prob = 31 },
-			-- 2-3 leaf levels
-			{ ypos = 14, prob = 127 },
-		},
-	}
+	-- Matchstick spruce: Very few leaves, tall trunk
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
 		sidelen = 80,
 		noise_params = {
-			offset = -0.01,
+			offset = -0.005,
 			scale = 0.025,
 			spread = {x = 250, y = 250, z = 250},
 			seed = 2566,
@@ -1277,7 +1212,7 @@ local function register_decorations()
 		biomes = {"coniferous_forest"},
 		y_min = 3,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = matchstick,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_matchstick.mts",
 		flags = "place_center_x, place_center_z",
 	})
 
