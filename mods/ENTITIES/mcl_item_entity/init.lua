@@ -437,53 +437,42 @@ core.register_entity(":__builtin:item", {
 		self:set_item(self.itemstring)
 	end,
 
-	try_merge_with = function(self, own_stack, object, obj)
-		local stack = ItemStack(obj.itemstring)
-		if own_stack:get_name() == stack:get_name() and stack:get_free_space() > 0 then
-			local overflow = false
-			local count = stack:get_count() + own_stack:get_count()
-			local max_count = stack:get_stack_max()
-			if count > max_count then
-				overflow = true
-				count = count - max_count
-			end
-			local pos = object:getpos()
-			pos.y = pos.y + (count - stack:get_count()) / max_count * 0.15
-			object:moveto(pos, false)
-			local s, c
-			local max_count = stack:get_stack_max()
-			local name = stack:get_name()
-			if not overflow then
-				obj.itemstring = name .. " " .. count
-				s = 0.2 + 0.1 * (count / max_count)
-				c = s
-				object:set_properties({
-					visual_size = {x = s, y = s},
-					collisionbox = {-c, -c, -c, c, c, c}
-				})
-				self._removed = true
-				self.object:remove()
-				-- merging succeeded
-				return true
-			else
-				s = 0.4
-				c = 0.3
-				object:set_properties({
-					visual_size = {x = s, y = s},
-					collisionbox = {-c, -c, -c, c, c, c}
-				})
-				obj.itemstring = name .. " " .. max_count
-				s = 0.2 + 0.1 * (count / max_count)
-				c = s
-				self.object:set_properties({
-					visual_size = {x = s, y = s},
-					collisionbox = {-c, -c, -c, c, c, c}
-				})
-				self.itemstring = name .. " " .. count
-			end
+	try_merge_with = function(self, own_stack, object, entity)
+		if self.age == entity.age or entity._removed then
+			-- Can not merge with itself and remove entity
+			return false
 		end
-		-- merging didn't succeed
-		return false
+
+		local stack = ItemStack(entity.itemstring)
+		local name = stack:get_name()
+		if own_stack:get_name() ~= name or
+				own_stack:get_meta() ~= stack:get_meta() or
+				own_stack:get_wear() ~= stack:get_wear() or
+				own_stack:get_free_space() == 0 then
+			-- Can not merge different or full stack
+			return false
+		end
+
+		local count = own_stack:get_count()
+		local total_count = stack:get_count() + count
+		local max_count = stack:get_stack_max()
+
+		if total_count > max_count then
+			return false
+		end
+		-- Merge the remote stack into this one
+
+		local pos = object:get_pos()
+		pos.y = pos.y + ((total_count - count) / max_count) * 0.15
+		self.object:move_to(pos)
+
+		self.age = 0 -- Handle as new entity
+		own_stack:set_count(total_count)
+		self:set_item(own_stack:to_string())
+
+		entity._removed = true
+		object:remove()
+		return true
 	end,
 
 	on_step = function(self, dtime)
