@@ -971,15 +971,23 @@ end
 
 -- All mapgens except mgv6
 
-local function register_grass_decoration(node, offset, scale, biomes, place_on)
-	if not place_on then
+-- Template to register a grass or fern decoration
+local function register_grass_decoration(grasstype, offset, scale, biomes)
+	local place_on, seed, node
+	if grasstype == "fern" then
+		node = "mcl_flowers:fern"
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:podzol"}
+		seed = 333
+	elseif grasstype == "tallgrass" then
+		node = "mcl_flowers:tallgrass"
 		place_on = {"mcl_core:dirt_with_grass"}
+		seed = 420
 	end
 	local noise = {
 		offset = offset,
 		scale = scale,
 		spread = {x = 200, y = 200, z = 200},
-		seed = 329,
+		seed = seed,
 		octaves = 3,
 		persist = 0.6
 	}
@@ -1782,32 +1790,31 @@ local function register_decorations()
 	local grass_forest = {"grassland", "coniferous_forest", "deciduous_forest", "roofed_forest", "flower_forest" }
 	local grass_grassland = {"grassland", "savanna"}
 	local grass_savanna = {"savanna"}
-	register_grass_decoration("mcl_flowers:tallgrass", -0.03,  0.09, grass_minimal)
-	register_grass_decoration("mcl_flowers:tallgrass", -0.015, 0.075, grass_minimal)
-	register_grass_decoration("mcl_flowers:tallgrass", 0,      0.06, grass_forest)
-	register_grass_decoration("mcl_flowers:tallgrass", 0.015,  0.045, grass_forest)
-	register_grass_decoration("mcl_flowers:tallgrass", 0.03,   0.03, grass_forest)
-	register_grass_decoration("mcl_flowers:tallgrass", 0.01, 0.05, grass_forest)
-	register_grass_decoration("mcl_flowers:tallgrass", 0.03, 0.03, grass_grassland)
-	register_grass_decoration("mcl_flowers:tallgrass", 0.05, 0.01, grass_grassland)
-	register_grass_decoration("mcl_flowers:tallgrass", 0.07, -0.01, grass_grassland)
-	register_grass_decoration("mcl_flowers:tallgrass", 0.09, -0.03, grass_grassland)
-	register_grass_decoration("mcl_flowers:tallgrass", 0.18, -0.03, grass_savanna)
+	register_grass_decoration("tallgrass", -0.03,  0.09, grass_minimal)
+	register_grass_decoration("tallgrass", -0.015, 0.075, grass_minimal)
+	register_grass_decoration("tallgrass", 0,      0.06, grass_forest)
+	register_grass_decoration("tallgrass", 0.015,  0.045, grass_forest)
+	register_grass_decoration("tallgrass", 0.03,   0.03, grass_forest)
+	register_grass_decoration("tallgrass", 0.01, 0.05, grass_forest)
+	register_grass_decoration("tallgrass", 0.03, 0.03, grass_grassland)
+	register_grass_decoration("tallgrass", 0.05, 0.01, grass_grassland)
+	register_grass_decoration("tallgrass", 0.07, -0.01, grass_grassland)
+	register_grass_decoration("tallgrass", 0.09, -0.03, grass_grassland)
+	register_grass_decoration("tallgrass", 0.18, -0.03, grass_savanna)
 
 	local fern_minimal = { "rainforest", "taiga", "mega_taiga", "cold_taiga" }
 	local fern_low = { "rainforest", "taiga", "mega_taiga" }
 	local fern_full = { "rainforest" }
-	local fern_surf = {"mcl_core:dirt_with_grass", "mcl_core:podzol"}
-	register_grass_decoration("mcl_flowers:fern", -0.03,  0.09, fern_minimal, fern_surf)
-	register_grass_decoration("mcl_flowers:fern", -0.015, 0.075, fern_minimal, fern_surf)
-	register_grass_decoration("mcl_flowers:fern", 0,      0.06, fern_minimal, fern_surf)
-	register_grass_decoration("mcl_flowers:fern", 0.015,  0.045, fern_low, fern_surf)
-	register_grass_decoration("mcl_flowers:fern", 0.03,   0.03, fern_low, fern_surf)
-	register_grass_decoration("mcl_flowers:fern", 0.01, 0.05, fern_full, fern_surf)
-	register_grass_decoration("mcl_flowers:fern", 0.03, 0.03, fern_full, fern_surf)
-	register_grass_decoration("mcl_flowers:fern", 0.05, 0.01, fern_full, fern_surf)
-	register_grass_decoration("mcl_flowers:fern", 0.07, -0.01, fern_full, fern_surf)
-	register_grass_decoration("mcl_flowers:fern", 0.09, -0.03, fern_full, fern_surf)
+	register_grass_decoration("fern", -0.03,  0.09, fern_minimal)
+	register_grass_decoration("fern", -0.015, 0.075, fern_minimal)
+	register_grass_decoration("fern", 0,      0.06, fern_minimal)
+	register_grass_decoration("fern", 0.015,  0.045, fern_low)
+	register_grass_decoration("fern", 0.03,   0.03, fern_low)
+	register_grass_decoration("fern", 0.01, 0.05, fern_full)
+	register_grass_decoration("fern", 0.03, 0.03, fern_full)
+	register_grass_decoration("fern", 0.05, 0.01, fern_full)
+	register_grass_decoration("fern", 0.07, -0.01, fern_full)
+	register_grass_decoration("fern", 0.09, -0.03, fern_full)
 
 	-- Dead bushes
 	minetest.register_decoration({
