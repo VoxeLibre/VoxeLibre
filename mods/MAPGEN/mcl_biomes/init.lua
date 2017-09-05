@@ -1779,19 +1779,20 @@ local function register_decorations()
 	})
 
 	-- Grasses and ferns
-	local grass_minimal = {"grassland", "coniferous_forest", "deciduous_forest", "roofed_forest", "flower_forest", "savanna"}
 	local grass_forest = {"grassland", "coniferous_forest", "deciduous_forest", "roofed_forest", "flower_forest" }
-	local grass_full = {"grassland"}
+	local grass_grassland = {"grassland", "savanna"}
+	local grass_savanna = {"savanna"}
 	register_grass_decoration("mcl_flowers:tallgrass", -0.03,  0.09, grass_minimal)
 	register_grass_decoration("mcl_flowers:tallgrass", -0.015, 0.075, grass_minimal)
 	register_grass_decoration("mcl_flowers:tallgrass", 0,      0.06, grass_forest)
 	register_grass_decoration("mcl_flowers:tallgrass", 0.015,  0.045, grass_forest)
 	register_grass_decoration("mcl_flowers:tallgrass", 0.03,   0.03, grass_forest)
 	register_grass_decoration("mcl_flowers:tallgrass", 0.01, 0.05, grass_forest)
-	register_grass_decoration("mcl_flowers:tallgrass", 0.03, 0.03, grass_full)
-	register_grass_decoration("mcl_flowers:tallgrass", 0.05, 0.01, grass_full)
-	register_grass_decoration("mcl_flowers:tallgrass", 0.07, -0.01, grass_full)
-	register_grass_decoration("mcl_flowers:tallgrass", 0.09, -0.03, grass_full)
+	register_grass_decoration("mcl_flowers:tallgrass", 0.03, 0.03, grass_grassland)
+	register_grass_decoration("mcl_flowers:tallgrass", 0.05, 0.01, grass_grassland)
+	register_grass_decoration("mcl_flowers:tallgrass", 0.07, -0.01, grass_grassland)
+	register_grass_decoration("mcl_flowers:tallgrass", 0.09, -0.03, grass_grassland)
+	register_grass_decoration("mcl_flowers:tallgrass", 0.18, -0.03, grass_savanna)
 
 	local fern_minimal = { "rainforest", "taiga", "mega_taiga", "cold_taiga" }
 	local fern_low = { "rainforest", "taiga", "mega_taiga" }
