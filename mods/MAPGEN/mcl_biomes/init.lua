@@ -1124,8 +1124,8 @@ local function register_decorations()
 		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
 		sidelen = 16,
 		noise_params = {
-			offset = 0.02,
-			scale = 0.0022,
+			offset = 0.0062,
+			scale = 0.0006,
 			spread = {x = 250, y = 250, z = 250},
 			seed = 2500,
 			octaves = 3,
@@ -1134,7 +1134,43 @@ local function register_decorations()
 		biomes = {"taiga", "coniferous_forest"},
 		y_min = 2,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/pine_tree.mts",
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_1.mts",
+		flags = "place_center_x, place_center_z",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.0065,
+			scale = 0.0006,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 5000,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"taiga", "coniferous_forest"},
+		y_min = 2,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_2.mts",
+		flags = "place_center_x, place_center_z",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.005,
+			scale = 0.0006,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 7500,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"taiga", "coniferous_forest"},
+		y_min = 2,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_3.mts",
 		flags = "place_center_x, place_center_z",
 	})
 	minetest.register_decoration({

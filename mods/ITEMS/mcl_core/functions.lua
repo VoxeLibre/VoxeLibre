@@ -238,7 +238,11 @@ function mcl_core.generate_tree(pos, tree_type, two_by_two)
 		if two_by_two then
 			mcl_core.generate_huge_spruce_tree(pos)
 		else
-			mcl_core.generate_spruce_tree(pos)
+			if mg_name == "v6" then
+				mcl_core.generate_v6_spruce_tree(pos)
+			else
+				mcl_core.generate_spruce_tree(pos)
+			end
 		end
 	elseif tree_type == 4 then
 		mcl_core.generate_acacia_tree(pos)
@@ -353,7 +357,7 @@ local function add_spruce_leaves(data, vi, c_air, c_ignore, c_snow, c_spruce_lea
 	end
 end
 
-function mcl_core.generate_spruce_tree(pos)
+function mcl_core.generate_v6_spruce_tree(pos)
 	local x, y, z = pos.x, pos.y, pos.z
 	local maxy = y + math.random(9, 13) -- Trunk top
 
@@ -447,6 +451,12 @@ function mcl_core.generate_spruce_tree(pos)
 
 	vm:set_data(data)
 	vm:write_to_map()
+end
+
+mcl_core.generate_spruce_tree = function(pos)
+	local r = math.random(1, 3)
+	local path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_spruce_"..r..".mts"
+	minetest.place_schematic({ x = pos.x - 3, y = pos.y - 1, z = pos.z - 3 }, path, "0", nil, false)
 end
 
 mcl_core.generate_huge_spruce_tree = function(pos)
