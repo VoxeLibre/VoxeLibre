@@ -90,12 +90,15 @@ Code based on information gathered from Minecraft Wiki
 <http://minecraft.gamepedia.com/Tutorials/Mushroom_farming#Videos>
 ]]
 minetest.register_abm({
-	label = "Mushroom spread",
+	label = "Mushroom spread and death",
 	nodenames = {"mcl_mushrooms:mushroom_brown", "mcl_mushrooms:mushroom_red"},
 	interval = 11,
 	chance = 50,
 	action = function(pos, node)
-		if minetest.get_node_light(pos, nil) > 12 then
+		local node_soil = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name
+		-- Mushrooms uproot in light except on podzol or mycelium
+		if node_soil ~= "mcl_core:podzol" and node_soil ~= "mcl_core:mycelium" and
+				node_soil ~= "mcl_core:podzol_snow" and node_soil ~= "mcl_core:mycelium_snow" and minetest.get_node_light(pos, nil) > 12 then
 			minetest.dig_node(pos)
 			return
 		end
