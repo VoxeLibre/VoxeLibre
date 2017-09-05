@@ -90,6 +90,9 @@ end
 
 local function drop_attached_node(p)
 	local nn = minetest.get_node(p).name
+	if nn == "air" or nn == "ignore" then
+		return
+	end
 	minetest.remove_node(p)
 	for _, item in pairs(minetest.get_node_drops(nn, "")) do
 		local pos = {
@@ -97,7 +100,9 @@ local function drop_attached_node(p)
 			y = p.y + math.random()/2 - 0.25,
 			z = p.z + math.random()/2 - 0.25,
 		}
-		minetest.add_item(pos, item)
+		if item ~= "" then
+			minetest.add_item(pos, item)
+		end
 	end
 end
 
