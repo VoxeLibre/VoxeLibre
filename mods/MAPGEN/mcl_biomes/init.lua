@@ -61,15 +61,15 @@ local function register_biomes()
 		humidity_point = 73,
 	})
 
-	-- Tundra
-
+	-- Cold Taiga
 	minetest.register_biome({
-		name = "tundra",
-		node_top = "mcl_core:snowblock",
+		name = "cold_taiga",
+		node_dust = "mcl_core:snow",
+		node_top = "mcl_core:dirt_with_grass_snow",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 2,
-		node_riverbed = "mcl_core:gravel",
+		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = 2,
 		y_max = mcl_vars.mg_overworld_max,
@@ -78,12 +78,13 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "tundra_beach",
-		node_top = "mcl_core:gravel",
+		name = "cold_taiga_beach",
+		node_dust = "mcl_core:snow",
+		node_top = "mcl_core:sand",
 		depth_top = 1,
-		node_filler = "mcl_core:gravel",
+		node_filler = "mcl_core:sand",
 		depth_filler = 2,
-		node_riverbed = "mcl_core:gravel",
+		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = -3,
 		y_max = 1,
@@ -92,7 +93,7 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "tundra_ocean",
+		name = "cold_taiga_ocean",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -105,9 +106,9 @@ local function register_biomes()
 		humidity_point = 40,
 	})
 
-	-- Taiga
+	-- Mega taiga
 	minetest.register_biome({
-		name = "taiga",
+		name = "mega_taiga",
 		node_top = "mcl_core:podzol",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -121,7 +122,7 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "taiga_ocean",
+		name = "mega_taiga_ocean",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -134,9 +135,9 @@ local function register_biomes()
 		humidity_point = 72,
 	})
 
-	-- Snowy grassland
+	-- Snowy plains
 	minetest.register_biome({
-		name = "snowy_grassland",
+		name = "snowy_plains",
 		node_top = "mcl_core:dirt_with_grass_snow",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -151,7 +152,7 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "snowy_grassland_ocean",
+		name = "snowy_plains_ocean",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -164,9 +165,9 @@ local function register_biomes()
 		humidity_point = 79,
 	})
 
-	-- Grassland
+	-- Plains
 	minetest.register_biome({
-		name = "grassland",
+		name = "plains",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -180,7 +181,7 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "grassland_dunes",
+		name = "plains_dunes",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
 		node_filler = "mcl_core:sand",
@@ -195,7 +196,7 @@ local function register_biomes()
 
 
 	minetest.register_biome({
-		name = "grassland_ocean",
+		name = "plains_ocean",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -208,9 +209,9 @@ local function register_biomes()
 		humidity_point = 45,
 	})
 
-	-- Coniferous forest
+	-- Taiga
 	minetest.register_biome({
-		name = "coniferous_forest",
+		name = "taiga",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -224,7 +225,7 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "coniferous_forest_dunes",
+		name = "taiga_dunes",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -238,7 +239,7 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "coniferous_forest_ocean",
+		name = "taiga_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -251,9 +252,9 @@ local function register_biomes()
 		humidity_point = 73,  --was 70
 	})
 
-	-- Deciduous forest
+	-- (Deciduous) forest
 	minetest.register_biome({
-		name = "deciduous_forest",
+		name = "forest",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -267,7 +268,7 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "deciduous_forest_shore",
+		name = "forest_shore",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -281,7 +282,7 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "deciduous_forest_ocean",
+		name = "forest_ocean",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -456,9 +457,9 @@ local function register_biomes()
 		humidity_point = 46,
 	})
 
-	-- Rainforest
+	-- Jungle
 	minetest.register_biome({
-		name = "rainforest",
+		name = "jungle",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -472,7 +473,7 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "rainforest_swamp",
+		name = "jungle_swamp",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -486,7 +487,7 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "rainforest_ocean",
+		name = "jungle_ocean",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -500,8 +501,9 @@ local function register_biomes()
 	})
 
 	-- Mushroom biomes
+	-- TODO: Make sure these biomes only spawn in islands
 	minetest.register_biome({
-		name = "mushroom",
+		name = "mushroom_island",
 		node_top = "mcl_core:mycelium",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -515,7 +517,7 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "mushroom_ocean",
+		name = "mushroom_island_ocean",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -1060,7 +1062,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"deciduous_forest"},
+		biomes = {"forest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_large_1.mts",
@@ -1079,7 +1081,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"deciduous_forest"},
+		biomes = {"forest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_large_2.mts",
@@ -1098,7 +1100,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"deciduous_forest"},
+		biomes = {"forest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
@@ -1117,7 +1119,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.6,
 		},
-		biomes = {"deciduous_forest"},
+		biomes = {"forest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_balloon.mts",
@@ -1131,7 +1133,7 @@ local function register_decorations()
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.0025,
-		biomes = {"rainforest"},
+		biomes = {"jungle"},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_tree_huge.mts",
@@ -1143,7 +1145,7 @@ local function register_decorations()
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.045,
-		biomes = {"rainforest", "rainforest_swamp"},
+		biomes = {"jungle", "jungle_swamp"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_tree.mts",
@@ -1156,7 +1158,7 @@ local function register_decorations()
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.004,
-		biomes = {"rainforest"},
+		biomes = {"jungle"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
@@ -1179,7 +1181,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"taiga", "coniferous_forest"},
+		biomes = {"mega_taiga", "taiga"},
 		y_min = 2,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_1.mts",
@@ -1197,7 +1199,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"taiga", "coniferous_forest"},
+		biomes = {"mega_taiga", "taiga"},
 		y_min = 2,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_2.mts",
@@ -1215,7 +1217,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"taiga", "coniferous_forest"},
+		biomes = {"mega_taiga", "taiga"},
 		y_min = 2,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_3.mts",
@@ -1235,7 +1237,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"taiga", "coniferous_forest"},
+		biomes = {"mega_taiga", "taiga"},
 		y_min = 2,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_lollipop.mts",
@@ -1255,7 +1257,7 @@ local function register_decorations()
 			octaves = 5,
 			persist = 0.60,
 		},
-		biomes = {"coniferous_forest"},
+		biomes = {"taiga"},
 		y_min = 3,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_matchstick.mts",
@@ -1296,7 +1298,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"deciduous_forest"},
+		biomes = {"forest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_birch.mts",
@@ -1332,7 +1334,7 @@ local function register_decorations()
 		sidelen = 80,
 		fill_ratio = 0.0001,
 		-- FIXME: Should be roofed forest, but placing it there doesn't work well (leaves often go into mushroom)
-		biomes = { "deciduous_forest" },
+		biomes = { "forest" },
 		y_min = mcl_vars.mg_overworld_min,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_brown.mts",
@@ -1345,7 +1347,7 @@ local function register_decorations()
 		place_on = { "mcl_core:mycelium" },
 		sidelen = 80,
 		fill_ratio = 0.002,
-		biomes = { "mushroom" },
+		biomes = { "mushroom_island" },
 		y_min = mcl_vars.mg_overworld_min,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_brown.mts",
@@ -1360,7 +1362,7 @@ local function register_decorations()
 		sidelen = 50,
 		fill_ratio = 0.0001,
 		-- FIXME: Should be roofed forest, but placing it there doesn't work well (leaves often go into mushroom)
-		biomes = { "deciduous_forest" },
+		biomes = { "forest" },
 		y_min = mcl_vars.mg_overworld_min,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_red.mts",
@@ -1373,7 +1375,7 @@ local function register_decorations()
 		place_on = { "mcl_core:mycelium" },
 		sidelen = 50,
 		fill_ratio = 0.002,
-		biomes = { "mushroom" },
+		biomes = { "mushroom_island" },
 		y_min = mcl_vars.mg_overworld_min,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_red.mts",
@@ -1394,7 +1396,7 @@ local function register_decorations()
 			octaves = 4,
 			persist = 0.63,
 		},
-		biomes = {"taiga", "mega_taiga"},
+		biomes = {"mega_taiga"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder.mts",
@@ -1414,7 +1416,7 @@ local function register_decorations()
 			octaves = 4,
 			persist = 0.63,
 		},
-		biomes = {"taiga", "mega_taiga"},
+		biomes = {"mega_taiga"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder_small.mts",
@@ -1455,7 +1457,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.7
 		},
-		biomes = {"grassland", "grassland_dunes", "snowy_grassland", "beach", "red_desert", "desert", "swamp"},
+		biomes = {"plains", "plains_dunes", "snowy_plains", "beach", "red_desert", "desert", "swamp"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_core:reeds",
@@ -1491,7 +1493,7 @@ local function register_decorations()
 		},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		biomes = {"grassland", "coniferous_forest", "deciduous_forest", "roofed_forest", "savanna"},
+		biomes = {"plains", "taiga", "forest", "roofed_forest", "savanna"},
 	})
 
 	-- Large ferns
@@ -1519,7 +1521,7 @@ local function register_decorations()
 			octaves = 2,
 			persist = 0.66,
 		},
-		biomes = { "rainforest", "taiga", "cold_taiga", "mega_taiga" },
+		biomes = { "jungle", "taiga", "cold_taiga", "mega_taiga" },
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 	})
@@ -1554,11 +1556,11 @@ local function register_decorations()
 		})
 	end
 
-	register_large_flower("rose_bush", {"deciduous_forest", "coniferous_forest", "roofed_forest", "flower_forest"}, 9350, -0.008)
-	register_large_flower("peony", {"deciduous_forest", "coniferous_forest", "roofed_forest", "flower_forest"}, 10450, -0.008)
-	register_large_flower("lilac", {"deciduous_forest", "coniferous_forest", "roofed_forest", "flower_forest"}, 10600, -0.007)
+	register_large_flower("rose_bush", {"forest", "taiga", "roofed_forest", "flower_forest"}, 9350, -0.008)
+	register_large_flower("peony", {"forest", "taiga", "roofed_forest", "flower_forest"}, 10450, -0.008)
+	register_large_flower("lilac", {"forest", "taiga", "roofed_forest", "flower_forest"}, 10600, -0.007)
 	-- TODO: Make exclusive to sunflower plains
-	register_large_flower("sunflower", {"grassland", "sunflower_plains"}, 2940, -0.005)
+	register_large_flower("sunflower", {"plains", "sunflower_plains"}, 2940, -0.005)
 
 	-- Jungle bush
 	minetest.register_decoration({
@@ -1573,7 +1575,7 @@ local function register_decorations()
 			octaves = 4,
 			persist = 0.6,
 		},
-		biomes = {"rainforest"},
+		biomes = {"jungle"},
 		y_min = 3,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_bush.mts",
@@ -1593,7 +1595,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"taiga", "coniferous_forest"},
+		biomes = {"mega_taiga", "taiga"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = {
@@ -1629,7 +1631,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"deciduous_forest"},
+		biomes = {"forest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = {
@@ -1655,7 +1657,7 @@ local function register_decorations()
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.005,
-		biomes = {"rainforest"},
+		biomes = {"jungle"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = {
@@ -1691,7 +1693,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"deciduous_forest"},
+		biomes = {"forest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = {
@@ -1737,7 +1739,7 @@ local function register_decorations()
 		y_min = 0,
 		y_max = 0,
 		-- TODO: optimize spawn in real swamps
-		biomes = { "rainforest_swamp", "swamp" },
+		biomes = { "jungle_swamp", "swamp" },
 		rotation = "random",
 	})
 
@@ -1757,7 +1759,7 @@ local function register_decorations()
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_farming:melon",
-		biomes = { "rainforest" },
+		biomes = { "jungle" },
 	})
 
 	-- Pumpkin
@@ -1780,15 +1782,15 @@ local function register_decorations()
 			octaves = 6,
 			persist = 0.666
 		},
-		biomes = {"grassland"},
+		biomes = {"plains"},
 		y_min = 3,
 		y_max = 29,
 		rotation = "random",
 	})
 
 	-- Grasses and ferns
-	local grass_forest = {"grassland", "coniferous_forest", "deciduous_forest", "roofed_forest", "flower_forest" }
-	local grass_grassland = {"grassland", "savanna"}
+	local grass_forest = {"plains", "taiga", "forest", "roofed_forest", "flower_forest" }
+	local grass_plains = {"plains", "savanna"}
 	local grass_savanna = {"savanna"}
 	register_grass_decoration("tallgrass", -0.03,  0.09, grass_minimal)
 	register_grass_decoration("tallgrass", -0.015, 0.075, grass_minimal)
@@ -1796,15 +1798,15 @@ local function register_decorations()
 	register_grass_decoration("tallgrass", 0.015,  0.045, grass_forest)
 	register_grass_decoration("tallgrass", 0.03,   0.03, grass_forest)
 	register_grass_decoration("tallgrass", 0.01, 0.05, grass_forest)
-	register_grass_decoration("tallgrass", 0.03, 0.03, grass_grassland)
-	register_grass_decoration("tallgrass", 0.05, 0.01, grass_grassland)
-	register_grass_decoration("tallgrass", 0.07, -0.01, grass_grassland)
-	register_grass_decoration("tallgrass", 0.09, -0.03, grass_grassland)
+	register_grass_decoration("tallgrass", 0.03, 0.03, grass_plains)
+	register_grass_decoration("tallgrass", 0.05, 0.01, grass_plains)
+	register_grass_decoration("tallgrass", 0.07, -0.01, grass_plains)
+	register_grass_decoration("tallgrass", 0.09, -0.03, grass_plains)
 	register_grass_decoration("tallgrass", 0.18, -0.03, grass_savanna)
 
-	local fern_minimal = { "rainforest", "taiga", "mega_taiga", "cold_taiga" }
-	local fern_low = { "rainforest", "taiga", "mega_taiga" }
-	local fern_full = { "rainforest" }
+	local fern_minimal = { "jungle", "taiga", "mega_taiga", "cold_taiga" }
+	local fern_low = { "jungle", "taiga", "mega_taiga" }
+	local fern_full = { "jungle" }
 	register_grass_decoration("fern", -0.03,  0.09, fern_minimal)
 	register_grass_decoration("fern", -0.015, 0.075, fern_minimal)
 	register_grass_decoration("fern", 0,      0.06, fern_minimal)
@@ -1842,7 +1844,7 @@ local function register_decorations()
 		place_on = {"mcl_core:mycelium"},
 		sidelen = 80,
 		fill_ratio = 0.009,
-		biomes = {"mushroom"},
+		biomes = {"mushroom_island"},
 		noise_threshold = 2.0,
 		y_min = mcl_vars.mg_overworld_min,
 		y_max = mcl_vars.mg_overworld_max,
@@ -1853,7 +1855,7 @@ local function register_decorations()
 		place_on = {"mcl_core:mycelium"},
 		sidelen = 80,
 		fill_ratio = 0.009,
-		biomes = {"mushroom"},
+		biomes = {"mushroom_island"},
 		y_min = mcl_vars.mg_overworld_min,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_mushrooms:mushroom_brown",
@@ -1927,12 +1929,12 @@ local function register_decorations()
 		})
 	end
 
-	local flower_biomes1 = {"grassland", "sunflower_plains", "flower_forest", "roofed_forest", "deciduous_forest", "coniferous_forest", "taiga", "rainforest"}
+	local flower_biomes1 = {"plains", "sunflower_plains", "flower_forest", "roofed_forest", "forest", "taiga", "cold_taiga", "jungle", "savanna"}
 
 	register_flower("dandelion", flower_biomes1, 8)
 	register_flower("poppy", flower_biomes1, 9439)
 
-	local flower_biomes2 = {"grassland", "sunflower_plains", "flower_forest"}
+	local flower_biomes2 = {"plains", "sunflower_plains", "flower_forest"}
 	register_flower("tulip_red", flower_biomes2, 436)
 	register_flower("tulip_orange", flower_biomes2, 536)
 	register_flower("tulip_pink", flower_biomes2, 636)
@@ -1941,7 +1943,7 @@ local function register_decorations()
 	register_flower("oxeye_daisy", flower_biomes2, 3490)
 
 	-- TODO: Make exclusive to flower forest
-	register_flower("allium", {"deciduous_forest", "flower_forest", "roofed_forest"}, 0)
+	register_flower("allium", {"forest", "flower_forest", "roofed_forest"}, 0)
 	-- TODO: Make exclusive to swamp
 	register_flower("blue_orchid", {"roofed_forest", "swamp"}, 64500)
 
