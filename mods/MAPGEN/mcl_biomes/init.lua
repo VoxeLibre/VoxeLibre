@@ -1956,24 +1956,27 @@ end
 --
 -- Detect mapgen to select functions
 --
-minetest.clear_registered_biomes()
-minetest.clear_registered_decorations()
-minetest.clear_registered_schematics()
-if mg_name ~= "v6" and mg_name ~= "flat" then
-	register_biomes()
-	register_biomelike_ores()
-	register_decorations()
-elseif mg_name == "flat" then
-	-- Implementation of Minecraft's Superflat mapgen, classic style
+if mg_name ~= "singlenode" then
 	minetest.clear_registered_biomes()
 	minetest.clear_registered_decorations()
 	minetest.clear_registered_schematics()
-	register_classic_superflat_biome()
+	if mg_name ~= "v6" and mg_name ~= "flat" then
+		register_biomes()
+		register_biomelike_ores()
+		register_decorations()
+	elseif mg_name == "flat" then
+		-- Implementation of Minecraft's Superflat mapgen, classic style
+		minetest.clear_registered_biomes()
+		minetest.clear_registered_decorations()
+		minetest.clear_registered_schematics()
+		register_classic_superflat_biome()
+	end
+
+	-- Non-overworld stuff is registered independently
+	register_dimension_biomes()
+	register_dimension_ores()
+	register_dimension_decorations()
+
+	-- Overworld decorations for v6 are handled in mcl_mapgen_core
 end
 
--- Non-overworld stuff is registered independently
-register_dimension_biomes()
-register_dimension_ores()
-register_dimension_decorations()
-
--- Overworld decorations for v6 are handled in mcl_mapgen_core

@@ -1285,7 +1285,8 @@ minetest.register_on_generated(function(minp, maxp)
 	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
 	local lvm_used = false
 
-	-- Generate bedrock and lava layers
+	-- Generate basic layer-based nodes: void, bedrock, realm barrier, lava seas, etc.
+	-- Also perform some basic node replacements.
 	if minp.y <= GEN_MAX then
 		local max_y = math.min(maxp.y, GEN_MAX)
 
@@ -1293,8 +1294,20 @@ minetest.register_on_generated(function(minp, maxp)
 			for x = minp.x, maxp.x do
 				for z = minp.z, maxp.z do
 					local p_pos = area:index(x, y, z)
-					local setdata = nil
-					if mcl_vars.mg_bedrock_is_rough then
+
+					-- The void
+					if mcl_util.is_in_void({x=x,y=y,z=z}) then
+						data[p_pos] = c_void
+						lvm_used = true
+					-- Realm barrier between the Overworld void and the End
+					elseif y >= mcl_vars.mg_realm_barrier_overworld_end_min and y <= mcl_vars.mg_realm_barrier_overworld_end_max then
+						data[p_pos] = c_realm_barrier
+						lvm_used = true
+					end
+
+					-- Bedrock layer checking (skip in singlenode)
+					local bedrock = false
+					if mg_name ~= "singlenode" and mcl_vars.mg_bedrock_is_rough then
 						local is_bedrock = function(y)
 							-- Bedrock layers with increasing levels of roughness, until a perfecly flat bedrock later at the bottom layer
 							-- This code assumes a bedrock height of 5 layers.
@@ -1327,28 +1340,23 @@ minetest.register_on_generated(function(minp, maxp)
 							return math.random(1, top) <= top-1
 						end
 						if is_bedrock(y) then
-							setdata = c_bedrock
+							bedrock = true
 						end
-					else
+					elseif mg_name ~= "singlenode" then
 						-- Perfectly flat bedrock layer(s)
 						if (y >= mcl_vars.mg_bedrock_overworld_min and y <= mcl_vars.mg_bedrock_overworld_max) or
 								(y >= mcl_vars.mg_bedrock_nether_bottom_min and y <= mcl_vars.mg_bedrock_nether_bottom_max) or
 								(y >= mcl_vars.mg_bedrock_nether_top_min and y <= mcl_vars.mg_bedrock_nether_top_max) then
-							setdata = c_bedrock
+							bedrock = true
 						end
 					end
 
+					-- No more transformations in singlenode
+					if mg_name == "singlenode" then
+						-- do nothing
 					-- Bedrock, defined above
-					if setdata then
-						data[p_pos] = setdata
-						lvm_used = true
-					-- The void
-					elseif mcl_util.is_in_void({x=x,y=y,z=z}) then
-						data[p_pos] = c_void
-						lvm_used = true
-					-- Realm barrier between the Overworld void and the End
-					elseif y >= mcl_vars.mg_realm_barrier_overworld_end_min and y <= mcl_vars.mg_realm_barrier_overworld_end_max then
-						data[p_pos] = c_realm_barrier
+					elseif bedrock then
+						data[p_pos] = c_bedrock
 						lvm_used = true
 					-- Flat Nether
 					elseif mg_name == "flat" and y >= mcl_vars.mg_bedrock_nether_bottom_max + 4 and y <= mcl_vars.mg_bedrock_nether_bottom_max + 52 then
