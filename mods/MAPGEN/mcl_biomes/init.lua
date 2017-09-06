@@ -1383,10 +1383,30 @@ local function register_decorations()
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:coarse_dirt"},
 		sidelen = 16,
 		noise_params = {
-			offset = 0,
+			offset = 0.00075,
 			scale = 0.002,
 			spread = {x = 250, y = 250, z = 250},
-			seed = 2,
+			seed = 26,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"savanna"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_acacia_classic_1.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:coarse_dirt"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.00075,
+			scale = 0.002,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 25,
 			octaves = 3,
 			persist = 0.66
 		},
