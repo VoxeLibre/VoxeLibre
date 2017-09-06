@@ -1047,10 +1047,6 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	end
 end)
 
-
--- Generate bedrock layer or layers
-local GEN_MAX = mcl_vars.mg_lava_overworld_max or mcl_vars.mg_bedrock_overworld_max
-
 -- Buffer for LuaVoxelManip
 local lvm_buffer = {}
 
@@ -1267,6 +1263,8 @@ end
 local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
 local c_stone = minetest.get_content_id("mcl_core:stone")
 local c_dirt = minetest.get_content_id("mcl_core:dirt")
+local c_dirt_with_grass = minetest.get_content_id("mcl_core:dirt_with_grass")
+local c_dirt_with_grass_snow = minetest.get_content_id("mcl_core:dirt_with_grass_snow")
 local c_sand = minetest.get_content_id("mcl_core:sand")
 local c_void = minetest.get_content_id("mcl_core:void")
 local c_lava = minetest.get_content_id("mcl_core:lava_source")
@@ -1277,6 +1275,7 @@ local c_nether_lava = minetest.get_content_id("mcl_nether:nether_lava_source")
 local c_end_stone = minetest.get_content_id("mcl_end:end_stone")
 local c_realm_barrier = minetest.get_content_id("mcl_core:realm_barrier")
 local c_top_snow = minetest.get_content_id("mcl_core:snow")
+local c_snow_block = minetest.get_content_id("mcl_core:snowblock")
 local c_air = minetest.get_content_id("air")
 
 -- Below the bedrock, generate air/void
@@ -1288,10 +1287,8 @@ minetest.register_on_generated(function(minp, maxp)
 
 	-- Generate basic layer-based nodes: void, bedrock, realm barrier, lava seas, etc.
 	-- Also perform some basic node replacements.
-	if minp.y <= GEN_MAX then
-		local max_y = math.min(maxp.y, GEN_MAX)
-
-		for y = minp.y, max_y do
+	do
+		for y = minp.y, maxp.y do
 			for x = minp.x, maxp.x do
 				for z = minp.z, maxp.z do
 					local p_pos = area:index(x, y, z)
@@ -1382,6 +1379,14 @@ minetest.register_on_generated(function(minp, maxp)
 							data[p_pos] = c_air
 							lvm_used = true
 						end
+					-- Clear snowy grass blocks to ensure consistency.
+					-- Snowy grass blocks are not allowed below anything except top snow or snow block.
+					elseif mg_name ~= "v6" and data[p_pos] == c_dirt_with_grass_snow then
+						local p_pos_above = area:index(x, y+1, z)
+						if p_pos_above and data[p_pos_above] ~= c_top_snow and data[p_pos_above] ~= c_snow_block then
+							data[p_pos] = c_dirt_with_grass
+							lvm_used = true
+						end
 					-- Nether and End support for v6 because v6 does not support the biomes API
 					elseif mg_name == "v6" then
 						if y <= mcl_vars.mg_nether_max and y >= mcl_vars.mg_nether_min then
@@ -1404,7 +1409,7 @@ minetest.register_on_generated(function(minp, maxp)
 		end
 	end
 
-	-- Put top snow on grassy snow blocks created by the v6 mapgen
+	-- Put top snow on snowy grass blocks created by the v6 mapgen
 	-- This is because the snowy grass block must only be used when it is below snow or top snow
 	if mg_name == "v6" then
 		local snowdirt = minetest.find_nodes_in_area_under_air(minp, maxp, "mcl_core:dirt_with_grass_snow")
