@@ -213,7 +213,7 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "plains_dunes",
+		name = "plains_beach",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
 		node_filler = "mcl_core:sand",
@@ -257,7 +257,7 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "taiga_dunes",
+		name = "taiga_beach",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -300,8 +300,8 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "forest_shore",
-		node_top = "mcl_core:dirt",
+		name = "forest_beach",
+		node_top = "mcl_core:sand",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 3,
@@ -462,8 +462,8 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "savanna_shore",
-		node_top = "mcl_core:dirt",
+		name = "savanna_beach",
+		node_top = "mcl_core:sand",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 3,
@@ -1463,7 +1463,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.7
 		},
-		biomes = {"plains", "plains_dunes", "ice_plains", "beach", "red_desert", "desert", "swamp"},
+		biomes = {"plains", "plains_beach", "taiga_beach", "ice_plains", "cold_taiga_beach", "savanna_beach", "forest_beach", "red_desert", "desert", "swamp"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_core:reeds",
