@@ -1170,6 +1170,25 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:dirt_with_grass_snow"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.0,
+			scale = 0.0002,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.7
+		},
+		biomes = {"ice_plains"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 16,
 		noise_params = {
@@ -1329,11 +1348,29 @@ local function register_decorations()
 			offset = 0.001,
 			scale = -0.0015,
 			spread = {x = 250, y = 250, z = 250},
-			seed = 2,
+			seed = 11,
 			octaves = 3,
 			persist = 0.66
 		},
 		biomes = {"forest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_birch.mts",
+		flags = "place_center_x, place_center_z",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_grass_snow"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.0005,
+			scale = -0.0015,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 11,
+			octaves = 3,
+			persist = 0.7
+		},
+		biomes = {"ice_plains"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_birch.mts",
