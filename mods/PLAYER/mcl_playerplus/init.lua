@@ -134,21 +134,22 @@ minetest.register_globalstep(function(dtime)
 			end
 		end
 
-		-- am I near a cactus?
+		-- Am I near a cactus?
 		local near = minetest.find_node_near(pos, 1, "mcl_core:cactus")
-
+		if not near then
+			near = minetest.find_node_near({x=pos.x, y=pos.y-1, z=pos.z}, 1, "mcl_core:cactus")
+		end
 		if near then
-			-- am I touching the cactus? if so it hurts
-			for _,object in pairs(minetest.get_objects_inside_radius(near, 1.1)) do
-				if object:get_hp() > 0 then
-					if object:is_player() then
-						mcl_death_messages.player_damage(object, string.format("%s was prickled by a cactus.", object:get_player_name()))
-						mcl_hunger.exhaust(object:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
-					end
-					object:set_hp(object:get_hp() - 1)
+			-- Am I touching the cactus? If so, it hurts
+			local dist = vector.distance(pos, near)
+			local dist_feet = vector.distance({x=pos.x, y=pos.y-1, z=pos.z}, near)
+			if dist < 1.1 or dist_feet < 1.1 then
+				if player:get_hp() > 0 then
+					mcl_death_messages.player_damage(player, string.format("%s was prickled by a cactus.", player:get_player_name()))
+					mcl_hunger.exhaust(player:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+					player:set_hp(player:get_hp() - 1)
 				end
 			end
-
 		end
 
 		-- Apply black sky in the Void and deal Void damage
