@@ -357,6 +357,64 @@ local function register_biomes()
 		humidity_point = 44,  --was 68
 	})
 
+	-- Birch forest
+	minetest.register_biome({
+		name = "birch_forest",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		heat_point = 20,
+		humidity_point = 49,
+	})
+
+	minetest.register_biome({
+		name = "birch_forest_ocean",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = 0,
+		heat_point = 20,
+		humidity_point = 49,
+	})
+
+	-- Birch forest M
+	minetest.register_biome({
+		name = "birch_forest_m",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		heat_point = 20,
+		humidity_point = 44,
+	})
+
+	minetest.register_biome({
+		name = "birch_forest_m_ocean",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = 0,
+		heat_point = 20,
+		humidity_point = 44,
+	})
+
 	-- Desert (Red Sand)
 	minetest.register_biome({
 		name = "red_desert",
@@ -1346,6 +1404,43 @@ local function register_decorations()
 		place_on = {"mcl_core:dirt_with_grass"},
 		sidelen = 16,
 		noise_params = {
+			offset = 0.03,
+			scale = 0.0025,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 11,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"birch_forest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_birch.mts",
+		flags = "place_center_x, place_center_z",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.03,
+			scale = 0.0025,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 11,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"birch_forest_m"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_birch_tall.mts",
+		flags = "place_center_x, place_center_z",
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 16,
+		noise_params = {
 			offset = 0.001,
 			scale = -0.0015,
 			spread = {x = 250, y = 250, z = 250},
@@ -1566,7 +1661,7 @@ local function register_decorations()
 		},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		biomes = {"plains", "sunflower_plains", "taiga", "forest", "roofed_forest", "savanna"},
+		biomes = {"plains", "sunflower_plains", "taiga", "forest", "birch_forest", "birch_forest_m", "roofed_forest", "savanna"},
 	})
 
 	-- Large ferns
@@ -1629,9 +1724,9 @@ local function register_decorations()
 		})
 	end
 
-	register_large_flower("rose_bush", {"forest", "taiga", "roofed_forest", "flower_forest"}, 9350, -0.008)
-	register_large_flower("peony", {"forest", "taiga", "roofed_forest", "flower_forest"}, 10450, -0.008)
-	register_large_flower("lilac", {"forest", "taiga", "roofed_forest", "flower_forest"}, 10600, -0.007)
+	register_large_flower("rose_bush", {"forest", "birch_forest", "birch_forest_m", "taiga", "roofed_forest", "flower_forest"}, 9350, -0.008)
+	register_large_flower("peony", {"forest", "birch_forest", "birch_forest_m", "taiga", "roofed_forest", "flower_forest"}, 10450, -0.008)
+	register_large_flower("lilac", {"forest", "birch_forest", "birch_forest_m", "taiga", "roofed_forest", "flower_forest"}, 10600, -0.007)
 	-- TODO
 	register_large_flower("sunflower", {"plains", "sunflower_plains"}, 2940, 0.0) -- 0.03
 
@@ -1740,7 +1835,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"forest"},
+		biomes = {"forest", "birch_forest", "birch_forest_m",},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = {
@@ -1898,7 +1993,7 @@ local function register_decorations()
 	})
 
 	-- Grasses and ferns
-	local grass_forest = {"plains", "taiga", "forest", "roofed_forest", "flower_forest" }
+	local grass_forest = {"plains", "taiga", "forest", "birch_forest", "birch_forest_m", "roofed_forest", "flower_forest" }
 	local grass_plains = {"plains", "savanna", "sunflower_plains"}
 	local grass_savanna = {"savanna"}
 
@@ -2064,7 +2159,7 @@ local function register_decorations()
 		})
 	end
 
-	local flower_biomes1 = {"plains", "sunflower_plains", "flower_forest", "roofed_forest", "forest", "taiga", "cold_taiga", "jungle", "savanna"}
+	local flower_biomes1 = {"plains", "sunflower_plains", "flower_forest", "roofed_forest", "forest", "birch_forest", "birch_forest_m", "taiga", "cold_taiga", "jungle", "savanna"}
 
 	register_flower("dandelion", flower_biomes1, 8)
 	register_flower("poppy", flower_biomes1, 9439)
