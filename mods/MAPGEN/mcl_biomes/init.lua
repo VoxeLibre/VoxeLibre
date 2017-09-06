@@ -226,7 +226,6 @@ local function register_biomes()
 		humidity_point = 45,
 	})
 
-
 	minetest.register_biome({
 		name = "plains_ocean",
 		node_top = "mcl_core:dirt",
@@ -240,6 +239,36 @@ local function register_biomes()
 		heat_point = 26,
 		humidity_point = 45,
 	})
+
+	-- Sunflower Plains
+	minetest.register_biome({
+		name = "sunflower_plains",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		heat_point = 26,
+		humidity_point = 35,
+	})
+
+	minetest.register_biome({
+		name = "sunflower_plains_ocean",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:dirt",
+		depth_riverbed = 2,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = 0,
+		heat_point = 26,
+		humidity_point = 35,
+	})
+
 
 	-- Taiga
 	minetest.register_biome({
@@ -1565,8 +1594,7 @@ local function register_decorations()
 	register_large_flower("rose_bush", {"forest", "taiga", "roofed_forest", "flower_forest"}, 9350, -0.008)
 	register_large_flower("peony", {"forest", "taiga", "roofed_forest", "flower_forest"}, 10450, -0.008)
 	register_large_flower("lilac", {"forest", "taiga", "roofed_forest", "flower_forest"}, 10600, -0.007)
-	-- TODO: Make exclusive to sunflower plains
-	register_large_flower("sunflower", {"plains", "sunflower_plains"}, 2940, -0.005)
+	register_large_flower("sunflower", {"sunflower_plains"}, 2940, 1.005)
 
 	-- Jungle bush
 	minetest.register_decoration({
@@ -1834,6 +1862,7 @@ local function register_decorations()
 	local grass_forest = {"plains", "taiga", "forest", "roofed_forest", "flower_forest" }
 	local grass_plains = {"plains", "savanna"}
 	local grass_savanna = {"savanna"}
+
 	register_grass_decoration("tallgrass", -0.03,  0.09, grass_minimal)
 	register_grass_decoration("tallgrass", -0.015, 0.075, grass_minimal)
 	register_grass_decoration("tallgrass", 0,      0.06, grass_forest)
@@ -1859,6 +1888,31 @@ local function register_decorations()
 	register_grass_decoration("fern", 0.05, 0.01, fern_full)
 	register_grass_decoration("fern", 0.07, -0.01, fern_full)
 	register_grass_decoration("fern", 0.09, -0.03, fern_full)
+
+	-- Tall grass in ice plains
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_grass_snow"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.08,
+			scale = 0.09,
+			spread = {x = 15, y = 15, z = 15},
+			seed = 420,
+			octaves = 3,
+			persist = 0.6,
+		},
+		biomes = {"ice_plains"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = {
+			size = { x=1, y=2, z=1 },
+			data = {
+				{ name = "mcl_core:dirt_with_grass", force_place=true, },
+				{ name = "mcl_flowers:tallgrass", },
+			},
+		},
+	})
 
 	-- Dead bushes
 	minetest.register_decoration({
