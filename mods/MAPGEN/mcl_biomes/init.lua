@@ -135,6 +135,35 @@ local function register_biomes()
 		humidity_point = 72,
 	})
 
+	-- Mega spruce taiga
+	minetest.register_biome({
+		name = "mega_spruce_taiga",
+		node_top = "mcl_core:podzol",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:dirt",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		heat_point = 21,
+		humidity_point = 72,
+	})
+
+	minetest.register_biome({
+		name = "mega_spruce_taiga_ocean",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:dirt",
+		depth_riverbed = 2,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = 0,
+		heat_point = 21,
+		humidity_point = 72,
+	})
+
 	-- Snowy plains
 	minetest.register_biome({
 		name = "snowy_plains",
@@ -1167,62 +1196,36 @@ local function register_decorations()
 	})
 
 	-- Spruce
+	local function quick_spruce(seed, offset, sprucename, biomes)
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
+			sidelen = 16,
+			noise_params = {
+				offset = offset,
+				scale = 0.0006,
+				spread = {x = 250, y = 250, z = 250},
+				seed = seed,
+				octaves = 3,
+				persist = 0.66
+			},
+			biomes = biomes,
+			y_min = 2,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = minetest.get_modpath("mcl_core").."/schematics/"..sprucename,
+			flags = "place_center_x, place_center_z",
+		})
+	end
 
-	-- Common spruces
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
-		sidelen = 16,
-		noise_params = {
-			offset = 0.0062,
-			scale = 0.0006,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 2500,
-			octaves = 3,
-			persist = 0.66
-		},
-		biomes = {"mega_taiga", "taiga", "cold_taiga"},
-		y_min = 2,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_1.mts",
-		flags = "place_center_x, place_center_z",
-	})
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
-		sidelen = 16,
-		noise_params = {
-			offset = 0.0065,
-			scale = 0.0006,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 5000,
-			octaves = 3,
-			persist = 0.66
-		},
-		biomes = {"mega_taiga", "taiga", "cold_taiga"},
-		y_min = 2,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_2.mts",
-		flags = "place_center_x, place_center_z",
-	})
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
-		sidelen = 16,
-		noise_params = {
-			offset = 0.005,
-			scale = 0.0006,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 7500,
-			octaves = 3,
-			persist = 0.66
-		},
-		biomes = {"mega_taiga", "taiga", "cold_taiga"},
-		y_min = 2,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_3.mts",
-		flags = "place_center_x, place_center_z",
-	})
+	-- Huge spruce
+	quick_spruce(3000, 0.001, "mcl_core_spruce_huge_1.mts", {"mega_spruce_taiga"})
+	quick_spruce(4000, 0.00112, "mcl_core_spruce_huge_2.mts", {"mega_spruce_taiga"})
+	quick_spruce(6000, 0.001, "mcl_core_spruce_huge_3.mts", {"mega_spruce_taiga"})
+
+	-- Common spruce
+	quick_spruce(2500, 0.0062, "mcl_core_spruce_1.mts", {"mega_spruce_taiga", "mega_taiga", "taiga", "cold_taiga"})
+	quick_spruce(5000, 0.0065, "mcl_core_spruce_2.mts", {"mega_spruce_taiga", "mega_taiga", "taiga", "cold_taiga"})
+	quick_spruce(7000, 0.005, "mcl_core_spruce_3.mts", {"mega_spruce_taiga", "mega_taiga", "taiga", "cold_taiga"})
 
 	-- Small lollipop spruce
 	minetest.register_decoration({
@@ -1237,7 +1240,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"mega_taiga", "taiga", "cold_taiga"},
+		biomes = {"taiga", "cold_taiga"},
 		y_min = 2,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_spruce_lollipop.mts",
@@ -1396,7 +1399,7 @@ local function register_decorations()
 			octaves = 4,
 			persist = 0.63,
 		},
-		biomes = {"mega_taiga"},
+		biomes = {"mega_taiga", "mega_spruce_taiga"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder.mts",
@@ -1416,7 +1419,7 @@ local function register_decorations()
 			octaves = 4,
 			persist = 0.63,
 		},
-		biomes = {"mega_taiga"},
+		biomes = {"mega_taiga", "mega_spruce_taiga"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder_small.mts",
@@ -1521,7 +1524,7 @@ local function register_decorations()
 			octaves = 2,
 			persist = 0.66,
 		},
-		biomes = { "jungle", "taiga", "cold_taiga", "mega_taiga" },
+		biomes = { "jungle", "taiga", "cold_taiga", "mega_taiga", "mega_spruce_taiga" },
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 	})
@@ -1585,7 +1588,7 @@ local function register_decorations()
 	-- Fallen logs
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
+		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol", "mcl_core:coarse_dirt"},
 		sidelen = 80,
 		noise_params = {
 			offset = 0.00018,
@@ -1595,7 +1598,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"mega_taiga", "taiga"},
+		biomes = {"mega_taiga", "mega_spruce_taiga", "taiga", "cold_taiga"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = {
@@ -1804,8 +1807,8 @@ local function register_decorations()
 	register_grass_decoration("tallgrass", 0.09, -0.03, grass_plains)
 	register_grass_decoration("tallgrass", 0.18, -0.03, grass_savanna)
 
-	local fern_minimal = { "jungle", "taiga", "mega_taiga", "cold_taiga" }
-	local fern_low = { "jungle", "taiga", "mega_taiga" }
+	local fern_minimal = { "jungle", "taiga", "mega_taiga", "mega_spruce_taiga", "cold_taiga" }
+	local fern_low = { "jungle", "taiga", "mega_taiga", "mega_spruce_taiga" }
 	local fern_full = { "jungle" }
 	register_grass_decoration("fern", -0.03,  0.09, fern_minimal)
 	register_grass_decoration("fern", -0.015, 0.075, fern_minimal)
@@ -1867,7 +1870,7 @@ local function register_decorations()
 		place_on = {"mcl_core:podzol"},
 		sidelen = 80,
 		fill_ratio = 0.003,
-		biomes = {"taiga", "mega_taiga"},
+		biomes = {"taiga", "mega_taiga", "mega_spruce_taiga"},
 		y_min = mcl_vars.mg_overworld_min,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_mushrooms:mushroom_red",
@@ -1877,7 +1880,7 @@ local function register_decorations()
 		place_on = {"mcl_core:podzol"},
 		sidelen = 80,
 		fill_ratio = 0.003,
-		biomes = {"taiga", "mega_taiga"},
+		biomes = {"taiga", "mega_taiga", "mega_spruce_taiga"},
 		y_min = mcl_vars.mg_overworld_min,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_mushrooms:mushroom_brown",
