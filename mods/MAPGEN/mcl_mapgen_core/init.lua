@@ -1287,92 +1287,107 @@ minetest.register_on_generated(function(minp, maxp)
 	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
 	local lvm_used = false
 
+	local ymin, ymax
+
 	-- Generate basic layer-based nodes: void, bedrock, realm barrier, lava seas, etc.
 	-- Also perform some basic node replacements.
-	if maxp.y <= GEN_MAX then
-		for y = minp.y, math.min(maxp.y, GEN_MAX) do
-			for x = minp.x, maxp.x do
-				for z = minp.z, maxp.z do
-					local p_pos = area:index(x, y, z)
 
-					-- The void
-					if mcl_util.is_in_void({x=x,y=y,z=z}) then
-						data[p_pos] = c_void
-						lvm_used = true
-					-- Realm barrier between the Overworld void and the End
-					elseif y >= mcl_vars.mg_realm_barrier_overworld_end_min and y <= mcl_vars.mg_realm_barrier_overworld_end_max then
-						data[p_pos] = c_realm_barrier
-						lvm_used = true
-					end
-
-					-- Bedrock layer checking (skip in singlenode)
-					local bedrock = false
-					if mg_name ~= "singlenode" and mcl_vars.mg_bedrock_is_rough then
-						local is_bedrock = function(y)
-							-- Bedrock layers with increasing levels of roughness, until a perfecly flat bedrock later at the bottom layer
-							-- This code assumes a bedrock height of 5 layers.
-
-							local diff = mcl_vars.mg_bedrock_overworld_max - y -- Overworld bedrock
-							local ndiff1 = mcl_vars.mg_bedrock_nether_bottom_max - y -- Nether bedrock, bottom
-							local ndiff2 = mcl_vars.mg_bedrock_nether_top_max - y -- Nether bedrock, ceiling
-
-							local top
-							if diff == 0 or ndiff1 == 0 or ndiff2 == 4 then
-								-- 50% bedrock chance
-								top = 2
-							elseif diff == 1 or ndiff1 == 1 or ndiff2 == 3 then
-								-- 66.666...%
-								top = 3
-							elseif diff == 2 or ndiff1 == 2 or ndiff2 == 2 then
-								-- 75%
-								top = 4
-							elseif diff == 3 or ndiff1 == 3 or ndiff2 == 1 then
-								-- 90%
-								top = 10
-							elseif diff == 4 or ndiff1 == 4 or ndiff2 == 0 then
-								-- 100%
-								return true
-							else
-								-- Not in bedrock layer
-								return false
+	-- Helper function to set all nodes in the layers between min and max.
+	-- content_id: Node to set
+	-- check: optional.
+	--	If content_id, node will be set only if it is equal to check.
+	--	If function(pos_to_check, content_id_at_this_pos), will set node only if returns true.
+	-- min, max: Minimum and maximum Y levels of the layers to set
+	-- minp, maxp: minp, maxp of the on_generated
+	-- lvm_used: Set to true if any node in this on_generated has been set before.
+	--
+	-- returns true if any node was set and lvm_used otherwise
+	local function set_layers(content_id, check, min, max, minp, maxp, lvm_used)
+		if (maxp.y >= min and minp.y <= max) then
+			for y = math.max(min, minp.y), math.min(max, maxp.y) do
+				for x = minp.x, maxp.x do
+					for z = minp.z, maxp.z do
+						local p_pos = area:index(x, y, z)
+						if check then
+							if type(check) == "function" and check({x=x,y=y,z=z}, data[p_pos]) then
+								data[p_pos] = content_id
+								lvm_used = true
+							elseif check == data[p_pos] then
+								data[p_pos] = content_id
+								lvm_used = true
 							end
-
-							return math.random(1, top) <= top-1
+						else
+							data[p_pos] = content_id
+							lvm_used = true
 						end
-						if is_bedrock(y) then
-							bedrock = true
-						end
-					elseif mg_name ~= "singlenode" then
-						-- Perfectly flat bedrock layer(s)
-						if (y >= mcl_vars.mg_bedrock_overworld_min and y <= mcl_vars.mg_bedrock_overworld_max) or
-								(y >= mcl_vars.mg_bedrock_nether_bottom_min and y <= mcl_vars.mg_bedrock_nether_bottom_max) or
-								(y >= mcl_vars.mg_bedrock_nether_top_min and y <= mcl_vars.mg_bedrock_nether_top_max) then
-							bedrock = true
-						end
-					end
-
-					-- No more transformations in singlenode
-					if mg_name == "singlenode" then
-						-- do nothing
-					-- Bedrock, defined above
-					elseif bedrock then
-						data[p_pos] = c_bedrock
-						lvm_used = true
-					-- Flat Nether
-					elseif mg_name == "flat" and y >= mcl_vars.mg_bedrock_nether_bottom_max + 4 and y <= mcl_vars.mg_bedrock_nether_bottom_max + 52 then
-						data[p_pos] = c_air
-						lvm_used = true
-					-- Big lava seas by replacing air below a certain height
-					elseif mcl_vars.mg_lava and data[p_pos] == c_air and y <= mcl_vars.mg_lava_overworld_max and y >= mcl_vars.mg_overworld_min then
-						data[p_pos] = c_lava
-						lvm_used = true
-					elseif mcl_vars.mg_lava and data[p_pos] == c_air and y <= mcl_vars.mg_lava_nether_max and y >= mcl_vars.mg_nether_min then
-						data[p_pos] = c_nether_lava
-						lvm_used = true
 					end
 				end
 			end
 		end
+		return lvm_used
+	end
+
+	-- The Void
+	lvm_used = set_layers(c_void, nil, -31000, mcl_vars.mg_nether_min-1, minp, maxp, lvm_used)
+	lvm_used = set_layers(c_void, nil, mcl_vars.mg_nether_max+1, mcl_vars.mg_end_min-1, minp, maxp, lvm_used)
+	lvm_used = set_layers(c_void, nil, mcl_vars.mg_end_max+1, mcl_vars.mg_realm_barrier_overworld_end_min-1, minp, maxp, lvm_used)
+	lvm_used = set_layers(c_void, nil, mcl_vars.mg_realm_barrier_overworld_end_max+1, mcl_vars.mg_overworld_min-1, minp, maxp, lvm_used)
+
+	-- Realm barrier between the Overworld void and the End
+	lvm_used = set_layers(c_realm_barrier, nil, mcl_vars.mg_realm_barrier_overworld_end_min, mcl_vars.mg_realm_barrier_overworld_end_max, minp, maxp, lvm_used)
+
+	-- Bedrock
+	local bedrock_check
+	if mcl_vars.mg_bedrock_is_rough then
+		bedrock_check = function(pos)
+			local y = pos.y
+			-- Bedrock layers with increasing levels of roughness, until a perfecly flat bedrock later at the bottom layer
+			-- This code assumes a bedrock height of 5 layers.
+
+			local diff = mcl_vars.mg_bedrock_overworld_max - y -- Overworld bedrock
+			local ndiff1 = mcl_vars.mg_bedrock_nether_bottom_max - y -- Nether bedrock, bottom
+			local ndiff2 = mcl_vars.mg_bedrock_nether_top_max - y -- Nether bedrock, ceiling
+
+			local top
+			if diff == 0 or ndiff1 == 0 or ndiff2 == 4 then
+				-- 50% bedrock chance
+			top = 2
+			elseif diff == 1 or ndiff1 == 1 or ndiff2 == 3 then
+				-- 66.666...%
+			top = 3
+			elseif diff == 2 or ndiff1 == 2 or ndiff2 == 2 then
+				-- 75%
+				top = 4
+			elseif diff == 3 or ndiff1 == 3 or ndiff2 == 1 then
+				-- 90%
+				top = 10
+			elseif diff == 4 or ndiff1 == 4 or ndiff2 == 0 then
+				-- 100%
+				return true
+			else
+				-- Not in bedrock layer
+				return false
+			end
+
+			return math.random(1, top) <= top-1
+		end
+	else
+		bedrock_check = nil
+	end
+
+	lvm_used = set_layers(c_bedrock, bedrock_check, mcl_vars.mg_bedrock_overworld_min, mcl_vars.mg_bedrock_overworld_max, minp, maxp, lvm_used)
+	lvm_used = set_layers(c_bedrock, bedrock_check, mcl_vars.mg_bedrock_nether_bottom_min, mcl_vars.mg_bedrock_nether_bottom_max, minp, maxp, lvm_used)
+	lvm_used = set_layers(c_bedrock, bedrock_check, mcl_vars.mg_bedrock_nether_top_min, mcl_vars.mg_bedrock_nether_top_max, minp, maxp, lvm_used)
+
+	-- Flat Nether
+	if mg_name == "flat" then
+		lvm_used = set_layers(c_air, nil, mcl_vars.mg_bedrock_nether_bottom_max + 4, mcl_vars.mg_bedrock_nether_bottom_max + 52, minp, maxp, lvm_used)
+	end
+
+	-- Big lava seas by replacing air below a certain height
+	if mcl_vars.mg_lava then
+		lvm_used = set_layers(c_lava, c_air, mcl_vars.mg_overworld_min, mcl_vars.mg_lava_overworld_max, minp, maxp, lvm_used)
+		lvm_used = set_layers(c_nether_lava, c_air, mcl_vars.mg_nether_min, mcl_vars.mg_lava_nether_max, minp, maxp, lvm_used)
 	end
 
 	----- Interactive block fixing section -----
