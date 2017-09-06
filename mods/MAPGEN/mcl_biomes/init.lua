@@ -1588,7 +1588,7 @@ local function register_decorations()
 	-- Fallen logs
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol", "mcl_core:coarse_dirt"},
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:podzol", "mcl_core:coarse_dirt"},
 		sidelen = 80,
 		noise_params = {
 			offset = 0.00018,
@@ -1598,7 +1598,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"mega_taiga", "mega_spruce_taiga", "taiga", "cold_taiga"},
+		biomes = {"mega_taiga", "mega_spruce_taiga", "taiga"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = {
@@ -1615,6 +1615,42 @@ local function register_decorations()
 				{name = "air", prob = 0},
 				{name = "mcl_mushrooms:mushroom_brown", prob = 160},
 				{name = "mcl_mushrooms:mushroom_red", prob = 160},
+				{name = "air", prob = 0},
+			},
+		},
+		flags = "place_center_x",
+		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol", "mcl_core:podzol_snow", "mcl_core:coarse_dirt"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.00018,
+			scale = 0.00011,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"cold_taiga"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = {
+			size = {x = 4, y = 3, z = 1},
+			data = {
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "mcl_core:sprucetree", param2 = 12, prob = 127},
+				{name = "mcl_core:sprucetree", param2 = 12},
+				{name = "mcl_core:sprucetree", param2 = 12},
+				{name = "mcl_core:sprucetree", param2 = 12, prob = 127},
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
+				{name = "air", prob = 0},
 				{name = "air", prob = 0},
 			},
 		},
