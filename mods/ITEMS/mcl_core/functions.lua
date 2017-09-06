@@ -1107,7 +1107,8 @@ minetest.register_abm({
 	end
 })
 
----- Functions for snowed dirt-like blocks. ----
+---- FUNCTIONS FOR SNOWED NODES ----
+-- These are nodes which change their appearence when they are below a snow cover.
 
 -- Lookup tables
 mcl_core.snowed_nodes = {}
@@ -1153,14 +1154,35 @@ mcl_core.clear_snow_dirt = function(pos, node)
 	end
 end
 
+---- [[[[[ Functions for snowable nodes (nodes that can become snowed). ]]]]] ----
+-- Always add these for snowable nodes.
 
--- Functions for snow cover nodes. A snow cover node is a node which turns a snowed dirtlike
+-- on_construct
+-- Makes constructed snowable node snowed if placed below a snow cover node.
+mcl_core.on_snowable_construct = function(pos)
+	-- Myself
+	local node = minetest.get_node(pos)
+
+	-- Above
+	local apos = {x=pos.x, y=pos.y+1, z=pos.z}
+	local anode = minetest.get_node(apos)
+
+	-- Make snowed if needed
+	if minetest.get_item_group(anode.name, "snow_cover") == 1 then
+		minetest.swap_node(pos, {name=mcl_core.snowed_nodes_reverse[node.name]})
+	end
+end
+
+---- [[[[[ Functions for snow cover nodes. ]]]]] ----
+
+-- A snow cover node is a node which turns a snowed dirtlike --
 -- node into its snowed form while it is placed above.
 -- MCL2's snow cover nodes are Top Snow (mcl_core:snow) and Snow (mcl_core:snowblock).
 
 -- Always add the following functions to snow cover nodes:
 
 -- on_construct
+-- Makes snowable node below snowed.
 mcl_core.on_snow_construct = function(pos)
 	local npos = {x=pos.x, y=pos.y-1, z=pos.z}
 	local node = minetest.get_node(npos)
