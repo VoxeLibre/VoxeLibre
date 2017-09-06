@@ -310,23 +310,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 0.6,
 })
-
--- NOTE: This block is to be considered equivalent to the grass block
-minetest.register_node("mcl_core:dirt_with_grass_snow", {
-	description = "Snowy Grass Block",
-	_doc_items_create_entry = false,
-	tiles = {"default_snow.png", "default_dirt.png", "mcl_core_grass_side_snowed.png"},
-	is_ground_content = true,
-	stack_max = 64,
-	groups = {handy=1,shovely=1, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, building_block=1, not_in_creative_inventory=1},
-	drop = 'mcl_core:dirt',
-	sounds = mcl_sounds.node_sound_snow_defaults({
-		dug = {name="default_dirt_footstep", gain=1.5},
-		dig = {name="default_dig_crumbly", gain=1.0}
-	}),
-	_mcl_blast_resistance = 3,
-	_mcl_hardness = 0.6,
-})
+mcl_core.register_snowed_node("mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass")
 
 minetest.register_node("mcl_core:grass_path", {
 	tiles = {"mcl_core_grass_path_top.png", "default_dirt.png", "mcl_core_grass_path_side.png"},
@@ -366,24 +350,7 @@ minetest.register_node("mcl_core:mycelium", {
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.6,
 })
-
--- NOTE: This block is to be considered equivalent to mycelium
-minetest.register_node("mcl_core:mycelium_snow", {
-	description = "Snowy Mycelium",
-	_doc_items_create_entry = false,
-	-- CHECKME: Are the sides of snowy mycelium supposed to look like this?
-	tiles = {"default_snow.png", "default_dirt.png", "mcl_core_grass_side_snowed.png"},
-	is_ground_content = true,
-	stack_max = 64,
-	groups = {handy=1,shovely=1, building_block=1, not_in_creative_inventory=1},
-	drop = 'mcl_core:dirt',
-	sounds = mcl_sounds.node_sound_snow_defaults({
-		dug = {name="default_dirt_footstep", gain=1.5},
-		dig = {name="default_dig_crumbly", gain=1.0}
-	}),
-	_mcl_blast_resistance = 2.5,
-	_mcl_hardness = 0.6,
-})
+mcl_core.register_snowed_node("mcl_core:mycelium_snow", "mcl_core:mycelium")
 
 minetest.register_node("mcl_core:podzol", {
 	description = "Podzol",
@@ -397,23 +364,7 @@ minetest.register_node("mcl_core:podzol", {
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.6,
 })
-
--- NOTE: This block is to be considered equivalent to podzol
-minetest.register_node("mcl_core:podzol_snow", {
-	description = "Snowy Podzol",
-	_doc_items_create_entry = false,
-	tiles = {"default_snow.png", "default_dirt.png", "mcl_core_grass_side_snowed.png"},
-	is_ground_content = true,
-	stack_max = 64,
-	groups = {handy=1,shovely=3, soil=1, soil_sapling=2, soil_sugarcane=1, building_block=1, not_in_creative_inventory=1},
-	drop = 'mcl_core:dirt',
-	sounds = mcl_sounds.node_sound_snow_defaults({
-		dug = {name="default_dirt_footstep", gain=1.5},
-		dig = {name="default_dig_crumbly", gain=1.0}
-	}),
-	_mcl_blast_resistance = 2.5,
-	_mcl_hardness = 0.6,
-})
+mcl_core.register_snowed_node("mcl_core:podzol_snow", "mcl_core:podzol")
 
 minetest.register_node("mcl_core:dirt", {
 	description = "Dirt",
@@ -824,38 +775,6 @@ for i=0,3 do
 	end
 end
 
-local on_snow_construct = function(pos)
-	local npos = {x=pos.x, y=pos.y-1, z=pos.z}
-	local node = minetest.get_node(npos)
-	if node.name == "mcl_core:dirt_with_grass" then
-		minetest.swap_node(npos, {name="mcl_core:dirt_with_grass_snow"})
-	elseif node.name == "mcl_core:podzol" then
-		minetest.swap_node(npos, {name="mcl_core:podzol_snow"})
-	elseif node.name == "mcl_core:mycelium" then
-		minetest.swap_node(npos, {name="mcl_core:mycelium_snow"})
-	end
-end
-local clear_snow_dirt = function(pos, node)
-	if node.name == "mcl_core:dirt_with_grass_snow" then
-		minetest.swap_node(pos, {name="mcl_core:dirt_with_grass"})
-	elseif node.name == "mcl_core:podzol_snow" then
-		minetest.swap_node(pos, {name="mcl_core:podzol"})
-	elseif node.name == "mcl_core:mycelium_snow" then
-		minetest.swap_node(pos, {name="mcl_core:mycelium"})
-	end
-
-end
-local after_snow_destruct = function(pos)
-	local nn = minetest.get_node(pos).name
-	-- No-op if snow was replaced with snow
-	if nn == "mcl_core:snow" or nn == "mcl_core:snowblock" then
-		return
-	end
-	local npos = {x=pos.x, y=pos.y-1, z=pos.z}
-	local node = minetest.get_node(npos)
-	clear_snow_dirt(npos, node)
-end
-
 minetest.register_node("mcl_core:snow", {
 	description = "Top Snow",
 	_doc_items_longdesc = "Top snow is a thin layer of snow.",
@@ -873,7 +792,7 @@ minetest.register_node("mcl_core:snow", {
 	on_flood = function(pos, oldnode, newnode)
 		local npos = {x=pos.x, y=pos.y-1, z=pos.z}
 		local node = minetest.get_node(npos)
-		clear_snow_dirt(npos, node)
+		mcl_core.clear_snow_dirt(npos, node)
 	end,
 	node_box = {
 		type = "fixed",
@@ -881,10 +800,10 @@ minetest.register_node("mcl_core:snow", {
 			{-0.5, -0.5, -0.5,  0.5, -0.5+2/16, 0.5},
 		},
 	},
-	groups = {shovely=1, attached_node=1,deco_block=1, dig_by_piston=1},
+	groups = {shovely=1, attached_node=1,deco_block=1, dig_by_piston=1, snow_cover=1},
 	sounds = mcl_sounds.node_sound_snow_defaults(),
-	on_construct = on_snow_construct,
-	after_destruct = after_snow_destruct,
+	on_construct = mcl_core.on_snow_construct,
+	after_destruct = mcl_core.after_snow_destruct,
 	drop = "mcl_throwing:snowball 2",
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.1,
@@ -897,10 +816,10 @@ minetest.register_node("mcl_core:snowblock", {
 	tiles = {"default_snow.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {shovely=1, building_block=1},
+	groups = {shovely=1, building_block=1, snow_cover=1},
 	sounds = mcl_sounds.node_sound_snow_defaults(),
-	on_construct = on_snow_construct,
-	after_destruct = after_snow_destruct,
+	on_construct = mcl_core.on_snow_construct,
+	after_destruct = mcl_core.after_snow_destruct,
 	drop = "mcl_throwing:snowball 4",
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 0.2,
@@ -911,8 +830,5 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_core:stone_with_redstone", "nodes", "mcl_core:stone_with_redstone_lit")
 	doc.add_entry_alias("nodes", "mcl_core:water_source", "nodes", "mcl_core:water_flowing")
 	doc.add_entry_alias("nodes", "mcl_core:lava_source", "nodes", "mcl_core:lava_flowing")
-	doc.add_entry_alias("nodes", "mcl_core:dirt_with_grass", "nodes", "mcl_core:dirt_with_grass_snow")
-	doc.add_entry_alias("nodes", "mcl_core:podzol", "nodes", "mcl_core:podzol_snow")
-	doc.add_entry_alias("nodes", "mcl_core:mycelium", "nodes", "mcl_core:mycelium_snow")
 end
 
