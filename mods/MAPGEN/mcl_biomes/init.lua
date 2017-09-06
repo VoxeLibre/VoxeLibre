@@ -1565,7 +1565,7 @@ local function register_decorations()
 		},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		biomes = {"plains", "taiga", "forest", "roofed_forest", "savanna"},
+		biomes = {"plains", "sunflower_plains", "taiga", "forest", "roofed_forest", "savanna"},
 	})
 
 	-- Large ferns
@@ -1631,7 +1631,7 @@ local function register_decorations()
 	register_large_flower("rose_bush", {"forest", "taiga", "roofed_forest", "flower_forest"}, 9350, -0.008)
 	register_large_flower("peony", {"forest", "taiga", "roofed_forest", "flower_forest"}, 10450, -0.008)
 	register_large_flower("lilac", {"forest", "taiga", "roofed_forest", "flower_forest"}, 10600, -0.007)
-	register_large_flower("sunflower", {"sunflower_plains"}, 2940, 1.005)
+	register_large_flower("sunflower", {"sunflower_plains"}, 2940, 0.030)
 
 	-- Jungle bush
 	minetest.register_decoration({
@@ -1897,7 +1897,7 @@ local function register_decorations()
 
 	-- Grasses and ferns
 	local grass_forest = {"plains", "taiga", "forest", "roofed_forest", "flower_forest" }
-	local grass_plains = {"plains", "savanna"}
+	local grass_plains = {"plains", "savanna", "sunflower_plains"}
 	local grass_savanna = {"savanna"}
 
 	register_grass_decoration("tallgrass", -0.03,  0.09, grass_minimal)
@@ -2076,9 +2076,9 @@ local function register_decorations()
 	register_flower("oxeye_daisy", flower_biomes2, 3490)
 
 	-- TODO: Make exclusive to flower forest
-	register_flower("allium", {"forest", "flower_forest", "roofed_forest"}, 0)
+	register_flower("allium", {"flower_forest", "roofed_forest"}, 0)
 	-- TODO: Make exclusive to swamp
-	register_flower("blue_orchid", {"roofed_forest", "swamp"}, 64500)
+	register_flower("blue_orchid", {"taiga", "swamp"}, 64500)
 
 
 end
