@@ -308,6 +308,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
 	on_construct = mcl_core.on_snowable_construct,
+	_mcl_snowed = "mcl_core:dirt_with_grass_snow",
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 0.6,
 })
@@ -348,7 +349,9 @@ minetest.register_node("mcl_core:mycelium", {
 	sounds = mcl_sounds.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
+
 	on_construct = mcl_core.on_snowable_construct,
+	_mcl_snowed = "mcl_core:mycelium_snow",
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.6,
 })
@@ -364,6 +367,7 @@ minetest.register_node("mcl_core:podzol", {
 	drop = 'mcl_core:dirt',
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	on_construct = mcl_core.on_snowable_construct,
+	_mcl_snowed = "mcl_core:podzol_snow",
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.6,
 })

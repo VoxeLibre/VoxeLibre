@@ -1108,16 +1108,16 @@ minetest.register_abm({
 })
 
 ---- FUNCTIONS FOR SNOWED NODES ----
--- These are nodes which change their appearence when they are below a snow cover.
+-- These are nodes which change their appearence when they are below a snow cover
+-- and turn back into “normal” when the snow cover is removed.
 
--- Lookup tables
-mcl_core.snowed_nodes = {}
-mcl_core.snowed_nodes_reverse = {}
-
--- Registers a snowed variant of a dirtlike node (e.g. grass block, podzol, mycelium).
+-- Registers a snowed variant of a node (e.g. grass block, podzol, mycelium).
 -- * itemstring_snowed: Itemstring of the snowed node to add
 -- * itemstring_clear: Itemstring of the original “clear” node without snow
 -- * tiles: Optional custom tiles
+--
+-- The snowable nodes also MUST have _mcl_snowed defined to contain the name
+-- of the snowed node.
 mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, tiles)
 	local def = table.copy(minetest.registered_nodes[itemstring_clear])
 	-- Just some group clearing
@@ -1130,15 +1130,17 @@ mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, ti
 	-- Enderman must never take this because this block is supposed to be always buried below snow.
 	def.groups.enderman_takable = nil
 
+	-- Add the clear node to the item definition for easy lookup
+	def._mcl_snowless = itemstring_clear
+
+	-- Note: _mcl_snowed must be added to the clear node manually!
+
 	if not tiles then
 		def.tiles = {"default_snow.png", "default_dirt.png", "mcl_core_grass_side_snowed.png"}
 	end
 
 	-- Register stuff
 	minetest.register_node(itemstring_snowed, def)
-
-	mcl_core.snowed_nodes[itemstring_snowed] = itemstring_clear
-	mcl_core.snowed_nodes_reverse[itemstring_clear] = itemstring_snowed
 
 	if minetest.get_modpath("doc") then
 		doc.add_entry_alias("nodes", itemstring_clear, "nodes", itemstring_snowed)
@@ -1149,8 +1151,9 @@ end
 -- This function assumes there is no snow cover node above. This function
 -- MUST NOT be called if there is a snow cover node above pos.
 mcl_core.clear_snow_dirt = function(pos, node)
-	if mcl_core.snowed_nodes[node.name] then
-		minetest.swap_node(pos, {name=mcl_core.snowed_nodes[node.name]})
+	local def = minetest.registered_nodes[node.name]
+	if def._mcl_snowless then
+		minetest.swap_node(pos, {name = def._mcl_snowless})
 	end
 end
 
@@ -1169,9 +1172,13 @@ mcl_core.on_snowable_construct = function(pos)
 
 	-- Make snowed if needed
 	if minetest.get_item_group(anode.name, "snow_cover") == 1 then
-		minetest.swap_node(pos, {name=mcl_core.snowed_nodes_reverse[node.name]})
+		local def = minetest.registered_nodes[node.name]
+		if def._mcl_snowed then
+			minetest.swap_node(pos, {name = def._mcl_snowed})
+		end
 	end
 end
+
 
 ---- [[[[[ Functions for snow cover nodes. ]]]]] ----
 
@@ -1186,8 +1193,9 @@ end
 mcl_core.on_snow_construct = function(pos)
 	local npos = {x=pos.x, y=pos.y-1, z=pos.z}
 	local node = minetest.get_node(npos)
-	if mcl_core.snowed_nodes_reverse[node.name] then
-		minetest.swap_node(npos, {name=mcl_core.snowed_nodes_reverse[node.name]})
+	local def = minetest.registered_nodes[node.name]
+	if def._mcl_snowed then
+		minetest.swap_node(npos, {name = def._mcl_snowed})
 	end
 end
 -- after_destruct
