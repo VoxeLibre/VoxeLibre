@@ -25,14 +25,13 @@ local function register_biomes()
 
 	--[[ OVERWORLD ]]
 
-	-- Icesheet
+	-- Ice spikes
 	minetest.register_biome({
-		name = "icesheet",
+		name = "ice_plains_spike",
 		node_top = "mcl_core:snowblock",
-		depth_top = 3,
+		depth_top = 2,
 		node_filler = "mcl_core:snowblock",
-		depth_filler = 3,
-		node_stone = "mcl_core:packed_ice",
+		depth_filler = 1,
 		node_water_top = "mcl_core:ice",
 		depth_water_top = 2,
 		node_river_water = "mcl_core:ice",
@@ -44,8 +43,9 @@ local function register_biomes()
 		humidity_point = 73,
 	})
 
+	-- Frozen ocean
 	minetest.register_biome({
-		name = "icesheet_ocean",
+		name = "ice_plains_spike_ocean",
 		node_top = "mcl_core:gravel",
 		depth_top = 2,
 		node_filler = "mcl_core:dirt",
@@ -164,16 +164,19 @@ local function register_biomes()
 		humidity_point = 72,
 	})
 
-	-- Snowy plains
+	-- Ice plains
 	minetest.register_biome({
-		name = "snowy_plains",
+		name = "ice_plains",
+		node_dust = "mcl_core:snow",
 		node_top = "mcl_core:dirt_with_grass_snow",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 2,
-		node_riverbed = "mcl_core:sand",
+		node_water_top = "mcl_core:ice",
+		depth_water_top = 2,
+		node_river_water = "mcl_core:ice",
+		node_riverbed = "mcl_core:gravel",
 		depth_riverbed = 2,
-		node_dust = "mcl_core:snow",
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 13,
@@ -181,7 +184,7 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "snowy_plains_ocean",
+		name = "ice_plains_ocean",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -1039,7 +1042,7 @@ local function register_decorations()
 	-- Large ice spike
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:snowblock"},
+		place_on = {"mcl_core:snowblock", "mcl_core:snow", "mcl_core:dirt_with_grass_snow"},
 		sidelen = 80,
 		noise_params = {
 			offset = 0.00040,
@@ -1049,7 +1052,7 @@ local function register_decorations()
 			octaves = 4,
 			persist = 0.67,
 		},
-		biomes = {"icesheet"},
+		biomes = {"ice_plains_spike"},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_large.mts",
@@ -1060,7 +1063,7 @@ local function register_decorations()
 	-- Small ice spike
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:snowblock"},
+		place_on = {"mcl_core:snowblock", "mcl_core:snow", "mcl_core:dirt_with_grass_snow"},
 		sidelen = 80,
 		noise_params = {
 			offset = 0.005,
@@ -1070,7 +1073,7 @@ local function register_decorations()
 			octaves = 4,
 			persist = 0.67,
 		},
-		biomes = {"icesheet"},
+		biomes = {"ice_plains_spike"},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_small.mts",
@@ -1460,7 +1463,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.7
 		},
-		biomes = {"plains", "plains_dunes", "snowy_plains", "beach", "red_desert", "desert", "swamp"},
+		biomes = {"plains", "plains_dunes", "ice_plains", "beach", "red_desert", "desert", "swamp"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_core:reeds",
