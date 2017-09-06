@@ -1260,6 +1260,8 @@ local generate_nether_decorations = function(minp, maxp)
 
 end
 
+local GEN_MAX = mcl_vars.mg_lava_overworld_max or mcl_vars.mg_overworld_max
+
 local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
 local c_stone = minetest.get_content_id("mcl_core:stone")
 local c_dirt = minetest.get_content_id("mcl_core:dirt")
@@ -1287,8 +1289,8 @@ minetest.register_on_generated(function(minp, maxp)
 
 	-- Generate basic layer-based nodes: void, bedrock, realm barrier, lava seas, etc.
 	-- Also perform some basic node replacements.
-	do
-		for y = minp.y, maxp.y do
+	if maxp.y <= GEN_MAX then
+		for y = minp.y, math.min(maxp.y, GEN_MAX) do
 			for x = minp.x, maxp.x do
 				for z = minp.z, maxp.z do
 					local p_pos = area:index(x, y, z)
@@ -1367,67 +1369,105 @@ minetest.register_on_generated(function(minp, maxp)
 					elseif mcl_vars.mg_lava and data[p_pos] == c_air and y <= mcl_vars.mg_lava_nether_max and y >= mcl_vars.mg_nether_min then
 						data[p_pos] = c_nether_lava
 						lvm_used = true
-					-- Water in the Nether or End? No way!
-					elseif data[p_pos] == c_water then
-						if y <= mcl_vars.mg_nether_max and y >= mcl_vars.mg_nether_min then
-							data[p_pos] = c_nether_lava
-							lvm_used = true
-						elseif y <= mcl_vars.mg_end_min + 104 and y >= mcl_vars.mg_end_min + 40 then
-							data[p_pos] = c_end_stone
-							lvm_used = true
-						elseif y <= mcl_vars.mg_end_max and y >= mcl_vars.mg_end_min then
-							data[p_pos] = c_air
-							lvm_used = true
-						end
-					-- Clear snowy grass blocks to ensure consistency.
-					-- Snowy grass blocks are not allowed below anything except top snow or snow block.
-					elseif mg_name ~= "v6" and data[p_pos] == c_dirt_with_grass_snow then
-						local p_pos_above = area:index(x, y+1, z)
-						if p_pos_above and data[p_pos_above] ~= c_top_snow and data[p_pos_above] ~= c_snow_block then
-							data[p_pos] = c_dirt_with_grass
-							lvm_used = true
-						end
-					-- Nether and End support for v6 because v6 does not support the biomes API
-					elseif mg_name == "v6" then
-						if y <= mcl_vars.mg_nether_max and y >= mcl_vars.mg_nether_min then
-							if data[p_pos] == c_stone then
-								data[p_pos] = c_netherrack
-								lvm_used = true
-							elseif data[p_pos] == c_sand or data[p_pos] == c_dirt then
-								data[p_pos] = c_soul_sand
-								lvm_used = true
-							end
-						elseif y <= mcl_vars.mg_end_max and y >= mcl_vars.mg_end_min then
-							if data[p_pos] == c_stone or data[p_pos] == c_dirt or data[p_pos] == c_sand then
-								data[p_pos] = c_air
-								lvm_used = true
-							end
-						end
 					end
 				end
 			end
 		end
 	end
 
-	-- Put top snow on snowy grass blocks created by the v6 mapgen
-	-- This is because the snowy grass block must only be used when it is below snow or top snow
-	if mg_name == "v6" then
-		local snowdirt = minetest.find_nodes_in_area_under_air(minp, maxp, "mcl_core:dirt_with_grass_snow")
-		for n = 1, #snowdirt do
-			-- CHECKME: What happens at chunk borders?
-			local p_pos = area:index(snowdirt[n].x, snowdirt[n].y + 1, snowdirt[n].z)
-			if p_pos then
-				data[p_pos] = c_top_snow
+	----- Interactive block fixing section -----
+	----- The section to perform basic block overrides of the core mapgen generated world. -----
+
+	-- Snow fixes. This code implements snow consistency.
+	-- A snowy grass block must be below a top snow or snow block at all times.
+	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
+		-- v6 mapgen:
+		-- Put top snow on snowy grass blocks. The mapgen does not generate the top snow on its own.
+		if mg_name == "v6" then
+			local snowdirt = minetest.find_nodes_in_area_under_air(minp, maxp, "mcl_core:dirt_with_grass_snow")
+			for n = 1, #snowdirt do
+				-- CHECKME: What happens at chunk borders?
+				local p_pos = area:index(snowdirt[n].x, snowdirt[n].y + 1, snowdirt[n].z)
+				if p_pos then
+					data[p_pos] = c_top_snow
+				end
+			end
+			if #snowdirt > 1 then
+				lvm_used = true
+			end
+
+		-- Non-v6 mapgens:
+		-- Clear snowy grass blocks without snow above to ensure consistency.
+		else
+			local nodes = minetest.find_nodes_in_area(minp, maxp, "mcl_core:dirt_with_grass_snow")
+			for n=1, #nodes do
+				local p_pos = area:index(nodes[n].x, nodes[n].y, nodes[n].z)
+				local p_pos_above = area:index(nodes[n].x, nodes[n].y+1, nodes[n].z)
+				if p_pos_above and data[p_pos_above] ~= c_top_snow and data[p_pos_above] ~= c_snow_block then
+					data[p_pos] = c_dirt_with_grass
+					lvm_used = true
+				end
 			end
 		end
-		if #snowdirt > 1 then
-			lvm_used = true
+
+	-- Nether block fixes:
+	-- * Replace water with Nether lava.
+	-- * Replace stone, sand dirt in v6 so the Nether works in v6.
+	elseif minp.y <= mcl_vars.mg_nether_max and maxp.y >= mcl_vars.mg_nether_min then
+		local nodes
+		if mg_name == "v6" then
+			nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
+		else
+			nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:water_source"})
+		end
+		for n=1, #nodes do
+			local p_pos = area:index(nodes[n].x, nodes[n].y, nodes[n].z)
+			if data[p_pos] == c_water then
+				data[p_pos] = c_nether_lava
+				lvm_used = true
+			elseif data[p_pos] == c_stone then
+				data[p_pos] = c_netherrack
+				lvm_used = true
+			elseif data[p_pos] == c_sand or data[p_pos] == c_dirt then
+				data[p_pos] = c_soul_sand
+				lvm_used = true
+			end
+		end
+
+	-- End block fixes:
+	-- * Replace water with end stone or air (depending on height).
+	-- * Remove stone, sand, dirt in v6 so our End map generator works in v6.
+	elseif minp.y <= mcl_vars.mg_end_max and maxp.y >= mcl_vars.mg_end_min then
+		if mg_name == "v6" then
+			nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
+		else
+			nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:water_source"})
+		end
+		for n=1, #nodes do
+			local y = nodes[n].y
+			local p_pos = area:index(nodes[n].x, y, nodes[n].z)
+
+			if data[p_pos] == c_water then
+				if y <= mcl_vars.mg_end_min + 104 and y >= mcl_vars.mg_end_min + 40 then
+					data[p_pos] = c_end_stone
+					lvm_used = true
+				else
+					data[p_pos] = c_air
+					lvm_used = true
+				end
+			elseif data[p_pos] == c_stone or data[p_pos] == c_dirt or data[p_pos] == c_sand then
+				data[p_pos] = c_air
+				lvm_used = true
+			end
+
 		end
 	end
 
+
+
+	-- Final hackery: Set sun light level in the End.
+	-- -26912 is at a mapchunk border.
 	local shadow
-	-- Set sun light level in the End
-	-- -26912 is at a mapchunk border
 	if minp.y >= -26912 and maxp.y <= mcl_vars.mg_end_max then
 		vm:set_lighting({day=15, night=15})
 		lvm_used = true
@@ -1436,6 +1476,8 @@ minetest.register_on_generated(function(minp, maxp)
 		shadow = false
 		lvm_used = true
 	end
+
+	-- Write stuff
 	if lvm_used then
 		vm:set_data(data)
 		vm:calc_lighting(nil, nil, shadow)
@@ -1443,6 +1485,7 @@ minetest.register_on_generated(function(minp, maxp)
 		vm:write_to_map()
 	end
 
+	-- Generate special decorations
 	generate_underground_mushrooms(minp, maxp)
 	generate_jungle_tree_decorations(minp, maxp)
 	generate_nether_decorations(minp, maxp)
