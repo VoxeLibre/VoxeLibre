@@ -240,7 +240,8 @@ local function register_biomes()
 		humidity_point = 45,
 	})
 
-	-- Sunflower Plains
+	-- TODO: Sunflower Plains
+--[[
 	minetest.register_biome({
 		name = "sunflower_plains",
 		node_top = "mcl_core:dirt_with_grass",
@@ -252,7 +253,7 @@ local function register_biomes()
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 26,
-		humidity_point = 35,
+		humidity_point = 22.5,
 	})
 
 	minetest.register_biome({
@@ -266,9 +267,9 @@ local function register_biomes()
 		y_min = mcl_vars.mg_overworld_min,
 		y_max = 0,
 		heat_point = 26,
-		humidity_point = 35,
+		humidity_point = 22.5,
 	})
-
+]]
 
 	-- Taiga
 	minetest.register_biome({
@@ -1631,7 +1632,8 @@ local function register_decorations()
 	register_large_flower("rose_bush", {"forest", "taiga", "roofed_forest", "flower_forest"}, 9350, -0.008)
 	register_large_flower("peony", {"forest", "taiga", "roofed_forest", "flower_forest"}, 10450, -0.008)
 	register_large_flower("lilac", {"forest", "taiga", "roofed_forest", "flower_forest"}, 10600, -0.007)
-	register_large_flower("sunflower", {"sunflower_plains"}, 2940, 0.030)
+	-- TODO
+	register_large_flower("sunflower", {"plains", "sunflower_plains"}, 2940, 0.0) -- 0.03
 
 	-- Jungle bush
 	minetest.register_decoration({
