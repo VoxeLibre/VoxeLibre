@@ -1131,6 +1131,9 @@ mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, ti
 	-- Enderman must never take this because this block is supposed to be always buried below snow.
 	def.groups.enderman_takable = nil
 
+	-- Snowed blocks never spread
+	def.groups.spreading_dirt_type = nil
+
 	-- Add the clear node to the item definition for easy lookup
 	def._mcl_snowless = itemstring_clear
 
