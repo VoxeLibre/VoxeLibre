@@ -1115,10 +1115,11 @@ minetest.register_abm({
 -- * itemstring_snowed: Itemstring of the snowed node to add
 -- * itemstring_clear: Itemstring of the original “clear” node without snow
 -- * tiles: Optional custom tiles
+-- * sounds: Optional custom sounds
 --
 -- The snowable nodes also MUST have _mcl_snowed defined to contain the name
 -- of the snowed node.
-mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, tiles)
+mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, tiles, sounds)
 	local def = table.copy(minetest.registered_nodes[itemstring_clear])
 	-- Just some group clearing
 	def.description = nil
@@ -1137,6 +1138,15 @@ mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, ti
 
 	if not tiles then
 		def.tiles = {"default_snow.png", "default_dirt.png", "mcl_core_grass_side_snowed.png"}
+	else
+		def.tiles = tiles
+	end
+	if not sounds then
+		def.sounds = mcl_sounds.node_sound_dirt_defaults({
+			footstep = { name = "pedology_snow_soft_footstep", gain = 0.5 }
+		})
+	else
+		def.sounds = sounds
 	end
 
 	-- Register stuff
