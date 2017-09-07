@@ -41,10 +41,12 @@ function tsm_railcorridors.on_construct_spawner(pos)
 	mcl_mobspawners.setup_spawner(pos, "mobs_mc:cave_spider")
 end
 
+local mg_name = minetest.get_mapgen_setting("mg_name")
+
 -- MineClone 2's treasure function. Gets all treasures for a single chest.
 -- Based on information from Minecraft Wiki.
 function tsm_railcorridors.get_treasures(pr)
-	local items = mcl_loot.get_multi_loot({
+	local loottable = {
 	{
 		stacks_min = 1,
 		stacks_max = 1,
@@ -54,7 +56,7 @@ function tsm_railcorridors.get_treasures(pr)
 			{ itemstring = "mcl_books:book", weight = 10 }, -- TODO: Enchanted Book
 			{ itemstring = "", weight = 5},
 			{ itemstring = "mcl_core:pick_iron", weight = 5 },
-			{ itemstring = "mcl:core:apple_gold", weight = 1 }, -- TODO: Enchanted Golden Apple
+			{ itemstring = "mcl_core:apple_gold", weight = 1 }, -- TODO: Enchanted Golden Apple
 		}
 	},
 	{
@@ -83,7 +85,22 @@ function tsm_railcorridors.get_treasures(pr)
 			{ itemstring = "mcl_minecarts:detector_rail", weight = 5, amount_min = 1, amount_max = 4 },
 			{ itemstring = "mcl_minecarts:golden_rail", weight = 5, amount_min = 1, amount_max = 4 },
 		}
-	}}, pr)
+	}
+	}
+
+	-- Bonus loot for v6 mapgen: Otherwise unobtainable saplings.
+	if mg_name == "v6" then
+		table.insert(loottable, {
+			stacks_min = 1,
+			stacks_max = 1,
+			items = {
+				{ itemstring = "mcl_core:darksapling", weight = 1, amount_min = 1, amount_max = 2 },
+				{ itemstring = "mcl_core:birchsapling", weight = 1, amount_min = 1, amount_max = 2 },
+				{ itemstring = "", weight = 14 },
+			},
+		})
+	end
+	local items = mcl_loot.get_multi_loot(loottable, pr)
 
 	return items
 end

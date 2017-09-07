@@ -2,11 +2,12 @@
 
 -- TODO: Add monster spawner
 
+local mg_name = minetest.get_mapgen_setting("mg_name")
 local pr = PseudoRandom(os.time())
 
 -- Get loot for dungeon chests
 local get_loot = function()
-	local items = mcl_loot.get_multi_loot({
+	local loottable = {
 	{
 		stacks_min = 1,
 		stacks_max = 3,
@@ -50,7 +51,22 @@ local get_loot = function()
 			{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10, amount_min = 1, amount_max = 8 },
 			{ itemstring = "mcl_mobitems:string", weight = 10, amount_min = 1, amount_max = 8 },
 		},
-	}}, pr)
+	}
+	}
+
+	-- Bonus loot for v6 mapgen: Otherwise unobtainable saplings.
+	if mg_name == "v6" then
+		table.insert(loottable, {
+			stacks_min = 1,
+			stacks_max = 1,
+			items = {
+				{ itemstring = "mcl_core:birchsapling", weight = 1, amount_min = 1, amount_max = 2 },
+				{ itemstring = "mcl_core:acaciasapling", weight = 1, amount_min = 1, amount_max = 2 },
+				{ itemstring = "", weight = 11 },
+			},
+		})
+	end
+	local items = mcl_loot.get_multi_loot(loottable, pr)
 
 	return items
 end
