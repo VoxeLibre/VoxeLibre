@@ -967,7 +967,8 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		end
 	end
 	if maxp.y >= 3 and minp.y <= 64 then
-		-- Generate desert temples
+		-- Generate structures
+
 		perlin_structures = perlin_structures or minetest.get_perlin(329, 3, 0.6, 100)
 		-- Assume X and Z lengths are equal
 		local divlen = 5
@@ -1002,6 +1003,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 						minetest.registered_nodes[nn].buildable_to then
 						nn = minetest.get_node({x=x,y=ground_y,z=z}).name
 						local struct = false
+
 						-- Desert temples and desert wells
 						if nn == "mcl_core:sand" or (nn == "mcl_core:sandstone") then
 							if not chunk_has_desert_temple and not chunk_has_desert_well then
@@ -1026,6 +1028,8 @@ minetest.register_on_generated(function(minp, maxp, seed)
 									end
 								end
 							end
+
+						-- Igloos
 						elseif not chunk_has_igloo and (nn == "mcl_core:snowblock" or nn == "mcl_core:snow" or nn == "mcl_core:dirt_with_grass_snow") then
 							if math.random(1, 4400) == 1 then
 								-- Check surface
@@ -1035,6 +1039,33 @@ minetest.register_on_generated(function(minp, maxp, seed)
 								if #surface + #surface2 >= 63 then
 									mcl_structures.call_struct(p, "igloo")
 									chunk_has_igloo = true
+								end
+							end
+						end
+
+						-- Ice spikes (v6 only)
+						if mg_name == "v6" and not chunk_has_igloo and nn == "mcl_core:snowblock" then
+							local spike = math.random(1, 3000)
+							if spike < 3 then
+								-- Check surface
+								local floor = {x=p.x+4, y=p.y-1, z=p.z+4}
+								local surface = minetest.find_nodes_in_area({x=p.x+1,y=p.y-1,z=p.z+1}, floor, {"mcl_core:snowblock", "mcl_core:dirt_with_grass_snow"})
+								-- Check for collision with spruce
+								local spruce_collisions = minetest.find_nodes_in_area({x=p.x+1,y=p.y+2,z=p.z+1}, {x=p.x+4, y=p.y+6, z=p.z+4}, {"mcl_core:sprucetree", "mcl_core:spruceleaves"})
+
+								if #surface >= 9 and #spruce_collisions == 0 then
+									mcl_structures.call_struct(p, "ice_spike_large")
+								end
+							elseif spike < 100 then
+								-- Check surface
+								local floor = {x=p.x+6, y=p.y-1, z=p.z+6}
+								local surface = minetest.find_nodes_in_area({x=p.x+1,y=p.y-1,z=p.z+1}, floor, {"mcl_core:snowblock", "mcl_core:dirt_with_grass_snow"})
+
+								-- Check for collision with spruce
+								local spruce_collisions = minetest.find_nodes_in_area({x=p.x+1,y=p.y+1,z=p.z+1}, {x=p.x+6, y=p.y+6, z=p.z+6}, {"mcl_core:sprucetree", "mcl_core:spruceleaves"})
+
+								if #surface >= 25 and #spruce_collisions == 0 then
+									mcl_structures.call_struct(p, "ice_spike_small")
 								end
 							end
 						end
@@ -1410,6 +1441,7 @@ minetest.register_on_generated(function(minp, maxp)
 			if #snowdirt > 1 then
 				lvm_used = true
 			end
+
 
 		-- Non-v6 mapgens:
 		-- Clear snowy grass blocks without snow above to ensure consistency.
