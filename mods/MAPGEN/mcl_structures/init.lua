@@ -235,7 +235,7 @@ mcl_structures.generate_fossil = function(pos)
 	}
 	local r = math.random(1, #fossils)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/"..fossils[r]
-	minetest.place_schematic(newpos, path, "random", nil, false)
+	minetest.place_schematic(newpos, path, "random", nil, true)
 end
 
 mcl_structures.generate_desert_temple = function(pos)
