@@ -224,14 +224,14 @@ mcl_structures.generate_fossil = function(pos)
 	-- Generates one out of 8 possible fossil pieces
 	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
 	local fossils = {
-		"mcl_structures_fossil_skull_1.mts",
-		"mcl_structures_fossil_skull_2.mts",
-		"mcl_structures_fossil_skull_3.mts",
-		"mcl_structures_fossil_skull_4.mts",
-		"mcl_structures_fossil_spine_1.mts",
-		"mcl_structures_fossil_spine_2.mts",
-		"mcl_structures_fossil_spine_3.mts",
-		"mcl_structures_fossil_spine_4.mts",
+		"mcl_structures_fossil_skull_1.mts", -- 4×5×5
+		"mcl_structures_fossil_skull_2.mts", -- 5×5×5
+		"mcl_structures_fossil_skull_3.mts", -- 5×5×7
+		"mcl_structures_fossil_skull_4.mts", -- 7×5×5
+		"mcl_structures_fossil_spine_1.mts", -- 3×3×13
+		"mcl_structures_fossil_spine_2.mts", -- 5×4×13
+		"mcl_structures_fossil_spine_3.mts", -- 7×4×13
+		"mcl_structures_fossil_spine_4.mts", -- 8×5×13
 	}
 	local r = math.random(1, #fossils)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/"..fossils[r]
