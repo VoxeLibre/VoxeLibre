@@ -24,7 +24,6 @@ end
 local function register_biomes()
 
 	--[[ OVERWORLD ]]
-
 	-- Ice spikes
 	minetest.register_biome({
 		name = "ice_plains_spike",
@@ -1597,17 +1596,37 @@ local function register_decorations()
 	})
 
 
+	local ratio_mushroom = 0.0001
+	local ratio_mushroom_huge = ratio_mushroom * (11/12)
+	local ratio_mushroom_giant = ratio_mushroom * (1/12)
+	local ratio_mushroom_mycelium = 0.002
+	local ratio_mushroom_mycelium_huge = ratio_mushroom_mycelium * (11/12)
+	local ratio_mushroom_mycelium_giant = ratio_mushroom_mycelium * (1/12)
+
 	-- Huge Brown Mushroom
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = { "mcl_core:dirt_with_grass", "mcl_core:dirt" },
 		sidelen = 80,
-		fill_ratio = 0.0001,
+		fill_ratio = ratio_mushroom_huge,
 		-- FIXME: Should be roofed forest, but placing it there doesn't work well (leaves often go into mushroom)
 		biomes = { "forest" },
-		y_min = mcl_vars.mg_overworld_min,
+		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_brown.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = { "mcl_core:dirt_with_grass", "mcl_core:dirt" },
+		sidelen = 80,
+		fill_ratio = ratio_mushroom_giant,
+		-- FIXME: Should be roofed forest, but placing it there doesn't work well (leaves often go into mushroom)
+		biomes = { "forest" },
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_giant_brown.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -1616,11 +1635,23 @@ local function register_decorations()
 		deco_type = "schematic",
 		place_on = { "mcl_core:mycelium" },
 		sidelen = 80,
-		fill_ratio = 0.002,
+		fill_ratio = ratio_mushroom_mycelium_huge,
 		biomes = { "mushroom_island", "mushroom_island_shore" },
-		y_min = mcl_vars.mg_overworld_min,
+		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_brown.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = { "mcl_core:mycelium" },
+		sidelen = 80,
+		fill_ratio = ratio_mushroom_mycelium_giant,
+		biomes = { "mushroom_island", "mushroom_island_shore" },
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_giant_brown.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -1629,13 +1660,26 @@ local function register_decorations()
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = { "mcl_core:dirt_with_grass", "mcl_core:dirt" },
-		sidelen = 50,
-		fill_ratio = 0.0001,
+		sidelen = 80,
+		fill_ratio = ratio_mushroom_huge,
 		-- FIXME: Should be roofed forest, but placing it there doesn't work well (leaves often go into mushroom)
 		biomes = { "forest" },
-		y_min = mcl_vars.mg_overworld_min,
+		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_red.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = { "mcl_core:dirt_with_grass", "mcl_core:dirt" },
+		sidelen = 80,
+		fill_ratio = ratio_mushroom_giant,
+		-- FIXME: Should be roofed forest, but placing it there doesn't work well (leaves often go into mushroom)
+		biomes = { "forest" },
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_giant_red.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -1643,12 +1687,24 @@ local function register_decorations()
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = { "mcl_core:mycelium" },
-		sidelen = 50,
-		fill_ratio = 0.002,
+		sidelen = 80,
+		fill_ratio = ratio_mushroom_mycelium_huge,
 		biomes = { "mushroom_island", "mushroom_island_shore" },
-		y_min = mcl_vars.mg_overworld_min,
+		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_red.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = { "mcl_core:mycelium" },
+		sidelen = 80,
+		fill_ratio = ratio_mushroom_mycelium_giant,
+		biomes = { "mushroom_island", "mushroom_island_shore" },
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_giant_red.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
