@@ -1118,6 +1118,8 @@ local function generate_tree_decorations(minp, maxp, biomemap)
 	local swampland_shore = minetest.get_biome_id("swampland_shore")
 	local jungle = minetest.get_biome_id("jungle")
 	local jungle_shore = minetest.get_biome_id("jungle_shore")
+	local jungle_edge = minetest.get_biome_id("jungle_edge")
+	local jungle_edge_shore = minetest.get_biome_id("jungle_edge_shore")
 
 	if biomemap then
 		-- Biome map available: Check if the required biome (jungle or swampland)
@@ -1131,7 +1133,7 @@ local function generate_tree_decorations(minp, maxp, biomemap)
 				oaktree = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:tree"})
 				oakleaves = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:leaves"})
 				swamp_biome_found = true
-			elseif not jungle_biome_found and (id == jungle or id == jungle_shore) then
+			elseif not jungle_biome_found and (id == jungle or id == jungle_shore or id == jungle_edge or id == jungle_edge_shore) then
 				jungletree = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:jungletree"})
 				jungleleaves = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:jungleleaves"})
 				jungle_biome_found = true
