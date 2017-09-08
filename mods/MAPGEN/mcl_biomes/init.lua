@@ -82,6 +82,8 @@ local function register_biomes()
 		node_dust = "mcl_core:snow",
 		node_top = "mcl_core:sand",
 		depth_top = 1,
+		node_water_top = "mcl_core:ice",
+		depth_water_top = 1,
 		node_filler = "mcl_core:sand",
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
