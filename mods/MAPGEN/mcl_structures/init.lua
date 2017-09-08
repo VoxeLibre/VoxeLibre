@@ -142,7 +142,7 @@ end
 -- The call of Struct
 mcl_structures.call_struct= function(pos, struct_style)
 	if struct_style == "village" then
-		mcl_structures.geerate_village(pos)
+		mcl_structures.generate_village(pos)
 	elseif struct_style == "desert_temple" then
 		mcl_structures.generate_desert_temple(pos)
 	elseif struct_style == "desert_well" then
@@ -163,13 +163,11 @@ mcl_structures.call_struct= function(pos, struct_style)
 end
 
 mcl_structures.generate_village = function(pos)
-	-- No Generating for the moment only place it :D
-	local city = mcl_structures.get_struct("pnj_town_1.we")
-	local newpos = {x=pos.x,y=pos.y,z=pos.z}
-	if newpos == nil then
-		return
-	end
-	mcl_structures.deserialise_WE(newpos, city )
+	-- No generating for the moment, only place it :D
+	-- TODO: Do complete overhaul of the algorithm
+	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
+	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_village.mts"
+	minetest.place_schematic(newpos, path, "random", nil, true)
 end
 
 mcl_structures.generate_desert_well = function(pos)
