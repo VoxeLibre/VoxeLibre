@@ -379,7 +379,8 @@ else -- Fire enabled
 
 end
 
--- Spawn eternal fire when using flint and steel on netherrack or magma block
+-- Spawn eternal fire when fire starts on netherrack or magma block.
+-- Also on bedrock when it's in the end.
 
 local eternal_override = {
 	after_destruct = function(pos, oldnode)
@@ -399,7 +400,22 @@ local eternal_override = {
 		end
 	end,
 }
+local eternal_override_end = {
+	after_destruct = eternal_override.after_destruct,
+	_on_ignite = function(player, pointed_thing)
+		local pos = pointed_thing.under
+		local _, dim = mcl_util.y_to_layer(pos.y)
+		local flame_pos = {x = pos.x, y = pos.y + 1, z = pos.z}
+		local fn = minetest.get_node(flame_pos)
+		if dim == "end" and fn.name == "air" and not minetest.is_protected(flame_pos, "fire") and pointed_thing.under.y < pointed_thing.above.y then
+			minetest.set_node(flame_pos, {name = "mcl_fire:eternal_fire"})
+		else
+			mcl_fire.set_fire(pointed_thing)
+		end
+	end,
+}
 
+minetest.override_item("mcl_core:bedrock", eternal_override_end)
 if minetest.get_modpath("mcl_nether") then
 	minetest.override_item("mcl_nether:netherrack", eternal_override)
 	minetest.override_item("mcl_nether:magma", eternal_override)

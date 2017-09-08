@@ -553,7 +553,8 @@ minetest.register_node("mcl_core:brick_block", {
 
 minetest.register_node("mcl_core:bedrock", {
 	description = "Bedrock",
-	_doc_items_longdesc = "Bedrock is a very hard type of rock. It can not be broken, destroyed, collected or moved by normal means, unless in Creative Mode.",
+	_doc_items_longdesc = "Bedrock is a very hard type of rock. It can not be broken, destroyed, collected or moved by normal means, unless in Creative Mode.".."\n"..
+		"In the End dimension, starting a fire on this block will create an eternal fire.",
 	tiles = {"mcl_core_bedrock.png"},
 	stack_max = 64,
 	groups = {creative_breakable=1, building_block=1, material_stone=1},
