@@ -66,7 +66,10 @@ if setting then
 end
 
 -- Probability for every part of a corridor to contain a cart
-local probability_cart = P(0.05)
+-- Disabled because cart spawning creates error message spam:
+-- “m_static_exists=true but static data doesn't actually exist in (x,y,z)
+-- TODO: Set back to 0.05 if this is fixedd.
+local probability_cart = P(0)
 setting = tonumber(minetest.settings:get("tsm_railcorridors_probability_cart"))
 if setting then
 	probability_cart = P(setting)
