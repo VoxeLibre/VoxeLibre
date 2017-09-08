@@ -78,12 +78,12 @@ local register_mushroom = function(color, template, d_cap_top, d_cap_side, d_cap
 
 	-- Add entry aliases for the Help
 	if minetest.get_modpath("doc") then
-		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_pores_full", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full")
-		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_stem_full", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full")
-		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_stem", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full")
-		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_corner", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full")
-		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_top", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full")
-		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_side", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full")
+		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_pores_full")
+		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_stem_full")
+		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_stem")
+		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_corner")
+		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_top")
+		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_side")
 	end
 
 end
