@@ -238,12 +238,18 @@ end
 
 mcl_structures.generate_desert_temple = function(pos)
 	-- No Generating for the temple ... Why using it ? No Change
-	local temple = mcl_structures.get_struct("mcl_structures_desert_temple.we")
+	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_desert_temple.mts"
 	local newpos = {x=pos.x,y=pos.y-12,z=pos.z}
+	local size = {x=22, y=24, z=22}
 	if newpos == nil then
 		return
 	end
-	local count, chests = mcl_structures.deserialise_WE(newpos, temple)
+	minetest.place_schematic(newpos, path, "random", nil, true)
+
+	-- Find chests.
+	-- FIXME: Searching this large area just for the chets is not efficient. Need a better way to find the chests;
+	-- probably let's just infer it from newpos because the schematic always the same.
+	local chests = minetest.find_nodes_in_area({x=newpos.x-size.x, y=newpos.y, z=newpos.z-size.z}, vector.add(newpos, size), "mcl_chests:chest")
 
 	-- Add desert temple loot into chests
 	for c=1, #chests do
@@ -287,6 +293,7 @@ mcl_structures.generate_desert_temple = function(pos)
 
 		local meta = minetest.get_meta(chests[c])
 		local inv = meta:get_inventory()
+		inv:set_size("main", 9*3)
 		for i=1, #lootitems do
 			inv:add_item("main", lootitems[i])
 		end
