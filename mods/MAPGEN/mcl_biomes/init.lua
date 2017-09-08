@@ -2417,23 +2417,25 @@ local function register_decorations()
 		if is_in_flower_forest == nil then
 			is_in_flower_forest = true
 		end
-		minetest.register_decoration({
-			deco_type = "simple",
-			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
-			sidelen = 16,
-			noise_params = {
-				offset = 0.0008,
-				scale = 0.006,
-				spread = {x = 100, y = 100, z = 100},
-				seed = seed,
-				octaves = 3,
-				persist = 0.6
-			},
-			y_min = 1,
-			y_max = mcl_vars.mg_overworld_max,
-			biomes = biomes,
-			decoration = "mcl_flowers:"..name,
-		})
+		if biomes then
+			minetest.register_decoration({
+				deco_type = "simple",
+				place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+				sidelen = 16,
+				noise_params = {
+					offset = 0.0008,
+					scale = 0.006,
+					spread = {x = 100, y = 100, z = 100},
+					seed = seed,
+					octaves = 3,
+					persist = 0.6
+				},
+				y_min = 1,
+				y_max = mcl_vars.mg_overworld_max,
+				biomes = biomes,
+				decoration = "mcl_flowers:"..name,
+			})
+		end
 		if is_in_flower_forest then
 			minetest.register_decoration({
 				deco_type = "simple",
@@ -2468,7 +2470,7 @@ local function register_decorations()
 	register_flower("azure_bluet", flower_biomes2, 800)
 	register_flower("oxeye_daisy", flower_biomes2, 3490)
 
-	register_flower("allium", {}, 0) -- flower forest only
+	register_flower("allium", nil, 0) -- flower forest only
 	register_flower("blue_orchid", {"swampland"}, 64500, false)
 
 
