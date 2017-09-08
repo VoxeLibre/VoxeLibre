@@ -180,7 +180,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 		end
 
 		-- Check if pointing to a liquid source
-		liquiddef = mcl_buckets.liquids[nn]
+		local liquiddef = mcl_buckets.liquids[nn]
 		local new_bucket
 		if liquiddef ~= nil and liquiddef.itemname ~= nil and (nn == liquiddef.source_take) then
 
