@@ -142,11 +142,11 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		local schematic, offset, height
 		if n.name == "mcl_mushrooms:mushroom_brown" then
 			schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_brown.mts"
-			offset = { x = -3, y = 0, z = -3 }
+			offset = { x = -3, y = -1, z = -3 }
 			height = 8
 		elseif n.name == "mcl_mushrooms:mushroom_red" then
 			schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_red.mts"
-			offset = { x = -2, y = 0, z = -2 }
+			offset = { x = -2, y = -1, z = -2 }
 			height = 8
 		else
 			return false
