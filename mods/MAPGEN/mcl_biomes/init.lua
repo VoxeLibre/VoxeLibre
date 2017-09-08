@@ -2303,7 +2303,7 @@ local function register_decorations()
 		place_on = {"mcl_core:dirt_with_grass"},
 		sidelen = 16,
 		noise_params = {
-			offset = 0.002,
+			offset = -0.01,
 			scale = 0.006,
 			spread = {x = 250, y = 250, z = 250},
 			seed = 333,
@@ -2313,7 +2313,24 @@ local function register_decorations()
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_farming:melon",
-		biomes = { "jungle", "jungle_edge" },
+		biomes = { "jungle" },
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 16,
+		noise_params = {
+			offset = -0.005,
+			scale = 0.006,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 333,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_farming:melon",
+		biomes = { "jungle_edge" },
 	})
 
 	-- Pumpkin
