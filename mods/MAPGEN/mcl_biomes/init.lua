@@ -2042,31 +2042,43 @@ local function register_decorations()
 	})
 
 	-- Lily pad
-	minetest.register_decoration({
-		deco_type = "schematic",
-		schematic = {
-			size = { x=1, y=3, z=1 },
-			data = {
-				{ name = "mcl_core:water_source", prob = 0 },
-				{ name = "mcl_core:water_source" },
-				{ name = "mcl_flowers:waterlily", param1 = 255 },
+
+	local lily_schem = {
+		{ name = "mcl_core:water_source" },
+		{ name = "mcl_flowers:waterlily" },
+	}
+
+	-- Spawn them in shallow water at ocean level in swamplands.
+	-- Tweak lilydepth to change the maximum water depth
+	local lilydepth = 2
+
+	for d=1, lilydepth do
+		local height = d + 2
+		local y = 1 - d
+		table.insert(lily_schem, 1, { name = "air", prob = 0 })
+
+		minetest.register_decoration({
+			deco_type = "schematic",
+			schematic = {
+				size = { x=1, y=height, z=1 },
+				data = lily_schem,
 			},
-		},
-		place_on = "mcl_core:dirt",
-		sidelen = 16,
-		noise_params = {
-			offset = 0,
-			scale = 0.3,
-			spread = {x = 100, y = 100, z = 100},
-			seed = 503,
-			octaves = 6,
-			persist = 0.7,
-		},
-		y_min = 0,
-		y_max = 0,
-		biomes = { "swampland_shore" },
-		rotation = "random",
-	})
+			place_on = "mcl_core:dirt",
+			sidelen = 16,
+			noise_params = {
+				offset = 0,
+				scale = 0.3,
+				spread = {x = 100, y = 100, z = 100},
+				seed = 503,
+				octaves = 6,
+				persist = 0.7,
+			},
+			y_min = y,
+			y_max = y,
+			biomes = { "swampland_shore" },
+			rotation = "random",
+		})
+	end
 
 	-- Melon
 	minetest.register_decoration({
