@@ -595,7 +595,7 @@ local function register_biomes()
 	})
 
 	minetest.register_biome({
-		name = "jungle_swamp",
+		name = "jungle_shore",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
@@ -1300,7 +1300,7 @@ local function register_decorations()
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.045,
-		biomes = {"jungle", "jungle_swamp"},
+		biomes = {"jungle"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_tree.mts",
@@ -1661,7 +1661,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.7
 		},
-		biomes = {"plains", "plains_beach", "taiga_beach", "ice_plains", "cold_taiga_beach", "savanna_beach", "forest_beach", "red_desert", "desert", "swamp"},
+		biomes = {"plains", "plains_beach", "taiga_beach", "ice_plains", "cold_taiga_beach", "savanna_beach", "forest_beach", "red_desert", "desert", "swampland"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_core:reeds",
@@ -1955,7 +1955,7 @@ local function register_decorations()
 	})
 
 	-- Lily pad
-	-- Spawn on Sea level in swamps only
+	-- TODO: Spawn on Sea level in swamplands only
 	minetest.register_decoration({
 		deco_type = "schematic",
 		schematic = {
@@ -1979,7 +1979,7 @@ local function register_decorations()
 		y_min = 0,
 		y_max = 0,
 		-- TODO: optimize spawn in real swamps
-		biomes = { "jungle_swamp", "swamp" },
+		biomes = { "jungle_shore", "swampland" },
 		rotation = "random",
 	})
 
@@ -2211,7 +2211,7 @@ local function register_decorations()
 	-- TODO: Make exclusive to flower forest
 	register_flower("allium", {"flower_forest", "roofed_forest"}, 0)
 	-- TODO: Make exclusive to swamp
-	register_flower("blue_orchid", {"taiga", "swamp"}, 64500)
+	register_flower("blue_orchid", {"taiga", "swampland"}, 64500)
 
 
 end
