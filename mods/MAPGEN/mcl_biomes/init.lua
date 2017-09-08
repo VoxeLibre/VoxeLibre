@@ -367,8 +367,22 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		y_min = 1,
+		y_min = 2,
 		y_max = mcl_vars.mg_overworld_max,
+		heat_point = 33,
+		humidity_point = 51,
+	})
+
+	minetest.register_biome({
+		name = "flower_forest_beach",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = -2,
+		y_max = 1,
 		heat_point = 33,
 		humidity_point = 51,
 	})
@@ -382,7 +396,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = mcl_vars.mg_overworld_min,
-		y_max = 0,
+		y_max = -3,
 		heat_point = 33,
 		humidity_point = 51,
 	})
