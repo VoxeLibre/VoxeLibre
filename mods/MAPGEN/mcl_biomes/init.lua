@@ -2017,8 +2017,8 @@ local function register_decorations()
 	local grass_plains = {"plains", "savanna", "sunflower_plains"}
 	local grass_savanna = {"savanna"}
 
-	register_grass_decoration("tallgrass", -0.03,  0.09, grass_minimal)
-	register_grass_decoration("tallgrass", -0.015, 0.075, grass_minimal)
+	register_grass_decoration("tallgrass", -0.03,  0.09, grass_forest)
+	register_grass_decoration("tallgrass", -0.015, 0.075, grass_forest)
 	register_grass_decoration("tallgrass", 0,      0.06, grass_forest)
 	register_grass_decoration("tallgrass", 0.015,  0.045, grass_forest)
 	register_grass_decoration("tallgrass", 0.03,   0.03, grass_forest)
