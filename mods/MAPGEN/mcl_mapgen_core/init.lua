@@ -1006,7 +1006,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 
 						-- Desert temples and desert wells
 						if nn == "mcl_core:sand" or (nn == "mcl_core:sandstone") then
-							if not chunk_has_desert_temple and not chunk_has_desert_well and ground_level > 3 then
+							if not chunk_has_desert_temple and not chunk_has_desert_well and ground_y > 3 then
 								-- Spawn desert temple
 								-- TODO: Check surface
 								if math.random(1,12000) == 1 then
@@ -1042,6 +1042,29 @@ minetest.register_on_generated(function(minp, maxp, seed)
 								end
 							end
 						end
+
+						-- Fossil
+						if nn == "mcl_core:sandstone" or nn == "mcl_core:sand" and not chunk_has_desert_temple and ground_y > 3 then
+							-- Minecraft probability: 1/64 per Minecraft chunk (16×16).
+							-- We adjust the probability to Minetest's MapBlock size.
+							local fossil_prob = 64 * (((maxp.x-minp.x+1)*(maxp.z-minp.z+1)) / 256)
+
+							if math.random(1, fossil_prob) == 1 then
+								-- Spawn fossil below desert surface
+								local p1 = {x=p.x, y=p.y-math.random(15, 24), z=p.z}
+								-- Very rough check of the environment (we expect to have enough stonelike nodes).
+								-- Fossils may still appear partially exposed in caves, but this is O.K.
+								local p2 = vector.add(p1, 4)
+								local nodes = minetest.find_nodes_in_area(p1, p2, {"mcl_core:sandstone", "mcl_core:stone", "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite", "mcl_core:stone_with_coal", "mcl_core:dirt", "mcl_core:gravel"})
+
+								if #nodes >= 100 then -- >= 80%
+									mcl_structures.call_struct(p1, "fossil")
+								end
+							end
+						end
+
+
+
 
 						-- Ice spikes (v6 only)
 						if mg_name == "v6" and not chunk_has_igloo and nn == "mcl_core:snowblock" then
