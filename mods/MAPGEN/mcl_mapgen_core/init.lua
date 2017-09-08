@@ -1050,8 +1050,8 @@ minetest.register_on_generated(function(minp, maxp, seed)
 							local fossil_prob = 64 * (((maxp.x-minp.x+1)*(maxp.z-minp.z+1)) / 256)
 
 							if math.random(1, fossil_prob) == 1 then
-								-- Spawn fossil below desert surface
-								local p1 = {x=p.x, y=p.y-math.random(15, 24), z=p.z}
+								-- Spawn fossil below desert surface between layers 40 and 49
+								local p1 = {x=p.x, y=math.random(mcl_util.layer_to_y(40), mcl_util.layer_to_y(49)), z=p.z}
 								-- Very rough check of the environment (we expect to have enough stonelike nodes).
 								-- Fossils may still appear partially exposed in caves, but this is O.K.
 								local p2 = vector.add(p1, 4)
