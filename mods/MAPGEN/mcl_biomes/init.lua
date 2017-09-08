@@ -622,6 +622,49 @@ local function register_biomes()
 		humidity_point =  91,
 	})
 
+	-- Swampland
+	minetest.register_biome({
+		name = "swampland",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = 23,
+		heat_point = 60,
+		humidity_point = 99,
+	})
+
+	minetest.register_biome({
+		name = "swampland_shore",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = -4,
+		y_max = 0,
+		heat_point = 60,
+		humidity_point = 99,
+	})
+
+	minetest.register_biome({
+		name = "swampland_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 20,
+		y_max = -4,
+		heat_point = 60,
+		humidity_point = 99,
+	})
+
 	-- Mushroom biomes
 	-- TODO: Make sure these biomes only spawn in islands
 	minetest.register_biome({
@@ -1186,6 +1229,7 @@ local function register_decorations()
 	})
 
 	-- Oak
+	-- Large oaks
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
@@ -1224,6 +1268,7 @@ local function register_decorations()
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
+	-- Small classic oak (forest and ice plains)
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
@@ -1262,6 +1307,7 @@ local function register_decorations()
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
+	-- Rare balloon oak
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
@@ -1278,6 +1324,26 @@ local function register_decorations()
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_balloon.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	-- Swamp oak
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.0055,
+			scale = 0.0011,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 5005,
+			octaves = 5,
+			persist = 0.6,
+		},
+		biomes = {"swampland", "swampland_shore"},
+		y_min = 0,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_swamp.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
@@ -1661,7 +1727,28 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.7
 		},
-		biomes = {"plains", "plains_beach", "taiga_beach", "ice_plains", "cold_taiga_beach", "savanna_beach", "forest_beach", "red_desert", "desert", "swampland"},
+		biomes = {"plains", "plains_beach", "taiga_beach", "ice_plains", "cold_taiga_beach", "savanna_beach", "forest_beach", "red_desert", "desert"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_core:reeds",
+		height = 1,
+		height_max = 3,
+		spawn_by = { "mcl_core:water_source", "group:frosted_ice" },
+		num_spawn_by = 1,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "mcl_core:dirt_with_grass", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.0,
+			scale = 0.5,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 2,
+			octaves = 3,
+			persist = 0.7,
+		},
+		biomes = {"swampland"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_core:reeds",
@@ -1955,7 +2042,6 @@ local function register_decorations()
 	})
 
 	-- Lily pad
-	-- TODO: Spawn on Sea level in swamplands only
 	minetest.register_decoration({
 		deco_type = "schematic",
 		schematic = {
@@ -1969,7 +2055,7 @@ local function register_decorations()
 		place_on = "mcl_core:dirt",
 		sidelen = 16,
 		noise_params = {
-			offset = -0.12,
+			offset = 0,
 			scale = 0.3,
 			spread = {x = 100, y = 100, z = 100},
 			seed = 503,
@@ -1978,8 +2064,7 @@ local function register_decorations()
 		},
 		y_min = 0,
 		y_max = 0,
-		-- TODO: optimize spawn in real swamps
-		biomes = { "jungle_shore", "swampland" },
+		biomes = { "swampland_shore" },
 		rotation = "random",
 	})
 
@@ -2029,7 +2114,7 @@ local function register_decorations()
 	})
 
 	-- Grasses and ferns
-	local grass_forest = {"plains", "taiga", "forest", "birch_forest", "birch_forest_m", "roofed_forest", "flower_forest" }
+	local grass_forest = {"plains", "taiga", "forest", "birch_forest", "birch_forest_m", "roofed_forest", "flower_forest", "swampland" }
 	local grass_plains = {"plains", "savanna", "sunflower_plains"}
 	local grass_savanna = {"savanna"}
 
@@ -2173,6 +2258,27 @@ local function register_decorations()
 			spawn_by = { "mcl_core:tree", "mcl_core:sprucetree", "mcl_core:darktree", "mcl_core:birchtree" },
 			num_spawn_by = 1,
 		})
+
+		-- More mushrooms in swamplands
+		minetest.register_decoration({
+			deco_type = "simple",
+			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol", "mcl_core:mycelium", "mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite"},
+			sidelen = 16,
+			noise_params = {
+				offset = 0.05,
+				scale = 0.003,
+				spread = {x = 250, y = 250, z = 250},
+				seed = mseeds[m],
+				octaves = 3,
+				persist = 0.6,
+			},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			decoration = mushrooms[m],
+			biomes = { "swampland "},
+			spawn_by = { "mcl_core:tree", "mcl_core:sprucetree", "mcl_core:darktree", "mcl_core:birchtree" },
+			num_spawn_by = 1,
+		})
 	end
 
 	local function register_flower(name, biomes, seed)
@@ -2195,7 +2301,7 @@ local function register_decorations()
 		})
 	end
 
-	local flower_biomes1 = {"plains", "sunflower_plains", "flower_forest", "roofed_forest", "forest", "birch_forest", "birch_forest_m", "taiga", "cold_taiga", "jungle", "savanna"}
+	local flower_biomes1 = {"plains", "sunflower_plains", "flower_forest", "roofed_forest", "forest", "birch_forest", "birch_forest_m", "taiga", "cold_taiga", "jungle", "savanna",}
 
 	register_flower("dandelion", flower_biomes1, 8)
 	register_flower("poppy", flower_biomes1, 9439)
@@ -2210,8 +2316,7 @@ local function register_decorations()
 
 	-- TODO: Make exclusive to flower forest
 	register_flower("allium", {"flower_forest", "roofed_forest"}, 0)
-	-- TODO: Make exclusive to swamp
-	register_flower("blue_orchid", {"taiga", "swampland"}, 64500)
+	register_flower("blue_orchid", {"swampland"}, 64500)
 
 
 end
