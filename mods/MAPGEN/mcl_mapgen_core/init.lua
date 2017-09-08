@@ -1006,7 +1006,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 
 						-- Desert temples and desert wells
 						if nn == "mcl_core:sand" or (nn == "mcl_core:sandstone") then
-							if not chunk_has_desert_temple and not chunk_has_desert_well then
+							if not chunk_has_desert_temple and not chunk_has_desert_well and ground_level > 3 then
 								-- Spawn desert temple
 								-- TODO: Check surface
 								if math.random(1,12000) == 1 then
