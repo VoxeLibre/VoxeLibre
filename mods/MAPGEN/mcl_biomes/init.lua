@@ -358,6 +358,35 @@ local function register_biomes()
 		humidity_point = 44,  --was 68
 	})
 
+	-- Flower forest
+	minetest.register_biome({
+		name = "flower_forest",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		heat_point = 33,
+		humidity_point = 51,
+	})
+
+	minetest.register_biome({
+		name = "flower_forest_ocean",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = 0,
+		heat_point = 33,
+		humidity_point = 51,
+	})
+
 	-- Birch forest
 	minetest.register_biome({
 		name = "birch_forest",
@@ -707,6 +736,7 @@ local function register_biomes()
 		heat_point = 99,
 		humidity_point = 99,
 	})
+
 
 end
 
@@ -1184,7 +1214,6 @@ local function register_grass_decoration(grasstype, offset, scale, biomes)
 end
 
 local function register_decorations()
-
 	-- Large ice spike
 	minetest.register_decoration({
 		deco_type = "schematic",
@@ -1267,7 +1296,7 @@ local function register_decorations()
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
-	-- Small classic oak (forest and ice plains)
+	-- Small classic oak (forest, flower forest and ice plains)
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
@@ -1281,6 +1310,25 @@ local function register_decorations()
 			persist = 0.66
 		},
 		biomes = {"forest"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.01,
+			scale = 0.0022,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.66
+		},
+		biomes = {"flower_forest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
@@ -1539,17 +1587,17 @@ local function register_decorations()
 
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass"},
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 16,
 		noise_params = {
-			offset = 0.001,
+			offset = 0.000333,
 			scale = -0.0015,
 			spread = {x = 250, y = 250, z = 250},
 			seed = 11,
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"forest"},
+		biomes = {"flower_forest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_birch.mts",
@@ -1560,7 +1608,7 @@ local function register_decorations()
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_grass_snow"},
 		sidelen = 16,
 		noise_params = {
-			offset = -0.0005,
+			offset = -0.00075,
 			scale = -0.0015,
 			spread = {x = 250, y = 250, z = 250},
 			seed = 11,
@@ -1840,7 +1888,7 @@ local function register_decorations()
 		},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		biomes = {"plains", "sunflower_plains", "taiga", "forest", "birch_forest", "birch_forest_m", "roofed_forest", "savanna"},
+		biomes = {"plains", "sunflower_plains", "taiga", "forest", "flower_forest", "birch_forest", "birch_forest_m", "roofed_forest", "savanna"},
 	})
 
 	-- Large ferns
@@ -1874,40 +1922,57 @@ local function register_decorations()
 	})
 
 	-- Large flowers
-	local register_large_flower = function(name, biomes, seed, offset)
-		minetest.register_decoration({
-			deco_type = "schematic",
-			schematic = {
-				size = { x=1, y=3, z=1 },
-				data = {
-					{ name = "air", prob = 0 },
-					{ name = "mcl_flowers:"..name, param1=255, },
-					{ name = "mcl_flowers:"..name.."_top", param1=255, },
-				},
-			},
-			place_on = {"mcl_core:dirt_with_grass"},
+	local register_large_flower = function(name, biomes, seed, offset, flower_forest_offset)
+		local maxi
+		if flower_forest_offset then
+			maxi = 2
+		else
+			maxi = 1
+		end
+		for i=1, maxi do
+			local o, b -- offset, biomes
+			if i == 1 then
+				o = offset
+				b = biomes
+			else
+				o = flower_forest_offset
+				b = { "flower_forest" }
+			end
 
-			sidelen = 16,
-			noise_params = {
-				offset = offset,
-				scale = 0.01,
-				spread = {x = 300, y = 300, z = 300},
-				seed = seed,
-				octaves = 5,
-				persist = 0.62,
-			},
-			y_min = 1,
-			y_max = mcl_vars.mg_overworld_max,
-			flags = "",
-			biomes = biomes,
-		})
+			minetest.register_decoration({
+				deco_type = "schematic",
+				schematic = {
+					size = { x=1, y=3, z=1 },
+					data = {
+						{ name = "air", prob = 0 },
+						{ name = "mcl_flowers:"..name, param1=255, },
+						{ name = "mcl_flowers:"..name.."_top", param1=255, },
+					},
+				},
+				place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+
+				sidelen = 16,
+				noise_params = {
+					offset = o,
+					scale = 0.01,
+					spread = {x = 300, y = 300, z = 300},
+					seed = seed,
+					octaves = 5,
+					persist = 0.62,
+				},
+				y_min = 1,
+				y_max = mcl_vars.mg_overworld_max,
+				flags = "",
+				biomes = b,
+			})
+		end
 	end
 
-	register_large_flower("rose_bush", {"forest", "birch_forest", "birch_forest_m", "taiga", "roofed_forest", "flower_forest"}, 9350, -0.008)
-	register_large_flower("peony", {"forest", "birch_forest", "birch_forest_m", "taiga", "roofed_forest", "flower_forest"}, 10450, -0.008)
-	register_large_flower("lilac", {"forest", "birch_forest", "birch_forest_m", "taiga", "roofed_forest", "flower_forest"}, 10600, -0.007)
+	register_large_flower("rose_bush", {"forest"}, 9350, -0.008, 0.003)
+	register_large_flower("peony", {"forest"}, 10450, -0.008, 0.003)
+	register_large_flower("lilac", {"forest"}, 10600, -0.007, 0.003)
 	-- TODO
-	register_large_flower("sunflower", {"plains", "sunflower_plains"}, 2940, 0.0) -- 0.03
+	register_large_flower("sunflower", {"plains", "sunflower_plains"}, 2940, 0.0)
 
 	-- Jungle bush
 	minetest.register_decoration({
@@ -2182,7 +2247,7 @@ local function register_decorations()
 	})
 
 	-- Grasses and ferns
-	local grass_forest = {"plains", "taiga", "forest", "birch_forest", "birch_forest_m", "roofed_forest", "flower_forest", "swampland" }
+	local grass_forest = {"plains", "taiga", "forest", "flower_forest", "birch_forest", "birch_forest_m", "roofed_forest", "swampland" }
 	local grass_plains = {"plains", "savanna", "sunflower_plains"}
 	local grass_savanna = {"savanna"}
 
@@ -2348,11 +2413,13 @@ local function register_decorations()
 			num_spawn_by = 1,
 		})
 	end
-
-	local function register_flower(name, biomes, seed)
+	local function register_flower(name, biomes, seed, is_in_flower_forest)
+		if is_in_flower_forest == nil then
+			is_in_flower_forest = true
+		end
 		minetest.register_decoration({
 			deco_type = "simple",
-			place_on = {"mcl_core:dirt_with_grass", "mcl_core:podzol"},
+			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 			sidelen = 16,
 			noise_params = {
 				offset = 0.0008,
@@ -2367,14 +2434,33 @@ local function register_decorations()
 			biomes = biomes,
 			decoration = "mcl_flowers:"..name,
 		})
+		if is_in_flower_forest then
+			minetest.register_decoration({
+				deco_type = "simple",
+				place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+				sidelen = 80,
+				noise_params= {
+					offset = 0.0008*40,
+					scale = 0.003,
+					spread = {x = 100, y = 100, z = 100},
+					seed = seed,
+					octaves = 3,
+					persist = 0.6,
+				},
+				y_min = 1,
+				y_max = mcl_vars.mg_overworld_max,
+				biomes = {"flower_forest"},
+				decoration = "mcl_flowers:"..name,
+			})
+		end
 	end
 
-	local flower_biomes1 = {"plains", "sunflower_plains", "flower_forest", "roofed_forest", "forest", "birch_forest", "birch_forest_m", "taiga", "cold_taiga", "jungle", "savanna",}
+	local flower_biomes1 = {"plains", "sunflower_plains", "roofed_forest", "forest", "birch_forest", "birch_forest_m", "taiga", "cold_taiga", "jungle", "savanna",}
 
 	register_flower("dandelion", flower_biomes1, 8)
 	register_flower("poppy", flower_biomes1, 9439)
 
-	local flower_biomes2 = {"plains", "sunflower_plains", "flower_forest"}
+	local flower_biomes2 = {"plains", "sunflower_plains"}
 	register_flower("tulip_red", flower_biomes2, 436)
 	register_flower("tulip_orange", flower_biomes2, 536)
 	register_flower("tulip_pink", flower_biomes2, 636)
@@ -2382,9 +2468,8 @@ local function register_decorations()
 	register_flower("azure_bluet", flower_biomes2, 800)
 	register_flower("oxeye_daisy", flower_biomes2, 3490)
 
-	-- TODO: Make exclusive to flower forest
-	register_flower("allium", {"flower_forest", "roofed_forest"}, 0)
-	register_flower("blue_orchid", {"swampland"}, 64500)
+	register_flower("allium", {}, 0) -- flower forest only
+	register_flower("blue_orchid", {"swampland"}, 64500, false)
 
 
 end
