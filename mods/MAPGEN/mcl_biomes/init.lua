@@ -164,6 +164,130 @@ local function register_biomes()
 		humidity_point = 72,
 	})
 
+	-- Extreme Hills
+	minetest.register_biome({
+		name = "extreme_hills",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 4,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 4,
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		heat_point = 31,
+		humidity_point = 30,
+	})
+
+	minetest.register_biome({
+		name = "extreme_hills_beach",
+		node_top = "mcl_core:sand",
+		depth_top = 1,
+		depth_water_top = 1,
+		node_filler = "mcl_core:sand",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 4,
+		y_min = -3,
+		y_max = 3,
+		heat_point = 31,
+		humidity_point = 30,
+	})
+
+	minetest.register_biome({
+		name = "extreme_hills_ocean",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 4,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 4,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = -4,
+		heat_point = 31,
+		humidity_point = 30,
+	})
+
+	-- Extreme Hills M
+	minetest.register_biome({
+		name = "extreme_hills_m",
+		node_top = "mcl_core:gravel",
+		depth_top = 1,
+		node_filler = "mcl_core:gravel",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:gravel",
+		depth_riverbed = 3,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		heat_point = 28,
+		humidity_point = 30,
+	})
+
+	minetest.register_biome({
+		name = "extreme_hills_m_ocean",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 3,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = 0,
+		heat_point = 28,
+		humidity_point = 30,
+	})
+
+	-- Extreme Hills+
+	-- This biome is identical to Extreme Hills on the surface but has snow-covered mountains with spruce/oak
+	-- forests above a certain hight.
+	minetest.register_biome({
+		name = "extreme_hills_plus",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 4,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 4,
+		y_min = 1,
+		y_max = 44,
+		heat_point = 31,
+		humidity_point = 35,
+	})
+
+	-- Sub-biome for snow-covered mountains
+	-- TODO: Find a more generic way to cover high areas with snow, defining a new biome seems tedious.
+	minetest.register_biome({
+		name = "extreme_hills_plus_snowtop",
+		node_dust = "mcl_core:snow",
+		node_top = "mcl_core:dirt_with_grass_snow",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 4,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 4,
+		y_min = 45,
+		y_max = mcl_vars.mg_overworld_max,
+		heat_point = 31,
+		humidity_point = 35,
+	})
+
+	minetest.register_biome({
+		name = "extreme_hills_plus_ocean",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 4,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 4,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = 0,
+		heat_point = 31,
+		humidity_point = 35,
+	})
+
+
+
+
 	-- Ice plains
 	minetest.register_biome({
 		name = "ice_plains",
@@ -834,6 +958,7 @@ end
 -- Register “fake” ores directly related to the biomes
 local function register_biomelike_ores()
 
+	-- Random coarse dirt floor in mega taiga
 	minetest.register_ore({
 		ore_type	= "sheet",
 		ore		= "mcl_core:coarse_dirt",
@@ -848,6 +973,21 @@ local function register_biomelike_ores()
 		biomes = { "mega_taiga" },
 	})
 
+	-- Small dirt patches in Extreme Hills M
+	minetest.register_ore({
+		ore_type	= "blob",
+		-- TODO: Should be grass block. But generating this as ore means gras blocks will spawn undeground. :-(
+		ore		= "mcl_core:dirt",
+		wherein		= {"mcl_core:gravel"},
+		clust_scarcity	= 5000,
+		clust_num_ores	= 12,
+		clust_size	= 4,
+		y_min		= mcl_vars.mg_overworld_min,
+		y_max		= mcl_vars.mg_overworld_max,
+		noise_threshold = 0.2,
+		noise_params = {offset=0, scale=5, spread={x=250, y=250, z=250}, seed=64, octaves=3, persist=0.60},
+		biomes = { "extreme_hills_m" },
+	})
 
 	-- Mesa ores
 	minetest.register_ore({
@@ -1328,44 +1468,47 @@ local function register_decorations()
 
 	-- Oak
 	-- Large oaks
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
-		sidelen = 80,
-		noise_params = {
-			offset = 0.00075,
-			scale = 0.0011,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 3,
-			octaves = 3,
-			persist = 0.66
-		},
-		biomes = {"forest"},
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_large_1.mts",
-		flags = "place_center_x, place_center_z",
-		rotation = "random",
-	})
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
-		sidelen = 80,
-		noise_params = {
-			offset = 0.00075,
-			scale = 0.0011,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 3,
-			octaves = 3,
-			persist = 0.66
-		},
-		biomes = {"forest"},
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_large_2.mts",
-		flags = "place_center_x, place_center_z",
-		rotation = "random",
-	})
+	for i=1, 2 do
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+			sidelen = 80,
+			noise_params = {
+				offset = 0.00075,
+				scale = 0.0011,
+				spread = {x = 250, y = 250, z = 250},
+				seed = 3,
+				octaves = 3,
+				persist = 0.66
+			},
+			biomes = {"forest"},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_large_"..i..".mts",
+			flags = "place_center_x, place_center_z",
+			rotation = "random",
+		})
+
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:dirt_with_grass_snow"},
+			sidelen = 80,
+			noise_params = {
+				offset = -0.0004,
+				scale = 0.001,
+				spread = {x = 250, y = 250, z = 250},
+				seed = 3,
+				octaves = 3,
+				persist = 0.6
+			},
+			biomes = {"extreme_hills", "extreme_hills_m", "extreme_hills_plus", "extreme_hills_plus_snowtop"},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_large_"..i..".mts",
+			flags = "place_center_x, place_center_z",
+			rotation = "random",
+		})
+	end
 	-- Small classic oak (forest, flower forest and ice plains)
 	minetest.register_decoration({
 		deco_type = "schematic",
@@ -1405,6 +1548,46 @@ local function register_decorations()
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:dirt_with_grass_snow"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.0,
+			scale = 0.002,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.7
+		},
+		biomes = {"extreme_hills", "extreme_hills_m", "extreme_hills_plus", "extreme_hills_plus_snowtop"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_grass_snow", "mcl_core:dirt"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.006,
+			scale = 0.002,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.7
+		},
+		biomes = {"extreme_hills_plus", "extreme_hills_plus_snowtop"},
+		y_min = 50,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:dirt_with_grass_snow"},
@@ -1530,10 +1713,13 @@ local function register_decorations()
 	})
 
 	-- Spruce
-	local function quick_spruce(seed, offset, sprucename, biomes)
+	local function quick_spruce(seed, offset, sprucename, biomes, y)
+		if not y then
+			y = 2
+		end
 		minetest.register_decoration({
 			deco_type = "schematic",
-			place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
+			place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol"},
 			sidelen = 16,
 			noise_params = {
 				offset = offset,
@@ -1544,7 +1730,7 @@ local function register_decorations()
 				persist = 0.66
 			},
 			biomes = biomes,
-			y_min = 2,
+			y_min = y,
 			y_max = mcl_vars.mg_overworld_max,
 			schematic = minetest.get_modpath("mcl_core").."/schematics/"..sprucename,
 			flags = "place_center_x, place_center_z",
@@ -1560,6 +1746,7 @@ local function register_decorations()
 	quick_spruce(4000, 0.0008, "mcl_core_spruce_huge_up_2.mts", {"mega_taiga"})
 	quick_spruce(6000, 0.0008, "mcl_core_spruce_huge_up_3.mts", {"mega_taiga"})
 
+
 	-- Common spruce
 	quick_spruce(11000, 0.00150, "mcl_core_spruce_5.mts", {"taiga", "cold_taiga"})
 
@@ -1570,6 +1757,17 @@ local function register_decorations()
 	quick_spruce(9500, 0.00500, "mcl_core_spruce_tall.mts", {"mega_taiga"})
 
 	quick_spruce(5000, 0.00250, "mcl_core_spruce_2.mts", {"mega_spruce_taiga", "mega_taiga"})
+
+	quick_spruce(11000, 0.000025, "mcl_core_spruce_5.mts", {"extreme_hills", "extreme_hills_m"})
+	quick_spruce(2500, 0.00005, "mcl_core_spruce_1.mts", {"extreme_hills", "extreme_hills_m"})
+	quick_spruce(7000, 0.00005, "mcl_core_spruce_3.mts", {"extreme_hills", "extreme_hills_m"})
+	quick_spruce(9000, 0.00005, "mcl_core_spruce_4.mts", {"extreme_hills", "extreme_hills_m"})
+
+	quick_spruce(11000, 0.001, "mcl_core_spruce_5.mts", {"extreme_hills_plus", "extreme_hills_plus_snowtop"}, 50)
+	quick_spruce(2500, 0.002, "mcl_core_spruce_1.mts", {"extreme_hills_plus", "extreme_hills_plus_snowtop"}, 50)
+	quick_spruce(7000, 0.003, "mcl_core_spruce_3.mts", {"extreme_hills_plus", "extreme_hills_plus_snowtop"}, 50)
+	quick_spruce(9000, 0.002, "mcl_core_spruce_4.mts", {"extreme_hills_plus", "extreme_hills_plus_snowtop"}, 50)
+
 
 	-- Small lollipop spruce
 	minetest.register_decoration({
@@ -1677,7 +1875,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.66
 		},
-		biomes = {"flower_forest"},
+		biomes = {"forest", "flower_forest"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_birch.mts",
@@ -1964,7 +2162,7 @@ local function register_decorations()
 		},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		biomes = {"plains", "sunflower_plains", "taiga", "forest", "flower_forest", "birch_forest", "birch_forest_m", "roofed_forest", "savanna"},
+		biomes = {"plains", "sunflower_plains", "taiga", "forest", "flower_forest", "birch_forest", "birch_forest_m", "roofed_forest", "savanna", },
 	})
 
 	-- Large ferns
@@ -2359,8 +2557,9 @@ local function register_decorations()
 
 	-- Grasses and ferns
 	local grass_forest = {"plains", "taiga", "forest", "flower_forest", "birch_forest", "birch_forest_m", "roofed_forest", "swampland" }
-	local grass_plains = {"plains", "savanna", "sunflower_plains", "jungle_edge"}
+	local grass_plains = {"plains", "savanna", "sunflower_plains", "jungle_edge" }
 	local grass_savanna = {"savanna"}
+	local grass_sparse = {"extreme_hills", "extreme_hills_plus", "extreme_hills_plus_snowtop", "extreme_hills_m" }
 
 	register_grass_decoration("tallgrass", -0.03,  0.09, grass_forest)
 	register_grass_decoration("tallgrass", -0.015, 0.075, grass_forest)
@@ -2373,6 +2572,7 @@ local function register_decorations()
 	register_grass_decoration("tallgrass", 0.07, -0.01, grass_plains)
 	register_grass_decoration("tallgrass", 0.09, -0.03, grass_plains)
 	register_grass_decoration("tallgrass", 0.18, -0.03, grass_savanna)
+	register_grass_decoration("tallgrass", 0.05, -0.03, grass_sparse)
 
 	local fern_minimal = { "jungle", "jungle_edge", "taiga", "mega_taiga", "mega_spruce_taiga", "cold_taiga" }
 	local fern_low = { "jungle", "jungle_edge", "taiga", "mega_taiga", "mega_spruce_taiga" }
@@ -2388,7 +2588,7 @@ local function register_decorations()
 	register_grass_decoration("fern", 0.07, -0.01, fern_jungle)
 	register_grass_decoration("fern", 0.09, -0.03, fern_jungle)
 
-	-- Tall grass in ice plains
+	-- Place tall grass on snow in Ice Plains and Extreme Hills+
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_grass_snow"},
@@ -2412,6 +2612,30 @@ local function register_decorations()
 			},
 		},
 	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_grass_snow"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.0,
+			scale = 0.09,
+			spread = {x = 15, y = 15, z = 15},
+			seed = 420,
+			octaves = 3,
+			persist = 0.6,
+		},
+		biomes = {"extreme_hills_plus_snowtop"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = {
+			size = { x=1, y=2, z=1 },
+			data = {
+				{ name = "mcl_core:dirt_with_grass", force_place=true, },
+				{ name = "mcl_flowers:tallgrass", },
+			},
+		},
+	})
+
 
 	-- Dead bushes
 	minetest.register_decoration({
@@ -2568,7 +2792,7 @@ local function register_decorations()
 		end
 	end
 
-	local flower_biomes1 = {"plains", "sunflower_plains", "roofed_forest", "forest", "birch_forest", "birch_forest_m", "taiga", "cold_taiga", "jungle", "jungle_edge", "savanna" }
+	local flower_biomes1 = {"plains", "sunflower_plains", "roofed_forest", "forest", "birch_forest", "birch_forest_m", "taiga", "cold_taiga", "jungle", "jungle_edge", "savanna", "extreme_hills", "extreme_hills_m", "extreme_hills_plus", "extreme_hills_plus_snowtop" }
 
 	register_flower("dandelion", flower_biomes1, 8)
 	register_flower("poppy", flower_biomes1, 9439)
@@ -2583,7 +2807,6 @@ local function register_decorations()
 
 	register_flower("allium", nil, 0) -- flower forest only
 	register_flower("blue_orchid", {"swampland"}, 64500, false)
-
 
 end
 
