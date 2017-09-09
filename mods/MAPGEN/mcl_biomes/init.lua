@@ -2382,11 +2382,11 @@ local function register_decorations()
 	register_grass_decoration("fern", 0,      0.06, fern_minimal)
 	register_grass_decoration("fern", 0.015,  0.045, fern_low)
 	register_grass_decoration("fern", 0.03,   0.03, fern_low)
-	register_grass_decoration("fern", 0.01, 0.05, fern_full)
-	register_grass_decoration("fern", 0.03, 0.03, fern_full)
-	register_grass_decoration("fern", 0.05, 0.01, fern_full)
-	register_grass_decoration("fern", 0.07, -0.01, fern_full)
-	register_grass_decoration("fern", 0.09, -0.03, fern_full)
+	register_grass_decoration("fern", 0.01, 0.05, fern_jungle)
+	register_grass_decoration("fern", 0.03, 0.03, fern_jungle)
+	register_grass_decoration("fern", 0.05, 0.01, fern_jungle)
+	register_grass_decoration("fern", 0.07, -0.01, fern_jungle)
+	register_grass_decoration("fern", 0.09, -0.03, fern_jungle)
 
 	-- Tall grass in ice plains
 	minetest.register_decoration({
