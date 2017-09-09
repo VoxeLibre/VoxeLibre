@@ -860,9 +860,12 @@ local function register_mgv6_decorations()
 		decoration = "mcl_core:deadbush",
 	})
 
-	local function register_mgv6_flower(name, seed, offset)
+	local function register_mgv6_flower(name, seed, offset, y_max)
 		if offset == nil then
 			offset = 0
+		end
+		if y_max == nil then
+			y_max = mcl_vars.mg_overworld_max
 		end
 		minetest.register_decoration({
 			deco_type = "simple",
@@ -877,7 +880,7 @@ local function register_mgv6_decorations()
 				persist = 0.6
 			},
 			y_min = 1,
-			y_max = mcl_vars.mg_overworld_max,
+			y_max = y_max,
 			decoration = "mcl_flowers:"..name,
 		})
 	end
@@ -888,10 +891,13 @@ local function register_mgv6_decorations()
 	register_mgv6_flower("tulip_white", 736)
 	register_mgv6_flower("azure_bluet", 800)
 	register_mgv6_flower("dandelion", 8)
-	--[[ Allium and blue orchid are made slightly rarer in v6
-	to compensate for missing biomes. In Minecraft, those flowers only appear in special biomes. ]]
+	-- Allium is supposed to only appear in flower forest in MC. There are no flower forests in v6.
+	-- We compensate by making it slightly rarer in v6.
 	register_mgv6_flower("allium", 0, -0.001)
-	register_mgv6_flower("blue_orchid", 64500, -0.001)
+	--[[ Blue orchid is supposed to appear in swamplands. There are no swamplands in v6.
+	We emulate swamplands by limiting the height to 5 levels above sea level,
+	which should be close to the water. ]]
+	register_mgv6_flower("blue_orchid", 64500, nil, mcl_util.layer_to_y(67))
 	register_mgv6_flower("oxeye_daisy", 3490)
 	register_mgv6_flower("poppy", 9439)
 
