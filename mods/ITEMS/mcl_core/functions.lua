@@ -502,38 +502,19 @@ end
 
 -- END of spruce tree functions --
 
--- Acacia tree (2 variants)
+-- Acacia tree (multiple variants)
 function mcl_core.generate_acacia_tree(pos)
-	local r = math.random(1, 2)
-	local rot = math.random(0, 3)
-	local offset, path
-	if r == 1 then
-		path = minetest.get_modpath("mcl_core") ..
-			"/schematics/mcl_core_acacia_classic_1.mts"
-		if rot == 0 then
-			offset = { x = pos.x - 4, y = pos.y, z = pos.z - 2 }
-		elseif rot == 1 then
-			offset = { x = pos.x - 2, y = pos.y, z = pos.z - 4 }
-		elseif rot == 2 then
-			offset = { x = pos.x - 4, y = pos.y, z = pos.z - 2 }
-		else
-			offset = { x = pos.x - 2, y = pos.y, z = pos.z - 4 }
-		end
-	else
-		path = minetest.get_modpath("mcl_core") ..
-			"/schematics/mcl_core_acacia_classic_2.mts"
-		if rot == 0 then
-			offset = { x = pos.x - 2, y = pos.y, z = pos.z - 2 }
-		elseif rot == 1 then
-			offset = { x = pos.x - 2, y = pos.y, z = pos.z - 4 }
-		elseif rot == 2 then
-			offset = { x = pos.x - 4, y = pos.y, z = pos.z - 4 }
-		else
-			offset = { x = pos.x - 4, y = pos.y, z = pos.z - 2 }
-		end
+	local r = math.random(1, 7)
+	local offset = vector.new()
+	if r == 2 or r == 3 then
+		offset = { x = -4, y = -1, z = -4 }
+	elseif r == 4 or r == 6 or r == 7 then
+		offset = { x = -3, y = -1, z = -3 }
+	elseif r == 1 or r == 5 then
+		offset = { x = -5, y = -1, z = -5 }
 	end
-	local angle = tostring(rot * 90)
-	minetest.place_schematic(offset, path, angle, nil, false)
+	local path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_acacia_"..r..".mts"
+	minetest.place_schematic(vector.add(pos, offset), path, "random", nil, false)
 end
 
 -- Generate dark oak tree with 2×2 trunk.
