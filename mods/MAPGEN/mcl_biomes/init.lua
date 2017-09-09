@@ -22,7 +22,6 @@ end
 
 -- All mapgens except mgv6, flat and singlenode
 local function register_biomes()
-
 	--[[ OVERWORLD ]]
 	-- Ice spikes
 	minetest.register_biome({
@@ -70,7 +69,7 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		y_min = 2,
+		y_min = 3,
 		y_max = mcl_vars.mg_overworld_max,
 		heat_point = 0,
 		humidity_point = 40,
@@ -88,7 +87,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = -3,
-		y_max = 1,
+		y_max = 2,
 		heat_point = 0,
 		humidity_point = 40,
 	})
@@ -794,7 +793,6 @@ local function register_biomes()
 		humidity_point = 99,
 	})
 
-
 end
 
 -- Register biomes of non-Overworld biomes
@@ -835,6 +833,21 @@ end
 
 -- Register “fake” ores directly related to the biomes
 local function register_biomelike_ores()
+
+	minetest.register_ore({
+		ore_type	= "sheet",
+		ore		= "mcl_core:coarse_dirt",
+		wherein		= {"mcl_core:podzol", "mcl_core:dirt"},
+		clust_scarcity	= 1,
+		clust_num_ores	= 12,
+		clust_size	= 10,
+		y_min		= mcl_vars.mg_overworld_min,
+		y_max		= mcl_vars.mg_overworld_max,
+		noise_threshold = 0.2,
+		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=24, octaves=3, persist=0.70},
+		biomes = { "mega_taiga" },
+	})
+
 
 	-- Mesa ores
 	minetest.register_ore({
@@ -1539,14 +1552,24 @@ local function register_decorations()
 	end
 
 	-- Huge spruce
-	quick_spruce(3000, 0.001, "mcl_core_spruce_huge_1.mts", {"mega_spruce_taiga"})
-	quick_spruce(4000, 0.00112, "mcl_core_spruce_huge_2.mts", {"mega_spruce_taiga"})
-	quick_spruce(6000, 0.001, "mcl_core_spruce_huge_3.mts", {"mega_spruce_taiga"})
+	quick_spruce(3000, 0.0013, "mcl_core_spruce_huge_1.mts", {"mega_spruce_taiga"})
+	quick_spruce(4000, 0.00142, "mcl_core_spruce_huge_2.mts", {"mega_spruce_taiga"})
+	quick_spruce(6000, 0.0013, "mcl_core_spruce_huge_3.mts", {"mega_spruce_taiga"})
+
+	quick_spruce(3000, 0.0008, "mcl_core_spruce_huge_up_1.mts", {"mega_taiga"})
+	quick_spruce(4000, 0.0008, "mcl_core_spruce_huge_up_2.mts", {"mega_taiga"})
+	quick_spruce(6000, 0.0008, "mcl_core_spruce_huge_up_3.mts", {"mega_taiga"})
 
 	-- Common spruce
-	quick_spruce(2500, 0.0062, "mcl_core_spruce_1.mts", {"mega_spruce_taiga", "mega_taiga", "taiga", "cold_taiga"})
-	quick_spruce(5000, 0.0065, "mcl_core_spruce_2.mts", {"mega_spruce_taiga", "mega_taiga", "taiga", "cold_taiga"})
-	quick_spruce(7000, 0.005, "mcl_core_spruce_3.mts", {"mega_spruce_taiga", "mega_taiga", "taiga", "cold_taiga"})
+	quick_spruce(11000, 0.00150, "mcl_core_spruce_5.mts", {"taiga", "cold_taiga"})
+
+	quick_spruce(2500, 0.00325, "mcl_core_spruce_1.mts", {"mega_spruce_taiga", "mega_taiga", "taiga", "cold_taiga"})
+	quick_spruce(7000, 0.00425, "mcl_core_spruce_3.mts", {"mega_spruce_taiga", "mega_taiga", "taiga", "cold_taiga"})
+	quick_spruce(9000, 0.00325, "mcl_core_spruce_4.mts", {"mega_spruce_taiga", "mega_taiga", "taiga", "cold_taiga"})
+
+	quick_spruce(9500, 0.00500, "mcl_core_spruce_tall.mts", {"mega_taiga"})
+
+	quick_spruce(5000, 0.00250, "mcl_core_spruce_2.mts", {"mega_spruce_taiga", "mega_taiga"})
 
 	-- Small lollipop spruce
 	minetest.register_decoration({
