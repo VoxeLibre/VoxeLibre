@@ -285,8 +285,27 @@ local function register_biomes()
 		humidity_point = 35,
 	})
 
-
-
+	-- Stone beach
+	minetest.register_biome({
+		name = "stone_beach",
+		y_min = -6,
+		y_max = mcl_vars.mg_overworld_max,
+		heat_point = 31,
+		humidity_point = 15,
+	})
+	minetest.register_biome({
+		name = "stone_beach_ocean",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		filler_depth = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 1,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = -7,
+		heat_point = 31,
+		humidity_point = 15,
+	})
 
 	-- Ice plains
 	minetest.register_biome({
