@@ -483,9 +483,21 @@ mcl_core.generate_spruce_tree = function(pos)
 end
 
 mcl_core.generate_huge_spruce_tree = function(pos)
-	local r = math.random(1, 3)
-	local path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_spruce_huge_"..r..".mts"
-	minetest.place_schematic({ x = pos.x - 4, y = pos.y - 1, z = pos.z - 5 }, path, "0", nil, false)
+	local r1 = math.random(1, 2)
+	local r2 = math.random(1, 3)
+	local path
+	local offset = { x = -4, y = -1, z = -5 }
+	if r1 <= 2 then
+		-- Mega Spruce Taiga (full canopy)
+		path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_spruce_huge_"..r2..".mts"
+	else
+		-- Mega Taiga (leaves only at top)
+		if r2 == 1 or r2 == 3 then
+			offset = { x = -3, y = -1, z = -4}
+		end
+		path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_spruce_huge_up_"..r2..".mts"
+	end
+	minetest.place_schematic(vector.add(pos, offset), path, "0", nil, false)
 end
 
 -- END of spruce tree functions --
