@@ -930,12 +930,9 @@ local function register_biomes()
 	})
 
 	-- Jungle Edge M
-	-- Very similar to Jungle Edge. Has deeper dirt. Melon spawn here a lot.
+	-- Almost identical Jungle Edge. Has deeper dirt. Melons spawn here a lot (TODO).
 	-- TODO: Must be super rare
 
-	-- Note: Temporarily disabled because it is too common (almost always occours between jungle and jungle edge)
-	-- and allowed cheap access to melons
-	--[[
 	minetest.register_biome({
 		name = "jungle_edge_m",
 		node_top = "mcl_core:dirt_with_grass",
@@ -962,7 +959,6 @@ local function register_biomes()
 		heat_point = 90,
 		humidity_point = 90,
 	})
-	]]
 
 	-- Swampland
 	minetest.register_biome({
@@ -2549,12 +2545,16 @@ local function register_decorations()
 		decoration = "mcl_farming:melon",
 		biomes = { "jungle_edge" },
 	})
+--[[
+	-- Lots of melons in Jungle Edge M
+	NOTE: Temporarily disabled because Jungle Edge M is too common atm.
+	TODO: Re-enable when Jungle Edge M has been fixed.
+
 	minetest.register_decoration({
 		deco_type = "simple",
 		place_on = {"mcl_core:dirt_with_grass"},
 		sidelen = 80,
 		noise_params = {
-			-- Lots of melons in Jungle Edge M
 			offset = 0.013,
 			scale = 0.006,
 			spread = {x = 125, y = 125, z = 125},
@@ -2567,6 +2567,7 @@ local function register_decorations()
 		decoration = "mcl_farming:melon",
 		biomes = { "jungle_edge_m" },
 	})
+]]
 
 	-- Pumpkin
 	minetest.register_decoration({
