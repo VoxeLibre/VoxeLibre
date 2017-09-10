@@ -630,6 +630,7 @@ local function register_biomes()
 
 	-- Desert (Red Sand)
 	-- FIXME: Not a real biome in MC
+--[[
 	minetest.register_biome({
 		name = "red_desert",
 		node_top = "mcl_core:redsand",
@@ -658,6 +659,7 @@ local function register_biomes()
 		heat_point = 64,
 		humidity_point = 37,  --was 16
 	})
+]]
 
 	-- Desert
 	minetest.register_biome({
@@ -761,7 +763,65 @@ local function register_biomes()
 		heat_point = 88,
 		humidity_point = 20,
 	})
-	-- TODO: More mesa biomes
+
+	-- Mesa Plateau F
+	-- Identical to Mesa below Y=30. Y=30 and above is replaced with an oak forest
+	minetest.register_biome({
+		name = "mesa_plateau_f",
+		node_top = "mcl_colorblocks:hardened_clay",
+		depth_top = 1,
+		node_filler = "mcl_colorblocks:hardened_clay",
+		node_stone = "mcl_colorblocks:hardened_clay",
+		y_min = 11,
+		y_max = 29,
+		heat_point = 64,
+		humidity_point = 37,
+	})
+
+	-- The actual plateau of this biome
+	-- This is a mesa plateau for grass blocks, tall grass and oaks.
+	minetest.register_biome({
+		name = "mesa_plateau_f_grasstop",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		filler_depth = 1,
+		node_stone = "mcl_colorblocks:hardened_clay",
+		y_min = 30,
+		y_max = mcl_vars.mg_overworld_max,
+		heat_point = 64,
+		humidity_point = 37,
+	})
+
+	-- Helper biome for the red sand at the bottom.
+	minetest.register_biome({
+		name = "mesa_plateau_f_sandlevel",
+		node_top = "mcl_core:redsand",
+		depth_top = 1,
+		node_filler = "mcl_colorblocks:hardened_clay_orange",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:redsand",
+		depth_riverbed = 1,
+		node_stone = "mcl_colorblocks:hardened_clay_orange",
+		y_min = 1,
+		y_max = 10,
+		heat_point = 64,
+		humidity_point = 37,
+	})
+
+	minetest.register_biome({
+		name = "mesa_plateau_f_ocean",
+		node_top = "mcl_core:dirt",
+		depth_top = 3,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:redsand",
+		depth_riverbed = 2,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = 0,
+		heat_point = 64,
+		humidity_point = 37,
+	})
 
 	-- Savanna
 	minetest.register_biome({
@@ -1075,7 +1135,7 @@ local function register_biomelike_ores()
 			y_max = y_max,
 			noise_threshold = -1.0,
 			noise_params = {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=seed, octaves=3, persist=0.70},
-			biomes = { "mesa" },
+			biomes = { "mesa", "mesa_plateau_f" },
 		})
 	end
 
@@ -1512,6 +1572,25 @@ local function register_decorations()
 		},
 		biomes = {"extreme_hills_plus", "extreme_hills_plus_snowtop"},
 		y_min = 50,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.015,
+			scale = 0.002,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.7
+		},
+		biomes = {"mesa_plateau_f_grasstop"},
+		y_min = 30,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
@@ -2017,7 +2096,7 @@ local function register_decorations()
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_core:cactus",
-		biomes = {"red_desert","desert","mesa","mesa_sandlevel"},
+		biomes = {"red_desert","desert","mesa","mesa_sandlevel","mesa_plateau_f","mesa_plateau_f_sandlevel"},
 		height = 1,
 		height_max = 3,
 	})
@@ -2092,7 +2171,7 @@ local function register_decorations()
 		},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		biomes = {"plains", "sunflower_plains", "taiga", "forest", "flower_forest", "birch_forest", "birch_forest_m", "roofed_forest", "savanna", },
+		biomes = {"plains", "sunflower_plains", "taiga", "forest", "flower_forest", "birch_forest", "birch_forest_m", "roofed_forest", "savanna", "mesa_plateau_f_grasstop" },
 	})
 
 	-- Large ferns
@@ -2486,7 +2565,7 @@ local function register_decorations()
 	})
 
 	-- Grasses and ferns
-	local grass_forest = {"plains", "taiga", "forest", "flower_forest", "birch_forest", "birch_forest_m", "roofed_forest", "swampland" }
+	local grass_forest = {"plains", "taiga", "forest", "flower_forest", "birch_forest", "birch_forest_m", "roofed_forest", "swampland", "mesa_plateau_f_grasstop" }
 	local grass_plains = {"plains", "savanna", "sunflower_plains", "jungle_edge" }
 	local grass_savanna = {"savanna"}
 	local grass_sparse = {"extreme_hills", "extreme_hills_plus", "extreme_hills_plus_snowtop", "extreme_hills_m" }
@@ -2582,7 +2661,7 @@ local function register_decorations()
 		},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
-		biomes = {"red_desert", "desert", "mesa", "mesa_sandlevel", "taiga", "mega_taiga"},
+		biomes = {"red_desert", "desert", "mesa", "mesa_sandlevel", "mesa_plateau_f", "mesa_plateau_f_sandlevel", "taiga", "mega_taiga"},
 		decoration = "mcl_core:deadbush",
 		height = 1,
 	})
@@ -2722,7 +2801,7 @@ local function register_decorations()
 		end
 	end
 
-	local flower_biomes1 = {"plains", "sunflower_plains", "roofed_forest", "forest", "birch_forest", "birch_forest_m", "taiga", "cold_taiga", "jungle", "jungle_edge", "savanna", "extreme_hills", "extreme_hills_m", "extreme_hills_plus", "extreme_hills_plus_snowtop" }
+	local flower_biomes1 = {"plains", "sunflower_plains", "roofed_forest", "forest", "birch_forest", "birch_forest_m", "taiga", "cold_taiga", "jungle", "jungle_edge", "savanna", "extreme_hills", "extreme_hills_m", "extreme_hills_plus", "extreme_hills_plus_snowtop", "mesa_plateau_f_grasstop" }
 
 	register_flower("dandelion", flower_biomes1, 8)
 	register_flower("poppy", flower_biomes1, 9439)
