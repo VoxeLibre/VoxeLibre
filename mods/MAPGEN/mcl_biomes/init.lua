@@ -2122,7 +2122,6 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.7
 		},
-		biomes = {"plains", "plains_beach", "taiga_beach", "ice_plains", "cold_taiga_beach", "savanna_beach", "forest_beach", "desert"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_core:reeds",
