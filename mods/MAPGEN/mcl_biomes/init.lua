@@ -1116,34 +1116,61 @@ local function register_biomelike_ores()
 	-- Mesa strata
 
 	-- Colors to use: silver (light grey), brown, orange, red, yellow, white
-	local stratum = function(y_min, y_max, color)
+	local stratum = function(y_min, height, color, seed)
+		if not height then
+			height = 1
+		end
+		if not seed then
+			seed = 39
+		end
+		local y_max = y_min + height-1
 		minetest.register_ore({
 			ore_type = "sheet",
 			ore = "mcl_colorblocks:hardened_clay_"..color,
 			wherein = {"mcl_colorblocks:hardened_clay"},
-			column_height_min = y_max - y_min,
-			column_height_max = y_max - y_min,
+			column_height_min = height,
+			column_height_max = height,
 			y_min = y_min,
 			y_max = y_max,
-			noise_threshold = 0.0,
-			noise_params = {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=23, octaves=3, persist=0.70},
+			noise_threshold = -1.0,
+			noise_params = {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=seed, octaves=3, persist=0.70},
 			biomes = { "mesa" },
 		})
 	end
 
+	stratum(11, 3, "orange")
 
-	stratum(11, 12, "orange")
-	stratum(15, 17, "brown")
-	stratum(20, 29, "orange")
-	stratum(34, 37, "red")
-	stratum(42, 43, "yellow")
-	stratum(44, 45, "orange")
-	stratum(46, 47, "brown")
-	stratum(48, 49, "yellow")
-	stratum(50, 52, "white")
-	stratum(53, 59, "white")
-	stratum(61, 66, "white")
-	stratum(70, 75, "silver")
+	-- Create strata for up to Y = 256
+	-- This is semi-random based on the mapseed.
+	local seed = minetest.get_mapgen_setting("seed")
+	local i = 0
+	repeat
+		seed = seed + i
+
+		stratum(17+i, 1, "orange", seed)
+		stratum(19+i, 1, "silver", seed)
+		stratum(21+i, 1, "brown", seed)
+		stratum(22+i, 1, "red", seed)
+		stratum(24+i, 1, "silver", seed)
+		stratum(26+i, 1, "brown", seed)
+		stratum(27+i, 1, "white", seed)
+		stratum(29+i, 1, "orange", seed)
+		stratum(34+i, 1, "red", seed)
+		stratum(42+i, 1, "orange", seed)
+		stratum(44+i, 1, "yellow", seed)
+		stratum(46+i, 1, "brown", seed)
+		stratum(48+i, 1, "silver", seed)
+		stratum(51+i, 1, "white", seed)
+		stratum(55+i, 2, "yellow", seed)
+		stratum(58+i, 2, "orange", seed)
+		stratum(62+i, 1, "brown", seed)
+		stratum(68+i, 3, "orange", seed)
+		stratum(73+i, 2, "brown", seed)
+		stratum(76+i, 1, "white", seed)
+		-- Repeat strata above Y=76
+
+		i = i + 66
+	until i > 256
 end
 
 -- Non-Overworld ores
