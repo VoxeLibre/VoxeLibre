@@ -969,12 +969,8 @@ end
 local perlin_structures
 local perlin_vines, perlin_vines_fine, perlin_vines_upwards, perlin_vines_length, perlin_vines_density
 
--- Generate clay and structures
--- TODO: Try to use more efficient structure generating code
-minetest.register_on_generated(function(minp, maxp, seed)
-	local chunk_has_desert_well = false
-	local chunk_has_desert_temple = false
-	local chunk_has_igloo = false
+-- TODO: Try to use more efficient clay generating code
+local function generate_clay(minp, maxp, seed)
 	if maxp.y >= 2 and minp.y <= 0 then
 		-- Generate clay
 		-- Assume X and Z lengths are equal
@@ -1012,9 +1008,16 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		end
 		end
 	end
+
+end
+
+-- TODO: Try to use more efficient structure generating code
+local function generate_structures(minp, maxp, seed, biomemap)
+	local chunk_has_desert_well = false
+	local chunk_has_desert_temple = false
+	local chunk_has_igloo = false
 	local struct_min, struct_max = -3, 64
 	if maxp.y >= struct_min and minp.y <= struct_max then
-		local biomemap = minetest.get_mapgen_object("biomemap")
 		-- Generate structures
 
 		perlin_structures = perlin_structures or minetest.get_perlin(329, 3, 0.6, 100)
@@ -1243,7 +1246,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		end
 		end
 	end
-end)
+end
 
 -- Buffer for LuaVoxelManip
 local lvm_buffer = {}
@@ -1252,7 +1255,7 @@ local lvm_buffer = {}
 -- * Cocoa at jungle trees
 -- * Jungle tree vines
 -- * Oak vines in swamplands
-local function generate_tree_decorations(minp, maxp, biomemap)
+local function generate_tree_decorations(minp, maxp, seed, biomemap)
 	if maxp.y < 0 then
 		return
 	end
@@ -1415,7 +1418,7 @@ end
 local pr_shroom = PseudoRandom(os.time()-24359)
 -- Generate mushrooms in caves manually.
 -- Minetest's API does not support decorations in caves yet. :-(
-local generate_underground_mushrooms = function(minp, maxp)
+local generate_underground_mushrooms = function(minp, maxp, seed)
 	-- Generate rare underground mushrooms
 	-- TODO: Make them appear in groups, use Perlin noise
 	local min, max = mcl_vars.mg_lava_overworld_max + 4, 0
@@ -1442,7 +1445,7 @@ end
 local pr_nether = PseudoRandom(os.time()+667)
 -- Generate Nether decorations manually: Eternal fire, mushrooms, nether wart
 -- Minetest's API does not support decorations in caves yet. :-(
-local generate_nether_decorations = function(minp, maxp)
+local generate_nether_decorations = function(minp, maxp, seed)
 	if minp.y > mcl_vars.mg_nether_max or maxp.y < mcl_vars.mg_nether_min then
 		return
 	end
@@ -1526,7 +1529,7 @@ local c_snow_block = minetest.get_content_id("mcl_core:snowblock")
 local c_air = minetest.get_content_id("air")
 
 -- Below the bedrock, generate air/void
-minetest.register_on_generated(function(minp, maxp)
+minetest.register_on_generated(function(minp, maxp, seed)
 	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
 	local data = vm:get_data(lvm_buffer)
 	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
@@ -1762,9 +1765,11 @@ minetest.register_on_generated(function(minp, maxp)
 	local biomemap = minetest.get_mapgen_object("biomemap")
 
 	-- Generate special decorations
-	generate_underground_mushrooms(minp, maxp)
-	generate_tree_decorations(minp, maxp, biomemap)
-	generate_nether_decorations(minp, maxp)
+	generate_clay(minp, maxp, seed)
+	generate_underground_mushrooms(minp, maxp, seed)
+	generate_tree_decorations(minp, maxp, seed, biomemap)
+	generate_nether_decorations(minp, maxp, seed)
+	generate_structures(minp, maxp, seed, biomemap)
 end)
 
 
