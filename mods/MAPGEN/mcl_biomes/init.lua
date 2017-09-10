@@ -1090,7 +1090,7 @@ end
 -- Register “fake” ores directly related to the biomes
 local function register_biomelike_ores()
 
-	-- Random coarse dirt floor in mega taiga
+	-- Random coarse dirt floor in Mega Taiga and Mesa Plateau F
 	minetest.register_ore({
 		ore_type	= "sheet",
 		ore		= "mcl_core:coarse_dirt",
@@ -1103,6 +1103,30 @@ local function register_biomelike_ores()
 		noise_threshold = 0.2,
 		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=24, octaves=3, persist=0.70},
 		biomes = { "mega_taiga" },
+	})
+
+	minetest.register_ore({
+		ore_type	= "sheet",
+		ore		= "mcl_core:coarse_dirt",
+		wherein		= {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		column_height_max = 1,
+		column_midpoint_factor = 0.0,
+		y_min		= mcl_vars.mg_overworld_min,
+		y_max		= mcl_vars.mg_overworld_max,
+		noise_threshold = 0.0,
+		noise_params = {offset=0, scale=15, spread={x=250, y=250, z=250}, seed=24, octaves=3, persist=0.70},
+		biomes = { "mesa_plateau_f_grasstop" },
+	})
+	minetest.register_ore({
+		ore_type	= "blob",
+		ore		= "mcl_core:coarse_dirt",
+		wherein		= {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		clust_scarcity	= 1500,
+		clust_num_ores	= 25,
+		clust_size	= 7,
+		y_min		= mcl_vars.mg_overworld_min,
+		y_max		= mcl_vars.mg_overworld_max,
+		biomes = { "mesa_plateau_f_grasstop" },
 	})
 
 	-- Small dirt patches in Extreme Hills M
@@ -2690,7 +2714,7 @@ local function register_decorations()
 		},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
-		biomes = {"desert", "mesa", "mesa_sandlevel", "mesa_plateau_f", "mesa_plateau_f_sandlevel", "taiga", "mega_taiga"},
+		biomes = {"desert", "mesa", "mesa_sandlevel", "mesa_plateau_f", "mesa_plateau_f_sandlevel", "mesa_plateau_f_grasstop", "taiga", "mega_taiga"},
 		decoration = "mcl_core:deadbush",
 		height = 1,
 	})
@@ -2830,7 +2854,7 @@ local function register_decorations()
 		end
 	end
 
-	local flower_biomes1 = {"plains", "sunflower_plains", "roofed_forest", "forest", "birch_forest", "birch_forest_m", "taiga", "cold_taiga", "jungle", "jungle_edge", "jungle_edge_m", "savanna", "savanna_m", "extreme_hills", "extreme_hills_m", "extreme_hills_plus", "extreme_hills_plus_snowtop", "mesa_plateau_f_grasstop" }
+	local flower_biomes1 = {"plains", "sunflower_plains", "roofed_forest", "forest", "birch_forest", "birch_forest_m", "taiga", "cold_taiga", "jungle", "jungle_edge", "jungle_edge_m", "savanna", "savanna_m", "extreme_hills", "extreme_hills_m", "extreme_hills_plus", "extreme_hills_plus_snowtop" }
 
 	register_flower("dandelion", flower_biomes1, 8)
 	register_flower("poppy", flower_biomes1, 9439)
