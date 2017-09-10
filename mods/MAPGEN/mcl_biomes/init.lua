@@ -1759,9 +1759,9 @@ local function register_decorations()
 	end
 
 	-- Huge spruce
-	quick_spruce(3000, 0.0013, "mcl_core_spruce_huge_1.mts", {"mega_spruce_taiga"})
-	quick_spruce(4000, 0.00142, "mcl_core_spruce_huge_2.mts", {"mega_spruce_taiga"})
-	quick_spruce(6000, 0.0013, "mcl_core_spruce_huge_3.mts", {"mega_spruce_taiga"})
+	quick_spruce(3000, 0.005, "mcl_core_spruce_huge_1.mts", {"mega_spruce_taiga"})
+	quick_spruce(4000, 0.005, "mcl_core_spruce_huge_2.mts", {"mega_spruce_taiga"})
+	quick_spruce(6000, 0.005, "mcl_core_spruce_huge_3.mts", {"mega_spruce_taiga"})
 
 	quick_spruce(3000, 0.0008, "mcl_core_spruce_huge_up_1.mts", {"mega_taiga"})
 	quick_spruce(4000, 0.0008, "mcl_core_spruce_huge_up_2.mts", {"mega_taiga"})
@@ -1773,7 +1773,7 @@ local function register_decorations()
 
 	quick_spruce(2500, 0.00325, "mcl_core_spruce_1.mts", {"mega_spruce_taiga", "mega_taiga", "taiga", "cold_taiga"})
 	quick_spruce(7000, 0.00425, "mcl_core_spruce_3.mts", {"mega_spruce_taiga", "mega_taiga", "taiga", "cold_taiga"})
-	quick_spruce(9000, 0.00325, "mcl_core_spruce_4.mts", {"mega_spruce_taiga", "mega_taiga", "taiga", "cold_taiga"})
+	quick_spruce(9000, 0.00325, "mcl_core_spruce_4.mts", {"mega_taiga", "taiga", "cold_taiga"})
 
 	quick_spruce(9500, 0.00500, "mcl_core_spruce_tall.mts", {"mega_taiga"})
 
