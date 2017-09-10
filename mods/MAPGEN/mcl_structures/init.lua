@@ -200,7 +200,8 @@ mcl_structures.generate_boulder = function(pos)
 		path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_boulder.mts"
 	end
 
-	minetest.place_schematic(pos, path)
+	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
+	minetest.place_schematic(newpos, path)
 end
 
 mcl_structures.generate_witch_hut = function(pos)
