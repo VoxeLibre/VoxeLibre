@@ -994,8 +994,9 @@ minetest.register_on_generated(function(minp, maxp, seed)
 				local z = pr:next(z0, z1)
 				-- Find ground level
 				local ground_y = nil
-				for y=64,3,-1 do
-					if minetest.get_node({x=x,y=y,z=z}).name ~= "air" then
+				for y=64,-1,-1 do
+					local checknode = minetest.get_node({x=x,y=y,z=z}).name
+					if minetest.registered_nodes[checknode].walkable then
 						ground_y = y
 						break
 					end
@@ -1020,7 +1021,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 									chunk_has_desert_temple = true
 								end
 							end
-							if not chunk_has_desert_temple and not chunk_has_desert_well then
+							if not chunk_has_desert_temple and not chunk_has_desert_well and ground_y > 3 then
 								-- Minecraft probability: 1/1000 per Minecraft chunk (16×16).
 								-- We adjust the probability to Minetest's MapBlock size.
 								local desert_well_prob = 1000 * (((maxp.x-minp.x+1)*(maxp.z-minp.z+1)) / 256)
@@ -1069,10 +1070,49 @@ minetest.register_on_generated(function(minp, maxp, seed)
 							end
 						end
 
+						-- Witch hut
+						if ground_y <= 0 and nn == "mcl_core:dirt" then
+							local prob = 1024 * (((maxp.x-minp.x+1)*(maxp.z-minp.z+1)) / 256)
 
+							if math.random(1, prob) == 1 then
+								local p1 = {x=p.x-1, y=p.y+4, z=p.z-1}
+								local p2 = vector.add(p1, {x=9, y=5, z=8})
+								local free_nodes = minetest.find_nodes_in_area(p1, p2, {"air", "mcl_core:water_source", "mcl_flowers:waterlily"})
+								if #free_nodes >= 10*6*9 then
+									local place = {x=p.x, y=p.y+2, z=p.z}
+									mcl_structures.call_struct(place, "witch_hut")
+									local place_tree_if_free = function(pos, prev_result)
+										local nn = minetest.get_node(pos).name
+										if nn == "mcl_flowers:waterlily" or nn == "mcl_core:water_source" or nn == "mcl_core:water_flowing" or nn == "air" then
+											minetest.set_node(pos, {name="mcl_core:tree", param2=0})
+											return prev_result
+										else
+											return false
+										end
+									end
+									local offsets = {
+										{x=1, y=0, z=1},
+										{x=1, y=0, z=5},
+										{x=6, y=0, z=1},
+										{x=6, y=0, z=5},
+									}
+									for o=1, #offsets do
+										local ok = true
+										for y=place.y-1, place.y-64, -1 do
+											local tpos = vector.add(place, offsets[o])
+											tpos.y = y
+											ok = place_tree_if_free(tpos, ok)
+											if not ok then
+												break
+											end
+										end
+									end
+								end
+							end
+						end
 
-
-						-- Ice spikes (v6 only)
+						-- Ice spikes in v6
+						-- In other mapgens, ice spikes are generated as decorations.
 						if mg_name == "v6" and not chunk_has_igloo and nn == "mcl_core:snowblock" then
 							local spike = math.random(1, 3000)
 							if spike < 3 then

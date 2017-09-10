@@ -206,7 +206,7 @@ end
 
 mcl_structures.generate_witch_hut = function(pos)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_witch_hut.mts"
-	minetest.place_schematic(pos, path, "random", nil, true)
+	minetest.place_schematic(pos, path, "0", nil, true)
 end
 
 mcl_structures.generate_ice_spike_small = function(pos)
