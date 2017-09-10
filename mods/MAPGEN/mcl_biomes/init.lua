@@ -54,7 +54,8 @@ local function register_biomes()
 	]]
 
 	local DEEP_OCEAN_MAX = -11
-	local OCEAN_MIN = DEEP_OCEAN_MAX + 1
+	local DEEP_OCEAN_MIN = -32 -- Careful when changing this. You might end up caves covered in gravel around Y=32!
+	local OCEAN_MIN = DEEP_OCEAN_MAX+1
 
 	-- Ice Plains Spikes
 	minetest.register_biome({
@@ -1082,12 +1083,20 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:gravel",
 		depth_riverbed = 2,
-		y_min = mcl_vars.mg_overworld_min,
+		y_min = DEEP_OCEAN_MIN,
 		y_max = DEEP_OCEAN_MAX,
 		heat_point = 50,
 		humidity_point = 50,
 	})
 
+	-- Underground biome, to prevent ocean floor materials “leaking” into the underground.
+	minetest.register_biome({
+		name = "underground",
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = DEEP_OCEAN_MIN-1,
+		heat_point = 50,
+		humidity_point = 50,
+	})
 end
 
 -- Register biomes of non-Overworld biomes
