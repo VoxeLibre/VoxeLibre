@@ -941,6 +941,30 @@ local function minecraft_chunk_probability(x, minp, maxp)
 	return x * (((maxp.x-minp.x+1)*(maxp.z-minp.z+1)) / 256)
 end
 
+-- Takes an index of a biomemap table (from minetest.get_mapgen_object),
+-- minp and maxp (from an on_generated callback) and returns the real world coordinates
+-- as X, Z.
+-- Inverse function of xz_to_biomemap
+local biomemap_to_xz = function(index, minp, maxp)
+	local xwidth = maxp.x - minp.x + 1
+	local zwidth = maxp.z - minp.z + 1
+	local x = ((index-1) % xwidth) + minp.x
+	local z = ((index-1) / zwidth) + minp.z
+	return x, z
+end
+
+-- Takes x and z coordinates and minp and maxp of a generated chunk
+-- (in on_generated callback) and returns a biomemap index)
+-- Inverse function of biomemap_to_xz
+local xz_to_biomemap_index = function(x, z, minp, maxp)
+	local xwidth = maxp.x - minp.x + 1
+	local zwidth = maxp.z - minp.z + 1
+	local minix = x % xwidth
+	local miniz = z % zwidth
+
+	return (minix + miniz * zwidth) + 1
+end
+
 -- Perlin noise objects
 local perlin_structures
 local perlin_vines, perlin_vines_fine, perlin_vines_upwards, perlin_vines_length, perlin_vines_density
@@ -988,7 +1012,9 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		end
 		end
 	end
-	if maxp.y >= 3 and minp.y <= 64 then
+	local struct_min, struct_max = -1, 64
+	if maxp.y >= struct_min and minp.y <= struct_max then
+		local biomemap = minetest.get_mapgen_object("biomemap")
 		-- Generate structures
 
 		perlin_structures = perlin_structures or minetest.get_perlin(329, 3, 0.6, 100)
@@ -1010,7 +1036,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 				local z = pr:next(z0, z1)
 				-- Find ground level
 				local ground_y = nil
-				for y=64,-1,-1 do
+				for y = struct_max, struct_min, -1 do
 					local checknode = minetest.get_node({x=x,y=y,z=z}).name
 					if minetest.registered_nodes[checknode].walkable then
 						ground_y = y
@@ -1085,9 +1111,28 @@ minetest.register_on_generated(function(minp, maxp, seed)
 
 						-- Witch hut
 						if ground_y <= 0 and nn == "mcl_core:dirt" then
-							local prob = minecraft_chunk_probability(64, minp, maxp)
+							local prob = minecraft_chunk_probability(48, minp, maxp)
 
-							if math.random(1, prob) == 1 then
+							local swampland = minetest.get_biome_id("jungle_edge")
+							local swampland_shore = minetest.get_biome_id("jungle_edge_ocean")
+
+							-- Where do witches live?
+
+							local here_be_witches = false
+							if mg_name == "v6" then
+								-- In ye good ol' landes of v6, witches will settle at any
+								-- shores of dirt.
+								here_be_witches = true
+							else
+								-- The townsfolk told me that witches live in the swamplands!
+								local bi = xz_to_biomemap_index(p.x, p.z, minp, maxp)
+								if biomemap[bi] == swampland or biomemap[bi] == swampland_shore then
+									here_be_witches = true
+								end
+							end
+
+							-- We still need a bit of luck!
+							if here_be_witches and math.random(1, prob) == 1 then
 								local r = tostring(math.random(0, 3) * 90) -- "0", "90", "180" or 270"
 								local p1 = {x=p.x-1, y=WITCH_HUT_HEIGHT+2, z=p.z-1}
 								if r == "0" or r == "180" then
@@ -1096,6 +1141,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 									size = {x=8, y=4, z=10}
 								end
 								local p2 = vector.add(p1, size)
+
 								-- This checks free space at the “body” of the hut and a bit around.
 								-- ALL nodes must be free for the placement to succeed.
 								local free_nodes = minetest.find_nodes_in_area(p1, p2, {"air", "mcl_core:water_source", "mcl_flowers:waterlily"})
@@ -1227,6 +1273,7 @@ local function generate_tree_decorations(minp, maxp, biomemap)
 		local swamp_biome_found, jungle_biome_found = false, false
 		for b=1, #biomemap do
 			local id = biomemap[b]
+
 			if not swamp_biome_found and (id == swampland or id == swampland_shore) then
 				oaktree = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:tree"})
 				oakleaves = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:leaves"})
