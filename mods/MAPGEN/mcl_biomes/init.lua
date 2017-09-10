@@ -778,9 +778,9 @@ local function register_biomes()
 
 	minetest.register_biome({
 		name = "mesa_plateau_f_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:redsand",
 		depth_top = 3,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_colorblocks:hardened_clay",
 		depth_filler = 2,
 		node_riverbed = "mcl_core:redsand",
 		depth_riverbed = 2,
