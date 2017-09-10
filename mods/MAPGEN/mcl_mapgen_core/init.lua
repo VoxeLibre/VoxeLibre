@@ -41,6 +41,8 @@ minetest.register_alias("mapgen_stair_desert_stone", "mcl_stairs:stair_sandstone
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
+local WITCH_HUT_HEIGHT = 3 -- Exact Y level to spawn witch huts at. This height refers to the height of the floor
+
 --
 -- Ore generation
 --
@@ -1071,16 +1073,24 @@ minetest.register_on_generated(function(minp, maxp, seed)
 						end
 
 						-- Witch hut
-						if ground_y <= 0 and nn == "mcl_core:dirt" then
-							local prob = 1024 * (((maxp.x-minp.x+1)*(maxp.z-minp.z+1)) / 256)
+						if ground_y <= 0 and (nn == "mcl_core:dirt" or n == "mcl_core:redsand") then
+							local prob = 64 * (((maxp.x-minp.x+1)*(maxp.z-minp.z+1)) / 256)
 
-							if math.random(1, prob) == 1 then
-								local p1 = {x=p.x-1, y=p.y+4, z=p.z-1}
-								local p2 = vector.add(p1, {x=9, y=5, z=8})
+							if math.random(1, 20) == 1 then
+								local r = tostring(math.random(0, 3) * 90) -- "0", "90", "180" or 270"
+								local p1 = {x=p.x-1, y=WITCH_HUT_HEIGHT+2, z=p.z-1}
+								if r == "0" or r == "180" then
+									size = {x=10, y=4, z=8}
+								else
+									size = {x=8, y=4, z=10}
+								end
+								local p2 = vector.add(p1, size)
+								-- This checks free space at the “body” of the hut and a bit around.
+								-- ALL nodes must be free for the placement to succeed.
 								local free_nodes = minetest.find_nodes_in_area(p1, p2, {"air", "mcl_core:water_source", "mcl_flowers:waterlily"})
-								if #free_nodes >= 10*6*9 then
-									local place = {x=p.x, y=p.y+2, z=p.z}
-									mcl_structures.call_struct(place, "witch_hut")
+								if #free_nodes >= ((size.x+1)*(size.y+1)*(size.z+1)) then
+									local place = {x=p.x, y=WITCH_HUT_HEIGHT-1, z=p.z}
+									mcl_structures.call_struct(place, "witch_hut", r)
 									local place_tree_if_free = function(pos, prev_result)
 										local nn = minetest.get_node(pos).name
 										if nn == "mcl_flowers:waterlily" or nn == "mcl_core:water_source" or nn == "mcl_core:water_flowing" or nn == "air" then
@@ -1090,12 +1100,36 @@ minetest.register_on_generated(function(minp, maxp, seed)
 											return false
 										end
 									end
-									local offsets = {
-										{x=1, y=0, z=1},
-										{x=1, y=0, z=5},
-										{x=6, y=0, z=1},
-										{x=6, y=0, z=5},
-									}
+									local offsets
+									if r == "0" then
+										offsets = {
+											{x=1, y=0, z=1},
+											{x=1, y=0, z=5},
+											{x=6, y=0, z=1},
+											{x=6, y=0, z=5},
+										}
+									elseif r == "180" then
+										offsets = {
+											{x=2, y=0, z=1},
+											{x=2, y=0, z=5},
+											{x=7, y=0, z=1},
+											{x=7, y=0, z=5},
+										}
+									elseif r == "270" then
+										offsets = {
+											{x=1, y=0, z=1},
+											{x=5, y=0, z=1},
+											{x=1, y=0, z=6},
+											{x=5, y=0, z=6},
+										}
+									elseif r == "90" then
+										offsets = {
+											{x=1, y=0, z=2},
+											{x=5, y=0, z=2},
+											{x=1, y=0, z=7},
+											{x=5, y=0, z=7},
+										}
+									end
 									for o=1, #offsets do
 										local ok = true
 										for y=place.y-1, place.y-64, -1 do
@@ -1107,6 +1141,9 @@ minetest.register_on_generated(function(minp, maxp, seed)
 											end
 										end
 									end
+minetest.set_node(p1, {name="mcl_wool:white"})
+minetest.set_node(p2, {name="mcl_wool:black"})
+
 								end
 							end
 						end

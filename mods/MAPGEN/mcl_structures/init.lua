@@ -140,25 +140,28 @@ end
 
 
 -- The call of Struct
-mcl_structures.call_struct= function(pos, struct_style)
+mcl_structures.call_struct = function(pos, struct_style, rotation)
+	if not rotation then
+		rotation = "random"
+	end
 	if struct_style == "village" then
-		mcl_structures.generate_village(pos)
+		mcl_structures.generate_village(pos, rotation)
 	elseif struct_style == "desert_temple" then
-		mcl_structures.generate_desert_temple(pos)
+		mcl_structures.generate_desert_temple(pos, rotation)
 	elseif struct_style == "desert_well" then
-		mcl_structures.generate_desert_well(pos)
+		mcl_structures.generate_desert_well(pos, rotation)
 	elseif struct_style == "igloo" then
-		mcl_structures.generate_igloo_top(pos)
+		mcl_structures.generate_igloo_top(pos, rotation)
 	elseif struct_style == "witch_hut" then
-		mcl_structures.generate_witch_hut(pos)
+		mcl_structures.generate_witch_hut(pos, rotation)
 	elseif struct_style == "ice_spike_small" then
-		mcl_structures.generate_ice_spike_small(pos)
+		mcl_structures.generate_ice_spike_small(pos, rotation)
 	elseif struct_style == "ice_spike_large" then
-		mcl_structures.generate_ice_spike_large(pos)
+		mcl_structures.generate_ice_spike_large(pos, rotation)
 	elseif struct_style == "boulder" then
-		mcl_structures.generate_boulder(pos)
+		mcl_structures.generate_boulder(pos, rotation)
 	elseif struct_style == "fossil" then
-		mcl_structures.generate_fossil(pos)
+		mcl_structures.generate_fossil(pos, rotation)
 	end
 end
 
@@ -204,9 +207,9 @@ mcl_structures.generate_boulder = function(pos)
 	minetest.place_schematic(newpos, path)
 end
 
-mcl_structures.generate_witch_hut = function(pos)
+mcl_structures.generate_witch_hut = function(pos, rotation)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_witch_hut.mts"
-	minetest.place_schematic(pos, path, "0", nil, true)
+	minetest.place_schematic(pos, path, rotation, nil, true)
 end
 
 mcl_structures.generate_ice_spike_small = function(pos)
