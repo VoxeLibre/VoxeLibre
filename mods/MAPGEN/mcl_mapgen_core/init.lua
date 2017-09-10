@@ -784,7 +784,7 @@ local function register_mgv6_decorations()
 			octaves = 6,
 			persist = 0.666
 		},
-		y_min = 3,
+		y_min = 1,
 		y_max = mcl_vars.overworld_max,
 		rotation = "random",
 	})

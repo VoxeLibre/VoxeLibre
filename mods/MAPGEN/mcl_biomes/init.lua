@@ -2588,9 +2588,8 @@ local function register_decorations()
 			octaves = 6,
 			persist = 0.666
 		},
-		biomes = {"plains"},
-		y_min = 3,
-		y_max = 29,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
 		rotation = "random",
 	})
 
