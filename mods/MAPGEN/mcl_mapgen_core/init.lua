@@ -1012,7 +1012,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		end
 		end
 	end
-	local struct_min, struct_max = -1, 64
+	local struct_min, struct_max = -3, 64
 	if maxp.y >= struct_min and minp.y <= struct_max then
 		local biomemap = minetest.get_mapgen_object("biomemap")
 		-- Generate structures
