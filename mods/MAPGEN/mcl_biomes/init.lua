@@ -628,39 +628,6 @@ local function register_biomes()
 		humidity_point = 44,
 	})
 
-	-- Desert (Red Sand)
-	-- FIXME: Not a real biome in MC
---[[
-	minetest.register_biome({
-		name = "red_desert",
-		node_top = "mcl_core:redsand",
-		depth_top = 1,
-		node_filler = "mcl_core:redsand",
-		depth_filler = 2,
-		node_riverbed = "mcl_core:sand",
-		depth_riverbed = 2,
-		node_stone = "mcl_core:redsandstone",
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-		heat_point = 64,
-		humidity_point = 37,  --was 16
-	})
-
-	minetest.register_biome({
-		name = "red_desert_ocean",
-		node_top = "mcl_core:redsand",
-		depth_top = 1,
-		node_filler = "mcl_core:redsand",
-		depth_filler = 3,
-		node_riverbed = "mcl_core:redsand",
-		depth_riverbed = 2,
-		y_min = mcl_vars.mg_overworld_min,
-		y_max = 0,
-		heat_point = 64,
-		humidity_point = 37,  --was 16
-	})
-]]
-
 	-- Desert
 	minetest.register_biome({
 		name = "desert",
@@ -2096,7 +2063,7 @@ local function register_decorations()
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_core:cactus",
-		biomes = {"red_desert","desert","mesa","mesa_sandlevel","mesa_plateau_f","mesa_plateau_f_sandlevel"},
+		biomes = {"desert","mesa","mesa_sandlevel","mesa_plateau_f","mesa_plateau_f_sandlevel"},
 		height = 1,
 		height_max = 3,
 	})
@@ -2114,7 +2081,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.7
 		},
-		biomes = {"plains", "plains_beach", "taiga_beach", "ice_plains", "cold_taiga_beach", "savanna_beach", "forest_beach", "red_desert", "desert"},
+		biomes = {"plains", "plains_beach", "taiga_beach", "ice_plains", "cold_taiga_beach", "savanna_beach", "forest_beach", "desert"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_core:reeds",
@@ -2661,7 +2628,7 @@ local function register_decorations()
 		},
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
-		biomes = {"red_desert", "desert", "mesa", "mesa_sandlevel", "mesa_plateau_f", "mesa_plateau_f_sandlevel", "taiga", "mega_taiga"},
+		biomes = {"desert", "mesa", "mesa_sandlevel", "mesa_plateau_f", "mesa_plateau_f_sandlevel", "taiga", "mega_taiga"},
 		decoration = "mcl_core:deadbush",
 		height = 1,
 	})
