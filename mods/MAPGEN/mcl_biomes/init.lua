@@ -47,9 +47,7 @@ local function register_biomes()
 	TODO: Find a way to position these biomes accordingly.
 
 	Biomes TODO list:
-	* Savanna M (coarse dirt instead of dirt)
 	* Jungle Edge M (super rare but melons are common here)
-	* Mesa biomes
 	]]
 
 
@@ -795,7 +793,7 @@ local function register_biomes()
 		name = "savanna",
 		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
-		node_filler = "mcl_core:coarse_dirt",
+		node_filler = "mcl_core:dirt",
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -823,13 +821,43 @@ local function register_biomes()
 		name = "savanna_ocean",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
-		node_filler = "mcl_core:coarse_dirt",
+		node_filler = "mcl_core:dirt",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = mcl_vars.mg_overworld_min,
 		y_max = -2,
 		heat_point = 50,
+		humidity_point = 46,
+	})
+
+	-- Savanna M
+	-- Extras: Coarse Dirt. No sand beach.
+	-- Otherwise identical to Savanna
+	minetest.register_biome({
+		name = "savanna_m",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:coarse_dirt",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		heat_point = 55,
+		humidity_point = 46,
+	})
+	minetest.register_biome({
+		name = "savanna_m_ocean",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = mcl_vars.mg_overworld_min,
+		y_max = 0,
+		heat_point = 55,
 		humidity_point = 46,
 	})
 
@@ -1792,7 +1820,7 @@ local function register_decorations()
 			place_on = {"mcl_core:dirt_with_grass", "mcl_core:coarse_dirt"},
 			sidelen = 16,
 			fill_ratio = 0.0002,
-			biomes = {"savanna"},
+			biomes = {"savanna", "savanna_m"},
 			y_min = 1,
 			y_max = mcl_vars.mg_overworld_max,
 			schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_acacia_"..a..".mts",
@@ -2138,7 +2166,7 @@ local function register_decorations()
 		},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		biomes = {"plains", "sunflower_plains", "taiga", "forest", "flower_forest", "birch_forest", "birch_forest_m", "roofed_forest", "savanna", "mesa_plateau_f_grasstop" },
+		biomes = {"plains", "sunflower_plains", "taiga", "forest", "flower_forest", "birch_forest", "birch_forest_m", "roofed_forest", "savanna", "savanna_m", "mesa_plateau_f_grasstop" },
 	})
 
 	-- Large ferns
@@ -2533,8 +2561,8 @@ local function register_decorations()
 
 	-- Grasses and ferns
 	local grass_forest = {"plains", "taiga", "forest", "flower_forest", "birch_forest", "birch_forest_m", "roofed_forest", "swampland", "mesa_plateau_f_grasstop" }
-	local grass_plains = {"plains", "savanna", "sunflower_plains", "jungle_edge" }
-	local grass_savanna = {"savanna"}
+	local grass_plains = {"plains", "sunflower_plains", "jungle_edge" }
+	local grass_savanna = {"savanna", "savanna_m"}
 	local grass_sparse = {"extreme_hills", "extreme_hills_plus", "extreme_hills_plus_snowtop", "extreme_hills_m" }
 
 	register_grass_decoration("tallgrass", -0.03,  0.09, grass_forest)
@@ -2768,7 +2796,7 @@ local function register_decorations()
 		end
 	end
 
-	local flower_biomes1 = {"plains", "sunflower_plains", "roofed_forest", "forest", "birch_forest", "birch_forest_m", "taiga", "cold_taiga", "jungle", "jungle_edge", "savanna", "extreme_hills", "extreme_hills_m", "extreme_hills_plus", "extreme_hills_plus_snowtop", "mesa_plateau_f_grasstop" }
+	local flower_biomes1 = {"plains", "sunflower_plains", "roofed_forest", "forest", "birch_forest", "birch_forest_m", "taiga", "cold_taiga", "jungle", "jungle_edge", "savanna", "savanna_m", "extreme_hills", "extreme_hills_m", "extreme_hills_plus", "extreme_hills_plus_snowtop", "mesa_plateau_f_grasstop" }
 
 	register_flower("dandelion", flower_biomes1, 8)
 	register_flower("poppy", flower_biomes1, 9439)
