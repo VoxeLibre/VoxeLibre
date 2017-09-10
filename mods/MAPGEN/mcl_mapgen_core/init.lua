@@ -1084,7 +1084,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 						end
 
 						-- Witch hut
-						if ground_y <= 0 and (nn == "mcl_core:dirt" or n == "mcl_core:redsand") then
+						if ground_y <= 0 and nn == "mcl_core:dirt" then
 							local prob = minecraft_chunk_probability(64, minp, maxp)
 
 							if math.random(1, prob) == 1 then
@@ -1159,9 +1159,6 @@ minetest.register_on_generated(function(minp, maxp, seed)
 											end
 										end
 									end
-minetest.set_node(p1, {name="mcl_wool:white"})
-minetest.set_node(p2, {name="mcl_wool:black"})
-
 								end
 							end
 						end
