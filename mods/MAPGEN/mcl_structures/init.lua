@@ -145,23 +145,23 @@ mcl_structures.call_struct = function(pos, struct_style, rotation)
 		rotation = "random"
 	end
 	if struct_style == "village" then
-		mcl_structures.generate_village(pos, rotation)
+		return mcl_structures.generate_village(pos, rotation)
 	elseif struct_style == "desert_temple" then
-		mcl_structures.generate_desert_temple(pos, rotation)
+		return mcl_structures.generate_desert_temple(pos, rotation)
 	elseif struct_style == "desert_well" then
-		mcl_structures.generate_desert_well(pos, rotation)
+		return mcl_structures.generate_desert_well(pos, rotation)
 	elseif struct_style == "igloo" then
-		mcl_structures.generate_igloo_top(pos, rotation)
+		return mcl_structures.generate_igloo_top(pos, rotation)
 	elseif struct_style == "witch_hut" then
-		mcl_structures.generate_witch_hut(pos, rotation)
+		return mcl_structures.generate_witch_hut(pos, rotation)
 	elseif struct_style == "ice_spike_small" then
-		mcl_structures.generate_ice_spike_small(pos, rotation)
+		return mcl_structures.generate_ice_spike_small(pos, rotation)
 	elseif struct_style == "ice_spike_large" then
-		mcl_structures.generate_ice_spike_large(pos, rotation)
+		return mcl_structures.generate_ice_spike_large(pos, rotation)
 	elseif struct_style == "boulder" then
-		mcl_structures.generate_boulder(pos, rotation)
+		return mcl_structures.generate_boulder(pos, rotation)
 	elseif struct_style == "fossil" then
-		mcl_structures.generate_fossil(pos, rotation)
+		return mcl_structures.generate_fossil(pos, rotation)
 	end
 end
 
@@ -170,13 +170,13 @@ mcl_structures.generate_village = function(pos)
 	-- TODO: Do complete overhaul of the algorithm
 	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_village.mts"
-	minetest.place_schematic(newpos, path, "random", nil, true)
+	return minetest.place_schematic(newpos, path, "random", nil, true)
 end
 
 mcl_structures.generate_desert_well = function(pos)
 	local newpos = {x=pos.x,y=pos.y-2,z=pos.z}
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_desert_well.mts"
-	minetest.place_schematic(newpos, path, "0", nil, true)
+	return minetest.place_schematic(newpos, path, "0", nil, true)
 end
 
 mcl_structures.generate_igloo_top = function(pos)
@@ -184,13 +184,13 @@ mcl_structures.generate_igloo_top = function(pos)
 	-- Furnace does ot work atm because apparently meta is not set. :-(
 	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_igloo_top.mts"
-	minetest.place_schematic(newpos, path, "random", nil, true)
+	return minetest.place_schematic(newpos, path, "random", nil, true)
 end
 
 mcl_structures.generate_igloo_basement = function(pos, orientation)
 	-- TODO: Add brewing stand
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_igloo_basement.mts"
-	minetest.place_schematic(pos, path, orientation, nil, true)
+	return minetest.place_schematic(pos, path, orientation, nil, true)
 end
 
 mcl_structures.generate_boulder = function(pos)
@@ -204,22 +204,22 @@ mcl_structures.generate_boulder = function(pos)
 	end
 
 	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
-	minetest.place_schematic(newpos, path)
+	return minetest.place_schematic(newpos, path)
 end
 
 mcl_structures.generate_witch_hut = function(pos, rotation)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_witch_hut.mts"
-	minetest.place_schematic(pos, path, rotation, nil, true)
+	return minetest.place_schematic(pos, path, rotation, nil, true)
 end
 
 mcl_structures.generate_ice_spike_small = function(pos)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_small.mts"
-	minetest.place_schematic(pos, path, "random", nil, false)
+	return minetest.place_schematic(pos, path, "random", nil, false)
 end
 
 mcl_structures.generate_ice_spike_large = function(pos)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_ice_spike_large.mts"
-	minetest.place_schematic(pos, path, "random", nil, false)
+	return minetest.place_schematic(pos, path, "random", nil, false)
 end
 
 mcl_structures.generate_fossil = function(pos)
@@ -237,7 +237,7 @@ mcl_structures.generate_fossil = function(pos)
 	}
 	local r = math.random(1, #fossils)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/"..fossils[r]
-	minetest.place_schematic(newpos, path, "random", nil, true)
+	return minetest.place_schematic(newpos, path, "random", nil, true)
 end
 
 mcl_structures.generate_desert_temple = function(pos)
@@ -248,7 +248,10 @@ mcl_structures.generate_desert_temple = function(pos)
 	if newpos == nil then
 		return
 	end
-	minetest.place_schematic(newpos, path, "random", nil, true)
+	local ret = minetest.place_schematic(newpos, path, "random", nil, true)
+	if ret == nil then
+		return ret
+	end
 
 	-- Find chests.
 	-- FIXME: Searching this large area just for the chets is not efficient. Need a better way to find the chests;
@@ -302,6 +305,8 @@ mcl_structures.generate_desert_temple = function(pos)
 			inv:add_item("main", lootitems[i])
 		end
 	end
+
+	return ret
 end
 
 
