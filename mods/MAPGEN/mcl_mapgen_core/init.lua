@@ -927,6 +927,20 @@ else
 	minetest.set_mapgen_setting("mg_flags", "caves,nodungeons,decorations,light", true)
 end
 
+-- Helper function for converting a MC probability to MT, with
+-- regards to MapBlocks.
+-- Some MC generated structures are generated on per-chunk
+-- probability.
+-- The MC probability is 1/x per Minecraft chunk (16×16).
+
+-- x: The MC probability is 1/x.
+-- minp, maxp: MapBlock limits
+-- returns: Probability (1/return_value) for a single MT mapblock
+local function minecraft_chunk_probability(x, minp, maxp)
+	-- 256 is the MC chunk height
+	return x * (((maxp.x-minp.x+1)*(maxp.z-minp.z+1)) / 256)
+end
+
 -- Perlin noise objects
 local perlin_structures
 local perlin_vines, perlin_vines_fine, perlin_vines_upwards, perlin_vines_length, perlin_vines_density
@@ -1024,9 +1038,8 @@ minetest.register_on_generated(function(minp, maxp, seed)
 								end
 							end
 							if not chunk_has_desert_temple and not chunk_has_desert_well and ground_y > 3 then
-								-- Minecraft probability: 1/1000 per Minecraft chunk (16×16).
-								-- We adjust the probability to Minetest's MapBlock size.
-								local desert_well_prob = 1000 * (((maxp.x-minp.x+1)*(maxp.z-minp.z+1)) / 256)
+								local desert_well_prob = minecraft_chunk_probability(1000, minp, maxp)
+
 								-- Spawn desert well
 								if math.random(1, desert_well_prob) == 1 then
 									-- Check surface
@@ -1054,9 +1067,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 
 						-- Fossil
 						if nn == "mcl_core:sandstone" or nn == "mcl_core:sand" and not chunk_has_desert_temple and ground_y > 3 then
-							-- Minecraft probability: 1/64 per Minecraft chunk (16×16).
-							-- We adjust the probability to Minetest's MapBlock size.
-							local fossil_prob = 64 * (((maxp.x-minp.x+1)*(maxp.z-minp.z+1)) / 256)
+							local fossil_prob = minecraft_chunk_probability(64, minp, maxp)
 
 							if math.random(1, fossil_prob) == 1 then
 								-- Spawn fossil below desert surface between layers 40 and 49
@@ -1074,9 +1085,9 @@ minetest.register_on_generated(function(minp, maxp, seed)
 
 						-- Witch hut
 						if ground_y <= 0 and (nn == "mcl_core:dirt" or n == "mcl_core:redsand") then
-							local prob = 64 * (((maxp.x-minp.x+1)*(maxp.z-minp.z+1)) / 256)
+							local prob = minecraft_chunk_probability(64, minp, maxp)
 
-							if math.random(1, 20) == 1 then
+							if math.random(1, prob) == 1 then
 								local r = tostring(math.random(0, 3) * 90) -- "0", "90", "180" or 270"
 								local p1 = {x=p.x-1, y=WITCH_HUT_HEIGHT+2, z=p.z-1}
 								if r == "0" or r == "180" then
@@ -1090,7 +1101,14 @@ minetest.register_on_generated(function(minp, maxp, seed)
 								local free_nodes = minetest.find_nodes_in_area(p1, p2, {"air", "mcl_core:water_source", "mcl_flowers:waterlily"})
 								if #free_nodes >= ((size.x+1)*(size.y+1)*(size.z+1)) then
 									local place = {x=p.x, y=WITCH_HUT_HEIGHT-1, z=p.z}
+
+									-- FIXME: For some mysterious reason (black magic?) this
+									-- function does sometimes NOT spawn the witch hut. One can only see the
+									-- oak wood nodes in the water, but no hut. :-/
 									mcl_structures.call_struct(place, "witch_hut", r)
+
+									-- TODO: Spawn witch in or around hut when the mob sucks less.
+
 									local place_tree_if_free = function(pos, prev_result)
 										local nn = minetest.get_node(pos).name
 										if nn == "mcl_flowers:waterlily" or nn == "mcl_core:water_source" or nn == "mcl_core:water_flowing" or nn == "air" then
