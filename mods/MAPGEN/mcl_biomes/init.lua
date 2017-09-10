@@ -55,11 +55,9 @@ local function register_biomes()
 	minetest.register_biome({
 		name = "ice_plains_spikes",
 		node_top = "mcl_core:snowblock",
-		depth_top = 2,
-		node_filler = "mcl_core:snowblock",
-		depth_filler = 1,
-		node_water_top = "mcl_core:ice",
-		depth_water_top = 2,
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 2,
 		node_river_water = "mcl_core:ice",
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -70,7 +68,7 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "ice_plains_spikes_ocean",
-		node_top = "mcl_core:gravel",
+		node_top = "mcl_core:sand",
 		depth_top = 2,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 3,
