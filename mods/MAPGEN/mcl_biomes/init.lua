@@ -932,6 +932,10 @@ local function register_biomes()
 	-- Jungle Edge M
 	-- Very similar to Jungle Edge. Has deeper dirt. Melon spawn here a lot.
 	-- TODO: Must be super rare
+
+	-- Note: Temporarily disabled because it is too common (almost always occours between jungle and jungle edge)
+	-- and allowed cheap access to melons
+	--[[
 	minetest.register_biome({
 		name = "jungle_edge_m",
 		node_top = "mcl_core:dirt_with_grass",
@@ -958,6 +962,7 @@ local function register_biomes()
 		heat_point = 90,
 		humidity_point = 90,
 	})
+	]]
 
 	-- Swampland
 	minetest.register_biome({
