@@ -32,6 +32,7 @@ S("This is a very brief introduction to the basic gameplay:").."\n\n"..
 S("Basic controls:").."\n"..
 S("• Move mouse to look").."\n"..
 S("• [W], [A], [S] and [D] to move").."\n"..
+S("• [E] to sprint").."\n"..
 S("• [Space] to jump or move upwards").."\n"..
 S("• [Shift] to sneak or move downwards").."\n"..
 S("• Mouse wheel or [1]-[9] to select item").."\n"..
@@ -102,6 +103,7 @@ S("• W: Move forwards").."\n"..
 S("• A: Move to the left").."\n"..
 S("• D: Move to the right").."\n"..
 S("• S: Move backwards").."\n\n"..
+S("• E: Sprint").."\n\n"..
 
 S("While standing on solid ground:").."\n"..
 S("• Space: Jump").."\n"..
@@ -115,7 +117,7 @@ S("Extended movement (requires privileges):").."\n"..
 S("• J: Toggle fast mode, makes you run or fly fast (requires “fast” privilege)").."\n"..
 S("• K: Toggle fly mode, makes you move freely in all directions (requires “fly” privilege)").."\n"..
 S("• H: Toggle noclip mode, makes you go through walls in fly mode (requires “noclip” privilege)").."\n"..
-S("• E: Walk fast in fast mode").."\n\n"..
+S("• E: Move even faster when in fast mode").."\n\n"..
 
 S("World interaction:").."\n"..
 S("• Left mouse button: Punch / mine blocks / take items").."\n"..
