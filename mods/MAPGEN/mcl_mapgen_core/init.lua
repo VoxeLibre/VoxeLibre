@@ -1371,6 +1371,9 @@ local c_dirt = minetest.get_content_id("mcl_core:dirt")
 local c_dirt_with_grass = minetest.get_content_id("mcl_core:dirt_with_grass")
 local c_dirt_with_grass_snow = minetest.get_content_id("mcl_core:dirt_with_grass_snow")
 local c_sand = minetest.get_content_id("mcl_core:sand")
+local c_sandstone = minetest.get_content_id("mcl_core:sandstone")
+local c_redsand = minetest.get_content_id("mcl_core:redsand")
+local c_redsandstone = minetest.get_content_id("mcl_core:redsandstone")
 local c_void = minetest.get_content_id("mcl_core:void")
 local c_lava = minetest.get_content_id("mcl_core:lava_source")
 local c_water = minetest.get_content_id("mcl_core:water_source")
@@ -1496,7 +1499,8 @@ minetest.register_on_generated(function(minp, maxp)
 	----- Interactive block fixing section -----
 	----- The section to perform basic block overrides of the core mapgen generated world. -----
 
-	-- Snow fixes. This code implements snow consistency.
+	-- Snow and sand fixes. This code implements snow consistency
+	-- and fixes floating sand.
 	-- A snowy grass block must be below a top snow or snow block at all times.
 	if minp.y <= mcl_vars.mg_overworld_max and maxp.y >= mcl_vars.mg_overworld_min then
 		-- v6 mapgen:
@@ -1517,14 +1521,26 @@ minetest.register_on_generated(function(minp, maxp)
 
 		-- Non-v6 mapgens:
 		-- Clear snowy grass blocks without snow above to ensure consistency.
+		-- Solidify floating sand to sandstone (both colors).
 		else
-			local nodes = minetest.find_nodes_in_area(minp, maxp, "mcl_core:dirt_with_grass_snow")
+			--local nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:dirt_with_grass_snow"})
+			local nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:dirt_with_grass_snow", "mcl_core:sand", "mcl_core:redsand"})
 			for n=1, #nodes do
 				local p_pos = area:index(nodes[n].x, nodes[n].y, nodes[n].z)
 				local p_pos_above = area:index(nodes[n].x, nodes[n].y+1, nodes[n].z)
-				if p_pos_above and data[p_pos_above] ~= c_top_snow and data[p_pos_above] ~= c_snow_block then
+				local p_pos_below = area:index(nodes[n].x, nodes[n].y-1, nodes[n].z)
+				if data[p_pos] == c_dirt_with_grass_snow and p_pos_above and data[p_pos_above] ~= c_top_snow and data[p_pos_above] ~= c_snow_block then
 					data[p_pos] = c_dirt_with_grass
 					lvm_used = true
+				elseif p_pos_below and data[p_pos_below] == c_air or data[p_pos_below] == c_water then
+					if data[p_pos] == c_sand then
+						data[p_pos] = c_sandstone
+						lvm_used = true
+					elseif data[p_pos] == c_redsand then
+						-- Note: This is the only place in which red sandstone is generatd
+						data[p_pos] = c_redsandstone
+						lvm_used = true
+					end
 				end
 			end
 		end

@@ -1165,22 +1165,6 @@ local function register_biomelike_ores()
 		biomes = { "mesa_plateau_f_grasstop" },
 	})
 
-	-- Red sandstone in mesa biomes
-	-- TODO: Should generate at cave entrances only
-	minetest.register_ore({
-		ore_type	= "blob",
-		ore		= "mcl_core:redsandstone",
-		wherein		= {"mcl_core:redsand"},
-		clust_scarcity	= 1000,
-		clust_num_ores	= 12,
-		clust_size	= 4,
-		y_min		= 8,
-		y_max		= mcl_vars.mg_overworld_max,
-		noise_threshold = 0.0,
-		noise_params = {offset=0, scale=5, spread={x=250, y=250, z=250}, seed=64, octaves=3, persist=0.60},
-		biomes = { "mesa_sandlevel", "mesa_plateau_f_sandlevel" },
-	})
-
 	-- Small dirt patches in Extreme Hills M
 	minetest.register_ore({
 		ore_type	= "blob",
