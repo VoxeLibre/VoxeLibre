@@ -43,6 +43,29 @@ local mg_name = minetest.get_mapgen_setting("mg_name")
 
 local WITCH_HUT_HEIGHT = 3 -- Exact Y level to spawn witch huts at. This height refers to the height of the floor
 
+-- Content IDs
+local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
+local c_stone = minetest.get_content_id("mcl_core:stone")
+local c_dirt = minetest.get_content_id("mcl_core:dirt")
+local c_dirt_with_grass = minetest.get_content_id("mcl_core:dirt_with_grass")
+local c_dirt_with_grass_snow = minetest.get_content_id("mcl_core:dirt_with_grass_snow")
+local c_sand = minetest.get_content_id("mcl_core:sand")
+local c_sandstone = minetest.get_content_id("mcl_core:sandstone")
+local c_redsand = minetest.get_content_id("mcl_core:redsand")
+local c_redsandstone = minetest.get_content_id("mcl_core:redsandstone")
+local c_void = minetest.get_content_id("mcl_core:void")
+local c_lava = minetest.get_content_id("mcl_core:lava_source")
+local c_water = minetest.get_content_id("mcl_core:water_source")
+local c_soul_sand = minetest.get_content_id("mcl_nether:soul_sand")
+local c_netherrack = minetest.get_content_id("mcl_nether:netherrack")
+local c_nether_lava = minetest.get_content_id("mcl_nether:nether_lava_source")
+local c_end_stone = minetest.get_content_id("mcl_end:end_stone")
+local c_realm_barrier = minetest.get_content_id("mcl_core:realm_barrier")
+local c_top_snow = minetest.get_content_id("mcl_core:snow")
+local c_snow_block = minetest.get_content_id("mcl_core:snowblock")
+local c_clay = minetest.get_content_id("mcl_core:clay")
+local c_air = minetest.CONTENT_AIR
+
 --
 -- Ore generation
 --
@@ -970,9 +993,8 @@ local perlin_structures
 local perlin_vines, perlin_vines_fine, perlin_vines_upwards, perlin_vines_length, perlin_vines_density
 local perlin_clay
 
-local function generate_clay(minp, maxp, seed)
-	-- TODO: Try to use more efficient clay generating code.
-	-- TODO: Make clay generation reproducible for same seed
+local function generate_clay(minp, maxp, seed, voxelmanip_data, voxelmanip_area, lvm_used)
+	-- TODO: Make clay generation reproducible for same seed.
 	if maxp.y < -5 or minp.y > 0 then
 		return
 	end
@@ -995,19 +1017,23 @@ local function generate_clay(minp, maxp, seed)
 			-- Get position and shift it a bit randomly so the clay do not obviously appear in a grid
 			local cx = minp.x + math.floor((divx+0.5)*divlen) + math.random(-1,1)
 			local cz = minp.z + math.floor((divz+0.5)*divlen) + math.random(-1,1)
-			local waternode = minetest.get_node({x=cx,y=y+1,z=cz}).name
-			local surfacepos = {x=cx,y=y,z=cz}
-			local surfacenode = minetest.get_node(surfacepos).name
+
+			local water_pos = voxelmanip_area:index(cx, y+1, cz)
+			waternode = voxelmanip_data[water_pos]
+			local surface_pos = voxelmanip_area:index(cx, y, cz)
+			surfacenode = voxelmanip_data[surface_pos]
+
 			local genrnd = math.random(1, 20)
-			if genrnd == 1 and perlin_clay:get3d(surfacepos) > 0 and waternode == "mcl_core:water_source" and
-					(surfacenode == "mcl_core:dirt" or minetest.get_item_group(surfacenode, "sand") == 1) then
+			if genrnd == 1 and perlin_clay:get3d({x=cx,y=y,z=cz}) > 0 and waternode == c_water and
+					(surfacenode == c_dirt or minetest.get_item_group(minetest.get_name_from_content_id(surfacenode), "sand") == 1) then
 				local diamondsize = math.random(1, 3)
 				for x1 = -diamondsize, diamondsize do
 				for z1 = -(diamondsize - math.abs(x1)), diamondsize - math.abs(x1) do
-					local ccpos = {x=cx+x1,y=y,z=cz+z1}
-					local claycandidate = minetest.get_node(ccpos)
-					if claycandidate.name == "mcl_core:dirt" or minetest.get_item_group(claycandidate.name, "sand") == 1 then
-						minetest.set_node(ccpos, {name="mcl_core:clay"})
+					local ccpos = voxelmanip_area:index(cx+x1, y, cz+z1)
+					local claycandidate = voxelmanip_data[ccpos]
+					if ccname == c_dirt or minetest.get_item_group(minetest.get_name_from_content_id(claycandidate), "sand") == 1 then
+						voxelmanip_data[ccpos] = c_clay
+						lvm_used = true
 					end
 				end
 				end
@@ -1015,6 +1041,7 @@ local function generate_clay(minp, maxp, seed)
 		end
 		end
 	end
+	return lvm_used
 end
 
 -- TODO: Try to use more efficient structure generating code
@@ -1513,27 +1540,6 @@ end
 
 local GEN_MAX = mcl_vars.mg_lava_overworld_max or mcl_vars.mg_overworld_max
 
-local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
-local c_stone = minetest.get_content_id("mcl_core:stone")
-local c_dirt = minetest.get_content_id("mcl_core:dirt")
-local c_dirt_with_grass = minetest.get_content_id("mcl_core:dirt_with_grass")
-local c_dirt_with_grass_snow = minetest.get_content_id("mcl_core:dirt_with_grass_snow")
-local c_sand = minetest.get_content_id("mcl_core:sand")
-local c_sandstone = minetest.get_content_id("mcl_core:sandstone")
-local c_redsand = minetest.get_content_id("mcl_core:redsand")
-local c_redsandstone = minetest.get_content_id("mcl_core:redsandstone")
-local c_void = minetest.get_content_id("mcl_core:void")
-local c_lava = minetest.get_content_id("mcl_core:lava_source")
-local c_water = minetest.get_content_id("mcl_core:water_source")
-local c_soul_sand = minetest.get_content_id("mcl_nether:soul_sand")
-local c_netherrack = minetest.get_content_id("mcl_nether:netherrack")
-local c_nether_lava = minetest.get_content_id("mcl_nether:nether_lava_source")
-local c_end_stone = minetest.get_content_id("mcl_end:end_stone")
-local c_realm_barrier = minetest.get_content_id("mcl_core:realm_barrier")
-local c_top_snow = minetest.get_content_id("mcl_core:snow")
-local c_snow_block = minetest.get_content_id("mcl_core:snowblock")
-local c_air = minetest.get_content_id("air")
-
 -- Below the bedrock, generate air/void
 minetest.register_on_generated(function(minp, maxp, seed)
 	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
@@ -1644,6 +1650,9 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		lvm_used = set_layers(c_nether_lava, c_air, mcl_vars.mg_nether_min, mcl_vars.mg_lava_nether_max, minp, maxp, lvm_used)
 	end
 
+	-- Clay
+	lvm_used = generate_clay(minp, maxp, seed, data, area, lvm_used)
+
 	----- Interactive block fixing section -----
 	----- The section to perform basic block overrides of the core mapgen generated world. -----
 
@@ -1746,8 +1755,6 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		end
 	end
 
-
-
 	-- Final hackery: Set sun light level in the End.
 	-- -26912 is at a mapchunk border.
 	local shadow
@@ -1771,7 +1778,6 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	local biomemap = minetest.get_mapgen_object("biomemap")
 
 	-- Generate special decorations
-	generate_clay(minp, maxp, seed)
 	generate_underground_mushrooms(minp, maxp, seed)
 	generate_tree_decorations(minp, maxp, seed, biomemap)
 	generate_nether_decorations(minp, maxp, seed)
