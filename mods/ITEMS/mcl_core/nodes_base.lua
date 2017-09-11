@@ -523,9 +523,8 @@ minetest.register_node("mcl_core:redsandstonecarved", {
 ---
 
 minetest.register_node("mcl_core:clay", {
-	-- Original name: Clay
-	description = "Block of Clay",
-	_doc_items_longdesc = "A block of clay is a versatile kind of earth commonly found at beaches underwater.",
+	description = "Clay",
+	_doc_items_longdesc = "Clay is a versatile kind of earth commonly found at beaches underwater.",
 	_doc_items_hidden = false,
 	tiles = {"default_clay.png"},
 	is_ground_content = true,

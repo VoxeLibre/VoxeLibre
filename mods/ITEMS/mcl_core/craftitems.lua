@@ -66,8 +66,8 @@ minetest.register_craftitem("mcl_core:diamond", {
 })
 
 minetest.register_craftitem("mcl_core:clay_lump", {
-	description = "Clay",
-	_doc_items_longdesc = "Clay is a raw material.",
+	description = "Clay Ball",
+	_doc_items_longdesc = "Clay balls are a raw material, mainly used to create bricks in the furnace.",
 	_doc_items_hidden = false,
 	inventory_image = "default_clay_lump.png",
 	stack_max = 64,
