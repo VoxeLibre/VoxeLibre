@@ -13,23 +13,56 @@ local pp_box_on = {
 local function pp_on_timer(pos, elapsed)
 	local node = minetest.get_node(pos)
 	local basename = minetest.registered_nodes[node.name].pressureplate_basename
+	local activated_by = minetest.registered_nodes[node.name].pressureplate_activated_by
 
 	-- This is a workaround for a strange bug that occurs when the server is started
 	-- For some reason the first time on_timer is called, the pos is wrong
 	if not basename then return end
 
-	local objs   = minetest.get_objects_inside_radius(pos, 1)
-	local two_below = vector.add(pos, vector.new(0, -2, 0))
+	if activated_by == nil then
+		activated_by = { any = true }
+	end
 
-	if objs[1] == nil and node.name == basename .. "_on" then
-		minetest.set_node(pos, {name = basename .. "_off"})
-		mesecon.receptor_off(pos, mesecon.rules.pplate)
+	local obj_does_activate = function(obj, activated_by)
+		if activated_by.any then
+			return true
+		elseif activated_by.mob and obj:get_luaentity() and obj:get_luaentity()._cmi_is_mob == true then
+			return true
+		elseif activated_by.player and obj:is_player() then
+			return true
+		else
+			return false
+		end
+	end
+
+	local objs = minetest.get_objects_inside_radius(pos, 1)
+
+	if node.name == basename .. "_on" then
+		local disable
+		if #objs == 0 then
+			disable = true
+		elseif not activated_by.any then
+			disable = true
+			for k, obj in pairs(objs) do
+				if obj_does_activate(obj, activated_by) then
+					disable = false
+					break
+				end
+			end
+		end
+		if disable then
+			minetest.set_node(pos, {name = basename .. "_off"})
+			mesecon.receptor_off(pos, mesecon.rules.pplate)
+		end
 	elseif node.name == basename .. "_off" then
 		for k, obj in pairs(objs) do
 			local objpos = obj:getpos()
-			if objpos.y > pos.y-1 and objpos.y < pos.y then
-				minetest.set_node(pos, {name = basename .. "_on"})
-				mesecon.receptor_on(pos, mesecon.rules.pplate )
+			if obj_does_activate(obj, activated_by) then
+				if objpos.y > pos.y-1 and objpos.y < pos.y then
+					minetest.set_node(pos, {name = basename .. "_on"})
+					mesecon.receptor_on(pos, mesecon.rules.pplate )
+					break
+				end
 			end
 		end
 	end
@@ -46,8 +79,13 @@ end
 -- recipe:	crafting recipe of the pressure plate
 -- sounds:	sound table (like in minetest.register_node)
 -- plusgroups:	group memberships (attached_node=1 and not_in_creative_inventory=1 are already used)
+-- activated_by: optinal table with elements denoting by which entities this pressure plate is triggered
+--		Possible table fields:
+--		* player=true: Player
+--		* mob=true: Mob
+--		By default, is triggered by all entities
 
-function mesecon.register_pressure_plate(basename, description, textures_off, textures_on, image_w, image_i, recipe, sounds, plusgroups)
+function mesecon.register_pressure_plate(basename, description, textures_off, textures_on, image_w, image_i, recipe, sounds, plusgroups, activated_by)
 	local groups_off = table.copy(plusgroups)
 	groups_off.attached_node = 1
 	groups_off.dig_by_piston = 1
@@ -67,6 +105,7 @@ function mesecon.register_pressure_plate(basename, description, textures_off, te
 		sounds = sounds,
 
 		pressureplate_basename = basename,
+		pressureplate_activated_by = activated_by,
 		_mcl_blast_resistance = 2.5,
 		_mcl_hardness = 0.5,
 	},{
@@ -116,7 +155,8 @@ mesecon.register_pressure_plate(
 	nil,
 	{{"mcl_core:stone", "mcl_core:stone"}},
 	mcl_sounds.node_sound_stone_defaults(),
-	{pickaxey=1, material_stone=1})
+	{pickaxey=1, material_stone=1},
+	{ player = true, mob = true })
 
 minetest.register_craft({
 	type = "fuel",
