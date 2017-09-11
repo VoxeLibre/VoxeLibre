@@ -968,47 +968,53 @@ end
 -- Perlin noise objects
 local perlin_structures
 local perlin_vines, perlin_vines_fine, perlin_vines_upwards, perlin_vines_length, perlin_vines_density
+local perlin_clay
 
--- TODO: Try to use more efficient clay generating code
 local function generate_clay(minp, maxp, seed)
-	if maxp.y >= 2 and minp.y <= 0 then
-		-- Generate clay
+	-- TODO: Try to use more efficient clay generating code.
+	-- TODO: Make clay generation reproducible for same seed
+	if maxp.y < -5 or minp.y > 0 then
+		return
+	end
+
+	perlin_clay = perlin_clay or minetest.get_perlin({
+		offset = 0.5,
+		scale = 0.2,
+		spread = {x = 5, y = 5, z = 5},
+		seed = -316,
+		octaves = 1,
+		persist = 0.0
+	})
+
+	for y=math.max(minp.y, 0), math.min(maxp.y, -8), -1 do
 		-- Assume X and Z lengths are equal
 		local divlen = 4
 		local divs = (maxp.x-minp.x)/divlen+1;
-		for divx=0+1,divs-1-1 do
-		for divz=0+1,divs-1-1 do
-			local cx = minp.x + math.floor((divx+0.5)*divlen)
-			local cz = minp.z + math.floor((divz+0.5)*divlen)
-			if minetest.get_node({x=cx,y=1,z=cz}).name == "mcl_core:water_source" and
-					minetest.get_item_group(minetest.get_node({x=cx,y=0,z=cz}).name, "sand") == 1 then
-				local is_shallow = true
-				local num_water_around = 0
-				if minetest.get_node({x=cx-divlen*2,y=1,z=cz+0}).name == "mcl_core:water_source" then
-					num_water_around = num_water_around + 1 end
-				if minetest.get_node({x=cx+divlen*2,y=1,z=cz+0}).name == "mcl_core:water_source" then
-					num_water_around = num_water_around + 1 end
-				if minetest.get_node({x=cx+0,y=1,z=cz-divlen*2}).name == "mcl_core:water_source" then
-					num_water_around = num_water_around + 1 end
-				if minetest.get_node({x=cx+0,y=1,z=cz+divlen*2}).name == "mcl_core:water_source" then
-					num_water_around = num_water_around + 1 end
-				if num_water_around >= 2 then
-					is_shallow = false
+		for divx=0+1,divs-2 do
+		for divz=0+1,divs-2 do
+			-- Get position and shift it a bit randomly so the clay do not obviously appear in a grid
+			local cx = minp.x + math.floor((divx+0.5)*divlen) + math.random(-1,1)
+			local cz = minp.z + math.floor((divz+0.5)*divlen) + math.random(-1,1)
+			local waternode = minetest.get_node({x=cx,y=y+1,z=cz}).name
+			local surfacepos = {x=cx,y=y,z=cz}
+			local surfacenode = minetest.get_node(surfacepos).name
+			local genrnd = math.random(1, 20)
+			if genrnd == 1 and perlin_clay:get3d(surfacepos) > 0 and waternode == "mcl_core:water_source" and
+					(surfacenode == "mcl_core:dirt" or minetest.get_item_group(surfacenode, "sand") == 1) then
+				local diamondsize = math.random(1, 3)
+				for x1 = -diamondsize, diamondsize do
+				for z1 = -(diamondsize - math.abs(x1)), diamondsize - math.abs(x1) do
+					local ccpos = {x=cx+x1,y=y,z=cz+z1}
+					local claycandidate = minetest.get_node(ccpos)
+					if claycandidate.name == "mcl_core:dirt" or minetest.get_item_group(claycandidate.name, "sand") == 1 then
+						minetest.set_node(ccpos, {name="mcl_core:clay"})
+					end
 				end
-				if is_shallow then
-					for x1=-divlen,divlen do
-					for z1=-divlen,divlen do
-						if minetest.get_item_group(minetest.get_node({x=cx+x1,y=0,z=cz+z1}).name, "sand") == 1 then
-							minetest.set_node({x=cx+x1,y=0,z=cz+z1}, {name="mcl_core:clay"})
-						end
-					end
-					end
 				end
 			end
 		end
 		end
 	end
-
 end
 
 -- TODO: Try to use more efficient structure generating code
