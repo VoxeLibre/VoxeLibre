@@ -1771,8 +1771,8 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	if lvm_used then
 		vm:set_data(data)
 		vm:calc_lighting(nil, nil, shadow)
-		vm:update_liquids()
 		vm:write_to_map()
+		vm:update_liquids()
 	end
 
 	local biomemap = minetest.get_mapgen_object("biomemap")
