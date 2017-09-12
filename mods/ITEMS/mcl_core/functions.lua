@@ -629,8 +629,10 @@ end
 -- Generate huge jungle tree with 2×2 trunk.
 -- With pos being the lower X and the higher Z value of the trunk.
 function mcl_core.generate_huge_jungle_tree(pos)
+	-- 2 variants
+	local r = math.random(1, 2)
 	local path = minetest.get_modpath("mcl_core") ..
-		"/schematics/mcl_core_jungle_tree_huge.mts"
+		"/schematics/mcl_core_jungle_tree_huge_"..r..".mts"
 	minetest.place_schematic({x = pos.x - 6, y = pos.y - 1, z = pos.z - 7}, path, "random", nil, false)
 end
 

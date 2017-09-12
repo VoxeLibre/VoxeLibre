@@ -1780,18 +1780,36 @@ local function register_decorations()
 	})
 
 	-- Jungle tree
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
-		sidelen = 80,
-		fill_ratio = 0.0025,
-		biomes = {"jungle"},
-		y_min = 4,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_tree_huge.mts",
-		flags = "place_center_x, place_center_z",
-		rotation = "random",
-	})
+
+	-- Huge jungle tree (2 variants)
+	for i=1, 2 do
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+			sidelen = 80,
+			fill_ratio = 0.00125,
+			biomes = {"jungle"},
+			y_min = 4,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_tree_huge_"..i..".mts",
+			flags = "place_center_x, place_center_z",
+			rotation = "random",
+		})
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+			sidelen = 80,
+			fill_ratio = 0.004,
+			biomes = {"jungle_m"},
+			y_min = 4,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_tree_huge_"..i..".mts",
+			flags = "place_center_x, place_center_z",
+			rotation = "random",
+		})
+	end
+
+	-- Common jungle tree
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
@@ -1817,18 +1835,6 @@ local function register_decorations()
 		rotation = "random",
 	})
 
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
-		sidelen = 80,
-		fill_ratio = 0.008,
-		biomes = {"jungle_m"},
-		y_min = 4,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_tree_huge.mts",
-		flags = "place_center_x, place_center_z",
-		rotation = "random",
-	})
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
