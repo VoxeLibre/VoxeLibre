@@ -1613,7 +1613,7 @@ local function register_decorations()
 			rotation = "random",
 		})
 	end
-	-- Small classic oak (Forest, Flower Forest and Ice Plains)
+	-- Small “classic” oak (many biomes)
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
@@ -1730,6 +1730,32 @@ local function register_decorations()
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.004,
+		biomes = {"Jungle", "JungleM"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.0004,
+		biomes = {"JungleEdge", "JungleEdgeM"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
+
 	-- Rare balloon oak
 	minetest.register_decoration({
 		deco_type = "schematic",
@@ -1836,32 +1862,6 @@ local function register_decorations()
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_tree.mts",
-		flags = "place_center_x, place_center_z",
-		rotation = "random",
-	})
-
-	-- Oak in Jungle / Jungle Edge
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
-		sidelen = 80,
-		fill_ratio = 0.004,
-		biomes = {"Jungle", "JungleM"},
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
-		flags = "place_center_x, place_center_z",
-		rotation = "random",
-	})
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
-		sidelen = 80,
-		fill_ratio = 0.0004,
-		biomes = {"JungleEdge", "JungleEdgeM"},
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
