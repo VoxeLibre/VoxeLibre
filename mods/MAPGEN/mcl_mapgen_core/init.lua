@@ -64,6 +64,13 @@ local c_realm_barrier = minetest.get_content_id("mcl_core:realm_barrier")
 local c_top_snow = minetest.get_content_id("mcl_core:snow")
 local c_snow_block = minetest.get_content_id("mcl_core:snowblock")
 local c_clay = minetest.get_content_id("mcl_core:clay")
+local c_leaves = minetest.get_content_id("mcl_core:leaves")
+local c_jungleleaves = minetest.get_content_id("mcl_core:jungleleaves")
+local c_jungletree = minetest.get_content_id("mcl_core:jungletree")
+local c_cocoa_1 = minetest.get_content_id("mcl_cocoas:cocoa_1")
+local c_cocoa_2 = minetest.get_content_id("mcl_cocoas:cocoa_2")
+local c_cocoa_3 = minetest.get_content_id("mcl_cocoas:cocoa_3")
+local c_vine = minetest.get_content_id("mcl_core:vine")
 local c_air = minetest.CONTENT_AIR
 
 --
@@ -1282,16 +1289,17 @@ local function generate_structures(minp, maxp, seed, biomemap)
 	end
 end
 
--- Buffer for LuaVoxelManip
+-- Buffers for LuaVoxelManip
 local lvm_buffer = {}
+local lvm_buffer_param2 = {}
 
 -- Generate tree decorations in the bounding box. This adds:
 -- * Cocoa at jungle trees
 -- * Jungle tree vines
 -- * Oak vines in swamplands
-local function generate_tree_decorations(minp, maxp, seed, biomemap)
+local function generate_tree_decorations(minp, maxp, seed, data, param2_data, area, biomemap, lvm_used)
 	if maxp.y < 0 then
-		return
+		return lvm_used
 	end
 
 	local oaktree, oakleaves, jungletree, jungleleaves = {}, {}, {}, {}
@@ -1303,6 +1311,8 @@ local function generate_tree_decorations(minp, maxp, seed, biomemap)
 	local jungle_m_shore = minetest.get_biome_id("JungleM_shore")
 	local jungle_edge = minetest.get_biome_id("JungleEdge")
 	local jungle_edge_shore = minetest.get_biome_id("JungleEdge_shore")
+	local jungle_edge_m = minetest.get_biome_id("JungleEdgeM")
+	local jungle_edge_m_shore = minetest.get_biome_id("JungleEdgeM_shore")
 
 	-- Modifier for Jungle M biome: More vines and cocoas
 	local dense_vegetation = false
@@ -1321,7 +1331,7 @@ local function generate_tree_decorations(minp, maxp, seed, biomemap)
 				oakleaves = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:leaves"})
 				swamp_biome_found = true
 			end
-			if not jungle_biome_found and (id == jungle or id == jungle_shore or id == jungle_m or id == jungle_m_shore or id == jungle_edge or id == jungle_edge_shore) then
+			if not jungle_biome_found and (id == jungle or id == jungle_shore or id == jungle_m or id == jungle_m_shore or id == jungle_edge or id == jungle_edge_shore or id == jungle_edge_m or id == jungle_edge_m_shore) then
 				jungletree = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:jungletree"})
 				jungleleaves = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:jungleleaves"})
 				jungle_biome_found = true
@@ -1367,15 +1377,21 @@ local function generate_tree_decorations(minp, maxp, seed, biomemap)
 				pos.x = pos.x -1
 			end
 
-			local nn = minetest.get_node(pos).name
+			local p_pos = area:index(pos.x, pos.y, pos.z)
 
 			if dir < 5
-			and nn == "air"
+			and data[p_pos] == c_air
 			and minetest.get_node_light(pos) > 12 then
-				minetest.swap_node(pos, {
-					name = "mcl_cocoas:cocoa_" .. tostring(math.random(1, 3)),
-					param2 = minetest.dir_to_facedir(vector.subtract(treepos, pos))
-				})
+				local c = math.random(1, 3)
+				if c == 1 then
+					data[p_pos] = c_cocoa_1
+				elseif c == 2 then
+					data[p_pos] = c_cocoa_2
+				else
+					data[p_pos] = c_cocoa_3
+				end
+				param2_data[p_pos] = minetest.dir_to_facedir(vector.subtract(treepos, pos))
+				lvm_used = true
 			end
 
 		end
@@ -1419,15 +1435,11 @@ local function generate_tree_decorations(minp, maxp, seed, biomemap)
 
 			for d = 1, #dirs do
 			local pos = vector.add(pos, dirs[d])
+			local p_pos = area:index(pos.x, pos.y, pos.z)
 
-			local nn = minetest.get_node(pos).name
+			if perlin_vines:get2d(pos) > -1.0 and perlin_vines_fine:get3d(pos) > math.max(0.33333, perlin_vines_density:get2d(pos)) and data[p_pos] == c_air then
 
-			if perlin_vines:get2d(pos) > -1.0 and perlin_vines_fine:get3d(pos) > math.max(0.33333, perlin_vines_density:get2d(pos)) and nn == "air" then
-
-				local newnode = {
-					name = "mcl_core:vine",
-					param2 = minetest.dir_to_wallmounted(vector.subtract(treepos, pos))
-				}
+				local param2 = minetest.dir_to_wallmounted(vector.subtract(treepos, pos))
 
 				-- Determine growth direction
 				local grow_upwards = false
@@ -1441,32 +1453,42 @@ local function generate_tree_decorations(minp, maxp, seed, biomemap)
 					-- But this will be fairly rare.
 					local length = math.ceil(math.abs(perlin_vines_length:get3d(pos)) * 4)
 					for l=0, length-1 do
-						local tnn = minetest.get_node(treepos).name
-						local nn = minetest.get_node(pos).name
-						if (nn == "air" or nn == "mcl_core:jungleleaves" or nn == "mcl_core:leaves") and mcl_core.supports_vines(tnn) then
-							minetest.set_node(pos, newnode)
+						local t_pos = area:index(treepos.x, treepos.y, treepos.z)
+
+						if (data[p_pos] == c_air or data[p_pos] == c_jungeleaves or data[p_pos] == c_leaves) and mcl_core.supports_vines(minetest.get_name_from_content_id(data[t_pos])) then
+							data[p_pos] = c_vine
+							param2_data[p_pos] = param2
+							lvm_used = true
+
 						else
 							break
 						end
 						pos.y = pos.y + 1
+						p_pos = area:index(pos.x, pos.y, pos.z)
 						treepos.y = treepos.y + 1
 					end
 				else
 					-- Grow vines down, length between 1 and maxvinelength
 					local length = math.ceil(math.abs(perlin_vines_length:get3d(pos)) * maxvinelength)
 					for l=0, length-1 do
-						if minetest.get_node(pos).name == "air" then
-							minetest.set_node(pos, newnode)
+						if data[p_pos] == c_air then
+							data[p_pos] = c_vine
+							param2_data[p_pos] = param2
+							lvm_used = true
+
 						else
 							break
 						end
 						pos.y = pos.y - 1
+						p_pos = area:index(pos.x, pos.y, pos.z)
 					end
 				end
 			end
 			end
+
 		end
 	end
+	return lvm_used
 end
 
 local pr_shroom = PseudoRandom(os.time()-24359)
@@ -1563,6 +1585,7 @@ end
 minetest.register_on_generated(function(minp, maxp, seed)
 	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
 	local data = vm:get_data(lvm_buffer)
+	local param2_data = vm:get_param2_data(lvm_buffer_param2)
 	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
 	local lvm_used = false
 
@@ -1669,8 +1692,11 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		lvm_used = set_layers(c_nether_lava, c_air, mcl_vars.mg_nether_min, mcl_vars.mg_lava_nether_max, minp, maxp, lvm_used)
 	end
 
-	-- Clay
+	-- Clay, vines, cocoas
 	lvm_used = generate_clay(minp, maxp, seed, data, area, lvm_used)
+
+	local biomemap = minetest.get_mapgen_object("biomemap")
+	lvm_used = generate_tree_decorations(minp, maxp, seed, data, param2_data, area, biomemap, lvm_used)
 
 	----- Interactive block fixing section -----
 	----- The section to perform basic block overrides of the core mapgen generated world. -----
@@ -1790,16 +1816,15 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	-- Write stuff
 	if lvm_used then
 		vm:set_data(data)
+		vm:set_param2_data(param2_data)
 		vm:calc_lighting(nil, nil, shadow)
 		vm:write_to_map()
 		vm:update_liquids()
 	end
 
-	local biomemap = minetest.get_mapgen_object("biomemap")
 
 	-- Generate special decorations
 	generate_underground_mushrooms(minp, maxp, seed)
-	generate_tree_decorations(minp, maxp, seed, biomemap)
 	generate_nether_decorations(minp, maxp, seed)
 	generate_structures(minp, maxp, seed, biomemap)
 end)
