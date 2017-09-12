@@ -996,7 +996,7 @@ local perlin_clay
 local function generate_clay(minp, maxp, seed, voxelmanip_data, voxelmanip_area, lvm_used)
 	-- TODO: Make clay generation reproducible for same seed.
 	if maxp.y < -5 or minp.y > 0 then
-		return
+		return lvm_used
 	end
 
 	perlin_clay = perlin_clay or minetest.get_perlin({
