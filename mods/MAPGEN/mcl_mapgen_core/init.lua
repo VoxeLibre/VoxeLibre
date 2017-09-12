@@ -1019,9 +1019,9 @@ local function generate_clay(minp, maxp, seed, voxelmanip_data, voxelmanip_area,
 			local cz = minp.z + math.floor((divz+0.5)*divlen) + math.random(-1,1)
 
 			local water_pos = voxelmanip_area:index(cx, y+1, cz)
-			waternode = voxelmanip_data[water_pos]
+			local waternode = voxelmanip_data[water_pos]
 			local surface_pos = voxelmanip_area:index(cx, y, cz)
-			surfacenode = voxelmanip_data[surface_pos]
+			local surfacenode = voxelmanip_data[surface_pos]
 
 			local genrnd = math.random(1, 20)
 			if genrnd == 1 and perlin_clay:get3d({x=cx,y=y,z=cz}) > 0 and waternode == c_water and
@@ -1171,6 +1171,7 @@ local function generate_structures(minp, maxp, seed, biomemap)
 							if here_be_witches and math.random(1, prob) == 1 then
 								local r = tostring(math.random(0, 3) * 90) -- "0", "90", "180" or 270"
 								local p1 = {x=p.x-1, y=WITCH_HUT_HEIGHT+2, z=p.z-1}
+								local size
 								if r == "0" or r == "180" then
 									size = {x=10, y=4, z=8}
 								else
@@ -1299,7 +1300,7 @@ local function generate_tree_decorations(minp, maxp, seed, biomemap)
 	local jungle = minetest.get_biome_id("jungle")
 	local jungle_shore = minetest.get_biome_id("jungle_shore")
 	local jungle_m = minetest.get_biome_id("jungle_m")
-	local jungle_shore_m = minetest.get_biome_id("jungle_m_shore")
+	local jungle_m_shore = minetest.get_biome_id("jungle_m_shore")
 	local jungle_edge = minetest.get_biome_id("jungle_edge")
 	local jungle_edge_shore = minetest.get_biome_id("jungle_edge_shore")
 
@@ -1341,7 +1342,7 @@ local function generate_tree_decorations(minp, maxp, seed, biomemap)
 
 	local pos, treepos, dir
 
-	local cocoachange = 40
+	local cocoachance = 40
 	if dense_vegetation then
 		cocoachance = 32
 	end
@@ -1558,8 +1559,6 @@ local generate_nether_decorations = function(minp, maxp, seed)
 
 end
 
-local GEN_MAX = mcl_vars.mg_lava_overworld_max or mcl_vars.mg_overworld_max
-
 -- Below the bedrock, generate air/void
 minetest.register_on_generated(function(minp, maxp, seed)
 	local vm, emin, emax = minetest.get_mapgen_object("voxelmanip")
@@ -1750,6 +1749,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	-- * Replace water with end stone or air (depending on height).
 	-- * Remove stone, sand, dirt in v6 so our End map generator works in v6.
 	elseif minp.y <= mcl_vars.mg_end_max and maxp.y >= mcl_vars.mg_end_min then
+		local nodes
 		if mg_name == "v6" then
 			nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
 		else
