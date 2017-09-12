@@ -1149,8 +1149,8 @@ local function generate_structures(minp, maxp, seed, biomemap)
 						if ground_y <= 0 and nn == "mcl_core:dirt" then
 							local prob = minecraft_chunk_probability(48, minp, maxp)
 
-							local swampland = minetest.get_biome_id("jungle_edge")
-							local swampland_shore = minetest.get_biome_id("jungle_edge_ocean")
+							local swampland = minetest.get_biome_id("JungleEdge")
+							local swampland_shore = minetest.get_biome_id("JungleEdge_ocean")
 
 							-- Where do witches live?
 
@@ -1295,14 +1295,14 @@ local function generate_tree_decorations(minp, maxp, seed, biomemap)
 	end
 
 	local oaktree, oakleaves, jungletree, jungleleaves = {}, {}, {}, {}
-	local swampland = minetest.get_biome_id("swampland")
-	local swampland_shore = minetest.get_biome_id("swampland_shore")
-	local jungle = minetest.get_biome_id("jungle")
-	local jungle_shore = minetest.get_biome_id("jungle_shore")
-	local jungle_m = minetest.get_biome_id("jungle_m")
-	local jungle_m_shore = minetest.get_biome_id("jungle_m_shore")
-	local jungle_edge = minetest.get_biome_id("jungle_edge")
-	local jungle_edge_shore = minetest.get_biome_id("jungle_edge_shore")
+	local swampland = minetest.get_biome_id("Swampland")
+	local swampland_shore = minetest.get_biome_id("Swampland_shore")
+	local jungle = minetest.get_biome_id("Jungle")
+	local jungle_shore = minetest.get_biome_id("Jungle_shore")
+	local jungle_m = minetest.get_biome_id("JungleM")
+	local jungle_m_shore = minetest.get_biome_id("JungleM_shore")
+	local jungle_edge = minetest.get_biome_id("JungleEdge")
+	local jungle_edge_shore = minetest.get_biome_id("JungleEdge_shore")
 
 	-- Modifier for Jungle M biome: More vines and cocoas
 	local dense_vegetation = false
