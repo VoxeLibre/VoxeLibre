@@ -2429,7 +2429,7 @@ local function register_decorations()
 	register_large_flower("rose_bush", {"Forest"}, 9350, -0.008, 0.003)
 	register_large_flower("peony", {"Forest"}, 10450, -0.008, 0.003)
 	register_large_flower("lilac", {"Forest"}, 10600, -0.007, 0.003)
-	register_large_flower("sunflower", {"SunflowerPlains"}, 2940, 0.0)
+	register_large_flower("sunflower", {"SunflowerPlains"}, 2940, 0.01)
 
 	-- Jungle bush
 	minetest.register_decoration({
