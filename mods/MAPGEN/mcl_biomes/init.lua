@@ -45,7 +45,6 @@ local function register_biomes()
 
 	TODO:
 	* Extreme Hills+ M
-	* Jungle M
 	* Better beaches (varying height)
 
 	Tricky are the beach (esp. stone beach) and mushroom island biomes as they have specific conditions we can't check in MT. :(
@@ -56,7 +55,6 @@ local function register_biomes()
 	local DEEP_OCEAN_MAX = -11
 	local DEEP_OCEAN_MIN = -32 -- Careful when changing this. You might end up caves covered in gravel around Y=32!
 	local OCEAN_MIN = DEEP_OCEAN_MAX+1
-
 	-- Ice Plains Spikes
 	minetest.register_biome({
 		name = "ice_plains_spikes",
@@ -925,6 +923,50 @@ local function register_biomes()
 		humidity_point =  91,
 	})
 
+	-- Jungle M
+	-- Like jungle but with even more dense vegetation
+	minetest.register_biome({
+		name = "jungle_m",
+		node_top = "mcl_core:dirt_with_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		heat_point = 90,
+		humidity_point = 100,
+	})
+
+	minetest.register_biome({
+		name = "jungle_m_shore",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = -1,
+		y_max = 0,
+		heat_point = 90,
+		humidity_point = 100,
+	})
+
+	minetest.register_biome({
+		name = "jungle_m_ocean",
+		node_top = "mcl_core:dirt",
+		depth_top = 1,
+		node_filler = "mcl_core:dirt",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -2,
+		heat_point = 90,
+		humidity_point = 100,
+	})
+
 	-- Jungle Edge
 	minetest.register_biome({
 		name = "jungle_edge",
@@ -954,7 +996,7 @@ local function register_biomes()
 	})
 
 	-- Jungle Edge M
-	-- Almost identical Jungle Edge. Has deeper dirt. Melons spawn here a lot (TODO).
+	-- Almost identical to Jungle Edge. Has deeper dirt. Melons spawn here a lot (TODO).
 	-- TODO: Must be super rare
 
 	minetest.register_biome({
@@ -1775,13 +1817,38 @@ local function register_decorations()
 		rotation = "random",
 	})
 
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.008,
+		biomes = {"jungle_m"},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_tree_huge.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		sidelen = 80,
+		fill_ratio = 0.09,
+		biomes = {"jungle_m"},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_tree.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
+
 	-- Oak in jungle / jungle edge
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.004,
-		biomes = {"jungle"},
+		biomes = {"jungle", "jungle_m"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
@@ -2274,13 +2341,42 @@ local function register_decorations()
 		sidelen = 16,
 		noise_params = {
 			offset = 0.01,
-			scale = 0.01,
+			scale = 0.03,
 			spread = {x = 250, y = 250, z = 250},
 			seed = 333,
 			octaves = 2,
 			persist = 0.66,
 		},
-		biomes = { "jungle", "jungle_edge", "jungle_edge_m", "taiga", "cold_taiga", "mega_taiga", "mega_spruce_taiga" },
+		biomes = { "jungle", "jungle_m", "jungle_edge", "jungle_edge_m", "taiga", "cold_taiga", "mega_taiga", "mega_spruce_taiga" },
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+	})
+
+	minetest.register_decoration({
+		deco_type = "schematic",
+		schematic = {
+			size = { x=1, y=3, z=1 },
+			data = {
+				{ name = "air", prob = 0 },
+				{ name = "mcl_flowers:double_fern", param1=255, },
+				{ name = "mcl_flowers:double_fern_top", param1=255, },
+			},
+		},
+		replacements = {
+			["mcl_flowers:fern"] = "mcl_flowers:double_fern"
+		},
+		place_on = {"mcl_core:dirt_with_grass"},
+
+		sidelen = 16,
+		noise_params = {
+			offset = 0.15,
+			scale = 0.1,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 333,
+			octaves = 2,
+			persist = 0.60,
+		},
+		biomes = { "jungle_m" },
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 	})
@@ -2353,6 +2449,24 @@ local function register_decorations()
 		},
 		biomes = {"jungle"},
 		y_min = 3,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_bush.mts",
+		flags = "place_center_x, place_center_z",
+	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		sidelen = 80,
+		noise_params = {
+			offset = 0.05,
+			scale = 0.025,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2930,
+			octaves = 4,
+			persist = 0.6,
+		},
+		biomes = {"jungle_m"},
+		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_bush.mts",
 		flags = "place_center_x, place_center_z",
@@ -2487,7 +2601,7 @@ local function register_decorations()
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.005,
-		biomes = {"jungle"},
+		biomes = {"jungle", "jungle_m"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = {
@@ -2606,6 +2720,23 @@ local function register_decorations()
 		place_on = {"mcl_core:dirt_with_grass"},
 		sidelen = 16,
 		noise_params = {
+			offset = 0.0,
+			scale = 0.006,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 333,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_farming:melon",
+		biomes = { "jungle_m" },
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 16,
+		noise_params = {
 			offset = -0.005,
 			scale = 0.006,
 			spread = {x = 250, y = 250, z = 250},
@@ -2616,7 +2747,7 @@ local function register_decorations()
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_farming:melon",
-		biomes = { "jungle_edge" },
+		biomes = { "jungle_edge", "jungle_edge_m" },
 	})
 --[[
 	-- Lots of melons in Jungle Edge M
@@ -2671,7 +2802,7 @@ local function register_decorations()
 	local grass_forest = {"plains", "taiga", "forest", "flower_forest", "birch_forest", "birch_forest_m", "roofed_forest", "swampland", "mesa_plateau_f_grasstop" }
 	local grass_plains = {"plains", "sunflower_plains", "jungle_edge", "jungle_edge_m" }
 	local grass_savanna = {"savanna", "savanna_m"}
-	local grass_sparse = {"extreme_hills", "extreme_hills_plus", "extreme_hills_plus_snowtop", "extreme_hills_m" }
+	local grass_sparse = {"extreme_hills", "extreme_hills_plus", "extreme_hills_plus_snowtop", "extreme_hills_m", "jungle", }
 
 	register_grass_decoration("tallgrass", -0.03,  0.09, grass_forest)
 	register_grass_decoration("tallgrass", -0.015, 0.075, grass_forest)
@@ -2686,9 +2817,10 @@ local function register_decorations()
 	register_grass_decoration("tallgrass", 0.18, -0.03, grass_savanna)
 	register_grass_decoration("tallgrass", 0.05, -0.03, grass_sparse)
 
-	local fern_minimal = { "jungle", "jungle_edge", "jungle_edge_m", "taiga", "mega_taiga", "mega_spruce_taiga", "cold_taiga" }
-	local fern_low = { "jungle", "jungle_edge", "jungle_edge_m", "taiga", "mega_taiga", "mega_spruce_taiga" }
-	local fern_jungle = { "jungle", "jungle_edge", "jungle_edge_m" }
+	local fern_minimal = { "jungle", "jungle_m", "jungle_edge", "jungle_edge_m", "taiga", "mega_taiga", "mega_spruce_taiga", "cold_taiga" }
+	local fern_low = { "jungle", "jungle_m", "jungle_edge", "jungle_edge_m", "taiga", "mega_taiga", "mega_spruce_taiga" }
+	local fern_jungle = { "jungle", "jungle_m", "jungle_edge", "jungle_edge_m" }
+	local fern_jungle_m = { "jungle_m" },
 	register_grass_decoration("fern", -0.03,  0.09, fern_minimal)
 	register_grass_decoration("fern", -0.015, 0.075, fern_minimal)
 	register_grass_decoration("fern", 0,      0.06, fern_minimal)
@@ -2699,6 +2831,7 @@ local function register_decorations()
 	register_grass_decoration("fern", 0.05, 0.01, fern_jungle)
 	register_grass_decoration("fern", 0.07, -0.01, fern_jungle)
 	register_grass_decoration("fern", 0.09, -0.03, fern_jungle)
+	register_grass_decoration("fern", 0.12, -0.03, fern_jungle_m)
 
 	-- Place tall grass on snow in Ice Plains and Extreme Hills+
 	minetest.register_decoration({
@@ -2904,7 +3037,7 @@ local function register_decorations()
 		end
 	end
 
-	local flower_biomes1 = {"plains", "sunflower_plains", "roofed_forest", "forest", "birch_forest", "birch_forest_m", "taiga", "cold_taiga", "jungle", "jungle_edge", "jungle_edge_m", "savanna", "savanna_m", "extreme_hills", "extreme_hills_m", "extreme_hills_plus", "extreme_hills_plus_snowtop" }
+	local flower_biomes1 = {"plains", "sunflower_plains", "roofed_forest", "forest", "birch_forest", "birch_forest_m", "taiga", "cold_taiga", "jungle", "jungle_m", "jungle_edge", "jungle_edge_m", "savanna", "savanna_m", "extreme_hills", "extreme_hills_m", "extreme_hills_plus", "extreme_hills_plus_snowtop" }
 
 	register_flower("dandelion", flower_biomes1, 8)
 	register_flower("poppy", flower_biomes1, 9439)

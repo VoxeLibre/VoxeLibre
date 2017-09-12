@@ -1298,8 +1298,13 @@ local function generate_tree_decorations(minp, maxp, seed, biomemap)
 	local swampland_shore = minetest.get_biome_id("swampland_shore")
 	local jungle = minetest.get_biome_id("jungle")
 	local jungle_shore = minetest.get_biome_id("jungle_shore")
+	local jungle_m = minetest.get_biome_id("jungle_m")
+	local jungle_shore_m = minetest.get_biome_id("jungle_m_shore")
 	local jungle_edge = minetest.get_biome_id("jungle_edge")
 	local jungle_edge_shore = minetest.get_biome_id("jungle_edge_shore")
+
+	-- Modifier for Jungle M biome: More vines and cocoas
+	local dense_vegetation = false
 
 	if biomemap then
 		-- Biome map available: Check if the required biome (jungle or swampland)
@@ -1314,12 +1319,16 @@ local function generate_tree_decorations(minp, maxp, seed, biomemap)
 				oaktree = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:tree"})
 				oakleaves = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:leaves"})
 				swamp_biome_found = true
-			elseif not jungle_biome_found and (id == jungle or id == jungle_shore or id == jungle_edge or id == jungle_edge_shore) then
+			end
+			if not jungle_biome_found and (id == jungle or id == jungle_shore or id == jungle_m or id == jungle_m_shore or id == jungle_edge or id == jungle_edge_shore) then
 				jungletree = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:jungletree"})
 				jungleleaves = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:jungleleaves"})
 				jungle_biome_found = true
 			end
-			if swamp_biome_found and jungle_biome_found then
+			if not dense_vegetation and (id == jungle_m or id == jungle_m_shore) then
+				dense_vegetation = true
+			end
+			if swamp_biome_found and jungle_biome_found and dense_vegetation then
 				break
 			end
 		end
@@ -1332,6 +1341,11 @@ local function generate_tree_decorations(minp, maxp, seed, biomemap)
 
 	local pos, treepos, dir
 
+	local cocoachange = 40
+	if dense_vegetation then
+		cocoachance = 32
+	end
+
 	-- Pass 1: Generate cocoas at jungle trees
 	for n = 1, #jungletree do
 
@@ -1340,7 +1354,7 @@ local function generate_tree_decorations(minp, maxp, seed, biomemap)
 
 		if minetest.find_node_near(pos, 1, {"mcl_core:jungleleaves"}) then
 
-			dir = math.random(1, 40)
+			dir = math.random(1, cocoachance)
 
 			if dir == 1 then
 				pos.z = pos.z + 1
@@ -1372,6 +1386,12 @@ local function generate_tree_decorations(minp, maxp, seed, biomemap)
 	perlin_vines_length = perlin_vines_length or minetest.get_perlin(435, 4, 0.6, 75)
 	perlin_vines_upwards = perlin_vines_upwards or minetest.get_perlin(436, 3, 0.6, 10)
 	perlin_vines_density = perlin_vines_density or minetest.get_perlin(436, 3, 0.6, 500)
+
+	-- Extra long vines in Jungle M
+	local maxvinelength = 7
+	if dense_vegetation then
+		maxvinelength = 14
+	end
 	local treething
 	for i=1, 4 do
 		if i==1 then
@@ -1431,8 +1451,8 @@ local function generate_tree_decorations(minp, maxp, seed, biomemap)
 						treepos.y = treepos.y + 1
 					end
 				else
-					-- Grow vines down 1-7 nodes
-					local length = math.ceil(math.abs(perlin_vines_length:get3d(pos)) * 7)
+					-- Grow vines down, length between 1 and maxvinelength
+					local length = math.ceil(math.abs(perlin_vines_length:get3d(pos)) * maxvinelength)
 					for l=0, length-1 do
 						if minetest.get_node(pos).name == "air" then
 							minetest.set_node(pos, newnode)
