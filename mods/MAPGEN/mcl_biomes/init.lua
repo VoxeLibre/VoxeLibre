@@ -850,7 +850,7 @@ local function register_biomes()
 	})
 
 	-- Savanna M
-	-- Extras: Coarse Dirt. No sand beach.
+	-- Changes to Savanna: Coarse Dirt. No sand beach. No oaks.
 	-- Otherwise identical to Savanna
 	minetest.register_biome({
 		name = "SavannaM",
@@ -1747,7 +1747,7 @@ local function register_decorations()
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.0004,
-		biomes = {"JungleEdge", "JungleEdgeM"},
+		biomes = {"JungleEdge", "JungleEdgeM", "Savanna"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
