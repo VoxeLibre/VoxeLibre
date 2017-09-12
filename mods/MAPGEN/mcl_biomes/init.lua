@@ -67,7 +67,6 @@ local function register_biomes()
 	Tricky biomes:
 	* Mushroom Island (must be on island)
 	* Stone Beach (must be at beaches only)
-	* Jungle Edge M (must be tested)
 	TODO: Find a way to position these biomes accordingly.
 
 	]]
@@ -890,8 +889,8 @@ local function register_biomes()
 		depth_riverbed = 2,
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		humidity_point = 79,
-		heat_point = 92,
+		humidity_point = 88,
+		heat_point = 81,
 	})
 	minetest.register_biome({
 		name = "Jungle_shore",
@@ -903,8 +902,8 @@ local function register_biomes()
 		depth_riverbed = 2,
 		y_min = -1,
 		y_max = 0,
-		humidity_point = 79,
-		heat_point = 92,
+		humidity_point = 88,
+		heat_point = 81,
 	})
 	minetest.register_biome({
 		name = "Jungle_ocean",
@@ -916,8 +915,8 @@ local function register_biomes()
 		depth_riverbed = 2,
 		y_min = OCEAN_MIN,
 		y_max = -2,
-		humidity_point = 79,
-		heat_point = 92,
+		humidity_point = 88,
+		heat_point = 81,
 	})
 
 	-- Jungle M
@@ -932,8 +931,8 @@ local function register_biomes()
 		depth_riverbed = 2,
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		humidity_point = 100,
-		heat_point = 93,
+		humidity_point = 92,
+		heat_point = 81,
 	})
 	minetest.register_biome({
 		name = "JungleM_shore",
@@ -945,8 +944,8 @@ local function register_biomes()
 		depth_riverbed = 2,
 		y_min = -1,
 		y_max = 0,
-		humidity_point = 100,
-		heat_point = 93,
+		humidity_point = 92,
+		heat_point = 81,
 	})
 	minetest.register_biome({
 		name = "JungleM_ocean",
@@ -958,8 +957,8 @@ local function register_biomes()
 		depth_riverbed = 2,
 		y_min = OCEAN_MIN,
 		y_max = -2,
-		humidity_point = 100,
-		heat_point = 93,
+		humidity_point = 92,
+		heat_point = 81,
 	})
 
 	-- Jungle Edge
@@ -973,8 +972,8 @@ local function register_biomes()
 		depth_riverbed = 2,
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		humidity_point = 79,
-		heat_point = 77,
+		humidity_point = 88,
+		heat_point = 76,
 	})
 	minetest.register_biome({
 		name = "JungleEdge_ocean",
@@ -986,14 +985,14 @@ local function register_biomes()
 		depth_riverbed = 2,
 		y_min = OCEAN_MIN,
 		y_max = 0,
-		humidity_point = 79,
-		heat_point = 77,
+		humidity_point = 88,
+		heat_point = 76,
 	})
 
-	-- Jungle Edge M (extremely rare).
+	-- Jungle Edge M (very rare).
 	-- Almost identical to Jungle Edge. Has deeper dirt. Melons spawn here a lot.
-	-- This biome has borders with Jungle Edge, Jungle M and theoretically Mushroom Island and Mushroom Island Shore.
-	-- In the Voronoi diagram, it has only a tiny area within the 0-100 heat/humity bounding box.
+	-- This biome occours directly between Jungle M and Jungle Edge but also has a small border to Jungle.
+	-- This biome is very small in general.
 	minetest.register_biome({
 		name = "JungleEdgeM",
 		node_top = "mcl_core:dirt_with_grass",
@@ -1004,8 +1003,8 @@ local function register_biomes()
 		depth_riverbed = 2,
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		humidity_point = 115,
-		heat_point = 83,
+		humidity_point = 90,
+		heat_point = 79,
 	})
 	minetest.register_biome({
 		name = "JungleEdgeM_ocean",
@@ -1017,8 +1016,8 @@ local function register_biomes()
 		depth_riverbed = 2,
 		y_min = OCEAN_MIN,
 		y_max = 0,
-		humidity_point = 115,
-		heat_point = 83,
+		humidity_point = 90,
+		heat_point = 79,
 	})
 
 	-- Swampland
