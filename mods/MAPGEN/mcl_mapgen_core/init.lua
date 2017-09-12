@@ -1437,7 +1437,12 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 			local pos = vector.add(pos, dirs[d])
 			local p_pos = area:index(pos.x, pos.y, pos.z)
 
-			if perlin_vines:get2d(pos) > -1.0 and perlin_vines_fine:get3d(pos) > math.max(0.33333, perlin_vines_density:get2d(pos)) and data[p_pos] == c_air then
+			local vine_threshold = math.max(0.33333, perlin_vines_density:get2d(pos))
+			if dense_vegetation then
+				vine_threshold = vine_threshold * (2/3)
+			end
+
+			if perlin_vines:get2d(pos) > -1.0 and perlin_vines_fine:get3d(pos) > vine_threshold and data[p_pos] == c_air then
 
 				local param2 = minetest.dir_to_wallmounted(vector.subtract(treepos, pos))
 
