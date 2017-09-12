@@ -173,8 +173,7 @@ register_sapling("birchsapling", "Birch Sapling", "When placed on soil (such as 
 
 register_leaves("leaves", "Oak Leaves", "Oak leaves are grown from oak trees.", {"default_leaves.png"}, "mcl_core:sapling", 20, "mcl_core:apple", 200)
 register_leaves("darkleaves", "Dark Oak Leaves", "Dark oak leaves are grown from dark oak trees.", {"mcl_core_leaves_big_oak.png"}, "mcl_core:darksapling", 20, "mcl_core:apple", 200)
--- FIXME: Jungle leaves decay distance should be default, not 6. Distance of 6 was chosen to make the huge jungle tree work.
-register_leaves("jungleleaves", "Jungle Leaves", "Jungle leaves are grown from jungle trees.", {"default_jungleleaves.png"}, "mcl_core:junglesapling", 40, nil, nil, 6)
+register_leaves("jungleleaves", "Jungle Leaves", "Jungle leaves are grown from jungle trees.", {"default_jungleleaves.png"}, "mcl_core:junglesapling", 40)
 register_leaves("acacialeaves", "Acacia Leaves", "Acacia leaves are grown from acacia trees.", {"default_acacia_leaves.png"}, "mcl_core:acaciasapling", 20)
 register_leaves("spruceleaves", "Spruce Leaves", "Spruce leaves are grown from spruce trees.", {"mcl_core_leaves_spruce.png"}, "mcl_core:sprucesapling", 20)
 register_leaves("birchleaves", "Birch Leaves", "Birch leaves are grown from birch trees.", {"mcl_core_leaves_birch.png"}, "mcl_core:birchsapling", 20)
