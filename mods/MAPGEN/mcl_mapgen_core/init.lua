@@ -722,14 +722,14 @@ local function register_mgv6_decorations()
 			["mcl_flowers:tallgrass"] = "mcl_flowers:double_grass"
 		},
 		place_on = {"mcl_core:dirt_with_grass"},
-		sidelen = 16,
+		sidelen = 8,
 		noise_params = {
-			offset = -0.01,
+			offset = -0.0025,
 			scale = 0.03,
-			spread = {x = 300, y = 300, z = 300},
+			spread = {x = 100, y = 100, z = 100},
 			seed = 420,
-			octaves = 2,
-			persist = 0.6,
+			octaves = 3,
+			persist = 0.0,
 		},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
@@ -860,9 +860,9 @@ local function register_mgv6_decorations()
 		noise_params = {
 			offset = 0.01,
 			scale = 0.3,
-			spread = {x = 500, y = 500, z = 500},
-			seed = 421,
-			octaves = 2,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 420,
+			octaves = 3,
 			persist = 0.6
 		},
 		y_min = 1,
@@ -874,9 +874,9 @@ local function register_mgv6_decorations()
 		place_on = {"mcl_core:dirt_with_grass"},
 		sidelen = 8,
 		noise_params = {
-			offset = 0.03,
+			offset = 0.04,
 			scale = 0.03,
-			spread = {x = 400, y = 400, z = 400},
+			spread = {x = 100, y = 100, z = 100},
 			seed = 420,
 			octaves = 3,
 			persist = 0.6
@@ -890,7 +890,7 @@ local function register_mgv6_decorations()
 		deco_type = "simple",
 		place_on = {"mcl_core:dirt_with_grass"},
 		sidelen = 8,
-		fill_ratio = 0.001,
+		fill_ratio = 0.004,
 		y_min = 1,
 		y_max = mcl_vars.overworld_max,
 		decoration = "mcl_flowers:tallgrass",
