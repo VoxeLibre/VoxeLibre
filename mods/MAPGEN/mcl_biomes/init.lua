@@ -78,7 +78,7 @@ local function register_biomes()
 
 	TODO:
 	* Better beaches
-	* Extreme Hills+ M
+	* Improve Extreme Hills M
 	* Desert M
 
 	Tricky biomes:
