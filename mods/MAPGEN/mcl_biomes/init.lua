@@ -1,5 +1,19 @@
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
+-- Some mapgen settings
+local imitate = minetest.settings:get("mcl_imitation_mode")
+
+local generate_fallen_logs = false
+
+-- Jungle bush type. Default (PC/Java Edition) is Jungle Wood + Oak Leaves
+local jungle_bush_schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_bush_oak_leaves.mts"
+if imitate == "pocket_edition" then
+	-- Simple fallen tree trunk logs (not very good yet)
+	generate_fallen_logs = true
+	-- Jungle bush: Jungle Wood + Jungle Leaves
+	jungle_bush_schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_bush_jungle_leaves.mts"
+end
+
 --
 -- Register biomes
 --
@@ -2431,6 +2445,7 @@ local function register_decorations()
 	register_large_flower("sunflower", {"SunflowerPlains"}, 2940, 0.01)
 
 	-- Jungle bush
+
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
@@ -2446,7 +2461,7 @@ local function register_decorations()
 		biomes = {"Jungle"},
 		y_min = 3,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_bush_oak_leaves.mts",
+		schematic = jungle_bush_schematic,
 		flags = "place_center_x, place_center_z",
 	})
 	minetest.register_decoration({
@@ -2464,7 +2479,7 @@ local function register_decorations()
 		biomes = {"JungleM"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_bush_oak_leaves.mts",
+		schematic = jungle_bush_schematic,
 		flags = "place_center_x, place_center_z",
 	})
 	minetest.register_decoration({
@@ -2482,168 +2497,172 @@ local function register_decorations()
 		biomes = {"JungleEdge", "JungleEdgeM"},
 		y_min = 3,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_bush_oak_leaves.mts",
+		schematic_jungle_bush_schematic,
 		flags = "place_center_x, place_center_z",
 	})
 
 	-- Fallen logs
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:podzol", "mcl_core:coarse_dirt"},
-		sidelen = 80,
-		noise_params = {
-			offset = 0.00018,
-			scale = 0.00011,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 2,
-			octaves = 3,
-			persist = 0.66
-		},
-		biomes = {"MegaTaiga", "MegaSpruceTaiga", "Taiga"},
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = {
-			size = {x = 3, y = 3, z = 1},
-			data = {
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "mcl_core:sprucetree", param2 = 12, prob = 127},
-				{name = "mcl_core:sprucetree", param2 = 12},
-				{name = "mcl_core:sprucetree", param2 = 12},
-				{name = "air", prob = 0},
-				{name = "mcl_mushrooms:mushroom_brown", prob = 160},
-				{name = "mcl_mushrooms:mushroom_red", prob = 160},
+	-- These fallen logs are not really good yet. They must be longer and also have one upright block.
+	-- Note the decortion API does not like wide schematics, they are likely to overhang.
+	if generate_fallen_logs then
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"mcl_core:dirt_with_grass", "mcl_core:podzol", "mcl_core:coarse_dirt"},
+			sidelen = 80,
+			noise_params = {
+				offset = 0.00018,
+				scale = 0.00011,
+				spread = {x = 250, y = 250, z = 250},
+				seed = 2,
+				octaves = 3,
+				persist = 0.66
 			},
-		},
-		flags = "place_center_x",
-		rotation = "random",
-	})
+			biomes = {"MegaTaiga", "MegaSpruceTaiga", "Taiga"},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = {
+				size = {x = 3, y = 3, z = 1},
+				data = {
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "mcl_core:sprucetree", param2 = 12, prob = 127},
+					{name = "mcl_core:sprucetree", param2 = 12},
+					{name = "mcl_core:sprucetree", param2 = 12},
+					{name = "air", prob = 0},
+					{name = "mcl_mushrooms:mushroom_brown", prob = 160},
+					{name = "mcl_mushrooms:mushroom_red", prob = 160},
+				},
+			},
+			flags = "place_center_x",
+			rotation = "random",
+		})
 
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol", "mcl_core:podzol_snow", "mcl_core:coarse_dirt"},
-		sidelen = 80,
-		noise_params = {
-			offset = 0.00018,
-			scale = 0.00011,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 2,
-			octaves = 3,
-			persist = 0.66
-		},
-		biomes = {"ColdTaiga"},
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = {
-			size = {x = 3, y = 3, z = 1},
-			data = {
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "mcl_core:sprucetree", param2 = 12, prob = 127},
-				{name = "mcl_core:sprucetree", param2 = 12},
-				{name = "mcl_core:sprucetree", param2 = 12},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol", "mcl_core:podzol_snow", "mcl_core:coarse_dirt"},
+			sidelen = 80,
+			noise_params = {
+				offset = 0.00018,
+				scale = 0.00011,
+				spread = {x = 250, y = 250, z = 250},
+				seed = 2,
+				octaves = 3,
+				persist = 0.66
 			},
-		},
-		flags = "place_center_x",
-		rotation = "random",
-	})
+			biomes = {"ColdTaiga"},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = {
+				size = {x = 3, y = 3, z = 1},
+				data = {
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "mcl_core:sprucetree", param2 = 12, prob = 127},
+					{name = "mcl_core:sprucetree", param2 = 12},
+					{name = "mcl_core:sprucetree", param2 = 12},
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+				},
+			},
+			flags = "place_center_x",
+			rotation = "random",
+		})
 
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass"},
-		sidelen = 16,
-		noise_params = {
-			offset = 0.0,
-			scale = -0.00008,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 2,
-			octaves = 3,
-			persist = 0.66
-		},
-		biomes = {"BirchForest", "BirchForestM",},
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = {
-			size = {x = 3, y = 3, z = 1},
-			data = {
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "mcl_core:birchtree", param2 = 12},
-				{name = "mcl_core:birchtree", param2 = 12},
-				{name = "mcl_core:birchtree", param2 = 12, prob = 127},
-				{name = "mcl_mushrooms:mushroom_red", prob = 100},
-				{name = "mcl_mushrooms:mushroom_brown", prob = 10},
-				{name = "air", prob = 0},
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"mcl_core:dirt_with_grass"},
+			sidelen = 16,
+			noise_params = {
+				offset = 0.0,
+				scale = -0.00008,
+				spread = {x = 250, y = 250, z = 250},
+				seed = 2,
+				octaves = 3,
+				persist = 0.66
 			},
-		},
-		flags = "place_center_x",
-		rotation = "random",
-	})
+			biomes = {"BirchForest", "BirchForestM",},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = {
+				size = {x = 3, y = 3, z = 1},
+				data = {
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "mcl_core:birchtree", param2 = 12},
+					{name = "mcl_core:birchtree", param2 = 12},
+					{name = "mcl_core:birchtree", param2 = 12, prob = 127},
+					{name = "mcl_mushrooms:mushroom_red", prob = 100},
+					{name = "mcl_mushrooms:mushroom_brown", prob = 10},
+					{name = "air", prob = 0},
+				},
+			},
+			flags = "place_center_x",
+			rotation = "random",
+		})
 
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
-		sidelen = 80,
-		fill_ratio = 0.005,
-		biomes = {"Jungle", "JungleM"},
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = {
-			size = {x = 3, y = 3, z = 1},
-			data = {
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "mcl_core:jungletree", param2 = 12},
-				{name = "mcl_core:jungletree", param2 = 12},
-				{name = "mcl_core:jungletree", param2 = 12, prob = 127},
-				{name = "air", prob = 0},
-				{name = "mcl_mushrooms:mushroom_brown", prob = 50},
-				{name = "air", prob = 0},
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+			sidelen = 80,
+			fill_ratio = 0.005,
+			biomes = {"Jungle", "JungleM"},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = {
+				size = {x = 3, y = 3, z = 1},
+				data = {
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "mcl_core:jungletree", param2 = 12},
+					{name = "mcl_core:jungletree", param2 = 12},
+					{name = "mcl_core:jungletree", param2 = 12, prob = 127},
+					{name = "air", prob = 0},
+					{name = "mcl_mushrooms:mushroom_brown", prob = 50},
+					{name = "air", prob = 0},
+				},
 			},
-		},
-		flags = "place_center_x",
-		rotation = "random",
-	})
+			flags = "place_center_x",
+			rotation = "random",
+		})
 
-	minetest.register_decoration({
-		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass"},
-		sidelen = 16,
-		noise_params = {
-			offset = 0.00018,
-			scale = 0.00011,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 2,
-			octaves = 3,
-			persist = 0.66
-		},
-		biomes = {"Forest"},
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-		schematic = {
-			size = {x = 3, y = 3, z = 1},
-			data = {
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "air", prob = 0},
-				{name = "mcl_core:tree", param2 = 12, prob = 127},
-				{name = "mcl_core:tree", param2 = 12},
-				{name = "mcl_core:tree", param2 = 12},
-				{name = "air", prob = 0},
-				{name = "mcl_mushrooms:mushroom_brown", prob = 96},
-				{name = "mcl_mushrooms:mushroom_red", prob = 96},
+		minetest.register_decoration({
+			deco_type = "schematic",
+			place_on = {"mcl_core:dirt_with_grass"},
+			sidelen = 16,
+			noise_params = {
+				offset = 0.00018,
+				scale = 0.00011,
+				spread = {x = 250, y = 250, z = 250},
+				seed = 2,
+				octaves = 3,
+				persist = 0.66
 			},
-		},
-		flags = "place_center_x",
-		rotation = "random",
-	})
+			biomes = {"Forest"},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			schematic = {
+				size = {x = 3, y = 3, z = 1},
+				data = {
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "air", prob = 0},
+					{name = "mcl_core:tree", param2 = 12, prob = 127},
+					{name = "mcl_core:tree", param2 = 12},
+					{name = "mcl_core:tree", param2 = 12},
+					{name = "air", prob = 0},
+					{name = "mcl_mushrooms:mushroom_brown", prob = 96},
+					{name = "mcl_mushrooms:mushroom_red", prob = 96},
+				},
+			},
+			flags = "place_center_x",
+			rotation = "random",
+		})
+	end
 
 	-- Lily pad
 

@@ -59,3 +59,18 @@ craftguide_progressive_mode (EXPERIMENTAL: Enable recipe book progressive mode) 
 # Warning: Disabling this setting is currently EXPERIMENTAL! The generated map
 # may not be that pretty.
 mcl_superflat_classic (Classic superflat map generation) bool true
+
+# Which edition of Minecraft to imitate. This currently only affects two map
+# generation aspects.
+# This setting might be removed in a later version.
+# Available options:
+#
+# pc_edition: PC Edition (later known as “Java Edition”).
+#     There are no fallen tree trunks.
+#     Jungle bushes have oak leaves.
+#
+# pocket_edition: Pocket Edition
+#     There are simple fallen tree trunks with mushrooms.
+#     Jungle bushes have jungle leaves.
+mcl_imitation_mode (Imitated Minecraft edition) enum pc_edition pc_edition,pocket_edition
+
