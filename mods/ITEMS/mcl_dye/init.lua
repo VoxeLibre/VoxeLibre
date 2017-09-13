@@ -105,20 +105,23 @@ end
 -- Bone Meal
 
 mcl_dye.apply_bone_meal = function(pointed_thing)
-	-- TODO: Use biome-specific flowers
+	-- TODO: Only spawn flowers specific to the biome
+
+	-- Bone meal currently spawns all flowers found in the plains.
 	local flowers_table = {
 		"mcl_flowers:dandelion",
 		"mcl_flowers:dandelion",
 		"mcl_flowers:poppy",
 
-		"mcl_flowers:blue_orchid",
 		"mcl_flowers:oxeye_daisy",
 		"mcl_flowers:tulip_orange",
 		"mcl_flowers:tulip_red",
 		"mcl_flowers:tulip_white",
 		"mcl_flowers:tulip_pink",
-		"mcl_flowers:allium",
 		"mcl_flowers:azure_bluet",
+
+		-- Allium and blue orchid intentionally left out,
+		-- those must be found by the player.
 	}
 
 	pos = pointed_thing.under
