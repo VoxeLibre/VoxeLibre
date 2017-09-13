@@ -291,8 +291,20 @@ minetest.register_ore({
 	y_max          = mcl_util.layer_to_y(33),
 })
 
-
-
+-- Bonus spawn in Mesa
+if mg_name ~= "v6" then
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "mcl_core:stone_with_gold",
+		wherein        = stonelike,
+		clust_scarcity = 3333,
+		clust_num_ores = 5,
+		clust_size     = 3,
+		y_min          = mcl_util.layer_to_y(32),
+		y_max          = mcl_util.layer_to_y(79),
+		biomes         = { "Mesa", "Mesa_sandlevel", "Mesa_ocean", "Mesa_deep_ocean", "Mesa_underground" },
+	})
+end
 
 --
 -- Diamond
@@ -430,6 +442,8 @@ if mg_name == "v6" then
 		y_max          = mcl_util.layer_to_y(32),
 	})
 else
+	-- Generate in Extreme Hills biome only
+
 	minetest.register_ore({
 		ore_type       = "scatter",
 		ore            = "mcl_core:stone_with_emerald",
