@@ -1299,7 +1299,6 @@ local function register_biomelike_ores()
 	-- Mesa strata (registered as sheet ores)
 
 	-- Helper function to create strata.
-	-- Available Mesa colors: silver (light grey), brown, orange, red, yellow, white
 	local stratum = function(y_min, height, color, seed)
 		if not height then
 			height = 1
@@ -1322,39 +1321,75 @@ local function register_biomelike_ores()
 		})
 	end
 
+	-- First stratum near the sand level. Always orange.
 	stratum(11, 3, "orange")
 
-	-- Create strata for up to Y = 256
-	-- This is semi-random based on the mapseed.
-	local seed = minetest.get_mapgen_setting("seed")
-	local i = 0
+	-- Create random strata for up to Y = 256.
+	-- These strata are calculated based on the world seed and are global.
+	-- They are thus unique per-world.
+	local mesapr = PcgRandom(minetest.get_mapgen_setting("seed"))
+
+	--[[
+
+	------ DANGER ZONE! ------
+
+	The following code is sensitive to changes; changing any number may break
+	mapgen consistency when the mapgen generates new mapchunks in existing
+	worlds because the random generator will yield different results and the strata
+	suddenly don't match up anymore. ]]
+
+	-- Available Mesa colors:
+	local mesa_stratum_colors = { "silver", "brown", "orange", "red", "yellow", "white" }
+
+	-- Start level
+	local y = 17
+
+	-- Generate stratas
 	repeat
-		seed = seed + i
+		-- Each stratum has a color (duh!)
+		local colorid = mesapr:next(1, #mesa_stratum_colors)
 
-		stratum(17+i, 1, "orange", seed)
-		stratum(19+i, 1, "silver", seed)
-		stratum(21+i, 1, "brown", seed)
-		stratum(22+i, 1, "red", seed)
-		stratum(24+i, 1, "silver", seed)
-		stratum(26+i, 1, "brown", seed)
-		stratum(27+i, 1, "white", seed)
-		stratum(29+i, 1, "orange", seed)
-		stratum(34+i, 1, "red", seed)
-		stratum(42+i, 1, "orange", seed)
-		stratum(44+i, 1, "yellow", seed)
-		stratum(46+i, 1, "brown", seed)
-		stratum(48+i, 1, "silver", seed)
-		stratum(51+i, 1, "white", seed)
-		stratum(55+i, 2, "yellow", seed)
-		stratum(58+i, 2, "orange", seed)
-		stratum(62+i, 1, "brown", seed)
-		stratum(68+i, 3, "orange", seed)
-		stratum(73+i, 2, "brown", seed)
-		stratum(76+i, 1, "white", seed)
-		-- Repeat strata above Y=76
+		-- … and a random thickness
+		local heightrandom = mesapr:next(1, 12)
+		local h
+		if heightrandom == 12 then
+			h = 4
+		elseif heightrandom >= 10 then
+			h = 3
+		elseif heightrandom >= 8 then
+			h = 2
+		else
+			h = 1
+		end
+		-- Small built-in bias: Only thin strata up to this Y level
+		if y < 45 then
+			h = math.min(h, 2)
+		end
 
-		i = i + 66
-	until i > 256
+		-- Register stratum
+		stratum(y, h, mesa_stratum_colors[colorid])
+
+		-- Skip a random amount of layers (which won't get painted)
+		local skiprandom = mesapr:next(1, 12)
+		local skip
+		if skiprandom == 12 then
+			skip = 4
+		elseif skiprandom >= 10 then
+			skip = 3
+		elseif skiprandom >= 5 then
+			skip = 2
+		elseif skiprandom >= 2 then
+			skip = 1
+		else
+			-- If this happens, the next stratum will touch the previous one without gap
+			skip = 0
+		end
+
+		-- Get height of next stratum or finish
+		y = y + h + skip
+	until y > 256
+
+	--[[ END OF DANGER ZONE ]]
 end
 
 -- Non-Overworld ores
