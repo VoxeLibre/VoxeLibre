@@ -1276,11 +1276,39 @@ local function register_biomelike_ores()
 		biomes = { "ExtremeHillsM" },
 	})
 
+
+	-- Small hack to make sure stone appears at ca. sea level in Mesa biomes
+	minetest.register_ore({
+		ore_type = "sheet",
+		ore = "mcl_core:stone",
+		noise_threshold = -100,
+		noise_params = {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=seed, octaves=1, persist=1.00},
+		biomes = {
+			"Mesa", "Mesa_sandlevel", "Mesa_ocean", "Mesa_deep_ocean", "Mesa_underground",
+			"MesaPlateauF", "MesaPlateauF_sandlevel", "MesaPlateauF_ocean", "MesaPlateauF_deep_ocean", "MesaPlateauF_underground",
+		},
+		wherein = {"mcl_colorblocks:hardened_clay"},
+		column_height_min = 32,
+		column_height_max = 32,
+		y_min = -32,
+		y_max = 0,
+	})
+
+
+
 	-- Mesa strata (registered as sheet ores)
 
-	-- Helper function
-	-- Colors to use: silver (light grey), brown, orange, red, yellow, white
+	-- Helper function to create strata.
+	-- Available Mesa colors: silver (light grey), brown, orange, red, yellow, white
 	local stratum = function(y_min, height, color, seed)
+
+		local ore = "mcl_colorblocks:hardened_clay_"..color
+		local noise_threshold = -1
+		local noise_params = {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=seed, octaves=3, persist=0.70}
+		local biomes = {
+			"Mesa", "Mesa_sandlevel", "Mesa_ocean", "Mesa_deep_ocean", "Mesa_underground",
+		}
+
 		if not height then
 			height = 1
 		end
@@ -1290,17 +1318,19 @@ local function register_biomelike_ores()
 		local y_max = y_min + height-1
 		minetest.register_ore({
 			ore_type = "sheet",
-			ore = "mcl_colorblocks:hardened_clay_"..color,
+			ore = ore,
 			wherein = {"mcl_colorblocks:hardened_clay"},
 			column_height_min = height,
 			column_height_max = height,
 			y_min = y_min,
 			y_max = y_max,
-			noise_threshold = -1.0,
-			noise_params = {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=seed, octaves=3, persist=0.70},
-			biomes = { "Mesa", "MesaPlateauF" },
+			noise_threshold = noise_threshold,
+			noise_params = noise_param,
+			biomes = biomes,
 		})
 	end
+
+
 
 	stratum(11, 3, "orange")
 
