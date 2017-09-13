@@ -439,7 +439,7 @@ else
 		clust_size     = 1,
 		y_min          = mcl_util.layer_to_y(4),
 		y_max          = mcl_util.layer_to_y(32),
-		biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", },
+		biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", "ExtremeHills_deep_ocean", "ExtremeHills_underground" },
 	})
 end
 
@@ -645,7 +645,7 @@ minetest.register_ore({
 	clust_size     = 2,
 	y_min          = mcl_vars.mg_overworld_min,
 	y_max          = mcl_util.layer_to_y(61),
-	biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", },
+	biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", "ExtremeHills_deep_ocean", "ExtremeHills_underground" },
 })
 
 
@@ -1173,8 +1173,8 @@ local function generate_structures(minp, maxp, seed, biomemap)
 						if ground_y <= 0 and nn == "mcl_core:dirt" then
 							local prob = minecraft_chunk_probability(48, minp, maxp)
 
-							local swampland = minetest.get_biome_id("JungleEdge")
-							local swampland_shore = minetest.get_biome_id("JungleEdge_ocean")
+							local swampland = minetest.get_biome_id("Swampland")
+							local swampland_shore = minetest.get_biome_id("Swampland_shore")
 
 							-- Where do witches live?
 
