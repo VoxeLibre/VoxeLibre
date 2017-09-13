@@ -23,7 +23,16 @@ mobs:register_mob("mobs_mc:llama", {
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.86, 0.45},
 	visual = "mesh",
 	mesh = "mobs_mc_llama.b3d",
-	textures = {{"mobs_mc_llama.png"},{"mobs_mc_llama_brown.png"},{"mobs_mc_llama_creamy.png"},{"mobs_mc_llama_white.png"},{"mobs_mc_llama_gray.png"}},
+	textures = { -- 1: chest -- 2: decor -- 3: llama base texture
+		{"blank.png", "blank.png", "mobs_mc_llama_brown.png"},
+		{"blank.png", "blank.png", "mobs_mc_llama_creamy.png"},
+		{"blank.png", "blank.png", "mobs_mc_llama_gray.png"},
+		{"blank.png", "blank.png", "mobs_mc_llama_white.png"},
+		{"blank.png", "blank.png", "mobs_mc_llama.png"},
+		--{"mobs_mc_llama.png", "blank.png", "mobs_mc_llama.png"},  --lama with chest
+		--{"blank.png", "mobs_mc_decor_green.png", "mobs_mc_llama.png"},  --lama with decor
+		--{"mobs_mc_llama.png", "mobs_mc_decor_green.png", "mobs_mc_llama.png"},  --lama with everything
+    },
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
 	runaway = true,

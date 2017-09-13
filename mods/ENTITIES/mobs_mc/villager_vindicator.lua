@@ -22,10 +22,14 @@ mobs:register_mob("mobs_mc:vindicator", {
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_vindicator.b3d",
-	textures = {
-	        {"mobs_mc_vindicator_axe.png"},
-		-- TODO: Glow when attacking (mobs_mc_vindicator.png)
-	},
+    textures = {
+        {
+            "mobs_mc_vindicator_base.png",
+            "blank.png", --no hat
+            "mobs_mc_iron_axe.png",
+            -- TODO: Glow when attacking (mobs_mc_vindicator.png)
+        },
+    },
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
 	damage = 13,
@@ -49,18 +53,19 @@ mobs:register_mob("mobs_mc:vindicator", {
 		damage = "Villagerhurt1",
 	},
 	animation = {
+		stand_speed = 25,
 		walk_speed = 25,
 		run_speed = 25,
+		punch_speed = 25,
 		stand_start = 40,
 		stand_end = 59,
-		stand_speed = 5,
 		walk_start = 0,
 		walk_end = 40,
 		punch_start = 90,
 		punch_end = 110,
 		-- TODO: Implement and fix death animation
-		--die_start = 110,
-		--die_end = 130,
+		--die_start = 170,
+		--die_end = 180,
 		--die_loop = false,
 	},
 	water_damage = 1,

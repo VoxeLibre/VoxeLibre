@@ -11,9 +11,10 @@ local cow_def = {
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.39, 0.45},
 	visual = "mesh",
 	mesh = "mobs_mc_cow.b3d",
-	textures = {
-		{"mobs_mc_cow.png"},
-	},
+	textures = { {
+		"mobs_mc_cow.png",
+		"blank.png",
+	}, },
 	visual_size = {x=2.8, y=2.8},
 	makes_footstep_sound = true,
 	walk_velocity = 1,
@@ -79,7 +80,7 @@ mobs:register_mob("mobs_mc:cow", cow_def)
 local mooshroom_def = table.copy(cow_def)
 
 mooshroom_def.mesh = "mobs_mc_cow.b3d"
-mooshroom_def.textures = { {"mobs_mc_mooshroom.png^mobs_mc_mooshroom_mooshroom.png"}, }
+mooshroom_def.textures = { {"mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png"}, }
 mooshroom_def.on_rightclick = function(self, clicker)
 	if mobs:feed_tame(self, clicker, 1, true, true) then return end
 	if mobs:protect(self, clicker) then return end

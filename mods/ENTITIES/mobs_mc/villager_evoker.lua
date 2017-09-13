@@ -22,11 +22,12 @@ mobs:register_mob("mobs_mc:evoker", {
 	hp_max = 24,
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.95, 0.4},
 	visual = "mesh",
-	mesh = "mobs_mc_evoker.b3d",
-	textures = {
-		{"mobs_mc_evoker_base.png"},
+	mesh = "mobs_mc_villager.b3d",
+	textures = { {
+		"mobs_mc_evoker_base.png",
+		"blank.png", --no hat
 		-- TODO: Attack glow
-	},
+	} },
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
 	damage = 6,
@@ -75,11 +76,12 @@ mobs:register_mob("mobs_mc:evoker", {
 		stand_speed = 5,
 		walk_start = 0,
 		walk_end = 40,
-		shoot_start = 60,
-		shoot_end = 80,
+		shoot_start = 120,
+		shoot_end = 140,
 		-- TODO: Implement and fix death animation
-		--die_start = 80,
-		--die_end = 130,
+		--die_start = 190,
+		--die_end = 200,
+	        --die_speed = 15,
 		--die_loop = false,
 	},
 	water_damage = 0,

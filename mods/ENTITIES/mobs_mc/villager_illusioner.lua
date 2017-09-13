@@ -18,9 +18,11 @@ mobs:register_mob("mobs_mc:illusioner", {
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_illusioner.b3d",
-	textures = {
-		{"mobs_mc_illusionist.png^mobs_mc_illusionist_bow.png"},
-	},
+	textures = { {
+		"mobs_mc_illusionist.png",
+		"mobs_mc_illusionist.png", --hat
+		"mcl_throwing_bow.png",
+	}, },
 	visual_size = {x=3, y=3},
 	walk_velocity = 0.6,
 	run_velocity = 2,
@@ -32,13 +34,14 @@ mobs:register_mob("mobs_mc:illusioner", {
 		stand_end = 59,
 		walk_start = 0,
 		walk_end = 40,
-		shoot_start = 90,
-		shoot_end = 110,
+		shoot_start = 150,
+		shoot_end = 170,
 		-- TODO: Implement and fix death animation
-		--die_start = 110,
-		--die_end = 130,
+		--die_start = 170,
+		--die_end = 180,
+	        --die_speed = 15,
 		--die_loop = false,
-		-- 60-80 magic arm swinging, 80-90 transition between magic to bow shooting
+		-- 120-140 magic arm swinging, 140-150 transition between magic to bow shooting
 	},
 	view_range = 16,
 	fear_height = 4,

@@ -15,8 +15,12 @@ local S, NS = dofile(MP.."/intllib.lua")
 --###################
 
 local pr = PseudoRandom(os.time()*(-334))
-local take_frequency = 10
-local place_frequency = 10
+
+-- How freqeuntly to take and place blocks, in seconds
+local take_frequency_min = 25
+local take_frequency_max = 90
+local place_frequency_min = 10
+local place_frequency_max = 30
 
 -- Create the textures table for the enderman, depending on which kind of block
 -- the enderman holds (if any).
@@ -191,14 +195,16 @@ mobs:register_mob("mobs_mc:enderman", {
 	_taken_node = "",
 	do_custom = function(self, dtime)
 		-- Take and put nodes
-		if not self._take_place_timer then
+		if not self._take_place_timer or not self._next_take_place_time then
 			self._take_place_timer = 0
+			self._next_take_place_time = math.random(take_frequency_min, take_frequency_max)
 			return
 		end
 		self._take_place_timer = self._take_place_timer + dtime
-		if (self._taken_node == nil or self._taken_node == "") and self._take_place_timer >= take_frequency then
+		if (self._taken_node == nil or self._taken_node == "") and self._take_place_timer >= self._next_take_place_time then
 			-- Take random node
 			self._take_place_timer = 0
+			self._next_take_place_time = math.random(place_frequency_min, place_frequency_max)
 			local pos = self.object:getpos()
 			local takable_nodes = minetest.find_nodes_in_area({x=pos.x-2, y=pos.y-1, z=pos.z-2}, {x=pos.x+2, y=pos.y+1, z=pos.z+2}, mobs_mc.enderman_takable)
 			if #takable_nodes >= 1 then
@@ -242,9 +248,10 @@ mobs:register_mob("mobs_mc:enderman", {
 					end
 				end
 			end
-		elseif self._taken_node ~= nil and self._taken_node ~= "" and self._take_place_timer >= place_frequency then
+		elseif self._taken_node ~= nil and self._taken_node ~= "" and self._take_place_timer >= self._next_take_place_time then
 			-- Place taken node
 			self._take_place_timer = 0
+			self._next_take_place_time = math.random(take_frequency_min, take_frequency_max)
 			local pos = self.object:getpos()
 			local yaw = self.object:get_yaw()
 			-- Place node at looking direction
