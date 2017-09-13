@@ -2341,92 +2341,74 @@ local function register_decorations()
 	})
 
 	-- Doubletall grass
-	minetest.register_decoration({
-		deco_type = "schematic",
-		schematic = {
-			size = { x=1, y=3, z=1 },
-			data = {
-				{ name = "air", prob = 0 },
-				{ name = "mcl_flowers:double_grass", param1=255, },
-				{ name = "mcl_flowers:double_grass_top", param1=255, },
+	local register_doubletall_grass = function(offset, scale, biomes)
+
+		minetest.register_decoration({
+			deco_type = "schematic",
+			schematic = {
+				size = { x=1, y=3, z=1 },
+				data = {
+					{ name = "air", prob = 0 },
+					{ name = "mcl_flowers:double_grass", param1=255, },
+					{ name = "mcl_flowers:double_grass_top", param1=255, },
+				},
 			},
-		},
-		replacements = {
-			["mcl_flowers:tallgrass"] = "mcl_flowers:double_grass"
-		},
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_grass_snow"},
-		sidelen = 16,
-		noise_params = {
-			offset = -0.01,
-			scale = 0.03,
-			spread = {x = 300, y = 300, z = 300},
-			seed = 420,
-			octaves = 2,
-			persist = 0.6,
-		},
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-		biomes = {"Plains", "SunflowerPlains", "Taiga", "Forest", "FlowerForest", "BirchForest", "BirchForestM", "RoofedForest", "Savanna", "SavannaM", "MesaPlateauF_grasstop" },
-	})
+			replacements = {
+				["mcl_flowers:tallgrass"] = "mcl_flowers:double_grass"
+			},
+			place_on = {"mcl_core:dirt_with_grass"},
+			sidelen = 16,
+			noise_params = {
+				offset = offset,
+				scale = scale,
+				spread = {x = 200, y = 200, z = 200},
+				seed = 420,
+				octaves = 3,
+				persist = 0.6,
+			},
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+			biomes = biomes,
+		})
+	end
+
+	register_doubletall_grass(-0.01, 0.03, {"Taiga", "Forest", "FlowerForest", "BirchForest", "BirchForestM", "RoofedForest", "MesaPlateauF_grasstop" })
+	register_doubletall_grass(-0.002, 0.03, {"Plains", "SunflowerPlains"})
+	register_doubletall_grass(-0.0005, -0.03, {"Savanna", "SavannaM"})
 
 	-- Large ferns
-	minetest.register_decoration({
-		deco_type = "schematic",
-		schematic = {
-			size = { x=1, y=3, z=1 },
-			data = {
-				{ name = "air", prob = 0 },
-				{ name = "mcl_flowers:double_fern", param1=255, },
-				{ name = "mcl_flowers:double_fern_top", param1=255, },
+	local register_double_fern = function(offset, scale, biomes)
+		minetest.register_decoration({
+			deco_type = "schematic",
+			schematic = {
+				size = { x=1, y=3, z=1 },
+				data = {
+					{ name = "air", prob = 0 },
+					{ name = "mcl_flowers:double_fern", param1=255, },
+					{ name = "mcl_flowers:double_fern_top", param1=255, },
+				},
 			},
-		},
-		replacements = {
-			["mcl_flowers:fern"] = "mcl_flowers:double_fern"
-		},
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:podzol", "mcl_core:podzol_snow"},
-
-		sidelen = 16,
-		noise_params = {
-			offset = 0.01,
-			scale = 0.03,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 333,
-			octaves = 2,
-			persist = 0.66,
-		},
-		biomes = { "Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "ColdTaiga", "MegaTaiga", "MegaSpruceTaiga" },
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-	})
-
-	minetest.register_decoration({
-		deco_type = "schematic",
-		schematic = {
-			size = { x=1, y=3, z=1 },
-			data = {
-				{ name = "air", prob = 0 },
-				{ name = "mcl_flowers:double_fern", param1=255, },
-				{ name = "mcl_flowers:double_fern_top", param1=255, },
+			replacements = {
+				["mcl_flowers:fern"] = "mcl_flowers:double_fern"
 			},
-		},
-		replacements = {
-			["mcl_flowers:fern"] = "mcl_flowers:double_fern"
-		},
-		place_on = {"mcl_core:dirt_with_grass"},
+			place_on = {"mcl_core:dirt_with_grass", "mcl_core:podzol"},
+			sidelen = 16,
+			noise_params = {
+				offset = offset,
+				scale = scale,
+				spread = {x = 250, y = 250, z = 250},
+				seed = 333,
+				octaves = 2,
+				persist = 0.66,
+			},
+			biomes = biomes,
+			y_min = 1,
+			y_max = mcl_vars.mg_overworld_max,
+		})
+	end
 
-		sidelen = 16,
-		noise_params = {
-			offset = 0.15,
-			scale = 0.1,
-			spread = {x = 250, y = 250, z = 250},
-			seed = 333,
-			octaves = 2,
-			persist = 0.60,
-		},
-		biomes = { "JungleM" },
-		y_min = 1,
-		y_max = mcl_vars.mg_overworld_max,
-	})
+	register_double_fern(0.01, 0.03, { "Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "ColdTaiga", "MegaTaiga", "MegaSpruceTaiga" })
+	register_double_fern(0.15, 0.1, { "JungleM" })
 
 	-- Large flowers
 	local register_large_flower = function(name, biomes, seed, offset, flower_forest_offset)
