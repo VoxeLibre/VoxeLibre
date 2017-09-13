@@ -861,7 +861,7 @@ local function register_mgv6_decorations()
 			offset = 0.01,
 			scale = 0.3,
 			spread = {x = 500, y = 500, z = 500},
-			seed = 420,
+			seed = 421,
 			octaves = 2,
 			persist = 0.6
 		},
@@ -869,7 +869,22 @@ local function register_mgv6_decorations()
 		y_max = mcl_vars.overworld_max,
 		decoration = "mcl_flowers:tallgrass",
 	})
-
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt_with_grass"},
+		sidelen = 8,
+		noise_params = {
+			offset = 0.03,
+			scale = 0.03,
+			spread = {x = 400, y = 400, z = 400},
+			seed = 420,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 1,
+		y_max = mcl_vars.overworld_max,
+		decoration = "mcl_flowers:tallgrass",
+	})
 	-- Add a small amount of tall grass everywhere to avoid areas completely empty devoid of tall grass
 	minetest.register_decoration({
 		deco_type = "simple",
