@@ -1282,7 +1282,7 @@ local function register_biomelike_ores()
 		ore_type = "sheet",
 		ore = "mcl_core:stone",
 		noise_threshold = -100,
-		noise_params = {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=seed, octaves=1, persist=1.00},
+		noise_params = {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, octaves=1, persist=1.00},
 		biomes = {
 			"Mesa", "Mesa_sandlevel", "Mesa_ocean", "Mesa_deep_ocean", "Mesa_underground",
 			"MesaPlateauF", "MesaPlateauF_sandlevel", "MesaPlateauF_ocean", "MesaPlateauF_deep_ocean", "MesaPlateauF_underground",
@@ -1301,14 +1301,6 @@ local function register_biomelike_ores()
 	-- Helper function to create strata.
 	-- Available Mesa colors: silver (light grey), brown, orange, red, yellow, white
 	local stratum = function(y_min, height, color, seed)
-
-		local ore = "mcl_colorblocks:hardened_clay_"..color
-		local noise_threshold = -1
-		local noise_params = {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=seed, octaves=3, persist=0.70}
-		local biomes = {
-			"Mesa", "Mesa_sandlevel", "Mesa_ocean", "Mesa_deep_ocean", "Mesa_underground",
-		}
-
 		if not height then
 			height = 1
 		end
@@ -1318,19 +1310,17 @@ local function register_biomelike_ores()
 		local y_max = y_min + height-1
 		minetest.register_ore({
 			ore_type = "sheet",
-			ore = ore,
+			ore = "mcl_colorblocks:hardened_clay_"..color,
 			wherein = {"mcl_colorblocks:hardened_clay"},
 			column_height_min = height,
 			column_height_max = height,
 			y_min = y_min,
 			y_max = y_max,
-			noise_threshold = noise_threshold,
-			noise_params = noise_param,
-			biomes = biomes,
+			noise_threshold = -1.0,
+			noise_params = {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=seed, octaves=3, persist=0.70},
+			biomes = { "Mesa", "MesaPlateauF", },
 		})
 	end
-
-
 
 	stratum(11, 3, "orange")
 
