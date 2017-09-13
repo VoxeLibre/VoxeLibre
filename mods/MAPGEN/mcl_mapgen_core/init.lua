@@ -752,7 +752,7 @@ local function register_mgv6_decorations()
 		-- v6 hack: This makes sure large ferns only appear in jungles
 		spawn_by = { "mcl_core:jungletree", "mcl_flowers:fern" },
 		num_spawn_by = 1,
-		place_on = {"mcl_core:podzol"},
+		place_on = {"mcl_core:dirt_with_grass"},
 
 		sidelen = 16,
 		noise_params = {
