@@ -404,28 +404,44 @@ minetest.register_ore({
 -- Emerald
 --
 
--- Common spawn
-minetest.register_ore({
-	ore_type       = "scatter",
-	ore            = "mcl_core:stone_with_emerald",
-	wherein         = stonelike,
-	clust_scarcity = 14340,
-	clust_num_ores = 1,
-	clust_size     = 1,
-	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_util.layer_to_y(29),
-})
--- Rare spawn
-minetest.register_ore({
-	ore_type       = "scatter",
-	ore            = "mcl_core:stone_with_emerald",
-	wherein         = stonelike,
-	clust_scarcity = 21510,
-	clust_num_ores = 1,
-	clust_size     = 1,
-	y_min          = mcl_util.layer_to_y(30),
-	y_max          = mcl_util.layer_to_y(32),
-})
+if mg_name == "v6" then
+	-- Generate everywhere in v6, but rarely.
+
+	-- Common spawn
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "mcl_core:stone_with_emerald",
+		wherein        = stonelike,
+		clust_scarcity = 14340,
+		clust_num_ores = 1,
+		clust_size     = 1,
+		y_min          = mcl_vars.mg_overworld_min,
+		y_max          = mcl_util.layer_to_y(29),
+	})
+	-- Rare spawn
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "mcl_core:stone_with_emerald",
+		wherein        = stonelike,
+		clust_scarcity = 21510,
+		clust_num_ores = 1,
+		clust_size     = 1,
+		y_min          = mcl_util.layer_to_y(30),
+		y_max          = mcl_util.layer_to_y(32),
+	})
+else
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "mcl_core:stone_with_emerald",
+		wherein        = stonelike,
+		clust_scarcity = 16384,
+		clust_num_ores = 1,
+		clust_size     = 1,
+		y_min          = mcl_util.layer_to_y(4),
+		y_max          = mcl_util.layer_to_y(32),
+		--biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean" },
+	})
+end
 
 --
 -- Lapis Lazuli
@@ -612,12 +628,13 @@ minetest.register_ore({
 
 end
 
--- Rarely replace stone with stone monster eggs
+-- Rarely replace stone with stone monster eggs.
+-- In v6 this can happen anywhere, in other mapgens only in Extreme Hills.
 local monster_egg_scarcity
 if mg_name == "v6" then
 	monster_egg_scarcity = 28 * 28 * 28
 else
-	monster_egg_scarcity = 22 * 22 * 22
+	monster_egg_scarcity = 26 * 26 * 26
 end
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -627,8 +644,8 @@ minetest.register_ore({
 	clust_num_ores = 3,
 	clust_size     = 2,
 	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_vars.mg_overworld_max,
-	-- TODO: Limit by biome
+	y_max          = mcl_util.layer_to_y(61),
+	--biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean" },
 })
 
 
