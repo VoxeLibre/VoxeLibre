@@ -359,10 +359,6 @@ local function register_biomes()
 	-- TODO: Should occour only at real beaches.
 	minetest.register_biome({
 		name = "StoneBeach",
-		node_top = "mcl_core:dirt",
-		depth_top = 1,
-		node_filler = "mcl_core:dirt",
-		filler_depth = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 1,
 		y_min = -6,
@@ -375,8 +371,6 @@ local function register_biomes()
 		name = "StoneBeach_ocean",
 		node_top = "mcl_core:dirt",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
-		filler_depth = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 1,
 		y_min = OCEAN_MIN,
@@ -2497,7 +2491,7 @@ local function register_decorations()
 		biomes = {"JungleEdge", "JungleEdgeM"},
 		y_min = 3,
 		y_max = mcl_vars.mg_overworld_max,
-		schematic_jungle_bush_schematic,
+		schematic = jungle_bush_schematic,
 		flags = "place_center_x, place_center_z",
 	})
 
