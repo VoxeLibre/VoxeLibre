@@ -124,8 +124,8 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		-- those must be found by the player.
 	}
 
-	pos = pointed_thing.under
-	n = minetest.get_node(pos)
+	local pos = pointed_thing.under
+	local n = minetest.get_node(pos)
 	if n.name == "" then return false end
 	if minetest.get_item_group(n.name, "sapling") >= 1 then
 		-- Saplings: 45% chance to advance growth stage
@@ -213,7 +213,7 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 				pos = pointed_thing.above
 				pos = {x=pos.x+i, y=pos.y, z=pos.z+j}
 				n = minetest.get_node(pos)
-				n2 = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
+				local n2 = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
 
 				if n.name ~= "" and n.name == "air" and (n2.name == "mcl_core:dirt_with_grass" or n2.name == "mcl_core:dirt_with_grass_snow") then
 					-- Randomly generate flowers, tall grass or nothing
