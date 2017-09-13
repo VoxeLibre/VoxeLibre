@@ -1055,7 +1055,7 @@ local function generate_clay(minp, maxp, seed, voxelmanip_data, voxelmanip_area,
 				for z1 = -(diamondsize - math.abs(x1)), diamondsize - math.abs(x1) do
 					local ccpos = voxelmanip_area:index(cx+x1, y, cz+z1)
 					local claycandidate = voxelmanip_data[ccpos]
-					if ccname == c_dirt or minetest.get_item_group(minetest.get_name_from_content_id(claycandidate), "sand") == 1 then
+					if voxelmanip_data[ccpos] == c_dirt or minetest.get_item_group(minetest.get_name_from_content_id(claycandidate), "sand") == 1 then
 						voxelmanip_data[ccpos] = c_clay
 						lvm_used = true
 					end
@@ -1477,7 +1477,7 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 					for l=0, length-1 do
 						local t_pos = area:index(treepos.x, treepos.y, treepos.z)
 
-						if (data[p_pos] == c_air or data[p_pos] == c_jungeleaves or data[p_pos] == c_leaves) and mcl_core.supports_vines(minetest.get_name_from_content_id(data[t_pos])) then
+						if (data[p_pos] == c_air or data[p_pos] == c_jungleleaves or data[p_pos] == c_leaves) and mcl_core.supports_vines(minetest.get_name_from_content_id(data[t_pos])) then
 							data[p_pos] = c_vine
 							param2_data[p_pos] = param2
 							lvm_used = true
