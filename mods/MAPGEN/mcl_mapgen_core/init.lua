@@ -439,7 +439,7 @@ else
 		clust_size     = 1,
 		y_min          = mcl_util.layer_to_y(4),
 		y_max          = mcl_util.layer_to_y(32),
-		--biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean" },
+		biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", },
 	})
 end
 
@@ -645,7 +645,7 @@ minetest.register_ore({
 	clust_size     = 2,
 	y_min          = mcl_vars.mg_overworld_min,
 	y_max          = mcl_util.layer_to_y(61),
-	--biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean" },
+	biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", },
 })
 
 
