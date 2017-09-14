@@ -182,6 +182,12 @@ mcl_structures.generate_desert_temple = function(pos)
 		end
 	end
 
+	-- Initialize pressure plates
+	local pplates = minetest.find_nodes_in_area({x=newpos.x-size.x, y=newpos.y, z=newpos.z-size.z}, vector.add(newpos, size), "mesecons_pressureplates:pressure_plate_stone_off")
+	for p=1, #pplates do
+		minetest.registered_nodes["mesecons_pressureplates:pressure_plate_stone_off"].on_construct(pplates[p])
+	end
+
 	return ret
 end
 
