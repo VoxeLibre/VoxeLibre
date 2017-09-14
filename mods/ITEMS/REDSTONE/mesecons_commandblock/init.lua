@@ -143,7 +143,8 @@ You can optionally use the following placeholders in your commands:
 	on_rightclick = on_rightclick,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {effector = {
-		action_on = commandblock_action_on
+		action_on = commandblock_action_on,
+		rules = mesecon.rules.alldirs,
 	}},
 	_mcl_blast_resistance = 18000000,
 	_mcl_hardness = -1,
@@ -160,7 +161,8 @@ minetest.register_node("mesecons_commandblock:commandblock_on", {
 	on_rightclick = on_rightclick,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {effector = {
-		action_off = commandblock_action_off
+		action_off = commandblock_action_off,
+		rules = mesecon.rules.alldirs,
 	}},
 	_mcl_blast_resistance = 18000000,
 	_mcl_hardness = -1,

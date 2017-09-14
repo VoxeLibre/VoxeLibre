@@ -5,32 +5,22 @@ piston_rules =
 {{x=0,  y=0,  z=1}, --everything apart from z- (pusher side)
  {x=1,  y=0,  z=0},
  {x=-1, y=0,  z=0},
- {x=1,  y=1,  z=0},
- {x=1,  y=-1, z=0},
- {x=-1, y=1,  z=0},
- {x=-1, y=-1, z=0},
- {x=0,  y=1,  z=1},
- {x=0,  y=-1, z=1}}
+ {x=0,  y=1,  z=0},
+ {x=0,  y=-1, z=0}}
 
 local piston_up_rules =
 {{x=0,  y=0,  z=-1}, --everything apart from y+ (pusher side)
- {x=1,  y=0,  z=0},
- {x=-1, y=0,  z=0},
  {x=0,  y=0,  z=1},
- {x=1,  y=-1, z=0},
- {x=-1, y=-1, z=0},
- {x=0,  y=-1, z=1},
- {x=0,  y=-1, z=-1}}
+ {x=-1, y=0,  z=0},
+ {x=1,  y=0,  z=1},
+ {x=0,  y=-1, z=0}}
 
 local piston_down_rules =
 {{x=0,  y=0,  z=-1}, --everything apart from y- (pusher side)
- {x=1,  y=0,  z=0},
- {x=-1, y=0,  z=0},
  {x=0,  y=0,  z=1},
- {x=1,  y=1, z=0},
- {x=-1, y=1, z=0},
- {x=0,  y=1, z=1},
- {x=0,  y=1, z=-1}}
+ {x=-1,  y=0,  z=0},
+ {x=1,  y=0,  z=1},
+ {x=0,  y=1, z=0}}
 
 local piston_get_rules = function (node)
 	local rules = piston_rules

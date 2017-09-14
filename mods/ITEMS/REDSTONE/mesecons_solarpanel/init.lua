@@ -24,7 +24,8 @@ minetest.register_node("mesecons_solarpanel:solar_panel_on", {
 	groups = {handy=1,axey=1, not_in_creative_inventory = 1, material_wood=1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {receptor = {
-		state = mesecon.state.on
+		state = mesecon.state.on,
+		rules = mesecon.rules.alldirs,
 	}},
 	on_rightclick = function(pos, node, clicker, pointed_thing)
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_inverted_off"})
@@ -58,7 +59,8 @@ minetest.register_node("mesecons_solarpanel:solar_panel_off", {
 	_doc_items_usagehelp = "Rightclick the daylight sensor to turn it into an inverted daylight sensor, which supplies redstone energy when it is in moonlight.",
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {receptor = {
-		state = mesecon.state.off
+		state = mesecon.state.off,
+		rules = mesecon.rules.alldirs,
 	}},
 	on_rightclick = function(pos, node, clicker, pointed_thing)
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_inverted_on"})

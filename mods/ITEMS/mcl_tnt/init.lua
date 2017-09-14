@@ -69,7 +69,8 @@ minetest.register_node("mcl_tnt:tnt", {
 	_doc_items_usagehelp = "Place the TNT on the ground and ignite it with one of the methods above. Quickly get in safe distance quickly. The TNT will start to be affected by gravity and explodes in 4 seconds.",
 	groups = { dig_immediate = 3, tnt = 1, enderman_takable=1 },
 	mesecons = {effector = {
-		action_on = tnt.ignite
+		action_on = tnt.ignite,
+		rules = mesecon.rules.alldirs,
 	}},
 	_on_ignite = function(player, pointed_thing)
 		tnt.ignite(pointed_thing.under)

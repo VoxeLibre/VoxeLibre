@@ -9,7 +9,8 @@ minetest.register_node("mesecons_lightstone:lightstone_off", {
 	mesecons = {effector = {
 		action_on = function (pos, node)
 			minetest.swap_node(pos, {name="mesecons_lightstone:lightstone_on", param2 = node.param2})
-		end
+		end,
+		rules = mesecon.rules.alldirs,
 	}},
 	_mcl_blast_resistance = 1.5,
 	_mcl_hardness = 0.3,
@@ -28,7 +29,8 @@ minetest.register_node("mesecons_lightstone:lightstone_on", {
 	mesecons = {effector = {
 		action_off = function (pos, node)
 			minetest.swap_node(pos, {name="mesecons_lightstone:lightstone_off", param2 = node.param2})
-		end
+		end,
+		rules = mesecon.rules.alldirs,
 	}},
 	_mcl_blast_resistance = 1.5,
 	_mcl_hardness = 0.3,

@@ -361,7 +361,8 @@ local dispenserdef = {
 					inv:set_stack("main", stack_id, stack)
 				end
 			end
-		end
+		end,
+		rules = mesecon.rules.alldirs,
 	}}
 }
 
