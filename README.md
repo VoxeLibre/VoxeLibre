@@ -2,7 +2,7 @@
 An unofficial Minecraft-like game for Minetest. Forked from MineClone by daredevils.
 Developed by Wuzzy and contributors. Not developed or endorsed by Mojang AB.
 
-Version: 0.28.0
+Version: 0.29.0
 
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
@@ -104,8 +104,8 @@ The following main features are available:
 * Most blocks in the overworld
 * Water and lava
 * Weather
-* A few biomes
-* The Nether
+* 28 biomes
+* The Nether, a fiery underworld in another dimension
 * Redstone circuits (partially): Redstone ore, redstone, redstone repeater, levers, buttons, redstone blocks, redstone lamps
 * Minecarts (partial)
 * Boats
@@ -132,10 +132,10 @@ The following main features are available:
 
 The following features are incomplete:
 
-* Trees, biomes, generated structures
+* Generated structures
 * NPCs
 * Some monsters and animals
-* Some redstone-related things
+* Redstone-related things
 * The End
 * Enchanting
 * Experience
