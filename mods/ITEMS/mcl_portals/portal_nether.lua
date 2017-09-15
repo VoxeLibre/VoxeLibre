@@ -185,13 +185,13 @@ local function find_nether_target_y(target_x, target_z)
 	if mg_name == "flat" then
 		return mcl_vars.mg_bedrock_nether_bottom_max + 5
 	end
-	local start_y = mcl_vars.mg_nether_min + math.random(38, 117) -- Search start
+	local start_y = math.random(mcl_vars.mg_lava_nether_max + 1, mcl_vars.mg_bedrock_nether_top_min - 5) -- Search start
 	if not nobj_cave then
 		nobj_cave = minetest.get_perlin(np_cave)
 	end
 	local air = 4
 
-	for y = start_y, start_y -117, -1 do
+	for y = start_y, math.max(mcl_vars.mg_lava_nether_max + 1), -1 do
 		local nval_cave = nobj_cave:get3d({x = target_x, y = y, z = target_z})
 
 		if nval_cave > TCAVE then -- Cavern
