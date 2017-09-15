@@ -455,6 +455,12 @@ minetest.override_item("mcl_core:obsidian", {
 		local portal_placed = make_portal(pos)
 		if portal_placed and minetest.get_modpath("doc") then
 			doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:portal")
+
+			-- Achievement for finishing a Nether portal TO the Nether
+			local _, dim = mcl_util.y_to_layer(pos.y)
+			if minetest.get_modpath("awards") and dim ~= "nether" and user:is_player() then
+				awards.unlock(user:get_player_name(), "mcl:buildNetherPortal")
+			end
 		else
 			local node = minetest.get_node(pointed_thing.above)
 			if node.name ~= "mcl_portals:portal" then

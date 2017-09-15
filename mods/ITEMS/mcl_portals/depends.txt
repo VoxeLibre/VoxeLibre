@@ -5,4 +5,5 @@ mcl_fire
 mcl_nether
 mcl_end
 mcl_particles
+awards?
 doc?
