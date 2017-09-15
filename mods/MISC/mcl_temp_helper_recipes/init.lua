@@ -120,3 +120,15 @@ minetest.register_craft({
 -- TODO: Remove/fix these drops when creeper drops music discs properly
 
 
+-- Make red sand craftable in v6
+if minetest.get_mapgen_setting("mg_name") == "v6" then
+	minetest.register_craft({
+		output = "mcl_core:redsand 8",
+		recipe = {
+			{ "mcl_core:sand", "mcl_core:sand", "mcl_core:sand" },
+			{ "mcl_core:sand", "mcl_dye:red", "mcl_core:sand" },
+			{ "mcl_core:sand", "mcl_core:sand", "mcl_core:sand" },
+		}
+	})
+end
+
