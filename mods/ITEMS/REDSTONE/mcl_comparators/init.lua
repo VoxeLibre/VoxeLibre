@@ -3,7 +3,7 @@
 local comparator_get_output_rules = function(node)
 	local rules = {{x = -1, y = 0, z = 0}}
 	for i = 0, node.param2 do
-		rules = mesecon:rotate_rules_left(rules)
+		rules = mesecon.rotate_rules_left(rules)
 	end
 	return rules
 end
@@ -17,7 +17,7 @@ local comparator_get_input_rules = function(node)
 		{x = 0, y = 0, z =  1},  -- side
 	}
 	for i = 0, node.param2 do
-		rules = mesecon:rotate_rules_left(rules)
+		rules = mesecon.rotate_rules_left(rules)
 	end
 	return rules
 end
@@ -27,13 +27,13 @@ end
 
 local comparator_turnon = function(params)
 	local rules = comparator_get_output_rules(params.node)
-	mesecon:receptor_on(params.pos, rules)
+	mesecon.receptor_on(params.pos, rules)
 end
 
 
 local comparator_turnoff = function(params)
 	local rules = comparator_get_output_rules(params.node)
-	mesecon:receptor_off(params.pos, rules)
+	mesecon.receptor_off(params.pos, rules)
 end
 
 
@@ -41,14 +41,14 @@ end
 
 local comparator_activate = function(pos, node)
 	local def = minetest.registered_nodes[node.name]
-	mesecon:swap_node(pos, def.comparator_onstate)
+	minetest.swap_node(pos, { name = def.comparator_onstate, param2 = node.param2 })
 	minetest.after(0.1, comparator_turnon , {pos = pos, node = node})
 end
 
 
 local comparator_deactivate = function(pos, node)
 	local def = minetest.registered_nodes[node.name]
-	mesecon:swap_node(pos, def.comparator_offstate)
+	minetest.swap_node(pos, { name = def.comparator_offstate, param2 = node.param2 })
 	minetest.after(0.1, comparator_turnoff, {pos = pos, node = node})
 end
 
@@ -79,8 +79,10 @@ end
 local comparator_desired_on = function(pos, node)
 	local my_input_rules = comparator_get_input_rules(node);
 	local back_rule = my_input_rules[1]
-	local state = mesecon:is_powered_from(pos, back_rule)
-		or container_inventory_nonempty(vector.add(pos, back_rule))
+	local state
+	if back_rule then
+		state = mesecon.is_power_on(vector.add(pos, back_rule)) or container_inventory_nonempty(vector.add(pos, back_rule))
+	end
 
 	-- if back input if off, we don't need to check side inputs
 	if not state then return false end
@@ -93,7 +95,9 @@ local comparator_desired_on = function(pos, node)
 	-- subtract mode, subtract max(side_inputs) from back input
 	local side_state = false
 	for ri = 2,3 do
-		side_state = side_state or mesecon:is_powered_from(pos, my_input_rules[ri])
+		if my_input_rules[ri] then
+			side_state = mesecon.is_power_on(vector.add(pos, my_input_rules[ri]))
+		end
 		if side_state then break end
 	end
 	-- state is known to be true
@@ -104,7 +108,7 @@ end
 -- update comparator state, if needed
 local update_self = function(pos, node)
 	node = node or minetest.get_node(pos)
-	local old_state = mesecon:is_receptor_on(node.name)
+	local old_state = mesecon.is_receptor_on(node.name)
 	local new_state = comparator_desired_on(pos, node)
 	if new_state ~= old_state then
 		if new_state then
@@ -142,7 +146,7 @@ local make_rightclick_handler = function(state, mode)
 	local newnodename =
 		"mcl_comparators:comparator_"..state.."_"..flipmode(mode)
 	return function (pos, node)
-		mesecon:swap_node(pos,newnodename)
+		minetest.swap_node(pos, {name = newnodename, param2 = node.param2 })
 	end
 end
 
