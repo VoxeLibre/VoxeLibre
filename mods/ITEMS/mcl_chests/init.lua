@@ -108,6 +108,13 @@ minetest.register_node("mcl_chests:"..basename, {
 			on_rightclick_addendum(pos, node, clicker)
 		end
 	end,
+
+	on_destruct = function(pos)
+		local players = minetest.get_connected_players()
+		for p=1, #players do
+			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
+		end
+	end,
 	mesecons = mesecons,
 })
 
@@ -124,6 +131,12 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		if n.name == "mcl_chests:"..basename then
 			return
 		end
+
+		local players = minetest.get_connected_players()
+		for p=1, #players do
+			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
+		end
+
 		local param2 = n.param2
 		local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "left")
 		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_right" then
@@ -232,6 +245,12 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		if n.name == "mcl_chests:"..basename then
 			return
 		end
+
+		local players = minetest.get_connected_players()
+		for p=1, #players do
+			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
+		end
+
 		local param2 = n.param2
 		local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "right")
 		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_left" then
