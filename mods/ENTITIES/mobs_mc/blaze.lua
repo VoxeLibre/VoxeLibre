@@ -97,9 +97,18 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 
 	-- Node hit, make fire
 	hit_node = function(self, pos, node)
-		local pos_above = {x=pos.x, y=pos.y+1, z=pos.z}
-		if minetest.registered_nodes[minetest.get_node(pos_above).name].buildable_to then
+		if node.name == "air" then
 			minetest.set_node(pos_above, {name=mobs_mc.items.fire})
+		else
+			local v = self.object:getvelocity()
+			v = vector.normalize(v)
+			local crashpos = vector.subtract(pos, v)
+			local crashnode = minetest.get_node(crashpos)
+			-- Set fire if node is air, or a replacable flammable node (e.g. a plant)
+			if crashnode.name == "air" or
+					(minetest.registered_nodes[crashnode.name].buildable_to and minetest.get_item_group(crashnode.name, "flammable") >= 1) then
+				minetest.set_node(crashpos, {name=mobs_mc.items.fire})
+			end
 		end
 	end
 })
