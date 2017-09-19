@@ -2360,7 +2360,7 @@ local function register_decorations()
 		noise_params = {
 			offset = -0.3,
 			scale = 0.7,
-			spread = {x = 100, y = 100, z = 100},
+			spread = {x = 200, y = 200, z = 200},
 			seed = 2,
 			octaves = 3,
 			persist = 0.7
@@ -2380,7 +2380,7 @@ local function register_decorations()
 		noise_params = {
 			offset = 0.0,
 			scale = 0.5,
-			spread = {x = 100, y = 100, z = 100},
+			spread = {x = 200, y = 200, z = 200},
 			seed = 2,
 			octaves = 3,
 			persist = 0.7,
