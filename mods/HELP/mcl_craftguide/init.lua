@@ -191,6 +191,7 @@ function craftguide:get_recipe(iY, xoffset, tooltip_raw, item, recipe_num, recip
 
 	local items = recipes[recipe_num].items
 	local width = recipes[recipe_num].width
+	local output = recipes[recipe_num].output
 	local cooking_time = 10
 	local is_shapeless = false
 	if recipe_type == "normal" and width == 0 then
@@ -202,17 +203,47 @@ function craftguide:get_recipe(iY, xoffset, tooltip_raw, item, recipe_num, recip
 		end
 	end
 
+	--[[ Recipe type symbols ]]
+
+	-- Cooking (furnace)
 	if recipe_type == "cooking" then
 		cooking_time = width
 		width = 1
 		formspec = formspec..
 			"image["..(xoffset-0.8)..","..(iY+1)..
 				".5;0.5,0.5;default_furnace_front_active.png]"
+	-- Shapeless recipes (intertwined arrows)
 	elseif is_shapeless then
 		formspec = formspec..
 			"image["..(xoffset-0.8)..","..(iY+1)..
 			".5;0.5,0.5;craftguide_shapeless.png]"
 	end
+
+	-- Recipe only available in v6 (“v6” icon)
+	-- TODO/FIXME: This only works for the unique red sand recipe.
+	-- Remove this when red sand becomes regularily available.
+	local v6_only_recipe = false
+	if output == "mcl_core:redsand 8" and
+			width == 3 and
+			items[1] == "mcl_core:sand" and
+			items[2] == "mcl_core:sand" and
+			items[3] == "mcl_core:sand" and
+			items[4] == "mcl_core:sand" and
+			items[5] == "mcl_dye:red" and
+			items[6] == "mcl_core:sand" and
+			items[7] == "mcl_core:sand" and
+			items[8] == "mcl_core:sand" and
+			items[9] == "mcl_core:sand" then
+		v6_only_recipe = true
+	end
+
+	if v6_only_recipe then
+		formspec = formspec..
+			"image["..(xoffset-0.8)..","..(iY+2.75)..
+			".5;0.5,0.5;mcl_craftguide_v6.png]"
+	end
+
+	-- Render slots
 
 	local rows = ceil(maxn(items) / width)
 	local btn_size, craftgrid_limit = 1, 5
@@ -257,7 +288,6 @@ function craftguide:get_recipe(iY, xoffset, tooltip_raw, item, recipe_num, recip
 					";"..item_r..";"..label.."]"..tltip
 		end
 	end
-	local output = recipes[recipe_num].output
 	local label = ""
 	if recipes[recipe_num]._is_toolrepair then
 		tooltip_raw = tooltip_raw .. "\n" .. core.colorize("#00FF00", string.format("Repaired by %.0f%%", (mcl_core.repair*100)))
