@@ -164,7 +164,7 @@ awards.register_achievement("mcl:snipeSkeleton", {
 -- Triggered in mcl_portals
 awards.register_achievement("mcl:buildNetherPortal", {
 	title = S("Into the Nether"),
-	description = S("Use obsidian and flint and steel to construct a Nether portal."),
+	description = S("Use obsidian and a fire starter to construct a Nether portal."),
 	icon = "default_obsidian.png",
 })
 
