@@ -330,9 +330,7 @@ local function make_portal(pos)
 		else
 			p = {x = p1.x, y = y, z = p1.z + d}
 		end
-		if minetest.get_node(p).name == "air" then
-			minetest.set_node(p, {name = "mcl_portals:portal", param2 = param2})
-		end
+		minetest.set_node(p, {name = "mcl_portals:portal", param2 = param2})
 		local meta = minetest.get_meta(p)
 
 		-- Portal frame corners
