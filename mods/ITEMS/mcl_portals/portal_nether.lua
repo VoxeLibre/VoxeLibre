@@ -130,7 +130,7 @@ minetest.register_node("mcl_portals:portal", {
 
 -- Functions
 --Build arrival portal
-local function build_portal(pos, target, is_rebuilding)
+local function build_portal(pos, target)
 	local p = {x = pos.x - 1, y = pos.y - 1, z = pos.z}
 	local p1 = {x = pos.x - 1, y = pos.y - 1, z = pos.z}
 	local p2 = {x = p1.x + 3, y = p1.y + 4, z = p1.z}
@@ -165,7 +165,7 @@ local function build_portal(pos, target, is_rebuilding)
 			meta:set_string("portal_target", minetest.pos_to_string(target))
 		end
 
-		if y ~= p1.y and not is_rebuilding then
+		if y ~= p1.y then
 			for z = -2, 2 do
 				if z ~= 0 then
 					p.z = p.z + z
@@ -281,7 +281,9 @@ local function is_portal(pos)
 	end
 end
 
+-- Light Nether portal and create target portal
 local function make_portal(pos)
+	-- Create Nether portal nodes
 	local p1, p2 = is_portal(pos)
 	if not p1 or not p2 then
 		return false
@@ -308,6 +310,8 @@ local function make_portal(pos)
 		param2 = 1
 	end
 
+	-- Find target
+
 	local target = {x = p1.x, y = p1.y, z = p1.z}
 	target.x = target.x + 1
 	if target.y < mcl_vars.mg_nether_max and target.y > mcl_vars.mg_nether_min then
@@ -330,7 +334,9 @@ local function make_portal(pos)
 		else
 			p = {x = p1.x, y = y, z = p1.z + d}
 		end
-		minetest.set_node(p, {name = "mcl_portals:portal", param2 = param2})
+		if d ~= dmin and d ~= dmax and y ~= ymin and y ~= ymax then
+			minetest.set_node(p, {name = "mcl_portals:portal", param2 = param2})
+		end
 		local meta = minetest.get_meta(p)
 
 		-- Portal frame corners
@@ -403,22 +409,17 @@ minetest.register_abm({
 							return
 						end
 
-						-- Build target portal
-						local function check_and_build_portal(pos, target, is_rebuilding)
-							-- FIXME: This is a horrible hack and a desparate attempt to make sure
-							-- the portal has *really* been placed. Replace this hack!
-							local n = minetest.get_node_or_nil(target)
-							if n and n.name ~= "mcl_portals:portal" then
-								build_portal(target, pos, is_rebuilding)
-								is_rebuilding = true
-								minetest.after(2, check_and_build_portal, pos, target, is_rebuilding)
-							elseif not n then
-								is_rebuilding = true
-								minetest.after(1, check_and_build_portal, pos, target, is_rebuilding)
-							end
-						end
+						-- Build target portal (if there isn't already one)
 
-						check_and_build_portal(pos, target, false)
+						local n = minetest.get_node_or_nil(target)
+						if n and n.name ~= "mcl_portals:portal" then
+							local emerge_callback = function(blockpos, action, calls_remaining, param)
+								if calls_remaining <= 0 then
+									build_portal(param.target, param.pos, false)
+								end
+							end
+							minetest.emerge_area(vector.subtract(target, 7), vector.add(target, 7), emerge_callback, { pos = pos, target = target })
+						end
 
 						-- Teleport
 						obj:setpos(target)
