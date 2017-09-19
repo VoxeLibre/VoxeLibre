@@ -2385,7 +2385,7 @@ local function register_decorations()
 			octaves = 3,
 			persist = 0.7,
 		},
-		biomes = {"Swampland"},
+		biomes = {"Swampland", "Swampland_shore"},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_core:reeds",
