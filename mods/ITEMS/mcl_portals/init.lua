@@ -1,5 +1,7 @@
 -- Load files
 
+mcl_portals = {}
+
 -- Nether portal:
 -- Obsidian frame, activated by flint and steel
 dofile(minetest.get_modpath("mcl_portals").."/portal_nether.lua")

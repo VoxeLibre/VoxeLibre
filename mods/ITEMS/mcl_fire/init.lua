@@ -72,11 +72,18 @@ minetest.register_node("mcl_fire:fire", {
 	end,
 	drop = "",
 	sounds = {},
+	-- Turn into eternal fire on special blocks, light Nether portal (if possible), start burning timer
 	on_construct = function(pos)
 		local under = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name
+
 		if under == "mcl_nether:magma" or under == "mcl_nether:netherrack" then
 			minetest.swap_node(pos, {name = "mcl_fire:eternal_fire"})
 		end
+
+		if minetest.get_modpath("mcl_portals") then
+			mcl_portals.light_nether_portal(pos)
+		end
+
 		minetest.get_node_timer(pos):start(math.random(3, 7))
 	end,
 	_mcl_blast_resistance = 0,
@@ -126,8 +133,13 @@ minetest.register_node("mcl_fire:eternal_fire", {
 		-- Restart timer
 		minetest.get_node_timer(pos):start(math.random(3, 7))
 	end,
+	-- Start burning timer and light Nether portal (if possible)
 	on_construct = function(pos)
 		minetest.get_node_timer(pos):start(math.random(3, 7))
+
+		if minetest.get_modpath("mcl_portals") then
+			mcl_portals.light_nether_portal(pos)
+		end
 	end,
 	sounds = {},
 	drop = "",
@@ -395,8 +407,9 @@ local eternal_override = {
 		local fn = minetest.get_node(flame_pos)
 		if fn.name == "air" and not minetest.is_protected(flame_pos, "fire") and pointed_thing.under.y < pointed_thing.above.y then
 			minetest.set_node(flame_pos, {name = "mcl_fire:eternal_fire"})
+			return true
 		else
-			mcl_fire.set_fire(pointed_thing)
+			return false
 		end
 	end,
 }
@@ -409,8 +422,9 @@ local eternal_override_end = {
 		local fn = minetest.get_node(flame_pos)
 		if dim == "end" and fn.name == "air" and not minetest.is_protected(flame_pos, "fire") and pointed_thing.under.y < pointed_thing.above.y then
 			minetest.set_node(flame_pos, {name = "mcl_fire:eternal_fire"})
+			return true
 		else
-			mcl_fire.set_fire(pointed_thing)
+			return false
 		end
 	end,
 }

@@ -19,7 +19,10 @@ minetest.register_craftitem("mcl_fire:fire_charge", {
 		if pointed_thing.type == "node" then
 			local nodedef = minetest.registered_nodes[node.name]
 			if nodedef and nodedef._on_ignite then
-				nodedef._on_ignite(user, pointed_thing)
+				local overwrite = nodedef._on_ignite(user, pointed_thing)
+				if not overwrite then
+					mcl_fire.set_fire(pointed_thing)
+				end
 			else
 				mcl_fire.set_fire(pointed_thing)
 			end

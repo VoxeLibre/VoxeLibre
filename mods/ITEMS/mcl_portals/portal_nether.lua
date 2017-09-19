@@ -281,8 +281,13 @@ local function is_portal(pos)
 	end
 end
 
--- Light Nether portal and create target portal
-local function make_portal(pos)
+-- Attempts to light a Nether portal at pos and
+-- select target position.
+-- Pos can be any of the obsidian frame blocks or the inner part.
+-- The frame MUST be filled only with air or any fire, which will be replaced with Nether portal blocks.
+-- If no Nether portal can be lit, nothing happens.
+-- Returns true on success and false on failure.
+function mcl_portals.light_nether_portal(pos)
 	-- Create Nether portal nodes
 	local p1, p2 = is_portal(pos)
 	if not p1 or not p2 then
@@ -297,7 +302,8 @@ local function make_portal(pos)
 		else
 			p = {x = p1.x, y = y, z = p1.z + d}
 		end
-		if minetest.get_node(p).name ~= "air" then
+		local nn = minetest.get_node(p).name
+		if nn ~= "air" and minetest.get_item_group(nn, "fire") ~= 1 then
 			return false
 		end
 	end
@@ -451,7 +457,7 @@ minetest.override_item("mcl_core:obsidian", {
 	on_destruct = destroy_portal,
 	_on_ignite = function(user, pointed_thing)
 		local pos = pointed_thing.under
-		local portal_placed = make_portal(pos)
+		local portal_placed = mcl_portals.light_nether_portal(pos)
 		if portal_placed and minetest.get_modpath("doc") then
 			doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:portal")
 
@@ -460,11 +466,9 @@ minetest.override_item("mcl_core:obsidian", {
 			if minetest.get_modpath("awards") and dim ~= "nether" and user:is_player() then
 				awards.unlock(user:get_player_name(), "mcl:buildNetherPortal")
 			end
+			return true
 		else
-			local node = minetest.get_node(pointed_thing.above)
-			if node.name ~= "mcl_portals:portal" then
-				mcl_fire.set_fire(pointed_thing)
-			end
+			return false
 		end
 	end,
 })

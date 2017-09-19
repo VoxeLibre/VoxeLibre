@@ -74,6 +74,7 @@ minetest.register_node("mcl_tnt:tnt", {
 	}},
 	_on_ignite = function(player, pointed_thing)
 		tnt.ignite(pointed_thing.under)
+		return true
 	end,
 	sounds = sounds,
 })

@@ -25,7 +25,10 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 		if pointed_thing.type == "node" then
 			local nodedef = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
 			if nodedef and nodedef._on_ignite then
-				nodedef._on_ignite(user, pointed_thing)
+				local overwrite = nodedef._on_ignite(user, pointed_thing)
+				if not overwrite then
+					mcl_fire.set_fire(pointed_thing)
+				end
 			else
 				mcl_fire.set_fire(pointed_thing)
 			end
