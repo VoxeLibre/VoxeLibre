@@ -1,6 +1,10 @@
 local S
-if (minetest.get_modpath("intllib")) then
-	S = intllib.Getter()
+if minetest.global_exists("intllib") then
+	if intllib.make_gettext_pair then
+		S = intllib.make_gettext_pair()
+	else
+		S = intllib.Getter()
+	end
 else
 	S = function ( s ) return s end
 end
@@ -191,7 +195,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, default_sta
 		local bar_image, bar_size
 		if hb.settings.bar_type == "progress_bar" then
 			bar_image = textures.bar
-			bar_size = {x=2, y=16}
+			bar_size = nil
 		elseif hb.settings.bar_type == "statbar_classic" or hb.settings.bar_type == "statbar_modern" then
 			bar_image = textures.icon
 			bar_size = {x=24, y=24}

@@ -11,7 +11,7 @@ this mod will place them accordingly.
 position should be displayed correctly on every screen size.
 
 ## Current version
-The current version is 1.9.0.
+The current version is 1.10.0.
 
 This software uses [semantic versioning](http://semver.org), as defined by version 2.0.0 of the SemVer
 standard.
@@ -35,23 +35,24 @@ Translations:
 * German: Wuzzy
 * Portuguese: BrunoMine
 * Turkish: admicos
+* Dutch: kingoscargames
+* Italian: Hamlet
 
 This program is free software. It comes without any warranty, to
 the extent permitted by applicable law. You can redistribute it
-and/or modify it under the terms of the Do What The Fuck You Want
-To Public License (WTFPL), version 2, as published by Sam Hocevar.
+and/or modify it under the terms of the MIT License.
 
 ### Licenses of textures
 
 * `hudbars_icon_health.png`—celeron55 (CC BY-SA 3.0), modified by BlockMen
 * `hudbars_bgicon_health.png`—celeron55 (CC BY-SA 3.0), modified by BlockMen
-* `hudbars_icon_breath.png`—kaeza (WTFPL), modified by BlockMen, modified again by Wuzzy
-* `hudbars_bgicon_breath.png`—based on previous image, edited by Wuzzy (WTFPL)
-* `hudbars_bar_health.png`—Wuzzy (WTFPL)
-* `hudbars_bar_breath.png`—Wuzzy (WTFPL)
-* `hudbars_bar_background.png`—Wuzzy (WTFPL)
+* `hudbars_icon_breath.png`—kaeza (MIT License), modified by BlockMen, modified again by Wuzzy
+* `hudbars_bgicon_breath.png`—based on previous image, edited by Wuzzy (MIT License)
+* `hudbars_bar_health.png`—Wuzzy (MIT License)
+* `hudbars_bar_breath.png`—Wuzzy (MIT License)
+* `hudbars_bar_background.png`—Wuzzy (MIT License)
 
 ### License references
 
 * [CC-BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)
-* [WTFPL](http://sam.zoy.org/wtfpl/COPYING)
+* [MIT License](https://opensource.org/licenses/MIT)
