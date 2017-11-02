@@ -1138,8 +1138,8 @@ minetest.register_abm({
 	nodenames = {"mcl_core:vine"},
 	neighbors = {"air"},
 	-- A low interval and a high inverse chance spreads the load
-	interval = 3,
-	chance = 5,
+	interval = 4,
+	chance = 8,
 	action = function(p0, node, _, _)
 		if not mcl_core.check_vines_supported(p0, node) then
 			-- Vines must die!
