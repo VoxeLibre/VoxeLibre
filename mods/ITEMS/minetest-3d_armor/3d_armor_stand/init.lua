@@ -132,7 +132,8 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 		if not inv then return end
 		if list then
 			-- ... but only if the slot is free
-			local single_item = itemstack:get_name()
+			local single_item = ItemStack(itemstack)
+			single_item:set_count(1)
 			if inv:is_empty(list) then
 				inv:add_item(list, single_item)
 				update_entity(pos)
