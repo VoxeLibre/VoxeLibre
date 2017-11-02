@@ -116,7 +116,9 @@ minetest.register_node("itemframes:frame",{
 			drop_item(pos, node, meta)
 			-- item holds the itemstring
 			meta:set_string("item", itemstack:get_name())
-			local itemdata = minetest.serialize(itemstack:to_table())
+			local put_itemstack = ItemStack(itemstack)
+			put_itemstack:set_count(1)
+			local itemdata = minetest.serialize(put_itemstack:to_table())
 			-- itemdata holds the serialized itemstack in table form
 			meta:set_string("itemdata", itemdata)
 			update_item(pos,node)
