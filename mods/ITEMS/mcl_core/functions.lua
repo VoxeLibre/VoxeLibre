@@ -934,6 +934,13 @@ minetest.register_abm({
 	chance = 4,
 	action = function(pos, node, active_object_count, active_object_count_wider)
 
+		-- First of all, check if we are even supported, otherwise, let's die!
+		if not mcl_core.check_vines_supported(pos, node) then
+			minetest.remove_node(pos)
+			core.check_for_falling(pos)
+			return
+		end
+
 		local neighbor_offsets = {
 			{ x=1, y=0, z=0 },
 			{ x=-1, y=0, z=0 },
@@ -1010,7 +1017,9 @@ minetest.register_abm({
 mcl_core.supports_vines = function(nodename)
 	local def = minetest.registered_nodes[nodename]
 	-- Rules: 1) walkable 2) full cube
-	return def.walkable and ((not def.node_box) or def.node_box.type == "regular")
+	return def.walkable and
+			(def.node_box == nil or def.node_box.type == "regular") and
+			(def.collision_box == nil or def.collision_box.type == "regular")
 end
 
 -- Leaf Decay
@@ -1098,9 +1107,74 @@ minetest.register_abm({
 			-- Remove node
 			minetest.remove_node(p0)
 			core.check_for_falling(p0)
+
+			-- Kill depending vines immediately to skip the vines decay delay
+			local surround = {
+				{ x = 0, y = 0, z = -1 },
+				{ x = 0, y = 0, z = 1 },
+				{ x = -1, y = 0, z = 0 },
+				{ x = 1, y = 0, z = 0 },
+				{ x = 0, y = -1, z = -1 },
+			}
+			for s=1, #surround do
+				local spos = vector.add(p0, surround[s])
+				local maybe_vine = minetest.get_node(spos)
+				local surround_inverse = vector.multiply(surround[s], -1)
+				if maybe_vine.name == "mcl_core:vine" and (not mcl_core.check_vines_supported(spos, maybe_vine)) then
+					minetest.remove_node(spos)
+					core.check_for_falling(spos)
+				end
+			end
 		end
 	end
 })
+
+-- Remove vines which are not supported by anything, similar to leaf decay.
+--[[ TODO: Vines are supposed to die immediately when they supporting block is destroyed.
+But doing this in Minetest would be too complicated / hacky. This vines decay is a simple
+way to make sure that all floating vines are destroyed eventually. ]]
+minetest.register_abm({
+	label = "Vines decay",
+	nodenames = {"mcl_core:vine"},
+	neighbors = {"air"},
+	-- A low interval and a high inverse chance spreads the load
+	interval = 3,
+	chance = 5,
+	action = function(p0, node, _, _)
+		if not mcl_core.check_vines_supported(p0, node) then
+			-- Vines must die!
+			minetest.remove_node(p0)
+			-- Just in case a falling node happens to float above vines
+			core.check_for_falling(p0)
+		end
+	end
+})
+
+--[[ Call this for vines nodes only.
+Given the pos and node of a vines node, this returns true if the vines are supported
+and false if the vines are currently floating.
+Vines are considered “supported” if they face a walkable+solid block or “hang” from a vines node above. ]]
+function mcl_core.check_vines_supported(pos, node)
+	local supported = false
+	local dir = minetest.wallmounted_to_dir(node.param2)
+	local pos1 = vector.add(pos, dir)
+	local node_neighbor = minetest.get_node(pos1)
+	-- Check if vines are attached to a solid block.
+	-- If ignore, we assume its solid.
+	if node_neighbor.name == "ignore" or mcl_core.supports_vines(node_neighbor.name) then
+		supported = true
+	elseif dir.y == 0 then
+		-- Vines are not attached, now we check if the vines are “hanging” below another vines block
+		-- of equal orientation.
+		local pos2 = vector.add(pos, {x=0, y=1, z=0})
+		local node2 = minetest.get_node(pos2)
+		-- Again, ignore means we assume its supported
+		if node2.name == "ignore" or (node2.name == "mcl_core:vine" and node2.param2 == node.param2) then
+			supported = true
+		end
+	end
+	return supported
+end
 
 ---- FUNCTIONS FOR SNOWED NODES ----
 -- These are nodes which change their appearence when they are below a snow cover

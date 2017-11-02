@@ -118,14 +118,9 @@ minetest.register_node("mcl_core:vine", {
 			end
 		end
 
-		-- Only allow placement on solid nodes
-		if (not groups) or (not groups.solid) then
-			return itemstack
-		end
-
 		-- Only place on full cubes
 		if not mcl_core.supports_vines(node.name) then
-			return
+			return itemstack
 		end
 
 		local above = pointed_thing.above
@@ -150,14 +145,8 @@ minetest.register_node("mcl_core:vine", {
 	after_destruct = function(pos, oldnode)
 		local below = {x=pos.x, y=pos.y-1, z=pos.z}
 		local belownode = minetest.get_node(below)
-		if belownode.name == oldnode.name and belownode.param2 == belownode.param2 then
-			local dir = minetest.wallmounted_to_dir(belownode.param2)
-			local support = vector.add(below, dir)
-			local supportnode = minetest.get_node(support)
-			-- supporting block = walkable + solid
-			if not minetest.registered_nodes[supportnode.name].walkable and minetest.get_item_group(supportnode.name, "solid") ~= 1 then
-				minetest.remove_node(below)
-			end
+		if belownode.name == oldnode.name and mcl_core.check_vines_supported(below, belownode) then
+			minetest.remove_node(below)
 		end
 	end,
 
