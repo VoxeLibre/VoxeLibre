@@ -145,7 +145,7 @@ minetest.register_node("mcl_core:vine", {
 	after_destruct = function(pos, oldnode)
 		local below = {x=pos.x, y=pos.y-1, z=pos.z}
 		local belownode = minetest.get_node(below)
-		if belownode.name == oldnode.name and mcl_core.check_vines_supported(below, belownode) then
+		if belownode.name == oldnode.name and (not mcl_core.check_vines_supported(below, belownode)) then
 			minetest.remove_node(below)
 		end
 	end,
