@@ -22,6 +22,9 @@ Lucky Blocks: 9
 
 
 Changelog:
+- 1.40- Updated to use newer functions, requires Minetest 0.4.16+ to work.
+- 1.39- Added 'on_breed', 'on_grown' and 'do_punch' custom functions per mob
+- 1.38- Better entity checking, nametag setting and on_spawn function added to mob registry, tweaked light damage
 - 1.37- Added support for Raymoo's CMI (common mob interface) mod: https://forum.minetest.net/viewtopic.php?f=9&t=15448
 - 1.36- Death check added, if mob dies in fire/lava/with lava pick then drops are cooked
 - 1.35- Added owner_loyal flag for owned mobs to attack player enemies, also fixed group_attack

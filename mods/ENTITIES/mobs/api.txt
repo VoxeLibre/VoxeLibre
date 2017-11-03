@@ -1,5 +1,5 @@
 
-MOB API (13th July 2017)
+MOB API (18th October 2017)
 
 The mob api is a function that can be called on by other mods to add new animals or monsters into minetest.
 
@@ -30,12 +30,13 @@ This functions registers a new mob as a Minetest entity.
         'specific_attack' has a table of entity names that monsters can attack {"player", "mobs_animal:chicken"}
         'hp_min' minimum health
         'hp_max' maximum health (mob health is randomly selected between both)
+        'nametag' string containing name of mob to display above entity
         'physical' same is in minetest.register_entity()
         'collisionbox' same is in minetest.register_entity()
         'visual' same is in minetest.register_entity()
         'visual_size' same is in minetest.register_entity()
         'textures' same is in minetest.register_entity()
-            although you can add multiple lines for random textures {{"texture1.png"},{"texture2.png"}}, 
+            although you can add multiple lines for random textures {{"texture1.png"},{"texture2.png"}},
         'gotten_texture' alt. texture for when self.gotten value is set to true (used for shearing sheep)
         'child_texture' texture of mod for when self.child is set to true
         'mesh' same is in minetest.register_entity()
@@ -74,9 +75,7 @@ This functions registers a new mob as a Minetest entity.
         'fall_damage' will mob be hurt when falling from height
         'fall_speed' maximum falling velocity of mob (default is -10 and must be below -2)
         'fear_height' when mob walks near a drop then anything over this value makes it stop and turn back (default is 0 to disable)
-        'on_die' a function that is called when the mob is killed the parameters are (self, pos)
         'floats' 1 to float in water, 0 to sink
-        'on_rightclick' its same as in minetest.register_entity()
         'pathfinding' set to 1 for mobs to use pathfinder feature to locate player, set to 2 so they can build/break also (only works with dogfight attack)
         'attack_type' the attack type of a monster
             'dogfight' follows player in range and attacks when in reach
@@ -88,8 +87,8 @@ This functions registers a new mob as a Minetest entity.
         'dogshoot_count2_max' number of seconds before switching back to shoot mode.
         'custom_attack' when set this function is called instead of the normal mob melee attack, parameters are (self, to_attack)
         'double_melee_attack' if false then api will choose randomly between 'punch' and 'punch2' attack animations
-        'on_blast' is called when an explosion happens near mob when using TNT functions, parameters are (object, damage) and returns (do_damage, do_knockback, drops)
         'explosion_radius' radius of explosion attack (defaults to 1)
+        'explosion_timer' number of seconds before mob explodes while still inside view range.
         'arrow' if the attack_type is "shoot" or "dogshoot" then the entity name of a pre-defined arrow is required, see below for arrow definition.
         'shoot_interval' the minimum shoot interval
         'shoot_offset' +/- value to position arrow/fireball when fired
@@ -104,6 +103,19 @@ This functions registers a new mob as a Minetest entity.
             'jump' sound when jumping
             'explode' sound when exploding
             'distance' maximum distance sounds are heard from (default is 10)
+
+Custom mob functions inside mob registry:
+
+        'on_die' a function that is called when the mob is killed the parameters are (self, pos)
+        'on_rightclick' its same as in minetest.register_entity()
+        'on_blast' is called when an explosion happens near mob when using TNT functions, parameters are (object, damage) and returns (do_damage, do_knockback, drops)
+        'on_spawn' is a custom function that runs on mob spawn with 'self' as variable, return true at end of function to run only once.
+        'after_activate' is a custom function that runs once mob has been activated with the paramaters (self, staticdata, def, dtime)
+        'on_breed' called when two similar mobs breed, paramaters are (parent1, parent2) objects, return false to stop child from being resized and owner/tamed flags and child textures being applied.
+        'on_grown' is called when a child mob has grown up, only paramater is (self).
+        'do_punch' called when mob is punched with paramaters (self, hitter, time_from_last_punch, tool_capabilities, direction), return false to stop punch damage and knockback from taking place.
+
+
 
 Mobs can look for specific nodes as they walk and replace them to mimic eating.
 
@@ -135,6 +147,7 @@ can be added to the mob definition under pre-defined mob animation names like:
       'fly_start', 'fly_end', 'fly_speed' when mob flies
       'punch_start', 'punch_end', 'punch_speed' when mob attacks
       'punch2_start', 'punch2_end', 'punch2_speed' when mob attacks (alternative)
+      'shoot_start', 'shoot_end', shoot_speed' when mob shoots
       'die_start', 'die_end', 'die_speed' when mob dies
       '*_loop' bool value to determine if any set animation loops e.g (die_loop = false)
       defaults to true if not set
@@ -346,7 +359,7 @@ mobs:register_mob("mob_horse:horse", {
 	visual_size = {x = 1.20, y = 1.20},
 	mesh = "mobs_horse.x",
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.25, 0.4},
-	animation = { 
+	animation = {
 		speed_normal = 15,
 		speed_run = 30,
 		stand_start = 25,
