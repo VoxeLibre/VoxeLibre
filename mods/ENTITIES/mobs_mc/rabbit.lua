@@ -115,18 +115,16 @@ local spawn = {
 
 local spawn_desert = table.copy(spawn)
 spawn_desert.nodes = mobs_mc.spawn.desert
-local on_spawn = function(self, pos)
-	local ent = self:get_luaentity()
+spawn_desert.on_spawn = function(self, pos)
 	local texture = "mobs_mc_rabbit_gold.png"
-	ent.base_texture = { "mobs_mc_rabbit_gold.png" }
-	self:set_properties({textures = ent.base_texture})
+	self.base_texture = { "mobs_mc_rabbit_gold.png" }
+	self.object:set_properties({textures = self.base_texture})
 end
 mobs:spawn(spawn_desert)
 
 local spawn_snow = table.copy(spawn)
 spawn_snow.nodes = mobs_mc.spawn.snow
 spawn_snow.on_spawn = function(self, pos)
-	local ent = self:get_luaentity()
 	local texture
 	local r = math.random(1, 100)
 	-- 80% white fur
@@ -136,15 +134,14 @@ spawn_snow.on_spawn = function(self, pos)
 	else
 		texture = "mobs_mc_rabbit_white_splotched.png"
 	end
-	ent.base_texture = { texture }
-	self:set_properties({textures = ent.base_texture})
+	self.base_texture = { texture }
+	self.object:set_properties({textures = self.base_texture})
 end
 mobs:spawn(spawn_snow)
 
 local spawn_grass = table.copy(spawn)
 spawn_grass.nodes = mobs_mc.spawn.grassland
 spawn_grass.on_spawn = function(self, pos)
-	local ent = self:get_luaentity()
 	local texture
 	local r = math.random(1, 100)
 	-- 50% brown fur
@@ -157,8 +154,8 @@ spawn_grass.on_spawn = function(self, pos)
 	else
 		texture = "mobs_mc_rabbit_black.png"
 	end
-	ent.base_texture = { texture }
-	self:set_properties({textures = ent.base_texture})
+	self.base_texture = { texture }
+	self.object:set_properties({textures = self.base_texture})
 end
 mobs:spawn(spawn_grass)
 

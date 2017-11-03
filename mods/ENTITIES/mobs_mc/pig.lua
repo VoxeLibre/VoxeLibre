@@ -12,9 +12,11 @@ mobs:register_mob("mobs_mc:pig", {
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 0.865, 0.45},
 	visual = "mesh",
 	mesh = "mobs_mc_pig.b3d",
-	textures = {
-		{"mobs_mc_pig.png"},
-	},
+	textures = {{
+		"blank.png", -- baby
+		"mobs_mc_pig.png", -- base
+		"blank.png", -- saddle
+	}},
 	visual_size = {x=2.5, y=2.5},
 	makes_footstep_sound = true,
 	walk_velocity = 1,
@@ -36,19 +38,15 @@ mobs:register_mob("mobs_mc:pig", {
 		distance = 16,
 	},
 	animation = {
-		speed_normal = 40,
+		stand_speed = 40,
+		walk_speed = 40,
+		run_speed = 50,
 		stand_start = 0,
 		stand_end = 0,
 		walk_start = 0,
 		walk_end = 40,
-		hurt_start = 118,
-		hurt_end = 154,
-		death_start = 154,
-		death_end = 179,
-		eat_start = 49,
-		eat_end = 78,
-		look_start = 78,
-		look_end = 108,
+		run_start = 0,
+		run_end = 40,
 	},
 	follow = mobs_mc.follow.pig,
 	view_range = 5,
@@ -106,7 +104,11 @@ mobs:register_mob("mobs_mc:pig", {
 		-- Put saddle on pig
 		local item = clicker:get_wielded_item()
 		if item:get_name() == mobs_mc.items.saddle and self.saddle ~= "yes" then
-			self.base_texture = {"mobs_mc_pig.png^mobs_mc_pig_saddle.png"}
+			self.base_texture = {
+				"blank.png", -- baby
+				"mobs_mc_pig.png", -- base
+				"mobs_mc_pig_saddle.png", -- saddle
+			}
 			self.object:set_properties({
 				textures = self.base_texture
 			})

@@ -8,7 +8,7 @@ This mod adds mobs which closely resemble the mobs from the game Minecraft, vers
 * [Wuzzy2](https://github.com/Wuzzy2): Zombies, husks, item textures, and code
 * [toby109tt](https://github.com/tobyplowy): Mapping fixes - better 2D planes
 * [22i](https://github.com/22i): Models (done in Blender) and mob icons for spawn eggs
-* [XSSheep](https://www.planetminecraft.com/member/xssheep/): Mob and item textures (from [Pixel Perfection](https://www.planetminecraft.com/texture_pack/131pixel-perfection/)
+* [XSSheep](https://www.planetminecraft.com/member/xssheep/): Mob and item textures (from [Pixel Perfection](https://www.planetminecraft.com/texture_pack/131pixel-perfection/))
 * MysticTempest: More mob textures
 * See `LICENSE_media.md` for detailed credits about each file
 
