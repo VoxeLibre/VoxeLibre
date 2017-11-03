@@ -60,7 +60,7 @@ local ocelot = {
 	},
 	follow = mobs_mc.follow.ocelot,
 	view_range = 12,
-	passive = false,
+	passive = true,
 	attack_type = "dogfight",
 	pathfinding = 1,
 	damage = 2,
