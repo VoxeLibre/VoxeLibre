@@ -36,13 +36,10 @@ minetest.register_globalstep(function(dtime)
 				compass_image = random_frame
 			else
 				local spawn = {x=0,y=0,z=0}
-				local s = minetest.settings:get("static_spawnpoint")
-				if s then
-					local numbers = string.split(s, ",")
-					spawn.x = tonumber(numbers[1])
-					spawn.y = tonumber(numbers[2])
-					spawn.z = tonumber(numbers[3])
-					if type(spawn.x) ~= "number" and type(spawn.y) ~= "number" and type(spawn.z) ~= "number" then
+				local ssp = minetest.setting_get_pos("static_spawnpoint")
+				if ssp then
+					spawn = ssp
+					if type(spawn) ~= "table" or type(spawn.x) ~= "number" or type(spawn.y) ~= "number" or type(spawn.z) ~= "number" then
 						spawn = {x=0,y=0,z=0}
 					end
 				end
