@@ -1639,6 +1639,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	local param2_data = vm:get_param2_data(lvm_buffer_param2)
 	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
 	local lvm_used = false
+	local biomemap
 
 	local ymin, ymax
 
@@ -1747,7 +1748,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		-- Clay, vines, cocoas
 		lvm_used = generate_clay(minp, maxp, seed, data, area, lvm_used)
 
-		local biomemap = minetest.get_mapgen_object("biomemap")
+		biomemap = minetest.get_mapgen_object("biomemap")
 		lvm_used = generate_tree_decorations(minp, maxp, seed, data, param2_data, area, biomemap, lvm_used)
 
 		----- Interactive block fixing section -----
