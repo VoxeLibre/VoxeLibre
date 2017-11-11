@@ -104,7 +104,7 @@ end
 rain.update_sound = function(player)
   local player_meta = weather.players[player:get_player_name()]
   if player_meta ~= nil then
-    if player_meta.sound_updated ~= nil and player_meta.sound_updated + 5 > os.time() then
+    if player_meta.sound_updated ~= nil and player_meta.sound_updated + 5 > minetest.get_gametime() then
       return false
     end
 
@@ -117,7 +117,7 @@ rain.update_sound = function(player)
       player_meta.sound_handler = rain.sound_handler(player)
     end
 
-    player_meta.sound_updated = os.time()
+    player_meta.sound_updated = minetest.get_gametime()
   end
 end
 

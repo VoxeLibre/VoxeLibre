@@ -14,10 +14,10 @@ minetest.register_globalstep(function(dtime)
   
   rain.make_weather()
   
-  if (thunder.next_strike <= os.time()) then
+  if (thunder.next_strike <= minetest.get_gametime()) then
     lightning.strike()
     local delay = math.random(thunder.min_delay, thunder.max_delay)
-    thunder.next_strike = os.time() + delay
+    thunder.next_strike = minetest.get_gametime() + delay
   end
 
 end)
