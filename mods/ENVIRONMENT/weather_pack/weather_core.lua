@@ -38,8 +38,13 @@ weather.get_rand_end_time = function(min_duration, max_duration)
   end 
 end
 
+-- Returns true if pos is outdoor.
+-- Outdoor is defined as any node in the Overworld under open sky.
+-- FIXME: Nodes below glass also count as “outdoor”, this should not be the case.
 weather.is_outdoor = function(pos)
-  if minetest.get_node_light({x=pos.x, y=pos.y + 1, z=pos.z}, 0.5) == 15 then
+  local cpos = {x=pos.x, y=pos.y+1, z=pos.z}
+  local _, dim = mcl_util.y_to_layer(cpos.y)
+  if minetest.get_node_light(cpos, 0.5) == 15 and dim == "overworld" then
     return true
   end
   return false
