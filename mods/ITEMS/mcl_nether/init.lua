@@ -35,6 +35,26 @@ minetest.register_node("mcl_nether:quartz_ore", {
 	_mcl_hardness = 3,
 })
 
+-- For eternal fire on top of netherrack and magma blocks
+-- (this code does not require a dependency on mcl_fire)
+local eternal_after_destruct = function(pos, oldnode)
+	pos.y = pos.y + 1
+	if minetest.get_node(pos).name == "mcl_fire:eternal_fire" then
+		minetest.remove_node(pos)
+	end
+end
+local eternal_on_ignite = function(player, pointed_thing)
+	local pos = pointed_thing.under
+	local flame_pos = {x = pos.x, y = pos.y + 1, z = pos.z}
+	local fn = minetest.get_node(flame_pos)
+	if fn.name == "air" and not minetest.is_protected(flame_pos, "fire") and pointed_thing.under.y < pointed_thing.above.y then
+		minetest.set_node(flame_pos, {name = "mcl_fire:eternal_fire"})
+		return true
+	else
+		return false
+	end
+end
+
 minetest.register_node("mcl_nether:netherrack", {
 	description = "Netherrack",
 	_doc_items_longdesc = "Netherrack is a stone-like block home to the Nether. Starting a fire on this block will create an eternal fire.",
@@ -45,6 +65,10 @@ minetest.register_node("mcl_nether:netherrack", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
+
+	-- Eternal fire on top
+	after_destruct = eternal_after_destruct,
+	_on_ignite = eternal_on_ignite,
 })
 
 minetest.register_node("mcl_nether:magma", {
@@ -67,6 +91,10 @@ minetest.register_node("mcl_nether:magma", {
 	end,
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
+
+	-- Eternal fire on top
+	after_destruct = eternal_after_destruct,
+	_on_ignite = eternal_on_ignite,
 })
 
 minetest.register_node("mcl_nether:soul_sand", {

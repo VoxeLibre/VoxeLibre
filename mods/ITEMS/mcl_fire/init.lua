@@ -74,9 +74,11 @@ minetest.register_node("mcl_fire:fire", {
 	sounds = {},
 	-- Turn into eternal fire on special blocks, light Nether portal (if possible), start burning timer
 	on_construct = function(pos)
-		local under = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name
+		local bpos = {x=pos.x, y=pos.y-1, z=pos.z}
+		local under = minetest.get_node(bpos).name
 
-		if under == "mcl_nether:magma" or under == "mcl_nether:netherrack" then
+		local _, dim = mcl_util.y_to_layer(bpos.y)
+		if under == "mcl_nether:magma" or under == "mcl_nether:netherrack" or (under == "mcl_core:bedrock" and dim == "end") then
 			minetest.swap_node(pos, {name = "mcl_fire:eternal_fire"})
 		end
 
@@ -389,50 +391,6 @@ else -- Fire enabled
 		end,
 	})
 
-end
-
--- Spawn eternal fire when fire starts on netherrack or magma block.
--- Also on bedrock when it's in the end.
-
-local eternal_override = {
-	after_destruct = function(pos, oldnode)
-		pos.y = pos.y + 1
-		if minetest.get_node(pos).name == "mcl_fire:eternal_fire" then
-			minetest.remove_node(pos)
-		end
-	end,
-	_on_ignite = function(player, pointed_thing)
-		local pos = pointed_thing.under
-		local flame_pos = {x = pos.x, y = pos.y + 1, z = pos.z}
-		local fn = minetest.get_node(flame_pos)
-		if fn.name == "air" and not minetest.is_protected(flame_pos, "fire") and pointed_thing.under.y < pointed_thing.above.y then
-			minetest.set_node(flame_pos, {name = "mcl_fire:eternal_fire"})
-			return true
-		else
-			return false
-		end
-	end,
-}
-local eternal_override_end = {
-	after_destruct = eternal_override.after_destruct,
-	_on_ignite = function(player, pointed_thing)
-		local pos = pointed_thing.under
-		local _, dim = mcl_util.y_to_layer(pos.y)
-		local flame_pos = {x = pos.x, y = pos.y + 1, z = pos.z}
-		local fn = minetest.get_node(flame_pos)
-		if dim == "end" and fn.name == "air" and not minetest.is_protected(flame_pos, "fire") and pointed_thing.under.y < pointed_thing.above.y then
-			minetest.set_node(flame_pos, {name = "mcl_fire:eternal_fire"})
-			return true
-		else
-			return false
-		end
-	end,
-}
-
-minetest.override_item("mcl_core:bedrock", eternal_override_end)
-if minetest.get_modpath("mcl_nether") then
-	minetest.override_item("mcl_nether:netherrack", eternal_override)
-	minetest.override_item("mcl_nether:magma", eternal_override)
 end
 
 -- Set pointed_thing on (normal) fire

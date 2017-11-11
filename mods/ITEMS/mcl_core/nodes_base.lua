@@ -563,6 +563,26 @@ minetest.register_node("mcl_core:bedrock", {
 	drop = '',
 	_mcl_blast_resistance = 18000000,
 	_mcl_hardness = -1,
+
+	-- Eternal fire on top of bedrock, if in the End dimension
+	after_destruct = function(pos)
+		pos.y = pos.y + 1
+		if minetest.get_node(pos).name == "mcl_fire:eternal_fire" then
+			minetest.remove_node(pos)
+		end
+	end,
+	_on_ignite = function(player, pointed_thing)
+		local pos = pointed_thing.under
+		local _, dim = mcl_util.y_to_layer(pos.y)
+		local flame_pos = {x = pos.x, y = pos.y + 1, z = pos.z}
+		local fn = minetest.get_node(flame_pos)
+		if dim == "end" and fn.name == "air" and not minetest.is_protected(flame_pos, "fire") and pointed_thing.under.y < pointed_thing.above.y then
+			minetest.set_node(flame_pos, {name = "mcl_fire:eternal_fire"})
+			return true
+		else
+			return false
+		end
+	end,
 })
 
 minetest.register_node("mcl_core:cobble", {
