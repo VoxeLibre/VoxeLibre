@@ -241,7 +241,7 @@ if weather.reg_weathers.rain == nil then
     chance = 15,
     clear = rain.clear,
     -- 10min - 20min
-    min_duration = 300,
-    max_duration = 600,
+    min_duration = 600,
+    max_duration = 1200,
   }
 end
