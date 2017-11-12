@@ -25,16 +25,18 @@ end
 
 -- set skybox based on time (uses skycolor api)
 rain.set_sky_box = function()
-  skycolor.add_layer(
-    "weather-pack-rain-sky",
-    {{r=0, g=0, b=0},
-    {r=85, g=86, b=98},
-    {r=152, g=150, b=159},
-    {r=85, g=86, b=98},
-    {r=0, g=0, b=0}})
-  skycolor.active = true
-  for _, player in pairs(minetest.get_connected_players()) do
-    player:set_clouds({color="#3D3D3FE8"})
+  if weather.state == "rain" then
+    skycolor.add_layer(
+      "weather-pack-rain-sky",
+      {{r=0, g=0, b=0},
+      {r=85, g=86, b=98},
+      {r=175, g=175, b=191},
+      {r=85, g=86, b=98},
+      {r=0, g=0, b=0}})
+    skycolor.active = true
+    for _, player in pairs(minetest.get_connected_players()) do
+      player:set_clouds({color="#5D5D5FE8"})
+    end
   end
 end
 
