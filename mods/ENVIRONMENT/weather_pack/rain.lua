@@ -1,5 +1,5 @@
 local PARTICLES_COUNT_RAIN = 30
-local PARTICLES_COUNT_THUNDER = 60
+local PARTICLES_COUNT_THUNDER = 45
 
 rain = {
   -- max rain particles created at time
