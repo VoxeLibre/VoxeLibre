@@ -1,6 +1,9 @@
+local PARTICLES_COUNT_RAIN = 30
+local PARTICLES_COUNT_THUNDER = 60
+
 rain = {
   -- max rain particles created at time
-  particles_count = 35,
+  particles_count = PARTICLES_COUNT_RAIN,
 
   -- flag to turn on/off extinguish fire for rain
   extinguish_fire = true,
@@ -137,6 +140,7 @@ rain.clear = function()
   rain.raining = false
   rain.sky_last_update = -1
   rain.init_done = false
+  rain.set_particles_mode("rain")
   skycolor.remove_layer("weather-pack-rain-sky")
   for _, player in ipairs(minetest.get_connected_players()) do
     rain.remove_sound(player)
@@ -157,6 +161,7 @@ rain.make_weather = function()
     rain.raining = true
     rain.set_sky_box()
     rain.init_done = true
+    rain.set_particles_mode(weather.mode)
   end
 
   for _, player in ipairs(minetest.get_connected_players()) do
@@ -175,6 +180,15 @@ if weather.reg_weathers.rain == nil then
     chance = 15,
     clear = rain.clear
   }
+end
+
+-- Switch the number of raindrops: "thunder" for many raindrops, otherwise for normal raindrops
+rain.set_particles_mode = function(mode)
+  if mode == "thunder" then
+    rain.particles_count = PARTICLES_COUNT_THUNDER
+  else
+    rain.particles_count = PARTICLES_COUNT_RAIN
+  end
 end
 
 if weather.allow_abm then

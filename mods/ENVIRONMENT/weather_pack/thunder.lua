@@ -13,6 +13,7 @@ minetest.register_globalstep(function(dtime)
     return false
   end
   
+  rain.set_particles_mode("thunder")
   rain.make_weather()
 
   if thunder.init_done == false then
