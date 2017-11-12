@@ -27,6 +27,7 @@ minetest.register_globalstep(function(dtime)
     skycolor.active = true
     for _, player in pairs(minetest.get_connected_players()) do
       player:set_clouds({color="#3D3D3FE8"})
+
     end
     thunder.init_done = true
   end
@@ -43,6 +44,9 @@ thunder.clear = function()
   rain.clear()
   skycolor.remove_layer("weather-pack-thunder-sky")
   skycolor.remove_layer("lightning")
+  for _, player in pairs(minetest.get_connected_players()) do
+    player:override_day_night_ratio(nil)
+  end
   thunder.init_done = false
 end
 
@@ -50,6 +54,7 @@ end
 if weather.reg_weathers.thunder == nil then
   weather.reg_weathers.thunder = {
     chance = 5,
+    day_night_ratio = 0.33333,
     clear = thunder.clear,
     min_duration = 120,
     max_duration = 600,

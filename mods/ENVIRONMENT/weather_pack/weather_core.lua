@@ -38,6 +38,14 @@ weather.get_rand_end_time = function(min_duration, max_duration)
   end 
 end
 
+weather.get_current_day_night_ratio = function()
+  if weather.state == "none" then
+    return nil
+  else
+    return weather.reg_weathers[weather.state].day_night_ratio
+  end
+end
+
 -- Returns true if pos is outdoor.
 -- Outdoor is defined as any node in the Overworld under open sky.
 -- FIXME: Nodes below glass also count as “outdoor”, this should not be the case.

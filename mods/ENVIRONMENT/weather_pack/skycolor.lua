@@ -72,11 +72,34 @@ skycolor = {
 		end
 
 		players = skycolor.utils.get_players(players)
+
+		-- Make everything darker for player
 		for _, player in ipairs(players) do
 			local pos = player:getpos()
 			local _, dim = mcl_util.y_to_layer(pos.y)
 			if dim == "overworld" then
 				player:set_sky(color, "plain", nil, true)
+
+				local dnn = weather.get_current_day_night_ratio()
+				if dnn then
+					local w = minetest.get_timeofday()
+					if w > 0.5 then
+						w = 2*(1 - w)
+					else
+						w = 1 - (1 - 2*w)
+					end
+					if w > dnn then
+						-- FIXME: This color will cause a sharp brightness change.
+						-- The correct ratio value needs to be calculated.
+						player:override_day_night_ratio(dnn)
+					else
+						player:override_day_night_ratio(nil)
+					end
+				else
+					player:override_day_night_ratio(nil)
+				end
+			else
+				player:override_day_night_ratio(nil)
 			end
 		end
 	end,

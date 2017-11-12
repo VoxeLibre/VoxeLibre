@@ -39,6 +39,7 @@ rain.set_sky_box = function()
     skycolor.active = true
     for _, player in pairs(minetest.get_connected_players()) do
       player:set_clouds({color="#5D5D5FE8"})
+      player:override_day_night_ratio(0.8)
     end
   end
 end
@@ -145,6 +146,7 @@ rain.clear = function()
   for _, player in ipairs(minetest.get_connected_players()) do
     rain.remove_sound(player)
     rain.remove_player(player)
+    player:override_day_night_ratio(nil)
   end
 end
 
@@ -178,6 +180,7 @@ end
 if weather.reg_weathers.rain == nil then
   weather.reg_weathers.rain = {
     chance = 15,
+    day_night_ratio = 0.8,
     clear = rain.clear
   }
 end
