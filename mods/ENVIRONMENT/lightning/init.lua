@@ -184,7 +184,7 @@ lightning.strike = function(pos)
 						if lua.name == "mobs_mc:pig" then
 							local rot = obj:get_yaw()
 							obj:remove()
-							obj = minetest.add_entity(pos2, "mobs_mc:zombiepig")
+							obj = minetest.add_entity(pos2, "mobs_mc:pigman")
 							obj:set_yaw(rot)
 						-- villager → witch
 						elseif lua.name == "mobs_mc:villager" then
