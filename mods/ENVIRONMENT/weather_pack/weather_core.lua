@@ -6,7 +6,7 @@ weather = {
   players = {},
   
   -- time when weather should be re-calculated
-  next_check = 0,
+  next_check = nil,
   
   -- default weather recalculation interval
   check_interval = 150,
@@ -102,6 +102,12 @@ minetest.register_globalstep(function(dtime)
     return 0
   end
 
+  if weather.end_time == nil then
+    weather.end_time = weather.get_rand_end_time()
+  end
+  if weather.next_check == nil then
+    weather.next_check = minetest.get_gametime() + weather.check_interval
+  end
   -- recalculate weather only when there aren't currently any
   if (weather.state ~= "none") then
     if (weather.end_time ~= nil and weather.end_time <= minetest.get_gametime()) then
@@ -112,15 +118,11 @@ minetest.register_globalstep(function(dtime)
     for weather_name, weather_meta in pairs(weather.reg_weathers) do 
       weather.set_random_weather(weather_name, weather_meta)
     end
-    -- fallback next_check set, weather 'none' will be. 
-    weather.next_check = minetest.get_gametime() + weather.check_interval
   end
 end)
 
 -- sets random weather (which could be 'regular' (no weather)).
 weather.set_random_weather = function(weather_name, weather_meta)
-  if weather.next_check > minetest.get_gametime() then return 0 end
-
   if (weather_meta ~= nil and weather_meta.chance ~= nil) then
     local random_roll = math.random(0,100)
     if (random_roll <= weather_meta.chance) then
