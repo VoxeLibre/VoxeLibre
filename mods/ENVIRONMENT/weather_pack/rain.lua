@@ -160,8 +160,8 @@ rain.make_weather = function()
   if rain.init_done == false then
     rain.raining = true
     rain.set_sky_box()
-    rain.init_done = true
     rain.set_particles_mode(weather.mode)
+    rain.init_done = true
   end
 
   for _, player in ipairs(minetest.get_connected_players()) do
@@ -238,10 +238,14 @@ end
 
 if weather.reg_weathers.rain == nil then
   weather.reg_weathers.rain = {
-    chance = 15,
     clear = rain.clear,
     -- 10min - 20min
     min_duration = 600,
     max_duration = 1200,
+    transitions = {
+      [65] = "none",
+      [70] = "snow",
+      [100] = "thunder",
+    }
   }
 end

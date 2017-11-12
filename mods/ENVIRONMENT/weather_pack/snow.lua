@@ -83,11 +83,15 @@ end)
 -- register snow weather
 if weather.reg_weathers.snow == nil then
   weather.reg_weathers.snow = {
-    chance = 10,
     clear = snow.clear,
     -- 10min - 20min
     min_duration = 600,
     max_duration = 1200,
+    transitions = {
+      [65] = "none",
+      [80] = "rain",
+      [100] = "thunder",
+    }
   }
 end
 

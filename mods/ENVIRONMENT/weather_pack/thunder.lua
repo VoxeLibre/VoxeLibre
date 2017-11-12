@@ -49,10 +49,12 @@ end
 -- register thunderstorm weather
 if weather.reg_weathers.thunder == nil then
   weather.reg_weathers.thunder = {
-    chance = 5,
     clear = thunder.clear,
     -- 10min - 20min
     min_duration = 600,
     max_duration = 1200,
+    transitions = {
+      [100] = "rain",
+    }
   }
 end

@@ -5,9 +5,6 @@ weather = {
   -- player list for saving player meta info
   players = {},
   
-  -- time when weather should be re-calculated
-  next_check = nil,
-  
   -- default weather recalculation interval
   check_interval = 300,
   
@@ -30,12 +27,24 @@ weather = {
   allow_abm = true,
 }
 
+weather.reg_weathers["none"] = {
+  min_duration = weather.min_duration,
+  max_duration = weather.max_duration,
+  transitions = {
+    [50] = "rain",
+    [100] = "snow",
+  },
+  clear = function() end,
+}
+
 weather.get_rand_end_time = function(min_duration, max_duration)
+  local r
   if min_duration ~= nil and max_duration ~= nil then
-    return minetest.get_gametime() + math.random(min_duration, max_duration);
+    r = math.random(min_duration, max_duration);
   else
-    return minetest.get_gametime() + math.random(weather.min_duration, weather.max_duration);
+    r = math.random(weather.min_duration, weather.max_duration);
   end 
+  return minetest.get_gametime() + r
 end
 
 -- Returns true if pos is outdoor.
@@ -105,30 +114,28 @@ minetest.register_globalstep(function(dtime)
   if weather.end_time == nil then
     weather.end_time = weather.get_rand_end_time()
   end
-  if weather.next_check == nil then
-    weather.next_check = minetest.get_gametime() + weather.check_interval
-  end
-  -- recalculate weather only when there aren't currently any
-  if (weather.state ~= "none") then
-    if (weather.end_time ~= nil and weather.end_time <= minetest.get_gametime()) then
-      weather.reg_weathers[weather.state].clear()
-      weather.state = "none"
-    end
-  elseif (weather.next_check <= minetest.get_gametime()) then
-    for weather_name, weather_meta in pairs(weather.reg_weathers) do 
-      weather.set_random_weather(weather_name, weather_meta)
-    end
+  -- recalculate weather
+  if weather.end_time <= minetest.get_gametime() then
+    weather.set_random_weather(weather.state, weather.reg_weathers[weather.state])
   end
 end)
 
 -- sets random weather (which could be 'regular' (no weather)).
 weather.set_random_weather = function(weather_name, weather_meta)
-  if (weather_meta ~= nil and weather_meta.chance ~= nil) then
+  if (weather_meta ~= nil) then
+    local transitions = weather_meta.transitions
     local random_roll = math.random(0,100)
-    if (random_roll <= weather_meta.chance) then
-      weather.state = weather_name
-      weather.end_time = weather.get_rand_end_time(weather_meta.min_duration, weather_meta.max_duration)
-      weather.next_check = minetest.get_gametime() + weather.check_interval
+    local new_weather
+    for v, weather in pairs(transitions) do
+      if random_roll < v then
+        new_weather = weather
+        break
+      end
+    end
+    if new_weather then
+      weather.state = new_weather
+      weather.end_time = weather.get_rand_end_time(weather.reg_weathers[weather.state].min_duration, weather.reg_weathers[weather.state].max_duration)
+      weather.reg_weathers[weather_name].clear()
     end
   end
 end
@@ -150,9 +157,7 @@ minetest.register_chatcommand("weather", {
     end
     local success = false
     if (param == "clear") then
-      if (weather.state ~= nil and weather.reg_weathers[weather.state] ~= nil) then
-        weather.reg_weathers[weather.state].clear()
-      end
+      weather.reg_weathers[weather.state].clear()
       weather.state = "none"
       weather.end_time = weather.get_rand_end_time()
       success = true
@@ -180,9 +185,7 @@ minetest.register_chatcommand("toggledownfall", {
   func = function(name, param)
     -- Currently rain/thunder/snow: Set weather to clear
     if weather.state ~= "none" then
-       if (weather.state ~= nil and weather.state ~= "none" and weather.reg_weathers[weather.state] ~= nil) then
-         weather.reg_weathers[weather.state].clear()
-       end
+       weather.reg_weathers[weather.state].clear()
        weather.state = "none"
        weather.end_time = weather.get_rand_end_time()
 
@@ -190,9 +193,7 @@ minetest.register_chatcommand("toggledownfall", {
     else
        local new = { "rain", "thunder", "snow" }
        local r = math.random(1, #new)
-       if (weather.state ~= nil and weather.state ~= "none" and weather.reg_weathers[weather.state] ~= nil) then
-         weather.reg_weathers[weather.state].clear()
-       end
+       weather.reg_weathers[weather.state].clear()
        weather.state = new[r]
        local weather_meta = weather.reg_weathers[weather.state]
        weather.end_time = weather.get_rand_end_time(weather_meta.min_duration, weather_meta.max_duration)
