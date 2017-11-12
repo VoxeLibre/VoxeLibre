@@ -144,8 +144,7 @@ lightning.strike = function(pos)
 	-- trigger revert of skybox
 	ttl = 0.1
 
-	-- Events caused by the lightning strike: Fire, enemy spawns,
-	-- (TODO: damage)
+	-- Events caused by the lightning strike: Fire, damage, mob transformations, rare skeleton spawn
 
 	pos2.y = pos2.y + 1/2
 	local skeleton_lightning = false
@@ -168,10 +167,40 @@ lightning.strike = function(pos)
 					angle = angle + (math.pi*2) / 3
 				end
 
-			-- Cause a fire
+			-- Cause a fire, deal damage, transform mobs
 			else
 				minetest.set_node(pos2, {name = "mcl_fire:fire"})
-				-- TODO: Damage
+
+				local objs = minetest.get_objects_inside_radius(pos2, 3.5)
+				for o=1, #objs do
+					local obj = objs[o]
+					local lua = obj:get_luaentity()
+					if obj:is_player() then
+						-- Player damage
+						obj:set_hp(obj:get_hp()-5)
+					-- Mobs
+					elseif lua and lua._cmi_is_mob then
+						-- pig → zombie pigman
+						if lua.name == "mobs_mc:pig" then
+							local rot = obj:get_yaw()
+							obj:remove()
+							obj = minetest.add_entity(pos2, "mobs_mc:zombiepig")
+							obj:set_yaw(rot)
+						-- villager → witch
+						elseif lua.name == "mobs_mc:villager" then
+							local rot = obj:get_yaw()
+							obj:remove()
+							obj = minetest.add_entity(pos2, "mobs_mc:witch")
+							obj:set_yaw(rot)
+						-- TODO: creeper → charged creeper
+						elseif lua.name == "mobs_mc:creeper" then
+
+						-- Other mobs: Just Damage
+						else
+							obj:set_hp(obj:get_hp()-5)
+						end
+					end
+				end
 			end
 		end
 		-- TODO: Charged creeper
