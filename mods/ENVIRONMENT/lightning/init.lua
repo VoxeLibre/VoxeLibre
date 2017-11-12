@@ -144,13 +144,37 @@ lightning.strike = function(pos)
 	-- trigger revert of skybox
 	ttl = 0.1
 
-	-- set the air node above it on fire
+	-- Events caused by the lightning strike: Fire, enemy spawns,
+	-- (TODO: damage)
+
 	pos2.y = pos2.y + 1/2
+	local skeleton_lightning = false
+	if rng:next(1,100) <= 3 then
+		skeleton_lightning = true
+	end
 	if minetest.get_item_group(minetest.get_node({x = pos2.x, y = pos2.y - 1, z = pos2.z}).name, "liquid") < 1 then
 		if minetest.get_node(pos2).name == "air" then
+			-- Low chance for a lightning to spawn skeleton horse + skeletons
+			if skeleton_lightning then
+				minetest.add_entity(pos2, "mobs_mc:skeleton_horse")
+
+				local angle, posadd
+				angle = math.random(0, math.pi*2)
+				for i=1,3 do
+					posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
+					posadd = vector.normalize(posadd)
+					local mob = minetest.add_entity(vector.add(pos2, posadd), "mobs_mc:skeleton")
+					mob:setyaw(angle-math.pi/2)
+					angle = angle + (math.pi*2) / 3
+				end
+
 			-- Cause a fire
-			minetest.set_node(pos2, {name = "mcl_fire:fire"})
+			else
+				minetest.set_node(pos2, {name = "mcl_fire:fire"})
+				-- TODO: Damage
+			end
 		end
+		-- TODO: Charged creeper
 	end
 
 end
