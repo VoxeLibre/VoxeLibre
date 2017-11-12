@@ -175,13 +175,6 @@ rain.make_weather = function()
   end
 end
 
-if weather.reg_weathers.rain == nil then
-  weather.reg_weathers.rain = {
-    chance = 15,
-    clear = rain.clear
-  }
-end
-
 -- Switch the number of raindrops: "thunder" for many raindrops, otherwise for normal raindrops
 rain.set_particles_mode = function(mode)
   if mode == "thunder" then
@@ -241,4 +234,14 @@ if weather.allow_abm then
 			end
 		end
   	})
+end
+
+if weather.reg_weathers.rain == nil then
+  weather.reg_weathers.rain = {
+    chance = 15,
+    clear = rain.clear,
+    -- 10min - 20min
+    min_duration = 300,
+    max_duration = 600,
+  }
 end

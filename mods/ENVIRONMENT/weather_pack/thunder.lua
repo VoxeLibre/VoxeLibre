@@ -51,7 +51,8 @@ if weather.reg_weathers.thunder == nil then
   weather.reg_weathers.thunder = {
     chance = 5,
     clear = thunder.clear,
-    min_duration = 120,
+    -- 10min - 20min
+    min_duration = 300,
     max_duration = 600,
   }
 end

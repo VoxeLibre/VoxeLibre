@@ -9,13 +9,13 @@ weather = {
   next_check = 0,
   
   -- default weather recalculation interval
-  check_interval = 300,
+  check_interval = 150,
   
   -- weather min duration
-  min_duration = 240,
+  min_duration = 300,
   
   -- weather max duration
-  max_duration = 3600,
+  max_duration = 9000,
   
   -- weather calculated end time
   end_time = nil,
@@ -152,6 +152,7 @@ minetest.register_chatcommand("weather", {
         weather.reg_weathers[weather.state].clear()
       end
       weather.state = "none"
+      weather.end_time = weather.get_rand_end_time()
       success = true
       return
     end
@@ -159,6 +160,8 @@ minetest.register_chatcommand("weather", {
     if (weather.reg_weathers ~= nil and weather.reg_weathers[param] ~= nil) then
       if (weather.state ~= nil and weather.state ~= "none" and weather.reg_weathers[weather.state] ~= nil) then
         weather.reg_weathers[weather.state].clear()
+        local weather_meta = weather.reg_weathers[weather.state]
+        weather.end_time = weather.get_rand_end_time(weather_meta.min_duration, weather_meta.max_duration)
       end
       weather.state = param
       return
@@ -179,6 +182,8 @@ minetest.register_chatcommand("toggledownfall", {
          weather.reg_weathers[weather.state].clear()
        end
        weather.state = "none"
+       weather.end_time = weather.get_rand_end_time()
+
     -- Currently clear: Set weather randomly to rain/thunder/snow
     else
        local new = { "rain", "thunder", "snow" }
@@ -187,6 +192,8 @@ minetest.register_chatcommand("toggledownfall", {
          weather.reg_weathers[weather.state].clear()
        end
        weather.state = new[r]
+       local weather_meta = weather.reg_weathers[weather.state]
+       weather.end_time = weather.get_rand_end_time(weather_meta.min_duration, weather_meta.max_duration)
     end
   end
 })

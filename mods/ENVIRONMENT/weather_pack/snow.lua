@@ -84,7 +84,10 @@ end)
 if weather.reg_weathers.snow == nil then
   weather.reg_weathers.snow = {
     chance = 10,
-    clear = snow.clear
+    clear = snow.clear,
+    -- 10min - 20min
+    min_duration = 300,
+    max_duration = 600,
   }
 end
 
