@@ -811,7 +811,7 @@ local function register_biomes()
 	-- This is a plateau for grass blocks, tall grass, coarse dirt and oaks.
 	minetest.register_biome({
 		name = "MesaPlateauF_grasstop",
-		node_top = "mcl_core:dirt_with_grass",
+		node_top = "mcl_core:dirt_with_dry_grass",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		filler_depth = 1,
@@ -854,7 +854,7 @@ local function register_biomes()
 	-- Savanna
 	minetest.register_biome({
 		name = "Savanna",
-		node_top = "mcl_core:dirt_with_grass",
+		node_top = "mcl_core:dirt_with_dry_grass",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 2,
@@ -897,7 +897,7 @@ local function register_biomes()
 	-- Otherwise identical to Savanna
 	minetest.register_biome({
 		name = "SavannaM",
-		node_top = "mcl_core:dirt_with_grass",
+		node_top = "mcl_core:dirt_with_dry_grass",
 		depth_top = 1,
 		node_filler = "mcl_core:coarse_dirt",
 		depth_filler = 3,
@@ -1239,7 +1239,7 @@ local function register_biomelike_ores()
 	minetest.register_ore({
 		ore_type	= "sheet",
 		ore		= "mcl_core:coarse_dirt",
-		wherein		= {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		wherein		= {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt"},
 		column_height_max = 1,
 		column_midpoint_factor = 0.0,
 		y_min		= mcl_vars.mg_overworld_min,
@@ -1251,7 +1251,7 @@ local function register_biomelike_ores()
 	minetest.register_ore({
 		ore_type	= "blob",
 		ore		= "mcl_core:coarse_dirt",
-		wherein		= {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		wherein		= {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt"},
 		clust_scarcity	= 1500,
 		clust_num_ores	= 25,
 		clust_size	= 7,
@@ -1604,11 +1604,15 @@ local function register_grass_decoration(grasstype, offset, scale, biomes)
 	local place_on, seed, node
 	if grasstype == "fern" then
 		node = "mcl_flowers:fern"
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:podzol"}
+		place_on = {"group:grass_block", "mcl_core:podzol"}
 		seed = 333
 	elseif grasstype == "tallgrass" then
 		node = "mcl_flowers:tallgrass"
-		place_on = {"mcl_core:dirt_with_grass"}
+		place_on = {"group:grass_block"}
+		seed = 420
+	elseif grasstype == "tallgrass_dry" then
+		node = "mcl_flowers:tallgrass_dry"
+		place_on = {"group:grass_block"}
 		seed = 420
 	end
 	local noise = {
@@ -1797,7 +1801,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		place_on = {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.015,
@@ -1848,7 +1852,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_dry_grass", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.0004,
 		biomes = {"JungleEdge", "JungleEdgeM", "Savanna"},
@@ -2091,7 +2095,7 @@ local function register_decorations()
 	for a=1, 7 do
 		minetest.register_decoration({
 			deco_type = "schematic",
-			place_on = {"mcl_core:dirt_with_grass", "mcl_core:coarse_dirt"},
+			place_on = {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt", "mcl_core:coarse_dirt"},
 			sidelen = 16,
 			fill_ratio = 0.0002,
 			biomes = {"Savanna", "SavannaM"},
@@ -2355,7 +2359,7 @@ local function register_decorations()
 	-- Sugar canes
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "mcl_core:dirt_with_grass", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
+		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "group:grass_block", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
 		sidelen = 16,
 		noise_params = {
 			offset = -0.3,
@@ -2375,7 +2379,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "mcl_core:dirt_with_grass", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
+		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "group:grass_block", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.0,
@@ -2396,7 +2400,18 @@ local function register_decorations()
 	})
 
 	-- Doubletall grass
-	local register_doubletall_grass = function(offset, scale, biomes)
+	local register_doubletall_grass = function(offset, scale, biomes, is_dry)
+
+		local bottom, top, tallgrass
+		if is_dry then
+			bottom = "mcl_flowers:double_grass_dry"
+			top = "mcl_flowers:double_grass_dry_top"
+			tallgrass = "mcl_flowers:tallgrass_dry"
+		else
+			bottom = "mcl_flowers:double_grass"
+			top = "mcl_flowers:double_grass_top"
+			tallgrass = "mcl_flowers:tallgrass"
+		end
 
 		minetest.register_decoration({
 			deco_type = "schematic",
@@ -2404,14 +2419,14 @@ local function register_decorations()
 				size = { x=1, y=3, z=1 },
 				data = {
 					{ name = "air", prob = 0 },
-					{ name = "mcl_flowers:double_grass", param1=255, },
-					{ name = "mcl_flowers:double_grass_top", param1=255, },
+					{ name = bottom, param1=255, },
+					{ name = top, param1=255, },
 				},
 			},
 			replacements = {
-				["mcl_flowers:tallgrass"] = "mcl_flowers:double_grass"
+				[tallgrass] = bottom,
 			},
-			place_on = {"mcl_core:dirt_with_grass"},
+			place_on = {"group:grass_block"},
 			sidelen = 16,
 			noise_params = {
 				offset = offset,
@@ -2427,9 +2442,9 @@ local function register_decorations()
 		})
 	end
 
-	register_doubletall_grass(-0.01, 0.03, {"Taiga", "Forest", "FlowerForest", "BirchForest", "BirchForestM", "RoofedForest", "MesaPlateauF_grasstop" })
+	register_doubletall_grass(-0.01, 0.03, {"Taiga", "Forest", "FlowerForest", "BirchForest", "BirchForestM", "RoofedForest"})
 	register_doubletall_grass(-0.002, 0.03, {"Plains", "SunflowerPlains"})
-	register_doubletall_grass(-0.0005, -0.03, {"Savanna", "SavannaM"})
+	register_doubletall_grass(-0.0005, -0.03, {"Savanna", "SavannaM"}, true)
 
 	-- Large ferns
 	local register_double_fern = function(offset, scale, biomes)
@@ -2446,7 +2461,7 @@ local function register_decorations()
 			replacements = {
 				["mcl_flowers:fern"] = "mcl_flowers:double_fern"
 			},
-			place_on = {"mcl_core:dirt_with_grass", "mcl_core:podzol"},
+			place_on = {"group:grass_block", "mcl_core:podzol"},
 			sidelen = 16,
 			noise_params = {
 				offset = offset,
@@ -2493,7 +2508,7 @@ local function register_decorations()
 						{ name = "mcl_flowers:"..name.."_top", param1=255, },
 					},
 				},
-				place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+				place_on = {"group:grass_block", "mcl_core:dirt"},
 
 				sidelen = 16,
 				noise_params = {
@@ -2858,7 +2873,7 @@ local function register_decorations()
 				{ name = "mcl_farming:pumpkin_face", param1=255, },
 			},
 		},
-		place_on = {"mcl_core:dirt_with_grass"},
+		place_on = {"group:grass_block"},
 		sidelen = 16,
 		noise_params = {
 			offset = -0.016,
@@ -2874,7 +2889,8 @@ local function register_decorations()
 	})
 
 	-- Grasses and ferns
-	local grass_forest = {"Plains", "Taiga", "Forest", "FlowerForest", "BirchForest", "BirchForestM", "RoofedForest", "Swampland", "MesaPlateauF_grasstop" }
+	local grass_forest = {"Plains", "Taiga", "Forest", "FlowerForest", "BirchForest", "BirchForestM", "RoofedForest", "Swampland", }
+	local grass_mpf = {"MesaPlateauF_grasstop"}
 	local grass_plains = {"Plains", "SunflowerPlains", "JungleEdge", "JungleEdgeM" }
 	local grass_savanna = {"Savanna", "SavannaM"}
 	local grass_sparse = {"ExtremeHills", "ExtremeHills+", "ExtremeHills+_snowtop", "ExtremeHillsM", "Jungle", }
@@ -2884,12 +2900,16 @@ local function register_decorations()
 	register_grass_decoration("tallgrass", 0,      0.06, grass_forest)
 	register_grass_decoration("tallgrass", 0.015,  0.045, grass_forest)
 	register_grass_decoration("tallgrass", 0.03,   0.03, grass_forest)
+	register_grass_decoration("tallgrass_dry", -0.03, 0.09, grass_mpf)
+	register_grass_decoration("tallgrass_dry", -0.015, 0.075, grass_mpf)
+	register_grass_decoration("tallgrass_dry", 0, 0.06, grass_mpf)
+	register_grass_decoration("tallgrass_dry", 0.01, 0.045, grass_mpf)
 	register_grass_decoration("tallgrass", 0.01, 0.05, grass_forest)
 	register_grass_decoration("tallgrass", 0.03, 0.03, grass_plains)
 	register_grass_decoration("tallgrass", 0.05, 0.01, grass_plains)
 	register_grass_decoration("tallgrass", 0.07, -0.01, grass_plains)
 	register_grass_decoration("tallgrass", 0.09, -0.03, grass_plains)
-	register_grass_decoration("tallgrass", 0.18, -0.03, grass_savanna)
+	register_grass_decoration("tallgrass_dry", 0.18, -0.03, grass_savanna)
 	register_grass_decoration("tallgrass", 0.05, -0.03, grass_sparse)
 
 	local fern_minimal = { "Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "MegaTaiga", "MegaSpruceTaiga", "ColdTaiga" }
@@ -2960,7 +2980,7 @@ local function register_decorations()
 	-- Dead bushes
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"group:sand", "mcl_core:podzol", "mcl_core:podzol_snow", "mcl_core:dirt", "mcl_core:coarse_dirt", "group:hardened_clay"},
+		place_on = {"group:sand", "mcl_core:podzol", "mcl_core:dirt", "mcl_core:dirt_with_dry_grass", "mcl_core:coarse_dirt", "group:hardened_clay"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0,
@@ -3030,7 +3050,7 @@ local function register_decorations()
 		-- Mushrooms next to trees
 		minetest.register_decoration({
 			deco_type = "simple",
-			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol", "mcl_core:mycelium", "mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite"},
+			place_on = {"group:grass_block", "mcl_core:dirt", "mcl_core:podzol", "mcl_core:mycelium", "mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite"},
 			sidelen = 16,
 			noise_params = {
 				offset = 0,
@@ -3075,7 +3095,7 @@ local function register_decorations()
 		if biomes then
 			minetest.register_decoration({
 				deco_type = "simple",
-				place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+				place_on = {"group:grass_block", "mcl_core:dirt"},
 				sidelen = 16,
 				noise_params = {
 					offset = 0.0008,
@@ -3094,7 +3114,7 @@ local function register_decorations()
 		if is_in_flower_forest then
 			minetest.register_decoration({
 				deco_type = "simple",
-				place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+				place_on = {"group:grass_block", "mcl_core:dirt"},
 				sidelen = 80,
 				noise_params= {
 					offset = 0.0008*40,

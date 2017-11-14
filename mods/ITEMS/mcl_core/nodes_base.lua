@@ -295,6 +295,7 @@ minetest.register_node("mcl_core:diorite_smooth", {
 	_mcl_hardness = 1.5,
 })
 
+-- Grass Block
 minetest.register_node("mcl_core:dirt_with_grass", {
 	description = "Grass Block",
 	_doc_items_longdesc = "A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel. In light, the grass slowly spreads onto dirt nearby. Under an opaque block or a liquid, a grass block may turn back to dirt.",
@@ -302,7 +303,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	tiles = {"default_grass.png", "default_dirt.png", "default_dirt.png^default_grass_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {handy=1,shovely=1, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, spreading_dirt_type=1, enderman_takable=1, building_block=1},
+	groups = {handy=1,shovely=1, grass_block=1, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, spreading_dirt_type=1, enderman_takable=1, building_block=1},
 	drop = 'mcl_core:dirt',
 	sounds = mcl_sounds.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
@@ -313,6 +314,29 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	_mcl_hardness = 0.6,
 })
 mcl_core.register_snowed_node("mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass")
+
+-- Grass Block variant for dry biomes
+minetest.register_node("mcl_core:dirt_with_dry_grass", {
+	_doc_items_create_entry = false,
+	tiles = {"default_dry_grass.png", "default_dirt.png", "default_dirt.png^default_dry_grass_side.png"},
+	is_ground_content = true,
+	stack_max = 64,
+	groups = {handy=1,shovely=1, grass_block=1, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, spreading_dirt_type=1, enderman_takable=1, building_block=1, not_in_creative_inventory=1},
+	drop = 'mcl_core:dirt',
+	sounds = mcl_sounds.node_sound_dirt_defaults({
+		footstep = {name="default_grass_footstep", gain=0.4},
+	}),
+	on_construct = mcl_core.on_snowable_construct,
+	_mcl_snowed = "mcl_core:dirt_with_dry_grass_snow",
+	_mcl_blast_resistance = 3,
+	_mcl_hardness = 0.6,
+})
+mcl_core.register_snowed_node("mcl_core:dirt_with_dry_grass_snow", "mcl_core:dirt_with_dry_grass")
+
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mcl_core:dirt_with_grass", "nodes", "mcl_core:dirt_with_dry_grass")
+	doc.add_entry_alias("nodes", "mcl_core:dirt_with_grass", "nodes", "mcl_core:dirt_with_dry_grass_snow")
+end
 
 minetest.register_node("mcl_core:grass_path", {
 	tiles = {"mcl_core_grass_path_top.png", "default_dirt.png", "mcl_core_grass_path_side.png"},

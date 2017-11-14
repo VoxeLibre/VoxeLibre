@@ -170,7 +170,7 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 	if pointed_thing.above.y < pointed_thing.under.y then
 		return
 	end
-	if (node.name == "mcl_core:dirt_with_grass" or node.name == "mcl_core:dirt_with_grass_snow") then
+	if (minetest.get_item_group(node.name, "grass_block") == 1) then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
 		if minetest.get_node(above).name == "air" then
