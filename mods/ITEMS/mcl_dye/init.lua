@@ -123,6 +123,11 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		-- Allium and blue orchid intentionally left out,
 		-- those must be found by the player.
 	}
+	-- Special case for dry lands
+	local flowers_table_dry = {
+		"mcl_flowers:dandelion",
+		"mcl_flowers:poppy",
+	}
 
 	local pos = pointed_thing.under
 	local n = minetest.get_node(pos)
@@ -226,7 +231,11 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 								minetest.add_node(pos, {name="mcl_flowers:tallgrass"})
 							end
 						else
-							minetest.add_node(pos, {name=flowers_table[math.random(1, #flowers_table)]})
+							if n2.name == "mcl_core:dirt_with_dry_grass" then
+								minetest.add_node(pos, {name=flowers_table_dry[math.random(1, #flowers_table_dry)]})
+							else
+								minetest.add_node(pos, {name=flowers_table[math.random(1, #flowers_table)]})
+							end
 						end
 					end
 				end
