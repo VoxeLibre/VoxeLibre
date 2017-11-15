@@ -1977,7 +1977,7 @@ local function register_decorations()
 	-- Spruce
 	local function quick_spruce(seed, offset, sprucename, biomes, y)
 		if not y then
-			y = 2
+			y = 1
 		end
 		minetest.register_decoration({
 			deco_type = "schematic",
