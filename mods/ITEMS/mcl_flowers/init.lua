@@ -7,10 +7,16 @@ local smallflowerlongdesc = "This is a small flower. Small flowers are mainly us
 local flowerusagehelp = "It can only be placed on a block on which it would also survive."
 
 -- on_place function for flowers
-local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, node)
+local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, node, itemstack)
 	local below = {x=pos.x, y=pos.y-1, z=pos.z}
 	local soil_node = minetest.get_node_or_nil(below)
 	if not soil_node then return false end
+
+	local dry = minetest.registered_nodes[itemstack:get_name()]._mcl_dry_override
+	local replace
+	if dry and (soil_node.name == "mcl_core:dirt_with_dry_grass" or soil_node.name == "mcl_core:dirt_with_dry_grass_snow") then
+		replace = dry
+	end
 
 --[[	Placement requirements:
 	* Dirt or grass block
@@ -22,7 +28,11 @@ local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, 
 	if (light_night and light_night >= 8) or (light_day and light_day >= minetest.LIGHT_MAX) then
 		light_ok = true
 	end
-	return (soil_node.name == "mcl_core:dirt" or minetest.get_item_group(soil_node.name, "grass_block") == 1 or soil_node.name == "mcl_core:coarse_dirt" or soil_node.name == "mcl_core:podzol" or soil_node.name == "mcl_core:podzol_snow") and light_ok
+	local ok = (soil_node.name == "mcl_core:dirt" or minetest.get_item_group(soil_node.name, "grass_block") == 1 or soil_node.name == "mcl_core:coarse_dirt" or soil_node.name == "mcl_core:podzol" or soil_node.name == "mcl_core:podzol_snow") and light_ok
+	if ok and replace then
+		return replace
+	end
+	return ok
 end)
 
 local function add_simple_flower(name, desc, image, simple_selection_box)
@@ -121,6 +131,7 @@ for i=1,2 do
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		drop = wheat_seed_drop,
 		_mcl_shears_drop = shears_drop,
+		_mcl_dry_override = "mcl_flowers:tallgrass_dry",
 		node_placement_prediction = "",
 		on_place = on_place_flower,
 		_mcl_blast_resistance = 0,
@@ -149,6 +160,7 @@ for i=1,2 do
 		on_place = on_place_flower,
 		drop = wheat_seed_drop,
 		_mcl_shears_drop = shears_drop_fern,
+		_mcl_dry_override = "mcl_flowers:fern_dry",
 		selection_box = {
 			type = "fixed",
 			fixed = { -4/16, -0.5, -4/16, 4/16, 7/16, 4/16 },
@@ -159,7 +171,7 @@ end
 doc.add_entry_alias("nodes", "mcl_flowers:tallgrass", "nodes", "mcl_flowers:tallgrass_dry")
 doc.add_entry_alias("nodes", "mcl_flowers:fern", "nodes", "mcl_flowers:fern_dry")
 
-local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_img, selbox_radius, selbox_top_height, drop, shears_drop, is_flower)
+local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_img, selbox_radius, selbox_top_height, drop, shears_drop, is_flower, dry_override)
 	if not inv_img then
 		inv_img = top_img
 	end
@@ -199,6 +211,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		buildable_to = true,
 		drop = drop_bottom,
 		_mcl_shears_drop = shears_drop,
+		_mcl_dry_override = dry_override,
 		node_placement_prediction = "",
 		selection_box = {
 			type = "fixed",
@@ -207,8 +220,10 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		on_place = function(itemstack, placer, pointed_thing)
 			-- We can only place on nodes
 			if pointed_thing.type ~= "node" then
-				--return
+				return
 			end
+
+			local itemstring = "mcl_flowers:"..name
 
 			-- Call on_rightclick if the pointed node defines it
 			local node = minetest.get_node(pointed_thing.under)
@@ -252,10 +267,14 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 			-- * Only with light level >= 8
 			-- * Only if two enough space
 			if (floorname == "mcl_core:dirt" or minetest.get_item_group(floorname, "grass_block") == 1 or floorname == "mcl_core:coarse_dirt" or floorname == "mcl_core:podzol" or floorname == "mcl_core:podzol_snow") and bottom_buildable and top_buildable and light_ok then
+				local dry_override = minetest.registered_nodes[itemstring]._mcl_dry_override
+				if dry_override and (floorname == "mcl_core:dirt_with_dry_grass" or floorname == "mcl_core:dirt_with_dry_grass_snow") then
+					itemstring = dry_override
+				end
 				-- Success! We can now place the flower
-				minetest.sound_play(minetest.registered_nodes["mcl_flowers:"..name].sounds.place, {pos = bottom, gain=1})
-				minetest.set_node(bottom, {name="mcl_flowers:"..name})
-				minetest.set_node(top, {name="mcl_flowers:"..name.."_top"})
+				minetest.sound_play(minetest.registered_nodes[itemstring].sounds.place, {pos = bottom, gain=1})
+				minetest.set_node(bottom, {name=itemstring})
+				minetest.set_node(top, {name=itemstring.."_top"})
 				if not minetest.settings:get_bool("creative_mode") then
 					itemstack:take_item()
 				end
@@ -317,17 +336,19 @@ add_large_plant("lilac", "Lilac", "A lilac is a large plant which occupies two b
 add_large_plant("sunflower", "Sunflower", "A sunflower is a large plant which occupies two blocks. It is mainly used in dye production.", "mcl_flowers_double_plant_sunflower_bottom.png", "mcl_flowers_double_plant_sunflower_top.png^mcl_flowers_double_plant_sunflower_front.png", "mcl_flowers_double_plant_sunflower_front.png", 3/16, 4/16)
 
 for i=1, 2 do
-	local longdesc_grass, longdesc_fern, dry
+	local longdesc_grass, longdesc_fern, dry, dry_override_grass, dry_override_fern
 	if i==1 then
 		longdesc_grass = "Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds."
 		longdesc_fern = "Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds."
 		dry = ""
+		dry_override_grass = "mcl_flowers:double_grass_dry"
+		dry_override_fern = "mcl_flowers:double_fern_dry"
 	else
 		-- ID/texture name modifier
 		dry = "_dry"
 	end
-	add_large_plant("double_grass"..dry, "Double Tallgrass", longdesc_grass, "mcl_flowers_double_plant_grass_bottom"..dry..".png", "mcl_flowers_double_plant_grass_top"..dry..".png", nil, 5/16, 7/16, wheat_seed_drop, {"mcl_flowers:tallgrass 2"}, false)
-	add_large_plant("double_fern"..dry, "Large Fern", longdesc_fern, "mcl_flowers_double_plant_fern_bottom"..dry..".png", "mcl_flowers_double_plant_fern_top"..dry..".png", nil, 6/16, 5/16, wheat_seed_drop, {"mcl_flowers:fern 2"}, false)
+	add_large_plant("double_grass"..dry, "Double Tallgrass", longdesc_grass, "mcl_flowers_double_plant_grass_bottom"..dry..".png", "mcl_flowers_double_plant_grass_top"..dry..".png", nil, 5/16, 7/16, wheat_seed_drop, {"mcl_flowers:tallgrass 2"}, false, dry_override_grass)
+	add_large_plant("double_fern"..dry, "Large Fern", longdesc_fern, "mcl_flowers_double_plant_fern_bottom"..dry..".png", "mcl_flowers_double_plant_fern_top"..dry..".png", nil, 6/16, 5/16, wheat_seed_drop, {"mcl_flowers:fern 2"}, false, dry_override_fern)
 end
 
 doc.add_entry_alias("nodes", "mcl_flowers:double_grass", "nodes", "mcl_flowers:double_grass_dry")
