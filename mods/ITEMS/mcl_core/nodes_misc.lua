@@ -107,7 +107,7 @@ minetest.register_node("mcl_core:deadbush", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = {-6/16, -8/16, -6/16, 6/16, 8/16, 6/16},
+		fixed = {-5/16, -8/16, -5/16, 5/16, 1/16, 5/16},
 	},
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,

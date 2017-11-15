@@ -60,18 +60,16 @@ local function add_simple_flower(name, desc, image, simple_selection_box)
 	})
 end
 
-local box_tulip = { -0.15, -0.5, -0.15, 0.15, 5/16, 0.15 }
-
-add_simple_flower("poppy", "Poppy", "mcl_flowers_poppy", { -0.15, -0.5, -0.15, 0.15, 3/16, 0.15 })
-add_simple_flower("dandelion", "Dandelion", "flowers_dandelion_yellow", { -0.15, -0.5, -0.15, 0.15, 0, 0.15 })
-add_simple_flower("oxeye_daisy", "Oxeye Daisy", "mcl_flowers_oxeye_daisy", { -0.15, -0.5, -0.15, 0.15, 5/16, 0.15 })
-add_simple_flower("tulip_orange", "Orange Tulip", "flowers_tulip", box_tulip)
-add_simple_flower("tulip_pink", "Pink Tulip", "mcl_flowers_tulip_pink", box_tulip)
-add_simple_flower("tulip_red", "Red Tulip", "mcl_flowers_tulip_red", box_tulip)
-add_simple_flower("tulip_white", "White Tulip", "mcl_flowers_tulip_white", box_tulip)
-add_simple_flower("allium", "Allium", "mcl_flowers_allium", { -0.2, -0.5, -0.2, 0.2, 6/16, 0.2 })
-add_simple_flower("azure_bluet", "Azure Bluet", "mcl_flowers_azure_bluet", { -3/16, -0.5, -3/16, 3/16, 2/16, 3/16 })
-add_simple_flower("blue_orchid", "Blue Orchid", "mcl_flowers_blue_orchid", { -5/16, -0.5, -5/16, 5/16, 6/16, 5/16 })
+add_simple_flower("poppy", "Poppy", "mcl_flowers_poppy", { -5/16, -0.5, -5/16, 5/16, 5/16, 5/16 })
+add_simple_flower("dandelion", "Dandelion", "flowers_dandelion_yellow", { -4/16, -0.5, -4/16, 4/16, 3/16, 4/16 })
+add_simple_flower("oxeye_daisy", "Oxeye Daisy", "mcl_flowers_oxeye_daisy", { -4/16, -0.5, -4/16, 4/16, 4/16, 4/16 })
+add_simple_flower("tulip_orange", "Orange Tulip", "flowers_tulip", { -3/16, -0.5, -3/16, 3/16, 5/16, 3/16 })
+add_simple_flower("tulip_pink", "Pink Tulip", "mcl_flowers_tulip_pink", { -3/16, -0.5, -3/16, 3/16, 5/16, 3/16 })
+add_simple_flower("tulip_red", "Red Tulip", "mcl_flowers_tulip_red", { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 })
+add_simple_flower("tulip_white", "White Tulip", "mcl_flowers_tulip_white", { -3/16, -0.5, -3/16, 3/16, 4/16, 3/16 })
+add_simple_flower("allium", "Allium", "mcl_flowers_allium", { -5/16, -0.5, -5/16, 5/16, 6/16, 5/16 })
+add_simple_flower("azure_bluet", "Azure Bluet", "mcl_flowers_azure_bluet", { -5/16, -0.5, -5/16, 5/16, 3/16, 5/16 })
+add_simple_flower("blue_orchid", "Blue Orchid", "mcl_flowers_blue_orchid", { -5/16, -0.5, -5/16, 5/16, 7/16, 5/16 })
 
 
 local wheat_seed_drop = {
@@ -120,7 +118,7 @@ for i=1,2 do
 		wield_image = "mcl_flowers_"..id..".png",
 		selection_box = {
 			type = "fixed",
-			fixed = {{ -6/16, -8/16, -6/16, 6/16, 8/16, 6/16 }},
+			fixed = {{ -6/16, -8/16, -6/16, 6/16, 4/16, 6/16 }},
 		},
 		paramtype = "light",
 		sunlight_propagates = true,
@@ -163,7 +161,7 @@ for i=1,2 do
 		_mcl_dry_override = "mcl_flowers:fern_dry",
 		selection_box = {
 			type = "fixed",
-			fixed = { -4/16, -0.5, -4/16, 4/16, 7/16, 4/16 },
+			fixed = { -6/16, -0.5, -6/16, 6/16, 5/16, 6/16 },
 		},
 	})
 end
@@ -328,12 +326,12 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 
 end
 
-add_large_plant("peony", "Peony", "A peony is a large plant which occupies two blocks. It is mainly used in dye protection.", "mcl_flowers_double_plant_paeonia_bottom.png", "mcl_flowers_double_plant_paeonia_top.png", nil, 5/16, 4/16)
-add_large_plant("rose_bush", "Rose Bush", "A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye protection.", "mcl_flowers_double_plant_rose_bottom.png", "mcl_flowers_double_plant_rose_top.png", nil, 6/16, 7/16)
-add_large_plant("lilac", "Lilac", "A lilac is a large plant which occupies two blocks. It is mainly used in dye production.", "mcl_flowers_double_plant_syringa_bottom.png", "mcl_flowers_double_plant_syringa_top.png", nil, 6/16, 7/16)
+add_large_plant("peony", "Peony", "A peony is a large plant which occupies two blocks. It is mainly used in dye protection.", "mcl_flowers_double_plant_paeonia_bottom.png", "mcl_flowers_double_plant_paeonia_top.png", nil, 5/16, 6/16)
+add_large_plant("rose_bush", "Rose Bush", "A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye protection.", "mcl_flowers_double_plant_rose_bottom.png", "mcl_flowers_double_plant_rose_top.png", nil, 5/16, 1/16)
+add_large_plant("lilac", "Lilac", "A lilac is a large plant which occupies two blocks. It is mainly used in dye production.", "mcl_flowers_double_plant_syringa_bottom.png", "mcl_flowers_double_plant_syringa_top.png", nil, 5/16, 6/16)
 
 -- TODO: Make the sunflower face East. Requires a mesh for the top node.
-add_large_plant("sunflower", "Sunflower", "A sunflower is a large plant which occupies two blocks. It is mainly used in dye production.", "mcl_flowers_double_plant_sunflower_bottom.png", "mcl_flowers_double_plant_sunflower_top.png^mcl_flowers_double_plant_sunflower_front.png", "mcl_flowers_double_plant_sunflower_front.png", 3/16, 4/16)
+add_large_plant("sunflower", "Sunflower", "A sunflower is a large plant which occupies two blocks. It is mainly used in dye production.", "mcl_flowers_double_plant_sunflower_bottom.png", "mcl_flowers_double_plant_sunflower_top.png^mcl_flowers_double_plant_sunflower_front.png", "mcl_flowers_double_plant_sunflower_front.png", 6/16, 6/16)
 
 for i=1, 2 do
 	local longdesc_grass, longdesc_fern, dry, dry_override_grass, dry_override_fern
@@ -347,8 +345,8 @@ for i=1, 2 do
 		-- ID/texture name modifier
 		dry = "_dry"
 	end
-	add_large_plant("double_grass"..dry, "Double Tallgrass", longdesc_grass, "mcl_flowers_double_plant_grass_bottom"..dry..".png", "mcl_flowers_double_plant_grass_top"..dry..".png", nil, 5/16, 7/16, wheat_seed_drop, {"mcl_flowers:tallgrass 2"}, false, dry_override_grass)
-	add_large_plant("double_fern"..dry, "Large Fern", longdesc_fern, "mcl_flowers_double_plant_fern_bottom"..dry..".png", "mcl_flowers_double_plant_fern_top"..dry..".png", nil, 6/16, 5/16, wheat_seed_drop, {"mcl_flowers:fern 2"}, false, dry_override_fern)
+	add_large_plant("double_grass"..dry, "Double Tallgrass", longdesc_grass, "mcl_flowers_double_plant_grass_bottom"..dry..".png", "mcl_flowers_double_plant_grass_top"..dry..".png", nil, 6/16, 4/16, wheat_seed_drop, {"mcl_flowers:tallgrass 2"}, false, dry_override_grass)
+	add_large_plant("double_fern"..dry, "Large Fern", longdesc_fern, "mcl_flowers_double_plant_fern_bottom"..dry..".png", "mcl_flowers_double_plant_fern_top"..dry..".png", nil, 5/16, 5/16, wheat_seed_drop, {"mcl_flowers:fern 2"}, false, dry_override_fern)
 end
 
 doc.add_entry_alias("nodes", "mcl_flowers:double_grass", "nodes", "mcl_flowers:double_grass_dry")
