@@ -308,7 +308,13 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	sounds = mcl_sounds.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
-	on_construct = mcl_core.on_snowable_construct,
+	on_construct = function(pos)
+		local found_node = minetest.find_node_near(pos, 1, {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt_with_dry_grass_snow"})
+		if found_node then
+			minetest.set_node(pos, {name="mcl_core:dirt_with_dry_grass"})
+		end
+		return mcl_core.on_snowable_construct(pos)
+	end,
 	_mcl_snowed = "mcl_core:dirt_with_grass_snow",
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 0.6,
