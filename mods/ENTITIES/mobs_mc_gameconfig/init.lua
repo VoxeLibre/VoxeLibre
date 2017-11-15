@@ -170,7 +170,9 @@ mobs_mc.override.enderman_takable = {
 	-- Generic handling, useful for entensions
 	"group:enderman_takable",
 }
-
+mobs_mc.override.enderman_replace_on_take = {
+	["mcl_core:dirt_with_dry_grass"] = "mcl_core:dirt_with_grass",
+}
 
 -- Texuture overrides for enderman block. Required for cactus because it's original is a nodebox
 -- and the textures have tranparent pixels.
