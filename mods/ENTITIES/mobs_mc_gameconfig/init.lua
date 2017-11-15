@@ -192,10 +192,10 @@ mobs_mc.override.enderman_block_texture_overrides = {
 -- List of nodes on which mobs can spawn
 mobs_mc.override.spawn = {
 	solid = { "group:solid", }, -- spawn on "solid" nodes
-	grassland = { mobs_mc.override.items.grass_block },
-	savanna = { "group:sand", "mcl_core:sandstone", "mcl_core:redsandstone" },
-	grassland_savanna = { mobs_mc.override.items.grass_block, "group:sand", "mcl_core:sandstone", "mcl_core:redsandstone" },
-	desert = { "group:sand" },
+	grassland = { "mcl_core:dirt_with_grass" },
+	savanna = { "mcl_core:dirt_with_dry_grass" },
+	grassland_savanna = { "mcl_core:dirt_with_grass", "mcl_core:dirt_with_dry_grass" },
+	desert = { "mcl_core:sand", "mcl_core:sandstone" },
 	jungle = { "mcl_core:jungletree", "mcl_core:jungleleaves", "mcl_flowers:fern", "mcl_core:vine" },
 	snow = { "mcl_core:snow", "mcl_core:snowblock", "mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_dry_grass_snow" },
 	-- End stone added for shulkers because End cities don't generate yet
