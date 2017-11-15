@@ -456,7 +456,7 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		y_min = 4,
+		y_min = 3,
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 39,
 		heat_point = 58,
@@ -469,8 +469,8 @@ local function register_biomes()
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
-		y_min = 3,
-		y_max = 1,
+		y_min = 0,
+		y_max = 2,
 		humidity_point = 39,
 		heat_point = 58,
 	})
@@ -483,7 +483,7 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
 		y_min = OCEAN_MIN,
-		y_max = 0,
+		y_max = -1,
 		humidity_point = 39,
 		heat_point = 58,
 	})
