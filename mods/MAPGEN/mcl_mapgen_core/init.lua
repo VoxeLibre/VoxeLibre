@@ -688,7 +688,7 @@ local function register_mgv6_decorations()
 	-- Sugar canes
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "group:grass_block", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
+		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "group:grass_block_no_snow", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
 		sidelen = 16,
 		noise_params = {
 			offset = -0.3,
@@ -721,7 +721,7 @@ local function register_mgv6_decorations()
 		replacements = {
 			["mcl_flowers:tallgrass"] = "mcl_flowers:double_grass"
 		},
-		place_on = {"group:grass_block"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 8,
 		noise_params = {
 			offset = -0.0025,
@@ -752,7 +752,7 @@ local function register_mgv6_decorations()
 		-- v6 hack: This makes sure large ferns only appear in jungles
 		spawn_by = { "mcl_core:jungletree", "mcl_flowers:fern" },
 		num_spawn_by = 1,
-		place_on = {"group:grass_block"},
+		place_on = {"group:grass_block_no_snow"},
 
 		sidelen = 16,
 		noise_params = {
@@ -779,7 +779,7 @@ local function register_mgv6_decorations()
 					{ name = "mcl_flowers:"..name.."_top", param1=255, },
 				},
 			},
-			place_on = {"group:grass_block"},
+			place_on = {"group:grass_block_no_snow"},
 
 			sidelen = 16,
 			noise_params = {
@@ -837,7 +837,7 @@ local function register_mgv6_decorations()
 				{ name = "mcl_farming:pumpkin_face" },
 			},
 		},
-		place_on = {"group:grass_block"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 16,
 		noise_params = {
 			offset = -0.008,
@@ -855,7 +855,7 @@ local function register_mgv6_decorations()
 	-- Tall grass
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"group:grass_block"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 8,
 		noise_params = {
 			offset = 0.01,
@@ -871,7 +871,7 @@ local function register_mgv6_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"group:grass_block"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 8,
 		noise_params = {
 			offset = 0.04,
@@ -888,7 +888,7 @@ local function register_mgv6_decorations()
 	-- Add a small amount of tall grass everywhere to avoid areas completely empty devoid of tall grass
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"group:grass_block"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 8,
 		fill_ratio = 0.004,
 		y_min = 1,
@@ -902,7 +902,7 @@ local function register_mgv6_decorations()
 		-- Mushrooms next to trees
 		minetest.register_decoration({
 			deco_type = "simple",
-			place_on = {"group:grass_block", "mcl_core:dirt", "mcl_core:podzol", "mcl_core:mycelium", "mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite"},
+			place_on = {"group:grass_block_no_snow", "mcl_core:dirt", "mcl_core:podzol", "mcl_core:mycelium", "mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite"},
 			sidelen = 16,
 			noise_params = {
 				offset = 0.04,
@@ -947,7 +947,7 @@ local function register_mgv6_decorations()
 		end
 		minetest.register_decoration({
 			deco_type = "simple",
-			place_on = {"group:grass_block"},
+			place_on = {"group:grass_block_no_snow"},
 			sidelen = 16,
 			noise_params = {
 				offset = offset,
@@ -1167,7 +1167,7 @@ local function generate_structures(minp, maxp, seed, biomemap)
 							end
 
 						-- Igloos
-						elseif not chunk_has_igloo and (nn == "mcl_core:snowblock" or nn == "mcl_core:snow" or (minetest.get_item_group(nn, "grass_block") == 1 and minetest.get_item_group(nn, "snowed") == 1)) then
+						elseif not chunk_has_igloo and (nn == "mcl_core:snowblock" or nn == "mcl_core:snow" or (minetest.get_item_group(nn, "grass_block_snow") == 1)) then
 							if math.random(1, 4400) == 1 then
 								-- Check surface
 								local floor = {x=p.x+9, y=p.y-1, z=p.z+9}
@@ -1778,7 +1778,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 			-- Clear snowy grass blocks without snow above to ensure consistency.
 			-- Solidify floating sand to sandstone (both colors).
 			else
-				local nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_dry_grass_snow", "mcl_core:sand", "mcl_core:redsand"})
+				local nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:dirt_with_grass_snow", "mcl_core:sand", "mcl_core:redsand"})
 				for n=1, #nodes do
 					local p_pos = area:index(nodes[n].x, nodes[n].y, nodes[n].z)
 					local p_pos_above = area:index(nodes[n].x, nodes[n].y+1, nodes[n].z)

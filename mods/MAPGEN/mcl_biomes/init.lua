@@ -1604,15 +1604,15 @@ local function register_grass_decoration(grasstype, offset, scale, biomes)
 	local place_on, seed, node
 	if grasstype == "fern" then
 		node = "mcl_flowers:fern"
-		place_on = {"group:grass_block", "mcl_core:podzol"}
+		place_on = {"group:grass_block_no_snow", "mcl_core:podzol"}
 		seed = 333
 	elseif grasstype == "tallgrass" then
 		node = "mcl_flowers:tallgrass"
-		place_on = {"group:grass_block"}
+		place_on = {"group:grass_block_no_snow"}
 		seed = 420
 	elseif grasstype == "tallgrass_dry" then
 		node = "mcl_flowers:tallgrass_dry"
-		place_on = {"group:grass_block"}
+		place_on = {"group:grass_block_no_snow"}
 		seed = 420
 	end
 	local noise = {
@@ -1639,7 +1639,7 @@ local function register_decorations()
 	-- Large ice spike
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:snowblock", "mcl_core:snow", "mcl_core:dirt_with_grass_snow"},
+		place_on = {"mcl_core:snowblock", "mcl_core:snow", "group:grass_block_snow"},
 		sidelen = 80,
 		noise_params = {
 			offset = 0.00040,
@@ -1660,7 +1660,7 @@ local function register_decorations()
 	-- Small ice spike
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:snowblock", "mcl_core:snow", "mcl_core:dirt_with_grass_snow"},
+		place_on = {"mcl_core:snowblock", "mcl_core:snow", "group:grass_block_snow"},
 		sidelen = 80,
 		noise_params = {
 			offset = 0.005,
@@ -1683,7 +1683,7 @@ local function register_decorations()
 	for i=1, 2 do
 		minetest.register_decoration({
 			deco_type = "schematic",
-			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 			sidelen = 80,
 			noise_params = {
 				offset = 0.00075,
@@ -1703,7 +1703,7 @@ local function register_decorations()
 
 		minetest.register_decoration({
 			deco_type = "schematic",
-			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:dirt_with_grass_snow"},
+			place_on = {"group:grass_block", "mcl_core:dirt", },
 			sidelen = 80,
 			noise_params = {
 				offset = -0.0004,
@@ -1724,7 +1724,7 @@ local function register_decorations()
 	-- Small “classic” oak (many biomes)
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.025,
@@ -1743,7 +1743,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.01,
@@ -1762,7 +1762,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:dirt_with_grass_snow"},
+		place_on = {"group:grass_block", "mcl_core:dirt", },
 		sidelen = 16,
 		noise_params = {
 			offset = 0.0,
@@ -1782,7 +1782,7 @@ local function register_decorations()
 
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_grass_snow", "mcl_core:dirt"},
+		place_on = {"group:grass_block", "mcl_core:dirt"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.006,
@@ -1821,7 +1821,7 @@ local function register_decorations()
 
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:dirt_with_grass_snow"},
+		place_on = {"group:grass_block", "mcl_core:dirt", },
 		sidelen = 16,
 		noise_params = {
 			offset = 0.0,
@@ -1840,7 +1840,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.004,
 		biomes = {"Jungle", "JungleM"},
@@ -1852,7 +1852,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_dry_grass", "mcl_core:dirt"},
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.0004,
 		biomes = {"JungleEdge", "JungleEdgeM", "Savanna"},
@@ -1867,7 +1867,7 @@ local function register_decorations()
 	-- Rare balloon oak
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.002083,
@@ -1887,7 +1887,7 @@ local function register_decorations()
 	-- Swamp oak
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 80,
 		noise_params = {
 			offset = 0.0055,
@@ -1911,7 +1911,7 @@ local function register_decorations()
 	for i=1, 2 do
 		minetest.register_decoration({
 			deco_type = "schematic",
-			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 			sidelen = 80,
 			fill_ratio = 0.00125,
 			biomes = {"Jungle"},
@@ -1923,7 +1923,7 @@ local function register_decorations()
 		})
 		minetest.register_decoration({
 			deco_type = "schematic",
-			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 			sidelen = 80,
 			fill_ratio = 0.004,
 			biomes = {"JungleM"},
@@ -1938,7 +1938,7 @@ local function register_decorations()
 	-- Common jungle tree
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.045,
 		biomes = {"Jungle"},
@@ -1950,7 +1950,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.0045,
 		biomes = {"JungleEdge", "JungleEdgeM"},
@@ -1963,7 +1963,7 @@ local function register_decorations()
 
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 80,
 		fill_ratio = 0.09,
 		biomes = {"JungleM"},
@@ -1981,7 +1981,7 @@ local function register_decorations()
 		end
 		minetest.register_decoration({
 			deco_type = "schematic",
-			place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol"},
+			place_on = {"group:grass_block", "mcl_core:dirt", "mcl_core:podzol"},
 			sidelen = 16,
 			noise_params = {
 				offset = offset,
@@ -2034,7 +2034,7 @@ local function register_decorations()
 	-- Small lollipop spruce
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
+		place_on = {"group:grass_block", "mcl_core:podzol"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.004,
@@ -2054,7 +2054,7 @@ local function register_decorations()
 	-- Matchstick spruce: Very few leaves, tall trunk
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol"},
+		place_on = {"group:grass_block", "mcl_core:podzol"},
 		sidelen = 80,
 		noise_params = {
 			offset = -0.025,
@@ -2074,7 +2074,7 @@ local function register_decorations()
 	-- Rare spruce in Ice Plains
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_grass_snow"},
+		place_on = {"group:grass_block"},
 		sidelen = 16,
 		noise_params = {
 			offset = -0.00075,
@@ -2110,7 +2110,7 @@ local function register_decorations()
 	-- Birch
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.03,
@@ -2128,7 +2128,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.03,
@@ -2147,7 +2147,7 @@ local function register_decorations()
 
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.000333,
@@ -2167,7 +2167,7 @@ local function register_decorations()
 	-- Dark Oak
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.05,
@@ -2196,7 +2196,7 @@ local function register_decorations()
 	-- Huge Brown Mushroom
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = { "mcl_core:dirt_with_grass", "mcl_core:dirt" },
+		place_on = { "group:grass_block_no_snow", "mcl_core:dirt" },
 		sidelen = 80,
 		fill_ratio = ratio_mushroom_huge,
 		biomes = { "RoofedForest" },
@@ -2208,7 +2208,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = { "mcl_core:dirt_with_grass", "mcl_core:dirt" },
+		place_on = { "group:grass_block_no_snow", "mcl_core:dirt" },
 		sidelen = 80,
 		fill_ratio = ratio_mushroom_giant,
 		biomes = { "RoofedForest" },
@@ -2247,7 +2247,7 @@ local function register_decorations()
 	-- Huge Red Mushroom
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = { "mcl_core:dirt_with_grass", "mcl_core:dirt" },
+		place_on = { "group:grass_block_no_snow", "mcl_core:dirt" },
 		sidelen = 80,
 		fill_ratio = ratio_mushroom_huge,
 		biomes = { "RoofedForest" },
@@ -2259,7 +2259,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = { "mcl_core:dirt_with_grass", "mcl_core:dirt" },
+		place_on = { "group:grass_block_no_snow", "mcl_core:dirt" },
 		sidelen = 80,
 		fill_ratio = ratio_mushroom_giant,
 		biomes = { "RoofedForest" },
@@ -2359,7 +2359,7 @@ local function register_decorations()
 	-- Sugar canes
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "group:grass_block", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
+		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "group:grass_block_no_snow", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
 		sidelen = 16,
 		noise_params = {
 			offset = -0.3,
@@ -2379,7 +2379,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "group:grass_block", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
+		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "group:grass_block_no_snow", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.0,
@@ -2426,7 +2426,7 @@ local function register_decorations()
 			replacements = {
 				[tallgrass] = bottom,
 			},
-			place_on = {"group:grass_block"},
+			place_on = {"group:grass_block_no_snow"},
 			sidelen = 16,
 			noise_params = {
 				offset = offset,
@@ -2461,7 +2461,7 @@ local function register_decorations()
 			replacements = {
 				["mcl_flowers:fern"] = "mcl_flowers:double_fern"
 			},
-			place_on = {"group:grass_block", "mcl_core:podzol"},
+			place_on = {"group:grass_block_no_snow", "mcl_core:podzol"},
 			sidelen = 16,
 			noise_params = {
 				offset = offset,
@@ -2508,7 +2508,7 @@ local function register_decorations()
 						{ name = "mcl_flowers:"..name.."_top", param1=255, },
 					},
 				},
-				place_on = {"group:grass_block", "mcl_core:dirt"},
+				place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 
 				sidelen = 16,
 				noise_params = {
@@ -2536,7 +2536,7 @@ local function register_decorations()
 
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 80,
 		noise_params = {
 			offset = 0.0196,
@@ -2554,7 +2554,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 80,
 		noise_params = {
 			offset = 0.05,
@@ -2572,7 +2572,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+		place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 		sidelen = 80,
 		noise_params = {
 			offset = 0.0085,
@@ -2595,7 +2595,7 @@ local function register_decorations()
 	if generate_fallen_logs then
 		minetest.register_decoration({
 			deco_type = "schematic",
-			place_on = {"mcl_core:dirt_with_grass", "mcl_core:podzol", "mcl_core:coarse_dirt"},
+			place_on = {"group:grass_block_no_snow", "mcl_core:podzol", "mcl_core:coarse_dirt"},
 			sidelen = 80,
 			noise_params = {
 				offset = 0.00018,
@@ -2628,7 +2628,7 @@ local function register_decorations()
 
 		minetest.register_decoration({
 			deco_type = "schematic",
-			place_on = {"mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", "mcl_core:podzol", "mcl_core:podzol_snow", "mcl_core:coarse_dirt"},
+			place_on = {"group:grass_block", "mcl_core:podzol", "mcl_core:podzol_snow", "mcl_core:coarse_dirt"},
 			sidelen = 80,
 			noise_params = {
 				offset = 0.00018,
@@ -2661,7 +2661,7 @@ local function register_decorations()
 
 		minetest.register_decoration({
 			deco_type = "schematic",
-			place_on = {"mcl_core:dirt_with_grass"},
+			place_on = {"group:grass_block_no_snow"},
 			sidelen = 16,
 			noise_params = {
 				offset = 0.0,
@@ -2694,7 +2694,7 @@ local function register_decorations()
 
 		minetest.register_decoration({
 			deco_type = "schematic",
-			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
+			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 			sidelen = 80,
 			fill_ratio = 0.005,
 			biomes = {"Jungle", "JungleM"},
@@ -2720,7 +2720,7 @@ local function register_decorations()
 
 		minetest.register_decoration({
 			deco_type = "schematic",
-			place_on = {"mcl_core:dirt_with_grass"},
+			place_on = {"group:grass_block_no_snow"},
 			sidelen = 16,
 			noise_params = {
 				offset = 0.00018,
@@ -2794,7 +2794,7 @@ local function register_decorations()
 	-- Melon
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:dirt_with_grass"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 16,
 		noise_params = {
 			offset = -0.01,
@@ -2811,7 +2811,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:dirt_with_grass"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.0,
@@ -2828,7 +2828,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:dirt_with_grass"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 16,
 		noise_params = {
 			offset = -0.005,
@@ -2847,7 +2847,7 @@ local function register_decorations()
 	-- Lots of melons in Jungle Edge M
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:dirt_with_grass"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 80,
 		noise_params = {
 			offset = 0.013,
@@ -2873,7 +2873,7 @@ local function register_decorations()
 				{ name = "mcl_farming:pumpkin_face", param1=255, },
 			},
 		},
-		place_on = {"group:grass_block"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 16,
 		noise_params = {
 			offset = -0.016,
@@ -2931,7 +2931,7 @@ local function register_decorations()
 	-- Place tall grass on snow in Ice Plains and Extreme Hills+
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_grass_snow"},
+		place_on = {"group:grass_block"},
 		sidelen = 16,
 		noise_params = {
 			offset = -0.08,
@@ -2954,7 +2954,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_grass_snow"},
+		place_on = {"group:grass_block"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.0,
@@ -3050,7 +3050,7 @@ local function register_decorations()
 		-- Mushrooms next to trees
 		minetest.register_decoration({
 			deco_type = "simple",
-			place_on = {"group:grass_block", "mcl_core:dirt", "mcl_core:podzol", "mcl_core:mycelium", "mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite"},
+			place_on = {"group:grass_block_no_snow", "mcl_core:dirt", "mcl_core:podzol", "mcl_core:mycelium", "mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite"},
 			sidelen = 16,
 			noise_params = {
 				offset = 0,
@@ -3070,7 +3070,7 @@ local function register_decorations()
 		-- More mushrooms in Swampland
 		minetest.register_decoration({
 			deco_type = "simple",
-			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol", "mcl_core:mycelium", "mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite"},
+			place_on = {"group:grass_block_no_snow", "mcl_core:dirt", "mcl_core:podzol", "mcl_core:mycelium", "mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite"},
 			sidelen = 16,
 			noise_params = {
 				offset = 0.05,
@@ -3095,7 +3095,7 @@ local function register_decorations()
 		if biomes then
 			minetest.register_decoration({
 				deco_type = "simple",
-				place_on = {"group:grass_block", "mcl_core:dirt"},
+				place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 				sidelen = 16,
 				noise_params = {
 					offset = 0.0008,
@@ -3114,7 +3114,7 @@ local function register_decorations()
 		if is_in_flower_forest then
 			minetest.register_decoration({
 				deco_type = "simple",
-				place_on = {"group:grass_block", "mcl_core:dirt"},
+				place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 				sidelen = 80,
 				noise_params= {
 					offset = 0.0008*40,

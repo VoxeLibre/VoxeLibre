@@ -645,7 +645,7 @@ local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_setting("seed")
 minetest.register_abm({
 	label = "Grass Block and Mycelium spread",
 	nodenames = {"mcl_core:dirt"},
-	neighbors = {"air", "group:grass_block", "mcl_core:mycelium"},
+	neighbors = {"air", "group:grass_block_no_snow", "mcl_core:mycelium"},
 	interval = 30,
 	chance = 20,
 	catch_up = false,
@@ -1202,6 +1202,10 @@ mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, ti
 	def._doc_items_usagehelp = nil
 	def._doc_items_create_entry = false
 	def.groups.not_in_creative_inventory = 1
+	if def.groups.grass_block == 1 then
+		def.groups.grass_block_no_snow = nil
+		def.groups.grass_block_snow = 1
+	end
 
 	-- Enderman must never take this because this block is supposed to be always buried below snow.
 	def.groups.enderman_takable = nil

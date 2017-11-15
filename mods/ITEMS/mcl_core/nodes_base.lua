@@ -303,7 +303,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	tiles = {"default_grass.png", "default_dirt.png", "default_dirt.png^default_grass_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {handy=1,shovely=1, grass_block=1, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, spreading_dirt_type=1, enderman_takable=1, building_block=1},
+	groups = {handy=1,shovely=1, grass_block=1, grass_block_no_snow=1, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, spreading_dirt_type=1, enderman_takable=1, building_block=1},
 	drop = 'mcl_core:dirt',
 	sounds = mcl_sounds.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
@@ -327,7 +327,7 @@ minetest.register_node("mcl_core:dirt_with_dry_grass", {
 	tiles = {"default_dry_grass.png", "default_dirt.png", "default_dirt.png^default_dry_grass_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
-	groups = {handy=1,shovely=1, grass_block=1, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, spreading_dirt_type=1, enderman_takable=1, building_block=1, not_in_creative_inventory=1},
+	groups = {handy=1,shovely=1, grass_block=1, grass_block_no_snow=1, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, spreading_dirt_type=1, enderman_takable=1, building_block=1, not_in_creative_inventory=1},
 	drop = 'mcl_core:dirt',
 	sounds = mcl_sounds.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
