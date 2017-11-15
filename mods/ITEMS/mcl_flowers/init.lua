@@ -4,7 +4,7 @@ local init = os.clock()
 
 -- Simple flower template
 local smallflowerlongdesc = "This is a small flower. Small flowers are mainly used for dye production and can also be potted."
-local flowerusagehelp = "It can only be placed on a block on which it would also survive."
+local plant_usage_help = "It can only be placed on a block on which it would also survive."
 
 -- on_place function for flowers
 local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, node, itemstack)
@@ -20,6 +20,7 @@ local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, 
 
 --[[	Placement requirements:
 	* Dirt or grass block
+	* If not flower, also allowed on podzol and coarse dirt
 	* Light level >= 8 at any time or exposed to sunlight at day
 ]]
 	local light_night = minetest.get_node_light(pos, 0.0)
@@ -28,7 +29,8 @@ local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, 
 	if (light_night and light_night >= 8) or (light_day and light_day >= minetest.LIGHT_MAX) then
 		light_ok = true
 	end
-	local ok = (soil_node.name == "mcl_core:dirt" or minetest.get_item_group(soil_node.name, "grass_block") == 1 or soil_node.name == "mcl_core:coarse_dirt" or soil_node.name == "mcl_core:podzol" or soil_node.name == "mcl_core:podzol_snow") and light_ok
+	local is_flower = minetest.get_item_group(itemstack:get_name(), "flower") == 1
+	local ok = (soil_node.name == "mcl_core:dirt" or minetest.get_item_group(soil_node.name, "grass_block") == 1 or (not is_flower and (soil_node.name == "mcl_core:coarse_dirt" or soil_node.name == "mcl_core:podzol" or soil_node.name == "mcl_core:podzol_snow"))) and light_ok
 	if ok and replace then
 		return replace
 	end
@@ -39,7 +41,7 @@ local function add_simple_flower(name, desc, image, simple_selection_box)
 	minetest.register_node("mcl_flowers:"..name, {
 		description = desc,
 		_doc_items_longdesc = smallflowerlongdesc,
-		_doc_items_usagehelp = flowerusagehelp,
+		_doc_items_usagehelp = plant_usage_help,
 		drawtype = "plantlike",
 		waving = 1,
 		tiles = { image..".png" },
@@ -85,7 +87,7 @@ local wheat_seed_drop = {
 -- Tall Grass and Fern
 for i=1,2 do
 	-- CHECKME: How does tall grass behave when pushed by a piston?
-	local tgf_groups = {dig_immediate=3, flammable=3,attached_node=1,plant=1,place_flowerlike=1,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1}
+	local tgf_groups = {dig_immediate=3, flammable=3,attached_node=1,plant=1,place_flowerlike=2,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1}
 
 	local id, idf, longdesc, longdesc_fern, create_entry, shears_drop, shears_drop_fern
 	if i==1 then
@@ -110,6 +112,7 @@ for i=1,2 do
 		description = "Tall Grass",
 		drawtype = "plantlike",
 		_doc_items_longdesc = longdesc,
+		_doc_items_usagehelp = plant_usage_help,
 		_doc_items_hidden = hidden,
 		_doc_items_create_entry = create_entry,
 		waving = 1,
@@ -140,6 +143,7 @@ for i=1,2 do
 	minetest.register_node("mcl_flowers:"..idf, {
 		description = "Fern",
 		_doc_items_longdesc = longdesc_fern,
+		_doc_items_usagehelp = plant_usage_help,
 		_doc_items_create_entry = create_entry,
 		_doc_items_hidden = hidden,
 		drawtype = "plantlike",
@@ -173,18 +177,19 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 	if not inv_img then
 		inv_img = top_img
 	end
-	local flowergroup, usagehelp, noncreative, create_entry
+	local flowergroup, place_flowerlike, usagehelp, noncreative, create_entry
 	if is_flower == nil then
 		is_flower = true
 	end
 	if is_flower then
 		flowergroup = 1
-		usagehelp = flowerusagehelp
+		place_flowerlike = 1
+	else
+		place_flowerlike = 2
 	end
 	if longdesc == nil then
 		noncreative = 1
 		create_entry = false
-		usagehelp = nil
 	end
 	-- Drop itself by default
 	local drop_bottom, drop_top
@@ -198,7 +203,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		description = desc,
 		_doc_items_create_entry = create_entry,
 		_doc_items_longdesc = longdesc,
-		_doc_items_usagehelp = usagehelp,
+		_doc_items_usagehelp = plant_usage_help,
 		drawtype = "plantlike",
 		tiles = { bottom_img },
 		inventory_image = inv_img,
@@ -262,9 +267,10 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 
 			-- Placement rules:
 			-- * Allowed on dirt or grass block
+			-- * If not a flower, also allowed on podzol and coarse dirt
 			-- * Only with light level >= 8
 			-- * Only if two enough space
-			if (floorname == "mcl_core:dirt" or minetest.get_item_group(floorname, "grass_block") == 1 or floorname == "mcl_core:coarse_dirt" or floorname == "mcl_core:podzol" or floorname == "mcl_core:podzol_snow") and bottom_buildable and top_buildable and light_ok then
+			if (floorname == "mcl_core:dirt" or minetest.get_item_group(floorname, "grass_block") == 1 or (not is_flower and (floorname == "mcl_core:coarse_dirt" or floorname == "mcl_core:podzol" or floorname == "mcl_core:podzol_snow"))) and bottom_buildable and top_buildable and light_ok then
 				local dry_override = minetest.registered_nodes[itemstring]._mcl_dry_override
 				if dry_override and (floorname == "mcl_core:dirt_with_dry_grass" or floorname == "mcl_core:dirt_with_dry_grass_snow") then
 					itemstring = dry_override
@@ -287,7 +293,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 				minetest.remove_node(top)
 			end
 		end,
-		groups = {dig_immediate=3,flammable=2,flower=flowergroup,place_flowerlike=1,non_mycelium_plant=1,attached_node=1, dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, plant=1,double_plant=1,deco_block=1,not_in_creative_inventory=noncreative},
+		groups = {dig_immediate=3,flammable=2,flower=flowergroup,place_flowerlike=place_flowerlike,non_mycelium_plant=1,attached_node=1, dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, plant=1,double_plant=1,deco_block=1,not_in_creative_inventory=noncreative},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 	})
 
@@ -315,7 +321,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 				minetest.remove_node(bottom)
 			end
 		end,
-		groups = {dig_immediate=3,flammable=2,flower=flowergroup,place_flowerlike=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, not_in_creative_inventory = 1, plant=1,double_plant=2},
+		groups = {dig_immediate=3,flammable=2,flower=flowergroup,place_flowerlike=place_flowerlike,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, not_in_creative_inventory = 1, plant=1,double_plant=2},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 	})
 

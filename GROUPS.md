@@ -109,6 +109,7 @@ These groups are used mostly for informational purposes
    * `flower_pot=2`: Flower pot with a plant or flower
 * `flower=1`: Flower
 * `place_flowerlike=1`: Node has placement rules like that of a flower
+* `place_flowerlike=2`: Node has placement rules like tall grass
 * `cake`: Cake (rating = slices left)
 * `book=1`: Book
 * `pane=1`: Node is a “pane”-like node glass pane or iron bars
