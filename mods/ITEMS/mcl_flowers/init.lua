@@ -13,9 +13,12 @@ local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, 
 	if not soil_node then return false end
 
 	local has_palette = minetest.registered_nodes[itemstack:get_name()].palette ~= nil
-	local colorize = 0
-	if has_palette and (soil_node.name == "mcl_core:dirt_with_dry_grass" or soil_node.name == "mcl_core:dirt_with_dry_grass_snow") then
-		colorize = 1
+	local colorize
+	if has_palette then
+		colorize = minetest.registered_nodes[soil_node.name]._mcl_grass_palette_index
+	end
+	if not colorize then
+		colorize = 0
 	end
 
 --[[	Placement requirements:
@@ -235,8 +238,8 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 			-- * Only if two enough space
 			if (floorname == "mcl_core:dirt" or minetest.get_item_group(floorname, "grass_block") == 1 or (not is_flower and (floorname == "mcl_core:coarse_dirt" or floorname == "mcl_core:podzol" or floorname == "mcl_core:podzol_snow"))) and bottom_buildable and top_buildable and light_ok then
 				local param2
-				if grass_color and (floorname == "mcl_core:dirt_with_dry_grass" or floorname == "mcl_core:dirt_with_dry_grass_snow") then
-					param2 = 1
+				if grass_color then
+					param2 = minetest.registered_nodes[floorname]._mcl_grass_palette_index
 				end
 				-- Success! We can now place the flower
 				minetest.sound_play(minetest.registered_nodes[itemstring].sounds.place, {pos = bottom, gain=1})
