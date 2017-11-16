@@ -146,18 +146,20 @@ def convert_textures():
 		# Vines
 		convert_alphatex(FOLIAG, tex_dir+"/blocks/vine.png", "16+32", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/mcl_core_vine.png")
 
-		# Tall grass, fern
+		# Tall grass, fern (inventory images)
+		col = "49+172" # Plains grass color
+		convert_alphatex(GRASS, tex_dir+"/blocks/tallgrass.png", col, str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_tallgrass_inv.png")
+		convert_alphatex(GRASS, tex_dir+"/blocks/fern.png", col, str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_fern_inv.png")
+		convert_alphatex(GRASS, tex_dir+"/blocks/double_plant_fern_top.png", col, str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_double_plant_fern_inv.png")
+		convert_alphatex(GRASS, tex_dir+"/blocks/double_plant_grass_top.png", col, str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_double_plant_grass_inv.png")
+
+		# TODO: Convert grass palette
+
 		offset = [
-			[ "49+172", "", "grass" ], # Default
+			[ "49+172", "", "grass" ], # Default grass: Plains
 			[ "0+255", "_dry", "dry_grass" ], # Dry grass: Savanna, Mesa Plateau F, Nether, …
 		]
 		for o in offset:
-			convert_alphatex(GRASS, tex_dir+"/blocks/tallgrass.png", o[0], str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_tallgrass"+o[1]+".png")
-			convert_alphatex(GRASS, tex_dir+"/blocks/fern.png", o[0], str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_fern"+o[1]+".png")
-			convert_alphatex(GRASS, tex_dir+"/blocks/double_plant_fern_bottom.png", o[0], str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_double_plant_fern_bottom"+o[1]+".png")
-			convert_alphatex(GRASS, tex_dir+"/blocks/double_plant_fern_top.png", o[0], str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_double_plant_fern_top"+o[1]+".png")
-			convert_alphatex(GRASS, tex_dir+"/blocks/double_plant_grass_bottom.png", o[0], str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_double_plant_grass_bottom"+o[1]+".png")
-			convert_alphatex(GRASS, tex_dir+"/blocks/double_plant_grass_top.png", o[0], str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_double_plant_grass_top"+o[1]+".png")
 
 			os.system("convert "+GRASS+" -crop 1x1+"+o[0]+" -depth 8 -resize "+str(PXSIZE)+"x"+str(PXSIZE)+" "+tempfile1.name)
 			os.system("composite -compose Multiply "+tempfile1.name+" "+tex_dir+"/blocks/grass_top.png "+target_dir("/mods/ITEMS/mcl_core/textures")+"/default_"+o[2]+".png")

@@ -152,7 +152,6 @@ mobs_mc.override.replace = {
 		{ "mcl_core:dirt_with_grass", "mcl_core:dirt", -1 },
 		{ "mcl_core:dirt_with_dry_grass", "mcl_core:dirt", -1 },
 		{ "mcl_flowers:tallgrass", "air", 0 },
-		{ "mcl_flowers:tallgrass_dry", "air", 0 },
 	},
 	-- Silverfish populate stone, etc. with monster eggs
 	silverfish = {

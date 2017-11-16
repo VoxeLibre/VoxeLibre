@@ -12,10 +12,10 @@ local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, 
 	local soil_node = minetest.get_node_or_nil(below)
 	if not soil_node then return false end
 
-	local dry = minetest.registered_nodes[itemstack:get_name()]._mcl_dry_override
-	local replace
-	if dry and (soil_node.name == "mcl_core:dirt_with_dry_grass" or soil_node.name == "mcl_core:dirt_with_dry_grass_snow") then
-		replace = dry
+	local has_palette = minetest.registered_nodes[itemstack:get_name()].palette ~= nil
+	local colorize = 0
+	if has_palette and (soil_node.name == "mcl_core:dirt_with_dry_grass" or soil_node.name == "mcl_core:dirt_with_dry_grass_snow") then
+		colorize = 1
 	end
 
 --[[	Placement requirements:
@@ -31,10 +31,7 @@ local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, 
 	end
 	local is_flower = minetest.get_item_group(itemstack:get_name(), "flower") == 1
 	local ok = (soil_node.name == "mcl_core:dirt" or minetest.get_item_group(soil_node.name, "grass_block") == 1 or (not is_flower and (soil_node.name == "mcl_core:coarse_dirt" or soil_node.name == "mcl_core:podzol" or soil_node.name == "mcl_core:podzol_snow"))) and light_ok
-	if ok and replace then
-		return replace
-	end
-	return ok
+	return ok, colorize
 end)
 
 local function add_simple_flower(name, desc, image, simple_selection_box)
@@ -84,100 +81,61 @@ local wheat_seed_drop = {
 	}
 }
 
--- Tall Grass and Fern
-for i=1,2 do
-	-- CHECKME: How does tall grass behave when pushed by a piston?
-	local tgf_groups = {dig_immediate=3, flammable=3,attached_node=1,plant=1,place_flowerlike=2,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1}
+-- CHECKME: How does tall grass behave when pushed by a piston?
 
-	local id, idf, longdesc, longdesc_fern, create_entry, shears_drop, shears_drop_fern
-	if i==1 then
-		id = "tallgrass"
-		idf = "fern"
-		longdesc = "Tall grass is a small plant which often occours on the surface of grasslands. It can be harvested for wheat seeds. By using bone meal, tall grass can be turned into double tallgrass which is two blocks high."
-		longdesc_fern = "Ferns are small plants which occour naturally in grasslands. They can be harvested for wheat seeds. By using bone meal, a fern can be turned into a large fern which is two blocks high."
-		hidden = false
-		shears_drop = true
-		shears_drop_fern = true
-	else
-		id = "tallgrass_dry"
-		idf = "fern_dry"
-		tgf_groups.not_in_creative_inventory = 1
-		create_entry = false
-		shears_drop = {"mcl_flowers:tallgrass"}
-		shears_drop_fern = {"mcl_flowers:fern"}
-	end
+--- Tall Grass ---
+local def_tallgrass = {
+	description = "Tall Grass",
+	drawtype = "plantlike",
+	_doc_items_longdesc = "Tall grass is a small plant which often occours on the surface of grasslands. It can be harvested for wheat seeds. By using bone meal, tall grass can be turned into double tallgrass which is two blocks high.",
+	_doc_items_usagehelp = plant_usage_help,
+	_doc_items_hidden = false,
+	waving = 1,
+	tiles = {"mcl_flowers_tallgrass.png"},
+	inventory_image = "mcl_flowers_tallgrass_inv.png",
+	wield_image = "mcl_flowers_tallgrass_inv.png",
+	selection_box = {
+		type = "fixed",
+		fixed = {{ -6/16, -8/16, -6/16, 6/16, 4/16, 6/16 }},
+	},
+	paramtype = "light",
+	paramtype2 = "color",
+	palette = "mcl_core_palette_grass.png",
+	sunlight_propagates = true,
+	walkable = false,
+	buildable_to = true,
+	is_ground_content = true,
+	groups = {dig_immediate=3, flammable=3,attached_node=1,plant=1,place_flowerlike=2,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
+	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	drop = wheat_seed_drop,
+	_mcl_shears_drop = true,
+	node_placement_prediction = "",
+	on_place = on_place_flower,
+	_mcl_blast_resistance = 0,
+	_mcl_hardness = 0,
+}
+minetest.register_node("mcl_flowers:tallgrass", def_tallgrass)
 
-	--- Tall Grass ---
-	minetest.register_node("mcl_flowers:"..id, {
-		description = "Tall Grass",
-		drawtype = "plantlike",
-		_doc_items_longdesc = longdesc,
-		_doc_items_usagehelp = plant_usage_help,
-		_doc_items_hidden = hidden,
-		_doc_items_create_entry = create_entry,
-		waving = 1,
-		tiles = {"mcl_flowers_"..id..".png"},
-		inventory_image = "mcl_flowers_"..id..".png",
-		wield_image = "mcl_flowers_"..id..".png",
-		selection_box = {
-			type = "fixed",
-			fixed = {{ -6/16, -8/16, -6/16, 6/16, 4/16, 6/16 }},
-		},
-		paramtype = "light",
-		sunlight_propagates = true,
-		walkable = false,
-		buildable_to = true,
-		is_ground_content = true,
-		groups = tgf_groups,
-		sounds = mcl_sounds.node_sound_leaves_defaults(),
-		drop = wheat_seed_drop,
-		_mcl_shears_drop = shears_drop,
-		_mcl_dry_override = "mcl_flowers:tallgrass_dry",
-		node_placement_prediction = "",
-		on_place = on_place_flower,
-		_mcl_blast_resistance = 0,
-		_mcl_hardness = 0,
-	})
+--- Fern ---
+-- The fern is very similar to tall grass, so we can copy a lot from it.
+local def_fern = table.copy(def_tallgrass)
+def_fern.description = "Fern"
+def_fern._doc_items_longdesc = "Ferns are small plants which occour naturally in grasslands. They can be harvested for wheat seeds. By using bone meal, a fern can be turned into a large fern which is two blocks high."
+def_fern.tiles = { "mcl_flowers_fern.png" }
+def_fern.inventory_image = "mcl_flowers_fern_inv.png"
+def_fern.wield_image = "mcl_flowers_fern_inv.png"
+def_fern.selection_box = {
+	type = "fixed",
+	fixed = { -6/16, -0.5, -6/16, 6/16, 5/16, 6/16 },
+}
 
-	--- Fern ---
-	minetest.register_node("mcl_flowers:"..idf, {
-		description = "Fern",
-		_doc_items_longdesc = longdesc_fern,
-		_doc_items_usagehelp = plant_usage_help,
-		_doc_items_create_entry = create_entry,
-		_doc_items_hidden = hidden,
-		drawtype = "plantlike",
-		waving = 1,
-		tiles = { "mcl_flowers_"..idf..".png" },
-		inventory_image = "mcl_flowers_"..idf..".png",
-		wield_image = "mcl_flowers_"..idf..".png",
-		sunlight_propagates = true,
-		paramtype = "light",
-		walkable = false,
-		stack_max = 64,
-		groups = tgf_groups,
-		buildable_to = true,
-		sounds = mcl_sounds.node_sound_leaves_defaults(),
-		node_placement_prediction = "",
-		on_place = on_place_flower,
-		drop = wheat_seed_drop,
-		_mcl_shears_drop = shears_drop_fern,
-		_mcl_dry_override = "mcl_flowers:fern_dry",
-		selection_box = {
-			type = "fixed",
-			fixed = { -6/16, -0.5, -6/16, 6/16, 5/16, 6/16 },
-		},
-	})
-end
+minetest.register_node("mcl_flowers:fern", def_fern)
 
-doc.add_entry_alias("nodes", "mcl_flowers:tallgrass", "nodes", "mcl_flowers:tallgrass_dry")
-doc.add_entry_alias("nodes", "mcl_flowers:fern", "nodes", "mcl_flowers:fern_dry")
-
-local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_img, selbox_radius, selbox_top_height, drop, shears_drop, is_flower, dry_override)
+local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_img, selbox_radius, selbox_top_height, drop, shears_drop, is_flower, grass_color)
 	if not inv_img then
 		inv_img = top_img
 	end
-	local flowergroup, place_flowerlike, usagehelp, noncreative, create_entry
+	local flowergroup, place_flowerlike, usagehelp, noncreative, create_entry, paramtype2, palette
 	if is_flower == nil then
 		is_flower = true
 	end
@@ -186,6 +144,10 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		place_flowerlike = 1
 	else
 		place_flowerlike = 2
+	end
+	if grass_color then
+		paramtype2 = "color"
+		palette = "mcl_core_palette_grass.png"
 	end
 	if longdesc == nil then
 		noncreative = 1
@@ -210,11 +172,12 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		wield_image = inv_img,
 		sunlight_propagates = true,
 		paramtype = "light",
+		paramtype2 = paramtype2,
+		palette = palette,
 		walkable = false,
 		buildable_to = true,
 		drop = drop_bottom,
 		_mcl_shears_drop = shears_drop,
-		_mcl_dry_override = dry_override,
 		node_placement_prediction = "",
 		selection_box = {
 			type = "fixed",
@@ -271,14 +234,14 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 			-- * Only with light level >= 8
 			-- * Only if two enough space
 			if (floorname == "mcl_core:dirt" or minetest.get_item_group(floorname, "grass_block") == 1 or (not is_flower and (floorname == "mcl_core:coarse_dirt" or floorname == "mcl_core:podzol" or floorname == "mcl_core:podzol_snow"))) and bottom_buildable and top_buildable and light_ok then
-				local dry_override = minetest.registered_nodes[itemstring]._mcl_dry_override
-				if dry_override and (floorname == "mcl_core:dirt_with_dry_grass" or floorname == "mcl_core:dirt_with_dry_grass_snow") then
-					itemstring = dry_override
+				local param2
+				if grass_color and (floorname == "mcl_core:dirt_with_dry_grass" or floorname == "mcl_core:dirt_with_dry_grass_snow") then
+					param2 = 1
 				end
 				-- Success! We can now place the flower
 				minetest.sound_play(minetest.registered_nodes[itemstring].sounds.place, {pos = bottom, gain=1})
-				minetest.set_node(bottom, {name=itemstring})
-				minetest.set_node(top, {name=itemstring.."_top"})
+				minetest.set_node(bottom, {name=itemstring, param2=param2})
+				minetest.set_node(top, {name=itemstring.."_top", param2=param2})
 				if not minetest.settings:get_bool("creative_mode") then
 					itemstack:take_item()
 				end
@@ -305,6 +268,8 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		tiles = { top_img },
 		sunlight_propagates = true,
 		paramtype = "light",
+		paramtype2 = paramtype2,
+		palette = palette,
 		walkable = false,
 		buildable_to = true,
 		selection_box = {
@@ -339,26 +304,11 @@ add_large_plant("lilac", "Lilac", "A lilac is a large plant which occupies two b
 -- TODO: Make the sunflower face East. Requires a mesh for the top node.
 add_large_plant("sunflower", "Sunflower", "A sunflower is a large plant which occupies two blocks. It is mainly used in dye production.", "mcl_flowers_double_plant_sunflower_bottom.png", "mcl_flowers_double_plant_sunflower_top.png^mcl_flowers_double_plant_sunflower_front.png", "mcl_flowers_double_plant_sunflower_front.png", 6/16, 6/16)
 
-for i=1, 2 do
-	local longdesc_grass, longdesc_fern, dry, dry_override_grass, dry_override_fern
-	if i==1 then
-		longdesc_grass = "Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds."
-		longdesc_fern = "Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds."
-		dry = ""
-		dry_override_grass = "mcl_flowers:double_grass_dry"
-		dry_override_fern = "mcl_flowers:double_fern_dry"
-	else
-		-- ID/texture name modifier
-		dry = "_dry"
-	end
-	add_large_plant("double_grass"..dry, "Double Tallgrass", longdesc_grass, "mcl_flowers_double_plant_grass_bottom"..dry..".png", "mcl_flowers_double_plant_grass_top"..dry..".png", nil, 6/16, 4/16, wheat_seed_drop, {"mcl_flowers:tallgrass 2"}, false, dry_override_grass)
-	add_large_plant("double_fern"..dry, "Large Fern", longdesc_fern, "mcl_flowers_double_plant_fern_bottom"..dry..".png", "mcl_flowers_double_plant_fern_top"..dry..".png", nil, 5/16, 5/16, wheat_seed_drop, {"mcl_flowers:fern 2"}, false, dry_override_fern)
-end
+local longdesc_grass = "Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds."
+local longdesc_fern = "Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds."
 
-doc.add_entry_alias("nodes", "mcl_flowers:double_grass", "nodes", "mcl_flowers:double_grass_dry")
-doc.add_entry_alias("nodes", "mcl_flowers:double_grass", "nodes", "mcl_flowers:double_grass_dry_top")
-doc.add_entry_alias("nodes", "mcl_flowers:double_fern", "nodes", "mcl_flowers:double_fern_dry")
-doc.add_entry_alias("nodes", "mcl_flowers:double_fern", "nodes", "mcl_flowers:double_fern_dry_top")
+add_large_plant("double_grass", "Double Tallgrass", longdesc_grass, "mcl_flowers_double_plant_grass_bottom.png", "mcl_flowers_double_plant_grass_top.png", "mcl_flowers_double_plant_grass_inv.png", 6/16, 4/16, wheat_seed_drop, {"mcl_flowers:tallgrass 2"}, false, true)
+add_large_plant("double_fern", "Large Fern", longdesc_fern, "mcl_flowers_double_plant_fern_bottom.png", "mcl_flowers_double_plant_fern_top.png", "mcl_flowers_double_plant_fern_inv.png", 5/16, 5/16, wheat_seed_drop, {"mcl_flowers:fern 2"}, false, true)
 
 minetest.register_abm({
 	label = "Pop out flowers",

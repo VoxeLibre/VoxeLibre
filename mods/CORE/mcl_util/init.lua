@@ -447,20 +447,10 @@ function mcl_util.generate_on_place_plant_function(condition)
 		end
 
 		-- Check placement rules
-		local result = condition(place_pos, node, itemstack)
-		if result == true or type(result) == "string" then
-			local itemstack_place
-			if type(result) == "string" then
-				-- Let's pretend we place a different item
-				itemstack_place = ItemStack(itemstack)
-				itemstack_place:set_name(result)
-			else
-				itemstack_place = itemstack
-			end
-			local idef = itemstack_place:get_definition()
-			local new_itemstack, success = minetest.item_place_node(itemstack_place, placer, pointed_thing)
-			-- Restore old itemstack name
-			new_itemstack:set_name(itemstack:get_name())
+		local result, param2 = condition(place_pos, node, itemstack)
+		if result == true then
+			local idef = itemstack:get_definition()
+			local new_itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing, param2)
 
 			if success then
 				if idef.sounds and idef.sounds.place then

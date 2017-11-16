@@ -220,16 +220,13 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 				n = minetest.get_node(pos)
 				local n2 = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
 
-				if n.name ~= "" and n.name == "air" and (minetest.get_item_group(n2.name, "grass_block") == 1) and (minetest.get_item_group(n2.name, "snowed") == 0) then
+				if n.name ~= "" and n.name == "air" and (minetest.get_item_group(n2.name, "grass_block_no_snow") == 1) then
 					-- Randomly generate flowers, tall grass or nothing
 					if math.random(1,100) <= 90 then
 						-- 90% tall grass, 10% flower
 						if math.random(1,100) <= 90 then
-							if n2.name == "mcl_core:dirt_with_dry_grass" then
-								minetest.add_node(pos, {name="mcl_flowers:tallgrass_dry"})
-							else
-								minetest.add_node(pos, {name="mcl_flowers:tallgrass"})
-							end
+							local col = minetest.registered_nodes[n2.name]._mcl_grass_palette_index
+							minetest.add_node(pos, {name="mcl_flowers:tallgrass", param2=col})
 						else
 							if n2.name == "mcl_core:dirt_with_dry_grass" then
 								minetest.add_node(pos, {name=flowers_table_dry[math.random(1, #flowers_table_dry)]})
@@ -262,16 +259,8 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
 		local topnode = minetest.get_node(toppos)
 		if minetest.registered_nodes[topnode.name].buildable_to then
-			minetest.set_node(pos, { name = "mcl_flowers:double_grass" })
-			minetest.set_node(toppos, { name = "mcl_flowers:double_grass_top" })
-			return true
-		end
-	elseif n.name == "mcl_flowers:tallgrass_dry" then
-		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
-		local topnode = minetest.get_node(toppos)
-		if minetest.registered_nodes[topnode.name].buildable_to then
-			minetest.set_node(pos, { name = "mcl_flowers:double_grass_dry" })
-			minetest.set_node(toppos, { name = "mcl_flowers:double_grass_dry_top" })
+			minetest.set_node(pos, { name = "mcl_flowers:double_grass", param2 = n.param2 })
+			minetest.set_node(toppos, { name = "mcl_flowers:double_grass_top", param2 = n.param2 })
 			return true
 		end
 
@@ -280,16 +269,8 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
 		local topnode = minetest.get_node(toppos)
 		if minetest.registered_nodes[topnode.name].buildable_to then
-			minetest.set_node(pos, { name = "mcl_flowers:double_fern" })
-			minetest.set_node(toppos, { name = "mcl_flowers:double_fern_top" })
-			return true
-		end
-	elseif n.name == "mcl_flowers:fern_dry" then
-		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
-		local topnode = minetest.get_node(toppos)
-		if minetest.registered_nodes[topnode.name].buildable_to then
-			minetest.set_node(pos, { name = "mcl_flowers:double_fern_dry" })
-			minetest.set_node(toppos, { name = "mcl_flowers:double_fern_dry_top" })
+			minetest.set_node(pos, { name = "mcl_flowers:double_fern", param2 = n.param2 })
+			minetest.set_node(toppos, { name = "mcl_flowers:double_fern_top", param2 = n.param2 })
 			return true
 		end
 	end
