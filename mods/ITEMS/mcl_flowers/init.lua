@@ -69,7 +69,7 @@ add_simple_flower("tulip_orange", "Orange Tulip", "flowers_tulip", { -3/16, -0.5
 add_simple_flower("tulip_pink", "Pink Tulip", "mcl_flowers_tulip_pink", { -3/16, -0.5, -3/16, 3/16, 5/16, 3/16 })
 add_simple_flower("tulip_red", "Red Tulip", "mcl_flowers_tulip_red", { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 })
 add_simple_flower("tulip_white", "White Tulip", "mcl_flowers_tulip_white", { -3/16, -0.5, -3/16, 3/16, 4/16, 3/16 })
-add_simple_flower("allium", "Allium", "mcl_flowers_allium", { -5/16, -0.5, -5/16, 5/16, 6/16, 5/16 })
+add_simple_flower("allium", "Allium", "mcl_flowers_allium", { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 })
 add_simple_flower("azure_bluet", "Azure Bluet", "mcl_flowers_azure_bluet", { -5/16, -0.5, -5/16, 5/16, 3/16, 5/16 })
 add_simple_flower("blue_orchid", "Blue Orchid", "mcl_flowers_blue_orchid", { -5/16, -0.5, -5/16, 5/16, 7/16, 5/16 })
 
