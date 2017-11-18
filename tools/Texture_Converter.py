@@ -160,6 +160,13 @@ def convert_textures():
 				# Skip blacklisted files
 				continue
 
+			if make_texture_pack == False and dst_dir == "":
+				# If destination dir is empty, this texture is not supposed to be used in MCL2
+				# (but maybe an external mod). It should only be used in texture packs.
+				# Otherwise, it must be ignored.
+				# Example: textures for mcl_supplemental
+				continue
+
 			src_file = base_dir + src_dir + "/" + src_filename # source file
 			src_file_exists = os.path.isfile(src_file)
 			dst_file = target_dir(dst_dir) + "/" + dst_filename # destination file
