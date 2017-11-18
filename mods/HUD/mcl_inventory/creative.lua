@@ -218,8 +218,14 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 		"listring[current_player;main]"..
 		"listring[detached:trash;main]"
 
-	if page ~= nil then name = page end
+	if page ~= nil then
+		name = page
+		if players[playername] then
+			players[playername].page = page
+		end
+	end
 	bg[name] = "crafting_creative_bg.png"
+
 		local inv_bg = "crafting_inventory_creative.png"
 		if name == "inv" then
 			inv_bg = "crafting_inventory_creative_survival.png"
