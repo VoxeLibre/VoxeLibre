@@ -1424,10 +1424,11 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 			end
 
 			local p_pos = area:index(pos.x, pos.y, pos.z)
+			local l = minetest.get_node_light(pos)
 
 			if dir < 5
 			and data[p_pos] == c_air
-			and minetest.get_node_light(pos) > 12 then
+			and l ~= nil and l > 12 then
 				local c = math.random(1, 3)
 				if c == 1 then
 					data[p_pos] = c_cocoa_1
@@ -1559,7 +1560,8 @@ local generate_underground_mushrooms = function(minp, maxp, seed)
 	for n = 1, #stone do
 		bpos = {x = stone[n].x, y = stone[n].y + 1, z = stone[n].z }
 
-		if bpos.y >= min and bpos.y <= max and minetest.get_node_light(bpos, 0.5) <= 12 and pr_shroom:next(1,1000) < 4 then
+		local l = minetest.get_node_light(bpos, 0.5)
+		if bpos.y >= min and bpos.y <= max and l ~= nil and l <= 12 and pr_shroom:next(1,1000) < 4 then
 			if pr_shroom:next(1,2) == 1 then
 				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
 			else
@@ -1612,7 +1614,8 @@ local generate_nether_decorations = function(minp, maxp, seed)
 	-- Mushrooms on netherrack
 	-- Note: Spawned *after* the fire because of light level checks
 	special_deco(rack, function(bpos)
-		if bpos.y > mcl_vars.mg_lava_nether_max + 6 and minetest.get_node_light(bpos, 0.5) <= 12 and pr_nether:next(1,1000) <= 4 then
+		local l = minetest.get_node_light(bpos, 0.5)
+		if bpos.y > mcl_vars.mg_lava_nether_max + 6 and l ~= nil and l <= 12 and pr_nether:next(1,1000) <= 4 then
 			-- TODO: Make mushrooms appear in groups, use Perlin noise
 			if pr_nether:next(1,2) == 1 then
 				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
