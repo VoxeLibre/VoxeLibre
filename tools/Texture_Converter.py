@@ -44,12 +44,16 @@ make_texture_pack = True
 # If True, prints all copying actions
 verbose = False
 
+PXSIZE = 16
+
 syntax_help = """TextureConverter.py -i <input dir> [-o <output dir>] [-d] [-v|-q] [-h]
 Mandatory argument:
 -i <input directory>
 	Directory of Minecraft resource pack to convert
 
 Optional arguments:
+-p <size>
+	Specify the size of the original textures (default: 16)
 -o <output directory>
 	Directory in which to put the resulting MineClone 2 texture pack
 	(default: working directory)
@@ -61,7 +65,7 @@ Optional arguments:
 -h
 	Shows this help an exits"""
 try:
-	opts, args = getopt.getopt(sys.argv[1:],"hi:o:dv")
+	opts, args = getopt.getopt(sys.argv[1:],"hi:o:p:dv")
 except getopt.GetoptError:
 	print(
 """ERROR! The options you gave me make no sense!
@@ -89,6 +93,8 @@ Syntax:""")
 		base_dir = arg
 	elif opt == "-o":
 		output_dir = arg
+	elif opt == "-p":
+		PXSIZE = int(arg)
 
 if base_dir == None:
 	print(
@@ -173,7 +179,6 @@ def convert_textures():
 					print(src_file + " → " + dst_file)
 
 	# Convert chest textures (requires ImageMagick)
-	PXSIZE = 16
 	chest_file = tex_dir + "/entity/chest/normal.png"
 
 	if os.path.isfile(chest_file):
