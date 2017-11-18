@@ -12,7 +12,7 @@
 #
 # Usage (to be simplified later):
 # - Put extracted texture pack into $HOME/tmp/pp
-# - Make sure the file “Texture_Conversion_Table.csv” is in the same directory as the script
+# - Make sure the file “Conversion_Table.csv” is in the same directory as the script
 # - Run the script in its directory
 # - If everything worked, retrieve texture pack in New_MineClone_2_Texture_Pack/
 
@@ -28,6 +28,7 @@ home = os.environ["HOME"]
 mineclone2_path = home + "/.minetest/games/mineclone2"
 working_dir = os.getcwd()
 output_dir_name = "New_MineClone_2_Texture_Pack"
+appname = "Texture_Converter.py"
 
 ### SETTINGS ###
 output_dir = working_dir
@@ -46,7 +47,7 @@ verbose = False
 
 PXSIZE = 16
 
-syntax_help = """TextureConverter.py -i <input dir> [-o <output dir>] [-d] [-v|-q] [-h]
+syntax_help = appname+""" -i <input dir> [-o <output dir>] [-d] [-v|-q] [-h]
 Mandatory argument:
 -i <input directory>
 	Directory of Minecraft resource pack to convert
@@ -102,10 +103,10 @@ if base_dir == None:
 Mind-reading has not been implemented yet.
 
 Try this:
-    TextureConverter.py -i <path to resource pack>
+    """+appname+""" -i <path to resource pack>
 
 For the full help, use:
-    TextureConverter.py -h""")
+    """+appname+""" -h""")
 	sys.exit(2);
 
 ### END OF SETTINGS ###
@@ -130,7 +131,7 @@ def target_dir(directory):
 def convert_textures():
 	failed_conversions = 0
 	print("Texture conversion BEGINS NOW!")
-	with open("Texture_Conversion_Table.csv", newline="") as csvfile:
+	with open("Conversion_Table.csv", newline="") as csvfile:
 		reader = csv.reader(csvfile, delimiter=",", quotechar='"')
 		first_row = True
 		for row in reader:
