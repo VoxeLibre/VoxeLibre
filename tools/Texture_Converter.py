@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# EXPERIMENTAL texture pack copying utility.
+# EXPERIMENTAL texture pack converting utility.
 # This Python script helps in converting Minecraft texture packs. It has 2 main features:
 # - Can create a Minetest texture pack (default)
 # - Can update the MineClone 2 textures
@@ -10,11 +10,9 @@
 # - Python Library: Pillow
 # - ImageMagick
 #
-# Usage (to be simplified later):
-# - Put extracted texture pack into $HOME/tmp/pp
+# Usage:
 # - Make sure the file “Conversion_Table.csv” is in the same directory as the script
-# - Run the script in its directory
-# - If everything worked, retrieve texture pack in New_MineClone_2_Texture_Pack/
+# - Run ./Texture_Converter.py -h to learn the available options
 
 __author__ = "Wuzzy"
 __license__ = "MIT License"
