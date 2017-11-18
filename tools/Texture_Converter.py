@@ -208,31 +208,31 @@ def convert_textures():
 
 	
 		# Leaves
-		convert_alphatex(FOLIAG, tex_dir+"/blocks/leaves_oak.png", "70+120", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_leaves.png")
-		convert_alphatex(FOLIAG, tex_dir+"/blocks/leaves_big_oak.png", "70+120", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/mcl_core_leaves_big_oak.png")
-		convert_alphatex(FOLIAG, tex_dir+"/blocks/leaves_acacia.png", "16+240", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_acacia_leaves.png")
-		convert_alphatex(FOLIAG, tex_dir+"/blocks/leaves_spruce.png", "226+240", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/mcl_core_leaves_spruce.png")
-		convert_alphatex(FOLIAG, tex_dir+"/blocks/leaves_birch.png", "70+120", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/mcl_core_leaves_birch.png")
-		convert_alphatex(FOLIAG, tex_dir+"/blocks/leaves_jungle.png", "16+32", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_jungleleaves.png")
+		convert_alphatex(FOLIAG, tex_dir+"/blocks/leaves_oak.png", "116+143", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_leaves.png")
+		convert_alphatex(FOLIAG, tex_dir+"/blocks/leaves_big_oak.png", "158+177", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/mcl_core_leaves_big_oak.png")
+		convert_alphatex(FOLIAG, tex_dir+"/blocks/leaves_acacia.png", "40+255", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_acacia_leaves.png")
+		convert_alphatex(FOLIAG, tex_dir+"/blocks/leaves_spruce.png", "226+230", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/mcl_core_leaves_spruce.png")
+		convert_alphatex(FOLIAG, tex_dir+"/blocks/leaves_birch.png", "141+186", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/mcl_core_leaves_birch.png")
+		convert_alphatex(FOLIAG, tex_dir+"/blocks/leaves_jungle.png", "16+39", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_jungleleaves.png")
 
 		# Waterlily
-		convert_alphatex(FOLIAG, tex_dir+"/blocks/waterlily.png", "16+32", str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/flowers_waterlily.png")
+		convert_alphatex(FOLIAG, tex_dir+"/blocks/waterlily.png", "16+39", str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/flowers_waterlily.png")
 
 		# Vines
-		convert_alphatex(FOLIAG, tex_dir+"/blocks/vine.png", "16+32", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/mcl_core_vine.png")
+		convert_alphatex(FOLIAG, tex_dir+"/blocks/vine.png", "16+39", str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/mcl_core_vine.png")
 
 		# Tall grass, fern (inventory images)
-		col = "49+172" # Plains grass color
-		convert_alphatex(GRASS, tex_dir+"/blocks/tallgrass.png", col, str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_tallgrass_inv.png")
-		convert_alphatex(GRASS, tex_dir+"/blocks/fern.png", col, str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_fern_inv.png")
-		convert_alphatex(GRASS, tex_dir+"/blocks/double_plant_fern_top.png", col, str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_double_plant_fern_inv.png")
-		convert_alphatex(GRASS, tex_dir+"/blocks/double_plant_grass_top.png", col, str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_double_plant_grass_inv.png")
+		pcol = "49+172" # Plains grass color
+		convert_alphatex(GRASS, tex_dir+"/blocks/tallgrass.png", pcol, str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_tallgrass_inv.png")
+		convert_alphatex(GRASS, tex_dir+"/blocks/fern.png", pcol, str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_fern_inv.png")
+		convert_alphatex(GRASS, tex_dir+"/blocks/double_plant_fern_top.png", pcol, str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_double_plant_fern_inv.png")
+		convert_alphatex(GRASS, tex_dir+"/blocks/double_plant_grass_top.png", pcol, str(PXSIZE), target_dir("/mods/ITEMS/mcl_flowers/textures")+"/mcl_flowers_double_plant_grass_inv.png")
 
 		# TODO: Convert grass palette
 
 		offset = [
-			[ "49+172", "", "grass" ], # Default grass: Plains
-			[ "0+255", "_dry", "dry_grass" ], # Dry grass: Savanna, Mesa Plateau F, Nether, …
+			[ pcol, "", "grass" ], # Default grass: Plains
+			[ "40+255", "_dry", "dry_grass" ], # Dry grass: Savanna, Mesa Plateau F, Nether, …
 		]
 		for o in offset:
 
