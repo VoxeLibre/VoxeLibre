@@ -118,7 +118,7 @@ tex_dir = base_dir + "/assets/minecraft/textures"
 def convert_alphatex(colormap, source, colormap_pixel, texture_size, destination):
 	os.system("convert "+colormap+" -crop 1x1+"+colormap_pixel+" -depth 8 -resize "+texture_size+"x"+texture_size+" "+tempfile1.name)
 	os.system("composite -compose Multiply "+tempfile1.name+" "+source+" "+tempfile2.name)
-	os.system("composite -compose Dst_In "+source+" "+tempfile1.name+" -alpha Set "+destination)
+	os.system("composite -compose Dst_In "+source+" "+tempfile2.name+" -alpha Set "+destination)
 
 def target_dir(directory):
 	if make_texture_pack:
