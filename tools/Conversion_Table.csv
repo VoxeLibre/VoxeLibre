@@ -16,7 +16,7 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/blocks,anvil_top_damaged_0.png,/mods/ITEMS/mcl_anvils/textures,mcl_anvils_anvil_top_damaged_0.png,,,,,,,
 /assets/minecraft/textures/blocks,anvil_top_damaged_1.png,/mods/ITEMS/mcl_anvils/textures,mcl_anvils_anvil_top_damaged_1.png,,,,,,,
 /assets/minecraft/textures/blocks,anvil_top_damaged_2.png,/mods/ITEMS/mcl_anvils/textures,mcl_anvils_anvil_top_damaged_2.png,,,,,,,
-/assets/minecraft/textures/blocks,cauldron_side.png,/mods/ITEMS/mcl_anvils/textures,mcl_anvils_anvil_side.png,,,,,,,
+/assets/minecraft/textures/blocks,anvil_base.png,/mods/ITEMS/mcl_anvils/textures,mcl_anvils_anvil_side.png,,,,,,,
 /assets/minecraft/textures/blocks,anvil_side.png,/mods/ITEMS/mcl_anvils/textures,mcl_anvils_anvil_side.png,,,,,,,
 /assets/minecraft/textures/items,name_tag.png,/mods/ENTITIES/mobs/textures,mobs_nametag.png,,,,,,,
 /assets/minecraft/textures/gui,icons.png,/mods/ENTITIES/mobs/textures,mobs_blood.png,16,0,9,9,0,0,y
@@ -611,6 +611,7 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/blocks,observer_top.png,/mods/ITEMS/REDSTONE/mcl_observers/textures,mcl_observers_observer_top.png,,,,,,,
 /assets/minecraft/textures/items,redstone_dust.png,/mods/ITEMS/REDSTONE/mesecons_wires/textures,redstone_redstone_dust.png,,,,,,,
 /assets/minecraft/textures/items,repeater.png,/mods/ITEMS/REDSTONE/mesecons_delayer/textures,mesecons_delayer_item.png,,,,,,,
+/assets/minecraft/textures/items,comparator.png,/mods/ITEMS/REDSTONE/mesecons_comparators/textures,mcl_comparators_item.png,,,,,,,
 /assets/minecraft/textures/blocks,repeater_off.png,/mods/ITEMS/REDSTONE/mesecons_delayer/textures,mesecons_delayer_off.png,,,,,,,
 /assets/minecraft/textures/blocks,repeater_on.png,/mods/ITEMS/REDSTONE/mesecons_delayer/textures,mesecons_delayer_on.png,,,,,,,
 /assets/minecraft/textures/blocks,noteblock.png,/mods/ITEMS/REDSTONE/mesecons_noteblock/textures,mesecons_noteblock.png,,,,,,,
@@ -776,6 +777,7 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/blocks,shulker_top_white.png,/mods/ITEMS/mcl_chests/textures,mcl_chests_white_shulker_box_top.png,,,,,,,y
 /assets/minecraft/textures/blocks,shulker_top_yellow.png,/mods/ITEMS/mcl_chests/textures,mcl_chests_yellow_shulker_box_top.png,,,,,,,y
 /assets/minecraft/textures/items,flower_pot.png,/mods/ITEMS/mcl_flowerpots/textures,mcl_flowerpots_flowerpot_inventory.png,,,,,,,
+/assets/minecraft/textures/blocks,flower_pot.png,/mods/ITEMS/mcl_flowerpots/textures,mcl_flowerpots_flowerpot.png,,,,,,,y
 /assets/minecraft/textures/gui,widgets.png,/mods/HUD/mcl_inventory/textures,gui_hotbar.png,0,0,182,22,0,0,y
 /assets/minecraft/textures/gui,widgets.png,/mods/HUD/mcl_inventory/textures,gui_hotbar_selected.png,0,22,24,24,0,0,y
 /assets/minecraft/textures/blocks,bed_feet_end.png,/mods/ITEMS/mcl_beds/textures,mcl_beds_bed_side_bottom_red.png,,,,,,,
