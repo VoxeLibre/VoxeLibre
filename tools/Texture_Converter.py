@@ -111,7 +111,6 @@ For the full help, use:
 
 ### END OF SETTINGS ###
 
-# Helper variables
 tex_dir = base_dir + "/assets/minecraft/textures"
 
 # FUNCTION DEFINITIONS
@@ -153,6 +152,11 @@ def convert_textures():
 				yt = int(row[9])
 			else:
 				xs = None
+			blacklisted = row[10]
+
+			if blacklisted == "y":
+				# Skip blacklisted files
+				continue
 
 			src_file = base_dir + src_dir + "/" + src_filename # source file
 			src_file_exists = os.path.isfile(src_file)
@@ -184,14 +188,15 @@ def convert_textures():
 
 	if os.path.isfile(chest_file):
 		CHPX=((PXSIZE / 16 * 14)) # Chests in MC are 2/16 smaller!
+# Chests are currently blacklisted
 
-		os.system("convert " + chest_file + " \
-\( -clone 0 -crop "+str(CHPX)+"x"+str(CHPX)+"+"+str(CHPX)+"+0 \) -geometry +0+0 -composite -extent "+str(CHPX)+"x"+str(CHPX)+" "+target_dir("/mods/ITEMS/mcl_chests/textures")+"/default_chest_top.png")
+#		os.system("convert " + chest_file + " \
+#\( -clone 0 -crop "+str(CHPX)+"x"+str(CHPX)+"+"+str(CHPX)+"+0 \) -geometry +0+0 -composite -extent "+str(CHPX)+"x"+str(CHPX)+" "+target_dir("/mods/ITEMS/mcl_chests/textures")+"/default_chest_top.png")
 
-		os.system("convert " + chest_file + " \
-\( -clone 0 -crop "+str(CHPX)+"x"+str((PXSIZE/16)*5)+"+"+str(CHPX)+"+"+str(CHPX)+" \) -geometry +0+0 -composite \
-\( -clone 0 -crop "+str(CHPX)+"x"+str((PXSIZE/16)*10)+"+"+str(CHPX)+"+"+str((2*CHPX) + ((PXSIZE/16)*5))+" \) -geometry +0+"+str((PXSIZE/16)*5)+" -composite \
--extent "+str(CHPX)+"x"+str(CHPX)+" "+target_dir("/mods/ITEMS/mcl_chests/textures")+"/default_chest_front.png")
+#		os.system("convert " + chest_file + " \
+#\( -clone 0 -crop "+str(CHPX)+"x"+str((PXSIZE/16)*5)+"+"+str(CHPX)+"+"+str(CHPX)+" \) -geometry +0+0 -composite \
+#\( -clone 0 -crop "+str(CHPX)+"x"+str((PXSIZE/16)*10)+"+"+str(CHPX)+"+"+str((2*CHPX) + ((PXSIZE/16)*5))+" \) -geometry +0+"+str((PXSIZE/16)*5)+" -composite \
+#-extent "+str(CHPX)+"x"+str(CHPX)+" "+target_dir("/mods/ITEMS/mcl_chests/textures")+"/default_chest_front.png")
 
 		# TODO: Convert other chest sides
 
