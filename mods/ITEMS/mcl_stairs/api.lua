@@ -1,3 +1,20 @@
+-- Wrapper around mintest.pointed_thing_to_face_pos.
+local function get_fpos(placer, pointed_thing)
+	local fpos
+	-- Workaround: minetest.pointed_thing_to_face_pos crashes in MT 0.4.16 if
+	-- pointed_thing.under and pointed_thing.above are equal
+	-- FIXME: Remove this when MT got fixed.
+	if not vector.equals(pointed_thing.under, pointed_thing.above) then
+		-- The happy case: Everything is normal
+		local finepos = minetest.pointed_thing_to_face_pos(placer, pointed_thing)
+		fpos = finepos.y % 1
+	else
+		-- Fallback if both above and under are equal
+		fpos = 0
+	end
+	return fpos
+end
+
 local function place_slab_normal(itemstack, placer, pointed_thing)
 	-- Use pointed node's on_rightclick function first, if present
 	local node = minetest.get_node(pointed_thing.under)
@@ -12,8 +29,7 @@ local function place_slab_normal(itemstack, placer, pointed_thing)
 
 	local placer_pos = placer:getpos()
 
-	local finepos = minetest.pointed_thing_to_face_pos(placer, pointed_thing)
-	local fpos = finepos.y % 1
+	local fpos = get_fpos(placer, pointed_thing)
 
 	local place = ItemStack(itemstack)
 	local origname = itemstack:get_name()
@@ -44,8 +60,7 @@ local function place_stair(itemstack, placer, pointed_thing)
 		param2 = minetest.dir_to_facedir(vector.subtract(p1, placer_pos))
 	end
 
-	local finepos = minetest.pointed_thing_to_face_pos(placer, pointed_thing)
-	local fpos = finepos.y % 1
+	local fpos = get_pos(placer, pointed_thing)
 
 	if p0.y - 1 == p1.y or (fpos > 0 and fpos < 0.5)
 			or (fpos < -0.5 and fpos > -0.999999999) then
