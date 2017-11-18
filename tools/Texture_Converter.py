@@ -17,7 +17,7 @@
 # - If everything worked, retrieve texture pack in texture_pack/
 
 __author__ = "Wuzzy"
-__license__ = "WTFPL"
+__license__ = "MIT License"
 __status__ = "Development"
 
 ### SETTINGS ###
