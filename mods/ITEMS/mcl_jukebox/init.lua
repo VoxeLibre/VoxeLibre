@@ -133,7 +133,9 @@ minetest.register_node("mcl_jukebox:jukebox", {
 			local ly = pos.y+1
 			local lz = pos.z
 			local record = inv:get_stack("main", 1)
-			minetest.add_item({x=lx, y=ly, z=lz}, record:get_name())
+			local dropped_item = minetest.add_item({x=lx, y=ly, z=lz}, record:get_name())
+			-- Rotate record to match with “slot” texture
+			dropped_item:set_yaw(math.pi/2)
 			inv:set_stack("main", 1, "")
 			if active_tracks[cname] ~= nil then
 				minetest.sound_stop(active_tracks[cname])
@@ -170,7 +172,9 @@ minetest.register_node("mcl_jukebox:jukebox", {
 		local stack = inv:get_stack("main", 1)
 		if not stack:is_empty() then
 			local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
-			minetest.add_item(p, stack)
+			local dropped_item = minetest.add_item(p, stack)
+			-- Rotate record to match with “slot” texture
+			dropped_item:set_yaw(math.pi/2)
 			if active_tracks[name] ~= nil then
 				minetest.sound_stop(active_tracks[name])
 				digger:hud_remove(active_huds[name])
