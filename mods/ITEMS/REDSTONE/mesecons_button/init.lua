@@ -85,9 +85,9 @@ local buttonuse = "Rightclick the button to push it."
 minetest.register_node("mesecons_button:button_stone_off", {
 	drawtype = "nodebox",
 	tiles = {"default_stone.png"},
-	wield_image = "default_stone.png^[mask:mesecons_button_wield_mask.png",
+	wield_image = "mesecons_button_wield_mask.png^default_stone.png^mesecons_button_wield_mask.png^[makealpha:255,126,126",
 	-- FIXME: Use proper 3D inventory image
-	inventory_image = "default_stone.png^[mask:mesecons_button_wield_mask.png",
+	inventory_image = "mesecons_button_wield_mask.png^default_stone.png^mesecons_button_wield_mask.png^[makealpha:255,126,126",
 	wield_scale = { x=1, y=1, z=1},
 	paramtype = "light",
 	paramtype2 = "wallmounted",
@@ -119,8 +119,8 @@ minetest.register_node("mesecons_button:button_stone_off", {
 minetest.register_node("mesecons_button:button_stone_on", {
 	drawtype = "nodebox",
 	tiles = {"default_stone.png"},
-	wield_image = "default_stone.png^[mask:mesecons_button_wield_mask.png",
-	inventory_image = "default_stone.png^[mask:mesecons_button_wield_mask.png",
+	wield_image = "mesecons_button_wield_mask.png^default_stone.png^mesecons_button_wield_mask.png^[makealpha:255,126,126",
+	inventory_image = "mesecons_button_wield_mask.png^default_stone.png^mesecons_button_wield_mask.png^[makealpha:255,126,126",
 	wield_scale = { x=1, y=1, z=0.5},
 	paramtype = "light",
 	paramtype2 = "wallmounted",
@@ -145,8 +145,8 @@ minetest.register_node("mesecons_button:button_stone_on", {
 minetest.register_node("mesecons_button:button_wood_off", {
 	drawtype = "nodebox",
 	tiles = {"default_wood.png"},
-	wield_image = "default_wood.png^[mask:mesecons_button_wield_mask.png",
-	inventory_image = "default_wood.png^[mask:mesecons_button_wield_mask.png",
+	wield_image = "mesecons_button_wield_mask.png^default_wood.png^mesecons_button_wield_mask.png^[makealpha:255,126,126",
+	inventory_image = "mesecons_button_wield_mask.png^default_wood.png^mesecons_button_wield_mask.png^[makealpha:255,126,126",
 	wield_scale = { x=1, y=1, z=1},
 	paramtype = "light",
 	paramtype2 = "wallmounted",
@@ -178,8 +178,8 @@ minetest.register_node("mesecons_button:button_wood_off", {
 minetest.register_node("mesecons_button:button_wood_on", {
 	drawtype = "nodebox",
 	tiles = {"default_wood.png"},
-	wield_image = "default_wood.png^[mask:mesecons_button_wield_mask.png",
-	inventory_image = "default_wood.png^[mask:mesecons_button_wield_mask.png",
+	wield_image = "mesecons_button_wield_mask.png^default_wood.png^mesecons_button_wield_mask.png^[makealpha:255,126,126",
+	inventory_image = "mesecons_button_wield_mask.png^default_wood.png^mesecons_button_wield_mask.png^[makealpha:255,126,126",
 	wield_scale = { x=1, y=1, z=0.5},
 	paramtype = "light",
 	paramtype2 = "wallmounted",
