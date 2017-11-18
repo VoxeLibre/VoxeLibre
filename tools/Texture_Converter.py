@@ -202,6 +202,24 @@ def convert_textures():
 
 		# TODO: Convert other chest sides
 
+	# Generate railway crossings and t-junctions. Note: They may look strange.
+	# Note: these may be only a temporary solution, as crossings and t-junctions do not occour in MC.
+	# TODO: Curves
+	rails = [
+		# (Straigt src, curved src, t-junction dest, crossing dest)
+		("rail_normal.png", "rail_normal_turned.png", "default_rail_t_junction.png", "default_rail_crossing.png"),
+		("rail_golden.png", "rail_normal_turned.png", "carts_rail_t_junction_pwr.png", "carts_rail_crossing_pwr.png"),
+		("rail_golden_powered.png", "rail_normal_turned.png", "mcl_minecarts_rail_golden_t_junction_powered.png", "mcl_minecarts_rail_golden_crossing_powered.png"),
+		("rail_detector.png", "rail_normal_turned.png", "mcl_minecarts_rail_detector_t_junction.png", "mcl_minecarts_rail_detector_crossing.png"),
+		("rail_detector_powered.png", "rail_normal_turned.png", "mcl_minecarts_rail_detector_t_junction_powered.png", "mcl_minecarts_rail_detector_crossing_powered.png"),
+		("rail_activator.png", "rail_normal_turned.png", "mcl_minecarts_rail_activator_t_junction.png", "mcl_minecarts_rail_activator_crossing.png"),
+		("rail_activator_powered.png", "rail_normal_turned.png", "mcl_minecarts_rail_activator_d_t_junction.png", "mcl_minecarts_rail_activator_powered_crossing.png"),
+	]
+	for r in rails:
+		os.system("composite -compose Dst_Over "+tex_dir+"/blocks/"+r[0]+" "+tex_dir+"/blocks/"+r[1]+" "+target_dir("/mods/ENTITIES/mcl_minecarts/textures")+"/"+r[2])
+		os.system("convert "+tex_dir+"/blocks/"+r[0]+" -rotate 90 "+tempfile1.name)
+		os.system("composite -compose Dst_Over "+tempfile1.name+" "+tex_dir+"/blocks/"+r[0]+" "+target_dir("/mods/ENTITIES/mcl_minecarts/textures")+"/"+r[3])
+
 	# Convert grass
 	grass_file = tex_dir + "/blocks/grass_top.png"
 	if os.path.isfile(grass_file):
