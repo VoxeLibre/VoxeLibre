@@ -14,13 +14,26 @@
 # - Put extracted texture pack into $HOME/tmp/pp
 # - Make sure the file “Texture_Conversion_Table.csv” is in the same directory as the script
 # - Run the script in its directory
-# - If everything worked, retrieve texture pack in texture_pack/
+# - If everything worked, retrieve texture pack in New_MineClone_2_Texture_Pack/
 
 __author__ = "Wuzzy"
 __license__ = "MIT License"
 __status__ = "Development"
 
+import shutil, csv, os, tempfile, sys, getopt
+from PIL import Image
+
+# Helper vars
+home = os.environ["HOME"]
+mineclone2_path = home + "/.minetest/games/mineclone2"
+working_dir = os.getcwd()
+output_dir_name = "New_MineClone_2_Texture_Pack"
+
 ### SETTINGS ###
+output_dir = working_dir
+
+base_dir = None
+
 # If True, will only make console output but not convert anything.
 dry_run = False
 
@@ -31,16 +44,67 @@ make_texture_pack = True
 # If True, prints all copying actions
 verbose = False
 
+syntax_help = """TextureConverter.py -i <input dir> [-o <output dir>] [-d] [-v|-q] [-h]
+Mandatory argument:
+-i <input directory>
+	Directory of Minecraft resource pack to convert
+
+Optional arguments:
+-o <output directory>
+	Directory in which to put the resulting MineClone 2 texture pack
+	(default: working directory)
+-d
+	The script will only pretend to convert textures by writing
+	to the console only, but not changing any files.
+-v
+	Prints out all copying actions
+-h
+	Shows this help an exits"""
+try:
+	opts, args = getopt.getopt(sys.argv[1:],"hi:o:dv")
+except getopt.GetoptError:
+	print(
+"""ERROR! The options you gave me make no sense!
+
+Here's the syntax reference:""")
+	print(syntax_help)
+	sys.exit(2)
+for opt, arg in opts:
+	if opt == "-h":
+		print(
+"""This is the official MineClone 2 Texture Converter.
+This will convert textures from Minecraft resource packs to
+a MineClone 2 texture pack.
+
+Supported Minecraft version: 1.12 (Java Edition)
+
+Syntax:""")
+		print(syntax_help)
+		sys.exit()
+	elif opt == "-d":
+		dry_run = True
+	elif opt == "-v":
+		verbose = True
+	elif opt == "-i":
+		base_dir = arg
+	elif opt == "-o":
+		output_dir = arg
+
+if base_dir == None:
+	print(
+"""ERROR: You forgot to tell me the path to the Minecraft resource pack.
+Mind-reading has not been implemented yet.
+
+Try this:
+    TextureConverter.py -i <path to resource pack>
+
+For the full help, use:
+    TextureConverter.py -h""")
+	sys.exit(2);
+
 ### END OF SETTINGS ###
 
-import shutil, csv, os, tempfile
-from PIL import Image
-
 # Helper variables
-home = os.environ["HOME"]
-mineclone2_path = home + "/.minetest/games/mineclone2"
-working_dir = os.getcwd()
-base_dir = home + "/tmp/pp"
 tex_dir = base_dir + "/assets/minecraft/textures"
 
 # FUNCTION DEFINITIONS
@@ -52,7 +116,7 @@ def convert_alphatex(one, two, three, four, five):
 
 def target_dir(directory):
 	if make_texture_pack:
-		return working_dir + "/texture_pack"
+		return output_dir + "/" + output_dir_name
 	else:
 		return mineclone2_path + directory
 
@@ -179,11 +243,11 @@ def convert_textures():
 			print("WARNING: Number of missing files in original resource pack: "+str(failed_conversions))
 		print("NOTE: Please keep in mind this script does not reliably convert all the textures yet.")
 		if make_texture_pack:
-			print("You can now retrieve the texture pack in "+working_dir+"/texture_pack/")
+			print("You can now retrieve the texture pack in "+output_dir+"/"+output_dir_name+"/")
 
 # ENTRY POINT
-if make_texture_pack and not os.path.isdir("./texture_pack"):
-	os.mkdir("texture_pack")
+if make_texture_pack and not os.path.isdir(output_dir+"/"+output_dir_name):
+	os.mkdir(output_dir+"/"+output_dir_name)
 
 tempfile1 = tempfile.NamedTemporaryFile()
 tempfile2 = tempfile.NamedTemporaryFile()
