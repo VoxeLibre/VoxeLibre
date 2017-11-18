@@ -19,7 +19,7 @@ local flowers = {
 	{"sprucesapling", "mcl_core:sprucesapling", "Spruce Sapling Flower Pot"},
 	{"birchsapling", "mcl_core:birchsapling", "Birch Sapling Flower Pot"},
 	{"deadbush", "mcl_core:deadbush", "Dead Bush Flower Pot"},
-	{"fern", "mcl_flowers:fern", "Fern Flower Pot"},
+	{"fern", "mcl_flowers:fern", "Fern Flower Pot", {"mcl_flowers_fern_inv.png"}},
 }
 
 local cubes = {
@@ -90,7 +90,12 @@ for _, row in ipairs(flowers) do
 local flower = row[1]
 local flower_node = row[2]
 local desc = row[3]
-local texture = minetest.registered_nodes[flower_node]["tiles"]
+local texture
+if row[4] then
+	texture = row[4]
+else
+	texture = minetest.registered_nodes[flower_node]["tiles"]
+end
 minetest.register_node("mcl_flowerpots:flower_pot_"..flower, {
 	description = desc,
 	_doc_items_create_entry = false,
