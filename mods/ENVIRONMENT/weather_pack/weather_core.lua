@@ -120,7 +120,7 @@ minetest.register_globalstep(function(dtime)
   end
 end)
 
--- sets random weather (which could be 'regular' (no weather)).
+-- Sets random weather (which could be 'none' (no weather)).
 weather.set_random_weather = function(weather_name, weather_meta)
   if (weather_meta ~= nil) then
     local transitions = weather_meta.transitions
@@ -133,11 +133,26 @@ weather.set_random_weather = function(weather_name, weather_meta)
       end
     end
     if new_weather then
-      weather.state = new_weather
-      weather.end_time = weather.get_rand_end_time(weather.reg_weathers[weather.state].min_duration, weather.reg_weathers[weather.state].max_duration)
-      weather.reg_weathers[weather_name].clear()
+      weather.change_weather(new_weather)
     end
   end
+end
+
+weather.change_weather = function(new_weather)
+  if (weather.reg_weathers ~= nil and weather.reg_weathers[new_weather] ~= nil) then
+    if (weather.state ~= nil and weather.reg_weathers[weather.state] ~= nil) then
+      weather.reg_weathers[weather.state].clear()
+    end
+    weather.state = new_weather
+    local weather_meta = weather.reg_weathers[weather.state]
+    weather.end_time = weather.get_rand_end_time(weather_meta.min_duration, weather_meta.max_duration)
+    return true
+  end
+  return false
+end
+
+weather.get_weather = function()
+  return weather.state
 end
 
 minetest.register_privilege("weather_manager", {
@@ -152,28 +167,19 @@ minetest.register_chatcommand("weather", {
   privs = {weather_manager = true},
   func = function(name, param)
     if (param == "") then
-      minetest.chat_send_player(name, "Error: No weather specified.")
-      return
+      return false, "Error: No weather specified."
     end
-    local success = false
-    if (param == "clear") then
-      weather.reg_weathers[weather.state].clear()
-      weather.state = "none"
-      weather.end_time = weather.get_rand_end_time()
-      success = true
-      return
-    end
-  
-    if (weather.reg_weathers ~= nil and weather.reg_weathers[param] ~= nil) then
-      if (weather.state ~= nil and weather.state ~= "none" and weather.reg_weathers[weather.state] ~= nil) then
-        weather.reg_weathers[weather.state].clear()
-        local weather_meta = weather.reg_weathers[weather.state]
-        weather.end_time = weather.get_rand_end_time(weather_meta.min_duration, weather_meta.max_duration)
-      end
-      weather.state = param
-      return
+    local new_weather
+    if param == "clear" then
+        new_weather = "none"
     else
-      minetest.chat_send_player(name, "Error: Invalid weather specified. Use “clear”, “rain”, “snow” or “thunder”.")
+        new_weather = param
+    end
+    local success = weather.change_weather(new_weather)
+    if success then
+      return true
+    else
+      return false, "Error: Invalid weather specified. Use “clear”, “rain”, “snow” or “thunder”."
     end
   end
 })
@@ -185,18 +191,13 @@ minetest.register_chatcommand("toggledownfall", {
   func = function(name, param)
     -- Currently rain/thunder/snow: Set weather to clear
     if weather.state ~= "none" then
-       weather.reg_weathers[weather.state].clear()
-       weather.state = "none"
-       weather.end_time = weather.get_rand_end_time()
+       return weather.change_weather("none")
 
     -- Currently clear: Set weather randomly to rain/thunder/snow
     else
        local new = { "rain", "thunder", "snow" }
        local r = math.random(1, #new)
-       weather.reg_weathers[weather.state].clear()
-       weather.state = new[r]
-       local weather_meta = weather.reg_weathers[weather.state]
-       weather.end_time = weather.get_rand_end_time(weather_meta.min_duration, weather_meta.max_duration)
+       return weather.change_weather(new[r])
     end
   end
 })
