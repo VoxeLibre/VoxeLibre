@@ -60,7 +60,7 @@ local function place_stair(itemstack, placer, pointed_thing)
 		param2 = minetest.dir_to_facedir(vector.subtract(p1, placer_pos))
 	end
 
-	local fpos = get_pos(placer, pointed_thing)
+	local fpos = get_fpos(placer, pointed_thing)
 
 	if p0.y - 1 == p1.y or (fpos > 0 and fpos < 0.5)
 			or (fpos < -0.5 and fpos > -0.999999999) then
