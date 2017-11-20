@@ -309,8 +309,17 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
 	on_construct = function(pos)
-		local found_node = minetest.find_node_near(pos, 1, {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt_with_dry_grass_snow"})
-		if found_node then
+		local _, dim = mcl_util.y_to_layer(pos.y)
+		local dry
+		if dim == "nether" then
+			dry = true
+		else
+			local found_node = minetest.find_node_near(pos, 1, {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt_with_dry_grass_snow"})
+			if found_node then
+				dry = true
+			end
+		end
+		if dry then
 			minetest.set_node(pos, {name="mcl_core:dirt_with_dry_grass"})
 		end
 		return mcl_core.on_snowable_construct(pos)
