@@ -3,3 +3,4 @@ mcl_util?
 mcl_wool?
 mcl_dye?
 mcl_tnt?
+weather_pack?

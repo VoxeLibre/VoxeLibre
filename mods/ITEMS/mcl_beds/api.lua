@@ -22,17 +22,17 @@ local function destruct_bed(pos, n)
 	end
 end
 
-local beddesc = "Beds allow you to sleep at night and waste some time. Survival in this world does not demand sleep, but sleeping might have some other uses. "
-local beduse = "Right-click on the bed to try to sleep in it. This only works when the sun sets or at night."
+local beddesc = "Beds allow you to sleep at night and make the time pass faster."
+local beduse = "Right-click on the bed to sleep in it. This only works when the sun sets, at night or during a thunderstorm."
 if minetest.settings:get_bool("enable_bed_respawn") == false then
-	beddesc = beddesc .. "In local folklore, legends are told of other worlds where setting the start point for your next would be possible. But this world is not one of them. "
+	beddesc = beddesc .. "\n" .. "In local folklore, legends are told of other worlds where setting the start point for your next would be possible. But this world is not one of them."
 else
-	beddesc = beddesc .. "By sleeping in a bed, you set the starting point for your next life. "
+	beddesc = beddesc .. "\n" .. "By sleeping in a bed, you set the starting point for your next life."
 end
 if minetest.settings:get_bool("enable_bed_night_skip") == false then
-	beddesc = beddesc .. "In this strange world, the time will not pass faster for you when you sleep."
+	beddesc = beddesc .. "\n" .. "In this strange world, going to bed won't skip the night, but you can skip thunderstorms."
 else
-	beddesc = beddesc .. "Going into bed seems to make time pass faster: The night will be skipped when you go sleep and you're alone in this world. If you're not alone, the night is skipped when all players in this world went to sleep."
+	beddesc = beddesc .. "\n" .. "Sleeping allows you to skip the night if you're the only player in this world. If you're not alone, the night is skipped when all players in this world went to sleep. Thunderstorms can be skipped in the same manner."
 end
 
 local default_sounds
