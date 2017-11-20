@@ -7,7 +7,6 @@
 #
 # Requirements:
 # - Python 3
-# - Python Library: Pillow
 # - ImageMagick
 #
 # Usage:
@@ -19,7 +18,6 @@ __license__ = "MIT License"
 __status__ = "Development"
 
 import shutil, csv, os, tempfile, sys, getopt
-from PIL import Image
 
 # Helper vars
 home = os.environ["HOME"]
@@ -120,6 +118,17 @@ def colorize_alpha(colormap, source, colormap_pixel, texture_size, destination):
 	colorize(colormap, source, colormap_pixel, texture_size, tempfile2.name)
 	os.system("composite -compose Dst_In "+source+" "+tempfile2.name+" -alpha Set "+destination)
 
+# This function is unused atm.
+# TODO: Implemnt colormap extraction
+def extract_colormap(colormap, colormap_pixel, positions):
+	os.system("convert -size 16x16 canvas:black "+tempfile1.name)
+	x=0
+	y=0
+	for p in positions:
+		os.system("convert "+colormap+" -crop 1x1+"+colormap_pixel+" -depth 8 "+tempfile2.name)
+		os.system("composite -geometry 16x16+"+x+"+"+y+" "+tempfile2.name)
+		x = x+1
+
 def target_dir(directory):
 	if make_texture_pack:
 		return output_dir + "/" + output_dir_name
@@ -176,11 +185,8 @@ def convert_textures():
 
 			if xs != None:
 				# Crop and copy images
-				image = Image.open(src_file)
 				if not dry_run:
-					region = image.crop((xs, ys, xs+xl, ys+yl))
-					region.load()
-					region.save(dst_file)
+					os.system("convert "+src_file+" -crop "+xl+"x"+yl+"+"+xs+"+"+ys+" "+dst_file)
 				if verbose:
 					print(src_file + " → " + dst_file)
 			else:
