@@ -108,7 +108,7 @@ local def_tallgrass = {
 	walkable = false,
 	buildable_to = true,
 	is_ground_content = true,
-	groups = {dig_immediate=3, flammable=3,attached_node=1,plant=1,place_flowerlike=2,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
+	groups = {handy=1,shearsy=1, flammable=3,attached_node=1,plant=1,place_flowerlike=2,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	drop = wheat_seed_drop,
 	_mcl_shears_drop = true,
@@ -138,15 +138,20 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 	if not inv_img then
 		inv_img = top_img
 	end
-	local flowergroup, place_flowerlike, usagehelp, noncreative, create_entry, paramtype2, palette
+	local usagehelp, noncreative, create_entry, paramtype2, palette
 	if is_flower == nil then
 		is_flower = true
 	end
+
+	local bottom_groups = {flammable=2,non_mycelium_plant=1,attached_node=1, dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, plant=1,double_plant=1,deco_block=1,not_in_creative_inventory=noncreative}
 	if is_flower then
-		flowergroup = 1
-		place_flowerlike = 1
+		bottom_groups.flower = 1
+		bottom_groups.place_flowerlike = 1
+		bottom_groups.dig_immediate = 3
 	else
-		place_flowerlike = 2
+		bottom_groups.place_flowerlike = 2
+		bottom_groups.handy = 1
+		bottom_groups.shearsy = 1
 	end
 	if grass_color then
 		paramtype2 = "color"
@@ -259,9 +264,14 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 				minetest.remove_node(top)
 			end
 		end,
-		groups = {dig_immediate=3,flammable=2,flower=flowergroup,place_flowerlike=place_flowerlike,non_mycelium_plant=1,attached_node=1, dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, plant=1,double_plant=1,deco_block=1,not_in_creative_inventory=noncreative},
+		groups = bottom_groups,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 	})
+
+	local top_groups = table.copy(bottom_groups)
+	top_groups.not_in_creative_inventory=1
+	top_groups.double_plant=2
+	top_groups.attached_node=nil
 
 	-- Top
 	minetest.register_node("mcl_flowers:"..name.."_top", {
@@ -289,7 +299,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 				minetest.remove_node(bottom)
 			end
 		end,
-		groups = {dig_immediate=3,flammable=2,flower=flowergroup,place_flowerlike=place_flowerlike,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, not_in_creative_inventory = 1, plant=1,double_plant=2},
+		groups = top_groups,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 	})
 
