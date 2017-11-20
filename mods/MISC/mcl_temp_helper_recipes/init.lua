@@ -92,6 +92,24 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "mcl_mobitems:carrot_on_a_stick",
+	recipe = {
+		{ "", "", "mcl_core:stick", },
+		{ "", "mcl_core:stick", "mcl_mobitems:string", },
+		{ "mcl_core:stick", "", "mcl_farming:carrot_item" },
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_mobitems:carrot_on_a_stick",
+	recipe = {
+		{ "mcl_core:stick", "", "" },
+		{ "mcl_mobitems:string", "mcl_core:stick", "", },
+		{ "mcl_farming:carrot_item", "", "mcl_core:stick" },
+	},
+})
+
+minetest.register_craft({
 	output = "mcl_jukebox:record_2",
 	recipe = {
 		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
@@ -115,6 +133,7 @@ minetest.register_craft({
 		{ "mcl_core:glass_black", "mcl_core:glass_black", "mcl_core:glass_black", },
 	}
 })
+
 -- 2 discs are dropped by creeper
 -- 1 disc is droppd by zombie
 -- TODO: Remove/fix these drops when creeper drops music discs properly
