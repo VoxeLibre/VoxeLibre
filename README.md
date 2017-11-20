@@ -2,7 +2,7 @@
 An unofficial Minecraft-like game for Minetest. Forked from MineClone by daredevils.
 Developed by Wuzzy and contributors. Not developed or endorsed by Mojang AB.
 
-Version: 0.29.2
+Version: 0.30.0
 
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
@@ -149,6 +149,7 @@ Bonus features (not found in Minecraft 1.11):
 * Built-in crafting guide which shows you crafting and smelting recipes
 * In-game help system containing extensive help about gameplay basics, blocks, items and more
 * Temporary crafting recipes. They only exist to make some otherwise unaccessible items available when you're not in creative mode. These recipes will be removed as development goes on an more features become available
+* Saplings in chests (only in mapgen v6, because only 3 out of 6 tree species grow here)
 
 Technical differences from Minecraft:
 
@@ -161,7 +162,7 @@ Technical differences from Minecraft:
 * Different textures (Pixel Perfection)
 * Different sounds (various sources)
 * Different engine (Minetest)
-* Free software (“free” as in freedom *and* free beer)
+* Free software (“free” as in freedom)
 
 ## Reporting bugs
 Please report all bugs and missing Minecraft features here:
