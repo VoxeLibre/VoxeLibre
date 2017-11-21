@@ -126,6 +126,7 @@ minetest.register_globalstep(function(dtime)
 		and (ndef.node_box == nil or ndef.node_box.type == "regular")
 		and (ndef.groups.disable_suffocation ~= 1)
 		and (ndef.groups.opaque == 1)
+		and (node_head ~= "ignore")
 		-- Check privilege, too
 		and (not minetest.check_player_privs(name, {noclip = true})) then
 			if player:get_hp() > 0 then
