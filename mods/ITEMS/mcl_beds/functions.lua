@@ -158,6 +158,10 @@ function mcl_beds.skip_thunderstorm()
 end
 
 function mcl_beds.on_rightclick(pos, player)
+	-- Anti-Inception: Don't allow to sleep while you're sleeping
+	if player:get_attribute("mcl_beds:sleeping") == "true" then
+		return
+	end
 	if minetest.get_modpath("mcl_init") then
 		local _, dim = mcl_util.y_to_layer(pos.y)
 		if dim == "nether" or dim == "end" then
