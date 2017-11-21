@@ -1,6 +1,6 @@
-weather-pack
+`mcl_weather`
 =======================
-Weather mod for Minetest (http://minetest.net/)
+Weather mod for MineClone 2. Forked from `weather_pack`.
 
 Weathers included
 -----------------------
@@ -10,13 +10,13 @@ Weathers included
 
 Commands
 -----------------------
-`set_weather <weather>` requires `weather_manager` privilege.
+`weather <weather>`, requires `weather_manager` privilege.
 
 Dependencies
 -----------------------
 Thunder weather requres [lightning](https://github.com/minetest-mods/lightning) mod.
 
-Configuration properties
+Configuration prope,  ties
 -----------------------
 Weather mod for indoor check depends on sunlight propogation check. Some nodes (e.g. glass block) propogates sunlight and thus weather particles will go through it. To change that set `weather_allow_override_nodes=true` in `minetest.conf` file. Be aware that just few nodes will be override and these blocks needs to be re-builded to take effect. Maybe in future other 'cheap' way to check indoor will be available.
 

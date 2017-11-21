@@ -1,16 +1,16 @@
-snow = {}
+mcl_weather.snow = {}
 
-snow.particles_count = 15
-snow.init_done = false
+mcl_weather.snow.particles_count = 15
+mcl_weather.snow.init_done = false
 
 -- calculates coordinates and draw particles for snow weather 
-snow.add_rain_particles = function(player)
-  rain.last_rp_count = 0
-  for i=snow.particles_count, 1,-1 do
-    local random_pos_x, random_pos_y, random_pos_z = weather.get_random_pos_by_player_look_dir(player)
+mcl_weather.snow.add_snow_particles = function(player)
+  mcl_weather.rain.last_rp_count = 0
+  for i=mcl_weather.snow.particles_count, 1,-1 do
+    local random_pos_x, random_pos_y, random_pos_z = mcl_weather.get_random_pos_by_player_look_dir(player)
     random_pos_y = math.random() + math.random(player:getpos().y - 1, player:getpos().y + 7)
     if minetest.get_node_light({x=random_pos_x, y=random_pos_y, z=random_pos_z}, 0.5) == 15 then
-      rain.last_rp_count = rain.last_rp_count + 1
+      mcl_weather.rain.last_rp_count = mcl_weather.rain.last_rp_count + 1
       minetest.add_particle({
         pos = {x=random_pos_x, y=random_pos_y, z=random_pos_z},
         velocity = {x = math.random(-1,-0.5), y = math.random(-2,-1), z = math.random(-1,-0.5)},
@@ -20,30 +20,30 @@ snow.add_rain_particles = function(player)
         collisiondetection = true,
         collision_removal = true,
         vertical = true,
-        texture = snow.get_texture(),
+        texture = mcl_weather.snow.get_texture(),
         playername = player:get_player_name()
       })
     end
   end
 end
 
-snow.set_sky_box = function()
-  skycolor.add_layer(
+mcl_weather.snow.set_sky_box = function()
+  mcl_weather.skycolor.add_layer(
     "weather-pack-snow-sky",
     {{r=0, g=0, b=0},
     {r=241, g=244, b=249},
     {r=0, g=0, b=0}}
   )
-  skycolor.active = true
+  mcl_weather.skycolor.active = true
 end
 
-snow.clear = function() 
-  skycolor.remove_layer("weather-pack-snow-sky")
-  snow.init_done = false
+mcl_weather.snow.clear = function() 
+  mcl_weather.skycolor.remove_layer("weather-pack-snow-sky")
+  mcl_weather.snow.init_done = false
 end
 
 -- Simple random texture getter
-snow.get_texture = function()
+mcl_weather.snow.get_texture = function()
   local texture_name
   local random_number = math.random()
   if random_number > 0.5 then
@@ -56,7 +56,7 @@ end
 
 local timer = 0
 minetest.register_globalstep(function(dtime)
-  if weather.state ~= "snow" then 
+  if mcl_weather.state ~= "snow" then 
     return false
   end
   
@@ -67,23 +67,23 @@ minetest.register_globalstep(function(dtime)
     return
   end
 
-  if snow.init_done == false then
-    snow.set_sky_box()
-    snow.init_done = true
+  if mcl_weather.snow.init_done == false then
+    mcl_weather.snow.set_sky_box()
+    mcl_weather.snow.init_done = true
   end
 
   for _, player in ipairs(minetest.get_connected_players()) do
-    if (weather.is_underwater(player) or not mcl_util.has_weather(player:getpos())) then
+    if (mcl_weather.is_underwater(player) or not mcl_util.has_weather(player:getpos())) then
       return false
     end
-    snow.add_rain_particles(player)
+    mcl_weather.snow.add_snow_particles(player)
   end
 end)
 
 -- register snow weather
-if weather.reg_weathers.snow == nil then
-  weather.reg_weathers.snow = {
-    clear = snow.clear,
+if mcl_weather.reg_weathers.snow == nil then
+  mcl_weather.reg_weathers.snow = {
+    clear = mcl_weather.snow.clear,
     -- 10min - 20min
     min_duration = 600,
     max_duration = 1200,

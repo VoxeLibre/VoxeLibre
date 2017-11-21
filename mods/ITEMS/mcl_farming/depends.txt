@@ -2,6 +2,6 @@ mcl_core
 mcl_sounds
 mcl_wool
 mcl_torches
-weather_pack
+mcl_weather
 mobs_mc
 doc?

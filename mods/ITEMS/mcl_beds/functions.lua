@@ -5,7 +5,7 @@ local enable_respawn = minetest.settings:get_bool("enable_bed_respawn")
 if enable_respawn == nil then
 	enable_respawn = true
 end
-local weather_mod = minetest.get_modpath("weather_pack") ~= nil
+local weather_mod = minetest.get_modpath("mcl_weather") ~= nil
 
 -- Helper functions
 
@@ -148,8 +148,8 @@ end
 
 function mcl_beds.skip_thunderstorm()
 	-- Skip thunderstorm
-	if weather_mod and weather.get_weather() == "thunder" then
-		weather.change_weather("none")
+	if weather_mod and mcl_weather.get_weather() == "thunder" then
+		mcl_weather.change_weather("none")
 		-- Sleep for a half day (=minimum thunderstorm duration)
 		minetest.set_timeofday((minetest.get_timeofday() + 0.5) % 1)
 		return true
@@ -174,7 +174,7 @@ function mcl_beds.on_rightclick(pos, player)
 	local tod = minetest.get_timeofday() * 24000
 
 	-- Values taken from Minecraft Wiki with offset of +6000
-	if tod < 18541 and tod > 5458 and (not weather_mod or (weather.get_weather() ~= "thunder")) then
+	if tod < 18541 and tod > 5458 and (not weather_mod or (mcl_weather.get_weather() ~= "thunder")) then
 		if mcl_beds.player[name] then
 			lay_down(player, nil, nil, false)
 		end

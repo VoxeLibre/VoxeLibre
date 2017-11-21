@@ -157,7 +157,7 @@ minetest.register_globalstep(function(dtime)
 		local _, dim = mcl_util.y_to_layer(pos.y)
 		-- Set dimension skies.
 		-- FIXME: Sky handling in MCL2 is held together with lots of duct tape.
-		-- This only works beause weather_pack currently does not touch the sky for players below the height used for this check.
+		-- This only works beause mcl_weather currently does not touch the sky for players below the height used for this check.
 		-- There should be a real skybox API.
 		if dim == "void" then
 			player:set_sky("#000000", "plain", nil, false)
@@ -167,7 +167,7 @@ minetest.register_globalstep(function(dtime)
 		elseif dim == "nether" then
 			player:set_sky("#300808", "plain", nil, false)
 		else
-			skycolor.update_sky_color({player})
+			mcl_weather.skycolor.update_sky_color({player})
 		end
 		if void_deadly then
 			-- Player is deep into the void, deal void damage

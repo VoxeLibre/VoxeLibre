@@ -1,4 +1,4 @@
-weather = {
+mcl_weather = {
   -- weather states, 'none' is default, other states depends from active mods
   state = "none",
   
@@ -27,9 +27,9 @@ weather = {
   allow_abm = true,
 }
 
-weather.reg_weathers["none"] = {
-  min_duration = weather.min_duration,
-  max_duration = weather.max_duration,
+mcl_weather.reg_weathers["none"] = {
+  min_duration = mcl_weather.min_duration,
+  max_duration = mcl_weather.max_duration,
   transitions = {
     [50] = "rain",
     [100] = "snow",
@@ -37,12 +37,12 @@ weather.reg_weathers["none"] = {
   clear = function() end,
 }
 
-weather.get_rand_end_time = function(min_duration, max_duration)
+mcl_weather.get_rand_end_time = function(min_duration, max_duration)
   local r
   if min_duration ~= nil and max_duration ~= nil then
     r = math.random(min_duration, max_duration);
   else
-    r = math.random(weather.min_duration, weather.max_duration);
+    r = math.random(mcl_weather.min_duration, mcl_weather.max_duration);
   end 
   return minetest.get_gametime() + r
 end
@@ -50,7 +50,7 @@ end
 -- Returns true if pos is outdoor.
 -- Outdoor is defined as any node in the Overworld under open sky.
 -- FIXME: Nodes below glass also count as “outdoor”, this should not be the case.
-weather.is_outdoor = function(pos)
+mcl_weather.is_outdoor = function(pos)
   local cpos = {x=pos.x, y=pos.y+1, z=pos.z}
   local _, dim = mcl_util.y_to_layer(cpos.y)
   if minetest.get_node_light(cpos, 0.5) == 15 and dim == "overworld" then
@@ -61,7 +61,7 @@ end
 
 -- checks if player is undewater. This is needed in order to
 -- turn off weather particles generation.
-weather.is_underwater = function(player)
+mcl_weather.is_underwater = function(player)
     local ppos = player:getpos()
     local offset = player:get_eye_offset()
     local player_eye_pos = {x = ppos.x + offset.x, 
@@ -76,7 +76,7 @@ end
 
 -- trying to locate position for particles by player look direction for performance reason.
 -- it is costly to generate many particles around player so goal is focus mainly on front view.  
-weather.get_random_pos_by_player_look_dir = function(player)
+mcl_weather.get_random_pos_by_player_look_dir = function(player)
   local look_dir = player:get_look_dir()
   local player_pos = player:getpos()
 
@@ -107,21 +107,21 @@ weather.get_random_pos_by_player_look_dir = function(player)
 end
 
 minetest.register_globalstep(function(dtime)
-  if weather.auto_mode == false then
+  if mcl_weather.auto_mode == false then
     return 0
   end
 
-  if weather.end_time == nil then
-    weather.end_time = weather.get_rand_end_time()
+  if mcl_weather.end_time == nil then
+    mcl_weather.end_time = mcl_weather.get_rand_end_time()
   end
   -- recalculate weather
-  if weather.end_time <= minetest.get_gametime() then
-    weather.set_random_weather(weather.state, weather.reg_weathers[weather.state])
+  if mcl_weather.end_time <= minetest.get_gametime() then
+    mcl_weather.set_random_weather(mcl_weather.state, mcl_weather.reg_weathers[mcl_weather.state])
   end
 end)
 
 -- Sets random weather (which could be 'none' (no weather)).
-weather.set_random_weather = function(weather_name, weather_meta)
+mcl_weather.set_random_weather = function(weather_name, weather_meta)
   if (weather_meta ~= nil) then
     local transitions = weather_meta.transitions
     local random_roll = math.random(0,100)
@@ -133,26 +133,26 @@ weather.set_random_weather = function(weather_name, weather_meta)
       end
     end
     if new_weather then
-      weather.change_weather(new_weather)
+      mcl_weather.change_weather(new_weather)
     end
   end
 end
 
-weather.change_weather = function(new_weather)
-  if (weather.reg_weathers ~= nil and weather.reg_weathers[new_weather] ~= nil) then
-    if (weather.state ~= nil and weather.reg_weathers[weather.state] ~= nil) then
-      weather.reg_weathers[weather.state].clear()
+mcl_weather.change_weather = function(new_weather)
+  if (mcl_weather.reg_weathers ~= nil and mcl_weather.reg_weathers[new_weather] ~= nil) then
+    if (mcl_weather.state ~= nil and mcl_weather.reg_weathers[mcl_weather.state] ~= nil) then
+      mcl_weather.reg_weathers[mcl_weather.state].clear()
     end
-    weather.state = new_weather
-    local weather_meta = weather.reg_weathers[weather.state]
-    weather.end_time = weather.get_rand_end_time(weather_meta.min_duration, weather_meta.max_duration)
+    mcl_weather.state = new_weather
+    local weather_meta = mcl_weather.reg_weathers[mcl_weather.state]
+    mcl_weather.end_time = mcl_weather.get_rand_end_time(weather_meta.min_duration, weather_meta.max_duration)
     return true
   end
   return false
 end
 
-weather.get_weather = function()
-  return weather.state
+mcl_weather.get_weather = function()
+  return mcl_weather.state
 end
 
 minetest.register_privilege("weather_manager", {
@@ -175,7 +175,7 @@ minetest.register_chatcommand("weather", {
     else
         new_weather = param
     end
-    local success = weather.change_weather(new_weather)
+    local success = mcl_weather.change_weather(new_weather)
     if success then
       return true
     else
@@ -190,14 +190,14 @@ minetest.register_chatcommand("toggledownfall", {
   privs = {weather_manager = true},
   func = function(name, param)
     -- Currently rain/thunder/snow: Set weather to clear
-    if weather.state ~= "none" then
-       return weather.change_weather("none")
+    if mcl_weather.state ~= "none" then
+       return mcl_weather.change_weather("none")
 
     -- Currently clear: Set weather randomly to rain/thunder/snow
     else
        local new = { "rain", "thunder", "snow" }
        local r = math.random(1, #new)
-       return weather.change_weather(new[r])
+       return mcl_weather.change_weather(new[r])
     end
   end
 })
@@ -206,5 +206,5 @@ minetest.register_chatcommand("toggledownfall", {
 -- Weather mods expected to be use this flag before registering ABM.
 local weather_allow_abm = minetest.settings:get_bool("weather_allow_abm")
 if weather_allow_abm ~= nil and weather_allow_abm == false then
-  weather.allow_abm = false
+  mcl_weather.allow_abm = false
 end 

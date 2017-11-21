@@ -88,8 +88,8 @@ minetest.register_abm({
 			-- The decay branch (make farmland dry or turn back to dirt)
 
 			-- Don't decay while it's raining
-			if rain.raining then
-				if weather.is_outdoor(pos) then
+			if mcl_weather.rain.raining then
+				if mcl_weather.is_outdoor(pos) then
 					return
 				end
 			end

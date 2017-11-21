@@ -1,4 +1,4 @@
-local modpath = minetest.get_modpath("weather_pack");
+local modpath = minetest.get_modpath("mcl_weather");
 dofile(modpath.."/weather_core.lua")
 dofile(modpath.."/snow.lua")
 dofile(modpath.."/rain.lua")
