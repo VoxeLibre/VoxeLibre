@@ -66,11 +66,10 @@ local destroy_portal = function(pos)
 end
 
 -- End portal
--- TODO: Create real end portal
 minetest.register_node("mcl_portals:portal_end", {
 	description = "End Portal",
 	_doc_items_longdesc = "An End portal teleports creatures and objects to the mysterious End dimension (and back!).",
-	_doc_items_usagehelp = "Stand in the portal for a moment to activate the teleportation. Entering such a portal for the first time will create a new portal in your destination. End portal which were built in the End will lead back to the Overworld. An End portal is destroyed if any of its surrounding frame blocks is destroyed.",
+	_doc_items_usagehelp = "Stand in the portal for a moment to activate the teleportation. Entering an End portal in the overworld teleports you to a fixed position in the End dimension and creates a 5×5 obsidian platform at your destination. End portals in the End will lead back to your spawn point in the Overworld.",
 	tiles = {
 		{
 			name = "mcl_portals_end_portal.png",
