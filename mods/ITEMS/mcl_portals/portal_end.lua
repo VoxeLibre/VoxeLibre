@@ -288,6 +288,9 @@ minetest.register_abm({
 					end
 					if not target then
 						target = { x=0, y=0, z=0 }
+						if mg_name == "flat" then
+							target.y = mcl_vars.mg_bedrock_overworld_max + 5
+						end
 					end
 				else
 					-- End portal in any other dimension:
