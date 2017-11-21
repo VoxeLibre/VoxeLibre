@@ -265,7 +265,7 @@ minetest.register_abm({
 		-- We can tell if a end portal is legacy if it has portal_target as metadata.
 		-- FIXME: Remove this after some time.
 		local meta = minetest.get_meta(pos)
-		local legacy_portal_target = minetest.string_to_pos(meta:get_string("portal_target"))
+		local legacy_portal_target = meta:get_string("portal_frame1")
 		if legacy_portal_target and legacy_portal_target ~= "" then
 			minetest.set_node(pos, {name="mcl_core:cobweb"})
 			return
