@@ -339,8 +339,8 @@ minetest.register_abm({
 				-- Look towards the End island
 				if obj:is_player() and dim ~= "end" then
 					obj:set_look_horizontal(math.pi/2)
+					minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16})
 				end
-				minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16})
 			end
 		end
 	end,

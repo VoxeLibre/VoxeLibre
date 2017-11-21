@@ -434,7 +434,9 @@ minetest.register_abm({
 
 						-- Teleport
 						obj:setpos(target)
-						minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16})
+						if obj:is_player() then
+							minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16})
+						end
 
 						-- Enable teleportation cooloff for 4 seconds, to prevent back-and-forth teleportation
 						portal_cooloff[obj] = true
