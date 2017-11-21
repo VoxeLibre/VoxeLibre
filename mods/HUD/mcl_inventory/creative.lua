@@ -139,18 +139,36 @@ local boffset = {} --
 local hoch = {}
 local bg = {}
 
-noffset["blocks"] = {-0.29,-0.25}
-noffset["deco"] = {0.98,-0.25}
-noffset["redstone"] = {2.23,-0.25}
-noffset["rail"] = {3.495,-0.25}
-noffset["misc"] = {4.75,-0.25}
-noffset["nix"] = {8.99,-0.25}
-noffset["food"] = {-0.29,8.12}
-noffset["tools"] = {0.98,8.12}
-noffset["combat"] = {2.23,8.12}
-noffset["brew"] = {3.495,8.12}
-noffset["matr"] = {4.74,8.12}
-noffset["inv"] = {8.99,8.12}
+local noffset_x_start = -0.24
+local noffset_x = noffset_x_start
+local noffset_y = -0.25
+local next_noffset = function(id, right)
+	if right then
+		noffset[id] = { 8.94, noffset_y }
+	else
+		noffset[id] = { noffset_x, noffset_y }
+		noffset_x = noffset_x + 1.25
+	end
+end
+
+-- Upper row
+next_noffset("blocks")
+next_noffset("deco")
+next_noffset("redstone")
+next_noffset("rail")
+next_noffset("misc")
+next_noffset("nix", true)
+
+noffset_x = noffset_x_start
+noffset_y = 8.12
+
+-- Lower row
+next_noffset("food")
+next_noffset("tools")
+next_noffset("combat")
+next_noffset("brew")
+next_noffset("matr")
+next_noffset("inv", true)
 
 for k,v in pairs(noffset) do
 	offset[k] = tostring(v[1]) .. "," .. tostring(v[2])
@@ -293,61 +311,67 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 				"image[9.033," .. tostring(slider_pos) .. ";0.78,"..tostring(slider_height) .. ";crafting_slider.png]"..
 				"image_button[9.02,6.15;"..tostring(arrow_height)..",0.6;crafting_creative_down.png;creative_next;]"
 		end
-		local function tab(current, check)
-			local img
-			if current == check then
-				img = "crafting_creative_active.png"
+
+		local tab_icon = {
+			blocks = "mcl_core:brick_block",
+			deco = "mcl_flowers:peony",
+			redstone = "mesecons:redstone",
+			rail = "mcl_minecarts:golden_rail",
+			misc = "mcl_buckets:bucket_lava",
+			nix = "mcl_compass:compass",
+			food = "mcl_core:apple",
+			tools = "mcl_core:axe_iron",
+			combat = "mcl_core:sword_gold",
+			brew = "mcl_potions:potion_water",
+			matr = "mcl_core:stick",
+			inv = "mcl_chests:chest",
+		}
+		local function tab(current_tab, this_tab)
+			local bg_img
+			if current_tab == this_tab then
+				bg_img = "crafting_creative_active.png"
 			else
-				img = "crafting_creative_inactive.png"
+				bg_img = "crafting_creative_inactive.png"
 			end
-			return "image[" .. offset[check] .. ";1.5,1.44;" .. img .. hoch[check].. "]" ..
-				"image[" .. boffset[check] .. ";1,1;crafting_creative_marker.png]"
+			return 
+				"item_image_button[" .. boffset[this_tab] ..";1,1;"..tab_icon[this_tab]..";"..this_tab..";]"..
+				"image[" .. offset[this_tab] .. ";1.5,1.44;" .. bg_img .. hoch[this_tab].. "]" ..
+				"image[" .. boffset[this_tab] .. ";1,1;crafting_creative_marker.png]"
 		end
 		local fnt = ""
 		if name ~= "inv" then
 			fnt = "image[0,1;5,0.75;mcl_inventory_fnt_"..name..".png]"
 		end
+
 		formspec = "size[10,9.3]"..
 			mcl_vars.inventory_header..
 			"background[-0.19,-0.25;10.5,9.87;"..inv_bg.."]"..
 			"label[-5,-5;"..name.."]"..
-			"item_image_button[-0.1,0;1,1;mcl_core:brick_block;blocks;]"..	--build blocks
 			tab(name, "blocks") ..
 			"tooltip[blocks;Building Blocks]"..
-			"item_image_button[1.15,0;1,1;mcl_flowers:peony;deco;]"..	--decoration blocks
 			tab(name, "deco") ..
 			"tooltip[deco;Decoration Blocks]"..
-			"item_image_button[2.415,0;1,1;mesecons:redstone;redstone;]"..	--redstone
 			tab(name, "redstone") ..
 			"tooltip[redstone;Redstone]"..
-			"item_image_button[3.693,0;1,1;mcl_minecarts:golden_rail;rail;]"..	--transportation
 			tab(name, "rail") ..
 			"tooltip[rail;Transportation]"..
-			"item_image_button[4.93,0;1,1;mcl_buckets:bucket_lava;misc;]"..	--miscellaneous
 			tab(name, "misc") ..
 			"tooltip[misc;Miscellaneous]"..
-			"item_image_button[9.19,0;1,1;mcl_compass:compass;nix;]"..	--search
 			tab(name, "nix") ..
 			"tooltip[nix;Search Items]"..
 			fnt..
 			"list[current_player;main;0,7;9,1;]"..
 			main_list..
-			"item_image_button[-0.1,8.37;1,1;mcl_core:apple;food;]"..	--foodstuff
 			tab(name, "food") ..
 			"tooltip[food;Foodstuffs]"..
-			"item_image_button[1.15,8.37;1,1;mcl_core:axe_iron;tools;]"..	--tools
 			tab(name, "tools") ..
 			"tooltip[tools;Tools]"..
-			"item_image_button[2.415,8.37;1,1;mcl_core:sword_gold;combat;]"..	--combat
 			tab(name, "combat") ..
 			"tooltip[combat;Combat]"..
-			"item_image_button[3.693,8.37;1,1;mcl_potions:potion_water;brew;]"..	--brewing
 			tab(name, "brew") ..
 			"tooltip[brew;Brewing]"..
-			"item_image_button[4.938,8.37;1,1;mcl_core:stick;matr;]"..	--materials
 			tab(name, "matr") ..
 			"tooltip[matr;Materials]"..
-			"item_image_button[9.19,8.37;1,1;mcl_chests:chest;inv;]"..			--inventory
 			tab(name, "inv") ..
 			"tooltip[inv;Survival Inventory]"..
 			"list[detached:trash;main;9,7;1,1;]"..
