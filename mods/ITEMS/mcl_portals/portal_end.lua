@@ -18,13 +18,6 @@ local np_cave = {
 	octaves = 5,
 	persist = 0.7
 }
--- Portal frame material
-local fake_portal_frame = "mcl_nether:quartz_block"
-
--- Table of objects (including players) which recently teleported by a
--- End portal. Those objects have a brief cooloff period before they
--- can teleport again. This prevents annoying back-and-forth teleportation.
-local portal_cooloff = {}
 
 -- Destroy portal if pos (portal frame or portal node) got destroyed
 local destroy_portal = function(pos)
@@ -56,7 +49,7 @@ local destroy_portal = function(pos)
 			end
 		end
 		local nn = minetest.get_node(p).name
-		if nn == fake_portal_frame or nn == "mcl_portals:portal_end" then
+		if nn == "mcl_portals:portal_end" then
 			-- Remove portal nodes, but not myself
 			if nn == "mcl_portals:portal_end" and not vector.equals(p, pos) then
 				minetest.remove_node(p)
@@ -72,17 +65,13 @@ local destroy_portal = function(pos)
 	end
 end
 
--- Fake end portal
+-- End portal
 -- TODO: Create real end portal
 minetest.register_node("mcl_portals:portal_end", {
 	description = "End Portal",
 	_doc_items_longdesc = "An End portal teleports creatures and objects to the mysterious End dimension (and back!).",
 	_doc_items_usagehelp = "Stand in the portal for a moment to activate the teleportation. Entering such a portal for the first time will create a new portal in your destination. End portal which were built in the End will lead back to the Overworld. An End portal is destroyed if any of its surrounding frame blocks is destroyed.",
 	tiles = {
-		"blank.png",
-		"blank.png",
-		"blank.png",
-		"blank.png",
 		{
 			name = "mcl_portals_end_portal.png",
 			animation = {
@@ -92,19 +81,14 @@ minetest.register_node("mcl_portals:portal_end", {
 				length = 1.0,
 			},
 		},
-		{
-			name = "mcl_portals_end_portal.png",
-			animation = {
-				type = "vertical_frames",
-				aspect_w = 16,
-				aspect_h = 16,
-				length = 1.0,
-			},
-		},
+		"blank.png",
+		"blank.png",
+		"blank.png",
+		"blank.png",
+		"blank.png",
 	},
 	drawtype = "nodebox",
 	paramtype = "light",
-	paramtype2 = "facedir",
 	sunlight_propagates = true,
 	use_texture_alpha = true,
 	walkable = false,
@@ -120,7 +104,7 @@ minetest.register_node("mcl_portals:portal_end", {
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{-0.5, -0.5, -0.1,  0.5, 0.5, 0.1},
+			{-0.5, -0.5, -0.5, 0.5, 4/16, 0.5},
 		},
 	},
 	groups = {not_in_creative_inventory = 1},
@@ -130,84 +114,25 @@ minetest.register_node("mcl_portals:portal_end", {
 	_mcl_blast_resistance = 18000000,
 })
 
-local function build_end_portal(pos, target3)
-	local p = {x = pos.x - 1, y = pos.y - 1, z = pos.z}
-	local p1 = {x = pos.x - 1, y = pos.y - 1, z = pos.z}
-	local p2 = {x = p1.x + 3, y = p1.y + 4, z = p1.z}
-
-	for i = 1, 4 do
-		minetest.set_node(p, {name = fake_portal_frame})
-		p.y = p.y + 1
-	end
-	for i = 1, 3 do
-		minetest.set_node(p, {name = fake_portal_frame})
-		p.x = p.x + 1
-	end
-	for i = 1, 4 do
-		minetest.set_node(p, {name = fake_portal_frame})
-		p.y = p.y - 1
-	end
-	for i = 1, 3 do
-		minetest.set_node(p, {name = fake_portal_frame})
-		p.x = p.x - 1
-	end
+local function build_end_portal_destination(pos)
+	local p1 = {x = pos.x - 2, y = pos.y, z = pos.z-2}
+	local p2 = {x = pos.x + 2, y = pos.y+2, z = pos.z+2}
 
 	for x = p1.x, p2.x do
 	for y = p1.y, p2.y do
-		p = {x = x, y = y, z = p1.z}
-		if not (x == p1.x or x == p2.x or y == p1.y or y == p2.y) then
-			minetest.set_node(p, {name = "mcl_portals:portal_end", param2 = 0})
-		end
-		local meta = minetest.get_meta(p)
-		meta:set_string("portal_frame1", minetest.pos_to_string(p1))
-		meta:set_string("portal_frame2", minetest.pos_to_string(p2))
-		meta:set_string("portal_target", minetest.pos_to_string(target3))
-
-		for z = -2, 2 do
-			if z ~= 0 then
-				local newp = {x=p.x, y=p.y, z=p.z+z}
-				if y ~= p1.y then
-					if minetest.registered_nodes[
-							minetest.get_node(newp).name].is_ground_content then
-						minetest.remove_node(newp)
-					end
-				else
-					-- Build obsidian platform if floating
-					local newp_below = table.copy(newp)
-					newp_below.y = newp.y - 1
-					if minetest.get_node(newp).name == "air" and minetest.get_node(newp_below).name == "air" then
-						minetest.set_node(newp, {name="mcl_core:obsidian"})
-					end
-
-				end
+	for z = p1.z, p2.z do
+		local newp = {x=x,y=y,z=z}
+		-- Build obsidian platform
+		if minetest.registered_nodes[minetest.get_node(newp).name].is_ground_content then
+			if y == p1.y then
+				minetest.set_node(newp, {name="mcl_core:obsidian"})
+			else
+				minetest.remove_node(newp)
 			end
 		end
 	end
 	end
-end
-
-local function find_end_target3_y2(target3_x, target3_z)
-	local start_y = math.random(SPAWN_MIN, SPAWN_MAX) -- Search start
-	if not nobj_cave then
-		nobj_cave = minetest.get_perlin(np_cave)
 	end
-	local air = 0 -- Consecutive air nodes found
-
-	for y = start_y, SPAWN_MIN, -1 do
-		local nval_cave = nobj_cave:get3d({x = target3_x, y = y, z = target3_z})
-
-		if nval_cave > TCAVE then -- Cavern
-			air = air + 1
-		else -- Not cavern, check if 4 nodes of space above
-			if air >= 4 then
-				return y + 2
-			else -- Not enough space, reset air to zero
-				air = 0
-			end
-		end
-	end
-
-	return start_y -- Fallback
 end
 
 local function move_check2(p1, max, dir)
@@ -304,18 +229,6 @@ local function make_end_portal(pos)
 		param2 = 1
 	end
 
-	local target3 = {x = p1.x, y = p1.y, z = p1.z}
-	target3.x = target3.x + 1
-	if target3.y < mcl_vars.mg_end_max and target3.y > mcl_vars.mg_end_min then
-		if mg_name == "flat" then
-			target3.y = mcl_vars.mg_bedrock_overworld_max + 5
-		else
-			target3.y = math.random(mcl_vars.mg_overworld_min + 40, mcl_vars.mg_overworld_min + 96)
-		end
-	else
-		target3.y = find_end_target3_y2(target3.x, target3.z)
-	end
-
 	for d = 0, 3 do
 	for y = p1.y, p2.y do
 		local p = {}
@@ -345,67 +258,86 @@ minetest.register_abm({
 	label = "End portal teleportation",
 	nodenames = {"mcl_portals:portal_end"},
 	interval = 1,
-	chance = 2,
+	chance = 1,
 	action = function(pos, node)
-		for _,obj in ipairs(minetest.get_objects_inside_radius(pos,1)) do --maikerumine added for objects to travel
-		local lua_entity = obj:get_luaentity() --maikerumine added for objects to travel
+		-- Destroy legacy end portals created with quartz block frame
+		-- by turning them into cobwebs.
+		-- We can tell if a end portal is legacy if it has portal_target as metadata.
+		-- FIXME: Remove this after some time.
+		local meta = minetest.get_meta(pos)
+		local legacy_portal_target = minetest.string_to_pos(meta:get_string("portal_target"))
+		if legacy_portal_target and legacy_portal_target ~= "" then
+			minetest.set_node(pos, {name="mcl_core:cobweb"})
+			return
+		end
+
+		for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
+			local lua_entity = obj:get_luaentity() --maikerumine added for objects to travel
 			if obj:is_player() or lua_entity then
-				-- No rapid back-and-forth teleportatio
-				if portal_cooloff[obj] then
-					return
-				end
-				local meta = minetest.get_meta(pos)
-				local target3 = minetest.string_to_pos(meta:get_string("portal_target"))
-				if target3 then
-					-- force emerge of target3 area
-					minetest.get_voxel_manip():read_from_map(target3, target3)
-					if not minetest.get_node_or_nil(target3) then
-						minetest.emerge_area(
-							vector.subtract(target3, 4), vector.add(target3, 4))
+				local _, dim = mcl_util.y_to_layer(pos.y)
+
+				local target
+				if dim == "end" then
+					-- End portal in the End:
+					-- Teleport back to the player's spawn in the Overworld.
+					-- TODO: Implement better spawn point detection
+
+					target = minetest.string_to_pos(obj:get_attribute("mcl_beds:spawn"))
+					if not target then
+						target = minetest.setting_get_pos("static_spawnpoint")
+					end
+					if not target then
+						target = { x=0, y=0, z=0 }
+					end
+				else
+					-- End portal in any other dimension:
+					-- Teleport to the End at a fixed position and generate a
+					-- 5×5 obsidian platform below.
+
+					local platform_pos = mcl_vars.mg_end_platform_pos
+
+					-- force emerge of target1 area
+					minetest.get_voxel_manip():read_from_map(platform_pos, platform_pos)
+					if not minetest.get_node_or_nil(platform_pos) then
+						minetest.emerge_area(vector.subtract(platform_pos, 3), vector.add(platform_pos, 3))
 					end
 
-					-- teleport the object
-					minetest.after(3, function(obj, pos, target3)
-						-- No rapid back-and-forth teleportatio
-						if portal_cooloff[obj] then
-							return
-						end
-						local objpos = obj:getpos()
-						if objpos == nil then
-							return
-						end
-						-- If player stands, player is at ca. something+0.5
-						-- which might cause precision problems, so we used ceil.
-						objpos.y = math.ceil(objpos.y)
-						if minetest.get_node(objpos).name ~= "mcl_portals:portal_end" then
-							return
-						end
+					local objpos = obj:getpos()
+					if objpos == nil then
+						return
+					end
+					-- If player stands, player is at ca. something+0.5
+					-- which might cause precision problems, so we used ceil.
+					objpos.y = math.ceil(objpos.y)
+					if minetest.get_node(objpos).name ~= "mcl_portals:portal_end" then
+						return
+					end
 
-						-- Build destination
-						local function check_and_build_end_portal(pos, target3)
-							local n = minetest.get_node_or_nil(target3)
-							if n and n.name ~= "mcl_portals:portal_end" then
-								build_end_portal(target3, pos)
-								minetest.after(2, check_and_build_end_portal, pos, target3)
-							elseif not n then
-								minetest.after(1, check_and_build_end_portal, pos, target3)
-							end
-						end
+					-- Build destination
+					local function check_and_build_end_portal_destination(pos)
+						local n = minetest.get_node_or_nil(pos)
+						if n and n.name ~= "mcl_core:obsidian" then
+							build_end_portal_destination(pos)
+							minetest.after(2, check_and_build_end_portal_destination, pos)
+						elseif not n then
+						minetest.after(1, check_and_build_end_portal_destination, pos)
+					end
+					end
 
-						check_and_build_end_portal(pos, target3)
+					local platform
+					check_and_build_end_portal_destination(platform_pos)
 
-						-- Teleport
-						obj:setpos(target3)
-						minetest.sound_play("mcl_portals_teleport", {pos=target3, gain=0.5, max_hear_distance = 16})
-
-						-- Enable teleportation cooloff to prevent frequent back-and-forth teleportation
-						portal_cooloff[obj] = true
-						minetest.after(3, function(o)
-							portal_cooloff[o] = false
-						end, obj)
-
-					end, obj, pos, target3)
+					target = table.copy(platform_pos)
+					target.y = target.y + 1
 				end
+
+				-- Teleport
+				obj:set_pos(target)
+				-- Look towards the End island
+				if obj:is_player() and dim ~= "end" then
+					obj:set_look_horizontal(math.pi/2)
+				end
+				minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16})
 			end
 		end
 	end,
@@ -414,20 +346,9 @@ minetest.register_abm({
 
 --[[ ITEM OVERRIDES ]]
 
-local portal_open_help = "To open an End portal, place an upright frame of quartz blocks with a length of 4 blocks and a height of 5 blocks, leaving only air in the center. After placing this frame, use an eye of ender on the frame. The eye of ender is destroyed in the process."
-
--- Fake frame material
-minetest.override_item(fake_portal_frame, {
-	_doc_items_longdesc = "A block of quartz can be used to create End portals.",
-	_doc_items_usagehelp = portal_open_help,
-	on_destruct = destroy_portal,
-})
-
-
 -- End Portal Frame (TODO)
 minetest.register_node("mcl_portals:end_portal_frame", {
 	description = "End Portal Frame",
-	_doc_items_longdesc = "This block is currently only used for decoration. You can place an eye of ender into it for fun, but nothing will happen.",
 	groups = { creative_breakable = 1, deco_block = 1 },
 	tiles = { "mcl_portals_endframe_top.png", "mcl_portals_endframe_bottom.png", "mcl_portals_endframe_side.png" },
 	paramtype2 = "facedir",
@@ -477,7 +398,7 @@ end
 -- Portal opener
 minetest.override_item("mcl_end:ender_eye", {
 	_doc_items_longdesc = "An eye of ender can be used to open End portals.",
-	_doc_items_usagehelp = portal_open_help,
+	-- TODO: _doc_items_usagehelp = ,
 	on_place = function(itemstack, user, pointed_thing)
 		-- Use pointed node's on_rightclick function first, if present
 		local node = minetest.get_node(pointed_thing.under)

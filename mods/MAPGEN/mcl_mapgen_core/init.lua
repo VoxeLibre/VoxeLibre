@@ -45,6 +45,7 @@ local WITCH_HUT_HEIGHT = 3 -- Exact Y level to spawn witch huts at. This height 
 
 -- Content IDs
 local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
+local c_obsidian = minetest.get_content_id("mcl_core:obsidian")
 local c_stone = minetest.get_content_id("mcl_core:stone")
 local c_dirt = minetest.get_content_id("mcl_core:dirt")
 local c_dirt_with_grass = minetest.get_content_id("mcl_core:dirt_with_grass")
@@ -1829,6 +1830,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		-- End block fixes:
 		-- * Replace water with end stone or air (depending on height).
 		-- * Remove stone, sand, dirt in v6 so our End map generator works in v6.
+		-- * Generate spawn platform (End portal destination)
 		elseif minp.y <= mcl_vars.mg_end_max and maxp.y >= mcl_vars.mg_end_min then
 			local nodes
 			if mg_name == "v6" then
@@ -1853,6 +1855,25 @@ minetest.register_on_generated(function(minp, maxp, seed)
 					lvm_used = true
 				end
 
+			end
+
+			-- Obsidian spawn platform
+			if minp.y <= mcl_vars.mg_end_platform_pos.y and maxp.y >= mcl_vars.mg_end_platform_pos.y and
+					minp.x <= mcl_vars.mg_end_platform_pos.x and maxp.x >= mcl_vars.mg_end_platform_pos.z and
+					minp.z <= mcl_vars.mg_end_platform_pos.z and maxp.z >= mcl_vars.mg_end_platform_pos.z then
+				for x=math.max(minp.x, mcl_vars.mg_end_platform_pos.x-2), math.min(maxp.x, mcl_vars.mg_end_platform_pos.x+2) do
+				for z=math.max(minp.z, mcl_vars.mg_end_platform_pos.z-2), math.min(maxp.z, mcl_vars.mg_end_platform_pos.z+2) do
+				for y=math.max(minp.y, mcl_vars.mg_end_platform_pos.y), math.min(maxp.y, mcl_vars.mg_end_platform_pos.y+2) do
+					local p_pos = area:index(x, y, z)
+					if y == mcl_vars.mg_end_platform_pos.y then
+						data[p_pos] = c_obsidian
+					else
+						data[p_pos] = c_air
+					end
+				end
+				end
+				end
+				lvm_used = true
 			end
 		end
 	end
