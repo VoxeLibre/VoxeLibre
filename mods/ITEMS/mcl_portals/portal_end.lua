@@ -8,68 +8,11 @@ local SPAWN_MAX = mcl_vars.mg_end_min+98
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
--- 3D noise
-
-local np_cave = {
-	offset = 0,
-	scale = 1,
-	spread = {x = 384, y = 128, z = 384}, -- squashed 3:1
-	seed = 59033,
-	octaves = 5,
-	persist = 0.7
-}
-
--- Destroy portal if pos (portal frame or portal node) got destroyed
-local destroy_portal = function(pos)
-	-- Deactivate Nether portal
-	local meta = minetest.get_meta(pos)
-	local p1 = minetest.string_to_pos(meta:get_string("portal_frame1"))
-	local p2 = minetest.string_to_pos(meta:get_string("portal_frame2"))
-	if not p1 or not p2 then
-		return
-	end
-
-	local first = true
-
-	-- p1 metadata of first node
-	local mp1
-	for x = p1.x, p2.x do
-	for y = p1.y, p2.y do
-	for z = p1.z, p2.z do
-		local p = vector.new(x, y, z)
-		local m = minetest.get_meta(p)
-		if first then
-			--[[ Only proceed if the first node still has metadata.
-			If it doesn't have metadata, another node propably triggred the delection
-			routine earlier, so we bail out earlier to avoid an infinite cascade
-			of on_destroy events. ]]
-			mp1 = minetest.string_to_pos(m:get_string("portal_frame1"))
-			if not mp1 then
-				return
-			end
-		end
-		local nn = minetest.get_node(p).name
-		if nn == "mcl_portals:portal_end" then
-			-- Remove portal nodes, but not myself
-			if nn == "mcl_portals:portal_end" and not vector.equals(p, pos) then
-				minetest.remove_node(p)
-			end
-			-- Clear metadata of portal nodes and the frame
-			m:set_string("portal_frame1", "")
-			m:set_string("portal_frame2", "")
-			m:set_string("portal_target", "")
-		end
-		first = false
-	end
-	end
-	end
-end
-
 -- End portal
 minetest.register_node("mcl_portals:portal_end", {
 	description = "End Portal",
 	_doc_items_longdesc = "An End portal teleports creatures and objects to the mysterious End dimension (and back!).",
-	_doc_items_usagehelp = "Stand in the portal for a moment to activate the teleportation. Entering an End portal in the overworld teleports you to a fixed position in the End dimension and creates a 5×5 obsidian platform at your destination. End portals in the End will lead back to your spawn point in the Overworld.",
+	_doc_items_usagehelp = "Hop into the portal to teleport. Entering an End portal in the Overworld teleports you to a fixed position in the End dimension and creates a 5×5 obsidian platform at your destination. End portals in the End will lead back to your spawn point in the Overworld.",
 	tiles = {
 		{
 			name = "mcl_portals_end_portal.png",
@@ -107,12 +50,12 @@ minetest.register_node("mcl_portals:portal_end", {
 		},
 	},
 	groups = {not_in_creative_inventory = 1},
-	on_destruct = destroy_portal,
 
 	_mcl_hardness = -1,
 	_mcl_blast_resistance = 18000000,
 })
 
+-- Obsidian platform at the End portal destination in the End
 local function build_end_portal_destination(pos)
 	local p1 = {x = pos.x - 2, y = pos.y, z = pos.z-2}
 	local p2 = {x = pos.x + 2, y = pos.y+2, z = pos.z+2}
@@ -134,123 +77,111 @@ local function build_end_portal_destination(pos)
 	end
 end
 
-local function move_check2(p1, max, dir)
-	local p = {x = p1.x, y = p1.y, z = p1.z}
-	local d = math.abs(max - p1[dir]) / (max - p1[dir])
 
-	while p[dir] ~= max do
-		p[dir] = p[dir] + d
-		if minetest.get_node(p).name ~= fake_portal_frame then
-			return false
-		end
-		-- Abort if any of the portal frame blocks already has metadata.
-		-- This mod does not yet portals which neighbor each other directly.
-		-- TODO: Reorganize the way how portal frame coordinates are stored.
-		local meta = minetest.get_meta(p)
-		local p1 = meta:get_string("portal_frame1")
-		if minetest.string_to_pos(p1) ~= nil then
-			return false
-		end
-	end
-
-	return true
-end
-
-local function check_end_portal(p1, p2)
-	if p1.x ~= p2.x then
-		if not move_check2(p1, p2.x, "x") then
-			return false
-		end
-		if not move_check2(p2, p1.x, "x") then
-			return false
-		end
-	elseif p1.z ~= p2.z then
-		if not move_check2(p1, p2.z, "z") then
-			return false
-		end
-		if not move_check2(p2, p1.z, "z") then
-			return false
-		end
-	else
-		return false
-	end
-
-	if not move_check2(p1, p2.y, "y") then
-		return false
-	end
-	if not move_check2(p2, p1.y, "y") then
-		return false
-	end
-
-	return true
-end
-
-local function is_end_portal(pos)
-	for d = -3, 3 do
-		for y = -4, 4 do
-			local px = {x = pos.x + d, y = pos.y + y, z = pos.z}
-			local pz = {x = pos.x, y = pos.y + y, z = pos.z + d}
-
-			if check_end_portal(px, {x = px.x + 3, y = px.y + 4, z = px.z}) then
-				return px, {x = px.x + 3, y = px.y + 4, z = px.z}
-			end
-			if check_end_portal(pz, {x = pz.x, y = pz.y + 4, z = pz.z + 3}) then
-				return pz, {x = pz.x, y = pz.y + 4, z = pz.z + 3}
+-- Check if pos is part of a valid end portal frame, filled with eyes of ender.
+local function check_end_portal_frame(pos)
+	-- Check if pos has an end portal frame with eye of ender
+	local eframe = function(pos, param2)
+		local node = minetest.get_node(pos)
+		if node.name == "mcl_portals:end_portal_frame_eye" then
+			if param2 == nil or node.param2 == param2 then
+				return true, node
 			end
 		end
-	end
-end
-
-local function make_end_portal(pos)
-	local p1, p2 = is_end_portal(pos)
-	if not p1 or not p2 then
 		return false
 	end
 
-	for d = 1, 2 do
-	for y = p1.y + 1, p2.y - 1 do
-		local p
-		if p1.z == p2.z then
-			p = {x = p1.x + d, y = y, z = p1.z}
-		else
-			p = {x = p1.x, y = y, z = p1.z + d}
+	-- Step 1: Find a row of 3 end portal frames with eyes, all facing the same direction
+	local streak = 0
+	local streak_start, streak_end, streak_start_node, streak_end_node
+	local last_param2
+	local axes = { "x", "z" }
+	for a=1, #axes do
+		local axis = axes[a]
+		for b=pos[axis]-2, pos[axis]+2 do
+			local cpos = table.copy(pos)
+			cpos[axis] = b
+			local e, node = eframe(cpos, last_param2)
+			if e then
+				last_param2 = node.param2
+				streak = streak + 1
+				if streak == 1 then
+					streak_start = table.copy(pos)
+					streak_start[axis] = b
+					streak_start_node = node
+				elseif streak == 3 then
+					streak_end = table.copy(pos)
+					streak_end[axis] = b
+					streak_end_node = node
+					break
+				end
+			else
+				streak = 0
+				last_param2 = nil
+			end
 		end
-		if minetest.get_node(p).name ~= "air" then
-			return false
+		if streak_end then
+			break
+		end
+		streak = 0
+		last_param2 = nil
+	end
+	-- Has a row been found?
+	if streak_end then
+		-- Step 2: Using the known facedir, check the remaining spots in which we expect
+		-- “eyed” end portal frames.
+		local dir = minetest.facedir_to_dir(streak_start_node.param2)
+		if dir.x ~= 0 then
+			for i=1, 3 do
+				if not eframe({x=streak_start.x + i*dir.x, y=streak_start.y, z=streak_start.z - 1}) then
+					return false
+				end
+				if not eframe({x=streak_start.x + i*dir.x, y=streak_start.y, z=streak_end.z + 1}) then
+					return false
+				end
+				if not eframe({x=streak_start.x + 4*dir.x, y=streak_start.y, z=streak_start.z + i-1}) then
+					return false
+				end
+			end
+			-- All checks survived! We have a valid portal!
+			if dir.x > 0 then
+				k = 1
+			else
+				k = -3
+			end
+			return true, { x = streak_start.x + k, y = streak_start.y, z = streak_start.z }
+		elseif dir.z ~= 0 then
+			for i=1, 3 do
+				if not eframe({x=streak_start.x - 1, y=streak_start.y, z=streak_start.z + i*dir.z}) then
+					return false
+				end
+				if not eframe({x=streak_end.x + 1, y=streak_start.y, z=streak_start.z + i*dir.z}) then
+					return false
+				end
+				if not eframe({x=streak_start.x + i-1, y=streak_start.y, z=streak_start.z + 4*dir.z}) then
+					return false
+				end
+			end
+			if dir.z > 0 then
+				k = 1
+			else
+				k = -3
+			end
+			-- All checks survived! We have a valid portal!
+			return true, { x = streak_start.x, y = streak_start.y, z = streak_start.z + k }
 		end
 	end
-	end
+	return false
+end
 
-	local param2
-	if p1.z == p2.z then
-		param2 = 0
-	else
-		param2 = 1
-	end
-
-	for d = 0, 3 do
-	for y = p1.y, p2.y do
-		local p = {}
-		if param2 == 0 then
-			p = {x = p1.x + d, y = y, z = p1.z}
-		else
-			p = {x = p1.x, y = y, z = p1.z + d}
+-- Generate a 3×3 end portal beginning at pos. To be used to fill an end portal frame
+local function spawn_end_portal(pos)
+	local SIZE = 3
+	for x=pos.x, pos.x+SIZE-1 do
+		for z=pos.z, pos.z+SIZE-1 do
+			minetest.set_node({x=x,y=pos.y,z=z}, {name="mcl_portals:portal_end"})
 		end
-		if minetest.get_node(p).name == "air" then
-			minetest.set_node(p, {name = "mcl_portals:portal_end", param2 = param2})
-		end
-		local meta = minetest.get_meta(p)
-
-		-- Portal frame corners
-		meta:set_string("portal_frame1", minetest.pos_to_string(p1))
-		meta:set_string("portal_frame2", minetest.pos_to_string(p2))
-
-		-- Portal target coordinates
-		meta:set_string("portal_target", minetest.pos_to_string(target3))
 	end
-	end
-
-	return true
 end
 
 minetest.register_abm({
@@ -350,9 +281,10 @@ minetest.register_abm({
 
 --[[ ITEM OVERRIDES ]]
 
--- End Portal Frame (TODO)
 minetest.register_node("mcl_portals:end_portal_frame", {
 	description = "End Portal Frame",
+	_doc_items_longdesc = "End portal frames are used in the construction of End portals. Each block has a socket for an eye of ender.",
+	_doc_items_usagehelp = "To create an End portal, you need 12 end portal frames and 12 eyes of ender. The end portal frames have to be arranged around a horizontal 3×3 area with each block facing inward. Any other arrangement will fail." .. "\n" .. "Place an eye of ender into each block. The end portal appears in the middle after placing the final eye." .. "\n" .. "Once placed, an eye of ender can not be taken back.",
 	groups = { creative_breakable = 1, deco_block = 1 },
 	tiles = { "mcl_portals_endframe_top.png", "mcl_portals_endframe_bottom.png", "mcl_portals_endframe_side.png" },
 	paramtype2 = "facedir",
@@ -401,8 +333,8 @@ end
 
 -- Portal opener
 minetest.override_item("mcl_end:ender_eye", {
-	_doc_items_longdesc = "An eye of ender can be used to open End portals.",
-	-- TODO: _doc_items_usagehelp = ,
+	_doc_items_longdesc = "Eye of ender can be used in the construction of End portal frames.",
+	_doc_items_usagehelp = "Find a structure with 12 end portal frames surrounding a horizontal aread of 3×3 blocks, with each block facing inward. Place an eye of ender into each end portal frame to create the portal.",
 	on_place = function(itemstack, user, pointed_thing)
 		-- Use pointed node's on_rightclick function first, if present
 		local node = minetest.get_node(pointed_thing.under)
@@ -412,26 +344,10 @@ minetest.override_item("mcl_end:ender_eye", {
 			end
 		end
 
-		-- If used on portal frame, open a portal
-		-- FIXME: This is the fake portal. Remove when the real end portal frame works
-		if pointed_thing.under and node.name == fake_portal_frame then
-			local opened = make_end_portal(pointed_thing.under)
-			if opened then
-				if minetest.get_modpath("doc") then
-					doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:portal_end")
-				end
-				minetest.sound_play(
-					"fire_flint_and_steel",
-					{pos = pointed_thing.above, gain = 0.5, max_hear_distance = 16})
-				if not minetest.settings:get_bool("creative_mode") then
-					itemstack:take_item() -- 1 use
-				end
-			end
-
 		-- Place eye of ender into end portal frame
-		elseif pointed_thing.under and node.name == "mcl_portals:end_portal_frame" then
-			-- TODO: Open real end portal
+		if pointed_thing.under and node.name == "mcl_portals:end_portal_frame" then
 			minetest.swap_node(pointed_thing.under, { name = "mcl_portals:end_portal_frame_eye", param2 = node.param2 })
+
 			if minetest.get_modpath("doc") then
 				doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:end_portal_frame")
 			end
@@ -440,6 +356,14 @@ minetest.override_item("mcl_end:ender_eye", {
 				{pos = pointed_thing.under, gain = 0.5, max_hear_distance = 16})
 			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:take_item() -- 1 use
+			end
+
+			local ok, ppos = check_end_portal_frame(pointed_thing.under)
+			if ok then
+				spawn_end_portal(ppos)
+				if minetest.get_modpath("doc") then
+					doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:portal_end")
+				end
 			end
 		end
 		return itemstack
