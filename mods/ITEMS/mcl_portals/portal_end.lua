@@ -1,8 +1,4 @@
 -- Parameters
-
-local TCAVE = 0.6
-local nobj_cave = nil
-
 local SPAWN_MIN = mcl_vars.mg_end_min+70
 local SPAWN_MAX = mcl_vars.mg_end_min+98
 
@@ -206,6 +202,17 @@ minetest.register_abm({
 			if obj:is_player() or lua_entity then
 				local _, dim = mcl_util.y_to_layer(pos.y)
 
+				local objpos = obj:getpos()
+				if objpos == nil then
+					return
+				end
+
+				-- Check if object is actually in portal.
+				objpos.y = math.ceil(objpos.y)
+				if minetest.get_node(objpos).name ~= "mcl_portals:portal_end" then
+					return
+				end
+
 				local target
 				if dim == "end" then
 					-- End portal in the End:
@@ -228,22 +235,10 @@ minetest.register_abm({
 					-- 5×5 obsidian platform below.
 
 					local platform_pos = mcl_vars.mg_end_platform_pos
-
 					-- force emerge of target1 area
 					minetest.get_voxel_manip():read_from_map(platform_pos, platform_pos)
 					if not minetest.get_node_or_nil(platform_pos) then
 						minetest.emerge_area(vector.subtract(platform_pos, 3), vector.add(platform_pos, 3))
-					end
-
-					local objpos = obj:getpos()
-					if objpos == nil then
-						return
-					end
-					-- If player stands, player is at ca. something+0.5
-					-- which might cause precision problems, so we used ceil.
-					objpos.y = math.ceil(objpos.y)
-					if minetest.get_node(objpos).name ~= "mcl_portals:portal_end" then
-						return
 					end
 
 					-- Build destination
