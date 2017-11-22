@@ -79,22 +79,32 @@ local stem_def = {
 -- Template for pumpkin
 local pumpkin_base_def = {
 	description = "Pumpkin",
-	_doc_items_longdesc = "A pumpkin is a naturally occouring block from the grasslands and is remarkable for its strange face-like cavity, which is developed naturally. A pumpkin can be worn as a helmet for fun, but it doesn't offer any protection. Pumpkins are grown from pumpkin stems, which in turn are grown from pumpkin seeds.",
+	_doc_items_longdesc = "A pumpkin is a naturally occouring block from the grasslands. Pumpkins are grown from pumpkin stems, which in turn are grown from pumpkin seeds. Pumpkins can be carved with shears.",
+	_doc_items_usagehelp = "To carve a face into the pumpkin, use the shears on the side you want to carve.",
 	stack_max = 64,
 	paramtype = "light",
 	paramtype2 = "facedir",
-	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"},
-	groups = {handy=1,axey=1, plant=1,building_block=1, armor_head=1,non_combat_armor=1, dig_by_piston=1, enderman_takable=1},
+	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png"},
+	groups = {handy=1,axey=1, plant=1,building_block=1, dig_by_piston=1, enderman_takable=1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 5,
 	_mcl_hardness = 1,
 }
 
+local pumpkin_face_base_def = table.copy(pumpkin_base_def)
+pumpkin_face_base_def.description = "Carved Pumpkin"
+pumpkin_face_base_def.doc_items_longdesc = "A carved pumpkin can be worn as a helmet for fun, but it doesn't offer any protection. Carved pumpkins are created by using shears on a pumpkin."
+pumpkin_face_base_def.tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"}
+pumpkin_face_base_def.groups.armor_head=1
+pumpkin_face_base_def.non_combat_armor=1
+
+minetest.register_node("mcl_farming:pumpkin_face", pumpkin_face_base_def)
+
 -- Register stem growth
 mcl_farming:add_plant("plant_pumpkin_stem", "mcl_farming:pumpkintige_unconnect", {"mcl_farming:pumpkin_1", "mcl_farming:pumpkin_2", "mcl_farming:pumpkin_3", "mcl_farming:pumpkin_4", "mcl_farming:pumpkin_5", "mcl_farming:pumpkin_6", "mcl_farming:pumpkin_7"}, 30, 5)
 
 -- Register actual pumpkin, connected stems and stem-to-pumpkin growth
-mcl_farming:add_gourd("mcl_farming:pumpkintige_unconnect", "mcl_farming:pumpkintige_linked", "mcl_farming:pumpkintige_unconnect", stem_def, stem_drop, "mcl_farming:pumpkin_face", pumpkin_base_def, 30, 15, "mcl_farming_pumpkin_stem_connected.png^[colorize:#FFA800:127",
+mcl_farming:add_gourd("mcl_farming:pumpkintige_unconnect", "mcl_farming:pumpkintige_linked", "mcl_farming:pumpkintige_unconnect", stem_def, stem_drop, "mcl_farming:pumpkin", pumpkin_base_def, 30, 15, "mcl_farming_pumpkin_stem_connected.png^[colorize:#FFA800:127",
 function(pos)
 	-- Attempt to spawn iron golem or snow golem
 	mobs_mc.tools.check_iron_golem_summon(pos)
@@ -133,7 +143,7 @@ minetest.register_craft({
 
 minetest.register_craft({
 	output = "mcl_farming:pumpkin_seeds 4",
-	recipe = {{"mcl_farming:pumpkin_face"}}
+	recipe = {{"mcl_farming:pumpkin"}}
 })
 
 minetest.register_craftitem("mcl_farming:pumpkin_pie", {
@@ -151,7 +161,7 @@ minetest.register_craftitem("mcl_farming:pumpkin_pie", {
 minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_farming:pumpkin_pie",
-	recipe = {"mcl_farming:pumpkin_face", "mcl_core:sugar", "mcl_throwing:egg"},
+	recipe = {"mcl_farming:pumpkin", "mcl_core:sugar", "mcl_throwing:egg"},
 })
 
 if minetest.get_modpath("doc") then

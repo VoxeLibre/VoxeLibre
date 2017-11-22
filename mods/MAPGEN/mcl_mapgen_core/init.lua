@@ -842,7 +842,7 @@ local function register_mgv6_decorations()
 			size = { x=1, y=2, z=1 },
 			data = {
 				{ name = "air", prob = 0 },
-				{ name = "mcl_farming:pumpkin_face" },
+				{ name = "mcl_farming:pumpkin" },
 			},
 		},
 		place_on = {"group:grass_block_no_snow"},
