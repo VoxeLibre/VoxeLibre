@@ -8,19 +8,6 @@ local button_get_output_rules = function(node)
 	return rules
 end
 
-mesecon.button_turnoff = function (pos)
-	local node = minetest.get_node(pos)
-	if node.name=="mesecons_button:button_stone_on" then --has not been dug
-		minetest.swap_node(pos, {name="mesecons_button:button_stone_off",param2=node.param2})
-		minetest.sound_play("mesecons_button_pop", {pos=pos})
-		mesecon.receptor_off(pos, button_get_output_rules(node))
-	elseif node.name=="mesecons_button:button_wood_on" then --has not been dug
-		minetest.swap_node(pos, {name="mesecons_button:button_wood_off",param2=node.param2})
-		minetest.sound_play("mesecons_button_pop", {pos=pos})
-		mesecon.receptor_off(pos, button_get_output_rules(node))
-	end
-end
-
 local boxes_off = {
 	type = "wallmounted",
 	wall_side = { -8/16, -2/16, -4/16, -6/16, 2/16, 4/16 },
@@ -75,7 +62,7 @@ local on_button_place = function(itemstack, placer, pointed_thing)
 
 	if success then
 		if idef.sounds and idef.sounds.place then
-			--minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
+			minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
 		end
 	end
 	return itemstack
@@ -84,9 +71,16 @@ end
 local buttonuse = "Rightclick the button to push it."
 
 mesecon.register_button = function(basename, description, texture, recipeitem, sounds, plusgroups, button_timer, longdesc)
-	local groups_off = {handy=1,pickaxey=1, attached_node=1, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1}
+	local groups_off = table.copy(plusgroups)
+	groups_off.attached_node=1
+	groups_off.dig_by_water=1
+	groups_off.destroy_by_lava_flow=1
+	groups_off.dig_by_piston=1
+	groups_off.button=1 -- button (off)
+
 	local groups_on = table.copy(groups_off)
 	groups_on.not_in_creative_inventory=1
+	groups_on.button=2 -- button (on)
 
 	minetest.register_node("mesecons_button:button_"..basename.."_off", {
 		drawtype = "nodebox",
@@ -111,7 +105,17 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 			minetest.swap_node(pos, {name="mesecons_button:button_"..basename.."_on", param2=node.param2})
 			mesecon.receptor_on(pos, button_get_output_rules(node))
 			minetest.sound_play("mesecons_button_push", {pos=pos})
-			minetest.after(button_timer, mesecon.button_turnoff, pos)
+			local button_turnoff = function(a)
+				local pos = a.pos
+				local node = minetest.get_node(pos)
+				local basename = a.basename
+				if node.name=="mesecons_button:button_"..basename.."_on" then --has not been dug
+					minetest.swap_node(pos, {name="mesecons_button:button_"..basename.."_off",param2=node.param2})
+					minetest.sound_play("mesecons_button_pop", {pos=pos})
+					mesecon.receptor_off(pos, button_get_output_rules(node))
+				end
+			end
+			minetest.after(button_timer, button_turnoff, {pos=pos, basename=basename})
 		end,
 		sounds = sounds,
 		mesecons = {receptor = {
@@ -163,21 +167,32 @@ mesecon.register_button(
 	1,
 	"A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second. It can only be placed on solid opaque full cubes (like cobblestone).")
 
-mesecon.register_button(
-	"wood",
-	"Oak Wood Button",
-	"default_wood.png",
-	"mcl_core:wood",
-	mcl_sounds.node_sound_wood_defaults(),
-	{material_wood=1,handy=1,axey=1},
-	1.5,
-	"A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. It can only be placed on solid opaque full cubes (like cobblestone).")
+local woods = {
+	{ "wood", "mcl_core:wood", "default_wood.png", "Oak Button" },
+	{ "acaciawood", "mcl_core:acaciawood", "default_acacia_wood.png", "Acacia Button" },
+	{ "birchwood", "mcl_core:birchwood", "mcl_core_planks_birch.png", "Birch Button" },
+	{ "darkwood", "mcl_core:darkwood", "mcl_core_planks_big_oak.png", "Dark Oak Button" },
+	{ "sprucewood", "mcl_core:sprucewood", "mcl_core_planks_spruce.png", "Spruce Button" },
+	{ "junglewood", "mcl_core:junglewood", "default_junglewood.png", "Jungle Button" },
+}
 
-minetest.register_craft({
-	type = "fuel",
-	recipe = 'mesecons_button:button_wood_off',
-	burntime = 5,
-})
+for w=1, #woods do
+	mesecon.register_button(
+		woods[w][1],
+		woods[w][4],
+		woods[w][3],
+		woods[w][2],
+		mcl_sounds.node_sound_wood_defaults(),
+		{material_wood=1,handy=1,axey=1},
+		1.5,
+		"A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. It can only be placed on solid opaque full cubes (like cobblestone).")
+
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "mesecons_button:button_"..woods[w][1].."_off",
+		burntime = 5,
+	})
+end
 
 -- Add entry aliases for the Help
 if minetest.get_modpath("doc") then
