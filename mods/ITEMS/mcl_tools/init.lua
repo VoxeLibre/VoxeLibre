@@ -53,8 +53,8 @@ local axe_longdesc = "An axe is your tool of choice to cut down trees, wood-base
 local sword_longdesc = "Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs."
 local shovel_longdesc = "Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak."
 local shovel_use = "To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the top or side of a grass block. This only works when there's air above the grass block."
-local shears_longdesc = "Shears are tools to shear sheep and to mine a few block types. Shears are a special mining tool and can be used to obtain the original item from a grass, leaves and similar blocks."
-local shears_use = "To shear a sheep and obtain its wool, rightclick it while holding the shears. Mining works are usual, but the drops are different for a few blocks."
+local shears_longdesc = "Shears are tools to shear sheep, carve pumpkins and to mine a few block types. Shears are a special mining tool and can be used to obtain the original item from a grass, leaves and similar blocks."
+local shears_use = "To shear a sheep and obtain its wool, rightclick it. To carve a face into a pumpkin and obtain 4 pumpkin seeds, rightclick it on one of its sides. Mining works are usual, but the drops are different for a few blocks."
 
 -- Picks
 minetest.register_tool("mcl_tools:pick_wood", {
@@ -190,6 +190,43 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 		end
 	end
 	return itemstack
+end
+
+local carve_pumpkin
+if minetest.get_modpath("mcl_farming") then
+	carve_pumpkin = function(itemstack, placer, pointed_thing)
+		-- Use pointed node's on_rightclick function first, if present
+		local node = minetest.get_node(pointed_thing.under)
+		if placer and not placer:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+			end
+		end
+
+		-- Only carve pumpkin if used on side
+		if pointed_thing.above.y ~= pointed_thing.under.y then
+			return
+		end
+		if node.name == "mcl_farming:pumpkin" then
+			if not minetest.settings:get_bool("creative_mode") then
+				-- Add wear (as if digging a shearsy node)
+				local toolname = itemstack:get_name()
+				local def = minetest.registered_items[toolname]
+				local group = get_shovel_dig_group(toolname)
+				local base_uses = def.tool_capabilities.groupcaps["shearsy_dig"].uses
+				local maxlevel = def.tool_capabilities.groupcaps["shearsy_dig"].maxlevel
+				local uses = base_uses * math.pow(3, maxlevel)
+				local wear = math.ceil(65535 / uses)
+				itemstack:add_wear(wear)
+			end
+			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above})
+			local dir = vector.subtract(pointed_thing.under, pointed_thing.above)
+			local param2 = minetest.dir_to_facedir(dir)
+			minetest.swap_node(pointed_thing.under, {name="mcl_farming:pumpkin_face", param2 = param2})
+			minetest.add_item(pointed_thing.above, "mcl_farming:pumpkin_seeds 4")
+		end
+		return itemstack
+	end
 end
 
 -- Shovels
@@ -464,6 +501,7 @@ minetest.register_tool("mcl_tools:shears", {
 			shearsy_wool_dig = {times=mcl_autogroup.digtimes.shearsy_wool_dig, uses=238, maxlevel=0},
 		}
 	},
+	on_place = carve_pumpkin,
 	sound = { breaks = "default_tool_breaks" },
 })
 
