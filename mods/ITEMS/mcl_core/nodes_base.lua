@@ -223,6 +223,18 @@ minetest.register_node("mcl_core:stonebrickmossy", {
 	_mcl_hardness = 1.5,
 })
 
+minetest.register_node("mcl_core:stone_smooth", {
+	description = "Polished Stone",
+	_doc_items_longdesc = doc.sub.items.temp.build,
+	tiles = {"mcl_stairs_stone_slab_top.png"},
+	stack_max = 64,
+	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1},
+	sounds = mcl_sounds.node_sound_stone_defaults(),
+	is_ground_content = false,
+	_mcl_blast_resistance = 30,
+	_mcl_hardness = 1.5,
+})
+
 minetest.register_node("mcl_core:granite", {
 	description = "Granite",
 	_doc_items_longdesc = "Granite is an igneous rock.",
@@ -488,8 +500,8 @@ minetest.register_node("mcl_core:sandstone", {
 })
 
 minetest.register_node("mcl_core:sandstonesmooth", {
-	description = "Smooth Sandstone",
-	_doc_items_longdesc = "Smooth sandstone is a decorational building block.",
+	description = "Cut Sandstone",
+	_doc_items_longdesc = "Cut sandstone is a decorational building block.",
 	tiles = {"mcl_core_sandstone_top.png", "mcl_core_sandstone_bottom.png", "mcl_core_sandstone_smooth.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -503,6 +515,19 @@ minetest.register_node("mcl_core:sandstonecarved", {
 	description = "Chiseled Sandstone",
 	_doc_items_longdesc = "Chiseled sandstone is a decorational building block.",
 	tiles = {"mcl_core_sandstone_top.png", "mcl_core_sandstone_bottom.png", "mcl_core_sandstone_carved.png"},
+	is_ground_content = true,
+	stack_max = 64,
+	groups = {pickaxey=1, sandstone=1, building_block=1, material_stone=1},
+	sounds = mcl_sounds.node_sound_stone_defaults(),
+	_mcl_blast_resistance = 4,
+	_mcl_hardness = 0.8,
+})
+
+minetest.register_node("mcl_core:sandstonesmooth2", {
+	description = "Smooth Sandstone",
+	_doc_items_hidden = false,
+	_doc_items_longdesc = "Smooth sandstone is compressed sand and is a rather soft kind of stone.",
+	tiles = {"mcl_core_sandstone_top.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {pickaxey=1, sandstone=1, building_block=1, material_stone=1},
@@ -538,8 +563,8 @@ minetest.register_node("mcl_core:redsandstone", {
 })
 
 minetest.register_node("mcl_core:redsandstonesmooth", {
-	description = "Smooth Red Sandstone",
-	_doc_items_longdesc = "Smooth red sandstone is a decorational building block.",
+	description = "Cut Red Sandstone",
+	_doc_items_longdesc = "Cut red sandstone is a decorational building block.",
 	tiles = {"mcl_core_red_sandstone_top.png", "mcl_core_red_sandstone_bottom.png", "mcl_core_red_sandstone_smooth.png"},
 	is_ground_content = true,
 	stack_max = 64,
@@ -553,6 +578,18 @@ minetest.register_node("mcl_core:redsandstonecarved", {
 	description = "Chiseled Red Sandstone",
 	_doc_items_longdesc = "Chiseled red sandstone is a decorational building block.",
 	tiles = {"mcl_core_red_sandstone_top.png", "mcl_core_red_sandstone_bottom.png", "mcl_core_red_sandstone_carved.png"},
+	is_ground_content = true,
+	stack_max = 64,
+	groups = {pickaxey=1, redsandstone=1, building_block=1, material_stone=1},
+	sounds = mcl_sounds.node_sound_stone_defaults(),
+	_mcl_blast_resistance = 4,
+	_mcl_hardness = 0.8,
+})
+
+minetest.register_node("mcl_core:redsandstonesmooth2", {
+	description = "Smooth Red Sandstone",
+	_doc_items_longdesc = "Smooth red sandstone is a decorational building block.",
+	tiles = {"mcl_core_red_sandstone_top.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {pickaxey=1, redsandstone=1, building_block=1, material_stone=1},
