@@ -205,7 +205,7 @@ function mcl_doors:register_door(name, def)
 	end
 
 	minetest.register_node(name.."_b_1", {
-		tiles = {tt[2].."^[transformFY", tt[2], tb[2].."^[transformFX", tb[2], tb[1], tb[1].."^[transformFX"},
+		tiles = {"blank.png", tt[2].."^[transformFXR90", tb[2], tb[2].."^[transformFX", tb[1], tb[1].."^[transformFX"},
 		paramtype = "light",
 		paramtype2 = "facedir",
 		sunlight_propagates = true,
@@ -252,7 +252,7 @@ function mcl_doors:register_door(name, def)
 	end
 
 	minetest.register_node(name.."_t_1", {
-		tiles = {tt[2].."^[transformFY", tt[2], tt[2].."^[transformFX", tt[2], tt[1], tt[1].."^[transformFX"},
+		tiles = {tt[2].."^[transformR90", "blank.png", tt[2], tt[2].."^[transformFX", tt[1], tt[1].."^[transformFX"},
 		paramtype = "light",
 		paramtype2 = "facedir",
 		sunlight_propagates = true,
@@ -295,7 +295,7 @@ function mcl_doors:register_door(name, def)
 	end
 
 	minetest.register_node(name.."_b_2", {
-		tiles = {tt[2].."^[transformFY", tt[2], tb[2].."^[transformFX", tb[2], tb[1].."^[transformFX", tb[1]},
+		tiles = {"blank.png", tt[2].."^[transformFXR90", tb[2].."^[transformI", tb[2].."^[transformFX", tb[1].."^[transformFX", tb[1]},
 		paramtype = "light",
 		paramtype2 = "facedir",
 		sunlight_propagates = true,
@@ -342,7 +342,7 @@ function mcl_doors:register_door(name, def)
 	end
 
 	minetest.register_node(name.."_t_2", {
-		tiles = {tt[2].."^[transformFY", tt[2], tt[2].."^[transformFX", tt[2], tt[1].."^[transformFX", tt[1]},
+		tiles = {tt[2].."^[transformR90", "blank.png", tt[2].."^[transformI", tt[2].."^[transformFX", tt[1].."^[transformFX", tt[1]},
 		paramtype = "light",
 		paramtype2 = "facedir",
 		sunlight_propagates = true,

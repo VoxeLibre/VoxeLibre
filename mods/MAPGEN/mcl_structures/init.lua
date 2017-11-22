@@ -38,6 +38,8 @@ mcl_structures.call_struct = function(pos, struct_style, rotation)
 		return mcl_structures.generate_boulder(pos, rotation)
 	elseif struct_style == "fossil" then
 		return mcl_structures.generate_fossil(pos, rotation)
+	elseif struct_style == "end_exit_portal" then
+		return mcl_structures.generate_end_exit_portal(pos, rotation)
 	end
 end
 
@@ -114,6 +116,11 @@ mcl_structures.generate_fossil = function(pos)
 	local r = math.random(1, #fossils)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/"..fossils[r]
 	return minetest.place_schematic(newpos, path, "random", nil, true)
+end
+
+mcl_structures.generate_end_exit_portal = function(pos)
+	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_exit_portal.mts"
+	return minetest.place_schematic(pos, path, "0", nil, true)
 end
 
 mcl_structures.generate_desert_temple = function(pos)
@@ -194,7 +201,7 @@ end
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
-	params = "desert_temple | desert_well | igloo | village | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil",
+	params = "desert_temple | desert_well | igloo | village | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal",
 	description = "Generate a pre-defined structure near your position.",
 	privs = {debug = true},
 	func = function(name, param)
@@ -230,6 +237,9 @@ minetest.register_chatcommand("spawnstruct", {
 		elseif param == "ice_spike_large" then
 			mcl_structures.generate_ice_spike_large(pos)
 			minetest.chat_send_player(name, "Large ice spike placed.")
+		elseif param == "end_exit_portal" then
+			mcl_structures.generate_end_exit_portal(pos)
+			minetest.chat_send_player(name, "End exit portal placed.")
 		elseif param == "" then
 			minetest.chat_send_player(name, "Error: No structure type given. Please use “/spawnstruct <type>”.")
 			errord = true

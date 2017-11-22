@@ -86,7 +86,8 @@ mobs_mc.override.items = {
 	mycelium = "mcl_core:mycelium",
 	carrot = "mcl_farming:carrot_item",
 	golden_carrot = "mcl_farming:carrot_item_gold",
-	fishing_rod = "mcl_fishing:fishing_rod",
+	fishing_rod = "mcl_core:stick",
+	--TODO: Re-enable: fishing_rod = "mcl_fishing:fishing_rod",
 	fish_raw = "mcl_fishing:fish_raw",
 	salmon_raw = "mcl_fishing:salmon_raw",
 	clownfish_raw = "mcl_fishing:clownfish_raw",
@@ -150,6 +151,7 @@ mobs_mc.override.replace = {
 	-- Sheep eat grass
 	sheep = {
 		{ "mcl_core:dirt_with_grass", "mcl_core:dirt", -1 },
+		{ "mcl_core:dirt_with_dry_grass", "mcl_core:dirt", -1 },
 		{ "mcl_flowers:tallgrass", "air", 0 },
 	},
 	-- Silverfish populate stone, etc. with monster eggs
@@ -168,7 +170,9 @@ mobs_mc.override.enderman_takable = {
 	-- Generic handling, useful for entensions
 	"group:enderman_takable",
 }
-
+mobs_mc.override.enderman_replace_on_take = {
+	["mcl_core:dirt_with_dry_grass"] = "mcl_core:dirt_with_grass",
+}
 
 -- Texuture overrides for enderman block. Required for cactus because it's original is a nodebox
 -- and the textures have tranparent pixels.
@@ -190,18 +194,18 @@ mobs_mc.override.enderman_block_texture_overrides = {
 -- List of nodes on which mobs can spawn
 mobs_mc.override.spawn = {
 	solid = { "group:solid", }, -- spawn on "solid" nodes
-	grassland = { mobs_mc.override.items.grass_block },
-	savanna = { "group:sand", "mcl_core:sandstone", "mcl_core:redsandstone" },
-	grassland_savanna = { mobs_mc.override.items.grass_block, "group:sand", "mcl_core:sandstone", "mcl_core:redsandstone" },
-	desert = { "group:sand" },
+	grassland = { "mcl_core:dirt_with_grass" },
+	savanna = { "mcl_core:dirt_with_dry_grass" },
+	grassland_savanna = { "mcl_core:dirt_with_grass", "mcl_core:dirt_with_dry_grass" },
+	desert = { "mcl_core:sand", "mcl_core:sandstone" },
 	jungle = { "mcl_core:jungletree", "mcl_core:jungleleaves", "mcl_flowers:fern", "mcl_core:vine" },
-	snow = { "mcl_core:snow", "mcl_core:snowblock", "mcl_core:dirt_with_grass_snow" },
+	snow = { "mcl_core:snow", "mcl_core:snowblock", "mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_dry_grass_snow" },
 	-- End stone added for shulkers because End cities don't generate yet
 	end_city = { "mcl_end:end_stone", "mcl_end:purpur_block" },
 	nether = { "mcl_nether:netherrack", "mcl_nether:quartz_ore" },
 	-- Netherrack added because there are no Nether fortresses yet. TODO: Remove netherrac from list as soon they're available
 	nether_fortress = { "mcl_nether:nether_brick", "mcl_nether:netherrack" },
-	wolf = { mobs_mc.override.items.grass_block, "mcl_core:dirt", "mcl_core:dirt_with_grass_snow", "mcl_core:snow", "mcl_core:snowblock", "mcl_core:podzol" },
+	wolf = { mobs_mc.override.items.grass_block, "mcl_core:dirt", "mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_dry_grass_snow", "mcl_core:snow", "mcl_core:snowblock", "mcl_core:podzol" },
 }
 
 -- This table contains important spawn height references for the mob spawn height.

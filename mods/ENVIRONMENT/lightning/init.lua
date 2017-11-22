@@ -34,7 +34,7 @@ local revertsky = function(dtime)
 		return
 	end
 
-	skycolor.remove_layer("lightning")
+	mcl_weather.skycolor.remove_layer("lightning")
 
 	ps = {}
 end
@@ -136,8 +136,8 @@ lightning.strike = function(pos)
 		local name = player:get_player_name()
 		if ps[name] == nil then
 			ps[name] = {p = player, sky = sky}
-			skycolor.add_layer("lightning", {{r=255,g=255,b=255}}, true)
-			skycolor.active = true
+			mcl_weather.skycolor.add_layer("lightning", {{r=255,g=255,b=255}}, true)
+			mcl_weather.skycolor.active = true
 		end
 	end
 
@@ -184,7 +184,7 @@ lightning.strike = function(pos)
 						if lua.name == "mobs_mc:pig" then
 							local rot = obj:get_yaw()
 							obj:remove()
-							obj = minetest.add_entity(pos2, "mobs_mc:zombiepig")
+							obj = minetest.add_entity(pos2, "mobs_mc:pigman")
 							obj:set_yaw(rot)
 						-- villager → witch
 						elseif lua.name == "mobs_mc:villager" then

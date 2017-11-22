@@ -288,6 +288,11 @@ end
 -- If no Nether portal can be lit, nothing happens.
 -- Returns true on success and false on failure.
 function mcl_portals.light_nether_portal(pos)
+	-- Only allow to make portals in Overworld and Nether
+	local _, dim = mcl_util.y_to_layer(pos.y)
+	if dim ~= "overworld" and dim ~= "nether" then
+		return false
+	end
 	-- Create Nether portal nodes
 	local p1, p2 = is_portal(pos)
 	if not p1 or not p2 then
@@ -429,7 +434,9 @@ minetest.register_abm({
 
 						-- Teleport
 						obj:setpos(target)
-						minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16})
+						if obj:is_player() then
+							minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16})
+						end
 
 						-- Enable teleportation cooloff for 4 seconds, to prevent back-and-forth teleportation
 						portal_cooloff[obj] = true
@@ -449,7 +456,7 @@ minetest.register_abm({
 
 local longdesc = minetest.registered_nodes["mcl_core:obsidian"]._doc_items_longdesc
 longdesc = longdesc .. "\n" .. "Obsidian is also used as the frame of Nether portals."
-local usagehelp = "To open a Nether portal, place an upright frame of obsidian with a width of 4 blocks and a height of 5 blocks, leaving only air in the center. After placing this frame, light a fire in the obsidian frame."
+local usagehelp = "To open a Nether portal, place an upright frame of obsidian with a width of 4 blocks and a height of 5 blocks, leaving only air in the center. After placing this frame, light a fire in the obsidian frame. Nether portals only work in the Overworld and the Nether."
 
 minetest.override_item("mcl_core:obsidian", {
 	_doc_items_longdesc = longdesc,

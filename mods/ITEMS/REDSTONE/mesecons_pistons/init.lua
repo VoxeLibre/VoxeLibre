@@ -781,7 +781,7 @@ local piston_get_stopper = function (node, dir, stack, stackid)
 
 	if minetest.registered_nodes[node.name].mesecons_piston.pusher == pushernode.name then
 		for _, s in ipairs(stack) do
-			if  mesecon.cmpPos(s.pos, pusherpos) -- pusher is also to be pushed
+			if vector.equals(s.pos, pusherpos) -- pusher is also to be pushed
 			and s.node.param2 == node.param2 then
 				return false
 			end

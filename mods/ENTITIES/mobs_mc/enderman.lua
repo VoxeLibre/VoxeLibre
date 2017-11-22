@@ -213,7 +213,11 @@ mobs:register_mob("mobs_mc:enderman", {
 				local node = minetest.get_node(take_pos)
 				local dug = minetest.dig_node(take_pos)
 				if dug then
-					self._taken_node = node.name
+					if mobs_mc.enderman_replace_on_take[node.name] then
+						self._taken_node = mobs_mc.enderman_replace_on_take[node.name]
+					else
+						self._taken_node = node.name
+					end
 					local def = minetest.registered_nodes[self._taken_node]
 					-- Update animation and texture accordingly (adds visibly carried block)
 					local block_type

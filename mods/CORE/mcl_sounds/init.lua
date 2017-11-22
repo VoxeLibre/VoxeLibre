@@ -134,3 +134,10 @@ function mcl_sounds.node_sound_water_defaults(table)
 	mcl_sounds.node_sound_defaults(table)
 	return table
 end
+
+
+-- Player death sound
+minetest.register_on_dieplayer(function(player)
+	-- TODO: Add separate death sound
+	minetest.sound_play({name="player_damage", gain = 1.0}, {pos=player:get_pos(), max_hear_distance=16})
+end)

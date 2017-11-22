@@ -5,6 +5,7 @@ local enable_respawn = minetest.settings:get_bool("enable_bed_respawn")
 if enable_respawn == nil then
 	enable_respawn = true
 end
+local weather_mod = minetest.get_modpath("mcl_weather") ~= nil
 
 -- Helper functions
 
@@ -121,8 +122,18 @@ local function update_formspecs(finished)
 	end
 end
 
-
 -- Public functions
+
+-- Handle environment stuff related to sleeping: skip night and thunderstorm
+function mcl_beds.sleep()
+	local storm_skipped = mcl_beds.skip_thunderstorm()
+	if is_night_skip_enabled() then
+		if not storm_skipped then
+			mcl_beds.skip_night()
+		end
+		mcl_beds.kick_players()
+	end
+end
 
 function mcl_beds.kick_players()
 	for name, _ in pairs(mcl_beds.player) do
@@ -135,7 +146,22 @@ function mcl_beds.skip_night()
 	minetest.set_timeofday(0.25) -- tod = 6000
 end
 
+function mcl_beds.skip_thunderstorm()
+	-- Skip thunderstorm
+	if weather_mod and mcl_weather.get_weather() == "thunder" then
+		mcl_weather.change_weather("none")
+		-- Sleep for a half day (=minimum thunderstorm duration)
+		minetest.set_timeofday((minetest.get_timeofday() + 0.5) % 1)
+		return true
+	end
+	return false
+end
+
 function mcl_beds.on_rightclick(pos, player)
+	-- Anti-Inception: Don't allow to sleep while you're sleeping
+	if player:get_attribute("mcl_beds:sleeping") == "true" then
+		return
+	end
 	if minetest.get_modpath("mcl_init") then
 		local _, dim = mcl_util.y_to_layer(pos.y)
 		if dim == "nether" or dim == "end" then
@@ -152,11 +178,11 @@ function mcl_beds.on_rightclick(pos, player)
 	local tod = minetest.get_timeofday() * 24000
 
 	-- Values taken from Minecraft Wiki with offset of +6000
-	if tod < 18541 and tod > 5458 then
+	if tod < 18541 and tod > 5458 and (not weather_mod or (mcl_weather.get_weather() ~= "thunder")) then
 		if mcl_beds.player[name] then
 			lay_down(player, nil, nil, false)
 		end
-		minetest.chat_send_player(name, "You can only sleep at night.")
+		minetest.chat_send_player(name, "You can only sleep at night or during a thunderstorm.")
 		return
 	end
 
@@ -178,10 +204,7 @@ function mcl_beds.on_rightclick(pos, player)
 			if not is_sp then
 				update_formspecs(is_night_skip_enabled())
 			end
-			if is_night_skip_enabled() then
-				mcl_beds.skip_night()
-				mcl_beds.kick_players()
-			end
+			mcl_beds.sleep()
 		end)
 	end
 end
@@ -207,10 +230,7 @@ minetest.register_on_leaveplayer(function(player)
 	if check_in_beds() then
 		minetest.after(2, function()
 			update_formspecs(is_night_skip_enabled())
-			if is_night_skip_enabled() then
-				mcl_beds.skip_night()
-				mcl_beds.kick_players()
-			end
+			mcl_beds.sleep()
 		end)
 	end
 end)
@@ -226,9 +246,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 
 	if fields.force then
 		update_formspecs(is_night_skip_enabled())
-		if is_night_skip_enabled() then
-			mcl_beds.skip_night()
-			mcl_beds.kick_players()
-		end
+		mcl_beds.sleep()
 	end
 end)

@@ -43,8 +43,16 @@ local mg_name = minetest.get_mapgen_setting("mg_name")
 
 local WITCH_HUT_HEIGHT = 3 -- Exact Y level to spawn witch huts at. This height refers to the height of the floor
 
+-- End exit portal position. This is temporary.
+-- TODO: Remove the exit portal generation when the ender dragon has been implemented.
+local END_EXIT_PORTAL_POS = table.copy(mcl_vars.mg_end_platform_pos)
+END_EXIT_PORTAL_POS.x = END_EXIT_PORTAL_POS.x - 30
+END_EXIT_PORTAL_POS.z = END_EXIT_PORTAL_POS.z - 3
+END_EXIT_PORTAL_POS.y = END_EXIT_PORTAL_POS.y - 3
+
 -- Content IDs
 local c_bedrock = minetest.get_content_id("mcl_core:bedrock")
+local c_obsidian = minetest.get_content_id("mcl_core:obsidian")
 local c_stone = minetest.get_content_id("mcl_core:stone")
 local c_dirt = minetest.get_content_id("mcl_core:dirt")
 local c_dirt_with_grass = minetest.get_content_id("mcl_core:dirt_with_grass")
@@ -688,7 +696,7 @@ local function register_mgv6_decorations()
 	-- Sugar canes
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "mcl_core:dirt_with_grass", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
+		place_on = {"mcl_core:dirt", "mcl_core:coarse_dirt", "group:grass_block_no_snow", "group:sand", "mcl_core:podzol", "mcl_core:reeds"},
 		sidelen = 16,
 		noise_params = {
 			offset = -0.3,
@@ -721,7 +729,7 @@ local function register_mgv6_decorations()
 		replacements = {
 			["mcl_flowers:tallgrass"] = "mcl_flowers:double_grass"
 		},
-		place_on = {"mcl_core:dirt_with_grass"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 8,
 		noise_params = {
 			offset = -0.0025,
@@ -752,7 +760,7 @@ local function register_mgv6_decorations()
 		-- v6 hack: This makes sure large ferns only appear in jungles
 		spawn_by = { "mcl_core:jungletree", "mcl_flowers:fern" },
 		num_spawn_by = 1,
-		place_on = {"mcl_core:dirt_with_grass"},
+		place_on = {"group:grass_block_no_snow"},
 
 		sidelen = 16,
 		noise_params = {
@@ -779,7 +787,7 @@ local function register_mgv6_decorations()
 					{ name = "mcl_flowers:"..name.."_top", param1=255, },
 				},
 			},
-			place_on = {"mcl_core:dirt_with_grass"},
+			place_on = {"group:grass_block_no_snow"},
 
 			sidelen = 16,
 			noise_params = {
@@ -837,7 +845,7 @@ local function register_mgv6_decorations()
 				{ name = "mcl_farming:pumpkin_face" },
 			},
 		},
-		place_on = {"mcl_core:dirt_with_grass"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 16,
 		noise_params = {
 			offset = -0.008,
@@ -855,7 +863,7 @@ local function register_mgv6_decorations()
 	-- Tall grass
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:dirt_with_grass"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 8,
 		noise_params = {
 			offset = 0.01,
@@ -871,7 +879,7 @@ local function register_mgv6_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:dirt_with_grass"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 8,
 		noise_params = {
 			offset = 0.04,
@@ -888,7 +896,7 @@ local function register_mgv6_decorations()
 	-- Add a small amount of tall grass everywhere to avoid areas completely empty devoid of tall grass
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:dirt_with_grass"},
+		place_on = {"group:grass_block_no_snow"},
 		sidelen = 8,
 		fill_ratio = 0.004,
 		y_min = 1,
@@ -902,7 +910,7 @@ local function register_mgv6_decorations()
 		-- Mushrooms next to trees
 		minetest.register_decoration({
 			deco_type = "simple",
-			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:podzol", "mcl_core:mycelium", "mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite"},
+			place_on = {"group:grass_block_no_snow", "mcl_core:dirt", "mcl_core:podzol", "mcl_core:mycelium", "mcl_core:stone", "mcl_core:andesite", "mcl_core:diorite", "mcl_core:granite"},
 			sidelen = 16,
 			noise_params = {
 				offset = 0.04,
@@ -947,7 +955,7 @@ local function register_mgv6_decorations()
 		end
 		minetest.register_decoration({
 			deco_type = "simple",
-			place_on = {"mcl_core:dirt_with_grass"},
+			place_on = {"group:grass_block_no_snow"},
 			sidelen = 16,
 			noise_params = {
 				offset = offset,
@@ -1167,7 +1175,7 @@ local function generate_structures(minp, maxp, seed, biomemap)
 							end
 
 						-- Igloos
-						elseif not chunk_has_igloo and (nn == "mcl_core:snowblock" or nn == "mcl_core:snow" or nn == "mcl_core:dirt_with_grass_snow") then
+						elseif not chunk_has_igloo and (nn == "mcl_core:snowblock" or nn == "mcl_core:snow" or (minetest.get_item_group(nn, "grass_block_snow") == 1)) then
 							if math.random(1, 4400) == 1 then
 								-- Check surface
 								local floor = {x=p.x+9, y=p.y-1, z=p.z+9}
@@ -1332,6 +1340,22 @@ local function generate_structures(minp, maxp, seed, biomemap)
 			end
 		end
 		end
+	-- End exit portal
+	elseif minp.y <= END_EXIT_PORTAL_POS.y and maxp.y >= END_EXIT_PORTAL_POS.y and
+			minp.x <= END_EXIT_PORTAL_POS.x and maxp.x >= END_EXIT_PORTAL_POS.x and
+			minp.z <= END_EXIT_PORTAL_POS.z and maxp.z >= END_EXIT_PORTAL_POS.z then
+		local built = false
+		for y=maxp.y, minp.y, -1 do
+			local p = {x=END_EXIT_PORTAL_POS.x, y=y, z=END_EXIT_PORTAL_POS.z}
+			if minetest.get_node(p).name == "mcl_end:end_stone" then
+				mcl_structures.call_struct(p, "end_exit_portal")
+				built = true
+				break
+			end
+		end
+		if not built then
+			mcl_structures.call_struct(END_EXIT_PORTAL_POS, "end_exit_portal")
+		end
 	end
 end
 
@@ -1424,10 +1448,11 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 			end
 
 			local p_pos = area:index(pos.x, pos.y, pos.z)
+			local l = minetest.get_node_light(pos)
 
 			if dir < 5
 			and data[p_pos] == c_air
-			and minetest.get_node_light(pos) > 12 then
+			and l ~= nil and l > 12 then
 				local c = math.random(1, 3)
 				if c == 1 then
 					data[p_pos] = c_cocoa_1
@@ -1559,7 +1584,8 @@ local generate_underground_mushrooms = function(minp, maxp, seed)
 	for n = 1, #stone do
 		bpos = {x = stone[n].x, y = stone[n].y + 1, z = stone[n].z }
 
-		if bpos.y >= min and bpos.y <= max and minetest.get_node_light(bpos, 0.5) <= 12 and pr_shroom:next(1,1000) < 4 then
+		local l = minetest.get_node_light(bpos, 0.5)
+		if bpos.y >= min and bpos.y <= max and l ~= nil and l <= 12 and pr_shroom:next(1,1000) < 4 then
 			if pr_shroom:next(1,2) == 1 then
 				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
 			else
@@ -1612,7 +1638,8 @@ local generate_nether_decorations = function(minp, maxp, seed)
 	-- Mushrooms on netherrack
 	-- Note: Spawned *after* the fire because of light level checks
 	special_deco(rack, function(bpos)
-		if bpos.y > mcl_vars.mg_lava_nether_max + 6 and minetest.get_node_light(bpos, 0.5) <= 12 and pr_nether:next(1,1000) <= 4 then
+		local l = minetest.get_node_light(bpos, 0.5)
+		if bpos.y > mcl_vars.mg_lava_nether_max + 6 and l ~= nil and l <= 12 and pr_nether:next(1,1000) <= 4 then
 			-- TODO: Make mushrooms appear in groups, use Perlin noise
 			if pr_nether:next(1,2) == 1 then
 				minetest.set_node(bpos, {name = "mcl_mushrooms:mushroom_brown"})
@@ -1778,7 +1805,6 @@ minetest.register_on_generated(function(minp, maxp, seed)
 			-- Clear snowy grass blocks without snow above to ensure consistency.
 			-- Solidify floating sand to sandstone (both colors).
 			else
-				--local nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:dirt_with_grass_snow"})
 				local nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:dirt_with_grass_snow", "mcl_core:sand", "mcl_core:redsand"})
 				for n=1, #nodes do
 					local p_pos = area:index(nodes[n].x, nodes[n].y, nodes[n].z)
@@ -1827,6 +1853,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		-- End block fixes:
 		-- * Replace water with end stone or air (depending on height).
 		-- * Remove stone, sand, dirt in v6 so our End map generator works in v6.
+		-- * Generate spawn platform (End portal destination)
 		elseif minp.y <= mcl_vars.mg_end_max and maxp.y >= mcl_vars.mg_end_min then
 			local nodes
 			if mg_name == "v6" then
@@ -1851,6 +1878,25 @@ minetest.register_on_generated(function(minp, maxp, seed)
 					lvm_used = true
 				end
 
+			end
+
+			-- Obsidian spawn platform
+			if minp.y <= mcl_vars.mg_end_platform_pos.y and maxp.y >= mcl_vars.mg_end_platform_pos.y and
+					minp.x <= mcl_vars.mg_end_platform_pos.x and maxp.x >= mcl_vars.mg_end_platform_pos.z and
+					minp.z <= mcl_vars.mg_end_platform_pos.z and maxp.z >= mcl_vars.mg_end_platform_pos.z then
+				for x=math.max(minp.x, mcl_vars.mg_end_platform_pos.x-2), math.min(maxp.x, mcl_vars.mg_end_platform_pos.x+2) do
+				for z=math.max(minp.z, mcl_vars.mg_end_platform_pos.z-2), math.min(maxp.z, mcl_vars.mg_end_platform_pos.z+2) do
+				for y=math.max(minp.y, mcl_vars.mg_end_platform_pos.y), math.min(maxp.y, mcl_vars.mg_end_platform_pos.y+2) do
+					local p_pos = area:index(x, y, z)
+					if y == mcl_vars.mg_end_platform_pos.y then
+						data[p_pos] = c_obsidian
+					else
+						data[p_pos] = c_air
+					end
+				end
+				end
+				end
+				lvm_used = true
 			end
 		end
 	end

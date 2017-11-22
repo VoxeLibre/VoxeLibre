@@ -4,16 +4,26 @@ local init = os.clock()
 
 -- Simple flower template
 local smallflowerlongdesc = "This is a small flower. Small flowers are mainly used for dye production and can also be potted."
-local flowerusagehelp = "It can only be placed on a block on which it would also survive."
+local plant_usage_help = "It can only be placed on a block on which it would also survive."
 
 -- on_place function for flowers
-local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, node)
+local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, node, itemstack)
 	local below = {x=pos.x, y=pos.y-1, z=pos.z}
 	local soil_node = minetest.get_node_or_nil(below)
 	if not soil_node then return false end
 
+	local has_palette = minetest.registered_nodes[itemstack:get_name()].palette ~= nil
+	local colorize
+	if has_palette then
+		colorize = minetest.registered_nodes[soil_node.name]._mcl_grass_palette_index
+	end
+	if not colorize then
+		colorize = 0
+	end
+
 --[[	Placement requirements:
 	* Dirt or grass block
+	* If not flower, also allowed on podzol and coarse dirt
 	* Light level >= 8 at any time or exposed to sunlight at day
 ]]
 	local light_night = minetest.get_node_light(pos, 0.0)
@@ -22,14 +32,16 @@ local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, 
 	if (light_night and light_night >= 8) or (light_day and light_day >= minetest.LIGHT_MAX) then
 		light_ok = true
 	end
-	return (soil_node.name == "mcl_core:dirt" or soil_node.name == "mcl_core:dirt_with_grass" or soil_node.name == "mcl_core:dirt_with_grass_snow" or soil_node.name == "mcl_core:coarse_dirt" or soil_node.name == "mcl_core:podzol" or soil_node.name == "mcl_core:podzol_snow") and light_ok
+	local is_flower = minetest.get_item_group(itemstack:get_name(), "flower") == 1
+	local ok = (soil_node.name == "mcl_core:dirt" or minetest.get_item_group(soil_node.name, "grass_block") == 1 or (not is_flower and (soil_node.name == "mcl_core:coarse_dirt" or soil_node.name == "mcl_core:podzol" or soil_node.name == "mcl_core:podzol_snow"))) and light_ok
+	return ok, colorize
 end)
 
 local function add_simple_flower(name, desc, image, simple_selection_box)
 	minetest.register_node("mcl_flowers:"..name, {
 		description = desc,
 		_doc_items_longdesc = smallflowerlongdesc,
-		_doc_items_usagehelp = flowerusagehelp,
+		_doc_items_usagehelp = plant_usage_help,
 		drawtype = "plantlike",
 		waving = 1,
 		tiles = { image..".png" },
@@ -50,18 +62,16 @@ local function add_simple_flower(name, desc, image, simple_selection_box)
 	})
 end
 
-local box_tulip = { -0.15, -0.5, -0.15, 0.15, 5/16, 0.15 }
-
-add_simple_flower("poppy", "Poppy", "mcl_flowers_poppy", { -0.15, -0.5, -0.15, 0.15, 3/16, 0.15 })
-add_simple_flower("dandelion", "Dandelion", "flowers_dandelion_yellow", { -0.15, -0.5, -0.15, 0.15, 0, 0.15 })
-add_simple_flower("oxeye_daisy", "Oxeye Daisy", "mcl_flowers_oxeye_daisy", { -0.15, -0.5, -0.15, 0.15, 5/16, 0.15 })
-add_simple_flower("tulip_orange", "Orange Tulip", "flowers_tulip", box_tulip)
-add_simple_flower("tulip_pink", "Pink Tulip", "mcl_flowers_tulip_pink", box_tulip)
-add_simple_flower("tulip_red", "Red Tulip", "mcl_flowers_tulip_red", box_tulip)
-add_simple_flower("tulip_white", "White Tulip", "mcl_flowers_tulip_white", box_tulip)
-add_simple_flower("allium", "Allium", "mcl_flowers_allium", { -0.2, -0.5, -0.2, 0.2, 6/16, 0.2 })
-add_simple_flower("azure_bluet", "Azure Bluet", "mcl_flowers_azure_bluet", { -3/16, -0.5, -3/16, 3/16, 2/16, 3/16 })
-add_simple_flower("blue_orchid", "Blue Orchid", "mcl_flowers_blue_orchid", { -5/16, -0.5, -5/16, 5/16, 6/16, 5/16 })
+add_simple_flower("poppy", "Poppy", "mcl_flowers_poppy", { -5/16, -0.5, -5/16, 5/16, 5/16, 5/16 })
+add_simple_flower("dandelion", "Dandelion", "flowers_dandelion_yellow", { -4/16, -0.5, -4/16, 4/16, 3/16, 4/16 })
+add_simple_flower("oxeye_daisy", "Oxeye Daisy", "mcl_flowers_oxeye_daisy", { -4/16, -0.5, -4/16, 4/16, 4/16, 4/16 })
+add_simple_flower("tulip_orange", "Orange Tulip", "flowers_tulip", { -3/16, -0.5, -3/16, 3/16, 5/16, 3/16 })
+add_simple_flower("tulip_pink", "Pink Tulip", "mcl_flowers_tulip_pink", { -3/16, -0.5, -3/16, 3/16, 5/16, 3/16 })
+add_simple_flower("tulip_red", "Red Tulip", "mcl_flowers_tulip_red", { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 })
+add_simple_flower("tulip_white", "White Tulip", "mcl_flowers_tulip_white", { -3/16, -0.5, -3/16, 3/16, 4/16, 3/16 })
+add_simple_flower("allium", "Allium", "mcl_flowers_allium", { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 })
+add_simple_flower("azure_bluet", "Azure Bluet", "mcl_flowers_azure_bluet", { -5/16, -0.5, -5/16, 5/16, 3/16, 5/16 })
+add_simple_flower("blue_orchid", "Blue Orchid", "mcl_flowers_blue_orchid", { -5/16, -0.5, -5/16, 5/16, 7/16, 5/16 })
 
 
 local wheat_seed_drop = {
@@ -74,27 +84,31 @@ local wheat_seed_drop = {
 	}
 }
 
--- Tall Grass
-minetest.register_node("mcl_flowers:tallgrass", {
+-- CHECKME: How does tall grass behave when pushed by a piston?
+
+--- Tall Grass ---
+local def_tallgrass = {
 	description = "Tall Grass",
-	_doc_items_longdesc = "Tall grass is a small plant which often occours on the surface of grasslands. It can be harvested for wheat seeds. By using bone meal, tall grass can be turned into double tallgrass which is two blocks high.",
-	_doc_items_hidden = false,
 	drawtype = "plantlike",
+	_doc_items_longdesc = "Tall grass is a small plant which often occours on the surface of grasslands. It can be harvested for wheat seeds. By using bone meal, tall grass can be turned into double tallgrass which is two blocks high.",
+	_doc_items_usagehelp = plant_usage_help,
+	_doc_items_hidden = false,
 	waving = 1,
 	tiles = {"mcl_flowers_tallgrass.png"},
-	inventory_image = "mcl_flowers_tallgrass.png",
-	wield_image = "mcl_flowers_tallgrass.png",
+	inventory_image = "mcl_flowers_tallgrass_inv.png",
+	wield_image = "mcl_flowers_tallgrass_inv.png",
 	selection_box = {
 		type = "fixed",
-		fixed = {{ -6/16, -8/16, -6/16, 6/16, 8/16, 6/16 }},
+		fixed = {{ -6/16, -8/16, -6/16, 6/16, 4/16, 6/16 }},
 	},
 	paramtype = "light",
+	paramtype2 = "color",
+	palette = "mcl_core_palette_grass.png",
 	sunlight_propagates = true,
 	walkable = false,
 	buildable_to = true,
 	is_ground_content = true,
-	-- CHECKME: How does tall grass behave when pushed by a piston?
-	groups = {dig_immediate=3, flammable=3,attached_node=1,plant=1,place_flowerlike=1,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
+	groups = {handy=1,shearsy=1, flammable=3,attached_node=1,plant=1,place_flowerlike=2,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	drop = wheat_seed_drop,
 	_mcl_shears_drop = true,
@@ -102,46 +116,50 @@ minetest.register_node("mcl_flowers:tallgrass", {
 	on_place = on_place_flower,
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
-})
+}
+minetest.register_node("mcl_flowers:tallgrass", def_tallgrass)
 
 --- Fern ---
-minetest.register_node("mcl_flowers:fern", {
-	description = "Fern",
-	_doc_items_longdesc = "Ferns are small plants which occour naturally in grasslands. They can be harvested for wheat seeds. By using bone meal, a fern can be turned into a large fern which is two blocks high.",
-	drawtype = "plantlike",
-	waving = 1,
-	tiles = { "mcl_flowers_fern.png" },
-	inventory_image = "mcl_flowers_fern.png",
-	wield_image = "mcl_flowers_fern.png",
-	sunlight_propagates = true,
-	paramtype = "light",
-	walkable = false,
-	stack_max = 64,
-	-- CHECKME: How does a fern behave when pushed by a piston?
-	groups = {dig_immediate=3,flammable=2,attached_node=1,plant=1,place_flowerlike=1,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
-	buildable_to = true,
-	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	node_placement_prediction = "",
-	on_place = on_place_flower,
-	drop = wheat_seed_drop,
-	_mcl_shears_drop = true,
-	selection_box = {
-		type = "fixed",
-		fixed = { -4/16, -0.5, -4/16, 4/16, 7/16, 4/16 },
-	},
-})
+-- The fern is very similar to tall grass, so we can copy a lot from it.
+local def_fern = table.copy(def_tallgrass)
+def_fern.description = "Fern"
+def_fern._doc_items_longdesc = "Ferns are small plants which occour naturally in grasslands. They can be harvested for wheat seeds. By using bone meal, a fern can be turned into a large fern which is two blocks high."
+def_fern.tiles = { "mcl_flowers_fern.png" }
+def_fern.inventory_image = "mcl_flowers_fern_inv.png"
+def_fern.wield_image = "mcl_flowers_fern_inv.png"
+def_fern.selection_box = {
+	type = "fixed",
+	fixed = { -6/16, -0.5, -6/16, 6/16, 5/16, 6/16 },
+}
 
-local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_img, selbox_radius, selbox_top_height, drop, shears_drop, is_flower)
+minetest.register_node("mcl_flowers:fern", def_fern)
+
+local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_img, selbox_radius, selbox_top_height, drop, shears_drop, is_flower, grass_color)
 	if not inv_img then
 		inv_img = top_img
 	end
-	local flowergroup, usagehelp
+	local usagehelp, noncreative, create_entry, paramtype2, palette
 	if is_flower == nil then
 		is_flower = true
 	end
+
+	local bottom_groups = {flammable=2,non_mycelium_plant=1,attached_node=1, dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, plant=1,double_plant=1,deco_block=1,not_in_creative_inventory=noncreative}
 	if is_flower then
-		flowergroup = 1
-		usagehelp = flowerusagehelp
+		bottom_groups.flower = 1
+		bottom_groups.place_flowerlike = 1
+		bottom_groups.dig_immediate = 3
+	else
+		bottom_groups.place_flowerlike = 2
+		bottom_groups.handy = 1
+		bottom_groups.shearsy = 1
+	end
+	if grass_color then
+		paramtype2 = "color"
+		palette = "mcl_core_palette_grass.png"
+	end
+	if longdesc == nil then
+		noncreative = 1
+		create_entry = false
 	end
 	-- Drop itself by default
 	local drop_bottom, drop_top
@@ -153,14 +171,17 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 	end
 	minetest.register_node("mcl_flowers:"..name, {
 		description = desc,
+		_doc_items_create_entry = create_entry,
 		_doc_items_longdesc = longdesc,
-		_doc_items_usagehelp = usagehelp,
+		_doc_items_usagehelp = plant_usage_help,
 		drawtype = "plantlike",
 		tiles = { bottom_img },
 		inventory_image = inv_img,
 		wield_image = inv_img,
 		sunlight_propagates = true,
 		paramtype = "light",
+		paramtype2 = paramtype2,
+		palette = palette,
 		walkable = false,
 		buildable_to = true,
 		drop = drop_bottom,
@@ -173,8 +194,10 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		on_place = function(itemstack, placer, pointed_thing)
 			-- We can only place on nodes
 			if pointed_thing.type ~= "node" then
-				--return
+				return
 			end
+
+			local itemstring = "mcl_flowers:"..name
 
 			-- Call on_rightclick if the pointed node defines it
 			local node = minetest.get_node(pointed_thing.under)
@@ -215,13 +238,18 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 
 			-- Placement rules:
 			-- * Allowed on dirt or grass block
+			-- * If not a flower, also allowed on podzol and coarse dirt
 			-- * Only with light level >= 8
 			-- * Only if two enough space
-			if (floorname == "mcl_core:dirt" or floorname == "mcl_core:dirt_with_grass" or floorname == "mcl_core:dirt_with_grass_snow" or floorname == "mcl_core:coarse_dirt" or floorname == "mcl_core:podzol" or floorname == "mcl_core:podzol_snow") and bottom_buildable and top_buildable and light_ok then
+			if (floorname == "mcl_core:dirt" or minetest.get_item_group(floorname, "grass_block") == 1 or (not is_flower and (floorname == "mcl_core:coarse_dirt" or floorname == "mcl_core:podzol" or floorname == "mcl_core:podzol_snow"))) and bottom_buildable and top_buildable and light_ok then
+				local param2
+				if grass_color then
+					param2 = minetest.registered_nodes[floorname]._mcl_grass_palette_index
+				end
 				-- Success! We can now place the flower
-				minetest.sound_play(minetest.registered_nodes["mcl_flowers:"..name].sounds.place, {pos = bottom, gain=1})
-				minetest.set_node(bottom, {name="mcl_flowers:"..name})
-				minetest.set_node(top, {name="mcl_flowers:"..name.."_top"})
+				minetest.sound_play(minetest.registered_nodes[itemstring].sounds.place, {pos = bottom, gain=1})
+				minetest.set_node(bottom, {name=itemstring, param2=param2})
+				minetest.set_node(top, {name=itemstring.."_top", param2=param2})
 				if not minetest.settings:get_bool("creative_mode") then
 					itemstack:take_item()
 				end
@@ -236,9 +264,14 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 				minetest.remove_node(top)
 			end
 		end,
-		groups = {dig_immediate=3,flammable=2,flower=flowergroup,place_flowerlike=1,non_mycelium_plant=1,attached_node=1, dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, plant=1,double_plant=1,deco_block=1},
+		groups = bottom_groups,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 	})
+
+	local top_groups = table.copy(bottom_groups)
+	top_groups.not_in_creative_inventory=1
+	top_groups.double_plant=2
+	top_groups.attached_node=nil
 
 	-- Top
 	minetest.register_node("mcl_flowers:"..name.."_top", {
@@ -248,6 +281,8 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		tiles = { top_img },
 		sunlight_propagates = true,
 		paramtype = "light",
+		paramtype2 = paramtype2,
+		palette = palette,
 		walkable = false,
 		buildable_to = true,
 		selection_box = {
@@ -264,25 +299,29 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 				minetest.remove_node(bottom)
 			end
 		end,
-		groups = {dig_immediate=3,flammable=2,flower=flowergroup,place_flowerlike=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1, not_in_creative_inventory = 1, plant=1,double_plant=2},
+		groups = top_groups,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 	})
 
-	if minetest.get_modpath("doc") then
+	if minetest.get_modpath("doc") and longdesc then
 		doc.add_entry_alias("nodes", "mcl_flowers:"..name, "nodes", "mcl_flowers:"..name.."_top")
+		-- If no longdesc, help alias must be added manually
 	end
 
 end
 
-add_large_plant("peony", "Peony", "A peony is a large plant which occupies two blocks. It is mainly used in dye protection.", "mcl_flowers_double_plant_paeonia_bottom.png", "mcl_flowers_double_plant_paeonia_top.png", nil, 5/16, 4/16)
-add_large_plant("rose_bush", "Rose Bush", "A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye protection.", "mcl_flowers_double_plant_rose_bottom.png", "mcl_flowers_double_plant_rose_top.png", nil, 6/16, 7/16)
-add_large_plant("lilac", "Lilac", "A lilac is a large plant which occupies two blocks. It is mainly used in dye production.", "mcl_flowers_double_plant_syringa_bottom.png", "mcl_flowers_double_plant_syringa_top.png", nil, 6/16, 7/16)
+add_large_plant("peony", "Peony", "A peony is a large plant which occupies two blocks. It is mainly used in dye protection.", "mcl_flowers_double_plant_paeonia_bottom.png", "mcl_flowers_double_plant_paeonia_top.png", nil, 5/16, 6/16)
+add_large_plant("rose_bush", "Rose Bush", "A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye protection.", "mcl_flowers_double_plant_rose_bottom.png", "mcl_flowers_double_plant_rose_top.png", nil, 5/16, 1/16)
+add_large_plant("lilac", "Lilac", "A lilac is a large plant which occupies two blocks. It is mainly used in dye production.", "mcl_flowers_double_plant_syringa_bottom.png", "mcl_flowers_double_plant_syringa_top.png", nil, 5/16, 6/16)
 
 -- TODO: Make the sunflower face East. Requires a mesh for the top node.
-add_large_plant("sunflower", "Sunflower", "A sunflower is a large plant which occupies two blocks. It is mainly used in dye production.", "mcl_flowers_double_plant_sunflower_bottom.png", "mcl_flowers_double_plant_sunflower_top.png^mcl_flowers_double_plant_sunflower_front.png", "mcl_flowers_double_plant_sunflower_front.png", 3/16, 4/16)
+add_large_plant("sunflower", "Sunflower", "A sunflower is a large plant which occupies two blocks. It is mainly used in dye production.", "mcl_flowers_double_plant_sunflower_bottom.png", "mcl_flowers_double_plant_sunflower_top.png^mcl_flowers_double_plant_sunflower_front.png", "mcl_flowers_double_plant_sunflower_front.png", 6/16, 6/16)
 
-add_large_plant("double_grass", "Double Tallgrass", "Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds.", "mcl_flowers_double_plant_grass_bottom.png", "mcl_flowers_double_plant_grass_top.png", nil, 5/16, 7/16, wheat_seed_drop, {"mcl_flowers:tallgrass 2"}, false)
-add_large_plant("double_fern", "Large Fern", "Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds.", "mcl_flowers_double_plant_fern_bottom.png", "mcl_flowers_double_plant_fern_top.png", nil, 6/16, 5/16, wheat_seed_drop, {"mcl_flowers:fern 2"}, false)
+local longdesc_grass = "Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds."
+local longdesc_fern = "Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds."
+
+add_large_plant("double_grass", "Double Tallgrass", longdesc_grass, "mcl_flowers_double_plant_grass_bottom.png", "mcl_flowers_double_plant_grass_top.png", "mcl_flowers_double_plant_grass_inv.png", 6/16, 4/16, wheat_seed_drop, {"mcl_flowers:tallgrass 2"}, false, true)
+add_large_plant("double_fern", "Large Fern", longdesc_fern, "mcl_flowers_double_plant_fern_bottom.png", "mcl_flowers_double_plant_fern_top.png", "mcl_flowers_double_plant_fern_inv.png", 5/16, 5/16, wheat_seed_drop, {"mcl_flowers:fern 2"}, false, true)
 
 minetest.register_abm({
 	label = "Pop out flowers",
@@ -299,7 +338,7 @@ minetest.register_abm({
 			return
 		end
 		-- Pop out flower if not on dirt, grass block or too low brightness
-		if (below.name ~= "mcl_core:dirt" and below.name ~= "mcl_core:dirt_with_grass" and below.name ~= "mcl_core:dirt_with_grass_snow") or (minetest.get_node_light(pos, 0.5) < 8) then
+		if (below.name ~= "mcl_core:dirt" and minetest.get_item_group(below.name, "grass_block") ~= 1) or (minetest.get_node_light(pos, 0.5) < 8) then
 			minetest.dig_node(pos)
 			return
 		end

@@ -123,6 +123,11 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		-- Allium and blue orchid intentionally left out,
 		-- those must be found by the player.
 	}
+	-- Special case for dry lands
+	local flowers_table_dry = {
+		"mcl_flowers:dandelion",
+		"mcl_flowers:poppy",
+	}
 
 	local pos = pointed_thing.under
 	local n = minetest.get_node(pos)
@@ -137,7 +142,7 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 
 		-- Must be on a dirt-type block
 		local below = minetest.get_node({x=pos.x,y=pos.y-1,z=pos.z})
-		if below.name ~= "mcl_core:mycelium" and below.name ~= "mcl_core:dirt" and below.name ~= "mcl_core:dirt_with_grass" and below.name ~= "mcl_core:coarse_dirt" and below.name ~= "mcl_core:podzol" then
+		if below.name ~= "mcl_core:mycelium" and below.name ~= "mcl_core:dirt" and minetest.get_item_group(below.name, "grass_block") ~= 1 and below.name ~= "mcl_core:coarse_dirt" and below.name ~= "mcl_core:podzol" then
 			return false
 		end
 
@@ -206,7 +211,7 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		-- Cocoa: Advance by 1 stage
 		mcl_cocoas.grow(pos)
 		return true
-	elseif n.name == "mcl_core:dirt_with_grass" or n.name == "mcl_core:dirt_with_grass_snow" then
+	elseif minetest.get_item_group(n.name, "grass_block") == 1 then
 		-- Grass Block: Generate tall grass and random flowers all over the place
 		for i = -2, 2 do
 			for j = -2, 2 do
@@ -215,14 +220,19 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 				n = minetest.get_node(pos)
 				local n2 = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z})
 
-				if n.name ~= "" and n.name == "air" and (n2.name == "mcl_core:dirt_with_grass" or n2.name == "mcl_core:dirt_with_grass_snow") then
+				if n.name ~= "" and n.name == "air" and (minetest.get_item_group(n2.name, "grass_block_no_snow") == 1) then
 					-- Randomly generate flowers, tall grass or nothing
 					if math.random(1,100) <= 90 then
 						-- 90% tall grass, 10% flower
 						if math.random(1,100) <= 90 then
-							minetest.add_node(pos, {name="mcl_core:tallgrass"})
+							local col = minetest.registered_nodes[n2.name]._mcl_grass_palette_index
+							minetest.add_node(pos, {name="mcl_flowers:tallgrass", param2=col})
 						else
-							minetest.add_node(pos, {name=flowers_table[math.random(1, #flowers_table)]})
+							if n2.name == "mcl_core:dirt_with_dry_grass" then
+								minetest.add_node(pos, {name=flowers_table_dry[math.random(1, #flowers_table_dry)]})
+							else
+								minetest.add_node(pos, {name=flowers_table[math.random(1, #flowers_table)]})
+							end
 						end
 					end
 				end
@@ -249,8 +259,8 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
 		local topnode = minetest.get_node(toppos)
 		if minetest.registered_nodes[topnode.name].buildable_to then
-			minetest.set_node(pos, { name = "mcl_flowers:double_grass" })
-			minetest.set_node(toppos, { name = "mcl_flowers:double_grass_top" })
+			minetest.set_node(pos, { name = "mcl_flowers:double_grass", param2 = n.param2 })
+			minetest.set_node(toppos, { name = "mcl_flowers:double_grass_top", param2 = n.param2 })
 			return true
 		end
 
@@ -259,8 +269,8 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		local toppos = { x=pos.x, y=pos.y+1, z=pos.z }
 		local topnode = minetest.get_node(toppos)
 		if minetest.registered_nodes[topnode.name].buildable_to then
-			minetest.set_node(pos, { name = "mcl_flowers:double_fern" })
-			minetest.set_node(toppos, { name = "mcl_flowers:double_fern_top" })
+			minetest.set_node(pos, { name = "mcl_flowers:double_fern", param2 = n.param2 })
+			minetest.set_node(toppos, { name = "mcl_flowers:double_fern_top", param2 = n.param2 })
 			return true
 		end
 	end

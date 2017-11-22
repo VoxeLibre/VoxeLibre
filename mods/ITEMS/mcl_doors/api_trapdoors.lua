@@ -1,3 +1,20 @@
+-- Wrapper around mintest.pointed_thing_to_face_pos.
+local function get_fpos(placer, pointed_thing)
+	local fpos
+	-- Workaround: minetest.pointed_thing_to_face_pos crashes in MT 0.4.16 if
+	-- pointed_thing.under and pointed_thing.above are equal
+	-- FIXME: Remove this when MT got fixed.
+	if not vector.equals(pointed_thing.under, pointed_thing.above) then
+		-- The happy case: Everything is normal
+		local finepos = minetest.pointed_thing_to_face_pos(placer, pointed_thing)
+		fpos = finepos.y % 1
+	else
+		-- Fallback if both above and under are equal
+		fpos = 0
+	end
+	return fpos
+end
+
 ---- Trapdoor ----
 
 function mcl_doors:register_trapdoor(name, def)
@@ -91,9 +108,7 @@ function mcl_doors:register_trapdoor(name, def)
 				param2 = minetest.dir_to_facedir(vector.subtract(p1, placer_pos))
 			end
 
-			local finepos = minetest.pointed_thing_to_face_pos(placer, pointed_thing)
-			local fpos = finepos.y % 1
-
+			local fpos = get_fpos(placer, pointed_thing)
 
 			local origname = itemstack:get_name()
 			if p0.y - 1 == p1.y or (fpos > 0 and fpos < 0.5)

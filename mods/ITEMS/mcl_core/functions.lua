@@ -645,7 +645,7 @@ local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_setting("seed")
 minetest.register_abm({
 	label = "Grass Block and Mycelium spread",
 	nodenames = {"mcl_core:dirt"},
-	neighbors = {"air", "mcl_core:dirt_with_grass", "mcl_core:mycelium"},
+	neighbors = {"air", "group:grass_block_no_snow", "mcl_core:mycelium"},
 	interval = 30,
 	chance = 20,
 	catch_up = false,
@@ -1190,12 +1190,22 @@ end
 -- of the snowed node.
 mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, tiles, sounds)
 	local def = table.copy(minetest.registered_nodes[itemstring_clear])
+	local create_doc_alias
+	if def.description then
+		create_doc_alias = true
+	else
+		create_doc_alias = false
+	end
 	-- Just some group clearing
 	def.description = nil
 	def._doc_items_longdesc = nil
 	def._doc_items_usagehelp = nil
 	def._doc_items_create_entry = false
 	def.groups.not_in_creative_inventory = 1
+	if def.groups.grass_block == 1 then
+		def.groups.grass_block_no_snow = nil
+		def.groups.grass_block_snow = 1
+	end
 
 	-- Enderman must never take this because this block is supposed to be always buried below snow.
 	def.groups.enderman_takable = nil
@@ -1224,7 +1234,7 @@ mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, ti
 	-- Register stuff
 	minetest.register_node(itemstring_snowed, def)
 
-	if minetest.get_modpath("doc") then
+	if create_doc_alias and minetest.get_modpath("doc") then
 		doc.add_entry_alias("nodes", itemstring_clear, "nodes", itemstring_snowed)
 	end
 end

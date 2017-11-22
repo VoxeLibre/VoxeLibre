@@ -94,6 +94,12 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 	sound = { breaks = "default_tool_breaks" },
 })
 
+--[[
+
+Temporarily removed from crafting as the fishing rod is massively overpowered atm.
+
+TODO: Re-enable crafting when fishing rod has been improved.
+
 minetest.register_craft({
 	output = "mcl_fishing:fishing_rod",
 	recipe = {
@@ -110,6 +116,7 @@ minetest.register_craft({
 		{'mcl_mobitems:string','','mcl_core:stick'},
 	}
 })
+]]
 
 minetest.register_craft({
 	type = "fuel",

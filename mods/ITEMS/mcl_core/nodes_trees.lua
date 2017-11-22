@@ -112,7 +112,7 @@ local register_sapling = function(subname, description, longdesc, texture, selbo
 			local node_below = minetest.get_node_or_nil({x=pos.x,y=pos.y-1,z=pos.z})
 			if not node_below then return false end
 			local nn = node_below.name
-			return (nn=="mcl_core:dirt_with_grass" or nn=="mcl_core:dirt_with_grass_snow" or
+			return ((minetest.get_item_group(nn, "grass_block") == 1) or
 					nn=="mcl_core:podzol" or nn=="mcl_core:podzol_snow" or
 					nn=="mcl_core:dirt")
 		end),
@@ -165,12 +165,12 @@ register_wooden_planks("acaciawood", "Acacia Wood Planks", {"default_acacia_wood
 register_wooden_planks("birchwood", "Birch Wood Planks", {"mcl_core_planks_birch.png"})
 
 
-register_sapling("sapling", "Oak Sapling", "When placed on soil (such as dirt) and exposed to light, an oak sapling will grow into an oak after some time.", "default_sapling.png", {-6/16, -0.5, -6/16, 6/16, 0.5, 6/16})
-register_sapling("darksapling", "Dark Oak Sapling", "Dark oak saplings can grow into dark oaks, but only in groups. A lonely dark oak sapling won't grow. A group of four dark oak saplings grows into a dark oak after some time when they are placed on soil (such as dirt) in a 2×2 square and exposed to light.", "mcl_core_sapling_big_oak.png", {-5.5/16, -0.5, -5.5/16, 5.5/16, 0.5, 5.5/16})
-register_sapling("junglesapling", "Jungle Sapling", "When placed on soil (such as dirt) and exposed to light, a jungle sapling will grow into a jungle tree after some time. When there are 4 jungle saplings in a 2×2 square, they will grow to a huge jungle tree.", "default_junglesapling.png", {-4/16, -0.5, -4/16, 4/16, 0.5, 4/16})
-register_sapling("acaciasapling", "Acacia Sapling", "When placed on soil (such as dirt) and exposed to light, an acacia sapling will grow into an acacia after some time.", "default_acacia_sapling.png", {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3})
-register_sapling("sprucesapling", "Spruce Sapling", "When placed on soil (such as dirt) and exposed to light, a spruce sapling will grow into a spruce after some time. When there are 4 spruce saplings in a 2×2 square, they will grow to a huge spruce.", "mcl_core_sapling_spruce.png", {-0.3, -0.5, -0.3, 0.3, 0.35, 0.3})
-register_sapling("birchsapling", "Birch Sapling", "When placed on soil (such as dirt) and exposed to light, a birch sapling will grow into a birch after some time.", "mcl_core_sapling_birch.png", {-6/16, -0.5, -6/16, 6/16, 0.5, 6/16})
+register_sapling("sapling", "Oak Sapling", "When placed on soil (such as dirt) and exposed to light, an oak sapling will grow into an oak after some time.", "default_sapling.png", {-5/16, -0.5, -5/16, 5/16, 0.5, 5/16})
+register_sapling("darksapling", "Dark Oak Sapling", "Dark oak saplings can grow into dark oaks, but only in groups. A lonely dark oak sapling won't grow. A group of four dark oak saplings grows into a dark oak after some time when they are placed on soil (such as dirt) in a 2×2 square and exposed to light.", "mcl_core_sapling_big_oak.png", {-5/16, -0.5, -5/16, 5/16, 7/16, 5/16})
+register_sapling("junglesapling", "Jungle Sapling", "When placed on soil (such as dirt) and exposed to light, a jungle sapling will grow into a jungle tree after some time. When there are 4 jungle saplings in a 2×2 square, they will grow to a huge jungle tree.", "default_junglesapling.png", {-5/16, -0.5, -5/16, 5/16, 0.5, 5/16})
+register_sapling("acaciasapling", "Acacia Sapling", "When placed on soil (such as dirt) and exposed to light, an acacia sapling will grow into an acacia after some time.", "default_acacia_sapling.png", {-5/16, -0.5, -5/16, 5/16, 4/16, 5/16})
+register_sapling("sprucesapling", "Spruce Sapling", "When placed on soil (such as dirt) and exposed to light, a spruce sapling will grow into a spruce after some time. When there are 4 spruce saplings in a 2×2 square, they will grow to a huge spruce.", "mcl_core_sapling_spruce.png", {-4/16, -0.5, -4/16, 4/16, 0.5, 4/16})
+register_sapling("birchsapling", "Birch Sapling", "When placed on soil (such as dirt) and exposed to light, a birch sapling will grow into a birch after some time.", "mcl_core_sapling_birch.png", {-4/16, -0.5, -4/16, 4/16, 0.5, 4/16})
 
 
 register_leaves("leaves", "Oak Leaves", "Oak leaves are grown from oak trees.", {"default_leaves.png"}, "mcl_core:sapling", 20, "mcl_core:apple", 200)

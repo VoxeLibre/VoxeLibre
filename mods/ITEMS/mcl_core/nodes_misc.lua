@@ -89,7 +89,7 @@ minetest.register_node("mcl_core:deadbush", {
 	walkable = false,
 	stack_max = 64,
 	buildable_to = true,
-	groups = {dig_immediate=3, flammable=3,attached_node=1,plant=1,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
+	groups = {handy=1,shearsy=1, flammable=3,attached_node=1,plant=1,non_mycelium_plant=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
 	drop = {
 		max_items = 1,
 		items = {
@@ -107,7 +107,7 @@ minetest.register_node("mcl_core:deadbush", {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	selection_box = {
 		type = "fixed",
-		fixed = {-6/16, -8/16, -6/16, 6/16, 8/16, 6/16},
+		fixed = {-5/16, -8/16, -5/16, 5/16, 1/16, 5/16},
 	},
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,

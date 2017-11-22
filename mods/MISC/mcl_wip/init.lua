@@ -2,7 +2,6 @@ local wip_items = {
 	"mcl_anvils:anvil",
 	"mcl_anvils:anvil_damage_1",
 	"mcl_anvils:anvil_damage_2",
-	"mcl_core:apple_gold",
 	"mcl_end:chorus_fruit",
 	"mcl_end:chorus_flower",
 	"mcl_end:chorus_flower_dead",
@@ -20,9 +19,8 @@ local wip_items = {
 	"mcl_minecarts:furnace_minecart",
 	"mcl_minecarts:tnt_minecart",
 	"mcl_minecarts:activator_rail",
-	"mcl_portals:end_portal_frame",
-	"mcl_portals:end_portal_frame_eye",
 }
+local experimental_items = {}
 
 for i=1,#wip_items do
 	local def = minetest.registered_items[wip_items[i]]
@@ -31,14 +29,12 @@ for i=1,#wip_items do
 		break
 	end
 	local new_description = def.description
+	local new_groups = table.copy(def.groups)
 	new_description = new_description .. "\n"..core.colorize("#FF0000", "(WIP)")
-	minetest.override_item(wip_items[i], { description = new_description })
+	new_groups.not_in_craft_guide = 1
+	minetest.override_item(wip_items[i], { description = new_description, groups = new_groups })
 end
 
-local experimental_items = {
-	"doc_identifier:identifier_solid",
-	"doc_identifier:identifier_liquid",
-}
 for i=1,#experimental_items do
 	local def = minetest.registered_items[experimental_items[i]]
 	if not def then

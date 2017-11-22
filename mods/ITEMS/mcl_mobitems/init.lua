@@ -311,7 +311,7 @@ minetest.register_craftitem("mcl_mobitems:gunpowder", {
 minetest.register_tool("mcl_mobitems:carrot_on_a_stick", {
 	description = "Carrot on a Stick",
 	_doc_items_longdesc = "A carrot on a stick can be used on saddled pigs to ride them.",
-	_doc_items_usagehelp = "Rightclick a saddled pig with the carrot on a stick to mount it. You can now ride it like a horse (TODO). Pigs will also walk towards you when you just wield the carrot on a stick.",
+	_doc_items_usagehelp = "Rightclick a saddled pig with the carrot on a stick to mount it. You can now ride it like a horse. Pigs will also walk towards you when you just wield the carrot on a stick.",
 	wield_image = "mcl_mobitems_carrot_on_a_stick.png",
 	inventory_image = "mcl_mobitems_carrot_on_a_stick.png",
 	groups = { transport = 1 },
@@ -353,6 +353,8 @@ minetest.register_craft({
 	},
 })
 
+--[[
+TODO: Re-enable this when fishing rod is available again
 minetest.register_craft({
 	output = "mcl_mobitems:carrot_on_a_stick",
 	recipe = {
@@ -368,6 +370,7 @@ minetest.register_craft({
 		{ "mcl_farming:carrot_item", "" },
 	},
 })
+]]
 
 minetest.register_craft({
 	type = "shapeless",
