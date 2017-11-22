@@ -33,7 +33,7 @@ mcl_weather.rain.set_sky_box = function()
       "weather-pack-rain-sky",
       {{r=0, g=0, b=0},
       {r=85, g=86, b=98},
-      {r=175, g=175, b=191},
+      {r=135, g=135, b=151},
       {r=85, g=86, b=98},
       {r=0, g=0, b=0}})
     mcl_weather.skycolor.active = true
