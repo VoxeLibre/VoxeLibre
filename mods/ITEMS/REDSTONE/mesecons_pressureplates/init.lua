@@ -157,20 +157,36 @@ function mesecon.register_pressure_plate(basename, description, textures_off, te
 	end
 end
 
-mesecon.register_pressure_plate(
-	"mesecons_pressureplates:pressure_plate_wood",
-	"Wooden Pressure Plate",
-	{"default_wood.png"},
-	{"default_wood.png"},
-	"default_wood.png",
-	nil,
-	{{"group:wood", "group:wood"}},
-	mcl_sounds.node_sound_wood_defaults(),
-	{axey=1, material_wood=1},
-	nil,
-	"A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.")
+local woods = {
+	{ "wood", "mcl_core:wood", "default_wood.png", "Oak Pressure Plate" },
+	{ "acaciawood", "mcl_core:acaciawood", "default_acacia_wood.png", "Acacia Pressure Plate" },
+	{ "birchwood", "mcl_core:birchwood", "mcl_core_planks_birch.png", "Birch Pressure Plate" },
+	{ "darkwood", "mcl_core:darkwood", "mcl_core_planks_big_oak.png", "Dark Oak Pressure Plate" },
+	{ "sprucewood", "mcl_core:sprucewood", "mcl_core_planks_spruce.png", "Spruce Pressure Plate" },
+	{ "junglewood", "mcl_core:junglewood", "default_junglewood.png", "Jungle Pressure Plate" },
+}
 
+for w=1, #woods do
+	mesecon.register_pressure_plate(
+		"mesecons_pressureplates:pressure_plate_"..woods[w][1],
+		woods[w][4],
+		{woods[w][3]},
+		{woods[w][3]},
+		woods[w][3],
+		nil,
+		{{woods[w][2], woods[w][2]}},
+		mcl_sounds.node_sound_wood_defaults(),
+		{axey=1, material_wood=1,pressure_plate=2},
+		nil,
+		"A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.")
 
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "mesecons_pressureplates:pressure_plate_"..woods[w][1].."_off",
+		burntime = 15
+	})
+
+end
 
 mesecon.register_pressure_plate(
 	"mesecons_pressureplates:pressure_plate_stone",
@@ -181,13 +197,8 @@ mesecon.register_pressure_plate(
 	nil,
 	{{"mcl_core:stone", "mcl_core:stone"}},
 	mcl_sounds.node_sound_stone_defaults(),
-	{pickaxey=1, material_stone=1},
+	{pickaxey=1, material_stone=1, pressure_plate=3},
 	{ player = true, mob = true },
 	"A stone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.")
 
-minetest.register_craft({
-	type = "fuel",
-	recipe = "mesecons_pressureplates:pressure_plate_wood_off",
-	burntime = 15
-})
 
