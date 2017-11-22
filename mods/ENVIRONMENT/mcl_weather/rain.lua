@@ -20,8 +20,7 @@ mcl_weather.rain = {
 
 mcl_weather.rain.sound_handler = function(player)
   return minetest.sound_play("weather_rain", {
-    object = player,
-    max_hear_distance = 2,
+    to_player = player,
     loop = true,
   })
 end
