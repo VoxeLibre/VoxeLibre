@@ -82,138 +82,96 @@ local on_button_place = function(itemstack, placer, pointed_thing)
 end
 
 local buttonuse = "Rightclick the button to push it."
-minetest.register_node("mesecons_button:button_stone_off", {
-	drawtype = "nodebox",
-	tiles = {"default_stone.png"},
-	wield_image = "mesecons_button_wield_mask.png^default_stone.png^mesecons_button_wield_mask.png^[makealpha:255,126,126",
-	-- FIXME: Use proper 3D inventory image
-	inventory_image = "mesecons_button_wield_mask.png^default_stone.png^mesecons_button_wield_mask.png^[makealpha:255,126,126",
-	wield_scale = { x=1, y=1, z=1},
-	paramtype = "light",
-	paramtype2 = "wallmounted",
-	is_ground_content = false,
-	walkable = false,
-	sunlight_propagates = true,
-	node_box = boxes_off,
-	groups = {handy=1,pickaxey=1, attached_node=1, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1},
-	description = "Stone Button",
-	_doc_items_longdesc = "A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second. It can only be placed on solid opaque full cubes (like cobblestone).",
-	_doc_items_usagehelp = buttonuse,
-	on_place = on_button_place,
-	node_placement_prediction = "",
-	on_rightclick = function (pos, node)
-		minetest.swap_node(pos, {name="mesecons_button:button_stone_on", param2=node.param2})
-		mesecon.receptor_on(pos, button_get_output_rules(node))
-		minetest.sound_play("mesecons_button_push", {pos=pos})
-		minetest.after(1, mesecon.button_turnoff, pos)
-	end,
-	sounds = mcl_sounds.node_sound_stone_defaults(),
-	mesecons = {receptor = {
-		state = mesecon.state.off,
-		rules = button_get_output_rules,
-	}},
-	_mcl_blast_resistance = 2.5,
-	_mcl_hardness = 0.5,
-})
 
-minetest.register_node("mesecons_button:button_stone_on", {
-	drawtype = "nodebox",
-	tiles = {"default_stone.png"},
-	wield_image = "mesecons_button_wield_mask.png^default_stone.png^mesecons_button_wield_mask.png^[makealpha:255,126,126",
-	inventory_image = "mesecons_button_wield_mask.png^default_stone.png^mesecons_button_wield_mask.png^[makealpha:255,126,126",
-	wield_scale = { x=1, y=1, z=0.5},
-	paramtype = "light",
-	paramtype2 = "wallmounted",
-	is_ground_content = false,
-	walkable = false,
-	sunlight_propagates = true,
-	node_box = boxes_on,
-	groups = {handy=1,pickaxey=1, not_in_creative_inventory=1, attached_node=1, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1},
-	drop = 'mesecons_button:button_stone_off',
-	description = "Stone Button",
-	_doc_items_create_entry = false,
-	node_placement_prediction = "",
-	sounds = mcl_sounds.node_sound_stone_defaults(),
-	mesecons = {receptor = {
-		state = mesecon.state.on,
-		rules = button_get_output_rules
-	}},
-	_mcl_blast_resistance = 2.5,
-	_mcl_hardness = 0.5,
-})
+mesecon.register_button = function(basename, description, texture, recipeitem, sounds, plusgroups, button_timer, longdesc)
+	local groups_off = {handy=1,pickaxey=1, attached_node=1, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1}
+	local groups_on = table.copy(groups_off)
+	groups_on.not_in_creative_inventory=1
 
-minetest.register_node("mesecons_button:button_wood_off", {
-	drawtype = "nodebox",
-	tiles = {"default_wood.png"},
-	wield_image = "mesecons_button_wield_mask.png^default_wood.png^mesecons_button_wield_mask.png^[makealpha:255,126,126",
-	inventory_image = "mesecons_button_wield_mask.png^default_wood.png^mesecons_button_wield_mask.png^[makealpha:255,126,126",
-	wield_scale = { x=1, y=1, z=1},
-	paramtype = "light",
-	paramtype2 = "wallmounted",
-	is_ground_content = false,
-	walkable = false,
-	sunlight_propagates = true,
-	node_box = boxes_off,
-	groups = {handy=1,axey=1, attached_node=1, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1},
-	description = "Wooden Button",
-	_doc_items_longdesc = "A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. It can only be placed on solid opaque full cubes (like cobblestone).",
-	_doc_items_usagehelp = buttonuse,
-	on_place = on_button_place,
-	node_placement_prediction = "",
-	on_rightclick = function (pos, node)
-		minetest.swap_node(pos, {name="mesecons_button:button_wood_on", param2=node.param2})
-		mesecon.receptor_on(pos, button_get_output_rules(node))
-		minetest.sound_play("mesecons_button_push", {pos=pos})
-		minetest.after(1.5, mesecon.button_turnoff, pos)
-	end,
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-	mesecons = {receptor = {
-		state = mesecon.state.off,
-		rules = button_get_output_rules,
-	}},
-	_mcl_blast_resistance = 2.5,
-	_mcl_hardness = 0.5,
-})
+	minetest.register_node("mesecons_button:button_"..basename.."_off", {
+		drawtype = "nodebox",
+		tiles = {texture},
+		wield_image = "mesecons_button_wield_mask.png^"..texture.."^mesecons_button_wield_mask.png^[makealpha:255,126,126",
+		-- FIXME: Use proper 3D inventory image
+		inventory_image = "mesecons_button_wield_mask.png^"..texture.."^mesecons_button_wield_mask.png^[makealpha:255,126,126",
+		wield_scale = { x=1, y=1, z=1},
+		paramtype = "light",
+		paramtype2 = "wallmounted",
+		is_ground_content = false,
+		walkable = false,
+		sunlight_propagates = true,
+		node_box = boxes_off,
+		groups = groups_off,
+		description = description,
+		_doc_items_longdesc = longdesc,
+		_doc_items_usagehelp = buttonuse,
+		on_place = on_button_place,
+		node_placement_prediction = "",
+		on_rightclick = function (pos, node)
+			minetest.swap_node(pos, {name="mesecons_button:button_"..basename.."_on", param2=node.param2})
+			mesecon.receptor_on(pos, button_get_output_rules(node))
+			minetest.sound_play("mesecons_button_push", {pos=pos})
+			minetest.after(button_timer, mesecon.button_turnoff, pos)
+		end,
+		sounds = sounds,
+		mesecons = {receptor = {
+			state = mesecon.state.off,
+			rules = button_get_output_rules,
+		}},
+		_mcl_blast_resistance = 2.5,
+		_mcl_hardness = 0.5,
+	})
 
-minetest.register_node("mesecons_button:button_wood_on", {
-	drawtype = "nodebox",
-	tiles = {"default_wood.png"},
-	wield_image = "mesecons_button_wield_mask.png^default_wood.png^mesecons_button_wield_mask.png^[makealpha:255,126,126",
-	inventory_image = "mesecons_button_wield_mask.png^default_wood.png^mesecons_button_wield_mask.png^[makealpha:255,126,126",
-	wield_scale = { x=1, y=1, z=0.5},
-	paramtype = "light",
-	paramtype2 = "wallmounted",
-	is_ground_content = false,
-	walkable = false,
-	sunlight_propagates = true,
-	node_box = boxes_on,
-	groups = {handy=1,axey=1, not_in_creative_inventory=1, attached_node=1, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1},
-	drop = 'mesecons_button:button_wood_off',
-	description = "Wooden Button",
-	_doc_items_create_entry = false,
-	node_placement_prediction = "",
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-	mesecons = {receptor = {
-		state = mesecon.state.on,
-		rules = button_get_output_rules,
-	}},
-	_mcl_blast_resistance = 2.5,
-	_mcl_hardness = 0.5,
-})
+	minetest.register_node("mesecons_button:button_"..basename.."_on", {
+		drawtype = "nodebox",
+		tiles = {texture},
+		wield_image = "mesecons_button_wield_mask.png^"..texture.."^mesecons_button_wield_mask.png^[makealpha:255,126,126",
+		inventory_image = "mesecons_button_wield_mask.png^"..texture.."^mesecons_button_wield_mask.png^[makealpha:255,126,126",
+		wield_scale = { x=1, y=1, z=0.5},
+		paramtype = "light",
+		paramtype2 = "wallmounted",
+		is_ground_content = false,
+		walkable = false,
+		sunlight_propagates = true,
+		node_box = boxes_on,
+		groups = groups_on,
+		drop = 'mesecons_button:button_'..basename..'_off',
+		_doc_items_create_entry = false,
+		node_placement_prediction = "",
+		sounds = sounds,
+		mesecons = {receptor = {
+			state = mesecon.state.on,
+			rules = button_get_output_rules
+		}},
+		_mcl_blast_resistance = 2.5,
+		_mcl_hardness = 0.5,
+	})
 
-minetest.register_craft({
-	output = 'mesecons_button:button_stone_off',
-	recipe = {
-		{'mcl_core:stone'},
-	}
-})
+	minetest.register_craft({
+		output = "mesecons_button:button_"..basename.."_off",
+		recipe = {{ recipeitem }},
+	})
+end
 
-minetest.register_craft({
-	output = 'mesecons_button:button_wood_off',
-	recipe = {
-		{'group:wood'},
-	}
-})
+mesecon.register_button(
+	"stone",
+	"Stone Button",
+	"default_stone.png",
+	"mcl_core:stone",
+	mcl_sounds.node_sound_stone_defaults(),
+	{material_stone=1,handy=1,pickaxey=1},
+	1,
+	"A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second. It can only be placed on solid opaque full cubes (like cobblestone).")
+
+mesecon.register_button(
+	"wood",
+	"Oak Wood Button",
+	"default_wood.png",
+	"mcl_core:wood",
+	mcl_sounds.node_sound_wood_defaults(),
+	{material_wood=1,handy=1,axey=1},
+	1.5,
+	"A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. It can only be placed on solid opaque full cubes (like cobblestone).")
 
 minetest.register_craft({
 	type = "fuel",
