@@ -1,11 +1,11 @@
 -- Tree nodes: Wood, Wooden Planks, Sapling, Leaves
 
-local register_tree_trunk = function(subname, description, longdesc, tiles, after_dig_node)
+local register_tree_trunk = function(subname, description_trunk, description_bark, longdesc, tile_inner, tile_bark, after_dig_node)
 	minetest.register_node("mcl_core:"..subname, {
-		description = description,
+		description = description_trunk,
 		_doc_items_longdesc = longdesc,
 		_doc_items_hidden = false,
-		tiles = tiles,
+		tiles = {tile_inner, tile_inner, tile_bark},
 		paramtype2 = "facedir",
 		on_place = mcl_util.rotate_axis,
 		stack_max = 64,
@@ -15,6 +15,19 @@ local register_tree_trunk = function(subname, description, longdesc, tiles, afte
 		_mcl_hardness = 2,
 
 		after_dig_node = after_dig_node,
+	})
+
+	minetest.register_node("mcl_core:"..subname.."_bark", {
+		description = description_bark,
+		_doc_items_longdesc = "This is a decorative block surrounded by the bark of a tree trunk.",
+		tiles = {tile_bark},
+		paramtype2 = "facedir",
+		on_place = mcl_util.rotate_axis,
+		stack_max = 64,
+		groups = {handy=1,axey=1, bark=1, flammable=2, building_block=1, material_wood=1},
+		sounds = mcl_sounds.node_sound_wood_defaults(),
+		_mcl_blast_resistance = 10,
+		_mcl_hardness = 2,
 	})
 end
 
@@ -147,14 +160,14 @@ local jungle_tree_after_dig_node = function(pos, oldnode, oldmetadata, digger)
 	end
 end
 
-register_tree_trunk("tree", "Oak Wood", "The trunk of an oak tree.", {"default_tree_top.png", "default_tree_top.png", "default_tree.png"})
-register_tree_trunk("darktree", "Dark Oak Wood", "The trunk of a dark oak tree.", {"mcl_core_log_big_oak_top.png", "mcl_core_log_big_oak_top.png", "mcl_core_log_big_oak.png"})
-register_tree_trunk("acaciatree", "Acacia Wood", "The trunk of an acacia.", {"default_acacia_tree_top.png", "default_acacia_tree_top.png", "default_acacia_tree.png"})
-register_tree_trunk("darktree", "Dark Oak Wood", "The trunk of a dark oak tree.", {"mcl_core_log_big_oak_top.png", "mcl_core_log_big_oak_top.png", "mcl_core_log_big_oak.png"})
-register_tree_trunk("sprucetree", "Spruce Wood", "The trunk of a spruce tree.", {"mcl_core_log_spruce_top.png", "mcl_core_log_spruce_top.png", "mcl_core_log_spruce.png"})
-register_tree_trunk("birchtree", "Birch Wood", "The trunk of a birch tree.", {"mcl_core_log_birch_top.png", "mcl_core_log_birch_top.png", "mcl_core_log_birch.png"})
+register_tree_trunk("tree", "Oak Wood", "Oak Bark", "The trunk of an oak tree.", "default_tree_top.png", "default_tree.png")
+register_tree_trunk("darktree", "Dark Oak Wood", "Dark Oak Bark", "The trunk of a dark oak tree.", "mcl_core_log_big_oak_top.png", "mcl_core_log_big_oak.png")
+register_tree_trunk("acaciatree", "Acacia Wood", "Acacia Bark", "The trunk of an acacia.", "default_acacia_tree_top.png", "default_acacia_tree.png")
+register_tree_trunk("darktree", "Dark Oak Wood", "Dark Oak Bark", "The trunk of a dark oak tree.", "mcl_core_log_big_oak_top.png", "mcl_core_log_big_oak.png")
+register_tree_trunk("sprucetree", "Spruce Wood", "Spruce Bark", "The trunk of a spruce tree.", "mcl_core_log_spruce_top.png", "mcl_core_log_spruce.png")
+register_tree_trunk("birchtree", "Birch Wood", "Birch Bark", "The trunk of a birch tree.", "mcl_core_log_birch_top.png", "mcl_core_log_birch.png")
 
-register_tree_trunk("jungletree", "Jungle Wood", "The trunk of a jungle tree.", {"default_jungletree_top.png", "default_jungletree_top.png", "default_jungletree.png"}, jungle_tree_after_dig_node)
+register_tree_trunk("jungletree", "Jungle Wood", "Jungle Bark", "The trunk of a jungle tree.", "default_jungletree_top.png", "default_jungletree.png", jungle_tree_after_dig_node)
 
 
 register_wooden_planks("wood", "Oak Wood Planks", {"default_wood.png"})
