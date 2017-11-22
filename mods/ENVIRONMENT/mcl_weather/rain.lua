@@ -194,7 +194,7 @@ if mcl_weather.allow_abm then
 			if mcl_weather.rain.raining and mcl_weather.rain.extinguish_fire then
 				if mcl_weather.is_outdoor(pos) then
 					minetest.remove_node(pos)
-					minetest.sound_play("fire_extinguish_flame", {pos = pos, max_hear_distance = 16, gain = 0.15})
+					minetest.sound_play("fire_extinguish_flame", {pos = pos, max_hear_distance = 8, gain = 0.1})
 				end
 			end
 		end,
