@@ -165,8 +165,10 @@ minetest.register_globalstep(function(dtime)
 		elseif dim == "end" then
 			local t = "mcl_playerplus_end_sky.png"
 			player:set_sky("#000000", "skybox", {t,t,t,t,t,t}, false)
+			player:set_day_night_override_ratio(nil)
 		elseif dim == "nether" then
 			player:set_sky("#300808", "plain", nil, false)
+			player:set_day_night_override_ratio(nil)
 		else
 			mcl_weather.skycolor.update_sky_color({player})
 		end
