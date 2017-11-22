@@ -144,9 +144,10 @@ These groups are used mostly for informational purposes
    * `container=1`: Other/unspecified container type
 * `spawn_egg=1`: Spawn egg
 
-* `pressure_plate=1`: Pressure plate (unspecified material)
-* `pressure_plate=2`: Wooden pressure plate
-* `pressure_plate=3`: Stone pressure plate
+* `pressure_plate=1`: Pressure plate (off)
+* `pressure_plate=2`: Wooden pressure (on)
+* `button=1`: Button (off)
+* `button=2`: Button (on)
 
 * `plant=1`: Plant or part of a plant
 * `double_plant`: Part of a double-sized plant. 1 = lower part, 2 = upper part

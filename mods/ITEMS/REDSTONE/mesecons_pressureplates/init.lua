@@ -106,8 +106,10 @@ function mesecon.register_pressure_plate(basename, description, textures_off, te
 	local groups_off = table.copy(plusgroups)
 	groups_off.attached_node = 1
 	groups_off.dig_by_piston = 1
+	groups_off.pressure_plate = 1
 	local groups_on = table.copy(groups_off)
 	groups_on.not_in_creative_inventory = 1
+	groups_on.pressure_plate = 2
 	if not longdesc then
 		longdesc = "A pressure plate is a redstone component which supplies its surrounding blocks with redstone power while someone or something rests on top of it."
 	end
@@ -176,7 +178,7 @@ for w=1, #woods do
 		nil,
 		{{woods[w][2], woods[w][2]}},
 		mcl_sounds.node_sound_wood_defaults(),
-		{axey=1, material_wood=1,pressure_plate=2},
+		{axey=1, material_wood=1},
 		nil,
 		"A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.")
 
@@ -197,7 +199,7 @@ mesecon.register_pressure_plate(
 	nil,
 	{{"mcl_core:stone", "mcl_core:stone"}},
 	mcl_sounds.node_sound_stone_defaults(),
-	{pickaxey=1, material_stone=1, pressure_plate=3},
+	{pickaxey=1, material_stone=1},
 	{ player = true, mob = true },
 	"A stone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.")
 
