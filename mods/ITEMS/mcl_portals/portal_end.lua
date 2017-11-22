@@ -248,11 +248,12 @@ minetest.register_abm({
 							build_end_portal_destination(pos)
 							minetest.after(2, check_and_build_end_portal_destination, pos)
 						elseif not n then
-						minetest.after(1, check_and_build_end_portal_destination, pos)
-					end
+							minetest.after(1, check_and_build_end_portal_destination, pos)
+						end
 					end
 
 					local platform
+					build_end_portal_destination(platform_pos)
 					check_and_build_end_portal_destination(platform_pos)
 
 					target = table.copy(platform_pos)
