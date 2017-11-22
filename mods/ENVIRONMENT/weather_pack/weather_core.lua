@@ -38,11 +38,11 @@ weather.get_rand_end_time = function(min_duration, max_duration)
   end 
 end
 
-weather.get_current_day_night_ratio = function()
+weather.get_current_light_factor = function()
   if weather.state == "none" then
     return nil
   else
-    return weather.reg_weathers[weather.state].day_night_ratio
+    return weather.reg_weathers[weather.state].light_factor
   end
 end
 

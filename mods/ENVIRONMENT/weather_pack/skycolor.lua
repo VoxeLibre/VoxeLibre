@@ -80,21 +80,17 @@ skycolor = {
 			if dim == "overworld" then
 				player:set_sky(color, "plain", nil, true)
 
-				local dnn = weather.get_current_day_night_ratio()
-				if dnn then
+				local lf = weather.get_current_light_factor()
+				if lf then
 					local w = minetest.get_timeofday()
-					if w > 0.5 then
-						w = 2*(1 - w)
-					else
-						w = 1 - (1 - 2*w)
+					local light = (w * (lf*2))
+					if light > 1 then
+						light = 1 - (light - 1)
 					end
-					if w > dnn then
-						-- FIXME: This color will cause a sharp brightness change.
-						-- The correct ratio value needs to be calculated.
-						player:override_day_night_ratio(dnn)
-					else
-						player:override_day_night_ratio(nil)
-					end
+
+					light = (light * lf) + 0.15
+
+					player:override_day_night_ratio(light)
 				else
 					player:override_day_night_ratio(nil)
 				end

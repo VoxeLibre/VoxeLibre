@@ -84,7 +84,7 @@ end)
 if weather.reg_weathers.snow == nil then
   weather.reg_weathers.snow = {
     chance = 10,
-    day_night_ratio = 0.8,
+    light_factor = 0.7,
     clear = snow.clear
   }
 end
