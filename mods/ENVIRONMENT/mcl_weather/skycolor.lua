@@ -46,9 +46,13 @@ mcl_weather.skycolor = {
 		mcl_weather.skycolor.force_update = true
 	end,
 
+	current_layer_name = function()
+		return mcl_weather.skycolor.layer_names[#mcl_weather.skycolor.layer_names]
+	end,
+
 	-- Retrieve layer from colors table
 	retrieve_layer = function()
-		local last_layer = mcl_weather.skycolor.layer_names[#mcl_weather.skycolor.layer_names]
+		local last_layer = mcl_weather.skycolor.current_layer_name()
 		return mcl_weather.skycolor.colors[last_layer]
 	end,
 
@@ -71,7 +75,7 @@ mcl_weather.skycolor = {
 			return
 		end
 
-		-- Make everything darker for player
+		-- Override day/night ratio as well
 		players = mcl_weather.skycolor.utils.get_players(players)
 		for _, player in ipairs(players) do
 			local pos = player:getpos()
@@ -80,7 +84,9 @@ mcl_weather.skycolor = {
 				player:set_sky(color, "plain", nil, true)
 
 				local lf = mcl_weather.get_current_light_factor()
-				if lf then
+				if mcl_weather.skycolor.current_layer_name() == "lightning" then
+					player:override_day_night_ratio(1)
+				elseif lf then
 					local w = minetest.get_timeofday()
 					local light = (w * (lf*2))
 					if light > 1 then
