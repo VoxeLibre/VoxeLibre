@@ -28,10 +28,9 @@ Hoppers interact with containers the following way:
 	paramtype = "light",
 	sunlight_propagates = true,
 	tiles = {"mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_inside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png"},
-	selection_box = {type="regular"},
 	node_box = {
-			type = "fixed",
-			fixed = {
+		type = "fixed",
+		fixed = {
 			--funnel walls
 			{-0.5, 0.0, 0.4, 0.5, 0.5, 0.5},
 			{0.4, 0.0, -0.5, 0.5, 0.5, 0.5},
@@ -42,8 +41,18 @@ Hoppers interact with containers the following way:
 			--spout
 			{-0.3, -0.3, -0.3, 0.3, 0.0, 0.3},
 			{-0.1, -0.3, -0.1, 0.1, -0.5, 0.1},
-			},
 		},
+	},
+	selection_box = {
+		type = "fixed",
+		fixed = {
+			--funnel
+			{-0.5, 0.0, -0.5, 0.5, 0.5, 0.5},
+			--spout
+			{-0.3, -0.3, -0.3, 0.3, 0.0, 0.3},
+			{-0.1, -0.3, -0.1, 0.1, -0.5, 0.1},
+		},
+	},
 	is_ground_content = false,
 
 	on_construct = function(pos)
@@ -144,10 +153,9 @@ minetest.register_node("mcl_hoppers:hopper_side", {
 	sunlight_propagates = true,
 	paramtype2 = "facedir",
 	tiles = {"mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_inside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png"},
-	selection_box = {type="regular"},
 	node_box = {
-			type = "fixed",
-			fixed = {
+		type = "fixed",
+		fixed = {
 			--funnel walls
 			{-0.5, 0.0, 0.4, 0.5, 0.5, 0.5},
 			{0.4, 0.0, -0.5, 0.5, 0.5, 0.5},
@@ -158,8 +166,18 @@ minetest.register_node("mcl_hoppers:hopper_side", {
 			--spout
 			{-0.3, -0.3, -0.3, 0.3, 0.0, 0.3},
 			{-0.5, -0.3, -0.1, 0.1, -0.1, 0.1},
-			},
 		},
+	},
+	selection_box = {
+		type = "fixed",
+		fixed = {
+			--funnel
+			{-0.5, 0.0, -0.5, 0.5, 0.5, 0.5},
+			--spout
+			{-0.3, -0.3, -0.3, 0.3, 0.0, 0.3},
+			{-0.5, -0.3, -0.1, 0.1, -0.1, 0.1},
+		},
+	},
 	is_ground_content = false,
 
 	on_construct = function(pos)
