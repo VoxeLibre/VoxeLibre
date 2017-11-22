@@ -713,7 +713,8 @@ minetest.register_abm({
 
 -- Turn Grass Path and similar nodes to Dirt if a solid node is placed above it
 minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack, pointed_thing)
-	if minetest.get_item_group(newnode.name, "solid") ~= 0 then
+	if minetest.get_item_group(newnode.name, "solid") ~= 0 or
+			minetest.get_item_group(newnode.name, "dirtifier") ~= 0 then
 		local below = {x=pos.x, y=pos.y-1, z=pos.z}
 		local belownode = minetest.get_node(below)
 		if minetest.get_item_group(belownode.name, "dirtifies_below_solid") == 1 then

@@ -36,7 +36,8 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `cultivatable=1`: Block will be turned into Dirt by using a hoe on it
 * `flammable`: Block helps spreading fire and gets destroyed by nearby fire (rating doesn't matter)
 * `spreading_dirt_type=1`: A dirt-type block with a cover (e.g. grass) which may spread to neighbor dirt blocks
-* `dirtifies_below_solid=1`: This node turns into dirt immediately when a solid node is placed on top
+* `dirtifies_below_solid=1`: This node turns into dirt immediately when a solid or dirtifier node is placed on top
+* `dirtifier=1`: This node turns nodes the above group into dirt when placed above
 * `non_mycelium_plant=1`: A plant which can't grow on mycelium. Placing it on mycelium fails and if mycelium spreads below it, it uproots
 * `soil=1`: Saplings and other small plants can grow on it
 * `soil_sapling=2`: Soil for saplings. Intended to be natural soil. All saplings will grow on this

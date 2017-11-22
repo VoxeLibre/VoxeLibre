@@ -16,7 +16,7 @@ minetest.register_node("mcl_farming:soil", {
 		local meta = minetest.get_meta(pos)
 		meta:set_int("wet", 0)
 	end,
-	groups = {handy=1,shovely=1, not_in_creative_inventory=1, dirtifies_below_solid=1, soil=2, soil_sapling=1 },
+	groups = {handy=1,shovely=1, dirtifies_below_solid=1, dirtifier=1, soil=2, soil_sapling=1, deco_block=1 },
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 0.6,
@@ -39,7 +39,7 @@ minetest.register_node("mcl_farming:soil_wet", {
 		local meta = minetest.get_meta(pos)
 		meta:set_int("wet", 7)
 	end,
-	groups = {handy=1,shovely=1, not_in_creative_inventory=1, dirtifies_below_solid=1, soil=3, soil_sapling=1 },
+	groups = {handy=1,shovely=1, not_in_creative_inventory=1, dirtifies_below_solid=1, dirtifier=1, soil=3, soil_sapling=1 },
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 0.6,
