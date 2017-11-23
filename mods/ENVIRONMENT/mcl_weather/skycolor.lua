@@ -78,7 +78,7 @@ mcl_weather.skycolor = {
 		-- Override day/night ratio as well
 		players = mcl_weather.skycolor.utils.get_players(players)
 		for _, player in ipairs(players) do
-			local pos = player:getpos()
+			local pos = player:get_pos()
 			local _, dim = mcl_util.y_to_layer(pos.y)
 			if dim == "overworld" then
 				player:set_sky(color, "plain", nil, true)
@@ -99,9 +99,8 @@ mcl_weather.skycolor = {
 				else
 					player:override_day_night_ratio(nil)
 				end
-			else
-				player:override_day_night_ratio(nil)
 			end
+			-- Other dimensions are handled in mcl_playerplus
 		end
 	end,
 
