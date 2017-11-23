@@ -46,6 +46,8 @@ piston_get_direction = function (dir, node)
 	end
 end
 
+-- Remove pusher of piston.
+-- To be used when piston was destroyed or dug.
 local piston_remove_pusher = function (pos, oldnode)
 	local pistonspec = minetest.registered_nodes[oldnode.name].mesecons_piston
 
@@ -53,9 +55,30 @@ local piston_remove_pusher = function (pos, oldnode)
 	local pusherpos = vector.add(pos, dir)
 	local pushername = minetest.get_node(pusherpos).name
 
-	if pushername == pistonspec.pusher then --make sure there actually is a pusher (for compatibility reasons mainly)
+	if pushername == pistonspec.pusher then -- make sure there actually is a pusher
 		minetest.remove_node(pusherpos)
 		core.check_for_falling(pusherpos)
+		minetest.sound_play("piston_retract", {
+			pos = pos,
+			max_hear_distance = 20,
+			gain = 0.3,
+		})
+	end
+end
+
+-- Remove base node of piston.
+-- To be used when pusher was destroyed.
+local piston_remove_base = function (pos, oldnode)
+	local basenodename = minetest.registered_nodes[oldnode.name].corresponding_piston
+	local pistonspec = minetest.registered_nodes[basenodename].mesecons_piston
+
+	local dir = piston_get_direction(pistonspec.dir, oldnode)
+	local basepos = vector.subtract(pos, dir)
+	local basename = minetest.get_node(basepos).name
+
+	if basename == pistonspec.onname then -- make sure there actually is a base node
+		minetest.remove_node(basepos)
+		core.check_for_falling(basepos)
 		minetest.sound_play("piston_retract", {
 			pos = pos,
 			max_hear_distance = 20,
@@ -224,6 +247,7 @@ minetest.register_node("mesecons_pistons:piston_pusher_normal", {
 	sunlight_propagates = true,
 	paramtype2 = "facedir",
 	is_ground_content = false,
+	after_destruct = piston_remove_base,
 	diggable = false,
 	corresponding_piston = "mesecons_pistons:piston_normal_on",
 	selection_box = piston_pusher_box,
@@ -319,6 +343,7 @@ minetest.register_node("mesecons_pistons:piston_pusher_sticky", {
 	sunlight_propagates = true,
 	paramtype2 = "facedir",
 	is_ground_content = false,
+	after_destruct = piston_remove_base,
 	diggable = false,
 	corresponding_piston = "mesecons_pistons:piston_sticky_on",
 	selection_box = piston_pusher_box,
@@ -428,6 +453,7 @@ minetest.register_node("mesecons_pistons:piston_up_pusher_normal", {
 	sunlight_propagates = true,
 	paramtype2 = "facedir",
 	is_ground_content = false,
+	after_destruct = piston_remove_base,
 	diggable = false,
 	corresponding_piston = "mesecons_pistons:piston_up_normal_on",
 	selection_box = piston_up_pusher_box,
@@ -520,6 +546,7 @@ minetest.register_node("mesecons_pistons:piston_up_pusher_sticky", {
 	sunlight_propagates = true,
 	paramtype2 = "facedir",
 	is_ground_content = false,
+	after_destruct = piston_remove_base,
 	diggable = false,
 	corresponding_piston = "mesecons_pistons:piston_up_sticky_on",
 	selection_box = piston_up_pusher_box,
@@ -631,6 +658,7 @@ minetest.register_node("mesecons_pistons:piston_down_pusher_normal", {
 	sunlight_propagates = true,
 	paramtype2 = "facedir",
 	is_ground_content = false,
+	after_destruct = piston_remove_base,
 	diggable = false,
 	corresponding_piston = "mesecons_pistons:piston_down_normal_on",
 	selection_box = piston_down_pusher_box,
@@ -720,6 +748,7 @@ minetest.register_node("mesecons_pistons:piston_down_pusher_sticky", {
 	sunlight_propagates = true,
 	paramtype2 = "facedir",
 	is_ground_content = false,
+	after_destruct = piston_remove_base,
 	diggable = false,
 	corresponding_piston = "mesecons_pistons:piston_down_sticky_on",
 	selection_box = piston_down_pusher_box,
