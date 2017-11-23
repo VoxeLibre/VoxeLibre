@@ -227,7 +227,7 @@ function mcl_doors:register_door(name, def)
 
 		after_destruct = function(bottom, oldnode)
 			local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
-			if minetest.get_node(bottom).name == "air" and minetest.get_node(top).name == name.."_t_1" then
+			if minetest.get_node(bottom).name ~= name.."_b_2" and minetest.get_node(top).name == name.."_t_1" then
 				minetest.remove_node(top)
 			end
 		end,
@@ -274,7 +274,7 @@ function mcl_doors:register_door(name, def)
 
 		after_destruct = function(top, oldnode)
 			local bottom = { x = top.x, y = top.y - 1, z = top.z }
-			if minetest.get_node(top).name == "air" and minetest.get_node(bottom).name == name.."_b_1" and oldnode.name == name.."_t_1" then
+			if minetest.get_node(top).name ~= name.."_t_2" and minetest.get_node(bottom).name == name.."_b_1" and oldnode.name == name.."_t_1" then
 				minetest.dig_node(bottom)
 			end
 		end,
@@ -317,7 +317,7 @@ function mcl_doors:register_door(name, def)
 
 		after_destruct = function(bottom, oldnode)
 			local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
-			if minetest.get_node(bottom).name == "air" and minetest.get_node(top).name == name.."_t_2" then
+			if minetest.get_node(bottom).name ~= name.."_b_1" and minetest.get_node(top).name == name.."_t_2" then
 				minetest.remove_node(top)
 			end
 		end,
@@ -364,7 +364,7 @@ function mcl_doors:register_door(name, def)
 
 		after_destruct = function(top, oldnode)
 			local bottom = { x = top.x, y = top.y - 1, z = top.z }
-			if minetest.get_node(top).name == "air" and minetest.get_node(bottom).name == name.."_b_2" and oldnode.name == name.."_t_2" then
+			if minetest.get_node(top).name ~= name.."_t_1" and minetest.get_node(bottom).name == name.."_b_2" and oldnode.name == name.."_t_2" then
 				minetest.dig_node(bottom)
 			end
 		end,
