@@ -327,5 +327,7 @@ mesecon.register_mvps_stopper("mcl_banners:standing_banner")
 mesecon.register_mvps_stopper("mcl_banners:hanging_banner")
 mesecon:register_mvps_stopper("mcl_portals:portal")
 mesecon:register_mvps_stopper("mcl_portals:portal_end")
+mesecon:register_mvps_stopper("mcl_portals:end_portal_frame")
+mesecon:register_mvps_stopper("mcl_portals:end_portal_frame_eye")
 
 mesecon.register_on_mvps_move(mesecon.move_hot_nodes)
