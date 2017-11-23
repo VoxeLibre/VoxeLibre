@@ -96,7 +96,7 @@ pumpkin_face_base_def.description = "Carved Pumpkin"
 pumpkin_face_base_def.doc_items_longdesc = "A carved pumpkin can be worn as a helmet for fun, but it doesn't offer any protection. Carved pumpkins are created by using shears on a pumpkin."
 pumpkin_face_base_def.tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"}
 pumpkin_face_base_def.groups.armor_head=1
-pumpkin_face_base_def.non_combat_armor=1
+pumpkin_face_base_def.groups.non_combat_armor=1
 
 minetest.register_node("mcl_farming:pumpkin_face", pumpkin_face_base_def)
 
