@@ -1,5 +1,6 @@
 -- Tree nodes: Wood, Wooden Planks, Sapling, Leaves
 
+-- Register tree trunk (wood) and bark
 local register_tree_trunk = function(subname, description_trunk, description_bark, longdesc, tile_inner, tile_bark, after_dig_node)
 	minetest.register_node("mcl_core:"..subname, {
 		description = description_trunk,
@@ -28,6 +29,14 @@ local register_tree_trunk = function(subname, description_trunk, description_bar
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		_mcl_blast_resistance = 10,
 		_mcl_hardness = 2,
+	})
+
+	minetest.register_craft({
+		output = "mcl_core:"..subname.."_bark 3",
+		recipe = {
+			{ "mcl_core:"..subname, "mcl_core:"..subname },
+			{ "mcl_core:"..subname, "mcl_core:"..subname },
+		}
 	})
 end
 
@@ -163,7 +172,6 @@ end
 register_tree_trunk("tree", "Oak Wood", "Oak Bark", "The trunk of an oak tree.", "default_tree_top.png", "default_tree.png")
 register_tree_trunk("darktree", "Dark Oak Wood", "Dark Oak Bark", "The trunk of a dark oak tree.", "mcl_core_log_big_oak_top.png", "mcl_core_log_big_oak.png")
 register_tree_trunk("acaciatree", "Acacia Wood", "Acacia Bark", "The trunk of an acacia.", "default_acacia_tree_top.png", "default_acacia_tree.png")
-register_tree_trunk("darktree", "Dark Oak Wood", "Dark Oak Bark", "The trunk of a dark oak tree.", "mcl_core_log_big_oak_top.png", "mcl_core_log_big_oak.png")
 register_tree_trunk("sprucetree", "Spruce Wood", "Spruce Bark", "The trunk of a spruce tree.", "mcl_core_log_spruce_top.png", "mcl_core_log_spruce.png")
 register_tree_trunk("birchtree", "Birch Wood", "Birch Bark", "The trunk of a birch tree.", "mcl_core_log_birch_top.png", "mcl_core_log_birch.png")
 
