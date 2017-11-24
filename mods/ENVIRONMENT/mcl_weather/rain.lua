@@ -109,6 +109,7 @@ mcl_worlds.register_on_dimension_change(function(player, dimension)
   elseif dimension == "overworld" then
     mcl_weather.rain.update_sound(player)
     if mcl_weather.rain.raining then
+      mcl_weather.rain.add_rain_particles(player)
       mcl_weather.rain.add_player(player)
     end
   end
