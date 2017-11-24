@@ -103,7 +103,7 @@ if mcl_vars.mg_lava then
 else
 	height_min = mcl_vars.mg_bedrock_overworld_max + 2
 end
-local height_max = mcl_util.layer_to_y(60)
+local height_max = mcl_worlds.layer_to_y(60)
 
 -- Chaos Mode: If enabled, rail corridors don't stop generating when hitting obstacles
 local chaos_mode = minetest.settings:get_bool("tsm_railcorridors_chaos") or false

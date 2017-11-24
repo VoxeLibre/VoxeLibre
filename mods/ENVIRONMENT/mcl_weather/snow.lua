@@ -78,7 +78,7 @@ minetest.register_globalstep(function(dtime)
   end
 
   for _, player in ipairs(minetest.get_connected_players()) do
-    if (mcl_weather.is_underwater(player) or not mcl_util.has_weather(player:getpos())) then
+    if (mcl_weather.is_underwater(player) or not mcl_worlds.has_weather(player:getpos())) then
       return false
     end
     mcl_weather.snow.add_snow_particles(player)

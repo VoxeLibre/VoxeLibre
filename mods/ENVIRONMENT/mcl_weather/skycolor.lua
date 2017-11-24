@@ -74,7 +74,7 @@ mcl_weather.skycolor = {
 		local color = mcl_weather.skycolor.current_sky_layer_color()
 		for _, player in ipairs(players) do
 			local pos = player:get_pos()
-			local _, dim = mcl_util.y_to_layer(pos.y)
+			local dim = mcl_worlds.pos_to_dimension(pos)
 			if dim == "overworld" then
 				if (color == nil) then
 					-- No sky layers
@@ -141,7 +141,7 @@ mcl_weather.skycolor = {
 		local players = mcl_weather.skycolor.utils.get_players(nil)
 		for _, player in ipairs(players) do
 			local pos = player:getpos()
-			local _, dim = mcl_util.y_to_layer(pos.y)
+			local dim = mcl_worlds.pos_to_dimension(pos)
 			if dim == "overworld" then
 				player:set_sky(color, "plain", nil, true)
 			end
@@ -235,7 +235,7 @@ local initsky = function(player)
 	end
 
 	-- MC-style clouds: Layer 127, thickness 4, fly to the “West”
-	player:set_clouds({height=mcl_util.layer_to_y(127), speed={x=-2, y=0}, thickness=4, color="#FFF0FEF"})
+	player:set_clouds({height=mcl_worlds.layer_to_y(127), speed={x=-2, y=0}, thickness=4, color="#FFF0FEF"})
 end
 
 minetest.register_on_joinplayer(initsky)

@@ -77,7 +77,7 @@ minetest.register_node("mcl_fire:fire", {
 		local bpos = {x=pos.x, y=pos.y-1, z=pos.z}
 		local under = minetest.get_node(bpos).name
 
-		local _, dim = mcl_util.y_to_layer(bpos.y)
+		local dim = mcl_worlds.pos_to_dimension(bpos)
 		if under == "mcl_nether:magma" or under == "mcl_nether:netherrack" or (under == "mcl_core:bedrock" and dim == "end") then
 			minetest.swap_node(pos, {name = "mcl_fire:eternal_fire"})
 		end

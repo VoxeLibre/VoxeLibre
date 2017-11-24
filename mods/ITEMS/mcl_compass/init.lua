@@ -29,10 +29,10 @@ minetest.register_globalstep(function(dtime)
 		end
 		if has_compass(player) then
 			local pos = player:getpos()
-			local _, dim = mcl_util.y_to_layer(pos.y)
+			local dim = mcl_worlds.pos_to_dimension(pos)
 			local compass_image
 			-- Compasses do not work in certain zones
-			if not mcl_util.compass_works(pos) then
+			if not mcl_worlds.compass_works(pos) then
 				compass_image = random_frame
 			else
 				local spawn = {x=0,y=0,z=0}

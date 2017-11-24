@@ -200,7 +200,7 @@ minetest.register_abm({
 		for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
 			local lua_entity = obj:get_luaentity() --maikerumine added for objects to travel
 			if obj:is_player() or lua_entity then
-				local _, dim = mcl_util.y_to_layer(pos.y)
+				local dim = mcl_worlds.pos_to_dimension(pos)
 
 				local objpos = obj:getpos()
 				if objpos == nil then
@@ -263,7 +263,7 @@ minetest.register_abm({
 				-- Teleport
 				obj:set_pos(target)
 				if obj:is_player() then
-					-- Look towards the End island
+					-- Look towards the main End island
 					if dim ~= "end" then
 						obj:set_look_horizontal(math.pi/2)
 					end

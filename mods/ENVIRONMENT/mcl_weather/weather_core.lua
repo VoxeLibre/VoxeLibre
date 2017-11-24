@@ -61,7 +61,7 @@ end
 -- FIXME: Nodes below glass also count as “outdoor”, this should not be the case.
 mcl_weather.is_outdoor = function(pos)
   local cpos = {x=pos.x, y=pos.y+1, z=pos.z}
-  local _, dim = mcl_util.y_to_layer(cpos.y)
+  local dim = mcl_worlds.pos_to_dimension(cpos)
   if minetest.get_node_light(cpos, 0.5) == 15 and dim == "overworld" then
     return true
   end

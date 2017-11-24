@@ -321,7 +321,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
 	on_construct = function(pos)
-		local _, dim = mcl_util.y_to_layer(pos.y)
+		local dim = mcl_worlds.pos_to_dimension(pos)
 		local dry
 		if dim == "nether" then
 			dry = true
@@ -651,7 +651,7 @@ minetest.register_node("mcl_core:bedrock", {
 	end,
 	_on_ignite = function(player, pointed_thing)
 		local pos = pointed_thing.under
-		local _, dim = mcl_util.y_to_layer(pos.y)
+		local dim = mcl_worlds.pos_to_dimension(pos)
 		local flame_pos = {x = pos.x, y = pos.y + 1, z = pos.z}
 		local fn = minetest.get_node(flame_pos)
 		if dim == "end" and fn.name == "air" and not minetest.is_protected(flame_pos, "fire") and pointed_thing.under.y < pointed_thing.above.y then
@@ -788,7 +788,7 @@ minetest.register_node("mcl_core:ice", {
 		-- Create a water source if ice is destroyed and there was something below it
 		local below = {x=pos.x, y=pos.y-1, z=pos.z}
 		local belownode = minetest.get_node(below)
-		local _, dim = mcl_util.y_to_layer(below.y)
+		local dim = mcl_worlds.pos_to_dimension(below)
 		if dim ~= "nether" and belownode.name ~= "air" and belownode.name ~= "ignore" and belownode.name ~= "mcl_core:void" then
 			minetest.set_node(pos, {name="mcl_core:water_source"})
 		end
@@ -817,7 +817,7 @@ for i=0,3 do
 		-- Increase age of frosted age or turn to water source if too old
 		local nn = minetest.get_node(pos).name
 		local age = tonumber(string.sub(nn, -1))
-		local _, dim = mcl_util.y_to_layer(pos.y)
+		local dim = mcl_worlds.pos_to_dimension(pos)
 		if age == nil then return end
 		if age < 3 then
 			minetest.swap_node(pos, { name = "mcl_core:frosted_ice_"..(age+1) })

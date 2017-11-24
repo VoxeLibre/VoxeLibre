@@ -1407,7 +1407,7 @@ local function register_dimension_ores()
 		clust_scarcity  = 13 * 13 * 13,
 		clust_size      = 5,
 		y_min           = mcl_vars.mg_nether_min,
-		y_max           = mcl_util.layer_to_y(64, "nether"),
+		y_max           = mcl_worlds.layer_to_y(64, "nether"),
 		noise_threshold = 0.0,
 		noise_params    = {
 			offset = 0.5,
@@ -1427,8 +1427,8 @@ local function register_dimension_ores()
 		clust_scarcity = 8*8*8,
 		clust_num_ores = 45,
 		clust_size     = 6,
-		y_min          = mcl_util.layer_to_y(23, "nether"),
-		y_max          = mcl_util.layer_to_y(37, "nether"),
+		y_min          = mcl_worlds.layer_to_y(23, "nether"),
+		y_max          = mcl_worlds.layer_to_y(37, "nether"),
 	})
 	minetest.register_ore({
 		ore_type       = "blob",
@@ -1437,8 +1437,8 @@ local function register_dimension_ores()
 		clust_scarcity = 10*10*10,
 		clust_num_ores = 65,
 		clust_size     = 8,
-		y_min          = mcl_util.layer_to_y(23, "nether"),
-		y_max          = mcl_util.layer_to_y(37, "nether"),
+		y_min          = mcl_worlds.layer_to_y(23, "nether"),
+		y_max          = mcl_worlds.layer_to_y(37, "nether"),
 	})
 
 	-- Glowstone
@@ -1469,9 +1469,9 @@ local function register_dimension_ores()
 		column_height_min = 1,
 		column_height_max = 1,
 		column_midpoint_factor = 0,
-		y_min           = mcl_util.layer_to_y(63, "nether"),
+		y_min           = mcl_worlds.layer_to_y(63, "nether"),
 		-- This should be 65, but for some reason with this setting, the sheet ore really stops at 65. o_O
-		y_max           = mcl_util.layer_to_y(65+2, "nether"),
+		y_max           = mcl_worlds.layer_to_y(65+2, "nether"),
 		noise_threshold = 0.2,
 		noise_params    = {
 			offset = 0.0,

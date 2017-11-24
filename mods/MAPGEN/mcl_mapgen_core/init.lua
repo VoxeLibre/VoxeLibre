@@ -134,7 +134,7 @@ minetest.register_ore({
 	clust_num_ores = 33,
 	clust_size     = 5,
 	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_util.layer_to_y(111),
+	y_max          = mcl_worlds.layer_to_y(111),
 })
 
 --
@@ -150,7 +150,7 @@ minetest.register_ore({
 	clust_num_ores = 5,
 	clust_size     = 3,
 	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_util.layer_to_y(50),
+	y_max          = mcl_worlds.layer_to_y(50),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -160,7 +160,7 @@ minetest.register_ore({
 	clust_num_ores = 8,
 	clust_size     = 3,
 	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_util.layer_to_y(50),
+	y_max          = mcl_worlds.layer_to_y(50),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -170,7 +170,7 @@ minetest.register_ore({
 	clust_num_ores = 12,
 	clust_size     = 3,
 	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_util.layer_to_y(50),
+	y_max          = mcl_worlds.layer_to_y(50),
 })
 
 -- Medium-rare spawn
@@ -181,8 +181,8 @@ minetest.register_ore({
 	clust_scarcity = 550*3,
 	clust_num_ores = 4,
 	clust_size     = 2,
-	y_min          = mcl_util.layer_to_y(51),
-	y_max          = mcl_util.layer_to_y(80),
+	y_min          = mcl_worlds.layer_to_y(51),
+	y_max          = mcl_worlds.layer_to_y(80),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -191,8 +191,8 @@ minetest.register_ore({
 	clust_scarcity = 525*3,
 	clust_num_ores = 6,
 	clust_size     = 3,
-	y_min          = mcl_util.layer_to_y(51),
-	y_max          = mcl_util.layer_to_y(80),
+	y_min          = mcl_worlds.layer_to_y(51),
+	y_max          = mcl_worlds.layer_to_y(80),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -201,8 +201,8 @@ minetest.register_ore({
 	clust_scarcity = 500*3,
 	clust_num_ores = 8,
 	clust_size     = 3,
-	y_min          = mcl_util.layer_to_y(51),
-	y_max          = mcl_util.layer_to_y(80),
+	y_min          = mcl_worlds.layer_to_y(51),
+	y_max          = mcl_worlds.layer_to_y(80),
 })
 
 -- Rare spawn
@@ -213,8 +213,8 @@ minetest.register_ore({
 	clust_scarcity = 600*3,
 	clust_num_ores = 3,
 	clust_size     = 2,
-	y_min          = mcl_util.layer_to_y(81),
-	y_max          = mcl_util.layer_to_y(128),
+	y_min          = mcl_worlds.layer_to_y(81),
+	y_max          = mcl_worlds.layer_to_y(128),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -223,8 +223,8 @@ minetest.register_ore({
 	clust_scarcity = 550*3,
 	clust_num_ores = 4,
 	clust_size     = 3,
-	y_min          = mcl_util.layer_to_y(81),
-	y_max          = mcl_util.layer_to_y(128),
+	y_min          = mcl_worlds.layer_to_y(81),
+	y_max          = mcl_worlds.layer_to_y(128),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -233,8 +233,8 @@ minetest.register_ore({
 	clust_scarcity = 500*3,
 	clust_num_ores = 5,
 	clust_size     = 3,
-	y_min          = mcl_util.layer_to_y(81),
-	y_max          = mcl_util.layer_to_y(128),
+	y_min          = mcl_worlds.layer_to_y(81),
+	y_max          = mcl_worlds.layer_to_y(128),
 })
 
 --
@@ -248,7 +248,7 @@ minetest.register_ore({
 	clust_num_ores = 5,
 	clust_size     = 3,
 	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_util.layer_to_y(39),
+	y_max          = mcl_worlds.layer_to_y(39),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -257,8 +257,8 @@ minetest.register_ore({
 	clust_scarcity = 1660,
 	clust_num_ores = 4,
 	clust_size     = 2,
-	y_min          = mcl_util.layer_to_y(40),
-	y_max          = mcl_util.layer_to_y(63),
+	y_min          = mcl_worlds.layer_to_y(40),
+	y_max          = mcl_worlds.layer_to_y(63),
 })
 
 --
@@ -274,7 +274,7 @@ minetest.register_ore({
 	clust_num_ores = 5,
 	clust_size     = 3,
 	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_util.layer_to_y(30),
+	y_max          = mcl_worlds.layer_to_y(30),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -284,7 +284,7 @@ minetest.register_ore({
 	clust_num_ores = 7,
 	clust_size     = 3,
 	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_util.layer_to_y(30),
+	y_max          = mcl_worlds.layer_to_y(30),
 })
 
 -- Rare spawn
@@ -295,8 +295,8 @@ minetest.register_ore({
 	clust_scarcity = 13000,
 	clust_num_ores = 4,
 	clust_size     = 2,
-	y_min          = mcl_util.layer_to_y(31),
-	y_max          = mcl_util.layer_to_y(33),
+	y_min          = mcl_worlds.layer_to_y(31),
+	y_max          = mcl_worlds.layer_to_y(33),
 })
 
 -- Bonus spawn in Mesa
@@ -308,8 +308,8 @@ if mg_name ~= "v6" then
 		clust_scarcity = 3333,
 		clust_num_ores = 5,
 		clust_size     = 3,
-		y_min          = mcl_util.layer_to_y(32),
-		y_max          = mcl_util.layer_to_y(79),
+		y_min          = mcl_worlds.layer_to_y(32),
+		y_max          = mcl_worlds.layer_to_y(79),
 		biomes         = { "Mesa", "Mesa_sandlevel", "Mesa_ocean", "Mesa_deep_ocean", "Mesa_underground" },
 	})
 end
@@ -327,7 +327,7 @@ minetest.register_ore({
 	clust_num_ores = 4,
 	clust_size     = 3,
 	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_util.layer_to_y(12),
+	y_max          = mcl_worlds.layer_to_y(12),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -337,7 +337,7 @@ minetest.register_ore({
 	clust_num_ores = 2,
 	clust_size     = 2,
 	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_util.layer_to_y(12),
+	y_max          = mcl_worlds.layer_to_y(12),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -347,7 +347,7 @@ minetest.register_ore({
 	clust_num_ores = 8,
 	clust_size     = 3,
 	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_util.layer_to_y(12),
+	y_max          = mcl_worlds.layer_to_y(12),
 })
 
 -- Rare spawn
@@ -358,8 +358,8 @@ minetest.register_ore({
 	clust_scarcity = 20000,
 	clust_num_ores = 1,
 	clust_size     = 1,
-	y_min          = mcl_util.layer_to_y(13),
-	y_max          = mcl_util.layer_to_y(15),
+	y_min          = mcl_worlds.layer_to_y(13),
+	y_max          = mcl_worlds.layer_to_y(15),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -368,8 +368,8 @@ minetest.register_ore({
 	clust_scarcity = 20000,
 	clust_num_ores = 2,
 	clust_size     = 2,
-	y_min          = mcl_util.layer_to_y(13),
-	y_max          = mcl_util.layer_to_y(15),
+	y_min          = mcl_worlds.layer_to_y(13),
+	y_max          = mcl_worlds.layer_to_y(15),
 })
 
 --
@@ -385,7 +385,7 @@ minetest.register_ore({
 	clust_num_ores = 4,
 	clust_size     = 3,
 	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_util.layer_to_y(13),
+	y_max          = mcl_worlds.layer_to_y(13),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -395,7 +395,7 @@ minetest.register_ore({
 	clust_num_ores = 7,
 	clust_size     = 4,
 	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_util.layer_to_y(13),
+	y_max          = mcl_worlds.layer_to_y(13),
 })
 
 -- Rare spawn
@@ -406,8 +406,8 @@ minetest.register_ore({
 	clust_scarcity = 1000,
 	clust_num_ores = 4,
 	clust_size     = 3,
-	y_min          = mcl_util.layer_to_y(13),
-	y_max          = mcl_util.layer_to_y(15),
+	y_min          = mcl_worlds.layer_to_y(13),
+	y_max          = mcl_worlds.layer_to_y(15),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -416,8 +416,8 @@ minetest.register_ore({
 	clust_scarcity = 1600,
 	clust_num_ores = 7,
 	clust_size     = 4,
-	y_min          = mcl_util.layer_to_y(13),
-	y_max          = mcl_util.layer_to_y(15),
+	y_min          = mcl_worlds.layer_to_y(13),
+	y_max          = mcl_worlds.layer_to_y(15),
 })
 
 --
@@ -436,7 +436,7 @@ if mg_name == "v6" then
 		clust_num_ores = 1,
 		clust_size     = 1,
 		y_min          = mcl_vars.mg_overworld_min,
-		y_max          = mcl_util.layer_to_y(29),
+		y_max          = mcl_worlds.layer_to_y(29),
 	})
 	-- Rare spawn
 	minetest.register_ore({
@@ -446,8 +446,8 @@ if mg_name == "v6" then
 		clust_scarcity = 21510,
 		clust_num_ores = 1,
 		clust_size     = 1,
-		y_min          = mcl_util.layer_to_y(30),
-		y_max          = mcl_util.layer_to_y(32),
+		y_min          = mcl_worlds.layer_to_y(30),
+		y_max          = mcl_worlds.layer_to_y(32),
 	})
 else
 	-- Generate in Extreme Hills biome only
@@ -459,8 +459,8 @@ else
 		clust_scarcity = 16384,
 		clust_num_ores = 1,
 		clust_size     = 1,
-		y_min          = mcl_util.layer_to_y(4),
-		y_max          = mcl_util.layer_to_y(32),
+		y_min          = mcl_worlds.layer_to_y(4),
+		y_max          = mcl_worlds.layer_to_y(32),
 		biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", "ExtremeHills_deep_ocean", "ExtremeHills_underground" },
 	})
 end
@@ -477,8 +477,8 @@ minetest.register_ore({
 	clust_scarcity = 10000,
 	clust_num_ores = 7,
 	clust_size     = 4,
-	y_min          = mcl_util.layer_to_y(14),
-	y_max          = mcl_util.layer_to_y(16),
+	y_min          = mcl_worlds.layer_to_y(14),
+	y_max          = mcl_worlds.layer_to_y(16),
 })
 
 -- Rare spawn (below center)
@@ -489,8 +489,8 @@ minetest.register_ore({
 	clust_scarcity = 12000,
 	clust_num_ores = 6,
 	clust_size     = 3,
-	y_min          = mcl_util.layer_to_y(10),
-	y_max          = mcl_util.layer_to_y(13),
+	y_min          = mcl_worlds.layer_to_y(10),
+	y_max          = mcl_worlds.layer_to_y(13),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -499,8 +499,8 @@ minetest.register_ore({
 	clust_scarcity = 14000,
 	clust_num_ores = 5,
 	clust_size     = 3,
-	y_min          = mcl_util.layer_to_y(6),
-	y_max          = mcl_util.layer_to_y(9),
+	y_min          = mcl_worlds.layer_to_y(6),
+	y_max          = mcl_worlds.layer_to_y(9),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -509,8 +509,8 @@ minetest.register_ore({
 	clust_scarcity = 16000,
 	clust_num_ores = 4,
 	clust_size     = 3,
-	y_min          = mcl_util.layer_to_y(2),
-	y_max          = mcl_util.layer_to_y(5),
+	y_min          = mcl_worlds.layer_to_y(2),
+	y_max          = mcl_worlds.layer_to_y(5),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -519,8 +519,8 @@ minetest.register_ore({
 	clust_scarcity = 18000,
 	clust_num_ores = 3,
 	clust_size     = 2,
-	y_min          = mcl_util.layer_to_y(0),
-	y_max          = mcl_util.layer_to_y(2),
+	y_min          = mcl_worlds.layer_to_y(0),
+	y_max          = mcl_worlds.layer_to_y(2),
 })
 
 -- Rare spawn (above center)
@@ -531,8 +531,8 @@ minetest.register_ore({
 	clust_scarcity = 12000,
 	clust_num_ores = 6,
 	clust_size     = 3,
-	y_min          = mcl_util.layer_to_y(17),
-	y_max          = mcl_util.layer_to_y(20),
+	y_min          = mcl_worlds.layer_to_y(17),
+	y_max          = mcl_worlds.layer_to_y(20),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -541,8 +541,8 @@ minetest.register_ore({
 	clust_scarcity = 14000,
 	clust_num_ores = 5,
 	clust_size     = 3,
-	y_min          = mcl_util.layer_to_y(21),
-	y_max          = mcl_util.layer_to_y(24),
+	y_min          = mcl_worlds.layer_to_y(21),
+	y_max          = mcl_worlds.layer_to_y(24),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -551,8 +551,8 @@ minetest.register_ore({
 	clust_scarcity = 16000,
 	clust_num_ores = 4,
 	clust_size     = 3,
-	y_min          = mcl_util.layer_to_y(25),
-	y_max          = mcl_util.layer_to_y(28),
+	y_min          = mcl_worlds.layer_to_y(25),
+	y_max          = mcl_worlds.layer_to_y(28),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -561,8 +561,8 @@ minetest.register_ore({
 	clust_scarcity = 18000,
 	clust_num_ores = 3,
 	clust_size     = 2,
-	y_min          = mcl_util.layer_to_y(29),
-	y_max          = mcl_util.layer_to_y(32),
+	y_min          = mcl_worlds.layer_to_y(29),
+	y_max          = mcl_worlds.layer_to_y(32),
 })
 minetest.register_ore({
 	ore_type       = "scatter",
@@ -571,8 +571,8 @@ minetest.register_ore({
 	clust_scarcity = 32000,
 	clust_num_ores = 1,
 	clust_size     = 1,
-	y_min          = mcl_util.layer_to_y(31),
-	y_max          = mcl_util.layer_to_y(32),
+	y_min          = mcl_worlds.layer_to_y(31),
+	y_max          = mcl_worlds.layer_to_y(32),
 })
 
 if mg_name ~= "flat" then
@@ -586,8 +586,8 @@ minetest.register_ore({
 	clust_scarcity = 9000,
 	clust_num_ores = 1,
 	clust_size     = 1,
-	y_min          = mcl_util.layer_to_y(5),
-	y_max          = mcl_util.layer_to_y(128),
+	y_min          = mcl_worlds.layer_to_y(5),
+	y_max          = mcl_worlds.layer_to_y(128),
 })
 
 -- Lava springs are rather common at -31 and below
@@ -598,8 +598,8 @@ minetest.register_ore({
 	clust_scarcity = 2000,
 	clust_num_ores = 1,
 	clust_size     = 1,
-	y_min          = mcl_util.layer_to_y(1),
-	y_max          = mcl_util.layer_to_y(10),
+	y_min          = mcl_worlds.layer_to_y(1),
+	y_max          = mcl_worlds.layer_to_y(10),
 })
 
 minetest.register_ore({
@@ -609,8 +609,8 @@ minetest.register_ore({
 	clust_scarcity = 9000,
 	clust_num_ores = 1,
 	clust_size     = 1,
-	y_min          = mcl_util.layer_to_y(11),
-	y_max          = mcl_util.layer_to_y(31),
+	y_min          = mcl_worlds.layer_to_y(11),
+	y_max          = mcl_worlds.layer_to_y(31),
 })
 
 -- Lava springs will become gradually rarer with increasing height
@@ -621,8 +621,8 @@ minetest.register_ore({
 	clust_scarcity = 32000,
 	clust_num_ores = 1,
 	clust_size     = 1,
-	y_min          = mcl_util.layer_to_y(32),
-	y_max          = mcl_util.layer_to_y(47),
+	y_min          = mcl_worlds.layer_to_y(32),
+	y_max          = mcl_worlds.layer_to_y(47),
 })
 
 minetest.register_ore({
@@ -632,8 +632,8 @@ minetest.register_ore({
 	clust_scarcity = 72000,
 	clust_num_ores = 1,
 	clust_size     = 1,
-	y_min          = mcl_util.layer_to_y(48),
-	y_max          = mcl_util.layer_to_y(61),
+	y_min          = mcl_worlds.layer_to_y(48),
+	y_max          = mcl_worlds.layer_to_y(61),
 })
 
 -- Lava may even appear above surface, but this is very rare
@@ -644,8 +644,8 @@ minetest.register_ore({
 	clust_scarcity = 96000,
 	clust_num_ores = 1,
 	clust_size     = 1,
-	y_min          = mcl_util.layer_to_y(62),
-	y_max          = mcl_util.layer_to_y(127),
+	y_min          = mcl_worlds.layer_to_y(62),
+	y_max          = mcl_worlds.layer_to_y(127),
 })
 
 end
@@ -666,7 +666,7 @@ minetest.register_ore({
 	clust_num_ores = 3,
 	clust_size     = 2,
 	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_util.layer_to_y(61),
+	y_max          = mcl_worlds.layer_to_y(61),
 	biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", "ExtremeHills_deep_ocean", "ExtremeHills_underground" },
 })
 
@@ -983,7 +983,7 @@ local function register_mgv6_decorations()
 	--[[ Blue orchid is supposed to appear in swamplands. There are no swamplands in v6.
 	We emulate swamplands by limiting the height to 5 levels above sea level,
 	which should be close to the water. ]]
-	register_mgv6_flower("blue_orchid", 64500, nil, mcl_util.layer_to_y(67))
+	register_mgv6_flower("blue_orchid", 64500, nil, mcl_worlds.layer_to_y(67))
 	register_mgv6_flower("oxeye_daisy", 3490)
 	register_mgv6_flower("poppy", 9439)
 
@@ -1194,7 +1194,7 @@ local function generate_structures(minp, maxp, seed, biomemap)
 
 							if math.random(1, fossil_prob) == 1 then
 								-- Spawn fossil below desert surface between layers 40 and 49
-								local p1 = {x=p.x, y=math.random(mcl_util.layer_to_y(40), mcl_util.layer_to_y(49)), z=p.z}
+								local p1 = {x=p.x, y=math.random(mcl_worlds.layer_to_y(40), mcl_worlds.layer_to_y(49)), z=p.z}
 								-- Very rough check of the environment (we expect to have enough stonelike nodes).
 								-- Fossils may still appear partially exposed in caves, but this is O.K.
 								local p2 = vector.add(p1, 4)

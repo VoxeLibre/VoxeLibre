@@ -162,8 +162,8 @@ function mcl_beds.on_rightclick(pos, player)
 	if player:get_attribute("mcl_beds:sleeping") == "true" then
 		return
 	end
-	if minetest.get_modpath("mcl_init") then
-		local _, dim = mcl_util.y_to_layer(pos.y)
+	if minetest.get_modpath("mcl_worlds") then
+		local dim = mcl_worlds.pos_to_dimension(pos)
 		if dim == "nether" or dim == "end" then
 			-- Bed goes BOOM in the Nether or End.
 			minetest.remove_node(pos)

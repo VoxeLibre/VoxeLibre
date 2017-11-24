@@ -89,10 +89,10 @@ minetest.register_globalstep(function(dtime)
 	local players = minetest.get_connected_players()
 	for p, player in ipairs(players) do
 		for s, stack in ipairs(player:get_inventory():get_list("main")) do
-			local _, dim = mcl_util.y_to_layer(player:getpos().y)
+			local dim = mcl_worlds.pos_to_dimension(player:get_pos())
 			local frame
 			-- Clocks do not work in certain zones
-			if not mcl_util.clock_works(player:getpos()) then
+			if not mcl_worlds.clock_works(player:getpos()) then
 				frame = random_frame
 			else
 				frame = now

@@ -154,7 +154,7 @@ minetest.register_globalstep(function(dtime)
 		end
 
 		-- Deal Void damage
-		local void, void_deadly = mcl_util.is_in_void(pos)
+		local void, void_deadly = mcl_worlds.is_in_void(pos)
 		if void_deadly then
 			-- Player is deep into the void, deal void damage
 			if player:get_hp() > 0 then

@@ -173,7 +173,7 @@ local dispenserdef = {
 				elseif iname == "mcl_buckets:bucket_water" or iname == "mcl_buckets:bucket_lava" then
 					-- Place water/lava source
 					if dropnodedef.buildable_to then
-						local _, dim = mcl_util.y_to_layer(droppos.y)
+						local dim = mcl_worlds.pos_to_dimension(droppos)
 						if iname == "mcl_buckets:bucket_water" then
 							if dim == "nether" then
 								minetest.sound_play("fire_extinguish_flame", {pos = droppos, gain = 0.25, max_hear_distance = 16})

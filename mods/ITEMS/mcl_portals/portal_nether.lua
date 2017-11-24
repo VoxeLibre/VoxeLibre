@@ -289,7 +289,7 @@ end
 -- Returns true on success and false on failure.
 function mcl_portals.light_nether_portal(pos)
 	-- Only allow to make portals in Overworld and Nether
-	local _, dim = mcl_util.y_to_layer(pos.y)
+	local dim = mcl_worlds.pos_to_dimension(pos)
 	if dim ~= "overworld" and dim ~= "nether" then
 		return false
 	end
@@ -433,7 +433,7 @@ minetest.register_abm({
 						end
 
 						-- Teleport
-						obj:setpos(target)
+						obj:set_pos(target)
 						if obj:is_player() then
 							minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16})
 						end
@@ -469,7 +469,7 @@ minetest.override_item("mcl_core:obsidian", {
 			doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:portal")
 
 			-- Achievement for finishing a Nether portal TO the Nether
-			local _, dim = mcl_util.y_to_layer(pos.y)
+			local dim = mcl_worlds.pos_to_dimension(pos)
 			if minetest.get_modpath("awards") and dim ~= "nether" and user:is_player() then
 				awards.unlock(user:get_player_name(), "mcl:buildNetherPortal")
 			end

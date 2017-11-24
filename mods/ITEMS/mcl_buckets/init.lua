@@ -251,7 +251,7 @@ if mod_mcl_core then
 				return false
 			-- Evaporate water if used in Nether (except on cauldron)
 			else
-				local _, dim = mcl_util.y_to_layer(pos.y)
+				local dim = mcl_worlds.pos_to_dimension(pos)
 				if dim == "nether" then
 					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
 					return false
@@ -263,7 +263,7 @@ if mod_mcl_core then
 	-- Lava bucket
 	mcl_buckets.register_liquid(
 		function(pos)
-			local _, dim = mcl_util.y_to_layer(pos.y)
+			local dim = mcl_worlds.pos_to_dimension(pos)
 			if dim == "nether" then
 				return "mcl_nether:nether_lava_source"
 			else
