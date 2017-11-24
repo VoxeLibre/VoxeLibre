@@ -144,6 +144,7 @@ mcl_weather.rain.remove_sound = function(player)
   if player_meta ~= nil and player_meta.sound_handler ~= nil then
     minetest.sound_stop(player_meta.sound_handler)
     player_meta.sound_handler = nil
+    player_meta.sound_updated = nil
   end
 end
 
