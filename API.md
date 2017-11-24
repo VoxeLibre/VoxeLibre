@@ -12,7 +12,7 @@ Mods mods in MineClone 2 follow a simple naming convention: Mods with the prefix
 All nodes can have these fields:
 
 * `_mcl_hardness`: Hardness of the block, ranges from 0 to infinity (represented by -1). Determines digging times. Default: 0
-* `_mcl_blast_resistance`: How well this block blocks and resistst explosions. Default: 0
+* `_mcl_blast_resistance`: How well this block blocks and resists explosions. Default: 0
 
 Use the `mcl_sounds` mod for the sounds.
 
@@ -49,13 +49,14 @@ API documnetation is included in `ENTITIES/mobs/api.txt`.
 * Get node names close to player (to reduce constant querying): `PLAYER/mcl_playerinfo`
 
 ### Unstable APIs
-These APIs may be subject to change in future. You could already use these APIs but there will probably be breaking changes in the future, or the API is not as fleshed out as it should be. Use at your own risk!
+The following APIs may be subject to change in future. You could already use these APIs but there will probably be breaking changes in the future, or the API is not as fleshed out as it should be. Use at your own risk!
 
 * Panes (like glass panes and iron bars): `ITEMS/xpanes`
 * Slabs and stairs: `ITEM/mcl_stairs` **and** `ITEMS/mcstair`
 * `_on_ignite` callback: `ITEMS/mcl_fire`
 * Farming: `ITEMS/mcl_farming`
-* Other mods not listed above
+* Anything related to redstone: Don't touch (yet)
+* Any other mod not explicitly mentioned above
 
 ### Planned APIs
 
