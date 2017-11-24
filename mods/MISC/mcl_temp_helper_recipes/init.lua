@@ -151,3 +151,35 @@ if minetest.get_mapgen_setting("mg_name") == "v6" then
 	})
 end
 
+
+minetest.register_craft({
+	output = "mcl_nether:quartz_smooth 4",
+	recipe = {
+		{ "mcl_nether:quartz_block", "mcl_nether:quartz_block" },
+		{ "mcl_nether:quartz_block", "mcl_nether:quartz_block" },
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_core:sandstonesmooth2 4",
+	recipe = {
+		{ "mcl_core:sandstonesmooth", "mcl_core:sandstonesmooth" },
+		{ "mcl_core:sandstonesmooth", "mcl_core:sandstonesmooth" },
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_core:redsandstonesmooth2 4",
+	recipe = {
+		{ "mcl_core:redsandstonesmooth", "mcl_core:redsandstonesmooth" },
+		{ "mcl_core:redsandstonesmooth", "mcl_core:redsandstonesmooth" },
+	},
+})
+
+minetest.register_craft({
+	output = "mcl_core:stone_smooth 2",
+	recipe = {
+		{ "mcl_stairs:slab_stone" },
+		{ "mcl_stairs:slab_stone" },
+	},
+})

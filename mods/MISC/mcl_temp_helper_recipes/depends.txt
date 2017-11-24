@@ -3,4 +3,5 @@ mcl_mobitems
 mcl_end
 mcl_nether
 mcl_ocean
+mcl_stairs
 xpanes
