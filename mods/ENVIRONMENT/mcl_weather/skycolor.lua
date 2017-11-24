@@ -4,9 +4,9 @@ mcl_weather.skycolor = {
 
 	-- To skip update interval
 	force_update = true,
-	
+
 	-- Update interval.
-	update_interval = 15,
+	update_interval = 0.5,
 
 	-- Main sky colors: starts from midnight to midnight. 
 	-- Please do not set directly. Use add_layer instead.
@@ -69,38 +69,48 @@ mcl_weather.skycolor = {
 
 	-- Update sky color. If players not specified update sky for all players.
 	update_sky_color = function(players)
-		local color = mcl_weather.skycolor.current_sky_layer_color()
-		if (color == nil) then
-			mcl_weather.skycolor.set_default_sky()
-			return
-		end
-
 		-- Override day/night ratio as well
 		players = mcl_weather.skycolor.utils.get_players(players)
+		local color = mcl_weather.skycolor.current_sky_layer_color()
 		for _, player in ipairs(players) do
 			local pos = player:get_pos()
 			local _, dim = mcl_util.y_to_layer(pos.y)
 			if dim == "overworld" then
-				player:set_sky(color, "plain", nil, true)
-
-				local lf = mcl_weather.get_current_light_factor()
-				if mcl_weather.skycolor.current_layer_name() == "lightning" then
-					player:override_day_night_ratio(1)
-				elseif lf then
-					local w = minetest.get_timeofday()
-					local light = (w * (lf*2))
-					if light > 1 then
-						light = 1 - (light - 1)
-					end
-
-					light = (light * lf) + 0.15
-
-					player:override_day_night_ratio(light)
-				else
+				if (color == nil) then
+					-- No sky layers
+					player:set_sky(nil, "regular")
 					player:override_day_night_ratio(nil)
+				else
+					-- Weather skies
+					player:set_sky(color, "plain", nil, true)
+
+					local lf = mcl_weather.get_current_light_factor()
+					if mcl_weather.skycolor.current_layer_name() == "lightning" then
+						player:override_day_night_ratio(1)
+					elseif lf then
+						local w = minetest.get_timeofday()
+						local light = (w * (lf*2))
+						if light > 1 then
+							light = 1 - (light - 1)
+						end
+
+						light = (light * lf) + 0.15
+
+						player:override_day_night_ratio(light)
+					else
+						player:override_day_night_ratio(nil)
+					end
 				end
+			elseif dim == "end" then
+				local t = "mcl_playerplus_end_sky.png"
+				player:set_sky("#000000", "skybox", {t,t,t,t,t,t}, false)
+				player:override_day_night_ratio(0.5)
+			elseif dim == "nether" then
+				player:set_sky("#300808", "plain", nil, false)
+				player:override_day_night_ratio(nil)
+			elseif dim == "void" then
+				player:set_sky("#000000", "plain", nil, false)
 			end
-			-- Other dimensions are handled in mcl_playerplus
 		end
 	end,
 
@@ -119,11 +129,6 @@ mcl_weather.skycolor = {
 
 	-- Initialy used only on 
 	update_transition_sky_color = function()
-		if #mcl_weather.skycolor.layer_names == 0 then
-			mcl_weather.skycolor.set_default_sky()
-			return
-		end
-
 		local multiplier = 100
 		local rounded_time = math.floor(mcl_weather.skycolor.transition_timer * multiplier)
 		if rounded_time >= mcl_weather.skycolor.transition_time * multiplier then
@@ -139,21 +144,6 @@ mcl_weather.skycolor = {
 			local _, dim = mcl_util.y_to_layer(pos.y)
 			if dim == "overworld" then
 				player:set_sky(color, "plain", nil, true)
-			end
-		end
-	end,
-
-	-- Reset sky color to game default. If players not specified update sky for all players.
-	-- Could be sometimes useful but not recomended to use in general case as there may be other color layers
-	-- which needs to preserve.
-	set_default_sky = function(players)
-		local players = mcl_weather.skycolor.utils.get_players(players)
-		for _, player in ipairs(players) do
-			local pos = player:getpos()
-			local _, dim = mcl_util.y_to_layer(pos.y)
-			if dim == "overworld" then
-				player:set_sky(nil, "regular", nil, true)
-				player:override_day_night_ratio(nil)
 			end
 		end
 	end,
@@ -205,7 +195,7 @@ mcl_weather.skycolor = {
 			local players = mcl_weather.skycolor.utils.get_players(nil)
 			for _, player in ipairs(players) do
 				return player:get_sky()
-			end	
+			end
 			return nil
 		end
 	},

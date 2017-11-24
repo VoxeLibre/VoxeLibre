@@ -1,1 +1,1 @@
-Weather: Rain, snow, thunderstorm.
+Weather and sky handling: Rain, snow, thunderstorm, End and Nether ambience

@@ -153,25 +153,8 @@ minetest.register_globalstep(function(dtime)
 			end
 		end
 
-		-- Apply black sky in the Void and deal Void damage
+		-- Deal Void damage
 		local void, void_deadly = mcl_util.is_in_void(pos)
-		local _, dim = mcl_util.y_to_layer(pos.y)
-		-- Set dimension skies.
-		-- FIXME: Sky handling in MCL2 is held together with lots of duct tape.
-		-- This only works beause mcl_weather currently does not touch the sky for players below the height used for this check.
-		-- There should be a real skybox API.
-		if dim == "void" then
-			player:set_sky("#000000", "plain", nil, false)
-		elseif dim == "end" then
-			local t = "mcl_playerplus_end_sky.png"
-			player:set_sky("#000000", "skybox", {t,t,t,t,t,t}, false)
-			player:override_day_night_ratio(0.5)
-		elseif dim == "nether" then
-			player:set_sky("#300808", "plain", nil, false)
-			player:override_day_night_ratio(nil)
-		else
-			mcl_weather.skycolor.update_sky_color({player})
-		end
 		if void_deadly then
 			-- Player is deep into the void, deal void damage
 			if player:get_hp() > 0 then
