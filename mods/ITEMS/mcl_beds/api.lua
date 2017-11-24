@@ -215,3 +215,5 @@ function mcl_beds.register_bed(name, def)
 
 	doc.add_entry_alias("nodes", name.."_bottom", "nodes", name.."_top")
 end
+
+

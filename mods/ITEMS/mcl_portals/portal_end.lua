@@ -217,18 +217,8 @@ minetest.register_abm({
 				if dim == "end" then
 					-- End portal in the End:
 					-- Teleport back to the player's spawn in the Overworld.
-					-- TODO: Implement better spawn point detection
 
-					target = minetest.string_to_pos(obj:get_attribute("mcl_beds:spawn"))
-					if not target then
-						target = minetest.setting_get_pos("static_spawnpoint")
-					end
-					if not target then
-						target = { x=0, y=0, z=0 }
-						if mg_name == "flat" then
-							target.y = mcl_vars.mg_bedrock_overworld_max + 5
-						end
-					end
+					target = mcl_spawn.get_spawn_pos(obj)
 				else
 					-- End portal in any other dimension:
 					-- Teleport to the End at a fixed position and generate a

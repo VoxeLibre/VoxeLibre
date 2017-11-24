@@ -1,10 +1,6 @@
 local pi = math.pi
 local player_in_bed = 0
 local is_sp = minetest.is_singleplayer()
-local enable_respawn = minetest.settings:get_bool("enable_bed_respawn")
-if enable_respawn == nil then
-	enable_respawn = true
-end
 local weather_mod = minetest.get_modpath("mcl_weather") ~= nil
 
 -- Helper functions
@@ -189,7 +185,9 @@ function mcl_beds.on_rightclick(pos, player)
 	-- move to bed
 	if not mcl_beds.player[name] then
 		lay_down(player, ppos, pos)
-		player:set_attribute("mcl_beds:spawn", minetest.pos_to_string(player:getpos())) -- save respawn position when entering bed
+		if minetest.get_modpath("mcl_spawn") then
+			mcl_spawn.set_spawn_pos(player:get_pos()) -- save respawn position when entering bed
+		end
 	else
 		lay_down(player, nil, nil, false)
 	end
@@ -211,17 +209,6 @@ end
 
 
 -- Callbacks
--- Only register respawn callback if respawn enabled
-if enable_respawn then
-	-- respawn player at bed if enabled and valid position is found
-	minetest.register_on_respawnplayer(function(player)
-		local pos = minetest.string_to_pos(player:get_attribute("mcl_beds:spawn"))
-		if pos then
-			player:setpos(pos)
-			return true
-		end
-	end)
-end
 
 minetest.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()

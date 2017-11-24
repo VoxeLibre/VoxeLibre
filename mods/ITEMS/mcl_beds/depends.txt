@@ -4,3 +4,4 @@ mcl_wool?
 mcl_dye?
 mcl_tnt?
 mcl_weather?
+mcl_spawn?
