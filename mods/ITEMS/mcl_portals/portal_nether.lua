@@ -434,6 +434,7 @@ minetest.register_abm({
 
 						-- Teleport
 						obj:set_pos(target)
+						mcl_worlds.dimension_change(obj, mcl_worlds.pos_to_dimension(target))
 						if obj:is_player() then
 							minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16})
 						end

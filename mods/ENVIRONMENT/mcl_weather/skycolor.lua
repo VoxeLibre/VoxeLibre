@@ -6,7 +6,7 @@ mcl_weather.skycolor = {
 	force_update = true,
 
 	-- Update interval.
-	update_interval = 0.5,
+	update_interval = 15,
 
 	-- Main sky colors: starts from midnight to midnight. 
 	-- Please do not set directly. Use add_layer instead.
@@ -240,3 +240,7 @@ end
 
 minetest.register_on_joinplayer(initsky)
 minetest.register_on_respawnplayer(initsky)
+
+mcl_worlds.register_on_dimension_change(function(player)
+	mcl_weather.skycolor.update_sky_color({player})
+end)

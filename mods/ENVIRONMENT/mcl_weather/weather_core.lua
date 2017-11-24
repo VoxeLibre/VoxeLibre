@@ -218,3 +218,5 @@ local weather_allow_abm = minetest.settings:get_bool("weather_allow_abm")
 if weather_allow_abm ~= nil and weather_allow_abm == false then
   mcl_weather.allow_abm = false
 end 
+
+

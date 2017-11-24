@@ -267,6 +267,7 @@ minetest.register_abm({
 					if dim ~= "end" then
 						obj:set_look_horizontal(math.pi/2)
 					end
+					mcl_worlds.dimension_change(obj, mcl_worlds.pos_to_dimension(target))
 					minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16})
 				end
 			end

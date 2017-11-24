@@ -83,3 +83,54 @@ end
 -- Takes a position (pos) and returns true if clocks are working here
 mcl_worlds.clock_works = mcl_worlds.compass_works
 
+--------------- CALLBACKS ------------------
+mcl_worlds.registered_on_dimension_change = {}
+
+-- Register a callback function func(player, dimension).
+-- It will be called whenever a player changes between dimensions.
+-- The void counts as dimension.
+-- * player: The player who changed the dimension
+-- * dimension: The new dimension of the player ("overworld", "nether", "end", "void").
+function mcl_worlds.register_on_dimension_change(func)
+	table.insert(mcl_worlds.registered_on_dimension_change, func)
+end
+
+-- Playername-indexed table containig the name of the last known dimension the
+-- player was in.
+local last_dimension = {}
+
+-- Notifies this mod about a dimension change of a player.
+-- * player: Player who changed the dimension
+function mcl_worlds.dimension_change(player, dimension)
+	for i=1, #mcl_worlds.registered_on_dimension_change do
+		mcl_worlds.registered_on_dimension_change[i](player, dimension)
+		last_dimension[player:get_player_name()] = dimension
+	end
+end
+
+----------------------- INTERNAL STUFF ----------------------
+
+-- Update the dimension callbacks every DIM_UPDATE seconds
+local DIM_UPDATE = 1
+local dimtimer = 0
+
+minetest.register_on_joinplayer(function(player)
+	last_dimension[player:get_player_name()] = mcl_worlds.pos_to_dimension(player:get_pos())
+end)
+
+minetest.register_globalstep(function(dtime)
+	-- regular updates based on iterval
+	dimtimer = dimtimer + dtime;
+	if dimtimer >= DIM_UPDATE then
+		local players = minetest.get_connected_players()
+		for p=1, #players do
+			local dim = mcl_worlds.pos_to_dimension(players[p]:get_pos())
+			local name = players[p]:get_player_name()
+			if dim ~= last_dimension[name] then
+				mcl_worlds.dimension_change(players[p], dim)
+			end
+		end
+		dimtimer = 0
+	end
+end)
+
