@@ -186,7 +186,7 @@ function mcl_beds.on_rightclick(pos, player)
 	if not mcl_beds.player[name] then
 		lay_down(player, ppos, pos)
 		if minetest.get_modpath("mcl_spawn") then
-			mcl_spawn.set_spawn_pos(player:get_pos()) -- save respawn position when entering bed
+			mcl_spawn.set_spawn_pos(player, player:get_pos()) -- save respawn position when entering bed
 		end
 	else
 		lay_down(player, nil, nil, false)
@@ -209,6 +209,11 @@ end
 
 
 -- Callbacks
+minetest.register_on_joinplayer(function(player)
+	if player:get_attribute("mcl_beds:sleeping") == "true" then
+		player:set_attribute("mcl_beds:sleeping", "false")
+	end
+end)
 
 minetest.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
