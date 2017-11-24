@@ -202,32 +202,43 @@ minetest.register_craft({
 
 
 --[[ Trapdoors ]]
+local woods = {
+	-- id, desc, texture, craftitem
+	{ "trapdoor", "Oak Trapdoor", "doors_trapdoor.png", "mcl_core:wood" },
+	{ "acacia_trapdoor", "Acacia Trapdoor", "mcl_doors_trapdoor_acacia.png", "mcl_core:acaciawood" },
+	{ "birch_trapdoor", "Birch Trapdoor", "mcl_doors_trapdoor_birch.png", "mcl_core:birchwood" },
+	{ "spruce_trapdoor", "Spruce Trapdoor", "mcl_doors_trapdoor_spruce.png", "mcl_core:sprucewood" },
+	{ "dark_oak_trapdoor", "Dark Oak Trapdoor", "mcl_doors_trapdoor_dark_oak.png", "mcl_core:darkwood" },
+	{ "jungle_trapdoor", "Jungle Trapdoor", "mcl_doors_trapdoor_jungle.png", "mcl_core:junglewood" },
+}
 
-mcl_doors:register_trapdoor("mcl_doors:trapdoor", {
-	description = "Wooden Trapdoor",
-	_doc_items_longdesc = "Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.",
-	_doc_items_usagehelp = "To open or close the trapdoor, rightclick it or send a redstone signal to it.",
-	tiles = {"doors_trapdoor.png"},
-	wield_image = "doors_trapdoor.png",
-	groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1},
-	_mcl_hardness = 3,
-	_mcl_blast_resistance = 15,
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-})
+for w=1, #woods do
+	mcl_doors:register_trapdoor("mcl_doors:"..woods[w][1], {
+		description = woods[w][2],
+		_doc_items_longdesc = "Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.",
+		_doc_items_usagehelp = "To open or close the trapdoor, rightclick it or send a redstone signal to it.",
+		tiles = {woods[w][3]},
+		wield_image = woods[w][3],
+		groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1},
+		_mcl_hardness = 3,
+		_mcl_blast_resistance = 15,
+		sounds = mcl_sounds.node_sound_wood_defaults(),
+	})
 
-minetest.register_craft({
-	output = 'mcl_doors:trapdoor 2',
-	recipe = {
-		{'group:wood', 'group:wood', 'group:wood'},
-		{'group:wood', 'group:wood', 'group:wood'},
-	}
-})
+	minetest.register_craft({
+		output = "mcl_doors:"..woods[w][1].." 2",
+		recipe = {
+			{woods[w][4], woods[w][4], woods[w][4]},
+			{woods[w][4], woods[w][4], woods[w][4]},
+		}
+	})
 
-minetest.register_craft({
-	type = "fuel",
-	recipe = "mcl_doors:trapdoor",
-	burntime = 15,
-})
+	minetest.register_craft({
+		type = "fuel",
+		recipe = "mcl_doors:"..woods[w][1],
+		burntime = 15,
+	})
+end
 
 mcl_doors:register_trapdoor("mcl_doors:iron_trapdoor", {
 	description = "Iron Trapdoor",

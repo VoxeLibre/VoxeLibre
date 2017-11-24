@@ -29,3 +29,8 @@ With modifications by GitHub user kingoscargames:
 - `doors_item_steel.png`
 - `mcl_doors_door_iron_lower.png`
 - `mcl_doors_door_iron_upper.png`
+- `mcl_doors_trapdoor_acaica.png`
+- `mcl_doors_trapdoor_birch.png`
+- `mcl_doors_trapdoor_spruce.png`
+- `mcl_doors_trapdoor_dark_oak.png`
+- `mcl_doors_trapdoor_jungle.png`
