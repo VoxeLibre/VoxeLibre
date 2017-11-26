@@ -38,3 +38,6 @@ minetest.register_on_respawnplayer(function(player)
 	end
 end)
 
+minetest.register_on_newplayer(function(player)
+	mcl_spawn.set_spawn_pos(player, player:get_pos())
+end)
