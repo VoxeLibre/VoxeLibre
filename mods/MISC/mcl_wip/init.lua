@@ -20,7 +20,9 @@ local wip_items = {
 	"mcl_minecarts:tnt_minecart",
 	"mcl_minecarts:activator_rail",
 }
-local experimental_items = {}
+local experimental_items = {
+	"mcl_temp_end_escape:end_escape_pearl",
+}
 
 for i=1,#wip_items do
 	local def = minetest.registered_items[wip_items[i]]
@@ -42,7 +44,7 @@ for i=1,#experimental_items do
 		break
 	end
 	local new_description = def.description
-	new_description = new_description .. "\n"..core.colorize("#FFFF00", "(Experimental)")
+	new_description = new_description .. "\n"..core.colorize("#FFFF00", "(Temporary)")
 	minetest.override_item(experimental_items[i], { description = new_description })
 end
 
