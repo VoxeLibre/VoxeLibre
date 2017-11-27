@@ -2858,7 +2858,7 @@ local function register_decorations()
 			size = { x=1, y=2, z=1 },
 			data = {
 				{ name = "air", prob = 0 },
-				{ name = "mcl_farming:pumpkin", param1=255, },
+				{ name = "mcl_farming:pumpkin_face", param1=255, },
 			},
 		},
 		place_on = {"group:grass_block_no_snow"},
