@@ -69,6 +69,29 @@ for _, row in ipairs(block.dyes) do
 		stack_max = 64,
 		is_ground_content = false,
 		sounds = mcl_sounds.node_sound_sand_defaults(),
+		on_place = function(itemstack, placer, pointed_thing)
+			if pointed_thing.type ~= "node" then
+				return itemstack
+			end
+
+			-- Call on_rightclick if the pointed node defines it
+			local unode = minetest.get_node(pointed_thing.under)
+			if placer and not placer:get_player_control().sneak then
+				if minetest.registered_nodes[unode.name] and minetest.registered_nodes[unode.name].on_rightclick then
+					return minetest.registered_nodes[unode.name].on_rightclick(pointed_thing.under, unode, placer, itemstack) or itemstack
+				end
+			end
+
+			-- If placed in water, immediately harden this node
+			local n = minetest.get_node(pointed_thing.above)
+			local oldname = itemstack:get_name()
+			if minetest.get_item_group(n.name, "water") ~= 0 then
+				itemstack:set_name(itemstack:get_definition()._mcl_colorblocks_harden_to)
+			end
+			itemstack = minetest.item_place_node(itemstack, placer, pointed_thing)
+			itemstack:set_name(oldname)
+			return itemstack
+		end,
 
 		-- Specify the node to which this node will convert after getting in contact with water
 		_mcl_colorblocks_harden_to = "mcl_colorblocks:concrete_"..name,
