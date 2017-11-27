@@ -29,6 +29,7 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 
 ### Groups for interactions
 
+* `crush_after_fall=1`: For falling nodes. These will crush whatever they hit after falling, not dropping as an item
 * `dig_by_water=1`: Blocks with this group will drop when they are near flowing water
 * `destroy_by_lava_flow=1`: Blocks with this group will be destroyed by flowing lava
 * `dig_by_piston=1`: Blocks which will drop as an item when pushed by a piston. They also cannot be pulled by sticky pistons

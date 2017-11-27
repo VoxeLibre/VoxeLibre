@@ -92,7 +92,7 @@ minetest.register_entity(":__builtin:falling_node", {
 			if n2.name == "mcl_portals:portal_end" then
 				-- TODO: Teleport falling node. 
 
-			elseif nd and nd.buildable_to == true then
+			elseif (nd and nd.buildable_to == true) or minetest.get_item_group(self.node.name, "crush_after_fall") ~= 0 then
 				-- Replace destination node if it's buildable to
 				minetest.remove_node(np)
 				-- Run script hook

@@ -1,5 +1,5 @@
 local anvildef = {
-	groups = {pickaxey=1, falling_node=1, deco_block=1, anvil=1},
+	groups = {pickaxey=1, falling_node=1, crush_after_fall=1, deco_block=1, anvil=1},
 	tiles = {"mcl_anvils_anvil_top_damaged_0.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png"},
 	paramtype = "light",
 	sunlight_propagates = true,
