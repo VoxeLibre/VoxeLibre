@@ -12,7 +12,7 @@ minetest.register_craft({
 	output = "mcl_sponges:sponge",
 	recipe = {
 		{ "mcl_farming:hay_block", "mcl_farming:hay_block", "mcl_farming:hay_block" },
-		{ "mcl_farming:hay_block", "mcl_core:emerald", "mcl_farming:hay_block" },
+		{ "mcl_farming:hay_block", "mcl_core:goldblock", "mcl_farming:hay_block" },
 		{ "mcl_farming:hay_block", "mcl_farming:hay_block", "mcl_farming:hay_block" },
 	}
 })
@@ -52,7 +52,7 @@ minetest.register_craft({
 	output = "mcl_mobitems:shulker_shell",
 	recipe = {
 		 { "mcl_end:purpur_block", "mcl_end:purpur_block", "mcl_end:purpur_block", },
-		 { "mcl_end:purpur_block", "mcl_core:emerald", "mcl_end:purpur_block", },
+		 { "mcl_end:purpur_block", "mcl_core:goldblock", "mcl_end:purpur_block", },
 		 { "mcl_end:purpur_block", "", "mcl_end:purpur_block", },
 	}
 })
@@ -152,4 +152,9 @@ minetest.register_craft({
 		{ "mcl_stairs:slab_stone" },
 		{ "mcl_stairs:slab_stone" },
 	},
+})
+
+minetest.register_craft({
+	output = "mcl_core:gold_ingot 9",
+	recipe = {{ "mcl_core:emerald" }},
 })
