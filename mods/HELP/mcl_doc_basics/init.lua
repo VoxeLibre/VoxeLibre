@@ -759,3 +759,20 @@ S("• The side length of a full cube is 1").."\n\n"..
 
 S("You can view your current position in the debug screen (open with [F5]). This is considered cheating in some games.")
 }})
+
+doc.add_entry("advanced", "creative", {
+	name = S("Creative Mode"),
+	data = { text =
+S("Enabling Creative Mode in MineClone 2 applies the following changes:").."\n\n"..
+
+S("• You keep the things you've placed").."\n"..
+S("• Creative inventory is available to obtain most items easily").."\n"..
+S("• Hand breaks all default blocks instantly").."\n"..
+S("• Mined blocks don't drop items").."\n"..
+S("• Tools don't wear off").."\n"..
+S("• Bows have infinite arrows").."\n"..
+S("• You can always use the minimap").."\n\n"..
+
+S("Damage is not affected by Creative Mode, it needs to be disabled seperately.")
+}})
+
