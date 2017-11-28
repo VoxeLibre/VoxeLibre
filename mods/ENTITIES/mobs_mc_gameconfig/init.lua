@@ -115,9 +115,11 @@ mobs_mc.override.items = {
 	wool_light_blue = "mcl_wool:light_blue",
 
 	music_discs = {
-		-- Music discs 2, 3 and 5 intentionally left out for the temporary crafting recipes
 		"mcl_jukebox:record_1",
+		"mcl_jukebox:record_2",
+		"mcl_jukebox:record_3",
 		"mcl_jukebox:record_4",
+		"mcl_jukebox:record_5",
 		"mcl_jukebox:record_6",
 		"mcl_jukebox:record_7",
 		"mcl_jukebox:record_8",
