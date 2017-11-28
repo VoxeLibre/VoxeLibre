@@ -11,7 +11,7 @@ doc.add_category("basics",
 	name = S("Basics"),
 	description = S("Everything you need to know about MineClone 2 to get started with playing"),
 	sorting = "custom",
-	sorting_data = {"quick_start", "controls", "point", "items", "inventory", "hotbar", "tools", "weapons", "nodes", "mine", "build", "craft", "cook", "mobs", "animals", "minimap", "cam", "sneak", "players", "liquids", "light", "groups", "glossary", "minetest"},
+	sorting_data = {"quick_start", "controls", "point", "items", "inventory", "hotbar", "tools", "weapons", "nodes", "mine", "build", "craft", "cook", "hunger", "mobs", "animals", "minimap", "cam", "sneak", "players", "liquids", "light", "groups", "glossary", "minetest"},
 	build_formspec = doc.entry_builders.text_and_gallery,
 })
 
@@ -810,3 +810,46 @@ S("Baby animals:").."\n"..
 S("Baby animals are just like their adult couterparts, but they can't be fed, tamed or bred and don't drop anything when they die. They grow to adults after a short time.")
 
 }})
+
+doc.add_entry("basics", "hunger", {
+	name = S("Hunger"),
+	data = { text =
+S("Hunger affects your health and your ability to sprint. Hunger is not in effect when damage is disabled.").."\n\n"..
+
+S("Core hunger rules:").."\n\n"..
+S("• You start with 20/20 hunger points (more points = less hungry)").."\n"..
+S("• Actions like combat, jumping, sprinting, etc. decrease hunger points").."\n"..
+S("• Food restores hunger points").."\n"..
+S("• If your hunger bar decreases, you're hungry").."\n"..
+S("• At 18-20 hunger points, you regenerate 1 HP every 4 seconds").."\n"..
+S("• At 6 hunger points or less, you can't sprint").."\n"..
+S("• At 0 hunger points, you lose 1 HP every 4 seconds (down to 1 HP)").."\n"..
+S("• Poisonous food decreases your health").."\n\n"..
+
+
+S("Details:").."\n\n"..
+S("You have 0-20 hunger points, indicated by 20 drumstick half-icons above the hotbar. You also have an invisible attribute: Saturation.").."\n"..
+S("Hunger points reflect how full you are while saturation points reflect how long it takes until you're hungry again.").."\n\n"..
+
+S("Each food item increases both your hunger level as well your saturation.").."\n"..
+S("Food with a high saturation boost has the advantage that it will take longer until you get hungry again.").."\n"..
+S("A few food items might induce food poisoning by chance. When you're poisoned, the health and hunger symbols turn sickly green. Food poisoning drains your health by 1 HP per second, down to 1 HP. Food poisoning also drains your saturation. Food poisoning goes away after a while or when you drink milk.").."\n\n"..
+
+S("You start with 5 saturation points. The maximum saturation is equal to your current hunger level. So with 20 hunger points your maximum saturation is 20. What this means is that food items which restore many saturation points are more effective the more hunger points you have. This is because at low hunger levels, a lot of the saturation boost will be lost due to the low saturation cap.").."\n"..
+S("If your saturation reaches 0, you're hungry and start to lose hunger points. Whenever you see the hunger bar decrease, it is a good time to eat.").."\n\n"..
+
+S("Saturation decreases by doing things which exhaust you (highest exhaustion first):").."\n"..
+S("• Regenerating 1 HP").."\n"..
+S("• Suffering food poisoning").."\n"..
+S("• Sprint-jumping").."\n"..
+S("• Sprinting").."\n"..
+S("• Attacking").."\n"..
+S("• Taking damage").."\n"..
+S("• Swimming").."\n"..
+S("• Jumping").."\n"..
+S("• Mining a block").."\n\n"..
+
+S("Other actions, like walking, do not exaust you.")
+
+}})
+
