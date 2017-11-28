@@ -11,7 +11,7 @@ doc.add_category("basics",
 	name = S("Basics"),
 	description = S("Everything you need to know about MineClone 2 to get started with playing"),
 	sorting = "custom",
-	sorting_data = {"quick_start", "controls", "point", "items", "inventory", "hotbar", "tools", "weapons", "nodes", "mine", "build", "craft", "cook", "minimap", "cam", "sneak", "players", "liquids", "light", "groups", "glossary", "minetest"},
+	sorting_data = {"quick_start", "controls", "point", "items", "inventory", "hotbar", "tools", "weapons", "nodes", "mine", "build", "craft", "cook", "mobs", "animals", "minimap", "cam", "sneak", "players", "liquids", "light", "groups", "glossary", "minetest"},
 	build_formspec = doc.entry_builders.text_and_gallery,
 })
 
@@ -20,7 +20,7 @@ doc.add_category("advanced",
 	name = S("Advanced usage"),
 	description = S("Advanced information about Minetest which may be nice to know, but is not crucial to gameplay"),
 	sorting = "custom",
-	sorting_data = {"console", "commands", "privs", "movement_modes", "coordinates", "settings", "online"},
+	sorting_data = {"creative", "console", "commands", "privs", "movement_modes", "coordinates", "settings", "online"},
 	build_formspec = doc.entry_builders.text_and_gallery,
 })
 
@@ -776,3 +776,37 @@ S("• You can always use the minimap").."\n\n"..
 S("Damage is not affected by Creative Mode, it needs to be disabled seperately.")
 }})
 
+doc.add_entry("basics", "mobs", {
+	name = S("Mobs"),
+	data = { text =
+S("Mobs are the living beings in the world. This includes animals and monsters.").."\n\n"..
+
+S("Mobs appear randomly throughout the world. This is called “spawning”. Each mob kind appears on particular block types at a given light level. The height also plays a role. Peaceful mobs tend to spawn at daylight while hostile ones prefer darkness. Most mobs can spawn on any solid block but some blocks only spawn on particular blocks (like grass blocks).").."\n\n"..
+
+S("Like players, mobs have hit points and sometimes armor points, too (which means you need better weapons to deal any damage at all). Also like players, hostile mobs can attack directly or at a distance. Mobs may drop random items after they die.").."\n\n"..
+
+S("Most animals roam the world aimlessly while most hostile mobs hunt players. Animals can be fed, tamed and bred.")
+}})
+
+doc.add_entry("basics", "animals", {
+	name = S("Animals"),
+	data = { text =
+S("Animals are peaceful beings which roam the world aimlessly. You can feed, tame and breed them.").."\n\n"..
+
+S("Feeding:").."\n"..
+S("Each animal has its own taste for food and doesn't just accept any food. To feed, hold an item in your hand and rightclick the animal.").."\n"..
+S("Animals are attraced to the food they like and follow you as long you hold the food item in hand.").."\n"..
+S("Feeding an animal has three uses: Taming, healing and breeding.").."\n"..
+S("Feeding heals animals instantly, depending on the quality of the food item.").."\n\n"..
+
+S("Taming:").."\n"..
+S("A few animals can be tamed. You can generally do more things with tamed animals and use other items on them. For example, tame horses can be saddled and tame wolves fight on your side.").."\n\n"..
+
+S("Breeding:").."\n"..
+S("When you have fed an animal up to its maximum health, then feed it again, you will activate “Love Mode” and many hearts appear around the animal.").."\n"..
+S("Two animals of the same species will start to breed if they are in Love Mode and close to each other. Soon a baby animal will pop up.").."\n\n"..
+
+S("Baby animals:").."\n"..
+S("Baby animals are just like their adult couterparts, but they can't be fed, tamed or bred and don't drop anything when they die. They grow to adults after a short time.")
+
+}})
