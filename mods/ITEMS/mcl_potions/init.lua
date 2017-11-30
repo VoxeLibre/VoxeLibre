@@ -1,4 +1,4 @@
-local brewhelp = "This item is used in potion brewing."
+local brewhelp = "This item currently has no purpose."
 
 minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 	description = "Fermented Spider Eye",
@@ -18,7 +18,7 @@ minetest.register_craft({
 minetest.register_craftitem("mcl_potions:glass_bottle", {
 	description = "Glass Bottle",
 	_doc_items_longdesc = "A glass bottle is used as a container for potions and can be used to collect water directly.",
-	_doc_items_usagehelp = "To collect water, it on a cauldron with water (which removes a level of water) or a water source (which removes no water).",
+	_doc_items_usagehelp = "To collect water, it on a cauldron with water (which removes a level of water) or any water source (which removes no water).",
 	inventory_image = "mcl_potions_potion_bottle_empty.png",
 	wield_image = "mcl_potions_potion_bottle_empty.png",
 	groups = {brewitem=1},
@@ -137,7 +137,7 @@ end
 
 minetest.register_craftitem("mcl_potions:potion_water", {
 	description = "Water Bottle",
-	_doc_items_longdesc = "Water bottles can be used to brew potions and to fill cauldrons. Drinking water has no effect.",
+	_doc_items_longdesc = "Water bottles can be used to fill cauldrons. Drinking water has no effect.",
 	_doc_items_usagehelp = "Wield it and rightclick to drink it. Rightclick a cauldron to put the water into the cauldron.",
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
@@ -172,7 +172,7 @@ minetest.register_craftitem("mcl_potions:potion_water", {
 
 minetest.register_craftitem("mcl_potions:potion_river_water", {
 	description = "River Water Bottle",
-	_doc_items_longdesc = "River water bottles can be used to brew potions and to fill cauldrons. Drinking it has no effect.",
+	_doc_items_longdesc = "River water bottles can be used to fill cauldrons. Drinking it has no effect.",
 	_doc_items_usagehelp = "Wield it and rightclick to drink it. Rightclick a cauldron to put the river water into the cauldron.",
 	stack_max = 1,
 	inventory_image = potion_image("#0044FF"),
