@@ -197,6 +197,12 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 						new_node = "mcl_cauldrons:cauldron_1"
 					elseif node_under.name == "mcl_cauldrons:cauldron_1" then
 						new_node = "mcl_cauldrons:cauldron"
+					elseif node_under.name == "mcl_cauldrons:cauldron_3r" then
+						new_node = "mcl_cauldrons:cauldron_2r"
+					elseif node_under.name == "mcl_cauldrons:cauldron_2r" then
+						new_node = "mcl_cauldrons:cauldron_1r"
+					elseif node_under.name == "mcl_cauldrons:cauldron_1r" then
+						new_node = "mcl_cauldrons:cauldron"
 					end
 					if new_node then
 						local imeta = itemstack:get_meta()
