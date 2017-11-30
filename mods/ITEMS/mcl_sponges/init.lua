@@ -108,29 +108,32 @@ minetest.register_node("mcl_sponges:sponge_wet", {
 	_mcl_hardness = 0.6,
 })
 
-minetest.register_node("mcl_sponges:sponge_wet_river_water", {
-	description = "Riverwaterlogged Sponge",
-	_doc_items_longdesc = "A sponge full of river water. It can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of the furnace, the river water will pour into the bucket.",
-	drawtype = "normal",
-	is_ground_content = false,
-	tiles = {"mcl_sponges_sponge_wet_river_water.png"},
-	walkable = true,
-	pointable = true,
-	diggable = true,
-	buildable_to = false,
-	stack_max = 64,
-	sounds = mcl_sounds.node_sound_dirt_defaults(),
-	groups = {handy=1, building_block=1},
-	_mcl_blast_resistance = 3,
-	_mcl_hardness = 0.6,
-})
+if minetest.get_modpath("mclx_core") then
+	minetest.register_node("mcl_sponges:sponge_wet_river_water", {
+		description = "Riverwaterlogged Sponge",
+		_doc_items_longdesc = "A sponge full of river water. It can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of the furnace, the river water will pour into the bucket.",
+		drawtype = "normal",
+		is_ground_content = false,
+		tiles = {"mcl_sponges_sponge_wet_river_water.png"},
+		walkable = true,
+		pointable = true,
+		diggable = true,
+		buildable_to = false,
+		stack_max = 64,
+		sounds = mcl_sounds.node_sound_dirt_defaults(),
+		groups = {handy=1, building_block=1},
+		_mcl_blast_resistance = 3,
+		_mcl_hardness = 0.6,
+	})
 
-minetest.register_craft({
-	type = "cooking",
-	output = "mcl_sponges:sponge",
-	recipe = "mcl_sponges:sponge_wet_river_water",
-	cooktime = 10,
-})
+	minetest.register_craft({
+		type = "cooking",
+		output = "mcl_sponges:sponge",
+		recipe = "mcl_sponges:sponge_wet_river_water",
+		cooktime = 10,
+	})
+end
+
 minetest.register_craft({
 	type = "cooking",
 	output = "mcl_sponges:sponge",
