@@ -28,7 +28,11 @@ minetest.register_alias("mapgen_stone_with_iron", "mcl_core:stone_with_iron")
 minetest.register_alias("mapgen_desert_sand", "mcl_core:sand")
 minetest.register_alias("mapgen_desert_stone", "mcl_core:sandstone")
 minetest.register_alias("mapgen_sandstone", "mcl_core:sandstone")
-minetest.register_alias("mapgen_river_water_source", "mcl_core:water_source")
+if minetest.get_modpath("mclx_core") then
+	minetest.register_alias("mapgen_river_water_source", "mclx_core:river_water_source")
+else
+	minetest.register_alias("mapgen_river_water_source", "mcl_core:water_source")
+end
 minetest.register_alias("mapgen_snow", "mcl_core:snow")
 minetest.register_alias("mapgen_snowblock", "mcl_core:snowblock")
 minetest.register_alias("mapgen_ice", "mcl_core:ice")
