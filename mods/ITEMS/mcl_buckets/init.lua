@@ -7,6 +7,7 @@ minetest.register_alias("bucket:bucket_lava", "mcl_buckets:bucket_lava")
 
 local mod_doc = minetest.get_modpath("doc")
 local mod_mcl_core = minetest.get_modpath("mcl_core")
+local mod_mclx_core = minetest.get_modpath("mclx_core")
 
 if mod_mcl_core then
 	minetest.register_craft({
@@ -227,6 +228,24 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 })
 
 if mod_mcl_core then
+	-- Lava bucket
+	mcl_buckets.register_liquid(
+		function(pos)
+			local dim = mcl_worlds.pos_to_dimension(pos)
+			if dim == "nether" then
+				return "mcl_nether:nether_lava_source"
+			else
+				return "mcl_core:lava_source"
+			end
+		end,
+		{"mcl_core:lava_source", "mcl_nether:nether_lava_source"},
+		"mcl_buckets:bucket_lava",
+		"bucket_lava.png",
+		"Lava Bucket",
+		"A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution.",
+		"Choose a place where you want to empty the bucket, then get in a safe spot somewhere above it. Be prepared to run away when something goes wrong as the lava will soon start to flow after placing. To empty the bucket (which places a lava source), right-click on your chosen place."
+	)
+
 	-- Water bucket
 	mcl_buckets.register_liquid(
 		"mcl_core:water_source",
@@ -259,23 +278,35 @@ if mod_mcl_core then
 			end
 		end
 	)
+end
 
-	-- Lava bucket
+if mod_mclx_core then
+	-- River water bucket
 	mcl_buckets.register_liquid(
+		"mclx_core:river_water_source",
+		{"mclx_core:river_water_source"},
+		"mcl_buckets:bucket_river_water",
+		"bucket_river_water.png",
+		"River Water Bucket",
+		"A bucket can be used to collect and release liquids. This one is filled with river water.",
+		"Right-click on any block to empty the bucket and put a river water source on this spot.",
 		function(pos)
+			local nn = minetest.get_node(pos).name
+			-- TODO: Implement cauldron support.
+			-- Ignore cauldron
+			if (nn == "mcl_cauldrons:cauldron" or
+					nn == "mcl_cauldrons:cauldron_1" or
+					nn == "mcl_cauldrons:cauldron_2" or
+					nn == "mcl_cauldrons:cauldron_3") then
+				return false
+			end
+			-- Evaporate water if used in Nether (except on cauldron)
 			local dim = mcl_worlds.pos_to_dimension(pos)
 			if dim == "nether" then
-				return "mcl_nether:nether_lava_source"
-			else
-				return "mcl_core:lava_source"
+				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
+				return false
 			end
-		end,
-		{"mcl_core:lava_source", "mcl_nether:nether_lava_source"},
-		"mcl_buckets:bucket_lava",
-		"bucket_lava.png",
-		"Lava Bucket",
-		"A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution.",
-		"Choose a place where you want to empty the bucket, then get in a safe spot somewhere above it. Be prepared to run away when something goes wrong as the lava will soon start to flow after placing. To empty the bucket (which places a lava source), right-click on your chosen place."
+		end
 	)
 end
 
