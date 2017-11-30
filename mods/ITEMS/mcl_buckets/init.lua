@@ -48,9 +48,10 @@ end
 --   longdesc = long explanatory description (for help)
 --   usagehelp = short usage explanation (for help)
 --   extra_check = optional function(pos) which can returns false to avoid placing the liquid
+--   groups = optional list of item groups
 --
 -- This function can be called from any mod (which depends on this one)
-function mcl_buckets.register_liquid(source_place, source_take, itemname, inventory_image, name, longdesc, usagehelp, extra_check)
+function mcl_buckets.register_liquid(source_place, source_take, itemname, inventory_image, name, longdesc, usagehelp, extra_check, groups)
 	for i=1, #source_take do
 		mcl_buckets.liquids[source_take[i]] = {
 			source_place = source_place,
@@ -70,6 +71,7 @@ function mcl_buckets.register_liquid(source_place, source_take, itemname, invent
 			inventory_image = inventory_image,
 			stack_max = 16,
 			liquids_pointable = true,
+			groups = groups,
 			on_place = function(itemstack, user, pointed_thing)
 				-- Must be pointing to node
 				if pointed_thing.type ~= "node" then
@@ -276,7 +278,8 @@ if mod_mcl_core then
 					return false
 				end
 			end
-		end
+		end,
+		{ water_bucket = 1 }
 	)
 end
 
@@ -306,7 +309,8 @@ if mod_mclx_core then
 				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
 				return false
 			end
-		end
+		end,
+		{ water_bucket = 1 }
 	)
 end
 

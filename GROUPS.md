@@ -73,6 +73,7 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `wool=1`: Wool (only full blocks)
 * `carpet=1:` (Wool) carpet
 * `stick=1`: Stick
+* `water_bucket=1`: Bucket containing a liquid of group “water”
 
 ### Material groups
 
