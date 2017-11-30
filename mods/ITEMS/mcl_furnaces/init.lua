@@ -193,10 +193,13 @@ local function furnace_node_timer(pos, elapsed)
 						inv:add_item("dst", cooked.item)
 						inv:set_stack("src", 1, aftercooked.items[1])
 
-						-- Unique recipe: Put water into empty bucket after cooking wet sponge successfully
-						if srclist[1]:get_name() == "mcl_sponges:sponge_wet" then
-							if inv:get_stack("fuel", 1):get_name() == "mcl_buckets:bucket_empty" then
+						-- Unique recipe: Pour water into empty bucket after cooking wet sponge successfully
+						if inv:get_stack("fuel", 1):get_name() == "mcl_buckets:bucket_empty" then
+							if srclist[1]:get_name() == "mcl_sponges:sponge_wet" then
 								inv:set_stack("fuel", 1, "mcl_buckets:bucket_water")
+							-- Also for river water
+							elseif srclist[1]:get_name() == "mcl_sponges:sponge_wet_river_water" then
+								inv:set_stack("fuel", 1, "mcl_buckets:bucket_river_water")
 							end
 						end
 
