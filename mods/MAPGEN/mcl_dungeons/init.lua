@@ -1,7 +1,5 @@
 -- FIXME: Chests may appear at openings
 
--- TODO: Add monster spawner
-
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local pr = PseudoRandom(os.time())
 
@@ -74,7 +72,6 @@ end
 
 -- Buffer for LuaVoxelManip
 local lvm_buffer = {}
-local lvm_buffer2 = {} -- for param2
 
 -- Below the bedrock, generate air/void
 minetest.register_on_generated(function(minp, maxp)
@@ -90,7 +87,6 @@ minetest.register_on_generated(function(minp, maxp)
 	local c_air = minetest.get_content_id("air")
 	local c_cobble = minetest.get_content_id("mcl_core:cobble")
 	local c_mossycobble = minetest.get_content_id("mcl_core:mossycobble")
-	local c_chest = minetest.get_content_id("mcl_chests:chest")
 
 	-- Remember spawner chest positions to set metadata later
 	local chest_posses = {}
@@ -294,13 +290,6 @@ minetest.register_on_generated(function(minp, maxp)
 
 								-- Place next chest at the wall (if it was its chosen wall slot)
 								if forChest and (currentChest < totalChests + 1) and (chestSlots[currentChest] == chestSlotCounter) then
-									local p2
-
-									-- Select rotation so the chest faces away from wall
-									if (tx==x+1) then p2 = 3
-									elseif (tx==maxx-1) then p2 = 1
-									elseif (tz==z+1) then p2 = 2
-									else p2 = 0 end
 									table.insert(chest_posses, {x=tx, y=ty, z=tz})
 									currentChest = currentChest + 1
 								else
