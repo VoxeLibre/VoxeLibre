@@ -230,8 +230,7 @@ if mcl_weather.allow_abm then
 				elseif node.name == "mcl_cauldrons:cauldron_2" then
 					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_3"})
 				elseif node.name == "mcl_cauldrons:cauldron_1r" then
-					-- Intentional
-					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_2"})
+					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_2r"})
 				elseif node.name == "mcl_cauldrons:cauldron_2r" then
 					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_3r"})
 				end

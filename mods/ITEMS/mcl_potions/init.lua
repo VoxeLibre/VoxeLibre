@@ -17,7 +17,7 @@ minetest.register_craft({
 
 minetest.register_craftitem("mcl_potions:glass_bottle", {
 	description = "Glass Bottle",
-	_doc_items_longdesc = "A glass bottle is used as a container for potions and can be used to collect water directly.",
+	_doc_items_longdesc = "A glass bottle is used as a container for liquids and can be used to collect water directly.",
 	_doc_items_usagehelp = "To collect water, it on a cauldron with water (which removes a level of water) or any water source (which removes no water).",
 	inventory_image = "mcl_potions_potion_bottle_empty.png",
 	wield_image = "mcl_potions_potion_bottle_empty.png",
@@ -102,7 +102,7 @@ minetest.register_craft( {
 	}
 })
 
--- Tempalte function for creating images of filled potions
+-- Template function for creating images of filled potions
 -- - colorstring must be a ColorString of form “#RRGGBB”, e.g. “#0000FF” for blue.
 -- - opacity is optional opacity from 0-255 (default: 127)
 local potion_image = function(colorstring, opacity)
@@ -112,13 +112,15 @@ local potion_image = function(colorstring, opacity)
 	return "mcl_potions_potion_bottle_drinkable.png^(mcl_potions_potion_overlay.png^[colorize:"..colorstring..":"..tostring(opacity)..")"
 end
 
+-- Cauldron fill up rules:
+-- Adding any water increases the water level by 1, preserving the current water type
 local cauldron_levels = {
-	-- start = { add water, add river water, take }
-	{ "",    "_1",  "_1r", nil },
-	{ "_1",  "_2",  "_2",  "" },
-	{ "_2",  "_3",  "_3",  "_1" },
-	{ "_1r", "_2",  "_2r", "" },
-	{ "_2r", "_3r", "_3r", "_1r" },
+	-- start = { add water, add river water }
+	{ "",    "_1",  "_1r" },
+	{ "_1",  "_2",  "_2" },
+	{ "_2",  "_3",  "_3" },
+	{ "_1r", "_2r",  "_2r" },
+	{ "_2r", "_3r", "_3r" },
 }
 local fill_cauldron = function(cauldron, water_type)
 	local base = "mcl_cauldrons:cauldron"
@@ -138,7 +140,7 @@ end
 minetest.register_craftitem("mcl_potions:potion_water", {
 	description = "Water Bottle",
 	_doc_items_longdesc = "Water bottles can be used to fill cauldrons. Drinking water has no effect.",
-	_doc_items_usagehelp = "Wield it and rightclick to drink it. Rightclick a cauldron to put the water into the cauldron.",
+	_doc_items_usagehelp = "Rightclick to drink. Rightclick a cauldron to pour the water into the cauldron.",
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
@@ -173,7 +175,7 @@ minetest.register_craftitem("mcl_potions:potion_water", {
 minetest.register_craftitem("mcl_potions:potion_river_water", {
 	description = "River Water Bottle",
 	_doc_items_longdesc = "River water bottles can be used to fill cauldrons. Drinking it has no effect.",
-	_doc_items_usagehelp = "Wield it and rightclick to drink it. Rightclick a cauldron to put the river water into the cauldron.",
+	_doc_items_usagehelp = "Rightclick to drink. Rightclick a cauldron to pour the river water into the cauldron.",
 	stack_max = 1,
 	inventory_image = potion_image("#0044FF"),
 	wield_image = potion_image("#0044FF"),
