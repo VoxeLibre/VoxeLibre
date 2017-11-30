@@ -73,7 +73,7 @@ mobs:register_mob("mobs_mc:guardian", {
 		max = 1,},
 	},
 	fly = true,
-	fly_in = mobs_mc.items.water_source,
+	fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
 	view_range = 16,
 	water_damage = 0,
 	lava_damage = 4,

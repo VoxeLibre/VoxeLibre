@@ -81,6 +81,7 @@ mobs_mc.items = {
 	gunpowder = "tnt:gunpowder",
 	flint_and_steel = "fire:flint_and_steel",
 	water_source = "default:water_source",
+	river_water_source = "default:river_water_source",
 	black_dye = "dye:black",
 	poppy = "flowers:rose",
 	dandelion = "flowers:dandelion_yellow",

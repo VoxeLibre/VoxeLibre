@@ -78,7 +78,7 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 		max = 1,},
 	},
 	fly = true,
-	fly_in = mobs_mc.items.water_source,
+	fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
 	water_damage = 0,
 	lava_damage = 4,
 	light_damage = 0,
