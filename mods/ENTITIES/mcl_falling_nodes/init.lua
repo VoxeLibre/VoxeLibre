@@ -118,9 +118,28 @@ minetest.register_entity(":__builtin:falling_node", {
 			return
 		end
 		local vel = self.object:getvelocity()
+		-- Fix position if entity does not move
 		if vector.equals(vel, {x = 0, y = 0, z = 0}) then
-			local npos = self.object:getpos()
-			self.object:setpos(vector.round(npos))
+			local npos = vector.round(self.object:getpos())
+			local npos2 = table.copy(npos)
+			npos2.y = npos2.y - 2
+			local lownode = minetest.get_node(npos2)
+			-- Special check required for fences, because of their overhigh collision box.
+			if minetest.get_item_group(lownode.name, "fence") == 1 then
+				-- Instantly stop the node if it is above a fence. This is needed
+				-- because the falling node collides early with a fence node.
+				-- Hacky, because the falling node will teleport a short distance, instead
+				-- of smoothly fall on the fence post.
+				local npos3 = table.copy(npos)
+				npos3.y = npos3.y - 1
+				minetest.add_node(npos3, self.node)
+				self.object:remove()
+				minetest.check_for_falling(npos3)
+				return
+			else
+				-- Normal position fix (expected case)
+				self.object:setpos(npos)
+			end
 		end
 	end
 })
