@@ -29,7 +29,7 @@ end
 
 mcl_weather.snow.set_sky_box = function()
   mcl_weather.skycolor.add_layer(
-    "weather-pack-rain-sky",
+    "weather-pack-snow-sky",
     {{r=0, g=0, b=0},
     {r=85, g=86, b=86},
     {r=135, g=135, b=135},
