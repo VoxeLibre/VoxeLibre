@@ -68,7 +68,7 @@ minetest.register_globalstep(function(dtime)
 
 						-- Collection
 						if vector.distance(checkpos, object:getpos()) <= item_drop_settings.radius_collect and not object:get_luaentity()._removed then
-
+							-- Ignore if itemstring is not set yet
 							if object:get_luaentity().itemstring ~= "" then
 								inv:add_item("main", ItemStack(object:get_luaentity().itemstring))
 								minetest.sound_play("item_drop_pickup", {
@@ -78,19 +78,13 @@ minetest.register_globalstep(function(dtime)
 								})
 								check_pickup_achievements(object, player)
 
-							-- If this happens, itemstring was "" (=hand). This is always a bug, the hand must never drop as item.
-							else
-								-- Scream this to the error log because this is bad.
-								minetest.log("error", "Player "..player:get_player_name().." collected a hand at "..minetest.pos_to_string(object:getpos()).." (age="..object:get_luaentity().age..")!")
 
+								-- Destroy entity
+								-- This just prevents this section to be run again because object:remove() doesn't remove the item immediately.
+								object:get_luaentity()._removed = true
+								object:remove()
+								collected = true
 							end
-
-							-- Destroy entity
-
-							-- This just prevents this sectino to be run again because object:remove() doesn't remove the item immediately.
-							object:get_luaentity()._removed = true
-							object:remove()
-							collected = true
 
 						-- Magnet
 						else
@@ -313,17 +307,27 @@ core.register_entity(":__builtin:item", {
 		infotext = "",
 	},
 
+	-- Itemstring of dropped item. The empty string is used when the item is not yet initialized yet.
+	-- The itemstring MUST be set immediately to a non-empty string after creating the entity.
+	-- The hand is NOT permitted as dropped item. ;-)
+	-- Item entities will be deleted if they still have an empty itemstring on their first on_step tick.
 	itemstring = '',
+
+	-- If true, item will fall
 	physical_state = true,
-	_flowing = false, -- item entity is currently flowing
-	-- States:
-	-- * "magnet": Attracted to a nearby player or item
-	-- * "flowing": Moving in a flowing liquid
-	-- * "normal": Affected by gravitiy
+
+	-- If item entity is currently flowing in water
+	_flowing = false,
+
+	-- Number of seconds this item entity has existed so far
 	age = 0,
 
 	set_item = function(self, itemstring)
 		self.itemstring = itemstring
+		if self.itemstring == "" then
+			-- item not yet known
+			return
+		end
 		local stack = ItemStack(itemstring)
 		local count = stack:get_count()
 		local max_count = stack:get_stack_max()
@@ -488,11 +492,12 @@ core.register_entity(":__builtin:item", {
 			self.object:remove()
 			return
 		end
-		-- If, for some reason, an item entity with itemstring == "" (hand) appears, this is very bad.
-		if not self._hand_bug_detected and self.age > 1 and self.itemstring == "" then
-			-- We must this scream this into the error console. The bug is rare an
-			minetest.log("error", "A hand item entity appeared at "..minetest.pos_to_string(self.object:getpos()).. "!")
-			self._hand_bug_detected = true
+		-- Delete corrupted item entities. The itemstring MUST be non-empty on its first step,
+		-- otherwise there might have some data corruption.
+		if self.itemstring == "" then
+			minetest.log("warning", "Item entity with empty itemstring found at "..minetest.pos_to_string(self.object:getpos()).. "! Deleting it now.")
+			self._removed = true
+			self.object:remove()
 		end
 
 		local p = self.object:getpos()
