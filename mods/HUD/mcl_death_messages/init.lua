@@ -58,6 +58,7 @@ local msgs = {
 
 local mobkills = {
 	["mobs_mc:zombie"] = "%s was killed by a zombie.",
+	["mobs_mc:baby_zombie"] = "%s was killed by a baby zombie.",
 	["mobs_mc:blaze"] = "%s was killed by a blaze.",
 	["mobs_mc:slime"] = "%s was killed by a slime.",
 	["mobs_mc:witch"] = "%s was killed by a witch.",
@@ -92,7 +93,9 @@ local mobkills = {
 	["mobs_mc:vindicator"] = "%s was killed by a vindicator.",
 	["mobs_mc:villager_zombie"] = "%s was killed by a zombie villager.",
 	["mobs_mc:husk"] = "%s was killed by a husk.",
-	["mobs_mc:zombiepig"] = "%s was killed by a zombie pigman.",
+	["mobs_mc:baby_husk"] = "%s was killed by a baby husk.",
+	["mobs_mc:pigman"] = "%s was killed by a zombie pigman.",
+	["mobs_mc:baby_pigman"] = "%s was killed by a baby zombie pigman.",
 }
 
 -- Select death message
