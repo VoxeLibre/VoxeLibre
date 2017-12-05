@@ -10,23 +10,29 @@ mcstair.add("mcl_stairs:stair_prismarine_dark")
 mcl_stairs.register_stair_and_slab_simple("mossycobble", "mcl_core:mossycobble", "Moss Stone Stairs", "Moss Stone Slab", "Double Moss Stone Slab")
 mcstair.add("mcl_stairs:stair_mossycobble")
 
-mcl_stairs.register_stair_and_slab_simple("lapisblock", "mcl_core:lapisblock", "Lapis Lazuli Stairs", "Lapis Lazuli Slab", "Double Lapis Lazuli Slab")
+mcl_stairs.register_slab("lapisblock", "mcl_core:lapisblock", {}, {"mcl_core_lapis_block.png", "mcl_core_lapis_block.png", "mcl_stairs_lapis_block_slab.png"}, "Lapis Lazuli Slab")
+mcl_stairs.register_stair("lapisblock", "mcl_core:lapisblock", {}, {"mcl_stairs_lapis_block_slab.png", "mcl_core_lapis_block.png", "mcl_core_lapis_block.png", "mcl_core_lapis_block.png", "mcl_core_lapis_block.png", "mcl_stairs_lapis_block_slab.png"}, "Lapis Lazuli Stair")
 mcstair.add("mcl_stairs:stair_lapisblock")
 
-mcl_stairs.register_stair_and_slab_simple("goldblock", "mcl_core:goldblock", "Stairs of Gold", "Slab of Gold", "Double Slab of Gold")
+mcl_stairs.register_slab("goldblock", "mcl_core:goldblock", {}, {"default_gold_block.png", "default_gold_block.png", "mcl_stairs_gold_block_slab.png"}, "Slab of Gold")
+mcl_stairs.register_stair("goldblock", "mcl_core:goldblock", {}, {"mcl_stairs_gold_block_slab.png", "default_gold_block.png", "default_gold_block.png", "default_gold_block.png", "default_gold_block.png", "mcl_stairs_gold_block_slab.png"}, "Stair of Gold")
 mcstair.add("mcl_stairs:stair_goldblock")
 
-mcl_stairs.register_stair_and_slab_simple("ironblock", "mcl_core:ironblock", "Stairs of Iron", "Slab of Iron", "Double Slab of Iron")
+mcl_stairs.register_slab("ironblock", "mcl_core:ironblock", {}, {"default_steel_block.png", "default_steel_block.png", "mcl_stairs_iron_block_slab.png"}, "Slab of Iron")
+mcl_stairs.register_stair("ironblock", "mcl_core:ironblock", {}, {"mcl_stairs_iron_block_slab.png", "default_steel_block.png", "default_steel_block.png", "default_steel_block.png", "default_steel_block.png", "mcl_stairs_iron_block_slab.png"}, "Stair of Iron")
 mcstair.add("mcl_stairs:stair_ironblock")
 
-mcl_stairs.register_stair_and_slab_simple("andesite_smooth", "mcl_core:andesite_smooth", "Polished Andesite Stairs", "Polished Andesite Slab", "Double Polished Andesite Slab")
+mcl_stairs.register_slab("andesite_smooth", "mcl_core:andesite_smooth", {}, {"mcl_core_andesite_smooth.png", "mcl_core_andesite_smooth.png", "mcl_stairs_andesite_smooth_slab.png"}, "Polished Andesite Slab")
+mcl_stairs.register_stair("andesite_smooth", "mcl_core:andesite_smooth", {}, {"mcl_stairs_andesite_smooth_slab.png", "mcl_core_andesite_smooth.png", "mcl_core_andesite_smooth.png", "mcl_core_andesite_smooth.png", "mcl_core_andesite_smooth.png", "mcl_stairs_andesite_smooth_slab.png"}, "Polished Andesite Stair")
 mcstair.add("mcl_stairs:stair_andesite_smooth")
 
-mcl_stairs.register_stair_and_slab_simple("diorite_smooth", "mcl_core:diorite_smooth", "Polished Diorite Stairs", "Polished Diorite Slab", "Double Polished Diorite Slab")
-mcstair.add("mcl_stairs:stair_diorite_smooth")
-
-mcl_stairs.register_stair_and_slab_simple("granite_smooth", "mcl_core:granite_smooth", "Polished Granite Stairs", "Polished Granite Slab", "Double Polished Granite Slab")
+mcl_stairs.register_slab("granite_smooth", "mcl_core:granite_smooth", {}, {"mcl_core_granite_smooth.png", "mcl_core_granite_smooth.png", "mcl_stairs_granite_smooth_slab.png"}, "Polished Granite Slab")
+mcl_stairs.register_stair("granite_smooth", "mcl_core:granite_smooth", {}, {"mcl_stairs_granite_smooth_slab.png", "mcl_core_granite_smooth.png", "mcl_core_granite_smooth.png", "mcl_core_granite_smooth.png", "mcl_core_granite_smooth.png", "mcl_stairs_granite_smooth_slab.png"}, "Polished Granite Stair")
 mcstair.add("mcl_stairs:stair_granite_smooth")
+
+mcl_stairs.register_slab("diorite_smooth", "mcl_core:diorite_smooth", {}, {"mcl_core_diorite_smooth.png", "mcl_core_diorite_smooth.png", "mcl_stairs_diorite_smooth_slab.png"}, "Polished Diorite Slab")
+mcl_stairs.register_stair("diorite_smooth", "mcl_core:diorite_smooth", {}, {"mcl_stairs_diorite_smooth_slab.png", "mcl_core_diorite_smooth.png", "mcl_core_diorite_smooth.png", "mcl_core_diorite_smooth.png", "mcl_core_diorite_smooth.png", "mcl_stairs_diorite_smooth_slab.png"}, "Polished Diorite Stair")
+mcstair.add("mcl_stairs:stair_diorite_smooth")
 
 mcl_stairs.register_stair("stonebrickmossy", "mcl_core:stonebrickmossy",
 		{pickaxey=1},
