@@ -72,6 +72,7 @@ minetest.register_node("mcl_core:ladder", {
 
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
+	on_rotate = function() return false end,
 })
 
 
@@ -153,4 +154,5 @@ minetest.register_node("mcl_core:vine", {
 
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 0.2,
+	on_rotate = function() return false end,
 })
