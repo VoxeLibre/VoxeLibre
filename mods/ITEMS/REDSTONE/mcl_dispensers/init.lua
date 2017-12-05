@@ -68,11 +68,7 @@ local dispenserdef = {
 				droppos  = {x=pos.x, y=pos.y-1, z=pos.z}
 			end
 			local dropnode = minetest.get_node(droppos)
-			-- Do not dispense into solid nodes
 			local dropnodedef = minetest.registered_nodes[dropnode.name]
-			if dropnodedef.walkable then
-				return
-			end
 			local stacks = {}
 			for i=1,inv:get_size("main") do
 				local stack = inv:get_stack("main", i)
@@ -88,8 +84,12 @@ local dispenserdef = {
 				local iname = stack:get_name()
 				local igroups = minetest.registered_items[iname].groups
 
+				-- Do not dispense into solid nodes. Exception: Water bucket into cauldron
+				if dropnodedef.walkable and not (minetest.get_item_group(dropnode.name, "cauldron") ~= 0 and (iname == "mcl_buckets:bucket_water" or iname == "mcl_buckets:bucket_river_water")) then
+					-- no-op
+
 				--[===[ Dispense item ]===]
-				if iname == "mcl_throwing:arrow" then
+				elseif iname == "mcl_throwing:arrow" then
 					-- Shoot arrow
 					local shootpos = vector.add(pos, vector.multiply(dropdir, 0.51))
 					local yaw = math.atan2(dropdir.z, dropdir.x) - math.pi/2
@@ -153,6 +153,9 @@ local dispenserdef = {
 					elseif dropnode.name == "mcl_core:lava_source" or dropnode.name == "mcl_nether:nether_lava_source" then
 						collect_liquid = true
 						bucket_id = "mcl_buckets:bucket_lava"
+					elseif dropnode.name == "mclx_core:river_water_source" then
+						collect_liquid = true
+						bucket_id = "mcl_buckets:bucket_river_water"
 					end
 					if collect_liquid then
 						minetest.set_node(droppos, {name="air"})
@@ -175,9 +178,18 @@ local dispenserdef = {
 						stack:take_item()
 						inv:set_stack("main", stack_id, stack)
 					end
-				elseif iname == "mcl_buckets:bucket_water" or iname == "mcl_buckets:bucket_lava" then
+				elseif iname == "mcl_buckets:bucket_water" or iname == "mcl_buckets:bucket_river_water" or iname == "mcl_buckets:bucket_lava" then
+					local do_empty = false
 					-- Place water/lava source
-					if dropnodedef.buildable_to then
+					if minetest.get_item_group(dropnode.name, "cauldron") ~= 0 then
+						if iname == "mcl_buckets:bucket_water" then
+							minetest.set_node(droppos, {name = "mcl_cauldrons:cauldron_3"})
+							do_empty = true
+						elseif iname == "mcl_buckets:bucket_river_water" then
+							minetest.set_node(droppos, {name = "mcl_cauldrons:cauldron_3r"})
+							do_empty = true
+						end
+					elseif dropnodedef.buildable_to then
 						local dim = mcl_worlds.pos_to_dimension(droppos)
 						if iname == "mcl_buckets:bucket_water" then
 							if dim == "nether" then
@@ -185,14 +197,25 @@ local dispenserdef = {
 							else
 								minetest.set_node(droppos, {name = "mcl_core:water_source"})
 							end
+							do_empty = true
+						elseif iname == "mcl_buckets:bucket_river_water" then
+							if dim == "nether" then
+								minetest.sound_play("fire_extinguish_flame", {pos = droppos, gain = 0.25, max_hear_distance = 16})
+							else
+								minetest.set_node(droppos, {name = "mclx_core:river_water_source"})
+							end
+							do_empty = true
 						elseif iname == "mcl_buckets:bucket_lava" then
 							if dim == "nether" then
 								minetest.set_node(droppos, {name = "mcl_nether:nether_lava_source"})
 							else
 								minetest.set_node(droppos, {name = "mcl_core:lava_source"})
 							end
+							do_empty = true
 						end
+					end
 
+					if do_empty then
 						stack:take_item()
 						inv:set_stack("main", stack_id, stack)
 

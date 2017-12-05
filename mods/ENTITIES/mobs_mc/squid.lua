@@ -43,8 +43,7 @@ mobs:register_mob("mobs_mc:squid", {
     makes_footstep_sound = false,
     stepheight = 1.1,
     fly = true,
-   -- fly_in = mobs_mc.items.water_source,  fuck this
-    fly_in = {"mcl_core:water_source", "default:water_source"},
+    fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
     	jump = true,
 	jump_height = 1.25,
 	jump_chance = 98,

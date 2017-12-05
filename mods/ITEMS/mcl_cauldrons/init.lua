@@ -43,7 +43,7 @@ end
 -- Empty cauldron
 minetest.register_node("mcl_cauldrons:cauldron", {
 	description = "Cauldron",
-	_doc_items_longdesc = "Cauldrons are used to store water and slowly fill up under rain.",
+	_doc_items_longdesc = "Cauldrons are used to store water and slowly fill up under rain. They can also be used to wash off banners.",
 	_doc_items_usagehelp = "Place a water pucket into the cauldron to fill it with water. Place an empty bucket on a full cauldron to retrieve the water. Place a water bottle into the cauldron to fill the cauldron to one third with water. Place a glass bottle in a cauldron with water to retrieve one third of the water. Use an emblazoned banner on a cauldron with water to wash off its top layer.",
 	wield_image = "mcl_cauldrons_cauldron.png",
 	inventory_image = "mcl_cauldrons_cauldron.png",
@@ -51,7 +51,7 @@ minetest.register_node("mcl_cauldrons:cauldron", {
 	paramtype = "light",
 	is_ground_content = false,
 	sunlight_propagates = true,
-	groups = {pickaxey=1, deco_block=1},
+	groups = {pickaxey=1, deco_block=1, cauldron=1},
 	node_box = cauldron_nodeboxes[0],
 	selection_box = { type = "regular" },
 	tiles = {
@@ -65,20 +65,28 @@ minetest.register_node("mcl_cauldrons:cauldron", {
 })
 
 -- Template function for cauldrons with water
-local register_filled_cauldron = function(water_level, description)
-	minetest.register_node("mcl_cauldrons:cauldron_"..water_level, {
+local register_filled_cauldron = function(water_level, description, river_water)
+	local id = "mcl_cauldrons:cauldron_"..water_level
+	local water_tex
+	if river_water then
+		id = id .. "r"
+		water_tex = "default_river_water_source_animated.png^[verticalframe:16:0"
+	else
+		water_tex = "default_water_source_animated.png^[verticalframe:16:0"
+	end
+	minetest.register_node(id, {
 		description = description,
 		_doc_items_create_entry = false,
 		drawtype = "nodebox",
 		paramtype = "light",
 		is_ground_content = false,
 		sunlight_propagates = true,
-		groups = {pickaxey=1, not_in_creative_inventory=1},
+		groups = {pickaxey=1, not_in_creative_inventory=1, cauldron=(1+water_level)},
 		node_box = cauldron_nodeboxes[water_level],
 		collision_box = cauldron_nodeboxes[0],
 		selection_box = { type = "regular" },
 		tiles = {
-			"(default_water_source_animated.png^[verticalframe:16:0)^mcl_cauldrons_cauldron_top.png",
+			"("..water_tex..")^mcl_cauldrons_cauldron_top.png",
 			"mcl_cauldrons_cauldron_inner.png^mcl_cauldrons_cauldron_bottom.png",
 			"mcl_cauldrons_cauldron_side.png"
 		},
@@ -90,14 +98,20 @@ local register_filled_cauldron = function(water_level, description)
 
 	-- Add entry aliases for the Help
 	if minetest.get_modpath("doc") then
-		doc.add_entry_alias("nodes", "mcl_cauldrons:cauldron", "nodes", "mcl_cauldrons:cauldron_"..water_level)
+		doc.add_entry_alias("nodes", "mcl_cauldrons:cauldron", "nodes", id)
 	end
 end
 
--- Filled crauldrons (3 levels)
-register_filled_cauldron(1, "Cauldron (One Third Full)")
-register_filled_cauldron(2, "Cauldron (Two Thirds Full)")
-register_filled_cauldron(3, "Cauldron (Full)")
+-- Filled cauldrons (3 levels)
+register_filled_cauldron(1, "Cauldron (1/3 Water)")
+register_filled_cauldron(2, "Cauldron (2/3 Water)")
+register_filled_cauldron(3, "Cauldron (3/3 Water)")
+
+if minetest.get_modpath("mclx_core") then
+	register_filled_cauldron(1, "Cauldron (1/3 River Water)", true)
+	register_filled_cauldron(2, "Cauldron (2/3 River Water)", true)
+	register_filled_cauldron(3, "Cauldron (3/3 River Water)", true)
+end
 
 minetest.register_craft({
 	output = "mcl_cauldrons:cauldron",

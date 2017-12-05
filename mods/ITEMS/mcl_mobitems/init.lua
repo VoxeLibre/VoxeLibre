@@ -157,7 +157,7 @@ minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 
 minetest.register_craftitem("mcl_mobitems:spider_eye", {
 	description = "Spider Eye",
-	_doc_items_longdesc = "Spider eyes are used mainly in crafting and brewing. If you're really desperate, you can eat a spider eye, but it will poison you briefly.",
+	_doc_items_longdesc = "Spider eyes are used mainly in crafting. If you're really desperate, you can eat a spider eye, but it will poison you briefly.",
 	inventory_image = "mcl_mobitems_spider_eye.png",
 	wield_image = "mcl_mobitems_spider_eye.png",
 	on_place = minetest.item_eat(2),
@@ -195,7 +195,7 @@ minetest.register_craftitem("mcl_mobitems:blaze_rod", {
 
 minetest.register_craftitem("mcl_mobitems:blaze_powder", {
 	description = "Blaze Powder",
-	_doc_items_longdesc = "This item is mainly used for brewing potions and crafting.",
+	_doc_items_longdesc = "This item is mainly used for crafting.",
 	wield_image = "mcl_mobitems_blaze_powder.png",
 	inventory_image = "mcl_mobitems_blaze_powder.png",
 	groups = { brewitem = 1 },
@@ -213,7 +213,7 @@ minetest.register_craftitem("mcl_mobitems:magma_cream", {
 
 minetest.register_craftitem("mcl_mobitems:ghast_tear", {
 	description = "Ghast Tear",
-	_doc_items_longdesc = "A ghast tear is an item used in potion brewing. It is dropped from dead ghasts.",
+	_doc_items_longdesc = "A ghast tear is dropped from dead ghasts. It has no purpose yet.",
 	wield_image = "mcl_mobitems_ghast_tear.png",
 	inventory_image = "mcl_mobitems_ghast_tear.png",
 	groups = { brewitem = 1 },
@@ -258,7 +258,7 @@ minetest.register_craftitem("mcl_mobitems:rabbit_hide", {
 
 minetest.register_craftitem("mcl_mobitems:rabbit_foot", {
 	description = "Rabbit's Foot",
-	_doc_items_longdesc = "This item is used in brewing.",
+	_doc_items_longdesc = "This item currently has no purpose.",
 	wield_image = "mcl_mobitems_rabbit_foot.png",
 	inventory_image = "mcl_mobitems_rabbit_foot.png",
 	groups = { brewitem = 1 },

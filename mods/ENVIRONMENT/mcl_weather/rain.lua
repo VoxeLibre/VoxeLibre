@@ -221,6 +221,7 @@ if mcl_weather.allow_abm then
 		interval = 56.0,
 		chance = 1,
 		action = function(pos, node, active_object_count, active_object_count_wider)
+			-- Rain is equivalent to a water bottle
 			if mcl_weather.rain.raining and mcl_weather.is_outdoor(pos) then
 				if node.name == "mcl_cauldrons:cauldron" then
 					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_1"})
@@ -228,6 +229,10 @@ if mcl_weather.allow_abm then
 					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_2"})
 				elseif node.name == "mcl_cauldrons:cauldron_2" then
 					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_3"})
+				elseif node.name == "mcl_cauldrons:cauldron_1r" then
+					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_2r"})
+				elseif node.name == "mcl_cauldrons:cauldron_2r" then
+					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_3r"})
 				end
 			end
 		end

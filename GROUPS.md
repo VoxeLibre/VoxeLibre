@@ -50,6 +50,7 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `destroys_items=1`: If an item happens to be *inside* this node, the item will be destroyed
 * `no_eat_delay=1`: Only for foodstuffs. When eating this, all eating delays are ignored.
 * `can_eat_when_full=1`: Only for foodstuffs. This item can be eaten when the user has a full hunger bar
+* `cauldron`: Cauldron. 1: Empty. 2-4: Water height
 
 #### Footnotes
 
@@ -73,6 +74,7 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `wool=1`: Wool (only full blocks)
 * `carpet=1:` (Wool) carpet
 * `stick=1`: Stick
+* `water_bucket=1`: Bucket containing a liquid of group “water”
 
 ### Material groups
 

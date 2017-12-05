@@ -55,6 +55,7 @@ mobs_mc.override.items = {
 	gunpowder = "mcl_mobitems:gunpowder",
 	flint_and_steel = "mcl_fire:flint_and_steel",
 	water_source = "mcl_core:water_source",
+	river_water_source = "mclx_core:river_water_source",
 	black_dye = "mcl_dye:black",
 	poppy = "mcl_flowers:poppy",
 	dandelion = "mcl_flowers:dandelion",

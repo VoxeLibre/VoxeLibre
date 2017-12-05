@@ -209,7 +209,7 @@ minetest.register_node("mcl_nether:quartz_smooth", {
 
 minetest.register_craftitem("mcl_nether:glowstone_dust", {
 	description = "Glowstone Dust",
-	_doc_items_longdesc = "Glowstone dust is the dust which comes out of broken glowstones. It is mainly used in crafting and brewing.",
+	_doc_items_longdesc = "Glowstone dust is the dust which comes out of broken glowstones. It is mainly used in crafting.",
 	inventory_image = "mcl_nether_glowstone_dust.png",
 	stack_max = 64,
 	groups = { craftitem=1 },

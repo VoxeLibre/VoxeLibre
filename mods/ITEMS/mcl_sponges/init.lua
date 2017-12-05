@@ -1,5 +1,9 @@
 local absorb = function(pos)
 	local change = false
+	-- Count number of absorbed river water vs other nodes
+	-- to determine the wet sponge type.
+	local river_water = 0
+	local non_river_water = 0
 	local p, n
 	for i=-3,3 do
 		for j=-3,3 do
@@ -9,11 +13,24 @@ local absorb = function(pos)
 				if minetest.get_item_group(n.name, "water") ~= 0 then
 					minetest.add_node(p, {name="air"})
 					change = true
+					if n.name == "mclx_core:river_water_source" or n.name == "mclx_core:river_water_flowing" then
+						river_water = river_water + 1
+					else
+						non_river_water = non_river_water + 1
+					end
 				end
 			end
 		end
 	end
-	return change
+	-- The dominant water type wins. In case of a tie, normal water wins.
+	-- This slight bias is intentional.
+	local sponge_type
+	if river_water > non_river_water then
+		sponge_type = "mcl_sponges:sponge_wet_river_water"
+	else
+		sponge_type = "mcl_sponges:sponge_wet"
+	end
+	return change, sponge_type
 end
 
 minetest.register_node("mcl_sponges:sponge", {
@@ -59,8 +76,9 @@ minetest.register_node("mcl_sponges:sponge", {
 		if on_water then
 			-- Absorb water
 			-- FIXME: pos is not always the right placement position because of pointed_thing
-			if absorb(pos) then
-				minetest.item_place_node(ItemStack("mcl_sponges:sponge_wet"), placer, pointed_thing)
+			local absorbed, wet_sponge = absorb(pos)
+			if absorbed then
+				minetest.item_place_node(ItemStack(wet_sponge), placer, pointed_thing)
 				if not minetest.settings:get_bool("creative_mode") then
 					itemstack:take_item()
 				end
@@ -74,8 +92,8 @@ minetest.register_node("mcl_sponges:sponge", {
 })
 
 minetest.register_node("mcl_sponges:sponge_wet", {
-	description = "Wet Sponge",
-	_doc_items_longdesc = "Wet sponges can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of a furnace, water will pour into the bucket.",
+	description = "Waterlogged Sponge",
+	_doc_items_longdesc = "A waterlogged sponge can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of a furnace, the water will pour into the bucket.",
 	drawtype = "normal",
 	is_ground_content = false,
 	tiles = {"mcl_sponges_sponge_wet.png"},
@@ -89,6 +107,32 @@ minetest.register_node("mcl_sponges:sponge_wet", {
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 0.6,
 })
+
+if minetest.get_modpath("mclx_core") then
+	minetest.register_node("mcl_sponges:sponge_wet_river_water", {
+		description = "Riverwaterlogged Sponge",
+		_doc_items_longdesc = "A sponge full of river water. It can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of the furnace, the river water will pour into the bucket.",
+		drawtype = "normal",
+		is_ground_content = false,
+		tiles = {"mcl_sponges_sponge_wet_river_water.png"},
+		walkable = true,
+		pointable = true,
+		diggable = true,
+		buildable_to = false,
+		stack_max = 64,
+		sounds = mcl_sounds.node_sound_dirt_defaults(),
+		groups = {handy=1, building_block=1},
+		_mcl_blast_resistance = 3,
+		_mcl_hardness = 0.6,
+	})
+
+	minetest.register_craft({
+		type = "cooking",
+		output = "mcl_sponges:sponge",
+		recipe = "mcl_sponges:sponge_wet_river_water",
+		cooktime = 10,
+	})
+end
 
 minetest.register_craft({
 	type = "cooking",
@@ -104,8 +148,9 @@ minetest.register_abm({
 	interval = 1,
 	chance = 1,
 	action = function(pos)
-		if absorb(pos) then
-			minetest.add_node(pos, {name = "mcl_sponges:sponge_wet"})
+		local absorbed, wet_sponge = absorb(pos)
+		if absorbed then
+			minetest.add_node(pos, {name = wet_sponge})
 		end
 	end,
 })

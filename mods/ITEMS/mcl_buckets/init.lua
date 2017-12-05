@@ -7,6 +7,7 @@ minetest.register_alias("bucket:bucket_lava", "mcl_buckets:bucket_lava")
 
 local mod_doc = minetest.get_modpath("doc")
 local mod_mcl_core = minetest.get_modpath("mcl_core")
+local mod_mclx_core = minetest.get_modpath("mclx_core")
 
 if mod_mcl_core then
 	minetest.register_craft({
@@ -47,9 +48,10 @@ end
 --   longdesc = long explanatory description (for help)
 --   usagehelp = short usage explanation (for help)
 --   extra_check = optional function(pos) which can returns false to avoid placing the liquid
+--   groups = optional list of item groups
 --
 -- This function can be called from any mod (which depends on this one)
-function mcl_buckets.register_liquid(source_place, source_take, itemname, inventory_image, name, longdesc, usagehelp, extra_check)
+function mcl_buckets.register_liquid(source_place, source_take, itemname, inventory_image, name, longdesc, usagehelp, extra_check, groups)
 	for i=1, #source_take do
 		mcl_buckets.liquids[source_take[i]] = {
 			source_place = source_place,
@@ -69,6 +71,7 @@ function mcl_buckets.register_liquid(source_place, source_take, itemname, invent
 			inventory_image = inventory_image,
 			stack_max = 16,
 			liquids_pointable = true,
+			groups = groups,
 			on_place = function(itemstack, user, pointed_thing)
 				-- Must be pointing to node
 				if pointed_thing.type ~= "node" then
@@ -203,6 +206,13 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 				new_bucket = ItemStack("mcl_buckets:bucket_water")
 			end
 			sound_take("mcl_core:water_source", pointed_thing.under)
+		elseif nn == "mcl_cauldrons:cauldron_3r" then
+			-- Take river water out of full cauldron
+			minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
+			if not minetest.settings:get_bool("creative_mode") then
+				new_bucket = ItemStack("mcl_buckets:bucket_river_water")
+			end
+			sound_take("mclx_core:river_water_source", pointed_thing.under)
 		end
 
 		-- Add liquid bucket and put it into inventory, if possible.
@@ -227,39 +237,6 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 })
 
 if mod_mcl_core then
-	-- Water bucket
-	mcl_buckets.register_liquid(
-		"mcl_core:water_source",
-		{"mcl_core:water_source"},
-		"mcl_buckets:bucket_water",
-		"bucket_water.png",
-		"Water Bucket",
-		"A bucket can be used to collect and release liquids. This one is filled with water.",
-		"Right-click on any block to empty the bucket and put a water source on this spot.",
-		function(pos)
-			local nn = minetest.get_node(pos).name
-			-- Pour water into cauldron
-			if (nn == "mcl_cauldrons:cauldron" or
-					nn == "mcl_cauldrons:cauldron_1" or
-					nn == "mcl_cauldrons:cauldron_2") then
-				-- Put water into cauldron
-				minetest.set_node(pos, {name="mcl_cauldrons:cauldron_3"})
-				sound_place("mcl_core:water_source", pos)
-				return false
-			elseif nn == "mcl_cauldrons:cauldron_3" then
-				sound_place("mcl_core:water_source", pos)
-				return false
-			-- Evaporate water if used in Nether (except on cauldron)
-			else
-				local dim = mcl_worlds.pos_to_dimension(pos)
-				if dim == "nether" then
-					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
-					return false
-				end
-			end
-		end
-	)
-
 	-- Lava bucket
 	mcl_buckets.register_liquid(
 		function(pos)
@@ -276,6 +253,70 @@ if mod_mcl_core then
 		"Lava Bucket",
 		"A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution.",
 		"Choose a place where you want to empty the bucket, then get in a safe spot somewhere above it. Be prepared to run away when something goes wrong as the lava will soon start to flow after placing. To empty the bucket (which places a lava source), right-click on your chosen place."
+	)
+
+	-- Water bucket
+	mcl_buckets.register_liquid(
+		"mcl_core:water_source",
+		{"mcl_core:water_source"},
+		"mcl_buckets:bucket_water",
+		"bucket_water.png",
+		"Water Bucket",
+		"A bucket can be used to collect and release liquids. This one is filled with water.",
+		"Right-click on any block to empty the bucket and put a water source on this spot.",
+		function(pos)
+			local nn = minetest.get_node(pos).name
+			-- Pour water into cauldron
+			if minetest.get_item_group(nn, "cauldron") ~= 0 then
+				-- Put water into cauldron
+				if nn ~= "mcl_cauldrons:cauldron_3" then
+					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_3"})
+				end
+				sound_place("mcl_core:water_source", pos)
+				return false
+			-- Evaporate water if used in Nether (except on cauldron)
+			else
+				local dim = mcl_worlds.pos_to_dimension(pos)
+				if dim == "nether" then
+					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
+					return false
+				end
+			end
+		end,
+		{ water_bucket = 1 }
+	)
+end
+
+if mod_mclx_core then
+	-- River water bucket
+	mcl_buckets.register_liquid(
+		"mclx_core:river_water_source",
+		{"mclx_core:river_water_source"},
+		"mcl_buckets:bucket_river_water",
+		"bucket_river_water.png",
+		"River Water Bucket",
+		"A bucket can be used to collect and release liquids. This one is filled with river water.",
+		"Right-click on any block to empty the bucket and put a river water source on this spot.",
+		function(pos)
+			local nn = minetest.get_node(pos).name
+			-- Pour into cauldron
+			if minetest.get_item_group(nn, "cauldron") ~= 0 then
+				-- Put water into cauldron
+				if nn ~= "mcl_cauldrons:cauldron_3r" then
+					minetest.set_node(pos, {name="mcl_cauldrons:cauldron_3r"})
+				end
+				sound_place("mcl_core:water_source", pos)
+				return false
+			else
+				-- Evaporate water if used in Nether (except on cauldron)
+				local dim = mcl_worlds.pos_to_dimension(pos)
+				if dim == "nether" then
+					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
+					return false
+				end
+			end
+		end,
+		{ water_bucket = 1 }
 	)
 end
 
