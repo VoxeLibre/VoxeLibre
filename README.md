@@ -154,6 +154,7 @@ Bonus features (not found in Minecraft 1.11):
     * Nether Brick Fence Gate
     * Red Nether Brick Fence
     * Red Nether Brick Fence Gate
+    * More slabs and stairs
 
 Technical differences from Minecraft:
 

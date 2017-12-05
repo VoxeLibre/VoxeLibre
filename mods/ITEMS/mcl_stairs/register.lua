@@ -121,12 +121,13 @@ mcl_stairs.register_slab("redsandstone", "group:redsandstone",
 		"Red Sandstone Slab",
 		mcl_sounds.node_sound_stone_defaults(), 2, "Double Red Sandstone Slab", "mcl_core:redsandstone")
 
-mcl_stairs.register_stair("stonebrick", "group:stonebrick",
+-- Intentionally not group:stonebrick because of mclx_stairs
+mcl_stairs.register_stair("stonebrick", "mcl_core:stonebrick",
 		{pickaxey=1, material_stone=1},
 		{"default_stone_brick.png"},
 		"Stone Bricks Stairs",
 		mcl_sounds.node_sound_stone_defaults(), 1.5, nil, "mcl_core:stonebrick")
-mcl_stairs.register_slab("stonebrick", "group:stonebrick",
+mcl_stairs.register_slab("stonebrick", "mcl_core:stonebrick",
 		{pickaxey=1, material_stone=1},
 		{"default_stone_brick.png"},
 		"Stone Bricks Slab",
