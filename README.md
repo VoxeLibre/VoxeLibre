@@ -150,6 +150,10 @@ Bonus features (not found in Minecraft 1.11):
 * In-game help system containing extensive help about gameplay basics, blocks, items and more
 * Temporary crafting recipes. They only exist to make some otherwise unaccessible items available when you're not in creative mode. These recipes will be removed as development goes on an more features become available
 * Saplings in chests (only in mapgen v6, because only 3 out of 6 tree species grow here)
+* New blocks:
+    * Nether Brick Fence Gate
+    * Red Nether Brick Fence
+    * Red Nether Brick Fence Gate
 
 Technical differences from Minecraft:
 
