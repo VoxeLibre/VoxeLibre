@@ -20,6 +20,8 @@ mcl_fences.register_fence_gate(
 	minetest.registered_nodes["mcl_nether:nether_brick"]._mcl_blast_resistance,
 	mcl_sounds.node_sound_stone_defaults(), "mcl_fences_nether_brick_fence_gate_open", "mcl_fences_nether_brick_fence_gate_close", 1, 1)
 
+-- Crafting
+
 minetest.register_craft({
 	output = 'mclx_fences:red_nether_brick_fence 6',
 	recipe = {
@@ -51,3 +53,12 @@ minetest.register_craft({
 	}
 })
 
+
+-- Aliases for mcl_supplemental
+minetest.register_alias("mcl_supplemental:red_nether_brick_fence", "mclx_fences:red_nether_brick_fence")
+
+minetest.register_alias("mcl_supplemental:nether_brick_fence_gate", "mclx_fences:nether_brick_fence_gate")
+minetest.register_alias("mcl_supplemental:nether_brick_fence_gate_open", "mclx_fences:nether_brick_fence_gate_open")
+
+minetest.register_alias("mcl_supplemental:red_nether_brick_fence_gate", "mclx_fences:red_nether_brick_fence_gate")
+minetest.register_alias("mcl_supplemental:red_nether_brick_fence_gate_open", "mclx_fences:red_nether_brick_fence_gate_open")
