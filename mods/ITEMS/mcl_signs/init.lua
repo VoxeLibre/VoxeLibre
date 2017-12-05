@@ -371,6 +371,10 @@ minetest.register_node("mcl_signs:wall_sign", {
 	_mcl_blast_resistance = 5,
 })
 
+local on_rotate
+if minetest.get_modpath("screwdriver") then
+	on_rotate = screwdriver.disallow
+end
 
 -- Standing sign nodes.
 -- 4 rotations at 0°, 22.5°, 45° and 67.5°.
@@ -400,6 +404,8 @@ local ssign = {
 	on_punch = function(pos, node, puncher)
 		update_sign(pos)
 	end,
+
+	on_rotate = on_rotate,
 	_mcl_hardness = 1,
 	_mcl_blast_resistance = 5,
 }

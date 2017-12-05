@@ -111,6 +111,11 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 		meta2:set_int("state", state2)
 	end
 
+	local on_rotate
+	if minetest.get_modpath("screwdriver") then
+		on_rotate = screwdriver.rotate_simple
+	end
+
 	local cgroups = table.copy(groups)
 	if cgroups == nil then cgroups = {} end
 	cgroups.fence_gate = 1
@@ -157,6 +162,7 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 				punch_gate(pos, node)
 			end),
 		}},
+		on_rotate = on_rotate,
 		sounds = sounds,
 		_mcl_blast_resistance = blast_resistance,
 		_mcl_hardness = hardness,
@@ -215,6 +221,7 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 				punch_gate(pos, node)
 			end),
 		}},
+		on_rotate = on_rotate,
 		on_rightclick = function(pos, node, clicker)
 			punch_gate(pos, node)
 		end,

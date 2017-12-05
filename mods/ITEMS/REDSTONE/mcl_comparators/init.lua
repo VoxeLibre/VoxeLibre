@@ -196,6 +196,11 @@ local groups = {
 	attached_node = 1,
 }
 
+local on_rotate
+if minetest.get_modpath("screwdriver") then
+	on_rotate = screwdriver.disallow
+end
+
 for _, mode in pairs{"comp", "sub"} do
 for _, state in pairs{mesecon.state.on, mesecon.state.off} do
 	local state_str = state_strs[state]
@@ -255,7 +260,8 @@ for _, state in pairs{mesecon.state.on, mesecon.state.off} do
 				rules = comparator_get_input_rules,
 				action_change = update_self,
 			}
-		}
+		},
+		on_rotate = on_rotate,
 	}
 
 	if mode == "comp" and state == mesecon.state.off then

@@ -1,6 +1,11 @@
 -- Heads system
 
 local function addhead(name, texture, desc, longdesc)
+	local on_rotate
+	if minetest.get_modpath("screwdriver") then
+		on_rotate = screwdriver.rotate_simple
+	end
+
 	minetest.register_node("mcl_heads:"..name, {
 		description = desc,
 		_doc_items_longdesc = longdesc,
@@ -37,6 +42,7 @@ local function addhead(name, texture, desc, longdesc)
 		sounds = mcl_sounds.node_sound_defaults({
 			footstep = {name="default_hard_footstep", gain=0.3}
 		}),
+		on_rotate = on_rotate,
 		_mcl_blast_resistance = 5,
 		_mcl_hardness = 1,
 	})

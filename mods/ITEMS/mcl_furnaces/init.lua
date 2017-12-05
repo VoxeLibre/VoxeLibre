@@ -281,6 +281,11 @@ local function furnace_node_timer(pos, elapsed)
 	return result
 end
 
+local on_rotate
+if minetest.get_modpath("screwdriver") then
+	on_rotate = screwdriver.rotate_simple
+end
+
 minetest.register_node("mcl_furnaces:furnace", {
 	description = "Furnace",
 	_doc_items_longdesc = "Furnaces cook or smelt several items, using a furnace fuel, into something else.",
@@ -336,6 +341,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 	on_receive_fields = receive_fields,
 	_mcl_blast_resistance = 17.5,
 	_mcl_hardness = 3.5,
+	on_rotate = on_rotate,
 })
 
 minetest.register_node("mcl_furnaces:furnace_active", {
@@ -378,6 +384,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	on_receive_fields = receive_fields,
 	_mcl_blast_resistance = 17.5,
 	_mcl_hardness = 3.5,
+	on_rotate = on_rotate,
 })
 
 minetest.register_craft({

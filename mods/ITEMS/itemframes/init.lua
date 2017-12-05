@@ -87,6 +87,11 @@ local drop_item = function(pos, node, meta)
 	remove_item(pos, node)
 end
 
+local on_rotate
+if minetest.get_modpath("screwdriver") then
+	on_rotate = screwdriver.disallow
+end
+
 minetest.register_node("itemframes:frame",{
 	description = "Item Frame",
 	_doc_items_longdesc = "Item frames are decorative blocks in which items can be placed.",
@@ -138,6 +143,7 @@ minetest.register_node("itemframes:frame",{
 		local meta = minetest.get_meta(pos)
 		return player:get_player_name() == meta:get_string("owner")
 	end,
+	on_rotate = on_rotate,
 })
 
 minetest.register_craft({

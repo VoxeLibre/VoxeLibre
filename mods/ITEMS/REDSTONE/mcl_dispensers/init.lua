@@ -26,6 +26,11 @@ local setup_dispenser = function(pos)
 	inv:set_size("main", 9)
 end
 
+local on_rotate
+if minetest.get_modpath("screwdriver") then
+	on_rotate = screwdriver.rotate_simple
+end
+
 -- Shared core definition table
 local dispenserdef = {
 	is_ground_content = false,
@@ -363,7 +368,8 @@ local dispenserdef = {
 			end
 		end,
 		rules = mesecon.rules.alldirs,
-	}}
+	}},
+	on_rotate = on_rotate,
 }
 
 -- Horizontal dispenser

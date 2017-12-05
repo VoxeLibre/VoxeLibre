@@ -95,6 +95,11 @@ else
 	help = false
 end
 
+local on_rotate
+if minetest.get_modpath("screwdriver") then
+	on_rotate = screwdriver.disallow
+end
+
 minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 	description = "Redstone Repeater",
 	inventory_image = icon,
@@ -156,7 +161,8 @@ minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 			rules = delayer_get_input_rules,
 			action_on = delayer_activate
 		}
-	}
+	},
+	on_rotate = on_rotate,
 })
 
 
@@ -215,7 +221,8 @@ minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
 			rules = delayer_get_input_rules,
 			action_off = delayer_deactivate
 		}
-	}
+	},
+	on_rotate = on_rotate,
 })
 end
 

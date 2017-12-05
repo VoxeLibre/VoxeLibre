@@ -26,6 +26,11 @@ local setup_dropper = function(pos)
 	inv:set_size("main", 9)
 end
 
+local on_rotate
+if minetest.get_modpath("screwdriver") then
+	on_rotate = screwdriver.rotate_simple
+end
+
 -- Shared core definition table
 local dropperdef = {
 	is_ground_content = false,
@@ -91,7 +96,8 @@ local dropperdef = {
 			end
 		end,
 		rules = mesecon.rules.alldirs,
-	}}
+	}},
+	on_rotate = on_rotate,
 }
 
 -- Horizontal dropper

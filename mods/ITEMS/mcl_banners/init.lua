@@ -96,6 +96,11 @@ local make_banner_texture = function(base_color, layers)
 	end
 end
 
+local on_rotate
+if minetest.get_modpath("screwdriver") then
+	on_rotate = screwdriver.disallow
+end
+
 -- Banner nodes.
 -- These are an invisible nodes which are only used to destroy the banner entity.
 -- All the important banner information (such as color) is stored in the entity.
@@ -147,6 +152,7 @@ minetest.register_node("mcl_banners:hanging_banner", {
 	on_destruct = on_destruct_hanging_banner,
 	_mcl_hardness = 1,
 	_mcl_blast_resistance = 5,
+	on_rotate = on_rotate,
 })
 
 for colorid, colortab in pairs(mcl_banners.colors) do

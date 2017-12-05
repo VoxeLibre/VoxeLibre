@@ -7,6 +7,12 @@ else
 	drop = "mcl_chests:"..drop
 end
 
+local no_rotate, simple_rotate
+if minetest.get_modpath("screwdriver") then
+	no_rotate = screwdriver.disallow
+	simple_rotate = screwdriver.rotate_simple
+end
+
 minetest.register_node("mcl_chests:"..basename, {
 	description = desc,
 	_doc_items_longdesc = longdesc,
@@ -116,6 +122,7 @@ minetest.register_node("mcl_chests:"..basename, {
 		end
 	end,
 	mesecons = mesecons,
+	on_rotate = simple_rotate,
 })
 
 minetest.register_node("mcl_chests:"..basename.."_left", {
@@ -230,6 +237,7 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		end
 	end,
 	mesecons = mesecons,
+	on_rotate = no_rotate,
 })
 
 minetest.register_node("mcl_chests:"..basename.."_right", {
@@ -345,6 +353,7 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		end
 	end,
 	mesecons = mesecons,
+	on_rotate = no_rotate,
 })
 
 if minetest.get_modpath("doc") then
@@ -546,6 +555,7 @@ minetest.register_node("mcl_chests:ender_chest", {
 	end,
 	_mcl_blast_resistance = 3000,
 	_mcl_hardness = 22.5,
+	on_rotate = simple_rotate,
 })
 
 minetest.register_on_joinplayer(function(player)

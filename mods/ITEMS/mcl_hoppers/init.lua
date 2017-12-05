@@ -143,6 +143,11 @@ Hoppers interact with containers the following way:
 	_mcl_hardness = 3,
 })
 
+local on_rotate
+if minetest.get_modpath("screwdriver") then
+	on_rotate = screwdriver.rotate_simple
+end
+
 minetest.register_node("mcl_hoppers:hopper_side", {
 	description = "Hopper (Side)",
 	_doc_items_create_entry = false,
@@ -213,6 +218,7 @@ minetest.register_node("mcl_hoppers:hopper_side", {
 		minetest.log("action", player:get_player_name()..
 				" takes stuff from mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
+	on_rotate = on_rotate,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 24,
 	_mcl_hardness = 3,

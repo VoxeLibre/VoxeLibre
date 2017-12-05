@@ -18,6 +18,9 @@ local anvildef = {
 	_mcl_blast_resistance = 6000,
 	_mcl_hardness = 5,
 }
+if minetest.get_modpath("screwdriver") then
+	anvildef.on_rotate = screwdriver.rotate_simple
+end
 
 local anvildef0 = table.copy(anvildef)
 anvildef0.description = "Anvil"

@@ -44,6 +44,10 @@ minetest.register_craft({
 	cooktime = 10,
 })
 
+local on_rotate
+if minetest.get_modpath("screwdriver") then
+	on_rotate = screwdriver.rotate_simple
+end
 
 for _, row in ipairs(block.dyes) do
 	local name = row[1]
@@ -124,6 +128,7 @@ for _, row in ipairs(block.dyes) do
 		sounds = mcl_sounds.node_sound_stone_defaults(),
 		_mcl_blast_resistance = 7,
 		_mcl_hardness = 1.4,
+		on_rotate = on_rotate,
 	})
 
 	-- Crafting recipes

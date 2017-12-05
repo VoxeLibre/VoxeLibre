@@ -17,6 +17,11 @@ end
 
 ---- Trapdoor ----
 
+local on_rotate
+if minetest.get_modpath("screwdriver") then
+	on_rotate = screwdriver.rotate_simple
+end
+
 function mcl_doors:register_trapdoor(name, def)
 	local groups = table.copy(def.groups)
 	if groups == nil then
@@ -123,6 +128,7 @@ function mcl_doors:register_trapdoor(name, def)
 			return minetest.item_place(itemstack, placer, pointed_thing, param2)
 		end,
 		on_rightclick = on_rightclick,
+		on_rotate = on_rotate,
 	})
 
 	-- Open trapdoor
@@ -156,6 +162,7 @@ function mcl_doors:register_trapdoor(name, def)
 				punch(pos)
 			end),
 		}},
+		on_rotate = on_rotate,
 	})
 
 	if minetest.get_modpath("doc") then
