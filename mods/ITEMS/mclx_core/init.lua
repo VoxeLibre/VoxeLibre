@@ -10,7 +10,7 @@ source._doc_items_longdesc = "River water has the same properties as water, but 
 source._doc_items_entry_name = "River Water"
 -- Auto-expose entry only in valleys mapgen
 source._doc_items_hidden = minetest.get_mapgen_setting("mg_name") ~= "valleys"
-source.post_effect_color = {a=204, r=0x2c, g=0x88, b=0x8c}
+source.post_effect_color = {a=192, r=0x2c, g=0x88, b=0x8c}
 source.tiles = {
 	{name="default_river_water_source_animated.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=5.0}}
 }
@@ -30,7 +30,7 @@ flowing.liquid_alternative_flowing = "mclx_core:river_water_flowing"
 flowing.liquid_alternative_source = "mclx_core:river_water_source"
 flowing.liquid_renewable = false
 flowing.tiles = {"default_river_water_flowing_animated.png^[verticalframe:64:0"}
-flowing.post_effect_color = {a=204, r=0x2c, g=0x88, b=0x8c}
+flowing.post_effect_color = {a=192, r=0x2c, g=0x88, b=0x8c}
 flowing.special_tiles = {
 	{
 		image="default_river_water_flowing_animated.png",
