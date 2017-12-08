@@ -1,3 +1,9 @@
+local no_rotate, simple_rotate
+if minetest.get_modpath("screwdriver") then
+	no_rotate = screwdriver.disallow
+	simple_rotate = screwdriver.rotate_simple
+end
+
 -- This is a helper function to register both chests and trapped chests. Trapped chests will make use of the additional parameters
 local register_chest = function(basename, desc, longdesc, usagehelp, hidden, mesecons, on_rightclick_addendum, on_rightclick_addendum_left, on_rightclick_addendum_right, drop)
 
@@ -5,12 +11,6 @@ if not drop then
 	drop = "mcl_chests:"..basename
 else
 	drop = "mcl_chests:"..drop
-end
-
-local no_rotate, simple_rotate
-if minetest.get_modpath("screwdriver") then
-	no_rotate = screwdriver.disallow
-	simple_rotate = screwdriver.rotate_simple
 end
 
 minetest.register_node("mcl_chests:"..basename, {
