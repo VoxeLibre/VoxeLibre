@@ -1,31 +1,29 @@
-mcl_weather = {
-  -- weather states, 'none' is default, other states depends from active mods
-  state = "none",
+-- weather states, 'none' is default, other states depends from active mods
+mcl_weather.state = "none"
   
-  -- player list for saving player meta info
-  players = {},
+-- player list for saving player meta info
+mcl_weather.players = {}
   
-  -- default weather recalculation interval
-  check_interval = 300,
+-- default weather recalculation interval
+mcl_weather.check_interval = 300
   
-  -- weather min duration
-  min_duration = 600,
+-- weather min duration
+mcl_weather.min_duration = 600
   
-  -- weather max duration
-  max_duration = 9000,
-  
-  -- weather calculated end time
-  end_time = nil,
-  
-  -- registered weathers
-  reg_weathers = {},
+-- weather max duration
+mcl_weather.max_duration = 9000
 
-  -- automaticly calculates intervals and swap weathers 
-  auto_mode = true,
+-- weather calculated end time
+mcl_weather.end_time = nil
   
-  -- global flag to disable/enable ABM logic. 
-  allow_abm = true,
-}
+-- registered weathers
+mcl_weather.reg_weathers = {}
+
+-- automaticly calculates intervals and swap weathers 
+mcl_weather.auto_mode = true
+  
+-- global flag to disable/enable ABM logic. 
+mcl_weather.allow_abm = true
 
 mcl_weather.reg_weathers["none"] = {
   min_duration = mcl_weather.min_duration,
@@ -240,9 +238,9 @@ end
 local load_weather = function()
 	local weather = storage:get_string("mcl_weather_state")
 	if weather and weather ~= "" then
-		mcl_weather.change_weather(weather, mcl_weather.end_time)
 		mcl_weather.state = weather
 		mcl_weather.end_time = storage:get_int("mcl_weather_end_time")
+		mcl_weather.change_weather(weather, mcl_weather.end_time)
 		if type(mcl_weather.end_time) ~= "number" then
 			-- Fallback in case of corrupted end time
 			mcl_weather.end_time = mcl_weather.min_duration
