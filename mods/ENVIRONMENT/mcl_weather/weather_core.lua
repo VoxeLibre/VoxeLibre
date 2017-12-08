@@ -38,6 +38,15 @@ mcl_weather.reg_weathers["none"] = {
   clear = function() end,
 }
 
+local storage = minetest.get_mod_storage()
+-- Save weather into mod storage, so it can be loaded after restarting the server
+local save_weather = function()
+	storage:set_string("mcl_weather_state", mcl_weather.state)
+	storage:set_int("mcl_weather_end_time", mcl_weather.end_time)
+	minetest.log("verbose", "[mcl_weather] Weather data saved: state="..mcl_weather.state.." end_time="..mcl_weather.end_time)
+end
+minetest.register_on_shutdown(save_weather)
+
 mcl_weather.get_rand_end_time = function(min_duration, max_duration)
   local r
   if min_duration ~= nil and max_duration ~= nil then
@@ -147,15 +156,23 @@ mcl_weather.set_random_weather = function(weather_name, weather_meta)
   end
 end
 
-mcl_weather.change_weather = function(new_weather)
+-- Change weather to new_weather.
+-- * explicit_end_time is OPTIONAL. If specified, explicitly set the
+--   gametime (minetest.get_gametime) in which the weather ends.
+mcl_weather.change_weather = function(new_weather, explicit_end_time)
   if (mcl_weather.reg_weathers ~= nil and mcl_weather.reg_weathers[new_weather] ~= nil) then
     if (mcl_weather.state ~= nil and mcl_weather.reg_weathers[mcl_weather.state] ~= nil) then
       mcl_weather.reg_weathers[mcl_weather.state].clear()
     end
     mcl_weather.state = new_weather
     local weather_meta = mcl_weather.reg_weathers[mcl_weather.state]
-    mcl_weather.end_time = mcl_weather.get_rand_end_time(weather_meta.min_duration, weather_meta.max_duration)
+    if explicit_end_time then
+        mcl_weather.end_time = explicit_end_time
+    else
+        mcl_weather.end_time = mcl_weather.get_rand_end_time(weather_meta.min_duration, weather_meta.max_duration)
+    end
     mcl_weather.skycolor.update_sky_color()
+    save_weather()
     return true
   end
   return false
@@ -220,3 +237,20 @@ if weather_allow_abm ~= nil and weather_allow_abm == false then
 end 
 
 
+local load_weather = function()
+	local weather = storage:get_string("mcl_weather_state")
+	if weather and weather ~= "" then
+		mcl_weather.change_weather(weather, mcl_weather.end_time)
+		mcl_weather.state = weather
+		mcl_weather.end_time = storage:get_int("mcl_weather_end_time")
+		if type(mcl_weather.end_time) ~= "number" then
+			-- Fallback in case of corrupted end time
+			mcl_weather.end_time = mcl_weather.min_duration
+		end
+		minetest.log("action", "[mcl_weather] Weather restored.")
+	else
+		minetest.log("action", "[mcl_weather] No weather data found. Starting with clear weather.")
+	end
+end
+
+load_weather()
