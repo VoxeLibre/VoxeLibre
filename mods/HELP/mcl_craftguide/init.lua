@@ -530,6 +530,8 @@ mt.register_on_player_receive_fields(function(player, formname, fields)
 		data.pagenum = 1
 		data.iX = data.iX - (fields.size_dec and 1 or -1)
 		craftguide:get_formspec(player_name)
+	elseif (fields.quit) then
+		datas[player_name] = nil
 	else
 		for item in pairs(fields) do
 		if item:find(":") then
@@ -596,4 +598,8 @@ mt.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.__mcl_craftguide then
 		craftguide:on_use(player)
 	end
+end)
+
+mt.register_on_leaveplayer(function(player)
+	datas[player:get_player_name()] = nil
 end)
