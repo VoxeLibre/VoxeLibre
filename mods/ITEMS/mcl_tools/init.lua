@@ -16,7 +16,7 @@
 -- TODO: Add legacy support for Minetest Game groups like crumbly, snappy, cracky, etc. for all tools
 
 -- The hand
-local groupcaps
+local groupcaps, range
 if minetest.settings:get_bool("creative_mode") then
 	-- Instant breaking in creative mode
 	groupcaps = {
@@ -26,10 +26,12 @@ if minetest.settings:get_bool("creative_mode") then
 	for k,v in pairs(mcl_autogroup.creativetimes) do
 		groupcaps[k] = { times = v, uses = 0 }
 	end
+	hand_range = 10
 else
 	groupcaps = {
 		handy_dig = {times=mcl_autogroup.digtimes.handy_dig, uses=0},
 	}
+	hand_range = 4
 end
 minetest.register_item(":", {
 	type = "none",
@@ -38,7 +40,7 @@ minetest.register_item(":", {
 	wield_scale = {x=1.0,y=1.0,z=2.0},
 	-- According to Minecraft Wiki, the exact range is 3.975.
 	-- Minetest seems to only support whole numbers, so we use 4.
-	range = 4,
+	range = hand_range,
 	tool_capabilities = {
 		full_punch_interval = 0.25,
 		max_drop_level = 0,
