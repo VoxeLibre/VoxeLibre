@@ -80,6 +80,22 @@ end
 function mcl_stairs.register_stair(subname, recipeitem, groups, images, description, sounds, hardness)
 	groups.stair = 1
 	groups.building_block = 1
+
+	if recipeitem then
+		if not images then
+			images = minetest.registered_items[recipeitem].tiles
+		end
+		if not groups then
+			groups = minetest.registered_items[recipeitem].groups
+		end
+		if not sounds then
+			sounds = minetest.registered_items[recipeitem].sounds
+		end
+		if not hardness then
+			hardness = minetest.registered_items[recipeitem]._mcl_hardness
+		end
+	end
+
 	minetest.register_node(":mcl_stairs:stair_" .. subname, {
 		description = description,
 		_doc_items_longdesc = "Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the bottom or at the upper half of the side of a block will be placed upside down.",
@@ -151,6 +167,21 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 	local lower_slab = "mcl_stairs:slab_"..subname
 	local upper_slab = lower_slab.."_top"
 	local double_slab = lower_slab.."_double"
+
+	if recipeitem then
+		if not images then
+			images = minetest.registered_items[recipeitem].tiles
+		end
+		if not groups then
+			groups = minetest.registered_items[recipeitem].groups
+		end
+		if not sounds then
+			sounds = minetest.registered_items[recipeitem].sounds
+		end
+		if not hardness then
+			hardness = minetest.registered_items[recipeitem]._mcl_hardness
+		end
+	end
 
 	-- Automatically generate double slab description
 	if not double_description then
