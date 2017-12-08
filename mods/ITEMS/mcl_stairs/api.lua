@@ -193,9 +193,6 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 					not ((dir.y >= 0 and minetest.get_item_group(under.name, "slab_top") == 1) or
 					(dir.y <= 0 and minetest.get_item_group(under.name, "slab_top") == 0)) then
 
-				if not recipeitem then
-					return itemstack
-				end
 				local player_name = placer:get_player_name()
 				if minetest.is_protected(pointed_thing.under, player_name) and not
 						minetest.check_player_privs(placer, "protection_bypass") then
