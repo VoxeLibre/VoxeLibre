@@ -746,6 +746,7 @@ local function place_corridors(main_cave_coords, psra)
 	if not IsGround(main_cave_coords) then
 		return
 	end
+	local center_node = minetest.get_node(main_cave_coords)
 
 	-- Determine if this corridor system is “damaged” (some rails removed) and to which extent
 	local damage = 0
@@ -769,25 +770,33 @@ local function place_corridors(main_cave_coords, psra)
 	local xs = pr:next(0, 2) < 1
 	local zs = pr:next(0, 2) < 1;
 
-	-- Select random wood type (found in gameconfig.lua)
-	local rnd = pr:next(1,1000)
+	-- Get wood and fence post types, using gameconfig.
+	local wood, post
+	if tsm_railcorridors.nodes.corridor_woods_function then
+		-- Get wood type by gameconfig function
+		wood, post = tsm_railcorridors.nodes.corridor_woods_function(main_cave_coords, center_node)
+	else
+		-- Select random wood type (found in gameconfig.lua)
+		local rnd = pr:next(1,1000)
+		local woodtype = 1
+		local accumulated_chance = 0
 
-	local woodtype = 1
-	local accumulated_chance = 0
-	for w=1, #tsm_railcorridors.nodes.corridor_woods do
-		local woodtable = tsm_railcorridors.nodes.corridor_woods[w]
-		accumulated_chance = accumulated_chance + woodtable.chance
-		if accumulated_chance > 1000 then
-			minetest.log("warning", "[tsm_railcorridors] Warning: Wood chances add up to over 100%!")
-			break
+		for w=1, #tsm_railcorridors.nodes.corridor_woods do
+			local woodtable = tsm_railcorridors.nodes.corridor_woods[w]
+			accumulated_chance = accumulated_chance + woodtable.chance
+			if accumulated_chance > 1000 then
+				minetest.log("warning", "[tsm_railcorridors] Warning: Wood chances add up to over 100%!")
+				break
+			end
+			if rnd <= accumulated_chance then
+				woodtype = w
+				break
+			end
 		end
-		if rnd <= accumulated_chance then
-			woodtype = w
-			break
-		end
+		wood = tsm_railcorridors.nodes.corridor_woods[woodtype].wood
+		post = tsm_railcorridors.nodes.corridor_woods[woodtype].post
 	end
-	local wood = tsm_railcorridors.nodes.corridor_woods[woodtype].wood
-	local post = tsm_railcorridors.nodes.corridor_woods[woodtype].post
+
 	start_corridor(main_cave_coords, "x", xs, pr:next(way_min,way_max), psra, wood, post, damage, false)
 	start_corridor(main_cave_coords, "z", zs, pr:next(way_min,way_max), psra, wood, post, damage, false)
 	-- Auch mal die andere Richtung?

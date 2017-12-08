@@ -12,15 +12,30 @@ tsm_railcorridors.nodes = {
 	torch_wall = "mcl_torches:torch_wall",
 	cobweb = "mcl_core:cobweb",
 	spawner = "mcl_mobspawners:spawner",
+}
 
+local mg_name = minetest.get_mapgen_setting("mg_name")
+
+if mg_name == "v6" then
+	-- In v6, wood is chosen randomly.
 	--[[ Wood types for the corridors. Corridors are made out of full wood blocks
 	and posts. For each corridor system, a random wood type is chosen with the chance
 	specified in per mille. ]]
-	corridor_woods = {
+	tsm_railcorridors.nodes.corridor_woods = {
 		{ wood = "mcl_core:wood", post = "mcl_fences:fence", chance = 900},
 		{ wood = "mcl_core:darkwood", post = "mcl_fences:dark_oak_fence", chance = 100},
-	},
-}
+	}
+else
+	-- This generates dark oak wood in mesa biomes and oak wood everywhere else.
+	tsm_railcorridors.nodes.corridor_woods_function = function(pos, node)
+		if minetest.get_item_group(node.name, "hardened_clay") ~= 0 then
+			return "mcl_core:darkwood", "mcl_fences:dark_oak_fence"
+		else
+			return "mcl_core:wood", "mcl_fences:fence"
+		end
+	end
+end
+	
 
 -- TODO: Use minecart with chest instead of normal minecart
 tsm_railcorridors.carts = { "mcl_minecarts:minecart" }
@@ -40,8 +55,6 @@ end
 function tsm_railcorridors.on_construct_spawner(pos)
 	mcl_mobspawners.setup_spawner(pos, "mobs_mc:cave_spider")
 end
-
-local mg_name = minetest.get_mapgen_setting("mg_name")
 
 -- MineClone 2's treasure function. Gets all treasures for a single chest.
 -- Based on information from Minecraft Wiki.
