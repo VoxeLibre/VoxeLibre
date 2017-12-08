@@ -74,6 +74,18 @@ function mcl_doors:register_trapdoor(name, def)
 
 	-- Closed trapdoor
 
+	local tile_front = def.tile_front
+	local tile_side = def.tile_side
+	if not tile_side then
+		tile_side = tile_front
+	end
+	local tiles_closed = {
+		tile_front,
+		tile_front .. "^[transformFY",
+		tile_side .. "^[transform6", tile_side .. "^[transform6",
+		tile_side .. "^[transform6", tile_side .. "^[transform6",
+	}
+
 	local groups_closed = groups
 	groups_closed.trapdoor = 1
 	minetest.register_node(name, {
@@ -81,7 +93,7 @@ function mcl_doors:register_trapdoor(name, def)
 		_doc_items_longdesc = longdesc,
 		_doc_items_usagehelp = usagehelp,
 		drawtype = "nodebox",
-		tiles = def.tiles,
+		tiles = tiles_closed,
 		inventory_image = def.inventory_image,
 		wield_image = def.wield_image,
 		is_ground_content = false,
@@ -134,10 +146,20 @@ function mcl_doors:register_trapdoor(name, def)
 	-- Open trapdoor
 
 	local groups_open = table.copy(groups)
+
+	local tiles_open = {
+		tile_side,
+		tile_side .. "^[transformR180",
+		tile_side .. "^[transformR270",
+		tile_side .. "^[transformR90",
+		tile_front .. "^[transform46",
+		tile_front .. "^[transformFY",
+	}
+
 	groups_open.trapdoor = 2
 	minetest.register_node(name.."_open", {
 		drawtype = "nodebox",
-		tiles = def.tiles,
+		tiles = tiles_open,
 		is_ground_content = false,
 		paramtype = "light",
 		paramtype2 = "facedir",
