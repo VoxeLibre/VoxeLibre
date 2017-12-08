@@ -204,12 +204,12 @@ minetest.register_craft({
 --[[ Trapdoors ]]
 local woods = {
 	-- id, desc, texture, craftitem
-	{ "trapdoor", "Oak Trapdoor", "doors_trapdoor.png", "mcl_core:wood" },
-	{ "acacia_trapdoor", "Acacia Trapdoor", "mcl_doors_trapdoor_acacia.png", "mcl_core:acaciawood" },
-	{ "birch_trapdoor", "Birch Trapdoor", "mcl_doors_trapdoor_birch.png", "mcl_core:birchwood" },
-	{ "spruce_trapdoor", "Spruce Trapdoor", "mcl_doors_trapdoor_spruce.png", "mcl_core:sprucewood" },
-	{ "dark_oak_trapdoor", "Dark Oak Trapdoor", "mcl_doors_trapdoor_dark_oak.png", "mcl_core:darkwood" },
-	{ "jungle_trapdoor", "Jungle Trapdoor", "mcl_doors_trapdoor_jungle.png", "mcl_core:junglewood" },
+	{ "trapdoor", "Oak Trapdoor", "doors_trapdoor.png", "doors_trapdoor_side.png", "mcl_core:wood" },
+	{ "acacia_trapdoor", "Acacia Trapdoor", "mcl_doors_trapdoor_acacia.png", "mcl_doors_trapdoor_acacia_side.png", "mcl_core:acaciawood" },
+	{ "birch_trapdoor", "Birch Trapdoor", "mcl_doors_trapdoor_birch.png", "mcl_doors_trapdoor_birch_side.png", "mcl_core:birchwood" },
+	{ "spruce_trapdoor", "Spruce Trapdoor", "mcl_doors_trapdoor_spruce.png", "mcl_doors_trapdoor_spruce_side.png", "mcl_core:sprucewood" },
+	{ "dark_oak_trapdoor", "Dark Oak Trapdoor", "mcl_doors_trapdoor_dark_oak.png", "mcl_doors_trapdoor_dark_oak_side.png", "mcl_core:darkwood" },
+	{ "jungle_trapdoor", "Jungle Trapdoor", "mcl_doors_trapdoor_jungle.png", "mcl_doors_trapdoor_jungle_side.png", "mcl_core:junglewood" },
 }
 
 for w=1, #woods do
@@ -218,7 +218,7 @@ for w=1, #woods do
 		_doc_items_longdesc = "Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.",
 		_doc_items_usagehelp = "To open or close the trapdoor, rightclick it or send a redstone signal to it.",
 		tile_front = woods[w][3],
-		tile_side = woods[w][3],
+		tile_side = woods[w][4],
 		wield_image = woods[w][3],
 		groups = {handy=1,axey=1, mesecon_effector_on=1, material_wood=1},
 		_mcl_hardness = 3,
@@ -229,8 +229,8 @@ for w=1, #woods do
 	minetest.register_craft({
 		output = "mcl_doors:"..woods[w][1].." 2",
 		recipe = {
-			{woods[w][4], woods[w][4], woods[w][4]},
-			{woods[w][4], woods[w][4], woods[w][4]},
+			{woods[w][5], woods[w][5], woods[w][5]},
+			{woods[w][5], woods[w][5], woods[w][5]},
 		}
 	})
 
@@ -245,7 +245,7 @@ mcl_doors:register_trapdoor("mcl_doors:iron_trapdoor", {
 	description = "Iron Trapdoor",
 	_doc_items_longdesc = "Iron trapdoors are horizontal barriers which can only be opened and closed by redstone signals, but not by hand. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.",
 	tile_front = "doors_trapdoor_steel.png",
-	tile_side = "doors_trapdoor_steel.png",
+	tile_side = "doors_trapdoor_steel_side.png",
 	wield_image = "doors_trapdoor_steel.png",
 	groups = {pickaxey=1, mesecon_effector_on=1},
 	_mcl_hardness = 5,

@@ -82,8 +82,8 @@ function mcl_doors:register_trapdoor(name, def)
 	local tiles_closed = {
 		tile_front,
 		tile_front .. "^[transformFY",
-		tile_side .. "^[transform6", tile_side .. "^[transform6",
-		tile_side .. "^[transform6", tile_side .. "^[transform6",
+		tile_side, tile_side,
+		tile_side, tile_side,
 	}
 
 	local groups_closed = groups
