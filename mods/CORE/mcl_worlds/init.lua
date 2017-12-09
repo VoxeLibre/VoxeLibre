@@ -16,7 +16,10 @@ function mcl_worlds.is_in_void(pos)
 		if pos.y < mcl_vars.mg_overworld_min and pos.y > mcl_vars.mg_end_max then
 			void_deadly = pos.y < mcl_vars.mg_overworld_min - deadly_tolerance
 		elseif pos.y < mcl_vars.mg_end_min and pos.y > mcl_vars.mg_nether_max then
-			void_deadly = pos.y < mcl_vars.mg_end_min - deadly_tolerance
+			-- The void between End and Nether. Like usual, but here, the void
+			-- *above* the Nether also has a small tolerance area, so player
+			-- can fly above the Nether without getting hurt instantly.
+			void_deadly = (pos.y < mcl_vars.mg_end_min - deadly_tolerance) and (pos.y > mcl_vars.mg_nether_max + deadly_tolerance)
 		elseif pos.y < mcl_vars.mg_nether_min then
 			void_deadly = pos.y < mcl_vars.mg_nether_min - deadly_tolerance
 		end
