@@ -275,9 +275,8 @@ minetest.register_abm({
 local rotate_frame, rotate_frame_eye
 
 if minetest.get_modpath("screwdriver") then
-	rotate_frame = screwdriver.rotate_simple
-	-- TODO: Make the other node rotatable as well.
-	-- Problem: We need to capture edge cases and update the portal accordingly.
+	-- Intentionally not rotatable
+	rotate_frame = false
 	rotate_frame_eye = false
 end
 
