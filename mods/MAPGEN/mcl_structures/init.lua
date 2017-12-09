@@ -40,6 +40,8 @@ mcl_structures.call_struct = function(pos, struct_style, rotation)
 		return mcl_structures.generate_fossil(pos, rotation)
 	elseif struct_style == "end_exit_portal" then
 		return mcl_structures.generate_end_exit_portal(pos, rotation)
+	elseif struct_style == "end_portal_room" then
+		return mcl_structures.generate_end_portal_room(pos, rotation)
 	end
 end
 
@@ -123,6 +125,68 @@ mcl_structures.generate_end_exit_portal = function(pos)
 	return minetest.place_schematic(pos, path, "0", nil, true)
 end
 
+mcl_structures.generate_end_portal_room = function(pos)
+	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_portal_room_simple.mts"
+	local size = {x=13, y=8, z=13}
+	local ret = minetest.place_schematic(pos, path, "0", nil, true)
+	if ret == nil then
+		return ret
+	end
+
+	local area_start, area_end = {x=pos.x-size.x, y=pos.y, z=pos.z-size.z}, vector.add(pos, size)
+	-- Find and setup spawner with silverfish
+	local spawners = minetest.find_nodes_in_area(area_start, area_end, "mcl_mobspawners:spawner")
+	for s=1, #spawners do
+		local meta = minetest.get_meta(spawners[s])
+		mcl_mobspawners.setup_spawner(spawners[s], "mobs_mc:silverfish")
+	end
+
+	-- Shuffle stone brick types
+	local bricks = minetest.find_nodes_in_area(area_start, area_end, "mcl_core:stonebrick")
+	-- FIXME: Use better seeding
+	local pr = PseudoRandom(math.random(0, 4294967295))
+	for b=1, #bricks do
+		local r_bricktype = pr:next(1, 100)
+		local r_infested = pr:next(1, 100)
+		local bricktype
+		if r_infested <= 8 then
+			if r_bricktype <= 10 then
+				bricktype = "mcl_monster_eggs:monster_egg_stonebrickmossy"
+			elseif r_bricktype <= 20 then
+				bricktype = "mcl_monster_eggs:monster_egg_stonebrickcracked"
+			else
+				bricktype = "mcl_monster_eggs:monster_egg_stonebrick"
+			end
+		else
+			if r_bricktype <= 10 then
+				bricktype = "mcl_core:stonebrickmossy"
+			elseif r_bricktype <= 20 then
+				bricktype = "mcl_core:stonebrickcracked"
+			end
+		end
+		if bricktype ~= nil then
+			minetest.set_node(bricks[b], { name = bricktype })
+		end
+	end
+
+	-- Randomly add ender eyes into end portal frames, but never fill the entire frame
+	local frames = minetest.find_nodes_in_area(area_start, area_end, "mcl_portals:end_portal_frame")
+	local eyes = 0
+	for f=1, #frames do
+		local r_eye = pr:next(1, 10)
+		if r_eye == 1 then
+			eyes = eyes + 1
+			if eyes < #frames then
+				local frame_node = minetest.get_node(frames[f])
+				frame_node.name = "mcl_portals:end_portal_frame_eye"
+				minetest.set_node(frames[f], frame_node)
+			end
+		end
+	end
+
+	return ret
+end
+
 mcl_structures.generate_desert_temple = function(pos)
 	-- No Generating for the temple ... Why using it ? No Change
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_desert_temple.mts"
@@ -201,7 +265,7 @@ end
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
-	params = "desert_temple | desert_well | igloo | village | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal",
+	params = "desert_temple | desert_well | igloo | village | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_portal_room",
 	description = "Generate a pre-defined structure near your position.",
 	privs = {debug = true},
 	func = function(name, param)
@@ -240,6 +304,9 @@ minetest.register_chatcommand("spawnstruct", {
 		elseif param == "end_exit_portal" then
 			mcl_structures.generate_end_exit_portal(pos)
 			minetest.chat_send_player(name, "End exit portal placed.")
+		elseif param == "end_portal_room" then
+			mcl_structures.generate_end_portal_room(pos)
+			minetest.chat_send_player(name, "End portal room placed.")
 		elseif param == "" then
 			minetest.chat_send_player(name, "Error: No structure type given. Please use “/spawnstruct <type>”.")
 			errord = true

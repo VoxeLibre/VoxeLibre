@@ -10,3 +10,5 @@ mcl_chests
 mcl_inventory
 mesecons_pressureplates
 mcl_tnt
+mcl_mobspawners
+mcl_portals
