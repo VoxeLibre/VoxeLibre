@@ -130,7 +130,7 @@ minetest.register_globalstep(function(dtime)
 		-- Check privilege, too
 		and (not minetest.check_player_privs(name, {noclip = true})) then
 			if player:get_hp() > 0 then
-				mcl_death_messages.player_damage(player, string.format("%s suffocated to death.", player:get_player_name()))
+				mcl_death_messages.player_damage(player, string.format("%s suffocated to death.", name))
 				player:set_hp(player:get_hp() - 1)
 			end
 		end
@@ -146,8 +146,8 @@ minetest.register_globalstep(function(dtime)
 			local dist_feet = vector.distance({x=pos.x, y=pos.y-1, z=pos.z}, near)
 			if dist < 1.1 or dist_feet < 1.1 then
 				if player:get_hp() > 0 then
-					mcl_death_messages.player_damage(player, string.format("%s was prickled by a cactus.", player:get_player_name()))
-					mcl_hunger.exhaust(player:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+					mcl_death_messages.player_damage(player, string.format("%s was prickled by a cactus.", name))
+					mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_DAMAGE)
 					player:set_hp(player:get_hp() - 1)
 				end
 			end
@@ -157,9 +157,18 @@ minetest.register_globalstep(function(dtime)
 		local void, void_deadly = mcl_worlds.is_in_void(pos)
 		if void_deadly then
 			-- Player is deep into the void, deal void damage
-			if player:get_hp() > 0 then
-				mcl_death_messages.player_damage(player, string.format("%s fell into the endless void.", player:get_player_name()))
-				player:set_hp(player:get_hp() - 4)
+			if minetest.settings:get_bool("enable_damage") then
+				if player:get_hp() > 0 then
+					mcl_death_messages.player_damage(player, string.format("%s fell into the endless void.", name))
+					player:set_hp(player:get_hp() - 4)
+				end
+			else
+				-- If damge is disabled, we can't kill the player.
+				-- So we just teleport the player back to spawn.
+				local spawn = mcl_spawn.get_spawn_pos(player)
+				player:set_pos(spawn)
+				mcl_worlds.dimension_change(player, mcl_worlds.pos_to_dimension(spawn))
+				minetest.chat_send_player(name, "The void is off-limits to you!")
 			end
 		end
 

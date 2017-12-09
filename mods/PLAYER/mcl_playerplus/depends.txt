@@ -7,3 +7,4 @@ mcl_death_messages
 mcl_playerinfo
 3d_armor?
 mcl_weather
+mcl_spawn
