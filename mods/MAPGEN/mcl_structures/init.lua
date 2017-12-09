@@ -170,6 +170,33 @@ mcl_structures.generate_end_portal_room = function(pos)
 		end
 	end
 
+	-- Also replace stairs
+	local stairs = minetest.find_nodes_in_area(area_start, area_end, {"mcl_stairs:stair_stonebrick", "mcl_stairs:stair_stonebrick_outer", "mcl_stairs:stair_stonebrick_inner"})
+	for s=1, #stairs do
+		local stair = minetest.get_node(stairs[s])
+		local r_type = pr:next(1, 100)
+		if r_type <= 30 then -- 30% mossy
+			if stair.name == "mcl_stairs:stair_stonebrick" then
+				stair.name = "mcl_stairs:stair_stonebrickmossy"
+			elseif stair.name == "mcl_stairs:stair_stonebrick_outer" then
+				stair.name = "mcl_stairs:stair_stonebrickmossy_outer"
+			elseif stair.name == "mcl_stairs:stair_stonebrick_inner" then
+				stair.name = "mcl_stairs:stair_stonebrickmossy_inner"
+			end
+			minetest.set_node(stairs[s], stair)
+		elseif r_type <= 50 then -- 20% cracky
+			if stair.name == "mcl_stairs:stair_stonebrick" then
+				stair.name = "mcl_stairs:stair_stonebrickcracked"
+			elseif stair.name == "mcl_stairs:stair_stonebrick_outer" then
+				stair.name = "mcl_stairs:stair_stonebrickcracked_outer"
+			elseif stair.name == "mcl_stairs:stair_stonebrick_inner" then
+				stair.name = "mcl_stairs:stair_stonebrickcracked_inner"
+			end
+			minetest.set_node(stairs[s], stair)
+		end
+		-- 50% no change
+	end
+
 	-- Randomly add ender eyes into end portal frames, but never fill the entire frame
 	local frames = minetest.find_nodes_in_area(area_start, area_end, "mcl_portals:end_portal_frame")
 	local eyes = 0
