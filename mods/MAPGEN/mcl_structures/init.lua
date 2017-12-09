@@ -149,20 +149,21 @@ mcl_structures.generate_end_portal_room = function(pos)
 		local r_bricktype = pr:next(1, 100)
 		local r_infested = pr:next(1, 100)
 		local bricktype
-		if r_infested <= 8 then
-			if r_bricktype <= 10 then
+		if r_infested <= 5 then
+			if r_bricktype <= 30 then -- 30%
 				bricktype = "mcl_monster_eggs:monster_egg_stonebrickmossy"
-			elseif r_bricktype <= 20 then
+			elseif r_bricktype <= 50 then -- 20%
 				bricktype = "mcl_monster_eggs:monster_egg_stonebrickcracked"
-			else
+			else -- 50%
 				bricktype = "mcl_monster_eggs:monster_egg_stonebrick"
 			end
 		else
-			if r_bricktype <= 10 then
+			if r_bricktype <= 30 then -- 30%
 				bricktype = "mcl_core:stonebrickmossy"
-			elseif r_bricktype <= 20 then
+			elseif r_bricktype <= 50 then -- 20%
 				bricktype = "mcl_core:stonebrickcracked"
 			end
+			-- 50% stonebrick (no change necessary)
 		end
 		if bricktype ~= nil then
 			minetest.set_node(bricks[b], { name = bricktype })
