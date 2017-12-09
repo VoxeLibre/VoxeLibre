@@ -170,12 +170,19 @@ local function check_end_portal_frame(pos)
 	return false
 end
 
--- Generate a 3×3 end portal beginning at pos. To be used to fill an end portal frame
-local function spawn_end_portal(pos)
+-- Generate or destroy a 3×3 end portal beginning at pos. To be used to fill an end portal framea.
+-- If destroy == true, the 3×3 area is removed instead.
+local function end_portal_area(pos, destroy)
 	local SIZE = 3
+	local name
+	if destroy then
+		name = "air"
+	else
+		name = "mcl_portals:portal_end"
+	end
 	for x=pos.x, pos.x+SIZE-1 do
 		for z=pos.z, pos.z+SIZE-1 do
-			minetest.set_node({x=x,y=pos.y,z=z}, {name="mcl_portals:portal_end"})
+			minetest.set_node({x=x,y=pos.y,z=z}, {name=name})
 		end
 	end
 end
@@ -265,8 +272,14 @@ minetest.register_abm({
 	end,
 })
 
+local rotate_frame, rotate_frame_eye
 
---[[ ITEM OVERRIDES ]]
+if minetest.get_modpath("screwdriver") then
+	rotate_frame = screwdriver.rotate_simple
+	-- TODO: Make the other node rotatable as well.
+	-- Problem: We need to capture edge cases and update the portal accordingly.
+	rotate_frame_eye = false
+end
 
 minetest.register_node("mcl_portals:end_portal_frame", {
 	description = "End Portal Frame",
@@ -285,6 +298,9 @@ minetest.register_node("mcl_portals:end_portal_frame", {
 	paramtype = "light",
 	sunlight_propagates = false,
 	light_source = 1,
+
+	on_rotate = rotate_frame,
+
 	_mcl_blast_resistance = 18000000,
 	_mcl_hardness = -1,
 })
@@ -308,15 +324,25 @@ minetest.register_node("mcl_portals:end_portal_frame_eye", {
 	paramtype = "light",
 	sunlight_propagates = false,
 	light_source = 1,
+	on_destruct = function(pos)
+		local ok, ppos = check_end_portal_frame(pos)
+		if ok then
+			end_portal_area(ppos, true)
+		end
+	end,
+
+	on_rotate = rotate_frame_eye,
+
 	_mcl_blast_resistance = 18000000,
 	_mcl_hardness = -1,
-	-- TODO: Destroy end portal if this block got destroyed
 })
 
 if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_portals:end_portal_frame", "nodes", "mcl_portals:end_portal_frame_eye")
 end
 
+
+--[[ ITEM OVERRIDES ]]
 
 -- Portal opener
 minetest.override_item("mcl_end:ender_eye", {
@@ -347,7 +373,7 @@ minetest.override_item("mcl_end:ender_eye", {
 
 			local ok, ppos = check_end_portal_frame(pointed_thing.under)
 			if ok then
-				spawn_end_portal(ppos)
+				end_portal_area(ppos)
 				if minetest.get_modpath("doc") then
 					doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:portal_end")
 				end
