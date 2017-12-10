@@ -109,27 +109,20 @@ minetest.register_node("itemframes:frame",{
 	sunlight_propagates = true,
 	groups = { dig_immediate=3,deco_block=1,dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_defaults(),
-	after_place_node = function(pos, placer, itemstack)
-		local meta = minetest.get_meta(pos)
-		meta:set_string("owner",placer:get_player_name())
-		meta:set_string("infotext","Item frame (owned by "..placer:get_player_name()..")")
-	end,
 	on_rightclick = function(pos, node, clicker, itemstack)
 		if not itemstack then return end
 		local meta = minetest.get_meta(pos)
-		if clicker:get_player_name() == meta:get_string("owner") then
-			drop_item(pos, node, meta)
-			-- item holds the itemstring
-			meta:set_string("item", itemstack:get_name())
-			local put_itemstack = ItemStack(itemstack)
-			put_itemstack:set_count(1)
-			local itemdata = minetest.serialize(put_itemstack:to_table())
-			-- itemdata holds the serialized itemstack in table form
-			meta:set_string("itemdata", itemdata)
-			update_item(pos,node)
-			if not minetest.settings:get_bool("creative_mode") then
-				itemstack:take_item()
-			end
+		drop_item(pos, node, meta)
+		-- item holds the itemstring
+		meta:set_string("item", itemstack:get_name())
+		local put_itemstack = ItemStack(itemstack)
+		put_itemstack:set_count(1)
+		local itemdata = minetest.serialize(put_itemstack:to_table())
+		-- itemdata holds the serialized itemstack in table form
+		meta:set_string("itemdata", itemdata)
+		update_item(pos,node)
+		if not minetest.settings:get_bool("creative_mode") then
+			itemstack:take_item()
 		end
 		return itemstack
 	end,
@@ -137,11 +130,6 @@ minetest.register_node("itemframes:frame",{
 		local meta = minetest.get_meta(pos)
 		local node = minetest.get_node(pos)
 		drop_item(pos, node, meta)
-	end,
-	can_dig = function(pos,player)
-		
-		local meta = minetest.get_meta(pos)
-		return player:get_player_name() == meta:get_string("owner")
 	end,
 	on_rotate = on_rotate,
 })
