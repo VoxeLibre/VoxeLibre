@@ -59,6 +59,9 @@ local init_strongholds = function()
 			angle = math.fmod(angle + ((math.pi*2) / ring.amount), math.pi*2)
 		end
 	end
+
+	mcl_structures.register_structures("stronghold", table.copy(strongholds))
+
 	strongholds_inited = true
 end
 
@@ -89,13 +92,6 @@ local generate_strongholds = function(minp, maxp)
 		end
 	end
 end
-
--- Minimal API
-mcl_strongholds = {}
-mcl_strongholds.get_stronghold_positions = function()
-	return table.copy(strongholds)
-end
-
 
 init_strongholds()
 

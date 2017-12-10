@@ -345,8 +345,6 @@ end
 
 -- Portal opener
 minetest.override_item("mcl_end:ender_eye", {
-	_doc_items_longdesc = "Eye of ender can be used in the construction of End portal frames.",
-	_doc_items_usagehelp = "Find a structure with 12 end portal frames surrounding a horizontal aread of 3×3 blocks, with each block facing inward. Place an eye of ender into each end portal frame to create the portal.",
 	on_place = function(itemstack, user, pointed_thing)
 		-- Use pointed node's on_rightclick function first, if present
 		local node = minetest.get_node(pointed_thing.under)

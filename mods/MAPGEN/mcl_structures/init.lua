@@ -292,6 +292,28 @@ mcl_structures.generate_desert_temple = function(pos)
 	return ret
 end
 
+local registered_structures = {}
+
+--[[ Returns a table of structure of the specified type.
+Currently the only valid parameter is "stronghold".
+Format of return value:
+{
+	{ pos = <position>, generated=<true/false> }, -- first structure
+	{ pos = <position>, generated=<true/false> }, -- second structure
+	-- and so on
+}
+
+TODO: Implement this function for all other structure types as well.
+]]
+mcl_structures.get_registered_structures = function(structure_type)
+	return table.copy(registered_structures[structure_type])
+end
+
+-- Register a structures table for the given type. The table format is the same as for
+-- mcl_structures.get_registered_structures.
+mcl_structures.register_structures = function(structure_type, structures)
+	registered_structures[structure_type] = structures
+end
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
