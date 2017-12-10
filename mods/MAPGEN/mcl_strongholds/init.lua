@@ -52,7 +52,7 @@ local init_strongholds = function()
 			end
 			local pos = { x = math.cos(angle) * dist, y = y, z = math.sin(angle) * dist }
 			pos = vector.round(pos)
-			table.insert(strongholds, { pos = pos })
+			table.insert(strongholds, { pos = pos, generated = false })
 
 			-- Rotate angle by (360 / amount) degrees.
 			-- This will cause the angles to be evenly distributed in the stronghold ring
@@ -88,6 +88,12 @@ local generate_strongholds = function(minp, maxp)
 			end
 		end
 	end
+end
+
+-- Minimal API
+mcl_strongholds = {}
+mcl_strongholds.get_stronghold_positions = function()
+	return table.copy(strongholds)
 end
 
 
