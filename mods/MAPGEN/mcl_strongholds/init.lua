@@ -86,7 +86,7 @@ local generate_strongholds = function(minp, maxp)
 					pos.z = maxp.z - 7
 				end
 
-				mcl_structures.call_struct(pos, "end_portal_room")
+				mcl_structures.call_struct(pos, "end_portal_shrine")
 				strongholds[s].generated = true
 			end
 		end

@@ -40,8 +40,8 @@ mcl_structures.call_struct = function(pos, struct_style, rotation)
 		return mcl_structures.generate_fossil(pos, rotation)
 	elseif struct_style == "end_exit_portal" then
 		return mcl_structures.generate_end_exit_portal(pos, rotation)
-	elseif struct_style == "end_portal_room" then
-		return mcl_structures.generate_end_portal_room(pos, rotation)
+	elseif struct_style == "end_portal_shrine" then
+		return mcl_structures.generate_end_portal_shrine(pos, rotation)
 	end
 end
 
@@ -125,7 +125,7 @@ mcl_structures.generate_end_exit_portal = function(pos)
 	return minetest.place_schematic(pos, path, "0", nil, true)
 end
 
-mcl_structures.generate_end_portal_room = function(pos)
+mcl_structures.generate_end_portal_shrine = function(pos)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_portal_room_simple.mts"
 	local offset = {x=6, y=8, z=6}
 	local size = {x=13, y=8, z=13}
@@ -317,7 +317,7 @@ end
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
-	params = "desert_temple | desert_well | igloo | village | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_portal_room",
+	params = "desert_temple | desert_well | igloo | village | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_portal_shrine",
 	description = "Generate a pre-defined structure near your position.",
 	privs = {debug = true},
 	func = function(name, param)
@@ -356,9 +356,9 @@ minetest.register_chatcommand("spawnstruct", {
 		elseif param == "end_exit_portal" then
 			mcl_structures.generate_end_exit_portal(pos)
 			minetest.chat_send_player(name, "End exit portal placed.")
-		elseif param == "end_portal_room" then
-			mcl_structures.generate_end_portal_room(pos)
-			minetest.chat_send_player(name, "End portal room placed.")
+		elseif param == "end_portal_shrine" then
+			mcl_structures.generate_end_portal_shrine(pos)
+			minetest.chat_send_player(name, "End portal shrine placed.")
 		elseif param == "" then
 			minetest.chat_send_player(name, "Error: No structure type given. Please use “/spawnstruct <type>”.")
 			errord = true
