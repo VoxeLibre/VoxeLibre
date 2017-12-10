@@ -3,3 +3,4 @@ mcl_throwing
 mcl_util
 doc_items
 mcl_worlds
+mcl_structures
