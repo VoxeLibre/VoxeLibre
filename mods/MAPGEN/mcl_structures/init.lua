@@ -127,13 +127,15 @@ end
 
 mcl_structures.generate_end_portal_room = function(pos)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_portal_room_simple.mts"
+	local offset = {x=6, y=8, z=6}
 	local size = {x=13, y=8, z=13}
-	local ret = minetest.place_schematic(pos, path, "0", nil, true)
+	local newpos = { x = pos.x - offset.x, y = pos.y, z = pos.z - offset.z }
+	local ret = minetest.place_schematic(newpos, path, "0", nil, true)
 	if ret == nil then
 		return ret
 	end
 
-	local area_start, area_end = {x=pos.x-size.x, y=pos.y, z=pos.z-size.z}, vector.add(pos, size)
+	local area_start, area_end = newpos, vector.add(newpos, size)
 	-- Find and setup spawner with silverfish
 	local spawners = minetest.find_nodes_in_area(area_start, area_end, "mcl_mobspawners:spawner")
 	for s=1, #spawners do

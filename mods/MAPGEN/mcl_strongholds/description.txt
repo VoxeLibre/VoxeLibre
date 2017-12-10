@@ -1,0 +1,1 @@
+Generates strongholds with end portals in the Overworld
