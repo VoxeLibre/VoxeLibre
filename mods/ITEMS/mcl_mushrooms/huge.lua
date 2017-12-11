@@ -157,12 +157,12 @@ end
 
 local longdesc_red = "Huge red mushroom blocks are the cap parts of huge red mushrooms. It consists of a red skin and can have pores on each of its sides."
 local longdesc_red_stem = "The stem part of a huge red mushroom."
-register_mushroom("red", 1, red, "Huge Red Mushroom Block", "Huge Red Mushroom Stem", "Huge Red Mushroom All-Faces Stem", longdesc_red)
+register_mushroom("red", 1, red, "Huge Red Mushroom Block", "Huge Red Mushroom Stem", "Huge Red Mushroom All-Faces Stem", longdesc_red, longdesc_red_stem)
 
 
 local longdesc_brown = "Huge brown mushroom blocks are the cap parts of huge brown mushrooms. It consists of a brown skin and can have pores on each of its sides."
 local longdesc_brown_stem = "The stem part of a huge brown mushroom."
-register_mushroom("brown", 2, brown, "Huge Brown Mushroom Block", "Huge Brown Mushroom Stem", "Huge Brown Mushroom All-Faces Stem", longdesc_brown)
+register_mushroom("brown", 2, brown, "Huge Brown Mushroom Block", "Huge Brown Mushroom Stem", "Huge Brown Mushroom All-Faces Stem", longdesc_brown, longdesc_brown_stem)
 
 minetest.register_craft({
 	type = "fuel",
