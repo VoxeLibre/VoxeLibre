@@ -46,7 +46,7 @@ local init_strongholds = function()
 			local dist = pr:next(ring.min, ring.max)
 			local y
 			if mg_name == "flat" then
-				y = mcl_vars.mg_bedrock_overworld_max + pr:next(1, 4)
+				y = mcl_vars.mg_bedrock_overworld_max + 3
 			else
 				y = pr:next(mcl_vars.mg_bedrock_overworld_max+1, mcl_vars.mg_overworld_min+48)
 			end
