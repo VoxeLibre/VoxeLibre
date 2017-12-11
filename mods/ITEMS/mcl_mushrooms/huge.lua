@@ -152,12 +152,6 @@ local register_mushroom = function(color, species_id, template, d_cap, d_stem, d
 		minetest.register_node("mcl_mushrooms:"..color.."_mushroom_block_cap_"..bin, block)
 	end
 
-	-- Add entry aliases for the Help
-	if minetest.get_modpath("doc") then
-		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_stem_full")
-		doc.add_entry_alias("nodes", "mcl_mushrooms:"..color.."_mushroom_block_cap_full", "nodes", "mcl_mushrooms:"..color.."_mushroom_block_stem")
-	end
-
 end
 
 
@@ -174,4 +168,51 @@ minetest.register_craft({
 	type = "fuel",
 	recipe = "group:huge_mushroom",
 	burntime = 15,
+})
+
+-- Legacy support
+local colors = { "red", "brown" }
+for c=1, 2 do
+	local color = colors[c]
+	minetest.register_alias("mcl_mushrooms:"..color.."_mushroom_block_cap_full", "mcl_mushrooms:"..color.."_mushroom_block_cap_111111")
+	minetest.register_alias("mcl_mushrooms:"..color.."_mushroom_block_cap_top", "mcl_mushrooms:"..color.."_mushroom_block_cap_100000")
+	minetest.register_alias("mcl_mushrooms:"..color.."_mushroom_block_pores_full", "mcl_mushrooms:"..color.."_mushroom_block_cap_000000")
+end
+
+minetest.register_lbm({
+	label = "Replace legacy mushroom cap blocks",
+	name = "mcl_mushrooms:replace_legacy_mushroom_caps",
+	nodenames = { "mcl_mushrooms:brown_mushroom_block_cap_corner", "mcl_mushrooms:brown_mushroom_block_cap_side", "mcl_mushrooms:red_mushroom_block_cap_corner", "mcl_mushrooms:red_mushroom_block_cap_side" },
+	action = function(pos, node)
+		for c=1, 2 do
+			local color = colors[c]
+			if node.name == "mcl_mushrooms:"..color.."_mushroom_block_cap_side" then
+				if node.param2 == 0 then
+					minetest.set_node(pos, {name = "mcl_mushrooms:"..color.."_mushroom_block_cap_100001"})
+				elseif node.param2 == 1 then
+					minetest.set_node(pos, {name = "mcl_mushrooms:"..color.."_mushroom_block_cap_100100"}) -- OK
+				elseif node.param2 == 2 then
+					minetest.set_node(pos, {name = "mcl_mushrooms:"..color.."_mushroom_block_cap_100010"})
+				elseif node.param2 == 3 then
+					minetest.set_node(pos, {name = "mcl_mushrooms:"..color.."_mushroom_block_cap_101000"})
+				else
+					-- Fallback
+					minetest.set_node(pos, {name = "mcl_mushrooms:"..color.."_mushroom_block_cap_101111"})
+				end
+			elseif node.name == "mcl_mushrooms:"..color.."_mushroom_block_cap_corner" then
+				if node.param2 == 0 then
+					minetest.set_node(pos, {name = "mcl_mushrooms:"..color.."_mushroom_block_cap_101001"})
+				elseif node.param2 == 1 then
+					minetest.set_node(pos, {name = "mcl_mushrooms:"..color.."_mushroom_block_cap_100101"}) -- OK
+				elseif node.param2 == 2 then
+					minetest.set_node(pos, {name = "mcl_mushrooms:"..color.."_mushroom_block_cap_100110"}) -- OK
+				elseif node.param2 == 3 then
+					minetest.set_node(pos, {name = "mcl_mushrooms:"..color.."_mushroom_block_cap_101010"})
+				else
+					-- Fallback
+					minetest.set_node(pos, {name = "mcl_mushrooms:"..color.."_mushroom_block_cap_101111"})
+				end
+			end
+		end
+	end,
 })
