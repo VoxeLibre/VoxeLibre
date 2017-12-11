@@ -20,13 +20,13 @@ local register_block = function(subname, description, tiles, is_ground_content)
 		description = description,
 		tiles = tiles,
 		is_ground_content = is_ground_content,
-		groups = {handy = 1, spawns_silverfish = 1, deco_block = 1},
+		groups = {dig_immediate = 3, spawns_silverfish = 1, deco_block = 1},
 		drop = '',
 		is_ground_content = false,
 		sounds = mcl_sounds.node_sound_stone_defaults(),
 		after_dig_node = spawn_silverfish,
 		_doc_items_longdesc = S("An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart."),
-		_mcl_hardness = 0.75,
+		_mcl_hardness = 0,
 		_mcl_blast_resistance = 3.75,
 	})
 end
