@@ -382,7 +382,7 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 				if filter == nil then
 					filter = ""
 				end
-				formspec = formspec .. "field[5.3,1.3;4,0.75;suche;;"..minetest.formspec_escape(filter).."]"
+				formspec = formspec .. "field[5.3,1.34;4,0.75;suche;;"..minetest.formspec_escape(filter).."]"
 				formspec = formspec .. "field_close_on_enter[suche;false]"
 			end
 			if pagenum ~= nil then formspec = formspec .. "p"..tostring(pagenum) end
