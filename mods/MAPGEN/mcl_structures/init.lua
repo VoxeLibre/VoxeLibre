@@ -306,7 +306,11 @@ Format of return value:
 TODO: Implement this function for all other structure types as well.
 ]]
 mcl_structures.get_registered_structures = function(structure_type)
-	return table.copy(registered_structures[structure_type])
+	if registered_structures[structure_type] then
+		return table.copy(registered_structures[structure_type])
+	else
+		return {}
+	end
 end
 
 -- Register a structures table for the given type. The table format is the same as for
