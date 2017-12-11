@@ -111,7 +111,7 @@ minetest.register_node("mcl_sponges:sponge_wet", {
 if minetest.get_modpath("mclx_core") then
 	minetest.register_node("mcl_sponges:sponge_wet_river_water", {
 		description = "Riverwaterlogged Sponge",
-		_doc_items_longdesc = "A sponge full of river water. It can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of the furnace, the river water will pour into the bucket.",
+		_doc_items_longdesc = "This is a sponge soaking wet with river water. It can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of the furnace, the river water will pour into the bucket." .. "\n" .. "A sponge becomes riverwaterlogged (instead of waterlogged) if it sucks up more river water than (normal) water.",
 		drawtype = "normal",
 		is_ground_content = false,
 		tiles = {"mcl_sponges_sponge_wet_river_water.png"},
