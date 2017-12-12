@@ -60,9 +60,7 @@ The following items are interesting for Creative Mode and for adventure
 map builders. They can not be obtained in-game or in the creative inventory.
 
 * Barrier: `mcl_core:barrier`
-* Command Block: `mesecons_commandblock:commandblock_off`
-* Monster Spawner: `mcl_mobspawners:spawner`
-* Minecart with Command Block: `mcl_minecarts:command_block_minecart`
+* Minecart with Command Block (does not work yet): `mcl_minecarts:command_block_minecart`
 
 Use the `/giveme` chat command to obtain them. See the in-game help for
 an explanation.

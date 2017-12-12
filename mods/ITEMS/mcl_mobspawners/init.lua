@@ -216,12 +216,30 @@ minetest.register_node("mcl_mobspawners:spawner", {
 	walkable = true,
 	description = S("Monster Spawner"),
 	_doc_items_longdesc = S("A monster spawner is a block which regularily causes monsters and animals to appear around it."),
-	groups = {pickaxey=1, not_in_creative_inventory = 1, material_stone=1},
+	groups = {pickaxey=1, material_stone=1, deco_block=1},
 	is_ground_content = false,
 	drop = "",
 
 	-- If placed by player, setup spawner with default settings
 	on_place = function(itemstack, placer, pointed_thing)
+		if pointed_thing.type ~= "node" then
+			return itemstack
+		end
+
+		-- Use pointed node's on_rightclick function first, if present
+		local node = minetest.get_node(pointed_thing.under)
+		if placer and not placer:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+			end
+		end
+
+		local name = placer:get_player_name()
+		local privs = minetest.get_player_privs(name)
+		if not privs.maphack then
+			minetest.chat_send_player(name, "Placement denied. You need the “maphack” privilege to place monster spawners.")
+			return itemstack
+		end
 		local node_under = minetest.get_node(pointed_thing.under)
 		local new_itemstack, success = minetest.item_place(itemstack, placer, pointed_thing)
 		if success then

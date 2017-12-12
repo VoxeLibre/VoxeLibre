@@ -106,6 +106,11 @@ local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 	if not minetest.settings:get_bool("creative_mode") then
 		return
 	end
+	local privs = minetest.get_player_privs(player:get_player_name())
+	if not privs.maphack then
+		minetest.chat_send_player(player:get_player_name(), "Access denied. You need the “maphack” privilege to edit command blocks.")
+		return
+	end
 
 	local meta = minetest.get_meta(pos)
 	local commands = meta:get_string("commands")
@@ -116,6 +121,28 @@ local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 	"image_button[8,4.5;1,1;doc_button_icon_lores.png;doc;]" ..
 	"tooltip[doc;Help]"
 	minetest.show_formspec(player:get_player_name(), "commandblock_"..pos.x.."_"..pos.y.."_"..pos.z, formspec)
+end
+
+local on_place = function(itemstack, placer, pointed_thing)
+	if pointed_thing.type ~= "node" then
+		return itemstack
+	end
+
+	-- Use pointed node's on_rightclick function first, if present
+	local node = minetest.get_node(pointed_thing.under)
+	if placer and not placer:get_player_control().sneak then
+		if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+			return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+		end
+	end
+
+	local privs = minetest.get_player_privs(placer:get_player_name())
+	if not privs.maphack then
+		minetest.chat_send_player(placer:get_player_name(), "Placement denied. You need the “maphack” privilege to place command blocks.")
+		return itemstack
+	end
+
+	return minetest.item_place_node(itemstack, placer, pointed_thing)
 end
 
 minetest.register_node("mesecons_commandblock:commandblock_off", {
@@ -134,11 +161,12 @@ You can optionally use the following placeholders in your commands:
 • “@random” is replaced by the name of a random player currently connected]],
 
 	tiles = {{name="jeija_commandblock_off.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=2}}},
-	groups = {creative_breakable=1, mesecon_effector_off=1, not_in_creative_inventory=1},
+	groups = {creative_breakable=1, mesecon_effector_off=1},
 	drop = "",
 	on_blast = function() end,
 	on_construct = construct,
 	is_ground_content = false,
+	on_place = on_place,
 	after_place_node = after_place,
 	on_rightclick = on_rightclick,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
@@ -157,6 +185,7 @@ minetest.register_node("mesecons_commandblock:commandblock_on", {
 	on_blast = function() end,
 	on_construct = construct,
 	is_ground_content = false,
+	on_place = on_place,
 	after_place_node = after_place,
 	on_rightclick = on_rightclick,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
@@ -173,6 +202,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if not fields.submit and not fields.doc then
 			return
 		end
+		local privs = minetest.get_player_privs(player:get_player_name())
+		if not privs.maphack then
+			minetest.chat_send_player(player:get_player_name(), "Access denied. You need the “maphack” privilege to edit command blocks.")
+			return
+		end
+
 		if fields.doc and minetest.get_modpath("doc") then
 			doc.show_entry(player:get_player_name(), "nodes", "mesecons_commandblock:commandblock_off", true)
 			return

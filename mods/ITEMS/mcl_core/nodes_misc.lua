@@ -142,6 +142,28 @@ minetest.register_node("mcl_core:barrier", {
 			playername = placer:get_player_name()
 		})
 	end,
+	on_place = function(itemstack, placer, pointed_thing)
+		if pointed_thing.type ~= "node" then
+			return itemstack
+		end
+
+		-- Use pointed node's on_rightclick function first, if present
+		local node = minetest.get_node(pointed_thing.under)
+		if placer and not placer:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
+			end
+		end
+
+		local name = placer:get_player_name()
+		local privs = minetest.get_player_privs(name)
+		if not privs.maphack then
+			minetest.chat_send_player(name, "Placement denied. You need the “maphack” privilege to place barriers.")
+			return itemstack
+		end
+		local new_itemstack = minetest.item_place(itemstack, placer, pointed_thing)
+		return new_itemstack
+	end,
 })
 
 -- Same as barrier, but non-pointable. This node is only to be used internally to separate realms.
