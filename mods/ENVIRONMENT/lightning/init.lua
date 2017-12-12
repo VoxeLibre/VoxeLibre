@@ -177,6 +177,9 @@ lightning.strike = function(pos)
 					local lua = obj:get_luaentity()
 					if obj:is_player() then
 						-- Player damage
+						if minetest.get_modpath("mcl_death_messages") then
+							mcl_death_messages.player_damage(obj, string.format("%s was struck by lightning.", obj:get_player_name()))
+						end
 						obj:set_hp(obj:get_hp()-5)
 					-- Mobs
 					elseif lua and lua._cmi_is_mob then
