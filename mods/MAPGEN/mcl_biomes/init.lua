@@ -2207,7 +2207,7 @@ local function register_decorations()
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_brown.mts",
 		flags = "place_center_x, place_center_z",
-		rotation = "random",
+		rotation = "0",
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
@@ -2219,7 +2219,7 @@ local function register_decorations()
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_giant_brown.mts",
 		flags = "place_center_x, place_center_z",
-		rotation = "random",
+		rotation = "0",
 	})
 
 	minetest.register_decoration({
@@ -2232,7 +2232,7 @@ local function register_decorations()
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_brown.mts",
 		flags = "place_center_x, place_center_z",
-		rotation = "random",
+		rotation = "0",
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
@@ -2244,7 +2244,7 @@ local function register_decorations()
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_giant_brown.mts",
 		flags = "place_center_x, place_center_z",
-		rotation = "random",
+		rotation = "0",
 	})
 
 	-- Huge Red Mushroom
@@ -2258,7 +2258,7 @@ local function register_decorations()
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_red.mts",
 		flags = "place_center_x, place_center_z",
-		rotation = "random",
+		rotation = "0",
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
@@ -2270,7 +2270,7 @@ local function register_decorations()
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_giant_red.mts",
 		flags = "place_center_x, place_center_z",
-		rotation = "random",
+		rotation = "0",
 	})
 
 	minetest.register_decoration({
@@ -2283,7 +2283,7 @@ local function register_decorations()
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_huge_red.mts",
 		flags = "place_center_x, place_center_z",
-		rotation = "random",
+		rotation = "0",
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
@@ -2295,7 +2295,7 @@ local function register_decorations()
 		y_max = mcl_vars.mg_overworld_max,
 		schematic = minetest.get_modpath("mcl_mushrooms").."/schematics/mcl_mushrooms_giant_red.mts",
 		flags = "place_center_x, place_center_z",
-		rotation = "random",
+		rotation = "0",
 	})
 
 	-- Moss stone boulder (3×3)
