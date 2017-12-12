@@ -332,7 +332,7 @@ minetest.register_chatcommand("spawnstruct", {
 		local errord = false
 		if param == "village" then
 			mcl_structures.generate_village(pos)
-			minetest.chat_send_player(name, "Village built.")
+			minetest.chat_send_player(name, "Village built. WARNING: Villages are experimental and might have bugs.")
 		elseif param == "desert_temple" then
 			mcl_structures.generate_desert_temple(pos)
 			minetest.chat_send_player(name, "Desert temple built.")
