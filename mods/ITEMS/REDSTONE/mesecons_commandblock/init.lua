@@ -52,7 +52,7 @@ local function resolve_commands(commands, pos)
 	return commands
 end
 
-local function check_commands(commands)
+local function check_commands(commands, player_name)
 	for _, command in pairs(commands:split("\n")) do
 		local pos = command:find(" ")
 		local cmd, param = command, ""
@@ -62,7 +62,21 @@ local function check_commands(commands)
 		local cmddef = minetest.chatcommands[cmd]
 		if not cmddef then
 			-- Invalid chat command
-			return false, cmd
+			msg = "Error: The command “"..cmd.."” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands."
+			if string.sub(cmd, 1, 1) == "/" then
+				msg = msg .. " Hint: Try to remove the trailing slash."
+			end
+			return false, msg
+		end
+		if player_name then
+			local player_privs = minetest.get_player_privs(player_name)
+
+			for cmd_priv, _ in pairs(cmddef.privs) do
+				if player_privs[cmd_priv] ~= true then
+					local msg = "Error: You have insufficient privileges to use the command “"..cmd.."” (missing privilege: "..cmd_priv..")! The command block has not been changed."
+					return false, msg
+				end
+			end
 		end
 	end
 	return true
@@ -220,22 +234,15 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				minetest.chat_send_player(player:get_player_name(), "Editing the command block has failed! You can only change the command block in Creative Mode!")
 				return
 			end
-			local check, bad_command = check_commands(fields.commands)
+			local check, error_message = check_commands(fields.commands, player:get_player_name())
 			if check == false then
-				local msg
-				if bad_command ~= nil and bad_command ~= "" then
-					msg = "Warning: The command “"..bad_command.."” does not exist; your command block won't do anything. See the help command for a list of available commands."
-					if string.sub(bad_command, 1, 1) == "/" then
-						msg = msg .. " Hint: Try to remove the trailing slash"
-					end
-				else
-					msg = "Warning: You have entered an unknown command; your command block won't do anything.. See the help command for a list of available commands."
-				end
-				minetest.chat_send_player(player:get_player_name(), msg)
+				-- Command block rejected
+				minetest.chat_send_player(player:get_player_name(), error_message)
+				return
+			else
+				meta:set_string("commands", fields.commands)
+				initialize_data(meta)
 			end
-
-			meta:set_string("commands", fields.commands)
-			initialize_data(meta)
 		else
 			minetest.chat_send_player(player:get_player_name(), "Editing the command block has failed! The command block is gone.")
 		end
