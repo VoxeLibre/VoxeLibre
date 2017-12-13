@@ -282,7 +282,7 @@ end
 
 minetest.register_node("mcl_portals:end_portal_frame", {
 	description = "End Portal Frame",
-	_doc_items_longdesc = "End portal frames are used in the construction of End portals. Each block has a socket for an eye of ender.",
+	_doc_items_longdesc = "End portal frames are used in the construction of End portals. Each block has a socket for an eye of ender." .. "\n" .. "NOTE: The End dimension is currently incomplete and boring.",
 	_doc_items_usagehelp = "To create an End portal, you need 12 end portal frames and 12 eyes of ender. The end portal frames have to be arranged around a horizontal 3×3 area with each block facing inward. Any other arrangement will fail." .. "\n" .. "Place an eye of ender into each block. The end portal appears in the middle after placing the final eye." .. "\n" .. "Once placed, an eye of ender can not be taken back.",
 	groups = { creative_breakable = 1, deco_block = 1 },
 	tiles = { "mcl_portals_endframe_top.png", "mcl_portals_endframe_bottom.png", "mcl_portals_endframe_side.png" },
