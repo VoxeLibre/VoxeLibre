@@ -3153,9 +3153,6 @@ end
 -- Detect mapgen to select functions
 --
 if mg_name ~= "singlenode" then
-	minetest.clear_registered_biomes()
-	minetest.clear_registered_decorations()
-	minetest.clear_registered_schematics()
 	if mg_name ~= "v6" and mg_name ~= "flat" then
 		register_biomes()
 		register_biomelike_ores()
