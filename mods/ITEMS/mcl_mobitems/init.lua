@@ -267,8 +267,8 @@ minetest.register_craftitem("mcl_mobitems:rabbit_foot", {
 
 minetest.register_craftitem("mcl_mobitems:saddle", {
 	description = "Saddle",
-	_doc_items_longdesc = "Saddles can be put on horses and pigs in order to mount them.",
-	_doc_items_usagehelp = "Rightclick a horse or pig with a saddle to put on the saddle. You can now mount the animal by rightclicking it again.",
+	_doc_items_longdesc = "Saddles can be put on some animals in order to mount them.",
+	_doc_items_usagehelp = "Rightclick an animal (with the saddle in your hand) to try put on the saddle. Saddles fit on horses, mules, donkeys and pigs. Horses, mules and donkeys need to be tamed first, otherwise they'll reject the saddle. Saddled animals can be mounted by rightclicking them again.",
 	wield_image = "mcl_mobitems_saddle.png",
 	inventory_image = "mcl_mobitems_saddle.png",
 	stack_max = 1,
