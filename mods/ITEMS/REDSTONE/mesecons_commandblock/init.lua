@@ -165,14 +165,24 @@ minetest.register_node("mesecons_commandblock:commandblock_off", {
 	_doc_items_longdesc =
 "Command blocks are mighty redstone components which are able to alter reality itself. In other words, they cause the server to execute server commands when they are supplied with redstone power.",
 	_doc_items_usagehelp =
-[[Using a command block which someone already placed and set up properly is easy: Just supply it with redstone power and see what happens. This will execute the commands once. To execute the commands again, turn the redstone power off and on again.
+[[To use an already existing command block, just supply it with redstone power and see what happens. This will execute the commands once. To execute the commands again, turn the redstone power off and on again.
 
-Changing the commands or breaking the command block is only possible in Creative Mode. Directly after placing, a command block does not have any commands and does nothing. Rightclick the command block (in Creative Mode!) to edit its commands. Refer to the help entry about server commands to understand how they work. Each line contains a single command, the commands will be executed from top to bottom. The commands DO NOT require a leading slash.
+To place a command block and change the commands, you need to be in Creative Mode and must have the “maphack” privilege. A new command block does not have any commands and does nothing. Rightclick the command block (in Creative Mode!) to edit its commands. Read the help entry “Advanced topics > Server Commands” to understand how they work. Each line contains a single command. You enter them like you would in the console, but without the leading slash. The commands will be executed from top to bottom.
 
 You can optionally use the following placeholders in your commands:
 • “@nearest” is replaced by the name of the player nearest to the command block
 • “@farthest” is replaced by the name of the player farthest away from the command block
-• “@random” is replaced by the name of a random player currently connected]],
+• “@random” is replaced by the name of a random player currently connected
+
+Example 1:
+    time 12000
+
+Sets the game clock to 12:00
+
+Example 2:
+    give @nearest mcl_core:apple 5
+
+→ Gives the nearest player 5 apples]],
 
 	tiles = {{name="jeija_commandblock_off.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=2}}},
 	groups = {creative_breakable=1, mesecon_effector_off=1},
