@@ -878,35 +878,22 @@ for i=0,3 do
 	end
 end
 
-minetest.register_node("mcl_core:snow", {
-	description = "Top Snow",
-	_doc_items_longdesc = "Top snow is a thin layer of snow.",
-	_doc_items_hidden = false,
-	tiles = {"default_snow.png"},
-	wield_image = "default_snow.png",
-	wield_scale = { x=1, y=1, z=1 },
-	is_ground_content = true,
-	paramtype = "light",
-	sunlight_propagates = true,
-	buildable_to = true,
-	drawtype = "nodebox",
-	stack_max = 64,
-	floodable = true,
-	on_flood = function(pos, oldnode, newnode)
-		local npos = {x=pos.x, y=pos.y-1, z=pos.z}
-		local node = minetest.get_node(npos)
-		mcl_core.clear_snow_dirt(npos, node)
-	end,
-	node_box = {
-		type = "fixed",
-		fixed = {
-			{-0.5, -0.5, -0.5,  0.5, -0.5+2/16, 0.5},
-		},
-	},
-	groups = {shovely=1, attached_node=1,deco_block=1, dig_by_piston=1, snow_cover=1},
-	sounds = mcl_sounds.node_sound_snow_defaults(),
-	on_construct = mcl_core.on_snow_construct,
-	on_place = function(itemstack, placer, pointed_thing)
+for i=1,8 do
+	local id, desc, longdesc, help, walkable
+	if i == 1 then
+		id = "mcl_core:snow"
+		desc = "Top Snow"
+		longdesc = "Top snow is a thin layer of snow."
+		walkable = false
+	else
+		id = "mcl_core:snow_"..i
+		help = false
+		if minetest.get_modpath("doc") then
+			doc.add_entry_alias("nodes", "mcl_core:snow", "nodes", id)
+		end
+		walkable = true
+	end
+	local on_place = function(itemstack, placer, pointed_thing)
 		-- Placement is only allowed on top of solid blocks
 		if pointed_thing.type ~= "node" then
 			-- no interaction possible with entities
@@ -916,6 +903,7 @@ minetest.register_node("mcl_core:snow", {
 		local above = pointed_thing.above
 		local under = pointed_thing.under
 		local unode = minetest.get_node(under)
+
 		-- Check special rightclick action of pointed node
 		if def and def.on_rightclick then
 			if not placer:get_player_control().sneak then
@@ -924,25 +912,79 @@ minetest.register_node("mcl_core:snow", {
 			end
 		end
 
-		local anode = minetest.get_node(above)
-		local below
-		if above.y > under.y and minetest.registered_nodes[unode.name].buildable_to then
-			below = {x=above.x, y=above.y-2, z=above.z}
+		-- Get position where snow would be placed
+		local target
+		if minetest.registered_nodes[unode.name].buildable_to then
+			target = under
 		else
-			below = {x=above.x, y=above.y-1, z=above.z}
+			target = above
 		end
+		local tnode = minetest.get_node(target)
+
+		-- Stack snow
+		local g = minetest.get_item_group(tnode.name, "top_snow")
+		if g > 0 then
+			local itemstring = itemstack:get_name()
+			local itemcount = itemstack:get_count()
+			local fakestack = ItemStack(itemstring.." "..itemcount)
+			fakestack:set_name("mcl_core:snow_"..math.min(8, (i+g)))
+			local success
+			itemstack, success = minetest.item_place(fakestack, placer, pointed_thing)
+			minetest.sound_play(mcl_sounds.node_sound_snow_defaults().place, {pos = below})
+			itemstack:set_name(itemstring)
+			return itemstack
+		end
+
+		-- Place snow normally
+		local below = {x=target.x, y=target.y-1, z=target.z}
 		local bnode = minetest.get_node(below)
+
 		if minetest.get_item_group(bnode.name, "solid") == 1 then
+			minetest.sound_play(mcl_sounds.node_sound_snow_defaults().place, {pos = below})
 			return minetest.item_place_node(itemstack, placer, pointed_thing)
 		else
 			return itemstack
 		end
-	end,
-	after_destruct = mcl_core.after_snow_destruct,
-	drop = "mcl_throwing:snowball 2",
-	_mcl_blast_resistance = 0.5,
-	_mcl_hardness = 0.1,
-})
+	end
+
+	minetest.register_node(id, {
+		description = desc,
+		_doc_items_longdesc = longdesc,
+		_doc_items_create_entry = hhelp,
+		_doc_items_hidden = false,
+		tiles = {"default_snow.png"},
+		wield_image = "default_snow.png",
+		wield_scale = { x=1, y=1, z=i },
+		is_ground_content = true,
+		paramtype = "light",
+		sunlight_propagates = true,
+		buildable_to = true,
+		node_placement_prediction = "", -- to prevent client flickering when stacking snow
+		drawtype = "nodebox",
+		stack_max = 64,
+		walkable = walkable,
+		floodable = true,
+		on_flood = function(pos, oldnode, newnode)
+			local npos = {x=pos.x, y=pos.y-1, z=pos.z}
+			local node = minetest.get_node(npos)
+			mcl_core.clear_snow_dirt(npos, node)
+		end,
+		node_box = {
+			type = "fixed",
+			fixed = {
+				{-0.5, -0.5, -0.5,  0.5, -0.5+(i*2)/16, 0.5},
+			},
+		},
+		groups = {shovely=1, attached_node=1,deco_block=1, dig_by_piston=1, snow_cover=1, top_snow=i},
+		sounds = mcl_sounds.node_sound_snow_defaults(),
+		on_construct = mcl_core.on_snow_construct,
+		on_place = on_place,
+		after_destruct = mcl_core.after_snow_destruct,
+		drop = "mcl_throwing:snowball "..(i+1),
+		_mcl_blast_resistance = 0.5,
+		_mcl_hardness = 0.1,
+	})
+end
 
 minetest.register_node("mcl_core:snowblock", {
 	description = "Snow",

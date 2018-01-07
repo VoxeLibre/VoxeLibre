@@ -97,6 +97,7 @@ These groups are used mostly for informational purposes
 * `fire=1`: Fire
 * `water=1`: Water
 * `lava=1`: Lava
+* `top_snow=X`: Top snow with X layers (1-8)
 * `torch`: Torch or torch-like node
     * `torch=1`: Torch on floor
     * `torch=2`: Torch at wall
