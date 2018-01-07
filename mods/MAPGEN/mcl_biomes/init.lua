@@ -370,6 +370,7 @@ local function register_biomes()
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 4,
+		node_river_water = "mcl_core:ice",
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
 		y_min = 45,
