@@ -388,7 +388,7 @@ minetest.register_on_generated(function(minp, maxp)
 				}
 				local spawner_mob = mobs[math.random(1, #mobs)]
 
-				mcl_mobspawners.setup_spawner(sp, spawner_mob)
+				mcl_mobspawners.setup_spawner(sp, spawner_mob, 0, 7)
 			end
 		end
 

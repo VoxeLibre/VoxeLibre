@@ -53,7 +53,7 @@ end
 
 -- All spawners spawn cave spiders
 function tsm_railcorridors.on_construct_spawner(pos)
-	mcl_mobspawners.setup_spawner(pos, "mobs_mc:cave_spider")
+	mcl_mobspawners.setup_spawner(pos, "mobs_mc:cave_spider", 0, 7)
 end
 
 -- MineClone 2's treasure function. Gets all treasures for a single chest.
