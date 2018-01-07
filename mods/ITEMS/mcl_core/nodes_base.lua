@@ -906,6 +906,38 @@ minetest.register_node("mcl_core:snow", {
 	groups = {shovely=1, attached_node=1,deco_block=1, dig_by_piston=1, snow_cover=1},
 	sounds = mcl_sounds.node_sound_snow_defaults(),
 	on_construct = mcl_core.on_snow_construct,
+	on_place = function(itemstack, placer, pointed_thing)
+		-- Placement is only allowed on top of solid blocks
+		if pointed_thing.type ~= "node" then
+			-- no interaction possible with entities
+			return itemstack
+		end
+		local def = minetest.registered_nodes[minetest.get_node(pointed_thing.under).name]
+		local above = pointed_thing.above
+		local under = pointed_thing.under
+		local unode = minetest.get_node(under)
+		-- Check special rightclick action of pointed node
+		if def and def.on_rightclick then
+			if not placer:get_player_control().sneak then
+				return def.on_rightclick(under, unode, placer, itemstack,
+					pointed_thing) or itemstack, false
+			end
+		end
+
+		local anode = minetest.get_node(above)
+		local below
+		if above.y > under.y and minetest.registered_nodes[unode.name].buildable_to then
+			below = {x=above.x, y=above.y-2, z=above.z}
+		else
+			below = {x=above.x, y=above.y-1, z=above.z}
+		end
+		local bnode = minetest.get_node(below)
+		if minetest.get_item_group(bnode.name, "solid") == 1 then
+			return minetest.item_place_node(itemstack, placer, pointed_thing)
+		else
+			return itemstack
+		end
+	end,
 	after_destruct = mcl_core.after_snow_destruct,
 	drop = "mcl_throwing:snowball 2",
 	_mcl_blast_resistance = 0.5,
