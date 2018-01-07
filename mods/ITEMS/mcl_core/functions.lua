@@ -1151,6 +1151,19 @@ minetest.register_abm({
 	end
 })
 
+-- Melt snow
+minetest.register_abm({
+	label = "Top snow and ice melting",
+	nodenames = {"mcl_core:snow", "mcl_core:ice"},
+	interval = 16,
+	chance = 8,
+	action = function(pos, node)
+		if minetest.get_node_light(pos, 0) >= 12 then
+			minetest.remove_node(pos)
+		end
+	end
+})
+
 --[[ Call this for vines nodes only.
 Given the pos and node of a vines node, this returns true if the vines are supported
 and false if the vines are currently floating.
