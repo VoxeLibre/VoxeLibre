@@ -879,7 +879,7 @@ for i=0,3 do
 end
 
 for i=1,8 do
-	local id, desc, longdesc, usagehelp, help, walkable
+	local id, desc, longdesc, usagehelp, help, walkable, drawtype, node_box
 	if i == 1 then
 		id = "mcl_core:snow"
 		desc = "Top Snow"
@@ -893,6 +893,13 @@ for i=1,8 do
 			doc.add_entry_alias("nodes", "mcl_core:snow", "nodes", id)
 		end
 		walkable = true
+	end
+	if i ~= 8 then
+		drawtype = "nodebox"
+		node_box = {
+			type = "fixed",
+			fixed = { -0.5, -0.5, -0.5, 0.5, -0.5 + (2*i)/16, 0.5 },
+		}
 	end
 	local on_place = function(itemstack, placer, pointed_thing)
 		-- Placement is only allowed on top of solid blocks
@@ -962,7 +969,7 @@ for i=1,8 do
 		sunlight_propagates = true,
 		buildable_to = true,
 		node_placement_prediction = "", -- to prevent client flickering when stacking snow
-		drawtype = "nodebox",
+		drawtype = drawtype,
 		stack_max = 64,
 		walkable = walkable,
 		floodable = true,
@@ -971,12 +978,7 @@ for i=1,8 do
 			local node = minetest.get_node(npos)
 			mcl_core.clear_snow_dirt(npos, node)
 		end,
-		node_box = {
-			type = "fixed",
-			fixed = {
-				{-0.5, -0.5, -0.5,  0.5, -0.5+(i*2)/16, 0.5},
-			},
-		},
+		node_box = node_box,
 		groups = {shovely=1, attached_node=1,deco_block=1, dig_by_piston=1, snow_cover=1, top_snow=i},
 		sounds = mcl_sounds.node_sound_snow_defaults(),
 		on_construct = mcl_core.on_snow_construct,
