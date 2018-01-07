@@ -8,8 +8,12 @@ local default_mob = "mobs_mc:pig"
 local spawner_default = default_mob.." 0 15 4 15"
 
 local function get_mob_textures(mob)
-	-- FIXME: Ummm … wtf? Why isn't there a textures attribute?
-	return minetest.registered_entities[mob].texture_list[1]
+	local list = minetest.registered_entities[mob].texture_list
+	if type(list[1]) == "table" then
+		return list[1]
+	else
+		return list
+	end
 end
 
 local function find_doll(pos)
