@@ -772,7 +772,7 @@ minetest.register_node("mcl_core:obsidian", {
 
 minetest.register_node("mcl_core:ice", {
 	description = "Ice",
-	_doc_items_longdesc = "Ice is a translucent solid block usually found in cold areas. When it is broken while resting on top of another block, it will turn into still water.",
+	_doc_items_longdesc = "Ice is a translucent solid block usually found in cold areas. It melts near block light sources at a light level of 12 or higher. When it melts or is broken while resting on top of another block, it will turn into still water.",
 	drawtype = "glasslike",
 	tiles = {"default_ice.png"},
 	is_ground_content = true,
@@ -879,11 +879,12 @@ for i=0,3 do
 end
 
 for i=1,8 do
-	local id, desc, longdesc, help, walkable
+	local id, desc, longdesc, usagehelp, help, walkable
 	if i == 1 then
 		id = "mcl_core:snow"
 		desc = "Top Snow"
-		longdesc = "Top snow is a thin layer of snow."
+		longdesc = "Top snow is a layer of snow. It melts near light sources other than the sun with a light level of 12 or higher.".."\n".."Top snow can be stacked and has one of 8 different height levels. At levels 2-8, top snow is collidable. Top snow drops 2-9 snowballs, depending on its height."
+		usagehelp = "This block can only be placed on full solid blocks and on another top snow (which increases its height)." 
 		walkable = false
 	else
 		id = "mcl_core:snow_"..i
@@ -950,6 +951,7 @@ for i=1,8 do
 	minetest.register_node(id, {
 		description = desc,
 		_doc_items_longdesc = longdesc,
+		_doc_items_usagehelp = usagehelp,
 		_doc_items_create_entry = hhelp,
 		_doc_items_hidden = false,
 		tiles = {"default_snow.png"},
