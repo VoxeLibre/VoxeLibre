@@ -41,8 +41,6 @@ local function set_doll_properties(doll, mob)
 	doll:get_luaentity()._mob = mob
 end
 
-
-
 --[[ Public function: Setup the spawner at pos.
 This function blindly assumes there's actually a spawner at pos.
 If not, then the results are undefined.
@@ -72,8 +70,11 @@ function mcl_mobspawners.setup_spawner(pos, Mob, MinLight, MaxLight, MaxMobsInAr
 	meta:set_int("PlayerDistance", PlayerDistance)
 	meta:set_int("YOffset", YOffset)
 
-	-- Create doll
-	local doll = spawn_doll(pos)
+	-- Create doll or replace existing doll
+	local doll = find_doll(pos)
+	if not doll then
+		doll = spawn_doll(pos)
+	end
 	set_doll_properties(doll, Mob)
 
 
@@ -215,7 +216,8 @@ minetest.register_node("mcl_mobspawners:spawner", {
 	sunlight_propagates = true,
 	walkable = true,
 	description = S("Monster Spawner"),
-	_doc_items_longdesc = S("A monster spawner is a block which regularily causes monsters and animals to appear around it."),
+	_doc_items_longdesc = S("A monster spawner regularily causes mobs to appear around it while a player is nearby. Mobs are spawned regardless of the light level."),
+	_doc_items_usagehelp = S("If you have a spawn egg, you use it to change the monter to spawn. Just place the item on the monster spawner."),
 	groups = {pickaxey=1, material_stone=1, deco_block=1},
 	is_ground_content = false,
 	drop = "",
@@ -255,7 +257,7 @@ minetest.register_node("mcl_mobspawners:spawner", {
 	end,
 
 	on_destruct = function(pos)
-		local meta = minetest.get_meta(pos)
+		-- Remove doll (if any)
 		local obj = find_doll(pos)
 		if obj then
 			obj:remove()
@@ -301,6 +303,25 @@ minetest.register_node("mcl_mobspawners:spawner", {
 		end
 	end,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
+
+	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+		-- Change mob type if placing spawn egg into monster spawner.
+		-- Shift-click to ignore.
+		if minetest.get_item_group(itemstack:get_name(), "spawn_egg") == 1 then
+			local name = clicker:get_player_name()
+			local privs = minetest.get_player_privs(name)
+			if not privs.maphack then
+				minetest.chat_send_player(name, "You need the “maphack” privilege to change the spawned monster.")
+				return itemstack
+			end
+			mcl_mobspawners.setup_spawner(pos, itemstack:get_name())
+			if not minetest.settings:get_bool("creative_mode") then
+				itemstack:take_item()
+			end
+			return itemstack
+		end
+	end,
+
 	_mcl_blast_resistance = 25,
 	_mcl_hardness = 5,
 })
