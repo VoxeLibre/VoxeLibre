@@ -41,6 +41,7 @@ local doll_size_overrides = {
 	["mobs_mc:ghast"] = { x = 1.05, y = 1.05 },
 	["mobs_mc:wither"] = { x = 1.2, y = 1.2 },
 	["mobs_mc:enderdragon"] = { x = 0.16, y = 0.16 },
+	["mobs_mc:witch"] = { x = 0.95, y = 0.95 },
 }
 
 local function set_doll_properties(doll, mob)
