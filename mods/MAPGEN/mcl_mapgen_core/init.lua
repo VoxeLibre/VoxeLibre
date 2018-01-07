@@ -1519,7 +1519,11 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 
 			if perlin_vines:get2d(pos) > -1.0 and perlin_vines_fine:get3d(pos) > vine_threshold and data[p_pos] == c_air then
 
-				local param2 = minetest.dir_to_wallmounted(vector.subtract(treepos, pos))
+				local rdir = {}
+				rdir.x = -dirs[d].x
+				rdir.y = dirs[d].y
+				rdir.z = -dirs[d].z
+				local param2 = minetest.dir_to_wallmounted(rdir)
 
 				-- Determine growth direction
 				local grow_upwards = false
