@@ -4,7 +4,7 @@ mcl_mobspawners = {}
 
 local default_mob = "mobs_mc:pig"
 
--- Monster spawner
+-- Mob spawner
 local spawner_default = default_mob.." 0 15 4 15"
 
 local function get_mob_textures(mob)
@@ -55,7 +55,7 @@ All the arguments are optional!
 ]]
 
 function mcl_mobspawners.setup_spawner(pos, Mob, MinLight, MaxLight, MaxMobsInArea, PlayerDistance, YOffset)
-	-- Activate monster spawner and disable editing functionality
+	-- Activate mob spawner and disable editing functionality
 	if Mob == nil then Mob = default_mob end
 	if MinLight == nil then MinLight = 0 end
 	if MaxLight == nil then MaxLight = 15 end
@@ -83,9 +83,9 @@ function mcl_mobspawners.setup_spawner(pos, Mob, MinLight, MaxLight, MaxMobsInAr
 	t:start(2)
 end
 
--- Spawn monsters around pos
+-- Spawn mobs around pos
 -- NOTE: The node is timer-based, rather than ABM-based.
-local spawn_monsters = function(pos, elapsed)
+local spawn_mobs = function(pos, elapsed)
 
 	-- get meta
 	local meta = minetest.get_meta(pos)
@@ -105,7 +105,7 @@ local spawn_monsters = function(pos, elapsed)
 
 	-- are we spawning a registered mob?
 	if not mobs.spawning_mobs[mob] then
-		minetest.log("error", "[mcl_mobspawners] Monster Spawner: Mob doesn't exist: "..mob)
+		minetest.log("error", "[mcl_mobspawners] Mob Spawner: Mob doesn't exist: "..mob)
 		return
 	end
 
@@ -142,9 +142,9 @@ local spawn_monsters = function(pos, elapsed)
 	end
 
 	--[[ HACK!
-	The doll may not stay spawned if the monster spawner is placed far away from
+	The doll may not stay spawned if the mob spawner is placed far away from
 	players, so we will check for its existance periodically when a player is nearby.
-	This would happen almost always when the monster spawner is placed by the mapgen.
+	This would happen almost always when the mob spawner is placed by the mapgen.
 	This is probably caused by a Minetest bug:
 	https://github.com/minetest/minetest/issues/4759
 	FIXME: Fix this horrible hack.
@@ -203,7 +203,7 @@ local spawn_monsters = function(pos, elapsed)
 
 end
 
--- The monster spawner node.
+-- The mob spawner node.
 -- PLACEMENT INSTRUCTIONS:
 -- If this node is placed by a player, minetest.item_place, etc. default settings are applied
 -- automatially.
@@ -215,9 +215,9 @@ minetest.register_node("mcl_mobspawners:spawner", {
 	paramtype = "light",
 	sunlight_propagates = true,
 	walkable = true,
-	description = S("Monster Spawner"),
-	_doc_items_longdesc = S("A monster spawner regularily causes mobs to appear around it while a player is nearby. Mobs are spawned regardless of the light level."),
-	_doc_items_usagehelp = S("If you have a spawn egg, you use it to change the monter to spawn. Just place the item on the monster spawner."),
+	description = S("Mob Spawner"),
+	_doc_items_longdesc = S("A mob spawner regularily causes mobs to appear around it while a player is nearby. Mobs are spawned regardless of the light level."),
+	_doc_items_usagehelp = S("If you have a spawn egg, you use it to change the monter to spawn. Just place the item on the mob spawner."),
 	groups = {pickaxey=1, material_stone=1, deco_block=1},
 	is_ground_content = false,
 	drop = "",
@@ -239,7 +239,7 @@ minetest.register_node("mcl_mobspawners:spawner", {
 		local name = placer:get_player_name()
 		local privs = minetest.get_player_privs(name)
 		if not privs.maphack then
-			minetest.chat_send_player(name, "Placement denied. You need the “maphack” privilege to place monster spawners.")
+			minetest.chat_send_player(name, "Placement denied. You need the “maphack” privilege to place mob spawners.")
 			return itemstack
 		end
 		local node_under = minetest.get_node(pointed_thing.under)
@@ -264,7 +264,7 @@ minetest.register_node("mcl_mobspawners:spawner", {
 		end
 	end,
 
-	on_timer = spawn_monsters,
+	on_timer = spawn_mobs,
 
 	on_receive_fields = function(pos, formname, fields, sender)
 

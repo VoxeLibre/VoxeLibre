@@ -70,9 +70,8 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 			-- Special allowed nodes:
 			-- * soul sand
 			-- * end portal frame (TODO)
-			-- * monster spawner
+			-- * mob spawner
 			-- * Fence, wall, glass, hopper: Only on top
-			-- * Monster spawner
 			-- * Slab: Only on top if upside down
 			-- * Stairs: Only on top if upside down
 
@@ -175,7 +174,7 @@ mcl_torches.register_torch("torch",
 	[[Torches can generally be placed on full solid opaque blocks. The following exceptions apply:
 • Glass, fence, wall, hopper: Can only be placed on top
 • Upside-down slab/stair: Can only be placed on top
-• Soul sand, monster spawner: Placement possible
+• Soul sand, mob spawner: Placement possible
 • Glowstone and pistons: No placement possible]],
 	"default_torch_on_floor.png",
 	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",

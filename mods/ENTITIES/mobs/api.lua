@@ -3153,7 +3153,7 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 		groups = grp,
 
 		_doc_items_longdesc = "This allows you to place a single mob.",
-		_doc_items_usagehelp = "Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a monster spawner, you change the monster it spawns.",
+		_doc_items_usagehelp = "Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.",
 
 		on_place = function(itemstack, placer, pointed_thing)
 

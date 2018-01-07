@@ -240,7 +240,7 @@ minetest.register_on_generated(function(minp, maxp)
 			table.sort(chestSlots)
 			local currentChest = 1
 
-			-- Calculate the monster spawner position, to be re-used for later
+			-- Calculate the mob spawner position, to be re-used for later
 			local spawner_pos = {x = x + math.ceil(dim.x/2), y = y+1, z = z + math.ceil(dim.z/2)}
 			table.insert(spawner_posses, spawner_pos)
 
@@ -371,7 +371,7 @@ minetest.register_on_generated(function(minp, maxp)
 			end
 		end
 
-		-- Monster spawners are placed seperately, too
+		-- Mob spawners are placed seperately, too
 		-- We don't want to destroy non-ground nodes
 		for s=1, #spawner_posses do
 			local sp = spawner_posses[s]
