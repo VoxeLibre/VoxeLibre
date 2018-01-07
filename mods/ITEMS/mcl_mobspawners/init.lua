@@ -304,24 +304,6 @@ minetest.register_node("mcl_mobspawners:spawner", {
 	end,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 
-	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
-		-- Change mob type if placing spawn egg into monster spawner.
-		-- Shift-click to ignore.
-		if minetest.get_item_group(itemstack:get_name(), "spawn_egg") == 1 then
-			local name = clicker:get_player_name()
-			local privs = minetest.get_player_privs(name)
-			if not privs.maphack then
-				minetest.chat_send_player(name, "You need the “maphack” privilege to change the spawned monster.")
-				return itemstack
-			end
-			mcl_mobspawners.setup_spawner(pos, itemstack:get_name())
-			if not minetest.settings:get_bool("creative_mode") then
-				itemstack:take_item()
-			end
-			return itemstack
-		end
-	end,
-
 	_mcl_blast_resistance = 25,
 	_mcl_hardness = 5,
 })

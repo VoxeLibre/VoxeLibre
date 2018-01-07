@@ -3152,6 +3152,9 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 		inventory_image = invimg,
 		groups = grp,
 
+		_doc_items_longdesc = "This allows you to place a single mob.",
+		_doc_items_usagehelp = "Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a monster spawner, you change the monster it spawns.",
+
 		on_place = function(itemstack, placer, pointed_thing)
 
 			local pos = pointed_thing.above
@@ -3169,6 +3172,20 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 
 				if not minetest.registered_entities[mob] then
 					return
+				end
+
+				local name = placer:get_player_name()
+				local privs = minetest.get_player_privs(name)
+				if not privs.maphack then
+					minetest.chat_send_player(name, "You need the “maphack” privilege to change the mob spawner.")
+					return itemstack
+				end
+				if minetest.get_modpath("mcl_mobspawners") and under.name == "mcl_mobspawners:spawner" then
+					mcl_mobspawners.setup_spawner(pointed_thing.under, itemstack:get_name())
+					if not minetest.settings:get_bool("creative_mode") then
+						itemstack:take_item()
+					end
+					return itemstack
 				end
 
 				pos.y = pos.y + 1
