@@ -27,14 +27,34 @@ local function spawn_doll(pos)
 	return minetest.add_entity({x=pos.x, y=pos.y-0.3, z=pos.z}, "mcl_mobspawners:doll")
 end
 
+-- Manually set the doll sizes for large mobs
+-- TODO: Relocate this code to mobs_mc
+local doll_size_overrides = {
+	["mobs_mc:guardian"] = { x = 0.6, y = 0.6 },
+	["mobs_mc:guardian_elder"] = { x = 0.72, y = 0.72 },
+	["mobs_mc:enderman"] = { x = 0.8, y = 0.8 },
+	["mobs_mc:iron_golem"] = { x = 0.9, y = 0.9 },
+	["mobs_mc:ghast"] = { x = 1.05, y = 1.05 },
+	["mobs_mc:wither"] = { x = 1.2, y = 1.2 },
+	["mobs_mc:enderdragon"] = { x = 0.16, y = 0.16 },
+}
+
 local function set_doll_properties(doll, mob)
 	local mobinfo = minetest.registered_entities[mob]
+	local xs, ys
+	if doll_size_overrides[mob] then
+		xs = doll_size_overrides[mob].x
+		ys = doll_size_overrides[mob].y
+	else
+		xs = mobinfo.visual_size.x * 0.33333
+		ys = mobinfo.visual_size.y * 0.33333
+	end
 	local prop = {
 		mesh = mobinfo.mesh,
 		textures = get_mob_textures(mob),
 		visual_size = {
-			x = mobinfo.visual_size.x * 0.33333,
-			y = mobinfo.visual_size.y * 0.33333,
+			x = xs,
+			y = ys,
 		}
 	}
 	doll:set_properties(prop)
