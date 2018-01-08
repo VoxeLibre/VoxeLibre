@@ -50,6 +50,27 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		return
 	end
 
+	if bed_pos then
+		-- No sleeping if monsters nearby
+		local objs = minetest.get_objects_inside_radius(bed_pos, 8)
+		for _, obj in ipairs(objs) do
+			if obj ~= nil and not obj:is_player() then
+				local def = minetest.registered_entities[obj:get_luaentity().name]
+				-- Approximation of monster detection range
+				if def._cmi_is_mob and def.type == "monster" and math.abs(bed_pos.y - obj:get_pos().y) <= 5 then
+					minetest.chat_send_player(name, "You can't sleep now, monsters are nearby!")
+					return
+				end
+			end
+		end
+
+		-- No sleeping if too far away
+		if vector.distance(bed_pos, pos) > 2 then
+			minetest.chat_send_player(name, "You can't sleep, the bed's too far away!")
+			return
+		end
+	end
+
 	-- stand up
 	if state ~= nil and not state then
 		local p = mcl_beds.pos[name] or nil
