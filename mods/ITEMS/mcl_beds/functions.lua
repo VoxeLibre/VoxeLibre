@@ -65,6 +65,12 @@ local function lay_down(player, pos, bed_pos, state, skip)
 	end
 
 	if bed_pos then
+		-- No sleeping if too far away
+		if vector.distance(bed_pos, pos) > 2 then
+			minetest.chat_send_player(name, "You can't sleep, the bed's too far away!")
+			return
+		end
+
 		-- No sleeping if monsters nearby.
 		-- The exceptions above apply.
 		-- Zombie pigmen only prevent sleep while they are hostle.
@@ -82,12 +88,6 @@ local function lay_down(player, pos, bed_pos, state, skip)
 					return
 				end
 			end
-		end
-
-		-- No sleeping if too far away
-		if vector.distance(bed_pos, pos) > 2 then
-			minetest.chat_send_player(name, "You can't sleep, the bed's too far away!")
-			return
 		end
 	end
 
