@@ -1,90 +1,153 @@
--- WALL LEVER
--- Basically a switch that can be attached to a wall
--- Powers the block 2 nodes behind (using a receiver)
+local lever_get_output_rules = function(node)
+	local rules = {
+		{x = -1, y = 0, z = 0},
+		{x = 1, y = 0, z = 0},
+		{x = 0, y = 0, z = -1},
+		{x = 0, y = 0, z = 1},
+		{x = 0, y = -1, z = 0},
+		{x = 0, y = 1, z = 0},
+	}
+	local dir = minetest.facedir_to_dir(node.param2)
+	dir = vector.multiply(dir, 2)
+	table.insert(rules, dir)
+	return rules
+end
+
+-- LEVER
 minetest.register_node("mesecons_walllever:wall_lever_off", {
-	drawtype = "nodebox",
+	drawtype = "mesh",
 	tiles = {
-		"jeija_wall_lever_tb.png",
-		"jeija_wall_lever_bottom.png",
-		"jeija_wall_lever_sides.png",
-		"jeija_wall_lever_sides.png",
-		"jeija_wall_lever_back.png",
-		"jeija_wall_lever_off.png",
+		"jeija_wall_lever_lever_light_on.png",
 	},
 	inventory_image = "jeija_wall_lever.png",
 	wield_image = "jeija_wall_lever.png",
 	paramtype = "light",
 	paramtype2 = "facedir",
+	drawtype = "mesh",
+	mesh = "jeija_wall_lever_off.obj",
 	sunlight_propagates = true,
 	walkable = false,
 	selection_box = {
 		type = "fixed",
-		fixed = {{ -2/16, -3/16,  8/16, 2/16, 3/16,  4/16 },
-			 { -1/16, -8/16, 7/16, 1/16, 0/16,  5/16 }},
+		fixed = { -3/16, -4/16, 2/16, 3/16, 4/16, 8/16 },
 	},
-	node_box = {
-		type = "fixed",
-		fixed = {{ -2/16, -3/16,  8/16, 2/16, 3/16,  4/16 },	-- the base
-			 { -1/16, -8/16, 7/16, 1/16, 0/16,  5/16 }}	-- the lever itself.
-	},
-	groups = {handy=1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1},
+	groups = {handy=1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1},
 	is_ground_content = false,
 	description="Lever",
 	_doc_items_longdesc = "A lever is a redstone component which can be flipped on and off. It supplies redstone power to the blocks behind while it is in the “on” state.",
 	_doc_items_usagehelp = "Right-click the lever to flip it on or off.",
 	on_rightclick = function (pos, node)
 		minetest.swap_node(pos, {name="mesecons_walllever:wall_lever_on", param2=node.param2})
-		mesecon.receptor_on(pos, mesecon.rules.buttonlike_get(node))
+		mesecon.receptor_on(pos, lever_get_output_rules(node))
 		minetest.sound_play("mesecons_lever", {pos=pos})
 	end,
-	sounds = mcl_sounds.node_sound_wood_defaults(),
+	node_placement_prediction = "",
+	on_place = function(itemstack, placer, pointed_thing)
+		if pointed_thing.type ~= "node" then
+			-- no interaction possible with entities
+			return itemstack
+		end
+
+		local under = pointed_thing.under
+		local node = minetest.get_node(under)
+		local def = minetest.registered_nodes[node.name]
+		if not def then return end
+		local groups = def.groups
+
+		-- Check special rightclick action of pointed node
+		if def and def.on_rightclick then
+			if not placer:get_player_control().sneak then
+				return def.on_rightclick(under, node, placer, itemstack,
+					pointed_thing) or itemstack, false
+			end
+		end
+
+		-- If the pointed node is buildable, let's look at the node *behind* that node
+		if def.buildable_to then
+			local dir = vector.subtract(pointed_thing.above, pointed_thing.under)
+			local actual = vector.subtract(under, dir)
+			local actualnode = minetest.get_node(actual)
+			def = minetest.registered_nodes[actualnode.name]
+			groups = def.groups
+		end
+
+		-- Only allow placement on full-cube solid opaque nodes
+		if (not groups) or (not groups.solid) or (not groups.opaque) or (def.node_box and def.node_box.type ~= "regular") then
+			return itemstack
+		end
+
+		local above = pointed_thing.above
+		local dir = vector.subtract(under, above)
+		local tau = math.pi*2
+		local wdir = minetest.dir_to_facedir(dir, true)
+		if dir.y ~= 0 then
+			local yaw = placer:get_look_horizontal()
+			if (yaw > tau/8 and yaw < (tau/8)*3) or (yaw < (tau/8)*7 and yaw > (tau/8)*5) then
+				if dir.y == -1 then
+					wdir = 13
+				else
+					wdir = 15
+				end
+			else
+				if dir.y == -1 then
+					wdir = 10
+				else
+					wdir = 8
+				end
+			end
+		end
+
+		local idef = itemstack:get_definition()
+		local itemstack, success = minetest.item_place_node(itemstack, placer, pointed_thing, wdir)
+
+		if success then
+			if idef.sounds and idef.sounds.place then
+				minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
+			end
+		end
+		return itemstack
+	end,
+
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {receptor = {
-		rules = mesecon.rules.buttonlike_get,
+		rules = lever_get_output_rules,
 		state = mesecon.state.off
 	}},
+	on_rotate = false,
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
 })
 minetest.register_node("mesecons_walllever:wall_lever_on", {
-	drawtype = "nodebox",
+	drawtype = "mesh",
 	tiles = {
-		"jeija_wall_lever_top.png",
-		"jeija_wall_lever_tb.png",
-		"jeija_wall_lever_sides.png",
-		"jeija_wall_lever_sides.png",
-		"jeija_wall_lever_back.png",
-		"jeija_wall_lever_on.png",
+		"jeija_wall_lever_lever_light_on.png",
 	},
 	inventory_image = "jeija_wall_lever.png",
 	paramtype = "light",
 	paramtype2 = "facedir",
+	mesh = "jeija_wall_lever_on.obj",
 	sunlight_propagates = true,
 	walkable = false,
 	selection_box = {
 		type = "fixed",
-		fixed = {{ -2/16, -3/16,  8/16, 2/16, 3/16,  4/16 },
-			 { -1/16, 0, 7/16, 1/16, 8/16,  5/16 }},
+		fixed = { -3/16, -4/16, 2/16, 3/16, 4/16, 8/16 },
 	},
-	node_box = {
-		type = "fixed",
-		fixed = {{ -2/16, -3/16,  8/16, 2/16, 3/16,  4/16 },	-- the base
-			 { -1/16, 0/16, 7/16, 1/16, 8/16,  5/16 }}	-- the lever itself.
-	},
-	groups = {handy=1, not_in_creative_inventory = 1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1},
+	groups = {handy=1, not_in_creative_inventory = 1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1},
 	is_ground_content = false,
 	drop = '"mesecons_walllever:wall_lever_off" 1',
 	description="Lever",
 	_doc_items_create_entry = false,
 	on_rightclick = function (pos, node)
 		minetest.swap_node(pos, {name="mesecons_walllever:wall_lever_off", param2=node.param2})
-		mesecon.receptor_off(pos, mesecon.rules.buttonlike_get(node))
+		mesecon.receptor_off(pos, lever_get_output_rules(node))
 		minetest.sound_play("mesecons_lever", {pos=pos})
 	end,
-	sounds = mcl_sounds.node_sound_wood_defaults(),
+	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {receptor = {
-		rules = mesecon.rules.buttonlike_get,
+		rules = lever_get_output_rules,
 		state = mesecon.state.on
 	}},
+	on_rotate = false,
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
 })
