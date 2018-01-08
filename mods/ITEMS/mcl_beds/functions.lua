@@ -164,6 +164,10 @@ end
 -- Handle environment stuff related to sleeping: skip night and thunderstorm
 function mcl_beds.sleep()
 	local storm_skipped = mcl_beds.skip_thunderstorm()
+	-- Always clear weather
+	if weather_mod then
+		mcl_weather.change_weather("none")
+	end
 	if is_night_skip_enabled() then
 		if not storm_skipped then
 			mcl_beds.skip_night()
@@ -186,7 +190,6 @@ end
 function mcl_beds.skip_thunderstorm()
 	-- Skip thunderstorm
 	if weather_mod and mcl_weather.get_weather() == "thunder" then
-		mcl_weather.change_weather("none")
 		-- Sleep for a half day (=minimum thunderstorm duration)
 		minetest.set_timeofday((minetest.get_timeofday() + 0.5) % 1)
 		return true
