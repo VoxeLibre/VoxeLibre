@@ -29,9 +29,9 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 	walkable = false,
 	selection_box = {
 		type = "fixed",
-		fixed = { -3/16, -8/16,  -4/16, 3/16, -2/16,  4/16 },
+		fixed = { -3/16, -4/16, 2/16, 3/16, 4/16, 8/16 },
 	},
-	groups = {handy=1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1},
+	groups = {handy=1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1},
 	is_ground_content = false,
 	description="Lever",
 	_doc_items_longdesc = "A lever is a redstone component which can be flipped on and off. It supplies redstone power to the blocks behind while it is in the “on” state.",
@@ -77,30 +77,22 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 		end
 
 		local above = pointed_thing.above
-		local dir = vector.subtract(above, under)
-		local wdir
+		local dir = vector.subtract(under, above)
 		local tau = math.pi*2
-		if dir.z == 1 then
-			wdir = 6
-		elseif dir.z == -1 then
-			wdir = 8
-		elseif dir.x == 1 then
-			wdir = 15
-		elseif dir.x == -1 then
-			wdir = 17
-		elseif dir.y ~= 0 then
+		local wdir = minetest.dir_to_facedir(dir, true)
+		if dir.y ~= 0 then
 			local yaw = placer:get_look_horizontal()
 			if (yaw > tau/8 and yaw < (tau/8)*3) or (yaw < (tau/8)*7 and yaw > (tau/8)*5) then
 				if dir.y == -1 then
-					wdir = 23
+					wdir = 13
 				else
-					wdir = 1
+					wdir = 15
 				end
 			else
 				if dir.y == -1 then
-					wdir = 22
+					wdir = 10
 				else
-					wdir = 2
+					wdir = 8
 				end
 			end
 		end
@@ -138,9 +130,9 @@ minetest.register_node("mesecons_walllever:wall_lever_on", {
 	walkable = false,
 	selection_box = {
 		type = "fixed",
-		fixed = { -3/16, -8/16,  -4/16, 3/16, -2/16,  4/16 },
+		fixed = { -3/16, -4/16, 2/16, 3/16, 4/16, 8/16 },
 	},
-	groups = {handy=1, not_in_creative_inventory = 1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1},
+	groups = {handy=1, not_in_creative_inventory = 1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1},
 	is_ground_content = false,
 	drop = '"mesecons_walllever:wall_lever_off" 1',
 	description="Lever",
