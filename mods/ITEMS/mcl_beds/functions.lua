@@ -149,9 +149,6 @@ local function update_formspecs(finished)
 	else
 		form_n = mcl_beds.formspec .. "label[2.2,11;" .. tostring(player_in_bed) ..
 			" of " .. tostring(ges) .. " players are in bed]"
-		if all_in_bed and is_night_skip_enabled() then
-			form_n = form_n .. "button_exit[2,8;4,0.75;force;Force night skip]"
-		end
 	end
 
 	for name,_ in pairs(mcl_beds.player) do
@@ -264,7 +261,7 @@ minetest.register_on_leaveplayer(function(player)
 	lay_down(player, nil, nil, false, true)
 	mcl_beds.player[name] = nil
 	if check_in_beds() then
-		minetest.after(2, function()
+		minetest.after(5, function()
 			update_formspecs(is_night_skip_enabled())
 			mcl_beds.sleep()
 		end)
