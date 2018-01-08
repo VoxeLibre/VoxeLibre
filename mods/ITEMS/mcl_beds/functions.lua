@@ -42,6 +42,20 @@ local function check_in_beds(players)
 	return #players > 0
 end
 
+-- These monsters do not prevent sleep
+local monster_exceptions = {
+	["mobs_mc:ghast"] = true,
+	["mobs_mc:enderdragon"] = true,
+	["mobs_mc:killer_bunny"] = true,
+	["mobs_mc:slime_big"] = true,
+	["mobs_mc:slime_small"] = true,
+	["mobs_mc:slime_tiny"] = true,
+	["mobs_mc:magma_cube_big"] = true,
+	["mobs_mc:magma_cube_small"] = true,
+	["mobs_mc:magma_cube_tiny"] = true,
+	["mobs_mc:shulker"] = true,
+}
+
 local function lay_down(player, pos, bed_pos, state, skip)
 	local name = player:get_player_name()
 	local hud_flags = player:hud_get_flags()
@@ -51,14 +65,20 @@ local function lay_down(player, pos, bed_pos, state, skip)
 	end
 
 	if bed_pos then
-		-- No sleeping if monsters nearby
+		-- No sleeping if monsters nearby.
+		-- The exceptions above apply.
+		-- Zombie pigmen only prevent sleep while they are hostle.
 		local objs = minetest.get_objects_inside_radius(bed_pos, 8)
 		for _, obj in ipairs(objs) do
 			if obj ~= nil and not obj:is_player() then
-				local def = minetest.registered_entities[obj:get_luaentity().name]
+				local ent = obj:get_luaentity()
+				local mobname = ent.name
+				local def = minetest.registered_entities[mobname]
 				-- Approximation of monster detection range
-				if def._cmi_is_mob and def.type == "monster" and math.abs(bed_pos.y - obj:get_pos().y) <= 5 then
-					minetest.chat_send_player(name, "You can't sleep now, monsters are nearby!")
+				if def._cmi_is_mob and ((mobname ~= "mobs_mc:pigman" and def.type == "monster" and not monster_exceptions[mobname]) or (mobname == "mobs_mc:pigman" and ent.state == "attack")) then
+					if math.abs(bed_pos.y - obj:get_pos().y) <= 5 then
+						minetest.chat_send_player(name, "You can't sleep now, monsters are nearby!")
+					end
 					return
 				end
 			end
