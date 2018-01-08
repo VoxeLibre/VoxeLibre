@@ -1,6 +1,6 @@
 -- Tree nodes: Wood, Wooden Planks, Sapling, Leaves
 
-local register_tree_trunk = function(subname, description, longdesc, tiles, after_dig_node)
+local register_tree_trunk = function(subname, description, longdesc, tiles)
 	minetest.register_node("mcl_core:"..subname, {
 		description = description,
 		_doc_items_longdesc = longdesc,
@@ -13,8 +13,6 @@ local register_tree_trunk = function(subname, description, longdesc, tiles, afte
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		_mcl_blast_resistance = 10,
 		_mcl_hardness = 2,
-
-		after_dig_node = after_dig_node,
 	})
 end
 
@@ -118,29 +116,6 @@ end
 
 ---------------------
 
--- This is a bad bad workaround which is only done because cocoas are not wallmounted (but should)
--- As long cocoas only EVER stick to jungle trees, and nothing else, this is probably a lesser sin.
-local jungle_tree_after_dig_node = function(pos, oldnode, oldmetadata, digger)
-	-- Drop attached cocoas
-	local posses = {
-		{ x = pos.x + 1, y = pos.y, z = pos.z },
-		{ x = pos.x - 1, y = pos.y, z = pos.z },
-		{ x = pos.x, y = pos.y, z = pos.z + 1 },
-		{ x = pos.x, y = pos.y, z = pos.z - 1 },
-	}
-	for p=1, #posses do
-		local node = minetest.get_node(posses[p])
-		local g = minetest.get_item_group(node.name, "cocoa")
-		if g and g >= 1 then
-			minetest.remove_node(posses[p])
-			local drops = minetest.get_node_drops(node.name, "")
-			for d=1, #drops do
-				minetest.add_item(posses[p], drops[d])
-			end
-		end
-	end
-end
-
 register_tree_trunk("tree", "Oak Wood", "The trunk of an oak tree.", {"default_tree_top.png", "default_tree_top.png", "default_tree.png"})
 register_tree_trunk("darktree", "Dark Oak Wood", "The trunk of a dark oak tree.", {"mcl_core_log_big_oak_top.png", "mcl_core_log_big_oak_top.png", "mcl_core_log_big_oak.png"})
 register_tree_trunk("acaciatree", "Acacia Wood", "The trunk of an acacia.", {"default_acacia_tree_top.png", "default_acacia_tree_top.png", "default_acacia_tree.png"})
@@ -148,8 +123,7 @@ register_tree_trunk("darktree", "Dark Oak Wood", "The trunk of a dark oak tree."
 register_tree_trunk("sprucetree", "Spruce Wood", "The trunk of a spruce tree.", {"mcl_core_log_spruce_top.png", "mcl_core_log_spruce_top.png", "mcl_core_log_spruce.png"})
 register_tree_trunk("birchtree", "Birch Wood", "The trunk of a birch tree.", {"mcl_core_log_birch_top.png", "mcl_core_log_birch_top.png", "mcl_core_log_birch.png"})
 
-register_tree_trunk("jungletree", "Jungle Wood", "The trunk of a jungle tree.", {"default_jungletree_top.png", "default_jungletree_top.png", "default_jungletree.png"}, jungle_tree_after_dig_node)
-
+register_tree_trunk("jungletree", "Jungle Wood", "The trunk of a jungle tree.", {"default_jungletree_top.png", "default_jungletree_top.png", "default_jungletree.png"})
 
 register_wooden_planks("wood", "Oak Wood Planks", {"default_wood.png"})
 register_wooden_planks("darkwood", "Dark Oak Wood Planks", {"mcl_core_planks_big_oak.png"})

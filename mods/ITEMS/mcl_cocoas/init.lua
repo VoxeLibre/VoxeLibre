@@ -68,12 +68,7 @@ end
 -- Cocoa definition
 -- 1st stage
 
---[[ TODO (code quality): Turn the cocoa nodes into attached nodes and make use of wallmounted. This is much better
-than the current ugly hacky check after digging a jungle tree (in mcl_core).
-Problem: If we want to use wallmounted, we MUST use a mesh, since wallmounted does not support
-nodeboxes with multiple boxes. :-(
-Using meshes will also clean up the texture mess.
-]]
+--[[ TODO: Use a mesh for cocoas for perfect texture compability. ]]
 local crop_def = {
 	description = "Premature Cocoa",
 	_doc_items_create_entry = true,
@@ -110,7 +105,7 @@ local crop_def = {
 		},
 	},
 	groups = {
-		handy=1,axey=1, cocoa=1, not_in_creative_inventory=1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1
+		handy=1,axey=1, cocoa=1, not_in_creative_inventory=1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1,
 	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 15,
