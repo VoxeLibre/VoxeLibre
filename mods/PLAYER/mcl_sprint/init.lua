@@ -47,8 +47,9 @@ minetest.register_globalstep(function(dtime)
 	for playerName,playerInfo in pairs(players) do
 		local player = minetest.get_player_by_name(playerName)
 		if player ~= nil then
+			local ctrl = player:get_player_control()
 			--Check if the player should be sprinting
-			if player:get_player_control()["aux1"] and player:get_player_control()["up"] then
+			if ctrl.aux1 and ctrl.up and not ctrl.sneak then
 				players[playerName]["shouldSprint"] = true
 			else
 				players[playerName]["shouldSprint"] = false
