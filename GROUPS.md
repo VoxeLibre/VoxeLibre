@@ -48,6 +48,7 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `destroys_items=1`: If an item happens to be *inside* this node, the item will be destroyed
 * `no_eat_delay=1`: Only for foodstuffs. When eating this, all eating delays are ignored.
 * `can_eat_when_full=1`: Only for foodstuffs. This item can be eaten when the user has a full hunger bar
+* `attached_node_facedir=1`: Like `attached_node`, but for facedir nodes
 
 #### Footnotes
 
