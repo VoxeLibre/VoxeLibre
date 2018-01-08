@@ -21,7 +21,6 @@ local wip_items = {
 	"mcl_minecarts:activator_rail",
 }
 local experimental_items = {
-	"mcl_temp_end_escape:end_escape_pearl",
 }
 
 for i=1,#wip_items do
