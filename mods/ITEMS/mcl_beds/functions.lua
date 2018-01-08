@@ -242,7 +242,7 @@ function mcl_beds.on_rightclick(pos, player)
 
 	-- skip the night and let all players stand up
 	if check_in_beds() then
-		minetest.after(2, function()
+		minetest.after(5, function()
 			if not is_sp then
 				update_formspecs(is_night_skip_enabled())
 			end
