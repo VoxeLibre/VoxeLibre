@@ -1,5 +1,5 @@
 
-MOB API (18th October 2017)
+MOB API
 
 The mob api is a function that can be called on by other mods to add new animals or monsters into minetest.
 
@@ -13,6 +13,7 @@ The mob api is a function that can be called on by other mods to add new animals
     'mobname' can change specific mob chance rate (0 to disable) and spawn number e.g. mobs_animal:cow = 1000,5
     'mob_difficulty' sets difficulty level (health and hit damage multiplied by this number), defaults to 1.0.
     'mob_show_health' if false then punching mob will not show health status (true by default)
+    'mob_chance_multiplier' multiplies chance of all mobs spawning and can be set to 0.5 to have mobs spawn more or 2.0 to spawn less. e.g.  1 in 7000 * 0.5 = 1 in 3500 so better odds of spawning.
 
 mobs:register_mob(name, definition)
 
@@ -33,6 +34,7 @@ This functions registers a new mob as a Minetest entity.
         'nametag' string containing name of mob to display above entity
         'physical' same is in minetest.register_entity()
         'collisionbox' same is in minetest.register_entity()
+        'selectionbox' same is in minetest.register_entity()
         'visual' same is in minetest.register_entity()
         'visual_size' same is in minetest.register_entity()
         'textures' same is in minetest.register_entity()

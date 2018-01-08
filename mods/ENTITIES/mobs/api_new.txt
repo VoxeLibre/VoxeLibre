@@ -1,6 +1,6 @@
 
-Mobs Redo API (last updated 18th Oct 2017)
-==========================================
+Mobs Redo API
+=============
 
 Welcome to the world of mobs in minetest and hopefully an easy guide to defining
 your own mobs and having them appear in your worlds.
@@ -140,8 +140,9 @@ functions needed for the mob to work properly which contains the following:
       'wielditem'      how it looks when player holds it in hand.
       'mesh'           uses separate object file to define mob.
    'visual_size'       has the size of the mob, defaults to {x = 1, y = 1}
-   'collision_box'     has the box in which mob can be interacted with e.g.
-                       {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}
+   'collision_box'     has the box in which mob can be interacted with the
+                       world e.g. {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}
+   'selection_box'     has the box in which player can interact with mob
    'textures'          holds a table list of textures to be used for mob, or you
                        could use multiple lists inside another table for random
                        selection e.g. { {"texture1.png"}, {"texture2.png"} }
@@ -531,21 +532,25 @@ Certain variables need to be set before using the above functions:
 External Settings for "minetest.conf"
 ------------------------------------
 
-   'enable_damage'        if true monsters will attack players (default is true)
-   'only_peaceful_mobs'   if true only animals will spawn in game (default is
-                          false)
-   'mobs_disable_blood'   if false blood effects appear when mob is hit (default
-                          is false)
-   'mobs_spawn_protected' if set to false then mobs will not spawn in protected
-                          areas (default is true)
-   'remove_far_mobs'      if true then mobs that are outside players visual
-                          range will be removed (default is false)
-   'mobname'              can change specific mob chance rate (0 to disable) and
-                          spawn number e.g. mobs_animal:cow = 1000,5
-   'mob_difficulty'       sets difficulty level (health and hit damage
-                          multiplied by this number), defaults to 1.0.
-   'mob_show_health'      if false then punching mob will not show health status
-                          (true by default)
+   'enable_damage'          if true monsters will attack players (default is true)
+   'only_peaceful_mobs'     if true only animals will spawn in game (default is
+                            false)
+   'mobs_disable_blood'     if false blood effects appear when mob is hit (default
+                            is false)
+   'mobs_spawn_protected'   if set to false then mobs will not spawn in protected
+                            areas (default is true)
+   'remove_far_mobs'        if true then mobs that are outside players visual
+                            range will be removed (default is false)
+   'mobname'                can change specific mob chance rate (0 to disable) and
+                            spawn number e.g. mobs_animal:cow = 1000,5
+   'mob_difficulty'         sets difficulty level (health and hit damage
+                            multiplied by this number), defaults to 1.0.
+   'mob_show_health'        if false then punching mob will not show health status
+                            (true by default)
+   'mob_chance_multiplier'  multiplies chance of all mobs spawning and can be set
+                            to 0.5 to have mobs spawn more or 2.0 to spawn less.
+                            e.g.  1 in 7000 * 0.5 = 1 in 3500 so better odds of
+                            spawning.
 
 Players can override the spawn chance for each mob registered by adding a line
 to their minetest.conf file with a new value, the lower the value the more each
