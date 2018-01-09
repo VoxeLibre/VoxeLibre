@@ -60,7 +60,7 @@ local piston_remove_pusher = function (pos, oldnode)
 		core.check_for_falling(pusherpos)
 		minetest.sound_play("piston_retract", {
 			pos = pos,
-			max_hear_distance = 20,
+			max_hear_distance = 31,
 			gain = 0.3,
 		})
 	end
@@ -81,7 +81,7 @@ local piston_remove_base = function (pos, oldnode)
 		core.check_for_falling(basepos)
 		minetest.sound_play("piston_retract", {
 			pos = pos,
-			max_hear_distance = 20,
+			max_hear_distance = 31,
 			gain = 0.3,
 		})
 	end
@@ -104,7 +104,7 @@ local piston_on = function (pos, node)
 		mesecon.mvps_move_objects(np, dir, oldstack)
 		minetest.sound_play("piston_extend", {
 			pos = pos,
-			max_hear_distance = 20,
+			max_hear_distance = 31,
 			gain = 0.3,
 		})
 	end
