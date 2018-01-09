@@ -48,7 +48,7 @@ for _, row in ipairs(wool.dyes) do
 		minetest.register_node("mcl_wool:"..name.."_carpet", {
 			description = desc.." Carpet",
 			_doc_items_longdesc = "Carpets are thin floor covers which come in many different colors.",
-			walkable = true,
+			walkable = false, -- See <https://minecraft.gamepedia.com/Materials>
 			is_ground_content = false,
 			tiles = {"wool_"..texture..".png"},
 			wield_image = "wool_"..texture..".png",
