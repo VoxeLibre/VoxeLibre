@@ -245,12 +245,12 @@ Read the help entries on the other redstone components to learn how redstone com
 			inventory_image = "redstone_redstone_dust.png",
 			wield_image = "redstone_redstone_dust.png",
 			paramtype = "light",
-			paramtype2 = "facedir",
 			sunlight_propagates = true,
 			selection_box = selectionbox,
 			node_box = nodebox,
 			walkable = false,
 			drop = "mesecons:wire_00000000_off",
+			sounds = mcl_sounds.node_sound_defaults(),
 			mesecon_wire = true
 		}, {tiles = tiles_off, mesecons = meseconspec_off, groups = groups_off},
 		{tiles = tiles_on, mesecons = meseconspec_on, groups = groups_on})
