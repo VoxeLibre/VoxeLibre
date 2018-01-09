@@ -177,12 +177,17 @@ function mcl_doors:register_door(name, def)
 		minetest.sound_play(door_switching_sound, {pos = pos, gain = 0.5, max_hear_distance = 16})
 	end
 
-	local function on_mesecons_signal_open (pos, node)
+	local function on_mesecons_signal_open(pos, node)
 		on_open_close(pos, 1, name.."_t_1", name.."_b_2", name.."_t_2", {1,2,3,0})
 	end
-
-	local function on_mesecons_signal_close (pos, node)
+	local function on_mesecons_signal_close(pos, node)
 		on_open_close(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1", {3,0,1,2})
+	end
+	local function on_mesecons_signal_open_top(pos, node)
+		on_mesecons_signal_open({x=pos.x, y=pos.y-1, z=pos.z}, node)
+	end
+	local function on_mesecons_signal_close_top(pos, node)
+		on_mesecons_signal_close({x=pos.x, y=pos.y-1, z=pos.z}, node)
 	end
 
 	local function check_player_priv(pos, player)
@@ -281,6 +286,10 @@ function mcl_doors:register_door(name, def)
 
 		on_rightclick = on_rightclick,
 
+		mesecons = { effector = {
+			action_on = on_mesecons_signal_open_top
+		}},
+
 		can_dig = check_player_priv,
 	})
 
@@ -370,6 +379,10 @@ function mcl_doors:register_door(name, def)
 		end,
 
 		on_rightclick = on_rightclick,
+
+		mesecons = { effector = {
+			action_on = on_mesecons_signal_close_top
+		}},
 
 		can_dig = check_player_priv,
 	})
