@@ -128,14 +128,14 @@ local piston_orientate = function (pos, placer)
 	if not placer then return end
 
 	-- placer pitch in degrees
-	local pitch = placer:get_look_pitch() * (180 / math.pi)
+	local pitch = placer:get_look_vertical() * (180 / math.pi)
 
 	local node = minetest.get_node(pos)
 	local pistonspec = minetest.registered_nodes[node.name].mesecons_piston
-	if pitch > 55 then --looking upwards
-		minetest.add_node(pos, {name=pistonspec.piston_down})
-	elseif pitch < -55 then --looking downwards
+	if pitch > 55 then
 		minetest.add_node(pos, {name=pistonspec.piston_up})
+	elseif pitch < -55 then
+		minetest.add_node(pos, {name=pistonspec.piston_down})
 	end
 end
 
