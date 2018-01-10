@@ -1,3 +1,14 @@
+local rules_flat = {
+	{ x = 0, y = 0, z = -1 },
+}
+local get_rules_flat = function(node)
+	local rules = rules_flat
+	for i=1, node.param2 do
+		rules = mesecon.rotate_rules_left(rules)
+	end
+	return rules
+end
+
 minetest.register_node("mcl_observers:observer", {
 	description = "Observer",
 	is_ground_content = false,
@@ -28,7 +39,9 @@ minetest.register_node("mcl_observers:observer", {
 	_mcl_hardness = 3.5,
 	-- TODO: Mesecons handling
 	mesecons = {effector = {
-	}}
+		rules = get_rules_flat,
+	}},
+	on_rotate = false,
 })
 
 minetest.register_craft({
