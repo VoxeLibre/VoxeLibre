@@ -209,6 +209,13 @@ function mcl_doors:register_door(name, def)
 		end
 	end
 
+	local mrules = {
+		{x =  0, y =  0, z = -1},
+		{x =  1, y =  0, z =  0},
+		{x = -1, y =  0, z =  0},
+		{x =  0, y =  0, z =  1},
+	}
+
 	minetest.register_node(name.."_b_1", {
 		tiles = {"blank.png", tt[2].."^[transformFXR90", tb[2], tb[2].."^[transformFX", tb[1], tb[1].."^[transformFX"},
 		paramtype = "light",
@@ -240,7 +247,8 @@ function mcl_doors:register_door(name, def)
 		on_rightclick = on_rightclick,
 
 		mesecons = { effector = {
-			action_on = on_mesecons_signal_open
+			action_on = on_mesecons_signal_open,
+			rules = mrules,
 		}},
 
 		can_dig = check_player_priv,
@@ -287,7 +295,8 @@ function mcl_doors:register_door(name, def)
 		on_rightclick = on_rightclick,
 
 		mesecons = { effector = {
-			action_on = on_mesecons_signal_open_top
+			action_on = on_mesecons_signal_open_top,
+			rules = mrules,
 		}},
 
 		can_dig = check_player_priv,
@@ -334,7 +343,8 @@ function mcl_doors:register_door(name, def)
 		on_rightclick = on_rightclick,
 
 		mesecons = { effector = {
-			action_off = on_mesecons_signal_close
+			action_off = on_mesecons_signal_close,
+			rules = mrules,
 		}},
 
 		can_dig = check_player_priv,
@@ -381,7 +391,8 @@ function mcl_doors:register_door(name, def)
 		on_rightclick = on_rightclick,
 
 		mesecons = { effector = {
-			action_off = on_mesecons_signal_close_top
+			action_off = on_mesecons_signal_close_top,
+			rules = mrules,
 		}},
 
 		can_dig = check_player_priv,
