@@ -1,6 +1,7 @@
 --register stoppers for movestones/pistons
 
 mesecon.mvps_stoppers = {}
+mesecon.mvps_unsticky = {}
 mesecon.mvps_droppers = {}
 mesecon.on_mvps_move = {}
 mesecon.mvps_unmov = {}
@@ -54,6 +55,34 @@ function mesecon.register_mvps_stopper(nodename, get_stopper)
 	mesecon.mvps_stoppers[nodename] = get_stopper
 end
 
+-- For nodes which ignore sticky sides.
+-- They can't be pulled by sticky pistons and don't interact with slime blocks.
+-- TODO: This has NOT any actual effect so far. The actual functionality
+-- still needs to be implemented.
+function mesecon.register_mvps_unsticky(nodename, get_unsticky)
+	if get_unsticky == nil then
+		get_unsticky = true
+	end
+	mesecon.mvps_unsticky[nodename] = get_unsticky
+end
+
+function mesecon.is_mvps_unsticky(node, pulldir, stack, stackid)
+	-- unknown nodes are always unsticky
+	if not minetest.registered_nodes[node.name] then
+		return true
+	end
+
+	local get_unsticky = mesecon.mvps_unsticky[node.name]
+	if type(get_unsticky) == "function" then
+		get_unsticky = get_unsticky(node, pulldir, stack, stackid)
+	end
+	if get_unsticky == nil then
+		get_unsticky = false
+	end
+
+	return get_unsticky
+end
+
 -- Functions to be called on mvps movement
 function mesecon.register_on_mvps_move(callback)
 	mesecon.on_mvps_move[#mesecon.on_mvps_move+1] = callback
@@ -93,6 +122,7 @@ function mesecon.mvps_get_stack(pos, dir, maximum, all_pull_sticky)
 		local nn = minetest.get_node(np)
 
 		if not node_replaceable(nn.name) then
+
 			table.insert(nodes, {node = nn, pos = np})
 			if #nodes > maximum then return nil end
 
@@ -155,15 +185,15 @@ function mesecon.mvps_get_stack(pos, dir, maximum, all_pull_sticky)
 end
 
 function mesecon.mvps_push(pos, dir, maximum)
-	return mesecon.mvps_push_or_pull(pos, dir, dir, maximum)
+	return mesecon.mvps_push_or_pull(pos, dir, dir, maximum, nil, false)
 end
 
 function mesecon.mvps_pull_all(pos, dir, maximum)
-	return mesecon.mvps_push_or_pull(pos, vector.multiply(dir, -1), dir, maximum, true)
+	return mesecon.mvps_push_or_pull(pos, vector.multiply(dir, -1), dir, maximum, true, true)
 end
 
 function mesecon.mvps_pull_single(pos, dir, maximum)
-	return mesecon.mvps_push_or_pull(pos, vector.multiply(dir, -1), dir, maximum)
+	return mesecon.mvps_push_or_pull(pos, vector.multiply(dir, -1), dir, maximum, nil, true)
 end
 
 -- pos: pos of mvps; stackdir: direction of building the stack
@@ -329,5 +359,21 @@ mesecon.register_mvps_stopper("mcl_portals:portal")
 mesecon.register_mvps_stopper("mcl_portals:portal_end")
 mesecon.register_mvps_stopper("mcl_portals:end_portal_frame")
 mesecon.register_mvps_stopper("mcl_portals:end_portal_frame_eye")
+mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_red")
+mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_orange")
+mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_yellow")
+mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_green")
+mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_lime")
+mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_purple")
+mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_magenta")
+mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_blue")
+mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_cyan")
+mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_white")
+mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_grey")
+mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_silver")
+mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_black")
+mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_brown")
+mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_light_blue")
+mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_pink")
 
 mesecon.register_on_mvps_move(mesecon.move_hot_nodes)
