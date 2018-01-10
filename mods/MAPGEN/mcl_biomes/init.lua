@@ -1225,7 +1225,60 @@ local function register_dimension_biomes()
 
 end
 
--- Register “fake” ores directly related to the biomes
+-- Register ores which are limited by biomes. For all mapgens except flat and singlenode.
+local function register_biome_ores()
+	local stonelike = {"mcl_core:stone", "mcl_core:diorite", "mcl_core:andesite", "mcl_core:granite"}
+
+	-- Emeralds
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "mcl_core:stone_with_emerald",
+		wherein        = stonelike,
+		clust_scarcity = 16384,
+		clust_num_ores = 1,
+		clust_size     = 1,
+		y_min          = mcl_worlds.layer_to_y(4),
+		y_max          = mcl_worlds.layer_to_y(32),
+		biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean" },
+	})
+
+	-- Rarely replace stone with stone monster eggs.
+	-- In v6 this can happen anywhere, in other mapgens only in Extreme Hills.
+	local monster_egg_scarcity
+	if mg_name == "v6" then
+		monster_egg_scarcity = 28 * 28 * 28
+	else
+		monster_egg_scarcity = 26 * 26 * 26
+	end
+	minetest.register_ore({
+		ore_type       = "scatter",
+		ore            = "mcl_monster_eggs:monster_egg_stone",
+		wherein        = "mcl_core:stone",
+		clust_scarcity = monster_egg_scarcity,
+		clust_num_ores = 3,
+		clust_size     = 2,
+		y_min          = mcl_vars.mg_overworld_min,
+		y_max          = mcl_worlds.layer_to_y(61),
+		biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean" },
+	})
+
+	-- Bonus gold spawn in Mesa
+	if mg_name ~= "v6" then
+		minetest.register_ore({
+			ore_type       = "scatter",
+			ore            = "mcl_core:stone_with_gold",
+			wherein        = stonelike,
+			clust_scarcity = 3333,
+			clust_num_ores = 5,
+			clust_size     = 3,
+			y_min          = mcl_worlds.layer_to_y(32),
+			y_max          = mcl_worlds.layer_to_y(79),
+			biomes         = { "Mesa", "Mesa_sandlevel", "Mesa_ocean" },
+		})
+	end
+end
+
+-- Register “fake” ores directly related to the biomes. These are mostly low-level landscape alternations
 local function register_biomelike_ores()
 
 	-- Random coarse dirt floor in Mega Taiga and Mesa Plateau F
@@ -3150,15 +3203,21 @@ local function register_dimension_decorations()
 	-- TODO
 end
 
+
 --
 -- Detect mapgen to select functions
 --
 if mg_name ~= "singlenode" then
-	if mg_name ~= "v6" and mg_name ~= "flat" then
-		register_biomes()
-		register_biomelike_ores()
-		register_decorations()
-	elseif mg_name == "flat" then
+	if mg_name ~= "flat" then
+		if mg_name ~= "v6" then
+			register_biomes()
+			register_biomelike_ores()
+		end
+		register_biome_ores()
+		if mg_name ~= "v6" then
+			register_decorations()
+		end
+	else
 		-- Implementation of Minecraft's Superflat mapgen, classic style
 		minetest.clear_registered_biomes()
 		minetest.clear_registered_decorations()

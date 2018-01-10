@@ -303,21 +303,6 @@ minetest.register_ore({
 	y_max          = mcl_worlds.layer_to_y(33),
 })
 
--- Bonus spawn in Mesa
-if mg_name ~= "v6" then
-	minetest.register_ore({
-		ore_type       = "scatter",
-		ore            = "mcl_core:stone_with_gold",
-		wherein        = stonelike,
-		clust_scarcity = 3333,
-		clust_num_ores = 5,
-		clust_size     = 3,
-		y_min          = mcl_worlds.layer_to_y(32),
-		y_max          = mcl_worlds.layer_to_y(79),
-		biomes         = { "Mesa", "Mesa_sandlevel", "Mesa_ocean" },
-	})
-end
-
 --
 -- Diamond
 --
@@ -452,20 +437,6 @@ if mg_name == "v6" then
 		clust_size     = 1,
 		y_min          = mcl_worlds.layer_to_y(30),
 		y_max          = mcl_worlds.layer_to_y(32),
-	})
-else
-	-- Generate in Extreme Hills biome only
-
-	minetest.register_ore({
-		ore_type       = "scatter",
-		ore            = "mcl_core:stone_with_emerald",
-		wherein        = stonelike,
-		clust_scarcity = 16384,
-		clust_num_ores = 1,
-		clust_size     = 1,
-		y_min          = mcl_worlds.layer_to_y(4),
-		y_max          = mcl_worlds.layer_to_y(32),
-		biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean" },
 	})
 end
 
@@ -654,25 +625,8 @@ minetest.register_ore({
 
 end
 
--- Rarely replace stone with stone monster eggs.
--- In v6 this can happen anywhere, in other mapgens only in Extreme Hills.
-local monster_egg_scarcity
-if mg_name == "v6" then
-	monster_egg_scarcity = 28 * 28 * 28
-else
-	monster_egg_scarcity = 26 * 26 * 26
-end
-minetest.register_ore({
-	ore_type       = "scatter",
-	ore            = "mcl_monster_eggs:monster_egg_stone",
-	wherein        = "mcl_core:stone",
-	clust_scarcity = monster_egg_scarcity,
-	clust_num_ores = 3,
-	clust_size     = 2,
-	y_min          = mcl_vars.mg_overworld_min,
-	y_max          = mcl_worlds.layer_to_y(61),
-	biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean" },
-})
+
+
 
 
 local function register_mgv6_decorations()
