@@ -52,7 +52,7 @@ mesecon.register_node("mcl_observers:observer",
 {
 	description = "Observer",
 	tiles = {
-		"mcl_observers_observer_top.png", "default_furnace_bottom.png",
+		"mcl_observers_observer_top.png^[transformR180", "default_furnace_bottom.png",
 		"mcl_observers_observer_side.png", "mcl_observers_observer_side.png",
 		"mcl_observers_observer_front.png", "mcl_observers_observer_back.png",
 	},
@@ -74,7 +74,7 @@ mesecon.register_node("mcl_observers:observer",
 {
 	_doc_items_create_entry = false,
 	tiles = {
-		"mcl_observers_observer_top.png", "default_furnace_bottom.png",
+		"mcl_observers_observer_top.png^[transformR180", "default_furnace_bottom.png",
 		"mcl_observers_observer_side.png", "mcl_observers_observer_side.png",
 		"mcl_observers_observer_front.png", "mcl_observers_observer_back_lit.png",
 	},
