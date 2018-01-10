@@ -73,72 +73,72 @@ function mcl_doors:register_door(name, def)
 				return itemstack
 			end
 			local pn = placer:get_player_name()
-				if minetest.is_protected(pointed_thing.above, pn) and minetest.is_protected(pointed_thing.under, pn) then
-					return itemstack
-				end
-					local ptu = pointed_thing.under
-					local nu = minetest.get_node(ptu)
-					-- Pointed thing's rightclick action takes precedence, unless player holds down the sneak key
-					if minetest.registered_nodes[nu.name] and minetest.registered_nodes[nu.name].on_rightclick and not placer:get_player_control().sneak then
-						return minetest.registered_nodes[nu.name].on_rightclick(ptu, nu, placer, itemstack)
-					end
-
-					local pt
-					if minetest.registered_nodes[nu.name] and minetest.registered_nodes[nu.name].buildable_to then
-						pt = pointed_thing.under
-					else
-						pt = pointed_thing.above
-					end
-					local pt2 = {x=pt.x, y=pt.y, z=pt.z}
-					pt2.y = pt2.y+1
-					local ptname = minetest.get_node(pt).name
-					local pt2name = minetest.get_node(pt2).name
-					if
-						(minetest.registered_nodes[ptname] and not minetest.registered_nodes[ptname].buildable_to) or
-						(minetest.registered_nodes[pt2name] and not minetest.registered_nodes[pt2name].buildable_to)
-					then
-						return itemstack
-					end
-
-					local p2 = minetest.dir_to_facedir(placer:get_look_dir())
-					local pt3 = {x=pt.x, y=pt.y, z=pt.z}
-					if p2 == 0 then
-						pt3.x = pt3.x-1
-					elseif p2 == 1 then
-						pt3.z = pt3.z+1
-					elseif p2 == 2 then
-						pt3.x = pt3.x+1
-					elseif p2 == 3 then
-						pt3.z = pt3.z-1
-					end
-					if not string.find(minetest.get_node(pt3).name, name.."_b_") then
-						minetest.set_node(pt, {name=name.."_b_1", param2=p2})
-						minetest.set_node(pt2, {name=name.."_t_1", param2=p2})
-					else
-						minetest.set_node(pt, {name=name.."_b_2", param2=p2})
-						minetest.set_node(pt2, {name=name.."_t_2", param2=p2})
-					end
-					if def.sounds and def.sounds.place then
-						minetest.sound_play(def.sounds.place, {pos=pt})
-					end
-
-					if def.only_placer_can_open then
-						local meta = minetest.get_meta(pt)
-						meta:set_string("doors_owner", "")
-						meta = minetest.get_meta(pt2)
-						meta:set_string("doors_owner", "")
-					end
-
-					-- Save open state. 1 = open. 0 = closed
-					local meta = minetest.get_meta(pt)
-					meta:set_int("is_open", 0)
-					meta = minetest.get_meta(pt2)
-					meta:set_int("is_open", 0)
-
-					if not minetest.settings:get_bool("creative_mode") then
-						itemstack:take_item()
-					end
+			if minetest.is_protected(pointed_thing.above, pn) and minetest.is_protected(pointed_thing.under, pn) then
 				return itemstack
+			end
+			local ptu = pointed_thing.under
+			local nu = minetest.get_node(ptu)
+			-- Pointed thing's rightclick action takes precedence, unless player holds down the sneak key
+			if minetest.registered_nodes[nu.name] and minetest.registered_nodes[nu.name].on_rightclick and not placer:get_player_control().sneak then
+				return minetest.registered_nodes[nu.name].on_rightclick(ptu, nu, placer, itemstack)
+			end
+
+			local pt
+			if minetest.registered_nodes[nu.name] and minetest.registered_nodes[nu.name].buildable_to then
+				pt = pointed_thing.under
+			else
+				pt = pointed_thing.above
+			end
+			local pt2 = {x=pt.x, y=pt.y, z=pt.z}
+			pt2.y = pt2.y+1
+			local ptname = minetest.get_node(pt).name
+			local pt2name = minetest.get_node(pt2).name
+			if
+				(minetest.registered_nodes[ptname] and not minetest.registered_nodes[ptname].buildable_to) or
+				(minetest.registered_nodes[pt2name] and not minetest.registered_nodes[pt2name].buildable_to)
+			then
+				return itemstack
+			end
+
+			local p2 = minetest.dir_to_facedir(placer:get_look_dir())
+			local pt3 = {x=pt.x, y=pt.y, z=pt.z}
+			if p2 == 0 then
+				pt3.x = pt3.x-1
+			elseif p2 == 1 then
+				pt3.z = pt3.z+1
+			elseif p2 == 2 then
+				pt3.x = pt3.x+1
+			elseif p2 == 3 then
+				pt3.z = pt3.z-1
+			end
+			if not string.find(minetest.get_node(pt3).name, name.."_b_") then
+				minetest.set_node(pt, {name=name.."_b_1", param2=p2})
+				minetest.set_node(pt2, {name=name.."_t_1", param2=p2})
+			else
+				minetest.set_node(pt, {name=name.."_b_2", param2=p2})
+				minetest.set_node(pt2, {name=name.."_t_2", param2=p2})
+			end
+			if def.sounds and def.sounds.place then
+				minetest.sound_play(def.sounds.place, {pos=pt})
+			end
+
+			if def.only_placer_can_open then
+				local meta = minetest.get_meta(pt)
+				meta:set_string("doors_owner", "")
+				meta = minetest.get_meta(pt2)
+				meta:set_string("doors_owner", "")
+			end
+
+			-- Save open state. 1 = open. 0 = closed
+			local meta = minetest.get_meta(pt)
+			meta:set_int("is_open", 0)
+			meta = minetest.get_meta(pt2)
+			meta:set_int("is_open", 0)
+
+			if not minetest.settings:get_bool("creative_mode") then
+				itemstack:take_item()
+			end
+			return itemstack
 		end,
 	})
 
