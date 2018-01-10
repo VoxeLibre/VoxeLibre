@@ -1,5 +1,3 @@
-
-
 local chest = minetest.get_content_id("mcl_chests:chest")
 
 local mcl_hoppers_formspec =
@@ -12,16 +10,13 @@ local mcl_hoppers_formspec =
 	"listring[current_name;main]"..
 	"listring[current_player;main]"
 
-minetest.register_node("mcl_hoppers:hopper", {
-	description = "Hopper",
-	inventory_image = "mcl_hoppers_item.png",
-	_doc_items_longdesc = [[Hoppers are containers with 5 inventory slots. They collect dropped items from above, take items from a container above and attempts to put its items it into an adjacent container. Hoppers can go either downwards or sideways. Hoppers interact with chests, droppers, dispensers, shulker boxes, furnaces and hoppers.
 
-Hoppers interact with containers the following way:
-• Furnaces: Hoppers from above will put items into the source slot. Hoppers from below take items from the output slot. They also take items from the fuel slot when they can't be used as a fuel. Sideway hoppers put items into the fuel slot
-• Ender chests: Hoppers don't interact with ender chests
-• Other containers: Hoppers interact with them normally]],
-	_doc_items_usagehelp = "To place a hopper vertically, place it on the floor or a ceiling. To place it sideways, place it at the side of a block. Remember you can place at usable blocks (such as chests) with sneak + right-click. The hopper will keep its orientation when the blocks around it are changed. To access the hopper's inventory, rightclick it.",
+--[[ BEGIN OF NODE DEFINITIONS ]]
+
+-- Downwards hopper (base definition)
+
+local def_hopper = {
+	inventory_image = "mcl_hoppers_item.png",
 	wield_image = "mcl_hoppers_item.png",
 	groups = {pickaxey=1, container=2,deco_block=1,},
 	drawtype = "nodebox",
@@ -62,56 +57,6 @@ Hoppers interact with containers the following way:
 		inv:set_size("main", 5)
 	end,
 
-	on_place = function(itemstack, placer, pointed_thing)
-		local upos  = pointed_thing.under
-		local apos = pointed_thing.above
-
-		local uposnode = minetest.get_node(upos)
-		local uposnodedef = minetest.registered_nodes[uposnode.name]
-		if not uposnodedef then return itemstack end
-		-- Use pointed node's on_rightclick function first, if present
-		if placer and not placer:get_player_control().sneak then
-			if uposnodedef and uposnodedef.on_rightclick then
-				return uposnodedef.on_rightclick(pointed_thing.under, uposnode, placer, itemstack) or itemstack
-			end
-		end
-
-		local bpos
-		if uposnodedef.buildable_to then
-			bpos = upos
-		else
-			local aposnodedef = minetest.registered_nodes[minetest.get_node(apos).name]
-			if not aposnodedef then return itemstack end
-			if aposnodedef.buildable_to then
-				bpos = apos
-			end
-		end
-
-		if bpos == nil then
-			return itemstack
-		end
-
-		local x = upos.x - apos.x
-		local y = upos.y - apos.y
-		local z = upos.z - apos.z
-
-		if x == -1 then
-			minetest.set_node(bpos, {name="mcl_hoppers:hopper_side", param2=0})
-		elseif x == 1 then
-			minetest.set_node(bpos, {name="mcl_hoppers:hopper_side", param2=2})
-		elseif z == -1 then
-			minetest.set_node(bpos, {name="mcl_hoppers:hopper_side", param2=3})
-		elseif z == 1 then
-			minetest.set_node(bpos, {name="mcl_hoppers:hopper_side", param2=1})
-		else
-			minetest.set_node(bpos, {name="mcl_hoppers:hopper", param2=0})
-		end
-		if not minetest.settings:get_bool("creative_mode") then
-			itemstack:take_item()
-		end
-		return itemstack
-	end,
-
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)
 		local meta2 = meta
@@ -130,26 +75,119 @@ Hoppers interact with containers the following way:
 		minetest.log("action", player:get_player_name()..
 				" moves stuff in mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
-    on_metadata_inventory_put = function(pos, listname, index, stack, player)
+	on_metadata_inventory_put = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
 				" moves stuff to mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
-    on_metadata_inventory_take = function(pos, listname, index, stack, player)
+	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
 				" takes stuff from mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
+
 	_mcl_blast_resistance = 24,
 	_mcl_hardness = 3,
-})
+}
+
+-- Redstone variants (on/off) of downwards hopper.
+-- Note a hopper is enabled when it is *not* supplied with redstone power and disabled when it is supplied with redstone power.
+
+-- Enabled downwards hopper
+local def_hopper_enabled = table.copy(def_hopper)
+def_hopper_enabled.description = "Hopper"
+def_hopper_enabled._doc_items_longdesc = [[Hoppers are containers with 5 inventory slots. They collect dropped items from above, take items from a container above and attempts to put its items it into an adjacent container. Hoppers can go either downwards or sideways. Hoppers interact with chests, droppers, dispensers, shulker boxes, furnaces and hoppers.
+
+Hoppers interact with containers the following way:
+• Furnaces: Hoppers from above will put items into the source slot. Hoppers from below take items from the output slot. They also take items from the fuel slot when they can't be used as a fuel. Sideway hoppers put items into the fuel slot
+• Ender chests: Hoppers don't interact with ender chests
+• Other containers: Hoppers interact with them normally
+
+Hoppers can be disabled by supplying them with redstone power. Disabled hoppers don't move items.]]
+def_hopper_enabled._doc_items_usagehelp = "To place a hopper vertically, place it on the floor or a ceiling. To place it sideways, place it at the side of a block. Remember you can place at usable blocks (such as chests) with sneak + right-click. The hopper will keep its orientation when the blocks around it are changed. To access the hopper's inventory, rightclick it."
+def_hopper_enabled.on_place = function(itemstack, placer, pointed_thing)
+	local upos  = pointed_thing.under
+	local apos = pointed_thing.above
+
+	local uposnode = minetest.get_node(upos)
+	local uposnodedef = minetest.registered_nodes[uposnode.name]
+	if not uposnodedef then return itemstack end
+	-- Use pointed node's on_rightclick function first, if present
+	if placer and not placer:get_player_control().sneak then
+		if uposnodedef and uposnodedef.on_rightclick then
+			return uposnodedef.on_rightclick(pointed_thing.under, uposnode, placer, itemstack) or itemstack
+		end
+	end
+
+	local bpos
+	if uposnodedef.buildable_to then
+		bpos = upos
+	else
+		local aposnodedef = minetest.registered_nodes[minetest.get_node(apos).name]
+		if not aposnodedef then return itemstack end
+		if aposnodedef.buildable_to then
+			bpos = apos
+		end
+	end
+
+	if bpos == nil then
+		return itemstack
+	end
+
+	local x = upos.x - apos.x
+	local y = upos.y - apos.y
+	local z = upos.z - apos.z
+
+	if x == -1 then
+		minetest.set_node(bpos, {name="mcl_hoppers:hopper_side", param2=0})
+	elseif x == 1 then
+		minetest.set_node(bpos, {name="mcl_hoppers:hopper_side", param2=2})
+	elseif z == -1 then
+		minetest.set_node(bpos, {name="mcl_hoppers:hopper_side", param2=3})
+	elseif z == 1 then
+		minetest.set_node(bpos, {name="mcl_hoppers:hopper_side", param2=1})
+	else
+		minetest.set_node(bpos, {name="mcl_hoppers:hopper", param2=0})
+	end
+	if not minetest.settings:get_bool("creative_mode") then
+		itemstack:take_item()
+	end
+	return itemstack
+end
+def_hopper_enabled.mesecons = {
+	effector = {
+		action_on = function(pos, node)
+			minetest.swap_node(pos, {name="mcl_hoppers:hopper_disabled", param2=node.param2})
+		end,
+	},
+}
+
+minetest.register_node("mcl_hoppers:hopper", def_hopper_enabled)
+
+-- Disabled downwards hopper
+local def_hopper_disabled = table.copy(def_hopper)
+def_hopper_disabled.description = "Disabled Hopper"
+def_hopper_disabled._doc_items_create_entry = false
+def_hopper_disabled.groups.not_in_creative_inventory = 1
+def_hopper_disabled.drop = "mcl_hoppers:hopper"
+def_hopper_disabled.mesecons = {
+	effector = {
+		action_off = function(pos, node)
+			minetest.swap_node(pos, {name="mcl_hoppers:hopper", param2=node.param2})
+		end,
+	},
+}
+
+minetest.register_node("mcl_hoppers:hopper_disabled", def_hopper_disabled)
+
+
 
 local on_rotate
 if minetest.get_modpath("screwdriver") then
 	on_rotate = screwdriver.rotate_simple
 end
 
-minetest.register_node("mcl_hoppers:hopper_side", {
-	description = "Hopper (Side)",
+-- Sidewars hopper (base definition)
+local def_hopper_side = {
 	_doc_items_create_entry = false,
 	drop = "mcl_hoppers:hopper",
 	groups = {pickaxey=1, container=2,not_in_creative_inventory=1},
@@ -210,19 +248,46 @@ minetest.register_node("mcl_hoppers:hopper_side", {
 		minetest.log("action", player:get_player_name()..
 				" moves stuff in mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
-    on_metadata_inventory_put = function(pos, listname, index, stack, player)
+	on_metadata_inventory_put = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
 				" moves stuff to mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
-    on_metadata_inventory_take = function(pos, listname, index, stack, player)
+	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		minetest.log("action", player:get_player_name()..
 				" takes stuff from mcl_hoppers at "..minetest.pos_to_string(pos))
 	end,
 	on_rotate = on_rotate,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
+
 	_mcl_blast_resistance = 24,
 	_mcl_hardness = 3,
-})
+}
+
+local def_hopper_side_enabled = table.copy(def_hopper_side)
+def_hopper_side_enabled.description = "Side Hopper"
+def_hopper_side_enabled.mesecons = {
+	effector = {
+		action_on = function(pos, node)
+			minetest.swap_node(pos, {name="mcl_hoppers:hopper_side_disabled", param2=node.param2})
+		end,
+	},
+}
+minetest.register_node("mcl_hoppers:hopper_side", def_hopper_side_enabled)
+
+local def_hopper_side_disabled = table.copy(def_hopper_side)
+def_hopper_side_disabled.description = "Disabled Side Hopper"
+def_hopper_side_disabled.mesecons = {
+	effector = {
+		action_off = function(pos, node)
+			minetest.swap_node(pos, {name="mcl_hoppers:hopper_side", param2=node.param2})
+		end,
+	},
+}
+minetest.register_node("mcl_hoppers:hopper_side_disabled", def_hopper_side_disabled)
+
+--[[ END OF NODE DEFINITIONS ]]
+
+--[[ BEGIN OF ABM DEFINITONS ]]
 
 -- Make hoppers suck in dropped items
 minetest.register_abm({
