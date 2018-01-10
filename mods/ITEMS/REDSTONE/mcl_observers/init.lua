@@ -27,11 +27,18 @@ mesecon.register_node("mcl_observers:observer",
 		"mcl_observers_observer_side.png", "mcl_observers_observer_side.png",
 		"mcl_observers_observer_front.png", "mcl_observers_observer_back.png",
 	},
-	-- TODO: Mesecons handling
+	-- TODO: Detect node and state changes
 	mesecons = { receptor = {
 		state = mesecon.state.off,
 		rules = get_rules_flat,
 	}},
+
+	-- DEBUG code to manually turn on an observer by rightclick.
+	-- TODO: Remove this when observers are complete.
+	on_rightclick = function(pos, node, clicker)
+		minetest.set_node(pos, {name = "mcl_observers:observer_on", param2 = node.param2})
+		mesecon.receptor_on(pos)
+	end,
 },
 {
 	_doc_items_create_entry = false,
@@ -40,11 +47,22 @@ mesecon.register_node("mcl_observers:observer",
 		"mcl_observers_observer_side.png", "mcl_observers_observer_side.png",
 		"mcl_observers_observer_front.png", "mcl_observers_observer_back_lit.png",
 	},
-	-- TODO: Mesecons handling
 	mesecons = { receptor = {
 		state = mesecon.state.on,
 		rules = get_rules_flat,
 	}},
+
+	-- VERY quickly disable observer after construction
+	on_construct = function(pos)
+		local timer = minetest.get_node_timer(pos)
+		-- 1 redstone tick = 0.1 seconds
+		timer:start(0.1)
+	end,
+	on_timer = function(pos, elapsed)
+		local node = minetest.get_node(pos)
+		minetest.set_node(pos, {name = "mcl_observers:observer_off", param2 = node.param2})
+		mesecon.receptor_off(pos)
+	end,
 }
 )
 
