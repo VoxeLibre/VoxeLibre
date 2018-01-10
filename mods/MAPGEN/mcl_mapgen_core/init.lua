@@ -314,7 +314,7 @@ if mg_name ~= "v6" then
 		clust_size     = 3,
 		y_min          = mcl_worlds.layer_to_y(32),
 		y_max          = mcl_worlds.layer_to_y(79),
-		biomes         = { "Mesa", "Mesa_sandlevel", "Mesa_ocean", "Mesa_deep_ocean", "Mesa_underground" },
+		biomes         = { "Mesa", "Mesa_sandlevel", "Mesa_ocean" },
 	})
 end
 
@@ -465,7 +465,7 @@ else
 		clust_size     = 1,
 		y_min          = mcl_worlds.layer_to_y(4),
 		y_max          = mcl_worlds.layer_to_y(32),
-		biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", "ExtremeHills_deep_ocean", "ExtremeHills_underground" },
+		biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean" },
 	})
 end
 
@@ -671,7 +671,7 @@ minetest.register_ore({
 	clust_size     = 2,
 	y_min          = mcl_vars.mg_overworld_min,
 	y_max          = mcl_worlds.layer_to_y(61),
-	biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", "ExtremeHills_deep_ocean", "ExtremeHills_underground" },
+	biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean" },
 })
 
 
