@@ -37,6 +37,9 @@ for i=1,#wip_items do
 	end
 	local new_description = def.description
 	local new_groups = table.copy(def.groups)
+	if new_description == "" then
+		new_description = wip_items[i]
+	end
 	new_description = new_description .. "\n"..core.colorize("#FF0000", "(WIP)")
 	new_groups.not_in_craft_guide = 1
 	minetest.override_item(wip_items[i], { description = new_description, groups = new_groups })
