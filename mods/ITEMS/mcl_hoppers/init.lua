@@ -1,5 +1,8 @@
 local chest = minetest.get_content_id("mcl_chests:chest")
 
+
+--[[ BEGIN OF NODE DEFINITIONS ]]
+
 local mcl_hoppers_formspec =
 	"size[9,7]"..
 	"background[-0.19,-0.25;9.41,10.48;mcl_hoppers_inventory.png]"..
@@ -9,9 +12,6 @@ local mcl_hoppers_formspec =
 	"list[current_player;main;0,5.74;9,1;]"..
 	"listring[current_name;main]"..
 	"listring[current_player;main]"
-
-
---[[ BEGIN OF NODE DEFINITIONS ]]
 
 local redstone_rules =
 {{x= 1, y= 0,  z= 0},
@@ -126,39 +126,26 @@ def_hopper_enabled.on_place = function(itemstack, placer, pointed_thing)
 		end
 	end
 
-	local bpos
-	if uposnodedef.buildable_to then
-		bpos = upos
-	else
-		local aposnodedef = minetest.registered_nodes[minetest.get_node(apos).name]
-		if not aposnodedef then return itemstack end
-		if aposnodedef.buildable_to then
-			bpos = apos
-		end
-	end
-
-	if bpos == nil then
-		return itemstack
-	end
-
 	local x = upos.x - apos.x
-	local y = upos.y - apos.y
 	local z = upos.z - apos.z
 
+	local fake_itemstack = ItemStack(itemstack)
+	local newnode, param2
 	if x == -1 then
-		minetest.set_node(bpos, {name="mcl_hoppers:hopper_side", param2=0})
+		fake_itemstack:set_name("mcl_hoppers:hopper_side")
+		param2 = 0
 	elseif x == 1 then
-		minetest.set_node(bpos, {name="mcl_hoppers:hopper_side", param2=2})
+		fake_itemstack:set_name("mcl_hoppers:hopper_side")
+		param2 = 2
 	elseif z == -1 then
-		minetest.set_node(bpos, {name="mcl_hoppers:hopper_side", param2=3})
+		fake_itemstack:set_name("mcl_hoppers:hopper_side")
+		param2 = 3
 	elseif z == 1 then
-		minetest.set_node(bpos, {name="mcl_hoppers:hopper_side", param2=1})
-	else
-		minetest.set_node(bpos, {name="mcl_hoppers:hopper", param2=0})
+		fake_itemstack:set_name("mcl_hoppers:hopper_side")
+		param2 = 1
 	end
-	if not minetest.settings:get_bool("creative_mode") then
-		itemstack:take_item()
-	end
+	local itemstack, success = minetest.item_place_node(fake_itemstack, placer, pointed_thing, param2)
+	itemstack:set_name("mcl_hoppers:hopper")
 	return itemstack
 end
 def_hopper_enabled.mesecons = {
