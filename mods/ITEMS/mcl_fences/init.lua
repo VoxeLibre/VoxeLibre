@@ -158,6 +158,9 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 			punch_gate(pos, node)
 		end,
 		mesecons = {effector = {
+			action_off = (function(pos, node)
+				punch_gate(pos, node)
+			end),
 			action_on = (function(pos, node)
 				punch_gate(pos, node)
 			end),

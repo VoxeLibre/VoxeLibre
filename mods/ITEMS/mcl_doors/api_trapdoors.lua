@@ -180,7 +180,7 @@ function mcl_doors:register_trapdoor(name, def)
 		},
 		on_rightclick = on_rightclick,
 		mesecons = {effector = {
-			action_on = (function(pos, node)
+			action_off = (function(pos, node)
 				punch(pos)
 			end),
 		}},

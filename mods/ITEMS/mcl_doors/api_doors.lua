@@ -334,7 +334,7 @@ function mcl_doors:register_door(name, def)
 		on_rightclick = on_rightclick,
 
 		mesecons = { effector = {
-			action_on = on_mesecons_signal_close
+			action_off = on_mesecons_signal_close
 		}},
 
 		can_dig = check_player_priv,
@@ -381,7 +381,7 @@ function mcl_doors:register_door(name, def)
 		on_rightclick = on_rightclick,
 
 		mesecons = { effector = {
-			action_on = on_mesecons_signal_close_top
+			action_off = on_mesecons_signal_close_top
 		}},
 
 		can_dig = check_player_priv,
