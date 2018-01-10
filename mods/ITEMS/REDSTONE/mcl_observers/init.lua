@@ -9,23 +9,41 @@ local get_rules_flat = function(node)
 	return rules
 end
 
+local rules_down = {{ x = 0, y = 1, z = 0 }}
+local rules_up = {{ x = 0, y = -1, z = 0 }}
+
 -- Scan the node in front of the observer
 -- and update the observer state if needed.
 -- TODO: Also scan metadata changes.
 -- TODO: Ignore some node changes.
-local observer_scan = function(pos)
+local observer_scan = function(pos, initialize)
 	local node = minetest.get_node(pos)
-	local front = vector.add(pos, minetest.facedir_to_dir(node.param2))
+	local front
+	if node.name == "mcl_observers:observer_up_off" or node.name == "mcl_observers:observer_up_on" then
+		front = vector.add(pos, {x=0, y=1, z=0})
+	elseif node.name == "mcl_observers:observer_down_off" or node.name == "mcl_observers:observer_down_on" then
+		front = vector.add(pos, {x=0, y=-1, z=0})
+	else
+		front = vector.add(pos, minetest.facedir_to_dir(node.param2))
+	end
 	local frontnode = minetest.get_node(front)
 	local meta = minetest.get_meta(pos)
 	local oldnode = meta:get_string("node_name")
 	local oldparam2 = meta:get_string("node_param2")
 	local meta_needs_updating = false
-	if oldnode ~= "" then
+	if oldnode ~= "" and not initialize then
 		if not (frontnode.name == oldnode and frontnode.param2) then
 			-- Node state changed! Activate observer
-			minetest.set_node(pos, {name = "mcl_observers:observer_on", param2 = node.param2})
-			mesecon.receptor_on(pos)
+			if node.name == "mcl_observers:observer_off" then
+				minetest.set_node(pos, {name = "mcl_observers:observer_on", param2 = node.param2})
+				mesecon.receptor_on(pos)
+			elseif node.name == "mcl_observers:observer_down_off" then
+				minetest.set_node(pos, {name = "mcl_observers:observer_down_on"})
+				mesecon.receptor_on(pos)
+			elseif node.name == "mcl_observers:observer_up_off" then
+				minetest.set_node(pos, {name = "mcl_observers:observer_up_on"})
+				mesecon.receptor_on(pos)
+			end
 			meta_needs_updating = true
 		end
 	else
@@ -36,6 +54,30 @@ local observer_scan = function(pos)
 		meta:set_string("node_param2", frontnode.param2)
 	end
 	return frontnode
+end
+
+-- Vertical orientation (CURRENTLY DISABLED)
+local observer_orientate = function(pos, placer)
+	-- Currently, do nothing.
+	-- The vertical observers detect the node correctly, but they have problems with
+	-- transmitting the redstone signal vertically.
+	-- TODO: Re-enable orientation when vertical observers are done.
+	do return end
+
+	-- Not placed by player
+	if not placer then return end
+
+	-- Placer pitch in degrees
+	local pitch = placer:get_look_vertical() * (180 / math.pi)
+
+	local node = minetest.get_node(pos)
+	if pitch > 55 then -- player looking upwards
+		-- Observer looking downwards
+		minetest.set_node(pos, {name="mcl_observers:observer_down_off"})
+	elseif pitch < -55 then -- player looking downwards
+		-- Observer looking upwards
+		minetest.set_node(pos, {name="mcl_observers:observer_up_off"})
+	end
 end
 
 mesecon.register_node("mcl_observers:observer",
@@ -61,15 +103,9 @@ mesecon.register_node("mcl_observers:observer",
 		rules = get_rules_flat,
 	}},
 	on_construct = function(pos)
-		observer_scan(pos)
+		observer_scan(pos, true)
 	end,
-
-	-- DEBUG code to manually turn on an observer by rightclick.
-	-- TODO: Remove this when observers are complete.
-	on_rightclick = function(pos, node, clicker)
-		minetest.set_node(pos, {name = "mcl_observers:observer_on", param2 = node.param2})
-		mesecon.receptor_on(pos)
-	end,
+	after_place_node = observer_orientate,
 },
 {
 	_doc_items_create_entry = false,
@@ -97,10 +133,108 @@ mesecon.register_node("mcl_observers:observer",
 }
 )
 
+mesecon.register_node("mcl_observers:observer_down",
+{
+	is_ground_content = false,
+	sounds = mcl_sounds.node_sound_stone_defaults(),
+	groups = {pickaxey=1, material_stone=1, not_in_creative_inventory=1 },
+	on_rotate = false,
+	_mcl_blast_resistance = 17.5,
+	_mcl_hardness = 3.5,
+},
+{
+	tiles = {
+		"mcl_observers_observer_back.png", "mcl_observers_observer_front.png",
+		"mcl_observers_observer_side.png^[transformR90", "mcl_observers_observer_side.png^[transformR90",
+		"mcl_observers_observer_top.png", "mcl_observers_observer_top.png",
+	},
+	mesecons = { receptor = {
+		state = mesecon.state.off,
+		rules = rules_down,
+	}},
+	on_construct = function(pos)
+		observer_scan(pos, true)
+	end,
+},
+{
+	_doc_items_create_entry = false,
+	tiles = {
+		"mcl_observers_observer_back_lit.png", "mcl_observers_observer_front.png",
+		"mcl_observers_observer_side.png^[transformR90", "mcl_observers_observer_side.png^[transformR90",
+		"mcl_observers_observer_top.png", "mcl_observers_observer_top.png",
+	},
+	mesecons = { receptor = {
+		state = mesecon.state.on,
+		rules = rules_down,
+	}},
+
+	-- VERY quickly disable observer after construction
+	on_construct = function(pos)
+		local timer = minetest.get_node_timer(pos)
+		-- 1 redstone tick = 0.1 seconds
+		timer:start(0.1)
+	end,
+	on_timer = function(pos, elapsed)
+		local node = minetest.get_node(pos)
+		minetest.set_node(pos, {name = "mcl_observers:observer_down_off", param2 = node.param2})
+		mesecon.receptor_off(pos)
+	end,
+})
+
+mesecon.register_node("mcl_observers:observer_up",
+{
+	is_ground_content = false,
+	sounds = mcl_sounds.node_sound_stone_defaults(),
+	groups = {pickaxey=1, material_stone=1, not_in_creative_inventory=1 },
+	on_rotate = false,
+	_mcl_blast_resistance = 17.5,
+	_mcl_hardness = 3.5,
+},
+{
+	tiles = {
+		"mcl_observers_observer_front.png", "mcl_observers_observer_back.png",
+		"mcl_observers_observer_side.png^[transformR270", "mcl_observers_observer_side.png^[transformR270",
+		"mcl_observers_observer_top.png^[transformR180", "mcl_observers_observer_top.png^[transformR180",
+	},
+	mesecons = { receptor = {
+		state = mesecon.state.off,
+		rules = rules_up,
+	}},
+	on_construct = function(pos)
+		observer_scan(pos, true)
+	end,
+},
+{
+	_doc_items_create_entry = false,
+	tiles = {
+		"mcl_observers_observer_front.png", "mcl_observers_observer_back_lit.png",
+		"mcl_observers_observer_side.png^[transformR270", "mcl_observers_observer_side.png^[transformR270",
+		"mcl_observers_observer_top.png^[transformR180", "mcl_observers_observer_top.png^[transformR180",
+	},
+	mesecons = { receptor = {
+		state = mesecon.state.on,
+		rules = rules_up,
+	}},
+
+	-- VERY quickly disable observer after construction
+	on_construct = function(pos)
+		local timer = minetest.get_node_timer(pos)
+		-- 1 redstone tick = 0.1 seconds
+		timer:start(0.1)
+	end,
+	on_timer = function(pos, elapsed)
+		minetest.set_node(pos, {name = "mcl_observers:observer_up_off"})
+		mesecon.receptor_off(pos)
+	end,
+})
+
+
+
+
 -- Regularily check the observer nodes.
 -- TODO: This is rather slow and clunky. Find a more efficient way to do this.
 minetest.register_abm({
-	nodenames = {"mcl_observers:observer_off"},
+	nodenames = {"mcl_observers:observer_off", "mcl_observers:observer_down_off", "mcl_observers:observer_up_off"},
 	interval = 1,
 	chance = 1,
 	action = function(pos, node)
