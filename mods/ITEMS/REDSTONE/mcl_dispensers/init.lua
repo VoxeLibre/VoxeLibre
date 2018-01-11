@@ -26,6 +26,21 @@ local setup_dispenser = function(pos)
 	inv:set_size("main", 9)
 end
 
+local orientate_dispenser = function(pos, placer)
+	-- Not placed by player
+	if not placer then return end
+
+	-- Pitch in degrees
+	local pitch = placer:get_look_vertical() * (180 / math.pi)
+
+	local node = minetest.get_node(pos)
+	if pitch > 55 then
+		minetest.set_node(pos, {name="mcl_dispensers:dispenser_up", param2 = node.param2})
+	elseif pitch < -55 then
+		minetest.set_node(pos, {name="mcl_dispensers:dispenser_down", param2 = node.param2})
+	end
+end
+
 local on_rotate
 if minetest.get_modpath("screwdriver") then
 	on_rotate = screwdriver.rotate_simple
@@ -422,15 +437,7 @@ The dispenser will do different things, depending on the dispensed item:
 
 horizontal_def.after_place_node = function(pos, placer, itemstack, pointed_thing)
 	setup_dispenser(pos)
-
-	-- When placed up and down, convert node to up/down dispenser
-	if pointed_thing.above.y < pointed_thing.under.y then
-		minetest.swap_node(pos, {name = "mcl_dispensers:dispenser_down"})
-	elseif pointed_thing.above.y > pointed_thing.under.y then
-		minetest.swap_node(pos, {name = "mcl_dispensers:dispenser_up"})
-	end
-
-	-- Else, the normal facedir logic applies
+	orientate_dispenser(pos, placer)
 end
 horizontal_def.tiles = {
 	"default_furnace_top.png", "default_furnace_bottom.png",

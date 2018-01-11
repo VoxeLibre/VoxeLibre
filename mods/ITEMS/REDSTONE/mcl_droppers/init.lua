@@ -26,6 +26,20 @@ local setup_dropper = function(pos)
 	inv:set_size("main", 9)
 end
 
+local orientate_dropper = function(pos, placer)
+	-- Not placed by player
+	if not placer then return end
+
+	-- Pitch in degrees
+	local pitch = placer:get_look_vertical() * (180 / math.pi)
+
+	if pitch > 55 then
+		minetest.swap_node(pos, {name="mcl_droppers:dropper_up"})
+	elseif pitch < -55 then
+		minetest.swap_node(pos, {name="mcl_droppers:dropper_down"})
+	end
+end
+
 local on_rotate
 if minetest.get_modpath("screwdriver") then
 	on_rotate = screwdriver.rotate_simple
@@ -108,15 +122,7 @@ horizontal_def._doc_items_longdesc = "A dropper is a redstone component and a co
 horizontal_def._doc_items_usagehelp = "Droppers can be placed in 6 possible directions, items will be dropped out of the hole. Rightclick the dropper to access its inventory. Supply it with redstone energy once to make the dropper drop or transfer a random item."
 horizontal_def.after_place_node = function(pos, placer, itemstack, pointed_thing)
 	setup_dropper(pos)
-
-	-- When placed up and down, convert node to up/down dropper
-	if pointed_thing.above.y < pointed_thing.under.y then
-		minetest.swap_node(pos, {name = "mcl_droppers:dropper_down"})
-	elseif pointed_thing.above.y > pointed_thing.under.y then
-		minetest.swap_node(pos, {name = "mcl_droppers:dropper_up"})
-	end
-
-	-- Else, the normal facedir logic applies
+	orientate_dropper(pos, placer)
 end
 horizontal_def.tiles = {
 	"default_furnace_top.png", "default_furnace_bottom.png",
