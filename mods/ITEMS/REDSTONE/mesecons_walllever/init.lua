@@ -1,17 +1,4 @@
-local lever_get_output_rules = function(node)
-	local rules = {
-		{x = -1, y = 0, z = 0},
-		{x = 1, y = 0, z = 0},
-		{x = 0, y = 0, z = -1},
-		{x = 0, y = 0, z = 1},
-		{x = 0, y = -1, z = 0},
-		{x = 0, y = 1, z = 0},
-	}
-	local dir = minetest.facedir_to_dir(node.param2)
-	dir = vector.multiply(dir, 2)
-	table.insert(rules, dir)
-	return rules
-end
+local lever_get_output_rules = mesecon.rules.buttonlike_get
 
 -- LEVER
 minetest.register_node("mesecons_walllever:wall_lever_off", {

@@ -2,11 +2,7 @@
 -- A button that when pressed emits power for 1 second
 -- and then turns off again
 
--- FIXME: Power node behind as well
-local button_get_output_rules = function(node)
-	local rules = mesecon.rules.alldirs
-	return rules
-end
+local button_get_output_rules = mesecon.rules.buttonlike_get
 
 local boxes_off = {
 	type = "wallmounted",

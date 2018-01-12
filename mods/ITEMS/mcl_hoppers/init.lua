@@ -13,14 +13,6 @@ local mcl_hoppers_formspec =
 	"listring[current_name;main]"..
 	"listring[current_player;main]"
 
-local redstone_rules =
-{{x= 1, y= 0,  z= 0},
- {x=-1, y= 0,  z= 0},
- {x= 0, y= 1,  z= 0},
- {x= 0, y= -1,  z= 0},
- {x= 0, y= 0,  z= 1},
- {x= 0, y= 0,  z=-1}}
-
 -- Downwards hopper (base definition)
 
 local def_hopper = {
@@ -153,7 +145,6 @@ def_hopper_enabled.mesecons = {
 		action_on = function(pos, node)
 			minetest.swap_node(pos, {name="mcl_hoppers:hopper_disabled", param2=node.param2})
 		end,
-		rules = redstone_rules,
 	},
 }
 
@@ -170,7 +161,6 @@ def_hopper_disabled.mesecons = {
 		action_off = function(pos, node)
 			minetest.swap_node(pos, {name="mcl_hoppers:hopper", param2=node.param2})
 		end,
-		rules = redstone_rules,
 	},
 }
 
@@ -267,7 +257,6 @@ def_hopper_side_enabled.mesecons = {
 		action_on = function(pos, node)
 			minetest.swap_node(pos, {name="mcl_hoppers:hopper_side_disabled", param2=node.param2})
 		end,
-		rules = redstone_rules,
 	},
 }
 minetest.register_node("mcl_hoppers:hopper_side", def_hopper_side_enabled)
@@ -279,7 +268,6 @@ def_hopper_side_disabled.mesecons = {
 		action_off = function(pos, node)
 			minetest.swap_node(pos, {name="mcl_hoppers:hopper_side", param2=node.param2})
 		end,
-		rules = redstone_rules,
 	},
 }
 minetest.register_node("mcl_hoppers:hopper_side_disabled", def_hopper_side_disabled)

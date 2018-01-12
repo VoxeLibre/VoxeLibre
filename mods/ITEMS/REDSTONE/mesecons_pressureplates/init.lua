@@ -10,22 +10,6 @@ local pp_box_on = {
 	fixed = { -7/16, -8/16, -7/16, 7/16, -7.5/16, 7/16 },
 }
 
-local pplate_rules = {
-	{x=-1, y=0, z=0},
-	{x=1, y=0, z=0},
-	{x=0, y=0, z=-1},
-	{x=0, y=0, z=1},
-
-	{x=-1, y=-1, z=0},
-	{x=1, y=-1, z=0},
-	{x=0, y=-1, z=-1},
-	{x=0, y=-1, z=1},
-
-	{x=0, y=-1, z=0},
-	{x=0, y=-2, z=0},
-	{x=0, y=1, z=0},
-}
-
 local function pp_on_timer(pos, elapsed)
 	local node = minetest.get_node(pos)
 	local basename = minetest.registered_nodes[node.name].pressureplate_basename
@@ -68,7 +52,7 @@ local function pp_on_timer(pos, elapsed)
 		end
 		if disable then
 			minetest.set_node(pos, {name = basename .. "_off"})
-			mesecon.receptor_off(pos, pplate_rules)
+			mesecon.receptor_off(pos, mesecon.rules.pplate)
 		end
 	elseif node.name == basename .. "_off" then
 		for k, obj in pairs(objs) do
@@ -76,7 +60,7 @@ local function pp_on_timer(pos, elapsed)
 			if obj_does_activate(obj, activated_by) then
 				if objpos.y > pos.y-1 and objpos.y < pos.y then
 					minetest.set_node(pos, {name = basename .. "_on"})
-					mesecon.receptor_on(pos, pplate_rules)
+					mesecon.receptor_on(pos, mesecon.rules.pplate)
 					break
 				end
 			end
@@ -137,7 +121,7 @@ function mesecon.register_pressure_plate(basename, description, textures_off, te
 		groups = groups_off,
 		tiles = textures_off,
 
-		mesecons = {receptor = { state = mesecon.state.off, rules = pplate_rules }},
+		mesecons = {receptor = { state = mesecon.state.off, rules = mesecon.rules.pplate }},
 		_doc_items_longdesc = longdesc,
 	},{
 		node_box = pp_box_on,
@@ -145,7 +129,7 @@ function mesecon.register_pressure_plate(basename, description, textures_off, te
 		groups = groups_on,
 		tiles = textures_on,
 
-		mesecons = {receptor = { state = mesecon.state.on, rules = pplate_rules }},
+		mesecons = {receptor = { state = mesecon.state.on, rules = mesecon.rules.pplate }},
 		_doc_items_create_entry = false,
 	})
 

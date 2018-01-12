@@ -26,7 +26,8 @@ The note block will only play a note when it is below air, otherwise, it stays s
 	mesecons = {effector = { -- play sound when activated
 		action_on = function (pos, node)
 			mesecon.noteblock_play(pos, node.param2)
-		end
+		end,
+		rules = mesecon.rules.alldirs,
 	}},
 	_mcl_blast_resistance = 4,
 	_mcl_hardness = 0.8,
