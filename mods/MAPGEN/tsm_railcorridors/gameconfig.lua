@@ -105,11 +105,11 @@ function tsm_railcorridors.get_treasures(pr)
 	if mg_name == "v6" then
 		table.insert(loottable, {
 			stacks_min = 1,
-			stacks_max = 1,
+			stacks_max = 3,
 			items = {
-				{ itemstring = "mcl_core:darksapling", weight = 1, amount_min = 1, amount_max = 2 },
+				{ itemstring = "mcl_core:darksapling", weight = 1, amount_min = 1, amount_max = 3 },
 				{ itemstring = "mcl_core:birchsapling", weight = 1, amount_min = 1, amount_max = 2 },
-				{ itemstring = "", weight = 14 },
+				{ itemstring = "", weight = 6 },
 			},
 		})
 	end
