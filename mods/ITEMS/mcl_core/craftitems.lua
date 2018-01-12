@@ -92,7 +92,7 @@ minetest.register_craftitem("mcl_core:gold_ingot", {
 
 minetest.register_craftitem("mcl_core:emerald", {
 	description = "Emerald",
-	_doc_items_longdesc = "Emeralds are not very useful on their own, but many villagers have a love for emeralds and often use it as a currency in trading.",
+	_doc_items_longdesc = "Emeralds are not very useful on their own, but they can exchanged for gold ingots by crafting.",
 	inventory_image = "mcl_core_emerald.png",
 	stack_max = 64,
 	groups = { craftitem=1 },
