@@ -75,6 +75,10 @@ Voxelands project <http://www.voxelands.com/> (CC BY-SA 3.0)
 (Note: Artists from the Voxelands project include: sdzen, darkrose, sapier,
       Tom Peter, Telaron, juskiddink)
 
+Michel Baradari <https://opengameart.org/content/lava-splash> (CC BY 3.0)
+
+  default_place_node_lava.ogg
+
 Adam_N (CC0 1.0):
   player_falling_damage.ogg
     Source: <https://www.freesound.org/people/Adam_N/sounds/346692/>

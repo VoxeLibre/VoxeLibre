@@ -135,6 +135,17 @@ function mcl_sounds.node_sound_water_defaults(table)
 	return table
 end
 
+function mcl_sounds.node_sound_lava_defaults(table)
+	table = table or {}
+	-- TODO: Footstep
+	table.place = table.place or
+			{name = "default_place_node_lava", gain = 1.0}
+	table.dug = table.dug or
+			{name = "default_place_node_lava", gain = 1.0}
+	-- TODO: Different dug sound
+	mcl_sounds.node_sound_defaults(table)
+	return table
+end
 
 -- Player death sound
 minetest.register_on_dieplayer(function(player)

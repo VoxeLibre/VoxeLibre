@@ -22,7 +22,7 @@ minetest.register_node("mcl_core:water_flowing", {
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=4.0}
 		},
 	},
-	sounds = mcl_sounds.node_sound_water_defaults(table),
+	sounds = mcl_sounds.node_sound_water_defaults(),
 	alpha = WATER_ALPHA,
 	paramtype = "light",
 	paramtype2 = "flowingliquid",
@@ -66,7 +66,7 @@ Water interacts with lava in various ways:
 			backface_culling = false,
 		}
 	},
-	sounds = mcl_sounds.node_sound_water_defaults(table),
+	sounds = mcl_sounds.node_sound_water_defaults(),
 	alpha = WATER_ALPHA,
 	paramtype = "light",
 	walkable = false,
@@ -111,6 +111,7 @@ minetest.register_node("mcl_core:lava_flowing", {
 	paramtype2 = "flowingliquid",
 	-- Real light level: 15 (but Minetest caps at 14)
 	light_source = 14,
+	sounds = mcl_sounds.node_sound_lava_defaults(),
 	walkable = false,
 	pointable = false,
 	diggable = false,
@@ -160,6 +161,7 @@ Lava interacts with water various ways:
 	sunlight_propagates = true,
 	-- Real light level: 15 (but Minetest caps at 14)
 	light_source = 14,
+	sounds = mcl_sounds.node_sound_lava_defaults(),
 	walkable = false,
 	pointable = false,
 	diggable = false,
