@@ -164,20 +164,20 @@ local function register_wires()
 		end
 
 		local rules = {}
-		if (nid[0] == 1) then table.insert(rules, vector.new( 1,  0,  0)) end
-		if (nid[1] == 1) then table.insert(rules, vector.new( 0,  0,  1)) end
-		if (nid[2] == 1) then table.insert(rules, vector.new(-1,  0,  0)) end
-		if (nid[3] == 1) then table.insert(rules, vector.new( 0,  0, -1)) end
+		if (nid[0] == 1) then table.insert(rules, {x=1, y= 0,z= 0, spread=true}) end
+		if (nid[1] == 1) then table.insert(rules, {x=0, y= 0,z= 1, spread=true}) end
+		if (nid[2] == 1) then table.insert(rules, {x=-1,y= 0,z= 0, spread=true}) end
+		if (nid[3] == 1) then table.insert(rules, {x= 0,y= 0,z=-1, spread=true}) end
 
-		if (nid[0] == 1) then table.insert(rules, vector.new( 1, -1,  0)) end
-		if (nid[1] == 1) then table.insert(rules, vector.new( 0, -1,  1)) end
-		if (nid[2] == 1) then table.insert(rules, vector.new(-1, -1,  0)) end
-		if (nid[3] == 1) then table.insert(rules, vector.new( 0, -1, -1)) end
+		if (nid[0] == 1) then table.insert(rules, {x= 1,y=-1,z= 0}) end
+		if (nid[1] == 1) then table.insert(rules, {x= 0,y=-1,z= 1}) end
+		if (nid[2] == 1) then table.insert(rules, {x=-1,y=-1,z= 0}) end
+		if (nid[3] == 1) then table.insert(rules, {x= 0,y=-1,z= -1}) end
 
-		if (nid[4] == 1) then table.insert(rules, vector.new( 1,  1,  0)) end
-		if (nid[5] == 1) then table.insert(rules, vector.new( 0,  1,  1)) end
-		if (nid[6] == 1) then table.insert(rules, vector.new(-1,  1,  0)) end
-		if (nid[7] == 1) then table.insert(rules, vector.new( 0,  1, -1)) end
+		if (nid[4] == 1) then table.insert(rules, {x= 1,y= 1,z= 0}) end
+		if (nid[5] == 1) then table.insert(rules, {x= 0,y= 1,z= 1}) end
+		if (nid[6] == 1) then table.insert(rules, {x=-1,y= 1,z= 0}) end
+		if (nid[7] == 1) then table.insert(rules, {x= 0,y= 1,z= -1}) end
 
 		local meseconspec_off = { conductor = {
 			rules = rules,

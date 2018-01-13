@@ -53,7 +53,9 @@ register_rail("mcl_minecarts:golden_rail",
 		mesecons = {
 			conductor = {
 				state = mesecon.state.off,
+				offstate = "mcl_minecarts:golden_rail",
 				onstate = "mcl_minecarts:golden_rail_on",
+				rules = mesecon.rules.alldirs,
 			},
 		},
 	}
@@ -69,6 +71,8 @@ register_rail("mcl_minecarts:golden_rail_on",
 			conductor = {
 				state = mesecon.state.on,
 				offstate = "mcl_minecarts:golden_rail",
+				onstate = "mcl_minecarts:golden_rail_on",
+				rules = mesecon.rules.alldirs,
 			},
 		},
 		drop = "mcl_minecarts:golden_rail",
@@ -87,7 +91,9 @@ register_rail("mcl_minecarts:activator_rail",
 		mesecons = {
 			conductor = {
 				state = mesecon.state.off,
+				offstate = "mcl_minecarts:activator_rail",
 				onstate = "mcl_minecarts:activator_rail_on",
+				rules = mesecon.rules.alldirs,
 			},
 		},
 	}
@@ -102,6 +108,8 @@ register_rail("mcl_minecarts:activator_rail_on",
 			conductor = {
 				state = mesecon.state.on,
 				offstate = "mcl_minecarts:activator_rail",
+				onstate = "mcl_minecarts:activator_rail_on",
+				rules = mesecon.rules.alldirs,
 			},
 		},
 		drop = "mcl_minecarts:activator_rail",
@@ -119,6 +127,7 @@ register_rail("mcl_minecarts:detector_rail",
 		mesecons = {
 			receptor = {
 				state = mesecon.state.off,
+				rules = mesecon.rules.pplate,
 			},
 		},
 	}
@@ -132,6 +141,7 @@ register_rail("mcl_minecarts:detector_rail_on",
 		mesecons = {
 			receptor = {
 				state = mesecon.state.on,
+				rules = mesecon.rules.pplate,
 			},
 		},
 		drop = "mcl_minecarts:detector_rail",

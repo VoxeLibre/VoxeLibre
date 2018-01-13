@@ -19,12 +19,12 @@ mesecon.rules.default =
  {x=0,  y=-1, z=-1}}
 
 mesecon.rules.alldirs =
-{{x= 1, y= 0,  z= 0, spread = true},
- {x=-1, y= 0,  z= 0, spread = true},
- {x= 0, y= 1,  z= 0, spread = true},
- {x= 0, y=-1,  z= 0, spread = true},
- {x= 0, y= 0,  z= 1, spread = true},
- {x= 0, y= 0,  z=-1, spread = true}}
+{{x= 1, y= 0,  z= 0},
+ {x=-1, y= 0,  z= 0},
+ {x= 0, y= 1,  z= 0},
+ {x= 0, y=-1,  z= 0},
+ {x= 0, y= 0,  z= 1},
+ {x= 0, y= 0,  z=-1}}
 
 mesecon.rules.pplate =
 {{x = 1,  y = 0, z = 0},
@@ -49,13 +49,13 @@ mesecon.rules.flat =
  {x = 0, y = 0, z =-1}}
 
 -- NOT IN ORIGNAL MESECONS
-mesecon.rules.mcl_alldirs_short =
-{{x= 1, y= 0,  z= 0},
- {x=-1, y= 0,  z= 0},
- {x= 0, y= 1,  z= 0},
- {x= 0, y=-1,  z= 0},
- {x= 0, y= 0,  z= 1},
- {x= 0, y= 0,  z=-1}}
+mesecon.rules.mcl_alldirs_spread =
+{{x= 1, y= 0,  z= 0, spread = true},
+ {x=-1, y= 0,  z= 0, spread = true},
+ {x= 0, y= 1,  z= 0, spread = true},
+ {x= 0, y=-1,  z= 0, spread = true},
+ {x= 0, y= 0,  z= 1, spread = true},
+ {x= 0, y= 0,  z=-1, spread = true}}
 
 -- END OF UNOFFICIAL RULES
 

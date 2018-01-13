@@ -1,7 +1,7 @@
 -- Functions that get the input/output rules of the comparator
 
 local comparator_get_output_rules = function(node)
-	local rules = {{x = -1, y = 0, z = 0}}
+	local rules = {{x = -1, y = 0, z = 0, spread=true}}
 	for i = 0, node.param2 do
 		rules = mesecon.rotate_rules_left(rules)
 	end
