@@ -90,6 +90,25 @@ function mesecon.rule2meta(findrule, allrules)
 	return allrules[index]
 end
 
+-- Returns the 6 immediate neighbors of pos
+-- (nodes which touch the sides of pos).
+-- NOT PART OF ORIGINAL MESECONS!
+function mesecon.mcl_get_neighbors(pos)
+	local r = {
+		{ x= 0, y= 0, z=-1 },
+		{ x= 0, y= 0, z= 1 },
+		{ x= 0, y=-1, z= 0 },
+		{ x= 0, y= 1, z= 0 },
+		{ x=-1, y= 0, z= 0 },
+		{ x= 1, y= 0, z= 0 },
+	}
+	local e = {}
+	for i=1, #r do
+		table.insert(e, { pos = vector.add(pos, r[i]), link = r[i] })
+	end
+	return e
+end
+
 function mesecon.dec2bin(n)
 	local x, y = math.floor(n / 2), n % 2
 	if (n > 1) then

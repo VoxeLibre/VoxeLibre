@@ -398,6 +398,7 @@ function mesecon.turnon(pos, link)
 				mesecon.activate(f.pos, node, f.link, depth)
 			end
 		end
+
 		depth = depth + 1
 	end
 end
@@ -557,7 +558,8 @@ function mesecon.rotate_rules_right(rules)
 			x = -rule.z,
 			y =  rule.y,
 			z =  rule.x,
-			name = rule.name})
+			name = rule.name,
+			spread = rule.spread,})
 	end
 	return nr
 end
@@ -569,7 +571,8 @@ function mesecon.rotate_rules_left(rules)
 			x =  rule.z,
 			y =  rule.y,
 			z = -rule.x,
-			name = rule.name})
+			name = rule.name,
+			spread = rule.spread,})
 	end
 	return nr
 end
@@ -581,7 +584,8 @@ function mesecon.rotate_rules_down(rules)
 			x = -rule.y,
 			y =  rule.x,
 			z =  rule.z,
-			name = rule.name})
+			name = rule.name,
+			spread = rule.spread,})
 	end
 	return nr
 end
@@ -593,7 +597,8 @@ function mesecon.rotate_rules_up(rules)
 			x =  rule.y,
 			y = -rule.x,
 			z =  rule.z,
-			name = rule.name})
+			name = rule.name,
+			spread = rule.spread,})
 	end
 	return nr
 end

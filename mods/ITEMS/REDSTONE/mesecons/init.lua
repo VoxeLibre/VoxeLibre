@@ -81,6 +81,13 @@ mesecon.queue:add_function("receptor_on", function (pos, rules)
 		for _, rulename in ipairs(rulenames) do
 			mesecon.turnon(np, rulename)
 		end
+		if rule.spread then
+			if minetest.get_item_group(minetest.get_node(np).name, "opaque") == 1 then
+				for _, neighbor in ipairs(mesecon.mcl_get_neighbors(np)) do
+					mesecon.turnon(neighbor.pos, vector.add(rule, neighbor.link))
+				end
+			end
+		end
 	end
 
 	mesecon.vm_commit()
@@ -108,6 +115,19 @@ mesecon.queue:add_function("receptor_off", function (pos, rules)
 				mesecon.vm_commit()
 			else
 				mesecon.vm_abort()
+			end
+		end
+		if rule.spread then
+			if minetest.get_item_group(minetest.get_node(np).name, "opaque") == 1 then
+				for _, neighbor in ipairs(mesecon.mcl_get_neighbors(np)) do
+					mesecon.vm_begin()
+					mesecon.changesignal(neighbor.pos, minetest.get_node(neighbor.pos), vector.add(rule, neighbor.link), mesecon.state.off, 2)
+					if (mesecon.turnoff(neighbor.pos, vector.add(rule, neighbor.link))) then
+						mesecon.vm_commit()
+					else
+						mesecon.vm_abort()
+					end
+				end
 			end
 		end
 	end
