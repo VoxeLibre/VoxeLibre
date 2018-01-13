@@ -163,7 +163,10 @@ local function register_wires()
 			nodebox.fixed = {-8/16, -.5, -1/16, 8/16, -.5+1/16, 1/16}
 		end
 
-		local rules = {}
+		local rules = {
+			{x=0, y=-1, z=0, spread=true},
+			{x=0, y= 1, z=0, spread=true},
+		}
 		if (nid[0] == 1) then table.insert(rules, {x=1, y= 0,z= 0, spread=true}) end
 		if (nid[1] == 1) then table.insert(rules, {x=0, y= 0,z= 1, spread=true}) end
 		if (nid[2] == 1) then table.insert(rules, {x=-1,y= 0,z= 0, spread=true}) end
