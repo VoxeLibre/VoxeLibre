@@ -71,6 +71,7 @@ register_rail("mcl_minecarts:golden_rail_on",
 				offstate = "mcl_minecarts:golden_rail",
 			},
 		},
+		drop = "mcl_minecarts:golden_rail",
 	},
 	false
 )
@@ -103,6 +104,7 @@ register_rail("mcl_minecarts:activator_rail_on",
 				offstate = "mcl_minecarts:activator_rail",
 			},
 		},
+		drop = "mcl_minecarts:activator_rail",
 	},
 	false
 )
@@ -132,6 +134,7 @@ register_rail("mcl_minecarts:detector_rail_on",
 				state = mesecon.state.on,
 			},
 		},
+		drop = "mcl_minecarts:detector_rail",
 	},
 	false
 )
