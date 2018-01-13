@@ -16,16 +16,7 @@ local rotate_torch_rules = function (rules, param2)
 	end
 end
 
-local torch_get_output_rules = function(node)
-	local rules = {
-		{x = 1,  y = 0, z = 0},
-		{x = 0,  y = 0, z = 1},
-		{x = 0,  y = 0, z =-1},
-		{x = 0,  y = 1, z = 0},
-		{x = 0,  y =-1, z = 0}}
-
-	return rotate_torch_rules(rules, node.param2)
-end
+local torch_get_output_rules = mesecon.rules.alldirs
 
 local torch_get_input_rules = function(node)
 	local rules = 	{{x = -2, y = 0, z = 0},
