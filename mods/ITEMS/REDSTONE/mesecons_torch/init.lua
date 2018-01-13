@@ -16,7 +16,9 @@ local rotate_torch_rules = function (rules, param2)
 	end
 end
 
-local torch_get_output_rules = mesecon.rules.alldirs
+local torch_get_output_rules = function()
+	return mesecon.rules.mcl_alldirs_spread
+end
 
 local torch_get_input_rules = function(node)
 	local rules = 	{{x = -2, y = 0, z = 0},

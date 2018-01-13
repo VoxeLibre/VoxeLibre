@@ -6,6 +6,59 @@ function mesecon.move_node(pos, newpos)
 	minetest.get_meta(pos):from_table(meta)
 end
 
+--Rules rotation Functions:
+function mesecon.rotate_rules_right(rules)
+	local nr = {}
+	for i, rule in ipairs(rules) do
+		table.insert(nr, {
+			x = -rule.z,
+			y =  rule.y,
+			z =  rule.x,
+			name = rule.name,
+			spread = rule.spread,})
+	end
+	return nr
+end
+
+function mesecon.rotate_rules_left(rules)
+	local nr = {}
+	for i, rule in ipairs(rules) do
+		table.insert(nr, {
+			x =  rule.z,
+			y =  rule.y,
+			z = -rule.x,
+			name = rule.name,
+			spread = rule.spread,})
+	end
+	return nr
+end
+
+function mesecon.rotate_rules_down(rules)
+	local nr = {}
+	for i, rule in ipairs(rules) do
+		table.insert(nr, {
+			x = -rule.y,
+			y =  rule.x,
+			z =  rule.z,
+			name = rule.name,
+			spread = rule.spread,})
+	end
+	return nr
+end
+
+function mesecon.rotate_rules_up(rules)
+	local nr = {}
+	for i, rule in ipairs(rules) do
+		table.insert(nr, {
+			x =  rule.y,
+			y = -rule.x,
+			z =  rule.z,
+			name = rule.name,
+			spread = rule.spread,})
+	end
+	return nr
+end
+
 function mesecon.flattenrules(allrules)
 --[[
 	{
