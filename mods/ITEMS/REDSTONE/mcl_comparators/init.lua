@@ -211,11 +211,11 @@ for _, state in pairs{mesecon.state.on, mesecon.state.off} do
 	local longdesc, usagehelp, use_help
 	if state_strs[state] == "off" and mode == "comp" then
 		longdesc = "Redstone comparators are redstone components which "..
-		"compare redstone signals and measure various node states, such as "..
-		"how full inventories are."
+		"compare redstone signals and measure various block states, such as "..
+		"how full inventories are. NOTE: This item is incomplete."
 
 		usagehelp = "To power a redstone comparater, send a signal in “arrow” "..
-		"direction, or place the block to measure there.  Send the signal "..
+		"direction, or place the block to measure there. Send the signal "..
 		"to compare with in from the side."
 	else
 		use_help = false
