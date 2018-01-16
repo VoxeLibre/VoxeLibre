@@ -141,7 +141,7 @@ minetest.register_chatcommand("seed", {
 	params = "",
 	privs = {},
 	func = function(name)
-		minetest.chat_send_player(name, string.format("%d", minetest.get_mapgen_setting("seed")))
+		minetest.chat_send_player(name, minetest.get_mapgen_setting("seed"))
 	end
 })
 
