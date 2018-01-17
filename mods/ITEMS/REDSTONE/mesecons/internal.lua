@@ -37,7 +37,7 @@
 -- HIGH-LEVEL Internals
 -- mesecon.is_power_on(pos)				--> Returns true if pos emits power in any way
 -- mesecon.is_power_off(pos)				--> Returns true if pos does not emit power in any way
--- mesecon.is_powered(pos)				--> Returns true if pos is powered by a receptor or a conductor
+-- mesecon.is_powered(pos)				--> Returns true if pos is powered by a receptor, a conductor or an opaque block
 
 -- RULES ROTATION helpers
 -- mesecon.rotate_rules_right(rules)
@@ -78,6 +78,8 @@ function mesecon.get_any_outputrules(node)
 		return mesecon.conductor_get_rules(node)
 	elseif mesecon.is_receptor(node.name) then
 		return mesecon.receptor_get_rules(node)
+	elseif minetest.get_item_group(node.name, "opaque") == 1 then
+		return mesecon.rules.alldirs
 	end
 end
 
@@ -88,6 +90,8 @@ function mesecon.get_any_inputrules(node)
 		return mesecon.conductor_get_rules(node)
 	elseif mesecon.is_effector(node.name) then
 		return mesecon.effector_get_rules(node)
+	elseif minetest.get_item_group(node.name, "opaque") == 1 then
+		return mesecon.rules.alldirs
 	end
 end
 
@@ -512,42 +516,49 @@ function mesecon.rules_link_rule_all_inverted(input, rule)
 	return rules
 end
 
-function mesecon.is_powered(pos, rule)
+function mesecon.is_powered(pos, rule, depth, sourcepos)
+	if depth == nil then depth = 0 end
+	if depth > 1 then
+		return false
+	end
 	local node = mesecon.get_node_force(pos)
 	local rules = mesecon.get_any_inputrules(node)
-	if not rules then return false end
+	if not rules then
+		return false
+	end
 
 	-- List of nodes that send out power to pos
-	local sourcepos = {}
+	if sourcepos == nil then
+		sourcepos = {}
+	end
 
-	if not rule then
-		for _, rule in ipairs(mesecon.flattenrules(rules)) do
-			local rulenames = mesecon.rules_link_rule_all_inverted(pos, rule)
-			for _, rname in ipairs(rulenames) do
-				local np = vector.add(pos, rname)
-				local nn = mesecon.get_node_force(np)
-
-				if (mesecon.is_conductor_on(nn, mesecon.invertRule(rname))
-				or mesecon.is_receptor_on(nn.name)) then
-					table.insert(sourcepos, np)
-				end
-			end
-		end
-	else
-		local rulenames = mesecon.rules_link_rule_all_inverted(pos, rule)
+	local function power_walk(pos, sourcepos, rulenames, rule, depth)
 		for _, rname in ipairs(rulenames) do
 			local np = vector.add(pos, rname)
 			local nn = mesecon.get_node_force(np)
 			if (mesecon.is_conductor_on (nn, mesecon.invertRule(rname))
 			or mesecon.is_receptor_on (nn.name)) then
 				table.insert(sourcepos, np)
+			elseif depth == 0 and minetest.get_item_group(nn.name, "opaque") == 1 then
+				local more_sourcepos = mesecon.is_powered(np, nil, depth + 1, sourcepos)
+				mesecon.mergetable(sourcepos, more_sourcepos)
 			end
 		end
+		return sourcepos
+	end
+
+	if not rule then
+		for _, rule in ipairs(mesecon.flattenrules(rules)) do
+			local rulenames = mesecon.rules_link_rule_all_inverted(pos, rule)
+			sourcepos = power_walk(pos, sourcepos, rulenames, rule, depth)
+		end
+	else
+		local rulenames = mesecon.rules_link_rule_all_inverted(pos, rule)
+		sourcepos = power_walk(pos, sourcepos, rulenames, rule, depth)
 	end
 
 	-- Return FALSE if not powered, return list of sources if is powered
 	if (#sourcepos == 0) then return false
 	else return sourcepos end
 end
-
 

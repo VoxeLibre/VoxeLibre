@@ -147,14 +147,7 @@ end
 -- (nodes which touch the sides of pos).
 -- NOT PART OF ORIGINAL MESECONS!
 function mesecon.mcl_get_neighbors(pos)
-	local r = {
-		{ x= 0, y= 0, z=-1 },
-		{ x= 0, y= 0, z= 1 },
-		{ x= 0, y=-1, z= 0 },
-		{ x= 0, y= 1, z= 0 },
-		{ x=-1, y= 0, z= 0 },
-		{ x= 1, y= 0, z= 0 },
-	}
+	local r = mesecon.rules.alldirs
 	local e = {}
 	for i=1, #r do
 		table.insert(e, { pos = vector.add(pos, r[i]), link = r[i] })
