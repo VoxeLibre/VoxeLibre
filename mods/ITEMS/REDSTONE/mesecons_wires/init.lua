@@ -225,7 +225,7 @@ local function register_wires()
 			tiles_off = { dot_off, dot_off, "blank.png", "blank.png", "blank.png", "blank.png" }
 			tiles_on = { dot_on, dot_on, "blank.png", "blank.png", "blank.png", "blank.png" }
 
-			longdesc = [[Redstone is a versatile conductive mineral which transmits redstone power. It can be placed on trail the ground as a trail.
+			longdesc = [[Redstone is a versatile conductive mineral which transmits redstone power. It can be placed on the ground as a trail.
 A redstone trail can be in two states: Powered or not powered. A powered redstone trail will power (and thus activate) adjacent redstone components.
 Redstone power can be received from various redstone components, such as a block of redstone or a button. Redstone power is used to activate numerous mechanisms, such as redstone lamps or pistons.]]
 			usagehelp = [[Place redstone on the ground to build a redstone trail. The trails will connect to each other automatically and it can also go over hills. An easy way to power a redstone trail is by placing a redstone torch.
@@ -241,9 +241,6 @@ Read the help entries on the other redstone components to learn how redstone com
 
 		mesecon.register_node(":mesecons:wire_"..nodeid, {
 			description = "Redstone",
-			_doc_items_create_entry = wirehelp,
-			_doc_items_longdesc = longdesc,
-			_doc_items_usagehelp = usagehelp,
 			drawtype = "nodebox",
 			inventory_image = "redstone_redstone_dust.png",
 			wield_image = "redstone_redstone_dust.png",
@@ -255,8 +252,19 @@ Read the help entries on the other redstone components to learn how redstone com
 			drop = "mesecons:wire_00000000_off",
 			sounds = mcl_sounds.node_sound_defaults(),
 			mesecon_wire = true
-		}, {tiles = tiles_off, mesecons = meseconspec_off, groups = groups_off},
-		{tiles = tiles_on, mesecons = meseconspec_on, groups = groups_on})
+		},{
+			_doc_items_create_entry = wirehelp,
+			_doc_items_longdesc = longdesc,
+			_doc_items_usagehelp = usagehelp,
+			tiles = tiles_off,
+			mesecons = meseconspec_off,
+			groups = groups_off,
+		},{
+			_doc_items_create_entry = false,
+			tiles = tiles_on,
+			mesecons = meseconspec_on,
+			groups = groups_on
+		})
 
 		-- Add Help entry aliases for e.g. making it identifiable by the lookup tool [doc_identifier]
 		if minetest.get_modpath("doc") then
