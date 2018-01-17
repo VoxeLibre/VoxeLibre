@@ -1558,6 +1558,12 @@ local generate_underground_mushrooms = function(minp, maxp, seed)
 end
 
 local pr_nether = PseudoRandom(os.time()+667)
+local nehter_wart_chance
+if mg_name == "v6" then
+	nether_wart_chance = 85
+else
+	nether_wart_chance = 170
+end
 -- Generate Nether decorations manually: Eternal fire, mushrooms, nether wart
 -- Minetest's API does not support decorations in caves yet. :-(
 local generate_nether_decorations = function(minp, maxp, seed)
@@ -1614,7 +1620,7 @@ local generate_nether_decorations = function(minp, maxp, seed)
 	-- Nether wart on soul sand
 	-- TODO: Spawn in Nether fortresses
 	special_deco(ssand, function(bpos)
-		if pr_nether:next(1,170) == 1 then
+		if pr_nether:next(1, nether_wart_chance) == 1 then
 			minetest.set_node(bpos, {name = "mcl_nether:nether_wart"})
 		end
 	end)
