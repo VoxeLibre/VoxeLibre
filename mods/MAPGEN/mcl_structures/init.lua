@@ -236,9 +236,10 @@ mcl_structures.generate_desert_temple = function(pos)
 	local chests = minetest.find_nodes_in_area({x=newpos.x-size.x, y=newpos.y, z=newpos.z-size.z}, vector.add(newpos, size), "mcl_chests:chest")
 
 	-- Add desert temple loot into chests
+	-- FIXME: Use better seeding
+	local pr = PseudoRandom(math.random(0, 4294967295))
 	for c=1, #chests do
 		-- FIXME: Use better seeding
-		local pr = PseudoRandom(math.random(0, 4294967295))
 		local lootitems = mcl_loot.get_multi_loot({
 		{
 			stacks_min = 2,
@@ -283,10 +284,18 @@ mcl_structures.generate_desert_temple = function(pos)
 		end
 	end
 
-	-- Initialize pressure plates
+	-- Initialize pressure plates and randomly remove up to 5 plates
 	local pplates = minetest.find_nodes_in_area({x=newpos.x-size.x, y=newpos.y, z=newpos.z-size.z}, vector.add(newpos, size), "mesecons_pressureplates:pressure_plate_stone_off")
+	local pplates_remove = 5
 	for p=1, #pplates do
-		minetest.registered_nodes["mesecons_pressureplates:pressure_plate_stone_off"].on_construct(pplates[p])
+		if pplates_remove > 0 and pr:next(1, 100) >= 50 then
+			-- Remove plate
+			minetest.remove_node(pplates[p])
+			pplates_remove = pplates_remove - 1
+		else
+			-- Initialize plate
+			minetest.registered_nodes["mesecons_pressureplates:pressure_plate_stone_off"].on_construct(pplates[p])
+		end
 	end
 
 	return ret
