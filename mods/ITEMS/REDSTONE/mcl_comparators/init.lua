@@ -210,13 +210,19 @@ for _, state in pairs{mesecon.state.on, mesecon.state.off} do
 	-- Help
 	local longdesc, usagehelp, use_help
 	if state_strs[state] == "off" and mode == "comp" then
-		longdesc = "Redstone comparators are redstone components which "..
-		"compare redstone signals and measure various block states, such as "..
-		"how full inventories are. NOTE: This item is incomplete."
+		longdesc = "Redstone comparators are multi-purpose redstone components. "..
+		"They can transmit a redstone signal, detect whether a block contains any items and compare multiple signals."
 
-		usagehelp = "To power a redstone comparater, send a signal in “arrow” "..
-		"direction, or place the block to measure there. Send the signal "..
-		"to compare with in from the side."
+		usagehelp = "A redstone comparator has 1 main input, 2 side inputs and 1 output. The output is in "..
+			"arrow direction, the main input is in the opposite direction. The other 2 sides are the side inputs.".."\n"..
+			"The main input can powered in 2 ways: First, it can be powered directly by redstone power like any other component. Second, it is powered if, and only if a container (like  chest) is placed in front of it and the container contains at least one item."..
+			"The side inputs are only powered by normal redstone power."..
+			"The redstone can operate in two modes: Transmission mode and subtraction mode. It "..
+			"starts in transmission mode and the mode can be changed by a rightclick.".."\n\n"..
+			"Transmission mode:"..
+			"The front torch is unlit and lowered. The output is powered if, and only if the main input is powered. The two side inputs are ignored.".."\n"..
+			"Subtraction mode:"..
+			"The front torch is lit. The output is powered if, and only if the main input is powered and none of the side inputs is powered."
 	else
 		use_help = false
 	end
