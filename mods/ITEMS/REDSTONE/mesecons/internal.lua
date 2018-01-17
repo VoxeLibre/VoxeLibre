@@ -516,7 +516,7 @@ function mesecon.rules_link_rule_all_inverted(input, rule)
 	return rules
 end
 
-function mesecon.is_powered(pos, rule, depth, sourcepos)
+function mesecon.is_powered(pos, rule, depth, sourcepos, home_pos)
 	if depth == nil then depth = 0 end
 	if depth > 1 then
 		return false
@@ -525,6 +525,9 @@ function mesecon.is_powered(pos, rule, depth, sourcepos)
 	local rules = mesecon.get_any_inputrules(node)
 	if not rules then
 		return false
+	end
+	if not home_pos then
+		home_pos = pos
 	end
 
 	-- List of nodes that send out power to pos
@@ -538,9 +541,11 @@ function mesecon.is_powered(pos, rule, depth, sourcepos)
 			local nn = mesecon.get_node_force(np)
 			if (mesecon.is_conductor_on (nn, mesecon.invertRule(rname))
 			or mesecon.is_receptor_on (nn.name)) then
-				table.insert(sourcepos, np)
+				if not vector.equals(home_pos, np) then
+					table.insert(sourcepos, np)
+				end
 			elseif depth == 0 and minetest.get_item_group(nn.name, "opaque") == 1 then
-				local more_sourcepos = mesecon.is_powered(np, nil, depth + 1, sourcepos)
+				local more_sourcepos = mesecon.is_powered(np, nil, depth + 1, sourcepos, home_pos)
 				mesecon.mergetable(sourcepos, more_sourcepos)
 			end
 		end
