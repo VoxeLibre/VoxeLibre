@@ -521,12 +521,12 @@ end
 function mesecon.is_powered(pos, rule, depth, sourcepos, home_pos)
 	if depth == nil then depth = 0 end
 	if depth > 1 then
-		return false
+		return false, false
 	end
 	local node = mesecon.get_node_force(pos)
 	local rules = mesecon.get_any_inputrules(node)
 	if not rules then
-		return false
+		return false, false
 	end
 	if not home_pos then
 		home_pos = pos
@@ -558,11 +558,15 @@ function mesecon.is_powered(pos, rule, depth, sourcepos, home_pos)
 		return sourcepos, direct_source
 	end
 
-	local direct_source
+	local direct_source = false
 	if not rule then
 		for _, rule in ipairs(mesecon.flattenrules(rules)) do
+			local direct_source_temp
 			local rulenames = mesecon.rules_link_rule_all_inverted(pos, rule)
-			sourcepos, direct_source = power_walk(pos, home_pos, sourcepos, rulenames, rule, depth)
+			sourcepos, direct_source_temp = power_walk(pos, home_pos, sourcepos, rulenames, rule, depth)
+			if direct_source_temp then
+				direct_source = true
+			end
 		end
 	else
 		local rulenames = mesecon.rules_link_rule_all_inverted(pos, rule)
@@ -572,7 +576,7 @@ function mesecon.is_powered(pos, rule, depth, sourcepos, home_pos)
 	-- Return FALSE if not powered, return list of sources if is powered
 
 	if (#sourcepos == 0) then
-		return false
+		return false, false
 	else
 		return sourcepos, direct_source
 	end
