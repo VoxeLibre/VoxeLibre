@@ -37,7 +37,9 @@
 -- HIGH-LEVEL Internals
 -- mesecon.is_power_on(pos)				--> Returns true if pos emits power in any way
 -- mesecon.is_power_off(pos)				--> Returns true if pos does not emit power in any way
--- mesecon.is_powered(pos)				--> Returns true if pos is powered by a receptor, a conductor or an opaque block
+-- mesecon.is_powered(pos)				--> Returns bool, direct_source. bool is true if pos is powered by a receptor, a conductor or an opaque block.
+							--  direct_source is true if it powered at least by one power source directly
+							-- (rather than just indirectly with a strongly-powered (opaque) block.
 
 -- RULES ROTATION helpers
 -- mesecon.rotate_rules_right(rules)
@@ -536,6 +538,7 @@ function mesecon.is_powered(pos, rule, depth, sourcepos, home_pos)
 	end
 
 	local function power_walk(pos, sourcepos, rulenames, rule, depth)
+		local direct_source = false
 		for _, rname in ipairs(rulenames) do
 			local np = vector.add(pos, rname)
 			local nn = mesecon.get_node_force(np)
@@ -543,27 +546,35 @@ function mesecon.is_powered(pos, rule, depth, sourcepos, home_pos)
 			or mesecon.is_receptor_on (nn.name)) then
 				if not vector.equals(home_pos, np) then
 					table.insert(sourcepos, np)
+					direct_source = true
 				end
 			elseif depth == 0 and minetest.get_item_group(nn.name, "opaque") == 1 then
 				local more_sourcepos = mesecon.is_powered(np, nil, depth + 1, sourcepos, home_pos)
-				mesecon.mergetable(sourcepos, more_sourcepos)
+				if more_sourcepos and #more_sourcepos > 0 then
+					mesecon.mergetable(sourcepos, more_sourcepos)
+				end
 			end
 		end
-		return sourcepos
+		return sourcepos, direct_source
 	end
 
+	local direct_source
 	if not rule then
 		for _, rule in ipairs(mesecon.flattenrules(rules)) do
 			local rulenames = mesecon.rules_link_rule_all_inverted(pos, rule)
-			sourcepos = power_walk(pos, sourcepos, rulenames, rule, depth)
+			sourcepos, direct_source = power_walk(pos, sourcepos, rulenames, rule, depth)
 		end
 	else
 		local rulenames = mesecon.rules_link_rule_all_inverted(pos, rule)
-		sourcepos = power_walk(pos, sourcepos, rulenames, rule, depth)
+		sourcepos, direct_source = power_walk(pos, sourcepos, rulenames, rule, depth)
 	end
 
 	-- Return FALSE if not powered, return list of sources if is powered
-	if (#sourcepos == 0) then return false
-	else return sourcepos end
+
+	if (#sourcepos == 0) then
+		return false
+	else
+		return sourcepos, direct_source
+	end
 end
 

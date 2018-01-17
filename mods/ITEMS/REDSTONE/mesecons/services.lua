@@ -53,8 +53,8 @@ mesecon.on_placenode = function(pos, node)
 
 	if minetest.get_item_group(node.name, "opaque") == 1 then
 		local neighbors = mesecon.mcl_get_neighbors(pos)
-		local is_powered = mesecon.is_powered(pos)
-		if is_powered then
+		local is_powered, direct_source = mesecon.is_powered(pos)
+		if is_powered and direct_source then
 			for n=1, #neighbors do
 				local npos = neighbors[n].pos
 				local nnode = minetest.get_node(npos)
