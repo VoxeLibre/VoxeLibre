@@ -545,8 +545,21 @@ function mesecon.is_powered(pos, rule, depth, sourcepos, home_pos)
 			if (mesecon.is_conductor_on (nn, mesecon.invertRule(rname))
 			or mesecon.is_receptor_on (nn.name)) then
 				if not vector.equals(home_pos, np) then
-					table.insert(sourcepos, np)
-					direct_source = true
+					local rulez = mesecon.get_any_outputrules(nn)
+					local ds_tmp = false
+					for r=1, #rulez do
+						if vector.equals(mesecon.invertRule(rname), rulez[r]) then
+							if rulez[r].spread then
+								ds_tmp = true
+							end
+						end
+					end
+					if depth == 0 or ds_tmp then
+						table.insert(sourcepos, np)
+						if ds_tmp then
+							direct_source = true
+						end
+					end
 				end
 			elseif depth == 0 and minetest.get_item_group(nn.name, "opaque") == 1 then
 				local more_sourcepos = mesecon.is_powered(np, nil, depth + 1, sourcepos, home_pos)
