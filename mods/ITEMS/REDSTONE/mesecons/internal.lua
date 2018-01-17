@@ -537,7 +537,7 @@ function mesecon.is_powered(pos, rule, depth, sourcepos, home_pos)
 		sourcepos = {}
 	end
 
-	local function power_walk(pos, sourcepos, rulenames, rule, depth)
+	local function power_walk(pos, home_pos, sourcepos, rulenames, rule, depth)
 		local direct_source = false
 		for _, rname in ipairs(rulenames) do
 			local np = vector.add(pos, rname)
@@ -562,11 +562,11 @@ function mesecon.is_powered(pos, rule, depth, sourcepos, home_pos)
 	if not rule then
 		for _, rule in ipairs(mesecon.flattenrules(rules)) do
 			local rulenames = mesecon.rules_link_rule_all_inverted(pos, rule)
-			sourcepos, direct_source = power_walk(pos, sourcepos, rulenames, rule, depth)
+			sourcepos, direct_source = power_walk(pos, home_pos, sourcepos, rulenames, rule, depth)
 		end
 	else
 		local rulenames = mesecon.rules_link_rule_all_inverted(pos, rule)
-		sourcepos, direct_source = power_walk(pos, sourcepos, rulenames, rule, depth)
+		sourcepos, direct_source = power_walk(pos, home_pos, sourcepos, rulenames, rule, depth)
 	end
 
 	-- Return FALSE if not powered, return list of sources if is powered
