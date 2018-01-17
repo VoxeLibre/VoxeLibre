@@ -37,9 +37,8 @@
 -- HIGH-LEVEL Internals
 -- mesecon.is_power_on(pos)				--> Returns true if pos emits power in any way
 -- mesecon.is_power_off(pos)				--> Returns true if pos does not emit power in any way
--- mesecon.is_powered(pos)				--> Returns bool, direct_source. bool is true if pos is powered by a receptor, a conductor or an opaque block.
-							--  direct_source is true if it powered at least by one power source directly
-							-- (rather than just indirectly with a strongly-powered (opaque) block.
+-- mesecon.is_powered(pos)				--> Returns bool, spread. bool is true if pos is powered by a receptor, a conductor or an opaque block.
+							--  spread is true if it is powered AND also transmits its power one block further.
 
 -- RULES ROTATION helpers
 -- mesecon.rotate_rules_right(rules)
@@ -538,7 +537,7 @@ function mesecon.is_powered(pos, rule, depth, sourcepos, home_pos)
 	end
 
 	local function power_walk(pos, home_pos, sourcepos, rulenames, rule, depth)
-		local direct_source = false
+		local spread = false
 		for _, rname in ipairs(rulenames) do
 			local np = vector.add(pos, rname)
 			local nn = mesecon.get_node_force(np)
@@ -546,18 +545,18 @@ function mesecon.is_powered(pos, rule, depth, sourcepos, home_pos)
 			or mesecon.is_receptor_on (nn.name)) then
 				if not vector.equals(home_pos, np) then
 					local rulez = mesecon.get_any_outputrules(nn)
-					local ds_tmp = false
+					local spread_tmp = false
 					for r=1, #rulez do
 						if vector.equals(mesecon.invertRule(rname), rulez[r]) then
 							if rulez[r].spread then
-								ds_tmp = true
+								spread_tmp = true
 							end
 						end
 					end
-					if depth == 0 or ds_tmp then
+					if depth == 0 or spread_tmp then
 						table.insert(sourcepos, np)
-						if ds_tmp then
-							direct_source = true
+						if spread_tmp then
+							spread = true
 						end
 					end
 				end
@@ -568,22 +567,22 @@ function mesecon.is_powered(pos, rule, depth, sourcepos, home_pos)
 				end
 			end
 		end
-		return sourcepos, direct_source
+		return sourcepos, spread
 	end
 
-	local direct_source = false
+	local spread = false
 	if not rule then
 		for _, rule in ipairs(mesecon.flattenrules(rules)) do
-			local direct_source_temp
+			local spread_temp
 			local rulenames = mesecon.rules_link_rule_all_inverted(pos, rule)
-			sourcepos, direct_source_temp = power_walk(pos, home_pos, sourcepos, rulenames, rule, depth)
-			if direct_source_temp then
-				direct_source = true
+			sourcepos, spread_temp = power_walk(pos, home_pos, sourcepos, rulenames, rule, depth)
+			if spread_temp then
+				spread = true
 			end
 		end
 	else
 		local rulenames = mesecon.rules_link_rule_all_inverted(pos, rule)
-		sourcepos, direct_source = power_walk(pos, home_pos, sourcepos, rulenames, rule, depth)
+		sourcepos, spread = power_walk(pos, home_pos, sourcepos, rulenames, rule, depth)
 	end
 
 	-- Return FALSE if not powered, return list of sources if is powered
@@ -591,7 +590,7 @@ function mesecon.is_powered(pos, rule, depth, sourcepos, home_pos)
 	if (#sourcepos == 0) then
 		return false, false
 	else
-		return sourcepos, direct_source
+		return sourcepos, spread
 	end
 end
 
