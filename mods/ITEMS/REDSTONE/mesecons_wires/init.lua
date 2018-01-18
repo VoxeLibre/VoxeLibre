@@ -8,6 +8,23 @@
 -- ## Update wire looks ##
 -- #######################
 
+local wire_rules =
+{{x=-1,  y= 0, z= 0, spread=true},
+ {x= 1,  y= 0, z= 0, spread=true},
+ {x= 0,  y=-1, z= 0, spread=true},
+ {x= 0,  y= 1, z= 0, spread=true},
+ {x= 0,  y= 0, z=-1, spread=true},
+ {x= 0,  y= 0, z= 1, spread=true},
+
+ {x= 1, y= 1, z= 0},
+ {x= 1, y=-1, z= 0},
+ {x=-1, y= 1, z= 0},
+ {x=-1, y=-1, z= 0},
+ {x= 0, y= 1, z= 1},
+ {x= 0, y=-1, z= 1},
+ {x= 0, y= 1, z=-1},
+ {x= 0, y=-1, z=-1}}
+
 -- self_pos = pos of any mesecon node, from_pos = pos of conductor to getconnect for
 local wire_getconnect = function (from_pos, self_pos)
 	local node = minetest.get_node(self_pos)
@@ -16,7 +33,7 @@ local wire_getconnect = function (from_pos, self_pos)
 		-- rules of node to possibly connect to
 		local rules = {}
 		if (minetest.registered_nodes[node.name].mesecon_wire) then
-			rules = mesecon.rules.default
+			rules = wire_rules
 		else
 			rules = mesecon.get_any_rules(node)
 		end
@@ -34,7 +51,7 @@ end
 local wire_updateconnect = function (pos)
 	local connections = {}
 
-	for _, r in ipairs(mesecon.rules.default) do
+	for _, r in ipairs(wire_rules) do
 		if wire_getconnect(pos, vector.add(pos, r)) then
 			table.insert(connections, r)
 		end
@@ -73,10 +90,9 @@ local update_on_place_dig = function (pos, node)
 	end
 
 	-- Update nodes around it
-	local rules = {}
 	if minetest.registered_nodes[node.name]
 	and minetest.registered_nodes[node.name].mesecon_wire then
-		rules = mesecon.rules.default
+		rules = wire_rules
 	else
 		rules = mesecon.get_any_rules(node)
 	end
@@ -163,33 +179,14 @@ local function register_wires()
 			nodebox.fixed = {-8/16, -.5, -1/16, 8/16, -.5+1/16, 1/16}
 		end
 
-		local rules = {
-			{x=0, y=-1, z=0, spread=true},
-			{x=0, y= 1, z=0, spread=true},
-		}
-		if (nid[0] == 1) then table.insert(rules, {x=1, y= 0,z= 0, spread=true}) end
-		if (nid[1] == 1) then table.insert(rules, {x=0, y= 0,z= 1, spread=true}) end
-		if (nid[2] == 1) then table.insert(rules, {x=-1,y= 0,z= 0, spread=true}) end
-		if (nid[3] == 1) then table.insert(rules, {x= 0,y= 0,z=-1, spread=true}) end
-
-		if (nid[0] == 1) then table.insert(rules, {x= 1,y=-1,z= 0}) end
-		if (nid[1] == 1) then table.insert(rules, {x= 0,y=-1,z= 1}) end
-		if (nid[2] == 1) then table.insert(rules, {x=-1,y=-1,z= 0}) end
-		if (nid[3] == 1) then table.insert(rules, {x= 0,y=-1,z= -1}) end
-
-		if (nid[4] == 1) then table.insert(rules, {x= 1,y= 1,z= 0}) end
-		if (nid[5] == 1) then table.insert(rules, {x= 0,y= 1,z= 1}) end
-		if (nid[6] == 1) then table.insert(rules, {x=-1,y= 1,z= 0}) end
-		if (nid[7] == 1) then table.insert(rules, {x= 0,y= 1,z= -1}) end
-
 		local meseconspec_off = { conductor = {
-			rules = rules,
+			rules = wire_rules,
 			state = mesecon.state.off,
 			onstate = "mesecons:wire_"..nodeid.."_on"
 		}}
 
 		local meseconspec_on = { conductor = {
-			rules = rules,
+			rules = wire_rules,
 			state = mesecon.state.on,
 			offstate = "mesecons:wire_"..nodeid.."_off"
 		}}
