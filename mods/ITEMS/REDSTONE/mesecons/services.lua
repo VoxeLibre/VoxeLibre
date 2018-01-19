@@ -19,7 +19,7 @@ mesecon.on_placenode = function(pos, node)
 				local rule = vector.subtract(pos, s)
 				mesecon.turnon(pos, rule)
 			end
-			--mesecon.receptor_on (pos, mesecon.conductor_get_rules(node))
+			mesecon.receptor_on (pos, mesecon.conductor_get_rules(node))
 		elseif mesecon.is_conductor_on(node) then
 			minetest.swap_node(pos, {name = mesecon.get_conductor_off(node)})
 		end
@@ -82,9 +82,9 @@ mesecon.on_dignode = function(pos, node)
 			local npos = neighbors[n].pos
 			local nlink = neighbors[n].link
 			local nnode = minetest.get_node(npos)
-			if mesecon.is_conductor_on(nnode) and not mesecon.is_powered(npos) then
+			if mesecon.is_conductor_on(nnode) then
 				mesecon.receptor_off(npos, mesecon.conductor_get_rules(nnode))
-			elseif mesecon.is_effector_on(nnode.name) and not mesecon.is_powered(npos) then
+			elseif mesecon.is_effector_on(nnode.name) then
 				mesecon.changesignal(npos, nnode, nlink, mesecon.state.off, 1)
 				mesecon.deactivate(npos, nnode, nlink, 1)
 			end
