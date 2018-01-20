@@ -403,12 +403,24 @@ function mesecon.turnon(pos, link)
 				mesecon.activate(f.pos, node, f.link, depth)
 			end
 		end
+		if node and f.link.spread and minetest.get_item_group(node.name, "opaque") == 1 then
+			-- Call turnon on neighbors
+			-- Warning: A LOT of nodes need to be looked at for this to work
+			for _, r in ipairs(mesecon.rule2meta(f.link, mesecon.rules.mcl_alldirs_spread)) do
+				local np = vector.add(f.pos, r)
+				for _, l in ipairs(mesecon.rules_link_rule_all(f.pos, r)) do
+					local nlink = table.copy(l)
+					nlink.spread = false
+					table.insert(frontiers, {pos = np, link = nlink})
+				end
+			end
+		end
 
 		depth = depth + 1
 	end
 end
 
--- Turn on an equipotential section starting at `pos`, which outputs in the direction of `link`.
+-- Turn off an equipotential section starting at `pos`, which outputs in the direction of `link`.
 -- Breadth-first search. Map is abstracted away in a voxelmanip.
 -- Follow all all conductor paths replacing conductors that were already
 -- looked at, deactivating / changing all effectors along the way.
@@ -464,6 +476,10 @@ function mesecon.turnoff(pos, link)
 				depth = depth
 			})
 		end
+		if node and f.link.spread and minetest.get_item_group(node.name, "opaque") == 1 then
+			-- TODO: Call turnoff on neighbors
+		end
+
 		depth = depth + 1
 	end
 
@@ -490,8 +506,10 @@ function mesecon.rules_link_rule_all(output, rule)
 
 	for _, inputrule in ipairs(mesecon.flattenrules(inputrules)) do
 		-- Check if input accepts from output
-		if  vector.equals(vector.add(input, inputrule), output) then
-			table.insert(rules, inputrule)
+		if vector.equals(vector.add(input, inputrule), output) then
+			local newrule = table.copy(inputrule)
+			newrule.spread = rule.spread
+			table.insert(rules, newrule)
 		end
 	end
 
@@ -510,8 +528,11 @@ function mesecon.rules_link_rule_all_inverted(input, rule)
 	local rules = {}
 
 	for _, outputrule in ipairs(mesecon.flattenrules(outputrules)) do
-		if  vector.equals(vector.add(output, outputrule), input) then
-			table.insert(rules, mesecon.invertRule(outputrule))
+		if vector.equals(vector.add(output, outputrule), input) then
+			local newrule = table.copy(outputrule)
+			newrule = mesecon.invertRule(newrule)
+			newrule.spread = rule.spread
+			table.insert(rules, newrule)
 		end
 	end
 	return rules

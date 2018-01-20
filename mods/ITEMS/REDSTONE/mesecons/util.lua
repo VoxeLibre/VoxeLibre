@@ -198,7 +198,12 @@ function mesecon.set_bit(binary,bit,value)
 end
 
 function mesecon.invertRule(r)
-	return vector.multiply(r, -1)
+	local spread = r.spread
+	r = vector.multiply(r, -1)
+	if spread then
+		r.spread = true
+	end
+	return r
 end
 
 function mesecon.tablecopy(table) -- deep table copy
