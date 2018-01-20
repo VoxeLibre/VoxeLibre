@@ -446,7 +446,7 @@ function mesecon.turnoff(pos, link)
 		local node = mesecon.get_node_force(f.pos)
 
 		if not node then
-			-- Area does not exist; do nothing
+			-- No-op
 		elseif mesecon.is_conductor_on(node, f.link) then
 			local rules = mesecon.conductor_get_rules(node)
 			for _, r in ipairs(mesecon.rule2meta(f.link, rules)) do
@@ -476,8 +476,21 @@ function mesecon.turnoff(pos, link)
 				depth = depth
 			})
 		end
+
 		if node and f.link.spread and minetest.get_item_group(node.name, "opaque") == 1 then
-			-- TODO: Call turnoff on neighbors
+			-- Call turnoff on neighbors
+			-- Warning: A LOT of nodes need to be looked at for this to work
+			for _, r in ipairs(mesecon.rule2meta(f.link, mesecon.rules.mcl_alldirs_spread)) do
+				local np = vector.add(f.pos, r)
+				if mesecon.is_receptor_on(mesecon.get_node_force(np).name) then
+					return false
+				end
+				for _, l in ipairs(mesecon.rules_link_rule_all(f.pos, r)) do
+					local nlink = table.copy(l)
+					nlink.spread = false
+					table.insert(frontiers, {pos = np, link = nlink})
+				end
+			end
 		end
 
 		depth = depth + 1
