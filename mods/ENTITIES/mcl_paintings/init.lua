@@ -5,7 +5,7 @@ local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP .. "/intllib.lua")
 
 minetest.register_craftitem("mcl_paintings:painting", {
-	description = S("Next-Gen Painting"),
+	description = S("Painting"),
 	_doc_items_longdesc = S("Paintings are decorations which can be placed on walls. THIS ITEM IS INCOMPLETE."),
 	wield_image = "gemalde_node.png",
 	inventory_image = "gemalde_node.png",
