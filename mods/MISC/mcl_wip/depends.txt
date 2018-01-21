@@ -5,7 +5,6 @@ mcl_fishing
 mcl_maps
 mcl_minecarts
 mcl_chests
-gemalde
 mcl_observers
 doc_identifier
 mobs_mc
