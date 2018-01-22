@@ -391,7 +391,11 @@ minetest.register_node("mcl_end:chorus_plant", {
 	connects_to = {"mcl_end:chorus_plant", "mcl_end:chorus_flower", "mcl_end:chorus_flower_dead", "mcl_end:end_stone"},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	-- TODO: Check drop probability
-	drop = { items = { {items = { "mcl_end:chorus_fruit", rarity = 4 } } } },
+	drop = {
+		items = {
+			{ items = { "mcl_end:chorus_fruit"}, rarity = 2 },
+		}
+	},
 	groups = {handy=1,axey=1, not_in_creative_inventory = 1, dig_by_piston = 1, destroy_by_lava_flow = 1 },
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
