@@ -2,7 +2,7 @@
 -- A button that when pressed emits power for 1 second
 -- and then turns off again
 
-local button_get_output_rules = mesecon.rules.buttonlike_get
+local button_get_output_rules = mesecon.rules.wallmounted_get
 
 local boxes_off = {
 	type = "wallmounted",

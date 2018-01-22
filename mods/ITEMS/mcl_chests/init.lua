@@ -370,13 +370,7 @@ register_chest("chest",
 	false
 )
 
-local trapped_chest_mesecons_rules = {
-	{x = 1,  y = 0, z = 0},
-	{x = -1,  y = 0, z = 0},
-	{x = 0,  y = 0, z = 1},
-	{x = 0,  y = 0, z =-1},
-	{x = 0,  y =-1, z = 0}
-}
+local trapped_chest_mesecons_rules = mesecon.rules.pplate
 
 register_chest("trapped_chest",
 	"Trapped Chest",

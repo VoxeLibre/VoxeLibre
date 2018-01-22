@@ -161,9 +161,6 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 			action_off = (function(pos, node)
 				punch_gate(pos, node)
 			end),
-			action_on = (function(pos, node)
-				punch_gate(pos, node)
-			end),
 		}},
 		on_rotate = on_rotate,
 		sounds = sounds,

@@ -120,9 +120,5 @@ end
 
 print("[OK] Mesecons")
 
--- Deprecated stuff
--- To be removed in future releases
-dofile(minetest.get_modpath("mesecons").."/legacy.lua");
-
 --Services like turnoff receptor on dignode and so on
 dofile(minetest.get_modpath("mesecons").."/services.lua");

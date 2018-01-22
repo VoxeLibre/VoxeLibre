@@ -37,7 +37,8 @@
 -- HIGH-LEVEL Internals
 -- mesecon.is_power_on(pos)				--> Returns true if pos emits power in any way
 -- mesecon.is_power_off(pos)				--> Returns true if pos does not emit power in any way
--- mesecon.is_powered(pos)				--> Returns true if pos is powered by a receptor or a conductor
+-- mesecon.is_powered(pos)				--> Returns bool, spread. bool is true if pos is powered by a receptor, a conductor or an opaque block.
+							--  spread is true if it is powered AND also transmits its power one block further.
 
 -- RULES ROTATION helpers
 -- mesecon.rotate_rules_right(rules)
@@ -78,6 +79,8 @@ function mesecon.get_any_outputrules(node)
 		return mesecon.conductor_get_rules(node)
 	elseif mesecon.is_receptor(node.name) then
 		return mesecon.receptor_get_rules(node)
+	elseif minetest.get_item_group(node.name, "opaque") == 1 then
+		return mesecon.rules.alldirs
 	end
 end
 
@@ -88,6 +91,8 @@ function mesecon.get_any_inputrules(node)
 		return mesecon.conductor_get_rules(node)
 	elseif mesecon.is_effector(node.name) then
 		return mesecon.effector_get_rules(node)
+	elseif minetest.get_item_group(node.name, "opaque") == 1 then
+		return mesecon.rules.alldirs
 	end
 end
 
@@ -398,11 +403,24 @@ function mesecon.turnon(pos, link)
 				mesecon.activate(f.pos, node, f.link, depth)
 			end
 		end
+		if node and f.link.spread and minetest.get_item_group(node.name, "opaque") == 1 then
+			-- Call turnon on neighbors
+			-- Warning: A LOT of nodes need to be looked at for this to work
+			for _, r in ipairs(mesecon.rule2meta(f.link, mesecon.rules.mcl_alldirs_spread)) do
+				local np = vector.add(f.pos, r)
+				for _, l in ipairs(mesecon.rules_link_rule_all(f.pos, r)) do
+					local nlink = table.copy(l)
+					nlink.spread = false
+					table.insert(frontiers, {pos = np, link = nlink})
+				end
+			end
+		end
+
 		depth = depth + 1
 	end
 end
 
--- Turn on an equipotential section starting at `pos`, which outputs in the direction of `link`.
+-- Turn off an equipotential section starting at `pos`, which outputs in the direction of `link`.
 -- Breadth-first search. Map is abstracted away in a voxelmanip.
 -- Follow all all conductor paths replacing conductors that were already
 -- looked at, deactivating / changing all effectors along the way.
@@ -428,7 +446,7 @@ function mesecon.turnoff(pos, link)
 		local node = mesecon.get_node_force(f.pos)
 
 		if not node then
-			-- Area does not exist; do nothing
+			-- No-op
 		elseif mesecon.is_conductor_on(node, f.link) then
 			local rules = mesecon.conductor_get_rules(node)
 			for _, r in ipairs(mesecon.rule2meta(f.link, rules)) do
@@ -458,6 +476,29 @@ function mesecon.turnoff(pos, link)
 				depth = depth
 			})
 		end
+
+		if node and f.link.spread and minetest.get_item_group(node.name, "opaque") == 1 then
+			-- Call turnoff on neighbors
+			-- Warning: A LOT of nodes need to be looked at for this to work
+			for _, r in ipairs(mesecon.rule2meta(f.link, mesecon.rules.mcl_alldirs_spread)) do
+				local np = vector.add(f.pos, r)
+				local n = mesecon.get_node_force(np)
+				if mesecon.is_receptor_on(n.name) then
+					local receptorrules = mesecon.receptor_get_rules(n)
+					for _, rr in pairs(receptorrules) do
+						if vector.equals(mesecon.invertRule(rr), r) then
+							return false
+						end
+					end
+				end
+				for _, l in ipairs(mesecon.rules_link_rule_all(f.pos, r)) do
+					local nlink = table.copy(l)
+					nlink.spread = false
+					table.insert(frontiers, {pos = np, link = nlink})
+				end
+			end
+		end
+
 		depth = depth + 1
 	end
 
@@ -484,8 +525,10 @@ function mesecon.rules_link_rule_all(output, rule)
 
 	for _, inputrule in ipairs(mesecon.flattenrules(inputrules)) do
 		-- Check if input accepts from output
-		if  vector.equals(vector.add(input, inputrule), output) then
-			table.insert(rules, inputrule)
+		if vector.equals(vector.add(input, inputrule), output) then
+			local newrule = table.copy(inputrule)
+			newrule.spread = rule.spread
+			table.insert(rules, newrule)
 		end
 	end
 
@@ -504,96 +547,90 @@ function mesecon.rules_link_rule_all_inverted(input, rule)
 	local rules = {}
 
 	for _, outputrule in ipairs(mesecon.flattenrules(outputrules)) do
-		if  vector.equals(vector.add(output, outputrule), input) then
-			table.insert(rules, mesecon.invertRule(outputrule))
+		if vector.equals(vector.add(output, outputrule), input) then
+			local newrule = table.copy(outputrule)
+			newrule = mesecon.invertRule(newrule)
+			newrule.spread = rule.spread
+			table.insert(rules, newrule)
 		end
 	end
 	return rules
 end
 
-function mesecon.is_powered(pos, rule)
+function mesecon.is_powered(pos, rule, depth, sourcepos, home_pos)
+	if depth == nil then depth = 0 end
+	if depth > 1 then
+		return false, false
+	end
 	local node = mesecon.get_node_force(pos)
 	local rules = mesecon.get_any_inputrules(node)
-	if not rules then return false end
+	if not rules then
+		return false, false
+	end
+	if not home_pos then
+		home_pos = pos
+	end
 
 	-- List of nodes that send out power to pos
-	local sourcepos = {}
+	if sourcepos == nil then
+		sourcepos = {}
+	end
 
-	if not rule then
-		for _, rule in ipairs(mesecon.flattenrules(rules)) do
-			local rulenames = mesecon.rules_link_rule_all_inverted(pos, rule)
-			for _, rname in ipairs(rulenames) do
-				local np = vector.add(pos, rname)
-				local nn = mesecon.get_node_force(np)
-
-				if (mesecon.is_conductor_on(nn, mesecon.invertRule(rname))
-				or mesecon.is_receptor_on(nn.name)) then
-					table.insert(sourcepos, np)
-				end
-			end
-		end
-	else
-		local rulenames = mesecon.rules_link_rule_all_inverted(pos, rule)
+	local function power_walk(pos, home_pos, sourcepos, rulenames, rule, depth)
+		local spread = false
 		for _, rname in ipairs(rulenames) do
 			local np = vector.add(pos, rname)
 			local nn = mesecon.get_node_force(np)
 			if (mesecon.is_conductor_on (nn, mesecon.invertRule(rname))
 			or mesecon.is_receptor_on (nn.name)) then
-				table.insert(sourcepos, np)
+				if not vector.equals(home_pos, np) then
+					local rulez = mesecon.get_any_outputrules(nn)
+					local spread_tmp = false
+					for r=1, #rulez do
+						if vector.equals(mesecon.invertRule(rname), rulez[r]) then
+							if rulez[r].spread then
+								spread_tmp = true
+							end
+						end
+					end
+					if depth == 0 or spread_tmp then
+						table.insert(sourcepos, np)
+						if spread_tmp then
+							spread = true
+						end
+					end
+				end
+			elseif depth == 0 and minetest.get_item_group(nn.name, "opaque") == 1 then
+				local more_sourcepos = mesecon.is_powered(np, nil, depth + 1, sourcepos, home_pos)
+				if more_sourcepos and #more_sourcepos > 0 then
+					mesecon.mergetable(sourcepos, more_sourcepos)
+				end
 			end
 		end
+		return sourcepos, spread
+	end
+
+	local spread = false
+	if not rule then
+		for _, rule in ipairs(mesecon.flattenrules(rules)) do
+			local spread_temp
+			local rulenames = mesecon.rules_link_rule_all_inverted(pos, rule)
+			sourcepos, spread_temp = power_walk(pos, home_pos, sourcepos, rulenames, rule, depth)
+			if spread_temp then
+				spread = true
+			end
+		end
+	else
+		local rulenames = mesecon.rules_link_rule_all_inverted(pos, rule)
+		sourcepos, spread = power_walk(pos, home_pos, sourcepos, rulenames, rule, depth)
 	end
 
 	-- Return FALSE if not powered, return list of sources if is powered
-	if (#sourcepos == 0) then return false
-	else return sourcepos end
+
+	if (#sourcepos == 0) then
+		return false, false
+	else
+		return sourcepos, spread
+	end
 end
 
---Rules rotation Functions:
-function mesecon.rotate_rules_right(rules)
-	local nr = {}
-	for i, rule in ipairs(rules) do
-		table.insert(nr, {
-			x = -rule.z,
-			y =  rule.y,
-			z =  rule.x,
-			name = rule.name})
-	end
-	return nr
-end
-
-function mesecon.rotate_rules_left(rules)
-	local nr = {}
-	for i, rule in ipairs(rules) do
-		table.insert(nr, {
-			x =  rule.z,
-			y =  rule.y,
-			z = -rule.x,
-			name = rule.name})
-	end
-	return nr
-end
-
-function mesecon.rotate_rules_down(rules)
-	local nr = {}
-	for i, rule in ipairs(rules) do
-		table.insert(nr, {
-			x = -rule.y,
-			y =  rule.x,
-			z =  rule.z,
-			name = rule.name})
-	end
-	return nr
-end
-
-function mesecon.rotate_rules_up(rules)
-	local nr = {}
-	for i, rule in ipairs(rules) do
-		table.insert(nr, {
-			x =  rule.y,
-			y = -rule.x,
-			z =  rule.z,
-			name = rule.name})
-	end
-	return nr
-end

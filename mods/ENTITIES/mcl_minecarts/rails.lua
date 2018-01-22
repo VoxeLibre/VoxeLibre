@@ -30,6 +30,26 @@ local register_rail = function(itemstring, tiles, def_extras, creative)
 	minetest.register_node(itemstring, ndef)
 end
 
+-- Redstone rules
+local rail_rules_long =
+{{x=-1,  y= 0, z= 0, spread=true},
+ {x= 1,  y= 0, z= 0, spread=true},
+ {x= 0,  y=-1, z= 0, spread=true},
+ {x= 0,  y= 1, z= 0, spread=true},
+ {x= 0,  y= 0, z=-1, spread=true},
+ {x= 0,  y= 0, z= 1, spread=true},
+
+ {x= 1, y= 1, z= 0},
+ {x= 1, y=-1, z= 0},
+ {x=-1, y= 1, z= 0},
+ {x=-1, y=-1, z= 0},
+ {x= 0, y= 1, z= 1},
+ {x= 0, y=-1, z= 1},
+ {x= 0, y= 1, z=-1},
+ {x= 0, y=-1, z=-1}}
+
+local rail_rules_short = mesecon.rules.pplate
+
 local railuse = "Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed."
 
 -- Normal rail
@@ -53,7 +73,9 @@ register_rail("mcl_minecarts:golden_rail",
 		mesecons = {
 			conductor = {
 				state = mesecon.state.off,
+				offstate = "mcl_minecarts:golden_rail",
 				onstate = "mcl_minecarts:golden_rail_on",
+				rules = rail_rules_long,
 			},
 		},
 	}
@@ -69,13 +91,14 @@ register_rail("mcl_minecarts:golden_rail_on",
 			conductor = {
 				state = mesecon.state.on,
 				offstate = "mcl_minecarts:golden_rail",
+				onstate = "mcl_minecarts:golden_rail_on",
+				rules = rail_rules_long,
 			},
 		},
 		drop = "mcl_minecarts:golden_rail",
 	},
 	false
 )
-
 
 -- Activator rail (off)
 register_rail("mcl_minecarts:activator_rail",
@@ -87,7 +110,9 @@ register_rail("mcl_minecarts:activator_rail",
 		mesecons = {
 			conductor = {
 				state = mesecon.state.off,
+				offstate = "mcl_minecarts:activator_rail",
 				onstate = "mcl_minecarts:activator_rail_on",
+				rules = rail_rules_long,
 			},
 		},
 	}
@@ -102,6 +127,8 @@ register_rail("mcl_minecarts:activator_rail_on",
 			conductor = {
 				state = mesecon.state.on,
 				offstate = "mcl_minecarts:activator_rail",
+				onstate = "mcl_minecarts:activator_rail_on",
+				rules = rail_rules_long,
 			},
 		},
 		drop = "mcl_minecarts:activator_rail",
@@ -119,6 +146,7 @@ register_rail("mcl_minecarts:detector_rail",
 		mesecons = {
 			receptor = {
 				state = mesecon.state.off,
+				rules = rail_rules_short,
 			},
 		},
 	}
@@ -132,6 +160,7 @@ register_rail("mcl_minecarts:detector_rail_on",
 		mesecons = {
 			receptor = {
 				state = mesecon.state.on,
+				rules = rail_rules_short,
 			},
 		},
 		drop = "mcl_minecarts:detector_rail",

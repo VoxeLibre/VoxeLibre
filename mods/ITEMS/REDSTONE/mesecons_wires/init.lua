@@ -8,6 +8,23 @@
 -- ## Update wire looks ##
 -- #######################
 
+local wire_rules =
+{{x=-1,  y= 0, z= 0, spread=true},
+ {x= 1,  y= 0, z= 0, spread=true},
+ {x= 0,  y=-1, z= 0, spread=true},
+ {x= 0,  y= 1, z= 0, spread=true},
+ {x= 0,  y= 0, z=-1, spread=true},
+ {x= 0,  y= 0, z= 1, spread=true},
+
+ {x= 1, y= 1, z= 0},
+ {x= 1, y=-1, z= 0},
+ {x=-1, y= 1, z= 0},
+ {x=-1, y=-1, z= 0},
+ {x= 0, y= 1, z= 1},
+ {x= 0, y=-1, z= 1},
+ {x= 0, y= 1, z=-1},
+ {x= 0, y=-1, z=-1}}
+
 -- self_pos = pos of any mesecon node, from_pos = pos of conductor to getconnect for
 local wire_getconnect = function (from_pos, self_pos)
 	local node = minetest.get_node(self_pos)
@@ -16,7 +33,7 @@ local wire_getconnect = function (from_pos, self_pos)
 		-- rules of node to possibly connect to
 		local rules = {}
 		if (minetest.registered_nodes[node.name].mesecon_wire) then
-			rules = mesecon.rules.default
+			rules = wire_rules
 		else
 			rules = mesecon.get_any_rules(node)
 		end
@@ -34,7 +51,7 @@ end
 local wire_updateconnect = function (pos)
 	local connections = {}
 
-	for _, r in ipairs(mesecon.rules.default) do
+	for _, r in ipairs(wire_rules) do
 		if wire_getconnect(pos, vector.add(pos, r)) then
 			table.insert(connections, r)
 		end
@@ -73,10 +90,9 @@ local update_on_place_dig = function (pos, node)
 	end
 
 	-- Update nodes around it
-	local rules = {}
 	if minetest.registered_nodes[node.name]
 	and minetest.registered_nodes[node.name].mesecon_wire then
-		rules = mesecon.rules.default
+		rules = wire_rules
 	else
 		rules = mesecon.get_any_rules(node)
 	end
@@ -163,30 +179,14 @@ local function register_wires()
 			nodebox.fixed = {-8/16, -.5, -1/16, 8/16, -.5+1/16, 1/16}
 		end
 
-		local rules = {}
-		if (nid[0] == 1) then table.insert(rules, vector.new( 1,  0,  0)) end
-		if (nid[1] == 1) then table.insert(rules, vector.new( 0,  0,  1)) end
-		if (nid[2] == 1) then table.insert(rules, vector.new(-1,  0,  0)) end
-		if (nid[3] == 1) then table.insert(rules, vector.new( 0,  0, -1)) end
-
-		if (nid[0] == 1) then table.insert(rules, vector.new( 1, -1,  0)) end
-		if (nid[1] == 1) then table.insert(rules, vector.new( 0, -1,  1)) end
-		if (nid[2] == 1) then table.insert(rules, vector.new(-1, -1,  0)) end
-		if (nid[3] == 1) then table.insert(rules, vector.new( 0, -1, -1)) end
-
-		if (nid[4] == 1) then table.insert(rules, vector.new( 1,  1,  0)) end
-		if (nid[5] == 1) then table.insert(rules, vector.new( 0,  1,  1)) end
-		if (nid[6] == 1) then table.insert(rules, vector.new(-1,  1,  0)) end
-		if (nid[7] == 1) then table.insert(rules, vector.new( 0,  1, -1)) end
-
 		local meseconspec_off = { conductor = {
-			rules = rules,
+			rules = wire_rules,
 			state = mesecon.state.off,
 			onstate = "mesecons:wire_"..nodeid.."_on"
 		}}
 
 		local meseconspec_on = { conductor = {
-			rules = rules,
+			rules = wire_rules,
 			state = mesecon.state.on,
 			offstate = "mesecons:wire_"..nodeid.."_off"
 		}}
@@ -222,7 +222,7 @@ local function register_wires()
 			tiles_off = { dot_off, dot_off, "blank.png", "blank.png", "blank.png", "blank.png" }
 			tiles_on = { dot_on, dot_on, "blank.png", "blank.png", "blank.png", "blank.png" }
 
-			longdesc = [[Redstone is a versatile conductive mineral which transmits redstone power. It can be placed on trail the ground as a trail.
+			longdesc = [[Redstone is a versatile conductive mineral which transmits redstone power. It can be placed on the ground as a trail.
 A redstone trail can be in two states: Powered or not powered. A powered redstone trail will power (and thus activate) adjacent redstone components.
 Redstone power can be received from various redstone components, such as a block of redstone or a button. Redstone power is used to activate numerous mechanisms, such as redstone lamps or pistons.]]
 			usagehelp = [[Place redstone on the ground to build a redstone trail. The trails will connect to each other automatically and it can also go over hills. An easy way to power a redstone trail is by placing a redstone torch.
@@ -238,9 +238,6 @@ Read the help entries on the other redstone components to learn how redstone com
 
 		mesecon.register_node(":mesecons:wire_"..nodeid, {
 			description = "Redstone",
-			_doc_items_create_entry = wirehelp,
-			_doc_items_longdesc = longdesc,
-			_doc_items_usagehelp = usagehelp,
 			drawtype = "nodebox",
 			inventory_image = "redstone_redstone_dust.png",
 			wield_image = "redstone_redstone_dust.png",
@@ -252,8 +249,19 @@ Read the help entries on the other redstone components to learn how redstone com
 			drop = "mesecons:wire_00000000_off",
 			sounds = mcl_sounds.node_sound_defaults(),
 			mesecon_wire = true
-		}, {tiles = tiles_off, mesecons = meseconspec_off, groups = groups_off},
-		{tiles = tiles_on, mesecons = meseconspec_on, groups = groups_on})
+		},{
+			_doc_items_create_entry = wirehelp,
+			_doc_items_longdesc = longdesc,
+			_doc_items_usagehelp = usagehelp,
+			tiles = tiles_off,
+			mesecons = meseconspec_off,
+			groups = groups_off,
+		},{
+			_doc_items_create_entry = false,
+			tiles = tiles_on,
+			mesecons = meseconspec_on,
+			groups = groups_on
+		})
 
 		-- Add Help entry aliases for e.g. making it identifiable by the lookup tool [doc_identifier]
 		if minetest.get_modpath("doc") then

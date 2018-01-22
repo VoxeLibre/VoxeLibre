@@ -1,5 +1,5 @@
 local rules_flat = {
-	{ x = 0, y = 0, z = -1 },
+	{ x = 0, y = 0, z = -1, spread = true },
 }
 local get_rules_flat = function(node)
 	local rules = rules_flat
@@ -9,8 +9,8 @@ local get_rules_flat = function(node)
 	return rules
 end
 
-local rules_down = {{ x = 0, y = 1, z = 0 }}
-local rules_up = {{ x = 0, y = -1, z = 0 }}
+local rules_down = {{ x = 0, y = 1, z = 0, spread = true }}
+local rules_up = {{ x = 0, y = -1, z = 0, spread = true }}
 
 -- Scan the node in front of the observer
 -- and update the observer state if needed.
@@ -36,13 +36,13 @@ local observer_scan = function(pos, initialize)
 			-- Node state changed! Activate observer
 			if node.name == "mcl_observers:observer_off" then
 				minetest.set_node(pos, {name = "mcl_observers:observer_on", param2 = node.param2})
-				mesecon.receptor_on(pos)
+				mesecon.receptor_on(pos, get_rules_flat(node))
 			elseif node.name == "mcl_observers:observer_down_off" then
 				minetest.set_node(pos, {name = "mcl_observers:observer_down_on"})
-				mesecon.receptor_on(pos)
+				mesecon.receptor_on(pos, rules_down)
 			elseif node.name == "mcl_observers:observer_up_off" then
 				minetest.set_node(pos, {name = "mcl_observers:observer_up_on"})
-				mesecon.receptor_on(pos)
+				mesecon.receptor_on(pos, rules_up)
 			end
 			meta_needs_updating = true
 		end
@@ -58,12 +58,6 @@ end
 
 -- Vertical orientation (CURRENTLY DISABLED)
 local observer_orientate = function(pos, placer)
-	-- Currently, do nothing.
-	-- The vertical observers detect the node correctly, but they have problems with
-	-- transmitting the redstone signal vertically.
-	-- TODO: Re-enable orientation when vertical observers are done.
-	do return end
-
 	-- Not placed by player
 	if not placer then return end
 
@@ -130,7 +124,7 @@ mesecon.register_node("mcl_observers:observer",
 	on_timer = function(pos, elapsed)
 		local node = minetest.get_node(pos)
 		minetest.set_node(pos, {name = "mcl_observers:observer_off", param2 = node.param2})
-		mesecon.receptor_off(pos)
+		mesecon.receptor_off(pos, get_rules_flat(node))
 	end,
 }
 )
@@ -179,7 +173,7 @@ mesecon.register_node("mcl_observers:observer_down",
 	on_timer = function(pos, elapsed)
 		local node = minetest.get_node(pos)
 		minetest.set_node(pos, {name = "mcl_observers:observer_down_off", param2 = node.param2})
-		mesecon.receptor_off(pos)
+		mesecon.receptor_off(pos, rules_down)
 	end,
 })
 
@@ -226,7 +220,7 @@ mesecon.register_node("mcl_observers:observer_up",
 	end,
 	on_timer = function(pos, elapsed)
 		minetest.set_node(pos, {name = "mcl_observers:observer_up_off"})
-		mesecon.receptor_off(pos)
+		mesecon.receptor_off(pos, rules_up)
 	end,
 })
 

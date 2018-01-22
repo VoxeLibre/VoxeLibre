@@ -19,7 +19,7 @@ mesecon.on_placenode = function(pos, node)
 				local rule = vector.subtract(pos, s)
 				mesecon.turnon(pos, rule)
 			end
-			--mesecon.receptor_on (pos, mesecon.conductor_get_rules(node))
+			mesecon.receptor_on (pos, mesecon.conductor_get_rules(node))
 		elseif mesecon.is_conductor_on(node) then
 			minetest.swap_node(pos, {name = mesecon.get_conductor_off(node)})
 		end
@@ -50,6 +50,23 @@ mesecon.on_placenode = function(pos, node)
 			end
 		end
 	end
+
+	if minetest.get_item_group(node.name, "opaque") == 1 then
+		local neighbors = mesecon.mcl_get_neighbors(pos)
+		local is_powered, direct_source = mesecon.is_powered(pos)
+		if is_powered and direct_source then
+			for n=1, #neighbors do
+				local npos = neighbors[n].pos
+				local nnode = minetest.get_node(npos)
+				if mesecon.is_conductor_off(nnode) then
+					mesecon.receptor_on(npos, mesecon.conductor_get_rules(nnode))
+				elseif mesecon.is_effector_off(nnode.name) then
+					mesecon.changesignal(npos, nnode, neighbors[n].link, mesecon.state.on, 1)
+					mesecon.activate(npos, nnode, neighbors[n].link, 1)
+				end
+			end
+		end
+	end
 end
 
 mesecon.on_dignode = function(pos, node)
@@ -58,7 +75,21 @@ mesecon.on_dignode = function(pos, node)
 	elseif mesecon.is_receptor_on(node.name) then
 		mesecon.receptor_off(pos, mesecon.receptor_get_rules(node))
 	end
-
+	if minetest.get_item_group(node.name, "opaque") == 1 then
+		local sources = mesecon.is_powered(pos)
+		local neighbors = mesecon.mcl_get_neighbors(pos)
+		for n=1, #neighbors do
+			local npos = neighbors[n].pos
+			local nlink = neighbors[n].link
+			local nnode = minetest.get_node(npos)
+			if mesecon.is_conductor_on(nnode) then
+				mesecon.receptor_off(npos, mesecon.conductor_get_rules(nnode))
+			elseif mesecon.is_effector_on(nnode.name) and mesecon.is_powered(npos) == false then
+				mesecon.changesignal(npos, nnode, nlink, mesecon.state.off, 1)
+				mesecon.deactivate(npos, nnode, nlink, 1)
+			end
+		end
+	end
 	mesecon.execute_autoconnect_hooks_queue(pos, node)
 end
 

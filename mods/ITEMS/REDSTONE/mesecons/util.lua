@@ -6,6 +6,59 @@ function mesecon.move_node(pos, newpos)
 	minetest.get_meta(pos):from_table(meta)
 end
 
+--Rules rotation Functions:
+function mesecon.rotate_rules_right(rules)
+	local nr = {}
+	for i, rule in ipairs(rules) do
+		table.insert(nr, {
+			x = -rule.z,
+			y =  rule.y,
+			z =  rule.x,
+			name = rule.name,
+			spread = rule.spread,})
+	end
+	return nr
+end
+
+function mesecon.rotate_rules_left(rules)
+	local nr = {}
+	for i, rule in ipairs(rules) do
+		table.insert(nr, {
+			x =  rule.z,
+			y =  rule.y,
+			z = -rule.x,
+			name = rule.name,
+			spread = rule.spread,})
+	end
+	return nr
+end
+
+function mesecon.rotate_rules_down(rules)
+	local nr = {}
+	for i, rule in ipairs(rules) do
+		table.insert(nr, {
+			x = -rule.y,
+			y =  rule.x,
+			z =  rule.z,
+			name = rule.name,
+			spread = rule.spread,})
+	end
+	return nr
+end
+
+function mesecon.rotate_rules_up(rules)
+	local nr = {}
+	for i, rule in ipairs(rules) do
+		table.insert(nr, {
+			x =  rule.y,
+			y = -rule.x,
+			z =  rule.z,
+			name = rule.name,
+			spread = rule.spread,})
+	end
+	return nr
+end
+
 function mesecon.flattenrules(allrules)
 --[[
 	{
@@ -90,6 +143,18 @@ function mesecon.rule2meta(findrule, allrules)
 	return allrules[index]
 end
 
+-- Returns the 6 immediate neighbors of pos
+-- (nodes which touch the sides of pos).
+-- NOT PART OF ORIGINAL MESECONS!
+function mesecon.mcl_get_neighbors(pos)
+	local r = mesecon.rules.alldirs
+	local e = {}
+	for i=1, #r do
+		table.insert(e, { pos = vector.add(pos, r[i]), link = r[i] })
+	end
+	return e
+end
+
 function mesecon.dec2bin(n)
 	local x, y = math.floor(n / 2), n % 2
 	if (n > 1) then
@@ -133,7 +198,12 @@ function mesecon.set_bit(binary,bit,value)
 end
 
 function mesecon.invertRule(r)
-	return vector.multiply(r, -1)
+	local spread = r.spread
+	r = vector.multiply(r, -1)
+	if spread then
+		r.spread = true
+	end
+	return r
 end
 
 function mesecon.tablecopy(table) -- deep table copy

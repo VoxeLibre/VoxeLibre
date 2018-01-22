@@ -35,9 +35,9 @@ local orientate_dispenser = function(pos, placer)
 
 	local node = minetest.get_node(pos)
 	if pitch > 55 then
-		minetest.set_node(pos, {name="mcl_dispensers:dispenser_up", param2 = node.param2})
+		minetest.swap_node(pos, {name="mcl_dispensers:dispenser_up", param2 = node.param2})
 	elseif pitch < -55 then
-		minetest.set_node(pos, {name="mcl_dispensers:dispenser_down", param2 = node.param2})
+		minetest.swap_node(pos, {name="mcl_dispensers:dispenser_down", param2 = node.param2})
 	end
 end
 

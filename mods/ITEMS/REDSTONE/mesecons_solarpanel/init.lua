@@ -1,6 +1,6 @@
-local boxes = { -8/16, -8/16, -8/16,  8/16, -2/16, 8/16 } -- Solar Pannel
+local boxes = { -8/16, -8/16, -8/16,  8/16, -2/16, 8/16 }
 
--- Solar Panel
+-- Daylight Sensor
 minetest.register_node("mesecons_solarpanel:solar_panel_on", {
 	drawtype = "nodebox",
 	tiles = { "jeija_solar_panel.png","jeija_solar_panel.png","jeija_solar_panel_side.png",
@@ -25,17 +25,16 @@ minetest.register_node("mesecons_solarpanel:solar_panel_on", {
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.on,
-		rules = mesecon.rules.alldirs,
+		rules = mesecon.rules.pplate,
 	}},
 	on_rightclick = function(pos, node, clicker, pointed_thing)
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_inverted_off"})
-		mesecon.receptor_off(pos)
+		mesecon.receptor_off(pos, mesecon.rules.pplate)
 	end,
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 0.2,
 })
 
--- Solar Panel
 minetest.register_node("mesecons_solarpanel:solar_panel_off", {
 	drawtype = "nodebox",
 	tiles = { "jeija_solar_panel.png","jeija_solar_panel.png","jeija_solar_panel_side.png",
@@ -60,11 +59,11 @@ minetest.register_node("mesecons_solarpanel:solar_panel_off", {
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.off,
-		rules = mesecon.rules.alldirs,
+		rules = mesecon.rules.pplate,
 	}},
 	on_rightclick = function(pos, node, clicker, pointed_thing)
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_inverted_on"})
-		mesecon.receptor_on(pos)
+		mesecon.receptor_on(pos, mesecon.rules.pplate)
 	end,
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 0.2,
@@ -89,7 +88,7 @@ minetest.register_abm({
 
 		if light >= 12 and minetest.get_timeofday() > 0.2 and minetest.get_timeofday() < 0.8 then
 			minetest.set_node(pos, {name="mesecons_solarpanel:solar_panel_on", param2=node.param2})
-			mesecon.receptor_on(pos)
+			mesecon.receptor_on(pos, mesecon.rules.pplate)
 		end
 	end,
 })
@@ -104,14 +103,13 @@ minetest.register_abm({
 
 		if light < 12 then
 			minetest.set_node(pos, {name="mesecons_solarpanel:solar_panel_off", param2=node.param2})
-			mesecon.receptor_off(pos)
+			mesecon.receptor_off(pos, mesecon.rules.pplate)
 		end
 	end,
 })
 
---- Solar panel inversed
+--- Inverted Daylight Sensor
 
--- Solar Panel
 minetest.register_node("mesecons_solarpanel:solar_panel_inverted_on", {
 	drawtype = "nodebox",
 	tiles = { "jeija_solar_panel_inverted.png","jeija_solar_panel_inverted.png","jeija_solar_panel_side.png",
@@ -135,17 +133,17 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_on", {
 	_doc_items_create_entry = false,
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {receptor = {
-		state = mesecon.state.on
+		state = mesecon.state.on,
+		rules = mesecon.rules.pplate,
 	}},
 	on_rightclick = function(pos, node, clicker, pointed_thing)
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_off"})
-		mesecon.receptor_off(pos)
+		mesecon.receptor_off(pos, mesecon.rules.pplate)
 	end,
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 0.2,
 })
 
--- Solar Panel
 minetest.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
 	drawtype = "nodebox",
 	tiles = { "jeija_solar_panel_inverted.png","jeija_solar_panel_inverted.png","jeija_solar_panel_side.png",
@@ -170,11 +168,12 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
 	_doc_items_usagehelp = "Rightclick the daylight sensor to turn it into a daylight sensor.",
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {receptor = {
-		state = mesecon.state.off
+		state = mesecon.state.off,
+		rules = mesecon.rules.pplate,
 	}},
 	on_rightclick = function(pos, node, clicker, pointed_thing)
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_on"})
-		mesecon.receptor_on(pos)
+		mesecon.receptor_on(pos, mesecon.rules.pplate)
 	end,
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 0.2,
@@ -190,7 +189,7 @@ minetest.register_abm({
 
 		if light < 12 then
 			minetest.set_node(pos, {name="mesecons_solarpanel:solar_panel_inverted_on", param2=node.param2})
-			mesecon.receptor_on(pos)
+			mesecon.receptor_on(pos, mesecon.rules.pplate)
 		end
 	end,
 })
@@ -205,7 +204,7 @@ minetest.register_abm({
 
 		if light >= 12 and minetest.get_timeofday() > 0.8 and minetest.get_timeofday() < 0.2 then
 			minetest.set_node(pos, {name="mesecons_solarpanel:solar_panel_inverted_off", param2=node.param2})
-			mesecon.receptor_off(pos)
+			mesecon.receptor_off(pos, mesecon.rules.pplate)
 		end
 	end,
 })
