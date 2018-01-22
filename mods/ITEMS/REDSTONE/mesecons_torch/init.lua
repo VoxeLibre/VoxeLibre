@@ -45,6 +45,22 @@ local torch_get_input_rules = function(node)
 	end
 end
 
+local torch_inversion = function(pos, node)
+	if node.name == "mesecons_torch:mesecon_torch_on" then
+		minetest.set_node(pos, {name="mesecons_torch:mesecon_torch_off", param2=node.param2})
+		mesecon.receptor_off(pos, torch_get_output_rules(node))
+	elseif node.name == "mesecons_torch:mesecon_torch_on_wall" then
+		minetest.set_node(pos, {name="mesecons_torch:mesecon_torch_off_wall", param2=node.param2})
+		mesecon.receptor_off(pos, torch_get_output_rules(node))
+	elseif node.name == "mesecons_torch:mesecon_torch_off" then
+		minetest.set_node(pos, {name="mesecons_torch:mesecon_torch_on", param2=node.param2})
+		mesecon.receptor_on(pos, torch_get_output_rules(node))
+	elseif node.name == "mesecons_torch:mesecon_torch_off_wall" then
+		minetest.set_node(pos, {name="mesecons_torch:mesecon_torch_on_wall", param2=node.param2})
+		mesecon.receptor_on(pos, torch_get_output_rules(node))
+	end
+end
+
 minetest.register_craft({
 	output = 'mesecons_torch:mesecon_torch_on',
 	recipe = {
@@ -62,10 +78,17 @@ mcl_torches.register_torch("mesecon_torch_off", "Redstone Torch (off)",
 	{dig_immediate=3, dig_by_water=1, not_in_creative_inventory=1},
 	mcl_sounds.node_sound_wood_defaults(),
 	{
-		mesecons = {receptor = {
-			state = mesecon.state.off,
-			rules = torch_get_output_rules
-		}},
+		mesecons = {
+			receptor = {
+				state = mesecon.state.off,
+				rules = torch_get_output_rules,
+			},
+			effector = {
+				state = mesecon.state.on,
+				rules = torch_get_input_rules,
+				action_off = torch_inversion,
+			},
+		},
 		drop = "mesecons_torch:mesecon_torch_on",
 		_doc_items_create_entry = false,
 	}
@@ -85,10 +108,17 @@ mcl_torches.register_torch("mesecon_torch_on", "Redstone Torch",
 	{dig_immediate=3, dig_by_water=1,},
 	mcl_sounds.node_sound_wood_defaults(),
 	{
-		mesecons = {receptor = {
-			state = mesecon.state.on,
-			rules = torch_get_output_rules
-		}}
+		mesecons = {
+			receptor = {
+				state = mesecon.state.on,
+				rules = torch_get_output_rules
+			},
+			effector = {
+				state = mesecon.state.off,
+				rules = torch_get_input_rules,
+				action_on = torch_inversion,
+			},
+		}
 	}
 )
 
@@ -122,38 +152,6 @@ minetest.register_craft({
 	recipe = {
 		{'mesecons_torch:redstoneblock'},
 	}
-})
-
-minetest.register_abm({
-	label = "Redstone torch inversion",
-	nodenames = {"mesecons_torch:mesecon_torch_off","mesecons_torch:mesecon_torch_off_wall","mesecons_torch:mesecon_torch_on","mesecons_torch:mesecon_torch_on_wall"},
-	interval = 1,
-	chance = 1,
-	action = function(pos, node)
-		local is_powered = false
-		for _, rule in ipairs(torch_get_input_rules(node)) do
-			local src = vector.add(pos, rule)
-			if mesecon.is_powered(src) then
-				is_powered = true
-			end
-		end
-
-		if is_powered then
-			if node.name == "mesecons_torch:mesecon_torch_on" then
-				minetest.set_node(pos, {name="mesecons_torch:mesecon_torch_off", param2=node.param2})
-				mesecon.receptor_off(pos, torch_get_output_rules(node))
-			elseif node.name == "mesecons_torch:mesecon_torch_on_wall" then
-				minetest.set_node(pos, {name="mesecons_torch:mesecon_torch_off_wall", param2=node.param2})
-				mesecon.receptor_off(pos, torch_get_output_rules(node))
-			end
-		elseif node.name == "mesecons_torch:mesecon_torch_off" then
-			minetest.set_node(pos, {name="mesecons_torch:mesecon_torch_on", param2=node.param2})
-			mesecon.receptor_on(pos, torch_get_output_rules(node))
-		elseif node.name == "mesecons_torch:mesecon_torch_off_wall" then
-			minetest.set_node(pos, {name="mesecons_torch:mesecon_torch_on_wall", param2=node.param2})
-			mesecon.receptor_on(pos, torch_get_output_rules(node))
-		end
-	end
 })
 
 if minetest.get_modpath("doc") then
