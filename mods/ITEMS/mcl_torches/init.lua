@@ -82,7 +82,7 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 				if node.name ~= "mcl_nether:soul_sand" and node.name ~= "mcl_mobspawners:spawner" and
 						((not def.groups.solid) or (not def.groups.opaque)) then
 					-- Only allow top placement on these nodes
-					if def.groups.glass or node.name == "mcl_hoppers:hopper" or node.name == "mcl_hoppers:hopper_side" or def.groups.fence == 1 or def.groups.wall or def.groups.slab_top == 1 or (def.groups.stair == 1 and minetest.facedir_to_dir(node.param2).y ~= 0) then
+					if def.groups.glass or node.name == "mcl_hoppers:hopper" or node.name == "mcl_hoppers:hopper_side" or node.name == "mcl_hoppers:hopper_disabled" or node.name == "mcl_hoppers:hopper_side_disabled" or def.groups.fence == 1 or def.groups.wall or def.groups.slab_top == 1 or (def.groups.stair == 1 and minetest.facedir_to_dir(node.param2).y ~= 0) then
 						if wdir ~= 1 then
 							return itemstack
 						end
