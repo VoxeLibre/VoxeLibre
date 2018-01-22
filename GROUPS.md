@@ -154,6 +154,8 @@ These groups are used mostly for informational purposes
 * `pressure_plate=2`: Wooden pressure (on)
 * `button=1`: Button (off)
 * `button=2`: Button (on)
+* `redstone_torch=1`: Redstone Torch (lit)
+* `redstone_torch=2`: Redstone Torch (unlit)
 
 * `plant=1`: Plant or part of a plant
 * `double_plant`: Part of a double-sized plant. 1 = lower part, 2 = upper part
