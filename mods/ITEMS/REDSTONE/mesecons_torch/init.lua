@@ -1,30 +1,48 @@
 --MESECON TORCHES
 
 local rotate_torch_rules = function (rules, param2)
-	if param2 == 5 then
+	if param2 == 1 then
+		return rules
+	elseif param2 == 5 then
 		return mesecon.rotate_rules_right(rules)
 	elseif param2 == 2 then
 		return mesecon.rotate_rules_right(mesecon.rotate_rules_right(rules)) --180 degrees
 	elseif param2 == 4 then
 		return mesecon.rotate_rules_left(rules)
-	elseif param2 == 1 then
-		return mesecon.rotate_rules_down(rules)
 	elseif param2 == 0 then
-		return mesecon.rotate_rules_up(rules)
+		return rules
 	else
 		return rules
 	end
 end
 
-local torch_get_output_rules = function()
-	return mesecon.rules.mcl_alldirs_spread
+local torch_get_output_rules = function(node)
+	if node.param2 == 1 then
+		return {
+			{ x = -1, y =  0, z =  0 },
+			{ x =  1, y =  0, z =  0 },
+			{ x =  0, y =  1, z =  0, spread = true },
+			{ x =  0, y =  0, z = -1 },
+			{ x =  0, y =  0, z =  1 },
+		}
+	else
+		return rotate_torch_rules({
+			{ x =  1, y =  0, z =  0 },
+			{ x =  0, y = -1, z =  0 },
+			{ x =  0, y =  1, z =  0, spread = true },
+			{ x =  0, y =  1, z =  0 },
+			{ x =  0, y =  0, z = -1 },
+			{ x =  0, y =  0, z =  1 },
+		}, node.param2)
+	end
 end
 
 local torch_get_input_rules = function(node)
-	local rules = 	{{x = -2, y = 0, z = 0},
-				 {x = -1, y = 1, z = 0}}
-
-	return rotate_torch_rules(rules, node.param2)
+	if node.param2 == 1 then
+		return {{x = 0, y = -1, z = 0 }}
+	else
+		return rotate_torch_rules({{ x = -1, y = 0, z = 0 }}, node.param2)
+	end
 end
 
 minetest.register_craft({
@@ -115,7 +133,7 @@ minetest.register_abm({
 		local is_powered = false
 		for _, rule in ipairs(torch_get_input_rules(node)) do
 			local src = vector.add(pos, rule)
-			if mesecon.is_power_on(src) then
+			if mesecon.is_powered(src) then
 				is_powered = true
 			end
 		end
