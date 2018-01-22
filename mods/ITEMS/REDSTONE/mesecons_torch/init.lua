@@ -45,14 +45,18 @@ local torch_get_input_rules = function(node)
 	end
 end
 
-local torch_inversion = function(pos, node)
+local torch_action_on = function(pos, node)
 	if node.name == "mesecons_torch:mesecon_torch_on" then
 		minetest.set_node(pos, {name="mesecons_torch:mesecon_torch_off", param2=node.param2})
 		mesecon.receptor_off(pos, torch_get_output_rules(node))
 	elseif node.name == "mesecons_torch:mesecon_torch_on_wall" then
 		minetest.set_node(pos, {name="mesecons_torch:mesecon_torch_off_wall", param2=node.param2})
 		mesecon.receptor_off(pos, torch_get_output_rules(node))
-	elseif node.name == "mesecons_torch:mesecon_torch_off" then
+	end
+end
+
+local torch_action_off = function(pos, node)
+	if node.name == "mesecons_torch:mesecon_torch_off" then
 		minetest.set_node(pos, {name="mesecons_torch:mesecon_torch_on", param2=node.param2})
 		mesecon.receptor_on(pos, torch_get_output_rules(node))
 	elseif node.name == "mesecons_torch:mesecon_torch_off_wall" then
@@ -86,7 +90,7 @@ mcl_torches.register_torch("mesecon_torch_off", "Redstone Torch (off)",
 			effector = {
 				state = mesecon.state.on,
 				rules = torch_get_input_rules,
-				action_off = torch_inversion,
+				action_off = torch_action_off,
 			},
 		},
 		drop = "mesecons_torch:mesecon_torch_on",
@@ -116,7 +120,7 @@ mcl_torches.register_torch("mesecon_torch_on", "Redstone Torch",
 			effector = {
 				state = mesecon.state.off,
 				rules = torch_get_input_rules,
-				action_on = torch_inversion,
+				action_on = torch_action_on,
 			},
 		}
 	}
