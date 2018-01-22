@@ -1,4 +1,6 @@
---MESECON TORCHES
+-- REDSTONE TORCHES
+
+local TORCH_COOLOFF = 120 -- Number of seconds it takes for a burned-out torch to reactivate
 
 local rotate_torch_rules = function (rules, param2)
 	if param2 == 1 then
@@ -45,23 +47,64 @@ local torch_get_input_rules = function(node)
 	end
 end
 
+local torch_overheated = function(pos)
+	minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.02, max_hear_distance = 6})
+	minetest.add_particle({
+		pos = {x=pos.x, y=pos.y+0.2, z=pos.z},
+		velocity = {x = 0, y = 0.6, z = 0},
+		expirationtime = 1.2,
+		size = 1.5,
+		texture = "tnt_smoke.png",
+	})
+	local timer = minetest.get_node_timer(pos)
+	timer:start(TORCH_COOLOFF)
+end
+
 local torch_action_on = function(pos, node)
+	local overheat
 	if node.name == "mesecons_torch:mesecon_torch_on" then
-		minetest.set_node(pos, {name="mesecons_torch:mesecon_torch_off", param2=node.param2})
+		overheat = mesecon.do_overheat(pos)
+		if overheat then
+			minetest.swap_node(pos, {name="mesecons_torch:mesecon_torch_overheated", param2=node.param2})
+		else
+			minetest.swap_node(pos, {name="mesecons_torch:mesecon_torch_off", param2=node.param2})
+		end
 		mesecon.receptor_off(pos, torch_get_output_rules(node))
 	elseif node.name == "mesecons_torch:mesecon_torch_on_wall" then
-		minetest.set_node(pos, {name="mesecons_torch:mesecon_torch_off_wall", param2=node.param2})
+		overheat = mesecon.do_overheat(pos)
+		if overheat then
+			minetest.swap_node(pos, {name="mesecons_torch:mesecon_torch_overheated_wall", param2=node.param2})
+		else
+			minetest.swap_node(pos, {name="mesecons_torch:mesecon_torch_off_wall", param2=node.param2})
+		end
 		mesecon.receptor_off(pos, torch_get_output_rules(node))
+	end
+	if overheat then
+		torch_overheated(pos)
 	end
 end
 
 local torch_action_off = function(pos, node)
-	if node.name == "mesecons_torch:mesecon_torch_off" then
-		minetest.set_node(pos, {name="mesecons_torch:mesecon_torch_on", param2=node.param2})
-		mesecon.receptor_on(pos, torch_get_output_rules(node))
-	elseif node.name == "mesecons_torch:mesecon_torch_off_wall" then
-		minetest.set_node(pos, {name="mesecons_torch:mesecon_torch_on_wall", param2=node.param2})
-		mesecon.receptor_on(pos, torch_get_output_rules(node))
+	local overheat
+	if node.name == "mesecons_torch:mesecon_torch_off" or node.name == "mesecons_torch:mesecon_torch_overheated" then
+		overheat = mesecon.do_overheat(pos)
+		if overheat then
+			minetest.swap_node(pos, {name="mesecons_torch:mesecon_torch_overheated", param2=node.param2})
+		else
+			minetest.swap_node(pos, {name="mesecons_torch:mesecon_torch_on", param2=node.param2})
+			mesecon.receptor_on(pos, torch_get_output_rules(node))
+		end
+	elseif node.name == "mesecons_torch:mesecon_torch_off_wall" or node.name == "mesecons_torch:mesecon_torch_overheated_wall" then
+		overheat = mesecon.do_overheat(pos)
+		if overheat then
+			minetest.swap_node(pos, {name="mesecons_torch:mesecon_torch_overheated_wall", param2=node.param2})
+		else
+			minetest.swap_node(pos, {name="mesecons_torch:mesecon_torch_on_wall", param2=node.param2})
+			mesecon.receptor_on(pos, torch_get_output_rules(node))
+		end
+	end
+	if overheat then
+		torch_overheated(pos)
 	end
 end
 
@@ -97,6 +140,29 @@ mcl_torches.register_torch("mesecon_torch_off", "Redstone Torch (off)",
 		_doc_items_create_entry = false,
 	}
 )
+
+mcl_torches.register_torch("mesecon_torch_overheated", "Redstone Torch (overheated)",
+	nil,
+	nil,
+	"jeija_torches_off.png",
+	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",
+	{"jeija_torches_off.png"},
+	0,
+	{dig_immediate=3, dig_by_water=1, redstone_torch=2, not_in_creative_inventory=1},
+	mcl_sounds.node_sound_wood_defaults(),
+	{
+		drop = "mesecons_torch:mesecon_torch_on",
+		_doc_items_create_entry = false,
+		on_timer = function(pos, elapsed)
+			if not mesecon.is_powered(pos) then
+				local node = minetest.get_node(pos)
+				torch_action_off(pos, node)
+			end
+		end,
+	}
+)
+
+
 
 mcl_torches.register_torch("mesecon_torch_on", "Redstone Torch",
 	"A redstone torch is a redstone component which can be used to invert a redstone signal. It supplies its surrounding blocks with redstone power, except for the block it is attached to. A redstone torch is normally lit, but it can also be turned off by powering the block it is attached to. While unlit, a redstone torch does not power anything.",

@@ -99,8 +99,8 @@ minetest.register_on_placenode(mesecon.on_placenode)
 minetest.register_on_dignode(mesecon.on_dignode)
 
 -- Overheating service for fast circuits
-local OVERHEAT_MAX = mesecon.setting("overheat_max", 20)
-local COOLDOWN_TIME = mesecon.setting("cooldown_time", 2.0)
+local OVERHEAT_MAX = mesecon.setting("overheat_max", 8)
+local COOLDOWN_TIME = mesecon.setting("cooldown_time", 3.0)
 local COOLDOWN_STEP = mesecon.setting("cooldown_granularity", 0.5)
 local COOLDOWN_MULTIPLIER = OVERHEAT_MAX / COOLDOWN_TIME
 local cooldown_timer = 0.0
