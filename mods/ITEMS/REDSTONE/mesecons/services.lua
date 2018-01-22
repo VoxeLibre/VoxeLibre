@@ -84,7 +84,7 @@ mesecon.on_dignode = function(pos, node)
 			local nnode = minetest.get_node(npos)
 			if mesecon.is_conductor_on(nnode) then
 				mesecon.receptor_off(npos, mesecon.conductor_get_rules(nnode))
-			elseif mesecon.is_effector_on(nnode.name) then
+			elseif mesecon.is_effector_on(nnode.name) and mesecon.is_powered(npos) == false then
 				mesecon.changesignal(npos, nnode, nlink, mesecon.state.off, 1)
 				mesecon.deactivate(npos, nnode, nlink, 1)
 			end

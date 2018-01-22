@@ -482,8 +482,14 @@ function mesecon.turnoff(pos, link)
 			-- Warning: A LOT of nodes need to be looked at for this to work
 			for _, r in ipairs(mesecon.rule2meta(f.link, mesecon.rules.mcl_alldirs_spread)) do
 				local np = vector.add(f.pos, r)
-				if mesecon.is_receptor_on(mesecon.get_node_force(np).name) then
-					return false
+				local n = mesecon.get_node_force(np)
+				if mesecon.is_receptor_on(n.name) then
+					local receptorrules = mesecon.receptor_get_rules(n)
+					for _, rr in pairs(receptorrules) do
+						if vector.equals(mesecon.invertRule(rr), r) then
+							return false
+						end
+					end
 				end
 				for _, l in ipairs(mesecon.rules_link_rule_all(f.pos, r)) do
 					local nlink = table.copy(l)
