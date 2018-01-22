@@ -337,6 +337,66 @@ minetest.register_node("mcl_end:chorus_flower", {
 	selection_box = { type = "regular" },
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	groups = {handy=1,axey=1, deco_block = 1, dig_by_piston = 1, destroy_by_lava_flow = 1,},
+
+	node_placement_prediction = "",
+	on_place = function(itemstack, placer, pointed_thing)
+		local node_under = minetest.get_node(pointed_thing.under)
+		local node_above = minetest.get_node(pointed_thing.above)
+		if placer and not placer:get_player_control().sneak then
+			-- Use pointed node's on_rightclick function first, if present
+			if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
+				return minetest.registered_nodes[node_under.name].on_rightclick(pointed_thing.under, node_under, placer, itemstack) or itemstack
+			end
+		end
+
+		--[[ Part 1: Check placement rules. Placement is legal is one of the following
+		conditions is met:
+		1) On top of end stone or chorus plant
+		2) On top of air and horizontally adjacent to exactly 1 chorus plant ]]
+		local pos
+		if minetest.registered_nodes[node_under.name].buildable_to then
+			pos = pointed_thing.under
+		else
+			pos = pointed_thing.above
+		end
+
+
+		local below = {x=pos.x, y=pos.y-1, z=pos.z}
+		local node_below = minetest.get_node(below)
+		local plant_ok = false
+		-- Condition 1
+		if node_below.name == "mcl_end:chorus_plant" or node_below.name == "mcl_end:end_stone" then
+			plant_ok = true
+		-- Condition 2
+		elseif node_below.name == "air" then
+			local around = {
+				{ x= 1, y=0, z= 0 },
+				{ x=-1, y=0, z= 0 },
+				{ x= 0, y=0, z= 1 },
+				{ x= 0, y=0, z=-1 },
+			}
+			local around_count = 0
+			for a=1, #around do
+				local pos_side = vector.add(pos, around[a])
+				local node_side = minetest.get_node(pos_side)
+				if node_side.name == "mcl_end:chorus_plant" then
+					around_count = around_count + 1
+					if around_count > 1 then
+						break
+					end
+				end
+			end
+			if around_count == 1 then
+				plant_ok = true
+			end
+		end
+		if plant_ok then
+			-- Placement OK! Proceed normally
+			return minetest.item_place(itemstack, placer, pointed_thing)
+		else
+			return itemstack
+		end
+	end,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
 })
@@ -390,7 +450,6 @@ minetest.register_node("mcl_end:chorus_plant", {
 	connect_sides = { "top", "bottom", "front", "back", "left", "right" },
 	connects_to = {"mcl_end:chorus_plant", "mcl_end:chorus_flower", "mcl_end:chorus_flower_dead", "mcl_end:end_stone"},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	-- TODO: Check drop probability
 	drop = {
 		items = {
 			{ items = { "mcl_end:chorus_fruit"}, rarity = 2 },
