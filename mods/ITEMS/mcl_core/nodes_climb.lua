@@ -78,7 +78,7 @@ minetest.register_node("mcl_core:ladder", {
 
 minetest.register_node("mcl_core:vine", {
 	description = "Vines",
-	_doc_items_longdesc = "Vines are climbable blocks which can be placed on the sides solid full-cube blocks. Vines very slowly grow upwards and downwards.",
+	_doc_items_longdesc = "Vines are climbable blocks which can be placed on the sides solid full-cube blocks. Vines slowly grow and spread.",
 	drawtype = "signlike",
 	tiles = {"mcl_core_vine.png"},
 	inventory_image = "mcl_core_vine.png",
