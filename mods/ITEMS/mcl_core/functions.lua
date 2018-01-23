@@ -942,75 +942,68 @@ minetest.register_abm({
 			return
 		end
 
-		local neighbor_offsets = {
-			{ x=1, y=0, z=0 },
-			{ x=-1, y=0, z=0 },
-			{ x=0, y=0, z=1 },
-			{ x=0, y=0, z=-1 },
-		}
-
 		-- Add vines below pos (if empty)
-		local spread_down = function(pos, node)
-			local down = vector.add(pos, {x=0, y=-1, z=0})
-			if minetest.get_node(down).name == "air" then
-				minetest.add_node(down, {name = "mcl_core:vine", param2 = node.param2})
-			end
-		end
-
-		-- Add vines above pos if it is backed up
-		local spread_up = function(pos, node)
-			local up = vector.add(pos, {x=0, y=1, z=0})
-			if minetest.get_node(up).name == "air" then
-				local backup_dir = minetest.facedir_to_dir(node.param2)
-				local backup = vector.add(up, backup_dir)
-				local backupnodename = minetest.get_node(backup).name
-
-				-- Check if the block above is supported
-				if mcl_core.supports_vines(backupnodename) then
-					minetest.add_node(up, {name = "mcl_core:vine", param2 = node.param2})
+		local spread_down = function(origin, target, dir, node)
+			if math.random(1, 2) == 1 then
+				if minetest.get_node(target).name == "air" then
+					minetest.add_node(target, {name = "mcl_core:vine", param2 = node.param2})
 				end
 			end
 		end
 
-		-- Try to spread vines from the 4 horizontal neighbors
-		local spread_neighbors = function(pos, node, spread_dir)
-			for n=1, #neighbor_offsets do
-				if math.random(1,2) == 1 then
-					local neighbor = vector.add(pos, neighbor_offsets[n])
-					local neighbornode = minetest.get_node(neighbor)
-					if neighbornode.name == "mcl_core:vine" then
-						if spread_dir == "up" then
-							spread_up(neighbor, neighbornode)
-						elseif spread_dir == "down" then
-							spread_down(neighbor, neighbornode)
+		-- Add vines above pos if it is backed up
+		local spread_up = function(origin, target, dir, node)
+			local vines_in_area = minetest.find_nodes_in_area({x=origin.x-4, y=origin.y-1, z=origin.z-4}, {x=origin.x+4, y=origin.y+1, z=origin.z+4}, "mcl_core:vine")
+			-- Less then 4 vines blocks around the ticked vines block (remember the ticked block is counted by above function as well)
+			if #vines_in_area < 5 then
+				if math.random(1, 2) == 1 then
+					if minetest.get_node(target).name == "air" then
+						local backup_dir = minetest.wallmounted_to_dir(node.param2)
+						local backup = vector.subtract(target, backup_dir)
+						local backupnodename = minetest.get_node(backup).name
+
+						-- Check if the block above is supported
+						if mcl_core.supports_vines(backupnodename) then
+							minetest.add_node(target, {name = "mcl_core:vine", param2 = node.param2})
 						end
 					end
 				end
 			end
 		end
 
-		-- Spread down
-		local down = {x=pos.x, y=pos.y-1, z=pos.z}
-		local down_node = minetest.get_node(down)
-		if down_node.name == "air" then
-			spread_neighbors(pos, node, "down")
-		elseif down_node.name == "mcl_core:vine" then
-			spread_neighbors(down, down_node, "down")
-		end
-
-		-- Spread up
-		local up = {x=pos.x, y=pos.y+1, z=pos.z}
-		local up_node = minetest.get_node(up)
-		if up_node.name == "air" then
-			local vines_in_area = minetest.find_nodes_in_area({x=pos.x-4, y=pos.y-1, z=pos.z-4}, {x=pos.x+4, y=pos.y+1, z=pos.z+4}, "mcl_core:vine")
+		local spread_horizontal = function(origin, target, dir, node)
+			local vines_in_area = minetest.find_nodes_in_area({x=origin.x-4, y=origin.y-1, z=origin.z-4}, {x=origin.x+4, y=origin.y+1, z=origin.z+4}, "mcl_core:vine")
 			-- Less then 4 vines blocks around the ticked vines block (remember the ticked block is counted by above function as well)
 			if #vines_in_area < 5 then
-				spread_neighbors(pos, node, "up")
+				-- Spread horizontally
+				local backup_dir = minetest.wallmounted_to_dir(node.param2)
+				if not vector.equals(backup_dir, dir) then
+					local target_node = minetest.get_node(target)
+					if target_node.name == "air" then
+						local backup = vector.add(target, backup_dir)
+						local backupnodename = minetest.get_node(backup).name
+						if mcl_core.supports_vines(backupnodename) then
+							minetest.add_node(target, {name = "mcl_core:vine", param2 = node.param2})
+						end
+					end
+				end
 			end
 		end
 
-		-- TODO: Spread horizontally
+		local directions = {
+			{ { x= 1, y= 0, z= 0 }, spread_horizontal },
+			{ { x=-1, y= 0, z= 0 }, spread_horizontal },
+			{ { x= 0, y= 1, z= 0 }, spread_up },
+			{ { x= 0, y=-1, z= 0 }, spread_down },
+			{ { x= 0, y= 0, z= 1 }, spread_horizontal },
+			{ { x= 0, y= 0, z=-1 }, spread_horizontal },
+		}
 
+		local d = math.random(1, #directions)
+		local dir = directions[d][1]
+		local spread = directions[d][2]
+
+		spread(pos, vector.add(pos, dir), dir, node)
 	end
 })
 
