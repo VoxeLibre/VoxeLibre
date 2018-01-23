@@ -114,6 +114,7 @@ minetest.register_abm({
 				break
 			end
 		end
+		local grown = false
 		if node_above.name == "air" and air_around then
 			local branching = false
 			local h = 0
@@ -150,7 +151,6 @@ minetest.register_abm({
 				grow_chance = 20
 			end
 
-			local grown = false
 			if grow_chance then
 				local new_flowers = {}
 				local r = math.random(1, 100)
@@ -190,9 +190,9 @@ minetest.register_abm({
 					grown = true
 				end
 			end
-			if not grown then
-				minetest.set_node(pos, {name = "mcl_end:chorus_flower_dead"})
-			end
+		end
+		if not grown then
+			minetest.set_node(pos, {name = "mcl_end:chorus_flower_dead"})
 		end
 	end,
 })
