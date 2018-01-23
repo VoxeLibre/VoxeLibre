@@ -158,3 +158,12 @@ minetest.register_craft({
 	output = "mcl_core:gold_ingot 9",
 	recipe = {{ "mcl_core:emerald" }},
 })
+
+minetest.register_craft({
+	output = "mcl_end:chorus_flower",
+	recipe = {
+		{ "mcl_end:chorus_fruit","mcl_end:chorus_fruit","mcl_end:chorus_fruit" },
+		{ "mcl_end:chorus_fruit","mcl_end:chorus_fruit","mcl_end:chorus_fruit" },
+		{ "mcl_end:chorus_fruit","mcl_end:chorus_fruit","mcl_end:chorus_fruit" },
+	}
+})
