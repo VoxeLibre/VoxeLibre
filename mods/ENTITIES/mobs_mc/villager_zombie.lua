@@ -44,18 +44,15 @@ mobs:register_mob("mobs_mc:villager_zombie", {
 		min = 0,
 		max = 2,},
 		{name = mobs_mc.items.iron_ingot,
-		-- approximation to 8.5%
-		chance = 11,
+		chance = 120, -- 2.5% / 3
 		min = 1,
 		max = 1,},
 		{name = mobs_mc.items.carrot,
-		-- approximation to 8.5%
-		chance = 11,
+		chance = 120, -- 2.5% / 3
 		min = 1,
 		max = 1,},
 		{name = mobs_mc.items.potato,
-		-- approximation to 8.5%
-		chance = 11,
+		chance = 120, -- 2.5% / 3
 		min = 1,
 		max = 1,},
 	},

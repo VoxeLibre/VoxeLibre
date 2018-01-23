@@ -14,6 +14,34 @@ local S, NS = dofile(MP.."/intllib.lua")
 --################### ZOMBIE
 --###################
 
+local drops_common = {
+	{name = mobs_mc.items.rotten_flesh,
+	chance = 1,
+	min = 0,
+	max = 2,},
+	{name = mobs_mc.items.iron_ingot,
+	chance = 120, -- 2.5% / 3
+	min = 1,
+	max = 1,},
+	{name = mobs_mc.items.carrot,
+	chance = 120, -- 2.5% / 3
+	min = 1,
+	max = 1,},
+	{name = mobs_mc.items.potato,
+	chance = 120, -- 2.5% / 3
+	min = 1,
+	max = 1,},
+}
+
+local drops_zombie = table.copy(drops_common)
+table.insert(drops_zombie, {
+	-- Zombie Head
+	-- TODO: Only drop if killed by charged creeper
+	name = mobs_mc.items.head_zombie,
+	chance = 200, -- 0.5%
+	min = 1,
+	max = 1,
+})
 
 local zombie = {
 	type = "monster",
@@ -44,34 +72,7 @@ local zombie = {
 	jump = true,
 	--jump_height = 3,
 	group_attack = true,
-	drops = {
-		{name = mobs_mc.items.rotten_flesh,
-		chance = 1,
-		min = 0,
-		max = 2,},
-		{name = mobs_mc.items.iron_ingot,
-		-- approximation to 8.5%
-		chance = 11,
-		min = 1,
-		max = 1,},
-		{name = mobs_mc.items.carrot,
-		-- approximation to 8.5%
-		chance = 11,
-		min = 1,
-		max = 1,},
-		{name = mobs_mc.items.potato,
-		-- approximation to 8.5%
-		chance = 11,
-		min = 1,
-		max = 1,},
-
-		-- Head
-		-- TODO: Only drop if killed by charged creeper
-		{name = mobs_mc.items.head_zombie,
-		chance = 200, -- 0.5%
-		min = 1,
-		max = 1,},
-	},
+	drops = drops_zombie,
 	animation = {
 		speed_normal = 25,		speed_run = 50,
 		stand_start = 40,		stand_end = 80,
@@ -105,6 +106,7 @@ local husk = table.copy(zombie)
 husk.textures = {{"mobs_mc_husk.png"}}
 husk.light_damage = 0
 husk.water_damage = 3
+husk.drops = drops_common
 -- TODO: Husks avoid water
 
 mobs:register_mob("mobs_mc:husk", husk)
