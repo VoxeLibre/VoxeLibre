@@ -267,15 +267,84 @@ minetest.register_abm({
 	end,
 })
 
---- Craftitems ---
+--- Chorus fruit ---
+
+-- Attempt to randomly teleport the player within a 8×8×8 box around. Rules:
+-- * Not in solid blocks.
+-- * Not in liquids.
+-- * Always on top of a solid block
+-- * Maximum attempts: 16
+--
+-- Returns true on success.
+local random_teleport = function(player)
+	local pos = player:get_pos()
+	-- 16 attempts to find a suitable position
+	for a=1, 16 do
+		-- Teleportation box
+		local x,y,z
+		x = math.random(pos.x-8, pos.x+8)
+		y = math.random(math.ceil(pos.y)-8, math.ceil(pos.y)+8)
+		z = math.random(pos.z-8, pos.z+8)
+		local node_cache = {}
+		local ground_level = false
+		-- Scan nodes from selected position until we hit ground
+		for t=0, 16 do
+			local tpos = {x=x, y=y-t, z=z}
+			local tnode = minetest.get_node(tpos)
+			if tnode.name == "mcl_core:void" then
+				break
+			end
+			local tdef = minetest.registered_nodes[tnode.name]
+			table.insert(node_cache, {pos=tpos, node=tnode})
+			if tdef.walkable then
+				ground_level = true
+				break
+			end
+		end
+		-- Ground found? Then let's check if the player has enough room
+		if ground_level and #node_cache >= 1 then
+			local streak = 0
+			for c=#node_cache, 1, -1 do
+				local tpos = node_cache[c].pos
+				local tnode = node_cache[c].node
+				local tdef = minetest.registered_nodes[tnode.name]
+				-- Player needs a space of 2 nodes on top of each other
+				if not tdef.walkable and tdef.liquidtype == "none" then
+					streak = streak + 1
+				else
+					streak = 0
+				end
+				if streak >= 2 then
+					-- JACKPOT! Now we can teleport.
+					player:set_pos({x=tpos.x, y=tpos.y-1.5, z=tpos.z})
+					return true
+				end
+			end
+		end
+	end
+	return false
+end
+
+-- Randomly teleport player and update hunger
+local eat_chorus_fruit = function(itemstack, player, pointed_thing)
+	if player and pointed_thing and pointed_thing.type == "node" and not player:get_player_control().sneak then
+		local node_under = minetest.get_node(pointed_thing.under)
+		-- Use pointed node's on_rightclick function first, if present
+		if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
+			return minetest.registered_nodes[node_under.name].on_rightclick(pointed_thing.under, node_under, placer, itemstack) or itemstack
+		end
+	end
+	random_teleport(player)
+	return minetest.do_item_eat(0, nil, itemstack, player, pointed_thing)
+end
+
 minetest.register_craftitem("mcl_end:chorus_fruit", {
 	description = "Chorus Fruit",
-	_doc_items_longdesc = "Chorus fruits are the fruits of the chorus plant which is home to the End. They can be eaten to restore a few hunger points.",
+	_doc_items_longdesc = "A chorus fruit is an edible fruit from the chorus plant which is home to the End. Eating it teleports you to the top of a random solid block nearby, provided you won't end up inside a liquid or some solid blocks. Teleportation might fail if there are very few or no places to teleport to.",
 	wield_image = "mcl_end_chorus_fruit.png",
 	inventory_image = "mcl_end_chorus_fruit.png",
-	-- TODO: Teleport player
-	on_place = minetest.item_eat(4),
-	on_secondary_use = minetest.item_eat(4),
+	on_place = eat_chorus_fruit,
+	on_secondary_use = eat_chorus_fruit,
 	groups = { food = 2, eatable = 4, can_eat_when_full = 1 },
 	_mcl_saturation = 2.4,
 	stack_max = 64,

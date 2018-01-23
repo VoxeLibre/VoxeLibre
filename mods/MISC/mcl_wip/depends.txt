@@ -1,6 +1,5 @@
 mcl_anvils
 mcl_core
-mcl_end
 mcl_fishing
 mcl_maps
 mcl_minecarts
