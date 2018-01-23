@@ -90,6 +90,7 @@ local update_on_place_dig = function (pos, node)
 	end
 
 	-- Update nodes around it
+	local rules
 	if minetest.registered_nodes[node.name]
 	and minetest.registered_nodes[node.name].mesecon_wire then
 		rules = wire_rules
