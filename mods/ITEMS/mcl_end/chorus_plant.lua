@@ -133,7 +133,6 @@ minetest.register_node("mcl_end:chorus_plant", {
 	drawtype = "nodebox",
 	paramtype = "light",
 	sunlight_propagates = true,
-	-- TODO: Maybe improve nodebox a bit to look more “natural”
 	node_box = {
 		type = "connected",
 		fixed = { -0.25, -0.25, -0.25, 0.25, 0.25, 0.25 }, -- Core
