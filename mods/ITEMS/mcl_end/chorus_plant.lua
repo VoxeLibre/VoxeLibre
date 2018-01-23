@@ -316,7 +316,9 @@ local random_teleport = function(player)
 				end
 				if streak >= 2 then
 					-- JACKPOT! Now we can teleport.
-					player:set_pos({x=tpos.x, y=tpos.y-1.5, z=tpos.z})
+					local goal = {x=tpos.x, y=tpos.y-1.5, z=tpos.z}
+					player:set_pos(goal)
+					minetest.sound_play({name="mcl_end_teleport", gain=0.8}, {pos=goal, max_hear_distance=16})
 					return true
 				end
 			end
