@@ -8,6 +8,9 @@ else
 end
 
 local function handle_clear_command(giver, receiver)
+	if receiver == "" then
+		receiver = giver
+	end
 	local receiverref = minetest.get_player_by_name(receiver)
 	if receiverref == nil then
 		return false, S("Player @1 does not exist.", receiver)
