@@ -5,7 +5,7 @@
 -- but this would also allow players to swim faster in lava.
 
 local lava_src_def = table.copy(minetest.registered_nodes["mcl_core:lava_source"])
-lava_src_def.description = "Still Nether Lava"
+lava_src_def.description = "Nether Lava Source"
 lava_src_def._doc_items_create_entry = false
 lava_src_def._doc_items_entry_name = nil
 lava_src_def._doc_items_longdesc = nil

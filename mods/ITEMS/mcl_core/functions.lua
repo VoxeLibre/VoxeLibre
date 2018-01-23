@@ -26,7 +26,7 @@ minetest.register_abm({
 			elseif lavatype == "flowing" and water[w].y == pos.y and (water[w].x == pos.x or water[w].z == pos.z) then
 				minetest.set_node(pos, {name="mcl_core:cobble"})
 				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
-			-- Still lava vs flowing water above or horizontally neighbored: Lava turns into obsidian
+			-- Lava source vs flowing water above or horizontally neighbored: Lava turns into obsidian
 			elseif lavatype == "source" and
 					((water[w].y > pos.y and water[w].x == pos.x and water[w].z == pos.z) or
 					(water[w].y == pos.y and (water[w].x == pos.x or water[w].z == pos.z))) then

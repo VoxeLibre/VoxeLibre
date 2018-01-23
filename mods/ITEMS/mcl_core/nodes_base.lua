@@ -772,7 +772,7 @@ minetest.register_node("mcl_core:obsidian", {
 
 minetest.register_node("mcl_core:ice", {
 	description = "Ice",
-	_doc_items_longdesc = "Ice is a translucent solid block usually found in cold areas. It melts near block light sources at a light level of 12 or higher. When it melts or is broken while resting on top of another block, it will turn into still water.",
+	_doc_items_longdesc = "Ice is a translucent solid block usually found in cold areas. It melts near block light sources at a light level of 12 or higher. When it melts or is broken while resting on top of another block, it will turn into a water source.",
 	drawtype = "glasslike",
 	tiles = {"default_ice.png"},
 	is_ground_content = true,

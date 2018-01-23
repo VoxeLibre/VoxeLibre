@@ -45,12 +45,12 @@ minetest.register_node("mcl_core:water_flowing", {
 })
 
 minetest.register_node("mcl_core:water_source", {
-	description = "Still Water",
+	description = "Water Source",
 	_doc_items_entry_name = "Water",
 	_doc_items_longdesc =
 [[Water is abundant in oceans and also appears in a few springs in the ground. You can swim easily in water, but you need to catch your breath from time to time.
 Water interacts with lava in various ways:
-• When water is directly above or horizontally next to still lava, the lava turns into obsidian.
+• When water is directly above or horizontally next to a lava source, the lava turns into obsidian.
 • When flowing water touches flowing lava either from above or horizontally, the lava turns into cobblestone.
 • When water is directly below lava, the water turns into stone.]],
 	_doc_items_hidden = false,
@@ -136,13 +136,13 @@ minetest.register_node("mcl_core:lava_flowing", {
 })
 
 minetest.register_node("mcl_core:lava_source", {
-	description = "Still Lava",
+	description = "Lava Source",
 	_doc_items_entry_name = "Lava",
 	_doc_items_longdesc =
 [[Lava is hot and rather dangerous. Don't touch it, it will hurt you a lot and it is hard to get out.
-Still lava sets fire to a couple of air blocks above when they're next to a flammable block.
+A lava source sets fire to a couple of air blocks above when they're next to a flammable block.
 Lava interacts with water various ways:
-• When still lava is directly below or horizontally next to water, the lava turns into obsidian.
+• When a lava source is directly below or horizontally next to water, the lava turns into obsidian.
 • When flowing water touches flowing lava either from above or horizontally, the lava turns into cobblestone.
 • When lava is directly above water, the water turns into stone.]],
 	drawtype = "liquid",
