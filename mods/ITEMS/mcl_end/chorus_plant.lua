@@ -19,6 +19,8 @@ local chorus_flower_box = {
 
 minetest.register_node("mcl_end:chorus_flower", {
 	description = "Chorus Flower",
+	_doc_items_longdesc = "A chorus flower is the living part of a chorus plant. When placed on end stone, it will grow into a tall chorus plant. It may grow upwards or branch off into more flowers to the sides. When it grows, it may die on old age eventually. It also dies when it is unable to grow.",
+	_doc_items_usagehelp = "It can only be placed on top of end stone, on top of a chorus plant stem, or at the side of exactly a chorus plant stem. Just place it and watch it grow.",
 	tiles = {
 		"mcl_end_chorus_flower.png",
 		"mcl_end_chorus_flower.png",
@@ -100,6 +102,7 @@ minetest.register_node("mcl_end:chorus_flower", {
 
 minetest.register_node("mcl_end:chorus_flower_dead", {
 	description = "Dead Chorus Flower",
+	_doc_items_longdesc = "This is a part of a chorus plant. Chorus flowers die of old age or when they are unable to grow. A dead chorus flower can be harvested to obtain a fresh chorus flower which can be planted.",
 	tiles = {
 		"mcl_end_chorus_flower_dead.png",
 		"mcl_end_chorus_flower_dead.png",
@@ -122,6 +125,7 @@ minetest.register_node("mcl_end:chorus_flower_dead", {
 
 minetest.register_node("mcl_end:chorus_plant", {
 	description = "Chorus Plant Stem",
+	_doc_items_longdesc = "A chorus plant stem is a part of a chorus plant holds the plant and its flowers together. It needs end stone as its soil. Stems are grown from chorus flowers.",
 	tiles = {
 		"mcl_end_chorus_plant.png",
 		"mcl_end_chorus_plant.png",
