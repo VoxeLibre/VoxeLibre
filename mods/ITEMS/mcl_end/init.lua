@@ -401,6 +401,110 @@ minetest.register_node("mcl_end:chorus_flower", {
 	_mcl_hardness = 0.4,
 })
 
+minetest.register_abm({
+	label = "Chorus plant growth",
+	nodenames = { "mcl_end:chorus_flower" },
+	interval = 35.0,
+	chance = 4.0,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		local above = { x = pos.x, y = pos.y + 1, z = pos.z }
+		local node_above = minetest.get_node(above)
+		local around = {
+			{ x=-1, y=0, z= 0 },
+			{ x= 1, y=0, z= 0 },
+			{ x= 0, y=0, z=-1 },
+			{ x= 0, y=0, z= 1 },
+		}
+		local air_around = true
+		for a=1, #around do
+			if minetest.get_node(vector.add(above, around[a])).name ~= "air" then
+				air_around = false
+				break
+			end
+		end
+		if node_above.name == "air" and air_around then
+			local branching = false
+			local h = 0
+			for y=1, 4 do
+				local checkpos = {x=pos.x, y=pos.y-y, z=pos.z}
+				local node = minetest.get_node(checkpos)
+				if node.name == "mcl_end:chorus_plant" then
+					h = y
+					if not branching then
+						for a=1, #around do
+							local node_side = minetest.get_node(vector.add(checkpos, around[a]))
+							if node_side.name == "mcl_end:chorus_plant" then
+								branching = true
+							end
+						end
+					end
+				else
+					break
+				end
+			end
+
+			local grow_chance
+			if h <= 1 then
+				grow_chance = 100
+			elseif h == 2 and branching == false then
+				grow_chance = 60
+			elseif h == 2 and branching == true then
+				grow_chance = 50
+			elseif h == 3 and branching == false then
+				grow_chance = 40
+			elseif h == 3 and branching == true then
+				grow_chance = 25
+			elseif h == 4 and branching == false then
+				grow_chance = 20
+			end
+
+			local grown = false
+			if grow_chance then
+				local new_flowers = {}
+				local r = math.random(1, 100)
+				local age = node.param2
+				if r <= grow_chance then
+					table.insert(new_flowers, above)
+				else
+					age = age + 1
+					local branches
+					if branching == false then
+						branches = math.random(1, 4)
+					elseif branching == true then
+						branches = math.random(0, 3)
+					end
+					local branch_grown = false
+					for b=1, branches do
+						local next_branch = math.random(1, #around)
+						local branch = vector.add(pos, around[next_branch])
+						local below_branch = vector.add(branch, {x=0,y=-1,z=0})
+						if minetest.get_node(below_branch).name == "air" then
+							table.insert(new_flowers, branch)
+						end
+					end
+				end
+
+				for _, f in ipairs(new_flowers) do
+					if age >= 5 then
+						minetest.set_node(f, {name="mcl_end:chorus_flower_dead"})
+						grown = true
+					else
+						minetest.set_node(f, {name="mcl_end:chorus_flower", param2 = age})
+						grown = true
+					end
+				end
+				if #new_flowers >= 1 then
+					minetest.set_node(pos, {name="mcl_end:chorus_plant"})
+					grown = true
+				end
+			end
+			if not grown then
+				minetest.set_node(pos, {name = "mcl_end:chorus_flower_dead"})
+			end
+		end
+	end,
+})
+
 minetest.register_node("mcl_end:chorus_flower_dead", {
 	description = "Dead Chorus Flower",
 	tiles = {
