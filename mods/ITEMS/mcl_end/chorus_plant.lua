@@ -91,7 +91,8 @@ minetest.register_node("mcl_end:chorus_flower", {
 		end
 		if plant_ok then
 			-- Placement OK! Proceed normally
-			return minetest.item_place(itemstack, placer, pointed_thing)
+			minetest.sound_play(mcl_sounds.node_sound_wood_defaults().place, {pos = pos})
+			return minetest.item_place_node(itemstack, placer, pointed_thing)
 		else
 			return itemstack
 		end
