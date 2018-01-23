@@ -1,5 +1,10 @@
--- Chorus plants.
+-- Chorus plants
 -- This includes chorus flowers, chorus plant stem nodes and chorus fruit
+
+
+--- Plant parts ---
+
+local MAX_FLOWER_AGE = 5 -- Maximum age of chorus flower before it dies
 
 local chorus_flower_box = {
 	type = "fixed",
@@ -93,6 +98,67 @@ minetest.register_node("mcl_end:chorus_flower", {
 	_mcl_hardness = 0.4,
 })
 
+minetest.register_node("mcl_end:chorus_flower_dead", {
+	description = "Dead Chorus Flower",
+	tiles = {
+		"mcl_end_chorus_flower_dead.png",
+		"mcl_end_chorus_flower_dead.png",
+		"mcl_end_chorus_flower_dead.png",
+		"mcl_end_chorus_flower_dead.png",
+		"mcl_end_chorus_flower_dead.png",
+		"mcl_end_chorus_flower_dead.png",
+	},
+	drawtype = "nodebox",
+	paramtype = "light",
+	sunlight_propagates = true,
+	node_box = chorus_flower_box,
+	selection_box = { type = "regular" },
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	drop = "mcl_end:chorus_flower",
+	groups = {handy=1,axey=1, deco_block = 1, dig_by_piston = 1, destroy_by_lava_flow = 1,},
+	_mcl_blast_resistance = 2,
+	_mcl_hardness = 0.4,
+})
+
+minetest.register_node("mcl_end:chorus_plant", {
+	description = "Chorus Plant Stem",
+	tiles = {
+		"mcl_end_chorus_plant.png",
+		"mcl_end_chorus_plant.png",
+		"mcl_end_chorus_plant.png",
+		"mcl_end_chorus_plant.png",
+		"mcl_end_chorus_plant.png",
+		"mcl_end_chorus_plant.png",
+	},
+	drawtype = "nodebox",
+	paramtype = "light",
+	sunlight_propagates = true,
+	-- TODO: Maybe improve nodebox a bit to look more “natural”
+	node_box = {
+		type = "connected",
+		fixed = { -0.25, -0.25, -0.25, 0.25, 0.25, 0.25 }, -- Core
+		connect_top = { -0.1875, 0.25, -0.1875, 0.1875, 0.5, 0.1875 },
+		connect_left = { -0.5, -0.1875, -0.1875, -0.25, 0.1875, 0.1875 },
+		connect_right = { 0.25, -0.1875, -0.1875, 0.5, 0.1875, 0.1875 },
+		connect_bottom = { -0.1875, -0.5, -0.25, 0.1875, -0.25, 0.25 },
+		connect_front = { -0.1875, -0.1875, -0.5, 0.1875, 0.1875, -0.25 },
+		connect_back = { -0.1875, -0.1875, 0.25, 0.1875, 0.1875, 0.5 },
+	},
+	connect_sides = { "top", "bottom", "front", "back", "left", "right" },
+	connects_to = {"mcl_end:chorus_plant", "mcl_end:chorus_flower", "mcl_end:chorus_flower_dead", "mcl_end:end_stone"},
+	sounds = mcl_sounds.node_sound_wood_defaults(),
+	drop = {
+		items = {
+			{ items = { "mcl_end:chorus_fruit"}, rarity = 2 },
+		}
+	},
+	groups = {handy=1,axey=1, not_in_creative_inventory = 1, dig_by_piston = 1, destroy_by_lava_flow = 1 },
+	_mcl_blast_resistance = 2,
+	_mcl_hardness = 0.4,
+})
+
+
+--- ABM ---
 minetest.register_abm({
 	label = "Chorus plant growth",
 	nodenames = { "mcl_end:chorus_flower" },
@@ -177,7 +243,7 @@ minetest.register_abm({
 				end
 
 				for _, f in ipairs(new_flowers) do
-					if age >= 5 then
+					if age >= MAX_FLOWER_AGE then
 						minetest.set_node(f, {name="mcl_end:chorus_flower_dead"})
 						grown = true
 					else
@@ -197,66 +263,7 @@ minetest.register_abm({
 	end,
 })
 
-minetest.register_node("mcl_end:chorus_flower_dead", {
-	description = "Dead Chorus Flower",
-	tiles = {
-		"mcl_end_chorus_flower_dead.png",
-		"mcl_end_chorus_flower_dead.png",
-		"mcl_end_chorus_flower_dead.png",
-		"mcl_end_chorus_flower_dead.png",
-		"mcl_end_chorus_flower_dead.png",
-		"mcl_end_chorus_flower_dead.png",
-	},
-	drawtype = "nodebox",
-	paramtype = "light",
-	sunlight_propagates = true,
-	node_box = chorus_flower_box,
-	selection_box = { type = "regular" },
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-	drop = "mcl_end:chorus_flower",
-	groups = {handy=1,axey=1, deco_block = 1, dig_by_piston = 1, destroy_by_lava_flow = 1,},
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 0.4,
-})
-
-minetest.register_node("mcl_end:chorus_plant", {
-	description = "Chorus Plant Stem",
-	tiles = {
-		"mcl_end_chorus_plant.png",
-		"mcl_end_chorus_plant.png",
-		"mcl_end_chorus_plant.png",
-		"mcl_end_chorus_plant.png",
-		"mcl_end_chorus_plant.png",
-		"mcl_end_chorus_plant.png",
-	},
-	drawtype = "nodebox",
-	paramtype = "light",
-	sunlight_propagates = true,
-	-- TODO: Maybe improve nodebox a bit to look more “natural”
-	node_box = {
-		type = "connected",
-		fixed = { -0.25, -0.25, -0.25, 0.25, 0.25, 0.25 }, -- Core
-		connect_top = { -0.1875, 0.25, -0.1875, 0.1875, 0.5, 0.1875 },
-		connect_left = { -0.5, -0.1875, -0.1875, -0.25, 0.1875, 0.1875 },
-		connect_right = { 0.25, -0.1875, -0.1875, 0.5, 0.1875, 0.1875 },
-		connect_bottom = { -0.1875, -0.5, -0.25, 0.1875, -0.25, 0.25 },
-		connect_front = { -0.1875, -0.1875, -0.5, 0.1875, 0.1875, -0.25 },
-		connect_back = { -0.1875, -0.1875, 0.25, 0.1875, 0.1875, 0.5 },
-	},
-	connect_sides = { "top", "bottom", "front", "back", "left", "right" },
-	connects_to = {"mcl_end:chorus_plant", "mcl_end:chorus_flower", "mcl_end:chorus_flower_dead", "mcl_end:end_stone"},
-	sounds = mcl_sounds.node_sound_wood_defaults(),
-	drop = {
-		items = {
-			{ items = { "mcl_end:chorus_fruit"}, rarity = 2 },
-		}
-	},
-	groups = {handy=1,axey=1, not_in_creative_inventory = 1, dig_by_piston = 1, destroy_by_lava_flow = 1 },
-	_mcl_blast_resistance = 2,
-	_mcl_hardness = 0.4,
-})
-
--- Craftitems
+--- Craftitems ---
 minetest.register_craftitem("mcl_end:chorus_fruit", {
 	description = "Chorus Fruit",
 	_doc_items_longdesc = "Chorus fruits are the fruits of the chorus plant which is home to the End. They can be eaten to restore a few hunger points.",
@@ -279,6 +286,7 @@ minetest.register_craftitem("mcl_end:chorus_fruit_popped", {
 	stack_max = 64,
 })
 
+--- Crafting ---
 minetest.register_craft({
 	type = "cooking",
 	output = "mcl_end:chorus_fruit_popped",
