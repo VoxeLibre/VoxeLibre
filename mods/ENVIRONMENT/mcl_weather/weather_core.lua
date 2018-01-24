@@ -187,20 +187,35 @@ minetest.register_privilege("weather_manager", {
 
 -- Weather command definition. Set 
 minetest.register_chatcommand("weather", {
-  params = "clear | rain | snow | thunder",
+  params = "(clear | rain | snow | thunder) [<duration>]",
   description = "Changes the weather to the specified parameter.",
   privs = {weather_manager = true},
   func = function(name, param)
     if (param == "") then
       return false, "Error: No weather specified."
     end
-    local new_weather
-    if param == "clear" then
-        new_weather = "none"
+    local new_weather, end_time
+    local parse1, parse2 = string.match(param, "(%w+) ?(%d*)")
+    if parse1 then
+      if parse1 == "clear" then
+          new_weather = "none"
+      else
+          new_weather = parse1
+      end
     else
-        new_weather = param
+      return false, "Error: Invalid parameters."
     end
-    local success = mcl_weather.change_weather(new_weather)
+    if parse2 then
+      if type(tonumber(parse2)) == "number" then
+          local duration = tonumber(parse2)
+          if duration < 1 then
+              return false, "Error: Duration can't be less than 1 second."
+          end
+          end_time = minetest.get_gametime() + duration
+      end
+    end
+
+    local success = mcl_weather.change_weather(new_weather, end_time)
     if success then
       return true
     else
