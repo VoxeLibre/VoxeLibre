@@ -102,7 +102,7 @@ register_rail("mcl_minecarts:golden_rail_on",
 
 -- Activator rail (off)
 register_rail("mcl_minecarts:activator_rail",
-	{"mcl_minecarts_rail_activator.png", "default_rail_curved.png^[colorize:#FF0000:96", "default_rail_t_junction.png^[colorize:#FF0000:96", "default_rail_crossing.png^[colorize:#FF0000:96"},
+	{"mcl_minecarts_rail_activator.png", "mcl_minecarts_rail_activator_curved.png", "mcl_minecarts_rail_activator_t_junction.png", "mcl_minecarts_rail_activator_crossing.png"},
 	{
 		description = "Activator Rail",
 		_doc_items_longdesc = "Rails can be used to build transport tracks for minecarts. Activator rails are used to activate special minecarts.",
@@ -120,7 +120,7 @@ register_rail("mcl_minecarts:activator_rail",
 
 -- Activator rail (on)
 register_rail("mcl_minecarts:activator_rail_on",
-	{"mcl_minecarts_rail_activator_powered.png", "default_rail_curved.png^[colorize:#FF0000:128", "default_rail_t_junction.png^[colorize:#FF0000:128", "default_rail_crossing.png^[colorize:#FF0000:128"},
+	{"mcl_minecarts_rail_activator_powered.png", "mcl_minecarts_rail_activator_curved_powered.png", "mcl_minecarts_rail_activator_t_junction_powered.png", "mcl_minecarts_rail_activator_crossing_powered.png"},
 	{
 		_doc_items_create_entry = false,
 		mesecons = {
