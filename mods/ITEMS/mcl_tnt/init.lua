@@ -94,7 +94,10 @@ local TNT = {
 	blinkstatus = true,}
 
 function TNT:on_activate(staticdata)
-	self.object:setvelocity({x=0, y=4, z=0})
+	local phi = math.random(0, 65535) / 65535 * 2*math.pi
+	local hdir_x = math.cos(phi) * 0.02
+	local hdir_z = math.sin(phi) * 0.02
+	self.object:setvelocity({x=hdir_x, y=2, z=hdir_z})
 	self.object:setacceleration({x=0, y=-10, z=0})
 	self.object:settexturemod("^mcl_tnt_blink.png")
 end
