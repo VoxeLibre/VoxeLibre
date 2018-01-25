@@ -53,7 +53,15 @@ local function handle_kill_command(suspect, victim)
 	if not suspect == victim then
 		minetest.log("action", S("@1 killed @2", suspect, victim))
 	end
+	-- If player holds a totem of undying, destroy it before killing,
+	-- so it doesn't rescue the player.
+	local wield = victimref:get_wielded_item()
+	if wield:get_name() == "mobs_mc:totem" then
+		victimref:set_wielded_item("")
+	end
+	-- DIE!
 	victimref:set_hp(0)
+	return true
 end
 
 minetest.register_privilege("clear", {
