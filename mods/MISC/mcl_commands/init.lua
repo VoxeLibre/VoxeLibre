@@ -37,7 +37,7 @@ local function handle_clear_command(giver, receiver)
 end
 
 local function handle_kill_command(suspect, victim)
-	if not minetest.settings:get_bool("damage_enabled") then
+	if minetest.settings:get_bool("damage_enabled") == false then
 		return false, S("Players can't be killed right now, damage has been disabled.")
 	end
 	local victimref = minetest.get_player_by_name(victim)
