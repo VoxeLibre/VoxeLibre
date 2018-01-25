@@ -120,3 +120,6 @@ Origin of those models:
         * Source: <https://freesound.org/people/haratman/sounds/393749/>
     * `mobs_mc_zombie_hurt.ogg`
         * Source: <https://freesound.org/people/haratman/sounds/393749/>
+* [Spennnyyy](https://freesound.org/people/Spennnyyy/) (CC0)
+    * `mcl_totems_totem.ogg`
+        * Source: <https://freesound.org/people/Spennnyyy/sounds/323502/>

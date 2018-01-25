@@ -7,7 +7,6 @@ local wip_items = {
 	"mcl_observers:observer_off",
 	"mcl_observers:observer_on",
 	"mcl_chests:trapped_chest",
-	"mobs_mc:totem",
 	"mcl_comparators:comparator_off_comp",
 	"mcl_minecarts:hopper_minecart",
 	"mcl_minecarts:command_block_minecart",

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-20 14:43+0200\n"
+"POT-Creation-Date: 2018-01-25 18:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -298,8 +298,9 @@ msgstr ""
 
 #: 1_items_default.lua
 msgid ""
-"Hold it in your hand and punch once to instantly get back to full health. "
-"The totem gets destroyed in the process."
+"The totem only works while you hold it in your hand. If you receive fatal "
+"damage, you are saved from death and you get a second chance with 1 HP. The "
+"totem is destroyed in the process, however."
 msgstr ""
 
 #: 1_items_default.lua
@@ -423,6 +424,10 @@ msgstr ""
 msgid ""
 "A wither skeleton skull is a small decorative block which resembles the "
 "skull of a wither skeleton."
+msgstr ""
+
+#: agent.lua
+msgid "Agent"
 msgstr ""
 
 #: bat.lua

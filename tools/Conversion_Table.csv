@@ -666,7 +666,7 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/blocks,glass_pane_top_silver.png,/mods/ITEMS/xpanes/textures,xpanes_top_glass_silver.png,,,,,,,
 /assets/minecraft/textures/blocks,glass_pane_top_white.png,/mods/ITEMS/xpanes/textures,xpanes_top_glass_white.png,,,,,,,
 /assets/minecraft/textures/blocks,glass_pane_top_yellow.png,/mods/ITEMS/xpanes/textures,xpanes_top_glass_yellow.png,,,,,,,
-/assets/minecraft/textures/items,totem.png,/mods/ENTITIES/mobs_mc/textures,mcl_mobitems_totem.png,,,,,,,
+/assets/minecraft/textures/items,totem.png,/mods/ENTITIES/mobs_mc/textures,mcl_totems_totem.png,,,,,,,
 /assets/minecraft/textures/entity,bat.png,/mods/ENTITIES/mobs_mc/textures,mobs_mc_bat.png,,,,,,,
 /assets/minecraft/textures/entity,blaze.png,/mods/ENTITIES/mobs_mc/textures,mobs_mc_blaze.png,,,,,,,
 /assets/minecraft/textures/entity/cat,black.png,/mods/ENTITIES/mobs_mc/textures,mobs_mc_cat_black.png,,,,,,,

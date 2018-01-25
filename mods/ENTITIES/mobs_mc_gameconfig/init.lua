@@ -176,6 +176,9 @@ mobs_mc.override.enderman_takable = {
 mobs_mc.override.enderman_replace_on_take = {
 	["mcl_core:dirt_with_dry_grass"] = "mcl_core:dirt_with_grass",
 }
+mobs_mc.override.misc = {
+	totem_fail_nodes = { "mcl_core:void", "mcl_core:realm_barrier" },
+}
 
 -- Texuture overrides for enderman block. Required for cactus because it's original is a nodebox
 -- and the textures have tranparent pixels.

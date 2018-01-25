@@ -87,9 +87,9 @@ mobs:register_mob("mobs_mc:parrot", {
 })
 
 
---spawn
--- TODO: Increase spawn chance if polished
-mobs:spawn_specific("mobs_mc:parrot", mobs_mc.spawn.jungle, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 30000, 1, mobs_mc.spawn_height.water+1, mobs_mc.spawn_height.overworld_max)
+-- Spawn disabled because parrots are not very smart.
+-- TODO: Re-enable when parrots are finished
+--mobs:spawn_specific("mobs_mc:parrot", mobs_mc.spawn.jungle, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 30000, 1, mobs_mc.spawn_height.water+1, mobs_mc.spawn_height.overworld_max)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:parrot", S("Parrot"), "mobs_mc_spawn_icon_parrot.png", 0)

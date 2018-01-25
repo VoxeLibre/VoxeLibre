@@ -304,6 +304,7 @@ mobs_mc.spawn_height = {
 
 mobs_mc.misc = {
 	shears_wear = 276, -- Wear to add per shears usage (238 uses)
+	totem_fail_nodes = {} -- List of nodes in which the totem of undying fails
 }
 
 -- Item name overrides from mobs_mc_gameconfig (if present)

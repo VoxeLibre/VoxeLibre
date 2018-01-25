@@ -519,22 +519,74 @@ end
 
 -- Evoker
 if c("totem") then
-	-- TODO: Implement actual MC totem behaviour
+	local hud_totem = {}
+
+	-- Totem of Undying
 	minetest.register_craftitem("mobs_mc:totem", {
 		description = S("Totem of Undying"),
 		_doc_items_longdesc = S("A totem of undying is a rare artifact which may safe you from certain death."),
-		_doc_items_usagehelp = S("Hold it in your hand and punch once to instantly get back to full health. The totem gets destroyed in the process."),
-		wield_image = "mcl_mobitems_totem.png",
-		inventory_image = "mcl_mobitems_totem.png",
+		_doc_items_usagehelp = S("The totem only works while you hold it in your hand. If you receive fatal damage, you are saved from death and you get a second chance with 1 HP. The totem is destroyed in the process, however."),
+		inventory_image = "mcl_totems_totem.png",
+		wield_image = "mcl_totems_totem.png",
 		stack_max = 1,
-		on_use = function(itemstack, user, pointed_thing)
-			user:set_hp(20)
-			if not minetest.settings:get_bool("creative_mode") then
-				itemstack:take_item()
-			end
-			return itemstack
-		end,
 	})
+
+	minetest.register_on_leaveplayer(function(player)
+		hud_totem[player:get_player_name()] = nil
+	end)
+
+	-- Save the player from death when holding totem of undying in hand
+	minetest.register_on_player_hpchange(function(player, hp_change)
+		local hp = player:get_hp()
+		-- Fatal damage?
+		if hp + hp_change <= 0 then
+			local wield = player:get_wielded_item()
+			if wield:get_name() == "mobs_mc:totem" then
+				local ppos = player:get_pos()
+				local pnname = minetest.get_node(ppos).name
+				-- Some exceptions when _not_ to save the player
+				for n=1, #mobs_mc.misc.totem_fail_nodes do
+					if pnname == mobs_mc.misc.totem_fail_nodes[n] then
+						return hp_change
+					end
+				end
+				-- Reset breath as well
+				if player:get_breath() < 11 then
+					player:set_breath(10)
+				end
+				if not minetest.settings:get_bool("creative_mode") then
+					wield:take_item()
+					player:set_wielded_item(wield)
+				end
+				-- Effects
+				minetest.sound_play({name = "mcl_totems_totem", gain=1}, {pos=ppos, max_hear_distance=16})
+
+				-- Big totem overlay
+				if not hud_totem[player:get_player_name()] then
+					hud_totem[player:get_player_name()] = player:hud_add({
+						hud_elem_type = "image",
+						text = "mcl_totems_totem.png",
+						position = { x=0.5, y=1 },
+						scale = { x=17, y=17 },
+						offset = { x=0, y=-178 },
+					})
+					minetest.after(3, function(player)
+						if player and player:is_player() then
+							local name = player:get_player_name()
+							if hud_totem[name] then
+								player:hud_remove(hud_totem[name])
+								hud_totem[name] = nil
+							end
+						end
+					end, player)
+				end
+
+				-- Set HP to exactly 1
+				return -hp + 1
+			end
+		end
+		return hp_change
+	end, true)
 end
 
 -- Rotten flesh
