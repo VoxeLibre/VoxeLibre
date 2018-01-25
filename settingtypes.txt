@@ -33,8 +33,13 @@ mcl_showDeathMessages (Show death messages) bool true
 # If enabled, the weather will change naturally over time.
 mcl_doWeatherCycle (Change weather) bool true
 
+# If enabled, mobs will spawn naturally. This does not affect
+# affect mob spawners.
+# This setting is only read at startup.
+mobs_spawn (Spawn mobs naturally) bool true
+
 # If enabled, only peaceful mobs will appear naturally. This does not
-# affect monster spawners.
+# affect mob spawners.
 # This setting is only read at startup.
 only_peaceful_mobs (Spawn only peaceful mobs) bool false
 

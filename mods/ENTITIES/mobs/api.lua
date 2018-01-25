@@ -54,6 +54,7 @@ end
 -- Load settings
 local damage_enabled = minetest.settings:get_bool("enable_damage")
 local peaceful_only = minetest.settings:get_bool("only_peaceful_mobs")
+local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true)
 local disable_blood = minetest.settings:get_bool("mobs_disable_blood")
 local creative = minetest.settings:get_bool("creative_mode")
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
@@ -2860,8 +2861,12 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 		catch_up = false,
 
 		action = function(pos, node, active_object_count, active_object_count_wider)
+			-- Can mobs spawn at all?
+			if not mobs_spawn then
+				return
+			end
 
-			-- is mob actually registered?
+			-- Is mob actually registered?
 			if not mobs.spawning_mobs[name]
 			or not minetest.registered_entities[name] then
 --print ("--- mob doesn't exist", name)
