@@ -19,9 +19,6 @@ mcl_weather.end_time = nil
 -- registered weathers
 mcl_weather.reg_weathers = {}
 
--- automaticly calculates intervals and swap weathers 
-mcl_weather.auto_mode = true
-  
 -- global flag to disable/enable ABM logic. 
 mcl_weather.allow_abm = true
 
@@ -123,16 +120,20 @@ mcl_weather.get_random_pos_by_player_look_dir = function(player)
 end
 
 minetest.register_globalstep(function(dtime)
-  if mcl_weather.auto_mode == false then
-    return 0
-  end
-
   if mcl_weather.end_time == nil then
     mcl_weather.end_time = mcl_weather.get_rand_end_time()
   end
   -- recalculate weather
   if mcl_weather.end_time <= minetest.get_gametime() then
-    mcl_weather.set_random_weather(mcl_weather.state, mcl_weather.reg_weathers[mcl_weather.state])
+    local changeWeather = minetest.settings:get_bool("mcl_doWeatherCycle")
+    if changeWeather == nil then
+        changeWeather = true
+    end
+    if changeWeather then
+       mcl_weather.set_random_weather(mcl_weather.state, mcl_weather.reg_weathers[mcl_weather.state])
+    else
+       mcl_weather.end_time = mcl_weather.get_rand_end_time()
+    end
   end
 end)
 

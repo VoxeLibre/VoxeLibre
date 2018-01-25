@@ -30,6 +30,9 @@ mcl_keepInventory (Keep inventory on death) bool false
 # If enabled, chat messages are shown to everyone when a player dies.
 mcl_showDeathMessages (Show death messages) bool true
 
+# If enabled, the weather will change naturally over time.
+mcl_doWeatherCycle (Change weather) bool true
+
 # If enabled, only peaceful mobs will appear naturally. This does not
 # affect monster spawners.
 # This setting is only read at startup.
