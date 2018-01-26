@@ -486,7 +486,7 @@ function mesecon.turnoff(pos, link)
 				if mesecon.is_receptor_on(n.name) then
 					local receptorrules = mesecon.receptor_get_rules(n)
 					for _, rr in pairs(receptorrules) do
-						if vector.equals(mesecon.invertRule(rr), r) then
+						if rr.spread and vector.equals(mesecon.invertRule(rr), r) then
 							return false
 						end
 					end
