@@ -14,6 +14,9 @@ local open_chests = {}
 local player_chest_open = function(player, pos)
 	open_chests[player:get_player_name()] = { pos = pos }
 end
+
+local trapped_chest_mesecons_rules = mesecon.rules.pplate
+
 -- To be called if a player closed a chest
 local player_chest_close = function(player)
 	local name = player:get_player_name()
@@ -421,8 +424,6 @@ register_chest("chest",
 	},
 	false
 )
-
-local trapped_chest_mesecons_rules = mesecon.rules.pplate
 
 local traptiles = {
 	small = {"mcl_chests_chest_trapped_top.png", "mcl_chests_chest_trapped_bottom.png",
