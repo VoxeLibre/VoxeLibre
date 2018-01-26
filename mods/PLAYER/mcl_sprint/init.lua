@@ -39,6 +39,23 @@ minetest.register_on_leaveplayer(function(player)
 	local playerName = player:get_player_name()
 	players[playerName] = nil
 end)
+
+local function setSprinting(playerName, sprinting) --Sets the state of a player (0=stopped/moving, 1=sprinting)
+	local player = minetest.get_player_by_name(playerName)
+	if players[playerName] then
+		players[playerName]["sprinting"] = sprinting
+		-- Don't overwrite physics when standing on soul sand or sleeping
+		if mcl_playerinfo[playerName].node_stand ~= "mcl_nether:soul_sand" and player:get_attribute("mcl_beds:sleeping") ~= "true" then
+			if sprinting == true then
+				player:set_physics_override({speed=mcl_sprint.SPEED})
+			elseif sprinting == false then
+				player:set_physics_override({speed=1.0})
+			end
+			return true
+		end
+	end
+	return false
+end
 minetest.register_globalstep(function(dtime)
 	--Get the gametime
 	local gameTime = minetest.get_gametime()
@@ -106,20 +123,3 @@ minetest.register_globalstep(function(dtime)
 		end
 	end
 end)
-
-function setSprinting(playerName, sprinting) --Sets the state of a player (0=stopped/moving, 1=sprinting)
-	local player = minetest.get_player_by_name(playerName)
-	if players[playerName] then
-		players[playerName]["sprinting"] = sprinting
-		-- Don't overwrite physics when standing on soul sand or sleeping
-		if mcl_playerinfo[playerName].node_stand ~= "mcl_nether:soul_sand" and player:get_attribute("mcl_beds:sleeping") ~= "true" then
-			if sprinting == true then
-				player:set_physics_override({speed=mcl_sprint.SPEED})
-			elseif sprinting == false then
-				player:set_physics_override({speed=1.0})
-			end
-			return true
-		end
-	end
-	return false
-end

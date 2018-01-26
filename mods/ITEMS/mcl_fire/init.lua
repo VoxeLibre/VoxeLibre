@@ -345,7 +345,7 @@ if not fire_enabled then
 		chance = 2,
 		catch_up = false,
 		action = function(pos)
-			function try_ignite(airs)
+			local function try_ignite(airs)
 				while #airs > 0 do
 					local r = math.random(1, #airs)
 					if minetest.find_node_near(airs[r], 1, {"group:flammable", "group:flammable_lava"}) then

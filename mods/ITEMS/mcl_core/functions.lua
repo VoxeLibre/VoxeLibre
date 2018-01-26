@@ -270,7 +270,7 @@ end
 function mcl_core.generate_v6_oak_tree(pos)
 	local trunk = "mcl_core:tree"
 	local leaves = "mcl_core:leaves"
-	node = {name = ""}
+	local node = {name = ""}
 	for dy=1,4 do
 		pos.y = pos.y+dy
 		if minetest.get_node(pos).name ~= "air" then

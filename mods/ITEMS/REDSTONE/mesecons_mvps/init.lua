@@ -241,7 +241,7 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, all_pull_sti
 		if first_dropper and id >= first_dropper then
 			break
 		end
-		np = vector.add(n.pos, movedir)
+		local np = vector.add(n.pos, movedir)
 		minetest.add_node(np, n.node)
 		minetest.get_meta(np):from_table(n.meta)
 	end

@@ -1,7 +1,7 @@
 local PISTON_MAXIMUM_PUSH = 12
 
 -- Get mesecon rules of pistons
-piston_rules =
+local piston_rules =
 {{x=0,  y=0,  z=1}, --everything apart from z- (pusher side)
  {x=1,  y=0,  z=0},
  {x=-1, y=0,  z=0},
@@ -30,7 +30,7 @@ local piston_get_rules = function (node)
 	return rules
 end
 
-piston_facedir_direction = function (node)
+local piston_facedir_direction = function (node)
 	local rules = {{x = 0, y = 0, z = -1}}
 	for i = 1, node.param2 do
 		rules = mesecon.rotate_rules_left(rules)
@@ -38,7 +38,7 @@ piston_facedir_direction = function (node)
 	return rules[1]
 end
 
-piston_get_direction = function (dir, node)
+local piston_get_direction = function (dir, node)
 	if type(dir) == "function" then
 		return dir(node)
 	else
@@ -830,7 +830,7 @@ local piston_up_down_get_stopper = function (node, dir, stack, stackid)
 end
 
 local piston_get_stopper = function (node, dir, stack, stackid)
-	pistonspec = minetest.registered_nodes[node.name].mesecons_piston
+	local pistonspec = minetest.registered_nodes[node.name].mesecons_piston
 	dir = piston_get_direction(pistonspec.dir, node)
 	local pusherpos  = vector.add(stack[stackid].pos, dir)
 	local pushernode = minetest.get_node(pusherpos)

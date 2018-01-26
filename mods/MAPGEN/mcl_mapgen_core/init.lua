@@ -1558,7 +1558,7 @@ local generate_underground_mushrooms = function(minp, maxp, seed)
 end
 
 local pr_nether = PseudoRandom(os.time()+667)
-local nehter_wart_chance
+local nether_wart_chance
 if mg_name == "v6" then
 	nether_wart_chance = 85
 else

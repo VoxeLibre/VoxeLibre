@@ -339,7 +339,7 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 
 		-- For copying to be allowed, one banner has to have no layers while the other one has at least 1 layer.
 		-- The banner with layers will be used as a source.
-		local src_banner, src_layers, src_desc, src_index
+		local src_banner, src_layers_raw, src_desc, src_index
 		if #b1layers == 0 and #b2layers > 0 then
 			src_banner = banner2
 			src_layers_raw = b2layers_raw

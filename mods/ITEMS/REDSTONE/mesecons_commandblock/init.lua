@@ -62,7 +62,7 @@ local function check_commands(commands, player_name)
 		local cmddef = minetest.chatcommands[cmd]
 		if not cmddef then
 			-- Invalid chat command
-			msg = "Error: The command “"..cmd.."” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands."
+			local msg = "Error: The command “"..cmd.."” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands."
 			if string.sub(cmd, 1, 1) == "/" then
 				msg = msg .. " Hint: Try to remove the trailing slash."
 			end

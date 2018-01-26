@@ -140,6 +140,7 @@ local function check_end_portal_frame(pos)
 				end
 			end
 			-- All checks survived! We have a valid portal!
+			local k
 			if dir.x > 0 then
 				k = 1
 			else
@@ -158,6 +159,7 @@ local function check_end_portal_frame(pos)
 					return false
 				end
 			end
+			local k
 			if dir.z > 0 then
 				k = 1
 			else

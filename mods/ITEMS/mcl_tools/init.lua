@@ -16,7 +16,7 @@
 -- TODO: Add legacy support for Minetest Game groups like crumbly, snappy, cracky, etc. for all tools
 
 -- The hand
-local groupcaps, range
+local groupcaps, hand_range
 if minetest.settings:get_bool("creative_mode") then
 	-- Instant breaking in creative mode
 	groupcaps = {
