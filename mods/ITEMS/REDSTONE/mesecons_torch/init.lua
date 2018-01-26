@@ -122,7 +122,7 @@ mcl_torches.register_torch("mesecon_torch_off", "Redstone Torch (off)",
 	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",
 	{"jeija_torches_off.png"},
 	0,
-	{dig_immediate=3, dig_by_water=1, redstone_torch=2, not_in_creative_inventory=1},
+	{dig_immediate=3, dig_by_water=1, redstone_torch=2, mesecon_ignore_opaque_dig=1, not_in_creative_inventory=1},
 	mcl_sounds.node_sound_wood_defaults(),
 	{
 		mesecons = {
@@ -148,7 +148,7 @@ mcl_torches.register_torch("mesecon_torch_overheated", "Redstone Torch (overheat
 	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",
 	{"jeija_torches_off.png"},
 	0,
-	{dig_immediate=3, dig_by_water=1, redstone_torch=2, not_in_creative_inventory=1},
+	{dig_immediate=3, dig_by_water=1, redstone_torch=2, mesecon_ignore_opaque_dig=1, not_in_creative_inventory=1},
 	mcl_sounds.node_sound_wood_defaults(),
 	{
 		drop = "mesecons_torch:mesecon_torch_on",
@@ -175,7 +175,7 @@ mcl_torches.register_torch("mesecon_torch_on", "Redstone Torch",
 	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",
 	{"jeija_torches_on.png"},
 	7,
-	{dig_immediate=3, dig_by_water=1, redstone_torch=1},
+	{dig_immediate=3, dig_by_water=1, redstone_torch=1, mesecon_ignore_opaque_dig=1},
 	mcl_sounds.node_sound_wood_defaults(),
 	{
 		mesecons = {

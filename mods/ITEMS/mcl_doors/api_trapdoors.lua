@@ -27,6 +27,7 @@ function mcl_doors:register_trapdoor(name, def)
 	if groups == nil then
 		groups = {}
 	end
+	groups.mesecon_ignore_opaque_dig = 1
 
 	if not def.sound_open then
 		def.sound_open = "doors_door_open"

@@ -121,6 +121,7 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 	cgroups.fence_gate = 1
 	cgroups.deco_block = 1
 
+	cgroups.mesecon_ignore_opaque_dig = 1
 	cgroups.mesecon_effector_on = 1
 	cgroups.fence_gate = 1
 	minetest.register_node(open_gate_id, {

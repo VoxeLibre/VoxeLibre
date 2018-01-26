@@ -85,8 +85,8 @@ mesecon.on_dignode = function(pos, node)
 			local nnode = minetest.get_node(npos)
 			if mesecon.is_conductor_on(nnode) then
 				mesecon.receptor_off(npos, mesecon.conductor_get_rules(nnode))
-			-- Redstone torch is a special case and must be ignored
-			elseif mesecon.is_effector_on(nnode.name) and mesecon.is_powered(npos) == false and minetest.get_item_group(nnode.name, "redstone_torch") == 0 then
+			-- Disable neighbor effectors unless they are in a special ignore group
+			elseif mesecon.is_effector_on(nnode.name) and mesecon.is_powered(npos) == false and minetest.get_item_group(nnode.name, "mesecon_ignore_opaque_dig") == 0 then
 				mesecon.changesignal(npos, nnode, nlink, mesecon.state.off, 1)
 				mesecon.deactivate(npos, nnode, nlink, 1)
 			end
