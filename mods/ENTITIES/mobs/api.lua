@@ -3,7 +3,7 @@
 
 mobs = {}
 mobs.mod = "redo"
-mobs.version = "20180104"
+mobs.version = "20180126"
 
 
 -- Intllib
@@ -53,9 +53,11 @@ end
 
 -- Load settings
 local damage_enabled = minetest.settings:get_bool("enable_damage")
+local mobs_spawn = minetest.settings:get_bool("mobs_spawn") ~= false
 local peaceful_only = minetest.settings:get_bool("only_peaceful_mobs")
-local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true)
 local disable_blood = minetest.settings:get_bool("mobs_disable_blood")
+local mobs_drop_items = minetest.settings:get_bool("mobs_drop_items") ~= false
+local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 local creative = minetest.settings:get_bool("creative_mode")
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
 local remove_far = minetest.settings:get_bool("remove_far_mobs")
@@ -357,6 +359,9 @@ end
 -- drop items
 local item_drop = function(self, cooked)
 
+	-- no drops if disabled by setting
+	if not mobs_drop_items then return end
+
 	-- no drops for child mobs
 	if self.child then return end
 
@@ -369,7 +374,7 @@ local item_drop = function(self, cooked)
 
 		if random(1, self.drops[n].chance) == 1 then
 
-			num = random(self.drops[n].min, self.drops[n].max)
+			num = random(self.drops[n].min or 1, self.drops[n].max or 1)
 			item = self.drops[n].name
 
 			-- cook items when true
@@ -745,7 +750,9 @@ local do_jump = function(self)
 
 			self.object:setvelocity(v)
 
+if get_velocity(self) > 0 then
 			mob_sound(self, self.sounds.jump)
+end
 		else
 			self.facing_fence = true
 		end
@@ -980,7 +987,8 @@ end
 -- find and replace what mob is looking for (grass, wheat etc.)
 local replace = function(self, pos)
 
-	if not self.replace_rate
+	if not mobs_griefing
+	or not self.replace_rate
 	or not self.replace_what
 	or self.child == true
 	or self.object:getvelocity().y ~= 0
@@ -1113,7 +1121,7 @@ local smart_mobs = function(self, s, p, dist, dtime)
 			self.path.following = false
 
 			 -- lets make way by digging/building if not accessible
-			if self.pathfinding == 2 then
+			if self.pathfinding == 2 and mobs_griefing then
 
 				-- is player higher than mob?
 				if s.y < p1.y then
@@ -1346,6 +1354,113 @@ local npc_attack = function(self)
 
 	if min_player then
 		do_attack(self, min_player)
+	end
+end
+
+
+-- specific runaway
+local specific_runaway = function(list, what)
+
+	-- no list so do not run
+	if list == nil then
+		return false
+	end
+
+	-- found entity on list to attack?
+	for no = 1, #list do
+
+		if list[no] == what or list[no] == "player" then
+			return true
+		end
+	end
+
+	return false
+end
+
+
+-- find someone to runaway from
+local runaway_from = function(self)
+
+	if not self.runaway_from then
+		return
+	end
+
+	local s = self.object:get_pos()
+	local p, sp, dist
+	local player, obj, min_player
+	local type, name = "", ""
+	local min_dist = self.view_range + 1
+	local objs = minetest.get_objects_inside_radius(s, self.view_range)
+
+	for n = 1, #objs do
+
+		if objs[n]:is_player() then
+
+			if mobs.invis[ objs[n]:get_player_name() ] then
+
+				type = ""
+			else
+				player = objs[n]
+				type = "player"
+				name = "player"
+			end
+		else
+			obj = objs[n]:get_luaentity()
+
+			if obj then
+				player = obj.object
+				type = obj.type
+				name = obj.name or ""
+			end
+		end
+
+		-- find specific mob to runaway from
+		if name ~= "" and name ~= self.name
+		and specific_runaway(self.runaway_from, name) then
+
+			s = self.object:get_pos()
+			p = player:get_pos()
+			sp = s
+
+			-- aim higher to make looking up hills more realistic
+			p.y = p.y + 1
+			sp.y = sp.y + 1
+
+			dist = get_distance(p, s)
+
+			if dist < self.view_range then
+			-- field of view check goes here
+
+				-- choose closest player/mpb to runaway from
+				if line_of_sight(self, sp, p, 2) == true
+				and dist < min_dist then
+					min_dist = dist
+					min_player = player
+				end
+			end
+		end
+	end
+
+	-- attack player
+	if min_player then
+
+		local lp = player:get_pos()
+		local vec = {
+			x = lp.x - s.x,
+			y = lp.y - s.y,
+			z = lp.z - s.z
+		}
+
+		local yaw = (atan(vec.z / vec.x) + 3 * pi / 2) - self.rotate
+
+		if lp.x > s.x then
+			yaw = yaw + pi
+		end
+
+		yaw = set_yaw(self.object, yaw)
+		self.state = "runaway"
+		self.runaway_timer = 0
+		self.following = nil
 	end
 end
 
@@ -2226,7 +2341,15 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
 			pos.y = pos.y + (-self.collisionbox[2] + self.collisionbox[5]) * .5
 
-			effect(pos, self.blood_amount, self.blood_texture, nil, nil, 1, nil)
+			-- do we have a single blood texture or multiple?
+			if type(self.blood_texture) == "table" then
+
+				local blood = self.blood_texture[random(1, #self.blood_texture)]
+
+				effect(pos, self.blood_amount, blood, nil, nil, 1, nil)
+			else
+				effect(pos, self.blood_amount, self.blood_texture, nil, nil, 1, nil)
+			end
 		end
 
 		-- do damage
@@ -2359,6 +2482,8 @@ local mob_staticdata = function(self)
 	-- remove mob when out of range unless tamed
 	if remove_far
 	and self.remove_ok
+	and self.type ~= "npc"
+	and self.state ~= "attack"
 	and not self.tamed
 	and self.lifetimer < 20000 then
 
@@ -2437,6 +2562,11 @@ local mob_activate = function(self, staticdata, def, dtime)
 		self.base_size = self.visual_size
 		self.base_colbox = self.collisionbox
 		self.base_selbox = self.selectionbox
+	end
+
+	-- for current mobs that dont have this set
+	if not self.base_selbox then
+		self.base_selbox = self.selectionbox or self.base_colbox
 	end
 
 	-- set texture, model and size
@@ -2654,6 +2784,8 @@ local mob_step = function(self, dtime)
 
 	do_jump(self)
 
+	runaway_from(self)
+
 end
 
 
@@ -2766,6 +2898,7 @@ minetest.register_entity(name, {
 	dogshoot_count2_max = def.dogshoot_count2_max or (def.dogshoot_count_max or 5),
 	attack_animals = def.attack_animals or false,
 	specific_attack = def.specific_attack,
+	runaway_from = def.runaway_from,
 	owner_loyal = def.owner_loyal,
 	facing_fence = false,
 	_cmi_is_mob = true,
@@ -2833,6 +2966,11 @@ end
 function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 	interval, chance, aoc, min_height, max_height, day_toggle, on_spawn)
 
+	-- Do mobs spawn at all?
+	if not mobs_spawn then
+		return
+	end
+
 	-- chance/spawn number override in minetest.conf for registered mob
 	local numbers = minetest.settings:get(name)
 
@@ -2861,12 +2999,8 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 		catch_up = false,
 
 		action = function(pos, node, active_object_count, active_object_count_wider)
-			-- Can mobs spawn at all?
-			if not mobs_spawn then
-				return
-			end
 
-			-- Is mob actually registered?
+			-- is mob actually registered?
 			if not mobs.spawning_mobs[name]
 			or not minetest.registered_entities[name] then
 --print ("--- mob doesn't exist", name)
@@ -3124,27 +3258,35 @@ function mobs:explosion(pos, radius)
 end
 
 
+-- no damage to nodes explosion
+function mobs:safe_boom(self, pos, radius)
+
+	minetest.sound_play(self.sounds and self.sounds.explode or "tnt_explode", {
+		pos = pos,
+		gain = 1.0,
+		max_hear_distance = self.sounds and self.sounds.distance or 32
+	})
+
+	entity_physics(pos, radius)
+	effect(pos, 32, "tnt_smoke.png", radius * 3, radius * 5, radius, 1, 0)
+end
+
+
 -- make explosion with protection and tnt mod check
 function mobs:boom(self, pos, radius)
 
-	if minetest.get_modpath("mcl_tnt") and tnt and tnt.boom
+	if mobs_griefing
+	and minetest.get_modpath("mcl_tnt") and tnt and tnt.boom
 	and not minetest.is_protected(pos, "") then
 
 		tnt.boom(pos, {
 			radius = radius,
 			damage_radius = radius,
-			sound = self.sounds.explode,
+			sound = self.sounds and self.sounds.explode,
 			explode_center = true,
 		})
 	else
-		minetest.sound_play(self.sounds.explode, {
-			pos = pos,
-			gain = 1.0,
-			max_hear_distance = self.sounds.distance or 32
-		})
-
-		entity_physics(pos, radius)
-		effect(pos, 32, "tnt_smoke.png", radius * 3, radius * 5, radius, 1, 0)
+		mobs:safe_boom(self, pos, radius)
 	end
 end
 
@@ -3176,7 +3318,6 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 		description = desc,
 		inventory_image = invimg,
 		groups = grp,
-
 		_doc_items_longdesc = "This allows you to place a single mob.",
 		_doc_items_usagehelp = "Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.",
 
@@ -3195,10 +3336,6 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 			and within_limits(pos, 0)
 			and not minetest.is_protected(pos, placer:get_player_name()) then
 
-				if not minetest.registered_entities[mob] then
-					return
-				end
-
 				local name = placer:get_player_name()
 				local privs = minetest.get_player_privs(name)
 				if not privs.maphack then
@@ -3211,6 +3348,10 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 						itemstack:take_item()
 					end
 					return itemstack
+				end
+
+				if not minetest.registered_entities[mob] then
+					return
 				end
 
 				pos.y = pos.y + 1
@@ -3430,12 +3571,6 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 			self.health = self.hp_max
 
 			if self.htimer < 1 then
-
---[[
-				minetest.chat_send_player(clicker:get_player_name(),
-					S("@1 at full health (@2)",
-					self.name:split(":")[2], tostring(self.health)))
-]]
 
 				self.htimer = 5
 			end
