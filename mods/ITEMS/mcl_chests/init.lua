@@ -5,7 +5,7 @@ if minetest.get_modpath("screwdriver") then
 end
 
 -- This is a helper function to register both chests and trapped chests. Trapped chests will make use of the additional parameters
-local register_chest = function(basename, desc, longdesc, usagehelp, hidden, mesecons, on_rightclick_addendum, on_rightclick_addendum_left, on_rightclick_addendum_right, drop)
+local register_chest = function(basename, desc, longdesc, usagehelp, tiles_table, hidden, mesecons, on_rightclick_addendum, on_rightclick_addendum_left, on_rightclick_addendum_right, drop)
 
 if not drop then
 	drop = "mcl_chests:"..basename
@@ -18,9 +18,7 @@ minetest.register_node("mcl_chests:"..basename, {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usagehelp,
 	_doc_items_hidden = hidden,
-	tiles = {"default_chest_top.png", "mcl_chests_chest_bottom.png",
-		"mcl_chests_chest_right.png", "mcl_chests_chest_left.png",
-		"mcl_chests_chest_back.png", "default_chest_front.png"},
+	tiles = tiles_table.small,
 	paramtype2 = "facedir",
 	stack_max = 64,
 	drop = drop,
@@ -126,8 +124,7 @@ minetest.register_node("mcl_chests:"..basename, {
 })
 
 minetest.register_node("mcl_chests:"..basename.."_left", {
-	tiles = {"default_chest_top_big.png", "default_chest_top_big.png", "mcl_chests_chest_right.png",
-		"mcl_chests_chest_left.png", "default_chest_side_big.png^[transformFX", "default_chest_front_big.png"},
+	tiles = tiles_table.left,
 	paramtype2 = "facedir",
 	groups = {handy=1,axey=1, container=5,not_in_creative_inventory=1, material_wood=1},
 	drop = drop,
@@ -241,8 +238,7 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 })
 
 minetest.register_node("mcl_chests:"..basename.."_right", {
-	tiles = {"default_chest_top_big.png^[transformFX", "default_chest_top_big.png^[transformFX", "mcl_chests_chest_right.png",
-		"mcl_chests_chest_left.png", "default_chest_side_big.png", "default_chest_front_big.png^[transformFX"},
+	tiles = tiles_table.right,
 	paramtype2 = "facedir",
 	groups = {handy=1,axey=1, container=6,not_in_creative_inventory=1, material_wood=1},
 	drop = drop,
@@ -367,15 +363,39 @@ register_chest("chest",
 	"Chest",
 	"Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other.",
 	"To acccess the inventory of a chest or large chest, rightclick it. When broken, the items of the chest will drop out.",
+	{
+		small = {"default_chest_top.png", "mcl_chests_chest_bottom.png",
+		"mcl_chests_chest_right.png", "mcl_chests_chest_left.png",
+		"mcl_chests_chest_back.png", "default_chest_front.png"},
+		left = {"default_chest_top_big.png", "default_chest_top_big.png",
+		"mcl_chests_chest_right.png", "mcl_chests_chest_left.png",
+		"default_chest_side_big.png^[transformFX", "default_chest_front_big.png"},
+		right = {"default_chest_top_big.png^[transformFX", "default_chest_top_big.png^[transformFX",
+		"mcl_chests_chest_right.png", "mcl_chests_chest_left.png",
+		"default_chest_side_big.png", "default_chest_front_big.png^[transformFX"},
+	},
 	false
 )
 
 local trapped_chest_mesecons_rules = mesecon.rules.pplate
 
+local traptiles = {
+	small = {"mcl_chests_chest_trapped_top.png", "mcl_chests_chest_trapped_bottom.png",
+	"mcl_chests_chest_trapped_right.png", "mcl_chests_chest_trapped_left.png",
+	"mcl_chests_chest_trapped_back.png", "mcl_chests_chest_trapped_front.png"},
+	left = {"mcl_chests_chest_trapped_top_big.png", "mcl_chests_chest_trapped_top_big.png",
+	"mcl_chests_chest_trapped_right.png", "mcl_chests_chest_trapped_left.png",
+	"mcl_chests_chest_trapped_side_big.png^[transformFX", "mcl_chests_chest_trapped_front_big.png"},
+	right = {"mcl_chests_chest_trapped_top_big.png^[transformFX", "mcl_chests_chest_trapped_top_big.png^[transformFX",
+	"mcl_chests_chest_trapped_right.png", "mcl_chests_chest_trapped_left.png",
+	"mcl_chests_chest_trapped_side_big.png", "mcl_chests_chest_trapped_front_big.png^[transformFX"},
+}
+
 register_chest("trapped_chest",
 	"Trapped Chest",
 	"A trapped chest is a container which provides 27 inventory slots. It looks identical to a regular chest, but when it is opened, it sends a redstone signal to its adjacent blocks. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other.",
 	"To acccess the inventory of a trapped chest or a large trapped chest, rightclick it. When broken, the items will drop out.",
+	traptiles,
 	nil,
 	{receptor = {
 		state = mesecon.state.off,
@@ -414,7 +434,7 @@ register_chest("trapped_chest",
 )
 
 register_chest("trapped_chest_on",
-	nil, nil, nil, true,
+	nil, nil, nil, traptiles, true,
 	{receptor = {
 		state = mesecon.state.on,
 		rules = trapped_chest_mesecons_rules,
