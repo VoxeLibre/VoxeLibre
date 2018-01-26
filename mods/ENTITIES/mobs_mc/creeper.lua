@@ -37,6 +37,7 @@ mobs:register_mob("mobs_mc:creeper", {
 	makes_footstep_sound = true,
 	walk_velocity = 1.5,
 	run_velocity = 3,
+	runaway_from = { "mobs_mc:ocelot", "mobs_mc:cat" },
 	attack_type = "explode",
 	
 	explosion_radius = 3,
