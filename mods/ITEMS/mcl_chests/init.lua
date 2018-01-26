@@ -4,9 +4,50 @@ if minetest.get_modpath("screwdriver") then
 	simple_rotate = screwdriver.rotate_simple
 end
 
+--[[ List of open chests.
+Key: Player name
+Value:
+    If player is using a chest: { pos = <chest node position> }
+    Otherwise: nil ]]
+local open_chests = {}
+-- To be called if a player opened a chest
+local player_chest_open = function(player, pos)
+	open_chests[player:get_player_name()] = { pos = pos }
+end
+-- To be called if a player closed a chest
+local player_chest_close = function(player)
+	local name = player:get_player_name()
+	if open_chests[name] == nil then
+		return
+	end
+	local pos = open_chests[name].pos
+	local node = minetest.get_node(pos)
+
+	if node.name == "mcl_chests:trapped_chest_on" then
+		minetest.swap_node(pos, {name="mcl_chests:trapped_chest", param2 = node.param2})
+		mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
+	elseif node.name == "mcl_chests:trapped_chest_on_left" then
+		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_left", param2 = node.param2})
+		mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
+
+		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
+		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_right", param2 = node.param2})
+		mesecon.receptor_off(pos_other, trapped_chest_mesecons_rules)
+	elseif node.name == "mcl_chests:trapped_chest_on_right" then
+		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_right", param2 = node.param2})
+		mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
+
+		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
+		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_left", param2 = node.param2})
+		mesecon.receptor_off(pos_other, trapped_chest_mesecons_rules)
+	end
+
+	open_chests[name] = nil
+end
+
 -- This is a helper function to register both chests and trapped chests. Trapped chests will make use of the additional parameters
 local register_chest = function(basename, desc, longdesc, usagehelp, tiles_table, hidden, mesecons, on_rightclick_addendum, on_rightclick_addendum_left, on_rightclick_addendum_right, drop, formspec_basename)
-
+-- START OF register_chest FUNCTION BODY
 if not drop then
 	drop = "mcl_chests:"..basename
 else
@@ -360,6 +401,7 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_chests:"..basename, "nodes", "mcl_chests:"..basename.."_right")
 end
 
+-- END OF register_chest FUNCTION BODY
 end
 
 register_chest("chest",
@@ -405,10 +447,9 @@ register_chest("trapped_chest",
 		rules = trapped_chest_mesecons_rules,
 	}},
 	function(pos, node, clicker)
-		local meta = minetest.get_meta(pos)
-		meta:set_int("players", 1)
 		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_on", param2 = node.param2})
 		mesecon.receptor_on(pos, trapped_chest_mesecons_rules)
+		player_chest_open(clicker, pos)
 	end,
 	function(pos, node, clicker)
 		local meta = minetest.get_meta(pos)
@@ -420,19 +461,19 @@ register_chest("trapped_chest",
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
 		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_on_right", param2 = node.param2})
 		mesecon.receptor_on(pos_other, trapped_chest_mesecons_rules)
+
+		player_chest_open(clicker, pos)
 	end,
 	function(pos, node, clicker)
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
-
-		-- Save number of players in left part of the chest only
-		local meta = minetest.get_meta(pos_other)
-		meta:set_int("players", 1)
 
 		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_on_right", param2 = node.param2})
 		mesecon.receptor_on(pos, trapped_chest_mesecons_rules)
 
 		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_on_left", param2 = node.param2})
 		mesecon.receptor_on(pos_other, trapped_chest_mesecons_rules)
+
+		player_chest_open(clicker, pos)
 	end
 )
 
@@ -443,82 +484,58 @@ register_chest("trapped_chest_on",
 		rules = trapped_chest_mesecons_rules,
 	}},
 	function(pos, node, clicker)
-		local meta = minetest.get_meta(pos)
-		local players = meta:get_int("players")
-		players = players + 1
-		meta:set_int("players", players)
+		player_chest_open(clicker, pos)
 	end,
 	function(pos, node, clicker)
-		local meta = minetest.get_meta(pos)
-		local players = meta:get_int("players")
-		players = players + 1
-		meta:set_int("players", players)
+		player_chest_open(clicker, pos)
 	end,
 	function(pos, node, clicker)
-		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
-		local meta = minetest.get_meta(pos_other)
-		local players = meta:get_int("players")
-		players = players + 1
-		meta:set_int("players", players)
+		player_chest_open(clicker, pos)
 	end,
 	"trapped_chest",
 	"trapped_chest"
 )
 
+local function close_if_trapped_chest(pos, player)
+	local node = minetest.get_node(pos)
+
+	if node.name == "mcl_chests:trapped_chest_on" then
+		minetest.swap_node(pos, {name="mcl_chests:trapped_chest", param2 = node.param2})
+		mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
+
+		player_chest_close(player)
+	elseif node.name == "mcl_chests:trapped_chest_on_left" then
+		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_left", param2 = node.param2})
+		mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
+
+		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
+		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_right", param2 = node.param2})
+		mesecon.receptor_off(pos_other, trapped_chest_mesecons_rules)
+
+		player_chest_close(player)
+	elseif node.name == "mcl_chests:trapped_chest_on_right" then
+		minetest.swap_node(pos, {name="mcl_chests:trapped_chest_right", param2 = node.param2})
+		mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
+
+		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
+		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_left", param2 = node.param2})
+		mesecon.receptor_off(pos_other, trapped_chest_mesecons_rules)
+
+		player_chest_close(player)
+	end
+end
+
 -- Disable trapped chest when it has been closed
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if formname:find("mcl_chests:trapped_chest_") == 1 then
 		if fields.quit then
-			local x, y, z = formname:match("mcl_chests:trapped_chest_(.-)_(.-)_(.*)")
-			local pos = {x=tonumber(x), y=tonumber(y), z=tonumber(z)}
-			if not pos or not pos.x or not pos.y or not pos.z then return end
-			local node = minetest.get_node(pos)
-			local meta, players, pos_other
-			if node.name == "mcl_chests:trapped_chest_on" or node.name == "mcl_chests:trapped_chest_on_left" then
-				meta = minetest.get_meta(pos)
-				players = meta:get_int("players")
-				players = players - 1
-			elseif node.name == "mcl_chests:trapped_chest_on_right" then
-				pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
-				meta = minetest.get_meta(pos_other)
-				players = meta:get_int("players")
-				players = players - 1
-			end
-
-			if node.name == "mcl_chests:trapped_chest_on" then
-				if players <= 0 then
-					meta:set_int("players", 0)
-					minetest.swap_node(pos, {name="mcl_chests:trapped_chest", param2 = node.param2})
-					mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
-				else
-					meta:set_int("players", players)
-				end
-			elseif node.name == "mcl_chests:trapped_chest_on_left" then
-				if players <= 0 then
-					meta:set_int("players", 0)
-					minetest.swap_node(pos, {name="mcl_chests:trapped_chest_left", param2 = node.param2})
-					mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
-
-					pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
-					minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_right", param2 = node.param2})
-					mesecon.receptor_off(pos_other, trapped_chest_mesecons_rules)
-				else
-					meta:set_int("players", players)
-				end
-			elseif node.name == "mcl_chests:trapped_chest_on_right" then
-				if players <= 0 then
-					meta:set_int("players", 0)
-					minetest.swap_node(pos, {name="mcl_chests:trapped_chest_right", param2 = node.param2})
-					mesecon.receptor_off(pos, trapped_chest_mesecons_rules)
-
-					minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_left", param2 = node.param2})
-					mesecon.receptor_off(pos_other, trapped_chest_mesecons_rules)
-				else
-					meta:set_int("players", players)
-				end
-			end
+			player_chest_close(player)
 		end
 	end
+end)
+
+minetest.register_on_leaveplayer(function(player)
+	player_chest_close(player)
 end)
 
 minetest.register_craft({
