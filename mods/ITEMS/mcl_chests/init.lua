@@ -410,7 +410,7 @@ end
 register_chest("chest",
 	"Chest",
 	"Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other.",
-	"To acccess the inventory of a chest or large chest, rightclick it. When broken, the items of the chest will drop out.",
+	"To access the chest's inventory, rightclick the chest. When broken, the items of the chest will drop out.",
 	{
 		small = {"default_chest_top.png", "mcl_chests_chest_bottom.png",
 		"mcl_chests_chest_right.png", "mcl_chests_chest_left.png",
@@ -439,8 +439,8 @@ local traptiles = {
 
 register_chest("trapped_chest",
 	"Trapped Chest",
-	"A trapped chest is a container which provides 27 inventory slots. It looks identical to a regular chest, but when it is opened, it sends a redstone signal to its adjacent blocks. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other.",
-	"To acccess the inventory of a trapped chest or a large trapped chest, rightclick it. When broken, the items will drop out.",
+	"A trapped chest is a container which provides 27 inventory slots. When it is opened, it sends a redstone signal to its adjacent blocks as long it stays open. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other.",
+	"To access the inventory of a trapped chest, rightclick it. When broken, the items will drop out.",
 	traptiles,
 	nil,
 	{receptor = {
@@ -562,7 +562,7 @@ minetest.register_craft({
 
 minetest.register_node("mcl_chests:ender_chest", {
 	description = "Ender Chest",
-	_doc_items_longdesc = "Ender chests grant you access to a single personal interdimensional inventory with 27 slots. This inventory is the same no matter from which ender chest you access it from. If you put one item into one ender chest, you will find it in all other ender chests worldwide. Each player will only see their own items, but not the items of other players.",
+	_doc_items_longdesc = "Ender chests grant you access to a single personal interdimensional inventory with 27 slots. This inventory is the same no matter from which ender chest you access it from. If you put one item into one ender chest, you will find it in all other ender chests. Each player will only see their own items, but not the items of other players.",
 	_doc_items_usagehelp = "Rightclick the ender chest to access your personal interdimensional inventory.",
 	tiles = {"mcl_chests_ender_chest_top.png", "mcl_chests_ender_chest_bottom.png",
 		"mcl_chests_ender_chest_right.png", "mcl_chests_ender_chest_left.png",
