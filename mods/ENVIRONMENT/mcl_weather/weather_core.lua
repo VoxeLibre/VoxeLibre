@@ -91,7 +91,7 @@ end
 -- it is costly to generate many particles around player so goal is focus mainly on front view.  
 mcl_weather.get_random_pos_by_player_look_dir = function(player)
   local look_dir = player:get_look_dir()
-  local player_pos = player:getpos()
+  local player_pos = player:get_pos()
 
   local random_pos_x = 0
   local random_pos_y = 0

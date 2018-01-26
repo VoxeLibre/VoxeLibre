@@ -104,6 +104,7 @@ local last_dimension = {}
 
 -- Notifies this mod about a dimension change of a player.
 -- * player: Player who changed the dimension
+-- * dimension: New dimension ("overworld", "nether", "end", "void")
 function mcl_worlds.dimension_change(player, dimension)
 	for i=1, #mcl_worlds.registered_on_dimension_change do
 		mcl_worlds.registered_on_dimension_change[i](player, dimension)
