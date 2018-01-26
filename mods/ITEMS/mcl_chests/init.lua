@@ -5,12 +5,15 @@ if minetest.get_modpath("screwdriver") then
 end
 
 -- This is a helper function to register both chests and trapped chests. Trapped chests will make use of the additional parameters
-local register_chest = function(basename, desc, longdesc, usagehelp, tiles_table, hidden, mesecons, on_rightclick_addendum, on_rightclick_addendum_left, on_rightclick_addendum_right, drop)
+local register_chest = function(basename, desc, longdesc, usagehelp, tiles_table, hidden, mesecons, on_rightclick_addendum, on_rightclick_addendum_left, on_rightclick_addendum_right, drop, formspec_basename)
 
 if not drop then
 	drop = "mcl_chests:"..basename
 else
 	drop = "mcl_chests:"..drop
+end
+if not formspec_basename then
+	formspec_basename = basename
 end
 
 minetest.register_node("mcl_chests:"..basename, {
@@ -97,7 +100,7 @@ minetest.register_node("mcl_chests:"..basename, {
 
 	on_rightclick = function(pos, node, clicker)
 		minetest.show_formspec(clicker:get_player_name(),
-		"mcl_chests:"..basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
+		"mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 		"size[9,8.75]"..
 		mcl_vars.inventory_header..
 		"background[-0.19,-0.25;9.41,10.48;mcl_chests_inventory_chest.png]"..
@@ -116,7 +119,7 @@ minetest.register_node("mcl_chests:"..basename, {
 	on_destruct = function(pos)
 		local players = minetest.get_connected_players()
 		for p=1, #players do
-			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
+			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
 		end
 	end,
 	mesecons = mesecons,
@@ -138,7 +141,7 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 
 		local players = minetest.get_connected_players()
 		for p=1, #players do
-			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
+			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
 		end
 
 		local param2 = n.param2
@@ -212,7 +215,7 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
 
 		minetest.show_formspec(clicker:get_player_name(),
-		"mcl_chests:"..basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
+		"mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 		"size[9,11.5]"..
 		"background[-0.19,-0.25;9.41,12.5;mcl_chests_inventory_chest_large.png]"..
 		mcl_vars.inventory_header..
@@ -252,7 +255,7 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 
 		local players = minetest.get_connected_players()
 		for p=1, #players do
-			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
+			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
 		end
 
 		local param2 = n.param2
@@ -326,7 +329,7 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
 
 		minetest.show_formspec(clicker:get_player_name(),
-		"mcl_chests:"..basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
+		"mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 
 		"size[9,11.5]"..
 		"background[-0.19,-0.25;9.41,12.5;mcl_chests_inventory_chest_large.png]"..
@@ -458,6 +461,7 @@ register_chest("trapped_chest_on",
 		players = players + 1
 		meta:set_int("players", players)
 	end,
+	"trapped_chest",
 	"trapped_chest"
 )
 
