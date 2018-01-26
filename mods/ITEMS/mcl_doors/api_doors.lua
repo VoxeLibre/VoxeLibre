@@ -207,13 +207,17 @@ function mcl_doors:register_door(name, def)
 		on_open_close(pos, 1, name.."_t_1", name.."_b_2", name.."_t_2", {1,2,3,0})
 	end
 	local function on_mesecons_signal_close(pos, node)
-		on_open_close(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1", {3,0,1,2})
+		if not mesecon.is_powered({x=pos.x,y=pos.y+1,z=pos.z}) then
+			on_open_close(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1", {3,0,1,2})
+		end
 	end
 	local function on_mesecons_signal_open_top(pos, node)
 		on_mesecons_signal_open({x=pos.x, y=pos.y-1, z=pos.z}, node)
 	end
 	local function on_mesecons_signal_close_top(pos, node)
-		on_mesecons_signal_close({x=pos.x, y=pos.y-1, z=pos.z}, node)
+		if not mesecon.is_powered({x=pos.x,y=pos.y-1,z=pos.z}) then
+			on_mesecons_signal_close({x=pos.x, y=pos.y-1, z=pos.z}, node)
+		end
 	end
 
 	local function check_player_priv(pos, player)
