@@ -377,7 +377,7 @@ minetest.register_node("mesecons_delayer:delayer_off_locked", {
 		fixed = {
 			{ -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 }, -- the main slab
 			{ -1/16, -6/16, 6/16, 1/16, -1/16, 4/16}, -- still torch
-			{ -6/16, -6/16, 0/16, 6/16, -4/16, 2/16}, -- lock
+			{ -6/16, -6/16, -1/16, 6/16, -4/16, 1/16}, -- lock
 		}
 	},
 	groups = {dig_immediate = 3, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1, attached_node=1, redstone_repeater=5, not_in_creative_inventory = 1},
@@ -428,7 +428,7 @@ minetest.register_node("mesecons_delayer:delayer_on_locked", {
 		fixed = {
 			{ -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 }, -- the main slab
 			{ -1/16, -6/16, 6/16, 1/16, -1/16, 4/16}, -- still torch
-			{ -6/16, -6/16, 0/16, 6/16, -4/16, 2/16}, -- lock
+			{ -6/16, -6/16, -1/16, 6/16, -4/16, 1/16}, -- lock
 		}
 	},
 	after_dig_node = function(pos, oldnode)
