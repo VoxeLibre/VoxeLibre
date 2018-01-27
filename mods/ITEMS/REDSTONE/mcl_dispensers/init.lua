@@ -388,8 +388,7 @@ local dispenserdef = {
 					-- Place spawn egg
 					if not dropnodedef.walkable then
 						pointed_thing = { above = droppos, under = { x=droppos.x, y=droppos.y-1, z=droppos.z } }
-
-						minetest.registered_items[iname].on_place(ItemStack(iname), nil, pointed_thing)
+						minetest.add_entity(droppos, stack:get_name())
 
 						stack:take_item()
 						inv:set_stack("main", stack_id, stack)
