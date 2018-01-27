@@ -189,7 +189,7 @@ if i == 1 then
 			local snode = minetest.get_node(spos)
 			local g = minetest.get_item_group(snode.name, "redstone_repeater")
 			local sdef = minetest.registered_nodes[snode.name]
-			if g ~= 0 and sdef.mesecons.receptor.state == mesecon.state.on then
+			if g ~= 0 and mesecon.is_receptor_on(snode.name) then
 				if mesecon.is_powered(pos, delayer_get_input_rules(node)[1]) ~= false then
 					minetest.set_node(pos, {name="mesecons_delayer:delayer_on_locked", param2 = node.param2})
 				else
