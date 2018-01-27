@@ -2,7 +2,7 @@
 An unofficial Minecraft-like game for Minetest. Forked from MineClone by daredevils.
 Developed by Wuzzy and contributors. Not developed or endorsed by Mojang AB.
 
-Version: 0.34.0
+Version: 0.35.0
 
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
@@ -86,13 +86,14 @@ The main goal of **MineClone 2** is to be a clone of Minecraft and to be release
 
 ## Completion status
 This game is currently in **alpha** stage.
-It is playable, but very unfinished, many bugs are to be expected.
+It is playable, but unfinished, many bugs are to be expected.
 Backwards-compability is *not* guaranteed, updating your world might cause small and
 big bugs (such as “missing node” errors or even crashes).
 
 The following main features are available:
 
-* Tools, weapons and armor
+* Tools, weapons
+* Armor (unbalanced)
 * Crafting system: 2×2 grid, crafting table (3×3 grid), furnace, including a crafting guide
 * Chests, large chests, ender chests, shulker boxes
 * Hunger
@@ -103,7 +104,7 @@ The following main features are available:
 * Weather
 * 28 biomes
 * The Nether, a fiery underworld in another dimension
-* Redstone circuits (partially): Redstone ore, redstone, redstone repeater, levers, buttons, redstone blocks, redstone lamps
+* Redstone circuits (partially)
 * Minecarts (partial)
 * Boats
 * Fire
@@ -122,7 +123,6 @@ The following main features are available:
 * Inventory menu
 * Creative inventory
 * Farming
-* Bookshelves (deco only)
 * Writable books
 * A few server commands
 * And more!
@@ -146,25 +146,28 @@ Bonus features (not found in Minecraft 1.11):
 * Built-in crafting guide which shows you crafting and smelting recipes
 * In-game help system containing extensive help about gameplay basics, blocks, items and more
 * Temporary crafting recipes. They only exist to make some otherwise unaccessible items available when you're not in creative mode. These recipes will be removed as development goes on an more features become available
-* Saplings in chests (only in mapgen v6, because only 3 out of 6 tree species grow here)
-* New blocks:
+* Saplings in chests in mapgen v6
+* Fully moddable (thanks to Minetest's powerful Lua API)
+* New blocks and items:
+    * Lookup tool, shows you the help for whatever it touches
+    * More slabs and stairs
     * Nether Brick Fence Gate
     * Red Nether Brick Fence
     * Red Nether Brick Fence Gate
-    * More slabs and stairs
 
 Technical differences from Minecraft:
 
 * Height limit of ca. 31000 blocks (much higher than in Minecraft)
 * Horizontal world size is ca. 62000×62000 blocks (much smaller than in Minecraft, but it is still very large)
-* Still very, very incomplete and buggy
+* Still very incomplete and buggy
 * Blocks, items, enemies and other features are missing
 * A few items have slightly different names to make them easier to distinguish
 * Different music for jukebox
 * Different textures (Pixel Perfection)
 * Different sounds (various sources)
 * Different engine (Minetest)
-* Free software (“free” as in freedom)
+
+… and finally, MineClone 2 is free software (“free” as in “freedom”)!
 
 ## Reporting bugs
 Please report all bugs and missing Minecraft features here:
