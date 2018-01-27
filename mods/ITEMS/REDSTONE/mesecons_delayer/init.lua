@@ -15,6 +15,12 @@ local delayer_get_input_rules = function(node)
 	return rules
 end
 
+local delayer_get_all_rules = function(node)
+	local orules = delayer_get_output_rules(node)
+	local irules = delayer_get_input_rules(node)
+	return mesecon.mergetables(orules, irules)
+end
+
 -- Functions that are called after the delay time
 
 local delayer_activate = function(pos, node)
@@ -22,6 +28,26 @@ local delayer_activate = function(pos, node)
 	local time = def.delayer_time
 	minetest.swap_node(pos, {name=def.delayer_onstate, param2=node.param2})
 	mesecon.queue:add_action(pos, "receptor_on", {delayer_get_output_rules(node)}, time, nil)
+
+	-- Lock repeater
+	local r = delayer_get_output_rules(node)[1]
+	local lpos = vector.add(pos, r)
+	local lnode = minetest.get_node(lpos)
+	local ldef = minetest.registered_nodes[lnode.name]
+	local g = minetest.get_item_group(lnode.name, "redstone_repeater")
+	if g >= 1 and g <= 4 then
+		local lrs = delayer_get_input_rules(lnode)
+		local fail = false
+		for _, lr in pairs(lrs) do
+			if lr.x == r.x or lr.z == r.z then
+				fail = true
+				break
+			end
+		end
+		if not fail then
+			minetest.swap_node(lpos, {name=ldef.delayer_lockstate, param2=lnode.param2})
+		end
+	end
 end
 
 local delayer_deactivate = function(pos, node)
@@ -29,6 +55,26 @@ local delayer_deactivate = function(pos, node)
 	local time = def.delayer_time
 	minetest.swap_node(pos, {name=def.delayer_offstate, param2=node.param2})
 	mesecon.queue:add_action(pos, "receptor_off", {delayer_get_output_rules(node)}, time, nil)
+
+	-- Unlock repeater
+	local r = delayer_get_output_rules(node)[1]
+	local lpos = vector.add(pos, r)
+	local lnode = minetest.get_node(lpos)
+	local ldef = minetest.registered_nodes[lnode.name]
+	local g = minetest.get_item_group(lnode.name, "redstone_repeater")
+	if g == 5 then
+		local lrs = delayer_get_input_rules(lnode)
+		local fail = false
+		for _, lr in pairs(lrs) do
+			if lr.x == r.x or lr.z == r.z then
+				fail = true
+				break
+			end
+		end
+		if not fail then
+			minetest.swap_node(lpos, {name=ldef.delayer_unlockstate, param2=lnode.param2})
+		end
+	end
 end
 
 -- Register the 2 (states) x 4 (delay times) delayers
@@ -36,9 +82,9 @@ end
 for i = 1, 4 do
 local groups = {}
 if i == 1 then 
-	groups = {dig_immediate=3,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,attached_node=1}
+	groups = {dig_immediate=3,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,attached_node=1,redstone_repeater=i}
 else
-	groups = {dig_immediate=3,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,attached_node=1, not_in_creative_inventory=1}
+	groups = {dig_immediate=3,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,attached_node=1,redstone_repeater=i,not_in_creative_inventory=1}
 end
 
 local delaytime
@@ -139,6 +185,7 @@ minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 	end,
 	delayer_time = delaytime,
 	delayer_onstate = "mesecons_delayer:delayer_on_"..tostring(i),
+	delayer_lockstate = "mesecons_delayer:delayer_off_locked",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {
 		receptor =
@@ -181,7 +228,7 @@ minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
 		type = "fixed",
 		fixed = boxes
 	},
-	groups = {dig_immediate = 3, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1, attached_node=1, not_in_creative_inventory = 1},
+	groups = {dig_immediate = 3, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1, attached_node=1, redstone_repeater=i, not_in_creative_inventory = 1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	sunlight_propagates = false,
@@ -200,6 +247,7 @@ minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
 	end,
 	delayer_time = delaytime,
 	delayer_offstate = "mesecons_delayer:delayer_off_"..tostring(i),
+	delayer_lockstate = "mesecons_delayer:delayer_on_locked",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {
 		receptor =
@@ -217,6 +265,9 @@ minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
 })
 
 end
+
+
+-- Locked repeater
 
 minetest.register_node("mesecons_delayer:delayer_off_locked", {
 	description = "Redstone Repeater (Locked)",
@@ -252,14 +303,13 @@ minetest.register_node("mesecons_delayer:delayer_off_locked", {
 			{ -6/16, -6/16, 0/16, 6/16, -4/16, 2/16}, -- lock
 		}
 	},
-	groups = {dig_immediate = 3, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1, attached_node=1, not_in_creative_inventory = 1},
+	groups = {dig_immediate = 3, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1, attached_node=1, redstone_repeater=5, not_in_creative_inventory = 1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	sunlight_propagates = false,
 	is_ground_content = false,
 	drop = 'mesecons_delayer:delayer_off_1',
-	delayer_time = delaytime,
-	delayer_onstate = "mesecons_delayer:delayer_on_"..tostring(i),
+	delayer_unlockstate = "mesecons_delayer:delayer_off_1",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {
 		receptor =
@@ -304,11 +354,12 @@ minetest.register_node("mesecons_delayer:delayer_on_locked", {
 			{ -6/16, -6/16, 0/16, 6/16, -4/16, 2/16}, -- lock
 		}
 	},
-	groups = {dig_immediate = 3, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1, attached_node=1, not_in_creative_inventory = 1},
+	groups = {dig_immediate = 3, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1, attached_node=1, redstone_repeater=5, not_in_creative_inventory = 1},
 	paramtype = "light",
 	paramtype2 = "facedir",
 	sunlight_propagates = false,
 	is_ground_content = false,
+	delayer_unlockstate = "mesecons_delayer:delayer_on_1",
 	drop = 'mesecons_delayer:delayer_off_1',
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {
