@@ -7,35 +7,6 @@ else
 	S = function(s,a,...)a={a,...}return s:gsub("@(%d+)",function(n)return a[tonumber(n)]end)end
 end
 
-local function handle_clear_command(giver, receiver)
-	if receiver == "" then
-		receiver = giver
-	end
-	local receiverref = minetest.get_player_by_name(receiver)
-	if receiverref == nil then
-		return false, S("Player @1 does not exist.", receiver)
-	end
-	if receiverref:get_inventory():is_empty("main") then
-		if giver == receiver then
-			return false, S("Your inventory is already clear.")
-		else
-			return false, S("@1's inventory is already clear.", receiver)
-		end
-	end
-	if not giver == receiver then
-		minetest.log("action", S("@1 cleared @2's inventory", giver, receiver))
-	end
-	for i=0,receiverref:get_inventory():get_size("main") do
-		receiverref:get_inventory():set_stack("main", i, nil)
-	end
-	if giver == receiver then
-		return true, S("Your inventory was cleared.")
-	else
-		minetest.chat_send_player(receiver, S("Your inventory was cleared."))
-		return true, S("@1's inventory was cleared.", receiver)
-	end
-end
-
 local function handle_kill_command(suspect, victim)
 	if minetest.settings:get_bool("damage_enabled") == false then
 		return false, S("Players can't be killed right now, damage has been disabled.")
@@ -64,10 +35,6 @@ local function handle_kill_command(suspect, victim)
 	return true
 end
 
-minetest.register_privilege("clear", {
-	description = S("Can use /clear"),
-	give_to_singleplayer = false
-})
 minetest.register_privilege("kill", {
 	description = S("Can use /kill"),
 	give_to_singleplayer = false,
@@ -75,15 +42,6 @@ minetest.register_privilege("kill", {
 minetest.register_privilege("announce", {
 	description = S("Can use /say"),
 	give_to_singleplayer = false,
-})
-
-minetest.register_chatcommand("clear", {
-	params = S("<name>"),
-	description = S("Clear inventory of player"),
-	privs = {clear=true},
-	func = function(name, param)
-		return handle_clear_command(name, param)
-	end,
 })
 
 minetest.register_chatcommand("kill", {
@@ -170,6 +128,7 @@ if minecraftaliases then
 	register_chatcommand_alias("tell", "msg")
 	register_chatcommand_alias("w", "msg")
 	register_chatcommand_alias("tp", "teleport")
+	register_chatcommand_alias("clear", "clearinv")
 
 	minetest.register_chatcommand("banlist", {
 		description = S("List bans"),
