@@ -28,9 +28,11 @@ local delayer_get_sides = function(node)
 	return rules
 end
 
+-- Make the repeater at pos try to lock any repeater it faces.
+-- Returns true if a repeater was locked.
 local check_lock_repeater = function(pos, node)
-	-- Check the repeater at pos and look if there is
-	-- a repeater in its facing direction and sideways.
+	-- Check the repeater at pos and look if it faces
+	-- a repeater placed sideways.
 	-- If yes, lock the second repeater.
 	local r = delayer_get_output_rules(node)[1]
 	local lpos = vector.add(pos, r)
@@ -54,32 +56,50 @@ local check_lock_repeater = function(pos, node)
 	return false
 end
 
+-- Make the repeater at pos try to unlock any repeater it faces.
+-- Returns true if a repeater was unlocked.
 local check_unlock_repeater = function(pos, node)
-	-- Unlock repeater
+	-- Check the repeater at pos and look if it faces
+	-- a repeater placed sideways.
+	-- If yes, also check if the second repeater doesn't receive
+	-- a locking signal on the other side. If not, unlock the second repeater.
 	local r = delayer_get_output_rules(node)[1]
 	local lpos = vector.add(pos, r)
 	local lnode = minetest.get_node(lpos)
 	local ldef = minetest.registered_nodes[lnode.name]
 	local g = minetest.get_item_group(lnode.name, "redstone_repeater")
+	-- Are we facing a locked repeater?
 	if g == 5 then
+		-- First check the orientation of the faced repeater
 		local lrs = delayer_get_input_rules(lnode)
-		local fail = false
 		for _, lr in pairs(lrs) do
 			if lr.x == r.x or lr.z == r.z then
-				fail = true
-				break
+				-- Invalid orientation. Do nothing
+				return false
 			end
 		end
-		if not fail then
-			if mesecon.is_powered(lpos, delayer_get_input_rules(lnode)[1]) then
-				minetest.swap_node(lpos, {name="mesecons_delayer:delayer_on_1", param2=lnode.param2})
-				mesecon.queue:add_action(lpos, "receptor_on", {delayer_get_output_rules(lnode)}, ldef.delayer_time, nil)
-			else
-				minetest.swap_node(lpos, {name="mesecons_delayer:delayer_off_1", param2=lnode.param2})
-				mesecon.queue:add_action(lpos, "receptor_off", {delayer_get_output_rules(lnode)}, ldef.delayer_time, nil)
+		-- Now we check if there's a powered repeater on the other side of the
+		-- locked repeater.
+		-- To get to the other side, we just take another step in the direction which we already face.
+		local other_side = vector.add(lpos, r)
+		local other_node = minetest.get_node(other_side)
+		if minetest.get_item_group(other_node.name, "redstone_repeater") ~= 0 and mesecon.is_receptor_on(other_node.name) then
+			-- Final check: The other repeater must also face the right way
+			local other_face = delayer_get_output_rules(other_node)[1]
+			local other_facing_pos = vector.add(other_side, other_face)
+			if vector.equals(other_facing_pos, lpos) then
+				-- Powered repeater found AND it's facing the locked repeater. Do NOT unlock!
+				return false
 			end
-			return true
 		end
+		if mesecon.is_powered(lpos, delayer_get_input_rules(lnode)[1]) then
+			minetest.swap_node(lpos, {name="mesecons_delayer:delayer_on_1", param2=lnode.param2})
+			mesecon.queue:add_action(lpos, "receptor_on", {delayer_get_output_rules(lnode)}, ldef.delayer_time, nil)
+		else
+			minetest.swap_node(lpos, {name="mesecons_delayer:delayer_off_1", param2=lnode.param2})
+			mesecon.queue:add_action(lpos, "receptor_off", {delayer_get_output_rules(lnode)}, ldef.delayer_time, nil)
+		end
+		return true
 	end
 	return false
 end
