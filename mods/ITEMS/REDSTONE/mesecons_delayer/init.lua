@@ -72,7 +72,13 @@ local delayer_deactivate = function(pos, node)
 			end
 		end
 		if not fail then
-			minetest.swap_node(lpos, {name=ldef.delayer_unlockstate, param2=lnode.param2})
+			if mesecon.is_powered(lpos) then
+				minetest.swap_node(lpos, {name="mesecons_delayer:delayer_on_1", param2=lnode.param2})
+				mesecon.queue:add_action(lpos, "receptor_on", {delayer_get_output_rules(lnode)}, ldef.delayer_time, nil)
+			else
+				minetest.swap_node(lpos, {name="mesecons_delayer:delayer_off_1", param2=lnode.param2})
+				mesecon.queue:add_action(lpos, "receptor_off", {delayer_get_output_rules(lnode)}, ldef.delayer_time, nil)
+			end
 		end
 	end
 end
@@ -309,7 +315,7 @@ minetest.register_node("mesecons_delayer:delayer_off_locked", {
 	sunlight_propagates = false,
 	is_ground_content = false,
 	drop = 'mesecons_delayer:delayer_off_1',
-	delayer_unlockstate = "mesecons_delayer:delayer_off_1",
+	delayer_time = 0.1,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {
 		receptor =
@@ -359,8 +365,8 @@ minetest.register_node("mesecons_delayer:delayer_on_locked", {
 	paramtype2 = "facedir",
 	sunlight_propagates = false,
 	is_ground_content = false,
-	delayer_unlockstate = "mesecons_delayer:delayer_on_1",
 	drop = 'mesecons_delayer:delayer_off_1',
+	delayer_time = 0.1,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {
 		receptor =
