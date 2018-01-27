@@ -15,10 +15,17 @@ local delayer_get_input_rules = function(node)
 	return rules
 end
 
-local delayer_get_all_rules = function(node)
-	local orules = delayer_get_output_rules(node)
-	local irules = delayer_get_input_rules(node)
-	return mesecon.mergetables(orules, irules)
+-- Return the sides of a delayer.
+-- Those are used to toggle the lock state.
+local delayer_get_sides = function(node)
+	local rules = {
+		{x = 0, y = 0, z = -1},
+		{x = 0, y = 0, z =  1},
+	}
+	for i = 0, node.param2 do
+		rules = mesecon.rotate_rules_left(rules)
+	end
+	return rules
 end
 
 local check_lock_repeater = function(pos, node)
@@ -140,12 +147,30 @@ boxes = {
 }
 end
 
-local help, longdesc, usagehelp, icon
+local help, longdesc, usagehelp, icon, on_construct
 if i == 1 then
 	help = true
 	longdesc = "Redstone repeaters are versatile redstone components which delay redstone signals and only allow redstone signals to travel through one direction. The delay of the signal is indicated by the redstone torches and is between 0.1 and 0.4 seconds long."
 	usagehelp = "To power a redstone repeater, send a signal in “arrow” direction. To change the delay, rightclick the redstone repeater. The delay is changed in steps of 0.1 seconds."
 	icon = "mesecons_delayer_item.png"
+	on_construct = function(pos)
+		local node = minetest.get_node(pos)
+		local sides = delayer_get_sides(node)
+		for s=1, #sides do
+			local spos = vector.add(pos, sides[s])
+			local snode = minetest.get_node(spos)
+			local g = minetest.get_item_group(snode.name, "redstone_repeater")
+			local sdef = minetest.registered_nodes[snode.name]
+			if g ~= 0 and sdef.mesecons.receptor.state == mesecon.state.on then
+				if mesecon.is_powered(pos, delayer_get_input_rules(node)[1]) ~= false then
+					minetest.swap_node(pos, {name="mesecons_delayer:delayer_on_locked", param2 = node.param2})
+				else
+					minetest.swap_node(pos, {name="mesecons_delayer:delayer_off_locked", param2 = node.param2})
+				end
+				break
+			end
+		end
+	end
 else
 	help = false
 end
@@ -154,6 +179,7 @@ local on_rotate
 if minetest.get_modpath("screwdriver") then
 	on_rotate = screwdriver.disallow
 end
+
 
 minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 	description = "Redstone Repeater",
@@ -202,6 +228,7 @@ minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 			minetest.swap_node(pos, {name="mesecons_delayer:delayer_off_1", param2=node.param2})
 		end
 	end,
+	on_construct = on_construct,
 	delayer_time = delaytime,
 	delayer_onstate = "mesecons_delayer:delayer_on_"..tostring(i),
 	delayer_lockstate = "mesecons_delayer:delayer_off_locked",
