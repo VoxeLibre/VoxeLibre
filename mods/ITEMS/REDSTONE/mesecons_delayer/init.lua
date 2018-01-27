@@ -21,15 +21,10 @@ local delayer_get_all_rules = function(node)
 	return mesecon.mergetables(orules, irules)
 end
 
--- Functions that are called after the delay time
-
-local delayer_activate = function(pos, node)
-	local def = minetest.registered_nodes[node.name]
-	local time = def.delayer_time
-	minetest.swap_node(pos, {name=def.delayer_onstate, param2=node.param2})
-	mesecon.queue:add_action(pos, "receptor_on", {delayer_get_output_rules(node)}, time, nil)
-
-	-- Lock repeater
+local check_lock_repeater = function(pos, node)
+	-- Check the repeater at pos and look if there is
+	-- a repeater in its facing direction and sideways.
+	-- If yes, lock the second repeater.
 	local r = delayer_get_output_rules(node)[1]
 	local lpos = vector.add(pos, r)
 	local lnode = minetest.get_node(lpos)
@@ -46,16 +41,13 @@ local delayer_activate = function(pos, node)
 		end
 		if not fail then
 			minetest.swap_node(lpos, {name=ldef.delayer_lockstate, param2=lnode.param2})
+			return true
 		end
 	end
+	return false
 end
 
-local delayer_deactivate = function(pos, node)
-	local def = minetest.registered_nodes[node.name]
-	local time = def.delayer_time
-	minetest.swap_node(pos, {name=def.delayer_offstate, param2=node.param2})
-	mesecon.queue:add_action(pos, "receptor_off", {delayer_get_output_rules(node)}, time, nil)
-
+local check_unlock_repeater = function(pos, node)
 	-- Unlock repeater
 	local r = delayer_get_output_rules(node)[1]
 	local lpos = vector.add(pos, r)
@@ -79,8 +71,29 @@ local delayer_deactivate = function(pos, node)
 				minetest.swap_node(lpos, {name="mesecons_delayer:delayer_off_1", param2=lnode.param2})
 				mesecon.queue:add_action(lpos, "receptor_off", {delayer_get_output_rules(lnode)}, ldef.delayer_time, nil)
 			end
+			return true
 		end
 	end
+	return false
+end
+
+-- Functions that are called after the delay time
+local delayer_activate = function(pos, node)
+	local def = minetest.registered_nodes[node.name]
+	local time = def.delayer_time
+	minetest.swap_node(pos, {name=def.delayer_onstate, param2=node.param2})
+	mesecon.queue:add_action(pos, "receptor_on", {delayer_get_output_rules(node)}, time, nil)
+
+	check_lock_repeater(pos, node)
+end
+
+local delayer_deactivate = function(pos, node)
+	local def = minetest.registered_nodes[node.name]
+	local time = def.delayer_time
+	minetest.swap_node(pos, {name=def.delayer_offstate, param2=node.param2})
+	mesecon.queue:add_action(pos, "receptor_off", {delayer_get_output_rules(node)}, time, nil)
+
+	check_unlock_repeater(pos, node)
 end
 
 -- Register the 2 (states) x 4 (delay times) delayers
@@ -251,6 +264,9 @@ minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
 			minetest.swap_node(pos, {name="mesecons_delayer:delayer_on_1",param2=node.param2})
 		end
 	end,
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		check_unlock_repeater(pos, oldnode)
+	end,
 	delayer_time = delaytime,
 	delayer_offstate = "mesecons_delayer:delayer_off_"..tostring(i),
 	delayer_lockstate = "mesecons_delayer:delayer_on_locked",
@@ -360,6 +376,9 @@ minetest.register_node("mesecons_delayer:delayer_on_locked", {
 			{ -6/16, -6/16, 0/16, 6/16, -4/16, 2/16}, -- lock
 		}
 	},
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		check_unlock_repeater(pos, oldnode)
+	end,
 	groups = {dig_immediate = 3, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1, attached_node=1, redstone_repeater=5, not_in_creative_inventory = 1},
 	paramtype = "light",
 	paramtype2 = "facedir",
