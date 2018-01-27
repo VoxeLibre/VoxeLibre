@@ -1,3 +1,6 @@
+local DELAYS = { 0.1, 0.2, 0.3, 0.4 }
+local DEFAULT_DELAY = DELAYS[1]
+
 -- Function that get the input/output rules of the delayer
 local delayer_get_output_rules = function(node)
 	local rules = {{x = -1, y = 0, z = 0, spread=true}}
@@ -51,6 +54,8 @@ local check_lock_repeater = function(pos, node)
 		if not fail then
 			minetest.set_node(lpos, {name=ldef.delayer_lockstate, param2=lnode.param2})
 			local meta = minetest.get_meta(lpos)
+			-- Metadata: delay. Used to remember the delay for locked repeaters.
+			-- The number is the torch position (1-4).
 			meta:set_int("delay", g)
 			return true
 		end
@@ -140,12 +145,7 @@ else
 	groups = {dig_immediate=3,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1,attached_node=1,redstone_repeater=i,not_in_creative_inventory=1}
 end
 
-local delaytime
-if i == 1 then delaytime = 0.1
-elseif	i == 2 then delaytime = 0.2
-elseif	i == 3 then delaytime = 0.3
-elseif	i == 4 then delaytime = 0.4
-end
+local delaytime = DELAYS[i]
 
 local boxes
 if i == 1 then
@@ -198,7 +198,9 @@ if i == 1 then
 				if vector.equals(sface_pos, pos) then
 					-- Repeater is facing towards us! Now we just need to lock the costructed node
 					if mesecon.is_powered(pos, delayer_get_input_rules(node)[1]) ~= false then
-						minetest.set_node(pos, {name="mesecons_delayer:delayer_on_locked", param2 = node.param2})
+						local newnode = {name="mesecons_delayer:delayer_on_locked", param2 = node.param2}
+						minetest.set_node(pos, newnode)
+						mesecon.queue:add_action(pos, "receptor_on", {delayer_get_output_rules(newnode)}, DEFAULT_DELAY, nil)
 					else
 						minetest.set_node(pos, {name="mesecons_delayer:delayer_off_locked", param2 = node.param2})
 					end
@@ -394,7 +396,7 @@ minetest.register_node("mesecons_delayer:delayer_off_locked", {
 	sunlight_propagates = false,
 	is_ground_content = false,
 	drop = 'mesecons_delayer:delayer_off_1',
-	delayer_time = 0.1,
+	delayer_time = DEFAULT_DELAY,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {
 		receptor =
@@ -448,7 +450,7 @@ minetest.register_node("mesecons_delayer:delayer_on_locked", {
 	sunlight_propagates = false,
 	is_ground_content = false,
 	drop = 'mesecons_delayer:delayer_off_1',
-	delayer_time = 0.1,
+	delayer_time = DEFAULT_DELAY,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {
 		receptor =
