@@ -50,6 +50,8 @@ local check_lock_repeater = function(pos, node)
 		end
 		if not fail then
 			minetest.swap_node(lpos, {name=ldef.delayer_lockstate, param2=lnode.param2})
+			local meta = minetest.get_meta(lpos)
+			meta:set_int("delay", g)
 			return true
 		end
 	end
@@ -92,11 +94,16 @@ local check_unlock_repeater = function(pos, node)
 				return false
 			end
 		end
+		local lmeta = minetest.get_meta(lpos)
+		local ldelay = lmeta:get_int("delay")
+		if tonumber(ldelay) == nil or ldelay < 1 or ldelay > 4 then
+			ldelay = 1
+		end
 		if mesecon.is_powered(lpos, delayer_get_input_rules(lnode)[1]) then
-			minetest.swap_node(lpos, {name="mesecons_delayer:delayer_on_1", param2=lnode.param2})
+			minetest.swap_node(lpos, {name="mesecons_delayer:delayer_on_"..ldelay, param2=lnode.param2})
 			mesecon.queue:add_action(lpos, "receptor_on", {delayer_get_output_rules(lnode)}, ldef.delayer_time, nil)
 		else
-			minetest.swap_node(lpos, {name="mesecons_delayer:delayer_off_1", param2=lnode.param2})
+			minetest.swap_node(lpos, {name="mesecons_delayer:delayer_off_"..ldelay, param2=lnode.param2})
 			mesecon.queue:add_action(lpos, "receptor_off", {delayer_get_output_rules(lnode)}, ldef.delayer_time, nil)
 		end
 		return true
