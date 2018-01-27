@@ -215,7 +215,115 @@ minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
 	},
 	on_rotate = on_rotate,
 })
+
 end
+
+minetest.register_node("mesecons_delayer:delayer_off_locked", {
+	description = "Redstone Repeater (Locked)",
+	inventory_image = icon,
+	wield_image = icon,
+	_doc_items_create_entry = false,
+	drawtype = "nodebox",
+	-- FIXME: Textures of torch and the lock bar overlap. Nodeboxes are (sadly) not suitable for this.
+	-- So this needs to be turned into a mesh.
+	tiles = {
+		"mesecons_delayer_locked_off.png",
+		"mcl_stairs_stone_slab_top.png",
+		"mesecons_delayer_sides_locked_off.png",
+		"mesecons_delayer_sides_locked_off.png^[transformFX",
+		"mesecons_delayer_front_locked_off.png",
+		"mesecons_delayer_end_locked_off.png",
+		},
+	wield_image = "mesecons_delayer_locked_off.png",
+	walkable = true,
+	selection_box = {
+		type = "fixed",
+		fixed = { -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },
+	},
+	collision_box = {
+		type = "fixed",
+		fixed = { -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },
+	},
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{ -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 }, -- the main slab
+			{ -1/16, -6/16, 6/16, 1/16, -1/16, 4/16}, -- still torch
+			{ -6/16, -6/16, 0/16, 6/16, -4/16, 2/16}, -- lock
+		}
+	},
+	groups = {dig_immediate = 3, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1, attached_node=1, not_in_creative_inventory = 1},
+	paramtype = "light",
+	paramtype2 = "facedir",
+	sunlight_propagates = false,
+	is_ground_content = false,
+	drop = 'mesecons_delayer:delayer_off_1',
+	delayer_time = delaytime,
+	delayer_onstate = "mesecons_delayer:delayer_on_"..tostring(i),
+	sounds = mcl_sounds.node_sound_stone_defaults(),
+	mesecons = {
+		receptor =
+		{
+			state = mesecon.state.off,
+			rules = delayer_get_output_rules
+		},
+		effector =
+		{
+			rules = delayer_get_input_rules,
+		}
+	},
+	on_rotate = on_rotate,
+})
+
+minetest.register_node("mesecons_delayer:delayer_on_locked", {
+	description = "Redstone Repeater (Locked, Powered)",
+	_doc_items_create_entry = false,
+	drawtype = "nodebox",
+	tiles = {
+		"mesecons_delayer_locked_on.png",
+		"mcl_stairs_stone_slab_top.png",
+		"mesecons_delayer_sides_locked_on.png",
+		"mesecons_delayer_sides_locked_on.png^[transformFX",
+		"mesecons_delayer_front_locked_on.png",
+		"mesecons_delayer_end_locked_on.png",
+		},
+	walkable = true,
+	selection_box = {
+		type = "fixed",
+		fixed = { -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },
+	},
+	collision_box = {
+		type = "fixed",
+		fixed = { -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 },
+	},
+	node_box = {
+		type = "fixed",
+		fixed = {
+			{ -8/16, -8/16, -8/16, 8/16, -6/16, 8/16 }, -- the main slab
+			{ -1/16, -6/16, 6/16, 1/16, -1/16, 4/16}, -- still torch
+			{ -6/16, -6/16, 0/16, 6/16, -4/16, 2/16}, -- lock
+		}
+	},
+	groups = {dig_immediate = 3, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1, attached_node=1, not_in_creative_inventory = 1},
+	paramtype = "light",
+	paramtype2 = "facedir",
+	sunlight_propagates = false,
+	is_ground_content = false,
+	drop = 'mesecons_delayer:delayer_off_1',
+	sounds = mcl_sounds.node_sound_stone_defaults(),
+	mesecons = {
+		receptor =
+		{
+			state = mesecon.state.on,
+			rules = delayer_get_output_rules
+		},
+		effector =
+		{
+			rules = delayer_get_input_rules,
+		}
+	},
+	on_rotate = on_rotate,
+})
 
 minetest.register_craft({
 	output = "mesecons_delayer:delayer_off_1",
@@ -230,8 +338,10 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mesecons_delayer:delayer_off_1", "nodes", "mesecons_delayer:delayer_off_2")
 	doc.add_entry_alias("nodes", "mesecons_delayer:delayer_off_1", "nodes", "mesecons_delayer:delayer_off_3")
 	doc.add_entry_alias("nodes", "mesecons_delayer:delayer_off_1", "nodes", "mesecons_delayer:delayer_off_4")
+	doc.add_entry_alias("nodes", "mesecons_delayer:delayer_off_1", "nodes", "mesecons_delayer:delayer_off_locked")
 	doc.add_entry_alias("nodes", "mesecons_delayer:delayer_off_1", "nodes", "mesecons_delayer:delayer_on_1")
 	doc.add_entry_alias("nodes", "mesecons_delayer:delayer_off_1", "nodes", "mesecons_delayer:delayer_on_2")
 	doc.add_entry_alias("nodes", "mesecons_delayer:delayer_off_1", "nodes", "mesecons_delayer:delayer_on_3")
 	doc.add_entry_alias("nodes", "mesecons_delayer:delayer_off_1", "nodes", "mesecons_delayer:delayer_on_4")
+	doc.add_entry_alias("nodes", "mesecons_delayer:delayer_off_1", "nodes", "mesecons_delayer:delayer_on_locked")
 end
