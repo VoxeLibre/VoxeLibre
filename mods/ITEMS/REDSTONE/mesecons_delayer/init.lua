@@ -170,8 +170,9 @@ end
 local help, longdesc, usagehelp, icon, on_construct
 if i == 1 then
 	help = true
-	longdesc = "Redstone repeaters are versatile redstone components which delay redstone signals and only allow redstone signals to travel through one direction. The delay of the signal is indicated by the redstone torches and is between 0.1 and 0.4 seconds long."
-	usagehelp = "To power a redstone repeater, send a signal in “arrow” direction. To change the delay, rightclick the redstone repeater. The delay is changed in steps of 0.1 seconds."
+	longdesc = "Redstone repeaters are versatile redstone components which delay redstone signals by 0.1 to 0.4 seconds and only allow redstone signals to travel through one direction. They can also be locked which forces them to keep their output signal regardless of their input."
+	usagehelp = "To power a redstone repeater, send a signal in “arrow” direction. To change the delay, rightclick the redstone repeater. The delay is changed in steps of 0.1 seconds and indicated by the position of the moving torch.".."\n"..
+			"To lock a repeater, send a signal from an adjacent repeater into one of its sides."
 	icon = "mesecons_delayer_item.png"
 	on_construct = function(pos)
 		local node = minetest.get_node(pos)
