@@ -181,21 +181,29 @@ if i == 1 then
 	usagehelp = "To power a redstone repeater, send a signal in “arrow” direction (the input). The signal goes out on the opposite side (the output) with a delay. To change the delay, rightclick the redstone repeater. The delay is between 0.1 and 0.4 seconds long and can be changed in steps of 0.1 seconds. It is indicated by the position of the moving redstone torch.".."\n"..
 			"To lock a repeater, send a signal from an adjacent repeater into one of its sides. While locked, the moving redstone torch disappears, the output doesn't change and the input signal is ignored."
 	icon = "mesecons_delayer_item.png"
+
+	-- Check sides of constructed repeater and lock it, if required
 	on_construct = function(pos)
 		local node = minetest.get_node(pos)
 		local sides = delayer_get_sides(node)
 		for s=1, #sides do
 			local spos = vector.add(pos, sides[s])
 			local snode = minetest.get_node(spos)
+			-- Is there a powered repeater at one of our sides?
 			local g = minetest.get_item_group(snode.name, "redstone_repeater")
-			local sdef = minetest.registered_nodes[snode.name]
 			if g ~= 0 and mesecon.is_receptor_on(snode.name) then
-				if mesecon.is_powered(pos, delayer_get_input_rules(node)[1]) ~= false then
-					minetest.set_node(pos, {name="mesecons_delayer:delayer_on_locked", param2 = node.param2})
-				else
-					minetest.set_node(pos, {name="mesecons_delayer:delayer_off_locked", param2 = node.param2})
+				-- The other repeater must also face towards the constructed node
+				local sface = delayer_get_output_rules(snode)[1]
+				local sface_pos = vector.add(spos, sface)
+				if vector.equals(sface_pos, pos) then
+					-- Repeater is facing towards us! Now we just need to lock the costructed node
+					if mesecon.is_powered(pos, delayer_get_input_rules(node)[1]) ~= false then
+						minetest.set_node(pos, {name="mesecons_delayer:delayer_on_locked", param2 = node.param2})
+					else
+						minetest.set_node(pos, {name="mesecons_delayer:delayer_off_locked", param2 = node.param2})
+					end
+					break
 				end
-				break
 			end
 		end
 	end
