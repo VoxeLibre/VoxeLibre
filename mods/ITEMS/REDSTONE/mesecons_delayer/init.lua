@@ -49,7 +49,7 @@ local check_lock_repeater = function(pos, node)
 			end
 		end
 		if not fail then
-			minetest.swap_node(lpos, {name=ldef.delayer_lockstate, param2=lnode.param2})
+			minetest.set_node(lpos, {name=ldef.delayer_lockstate, param2=lnode.param2})
 			local meta = minetest.get_meta(lpos)
 			meta:set_int("delay", g)
 			return true
@@ -100,10 +100,10 @@ local check_unlock_repeater = function(pos, node)
 			ldelay = 1
 		end
 		if mesecon.is_powered(lpos, delayer_get_input_rules(lnode)[1]) then
-			minetest.swap_node(lpos, {name="mesecons_delayer:delayer_on_"..ldelay, param2=lnode.param2})
+			minetest.set_node(lpos, {name="mesecons_delayer:delayer_on_"..ldelay, param2=lnode.param2})
 			mesecon.queue:add_action(lpos, "receptor_on", {delayer_get_output_rules(lnode)}, ldef.delayer_time, nil)
 		else
-			minetest.swap_node(lpos, {name="mesecons_delayer:delayer_off_"..ldelay, param2=lnode.param2})
+			minetest.set_node(lpos, {name="mesecons_delayer:delayer_off_"..ldelay, param2=lnode.param2})
 			mesecon.queue:add_action(lpos, "receptor_off", {delayer_get_output_rules(lnode)}, ldef.delayer_time, nil)
 		end
 		return true
@@ -115,7 +115,7 @@ end
 local delayer_activate = function(pos, node)
 	local def = minetest.registered_nodes[node.name]
 	local time = def.delayer_time
-	minetest.swap_node(pos, {name=def.delayer_onstate, param2=node.param2})
+	minetest.set_node(pos, {name=def.delayer_onstate, param2=node.param2})
 	mesecon.queue:add_action(pos, "receptor_on", {delayer_get_output_rules(node)}, time, nil)
 
 	check_lock_repeater(pos, node)
@@ -124,7 +124,7 @@ end
 local delayer_deactivate = function(pos, node)
 	local def = minetest.registered_nodes[node.name]
 	local time = def.delayer_time
-	minetest.swap_node(pos, {name=def.delayer_offstate, param2=node.param2})
+	minetest.set_node(pos, {name=def.delayer_offstate, param2=node.param2})
 	mesecon.queue:add_action(pos, "receptor_off", {delayer_get_output_rules(node)}, time, nil)
 
 	check_unlock_repeater(pos, node)
@@ -191,9 +191,9 @@ if i == 1 then
 			local sdef = minetest.registered_nodes[snode.name]
 			if g ~= 0 and sdef.mesecons.receptor.state == mesecon.state.on then
 				if mesecon.is_powered(pos, delayer_get_input_rules(node)[1]) ~= false then
-					minetest.swap_node(pos, {name="mesecons_delayer:delayer_on_locked", param2 = node.param2})
+					minetest.set_node(pos, {name="mesecons_delayer:delayer_on_locked", param2 = node.param2})
 				else
-					minetest.swap_node(pos, {name="mesecons_delayer:delayer_off_locked", param2 = node.param2})
+					minetest.set_node(pos, {name="mesecons_delayer:delayer_off_locked", param2 = node.param2})
 				end
 				break
 			end
@@ -247,13 +247,13 @@ minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 	drop = 'mesecons_delayer:delayer_off_1',
 	on_rightclick = function (pos, node)
 		if node.name=="mesecons_delayer:delayer_off_1" then
-			minetest.swap_node(pos, {name="mesecons_delayer:delayer_off_2", param2=node.param2})
+			minetest.set_node(pos, {name="mesecons_delayer:delayer_off_2", param2=node.param2})
 		elseif node.name=="mesecons_delayer:delayer_off_2" then
-			minetest.swap_node(pos, {name="mesecons_delayer:delayer_off_3", param2=node.param2})
+			minetest.set_node(pos, {name="mesecons_delayer:delayer_off_3", param2=node.param2})
 		elseif node.name=="mesecons_delayer:delayer_off_3" then
-			minetest.swap_node(pos, {name="mesecons_delayer:delayer_off_4", param2=node.param2})
+			minetest.set_node(pos, {name="mesecons_delayer:delayer_off_4", param2=node.param2})
 		elseif node.name=="mesecons_delayer:delayer_off_4" then
-			minetest.swap_node(pos, {name="mesecons_delayer:delayer_off_1", param2=node.param2})
+			minetest.set_node(pos, {name="mesecons_delayer:delayer_off_1", param2=node.param2})
 		end
 	end,
 	on_construct = on_construct,
@@ -310,16 +310,16 @@ minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
 	drop = 'mesecons_delayer:delayer_off_1',
 	on_rightclick = function (pos, node)
 		if node.name=="mesecons_delayer:delayer_on_1" then
-			minetest.swap_node(pos, {name="mesecons_delayer:delayer_on_2",param2=node.param2})
+			minetest.set_node(pos, {name="mesecons_delayer:delayer_on_2",param2=node.param2})
 		elseif node.name=="mesecons_delayer:delayer_on_2" then
-			minetest.swap_node(pos, {name="mesecons_delayer:delayer_on_3",param2=node.param2})
+			minetest.set_node(pos, {name="mesecons_delayer:delayer_on_3",param2=node.param2})
 		elseif node.name=="mesecons_delayer:delayer_on_3" then
-			minetest.swap_node(pos, {name="mesecons_delayer:delayer_on_4",param2=node.param2})
+			minetest.set_node(pos, {name="mesecons_delayer:delayer_on_4",param2=node.param2})
 		elseif node.name=="mesecons_delayer:delayer_on_4" then
-			minetest.swap_node(pos, {name="mesecons_delayer:delayer_on_1",param2=node.param2})
+			minetest.set_node(pos, {name="mesecons_delayer:delayer_on_1",param2=node.param2})
 		end
 	end,
-	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+	after_dig_node = function(pos, oldnode)
 		check_unlock_repeater(pos, oldnode)
 	end,
 	delayer_time = delaytime,
@@ -431,7 +431,7 @@ minetest.register_node("mesecons_delayer:delayer_on_locked", {
 			{ -6/16, -6/16, 0/16, 6/16, -4/16, 2/16}, -- lock
 		}
 	},
-	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+	after_dig_node = function(pos, oldnode)
 		check_unlock_repeater(pos, oldnode)
 	end,
 	groups = {dig_immediate = 3, dig_by_water=1,destroy_by_lava_flow=1, dig_by_piston=1, attached_node=1, redstone_repeater=5, not_in_creative_inventory = 1},
