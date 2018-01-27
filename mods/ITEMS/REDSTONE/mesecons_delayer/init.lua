@@ -71,7 +71,7 @@ local check_unlock_repeater = function(pos, node)
 			end
 		end
 		if not fail then
-			if mesecon.is_powered(lpos) then
+			if mesecon.is_powered(lpos, delayer_get_input_rules(lnode)[1]) then
 				minetest.swap_node(lpos, {name="mesecons_delayer:delayer_on_1", param2=lnode.param2})
 				mesecon.queue:add_action(lpos, "receptor_on", {delayer_get_output_rules(lnode)}, ldef.delayer_time, nil)
 			else
