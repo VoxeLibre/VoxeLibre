@@ -82,7 +82,8 @@ local overwrite = function()
 				groups_changed = true
 			end
 			-- Automatically assign the “opaque” group for opaque nodes
-			if not (ndef.paramtype == "light" or ndef.sunlight_propagates) then
+			if (not (ndef.paramtype == "light" or ndef.sunlight_propagates)) and
+					(ndef.groups.not_opaque == 0 or ndef.groups.not_opaque == nil) then
 				newgroups.opaque = 1
 				groups_changed = true
 			end
