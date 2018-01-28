@@ -32,7 +32,6 @@ minetest.register_node("mcl_core:slimeblock", {
 	tiles = {"mcl_core_slime.png"},
 	paramtype = "light",
 	use_texture_alpha = true,
-	sunlight_propagates = true,
 	stack_max = 64,
 	-- According to Minecraft Wiki, bouncing off a slime block from a height off 255 blocks should result in a bounce height of 50 blocks
 	-- bouncy=44 makes the player bounce up to 49.6. This value was chosen by experiment.
@@ -57,7 +56,6 @@ minetest.register_node("mcl_core:cobweb", {
 	tiles = {"mcl_core_web.png"},
 	inventory_image = "mcl_core_web.png",
 	paramtype = "light",
-	sunlight_propagates = true,
 	liquid_viscosity = 14,
 	liquidtype = "source",
 	liquid_alternative_flowing = "mcl_core:cobweb",

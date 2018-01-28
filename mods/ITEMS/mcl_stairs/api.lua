@@ -104,7 +104,6 @@ function mcl_stairs.register_stair(subname, recipeitem, groups, images, descript
 		tiles = images,
 		paramtype = "light",
 		paramtype2 = "facedir",
-		sunlight_propagates = false,
 		is_ground_content = false,
 		groups = groups,
 		sounds = sounds,
@@ -200,7 +199,6 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 		tiles = images,
 		paramtype = "light",
 		-- Facedir intentionally left out (see below)
-		sunlight_propagates = false,
 		is_ground_content = false,
 		groups = groups,
 		sounds = sounds,

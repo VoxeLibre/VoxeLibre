@@ -21,7 +21,6 @@ local def_hopper = {
 	groups = {pickaxey=1, container=2,deco_block=1,},
 	drawtype = "nodebox",
 	paramtype = "light",
-	sunlight_propagates = true,
 	-- FIXME: mcl_hoppers_hopper_inside.png is unused by hoppers.
 	tiles = {"mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png"},
 	node_box = {
@@ -181,7 +180,6 @@ local def_hopper_side = {
 	groups = {pickaxey=1, container=2,not_in_creative_inventory=1},
 	drawtype = "nodebox",
 	paramtype = "light",
-	sunlight_propagates = true,
 	paramtype2 = "facedir",
 	tiles = {"mcl_hoppers_hopper_inside.png^mcl_hoppers_hopper_top.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png", "mcl_hoppers_hopper_outside.png"},
 	node_box = {

@@ -60,7 +60,6 @@ function mcl_beds.register_bed(name, def)
 		drawtype = "nodebox",
 		tiles = def.tiles.bottom,
 		paramtype = "light",
-		sunlight_propagates = true,
 		paramtype2 = "facedir",
 		is_ground_content = false,
 		stack_max = 1,
@@ -183,7 +182,6 @@ function mcl_beds.register_bed(name, def)
 		tiles = def.tiles.top,
 		paramtype = "light",
 		paramtype2 = "facedir",
-		sunlight_propagates = true,
 		is_ground_content = false,
 		-- FIXME: Should be bouncy=66, but this would be a higher bounciness than slime blocks!
 		groups = {handy = 1, flammable = 3, bed = 2, dig_by_piston=1, bouncy=33, fall_damage_add_percent=-50},

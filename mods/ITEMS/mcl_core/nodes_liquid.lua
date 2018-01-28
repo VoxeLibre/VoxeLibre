@@ -106,8 +106,6 @@ minetest.register_node("mcl_core:lava_flowing", {
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=6.6}
 		},
 	},
-	paramtype = "light",
-	sunlight_propagates = true,
 	paramtype2 = "flowingliquid",
 	-- Real light level: 15 (but Minetest caps at 14)
 	light_source = 14,
@@ -157,8 +155,6 @@ Lava interacts with water various ways:
 			backface_culling = false,
 		}
 	},
-	paramtype = "light",
-	sunlight_propagates = true,
 	-- Real light level: 15 (but Minetest caps at 14)
 	light_source = 14,
 	sounds = mcl_sounds.node_sound_lava_defaults(),
