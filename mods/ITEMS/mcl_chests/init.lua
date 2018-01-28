@@ -66,6 +66,8 @@ minetest.register_node("mcl_chests:"..basename, {
 	_doc_items_usagehelp = usagehelp,
 	_doc_items_hidden = hidden,
 	tiles = tiles_table.small,
+	paramtype = "light",
+	sunlight_propagates = true,
 	paramtype2 = "facedir",
 	stack_max = 64,
 	drop = drop,
@@ -172,6 +174,8 @@ minetest.register_node("mcl_chests:"..basename, {
 
 minetest.register_node("mcl_chests:"..basename.."_left", {
 	tiles = tiles_table.left,
+	paramtype = "light",
+	sunlight_propagates = true,
 	paramtype2 = "facedir",
 	groups = {handy=1,axey=1, container=5,not_in_creative_inventory=1, material_wood=1},
 	drop = drop,
@@ -286,6 +290,8 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 
 minetest.register_node("mcl_chests:"..basename.."_right", {
 	tiles = tiles_table.right,
+	paramtype = "light",
+	sunlight_propagates = true,
 	paramtype2 = "facedir",
 	groups = {handy=1,axey=1, container=6,not_in_creative_inventory=1, material_wood=1},
 	drop = drop,
@@ -573,6 +579,7 @@ minetest.register_node("mcl_chests:ender_chest", {
 	is_ground_content = false,
 	paramtype = "light",
 	light_source = 7,
+	sunlight_propagates = true,
 	paramtype2 = "facedir",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	drop = "mcl_core:obsidian 8",
