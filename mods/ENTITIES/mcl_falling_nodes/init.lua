@@ -124,10 +124,10 @@ minetest.register_entity(":__builtin:falling_node", {
 			local npos2 = table.copy(npos)
 			npos2.y = npos2.y - 2
 			local lownode = minetest.get_node(npos2)
-			-- Special check required for fences, because of their overhigh collision box.
-			if minetest.get_item_group(lownode.name, "fence") == 1 then
-				-- Instantly stop the node if it is above a fence. This is needed
-				-- because the falling node collides early with a fence node.
+			-- Special check required for fences and walls, because of their overhigh collision box.
+			if minetest.get_item_group(lownode.name, "fence") == 1 or minetest.get_item_group(lownode.name, "wall") == 1 then
+				-- Instantly stop the node if it is above a fence/wall. This is needed
+				-- because the falling node collides early with a fence/wall node.
 				-- Hacky, because the falling node will teleport a short distance, instead
 				-- of smoothly fall on the fence post.
 				local npos3 = table.copy(npos)
