@@ -3,7 +3,6 @@ mcl_core
 mcl_fishing
 mcl_maps
 mcl_minecarts
-mcl_observers
 doc_identifier
 mobs_mc
 mcl_comparators

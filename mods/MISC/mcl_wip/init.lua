@@ -4,8 +4,6 @@ local wip_items = {
 	"mcl_anvils:anvil_damage_2",
 	"mcl_fishing:fishing_rod",
 	"mcl_maps:empty_map",
-	"mcl_observers:observer_off",
-	"mcl_observers:observer_on",
 	"mcl_comparators:comparator_off_comp",
 	"mcl_minecarts:hopper_minecart",
 	"mcl_minecarts:command_block_minecart",
