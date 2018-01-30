@@ -8,7 +8,7 @@ else
 end
 
 local function handle_kill_command(suspect, victim)
-	if minetest.settings:get_bool("damage_enabled") == false then
+	if minetest.settings:get_bool("enable_damage") == false then
 		return false, S("Players can't be killed right now, damage has been disabled.")
 	end
 	local victimref = minetest.get_player_by_name(victim)
@@ -35,19 +35,19 @@ local function handle_kill_command(suspect, victim)
 	return true
 end
 
-minetest.register_privilege("kill", {
-	description = S("Can use /kill"),
-	give_to_singleplayer = false,
-})
-minetest.register_privilege("announce", {
-	description = S("Can use /say"),
-	give_to_singleplayer = false,
-})
-
+if not minetest.registered_privileges["player"] then
+	minetest.register_privilege("player", {
+		description = S("Can change player attributes"),
+		give_to_singleplayer = false,
+	})
+end
+if minetest.registered_chatcommands["kill"] then
+	minetest.unregister_chatcommand("kill")
+end
 minetest.register_chatcommand("kill", {
 	params = S("[<name>]"),
-	description = S("Kill player"),
-	privs = {kill=true},
+	description = S("Kill player or yourself"),
+	privs = {player=true},
 	func = function(name, param)
 		if(param == "") then
 			-- Selfkill
@@ -58,6 +58,10 @@ minetest.register_chatcommand("kill", {
 	end,
 })
 
+minetest.register_privilege("announce", {
+	description = S("Can use /say"),
+	give_to_singleplayer = false,
+})
 minetest.register_chatcommand("say", {
 	params = S("<message>"),
 	description = S("Send a message to every player"),
