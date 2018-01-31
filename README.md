@@ -96,6 +96,7 @@ The following main features are available:
 * Armor (unbalanced)
 * Crafting system: 2×2 grid, crafting table (3×3 grid), furnace, including a crafting guide
 * Chests, large chests, ender chests, shulker boxes
+* Furnaces, hoppers
 * Hunger
 * Most monsters and animals
 * All ores from Minecraft
@@ -225,7 +226,7 @@ This project is currently mostly a one-person project.
 This is a fan game, not developed or endorsed by Mojang AB.
 
 Copying is an act of love. Please copy and share! <3
-But, oh well, if you insist, here is the legalese for you:
+Here's the detailed legalese for those who need it:
 
 ### License of source code
 MineClone 2 is a clean-room implementation of Minecraft
