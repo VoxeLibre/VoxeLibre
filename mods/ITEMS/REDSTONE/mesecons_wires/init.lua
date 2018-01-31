@@ -249,6 +249,7 @@ Read the help entries on the other redstone components to learn how redstone com
 			walkable = false,
 			drop = "mesecons:wire_00000000_off",
 			sounds = mcl_sounds.node_sound_defaults(),
+			is_ground_content = false,
 			mesecon_wire = true
 		},{
 			_doc_items_create_entry = wirehelp,

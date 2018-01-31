@@ -110,7 +110,7 @@ function mesecon.register_pressure_plate(basename, description, textures_off, te
 			minetest.get_node_timer(pos):start(PRESSURE_PLATE_INTERVAL)
 		end,
 		sounds = sounds,
-
+		is_ground_content = false,
 		pressureplate_basename = basename,
 		pressureplate_activated_by = activated_by,
 		_mcl_blast_resistance = 2.5,

@@ -25,6 +25,7 @@ local register_tree_trunk = function(subname, description_trunk, description_bar
 		stack_max = 64,
 		groups = {handy=1,axey=1, bark=1, flammable=2, building_block=1, material_wood=1},
 		sounds = mcl_sounds.node_sound_wood_defaults(),
+		is_ground_content = false,
 		_mcl_blast_resistance = 10,
 		_mcl_hardness = 2,
 	})
