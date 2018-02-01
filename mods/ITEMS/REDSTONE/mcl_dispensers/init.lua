@@ -94,197 +94,19 @@ local dispenserdef = {
 			if #stacks >= 1 then
 				local r = math.random(1, #stacks)
 				local stack = stacks[r].stack
-				local dropitem = ItemStack(stack:get_name())
+				local dropitem = ItemStack(stack)
+				dropitem:set_count(1)
 				local stack_id = stacks[r].stackpos
+				local stackdef = stack:get_definition()
 				local iname = stack:get_name()
 				local igroups = minetest.registered_items[iname].groups
 
-				-- Do not dispense into solid nodes. Exception: Water bucket into cauldron
-				if dropnodedef.walkable and not (minetest.get_item_group(dropnode.name, "cauldron") ~= 0 and (iname == "mcl_buckets:bucket_water" or iname == "mcl_buckets:bucket_river_water")) then
-					-- no-op
-
 				--[===[ Dispense item ]===]
-				elseif iname == "mcl_throwing:arrow" then
-					-- Shoot arrow
-					local shootpos = vector.add(pos, vector.multiply(dropdir, 0.51))
-					local yaw = math.atan2(dropdir.z, dropdir.x) - math.pi/2
-					mcl_throwing.shoot_arrow(iname, shootpos, dropdir, yaw, nil, 19, 3)
 
-					stack:take_item()
-					inv:set_stack("main", stack_id, stack)
+				-- Hardcoded dispensions --
 
-				elseif iname == "mcl_throwing:egg" or iname == "mcl_throwing:snowball" then
-					-- Throw egg or snowball
-					local shootpos = vector.add(pos, vector.multiply(dropdir, 0.51))
-					mcl_throwing.throw(iname, shootpos, dropdir)
-
-					stack:take_item()
-					inv:set_stack("main", stack_id, stack)
-
-				elseif iname == "mcl_fire:fire_charge" then
-					-- Throw fire charge
-					local shootpos = vector.add(pos, vector.multiply(dropdir, 0.51))
-					local fireball = minetest.add_entity(shootpos, "mobs_mc:blaze_fireball")
-					local ent = fireball:get_luaentity()
-					ent._shot_from_dispenser = true
-					local v = ent.velocity or 1
-					fireball:setvelocity(vector.multiply(dropdir, v))
-					ent.switch = 1
-
-					stack:take_item()
-					inv:set_stack("main", stack_id, stack)
-
-				elseif iname == "mcl_fire:flint_and_steel" then
-					-- Ignite air or fire
-					if dropnode.name == "air" then
-						minetest.add_node(droppos, {name="mcl_fire:fire"})
-						if not minetest.settings:get_bool("creative_mode") then
-							stack:add_wear(65535/65) -- 65 uses
-						end
-					elseif dropnode.name == "mcl_tnt:tnt" then
-						tnt.ignite(droppos)
-						if not minetest.settings:get_bool("creative_mode") then
-							stack:add_wear(65535/65) -- 65 uses
-						end
-					end
-
-					inv:set_stack("main", stack_id, stack)
-				elseif iname == "mcl_tnt:tnt" then
-					-- Place and ignite TNT
-					if dropnodedef.buildable_to then
-						minetest.set_node(droppos, {name = iname})
-						tnt.ignite(droppos)
-
-						stack:take_item()
-						inv:set_stack("main", stack_id, stack)
-					end
-				elseif iname == "mcl_buckets:bucket_empty" then
-					-- Fill empty bucket with liquid or drop bucket if no liquid
-					local collect_liquid = false
-					local bucket_id
-					if dropnode.name == "mcl_core:water_source" then
-						collect_liquid = true
-						bucket_id = "mcl_buckets:bucket_water"
-					elseif dropnode.name == "mcl_core:lava_source" or dropnode.name == "mcl_nether:nether_lava_source" then
-						collect_liquid = true
-						bucket_id = "mcl_buckets:bucket_lava"
-					elseif dropnode.name == "mclx_core:river_water_source" then
-						collect_liquid = true
-						bucket_id = "mcl_buckets:bucket_river_water"
-					end
-					if collect_liquid then
-						minetest.set_node(droppos, {name="air"})
-
-						-- Fill bucket with liquid and put it back into inventory
-						-- if there's still space. If not, drop it.
-						stack:take_item()
-						inv:set_stack("main", stack_id, stack)
-
-						local new_bucket = ItemStack(bucket_id)
-						if inv:room_for_item("main", new_bucket) then
-							inv:add_item("main", new_bucket)
-						else
-							minetest.add_item(droppos, dropitem)
-						end
-					else
-						-- No liquid found: Drop empty bucket
-						minetest.add_item(droppos, dropitem)
-
-						stack:take_item()
-						inv:set_stack("main", stack_id, stack)
-					end
-				elseif iname == "mcl_buckets:bucket_water" or iname == "mcl_buckets:bucket_river_water" or iname == "mcl_buckets:bucket_lava" then
-					local do_empty = false
-					-- Place water/lava source
-					if minetest.get_item_group(dropnode.name, "cauldron") ~= 0 then
-						if iname == "mcl_buckets:bucket_water" then
-							minetest.set_node(droppos, {name = "mcl_cauldrons:cauldron_3"})
-							do_empty = true
-						elseif iname == "mcl_buckets:bucket_river_water" then
-							minetest.set_node(droppos, {name = "mcl_cauldrons:cauldron_3r"})
-							do_empty = true
-						end
-					elseif dropnodedef.buildable_to then
-						local dim = mcl_worlds.pos_to_dimension(droppos)
-						if iname == "mcl_buckets:bucket_water" then
-							if dim == "nether" then
-								minetest.sound_play("fire_extinguish_flame", {pos = droppos, gain = 0.25, max_hear_distance = 16})
-							else
-								minetest.set_node(droppos, {name = "mcl_core:water_source"})
-							end
-							do_empty = true
-						elseif iname == "mcl_buckets:bucket_river_water" then
-							if dim == "nether" then
-								minetest.sound_play("fire_extinguish_flame", {pos = droppos, gain = 0.25, max_hear_distance = 16})
-							else
-								minetest.set_node(droppos, {name = "mclx_core:river_water_source"})
-							end
-							do_empty = true
-						elseif iname == "mcl_buckets:bucket_lava" then
-							if dim == "nether" then
-								minetest.set_node(droppos, {name = "mcl_nether:nether_lava_source"})
-							else
-								minetest.set_node(droppos, {name = "mcl_core:lava_source"})
-							end
-							do_empty = true
-						end
-					end
-
-					if do_empty then
-						stack:take_item()
-						inv:set_stack("main", stack_id, stack)
-
-						if inv:room_for_item("main", "mcl_buckets:bucket_empty") then
-							inv:add_item("main", "mcl_buckets:bucket_empty")
-						else
-							minetest.add_item(droppos, dropitem)
-						end
-					end
-
-				elseif iname == "mcl_dye:white" then
-					-- Apply bone meal, if possible
-					local pointed_thing
-					if dropnode.name == "air" then
-						pointed_thing = { above = droppos, under = { x=droppos.x, y=droppos.y-1, z=droppos.z } }
-					else
-						pointed_thing = { above = pos, under = droppos }
-					end
-					local success = mcl_dye.apply_bone_meal(pointed_thing)
-					if success then
-						stack:take_item()
-						inv:set_stack("main", stack_id, stack)
-					end
-
-				elseif minetest.get_item_group(iname, "minecart") == 1 then
-					-- Place minecart as entity on rail
-					local placed
-					if dropnodedef.groups.rail then
-						-- FIXME: This places minecarts even if the spot is already occupied
-						local pointed_thing = { under = droppos, above = { x=droppos.x, y=droppos.y+1, z=droppos.z } }
-						placed = mcl_minecarts.place_minecart(stack, pointed_thing)
-					end
-					if placed == nil then
-						-- Drop item
-						minetest.add_item(droppos, dropitem)
-					end
-
-					stack:take_item()
-					inv:set_stack("main", stack_id, stack)
-
-				elseif igroups.boat then
-					local below = {x=droppos.x, y=droppos.y-1, z=droppos.z}
-					local belownode = minetest.get_node(below)
-					-- Place boat as entity on or in water
-					if dropnodedef.groups.water or (dropnode.name == "air" and minetest.registered_nodes[belownode.name].groups.water) then
-						minetest.add_entity(droppos, "mcl_boats:boat")
-					else
-						minetest.add_item(droppos, dropitem)
-					end
-
-					stack:take_item()
-					inv:set_stack("main", stack_id, stack)
-
-				elseif igroups.armor_head or igroups.armor_torso or igroups.armor_legs or igroups.armor_feet then
+				-- Armor, mob heads and pumpkins
+				if igroups.armor_head or igroups.armor_torso or igroups.armor_legs or igroups.armor_feet then
 					local armor_type, armor_slot
 					local armor_dispensed = false
 					if igroups.armor_head then
@@ -373,19 +195,9 @@ local dispenserdef = {
 						end
 					end
 
-				elseif igroups.shulker_box then
-					-- Place shulker box as node
-					if dropnodedef.buildable_to then
-						minetest.set_node(droppos, {name = iname, param2 = node.param2})
-						local imeta = stack:get_metadata()
-						local iinv_main = minetest.deserialize(imeta)
-						local ninv = minetest.get_inventory({type="node", pos=droppos})
-						ninv:set_list("main", iinv_main)
-						stack:take_item()
-					end
-
+				-- Spawn Egg
 				elseif igroups.spawn_egg then
-					-- Place spawn egg
+					-- Spawn mob
 					if not dropnodedef.walkable then
 						pointed_thing = { above = droppos, under = { x=droppos.x, y=droppos.y-1, z=droppos.z } }
 						minetest.add_entity(droppos, stack:get_name())
@@ -394,14 +206,44 @@ local dispenserdef = {
 						inv:set_stack("main", stack_id, stack)
 					end
 
-				-- TODO: Many other dispenser actions
-				else
-					-- Drop item
-					minetest.add_item(droppos, dropitem)
-	
-					stack:take_item()
-					inv:set_stack("main", stack_id, stack)
+				-- Generalized dispension
+				elseif (not dropnodedef.walkable or stackdef._dispense_into_walkable) then
+					--[[ _on_dispense(stack, pos, droppos, dropnode, dropdir)
+						* stack: Itemstack which is dispense
+						* pos: Position of dispenser
+						* droppos: Position to which to dispense item
+						* dropnode: Node of droppos
+						* dropdir: Drop direction
+
+					_dispense_into_walkable: If true, can dispense into walkable nodes
+					]]
+					if stackdef._on_dispense then
+						-- Item-specific dispension (if defined)
+						local od_ret = stackdef._on_dispense(dropitem, pos, droppos, dropnode, dropdir)
+						if od_ret then
+							local newcount = stack:get_count() - 1
+							stack:set_count(newcount)
+							inv:set_stack("main", stack_id, stack)
+							if newcount == 0 then
+								inv:set_stack("main", stack_id, od_ret)
+							elseif inv:room_for_item("main", od_ret) then
+								inv:add_item("main", od_ret)
+							else
+								minetest.add_item(droppos, dropitem)
+							end
+						else
+							stack:take_item()
+							inv:set_stack("main", stack_id, stack)
+						end
+					else
+						-- Drop item otherwise
+						minetest.add_item(droppos, dropitem)
+						stack:take_item()
+						inv:set_stack("main", stack_id, stack)
+					end
 				end
+
+
 			end
 		end,
 		rules = mesecon.rules.alldirs,

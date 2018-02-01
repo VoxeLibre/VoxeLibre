@@ -7,6 +7,12 @@ minetest.register_craftitem("mcl_throwing:arrow", {
 	_doc_items_usagehelp = "To use arrows as ammunition for a bow, just put them anywhere in your inventory, they will be used up automatically. To use arrows as ammunition for a dispenser, place them in the dispenser's inventory.",
 	inventory_image = "mcl_throwing_arrow_inv.png",
 	groups = { ammo=1, ammo_bow=1 },
+	_on_dispense = function(itemstack, dispenserpos, droppos, dropnode, dropdir)
+		-- Shoot arrow
+		local shootpos = vector.add(dispenserpos, vector.multiply(dropdir, 0.51))
+		local yaw = math.atan2(dropdir.z, dropdir.x) - math.pi/2
+		mcl_throwing.shoot_arrow(itemstack:get_name(), shootpos, dropdir, yaw, nil, 19, 3)
+	end,
 })
 
 minetest.register_node("mcl_throwing:arrow_box", {

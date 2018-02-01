@@ -332,6 +332,7 @@ mcl_minecarts.place_minecart = function(itemstack, pointed_thing)
 	return itemstack
 end
 
+
 local register_craftitem = function(itemstring, entity_id, description, longdesc, usagehelp, icon, creative)
 	entity_mapping[itemstring] = entity_id
 
@@ -355,6 +356,19 @@ local register_craftitem = function(itemstring, entity_id, description, longdesc
 			end
 
 			return mcl_minecarts.place_minecart(itemstack, pointed_thing)
+		end,
+		_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
+			-- Place minecart as entity on rail. If there's no rail, just drop it.
+			local placed
+			if minetest.get_item_group(dropnode.name, "rail") ~= 0 then
+				-- FIXME: This places minecarts even if the spot is already occupied
+				local pointed_thing = { under = droppos, above = { x=droppos.x, y=droppos.y+1, z=droppos.z } }
+				placed = mcl_minecarts.place_minecart(stack, pointed_thing)
+			end
+			if placed == nil then
+				-- Drop item
+				minetest.add_item(droppos, stack)
+			end
 		end,
 		groups = groups,
 	}

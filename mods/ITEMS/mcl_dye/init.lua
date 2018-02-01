@@ -300,6 +300,20 @@ minetest.register_craftitem("mcl_dye:white", {
 		end
 		return itemstack
 	end,
+	_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
+		-- Apply bone meal, if possible
+		local pointed_thing
+		if dropnode.name == "air" then
+			pointed_thing = { above = droppos, under = { x=droppos.x, y=droppos.y-1, z=droppos.z } }
+		else
+			pointed_thing = { above = pos, under = droppos }
+		end
+		local success = mcl_dye.apply_bone_meal(pointed_thing)
+		if success then
+			stack:take_item()
+		end
+		return stack
+	end,
 })
 
 minetest.register_craftitem("mcl_dye:brown", {

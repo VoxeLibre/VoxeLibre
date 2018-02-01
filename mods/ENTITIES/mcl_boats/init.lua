@@ -307,6 +307,16 @@ for b=1, #boat_ids do
 			end
 			return itemstack
 		end,
+		_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
+			local below = {x=droppos.x, y=droppos.y-1, z=droppos.z}
+			local belownode = minetest.get_node(below)
+			-- Place boat as entity on or in water
+			if minetest.get_item_group(dropnode.name, "water") ~= 0 or (dropnode.name == "air" and minetest.get_item_group(belownode.name, "water") ~= 0) then
+				minetest.add_entity(droppos, "mcl_boats:boat")
+			else
+				minetest.add_item(droppos, stack)
+			end
+		end,
 	})
 
 	local c = craftstuffs[b]

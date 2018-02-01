@@ -37,6 +37,12 @@ local sound_take = function(itemname, pos)
 	end
 end
 
+local place_liquid = function(pos, itemstring)
+	local fullness = minetest.registered_nodes[itemstring].liquid_range
+	sound_place(itemstring, pos)
+	minetest.add_node(pos, {name=itemstring, param2=fullness})
+end
+
 -- Register a new liquid
 --   source_place = a string or function.
 --      * string: name of the node to place
@@ -86,12 +92,6 @@ function mcl_buckets.register_liquid(source_place, source_take, itemname, invent
 					if minetest.registered_nodes[nn] and minetest.registered_nodes[nn].on_rightclick then
 						return minetest.registered_nodes[nn].on_rightclick(place_pos, node, user, itemstack) or itemstack
 					end
-				end
-
-				local place_liquid = function(pos, itemstring)
-					local fullness = minetest.registered_nodes[itemstring].liquid_range
-					sound_place(itemstring, pos)
-					minetest.add_node(pos, {name=itemstring, param2=fullness})
 				end
 
 				local node_place
@@ -154,7 +154,29 @@ function mcl_buckets.register_liquid(source_place, source_take, itemname, invent
 				else
 					return
 				end
-			end
+			end,
+			_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
+				local iname = stack:get_name()
+				local buildable = minetest.registered_nodes[dropnode.name].buildable_to
+
+				if extra_check and extra_check(droppos) == false then
+					-- Fail placement of liquid
+				elseif buildable then
+					-- buildable; replace the node
+					if minetest.is_protected(droppos, "") then
+						return stack
+					end
+					local node_place
+					if type(source_place) == "function" then
+						node_place = source_place(droppos)
+					else
+						node_place = source_place
+					end
+					place_liquid(droppos, node_place)
+					stack:set_name("mcl_buckets:bucket_empty")
+				end
+				return stack
+			end,
 		})
 	end
 end
@@ -233,6 +255,30 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 				return itemstack
 			end
 		end
+	end,
+	_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
+		-- Fill empty bucket with liquid or drop bucket if no liquid
+		local collect_liquid = false
+
+		local liquiddef = mcl_buckets.liquids[dropnode.name]
+		local new_bucket
+		if liquiddef ~= nil and liquiddef.itemname ~= nil and (dropnode.name  == liquiddef.source_take) then
+			-- Fill bucket
+			new_bucket = ItemStack({name = liquiddef.itemname, metadata = tostring(dropnode.param2)})
+			sound_take(dropnode.name, droppos)
+			collect_liquid = true
+		end
+		if collect_liquid then
+			minetest.set_node(droppos, {name="air"})
+
+			-- Fill bucket with liquid
+			stack = new_bucket
+		else
+			-- No liquid found: Drop empty bucket
+			minetest.add_item(droppos, stack)
+			stack:take_item()
+		end
+		return stack
 	end,
 })
 

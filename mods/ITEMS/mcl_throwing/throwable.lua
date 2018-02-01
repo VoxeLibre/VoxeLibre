@@ -34,7 +34,7 @@ end
 -- Throw item
 local throw_function = function(entity_name, velocity)
 	local func = function(item, player, pointed_thing)
-		local playerpos = player:getpos()
+		local playerpos = player:get_pos()
 		local dir = player:get_look_dir()
 		local obj = mcl_throwing.throw(item, {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, velocity)
 		obj:get_luaentity()._thrower = player:get_player_name()
@@ -44,6 +44,12 @@ local throw_function = function(entity_name, velocity)
 		return item
 	end
 	return func
+end
+
+local dispense_function = function(stack, dispenserpos, droppos, dropnode, dropdir)
+	-- Launch throwable item
+	local shootpos = vector.add(dispenserpos, vector.multiply(dropdir, 0.51))
+	mcl_throwing.throw(stack:get_name(), shootpos, dropdir)
 end
 
 -- Staticdata handling because objects may want to be reloaded
@@ -288,6 +294,7 @@ minetest.register_craftitem("mcl_throwing:snowball", {
 	inventory_image = "mcl_throwing_snowball.png",
 	stack_max = 16,
 	on_use = throw_function("mcl_throwing:snowball_entity"),
+	_on_dispense = dispense_function,
 })
 
 -- Egg
@@ -298,6 +305,7 @@ minetest.register_craftitem("mcl_throwing:egg", {
 	inventory_image = "mcl_throwing_egg.png",
 	stack_max = 16,
 	on_use = throw_function("mcl_throwing:egg_entity"),
+	_on_dispense = dispense_function,
 	groups = { craftitem = 1 },
 })
 

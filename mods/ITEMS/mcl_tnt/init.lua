@@ -76,6 +76,13 @@ minetest.register_node("mcl_tnt:tnt", {
 		tnt.ignite(pointed_thing.under)
 		return true
 	end,
+	_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
+		-- Place and ignite TNT
+		if minetest.registered_nodes[dropnode.name].buildable_to then
+			minetest.set_node(droppos, {name = stack:get_name()})
+			tnt.ignite(droppos)
+		end
+	end,
 	sounds = sounds,
 })
 

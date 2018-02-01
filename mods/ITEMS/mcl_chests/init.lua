@@ -689,6 +689,18 @@ for color, desc in pairs(boxtypes) do
 			local inv = meta:get_inventory()
 			inv:set_size("main", 9*3)
 		end,
+		_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
+			-- Place shulker box as node
+			if minetest.registered_nodes[dropnode.name].buildable_to then
+				minetest.set_node(droppos, {name = stack:get_name(), param2 = minetest.dir_to_facedir(dropdir)})
+				local imeta = stack:get_metadata()
+				local iinv_main = minetest.deserialize(imeta)
+				local ninv = minetest.get_inventory({type="node", pos=droppos})
+				ninv:set_list("main", iinv_main)
+				stack:take_item()
+			end
+			return stack
+		end,
 		after_place_node = function(pos, placer, itemstack, pointed_thing)
 			local nmeta = minetest.get_meta(pos)
 			local ninv = nmeta:get_inventory()

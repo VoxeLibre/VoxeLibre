@@ -32,6 +32,17 @@ minetest.register_craftitem("mcl_fire:fire_charge", {
 		end
 		return itemstack
 	end,
+	_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
+		-- Throw fire charge
+		local shootpos = vector.add(pos, vector.multiply(dropdir, 0.51))
+		local fireball = minetest.add_entity(shootpos, "mobs_mc:blaze_fireball")
+		local ent = fireball:get_luaentity()
+		ent._shot_from_dispenser = true
+		local v = ent.velocity or 1
+		fireball:setvelocity(vector.multiply(dropdir, v))
+		ent.switch = 1
+		stack:take_item()
+	end,
 })
 
 minetest.register_craft({

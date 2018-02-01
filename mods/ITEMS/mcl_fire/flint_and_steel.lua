@@ -42,6 +42,21 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 		end
 		return itemstack
 	end,
+	_dispense_into_walkable = true,
+	_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
+		if dropnode.name == "air" then
+			minetest.add_node(droppos, {name="mcl_fire:fire"})
+			if not minetest.settings:get_bool("creative_mode") then
+				stack:add_wear(65535/65) -- 65 uses
+			end
+		elseif dropnode.name == "mcl_tnt:tnt" then
+			tnt.ignite(droppos)
+			if not minetest.settings:get_bool("creative_mode") then
+				stack:add_wear(65535/65) -- 65 uses
+			end
+		end
+		return stack
+	end,
 	sound = { breaks = "default_tool_breaks" },
 })
 
