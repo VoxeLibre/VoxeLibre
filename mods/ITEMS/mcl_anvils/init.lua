@@ -41,7 +41,10 @@ local function update_anvil_slots(meta)
 			local meta = name_item:get_meta()
 			-- Limit name length
 			new_name = string.sub(new_name, 1, 30)
+			-- Rename item
 			meta:set_string("description", new_name)
+			-- Double-save the name internally, too
+			meta:set_string("name", new_name)
 			new_output = name_item
 		else
 			new_output = ""
