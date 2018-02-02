@@ -380,7 +380,22 @@ local register_craftitem = function(itemstring, entity_id, description, longdesc
 	minetest.register_craftitem(itemstring, def)
 end
 
-local function register_minecart(itemstring, entity_id, description, longdesc, usagehelp, mesh, textures, icon, drop, on_rightclick, creative)
+--[[
+Register a minecart
+* itemstring: Itemstring of minecart item
+* entity_id: ID of minecart entity
+* description: Item name / description
+* longdesc: Long help text
+* usagehelp: Usage help text
+* mesh: Minecart mesh
+* textures: Minecart textures table
+* icon: Item icon
+* drop: Dropped items after destroying minecart
+* on_rightclick: Called after rightclick
+* on_activate_by_rail: Called when above activator rail
+* creative: If false, don't show in Creative Inventory
+]]
+local function register_minecart(itemstring, entity_id, description, longdesc, usagehelp, mesh, textures, icon, drop, on_rightclick, on_activate_by_rail, creative)
 	register_entity(entity_id, mesh, textures, drop, on_rightclick)
 	register_craftitem(itemstring, entity_id, description, longdesc, usagehelp, icon, creative)
 	if minetest.get_modpath("doc_identifier") ~= nil then
