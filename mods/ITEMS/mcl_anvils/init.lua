@@ -1,3 +1,61 @@
+local function get_anvil_formspec(set_name)
+	if not set_name then
+		set_name = ""
+	end
+	return "size[9,8.75]"..
+	"background[-0.19,-0.25;9.41,9.49;mcl_anvils_inventory.png]"..
+	mcl_vars.inventory_header..
+	"list[current_player;main;0,4.5;9,3;9]"..
+	"list[current_player;main;0,7.74;9,1;]"..
+	"list[context;input;1,2.5;1,1;]"..
+	"list[context;input;4,2.5;1,1;1]"..
+	"list[context;output;8,2.5;1,1;]"..
+	"field[3.25,1;4,1;name;;"..minetest.formspec_escape(set_name).."]"..
+	"button[7,0.7;2,1;name_button;Set name]"..
+	"listring[context;output]"..
+	"listring[current_player;main]"..
+	"listring[context;input]"..
+	"listring[current_player;main]"
+end
+
+-- Update the inventory slots of an anvil node.
+-- meta: Metadata of anvil node
+local function update_anvil_slots(meta)
+	local inv = meta:get_inventory()
+	local new_name = meta:get_string("set_name")
+	local input1, input2, output
+	input1 = inv:get_stack("input", 1)
+	input2 = inv:get_stack("input", 2)
+	output = inv:get_stack("output", 1)
+	local new_output
+
+	-- Just rename
+	if (not input1:is_empty() and input2:is_empty()) or (input1:is_empty() and not input2:is_empty()) then
+		if new_name ~= nil and new_name ~= "" then
+			local name_item
+			if input1:is_empty() then
+				name_item = input2
+			else
+				name_item = input1
+			end
+			local meta = name_item:get_meta()
+			-- Limit name length
+			new_name = string.sub(new_name, 1, 30)
+			meta:set_string("description", new_name)
+			new_output = name_item
+		else
+			new_output = ""
+		end
+	else
+		new_output = ""
+	end
+
+	-- Set the new output slot
+	if new_output ~= nil then
+		inv:set_stack("output", 1, new_output)
+	end
+end
+
 local anvildef = {
 	groups = {pickaxey=1, falling_node=1, crush_after_fall=1, deco_block=1, anvil=1},
 	tiles = {"mcl_anvils_anvil_top_damaged_0.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png"},
@@ -27,9 +85,42 @@ local anvildef = {
 	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 		if to_list == "output" then
 			return 0
+		elseif from_list == "output" and to_list == "input" then
+			local meta = minetest.get_meta(pos)
+			local inv = meta:get_inventory()
+			if inv:get_stack(to_list, to_index):is_empty() then
+				return count
+			else
+				return 0
+			end
 		else
 			return count
 		end
+	end,
+	on_metadata_inventory_put = function(pos, listname, index, stack, player)
+		local meta = minetest.get_meta(pos)
+		update_anvil_slots(meta)
+	end,
+	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+		local meta = minetest.get_meta(pos)
+		if from_list == "output" and to_list == "input" then
+			local inv = meta:get_inventory()
+			inv:set_stack("output", 1, "")
+			for i=1, inv:get_size("input") do
+				if i ~= to_index then
+					inv:set_stack("input", i, "")
+				end
+			end
+		end
+		update_anvil_slots(meta)
+	end,
+	on_metadata_inventory_take = function(pos, listname, index, stack, player)
+		local meta = minetest.get_meta(pos)
+		if listname == "output" then
+			local inv = meta:get_inventory()
+			inv:set_list("input", {"",""})
+		end
+		update_anvil_slots(meta)
 	end,
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -44,11 +135,27 @@ local anvildef = {
 		"list[context;input;1,2.5;1,1;]"..
 		"list[context;input;4,2.5;1,1;1]"..
 		"list[context;output;8,2.5;1,1;]"..
+		"field[3.25,1;4,1;name;;]"..
+		"button[7,0.7;2,1;name_button;Set name]"..
 		"listring[context;output]"..
 		"listring[current_player;main]"..
 		"listring[context;input]"..
 		"listring[current_player;main]"
 		meta:set_string("formspec", form)
+	end,
+	on_receive_fields = function(pos, formname, fields, sender)
+		if fields.name_button then
+			local set_name
+			if fields.name == nil then
+				set_name = ""
+			else
+				set_name = fields.name
+			end
+			local meta = minetest.get_meta(pos)
+			meta:set_string("set_name", set_name)
+			update_anvil_slots(meta)
+			meta:set_string("formspec", get_anvil_formspec(set_name))
+		end
 	end,
 }
 if minetest.get_modpath("screwdriver") then
