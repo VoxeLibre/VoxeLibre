@@ -1,4 +1,7 @@
 local MAX_NAME_LENGTH = 30
+local MAX_WEAR = 65535
+local SAME_TOOL_REPAIR_BOOST = math.ceil(MAX_WEAR * 0.05) -- 5%
+local MATERIAL_TOOL_REPAIR_BOOST = math.ceil(MAX_WEAR * 0.25) -- 25%
 
 local function get_anvil_formspec(set_name)
 	if not set_name then
@@ -29,19 +32,45 @@ local function update_anvil_slots(meta)
 	input1 = inv:get_stack("input", 1)
 	input2 = inv:get_stack("input", 2)
 	output = inv:get_stack("output", 1)
-	local new_output
+	local new_output, name_item
+	local check_rename = false
 
-	-- Just rename
-	if (not input1:is_empty() and input2:is_empty()) or (input1:is_empty() and not input2:is_empty()) then
+	-- Both input slots occupied
+	if (not input1:is_empty() and not input2:is_empty()) then
+		-- Repair, if tool
+		local def1 = input1:get_definition()
+		local def2 = input2:get_definition()
+
+		-- Same tool twice
+		if input1:get_name() == input2:get_name() and def1.type == "tool" then
+			-- Add tool health together plus a 5% bonus
+			-- TODO: Combine tool enchantments
+			local new_health = (MAX_WEAR - input1:get_wear()) + (MAX_WEAR - input2:get_wear())
+			new_health = new_health + SAME_TOOL_REPAIR_BOOST
+			local new_wear = math.max(0, math.min(MAX_WEAR, MAX_WEAR - new_health))
+			input1:set_wear(new_wear)
+			name_item = input1
+		-- Tool + repair item
+		else
+			-- TODO: 25% repair bonus
+			-- TODO: Combine tool enchantments
+			new_output = ""
+		end
+	-- Exactly 1 input slot occupied
+	elseif (not input1:is_empty() and input2:is_empty()) or (input1:is_empty() and not input2:is_empty()) then
+		-- Just rename item
 		if new_name == nil then
 			new_name = ""
 		end
-		local name_item
 		if input1:is_empty() then
 			name_item = input2
 		else
 			name_item = input1
 		end
+	end
+
+	-- Rename handling
+	if name_item then
 		-- No renaming allowed with group no_rename=1
 		if minetest.get_item_group(name_item:get_name(), "no_rename") == 1 then
 			new_output = ""
