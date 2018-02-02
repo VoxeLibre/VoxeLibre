@@ -3608,16 +3608,18 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 	if item:get_name() == "mobs:nametag" then
 
 		local tag = item:get_meta():get_string("name")
-		if string.len(tag) > 30 then
-			tag = string.sub(tag, 1, 30)
-		end
-		self.nametag = tag
+		if tag ~= "" then
+			if string.len(tag) > 30 then
+				tag = string.sub(tag, 1, 30)
+			end
+			self.nametag = tag
 
-		update_tag(self)
+			update_tag(self)
 
-		if not mobs.is_creative(name) then
-			item:take_item()
-			player:set_wielded_item(item)
+			if not mobs.is_creative(name) then
+				item:take_item()
+				player:set_wielded_item(item)
+			end
 		end
 	end
 
