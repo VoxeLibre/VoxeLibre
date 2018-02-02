@@ -333,24 +333,8 @@ end
 -- update nametag colour
 local update_tag = function(self)
 
-	local col = "#00FF00"
-	local qua = self.hp_max / 4
-
-	if self.health <= floor(qua * 3) then
-		col = "#FFFF00"
-	end
-
-	if self.health <= floor(qua * 2) then
-		col = "#FF6600"
-	end
-
-	if self.health <= floor(qua) then
-		col = "#FF0000"
-	end
-
 	self.object:set_properties({
 		nametag = self.nametag,
-		nametag_color = col
 	})
 
 end
@@ -3539,10 +3523,6 @@ function mobs:protect(self, clicker)
 	return true
 end
 
-
-local mob_obj = {}
-local mob_sta = {}
-
 -- feeding, taming and breeding (thanks blert2112)
 function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 
@@ -3624,71 +3604,26 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 
 	local item = clicker:get_wielded_item()
 
-	-- if mob has been tamed you can name it with a nametag
-	if item:get_name() == "mobs:nametag"
-	and clicker:get_player_name() == self.owner then
+	-- Name mob with nametag
+	if item:get_name() == "mobs:nametag" then
 
-		local name = clicker:get_player_name()
+		local tag = item:get_meta():get_string("name")
+		if string.len(tag) > 30 then
+			tag = string.sub(tag, 1, 30)
+		end
+		self.nametag = tag
 
-		-- store mob and nametag stack in external variables
-		mob_obj[name] = self
-		mob_sta[name] = item
+		update_tag(self)
 
-		local tag = self.nametag or ""
-
-		minetest.show_formspec(name, "mobs_nametag", "size[8,4]"
-			.. mcl_vars.gui_bg
-			.. mcl_vars.gui_bg_img
-			.. "field[0.5,1;7.5,0;name;" .. minetest.formspec_escape(S("Enter name:")) .. ";" .. tag .. "]"
-			.. "button_exit[2.5,3.5;3,1;mob_rename;" .. minetest.formspec_escape(S("Rename")) .. "]")
-
+		if not mobs.is_creative(name) then
+			item:take_item()
+			player:set_wielded_item(item)
+		end
 	end
 
 	return false
 
 end
-
-
--- inspired by blockmen's nametag mod
-minetest.register_on_player_receive_fields(function(player, formname, fields)
-
-	-- right-clicked with nametag and name entered?
-	if formname == "mobs_nametag"
-	and fields.name
-	and fields.name ~= "" then
-
-		local name = player:get_player_name()
-
-		if not mob_obj[name]
-		or not mob_obj[name].object then
-			return
-		end
-
-		-- limit name entered to 64 characters long
-		if string.len(fields.name) > 64 then
-			fields.name = string.sub(fields.name, 1, 64)
-		end
-
-		-- update nametag
-		mob_obj[name].nametag = fields.name
-
-		update_tag(mob_obj[name])
-
-		-- if not in creative then take item
-		if not mobs.is_creative(name) then
-
-			mob_sta[name]:take_item()
-
-			player:set_wielded_item(mob_sta[name])
-		end
-
-		-- reset external variables
-		mob_obj[name] = nil
-		mob_sta[name] = nil
-
-	end
-end)
-
 
 -- compatibility function for old entities to new modpack entities
 function mobs:alias_mob(old_name, new_name)
