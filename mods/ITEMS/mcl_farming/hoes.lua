@@ -53,6 +53,7 @@ minetest.register_tool("mcl_farming:hoe_wood", {
 		full_punch_interval = 1,
 		damage_groups = { fleshy = 1, }
 	},
+	_repair_material = "group:wood",
 })
 
 minetest.register_craft({
@@ -103,6 +104,7 @@ minetest.register_tool("mcl_farming:hoe_stone", {
 		full_punch_interval = 0.5,
 		damage_groups = { fleshy = 1, }
 	},
+	_repair_material = "mcl_core:cobblestone",
 })
 
 minetest.register_craft({
@@ -149,6 +151,7 @@ minetest.register_tool("mcl_farming:hoe_iron", {
 		full_punch_interval = 0.33333333,
 		damage_groups = { fleshy = 1, }
 	},
+	_repair_material = "mcl_core:iron_ingot",
 })
 
 minetest.register_craft({
@@ -201,6 +204,7 @@ minetest.register_tool("mcl_farming:hoe_gold", {
 		full_punch_interval = 1,
 		damage_groups = { fleshy = 1, }
 	},
+	_repair_material = "mcl_core:gold_ingot",
 })
 
 minetest.register_craft({
@@ -255,6 +259,7 @@ minetest.register_tool("mcl_farming:hoe_diamond", {
 		full_punch_interval = 0.25,
 		damage_groups = { fleshy = 1, }
 	},
+	_repair_material = "mcl_core:diamond",
 })
 
 minetest.register_craft({
