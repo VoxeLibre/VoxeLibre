@@ -38,14 +38,19 @@ local function update_anvil_slots(meta)
 			else
 				name_item = input1
 			end
-			local meta = name_item:get_meta()
-			-- Limit name length
-			new_name = string.sub(new_name, 1, 30)
-			-- Rename item
-			meta:set_string("description", new_name)
-			-- Double-save the name internally, too
-			meta:set_string("name", new_name)
-			new_output = name_item
+			-- No renaming allowed with group no_rename=1
+			if minetest.get_item_group(name_item:get_name(), "no_rename") == 1 then
+				new_output = ""
+			else
+				local meta = name_item:get_meta()
+				-- Limit name length
+				new_name = string.sub(new_name, 1, 30)
+				-- Rename item
+				meta:set_string("description", new_name)
+				-- Double-save the name internally, too
+				meta:set_string("name", new_name)
+				new_output = name_item
+			end
 		else
 			new_output = ""
 		end

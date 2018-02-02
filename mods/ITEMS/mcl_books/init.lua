@@ -179,7 +179,7 @@ minetest.register_craftitem("mcl_books:written_book", {
 
 To copy the text of the written book, place it into the crafting grid together with a book and quill (or multiple of those) and craft. The written book will not be consumed. Copies of copies can not be copied.]],
 	inventory_image = "mcl_books_book_written.png",
-	groups = { not_in_creative_inventory=1, book=1 },
+	groups = { not_in_creative_inventory=1, book=1, no_rename=1 },
 	stack_max = 16,
 	on_place = read,
 	on_secondary_use = read
