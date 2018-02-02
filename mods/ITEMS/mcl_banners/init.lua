@@ -218,7 +218,11 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 							table.remove(layers)
 							imeta:set_string("layers", minetest.serialize(layers))
 							local newdesc = mcl_banners.make_advanced_banner_description(itemstack:get_definition().description, layers)
-							imeta:set_string("description", newdesc)
+							local mname = imeta:get_string("name")
+							-- Don't change description if item has a name
+							if mname == "" then
+								imeta:set_string("description", newdesc)
+							end
 						end
 
 						-- Washing off reduces the water level by 1.
@@ -272,6 +276,10 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 			local layers_raw = imeta:get_string("layers")
 			local layers = minetest.deserialize(layers_raw)
 			banner:get_luaentity():_set_textures(colorid, layers)
+			local mname = imeta:get_string("name")
+			if mname ~= nil and mname ~= "" then
+				banner:get_luaentity()._item_name = mname
+			end
 
 			-- Set rotation
 			local final_yaw
@@ -336,7 +344,7 @@ local entity_standing = {
 			-- pattern: name of pattern (see list above)
 
 	get_staticdata = function(self)
-		local out = { _base_color = self._base_color, _layers = self._layers }
+		local out = { _base_color = self._base_color, _layers = self._layers, _name = self._name }
 		return minetest.serialize(out)
 	end,
 	on_activate = function(self, staticdata)
@@ -344,6 +352,7 @@ local entity_standing = {
 			local inp = minetest.deserialize(staticdata)
 			self._base_color = inp._base_color
 			self._layers = inp._layers
+			self._name = inp._name
 			self.object:set_properties({
 				textures = make_banner_texture(self._base_color, self._layers),
 			})
@@ -363,7 +372,12 @@ local entity_standing = {
 			local banner = ItemStack("mcl_banners:banner_item_"..mcl_banners.colors[self._base_color][1])
 			local meta = banner:get_meta()
 			meta:set_string("layers", minetest.serialize(self._layers))
-			meta:set_string("description", mcl_banners.make_advanced_banner_description(banner:get_definition().description, self._layers))
+			if self._item_name ~= nil and self._item_name ~= "" then
+				meta:set_string("description", self._item_name)
+				meta:set_string("name", self._item_name)
+			else
+				meta:set_string("description", mcl_banners.make_advanced_banner_description(banner:get_definition().description, self._layers))
+			end
 
 			minetest.add_item(pos, banner)
 		end

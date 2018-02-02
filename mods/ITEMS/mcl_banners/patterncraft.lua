@@ -339,16 +339,18 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 
 		-- For copying to be allowed, one banner has to have no layers while the other one has at least 1 layer.
 		-- The banner with layers will be used as a source.
-		local src_banner, src_layers_raw, src_desc, src_index
+		local src_banner, src_layers_raw, src_desc, src_index, src_has_name
 		if #b1layers == 0 and #b2layers > 0 then
 			src_banner = banner2
 			src_layers_raw = b2layers_raw
 			src_desc = b2meta:get_string("description")
+			src_has_no_name = b2meta:get_string("name") == ""
 			src_index = banner2_index
 		elseif #b2layers == 0 and #b1layers > 0 then
 			src_banner = banner
 			src_layers_raw = b1layers_raw
 			src_desc = b1meta:get_string("description")
+			src_has_no_name = b1meta:get_string("name") == ""
 			src_index = banner_index
 		else
 			return ItemStack("")
@@ -357,7 +359,10 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 		-- Set output metadata
 		local imeta = itemstack:get_meta()
 		imeta:set_string("layers", src_layers_raw)
-		imeta:set_string("description", src_desc)
+		-- Keep description if banner has a name
+		if src_has_no_name then
+			imeta:set_string("description", src_desc)
+		end
 
 		if not craft_predict then
 			-- Don't destroy source banner so this recipe is a true copy
@@ -461,9 +466,15 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 	local imeta = itemstack:get_meta()
 	imeta:set_string("layers", minetest.serialize(layers))
 
-	local odesc = itemstack:get_definition().description
-	local description = mcl_banners.make_advanced_banner_description(odesc, layers)
-	imeta:set_string("description", description)
+	local mname = ometa:get_string("name")
+	-- Only change description if banner does not have a name
+	if mname == "" then
+		local odesc = itemstack:get_definition().description
+		local description = mcl_banners.make_advanced_banner_description(odesc, layers)
+		imeta:set_string("description", description)
+	else
+		imeta:set_string("description", mname)
+	end
 	return itemstack
 end
 
