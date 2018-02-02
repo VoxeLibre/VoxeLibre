@@ -17,25 +17,36 @@ local anvildef = {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6000,
 	_mcl_hardness = 5,
+	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+		if listname == "output" then
+			return 0
+		else
+			return stack:get_count()
+		end
+	end,
+	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+		if to_list == "output" then
+			return 0
+		else
+			return count
+		end
+	end,
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
-		inv:set_size("input1", 1)
-		inv:set_size("input2", 1)
+		inv:set_size("input", 2)
 		inv:set_size("output", 1)
 		local form = "size[9,8.75]"..
 		"background[-0.19,-0.25;9.41,9.49;mcl_anvils_inventory.png]"..
 		mcl_vars.inventory_header..
 		"list[current_player;main;0,4.5;9,3;9]"..
 		"list[current_player;main;0,7.74;9,1;]"..
-		"list[context;input1;1,2.5;1,1;]"..
-		"list[current_name;input2;4,2.5;1,1;]"..
-		"list[current_name;output;8,2.5;1,1;]"..
-		"listring[current_name;output]"..
+		"list[context;input;1,2.5;1,1;]"..
+		"list[context;input;4,2.5;1,1;1]"..
+		"list[context;output;8,2.5;1,1;]"..
+		"listring[context;output]"..
 		"listring[current_player;main]"..
-		"listring[current_name;input1]"..
-		"listring[current_player;main]"..
-		"listring[current_name;input2]"..
+		"listring[context;input]"..
 		"listring[current_player;main]"
 		meta:set_string("formspec", form)
 	end,
