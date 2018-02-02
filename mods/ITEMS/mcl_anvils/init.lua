@@ -1,3 +1,5 @@
+local MAX_NAME_LENGTH = 30
+
 local function get_anvil_formspec(set_name)
 	if not set_name then
 		set_name = ""
@@ -46,7 +48,7 @@ local function update_anvil_slots(meta)
 		else
 			local meta = name_item:get_meta()
 			-- Limit name length
-			new_name = string.sub(new_name, 1, 30)
+			new_name = string.sub(new_name, 1, MAX_NAME_LENGTH)
 			-- Rename item
 			meta:set_string("description", new_name)
 			-- Double-save the name internally, too
@@ -159,6 +161,8 @@ local anvildef = {
 				set_name = fields.name
 			end
 			local meta = minetest.get_meta(pos)
+			-- Limit name length
+			set_name = string.sub(set_name, 1, MAX_NAME_LENGTH)
 			meta:set_string("set_name", set_name)
 			update_anvil_slots(meta)
 			meta:set_string("formspec", get_anvil_formspec(set_name))
