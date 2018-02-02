@@ -41,20 +41,61 @@ local function update_anvil_slots(meta)
 		local def1 = input1:get_definition()
 		local def2 = input2:get_definition()
 
+		-- Repair calculation helper.
+		-- Adds the “inverse” values of wear1 and wear2.
+		-- Then adds a boost health value directly.
+		-- Returns the resulting (capped) wear.
+		local function calculate_repair(wear1, wear2, boost)
+			local new_health = (MAX_WEAR - wear1) + (MAX_WEAR - wear2)
+			if boost then
+				new_health = new_health + boost
+			end
+			return math.max(0, math.min(MAX_WEAR, MAX_WEAR - new_health))
+		end
+
 		-- Same tool twice
 		if input1:get_name() == input2:get_name() and def1.type == "tool" then
-			-- Add tool health together plus a 5% bonus
+			-- Add tool health together plus a small bonus
 			-- TODO: Combine tool enchantments
-			local new_health = (MAX_WEAR - input1:get_wear()) + (MAX_WEAR - input2:get_wear())
-			new_health = new_health + SAME_TOOL_REPAIR_BOOST
-			local new_wear = math.max(0, math.min(MAX_WEAR, MAX_WEAR - new_health))
+			local new_wear = calculate_repair(input1:get_wear(), input2:get_wear(), SAME_TOOL_REPAIR_BOOST)
 			input1:set_wear(new_wear)
 			name_item = input1
 		-- Tool + repair item
 		else
-			-- TODO: 25% repair bonus
+			-- Any tool can have a repair item. This may be defined in the tool's item definition
+			-- as an itemstring in the field `_repair_material`. Only if this field is set, the
+			-- tool can be repaired with a material item.
+			-- Example: Iron Pickaxe + Iron Ingot. `_repair_material = mcl_core:iron_ingot`
+
+			-- Big repair bonus
 			-- TODO: Combine tool enchantments
-			new_output = ""
+			local tool, material
+			if def1.type == "tool" and def1._repair_material then
+				tool = input1
+				tooldef = def1
+				material = input2
+			elseif def2.type == "tool" and def2._repair_material then
+				tool = input2
+				tooldef = def2
+				material = input1
+			end
+			if tool and material then
+				local has_correct_material = false
+				if string.sub(tooldef._repair_material, 1, 6) == "group:" then
+					has_correct_material = minetest.get_item_group(material:get_name(), string.sub(tooldef._repair_material, 7)) ~= 0
+				elseif material:get_name() == tooldef._repair_material then
+					has_correct_material = true
+				end
+				if has_correct_material then
+					local new_wear = calculate_repair(tool:get_wear(), MAX_WEAR, MATERIAL_TOOL_REPAIR_BOOST)
+					tool:set_wear(new_wear)
+					name_item = tool
+				else
+					new_output = ""
+				end
+			else
+				new_output = ""
+			end
 		end
 	-- Exactly 1 input slot occupied
 	elseif (not input1:is_empty() and input2:is_empty()) or (input1:is_empty() and not input2:is_empty()) then
@@ -67,6 +108,8 @@ local function update_anvil_slots(meta)
 		else
 			name_item = input1
 		end
+	else
+		new_output = ""
 	end
 
 	-- Rename handling
@@ -84,8 +127,6 @@ local function update_anvil_slots(meta)
 			meta:set_string("name", new_name)
 			new_output = name_item
 		end
-	else
-		new_output = ""
 	end
 
 	-- Set the new output slot
