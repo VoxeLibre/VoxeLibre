@@ -135,6 +135,11 @@ local delayer_deactivate = function(pos, node)
 	check_unlock_repeater(pos, node)
 end
 
+local on_rotate
+if minetest.get_modpath("screwdriver") then
+	on_rotate = screwdriver.disallow
+end
+
 -- Register the 2 (states) x 4 (delay times) delayers
 
 for i = 1, 4 do
@@ -212,12 +217,6 @@ if i == 1 then
 else
 	help = false
 end
-
-local on_rotate
-if minetest.get_modpath("screwdriver") then
-	on_rotate = screwdriver.disallow
-end
-
 
 minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 	description = "Redstone Repeater",
@@ -358,8 +357,6 @@ end
 
 minetest.register_node("mesecons_delayer:delayer_off_locked", {
 	description = "Redstone Repeater (Locked)",
-	inventory_image = icon,
-	wield_image = icon,
 	_doc_items_create_entry = false,
 	drawtype = "nodebox",
 	-- FIXME: Textures of torch and the lock bar overlap. Nodeboxes are (sadly) not suitable for this.
