@@ -21,7 +21,7 @@ minetest.register_entity(":__builtin:falling_node", {
 		})
 		local def = core.registered_nodes[node.name]
 		-- Set correct entity yaw
-		if node.param2 ~= 0 then
+		if def and node.param2 ~= 0 then
 			if (def.paramtype2 == "facedir" or def.paramtype2 == "colorfacedir") then
 				self.object:set_yaw(core.dir_to_yaw(core.facedir_to_dir(node.param2)))
 			elseif (def.paramtype2 == "wallmounted" or def.paramtype2 == "colorwallmounted") then
