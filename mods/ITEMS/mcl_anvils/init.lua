@@ -16,7 +16,7 @@ local function get_anvil_formspec(set_name)
 	"list[context;input;4,2.5;1,1;1]"..
 	"list[context;output;8,2.5;1,1;]"..
 	"field[3.25,1;4,1;name;;"..minetest.formspec_escape(set_name).."]"..
-	"button[7,0.7;2,1;name_button;Set name]"..
+	"button[7,0.7;2,1;name_button;Set Name]"..
 	"listring[context;output]"..
 	"listring[current_player;main]"..
 	"listring[context;input]"..
@@ -294,7 +294,7 @@ local anvildef = {
 		"list[context;input;4,2.5;1,1;1]"..
 		"list[context;output;8,2.5;1,1;]"..
 		"field[3.25,1;4,1;name;;]"..
-		"button[7,0.7;2,1;name_button;Set name]"..
+		"button[7,0.7;2,1;name_button;Set Name]"..
 		"listring[context;output]"..
 		"listring[current_player;main]"..
 		"listring[context;input]"..
@@ -324,9 +324,20 @@ end
 
 local anvildef0 = table.copy(anvildef)
 anvildef0.description = "Anvil"
+anvildef0._doc_items_longdesc =
+[[The anvil allows you to repair tools and armor, and to give names to items. It has a limited durability, however. The anvil is able to fall and very heavy. Don't let it fall on your head! It crushes (nearly) everything under its weight and hurts everyone on its way down.]]
+anvildef0._doc_items_usagehelp =
+"To use an anvil, rightclick it. An anvil has 2 input slots (on the left) and one output slot.".."\n"..
+"To rename items, put an item stack in one of the item slots while keeping the other input slot empty. Enter a name, hit “Set Name” and take the renamed item from the output slot.".."\n"..
+"There are two possibilities to repair tools (and armor):".."\n"..
+"• Tool + Tool: Place two tools of the same type in the input slots. The “health” of the repaired tool is the sum of the “health” of both input tools, plus a 5% bonus.".."\n"..
+"• Tool + Material: Some tools can also be repaired by combining them with an item that it's made of. For example, iron pickaxes can be repaired with iron ingots. This repairs the tool by 25%.".."\n"..
+"Armor counts as a tool. It is possible to repair and rename a tool in a single step.".."\n\n"..
+"The anvil has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the anvil gets damaged. If a very damaged anvil is damaged again, it is destroyed."
 
 local anvildef1 = table.copy(anvildef)
 anvildef1.description = "Slightly Damaged Anvil"
+anvildef1._doc_items_create_entry = false
 anvildef1.groups.not_in_creative_inventory = 1
 anvildef1.groups.anvil = 2
 anvildef1._doc_items_create_entry = false
@@ -334,6 +345,7 @@ anvildef1.tiles = {"mcl_anvils_anvil_top_damaged_1.png^[transformR90", "mcl_anvi
 
 local anvildef2 = table.copy(anvildef)
 anvildef2.description = "Very Damaged Anvil"
+anvildef2._doc_items_create_entry = false
 anvildef2.groups.not_in_creative_inventory = 1
 anvildef2.groups.anvil = 3
 anvildef2._doc_items_create_entry = false
@@ -351,5 +363,10 @@ minetest.register_craft({
 		{ "mcl_core:iron_ingot", "mcl_core:iron_ingot", "mcl_core:iron_ingot" },
 	}
 })
+
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mcl_anvils:anvil", "nodes", "mcl_anvils:anvil_damage_1")
+	doc.add_entry_alias("nodes", "mcl_anvils:anvil", "nodes", "mcl_anvils:anvil_damage_2")
+end
 
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/falling_anvil.lua")
