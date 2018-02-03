@@ -285,20 +285,7 @@ local anvildef = {
 		local inv = meta:get_inventory()
 		inv:set_size("input", 2)
 		inv:set_size("output", 1)
-		local form = "size[9,8.75]"..
-		"background[-0.19,-0.25;9.41,9.49;mcl_anvils_inventory.png]"..
-		mcl_vars.inventory_header..
-		"list[current_player;main;0,4.5;9,3;9]"..
-		"list[current_player;main;0,7.74;9,1;]"..
-		"list[context;input;1,2.5;1,1;]"..
-		"list[context;input;4,2.5;1,1;1]"..
-		"list[context;output;8,2.5;1,1;]"..
-		"field[3.25,1;4,1;name;;]"..
-		"button[7,0.7;2,1;name_button;Set Name]"..
-		"listring[context;output]"..
-		"listring[current_player;main]"..
-		"listring[context;input]"..
-		"listring[current_player;main]"
+		local form = get_anvil_formspec()
 		meta:set_string("formspec", form)
 	end,
 	on_receive_fields = function(pos, formname, fields, sender)
