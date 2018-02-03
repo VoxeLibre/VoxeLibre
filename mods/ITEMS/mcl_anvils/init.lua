@@ -16,6 +16,7 @@ local function get_anvil_formspec(set_name)
 	"list[context;input;4,2.5;1,1;1]"..
 	"list[context;output;8,2.5;1,1;]"..
 	"field[3.25,1;4,1;name;;"..minetest.formspec_escape(set_name).."]"..
+	"field_close_on_enter[name;false]"..
 	"button[7,0.7;2,1;name_button;Set Name]"..
 	"listring[context;output]"..
 	"listring[current_player;main]"..
@@ -297,7 +298,7 @@ local anvildef = {
 		meta:set_string("formspec", form)
 	end,
 	on_receive_fields = function(pos, formname, fields, sender)
-		if fields.name_button then
+		if fields.name_button or fields.name then
 			local set_name
 			if fields.name == nil then
 				set_name = ""
@@ -323,7 +324,7 @@ anvildef0._doc_items_longdesc =
 [[The anvil allows you to repair tools and armor, and to give names to items. It has a limited durability, however. The anvil is able to fall and very heavy. Don't let it fall on your head! It crushes (nearly) everything under its weight and hurts everyone on its way down.]]
 anvildef0._doc_items_usagehelp =
 "To use an anvil, rightclick it. An anvil has 2 input slots (on the left) and one output slot.".."\n"..
-"To rename items, put an item stack in one of the item slots while keeping the other input slot empty. Enter a name, hit “Set Name” and take the renamed item from the output slot.".."\n"..
+"To rename items, put an item stack in one of the item slots while keeping the other input slot empty. Type in a name, hit enter or “Set Name”, then take the renamed item from the output slot.".."\n"..
 "There are two possibilities to repair tools (and armor):".."\n"..
 "• Tool + Tool: Place two tools of the same type in the input slots. The “health” of the repaired tool is the sum of the “health” of both input tools, plus a 12% bonus.".."\n"..
 "• Tool + Material: Some tools can also be repaired by combining them with an item that it's made of. For example, iron pickaxes can be repaired with iron ingots. This repairs the tool by 25%.".."\n"..
