@@ -126,6 +126,39 @@ doc.sub.items.register_factoid(nil, "groups", function(itemstring, def)
 	return s
 end)
 
+-- TODO: Move this info to the crafting guide
+doc.sub.items.register_factoid(nil, "groups", function(itemstring, def)
+	if def._repair_material then
+		local mdef = minetest.registered_items[def._repair_material]
+		local desc
+		if mdef and mdef.description and mdef.description ~= "" then
+			return string.format("This item can be repaired at an anvil with: %s.", mdef.description)
+		elseif def._repair_material == "group:wood" then
+			return "This item can be repaired at an anvil with any wooden planks."
+		elseif string.sub(def._repair_material, 1, 6) == "group:" then
+			local group = string.sub(def._repair_material, 7)
+			return string.format("This item can be repaired at an anvil with any item in the “%s” group.", group)
+		end
+	end
+	return ""
+end)
+
+doc.sub.items.register_factoid(nil, "groups", function(itemstring, def)
+	if minetest.get_item_group(itemstring, "no_rename") == 1 then
+		return "This item cannot be renamed at an anvil."
+	else
+		return ""
+	end
+end)
+
+doc.sub.items.register_factoid("nodes", "gravity", function(itemstring, def)
+	if minetest.get_item_group(itemstring, "anvil") ~= 0 then
+		return "This anvil is very heavy and damages and crushes (nearly) everything under its weight."
+	else
+		return ""
+	end
+end)
+
 -- Mining, hardness and all that
 doc.sub.items.register_factoid("nodes", "mining", function(itemstring, def)
 	local pickaxey = { "Diamond Pickaxe", "Iron Pickaxe", "Stone Pickaxe", "Golden Pickaxe", "Wooden Pickaxe" }
@@ -189,6 +222,7 @@ doc.sub.items.register_factoid("nodes", "mining", function(itemstring, def)
 	if not blast then
 		blast = 0
 	end
+	-- TODO: Blast resistance as number
 	if blast >= 1000 then
 		datastring = datastring .. "\n" .. "This block will not be destroyed by TNT explosions."
 	end
@@ -224,5 +258,3 @@ doc.sub.items.register_factoid("nodes", "drops", function(itemstring, def)
 end)
 
 
-
--- TODO: Blast resistance (omitted for now because explosions ignore hardness)
