@@ -1,6 +1,6 @@
 local MAX_NAME_LENGTH = 30
 local MAX_WEAR = 65535
-local SAME_TOOL_REPAIR_BOOST = math.ceil(MAX_WEAR * 0.05) -- 5%
+local SAME_TOOL_REPAIR_BOOST = math.ceil(MAX_WEAR * 0.12) -- 12%
 local MATERIAL_TOOL_REPAIR_BOOST = math.ceil(MAX_WEAR * 0.25) -- 25%
 
 local function get_anvil_formspec(set_name)
@@ -325,7 +325,7 @@ anvildef0._doc_items_usagehelp =
 "To use an anvil, rightclick it. An anvil has 2 input slots (on the left) and one output slot.".."\n"..
 "To rename items, put an item stack in one of the item slots while keeping the other input slot empty. Enter a name, hit “Set Name” and take the renamed item from the output slot.".."\n"..
 "There are two possibilities to repair tools (and armor):".."\n"..
-"• Tool + Tool: Place two tools of the same type in the input slots. The “health” of the repaired tool is the sum of the “health” of both input tools, plus a 5% bonus.".."\n"..
+"• Tool + Tool: Place two tools of the same type in the input slots. The “health” of the repaired tool is the sum of the “health” of both input tools, plus a 12% bonus.".."\n"..
 "• Tool + Material: Some tools can also be repaired by combining them with an item that it's made of. For example, iron pickaxes can be repaired with iron ingots. This repairs the tool by 25%.".."\n"..
 "Armor counts as a tool. It is possible to repair and rename a tool in a single step.".."\n\n"..
 "The anvil has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the anvil gets damaged. If a very damaged anvil is damaged again, it is destroyed."
