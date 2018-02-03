@@ -1,7 +1,4 @@
 local wip_items = {
-	"mcl_anvils:anvil",
-	"mcl_anvils:anvil_damage_1",
-	"mcl_anvils:anvil_damage_2",
 	"mcl_fishing:fishing_rod",
 	"mcl_maps:empty_map",
 	"mcl_comparators:comparator_off_comp",

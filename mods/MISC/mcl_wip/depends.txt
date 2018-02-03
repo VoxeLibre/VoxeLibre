@@ -1,4 +1,3 @@
-mcl_anvils
 mcl_core
 mcl_fishing
 mcl_maps
