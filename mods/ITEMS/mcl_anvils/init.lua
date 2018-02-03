@@ -69,7 +69,7 @@ local function update_anvil_slots(meta)
 
 			-- Big repair bonus
 			-- TODO: Combine tool enchantments
-			local tool, material
+			local tool, tooldef, material
 			if def1.type == "tool" and def1._repair_material then
 				tool = input1
 				tooldef = def1
@@ -135,6 +135,18 @@ local function update_anvil_slots(meta)
 	end
 end
 
+-- Drop input items of anvil at pos with metadata meta
+local function drop_anvil_items(pos, meta)
+	local inv = meta:get_inventory()
+	for i=1, inv:get_size("input") do
+		local stack = inv:get_stack("input", i)
+		if not stack:is_empty() then
+			local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
+			minetest.add_item(p, stack)
+		end
+	end
+end
+
 local anvildef = {
 	groups = {pickaxey=1, falling_node=1, crush_after_fall=1, deco_block=1, anvil=1},
 	tiles = {"mcl_anvils_anvil_top_damaged_0.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png"},
@@ -154,6 +166,14 @@ local anvildef = {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6000,
 	_mcl_hardness = 5,
+
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		local meta = minetest.get_meta(pos) 
+		local meta2 = meta 
+		meta:from_table(oldmetadata)
+		drop_anvil_items(pos, meta)
+		meta:from_table(meta2:to_table())
+	end,
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
 		if listname == "output" then
 			return 0
