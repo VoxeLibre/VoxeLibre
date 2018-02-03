@@ -242,17 +242,18 @@ local anvildef = {
 		end
 		update_anvil_slots(meta)
 
-		local destroyed = damage_anvil(pos, player)
-		-- Close formspec if anvil was destroyed
-		if destroyed then
-			--[[ Closing the formspec w/ emptyformname is discouraged. But this is justified
-			because node formspecs seem to only have an empty formname in MT 0.4.16.
-			Also, sice this is on_metadata_inventory_take, we KNOW which formspec has
-			been opened by the player. So this should be safe nonetheless.
-			TODO: Update this line when node formspecs get proper identifiers in Minetest. ]]
-			minetest.close_formspec(player:get_player_name(), "")
+		if from_list == "output" then
+			local destroyed = damage_anvil(pos, player)
+			-- Close formspec if anvil was destroyed
+			if destroyed then
+				--[[ Closing the formspec w/ emptyformname is discouraged. But this is justified
+				because node formspecs seem to only have an empty formname in MT 0.4.16.
+				Also, sice this is on_metadata_inventory_take, we KNOW which formspec has
+				been opened by the player. So this should be safe nonetheless.
+				TODO: Update this line when node formspecs get proper identifiers in Minetest. ]]
+				minetest.close_formspec(player:get_player_name(), "")
+			end
 		end
-
 	end,
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		local meta = minetest.get_meta(pos)
@@ -272,12 +273,13 @@ local anvildef = {
 			end
 		end
 		update_anvil_slots(meta)
-		local destroyed = damage_anvil(pos, player)
-
-		-- Close formspec if anvil was destroyed
-		if destroyed then
-			-- See above for justification.
-			minetest.close_formspec(player:get_player_name(), "")
+		if listname == "output" then
+			local destroyed = damage_anvil(pos, player)
+			-- Close formspec if anvil was destroyed
+			if destroyed then
+				-- See above for justification.
+				minetest.close_formspec(player:get_player_name(), "")
+			end
 		end
 	end,
 	on_construct = function(pos)
