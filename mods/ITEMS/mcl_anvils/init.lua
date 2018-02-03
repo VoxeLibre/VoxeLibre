@@ -34,7 +34,7 @@ local function update_anvil_slots(meta)
 	input2 = inv:get_stack("input", 2)
 	output = inv:get_stack("output", 1)
 	local new_output, name_item
-	local check_rename = false
+	local just_rename = false
 
 	-- Both input slots occupied
 	if (not input1:is_empty() and not input2:is_empty()) then
@@ -108,6 +108,7 @@ local function update_anvil_slots(meta)
 		else
 			name_item = input1
 		end
+		just_rename = true
 	else
 		new_output = ""
 	end
@@ -132,6 +133,8 @@ local function update_anvil_slots(meta)
 				-- Double-save the name internally, too
 				meta:set_string("name", new_name)
 				new_output = name_item
+			elseif just_rename then
+				new_output = ""
 			end
 		end
 	end
