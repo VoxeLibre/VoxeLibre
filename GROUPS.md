@@ -52,6 +52,7 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `can_eat_when_full=1`: Only for foodstuffs. This item can be eaten when the user has a full hunger bar
 * `attached_node_facedir=1`: Like `attached_node`, but for facedir nodes
 * `cauldron`: Cauldron. 1: Empty. 2-4: Water height
+* `anvil`: Anvil. 1: No damage. 2-3: Higher damage levels
 * `no_rename=1`: Item cannot be renamed by anvil
 
 #### Footnotes

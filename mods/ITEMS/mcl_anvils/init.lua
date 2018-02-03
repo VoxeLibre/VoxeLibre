@@ -147,6 +147,35 @@ local function drop_anvil_items(pos, meta)
 	end
 end
 
+-- Roll a virtual dice and with a low chance, damage the anvil by 1 level.
+-- Destroy anvil when at highest damage level.
+-- Returns true if anvil was destroyed.
+local function damage_anvil(pos)
+	local r = math.random(1, 100)
+	-- 12% chance
+	if r <= 12 then
+		local node = minetest.get_node(pos)
+		local new
+		if node.name == "mcl_anvils:anvil" then
+			minetest.swap_node(pos, {name="mcl_anvils:anvil_damage_1", param2=node.param2})
+			minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dig, {pos=pos, max_hear_distance=16})
+			return false
+		elseif node.name == "mcl_anvils:anvil_damage_1" then
+			minetest.swap_node(pos, {name="mcl_anvils:anvil_damage_2", param2=node.param2})
+			minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dig, {pos=pos, max_hear_distance=16})
+			return false
+		elseif node.name == "mcl_anvils:anvil_damage_2" then
+			-- Destroy anvil
+			local meta = minetest.get_meta(pos)
+			drop_anvil_items(pos, meta)
+			minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dug, {pos=pos, max_hear_distance=16})
+			minetest.remove_node(pos)
+			return true
+		end
+	end
+	return false
+end
+
 local anvildef = {
 	groups = {pickaxey=1, falling_node=1, crush_after_fall=1, deco_block=1, anvil=1},
 	tiles = {"mcl_anvils_anvil_top_damaged_0.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png"},
@@ -212,6 +241,18 @@ local anvildef = {
 			end
 		end
 		update_anvil_slots(meta)
+
+		local destroyed = damage_anvil(pos, player)
+		-- Close formspec if anvil was destroyed
+		if destroyed then
+			--[[ Closing the formspec w/ emptyformname is discouraged. But this is justified
+			because node formspecs seem to only have an empty formname in MT 0.4.16.
+			Also, sice this is on_metadata_inventory_take, we KNOW which formspec has
+			been opened by the player. So this should be safe nonetheless.
+			TODO: Update this line when node formspecs get proper identifiers in Minetest. ]]
+			minetest.close_formspec(player:get_player_name(), "")
+		end
+
 	end,
 	on_metadata_inventory_take = function(pos, listname, index, stack, player)
 		local meta = minetest.get_meta(pos)
@@ -231,6 +272,13 @@ local anvildef = {
 			end
 		end
 		update_anvil_slots(meta)
+		local destroyed = damage_anvil(pos, player)
+
+		-- Close formspec if anvil was destroyed
+		if destroyed then
+			-- See above for justification.
+			minetest.close_formspec(player:get_player_name(), "")
+		end
 	end,
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -280,12 +328,14 @@ anvildef0.description = "Anvil"
 local anvildef1 = table.copy(anvildef)
 anvildef1.description = "Slightly Damaged Anvil"
 anvildef1.groups.not_in_creative_inventory = 1
+anvildef1.groups.anvil = 2
 anvildef1._doc_items_create_entry = false
 anvildef1.tiles = {"mcl_anvils_anvil_top_damaged_1.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png"}
 
 local anvildef2 = table.copy(anvildef)
 anvildef2.description = "Very Damaged Anvil"
 anvildef2.groups.not_in_creative_inventory = 1
+anvildef2.groups.anvil = 3
 anvildef2._doc_items_create_entry = false
 anvildef2.tiles = {"mcl_anvils_anvil_top_damaged_2.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png"}
 
