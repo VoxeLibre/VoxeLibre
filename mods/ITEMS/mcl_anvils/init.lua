@@ -60,6 +60,7 @@ local function update_anvil_slots(meta)
 			local new_wear = calculate_repair(input1:get_wear(), input2:get_wear(), SAME_TOOL_REPAIR_BOOST)
 			input1:set_wear(new_wear)
 			name_item = input1
+			new_output = name_item
 		-- Tool + repair item
 		else
 			-- Any tool can have a repair item. This may be defined in the tool's item definition
@@ -90,6 +91,7 @@ local function update_anvil_slots(meta)
 					local new_wear = calculate_repair(tool:get_wear(), MAX_WEAR, MATERIAL_TOOL_REPAIR_BOOST)
 					tool:set_wear(new_wear)
 					name_item = tool
+					new_output = name_item
 				else
 					new_output = ""
 				end
@@ -100,9 +102,6 @@ local function update_anvil_slots(meta)
 	-- Exactly 1 input slot occupied
 	elseif (not input1:is_empty() and input2:is_empty()) or (input1:is_empty() and not input2:is_empty()) then
 		-- Just rename item
-		if new_name == nil then
-			new_name = ""
-		end
 		if input1:is_empty() then
 			name_item = input2
 		else
@@ -118,14 +117,21 @@ local function update_anvil_slots(meta)
 		if minetest.get_item_group(name_item:get_name(), "no_rename") == 1 then
 			new_output = ""
 		else
+			if new_name == nil then
+				new_name = ""
+			end
 			local meta = name_item:get_meta()
+			local old_name = meta:get_string("name")
 			-- Limit name length
 			new_name = string.sub(new_name, 1, MAX_NAME_LENGTH)
-			-- Rename item
-			meta:set_string("description", new_name)
-			-- Double-save the name internally, too
-			meta:set_string("name", new_name)
-			new_output = name_item
+			-- Don't rename if names are identical
+			if new_name ~= old_name then
+				-- Rename item
+				meta:set_string("description", new_name)
+				-- Double-save the name internally, too
+				meta:set_string("name", new_name)
+				new_output = name_item
+			end
 		end
 	end
 
