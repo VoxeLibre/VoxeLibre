@@ -282,7 +282,6 @@ local anvildef = {
 				inv:set_list("input", {"", ""})
 			end
 		end
-		update_anvil_slots(meta)
 		if listname == "output" then
 			local destroyed = damage_anvil(pos, player)
 			-- Close formspec if anvil was destroyed
