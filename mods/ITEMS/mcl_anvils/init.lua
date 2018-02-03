@@ -197,7 +197,18 @@ local anvildef = {
 		local meta = minetest.get_meta(pos)
 		if listname == "output" then
 			local inv = meta:get_inventory()
-			inv:set_list("input", {"",""})
+			local input1 = inv:get_stack("input", 1)
+			local input2 = inv:get_stack("input", 2)
+			if not input1:is_empty() and not input2:is_empty() then
+				-- Both slots occupied: Repair mode. Only take 1 item from each stack
+				input1:take_item()
+				input2:take_item()
+				inv:set_stack("input", 1, input1)
+				inv:set_stack("input", 2, input2)
+			else
+				-- Otherwise: Rename mode: Clear all input slots as the whole stack is renamed.
+				inv:set_list("input", {"", ""})
+			end
 		end
 		update_anvil_slots(meta)
 	end,
