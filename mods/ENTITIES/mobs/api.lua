@@ -5,6 +5,7 @@ mobs = {}
 mobs.mod = "redo"
 mobs.version = "20180126"
 
+local MAX_MOB_NAME_LENGTH = 30
 
 -- Intllib
 local MP = minetest.get_modpath(minetest.get_current_modname())
@@ -3349,6 +3350,15 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 					ent.owner = placer:get_player_name()
 					ent.tamed = true
 				end
+				-- set nametag
+				local nametag = itemstack:get_meta():get_string("name")
+				if nametag ~= "" then
+					if string.len(nametag) > MAX_MOB_NAME_LENGTH then
+						nametag = string.sub(nametag, 1, MAX_MOB_NAME_LENGTH)
+					end
+					ent.nametag = nametag
+					update_tag(ent)
+				end
 
 				-- if not in creative then take item
 				if not mobs.is_creative(placer:get_player_name()) then
@@ -3492,8 +3502,8 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 
 		local tag = item:get_meta():get_string("name")
 		if tag ~= "" then
-			if string.len(tag) > 30 then
-				tag = string.sub(tag, 1, 30)
+			if string.len(tag) > MAX_MOB_NAME_LENGTH then
+				tag = string.sub(tag, 1, MAX_MOB_NAME_LENGTH)
 			end
 			self.nametag = tag
 
