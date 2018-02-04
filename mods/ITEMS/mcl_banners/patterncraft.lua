@@ -476,6 +476,7 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 		imeta:set_string("description", description)
 	else
 		imeta:set_string("description", mname)
+		imeta:set_string("name", mname)
 	end
 	return itemstack
 end
