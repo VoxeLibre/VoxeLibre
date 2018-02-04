@@ -56,7 +56,7 @@ local function update_anvil_slots(meta)
 		end
 
 		-- Same tool twice
-		if input1:get_name() == input2:get_name() and def1.type == "tool" then
+		if input1:get_name() == input2:get_name() and def1.type == "tool" and (input1:get_wear() > 0 or input2:get_wear() > 0) then
 			-- Add tool health together plus a small bonus
 			-- TODO: Combine tool enchantments
 			local new_wear = calculate_repair(input1:get_wear(), input2:get_wear(), SAME_TOOL_REPAIR_BOOST)
@@ -89,7 +89,7 @@ local function update_anvil_slots(meta)
 				elseif material:get_name() == tooldef._repair_material then
 					has_correct_material = true
 				end
-				if has_correct_material then
+				if has_correct_material and tool:get_wear() > 0 then
 					local new_wear = calculate_repair(tool:get_wear(), MAX_WEAR, MATERIAL_TOOL_REPAIR_BOOST)
 					tool:set_wear(new_wear)
 					name_item = tool
