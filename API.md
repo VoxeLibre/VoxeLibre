@@ -9,6 +9,14 @@ Mods mods in MineClone 2 follow a simple naming convention: Mods with the prefix
 ## Adding items
 ### Special fields
 
+Items can have these fields:
+* `_mcl_generate_description(itemstack)`: Required for any items which manipulate their
+   description in any way. This function takes an itemstack of its own type and must set
+   the proper advanced description for this itemstack. If you don't do this, anvils will
+   fail at properly restoring the description when their custom name gets cleared at an
+   anvil.
+   See `mcl_banners` for an example.
+
 All nodes can have these fields:
 
 * `_mcl_hardness`: Hardness of the block, ranges from 0 to infinity (represented by -1). Determines digging times. Default: 0

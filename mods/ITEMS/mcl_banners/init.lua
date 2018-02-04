@@ -302,6 +302,19 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 
 			return itemstack
 		end,
+
+		_mcl_generate_description = function(itemstack)
+			local meta = itemstack:get_meta()
+			local layers_raw = meta:get_string("layers")
+			if not layers_raw then
+				return nil
+			end
+			local layers = minetest.deserialize(layers_raw)
+			local desc = itemstack:get_definition().description
+			local newdesc = mcl_banners.make_advanced_banner_description(desc, layers)
+			meta:set_string("description", newdesc)
+			return newdesc
+		end,
 	})
 
 	if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_wool") then

@@ -129,8 +129,16 @@ local function update_anvil_slots(meta)
 			-- Don't rename if names are identical
 			if new_name ~= old_name then
 				-- Rename item
-				meta:set_string("description", new_name)
-				-- Double-save the name internally, too
+				if new_name == "" and name_item:get_definition()._mcl_generate_description then
+					-- _mcl_generate_description(itemstack): If defined, set custom item description of itemstack.
+					-- This function should be defined for items with an advanced description.
+					-- See mcl_banners for an example.
+					name_item:get_definition()._mcl_generate_description(name_item)
+				else
+					-- Set description
+					meta:set_string("description", new_name)
+				end
+				-- Save the raw name internally, too
 				meta:set_string("name", new_name)
 				new_output = name_item
 			elseif just_rename then
