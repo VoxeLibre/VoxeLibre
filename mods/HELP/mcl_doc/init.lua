@@ -152,11 +152,11 @@ doc.sub.items.register_factoid(nil, "groups", function(itemstring, def)
 end)
 
 doc.sub.items.register_factoid("nodes", "gravity", function(itemstring, def)
-	if minetest.get_item_group(itemstring, "anvil") ~= 0 then
-		return "This anvil is very heavy and damages and crushes (nearly) everything under its weight."
-	else
-		return ""
+	local s = ""
+	if minetest.get_item_group(itemstring, "crush_after_fall") == 1 then
+		s = s .. "This block crushes any block it falls into."
 	end
+	return s
 end)
 
 -- Mining, hardness and all that
