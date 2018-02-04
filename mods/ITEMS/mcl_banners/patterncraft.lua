@@ -328,8 +328,6 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 		local b2meta = banner2:get_meta()
 		local b1layers_raw = b1meta:get_string("layers")
 		local b2layers_raw = b2meta:get_string("layers")
-		local b1name = b1meta:get_string("name")
-		local b2name = b2meta:get_string("name")
 		local b1layers = minetest.deserialize(b1layers_raw)
 		local b2layers = minetest.deserialize(b2layers_raw)
 		if type(b1layers) ~= "table" then
@@ -341,20 +339,18 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 
 		-- For copying to be allowed, one banner has to have no layers while the other one has at least 1 layer.
 		-- The banner with layers will be used as a source.
-		local src_banner, src_layers, src_layers_raw, src_desc, src_index, src_has_name
-		if #b1layers == 0 and b1name == "" and #b2layers > 0 then
+		local src_banner, src_layers, src_layers_raw, src_desc, src_index
+		if #b1layers == 0 and #b2layers > 0 then
 			src_banner = banner2
 			src_layers = b2layers
 			src_layers_raw = b2layers_raw
 			src_desc = minetest.registered_items[src_banner:get_name()].description
-			src_has_no_name = b2meta:get_string("name") == ""
 			src_index = banner2_index
-		elseif #b2layers == 0 and b2name == "" and #b1layers > 0 then
+		elseif #b2layers == 0 and #b1layers > 0 then
 			src_banner = banner
 			src_layers = b1layers
 			src_layers_raw = b1layers_raw
 			src_desc = minetest.registered_items[src_banner:get_name()].description
-			src_has_no_name = b1meta:get_string("name") == ""
 			src_index = banner_index
 		else
 			return ItemStack("")
@@ -364,7 +360,7 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 		local imeta = itemstack:get_meta()
 		imeta:set_string("layers", src_layers_raw)
 		-- Generate new description. This clears any (anvil) name from the original banners.
-		imeta:set_string("description", mcl_banners.make_advanced_banner_description(src_layers))
+		imeta:set_string("description", mcl_banners.make_advanced_banner_description(src_desc, src_layers))
 
 		if not craft_predict then
 			-- Don't destroy source banner so this recipe is a true copy
