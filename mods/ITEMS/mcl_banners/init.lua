@@ -279,6 +279,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 			local mname = imeta:get_string("name")
 			if mname ~= nil and mname ~= "" then
 				banner:get_luaentity()._item_name = mname
+				banner:get_luaentity()._item_description = imeta:get_string("description")
 			end
 
 			-- Set rotation
@@ -386,7 +387,7 @@ local entity_standing = {
 			local meta = banner:get_meta()
 			meta:set_string("layers", minetest.serialize(self._layers))
 			if self._item_name ~= nil and self._item_name ~= "" then
-				meta:set_string("description", self._item_name)
+				meta:set_string("description", self._item_description)
 				meta:set_string("name", self._item_name)
 			else
 				meta:set_string("description", mcl_banners.make_advanced_banner_description(banner:get_definition().description, self._layers))

@@ -2,6 +2,7 @@ local MAX_NAME_LENGTH = 30
 local MAX_WEAR = 65535
 local SAME_TOOL_REPAIR_BOOST = math.ceil(MAX_WEAR * 0.12) -- 12%
 local MATERIAL_TOOL_REPAIR_BOOST = math.ceil(MAX_WEAR * 0.25) -- 25%
+local NAME_COLOR = "#FFFF4C"
 
 local function get_anvil_formspec(set_name)
 	if not set_name then
@@ -129,14 +130,19 @@ local function update_anvil_slots(meta)
 			-- Don't rename if names are identical
 			if new_name ~= old_name then
 				-- Rename item
-				if new_name == "" and name_item:get_definition()._mcl_generate_description then
-					-- _mcl_generate_description(itemstack): If defined, set custom item description of itemstack.
-					-- This function should be defined for items with an advanced description.
-					-- See mcl_banners for an example.
-					name_item:get_definition()._mcl_generate_description(name_item)
+				if new_name == "" then
+					-- Empty name
+					if name_item:get_definition()._mcl_generate_description then
+						-- _mcl_generate_description(itemstack): If defined, set custom item description of itemstack.
+						name_item:get_definition()._mcl_generate_description(name_item)
+					else
+						-- Otherwise, just clear description
+						meta:set_string("description", "")
+					end
 				else
-					-- Set description
-					meta:set_string("description", new_name)
+					-- Custom name set. Colorize it!
+					-- This makes the name visually different from unnamed items
+					meta:set_string("description", core.colorize(NAME_COLOR, new_name))
 				end
 				-- Save the raw name internally, too
 				meta:set_string("name", new_name)

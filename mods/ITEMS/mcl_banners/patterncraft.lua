@@ -471,7 +471,7 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 		local description = mcl_banners.make_advanced_banner_description(odesc, layers)
 		imeta:set_string("description", description)
 	else
-		imeta:set_string("description", mname)
+		imeta:set_string("description", ometa:get_string("description"))
 		imeta:set_string("name", mname)
 	end
 	return itemstack
