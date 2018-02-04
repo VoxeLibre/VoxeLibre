@@ -289,14 +289,14 @@ local anvildef = {
 				-- Otherwise: Rename mode: Clear all input slots as the whole stack is renamed.
 				inv:set_list("input", {"", ""})
 			end
-		end
-		if listname == "output" then
 			local destroyed = damage_anvil(pos, player)
 			-- Close formspec if anvil was destroyed
 			if destroyed then
 				-- See above for justification.
 				minetest.close_formspec(player:get_player_name(), "")
 			end
+		elseif listname == "input" then
+			update_anvil_slots(meta)
 		end
 	end,
 	on_construct = function(pos)
