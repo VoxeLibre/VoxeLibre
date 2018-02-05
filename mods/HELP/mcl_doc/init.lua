@@ -159,6 +159,14 @@ doc.sub.items.register_factoid("nodes", "gravity", function(itemstring, def)
 	return s
 end)
 
+doc.sub.items.register_factoid("nodes", "gravity", function(itemstring, def)
+	local s = ""
+	if minetest.get_item_group(itemstring, "crush_after_fall") == 1 then
+		s = s .. "When this block falls deeper than 1 block, it causes damage to anything it hits. The damage dealt is B×2−2 hit points with B = number of blocks fallen. The damage can never be more than 40 HP."
+	end
+	return s
+end)
+
 -- Mining, hardness and all that
 doc.sub.items.register_factoid("nodes", "mining", function(itemstring, def)
 	local pickaxey = { "Diamond Pickaxe", "Iron Pickaxe", "Stone Pickaxe", "Golden Pickaxe", "Wooden Pickaxe" }

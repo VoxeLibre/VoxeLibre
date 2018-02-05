@@ -1,4 +1,6 @@
-local on_anvil_step = function(self, dtime)
+local on_damage_step = function(self, dtime)
+	-- Cause damage to everything it hits.
+	-- Algorithm based on MC anvils.
 	local pos = self.object:get_pos()
 	if not self._startpos then
 		self._startpos = pos
@@ -28,7 +30,13 @@ local on_anvil_step = function(self, dtime)
 						hp = 0
 					end
 					if v:is_player() then
-						mcl_death_messages.player_damage(v, string.format("%s was smashed by a falling anvil.", v:get_player_name()))
+						local msg
+						if minetest.get_item_group(self.node.name, "anvil") ~= 0 then
+							msg = "%s was smashed by a falling anvil."
+						else
+							msg = "%s was smashed by a falling block."
+						end
+						mcl_death_messages.player_damage(v, string.format(msg, v:get_player_name()))
 						mcl_hunger.exhaust(v:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
 					end
 					v:set_hp(hp)
@@ -210,8 +218,8 @@ minetest.register_entity(":__builtin:falling_node", {
 			end
 		end
 
-		if minetest.get_item_group(self.node, "anvil") ~= 0 then
-			on_anvil_step(self, dtime)
+		if minetest.get_item_group(self.node.name, "falling_node_damage") ~= 0 then
+			on_damage_step(self, dtime)
 		end
 	end
 })
