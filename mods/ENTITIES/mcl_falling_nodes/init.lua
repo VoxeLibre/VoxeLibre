@@ -71,9 +71,20 @@ minetest.register_entity(":__builtin:falling_node", {
 	end,
 
 	get_staticdata = function(self)
+		local meta = self.meta
+		-- Workaround: Save inventory seperately from metadata.
+		-- Because Minetest crashes when a node with inventory gets deactivated
+		-- (GitHub issue #7020).
+		-- FIXME: Remove the _inv workaround when it is no longer needed
+		local inv
+		if meta then
+			inv = meta.inv
+			meta.inventory = nil
+		end
 		local ds = {
 			node = self.node,
 			meta = self.meta,
+			_inv = inv,
 			_startpos = self._startpos,
 			_hit_players = self._hit_players,
 		}
@@ -88,7 +99,9 @@ minetest.register_entity(":__builtin:falling_node", {
 			self._startpos = ds._startpos
 			self._hit_players = ds._hit_players
 			if ds.node then
-				self:set_node(ds.node, ds.meta)
+				local meta = ds.meta
+				meta.inventory = ds._inv
+				self:set_node(ds.node, meta)
 			else
 				self:set_node(ds)
 			end
