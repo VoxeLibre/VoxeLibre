@@ -290,10 +290,11 @@ local anvildef = {
 		local meta = minetest.get_meta(pos)
 		if from_list == "output" and to_list == "input" then
 			local inv = meta:get_inventory()
-			inv:set_stack("output", 1, "")
 			for i=1, inv:get_size("input") do
 				if i ~= to_index then
-					inv:set_stack("input", i, "")
+					local istack = inv:get_stack("input", i)
+					istack:set_count(math.max(0, istack:get_count() - count))
+					inv:set_stack("input", i, istack)
 				end
 			end
 		end
@@ -342,8 +343,16 @@ local anvildef = {
 					inv:set_stack("input", 2, input2)
 				end
 			else
-				-- Otherwise: Rename mode: Clear all input slots as the whole stack is renamed.
-				inv:set_list("input", {"", ""})
+				-- Otherwise: Rename mode. Remove the same amount of items from input
+				-- as has been taken from output
+				if not input1:is_empty() then
+					input1:set_count(math.max(0, input1:get_count() - stack:get_count()))
+					inv:set_stack("input", 1, input1)
+				end
+				if not input2:is_empty() then
+					input2:set_count(math.max(0, input2:get_count() - stack:get_count()))
+					inv:set_stack("input", 2, input2)
+				end
 			end
 			local destroyed = damage_anvil(pos, player)
 			-- Close formspec if anvil was destroyed
