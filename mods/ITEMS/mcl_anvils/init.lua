@@ -1,7 +1,12 @@
 local MAX_NAME_LENGTH = 30
 local MAX_WEAR = 65535
 local SAME_TOOL_REPAIR_BOOST = math.ceil(MAX_WEAR * 0.12) -- 12%
-local MATERIAL_TOOL_REPAIR_BOOST = math.ceil(MAX_WEAR * 0.25) -- 25%
+local MATERIAL_TOOL_REPAIR_BOOST = {
+	math.ceil(MAX_WEAR * 0.25), -- 25%
+	math.ceil(MAX_WEAR * 0.5), -- 50%
+	math.ceil(MAX_WEAR * 0.75), -- 75%
+	MAX_WEAR, -- 100%
+}
 local NAME_COLOR = "#FFFF4C"
 
 local function get_anvil_formspec(set_name)
@@ -23,6 +28,41 @@ local function get_anvil_formspec(set_name)
 	"listring[current_player;main]"..
 	"listring[context;input]"..
 	"listring[current_player;main]"
+end
+
+-- Given a tool and material stack, returns how many items of the material stack
+-- needs to be used up to repair the tool.
+local function get_consumed_materials(tool, material)
+	local wear = tool:get_wear()
+	if wear == 0 then
+		return 0
+	end
+	local health = (MAX_WEAR - wear)
+	local matsize = material:get_count()
+	local materials_used = 0
+	for m=1, math.min(4, matsize) do
+		materials_used = materials_used + 1
+		if (wear - MATERIAL_TOOL_REPAIR_BOOST[m]) <= 0 then
+			break
+		end
+	end
+	return materials_used
+end
+
+-- Given 2 input stacks, tells you which is the tool and which is the material.
+-- Returns ("tool", input1, input2) if input1 is tool and input2 is material.
+-- Returns ("material", input2, input1) if input1 is material and input2 is tool.
+-- Returns nil otherwise.
+local function distinguish_tool_and_material(input1, input2)
+	local def1 = input1:get_definition()
+	local def2 = input2:get_definition()
+	if def1.type == "tool" and def1._repair_material then
+		return "tool", input1, input2
+	elseif def2.type == "tool" and def2._repair_material then
+		return "material", input2, input1
+	else
+		return nil
+	end
 end
 
 -- Update the inventory slots of an anvil node.
@@ -72,17 +112,9 @@ local function update_anvil_slots(meta)
 
 			-- Big repair bonus
 			-- TODO: Combine tool enchantments
-			local tool, tooldef, material
-			if def1.type == "tool" and def1._repair_material then
-				tool = input1
-				tooldef = def1
-				material = input2
-			elseif def2.type == "tool" and def2._repair_material then
-				tool = input2
-				tooldef = def2
-				material = input1
-			end
-			if tool and material then
+			local distinguished, tool, material = distinguish_tool_and_material(input1, input2)
+			if distinguished then
+				local tooldef = tool:get_definition()
 				local has_correct_material = false
 				if string.sub(tooldef._repair_material, 1, 6) == "group:" then
 					has_correct_material = minetest.get_item_group(material:get_name(), string.sub(tooldef._repair_material, 7)) ~= 0
@@ -90,7 +122,8 @@ local function update_anvil_slots(meta)
 					has_correct_material = true
 				end
 				if has_correct_material and tool:get_wear() > 0 then
-					local new_wear = calculate_repair(tool:get_wear(), MAX_WEAR, MATERIAL_TOOL_REPAIR_BOOST)
+					local materials_used = get_consumed_materials(tool, material)
+					local new_wear = calculate_repair(tool:get_wear(), MAX_WEAR, MATERIAL_TOOL_REPAIR_BOOST[materials_used])
 					tool:set_wear(new_wear)
 					name_item = tool
 					new_output = name_item
@@ -285,12 +318,29 @@ local anvildef = {
 			local inv = meta:get_inventory()
 			local input1 = inv:get_stack("input", 1)
 			local input2 = inv:get_stack("input", 2)
+			-- Both slots occupied?
 			if not input1:is_empty() and not input2:is_empty() then
-				-- Both slots occupied: Repair mode. Only take 1 item from each stack
-				input1:take_item()
-				input2:take_item()
-				inv:set_stack("input", 1, input1)
-				inv:set_stack("input", 2, input2)
+				-- Take as many items as needed
+				local distinguished, tool, material = distinguish_tool_and_material(input1, input2)
+				if distinguished then
+					-- Tool + material: Take tool and as many materials as needed
+					local materials_used = get_consumed_materials(tool, material)
+					material:set_count(material:get_count() - materials_used)
+					tool:take_item()
+					if distinguished == "tool" then
+						input1, input2 = tool, material
+					else
+						input1, input2 = material, tool
+					end
+					inv:set_stack("input", 1, input1)
+					inv:set_stack("input", 2, input2)
+				else
+					-- Else take 1 item from each stack
+					input1:take_item()
+					input2:take_item()
+					inv:set_stack("input", 1, input1)
+					inv:set_stack("input", 2, input2)
+				end
 			else
 				-- Otherwise: Rename mode: Clear all input slots as the whole stack is renamed.
 				inv:set_list("input", {"", ""})
