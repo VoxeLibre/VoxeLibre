@@ -430,5 +430,3 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_anvils:anvil", "nodes", "mcl_anvils:anvil_damage_1")
 	doc.add_entry_alias("nodes", "mcl_anvils:anvil", "nodes", "mcl_anvils:anvil_damage_2")
 end
-
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/falling_anvil.lua")

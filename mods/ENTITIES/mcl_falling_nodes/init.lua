@@ -1,3 +1,43 @@
+local on_anvil_step = function(self, dtime)
+	local pos = self.object:get_pos()
+	if not self._startpos then
+		self._startpos = pos
+	end
+	local objs = minetest.get_objects_inside_radius(pos, 1)
+	for _,v in ipairs(objs) do
+		local hp = v:get_hp()
+		if v:is_player() and hp ~= 0 then
+			if not self._hit_players then
+				self._hit_players = {}
+			end
+			local name = v:get_player_name()
+			local hit = false
+			for _,v in ipairs(self._hit_players) do
+				if name == v then
+					hit = true
+				end
+			end
+			if not hit then
+				table.insert(self._hit_players, name)
+				local way = self._startpos.y - pos.y
+				local damage = (way - 1) * 2
+				damage = math.min(40, math.max(0, damage))
+				if damage >= 1 then
+					hp = hp - damage
+					if hp < 0 then
+						hp = 0
+					end
+					if v:is_player() then
+						mcl_death_messages.player_damage(v, string.format("%s was smashed by a falling anvil.", v:get_player_name()))
+						mcl_hunger.exhaust(v:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+					end
+					v:set_hp(hp)
+				end
+			end
+		end
+	end
+end
+
 minetest.register_entity(":__builtin:falling_node", {
 	initial_properties = {
 		visual = "wielditem",
@@ -34,6 +74,8 @@ minetest.register_entity(":__builtin:falling_node", {
 		local ds = {
 			node = self.node,
 			meta = self.meta,
+			_startpos = self._startpos,
+			_hit_players = self._hit_players,
 		}
 		return minetest.serialize(ds)
 	end,
@@ -42,10 +84,14 @@ minetest.register_entity(":__builtin:falling_node", {
 		self.object:set_armor_groups({immortal = 1})
 		
 		local ds = minetest.deserialize(staticdata)
-		if ds and ds.node then
-			self:set_node(ds.node, ds.meta)
-		elseif ds then
-			self:set_node(ds)
+		if ds then
+			self._startpos = ds._startpos
+			self._hit_players = ds._hit_players
+			if ds.node then
+				self:set_node(ds.node, ds.meta)
+			else
+				self:set_node(ds)
+			end
 		elseif staticdata ~= "" then
 			self:set_node({name = staticdata})
 		end
@@ -58,7 +104,7 @@ minetest.register_entity(":__builtin:falling_node", {
 			self.object:setacceleration({x = 0, y = -10, z = 0})
 		end
 		-- Turn to actual node when colliding with ground, or continue to move
-		local pos = self.object:getpos()
+		local pos = self.object:get_pos()
 
 		-- Portal check
 		local np = {x = pos.x, y = pos.y + 0.3, z = pos.z}
@@ -129,7 +175,7 @@ minetest.register_entity(":__builtin:falling_node", {
 		local vel = self.object:getvelocity()
 		-- Fix position if entity does not move
 		if vector.equals(vel, {x = 0, y = 0, z = 0}) then
-			local npos = vector.round(self.object:getpos())
+			local npos = vector.round(self.object:get_pos())
 			local npos2 = table.copy(npos)
 			npos2.y = npos2.y - 2
 			local lownode = minetest.get_node(npos2)
@@ -147,8 +193,12 @@ minetest.register_entity(":__builtin:falling_node", {
 				return
 			else
 				-- Normal position fix (expected case)
-				self.object:setpos(npos)
+				self.object:set_pos(npos)
 			end
+		end
+
+		if minetest.get_item_group(self.node, "anvil") ~= 0 then
+			on_anvil_step(self, dtime)
 		end
 	end
 })
