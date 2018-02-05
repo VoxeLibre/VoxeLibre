@@ -1,6 +1,14 @@
 local dmes = minetest.get_modpath("mcl_death_messages") ~= nil
 local hung = minetest.get_modpath("mcl_hunger") ~= nil
 
+local get_falling_depth = function(self)
+	if not self._startpos then
+		-- Fallback
+		self._startpos = self.object:get_pos()
+	end
+	return self._startpos.y - vector.round(self.object:get_pos()).y
+end
+
 local deal_falling_damage = function(self, dtime)
 	if minetest.get_item_group(self.node.name, "falling_node_damage") == 0 then
 		return
@@ -10,6 +18,7 @@ local deal_falling_damage = function(self, dtime)
 	-- TODO: Support smashing other objects, too.
 	local pos = self.object:get_pos()
 	if not self._startpos then
+		-- Fallback
 		self._startpos = pos
 	end
 	local objs = minetest.get_objects_inside_radius(pos, 1)
@@ -128,6 +137,10 @@ minetest.register_entity(":__builtin:falling_node", {
 		elseif staticdata ~= "" then
 			self:set_node({name = staticdata})
 		end
+		if not self._startpos then
+			self._startpos = self.object:get_pos()
+		end
+		self._startpos = vector.round(self._startpos)
 	end,
 
 	on_step = function(self, dtime)
@@ -167,6 +180,9 @@ minetest.register_entity(":__builtin:falling_node", {
 					addlevel = bcd.leveled
 				end
 				if minetest.add_node_level(bcp, addlevel) == 0 then
+					if minetest.registered_nodes[self.node.name]._mcl_after_falling then
+						minetest.registered_nodes[self.node.name]._mcl_after_falling(bcp, get_falling_depth(self))
+					end
 					deal_falling_damage(self, dtime)
 					self.object:remove()
 					return
@@ -190,6 +206,9 @@ minetest.register_entity(":__builtin:falling_node", {
 				end
 				if minetest.registered_nodes[self.node.name] then
 					minetest.add_node(np, self.node)
+					if minetest.registered_nodes[self.node.name]._mcl_after_falling then
+						minetest.registered_nodes[self.node.name]._mcl_after_falling(np, get_falling_depth(self))
+					end
 					if self.meta then
 						local meta = minetest.get_meta(np)
 						meta:from_table(self.meta)
@@ -223,6 +242,9 @@ minetest.register_entity(":__builtin:falling_node", {
 				local npos3 = table.copy(npos)
 				npos3.y = npos3.y - 1
 				minetest.add_node(npos3, self.node)
+				if minetest.registered_nodes[self.node.name]._mcl_after_falling then
+					minetest.registered_nodes[self.node.name]._mcl_after_falling(npos3, get_falling_depth(self))
+				end
 				deal_falling_damage(self, dtime)
 				self.object:remove()
 				minetest.check_for_falling(npos3)

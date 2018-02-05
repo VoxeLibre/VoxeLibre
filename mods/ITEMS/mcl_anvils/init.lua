@@ -204,33 +204,49 @@ local function drop_anvil_items(pos, meta)
 	end
 end
 
--- Roll a virtual dice and with a low chance, damage the anvil by 1 level.
+-- Damage the anvil by 1 level.
 -- Destroy anvil when at highest damage level.
 -- Returns true if anvil was destroyed.
 local function damage_anvil(pos)
+	local node = minetest.get_node(pos)
+	local new
+	if node.name == "mcl_anvils:anvil" then
+		minetest.swap_node(pos, {name="mcl_anvils:anvil_damage_1", param2=node.param2})
+		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dig, {pos=pos, max_hear_distance=16})
+		return false
+	elseif node.name == "mcl_anvils:anvil_damage_1" then
+		minetest.swap_node(pos, {name="mcl_anvils:anvil_damage_2", param2=node.param2})
+		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dig, {pos=pos, max_hear_distance=16})
+		return false
+	elseif node.name == "mcl_anvils:anvil_damage_2" then
+		-- Destroy anvil
+		local meta = minetest.get_meta(pos)
+		drop_anvil_items(pos, meta)
+		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dug, {pos=pos, max_hear_distance=16})
+		minetest.remove_node(pos)
+		return true
+	end
+end
+
+-- Roll a virtual dice and damage anvil at a low chance.
+local function damage_anvil_by_using(pos)
 	local r = math.random(1, 100)
 	-- 12% chance
 	if r <= 12 then
-		local node = minetest.get_node(pos)
-		local new
-		if node.name == "mcl_anvils:anvil" then
-			minetest.swap_node(pos, {name="mcl_anvils:anvil_damage_1", param2=node.param2})
-			minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dig, {pos=pos, max_hear_distance=16})
-			return false
-		elseif node.name == "mcl_anvils:anvil_damage_1" then
-			minetest.swap_node(pos, {name="mcl_anvils:anvil_damage_2", param2=node.param2})
-			minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dig, {pos=pos, max_hear_distance=16})
-			return false
-		elseif node.name == "mcl_anvils:anvil_damage_2" then
-			-- Destroy anvil
-			local meta = minetest.get_meta(pos)
-			drop_anvil_items(pos, meta)
-			minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dug, {pos=pos, max_hear_distance=16})
-			minetest.remove_node(pos)
-			return true
+		return damage_anvil(pos)
+	else
+		return false
+	end
+end
+
+local function damage_anvil_by_falling(pos, distance)
+	local chance
+	local r = math.random(1, 100)
+	if distance > 1 then
+		if r <= (5*distance) then
+			damage_anvil(pos)
 		end
 	end
-	return false
 end
 
 local anvildef = {
@@ -252,6 +268,7 @@ local anvildef = {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 6000,
 	_mcl_hardness = 5,
+	_mcl_after_falling = damage_anvil_by_falling,
 
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos) 
@@ -301,7 +318,7 @@ local anvildef = {
 		update_anvil_slots(meta)
 
 		if from_list == "output" then
-			local destroyed = damage_anvil(pos, player)
+			local destroyed = damage_anvil_by_using(pos)
 			-- Close formspec if anvil was destroyed
 			if destroyed then
 				--[[ Closing the formspec w/ emptyformname is discouraged. But this is justified
@@ -354,7 +371,7 @@ local anvildef = {
 					inv:set_stack("input", 2, input2)
 				end
 			end
-			local destroyed = damage_anvil(pos, player)
+			local destroyed = damage_anvil_by_using(pos)
 			-- Close formspec if anvil was destroyed
 			if destroyed then
 				-- See above for justification.
@@ -404,7 +421,7 @@ anvildef0._doc_items_usagehelp =
 "• Tool + Tool: Place two tools of the same type in the input slots. The “health” of the repaired tool is the sum of the “health” of both input tools, plus a 12% bonus.".."\n"..
 "• Tool + Material: Some tools can also be repaired by combining them with an item that it's made of. For example, iron pickaxes can be repaired with iron ingots. This repairs the tool by 25%.".."\n"..
 "Armor counts as a tool. It is possible to repair and rename a tool in a single step.".."\n\n"..
-"The anvil has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the anvil gets damaged. If a very damaged anvil is damaged again, it is destroyed."
+"The anvil has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the anvil gets damaged. Anvils also have a chance of being damaged when they fall by more than 1 block. If a very damaged anvil is damaged again, it is destroyed."
 
 local anvildef1 = table.copy(anvildef)
 anvildef1.description = "Slightly Damaged Anvil"
