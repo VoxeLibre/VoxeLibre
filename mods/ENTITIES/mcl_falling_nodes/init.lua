@@ -1,7 +1,10 @@
 local dmes = minetest.get_modpath("mcl_death_messages") ~= nil
 local hung = minetest.get_modpath("mcl_hunger") ~= nil
 
-local on_damage_step = function(self, dtime)
+local deal_falling_damage = function(self, dtime)
+	if minetest.get_item_group(self.node.name, "falling_node_damage") == 0 then
+		return
+	end
 	-- Cause damage to any player it hits.
 	-- Algorithm based on MC anvils.
 	-- TODO: Support smashing other objects, too.
@@ -164,6 +167,7 @@ minetest.register_entity(":__builtin:falling_node", {
 					addlevel = bcd.leveled
 				end
 				if minetest.add_node_level(bcp, addlevel) == 0 then
+					deal_falling_damage(self, dtime)
 					self.object:remove()
 					return
 				end
@@ -198,6 +202,7 @@ minetest.register_entity(":__builtin:falling_node", {
 					minetest.add_item(np, dropped_item)
 				end
 			end
+			deal_falling_damage(self, dtime)
 			self.object:remove()
 			minetest.check_for_falling(np)
 			return
@@ -218,6 +223,7 @@ minetest.register_entity(":__builtin:falling_node", {
 				local npos3 = table.copy(npos)
 				npos3.y = npos3.y - 1
 				minetest.add_node(npos3, self.node)
+				deal_falling_damage(self, dtime)
 				self.object:remove()
 				minetest.check_for_falling(npos3)
 				return
@@ -227,8 +233,6 @@ minetest.register_entity(":__builtin:falling_node", {
 			end
 		end
 
-		if minetest.get_item_group(self.node.name, "falling_node_damage") ~= 0 then
-			on_damage_step(self, dtime)
-		end
+		deal_falling_damage(self, dtime)
 	end
 })
