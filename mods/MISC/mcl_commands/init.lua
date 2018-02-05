@@ -35,19 +35,13 @@ local function handle_kill_command(suspect, victim)
 	return true
 end
 
-if not minetest.registered_privileges["player"] then
-	minetest.register_privilege("player", {
-		description = S("Can change player attributes"),
-		give_to_singleplayer = false,
-	})
-end
 if minetest.registered_chatcommands["kill"] then
 	minetest.unregister_chatcommand("kill")
 end
 minetest.register_chatcommand("kill", {
 	params = S("[<name>]"),
 	description = S("Kill player or yourself"),
-	privs = {player=true},
+	privs = {server=true},
 	func = function(name, param)
 		if(param == "") then
 			-- Selfkill
