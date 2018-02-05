@@ -1,6 +1,10 @@
+local dmes = minetest.get_modpath("mcl_death_messages") ~= nil
+local hung = minetest.get_modpath("mcl_hunger") ~= nil
+
 local on_damage_step = function(self, dtime)
-	-- Cause damage to everything it hits.
+	-- Cause damage to any player it hits.
 	-- Algorithm based on MC anvils.
+	-- TODO: Support smashing other objects, too.
 	local pos = self.object:get_pos()
 	if not self._startpos then
 		self._startpos = pos
@@ -30,14 +34,19 @@ local on_damage_step = function(self, dtime)
 						hp = 0
 					end
 					if v:is_player() then
+						-- TODO: Reduce damage if wearing a helmet
 						local msg
 						if minetest.get_item_group(self.node.name, "anvil") ~= 0 then
 							msg = "%s was smashed by a falling anvil."
 						else
 							msg = "%s was smashed by a falling block."
 						end
-						mcl_death_messages.player_damage(v, string.format(msg, v:get_player_name()))
-						mcl_hunger.exhaust(v:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+						if dmes then
+							mcl_death_messages.player_damage(v, string.format(msg, v:get_player_name()))
+						end
+						if hung then
+							mcl_hunger.exhaust(v:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+						end
 					end
 					v:set_hp(hp)
 				end
