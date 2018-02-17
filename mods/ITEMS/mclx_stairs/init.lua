@@ -4,9 +4,6 @@ mcstair.add("mcl_stairs:stair_end_bricks")
 mcl_stairs.register_stair_and_slab_simple("red_nether_brick", "mcl_nether:red_nether_brick", "Red Nether Brick Stairs", "Red Nether Brick Slab", "Double Red Nether Brick Slab")
 mcstair.add("mcl_stairs:stair_red_nether_brick")
 
-mcl_stairs.register_stair_and_slab_simple("prismarine_dark", "mcl_ocean:prismarine_dark", "Dark Prismarine Stairs", "Dark Prismarine Slab", "Double Dark Prismarine Slab")
-mcstair.add("mcl_stairs:stair_prismarine_dark")
-
 mcl_stairs.register_stair_and_slab_simple("mossycobble", "mcl_core:mossycobble", "Moss Stone Stairs", "Moss Stone Slab", "Double Moss Stone Slab")
 mcstair.add("mcl_stairs:stair_mossycobble")
 

@@ -167,3 +167,7 @@ mcl_stairs.register_slab("purpur_block", "mcl_end:purpur_block",
 		2,
 		"Double Purpur Slab")
 
+mcl_stairs.register_stair_and_slab_simple("prismarine", "mcl_ocean:prismarine", "Prismarine Stairs", "Prismarine Slab", "Double Prismarine Slab")
+
+mcl_stairs.register_stair_and_slab_simple("prismarine_brick", "mcl_ocean:prismarine_brick", "Prismarine Brick Stairs", "Prismarine Brick Slab", "Double Prismarine Brick Slab")
+mcl_stairs.register_stair_and_slab_simple("prismarine_dark", "mcl_ocean:prismarine_dark", "Dark Prismarine Stairs", "Dark Prismarine Slab", "Double Dark Prismarine Slab")
