@@ -207,8 +207,12 @@ local check_can_drop = function(node_name, tool_capabilities)
 end
 
 function minetest.handle_node_drops(pos, drops, digger)
+	-- NOTE: This function override allows digger to be nil.
+	-- This means there is no digger. This is a special case which allows this function to be called
+	-- by hand. Creative Mode is intentionally ignored in this case.
+
 	local doTileDrops = minetest.settings:get_bool("mcl_doTileDrops") or true
-	if minetest.settings:get_bool("creative_mode") or doTileDrops == false then
+	if (digger ~= nil and minetest.settings:get_bool("creative_mode")) or doTileDrops == false then
 		return
 	end
 
