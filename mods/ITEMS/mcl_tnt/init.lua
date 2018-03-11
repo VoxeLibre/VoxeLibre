@@ -162,10 +162,10 @@ function TNT:on_step(dtime)
 	local pos = self.object:getpos()
 	minetest.add_particle({
 		pos = {x=pos.x,y=pos.y+0.5,z=pos.z},
-		velocity = {x=math.random(-.1,.1),y=math.random(1,2),z=math.random(-.1,.1)},
-		acceleration = {x=0,y=-0.1,z=0},
-		expirationtime = math.random(.5,1),
-		size = math.random(1,2),
+		velocity = vector.new(math.random() * 0.2 - 0.1, 1.0 + math.random(), math.random() * 0.2 - 0.1),
+		acceleration = vector.new(0, -0.1, 0),
+		expirationtime = 0.15 + math.random() * 0.25,
+		size = 1.0 + math.random(),
 		collisiondetection = false,
 		texture = "tnt_smoke.png"
 	})
