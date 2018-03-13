@@ -218,10 +218,10 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, all_pull_sti
 		local is_dropper = mesecon.is_mvps_dropper(n.node, movedir, nodes, id)
 		if is_dropper then
 			local drops = minetest.get_node_drops(n.node.name, "")
-			local droppos = vector.add(n.pos, movedir)
-			minetest.handle_node_drops(droppos, drops, nil)
+			minetest.dig_node(n.pos)
+		else
+			minetest.remove_node(n.pos)
 		end
-		minetest.remove_node(n.pos)
 		if is_dropper then
 			first_dropper = id
 			break
@@ -256,6 +256,9 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, all_pull_sti
 	local moved_nodes = {}
 	local oldstack = mesecon.tablecopy(nodes)
 	for i in ipairs(nodes) do
+		if first_dropper and i >= first_dropper then
+			break
+		end
 		moved_nodes[i] = {}
 		moved_nodes[i].oldpos = nodes[i].pos
 		nodes[i].pos = vector.add(nodes[i].pos, movedir)
