@@ -278,7 +278,6 @@ function mcl_farming:add_gourd(full_unconnected_stem, connected_stem_basename, s
 			walkable = false,
 			drop = stem_drop,
 			drawtype = "nodebox",
-			paramtype = "light",
 			node_box = {
 				type = "fixed",
 				fixed = connected_stem_nodebox[i]

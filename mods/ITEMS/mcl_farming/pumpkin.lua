@@ -82,7 +82,6 @@ local pumpkin_base_def = {
 	_doc_items_longdesc = "A faceless pumpkin is a decorative block. It can be carved with shears to obtain pumpkin seeds.",
 	_doc_items_usagehelp = "To carve a face into the pumpkin, use the shears on the side you want to carve.",
 	stack_max = 64,
-	paramtype = "light",
 	paramtype2 = "facedir",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png"},
 	groups = {handy=1,axey=1, plant=1,building_block=1, dig_by_piston=1, enderman_takable=1},
