@@ -123,7 +123,7 @@ local register_sapling = function(subname, description, longdesc, texture, selbo
 			fixed = selbox
 		},
 		stack_max = 64,
-		groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,deco_block=1},
+		groups = {dig_immediate=3, plant=1,sapling=1,non_mycelium_plant=1,attached_node=1,dig_by_water=1,dig_by_piston=1,destroy_by_lava_flow=1,deco_block=1},
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		on_construct = function(pos)
 			local meta = minetest.get_meta(pos)
