@@ -1,4 +1,4 @@
--- This file stores the various node types. This makes it easier to plug this mod into subgames
+-- This file stores the various node types. This makes it easier to plug this mod into games
 -- in which you need to change the node names.
 
 -- Adapted for MineClone 2!

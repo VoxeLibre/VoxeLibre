@@ -4,7 +4,7 @@ by PilzAdam
 Introduction:
 This mod adds Minecraft like drop/pick up of items to Minetest.
 
-This mod has been forked from item_drop in the VoxBox subgame.
+This mod has been forked from item_drop in the VoxBox game.
 
 License:
 Sourcecode: WTFPL (see below)

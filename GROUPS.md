@@ -1,5 +1,5 @@
 ## Groups
-This document explains all the groups used in this subgame.
+This document explains all the groups used in this game.
 
 ### Special groups
 

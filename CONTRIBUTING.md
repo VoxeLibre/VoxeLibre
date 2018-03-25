@@ -14,7 +14,7 @@ channel on irc.freenode.net. And finally, you can send e-mails to
 
 There is **no** guarantee I will accept anything from anybody.
 
-By sending me patches or asking me to include your changes in this subgame,
+By sending me patches or asking me to include your changes in this game,
 you agree that they fall under the terms of the LGPLv2.1, which basically
 means they will become part of a free software.
 

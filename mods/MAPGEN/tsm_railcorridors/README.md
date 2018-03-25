@@ -14,5 +14,5 @@ Use the advanced settings to finetune the railway corridors.
 * License: MIT License.
 
 ## Info for modders
-Want to include this mod in a subgame, but you hate the dependencies?
+Want to include this mod in a game, but you hate the dependencies?
 You can edit the node names in gameconfig.lua to fit your needs. :-)
