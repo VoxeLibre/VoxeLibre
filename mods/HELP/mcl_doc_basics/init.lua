@@ -63,7 +63,7 @@ doc.add_entry("basics", "minetest", {
 		text =
 S("Minetest is a free software game engine for games based on voxel gameplay, inspired by InfiniMiner, Minecraft, and the like. Minetest was originally created by Perttu Ahola (alias “celeron55”).").."\n\n"..
 
-S("The player is thrown into a huge world made out of cubes or blocks. These cubes usually make the landscape they blocks can be removed and placed almost entirely freely. Using the collected items, new tools and other items can be crafted. Games in Minetest (also called “subgames”) can, however, be much more complex than this.").."\n\n"..
+S("The player is thrown into a huge world made out of cubes or blocks. These cubes usually make the landscape they blocks can be removed and placed almost entirely freely. Using the collected items, new tools and other items can be crafted. Games in Minetest can, however, be much more complex than this.").."\n\n"..
 
 S("A core feature of Minetest is the built-in modding capability. Mods modify existing gameplay. They can be as simple as adding a few decorational blocks or be very complex by e.g. introducing completely new gameplay concepts, generating a completely different kind of world, and many other things.").."\n\n"..
 
@@ -440,7 +440,7 @@ S("Radar mode (image 2) is more complicated. It displays the “denseness” of 
 
 S("There are also two different rotation modes. In “square mode”, the rotation of the minimap is fixed. If you press [Shift]+[F9] to switch to “circle mode”, the minimap will instead rotate with your looking direction, so “up” is always your looking direction.").."\n\n"..
 
-S("In some subgames, the minimap may be disabled.").."\n\n"..
+S("In some games, the minimap may be disabled.").."\n\n"..
 
 S("• Toggle minimap mode: [F9]").."\n"..
 S("• Toggle minimap rotation mode: [Shift]+[F9]"),
@@ -497,7 +497,7 @@ S("Community wiki: <http://wiki.minetest.net/>").."\n"..
 S("A community-based documentation website for Minetest. Anyone with an account can edit it.").."\n\n"..
 
 S("Minetest forums: <http://forums.minetest.net/>").."\n"..
-S("A web-based discussion platform where you can discuss everything related to Minetest. This is also a place where player-made mods and subgames are published and discussed. The discussions are mainly in English, but there is also space for discussion in other languages.").."\n\n"..
+S("A web-based discussion platform where you can discuss everything related to Minetest. This is also a place where player-made mods and games are published and discussed. The discussions are mainly in English, but there is also space for discussion in other languages.").."\n\n"..
 
 S("Chat: <irc://irc.freenode.net#minetest>").."\n"..
 S("A generic Internet Relay Chat channel for everything related to Minetest where people can meet to discuss in real-time. If you do not understand IRC, see the Community Wiki for help.")
@@ -578,9 +578,9 @@ S("• Protection: Mechanism to own areas of the world, which only allows the ow
 S("Technical terms:").."\n"..
 S("• Minetest: This game engine").."\n"..
 S("• MineClone 2: What you play right now").."\n"..
-S("• Minetest Game: A subgame for Minetest by the Minetest developers").."\n"..
-S("• Subgame: A complete playing experience to be used in Minetest; such as a game or sandbox or similar").."\n"..
-S("• Mod: A single subsystem which adds or modifies functionality; is the basic building block of subgames and can be used to further enhance or modify them").."\n"..
+S("• Minetest Game: A game for Minetest by the Minetest developers").."\n"..
+S("• Game: A complete playing experience to be used in Minetest; such as a game or sandbox or similar").."\n"..
+S("• Mod: A single subsystem which adds or modifies functionality; is the basic building block of games and can be used to further enhance or modify them").."\n"..
 S("• Privilege: Allows a player to do something").."\n"..
 S("• Node: Other word for “block”")
 }})
