@@ -96,6 +96,7 @@ mobs:register_mob("mobs_mc:enderdragon", {
 })
 
 
+local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 
 mobs:register_arrow("mobs_mc:roar_of_the_dragon2", {
 	visual = "sprite",
@@ -131,13 +132,15 @@ mobs:register_arrow("mobs_mc:roar_of_the_dragon2", {
 			end
 	    end
 
-		minetest.set_node(pos, {name="air"})
-		if math.random(1,2)==1 then
-			local dx = math.random(-1,1)
-			local dy = math.random(-1,1)
-			local dz = math.random(-1,1)
-			local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-			minetest.set_node(p, {name="air"})
+		if mobs_griefing then
+			minetest.set_node(pos, {name="air"})
+			if math.random(1,2)==1 then
+				local dx = math.random(-1,1)
+				local dy = math.random(-1,1)
+				local dz = math.random(-1,1)
+				local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+				minetest.set_node(p, {name="air"})
+			end
 		end
 	end
 })

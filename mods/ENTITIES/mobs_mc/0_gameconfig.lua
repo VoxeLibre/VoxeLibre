@@ -2,10 +2,10 @@
 All mobs in this mod must use variables in this table, instead
 of hardcoding the itemstring.
 This way, external mods are enabled to replace the itemstrings to provide
-their own items and subgame integration is made much simpler.
+their own items and game integration is made much simpler.
 
 An item IDs is supposed to be overwritten by adding
-mobs_mc.override.items["example:item"] in a subgame mod
+mobs_mc.override.items["example:item"] in a game mod
 with name "mobs_mc_gameconfig". ]]
 
 
@@ -147,7 +147,7 @@ mobs_mc.items = {
 	-- Light blue intentionally missing
 
 	-- Special items
-	music_discs = {}, -- No music discs by default; used by creeper. Override this if your subgame has music discs.
+	music_discs = {}, -- No music discs by default; used by creeper. Override this if your game has music discs.
 }
 
 -- Tables for attracting, feeding and breeding mobs

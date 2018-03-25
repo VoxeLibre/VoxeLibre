@@ -73,6 +73,8 @@ mobs:register_mob("mobs_mc:wither", {
 	blood_amount = 0,
 })
 
+local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+
 mobs:register_arrow("mobs_mc:roar_of_the_dragon", {
 	visual = "sprite",
 	visual_size = {x = 1, y = 1},
@@ -106,13 +108,15 @@ mobs:register_arrow("mobs_mc:roar_of_the_dragon", {
 			end
 	    end
 
-		minetest.set_node(pos, {name="air"})
-		if math.random(1,2)==1 then
-			dx = math.random(-1,1)
-			dy = math.random(-1,1)
-			dz = math.random(-1,1)
-			local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-			minetest.set_node(p, {name="air"})
+		if mobs_griefing then
+			minetest.set_node(pos, {name="air"})
+			if math.random(1,2)==1 then
+				local dx = math.random(-1,1)
+				local dy = math.random(-1,1)
+				local dz = math.random(-1,1)
+				local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
+				minetest.set_node(p, {name="air"})
+			end
 		end
 	end
 })

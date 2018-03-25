@@ -8,6 +8,8 @@ local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 local snow_trail_frequency = 0.5 -- Time in seconds for checking to add a new snow trail
 
+local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+
 mobs:register_mob("mobs_mc:snowman", {
 	type = "npc",
 	passive = true,
@@ -51,6 +53,9 @@ mobs:register_mob("mobs_mc:snowman", {
 	},
 	blood_amount = 0,
 	do_custom = function(self, dtime)
+		if not mobs_griefing then
+			return
+		end
 		-- Leave a trail of top snow behind.
 		-- This is done in do_custom instead of just using replace_what because with replace_what,
 		-- the top snop may end up floating in the air.

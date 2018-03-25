@@ -161,6 +161,8 @@ local select_enderman_animation = function(animation_type)
 	end
 end
 
+local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+
 mobs:register_mob("mobs_mc:enderman", {
 	-- TODO: Make endermen attack when looked at
 	type = "animal",
@@ -194,6 +196,9 @@ mobs:register_mob("mobs_mc:enderman", {
 	animation = select_enderman_animation("normal"),
 	_taken_node = "",
 	do_custom = function(self, dtime)
+		if not mobs_griefing then
+			return
+		end
 		-- Take and put nodes
 		if not self._take_place_timer or not self._next_take_place_time then
 			self._take_place_timer = 0

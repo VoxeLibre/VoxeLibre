@@ -1,8 +1,8 @@
-# Subgame integration help
+# Game integration help
 
-This mod has been designed to make subgame integration rather easy. Ideally, it should be possible to include this mod verbatim in your subgame, with modifications only done by an external mod.
+This mod has been designed to make game integration rather easy. Ideally, it should be possible to include this mod verbatim in your game, with modifications only done by an external mod.
 
-To integrate this mod in a subgame, you have to do 2 things: Adding the mod, and adding another mod which tells `mobs_mc` which items to use. The idea is that `mobs_mc` should work with any items. Specifically, these are the steps you need to follow:
+To integrate this mod in a game, you have to do 2 things: Adding the mod, and adding another mod which tells `mobs_mc` which items to use. The idea is that `mobs_mc` should work with any items. Specifically, these are the steps you need to follow:
 
 * Add the `mobs_mc` mod and its dependencies
 * Add a mod with name “`mobs_mc_gameconfig`”
@@ -21,7 +21,7 @@ Some things to note:
 
 * Every override is optional, but explicitly setting all the item overrides is strongly recommended
 * `mobs_mc` ships many (but not all) items on its own. If not item name override is set, the `mobs_mc` item is used
-    * You decide whether your subgame defines its own items, outside of `mobs_mc` or if you let `mobs_mc` do the work.
+    * You decide whether your game defines its own items, outside of `mobs_mc` or if you let `mobs_mc` do the work.
 * Make sure to avoid duplicate items!
 * After finishing this, throughly test this
 * Without `mobs_mc_gameconfig`, the mod assumes Minetest Game items

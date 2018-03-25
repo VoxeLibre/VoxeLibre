@@ -19,8 +19,8 @@ This mod adds mobs which closely resemble the mobs from the game Minecraft, vers
 
 ## Useful information for developers
 
-### Subgame integration
-Want to include this mod in your subgame? Read `gameconfig.md`.
+### Game integration
+Want to include this mod in your game? Read `gameconfig.md`.
 
 ### Links
 
