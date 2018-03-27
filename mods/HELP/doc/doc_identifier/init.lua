@@ -36,7 +36,7 @@ doc_identifier.identify = function(itemstack, user, pointed_thing)
 					mod = string.sub(param,1,colon-1)
 				end
 			end
-			message = S("Error: This node, item or object is undefined. This is always an error.\nThis can happen for the following reasons:\n• The mod which is required for it is not enabled\n• The author of the subgame or a mod has made a mistake")
+			message = S("Error: This node, item or object is undefined. This is always an error.\nThis can happen for the following reasons:\n• The mod which is required for it is not enabled\n• The author of the game or a mod has made a mistake")
 			message = message .. "\n\n"
 
 			if mod ~= nil then
@@ -152,7 +152,7 @@ function doc_identifier.liquid_mode(itemstack, user, pointed_thing)
 	-- Use pointed node's on_rightclick function first, if present
 	if pointed_thing.type == "node" then
 		local node = minetest.get_node(pointed_thing.under)
-			if user and not user:get_player_control().sneak then
+		if user and not user:get_player_control().sneak then
 			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
 				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
 			end
@@ -190,19 +190,19 @@ minetest.register_tool("doc_identifier:identifier_liquid", {
 	on_secondary_use = doc_identifier.solid_mode,
 })
 
--- TODO: These crafting recipes are temporary. Add a different way to obtain the lookup tool
+--- TODO: These crafting recipes are temporary. Add a different way to obtain the lookup tool
+minetest.register_craft({
+	output = "doc_identifier:identifier_solid",
+	recipe = { {"group:stick", "group:stick" },
+		   {"", "group:stick"},
+		   {"group:stick", ""} }
+})
+
 if minetest.get_modpath("mcl_core") ~= nil then
 	minetest.register_craft({
 		output = "doc_identifier:identifier_solid",
-		recipe = { {"mcl_core:stick", "mcl_core:stick" },
-			   {"", "mcl_core:stick"},
-			   {"mcl_core:stick", ""} }
-	})
-
-	minetest.register_craft({
-		output = "doc_identifier:identifier_solid",
 		recipe = { { "mcl_core:glass" }, 
-			   { "mcl_core:stick" } }
+			   { "group:stick" } }
 	})
 end
 

@@ -179,7 +179,7 @@ explicitly).
 
 ### Hand and air
 The mod adds some default help texts for the hand and the air which are
-written in a way that they probably are true for most subgames out of the
+written in a way that they probably are true for most games out of the
 box, but especially the hand help text is kept intentionally vague.
 If you want to change these help texts or the entry names or other
 attributes, just add `_doc_items_*` fields to the item definition, either
@@ -271,7 +271,7 @@ entry then.
 
 #### Background
 Normally, the core factoids are written in a very general-purpose style, so this function might
-not be needed at all. But it might be useful for subgames and mods which radically break with
+not be needed at all. But it might be useful for games and mods which radically break with
 some of the underlying core assumptions in Minetest. For example, if your mod completely changes
 the digging system, the help texts provided by `doc_items` are probably incorrect, so you can
 disable `node_mining` and register a custom factoid as a replacement.

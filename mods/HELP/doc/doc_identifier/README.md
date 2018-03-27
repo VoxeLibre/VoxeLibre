@@ -1,5 +1,5 @@
 # Lookup Tool [`doc_identifier`]
-Version: 1.2.1
+Version: 1.2.2
 
 ## Description
 The lookup tool is an useful little helper which can be used to quickly learn

@@ -41,7 +41,7 @@ this mod is capable of and how these use cases could be implemented.
 
 ### Simple use case: Minetest basics
 Let's say you want to write in free form short help texts about the basic
-concepts of Minetest or your subgame. First you could define a category
+concepts of Minetest or your game. First you could define a category
 called “Basics”, the data for each of its entry is just a free form text.
 The template function simply creates a formspec where this free form
 text is displayed.
@@ -233,7 +233,7 @@ The help starts with this default order:
 
 This function can be called at any time, but it recommended to only call
 this function once for the entire server session and to only call it
-from subgame mods, to avoid contradictions. If this function is called a
+from game mods, to avoid contradictions. If this function is called a
 second time by any mod, a warning is written into the log.
 
 #### Parameters

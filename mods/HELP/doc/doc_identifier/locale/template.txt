@@ -1,4 +1,4 @@
-Error: This node, item or object is undefined. This is always an error.\\nThis can happen for the following reasons:\\n• The mod which is required for it is not enabled\\n• The author of the subgame or a mod has made a mistake =
+Error: This node, item or object is undefined. This is always an error.\\nThis can happen for the following reasons:\\n• The mod which is required for it is not enabled\\n• The author of the game or a mod has made a mistake =
 It appears to originate from the mod “%s”, which is enabled. =
 It appears to originate from the mod “%s”, which is not enabled! =
 Its identifier is “%s”. =

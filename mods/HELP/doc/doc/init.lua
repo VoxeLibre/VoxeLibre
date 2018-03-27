@@ -689,7 +689,7 @@ do
 				doc.data.players[name] = {}
 				doc.data.players[name].stored_data = players_stored_data
 			end
-			minetest.debug("[doc] doc.mt successfully read.")
+			minetest.log("action", "[doc] doc.mt successfully read.")
 		end
 	end
 end

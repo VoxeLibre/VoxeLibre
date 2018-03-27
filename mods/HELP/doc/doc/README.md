@@ -4,7 +4,7 @@ can access help pages about various things and the modder can add those pages.
 The mod itself does not provide any help texts, just the framework.
 It is the heart of the Help modpack, on which the other Help mods depend.
 
-Current version: 1.1.0
+Current version: 1.1.1
 
 ## For players 
 ### Accessing the help
@@ -37,9 +37,9 @@ stored in the world directory in the file `doc.mt`. You can safely reset
 the viewed/revealed state of all players by deleting this file. Players
 then need to start over revealing all entries.
 
-## For modders and subgame authors
+## For modders and game authors
 This mod helps you in creating extensive and flexible help entries for your
-mods or subgame. You can write about basically anything in the presentation
+mods or game. You can write about basically anything in the presentation
 you prefer.
 
 To get started, read `API.md` in the directory of this mod.
