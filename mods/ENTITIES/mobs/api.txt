@@ -39,7 +39,8 @@ functions needed for the mob to work properly which contains the following:
                    set to 0 for jumping mobs only.
    'jump'          when true allows your mob to jump updwards.
    'jump_height'   holds the height your mob can jump, 0 to disable jumping.
-   'step_height'   height of a block that your mob can easily walk up onto.
+   'stepheight'    height of a block that your mob can easily walk up onto,
+                   defaults to 1.1.
    'fly'           when true allows your mob to fly around instead of walking.
    'fly_in'        holds the node name that the mob flies (or swims) around
                    in e.g. "air" or "default:water_source".
@@ -49,7 +50,7 @@ functions needed for the mob to work properly which contains the following:
                    standing.
    'damage'        how many health points the mob does to a player or another
                    mob when melee attacking.
-   'knockback'     when true has mobs falling backwards when hit, the greater
+   'knock_back'    when true has mobs falling backwards when hit, the greater
                    the damage the more they move back.
    'fear_height'   is how high a cliff or edge has to be before the mob stops
                    walking, 0 to turn off height fear.
@@ -73,7 +74,7 @@ functions needed for the mob to work properly which contains the following:
                          hours and only attacking player at night or when
                          provoked.
    'attacks_monsters'    when true has npc's attacking monsters or not.
-   'attack_animal'       when true will have monsters attacking animals.
+   'attack_animals'      when true will have monsters attacking animals.
    'owner_loyal'         when true will have tamed mobs attack anything player
                          punches when nearby.
    'group_attack'        when true has same mob type grouping together to attack
@@ -85,17 +86,27 @@ functions needed for the mob to work properly which contains the following:
                          view_range.
       'dogshoot'         has melee attack when inside reach and shoot attack
                          when inside view_range.
-      'explode'          causes mob to explode when inside reach.
-   'explosion_radius'    has the radius of the explosion which defaults to 1.
-   'explosion_timer'     number of seconds before mob explodes while still
-                         inside view range.
+      'explode'          causes mob to stop and explode when inside reach.
+   'explosion_radius'           the radius of explosion node destruction,
+                                defaults to 1
+   'explosion_damage_radius'    the radius of explosion entity & player damage,
+                                defaults to explosion_radius * 2
+   'explosion_timer'     number of seconds before mob explodes while its target
+                         is still inside reach or explosion_damage_radius,
+                         defaults to 3.
+   'allow_fuse_reset'    Allow 'explode' attack_type to reset fuse and resume
+                         chasing if target leaves the blast radius or line of
+                         sight. Defaults to true.
+   'stop_to_explode'     When set to true (default), mob must stop and wait for
+                         explosion_timer in order to explode. If false, mob will
+                         continue chasing.
    'arrow'               holds the pre-defined arrow object to shoot when
                          attacking.
    'dogshoot_switch'     allows switching between attack types by using timers
                          (1 for shoot, 2 for dogfight)
    'dogshoot_count_max'  contains how many seconds before switching from
                          dogfight to shoot.
-   'dogshoot_count_max2' contains how many seconds before switching from shoot
+   'dogshoot_count2_max' contains how many seconds before switching from shoot
                          to dogfight.
    'shoot_interval'      has the number of seconds between shots.
    'shoot_offset'        holds the y position added as to where the
@@ -128,6 +139,7 @@ functions needed for the mob to work properly which contains the following:
       'damage'            sound heard when mob is hurt.
       'death'             played when mob is killed.
       'jump'              played when mob jumps.
+      'fuse'              sound played when mob explode timer starts.
       'explode'           sound played when mob explodes.
 
    'drops'     table of items that are dropped when mob is killed, fields are:
@@ -143,9 +155,9 @@ functions needed for the mob to work properly which contains the following:
       'wielditem'      how it looks when player holds it in hand.
       'mesh'           uses separate object file to define mob.
    'visual_size'       has the size of the mob, defaults to {x = 1, y = 1}
-   'collision_box'     has the box in which mob can be interacted with the
+   'collisionbox'      has the box in which mob can be interacted with the
                        world e.g. {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}
-   'selection_box'     has the box in which player can interact with mob
+   'selectionbox'      has the box in which player can interact with mob
    'textures'          holds a table list of textures to be used for mob, or you
                        could use multiple lists inside another table for random
                        selection e.g. { {"texture1.png"}, {"texture2.png"} }
@@ -332,6 +344,17 @@ For each mob that spawns with this function is a field in mobs.spawning_mobs.
 It tells if the mob should spawn or not.  Default is true.  So other mods can
 only use the API of this mod by disabling the spawning of the default mobs in
 this mod.
+
+
+mobs:spawn_abm_check(pos, node, name)
+
+This global function can be changed to contain additional checks for mobs to
+spawn e.g. mobs that spawn only in specific areas and the like.  By returning
+true the mob will not spawn.
+
+    'pos'    holds the position of the spawning mob
+    'node'   contains the node the mob is spawning on top of
+    'name'   is the name of the animal/monster
 
 
 Making Arrows

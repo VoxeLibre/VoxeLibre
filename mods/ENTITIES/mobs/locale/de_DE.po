@@ -19,6 +19,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: api.lua
+msgid "** Peaceful Mode Active - No Monsters Will Spawn"
+msgstr ""
+
+#: api.lua
 msgid "Mob has been protected!"
 msgstr "Kreatur wurde geschützt!"
 
@@ -41,10 +45,6 @@ msgstr "Daneben!"
 #: api.lua
 msgid "Already protected!"
 msgstr "Bereits geschützt!"
-
-#: api.lua
-msgid "Protected!"
-msgstr "Geschützt!"
 
 #: api.lua
 msgid "@1 at full health (@2)"
@@ -97,6 +97,10 @@ msgstr "Kreaturschutzrune"
 #: crafts.lua
 msgid "Saddle"
 msgstr "Sattel"
+
+#: crafts.lua
+msgid "Mob Fence"
+msgstr "Kreaturen Zaun"
 
 #: spawner.lua
 msgid "Mob Spawner"

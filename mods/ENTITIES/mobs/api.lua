@@ -3,7 +3,7 @@
 
 mobs = {}
 mobs.mod = "redo"
-mobs.version = "20180126"
+mobs.version = "20180328"
 
 local MAX_MOB_NAME_LENGTH = 30
 
@@ -63,7 +63,7 @@ local creative = minetest.settings:get_bool("creative_mode")
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
 local remove_far = minetest.settings:get_bool("remove_far_mobs")
 local difficulty = tonumber(minetest.settings:get("mob_difficulty")) or 1.0
-local show_health = false
+local show_health = minetest.settings:get_bool("mob_show_health") ~= false
 local max_per_block = tonumber(minetest.settings:get("max_objects_per_block") or 99)
 local mob_chance_multiplier = tonumber(minetest.settings:get("mob_chance_multiplier") or 1)
 
@@ -331,11 +331,29 @@ local effect = function(pos, amount, texture, min_size, max_size, radius, gravit
 end
 
 
--- update nametag colour
 local update_tag = function(self)
+
+	--DISABLED IN MCL2
+	--[[
+	local col = "#00FF00"
+	local qua = self.hp_max / 4
+
+	if self.health <= floor(qua * 3) then
+		col = "#FFFF00"
+	end
+
+	if self.health <= floor(qua * 2) then
+		col = "#FF6600"
+	end
+
+	if self.health <= floor(qua) then
+		col = "#FF0000"
+	end
+	]]
 
 	self.object:set_properties({
 		nametag = self.nametag,
+		-- No nametag coloring
 	})
 
 end
@@ -1200,7 +1218,7 @@ local smart_mobs = function(self, s, p, dist, dtime)
 			mob_sound(self, self.sounds.random)
 		else
 			-- yay i found path
-			mob_sound(self, self.sounds.attack)
+			mob_sound(self, self.sounds.war_cry)
 
 			set_velocity(self, self.walk_velocity)
 
@@ -1381,7 +1399,8 @@ local runaway_from = function(self)
 
 		if objs[n]:is_player() then
 
-			if mobs.invis[ objs[n]:get_player_name() ] then
+			if mobs.invis[ objs[n]:get_player_name() ]
+			or self.owner == objs[n]:get_player_name() then
 
 				type = ""
 			else
@@ -1426,7 +1445,6 @@ local runaway_from = function(self)
 		end
 	end
 
-	-- attack player
 	if min_player then
 
 		local lp = player:get_pos()
@@ -1444,7 +1462,7 @@ local runaway_from = function(self)
 
 		yaw = set_yaw(self.object, yaw)
 		self.state = "runaway"
-		self.runaway_timer = 0
+		self.runaway_timer = 3
 		self.following = nil
 	end
 end
@@ -1783,7 +1801,7 @@ local do_states = function(self, dtime)
 		local p = self.attack:get_pos() or s
 		local dist = get_distance(p, s)
 
-		-- stop attacking if player or out of range
+		-- stop attacking if player invisible or out of range
 		if dist > self.view_range
 		or not self.attack
 		or not self.attack:get_pos()
@@ -1815,16 +1833,35 @@ local do_states = function(self, dtime)
 
 			yaw = set_yaw(self.object, yaw)
 
-			-- start timer when inside reach
-			if dist < self.reach and not self.v_start then
+			local node_break_radius = self.explosion_radius or 1
+			local entity_damage_radius = self.explosion_damage_radius
+					or (node_break_radius * 2)
+
+			-- start timer when in reach and line of sight
+			if not self.v_start
+			and dist <= self.reach
+			and line_of_sight(self, s, p, 2) then
+
 				self.v_start = true
 				self.timer = 0
 				self.blinktimer = 0
+				mob_sound(self, self.sounds.fuse)
 --				print ("=== explosion timer started", self.explosion_timer)
+
+			-- stop timer if out of blast radius or direct line of sight
+			elseif self.allow_fuse_reset
+			and self.v_start
+			and (dist > max(self.reach, entity_damage_radius) + 0.5
+					or not line_of_sight(self, s, p, 2)) then
+				self.v_start = false
+				self.timer = 0
+				self.blinktimer = 0
+				self.blinkstatus = false
+				self.object:settexturemod("")
 			end
 
-			-- walk right up to player when timer active
-			if dist < 1.5 and self.v_start then
+			-- walk right up to player unless the timer is active
+			if self.v_start and (self.stop_to_explode or dist < 1.5) then
 				set_velocity(self, 0)
 			else
 				set_velocity(self, self.run_velocity)
@@ -1859,14 +1896,12 @@ local do_states = function(self, dtime)
 				if self.timer > self.explosion_timer then
 
 					local pos = self.object:get_pos()
-					local radius = self.explosion_radius or 1
-					local damage_radius = radius
 
 					-- dont damage anything if area protected or next to water
 					if minetest.find_node_near(pos, 1, {"group:water"})
 					or minetest.is_protected(pos, "") then
 
-						damage_radius = 0
+						node_break_radius = 0
 					end
 
 					self.object:remove()
@@ -1875,8 +1910,8 @@ local do_states = function(self, dtime)
 					and not minetest.is_protected(pos, "") then
 
 						tnt.boom(pos, {
-							radius = radius,
-							damage_radius = damage_radius,
+							radius = node_break_radius,
+							damage_radius = entity_damage_radius,
 							sound = self.sounds.explode,
 						})
 					else
@@ -1887,8 +1922,8 @@ local do_states = function(self, dtime)
 							max_hear_distance = self.sounds.distance or 32
 						})
 
-						entity_physics(pos, damage_radius)
-						effect(pos, 32, "tnt_smoke.png", radius * 3, radius * 5, radius, 1, 0)
+						entity_physics(pos, entity_damage_radius)
+						effect(pos, 32, "tnt_smoke.png", nil, nil, node_break_radius, 1, 0)
 					end
 
 					return
@@ -2874,7 +2909,10 @@ minetest.register_entity(name, {
 	pathfinding = def.pathfinding,
 	immune_to = def.immune_to or {},
 	explosion_radius = def.explosion_radius,
+	explosion_damage_radius = def.explosion_damage_radius,
 	explosion_timer = def.explosion_timer or 3,
+	allow_fuse_reset = def.allow_fuse_reset ~= false,
+	stop_to_explode = def.stop_to_explode ~= false,
 	custom_attack = def.custom_attack,
 	double_melee_attack = def.double_melee_attack,
 	dogshoot_switch = def.dogshoot_switch,
@@ -2948,6 +2986,12 @@ end
 
 -- global functions
 
+function mobs:spawn_abm_check(pos, node, name)
+	-- global function to add additional spawn checks
+	-- return true to stop spawning mob
+end
+
+
 function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 	interval, chance, aoc, min_height, max_height, day_toggle, on_spawn)
 
@@ -2989,6 +3033,11 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 			if not mobs.spawning_mobs[name]
 			or not minetest.registered_entities[name] then
 --print ("--- mob doesn't exist", name)
+				return
+			end
+
+			-- additional custom checks for spawning mob
+			if mobs:spawn_abm_check(pos, node, name) == true then
 				return
 			end
 
@@ -3297,12 +3346,63 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 			"^[mask:mobs_chicken_egg_overlay.png)"
 	end
 
+	-- register new spawn egg containing mob information
+	--[=[ DISABLED IN MCL2
+	minetest.register_craftitem(mob .. "_set", {
+
+		description = S("@1 (Tamed)", desc),
+		inventory_image = invimg,
+		groups = {spawn_egg = 2, not_in_creative_inventory = 1},
+		stack_max = 1,
+
+		on_place = function(itemstack, placer, pointed_thing)
+
+			local pos = pointed_thing.above
+
+			-- am I clicking on something with existing on_rightclick function?
+			local under = minetest.get_node(pointed_thing.under)
+			local def = minetest.registered_nodes[under.name]
+			if def and def.on_rightclick then
+				return def.on_rightclick(pointed_thing.under, under, placer, itemstack)
+			end
+
+			if pos
+			and within_limits(pos, 0)
+			and not minetest.is_protected(pos, placer:get_player_name()) then
+
+				if not minetest.registered_entities[mob] then
+					return
+				end
+
+				pos.y = pos.y + 1
+
+				local data = itemstack:get_metadata()
+				local mob = minetest.add_entity(pos, mob, data)
+				local ent = mob:get_luaentity()
+
+				-- set owner if not a monster
+				if ent.type ~= "monster" then
+					ent.owner = placer:get_player_name()
+					ent.tamed = true
+				end
+
+				-- since mob is unique we remove egg once spawned
+				itemstack:take_item()
+			end
+
+			return itemstack
+		end,
+	})
+	]=]
+
 	-- register old stackable mob egg
 	minetest.register_craftitem(mob, {
 
 		description = desc,
+
 		inventory_image = invimg,
 		groups = grp,
+
 		_doc_items_longdesc = "This allows you to place a single mob.",
 		_doc_items_usagehelp = "Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.",
 
@@ -3376,6 +3476,126 @@ end
 -- capture critter (thanks to blert2112 for idea)
 function mobs:capture_mob(self, clicker, chance_hand, chance_net, chance_lasso, force_take, replacewith)
 	return false
+-- DISABLED IN MCL2
+--[=[
+	if self.child
+	or not clicker:is_player()
+	or not clicker:get_inventory() then
+		return false
+	end
+
+	-- get name of clicked mob
+	local mobname = self.name
+
+	-- if not nil change what will be added to inventory
+	if replacewith then
+		mobname = replacewith
+	end
+
+	local name = clicker:get_player_name()
+	local tool = clicker:get_wielded_item()
+
+	-- are we using hand, net or lasso to pick up mob?
+	if tool:get_name() ~= ""
+	and tool:get_name() ~= "mobs:net"
+	and tool:get_name() ~= "mobs:lasso" then
+		return false
+	end
+
+	-- is mob tamed?
+	if self.tamed == false
+	and force_take == false then
+
+		minetest.chat_send_player(name, S("Not tamed!"))
+
+		return true -- false
+	end
+
+	-- cannot pick up if not owner
+	if self.owner ~= name
+	and force_take == false then
+
+		minetest.chat_send_player(name, S("@1 is owner!", self.owner))
+
+		return true -- false
+	end
+
+	if clicker:get_inventory():room_for_item("main", mobname) then
+
+		-- was mob clicked with hand, net, or lasso?
+		local chance = 0
+
+		if tool:get_name() == "" then
+			chance = chance_hand
+
+		elseif tool:get_name() == "mobs:net" then
+
+			chance = chance_net
+
+			tool:add_wear(4000) -- 17 uses
+
+			clicker:set_wielded_item(tool)
+
+		elseif tool:get_name() == "mobs:lasso" then
+
+			chance = chance_lasso
+
+			tool:add_wear(650) -- 100 uses
+
+			clicker:set_wielded_item(tool)
+
+		end
+
+		-- calculate chance.. add to inventory if successful?
+		if chance > 0 and random(1, 100) <= chance then
+
+			-- default mob egg
+			local new_stack = ItemStack(mobname)
+
+			-- add special mob egg with all mob information
+			-- unless 'replacewith' contains new item to use
+			if not replacewith then
+
+				new_stack = ItemStack(mobname .. "_set")
+
+				local tmp = {}
+
+				for _,stat in pairs(self) do
+					local t = type(stat)
+					if  t ~= "function"
+					and t ~= "nil"
+					and t ~= "userdata" then
+						tmp[_] = self[_]
+					end
+				end
+
+				local data_str = minetest.serialize(tmp)
+
+				new_stack:set_metadata(data_str)
+			end
+
+			local inv = clicker:get_inventory()
+
+			if inv:room_for_item("main", new_stack) then
+				inv:add_item("main", new_stack)
+			else
+				minetest.add_item(clicker:get_pos(), new_stack)
+			end
+
+			self.object:remove()
+
+			mob_sound(self, "default_place_node_hard")
+
+
+		else
+			minetest.chat_send_player(name, S("Missed!"))
+
+			mob_sound(self, "mobs_swing")
+		end
+	end
+
+	return true
+]=]
 end
 
 
@@ -3416,6 +3636,10 @@ function mobs:protect(self, clicker)
 	return true
 end
 
+
+local mob_obj = {}
+local mob_sta = {}
+
 -- feeding, taming and breeding (thanks blert2112)
 function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 
@@ -3444,6 +3668,13 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 			self.health = self.hp_max
 
 			if self.htimer < 1 then
+
+				-- DISABLED IN MCL2
+				--[=[
+				minetest.chat_send_player(clicker:get_player_name(),
+					S("@1 at full health (@2)",
+					self.name:split(":")[2], tostring(self.health)))
+				]=]
 
 				self.htimer = 5
 			end
@@ -3514,11 +3745,62 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 				player:set_wielded_item(item)
 			end
 		end
+
 	end
 
 	return false
 
 end
+
+-- DISABLED IN MCL2
+--[=[
+-- inspired by blockmen's nametag mod
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+
+	-- right-clicked with nametag and name entered?
+	if formname == "mobs_nametag"
+	and fields.name
+	and fields.name ~= "" then
+
+		local name = player:get_player_name()
+
+		if not mob_obj[name]
+		or not mob_obj[name].object then
+			return
+		end
+
+		-- make sure nametag is being used to name mob
+		local item = player:get_wielded_item()
+
+		if item:get_name() ~= "mobs:nametag" then
+			return
+		end
+
+		-- limit name entered to 64 characters long
+		if string.len(fields.name) > 64 then
+			fields.name = string.sub(fields.name, 1, 64)
+		end
+
+		-- update nametag
+		mob_obj[name].nametag = fields.name
+
+		update_tag(mob_obj[name])
+
+		-- if not in creative then take item
+		if not mobs.is_creative(name) then
+
+			mob_sta[name]:take_item()
+
+			player:set_wielded_item(mob_sta[name])
+		end
+
+		-- reset external variables
+		mob_obj[name] = nil
+		mob_sta[name] = nil
+
+	end
+end)
+]=]
 
 -- compatibility function for old entities to new modpack entities
 function mobs:alias_mob(old_name, new_name)

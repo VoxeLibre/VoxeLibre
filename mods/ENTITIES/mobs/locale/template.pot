@@ -18,6 +18,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: api.lua
+msgid "** Peaceful Mode Active - No Monsters Will Spawn"
+msgstr ""
+
+#: api.lua
 msgid "Mob has been protected!"
 msgstr ""
 
@@ -39,10 +43,6 @@ msgstr ""
 
 #: api.lua
 msgid "Already protected!"
-msgstr ""
-
-#: api.lua
-msgid "Protected!"
 msgstr ""
 
 #: api.lua
@@ -95,6 +95,10 @@ msgstr ""
 
 #: crafts.lua
 msgid "Saddle"
+msgstr ""
+
+#: crafts.lua
+msgid "Mob Fence"
 msgstr ""
 
 #: spawner.lua
