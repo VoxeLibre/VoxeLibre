@@ -1109,11 +1109,13 @@ local smart_mobs = function(self, s, p, dist, dtime)
 		self.path.way = minetest.find_path(s, p1, 16, self.stepheight, dropheight, "A*_noprefetch")
 
 		-- attempt to unstick mob that is "daydreaming"
+		--[[ BUT NOT IN MINECLONE2, SILLY!
 		self.object:setpos({
 			x = s.x + 0.1 * (random() * 2 - 1),
 			y = s.y + 1,
 			z = s.z + 0.1 * (random() * 2 - 1)
 		})
+		]]
 
 		self.state = ""
 		do_attack(self, self.attack)
