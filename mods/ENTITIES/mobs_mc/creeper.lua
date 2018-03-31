@@ -28,20 +28,24 @@ mobs:register_mob("mobs_mc:creeper", {
 	visual_size = {x=3, y=3},
 	sounds = {
 		attack = "tnt_ignite",
-		death = "Creeperdeath", -- TODO: Replace
-		damage = "Creeper4", -- TODO: Replce
-		war_cry = "tnt_ignite",
+		--TODO: death = "",
+		--TODO: damage = "",
+		fuse = "tnt_ignite",
 		explode = "tnt_explode",
 		distance = 16,
 	},
 	makes_footstep_sound = true,
-	walk_velocity = 1.5,
-	run_velocity = 3,
+	walk_velocity = 1.05,
+	run_velocity = 2.1,
 	runaway_from = { "mobs_mc:ocelot", "mobs_mc:cat" },
 	attack_type = "explode",
 	
 	explosion_radius = 3,
-	explosion_fire = false,
+	reach = 4,
+	explosion_damage_radius = 7,
+	explosion_timer = 1.5,
+	allow_fuse_reset = true,
+	stop_to_explode = true,
 
 	-- Force-ignite creeper with flint and steel and explode after 1.5 seconds.
 	-- TODO: Make creeper flash after doing this as well.
@@ -62,7 +66,7 @@ mobs:register_mob("mobs_mc:creeper", {
 				end
 				clicker:set_wielded_item(item)
 			end
-			self._forced_explosion_countdown_timer = 1.5
+			self._forced_explosion_countdown_timer = self.explosion_timer
 			minetest.sound_play(self.sounds.attack, {pos = self.object:getpos(), gain = 1, max_hear_distance = 16})
 		end
 	end,

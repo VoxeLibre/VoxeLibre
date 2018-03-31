@@ -1850,10 +1850,10 @@ local do_states = function(self, dtime)
 				mob_sound(self, self.sounds.fuse)
 --				print ("=== explosion timer started", self.explosion_timer)
 
-			-- stop timer if out of blast radius or direct line of sight
+			-- stop timer if out of reach or direct line of sight
 			elseif self.allow_fuse_reset
 			and self.v_start
-			and (dist > max(self.reach, entity_damage_radius) + 0.5
+			and (dist > self.reach
 					or not line_of_sight(self, s, p, 2)) then
 				self.v_start = false
 				self.timer = 0
