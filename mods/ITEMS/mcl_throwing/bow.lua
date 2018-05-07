@@ -9,6 +9,10 @@ local BOW_DURABILITY = 385
 local BOW_CHARGE_TIME_HALF = 500000
 local BOW_CHARGE_TIME_FULL = 1000000
 
+-- TODO: Use Minecraft speed (ca. 53 m/s)
+-- Currently nerfed because at full speed the arrow would easily get out of the range of the loaded map.
+local BOW_MAX_SPEED = 26
+
 local bow_load = {}
 
 mcl_throwing.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damage)
@@ -78,10 +82,7 @@ minetest.register_tool("mcl_throwing:bow", {
 	_doc_items_longdesc = "Bows are ranged weapons to shoot arrows at your foes.",
 	_doc_items_usagehelp = [[To use the bow, you first need to have at least one arrow anywhere in your inventory (unless in Creative Mode). Hold down the right mouse button to charge, release to shoot.
 
-The arrow speed and damage increase with the charge level:
-• Low charge: 1 damage
-• Medium charge: 2 damage
-• High charge: 4-5 damage (20% chance for 5 damage)]],
+The arrow speed and damage increase the longer you charge. The minimum damage is 1. At full charge, the damage is 9 with a 20% chance of a critical hit dealing 10 damage instead.]],
 	_doc_items_durability = BOW_DURABILITY,
 	inventory_image = "mcl_throwing_bow.png",
 	stack_max = 1,
@@ -125,26 +126,37 @@ controls.register_on_release(function(player, key, time)
 	local inv = minetest.get_inventory({type="player", name=player:get_player_name()})
 	local wielditem = player:get_wielded_item()
 	if (wielditem:get_name()=="mcl_throwing:bow_0" or wielditem:get_name()=="mcl_throwing:bow_1" or wielditem:get_name()=="mcl_throwing:bow_2") then
-		local shot = false
-		if wielditem:get_name()=="mcl_throwing:bow_0" then
-			shot = player_shoot_arrow(wielditem, player, 4, 1)
-		elseif wielditem:get_name()=="mcl_throwing:bow_1" then
-			shot = player_shoot_arrow(wielditem, player, 16, 2)
-		elseif wielditem:get_name()=="mcl_throwing:bow_2" then
+		local has_shot = false
+
+		local speed, damage
+		local charge = minetest.get_us_time() - bow_load[player:get_player_name()]
+		charge = math.max(math.min(charge, BOW_CHARGE_TIME_FULL), 0)
+		local charge_ratio = charge / BOW_CHARGE_TIME_FULL
+		charge_ratio = math.max(math.min(charge_ratio, 1), 0)
+
+		-- Calculate damage and speed
+		-- Fully charged
+		if charge >= BOW_CHARGE_TIME_FULL then
+			speed = BOW_MAX_SPEED
 			local r = math.random(1,5)
-			local damage
 			-- Damage and range have been nerfed because the arrow charges very quickly
-			-- TODO: Use Minecraft damage and range (9-10 @ ca. 53 m/s)
 			if r == 1 then
 				-- 20% chance for critical hit
-				damage = 5
+				damage = 10
 			else
-				damage = 4
+				damage = 9
 			end
-			shot = player_shoot_arrow(wielditem, player, 26, damage)
+		-- Partially charged
+		else
+			-- Linear speed and damage increase
+			speed = math.max(4, BOW_MAX_SPEED * charge_ratio)
+			damage = math.max(1, math.floor(9 * charge_ratio))
 		end
+
+		has_shot = player_shoot_arrow(wielditem, player, speed, damage)
+
 		wielditem:set_name("mcl_throwing:bow")
-		if shot and minetest.settings:get_bool("creative_mode") == false then
+		if has_shot and minetest.settings:get_bool("creative_mode") == false then
 			wielditem:add_wear(65535/BOW_DURABILITY)
 		end
 		player:set_wielded_item(wielditem)
