@@ -135,6 +135,21 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 				minetest.add_item(self._lastpos, 'mcl_bows:arrow')
 			end
 			self.object:remove()
+		elseif (def and def.liquidtype ~= "none") then
+			-- Slow down arrow in liquids
+			local v = def.liquid_viscosity
+			if not v then
+				v = 0
+			end
+			local vpenalty = math.max(0.1, 0.98 - 0.1 * v)
+			local vel = self.object:get_velocity()
+			if math.abs(vel.x) > 0.001 then
+				vel.x = vel.x * vpenalty
+			end
+			if math.abs(vel.z) > 0.001 then
+				vel.z = vel.z * vpenalty
+			end
+			self.object:set_velocity(vel)
 		end
 	end
 
