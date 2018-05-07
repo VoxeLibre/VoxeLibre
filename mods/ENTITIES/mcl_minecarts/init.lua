@@ -443,7 +443,8 @@ register_minecart(
 	"mcl_minecarts_minecart_chest.b3d",
 	{ "mcl_chests_normal.png", "mcl_minecarts_minecart.png" },
 	"mcl_minecarts_minecart_chest.png",
-	{"mcl_minecarts:minecart", "mcl_chests:chest"})
+	{"mcl_minecarts:minecart", "mcl_chests:chest"},
+	nil, nil, false)
 
 -- Minecart with Furnace
 register_minecart(
@@ -485,7 +486,7 @@ register_minecart(
 			-- DEBUG
 			minetest.chat_send_player(clicker:get_player_name(), "Fuel: " .. tostring(self._fueltime))
 		end
-	end
+	end, nil, false
 )
 
 -- Minecart with Command Block
@@ -506,8 +507,7 @@ register_minecart(
 	},
 	"mcl_minecarts_minecart_command_block.png",
 	{"mcl_minecarts:minecart"},
-	nil,
-	false
+	nil, nil, false
 )
 
 -- Minecart with Hopper
@@ -524,7 +524,8 @@ register_minecart(
 		"mcl_hoppers_hopper_top.png",
 	},
 	"mcl_minecarts_minecart_hopper.png",
-	{"mcl_minecarts:minecart", "mcl_hoppers:hopper"}
+	{"mcl_minecarts:minecart", "mcl_hoppers:hopper"},
+	nil, nil, false
 )
 
 -- Minecart with TNT
@@ -544,7 +545,8 @@ register_minecart(
 		"mcl_minecarts_minecart.png",
 	},
 	"mcl_minecarts_minecart_tnt.png",
-	{"mcl_minecarts:minecart", "mcl_tnt:tnt"}
+	{"mcl_minecarts:minecart", "mcl_tnt:tnt"},
+	nil, nil, false
 )
 
 
@@ -556,6 +558,8 @@ minetest.register_craft({
 	},
 })
 
+-- TODO: Re-enable crafting of special minecarts when they have been implemented
+if false then
 minetest.register_craft({
 	output = "mcl_minecarts:hopper_minecart",
 	recipe = {
@@ -587,3 +591,4 @@ minetest.register_craft({
 		{"mcl_minecarts:minecart"},
 	},
 })
+end
