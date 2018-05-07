@@ -1,2 +1,3 @@
 mcl_playerinfo
+mcl_playerphysics
 mcl_hunger

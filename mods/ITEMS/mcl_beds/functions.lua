@@ -110,7 +110,8 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		player:set_eye_offset({x = 0, y = 0, z = 0}, {x = 0, y = 0, z = 0})
 		player:set_look_horizontal(math.random(1, 180) / 100)
 		mcl_player.player_attached[name] = false
-		player:set_physics_override(1, 1, 1)
+		mcl_playerphysics.remove_physics_factor(player, "speed", "mcl_beds:sleeping")
+		mcl_playerphysics.remove_physics_factor(player, "jump", "mcl_beds:sleeping")
 		player:set_attribute("mcl_beds:sleeping", "false")
 		hud_flags.wielditem = true
 		mcl_player.player_set_animation(player, "stand" , 30)
@@ -127,9 +128,9 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		player:set_look_horizontal(yaw)
 		local dir = minetest.facedir_to_dir(param2)
 		local p = {x = bed_pos.x + dir.x / 2, y = bed_pos.y, z = bed_pos.z + dir.z / 2}
-		-- Set player attribute so other mods know they should not touch set_physics_override
 		player:set_attribute("mcl_beds:sleeping", "true")
-		player:set_physics_override(0, 0, 0)
+		mcl_playerphysics.add_physics_factor(player, "speed", "mcl_beds:sleeping", 0)
+		mcl_playerphysics.add_physics_factor(player, "jump", "mcl_beds:sleeping", 0)
 		player:setpos(p)
 		mcl_player.player_attached[name] = true
 		hud_flags.wielditem = false

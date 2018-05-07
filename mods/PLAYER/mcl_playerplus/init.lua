@@ -89,32 +89,20 @@ minetest.register_globalstep(function(dtime)
 
 		-- set defaults
 		def.speed = 1
-		def.jump = 1
-		def.gravity = 1
 
-		-- is 3d_armor mod active? if so make armor physics default
-		if armor_mod and armor and armor.def then
-			-- get player physics from armor
-			def.speed = armor.def[name].speed or 1
-			def.jump = armor.def[name].jump or 1
-			def.gravity = armor.def[name].gravity or 1
-		end
-
-		-- standing on soul sand? if so walk slower
+		-- Standing on soul sand? If so, walk slower
 		if node_stand == "mcl_nether:soul_sand" then
 			-- TODO: Tweak walk speed
 			-- TODO: Also slow down mobs
-			-- FIXME: This whole speed thing is a giant hack. We need a proper framefork for cleanly handling player speeds
-			if node_stand_below == "mcl_core:ice" or node_stand_below == "mcl_core:packed_ice" or node_stand_below == "mcl_core:slimeblock" then
-				def.speed = def.speed - 0.9
+			-- Slow down even more when soul sand is above certain block
+			if node_stand_below == "mcl_core:ice" or node_stand_below == "mcl_core:packed_ice" or node_stand_below == "mcl_core:slimeblock" or node_stand_below == "mcl_core:water_source" then
+				mcl_playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:surface", 0.1)
 			else
-				def.speed = def.speed - 0.6
+				mcl_playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:surface", 0.4)
 			end
-		end
-
-		-- Set player physics if there's no conflict
-		if player:get_attribute("mcl_beds:sleeping") ~= "true" then
-			player:set_physics_override(def.speed, def.jump, def.gravity)
+		else
+			-- Reset speed decrease
+			mcl_playerphysics.remove_physics_factor(player, "speed", "mcl_playerplus:surface")
 		end
 
 		-- Is player suffocating inside node? (Only for solid full opaque cube type nodes

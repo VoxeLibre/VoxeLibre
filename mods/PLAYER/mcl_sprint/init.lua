@@ -44,15 +44,12 @@ local function setSprinting(playerName, sprinting) --Sets the state of a player 
 	local player = minetest.get_player_by_name(playerName)
 	if players[playerName] then
 		players[playerName]["sprinting"] = sprinting
-		-- Don't overwrite physics when standing on soul sand or sleeping
-		if mcl_playerinfo[playerName].node_stand ~= "mcl_nether:soul_sand" and player:get_attribute("mcl_beds:sleeping") ~= "true" then
-			if sprinting == true then
-				player:set_physics_override({speed=mcl_sprint.SPEED})
-			elseif sprinting == false then
-				player:set_physics_override({speed=1.0})
-			end
-			return true
+		if sprinting == true then
+			mcl_playerphysics.add_physics_factor(player, "speed", "mcl_sprint:sprint", mcl_sprint.SPEED)
+		elseif sprinting == false then
+			mcl_playerphysics.remove_physics_factor(player, "speed", "mcl_sprint:sprint")
 		end
+		return true
 	end
 	return false
 end
@@ -109,8 +106,8 @@ minetest.register_globalstep(function(dtime)
 			players[playerName].lastPos = playerPos
 			if players[playerName]["shouldSprint"] == true then --Stopped
 				local sprinting
-				-- Prevent sprinting if standing on soul sand or hungry
-				if mcl_playerinfo[playerName].node_stand == "mcl_nether:soul_sand" or (mcl_hunger.active and mcl_hunger.get_hunger(player) <= 6) then
+				-- Prevent sprinting if hungry or sleeping
+				if (mcl_hunger.active and mcl_hunger.get_hunger(player) <= 6) or (player:get_attribute("mcl_beds:sleeping") == "true")then
 					sprinting = false
 				else
 					sprinting = true
