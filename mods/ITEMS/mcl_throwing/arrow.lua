@@ -100,8 +100,15 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 					full_punch_interval=1.0,
 					damage_groups={fleshy=self._damage},
 				}, nil)
-				if mod_mcl_hunger and is_player then
-					mcl_hunger.exhaust(obj:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+
+				if is_player then
+					if self._shooter and self._shooter:is_player() then
+						-- “Ding” sound for hitting another player
+						minetest.sound_play({name="mcl_throwing_hit_player", gain=0.1}, {to_player=self._shooter})
+					end
+					if mod_mcl_hunger then
+						mcl_hunger.exhaust(obj:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+					end
 				end
 
 				if lua then
