@@ -11,6 +11,9 @@ local BOW_DURABILITY = 385
 local BOW_CHARGE_TIME_HALF = 500000 -- bow level 1
 local BOW_CHARGE_TIME_FULL = 1000000 -- bow level 2 (full charge)
 
+-- Factor to multiply with player speed while player uses bow
+local PLAYER_USE_BOW_SPEED = 0.30232558 -- = sneak speed / walking speed from Minecraft Wiki
+
 -- TODO: Use Minecraft speed (ca. 53 m/s)
 -- Currently nerfed because at full speed the arrow would easily get out of the range of the loaded map.
 local BOW_MAX_SPEED = 26
@@ -106,27 +109,7 @@ The speed and damage of the arrow increases the longer you charge. The regular d
 	groups = {weapon=1,weapon_ranged=1},
 })
 
--- Bow in charging state
-for level=0, 2 do
-	minetest.register_tool("mcl_throwing:bow_"..level, {
-		description = "Bow",
-		_doc_items_create_entry = false,
-		inventory_image = "mcl_throwing_bow_"..level..".png",
-		stack_max = 1,
-		range = 0, -- Pointing range to 0 to prevent punching with bow :D
-		groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
-		on_drop = function(itemstack, dropper, pos)
-			bow_load[player:get_player_name()] = nil
-			bow_index[player:get_player_name()] = nil
-			itemstack:set_name("mcl_throwing:bow")
-			minetest.item_drop(itemstack, dropper, pos)
-			itemstack:take_item()
-			return itemstack
-		end,
-	})
-end
-
--- Resets all the bows in "charging" state back to their original stage
+-- Iterates through player inventory and resets all the bows in "charging" state back to their original stage
 local reset_bows = function(player)
 	local inv = player:get_inventory()
 	local list = inv:get_list("main")
@@ -138,6 +121,38 @@ local reset_bows = function(player)
 	end
 	inv:set_list("main", list)
 end
+
+-- Resets the bow charging state and player speed. To be used when the player is no longer charging the bow
+local reset_bow_state = function(player, also_reset_bows)
+	bow_load[player:get_player_name()] = nil
+	bow_index[player:get_player_name()] = nil
+	if minetest.get_modpath("mcl_playerphysics") then
+		mcl_playerphysics.remove_physics_factor(player, "speed", "mcl_bows:use_bow")
+	end
+	if also_reset_bows then
+		reset_bows(player)
+	end
+end
+
+-- Bow in charging state
+for level=0, 2 do
+	minetest.register_tool("mcl_throwing:bow_"..level, {
+		description = "Bow",
+		_doc_items_create_entry = false,
+		inventory_image = "mcl_throwing_bow_"..level..".png",
+		stack_max = 1,
+		range = 0, -- Pointing range to 0 to prevent punching with bow :D
+		groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
+		on_drop = function(itemstack, dropper, pos)
+			reset_bow_state(player)
+			itemstack:set_name("mcl_throwing:bow")
+			minetest.item_drop(itemstack, dropper, pos)
+			itemstack:take_item()
+			return itemstack
+		end,
+	})
+end
+
 
 controls.register_on_release(function(player, key, time)
 	if key~="RMB" then return end
@@ -188,9 +203,7 @@ controls.register_on_release(function(player, key, time)
 			wielditem:add_wear(65535/BOW_DURABILITY)
 		end
 		player:set_wielded_item(wielditem)
-		reset_bows(player)
-		bow_load[player:get_player_name()] = nil
-		bow_index[player:get_player_name()] = nil
+		reset_bow_state(player, true)
 	end
 end)
 
@@ -204,6 +217,10 @@ controls.register_on_hold(function(player, key, time)
 	if bow_load[name] == nil and wielditem:get_name()=="mcl_throwing:bow" and (minetest.settings:get_bool("creative_mode") or inv:contains_item("main", "mcl_throwing:arrow")) then
 		wielditem:set_name("mcl_throwing:bow_0")
 		player:set_wielded_item(wielditem)
+		if minetest.get_modpath("mcl_playerphysics") then
+			-- Slow player down when using bow
+			mcl_playerphysics.add_physics_factor(player, "speed", "mcl_bows:use_bow", PLAYER_USE_BOW_SPEED)
+		end
 		bow_load[name] = minetest.get_us_time()
 		bow_index[name] = player:get_wield_index()
 	else
@@ -221,9 +238,7 @@ controls.register_on_hold(function(player, key, time)
 			end
 			player:set_wielded_item(wielditem)
 		else
-			reset_bows(player)
-			bow_load[name] = nil
-			bow_index[name] = nil
+			reset_bow_state(player, true)
 		end
 	end
 end)
@@ -235,9 +250,7 @@ minetest.register_globalstep(function(dtime)
 		local wieldindex = player:get_wield_index()
 		local controls = player:get_player_control()
 		if type(bow_load[name]) == "number" and ((wielditem:get_name()~="mcl_throwing:bow_0" and wielditem:get_name()~="mcl_throwing:bow_1" and wielditem:get_name()~="mcl_throwing:bow_2") or wieldindex ~= bow_index[name]) then
-			reset_bows(player)
-			bow_load[name] = nil
-			bow_index[name] = nil
+			reset_bow_state(player, true)
 		end
 	end
 end)
@@ -247,9 +260,7 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 minetest.register_on_leaveplayer(function(player)
-	reset_bows(player)
-	bow_load[player:get_player_name()] = nil
-	bow_index[player:get_player_name()] = nil
+	reset_bow_state(player, true)
 end)
 
 if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
