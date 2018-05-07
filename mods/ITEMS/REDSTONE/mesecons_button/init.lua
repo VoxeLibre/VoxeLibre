@@ -98,20 +98,11 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 		on_place = on_button_place,
 		node_placement_prediction = "",
 		on_rightclick = function (pos, node)
-			minetest.swap_node(pos, {name="mesecons_button:button_"..basename.."_on", param2=node.param2})
+			minetest.set_node(pos, {name="mesecons_button:button_"..basename.."_on", param2=node.param2})
 			mesecon.receptor_on(pos, button_get_output_rules(node))
 			minetest.sound_play("mesecons_button_push", {pos=pos})
-			local button_turnoff = function(a)
-				local pos = a.pos
-				local node = minetest.get_node(pos)
-				local basename = a.basename
-				if node.name=="mesecons_button:button_"..basename.."_on" then --has not been dug
-					minetest.swap_node(pos, {name="mesecons_button:button_"..basename.."_off",param2=node.param2})
-					minetest.sound_play("mesecons_button_pop", {pos=pos})
-					mesecon.receptor_off(pos, button_get_output_rules(node))
-				end
-			end
-			minetest.after(button_timer, button_turnoff, {pos=pos, basename=basename})
+			local timer = minetest.get_node_timer(pos)
+			timer:start(button_timer)
 		end,
 		sounds = sounds,
 		mesecons = {receptor = {
@@ -143,6 +134,14 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 			state = mesecon.state.on,
 			rules = button_get_output_rules
 		}},
+		on_timer = function(pos, elapsed)
+			local node = minetest.get_node(pos)
+			if node.name=="mesecons_button:button_"..basename.."_on" then --has not been dug
+				minetest.set_node(pos, {name="mesecons_button:button_"..basename.."_off",param2=node.param2})
+				minetest.sound_play("mesecons_button_pop", {pos=pos})
+				mesecon.receptor_off(pos, button_get_output_rules(node))
+			end
+		end,
 		_mcl_blast_resistance = 2.5,
 		_mcl_hardness = 0.5,
 	})
