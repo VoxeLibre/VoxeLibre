@@ -21,7 +21,7 @@ mobs:register_mob("mobs_mc:illusioner", {
 	textures = { {
 		"mobs_mc_illusionist.png",
 		"mobs_mc_illusionist.png", --hat
-		"mcl_throwing_bow.png",
+		"mcl_bows_bow.png",
 	}, },
 	visual_size = {x=3, y=3},
 	walk_velocity = 0.6,

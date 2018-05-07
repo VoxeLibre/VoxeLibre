@@ -217,7 +217,7 @@ minetest.register_on_punchplayer(function(player, hitter)
 		hittertype = "mob"
 		hittersubtype = hitter:get_luaentity().name
 	-- Arrow
-	elseif hitter:get_luaentity().name == "mcl_throwing:arrow_entity" or hitter:get_luaentity().name == "mobs_mc:arrow_entity" then
+	elseif hitter:get_luaentity().name == "mcl_bows:arrow_entity" or hitter:get_luaentity().name == "mobs_mc:arrow_entity" then
 		hittertype = "arrow"
 		if hitter:get_luaentity()._shooter then
 			shooter = hitter:get_luaentity()._shooter

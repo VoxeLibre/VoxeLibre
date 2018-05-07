@@ -1,8 +1,8 @@
 default?
 mobs
 tnt?
+mcl_bows?
 mcl_throwing?
-throwing?
 fishing?
 bones?
 mesecons_materials?

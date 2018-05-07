@@ -47,7 +47,7 @@ local go_fishing = function(itemstack, user, pointed_thing)
 				items = mcl_loot.get_loot({
 					items = {
 						-- TODO: Enchanted Bow
-						{ itemstring = "mcl_throwing:bow", wear_min = 49144, wear_max = 65535 }, -- 75%-100% damage
+						{ itemstring = "mcl_bows:bow", wear_min = 49144, wear_max = 65535 }, -- 75%-100% damage
 						-- TODO: Enchanted Book
 						{ itemstring = "mcl_books:book" },
 						-- TODO: Enchanted Fishing Rod

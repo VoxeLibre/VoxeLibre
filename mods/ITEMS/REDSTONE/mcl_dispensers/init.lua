@@ -320,7 +320,7 @@ minetest.register_craft({
 	output = 'mcl_dispensers:dispenser',
 	recipe = {
 		{"mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble",},
-		{"mcl_core:cobble", "mcl_throwing:bow", "mcl_core:cobble",},
+		{"mcl_core:cobble", "mcl_bows:bow", "mcl_core:cobble",},
 		{"mcl_core:cobble", "mesecons:redstone", "mcl_core:cobble",},
 	}
 })
@@ -331,7 +331,7 @@ local check_craft = function(itemstack, player, old_craft_grid, craft_inv)
 		local bow, id
 		for i=1, craft_inv:get_size("craft") do
 			local item = craft_inv:get_stack("craft", i)
-			if item:get_name() == "mcl_throwing:bow" then
+			if item:get_name() == "mcl_bows:bow" then
 				bow = item
 				id = i
 				break

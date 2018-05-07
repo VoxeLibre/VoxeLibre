@@ -1,0 +1,8 @@
+controls
+awards?
+mcl_achievements?
+mcl_hunger?
+mcl_core?
+mcl_mobitems?
+mcl_playerphysics?
+doc?

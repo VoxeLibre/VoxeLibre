@@ -34,7 +34,7 @@ minetest.register_node("mobs_mc:arrow_box", {
 			{7.5/17, -2.5/17, -2.5/17, 8.5/17, -3.5/17, -3.5/17},
 		}
 	},
-	tiles = {"mcl_throwing_arrow.png^[transformFX", "mcl_throwing_arrow.png^[transformFX", "mcl_throwing_arrow_back.png", "mcl_throwing_arrow_front.png", "mcl_throwing_arrow.png", "mcl_throwing_arrow.png^[transformFX"},
+	tiles = {"mcl_bows_arrow.png^[transformFX", "mcl_bows_arrow.png^[transformFX", "mcl_bows_arrow_back.png", "mcl_bows_arrow_front.png", "mcl_bows_arrow.png", "mcl_bows_arrow.png^[transformFX"},
 	groups = {not_in_creative_inventory=1},
 })
 
@@ -135,7 +135,7 @@ if c("arrow") then
 		description = S("Arrow"),
 		_doc_items_longdesc = S("Arrows are ammunition for bows."),
 		_doc_items_usagehelp = S("To use arrows as ammunition for a bow, put them in the inventory slot following the bow. Slots are counted left to right, top to bottom."),
-		inventory_image = "mcl_throwing_arrow_inv.png",
+		inventory_image = "mcl_bows_arrow_inv.png",
 	})
 end
 
@@ -155,7 +155,7 @@ if c("bow") then
 		description = S("Bow"),
 		_doc_items_longdesc = S("Bows are ranged weapons to shoot arrows at your foes."),
 		_doc_items_usagehelp = S("To use the bow, you first need to have at least one arrow in slot following the bow. Leftclick to shoot. Each hit deals 3 damage."),
-		inventory_image = "mcl_throwing_bow.png",
+		inventory_image = "mcl_bows_bow.png",
 		on_use = function(itemstack, user, pointed_thing)
 			if throwing_shoot_arrow(itemstack, user, pointed_thing) then
 				if not minetest.settings:get_bool("creative_mode") then

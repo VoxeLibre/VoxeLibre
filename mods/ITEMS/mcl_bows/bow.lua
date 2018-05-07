@@ -1,7 +1,7 @@
-mcl_throwing = {}
+mcl_bows = {}
 
 local arrows = {
-	["mcl_throwing:arrow"] = "mcl_throwing:arrow_entity",
+	["mcl_bows:arrow"] = "mcl_bows:arrow_entity",
 }
 
 local GRAVITY = 9.81
@@ -31,7 +31,7 @@ local bow_load = {}
 -- Another player table, this one stores the wield index of the bow being charged
 local bow_index = {}
 
-mcl_throwing.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damage)
+mcl_bows.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damage)
 	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, arrows[arrow_item])
 	if power == nil then
 		power = 19
@@ -46,7 +46,7 @@ mcl_throwing.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, d
 	le._shooter = shooter
 	le._damage = damage
 	le._startpos = pos
-	minetest.sound_play("mcl_throwing_bow_shoot", {pos=pos})
+	minetest.sound_play("mcl_bows_bow_shoot", {pos=pos})
 	if shooter ~= nil then
 		if obj:get_luaentity().player == "" then
 			obj:get_luaentity().player = shooter
@@ -87,20 +87,20 @@ local player_shoot_arrow = function(itemstack, player, power, damage)
 	local yaw = player:get_look_horizontal()
 
 	if not arrow_itemstring then
-		arrow_itemstring = "mcl_throwing:arrow"
+		arrow_itemstring = "mcl_bows:arrow"
 	end
-	mcl_throwing.shoot_arrow(arrow_itemstring, {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, dir, yaw, player, power, damage)
+	mcl_bows.shoot_arrow(arrow_itemstring, {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, dir, yaw, player, power, damage)
 	return true
 end
 
 -- Bow item, uncharged state
-minetest.register_tool("mcl_throwing:bow", {
+minetest.register_tool("mcl_bows:bow", {
 	description = "Bow",
 	_doc_items_longdesc = [[Bows are ranged weapons to shoot arrows at your foes.
 The speed and damage of the arrow increases the longer you charge. The regular damage of the arrow is between 1 and 9. At full charge, there's also a 20% of a critical hit, dealing 10 damage instead.]],
 	_doc_items_usagehelp = [[To use the bow, you first need to have at least one arrow anywhere in your inventory (unless in Creative Mode). Hold down the right mouse button to charge, release to shoot.]],
 	_doc_items_durability = BOW_DURABILITY,
-	inventory_image = "mcl_throwing_bow.png",
+	inventory_image = "mcl_bows_bow.png",
 	stack_max = 1,
 	-- Trick to disable melee damage to entities.
 	-- Range not set to 0 (unlike the others) so it can be placed into item frames
@@ -115,8 +115,8 @@ local reset_bows = function(player)
 	local inv = player:get_inventory()
 	local list = inv:get_list("main")
 	for place, stack in pairs(list) do
-		if stack:get_name()=="mcl_throwing:bow_0" or stack:get_name()=="mcl_throwing:bow_1" or stack:get_name()=="mcl_throwing:bow_2" then
-			stack:set_name("mcl_throwing:bow")
+		if stack:get_name()=="mcl_bows:bow_0" or stack:get_name()=="mcl_bows:bow_1" or stack:get_name()=="mcl_bows:bow_2" then
+			stack:set_name("mcl_bows:bow")
 			list[place] = stack
 		end
 	end
@@ -137,16 +137,16 @@ end
 
 -- Bow in charging state
 for level=0, 2 do
-	minetest.register_tool("mcl_throwing:bow_"..level, {
+	minetest.register_tool("mcl_bows:bow_"..level, {
 		description = "Bow",
 		_doc_items_create_entry = false,
-		inventory_image = "mcl_throwing_bow_"..level..".png",
+		inventory_image = "mcl_bows_bow_"..level..".png",
 		stack_max = 1,
 		range = 0, -- Pointing range to 0 to prevent punching with bow :D
 		groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
 		on_drop = function(itemstack, dropper, pos)
 			reset_bow_state(player)
-			itemstack:set_name("mcl_throwing:bow")
+			itemstack:set_name("mcl_bows:bow")
 			minetest.item_drop(itemstack, dropper, pos)
 			itemstack:take_item()
 			return itemstack
@@ -159,7 +159,7 @@ controls.register_on_release(function(player, key, time)
 	if key~="RMB" then return end
 	local inv = minetest.get_inventory({type="player", name=player:get_player_name()})
 	local wielditem = player:get_wielded_item()
-	if (wielditem:get_name()=="mcl_throwing:bow_0" or wielditem:get_name()=="mcl_throwing:bow_1" or wielditem:get_name()=="mcl_throwing:bow_2") then
+	if (wielditem:get_name()=="mcl_bows:bow_0" or wielditem:get_name()=="mcl_bows:bow_1" or wielditem:get_name()=="mcl_bows:bow_2") then
 		local has_shot = false
 
 		local speed, damage
@@ -172,7 +172,7 @@ controls.register_on_release(function(player, key, time)
 			-- In case something goes wrong ...
 			-- Just assume minimum charge.
 			charge = 0
-			minetest.log("warning", "[mcl_throwing] Player "..player:get_player_name().." fires arrow with non-numeric bow_load!")
+			minetest.log("warning", "[mcl_bows] Player "..player:get_player_name().." fires arrow with non-numeric bow_load!")
 		end
 		charge = math.max(math.min(charge, BOW_CHARGE_TIME_FULL), 0)
 
@@ -199,7 +199,7 @@ controls.register_on_release(function(player, key, time)
 
 		has_shot = player_shoot_arrow(wielditem, player, speed, damage)
 
-		wielditem:set_name("mcl_throwing:bow")
+		wielditem:set_name("mcl_bows:bow")
 		if has_shot and minetest.settings:get_bool("creative_mode") == false then
 			wielditem:add_wear(65535/BOW_DURABILITY)
 		end
@@ -215,8 +215,8 @@ controls.register_on_hold(function(player, key, time)
 	local name = player:get_player_name()
 	local inv = minetest.get_inventory({type="player", name=name})
 	local wielditem = player:get_wielded_item()
-	if bow_load[name] == nil and wielditem:get_name()=="mcl_throwing:bow" and (minetest.settings:get_bool("creative_mode") or inv:contains_item("main", "mcl_throwing:arrow")) then
-		wielditem:set_name("mcl_throwing:bow_0")
+	if bow_load[name] == nil and wielditem:get_name()=="mcl_bows:bow" and (minetest.settings:get_bool("creative_mode") or inv:contains_item("main", "mcl_bows:arrow")) then
+		wielditem:set_name("mcl_bows:bow_0")
 		player:set_wielded_item(wielditem)
 		if minetest.get_modpath("mcl_playerphysics") then
 			-- Slow player down when using bow
@@ -227,14 +227,14 @@ controls.register_on_hold(function(player, key, time)
 	else
 		if player:get_wield_index() == bow_index[name] then
 			if type(bow_load[name]) == "number" then
-				if wielditem:get_name() == "mcl_throwing:bow_0" and minetest.get_us_time() - bow_load[name] >= BOW_CHARGE_TIME_HALF then
-					wielditem:set_name("mcl_throwing:bow_1")
-				elseif wielditem:get_name() == "mcl_throwing:bow_1" and minetest.get_us_time() - bow_load[name] >= BOW_CHARGE_TIME_FULL then
-					wielditem:set_name("mcl_throwing:bow_2")
+				if wielditem:get_name() == "mcl_bows:bow_0" and minetest.get_us_time() - bow_load[name] >= BOW_CHARGE_TIME_HALF then
+					wielditem:set_name("mcl_bows:bow_1")
+				elseif wielditem:get_name() == "mcl_bows:bow_1" and minetest.get_us_time() - bow_load[name] >= BOW_CHARGE_TIME_FULL then
+					wielditem:set_name("mcl_bows:bow_2")
 				end
 			else
-				if wielditem:get_name() == "mcl_throwing:bow_0" or wielditem:get_name() == "mcl_throwing:bow_1" or wielditem:get_name() == "mcl_throwing:bow_2" then
-					wielditem:set_name("mcl_throwing:bow")
+				if wielditem:get_name() == "mcl_bows:bow_0" or wielditem:get_name() == "mcl_bows:bow_1" or wielditem:get_name() == "mcl_bows:bow_2" then
+					wielditem:set_name("mcl_bows:bow")
 				end
 			end
 			player:set_wielded_item(wielditem)
@@ -250,7 +250,7 @@ minetest.register_globalstep(function(dtime)
 		local wielditem = player:get_wielded_item()
 		local wieldindex = player:get_wield_index()
 		local controls = player:get_player_control()
-		if type(bow_load[name]) == "number" and ((wielditem:get_name()~="mcl_throwing:bow_0" and wielditem:get_name()~="mcl_throwing:bow_1" and wielditem:get_name()~="mcl_throwing:bow_2") or wieldindex ~= bow_index[name]) then
+		if type(bow_load[name]) == "number" and ((wielditem:get_name()~="mcl_bows:bow_0" and wielditem:get_name()~="mcl_bows:bow_1" and wielditem:get_name()~="mcl_bows:bow_2") or wieldindex ~= bow_index[name]) then
 			reset_bow_state(player, true)
 		end
 	end
@@ -266,7 +266,7 @@ end)
 
 if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
 	minetest.register_craft({
-		output = 'mcl_throwing:bow',
+		output = 'mcl_bows:bow',
 		recipe = {
 			{'', 'mcl_core:stick', 'mcl_mobitems:string'},
 			{'mcl_core:stick', '', 'mcl_mobitems:string'},
@@ -274,7 +274,7 @@ if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") the
 		}
 	})
 	minetest.register_craft({
-		output = 'mcl_throwing:bow',
+		output = 'mcl_bows:bow',
 		recipe = {
 			{'mcl_mobitems:string', 'mcl_core:stick', ''},
 			{'mcl_mobitems:string', '', 'mcl_core:stick'},
@@ -285,15 +285,15 @@ end
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "mcl_throwing:bow",
+	recipe = "mcl_bows:bow",
 	burntime = 15,
 })
 
 -- Add entry aliases for the Help
 if minetest.get_modpath("doc") then
-	doc.add_entry_alias("tools", "mcl_throwing:bow", "tools", "mcl_throwing:bow_0")
-	doc.add_entry_alias("tools", "mcl_throwing:bow", "tools", "mcl_throwing:bow_1")
-	doc.add_entry_alias("tools", "mcl_throwing:bow", "tools", "mcl_throwing:bow_2")
+	doc.add_entry_alias("tools", "mcl_bows:bow", "tools", "mcl_bows:bow_0")
+	doc.add_entry_alias("tools", "mcl_bows:bow", "tools", "mcl_bows:bow_1")
+	doc.add_entry_alias("tools", "mcl_bows:bow", "tools", "mcl_bows:bow_2")
 end
 
 
