@@ -3,8 +3,9 @@ local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_
 
 minetest.register_craftitem("mcl_throwing:arrow", {
 	description = "Arrow",
-	_doc_items_longdesc = "Arrows are ammunition for bows and dispensers.",
-	_doc_items_usagehelp = "To use arrows as ammunition for a bow, just put them anywhere in your inventory, they will be used up automatically. To use arrows as ammunition for a dispenser, place them in the dispenser's inventory. Arrows fired from a dispenser always deal 3 damage.",
+	_doc_items_longdesc = [[Arrows are ammunition for bows and dispensers.
+An arrow fired from a bow has a regular damage of 1-9. At full charge, there's a 20% chance of a critical hit dealing 10 damage instead. An arrow fired from a dispenser always deals 3 damage.]],
+	_doc_items_usagehelp = "To use arrows as ammunition for a bow, just put them anywhere in your inventory, they will be used up automatically. To use arrows as ammunition for a dispenser, place them in the dispenser's inventory.",
 	inventory_image = "mcl_throwing_arrow_inv.png",
 	groups = { ammo=1, ammo_bow=1 },
 	_on_dispense = function(itemstack, dispenserpos, droppos, dropnode, dropdir)
