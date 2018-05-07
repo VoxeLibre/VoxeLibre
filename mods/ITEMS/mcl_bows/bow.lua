@@ -151,6 +151,10 @@ for level=0, 2 do
 			itemstack:take_item()
 			return itemstack
 		end,
+		-- Prevent accidental interaction with itemframes and other nodes
+		on_place = function(itemstack)
+			return itemstack
+		end,
 	})
 end
 
