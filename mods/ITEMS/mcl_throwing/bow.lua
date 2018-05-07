@@ -18,11 +18,14 @@ local BOW_MAX_SPEED = 26
 --[[ Store the charging state of each player.
 keys: player name
 value:
-false or nil = not charging or player not existing
+nil = not charging or player not existing
 number: currently charging, the number is the time from minetest.get_us_time
              in which the charging has started
 ]]
 local bow_load = {}
+
+-- Another player table, this one stores the wield index of the bow being charged
+local bow_index = {}
 
 mcl_throwing.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damage)
 	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, arrows[arrow_item])
@@ -178,9 +181,22 @@ controls.register_on_release(function(player, key, time)
 			wielditem:add_wear(65535/BOW_DURABILITY)
 		end
 		player:set_wielded_item(wielditem)
-		bow_load[player:get_player_name()] = false
+		bow_load[player:get_player_name()] = nil
+		bow_index[player:get_player_name()] = nil
 	end
 end)
+
+local reset_bows = function(player)
+	local inv = player:get_inventory()
+	local list = inv:get_list("main")
+	for place, stack in pairs(list) do
+		if stack:get_name()=="mcl_throwing:bow_0" or stack:get_name()=="mcl_throwing:bow_1" or stack:get_name()=="mcl_throwing:bow_2" then
+			stack:set_name("mcl_throwing:bow")
+			list[place] = stack
+		end
+	end
+	inv:set_list("main", list)
+end
 
 controls.register_on_hold(function(player, key, time)
 	if key ~= "RMB" then
@@ -189,45 +205,55 @@ controls.register_on_hold(function(player, key, time)
 	local name = player:get_player_name()
 	local inv = minetest.get_inventory({type="player", name=name})
 	local wielditem = player:get_wielded_item()
-	if wielditem:get_name()=="mcl_throwing:bow" and (minetest.settings:get_bool("creative_mode") or inv:contains_item("main", "mcl_throwing:arrow")) then
+	if bow_load[name] == nil and wielditem:get_name()=="mcl_throwing:bow" and (minetest.settings:get_bool("creative_mode") or inv:contains_item("main", "mcl_throwing:arrow")) then
 		wielditem:set_name("mcl_throwing:bow_0")
+		player:set_wielded_item(wielditem)
 		bow_load[name] = minetest.get_us_time()
+		bow_index[name] = player:get_wield_index()
 	else
-		if type(bow_load[name]) == "number" then
-			if wielditem:get_name() == "mcl_throwing:bow_0" and minetest.get_us_time() - bow_load[name] >= BOW_CHARGE_TIME_HALF then
-				wielditem:set_name("mcl_throwing:bow_1")
-			elseif wielditem:get_name() == "mcl_throwing:bow_1" and minetest.get_us_time() - bow_load[name] >= BOW_CHARGE_TIME_FULL then
-				wielditem:set_name("mcl_throwing:bow_2")
+		if player:get_wield_index() == bow_index[name] then
+			if type(bow_load[name]) == "number" then
+				if wielditem:get_name() == "mcl_throwing:bow_0" and minetest.get_us_time() - bow_load[name] >= BOW_CHARGE_TIME_HALF then
+					wielditem:set_name("mcl_throwing:bow_1")
+				elseif wielditem:get_name() == "mcl_throwing:bow_1" and minetest.get_us_time() - bow_load[name] >= BOW_CHARGE_TIME_FULL then
+					wielditem:set_name("mcl_throwing:bow_2")
+				end
+			else
+				if wielditem:get_name() == "mcl_throwing:bow_0" or wielditem:get_name() == "mcl_throwing:bow_1" or wielditem:get_name() == "mcl_throwing:bow_2" then
+					wielditem:set_name("mcl_throwing:bow")
+				end
 			end
+			player:set_wielded_item(wielditem)
 		else
-			wielditem:set_name("mcl_throwing:bow")
+			reset_bows(player)
+			bow_load[name] = nil
+			bow_index[name] = nil
 		end
 	end
-	player:set_wielded_item(wielditem)
 end)
 
 minetest.register_globalstep(function(dtime)
 	for _, player in pairs(minetest.get_connected_players()) do
+		local name = player:get_player_name()
 		local wielditem = player:get_wielded_item()
+		local wieldindex = player:get_wield_index()
 		local controls = player:get_player_control()
-		local inv = minetest.get_inventory({type="player", name = player:get_player_name()})
-		if bow_load[player:get_player_name()] and (wielditem:get_name()~="mcl_throwing:bow_0" and wielditem:get_name()~="mcl_throwing:bow_1" and wielditem:get_name()~="mcl_throwing:bow_2") then
-			local list = inv:get_list("main")
-			for place, stack in pairs(list) do
-				if stack:get_name()=="mcl_throwing:bow_0" or stack:get_name()=="mcl_throwing:bow_1" or stack:get_name()=="mcl_throwing:bow_2" then
-					stack:set_name("mcl_throwing:bow")
-					list[place] = stack
-					break
-				end
-			end
-			inv:set_list("main", list)
-			bow_load[player:get_player_name()] = false
+		if type(bow_load[name]) == "number" and ((wielditem:get_name()~="mcl_throwing:bow_0" and wielditem:get_name()~="mcl_throwing:bow_1" and wielditem:get_name()~="mcl_throwing:bow_2") or wieldindex ~= bow_index[name]) then
+			reset_bows(player)
+			bow_load[name] = nil
+			bow_index[name] = nil
 		end
 	end
 end)
 
+minetest.register_on_joinplayer(function(player)
+	reset_bows(player)
+end)
+
 minetest.register_on_leaveplayer(function(player)
+	reset_bows(player)
 	bow_load[player:get_player_name()] = nil
+	bow_index[player:get_player_name()] = nil
 end)
 
 if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
