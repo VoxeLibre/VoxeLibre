@@ -132,6 +132,19 @@ minetest.register_tool("mcl_throwing:bow_2", {
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
 })
 
+-- Resets all the bows in "charging" state back to their original stage
+local reset_bows = function(player)
+	local inv = player:get_inventory()
+	local list = inv:get_list("main")
+	for place, stack in pairs(list) do
+		if stack:get_name()=="mcl_throwing:bow_0" or stack:get_name()=="mcl_throwing:bow_1" or stack:get_name()=="mcl_throwing:bow_2" then
+			stack:set_name("mcl_throwing:bow")
+			list[place] = stack
+		end
+	end
+	inv:set_list("main", list)
+end
+
 controls.register_on_release(function(player, key, time)
 	if key~="RMB" then return end
 	local inv = minetest.get_inventory({type="player", name=player:get_player_name()})
@@ -181,22 +194,11 @@ controls.register_on_release(function(player, key, time)
 			wielditem:add_wear(65535/BOW_DURABILITY)
 		end
 		player:set_wielded_item(wielditem)
+		reset_bows(player)
 		bow_load[player:get_player_name()] = nil
 		bow_index[player:get_player_name()] = nil
 	end
 end)
-
-local reset_bows = function(player)
-	local inv = player:get_inventory()
-	local list = inv:get_list("main")
-	for place, stack in pairs(list) do
-		if stack:get_name()=="mcl_throwing:bow_0" or stack:get_name()=="mcl_throwing:bow_1" or stack:get_name()=="mcl_throwing:bow_2" then
-			stack:set_name("mcl_throwing:bow")
-			list[place] = stack
-		end
-	end
-	inv:set_list("main", list)
-end
 
 controls.register_on_hold(function(player, key, time)
 	if key ~= "RMB" then
