@@ -12,7 +12,8 @@ local BOW_CHARGE_TIME_HALF = 500000 -- bow level 1
 local BOW_CHARGE_TIME_FULL = 1000000 -- bow level 2 (full charge)
 
 -- Factor to multiply with player speed while player uses bow
-local PLAYER_USE_BOW_SPEED = 0.30232558 -- = sneak speed / walking speed from Minecraft Wiki
+-- This emulates the sneak speed.
+local PLAYER_USE_BOW_SPEED = tonumber(minetest.settings:get("movement_speed_crouch")) / tonumber(minetest.settings:get("movement_speed_walk"))
 
 -- TODO: Use Minecraft speed (ca. 53 m/s)
 -- Currently nerfed because at full speed the arrow would easily get out of the range of the loaded map.
