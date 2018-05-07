@@ -1,3 +1,6 @@
+-- Time in seconds after which a stuck arrow is deleted
+local ARROW_TIMEOUT = 60
+
 local mod_mcl_hunger = minetest.get_modpath("mcl_hunger")
 local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
 
@@ -43,6 +46,7 @@ minetest.register_node("mcl_bows:arrow_box", {
 	groups = {not_in_creative_inventory=1},
 })
 
+-- FIXME: Restore arrow state properly on re-loading
 local THROWING_ARROW_ENTITY={
 	physical = false,
 	visual = "wielditem",
@@ -53,6 +57,8 @@ local THROWING_ARROW_ENTITY={
 	_lastpos={},
 	_startpos=nil,
 	_damage=1,	-- Damage on impact
+	_stuck=false,   -- Whether arrow is stuck
+	_stucktimer=nil,-- Amount of time (in seconds) the arrow has been stuck so far
 	_shooter=nil,	-- ObjectRef of player or mob who shot it
 }
 
@@ -60,8 +66,36 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 	local pos = self.object:getpos()
 	local node = minetest.get_node(pos)
 
+	if self._stuck then
+		self._stucktimer = self._stucktimer + dtime
+		if self._stucktimer > ARROW_TIMEOUT then
+			self.object:remove()
+			return
+		end
+		local objects = minetest.get_objects_inside_radius(pos, 2)
+		for _,obj in ipairs(objects) do
+			if obj:is_player() then
+				if not minetest.settings:get_bool("creative_mode") then
+					-- Pickup arrow if player is nearby
+					if obj:get_inventory():room_for_item("main", "mcl_bows:arrow") then
+						obj:get_inventory():add_item("main", "mcl_bows:arrow")
+						minetest.sound_play("item_drop_pickup", {
+							pos = pos,
+							max_hear_distance = 16,
+							gain = 1.0,
+						})
+						self.object:remove()
+						return
+					end
+				else
+					self.object:remove()
+					return
+				end
+			end
+		end
+		
 	-- Check for object collision. Done every tick (hopefully this is not too stressing)
-	do
+	else
 		local objs = minetest.get_objects_inside_radius(pos, 2)
 		local closest_object
 		local closest_distance
@@ -128,13 +162,14 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 	end
 
 	-- Check for node collision
-	if self._lastpos.x~=nil then
+	if self._lastpos.x~=nil and not self._stuck then
 		local def = minetest.registered_nodes[node.name]
 		if (def and def.walkable) or not def then
-			if not minetest.settings:get_bool("creative_mode") then
-				minetest.add_item(self._lastpos, 'mcl_bows:arrow')
-			end
-			self.object:remove()
+			-- Arrow is stuck and no longer moves
+			self._stuck = true
+			self._stucktimer = 0
+			self.object:set_velocity({x=0, y=0, z=0})
+			self.object:set_acceleration({x=0, y=0, z=0})
 		elseif (def and def.liquidtype ~= "none") then
 			-- Slow down arrow in liquids
 			local v = def.liquid_viscosity
