@@ -89,6 +89,7 @@ local player_shoot_arrow = function(itemstack, player, power, damage)
 	return true
 end
 
+-- Bow item, uncharged state
 minetest.register_tool("mcl_throwing:bow", {
 	description = "Bow",
 	_doc_items_longdesc = [[Bows are ranged weapons to shoot arrows at your foes.
@@ -105,32 +106,25 @@ The speed and damage of the arrow increases the longer you charge. The regular d
 	groups = {weapon=1,weapon_ranged=1},
 })
 
-minetest.register_tool("mcl_throwing:bow_0", {
-	description = "Bow",
-	_doc_items_create_entry = false,
-	inventory_image = "mcl_throwing_bow_0.png",
-	stack_max = 1,
-	range = 0, -- Pointing range to 0 to prevent punching with bow :D
-	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
-})
-
-minetest.register_tool("mcl_throwing:bow_1", {
-	description = "Bow",
-	_doc_items_create_entry = false,
-	inventory_image = "mcl_throwing_bow_1.png",
-	stack_max = 1,
-	range = 0,
-	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
-})
-
-minetest.register_tool("mcl_throwing:bow_2", {
-	description = "Bow",
-	_doc_items_create_entry = false,
-	inventory_image = "mcl_throwing_bow_2.png",
-	stack_max = 1,
-	range = 0,
-	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
-})
+-- Bow in charging state
+for level=0, 2 do
+	minetest.register_tool("mcl_throwing:bow_"..level, {
+		description = "Bow",
+		_doc_items_create_entry = false,
+		inventory_image = "mcl_throwing_bow_"..level..".png",
+		stack_max = 1,
+		range = 0, -- Pointing range to 0 to prevent punching with bow :D
+		groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
+		on_drop = function(itemstack, dropper, pos)
+			bow_load[player:get_player_name()] = nil
+			bow_index[player:get_player_name()] = nil
+			itemstack:set_name("mcl_throwing:bow")
+			minetest.item_drop(itemstack, dropper, pos)
+			itemstack:take_item()
+			return itemstack
+		end,
+	})
+end
 
 -- Resets all the bows in "charging" state back to their original stage
 local reset_bows = function(player)
