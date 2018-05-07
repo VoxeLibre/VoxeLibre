@@ -6,7 +6,8 @@ local arrows = {
 
 local GRAVITY = 9.81
 local BOW_DURABILITY = 385
-local CHARGE_SPEED = 1
+local BOW_CHARGE_TIME_HALF = 500000
+local BOW_CHARGE_TIME_FULL = 1000000
 
 local bow_load = {}
 
@@ -160,12 +161,12 @@ controls.register_on_hold(function(player, key, time)
 	local wielditem = player:get_wielded_item()
 	if wielditem:get_name()=="mcl_throwing:bow" and (minetest.settings:get_bool("creative_mode") or inv:contains_item("main", "mcl_throwing:arrow")) then
 		wielditem:set_name("mcl_throwing:bow_0")
-		bow_load[name] = os.time()
+		bow_load[name] = minetest.get_us_time()
 	else
 		if type(bow_load[name]) == "number" then
-			if wielditem:get_name() == "mcl_throwing:bow_0" and os.time() - bow_load[name] > CHARGE_SPEED then
+			if wielditem:get_name() == "mcl_throwing:bow_0" and minetest.get_us_time() - bow_load[name] >= BOW_CHARGE_TIME_HALF then
 				wielditem:set_name("mcl_throwing:bow_1")
-			elseif wielditem:get_name() == "mcl_throwing:bow_1" and os.time() - bow_load[name] > CHARGE_SPEED*2 then
+			elseif wielditem:get_name() == "mcl_throwing:bow_1" and minetest.get_us_time() - bow_load[name] >= BOW_CHARGE_TIME_FULL then
 				wielditem:set_name("mcl_throwing:bow_2")
 			end
 		else
