@@ -8,8 +8,10 @@ local arrows = {
 }
 
 local GRAVITY = 9.81
+local BOW_DURABILITY = 385
+local CHARGE_SPEED = 1
 
-local bow_durability = 385
+local bow_load = {}
 
 mcl_throwing.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damage)
 	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, arrows[arrow_item])
@@ -98,13 +100,13 @@ end
 minetest.register_tool("mcl_throwing:bow", {
 	description = "Bow",
 	_doc_items_longdesc = "Bows are ranged weapons to shoot arrows at your foes.",
-	_doc_items_usagehelp = [[To use the bow, you first need to have at least one arrow anywhere in your inventory (unless in Creative Mode). Rightclick one to three times to charge the bow. Leftclick to shoot.
+	_doc_items_usagehelp = [[To use the bow, you first need to have at least one arrow anywhere in your inventory (unless in Creative Mode). Hold down the right mouse button to charge, release to shoot.
 
 The arrow speed and damage increase with the charge level:
 • Low charge: 1 damage
 • Medium charge: 2 damage
 • High charge: 4-5 damage (20% chance for 5 damage)]],
-	_doc_items_durability = bow_durability,
+	_doc_items_durability = BOW_DURABILITY,
 	inventory_image = "mcl_throwing_bow.png",
 	stack_max = 1,
 	-- Trick to disable melee damage to entities.
@@ -112,8 +114,6 @@ The arrow speed and damage increase with the charge level:
 	range = 1,
 	-- Trick to disable digging as well
 	on_use = function() end,
-	on_place = powerup_function("mcl_throwing:bow_0"),
-	on_secondary_use = powerup_function("mcl_throwing:bow_0"),
 	groups = {weapon=1,weapon_ranged=1},
 })
 
@@ -124,19 +124,6 @@ minetest.register_tool("mcl_throwing:bow_0", {
 	stack_max = 1,
 	range = 0, -- Pointing range to 0 to prevent punching with bow :D
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
-	on_place = powerup_function("mcl_throwing:bow_1"),
-	on_secondary_use = powerup_function("mcl_throwing:bow_1"),
-	on_use = function(itemstack, user, pointed_thing)
-		local wear = itemstack:get_wear()
-		itemstack:replace("mcl_throwing:bow")
-		itemstack:set_wear(wear)
-		if player_shoot_arrow(itemstack, user, 4, 1) then
-			if not minetest.settings:get_bool("creative_mode") then
-				itemstack:add_wear(65535/bow_durability)
-			end
-		end
-		return itemstack
-	end,
 })
 
 minetest.register_tool("mcl_throwing:bow_1", {
@@ -146,19 +133,6 @@ minetest.register_tool("mcl_throwing:bow_1", {
 	stack_max = 1,
 	range = 0,
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
-	on_place = powerup_function("mcl_throwing:bow_2"),
-	on_secondary_use = powerup_function("mcl_throwing:bow_2"),
-	on_use = function(itemstack, user, pointed_thing)
-		local wear = itemstack:get_wear()
-		itemstack:replace("mcl_throwing:bow")
-		itemstack:set_wear(wear)
-		if player_shoot_arrow(itemstack, user, 16, 2) then
-			if not minetest.settings:get_bool("creative_mode") then
-				itemstack:add_wear(65535/bow_durability)
-			end
-		end
-		return itemstack
-	end,
 })
 
 minetest.register_tool("mcl_throwing:bow_2", {
@@ -168,28 +142,87 @@ minetest.register_tool("mcl_throwing:bow_2", {
 	stack_max = 1,
 	range = 0,
 	groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
-	on_use = function(itemstack, user, pointed_thing)
-		local wear = itemstack:get_wear()
-		itemstack:replace("mcl_throwing:bow")
-		itemstack:set_wear(wear)
-		local r = math.random(1,5)
-		local damage
-		-- Damage and range have been nerfed because the arrow charges very quickly
-		-- TODO: Use Minecraft damage and range (9-10 @ ca. 53 m/s)
-		if r == 1 then
-			-- 20% chance to do more damage
-			damage = 5
-		else
-			damage = 4
-		end
-		if player_shoot_arrow(itemstack, user, 26, damage) then
-			if not minetest.settings:get_bool("creative_mode") then
-				itemstack:add_wear(65535/bow_durability)
-			end
-		end
-		return itemstack
-	end,
 })
+
+controls.register_on_release(function(player, key, time)
+	if key~="RMB" then return end
+	local inv = minetest.get_inventory({type="player", name=player:get_player_name()})
+	local wielditem = player:get_wielded_item()
+	if (wielditem:get_name()=="mcl_throwing:bow_0" or wielditem:get_name()=="mcl_throwing:bow_1" or wielditem:get_name()=="mcl_throwing:bow_2") then
+		local shot = false
+		if wielditem:get_name()=="mcl_throwing:bow_0" then
+			shot = player_shoot_arrow(wielditem, player, 4, 1)
+		elseif wielditem:get_name()=="mcl_throwing:bow_1" then
+			shot = player_shoot_arrow(wielditem, player, 16, 2)
+		elseif wielditem:get_name()=="mcl_throwing:bow_2" then
+			local r = math.random(1,5)
+			local damage
+			-- Damage and range have been nerfed because the arrow charges very quickly
+			-- TODO: Use Minecraft damage and range (9-10 @ ca. 53 m/s)
+			if r == 1 then
+				-- 20% chance for critical hit
+				damage = 5
+			else
+				damage = 4
+			end
+			shot = player_shoot_arrow(wielditem, player, 26, damage)
+		end
+		wielditem:set_name("mcl_throwing:bow")
+		if shot and minetest.settings:get_bool("creative_mode") == false then
+			wielditem:add_wear(65535/BOW_DURABILITY)
+		end
+		player:set_wielded_item(wielditem)
+		bow_load[player:get_player_name()] = false
+	end
+end)
+
+controls.register_on_hold(function(player, key, time)
+	if key ~= "RMB" then
+		return
+	end
+	local name = player:get_player_name()
+	local inv = minetest.get_inventory({type="player", name=name})
+	local wielditem = player:get_wielded_item()
+	if wielditem:get_name()=="mcl_throwing:bow" and (minetest.settings:get_bool("creative_mode") or inv:contains_item("main", "mcl_throwing:arrow")) then
+		wielditem:set_name("mcl_throwing:bow_0")
+		bow_load[name] = os.time()
+	else
+		if type(bow_load[name]) == "number" then
+			if wielditem:get_name() == "mcl_throwing:bow_0" and os.time() - bow_load[name] > CHARGE_SPEED then
+				wielditem:set_name("mcl_throwing:bow_1")
+			elseif wielditem:get_name() == "mcl_throwing:bow_1" and os.time() - bow_load[name] > CHARGE_SPEED*2 then
+				wielditem:set_name("mcl_throwing:bow_2")
+			end
+		else
+			wielditem:set_name("mcl_throwing:bow")
+		end
+	end
+	player:set_wielded_item(wielditem)
+end)
+
+minetest.register_globalstep(function(dtime)
+	for _, player in pairs(minetest.get_connected_players()) do
+		local wielditem = player:get_wielded_item()
+		--if wielditem:get_name()=="bow:bow_dropped" then
+		--	wielditem:set_name("bow:bow")
+		--	player:set_wielded_item(wielditem)
+		--end
+		local controls = player:get_player_control()
+		local inv = minetest.get_inventory({type="player", name = player:get_player_name()})
+		if bow_load[player:get_player_name()] and (wielditem:get_name()~="mcl_throwing:bow_0" and wielditem:get_name()~="mcl_throwing:bow_1" and wielditem:get_name()~="mcl_throwing:bow_2") then
+			local list = inv:get_list("main")
+			for place, stack in pairs(list) do
+				if stack:get_name()=="mcl_throwing:bow_0" or stack:get_name()=="mcl_throwing:bow_1" or stack:get_name()=="mcl_throwing:bow_2" then
+					stack:set_name("mcl_throwing:bow")
+					list[place] = stack
+					break
+				end
+			end
+			inv:set_list("main", list)
+			bow_load[player:get_player_name()] = false
+		end
+	end
+end)
 
 if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
 	minetest.register_craft({
