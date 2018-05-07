@@ -6,13 +6,22 @@ local arrows = {
 
 local GRAVITY = 9.81
 local BOW_DURABILITY = 385
-local BOW_CHARGE_TIME_HALF = 500000
-local BOW_CHARGE_TIME_FULL = 1000000
+
+-- Charging time in microseconds
+local BOW_CHARGE_TIME_HALF = 500000 -- bow level 1
+local BOW_CHARGE_TIME_FULL = 1000000 -- bow level 2 (full charge)
 
 -- TODO: Use Minecraft speed (ca. 53 m/s)
 -- Currently nerfed because at full speed the arrow would easily get out of the range of the loaded map.
 local BOW_MAX_SPEED = 26
 
+--[[ Store the charging state of each player.
+keys: player name
+value:
+false or nil = not charging or player not existing
+number: currently charging, the number is the time from minetest.get_us_time
+             in which the charging has started
+]]
 local bow_load = {}
 
 mcl_throwing.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damage)
@@ -129,8 +138,19 @@ controls.register_on_release(function(player, key, time)
 		local has_shot = false
 
 		local speed, damage
-		local charge = minetest.get_us_time() - bow_load[player:get_player_name()]
+		local p_load = bow_load[player:get_player_name()]
+		local charge
+		-- Type sanity check
+		if type(p_load) == "number" then
+			charge = minetest.get_us_time() - p_load
+		else
+			-- In case something goes wrong ...
+			-- Just assume minimum charge.
+			charge = 0
+			minetest.log("warning", "[mcl_throwing] Player "..player:get_player_name().." fires arrow with non-numeric bow_load!")
+		end
 		charge = math.max(math.min(charge, BOW_CHARGE_TIME_FULL), 0)
+
 		local charge_ratio = charge / BOW_CHARGE_TIME_FULL
 		charge_ratio = math.max(math.min(charge_ratio, 1), 0)
 
@@ -139,7 +159,6 @@ controls.register_on_release(function(player, key, time)
 		if charge >= BOW_CHARGE_TIME_FULL then
 			speed = BOW_MAX_SPEED
 			local r = math.random(1,5)
-			-- Damage and range have been nerfed because the arrow charges very quickly
 			if r == 1 then
 				-- 20% chance for critical hit
 				damage = 10
@@ -206,6 +225,10 @@ minetest.register_globalstep(function(dtime)
 			bow_load[player:get_player_name()] = false
 		end
 	end
+end)
+
+minetest.register_on_leaveplayer(function(player)
+	bow_load[player:get_player_name()] = nil
 end)
 
 if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
