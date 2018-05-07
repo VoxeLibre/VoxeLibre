@@ -1,8 +1,5 @@
 mcl_throwing = {}
 
-dofile(minetest.get_modpath("mcl_throwing").."/arrow.lua")
-dofile(minetest.get_modpath("mcl_throwing").."/throwable.lua")
-
 local arrows = {
 	["mcl_throwing:arrow"] = "mcl_throwing:arrow_entity",
 }
@@ -73,28 +70,6 @@ local player_shoot_arrow = function(itemstack, player, power, damage)
 	end
 	mcl_throwing.shoot_arrow(arrow_itemstring, {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, dir, yaw, player, power, damage)
 	return true
-end
-
-local powerup_function = function(nextbow)
-	return function(itemstack, placer, pointed_thing)
-		-- Use pointed node's on_rightclick function first, if present
-		if pointed_thing.type == "node" then
-			local node = minetest.get_node(pointed_thing.under)
-			if placer and not placer:get_player_control().sneak then
-				if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-					return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
-				end
-			end
-		end
-
-		-- Check for arrow or Creative Mode
-		if minetest.settings:get_bool("creative_mode") or get_arrow(placer) ~= nil then
-			local wear = itemstack:get_wear()
-			itemstack:replace(nextbow)
-			itemstack:set_wear(wear)
-		end
-		return itemstack
-	end
 end
 
 minetest.register_tool("mcl_throwing:bow", {
@@ -203,10 +178,6 @@ end)
 minetest.register_globalstep(function(dtime)
 	for _, player in pairs(minetest.get_connected_players()) do
 		local wielditem = player:get_wielded_item()
-		--if wielditem:get_name()=="bow:bow_dropped" then
-		--	wielditem:set_name("bow:bow")
-		--	player:set_wielded_item(wielditem)
-		--end
 		local controls = player:get_player_control()
 		local inv = minetest.get_inventory({type="player", name = player:get_player_name()})
 		if bow_load[player:get_player_name()] and (wielditem:get_name()~="mcl_throwing:bow_0" and wielditem:get_name()~="mcl_throwing:bow_1" and wielditem:get_name()~="mcl_throwing:bow_2") then
