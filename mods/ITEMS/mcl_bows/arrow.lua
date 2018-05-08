@@ -46,7 +46,6 @@ minetest.register_node("mcl_bows:arrow_box", {
 	groups = {not_in_creative_inventory=1},
 })
 
--- FIXME: Restore arrow state properly on re-loading
 -- FIXME: Arrow velocity is a bit strange. If the arrow flies VERY long, the acceleration can cause the velocity to become negative
 -- and the arrow flies backwards.
 local ARROW_ENTITY={
@@ -200,6 +199,37 @@ ARROW_ENTITY.on_step = function(self, dtime)
 
 	-- Update internal variable
 	self._lastpos={x=pos.x, y=pos.y, z=pos.z}
+end
+
+ARROW_ENTITY.get_staticdata = function(self)
+	local out = {
+		lastpos = self._lastpos,
+		startpos = self._startpos,
+		damage = self._damage,
+		stuck = self._stuck,
+		stucktimer = self._stucktimer,
+	}
+	if self._shooter and self._shooter:is_player() then
+		out.shootername = self._shooter:get_player_name()
+	end
+	return minetest.serialize(out)
+end
+
+ARROW_ENTITY.on_activate = function(self, staticdata, dtime_s)
+	local data = minetest.deserialize(staticdata)
+	if data then
+		self._lastpos = data.lastpos
+		self._startpos = data.startpos
+		self._damage = data.damage
+		self._stuck = data.stuck
+		self._stucktimer = data.stucktimer
+		if data.shootername then
+			local shooter = minetest.get_player_by_name(data.shootername)
+			if shooter and shooter:is_player() then
+				self._shooter = shooter
+			end
+		end
+	end
 end
 
 minetest.register_entity("mcl_bows:arrow_entity", ARROW_ENTITY)
