@@ -1,3 +1,6 @@
+-- Time in seconds after which a stuck arrow is deleted
+local ARROW_TIMEOUT = 60
+
 local mod_mcl_hunger = minetest.get_modpath("mcl_hunger")
 local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
 
@@ -43,25 +46,60 @@ minetest.register_node("mcl_bows:arrow_box", {
 	groups = {not_in_creative_inventory=1},
 })
 
-local THROWING_ARROW_ENTITY={
-	physical = false,
+-- FIXME: Arrow velocity is a bit strange. If the arrow flies VERY long, the acceleration can cause the velocity to become negative
+-- and the arrow flies backwards.
+local ARROW_ENTITY={
+	physical = true,
 	visual = "wielditem",
 	visual_size = {x=0.4, y=0.4},
 	textures = {"mcl_bows:arrow_box"},
-	collisionbox = {0,0,0,0,0,0},
+	collisionbox = {-0.1, -0.1, -0.1, 0.1, 0.1, 0.1},
+	collide_with_objects = false,
 
 	_lastpos={},
 	_startpos=nil,
 	_damage=1,	-- Damage on impact
+	_stuck=false,   -- Whether arrow is stuck
+	_stucktimer=nil,-- Amount of time (in seconds) the arrow has been stuck so far
 	_shooter=nil,	-- ObjectRef of player or mob who shot it
 }
 
-THROWING_ARROW_ENTITY.on_step = function(self, dtime)
+ARROW_ENTITY.on_step = function(self, dtime)
 	local pos = self.object:getpos()
-	local node = minetest.get_node(pos)
+	local dpos = table.copy(pos) -- digital pos
+	dpos = vector.round(dpos)
+	local node = minetest.get_node(dpos)
 
+	if self._stuck then
+		self._stucktimer = self._stucktimer + dtime
+		if self._stucktimer > ARROW_TIMEOUT then
+			self.object:remove()
+			return
+		end
+		local objects = minetest.get_objects_inside_radius(pos, 2)
+		for _,obj in ipairs(objects) do
+			if obj:is_player() then
+				if not minetest.settings:get_bool("creative_mode") then
+					-- Pickup arrow if player is nearby
+					if obj:get_inventory():room_for_item("main", "mcl_bows:arrow") then
+						obj:get_inventory():add_item("main", "mcl_bows:arrow")
+						minetest.sound_play("item_drop_pickup", {
+							pos = pos,
+							max_hear_distance = 16,
+							gain = 1.0,
+						})
+						self.object:remove()
+						return
+					end
+				else
+					self.object:remove()
+					return
+				end
+			end
+		end
+		
 	-- Check for object collision. Done every tick (hopefully this is not too stressing)
-	do
+	else
 		local objs = minetest.get_objects_inside_radius(pos, 2)
 		local closest_object
 		local closest_distance
@@ -123,18 +161,27 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 					end
 				end
 				self.object:remove()
+				return
 			end
 		end
 	end
 
 	-- Check for node collision
-	if self._lastpos.x~=nil then
+	-- FIXME: Also collides with ignore
+	if self._lastpos.x~=nil and not self._stuck then
 		local def = minetest.registered_nodes[node.name]
-		if (def and def.walkable) or not def then
-			if not minetest.settings:get_bool("creative_mode") then
-				minetest.add_item(self._lastpos, 'mcl_bows:arrow')
+		local vel = self.object:get_velocity()
+		-- Arrow has stopped
+		if (math.abs(vel.x) < 0.0001) or (math.abs(vel.z) < 0.0001) or (math.abs(vel.y) < 0.00001) then
+			-- Arrow is stuck and no longer moves
+			self._stuck = true
+			self._stucktimer = 0
+			self.object:set_velocity({x=0, y=0, z=0})
+			self.object:set_acceleration({x=0, y=0, z=0})
+			-- Push the button
+			if minetest.get_modpath("mesecons_button") and minetest.get_item_group(node.name, "button") > 0 and minetest.get_item_group(node.name, "button_push_by_arrow") == 1 then
+				mesecon.push_button(dpos, node)
 			end
-			self.object:remove()
 		elseif (def and def.liquidtype ~= "none") then
 			-- Slow down arrow in liquids
 			local v = def.liquid_viscosity
@@ -142,7 +189,6 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 				v = 0
 			end
 			local vpenalty = math.max(0.1, 0.98 - 0.1 * v)
-			local vel = self.object:get_velocity()
 			if math.abs(vel.x) > 0.001 then
 				vel.x = vel.x * vpenalty
 			end
@@ -157,7 +203,38 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 	self._lastpos={x=pos.x, y=pos.y, z=pos.z}
 end
 
-minetest.register_entity("mcl_bows:arrow_entity", THROWING_ARROW_ENTITY)
+ARROW_ENTITY.get_staticdata = function(self)
+	local out = {
+		lastpos = self._lastpos,
+		startpos = self._startpos,
+		damage = self._damage,
+		stuck = self._stuck,
+		stucktimer = self._stucktimer,
+	}
+	if self._shooter and self._shooter:is_player() then
+		out.shootername = self._shooter:get_player_name()
+	end
+	return minetest.serialize(out)
+end
+
+ARROW_ENTITY.on_activate = function(self, staticdata, dtime_s)
+	local data = minetest.deserialize(staticdata)
+	if data then
+		self._lastpos = data.lastpos
+		self._startpos = data.startpos
+		self._damage = data.damage
+		self._stuck = data.stuck
+		self._stucktimer = data.stucktimer
+		if data.shootername then
+			local shooter = minetest.get_player_by_name(data.shootername)
+			if shooter and shooter:is_player() then
+				self._shooter = shooter
+			end
+		end
+	end
+end
+
+minetest.register_entity("mcl_bows:arrow_entity", ARROW_ENTITY)
 
 if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
 	minetest.register_craft({

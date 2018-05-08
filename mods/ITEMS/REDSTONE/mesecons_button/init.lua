@@ -17,6 +17,20 @@ local boxes_on = {
 	wall_top = { -4/16, 7/16, -2/16, 4/16, 8/16, 2/16 },
 }
 
+-- Push the button
+mesecon.push_button = function(pos, node)
+	-- No-op if button is already pushed
+	if mesecon.is_receptor_on(node) then
+		return
+	end
+	local def = minetest.registered_nodes[node.name]
+	minetest.set_node(pos, {name="mesecons_button:button_"..def._mcl_button_basename.."_on", param2=node.param2})
+	mesecon.receptor_on(pos, button_get_output_rules(node))
+	minetest.sound_play("mesecons_button_push", {pos=pos})
+	local timer = minetest.get_node_timer(pos)
+	timer:start(def._mcl_button_timer)
+end
+
 local on_button_place = function(itemstack, placer, pointed_thing)
 	if pointed_thing.type ~= "node" then
 		-- no interaction possible with entities
@@ -66,7 +80,7 @@ end
 
 local buttonuse = "Rightclick the button to push it."
 
-mesecon.register_button = function(basename, description, texture, recipeitem, sounds, plusgroups, button_timer, longdesc)
+mesecon.register_button = function(basename, description, texture, recipeitem, sounds, plusgroups, button_timer, push_by_arrow, longdesc)
 	local groups_off = table.copy(plusgroups)
 	groups_off.attached_node=1
 	groups_off.dig_by_water=1
@@ -77,6 +91,11 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 	local groups_on = table.copy(groups_off)
 	groups_on.not_in_creative_inventory=1
 	groups_on.button=2 -- button (on)
+
+	if push_by_arrow then
+		groups_off.button_push_by_arrow = 1
+		groups_on.button_push_by_arrow = 1
+	end
 
 	minetest.register_node("mesecons_button:button_"..basename.."_off", {
 		drawtype = "nodebox",
@@ -98,17 +117,16 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 		on_place = on_button_place,
 		node_placement_prediction = "",
 		on_rightclick = function (pos, node)
-			minetest.set_node(pos, {name="mesecons_button:button_"..basename.."_on", param2=node.param2})
-			mesecon.receptor_on(pos, button_get_output_rules(node))
-			minetest.sound_play("mesecons_button_push", {pos=pos})
-			local timer = minetest.get_node_timer(pos)
-			timer:start(button_timer)
+			mesecon.push_button(pos, node)
 		end,
 		sounds = sounds,
 		mesecons = {receptor = {
 			state = mesecon.state.off,
 			rules = button_get_output_rules,
 		}},
+		_mcl_button_basename = basename,
+		_mcl_button_timer = button_timer,
+
 		_mcl_blast_resistance = 2.5,
 		_mcl_hardness = 0.5,
 	})
@@ -134,14 +152,33 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 			state = mesecon.state.on,
 			rules = button_get_output_rules
 		}},
+		_mcl_button_basename = basename,
+		_mcl_button_timer = button_timer,
 		on_timer = function(pos, elapsed)
 			local node = minetest.get_node(pos)
 			if node.name=="mesecons_button:button_"..basename.."_on" then --has not been dug
+				-- Is button pushable by arrow?
+				if push_by_arrow then
+					-- If there's an arrow stuck in the button, keep it pressed and check
+					-- it again later.
+					local objs = minetest.get_objects_inside_radius(pos, 1)
+					for o=1, #objs do
+						local entity = objs[o]:get_luaentity()
+						if entity and entity.name == "mcl_bows:arrow_entity" then
+							local timer = minetest.get_node_timer(pos)
+							timer:start(button_timer)
+							return
+						end
+					end
+				end
+
+				-- Normal operation: Un-press the button
 				minetest.set_node(pos, {name="mesecons_button:button_"..basename.."_off",param2=node.param2})
 				minetest.sound_play("mesecons_button_pop", {pos=pos})
 				mesecon.receptor_off(pos, button_get_output_rules(node))
 			end
 		end,
+
 		_mcl_blast_resistance = 2.5,
 		_mcl_hardness = 0.5,
 	})
@@ -160,6 +197,7 @@ mesecon.register_button(
 	mcl_sounds.node_sound_stone_defaults(),
 	{material_stone=1,handy=1,pickaxey=1},
 	1,
+	false,
 	"A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second. It can only be placed on solid opaque full cubes (like cobblestone).")
 
 local woods = {
@@ -180,7 +218,8 @@ for w=1, #woods do
 		mcl_sounds.node_sound_wood_defaults(),
 		{material_wood=1,handy=1,axey=1},
 		1.5,
-		"A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. It can only be placed on solid opaque full cubes (like cobblestone).")
+		true,
+		"A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. It can only be placed on solid opaque full cubes (like cobblestone). Wooden buttons may also be pushed by arrows.")
 
 	minetest.register_craft({
 		type = "fuel",
