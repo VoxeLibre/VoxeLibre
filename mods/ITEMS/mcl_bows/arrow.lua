@@ -177,8 +177,8 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			self.object:set_velocity({x=0, y=0, z=0})
 			self.object:set_acceleration({x=0, y=0, z=0})
 			-- Push the button
-			if minetest.get_item_group(node.name, "button") > 0 and minetest.get_item_group(node.name, "button_push_by_arrow") == 1 and def.on_rightclick then
-				def.on_rightclick(pos, node)
+			if minetest.get_modpath("mesecons_button") and minetest.get_item_group(node.name, "button") > 0 and minetest.get_item_group(node.name, "button_push_by_arrow") == 1 then
+				mesecon.push_button(pos, node)
 			end
 		elseif (def and def.liquidtype ~= "none") then
 			-- Slow down arrow in liquids

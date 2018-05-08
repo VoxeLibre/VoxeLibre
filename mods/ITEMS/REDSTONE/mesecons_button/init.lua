@@ -17,6 +17,20 @@ local boxes_on = {
 	wall_top = { -4/16, 7/16, -2/16, 4/16, 8/16, 2/16 },
 }
 
+-- Push the button
+mesecon.push_button = function(pos, node)
+	-- No-op if button is already pushed
+	if mesecon.is_receptor_on(node) then
+		return
+	end
+	local def = minetest.registered_nodes[node.name]
+	minetest.set_node(pos, {name="mesecons_button:button_"..def._mcl_button_basename.."_on", param2=node.param2})
+	mesecon.receptor_on(pos, button_get_output_rules(node))
+	minetest.sound_play("mesecons_button_push", {pos=pos})
+	local timer = minetest.get_node_timer(pos)
+	timer:start(def._mcl_button_timer)
+end
+
 local on_button_place = function(itemstack, placer, pointed_thing)
 	if pointed_thing.type ~= "node" then
 		-- no interaction possible with entities
@@ -103,17 +117,16 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 		on_place = on_button_place,
 		node_placement_prediction = "",
 		on_rightclick = function (pos, node)
-			minetest.set_node(pos, {name="mesecons_button:button_"..basename.."_on", param2=node.param2})
-			mesecon.receptor_on(pos, button_get_output_rules(node))
-			minetest.sound_play("mesecons_button_push", {pos=pos})
-			local timer = minetest.get_node_timer(pos)
-			timer:start(button_timer)
+			mesecon.push_button(pos, node)
 		end,
 		sounds = sounds,
 		mesecons = {receptor = {
 			state = mesecon.state.off,
 			rules = button_get_output_rules,
 		}},
+		_mcl_button_basename = basename,
+		_mcl_button_timer = button_timer,
+
 		_mcl_blast_resistance = 2.5,
 		_mcl_hardness = 0.5,
 	})
@@ -139,6 +152,8 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 			state = mesecon.state.on,
 			rules = button_get_output_rules
 		}},
+		_mcl_button_basename = basename,
+		_mcl_button_timer = button_timer,
 		on_timer = function(pos, elapsed)
 			local node = minetest.get_node(pos)
 			if node.name=="mesecons_button:button_"..basename.."_on" then --has not been dug
@@ -163,6 +178,7 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 				mesecon.receptor_off(pos, button_get_output_rules(node))
 			end
 		end,
+
 		_mcl_blast_resistance = 2.5,
 		_mcl_hardness = 0.5,
 	})
