@@ -47,12 +47,15 @@ minetest.register_node("mcl_bows:arrow_box", {
 })
 
 -- FIXME: Restore arrow state properly on re-loading
-local THROWING_ARROW_ENTITY={
-	physical = false,
+-- FIXME: Arrow velocity is a bit strange. If the arrow flies VERY long, the acceleration can cause the velocity to become negative
+-- and the arrow flies backwards.
+local ARROW_ENTITY={
+	physical = true,
 	visual = "wielditem",
 	visual_size = {x=0.4, y=0.4},
 	textures = {"mcl_bows:arrow_box"},
-	collisionbox = {0,0,0,0,0,0},
+	collisionbox = {-0.1, -0.1, -0.1, 0.1, 0.1, 0.1},
+	collide_with_objects = false,
 
 	_lastpos={},
 	_startpos=nil,
@@ -62,7 +65,7 @@ local THROWING_ARROW_ENTITY={
 	_shooter=nil,	-- ObjectRef of player or mob who shot it
 }
 
-THROWING_ARROW_ENTITY.on_step = function(self, dtime)
+ARROW_ENTITY.on_step = function(self, dtime)
 	local pos = self.object:getpos()
 	local node = minetest.get_node(pos)
 
@@ -157,19 +160,27 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 					end
 				end
 				self.object:remove()
+				return
 			end
 		end
 	end
 
 	-- Check for node collision
+	-- FIXME: Also collides with ignore
 	if self._lastpos.x~=nil and not self._stuck then
 		local def = minetest.registered_nodes[node.name]
-		if (def and def.walkable) or not def then
+		local vel = self.object:get_velocity()
+		-- Arrow has stopped
+		if (math.abs(vel.x) < 0.0001) or (math.abs(vel.z) < 0.0001) or (math.abs(vel.y) < 0.00001) then
 			-- Arrow is stuck and no longer moves
 			self._stuck = true
 			self._stucktimer = 0
 			self.object:set_velocity({x=0, y=0, z=0})
 			self.object:set_acceleration({x=0, y=0, z=0})
+			-- Push the button
+			if minetest.get_item_group(node.name, "button") > 0 and minetest.get_item_group(node.name, "button_push_by_arrow") == 1 and def.on_rightclick then
+				def.on_rightclick(pos, node)
+			end
 		elseif (def and def.liquidtype ~= "none") then
 			-- Slow down arrow in liquids
 			local v = def.liquid_viscosity
@@ -177,7 +188,6 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 				v = 0
 			end
 			local vpenalty = math.max(0.1, 0.98 - 0.1 * v)
-			local vel = self.object:get_velocity()
 			if math.abs(vel.x) > 0.001 then
 				vel.x = vel.x * vpenalty
 			end
@@ -192,7 +202,7 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 	self._lastpos={x=pos.x, y=pos.y, z=pos.z}
 end
 
-minetest.register_entity("mcl_bows:arrow_entity", THROWING_ARROW_ENTITY)
+minetest.register_entity("mcl_bows:arrow_entity", ARROW_ENTITY)
 
 if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then
 	minetest.register_craft({
