@@ -49,11 +49,11 @@ minetest.register_node("mcl_bows:arrow_box", {
 -- FIXME: Arrow velocity is a bit strange. If the arrow flies VERY long, the acceleration can cause the velocity to become negative
 -- and the arrow flies backwards.
 local ARROW_ENTITY={
-	physical = true,
+	physical = false,
 	visual = "wielditem",
 	visual_size = {x=0.4, y=0.4},
 	textures = {"mcl_bows:arrow_box"},
-	collisionbox = {-0.1, -0.1, -0.1, 0.1, 0.1, 0.1},
+	collisionbox = {0,0,0,0,0,0},
 	collide_with_objects = false,
 
 	_lastpos={},
@@ -167,21 +167,13 @@ ARROW_ENTITY.on_step = function(self, dtime)
 	end
 
 	-- Check for node collision
-	-- FIXME: Also collides with ignore
 	if self._lastpos.x~=nil and not self._stuck then
 		local def = minetest.registered_nodes[node.name]
 		local vel = self.object:get_velocity()
-		-- Arrow has stopped
-		if (math.abs(vel.x) < 0.0001) or (math.abs(vel.z) < 0.0001) or (math.abs(vel.y) < 0.00001) then
-			-- Arrow is stuck and no longer moves
-			self._stuck = true
-			self._stucktimer = 0
-			self.object:set_velocity({x=0, y=0, z=0})
-			self.object:set_acceleration({x=0, y=0, z=0})
-			-- Push the button
-			if minetest.get_modpath("mesecons_button") and minetest.get_item_group(node.name, "button") > 0 and minetest.get_item_group(node.name, "button_push_by_arrow") == 1 then
-				mesecon.push_button(dpos, node)
-			end
+		-- Arrow hits solid node: remove
+		if (def and def.walkable) then
+			self.object:remove()
+			return
 		elseif (def and def.liquidtype ~= "none") then
 			-- Slow down arrow in liquids
 			local v = def.liquid_viscosity
