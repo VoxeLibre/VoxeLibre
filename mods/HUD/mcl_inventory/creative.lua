@@ -11,7 +11,7 @@ for _, f in pairs(builtin_filter_ids) do
 end
 
 --[[ Populate all the item tables. We only do this once. Note this mod must be
-loaded after mcl_autogroup for this to work, because it required certain
+loaded after _mcl_autogroup for this to work, because it required certain
 groups to be set. ]]
 do
 	for name,def in pairs(minetest.registered_items) do
