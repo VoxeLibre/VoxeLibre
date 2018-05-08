@@ -25,34 +25,46 @@ do
 			local is_weapon_or_armor = function(def)
 				return def.groups.weapon or def.groups.weapon_ranged or def.groups.ammo or def.groups.combat_item or ((def.groups.armor_head or def.groups.armor_torso or def.groups.armor_legs or def.groups.armor_feet or def.groups.horse_armor) and def.groups.non_combat_armor ~= 1)
 			end
+			-- Is set to true if it was added in any category besides misc
+			local nonmisc = false
 			if def.groups.building_block then
 				table.insert(inventory_lists["blocks"], name)
+				nonmisc = true
 			end
 			if def.groups.deco_block then
 				table.insert(inventory_lists["deco"], name)
+				nonmisc = true
 			end
 			if is_redstone(def) then
 				table.insert(inventory_lists["redstone"], name)
+				nonmisc = true
 			end
 			if def.groups.transport then
 				table.insert(inventory_lists["rail"], name)
+				nonmisc = true
 			end
 			if (def.groups.food and not def.groups.brewitem) or def.groups.eatable then
 				table.insert(inventory_lists["food"], name)
+				nonmisc = true
 			end
 			if is_tool(def) then
 				table.insert(inventory_lists["tools"], name)
+				nonmisc = true
 			end
 			if is_weapon_or_armor(def) then
 				table.insert(inventory_lists["combat"], name)
+				nonmisc = true
 			end
 			if def.groups.brewitem then
 				table.insert(inventory_lists["brew"], name)
+				nonmisc = true
 			end
 			if def.groups.craftitem then
 				table.insert(inventory_lists["matr"], name)
+				nonmisc = true
 			end
-			if not def.groups.building_block and not def.groups.deco_block and not is_redstone(def) and not def.groups.transport and not def.groups.food and not def.groups.eatable and not is_tool(def) and not is_weapon_or_armor(def) and not def.groups.craftitem and not def.groups.brewitem then
+			-- Misc. category is for everything which is not in any other category
+			if not nonmisc then
 				table.insert(inventory_lists["misc"], name)
 			end
 
