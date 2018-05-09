@@ -14,8 +14,9 @@ local mod_button = minetest.get_modpath("mesecons_button")
 minetest.register_craftitem("mcl_bows:arrow", {
 	description = "Arrow",
 	_doc_items_longdesc = [[Arrows are ammunition for bows and dispensers.
-An arrow fired from a bow has a regular damage of 1-9. At full charge, there's a 20% chance of a critical hit dealing 10 damage instead. An arrow fired from a dispenser always deals 3 damage.]],
-	_doc_items_usagehelp = "To use arrows as ammunition for a bow, just put them anywhere in your inventory, they will be used up automatically. To use arrows as ammunition for a dispenser, place them in the dispenser's inventory.",
+An arrow fired from a bow has a regular damage of 1-9. At full charge, there's a 20% chance of a critical hit dealing 10 damage instead. An arrow fired from a dispenser always deals 3 damage.
+Arrows might get stuck on solid blocks and can be retrieved again. They are also capable of pushing wooden buttons.]],
+	_doc_items_usagehelp = "To use arrows as ammunition for a bow, just put them anywhere in your inventory, they will be used up automatically. To use arrows as ammunition for a dispenser, place them in the dispenser's inventory. To retrieve an arrow that sticks in a block, simply walk close to it.",
 	inventory_image = "mcl_bows_arrow_inv.png",
 	groups = { ammo=1, ammo_bow=1 },
 	_on_dispense = function(itemstack, dispenserpos, droppos, dropnode, dropdir)
@@ -105,6 +106,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			return
 		end
 		-- Drop arrow as item when it is no longer stuck
+		-- FIXME: Arrows are a bit slot to react and continue to float in mid air for a few seconds.
 		if self._stuckrechecktimer > STUCK_RECHECK_TIME then
 			local stuckin_def
 			if self._stuckin then
@@ -333,3 +335,8 @@ if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") the
 		}
 	})
 end
+
+if minetest.get_modpath("doc_identifier") ~= nil then
+	doc.sub.identifier.register_object("mcl_bows:arrow_entity", "craftitems", "mcl_bows:arrow")
+end
+
