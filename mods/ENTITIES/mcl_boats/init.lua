@@ -302,6 +302,7 @@ for b=1, #boat_ids do
 			local boat = minetest.add_entity(pointed_thing.under, "mcl_boats:boat")
 			boat:get_luaentity()._itemstring = itemstring
 			boat:set_properties({textures = { "mcl_boats_texture_"..images[b].."_boat.png" }})
+			boat:set_yaw(placer:get_look_horizontal())
 			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:take_item()
 			end
