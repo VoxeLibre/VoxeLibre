@@ -48,7 +48,7 @@ minetest.register_node("mcl_bows:arrow_box", {
 			{7.5/17, -2.5/17, 2.5/17, 6.5/17, -1.5/17, 1.5/17},
 			{7.5/17, 2.5/17, -2.5/17, 6.5/17, 1.5/17, -1.5/17},
 			{6.5/17, -1.5/17, -1.5/17, 7.5/17, -2.5/17, -2.5/17},
-			
+
 			{7.5/17, 2.5/17, 2.5/17, 8.5/17, 3.5/17, 3.5/17},
 			{8.5/17, -3.5/17, 3.5/17, 7.5/17, -2.5/17, 2.5/17},
 			{8.5/17, 3.5/17, -3.5/17, 7.5/17, 2.5/17, -2.5/17},
@@ -140,7 +140,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 				end
 			end
 		end
-		
+
 	-- Check for object collision. Done every tick (hopefully this is not too stressing)
 	else
 		local objs = minetest.get_objects_inside_radius(pos, 2)
@@ -292,9 +292,15 @@ ARROW_ENTITY.get_staticdata = function(self)
 		startpos = self._startpos,
 		damage = self._damage,
 		stuck = self._stuck,
-		stucktimer = self._stucktimer,
 		stuckin = self._stuckin,
 	}
+	if self._stuck then
+		-- If _stucktimer is missing for some reason, assume the maximum
+		if not self._stucktimer then
+			self._stucktimer = ARROW_TIMEOUT
+		end
+		out.stuckstarttime = minetest.get_gametime() - self._stucktimer
+	end
 	if self._shooter and self._shooter:is_player() then
 		out.shootername = self._shooter:get_player_name()
 	end
@@ -304,16 +310,28 @@ end
 ARROW_ENTITY.on_activate = function(self, staticdata, dtime_s)
 	local data = minetest.deserialize(staticdata)
 	if data then
+		self._stuck = data.stuck
+		if data.stuck then
+			if data.stuckstarttime then
+				-- First, check if the stuck arrow is aleady past its life timer.
+				-- If yes, delete it.
+				self._stucktimer = minetest.get_gametime() - data.stuckstarttime
+				if self._stucktimer > ARROW_TIMEOUT then
+					self.object:remove()
+					return
+				end
+			end
+
+			-- Perform a stuck recheck on the next step.
+			self._stuckrechecktimer = STUCK_RECHECK_TIME
+
+			self._stuckin = data.stuckin
+		end
+
+		-- Get the remaining arrow state
 		self._lastpos = data.lastpos
 		self._startpos = data.startpos
 		self._damage = data.damage
-		self._stuck = data.stuck
-		if self._stuck then
-			-- Perform a stuck recheck on the next step
-			self._stuckrechecktimer = STUCK_RECHECK_TIME
-		end
-		self._stucktimer = data.stucktimer
-		self._stuckin = data.stuckin
 		if data.shootername then
 			local shooter = minetest.get_player_by_name(data.shootername)
 			if shooter and shooter:is_player() then
