@@ -68,7 +68,7 @@ local ARROW_ENTITY={
 	visual = "wielditem",
 	visual_size = {x=0.4, y=0.4},
 	textures = {"mcl_bows:arrow_box"},
-	collisionbox = {-0.1, -0.1, -0.1, 0.1, 0.1, 0.1},
+	collisionbox = {-0.19, -0.125, -0.19, 0.19, 0.125, 0.19},
 	collide_with_objects = false,
 
 	_lastpos={},
