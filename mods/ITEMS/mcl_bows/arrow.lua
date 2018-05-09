@@ -1,8 +1,15 @@
 -- Time in seconds after which a stuck arrow is deleted
 local ARROW_TIMEOUT = 60
+-- Time after which stuck arrow is rechecked for being stuck
+local STUCK_RECHECK_TIME = 5
+
+local GRAVITY = 9.81
+
+local YAW_OFFSET = -math.pi/2
 
 local mod_mcl_hunger = minetest.get_modpath("mcl_hunger")
 local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
+local mod_button = minetest.get_modpath("mesecons_button")
 
 minetest.register_craftitem("mcl_bows:arrow", {
 	description = "Arrow",
@@ -14,7 +21,7 @@ An arrow fired from a bow has a regular damage of 1-9. At full charge, there's a
 	_on_dispense = function(itemstack, dispenserpos, droppos, dropnode, dropdir)
 		-- Shoot arrow
 		local shootpos = vector.add(dispenserpos, vector.multiply(dropdir, 0.51))
-		local yaw = math.atan2(dropdir.z, dropdir.x) - math.pi/2
+		local yaw = math.atan2(dropdir.z, dropdir.x) + YAW_OFFSET
 		mcl_bows.shoot_arrow(itemstack:get_name(), shootpos, dropdir, yaw, nil, 19, 3)
 	end,
 })
@@ -61,8 +68,19 @@ local ARROW_ENTITY={
 	_damage=1,	-- Damage on impact
 	_stuck=false,   -- Whether arrow is stuck
 	_stucktimer=nil,-- Amount of time (in seconds) the arrow has been stuck so far
+	_stuckrechecktimer=nil,-- An additional timer for periodically re-checking the stuck status of an arrow
+	_stuckin=nil,	--Position of node in which arow is stuck.
 	_shooter=nil,	-- ObjectRef of player or mob who shot it
 }
+
+local spawn_item = function(self, pos)
+	if not minetest.settings:get_bool("creative_mode") then
+		local item = minetest.add_item(pos, "mcl_bows:arrow")
+		item:set_velocity({x=0, y=0, z=0})
+		item:set_yaw(self.object:get_yaw())
+	end
+	self.object:remove()
+end
 
 ARROW_ENTITY.on_step = function(self, dtime)
 	local pos = self.object:getpos()
@@ -72,9 +90,23 @@ ARROW_ENTITY.on_step = function(self, dtime)
 
 	if self._stuck then
 		self._stucktimer = self._stucktimer + dtime
+		self._stuckrechecktimer = self._stuckrechecktimer + dtime
 		if self._stucktimer > ARROW_TIMEOUT then
 			self.object:remove()
 			return
+		end
+		-- Drop arrow as item when it is no longer stuck
+		if self._stuckrechecktimer > STUCK_RECHECK_TIME then
+			local stuckin_def
+			if self._stuckin then
+				stuckin_def = minetest.registered_nodes[minetest.get_node(self._stuckin).name]
+			end
+			-- TODO: In MC, arrow just falls down without turning into an item
+			if stuckin_def and stuckin_def.walkable == false then
+				spawn_item(self, pos)
+				return
+			end
+			self._stuckrechecktimer = 0
 		end
 		local objects = minetest.get_objects_inside_radius(pos, 2)
 		for _,obj in ipairs(objects) do
@@ -171,15 +203,40 @@ ARROW_ENTITY.on_step = function(self, dtime)
 	if self._lastpos.x~=nil and not self._stuck then
 		local def = minetest.registered_nodes[node.name]
 		local vel = self.object:get_velocity()
-		-- Arrow has stopped
+		-- Arrow has stopped in one axis, so it probably hit something
 		if (math.abs(vel.x) < 0.0001) or (math.abs(vel.z) < 0.0001) or (math.abs(vel.y) < 0.00001) then
-			-- Arrow is stuck and no longer moves
+			-- Check for the node to which the arrow is pointing
+			local dir
+			if vel.y >= 0 and vel.y < 0.00001 then
+				dir = {x=0, y=-1, z=0}
+			elseif vel.y <= 0 and vel.y > 0.00001 then
+				dir = {x=0, y=1, z=0}
+			else
+				dir = minetest.facedir_to_dir(minetest.dir_to_facedir(minetest.yaw_to_dir(self.object:get_yaw()-YAW_OFFSET)))
+			end
+			self._stuckin = vector.add(pos, dir)
+			local snode = minetest.get_node(self._stuckin)
+			local sdef = minetest.registered_nodes[snode.name]
+
+			-- If node is non-walkable, unknown or ignore, don't make arrow stuck.
+			-- This causes a deflection in the engine.
+			if not sdef or sdef.walkable == false or snode.name == "ignore" then
+				self._stuckin = nil
+				-- Lose 1/3 of velocity on deflection
+				self.object:set_velocity(vector.multiply(vel, 0.6667))
+				return
+			end
+
+			-- Node was walkable, make arrow stuck
 			self._stuck = true
 			self._stucktimer = 0
+			self._stuckrechecktimer = 0
+
 			self.object:set_velocity({x=0, y=0, z=0})
 			self.object:set_acceleration({x=0, y=0, z=0})
-			-- Push the button
-			if minetest.get_modpath("mesecons_button") and minetest.get_item_group(node.name, "button") > 0 and minetest.get_item_group(node.name, "button_push_by_arrow") == 1 then
+
+			-- Push the button! Push, push, push the button!
+			if mod_button and minetest.get_item_group(node.name, "button") > 0 and minetest.get_item_group(node.name, "button_push_by_arrow") == 1 then
 				mesecon.push_button(dpos, node)
 			end
 		elseif (def and def.liquidtype ~= "none") then
@@ -199,6 +256,12 @@ ARROW_ENTITY.on_step = function(self, dtime)
 		end
 	end
 
+	-- Update yaw
+	if not self._stuck then
+		local vel = self.object:get_velocity()
+		self.object:set_yaw(minetest.dir_to_yaw(vel)+YAW_OFFSET)
+	end
+
 	-- Update internal variable
 	self._lastpos={x=pos.x, y=pos.y, z=pos.z}
 end
@@ -210,6 +273,7 @@ ARROW_ENTITY.get_staticdata = function(self)
 		damage = self._damage,
 		stuck = self._stuck,
 		stucktimer = self._stucktimer,
+		stuckin = self._stuckin,
 	}
 	if self._shooter and self._shooter:is_player() then
 		out.shootername = self._shooter:get_player_name()
@@ -224,7 +288,12 @@ ARROW_ENTITY.on_activate = function(self, staticdata, dtime_s)
 		self._startpos = data.startpos
 		self._damage = data.damage
 		self._stuck = data.stuck
+		if self._stuck then
+			-- Perform a stuck recheck on the next step
+			self._stuckrechecktimer = STUCK_RECHECK_TIME
+		end
 		self._stucktimer = data.stucktimer
+		self._stuckin = data.stuckin
 		if data.shootername then
 			local shooter = minetest.get_player_by_name(data.shootername)
 			if shooter and shooter:is_player() then
