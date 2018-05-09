@@ -119,11 +119,11 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			end
 			self._stuckrechecktimer = 0
 		end
-		local objects = minetest.get_objects_inside_radius(pos, 2)
+		-- Pickup arrow if player is nearby (not in Creative Mode)
+		local objects = minetest.get_objects_inside_radius(pos, 1)
 		for _,obj in ipairs(objects) do
 			if obj:is_player() then
 				if not minetest.settings:get_bool("creative_mode") then
-					-- Pickup arrow if player is nearby
 					if obj:get_inventory():room_for_item("main", "mcl_bows:arrow") then
 						obj:get_inventory():add_item("main", "mcl_bows:arrow")
 						minetest.sound_play("item_drop_pickup", {
@@ -131,13 +131,10 @@ ARROW_ENTITY.on_step = function(self, dtime)
 							max_hear_distance = 16,
 							gain = 1.0,
 						})
-						self.object:remove()
-						return
 					end
-				else
-					self.object:remove()
-					return
 				end
+				self.object:remove()
+				return
 			end
 		end
 
