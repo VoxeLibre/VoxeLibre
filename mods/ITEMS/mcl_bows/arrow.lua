@@ -26,6 +26,9 @@ An arrow fired from a bow has a regular damage of 1-9. At full charge, there's a
 	end,
 })
 
+-- This is a fake node, used as model for the arrow entity.
+-- It's not supposed to be usable as item or real node.
+-- TODO: Use a proper mesh for the arrow entity
 minetest.register_node("mcl_bows:arrow_box", {
 	drawtype = "nodebox",
 	is_ground_content = false,
@@ -33,11 +36,13 @@ minetest.register_node("mcl_bows:arrow_box", {
 		type = "fixed",
 		fixed = {
 			-- Shaft
-			{-6.5/17, -1.5/17, -1.5/17, 6.5/17, 1.5/17, 1.5/17},
-			--Spitze
+			{-6.5/17, -1.5/17, -1.5/17, -4.5/17, 1.5/17, 1.5/17},
+			{-4.5/17, -0.5/17, -0.5/17, 5.5/17, 0.5/17, 0.5/17},
+			{5.5/17, -1.5/17, -1.5/17, 6.5/17, 1.5/17, 1.5/17},
+			-- Tip
 			{-4.5/17, 2.5/17, 2.5/17, -3.5/17, -2.5/17, -2.5/17},
 			{-8.5/17, 0.5/17, 0.5/17, -6.5/17, -0.5/17, -0.5/17},
-			--Federn
+			-- Fletching
 			{6.5/17, 1.5/17, 1.5/17, 7.5/17, 2.5/17, 2.5/17},
 			{7.5/17, -2.5/17, 2.5/17, 6.5/17, -1.5/17, 1.5/17},
 			{7.5/17, 2.5/17, -2.5/17, 6.5/17, 1.5/17, -1.5/17},
@@ -50,7 +55,10 @@ minetest.register_node("mcl_bows:arrow_box", {
 		}
 	},
 	tiles = {"mcl_bows_arrow.png^[transformFX", "mcl_bows_arrow.png^[transformFX", "mcl_bows_arrow_back.png", "mcl_bows_arrow_front.png", "mcl_bows_arrow.png", "mcl_bows_arrow.png^[transformFX"},
-	groups = {not_in_creative_inventory=1},
+	paramtype = "light",
+	paramtype2 = "facedir",
+	sunlight_propagates = true,
+	groups = {not_in_creative_inventory=1, dig_immediate=3},
 })
 
 -- FIXME: Arrow velocity is a bit strange. If the arrow flies VERY long, the acceleration can cause the velocity to become negative
