@@ -199,7 +199,6 @@ ARROW_ENTITY.on_step = function(self, dtime)
 	end
 
 	-- Check for node collision
-	-- FIXME: Also collides with ignore
 	if self._lastpos.x~=nil and not self._stuck then
 		local def = minetest.registered_nodes[node.name]
 		local vel = self.object:get_velocity()
@@ -207,10 +206,12 @@ ARROW_ENTITY.on_step = function(self, dtime)
 		if (math.abs(vel.x) < 0.0001) or (math.abs(vel.z) < 0.0001) or (math.abs(vel.y) < 0.00001) then
 			-- Check for the node to which the arrow is pointing
 			local dir
-			if vel.y >= 0 and vel.y < 0.00001 then
-				dir = {x=0, y=-1, z=0}
-			elseif vel.y <= 0 and vel.y > 0.00001 then
-				dir = {x=0, y=1, z=0}
+			if math.abs(vel.y) < 0.00001 then
+				if self._lastpos.y < pos.y then
+					dir = {x=0, y=1, z=0}
+				else
+					dir = {x=0, y=-1, z=0}
+				end
 			else
 				dir = minetest.facedir_to_dir(minetest.dir_to_facedir(minetest.yaw_to_dir(self.object:get_yaw()-YAW_OFFSET)))
 			end
