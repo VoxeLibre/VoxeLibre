@@ -81,6 +81,7 @@ local ARROW_ENTITY={
 	_shooter=nil,	-- ObjectRef of player or mob who shot it
 }
 
+-- Destroy arrow entity self at pos and drops it as an item
 local spawn_item = function(self, pos)
 	if not minetest.settings:get_bool("creative_mode") then
 		local item = minetest.add_item(pos, "mcl_bows:arrow")
@@ -273,6 +274,14 @@ ARROW_ENTITY.on_step = function(self, dtime)
 
 	-- Update internal variable
 	self._lastpos={x=pos.x, y=pos.y, z=pos.z}
+end
+
+-- Force recheck of stuck arrows when punched.
+-- Otherwise, punching has no effect.
+ARROW_ENTITY.on_punch = function(self)
+	if self._stuck then
+		self._stuckrechecktimer = STUCK_RECHECK_TIME
+	end
 end
 
 ARROW_ENTITY.get_staticdata = function(self)
