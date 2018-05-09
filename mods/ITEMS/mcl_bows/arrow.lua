@@ -226,7 +226,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			else
 				dir = minetest.facedir_to_dir(minetest.dir_to_facedir(minetest.yaw_to_dir(self.object:get_yaw()-YAW_OFFSET)))
 			end
-			self._stuckin = vector.add(pos, dir)
+			self._stuckin = vector.add(dpos, dir)
 			local snode = minetest.get_node(self._stuckin)
 			local sdef = minetest.registered_nodes[snode.name]
 
@@ -249,7 +249,11 @@ ARROW_ENTITY.on_step = function(self, dtime)
 
 			-- Push the button! Push, push, push the button!
 			if mod_button and minetest.get_item_group(node.name, "button") > 0 and minetest.get_item_group(node.name, "button_push_by_arrow") == 1 then
-				mesecon.push_button(dpos, node)
+				local bdir = minetest.wallmounted_to_dir(node.param2)
+				-- Check the button orientation
+				if vector.equals(vector.add(dpos, bdir), self._stuckin) then
+					mesecon.push_button(dpos, node)
+				end
 			end
 		elseif (def and def.liquidtype ~= "none") then
 			-- Slow down arrow in liquids
