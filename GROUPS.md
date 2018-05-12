@@ -55,6 +55,7 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `cauldron`: Cauldron. 1: Empty. 2-4: Water height
 * `anvil`: Anvil. 1: No damage. 2-3: Higher damage levels
 * `no_rename=1`: Item cannot be renamed by anvil
+* `comparator_signal=X`: If set, this node outputs a constant (!) comparator signal output of strength X.
 
 #### Footnotes
 

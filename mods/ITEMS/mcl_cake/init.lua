@@ -46,7 +46,7 @@ minetest.register_node("mcl_cake:cake", {
 		fixed = full_cake
 	},
 	stack_max = 1,
-	groups = {handy=1, cake=7, food=2,no_eat_delay=1, attached_node=1, dig_by_piston=1},
+	groups = {handy=1, cake=7, food=2,no_eat_delay=1, attached_node=1, dig_by_piston=1, comparator_signal=14},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
 		local newcake = minetest.do_item_eat(2, ItemStack("mcl_cake:cake_6"), ItemStack("mcl_cake:cake"), clicker, {type="nothing"})
@@ -102,7 +102,7 @@ local register_slice = function(level, nodebox, desc)
 			type = "fixed",
 			fixed = nodebox,
 			},
-		groups = {handy=1, cake=level, food=2,no_eat_delay=1,attached_node=1,not_in_creative_inventory=1,dig_by_piston=1},
+		groups = {handy=1, cake=level, food=2,no_eat_delay=1,attached_node=1,not_in_creative_inventory=1,dig_by_piston=1,comparator_signal=level*2},
 		drop = '',
 		on_rightclick = on_rightclick,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
@@ -118,9 +118,9 @@ local register_slice = function(level, nodebox, desc)
 	end
 end
 
-register_slice(6, slice_6, "Cake (6 Slices Left")
-register_slice(5, slice_5, "Cake (5 Slices Left")
-register_slice(4, slice_4, "Cake (4 Slices Left")
-register_slice(3, slice_3, "Cake (3 Slices Left")
-register_slice(2, slice_2, "Cake (2 Slices Left")
-register_slice(1, slice_1, "Cake (1 Slice Left")
+register_slice(6, slice_6, "Cake (6 Slices Left)")
+register_slice(5, slice_5, "Cake (5 Slices Left)")
+register_slice(4, slice_4, "Cake (4 Slices Left)")
+register_slice(3, slice_3, "Cake (3 Slices Left)")
+register_slice(2, slice_2, "Cake (2 Slices Left)")
+register_slice(1, slice_1, "Cake (1 Slice Left)")

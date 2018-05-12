@@ -309,7 +309,7 @@ minetest.register_node("mcl_portals:end_portal_frame", {
 minetest.register_node("mcl_portals:end_portal_frame_eye", {
 	description = "End Portal Frame with Eye of Ender",
 	_doc_items_create_entry = false,
-	groups = { creative_breakable = 1, not_in_creative_inventory = 1 },
+	groups = { creative_breakable = 1, not_in_creative_inventory = 1, comparator_signal = 15 },
 	tiles = { "mcl_portals_endframe_top.png^[lowpart:75:mcl_portals_endframe_eye.png", "mcl_portals_endframe_bottom.png", "mcl_portals_endframe_eye.png^mcl_portals_endframe_side.png" },
 	paramtype2 = "facedir",
 	drawtype = "nodebox",

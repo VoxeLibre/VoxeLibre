@@ -79,7 +79,7 @@ local register_filled_cauldron = function(water_level, description, river_water)
 		drawtype = "nodebox",
 		paramtype = "light",
 		is_ground_content = false,
-		groups = {pickaxey=1, not_in_creative_inventory=1, cauldron=(1+water_level)},
+		groups = {pickaxey=1, not_in_creative_inventory=1, cauldron=(1+water_level), comparator_signal=water_level},
 		node_box = cauldron_nodeboxes[water_level],
 		collision_box = cauldron_nodeboxes[0],
 		selection_box = { type = "regular" },

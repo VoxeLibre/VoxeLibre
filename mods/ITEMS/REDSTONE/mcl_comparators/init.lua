@@ -53,7 +53,7 @@ local comparator_deactivate = function(pos, node)
 end
 
 
--- wether pos has an inventory that contains at least one item
+-- weather pos has an inventory that contains at least one item
 local container_inventory_nonempty = function(pos)
 	local invnode = minetest.get_node(pos)
 	local invnodedef = minetest.registered_nodes[invnode.name]
@@ -75,13 +75,21 @@ local container_inventory_nonempty = function(pos)
 	return false
 end
 
+-- weather pos has an constant signal output for the comparator
+local static_signal_output = function(pos)
+	local node = minetest.get_node(pos)
+	local g = minetest.get_item_group(node.name, "comparator_signal")
+	return g > 0
+end
+
 -- whether the comparator should be on according to its inputs
 local comparator_desired_on = function(pos, node)
 	local my_input_rules = comparator_get_input_rules(node);
 	local back_rule = my_input_rules[1]
 	local state
 	if back_rule then
-		state = mesecon.is_power_on(vector.add(pos, back_rule)) or container_inventory_nonempty(vector.add(pos, back_rule))
+		local back_pos = vector.add(pos, back_rule)
+		state = mesecon.is_power_on(back_pos) or container_inventory_nonempty(back_pos) or static_signal_output(back_pos)
 	end
 
 	-- if back input if off, we don't need to check side inputs
@@ -307,19 +315,19 @@ minetest.register_craft({
 
 -- Register active block handlers
 minetest.register_abm({
-	label = "Comparator check for containers",
+	label = "Comparator signal input check (comparator is off)",
 	nodenames = {
 		"mcl_comparators:comparator_off_comp",
 		"mcl_comparators:comparator_off_sub",
 	},
-	neighbors = {"group:container"},
+	neighbors = {"group:container", "group:comparator_signal"},
 	interval = 1,
 	chance = 1,
 	action = update_self,
 })
 
 minetest.register_abm({
-	label = "Comparator check for no containers",
+	label = "Comparator signal input check (comparator is on)",
 	nodenames = {
 		"mcl_comparators:comparator_on_comp",
 		"mcl_comparators:comparator_on_sub",
