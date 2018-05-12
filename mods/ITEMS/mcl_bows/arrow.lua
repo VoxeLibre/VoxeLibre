@@ -62,8 +62,6 @@ minetest.register_node("mcl_bows:arrow_box", {
 	groups = {not_in_creative_inventory=1, dig_immediate=3},
 })
 
--- FIXME: Arrow velocity is a bit strange. If the arrow flies VERY long, the acceleration can cause the velocity to become negative
--- and the arrow flies backwards.
 local ARROW_ENTITY={
 	physical = true,
 	visual = "wielditem",
@@ -80,6 +78,9 @@ local ARROW_ENTITY={
 	_stuckrechecktimer=nil,-- An additional timer for periodically re-checking the stuck status of an arrow
 	_stuckin=nil,	--Position of node in which arow is stuck.
 	_shooter=nil,	-- ObjectRef of player or mob who shot it
+
+	_viscosity=0,   -- Viscosity of node the arrow is currently in
+	_deflection_cooloff=0, -- Cooloff timer after an arrow deflection, to prevent many deflections in quick succession
 }
 
 -- Destroy arrow entity self at pos and drops it as an item
@@ -144,6 +145,10 @@ ARROW_ENTITY.on_step = function(self, dtime)
 		local closest_object
 		local closest_distance
 		local ok = false
+
+		if self._deflection_cooloff > 0 then
+			self._deflection_cooloff = self._deflection_cooloff - dtime
+		end
 
 		-- Iterate through all objects and remember the closest attackable object
 		for k, obj in pairs(objs) do
@@ -210,7 +215,8 @@ ARROW_ENTITY.on_step = function(self, dtime)
 	if self._lastpos.x~=nil and not self._stuck then
 		local def = minetest.registered_nodes[node.name]
 		local vel = self.object:get_velocity()
-		-- Arrow has stopped in one axis, so it probably hit something
+		-- Arrow has stopped in one axis, so it probably hit something.
+		-- This detection is a bit clunky, but sadly, MT does not offer a direct collision detection for us. :-(
 		if (math.abs(vel.x) < 0.0001) or (math.abs(vel.z) < 0.0001) or (math.abs(vel.y) < 0.00001) then
 			-- Check for the node to which the arrow is pointing
 			local dir
@@ -231,25 +237,56 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			-- This causes a deflection in the engine.
 			if not sdef or sdef.walkable == false or snode.name == "ignore" then
 				self._stuckin = nil
-				-- Lose 1/3 of velocity on deflection
-				self.object:set_velocity(vector.multiply(vel, 0.6667))
-				return
-			end
+				if self._deflection_cooloff <= 0 then
+					-- Lose 1/3 of velocity on deflection
+					self.object:set_velocity(vector.multiply(vel, 0.6667))
 
-			-- Node was walkable, make arrow stuck
-			self._stuck = true
-			self._stucktimer = 0
-			self._stuckrechecktimer = 0
+					-- Just some dirty hack to make sure the arrow has a minimum direction to
+					-- avoid triggering the stuck detection again.
+					vel = self.object:get_velocity()
+					if math.abs(vel.x) < 0.0001 then
+						if pos.x < self._lastpos.x then
+							vel.x = 0.01
+						else
+							vel.x = -0.01
+						end
+					end
+					if math.abs(vel.z) < 0.0001 then
+						if pos.z < self._lastpos.z then
+							vel.z = 0.01
+						else
+							vel.z = -0.01
+						end
+					end
+					if math.abs(vel.y) < 0.00001 then
+						if pos.y < self._lastpos.y then
+							vel.y = 0.001
+						else
+							vel.y = -0.001
+						end
+					end
+					self.object:set_velocity(vel)
+					self.object:set_yaw(minetest.dir_to_yaw(vel)+YAW_OFFSET)
+					-- Reset deflection cooloff timer to prevent many deflections happening in quick succession
+					self._deflection_cooloff = 0.2
+				end
+			else
 
-			self.object:set_velocity({x=0, y=0, z=0})
-			self.object:set_acceleration({x=0, y=0, z=0})
+				-- Node was walkable, make arrow stuck
+				self._stuck = true
+				self._stucktimer = 0
+				self._stuckrechecktimer = 0
 
-			-- Push the button! Push, push, push the button!
-			if mod_button and minetest.get_item_group(node.name, "button") > 0 and minetest.get_item_group(node.name, "button_push_by_arrow") == 1 then
-				local bdir = minetest.wallmounted_to_dir(node.param2)
-				-- Check the button orientation
-				if vector.equals(vector.add(dpos, bdir), self._stuckin) then
-					mesecon.push_button(dpos, node)
+				self.object:set_velocity({x=0, y=0, z=0})
+				self.object:set_acceleration({x=0, y=0, z=0})
+
+				-- Push the button! Push, push, push the button!
+				if mod_button and minetest.get_item_group(node.name, "button") > 0 and minetest.get_item_group(node.name, "button_push_by_arrow") == 1 then
+					local bdir = minetest.wallmounted_to_dir(node.param2)
+					-- Check the button orientation
+					if vector.equals(vector.add(dpos, bdir), self._stuckin) then
+						mesecon.push_button(dpos, node)
+					end
 				end
 			end
 		elseif (def and def.liquidtype ~= "none") then
@@ -258,6 +295,8 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			if not v then
 				v = 0
 			end
+			local old_v = self._viscosity
+			self._viscosity = v
 			local vpenalty = math.max(0.1, 0.98 - 0.1 * v)
 			if math.abs(vel.x) > 0.001 then
 				vel.x = vel.x * vpenalty
