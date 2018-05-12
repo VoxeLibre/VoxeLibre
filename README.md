@@ -2,7 +2,7 @@
 An unofficial Minecraft-like game for Minetest. Forked from MineClone by daredevils.
 Developed by Wuzzy and contributors. Not developed or endorsed by Mojang AB.
 
-Version: 0.36.3
+Version: 0.37.0
 
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
@@ -130,7 +130,7 @@ The following main features are available:
 
 The following features are incomplete:
 
-* Generated structures
+* Generated structures (especially villages)
 * NPCs
 * Some monsters and animals
 * Redstone-related things
@@ -139,6 +139,7 @@ The following features are incomplete:
 * Experience
 * Status effects
 * Brewing, potions, tipped arrows
+* Special minecarts
 * A couple of non-trivial blocks and items
 
 Bonus features (not found in Minecraft 1.11):
