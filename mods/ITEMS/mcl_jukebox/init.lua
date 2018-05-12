@@ -103,6 +103,24 @@ minetest.register_craft({
 	}
 })
 
+local play_record = function(pos, itemstack, player)
+	local record_id = minetest.get_item_group(itemstack:get_name(), "music_record")
+	if record_id ~= 0 then
+		local cname = "singleplayer" -- player:get_player_name()
+		if active_tracks[cname] ~= nil then
+			minetest.sound_stop(active_tracks[cname])
+			active_tracks[cname] = nil
+		end
+		active_tracks[cname] = minetest.sound_play("mcl_jukebox_track_"..record_id, {
+			--to_player = cname,
+			max_hear_distance = 16,
+			gain = 1,
+		})
+		--now_playing(player, record_id)
+		return true
+	end
+	return false
+end
 
 -- Jukebox
 minetest.register_node("mcl_jukebox:jukebox", {
@@ -111,7 +129,7 @@ minetest.register_node("mcl_jukebox:jukebox", {
 	_doc_items_usagehelp = "Place a music disc into an empty jukebox to insert the music disc and play music. If the jukebox already has a music disc, you will retrieve this music disc first. The music can only be heard by you, not by other players.",
 	tiles = {"mcl_jukebox_top.png", "mcl_jukebox_side.png", "mcl_jukebox_side.png"},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	groups = {handy=1,axey=1, deco_block=1, material_wood=1},
+	groups = {handy=1,axey=1, container=7, deco_block=1, material_wood=1},
 	is_ground_content = false,
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -145,23 +163,13 @@ minetest.register_node("mcl_jukebox:jukebox", {
 			end
 		else
 			-- Jukebox is empty: Play track if player holds music record
-			local record_id = minetest.get_item_group(itemstack:get_name(), "music_record")
-			if record_id ~= 0 then
-				if active_tracks[cname] ~= nil then
-					minetest.sound_stop(active_tracks[cname])
-					active_tracks[cname] = nil
-				end
-				active_tracks[cname] = minetest.sound_play("mcl_jukebox_track_"..record_id, {
-					to_player = cname,
-					--max_hear_distance = 16,
-					gain = 1,
-				})
-				now_playing(clicker, record_id)
+			local playing = play_record(pos, itemstack, clicker)
+			if playing then
 				inv:set_stack("main", 1, itemstack:get_name())
 				itemstack:take_item()
-				return itemstack
 			end
 		end
+		return itemstack
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local name = digger:get_player_name()
@@ -183,6 +191,14 @@ minetest.register_node("mcl_jukebox:jukebox", {
 			end
 		end
 		meta:from_table(meta2:to_table())
+	end,
+	on_timer = function(pos, elapsed)
+		local meta = minetest.get_meta(pos)
+		local inv = meta:get_inventory()
+		local stack = inv:get_stack("main", 1)
+		if not stack:is_empty() then
+			play_record(pos, stack)
+		end
 	end,
 	_mcl_blast_resistance = 30,
 	_mcl_hardness = 2,

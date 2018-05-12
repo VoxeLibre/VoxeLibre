@@ -149,10 +149,16 @@ function mcl_util.get_eligible_transfer_item_slot(src_inventory, src_list, dst_i
 	return nil
 end
 
--- Returns true if given itemstack is a shulker box
+-- Returns true if itemstack is a shulker box
 local is_not_shulker_box = function(itemstack)
 	local g = minetest.get_item_group(itemstack:get_name(), "shulker_box")
 	return g == 0 or g == nil
+end
+
+-- Returns true itemstack is music disc
+local is_music_disc = function(itemstack)
+	local g = minetest.get_item_group(itemstack:get_name(), "music_record")
+	return g ~= 0 and g ~= nil
 end
 
 -- Moves a single item from one inventory to another.
@@ -235,7 +241,7 @@ function mcl_util.move_item_container(source_pos, destination_pos, source_list, 
 	-- Default source lists
 	if not source_list then
 		-- Main inventory for most container types
-		if sctype == 2 or sctype == 3 or sctype == 5 or sctype == 6 then
+		if sctype == 2 or sctype == 3 or sctype == 5 or sctype == 6 or sctype == 7 then
 			source_list = "main"
 		-- Furnace: output
 		elseif sctype == 4 then
@@ -255,6 +261,10 @@ function mcl_util.move_item_container(source_pos, destination_pos, source_list, 
 		-- Prevent shulker box inception
 		if dctype == 3 then
 			cond = is_not_shulker_box
+		end
+		-- Music disc only
+		if dctype == 7 then
+			cond = is_music_disc
 		end
 		source_stack_id = mcl_util.get_eligible_transfer_item_slot(sinv, source_list, dinv, dpos, cond)
 		if not source_stack_id then
@@ -281,13 +291,20 @@ function mcl_util.move_item_container(source_pos, destination_pos, source_list, 
 			return false
 		end
 	end
+	-- Container type 7 conly allows music discs
+	if dctype == 7 then
+		local stack = sinv:get_stack(source_list, source_stack_id)
+		if stack and minetest.get_item_group(stack:get_name(), "music_record") == 0 then
+			return false
+		end
+	end
 
 	-- If it's a container, put it into the container
 	if dctype ~= 0 then
 		-- Automatically select a destination list if omitted
 		if not destination_list then
 			-- Main inventory for most container types
-			if dctype == 2 or dctype == 3 or dctype == 5 or dctype == 6 then
+			if dctype == 2 or dctype == 3 or dctype == 5 or dctype == 6 or dctype == 7 then
 				destination_list = "main"
 			-- Furnace source slot
 			elseif dctype == 4 then
@@ -311,6 +328,10 @@ function mcl_util.move_item_container(source_pos, destination_pos, source_list, 
 			if ok and dctype == 4 then
 				-- Start furnace's timer function, it will sort out whether furnace can burn or not.
 				minetest.get_node_timer(dpos):start(1.0)
+			end
+			-- Update jukebox
+			if ok and dctype == 7 then
+				minetest.get_node_timer(dpos):start(0.0)
 			end
 
 			return ok
