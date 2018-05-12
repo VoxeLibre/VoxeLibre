@@ -871,6 +871,7 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/entity,sign.png,/mods/ITEMS/mcl_signs/textures,mcl_signs_sign.png,,,,,,,
 /assets/minecraft/textures/entity,banner_base.png,/mods/ITEMS/mcl_banners/textures,mcl_banners_banner_base.png,,,,,,,
 /assets/minecraft/textures/entity/banner,base.png,/mods/ITEMS/mcl_banners/textures,mcl_banners_base.png,,,,,,,
+/assets/minecraft/textures/blocks,planks_oak.png,/mods/ITEMS/mcl_banners/textures,mcl_banners_fallback_wood.png,,,,,,,
 /assets/minecraft/textures/items,banner_base.png,/mods/ITEMS/mcl_banners/textures,mcl_banners_item_base.png,,,,,,,
 /assets/minecraft/textures/items,banner_overlay.png,/mods/ITEMS/mcl_banners/textures,mcl_banners_item_overlay.png,,,,,,,
 /assets/minecraft/textures/blocks,portal.png,/mods/ITEMS/mcl_portals/textures,mcl_portals_portal.png,,,,,,,

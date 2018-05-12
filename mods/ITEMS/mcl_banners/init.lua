@@ -117,10 +117,20 @@ minetest.register_node("mcl_banners:standing_banner", {
 	is_ground_content = false,
 	paramtype = "light",
 	sunlight_propagates = true,
-	drawtype = "airlike",
+	drawtype = "nodebox",
+	-- Nodebox is drawn as fallback when the entity is missing, so that the
+	-- banner node is never truly invisible.
+	-- If the entity is drawn, the nodebox disappears within the real banner mesh.
+	node_box = {
+		type = "fixed",
+		fixed = { -1/32, -0.49, -1/32, 1/32, 1.49, 1/32 },
+	},
+	-- This texture is based on the banner base texture
+	tiles = { "mcl_banners_fallback_wood.png" },
+
 	inventory_image = "mcl_banners_item_base.png",
 	wield_image = "mcl_banners_item_base.png",
-	tiles = { "blank.png" },
+
 	selection_box = {type = "fixed", fixed= {-0.3, -0.5, -0.3, 0.3, 0.5, 0.3} },
 	groups = {axey=1,handy=1, attached_node = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1, material_wood=1 },
 	stack_max = 16,
@@ -139,10 +149,16 @@ minetest.register_node("mcl_banners:hanging_banner", {
 	paramtype = "light",
 	paramtype2 = "wallmounted",
 	sunlight_propagates = true,
-	drawtype = "airlike",
+	drawtype = "nodebox",
 	inventory_image = "mcl_banners_item_base.png",
 	wield_image = "mcl_banners_item_base.png",
-	tiles = { "blank.png" },
+	tiles = { "mcl_banners_fallback_wood.png" },
+	node_box = {
+		type = "wallmounted",
+		wall_side = { -0.49, 0.41, -0.49, -0.41, 0.49, 0.49 },
+		wall_top = { -0.49, 0.41, -0.49, -0.41, 0.49, 0.49 },
+		wall_bottom = { -0.49, -0.49, -0.49, -0.41, -0.41, 0.49 },
+	},
 	selection_box = {type = "wallmounted", wall_side = {-0.5, -0.5, -0.5, -4/16, 0.5, 0.5} },
 	groups = {axey=1,handy=1, attached_node = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1, material_wood=1 },
 	stack_max = 16,
