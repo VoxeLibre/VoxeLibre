@@ -106,17 +106,16 @@ minetest.register_craft({
 local play_record = function(pos, itemstack, player)
 	local record_id = minetest.get_item_group(itemstack:get_name(), "music_record")
 	if record_id ~= 0 then
-		local cname = "singleplayer" -- player:get_player_name()
+		local cname = player:get_player_name()
 		if active_tracks[cname] ~= nil then
 			minetest.sound_stop(active_tracks[cname])
 			active_tracks[cname] = nil
 		end
 		active_tracks[cname] = minetest.sound_play("mcl_jukebox_track_"..record_id, {
-			--to_player = cname,
-			max_hear_distance = 16,
+			to_player = cname,
 			gain = 1,
 		})
-		--now_playing(player, record_id)
+		now_playing(player, record_id)
 		return true
 	end
 	return false
@@ -191,14 +190,6 @@ minetest.register_node("mcl_jukebox:jukebox", {
 			end
 		end
 		meta:from_table(meta2:to_table())
-	end,
-	on_timer = function(pos, elapsed)
-		local meta = minetest.get_meta(pos)
-		local inv = meta:get_inventory()
-		local stack = inv:get_stack("main", 1)
-		if not stack:is_empty() then
-			play_record(pos, stack)
-		end
 	end,
 	_mcl_blast_resistance = 30,
 	_mcl_hardness = 2,

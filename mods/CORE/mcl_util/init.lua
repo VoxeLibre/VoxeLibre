@@ -211,6 +211,11 @@ function mcl_util.move_item_container(source_pos, destination_pos, source_list, 
 	local dctype = minetest.get_item_group(dnode.name, "container")
 	local sctype = minetest.get_item_group(snode.name, "container")
 
+	-- Container type 7 does not allow any movement
+	if sctype == 7 then
+		return false
+	end
+
 	-- Normalize double container by forcing to always use the left segment first
 	local normalize_double_container = function(pos, node, ctype)
 		if ctype == 6 then
@@ -291,12 +296,9 @@ function mcl_util.move_item_container(source_pos, destination_pos, source_list, 
 			return false
 		end
 	end
-	-- Container type 7 conly allows music discs
+	-- Container type 7 does not allow any placement
 	if dctype == 7 then
-		local stack = sinv:get_stack(source_list, source_stack_id)
-		if stack and minetest.get_item_group(stack:get_name(), "music_record") == 0 then
-			return false
-		end
+		return false
 	end
 
 	-- If it's a container, put it into the container
@@ -328,10 +330,6 @@ function mcl_util.move_item_container(source_pos, destination_pos, source_list, 
 			if ok and dctype == 4 then
 				-- Start furnace's timer function, it will sort out whether furnace can burn or not.
 				minetest.get_node_timer(dpos):start(1.0)
-			end
-			-- Update jukebox
-			if ok and dctype == 7 then
-				minetest.get_node_timer(dpos):start(0.0)
 			end
 
 			return ok

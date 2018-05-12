@@ -151,7 +151,7 @@ These groups are used mostly for informational purposes
    * `container=5`: Left part of a 2-part horizontal connected container. Both parts have a `"main"` inventory
                     list. Both inventories are considered to belong together. This is used for large chests.
    * `container=6`: Same as above, but for the right part.
-   * `container=7`: Same as `container=2`, but only music discs can be inserted
+   * `container=7`: Has inventory list "`main`", no movement allowed
    * `container=1`: Other/unspecified container type
 * `spawn_egg=1`: Spawn egg
 
