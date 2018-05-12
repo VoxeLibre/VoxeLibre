@@ -143,4 +143,14 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_alias("itemframes:frame", "mcl_itemframes:item_frame")
+minetest.register_lbm({
+	label = "Update legacy item frames",
+	name = "mcl_itemframes:update_legacy_item_frames",
+	nodenames = {"itemframes:frame"},
+	action = function(pos, node)
+		-- Swap legacy node, then respawn entity
+		node.name = "mcl_itemframes:item_frame"
+		minetest.swap_node(pos, node)
+		update_item(pos, node)
+	end,
+})
