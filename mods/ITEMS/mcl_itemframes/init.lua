@@ -188,3 +188,5 @@ minetest.register_lbm({
 		update_item_entity(pos, node)
 	end,
 })
+
+minetest.register_alias("itemframes:frame", "mcl_itemframes:item_frame")
