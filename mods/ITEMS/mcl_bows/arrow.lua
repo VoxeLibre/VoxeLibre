@@ -239,36 +239,11 @@ ARROW_ENTITY.on_step = function(self, dtime)
 				self._stuckin = nil
 				if self._deflection_cooloff <= 0 then
 					-- Lose 1/3 of velocity on deflection
-					self.object:set_velocity(vector.multiply(vel, 0.6667))
+					local newvel = vector.multiply(vel, 0.6667)
 
-					-- Just some dirty hack to make sure the arrow has a minimum direction to
-					-- avoid triggering the stuck detection again.
-					vel = self.object:get_velocity()
-					if math.abs(vel.x) < 0.0001 then
-						if pos.x < self._lastpos.x then
-							vel.x = 0.01
-						else
-							vel.x = -0.01
-						end
-					end
-					if math.abs(vel.z) < 0.0001 then
-						if pos.z < self._lastpos.z then
-							vel.z = 0.01
-						else
-							vel.z = -0.01
-						end
-					end
-					if math.abs(vel.y) < 0.00001 then
-						if pos.y < self._lastpos.y then
-							vel.y = 0.001
-						else
-							vel.y = -0.001
-						end
-					end
-					self.object:set_velocity(vel)
-					self.object:set_yaw(minetest.dir_to_yaw(vel)+YAW_OFFSET)
+					self.object:set_velocity(newvel)
 					-- Reset deflection cooloff timer to prevent many deflections happening in quick succession
-					self._deflection_cooloff = 0.2
+					self._deflection_cooloff = 1.0
 				end
 			else
 
