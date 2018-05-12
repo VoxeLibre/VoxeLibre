@@ -1,6 +1,6 @@
 local tmp = {}
 
-minetest.register_entity("itemframes:item",{
+minetest.register_entity("mcl_itemframes:item",{
 	hp_max = 1,
 	visual="wielditem",
 	visual_size={x=0.3,y=0.3},
@@ -43,12 +43,12 @@ facedir[3] = {x=-1,y=0,z=0}
 
 local remove_item = function(pos, node)
 	local objs = nil
-	if node.name == "itemframes:frame" then
+	if node.name == "mcl_itemframes:item_frame" then
 		objs = minetest.get_objects_inside_radius(pos, .5)
 	end
 	if objs then
 		for _, obj in ipairs(objs) do
-			if obj and obj:get_luaentity() and obj:get_luaentity().name == "itemframes:item" then
+			if obj and obj:get_luaentity() and obj:get_luaentity().name == "mcl_itemframes:item" then
 				obj:remove()
 			end
 		end
@@ -59,7 +59,7 @@ local update_item = function(pos, node)
 	remove_item(pos, node)
 	local meta = minetest.get_meta(pos)
 	if meta:get_string("item") ~= "" then
-		if node.name == "itemframes:frame" then
+		if node.name == "mcl_itemframes:item_frame" then
 			local posad = facedir[node.param2]
 			pos.x = pos.x + posad.x*6.5/16
 			pos.y = pos.y + posad.y*6.5/16
@@ -67,8 +67,8 @@ local update_item = function(pos, node)
 		end
 		tmp.nodename = node.name
 		tmp.texture = ItemStack(meta:get_string("item")):get_name()
-		local e = minetest.add_entity(pos,"itemframes:item")
-		if node.name == "itemframes:frame" then
+		local e = minetest.add_entity(pos,"mcl_itemframes:item")
+		if node.name == "mcl_itemframes:item_frame" then
 			local yaw = math.pi*2 - node.param2 * math.pi/2
 			e:setyaw(yaw)
 		end
@@ -77,7 +77,7 @@ end
 
 local drop_item = function(pos, node, meta)
 	if meta:get_string("item") ~= "" then
-		if node.name == "itemframes:frame" and not minetest.settings:get_bool("creative_mode") then
+		if node.name == "mcl_itemframes:item_frame" and not minetest.settings:get_bool("creative_mode") then
 			local item = ItemStack(minetest.deserialize(meta:get_string("itemdata")))
 			minetest.add_item(pos, item)
 		end
@@ -92,18 +92,18 @@ if minetest.get_modpath("screwdriver") then
 	on_rotate = screwdriver.disallow
 end
 
-minetest.register_node("itemframes:frame",{
+minetest.register_node("mcl_itemframes:item_frame",{
 	description = "Item Frame",
 	_doc_items_longdesc = "Item frames are decorative blocks in which items can be placed.",
 	_doc_items_usagehelp = "Hold any item in your hand and right-click the item frame to place the item into the frame. Rightclick the item frame again to retrieve the item.",
 	drawtype = "mesh",
 	is_ground_content = false,
-	mesh = "itemframes_itemframe1facedir.obj",
+	mesh = "mcl_itemframes_itemframe1facedir.obj",
 	selection_box = { type = "fixed", fixed = {-6/16, -6/16, 7/16, 6/16, 6/16, 0.5} },
 	collision_box = { type = "fixed", fixed = {-6/16, -6/16, 7/16, 6/16, 6/16, 0.5} },
-	tiles = {"itemframe_background.png", "itemframe_background.png", "itemframe_background.png", "itemframe_background.png", "default_wood.png", "itemframe_background.png"},
-	inventory_image = "itemframes_frame.png",
-	wield_image = "itemframes_frame.png",
+	tiles = {"mcl_itemframes_itemframe_background.png", "mcl_itemframes_itemframe_background.png", "mcl_itemframes_itemframe_background.png", "mcl_itemframes_itemframe_background.png", "default_wood.png", "mcl_itemframes_itemframe_background.png"},
+	inventory_image = "mcl_itemframes_item_frame.png",
+	wield_image = "mcl_itemframes_item_frame.png",
 	paramtype = "light",
 	paramtype2 = "facedir",
 	sunlight_propagates = true,
@@ -135,10 +135,12 @@ minetest.register_node("itemframes:frame",{
 })
 
 minetest.register_craft({
-	output = 'itemframes:frame',
+	output = 'mcl_itemframes:item_frame',
 	recipe = {
 		{'mcl_core:stick', 'mcl_core:stick', 'mcl_core:stick'},
 		{'mcl_core:stick', 'mcl_mobitems:leather', 'mcl_core:stick'},
 		{'mcl_core:stick', 'mcl_core:stick', 'mcl_core:stick'},
 	}
 })
+
+minetest.register_alias("itemframes:frame", "mcl_itemframes:item_frame")
