@@ -38,7 +38,7 @@ facedir[1] = {x=1,y=0,z=0}
 facedir[2] = {x=0,y=0,z=-1}
 facedir[3] = {x=-1,y=0,z=0}
 
-local remove_item = function(pos, node)
+local remove_item_entity = function(pos, node)
 	local objs = nil
 	if node.name == "mcl_itemframes:item_frame" then
 		objs = minetest.get_objects_inside_radius(pos, .5)
@@ -52,8 +52,8 @@ local remove_item = function(pos, node)
 	end
 end
 
-local update_item = function(pos, node)
-	remove_item(pos, node)
+local update_item_entity = function(pos, node)
+	remove_item_entity(pos, node)
 	local meta = minetest.get_meta(pos)
 	if meta:get_string("item") ~= "" then
 		if node.name == "mcl_itemframes:item_frame" then
@@ -80,10 +80,11 @@ local drop_item = function(pos, node, meta)
 			local item = ItemStack(minetest.deserialize(meta:get_string("itemdata")))
 			minetest.add_item(pos, item)
 		end
-		meta:set_string("item","")
-		meta:set_string("itemdata","")
+		meta:set_string("item", "")
+		meta:set_string("itemdata", "")
+		meta:set_string("infotext", "")
 	end
-	remove_item(pos, node)
+	remove_item_entity(pos, node)
 end
 
 local on_rotate
@@ -118,8 +119,15 @@ minetest.register_node("mcl_itemframes:item_frame",{
 		put_itemstack:set_count(1)
 		local itemdata = minetest.serialize(put_itemstack:to_table())
 		-- itemdata holds the serialized itemstack in table form
+		update_item_entity(pos,node)
+		-- Add node infotext when item has been named
 		meta:set_string("itemdata", itemdata)
-		update_item(pos,node)
+		local imeta = itemstack:get_meta()
+		local iname = imeta:get_string("name")
+		if iname then
+			meta:set_string("infotext", iname)
+		end
+
 		if not minetest.settings:get_bool("creative_mode") then
 			itemstack:take_item()
 		end
@@ -150,6 +158,6 @@ minetest.register_lbm({
 		-- Swap legacy node, then respawn entity
 		node.name = "mcl_itemframes:item_frame"
 		minetest.swap_node(pos, node)
-		update_item(pos, node)
+		update_item_entity(pos, node)
 	end,
 })
