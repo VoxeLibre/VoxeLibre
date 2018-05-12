@@ -5,6 +5,8 @@ minetest.register_entity("mcl_itemframes:item",{
 	collisionbox = {0,0,0,0,0,0},
 	physical = false,
 	textures = { "empty.png" },
+	_texture = "empty.png",
+
 	on_activate = function(self, staticdata)
 		if staticdata ~= nil and staticdata ~= "" then
 			local data = staticdata:split(';')
@@ -55,17 +57,23 @@ end
 local update_item_entity = function(pos, node)
 	remove_item_entity(pos, node)
 	local meta = minetest.get_meta(pos)
-	if meta:get_string("item") ~= "" then
+	local inv = meta:get_inventory()
+	local item = inv:get_stack("main", 1)
+	if not item:is_empty() then
 		if node.name == "mcl_itemframes:item_frame" then
 			local posad = facedir[node.param2]
 			pos.x = pos.x + posad.x*6.5/16
 			pos.y = pos.y + posad.y*6.5/16
 			pos.z = pos.z + posad.z*6.5/16
 		end
-		local e = minetest.add_entity(pos,"mcl_itemframes:item")
+		local e = minetest.add_entity(pos, "mcl_itemframes:item")
 		local lua = e:get_luaentity()
 		lua._nodename = node.name
-		lua._texture = ItemStack(meta:get_string("item")):get_name()
+		if item:get_name() == "" then
+			lua._texture = "blank.png"
+		else
+			lua._texture = item:get_name()
+		end
 		lua:_update_texture()
 		if node.name == "mcl_itemframes:item_frame" then
 			local yaw = math.pi*2 - node.param2 * math.pi/2
@@ -75,15 +83,14 @@ local update_item_entity = function(pos, node)
 end
 
 local drop_item = function(pos, node, meta)
-	if meta:get_string("item") ~= "" then
-		if node.name == "mcl_itemframes:item_frame" and not minetest.settings:get_bool("creative_mode") then
-			local item = ItemStack(minetest.deserialize(meta:get_string("itemdata")))
+	if node.name == "mcl_itemframes:item_frame" and not minetest.settings:get_bool("creative_mode") then
+		local inv = meta:get_inventory()
+		local item = inv:get_stack("main", 1)
+		if not item:is_empty() then
 			minetest.add_item(pos, item)
 		end
-		meta:set_string("item", "")
-		meta:set_string("itemdata", "")
-		meta:set_string("infotext", "")
 	end
+	meta:set_string("infotext", "")
 	remove_item_entity(pos, node)
 end
 
@@ -107,21 +114,31 @@ minetest.register_node("mcl_itemframes:item_frame",{
 	paramtype = "light",
 	paramtype2 = "facedir",
 	sunlight_propagates = true,
-	groups = { dig_immediate=3,deco_block=1,dig_by_piston=1},
+	groups = { dig_immediate=3,deco_block=1,dig_by_piston=1,container=7 },
 	sounds = mcl_sounds.node_sound_defaults(),
+	on_construct = function(pos)
+		local meta = minetest.get_meta(pos)
+		local inv = meta:get_inventory()
+		inv:set_size("main", 1)
+	end,
 	on_rightclick = function(pos, node, clicker, itemstack)
-		if not itemstack then return end
+		if not itemstack then
+			return
+		end
 		local meta = minetest.get_meta(pos)
 		drop_item(pos, node, meta)
-		-- item holds the itemstring
-		meta:set_string("item", itemstack:get_name())
+		local inv = meta:get_inventory()
+		if itemstack:is_empty() then
+			remove_item_entity(pos, node)
+			meta:set_string("infotext", "")
+			inv:set_stack("main", 1, "")
+			return itemstack
+		end
 		local put_itemstack = ItemStack(itemstack)
 		put_itemstack:set_count(1)
-		local itemdata = minetest.serialize(put_itemstack:to_table())
-		-- itemdata holds the serialized itemstack in table form
-		update_item_entity(pos,node)
+		inv:set_stack("main", 1, put_itemstack)
+		update_item_entity(pos, node)
 		-- Add node infotext when item has been named
-		meta:set_string("itemdata", itemdata)
 		local imeta = itemstack:get_meta()
 		local iname = imeta:get_string("name")
 		if iname then
@@ -157,7 +174,17 @@ minetest.register_lbm({
 	action = function(pos, node)
 		-- Swap legacy node, then respawn entity
 		node.name = "mcl_itemframes:item_frame"
+		local meta = minetest.get_meta(pos)
+		local item = meta:get_string("item")
 		minetest.swap_node(pos, node)
+		if item ~= "" then
+			local itemstack = ItemStack(minetest.deserialize(meta:get_string("itemdata")))
+			local inv = meta:get_inventory()
+			inv:set_size("main", 1)
+			if not itemstack:is_empty() then
+				inv:set_stack("main", 1, itemstack)
+			end
+		end
 		update_item_entity(pos, node)
 	end,
 })
