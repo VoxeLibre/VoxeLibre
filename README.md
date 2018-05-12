@@ -60,10 +60,19 @@ The following items are interesting for Creative Mode and for adventure
 map builders. They can not be obtained in-game or in the creative inventory.
 
 * Barrier: `mcl_core:barrier`
-* Minecart with Command Block (does not work yet): `mcl_minecarts:command_block_minecart`
 
 Use the `/giveme` chat command to obtain them. See the in-game help for
 an explanation.
+
+#### Incomplete items
+These items do not work yet, but you can get them with `/giveme` for testing:
+
+* Fishing Rod: `mcl_fishing:fishing_rod`
+* Activator Rail: `mcl_minecarts:activator_rail`
+* Minecart with Chest: `mcl_minecarts:chest_minecart`
+* Minecart with Furnace: `mcl_minecarts:furnace_minecart`
+* Minecart with Hopper: `mcl_minecarts:hopper_minecart`
+* Minecart with Command Block: `mcl_minecarts:command_block_minecart`
 
 ## Installation
 This game requires [Minetest](http://minetest.net) 0.4.16 (or later) to run,
