@@ -1,36 +1,33 @@
-local tmp = {}
-
 minetest.register_entity("mcl_itemframes:item",{
 	hp_max = 1,
-	visual="wielditem",
-	visual_size={x=0.3,y=0.3},
+	visual = "wielditem",
+	visual_size = {x=0.3,y=0.3},
 	collisionbox = {0,0,0,0,0,0},
-	physical=false,
-	textures={"air"},
+	physical = false,
+	textures = { "empty.png" },
 	on_activate = function(self, staticdata)
-		if tmp.nodename ~= nil and tmp.texture ~= nil then
-			self.nodename = tmp.nodename
-			tmp.nodename = nil
-			self.texture = tmp.texture
-			tmp.texture = nil
-		else
-			if staticdata ~= nil and staticdata ~= "" then
-				local data = staticdata:split(';')
-				if data and data[1] and data[2] then
-					self.nodename = data[1]
-					self.texture = data[2]
-				end
+		if staticdata ~= nil and staticdata ~= "" then
+			local data = staticdata:split(';')
+			if data and data[1] and data[2] then
+				self._nodename = data[1]
+				self._texture = data[2]
 			end
 		end
-		if self.texture ~= nil then
-			self.object:set_properties({textures={self.texture}})
+		if self._texture ~= nil then
+			self.object:set_properties({textures={self._texture}})
 		end
 	end,
 	get_staticdata = function(self)
-		if self.nodename ~= nil and self.texture ~= nil then
-			return self.nodename .. ';' .. self.texture
+		if self._nodename ~= nil and self._texture ~= nil then
+			return self._nodename .. ';' .. self._texture
 		end
 		return ""
+	end,
+
+	_update_texture = function(self)
+		if self._texture ~= nil then
+			self.object:set_properties({textures={self._texture}})
+		end
 	end,
 })
 
@@ -65,9 +62,11 @@ local update_item = function(pos, node)
 			pos.y = pos.y + posad.y*6.5/16
 			pos.z = pos.z + posad.z*6.5/16
 		end
-		tmp.nodename = node.name
-		tmp.texture = ItemStack(meta:get_string("item")):get_name()
 		local e = minetest.add_entity(pos,"mcl_itemframes:item")
+		local lua = e:get_luaentity()
+		lua._nodename = node.name
+		lua._texture = ItemStack(meta:get_string("item")):get_name()
+		lua:_update_texture()
 		if node.name == "mcl_itemframes:item_frame" then
 			local yaw = math.pi*2 - node.param2 * math.pi/2
 			e:setyaw(yaw)
