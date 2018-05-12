@@ -139,9 +139,13 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			end
 		end
 
-	-- Check for object collision. Done every tick (hopefully this is not too stressing)
+	-- Check for object "collision". Done every tick (hopefully this is not too stressing)
 	else
-		local objs = minetest.get_objects_inside_radius(pos, 2)
+		-- We just check for any hurtable objects nearby.
+		-- The radius of 3 is fairly liberal, but anything lower than than will cause
+		-- arrow to hilariously go through mobs often.
+		-- TODO: Implement an ACTUAL collision detection (engine support needed).
+		local objs = minetest.get_objects_inside_radius(pos, 3)
 		local closest_object
 		local closest_distance
 		local ok = false
