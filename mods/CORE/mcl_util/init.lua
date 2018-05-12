@@ -155,12 +155,6 @@ local is_not_shulker_box = function(itemstack)
 	return g == 0 or g == nil
 end
 
--- Returns true itemstack is music disc
-local is_music_disc = function(itemstack)
-	local g = minetest.get_item_group(itemstack:get_name(), "music_record")
-	return g ~= 0 and g ~= nil
-end
-
 -- Moves a single item from one inventory to another.
 --- source_inventory: Inventory to take the item from
 --- source_list: List name of the source inventory from which to take the item
@@ -266,10 +260,6 @@ function mcl_util.move_item_container(source_pos, destination_pos, source_list, 
 		-- Prevent shulker box inception
 		if dctype == 3 then
 			cond = is_not_shulker_box
-		end
-		-- Music disc only
-		if dctype == 7 then
-			cond = is_music_disc
 		end
 		source_stack_id = mcl_util.get_eligible_transfer_item_slot(sinv, source_list, dinv, dpos, cond)
 		if not source_stack_id then
