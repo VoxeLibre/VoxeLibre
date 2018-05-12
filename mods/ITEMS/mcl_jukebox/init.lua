@@ -150,7 +150,7 @@ minetest.register_node("mcl_jukebox:jukebox", {
 			local ly = pos.y+1
 			local lz = pos.z
 			local record = inv:get_stack("main", 1)
-			local dropped_item = minetest.add_item({x=lx, y=ly, z=lz}, record:get_name())
+			local dropped_item = minetest.add_item({x=lx, y=ly, z=lz}, record)
 			-- Rotate record to match with “slot” texture
 			dropped_item:set_yaw(math.pi/2)
 			inv:set_stack("main", 1, "")
@@ -164,7 +164,9 @@ minetest.register_node("mcl_jukebox:jukebox", {
 			-- Jukebox is empty: Play track if player holds music record
 			local playing = play_record(pos, itemstack, clicker)
 			if playing then
-				inv:set_stack("main", 1, itemstack:get_name())
+				local put_itemstack = ItemStack(itemstack)
+				put_itemstack:set_count(1)
+				inv:set_stack("main", 1, put_itemstack)
 				itemstack:take_item()
 			end
 		end
