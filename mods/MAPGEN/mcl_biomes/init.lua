@@ -1737,16 +1737,16 @@ local function register_decorations()
 
 	-- Oak
 	-- Large oaks
-	for i=1, 2 do
+	for i=1, 4 do
 		minetest.register_decoration({
 			deco_type = "schematic",
 			place_on = {"group:grass_block_no_snow", "mcl_core:dirt"},
 			sidelen = 80,
 			noise_params = {
-				offset = 0.00075,
+				offset = 0.000545,
 				scale = 0.0011,
 				spread = {x = 250, y = 250, z = 250},
-				seed = 3,
+				seed = 3 + 5 * i,
 				octaves = 3,
 				persist = 0.66
 			},
@@ -1763,7 +1763,7 @@ local function register_decorations()
 			place_on = {"group:grass_block", "mcl_core:dirt", },
 			sidelen = 80,
 			noise_params = {
-				offset = -0.0004,
+				offset = -0.0008,
 				scale = 0.001,
 				spread = {x = 250, y = 250, z = 250},
 				seed = 3,
@@ -2057,9 +2057,10 @@ local function register_decorations()
 	end
 
 	-- Huge spruce
-	quick_spruce(3000, 0.005, "mcl_core_spruce_huge_1.mts", {"MegaSpruceTaiga"})
-	quick_spruce(4000, 0.005, "mcl_core_spruce_huge_2.mts", {"MegaSpruceTaiga"})
-	quick_spruce(6000, 0.005, "mcl_core_spruce_huge_3.mts", {"MegaSpruceTaiga"})
+	quick_spruce(3000, 0.00205, "mcl_core_spruce_huge_1.mts", {"MegaSpruceTaiga"})
+	quick_spruce(4000, 0.00245, "mcl_core_spruce_huge_2.mts", {"MegaSpruceTaiga"})
+	quick_spruce(6000, 0.00245, "mcl_core_spruce_huge_3.mts", {"MegaSpruceTaiga"})
+	quick_spruce(6600, 0.00245, "mcl_core_spruce_huge_4.mts", {"MegaSpruceTaiga"})
 
 	quick_spruce(3000, 0.0008, "mcl_core_spruce_huge_up_1.mts", {"MegaTaiga"})
 	quick_spruce(4000, 0.0008, "mcl_core_spruce_huge_up_2.mts", {"MegaTaiga"})

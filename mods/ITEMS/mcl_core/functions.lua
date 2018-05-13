@@ -345,11 +345,11 @@ function mcl_core.generate_oak_tree(pos)
 			offset = { x = -2, y = -1, z = -2 }
 		else
 			-- Large balloon oak
-			local t = math.random(1, 2)
+			local t = math.random(1, 4)
 			path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_oak_large_"..t..".mts"
-			if t == 1 then
+			if t == 1 or t == 3 then
 				offset = { x = -3, y = -1, z = -3 }
-			elseif t == 2 then
+			elseif t == 2 or t == 4 then
 				offset = { x = -4, y = -1, z = -4 }
 			end
 		end
@@ -484,7 +484,7 @@ end
 
 mcl_core.generate_huge_spruce_tree = function(pos)
 	local r1 = math.random(1, 2)
-	local r2 = math.random(1, 3)
+	local r2 = math.random(1, 4)
 	local path
 	local offset = { x = -4, y = -1, z = -5 }
 	if r1 <= 2 then
