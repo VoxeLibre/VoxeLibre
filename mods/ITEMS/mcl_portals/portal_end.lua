@@ -309,7 +309,7 @@ minetest.register_node("mcl_portals:end_portal_frame", {
 minetest.register_node("mcl_portals:end_portal_frame_eye", {
 	description = "End Portal Frame with Eye of Ender",
 	_doc_items_create_entry = false,
-	groups = { creative_breakable = 1, not_in_creative_inventory = 1, comparator_signal = 15 },
+	groups = { creative_breakable = 1, deco_block = 1, comparator_signal = 15 },
 	tiles = { "mcl_portals_endframe_top.png^[lowpart:75:mcl_portals_endframe_eye.png", "mcl_portals_endframe_bottom.png", "mcl_portals_endframe_eye.png^mcl_portals_endframe_side.png" },
 	paramtype2 = "facedir",
 	drawtype = "nodebox",
@@ -329,6 +329,12 @@ minetest.register_node("mcl_portals:end_portal_frame_eye", {
 		local ok, ppos = check_end_portal_frame(pos)
 		if ok then
 			end_portal_area(ppos, true)
+		end
+	end,
+	on_construct = function(pos)
+		local ok, ppos = check_end_portal_frame(pos)
+		if ok then
+			end_portal_area(ppos)
 		end
 	end,
 
@@ -358,7 +364,7 @@ minetest.override_item("mcl_end:ender_eye", {
 
 		-- Place eye of ender into end portal frame
 		if pointed_thing.under and node.name == "mcl_portals:end_portal_frame" then
-			minetest.swap_node(pointed_thing.under, { name = "mcl_portals:end_portal_frame_eye", param2 = node.param2 })
+			minetest.set_node(pointed_thing.under, { name = "mcl_portals:end_portal_frame_eye", param2 = node.param2 })
 
 			if minetest.get_modpath("doc") then
 				doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:end_portal_frame")
@@ -370,9 +376,8 @@ minetest.override_item("mcl_end:ender_eye", {
 				itemstack:take_item() -- 1 use
 			end
 
-			local ok, ppos = check_end_portal_frame(pointed_thing.under)
+			local ok = check_end_portal_frame(pointed_thing.under)
 			if ok then
-				end_portal_area(ppos)
 				if minetest.get_modpath("doc") then
 					doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:portal_end")
 				end
