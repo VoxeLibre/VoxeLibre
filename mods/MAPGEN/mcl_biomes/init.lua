@@ -1763,7 +1763,7 @@ local function register_decorations()
 			place_on = {"group:grass_block", "mcl_core:dirt", },
 			sidelen = 80,
 			noise_params = {
-				offset = -0.0008,
+				offset = -0.0007,
 				scale = 0.001,
 				spread = {x = 250, y = 250, z = 250},
 				seed = 3,
@@ -2057,10 +2057,10 @@ local function register_decorations()
 	end
 
 	-- Huge spruce
-	quick_spruce(3000, 0.00205, "mcl_core_spruce_huge_1.mts", {"MegaSpruceTaiga"})
-	quick_spruce(4000, 0.00245, "mcl_core_spruce_huge_2.mts", {"MegaSpruceTaiga"})
-	quick_spruce(6000, 0.00245, "mcl_core_spruce_huge_3.mts", {"MegaSpruceTaiga"})
-	quick_spruce(6600, 0.00245, "mcl_core_spruce_huge_4.mts", {"MegaSpruceTaiga"})
+	quick_spruce(3000, 0.0030, "mcl_core_spruce_huge_1.mts", {"MegaSpruceTaiga"})
+	quick_spruce(4000, 0.0036, "mcl_core_spruce_huge_2.mts", {"MegaSpruceTaiga"})
+	quick_spruce(6000, 0.0036, "mcl_core_spruce_huge_3.mts", {"MegaSpruceTaiga"})
+	quick_spruce(6600, 0.0036, "mcl_core_spruce_huge_4.mts", {"MegaSpruceTaiga"})
 
 	quick_spruce(3000, 0.0008, "mcl_core_spruce_huge_up_1.mts", {"MegaTaiga"})
 	quick_spruce(4000, 0.0008, "mcl_core_spruce_huge_up_2.mts", {"MegaTaiga"})
