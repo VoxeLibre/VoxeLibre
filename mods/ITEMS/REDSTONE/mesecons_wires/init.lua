@@ -215,7 +215,7 @@ local function register_wires()
 		local tiles_off = { crossing_off, crossing_off, straight0_off, straight1_off, straight0_off, straight1_off }
 		local tiles_on = { crossing_on, crossing_on, straight0_on, straight1_on, straight0_on, straight1_on }
 
-		local wirehelp, longdesc, usagehelp
+		local wirehelp, longdesc, usagehelp, img, desc_off, desc_on
 		if nodeid == "00000000" then
 			-- Non-connected redstone wire
 			nodebox.fixed = {-8/16, -.5, -8/16, 8/16, -.5+1/64, 8/16}
@@ -229,19 +229,21 @@ Redstone power can be received from various redstone components, such as a block
 			usagehelp = [[Place redstone on the ground to build a redstone trail. The trails will connect to each other automatically and it can also go over hills. An easy way to power a redstone trail is by placing a redstone torch.
 
 Read the help entries on the other redstone components to learn how redstone components interact.]]
+			img = "redstone_redstone_dust.png"
+			desc_off = "Redstone"
+			desc_on = "Powered Redstone Spot ("..nodeid..")"
 		else
 			-- Connected redstone wire
 			table.insert(nodebox, box_center)
 			tiles_off = { crossing_off, crossing_off, straight0_off, straight1_off, straight0_off, straight1_off, }
 			tiles_on = { crossing_on, crossing_on, straight0_on, straight1_on, straight0_on, straight1_on, }
 			wirehelp = false
+			desc_off = "Redstone Trail ("..nodeid..")"
+			desc_on = "Powered Redstone Trail ("..nodeid..")"
 		end
 
 		mesecon.register_node(":mesecons:wire_"..nodeid, {
-			description = "Redstone",
 			drawtype = "nodebox",
-			inventory_image = "redstone_redstone_dust.png",
-			wield_image = "redstone_redstone_dust.png",
 			paramtype = "light",
 			sunlight_propagates = true,
 			selection_box = selectionbox,
@@ -252,6 +254,9 @@ Read the help entries on the other redstone components to learn how redstone com
 			is_ground_content = false,
 			mesecon_wire = true
 		},{
+			description = desc_off,
+			inventory_image = img,
+			wield_image = img,
 			_doc_items_create_entry = wirehelp,
 			_doc_items_longdesc = longdesc,
 			_doc_items_usagehelp = usagehelp,
@@ -259,6 +264,7 @@ Read the help entries on the other redstone components to learn how redstone com
 			mesecons = meseconspec_off,
 			groups = groups_off,
 		},{
+			description = desc_on,
 			_doc_items_create_entry = false,
 			tiles = tiles_on,
 			mesecons = meseconspec_on,
