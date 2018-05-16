@@ -245,7 +245,7 @@ minetest.register_node("mesecons_commandblock:commandblock_on", {
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if string.sub(formname, 1, 13) == "commandblock_" then
-		if not fields.submit and not fields.doc then
+		if not fields.submit and not fields.key_enter and not fields.doc then
 			return
 		end
 		local privs = minetest.get_player_privs(player:get_player_name())
