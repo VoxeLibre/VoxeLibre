@@ -19,14 +19,19 @@ local function resolve_commands(commands, pos)
 	local meta = minetest.get_meta(pos)
 	local commander = meta:get_string("commander")
 
+	-- A non-printable character used while replacing “@@”.
+	local SUBSTITUTE_CHARACTER = '\26' -- ASCII SUB
+
 	-- No players online: remove all commands containing
-	-- “@” placeholders
+	-- problematic placeholders.
 	if #players == 0 then
 		commands = commands:gsub("[^\r\n]+", function (line)
+			line = line:gsub("@@", SUBSTITUTE_CHARACTER)
 			if line:find("@nearest") then return "" end
 			if line:find("@farthest") then return "" end
 			if line:find("@random") then return "" end
-			if line:find("@commander") then return commander end
+			line = line:gsub("@commander", commander)
+			line = line:gsub(SUBSTITUTE_CHARACTER, "@")
 			return line
 		end)
 		return commands
@@ -46,10 +51,12 @@ local function resolve_commands(commands, pos)
 		end
 	end
 	local random = players[math.random(#players)]:get_player_name()
+	commands = commands:gsub("@@", SUBSTITUTE_CHARACTER)
 	commands = commands:gsub("@nearest", nearest)
 	commands = commands:gsub("@farthest", farthest)
 	commands = commands:gsub("@random", random)
 	commands = commands:gsub("@commander", commander)
+	commands = commands:gsub(SUBSTITUTE_CHARACTER, "@")
 	return commands
 end
 
@@ -185,6 +192,7 @@ Command blocks support placeholders, insert one of these placerholders and they 
 • “@nearest”: nearest player from the command block
 • “@farthest” farthest player from the command block
 • “@random”: random player currently in the world
+• “@@”: literal “@” sign
 
 Example 1:
     time 12000
