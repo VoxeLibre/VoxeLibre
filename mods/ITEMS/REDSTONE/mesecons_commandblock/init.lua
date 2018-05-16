@@ -27,10 +27,11 @@ local function resolve_commands(commands, pos)
 	if #players == 0 then
 		commands = commands:gsub("[^\r\n]+", function (line)
 			line = line:gsub("@@", SUBSTITUTE_CHARACTER)
-			if line:find("@nearest") then return "" end
-			if line:find("@farthest") then return "" end
-			if line:find("@random") then return "" end
-			line = line:gsub("@commander", commander)
+			if line:find("@n") then return "" end
+			if line:find("@p") then return "" end
+			if line:find("@f") then return "" end
+			if line:find("@r") then return "" end
+			line = line:gsub("@c", commander)
 			line = line:gsub(SUBSTITUTE_CHARACTER, "@")
 			return line
 		end)
@@ -52,10 +53,11 @@ local function resolve_commands(commands, pos)
 	end
 	local random = players[math.random(#players)]:get_player_name()
 	commands = commands:gsub("@@", SUBSTITUTE_CHARACTER)
-	commands = commands:gsub("@nearest", nearest)
-	commands = commands:gsub("@farthest", farthest)
-	commands = commands:gsub("@random", random)
-	commands = commands:gsub("@commander", commander)
+	commands = commands:gsub("@p", nearest)
+	commands = commands:gsub("@n", nearest)
+	commands = commands:gsub("@f", farthest)
+	commands = commands:gsub("@r", random)
+	commands = commands:gsub("@c", commander)
 	commands = commands:gsub(SUBSTITUTE_CHARACTER, "@")
 	return commands
 end
@@ -188,10 +190,10 @@ To place a command block and change the commands, you need to be in Creative Mod
 All commands will be executed on behalf of the player who placed the command block, as if the player typed in the commands. This player is said to be the “commander” of the block.
 
 Command blocks support placeholders, insert one of these placerholders and they will be replaced by a player name:
-• “@commander”: commander of this command block
-• “@nearest”: nearest player from the command block
-• “@farthest” farthest player from the command block
-• “@random”: random player currently in the world
+• “@c”: commander of this command block
+• “@n” or “@p”: nearest player from the command block
+• “@f” farthest player from the command block
+• “@r”: random player currently in the world
 • “@@”: literal “@” sign
 
 Example 1:
@@ -200,7 +202,7 @@ Example 1:
 Sets the game clock to 12:00
 
 Example 2:
-    give @nearest mcl_core:apple 5
+    give @n mcl_core:apple 5
 
 → Gives the nearest player 5 apples]],
 
