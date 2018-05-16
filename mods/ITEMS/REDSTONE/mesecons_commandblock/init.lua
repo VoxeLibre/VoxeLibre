@@ -16,13 +16,17 @@ end
 local function resolve_commands(commands, pos)
 	local players = minetest.get_connected_players()
 
+	local meta = minetest.get_meta(pos)
+	local commander = meta:get_string("commander")
+
 	-- No players online: remove all commands containing
-	-- @nearest, @farthest and @random
+	-- “@” placeholders
 	if #players == 0 then
 		commands = commands:gsub("[^\r\n]+", function (line)
 			if line:find("@nearest") then return "" end
 			if line:find("@farthest") then return "" end
 			if line:find("@random") then return "" end
+			if line:find("@commander") then return commander end
 			return line
 		end)
 		return commands
@@ -45,6 +49,7 @@ local function resolve_commands(commands, pos)
 	commands = commands:gsub("@nearest", nearest)
 	commands = commands:gsub("@farthest", farthest)
 	commands = commands:gsub("@random", random)
+	commands = commands:gsub("@commander", commander)
 	return commands
 end
 
@@ -136,7 +141,7 @@ local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 	"textarea[0.5,0.5;8.5,4;commands;Commands;"..commands.."]" ..
 	"button_exit[3.3,4.5;2,1;submit;Submit]" ..
 	"image_button[8,4.5;1,1;doc_button_icon_lores.png;doc;]" ..
-	"label[0,4.5;"..minetest.formspec_escape(commanderstr).."]" ..
+	"label[0,4;"..minetest.formspec_escape(commanderstr).."]" ..
 	"tooltip[doc;Help]"
 	minetest.show_formspec(player:get_player_name(), "commandblock_"..pos.x.."_"..pos.y.."_"..pos.z, formspec)
 end
@@ -175,10 +180,11 @@ To place a command block and change the commands, you need to be in Creative Mod
 
 All commands will be executed on behalf of the player who placed the command block, as if the player typed in the commands. This player is said to be the “commander” of the block.
 
-You can optionally use the following placeholders in your commands:
-• “@nearest” is replaced by the name of the player nearest to the command block
-• “@farthest” is replaced by the name of the player farthest away from the command block
-• “@random” is replaced by the name of a random player currently connected
+Command blocks support placeholders, insert one of these placerholders and they will be replaced by a player name:
+• “@commander”: commander of this command block
+• “@nearest”: nearest player from the command block
+• “@farthest” farthest player from the command block
+• “@random”: random player currently in the world
 
 Example 1:
     time 12000
