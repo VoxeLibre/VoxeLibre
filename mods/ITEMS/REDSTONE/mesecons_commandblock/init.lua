@@ -1,19 +1,15 @@
 
-local function initialize_data(meta)
-	local commands = minetest.formspec_escape(meta:get_string("commands"))
-end
-
 local function construct(pos)
 	local meta = minetest.get_meta(pos)
 
 	meta:set_string("commands", "")
-	initialize_data(meta)
+	meta:set_string("commander", "")
 end
 
 local function after_place(pos, placer)
 	if placer then
 		local meta = minetest.get_meta(pos)
-		initialize_data(meta)
+		meta:set_string("commander", placer:get_player_name())
 	end
 end
 
@@ -93,19 +89,20 @@ local function commandblock_action_on(pos, node)
 
 	local commands = resolve_commands(meta:get_string("commands"), pos)
 	for _, command in pairs(commands:split("\n")) do
-		local pos = command:find(" ")
+		local cpos = command:find(" ")
 		local cmd, param = command, ""
-		if pos then
-			cmd = command:sub(1, pos - 1)
-			param = command:sub(pos + 1)
+		if cpos then
+			cmd = command:sub(1, cpos - 1)
+			param = command:sub(cpos + 1)
 		end
 		local cmddef = minetest.chatcommands[cmd]
 		if not cmddef then
 			-- Invalid chat command
 			return
 		end
-		local dummy_player = ""
-		cmddef.func(dummy_player, param)
+		-- Execute command in the name of commander
+		local commander = meta:get_string("commander")
+		cmddef.func(commander, param)
 	end
 end
 
@@ -128,10 +125,18 @@ local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 
 	local meta = minetest.get_meta(pos)
 	local commands = meta:get_string("commands")
+	local commander = meta:get_string("commander")
+	local commanderstr
+	if commander == "" or commander == nil then
+		commanderstr = "Error: No commander! Block must be replaced."
+	else
+		commanderstr = "Commander: "..commander
+	end
 	local formspec = "invsize[9,5;]" ..
 	"textarea[0.5,0.5;8.5,4;commands;Commands;"..commands.."]" ..
 	"button_exit[3.3,4.5;2,1;submit;Submit]" ..
 	"image_button[8,4.5;1,1;doc_button_icon_lores.png;doc;]" ..
+	"label[0,4.5;"..minetest.formspec_escape(commanderstr).."]" ..
 	"tooltip[doc;Help]"
 	minetest.show_formspec(player:get_player_name(), "commandblock_"..pos.x.."_"..pos.y.."_"..pos.z, formspec)
 end
@@ -167,6 +172,8 @@ minetest.register_node("mesecons_commandblock:commandblock_off", {
 [[To use an already existing command block, just supply it with redstone power and see what happens. This will execute the commands once. To execute the commands again, turn the redstone power off and on again.
 
 To place a command block and change the commands, you need to be in Creative Mode and must have the “maphack” privilege. A new command block does not have any commands and does nothing. Rightclick the command block (in Creative Mode!) to edit its commands. Read the help entry “Advanced topics > Server Commands” to understand how they work. Each line contains a single command. You enter them like you would in the console, but without the leading slash. The commands will be executed from top to bottom.
+
+All commands will be executed on behalf of the player who placed the command block, as if the player typed in the commands. This player is said to be the “commander” of the block.
 
 You can optionally use the following placeholders in your commands:
 • “@nearest” is replaced by the name of the player nearest to the command block
@@ -250,7 +257,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				return
 			else
 				meta:set_string("commands", fields.commands)
-				initialize_data(meta)
 			end
 		else
 			minetest.chat_send_player(player:get_player_name(), "Editing the command block has failed! The command block is gone.")
