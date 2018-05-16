@@ -229,7 +229,7 @@ function craftguide:get_recipe(iY, xoffset, tooltip_raw, item, recipe_num, recip
 			items[2] == "mcl_core:sand" and
 			items[3] == "mcl_core:sand" and
 			items[4] == "mcl_core:sand" and
-			items[5] == "mcl_dye:red" and
+			items[5] == "mcl_nether:nether_wart_item" and
 			items[6] == "mcl_core:sand" and
 			items[7] == "mcl_core:sand" and
 			items[8] == "mcl_core:sand" and
