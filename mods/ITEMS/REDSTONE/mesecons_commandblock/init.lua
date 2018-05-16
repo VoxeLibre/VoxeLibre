@@ -76,7 +76,7 @@ local function check_commands(commands, player_name)
 			if string.sub(cmd, 1, 1) == "/" then
 				msg = msg .. " Hint: Try to remove the trailing slash."
 			end
-			return false, msg
+			return false, minetest.colorize("#FF0000", msg)
 		end
 		if player_name then
 			local player_privs = minetest.get_player_privs(player_name)
@@ -84,7 +84,7 @@ local function check_commands(commands, player_name)
 			for cmd_priv, _ in pairs(cmddef.privs) do
 				if player_privs[cmd_priv] ~= true then
 					local msg = "Error: You have insufficient privileges to use the command “"..cmd.."” (missing privilege: "..cmd_priv..")! The command block has not been changed."
-					return false, msg
+					return false, minetest.colorize("#FF0000", msg)
 				end
 			end
 		end
