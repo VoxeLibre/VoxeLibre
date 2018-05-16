@@ -19,17 +19,22 @@ minetest.register_node("mcl_portals:portal_end", {
 				length = 1.0,
 			},
 		},
-		"blank.png",
-		"blank.png",
-		"blank.png",
-		"blank.png",
+		{
+			name = "mcl_portals_end_portal.png",
+			animation = {
+				type = "vertical_frames",
+				aspect_w = 16,
+				aspect_h = 16,
+				length = 6.0,
+			},
+		},
 		"blank.png",
 	},
 	drawtype = "nodebox",
 	paramtype = "light",
 	sunlight_propagates = true,
 	use_texture_alpha = true,
-	walkable = false,
+	walkable = true,
 	diggable = false,
 	pointable = false,
 	buildable_to = false,
@@ -39,13 +44,20 @@ minetest.register_node("mcl_portals:portal_end", {
 	light_source = 14,
 	post_effect_color = {a = 192, r = 0, g = 0, b = 0},
 	alpha = 192,
+	-- This prevents “falling through”
+	collision_box = {
+		type = "fixed",
+		fixed = {
+			{-0.5, -0.5, -0.5, 0.5, -7/16, 0.5},
+		},
+	},
 	node_box = {
 		type = "fixed",
 		fixed = {
 			{-0.5, -0.5, -0.5, 0.5, 4/16, 0.5},
 		},
 	},
-	groups = {not_in_creative_inventory = 1},
+	groups = {not_in_creative_inventory = 1, disable_jump = 1 },
 
 	_mcl_hardness = -1,
 	_mcl_blast_resistance = 18000000,
