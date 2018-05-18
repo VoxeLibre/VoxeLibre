@@ -241,6 +241,43 @@ def convert_textures():
 \( -clone 0 -crop "+str(CHPX)+"x"+str(LIDLOW)+"+"+str(0)+"+"+str(CHPX*2+LIDPX)+" \) -geometry +0+"+str(LIDPX-PPX)+" -composite \
 -extent "+str(CHPX)+"x"+str(CHPX)+" "+f)
 
+	# Double chests
+
+	chest_files = [
+		[ tex_dir + "/entity/chest/normal_double.png", target_dir("/mods/ITEMS/mcl_chests/textures"), "default_chest_front_big.png", "default_chest_top_big.png", "default_chest_side_big.png" ],
+		[ tex_dir + "/entity/chest/trapped_double.png", target_dir("/mods/ITEMS/mcl_chests/textures"), "mcl_chests_chest_trapped_front_big.png", "mcl_chests_chest_trapped_top_big.png", "mcl_chests_chest_trapped_side_big.png" ]
+	]
+	for c in chest_files:
+		chest_file = c[0]
+		if os.path.isfile(chest_file):
+			PPX = (PXSIZE/16)
+			CHPX = (PPX * 14) # Chest width (short side)
+			CHPX2 = (PPX * 15) # Chest width (long side)
+			LIDPX = (PPX * 5) # Lid height
+			LIDLOW = (PPX * 10) # Lower lid section height
+			LOCKW = (PPX * 6) # Lock width
+			LOCKH = (PPX * 5) # Lock height
+
+			cdir = c[1]
+			front = cdir + "/" + c[2]
+			top = cdir + "/" + c[3]
+			side = cdir + "/" + c[4]
+			# Top
+			os.system("convert " + chest_file + " \
+\( -clone 0 -crop "+str(CHPX2)+"x"+str(CHPX)+"+"+str(CHPX)+"+0 \) -geometry +0+0 -composite -extent "+str(CHPX2)+"x"+str(CHPX)+" "+top)
+			# Front
+			# TODO: Add lock
+			os.system("convert " + chest_file + " \
+\( -clone 0 -crop "+str(CHPX2)+"x"+str(LIDPX)+"+"+str(CHPX)+"+"+str(CHPX)+" \) -geometry +0+0 -composite \
+\( -clone 0 -crop "+str(CHPX2)+"x"+str(LIDLOW)+"+"+str(CHPX)+"+"+str(CHPX*2+LIDPX)+" \) -geometry +0+"+str(LIDPX-PPX)+" -composite \
+-extent "+str(CHPX2)+"x"+str(CHPX)+" "+front)
+			# Side
+			os.system("convert " + chest_file + " \
+\( -clone 0 -crop "+str(CHPX)+"x"+str(LIDPX)+"+"+str(0)+"+"+str(CHPX)+" \) -geometry +0+0 -composite \
+\( -clone 0 -crop "+str(CHPX)+"x"+str(LIDLOW)+"+"+str(0)+"+"+str(CHPX*2+LIDPX)+" \) -geometry +0+"+str(LIDPX-PPX)+" -composite \
+-extent "+str(CHPX)+"x"+str(CHPX)+" "+side)
+
+
 	# Generate railway crossings and t-junctions. Note: They may look strange.
 	# Note: these may be only a temporary solution, as crossings and t-junctions do not occour in MC.
 	# TODO: Curves
