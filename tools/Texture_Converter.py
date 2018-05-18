@@ -296,6 +296,56 @@ def convert_textures():
 		os.system("convert "+tex_dir+"/blocks/"+r[0]+" -rotate 90 "+tempfile1.name)
 		os.system("composite -compose Dst_Over "+tempfile1.name+" "+tex_dir+"/blocks/"+r[0]+" "+target_dir("/mods/ENTITIES/mcl_minecarts/textures")+"/"+r[3])
 
+	# Convert banner overlays
+	overlays = [
+		"base",
+		"border",
+		"bricks",
+		"circle",
+		"creeper",
+		"cross",
+		"curly_border",
+		"diagonal_left",
+		"diagonal_right",
+		"diagonal_up_left",
+		"diagonal_up_right",
+		"flower",
+		"gradient",
+		"gradient_up",
+		"half_horizontal_bottom",
+		"half_horizontal",
+		"half_vertical",
+		"half_vertical_right",
+		"rhombus",
+		"mojang",
+		"skull",
+		"small_stripes",
+		"straight_cross",
+		"stripe_bottom",
+		"stripe_center",
+		"stripe_downleft",
+		"stripe_downright",
+		"stripe_left",
+		"stripe_middle",
+		"stripe_right",
+		"stripe_top",
+		"square_bottom_left",
+		"square_bottom_right",
+		"square_top_left",
+		"square_top_right",
+		"triangle_bottom",
+		"triangles_bottom",
+		"triangle_top",
+		"triangles_top",
+	]
+	for o in overlays:
+		orig = tex_dir + "/entity/banner/" + o + ".png"
+		if os.path.isfile(orig):
+			if o == "mojang":
+				o = "thing"
+			dest = target_dir("/mods/ITEMS/mcl_banners/textures")+"/"+"mcl_banners_"+o+".png"
+			os.system("convert "+orig+" -transparent-color white -background black -alpha remove -alpha copy -channel RGB -white-threshold 0 "+dest)
+
 	# Convert grass
 	grass_file = tex_dir + "/blocks/grass_top.png"
 	if os.path.isfile(grass_file):
@@ -334,14 +384,6 @@ def convert_textures():
 			colorize(GRASS, tex_dir+"/blocks/grass_top.png", o[0], str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_"+o[2]+".png")
 			colorize_alpha(GRASS, tex_dir+"/blocks/grass_side_overlay.png", o[0], str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_"+o[2]+"_side.png")
 
-
-
-#	TODO: Convert banner masks
-#	if os.path.isdir(tex_dir + "/entity/banner"):
-# These are the ImageMagick commands needed to convert the mask images
-#		os.system("mogrify -transparent-color "+filename)
-#		os.system("mogrify -clip-mask "+tex_dir+"/entity/banner/base.png"+" -alpha Copy "+filename)
-#		os.system("mogrify -fill white -colorize 100 "+filename)
 
 		print("Textures conversion COMPLETE!")
 		if failed_conversions > 0:
