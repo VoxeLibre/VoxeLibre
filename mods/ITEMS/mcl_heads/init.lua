@@ -19,7 +19,6 @@ local function addhead(name, texture, desc, longdesc)
 		},
 		groups = {handy=1, armor_head=1,non_combat_armor=1, head=1, deco_block=1, dig_by_piston=1},
 		-- The head textures are based off the textures of an actual mob.
-		-- FIXME: This code assumes 16×16 textures for the mob textures!
 		tiles = {
 			-- Note: bottom texture is overlaid over top texture to get rid of possible transparency.
 			-- This is required for skeleton skull and wither skeleton skull.
@@ -49,9 +48,9 @@ local function addhead(name, texture, desc, longdesc)
 end
 
 -- Add heads
-addhead("zombie", "mobs_mc_zombie.png", "Zombie Head", "A zombie head is a small decorative block which resembles the head of a zombie. It can also be worn as a helmet for fun, but does not offer any protection.")
-addhead("creeper", "mobs_mc_creeper.png", "Creeper Head", "A creeper head is a small decorative block which resembles the head of a creeper. It can also be worn as a helmet for fun, but does not offer any protection.")
+addhead("zombie", "mcl_heads_zombie_node.png", "Zombie Head", "A zombie head is a small decorative block which resembles the head of a zombie. It can also be worn as a helmet for fun, but does not offer any protection.")
+addhead("creeper", "mcl_heads_creeper_node.png", "Creeper Head", "A creeper head is a small decorative block which resembles the head of a creeper. It can also be worn as a helmet for fun, but does not offer any protection.")
 -- Original Minecraft name: “Head”
-addhead("steve", "character.png", "Human Head", "A human head is a small decorative block which resembles the head of a human (i.e. a player character). It can also be worn as a helmet for fun, but does not offer any protection.")
-addhead("skeleton", "mobs_mc_skeleton.png", "Skeleton Skull", "A skeleton skull is a small decorative block which resembles the head of a skeleton. It can also be worn as a helmet for fun, but does not offer any protection.")
-addhead("wither_skeleton", "mobs_mc_wither_skeleton.png", "Wither Skeleton Skull", "A wither skeleton skull is a small decorative block which resembles the head of a wither skeleton. It can also be worn as a helmet for fun, but does not offer any protection.")
+addhead("steve", "mcl_heads_steve_node.png", "Human Head", "A human head is a small decorative block which resembles the head of a human (i.e. a player character). It can also be worn as a helmet for fun, but does not offer any protection.")
+addhead("skeleton", "mcl_heads_skeleton_node.png", "Skeleton Skull", "A skeleton skull is a small decorative block which resembles the head of a skeleton. It can also be worn as a helmet for fun, but does not offer any protection.")
+addhead("wither_skeleton", "mcl_heads_wither_skeleton_node.png", "Wither Skeleton Skull", "A wither skeleton skull is a small decorative block which resembles the head of a wither skeleton. It can also be worn as a helmet for fun, but does not offer any protection.")
