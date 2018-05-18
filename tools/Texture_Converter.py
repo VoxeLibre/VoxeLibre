@@ -197,21 +197,48 @@ def convert_textures():
 					print(src_file + " → " + dst_file)
 
 	# Convert chest textures (requires ImageMagick)
-	chest_file = tex_dir + "/entity/chest/normal.png"
+	chest_files = [
+		[ tex_dir + "/entity/chest/normal.png", target_dir("/mods/ITEMS/mcl_chests/textures"), "default_chest_top.png", "mcl_chests_chest_bottom.png", "default_chest_front.png", "mcl_chests_chest_left.png", "mcl_chests_chest_right.png", "mcl_chests_chest_back.png" ],
+		[ tex_dir + "/entity/chest/trapped.png", target_dir("/mods/ITEMS/mcl_chests/textures"), "mcl_chests_chest_trapped_top.png", "mcl_chests_chest_trapped_bottom.png", "mcl_chests_chest_trapped_front.png", "mcl_chests_chest_trapped_left.png", "mcl_chests_chest_trapped_right.png", "mcl_chests_chest_trapped_back.png" ],
+		[ tex_dir + "/entity/chest/ender.png", target_dir("/mods/ITEMS/mcl_chests/textures"), "mcl_chests_ender_chest_top.png", "mcl_chests_ender_chest_bottom.png", "mcl_chests_ender_chest_front.png", "mcl_chests_ender_chest_left.png", "mcl_chests_ender_chest_right.png", "mcl_chests_ender_chest_back.png" ]
+	]
 
-	if os.path.isfile(chest_file):
-		CHPX=((PXSIZE / 16 * 14)) # Chests in MC are 2/16 smaller!
-# Chests are currently blacklisted
+	for c in chest_files:
+		chest_file = c[0]
+		if os.path.isfile(chest_file):
+			PPX = (PXSIZE/16)
+			CHPX= (PPX * 14) # Chests in MC are 2/16 smaller!
+			LIDPX =(PPX * 5) # Lid height
+			LOCKW = (PPX * 6) # Lock width
+			LOCKH = (PPX * 5) # Lock height
 
-#		os.system("convert " + chest_file + " \
-#\( -clone 0 -crop "+str(CHPX)+"x"+str(CHPX)+"+"+str(CHPX)+"+0 \) -geometry +0+0 -composite -extent "+str(CHPX)+"x"+str(CHPX)+" "+target_dir("/mods/ITEMS/mcl_chests/textures")+"/default_chest_top.png")
+			cdir = c[1]
+			top = cdir + "/" + c[2]
+			bottom = cdir + "/" + c[3]
+			front = cdir + "/" + c[4]
+			left = cdir + "/" + c[5]
+			right = cdir + "/" + c[6]
+			back = cdir + "/" + c[7]
+			# Top
+			os.system("convert " + chest_file + " \
+\( -clone 0 -crop "+str(CHPX)+"x"+str(CHPX)+"+"+str(CHPX)+"+0 \) -geometry +0+0 -composite -extent "+str(CHPX)+"x"+str(CHPX)+" "+top)
+			# Bottom
+			os.system("convert " + chest_file + " \
+\( -clone 0 -crop "+str(CHPX)+"x"+str(CHPX)+"+"+str(CHPX*2)+"+"+str(CHPX+LIDPX)+" \) -geometry +0+0 -composite -extent "+str(CHPX)+"x"+str(CHPX)+" "+bottom)
+			# Front
+			os.system("convert " + chest_file + " \
+\( -clone 0 -crop "+str(CHPX)+"x"+str(LIDPX)+"+"+str(CHPX)+"+"+str(CHPX)+" \) -geometry +0+0 -composite \
+\( -clone 0 -crop "+str(CHPX)+"x"+str(CHPX-LIDPX)+"+"+str(CHPX)+"+"+str(CHPX*2+LIDPX)+" \) -geometry +0+"+str(LIDPX)+" -composite \
+-extent "+str(CHPX)+"x"+str(CHPX)+" "+front)
+			# TODO: Add lock
 
-#		os.system("convert " + chest_file + " \
-#\( -clone 0 -crop "+str(CHPX)+"x"+str((PXSIZE/16)*5)+"+"+str(CHPX)+"+"+str(CHPX)+" \) -geometry +0+0 -composite \
-#\( -clone 0 -crop "+str(CHPX)+"x"+str((PXSIZE/16)*10)+"+"+str(CHPX)+"+"+str((2*CHPX) + ((PXSIZE/16)*5))+" \) -geometry +0+"+str((PXSIZE/16)*5)+" -composite \
-#-extent "+str(CHPX)+"x"+str(CHPX)+" "+target_dir("/mods/ITEMS/mcl_chests/textures")+"/default_chest_front.png")
-
-		# TODO: Convert other chest sides
+			# Left, right back (use same texture, we're lazy
+			files = [ left, right, back ]
+			for f in files:
+				os.system("convert " + chest_file + " \
+\( -clone 0 -crop "+str(CHPX)+"x"+str(LIDPX)+"+"+str(0)+"+"+str(CHPX)+" \) -geometry +0+0 -composite \
+\( -clone 0 -crop "+str(CHPX)+"x"+str(CHPX-LIDPX)+"+"+str(0)+"+"+str(CHPX*2+LIDPX)+" \) -geometry +0+"+str(LIDPX)+" -composite \
+-extent "+str(CHPX)+"x"+str(CHPX)+" "+f)
 
 	# Generate railway crossings and t-junctions. Note: They may look strange.
 	# Note: these may be only a temporary solution, as crossings and t-junctions do not occour in MC.
