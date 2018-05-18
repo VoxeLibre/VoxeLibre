@@ -207,8 +207,9 @@ def convert_textures():
 		chest_file = c[0]
 		if os.path.isfile(chest_file):
 			PPX = (PXSIZE/16)
-			CHPX= (PPX * 14) # Chests in MC are 2/16 smaller!
-			LIDPX =(PPX * 5) # Lid height
+			CHPX = (PPX * 14) # Chest width
+			LIDPX = (PPX * 5) # Lid height
+			LIDLOW = (PPX * 10) # Lower lid section height
 			LOCKW = (PPX * 6) # Lock width
 			LOCKH = (PPX * 5) # Lock height
 
@@ -228,7 +229,7 @@ def convert_textures():
 			# Front
 			os.system("convert " + chest_file + " \
 \( -clone 0 -crop "+str(CHPX)+"x"+str(LIDPX)+"+"+str(CHPX)+"+"+str(CHPX)+" \) -geometry +0+0 -composite \
-\( -clone 0 -crop "+str(CHPX)+"x"+str(CHPX-LIDPX)+"+"+str(CHPX)+"+"+str(CHPX*2+LIDPX)+" \) -geometry +0+"+str(LIDPX)+" -composite \
+\( -clone 0 -crop "+str(CHPX)+"x"+str(LIDLOW)+"+"+str(CHPX)+"+"+str(CHPX*2+LIDPX)+" \) -geometry +0+"+str(LIDPX-PPX)+" -composite \
 -extent "+str(CHPX)+"x"+str(CHPX)+" "+front)
 			# TODO: Add lock
 
@@ -237,7 +238,7 @@ def convert_textures():
 			for f in files:
 				os.system("convert " + chest_file + " \
 \( -clone 0 -crop "+str(CHPX)+"x"+str(LIDPX)+"+"+str(0)+"+"+str(CHPX)+" \) -geometry +0+0 -composite \
-\( -clone 0 -crop "+str(CHPX)+"x"+str(CHPX-LIDPX)+"+"+str(0)+"+"+str(CHPX*2+LIDPX)+" \) -geometry +0+"+str(LIDPX)+" -composite \
+\( -clone 0 -crop "+str(CHPX)+"x"+str(LIDLOW)+"+"+str(0)+"+"+str(CHPX*2+LIDPX)+" \) -geometry +0+"+str(LIDPX-PPX)+" -composite \
 -extent "+str(CHPX)+"x"+str(CHPX)+" "+f)
 
 	# Generate railway crossings and t-junctions. Note: They may look strange.
