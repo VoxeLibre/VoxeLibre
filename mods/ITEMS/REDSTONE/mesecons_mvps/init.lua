@@ -380,3 +380,20 @@ mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_light_blue")
 mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_pink")
 
 mesecon.register_on_mvps_move(mesecon.move_hot_nodes)
+
+-- Check for falling after moving node
+mesecon.register_on_mvps_move(function(moved_nodes)
+	for i = 1, #moved_nodes do
+		local moved_node = moved_nodes[i]
+		mesecon.on_placenode(moved_node.pos, moved_node.node)
+		minetest.after(0, function()
+			minetest.check_for_falling(moved_node.oldpos)
+			minetest.check_for_falling(moved_node.pos)
+		end)
+		local node_def = minetest.registered_nodes[moved_node.node.name]
+		if node_def and node_def.mesecon and node_def.mesecon.on_mvps_move then
+			node_def.mesecon.on_mvps_move(moved_node.pos, moved_node.node,
+					moved_node.oldpos, moved_node.meta)
+		end
+	end
+end)
