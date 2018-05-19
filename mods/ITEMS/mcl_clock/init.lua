@@ -22,7 +22,11 @@ local random_frame = math.random(0, clock_frames-1)
 -- Image of all possible faces
 watch.images = {}
 for frame=0, clock_frames-1 do
-	table.insert(watch.images, "mcl_clock_clock.png^[verticalframe:"..clock_frames..":"..frame)
+	local sframe = tostring(frame)
+	if string.len(sframe) == 1 then
+		sframe = "0" .. sframe
+	end
+	table.insert(watch.images, "mcl_clock_clock_"..sframe..".png")
 end
 
 local function round(num)
