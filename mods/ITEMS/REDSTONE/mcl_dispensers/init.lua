@@ -325,28 +325,6 @@ minetest.register_craft({
 	}
 })
 
--- Only allow crafting if the bow is intact
-local check_craft = function(itemstack, player, old_craft_grid, craft_inv)
-	if itemstack:get_name() == "mcl_dispensers:dispenser" then
-		local bow, id
-		for i=1, craft_inv:get_size("craft") do
-			local item = craft_inv:get_stack("craft", i)
-			if item:get_name() == "mcl_bows:bow" then
-				bow = item
-				id = i
-				break
-			end
-		end
-		if bow and bow:get_wear() ~= 0 then
-			return ""
-		end
-	end
-	return nil
-end
-
-minetest.register_on_craft(check_craft)
-minetest.register_craft_predict(check_craft)
-
 -- Add entry aliases for the Help
 if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_dispensers:dispenser", "nodes", "mcl_dispensers:dispenser_down")
