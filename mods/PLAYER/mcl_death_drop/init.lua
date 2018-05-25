@@ -3,8 +3,10 @@ minetest.register_on_dieplayer(function(player)
 	if keep == false then
 		-- Drop inventory, crafting grid and armor
 		local inv = player:get_inventory()
-		local pos = player:getpos()
+		local pos = player:get_pos()
 		local name, player_armor_inv, armor_armor_inv, pos = armor:get_valid_player(player, "[on_dieplayer]")
+		-- No item drop if in deep void
+		local void, void_deadly = mcl_worlds.is_in_void(pos)
 		local lists = {
 			{ inv = inv, listname = "main", drop = true },
 			{ inv = inv, listname = "craft", drop = true },
@@ -21,7 +23,7 @@ minetest.register_on_dieplayer(function(player)
 					local z = math.random(0, 9)/3
 					pos.x = pos.x + x
 					pos.z = pos.z + z
-					if drop then
+					if not void_deadly and drop then
 						minetest.add_item(pos, stack)
 					end
 					stack:clear()

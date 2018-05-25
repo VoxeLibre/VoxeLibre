@@ -141,25 +141,6 @@ minetest.register_globalstep(function(dtime)
 			end
 		end
 
-		-- Deal Void damage
-		local void, void_deadly = mcl_worlds.is_in_void(pos)
-		if void_deadly then
-			-- Player is deep into the void, deal void damage
-			if minetest.settings:get_bool("enable_damage") then
-				if player:get_hp() > 0 then
-					mcl_death_messages.player_damage(player, string.format("%s fell into the endless void.", name))
-					player:set_hp(player:get_hp() - 4)
-				end
-			else
-				-- If damge is disabled, we can't kill the player.
-				-- So we just teleport the player back to spawn.
-				local spawn = mcl_spawn.get_spawn_pos(player)
-				player:set_pos(spawn)
-				mcl_worlds.dimension_change(player, mcl_worlds.pos_to_dimension(spawn))
-				minetest.chat_send_player(name, "The void is off-limits to you!")
-			end
-		end
-
 		--[[ Swimming: Cause exhaustion.
 		NOTE: As of 0.4.15, it only counts as swimming when you are with the feet inside the liquid!
 		Head alone does not count. We respect that for now. ]]
