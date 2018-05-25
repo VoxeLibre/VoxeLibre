@@ -1092,8 +1092,8 @@ local function generate_structures(minp, maxp, seed, biomemap)
 				-- Find ground level
 				local ground_y = nil
 				for y = struct_max, struct_min, -1 do
-					local checknode = minetest.get_node({x=x,y=y,z=z}).name
-					if minetest.registered_nodes[checknode].walkable then
+					local checknode = minetest.get_node_or_nil({x=x,y=y,z=z})
+					if checknode and minetest.registered_nodes[checknode.name].walkable then
 						ground_y = y
 						break
 					end
