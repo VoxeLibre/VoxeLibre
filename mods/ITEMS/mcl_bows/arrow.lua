@@ -148,7 +148,6 @@ ARROW_ENTITY.on_step = function(self, dtime)
 		local objs = minetest.get_objects_inside_radius(pos, 3)
 		local closest_object
 		local closest_distance
-		local ok = false
 
 		if self._deflection_cooloff > 0 then
 			self._deflection_cooloff = self._deflection_cooloff - dtime
@@ -156,6 +155,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 
 		-- Iterate through all objects and remember the closest attackable object
 		for k, obj in pairs(objs) do
+			local ok = false
 			-- Arrows can only damage players and mobs
 			if obj ~= self._shooter and obj:is_player() then
 				ok = true
