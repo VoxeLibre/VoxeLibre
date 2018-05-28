@@ -1268,7 +1268,7 @@ local function generate_structures(minp, maxp, seed, biomemap)
 						-- Ice spikes in v6
 						-- In other mapgens, ice spikes are generated as decorations.
 						if mg_name == "v6" and not chunk_has_igloo and nn == "mcl_core:snowblock" then
-							local spike = math.random(1, 3000)
+							local spike = math.random(1, 58000)
 							if spike < 3 then
 								-- Check surface
 								local floor = {x=p.x+4, y=p.y-1, z=p.z+4}
