@@ -358,6 +358,7 @@ ARROW_ENTITY.on_activate = function(self, staticdata, dtime_s)
 			end
 		end
 	end
+	self.object:set_armor_groups({ immortal = 1 })
 end
 
 minetest.register_entity("mcl_bows:arrow_entity", ARROW_ENTITY)
