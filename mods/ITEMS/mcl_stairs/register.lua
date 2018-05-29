@@ -3,7 +3,7 @@
 -- slabs actually take slightly longer to be dug than their stair counterparts.
 -- Note sure if it is a good idea to preserve this oddity.
 
-local function make_wood_corner_texture(subname)
+local function make_corner_texture(subname)
 	local t = minetest.registered_nodes["mcl_core:"..subname].tiles[1]
 	return {
 		{
@@ -35,7 +35,7 @@ for w=1, #woods do
 			wood[3],
 			mcl_sounds.node_sound_wood_defaults(),
 			2,
-			make_wood_corner_texture(wood[1]))
+			make_corner_texture(wood[1]))
 	mcl_stairs.register_slab(wood[1], "mcl_core:"..wood[1],
 			{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1},
 			{wood[2]},
@@ -129,25 +129,3 @@ mcl_stairs.register_stair_and_slab_simple("prismarine", "mcl_ocean:prismarine", 
 mcl_stairs.register_stair_and_slab_simple("prismarine_brick", "mcl_ocean:prismarine_brick", "Prismarine Brick Stairs", "Prismarine Brick Slab", "Double Prismarine Brick Slab")
 mcl_stairs.register_stair_and_slab_simple("prismarine_dark", "mcl_ocean:prismarine_dark", "Dark Prismarine Stairs", "Dark Prismarine Slab", "Double Dark Prismarine Slab")
 
-for _,v in ipairs({
-	"wood",
-	"junglewood",
-	"sprucewood",
-	"acaciawood",
-	"birchwood",
-	"darkwood"
-}) do
-	local t = minetest.registered_nodes["mcl_core:"..v].tiles[1]
-	mcl_stairs.cornerstair.add("mcl_stairs:stair_"..v, {
-		{
-			t.."^("..t.."^[transformR90^mcl_stairs_turntexture.png^[makealpha:255,0,255)",
-			t.."^("..t.."^mcl_stairs_turntexture.png^[transformR270^[makealpha:255,0,255)",
-			t
-		},
-		{
-			t.."^("..t.."^[transformR90^(mcl_stairs_turntexture.png^[transformR180)^[makealpha:255,0,255)",
-			t.."^("..t.."^[transformR270^(mcl_stairs_turntexture.png^[transformR90)^[makealpha:255,0,255)",
-			t
-		}
-	})
-end
