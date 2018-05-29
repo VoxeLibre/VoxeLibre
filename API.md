@@ -31,6 +31,7 @@ A lot of things are possible by using one of the APIs in the mods. Note that not
 ### Items
 * Doors: `ITEMS/mcl_doors`
 * Fences and fence gates: `ITEMS/mcl_fences`
+* Stairs and slabs: `ITEM/mcl_stairs`
 * Walls: `ITEMS/mcl_walls`
 * Beds: `ITEMS/mcl_beds`
 * Buckets: `ITEMS/mcl_buckets`
@@ -62,7 +63,6 @@ API documnetation is included in `ENTITIES/mobs/api.txt`.
 The following APIs may be subject to change in future. You could already use these APIs but there will probably be breaking changes in the future, or the API is not as fleshed out as it should be. Use at your own risk!
 
 * Panes (like glass panes and iron bars): `ITEMS/xpanes`
-* Slabs and stairs: `ITEM/mcl_stairs`
 * `_on_ignite` callback: `ITEMS/mcl_fire`
 * Farming: `ITEMS/mcl_farming`
 * Anything related to redstone: Don't touch (yet)

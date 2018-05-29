@@ -79,7 +79,7 @@ end
 -- Register stairs.
 -- Node will be called mcl_stairs:stair_<subname>
 
-function mcl_stairs.register_stair(subname, recipeitem, groups, images, description, sounds, hardness, corner_texture_override)
+function mcl_stairs.register_stair(subname, recipeitem, groups, images, description, sounds, hardness, corner_stair_texture_override)
 	groups.stair = 1
 	groups.building_block = 1
 
@@ -154,7 +154,7 @@ function mcl_stairs.register_stair(subname, recipeitem, groups, images, descript
 		})
 	end
 
-	mcl_stairs.cornerstair.add("mcl_stairs:stair_"..subname, corner_texture_override)
+	mcl_stairs.cornerstair.add("mcl_stairs:stair_"..subname, corner_stair_texture_override)
 end
 
 
