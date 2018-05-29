@@ -46,8 +46,6 @@ functions needed for the mob to work properly which contains the following:
                    in e.g. "air" or "default:water_source".
    'runaway'       if true causes animals to turn and run away when hit.
    'view_range'    how many nodes in distance the mob can see a player.
-   'reach'         how many nodes in distance a mob can attack a player while
-                   standing.
    'damage'        how many health points the mob does to a player or another
                    mob when melee attacking.
    'knock_back'    when true has mobs falling backwards when hit, the greater
@@ -565,8 +563,8 @@ External Settings for "minetest.conf"
                             is false)
    'mobs_spawn_protected'   if set to false then mobs will not spawn in protected
                             areas (default is true)
-   'remove_far_mobs'        if true then mobs that are outside players visual
-                            range will be removed (default is false)
+   'remove_far_mobs'        if true then untamed mobs that are outside players
+                             visual range will be removed (default is true)
    'mobname'                can change specific mob chance rate (0 to disable) and
                             spawn number e.g. mobs_animal:cow = 1000,5
    'mob_difficulty'         sets difficulty level (health and hit damage

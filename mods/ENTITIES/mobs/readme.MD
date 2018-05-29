@@ -22,6 +22,7 @@ Lucky Blocks: 9
 
 
 Changelog:
+- 1.41- Mob pathfinding has been updated thanks to Elkien3
 - 1.40- Updated to use newer functions, requires Minetest 0.4.16+ to work.
 - 1.39- Added 'on_breed', 'on_grown' and 'do_punch' custom functions per mob
 - 1.38- Better entity checking, nametag setting and on_spawn function added to mob registry, tweaked light damage
