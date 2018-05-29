@@ -314,14 +314,14 @@ end
 
 function mcl_stairs.register_stair_and_slab(subname, recipeitem,
 		groups, images, desc_stair, desc_slab, sounds, hardness,
-		double_description)
-	mcl_stairs.register_stair(subname, recipeitem, groups, images, desc_stair, sounds, hardness)
+		double_description, corner_stair_texture_override)
+	mcl_stairs.register_stair(subname, recipeitem, groups, images, desc_stair, sounds, hardness, corner_stair_texture_override)
 	mcl_stairs.register_slab(subname, recipeitem, groups, images, desc_slab, sounds, hardness, double_description)
 end
 
 -- Very simple registration function
 -- Makes stair and slab out of a source node
-function mcl_stairs.register_stair_and_slab_simple(subname, sourcenode, desc_stair, desc_slab, desc_double_slab)
+function mcl_stairs.register_stair_and_slab_simple(subname, sourcenode, desc_stair, desc_slab, desc_double_slab, corner_stair_texture_override)
 	local def = minetest.registered_nodes[sourcenode]
 	local groups = {}
 	-- Only allow a strict set of groups to be added to stairs and slabs for more predictable results
@@ -331,6 +331,6 @@ function mcl_stairs.register_stair_and_slab_simple(subname, sourcenode, desc_sta
 			groups[allowed_groups[a]] = def.groups[allowed_groups[a]]
 		end
 	end
-	mcl_stairs.register_stair_and_slab(subname, sourcenode, groups, def.tiles, desc_stair, desc_slab, def.sounds, def._mcl_hardness, desc_double_slab)
+	mcl_stairs.register_stair_and_slab(subname, sourcenode, groups, def.tiles, desc_stair, desc_slab, def.sounds, def._mcl_hardness, desc_double_slab, corner_stair_texture_override)
 end
 
