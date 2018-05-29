@@ -3,21 +3,6 @@
 -- slabs actually take slightly longer to be dug than their stair counterparts.
 -- Note sure if it is a good idea to preserve this oddity.
 
-local function make_corner_texture(subname)
-	local t = minetest.registered_nodes["mcl_core:"..subname].tiles[1]
-	return {
-		{
-			t.."^("..t.."^[transformR90^mcl_stairs_turntexture.png^[makealpha:255,0,255)",
-			t.."^("..t.."^mcl_stairs_turntexture.png^[transformR270^[makealpha:255,0,255)",
-			t
-		},
-		{
-			t.."^("..t.."^[transformR90^(mcl_stairs_turntexture.png^[transformR180)^[makealpha:255,0,255)",
-			t.."^("..t.."^[transformR270^(mcl_stairs_turntexture.png^[transformR90)^[makealpha:255,0,255)",
-			t
-		}
-	}
-end
 local woods = {
 	{ "wood", "default_wood.png", "Oak Wood Stairs", "Oak Wood Slab", "Double Oak Wood Slab" },
 	{ "junglewood", "default_junglewood.png", "Jungle Wood Stairs", "Jungle Wood Slab", "Double Jungle Wood Slab" },
@@ -35,7 +20,7 @@ for w=1, #woods do
 			wood[3],
 			mcl_sounds.node_sound_wood_defaults(),
 			2,
-			make_corner_texture(wood[1]))
+			"woodlike")
 	mcl_stairs.register_slab(wood[1], "mcl_core:"..wood[1],
 			{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1},
 			{wood[2]},

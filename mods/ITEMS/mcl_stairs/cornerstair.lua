@@ -187,25 +187,44 @@ end
 --[[
 mcl_stairs.cornerstair.add(name, stairtiles)
 
-* "name" is the name of the node to make corner stairs for.
-* "stairtiles" is an optional table of tiles to override textures for inner and outer stairs.
-* "stairtiles" format is:
+NOTE: This function is used internally. If you register a stair, this function is already called, no
+need to call it again!
 
-    {tiles_def_for_outer_stair, tiles_def_for_inner_stair}
-
-Note: This function is called when you register a stair, no need to call it again!
+Usage:
+* name is the name of the node to make corner stairs for.
+* stairtiles is optional, can specify textures for inner and outer stairs. 3 data types are accepted:
+    * string: one of:
+        * "default": Use same textures as original node
+        * "woodlike": Take first frame of the original tiles, then take a triangle piece
+                      of the texture, rotate it by 90° and overlay it over the original texture
+    * table: Specify textures explicitly. Table of tiles to override textures for
+             inner and outer stairs. Table format:
+                 { tiles_def_for_outer_stair, tiles_def_for_inner_stair }
+    * nil: Equivalent to "default"
 ]]
 
 function mcl_stairs.cornerstair.add(name, stairtiles)
 	local node_def = minetest.registered_nodes[name]
 	local outer_tiles
 	local inner_tiles
-	if stairtiles then
-		outer_tiles = stairtiles[1]
-		inner_tiles = stairtiles[2]
-	else
+	if stairtiles == "woodlike" then
+		local t = node_def.tiles[1]
+		outer_tiles = {
+			t.."^("..t.."^[transformR90^mcl_stairs_turntexture.png^[makealpha:255,0,255)",
+			t.."^("..t.."^mcl_stairs_turntexture.png^[transformR270^[makealpha:255,0,255)",
+			t
+		}
+		inner_tiles = {
+			t.."^("..t.."^[transformR90^(mcl_stairs_turntexture.png^[transformR180)^[makealpha:255,0,255)",
+			t.."^("..t.."^[transformR270^(mcl_stairs_turntexture.png^[transformR90)^[makealpha:255,0,255)",
+			t
+		}
+	elseif stairtiles == nil or stairtiles == "default" then
 		outer_tiles = node_def.tiles
 		inner_tiles = node_def.tiles
+	else
+		outer_tiles = stairtiles[1]
+		inner_tiles = stairtiles[2]
 	end
 	local outer_groups = table.copy(node_def.groups)
 	outer_groups.not_in_creative_inventory = 1
