@@ -1,4 +1,9 @@
-mcstair = {}
+-- Corner stairs handling
+
+-- This code originally copied from the [mcstair] mod and merged into this mod.
+-- This file is licensed under CC0.
+
+mcl_stairs.cornerstair = {}
 
 local get_stair_param = function(node)
 	local stair = minetest.get_item_group(node.name, "stair")
@@ -179,7 +184,19 @@ local stair_connect_to_param = function(connect, ceiling)
 	return param
 end
 
-function mcstair.add(name, stairtiles)
+--[[
+mcl_stairs.cornerstair.add(name, stairtiles)
+
+* "name" is the name of the node to make corner stairs for.
+* "stairtiles" is an optional table of tiles to override textures for inner and outer stairs.
+* "stairtiles" format is:
+
+    {tiles_def_for_outer_stair, tiles_def_for_inner_stair}
+
+Note: This function is called when you register a stair, no need to call it again!
+]]
+
+function mcl_stairs.cornerstair.add(name, stairtiles)
 	local node_def = minetest.registered_nodes[name]
 	local outer_tiles
 	local inner_tiles
@@ -653,41 +670,4 @@ function mcstair.add(name, stairtiles)
 	end
 end
 
-for _,v in ipairs({
-	"wood",
-	"junglewood",
-	"sprucewood",
-	"acaciawood",
-	"birchwood",
-	"darkwood"
-}) do
-	local t = minetest.registered_nodes["mcl_core:"..v].tiles[1]
-	mcstair.add("mcl_stairs:stair_"..v, {
-		{
-			t.."^("..t.."^[transformR90^mcstair_turntexture.png^[makealpha:255,0,255)",
-			t.."^("..t.."^mcstair_turntexture.png^[transformR270^[makealpha:255,0,255)",
-			t
-		},
-		{
-			t.."^("..t.."^[transformR90^(mcstair_turntexture.png^[transformR180)^[makealpha:255,0,255)",
-			t.."^("..t.."^[transformR270^(mcstair_turntexture.png^[transformR90)^[makealpha:255,0,255)",
-			t
-		}
-	})
-end
 
-for _,v in ipairs({
-	"cobble",
-	"brick_block",
-	"sandstone",
-	"redsandstone",
-	"stonebrick",
-	"quartzblock",
-	"purpur_block",
-	"nether_brick",
-	"prismarine",
-	"prismarine_brick",
-	"prismarine_dark",
-}) do
-	mcstair.add("mcl_stairs:stair_"..v)
-end

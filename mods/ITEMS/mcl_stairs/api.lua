@@ -1,3 +1,5 @@
+-- Core mcl_stairs API
+
 -- Wrapper around mintest.pointed_thing_to_face_pos.
 local function get_fpos(placer, pointed_thing)
 	local fpos
@@ -74,10 +76,10 @@ local function place_stair(itemstack, placer, pointed_thing)
 	return minetest.item_place(itemstack, placer, pointed_thing, param2)
 end
 
--- Register mcl_stairs.
+-- Register stairs.
 -- Node will be called mcl_stairs:stair_<subname>
 
-function mcl_stairs.register_stair(subname, recipeitem, groups, images, description, sounds, hardness)
+function mcl_stairs.register_stair(subname, recipeitem, groups, images, description, sounds, hardness, corner_texture_override)
 	groups.stair = 1
 	groups.building_block = 1
 
@@ -151,6 +153,8 @@ function mcl_stairs.register_stair(subname, recipeitem, groups, images, descript
 			},
 		})
 	end
+
+	mcl_stairs.cornerstair.add("mcl_stairs:stair_"..subname, corner_texture_override)
 end
 
 

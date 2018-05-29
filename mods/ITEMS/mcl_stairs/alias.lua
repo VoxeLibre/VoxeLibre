@@ -11,7 +11,7 @@ for m=1, #materials do
 	minetest.register_alias("stairs:slab_"..mat, "mcl_stairs:slab_"..mat)
 	minetest.register_alias("stairs:stair_"..mat, "mcl_stairs:stair_"..mat)
 
-	-- mcstair
+	-- corner stairs
 	minetest.register_alias("stairs:stair_"..mat.."_inner", "mcl_stairs:stair_"..mat.."_inner")
 	minetest.register_alias("stairs:stair_"..mat.."_outer", "mcl_stairs:stair_"..mat.."_outer")
 end

@@ -3,90 +3,47 @@
 -- slabs actually take slightly longer to be dug than their stair counterparts.
 -- Note sure if it is a good idea to preserve this oddity.
 
-mcl_stairs.register_stair("wood", "mcl_core:wood",
-		{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
-		{"default_wood.png"},
-		"Oak Wood Stairs",
-		mcl_sounds.node_sound_wood_defaults(),
-		2)
-mcl_stairs.register_slab("wood", "mcl_core:wood",
-		{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1},
-		{"default_wood.png"},
-		"Oak Wood Slab",
-		mcl_sounds.node_sound_wood_defaults(),
-		2,
-		"Double Oak Wood Slab")
+local function make_wood_corner_texture(subname)
+	local t = minetest.registered_nodes["mcl_core:"..subname].tiles[1]
+	return {
+		{
+			t.."^("..t.."^[transformR90^mcl_stairs_turntexture.png^[makealpha:255,0,255)",
+			t.."^("..t.."^mcl_stairs_turntexture.png^[transformR270^[makealpha:255,0,255)",
+			t
+		},
+		{
+			t.."^("..t.."^[transformR90^(mcl_stairs_turntexture.png^[transformR180)^[makealpha:255,0,255)",
+			t.."^("..t.."^[transformR270^(mcl_stairs_turntexture.png^[transformR90)^[makealpha:255,0,255)",
+			t
+		}
+	}
+end
+local woods = {
+	{ "wood", "default_wood.png", "Oak Wood Stairs", "Oak Wood Slab", "Double Oak Wood Slab" },
+	{ "junglewood", "default_junglewood.png", "Jungle Wood Stairs", "Jungle Wood Slab", "Double Jungle Wood Slab" },
+	{ "acaciawood", "default_acacia_wood.png", "Acacia Wood Stairs", "Acacia Wood Slab", "Double Acacia Wood Slab" },
+	{ "sprucewood", "mcl_core_planks_spruce.png", "Spruce Wood Stairs", "Spruce Wood Slab", "Double Spruce Wood Slab" },
+	{ "birchwood", "mcl_core_planks_birch.png", "Birch Wood Stairs", "Birch Wood Slab", "Double Birch Wood Slab" },
+	{ "darkwood", "mcl_core_planks_big_oak.png", "Dark Oak Wood Stairs", "Dark Oak Wood Slab", "Double Dark Oak Wood Slab" },
+}
 
-mcl_stairs.register_stair("junglewood", "mcl_core:junglewood",
-		{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
-		{"default_junglewood.png"},
-		"Jungle Wood Stairs",
-		mcl_sounds.node_sound_wood_defaults(),
-		2)
-mcl_stairs.register_slab("junglewood", "mcl_core:junglewood",
-		{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1},
-		{"default_junglewood.png"},
-		"Jungle Wood Slab",
-		mcl_sounds.node_sound_wood_defaults(),
-		2,
-		"Double Jungle Wood Slab")
-
-mcl_stairs.register_stair("acaciawood", "mcl_core:acaciawood",
-		{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
-		{"default_acacia_wood.png"},
-		"Acacia Wood Stairs",
-		mcl_sounds.node_sound_wood_defaults(),
-		2)
-
-mcl_stairs.register_slab("acaciawood", "mcl_core:acaciawood",
-		{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1},
-		{"default_acacia_wood.png"},
-		"Acacia Wood Slab",
-		mcl_sounds.node_sound_wood_defaults(),
-		2,
-		"Double Acacia Wood Slab")
-
-mcl_stairs.register_stair("sprucewood", "mcl_core:sprucewood",
-		{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
-		{"mcl_core_planks_spruce.png"},
-		"Spruce Wood Stairs",
-		mcl_sounds.node_sound_wood_defaults(),
-		2)
-mcl_stairs.register_slab("sprucewood", "mcl_core:sprucewood",
-		{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1},
-		{"mcl_core_planks_spruce.png"},
-		"Spruce Wood Slab",
-		mcl_sounds.node_sound_wood_defaults(),
-		2,
-		"Double Spruce Wood Slab")
-
-mcl_stairs.register_stair("birchwood", "mcl_core:birchwood",
-		{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
-		{"mcl_core_planks_birch.png"},
-		"Birch Wood Stairs",
-		mcl_sounds.node_sound_wood_defaults(),
-		2)
-mcl_stairs.register_slab("birchwood", "mcl_core:birchwood",
-		{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1},
-		{"mcl_core_planks_birch.png"},
-		"Birch Wood Slab",
-		mcl_sounds.node_sound_wood_defaults(),
-		2,
-		"Double Birch Wood Slab")
-
-mcl_stairs.register_stair("darkwood", "mcl_core:darkwood",
-		{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
-		{"mcl_core_planks_big_oak.png"},
-		"Dark Oak Wood Stairs",
-		mcl_sounds.node_sound_wood_defaults(),
-		2)
-mcl_stairs.register_slab("darkwood", "mcl_core:darkwood",
-		{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1},
-		{"mcl_core_planks_big_oak.png"},
-		"Dark Oak Wood Slab",
-		mcl_sounds.node_sound_wood_defaults(),
-		2,
-		"Double Dark Oak Wood Slab")
+for w=1, #woods do
+	local wood = woods[w]
+	mcl_stairs.register_stair(wood[1], "mcl_core:"..wood[1],
+			{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
+			{wood[2]},
+			wood[3],
+			mcl_sounds.node_sound_wood_defaults(),
+			2,
+			make_wood_corner_texture(wood[1]))
+	mcl_stairs.register_slab(wood[1], "mcl_core:"..wood[1],
+			{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1},
+			{wood[2]},
+			wood[4],
+			mcl_sounds.node_sound_wood_defaults(),
+			2,
+			wood[5])
+end
 
 mcl_stairs.register_slab("stone", "mcl_core:stone",
 		{pickaxey=1, material_stone=1},
@@ -171,3 +128,26 @@ mcl_stairs.register_stair_and_slab_simple("prismarine", "mcl_ocean:prismarine", 
 
 mcl_stairs.register_stair_and_slab_simple("prismarine_brick", "mcl_ocean:prismarine_brick", "Prismarine Brick Stairs", "Prismarine Brick Slab", "Double Prismarine Brick Slab")
 mcl_stairs.register_stair_and_slab_simple("prismarine_dark", "mcl_ocean:prismarine_dark", "Dark Prismarine Stairs", "Dark Prismarine Slab", "Double Dark Prismarine Slab")
+
+for _,v in ipairs({
+	"wood",
+	"junglewood",
+	"sprucewood",
+	"acaciawood",
+	"birchwood",
+	"darkwood"
+}) do
+	local t = minetest.registered_nodes["mcl_core:"..v].tiles[1]
+	mcl_stairs.cornerstair.add("mcl_stairs:stair_"..v, {
+		{
+			t.."^("..t.."^[transformR90^mcl_stairs_turntexture.png^[makealpha:255,0,255)",
+			t.."^("..t.."^mcl_stairs_turntexture.png^[transformR270^[makealpha:255,0,255)",
+			t
+		},
+		{
+			t.."^("..t.."^[transformR90^(mcl_stairs_turntexture.png^[transformR180)^[makealpha:255,0,255)",
+			t.."^("..t.."^[transformR270^(mcl_stairs_turntexture.png^[transformR90)^[makealpha:255,0,255)",
+			t
+		}
+	})
+end
