@@ -7,8 +7,6 @@
 local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
---dofile(minetest.get_modpath("mobs").."/api.lua")
-
 --###################
 --################### HORSE
 --###################
@@ -19,18 +17,23 @@ local horse_extra_texture = function(horse)
 	local saddle = horse._saddle
 	local chest  = horse._chest
 	local armor = horse._horse_armor
-	if armor then
-		if minetest.get_item_group(armor, "horse_armor") > 0 then
-			base = base .. "^" .. minetest.registered_items[armor]._horse_overlay_image
-		end
+	local textures = {}
+	if armor and minetest.get_item_group(armor, "horse_armor") > 0 then
+		textures[2] = base .. "^" .. minetest.registered_items[armor]._horse_overlay_image
+	else
+		textures[2] = base
 	end
 	if saddle then
-		base = base .. "^mobs_mc_horse_saddle.png"
+		textures[3] = base
+	else
+		textures[3] = "blank.png"
 	end
 	if chest then
-		base = base .. "^mobs_mc_horse_chest.png"
+		textures[1] = base
+	else
+		textures[1] = "blank.png"
 	end
-	return base
+	return textures
 end
 
 -- Helper functions to determine equipment rules
@@ -46,7 +49,7 @@ end
 
 --[[ Generate all possible horse textures.
 Horse textures are a combination of a base texture and an optional marking overlay. ]]
--- The base horse textures
+-- The base horse textures (fur) (fur)
 local horse_base = {
 	"mobs_mc_horse_brown.png",
 	"mobs_mc_horse_darkbrown.png",
@@ -67,7 +70,11 @@ local horse_markings = {
 local horse_textures = {}
 for b=1, #horse_base do
 	for m=1, #horse_markings do
-		table.insert(horse_textures, { horse_base[b] .. horse_markings[m] })
+		table.insert(horse_textures, {
+			"blank.png", -- chest
+			horse_base[b] .. horse_markings[m], -- base texture + markings and optional armor
+			"blank.png", -- saddle
+		})
 	end
 end
 
@@ -79,10 +86,15 @@ local horse = {
 	visual_size = {x=3.0, y=3.0},
 	collisionbox = {-0.69825, -0.01, -0.69825, 0.69825, 1.59, 0.69825},
 	animation = {
-		stand_speed = 25, walk_speed = 25, run_speed = 50,
-		stand_start = 0, stand_end = 0,
-		walk_start = 0, walk_end = 40,
-		run_start = 0, run_end = 40,
+		stand_speed = 25,
+		stand_start = 0,
+		stand_end = 0,
+		walk_speed = 25,
+		walk_start = 0,
+		walk_end = 40,
+		run_speed = 50,
+		run_start = 0,
+		run_end = 40,
 	},
 	textures = horse_textures,
 	fear_height = 4,
@@ -198,10 +210,10 @@ local horse = {
 				-- Update texture
 				if not self._naked_texture then
 					-- Base horse texture without chest or saddle
-					self._naked_texture = self.base_texture[1]
+					self._naked_texture = self.base_texture[2]
 				end
 				local tex = horse_extra_texture(self)
-				self.base_texture = { tex }
+				self.base_texture = tex
 				self.object:set_properties({textures = self.base_texture})
 
 			-- Put on horse armor if tamed
@@ -219,10 +231,6 @@ local horse = {
 				end
 
 				-- Set horse armor strength
-				--[[ WARNING: This goes deep into the entity data structure and depends on
-				how Mobs Redo works internally. This code assumes that Mobs Redo uses
-				the fleshy group for armor. ]]
-				-- TODO: Change this code as soon Mobs Redo officially allows to change armor afterwards
 				self.armor = armor
 				local agroups = self.object:get_armor_groups()
 				agroups.fleshy = self.armor
@@ -231,10 +239,10 @@ local horse = {
 				-- Update texture
 				if not self._naked_texture then
 					-- Base horse texture without chest or saddle
-					self._naked_texture = self.base_texture[1]
+					self._naked_texture = self.base_texture[2]
 				end
 				local tex = horse_extra_texture(self)
-				self.base_texture = { tex }
+				self.base_texture = tex
 				self.object:set_properties({textures = self.base_texture})
 
 
@@ -263,7 +271,7 @@ mobs:register_mob("mobs_mc:horse", horse)
 
 -- Skeleton horse
 local skeleton_horse = table.copy(horse)
-skeleton_horse.textures = {{"mobs_mc_horse_skeleton.png"}}
+skeleton_horse.textures = {{"blank.png", "mobs_mc_horse_skeleton.png", "blank.png"}}
 skeleton_horse.drops = {
 	{name = mobs_mc.items.bone,
 	chance = 1,
@@ -281,7 +289,7 @@ mobs:register_mob("mobs_mc:skeleton_horse", skeleton_horse)
 
 -- Zombie horse
 local zombie_horse = table.copy(horse)
-zombie_horse.textures = {{"mobs_mc_horse_zombie.png"}}
+zombie_horse.textures = {{"blank.png", "mobs_mc_horse_zombie.png", "blank.png"}}
 zombie_horse.drops = {
 	{name = mobs_mc.items.rotten_flesh,
 	chance = 1,
@@ -300,7 +308,7 @@ mobs:register_mob("mobs_mc:zombie_horse", zombie_horse)
 -- Donkey
 local d = 0.86 -- donkey scale
 local donkey = table.copy(horse)
-donkey.textures = {{"mobs_mc_donkey.png"}}
+donkey.textures = {{"blank.png", "mobs_mc_donkey.png", "blank.png"}}
 donkey.animation = {
 	speed_normal = 25,
 	stand_start = 0, stand_end = 0,
@@ -323,7 +331,7 @@ mobs:register_mob("mobs_mc:donkey", donkey)
 -- Mule
 local m = 0.94
 local mule = table.copy(donkey)
-mule.textures = {{"mobs_mc_mule.png"}}
+mule.textures = {{"blank.png", "mobs_mc_mule.png", "blank.png"}}
 mule.visual_size = { x=horse.visual_size.x*m, y=horse.visual_size.y*m }
 mule.collisionbox = {
 	horse.collisionbox[1] * m,
