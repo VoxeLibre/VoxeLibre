@@ -24,10 +24,21 @@ mobs:register_mob("mobs_mc:bat", {
 	run_velocity = 6.0,
 	-- TODO: Hang upside down
 	animation = {
-		walk_speed = 80, stand_speed = 80, run_speed = 80,
-		stand_start = 0,		stand_end = 40,
-		walk_start = 0,		walk_end = 40,
-		run_start = 0,		run_end = 40,
+		stand_speed = 80,
+		stand_start = 0,
+		stand_end = 40,
+		walk_speed = 80,
+		walk_start = 0,
+		walk_end = 40,
+		run_speed = 80,
+		run_start = 0,
+		run_end = 40,
+		-- TODO: Less ugly death animation
+--[[		die_speed = 60,
+		die_start = 40,
+		die_end = 80,
+		die_loop = false,
+]]
 	},
 
 	water_damage = 1,

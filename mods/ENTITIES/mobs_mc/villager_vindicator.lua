@@ -26,7 +26,7 @@ mobs:register_mob("mobs_mc:vindicator", {
         {
             "mobs_mc_vindicator_base.png",
             "blank.png", --no hat
-            "mobs_mc_iron_axe.png",
+            "default_tool_steelaxe.png",
             -- TODO: Glow when attacking (mobs_mc_vindicator.png)
         },
     },
@@ -54,19 +54,19 @@ mobs:register_mob("mobs_mc:vindicator", {
 	},
 	animation = {
 		stand_speed = 25,
-		walk_speed = 25,
-		run_speed = 25,
-		punch_speed = 25,
 		stand_start = 40,
 		stand_end = 59,
+		walk_speed = 25,
 		walk_start = 0,
 		walk_end = 40,
+		run_speed = 25,
+		punch_speed = 25,
 		punch_start = 90,
 		punch_end = 110,
-		-- TODO: Implement and fix death animation
-		--die_start = 170,
-		--die_end = 180,
-		--die_loop = false,
+		die_speed = 25,
+		die_start = 170,
+		die_end = 180,
+		die_loop = false,
 	},
 	water_damage = 1,
 	lava_damage = 4,
