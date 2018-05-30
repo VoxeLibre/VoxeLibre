@@ -7,14 +7,9 @@
 local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
---dofile(minetest.get_modpath("mobs").."/api.lua")
-
-
 --###################
 --################### WITHER SKELETON
 --###################
-
-
 
 mobs:register_mob("mobs_mc:witherskeleton", {
 	type = "monster",
@@ -26,7 +21,10 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 	visual = "mesh",
 	mesh = "mobs_mc_witherskeleton.b3d",
 	textures = {
-		{"mobs_mc_wither_skeleton.png^mobs_mc_wither_skeleton_sword.png"},
+		{
+			"default_tool_stonesword.png", -- sword
+			"mobs_mc_wither_skeleton.png", -- wither skeleton
+		}
 	},
 	visual_size = {x=3.6, y=3.6},
 	makes_footstep_sound = true,
@@ -59,7 +57,7 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 	animation = {
 		stand_start = 0,
 		stand_end = 40,
-		stand_speed = 5,
+		stand_speed = 15,
 		walk_start = 40,
 		walk_end = 60,
 		walk_speed = 15,
@@ -68,16 +66,13 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 		run_speed = 30,
 		shoot_start = 70,
 		shoot_end = 90,
-		punch_start = 70,
-		punch_end = 90,
-		-- TODO: Implement and fix death animation
-		--die_start = 120,
-		--die_end = 130,
-		--die_loop = false,
-
-		-- Not supported yet
-		hurt_start = 100,
-		hurt_end = 120,
+		punch_start = 110,
+		punch_end = 130,
+		punch_speed = 25,
+		die_start = 160,
+		die_end = 170,
+		die_speed = 15,
+		die_loop = false,
 	},
 	water_damage = 0,
 	lava_damage = 0,
