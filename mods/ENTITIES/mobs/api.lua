@@ -646,6 +646,17 @@ local do_env_damage = function(self)
 
 	local nodef = minetest.registered_nodes[self.standing_in]
 
+	-- rain
+	if self.rain_damage and minetest.get_modpath("mcl_weather") then
+		if mcl_weather.rain.raining and mcl_weather.is_outdoor(pos) then
+
+			self.health = self.health - self.rain_damage
+
+			if check_for_death(self, "rain", {type = "environment",
+					pos = pos, node = self.standing_in}) then return end
+		end
+	end
+
 	pos.y = pos.y + 1 -- for particle effect position
 
 	-- water
@@ -3097,6 +3108,7 @@ minetest.register_entity(name, {
 
 	-- MCL2 extensions
 	ignores_nametag = def.ignores_nametag or false,
+	rain_damage = def.rain_damage or 0,
 
 	on_spawn = def.on_spawn,
 

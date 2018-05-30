@@ -208,6 +208,7 @@ functions needed for the mob to work properly which contains the following:
     MineClone 2 extensions:
 
       'ignores_nametag' if true, mob cannot be named by nametag
+      'rain_damage' damage per second if mob is standing in rain (default: 0)
 
 
 Node Replacement

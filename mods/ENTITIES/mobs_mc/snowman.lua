@@ -101,6 +101,8 @@ mobs:register_mob("mobs_mc:snowman", {
 			end
 		end
 	end,
+
+	rain_damage = 4,
 })
 
 -- This is to be called when a pumpkin or jack'o lantern has been placed. Recommended: In the on_construct function
