@@ -55,8 +55,9 @@ mobs:register_mob("mobs_mc:snowman", {
 	shoot_interval = 1,
 	shoot_offset = 1,
 	animation = {
-		speed_normal = 25,
-		speed_run = 50,
+		stand_speed = 25,
+		walk_speed = 25,
+		run_speed = 50,
 		stand_start = 20,
 		stand_end = 40,
 		walk_start = 0,
@@ -65,7 +66,8 @@ mobs:register_mob("mobs_mc:snowman", {
 		run_end = 20,
 		die_start = 40,
 		die_end = 50,
-		die_loop = false,
+		die_speed = 25,
+	        die_loop = false,
 	},
 	blood_amount = 0,
 	do_custom = function(self, dtime)
