@@ -27,7 +27,11 @@ local pigman = {
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_zombie_pigman.b3d",
-	textures = {{"mobs_mc_zombie_pigman.png^mobs_mc_zombie_pigman_sword.png"}},
+	textures = {
+		"blank.png", --baby
+		"default_tool_goldsword.png", --sword
+		"mobs_mc_zombie_pigman.png", --pigman
+	},
 	visual_size = {x=3, y=3},
 	sounds = {
 		random = "mobs_mc_zombie_idle",
@@ -60,11 +64,17 @@ local pigman = {
 		max = 1,},
 	},
 	animation = {
-		stnd_speed = 25, walk_speed = 25, run_speed = 50, punch_speed = 25,
-		stand_start = 40, stand_end = 80,
-		walk_start = 0,	walk_end = 40,
-		run_start = 0, run_end = 40,
-		punch_start = 90, punch_end = 130,
+		stand_speed = 25,
+		walk_speed = 25,
+		run_speed = 50,
+		stand_start = 40,
+		stand_end = 80,
+		walk_start = 0,
+		walk_end = 40,
+		run_start = 0,
+		run_end = 40,
+		punch_start = 90,
+		punch_end = 130,
 	},
 	water_damage = 1,
 	lava_damage = 0,
@@ -81,7 +91,11 @@ mobs:register_mob("mobs_mc:pigman", pigman)
 local baby_pigman = table.copy(pigman)
 baby_pigman.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
 baby_pigman.visual_size = {x=pigman.visual_size.x/2, y=pigman.visual_size.y/2}
-baby_pigman.textures = {{"mobs_mc_zombie_pigman.png"}}
+baby_pigman.textures = {
+		"mobs_mc_zombie_pigman.png", --baby
+		"default_tool_goldsword.png", --sword
+		"mobs_mc_zombie_pigman.png", --pigman
+}
 baby_pigman.walk_velocity = 1.2
 baby_pigman.run_velocity = 2.4
 baby_pigman.light_damage = 0
