@@ -24,7 +24,7 @@ mobs:register_mob("mobs_mc:evoker", {
 	visual = "mesh",
 	mesh = "mobs_mc_villager.b3d",
 	textures = { {
-		"mobs_mc_evoker_base.png",
+		"mobs_mc_evoker.png",
 		"blank.png", --no hat
 		-- TODO: Attack glow
 	} },

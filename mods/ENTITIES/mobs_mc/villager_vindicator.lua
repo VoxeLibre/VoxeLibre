@@ -24,7 +24,7 @@ mobs:register_mob("mobs_mc:vindicator", {
 	mesh = "mobs_mc_vindicator.b3d",
     textures = {
         {
-            "mobs_mc_vindicator_base.png",
+            "mobs_mc_vindicator.png",
             "blank.png", --no hat
             "default_tool_steelaxe.png",
             -- TODO: Glow when attacking (mobs_mc_vindicator.png)
