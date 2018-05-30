@@ -718,8 +718,8 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/entity/rabbit,toast.png,/mods/ENTITIES/mobs_mc/textures,mobs_mc_rabbit_toast.png,,,,,,,
 /assets/minecraft/textures/entity/rabbit,white.png,/mods/ENTITIES/mobs_mc/textures,mobs_mc_rabbit_white.png,,,,,,,
 /assets/minecraft/textures/entity/rabbit,white_splotched.png,/mods/ENTITIES/mobs_mc/textures,mobs_mc_rabbit_white_splotched.png,,,,,,,
-/assets/minecraft/textures/entity/sheep,sheep_fur.png,/mods/ENTITIES/mobs_mc/textures,mobs_mc_sheep_fur.png,,,,,,,y
-/assets/minecraft/textures/entity/sheep,sheep.png,/mods/ENTITIES/mobs_mc/textures,mobs_mc_sheep.png,,,,,,,y
+/assets/minecraft/textures/entity/sheep,sheep_fur.png,/mods/ENTITIES/mobs_mc/textures,mobs_mc_sheep_fur.png,,,,,,,
+/assets/minecraft/textures/entity/sheep,sheep.png,/mods/ENTITIES/mobs_mc/textures,mobs_mc_sheep.png,,,,,,,
 /assets/minecraft/textures/entity/shulker,shulker_black.png,/mods/ENTITIES/mobs_mc/textures,mobs_mc_shulker_black.png,,,,,,,y
 /assets/minecraft/textures/entity/shulker,shulker_blue.png,/mods/ENTITIES/mobs_mc/textures,mobs_mc_shulker_blue.png,,,,,,,y
 /assets/minecraft/textures/entity/shulker,shulker_brown.png,/mods/ENTITIES/mobs_mc/textures,mobs_mc_shulker_brown.png,,,,,,,y

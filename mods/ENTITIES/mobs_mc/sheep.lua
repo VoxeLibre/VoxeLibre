@@ -32,8 +32,13 @@ if minetest.get_modpath("mcl_wool") ~= nil then
 end
 
 local sheep_texture = function(color_group)
-	return {"mobs_mc_sheep.png^(mobs_mc_sheep_fur.png^[colorize:"..colors[color_group][2]..")"}
+	return {
+		"mobs_mc_sheep_fur.png^[colorize:"..colors[color_group][2],
+		"mobs_mc_sheep.png",
+	}
 end
+
+local gotten_texture = { "blank.png", "mobs_mc_sheep.png" }
 
 --mcsheep
 mobs:register_mob("mobs_mc:sheep", {
@@ -46,8 +51,8 @@ mobs:register_mob("mobs_mc:sheep", {
 	visual = "mesh",
 	visual_size = {x=3, y=3},
 	mesh = "mobs_mc_sheepfur.b3d",
-	gotten_mesh = "mobs_mc_sheepnaked.b3d",
 	textures = { sheep_texture("unicolor_white") },
+	gotten_texture = gotten_texture,
 	color = "unicolor_white",
 	makes_footstep_sound = true,
 	walk_velocity = 1,
@@ -90,18 +95,15 @@ mobs:register_mob("mobs_mc:sheep", {
 		end
 		self.gotten = false
 		self.drops = {
-		{name = mobs_mc.items.mutton_raw,
-		chance = 1,
-		min = 1,
-		max = 2,},
-		{name = colors[self.color][1],
-		chance = 1,
-		min = 1,
-		max = 1,},
+			{name = mobs_mc.items.mutton_raw,
+			chance = 1,
+			min = 1,
+			max = 2,},
+			{name = colors[self.color][1],
+			chance = 1,
+			min = 1,
+			max = 1,},
 		}
-		self.object:set_properties({
-		mesh = "mobs_mc_sheepfur.b3d",
-	})
 	end,
 
 	-- Set random color on spawn
@@ -159,8 +161,9 @@ mobs:register_mob("mobs_mc:sheep", {
 				self.color = "unicolor_white"
 			end
 			minetest.add_item(pos, ItemStack(colors[self.color][1].." "..math.random(1,3)))
+			self.base_texture = gotten_texture
 			self.object:set_properties({
-				mesh = "mobs_mc_sheepnaked.b3d",
+				textures = self.base_texture,
 			})
 			if not minetest.settings:get_bool("creative_mode") then
 				item:add_wear(mobs_mc.misc.shears_wear)
