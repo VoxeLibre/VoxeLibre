@@ -84,6 +84,8 @@ local wolf = {
 	},
 	jump = true,
 	attacks_monsters = true,
+	attack_animals = true,
+	specific_attack = { "player", "mobs_mc:sheep" },
 }
 
 mobs:register_mob("mobs_mc:wolf", wolf)
@@ -133,6 +135,8 @@ dog.owner_loyal = true
 -- Automatically teleport dog to owner
 dog.do_custom = mobs_mc.make_owner_teleport_function(12)
 dog.follow = mobs_mc.follow.dog
+dog.attack_animals = nil
+dog.specific_attack = nil
 dog.on_rightclick = function(self, clicker)
 	local item = clicker:get_wielded_item()
 
