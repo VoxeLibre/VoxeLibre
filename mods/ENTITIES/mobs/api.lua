@@ -2958,6 +2958,42 @@ end
 
 mobs.spawning_mobs = {}
 
+-- Code to execute before custom on_rightclick handling
+local on_rightclick_prefix = function(self, clicker)
+	local item = clicker:get_wielded_item()
+
+	-- Name mob with nametag
+	if not self.ignores_nametag and item:get_name() == "mobs:nametag" then
+
+		local tag = item:get_meta():get_string("name")
+		if tag ~= "" then
+			if string.len(tag) > MAX_MOB_NAME_LENGTH then
+				tag = string.sub(tag, 1, MAX_MOB_NAME_LENGTH)
+			end
+			self.nametag = tag
+
+			update_tag(self)
+
+			if not mobs.is_creative(name) then
+				item:take_item()
+				player:set_wielded_item(item)
+			end
+			return true
+		end
+
+	end
+	return false
+end
+
+local create_mob_on_rightclick = function(on_rightclick)
+	return function(self, clicker)
+		local stop = on_rightclick_prefix(self, clicker)
+		if (not stop) and (on_rightclick) then
+			on_rightclick(self, clicker)
+		end
+	end
+end
+
 -- register mob entity
 function mobs:register_mob(name, def)
 
@@ -3000,7 +3036,7 @@ minetest.register_entity(name, {
 	fall_speed = def.fall_speed or -10, -- must be lower than -2 (default: -10)
 	drops = def.drops or {},
 	armor = def.armor or 100,
-	on_rightclick = def.on_rightclick,
+	on_rightclick = create_mob_on_rightclick(def.on_rightclick),
 	arrow = def.arrow,
 	shoot_interval = def.shoot_interval,
 	sounds = def.sounds or {},
@@ -3058,6 +3094,9 @@ minetest.register_entity(name, {
 	owner_loyal = def.owner_loyal,
 	facing_fence = false,
 	_cmi_is_mob = true,
+
+	-- MCL2 extensions
+	ignores_nametag = def.ignores_nametag or false,
 
 	on_spawn = def.on_spawn,
 
@@ -3851,28 +3890,6 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 		end
 
 		return true
-	end
-
-	local item = clicker:get_wielded_item()
-
-	-- Name mob with nametag
-	if item:get_name() == "mobs:nametag" then
-
-		local tag = item:get_meta():get_string("name")
-		if tag ~= "" then
-			if string.len(tag) > MAX_MOB_NAME_LENGTH then
-				tag = string.sub(tag, 1, MAX_MOB_NAME_LENGTH)
-			end
-			self.nametag = tag
-
-			update_tag(self)
-
-			if not mobs.is_creative(name) then
-				item:take_item()
-				player:set_wielded_item(item)
-			end
-		end
-
 	end
 
 	return false

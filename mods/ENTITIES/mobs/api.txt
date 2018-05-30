@@ -205,6 +205,11 @@ functions needed for the mob to work properly which contains the following:
                      older mobs.
 
 
+    MineClone 2 extensions:
+
+      'ignores_nametag' if true, mob cannot be named by nametag
+
+
 Node Replacement
 ----------------
 
