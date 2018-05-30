@@ -361,6 +361,16 @@ true the mob will not spawn.
     'name'   is the name of the animal/monster
 
 
+MineClone 2 extensions
+----------------------
+
+mobs:spawn_child(pos, mob_type)
+
+This function spawns a mob as a child. The parameter mob_type is the
+entitystring of the new mob.
+This function returns the mob on success and nil otherwise.
+
+
 Making Arrows
 -------------
 

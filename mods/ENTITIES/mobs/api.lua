@@ -969,52 +969,25 @@ local breed = function(self)
 
 					-- custom breed function
 					if self.on_breed then
-
 						-- when false skip going any further
 						if self.on_breed(self, ent) == false then
-								return
+							return
 						end
-					else
-						effect(pos, 15, "tnt_smoke.png", 1, 2, 2, 15, 5)
 					end
 
-					local mob = minetest.add_entity(pos, self.name)
-					local ent2 = mob:get_luaentity()
+					local child = mobs:spawn_child(pos, self.name)
+
+					local ent_c = child:get_luaentity()
+
+					-- Use parent's texture
 					local textures = self.base_texture
-
-					-- using specific child texture (if found)
-					if self.child_texture then
-						textures = self.child_texture[1]
-					end
-
-					-- and resize to half height
-					mob:set_properties({
+					child:set_properties({
 						textures = textures,
-						visual_size = {
-							x = self.base_size.x * .5,
-							y = self.base_size.y * .5,
-						},
-						collisionbox = {
-							self.base_colbox[1] * .5,
-							self.base_colbox[2] * .5,
-							self.base_colbox[3] * .5,
-							self.base_colbox[4] * .5,
-							self.base_colbox[5] * .5,
-							self.base_colbox[6] * .5,
-						},
-						selectionbox = {
-							self.base_selbox[1] * .5,
-							self.base_selbox[2] * .5,
-							self.base_selbox[3] * .5,
-							self.base_selbox[4] * .5,
-							self.base_selbox[5] * .5,
-							self.base_selbox[6] * .5,
-						},
 					})
+
 					-- tamed and owned by parents' owner
-					ent2.child = true
-					ent2.tamed = true
-					ent2.owner = self.owner
+					ent_c.tamed = true
+					ent_c.owner = self.owner
 				end)
 
 				num = 0
@@ -3905,6 +3878,52 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 	end
 
 	return false
+end
+
+-- Spawn a child
+function mobs:spawn_child(pos, mob_type)
+	local child = minetest.add_entity(pos, mob_type)
+	if not child then
+		return
+	end
+
+	local ent = child:get_luaentity()
+	effect(pos, 15, "tnt_smoke.png", 1, 2, 2, 15, 5)
+
+	ent.child = true
+
+	local textures
+	-- using specific child texture (if found)
+	if ent.child_texture then
+		textures = ent.child_texture[1]
+	end
+
+	-- and resize to half height
+	child:set_properties({
+		textures = textures,
+		visual_size = {
+			x = ent.base_size.x * .5,
+			y = ent.base_size.y * .5,
+		},
+		collisionbox = {
+			ent.base_colbox[1] * .5,
+			ent.base_colbox[2] * .5,
+			ent.base_colbox[3] * .5,
+			ent.base_colbox[4] * .5,
+			ent.base_colbox[5] * .5,
+			ent.base_colbox[6] * .5,
+		},
+		selectionbox = {
+			ent.base_selbox[1] * .5,
+			ent.base_selbox[2] * .5,
+			ent.base_selbox[3] * .5,
+			ent.base_selbox[4] * .5,
+			ent.base_selbox[5] * .5,
+			ent.base_selbox[6] * .5,
+		},
+	})
+
+	return child
 end
 
 
