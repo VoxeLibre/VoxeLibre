@@ -25,9 +25,10 @@ local skeleton = {
 	group_attack = true,
 	visual = "mesh",
 	mesh = "mobs_mc_skeleton.b3d",
-	textures = {
-		{"mobs_mc_skeleton.png^mobs_mc_skeleton_bow.png"},
-	},
+	textures = { {
+		"mcl_bows_bow_0.png", -- bow
+		"mobs_mc_skeleton.png", -- skeleton
+	} },
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
 	sounds = {
@@ -104,7 +105,11 @@ mobs:register_mob("mobs_mc:skeleton", skeleton)
 local stray = table.copy(skeleton)
 stray.mesh = "mobs_mc_stray.b3d"
 stray.textures = {
-	{"mobs_mc_stray.png"},
+	{
+		"mcl_bows_bow_0.png",
+		"mobs_mc_stray.png",
+		"mobs_mc_stray_overlay.png",
+	},
 }
 -- TODO: different sound (w/ echo)
 -- TODO: stray's arrow inflicts slowness status
