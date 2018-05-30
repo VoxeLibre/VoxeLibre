@@ -249,7 +249,42 @@ local horse = {
 				mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 			end
 		end
-	end
+	end,
+
+	on_breed = function(parent1, parent2)
+		local pos = parent1.object:get_pos()
+		local mob = minetest.add_entity(pos, parent1.name)
+
+		-- resize to half height
+		mob:set_properties({
+			visual_size = {
+				x = parent1.base_size.x * .5,
+				y = parent1.base_size.y * .5,
+			},
+			collisionbox = {
+				parent1.base_colbox[1] * .5,
+				parent1.base_colbox[2] * .5,
+				parent1.base_colbox[3] * .5,
+				parent1.base_colbox[4] * .5,
+				parent1.base_colbox[5] * .5,
+				parent1.base_colbox[6] * .5,
+			},
+			selectionbox = {
+				parent1.base_selbox[1] * .5,
+				parent1.base_selbox[2] * .5,
+				parent1.base_selbox[3] * .5,
+				parent1.base_selbox[4] * .5,
+				parent1.base_selbox[5] * .5,
+				parent1.base_selbox[6] * .5,
+			},
+		})
+		local ent = mob:get_luaentity()
+		-- tamed and owned by parents' owner
+		ent.child = true
+		ent.tamed = true
+		ent.owner = parent1.owner
+		return false
+	end,
 }
 
 mobs:register_mob("mobs_mc:horse", horse)

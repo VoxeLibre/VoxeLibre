@@ -197,6 +197,7 @@ mobs:register_mob("mobs_mc:pig", {
 			},
 		})
 		local ent = mob:get_luaentity()
+
 		-- tamed and owned by parents' owner
 		ent.child = true
 		ent.tamed = true
