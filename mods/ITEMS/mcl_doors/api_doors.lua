@@ -274,6 +274,8 @@ function mcl_doors:register_door(name, def)
 			action_on = on_mesecons_signal_open,
 		}},
 
+		on_rotate = false,
+
 		can_dig = check_player_priv,
 	})
 
@@ -320,6 +322,8 @@ function mcl_doors:register_door(name, def)
 		mesecons = { effector = {
 			action_on = on_mesecons_signal_open_top,
 		}},
+
+		on_rotate = false,
 
 		can_dig = check_player_priv,
 	})
@@ -368,6 +372,8 @@ function mcl_doors:register_door(name, def)
 			action_off = on_mesecons_signal_close,
 		}},
 
+		on_rotate = false,
+
 		can_dig = check_player_priv,
 	})
 
@@ -414,6 +420,8 @@ function mcl_doors:register_door(name, def)
 		mesecons = { effector = {
 			action_off = on_mesecons_signal_close_top,
 		}},
+
+		on_rotate = false,
 
 		can_dig = check_player_priv,
 	})
