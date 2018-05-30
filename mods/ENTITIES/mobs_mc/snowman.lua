@@ -10,6 +10,16 @@ local snow_trail_frequency = 0.5 -- Time in seconds for checking to add a new sn
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 
+local gotten_texture = {
+	"mobs_mc_snowman.png",
+	"blank.png",
+	"blank.png",
+	"blank.png",
+	"blank.png",
+	"blank.png",
+	"blank.png",
+}
+
 mobs:register_mob("mobs_mc:snowman", {
 	type = "npc",
 	passive = true,
@@ -25,9 +35,15 @@ mobs:register_mob("mobs_mc:snowman", {
 	visual = "mesh",
 	mesh = "mobs_mc_snowman.b3d",
 	textures = {
-		{"mobs_mc_snowman.png^mobs_mc_snowman_pumpkin.png"},
+                "mobs_mc_snowman.png", --snowman texture
+                "farming_pumpkin_top.png", --top
+                "farming_pumpkin_top.png", --down
+                "farming_pumpkin_face.png", --front
+                "farming_pumpkin_side.png", --left
+                "farming_pumpkin_side.png", --right
+                "farming_pumpkin_side.png", --left
 	},
-	gotten_texture = { "mobs_mc_snowman.png" },
+	gotten_texture = gotten_texture,
 	drops = {{ name = mobs_mc.items.snowball, chance = 1, min = 0, max = 15 }},
 	visual_size = {x=3, y=3},
 	walk_velocity = 0.6,
@@ -88,7 +104,7 @@ mobs:register_mob("mobs_mc:snowman", {
 			-- Remove pumpkin
 			self.gotten = true
 			self.object:set_properties({
-				textures = {"mobs_mc_snowman.png"},
+				textures = gotten_texture,
 			})
 
 			local pos = self.object:getpos()
