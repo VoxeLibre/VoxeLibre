@@ -93,6 +93,9 @@ local node_snowblock = "mcl_core:snowblock"
 local node_snow = "mcl_core:snow"
 mobs.fallback_node = minetest.registered_aliases["mapgen_dirt"] or "mcl_core:dirt"
 
+local mod_weather = minetest.get_modpath("mcl_weather") ~= nil
+local mod_tnt = minetest.get_modpath("mcl_tnt") ~= nil
+local mod_mobspawners = minetest.get_modpath("mcl_mobspawners") ~= nil
 
 -- play sound
 local mob_sound = function(self, sound)
@@ -616,16 +619,17 @@ local do_env_damage = function(self)
 
 	-- bright light harms mob
 	if self.light_damage ~= 0
---	and pos.y > 0
---	and self.time_of_day > 0.2
---	and self.time_of_day < 0.8
 	and (minetest.get_node_light(pos) or 0) > 12 then
 
-		self.health = self.health - self.light_damage
+		if not (mod_weather and (mcl_weather.rain.raining or mcl_weather.state == "snow") and mcl_weather.is_outdoor(pos)) then
 
-		effect(pos, 5, "tnt_smoke.png")
+			self.health = self.health - self.light_damage
 
-		if check_for_death(self, "light", {type = "light"}) then return end
+			effect(pos, 5, "tnt_smoke.png")
+
+			if check_for_death(self, "light", {type = "light"}) then return end
+
+		end
 	end
 
 	local y_level = self.collisionbox[2]
@@ -647,7 +651,7 @@ local do_env_damage = function(self)
 	local nodef = minetest.registered_nodes[self.standing_in]
 
 	-- rain
-	if self.rain_damage and minetest.get_modpath("mcl_weather") then
+	if self.rain_damage and mod_weather then
 		if mcl_weather.rain.raining and mcl_weather.is_outdoor(pos) then
 
 			self.health = self.health - self.rain_damage
@@ -1983,7 +1987,7 @@ local do_states = function(self, dtime)
 
 					self.object:remove()
 
-					if minetest.get_modpath("mcl_tnt") and tnt and tnt.boom
+					if mod_tnt and tnt and tnt.boom
 					and not minetest.is_protected(pos, "") then
 
 						tnt.boom(pos, {
@@ -3467,7 +3471,7 @@ end
 function mobs:boom(self, pos, radius)
 
 	if mobs_griefing
-	and minetest.get_modpath("mcl_tnt") and tnt and tnt.boom
+	and mod_tnt and tnt and tnt.boom
 	and not minetest.is_protected(pos, "") then
 
 		tnt.boom(pos, {
@@ -3583,7 +3587,7 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 					minetest.chat_send_player(name, "You need the “maphack” privilege to change the mob spawner.")
 					return itemstack
 				end
-				if minetest.get_modpath("mcl_mobspawners") and under.name == "mcl_mobspawners:spawner" then
+				if mod_mobspawners and under.name == "mcl_mobspawners:spawner" then
 					mcl_mobspawners.setup_spawner(pointed_thing.under, itemstack:get_name())
 					if not minetest.settings:get_bool("creative_mode") then
 						itemstack:take_item()
@@ -3858,9 +3862,11 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 			if tame then
 
 				if self.tamed == false then
+					--[[ DISABLED IN MCL2
 					minetest.chat_send_player(clicker:get_player_name(),
 						S("@1 has been tamed!",
 						self.name:split(":")[2]))
+					]]
 				end
 
 				self.tamed = true
