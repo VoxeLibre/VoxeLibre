@@ -13,11 +13,11 @@
 --     recipe = {'<mod>:item_no_color', 'group:basecolor_yellow'},
 -- })
 
--- Other mods can use these for looping through available colors
 mcl_dye = {}
-local dye = {}
-dye.basecolors = {"white", "grey", "black", "red", "yellow", "green", "cyan", "blue", "magenta"}
-dye.excolors = {"white", "lightgrey", "grey", "darkgrey", "black", "red", "orange", "yellow", "lime", "green", "aqua", "cyan", "sky_blue", "blue", "violet", "magenta", "red_violet"}
+
+-- Other mods can use these for looping through available colors
+mcl_dye.basecolors = {"white", "grey", "black", "red", "yellow", "green", "cyan", "blue", "magenta"}
+mcl_dye.excolors = {"white", "lightgrey", "grey", "darkgrey", "black", "red", "orange", "yellow", "lime", "green", "aqua", "cyan", "sky_blue", "blue", "violet", "magenta", "red_violet"}
 
 -- Base color groups:
 -- - basecolor_white
@@ -81,6 +81,20 @@ dyelocal.dyes = {
 	{"magenta",    "Magenta Dye",   {dye=1, craftitem=1, basecolor_magenta=1, excolor_red_violet=1,unicolor_red_violet=1}},
 	{"pink",       "Pink Dye",      {dye=1, craftitem=1, basecolor_red=1,     excolor_red=1,       unicolor_light_red=1}},
 }
+
+dyelocal.unicolor_to_dye_id = {}
+for d=1, #dyelocal.dyes do
+	for k, _ in pairs(dyelocal.dyes[d][3]) do
+		if string.sub(k, 1, 9) == "unicolor_" then
+			dyelocal.unicolor_to_dye_id[k] = dyelocal.dyes[d][1]
+		end
+	end
+end
+
+-- Takes an unicolor group name (e.g. “unicolor_white”) and returns a corresponding dye name (if it exists), nil otherwise.
+mcl_dye.unicolor_to_dye = function(unicolor_group)
+	return "mcl_dye:" .. dyelocal.unicolor_to_dye_id[unicolor_group]
+end
 
 -- Define items
 for _, row in ipairs(dyelocal.dyes) do

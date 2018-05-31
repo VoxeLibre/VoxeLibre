@@ -207,15 +207,44 @@ mobs:register_mob("mobs_mc:sheep", {
 		if mobs:capture_mob(self, clicker, 0, 5, 70, false, nil) then return end
 	end,
 	on_breed = function(parent1, parent2)
+		-- Breed sheep and choose a fur color for the child.
 		local pos = parent1.object:get_pos()
 		local child = mobs:spawn_child(pos, parent1.name)
 		if child then
 			local ent_c = child:get_luaentity()
-			local p = math.random(1, 2)
-			if p == 1 then
-				ent_c.base_texture = sheep_texture(parent1.color)
-			else
-				ent_c.base_texture = sheep_texture(parent2.color)
+			local color1 = parent1.color
+			local color2 = parent2.color
+
+			local dye1 = mcl_dye.unicolor_to_dye(color1)
+			local dye2 = mcl_dye.unicolor_to_dye(color2)
+			local output
+			-- Check if parent colors could be mixed as dyes
+			if dye1 and dye2 then
+				output = minetest.get_craft_result({items = {dye1, dye2}, method="normal"})
+			end
+			local mixed = false
+			if output and not output.item:is_empty() then
+				-- Try to mix dyes and use that as new fur color
+				local new_dye = output.item:get_name()
+				local groups = minetest.registered_items[new_dye].groups
+				for k, v in pairs(groups) do
+					if string.sub(k, 1, 9) == "unicolor_" then
+						ent_c.base_texture = sheep_texture(k)
+						mixed = true
+						break
+					end
+				end
+			end
+
+			-- Colors not mixable
+			if not mixed then
+				-- Choose color randomly from one of the parents
+				local p = math.random(1, 2)
+				if p == 1 then
+					ent_c.base_texture = sheep_texture(color1)
+				else
+					ent_c.base_texture = sheep_texture(color2)
+				end
 			end
 			child:set_properties({textures = ent_c.base_texture})
 			ent_c.initial_color_set = true
