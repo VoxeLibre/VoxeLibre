@@ -1,6 +1,7 @@
 
-MOBS REDO for MINETEST
+Mobs Redo: MineClone 2 Edition
 
+Based on Mobs Redo from TenPlus1
 Built from PilzAdam's original Simple Mobs with additional mobs by KrupnoPavel, Zeg9, ExeterDad and AspireMint.
 
 
@@ -10,18 +11,14 @@ This mod contains the API only for adding your own mobs into the world, so pleas
 https://forum.minetest.net/viewtopic.php?f=11&t=9917
 
 
-Crafts:
+Items:
 
- - Nametag (paper, black dye, string) can be used right-click on a tamed mob to give them a name.
- - Nets can be used to right-click tamed mobs to pick them up and place inside inventory as a spawn egg.
- - Magic Lasso is similar to nets but with a better chance of picking up larger mobs.
- - Shears are used to right-click sheep and return 1-3 wool.
- - Protection Rune lets you protect tamed mobs from harm by other players
+- Nametag (paper, black dye, string) can be used right-click on a tamed mob to give them a name.
 
 Lucky Blocks: 9
 
 
-Changelog:
+Changelog from original Mobs Redo mod:
 - 1.41- Mob pathfinding has been updated thanks to Elkien3
 - 1.40- Updated to use newer functions, requires Minetest 0.4.16+ to work.
 - 1.39- Added 'on_breed', 'on_grown' and 'do_punch' custom functions per mob

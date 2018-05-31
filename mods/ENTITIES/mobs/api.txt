@@ -1,8 +1,9 @@
 
-Mobs Redo API
-=============
+Mobs Redo: MineClone 2 Edition
+API documentation
+==============================
 
-Welcome to the world of mobs in minetest and hopefully an easy guide to defining
+Welcome to the world of mobs in Minetest and hopefully an easy guide to defining
 your own mobs and having them appear in your worlds.
 
 
@@ -437,27 +438,20 @@ and damages any entity caught inside the blast radius.  Protection will limit
 node destruction but not entity damage.
 
 
-Capturing Mobs
---------------
+mobs:capture_mob
+----------------
 
-mobs:capture_mob(self, clicker, chance_hand, chance_net, chance_lasso,
-   force_take, replacewith)
+mobs:capture_mob(...)
 
-This function is generally called inside the on_rightclick section of the mob
-api code, it provides a chance of capturing the mob by hand, using the net or
-lasso items, and can also have the player take the mob by force if tamed and
-replace with another item entirely.
+Does nothing and returns false.
 
-   'self'         mob information
-   'clicker'      player information
-   'chance_hand'  chance of capturing mob by hand (1 to 100) 0 to disable
-   'chance_net'   chance of capturing mob using net (1 to 100) 0 to disable
-   'chance_lasso' chance of capturing mob using magic lasso (1 to 100) 0 to
-                  disable
-   'force_take'   take mob by force, even if tamed (true or false)
-   'replacewith'  once captured replace mob with this item instead (overrides
-                  new mob eggs with saved information)
+This function is provided for compability with Mobs Redo for an attempt to
+capture a mob.
+Mobs cannot be captured in MineClone 2.
 
+In Mobs Redo, this is generally called inside the on_rightclick section of the mob
+api code, it provides a chance of capturing the mob. See Mobs Redo documentation
+of parameters.
 
 Feeding and Taming/Breeding
 ---------------------------

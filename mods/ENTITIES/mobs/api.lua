@@ -1,9 +1,9 @@
 
--- Mobs Api
+-- API for Mobs Redo: MineClone 2 Edition (MRM)
 
 mobs = {}
-mobs.mod = "redo"
-mobs.version = "20180523"
+mobs.mod = "mrm"
+mobs.version = "20180531" -- don't rely too much on this, rarely updated, if ever
 
 local MAX_MOB_NAME_LENGTH = 30
 
@@ -354,24 +354,6 @@ end
 
 
 local update_tag = function(self)
-	--DISABLED IN MCL2
-	--[=[
-	local col = "#00FF00"
-	local qua = self.hp_max / 4
-
-	if self.health <= floor(qua * 3) then
-		col = "#FFFF00"
-	end
-
-	if self.health <= floor(qua * 2) then
-		col = "#FF6600"
-	end
-
-	if self.health <= floor(qua) then
-		col = "#FF0000"
-	end
-	]=]
-
 	self.object:set_properties({
 		nametag = self.nametag,
 	})
@@ -3519,55 +3501,6 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 			"^[mask:mobs_chicken_egg_overlay.png)"
 	end
 
-	-- register new spawn egg containing mob information
-	--[=[ DISABLED IN MCL2
-	minetest.register_craftitem(mob .. "_set", {
-
-		description = S("@1 (Tamed)", desc),
-		inventory_image = invimg,
-		groups = {spawn_egg = 2, not_in_creative_inventory = 1},
-		stack_max = 1,
-
-		on_place = function(itemstack, placer, pointed_thing)
-
-			local pos = pointed_thing.above
-
-			-- am I clicking on something with existing on_rightclick function?
-			local under = minetest.get_node(pointed_thing.under)
-			local def = minetest.registered_nodes[under.name]
-			if def and def.on_rightclick then
-				return def.on_rightclick(pointed_thing.under, under, placer, itemstack)
-			end
-
-			if pos
-			and within_limits(pos, 0)
-			and not minetest.is_protected(pos, placer:get_player_name()) then
-
-				if not minetest.registered_entities[mob] then
-					return
-				end
-
-				pos.y = pos.y + 1
-
-				local data = itemstack:get_metadata()
-				local mob = minetest.add_entity(pos, mob, data)
-				local ent = mob:get_luaentity()
-
-				-- set owner if not a monster
-				if ent.type ~= "monster" then
-					ent.owner = placer:get_player_name()
-					ent.tamed = true
-				end
-
-				-- since mob is unique we remove egg once spawned
-				itemstack:take_item()
-			end
-
-			return itemstack
-		end,
-	})
-	]=]
-
 	-- register old stackable mob egg
 	minetest.register_craftitem(mob, {
 
@@ -3646,127 +3579,10 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 end
 
 
--- capture critter (thanks to blert2112 for idea)
+-- No-op in MCL2 (capturing mobs is not possible).
+-- Provided for compability with Mobs Redo
 function mobs:capture_mob(self, clicker, chance_hand, chance_net, chance_lasso, force_take, replacewith)
 	return false
---[=[ DISABLED IN MCL2
-	if self.child
-	or not clicker:is_player()
-	or not clicker:get_inventory() then
-		return false
-	end
-
-	-- get name of clicked mob
-	local mobname = self.name
-
-	-- if not nil change what will be added to inventory
-	if replacewith then
-		mobname = replacewith
-	end
-
-	local name = clicker:get_player_name()
-	local tool = clicker:get_wielded_item()
-
-	-- are we using hand, net or lasso to pick up mob?
-	if tool:get_name() ~= ""
-	and tool:get_name() ~= "mobs:net"
-	and tool:get_name() ~= "mobs:lasso" then
-		return false
-	end
-
-	-- is mob tamed?
-	if self.tamed == false
-	and force_take == false then
-
-		minetest.chat_send_player(name, S("Not tamed!"))
-
-		return true -- false
-	end
-
-	-- cannot pick up if not owner
-	if self.owner ~= name
-	and force_take == false then
-
-		minetest.chat_send_player(name, S("@1 is owner!", self.owner))
-
-		return true -- false
-	end
-
-	if clicker:get_inventory():room_for_item("main", mobname) then
-
-		-- was mob clicked with hand, net, or lasso?
-		local chance = 0
-
-		if tool:get_name() == "" then
-			chance = chance_hand
-
-		elseif tool:get_name() == "mobs:net" then
-
-			chance = chance_net
-
-			tool:add_wear(4000) -- 17 uses
-
-			clicker:set_wielded_item(tool)
-
-		elseif tool:get_name() == "mobs:lasso" then
-
-			chance = chance_lasso
-
-			tool:add_wear(650) -- 100 uses
-
-			clicker:set_wielded_item(tool)
-
-		end
-
-		-- calculate chance.. add to inventory if successful?
-		if chance > 0 and random(1, 100) <= chance then
-
-			-- default mob egg
-			local new_stack = ItemStack(mobname)
-
-			-- add special mob egg with all mob information
-			-- unless 'replacewith' contains new item to use
-			if not replacewith then
-
-				new_stack = ItemStack(mobname .. "_set")
-
-				local tmp = {}
-
-				for _,stat in pairs(self) do
-					local t = type(stat)
-					if  t ~= "function"
-					and t ~= "nil"
-					and t ~= "userdata" then
-						tmp[_] = self[_]
-					end
-				end
-
-				local data_str = minetest.serialize(tmp)
-
-				new_stack:set_metadata(data_str)
-			end
-
-			local inv = clicker:get_inventory()
-
-			if inv:room_for_item("main", new_stack) then
-				inv:add_item("main", new_stack)
-			else
-				minetest.add_item(clicker:get_pos(), new_stack)
-			end
-
-			self.object:remove()
-
-			mob_sound(self, "default_place_node_hard")
-
-		elseif chance ~= 0 then
-			minetest.chat_send_player(name, S("Missed!"))
-
-			mob_sound(self, "mobs_swing")
-		end
-	end
-
-	return true
-]=]
 end
 
 
@@ -3837,12 +3653,6 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 			self.health = self.hp_max
 
 			if self.htimer < 1 then
-				-- DISABLED IN MCL2
-				--[=[
-				minetest.chat_send_player(clicker:get_player_name(),
-					S("@1 at full health (@2)",
-					self.name:split(":")[2], tostring(self.health)))
-				]=]
 				self.htimer = 5
 			end
 		end
@@ -3872,14 +3682,6 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 			self.gotten = false
 
 			if tame then
-
-				if self.tamed == false then
-					--[[ DISABLED IN MCL2
-					minetest.chat_send_player(clicker:get_player_name(),
-						S("@1 has been tamed!",
-						self.name:split(":")[2]))
-					]]
-				end
 
 				self.tamed = true
 
@@ -3943,56 +3745,6 @@ function mobs:spawn_child(pos, mob_type)
 
 	return child
 end
-
-
--- DISABLED IN MCL2
---[=[
--- inspired by blockmen's nametag mod
-minetest.register_on_player_receive_fields(function(player, formname, fields)
-
-	-- right-clicked with nametag and name entered?
-	if formname == "mobs_nametag"
-	and fields.name
-	and fields.name ~= "" then
-
-		local name = player:get_player_name()
-
-		if not mob_obj[name]
-		or not mob_obj[name].object then
-			return
-		end
-
-		-- make sure nametag is being used to name mob
-		local item = player:get_wielded_item()
-
-		if item:get_name() ~= "mobs:nametag" then
-			return
-		end
-
-		-- limit name entered to 64 characters long
-		if string.len(fields.name) > 64 then
-			fields.name = string.sub(fields.name, 1, 64)
-		end
-
-		-- update nametag
-		mob_obj[name].nametag = fields.name
-
-		update_tag(mob_obj[name])
-
-		-- if not in creative then take item
-		if not mobs.is_creative(name) then
-
-			mob_sta[name]:take_item()
-
-			player:set_wielded_item(mob_sta[name])
-		end
-
-		-- reset external variables
-		mob_obj[name] = nil
-		mob_sta[name] = nil
-	end
-end)
-]=]
 
 
 -- compatibility function for old entities to new modpack entities
