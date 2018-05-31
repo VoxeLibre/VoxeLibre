@@ -12,3 +12,4 @@ minetest.register_craftitem("mcl_mobs:nametag", {
 	groups = { tool=1 },
 })
 
+minetest.register_alias("mobs:nametag", "mcl_mobs:nametag")
