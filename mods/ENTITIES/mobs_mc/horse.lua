@@ -61,18 +61,22 @@ local horse_base = {
 -- Horse marking texture overlay, to be appended to the base texture string
 local horse_markings = {
 	"", -- no markings
-	"^mobs_mc_horse_markings_whitedots.png", -- snowflake appaloosa
-	"^mobs_mc_horse_markings_blackdots.png", -- sooty
-	"^mobs_mc_horse_markings_whitefield.png", -- paint
-	"^mobs_mc_horse_markings_white.png", -- stockings and blaze
+	"mobs_mc_horse_markings_whitedots.png", -- snowflake appaloosa
+	"mobs_mc_horse_markings_blackdots.png", -- sooty
+	"mobs_mc_horse_markings_whitefield.png", -- paint
+	"mobs_mc_horse_markings_white.png", -- stockings and blaze
 }
 
 local horse_textures = {}
 for b=1, #horse_base do
 	for m=1, #horse_markings do
+		local fur = horse_base[b]
+		if horse_markings[m] ~= "" then
+			fur = fur .. "^" .. horse_markings[m]
+		end
 		table.insert(horse_textures, {
 			"blank.png", -- chest
-			horse_base[b] .. horse_markings[m], -- base texture + markings and optional armor
+			fur, -- base texture + markings and optional armor
 			"blank.png", -- saddle
 		})
 	end
@@ -265,11 +269,45 @@ local horse = {
 		if child then
 			local ent_c = child:get_luaentity()
 			local p = math.random(1, 2)
+			local child_texture
+			-- Randomly pick one of the parents for the child texture
 			if p == 1 then
-				ent_c.base_texture = parent1.base_texture
+				if parent1._naked_texture then
+					child_texture = parent1._naked_texture
+				else
+					child_texture = parent1.base_texture[2]
+				end
 			else
-				ent_c.base_texture = parent2.base_texture
+				if parent2._naked_texture then
+					child_texture = parent2._naked_texture
+				else
+					child_texture = parent2.base_texture[2]
+				end
 			end
+			local splt = string.split(child_texture, "^")
+			if #splt >= 2 then
+				-- Randomly mutate base texture (fur) and markings
+				-- with chance of 1/9 each
+				local base = splt[1]
+				local markings = splt[2]
+				local mutate_base = math.random(1, 9)
+				local mutate_markings = math.random(1, 9)
+				if mutate_base == 1 then
+					local b = math.random(1, #horse_base)
+					base = horse_base[b]
+				end
+				if mutate_markings == 1 then
+					local m = math.random(1, #horse_markings)
+					markings = horse_markings[m]
+				end
+				child_texture = base
+				if markings ~= "" then
+					child_texture = child_texture .. "^" .. markings
+				end
+			end
+			ent_c.base_texture = { "blank.png", child_texture, "blank.png" }
+			ent_c._naked_texture = child_texture
+
 			child:set_properties({textures = ent_c.base_texture})
 			return false
 		end
