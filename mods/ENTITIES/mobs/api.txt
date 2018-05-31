@@ -209,7 +209,8 @@ functions needed for the mob to work properly which contains the following:
 
       'ignores_nametag' if true, mob cannot be named by nametag
       'rain_damage' damage per second if mob is standing in rain (default: 0)
-
+      'sunlight_damage' holds the damage per second inflicted to mobs when they
+                        are in direct sunlight
 
 Node Replacement
 ----------------

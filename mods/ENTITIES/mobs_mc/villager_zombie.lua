@@ -75,7 +75,7 @@ mobs:register_mob("mobs_mc:villager_zombie", {
 	},
 	water_damage = 1,
 	lava_damage = 5,
-	light_damage = 1,
+	sunlight_damage = 1,
 	view_range = 16,
 	fear_height = 5,
 

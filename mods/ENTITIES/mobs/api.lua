@@ -617,19 +617,24 @@ local do_env_damage = function(self)
 		return
 	end
 
-	-- bright light harms mob
-	if self.light_damage ~= 0
-	and (minetest.get_node_light(pos) or 0) > 12 then
 
+	local deal_light_damage = function(self, pos, damage)
 		if not (mod_weather and (mcl_weather.rain.raining or mcl_weather.state == "snow") and mcl_weather.is_outdoor(pos)) then
-
-			self.health = self.health - self.light_damage
+			self.health = self.health - damage
 
 			effect(pos, 5, "tnt_smoke.png")
 
 			if check_for_death(self, "light", {type = "light"}) then return end
-
 		end
+	end
+
+	-- bright light harms mob
+	if self.light_damage ~= 0 and (minetest.get_node_light(pos) or 0) > 12 then
+		deal_light_damage(self, pos, self.light_damage)
+	end
+	local _, dim = mcl_worlds.y_to_layer(pos.y)
+	if self.sunlight_damage ~= 0 and (minetest.get_node_light(pos) or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
+		deal_light_damage(self, pos, self.sunlight_damage)
 	end
 
 	local y_level = self.collisionbox[2]
@@ -3017,6 +3022,7 @@ minetest.register_entity(name, {
 	run_velocity = def.run_velocity or 2,
 	damage = max(0, (def.damage or 0) * difficulty),
 	light_damage = def.light_damage or 0,
+	sunlight_damage = def.sunlight_damage or 0,
 	water_damage = def.water_damage or 0,
 	lava_damage = def.lava_damage or 0,
 	suffocation = def.suffocation or 2,
