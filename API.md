@@ -40,10 +40,17 @@ A lot of things are possible by using one of the APIs in the mods. Note that not
 ## Mobs
 * Mobs: `ENTITIES/mods`
 
-MineClone 2 uses Mobs Redo [`mobs`] by TenPlus1, a very powerful mod for adding mods of various types.
-There are modificiations from the original mod for MineClone 2 compability. Some items have been removed or moved to other mods, but the API is identical.
+MineClone 2 uses its own mobs framework, called “Mobs Redo: MineClone 2 Edition” or “MRM” for short.
+This is a fork of Mobs Redo [`mobs`] by TenPlus1.
+
 You can add your own mobs, spawn eggs and spawning rules with this mod.
 API documnetation is included in `ENTITIES/mobs/api.txt`.
+
+This mod includes modificiations from the original Mobs Redo. Some items have been removed or moved to other mods.
+The API is mostly identical, but a few features have been added. Compability is not really a goal,
+but function and attribute names of Mobs Redo 1.41 are kept.
+If you have code for a mod which works fine under Mobs Redo, it should be easy to make it work in MineClone 2,
+chances are good that it works out of the box.
 
 ### Help
 * Item help texts: `HELP/doc/doc_items`
