@@ -1,6 +1,4 @@
 mcl_init
 mcl_sounds
-mcl_core
-mcl_hunger
-mcl_death_messages
+mcl_core?
 screwdriver?

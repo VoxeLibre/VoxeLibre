@@ -443,14 +443,16 @@ minetest.register_node("mcl_anvils:anvil", anvildef0)
 minetest.register_node("mcl_anvils:anvil_damage_1", anvildef1)
 minetest.register_node("mcl_anvils:anvil_damage_2", anvildef2)
 
-minetest.register_craft({
-	output = "mcl_anvils:anvil",
-	recipe = {
-		{ "mcl_core:ironblock", "mcl_core:ironblock", "mcl_core:ironblock" },
-		{ "", "mcl_core:iron_ingot", "" },
-		{ "mcl_core:iron_ingot", "mcl_core:iron_ingot", "mcl_core:iron_ingot" },
-	}
-})
+if minetest.get_modpath("mcl_core") then
+	minetest.register_craft({
+		output = "mcl_anvils:anvil",
+		recipe = {
+			{ "mcl_core:ironblock", "mcl_core:ironblock", "mcl_core:ironblock" },
+			{ "", "mcl_core:iron_ingot", "" },
+			{ "mcl_core:iron_ingot", "mcl_core:iron_ingot", "mcl_core:iron_ingot" },
+		}
+	})
+end
 
 if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_anvils:anvil", "nodes", "mcl_anvils:anvil_damage_1")
