@@ -154,7 +154,7 @@ mobs:register_mob("mobs_mc:sheep", {
 		if mobs:feed_tame(self, clicker, 1, true, true) then return end
 		if mobs:protect(self, clicker) then return end
 
-		if item:get_name() == mobs_mc.items.shears and not self.gotten then
+		if item:get_name() == mobs_mc.items.shears and not self.gotten and not self.child then
 			self.gotten = true
 			local pos = self.object:getpos()
 			minetest.sound_play("shears", {pos = pos})
