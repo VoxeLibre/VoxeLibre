@@ -171,7 +171,11 @@ mobs:register_mob("mobs_mc:pig", {
 
 	on_breed = function(parent1, parent2)
 		local pos = parent1.object:get_pos()
-		if mobs:spawn_child(pos, parent1.name) then
+		local child = mobs:spawn_child(pos, parent1.name)
+		if child then
+			local ent_c = child:get_luaentity()
+			ent_c.tamed = true
+			ent_c.owner = parent1.owner
 			return false
 		end
 	end,

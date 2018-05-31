@@ -248,6 +248,8 @@ mobs:register_mob("mobs_mc:sheep", {
 			end
 			child:set_properties({textures = ent_c.base_texture})
 			ent_c.initial_color_set = true
+			ent_c.tamed = true
+			ent_c.owner = parent1.owner
 			return false
 		end
 	end,
