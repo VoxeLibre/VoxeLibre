@@ -94,6 +94,8 @@ mobs:register_mob("mobs_mc:sheep", {
 			self.color = "unicolor_white"
 		end
 		self.gotten = false
+		self.base_texture = sheep_texture(self.color)
+		self.object:set_properties({ textures = self.base_texture })
 		self.drops = {
 			{name = mobs_mc.items.mutton_raw,
 			chance = 1,
