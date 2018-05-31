@@ -206,6 +206,22 @@ mobs:register_mob("mobs_mc:sheep", {
 		end
 		if mobs:capture_mob(self, clicker, 0, 5, 70, false, nil) then return end
 	end,
+	on_breed = function(parent1, parent2)
+		local pos = parent1.object:get_pos()
+		local child = mobs:spawn_child(pos, parent1.name)
+		if child then
+			local ent_c = child:get_luaentity()
+			local p = math.random(1, 2)
+			if p == 1 then
+				ent_c.base_texture = sheep_texture(parent1.color)
+			else
+				ent_c.base_texture = sheep_texture(parent2.color)
+			end
+			child:set_properties({textures = ent_c.base_texture})
+			ent_c.initial_color_set = true
+			return false
+		end
+	end,
 })
 mobs:spawn_specific("mobs_mc:sheep", mobs_mc.spawn.grassland, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 15000, 3, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 

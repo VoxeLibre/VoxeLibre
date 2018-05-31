@@ -988,10 +988,16 @@ local breed = function(self)
 
 					local ent_c = child:get_luaentity()
 
-					-- Use parent's texture
-					local textures = self.base_texture
+
+					-- Use texture of one of the parents
+					local p = math.random(1, 2)
+					if p == 1 then
+						ent_c.base_texture = self.base_texture
+					else
+						ent_c.base_texture = ent.base_texture
+					end
 					child:set_properties({
-						textures = textures,
+						textures = ent_c.base_texture
 					})
 
 					-- tamed and owned by parents' owner

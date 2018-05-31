@@ -261,7 +261,16 @@ local horse = {
 
 	on_breed = function(parent1, parent2)
 		local pos = parent1.object:get_pos()
-		if mobs:spawn_child(pos, parent1.name) then
+		local child = mobs:spawn_child(pos, parent1.name)
+		if child then
+			local ent_c = child:get_luaentity()
+			local p = math.random(1, 2)
+			if p == 1 then
+				ent_c.base_texture = parent1.base_texture
+			else
+				ent_c.base_texture = parent2.base_texture
+			end
+			child:set_properties({textures = ent_c.base_texture})
 			return false
 		end
 	end,
