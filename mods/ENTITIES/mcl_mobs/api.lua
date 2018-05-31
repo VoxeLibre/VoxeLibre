@@ -2944,7 +2944,7 @@ local on_rightclick_prefix = function(self, clicker)
 	local item = clicker:get_wielded_item()
 
 	-- Name mob with nametag
-	if not self.ignores_nametag and item:get_name() == "mobs:nametag" then
+	if not self.ignores_nametag and item:get_name() == "mcl_mobs:nametag" then
 
 		local tag = item:get_meta():get_string("name")
 		if tag ~= "" then

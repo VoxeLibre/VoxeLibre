@@ -15,7 +15,7 @@ Items:
 
 - Nametag (paper, black dye, string) can be used right-click on a tamed mob to give them a name.
 
-Lucky Blocks: 9
+Lucky Block items: 1
 
 
 Changelog from original Mobs Redo mod:

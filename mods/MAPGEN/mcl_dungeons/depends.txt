@@ -1,5 +1,6 @@
 mcl_init
 mcl_core
 mcl_chests
+mcl_mobs
 mcl_mobspawners
 mobs_mc

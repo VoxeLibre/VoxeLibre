@@ -38,13 +38,13 @@ A lot of things are possible by using one of the APIs in the mods. Note that not
 * Dispenser support: `ITEMS/REDSTONE/mcl_dispensers`
 
 ## Mobs
-* Mobs: `ENTITIES/mods`
+* Mobs: `ENTITIES/mcl_mods`
 
 MineClone 2 uses its own mobs framework, called “Mobs Redo: MineClone 2 Edition” or “MRM” for short.
 This is a fork of Mobs Redo [`mobs`] by TenPlus1.
 
 You can add your own mobs, spawn eggs and spawning rules with this mod.
-API documnetation is included in `ENTITIES/mobs/api.txt`.
+API documnetation is included in `ENTITIES/mcl_mobs/api.txt`.
 
 This mod includes modificiations from the original Mobs Redo. Some items have been removed or moved to other mods.
 The API is mostly identical, but a few features have been added. Compability is not really a goal,

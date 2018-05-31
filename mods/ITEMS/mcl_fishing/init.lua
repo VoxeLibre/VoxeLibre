@@ -52,7 +52,7 @@ local go_fishing = function(itemstack, user, pointed_thing)
 						{ itemstring = "mcl_books:book" },
 						-- TODO: Enchanted Fishing Rod
 						{ itemstring = "mcl_fishing:fishing_rod", wear_min = 49144, wear_max = 65535 }, -- 75%-100% damage
-						{ itemstring = "mobs:nametag", },
+						{ itemstring = "mcl_mobs:nametag", },
 						{ itemstring = "mcl_mobitems:saddle", },
 						{ itemstring = "mcl_flowers:waterlily", },
 					}

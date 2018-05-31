@@ -10,7 +10,7 @@ local get_loot = function()
 		stacks_min = 1,
 		stacks_max = 3,
 		items = {
-			{ itemstring = "mobs:nametag", weight = 20 },
+			{ itemstring = "mcl_mobs:nametag", weight = 20 },
 			{ itemstring = "mcl_mobitems:saddle", weight = 20 },
 			{ itemstring = "mcl_jukebox:record_1", weight = 15 },
 			{ itemstring = "mcl_jukebox:record_4", weight = 15 },

@@ -1,9 +1,9 @@
 default?
-mobs
-tnt?
+mcl_mobs
+mcl_tnt?
 mcl_bows?
 mcl_throwing?
-fishing?
+mcl_fishing?
 bones?
 mesecons_materials?
 mobs_mc_gameconfig?

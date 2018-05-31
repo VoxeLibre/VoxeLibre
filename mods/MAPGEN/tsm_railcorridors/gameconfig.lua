@@ -64,7 +64,7 @@ function tsm_railcorridors.get_treasures(pr)
 		stacks_min = 1,
 		stacks_max = 1,
 		items = {
-			{ itemstring = "mobs:nametag", weight = 30 },
+			{ itemstring = "mcl_mobs:nametag", weight = 30 },
 			{ itemstring = "mcl_core:apple_gold", weight = 20 },
 			{ itemstring = "mcl_books:book", weight = 10 }, -- TODO: Enchanted Book
 			{ itemstring = "", weight = 5},
