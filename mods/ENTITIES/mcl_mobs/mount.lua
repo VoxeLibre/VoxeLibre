@@ -155,7 +155,6 @@ function mobs.attach(entity, player)
 		mcl_player.player_set_animation(player, "sit" , 30)
 	end)
 
-	--player:set_look_yaw(entity.object:get_yaw() - rot_view)
 	player:set_look_horizontal(entity.object:get_yaw() - rot_view)
 end
 
@@ -191,8 +190,6 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 
 	-- process controls
 	if entity.driver then
-
---print ("---velo", get_v(velo))
 
 		local ctrl = entity.driver:get_player_control()
 
@@ -366,8 +363,6 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 		local intensity = entity.v2 - v
 
 		if intensity >= crash_threshold then
-
---print("----------- crash", intensity)
 
 			entity.object:punch(entity.object, 1.0, {
 				full_punch_interval = 1.0,
