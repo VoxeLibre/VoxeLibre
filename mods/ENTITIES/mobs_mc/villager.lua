@@ -77,6 +77,7 @@ mobs:register_mob("mobs_mc:villager", {
 	light_damage = 0,
 	view_range = 16,
 	fear_height = 4,
+--[[
 	on_rightclick = function(self, clicker)
 		local inv
 		inv = minetest.get_inventory({type="detached", name="trading_inv"})
@@ -203,6 +204,7 @@ mobs:register_mob("mobs_mc:villager", {
 		minetest.sound_play("mobs_mc_villager_trade", {to_player = clicker:get_player_name()})
 		minetest.show_formspec(clicker:get_player_name(), "mobs_mc:trade", formspec)
 	end,
+]]
 })
 
 mobs:spawn_specific("mobs_mc:villager", mobs_mc.spawn.village, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 8000, 4, mobs_mc.spawn_height.water+1, mobs_mc.spawn_height.overworld_max)
