@@ -53,9 +53,9 @@ mobs:register_mob("mobs_mc:villager", {
 	run_velocity = 2.4,
 	drops = {},
 	sounds = {
-		random = "Villager1",
-		death = "Villagerdead",
-		damage = "Villagerhurt1",
+		random = "mobs_mc_villager_noise",
+		death = "mobs_mc_villager_death",
+		damage = "mobs_mc_villager_damage",
 		distance = 16,
 	},
 	animation = {
@@ -78,7 +78,6 @@ mobs:register_mob("mobs_mc:villager", {
 	light_damage = 0,
 	view_range = 16,
 	fear_height = 4,
-	--[[
 	on_rightclick = function(self, clicker)
 		local inv
 		inv = minetest.get_inventory({type="detached", name="trading_inv"})
@@ -87,10 +86,9 @@ mobs:register_mob("mobs_mc:villager", {
 				allow_take = function(inv, listname, index, stack, player)
 					if listname == "output" then
 						inv:remove_item("input", inv:get_stack("wanted", 1))
-						minetest.sound_play("Villageraccept", {to_player = player:get_player_name()})
+						minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
 					end
 					if listname == "input" or listname == "output" then
-						--return 1000
 						return 0
 					else
 						return 0
@@ -106,72 +104,68 @@ mobs:register_mob("mobs_mc:villager", {
 				on_put = function(inv, listname, index, stack, player)
 					if inv:contains_item("input", inv:get_stack("wanted", 1)) then
 						inv:set_stack("output", 1, inv:get_stack("offered", 1))
-						minetest.sound_play("Villageraccept", {to_player = player:get_player_name()})
+						minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
 					else
 						inv:set_stack("output", 1, ItemStack(""))
-						minetest.sound_play("Villagerdeny", {to_player = player:get_player_name()})
+						minetest.sound_play("mobs_mc_villager_deny", {to_player = player:get_player_name()})
 					end
 				end,
 				on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
 					if inv:contains_item("input", inv:get_stack("wanted", 1)) then
 						inv:set_stack("output", 1, inv:get_stack("offered", 1))
-						minetest.sound_play("Villageraccept", {to_player = player:get_player_name()})
+						minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
 					else
 						inv:set_stack("output", 1, ItemStack(""))
-						minetest.sound_play("Villagerdeny", {to_player = player:get_player_name()})
+						minetest.sound_play("mobs_mc_villager_deny", {to_player = player:get_player_name()})
 					end
 				end,
 				on_take = function(inv, listname, index, stack, player)
 					if inv:contains_item("input", inv:get_stack("wanted", 1)) then
 						inv:set_stack("output", 1, inv:get_stack("offered", 1))
-						minetest.sound_play("Villageraccept", {to_player = player:get_player_name()})
+						minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
 					else
 						inv:set_stack("output", 1, ItemStack(""))
-						minetest.sound_play("Villagerdeny", {to_player = player:get_player_name()})
+						minetest.sound_play("mobs_mc_villager_deny", {to_player = player:get_player_name()})
 						
 					end
 				end,
 			})
 			end
-		inv:set_size("input", 1)
-		inv:set_size("output", 1)
-		inv:set_size("wanted", 1)
-		inv:set_size("offered", 1)
+			inv:set_size("input", 2)
+			inv:set_size("output", 1)
+			inv:set_size("wanted", 2)
+			inv:set_size("offered", 1)
 
 		local trades = {
-			{"default:apple 12",			"default:clay_lump 1"},
-			{"default:coal_lump 20",		"default:clay_lump 1"},
-			{"default:paper 30",			"default:clay_lump 1"},
-			{"mobs:leather 10",			"default:clay_lump 1"},
-			{"default:book 2",			"default:clay_lump 1"},
-			{"default:clay_lump 3",		"default:clay_lump 1"},
-			{"farming:potato 15",		"default:clay_lump 1"},
-			{"farming:wheat 20",			"default:clay_lump 1"},
-			{"farming:carrot 15",			"default:clay_lump 1"},
-			{"farming:melon_8 8",		"default:clay_lump 1"},
-			{"mobs:rotten_flesh 40",		"default:clay_lump 1"},
-			{"default:gold_ingot 10",		"default:clay_lump 1"},
-			{"farming:cotton 10",			"default:clay_lump 1"},
-			{"wool:white 15",			"default:clay_lump 1"},
-			{"farming:pumpkin 8",		"default:clay_lump 1"},
+			{"mcl_core:apple 12",		"mcl_core:emerald 1"},
+			{"mcl_core:coal_lump 20",	"mcl_core:emerald 1"},
+			{"mcl_core:paper 30",		"mcl_core:emerald 1"},
+			{"mcl_mobitems:leather 10",	"mcl_core:emerald 1"},
+			{"mcl_books:book 2",		"mcl_core:emerald 1"},
+			{"mcl_core:emerald 3",		"mcl_core:emerald 1"},
+			{"mcl_farming:potato_item 15",	"mcl_core:emerald 1"},
+			{"mcl_farming:wheat_item 20",	"mcl_core:emerald 1"},
+			{"mcl_farming:carrot_item 15",	"mcl_core:emerald 1"},
+			{"mcl_farming:melon_item 8",	"mcl_core:emerald 1"},
+			{"mcl_mobitems:rotten_flesh 40","mcl_core:emerald 1"},
+			{"mcl_core:gold_ingot 10",	"mcl_core:emerald 1"},
+			{"mcl_wool:white 15",		"mcl_core:emerald 1"},
+			{"mcl_farming:pumpkin 8",	"mcl_core:emerald 1"},
 
-			{"default:clay_lump 1",		"mobs:beef_cooked 5"},
-			{"default:clay_lump 1",		"mobs:chicken_cooked 7"},
-			{"default:clay_lump 1",		"farming:cookie 6"},
-			{"default:clay_lump 1",		"farming:pumpkin_bread 3"},
-			{"default:clay_lump 1",		"mobs:arrow 10"},
-			{"default:clay_lump 3",		"mobs:bow_wood 1"},
-			{"default:clay_lump 8",		"fishing:pole_wood 1"},
-			--{"default:clay_lump 4",		"potionspack:healthii 1"},
-			{"default:clay_lump 1",		"cake:cake 1"},
-			{"default:clay_lump 10",		"mobs:saddle 1"},
-			{"default:clay_lump 10",		"clock:1 1"},
-			{"default:clay_lumpd 10",		"compass:0 1"},
-			{"default:clay_lump 1",		"default:glass 5"},
-			{"default:clay_lump 1",		"nether:glowstone 3"},
-			{"default:clay_lump 3",		"mobs:shears 1"},
-			{"default:clay_lump 10",		"default:sword_diamond 1"},
-			{"default:clay_lump 20",		"3d_armor:chestplate_diamond 1"},
+			{"mcl_core:emerald 1",		"mcl_mobitems:beef_cooked 5"},
+			{"mcl_core:emerald 1",		"mcl_mobitems:chicken_cooked 7"},
+			{"mcl_core:emerald 1",		"mcl_farming:cookie 6"},
+			{"mcl_core:emerald 1",		"mcl_bows:arrow 10"},
+			{"mcl_core:emerald 3",		"mcl_bows:bow_0 1"},
+			{"mcl_core:emerald 1",		"mcl_cake:cake 1"},
+			{"mcl_core:emerald 10",		"mcl_mobitems:saddle 1"},
+			{"mcl_core:emerald 10",		"mcl_clock:clock_1 1"},
+			{"mcl_core:emerald 10",		"mcl_compass:compass 1"},
+			{"mcl_core:emerald 1",		"mcl_core:glass 5"},
+			{"mcl_core:emerald 1",		"mcl_nether:glowstone 3"},
+			{"mcl_core:emerald 3",		"mcl_tools:shears 1"},
+			{"mcl_core:emerald 10",		"mcl_tools:sword_diamond 1"},
+			{"mcl_core:emerald 20",		"3d_armor:chestplate_diamond 1"},
 		}
 		local tradenum = math.random(#trades)
 		inv:set_stack("wanted", 1, ItemStack(trades[tradenum][1]))
@@ -179,20 +173,17 @@ mobs:register_mob("mobs_mc:villager", {
 		
 		local formspec = 
 		"size[9,8.75]"..
-		"background[-0.19,-0.25;9.41,9.49;trading_formspec_bg.png]"..
-		"bgcolor[#080808BB;true]"..
-		"listcolors[#9990;#FFF7;#FFF0;#160816;#D4D2FF]"..
+		"background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"..
+		mcl_vars.inventory_header..
 		"list[current_player;main;0,4.5;9,3;9]"..
 		"list[current_player;main;0,7.74;9,1;]"
-		.."list[detached:trading_inv;wanted;2,1;1,1;]"
-		.."list[detached:trading_inv;offered;5.75,1;1,1;]"
-		.."list[detached:trading_inv;input;2,2.5;1,1;]"
-		.."list[detached:trading_inv;output;5.75,2.5;1,1;]"
-		minetest.sound_play("Villagertrade", {to_player = clicker:get_player_name()})
-		minetest.show_formspec(clicker:get_player_name(), "tradespec", formspec)
+		.."list[detached:trading_inv;wanted;2,1;2,1;]"
+		.."list[detached:trading_inv;offered;5.76,1;1,1;]"
+		.."list[detached:trading_inv;input;2,2.5;2,1;]"
+		.."list[detached:trading_inv;output;5.76,2.55;1,1;]"
+		minetest.sound_play("mobs_mc_villager_trade", {to_player = clicker:get_player_name()})
+		minetest.show_formspec(clicker:get_player_name(), "mobs_mc:trade", formspec)
 	end,
-	
-	]]
 })
 
 mobs:spawn_specific("mobs_mc:villager", mobs_mc.spawn.village, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 8000, 4, mobs_mc.spawn_height.water+1, mobs_mc.spawn_height.overworld_max)
