@@ -7,7 +7,6 @@
 local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
---dofile(minetest.get_modpath("mobs").."/api.lua")
 --###################
 --################### VILLAGER
 --###################
@@ -84,19 +83,26 @@ mobs:register_mob("mobs_mc:villager", {
 		if not inv then
 			inv = minetest.create_detached_inventory("trading_inv", {
 				allow_take = function(inv, listname, index, stack, player)
-					if listname == "output" then
-						inv:remove_item("input", inv:get_stack("wanted", 1))
-						minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
-					end
 					if listname == "input" or listname == "output" then
+						return stack:get_count()
+					else
 						return 0
+					end
+				end,
+				allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
+					if from_list == "wanted" or from_list == "offered" or to_list == "wanted" or to_list == "offered" then
+						return 0
+					elseif from_list == "output" and inv:get_stack(to_list, to_index):is_empty() then
+						return count
+					elseif from_list == "input" then
+						return count
 					else
 						return 0
 					end
 				end,
 				allow_put = function(inv, listname, index, stack, player)
 					if listname == "input" then
-						return 1000
+						return stack:get_count()
 					else
 						return 0
 					end
@@ -120,13 +126,22 @@ mobs:register_mob("mobs_mc:villager", {
 					end
 				end,
 				on_take = function(inv, listname, index, stack, player)
+					local accept
+					if listname == "output" then
+						inv:remove_item("input", inv:get_stack("wanted", 1))
+						accept = true
+					end
 					if inv:contains_item("input", inv:get_stack("wanted", 1)) then
 						inv:set_stack("output", 1, inv:get_stack("offered", 1))
-						minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
+						accept = true
 					else
 						inv:set_stack("output", 1, ItemStack(""))
+						accept = false
+					end
+					if accept then
+						minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
+					else
 						minetest.sound_play("mobs_mc_villager_deny", {to_player = player:get_player_name()})
-						
 					end
 				end,
 			})
@@ -150,16 +165,16 @@ mobs:register_mob("mobs_mc:villager", {
 			{"mcl_mobitems:rotten_flesh 40","mcl_core:emerald 1"},
 			{"mcl_core:gold_ingot 10",	"mcl_core:emerald 1"},
 			{"mcl_wool:white 15",		"mcl_core:emerald 1"},
-			{"mcl_farming:pumpkin 8",	"mcl_core:emerald 1"},
+			{"mcl_farming:pumpkin_face 8",	"mcl_core:emerald 1"},
 
-			{"mcl_core:emerald 1",		"mcl_mobitems:beef_cooked 5"},
-			{"mcl_core:emerald 1",		"mcl_mobitems:chicken_cooked 7"},
+			{"mcl_core:emerald 1",		"mcl_mobitems:cooked_beef 5"},
+			{"mcl_core:emerald 1",		"mcl_mobitems:cooked_chicken 7"},
 			{"mcl_core:emerald 1",		"mcl_farming:cookie 6"},
 			{"mcl_core:emerald 1",		"mcl_bows:arrow 10"},
-			{"mcl_core:emerald 3",		"mcl_bows:bow_0 1"},
+			{"mcl_core:emerald 3",		"mcl_bows:bow 1"},
 			{"mcl_core:emerald 1",		"mcl_cake:cake 1"},
 			{"mcl_core:emerald 10",		"mcl_mobitems:saddle 1"},
-			{"mcl_core:emerald 10",		"mcl_clock:clock_1 1"},
+			{"mcl_core:emerald 10",		"mcl_clock:clock 1"},
 			{"mcl_core:emerald 10",		"mcl_compass:compass 1"},
 			{"mcl_core:emerald 1",		"mcl_core:glass 5"},
 			{"mcl_core:emerald 1",		"mcl_nether:glowstone 3"},
@@ -181,6 +196,10 @@ mobs:register_mob("mobs_mc:villager", {
 		.."list[detached:trading_inv;offered;5.76,1;1,1;]"
 		.."list[detached:trading_inv;input;2,2.5;2,1;]"
 		.."list[detached:trading_inv;output;5.76,2.55;1,1;]"
+		.."listring[detached:trading_inv;output]"
+		.."listring[current_player;main]"
+		.."listring[detached:trading_inv;input]"
+		.."listring[current_player;main]"
 		minetest.sound_play("mobs_mc_villager_trade", {to_player = clicker:get_player_name()})
 		minetest.show_formspec(clicker:get_player_name(), "mobs_mc:trade", formspec)
 	end,
