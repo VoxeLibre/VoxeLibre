@@ -493,8 +493,10 @@ local check_for_death = function(self, cause, cmi_cause)
 		set_animation(self, "die")
 
 		minetest.after(length, function(self)
-
-			if use_cmi then
+			if not self.object:get_luaentity() then
+				return
+			end
+			if use_cmi  then
 				cmi.notify_die(self.object, cmi_cause)
 			end
 
@@ -769,6 +771,9 @@ local do_jump = function(self)
 
 			-- when in air move forward
 			minetest.after(0.3, function(self, v)
+				if not self.object:get_luaentity() then
+					return
+				end
 				self.object:set_acceleration({
 					x = v.x * 2,
 					y = 0,
@@ -949,17 +954,23 @@ local breed = function(self)
 				ent.hornytimer = 41
 
 				-- spawn baby
-				minetest.after(5, function()
+				minetest.after(5, function(parent1, parent2, pos)
+					if not parent1.object:get_luaentity() then
+						return
+					end
+					if not parent2.object:get_luaentity() then
+						return
+					end
 
 					-- custom breed function
-					if self.on_breed then
-						-- when false skip going any further
-						if self.on_breed(self, ent) == false then
+					if parent1.on_breed then
+						-- when false, skip going any further
+						if parent1.on_breed(parent1, parent2) == false then
 							return
 						end
 					end
 
-					local child = mobs:spawn_child(pos, self.name)
+					local child = mobs:spawn_child(pos, parent1.name)
 
 					local ent_c = child:get_luaentity()
 
@@ -967,9 +978,9 @@ local breed = function(self)
 					-- Use texture of one of the parents
 					local p = math.random(1, 2)
 					if p == 1 then
-						ent_c.base_texture = self.base_texture
+						ent_c.base_texture = parent1.base_texture
 					else
-						ent_c.base_texture = ent.base_texture
+						ent_c.base_texture = parent2.base_texture
 					end
 					child:set_properties({
 						textures = ent_c.base_texture
@@ -977,8 +988,8 @@ local breed = function(self)
 
 					-- tamed and owned by parents' owner
 					ent_c.tamed = true
-					ent_c.owner = self.owner
-				end)
+					ent_c.owner = parent1.owner
+				end, self, ent, pos)
 
 				num = 0
 
@@ -1096,6 +1107,9 @@ local smart_mobs = function(self, s, p, dist, dtime)
 			use_pathfind = false
 
 			minetest.after(1, function(self)
+				if not self.object:get_luaentity() then
+					return
+				end
 				if has_lineofsight then self.path.following = false end
 			end, self)
 		end -- can see target!
@@ -1107,6 +1121,9 @@ local smart_mobs = function(self, s, p, dist, dtime)
 		self.path.stuck_timer = 0
 
 		minetest.after(1, function(self)
+			if not self.object:get_luaentity() then
+				return
+			end
 			if has_lineofsight then self.path.following = false end
 		end, self)
 	end
@@ -1117,6 +1134,9 @@ local smart_mobs = function(self, s, p, dist, dtime)
 		self.path.stuck_timer = 0
 
 		minetest.after(1, function(self)
+			if not self.object:get_luaentity() then
+				return
+			end
 			if has_lineofsight then self.path.following = false end
 		end, self)
 	end

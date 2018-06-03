@@ -151,9 +151,11 @@ function mobs.attach(entity, player)
 		}
 	})
 
-	minetest.after(0.2, function()
-		mcl_player.player_set_animation(player, "sit" , 30)
-	end)
+	minetest.after(0.2, function(player)
+		if player:is_player() then
+			mcl_player.player_set_animation(player, "sit" , 30)
+		end
+	end, player)
 
 	player:set_look_horizontal(entity.object:get_yaw() - rot_view)
 end
@@ -169,9 +171,11 @@ function mobs.detach(player, offset)
 
 	pos = {x = pos.x + offset.x, y = pos.y + 0.2 + offset.y, z = pos.z + offset.z}
 
-	minetest.after(0.1, function()
-		player:setpos(pos)
-	end)
+	minetest.after(0.1, function(player, pos)
+		if player:is_player() then
+			player:set_pos(pos)
+		end
+	end, player, pos)
 end
 
 
