@@ -85,11 +85,12 @@ function boat.on_rightclick(self, clicker)
 			{x = 0, y = 3.75, z = -1}, {x = 0, y = 0, z = 0})
 		clicker:set_properties({ visual_size = driver_visual_size })
 		mcl_player.player_attached[name] = true
-		minetest.after(0.2, function(clicker)
-			if clicker:is_player() then
-				mcl_player.player_set_animation(clicker, "sit" , 30)
+		minetest.after(0.2, function(name)
+			local player = minetest.get_player_by_name(name)
+			if player then
+				mcl_player.player_set_animation(player, "sit" , 30)
 			end
-		end, clicker)
+		end, name)
 		clicker:set_look_horizontal(self.object:getyaw())
 	end
 end

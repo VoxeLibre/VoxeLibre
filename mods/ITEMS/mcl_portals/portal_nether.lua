@@ -404,6 +404,9 @@ minetest.register_abm({
 					end
 					-- teleport the object
 					minetest.after(3, function(obj, pos, target)
+						if not obj:get_luaentity() then
+							return
+						end
 						-- Prevent quick back-and-forth teleportation
 						if portal_cooloff[obj] then
 							return

@@ -570,7 +570,8 @@ if c("totem") then
 						scale = { x=17, y=17 },
 						offset = { x=0, y=-178 },
 					})
-					minetest.after(3, function(player)
+					minetest.after(3, function(name)
+						local player = minetest.get_player_by_name(name)
 						if player and player:is_player() then
 							local name = player:get_player_name()
 							if hud_totem[name] then
@@ -578,7 +579,7 @@ if c("totem") then
 								hud_totem[name] = nil
 							end
 						end
-					end, player)
+					end, player:get_player_name())
 				end
 
 				-- Set HP to exactly 1

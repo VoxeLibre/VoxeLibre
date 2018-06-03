@@ -85,9 +85,10 @@ local function reset_bars_poison_hunger(player)
 end
 
 -- Poison player
-local function poisonp(tick, time, time_left, damage, exhaustion, player)
+local function poisonp(tick, time, time_left, damage, exhaustion, name)
+	local player = minetest.get_player_by_name(name)
 	-- First check if player is still there
-	if not player:is_player() then
+	if not player then
 		return
 	end
 	local name = player:get_player_name()
@@ -97,7 +98,7 @@ local function poisonp(tick, time, time_left, damage, exhaustion, player)
 	end
 	time_left = time_left + tick
 	if time_left < time then
-		minetest.after(tick, poisonp, tick, time, time_left, damage, exhaustion, player)
+		minetest.after(tick, poisonp, tick, time, time_left, damage, exhaustion, name)
 	else
 		if damage > 0 then
 			mcl_hunger.poison_damage[name] = mcl_hunger.poison_damage[name] - 1
@@ -236,7 +237,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 						end
 						mcl_hunger.poison_hunger[name] = mcl_hunger.poison_hunger[name] + 1
 					end
-					poisonp(1, poisontime, 0, poison, exhaust, user)
+					poisonp(1, poisontime, 0, poison, exhaust, user:get_player_name())
 				end
 			end
 

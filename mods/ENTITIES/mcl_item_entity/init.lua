@@ -115,7 +115,8 @@ minetest.register_globalstep(function(dtime)
 								if object:get_luaentity().init ~= true then
 									object:get_luaentity().init = true
 									minetest.after(1, function(args)
-										local player = args[1]
+										local playername = args[1]
+										local player = minetest.get_player_by_name(playername)
 										local object = args[2]
 										local lua = object:get_luaentity()
 										if player == nil or not player:is_player() or object == nil or lua == nil or lua.itemstring == nil then
@@ -136,7 +137,7 @@ minetest.register_globalstep(function(dtime)
 										else
 											enable_physics(object, object:get_luaentity())
 										end
-									end, {player, object})
+									end, {player:get_player_name(), object})
 								end
 							end
 						end

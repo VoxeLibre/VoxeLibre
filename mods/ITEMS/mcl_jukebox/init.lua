@@ -72,8 +72,8 @@ local function now_playing(player, track_id)
 		active_huds[playername] = id
 	end
 	minetest.after(5, function(tab)
-		local player = tab[1]
-		local playername = player:get_player_name()
+		local playername = tab[1]
+		local player = minetest.get_player_by_name(playername)
 		local id = tab[2]
 		local seq = tab[3]
 		if not player or not player:is_player() or not active_huds[playername] or not hud_sequence_numbers[playername] or seq ~= hud_sequence_numbers[playername] then
@@ -83,7 +83,7 @@ local function now_playing(player, track_id)
 			player:hud_remove(active_huds[playername])
 			active_huds[playername] = nil
 		end
-	end, {player, id, hud_sequence_numbers[playername]})
+	end, {playername, id, hud_sequence_numbers[playername]})
 	
 end
 

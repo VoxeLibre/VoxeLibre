@@ -338,12 +338,16 @@ function awards.unlock(name, award)
 			alignment = {x = 0, y = 0},
 			direction = 0,
 		})
-		minetest.after(3, function()
+		minetest.after(3, function(name)
+			local player = minetest.get_player_by_name(name)
+			if not player then
+				return
+			end
 			player:hud_remove(one)
 			player:hud_remove(two)
 			player:hud_remove(three)
 			player:hud_remove(four)
-		end)
+		end, player:get_player_name())
 	end
 end
 

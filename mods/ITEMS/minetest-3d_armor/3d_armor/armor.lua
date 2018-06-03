@@ -292,11 +292,15 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 	for field, _ in pairs(fields) do
 		if string.find(field, "skins_set") then
-			minetest.after(0, function(player)
+			minetest.after(0, function(name)
+				local player = minetest.get_player_by_name(name)
+				if not player then
+					return
+				end
 				local skin = armor:get_player_skin(name)
 				armor.textures[name].skin = skin..".png"
 				armor:set_player_armor(player)
-			end, player)
+			end, player:get_player_name())
 		end
 	end
 end)
@@ -406,9 +410,13 @@ minetest.register_on_joinplayer(function(player)
 		end
 	end
 	for i=1, ARMOR_INIT_TIMES do
-		minetest.after(ARMOR_INIT_DELAY * i, function(player)
+		minetest.after(ARMOR_INIT_DELAY * i, function(name)
+			local player = minetest.get_player_by_name(name)
+			if not player then
+				return
+			end
 			armor:set_player_armor(player)
-		end, player)
+		end, player:get_player_name())
 	end
 end)
 
@@ -435,7 +443,7 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 		end
 		armor:set_player_armor(player)
 		if ARMOR_DESTROY == false then
-			minetest.after(ARMOR_BONES_DELAY, function()
+			minetest.after(ARMOR_BONES_DELAY, function(pos, drop)
 				local node = minetest.get_node(vector.round(pos))
 				if node then
 					if node.name ~= "bones:bones" then
@@ -461,7 +469,7 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 						armor.drop_armor(pos, stack)
 					end
 				end
-			end)
+			end, pos, drop)
 		end
 	end)
 end
