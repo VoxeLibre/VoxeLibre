@@ -38,6 +38,8 @@ dofile(path .. "/3_shared.lua")
 --Mob heads
 dofile(path .. "/4_heads.lua")
 
+dofile(path .. "/5_spawn_abm_check.lua")
+
 -- Animals
 dofile(path .. "/bat.lua") -- Mesh and animation by toby109tt  / https://github.com/22i
 dofile(path .. "/rabbit.lua") -- Mesh and animation byExeterDad
