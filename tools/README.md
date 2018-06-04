@@ -8,8 +8,9 @@ a texture pack for Minetest so it can be used with MineClone 2.
 
 **WARNING**: This script is currently incomplete, not all textures will be
 converted. Some texture conversions are even buggy!
-For a 100% complete texture pack, a bit of manual work will be required
-afterwards.
+Coverage is close to 100%, but it's not quite there yet.
+For a 100% complete texture pack, a bit of manual work on the textures
+will be required afterwards.
 
 Modes of operation:
 - Can create a Minetest texture pack (default)
