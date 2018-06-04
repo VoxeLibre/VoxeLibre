@@ -375,7 +375,7 @@ local function show_trade_formspec(playername, trader)
 	mcl_vars.inventory_header..
 	"label[4,0;"..minetest.formspec_escape(profession).."]"
 	-- FIXME: Remove when trading bugs are fixed
-	.."label[0,0.5;"..minetest.formspec_escape(minetest.colorize("#FF0000", "WARNING! Trading is incomplete and might have bugs!")).."]"
+	.."label[0,0.5;"..minetest.formspec_escape(minetest.colorize("#FF3333", "WARNING! Trading is incomplete and has bugs!")).."]"
 	.."list[current_player;main;0,4.5;9,3;9]"
 	.."list[current_player;main;0,7.74;9,1;]"
 	.."button[1,1;0.5,1;prev_trade;<]"
