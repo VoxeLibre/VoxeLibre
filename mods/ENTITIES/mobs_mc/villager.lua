@@ -3,6 +3,12 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
+-- TODO: Per-player trading inventories
+-- TODO: Trading tiers
+-- TODO: Trade locking
+-- FIXME: Weird behaviour when taking single item from output stack
+-- FIXME: Placing output on exiting item in player inventory destroys item
+
 -- intllib
 local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
@@ -291,7 +297,7 @@ local init_profession = function(self)
 		self._profession = profession_names[p]
 	end
 	if not self._max_trade_tier then
-		-- TODO: Randomize
+		-- TODO: Start with tier 1
 		self._max_trade_tier = 10
 	end
 end
@@ -368,6 +374,8 @@ local function show_trade_formspec(playername, trader)
 	"background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"..
 	mcl_vars.inventory_header..
 	"label[4,0;"..minetest.formspec_escape(profession).."]"
+	-- FIXME: Remove when trading bugs are fixed
+	.."label[0,0.5;"..minetest.formspec_escape(minetest.colorize("#FF0000", "WARNING! Trading is incomplete and might have bugs!")).."]"
 	.."list[current_player;main;0,4.5;9,3;9]"
 	.."list[current_player;main;0,7.74;9,1;]"
 	.."button[1,1;0.5,1;prev_trade;<]"
@@ -470,6 +478,7 @@ mobs:register_mob("mobs_mc:villager", {
 
 		player_trading_with[name] = self
 
+		-- TODO: Create per-player trading inventories
 		local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade"})
 		if not inv then
 			inv = minetest.create_detached_inventory("mobs_mc:trade", {
