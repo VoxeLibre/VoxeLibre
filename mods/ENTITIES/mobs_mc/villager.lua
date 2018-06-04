@@ -11,9 +11,11 @@ local S, NS = dofile(MP.."/intllib.lua")
 --################### VILLAGER
 --###################
 
+-- LIST OF VILLAGES PROFESSIONS AND TRADES
 local E1 = { "mcl_core:emerald", 1, 1 } -- one emerald
 local professions = {
-	{
+	farmer = {
+		id = "farmer",
 		name = "Farmer",
 		trades = {
 			{
@@ -39,7 +41,8 @@ local professions = {
 			},
 		}
 	},
-	{
+	fisherman = {
+		id = "fisherman",
 		name = "Fisherman",
 		trades = {
 			{
@@ -50,7 +53,8 @@ local professions = {
 			-- TODO: enchanted fishing rod
 		},
 	},
-	{
+	fletcher = {
+		id = "fletcher",
 		name = "Fletcher",
 		trades = {
 			{
@@ -64,7 +68,8 @@ local professions = {
 			},
 		}
 	},
-	{
+	shepherd ={
+		id = "shepherd",
 		name = "Shepherd",
 		trades = {
 			{
@@ -91,7 +96,8 @@ local professions = {
 			},
 		},
 	},
-	{
+	librarian = {
+		id = "librarian",
 		name = "Librarian",
 		trades = {
 			{
@@ -119,7 +125,8 @@ local professions = {
 			}
 		},
 	},
-	{
+	cartographer = {
+		id = "cartographer",
 		name = "Cartographer",
 		trades = {
 			{
@@ -138,7 +145,8 @@ local professions = {
 			-- TODO: special maps
 		},
 	},
-	{
+	armorer = {
+		id = "armorer",
 		name = "Armorer",
 		trades = {
 			{
@@ -165,7 +173,7 @@ local professions = {
 			},
 		},
 	},
-	{
+	leatherworker = {
 		name = "Leatherworker",
 		trades = {
 			{
@@ -183,7 +191,7 @@ local professions = {
 			},
 		},
 	},
-	{
+	butcher = {
 		name = "Butcher",
 		trades = {
 			{
@@ -198,7 +206,7 @@ local professions = {
 			},
 		},
 	},
-	{
+	weapon_smith = {
 		name = "Weapon Smith",
 		trades = {
 			{
@@ -221,7 +229,7 @@ local professions = {
 			},
 		},
 	},
-	{
+	tool_smith = {
 		name = "Tool Smith",
 		trades = {
 			{
@@ -243,7 +251,7 @@ local professions = {
 			},
 		},
 	},
-	{
+	cleric = {
 		name = "Cleric",
 		trades = {
 			{
@@ -267,6 +275,21 @@ local professions = {
 	-- TODO: Nitwit
 }
 
+local profession_names = {}
+for id, _ in pairs(professions) do
+	table.insert(profession_names, id)
+end
+
+local init_profession = function(self)
+	if not self._profession then
+		local p = math.random(1, #profession_names)
+		self._profession = profession_names[p]
+	end
+	if not self._max_trade_tier then
+		-- TODO: Randomize
+		self._max_trade_tier = 10
+	end
+end
 
 mobs:register_mob("mobs_mc:villager", {
 	type = "npc",
@@ -414,7 +437,9 @@ mobs:register_mob("mobs_mc:villager", {
 			inv:set_stack("offered", i, "")
 		end
 
-		local profession = professions[math.random(1, #professions)]
+		init_profession(self)
+		local profession = professions[self._profession]
+
 		local trade_tiers = profession.trades
 		if trade_tiers == nil then
 			return
@@ -451,6 +476,10 @@ mobs:register_mob("mobs_mc:villager", {
 		.."listring[current_player;main]"
 		minetest.sound_play("mobs_mc_villager_trade", {to_player = clicker:get_player_name()})
 		minetest.show_formspec(clicker:get_player_name(), "mobs_mc:trade", formspec)
+	end,
+
+	on_spawn = function(self)
+		init_profession(self)
 	end,
 })
 
