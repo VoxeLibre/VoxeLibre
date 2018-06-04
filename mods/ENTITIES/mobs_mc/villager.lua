@@ -16,7 +16,7 @@ local player_trading_with = {}
 --################### VILLAGER
 --###################
 
--- LIST OF VILLAGES PROFESSIONS AND TRADES
+-- LIST OF VILLAGER PROFESSIONS AND TRADES
 local E1 = { "mcl_core:emerald", 1, 1 } -- one emerald
 local professions = {
 	farmer = {
@@ -361,12 +361,14 @@ local set_trade = function(self, player, inv, concrete_tradenum)
 
 end
 
-local function show_trade_formspec(playername)
+local function show_trade_formspec(playername, trader)
+	local profession = professions[trader._profession].name
 	local formspec =
 	"size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"..
 	mcl_vars.inventory_header..
-	"list[current_player;main;0,4.5;9,3;9]"
+	"label[4,0;"..minetest.formspec_escape(profession).."]"
+	.."list[current_player;main;0,4.5;9,3;9]"
 	.."list[current_player;main;0,7.74;9,1;]"
 	.."button[1,1;0.5,1;prev_trade;<]"
 	.."button[7.26,1;0.5,1;next_trade;>]"
@@ -534,7 +536,7 @@ mobs:register_mob("mobs_mc:villager", {
 		player_tradenum[name] = 1
 		set_trade(self, player, inv, player_tradenum[name])
 
-		show_trade_formspec(name)
+		show_trade_formspec(name, self)
 	end,
 
 	on_spawn = function(self)
@@ -597,7 +599,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade"})
 			set_trade(trader, player, inv, player_tradenum[name])
 			update_offer(inv, player, false)
-			show_trade_formspec(name)
+			show_trade_formspec(name, trader)
 		elseif fields.prev_trade then
 			local trader = player_trading_with[name]
 			if not trader or not trader.object:get_luaentity() then
@@ -607,7 +609,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade"})
 			set_trade(trader, player, inv, player_tradenum[name])
 			update_offer(inv, player, false)
-			show_trade_formspec(name)
+			show_trade_formspec(name, trader)
 		end
 	end
 end)
