@@ -11,6 +11,261 @@ local S, NS = dofile(MP.."/intllib.lua")
 --################### VILLAGER
 --###################
 
+local E1 = { "mcl_core:emerald", 1, 1 } -- one emerald
+local professions = {
+	{
+		name = "Farmer",
+		trades = {
+			{
+			{ { "mcl_farming:wheat_item", 18, 22, }, E1 },
+			{ { "mcl_farming:potato_item", 15, 15, }, E1 },
+			{ { "mcl_farming:carrot_item", 15, 19, }, E1 },
+			{ E1, { "mcl_core:bread", 2, 4 } },
+			},
+
+			{
+			{ { "mcl_farming:pumpkin_face", 8, 13 }, E1 },
+			{ E1, { "mcl_farming:pumpkin_pie", 2, 3} },
+			},
+
+			{
+			{ { "mcl_farming:melon", 7, 12 }, E1 },
+			{ E1, { "mcl_core:apple", 5, 7 }, },
+			},
+
+			{
+			{ E1, { "mcl_farming:cookie", 6, 10 } },
+			{ E1, { "mcl_cake:cake", 1, 1 } },
+			},
+		}
+	},
+	{
+		name = "Fisherman",
+		trades = {
+			{
+			{ { "mcl_fishing:fish_raw", 6, 6, "mcl_core:emerald", 1, 1 }, { "mcl_fishing:fish_cooked", 6, 6 } },
+			{ { "mcl_mobitems:string", 15, 20 }, E1 },
+			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
+			},
+			-- TODO: enchanted fishing rod
+		},
+	},
+	{
+		name = "Fletcher",
+		trades = {
+			{
+			{ { "mcl_mobitems:string", 15, 20 }, E1 },
+			{ E1, { "mcl_bows:arrow", 8, 12 } },
+			},
+
+			{
+			{ { "mcl_core:gravel", 10, 10, "mcl_core:emerald", 1, 1 }, { "mcl_core:flint", 6, 10 } },
+			{ { "mcl_core:emerald", 2, 3 }, { "mcl_bows:bow", 1, 1 } },
+			},
+		}
+	},
+	{
+		name = "Shepherd",
+		trades = {
+			{
+			{ { "mcl_wool:white", 16, 22 }, E1 },
+			{ { "mcl_core:emerald", 3, 4 }, { "mcl_tools:shears", 1, 1 } },
+			},
+
+			{
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:white", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:grey", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:silver", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:yellow", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:red", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:purple", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:blue", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:light_blue", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:brown", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:lime", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:green", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:magenta", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:black", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:cyan", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:pink", 1, 1 } },
+			},
+		},
+	},
+	{
+		name = "Librarian",
+		trades = {
+			{
+			{ { "mcl_core:paper", 24, 36 }, E1 },
+			-- TODO: enchanted book
+			{ { "mcl_books:book", 8, 10 }, E1 },
+			{ { "mcl_core:emerald", 10, 12 }, { "mcl_compass:compass", 1 ,1 }},
+			{ { "mcl_core:emerald", 3, 4 }, { "mcl_books:bookshelf", 1 ,1 }},
+			},
+
+			{
+			{ { "mcl_books:written_book", 2, 2 }, E1 },
+			{ { "mcl_core:emerald", 10, 12 }, { "mcl_clock:clock", 1, 1 } },
+			{ E1, { "mcl_core:glass", 3, 5 } },
+			},
+
+			{
+			{ E1, { "mcl_core:glass", 3, 5 } },
+			},
+
+			-- TODO: 2 enchanted book tiers
+
+			{
+			{ { "mcl_core:emerald", 20, 22 }, { "mcl_mobs:nametag", 1, 1 } },
+			}
+		},
+	},
+	{
+		name = "Cartographer",
+		trades = {
+			{
+			{ { "mcl_core:paper", 24, 36 }, E1 },
+			},
+
+			{
+			{ { "mcl_compass:compass", 1, 1 }, E1 },
+			},
+
+			{
+			-- TODO: replace with empty map
+			{ { "mcl_core:emerald", 7, 11}, { "mcl_maps:filled_map", 1, 1 } },
+			},
+
+			-- TODO: special maps
+		},
+	},
+	{
+		name = "Armorer",
+		trades = {
+			{
+			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
+			{ { "mcl_core:emerald", 6, 8 }, { "3d_armor:helmet_iron", 1, 1 } },
+			},
+
+			{
+			{ { "mcl_core:iron_ingot", 7, 9 }, E1 },
+			{ { "mcl_core:emerald", 10, 14 }, { "3d_armor:chestplate_iron", 1, 1 } },
+			},
+
+			{
+			{ { "mcl_core:diamond", 3, 4 }, E1 },
+			-- TODO: enchant
+			{ { "mcl_core:emerald", 16, 19 }, { "3d_armor:chestplate_diamond", 1, 1 } },
+			},
+
+			{
+			{ { "mcl_core:emerald", 5, 7 }, { "3d_armor:boots_chain", 1, 1 } },
+			{ { "mcl_core:emerald", 9, 11 }, { "3d_armor:leggings_chain", 1, 1 } },
+			{ { "mcl_core:emerald", 5, 7 }, { "3d_armor:helmet_chain", 1, 1 } },
+			{ { "mcl_core:emerald", 11, 15 }, { "3d_armor:chestplate_chain", 1, 1 } },
+			},
+		},
+	},
+	{
+		name = "Leatherworker",
+		trades = {
+			{
+			{ { "mcl_mobitems:leather", 9, 12 }, E1 },
+			{ { "mcl_core:emerald", 2, 4 }, { "3d_armor:leggings_leather", 2, 4 } },
+			},
+
+			{
+			-- TODO: enchant
+			{ { "mcl_core:emerald", 7, 12 }, { "3d_armor:chestplate_leather", 1, 1 } },
+			},
+
+			{
+			{ { "mcl_core:emerald", 8, 10 }, { "mcl_mobitems:saddle", 1, 1 } },
+			},
+		},
+	},
+	{
+		name = "Butcher",
+		trades = {
+			{
+			{ { "mcl_mobitems:beef", 14, 18 }, E1 },
+			{ { "mcl_mobitems:chicken", 14, 18 }, E1 },
+			},
+
+			{
+			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
+			{ E1, { "mcl_mobitems:cooked_beef", 5, 7 } },
+			{ E1, { "mcl_mobitems:cooked_chicken", 6, 8 } },
+			},
+		},
+	},
+	{
+		name = "Weapon Smith",
+		trades = {
+			{
+			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
+			{ { "mcl_core:emerald", 6, 8 }, { "mcl_tools:axe_iron", 1, 1 } },
+			},
+
+			{
+			{ { "mcl_core:iron_ingot", 7, 9 }, E1 },
+			-- TODO: enchant
+			{ { "mcl_core:emerald", 9, 10 }, { "mcl_tools:sword_iron", 1, 1 } },
+			},
+
+			{
+			{ { "mcl_core:diamond", 3, 4 }, E1 },
+			-- TODO: enchant
+			{ { "mcl_core:emerald", 12, 15 }, { "mcl_tools:sword_diamond", 1, 1 } },
+			-- TODO: enchant
+			{ { "mcl_core:emerald", 9, 12 }, { "mcl_tools:axe_diamond", 1, 1 } },
+			},
+		},
+	},
+	{
+		name = "Tool Smith",
+		trades = {
+			{
+			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
+			-- TODO: enchant
+			{ { "mcl_core:emerald", 5, 7 }, { "mcl_tools:shovel_iron", 1, 1 } },
+			},
+
+			{
+			{ { "mcl_core:iron_ingot", 7, 9 }, E1 },
+			-- TODO: enchant
+			{ { "mcl_core:emerald", 9, 11 }, { "mcl_tools:pick_iron", 1, 1 } },
+			},
+
+			{
+			{ { "mcl_core:diamond", 3, 4 }, E1 },
+			-- TODO: enchant
+			{ { "mcl_core:emerald", 12, 15 }, { "mcl_tools:pick_diamond", 1, 1 } },
+			},
+		},
+	},
+	{
+		name = "Cleric",
+		trades = {
+			{
+			{ { "mcl_mobitems:rotten_flesh", 36, 40 }, E1 },
+			{ { "mcl_core:gold_ingot", 8, 10 }, E1 },
+			},
+
+			{
+			{ E1, { "mesecons:redstone", 1, 4  } },
+			{ E1, { "mcl_dye:blue", 1, 2 } },
+			},
+
+			{
+			{ E1, { "mcl_nether:glowstone", 1, 3 } },
+			{ { "mcl_core:emerald", 4, 7 }, { "mcl_throwing:ender_pearl", 1, 1 } },
+			},
+
+			-- TODO: Bottle 'o enchanting
+		},
+	},
+	-- TODO: Nitwit
+}
 
 
 mobs:register_mob("mobs_mc:villager", {
@@ -146,45 +401,39 @@ mobs:register_mob("mobs_mc:villager", {
 					end
 				end,
 			})
-			end
-			inv:set_size("input", 2)
-			inv:set_size("output", 1)
-			inv:set_size("wanted", 2)
-			inv:set_size("offered", 1)
+		end
+		inv:set_size("input", 2)
+		inv:set_size("output", 1)
+		inv:set_size("wanted", 2)
+		inv:set_size("offered", 1)
 
-		local trades = {
-			{"mcl_core:apple 12",		"mcl_core:emerald 1"},
-			{"mcl_core:coal_lump 20",	"mcl_core:emerald 1"},
-			{"mcl_core:paper 30",		"mcl_core:emerald 1"},
-			{"mcl_mobitems:leather 10",	"mcl_core:emerald 1"},
-			{"mcl_books:book 2",		"mcl_core:emerald 1"},
-			{"mcl_farming:potato_item 15",	"mcl_core:emerald 1"},
-			{"mcl_farming:wheat_item 20",	"mcl_core:emerald 1"},
-			{"mcl_farming:carrot_item 15",	"mcl_core:emerald 1"},
-			{"mcl_farming:melon_item 8",	"mcl_core:emerald 1"},
-			{"mcl_mobitems:rotten_flesh 40","mcl_core:emerald 1"},
-			{"mcl_core:gold_ingot 10",	"mcl_core:emerald 1"},
-			{"mcl_wool:white 15",		"mcl_core:emerald 1"},
-			{"mcl_farming:pumpkin_face 8",	"mcl_core:emerald 1"},
+		for i=1, inv:get_size("wanted") do
+			inv:set_stack("wanted", i, "")
+		end
+		for i=1, inv:get_size("offered") do
+			inv:set_stack("offered", i, "")
+		end
 
-			{"mcl_core:emerald 1",		"mcl_mobitems:cooked_beef 5"},
-			{"mcl_core:emerald 1",		"mcl_mobitems:cooked_chicken 7"},
-			{"mcl_core:emerald 1",		"mcl_farming:cookie 6"},
-			{"mcl_core:emerald 1",		"mcl_bows:arrow 10"},
-			{"mcl_core:emerald 3",		"mcl_bows:bow 1"},
-			{"mcl_core:emerald 1",		"mcl_cake:cake 1"},
-			{"mcl_core:emerald 10",		"mcl_mobitems:saddle 1"},
-			{"mcl_core:emerald 10",		"mcl_clock:clock 1"},
-			{"mcl_core:emerald 10",		"mcl_compass:compass 1"},
-			{"mcl_core:emerald 1",		"mcl_core:glass 5"},
-			{"mcl_core:emerald 1",		"mcl_nether:glowstone 3"},
-			{"mcl_core:emerald 3",		"mcl_tools:shears 1"},
-			{"mcl_core:emerald 10",		"mcl_tools:sword_diamond 1"},
-			{"mcl_core:emerald 20",		"3d_armor:chestplate_diamond 1"},
-		}
-		local tradenum = math.random(#trades)
-		inv:set_stack("wanted", 1, ItemStack(trades[tradenum][1]))
-		inv:set_stack("offered", 1, ItemStack(trades[tradenum][2]))
+		local profession = professions[math.random(1, #professions)]
+		local trade_tiers = profession.trades
+		if trade_tiers == nil then
+			return
+		end
+		local tier = trade_tiers[math.random(1, #trade_tiers)]
+		local tradenum = math.random(1, #tier)
+		local trade = tier[tradenum]
+		local wanted = ItemStack(trade[1][1])
+		wanted:set_count(math.random(trade[1][2], trade[1][3]))
+		local offered = ItemStack(trade[2][1])
+		offered:set_count(math.random(trade[2][2], trade[2][3]))
+		inv:set_stack("wanted", 1, wanted)
+		inv:set_stack("offered", 1, offered)
+		-- Second wanted item
+		if trade[1][4] then
+			local wanted2 = ItemStack(trade[1][4])
+			wanted2:set_count(math.random(trade[1][5], trade[1][6]))
+			inv:set_stack("wanted", 2, wanted2)
+		end
 		
 		local formspec = 
 		"size[9,8.75]"..
@@ -236,15 +485,13 @@ end
 local return_fields = function(player)
 	local inv_t = minetest.get_inventory({type="detached", name = "mobs_mc:trade"})
 	local inv_p = player:get_inventory()
-	for i, stack in ipairs(inv_t:get_list("input")) do
+	for i=1, inv_t:get_size("input") do
+		local stack = inv_t:get_stack("input", i)
 		return_item(stack, player, player:get_pos(), inv_p)
 		stack:clear()
 		inv_t:set_stack("input", i, stack)
 	end
-	for i, stack in ipairs(inv_t:get_list("output")) do
-		stack:clear()
-		inv_t:set_stack("output", i, stack)
-	end
+	inv_t:set_stack("output", 1, "")
 end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
