@@ -4,7 +4,7 @@ Currently, the only tool is Texture Converter.
 
 ## Texture Converter (EXPERIMENTAL)
 This is a Python script which converts a resource pack for Minecraft to
-a texture pack for Minetest (and thus, MineClone 2).
+a texture pack for Minetest so it can be used with MineClone 2.
 
 **WARNING**: This script is currently incomplete, not all textures will be
 converted. Some texture conversions are even buggy!
@@ -23,4 +23,6 @@ Requirements:
 Usage:
 - Make sure the file “`Conversion_Table.csv`” is in the same directory as the script
 - In the console, run `./Texture_Converter.py -h` to learn the available options
-
+- Convert the textures
+- Put the new texture directory in the Minetest texture pack directory, just like
+  any other Minetest texture pack

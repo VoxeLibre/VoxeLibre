@@ -40,17 +40,17 @@ Mandatory argument:
 
 Optional arguments:
 -p <size>
-	Specify the size of the original textures (default: 16)
+	Specify the size (pixels) of the original textures (default: 16)
 -o <output directory>
-	Directory in which to put the resulting MineClone 2 texture pack
+	Directory in which to put the resulting Minetest texture pack
 	(default: working directory)
 -d
-	The script will only pretend to convert textures by writing
-	to the console only, but not changing any files.
+	Just pretend to convert textures and just print output, but do not actually
+	change any files.
 -v
-	Prints out all copying actions
+	Print out all copying actions
 -h
-	Shows this help an exits"""
+	Show this help and exit"""
 try:
 	opts, args = getopt.getopt(sys.argv[1:],"hi:o:p:dv")
 except getopt.GetoptError:
@@ -65,7 +65,7 @@ for opt, arg in opts:
 		print(
 """This is the official MineClone 2 Texture Converter.
 This will convert textures from Minecraft resource packs to
-a MineClone 2 texture pack.
+a Minetest texture pack.
 
 Supported Minecraft version: 1.12 (Java Edition)
 
