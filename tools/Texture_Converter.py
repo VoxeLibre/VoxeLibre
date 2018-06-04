@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 # Texture Converter.
 # Converts Minecraft resource packs to Minetest texture packs.
 # See README.md.
