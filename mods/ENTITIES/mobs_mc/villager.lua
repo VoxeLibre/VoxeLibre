@@ -77,12 +77,12 @@ mobs:register_mob("mobs_mc:villager", {
 	light_damage = 0,
 	view_range = 16,
 	fear_height = 4,
---[[
 	on_rightclick = function(self, clicker)
 		local inv
-		inv = minetest.get_inventory({type="detached", name="trading_inv"})
+		inv = minetest.get_inventory({type="detached", name="mobs_mc:trade"})
+
 		if not inv then
-			inv = minetest.create_detached_inventory("trading_inv", {
+			inv = minetest.create_detached_inventory("mobs_mc:trade", {
 				allow_take = function(inv, listname, index, stack, player)
 					if listname == "input" or listname == "output" then
 						return stack:get_count()
@@ -158,7 +158,6 @@ mobs:register_mob("mobs_mc:villager", {
 			{"mcl_core:paper 30",		"mcl_core:emerald 1"},
 			{"mcl_mobitems:leather 10",	"mcl_core:emerald 1"},
 			{"mcl_books:book 2",		"mcl_core:emerald 1"},
-			{"mcl_core:emerald 3",		"mcl_core:emerald 1"},
 			{"mcl_farming:potato_item 15",	"mcl_core:emerald 1"},
 			{"mcl_farming:wheat_item 20",	"mcl_core:emerald 1"},
 			{"mcl_farming:carrot_item 15",	"mcl_core:emerald 1"},
@@ -193,19 +192,72 @@ mobs:register_mob("mobs_mc:villager", {
 		mcl_vars.inventory_header..
 		"list[current_player;main;0,4.5;9,3;9]"..
 		"list[current_player;main;0,7.74;9,1;]"
-		.."list[detached:trading_inv;wanted;2,1;2,1;]"
-		.."list[detached:trading_inv;offered;5.76,1;1,1;]"
-		.."list[detached:trading_inv;input;2,2.5;2,1;]"
-		.."list[detached:trading_inv;output;5.76,2.55;1,1;]"
-		.."listring[detached:trading_inv;output]"
+		.."list[detached:mobs_mc:trade;wanted;2,1;2,1;]"
+		.."list[detached:mobs_mc:trade;offered;5.76,1;1,1;]"
+		.."list[detached:mobs_mc:trade;input;2,2.5;2,1;]"
+		.."list[detached:mobs_mc:trade;output;5.76,2.55;1,1;]"
+		.."listring[detached:mobs_mc:trade;output]"
 		.."listring[current_player;main]"
-		.."listring[detached:trading_inv;input]"
+		.."listring[detached:mobs_mc:trade;input]"
 		.."listring[current_player;main]"
 		minetest.sound_play("mobs_mc_villager_trade", {to_player = clicker:get_player_name()})
 		minetest.show_formspec(clicker:get_player_name(), "mobs_mc:trade", formspec)
 	end,
-]]
 })
+
+-- Returns a single itemstack in the given inventory to the player's main inventory, or drop it when there's no space left
+local function return_item(itemstack, dropper, pos, inv_p)
+	if dropper:is_player() then
+		-- Return to main inventory
+		if inv_p:room_for_item("main", itemstack) then
+			inv_p:add_item("main", itemstack)
+		else
+			-- Drop item on the ground
+			local v = dropper:get_look_dir()
+			local p = {x=pos.x, y=pos.y+1.2, z=pos.z}
+			p.x = p.x+(math.random(1,3)*0.2)
+			p.z = p.z+(math.random(1,3)*0.2)
+			local obj = minetest.add_item(p, itemstack)
+			if obj then
+				v.x = v.x*4
+				v.y = v.y*4 + 2
+				v.z = v.z*4
+				obj:setvelocity(v)
+				obj:get_luaentity()._insta_collect = false
+			end
+		end
+	else
+		-- Fallback for unexpected cases
+		minetest.add_item(pos, itemstack)
+	end
+	return itemstack
+end
+
+local return_fields = function(player)
+	local inv_t = minetest.get_inventory({type="detached", name = "mobs_mc:trade"})
+	local inv_p = player:get_inventory()
+	for i, stack in ipairs(inv_t:get_list("input")) do
+		return_item(stack, player, player:get_pos(), inv_p)
+		stack:clear()
+		inv_t:set_stack("input", i, stack)
+	end
+	for i, stack in ipairs(inv_t:get_list("output")) do
+		stack:clear()
+		inv_t:set_stack("output", i, stack)
+	end
+end
+
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	if formname == "mobs_mc:trade" then
+		if fields.quit then
+			return_fields(player)
+		end
+	end
+end)
+
+minetest.register_on_leaveplayer(function(player)
+	return_fields(player)
+end)
 
 mobs:spawn_specific("mobs_mc:villager", mobs_mc.spawn.village, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 8000, 4, mobs_mc.spawn_height.water+1, mobs_mc.spawn_height.overworld_max)
 
