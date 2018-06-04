@@ -22,7 +22,7 @@ local professions = {
 			{ { "mcl_farming:wheat_item", 18, 22, }, E1 },
 			{ { "mcl_farming:potato_item", 15, 15, }, E1 },
 			{ { "mcl_farming:carrot_item", 15, 19, }, E1 },
-			{ E1, { "mcl_core:bread", 2, 4 } },
+			{ E1, { "mcl_farming:bread", 2, 4 } },
 			},
 
 			{
