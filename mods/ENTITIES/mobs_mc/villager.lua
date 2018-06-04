@@ -7,6 +7,11 @@
 local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
+-- playername-indexed table containing the previously used tradenum
+local player_tradenum = {}
+-- playername-indexed table containing the objectref of trader, if trading formspec is open
+local player_trading_with = {}
+
 --###################
 --################### VILLAGER
 --###################
@@ -326,7 +331,7 @@ local update_trades = function(self, inv)
 	self._trades = minetest.serialize(trades)
 end
 
-local set_trade = function(self, inv, concrete_tradenum)
+local set_trade = function(self, player, inv, concrete_tradenum)
 	local trades = minetest.deserialize(self._trades)
 	if not trades then
 		update_trades(self)
@@ -338,7 +343,11 @@ local set_trade = function(self, inv, concrete_tradenum)
 	end
 
 	if concrete_tradenum > #trades then
+		concrete_tradenum = 1
+		player_tradenum[player:get_player_name()] = concrete_tradenum
+	elseif concrete_tradenum < 1 then
 		concrete_tradenum = #trades
+		player_tradenum[player:get_player_name()] = concrete_tradenum
 	end
 	local trade = trades[concrete_tradenum]
 	inv:set_stack("wanted", 1, ItemStack(trade.wanted[1]))
@@ -350,6 +359,44 @@ local set_trade = function(self, inv, concrete_tradenum)
 		inv:set_stack("wanted", 2, "")
 	end
 
+end
+
+local function show_trade_formspec(playername)
+	local formspec =
+	"size[9,8.75]"..
+	"background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"..
+	mcl_vars.inventory_header..
+	"list[current_player;main;0,4.5;9,3;9]"
+	.."list[current_player;main;0,7.74;9,1;]"
+	.."button[1,1;0.5,1;prev_trade;<]"
+	.."button[7.26,1;0.5,1;next_trade;>]"
+	.."list[detached:mobs_mc:trade;wanted;2,1;2,1;]"
+	.."list[detached:mobs_mc:trade;offered;5.76,1;1,1;]"
+	.."list[detached:mobs_mc:trade;input;2,2.5;2,1;]"
+	.."list[detached:mobs_mc:trade;output;5.76,2.55;1,1;]"
+	.."listring[detached:mobs_mc:trade;output]"
+	.."listring[current_player;main]"
+	.."listring[detached:mobs_mc:trade;input]"
+	.."listring[current_player;main]"
+	minetest.sound_play("mobs_mc_villager_trade", {to_player = playername})
+	minetest.show_formspec(playername, "mobs_mc:trade", formspec)
+end
+
+local update_offer = function(inv, player, sound)
+	if inv:contains_item("input", inv:get_stack("wanted", 1)) and
+			(inv:get_stack("wanted", 2):is_empty() or inv:contains_item("input", inv:get_stack("wanted", 2))) then
+		inv:set_stack("output", 1, inv:get_stack("offered", 1))
+		if sound then
+			minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
+		end
+		return true
+	else
+		inv:set_stack("output", 1, ItemStack(""))
+		if sound then
+			minetest.sound_play("mobs_mc_villager_deny", {to_player = player:get_player_name()})
+		end
+		return false
+	end
 end
 
 mobs:register_mob("mobs_mc:villager", {
@@ -417,26 +464,11 @@ mobs:register_mob("mobs_mc:villager", {
 	view_range = 16,
 	fear_height = 4,
 	on_rightclick = function(self, clicker)
-		local inv
-		inv = minetest.get_inventory({type="detached", name="mobs_mc:trade"})
+		local name = clicker:get_player_name()
 
-		local update_offer = function(inv, player, sound)
-			if inv:contains_item("input", inv:get_stack("wanted", 1)) and
-					(inv:get_stack("wanted", 2):is_empty() or inv:contains_item("input", inv:get_stack("wanted", 2))) then
-				inv:set_stack("output", 1, inv:get_stack("offered", 1))
-				if sound then
-					minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
-				end
-				return true
-			else
-				inv:set_stack("output", 1, ItemStack(""))
-				if sound then
-					minetest.sound_play("mobs_mc_villager_deny", {to_player = player:get_player_name()})
-				end
-				return false
-			end
-		end
+		player_trading_with[name] = self
 
+		local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade"})
 		if not inv then
 			inv = minetest.create_detached_inventory("mobs_mc:trade", {
 				allow_take = function(inv, listname, index, stack, player)
@@ -499,26 +531,10 @@ mobs:register_mob("mobs_mc:villager", {
 		if not self._trades then
 			update_trades(self)
 		end
-		set_trade(self, inv, 1)
+		player_tradenum[name] = 1
+		set_trade(self, player, inv, player_tradenum[name])
 
-		local formspec =
-		"size[9,8.75]"..
-		"background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"..
-		mcl_vars.inventory_header..
-		"list[current_player;main;0,4.5;9,3;9]"
-		.."list[current_player;main;0,7.74;9,1;]"
-		.."button[1,1;0.5,1;prev_trade;<]"
-		.."button[7.26,1;0.5,1;next_trade;>]"
-		.."list[detached:mobs_mc:trade;wanted;2,1;2,1;]"
-		.."list[detached:mobs_mc:trade;offered;5.76,1;1,1;]"
-		.."list[detached:mobs_mc:trade;input;2,2.5;2,1;]"
-		.."list[detached:mobs_mc:trade;output;5.76,2.55;1,1;]"
-		.."listring[detached:mobs_mc:trade;output]"
-		.."listring[current_player;main]"
-		.."listring[detached:mobs_mc:trade;input]"
-		.."listring[current_player;main]"
-		minetest.sound_play("mobs_mc_villager_trade", {to_player = clicker:get_player_name()})
-		minetest.show_formspec(clicker:get_player_name(), "mobs_mc:trade", formspec)
+		show_trade_formspec(name)
 	end,
 
 	on_spawn = function(self)
@@ -568,18 +584,43 @@ end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if formname == "mobs_mc:trade" then
+		local name = player:get_player_name()
 		if fields.quit then
 			return_fields(player)
+			player_trading_with[name] = nil
 		elseif fields.next_trade then
-
+			local trader = player_trading_with[name]
+			if not trader or not trader.object:get_luaentity() then
+				return
+			end
+			player_tradenum[name] = player_tradenum[name] + 1
+			local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade"})
+			set_trade(trader, player, inv, player_tradenum[name])
+			update_offer(inv, player, false)
+			show_trade_formspec(name)
 		elseif fields.prev_trade then
-
+			local trader = player_trading_with[name]
+			if not trader or not trader.object:get_luaentity() then
+				return
+			end
+			player_tradenum[name] = player_tradenum[name] - 1
+			local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade"})
+			set_trade(trader, player, inv, player_tradenum[name])
+			update_offer(inv, player, false)
+			show_trade_formspec(name)
 		end
 	end
 end)
 
 minetest.register_on_leaveplayer(function(player)
 	return_fields(player)
+	player_tradenum[player:get_player_name()] = nil
+	player_trading_with[player:get_player_name()] = nil
+end)
+
+minetest.register_on_joinplayer(function(player)
+	player_tradenum[player:get_player_name()] = 1
+	player_trading_with[player:get_player_name()] = nil
 end)
 
 mobs:spawn_specific("mobs_mc:villager", mobs_mc.spawn.village, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 8000, 4, mobs_mc.spawn_height.water+1, mobs_mc.spawn_height.overworld_max)
