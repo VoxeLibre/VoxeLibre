@@ -1,17 +1,7 @@
 #!/usr/bin/env python
-# EXPERIMENTAL texture pack converting utility.
-# This Python script helps in converting Minecraft texture packs. It has 2 main features:
-# - Can create a Minetest texture pack (default)
-# - Can update the MineClone 2 textures
-# This script is currently incomplete, not all textures are converted.
-#
-# Requirements:
-# - Python 3
-# - ImageMagick
-#
-# Usage:
-# - Make sure the file “Conversion_Table.csv” is in the same directory as the script
-# - Run ./Texture_Converter.py -h to learn the available options
+# Texture Converter.
+# Converts Minecraft resource packs to Minetest texture packs.
+# See README.md.
 
 __author__ = "Wuzzy"
 __license__ = "MIT License"
