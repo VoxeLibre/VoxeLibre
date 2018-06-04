@@ -291,6 +291,67 @@ local init_profession = function(self)
 	end
 end
 
+local update_trades = function(self, inv)
+	local profession = professions[self._profession]
+	local trade_tiers = profession.trades
+	if trade_tiers == nil then
+		return
+	end
+
+	local max_tier = math.min(#trade_tiers, self._max_trade_tier)
+	local trades = {}
+	for tiernum=1, max_tier do
+		local tier = trade_tiers[tiernum]
+		for tradenum=1, #tier do
+			local trade = tier[tradenum]
+			local wanted1_item = trade[1][1]
+			local wanted1_count = math.random(trade[1][2], trade[1][3])
+			local offered_item = trade[2][1]
+			local offered_count = math.random(trade[2][2], trade[2][3])
+
+			local wanted = { wanted1_item .. " " ..wanted1_count }
+			if trade[1][4] then
+				local wanted2_item = trade[1][4]
+				local wanted2_count = math.random(trade[1][5], trade[1][6])
+				table.insert(wanted, wanted2_item .. " " ..wanted2_count)
+			end
+
+			table.insert(trades, {
+				wanted = wanted,
+				offered = offered_item .. " " .. offered_count,
+				tier = tiernum,
+			})
+		end
+	end
+	self._trades = minetest.serialize(trades)
+end
+
+local set_trade = function(self, inv, concrete_tradenum)
+	local trades = minetest.deserialize(self._trades)
+	if not trades then
+		update_trades(self)
+		trades = minetest.deserialize(self._trades)
+		if not trades then
+			minetest.log("error", "[mobs_mc] Failed to select villager trade!")
+			return
+		end
+	end
+
+	if concrete_tradenum > #trades then
+		concrete_tradenum = #trades
+	end
+	local trade = trades[concrete_tradenum]
+	inv:set_stack("wanted", 1, ItemStack(trade.wanted[1]))
+	inv:set_stack("offered", 1, ItemStack(trade.offered))
+	if trade.wanted[2] then
+		local wanted2 = ItemStack(trade.wanted[2])
+		inv:set_stack("wanted", 2, wanted2)
+	else
+		inv:set_stack("wanted", 2, "")
+	end
+
+end
+
 mobs:register_mob("mobs_mc:villager", {
 	type = "npc",
 	hp_min = 20,
@@ -359,6 +420,23 @@ mobs:register_mob("mobs_mc:villager", {
 		local inv
 		inv = minetest.get_inventory({type="detached", name="mobs_mc:trade"})
 
+		local update_offer = function(inv, player, sound)
+			if inv:contains_item("input", inv:get_stack("wanted", 1)) and
+					(inv:get_stack("wanted", 2):is_empty() or inv:contains_item("input", inv:get_stack("wanted", 2))) then
+				inv:set_stack("output", 1, inv:get_stack("offered", 1))
+				if sound then
+					minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
+				end
+				return true
+			else
+				inv:set_stack("output", 1, ItemStack(""))
+				if sound then
+					minetest.sound_play("mobs_mc_villager_deny", {to_player = player:get_player_name()})
+				end
+				return false
+			end
+		end
+
 		if not inv then
 			inv = minetest.create_detached_inventory("mobs_mc:trade", {
 				allow_take = function(inv, listname, index, stack, player)
@@ -387,41 +465,28 @@ mobs:register_mob("mobs_mc:villager", {
 					end
 				end,
 				on_put = function(inv, listname, index, stack, player)
-					if inv:contains_item("input", inv:get_stack("wanted", 1)) then
-						inv:set_stack("output", 1, inv:get_stack("offered", 1))
-						minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
-					else
-						inv:set_stack("output", 1, ItemStack(""))
-						minetest.sound_play("mobs_mc_villager_deny", {to_player = player:get_player_name()})
-					end
+					update_offer(inv, player, true)
 				end,
 				on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
-					if inv:contains_item("input", inv:get_stack("wanted", 1)) then
-						inv:set_stack("output", 1, inv:get_stack("offered", 1))
-						minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
-					else
-						inv:set_stack("output", 1, ItemStack(""))
-						minetest.sound_play("mobs_mc_villager_deny", {to_player = player:get_player_name()})
-					end
+					update_offer(inv, player, true)
 				end,
 				on_take = function(inv, listname, index, stack, player)
 					local accept
 					if listname == "output" then
 						inv:remove_item("input", inv:get_stack("wanted", 1))
+						local wanted2 = inv:get_stack("wanted", 2)
+						if not wanted2:is_empty() then
+							inv:remove_item("input", inv:get_stack("wanted", 2))
+						end
 						accept = true
-					end
-					if inv:contains_item("input", inv:get_stack("wanted", 1)) then
-						inv:set_stack("output", 1, inv:get_stack("offered", 1))
-						accept = true
-					else
-						inv:set_stack("output", 1, ItemStack(""))
-						accept = false
 					end
 					if accept then
 						minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
 					else
 						minetest.sound_play("mobs_mc_villager_deny", {to_player = player:get_player_name()})
 					end
+
+					update_offer(inv, player, false)
 				end,
 			})
 		end
@@ -430,42 +495,20 @@ mobs:register_mob("mobs_mc:villager", {
 		inv:set_size("wanted", 2)
 		inv:set_size("offered", 1)
 
-		for i=1, inv:get_size("wanted") do
-			inv:set_stack("wanted", i, "")
-		end
-		for i=1, inv:get_size("offered") do
-			inv:set_stack("offered", i, "")
-		end
-
 		init_profession(self)
-		local profession = professions[self._profession]
+		if not self._trades then
+			update_trades(self)
+		end
+		set_trade(self, inv, 1)
 
-		local trade_tiers = profession.trades
-		if trade_tiers == nil then
-			return
-		end
-		local tier = trade_tiers[math.random(1, #trade_tiers)]
-		local tradenum = math.random(1, #tier)
-		local trade = tier[tradenum]
-		local wanted = ItemStack(trade[1][1])
-		wanted:set_count(math.random(trade[1][2], trade[1][3]))
-		local offered = ItemStack(trade[2][1])
-		offered:set_count(math.random(trade[2][2], trade[2][3]))
-		inv:set_stack("wanted", 1, wanted)
-		inv:set_stack("offered", 1, offered)
-		-- Second wanted item
-		if trade[1][4] then
-			local wanted2 = ItemStack(trade[1][4])
-			wanted2:set_count(math.random(trade[1][5], trade[1][6]))
-			inv:set_stack("wanted", 2, wanted2)
-		end
-		
-		local formspec = 
+		local formspec =
 		"size[9,8.75]"..
 		"background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"..
 		mcl_vars.inventory_header..
-		"list[current_player;main;0,4.5;9,3;9]"..
-		"list[current_player;main;0,7.74;9,1;]"
+		"list[current_player;main;0,4.5;9,3;9]"
+		.."list[current_player;main;0,7.74;9,1;]"
+		.."button[1,1;0.5,1;prev_trade;<]"
+		.."button[7.26,1;0.5,1;next_trade;>]"
 		.."list[detached:mobs_mc:trade;wanted;2,1;2,1;]"
 		.."list[detached:mobs_mc:trade;offered;5.76,1;1,1;]"
 		.."list[detached:mobs_mc:trade;input;2,2.5;2,1;]"
@@ -527,6 +570,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if formname == "mobs_mc:trade" then
 		if fields.quit then
 			return_fields(player)
+		elseif fields.next_trade then
+
+		elseif fields.prev_trade then
+
 		end
 	end
 end)
