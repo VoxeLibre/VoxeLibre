@@ -6,7 +6,6 @@
 -- TODO: Per-player trading inventories
 -- TODO: Trading tiers
 -- TODO: Trade locking
--- FIXME: Placing output on exiting item in player inventory destroys item
 
 -- intllib
 local MP = minetest.get_modpath(minetest.get_current_modname())
@@ -373,8 +372,6 @@ local function show_trade_formspec(playername, trader)
 	"background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"..
 	mcl_vars.inventory_header..
 	"label[4,0;"..minetest.formspec_escape(profession).."]"
-	-- FIXME: Remove when trading bugs are fixed
-	.."label[0,0.5;"..minetest.formspec_escape(minetest.colorize("#FF3333", "WARNING! Trading is incomplete and has bugs!")).."]"
 	.."list[current_player;main;0,4.5;9,3;9]"
 	.."list[current_player;main;0,7.74;9,1;]"
 	.."button[1,1;0.5,1;prev_trade;<]"
@@ -488,7 +485,23 @@ mobs:register_mob("mobs_mc:villager", {
 						-- Only allow taking full stack
 						local count = stack:get_count()
 						if count == inv:get_stack(listname, index):get_count() then
-							return count
+							-- Also update output stack again.
+							-- If input has double the wanted items, the
+							-- output will stay because there will be still
+							-- enough items in input after the trade
+							local wanted1 = inv:get_stack("wanted", 1)
+							local wanted2 = inv:get_stack("wanted", 2)
+							wanted1:set_count(wanted1:get_count()*2)
+							wanted2:set_count(wanted2:get_count()*2)
+							if inv:contains_item("input", wanted1) and
+								(wanted2:is_empty() or inv:contains_item("input", wanted2)) then
+								return -1
+							else
+								-- If less than double the wanted items,
+								-- remove items from output (final trade,
+								-- input runs empty)
+								return count
+							end
 						else
 							return 0
 						end
@@ -537,13 +550,14 @@ mobs:register_mob("mobs_mc:villager", {
 							inv:remove_item("input", inv:get_stack("wanted", 2))
 						end
 						accept = true
+					elseif listname == "input" then
+						update_offer(inv, player, false)
 					end
 					if accept then
 						minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
 					else
 						minetest.sound_play("mobs_mc_villager_deny", {to_player = player:get_player_name()})
 					end
-					update_offer(inv, player, false)
 				end,
 			})
 		end
