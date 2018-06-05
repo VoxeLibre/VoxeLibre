@@ -137,6 +137,7 @@ mesecon.register_node("mcl_observers:observer_down",
 	on_rotate = false,
 	_mcl_blast_resistance = 17.5,
 	_mcl_hardness = 3.5,
+	drop = "mcl_observers:observer_off",
 },
 {
 	tiles = {
@@ -185,6 +186,7 @@ mesecon.register_node("mcl_observers:observer_up",
 	on_rotate = false,
 	_mcl_blast_resistance = 17.5,
 	_mcl_hardness = 3.5,
+	drop = "mcl_observers:observer_off",
 },
 {
 	tiles = {
