@@ -6,7 +6,6 @@
 -- TODO: Per-player trading inventories
 -- TODO: Trading tiers
 -- TODO: Trade locking
--- FIXME: Weird behaviour when taking single item from output stack
 -- FIXME: Placing output on exiting item in player inventory destroys item
 
 -- intllib
@@ -483,22 +482,30 @@ mobs:register_mob("mobs_mc:villager", {
 		if not inv then
 			inv = minetest.create_detached_inventory("mobs_mc:trade", {
 				allow_take = function(inv, listname, index, stack, player)
-					if listname == "input" or listname == "output" then
+					if listname == "input" then
 						return stack:get_count()
+					elseif listname == "output" then
+						-- Only allow taking full stack
+						local count = stack:get_count()
+						if count == inv:get_stack(listname, index):get_count() then
+							return count
+						else
+							return 0
+						end
 					else
 						return 0
 					end
 				end,
 				allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
-					if from_list == "wanted" or from_list == "offered" or to_list == "wanted" or to_list == "offered" then
-						return 0
-					elseif from_list == "output" and inv:get_stack(to_list, to_index):is_empty() then
+					if from_list == "input" and to_list == "input" then
 						return count
-					elseif from_list == "input" then
-						return count
-					else
-						return 0
+					elseif from_list == "output" and to_list == "input" then
+						local move_stack = inv:get_stack(from_list, from_index)
+						if inv:get_stack(to_list, to_index):item_fits(move_stack) then
+							return count
+						end
 					end
+					return 0
 				end,
 				allow_put = function(inv, listname, index, stack, player)
 					if listname == "input" then
@@ -511,6 +518,14 @@ mobs:register_mob("mobs_mc:villager", {
 					update_offer(inv, player, true)
 				end,
 				on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
+					if from_list == "output" and to_list == "input" then
+						inv:remove_item("input", inv:get_stack("wanted", 1))
+						local wanted2 = inv:get_stack("wanted", 2)
+						if not wanted2:is_empty() then
+							inv:remove_item("input", inv:get_stack("wanted", 2))
+						end
+						minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
+					end
 					update_offer(inv, player, true)
 				end,
 				on_take = function(inv, listname, index, stack, player)
@@ -528,7 +543,6 @@ mobs:register_mob("mobs_mc:villager", {
 					else
 						minetest.sound_play("mobs_mc_villager_deny", {to_player = player:get_player_name()})
 					end
-
 					update_offer(inv, player, false)
 				end,
 			})
