@@ -40,8 +40,8 @@ Mandatory argument:
 	Directory of Minecraft resource pack to convert
 
 Optional arguments:
--p <size>
-	Specify the size (pixels) of the original textures (default: 16)
+-p <texture size>
+	Specify the size (in pixels) of the original textures (default: 16)
 -o <output directory>
 	Directory in which to put the resulting Minetest texture pack
 	(default: working directory)
@@ -86,11 +86,11 @@ Syntax:""")
 
 if base_dir == None:
 	print(
-"""ERROR: You forgot to tell me the path to the Minecraft resource pack.
+"""ERROR: You didn't tell me the path to the Minecraft resource pack.
 Mind-reading has not been implemented yet.
 
 Try this:
-    """+appname+""" -i <path to resource pack>
+    """+appname+""" -i <path to resource pack> -p <texture size>
 
 For the full help, use:
     """+appname+""" -h""")
