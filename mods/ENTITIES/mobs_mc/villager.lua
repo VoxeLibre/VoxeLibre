@@ -142,9 +142,11 @@ local professions = {
 			{ { "mcl_core:paper", 24, 36 }, E1 },
 			},
 
-			{
-			{ { "mcl_compass:compass", 1, 1 }, E1 },
-			},
+--			{
+			-- TODO: compass
+			-- the difficulty lies in supporting the compass group, not the concrete item
+--			{ { "mcl_compass:compass", 1, 1 }, E1 },
+--			},
 
 			{
 			-- TODO: replace with empty map
