@@ -387,11 +387,16 @@ local set_trade = function(self, player, inv, concrete_tradenum)
 
 end
 
-local function show_trade_formspec(playername, trader)
+local function show_trade_formspec(playername, trader, is_disabled)
 	local profession = professions[trader._profession].name
+	local disabled = ""
+	if is_disabled then
+		disabled = "image[4.3,2.52;1,1;mobs_mc_trading_formspec_disabled.png]"
+	end
 	local formspec =
 	"size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"..
+	disabled..
 	mcl_vars.inventory_header..
 	"label[4,0;"..minetest.formspec_escape(profession).."]"
 	.."list[current_player;main;0,4.5;9,3;9]"
