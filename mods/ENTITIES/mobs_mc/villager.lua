@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- TODO: Per-player trading inventories
+-- TODO/FIXME: Per-player trading inventories
 -- TODO: Particles
 -- TODO: 4s Regeneration I after trade unlock
 -- FIXME: Possible to lock all trades
@@ -421,7 +421,8 @@ local function show_trade_formspec(playername, trader, tradenum)
 	local profession = professions[trader._profession].name
 	local disabled_img = ""
 	if trade.locked then
-		disabled_img = "image[4.3,2.52;1,1;mobs_mc_trading_formspec_disabled.png]"
+		disabled_img = "image[4.3,2.52;1,1;mobs_mc_trading_formspec_disabled.png]"..
+			"image[4.3,1.1;1,1;mobs_mc_trading_formspec_disabled.png]"
 	end
 	local formspec =
 	"size[9,8.75]"
