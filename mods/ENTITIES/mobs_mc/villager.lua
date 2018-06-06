@@ -309,8 +309,8 @@ local professions = {
 			},
 
 			{
-			{ E1, { "mcl_nether:glowstone", 1, 3 } },
 			TRADE_V6_RED_SANDSTONE,
+			{ E1, { "mcl_nether:glowstone", 1, 3 } },
 			{ { "mcl_core:emerald", 4, 7 }, { "mcl_throwing:ender_pearl", 1, 1 } },
 			},
 
