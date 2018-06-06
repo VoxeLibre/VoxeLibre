@@ -4,7 +4,8 @@
 --License for code WTFPL and otherwise stated in readmes
 
 -- TODO: Per-player trading inventories
--- TODO: Trade locking
+-- TODO: Particles
+-- TODO: 4s Regeneration I after trade unlock
 
 -- intllib
 local MP = minetest.get_modpath(minetest.get_current_modname())
@@ -89,18 +90,19 @@ local professions = {
 			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:white", 1, 1 } },
 			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:grey", 1, 1 } },
 			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:silver", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:black", 1, 1 } },
 			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:yellow", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:orange", 1, 1 } },
 			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:red", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:magenta", 1, 1 } },
 			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:purple", 1, 1 } },
 			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:blue", 1, 1 } },
-			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:light_blue", 1, 1 } },
-			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:brown", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:cyan", 1, 1 } },
 			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:lime", 1, 1 } },
 			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:green", 1, 1 } },
-			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:magenta", 1, 1 } },
-			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:black", 1, 1 } },
-			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:cyan", 1, 1 } },
 			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:pink", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:light_blue", 1, 1 } },
+			{ { "mcl_core:emerald", 1, 2 }, { "mcl_wool:brown", 1, 1 } },
 			},
 		},
 	},
@@ -393,18 +395,26 @@ local set_trade = function(trader, player, inv, concrete_tradenum)
 
 end
 
-local function show_trade_formspec(playername, trader, is_disabled)
+local function show_trade_formspec(playername, trader, tradenum)
+	if not trader._trades then
+		return
+	end
+	if not tradenum then
+		tradenum = 1
+	end
+	local trades = minetest.deserialize(trader._trades)
+	local trade = trades[tradenum]
 	local profession = professions[trader._profession].name
-	local disabled = ""
-	if is_disabled then
-		disabled = "image[4.3,2.52;1,1;mobs_mc_trading_formspec_disabled.png]"
+	local disabled_img = ""
+	if trade.locked then
+		disabled_img = "image[4.3,2.52;1,1;mobs_mc_trading_formspec_disabled.png]"
 	end
 	local formspec =
-	"size[9,8.75]"..
-	"background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"..
-	disabled..
-	mcl_vars.inventory_header..
-	"label[4,0;"..minetest.formspec_escape(profession).."]"
+	"size[9,8.75]"
+	.."background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"
+	..disabled_img
+	..mcl_vars.inventory_header
+	.."label[4,0;"..minetest.formspec_escape(profession).."]"
 	.."list[current_player;main;0,4.5;9,3;9]"
 	.."list[current_player;main;0,7.74;9,1;]"
 	.."button[1,1;0.5,1;prev_trade;<]"
@@ -422,17 +432,32 @@ local function show_trade_formspec(playername, trader, is_disabled)
 end
 
 local update_offer = function(inv, player, sound)
+	local name = player:get_player_name()
+	local trader = player_trading_with[name]
+	local tradenum = player_tradenum[name]
+	if not trader or not tradenum then
+		return false
+	end
+	local trades = minetest.deserialize(trader._trades)
+	if not trades then
+		return false
+	end
+	local trade = trades[tradenum]
+	if not trade then
+		return false
+	end
 	if inv:contains_item("input", inv:get_stack("wanted", 1)) and
-			(inv:get_stack("wanted", 2):is_empty() or inv:contains_item("input", inv:get_stack("wanted", 2))) then
+			(inv:get_stack("wanted", 2):is_empty() or inv:contains_item("input", inv:get_stack("wanted", 2))) and
+			(trade.locked == false) then
 		inv:set_stack("output", 1, inv:get_stack("offered", 1))
 		if sound then
-			minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
+			minetest.sound_play("mobs_mc_villager_accept", {to_player = name})
 		end
 		return true
 	else
 		inv:set_stack("output", 1, ItemStack(""))
 		if sound then
-			minetest.sound_play("mobs_mc_villager_deny", {to_player = player:get_player_name()})
+			minetest.sound_play("mobs_mc_villager_deny", {to_player = name})
 		end
 		return false
 	end
@@ -602,10 +627,12 @@ mobs:register_mob("mobs_mc:villager", {
 							local trade = trades[tradenum]
 							local unlock_stuff = false
 							if not trade.traded_once then
+								-- Unlock all the things if something was traded
+								-- for the first time ever
 								unlock_stuff = true
 								trade.traded_once = true
-							elseif math.random(1,5) then
-								-- Otherwise, 20% chance to unlock all trades
+							elseif trade.trade_counter == 0 and math.random(1,5) == 1 then
+								-- Otherwise, 20% chance to unlock if used freshly reset trade
 								unlock_stuff = true
 							end
 							if unlock_stuff then
@@ -622,12 +649,21 @@ mobs:register_mob("mobs_mc:villager", {
 							if trade.trade_counter >= 12 then
 								trade.locked = true
 							elseif trade.trade_counter >= 2 then
-								math.random(1, math.random(1, 20))
-								trade.locked = true
+								local r = math.random(1, math.random(1, 9))
+								if r == 1 then
+									trade.locked = true
+								end
+							end
+
+							trader._trades = minetest.serialize(trades)
+							if trade.locked then
+								inv:set_stack("output", 1, "")
+								show_trade_formspec(name, trader, tradenum)
 							end
 						else
 							minetest.log("error", "[mobs_mc] Player took item from trader output but player_trading_with or player_tradenum is nil!")
 						end
+
 						accept = true
 					elseif listname == "input" then
 						update_offer(inv, player, false)
@@ -646,7 +682,7 @@ mobs:register_mob("mobs_mc:villager", {
 		inv:set_size("offered", 1)
 
 		player_tradenum[name] = 1
-		set_trade(self, clicker, inv, player_tradenum[name])
+		set_trade(self, clicker, inv, player_tradenum[name], player_tradenum[name])
 
 		show_trade_formspec(name, self)
 	end,
@@ -715,7 +751,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade"})
 			set_trade(trader, player, inv, player_tradenum[name])
 			update_offer(inv, player, false)
-			show_trade_formspec(name, trader)
+			show_trade_formspec(name, trader, player_tradenum[name])
 		elseif fields.prev_trade then
 			local trader = player_trading_with[name]
 			if not trader or not trader.object:get_luaentity() then
@@ -729,7 +765,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade"})
 			set_trade(trader, player, inv, player_tradenum[name])
 			update_offer(inv, player, false)
-			show_trade_formspec(name, trader)
+			show_trade_formspec(name, trader, player_tradenum[name])
 		end
 	end
 end)
