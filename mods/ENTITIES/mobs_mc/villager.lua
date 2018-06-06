@@ -24,8 +24,8 @@ local player_trading_with = {}
 local E1 = { "mcl_core:emerald", 1, 1 } -- one emerald
 local professions = {
 	farmer = {
-		id = "farmer",
 		name = "Farmer",
+		texture = "mobs_mc_villager_farmer.png",
 		trades = {
 			{
 			{ { "mcl_farming:wheat_item", 18, 22, }, E1 },
@@ -51,8 +51,8 @@ local professions = {
 		}
 	},
 	fisherman = {
-		id = "fisherman",
 		name = "Fisherman",
+		texture = "mobs_mc_villager_farmer.png",
 		trades = {
 			{
 			{ { "mcl_fishing:fish_raw", 6, 6, "mcl_core:emerald", 1, 1 }, { "mcl_fishing:fish_cooked", 6, 6 } },
@@ -63,8 +63,8 @@ local professions = {
 		},
 	},
 	fletcher = {
-		id = "fletcher",
 		name = "Fletcher",
+		texture = "mobs_mc_villager_farmer.png",
 		trades = {
 			{
 			{ { "mcl_mobitems:string", 15, 20 }, E1 },
@@ -78,8 +78,8 @@ local professions = {
 		}
 	},
 	shepherd ={
-		id = "shepherd",
 		name = "Shepherd",
+		texture = "mobs_mc_villager_farmer.png",
 		trades = {
 			{
 			{ { "mcl_wool:white", 16, 22 }, E1 },
@@ -106,8 +106,8 @@ local professions = {
 		},
 	},
 	librarian = {
-		id = "librarian",
 		name = "Librarian",
+		texture = "mobs_mc_villager_librarian.png",
 		trades = {
 			{
 			{ { "mcl_core:paper", 24, 36 }, E1 },
@@ -135,8 +135,8 @@ local professions = {
 		},
 	},
 	cartographer = {
-		id = "cartographer",
 		name = "Cartographer",
+		texture = "mobs_mc_villager_librarian.png",
 		trades = {
 			{
 			{ { "mcl_core:paper", 24, 36 }, E1 },
@@ -157,8 +157,8 @@ local professions = {
 		},
 	},
 	armorer = {
-		id = "armorer",
 		name = "Armorer",
+		texture = "mobs_mc_villager_smith.png",
 		trades = {
 			{
 			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
@@ -186,6 +186,7 @@ local professions = {
 	},
 	leatherworker = {
 		name = "Leatherworker",
+		texture = "mobs_mc_villager_butcher.png",
 		trades = {
 			{
 			{ { "mcl_mobitems:leather", 9, 12 }, E1 },
@@ -204,6 +205,7 @@ local professions = {
 	},
 	butcher = {
 		name = "Butcher",
+		texture = "mobs_mc_villager_butcher.png",
 		trades = {
 			{
 			{ { "mcl_mobitems:beef", 14, 18 }, E1 },
@@ -219,6 +221,7 @@ local professions = {
 	},
 	weapon_smith = {
 		name = "Weapon Smith",
+		texture = "mobs_mc_villager_smith.png",
 		trades = {
 			{
 			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
@@ -242,6 +245,7 @@ local professions = {
 	},
 	tool_smith = {
 		name = "Tool Smith",
+		texture = "mobs_mc_villager_smith.png",
 		trades = {
 			{
 			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
@@ -264,6 +268,7 @@ local professions = {
 	},
 	cleric = {
 		name = "Cleric",
+		texture = "mobs_mc_villager_priest.png",
 		trades = {
 			{
 			{ { "mcl_mobitems:rotten_flesh", 36, 40 }, E1 },
@@ -283,7 +288,12 @@ local professions = {
 			-- TODO: Bottle 'o enchanting
 		},
 	},
-	-- TODO: Nitwit
+	nitwit = {
+		name = "Nitwit",
+		texture = "mobs_mc_villager.png",
+		-- No trades for nitwit
+		trades = nil,
+	}
 }
 
 local profession_names = {}
@@ -293,8 +303,16 @@ end
 
 local init_profession = function(self)
 	if not self._profession then
-		local p = math.random(1, #profession_names)
-		self._profession = profession_names[p]
+		-- Select random profession from all professions with matching clothing
+		local texture = self.base_texture[1]
+		local matches = {}
+		for prof_id, prof in pairs(professions) do
+			if texture == prof.texture then
+				table.insert(matches, prof_id)
+			end
+		end
+		local p = math.random(1, #matches)
+		self._profession = matches[p]
 	end
 	if not self._max_trade_tier then
 		-- TODO: Start with tier 1
@@ -306,6 +324,8 @@ local update_trades = function(self, inv)
 	local profession = professions[self._profession]
 	local trade_tiers = profession.trades
 	if trade_tiers == nil then
+		-- Empty trades
+		self._trades = false
 		return
 	end
 
@@ -474,6 +494,15 @@ mobs:register_mob("mobs_mc:villager", {
 	on_rightclick = function(self, clicker)
 		local name = clicker:get_player_name()
 
+		init_profession(self)
+		if self._trades == nil then
+			update_trades(self)
+		end
+		if self._trades == false then
+			-- Villager has no trades, rightclick is a no-op
+			return
+		end
+
 		player_trading_with[name] = self
 
 		-- TODO: Create per-player trading inventories
@@ -568,10 +597,6 @@ mobs:register_mob("mobs_mc:villager", {
 		inv:set_size("wanted", 2)
 		inv:set_size("offered", 1)
 
-		init_profession(self)
-		if not self._trades then
-			update_trades(self)
-		end
 		player_tradenum[name] = 1
 		set_trade(self, player, inv, player_tradenum[name])
 
