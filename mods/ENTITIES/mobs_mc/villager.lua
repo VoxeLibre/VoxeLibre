@@ -37,6 +37,16 @@ if minetest.registered_aliases[COMPASS] then
 end
 
 local E1 = { "mcl_core:emerald", 1, 1 } -- one emerald
+
+-- Special trades for v6 only
+local TRADE_V6_RED_SANDSTONE, TRADE_V6_DARK_OAK_SAPLING, TRADE_V6_ACACIA_SAPLING, TRADE_V6_BIRCH_SAPLING
+if minetest.get_mapgen_setting("mg_name") == "v6" then
+	TRADE_V6_RED_SANDSTONE = { E1, { "mcl_core:redsandstone", 12, 16 } }
+	TRADE_V6_DARK_OAK_SAPLING = { { "mcl_core:emerald", 6, 9 }, { "mcl_core:darksapling", 1, 1 } }
+	TRADE_V6_ACACIA_SAPLING = { { "mcl_core:emerald", 14, 17 }, { "mcl_core:acaciasapling", 1, 1 } }
+	TRADE_V6_BIRCH_SAPLING = { { "mcl_core:emerald", 8, 11 }, { "mcl_core:birchsapling", 1, 1 } }
+end
+
 local professions = {
 	farmer = {
 		name = "Farmer",
@@ -44,7 +54,7 @@ local professions = {
 		trades = {
 			{
 			{ { "mcl_farming:wheat_item", 18, 22, }, E1 },
-			{ { "mcl_farming:potato_item", 15, 15, }, E1 },
+			{ { "mcl_farming:potato_item", 15, 19, }, E1 },
 			{ { "mcl_farming:carrot_item", 15, 19, }, E1 },
 			{ E1, { "mcl_farming:bread", 2, 4 } },
 			},
@@ -62,6 +72,9 @@ local professions = {
 			{
 			{ E1, { "mcl_farming:cookie", 6, 10 } },
 			{ E1, { "mcl_cake:cake", 1, 1 } },
+			TRADE_V6_BIRCH_SAPLING,
+			TRADE_V6_DARK_OAK_SAPLING,
+			TRADE_V6_ACACIA_SAPLING,
 			},
 		}
 	},
@@ -297,6 +310,7 @@ local professions = {
 
 			{
 			{ E1, { "mcl_nether:glowstone", 1, 3 } },
+			TRADE_V6_RED_SANDSTONE,
 			{ { "mcl_core:emerald", 4, 7 }, { "mcl_throwing:ender_pearl", 1, 1 } },
 			},
 
