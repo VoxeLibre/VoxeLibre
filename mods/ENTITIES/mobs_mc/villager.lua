@@ -4,7 +4,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
 -- TODO: Per-player trading inventories
--- TODO: Trading tiers
 -- TODO: Trade locking
 
 -- intllib
@@ -315,12 +314,11 @@ local init_profession = function(self)
 		self._profession = matches[p]
 	end
 	if not self._max_trade_tier then
-		-- TODO: Start with tier 1
-		self._max_trade_tier = 10
+		self._max_trade_tier = 1
 	end
 end
 
-local update_trades = function(self, inv)
+local init_trades = function(self, inv)
 	local profession = professions[self._profession]
 	local trade_tiers = profession.trades
 	if trade_tiers == nil then
@@ -329,7 +327,7 @@ local update_trades = function(self, inv)
 		return
 	end
 
-	local max_tier = math.min(#trade_tiers, self._max_trade_tier)
+	local max_tier = #trade_tiers
 	local trades = {}
 	for tiernum=1, max_tier do
 		local tier = trade_tiers[tiernum]
@@ -350,18 +348,21 @@ local update_trades = function(self, inv)
 			table.insert(trades, {
 				wanted = wanted,
 				offered = offered_item .. " " .. offered_count,
-				tier = tiernum,
+				tier = tiernum, -- tier of this trade
+				traded_once = false, -- true if trade was traded at least once
+				trade_counter = 0, -- how often the this trade was mate after the last time it got unlocked
+				locked = false, -- if this trade is locked. Locked trades can't be used
 			})
 		end
 	end
 	self._trades = minetest.serialize(trades)
 end
 
-local set_trade = function(self, player, inv, concrete_tradenum)
-	local trades = minetest.deserialize(self._trades)
+local set_trade = function(trader, player, inv, concrete_tradenum)
+	local trades = minetest.deserialize(trader._trades)
 	if not trades then
-		update_trades(self)
-		trades = minetest.deserialize(self._trades)
+		init_trades(trader)
+		trades = minetest.deserialize(trader._trades)
 		if not trades then
 			minetest.log("error", "[mobs_mc] Failed to select villager trade!")
 			return
@@ -376,6 +377,11 @@ local set_trade = function(self, player, inv, concrete_tradenum)
 		player_tradenum[player:get_player_name()] = concrete_tradenum
 	end
 	local trade = trades[concrete_tradenum]
+	if trader._max_trade_tier < trade.tier then
+		concrete_tradenum = 1
+		player_tradenum[player:get_player_name()] = concrete_tradenum
+		trade = trades[concrete_tradenum]
+	end
 	inv:set_stack("wanted", 1, ItemStack(trade.wanted[1]))
 	inv:set_stack("offered", 1, ItemStack(trade.offered))
 	if trade.wanted[2] then
@@ -501,7 +507,7 @@ mobs:register_mob("mobs_mc:villager", {
 
 		init_profession(self)
 		if self._trades == nil then
-			update_trades(self)
+			init_trades(self)
 		end
 		if self._trades == false then
 			-- Villager has no trades, rightclick is a no-op
@@ -579,20 +585,57 @@ mobs:register_mob("mobs_mc:villager", {
 				end,
 				on_take = function(inv, listname, index, stack, player)
 					local accept
+					local name = player:get_player_name()
 					if listname == "output" then
 						inv:remove_item("input", inv:get_stack("wanted", 1))
 						local wanted2 = inv:get_stack("wanted", 2)
 						if not wanted2:is_empty() then
 							inv:remove_item("input", inv:get_stack("wanted", 2))
 						end
+						local trader = player_trading_with[name]
+						local tradenum = player_tradenum[name]
+						local trades
+						if trader and trader._trades then
+							trades = minetest.deserialize(trader._trades)
+						end
+						if trades then
+							local trade = trades[tradenum]
+							local unlock_stuff = false
+							if not trade.traded_once then
+								unlock_stuff = true
+								trade.traded_once = true
+							elseif math.random(1,5) then
+								-- Otherwise, 20% chance to unlock all trades
+								unlock_stuff = true
+							end
+							if unlock_stuff then
+								-- First-time trade unlock all trades and unlock next trade tier
+								if trade.tier + 1 > trader._max_trade_tier then
+									trader._max_trade_tier = trader._max_trade_tier + 1
+								end
+								for t=1, #trades do
+									trades[t].locked = false
+									trades[t].trade_counter = 0
+								end
+							end
+							trade.trade_counter = trade.trade_counter + 1
+							if trade.trade_counter >= 12 then
+								trade.locked = true
+							elseif trade.trade_counter >= 2 then
+								math.random(1, math.random(1, 20))
+								trade.locked = true
+							end
+						else
+							minetest.log("error", "[mobs_mc] Player took item from trader output but player_trading_with or player_tradenum is nil!")
+						end
 						accept = true
 					elseif listname == "input" then
 						update_offer(inv, player, false)
 					end
 					if accept then
-						minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
+						minetest.sound_play("mobs_mc_villager_accept", {to_player = name})
 					else
-						minetest.sound_play("mobs_mc_villager_deny", {to_player = player:get_player_name()})
+						minetest.sound_play("mobs_mc_villager_deny", {to_player = name})
 					end
 				end,
 			})
@@ -603,7 +646,7 @@ mobs:register_mob("mobs_mc:villager", {
 		inv:set_size("offered", 1)
 
 		player_tradenum[name] = 1
-		set_trade(self, player, inv, player_tradenum[name])
+		set_trade(self, clicker, inv, player_tradenum[name])
 
 		show_trade_formspec(name, self)
 	end,
@@ -664,6 +707,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			if not trader or not trader.object:get_luaentity() then
 				return
 			end
+			local trades = trader._trades
+			if not trades then
+				return
+			end
 			player_tradenum[name] = player_tradenum[name] + 1
 			local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade"})
 			set_trade(trader, player, inv, player_tradenum[name])
@@ -672,6 +719,10 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		elseif fields.prev_trade then
 			local trader = player_trading_with[name]
 			if not trader or not trader.object:get_luaentity() then
+				return
+			end
+			local trades = trader._trades
+			if not trades then
 				return
 			end
 			player_tradenum[name] = player_tradenum[name] - 1
