@@ -844,8 +844,6 @@ local trade_inventory = {
 					-- Otherwise, 20% chance to unlock if used freshly reset trade
 					unlock_stuff = true
 				end
-				-- DEBUG
-				unlock_stuff = false
 				local update_formspec = false
 				if unlock_stuff then
 					-- First-time trade unlock all trades and unlock next trade tier
