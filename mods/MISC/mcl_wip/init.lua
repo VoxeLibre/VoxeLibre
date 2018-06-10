@@ -10,7 +10,6 @@ local wip_items = {
 	"mcl_minecarts:activator_rail",
 	"mobs_mc:enderdragon",
 	"mobs_mc:wither",
-	"mobs_mc:villager",
 	"mobs_mc:parrot",
 	"mobs_mc:witch",
 }
