@@ -57,6 +57,7 @@ local horse_base = {
 	"mobs_mc_horse_gray.png",
 	"mobs_mc_horse_black.png",
 	"mobs_mc_horse_chestnut.png",
+	"mobs_mc_horse_creamy.png",
 }
 -- Horse marking texture overlay, to be appended to the base texture string
 local horse_markings = {
