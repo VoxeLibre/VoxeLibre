@@ -5,7 +5,6 @@
 
 -- TODO: Particles
 -- TODO: 4s Regeneration I after trade unlock
--- FIXME: Possible to lock all trades
 
 -- intllib
 local MP = minetest.get_modpath(minetest.get_current_modname())
@@ -359,6 +358,9 @@ local init_profession = function(self)
 	end
 	if not self._max_trade_tier then
 		self._max_trade_tier = 1
+	end
+	if not self._locked_trades then
+		self._locked_trades = 0
 	end
 end
 
@@ -842,34 +844,59 @@ local trade_inventory = {
 					-- Otherwise, 20% chance to unlock if used freshly reset trade
 					unlock_stuff = true
 				end
+				-- DEBUG
+				unlock_stuff = false
+				local update_formspec = false
 				if unlock_stuff then
 					-- First-time trade unlock all trades and unlock next trade tier
 					if trade.tier + 1 > trader._max_trade_tier then
 						trader._max_trade_tier = trader._max_trade_tier + 1
 						update_max_tradenum(trader)
-						show_trade_formspec(name, trader, tradenum)
+						update_formspec = true
 					end
 					for t=1, #trades do
 						trades[t].locked = false
 						trades[t].trade_counter = 0
 					end
+					trader._locked_trades = 0
 					-- Also heal trader for unlocking stuff
 					-- TODO: Replace by Regeneration I
 					trader.health = math.min(trader.hp_max, trader.health + 4)
 				end
 				trade.trade_counter = trade.trade_counter + 1
-				if trade.trade_counter >= 12 then
-					trade.locked = true
-				elseif trade.trade_counter >= 2 then
-					local r = math.random(1, math.random(4, 10))
-					if r == 1 then
+				-- Semi-randomly lock trade for repeated trade (not if there's only 1 trade)
+				if trader._max_tradenum > 1 then
+					if trade.trade_counter >= 12 then
 						trade.locked = true
+					elseif trade.trade_counter >= 2 then
+						local r = math.random(1, math.random(4, 10))
+						if r == 1 then
+							trade.locked = true
+						end
 					end
 				end
 
-				trader._trades = minetest.serialize(trades)
 				if trade.locked then
 					inv:set_stack("output", 1, "")
+					update_formspec = true
+					trader._locked_trades = trader._locked_trades + 1
+					-- Check if we managed to lock ALL available trades. Rare but possible.
+					if trader._locked_trades >= trader._max_tradenum then
+						-- Emergency unlock! Unlock all other trades except the current one
+						for t=1, #trades do
+							if t ~= tradenum then
+								trades[t].locked = false
+								trades[t].trade_counter = 0
+							end
+						end
+						trader._locked_trades = 1
+						-- Also heal trader for unlocking stuff
+						-- TODO: Replace by Regeneration I
+						trader.health = math.min(trader.hp_max, trader.health + 4)
+					end
+				end
+				trader._trades = minetest.serialize(trades)
+				if update_formspec then
 					show_trade_formspec(name, trader, tradenum)
 				end
 			else
