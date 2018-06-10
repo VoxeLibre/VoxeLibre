@@ -3,6 +3,10 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
+--###################
+--################### VILLAGER
+--###################
+
 -- TODO: Particles
 -- TODO: 4s Regeneration I after trade unlock
 
@@ -15,9 +19,9 @@ local player_tradenum = {}
 -- playername-indexed table containing the objectref of trader, if trading formspec is open
 local player_trading_with = {}
 
---###################
---################### VILLAGER
---###################
+local DEFAULT_WALK_CHANCE = 33 -- chance to walk in percent, if no player nearby
+local PLAYER_SCAN_INTERVAL = 5 -- every X seconds, villager looks for players nearby
+local PLAYER_SCAN_RADIUS = 4 -- scan radius for looking for nearby players
 
 -- LIST OF VILLAGER PROFESSIONS AND TRADES
 
@@ -328,6 +332,11 @@ for id, _ in pairs(professions) do
 	table.insert(profession_names, id)
 end
 
+local stand_still = function(self)
+	self.walk_chance = 0
+	self.jump = false
+end
+
 local update_max_tradenum = function(self)
 	if not self._trades then
 		return
@@ -618,7 +627,10 @@ mobs:register_mob("mobs_mc:villager", {
 	light_damage = 0,
 	view_range = 16,
 	fear_height = 4,
+	jump = true,
+	walk_chance = DEFAULT_WALK_CHANCE,
 	on_rightclick = function(self, clicker)
+		-- Initiate trading
 		local name = clicker:get_player_name()
 
 		init_profession(self)
@@ -638,6 +650,43 @@ mobs:register_mob("mobs_mc:villager", {
 		set_trade(self, clicker, inv, 1)
 
 		show_trade_formspec(name, self)
+
+		-- Behaviour stuff:
+		-- Make villager look at player and stand still
+		local selfpos = self.object:get_pos()
+		local clickerpos = clicker:get_pos()
+		local dir = vector.direction(selfpos, clickerpos)
+		self.object:set_yaw(minetest.dir_to_yaw(dir))
+		stand_still(self)
+	end,
+	_player_scan_timer = 0,
+	do_custom = function(self, dtime)
+		-- Stand still if player is nearby.
+		if not self._player_scan_timer then
+			self._player_scan_timer = 0
+		end
+		self._player_scan_timer = self._player_scan_timer + dtime
+		-- Check infrequently to keep CPU load low
+		if self._player_scan_timer > PLAYER_SCAN_INTERVAL then
+			self._player_scan_timer = 0
+			local selfpos = self.object:get_pos()
+			local objects = minetest.get_objects_inside_radius(selfpos, PLAYER_SCAN_RADIUS)
+			local has_player = false
+			for o, obj in pairs(objects) do
+				if obj:is_player() then
+					has_player = true
+					break
+				end
+			end
+			if has_player then
+				minetest.log("verbose", "[mobs_mc] Player near villager found!")
+				stand_still(self)
+			else
+				minetest.log("verbose", "[mobs_mc] No player near villager found!")
+				self.walk_chance = DEFAULT_WALK_CHANCE
+				self.jump = true
+			end
+		end
 	end,
 
 	on_spawn = function(self)
