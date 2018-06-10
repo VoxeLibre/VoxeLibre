@@ -3,7 +3,6 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- TODO/FIXME: Per-player trading inventories
 -- TODO: Particles
 -- TODO: 4s Regeneration I after trade unlock
 -- FIXME: Possible to lock all trades
@@ -438,6 +437,8 @@ local function show_trade_formspec(playername, trader, tradenum)
 		disabled_img = "image[4.3,2.52;1,1;mobs_mc_trading_formspec_disabled.png]"..
 			"image[4.3,1.1;1,1;mobs_mc_trading_formspec_disabled.png]"
 	end
+	local tradeinv_name = "mobs_mc:trade_"..playername
+	local tradeinv = minetest.formspec_escape("detached:"..tradeinv_name)
 	local formspec =
 	"size[9,8.75]"
 	.."background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"
@@ -448,16 +449,16 @@ local function show_trade_formspec(playername, trader, tradenum)
 	.."list[current_player;main;0,7.74;9,1;]"
 	.."button[1,1;0.5,1;prev_trade;<]"
 	.."button[7.26,1;0.5,1;next_trade;>]"
-	.."list[detached:mobs_mc:trade;wanted;2,1;2,1;]"
-	.."list[detached:mobs_mc:trade;offered;5.76,1;1,1;]"
-	.."list[detached:mobs_mc:trade;input;2,2.5;2,1;]"
-	.."list[detached:mobs_mc:trade;output;5.76,2.55;1,1;]"
-	.."listring[detached:mobs_mc:trade;output]"
+	.."list["..tradeinv..";wanted;2,1;2,1;]"
+	.."list["..tradeinv..";offered;5.76,1;1,1;]"
+	.."list["..tradeinv..";input;2,2.5;2,1;]"
+	.."list["..tradeinv..";output;5.76,2.55;1,1;]"
+	.."listring["..tradeinv..";output]"
 	.."listring[current_player;main]"
-	.."listring[detached:mobs_mc:trade;input]"
+	.."listring["..tradeinv..";input]"
 	.."listring[current_player;main]"
 	minetest.sound_play("mobs_mc_villager_trade", {to_player = playername})
-	minetest.show_formspec(playername, "mobs_mc:trade", formspec)
+	minetest.show_formspec(playername, tradeinv_name, formspec)
 end
 
 local update_offer = function(inv, player, sound)
@@ -608,178 +609,7 @@ mobs:register_mob("mobs_mc:villager", {
 
 		player_trading_with[name] = self
 
-		-- TODO: Create per-player trading inventories
-		local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade"})
-		if not inv then
-			inv = minetest.create_detached_inventory("mobs_mc:trade", {
-				allow_take = function(inv, listname, index, stack, player)
-					if listname == "input" then
-						return stack:get_count()
-					elseif listname == "output" then
-						-- Only allow taking full stack
-						local count = stack:get_count()
-						if count == inv:get_stack(listname, index):get_count() then
-							-- Also update output stack again.
-							-- If input has double the wanted items, the
-							-- output will stay because there will be still
-							-- enough items in input after the trade
-							local wanted1 = inv:get_stack("wanted", 1)
-							local wanted2 = inv:get_stack("wanted", 2)
-							local input1 = inv:get_stack("input", 1)
-							local input2 = inv:get_stack("input", 2)
-							wanted1:set_count(wanted1:get_count()*2)
-							wanted2:set_count(wanted2:get_count()*2)
-							-- BEGIN OF SPECIAL HANDLING FOR COMPASS
-							local special_checks = function(wanted1, input1, input2)
-								if wanted1:get_name() == COMPASS then
-									local compasses = 0
-									if (minetest.get_item_group(input1:get_name(), "compass") ~= 0) then
-										compasses = compasses + input1:get_count()
-									end
-									if (minetest.get_item_group(input2:get_name(), "compass") ~= 0) then
-										compasses = compasses + input2:get_count()
-									end
-									return compasses >= wanted1:get_count()
-								end
-								return false
-							end
-							-- END OF SPECIAL HANDLING FOR COMPASS
-							if (inv:contains_item("input", wanted1) and
-								(wanted2:is_empty() or inv:contains_item("input", wanted2)))
-								-- BEGIN OF SPECIAL HANDLING FOR COMPASS
-								or special_checks(wanted1, input1, input2) then
-								-- END OF SPECIAL HANDLING FOR COMPASS
-								return -1
-							else
-								-- If less than double the wanted items,
-								-- remove items from output (final trade,
-								-- input runs empty)
-								return count
-							end
-						else
-							return 0
-						end
-					else
-						return 0
-					end
-				end,
-				allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
-					if from_list == "input" and to_list == "input" then
-						return count
-					elseif from_list == "output" and to_list == "input" then
-						local move_stack = inv:get_stack(from_list, from_index)
-						if inv:get_stack(to_list, to_index):item_fits(move_stack) then
-							return count
-						end
-					end
-					return 0
-				end,
-				allow_put = function(inv, listname, index, stack, player)
-					if listname == "input" then
-						return stack:get_count()
-					else
-						return 0
-					end
-				end,
-				on_put = function(inv, listname, index, stack, player)
-					update_offer(inv, player, true)
-				end,
-				on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
-					if from_list == "output" and to_list == "input" then
-						inv:remove_item("input", inv:get_stack("wanted", 1))
-						local wanted2 = inv:get_stack("wanted", 2)
-						if not wanted2:is_empty() then
-							inv:remove_item("input", inv:get_stack("wanted", 2))
-						end
-						minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
-					end
-					update_offer(inv, player, true)
-				end,
-				on_take = function(inv, listname, index, stack, player)
-					local accept
-					local name = player:get_player_name()
-					if listname == "output" then
-						local wanted1 = inv:get_stack("wanted", 1)
-						inv:remove_item("input", wanted1)
-						local wanted2 = inv:get_stack("wanted", 2)
-						if not wanted2:is_empty() then
-							inv:remove_item("input", inv:get_stack("wanted", 2))
-						end
-						-- BEGIN OF SPECIAL HANDLING FOR COMPASS
-						if wanted1:get_name() == COMPASS then
-							for n=1, 2 do
-								local input = inv:get_stack("input", n)
-								if minetest.get_item_group(input:get_name(), "compass") ~= 0 then
-									input:set_count(input:get_count() - wanted1:get_count())
-									inv:set_stack("input", n, input)
-									break
-								end
-							end
-						end
-						-- END OF SPECIAL HANDLING FOR COMPASS
-						local trader = player_trading_with[name]
-						local tradenum = player_tradenum[name]
-						local trades
-						if trader and trader._trades then
-							trades = minetest.deserialize(trader._trades)
-						end
-						if trades then
-							local trade = trades[tradenum]
-							local unlock_stuff = false
-							if not trade.traded_once then
-								-- Unlock all the things if something was traded
-								-- for the first time ever
-								unlock_stuff = true
-								trade.traded_once = true
-							elseif trade.trade_counter == 0 and math.random(1,5) == 1 then
-								-- Otherwise, 20% chance to unlock if used freshly reset trade
-								unlock_stuff = true
-							end
-							if unlock_stuff then
-								-- First-time trade unlock all trades and unlock next trade tier
-								if trade.tier + 1 > trader._max_trade_tier then
-									trader._max_trade_tier = trader._max_trade_tier + 1
-								end
-								for t=1, #trades do
-									trades[t].locked = false
-									trades[t].trade_counter = 0
-								end
-							end
-							trade.trade_counter = trade.trade_counter + 1
-							if trade.trade_counter >= 12 then
-								trade.locked = true
-							elseif trade.trade_counter >= 2 then
-								local r = math.random(1, math.random(4, 10))
-								if r == 1 then
-									trade.locked = true
-								end
-							end
-
-							trader._trades = minetest.serialize(trades)
-							if trade.locked then
-								inv:set_stack("output", 1, "")
-								show_trade_formspec(name, trader, tradenum)
-							end
-						else
-							minetest.log("error", "[mobs_mc] Player took item from trader output but player_trading_with or player_tradenum is nil!")
-						end
-
-						accept = true
-					elseif listname == "input" then
-						update_offer(inv, player, false)
-					end
-					if accept then
-						minetest.sound_play("mobs_mc_villager_accept", {to_player = name})
-					else
-						minetest.sound_play("mobs_mc_villager_deny", {to_player = name})
-					end
-				end,
-			})
-		end
-		inv:set_size("input", 2)
-		inv:set_size("output", 1)
-		inv:set_size("wanted", 2)
-		inv:set_size("offered", 1)
+		local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade_"..name})
 
 		player_tradenum[name] = 1
 		set_trade(self, clicker, inv, player_tradenum[name], player_tradenum[name])
@@ -821,7 +651,8 @@ local function return_item(itemstack, dropper, pos, inv_p)
 end
 
 local return_fields = function(player)
-	local inv_t = minetest.get_inventory({type="detached", name = "mobs_mc:trade"})
+	local name = player:get_player_name()
+	local inv_t = minetest.get_inventory({type="detached", name = "mobs_mc:trade_"..name})
 	local inv_p = player:get_inventory()
 	for i=1, inv_t:get_size("input") do
 		local stack = inv_t:get_stack("input", i)
@@ -833,7 +664,7 @@ local return_fields = function(player)
 end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
-	if formname == "mobs_mc:trade" then
+	if string.sub(formname, 1, 14) == "mobs_mc:trade_" then
 		local name = player:get_player_name()
 		if fields.quit then
 			return_fields(player)
@@ -848,7 +679,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				return
 			end
 			player_tradenum[name] = player_tradenum[name] + 1
-			local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade"})
+			local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade_"..name})
 			set_trade(trader, player, inv, player_tradenum[name])
 			update_offer(inv, player, false)
 			show_trade_formspec(name, trader, player_tradenum[name])
@@ -862,7 +693,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				return
 			end
 			player_tradenum[name] = player_tradenum[name] - 1
-			local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade"})
+			local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade_"..name})
 			set_trade(trader, player, inv, player_tradenum[name])
 			update_offer(inv, player, false)
 			show_trade_formspec(name, trader, player_tradenum[name])
@@ -876,9 +707,186 @@ minetest.register_on_leaveplayer(function(player)
 	player_trading_with[player:get_player_name()] = nil
 end)
 
+local trade_inventory = {
+	allow_take = function(inv, listname, index, stack, player)
+		if listname == "input" then
+			return stack:get_count()
+		elseif listname == "output" then
+			-- Only allow taking full stack
+			local count = stack:get_count()
+			if count == inv:get_stack(listname, index):get_count() then
+				-- Also update output stack again.
+				-- If input has double the wanted items, the
+				-- output will stay because there will be still
+				-- enough items in input after the trade
+				local wanted1 = inv:get_stack("wanted", 1)
+				local wanted2 = inv:get_stack("wanted", 2)
+				local input1 = inv:get_stack("input", 1)
+				local input2 = inv:get_stack("input", 2)
+				wanted1:set_count(wanted1:get_count()*2)
+				wanted2:set_count(wanted2:get_count()*2)
+				-- BEGIN OF SPECIAL HANDLING FOR COMPASS
+				local special_checks = function(wanted1, input1, input2)
+					if wanted1:get_name() == COMPASS then
+						local compasses = 0
+						if (minetest.get_item_group(input1:get_name(), "compass") ~= 0) then
+							compasses = compasses + input1:get_count()
+						end
+						if (minetest.get_item_group(input2:get_name(), "compass") ~= 0) then
+							compasses = compasses + input2:get_count()
+						end
+						return compasses >= wanted1:get_count()
+					end
+					return false
+				end
+				-- END OF SPECIAL HANDLING FOR COMPASS
+				if (inv:contains_item("input", wanted1) and
+					(wanted2:is_empty() or inv:contains_item("input", wanted2)))
+					-- BEGIN OF SPECIAL HANDLING FOR COMPASS
+					or special_checks(wanted1, input1, input2) then
+					-- END OF SPECIAL HANDLING FOR COMPASS
+					return -1
+				else
+					-- If less than double the wanted items,
+					-- remove items from output (final trade,
+					-- input runs empty)
+					return count
+				end
+			else
+				return 0
+			end
+		else
+			return 0
+		end
+	end,
+	allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
+		if from_list == "input" and to_list == "input" then
+			return count
+		elseif from_list == "output" and to_list == "input" then
+			local move_stack = inv:get_stack(from_list, from_index)
+			if inv:get_stack(to_list, to_index):item_fits(move_stack) then
+				return count
+			end
+		end
+		return 0
+	end,
+	allow_put = function(inv, listname, index, stack, player)
+		if listname == "input" then
+			return stack:get_count()
+		else
+			return 0
+		end
+	end,
+	on_put = function(inv, listname, index, stack, player)
+		update_offer(inv, player, true)
+	end,
+	on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
+		if from_list == "output" and to_list == "input" then
+			inv:remove_item("input", inv:get_stack("wanted", 1))
+			local wanted2 = inv:get_stack("wanted", 2)
+			if not wanted2:is_empty() then
+				inv:remove_item("input", inv:get_stack("wanted", 2))
+			end
+			minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
+		end
+		update_offer(inv, player, true)
+	end,
+	on_take = function(inv, listname, index, stack, player)
+		local accept
+		local name = player:get_player_name()
+		if listname == "output" then
+			local wanted1 = inv:get_stack("wanted", 1)
+			inv:remove_item("input", wanted1)
+			local wanted2 = inv:get_stack("wanted", 2)
+			if not wanted2:is_empty() then
+				inv:remove_item("input", inv:get_stack("wanted", 2))
+			end
+			-- BEGIN OF SPECIAL HANDLING FOR COMPASS
+			if wanted1:get_name() == COMPASS then
+				for n=1, 2 do
+					local input = inv:get_stack("input", n)
+					if minetest.get_item_group(input:get_name(), "compass") ~= 0 then
+						input:set_count(input:get_count() - wanted1:get_count())
+						inv:set_stack("input", n, input)
+						break
+					end
+				end
+			end
+			-- END OF SPECIAL HANDLING FOR COMPASS
+			local trader = player_trading_with[name]
+			local tradenum = player_tradenum[name]
+			local trades
+			if trader and trader._trades then
+				trades = minetest.deserialize(trader._trades)
+			end
+			if trades then
+				local trade = trades[tradenum]
+				local unlock_stuff = false
+				if not trade.traded_once then
+					-- Unlock all the things if something was traded
+					-- for the first time ever
+					unlock_stuff = true
+					trade.traded_once = true
+				elseif trade.trade_counter == 0 and math.random(1,5) == 1 then
+					-- Otherwise, 20% chance to unlock if used freshly reset trade
+					unlock_stuff = true
+				end
+				if unlock_stuff then
+					-- First-time trade unlock all trades and unlock next trade tier
+					if trade.tier + 1 > trader._max_trade_tier then
+						trader._max_trade_tier = trader._max_trade_tier + 1
+					end
+					for t=1, #trades do
+						trades[t].locked = false
+						trades[t].trade_counter = 0
+					end
+				end
+				trade.trade_counter = trade.trade_counter + 1
+				if trade.trade_counter >= 12 then
+					trade.locked = true
+				elseif trade.trade_counter >= 2 then
+					local r = math.random(1, math.random(4, 10))
+					if r == 1 then
+						trade.locked = true
+					end
+				end
+
+				trader._trades = minetest.serialize(trades)
+				if trade.locked then
+					inv:set_stack("output", 1, "")
+					show_trade_formspec(name, trader, tradenum)
+				end
+			else
+				minetest.log("error", "[mobs_mc] Player took item from trader output but player_trading_with or player_tradenum is nil!")
+			end
+
+			accept = true
+		elseif listname == "input" then
+			update_offer(inv, player, false)
+		end
+		if accept then
+			minetest.sound_play("mobs_mc_villager_accept", {to_player = name})
+		else
+			minetest.sound_play("mobs_mc_villager_deny", {to_player = name})
+		end
+	end,
+}
+
+
 minetest.register_on_joinplayer(function(player)
-	player_tradenum[player:get_player_name()] = 1
-	player_trading_with[player:get_player_name()] = nil
+	local name = player:get_player_name()
+	player_tradenum[name] = 1
+	player_trading_with[name] = nil
+
+	-- Create or get player-specific trading inventory
+	local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade_"..name})
+	if not inv then
+		inv = minetest.create_detached_inventory("mobs_mc:trade_"..name, trade_inventory, name)
+	end
+	inv:set_size("input", 2)
+	inv:set_size("output", 1)
+	inv:set_size("wanted", 2)
+	inv:set_size("offered", 1)
 end)
 
 mobs:spawn_specific("mobs_mc:villager", mobs_mc.spawn.village, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 8000, 4, mobs_mc.spawn_height.water+1, mobs_mc.spawn_height.overworld_max)
