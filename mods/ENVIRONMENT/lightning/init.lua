@@ -191,10 +191,14 @@ lightning.strike = function(pos)
 							obj:set_yaw(rot)
 						-- villager → witch
 						elseif lua.name == "mobs_mc:villager" then
+						-- Witches are incomplete, this code is unused
+						-- TODO: Enable this code when witches are working.
+						--[[
 							local rot = obj:get_yaw()
 							obj:remove()
 							obj = minetest.add_entity(pos2, "mobs_mc:witch")
 							obj:set_yaw(rot)
+						]]
 						-- TODO: creeper → charged creeper
 						elseif lua.name == "mobs_mc:creeper" then
 

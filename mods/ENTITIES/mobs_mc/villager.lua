@@ -10,6 +10,14 @@
 
 -- TODO: Particles
 -- TODO: 4s Regeneration I after trade unlock
+-- TODO: Breeding
+-- TODO: Baby villagers
+-- TODO: Spawning in villages
+-- TODO: Behaviour:
+--     TODO: Walk around village, but do not leave it intentionally
+--     TODO: Run into house on rain or danger, open doors
+--     TODO: Internal inventory, pick up items, trade with other villagers
+--     TODO: Farm stuff
 
 -- intllib
 local MP = minetest.get_modpath(minetest.get_current_modname())

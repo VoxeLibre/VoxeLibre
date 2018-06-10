@@ -7,7 +7,7 @@
 local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
---dofile(minetest.get_modpath("mobs").."/api.lua")
+-- TODO: Turn villagers to zombie villager
 
 --###################
 --################### ZOMBIE VILLAGER
