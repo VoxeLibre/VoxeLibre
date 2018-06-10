@@ -853,6 +853,9 @@ local trade_inventory = {
 						trades[t].locked = false
 						trades[t].trade_counter = 0
 					end
+					-- Also heal trader for unlocking stuff
+					-- TODO: Replace by Regeneration I
+					trader.health = math.min(trader.hp_max, trader.health + 4)
 				end
 				trade.trade_counter = trade.trade_counter + 1
 				if trade.trade_counter >= 12 then
