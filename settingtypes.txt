@@ -46,7 +46,7 @@ only_peaceful_mobs (Spawn only peaceful mobs) bool false
 # If enabled, mobs might drop items when they die.
 mobs_drop_items (Mobs drop items) bool true
 
-# If enabled, mobs can take and place blocks around them.
+# If enabled, mobs can take, place, change and destroy blocks around them.
 mobs_griefing (Mobs change blocks) bool true
 
 # If enabled, players respawn at the bed they last lay on instead of normal

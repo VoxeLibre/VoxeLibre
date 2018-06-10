@@ -1959,7 +1959,7 @@ local do_states = function(self, dtime)
 
 					self.object:remove()
 
-					if mod_tnt and tnt and tnt.boom
+					if mobs_griefing and mod_tnt and tnt and tnt.boom
 					and not minetest.is_protected(pos, "") then
 
 						tnt.boom(pos, {
