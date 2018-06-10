@@ -6,6 +6,7 @@
 --###################
 --################### VILLAGER
 --###################
+-- Summary: Villagers are complex NPCs, their main feature allows players to trade with them.
 
 -- TODO: Particles
 -- TODO: 4s Regeneration I after trade unlock
@@ -22,6 +23,8 @@ local player_trading_with = {}
 local DEFAULT_WALK_CHANCE = 33 -- chance to walk in percent, if no player nearby
 local PLAYER_SCAN_INTERVAL = 5 -- every X seconds, villager looks for players nearby
 local PLAYER_SCAN_RADIUS = 4 -- scan radius for looking for nearby players
+
+--[=======[ TRADING ]=======]
 
 -- LIST OF VILLAGER PROFESSIONS AND TRADES
 
@@ -352,7 +355,7 @@ local update_max_tradenum = function(self)
 	self._max_tradenum = #trades
 end
 
-local init_profession = function(self)
+local init_trader_vars = function(self)
 	if not self._profession then
 		-- Select random profession from all professions with matching clothing
 		local texture = self.base_texture[1]
@@ -370,6 +373,9 @@ local init_profession = function(self)
 	end
 	if not self._locked_trades then
 		self._locked_trades = 0
+	end
+	if not self._trading_players then
+		self._trading_players = {}
 	end
 end
 
@@ -563,137 +569,6 @@ local update_offer = function(inv, player, sound)
 	end
 end
 
-mobs:register_mob("mobs_mc:villager", {
-	type = "npc",
-	hp_min = 20,
-	hp_max = 20,
-	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
-	visual = "mesh",
-	mesh = "mobs_mc_villager.b3d",
-	textures = {
-	{
-		"mobs_mc_villager.png",
-		"mobs_mc_villager.png", --hat
-	},
-	{
-		"mobs_mc_villager_farmer.png",
-		"mobs_mc_villager_farmer.png", --hat
-	},
-	{
-		"mobs_mc_villager_priest.png",
-		"mobs_mc_villager_priest.png", --hat
-	},
-	{
-		"mobs_mc_villager_librarian.png",
-		"mobs_mc_villager_librarian.png", --hat
-	},
-	{
-		"mobs_mc_villager_butcher.png",
-		"mobs_mc_villager_butcher.png", --hat
-	},
-	{
-		"mobs_mc_villager_smith.png",
-		"mobs_mc_villager_smith.png", --hat
-	},
-	},
-	visual_size = {x=3, y=3},
-	makes_footstep_sound = true,
-	walk_velocity = 1.2,
-	run_velocity = 2.4,
-	drops = {},
-	sounds = {
-		random = "mobs_mc_villager_noise",
-		death = "mobs_mc_villager_death",
-		damage = "mobs_mc_villager_damage",
-		distance = 16,
-	},
-	animation = {
-		stand_speed = 25,
-		stand_start = 40,
-		stand_end = 59,
-		walk_speed = 25,
-		walk_start = 0,
-		walk_end = 40,
-		run_speed = 25,
-		run_start = 0,
-		run_end = 40,
-		die_speed = 15,
-		die_start = 210,
-		die_end = 220,
-		die_loop = false,
-	},
-	water_damage = 0,
-	lava_damage = 4,
-	light_damage = 0,
-	view_range = 16,
-	fear_height = 4,
-	jump = true,
-	walk_chance = DEFAULT_WALK_CHANCE,
-	on_rightclick = function(self, clicker)
-		-- Initiate trading
-		local name = clicker:get_player_name()
-
-		init_profession(self)
-		if self._trades == nil then
-			init_trades(self)
-		end
-		update_max_tradenum(self)
-		if self._trades == false then
-			-- Villager has no trades, rightclick is a no-op
-			return
-		end
-
-		player_trading_with[name] = self
-
-		local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade_"..name})
-
-		set_trade(self, clicker, inv, 1)
-
-		show_trade_formspec(name, self)
-
-		-- Behaviour stuff:
-		-- Make villager look at player and stand still
-		local selfpos = self.object:get_pos()
-		local clickerpos = clicker:get_pos()
-		local dir = vector.direction(selfpos, clickerpos)
-		self.object:set_yaw(minetest.dir_to_yaw(dir))
-		stand_still(self)
-	end,
-	_player_scan_timer = 0,
-	do_custom = function(self, dtime)
-		-- Stand still if player is nearby.
-		if not self._player_scan_timer then
-			self._player_scan_timer = 0
-		end
-		self._player_scan_timer = self._player_scan_timer + dtime
-		-- Check infrequently to keep CPU load low
-		if self._player_scan_timer > PLAYER_SCAN_INTERVAL then
-			self._player_scan_timer = 0
-			local selfpos = self.object:get_pos()
-			local objects = minetest.get_objects_inside_radius(selfpos, PLAYER_SCAN_RADIUS)
-			local has_player = false
-			for o, obj in pairs(objects) do
-				if obj:is_player() then
-					has_player = true
-					break
-				end
-			end
-			if has_player then
-				minetest.log("verbose", "[mobs_mc] Player near villager found!")
-				stand_still(self)
-			else
-				minetest.log("verbose", "[mobs_mc] No player near villager found!")
-				self.walk_chance = DEFAULT_WALK_CHANCE
-				self.jump = true
-			end
-		end
-	end,
-
-	on_spawn = function(self)
-		init_profession(self)
-	end,
-})
-
 -- Returns a single itemstack in the given inventory to the player's main inventory, or drop it when there's no space left
 local function return_item(itemstack, dropper, pos, inv_p)
 	if dropper:is_player() then
@@ -739,7 +614,13 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if string.sub(formname, 1, 14) == "mobs_mc:trade_" then
 		local name = player:get_player_name()
 		if fields.quit then
+			-- Get input items back
 			return_fields(player)
+			-- Reset internal "trading with" state
+			local trader = player_trading_with[name]
+			if trader then
+				trader._trading_players[name] = nil
+			end
 			player_trading_with[name] = nil
 		elseif fields.next_trade or fields.prev_trade then
 			local trader = player_trading_with[name]
@@ -766,14 +647,28 @@ end)
 minetest.register_on_leaveplayer(function(player)
 	return_fields(player)
 	player_tradenum[player:get_player_name()] = nil
+	local trader = player_trading_with[name]
+	if trader then
+		trader._trading_players[name] = nil
+	end
 	player_trading_with[player:get_player_name()] = nil
+
 end)
+
+-- Return true if player is trading with villager, and the villager entity exists
+local trader_exists = function(playername)
+	local trader = player_trading_with[playername]
+	return trader ~= nil and trader.object:get_luaentity() ~= nil
+end
 
 local trade_inventory = {
 	allow_take = function(inv, listname, index, stack, player)
 		if listname == "input" then
 			return stack:get_count()
 		elseif listname == "output" then
+			if not trader_exists(player:get_player_name()) then
+				return 0
+			end
 			-- Only allow taking full stack
 			local count = stack:get_count()
 			if count == inv:get_stack(listname, index):get_count() then
@@ -825,6 +720,9 @@ local trade_inventory = {
 		if from_list == "input" and to_list == "input" then
 			return count
 		elseif from_list == "output" and to_list == "input" then
+			if not trader_exists(player:get_player_name()) then
+				return 0
+			end
 			local move_stack = inv:get_stack(from_list, from_index)
 			if inv:get_stack(to_list, to_index):item_fits(move_stack) then
 				return count
@@ -834,7 +732,11 @@ local trade_inventory = {
 	end,
 	allow_put = function(inv, listname, index, stack, player)
 		if listname == "input" then
-			return stack:get_count()
+			if not trader_exists(player:get_player_name()) then
+				return 0
+			else
+				return stack:get_count()
+			end
 		else
 			return 0
 		end
@@ -962,7 +864,6 @@ local trade_inventory = {
 	end,
 }
 
-
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	player_tradenum[name] = 1
@@ -978,6 +879,155 @@ minetest.register_on_joinplayer(function(player)
 	inv:set_size("wanted", 2)
 	inv:set_size("offered", 1)
 end)
+
+--[=======[ MOB REGISTRATION AND SPAWNING ]=======]
+
+mobs:register_mob("mobs_mc:villager", {
+	type = "npc",
+	hp_min = 20,
+	hp_max = 20,
+	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
+	visual = "mesh",
+	mesh = "mobs_mc_villager.b3d",
+	textures = {
+	{
+		"mobs_mc_villager.png",
+		"mobs_mc_villager.png", --hat
+	},
+	{
+		"mobs_mc_villager_farmer.png",
+		"mobs_mc_villager_farmer.png", --hat
+	},
+	{
+		"mobs_mc_villager_priest.png",
+		"mobs_mc_villager_priest.png", --hat
+	},
+	{
+		"mobs_mc_villager_librarian.png",
+		"mobs_mc_villager_librarian.png", --hat
+	},
+	{
+		"mobs_mc_villager_butcher.png",
+		"mobs_mc_villager_butcher.png", --hat
+	},
+	{
+		"mobs_mc_villager_smith.png",
+		"mobs_mc_villager_smith.png", --hat
+	},
+	},
+	visual_size = {x=3, y=3},
+	makes_footstep_sound = true,
+	walk_velocity = 1.2,
+	run_velocity = 2.4,
+	drops = {},
+	sounds = {
+		random = "mobs_mc_villager_noise",
+		death = "mobs_mc_villager_death",
+		damage = "mobs_mc_villager_damage",
+		distance = 16,
+	},
+	animation = {
+		stand_speed = 25,
+		stand_start = 40,
+		stand_end = 59,
+		walk_speed = 25,
+		walk_start = 0,
+		walk_end = 40,
+		run_speed = 25,
+		run_start = 0,
+		run_end = 40,
+		die_speed = 15,
+		die_start = 210,
+		die_end = 220,
+		die_loop = false,
+	},
+	water_damage = 0,
+	lava_damage = 4,
+	light_damage = 0,
+	view_range = 16,
+	fear_height = 4,
+	jump = true,
+	walk_chance = DEFAULT_WALK_CHANCE,
+	on_rightclick = function(self, clicker)
+		-- Initiate trading
+		local name = clicker:get_player_name()
+		self._trading_players[name] = true
+
+		init_trader_vars(self)
+		if self._trades == nil then
+			init_trades(self)
+		end
+		update_max_tradenum(self)
+		if self._trades == false then
+			-- Villager has no trades, rightclick is a no-op
+			return
+		end
+
+		player_trading_with[name] = self
+
+		local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade_"..name})
+
+		set_trade(self, clicker, inv, 1)
+
+		show_trade_formspec(name, self)
+
+		-- Behaviour stuff:
+		-- Make villager look at player and stand still
+		local selfpos = self.object:get_pos()
+		local clickerpos = clicker:get_pos()
+		local dir = vector.direction(selfpos, clickerpos)
+		self.object:set_yaw(minetest.dir_to_yaw(dir))
+		stand_still(self)
+	end,
+
+	_player_scan_timer = 0,
+	_trading_players = {}, -- list of playernames currently trading with villager (open formspec)
+	do_custom = function(self, dtime)
+		-- Stand still if player is nearby.
+		if not self._player_scan_timer then
+			self._player_scan_timer = 0
+		end
+		self._player_scan_timer = self._player_scan_timer + dtime
+		-- Check infrequently to keep CPU load low
+		if self._player_scan_timer > PLAYER_SCAN_INTERVAL then
+			self._player_scan_timer = 0
+			local selfpos = self.object:get_pos()
+			local objects = minetest.get_objects_inside_radius(selfpos, PLAYER_SCAN_RADIUS)
+			local has_player = false
+			for o, obj in pairs(objects) do
+				if obj:is_player() then
+					has_player = true
+					break
+				end
+			end
+			if has_player then
+				minetest.log("verbose", "[mobs_mc] Player near villager found!")
+				stand_still(self)
+			else
+				minetest.log("verbose", "[mobs_mc] No player near villager found!")
+				self.walk_chance = DEFAULT_WALK_CHANCE
+				self.jump = true
+			end
+		end
+	end,
+
+	on_spawn = function(self)
+		init_trader_vars(self)
+	end,
+	on_die = function(self, pos)
+		-- Close open trade formspecs and give input back to players
+		local trading_players = self._trading_players
+		for name, _ in pairs(trading_players) do
+			minetest.close_formspec(name, "mobs_mc:trade_"..name)
+			local player = minetest.get_player_by_name(name)
+			if player then
+				return_fields(player)
+			end
+		end
+	end,
+})
+
+
 
 mobs:spawn_specific("mobs_mc:villager", mobs_mc.spawn.village, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 8000, 4, mobs_mc.spawn_height.water+1, mobs_mc.spawn_height.overworld_max)
 
