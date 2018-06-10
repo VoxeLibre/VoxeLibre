@@ -195,7 +195,7 @@ local professions = {
 		trades = {
 			{
 			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
-			{ { "mcl_core:emerald", 6, 8 }, { "3d_armor:helmet_iron", 1, 1 } },
+			{ { "mcl_core:emerald", 4, 6 }, { "3d_armor:helmet_iron", 1, 1 } },
 			},
 
 			{
