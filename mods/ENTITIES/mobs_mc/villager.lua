@@ -329,6 +329,21 @@ for id, _ in pairs(professions) do
 	table.insert(profession_names, id)
 end
 
+local update_max_tradenum = function(self)
+	if not self._trades then
+		return
+	end
+	local trades = minetest.deserialize(self._trades)
+	for t=1, #trades do
+		local trade = trades[t]
+		if trade.tier > self._max_trade_tier then
+			self._max_tradenum = t - 1
+			return
+		end
+	end
+	self._max_tradenum = #trades
+end
+
 local init_profession = function(self)
 	if not self._profession then
 		-- Select random profession from all professions with matching clothing
@@ -397,20 +412,16 @@ local set_trade = function(trader, player, inv, concrete_tradenum)
 			return
 		end
 	end
+	local name = player:get_player_name()
 
-	if concrete_tradenum > #trades then
-		concrete_tradenum = 1
-		player_tradenum[player:get_player_name()] = concrete_tradenum
+	-- Stop tradenum from advancing into locked tiers or out-of-range areas
+	if concrete_tradenum > trader._max_tradenum then
+		concrete_tradenum = trader._max_tradenum
 	elseif concrete_tradenum < 1 then
-		concrete_tradenum = #trades
-		player_tradenum[player:get_player_name()] = concrete_tradenum
-	end
-	local trade = trades[concrete_tradenum]
-	if trader._max_trade_tier < trade.tier then
 		concrete_tradenum = 1
-		player_tradenum[player:get_player_name()] = concrete_tradenum
-		trade = trades[concrete_tradenum]
 	end
+	player_tradenum[name] = concrete_tradenum
+	local trade = trades[concrete_tradenum]
 	inv:set_stack("wanted", 1, ItemStack(trade.wanted[1]))
 	inv:set_stack("offered", 1, ItemStack(trade.offered))
 	if trade.wanted[2] then
@@ -439,6 +450,17 @@ local function show_trade_formspec(playername, trader, tradenum)
 	end
 	local tradeinv_name = "mobs_mc:trade_"..playername
 	local tradeinv = minetest.formspec_escape("detached:"..tradeinv_name)
+
+	local b_prev, b_next = "", ""
+	if #trades > 1 then
+		if tradenum > 1 then
+			b_prev = "button[1,1;0.5,1;prev_trade;<]"
+		end
+		if tradenum < trader._max_tradenum then
+			b_next = "button[7.26,1;0.5,1;next_trade;>]"
+		end
+	end
+
 	local formspec =
 	"size[9,8.75]"
 	.."background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"
@@ -447,8 +469,7 @@ local function show_trade_formspec(playername, trader, tradenum)
 	.."label[4,0;"..minetest.formspec_escape(profession).."]"
 	.."list[current_player;main;0,4.5;9,3;9]"
 	.."list[current_player;main;0,7.74;9,1;]"
-	.."button[1,1;0.5,1;prev_trade;<]"
-	.."button[7.26,1;0.5,1;next_trade;>]"
+	..b_prev..b_next
 	.."list["..tradeinv..";wanted;2,1;2,1;]"
 	.."list["..tradeinv..";offered;5.76,1;1,1;]"
 	.."list["..tradeinv..";input;2,2.5;2,1;]"
@@ -602,6 +623,7 @@ mobs:register_mob("mobs_mc:villager", {
 		if self._trades == nil then
 			init_trades(self)
 		end
+		update_max_tradenum(self)
 		if self._trades == false then
 			-- Villager has no trades, rightclick is a no-op
 			return
@@ -611,8 +633,7 @@ mobs:register_mob("mobs_mc:villager", {
 
 		local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade_"..name})
 
-		player_tradenum[name] = 1
-		set_trade(self, clicker, inv, player_tradenum[name], player_tradenum[name])
+		set_trade(self, clicker, inv, 1)
 
 		show_trade_formspec(name, self)
 	end,
@@ -669,7 +690,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if fields.quit then
 			return_fields(player)
 			player_trading_with[name] = nil
-		elseif fields.next_trade then
+		elseif fields.next_trade or fields.prev_trade then
 			local trader = player_trading_with[name]
 			if not trader or not trader.object:get_luaentity() then
 				return
@@ -678,23 +699,13 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			if not trades then
 				return
 			end
-			player_tradenum[name] = player_tradenum[name] + 1
-			local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade_"..name})
-			set_trade(trader, player, inv, player_tradenum[name])
-			update_offer(inv, player, false)
-			show_trade_formspec(name, trader, player_tradenum[name])
-		elseif fields.prev_trade then
-			local trader = player_trading_with[name]
-			if not trader or not trader.object:get_luaentity() then
-				return
+			local dir = 1
+			if fields.prev_trade then
+				dir = -1
 			end
-			local trades = trader._trades
-			if not trades then
-				return
-			end
-			player_tradenum[name] = player_tradenum[name] - 1
+			local tradenum = player_tradenum[name] + dir
 			local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade_"..name})
-			set_trade(trader, player, inv, player_tradenum[name])
+			set_trade(trader, player, inv, tradenum)
 			update_offer(inv, player, false)
 			show_trade_formspec(name, trader, player_tradenum[name])
 		end
@@ -835,6 +846,8 @@ local trade_inventory = {
 					-- First-time trade unlock all trades and unlock next trade tier
 					if trade.tier + 1 > trader._max_trade_tier then
 						trader._max_trade_tier = trader._max_trade_tier + 1
+						update_max_tradenum(trader)
+						show_trade_formspec(name, trader, tradenum)
 					end
 					for t=1, #trades do
 						trades[t].locked = false
