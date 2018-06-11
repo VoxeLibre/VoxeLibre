@@ -653,13 +653,14 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 minetest.register_on_leaveplayer(function(player)
+	local name = player:get_player_name()
 	return_fields(player)
-	player_tradenum[player:get_player_name()] = nil
+	player_tradenum[name] = nil
 	local trader = player_trading_with[name]
 	if trader then
 		trader._trading_players[name] = nil
 	end
-	player_trading_with[player:get_player_name()] = nil
+	player_trading_with[name] = nil
 
 end)
 
