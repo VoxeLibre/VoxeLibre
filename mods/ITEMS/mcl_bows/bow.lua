@@ -145,7 +145,7 @@ for level=0, 2 do
 		range = 0, -- Pointing range to 0 to prevent punching with bow :D
 		groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
 		on_drop = function(itemstack, dropper, pos)
-			reset_bow_state(player)
+			reset_bow_state(dropper)
 			itemstack:set_name("mcl_bows:bow")
 			minetest.item_drop(itemstack, dropper, pos)
 			itemstack:take_item()
