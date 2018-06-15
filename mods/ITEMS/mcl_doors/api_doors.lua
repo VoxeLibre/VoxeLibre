@@ -134,13 +134,11 @@ function mcl_doors:register_door(name, def)
 			elseif p2 == 3 then
 				pt3.z = pt3.z-1
 			end
-			if not string.find(minetest.get_node(pt3).name, name.."_b_") then
-				minetest.set_node(pt, {name=name.."_b_1", param2=p2})
-				minetest.set_node(pt2, {name=name.."_t_1", param2=p2})
-			else
-				minetest.set_node(pt, {name=name.."_b_2", param2=p2})
-				minetest.set_node(pt2, {name=name.."_t_2", param2=p2})
-			end
+			-- Set door nodes
+			minetest.set_node(pt, {name=name.."_b_1", param2=p2})
+			minetest.set_node(pt2, {name=name.."_t_1", param2=p2})
+			-- TODO: Mirror door when 2 doors are placed next to each other, to create double doors
+
 			if def.sounds and def.sounds.place then
 				minetest.sound_play(def.sounds.place, {pos=pt})
 			end
