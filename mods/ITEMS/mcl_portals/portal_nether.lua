@@ -404,7 +404,7 @@ minetest.register_abm({
 					end
 					-- teleport the object
 					minetest.after(3, function(obj, pos, target)
-						if not obj:get_luaentity() then
+						if (not obj:get_luaentity()) and  (not obj:is_player()) then
 							return
 						end
 						-- Prevent quick back-and-forth teleportation
