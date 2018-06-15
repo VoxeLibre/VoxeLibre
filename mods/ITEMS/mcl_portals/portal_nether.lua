@@ -9,6 +9,8 @@ local FRAME_SIZE_Y_MIN = 5
 local FRAME_SIZE_X_MAX = 23
 local FRAME_SIZE_Y_MAX = 23
 
+local NETHER_PORTAL_TELEPORT_DELAY = 3 -- seconds before teleporting in Nether portal
+
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
 -- 3D noise
@@ -179,6 +181,7 @@ local function build_portal(pos, target)
 		end
 	end
 	end
+	minetest.log("action", "[mcl_portal] Destination Nether portal generated at "..minetest.pos_to_string(p2).."!")
 end
 
 local function find_nether_target_y(target_x, target_z)
@@ -399,11 +402,11 @@ minetest.register_abm({
 					-- force emerge of target area
 					minetest.get_voxel_manip():read_from_map(target, target)
 					if not minetest.get_node_or_nil(target) then
-						minetest.emerge_area(
-							vector.subtract(target, 4), vector.add(target, 4))
+						minetest.emerge_area(vector.subtract(target, 4), vector.add(target, 4))
 					end
-					-- teleport the object
-					minetest.after(3, function(obj, pos, target)
+
+					-- teleport function
+					local teleport = function(obj, pos, target)
 						if (not obj:get_luaentity()) and  (not obj:is_player()) then
 							return
 						end
@@ -423,18 +426,6 @@ minetest.register_abm({
 							return
 						end
 
-						-- Build target portal (if there isn't already one)
-
-						local n = minetest.get_node_or_nil(target)
-						if n and n.name ~= "mcl_portals:portal" then
-							local emerge_callback = function(blockpos, action, calls_remaining, param)
-								if calls_remaining <= 0 then
-									build_portal(param.target, param.pos, false)
-								end
-							end
-							minetest.emerge_area(vector.subtract(target, 7), vector.add(target, 7), emerge_callback, { pos = pos, target = target })
-						end
-
 						-- Teleport
 						obj:set_pos(target)
 						if obj:is_player() then
@@ -447,8 +438,30 @@ minetest.register_abm({
 						minetest.after(4, function(o)
 							portal_cooloff[o] = false
 						end, obj)
+						if obj:is_player() then
+							local name = obj:get_player_name()
+							minetest.log("action", "[mcl_portal] "..name.." teleported to Nether portal at "..minetest.pos_to_string(target)..".")
+						end
+					end
 
-					end, obj, pos, target)
+					local n = minetest.get_node_or_nil(target)
+					if n and n.name ~= "mcl_portals:portal" then
+						-- Emerge target area, wait for emerging to be finished, build destination portal
+						-- (if there isn't already one, teleport object after a short delay.
+						local emerge_callback = function(blockpos, action, calls_remaining, param)
+							minetest.log("verbose", "[mcl_portal] emerge_callack called! action="..action)
+							if calls_remaining <= 0 then
+								minetest.log("verbose", "[mcl_portal] Area for destination Nether portal emerged!")
+								build_portal(param.target, param.pos, false)
+								minetest.after(NETHER_PORTAL_TELEPORT_DELAY, teleport, obj, pos, target)
+							end
+						end
+						minetest.log("verbose", "[mcl_portal] Emerging area for destination Nether portal ...")
+						minetest.emerge_area(vector.subtract(target, 7), vector.add(target, 7), emerge_callback, { pos = pos, target = target })
+					else
+						minetest.after(NETHER_PORTAL_TELEPORT_DELAY, teleport, obj, pos, target)
+					end
+
 				end
 			end
 		end
@@ -469,6 +482,9 @@ minetest.override_item("mcl_core:obsidian", {
 	_on_ignite = function(user, pointed_thing)
 		local pos = pointed_thing.under
 		local portal_placed = mcl_portals.light_nether_portal(pos)
+		if portal_placed then
+			minetest.log("action", "[mcl_portal] Nether portal activated at "..minetest.pos_to_string(pos)..".")
+		end
 		if portal_placed and minetest.get_modpath("doc") then
 			doc.mark_entry_as_revealed(user:get_player_name(), "nodes", "mcl_portals:portal")
 
