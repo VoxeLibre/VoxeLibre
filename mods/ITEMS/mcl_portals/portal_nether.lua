@@ -9,7 +9,8 @@ local FRAME_SIZE_Y_MIN = 5
 local FRAME_SIZE_X_MAX = 23
 local FRAME_SIZE_Y_MAX = 23
 
-local NETHER_PORTAL_TELEPORT_DELAY = 3 -- seconds before teleporting in Nether portal
+local TELEPORT_DELAY = 3 -- seconds before teleporting in Nether portal
+local TELEPORT_COOLOFF = 4 -- after object was teleported, for this many seconds it won't teleported again
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
@@ -433,9 +434,9 @@ minetest.register_abm({
 							minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16})
 						end
 
-						-- Enable teleportation cooloff for 4 seconds, to prevent back-and-forth teleportation
+						-- Enable teleportation cooloff for some seconds, to prevent back-and-forth teleportation
 						portal_cooloff[obj] = true
-						minetest.after(4, function(o)
+						minetest.after(TELEPORT_COOLOFF, function(o)
 							portal_cooloff[o] = false
 						end, obj)
 						if obj:is_player() then
@@ -450,16 +451,16 @@ minetest.register_abm({
 						-- (if there isn't already one, teleport object after a short delay.
 						local emerge_callback = function(blockpos, action, calls_remaining, param)
 							minetest.log("verbose", "[mcl_portal] emerge_callack called! action="..action)
-							if calls_remaining <= 0 then
+							if calls_remaining <= 0 and action ~= minetest.EMERGE_CANCELLED and action ~= minetest.EMERGE_ERRORED then
 								minetest.log("verbose", "[mcl_portal] Area for destination Nether portal emerged!")
 								build_portal(param.target, param.pos, false)
-								minetest.after(NETHER_PORTAL_TELEPORT_DELAY, teleport, obj, pos, target)
+								minetest.after(TELEPORT_DELAY, teleport, obj, pos, target)
 							end
 						end
 						minetest.log("verbose", "[mcl_portal] Emerging area for destination Nether portal ...")
 						minetest.emerge_area(vector.subtract(target, 7), vector.add(target, 7), emerge_callback, { pos = pos, target = target })
 					else
-						minetest.after(NETHER_PORTAL_TELEPORT_DELAY, teleport, obj, pos, target)
+						minetest.after(TELEPORT_DELAY, teleport, obj, pos, target)
 					end
 
 				end
