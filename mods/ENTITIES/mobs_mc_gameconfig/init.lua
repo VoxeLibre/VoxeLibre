@@ -216,7 +216,7 @@ mobs_mc.override.spawn = {
 
 -- This table contains important spawn height references for the mob spawn height.
 mobs_mc.override.spawn_height = {
-	water = tonumber(minetest.setting_get("water_level")) or 0, -- Water level in the Overworld
+	water = tonumber(minetest.settings:get("water_level")) or 0, -- Water level in the Overworld
 
 	-- Overworld boundaries (inclusive)
 	overworld_min = mcl_vars.mg_overworld_min,

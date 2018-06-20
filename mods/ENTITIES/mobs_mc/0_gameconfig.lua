@@ -287,7 +287,7 @@ mobs_mc.spawn = {
 -- This table contains important spawn height references for the mob spawn height.
 -- Please base your mob spawn height on these numbers to keep things clean.
 mobs_mc.spawn_height = {
-	water = tonumber(minetest.setting_get("water_level")) or 0, -- Water level in the Overworld
+	water = tonumber(minetest.settings:get("water_level")) or 0, -- Water level in the Overworld
 
 	-- Overworld boundaries (inclusive)
 	overworld_min = -2999,

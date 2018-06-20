@@ -295,7 +295,7 @@ end
 
 --modify builtin:item
 
-local time_to_live = tonumber(core.setting_get("item_entity_ttl"))
+local time_to_live = tonumber(minetest.settings:get("item_entity_ttl"))
 if not time_to_live then
 	time_to_live = 300
 end
