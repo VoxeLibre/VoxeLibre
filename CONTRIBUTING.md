@@ -70,4 +70,4 @@ Depending on what you add, the chances for inclusion vary:
 ## Reporting bugs
 Report all bugs and missing Minecraft features here:
 
-<https://github.com/Wuzzy2/MineClone2-Bugs>
+<https://git.minetest.land/Wuzzy/MineClone2-Bugs>

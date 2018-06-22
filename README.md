@@ -182,7 +182,7 @@ Technical differences from Minecraft:
 ## Reporting bugs
 Please report all bugs and missing Minecraft features here:
 
-<https://github.com/Wuzzy2/MineClone2-Bugs>
+<https://git.minetest.land/Wuzzy/MineClone2-Bugs>
 
 ## Other readme files
 
