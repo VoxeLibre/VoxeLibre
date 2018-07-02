@@ -1410,7 +1410,7 @@ local npc_attack = function(self)
 			p = obj.object:get_pos()
 			sp = s
 
-			dist = get_distance(p, s)
+			local dist = get_distance(p, s)
 
 			-- aim higher to make looking up hills more realistic
 			p.y = p.y + 1
