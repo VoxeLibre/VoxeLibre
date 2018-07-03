@@ -2912,7 +2912,7 @@ local on_rightclick_prefix = function(self, clicker)
 
 			if not mobs.is_creative(clicker:get_player_name()) then
 				item:take_item()
-				player:set_wielded_item(item)
+				clicker:set_wielded_item(item)
 			end
 			return true
 		end
