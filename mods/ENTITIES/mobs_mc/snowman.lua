@@ -36,12 +36,12 @@ mobs:register_mob("mobs_mc:snowman", {
 	mesh = "mobs_mc_snowman.b3d",
 	textures = {
                 "mobs_mc_snowman.png", --snowman texture
-                "farming_pumpkin_top.png", --top
+                "farming_pumpkin_side.png", --top
                 "farming_pumpkin_top.png", --down
                 "farming_pumpkin_face.png", --front
                 "farming_pumpkin_side.png", --left
                 "farming_pumpkin_side.png", --right
-                "farming_pumpkin_side.png", --left
+                "farming_pumpkin_top.png", --left
 	},
 	gotten_texture = gotten_texture,
 	drops = {{ name = mobs_mc.items.snowball, chance = 1, min = 0, max = 15 }},
