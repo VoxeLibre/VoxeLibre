@@ -13,6 +13,10 @@ License of source code:
 -----------------------
 MIT License
 
+Copyright (C) 2012-2016 PilzAdam
+Copyright (C) 2014-2016 SmallJoker
+Copyright (C) 2012-2016 Various Minetest developers and contributors
+
 Authors/licenses of media files:
 -----------------------
 

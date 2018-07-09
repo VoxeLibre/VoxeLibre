@@ -417,6 +417,7 @@ register_minecart(
 	"mcl_minecarts_minecart_normal.png",
 	{"mcl_minecarts:minecart"},
 	function(self, clicker)
+		local name = clicker:get_player_name()
 		if not clicker or not clicker:is_player() then
 			return
 		end
@@ -425,11 +426,21 @@ register_minecart(
 			self._driver = nil
 			self._start_pos = nil
 			clicker:set_detach()
+			local player = minetest.get_player_by_name(name)
+			player:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
 		elseif not self._driver then
 			self._driver = player_name
 			self._start_pos = self.object:getpos()
 			mcl_player.player_attached[player_name] = true
-			clicker:set_attach(self.object, "", {x=0, y=3, z=0}, {x=0, y=0, z=0})
+			clicker:set_attach(self.object, "", {x=0, y=8.25, z=-2}, {x=0, y=0, z=0})
+			mcl_player.player_attached[name] = true
+			minetest.after(0.2, function(name)
+				local player = minetest.get_player_by_name(name)
+				if player then
+					mcl_player.player_set_animation(player, "sit" , 30)
+					player:set_eye_offset({x=0, y=-5.5, z=0},{x=0, y=-4, z=0})
+				end
+			end, name)
 		end
 	end
 )
