@@ -35,6 +35,7 @@ local skeleton = {
 		random = "mobs_mc_skeleton_random",
 		death = "mobs_mc_skeleton_death",
 		damage = "mobs_mc_skeleton_hurt",
+		shoot_attack = "mcl_bows_bow_shoot",
 		distance = 16,
 	},
 	walk_velocity = 1.2,

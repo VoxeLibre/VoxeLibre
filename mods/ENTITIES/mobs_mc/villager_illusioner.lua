@@ -23,6 +23,11 @@ mobs:register_mob("mobs_mc:illusioner", {
 		"mobs_mc_illusionist.png", --hat
 		"mcl_bows_bow.png",
 	}, },
+	sounds = {
+		-- TODO: more sounds
+		shoot_attack = "mcl_bows_bow_shoot",
+		distance = 16,
+	},
 	visual_size = {x=3, y=3},
 	walk_velocity = 0.6,
 	run_velocity = 2,
