@@ -54,6 +54,7 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	walk_velocity = 6,
 	run_velocity = 6,
 	sounds = {
+		-- TODO: more sounds
 		shoot_attack = "mobs_mc_ender_dragon_shoot",
 		attack = "mobs_mc_ender_dragon_attack",
 		distance = 60,

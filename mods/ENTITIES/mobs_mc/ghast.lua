@@ -28,11 +28,13 @@ mobs:register_mob("mobs_mc:ghast", {
 	},
 	visual_size = {x=12, y=12},
 	sounds = {
-		shoot = "mobs_fireball",
-		death = "zombiedeath",
-		damage = "ghast_damage",
+		shoot_attack = "mobs_fireball",
+		death = "mobs_mc_zombie_death",
 		attack = "mobs_fireball",
 		random = "mobs_eerie",
+		distance = 16,
+		-- TODO: damage
+		-- TODO: better death
 	},
 	walk_velocity = 1.6,
 	run_velocity = 3.2,

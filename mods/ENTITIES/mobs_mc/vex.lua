@@ -38,6 +38,7 @@ mobs:register_mob("mobs_mc:vex", {
 	sounds = {
 		random = "mobs_rat",
 		death = "green_slime_death",
+		-- TODO: Sounds: random (better), death (better), damage
 		distance = 16,
 	},
 	animation = {
@@ -53,6 +54,7 @@ mobs:register_mob("mobs_mc:vex", {
 	},
 	do_custom = function(self, dtime)
 		-- Glow red while attacking
+		-- TODO: Charge sound
 		if self.state == "attack" then
 			if self.base_texture[2] ~= "mobs_mc_vex_charging.png" then
 				self.base_texture[2] = "mobs_mc_vex_charging.png"

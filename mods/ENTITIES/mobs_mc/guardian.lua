@@ -29,6 +29,7 @@ mobs:register_mob("mobs_mc:guardian", {
 	visual_size = {x=3, y=3},
 	sounds = {
 		damage = "mobs_mc_squid_hurt",
+		-- TODO: more and better sounds
 		distance = 16,
 	},
 	animation = {

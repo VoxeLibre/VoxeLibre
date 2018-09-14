@@ -102,6 +102,7 @@ local horse = {
 		run_end = 40,
 	},
 	textures = horse_textures,
+	-- TODO: sounds
 	fear_height = 4,
 	fly = false,
 	walk_chance = 60,

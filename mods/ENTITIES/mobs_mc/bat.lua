@@ -19,6 +19,7 @@ mobs:register_mob("mobs_mc:bat", {
 	visual_size = {x=1, y=1},
 	sounds = {
 		random = "mobs_rat", -- TODO: This sound is supposed to be very high-pitched and scary
+		-- TODO: more sounds?
 		distance = 16,
 	},
 	walk_velocity = 4.5,

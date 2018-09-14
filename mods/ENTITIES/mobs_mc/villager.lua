@@ -929,12 +929,7 @@ mobs:register_mob("mobs_mc:villager", {
 	walk_velocity = 1.2,
 	run_velocity = 2.4,
 	drops = {},
-	sounds = {
-		random = "mobs_mc_villager_noise",
-		death = "mobs_mc_villager_death",
-		damage = "mobs_mc_villager_damage",
-		distance = 16,
-	},
+	-- TODO: sounds
 	animation = {
 		stand_speed = 25,
 		stand_start = 40,

@@ -29,6 +29,7 @@ mobs:register_mob("mobs_mc:parrot", {
 	makes_footstep_sound = true,
 	walk_velocity = 3,
 	run_velocity = 5,
+	-- TODO: sounds
 	drops = {
 		{name = mobs_mc.items.feather,
 		chance = 1,

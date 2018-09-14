@@ -24,7 +24,7 @@ local rabbit = {
         {"mobs_mc_rabbit_black.png"},
 	},
 	visual_size = {x=1.5, y=1.5},
-	sounds = {},
+	-- TODO: sounds: random, damage, death
 	makes_footstep_sound = false,
 	walk_velocity = 1,
 	run_velocity = 3.7,

@@ -50,12 +50,7 @@ mobs:register_mob("mobs_mc:witch", {
 		{name = mobs_mc.items.sugar, chance = 8, min = 0, max = 2,},
 		{name = mobs_mc.items.stick, chance = 4, min = 0, max = 2,},
 	},
-	sounds = {
-		random = "Villager1",
-		death = "Villagerdead",
-		damage = "Villagerhurt1",
-		distance = 16,
-	},
+	-- TODO: sounds
 	animation = {
 		speed_normal = 30,
 		speed_run = 60,

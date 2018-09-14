@@ -47,11 +47,7 @@ mobs:register_mob("mobs_mc:vindicator", {
 		min = 1,
 		max = 1,},
 	},
-	sounds = {
-		random = "Villager1",
-		death = "Villagerdead",
-		damage = "Villagerhurt1",
-	},
+	-- TODO: sounds
 	animation = {
 		stand_speed = 25,
 		stand_start = 40,

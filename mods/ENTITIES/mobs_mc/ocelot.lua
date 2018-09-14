@@ -51,6 +51,7 @@ local ocelot = {
 	fear_height = 4,
 	sounds = {
 		random = "mobs_kitten",
+		-- TODO: more sounds
 		distance = 16,
 	},
 	animation = {

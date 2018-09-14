@@ -37,6 +37,7 @@ mobs:register_mob("mobs_mc:wither", {
 	sounds = {
 		shoot_attack = "mobs_mc_ender_dragon_shoot",
 		attack = "mobs_mc_ender_dragon_attack",
+		-- TODO: sounds
 		distance = 60,
 	},
 	jump = true,

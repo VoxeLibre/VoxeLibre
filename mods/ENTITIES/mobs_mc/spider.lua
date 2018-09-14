@@ -37,6 +37,7 @@ local spider = {
 	sounds = {
 		random = "mobs_spider",
 		attack = "mobs_spider",
+		-- TODO: sounds: walk, death
 		distance = 16,
 	},
 	walk_velocity = 3.9,

@@ -24,6 +24,8 @@ mobs:register_mob("mobs_mc:squid", {
     },
     sounds = {
 		damage = "mobs_mc_squid_hurt",
+		death = "mobs_mc_squid_hurt",
+		-- TODO: sounds: random, damage, death
 		distance = 16,
     },
     animation = {
@@ -55,6 +57,8 @@ mobs:register_mob("mobs_mc:squid", {
     fear_height = 4,
     blood_texture = "mobs_mc_squid_blood.png",
 })
+
+-- TODO: Behaviour: squirt
 
 -- Spawn near the water surface
 

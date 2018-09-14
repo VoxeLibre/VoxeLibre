@@ -29,6 +29,7 @@ mobs:register_mob("mobs_mc:shulker", {
 	visual = "mesh",
 	mesh = "mobs_mc_shulker.b3d",
 	textures = { "mobs_mc_endergolem.png", },
+	-- TODO: sounds
 	-- TODO: Make shulker dye-able
 	visual_size = {x=3, y=3},
 	walk_chance = 0,

@@ -34,6 +34,7 @@ mobs:register_mob("mobs_mc:snowman", {
 	collisionbox = {-0.35, -0.01, -0.35, 0.35, 1.89, 0.35},
 	visual = "mesh",
 	mesh = "mobs_mc_snowman.b3d",
+	-- TODO: sounds: damage, death
 	textures = {
                 "mobs_mc_snowman.png", --snowman texture
                 "farming_pumpkin_side.png", --top

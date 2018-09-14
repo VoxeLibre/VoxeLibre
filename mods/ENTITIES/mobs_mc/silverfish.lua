@@ -21,7 +21,7 @@ mobs:register_mob("mobs_mc:silverfish", {
 	},
 	pathfinding = 1,
 	visual_size = {x=3, y=3},
-	sounds = {},
+	-- TODO: sounds
 	makes_footstep_sound = false,
 	walk_velocity = 0.6,
 	run_velocity = 2,

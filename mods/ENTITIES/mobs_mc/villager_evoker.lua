@@ -61,13 +61,7 @@ mobs:register_mob("mobs_mc:evoker", {
 		min = 1,
 		max = 1,},
 	},
-	sounds = {
-		random = "Villagerdead",
-		death = "Villagerdead",
-		damage = "mese_dragon",
-		attack = "zombiedeath",
-		distance = 16,
-	},
+	-- TODO: sounds
 	animation = {
 		stand_speed = 25,
 		stand_start = 40,

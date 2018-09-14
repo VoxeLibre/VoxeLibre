@@ -50,10 +50,7 @@ mobs:register_mob("mobs_mc:polar_bear", {
 	lava_damage = 5,
 	light_damage = 0,
 	fear_height = 4,
-	sounds = {
-		random = "Cowhurt1", -- TODO: Replace
-		distance = 16,
-	},
+	-- TODO: sounds
 	animation = {
 		speed_normal = 25,		speed_run = 50,
 		stand_start = 0,		stand_end = 0,

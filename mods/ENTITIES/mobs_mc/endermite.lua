@@ -23,6 +23,8 @@ mobs:register_mob("mobs_mc:endermite", {
 	makes_footstep_sound = false,
 	sounds = {
 		random = "mobs_rat",
+		distance = 16,
+		-- TODO: more sounds
 	},
 	walk_velocity = 1,
 	run_velocity = 2,

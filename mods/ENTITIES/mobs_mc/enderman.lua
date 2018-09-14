@@ -180,7 +180,7 @@ mobs:register_mob("mobs_mc:enderman", {
 	sounds = {
 		war_cry = "mobs_sandmonster",
 		death = "green_slime_death",
-		damage = "Creeperdeath",
+		-- TODO: damage, random
 		distance = 16,
 	},
 	walk_velocity = 0.2,

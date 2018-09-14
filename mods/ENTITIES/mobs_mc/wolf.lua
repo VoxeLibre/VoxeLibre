@@ -35,10 +35,7 @@ local wolf = {
 	},
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
-	sounds = {
-		war_cry = "mobs_wolf_attack",
-		distance = 16,
-	},
+	-- TODO: sounds
 	pathfinding = 1,
 	floats = 1,
 	view_range = 16,

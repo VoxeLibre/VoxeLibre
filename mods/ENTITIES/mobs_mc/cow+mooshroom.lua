@@ -34,8 +34,7 @@ local cow_def = {
 	runaway = true,
 	sounds = {
 		random = "mobs_mc_cow",
-		death = "Cowhurt1", -- TODO: Replace
-		damage = "Cowhurt1", -- TODO: Replace
+		-- TODO: death, damage
 		distance = 16,
 	},
 	animation = {
