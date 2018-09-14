@@ -32,9 +32,9 @@ local skeleton = {
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
 	sounds = {
-		random = "skeleton1",
-		death = "skeletondeath",
-		damage = "skeletonhurt1",
+		random = "mobs_mc_skeleton_random",
+		death = "mobs_mc_skeleton_death",
+		damage = "mobs_mc_skeleton_hurt",
 		distance = 16,
 	},
 	walk_velocity = 1.2,

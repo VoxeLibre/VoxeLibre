@@ -327,9 +327,9 @@ skeleton_horse.drops = {
 	max = 2,},
 }
 skeleton_horse.sounds = {
-	random = "skeleton1",
-	death = "skeletondeath",
-	damage = "skeletonhurt1",
+	random = "mobs_mc_skeleton_random",
+	death = "mobs_mc_skeleton_death",
+	damage = "mobs_mc_skeleton_hurt",
 	distance = 16,
 }
 skeleton_horse.blood_amount = 0
