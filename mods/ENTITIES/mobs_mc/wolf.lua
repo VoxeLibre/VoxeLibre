@@ -22,7 +22,7 @@ end
 -- Wolf
 local wolf = {
 	type = "animal",
-
+	can_despawn = true,
 	hp_min = 8,
 	hp_max = 8,
 	passive = false,
@@ -123,6 +123,7 @@ end
 
 -- Tamed wolf (aka “dog”)
 local dog = table.copy(wolf)
+dog.can_despawn = false
 dog.passive = true
 dog.hp_min = 20
 dog.hp_max = 20

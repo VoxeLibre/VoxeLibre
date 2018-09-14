@@ -60,6 +60,7 @@ local mobs_drop_items = minetest.settings:get_bool("mobs_drop_items") ~= false
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 local creative = minetest.settings:get_bool("creative_mode")
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
+-- TODO
 local remove_far = false
 local difficulty = tonumber(minetest.settings:get("mob_difficulty")) or 1.0
 local show_health = false
@@ -2537,11 +2538,10 @@ local mob_staticdata = function(self)
 
 	-- remove mob when out of range unless tamed
 	if remove_far
+	and self.can_despawn
 	and self.remove_ok
-	and self.type ~= "npc"
-	and self.state ~= "attack"
-	and not self.tamed
-	and self.lifetimer < 20000 then
+	and ((not self.nametag) or (self.nametag == ""))
+	and self.lifetimer <= 20 then
 
 		self.object:remove()
 
@@ -2735,19 +2735,19 @@ local mob_step = function(self, dtime)
 	local pos = self.object:get_pos()
 	local yaw = 0
 
-	-- when lifetimer expires remove mob (except npc and tamed)
-	if self.type ~= "npc"
-	and not self.tamed
-	and self.state ~= "attack"
-	and remove_far ~= true
-	and self.lifetimer < 20000 then
+	-- Despawning: when lifetimer expires, remove mob
+	if remove_far
+	and self.can_despawn == true
+	and ((not self.nametag) or (self.nametag == "")) then
+
+		-- TODO: Finish up implementation of despawning rules
 
 		self.lifetimer = self.lifetimer - dtime
 
 		if self.lifetimer <= 0 then
 
 			-- only despawn away from player
-			local objs = minetest.get_objects_inside_radius(pos, 15)
+			local objs = minetest.get_objects_inside_radius(pos, 32)
 
 			for n = 1, #objs do
 
@@ -2758,8 +2758,6 @@ local mob_step = function(self, dtime)
 					return
 				end
 			end
-
-			effect(pos, 15, "tnt_smoke.png", 2, 4, 2, 0)
 
 			self.object:remove()
 
@@ -2935,6 +2933,16 @@ function mobs:register_mob(name, def)
 
 	mobs.spawning_mobs[name] = true
 
+local can_despawn
+if def.can_despawn ~= nil then
+	can_despawn = def.can_despawn
+else
+	if def.type == "monster" then
+		can_despawn = true
+	else
+		can_despawn = false
+	end
+end
 minetest.register_entity(name, {
 
 	stepheight = def.stepheight or 1.1, -- was 0.6
@@ -2950,7 +2958,7 @@ minetest.register_entity(name, {
 	jump_height = def.jump_height or 4, -- was 6
 	drawtype = def.drawtype, -- DEPRECATED, use rotate instead
 	rotate = math.rad(def.rotate or 0), --  0=front, 90=side, 180=back, 270=side2
-	lifetimer = def.lifetimer or 180, -- 3 minutes
+	lifetimer = def.lifetimer or 57.73,
 	hp_min = max(1, (def.hp_min or 5) * difficulty),
 	hp_max = max(1, (def.hp_max or 10) * difficulty),
 	physical = true,
@@ -3035,6 +3043,7 @@ minetest.register_entity(name, {
 	-- MCL2 extensions
 	ignores_nametag = def.ignores_nametag or false,
 	rain_damage = def.rain_damage or 0,
+	can_despawn = can_despawn,
 
 	on_spawn = def.on_spawn,
 

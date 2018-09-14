@@ -6,6 +6,7 @@ local S, NS = dofile(MP.."/intllib.lua")
 
 mobs:register_mob("mobs_mc:bat", {
 	type = "animal",
+	can_despawn = true,
 	passive = true,
 	hp_min = 6,
 	hp_max = 6,

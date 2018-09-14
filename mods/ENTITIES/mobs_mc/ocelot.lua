@@ -30,6 +30,7 @@ end
 -- Ocelot
 local ocelot = {
 	type = "animal",
+	can_despawn = true,
 	hp_min = 10,
 	hp_max = 10,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 0.69, 0.3},
@@ -97,6 +98,7 @@ mobs:register_mob("mobs_mc:ocelot", ocelot)
 -- Cat
 local cat = table.copy(ocelot)
 cat.textures = {{"mobs_mc_cat_black.png"}, {"mobs_mc_cat_red.png"}, {"mobs_mc_cat_siamese.png"}}
+cat.can_despawn = false
 cat.owner = ""
 cat.order = "roam" -- "sit" or "roam"
 cat.owner_loyal = true

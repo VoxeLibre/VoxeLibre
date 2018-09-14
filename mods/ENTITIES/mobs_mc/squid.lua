@@ -10,6 +10,7 @@ local S, NS = dofile(MP.."/intllib.lua")
 
 mobs:register_mob("mobs_mc:squid", {
     type = "animal",
+    can_despawn = true,
     passive = true,
     hp_min = 10,
     hp_max = 10,
