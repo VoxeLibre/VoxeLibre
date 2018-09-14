@@ -89,6 +89,10 @@ Origin of those models:
 * Zozzy from Freesound.org (CC0)
     * `mobs_mc_cow.ogg`
         * Source: <https://www.freesound.org/people/Zozzy/sounds/59245/>
+* [Bird\_man](https://freesound.org/people/Bird_man/packs/16972/)
+    * `mobs_mc_cow_hurt.ogg` (CC0)
+        * Heavily modified
+        * Source: <https://freesound.org/people/Bird_man/packs/16972/>
 * [NPXcoot](https://github.com/NPXcoot1) (CC BY-SA 4.0)
     * `mobs_mc_ender_dragon_*`
 * Blender Foundation (CC BY 3.0)
@@ -134,4 +138,4 @@ Origin of those models:
         * Source: <https://freesound.org/people/Cribbler/sounds/381859/>
 
 
-Note: Many of these sounds have been more or less altered to fit the game.
+Note: Many of these sounds have been more or less modified to fit the game.
