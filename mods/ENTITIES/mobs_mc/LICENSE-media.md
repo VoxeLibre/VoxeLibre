@@ -136,6 +136,13 @@ Origin of those models:
 * [Cribbler](https://freesound.org/people/Cribbler/)
     * `mobs_mc_skeleton_hurt.ogg` (CC0)
         * Source: <https://freesound.org/people/Cribbler/sounds/381859/>
-
+* [GoodListener](https://freesound.org/people/GoodListener/)
+    * `mobs_mc_horse_random.1.ogg` (CC BY 3.0)
+        * Source: <https://freesound.org/people/GoodListener/sounds/322454/>
+    * `mobs_mc_horse_death.ogg` (CC BY 3.0)
+        * Source: <https://freesound.org/people/GoodListener/sounds/322445/>
+* [ERH](https://freesound.org/people/ERH/)
+    * `mobs_mc_horse_random.2.ogg` (CC BY 3.0)
+        * Source: <https://freesound.org/people/ERH/sounds/32043/>
 
 Note: Many of these sounds have been more or less modified to fit the game.

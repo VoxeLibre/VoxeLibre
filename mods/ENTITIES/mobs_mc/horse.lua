@@ -102,7 +102,13 @@ local horse = {
 		run_end = 40,
 	},
 	textures = horse_textures,
-	-- TODO: sounds
+	sounds = {
+		random = "mobs_mc_horse_random",
+		-- TODO: Separate damage sound
+		damage = "mobs_mc_horse_death",
+		death = "mobs_mc_horse_death",
+		distance = 16,
+	},
 	fear_height = 4,
 	fly = false,
 	walk_chance = 60,
@@ -363,6 +369,8 @@ donkey.animation = {
 	stand_start = 0, stand_end = 0,
 	walk_start = 0, walk_end = 40,
 }
+-- TODO: donkey sounds
+donkey.sounds = nil
 donkey.visual_size = { x=horse.visual_size.x*d, y=horse.visual_size.y*d }
 donkey.collisionbox = {
 	horse.collisionbox[1] * d,
@@ -382,6 +390,7 @@ local m = 0.94
 local mule = table.copy(donkey)
 mule.textures = {{"blank.png", "mobs_mc_mule.png", "blank.png"}}
 mule.visual_size = { x=horse.visual_size.x*m, y=horse.visual_size.y*m }
+mule.sounds = horse.sounds
 mule.collisionbox = {
 	horse.collisionbox[1] * m,
 	horse.collisionbox[2] * m,
