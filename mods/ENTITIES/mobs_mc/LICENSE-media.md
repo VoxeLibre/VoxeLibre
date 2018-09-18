@@ -155,5 +155,8 @@ Origin of those models:
         * Source: <https://opengameart.org/content/some-kind-of-beings-soundsx>
     * `mobs_mc_vex_death.ogg` (CC0)
         * Source: <https://opengameart.org/content/some-kind-of-beings-sounds7>
+* [suonho](https://freesound.org/people/suonho/)
+    * `mobs_mc_bat_idle.ogg` (CC BY 3.0)
+        * Source: <https://freesound.org/people/suonho/sounds/59344/>
 
 Note: Many of these sounds have been more or less modified to fit the game.
