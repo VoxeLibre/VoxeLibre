@@ -421,16 +421,20 @@ local check_for_death = function(self, cause, cmi_cause)
 		return
 	end
 
+	local damaged = self.health < self.old_health
 	self.old_health = self.health
 
-	-- still got some health? play hurt sound
+	-- still got some health?
 	if self.health > 0 then
-
-		mob_sound(self, self.sounds.damage)
 
 		-- make sure health isn't higher than max
 		if self.health > self.hp_max then
 			self.health = self.hp_max
+		end
+
+		-- play damage sound if health was reduced
+		if damaged then
+			mob_sound(self, self.sounds.damage)
 		end
 
 		-- backup nametag so we can show health stats
