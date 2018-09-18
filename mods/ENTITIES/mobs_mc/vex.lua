@@ -36,9 +36,9 @@ mobs:register_mob("mobs_mc:vex", {
 	run_velocity = 5.9,
 	attack_type = "dogfight",
 	sounds = {
-		random = "mobs_rat",
-		death = "green_slime_death",
-		-- TODO: Sounds: random (better), death (better), damage
+		-- TODO: random
+		death = "mobs_mc_vex_death",
+		damage = "mobs_mc_vex_hurt",
 		distance = 16,
 	},
 	animation = {

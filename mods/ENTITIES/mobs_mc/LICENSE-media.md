@@ -144,5 +144,16 @@ Origin of those models:
 * [ERH](https://freesound.org/people/ERH/)
     * `mobs_mc_horse_random.2.ogg` (CC BY 3.0)
         * Source: <https://freesound.org/people/ERH/sounds/32043/>
+* [j1987](https://freesound.org/people/j1987/)
+    * `mobs_mc_creeper_death.ogg` (CC0)
+        * Source: <https://freesound.org/people/j1987/sounds/111325>
+* [themightyglider](https://opengameart.org/users/themightyglider)
+    * `mobs_mc_creeper_hurt.ogg` (CC0)
+        * Source: <https://opengameart.org/content/simple-fuse-sound>
+* [pauliw](https://opengameart.org/users/pauliw)
+    * `mobs_mc_vex_hurt.ogg` (CC0)
+        * Source: <https://opengameart.org/content/some-kind-of-beings-soundsx>
+    * `mobs_mc_vex_death.ogg` (CC0)
+        * Source: <https://opengameart.org/content/some-kind-of-beings-sounds7>
 
 Note: Many of these sounds have been more or less modified to fit the game.

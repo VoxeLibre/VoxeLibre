@@ -28,8 +28,8 @@ mobs:register_mob("mobs_mc:creeper", {
 	visual_size = {x=3, y=3},
 	sounds = {
 		attack = "tnt_ignite",
-		--TODO: death = "",
-		--TODO: damage = "",
+		death = "mobs_mc_creeper_death",
+		damage = "mobs_mc_creeper_hurt",
 		fuse = "tnt_ignite",
 		explode = "tnt_explode",
 		distance = 16,
