@@ -50,15 +50,19 @@ local ocelot = {
 	fall_damage = 0,
 	fear_height = 4,
 	sounds = {
-		random = "mobs_kitten",
-		-- TODO: more sounds
+		damage = "mobs_mc_ocelot_hurt",
+		death = "mobs_mc_ocelot_hurt",
 		distance = 16,
 	},
 	animation = {
-		speed_normal = 25,		speed_run = 50,
-		stand_start = 0,		stand_end = 0,
-		walk_start = 0,		walk_end = 40,
-		run_start = 0,		run_end = 40,
+		speed_normal = 25,
+		speed_run = 50,
+		stand_start = 0,
+		stand_end = 0,
+		walk_start = 0,
+		walk_end = 40,
+		run_start = 0,
+		run_end = 40,
 	},
 	follow = mobs_mc.follow.ocelot,
 	view_range = 12,
@@ -107,6 +111,12 @@ cat.tamed = true
 cat.runaway = false
 -- Automatically teleport cat to owner
 cat.do_custom = mobs_mc.make_owner_teleport_function(12)
+cat.sounds = {
+	random = "mobs_mc_cat_idle",
+	damage = "mobs_mc_cat_hiss",
+	death = "mobs_mc_ocelot_hurt",
+	distance = 16,
+}
 cat.on_rightclick = function(self, clicker)
 	if mobs:feed_tame(self, clicker, 1, true, false) then return end
 	if mobs:capture_mob(self, clicker, 0, 60, 5, false, nil) then return end

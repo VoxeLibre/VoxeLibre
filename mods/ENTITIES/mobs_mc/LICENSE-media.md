@@ -107,7 +107,7 @@ Origin of those models:
 * TenPlus1, from `mobs_monster` or `mobs_animal` mod (MIT License)
     * `mobs_chicken.ogg`
     * `mobs_fireball.ogg`
-    * `mobs_kitten.ogg`
+    * `mobs_mc_cat_idle.1.ogg`
     * `mobs_mc_llama.ogg`
     * `mobs_pig.ogg`
     * `mobs_pig_angry.ogg`
@@ -158,5 +158,14 @@ Origin of those models:
 * [suonho](https://freesound.org/people/suonho/)
     * `mobs_mc_bat_idle.ogg` (CC BY 3.0)
         * Source: <https://freesound.org/people/suonho/sounds/59344/>
+* [cmusounddesign](https://freesound.org/people/cmusounddesign/)
+    * `mobs_mc_cat_hiss.ogg` (CC BY 3.0)
+        * Source: <https://freesound.org/people/cmusounddesign/sounds/71899/>
+* [SelsRoyalNavy](https://freesound.org/people/SelsRoyalNavy/)
+    * `mobs_mc_cat_idle.2.ogg` (CC0)
+        * Source: <https://freesound.org/people/SelsRoyalNavy/sounds/427081/>
+* [ebcrosby](https://freesound.org/people/ebcrosby/)
+    * `mobs_mc_ocelot_hurt.ogg` (CC BY 3.0)
+        * Source: <https://freesound.org/people/ebcrosby/sounds/332979/>
 
 Note: Many of these sounds have been more or less modified to fit the game.
