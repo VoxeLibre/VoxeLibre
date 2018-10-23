@@ -117,7 +117,7 @@ Origin of those models:
 * BrandonReese (LGPL v2.1)
     * `mobs_eerie.ogg`
 * [Under7dude](https://freesound.org/people/Under7dude/) (CC0)
-    * `mobs_mc_zombie_idle.ogg`
+    * `mobs_mc_zombie_growl.ogg`
         * Source: <https://freesound.org/people/Under7dude/sounds/163445/>
 * [haratman](https://freesound.org/people/haratman/) (CC0)
     * `mobs_mc_zombie_death.ogg`

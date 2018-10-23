@@ -57,8 +57,8 @@ local zombie = {
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
 	sounds = {
-		random = "mobs_mc_zombie_idle",
-		war_cry = "mobs_mc_zombie_idle",
+		random = "mobs_mc_zombie_growl",
+		war_cry = "mobs_mc_zombie_growl",
 		death = "mobs_mc_zombie_death",
 		damage = "mobs_mc_zombie_hurt",
 		distance = 16,
