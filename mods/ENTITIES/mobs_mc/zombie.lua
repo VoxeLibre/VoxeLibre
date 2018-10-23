@@ -58,7 +58,8 @@ local zombie = {
 	makes_footstep_sound = true,
 	sounds = {
 		random = "mobs_mc_zombie_growl",
-		war_cry = "mobs_mc_zombie_growl",
+		--TODO: war_cry = "mobs_mc_zombie_growl",
+		-- Problem: The war_cry sound plays too often
 		death = "mobs_mc_zombie_death",
 		damage = "mobs_mc_zombie_hurt",
 		distance = 16,
