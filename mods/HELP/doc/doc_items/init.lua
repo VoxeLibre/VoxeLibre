@@ -592,7 +592,7 @@ doc.add_category("nodes", {
 			formstring = entry_image(data)
 			datastring = factoids_header(data, "nodes")
 
-			local liquid = data.def.liquidtype ~= "none"
+			local liquid = data.def.liquidtype ~= "none" and minetest.get_item_group(data.itemstring, "fake_liquid") == 0
 			if not forbidden_core_factoids.basics then
 				datastring = datastring .. S("Collidable: @1", yesno(data.def.walkable)) .. "\n"
 				if data.def.pointable == true then

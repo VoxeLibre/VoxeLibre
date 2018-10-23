@@ -351,6 +351,13 @@ definitions are already automatically added to this factoid.
 * `dig_immediate`: This group is already covered by the default factoids of this
   mod
 
+
+## Groups interpretations
+Nodes which are technically a liquid will not be considered liquids by this mod
+if the group `fake_liquid=1` is used. Useful for stuff like cobwebs.
+
+
+
 ## Dependencies
 If you only add the custom fields to your items, you do *not* need to depend
 on this mod. If you use anything else from this mod (e.g. a function), you
