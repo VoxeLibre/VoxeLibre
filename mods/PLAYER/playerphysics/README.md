@@ -2,7 +2,7 @@
 
 Version: 1.0.0
 
-This mod simplifies the setting of player physics (speed, jumping height, gravity).
+This mod simplifies the modification of player physics (speed, jumping height, gravity).
 
 The problem with `set_physics_override` is that is sets a raw value.
 As soon as two independent mods want to mess with player physics, this is a problem.
