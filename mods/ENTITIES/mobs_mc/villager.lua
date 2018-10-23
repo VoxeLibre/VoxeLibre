@@ -52,6 +52,7 @@ end
 local E1 = { "mcl_core:emerald", 1, 1 } -- one emerald
 
 -- Special trades for v6 only
+-- NOTE: These symbols MUST only be added at the end of a tier
 local TRADE_V6_RED_SANDSTONE, TRADE_V6_DARK_OAK_SAPLING, TRADE_V6_ACACIA_SAPLING, TRADE_V6_BIRCH_SAPLING
 if minetest.get_mapgen_setting("mg_name") == "v6" then
 	TRADE_V6_RED_SANDSTONE = { E1, { "mcl_core:redsandstone", 12, 16 } }
@@ -322,9 +323,9 @@ local professions = {
 			},
 
 			{
-			TRADE_V6_RED_SANDSTONE,
 			{ E1, { "mcl_nether:glowstone", 1, 3 } },
 			{ { "mcl_core:emerald", 4, 7 }, { "mcl_throwing:ender_pearl", 1, 1 } },
+			TRADE_V6_RED_SANDSTONE,
 			},
 
 			-- TODO: Bottle 'o enchanting
