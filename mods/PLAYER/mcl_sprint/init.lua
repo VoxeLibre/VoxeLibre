@@ -45,9 +45,9 @@ local function setSprinting(playerName, sprinting) --Sets the state of a player 
 	if players[playerName] then
 		players[playerName]["sprinting"] = sprinting
 		if sprinting == true then
-			mcl_playerphysics.add_physics_factor(player, "speed", "mcl_sprint:sprint", mcl_sprint.SPEED)
+			playerphysics.add_physics_factor(player, "speed", "mcl_sprint:sprint", mcl_sprint.SPEED)
 		elseif sprinting == false then
-			mcl_playerphysics.remove_physics_factor(player, "speed", "mcl_sprint:sprint")
+			playerphysics.remove_physics_factor(player, "speed", "mcl_sprint:sprint")
 		end
 		return true
 	end

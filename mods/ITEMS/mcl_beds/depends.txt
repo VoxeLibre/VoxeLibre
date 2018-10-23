@@ -1,4 +1,4 @@
-mcl_playerphysics
+playerphysics
 mcl_sounds?
 mcl_worlds?
 mcl_wool?

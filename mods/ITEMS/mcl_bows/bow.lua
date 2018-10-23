@@ -127,8 +127,8 @@ end
 local reset_bow_state = function(player, also_reset_bows)
 	bow_load[player:get_player_name()] = nil
 	bow_index[player:get_player_name()] = nil
-	if minetest.get_modpath("mcl_playerphysics") then
-		mcl_playerphysics.remove_physics_factor(player, "speed", "mcl_bows:use_bow")
+	if minetest.get_modpath("playerphysics") then
+		playerphysics.remove_physics_factor(player, "speed", "mcl_bows:use_bow")
 	end
 	if also_reset_bows then
 		reset_bows(player)
@@ -222,9 +222,9 @@ controls.register_on_hold(function(player, key, time)
 	if bow_load[name] == nil and wielditem:get_name()=="mcl_bows:bow" and (minetest.settings:get_bool("creative_mode") or inv:contains_item("main", "mcl_bows:arrow")) then
 		wielditem:set_name("mcl_bows:bow_0")
 		player:set_wielded_item(wielditem)
-		if minetest.get_modpath("mcl_playerphysics") then
+		if minetest.get_modpath("playerphysics") then
 			-- Slow player down when using bow
-			mcl_playerphysics.add_physics_factor(player, "speed", "mcl_bows:use_bow", PLAYER_USE_BOW_SPEED)
+			playerphysics.add_physics_factor(player, "speed", "mcl_bows:use_bow", PLAYER_USE_BOW_SPEED)
 		end
 		bow_load[name] = minetest.get_us_time()
 		bow_index[name] = player:get_wield_index()

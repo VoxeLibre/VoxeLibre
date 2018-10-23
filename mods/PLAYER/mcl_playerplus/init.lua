@@ -96,13 +96,13 @@ minetest.register_globalstep(function(dtime)
 			-- TODO: Also slow down mobs
 			-- Slow down even more when soul sand is above certain block
 			if node_stand_below == "mcl_core:ice" or node_stand_below == "mcl_core:packed_ice" or node_stand_below == "mcl_core:slimeblock" or node_stand_below == "mcl_core:water_source" then
-				mcl_playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:surface", 0.1)
+				playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:surface", 0.1)
 			else
-				mcl_playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:surface", 0.4)
+				playerphysics.add_physics_factor(player, "speed", "mcl_playerplus:surface", 0.4)
 			end
 		else
 			-- Reset speed decrease
-			mcl_playerphysics.remove_physics_factor(player, "speed", "mcl_playerplus:surface")
+			playerphysics.remove_physics_factor(player, "speed", "mcl_playerplus:surface")
 		end
 
 		-- Is player suffocating inside node? (Only for solid full opaque cube type nodes

@@ -3,7 +3,7 @@ mcl_core
 mcl_particles
 mcl_hunger
 mcl_death_messages
-mcl_playerphysics
+playerphysics
 mcl_playerinfo
 3d_armor?
 mcl_weather

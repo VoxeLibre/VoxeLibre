@@ -13,7 +13,7 @@ There is only one precondition to using this mod, but it is important:
 Mods *MUST NOT* call `set_physics_override` directly! Instead, to modify player physics, use this API.
 
 ## Functions
-### `mcl_playerphysics.add_physics_factor(player, physic, id, value)`
+### `playerphysics.add_physics_factor(player, physic, id, value)`
 Adds a factor for a player physic and updates the player physics immeiately.
 
 #### Parameters
@@ -22,7 +22,7 @@ Adds a factor for a player physic and updates the player physics immeiately.
 * `id`: Unique identifier for this factor. Identifiers are stored on a per-player per-physics type basis
 * `value`: The factor to add to the list of products
 
-### `mcl_playerphysics.remove_physics_factor(player, physic, id)`
+### `playerphysics.remove_physics_factor(player, physic, id)`
 Removes the physics factor of the given ID and updates the player's physics.
 
 #### Parameters
@@ -37,17 +37,17 @@ Here's what it could look like:
 
 Potions mod:
 ```
-mcl_playerphysics.add_physics_factor(player, "speed", "run_potion", 2)
+playerphysics.add_physics_factor(player, "speed", "run_potion", 2)
 ```
 
 Exhaustion mod:
 ```
-mcl_playerphysics.add_physics_factor(player, "jump", "exhausted", 0.75)
+playerphysics.add_physics_factor(player, "jump", "exhausted", 0.75)
 ```
 
 Electrocution mod:
 ```
-mcl_playerphysics.add_physics_factor(player, "jump", "shocked", 0.9)
+playerphysics.add_physics_factor(player, "jump", "shocked", 0.9)
 ```
 
 When the 3 mods have done their change, the real player speed is simply the product of all factors, that is:
@@ -62,7 +62,7 @@ Let's take the example above.
 Now if the Electrocution mod is done with shocking the player, it just needs to call:
 
 ```
-mcl_playerphysics.remove_physics_factor(player, "jump", "shocked")
+playerphysics.remove_physics_factor(player, "jump", "shocked")
 ```
 
 The effect is now gone, so the new player speed will be:
@@ -73,8 +73,8 @@ The effect is now gone, so the new player speed will be:
 To simulate sleeping by preventing all player movement, this can be done with this easy trick:
 
 ```
-mcl_playerphysics.add_physics_factor(player, "speed", "sleeping", 0)
-mcl_playerphysics.add_physics_factor(player, "jump", "sleeping", 0)
+playerphysics.add_physics_factor(player, "speed", "sleeping", 0)
+playerphysics.add_physics_factor(player, "jump", "sleeping", 0)
 ```
 
 This works regardless of the other factors because mathematics tell us that the factor 0 forces the product to be 0.
