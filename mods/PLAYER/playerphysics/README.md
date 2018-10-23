@@ -1,5 +1,7 @@
 # Player Physics API.
 
+Version: 1.0.0
+
 This mod simplifies the setting of player physics (speed, jumping height, gravity).
 
 The problem with `set_physics_override` is that is sets a raw value.
@@ -18,7 +20,7 @@ Adds a factor for a player physic and updates the player physics immeiately.
 
 #### Parameters
 * `player`: Player object
-* `physic`: Type of player physic to change. Any of the numeric values of `set_physics_override` (e.g. `speed`, `jump`, `gravity`)
+* `physic`: Type of player physic to change. Any of the numeric values of `set_physics_override` (e.g. `"speed"`, `"jump"`, `"gravity"`)
 * `id`: Unique identifier for this factor. Identifiers are stored on a per-player per-physics type basis
 * `value`: The factor to add to the list of products
 
@@ -27,7 +29,7 @@ Removes the physics factor of the given ID and updates the player's physics.
 
 #### Parameters
 * `player`: Player object
-* `physic`: Type of player physic to change. Any of the numeric values of `set_physics_override` (e.g. `speed`, `jump`, `gravity`)
+* `physic`: Type of player physic to change. Any of the numeric values of `set_physics_override` (e.g. `"speed"`, `"jump"`, `"gravity"`)
 * `id`: Unique identifier for the factor to remove
 
 ## Examples
