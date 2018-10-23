@@ -61,6 +61,7 @@ chances are good that it works out of the box.
 * Statbars: `HUD/hudbars`
 
 ### Utility APIs
+* Change player physics: `PLAYER/playerphysics`
 * Select random treasures: `CORE/mcl_loot`
 * Get flowing direction of liquids: `CORE/flowlib`
 * `on_walk_over` callback for nodes: `CORE/walkover` 
