@@ -287,9 +287,11 @@ for _, state in pairs{mesecon.state.on, mesecon.state.off} do
 		local extra_desc = {}
 		if mode == "sub" then
 			table.insert(extra_desc, "Subtract")
+			nodedef.inventory_image = nil
 		end
 		if state == mesecon.state.on then
 			table.insert(extra_desc, "Powered")
+			nodedef.inventory_image = nil
 		end
 		nodedef.description = nodedef.description..
 			" ("..table.concat(extra_desc, ", ")..")"
