@@ -11,7 +11,7 @@ minetest.register_craftitem("mcl_farming:beetroot_seeds", {
 })
 
 minetest.register_node("mcl_farming:beetroot_0", {
-	description = "Premature Beetroot Plant (First Stage)",
+	description = "Premature Beetroot Plant (Stage 1)",
 	_doc_items_longdesc = "Beetroot plants are plants which grow on farmland under sunlight in 4 stages. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.",
 	_doc_items_entry_name = "Premature Beetroot Plant",
 	paramtype = "light",
@@ -36,7 +36,7 @@ minetest.register_node("mcl_farming:beetroot_0", {
 })
 
 minetest.register_node("mcl_farming:beetroot_1", {
-	description = "Premature Beetroot Plant (Second Stage)",
+	description = "Premature Beetroot Plant (Stage 2)",
 	_doc_items_create_entry = false,
 	paramtype = "light",
 	paramtype2 = "meshoptions",
@@ -60,7 +60,7 @@ minetest.register_node("mcl_farming:beetroot_1", {
 })
 
 minetest.register_node("mcl_farming:beetroot_2", {
-	description = "Premature Beetroot Plant (Third Stage)",
+	description = "Premature Beetroot Plant (Stage 3)",
 	_doc_items_create_entry = false,
 	paramtype = "light",
 	paramtype2 = "meshoptions",

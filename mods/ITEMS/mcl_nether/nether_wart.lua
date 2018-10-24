@@ -1,5 +1,5 @@
 minetest.register_node("mcl_nether:nether_wart_0", {
-	description = "Premature Nether Wart",
+	description = "Premature Nether Wart (Stage 1)",
 	_doc_items_longdesc = "A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension.",
 	paramtype = "light",
 	paramtype2 = "meshoptions",
@@ -8,6 +8,8 @@ minetest.register_node("mcl_nether:nether_wart_0", {
 	drawtype = "plantlike",
 	drop = "mcl_nether:nether_wart_item",
 	tiles = {"mcl_nether_nether_wart_stage_0.png"},
+	wield_image = "mcl_nether_nether_wart_stage_0.png",
+	inventory_image = "mcl_nether_nether_wart_stage_0.png",
 	selection_box = {
 		type = "fixed",
 		fixed = {
@@ -28,6 +30,8 @@ minetest.register_node("mcl_nether:nether_wart_1", {
 	drawtype = "plantlike",
 	drop = "mcl_nether:nether_wart_item",
 	tiles = {"mcl_nether_nether_wart_stage_1.png"},
+	wield_image = "mcl_nether_nether_wart_stage_1.png",
+	inventory_image = "mcl_nether_nether_wart_stage_1.png",
 	selection_box = {
 		type = "fixed",
 		fixed = {
@@ -48,6 +52,8 @@ minetest.register_node("mcl_nether:nether_wart_2", {
 	drawtype = "plantlike",
 	drop = "mcl_nether:nether_wart_item",
 	tiles = {"mcl_nether_nether_wart_stage_1.png"},
+	wield_image = "mcl_nether_nether_wart_stage_1.png",
+	inventory_image = "mcl_nether_nether_wart_stage_1.png",
 	selection_box = {
 		type = "fixed",
 		fixed = {
@@ -75,6 +81,8 @@ minetest.register_node("mcl_nether:nether_wart", {
 		},
 	},
 	tiles = {"mcl_nether_nether_wart_stage_2.png"},
+	wield_image = "mcl_nether_nether_wart_stage_2.png",
+	inventory_image = "mcl_nether_nether_wart_stage_2.png",
 	selection_box = { 
 		type = "fixed",
 		fixed = {

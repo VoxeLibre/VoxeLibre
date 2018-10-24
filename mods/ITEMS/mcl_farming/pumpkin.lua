@@ -46,6 +46,7 @@ for s=1,7 do
 		longdesc = "Pumpkin stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature pumpkin stems are able to grow pumpkins."
 	end
 	local colorstring = mcl_farming:stem_color(startcolor, endcolor, s, 8)
+	local texture = "([combine:16x16:0,"..((8-s)*2).."=mcl_farming_pumpkin_stem_disconnected.png)^[colorize:"..colorstring..":127"
 	minetest.register_node("mcl_farming:pumpkin_"..s, {
 		description = string.format("Premature Pumpkin Stem (Stage %d)", s),
 		_doc_items_entry_name = entry_name,
@@ -56,7 +57,9 @@ for s=1,7 do
 		drawtype = "plantlike",
 		sunlight_propagates = true,
 		drop = stem_drop,
-		tiles = {"([combine:16x16:0,"..((8-s)*2).."=mcl_farming_pumpkin_stem_disconnected.png)^[colorize:"..colorstring..":127"},
+		tiles = {texture},
+		inventory_image = texture,
+		wield_image = texture,
 		selection_box = {
 			type = "fixed",
 			fixed = {
@@ -74,6 +77,8 @@ local stem_def = {
 	description = "Mature Pumpkin Stem",
 	_doc_items_longdesc = "A mature pumpkin stem attempts to grow a pumpkin at one of its four adjacent blocks. A pumpkin can only grow on top of farmland, dirt or a grass block. When a pumpkin is next to a pumpkin stem, the pumpkin stem immediately bends and connects to the pumpkin. A connected pumpkin stem can't grow another pumpkin. As soon all pumpkins around the stem have been removed, it loses the connection and is ready to grow another pumpkin.",
 	tiles = {"mcl_farming_pumpkin_stem_disconnected.png^[colorize:#FFA800:127"},
+	wield_image = "mcl_farming_pumpkin_stem_disconnected.png^[colorize:#FFA800:127",
+	inventory_image = "mcl_farming_pumpkin_stem_disconnected.png^[colorize:#FFA800:127",
 }
 
 -- Template for pumpkin

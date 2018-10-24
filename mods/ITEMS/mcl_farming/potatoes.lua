@@ -38,6 +38,8 @@ for i=1, 7 do
 		drawtype = "plantlike",
 		drop = "mcl_farming:potato_item",
 		tiles = { texture },
+		inventory_image = texture,
+		wield_image = texture,
 		selection_box = {
 			type = "fixed",
 			fixed = { selbox },
@@ -59,6 +61,8 @@ minetest.register_node("mcl_farming:potato", {
 	walkable = false,
 	drawtype = "plantlike",
 	tiles = {"mcl_farming_potatoes_stage_3.png"},
+	wield_image = "mcl_farming_potatoes_stage_3.png",
+	inventory_image = "mcl_farming_potatoes_stage_3.png",
 	drop = {
 		items = {
 			{ items = {'mcl_farming:potato_item 1'} },

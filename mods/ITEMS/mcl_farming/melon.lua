@@ -72,6 +72,7 @@ for s=1,7 do
 		longdesc = "Melon stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature melon stems are able to grow melons."
 	end
 	local colorstring = mcl_farming:stem_color(startcolor, endcolor, s, 8)
+	local texture = "([combine:16x16:0,"..((8-s)*2).."=mcl_farming_melon_stem_disconnected.png)^[colorize:"..colorstring..":127"
 	minetest.register_node("mcl_farming:melontige_"..s, {
 		description = string.format("Premature Melon Stem (Stage %d)", s),
 		_doc_items_create_entry = doc,
@@ -82,7 +83,9 @@ for s=1,7 do
 		drawtype = "plantlike",
 		sunlight_propagates = true,
 		drop = stem_drop,
-		tiles = {"([combine:16x16:0,"..((8-s)*2).."=mcl_farming_melon_stem_disconnected.png)^[colorize:"..colorstring..":127"},
+		tiles = {texture},
+		wield_image = texture,
+		inventory_image = texture,
 		selection_box = {
 			type = "fixed",
 			fixed = {
@@ -101,6 +104,8 @@ local stem_def = {
 	_doc_items_create_entry = true,
 	_doc_items_longdesc = "A mature melon stem attempts to grow a melon at one of its four adjacent blocks. A melon can only grow on top of farmland, dirt, or a grass block. When a melon is next to a melon stem, the melon stem immediately bends and connects to the melon. While connected, a melon stem can't grow another melon. As soon all melons around the stem have been removed, it loses the connection and is ready to grow another melon.",
 	tiles = {"mcl_farming_melon_stem_disconnected.png^[colorize:#FFA800:127"},
+	wield_image = "mcl_farming_melon_stem_disconnected.png^[colorize:#FFA800:127",
+	inventory_image = "mcl_farming_melon_stem_disconnected.png^[colorize:#FFA800:127",
 }
 
 -- Register stem growth
