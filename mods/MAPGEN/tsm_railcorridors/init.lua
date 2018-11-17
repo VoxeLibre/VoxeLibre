@@ -70,10 +70,12 @@ end
 -- “m_static_exists=true but static data doesn't actually exist in (x,y,z)
 -- TODO: Set back to 0.05 if this is fixedd.
 local probability_cart = P(0)
+--[[
 setting = tonumber(minetest.settings:get("tsm_railcorridors_probability_cart"))
 if setting then
 	probability_cart = P(setting)
 end
+]]
 
 -- Probability for a rail corridor system to be damaged
 local probability_damage = P(1.0)
