@@ -1,9 +1,3 @@
-mcl_stairs.register_stair_and_slab_simple("end_bricks", "mcl_end:end_bricks", "End Stone Brick Stairs", "End Stone Brick Slab", "Double End Stone Brick Slab")
-
-mcl_stairs.register_stair_and_slab_simple("red_nether_brick", "mcl_nether:red_nether_brick", "Red Nether Brick Stairs", "Red Nether Brick Slab", "Double Red Nether Brick Slab")
-
-mcl_stairs.register_stair_and_slab_simple("mossycobble", "mcl_core:mossycobble", "Moss Stone Stairs", "Moss Stone Slab", "Double Moss Stone Slab")
-
 mcl_stairs.register_stair_and_slab_simple("tree_bark", "mcl_core:tree_bark", "Oak Bark Stairs", "Oak Bark Slab", "Double Oak Bark Slab", "woodlike")
 mcl_stairs.register_stair_and_slab_simple("acaciatree_bark", "mcl_core:acaciatree_bark", "Acacia Bark Stairs", "Acacia Bark Slab", "Double Acacia Bark Slab", "woodlike")
 mcl_stairs.register_stair_and_slab_simple("sprucetree_bark", "mcl_core:sprucetree_bark", "Spruce Bark Stairs", "Spruce Bark Slab", "Double Spruce Bark Slab", "woodlike")
@@ -19,27 +13,6 @@ mcl_stairs.register_stair("goldblock", "mcl_core:goldblock", {pickaxey=4}, {"mcl
 
 mcl_stairs.register_slab("ironblock", "mcl_core:ironblock", {pickaxey=2}, {"default_steel_block.png", "default_steel_block.png", "mcl_stairs_iron_block_slab.png"}, "Slab of Iron", nil, nil, "Double Slab of Iron")
 mcl_stairs.register_stair("ironblock", "mcl_core:ironblock", {pickaxey=2}, {"mcl_stairs_iron_block_slab.png", "default_steel_block.png", "default_steel_block.png", "default_steel_block.png", "default_steel_block.png", "mcl_stairs_iron_block_slab.png"}, "Stairs of Iron", nil, nil, "woodlike")
-
-mcl_stairs.register_slab("andesite_smooth", "mcl_core:andesite_smooth", {pickaxey=1}, {"mcl_core_andesite_smooth.png", "mcl_core_andesite_smooth.png", "mcl_stairs_andesite_smooth_slab.png"}, "Polished Andesite Slab", nil, nil, "Double Polished Andesite Slab")
-mcl_stairs.register_stair("andesite_smooth", "mcl_core:andesite_smooth", {pickaxey=1}, {"mcl_stairs_andesite_smooth_slab.png", "mcl_core_andesite_smooth.png", "mcl_core_andesite_smooth.png", "mcl_core_andesite_smooth.png", "mcl_core_andesite_smooth.png", "mcl_stairs_andesite_smooth_slab.png"}, "Polished Andesite Stairs", nil, nil, "woodlike")
-
-mcl_stairs.register_slab("granite_smooth", "mcl_core:granite_smooth", {pickaxey=1}, {"mcl_core_granite_smooth.png", "mcl_core_granite_smooth.png", "mcl_stairs_granite_smooth_slab.png"}, "Polished Granite Slab", nil, nil, "Double Polished Granite Slab")
-mcl_stairs.register_stair("granite_smooth", "mcl_core:granite_smooth", {pickaxey=1}, {"mcl_stairs_granite_smooth_slab.png", "mcl_core_granite_smooth.png", "mcl_core_granite_smooth.png", "mcl_core_granite_smooth.png", "mcl_core_granite_smooth.png", "mcl_stairs_granite_smooth_slab.png"}, "Polished Granite Stairs", nil, nil, "woodlike")
-
-mcl_stairs.register_slab("diorite_smooth", "mcl_core:diorite_smooth", {pickaxey=1}, {"mcl_core_diorite_smooth.png", "mcl_core_diorite_smooth.png", "mcl_stairs_diorite_smooth_slab.png"}, "Polished Diorite Slab", nil, nil, "Double Polished Diorite Slab")
-mcl_stairs.register_stair("diorite_smooth", "mcl_core:diorite_smooth", {pickaxey=1}, {"mcl_stairs_diorite_smooth_slab.png", "mcl_core_diorite_smooth.png", "mcl_core_diorite_smooth.png", "mcl_core_diorite_smooth.png", "mcl_core_diorite_smooth.png", "mcl_stairs_diorite_smooth_slab.png"}, "Polished Diorite Stairs", nil, nil, "woodlike")
-
-mcl_stairs.register_stair("stonebrickmossy", "mcl_core:stonebrickmossy",
-		{pickaxey=1},
-		{"mcl_core_stonebrick_mossy.png"},
-		"Mossy Stone Brick Stairs",
-		mcl_sounds.node_sound_stone_defaults(), 1.5, nil, "mcl_core:stonebrickmossy")
-
-mcl_stairs.register_slab("stonebrickmossy", "mcl_core:stonebrickmossy",
-		{pickaxey=1},
-		{"mcl_core_stonebrick_mossy.png"},
-		"Mossy Stone Brick Slab",
-		mcl_sounds.node_sound_stone_defaults(), 2, "Double Mossy Stone Brick Slab", "mcl_core:stonebrickmossy")
 
 mcl_stairs.register_stair("stonebrickcracked", "mcl_core:stonebrickcracked",
 		{pickaxey=1},
