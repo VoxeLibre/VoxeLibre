@@ -25,8 +25,8 @@ mcl_fences.register_fence_gate(
 minetest.register_craft({
 	output = 'mclx_fences:red_nether_brick_fence 6',
 	recipe = {
-		{"mcl_nether:red_nether_brick", "mcl_nether:red_nether_brick", "mcl_nether:red_nether_brick"},
-		{"mcl_nether:red_nether_brick", "mcl_nether:red_nether_brick", "mcl_nether:red_nether_brick"},
+		{"mcl_nether:red_nether_brick", "mcl_nether:netherbrick", "mcl_nether:red_nether_brick"},
+		{"mcl_nether:red_nether_brick", "mcl_nether:netherbrick", "mcl_nether:red_nether_brick"},
 	}
 })
 

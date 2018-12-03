@@ -293,8 +293,8 @@ mcl_fences.register_fence("nether_brick_fence", "Nether Brick Fence", "mcl_fence
 minetest.register_craft({
 	output = 'mcl_fences:nether_brick_fence 6',
 	recipe = {
-		{"mcl_nether:nether_brick", "mcl_nether:nether_brick", "mcl_nether:nether_brick"},
-		{"mcl_nether:nether_brick", "mcl_nether:nether_brick", "mcl_nether:nether_brick"},
+		{"mcl_nether:nether_brick", "mcl_nether:netherbrick", "mcl_nether:nether_brick"},
+		{"mcl_nether:nether_brick", "mcl_nether:netherbrick", "mcl_nether:nether_brick"},
 	}
 })
 
