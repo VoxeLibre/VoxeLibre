@@ -86,13 +86,13 @@ local full_blocks = {
 --[[ Adds a new wall type.
 * nodename: Itemstring of base node to add. Must not contain an underscore
 * description: Item description (tooltip), visible to user
-* craft_material: Material for the default crafting recipe (optional)
+* source: Source block to craft this thing, for graphics, tiles and crafting (optional)
 * tiles: Wall textures table
 * inventory_image: Inventory image (optional)
 * groups: Base group memberships (optional, default is {pickaxey=1})
 * sounds: Sound table (optional, default is stone)
 ]]
-function mcl_walls.register_wall(nodename, description, craft_material, tiles, inventory_image, groups, sounds)
+function mcl_walls.register_wall(nodename, description, source, tiles, inventory_image, groups, sounds)
 
 	local base_groups = groups
 	if not base_groups then
@@ -110,6 +110,12 @@ function mcl_walls.register_wall(nodename, description, craft_material, tiles, i
 
 	if not sounds then
 		sounds = mcl_sounds.node_sound_stone_defaults()
+	end
+
+	if (not tiles) and source then
+		if minetest.registered_nodes[source] then
+			tiles = minetest.registered_nodes[source].tiles
+		end
 	end
 
 	for i = 0, 15 do
@@ -242,12 +248,12 @@ function mcl_walls.register_wall(nodename, description, craft_material, tiles, i
 		_mcl_blast_resistance = 30,
 		_mcl_hardness = 2,
 	})
-	if craft_material then
+	if source then
 		minetest.register_craft({
 			output = nodename .. " 6",
 			recipe = {
-				{craft_material, craft_material, craft_material},
-				{craft_material, craft_material, craft_material},
+				{source, source, source},
+				{source, source, source},
 			}
 		})
 	end
