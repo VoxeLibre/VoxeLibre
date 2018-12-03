@@ -436,6 +436,13 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "cooking",
+	output = "mcl_core:stone_smooth",
+	recipe = "mcl_core:stone",
+	cooktime = 10,
+})
+
+minetest.register_craft({
+	type = "cooking",
 	output = "mcl_core:stonebrickcracked",
 	recipe = "mcl_core:stonebrick",
 	cooktime = 10,
