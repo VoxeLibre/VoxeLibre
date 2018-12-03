@@ -253,12 +253,7 @@ function mcl_walls.register_wall(nodename, description, craft_material, tiles, i
 	end
 end
 
--- Cobblestone wall
-mcl_walls.register_wall("mcl_walls:cobble", "Cobblestone Wall", "mcl_core:cobble", {"default_cobble.png"})
-
--- Mossy wall
-
-mcl_walls.register_wall("mcl_walls:mossycobble", "Mossy Cobblestone Wall", "mcl_core:mossycobble", {"default_mossycobble.png"})
+dofile(minetest.get_modpath("mcl_walls") .. "/register.lua")
 
 minetest.register_on_placenode(update_wall_global)
 minetest.register_on_dignode(update_wall_global)
