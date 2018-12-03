@@ -58,6 +58,7 @@ local group_stereotypes = {
 	quartz_block = "mcl_nether:quartz_block",
 	banner       = "mcl_banners:banner_item_white",
 	mesecon_conductor_craftable = "mesecons:wire_00000000_off",
+	purpur       = "mcl_end:purpur_block",
 	compass      = mcl_compass.stereotype,
 	clock        = mcl_clock.sterotype,
 }

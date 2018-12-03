@@ -95,13 +95,13 @@ mcl_stairs.register_stair_and_slab("nether_brick", "mcl_nether:nether_brick",
 		2,
 		"Double Nether Brick Slab")
 
-mcl_stairs.register_stair("purpur_block", "mcl_end:purpur_block",
+mcl_stairs.register_stair("purpur_block", "group:purpur",
 		{pickaxey=1, material_stone=1},
 		{"mcl_end_purpur_block.png"},
 		"Purpur Stairs",
 		mcl_sounds.node_sound_stone_defaults(),
 		1.5)
-mcl_stairs.register_slab("purpur_block", "mcl_end:purpur_block",
+mcl_stairs.register_slab("purpur_block", "group:purpur",
 		{pickaxey=1, material_stone=1},
 		{"mcl_end_purpur_block.png"},
 		"Purpur Slab",
