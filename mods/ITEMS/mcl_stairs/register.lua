@@ -30,11 +30,17 @@ for w=1, #woods do
 			wood[5])
 end
 
-mcl_stairs.register_slab("stone", "mcl_core:stone",
+mcl_stairs.register_stair_and_slab_simple("stone_rough", "mcl_core:stone", "Stone Stairs", "Stone Slab", "Double Stone Slab")
+
+mcl_stairs.register_slab("stone", "mcl_core:stone_smooth",
 		{pickaxey=1, material_stone=1},
 		{"mcl_stairs_stone_slab_top.png", "mcl_stairs_stone_slab_top.png", "mcl_stairs_stone_slab_side.png"},
-		"Stone Slab",
-		mcl_sounds.node_sound_stone_defaults(), 2, "Double Stone Slab")
+		"Polished Stone Slab",
+		mcl_sounds.node_sound_stone_defaults(), 2, "Double Polished Stone Slab")
+
+mcl_stairs.register_stair_and_slab_simple("andesite", "mcl_core:andesite", "Andesite Stairs", "Andesite Slab", "Double Andesite Slab")
+mcl_stairs.register_stair_and_slab_simple("granite", "mcl_core:granite", "Granite Stairs", "Granite Slab", "Double Granite Slab")
+mcl_stairs.register_stair_and_slab_simple("diorite", "mcl_core:diorite", "Diorite Stairs", "Diorite Slab", "Double Diorite Slab")
 
 mcl_stairs.register_stair_and_slab_simple("cobble", "mcl_core:cobble", "Cobblestone Stairs", "Cobblestone Slab", "Double Cobblestone Slab")
 
@@ -51,6 +57,7 @@ mcl_stairs.register_slab("sandstone", "group:sandstone",
 		{"mcl_core_sandstone_top.png", "mcl_core_sandstone_bottom.png", "mcl_core_sandstone_normal.png"},
 		"Sandstone Slab",
 		mcl_sounds.node_sound_stone_defaults(), 2, "Double Sandstone Slab", "mcl_core:sandstone")
+mcl_stairs.register_stair_and_slab_simple("sandstonesmooth2", "mcl_core:sandstonesmooth2", "Smooth Sandstone Stairs", "Smooth Sandstone Slab", "Double Smooth Sandstone Slab")
 
 mcl_stairs.register_stair("redsandstone", "group:redsandstone",
 		{pickaxey=1, material_stone=1},
@@ -62,6 +69,7 @@ mcl_stairs.register_slab("redsandstone", "group:redsandstone",
 		{"mcl_core_red_sandstone_top.png", "mcl_core_red_sandstone_bottom.png", "mcl_core_red_sandstone_normal.png"},
 		"Red Sandstone Slab",
 		mcl_sounds.node_sound_stone_defaults(), 2, "Double Red Sandstone Slab", "mcl_core:redsandstone")
+mcl_stairs.register_stair_and_slab_simple("redsandstonesmooth2", "mcl_core:redsandstonesmooth2", "Smooth Red Sandstone Stairs", "Smooth Red Sandstone Slab", "Double Smooth Red Sandstone Slab")
 
 -- Intentionally not group:stonebrick because of mclx_stairs
 mcl_stairs.register_stair("stonebrick", "mcl_core:stonebrick",
@@ -85,6 +93,8 @@ mcl_stairs.register_slab("quartzblock", "group:quartz_block",
 		{"mcl_nether_quartz_block_top.png", "mcl_nether_quartz_block_bottom.png", "mcl_nether_quartz_block_side.png"},
 		"Quartz Slab",
 		mcl_sounds.node_sound_stone_defaults(), 2, "Double Quarzt Slab", "mcl_nether:quartz_block")
+
+mcl_stairs.register_stair_and_slab_simple("quartz_smooth", "mcl_nether:quartz_smooth", "Smooth Quartz Stairs", "Smooth Quartz Slab", "Double Smooth Quartz Slab")
 
 mcl_stairs.register_stair_and_slab("nether_brick", "mcl_nether:nether_brick",
 		{pickaxey=1, material_stone=1},
