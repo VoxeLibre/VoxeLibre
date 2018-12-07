@@ -90,7 +90,7 @@ for i,img in ipairs(images) do
 		inventory_image = img,
 		wield_image = img,
 		stack_max = 64,
-		groups = {not_in_creative_inventory=inv, compass=i, tool=1}
+		groups = {not_in_creative_inventory=inv, compass=i, tool=1, disable_repair=1}
 	})
 
 	-- Help aliases. Makes sure the lookup tool works correctly
