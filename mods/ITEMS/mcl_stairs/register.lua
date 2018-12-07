@@ -116,13 +116,13 @@ mcl_stairs.register_stair_and_slab("red_nether_brick", "mcl_nether:red_nether_br
 
 mcl_stairs.register_stair_and_slab_simple("end_bricks", "mcl_end:end_bricks", "End Stone Brick Stairs", "End Stone Brick Slab", "Double End Stone Brick Slab")
 
-mcl_stairs.register_stair("purpur_block", "group:purpur",
+mcl_stairs.register_stair("purpur_block", "group:purpur_block",
 		{pickaxey=1, material_stone=1},
 		{"mcl_end_purpur_block.png"},
 		"Purpur Stairs",
 		mcl_sounds.node_sound_stone_defaults(),
 		1.5)
-mcl_stairs.register_slab("purpur_block", "group:purpur",
+mcl_stairs.register_slab("purpur_block", "group:purpur_block",
 		{pickaxey=1, material_stone=1},
 		{"mcl_end_purpur_block.png"},
 		"Purpur Slab",
