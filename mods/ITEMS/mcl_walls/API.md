@@ -20,9 +20,9 @@ If `craft_material` is not `nil` it also adds a crafting recipe of the following
 ### Parameters
 * `nodename`: Full itemstring of the new wall node (base node only). ***Must not have an underscore!***
 * `description`: Item description of item (tooltip), visible to user
-* `craft_material`: Item to be used in the crafting recipe. If `nil`, no crafting recipe will be added
-* `tiles`: Wall textures table, same syntax as for `minetest.register_node`
-* `inventory_image`: Inventory image (optional, default is an ugly 3D image)
+* `source`: Node on which the wall is based off, use for texture and crafting recipe (optional)
+* `tiles`: Wall textures table, same syntax as for `minetest.register_node` (optional if `source` is set)
+* `inventory_image`: Inventory image (optional if `source` is set)
 * `groups`: Base group memberships (optional, default is `{pickaxey=1}`)
 * `sounds`: Sound table (optional, by default default uses stone sounds)
 
