@@ -140,7 +140,7 @@ minetest.register_tool("3d_armor:leggings_gold", {
 })
 
 minetest.register_tool("3d_armor:leggings_diamond",{
-	description = "Diamond Leggins",
+	description = "Diamond Leggings",
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_leggings_diamond.png",
