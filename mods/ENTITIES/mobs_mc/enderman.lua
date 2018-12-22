@@ -3,6 +3,13 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
+-- ENDERMAN BEHAVIOUR:
+-- In this game, endermen attack the player on sight, like other monsters do.
+-- However, they have a reduced viewing range to make them less dangerous.
+-- This differs from MC, in which endermen only become hostile when provoked,
+-- and they are provoked by looking directly at them.
+-- TODO: Implement MC behaviour.
+
 -- intllib
 local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
@@ -164,8 +171,8 @@ end
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 
 mobs:register_mob("mobs_mc:enderman", {
-	-- TODO: Make endermen attack when looked at
-	type = "animal",
+	-- TODO: Endermen should be classified as passive
+	type = "monster",
 	passive = false,
 	pathfinding = 1,
 	stepheight = 1.2,
@@ -320,7 +327,9 @@ mobs:register_mob("mobs_mc:enderman", {
 	water_damage = 8,
 	lava_damage = 4,
 	light_damage = 0,
-	view_range = 16,
+	-- TODO: Increase view range when it detects being seen
+	-- Low view range to emulate that behaviour somehow
+	view_range = 4,
 	fear_height = 4,
 	attack_type = "dogfight",
 	blood_amount = 0,
