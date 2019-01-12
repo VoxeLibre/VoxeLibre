@@ -26,14 +26,16 @@ local get_recipes = function(query_item)
 			if recipes == nil then
 				recipes = {}
 			end
-			table.insert(recipes, {
-				type = "normal",
-				width = 0,
-				items = { [1] = query_item, [2] = query_item },
-				output = query_item,
-				-- Special marker for repairing recipes
-				_is_toolrepair = true,
-			})
+			if minetest.get_item_group(query_item, "disable_repair") ~= 1 then
+				table.insert(recipes, {
+					type = "normal",
+					width = 0,
+					items = { [1] = query_item, [2] = query_item },
+					output = query_item,
+					-- Special marker for repairing recipes
+					_is_toolrepair = true,
+				})
+			end
 		end
 	end
 	return recipes
