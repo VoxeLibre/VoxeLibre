@@ -1,6 +1,7 @@
 # This file contains settings of MineClone 2that can be changed in
 # minetest.conf
 
+[World]
 # In creative mode, players are able to dig all kind of blocks
 # instantly, and have access to unlimited resources.
 # Items are not used up, and blocks do not drop.
@@ -9,70 +10,6 @@
 # This setting may be removed in later version in favor of
 # per-player Creative Mode.
 creative_mode (Creative mode) bool false
-
-# Fire spreads and flammable nodes will be ignited by nearby fire.
-# Spreading fire may cause severe destruction.
-# Spreading fire blocks will disappear when fire is disabled, but
-# eternal fire is unaffected.
-enable_fire (Fire) bool true
-
-# Enable flame sound.
-flame_sound (Flame sound) bool true
-
-# If enabled, breaking blocks will cause them to drop as item.
-# Note that blocks never have drops when in Creative Mode.
-mcl_doTileDrops (Blocks have drops) bool true
-
-# Normally, players drop all their items when they die. Enable this
-# setting, so players always keep their inventory on death.
-mcl_keepInventory (Keep inventory on death) bool false
-
-# If enabled, chat messages are shown to everyone when a player dies.
-mcl_showDeathMessages (Show death messages) bool true
-
-# If enabled, the weather will change naturally over time.
-mcl_doWeatherCycle (Change weather) bool true
-
-# If enabled, mobs will spawn naturally. This does not affect
-# affect mob spawners.
-# This setting is only read at startup.
-mobs_spawn (Spawn mobs naturally) bool true
-
-# If enabled, only peaceful mobs will appear naturally. This does not
-# affect mob spawners.
-# This setting is only read at startup.
-only_peaceful_mobs (Spawn only peaceful mobs) bool false
-
-# If enabled, mobs might drop items when they die.
-mobs_drop_items (Mobs drop items) bool true
-
-# If enabled, mobs can take, place, change and destroy blocks around them.
-mobs_griefing (Mobs change blocks) bool true
-
-# If enabled, players respawn at the bed they last lay on instead of normal
-# spawn.
-# This setting is only read at startup.
-enable_bed_respawn (Respawn at bed) bool true
-
-# If enabled, the night can be skipped if all players are in bed.
-# This setting is only read at startup.
-enable_bed_night_skip (Skip night when sleeping) bool true
-
-# If enabled, the recipe book will only show recipes which require one
-# item which you have already discovered.
-# If disabled, the recipe book shows all crafting recipes.
-# This setting is experimental and may be changed in later versions.
-# Feedback is appreciated.
-craftguide_progressive_mode (EXPERIMENTAL: Enable recipe book progressive mode) bool false
-
-# If enabled, the “flat” map generator generates a “classic” superflat map:
-# Completely flat, 1 layer of grass blocks on top of 2 layers of dirt on
-# top of a final layer of bedrock.
-# Note if this is enabled, the setting “mgflat_flags” is ignored. To
-# customize the “flat” map generator, you must disable this setting.
-# Warning: Disabling this setting is currently EXPERIMENTAL! The generated map
-# may not be that pretty.
-mcl_superflat_classic (Classic superflat map generation) bool true
 
 # Which edition of Minecraft to imitate. This currently only affects two map
 # generation aspects.
@@ -88,3 +25,87 @@ mcl_superflat_classic (Classic superflat map generation) bool true
 #     Jungle bushes have jungle leaves.
 mcl_imitation_mode (Imitated Minecraft edition) enum pc_edition pc_edition,pocket_edition
 
+# Fire spreads and flammable nodes will be ignited by nearby fire.
+# Spreading fire may cause severe destruction.
+# Spreading fire blocks will disappear when fire is disabled, but
+# eternal fire is unaffected.
+enable_fire (Fire) bool true
+
+# If enabled, the weather will change naturally over time.
+mcl_doWeatherCycle (Change weather) bool true
+
+# If enabled, breaking blocks will cause them to drop as item.
+# Note that blocks never have drops when in Creative Mode.
+mcl_doTileDrops (Blocks have drops) bool true
+
+[Players]
+# If enabled, players respawn at the bed they last lay on instead of normal
+# spawn.
+# This setting is only read at startup.
+enable_bed_respawn (Respawn at bed) bool true
+
+# If enabled, the night can be skipped if all players are in bed.
+# This setting is only read at startup.
+enable_bed_night_skip (Skip night when sleeping) bool true
+# Normally, players drop all their items when they die. Enable this
+# setting, so players always keep their inventory on death.
+mcl_keepInventory (Keep inventory on death) bool false
+
+# If enabled, chat messages are shown to everyone when a player dies.
+mcl_showDeathMessages (Show death messages) bool true
+
+[Mobs]
+# If enabled, mobs will spawn naturally. This does not affect
+# affect mob spawners.
+# This setting is only read at startup.
+mobs_spawn (Spawn mobs naturally) bool true
+
+# Controls the overall amount of mobs that spawn. The higher the number,
+# the less often mobs will spawn. This does not affect mob spawners.
+mob_chance_multiplier (Mob spawn multiplier) float 1.0 0.0
+
+# If enabled, only peaceful mobs will appear naturally. This does not
+# affect mob spawners.
+# This setting is only read at startup.
+only_peaceful_mobs (Spawn only peaceful mobs) bool false
+
+# Allow mobs to spawn in protected areas. This does not affect
+# mob spawners.
+mobs_spawn_protected (Mobs spawn in protected areas) bool false
+
+# If enabled, mobs might drop items when they die.
+mobs_drop_items (Mobs drop items) bool true
+
+# If enabled, mobs can take, place, change and destroy blocks around them.
+mobs_griefing (Mobs change blocks) bool true
+
+# If enable, mobs won't bleed or emit other damage particles when
+# they got hurt.
+mobs_disable_blood (Disable mob blood) bool false
+
+[Audio]
+# Enable flame sound.
+flame_sound (Flame sound) bool true
+
+[Experimental]
+# If enabled, the recipe book will only show recipes which require one
+# item which you have already discovered.
+# If disabled, the recipe book shows all crafting recipes.
+# This setting is EXPERIMENTAL and may be changed in later versions.
+# Feedback is appreciated.
+craftguide_progressive_mode (Enable recipe book progressive mode) bool false
+
+# If enabled, the “flat” map generator generates a “classic” superflat map:
+# Completely flat, 1 layer of grass blocks on top of 2 layers of dirt on
+# top of a final layer of bedrock.
+# Note if this is enabled, the setting “mgflat_flags” is ignored. To
+# customize the “flat” map generator, you must disable this setting.
+# Warning: Disabling this setting is currently EXPERIMENTAL! The generated map
+# may not be that pretty.
+mcl_superflat_classic (Classic superflat map generation) bool true
+
+# Mobs difficulty. This is a number that will affect the initial and maximum
+# health and the amount of damage that mobs deal. Health and damage will
+# be multiplied with this number.
+# This feature is not finished yet!
+mob_difficulty (Mob difficulty factor) float 1.0 0.0
