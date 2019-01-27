@@ -2444,7 +2444,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
 			local v = self.object:getvelocity()
 			local r = 1.4 - min(punch_interval, 1.4)
-			local kb = r * 5
+			local kb = r * 2.0
 			local up = 2
 
 			-- if already in air then dont go up anymore when hit
