@@ -5,3 +5,4 @@ invisibility?
 intllib?
 lucky_block?
 cmi?
+doc_identifier?

@@ -3073,6 +3073,10 @@ minetest.register_entity(name, {
 
 })
 
+if minetest.get_modpath("doc_identifier") ~= nil then
+	doc.sub.identifier.register_object(name, "basics", "mobs")
+end
+
 end -- END mobs:register_mob function
 
 
@@ -3727,4 +3731,5 @@ function mobs:alias_mob(old_name, new_name)
 			self.object:remove()
 		end
 	})
+
 end
