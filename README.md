@@ -75,10 +75,11 @@ These items do not work yet, but you can get them with `/giveme` for testing:
 * Minecart with Command Block: `mcl_minecarts:command_block_minecart`
 
 ## Installation
-This game requires [Minetest](http://minetest.net) 0.4.16 (or later) to run,
-so you need to install Minetest first. Only stable versions of Minetest are
-officially supported. There is no support whatsoever for running MineClone 2
-in development versions of Minetest.
+This game requires [Minetest](http://minetest.net) to run
+(version 0.4.16 or 0.4.17).
+So you need to install Minetest first. Only stable versions of Minetest are
+officially supported. Minetest 5.0.0 (when released) will NOT be supported (yet).
+There is no support whatsoever for running MineClone 2 in development versions of Minetest.
 To install MineClone 2, move this directory into the “games” directory of
 your Minetest data directory. Consult the help of Minetest to learn more.
 
