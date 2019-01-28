@@ -21,7 +21,12 @@ mobs:register_mob("mobs_mc:silverfish", {
 	},
 	pathfinding = 1,
 	visual_size = {x=3, y=3},
-	-- TODO: sounds
+	sounds = {
+		random = "mobs_mc_silverfish_idle",
+		death = "mobs_mc_silverfish_death",
+		damage = "mobs_mc_silverfish_hurt",
+		distance = 16,
+	},
 	makes_footstep_sound = false,
 	walk_velocity = 0.6,
 	run_velocity = 2,

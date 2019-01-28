@@ -167,5 +167,10 @@ Origin of those models:
 * [ebcrosby](https://freesound.org/people/ebcrosby/)
     * `mobs_mc_ocelot_hurt.ogg` (CC BY 3.0)
         * Source: <https://freesound.org/people/ebcrosby/sounds/332979/>
+* [Inocodum](https://forum.minetest.net/memberlist.php?mode=viewprofile&u=3115)
+    * `mobs_mc_silverfish_hurt.ogg` (CC BY-SA 4.0)
+    * `mobs_mc_silverfish_death.ogg` (CC BY-SA 4.0)
+    * `mobs_mc_silverfish_idle.ogg` (CC BY-SA 4.0)
+        * Source: <https://forum.minetest.net/viewtopic.php?f=17&t=10013>
 
 Note: Many of these sounds have been more or less modified to fit the game.
