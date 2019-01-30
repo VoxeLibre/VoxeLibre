@@ -1,6 +1,7 @@
 mcl_minecarts = {}
 mcl_minecarts.modpath = minetest.get_modpath("mcl_minecarts")
 mcl_minecarts.speed_max = 10
+mcl_minecarts.check_float_time = 10
 
 dofile(mcl_minecarts.modpath.."/functions.lua")
 dofile(mcl_minecarts.modpath.."/rails.lua")
@@ -23,6 +24,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 		_punched = false, -- used to re-send _velocity and position
 		_velocity = {x=0, y=0, z=0}, -- only used on punch
 		_start_pos = nil, -- Used to calculate distance for “On A Rail” achievement
+		_last_float_check = nil, -- timestamp of last time the cart was checked to be still on a rail
 		_old_dir = {x=0, y=0, z=0},
 		_old_pos = nil,
 		_old_vel = {x=0, y=0, z=0},
@@ -114,6 +116,45 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 	function cart:on_step(dtime)
 		local vel = self.object:getvelocity()
 		local update = {}
+		if self._last_float_check == nil then
+			self._last_float_check = 0
+		else
+			self._last_float_check = self._last_float_check + dtime
+		end
+		local pos, rou_pos, node
+		-- Drop minecart if it isn't on a rail anymore
+		if self._last_float_check >= mcl_minecarts.check_float_time then
+			pos = self.object:getpos()
+			rou_pos = vector.round(pos)
+			node = minetest.get_node(rou_pos)
+			local g = minetest.get_item_group(node.name, "connect_to_raillike")
+			if g ~= self._railtype and self._railtype ~= nil then
+				-- Detach driver
+				if self._driver then
+					if self._old_pos then
+						self.object:setpos(self._old_pos)
+					end
+					mcl_player.player_attached[self._driver] = nil
+					local player = minetest.get_player_by_name(self._driver)
+					if player then
+						player:set_detach()
+						player:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
+					end
+				end
+
+				-- Drop items and remove cart entity
+					if not minetest.settings:get_bool("creative_mode") then
+					for d=1, #drop do
+						minetest.add_item(self.object:getpos(), drop[d])
+					end
+				end
+
+				self.object:remove()
+				return
+			end
+			self._last_float_check = 0
+		end
+
 		if self._punched then
 			vel = vector.add(vel, self._velocity)
 			self.object:setvelocity(vel)
@@ -123,7 +164,9 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 		end
 
 		local dir, last_switch = nil, nil
-		local pos = self.object:getpos()
+		if not pos then
+			pos = self.object:getpos()
+		end
 		if self._old_pos and not self._punched then
 			local flo_pos = vector.floor(pos)
 			local flo_old = vector.floor(self._old_pos)
@@ -132,12 +175,16 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 				-- Prevent querying the same node over and over again
 			end
 
-			-- Update detector rails
-			local rou_pos = vector.round(pos)
-			local rou_old = vector.round(self._old_pos)
-			local node = minetest.get_node(rou_pos)
+			if not rou_pos then
+				rou_pos = vector.round(pos)
+			end
+			rou_old = vector.round(self._old_pos)
+			if not node then
+				node = minetest.get_node(rou_pos)
+			end
 			local node_old = minetest.get_node(rou_old)
 
+			-- Update detector rails
 			if node.name == "mcl_minecarts:detector_rail" then
 				local newnode = {name="mcl_minecarts:detector_rail_on", param2 = node.param2}
 				minetest.swap_node(rou_pos, newnode)
