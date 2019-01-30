@@ -1,7 +1,7 @@
 mcl_minecarts = {}
 mcl_minecarts.modpath = minetest.get_modpath("mcl_minecarts")
 mcl_minecarts.speed_max = 10
-mcl_minecarts.check_float_time = 10
+mcl_minecarts.check_float_time = 15
 
 dofile(mcl_minecarts.modpath.."/functions.lua")
 dofile(mcl_minecarts.modpath.."/rails.lua")
