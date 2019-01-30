@@ -323,6 +323,10 @@ mcl_minecarts.place_minecart = function(itemstack, pointed_thing)
 	local entity_id = entity_mapping[itemstack:get_name()]
 	local cart = minetest.add_entity(railpos, entity_id)
 	local railtype = minetest.get_item_group(node.name, "connect_to_raillike")
+	local le = cart:get_luaentity()
+	if le ~= nil then
+		le._railtype = railtype
+	end
 	local cart_dir = mcl_minecarts:get_rail_direction(railpos, {x=1, y=0, z=0}, nil, nil, railtype)
 	cart:setyaw(minetest.dir_to_yaw(cart_dir))
 
