@@ -31,6 +31,10 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 	}
 
 	function cart:on_activate(staticdata, dtime_s)
+		local data = minetest.deserialize(staticdata)
+		if type(data) == "table" then
+			self._railtype = data._railtype
+		end
 		self.object:set_armor_groups({immortal=1})
 	end
 
@@ -290,7 +294,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 	end
 
 	function cart:get_staticdata()
-		return ""
+		return minetest.serialize({_railtype = self._railtype})
 	end
 
 	minetest.register_entity(entity_id, cart)
