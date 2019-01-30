@@ -28,7 +28,7 @@ function mcl_core.add_glass(desc, recipeitem, colorgroup, color)
 		is_ground_content = false,
 		tiles = {"mcl_core_glass_"..color..".png"},
 		paramtype = "light",
-		sunlight_propagates = "true",
+		sunlight_propagates = true,
 		use_texture_alpha = true,
 		stack_max = 64,
 		-- TODO: Add color to groups
