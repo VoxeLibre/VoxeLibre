@@ -65,6 +65,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 				local player = minetest.get_player_by_name(self._driver)
 				if player then
 					player:set_detach()
+					player:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
 				end
 			end
 
@@ -434,8 +435,7 @@ register_minecart(
 			self._driver = nil
 			self._start_pos = nil
 			clicker:set_detach()
-			local player = minetest.get_player_by_name(name)
-			player:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
+			clicker:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
 		elseif not self._driver then
 			self._driver = player_name
 			self._start_pos = self.object:getpos()
