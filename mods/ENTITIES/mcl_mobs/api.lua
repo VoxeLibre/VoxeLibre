@@ -98,14 +98,18 @@ local mod_tnt = minetest.get_modpath("mcl_tnt") ~= nil
 local mod_mobspawners = minetest.get_modpath("mcl_mobspawners") ~= nil
 
 -- play sound
-local mob_sound = function(self, sound)
+local mob_sound = function(self, sound, is_opinion)
 
 	if sound then
+		if is_opinion and self.opinion_sound_cooloff > 0 then
+			return
+		end
 		minetest.sound_play(sound, {
 			object = self.object,
 			gain = 1.0,
 			max_hear_distance = self.sounds.distance
 		})
+		self.opinion_sound_cooloff = 1
 	end
 end
 
@@ -121,7 +125,7 @@ local do_attack = function(self, player)
 	self.state = "attack"
 
 	if random(0, 100) < 90 then
-		mob_sound(self, self.sounds.war_cry)
+		mob_sound(self, self.sounds.war_cry, true)
 	end
 end
 
@@ -1291,10 +1295,10 @@ local smart_mobs = function(self, s, p, dist, dtime)
 			self.path.stuck_timer = stuck_timeout - 2
 
 			-- frustration! cant find the damn path :(
-			mob_sound(self, self.sounds.random)
+			mob_sound(self, self.sounds.random, true)
 		else
 			-- yay i found path
-			mob_sound(self, self.sounds.war_cry)
+			mob_sound(self, self.sounds.war_cry, true)
 			set_velocity(self, self.walk_velocity)
 
 			-- follow path now that it has it
@@ -2702,6 +2706,7 @@ local mob_activate = function(self, staticdata, def, dtime)
 	self.visual_size = vis_size
 	self.standing_in = ""
 	self.jump_sound_cooloff = 0 -- used to prevent jump sound from being played too often in short time
+	self.opinion_sound_cooloff = 0 -- used to prevent sound spam of particular sound types
 
 	-- check existing nametag
 	if not self.nametag then
@@ -2775,6 +2780,9 @@ local mob_step = function(self, dtime)
 
 	if self.jump_sound_cooloff > 0 then
 		self.jump_sound_cooloff = self.jump_sound_cooloff - dtime
+	end
+	if self.opinion_sound_cooloff > 0 then
+		self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
 	end
 	falling(self, pos)
 
@@ -2854,7 +2862,7 @@ local mob_step = function(self, dtime)
 
 	-- mob plays random sound at times
 	if random(1, 100) == 1 then
-		mob_sound(self, self.sounds.random)
+		mob_sound(self, self.sounds.random, true)
 	end
 
 	-- environmental damage timer (every 1 second)
@@ -3662,7 +3670,7 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 			end
 
 			-- make sound when fed so many times
-			mob_sound(self, self.sounds.random)
+			mob_sound(self, self.sounds.random, true)
 		end
 
 		return true
