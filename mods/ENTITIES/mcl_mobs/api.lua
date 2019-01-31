@@ -699,19 +699,24 @@ local do_env_damage = function(self)
 		if check_for_death(self, "dps", {type = "environment",
 				pos = pos, node = self.standing_in}) then return end
 	end
---[[
-	--- suffocation inside solid node
-	if self.suffocation ~= 0
-	and nodef.walkable == true
-	and nodef.groups.disable_suffocation ~= 1
-	and nodef.drawtype == "normal" then
 
-		self.health = self.health - self.suffocation
+	--- suffocation inside solid node
+	-- FIXME: Redundant with mcl_playerplus
+	if (self.suffocation == true)
+	and (nodef.walkable == nil or nodef.walkable == true)
+	and (nodef.collision_box == nil or nodef.collision_box.type == "regular")
+	and (nodef.node_box == nil or nodef.node_box.type == "regular")
+	and (nodef.groups.disable_suffocation ~= 1)
+	and (nodef.groups.opaque == 1) then
+
+		-- 2 damage per second
+		-- TODO: Deal this damage once every 1/2 second
+		self.health = self.health - 2
 
 		if check_for_death(self, "suffocation", {type = "environment",
 				pos = pos, node = self.standing_in}) then return end
 	end
-]]
+
 	check_for_death(self, "", {type = "unknown"})
 end
 
@@ -2995,7 +3000,7 @@ minetest.register_entity(name, {
 	sunlight_damage = def.sunlight_damage or 0,
 	water_damage = def.water_damage or 0,
 	lava_damage = def.lava_damage or 0,
-	suffocation = def.suffocation or 2,
+	suffocation = def.suffocation or true,
 	fall_damage = def.fall_damage or 1,
 	fall_speed = def.fall_speed or -10, -- must be lower than -2 (default: -10)
 	drops = def.drops or {},

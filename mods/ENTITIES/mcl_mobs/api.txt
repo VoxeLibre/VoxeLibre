@@ -61,7 +61,7 @@ functions needed for the mob to work properly which contains the following:
                    in lava or fire.
    'light_damage'  holds the damage per second inflicted to mobs when it's too
                    bright (above 13 light).
-   'suffocation'   when true causes mobs to suffocate inside solid blocks.
+   'suffocation'   when true causes mobs to suffocate inside solid blocks (2 damage per second).
    'floats'        when set to 1 mob will float in water, 0 has them sink.
    'follow'        mobs follow player when holding any of the items which appear
                    on this table, the same items can be fed to a mob to tame or
