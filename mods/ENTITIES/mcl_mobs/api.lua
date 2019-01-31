@@ -787,7 +787,10 @@ local do_jump = function(self)
 			end, self, v)
 
 			if get_velocity(self) > 0 then
-				mob_sound(self, self.sounds.jump)
+				if self.jump_sound_cooloff <= 0 then
+					mob_sound(self, self.sounds.jump)
+					self.jump_sound_cooloff = 0.5
+				end
 			end
 		else
 			self.facing_fence = true
@@ -2698,6 +2701,7 @@ local mob_activate = function(self, staticdata, def, dtime)
 	self.selectionbox = selbox
 	self.visual_size = vis_size
 	self.standing_in = ""
+	self.jump_sound_cooloff = 0 -- used to prevent jump sound from being played too often in short time
 
 	-- check existing nametag
 	if not self.nametag then
@@ -2769,6 +2773,9 @@ local mob_step = function(self, dtime)
 		end
 	end
 
+	if self.jump_sound_cooloff > 0 then
+		self.jump_sound_cooloff = self.jump_sound_cooloff - dtime
+	end
 	falling(self, pos)
 
 	-- smooth rotation by ThomasMonroe314

@@ -137,7 +137,7 @@ functions needed for the mob to work properly which contains the following:
       'shoot_attack'      sound played when mob shoots.
       'damage'            sound heard when mob is hurt.
       'death'             played when mob is killed.
-      'jump'              played when mob jumps.
+      'jump'              played when mob jumps. There's a built-in cooloff timer to avoid sound spam
       'fuse'              sound played when mob explode timer starts.
       'explode'           sound played when mob explodes.
 
