@@ -1298,9 +1298,6 @@ local smart_mobs = function(self, s, p, dist, dtime)
 
 			-- will try again in 2 second
 			self.path.stuck_timer = stuck_timeout - 2
-
-			-- frustration! cant find the damn path :(
-			mob_sound(self, self.sounds.random, true)
 		else
 			-- yay i found path
 			mob_sound(self, self.sounds.war_cry, true)
