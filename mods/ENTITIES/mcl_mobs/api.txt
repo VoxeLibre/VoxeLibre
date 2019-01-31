@@ -133,7 +133,7 @@ functions needed for the mob to work properly which contains the following:
       'distance'          maximum distance sounds can be heard, default is 10.
       'random'            played randomly from time to time.
                           also played for overfeeding animal.
-      'war_cry'           what you hear when mob starts to attack player.
+      'war_cry'           what you hear when mob starts to attack player. (currently disabled)
       'attack'            what you hear when being attacked.
       'shoot_attack'      sound played when mob shoots.
       'damage'            sound heard when mob is hurt.

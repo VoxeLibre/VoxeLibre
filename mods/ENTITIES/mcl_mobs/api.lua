@@ -124,9 +124,10 @@ local do_attack = function(self, player)
 	self.attack = player
 	self.state = "attack"
 
-	if random(0, 100) < 90 then
-		mob_sound(self, self.sounds.war_cry, true)
-	end
+	-- TODO: Implement war_cry sound without being annoying
+	--if random(0, 100) < 90 then
+		--mob_sound(self, self.sounds.war_cry, true)
+	--end
 end
 
 
@@ -1300,7 +1301,8 @@ local smart_mobs = function(self, s, p, dist, dtime)
 			self.path.stuck_timer = stuck_timeout - 2
 		else
 			-- yay i found path
-			mob_sound(self, self.sounds.war_cry, true)
+			-- TODO: Implement war_cry sound without being annoying
+			--mob_sound(self, self.sounds.war_cry, true)
 			set_velocity(self, self.walk_velocity)
 
 			-- follow path now that it has it
