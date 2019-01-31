@@ -2558,6 +2558,7 @@ local mob_staticdata = function(self)
 	and ((not self.nametag) or (self.nametag == ""))
 	and self.lifetimer <= 20 then
 
+		minetest.log("action", "Mob "..name.." despawns in mob_staticdata at "..minetest.pos_to_string(self.object.get_pos()))
 		self.object:remove()
 
 		return ""-- nil
@@ -2776,6 +2777,7 @@ local mob_step = function(self, dtime)
 				end
 			end
 
+			minetest.log("action", "Mob "..name.." despawns in mob_step at "..minetest.pos_to_string(pos))
 			self.object:remove()
 
 			return
@@ -2960,11 +2962,7 @@ local can_despawn
 if def.can_despawn ~= nil then
 	can_despawn = def.can_despawn
 else
-	if def.type == "monster" then
-		can_despawn = true
-	else
-		can_despawn = false
-	end
+	can_despawn = true
 end
 minetest.register_entity(name, {
 
@@ -3223,6 +3221,7 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 
 				if objs[n]:is_player() then
 					-- player too close
+					minetest.log("info", "Mob spawn of ".. name .. " failed, player too close")
 					return
 				end
 			end
