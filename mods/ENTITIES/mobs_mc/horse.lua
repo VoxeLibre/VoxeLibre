@@ -352,8 +352,7 @@ zombie_horse.drops = {
 	max = 2,},
 }
 zombie_horse.sounds = {
-	random = "mobs_mc_zombie_idle",
-	war_cry = "mobs_mc_zombie_idle",
+	random = "mobs_mc_zombie_growl",
 	death = "mobs_mc_zombie_death",
 	damage = "mobs_mc_zombie_hurt",
 	distance = 16,
