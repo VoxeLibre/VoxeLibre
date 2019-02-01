@@ -172,5 +172,15 @@ Origin of those models:
     * `mobs_mc_silverfish_death.ogg` (CC BY-SA 4.0)
     * `mobs_mc_silverfish_idle.ogg` (CC BY-SA 4.0)
         * Source: <https://forum.minetest.net/viewtopic.php?f=17&t=10013>
+* [LukeIRL](https://freesound.org/people/LukeIRL/)
+    * `mobs_mc_magma_cube_small.ogg` (CC BY 4.0)
+        * Derived from: <https://freesound.org/people/LukeIRL/sounds/176123/>
+    * `mobs_mc_magma_cube_big.ogg` (CC BY 4.0)
+        * Derived from: <https://freesound.org/people/LukeIRL/sounds/176123/>
+* [kbnevel](https://freesound.org/people/kbnevel/)
+    * `mobs_mc_magma_cube_attack.ogg` (CC0)
+        * Derived from: <https://freesound.org/people/kbnevel/sounds/119863/>
 
 Note: Many of these sounds have been more or less modified to fit the game.
+
+Sounds not mentioned here are licensed under CC0.

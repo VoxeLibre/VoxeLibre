@@ -138,10 +138,9 @@ local magma_cube_big = {
 	blood_texture = "mobs_mc_magmacube_blood.png",
 	makes_footstep_sound = true,
 	sounds = {
-		jump = "green_slime_jump",
-		death = "green_slime_death",
-		damage = "green_slime_damage",
-		attack = "green_slime_attack",
+		jump = "mobs_mc_magma_cube_big",
+		death = "mobs_mc_magma_cube_big",
+		attack = "mobs_mc_magma_cube_attack",
 		distance = 16,
 	},
 	walk_velocity = 4,
@@ -198,6 +197,8 @@ local magma_cube_big = {
 mobs:register_mob("mobs_mc:magma_cube_big", magma_cube_big)
 
 local magma_cube_small = table.copy(magma_cube_big)
+magma_cube_small.sounds.jump = "mobs_mc_magma_cube_small"
+magma_cube_small.sounds.death = "mobs_mc_magma_cube_small"
 magma_cube_small.hp_min = 4
 magma_cube_small.hp_max = 4
 magma_cube_small.collisionbox = {-0.51, -0.01, -0.51, 0.51, 1.00, 0.51}
@@ -225,6 +226,8 @@ end
 mobs:register_mob("mobs_mc:magma_cube_small", magma_cube_small)
 
 local magma_cube_tiny = table.copy(magma_cube_big)
+magma_cube_tiny.sounds.jump = "mobs_mc_magma_cube_small"
+magma_cube_tiny.sounds.death = "mobs_mc_magma_cube_small"
 magma_cube_tiny.hp_min = 1
 magma_cube_tiny.hp_max = 1
 magma_cube_tiny.collisionbox = {-0.2505, -0.01, -0.2505, 0.2505, 0.50, 0.2505}
