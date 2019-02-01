@@ -114,7 +114,7 @@ local pearl_ENTITY={
 -- Snowball on_step()--> called when snowball is moving.
 local snowball_on_step = function(self, dtime)
 	self.timer=self.timer+dtime
-	local pos = self.object:getpos()
+	local pos = self.object:get_pos()
 	local node = minetest.get_node(pos)
 	local def = minetest.registered_nodes[node.name]
 
@@ -131,7 +131,7 @@ end
 -- Movement function of egg
 local egg_on_step = function(self, dtime)
 	self.timer=self.timer+dtime
-	local pos = self.object:getpos()
+	local pos = self.object:get_pos()
 	local node = minetest.get_node(pos)
 	local def = minetest.registered_nodes[node.name]
 
@@ -185,7 +185,7 @@ end
 -- Movement function of ender pearl
 local pearl_on_step = function(self, dtime)
 	self.timer=self.timer+dtime
-	local pos = self.object:getpos()
+	local pos = self.object:get_pos()
 	pos.y = math.floor(pos.y)
 	local node = minetest.get_node(pos)
 	local nn = node.name
@@ -259,7 +259,7 @@ local pearl_on_step = function(self, dtime)
 					end
 				end
 
-				local oldpos = player:getpos()
+				local oldpos = player:get_pos()
 				-- Teleport and hurt player
 				player:setpos(telepos)
 				player:set_hp(player:get_hp() - 5)

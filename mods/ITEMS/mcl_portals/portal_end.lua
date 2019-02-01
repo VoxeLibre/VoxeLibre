@@ -223,7 +223,7 @@ minetest.register_abm({
 			if obj:is_player() or lua_entity then
 				local dim = mcl_worlds.pos_to_dimension(pos)
 
-				local objpos = obj:getpos()
+				local objpos = obj:get_pos()
 				if objpos == nil then
 					return
 				end

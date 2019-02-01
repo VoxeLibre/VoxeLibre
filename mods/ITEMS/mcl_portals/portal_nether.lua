@@ -415,7 +415,7 @@ minetest.register_abm({
 						if portal_cooloff[obj] then
 							return
 						end
-						local objpos = obj:getpos()
+						local objpos = obj:get_pos()
 						if objpos == nil then
 							return
 						end

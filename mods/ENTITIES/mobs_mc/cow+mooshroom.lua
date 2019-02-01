@@ -61,7 +61,7 @@ local cow_def = {
 			if inv:room_for_item("main", {name=mobs_mc.items.milk}) then
 				clicker:get_inventory():add_item("main", mobs_mc.items.milk)
 			else
-				local pos = self.object:getpos()
+				local pos = self.object:get_pos()
 				pos.y = pos.y + 0.5
 				minetest.add_item(pos, {name = mobs_mc.items.milk})
 			end
@@ -91,7 +91,7 @@ mooshroom_def.on_rightclick = function(self, clicker)
 	local item = clicker:get_wielded_item()
 	-- Use shears to get mushrooms and turn mooshroom into cow
 	if item:get_name() == mobs_mc.items.shears then
-		local pos = self.object:getpos()
+		local pos = self.object:get_pos()
 		minetest.sound_play("shears", {pos = pos})
 		minetest.add_item({x=pos.x, y=pos.y+1.4, z=pos.z}, mobs_mc.items.mushroom_red .. " 5")
 
@@ -112,7 +112,7 @@ mooshroom_def.on_rightclick = function(self, clicker)
 		if inv:room_for_item("main", {name=mobs_mc.items.milk}) then
 			clicker:get_inventory():add_item("main", mobs_mc.items.milk)
 		else
-			local pos = self.object:getpos()
+			local pos = self.object:get_pos()
 			pos.y = pos.y + 0.5
 			minetest.add_item(pos, {name = mobs_mc.items.milk})
 		end
@@ -124,7 +124,7 @@ mooshroom_def.on_rightclick = function(self, clicker)
 		if inv:room_for_item("main", {name=mobs_mc.items.mushroom_stew}) then
 			clicker:get_inventory():add_item("main", mobs_mc.items.mushroom_stew)
 		else
-			local pos = self.object:getpos()
+			local pos = self.object:get_pos()
 			pos.y = pos.y + 0.5
 			minetest.add_item(pos, {name = mobs_mc.items.mushroom_stew})
 		end

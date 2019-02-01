@@ -55,7 +55,7 @@ end
 minetest.register_globalstep(function(dtime)
 	for _,player in ipairs(minetest.get_connected_players()) do
 		if player:get_hp() > 0 or not minetest.settings:get_bool("enable_damage") then
-			local pos = player:getpos()
+			local pos = player:get_pos()
 			local inv = player:get_inventory()
 			local checkpos = {x=pos.x,y=pos.y + item_drop_settings.player_collect_height,z=pos.z}
 
@@ -67,7 +67,7 @@ minetest.register_globalstep(function(dtime)
 					if object:get_luaentity()._magnet_timer >= 0 and object:get_luaentity()._magnet_timer < item_drop_settings.magnet_time and inv and inv:room_for_item("main", ItemStack(object:get_luaentity().itemstring)) then
 
 						-- Collection
-						if vector.distance(checkpos, object:getpos()) <= item_drop_settings.radius_collect and not object:get_luaentity()._removed then
+						if vector.distance(checkpos, object:get_pos()) <= item_drop_settings.radius_collect and not object:get_luaentity()._removed then
 							-- Ignore if itemstring is not set yet
 							if object:get_luaentity().itemstring ~= "" then
 								inv:add_item("main", ItemStack(object:get_luaentity().itemstring))
@@ -95,7 +95,7 @@ minetest.register_globalstep(function(dtime)
 							-- Move object to player
 							disable_physics(object, object:get_luaentity())
 
-							local opos = object:getpos()
+							local opos = object:get_pos()
 							local vec = vector.subtract(checkpos, opos)
 							vec = vector.add(opos, vector.divide(vec, 2))
 							object:moveto(vec)
@@ -503,12 +503,12 @@ core.register_entity(":__builtin:item", {
 		-- Delete corrupted item entities. The itemstring MUST be non-empty on its first step,
 		-- otherwise there might have some data corruption.
 		if self.itemstring == "" then
-			minetest.log("warning", "Item entity with empty itemstring found at "..minetest.pos_to_string(self.object:getpos()).. "! Deleting it now.")
+			minetest.log("warning", "Item entity with empty itemstring found at "..minetest.pos_to_string(self.object:get_pos()).. "! Deleting it now.")
 			self._removed = true
 			self.object:remove()
 		end
 
-		local p = self.object:getpos()
+		local p = self.object:get_pos()
 		local node = core.get_node_or_nil(p)
 		local in_unloaded = (node == nil)
 
@@ -530,7 +530,7 @@ core.register_entity(":__builtin:item", {
 		if (def and def.groups and (def.groups.lava or def.groups.destroys_items == 1)) then
 			-- Special effect for lava
 			if def.groups.lava then
-				minetest.sound_play("builtin_item_lava", {pos = self.object:getpos(), gain = 0.5})
+				minetest.sound_play("builtin_item_lava", {pos = self.object:get_pos(), gain = 0.5})
 			end
 			self._removed = true
 			self.object:remove()

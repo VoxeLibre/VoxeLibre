@@ -35,7 +35,7 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 			used = true
 		end
 		if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then
-			minetest.sound_play(idef.sound.breaks, {pos=user:getpos(), gain=0.5})
+			minetest.sound_play(idef.sound.breaks, {pos=user:get_pos(), gain=0.5})
 		end
 		if not minetest.settings:get_bool("creative_mode") and used == true then
 			itemstack:add_wear(65535/65) -- 65 uses

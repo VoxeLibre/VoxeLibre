@@ -31,7 +31,7 @@ minetest.register_on_joinplayer(function(player)
 		sprinting = false,
 		timeOut = 0, 
 		shouldSprint = false,
-		lastPos = player:getpos(),
+		lastPos = player:get_pos(),
 		sprintDistance = 0,
 	}
 end)
@@ -69,7 +69,7 @@ minetest.register_globalstep(function(dtime)
 				players[playerName]["shouldSprint"] = false
 			end
 			
-			local playerPos = player:getpos()
+			local playerPos = player:get_pos()
 			--If the player is sprinting, create particles behind and cause exhaustion
 			if playerInfo["sprinting"] == true and gameTime % 0.1 == 0 then
 

@@ -304,7 +304,7 @@ function mesecon.mvps_move_objects(pos, dir, nodestack)
 	for _, obj in ipairs(objects_to_move) do
 		local entity = obj:get_luaentity()
 		if not entity or not mesecon.is_mvps_unmov(entity.name) then
-			local np = vector.add(obj:getpos(), dir)
+			local np = vector.add(obj:get_pos(), dir)
 
 			--move only if destination is not solid
 			local nn = minetest.get_node(np)

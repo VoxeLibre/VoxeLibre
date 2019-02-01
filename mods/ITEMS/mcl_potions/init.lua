@@ -84,7 +84,7 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 					if inv:room_for_item("main", water_bottle) then
 						inv:add_item("main", water_bottle)
 					else
-						minetest.add_item(placer:getpos(), water_bottle)
+						minetest.add_item(placer:get_pos(), water_bottle)
 					end
 					itemstack:take_item()
 				end

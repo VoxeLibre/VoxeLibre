@@ -29,7 +29,7 @@ local function place_slab_normal(itemstack, placer, pointed_thing)
 	local p0 = pointed_thing.under
 	local p1 = pointed_thing.above
 
-	local placer_pos = placer:getpos()
+	local placer_pos = placer:get_pos()
 
 	local fpos = get_fpos(placer, pointed_thing)
 
@@ -57,7 +57,7 @@ local function place_stair(itemstack, placer, pointed_thing)
 	local p1 = pointed_thing.above
 	local param2 = 0
 
-	local placer_pos = placer:getpos()
+	local placer_pos = placer:get_pos()
 	if placer_pos then
 		param2 = minetest.dir_to_facedir(vector.subtract(p1, placer_pos))
 	end

@@ -153,7 +153,7 @@ mobs:register_mob("mobs_mc:pig", {
 					-- Break carrot on a stick
 					local def = wielditem:get_definition()
 					if def.sounds and def.sounds.breaks then
-						minetest.sound_play(def.sounds.breaks, {pos = clicker:getpos(), max_hear_distance = 8, gain = 0.5})
+						minetest.sound_play(def.sounds.breaks, {pos = clicker:get_pos(), max_hear_distance = 8, gain = 0.5})
 					end
 					wielditem = {name = mobs_mc.items.fishing_rod, count = 1}
 				else

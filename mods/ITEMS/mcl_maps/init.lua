@@ -9,7 +9,7 @@ local make_filled_map = function(itemstack, placer, pointed_thing)
 		if inv:room_for_item("main", new_map) then
 			inv:add_item("main", new_map)
 		else
-			minetest.add_item(placer:getpos(), new_map)
+			minetest.add_item(placer:get_pos(), new_map)
 		end
 		return itemstack
 	end

@@ -85,7 +85,7 @@ local ocelot = {
 			-- 1/3 chance of getting tamed
 			if pr:next(1, 3) == 1 then
 				local yaw = self.object:get_yaw()
-				local cat = minetest.add_entity(self.object:getpos(), "mobs_mc:cat")
+				local cat = minetest.add_entity(self.object:get_pos(), "mobs_mc:cat")
 				cat:set_yaw(yaw)
 				local ent = cat:get_luaentity()
 				ent.owner = clicker:get_player_name()

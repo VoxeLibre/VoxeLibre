@@ -84,7 +84,7 @@ mobs:register_arrow("mobs_mc:roar_of_the_dragon", {
 
 	on_step = function(self, dtime)
 
-		local pos = self.object:getpos()
+		local pos = self.object:get_pos()
 
 		local n = minetest.get_node(pos).name
 

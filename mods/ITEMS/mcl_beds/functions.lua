@@ -212,7 +212,7 @@ function mcl_beds.on_rightclick(pos, player)
 		end
 	end
 	local name = player:get_player_name()
-	local ppos = player:getpos()
+	local ppos = player:get_pos()
 	local tod = minetest.get_timeofday() * 24000
 
 	-- Values taken from Minecraft Wiki with offset of +6000

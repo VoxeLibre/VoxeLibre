@@ -25,7 +25,7 @@ minetest.register_entity("drippingwater:drop_water", {
 
 	on_step = function(self, dtime)
 	local k = math.random(1,222)
-	local ownpos = self.object:getpos()
+	local ownpos = self.object:get_pos()
 
 	if k==1 then
 	self.object:setacceleration({x=0, y=-5, z=0})
@@ -63,7 +63,7 @@ minetest.register_entity("drippingwater:drop_lava", {
 
 	on_step = function(self, dtime)
 	local k = math.random(1,222)
-	local ownpos = self.object:getpos()
+	local ownpos = self.object:get_pos()
 
 	if k==1 then
 	self.object:setacceleration({x=0, y=-5, z=0})

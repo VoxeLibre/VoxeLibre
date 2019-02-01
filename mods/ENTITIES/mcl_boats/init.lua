@@ -67,7 +67,7 @@ function boat.on_rightclick(self, clicker)
 		clicker:set_properties({visual_size = {x=1, y=1}})
 		mcl_player.player_attached[name] = false
 		mcl_player.player_set_animation(clicker, "stand" , 30)
-		local pos = clicker:getpos()
+		local pos = clicker:get_pos()
 		pos = {x = pos.x, y = pos.y + 0.2, z = pos.z}
 		clicker:setpos(pos)
 	elseif not self._driver then
@@ -131,7 +131,7 @@ function boat.on_punch(self, puncher)
 		self._removed = true
 		-- Drop boat as item on the ground after punching
 		if not minetest.settings:get_bool("creative_mode") then
-			minetest.add_item(self.object:getpos(), self._itemstring)
+			minetest.add_item(self.object:get_pos(), self._itemstring)
 		end
 		self.object:remove()
 	end
@@ -189,7 +189,7 @@ function boat.on_step(self, dtime)
 	end
 	local velo = self.object:getvelocity()
 	if self._v == 0 and velo.x == 0 and velo.y == 0 and velo.z == 0 then
-		self.object:setpos(self.object:getpos())
+		self.object:setpos(self.object:get_pos())
 		return
 	end
 	local s = get_sign(self._v)
@@ -203,7 +203,7 @@ function boat.on_step(self, dtime)
 		self._v = 5 * get_sign(self._v)
 	end
 
-	local p = self.object:getpos()
+	local p = self.object:get_pos()
 	p.y = p.y - boat_y_offset
 	local new_velo
 	local new_acce = {x = 0, y = 0, z = 0}
@@ -217,7 +217,7 @@ function boat.on_step(self, dtime)
 		end
 		new_velo = get_velocity(self._v, self.object:getyaw(),
 			self.object:getvelocity().y)
-		self.object:setpos(self.object:getpos())
+		self.object:setpos(self.object:get_pos())
 	else
 		p.y = p.y + 1
 		if is_water(p) then
@@ -230,18 +230,18 @@ function boat.on_step(self, dtime)
 				new_acce = {x = 0, y = 5, z = 0}
 			end
 			new_velo = get_velocity(self._v, self.object:getyaw(), y)
-			self.object:setpos(self.object:getpos())
+			self.object:setpos(self.object:get_pos())
 		else
 			new_acce = {x = 0, y = 0, z = 0}
 			if math.abs(self.object:getvelocity().y) < 1 then
-				local pos = self.object:getpos()
+				local pos = self.object:get_pos()
 				pos.y = math.floor(pos.y) + boat_y_offset
 				self.object:setpos(pos)
 				new_velo = get_velocity(self._v, self.object:getyaw(), 0)
 			else
 				new_velo = get_velocity(self._v, self.object:getyaw(),
 					self.object:getvelocity().y)
-				self.object:setpos(self.object:getpos())
+				self.object:setpos(self.object:get_pos())
 			end
 		end
 	end

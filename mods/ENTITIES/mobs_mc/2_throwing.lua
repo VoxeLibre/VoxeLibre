@@ -52,7 +52,7 @@ local THROWING_ARROW_ENTITY={
 --ARROW CODE
 THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 	self.timer=self.timer+dtime
-	local pos = self.object:getpos()
+	local pos = self.object:get_pos()
 	local node = minetest.get_node(pos)
 
 	minetest.add_particle({
@@ -113,7 +113,7 @@ local throwing_shoot_arrow = function(itemstack, player)
 			if not minetest.settings:get_bool("creative_mode") then
 				player:get_inventory():remove_item("main", arrow[1])
 			end
-			local playerpos = player:getpos()
+			local playerpos = player:get_pos()
 			local obj = minetest.add_entity({x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, arrow[2])  --mc
 			local dir = player:get_look_dir()
 			obj:setvelocity({x=dir.x*22, y=dir.y*22, z=dir.z*22})
@@ -247,7 +247,7 @@ if c("egg") then
 	-- shoot egg
 	local mobs_shoot_egg = function (item, player, pointed_thing)
 
-		local playerpos = player:getpos()
+		local playerpos = player:get_pos()
 
 		minetest.sound_play("default_place_node_hard", {
 			pos = playerpos,
@@ -337,7 +337,7 @@ if c("snowball") then
 	-- shoot snowball
 	local mobs_shoot_snowball = function (item, player, pointed_thing)
 
-		local playerpos = player:getpos()
+		local playerpos = player:get_pos()
 
 		local obj = minetest.add_entity({
 			x = playerpos.x,

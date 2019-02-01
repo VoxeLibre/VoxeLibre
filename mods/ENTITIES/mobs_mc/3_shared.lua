@@ -32,13 +32,13 @@ mobs_mc.make_owner_teleport_function = function(dist, teleport_check_interval)
 		self._teleport_timer = self._teleport_timer - dtime
 		if self._teleport_timer <= 0 then
 			self._teleport_timer = teleport_check_interval
-			local mob_pos = self.object:getpos()
+			local mob_pos = self.object:get_pos()
 			local owner = minetest.get_player_by_name(self.owner)
 			if not owner then
 				-- No owner found, no teleportation
 				return
 			end
-			local owner_pos = owner:getpos()
+			local owner_pos = owner:get_pos()
 			local dist_from_owner = vector.distance(owner_pos, mob_pos)
 			if dist_from_owner > dist then
 				-- Check for nodes below air in a 5×1×5 area around the owner position

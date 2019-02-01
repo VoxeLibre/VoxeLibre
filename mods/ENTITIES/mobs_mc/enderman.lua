@@ -217,7 +217,7 @@ mobs:register_mob("mobs_mc:enderman", {
 			-- Take random node
 			self._take_place_timer = 0
 			self._next_take_place_time = math.random(place_frequency_min, place_frequency_max)
-			local pos = self.object:getpos()
+			local pos = self.object:get_pos()
 			local takable_nodes = minetest.find_nodes_in_area({x=pos.x-2, y=pos.y-1, z=pos.z-2}, {x=pos.x+2, y=pos.y+1, z=pos.z+2}, mobs_mc.enderman_takable)
 			if #takable_nodes >= 1 then
 				local r = pr:next(1, #takable_nodes)
@@ -268,7 +268,7 @@ mobs:register_mob("mobs_mc:enderman", {
 			-- Place taken node
 			self._take_place_timer = 0
 			self._next_take_place_time = math.random(take_frequency_min, take_frequency_max)
-			local pos = self.object:getpos()
+			local pos = self.object:get_pos()
 			local yaw = self.object:get_yaw()
 			-- Place node at looking direction
 			local place_pos = vector.subtract(pos, minetest.facedir_to_dir(minetest.dir_to_facedir(minetest.yaw_to_dir(yaw))))
@@ -291,7 +291,7 @@ mobs:register_mob("mobs_mc:enderman", {
 	-- TODO: Teleport enderman on damage, etc.
 	_do_teleport = function(self)
 		-- Attempt to randomly teleport enderman
-		local pos = self.object:getpos()
+		local pos = self.object:get_pos()
 		-- Find all solid nodes below air in a 65×65×65 cuboid centered on the enderman
 		local nodes = minetest.find_nodes_in_area_under_air(vector.subtract(pos, 32), vector.add(pos, 32), {"group:solid", "group:cracky", "group:crumbly"})
 		local telepos

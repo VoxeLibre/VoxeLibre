@@ -4,7 +4,7 @@ minetest.register_globalstep(function(dtime)
 	timer = timer + dtime;
 	if timer >= 0.3 then
 		for _,player in pairs(minetest.get_connected_players()) do
-	    local pp = player:getpos()
+	    local pp = player:get_pos()
 	    pp.y = math.ceil(pp.y)
             local loc = vector.add(pp, {x=0,y=-1,z=0})
             if loc ~= nil then

@@ -125,7 +125,7 @@ minetest.register_on_dieplayer(function(player)
 			return
 		end
 
-		local node = minetest.registered_nodes[minetest.get_node(player:getpos()).name]
+		local node = minetest.registered_nodes[minetest.get_node(player:get_pos()).name]
 		local msg
 		-- Lava
 		if minetest.get_item_group(node.name, "lava") ~= 0 then

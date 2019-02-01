@@ -57,7 +57,7 @@ minetest.register_globalstep(function(dtime)
 		local name = player:get_player_name()
 
 		-- where am I?
-		local pos = player:getpos()
+		local pos = player:get_pos()
 
 		-- what is around me?
 		local node_stand, node_stand_below, node_head, node_feet = get_player_nodes(pos)

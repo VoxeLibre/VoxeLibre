@@ -20,7 +20,7 @@ local function do_tnt_physics(tnt_np,tntr)
     for k, obj in pairs(objs) do
         local ent = obj:get_luaentity()
         local v = obj:getvelocity()
-        local p = obj:getpos()
+        local p = obj:get_pos()
         if ent and ent.name == "mcl_tnt:tnt" then
             obj:setvelocity({x=(p.x - tnt_np.x) + (tntr / 2) + v.x, y=(p.y - tnt_np.y) + tntr + v.y, z=(p.z - tnt_np.z) + (tntr / 2) + v.z})
         else
@@ -159,7 +159,7 @@ local function add_effects(pos, radius, drops)
 end
 
 function TNT:on_step(dtime)
-	local pos = self.object:getpos()
+	local pos = self.object:get_pos()
 	minetest.add_particle({
 		pos = {x=pos.x,y=pos.y+0.5,z=pos.z},
 		velocity = vector.new(math.random() * 0.2 - 0.1, 1.0 + math.random(), math.random() * 0.2 - 0.1),
@@ -181,7 +181,7 @@ function TNT:on_step(dtime)
 		self.blinkstatus = not self.blinkstatus
 	end
 	if self.timer > 4 then
-		tnt.boom(self.object:getpos())
+		tnt.boom(self.object:get_pos())
 		self.object:remove()
 	end
 end

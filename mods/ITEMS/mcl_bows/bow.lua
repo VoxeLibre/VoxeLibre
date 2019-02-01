@@ -82,7 +82,7 @@ local player_shoot_arrow = function(itemstack, player, power, damage)
 		local inv = player:get_inventory()
 		inv:set_stack("main", arrow_stack_id, arrow_stack)
 	end
-	local playerpos = player:getpos()
+	local playerpos = player:get_pos()
 	local dir = player:get_look_dir()
 	local yaw = player:get_look_horizontal()
 

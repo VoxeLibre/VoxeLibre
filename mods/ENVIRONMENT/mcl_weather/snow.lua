@@ -8,7 +8,7 @@ mcl_weather.snow.add_snow_particles = function(player)
   mcl_weather.rain.last_rp_count = 0
   for i=mcl_weather.snow.particles_count, 1,-1 do
     local random_pos_x, random_pos_y, random_pos_z = mcl_weather.get_random_pos_by_player_look_dir(player)
-    random_pos_y = math.random() + math.random(player:getpos().y - 1, player:getpos().y + 7)
+    random_pos_y = math.random() + math.random(player:get_pos().y - 1, player:get_pos().y + 7)
     if minetest.get_node_light({x=random_pos_x, y=random_pos_y, z=random_pos_z}, 0.5) == 15 then
       mcl_weather.rain.last_rp_count = mcl_weather.rain.last_rp_count + 1
       minetest.add_particle({
@@ -78,7 +78,7 @@ minetest.register_globalstep(function(dtime)
   end
 
   for _, player in ipairs(minetest.get_connected_players()) do
-    if (mcl_weather.is_underwater(player) or not mcl_worlds.has_weather(player:getpos())) then
+    if (mcl_weather.is_underwater(player) or not mcl_worlds.has_weather(player:get_pos())) then
       return false
     end
     mcl_weather.snow.add_snow_particles(player)

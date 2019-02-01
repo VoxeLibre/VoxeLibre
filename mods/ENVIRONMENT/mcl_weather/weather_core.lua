@@ -75,7 +75,7 @@ end
 -- checks if player is undewater. This is needed in order to
 -- turn off weather particles generation.
 mcl_weather.is_underwater = function(player)
-    local ppos = player:getpos()
+    local ppos = player:get_pos()
     local offset = player:get_eye_offset()
     local player_eye_pos = {x = ppos.x + offset.x, 
                             y = ppos.y + offset.y + 1.5, 

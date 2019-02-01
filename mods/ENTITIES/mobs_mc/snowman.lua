@@ -85,7 +85,7 @@ mobs:register_mob("mobs_mc:snowman", {
 		self._snowtimer = self._snowtimer + dtime
 		if self.health > 0 and self._snowtimer > snow_trail_frequency then
 			self._snowtimer = 0
-			local pos = self.object:getpos()
+			local pos = self.object:get_pos()
 			local below = {x=pos.x, y=pos.y-1, z=pos.z}
 			local def = minetest.registered_nodes[minetest.get_node(pos).name]
 			-- Node at snow golem's position must be replacable
@@ -110,7 +110,7 @@ mobs:register_mob("mobs_mc:snowman", {
 				textures = gotten_texture,
 			})
 
-			local pos = self.object:getpos()
+			local pos = self.object:get_pos()
 			minetest.sound_play("shears", {pos = pos})
 
 			-- Wear out

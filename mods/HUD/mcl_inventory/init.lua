@@ -36,7 +36,7 @@ end
 local function return_fields(player, name)
 	local inv = player:get_inventory()
 	for i,stack in ipairs(inv:get_list(name)) do
-		return_item(stack, player, player:getpos(), inv)
+		return_item(stack, player, player:get_pos(), inv)
 		stack:clear()
 		inv:set_stack(name, i, stack)
 	end

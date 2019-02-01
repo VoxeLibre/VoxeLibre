@@ -38,7 +38,7 @@ mobs:register_mob("mobs_mc:evoker", {
 	-- Summon vexes
 	custom_attack = function(self, to_attack)
 		local r = pr:next(2,4)
-		local basepos = self.object:getpos()
+		local basepos = self.object:get_pos()
 		basepos.y = basepos.y + 1
 		for i=1, r do
 			local spawnpos = vector.add(basepos, minetest.yaw_to_dir(pr:next(0,360)))

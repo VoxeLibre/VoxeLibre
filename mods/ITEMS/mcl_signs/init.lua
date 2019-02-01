@@ -283,7 +283,7 @@ minetest.register_node("mcl_signs:wall_sign", {
 
 		local wdir = minetest.dir_to_wallmounted(dir)
 
-		local placer_pos = placer:getpos()
+		local placer_pos = placer:get_pos()
 
 		local fdir = minetest.dir_to_facedir(dir)
 
@@ -443,7 +443,7 @@ minetest.register_entity("mcl_signs:text", {
 				self._signnodename = des._signnodename
 			end
 		end
-		local meta = minetest.get_meta(self.object:getpos())
+		local meta = minetest.get_meta(self.object:get_pos())
 		local text = meta:get_string("text")
 		self.object:set_properties({
 			textures={generate_texture(create_lines(text), self._signnodename)},

@@ -140,7 +140,7 @@ mcl_weather.skycolor = {
 
 		local players = mcl_weather.skycolor.utils.get_players(nil)
 		for _, player in ipairs(players) do
-			local pos = player:getpos()
+			local pos = player:get_pos()
 			local dim = mcl_worlds.pos_to_dimension(pos)
 			if dim == "overworld" then
 				player:set_sky(color, "plain", nil, true)

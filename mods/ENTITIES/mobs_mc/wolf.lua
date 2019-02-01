@@ -65,7 +65,7 @@ local wolf = {
 			-- 1/3 chance of getting tamed
 			if pr:next(1, 3) == 1 then
 				local yaw = self.object:get_yaw()
-				dog = minetest.add_entity(self.object:getpos(), "mobs_mc:dog")
+				dog = minetest.add_entity(self.object:get_pos(), "mobs_mc:dog")
 				dog:set_yaw(yaw)
 				ent = dog:get_luaentity()
 				ent.owner = clicker:get_player_name()

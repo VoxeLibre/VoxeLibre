@@ -41,7 +41,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 	end
 
 	function cart:on_punch(puncher, time_from_last_punch, tool_capabilities, direction)
-		local pos = self.object:getpos()
+		local pos = self.object:get_pos()
 		if not self._railtype then
 			local node = minetest.get_node(vector.floor(pos)).name
 			self._railtype = minetest.get_item_group(node, "connect_to_raillike")
@@ -83,7 +83,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 			-- Drop items and remove cart entity
 			if not minetest.settings:get_bool("creative_mode") then
 				for d=1, #drop do
-					minetest.add_item(self.object:getpos(), drop[d])
+					minetest.add_item(self.object:get_pos(), drop[d])
 				end
 			end
 
@@ -124,7 +124,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 		local pos, rou_pos, node
 		-- Drop minecart if it isn't on a rail anymore
 		if self._last_float_check >= mcl_minecarts.check_float_time then
-			pos = self.object:getpos()
+			pos = self.object:get_pos()
 			rou_pos = vector.round(pos)
 			node = minetest.get_node(rou_pos)
 			local g = minetest.get_item_group(node.name, "connect_to_raillike")
@@ -145,7 +145,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 				-- Drop items and remove cart entity
 					if not minetest.settings:get_bool("creative_mode") then
 					for d=1, #drop do
-						minetest.add_item(self.object:getpos(), drop[d])
+						minetest.add_item(self.object:get_pos(), drop[d])
 					end
 				end
 
@@ -165,7 +165,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 
 		local dir, last_switch = nil, nil
 		if not pos then
-			pos = self.object:getpos()
+			pos = self.object:get_pos()
 		end
 		if self._old_pos and not self._punched then
 			local flo_pos = vector.floor(pos)
@@ -485,7 +485,7 @@ register_minecart(
 			clicker:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
 		elseif not self._driver then
 			self._driver = player_name
-			self._start_pos = self.object:getpos()
+			self._start_pos = self.object:get_pos()
 			mcl_player.player_attached[player_name] = true
 			clicker:set_attach(self.object, "", {x=0, y=8.25, z=-2}, {x=0, y=0, z=0})
 			mcl_player.player_attached[name] = true

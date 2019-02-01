@@ -18,7 +18,7 @@ minetest.register_globalstep(function(dtime)
 		end
 		if player:get_player_control().jump and mcl_playerplus_internal[name].jump_cooldown <= 0 then
 
-			local pos = player:getpos()
+			local pos = player:get_pos()
 
 			local node_stand = mcl_playerinfo[name].node_stand
 			local node_stand_below = mcl_playerinfo[name].node_stand_below
@@ -76,7 +76,7 @@ minetest.register_globalstep(function(dtime)
 		local name = player:get_player_name()
 
 		-- where am I?
-		local pos = player:getpos()
+		local pos = player:get_pos()
 
 		-- what is around me?
 		local node_stand = mcl_playerinfo[name].node_stand
@@ -183,7 +183,7 @@ minetest.register_globalstep(function(dtime)
 		-- Show positions of barriers when player is wielding a barrier
 		local wi = player:get_wielded_item():get_name()
 		if wi == "mcl_core:barrier" or wi == "mcl_core:realm_barrier" then
-			local pos = vector.round(player:getpos())
+			local pos = vector.round(player:get_pos())
 			local r = 8
 			local vm = minetest.get_voxel_manip()
 			local emin, emax = vm:read_from_map({x=pos.x-r, y=pos.y-r, z=pos.z-r}, {x=pos.x+r, y=pos.y+r, z=pos.z+r})

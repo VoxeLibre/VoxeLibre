@@ -219,7 +219,7 @@ minetest.register_entity("3d_armor_stand:armor_entity", {
 	pos = nil,
 	timer = 0,
 	on_activate = function(self)
-		local pos = self.object:getpos()
+		local pos = self.object:get_pos()
 		self.object:set_armor_groups({immortal=1})
 		if pos then
 			self.pos = vector.round(pos)
@@ -233,7 +233,7 @@ minetest.register_entity("3d_armor_stand:armor_entity", {
 		self.timer = self.timer + dtime
 		if self.timer > 1 then
 			self.timer = 0
-			local pos = self.object:getpos()
+			local pos = self.object:get_pos()
 			if pos then
 				if vector.equals(vector.round(pos), self.pos) then
 					return

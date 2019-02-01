@@ -394,7 +394,7 @@ local entity_standing = {
 
 	-- This is a custom function which causes the banner to be dropped as item and destroys the entity.
 	_drop = function(self)
-		local pos = self.object:getpos()
+		local pos = self.object:get_pos()
 		pos.y = pos.y + 1
 
 		if not minetest.settings:get_bool("creative_mode") and self._base_color then

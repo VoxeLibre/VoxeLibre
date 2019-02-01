@@ -56,7 +56,7 @@ local function pp_on_timer(pos, elapsed)
 		end
 	elseif node.name == basename .. "_off" then
 		for k, obj in pairs(objs) do
-			local objpos = obj:getpos()
+			local objpos = obj:get_pos()
 			if obj_does_activate(obj, activated_by) then
 				if objpos.y > pos.y-1 and objpos.y < pos.y then
 					minetest.set_node(pos, {name = basename .. "_on"})

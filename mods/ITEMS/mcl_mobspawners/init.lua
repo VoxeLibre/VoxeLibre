@@ -365,7 +365,7 @@ end
 doll_def.on_step = function(self, dtime)
 	-- Check if spawner is still present. If not, delete the entity
 	self.timer = self.timer + 0.01
-	local n = minetest.get_node_or_nil(self.object:getpos())
+	local n = minetest.get_node_or_nil(self.object:get_pos())
 	if self.timer > 1 then
 		if n and n.name and n.name ~= "mcl_mobspawners:spawner" then
 			self.object:remove()

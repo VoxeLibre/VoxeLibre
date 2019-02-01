@@ -54,7 +54,7 @@ local function choose_pos(pos)
 
 		local r = rng:next(1, playercount)
 		local randomplayer = playerlist[r]
-		pos = randomplayer:getpos()
+		pos = randomplayer:get_pos()
 
 		-- avoid striking underground
 		if pos.y < -20 then

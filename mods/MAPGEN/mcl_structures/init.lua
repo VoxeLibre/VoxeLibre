@@ -334,7 +334,7 @@ minetest.register_chatcommand("spawnstruct", {
 	description = "Generate a pre-defined structure near your position.",
 	privs = {debug = true},
 	func = function(name, param)
-		local pos= minetest.get_player_by_name(name):getpos()
+		local pos= minetest.get_player_by_name(name):get_pos()
 		if not pos then
 			return
 		end

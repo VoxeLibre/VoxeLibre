@@ -94,7 +94,7 @@ local spawn_item = function(self, pos)
 end
 
 ARROW_ENTITY.on_step = function(self, dtime)
-	local pos = self.object:getpos()
+	local pos = self.object:get_pos()
 	local dpos = table.copy(pos) -- digital pos
 	dpos = vector.round(dpos)
 	local node = minetest.get_node(dpos)
@@ -166,7 +166,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			end
 
 			if ok then
-				local dist = vector.distance(pos, obj:getpos())
+				local dist = vector.distance(pos, obj:get_pos())
 				if not closest_object or not closest_distance then
 					closest_object = obj
 					closest_distance = dist

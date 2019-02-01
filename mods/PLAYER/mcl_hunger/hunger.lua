@@ -141,7 +141,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 			local name = user:get_player_name()
 			local hp = user:get_hp()
 
-			local pos = user:getpos()
+			local pos = user:get_pos()
 			-- player height
 			pos.y = pos.y + 1.5
 			local foodtype = minetest.get_item_group(itemname, "food")

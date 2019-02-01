@@ -146,7 +146,7 @@ function mcl_buckets.register_liquid(source_place, source_take, itemname, invent
 						if inv:room_for_item("main", new_bucket) then
 							inv:add_item("main", new_bucket)
 						else
-							minetest.add_item(user:getpos(), new_bucket)
+							minetest.add_item(user:get_pos(), new_bucket)
 						end
 						itemstack:take_item()
 						return itemstack
@@ -247,7 +247,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 				if inv:room_for_item("main", new_bucket) then
 					inv:add_item("main", new_bucket)
 				else
-					minetest.add_item(user:getpos(), new_bucket)
+					minetest.add_item(user:get_pos(), new_bucket)
 				end
 				if not minetest.settings:get_bool("creative_mode") then
 					itemstack:take_item()

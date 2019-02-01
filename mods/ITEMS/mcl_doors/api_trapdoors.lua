@@ -121,7 +121,7 @@ function mcl_doors:register_trapdoor(name, def)
 			local p1 = pointed_thing.above
 			local param2 = 0
 
-			local placer_pos = placer:getpos()
+			local placer_pos = placer:get_pos()
 			if placer_pos then
 				param2 = minetest.dir_to_facedir(vector.subtract(p1, placer_pos))
 			end
