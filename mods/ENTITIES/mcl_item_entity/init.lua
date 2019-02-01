@@ -524,12 +524,14 @@ core.register_entity(":__builtin:item", {
 			return
 		end
 
-		-- Destroy item in lava or special nodes
+		-- Destroy item in lava, fire or special nodes
 		local nn = node.name
 		local def = minetest.registered_nodes[nn]
-		if (def and def.groups and (def.groups.lava or def.groups.destroys_items == 1)) then
-			-- Special effect for lava
-			if def.groups.lava then
+		local lg = minetest.get_item_group(nn, "lava")
+		local fg = minetest.get_item_group(nn, "fire")
+		local dg = minetest.get_item_group(nn, "destroys_items")
+		if (def and (lg ~= 0 or fg ~= 0 or dg == 1)) then
+			if dg ~= 2 then
 				minetest.sound_play("builtin_item_lava", {pos = self.object:get_pos(), gain = 0.5})
 			end
 			self._removed = true
