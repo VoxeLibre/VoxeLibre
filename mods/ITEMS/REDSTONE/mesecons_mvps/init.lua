@@ -290,7 +290,7 @@ function mesecon.mvps_move_objects(pos, dir, nodestack)
 	end
 
 	-- Move objects lying/standing on the stack (before it was pushed - oldstack)
-	if tonumber(minetest.setting_get("movement_gravity")) > 0 and dir.y == 0 then
+	if tonumber(minetest.settings:get("movement_gravity")) > 0 and dir.y == 0 then
 		-- If gravity positive and dir horizontal, push players standing on the stack
 		for _, n in ipairs(nodestack) do
 			local p_above = vector.add(n.pos, {x=0, y=1, z=0})
