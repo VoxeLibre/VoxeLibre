@@ -228,7 +228,9 @@ function mcl_beds.on_rightclick(pos, player)
 	if not mcl_beds.player[name] then
 		lay_down(player, ppos, pos)
 		if minetest.get_modpath("mcl_spawn") then
-			mcl_spawn.set_spawn_pos(player, player:get_pos()) -- save respawn position when entering bed
+			local spos = table.copy(pos)
+			spos.y = spos.y + 0.1
+			mcl_spawn.set_spawn_pos(player, spos) -- save respawn position when entering bed
 		end
 	else
 		lay_down(player, nil, nil, false)
