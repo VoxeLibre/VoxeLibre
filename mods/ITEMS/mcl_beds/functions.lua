@@ -118,16 +118,28 @@ local function lay_down(player, pos, bed_pos, state, skip)
 
 	-- lay down
 	else
+		local yaw, param2 = get_look_yaw(bed_pos)
+		local dir = minetest.facedir_to_dir(param2)
+		local p = {x = bed_pos.x + dir.x / 4, y = bed_pos.y, z = bed_pos.z + dir.z / 4}
+		local n1 = minetest.get_node({x=bed_pos.x, y=bed_pos.y+1, z=bed_pos.z})
+		local n2 = minetest.get_node({x=bed_pos.x, y=bed_pos.y+2, z=bed_pos.z})
+		local def1 = minetest.registered_nodes[n1.name]
+		local def2 = minetest.registered_nodes[n2.name]
+		if def1.walkable or def2.walkable then
+			minetest.chat_send_player(name, "You can't sleep, the bed is obstructed!")
+			return
+		elseif (def1.damage_per_second ~= nil and def1.damage_per_second > 0) or (def2.damage_per_second ~= nil and def2.damage_per_second > 0) then
+			minetest.chat_send_player(name, "It's too dangerous to sleep here!")
+			return
+		end
+
 		mcl_beds.player[name] = 1
 		mcl_beds.pos[name] = pos
 		player_in_bed = player_in_bed + 1
-
 		-- physics, eye_offset, etc
 		player:set_eye_offset({x = 0, y = -13, z = 0}, {x = 0, y = 0, z = 0})
-		local yaw, param2 = get_look_yaw(bed_pos)
 		player:set_look_horizontal(yaw)
-		local dir = minetest.facedir_to_dir(param2)
-		local p = {x = bed_pos.x + dir.x / 2, y = bed_pos.y, z = bed_pos.z + dir.z / 2}
+
 		player:set_attribute("mcl_beds:sleeping", "true")
 		playerphysics.add_physics_factor(player, "speed", "mcl_beds:sleeping", 0)
 		playerphysics.add_physics_factor(player, "jump", "mcl_beds:sleeping", 0)
