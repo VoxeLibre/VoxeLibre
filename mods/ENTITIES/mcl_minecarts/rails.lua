@@ -78,7 +78,7 @@ register_rail("mcl_minecarts:rail",
 
 -- Powered rail (off = brake mode)
 register_rail("mcl_minecarts:golden_rail",
-	{"carts_rail_pwr.png", "carts_rail_curved_pwr.png", "carts_rail_t_junction_pwr.png", "carts_rail_crossing_pwr.png"},
+	{"mcl_minecarts_rail_golden.png", "mcl_minecarts_rail_golden_curved.png", "mcl_minecarts_rail_golden_t_junction.png", "mcl_minecarts_rail_golden_crossing.png"},
 	{
 		description = "Powered Rail",
 		_doc_items_longdesc = "Rails can be used to build transport tracks for minecarts. Powered rails are able to accelerate and brake minecarts.",

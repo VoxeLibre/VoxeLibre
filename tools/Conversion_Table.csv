@@ -448,7 +448,7 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/items,map_empty.png,/mods/ITEMS/mcl_maps/textures,mcl_maps_map_empty.png,,,,,,,
 /assets/minecraft/textures/items,map_filled_markings.png,/mods/ITEMS/mcl_maps/textures,mcl_maps_map_filled_markings.png,,,,,,,
 /assets/minecraft/textures/items,map_filled.png,/mods/ITEMS/mcl_maps/textures,mcl_maps_map_filled.png,,,,,,,
-/assets/minecraft/textures/blocks,rail_golden.png,/mods/ENTITIES/mcl_minecarts/textures,carts_rail_pwr.png,,,,,,,
+/assets/minecraft/textures/blocks,rail_golden.png,/mods/ENTITIES/mcl_minecarts/textures,mcl_minecarts_rail_golden.png,,,,,,,
 /assets/minecraft/textures/blocks,rail_golden_powered.png,/mods/ENTITIES/mcl_minecarts/textures,mcl_minecarts_rail_golden_powered.png,,,,,,,
 /assets/minecraft/textures/blocks,rail_normal_turned.png,/mods/ENTITIES/mcl_minecarts/textures,default_rail_curved.png,,,,,,,
 /assets/minecraft/textures/blocks,rail_normal.png,/mods/ENTITIES/mcl_minecarts/textures,default_rail.png,,,,,,,
