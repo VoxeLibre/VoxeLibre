@@ -48,6 +48,10 @@ minetest.register_on_respawnplayer(function(player)
 			player:set_pos(pos)
 			return true
 		else
+			-- Forget spawn if bed was missing
+			if (bgroup ~= 1 and bgroup ~= 2) then
+				mcl_spawn.set_spawn_pos(player, nil)
+			end
 			minetest.chat_send_player(player:get_player_name(), "Your spawn bed was missing or blocked.")
 		end
 	end
