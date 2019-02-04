@@ -9,49 +9,51 @@ local wool = {}
 -- colors, and then some recipes using more specific colors for a few non-base
 -- colors available. When crafting, the last recipes will be checked first.
 wool.dyes = {
-	{"white",      "white",		"White",      nil,		"basecolor_white"},
-	{"grey",       "dark_grey",	"Grey",       "dark_grey",	"unicolor_darkgrey"},
-	{"silver",     "grey",		"Light Grey", "grey",		"basecolor_grey"},
-	{"black",      "black",		"Black",      "black",		"basecolor_black"},
-	{"red",        "red",		"Red",        "red",		"basecolor_red"},
-	{"yellow",     "yellow",	"Yellow",     "yellow",		"basecolor_yellow"},
-	{"green",      "green",		"Green",      "dark_green",	"unicolor_dark_green"},
-	{"cyan",       "cyan",		"Cyan",       "cyan",		"basecolor_cyan"},
-	{"blue",       "blue",		"Blue",       "blue",		"basecolor_blue"},
-	{"magenta",    "magenta",	"Magenta",    "magenta",	"basecolor_magenta"},
-	{"orange",     "orange",	"Orange",     "orange",		"excolor_orange"},
-	{"purple",     "violet",	"Purple",     "violet",		"excolor_violet"},
-	{"brown",      "brown",		"Brown",      "brown",		"unicolor_dark_orange"},
-	{"pink",       "pink",		"Pink",       "pink",		"unicolor_light_red"},
-	{"lime",       "lime",		"Lime",       "green",		"basecolor_green"},
-	{"light_blue", "light_blue",	"Light Blue", "lightblue",	"unicolor_light_blue"},
+	-- name,       texture,               wool desc.,        carpet desc.,        dye,          color_group
+	{"white",      "wool_white",          "White Wool",      "White Carpet",      nil,          "basecolor_white"},
+	{"grey",       "wool_dark_grey",      "Grey Wool",       "Grey Carpet",       "dark_grey",  "unicolor_darkgrey"},
+	{"silver",     "wool_grey",           "Light Grey Wool", "Light Grey Carpet", "grey",       "basecolor_grey"},
+	{"black",      "wool_black",          "Black Wool",      "Black Carpet",      "black",      "basecolor_black"},
+	{"red",        "wool_red",            "Red Wool",        "Red Carpet",        "red",        "basecolor_red"},
+	{"yellow",     "wool_yellow",         "Yellow Wool",     "Yellow Carpet",     "yellow",     "basecolor_yellow"},
+	{"green",      "wool_dark_green",     "Green Wool",      "Green Carpet",      "dark_green", "unicolor_dark_green"},
+	{"cyan",       "wool_cyan",           "Cyan Wool",       "Cyan Carpet",       "cyan",       "basecolor_cyan"},
+	{"blue",       "wool_blue",           "Blue Wool",       "Blue Carpet",       "blue",       "basecolor_blue"},
+	{"magenta",    "wool_magenta",        "Magenta Wool",    "Magenta Carpet",    "magenta",    "basecolor_magenta"},
+	{"orange",     "wool_orange",         "Orange Wool",     "Orange Carpet",     "orange",     "excolor_orange"},
+	{"purple",     "wool_violet",         "Purple Wool",     "Purple Carpet",     "violet",     "excolor_violet"},
+	{"brown",      "wool_brown",          "Brown Wool",      "Brown Carpet",      "brown",      "unicolor_dark_orange"},
+	{"pink",       "wool_pink",           "Pink Wool",       "Pink Carpet",       "pink",       "unicolor_light_red"},
+	{"lime",       "mcl_wool_lime",       "Lime Wool",       "Lime Carpet",       "green",      "basecolor_green"},
+	{"light_blue", "mcl_wool_light_blue", "Light Blue Wool", "Light Blue Carpet", "lightblue",  "unicolor_light_blue"},
 }
 
 for _, row in ipairs(wool.dyes) do
 	local name = row[1]
 	local texture = row[2]
-	local desc = row[3]
-	local dye = row[4]
-	local color_group = row[5]
+	local desc_wool = row[3]
+	local desc_carpet = row[4]
+	local dye = row[5]
+	local color_group = row[6]
 	-- Node Definition
 		minetest.register_node("mcl_wool:"..name, {
-			description = desc.." Wool",
+			description = desc_wool,
 			_doc_items_longdesc = "Wool is a decorational block which comes in many different colors.",
 			stack_max = 64,
 			is_ground_content = false,
-			tiles = {"wool_"..texture..".png"},
+			tiles = {texture..".png"},
 			groups = {handy=1,shearsy_wool=1, flammable=1,wool=1,building_block=1},
 			sounds = mcl_sounds.node_sound_defaults(),
 			_mcl_hardness = 0.8,
 			_mcl_blast_resistance = 4,
 		})
 		minetest.register_node("mcl_wool:"..name.."_carpet", {
-			description = desc.." Carpet",
+			description = desc_carpet,
 			_doc_items_longdesc = "Carpets are thin floor covers which come in many different colors.",
 			walkable = false, -- See <https://minecraft.gamepedia.com/Materials>
 			is_ground_content = false,
-			tiles = {"wool_"..texture..".png"},
-			wield_image = "wool_"..texture..".png",
+			tiles = {texture..".png"},
+			wield_image = texture..".png",
 			wield_scale = { x=1, y=1, z=0.5 },
 			groups = {handy=1, carpet=1,attached_node=1,dig_by_water=1,deco_block=1},
 			sounds = mcl_sounds.node_sound_defaults(),

@@ -5,7 +5,7 @@ minetest.register_node("mcl_core:cactus", {
 	_doc_items_longdesc = "This is a piece of cactus commonly found in dry areas, especially deserts. Over time, cacti will grow up to 3 blocks high on sand or red sand. A cactus hurts living beings touching it with a damage of 1 HP every half second. When a cactus block is broken, all cactus blocks connected above it will break as well.",
 	_doc_items_usagehelp = "A cactus can only be placed on top of another cactus or any sand.",
 	drawtype = "nodebox",
-	tiles = {"default_cactus_top.png", "mcl_core_cactus_bottom.png", "default_cactus_side.png","default_cactus_side.png","default_cactus_side.png","default_cactus_side.png"},
+	tiles = {"mcl_core_cactus_top.png", "mcl_core_cactus_bottom.png", "mcl_core_cactus_side.png"},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {handy=1, attached_node=1, plant=1, deco_block=1, dig_by_piston=1, enderman_takable=1},

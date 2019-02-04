@@ -135,8 +135,8 @@ minetest.register_on_joinplayer(function(player)
 	--set hotbar size
 	player:hud_set_hotbar_itemcount(9)
 	--add hotbar images
-	player:hud_set_hotbar_image("gui_hotbar.png")
- 	player:hud_set_hotbar_selected_image("gui_hotbar_selected.png")
+	player:hud_set_hotbar_image("mcl_inventory_hotbar.png")
+	player:hud_set_hotbar_selected_image("mcl_inventory_hotbar_selected.png")
 
 	if show_armor then
 		local set_player_armor_original = armor.set_player_armor

@@ -127,8 +127,8 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/items,apple.png,/mods/ITEMS/mcl_core/textures,default_apple.png,,,,,,,
 /assets/minecraft/textures/items,apple_golden.png,/mods/ITEMS/mcl_core/textures,mcl_core_apple_golden.png,,,,,,,
 /assets/minecraft/textures/blocks,brick.png,/mods/ITEMS/mcl_core/textures,default_brick.png,,,,,,,
-/assets/minecraft/textures/blocks,cactus_side.png,/mods/ITEMS/mcl_core/textures,default_cactus_side.png,,,,,,,
-/assets/minecraft/textures/blocks,cactus_top.png,/mods/ITEMS/mcl_core/textures,default_cactus_top.png,,,,,,,
+/assets/minecraft/textures/blocks,cactus_side.png,/mods/ITEMS/mcl_core/textures,mcl_core_cactus_side.png,,,,,,,
+/assets/minecraft/textures/blocks,cactus_top.png,/mods/ITEMS/mcl_core/textures,mcl_core_cactus_top.png,,,,,,,
 /assets/minecraft/textures/blocks,cactus_bottom.png,/mods/ITEMS/mcl_core/textures,mcl_core_cactus_bottom.png,,,,,,,
 /assets/minecraft/textures/items,brick.png,/mods/ITEMS/mcl_core/textures,default_clay_brick.png,,,,,,,
 /assets/minecraft/textures/items,clay_ball.png,/mods/ITEMS/mcl_core/textures,default_clay_lump.png,,,,,,,
@@ -578,10 +578,10 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/blocks,wool_colored_brown.png,/mods/ITEMS/mcl_wool/textures,wool_brown.png,,,,,,,
 /assets/minecraft/textures/blocks,wool_colored_cyan.png,/mods/ITEMS/mcl_wool/textures,wool_cyan.png,,,,,,,
 /assets/minecraft/textures/blocks,wool_colored_gray.png,/mods/ITEMS/mcl_wool/textures,wool_dark_grey.png,,,,,,,
-/assets/minecraft/textures/blocks,wool_colored_green.png,/mods/ITEMS/mcl_wool/textures,wool_green.png,,,,,,,
+/assets/minecraft/textures/blocks,wool_colored_green.png,/mods/ITEMS/mcl_wool/textures,wool_dark_green.png,,,,,,,
 /assets/minecraft/textures/blocks,wool_colored_silver.png,/mods/ITEMS/mcl_wool/textures,wool_grey.png,,,,,,,
-/assets/minecraft/textures/blocks,wool_colored_light_blue.png,/mods/ITEMS/mcl_wool/textures,wool_light_blue.png,,,,,,,
-/assets/minecraft/textures/blocks,wool_colored_lime.png,/mods/ITEMS/mcl_wool/textures,wool_lime.png,,,,,,,
+/assets/minecraft/textures/blocks,wool_colored_light_blue.png,/mods/ITEMS/mcl_wool/textures,mcl_wool_light_blue.png,,,,,,,
+/assets/minecraft/textures/blocks,wool_colored_lime.png,/mods/ITEMS/mcl_wool/textures,mcl_wool_lime.png,,,,,,,
 /assets/minecraft/textures/blocks,wool_colored_magenta.png,/mods/ITEMS/mcl_wool/textures,wool_magenta.png,,,,,,,
 /assets/minecraft/textures/blocks,wool_colored_orange.png,/mods/ITEMS/mcl_wool/textures,wool_orange.png,,,,,,,
 /assets/minecraft/textures/blocks,wool_colored_pink.png,/mods/ITEMS/mcl_wool/textures,wool_pink.png,,,,,,,
@@ -795,8 +795,8 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/blocks,shulker_top_yellow.png,/mods/ITEMS/mcl_chests/textures,mcl_chests_yellow_shulker_box_top.png,,,,,,,y
 /assets/minecraft/textures/items,flower_pot.png,/mods/ITEMS/mcl_flowerpots/textures,mcl_flowerpots_flowerpot_inventory.png,,,,,,,
 /assets/minecraft/textures/blocks,flower_pot.png,/mods/ITEMS/mcl_flowerpots/textures,mcl_flowerpots_flowerpot.png,,,,,,,y
-/assets/minecraft/textures/gui,widgets.png,/mods/HUD/mcl_inventory/textures,gui_hotbar.png,0,0,182,22,0,0,y
-/assets/minecraft/textures/gui,widgets.png,/mods/HUD/mcl_inventory/textures,gui_hotbar_selected.png,0,22,24,24,0,0,y
+/assets/minecraft/textures/gui,widgets.png,/mods/HUD/mcl_inventory/textures,mcl_inventory_hotbar.png,0,0,182,22,0,0,y
+/assets/minecraft/textures/gui,widgets.png,/mods/HUD/mcl_inventory/textures,mcl_inventory_hotbar_selected.png,0,22,24,24,0,0,y
 /assets/minecraft/textures/blocks,bed_feet_end.png,/mods/ITEMS/mcl_beds/textures,mcl_beds_bed_side_bottom_red.png,,,,,,,
 /assets/minecraft/textures/blocks,bed_feet_side.png,/mods/ITEMS/mcl_beds/textures,mcl_beds_bed_side_bottom_r_red.png,,,,,,,
 /assets/minecraft/textures/blocks,bed_feet_top.png,/mods/ITEMS/mcl_beds/textures,mcl_beds_bed_top_bottom_red.png,,,,,,,
