@@ -1,6 +1,6 @@
 -- wrapper for minetest.item_eat (this way we make sure other mods can't break this one)
-local org_eat = core.do_item_eat
-core.do_item_eat = function(hp_change, replace_with_item, itemstack, user, pointed_thing)
+local org_eat = minetest.do_item_eat
+minetest.do_item_eat = function(hp_change, replace_with_item, itemstack, user, pointed_thing)
 	-- Call on_rightclick if the pointed node defines it
 	if pointed_thing.type == "node" then
 		local node = minetest.get_node(pointed_thing.under)
@@ -28,7 +28,7 @@ core.do_item_eat = function(hp_change, replace_with_item, itemstack, user, point
 		-- Don't allow eating when player has full hunger bar (some exceptional items apply)
 		if can_eat_when_full or (mcl_hunger.get_hunger(user) < 20) then
 			itemstack = mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_thing)
-			for _, callback in pairs(core.registered_on_item_eats) do
+			for _, callback in pairs(minetest.registered_on_item_eats) do
 				local result = callback(hp_change, replace_with_item, itemstack, user, pointed_thing, old_itemstack)
 				if result then
 					return result
@@ -63,7 +63,7 @@ function mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_t
 		def = {}
 		if type(hp_change) ~= "number" then
 			hp_change = 1
-			core.log("error", "Wrong on_use() definition for item '" .. item .. "'")
+			minetest.log("error", "Wrong on_use() definition for item '" .. item .. "'")
 		end
 		def.saturation = hp_change
 		def.replace = replace_with_item
