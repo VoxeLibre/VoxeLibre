@@ -2383,12 +2383,13 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		if cancel then return end
 	end
 
-	-- add weapon wear
 	if tool_capabilities then
 		punch_interval = tool_capabilities.full_punch_interval or 1.4
 	end
 
-	if weapon:get_definition()
+	-- add weapon wear
+	if minetest.settings:get_bool("creative_mode") ~= true
+	and weapon:get_definition()
 	and weapon:get_definition().tool_capabilities then
 
 		weapon:add_wear(floor((punch_interval / 75) * 9000))
