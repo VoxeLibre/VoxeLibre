@@ -4,6 +4,41 @@
 local MP = minetest.get_modpath(minetest.get_current_modname())
 local S, NS = dofile(MP.."/intllib.lua")
 
+-- Returns a function that spawns children in a circle around pos.
+-- To be used as on_die callback.
+-- self: mob reference
+-- pos: position of "mother" mob
+-- child_mod: Mob to spawn
+-- children_count: Number of children to spawn
+-- spawn_distance: Spawn distance from "mother" mob
+-- eject_speed: Initial speed of child mob away from "mother" mob
+local spawn_children_on_die = function(self, pos, child_mob, children_count, spawn_distance, eject_speed)
+	return function(self, pos)
+		local angle, posadd, newpos, dir
+		if not eject_speed then
+			eject_speed = 1
+		end
+		local mother_stuck = minetest.registered_nodes[minetest.get_node(pos).name].walkable
+		angle = math.random(0, math.pi*2)
+		for i=1,children_count do
+			dir = {x=math.cos(angle),y=0,z=math.sin(angle)}
+			posadd = vector.multiply(vector.normalize(dir), spawn_distance)
+			newpos = vector.add(pos, posadd)
+			-- If child would end up in a wall, use position of the "mother", unless
+			-- the "mother" was stuck as well
+			local speed_penalty = 1
+			if (not mother_stuck) and minetest.registered_nodes[minetest.get_node(newpos).name].walkable then
+				newpos = pos
+				speed_penalty = 0.5
+			end
+			local mob = minetest.add_entity(newpos, child_mob)
+			mob:set_velocity(vector.multiply(dir, eject_speed * speed_penalty))
+			mob:set_yaw(angle - math.pi/2)
+			angle = angle + (math.pi*2)/children_count
+		end
+	end
+end
+
 -- Slime
 local slime_big = {
 	type = "monster",
@@ -59,18 +94,7 @@ local slime_big = {
 	jump_chance = 100,
 	fear_height = 60,
 	spawn_small_alternative = "mobs_mc:slime_small",
-	on_die = function(self, pos)
-		local angle, posadd
-		angle = math.random(0, math.pi*2)
-		for i=1,4 do
-			posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
-			posadd = vector.normalize(posadd)
-			local slime = minetest.add_entity(vector.add(pos, posadd), "mobs_mc:slime_small")
-			slime:setvelocity(vector.multiply(posadd, 1.5))
-			slime:setyaw(angle-math.pi/2)
-			angle = angle + math.pi/2
-		end
-	end,
+	on_die = spawn_children_on_die(self, pos, "mobs_mc:slime_small", 4, 1.0, 1.5)
 }
 mobs:register_mob("mobs_mc:slime_big", slime_big)
 
@@ -85,18 +109,7 @@ slime_small.walk_velocity = 1.3
 slime_small.run_velocity = 1.3
 slime_small.jump_height = 4.3
 slime_small.spawn_small_alternative = "mobs_mc:slime_tiny"
-slime_small.on_die = function(self, pos)
-	local angle, posadd, dir
-	angle = math.random(0, math.pi*2)
-	for i=1,4 do
-		dir = {x=math.cos(angle),y=0,z=math.sin(angle)}
-		posadd = vector.multiply(vector.normalize(dir), 0.6)
-		local slime = minetest.add_entity(vector.add(pos, posadd), "mobs_mc:slime_tiny")
-		slime:setvelocity(dir)
-		slime:setyaw(angle-math.pi/2)
-		angle = angle + math.pi/2
-	end
-end
+slime_small.on_die = spawn_children_on_die(self, pos, "mobs_mc:slime_tiny", 4, 0.6, 1.0)
 mobs:register_mob("mobs_mc:slime_small", slime_small)
 
 local slime_tiny = table.copy(slime_big)
@@ -185,18 +198,7 @@ local magma_cube_big = {
 	jump_chance = 100,
 	fear_height = 100000,
 	spawn_small_alternative = "mobs_mc:magma_cube_small",
-	on_die = function(self, pos)
-		local angle, posadd
-		angle = math.random(0, math.pi*2)
-		for i=1,3 do
-			posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
-			posadd = vector.normalize(posadd)
-			local mob = minetest.add_entity(vector.add(pos, posadd), "mobs_mc:magma_cube_small")
-			mob:setvelocity(vector.multiply(posadd, 1.5))
-			mob:setyaw(angle-math.pi/2)
-			angle = angle + (math.pi*2) / 3
-		end
-	end,
+	on_die = spawn_children_on_die(self, pos, "mobs_mc:magma_cube_small", 3, 0.8, 1.5)
 }
 mobs:register_mob("mobs_mc:magma_cube_big", magma_cube_big)
 
@@ -216,18 +218,7 @@ magma_cube_small.damage = 4
 magma_cube_small.reach = 2.75
 magma_cube_small.armor = 70
 magma_cube_small.spawn_small_alternative = "mobs_mc:magma_cube_tiny"
-magma_cube_small.on_die = function(self, pos)
-	local angle, posadd, dir
-	angle = math.random(0, math.pi*2)
-	for i=1,4 do
-		dir = vector.normalize({x=math.cos(angle),y=0,z=math.sin(angle)})
-		posadd = vector.multiply(dir, 0.6)
-		local mob = minetest.add_entity(vector.add(pos, posadd), "mobs_mc:magma_cube_tiny")
-		mob:setvelocity(dir)
-		mob:setyaw(angle-math.pi/2)
-		angle = angle + math.pi/2
-	end
-end
+magma_cube_small.on_die = spawn_children_on_die(self, pos, "mobs_mc:magma_cube_tiny", 4, 0.6, 1.0)
 mobs:register_mob("mobs_mc:magma_cube_small", magma_cube_small)
 
 local magma_cube_tiny = table.copy(magma_cube_big)
