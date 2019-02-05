@@ -1,6 +1,11 @@
 -- wrapper for minetest.item_eat (this way we make sure other mods can't break this one)
 local org_eat = minetest.do_item_eat
 minetest.do_item_eat = function(hp_change, replace_with_item, itemstack, user, pointed_thing)
+
+	if not user or user:is_player() == false then
+		return itemstack
+	end
+
 	-- Call on_rightclick if the pointed node defines it
 	if pointed_thing.type == "node" then
 		local node = minetest.get_node(pointed_thing.under)

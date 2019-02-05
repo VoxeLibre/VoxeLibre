@@ -333,7 +333,7 @@ local eat_chorus_fruit = function(itemstack, player, pointed_thing)
 		local node_under = minetest.get_node(pointed_thing.under)
 		-- Use pointed node's on_rightclick function first, if present
 		if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
-			return minetest.registered_nodes[node_under.name].on_rightclick(pointed_thing.under, node_under, placer, itemstack) or itemstack
+			return minetest.registered_nodes[node_under.name].on_rightclick(pointed_thing.under, node_under, player, itemstack) or itemstack
 		end
 	end
 	local count = itemstack:get_count()
