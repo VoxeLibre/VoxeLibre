@@ -58,6 +58,7 @@ local slime_big = {
 	jump_height = 5.2,
 	jump_chance = 100,
 	fear_height = 60,
+	spawn_small_alternative = "mobs_mc:slime_small",
 	on_die = function(self, pos)
 		local angle, posadd
 		angle = math.random(0, math.pi*2)
@@ -83,6 +84,7 @@ slime_small.reach = 2.75
 slime_small.walk_velocity = 1.3
 slime_small.run_velocity = 1.3
 slime_small.jump_height = 4.3
+slime_small.spawn_small_alternative = "mobs_mc:slime_tiny"
 slime_small.on_die = function(self, pos)
 	local angle, posadd, dir
 	angle = math.random(0, math.pi*2)
@@ -114,6 +116,7 @@ slime_tiny.drops = {
 slime_tiny.walk_velocity = 0.7
 slime_tiny.run_velocity = 0.7
 slime_tiny.jump_height = 3
+slime_tiny.spawn_small_alternative = nil
 slime_tiny.on_die = nil
 
 mobs:register_mob("mobs_mc:slime_tiny", slime_tiny)
@@ -181,6 +184,7 @@ local magma_cube_big = {
 	walk_chance = 0,
 	jump_chance = 100,
 	fear_height = 100000,
+	spawn_small_alternative = "mobs_mc:magma_cube_small",
 	on_die = function(self, pos)
 		local angle, posadd
 		angle = math.random(0, math.pi*2)
@@ -211,6 +215,7 @@ magma_cube_small.jump_height = 6
 magma_cube_small.damage = 4
 magma_cube_small.reach = 2.75
 magma_cube_small.armor = 70
+magma_cube_small.spawn_small_alternative = "mobs_mc:magma_cube_tiny"
 magma_cube_small.on_die = function(self, pos)
 	local angle, posadd, dir
 	angle = math.random(0, math.pi*2)
@@ -239,6 +244,7 @@ magma_cube_tiny.damage = 3
 magma_cube_tiny.reach = 2.5
 magma_cube_tiny.armor = 85
 magma_cube_tiny.drops = {}
+magma_cube_tiny.spawn_small_alternative = nil
 magma_cube_tiny.on_die = nil
 
 mobs:register_mob("mobs_mc:magma_cube_tiny", magma_cube_tiny)

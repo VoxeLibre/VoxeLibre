@@ -2975,6 +2975,7 @@ minetest.register_entity(name, {
 	owner = def.owner or "",
 	order = def.order or "",
 	on_die = def.on_die,
+	spawn_small_alternative = def.spawn_small_alternative,
 	do_custom = def.do_custom,
 	jump_height = def.jump_height or 4, -- was 6
 	drawtype = def.drawtype, -- DEPRECATED, use rotate instead
@@ -3162,17 +3163,10 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 
 	end
 
-	minetest.register_abm({
+	local spawn_action
+	spawn_action = function(pos, node, active_object_count, active_object_count_wider, name)
 
-		label = name .. " spawning",
-		nodenames = nodes,
-		neighbors = neighbors,
-		interval = interval,
-		chance = max(1, (chance * mob_chance_multiplier)),
-		catch_up = false,
-
-		action = function(pos, node, active_object_count, active_object_count_wider)
-
+			local orig_pos = table.copy(pos)
 			-- is mob actually registered?
 			if not mobs.spawning_mobs[name]
 			or not minetest.registered_entities[name] then
@@ -3285,6 +3279,10 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 						if minetest.registered_nodes[node_ok(pos2).name].walkable == true then
 							-- inside block
 							minetest.log("info", "Mob spawn of "..name.." at "..minetest.pos_to_string(pos).." failed, too little space!")
+							if ent.spawn_small_alternative ~= nil and (not minetest.registered_nodes[node_ok(pos).name].walkable) then
+								minetest.log("info", "Trying to spawn smaller alternative mob: "..ent.spawn_small_alternative)
+								spawn_action(orig_pos, node, active_object_count, active_object_count_wider, ent.spawn_small_alternative)
+							end
 							return
 						end
 					end
@@ -3309,7 +3307,20 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 
 				on_spawn(ent, pos)
 			end
-		end
+	end
+
+	local function spawn_abm_action(pos, node, active_object_count, active_object_count_wider)
+		spawn_action(pos, node, active_object_count, active_object_count_wider, name)
+	end
+
+	minetest.register_abm({
+		label = name .. " spawning",
+		nodenames = nodes,
+		neighbors = neighbors,
+		interval = interval,
+		chance = max(1, (chance * mob_chance_multiplier)),
+		catch_up = false,
+		action = spawn_abm_action,
 	})
 end
 
