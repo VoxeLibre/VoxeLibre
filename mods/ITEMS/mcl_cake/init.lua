@@ -51,7 +51,7 @@ minetest.register_node("mcl_cake:cake", {
 	on_rightclick = function(pos, node, clicker, itemstack)
 		local newcake = minetest.do_item_eat(2, ItemStack("mcl_cake:cake_6"), ItemStack("mcl_cake:cake"), clicker, {type="nothing"})
 		-- Check if we were allowed to eat
-		if newcake:get_name() ~= "mcl_cake:cake" then
+		if newcake:get_name() ~= "mcl_cake:cake" or minetest.settings:get_bool("creative_mode") == true then
 			minetest.add_node(pos,{type="node",name="mcl_cake:cake_6",param2=0})
 		end
 	end,
@@ -71,7 +71,7 @@ local register_slice = function(level, nodebox, desc)
 		on_rightclick = function(pos, node, clicker, itemstack)
 			local newcake = minetest.do_item_eat(2, ItemStack(after_eat), ItemStack(this), clicker, {type="nothing"})
 			-- Check if we were allowed to eat
-			if newcake:get_name() ~= this then
+			if newcake:get_name() ~= this or minetest.settings:get_bool("creative_mode") == true then
 				minetest.add_node(pos,{type="node",name=after_eat,param2=0})
 			end
 		end
@@ -80,7 +80,7 @@ local register_slice = function(level, nodebox, desc)
 		on_rightclick = function(pos, node, clicker, itemstack)
 			local newcake = minetest.do_item_eat(2, ItemStack("mcl:cake:cake 0"), ItemStack("mcl_cake:cake_1"), clicker, {type="nothing"})
 			-- Check if we were allowed to eat
-			if newcake:get_name() ~= this then
+			if newcake:get_name() ~= this or minetest.settings:get_bool("creative_mode") == true then
 				minetest.remove_node(pos)
 				core.check_for_falling(pos)
 			end

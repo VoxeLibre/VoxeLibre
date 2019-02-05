@@ -770,8 +770,9 @@ S("• Creative inventory is available to obtain most items easily").."\n"..
 S("• Hand breaks all default blocks instantly").."\n"..
 S("• Greatly increased hand pointing range").."\n"..
 S("• Mined blocks don't drop items").."\n"..
+S("• Items don't get used up").."\n"..
 S("• Tools don't wear off").."\n"..
-S("• Bows have infinite arrows").."\n"..
+S("• You can eat food whenever you want").."\n"..
 S("• You can always use the minimap").."\n\n"..
 
 S("Damage is not affected by Creative Mode, it needs to be disabled seperately.")

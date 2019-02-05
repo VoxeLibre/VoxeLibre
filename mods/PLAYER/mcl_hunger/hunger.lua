@@ -15,8 +15,10 @@ minetest.do_item_eat = function(hp_change, replace_with_item, itemstack, user, p
 
 	local name = user:get_player_name()
 
+	local creative = minetest.settings:get_bool("creative_mode") == true
+
 	-- Special foodstuffs like the cake may disable the eating delay
-	local no_eat_delay = minetest.get_item_group(itemstack:get_name(), "no_eat_delay") == 1
+	local no_eat_delay = creative or (minetest.get_item_group(itemstack:get_name(), "no_eat_delay") == 1)
 
 	-- Allow eating only after a delay of 2 seconds. This prevents eating as an excessive speed.
 	-- FIXME: time() is not a precise timer, so the actual delay may be +- 1 second, depending on which fraction
@@ -24,7 +26,7 @@ minetest.do_item_eat = function(hp_change, replace_with_item, itemstack, user, p
 	-- FIXME: In singleplayer, there's a cheat to circumvent this, simply by pausing the game between eats.
 	-- This is because os.time() obviously does not care about the pause. A fix needs a different timer mechanism.
 	if no_eat_delay or (mcl_hunger.last_eat[name] < 0) or (os.difftime(os.time(), mcl_hunger.last_eat[name]) >= 2) then
-		local can_eat_when_full = minetest.get_item_group(itemstack:get_name(), "can_eat_when_full") == 1
+		local can_eat_when_full = creative or minetest.get_item_group(itemstack:get_name(), "can_eat_when_full") == 1
 		-- Don't allow eating when player has full hunger bar (some exceptional items apply)
 		if can_eat_when_full or (mcl_hunger.get_hunger(user) < 20) then
 			itemstack = mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_thing)
@@ -136,8 +138,11 @@ local poisonrandomizer = PseudoRandom(os.time())
 function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poison, exhaust, poisonchance, sound)
 	return function(itemstack, user, pointed_thing)
 		local itemname = itemstack:get_name()
-
-		if itemstack:take_item() ~= nil and user ~= nil then
+		local creative = minetest.settings:get_bool("creative_mode") == true
+		if itemstack:peek_item() ~= nil and user ~= nil then
+			if not creative then
+				itemstack:take_item()
+			end
 			local name = user:get_player_name()
 			local hp = user:get_hp()
 
@@ -242,7 +247,9 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 			end
 
 			--sound:eat
-			itemstack:add_item(replace_with_item)
+			if not creative then
+				itemstack:add_item(replace_with_item)
+			end
 		end
 		return itemstack
 	end
