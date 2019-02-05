@@ -3289,8 +3289,9 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 				end
 			end
 
-			-- spawn mob with half of its height above ground
-			pos.y = pos.y + ((ent.collisionbox[2] - ent.collisionbox[5]) / 2)
+			-- spawn mob 1/2 node above ground
+			pos.y = pos.y + 0.5
+			-- tweak X/Z spawn pos
 			if width_x % 2 == 0 then
 				pos.x = pos.x + 0.5
 			end
