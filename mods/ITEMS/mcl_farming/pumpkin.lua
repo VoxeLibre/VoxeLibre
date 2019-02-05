@@ -4,7 +4,7 @@ minetest.register_craftitem("mcl_farming:pumpkin_seeds", {
 	_doc_items_longdesc = "Grows into a pumpkin. Chickens like pumpkin seeds.",
 	_doc_items_usagehelp = "Place the pumpkin seeds on farmland (which can be created with a hoe) to plant a pumpkin stem. Pumpkins grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it pumpkin seeds.",
 	stack_max = 64,
-	inventory_image = "farming_pumpkin_seed.png",
+	inventory_image = "mcl_farming_pumpkin_seeds.png",
 	groups = { craftitem=1 },
 	on_place = function(itemstack, placer, pointed_thing)
 		return mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:pumpkin_1")

@@ -4,7 +4,7 @@ minetest.register_craftitem("mcl_farming:wheat_seeds", {
 	_doc_items_longdesc = "Grows into a wheat plant. Chickens like wheat seeds.",
 	_doc_items_usagehelp = "Place the wheat seeds on farmland (which can be created with a hoe) to plant a wheat plant. They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it wheat seeds.",
 	groups = { craftitem=1 },
-	inventory_image = "farming_wheat_seed.png",
+	inventory_image = "mcl_farming_wheat_seeds.png",
 	on_place = function(itemstack, placer, pointed_thing)
 		return mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:wheat_1")
 	end

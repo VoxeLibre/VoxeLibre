@@ -5,7 +5,7 @@ minetest.register_craftitem("mcl_farming:melon_seeds", {
 	_doc_items_usagehelp = "Place the melon seeds on farmland (which can be created with a hoe) to plant a melon stem. Melons grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it melon seeds.",
 	stack_max = 64,
 	groups = { craftitem=1 },
-	inventory_image = "farming_melon_seed.png",
+	inventory_image = "mcl_farming_melon_seeds.png",
 	on_place = function(itemstack, placer, pointed_thing)
 		return mcl_farming:place_seed(itemstack, placer, pointed_thing, "mcl_farming:melontige_1")
 	end,
