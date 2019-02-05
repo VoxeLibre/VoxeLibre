@@ -20,6 +20,7 @@ local spawn_children_on_die = function(self, pos, child_mob, children_count, spa
 		end
 		local mother_stuck = minetest.registered_nodes[minetest.get_node(pos).name].walkable
 		angle = math.random(0, math.pi*2)
+		local children = {}
 		for i=1,children_count do
 			dir = {x=math.cos(angle),y=0,z=math.sin(angle)}
 			posadd = vector.multiply(vector.normalize(dir), spawn_distance)
@@ -34,7 +35,21 @@ local spawn_children_on_die = function(self, pos, child_mob, children_count, spa
 			local mob = minetest.add_entity(newpos, child_mob)
 			mob:set_velocity(vector.multiply(dir, eject_speed * speed_penalty))
 			mob:set_yaw(angle - math.pi/2)
+			table.insert(children, mob)
 			angle = angle + (math.pi*2)/children_count
+		end
+		-- If mother was murdered, children attack the killer after 1 second
+		if self.state == "attack" then
+			minetest.after(1.0, function(children, enemy)
+				for c=1, #children do
+					local child = children[c]
+					local le = child:get_luaentity()
+					if le ~= nil then
+						le.state = "attack"
+						le.attack = enemy
+					end
+				end
+			end, children, self.attack)
 		end
 	end
 end
