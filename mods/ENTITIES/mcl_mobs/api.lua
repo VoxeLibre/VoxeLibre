@@ -3176,11 +3176,13 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 			-- is mob actually registered?
 			if not mobs.spawning_mobs[name]
 			or not minetest.registered_entities[name] then
+				minetest.log("warning", "Mob spawn of "..name.." failed, unknown entity or mob is not registered for spawning!")
 				return
 			end
 
 			-- additional custom checks for spawning mob
 			if mobs:spawn_abm_check(pos, node, name) == true then
+				minetest.log("info", "Mob spawn of "..name.." at "..minetest.pos_to_string(pos).." failed, ABM check rejected!")
 				return
 			end
 
@@ -3188,6 +3190,7 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 			if active_object_count_wider >= max_per_block
 			or count_mobs(pos, name) >= aoc then
 				-- too many entities
+				minetest.log("info", "Mob spawn of "..name.." at "..minetest.pos_to_string(pos).." failed, too crowded!")
 				return
 			end
 
@@ -3200,12 +3203,14 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 					-- daylight, but mob wants night
 					if day_toggle == false then
 						-- mob needs night
+						minetest.log("info", "Mob spawn of "..name.." at "..minetest.pos_to_string(pos).." failed, mob needs light!")
 						return
 					end
 				else
 					-- night time but mob wants day
 					if day_toggle == true then
 						-- mob needs day
+						minetest.log("info", "Mob spawn of "..name.." at "..minetest.pos_to_string(pos).." failed, mob needs daylight!")
 						return
 					end
 				end
@@ -3221,7 +3226,7 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 
 				if objs[n]:is_player() then
 					-- player too close
-					minetest.log("info", "Mob spawn of ".. name .. " failed, player too close")
+					minetest.log("info", "Mob spawn of "..name.." at "..minetest.pos_to_string(pos).." failed, player too close!")
 					return
 				end
 			end
@@ -3229,12 +3234,14 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 			-- mobs cannot spawn in protected areas when enabled
 			if not spawn_protected
 			and minetest.is_protected(pos, "") then
+				minetest.log("info", "Mob spawn of "..name.." at "..minetest.pos_to_string(pos).." failed, position is protected!")
 				return
 			end
 
 			-- are we spawning within height limits?
 			if pos.y > max_height
 			or pos.y < min_height then
+				minetest.log("info", "Mob spawn of "..name.." at "..minetest.pos_to_string(pos).." failed, out of height limit!")
 				return
 			end
 
@@ -3243,27 +3250,58 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 			if not light
 			or light > max_light
 			or light < min_light then
+				minetest.log("info", "Mob spawn of "..name.." at "..minetest.pos_to_string(pos).." failed, bad light!")
 				return
 			end
 
-			-- do we have enough height clearance to spawn mob?
+			-- do we have enough space to spawn mob?
 			local ent = minetest.registered_entities[name]
-			local height = max(0, math.ceil(ent.collisionbox[5] - ent.collisionbox[2]) - 1)
+			local width_x = max(1, math.ceil(ent.collisionbox[4] - ent.collisionbox[1]))
+			local min_x, max_x
+			if width_x % 2 == 0 then
+				max_x = math.floor(width_x/2)
+				min_x = -(max_x-1)
+			else
+				max_x = math.floor(width_x/2)
+				min_x = -max_x
+			end
 
-			for n = 0, height do
+			local width_z = max(1, math.ceil(ent.collisionbox[6] - ent.collisionbox[3]))
+			local min_z, max_z
+			if width_z % 2 == 0 then
+				max_z = math.floor(width_z/2)
+				min_z = -(max_z-1)
+			else
+				max_z = math.floor(width_z/2)
+				min_z = -max_z
+			end
 
-				local pos2 = {x = pos.x, y = pos.y + n, z = pos.z}
+			local max_y = max(0, math.ceil(ent.collisionbox[5] - ent.collisionbox[2]) - 1)
 
-				if minetest.registered_nodes[node_ok(pos2).name].walkable == true then
-					-- inside block
-					return
+			for y = 0, max_y do
+				for x = min_x, max_x do
+					for z = min_z, max_z do
+						local pos2 = {x = pos.x+x, y = pos.y+y, z = pos.z+z}
+						if minetest.registered_nodes[node_ok(pos2).name].walkable == true then
+							-- inside block
+							minetest.log("info", "Mob spawn of "..name.." at "..minetest.pos_to_string(pos).." failed, too little space!")
+							return
+						end
+					end
 				end
 			end
 
-			-- spawn mob half block higher than ground
-			pos.y = pos.y + 0.5
+			-- spawn mob with half of its height above ground
+			pos.y = pos.y + ((ent.collisionbox[2] - ent.collisionbox[5]) / 2)
+			if width_x % 2 == 0 then
+				pos.x = pos.x + 0.5
+			end
+			if width_z % 2 == 0 then
+				pos.z = pos.z + 0.5
+			end
 
 			local mob = minetest.add_entity(pos, name)
+			minetest.log("action", "Mob spawned: "..name.." at "..minetest.pos_to_string(pos))
 
 			if on_spawn then
 
