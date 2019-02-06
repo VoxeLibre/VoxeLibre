@@ -85,6 +85,13 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 				for d=1, #drop do
 					minetest.add_item(self.object:get_pos(), drop[d])
 				end
+			elseif puncher and puncher:is_player() then
+				local inv = puncher:get_inventory()
+				for d=1, #drop do
+					if not inv:contains_item("main", drop[d]) then
+						inv:add_item("main", drop[d])
+					end
+				end
 			end
 
 			self.object:remove()
