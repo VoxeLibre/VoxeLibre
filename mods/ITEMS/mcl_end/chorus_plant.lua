@@ -352,7 +352,7 @@ minetest.register_craftitem("mcl_end:chorus_fruit", {
 	inventory_image = "mcl_end_chorus_fruit.png",
 	on_place = eat_chorus_fruit,
 	on_secondary_use = eat_chorus_fruit,
-	groups = { food = 2, eatable = 4, can_eat_when_full = 1 },
+	groups = { food = 2, transport = 1, eatable = 4, can_eat_when_full = 1 },
 	_mcl_saturation = 2.4,
 	stack_max = 64,
 })

@@ -321,5 +321,6 @@ minetest.register_craftitem("mcl_throwing:ender_pearl", {
 	inventory_image = "mcl_throwing_ender_pearl.png",
 	stack_max = 16,
 	on_use = throw_function("mcl_throwing:ender_pearl_entity"),
+	groups = { transport = 1 },
 })
 
