@@ -31,7 +31,7 @@ minetest.do_item_eat = function(hp_change, replace_with_item, itemstack, user, p
 	-- FIXME: In singleplayer, there's a cheat to circumvent this, simply by pausing the game between eats.
 	-- This is because os.time() obviously does not care about the pause. A fix needs a different timer mechanism.
 	if no_eat_delay or (mcl_hunger.last_eat[name] < 0) or (os.difftime(os.time(), mcl_hunger.last_eat[name]) >= 2) then
-		local can_eat_when_full = creative or minetest.get_item_group(itemstack:get_name(), "can_eat_when_full") == 1
+		local can_eat_when_full = creative or (mcl_hunger.active == false) or minetest.get_item_group(itemstack:get_name(), "can_eat_when_full") == 1
 		-- Don't allow eating when player has full hunger bar (some exceptional items apply)
 		if can_eat_when_full or (mcl_hunger.get_hunger(user) < 20) then
 			itemstack = mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_thing)
@@ -48,24 +48,9 @@ minetest.do_item_eat = function(hp_change, replace_with_item, itemstack, user, p
 	return itemstack
 end
 
--- food functions
-local food = {}
-
-function mcl_hunger.register_food(name, hunger_change, replace_with_item, poisontime, poison, exhaust, poisonchance, sound)
-	food[name] = {}
-	food[name].saturation = hunger_change	-- hunger points added
-	food[name].replace = replace_with_item	-- what item is given back after eating
-	food[name].poisontime = poisontime	-- time it is poisoning. If this is set, this item is considered poisonous,
-						-- otherwise the following poison/exhaust fields are ignored
-	food[name].poison = poison		-- poison damage per tick for poisonous food
-	food[name].exhaust = exhaust		-- exhaustion per tick for poisonous food
-	food[name].poisonchance = poisonchance	-- chance percentage that this item poisons the player (default: 100% if poisoning is enabled)
-	food[name].sound = sound		-- special sound that is played when eating
-end
-
 function mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_thing)
 	local item = itemstack:get_name()
-	local def = food[item]
+	local def = mcl_hunger.registered_foods[item]
 	if not def then
 		def = {}
 		if type(hp_change) ~= "number" then
@@ -80,11 +65,11 @@ function mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_t
 end
 
 -- Reset HUD bars after poisoning
-local function reset_bars_poison_damage(player)
+function mcl_hunger.reset_bars_poison_damage(player)
 	hb.change_hudbar(player, "health", nil, nil, "hudbars_icon_health.png", nil, "hudbars_bar_health.png")
 end
 
-local function reset_bars_poison_hunger(player)
+function mcl_hunger.reset_bars_poison_hunger(player)
 	hb.change_hudbar(player, "hunger", nil, nil, "hbhunger_icon.png", nil, "hbhunger_bar.png")
 	if mcl_hunger.debug then
 		hb.change_hudbar(player, "exhaustion", nil, nil, nil, nil, "mcl_hunger_bar_exhaustion.png")
@@ -93,6 +78,9 @@ end
 
 -- Poison player
 local function poisonp(tick, time, time_left, damage, exhaustion, name)
+	if not mcl_hunger.active then
+		return
+	end
 	local player = minetest.get_player_by_name(name)
 	-- First check if player is still there
 	if not player then
@@ -114,10 +102,10 @@ local function poisonp(tick, time, time_left, damage, exhaustion, name)
 			mcl_hunger.poison_hunger [name] = mcl_hunger.poison_hunger[name] - 1
 		end
 		if mcl_hunger.poison_damage[name] <= 0 then
-			reset_bars_poison_damage(player)
+			mcl_hunger.reset_bars_poison_damage(player)
 		end
 		if mcl_hunger.poison_hunger[name] <= 0 then
-			reset_bars_poison_hunger(player)
+			mcl_hunger.reset_bars_poison_hunger(player)
 		end
 	end
 
@@ -128,14 +116,6 @@ local function poisonp(tick, time, time_left, damage, exhaustion, name)
 
 	mcl_hunger.exhaust(name, exhaustion)
 
-end
-
--- Immediately stop all poisonings for this player
-function mcl_hunger.stop_poison(player)
-	mcl_hunger.poison_damage[player:get_player_name()] = 0
-	mcl_hunger.poison_hunger[player:get_player_name()] = 0
-	reset_bars_poison_damage(player)
-	reset_bars_poison_hunger(player)
 end
 
 local poisonrandomizer = PseudoRandom(os.time())
@@ -202,7 +182,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 				})
 			end
 
-			if hunger_change then
+			if mcl_hunger.active and hunger_change then
 				-- Add saturation (must be defined in item table)
 				local _mcl_saturation = minetest.registered_items[itemname]._mcl_saturation
 				local saturation
@@ -225,7 +205,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 				mcl_hunger.update_saturation_hud(user, mcl_hunger.get_saturation(user), h)
 			end
 			-- Poison
-			if poisontime then
+			if mcl_hunger.active and poisontime then
 				local do_poison = false
 				if poisonchance then
 					if poisonrandomizer:next(0,100) < poisonchance then
@@ -251,7 +231,6 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 				end
 			end
 
-			--sound:eat
 			if not creative then
 				itemstack:add_item(replace_with_item)
 			end
@@ -260,24 +239,16 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 	end
 end
 
--- player-action based hunger changes
-minetest.register_on_dignode(function(pos, oldnode, player)
-	-- is_fake_player comes from the pipeworks, we are not interested in those
-	if not player or not player:is_player() or player.is_fake_player == true then
-		return
-	end
-	local name = player:get_player_name()
-	-- dig event
-	mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_DIG)
-end)
+if mcl_hunger.active then
+	-- player-action based hunger changes
+	minetest.register_on_dignode(function(pos, oldnode, player)
+		-- is_fake_player comes from the pipeworks, we are not interested in those
+		if not player or not player:is_player() or player.is_fake_player == true then
+			return
+		end
+		local name = player:get_player_name()
+		-- dig event
+		mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_DIG)
+	end)
+end
 
--- Apply simple poison effect as long there are no real status effect
--- TODO: Remove this when status effects are in place
-
-mcl_hunger.register_food("mcl_farming:potato_item_poison",	2, "",  4, 1,   0, 60)
-
-mcl_hunger.register_food("mcl_mobitems:rotten_flesh",		4, "", 30, 0, 100, 80)
-mcl_hunger.register_food("mcl_mobitems:chicken",		2, "", 30, 0, 100, 30)
-mcl_hunger.register_food("mcl_mobitems:spider_eye",		2, "", 4,  1,   0)
-
-mcl_hunger.register_food("mcl_fishing:pufferfish_raw",		1, "", 60, 1, 300)

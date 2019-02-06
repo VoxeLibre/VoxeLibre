@@ -8,13 +8,17 @@ end
 
 mcl_hunger = {}
 
--- This variable tells you if the hunger gameplay mechanic is active.
--- IMPORTANT: If damage is disabled on load time, most of the functions are NOT
--- available! Check if mcl_hunger is active before using the API.
-mcl_hunger.active = false
-
-
-mcl_hunger.exhaust = function() end
+--[[ This variable tells you if the hunger gameplay mechanic is active.
+The state of the hunger mechanic will be determined at game start.
+Hunger is enabled when damage is enabled.
+If the damage setting is changed within the game, this does NOT
+update the hunger mechanic, so the game must be restarted for this
+to take effect. ]]
+if minetest.settings:get_bool("enable_damage") == true then
+	mcl_hunger.active = true
+else
+	mcl_hunger.active = false
+end
 
 mcl_hunger.HUD_TICK = 0.1
 
@@ -31,11 +35,22 @@ mcl_hunger.EXHAUST_LVL = 4000 -- at what exhaustion player saturation gets lower
 
 mcl_hunger.SATURATION_INIT = 5 -- Initial saturation for new/respawning players
 
-if minetest.settings:get_bool("enable_damage") then
-mcl_hunger.active = true
-
 -- Debug Mode. If enabled, saturation and exhaustion are shown as well.
--- NOTE: Read-only. The setting should only be read at the beginning, this mod is not
+-- NOTE: Only updated when settings are loaded.
+mcl_hunger.debug = false
+
+-- Cooldown timers for each player, to force a short delay between consuming 2 food items
+mcl_hunger.last_eat = {}
+
+dofile(minetest.get_modpath("mcl_hunger").."/api.lua")
+dofile(minetest.get_modpath("mcl_hunger").."/hunger.lua")
+dofile(minetest.get_modpath("mcl_hunger").."/register_foods.lua")
+
+--[[ IF HUNGER IS ENABLED ]]
+if mcl_hunger.active == true then
+
+-- Read debug mode setting
+-- The setting should only be read at the beginning, this mod is not
 -- prepared to change this setting later.
 mcl_hunger.debug = minetest.settings:get_bool("mcl_hunger_debug")
 if mcl_hunger.debug == nil then
@@ -55,9 +70,6 @@ end
 -- Count number of poisonings a player has at once
 mcl_hunger.poison_damage = {} -- damaging poison
 mcl_hunger.poison_hunger = {} -- food poisoning, increasing hunger
-
--- Cooldown timers for each player, to force a short delay between consuming 2 food items
-mcl_hunger.last_eat = {}
 
 -- HUD item ids
 local hunger_hud = {}
@@ -82,8 +94,6 @@ function mcl_hunger.update_exhaustion_hud(player, exhaustion)
 	end
 end
 
-dofile(minetest.get_modpath("mcl_hunger").."/hunger.lua")
-
 -- register saturation hudbar
 hb.register_hudbar("hunger", 0xFFFFFF, S("Food"), { icon = "hbhunger_icon.png", bgicon = "hbhunger_bgicon.png",  bar = "hbhunger_bar.png" }, 20, 20, false)
 if mcl_hunger.debug then
@@ -91,53 +101,6 @@ if mcl_hunger.debug then
 	hb.register_hudbar("exhaustion", 0xFFFFFF, S("Exhaust."), { icon = "mcl_hunger_icon_exhaustion.png", bgicon = "mcl_hunger_bgicon_exhaustion.png", bar = "mcl_hunger_bar_exhaustion.png" }, 0, mcl_hunger.EXHAUST_LVL, false, S("%s: %d/%d"))
 end
 
--- API START --
-mcl_hunger.get_hunger = function(player)
-	local hunger = player:get_attribute("mcl_hunger:hunger") or 20
-	return tonumber(hunger)
-end
-
-mcl_hunger.get_saturation = function(player)
-	local saturation = player:get_attribute("mcl_hunger:saturation") or mcl_hunger.SATURATION_INIT
-	return tonumber(saturation)
-end
-
-mcl_hunger.get_exhaustion = function(player)
-	local exhaustion = player:get_attribute("mcl_hunger:exhaustion") or 0
-	return tonumber(exhaustion)
-end
-
-mcl_hunger.set_hunger = function(player, hunger, update_hudbars)
-	hunger = math.min(20, math.max(0, hunger))
-	player:set_attribute("mcl_hunger:hunger", tostring(hunger))
-	if update_hudbars ~= false then
-		hb.change_hudbar(player, "hunger", hunger)
-		mcl_hunger.update_saturation_hud(player, nil, hunger)
-	end
-	return true
-end
-
-mcl_hunger.set_saturation = function(player, saturation, update_hudbar)
-	saturation = math.min(mcl_hunger.get_hunger(player), math.max(0, saturation))
-	player:set_attribute("mcl_hunger:saturation", tostring(saturation))
-	if update_hudbar ~= false then
-		mcl_hunger.update_saturation_hud(player, saturation)
-	end
-	return true
-end
-
-mcl_hunger.set_exhaustion = function(player, exhaustion, update_hudbar)
-	exhaustion = math.min(mcl_hunger.EXHAUST_LVL, math.max(0.0, exhaustion))
-	player:set_attribute("mcl_hunger:exhaustion", tostring(exhaustion))
-	if update_hudbar ~= false then
-		mcl_hunger.update_exhaustion_hud(player, exhaustion)
-	end
-	return true
-end
-
-
-
--- END OF API --
 minetest.register_on_newplayer(function(player)
 	local name = player:get_player_name()
 	mcl_hunger.set_hunger(player, 20, false)
@@ -176,41 +139,6 @@ minetest.register_on_punchplayer(function(victim, puncher, time_from_last_punch,
 		mcl_hunger.exhaust(puncher:get_player_name(), mcl_hunger.EXHAUST_ATTACK)
 	end
 end)
-
-function mcl_hunger.exhaust(playername, increase)
-	local player = minetest.get_player_by_name(playername)
-	if not player then return false end
-	mcl_hunger.set_exhaustion(player, mcl_hunger.get_exhaustion(player) + increase)
-	if mcl_hunger.get_exhaustion(player) >= mcl_hunger.EXHAUST_LVL then
-		mcl_hunger.set_exhaustion(player, 0.0)
-		local h = nil
-		local satuchanged = false
-		local s = mcl_hunger.get_saturation(player)
-		if s > 0 then
-			mcl_hunger.set_saturation(player, math.max(s - 1.0, 0))
-			satuchanged = true
-		elseif s <= 0.0001 then
-			h = mcl_hunger.get_hunger(player)
-			h = math.max(h-1, 0)
-			mcl_hunger.set_hunger(player, h)
-			satuchanged = true
-		end
-		if satuchanged then
-			if h ~= nil then h = h end
-			mcl_hunger.update_saturation_hud(player, mcl_hunger.get_saturation(player), h)
-		end
-	end
-	mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
-	return true
-end
-
-function mcl_hunger.saturate(playername, increase, update_hudbar)
-	local player = minetest.get_player_by_name(playername)
-	mcl_hunger.set_saturation(player, math.min(mcl_hunger.get_saturation(player) + increase, mcl_hunger.get_hunger(player)))
-	if update_hudbar ~= false then
-		mcl_hunger.update_saturation_hud(player, mcl_hunger.get_saturation(player), mcl_hunger.get_hunger(player))
-	end
-end
 
 local main_timer = 0
 local timer = 0		-- Half second timer
@@ -253,6 +181,13 @@ minetest.register_globalstep(function(dtime)
 			timerMult = 0
 		end
 	end
+end)
+
+--[[ IF HUNGER IS NOT ENABLED ]]
+else
+
+minetest.register_on_joinplayer(function(player)
+	mcl_hunger.last_eat[player:get_player_name()] = -1
 end)
 
 end
