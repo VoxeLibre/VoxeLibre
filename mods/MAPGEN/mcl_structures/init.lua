@@ -63,11 +63,12 @@ mcl_structures.generate_igloo = function(pos)
 	-- TODO: Check if we're allowed to destroy nodes
 	-- FIXME: Some nodes (water, ice) don't get overwritten by ladder
 	-- FIXME: Nodes at Y=0 don't get overwritten by ladder
+	-- FIXME: Apply basement height limit in other dimensions
 	-- TODO: Check if basement generation would not be too obvious
 	-- TODO: Generate basement with 50% chance only
 	local success, rotation = mcl_structures.generate_igloo_top(pos)
 	if success then
-		local buffer = pos.y - (mcl_vars.mg_bedrock_overworld_max + 1)
+		local buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
 		if buffer <= 19 then
 			return
 		end
@@ -140,6 +141,7 @@ end
 
 mcl_structures.generate_igloo_basement = function(pos, orientation)
 	-- TODO: Add brewing stand
+	-- TODO: Add monster eggs
 	-- TODO: Spawn villager and zombie villager
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_igloo_basement.mts"
 
