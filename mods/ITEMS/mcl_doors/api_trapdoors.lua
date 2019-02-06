@@ -89,6 +89,7 @@ function mcl_doors:register_trapdoor(name, def)
 
 	local groups_closed = groups
 	groups_closed.trapdoor = 1
+	groups_closed.deco_block = 1
 	minetest.register_node(name, {
 		description = def.description,
 		_doc_items_longdesc = longdesc,
@@ -158,6 +159,7 @@ function mcl_doors:register_trapdoor(name, def)
 	}
 
 	groups_open.trapdoor = 2
+	groups_open.not_in_creative_inventory = 1
 	minetest.register_node(name.."_open", {
 		drawtype = "nodebox",
 		tiles = tiles_open,
