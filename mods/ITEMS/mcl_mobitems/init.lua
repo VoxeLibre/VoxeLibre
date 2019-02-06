@@ -198,7 +198,7 @@ minetest.register_craftitem("mcl_mobitems:blaze_powder", {
 	_doc_items_longdesc = "This item is mainly used for crafting.",
 	wield_image = "mcl_mobitems_blaze_powder.png",
 	inventory_image = "mcl_mobitems_blaze_powder.png",
-	groups = { brewitem = 1 },
+	groups = { craftitem = 1, brewitem = 1 },
 	stack_max = 64,
 })
 
@@ -207,25 +207,27 @@ minetest.register_craftitem("mcl_mobitems:magma_cream", {
 	_doc_items_longdesc = "Magma cream is a crafting component.",
 	wield_image = "mcl_mobitems_magma_cream.png",
 	inventory_image = "mcl_mobitems_magma_cream.png",
-	groups = { brewitem = 1 },
+	groups = { craftitem = 1, brewitem = 1 },
 	stack_max = 64,
 })
 
 minetest.register_craftitem("mcl_mobitems:ghast_tear", {
 	description = "Ghast Tear",
-	_doc_items_longdesc = "A ghast tear is dropped from dead ghasts. It has no purpose yet.",
+	_doc_items_longdesc = "Place this item in an item frame as decoration.",
 	wield_image = "mcl_mobitems_ghast_tear.png",
 	inventory_image = "mcl_mobitems_ghast_tear.png",
-	groups = { brewitem = 1 },
+	-- TODO: Reveal item when it's useful
+	groups = { brewitem = 1, not_in_creative_inventory = 1 },
 	stack_max = 64,
 })
 
 minetest.register_craftitem("mcl_mobitems:nether_star", {
 	description = "Nether Star",
-	_doc_items_longdesc = "A nether star is a crafting component. It is dropped from the Wither.",
+	_doc_items_longdesc = "A nether star is dropped when the Wither dies. Place it in an item frame to show the world how hardcore you are! Or just as decoration.",
 	wield_image = "mcl_mobitems_nether_star.png",
 	inventory_image = "mcl_mobitems_nether_star.png",
-	groups = { craftitem = 1 },
+	-- TODO: Reveal item when it's useful
+	groups = { craftitem = 1, not_in_creative_inventory = 1 },
 	stack_max = 64,
 })
 
@@ -258,10 +260,11 @@ minetest.register_craftitem("mcl_mobitems:rabbit_hide", {
 
 minetest.register_craftitem("mcl_mobitems:rabbit_foot", {
 	description = "Rabbit's Foot",
-	_doc_items_longdesc = "This item currently has no purpose.",
+	_doc_items_longdesc = "Must be your lucky day! Place this item in an item frame for decoration.",
 	wield_image = "mcl_mobitems_rabbit_foot.png",
 	inventory_image = "mcl_mobitems_rabbit_foot.png",
-	groups = { brewitem = 1 },
+	-- TODO: Reveal item when it's useful
+	groups = { brewitem = 1, not_in_creative_inventory = 1 },
 	stack_max = 64,
 })
 

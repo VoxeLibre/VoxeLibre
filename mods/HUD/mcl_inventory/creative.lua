@@ -4,8 +4,10 @@ local players = {}
 -- Containing all the items for each Creative Mode tab
 local inventory_lists = {}
 
+-- TODO: Brewing is disabled. Add brewing (uncommented code) when it is implemented properly
+
 -- Create tables
-local builtin_filter_ids = {"blocks","deco","redstone","rail","food","tools","combat","brew","matr","misc","all"}
+local builtin_filter_ids = {"blocks","deco","redstone","rail","food","tools","combat",--[["brew",]]"matr","misc","all"}
 for _, f in pairs(builtin_filter_ids) do
 	inventory_lists[f] = {}
 end
@@ -55,10 +57,11 @@ do
 				table.insert(inventory_lists["combat"], name)
 				nonmisc = true
 			end
-			if def.groups.brewitem then
-				table.insert(inventory_lists["brew"], name)
-				nonmisc = true
-			end
+			-- TODO: add brew
+			--if def.groups.brewitem then
+				--table.insert(inventory_lists["brew"], name)
+				--nonmisc = true
+			--end
 			if def.groups.craftitem then
 				table.insert(inventory_lists["matr"], name)
 				nonmisc = true
@@ -178,7 +181,7 @@ noffset_y = 8.12
 next_noffset("food")
 next_noffset("tools")
 next_noffset("combat")
-next_noffset("brew")
+--next_noffset("brew") -- TODO: add brew
 next_noffset("matr")
 next_noffset("inv", true)
 
@@ -197,7 +200,7 @@ hoch["default"] = ""
 hoch["food"] = "^[transformfy"
 hoch["tools"] = "^[transformfy"
 hoch["combat"] = "^[transformfy"
-hoch["brew"] = "^[transformfy"
+--hoch["brew"] = "^[transformfy" -- TODO: add brew
 hoch["matr"] = "^[transformfy"
 hoch["inv"] = "^[transformfy"
 
@@ -213,7 +216,7 @@ local function reset_menu_item_bg()
 	bg["food"] = dark_bg 
 	bg["tools"] = dark_bg 
 	bg["combat"] = dark_bg 
-	bg["brew"] = dark_bg 
+	--bg["brew"] = dark_bg -- TODO: add brew
 	bg["matr"] = dark_bg 
 	bg["inv"] = dark_bg 
 	bg["default"] = dark_bg
@@ -380,8 +383,9 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 			"tooltip[tools;Tools]"..
 			tab(name, "combat") ..
 			"tooltip[combat;Combat]"..
-			tab(name, "brew") ..
-			"tooltip[brew;Brewing]"..
+			-- TODO: Add brew
+			--tab(name, "brew") ..
+			--"tooltip[brew;Brewing]"..
 			tab(name, "matr") ..
 			"tooltip[matr;Materials]"..
 			tab(name, "inv") ..
@@ -450,10 +454,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if players[name].page == "combat" then return end
 		set_inv_page("combat",player)
 		page = "combat"
+	--[[ TODO: add brew
 	elseif fields.brew then
 		if players[name].page == "brew" then return end
 		set_inv_page("brew",player)
 		page = "brew"
+	]]
 	elseif fields.matr then
 		if players[name].page == "matr" then return end
 		set_inv_page("matr",player)

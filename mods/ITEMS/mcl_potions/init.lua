@@ -1,11 +1,12 @@
-local brewhelp = "This item currently has no purpose."
+local brewhelp = "Put this item in an item frame for decoration. It's useless otherwise."
 
 minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 	description = "Fermented Spider Eye",
 	_doc_items_longdesc = brewhelp,
 	wield_image = "mcl_potions_spider_eye_fermented.png",
 	inventory_image = "mcl_potions_spider_eye_fermented.png",
-	groups = { brewitem = 1 },
+	-- TODO: Reveal item when it's actually useful
+	groups = { brewitem = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1 },
 	stack_max = 64,
 })
 
@@ -218,7 +219,8 @@ minetest.register_craftitem("mcl_potions:potion_awkward", {
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
-	groups = {brewitem=1, food=3, can_eat_when_full=1},
+	-- TODO: Reveal item when it's actually useful
+	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=1},
 	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
@@ -229,7 +231,8 @@ minetest.register_craftitem("mcl_potions:potion_mundane", {
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
-	groups = {brewitem=1, food=3, can_eat_when_full=1},
+	-- TODO: Reveal item when it's actually useful
+	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=1 },
 	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
@@ -240,16 +243,18 @@ minetest.register_craftitem("mcl_potions:potion_thick", {
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
-	groups = {brewitem=1, food=3, can_eat_when_full=1},
+	-- TODO: Reveal item when it's actually useful
+	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=1 },
 	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
 
 minetest.register_craftitem("mcl_potions:speckled_melon", {
 	description = "Glistering Melon",
-	_doc_items_longdesc = brewhelp,
+	_doc_items_longdesc = "This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.",
 	stack_max = 64,
-	groups = { brewitem = 1 },
+	-- TODO: Reveal item when it's actually useful
+	groups = { brewitem = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1 },
 	inventory_image = "mcl_potions_melon_speckled.png",
 })
 
@@ -267,6 +272,7 @@ minetest.register_craftitem("mcl_potions:dragon_breath", {
 	_doc_items_longdesc = brewhelp,
 	wield_image = "mcl_potions_dragon_breath.png",
 	inventory_image = "mcl_potions_dragon_breath.png",
-	groups = { brewitem = 1 },
+	-- TODO: Reveal item when it's actually useful
+	groups = { brewitem = 1, not_in_creative_inventory = 1 },
 	stack_max = 64,
 })

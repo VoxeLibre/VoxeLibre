@@ -43,7 +43,10 @@ mobs:register_mob("mobs_mc:ghast", {
 		chance = 1,
 		min = 0,
 		max = 2,},
-		{name = mobs_mc.items.ghast_tear,
+		-- TODO: drop tear when it's useful
+		-- ghast tear replaced with gunpowder
+		--{name = mobs_mc.items.ghast_tear,
+		{name = mobs_mc.items.gunpowder,
 		chance = 1,
 		min = 0,
 		max = 1,},

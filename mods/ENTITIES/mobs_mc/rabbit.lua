@@ -34,7 +34,8 @@ local rabbit = {
 	drops = {
 		{name = mobs_mc.items.rabbit_raw, chance = 1, min = 0, max = 1},
 		{name = mobs_mc.items.rabbit_hide, chance = 1, min = 0, max = 1},
-		{name = mobs_mc.items.rabbit_foot, chance = 10, min = 1, max = 1},
+		-- TODO: Drop rabbit's foot when it's useful
+		--{name = mobs_mc.items.rabbit_foot, chance = 10, min = 1, max = 1},
 	},
 	water_damage = 1,
 	lava_damage = 4,
