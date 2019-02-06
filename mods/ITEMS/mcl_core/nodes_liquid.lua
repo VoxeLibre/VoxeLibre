@@ -37,7 +37,7 @@ minetest.register_node("mcl_core:water_flowing", {
 	liquid_alternative_source = "mcl_core:water_source",
 	liquid_viscosity = WATER_VISC,
 	liquid_range = 7,
-	post_effect_color = {a=240, r=0x03, g=0x3C, b=0x5C},
+	post_effect_color = {a=209, r=0x03, g=0x3C, b=0x5C},
 	groups = { water=3, liquid=3, puts_out_fire=1, not_in_creative_inventory=1, freezes=1, melt_around=1, dig_by_piston=1},
 	_mcl_blast_resistance = 500,
 	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
@@ -80,7 +80,7 @@ Water interacts with lava in various ways:
 	liquid_alternative_source = "mcl_core:water_source",
 	liquid_viscosity = WATER_VISC,
 	liquid_range = 7,
-	post_effect_color = {a=240, r=0x03, g=0x3C, b=0x5C},
+	post_effect_color = {a=209, r=0x03, g=0x3C, b=0x5C},
 	stack_max = 64,
 	groups = { water=3, liquid=3, puts_out_fire=1, freezes=1, not_in_creative_inventory=1, dig_by_piston=1},
 	_mcl_blast_resistance = 500,
