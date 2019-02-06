@@ -98,6 +98,15 @@ function tsm_railcorridors.get_treasures(pr)
 			{ itemstring = "mcl_minecarts:detector_rail", weight = 5, amount_min = 1, amount_max = 4 },
 			{ itemstring = "mcl_minecarts:golden_rail", weight = 5, amount_min = 1, amount_max = 4 },
 		}
+	},
+	-- non-MC loot: 50% chance to add a minecart, offered as alternative to spawning minecarts on rails.
+	-- TODO: Remove this when minecarts spawn on rails.
+	{
+		stacks_min = 0,
+		stacks_max = 1,
+		items = {
+			{ itemstring = "mcl_minecarts:minecart", weight = 1 },
+		}
 	}
 	}
 

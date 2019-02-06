@@ -68,7 +68,8 @@ end
 -- Probability for every part of a corridor to contain a cart
 -- Disabled because cart spawning creates error message spam:
 -- “m_static_exists=true but static data doesn't actually exist in (x,y,z)
--- TODO: Set back to 0.05 if this is fixedd.
+-- TODO: Set back to 0.05 when this is fixed.
+-- TODO: Remove minecarts from loot table when minecarts spawn on rails.
 local probability_cart = P(0)
 --[[
 setting = tonumber(minetest.settings:get("tsm_railcorridors_probability_cart"))
