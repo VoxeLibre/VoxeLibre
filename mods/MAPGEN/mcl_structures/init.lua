@@ -59,18 +59,138 @@ mcl_structures.generate_desert_well = function(pos)
 	return minetest.place_schematic(newpos, path, "0", nil, true)
 end
 
+mcl_structures.generate_igloo = function(pos)
+	-- TODO: Check if we're allowed to destroy nodes
+	-- FIXME: Some nodes (water, ice) don't get overwritten by ladder
+	-- FIXME: Nodes at Y=0 don't get overwritten by ladder
+	-- TODO: Check if basement generation would not be too obvious
+	-- TODO: Generate basement with 50% chance only
+	local success, rotation = mcl_structures.generate_igloo_top(pos)
+	if success then
+		local buffer = pos.y - (mcl_vars.mg_bedrock_overworld_max + 1)
+		if buffer <= 19 then
+			return
+		end
+		local depth = math.random(19, buffer)
+		local bpos = {x=pos.x, y=pos.y-depth, z=pos.z}
+		-- trapdoor position
+		local tpos
+		local dir, tdir
+		if rotation == "0" then
+			dir = {x=-1, y=0, z=0}
+			tdir = {x=1, y=0, z=0}
+			tpos = {x=pos.x+7, y=pos.y-1, z=pos.z+3}
+		elseif rotation == "90" then
+			dir = {x=0, y=0, z=-1}
+			tdir = {x=0, y=0, z=-1}
+			tpos = {x=pos.x+3, y=pos.y-1, z=pos.z+1}
+		elseif rotation == "180" then
+			dir = {x=1, y=0, z=0}
+			tdir = {x=-1, y=0, z=0}
+			tpos = {x=pos.x+1, y=pos.y-1, z=pos.z+3}
+		elseif rotation == "270" then
+			dir = {x=0, y=0, z=1}
+			tdir = {x=0, y=0, z=1}
+			tpos = {x=pos.x+3, y=pos.y-1, z=pos.z+7}
+		else
+			return success
+		end
+		-- TODO: more reliable param2
+		minetest.set_node(tpos, {name="mcl_doors:trapdoor", param2=20+minetest.dir_to_facedir(dir)})
+		local set_brick = function(pos)
+			local c = math.random(1, 3) -- cracked chance
+			local m = math.random(1, 10) -- chance for monster egg
+			local brick
+			if m == 1 then
+				if c == 1 then
+					brick = "mcl_monster_eggs:monster_egg_stonebrickcracked"
+				else
+					brick = "mcl_monster_eggs:monster_egg_stonebrick"
+				end
+			else
+				if c == 1 then
+					brick = "mcl_core:stonebrickcracked"
+				else
+					brick = "mcl_core:stonebrick"
+				end
+			end
+			minetest.set_node(pos, {name=brick})
+		end
+		local ladder_param2 = minetest.dir_to_wallmounted(tdir)
+		for y=1, depth-5 do
+			set_brick({x=tpos.x-1,y=tpos.y-y,z=tpos.z  })
+			set_brick({x=tpos.x+1,y=tpos.y-y,z=tpos.z  })
+			set_brick({x=tpos.x  ,y=tpos.y-y,z=tpos.z-1})
+			set_brick({x=tpos.x  ,y=tpos.y-y,z=tpos.z+1})
+			minetest.set_node({x=tpos.x,y=tpos.y-y,z=tpos.z}, {name="mcl_core:ladder", param2=ladder_param2})
+		end
+		mcl_structures.generate_igloo_basement(bpos, rotation)
+	end
+	return success
+end
+
 mcl_structures.generate_igloo_top = function(pos)
 	-- FIXME: This spawns bookshelf instead of furnace. Fix this!
 	-- Furnace does ot work atm because apparently meta is not set. :-(
 	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_igloo_top.mts"
-	return minetest.place_schematic(newpos, path, "random", nil, true)
+	local rotation = tostring(math.random(0,3)*90)
+	return minetest.place_schematic(newpos, path, rotation, nil, true), rotation
 end
 
 mcl_structures.generate_igloo_basement = function(pos, orientation)
 	-- TODO: Add brewing stand
+	-- TODO: Spawn villager and zombie villager
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_igloo_basement.mts"
-	return minetest.place_schematic(pos, path, orientation, nil, true)
+
+	local success = minetest.place_schematic(pos, path, orientation, nil, true)
+	if success then
+		local chest_offset
+		if orientation == "0" then
+			chest_offset = {x=5, y=1, z=5}
+		elseif orientation == "90" then
+			chest_offset = {x=5, y=1, z=3}
+		elseif orientation == "180" then
+			chest_offset = {x=3, y=1, z=1}
+		elseif orientation == "270" then
+			chest_offset = {x=1, y=1, z=5}
+		else
+			return success
+		end
+		-- FIXME: Use better seeding
+		local pr = PseudoRandom(math.random(0, 4294967295))
+		local size = {x=9,y=5,z=7}
+		local lootitems = mcl_loot.get_multi_loot({
+		{
+			stacks_min = 1,
+			stacks_max = 1,
+			items = {
+				{ itemstring = "mcl_core:apple_gold", weight = 1 },
+			}
+		},
+		{
+			stacks_min = 2,
+			stacks_max = 8,
+			items = {
+				{ itemstring = "mcl_core:coal_lump", weight = 15, amount_min = 1, amount_max = 4 },
+				{ itemstring = "mcl_core:apple", weight = 15, amount_min = 1, amount_max = 3 },
+				{ itemstring = "mcl_farming:wheat_item", weight = 10, amount_min = 2, amount_max = 3 },
+				{ itemstring = "mcl_core:gold_nugget", weight = 10, amount_min = 1, amount_max = 3 },
+				{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10 },
+				{ itemstring = "mcl_tools:axe_stone", weight = 2 },
+				{ itemstring = "mcl_core:emerald", weight = 1 },
+			}
+		}}, pr)
+
+		local chest_pos = vector.add(pos, chest_offset)
+		local meta = minetest.get_meta(chest_pos)
+		local inv = meta:get_inventory()
+		inv:set_size("main", 9*3)
+		for i=1, #lootitems do
+			inv:add_item("main", lootitems[i])
+		end
+	end
+	return success
 end
 
 mcl_structures.generate_boulder = function(pos)
