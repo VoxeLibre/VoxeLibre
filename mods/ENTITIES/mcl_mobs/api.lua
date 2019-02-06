@@ -256,8 +256,7 @@ local line_of_sight = function(self, pos1, pos2, stepsize)
 	-- It continues to advance in the line of sight in search of a real
 	-- obstruction which counts as 'normal' nodebox.
 	while minetest.registered_nodes[nn]
-	and (minetest.registered_nodes[nn].walkable == false
-	or minetest.registered_nodes[nn].drawtype == "nodebox") do
+	and minetest.registered_nodes[nn].walkable == false do
 
 		-- Check if you can still move forward
 		if td < ad + stepsize then
