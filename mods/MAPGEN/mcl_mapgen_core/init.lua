@@ -1736,8 +1736,8 @@ minetest.register_on_generated(function(minp, maxp, seed)
 
 		-- Big lava seas by replacing air below a certain height
 		if mcl_vars.mg_lava then
-			lvm_used = set_layers(c_lava, c_air, mcl_vars.mg_overworld_min, mcl_vars.mg_lava_overworld_max, minp, maxp, lvm_used)
-			lvm_used = set_layers(c_nether_lava, c_air, mcl_vars.mg_nether_min, mcl_vars.mg_lava_nether_max, minp, maxp, lvm_used)
+			lvm_used = set_layers(c_lava, c_air, mcl_vars.mg_overworld_min, mcl_vars.mg_lava_overworld_max, emin, emax, lvm_used)
+			lvm_used = set_layers(c_nether_lava, c_air, mcl_vars.mg_nether_min, mcl_vars.mg_lava_nether_max, emin, emax, lvm_used)
 		end
 
 		-- Clay, vines, cocoas
@@ -1797,12 +1797,12 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		-- Nether block fixes:
 		-- * Replace water with Nether lava.
 		-- * Replace stone, sand dirt in v6 so the Nether works in v6.
-		elseif minp.y <= mcl_vars.mg_nether_max and maxp.y >= mcl_vars.mg_nether_min then
+		elseif emin.y <= mcl_vars.mg_nether_max and emax.y >= mcl_vars.mg_nether_min then
 			local nodes
 			if mg_name == "v6" then
-				nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
+				nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
 			else
-				nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:water_source"})
+				nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source"})
 			end
 			for n=1, #nodes do
 				local p_pos = area:index(nodes[n].x, nodes[n].y, nodes[n].z)
@@ -1822,12 +1822,12 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		-- * Replace water with end stone or air (depending on height).
 		-- * Remove stone, sand, dirt in v6 so our End map generator works in v6.
 		-- * Generate spawn platform (End portal destination)
-		elseif minp.y <= mcl_vars.mg_end_max and maxp.y >= mcl_vars.mg_end_min then
+		elseif emin.y <= mcl_vars.mg_end_max and emax.y >= mcl_vars.mg_end_min then
 			local nodes
 			if mg_name == "v6" then
-				nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
+				nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source", "mcl_core:stone", "mcl_core:sand", "mcl_core:dirt"})
 			else
-				nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:water_source"})
+				nodes = minetest.find_nodes_in_area(emin, emax, {"mcl_core:water_source"})
 			end
 			for n=1, #nodes do
 				local y = nodes[n].y
