@@ -805,6 +805,22 @@ local do_jump = function(self)
 			self.facing_fence = true
 		end
 
+		-- if we jumped against a block/wall 4 times then turn
+		if self.object:get_velocity().x ~= 0
+		and self.object:get_velocity().z ~= 0 then
+
+			self.jump_count = (self.jump_count or 0) + 1
+
+			if self.jump_count == 4 then
+
+				local yaw = self.object:get_yaw() or 0
+
+				yaw = set_yaw(self, yaw + 1.35, 8)
+
+				self.jump_count = 0
+			end
+		end
+
 		return true
 	end
 
