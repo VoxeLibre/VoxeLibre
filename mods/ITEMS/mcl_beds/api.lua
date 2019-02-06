@@ -63,7 +63,7 @@ function mcl_beds.register_bed(name, def)
 		paramtype2 = "facedir",
 		is_ground_content = false,
 		stack_max = 1,
-		groups = {handy=1, flammable = 3, bed = 1, dig_by_piston=1, bouncy=66, fall_damage_add_percent=-50},
+		groups = {handy=1, flammable = 3, bed = 1, dig_by_piston=1, bouncy=66, fall_damage_add_percent=-50, deco_block = 1},
 		_mcl_hardness = 0.2,
 		_mcl_blast_resistance = 1,
 		sounds = def.sounds or default_sounds,
@@ -184,7 +184,7 @@ function mcl_beds.register_bed(name, def)
 		paramtype2 = "facedir",
 		is_ground_content = false,
 		-- FIXME: Should be bouncy=66, but this would be a higher bounciness than slime blocks!
-		groups = {handy = 1, flammable = 3, bed = 2, dig_by_piston=1, bouncy=33, fall_damage_add_percent=-50},
+		groups = {handy = 1, flammable = 3, bed = 2, dig_by_piston=1, bouncy=33, fall_damage_add_percent=-50, not_in_creative_inventory = 1},
 		_mcl_hardness = 0.2,
 		_mcl_blast_resistance = 1,
 		sounds = def.sounds or default_sounds,

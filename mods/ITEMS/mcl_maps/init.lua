@@ -34,6 +34,7 @@ minetest.register_craftitem("mcl_maps:filled_map", {
 	description = "Map",
 	_doc_items_longdesc = "Maps show your surroundings as you explore the world. They can even show you the world like a radar. MAGIC!\nNote: Maps are subject to change in future versions of MineClone 2.",
 	_doc_items_usagehelp = "Hold the map in any of the hotbar slots. This allows you to access the minimap by pressing the minimap key ([F9] by default).\nIn Creative Mode, you don't need this item; the minimap is always available.",
+	groups = { tool = 1 },
 	inventory_image = "mcl_maps_map_filled.png^(mcl_maps_map_filled_markings.png^[colorize:#000000)",
 	stack_max = 1,
 })

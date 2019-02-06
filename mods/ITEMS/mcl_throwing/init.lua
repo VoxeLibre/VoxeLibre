@@ -295,6 +295,7 @@ minetest.register_craftitem("mcl_throwing:snowball", {
 	_doc_items_usagehelp = how_to_throw,
 	inventory_image = "mcl_throwing_snowball.png",
 	stack_max = 16,
+	groups = { weapon_ranged = 1 },
 	on_use = throw_function("mcl_throwing:snowball_entity"),
 	_on_dispense = dispense_function,
 })

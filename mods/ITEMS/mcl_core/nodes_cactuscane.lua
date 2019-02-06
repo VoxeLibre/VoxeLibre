@@ -71,7 +71,7 @@ minetest.register_node("mcl_core:reeds", {
 		},
 	},
 	stack_max = 64,
-	groups = {dig_immediate=3, craftitem=1, plant=1, non_mycelium_plant=1, dig_by_piston=1},
+	groups = {dig_immediate=3, craftitem=1, deco_block=1, plant=1, non_mycelium_plant=1, dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	node_placement_prediction = "",
 	on_place = mcl_util.generate_on_place_plant_function(function(place_pos, place_node)
