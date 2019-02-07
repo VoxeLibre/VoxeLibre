@@ -2,21 +2,26 @@ mcl_spawn = {}
 
 -- Returns current spawn position of player.
 -- If player is nil or not a player, the default spawn point is returned.
+-- The second return value is true if spawn point is player-chosen,
+-- false otherwise.
 mcl_spawn.get_spawn_pos = function(player)
-	local spawn
+	local spawn, custom_spawn
 	if player ~= nil and player:is_player() then
 		spawn = minetest.string_to_pos(player:get_attribute("mcl_beds:spawn"))
+		custom_spawn = true
 	end
 	if not spawn or spawn == "" then
 		spawn = minetest.setting_get_pos("static_spawnpoint")
+		custom_spawn = false
 	end
 	if not spawn then
 		spawn = { x=0, y=0, z=0 }
 		if mg_name == "flat" then
 			spawn.y = mcl_vars.mg_bedrock_overworld_max + 5
 		end
+		custom_spawn = false
 	end
-	return spawn
+	return spawn, custom_spawn
 end
 
 -- Sets the player's spawn position to pos.
@@ -31,8 +36,8 @@ end
 
 -- Respawn player at specified respawn position
 minetest.register_on_respawnplayer(function(player)
-	local pos = mcl_spawn.get_spawn_pos(player)
-	if pos then
+	local pos, custom_spawn = mcl_spawn.get_spawn_pos(player)
+	if custom_spawn then
 		-- Check if bed is still there
 		-- and the spawning position is free of solid or damaging blocks.
 		local node_bed = minetest.get_node(pos)
