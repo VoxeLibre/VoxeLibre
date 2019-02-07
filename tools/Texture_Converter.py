@@ -375,6 +375,11 @@ def convert_textures():
 			colorize(GRASS, tex_dir+"/blocks/grass_top.png", o[0], str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_"+o[2]+".png")
 			colorize_alpha(GRASS, tex_dir+"/blocks/grass_side_overlay.png", o[0], str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_"+o[2]+"_side.png")
 
+		# Create description file
+		description = "Automatically converted Minecraft texture pack from MineClone 2 Texture Converter.\nSize: "+str(PXSIZE)+"px×"+str(PXSIZE)+"px"
+		description_file = open(target_dir("/") + "/description.txt", "w")
+		description_file.write(description)
+		description_file.close()
 
 		print("Textures conversion COMPLETE!")
 		if failed_conversions > 0:
