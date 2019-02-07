@@ -14,7 +14,6 @@ import shutil, csv, os, tempfile, sys, getopt
 home = os.environ["HOME"]
 mineclone2_path = home + "/.minetest/games/mineclone2"
 working_dir = os.getcwd()
-output_dir_name = "New_MineClone_2_Texture_Pack"
 appname = "Texture_Converter.py"
 
 ### SETTINGS ###
@@ -99,6 +98,16 @@ For the full help, use:
 ### END OF SETTINGS ###
 
 tex_dir = base_dir + "/assets/minecraft/textures"
+
+# Get texture pack name (from directory name)
+bdir_split = base_dir.split("/")
+output_dir_name = bdir_split[-1]
+if len(output_dir_name) == 0:
+	if len(bdir_split) >= 2:
+		output_dir_name = base_dir.split("/")[-2]
+	else:
+		# Fallback
+		output_dir_name = "New_MineClone_2_Texture_Pack"
 
 # FUNCTION DEFINITIONS
 def colorize(colormap, source, colormap_pixel, texture_size, destination):
@@ -375,11 +384,17 @@ def convert_textures():
 			colorize(GRASS, tex_dir+"/blocks/grass_top.png", o[0], str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_"+o[2]+".png")
 			colorize_alpha(GRASS, tex_dir+"/blocks/grass_side_overlay.png", o[0], str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_"+o[2]+"_side.png")
 
-		# Create description file
-		description = "Automatically converted Minecraft texture pack from MineClone 2 Texture Converter.\nSize: "+str(PXSIZE)+"px×"+str(PXSIZE)+"px"
-		description_file = open(target_dir("/") + "/description.txt", "w")
-		description_file.write(description)
-		description_file.close()
+		# Metadata
+		if make_texture_pack:
+			# Create description file
+			description = "Texture pack for MineClone 2. Automatically converted from a Minecraft resource pack by the MineClone 2 Texture Converter. Size: "+str(PXSIZE)+"×"+str(PXSIZE)
+			description_file = open(target_dir("/") + "/description.txt", "w")
+			description_file.write(description)
+			description_file.close()
+
+			# Create preview image (screenshot.png)
+			os.system("convert -size 300x200 canvas:transparent "+target_dir("/") + "/screenshot.png")
+			os.system("composite "+base_dir+"/pack.png "+target_dir("/") + "/screenshot.png -gravity center "+target_dir("/") + "/screenshot.png")
 
 		print("Textures conversion COMPLETE!")
 		if failed_conversions > 0:
