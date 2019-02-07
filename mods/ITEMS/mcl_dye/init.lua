@@ -64,27 +64,27 @@ local dyelocal = {}
 
 -- This collection of colors is partly a historic thing, partly something else.
 dyelocal.dyes = {
-	{"white",      "Bone Meal",     {dye=1, craftitem=1, basecolor_white=1,   excolor_white=1,     unicolor_white=1}},
-	{"grey",       "Light Grey Dye",      {dye=1, craftitem=1, basecolor_grey=1,    excolor_grey=1,      unicolor_grey=1}},
-	{"dark_grey",  "Grey Dye", {dye=1, craftitem=1, basecolor_grey=1,    excolor_darkgrey=1,  unicolor_darkgrey=1}},
-	{"black",      "Ink Sac",     {dye=1, craftitem=1, basecolor_black=1,   excolor_black=1,     unicolor_black=1}},
-	{"violet",     "Purple Dye",    {dye=1, craftitem=1, basecolor_magenta=1, excolor_violet=1,    unicolor_violet=1}},
-	{"blue",       "Lapis Lazuli",      {dye=1, craftitem=1, basecolor_blue=1,    excolor_blue=1,      unicolor_blue=1}},
-	{"lightblue",  "Light Blue Dye",      {dye=1, craftitem=1, basecolor_blue=1,    excolor_blue=1,   unicolor_light_blue=1}},
-	{"cyan",       "Cyan Dye",      {dye=1, craftitem=1, basecolor_cyan=1,    excolor_cyan=1,      unicolor_cyan=1}},
-	{"dark_green", "Cactus Green",{dye=1, craftitem=1, basecolor_green=1,   excolor_green=1,     unicolor_dark_green=1}},
-	{"green",      "Lime Dye",     {dye=1, craftitem=1, basecolor_green=1,   excolor_green=1,     unicolor_green=1}},
-	{"yellow",     "Dandelion Yellow",    {dye=1, craftitem=1, basecolor_yellow=1,  excolor_yellow=1,    unicolor_yellow=1}},
-	{"brown",      "Cocoa Beans",     {dye=1, craftitem=1, basecolor_brown=1,  excolor_orange=1,    unicolor_dark_orange=1}},
-	{"orange",     "Orange Dye",    {dye=1, craftitem=1, basecolor_orange=1,  excolor_orange=1,    unicolor_orange=1}},
-	{"red",        "Rose Red",       {dye=1, craftitem=1, basecolor_red=1,     excolor_red=1,       unicolor_red=1}},
-	{"magenta",    "Magenta Dye",   {dye=1, craftitem=1, basecolor_magenta=1, excolor_red_violet=1,unicolor_red_violet=1}},
-	{"pink",       "Pink Dye",      {dye=1, craftitem=1, basecolor_red=1,     excolor_red=1,       unicolor_light_red=1}},
+	{"white", "mcl_dye_white",	    "Bone Meal",     {dye=1, craftitem=1, basecolor_white=1,   excolor_white=1,     unicolor_white=1}},
+	{"grey", "dye_grey",      	    "Light Grey Dye",      {dye=1, craftitem=1, basecolor_grey=1,    excolor_grey=1,      unicolor_grey=1}},
+	{"dark_grey", "dye_dark_grey", 	    "Grey Dye", {dye=1, craftitem=1, basecolor_grey=1,    excolor_darkgrey=1,  unicolor_darkgrey=1}},
+	{"black", "mcl_dye_black",     	    "Ink Sac",     {dye=1, craftitem=1, basecolor_black=1,   excolor_black=1,     unicolor_black=1}},
+	{"violet", "dye_violet",    	    "Purple Dye",    {dye=1, craftitem=1, basecolor_magenta=1, excolor_violet=1,    unicolor_violet=1}},
+	{"blue", "mcl_dye_blue",      	    "Lapis Lazuli",      {dye=1, craftitem=1, basecolor_blue=1,    excolor_blue=1,      unicolor_blue=1}},
+	{"lightblue", "mcl_dye_light_blue", "Light Blue Dye",      {dye=1, craftitem=1, basecolor_blue=1,    excolor_blue=1,   unicolor_light_blue=1}},
+	{"cyan", "dye_cyan",      	    "Cyan Dye",      {dye=1, craftitem=1, basecolor_cyan=1,    excolor_cyan=1,      unicolor_cyan=1}},
+	{"dark_green", "dye_dark_green",    "Cactus Green",{dye=1, craftitem=1, basecolor_green=1,   excolor_green=1,     unicolor_dark_green=1}},
+	{"green", "mcl_dye_lime",           "Lime Dye",     {dye=1, craftitem=1, basecolor_green=1,   excolor_green=1,     unicolor_green=1}},
+	{"yellow", "dye_yellow",            "Dandelion Yellow",    {dye=1, craftitem=1, basecolor_yellow=1,  excolor_yellow=1,    unicolor_yellow=1}},
+	{"brown", "mcl_dye_brown",          "Cocoa Beans",     {dye=1, craftitem=1, basecolor_brown=1,  excolor_orange=1,    unicolor_dark_orange=1}},
+	{"orange", "dye_orange",            "Orange Dye",    {dye=1, craftitem=1, basecolor_orange=1,  excolor_orange=1,    unicolor_orange=1}},
+	{"red", "dye_red",                  "Rose Red",       {dye=1, craftitem=1, basecolor_red=1,     excolor_red=1,       unicolor_red=1}},
+	{"magenta", "dye_magenta",          "Magenta Dye",   {dye=1, craftitem=1, basecolor_magenta=1, excolor_red_violet=1,unicolor_red_violet=1}},
+	{"pink", "dye_pink",                "Pink Dye",      {dye=1, craftitem=1, basecolor_red=1,     excolor_red=1,       unicolor_light_red=1}},
 }
 
 dyelocal.unicolor_to_dye_id = {}
 for d=1, #dyelocal.dyes do
-	for k, _ in pairs(dyelocal.dyes[d][3]) do
+	for k, _ in pairs(dyelocal.dyes[d][4]) do
 		if string.sub(k, 1, 9) == "unicolor_" then
 			dyelocal.unicolor_to_dye_id[k] = dyelocal.dyes[d][1]
 		end
@@ -101,10 +101,11 @@ for _, row in ipairs(dyelocal.dyes) do
 	local name = row[1]
 	-- White and brown dyes are defined explicitly below
 	if name ~= "white" and name ~= "brown" then
-		local description = row[2]
-		local groups = row[3]
+		local img = row[2]
+		local description = row[3]
+		local groups = row[4]
 		local item_name = "mcl_dye:"..name
-		local item_image = "dye_"..name..".png"
+		local item_image = img..".png"
 		minetest.register_craftitem(item_name, {
 			inventory_image = item_image,
 			description = description,
@@ -293,12 +294,12 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 end
 
 minetest.register_craftitem("mcl_dye:white", {
-	inventory_image = "dye_white.png",
+	inventory_image = "mcl_dye_white.png",
 	description = "Bone Meal",
 	_doc_items_longdesc = "Bone meal is a white dye and also useful as a fertilizer to speed up the growth of many plants.",
 	_doc_items_usagehelp = "Rightclick a sheep to turn its wool white. Rightclick a plant to speed up its growth. Note that not all plants can be fertilized like this. When you rightclick a grass block, tall grass and flowers will grow all over the place.",
 	stack_max = 64,
-	groups = dyelocal.dyes[1][3],
+	groups = dyelocal.dyes[1][4],
 	on_place = function(itemstack, user, pointed_thing) 
 		-- Use pointed node's on_rightclick function first, if present
 		local node = minetest.get_node(pointed_thing.under)
@@ -331,12 +332,12 @@ minetest.register_craftitem("mcl_dye:white", {
 })
 
 minetest.register_craftitem("mcl_dye:brown", {
-	inventory_image = "dye_brown.png",
+	inventory_image = "mcl_dye_brown.png",
 	_doc_items_longdesc = "Cocoa beans are a brown dye and can be used to plant cocoas.",
 	_doc_items_usagehelp = "Rightclick a sheep to turn its wool brown. Rightclick on the side of a jungle tree trunk (Jungle Wood) to plant a young cocoa.",
 	description = "Cocoa Beans",
 	stack_max = 64,
-	groups = dyelocal.dyes[12][3],
+	groups = dyelocal.dyes[12][4],
 	on_place = function(itemstack, placer, pointed_thing)
 		return mcl_cocoas.place(itemstack, placer, pointed_thing, "mcl_cocoas:cocoa_1")
 	end,
