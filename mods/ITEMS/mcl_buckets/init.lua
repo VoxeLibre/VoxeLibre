@@ -327,7 +327,10 @@ if mod_mcl_core then
 		"Right-click on any block to empty the bucket and put a water source on this spot.",
 		function(pos, placer)
 			-- Check protection
-			local placer_name = placer:get_player_name()
+			local placer_name = ""
+			if placer ~= nil then
+				placer_name = placer:get_player_name()
+			end
 			if minetest.is_protected(pos, placer_name) then
 				minetest.record_protection_violation(pos, placer_name)
 				return false
@@ -366,7 +369,10 @@ if mod_mclx_core then
 		"Right-click on any block to empty the bucket and put a river water source on this spot.",
 		function(pos, placer)
 			-- Check protection
-			local placer_name = placer:get_player_name()
+			local placer_name = ""
+			if placer ~= nil then
+				placer_name = placer:get_player_name()
+			end
 			if minetest.is_protected(pos, placer_name) then
 				minetest.record_protection_violation(pos, placer_name)
 				return false
