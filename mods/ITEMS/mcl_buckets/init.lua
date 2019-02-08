@@ -166,10 +166,6 @@ function mcl_buckets.register_liquid(source_place, source_take, itemname, invent
 					-- Fail placement of liquid
 				elseif buildable then
 					-- buildable; replace the node
-					if minetest.is_protected(droppos, "") then
-						minetest.record_protection_violation(droppos, "")
-						return stack
-					end
 					local node_place
 					if type(source_place) == "function" then
 						node_place = source_place(droppos)
@@ -267,11 +263,6 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 		end
 	end,
 	_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
-		if minetest.is_protected(droppos, "") then
-			minetest.record_protection_violation(droppos, "")
-			return stack
-		end
-
 		-- Fill empty bucket with liquid or drop bucket if no liquid
 		local collect_liquid = false
 
@@ -331,7 +322,7 @@ if mod_mcl_core then
 			if placer ~= nil then
 				placer_name = placer:get_player_name()
 			end
-			if minetest.is_protected(pos, placer_name) then
+			if placer and minetest.is_protected(pos, placer_name) then
 				minetest.record_protection_violation(pos, placer_name)
 				return false
 			end
@@ -373,7 +364,7 @@ if mod_mclx_core then
 			if placer ~= nil then
 				placer_name = placer:get_player_name()
 			end
-			if minetest.is_protected(pos, placer_name) then
+			if placer and minetest.is_protected(pos, placer_name) then
 				minetest.record_protection_violation(pos, placer_name)
 				return false
 			end
