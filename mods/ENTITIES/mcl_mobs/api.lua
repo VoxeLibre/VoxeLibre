@@ -3577,6 +3577,10 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 				local name = placer:get_player_name()
 				local privs = minetest.get_player_privs(name)
 				if mod_mobspawners and under.name == "mcl_mobspawners:spawner" then
+					if minetest.is_protected(pointed_thing.under, name) then
+						minetest.record_protection_violation(pointed_thing.under, name)
+						return itemstack
+					end
 					if not privs.maphack then
 						minetest.chat_send_player(name, "You need the “maphack” privilege to change the mob spawner.")
 						return itemstack

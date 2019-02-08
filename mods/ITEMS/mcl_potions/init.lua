@@ -46,27 +46,34 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 				get_water = true
 				river_water = node.name == "mclx_core:river_water_source"
 			-- Or reduce water level of cauldron by 1
-			elseif node.name == "mcl_cauldrons:cauldron_3" then
-				get_water = true
-				minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_2"})
-			elseif node.name == "mcl_cauldrons:cauldron_2" then
-				get_water = true
-				minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_1"})
-			elseif node.name == "mcl_cauldrons:cauldron_1" then
-				get_water = true
-				minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
-			elseif node.name == "mcl_cauldrons:cauldron_3r" then
-				get_water = true
-				river_water = true
-				minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_2r"})
-			elseif node.name == "mcl_cauldrons:cauldron_2r" then
-				get_water = true
-				river_water = true
-				minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_1r"})
-			elseif node.name == "mcl_cauldrons:cauldron_1r" then
-				get_water = true
-				river_water = true
-				minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
+			elseif string.sub(node.name, 1, 14) == "mcl_cauldrons:" then
+				local pname = placer:get_player_name()
+				if minetest.is_protected(pointed_thing.under, pname) then
+					minetest.record_protection_violation(pointed_thing.under, pname)
+					return itemstack
+				end
+				if node.name == "mcl_cauldrons:cauldron_3" then
+					get_water = true
+					minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_2"})
+				elseif node.name == "mcl_cauldrons:cauldron_2" then
+					get_water = true
+					minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_1"})
+				elseif node.name == "mcl_cauldrons:cauldron_1" then
+					get_water = true
+					minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
+				elseif node.name == "mcl_cauldrons:cauldron_3r" then
+					get_water = true
+					river_water = true
+					minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_2r"})
+				elseif node.name == "mcl_cauldrons:cauldron_2r" then
+					get_water = true
+					river_water = true
+					minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron_1r"})
+				elseif node.name == "mcl_cauldrons:cauldron_1r" then
+					get_water = true
+					river_water = true
+					minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
+				end
 			end
 			if get_water then
 				-- Replace with water bottle, if possible, otherwise
@@ -160,7 +167,12 @@ minetest.register_craftitem("mcl_potions:potion_water", {
 
 			local cauldron = fill_cauldron(node.name, "mcl_core:water_source")
 			if cauldron then
-			-- Increase water level of cauldron by 1
+				local pname = placer:get_player_name()
+				if minetest.is_protected(pointed_thing.under, pname) then
+					minetest.record_protection_violation(pointed_thing.under, pname)
+					return itemstack
+				end
+				-- Increase water level of cauldron by 1
 				minetest.set_node(pointed_thing.under, {name=cauldron})
 				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16})
 				return "mcl_potions:glass_bottle"
@@ -195,7 +207,12 @@ minetest.register_craftitem("mcl_potions:potion_river_water", {
 
 			local cauldron = fill_cauldron(node.name, "mclx_core:river_water_source")
 			if cauldron then
-			-- Increase water level of cauldron by 1
+				local pname = placer:get_player_name()
+				if minetest.is_protected(pointed_thing.under, pname) then
+					minetest.record_protection_violation(pointed_thing.under, pname)
+					return itemstack
+				end
+				-- Increase water level of cauldron by 1
 				minetest.set_node(pointed_thing.under, {name=cauldron})
 				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16})
 				return "mcl_potions:glass_bottle"

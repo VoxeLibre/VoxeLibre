@@ -257,7 +257,7 @@ minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 	on_rightclick = function (pos, node, clicker)
 		local protname = clicker:get_player_name()
 		if minetest.is_protected(pos, protname) then
-			minetest.report_protection_violation(pos, protname)
+			minetest.record_protection_violation(pos, protname)
 			return
 		end
 		if node.name=="mesecons_delayer:delayer_off_1" then
@@ -325,7 +325,7 @@ minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
 	on_rightclick = function (pos, node, clicker)
 		local protname = clicker:get_player_name()
 		if minetest.is_protected(pos, protname) then
-			minetest.report_protection_violation(pos, protname)
+			minetest.record_protection_violation(pos, protname)
 			return
 		end
 		if node.name=="mesecons_delayer:delayer_on_1" then
