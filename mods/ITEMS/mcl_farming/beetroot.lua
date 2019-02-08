@@ -94,6 +94,12 @@ minetest.register_node("mcl_farming:beetroot", {
 	walkable = false,
 	drawtype = "plantlike",
 	drop = {
+		--[[ drops 1 beetroot guaranteed.
+		drops 0-3 beetroot seeds:
+		0 seeds: 42.18%
+		1 seed:  14.06%
+		2 seeds: 18.75%
+		3 seeds: 25% ]]
 		max_items = 2,
 		items = {
 			{ items = {"mcl_farming:beetroot_item"}, rarity = 1 },
