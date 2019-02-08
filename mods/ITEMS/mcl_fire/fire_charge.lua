@@ -15,6 +15,13 @@ minetest.register_craftitem("mcl_fire:fire_charge", {
 			end
 		end
 
+		-- Check protection
+		local protname = user:get_player_name()
+		if minetest.is_protected(pointed_thing.under, protname) then
+			minetest.record_protection_violation(pointed_thing.under, protname)
+			return itemstack
+		end
+
 		-- Ignite/light fire
 		if pointed_thing.type == "node" then
 			local nodedef = minetest.registered_nodes[node.name]

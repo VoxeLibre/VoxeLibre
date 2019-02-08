@@ -15,6 +15,12 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
 			end
 		end
+		-- Check protection
+		local protname = user:get_player_name()
+		if minetest.is_protected(pointed_thing.under, protname) then
+			minetest.record_protection_violation(pointed_thing.under, protname)
+			return itemstack
+		end
 
 		local idef = itemstack:get_definition()
 		minetest.sound_play(
@@ -44,11 +50,13 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 	end,
 	_dispense_into_walkable = true,
 	_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
+		-- Ignite air
 		if dropnode.name == "air" then
 			minetest.add_node(droppos, {name="mcl_fire:fire"})
 			if not minetest.settings:get_bool("creative_mode") then
 				stack:add_wear(65535/65) -- 65 uses
 			end
+		-- Ignite TNT
 		elseif dropnode.name == "mcl_tnt:tnt" then
 			tnt.ignite(droppos)
 			if not minetest.settings:get_bool("creative_mode") then
