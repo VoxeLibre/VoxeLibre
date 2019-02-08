@@ -203,24 +203,24 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 	-- Wheat, Potato, Carrot, Pumpkin Stem, Melon Stem: Advance by 2-5 stages
 	elseif string.find(n.name, "mcl_farming:wheat_") ~= nil then
 		local stages = math.random(2, 5)
-		return mcl_farming:grow_plant("plant_wheat", pos, n, stages)
+		return mcl_farming:grow_plant("plant_wheat", pos, n, stages, true)
 	elseif string.find(n.name, "mcl_farming:potato_") ~= nil then
 		local stages = math.random(2, 5)
-		return mcl_farming:grow_plant("plant_potato", pos, n, stages)
+		return mcl_farming:grow_plant("plant_potato", pos, n, stages, true)
 	elseif string.find(n.name, "mcl_farming:carrot_") ~= nil then
 		local stages = math.random(2, 5)
-		return mcl_farming:grow_plant("plant_carrot", pos, n, stages)
+		return mcl_farming:grow_plant("plant_carrot", pos, n, stages, true)
 	elseif string.find(n.name, "mcl_farming:pumpkin_") ~= nil then
 		local stages = math.random(2, 5)
-		return mcl_farming:grow_plant("plant_pumpkin_stem", pos, n, stages)
+		return mcl_farming:grow_plant("plant_pumpkin_stem", pos, n, stages, true)
 	elseif string.find(n.name, "mcl_farming:melontige_") ~= nil then
 		local stages = math.random(2, 5)
-		return mcl_farming:grow_plant("plant_melon_stem", pos, n, stages)
+		return mcl_farming:grow_plant("plant_melon_stem", pos, n, stages, true)
 
 	elseif string.find(n.name, "mcl_farming:beetroot_") ~= nil then
 		-- Beetroot: 75% chance to advance to next stage
 		if math.random(1,100) <= 75 then
-			return mcl_farming:grow_plant("plant_beetroot", pos, n)
+			return mcl_farming:grow_plant("plant_beetroot", pos, n, 1, true)
 		end
 	elseif n.name == "mcl_cocoas:cocoa_1" or n.name == "mcl_cocoas:cocoa_2" then
 		-- Cocoa: Advance by 1 stage

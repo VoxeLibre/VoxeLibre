@@ -24,14 +24,15 @@ end
 -- pos: Position
 -- node: Node table
 -- stages: Number of stages to advance (optional, defaults to 1)
+-- ignore_light: if true, ignore light requirements for growing
 
 -- Returns true if plant has been grown by 1 or more stages.
 -- Returns false if nothing changed.
-function mcl_farming:grow_plant(identifier, pos, node, stages)
-	if not minetest.get_node_light(pos) then
+function mcl_farming:grow_plant(identifier, pos, node, stages, ignore_light)
+	if not minetest.get_node_light(pos) and not ignore_light then
 		return false
 	end
-	if minetest.get_node_light(pos) < 10 then
+	if minetest.get_node_light(pos) < 10 and not ignore_light then
 		return false
 	end
 
