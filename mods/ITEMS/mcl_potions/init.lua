@@ -76,26 +76,28 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 				end
 			end
 			if get_water then
-				-- Replace with water bottle, if possible, otherwise
-				-- place the water potion at a place where's space
-				local water_bottle
-				if river_water then
-					water_bottle = ItemStack("mcl_potions:potion_river_water")
-				else
-					water_bottle = ItemStack("mcl_potions:potion_water")
+				if minetest.settings:get_bool("creative_mode") ~= true then
+					-- Replace with water bottle, if possible, otherwise
+					-- place the water potion at a place where's space
+					local water_bottle
+					if river_water then
+						water_bottle = ItemStack("mcl_potions:potion_river_water")
+					else
+						water_bottle = ItemStack("mcl_potions:potion_water")
+					end
+					if itemstack:get_count() == 1 then
+						return water_bottle
+					else
+						local inv = placer:get_inventory()
+						if inv:room_for_item("main", water_bottle) then
+							inv:add_item("main", water_bottle)
+						else
+							minetest.add_item(placer:get_pos(), water_bottle)
+						end
+						itemstack:take_item()
+					end
 				end
 				minetest.sound_play("mcl_potions_bottle_fill", {pos=pointed_thing.under, gain=0.5, max_hear_range=16})
-				if itemstack:get_count() == 1 then
-					return water_bottle
-				else
-					local inv = placer:get_inventory()
-					if inv:room_for_item("main", water_bottle) then
-						inv:add_item("main", water_bottle)
-					else
-						minetest.add_item(placer:get_pos(), water_bottle)
-					end
-					itemstack:take_item()
-				end
 			end
 		end
 		return itemstack
@@ -175,7 +177,11 @@ minetest.register_craftitem("mcl_potions:potion_water", {
 				-- Increase water level of cauldron by 1
 				minetest.set_node(pointed_thing.under, {name=cauldron})
 				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16})
-				return "mcl_potions:glass_bottle"
+				if minetest.settings:get_bool("creative_mode") == true then
+					return itemstack
+				else
+					return "mcl_potions:glass_bottle"
+				end
 			end
 		end
 
@@ -215,7 +221,11 @@ minetest.register_craftitem("mcl_potions:potion_river_water", {
 				-- Increase water level of cauldron by 1
 				minetest.set_node(pointed_thing.under, {name=cauldron})
 				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16})
-				return "mcl_potions:glass_bottle"
+				if minetest.settings:get_bool("creative_mode") == true then
+					return itemstack
+				else
+					return "mcl_potions:glass_bottle"
+				end
 			end
 		end
 
