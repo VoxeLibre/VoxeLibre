@@ -1,5 +1,7 @@
 mcl_spawn = {}
 
+local mg_name = minetest.get_mapgen_setting("mg_name")
+
 -- Returns current spawn position of player.
 -- If player is nil or not a player, the default spawn point is returned.
 -- The second return value is true if spawn point is player-chosen,

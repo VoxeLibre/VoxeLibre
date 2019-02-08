@@ -398,14 +398,13 @@ minetest.register_node("mcl_flowers:waterlily", {
 					local idef = itemstack:get_definition()
 
 					if idef.sounds and idef.sounds.place then
-						minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
+						minetest.sound_play(idef.sounds.place, {pos=pointed_thing.above, gain=1})
 					end
 
 					if not minetest.settings:get_bool("creative_mode") then
 						itemstack:take_item()
 					end
 				else
-					minetest.chat_send_player(player_name, "Node is protected")
 					minetest.record_protection_violation(pos, player_name)
 				end
 			end
