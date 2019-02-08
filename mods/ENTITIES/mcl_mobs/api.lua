@@ -3576,11 +3576,11 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 
 				local name = placer:get_player_name()
 				local privs = minetest.get_player_privs(name)
-				if not privs.maphack then
-					minetest.chat_send_player(name, "You need the “maphack” privilege to change the mob spawner.")
-					return itemstack
-				end
 				if mod_mobspawners and under.name == "mcl_mobspawners:spawner" then
+					if not privs.maphack then
+						minetest.chat_send_player(name, "You need the “maphack” privilege to change the mob spawner.")
+						return itemstack
+					end
 					mcl_mobspawners.setup_spawner(pointed_thing.under, itemstack:get_name())
 					if not minetest.settings:get_bool("creative_mode") then
 						itemstack:take_item()
