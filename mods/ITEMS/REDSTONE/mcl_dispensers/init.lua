@@ -50,6 +50,33 @@ end
 local dispenserdef = {
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
+	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		else
+			return count
+		end
+	end,
+	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		else
+			return stack:get_count()
+		end
+	end,
+	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		else
+			return stack:get_count()
+		end
+	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)
 		local meta2 = meta

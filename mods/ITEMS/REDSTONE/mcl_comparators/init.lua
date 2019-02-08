@@ -153,7 +153,12 @@ end
 local make_rightclick_handler = function(state, mode)
 	local newnodename =
 		"mcl_comparators:comparator_"..state.."_"..flipmode(mode)
-	return function (pos, node)
+	return function (pos, node, clicker)
+		local protname = clicker:get_player_name()
+		if minetest.is_protected(pos, protname) then
+			minetest.record_protection_violation(pos, protname)
+			return
+		end
 		minetest.swap_node(pos, {name = newnodename, param2 = node.param2 })
 	end
 end

@@ -63,6 +63,33 @@ local dropperdef = {
 		end
 		meta:from_table(meta2:to_table())
 	end,
+	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		else
+			return count
+		end
+	end,
+	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		else
+			return stack:get_count()
+		end
+	end,
+	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		else
+			return stack:get_count()
+		end
+	end,
 	_mcl_blast_resistance = 17.5,
 	_mcl_hardness = 3.5,
 	mesecons = {effector = {

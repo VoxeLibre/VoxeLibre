@@ -376,6 +376,11 @@ minetest.override_item("mcl_end:ender_eye", {
 
 		-- Place eye of ender into end portal frame
 		if pointed_thing.under and node.name == "mcl_portals:end_portal_frame" then
+			local protname = user:get_player_name()
+			if minetest.is_protected(pointed_thing.under, protname) then
+				minetest.record_protection_violation(pointed_thing.under, protname)
+				return itemstack
+			end
 			minetest.set_node(pointed_thing.under, { name = "mcl_portals:end_portal_frame_eye", param2 = node.param2 })
 
 			if minetest.get_modpath("doc") then

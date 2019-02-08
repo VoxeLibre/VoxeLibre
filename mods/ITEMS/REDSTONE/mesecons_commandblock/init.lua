@@ -131,9 +131,14 @@ local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 	if not minetest.settings:get_bool("creative_mode") then
 		return
 	end
-	local privs = minetest.get_player_privs(player:get_player_name())
+	local pname = player:get_player_name()
+	if minetest.is_protected(pos, pname) then
+		minetest.record_protection_violation(pos, pname)
+		return
+	end
+	local privs = minetest.get_player_privs(pname)
 	if not privs.maphack then
-		minetest.chat_send_player(player:get_player_name(), "Access denied. You need the “maphack” privilege to edit command blocks.")
+		minetest.chat_send_player(pname, "Access denied. You need the “maphack” privilege to edit command blocks.")
 		return
 	end
 
@@ -152,7 +157,7 @@ local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 	"image_button[8,4.5;1,1;doc_button_icon_lores.png;doc;]" ..
 	"label[0,4;"..minetest.formspec_escape(commanderstr).."]" ..
 	"tooltip[doc;Help]"
-	minetest.show_formspec(player:get_player_name(), "commandblock_"..pos.x.."_"..pos.y.."_"..pos.z, formspec)
+	minetest.show_formspec(pname, "commandblock_"..pos.x.."_"..pos.y.."_"..pos.z, formspec)
 end
 
 local on_place = function(itemstack, placer, pointed_thing)

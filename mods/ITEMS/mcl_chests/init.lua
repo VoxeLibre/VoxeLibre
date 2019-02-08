@@ -15,6 +15,26 @@ local player_chest_open = function(player, pos)
 	open_chests[player:get_player_name()] = { pos = pos }
 end
 
+-- Simple protection checking functions
+local protection_check_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+	local name = player:get_player_name()
+	if minetest.is_protected(pos, name) then
+		minetest.record_protection_violation(pos, name)
+		return 0
+	else
+		return count
+	end
+end
+local protection_check_put_take = function(pos, listname, index, stack, player)
+	local name = player:get_player_name()
+	if minetest.is_protected(pos, name) then
+		minetest.record_protection_violation(pos, name)
+		return 0
+	else
+		return stack:get_count()
+	end
+end
+
 local trapped_chest_mesecons_rules = mesecon.rules.pplate
 
 -- To be called if a player closed a chest
@@ -122,6 +142,9 @@ minetest.register_node("mcl_chests:"..basename, {
 		end
 		meta:from_table(meta2:to_table())
 	end,
+	allow_metadata_inventory_move = protection_check_move,
+	allow_metadata_inventory_take = protection_check_put_take,
+	allow_metadata_inventory_put = protection_check_put_take,
 	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 		minetest.log("action", player:get_player_name()..
 				" moves stuff in chest at "..minetest.pos_to_string(pos))
@@ -211,9 +234,15 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		end
 		meta:from_table(meta2:to_table())
 	end,
-	-- BEGIN OF LISTRING WORKAROUND
+	allow_metadata_inventory_move = protection_check_move,
+	allow_metadata_inventory_take = protection_check_put_take,
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-		if listname == "input" then
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		-- BEGIN OF LISTRING WORKAROUND
+		elseif listname == "input" then
 			local inv = minetest.get_inventory({type="node", pos=pos})
 			if inv:room_for_item("main", stack) then
 				return -1
@@ -226,11 +255,11 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 					return 0
 				end
 			end
+		-- END OF LISTRING WORKAROUND
 		else
 			return stack:get_count()
 		end
 	end,
-	-- END OF LISTRING WORKAROUND
 	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 		minetest.log("action", player:get_player_name()..
 				" moves stuff in chest at "..minetest.pos_to_string(pos))
@@ -326,9 +355,15 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		end
 		meta:from_table(meta2:to_table())
 	end,
-	-- BEGIN OF LISTRING WORKAROUND
+	allow_metadata_inventory_move = protection_check_move,
+	allow_metadata_inventory_take = protection_check_put_take,
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-		if listname == "input" then
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		-- BEGIN OF LISTRING WORKAROUND
+		elseif listname == "input" then
 			local other_pos = mcl_util.get_double_container_neighbor_pos(pos, minetest.get_node(pos).param2, "right")
 			local other_inv = minetest.get_inventory({type="node", pos=other_pos})
 			if other_inv:room_for_item("main", stack) then
@@ -341,11 +376,11 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 					return 0
 				end
 			end
+		-- END OF LISTRING WORKAROUND
 		else
 			return stack:get_count()
 		end
 	end,
-	-- END OF LISTRING WORKAROUND
 	on_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 		minetest.log("action", player:get_player_name()..
 				" moves stuff in chest at "..minetest.pos_to_string(pos))
@@ -738,7 +773,14 @@ for color, desc in pairs(boxtypes) do
 				minetest.add_item(pos, boxitem)
 			end
 		end,
+		allow_metadata_inventory_move = protection_check_move,
+		allow_metadata_inventory_take = protection_check_put_take,
 		allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+			local name = player:get_player_name()
+			if minetest.is_protected(pos, name) then
+				minetest.record_protection_violation(pos, name)
+				return 0
+			end
 			-- Do not allow to place shulker boxes into shulker boxes
 			local group = minetest.get_item_group(stack:get_name(), "shulker_box")
 			if group == 0 or group == nil then

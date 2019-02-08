@@ -125,6 +125,11 @@ minetest.register_node("mcl_itemframes:item_frame",{
 		if not itemstack then
 			return
 		end
+		local pname = clicker:get_player_name()
+		if minetest.is_protected(pos, pname) then
+			minetest.record_protection_violation(pos, pname)
+			return
+		end
 		local meta = minetest.get_meta(pos)
 		drop_item(pos, node, meta)
 		local inv = meta:get_inventory()
@@ -149,6 +154,33 @@ minetest.register_node("mcl_itemframes:item_frame",{
 			itemstack:take_item()
 		end
 		return itemstack
+	end,
+	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		else
+			return count
+		end
+	end,
+	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		else
+			return stack:get_count()
+		end
+	end,
+	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		else
+			return stack:get_count()
+		end
 	end,
 	on_destruct = function(pos)
 		local meta = minetest.get_meta(pos)

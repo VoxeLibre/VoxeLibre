@@ -27,6 +27,11 @@ minetest.register_node("mesecons_solarpanel:solar_panel_on", {
 		rules = mesecon.rules.pplate,
 	}},
 	on_rightclick = function(pos, node, clicker, pointed_thing)
+		local protname = clicker:get_player_name()
+		if minetest.is_protected(pos, protname) then
+			minetest.record_protection_violation(pos, protname)
+			return
+		end
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_inverted_off"})
 		mesecon.receptor_off(pos, mesecon.rules.pplate)
 	end,
@@ -60,6 +65,11 @@ minetest.register_node("mesecons_solarpanel:solar_panel_off", {
 		rules = mesecon.rules.pplate,
 	}},
 	on_rightclick = function(pos, node, clicker, pointed_thing)
+		local protname = clicker:get_player_name()
+		if minetest.is_protected(pos, protname) then
+			minetest.record_protection_violation(pos, protname)
+			return
+		end
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_inverted_on"})
 		mesecon.receptor_on(pos, mesecon.rules.pplate)
 	end,
@@ -134,6 +144,11 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_on", {
 		rules = mesecon.rules.pplate,
 	}},
 	on_rightclick = function(pos, node, clicker, pointed_thing)
+		local protname = clicker:get_player_name()
+		if minetest.is_protected(pos, protname) then
+			minetest.record_protection_violation(pos, protname)
+			return
+		end
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_off"})
 		mesecon.receptor_off(pos, mesecon.rules.pplate)
 	end,
@@ -168,6 +183,11 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
 		rules = mesecon.rules.pplate,
 	}},
 	on_rightclick = function(pos, node, clicker, pointed_thing)
+		local protname = clicker:get_player_name()
+		if minetest.is_protected(pos, protname) then
+			minetest.record_protection_violation(pos, protname)
+			return
+		end
 		minetest.swap_node(pos, {name = "mesecons_solarpanel:solar_panel_on"})
 		mesecon.receptor_on(pos, mesecon.rules.pplate)
 	end,

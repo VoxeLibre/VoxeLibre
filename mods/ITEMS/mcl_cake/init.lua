@@ -49,6 +49,12 @@ minetest.register_node("mcl_cake:cake", {
 	groups = {handy=1, cake=7, food=2,no_eat_delay=1, attached_node=1, dig_by_piston=1, comparator_signal=14},
 	drop = '',
 	on_rightclick = function(pos, node, clicker, itemstack)
+		-- Cake is subject to protection
+		local name = clicker:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return
+		end
 		local newcake = minetest.do_item_eat(2, ItemStack("mcl_cake:cake_6"), ItemStack("mcl_cake:cake"), clicker, {type="nothing"})
 		-- Check if we were allowed to eat
 		if newcake:get_name() ~= "mcl_cake:cake" or minetest.settings:get_bool("creative_mode") == true then
@@ -69,6 +75,11 @@ local register_slice = function(level, nodebox, desc)
 	local on_rightclick
 	if level > 1 then
 		on_rightclick = function(pos, node, clicker, itemstack)
+			local name = clicker:get_player_name()
+			if minetest.is_protected(pos, name) then
+				minetest.record_protection_violation(pos, name)
+				return
+			end
 			local newcake = minetest.do_item_eat(2, ItemStack(after_eat), ItemStack(this), clicker, {type="nothing"})
 			-- Check if we were allowed to eat
 			if newcake:get_name() ~= this or minetest.settings:get_bool("creative_mode") == true then
@@ -78,6 +89,11 @@ local register_slice = function(level, nodebox, desc)
 	else
 		-- Last slice
 		on_rightclick = function(pos, node, clicker, itemstack)
+			local name = clicker:get_player_name()
+			if minetest.is_protected(pos, name) then
+				minetest.record_protection_violation(pos, name)
+				return
+			end
 			local newcake = minetest.do_item_eat(2, ItemStack("mcl:cake:cake 0"), ItemStack("mcl_cake:cake_1"), clicker, {type="nothing"})
 			-- Check if we were allowed to eat
 			if newcake:get_name() ~= this or minetest.settings:get_bool("creative_mode") == true then

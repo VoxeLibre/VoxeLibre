@@ -277,15 +277,32 @@ local anvildef = {
 		drop_anvil_items(pos, meta)
 		meta:from_table(meta2:to_table())
 	end,
+	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		else
+			return stack:get_count()
+		end
+	end,
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
-		if listname == "output" then
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		elseif listname == "output" then
 			return 0
 		else
 			return stack:get_count()
 		end
 	end,
 	allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-		if to_list == "output" then
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		elseif to_list == "output" then
 			return 0
 		elseif from_list == "output" and to_list == "input" then
 			local meta = minetest.get_meta(pos)

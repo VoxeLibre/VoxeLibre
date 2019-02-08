@@ -53,6 +53,11 @@ minetest.register_node("mcl_flowerpots:flower_pot", {
 	groups = {dig_immediate=3, deco_block=1, attached_node=1, dig_by_piston=1, flower_pot=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_rightclick = function(pos, node, clicker, itemstack)
+		local name = clicker:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return
+		end
 		local item = clicker:get_wielded_item():get_name()
 		for _, row in ipairs(flowers) do
 			local flower = row[1]
@@ -120,6 +125,11 @@ minetest.register_node("mcl_flowerpots:flower_pot_"..flower, {
 	groups = {dig_immediate=3, attached_node=1, dig_by_piston=1, not_in_creative_inventory=1, flower_pot=2},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_rightclick = function(pos, item, clicker)
+		local name = clicker:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return
+		end
 		minetest.add_item({x=pos.x, y=pos.y+0.5, z=pos.z}, flower_node)
 		minetest.set_node(pos, {name="mcl_flowerpots:flower_pot"})
 	end,
@@ -163,6 +173,14 @@ minetest.register_node("mcl_flowerpots:flower_pot_"..flower, {
 	groups = {dig_immediate=3, attached_node=1, dig_by_piston=1, not_in_creative_inventory=1, flower_pot=2},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_rightclick = function(pos, item, clicker)
+		local name = ""
+		if clicker:is_player() then
+			name = clicker:get_player_name()
+		end
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return
+		end
 		minetest.add_item({x=pos.x, y=pos.y+0.5, z=pos.z}, flower_node)
 		minetest.set_node(pos, {name="mcl_flowerpots:flower_pot"})
 	end,

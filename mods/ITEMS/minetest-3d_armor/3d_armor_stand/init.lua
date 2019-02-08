@@ -120,6 +120,11 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 	on_destruct = drop_armor,
 	-- Put piece of armor on armor stand, or take one away
 	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
+		local protname = clicker:get_player_name()
+		if minetest.is_protected(pos, protname) then
+			minetest.record_protection_violation(pos, protname)
+			return
+		end
 		-- Check if player wields armor
 		local name = itemstack:get_name()
 		local list
@@ -177,7 +182,21 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 	after_place_node = function(pos)
 		minetest.add_entity(pos, "3d_armor_stand:armor_entity")
 	end,
-	allow_metadata_inventory_put = function(pos, listname, index, stack)
+	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		else
+			return stack:get_count()
+		end
+	end,
+	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
+		local name = player:get_player_name()
+		if minetest.is_protected(pos, name) then
+			minetest.record_protection_violation(pos, name)
+			return 0
+		end
 		local def = stack:get_definition() or {}
 		local groups = def.groups or {}
 		if groups[listname] then
@@ -185,7 +204,7 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 		end
 		return 0
 	end,
-	allow_metadata_inventory_move = function(pos)
+	allow_metadata_inventory_move = function()
 		return 0
 	end,
 	on_metadata_inventory_put = function(pos)

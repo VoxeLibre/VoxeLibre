@@ -254,7 +254,12 @@ minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 	sunlight_propagates = false,
 	is_ground_content = false,
 	drop = 'mesecons_delayer:delayer_off_1',
-	on_rightclick = function (pos, node)
+	on_rightclick = function (pos, node, clicker)
+		local protname = clicker:get_player_name()
+		if minetest.is_protected(pos, protname) then
+			minetest.report_protection_violation(pos, protname)
+			return
+		end
 		if node.name=="mesecons_delayer:delayer_off_1" then
 			minetest.set_node(pos, {name="mesecons_delayer:delayer_off_2", param2=node.param2})
 		elseif node.name=="mesecons_delayer:delayer_off_2" then
@@ -317,7 +322,12 @@ minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
 	sunlight_propagates = false,
 	is_ground_content = false,
 	drop = 'mesecons_delayer:delayer_off_1',
-	on_rightclick = function (pos, node)
+	on_rightclick = function (pos, node, clicker)
+		local protname = clicker:get_player_name()
+		if minetest.is_protected(pos, protname) then
+			minetest.report_protection_violation(pos, protname)
+			return
+		end
 		if node.name=="mesecons_delayer:delayer_on_1" then
 			minetest.set_node(pos, {name="mesecons_delayer:delayer_on_2",param2=node.param2})
 		elseif node.name=="mesecons_delayer:delayer_on_2" then

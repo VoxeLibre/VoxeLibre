@@ -14,7 +14,12 @@ The note block will only play a note when it is below air, otherwise, it stays s
 	groups = {handy=1,axey=1, material_wood=1},
 	is_ground_content = false,
 	place_param2 = 0,
-	on_rightclick = function (pos, node) -- change sound when rightclicked
+	on_rightclick = function (pos, node, clicker) -- change sound when rightclicked
+		local protname = clicker:get_player_name()
+		if minetest.is_protected(pos, protname) then
+			minetest.record_protection_violation(pos, protname)
+			return
+		end
 		node.param2 = (node.param2+1)%24
 		mesecon.noteblock_play(pos, node.param2)
 		minetest.set_node(pos, node)

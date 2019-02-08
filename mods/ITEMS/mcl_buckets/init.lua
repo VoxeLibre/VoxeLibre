@@ -53,7 +53,8 @@ end
 --   name = user-visible bucket description
 --   longdesc = long explanatory description (for help)
 --   usagehelp = short usage explanation (for help)
---   extra_check = optional function(pos) which can returns false to avoid placing the liquid
+--   extra_check(pos, placer) = optional function(pos) which can returns false to avoid placing the liquid.
+--                              placer is object/player who is placing the liquid, can be nil
 --   groups = optional list of item groups
 --
 -- This function can be called from any mod (which depends on this one)
@@ -103,12 +104,13 @@ function mcl_buckets.register_liquid(source_place, source_take, itemname, invent
 				-- Check if pointing to a buildable node
 				local item = itemstack:get_name()
 
-				if extra_check and extra_check(place_pos) == false then
+				if extra_check and extra_check(place_pos, user) == false then
 					-- Fail placement of liquid
 				elseif minetest.registered_nodes[nn] and minetest.registered_nodes[nn].buildable_to then
 					-- buildable; replace the node
 					local pns = user:get_player_name()
 					if minetest.is_protected(place_pos, pns) then
+						minetest.record_protection_violation(place_pos, pns)
 						return itemstack
 					end
 					place_liquid(place_pos, node_place)
@@ -122,6 +124,7 @@ function mcl_buckets.register_liquid(source_place, source_take, itemname, invent
 					if minetest.registered_nodes[abovenode.name] and minetest.registered_nodes[abovenode.name].buildable_to then
 						local pn = user:get_player_name()
 						if minetest.is_protected(pointed_thing.above, pn) then
+							minetest.record_protection_violation(pointed_thing.above, pn)
 							return itemstack
 						end
 						place_liquid(pointed_thing.above, node_place)
@@ -159,11 +162,12 @@ function mcl_buckets.register_liquid(source_place, source_take, itemname, invent
 				local iname = stack:get_name()
 				local buildable = minetest.registered_nodes[dropnode.name].buildable_to
 
-				if extra_check and extra_check(droppos) == false then
+				if extra_check and extra_check(droppos, nil) == false then
 					-- Fail placement of liquid
 				elseif buildable then
 					-- buildable; replace the node
 					if minetest.is_protected(droppos, "") then
+						minetest.record_protection_violation(droppos, "")
 						return stack
 					end
 					local node_place
@@ -192,7 +196,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 	on_place = function(itemstack, user, pointed_thing)
 		-- Must be pointing to node
 		if pointed_thing.type ~= "node" then
-			return
+			return itemstack
 		end
 
 		-- Call on_rightclick if the pointed node defines it
@@ -202,6 +206,12 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 			if minetest.registered_nodes[nn] and minetest.registered_nodes[nn].on_rightclick then
 				return minetest.registered_nodes[nn].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
 			end
+		end
+
+		-- Can't steal liquids
+		if minetest.is_protected(pointed_thing.above, pointed_thing.under) then
+			minetest.record_protection_violation(pointed_thing.under, user:get_player_name())
+			return itemstack
 		end
 
 		-- Check if pointing to a liquid source
@@ -257,6 +267,11 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 		end
 	end,
 	_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
+		if minetest.is_protected(droppos, "") then
+			minetest.record_protection_violation(droppos, "")
+			return stack
+		end
+
 		-- Fill empty bucket with liquid or drop bucket if no liquid
 		local collect_liquid = false
 
@@ -310,7 +325,13 @@ if mod_mcl_core then
 		"Water Bucket",
 		"A bucket can be used to collect and release liquids. This one is filled with water.",
 		"Right-click on any block to empty the bucket and put a water source on this spot.",
-		function(pos)
+		function(pos, placer)
+			-- Check protection
+			local placer_name = placer:get_player_name()
+			if minetest.is_protected(pos, placer_name) then
+				minetest.record_protection_violation(pos, placer_name)
+				return false
+			end
 			local nn = minetest.get_node(pos).name
 			-- Pour water into cauldron
 			if minetest.get_item_group(nn, "cauldron") ~= 0 then
@@ -343,7 +364,13 @@ if mod_mclx_core then
 		"River Water Bucket",
 		"A bucket can be used to collect and release liquids. This one is filled with river water.",
 		"Right-click on any block to empty the bucket and put a river water source on this spot.",
-		function(pos)
+		function(pos, placer)
+			-- Check protection
+			local placer_name = placer:get_player_name()
+			if minetest.is_protected(pos, placer_name) then
+				minetest.record_protection_violation(pos, placer_name)
+				return false
+			end
 			local nn = minetest.get_node(pos).name
 			-- Pour into cauldron
 			if minetest.get_item_group(nn, "cauldron") ~= 0 then
