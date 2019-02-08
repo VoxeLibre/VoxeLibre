@@ -38,12 +38,14 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 
 			-- Try to fill glass bottle with water
 			local get_water = false
+			local from_liquid_source = false
 			local river_water = false
 			if not def then
 				-- Unknown node: no-op
 			elseif def.groups and def.groups.water and def.liquidtype == "source" then
 				-- Water source
 				get_water = true
+				from_liquid_source = true
 				river_water = node.name == "mclx_core:river_water_source"
 			-- Or reduce water level of cauldron by 1
 			elseif string.sub(node.name, 1, 14) == "mcl_cauldrons:" then
@@ -76,7 +78,8 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 				end
 			end
 			if get_water then
-				if minetest.settings:get_bool("creative_mode") ~= true then
+				local creative = minetest.settings:get_bool("creative_mode") == true
+				if from_liquid_source or creative then
 					-- Replace with water bottle, if possible, otherwise
 					-- place the water potion at a place where's space
 					local water_bottle
@@ -85,10 +88,15 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 					else
 						water_bottle = ItemStack("mcl_potions:potion_water")
 					end
-					if itemstack:get_count() == 1 then
+					local inv = placer:get_inventory()
+					if creative then
+						-- Don't replace empty bottle in creative for convenience reasons
+						if not inv:contains_item("main", water_bottle) then
+							inv:add_item("main", water_bottle)
+						end
+					elseif itemstack:get_count() == 1 then
 						return water_bottle
 					else
-						local inv = placer:get_inventory()
 						if inv:room_for_item("main", water_bottle) then
 							inv:add_item("main", water_bottle)
 						else
