@@ -407,6 +407,11 @@ local anvildef = {
 		meta:set_string("formspec", form)
 	end,
 	on_receive_fields = function(pos, formname, fields, sender)
+		local sender_name = sender:get_player_name()
+		if minetest.is_protected(pos, sender_name) then
+			minetest.record_protection_violation(pos, sender_name)
+			return
+		end
 		if fields.name_button or fields.name then
 			local set_name
 			if fields.name == nil then
