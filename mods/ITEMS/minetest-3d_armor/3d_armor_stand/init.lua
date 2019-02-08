@@ -123,7 +123,7 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 		local protname = clicker:get_player_name()
 		if minetest.is_protected(pos, protname) then
 			minetest.record_protection_violation(pos, protname)
-			return
+			return itemstack
 		end
 		-- Check if player wields armor
 		local name = itemstack:get_name()
@@ -139,7 +139,7 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 		-- If player wields armor, put it on armor stand
 		local inv = minetest.get_inventory({type = "node", pos = pos})
 		local wielditem = clicker:get_wielded_item()
-		if not inv then return end
+		if not inv then return itemstack end
 		if list then
 			-- ... but only if the slot is free
 			local single_item = ItemStack(itemstack)
@@ -148,7 +148,7 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 				inv:add_item(list, single_item)
 				update_entity(pos)
 				itemstack:take_item()
-				return itmstack
+				return itemstack
 			end
 		end
 
