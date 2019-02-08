@@ -12,7 +12,7 @@ local S, NS = dofile(MP.."/intllib.lua")
 -- children_count: Number of children to spawn
 -- spawn_distance: Spawn distance from "mother" mob
 -- eject_speed: Initial speed of child mob away from "mother" mob
-local spawn_children_on_die = function(self, pos, child_mob, children_count, spawn_distance, eject_speed)
+local spawn_children_on_die = function(child_mob, children_count, spawn_distance, eject_speed)
 	return function(self, pos)
 		local angle, posadd, newpos, dir
 		if not eject_speed then
@@ -111,7 +111,7 @@ local slime_big = {
 	jump_chance = 100,
 	fear_height = 60,
 	spawn_small_alternative = "mobs_mc:slime_small",
-	on_die = spawn_children_on_die(self, pos, "mobs_mc:slime_small", 4, 1.0, 1.5)
+	on_die = spawn_children_on_die("mobs_mc:slime_small", 4, 1.0, 1.5)
 }
 mobs:register_mob("mobs_mc:slime_big", slime_big)
 
@@ -126,7 +126,7 @@ slime_small.walk_velocity = 1.3
 slime_small.run_velocity = 1.3
 slime_small.jump_height = 4.3
 slime_small.spawn_small_alternative = "mobs_mc:slime_tiny"
-slime_small.on_die = spawn_children_on_die(self, pos, "mobs_mc:slime_tiny", 4, 0.6, 1.0)
+slime_small.on_die = spawn_children_on_die("mobs_mc:slime_tiny", 4, 0.6, 1.0)
 mobs:register_mob("mobs_mc:slime_small", slime_small)
 
 local slime_tiny = table.copy(slime_big)
@@ -215,7 +215,7 @@ local magma_cube_big = {
 	jump_chance = 100,
 	fear_height = 100000,
 	spawn_small_alternative = "mobs_mc:magma_cube_small",
-	on_die = spawn_children_on_die(self, pos, "mobs_mc:magma_cube_small", 3, 0.8, 1.5)
+	on_die = spawn_children_on_die("mobs_mc:magma_cube_small", 3, 0.8, 1.5)
 }
 mobs:register_mob("mobs_mc:magma_cube_big", magma_cube_big)
 
@@ -235,7 +235,7 @@ magma_cube_small.damage = 4
 magma_cube_small.reach = 2.75
 magma_cube_small.armor = 70
 magma_cube_small.spawn_small_alternative = "mobs_mc:magma_cube_tiny"
-magma_cube_small.on_die = spawn_children_on_die(self, pos, "mobs_mc:magma_cube_tiny", 4, 0.6, 1.0)
+magma_cube_small.on_die = spawn_children_on_die("mobs_mc:magma_cube_tiny", 4, 0.6, 1.0)
 mobs:register_mob("mobs_mc:magma_cube_small", magma_cube_small)
 
 local magma_cube_tiny = table.copy(magma_cube_big)
