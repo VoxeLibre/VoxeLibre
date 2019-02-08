@@ -290,42 +290,6 @@ minetest.register_node("mcl_mobspawners:spawner", {
 
 	on_timer = spawn_mobs,
 
-	on_receive_fields = function(pos, formname, fields, sender)
-
-		if not fields.text or fields.text == "" then
-			return
-		end
-
-		local meta = minetest.get_meta(pos)
-		local comm = fields.text:split(" ")
-		local name = sender:get_player_name()
-
-		if minetest.is_protected(pos, name) then
-			minetest.record_protection_violation(pos, name)
-			return
-		end
-
-		local mob = comm[1] -- mob to spawn
-		local mlig = tonumber(comm[2]) -- min light
-		local xlig = tonumber(comm[3]) -- max light
-		local num = tonumber(comm[4]) -- total mobs in area
-		local pla = tonumber(comm[5]) -- player distance (0 to disable)
-		local yof = tonumber(comm[6]) or 0 -- Y offset to spawn mob
-
-		if mob and mob ~= "" and mobs.spawning_mobs[mob] == true
-		and num and num >= 0 and num <= 10
-		and mlig and mlig >= 0 and mlig <= 15
-		and xlig and xlig >= 0 and xlig <= 15
-		and pla and pla >=0 and pla <= 20
-		and yof and yof > -10 and yof < 10 then
-
-			mcl_mobspawners.setup_spawner(pos, mob, mlig, xlig, num, pla, yof)
-		else
-			minetest.chat_send_player(name, S("Mob Spawner settings failed!"))
-			minetest.chat_send_player(name,
-				S("Syntax: name min_light[0-14] max_light[0-14] max_mobs_in_area[0 to disable] distance[1-20] y_offset[-10 to 10]"))
-		end
-	end,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 
 	_mcl_blast_resistance = 25,
