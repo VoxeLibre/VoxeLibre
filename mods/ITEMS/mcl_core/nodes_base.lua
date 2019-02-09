@@ -310,7 +310,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	description = "Grass Block",
 	_doc_items_longdesc = "A grass block is dirt with a grass cover. Grass blocks are resourceful blocks which allow the growth of all sorts of plants. They can be turned into farmland with a hoe and turned into grass paths with a shovel. In light, the grass slowly spreads onto dirt nearby. Under an opaque block or a liquid, a grass block may turn back to dirt.",
 	_doc_items_hidden = false,
-	tiles = {"default_grass.png", "default_dirt.png", "default_dirt.png^default_grass_side.png"},
+	tiles = {"default_grass.png", "default_dirt.png", {name="default_dirt.png^default_grass_side.png", tileable_vertical=false}},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {handy=1,shovely=1, grass_block=1, grass_block_no_snow=1, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, spreading_dirt_type=1, enderman_takable=1, building_block=1},
@@ -344,7 +344,7 @@ mcl_core.register_snowed_node("mcl_core:dirt_with_grass_snow", "mcl_core:dirt_wi
 -- Grass Block variant for dry biomes
 minetest.register_node("mcl_core:dirt_with_dry_grass", {
 	_doc_items_create_entry = false,
-	tiles = {"default_dry_grass.png", "default_dirt.png", "default_dirt.png^default_dry_grass_side.png"},
+	tiles = {"default_dry_grass.png", "default_dirt.png", {name="default_dirt.png^default_dry_grass_side.png", tileable_vertical=false}},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {handy=1,shovely=1, grass_block=1, grass_block_no_snow=1, soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, spreading_dirt_type=1, enderman_takable=1, building_block=1, not_in_creative_inventory=1},
@@ -392,7 +392,7 @@ minetest.register_node("mcl_core:grass_path", {
 minetest.register_node("mcl_core:mycelium", {
 	description = "Mycelium",
 	_doc_items_longdesc = "Mycelium is a type of dirt and the ideal soil for mushrooms. Unlike other dirt-type blocks, it can not be turned into farmland with a hoe. In light, mycelium slowly spreads over nearby dirt. Under an opaque block or a liquid, it eventually turns back into dirt.",
-	tiles = {"mcl_core_mycelium_top.png", "default_dirt.png", "mcl_core_mycelium_side.png"},
+	tiles = {"mcl_core_mycelium_top.png", "default_dirt.png", {name="mcl_core_mycelium_side.png", tileable_vertical=false}},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {handy=1,shovely=1, spreading_dirt_type=1, building_block=1},
@@ -411,7 +411,7 @@ mcl_core.register_snowed_node("mcl_core:mycelium_snow", "mcl_core:mycelium")
 minetest.register_node("mcl_core:podzol", {
 	description = "Podzol",
 	_doc_items_longdesc = "Podzol is a type of dirt found in taiga forests. Only a few plants are able to survive on it.",
-	tiles = {"mcl_core_dirt_podzol_top.png", "default_dirt.png", "mcl_core_dirt_podzol_side.png"},
+	tiles = {"mcl_core_dirt_podzol_top.png", "default_dirt.png", {name="mcl_core_dirt_podzol_side.png", tileable_vertical=false}},
 	is_ground_content = true,
 	stack_max = 64,
 	groups = {handy=1,shovely=3, soil=1, soil_sapling=2, soil_sugarcane=1, enderman_takable=1, building_block=1},
