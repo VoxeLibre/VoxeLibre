@@ -44,6 +44,7 @@ minetest.register_alias("mapgen_stair_sandstone_block", "mcl_stairs:stair_sandst
 minetest.register_alias("mapgen_stair_desert_stone", "mcl_stairs:stair_sandstone")
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
+local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
 
 local WITCH_HUT_HEIGHT = 3 -- Exact Y level to spawn witch huts at. This height refers to the height of the floor
 
@@ -550,8 +551,7 @@ minetest.register_ore({
 	y_max          = mcl_worlds.layer_to_y(32),
 })
 
-if mg_name ~= "flat" then
-
+if not superflat then
 -- Water and lava springs (single blocks of lava/water source)
 -- Water appears at nearly every height, but not near the bottom
 minetest.register_ore({
@@ -622,12 +622,7 @@ minetest.register_ore({
 	y_min          = mcl_worlds.layer_to_y(62),
 	y_max          = mcl_worlds.layer_to_y(127),
 })
-
 end
-
-
-
-
 
 local function register_mgv6_decorations()
 
@@ -951,20 +946,10 @@ end
 if mg_name == "v6" then
 	register_mgv6_decorations()
 	minetest.set_mapgen_setting("mg_flags", "caves,nodungeons,decorations,light", true)
-elseif mg_name == "flat" then
-	local classic = minetest.get_mapgen_setting("mcl_superflat_classic")
-	if classic == nil then
-		classic = minetest.settings:get_bool("mcl_superflat_classic")
-		minetest.set_mapgen_setting("mcl_superflat_classic", "true", true)
-	end
-	if classic ~= "false" then
-		-- Enforce superflat-like mapgen: No hills, lakes or caves
-		minetest.set_mapgen_setting("mg_flags", "nocaves,nodungeons,nodecorations,light", true)
-		minetest.set_mapgen_setting("mgflat_spflags", "nolakes,nohills", true)
-	else
-		-- If superflat mode is disabled, mapgen is way more liberal
-		minetest.set_mapgen_setting("mg_flags", "caves,nodungeons,nodecorations,light", true)
-	end
+elseif superflat then
+	-- Enforce superflat-like mapgen: No hills, lakes or caves
+	minetest.set_mapgen_setting("mg_flags", "nocaves,nodungeons,nodecorations,light", true)
+	minetest.set_mapgen_setting("mgflat_spflags", "nolakes,nohills", true)
 else
 	minetest.set_mapgen_setting("mg_flags", "caves,nodungeons,decorations,light", true)
 end
@@ -1731,7 +1716,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 
 		-- Flat Nether
 		if mg_name == "flat" then
-			lvm_used = set_layers(c_air, nil, mcl_vars.mg_bedrock_nether_bottom_max + 4, mcl_vars.mg_bedrock_nether_bottom_max + 52, minp, maxp, lvm_used)
+			lvm_used = set_layers(c_air, nil, mcl_vars.mg_flat_nether_floor, mcl_vars.mg_flat_nether_ceiling, minp, maxp, lvm_used)
 		end
 
 		-- Big lava seas by replacing air below a certain height

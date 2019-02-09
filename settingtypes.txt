@@ -95,17 +95,24 @@ flame_sound (Flame sound) bool true
 # Feedback is appreciated.
 craftguide_progressive_mode (Enable recipe book progressive mode) bool false
 
-# If enabled, the “flat” map generator generates a “classic” superflat map:
-# Completely flat, 1 layer of grass blocks on top of 2 layers of dirt on
-# top of a final layer of bedrock.
-# Note if this is enabled, the setting “mgflat_flags” is ignored. To
-# customize the “flat” map generator, you must disable this setting.
-# Warning: Disabling this setting is currently EXPERIMENTAL! The generated map
-# may not be that pretty.
-mcl_superflat_classic (Classic superflat map generation) bool true
-
 # Mobs difficulty. This is a number that will affect the initial and maximum
 # health and the amount of damage that mobs deal. Health and damage will
 # be multiplied with this number.
 # This feature is not finished yet!
 mob_difficulty (Mob difficulty factor) float 1.0 0.0
+
+# If enabled, the “flat” map generator generates a Classic Superflat world:
+# Completely flat, 1 layer of grass blocks on top of 2 layers of dirt on
+# top of a final layer of bedrock. No caves, trees or plants.
+# Also, if enabled, the setting “mgflat_flags” is ignored.
+# If disabled, Minetest's default flat map generator is used, that is, trees,
+# caves, and a deeper underground can be generated.
+#
+# Caution: Change this setting with care!
+# If you change this setting, then play on an existing flat world
+# that started with a different setting (e.g. you changed from superflat
+# from “enabled” to “disabled”), there will be continuity errors when players
+# reach new areas. Most importantly, the void is much higher in Superflat than
+# in “normal” Flat.
+# But creating new flat worlds after changing this setting should be safe.
+mcl_superflat_classic (Classic superflat map generation) bool true

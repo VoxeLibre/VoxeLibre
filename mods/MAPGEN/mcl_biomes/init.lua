@@ -2,6 +2,7 @@ local mg_name = minetest.get_mapgen_setting("mg_name")
 
 -- Some mapgen settings
 local imitate = minetest.settings:get("mcl_imitation_mode")
+local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
 
 local generate_fallen_logs = false
 
@@ -3209,7 +3210,7 @@ end
 -- Detect mapgen to select functions
 --
 if mg_name ~= "singlenode" then
-	if mg_name ~= "flat" then
+	if not superflat then
 		if mg_name ~= "v6" then
 			register_biomes()
 			register_biomelike_ores()
@@ -3219,7 +3220,9 @@ if mg_name ~= "singlenode" then
 			register_decorations()
 		end
 	else
-		-- Implementation of Minecraft's Superflat mapgen, classic style
+		-- Implementation of Minecraft's Superflat mapgen, classic style:
+		-- * Perfectly flat land, 1 grass biome, no decorations, no caves
+		-- * 4 layers, from top to bottom: grass block, dirt, dirt, bedrock
 		minetest.clear_registered_biomes()
 		minetest.clear_registered_decorations()
 		minetest.clear_registered_schematics()

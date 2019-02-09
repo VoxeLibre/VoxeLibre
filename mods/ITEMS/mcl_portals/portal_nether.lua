@@ -13,6 +13,7 @@ local TELEPORT_DELAY = 3 -- seconds before teleporting in Nether portal
 local TELEPORT_COOLOFF = 4 -- after object was teleported, for this many seconds it won't teleported again
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
+local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
 
 -- 3D noise
 local np_cave = {
@@ -187,7 +188,7 @@ end
 
 local function find_nether_target_y(target_x, target_z)
 	if mg_name == "flat" then
-		return mcl_vars.mg_bedrock_nether_bottom_max + 5
+		return mcl_vars.mg_flat_nether_floor + 1
 	end
 	local start_y = math.random(mcl_vars.mg_lava_nether_max + 1, mcl_vars.mg_bedrock_nether_top_min - 5) -- Search start
 	if not nobj_cave then
@@ -330,8 +331,15 @@ function mcl_portals.light_nether_portal(pos)
 	local target = {x = p1.x, y = p1.y, z = p1.z}
 	target.x = target.x + 1
 	if target.y < mcl_vars.mg_nether_max and target.y > mcl_vars.mg_nether_min then
-		if mg_name == "flat" then
+		if superflat then
 			target.y = mcl_vars.mg_bedrock_overworld_max + 5
+		elseif mg_name == "flat" then
+			local ground = minetest.get_mapgen_setting("mgflat_ground_level")
+			ground = tonumber(ground)
+			if not ground then
+				ground = 8
+			end
+			target.y = ground + 2
 		else
 			target.y = math.random(mcl_vars.mg_overworld_min + 40, mcl_vars.mg_overworld_min + 96)
 		end
