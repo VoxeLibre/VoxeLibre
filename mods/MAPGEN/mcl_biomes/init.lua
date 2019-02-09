@@ -2473,9 +2473,6 @@ local function register_decorations()
 					{ name = "mcl_flowers:double_grass_top", param1=255, param2=param2 },
 				},
 			},
-			replacements = {
-				["mcl_flowers:tallgrass"] = "mcl_flowers:double_grass",
-			},
 			place_on = {"group:grass_block_no_snow"},
 			sidelen = 16,
 			noise_params = {
@@ -2507,9 +2504,6 @@ local function register_decorations()
 					{ name = "mcl_flowers:double_fern", param1=255, },
 					{ name = "mcl_flowers:double_fern_top", param1=255, },
 				},
-			},
-			replacements = {
-				["mcl_flowers:fern"] = "mcl_flowers:double_fern"
 			},
 			place_on = {"group:grass_block_no_snow", "mcl_core:podzol"},
 			sidelen = 16,

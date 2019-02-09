@@ -679,9 +679,6 @@ local function register_mgv6_decorations()
 				{ name = "mcl_flowers:double_grass_top", param1 = 255, },
 			},
 		},
-		replacements = {
-			["mcl_flowers:tallgrass"] = "mcl_flowers:double_grass"
-		},
 		place_on = {"group:grass_block_no_snow"},
 		sidelen = 8,
 		noise_params = {
@@ -706,9 +703,6 @@ local function register_mgv6_decorations()
 				{ name = "mcl_flowers:double_fern", param1=255, },
 				{ name = "mcl_flowers:double_fern_top", param1=255, },
 			},
-		},
-		replacements = {
-			["mcl_flowers:fern"] = "mcl_flowers:double_fern"
 		},
 		-- v6 hack: This makes sure large ferns only appear in jungles
 		spawn_by = { "mcl_core:jungletree", "mcl_flowers:fern" },
