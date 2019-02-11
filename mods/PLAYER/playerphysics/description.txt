@@ -1,1 +1,1 @@
-This mod simplifies the modification of player physics (speed, jumping height, gravity) by adding factors to the base values.
+This mod makes it possible for multiple mods to modify player physics (speed, jumping strength, gravity) without conflict.

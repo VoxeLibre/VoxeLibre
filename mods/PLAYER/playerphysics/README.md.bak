@@ -23,7 +23,7 @@ The function `set_physics_override` from the Minetest Lua API allows mod authors
 
 This function works fine as long there is only one mod that sets a particular physical attribute at a time. However, as soon as at least two different mods (that do not know each other) try to change the same player physics attribute using only this function, there will be conflicts as each mod will undo the change of the other mod, as the function sets a raw value. A classic race condition occurs. This is the case because the mods fail to communicate with each other.
 
-This mod solves the problem of conflicts. It bans the concept of “setting the raw value directly” and replaces it with the concept of factors that mods can add and remove for each attribute. The real physical player attribute will be the product of all active factors.
+This mod solves the problem of conflicts. It bans the concept of “setting the raw value directly” and replaces it with the concept of factors that mods can add and remove for each attribute. The real phyisical player attribute will be the product of all active factors.
 
 ## Quick start
 Let's say you have a mod `example` and want to double the speed of the player (i.e. multiply it by a factor of 2), but you also don't want to break other mods that might touch the speed.
