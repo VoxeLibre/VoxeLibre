@@ -205,7 +205,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 		end
 
 		-- Can't steal liquids
-		if minetest.is_protected(pointed_thing.above, pointed_thing.under) then
+		if minetest.is_protected(pointed_thing.above, user:get_player_name()) then
 			minetest.record_protection_violation(pointed_thing.under, user:get_player_name())
 			return itemstack
 		end
