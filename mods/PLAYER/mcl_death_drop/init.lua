@@ -24,13 +24,16 @@ minetest.register_on_dieplayer(function(player)
 					pos.x = pos.x + x
 					pos.z = pos.z + z
 					if not void_deadly and drop then
+						local def = minetest.registered_items[stack:get_name()]
+						if def and def.on_drop then
+							stack = def.on_drop(stack, player, pos)
+						end
 						minetest.add_item(pos, stack)
 					end
-					stack:clear()
-					inv:set_stack(listname, i, stack)
 					pos.x = pos.x - x
 					pos.z = pos.z - z
 				end
+				inv:set_list(listname, {})
 			end
 		end
 		armor:set_player_armor(player)
