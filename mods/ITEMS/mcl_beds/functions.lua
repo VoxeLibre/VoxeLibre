@@ -71,6 +71,14 @@ local function lay_down(player, pos, bed_pos, state, skip)
 			return
 		end
 
+		-- No sleeping while moving. This is a workaround.
+		-- TODO: Ideally, the player speed should be force-set to 0,
+		-- but this is not possible in Minetest 0.4.17.
+		if vector.length(player:get_player_velocity()) > 0.001 then
+			minetest.chat_send_player(name, "You have to stop moving before going to bed!")
+			return
+		end
+
 		-- No sleeping if monsters nearby.
 		-- The exceptions above apply.
 		-- Zombie pigmen only prevent sleep while they are hostle.
