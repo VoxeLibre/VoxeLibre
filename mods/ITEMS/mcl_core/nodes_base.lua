@@ -652,7 +652,11 @@ minetest.register_node("mcl_core:bedrock", {
 		local dim = mcl_worlds.pos_to_dimension(pos)
 		local flame_pos = {x = pos.x, y = pos.y + 1, z = pos.z}
 		local fn = minetest.get_node(flame_pos)
-		if dim == "end" and fn.name == "air" and not minetest.is_protected(flame_pos, "fire") and pointed_thing.under.y < pointed_thing.above.y then
+		local pname = player:get_player_name()
+		if minetest.is_protected(flame_pos, pname) then
+			return minetest.record_protection_violation(flame_pos, pname)
+		end
+		if dim == "end" and fn.name == "air" and pointed_thing.under.y < pointed_thing.above.y then
 			minetest.set_node(flame_pos, {name = "mcl_fire:eternal_fire"})
 			return true
 		else

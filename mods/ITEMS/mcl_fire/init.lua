@@ -393,10 +393,22 @@ else -- Fire enabled
 
 end
 
--- Set pointed_thing on (normal) fire
-mcl_fire.set_fire = function(pointed_thing)
+-- Set pointed_thing on (normal) fire.
+-- * pointed_thing: Pointed thing to ignite
+-- * player: Player who sets fire or nil if nobody
+mcl_fire.set_fire = function(pointed_thing, player)
+	local pname
+	if player == nil then
+		pname = ""
+	else
+		pname = player:get_player_name()
+	end
 	local n = minetest.get_node(pointed_thing.above)
-	if n.name == "air" and not minetest.is_protected(pointed_thing.above, "fire") then
+	if minetest.is_protected(pointed_thing.above, pname) then
+		minetest.record_protection_violation(pointed_thing.above, pname)
+		return
+	end
+	if n.name == "air" then
 		minetest.add_node(pointed_thing.above, {name="mcl_fire:fire"})
 	end
 end

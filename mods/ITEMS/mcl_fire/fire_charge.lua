@@ -28,10 +28,10 @@ minetest.register_craftitem("mcl_fire:fire_charge", {
 			if nodedef and nodedef._on_ignite then
 				local overwrite = nodedef._on_ignite(user, pointed_thing)
 				if not overwrite then
-					mcl_fire.set_fire(pointed_thing)
+					mcl_fire.set_fire(pointed_thing, user)
 				end
 			else
-				mcl_fire.set_fire(pointed_thing)
+				mcl_fire.set_fire(pointed_thing, user)
 			end
 			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:take_item()

@@ -46,7 +46,12 @@ local eternal_on_ignite = function(player, pointed_thing)
 	local pos = pointed_thing.under
 	local flame_pos = {x = pos.x, y = pos.y + 1, z = pos.z}
 	local fn = minetest.get_node(flame_pos)
-	if fn.name == "air" and not minetest.is_protected(flame_pos, "fire") and pointed_thing.under.y < pointed_thing.above.y then
+	local pname = player:get_player_name()
+	if minetest.is_protected(flame_pos, pname) then
+		minetest.record_protection_violation(flame_pos, pname)
+		return
+	end
+	if fn.name == "air" and pointed_thing.under.y < pointed_thing.above.y then
 		minetest.set_node(flame_pos, {name = "mcl_fire:eternal_fire"})
 		return true
 	else
