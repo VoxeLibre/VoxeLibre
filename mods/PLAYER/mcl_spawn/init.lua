@@ -2,33 +2,37 @@ mcl_spawn = {}
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
--- Returns current spawn position of player.
+-- Returns current custom spawn position of player.
+-- Returns nil if player has no custom spawn position.
 -- If player is nil or not a player, the default spawn point is returned.
 -- The second return value is true if spawn point is player-chosen,
 -- false otherwise.
 mcl_spawn.get_spawn_pos = function(player)
-	local spawn, custom_spawn
+	local spawn, custom_spawn = nil, false
 	if player ~= nil and player:is_player() then
-		spawn = minetest.string_to_pos(player:get_attribute("mcl_beds:spawn"))
-		custom_spawn = true
+		local attr = player:get_attribute("mcl_beds:spawn")
+		if attr ~= nil and attr ~= "" then
+			spawn = minetest.string_to_pos(attr)
+			custom_spawn = true
+		end
 	end
 	if not spawn or spawn == "" then
 		spawn = minetest.setting_get_pos("static_spawnpoint")
 		custom_spawn = false
 	end
-	if not spawn then
-		spawn = { x=0, y=0, z=0 }
-		if mg_name == "flat" then
-			spawn.y = mcl_vars.mg_bedrock_overworld_max + 5
+	if not spawn or spawn == "" then
+		local attr = player:get_attribute("mcl_spawn:first_spawn")
+		if attr ~= nil and attr ~= "" then
+			spawn = minetest.string_to_pos(attr)
+			custom_spawn = false
 		end
-		custom_spawn = false
 	end
 	return spawn, custom_spawn
 end
 
 -- Sets the player's spawn position to pos.
 -- Set pos to nil to clear the spawn position.
-mcl_spawn.set_spawn_pos = function(player, pos)
+mcl_spawn.set_spawn_pos = function(player, pos, type)
 	if pos == nil then
 		player:set_attribute("mcl_beds:spawn", "")
 	else
@@ -39,7 +43,7 @@ end
 -- Respawn player at specified respawn position
 minetest.register_on_respawnplayer(function(player)
 	local pos, custom_spawn = mcl_spawn.get_spawn_pos(player)
-	if custom_spawn then
+	if pos and custom_spawn then
 		-- Check if bed is still there
 		-- and the spawning position is free of solid or damaging blocks.
 		local node_bed = minetest.get_node(pos)
@@ -65,5 +69,7 @@ minetest.register_on_respawnplayer(function(player)
 end)
 
 minetest.register_on_newplayer(function(player)
-	mcl_spawn.set_spawn_pos(player, player:get_pos())
+	-- Remember where the player spawned first
+	player:set_attribute("mcl_spawn:first_spawn", minetest.pos_to_string(player:get_pos()))
 end)
+

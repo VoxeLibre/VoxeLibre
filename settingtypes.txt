@@ -62,7 +62,7 @@ mobs_spawn (Spawn mobs naturally) bool true
 
 # Controls the overall amount of mobs that spawn. The higher the number,
 # the less often mobs will spawn. This does not affect mob spawners.
-mobs_spawn_chance (Mob spawn chance) float 1.0 0.0
+mobs_spawn_chance (Mob spawn chance) float 2.5 0.0
 
 # If enabled, only peaceful mobs will appear naturally. This does not
 # affect mob spawners.
