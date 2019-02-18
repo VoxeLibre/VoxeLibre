@@ -125,6 +125,12 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 			minetest.record_protection_violation(pos, protname)
 			return itemstack
 		end
+
+		local inv = minetest.get_inventory({type = "node", pos = pos})
+		if not inv then
+			return itemstack
+		end
+
 		-- Check if player wields armor
 		local name = itemstack:get_name()
 		local list
@@ -135,11 +141,8 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 				break
 			end
 		end
-
 		-- If player wields armor, put it on armor stand
-		local inv = minetest.get_inventory({type = "node", pos = pos})
 		local wielditem = clicker:get_wielded_item()
-		if not inv then return itemstack end
 		if list then
 			-- ... but only if the slot is free
 			local single_item = ItemStack(itemstack)
@@ -172,11 +175,12 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 				if taken then
 					stand_armor:take_item()
 					inv:set_stack("armor_" .. elements[e], 1, stand_armor)
-					update_entity(pos)
 				end
+				update_entity(pos)
 				return clicker:get_wielded_item()
 			end
 		end
+		update_entity(pos)
 		return itemstack
 	end,
 	after_place_node = function(pos)
@@ -261,6 +265,17 @@ minetest.register_entity("3d_armor_stand:armor_entity", {
 			update_entity(self.pos)
 			self.object:remove()
 		end
+	end,
+})
+
+-- FIXME: Armor helper entity can get destroyed by /clearobjects
+minetest.register_lbm({
+	label = "Respawn armor stand entities",
+	name = "3d_armor_stand:respawn_entities",
+	nodenames = {"3d_armor_stand:armor_stand"},
+	run_at_every_load = true,
+	action = function(pos, node)
+		update_entity(pos, node)
 	end,
 })
 
