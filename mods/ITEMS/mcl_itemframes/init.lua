@@ -221,4 +221,14 @@ minetest.register_lbm({
 	end,
 })
 
+minetest.register_lbm({
+	label = "Respawn item frame item entities",
+	name = "mcl_itemframes:respawn_entities",
+	nodenames = {"mcl_itemframes:item_frame"},
+	run_at_every_load = true,
+	action = function(pos, node)
+		update_item_entity(pos, node)
+	end,
+})
+
 minetest.register_alias("itemframes:frame", "mcl_itemframes:item_frame")
