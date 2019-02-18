@@ -220,13 +220,6 @@ local update_sign = function(pos, fields, sender)
 			x = pos.x + sign_info.delta.x,
 			y = pos.y + sign_info.delta.y,
 			z = pos.z + sign_info.delta.z}, "mcl_signs:text")
-	if nn == "mcl_signs:standing_sign22_5" then
-		sign_info.yaw = sign_info.yaw + math.pi / 8
-	elseif nn == "mcl_signs:standing_sign45" then
-		sign_info.yaw = sign_info.yaw + 2 * (math.pi / 8)
-	elseif nn == "mcl_signs:standing_sign67_5" then
-		sign_info.yaw = sign_info.yaw + 3 * (math.pi / 8)
-	end
 	text_entity:get_luaentity()._signnodename = nn
 	text_entity:set_properties({textures={generate_texture(create_lines(text), nn)}})
 
