@@ -66,6 +66,20 @@ local function set_doll_properties(doll, mob)
 	doll:get_luaentity()._mob = mob
 end
 
+local function respawn_doll(pos)
+	local meta = minetest.get_meta(pos)
+	local mob = meta:get_string("Mob")
+	local doll
+	if mob and mob ~= "" then
+		doll = find_doll(pos)
+		if not doll then
+			doll = spawn_doll(pos)
+			set_doll_properties(doll, mob)
+		end
+	end
+	return doll
+end
+
 --[[ Public function: Setup the spawner at pos.
 This function blindly assumes there's actually a spawner at pos.
 If not, then the results are undefined.
@@ -288,6 +302,10 @@ minetest.register_node("mcl_mobspawners:spawner", {
 		end
 	end,
 
+	on_punch = function(pos)
+		respawn_doll(pos)
+	end,
+
 	on_timer = spawn_mobs,
 
 	sounds = mcl_sounds.node_sound_metal_defaults(),
@@ -328,7 +346,7 @@ end
 
 doll_def.on_step = function(self, dtime)
 	-- Check if spawner is still present. If not, delete the entity
-	self.timer = self.timer + 0.01
+	self.timer = self.timer + dtime
 	local n = minetest.get_node_or_nil(self.object:get_pos())
 	if self.timer > 1 then
 		if n and n.name and n.name ~= "mcl_mobspawners:spawner" then
@@ -341,5 +359,14 @@ doll_def.on_punch = function(self, hitter) end
 
 minetest.register_entity("mcl_mobspawners:doll", doll_def)
 
-
+-- FIXME: Doll can get destroyed by /clearobjects
+minetest.register_lbm({
+	label = "Respawn mob spawner dolls",
+	name = "mcl_mobspawners:respawn_entities",
+	nodenames = { "mcl_mobspawners:spawner" },
+	run_at_every_load = true,
+	action = function(pos, node)
+		respawn_doll(pos)
+	end,
+})
 
