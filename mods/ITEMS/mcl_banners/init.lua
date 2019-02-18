@@ -32,6 +32,11 @@ mcl_banners.colors = {
 	["unicolor_light_blue"] = {"light_blue", "Light Blue Banner", "mcl_wool:light_blue", "#4040CF", "mcl_dye:lightblue", "Light Blue" },
 }
 
+local colors_reverse = {}
+for k,v in pairs(mcl_banners.colors) do
+	colors_reverse["mcl_banners:banner_item_"..v[1]] = k
+end
+
 -- Add pattern/emblazoning crafting recipes
 dofile(minetest.get_modpath("mcl_banners").."/patterncraft.lua")
 
@@ -42,28 +47,40 @@ local layer_ratio = 255
 local standing_banner_entity_offset = { x=0, y=-0.499, z=0 }
 local hanging_banner_entity_offset = { x=0, y=-1.7, z=0 }
 
-local on_destruct_standing_banner = function(pos)
+local on_destruct_banner = function(pos, hanging)
+	local offset, nodename
+	if hanging then
+		offset = hanging_banner_entity_offset
+		nodename = "mcl_banners:hanging_banner"
+	else
+		offset = standing_banner_entity_offset
+		nodename = "mcl_banners:standing_banner"
+	end
 	-- Find this node's banner entity and make it drop as an item
-	local checkpos = vector.add(pos, standing_banner_entity_offset)
+	local checkpos = vector.add(pos, offset)
 	local objects = minetest.get_objects_inside_radius(checkpos, 0.5)
 	for _, v in ipairs(objects) do
 		local ent = v:get_luaentity()
-		if ent and ent.name == "mcl_banners:standing_banner" then
-			v:get_luaentity():_drop()
+		if ent and ent.name == nodename then
+			v:remove()
 		end
+	end
+	-- Drop item
+	local meta = minetest.get_meta(pos)
+	local item = meta:get_inventory():get_stack("banner", 1)
+	if not item:is_empty() then
+		minetest.add_item(pos, item)
+	else
+		minetest.add_item(pos, "mcl_banners:banner_item_white")
 	end
 end
 
+local on_destruct_standing_banner = function(pos)
+	return on_destruct_banner(pos, false)
+end
+
 local on_destruct_hanging_banner = function(pos)
-	-- Find this node's banner entity and make it drop as an item
-	local checkpos = vector.add(pos, hanging_banner_entity_offset)
-	local objects = minetest.get_objects_inside_radius(checkpos, 0.5)
-	for _, v in ipairs(objects) do
-		local ent = v:get_luaentity()
-		if ent and ent.name == "mcl_banners:hanging_banner" then
-			v:get_luaentity():_drop()
-		end
-	end
+	return on_destruct_banner(pos, true)
 end
 
 local make_banner_texture = function(base_color, layers)
@@ -94,6 +111,59 @@ local make_banner_texture = function(base_color, layers)
 	else
 		return { "mcl_banners_banner_base.png" }
 	end
+end
+
+local spawn_banner_entity = function(pos, hanging, itemstack)
+	local banner
+	if hanging then
+		banner = minetest.add_entity(pos, "mcl_banners:hanging_banner")
+	else
+		banner = minetest.add_entity(pos, "mcl_banners:standing_banner")
+	end
+	if banner == nil then
+		return banner
+	end
+	local imeta = itemstack:get_meta()
+	local layers_raw = imeta:get_string("layers")
+	local layers = minetest.deserialize(layers_raw)
+	local colorid = colors_reverse[itemstack:get_name()]
+	banner:get_luaentity():_set_textures(colorid, layers)
+	local mname = imeta:get_string("name")
+	if mname ~= nil and mname ~= "" then
+		banner:get_luaentity()._item_name = mname
+		banner:get_luaentity()._item_description = imeta:get_string("description")
+	end
+
+	return banner
+end
+
+local respawn_banner_entity = function(pos, node)
+	local hanging = node.name == "mcl_banners:hanging_banner"
+	local offset
+	if hanging then
+		offset = hanging_banner_entity_offset
+	else
+		offset = standing_banner_entity_offset
+	end
+	-- Check if a banner entity already exists
+	local bpos = vector.add(pos, offset)
+	local objects = minetest.get_objects_inside_radius(bpos, 0.5)
+	for _, v in ipairs(objects) do
+		local ent = v:get_luaentity()
+		if ent and (ent.name == "mcl_banners:standing_banner" or ent.name == "mcl_banners:hanging_banner") then
+			return
+		end
+	end
+	-- Spawn new entity
+	local meta = minetest.get_meta(pos)
+	local banner_item = meta:get_inventory():get_stack("banner", 1)
+	local banner_entity = spawn_banner_entity(bpos, hanging, banner_item)
+
+	-- Set rotation
+	local final_yaw
+	local rotation_level = meta:get_int("rotation_level")
+	final_yaw = (rotation_level * (math.pi/8)) + math.pi
+	banner_entity:set_yaw(final_yaw)
 end
 
 local on_rotate
@@ -138,6 +208,9 @@ minetest.register_node("mcl_banners:standing_banner", {
 	drop = "", -- Item drops are handled in entity code
 
 	on_destruct = on_destruct_standing_banner,
+	on_punch = function(pos, node)
+		respawn_banner_entity(pos, node)
+	end,
 	_mcl_hardness = 1,
 	_mcl_blast_resistance = 5,
 })
@@ -166,6 +239,9 @@ minetest.register_node("mcl_banners:hanging_banner", {
 	drop = "", -- Item drops are handled in entity code
 
 	on_destruct = on_destruct_hanging_banner,
+	on_punch = function(pos, node)
+		respawn_banner_entity(pos, node)
+	end,
 	_mcl_hardness = 1,
 	_mcl_blast_resistance = 5,
 	on_rotate = on_rotate,
@@ -269,48 +345,61 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 				end
 				hanging = true
 			end
-
 			local place_pos
 			if minetest.registered_nodes[node_under.name].buildable_to then
 				place_pos = under
 			else
 				place_pos = above
 			end
-			if hanging then
-				place_pos = vector.add(place_pos, hanging_banner_entity_offset)
-			else
-				place_pos = vector.add(place_pos, standing_banner_entity_offset)
+			local bnode = minetest.get_node(place_pos)
+			if bnode.name ~= "mcl_banners:standing_banner" and bnode.name ~= "mcl_banners:hanging_banner" then
+				minetest.log("error", "[mcl_banners] The placed banner node is not what the mod expected!")
+				return itemstack
 			end
+			local meta = minetest.get_meta(place_pos)
+			local inv = meta:get_inventory()
+			inv:set_size("banner", 1)
+			local store_stack = ItemStack(itemstack)
+			store_stack:set_count(1)
+			inv:set_stack("banner", 1, store_stack)
 
-			local banner 
+			-- Spawn entity
+			local entity_place_pos
 			if hanging then
-				banner = minetest.add_entity(place_pos, "mcl_banners:hanging_banner")
+				entity_place_pos = vector.add(place_pos, hanging_banner_entity_offset)
 			else
-				banner = minetest.add_entity(place_pos, "mcl_banners:standing_banner")
+				entity_place_pos = vector.add(place_pos, standing_banner_entity_offset)
 			end
-			local imeta = itemstack:get_meta()
-			local layers_raw = imeta:get_string("layers")
-			local layers = minetest.deserialize(layers_raw)
-			banner:get_luaentity():_set_textures(colorid, layers)
-			local mname = imeta:get_string("name")
-			if mname ~= nil and mname ~= "" then
-				banner:get_luaentity()._item_name = mname
-				banner:get_luaentity()._item_description = imeta:get_string("description")
-			end
-
+			local banner_entity = spawn_banner_entity(entity_place_pos, hanging, itemstack)
 			-- Set rotation
-			local final_yaw
+			local final_yaw, rotation_level
 			if hanging then
 				local pdir = vector.direction(pointed_thing.under, pointed_thing.above)
 				final_yaw = minetest.dir_to_yaw(pdir)
+				if pdir.x > 0 then
+					rotation_level = 4
+				elseif pdir.z > 0 then
+					rotation_level = 8
+				elseif pdir.x < 0 then
+					rotation_level = 12
+				else
+					rotation_level = 0
+				end
 			else
 				-- Determine the rotation based on player's yaw
 				local yaw = placer:get_look_horizontal()
 				-- Select one of 16 possible rotations (0-15)
-				local rotation_level = round((yaw / (math.pi*2)) * 16)
+				rotation_level = round((yaw / (math.pi*2)) * 16)
+				if rotation_level >= 16 then
+					rotation_level = 0
+				end
 				final_yaw = (rotation_level * (math.pi/8)) + math.pi
 			end
-			banner:set_yaw(final_yaw)
+			meta:set_int("rotation_level", rotation_level)
+
+			if banner_entity ~= nil then
+				banner_entity:set_yaw(final_yaw)
+			end
 
 			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:take_item()
@@ -392,30 +481,6 @@ local entity_standing = {
 		self.object:set_armor_groups({immortal=1})
 	end,
 
-	-- This is a custom function which causes the banner to be dropped as item and destroys the entity.
-	_drop = function(self)
-		local pos = self.object:get_pos()
-		pos.y = pos.y + 1
-
-		if not minetest.settings:get_bool("creative_mode") and self._base_color then
-			-- Spawn item
-			local banner = ItemStack("mcl_banners:banner_item_"..mcl_banners.colors[self._base_color][1])
-			local meta = banner:get_meta()
-			meta:set_string("layers", minetest.serialize(self._layers))
-			if self._item_name ~= nil and self._item_name ~= "" then
-				meta:set_string("description", self._item_description)
-				meta:set_string("name", self._item_name)
-			else
-				meta:set_string("description", mcl_banners.make_advanced_banner_description(banner:get_definition().description, self._layers))
-			end
-
-			minetest.add_item(pos, banner)
-		end
-
-		-- Destroy entity
-		self.object:remove()
-	end,
-
 	-- Set the banner textures. This function can be used by external mods.
 	-- Meaning of parameters:
 	-- * self: Lua entity reference to entity.
@@ -435,6 +500,17 @@ minetest.register_entity("mcl_banners:standing_banner", entity_standing)
 local entity_hanging = table.copy(entity_standing)
 entity_hanging.mesh = "amc_banner_hanging.b3d"
 minetest.register_entity("mcl_banners:hanging_banner", entity_hanging)
+
+-- FIXME: Prevent entity destruction by /clearobjects
+minetest.register_lbm({
+	label = "Respawn banner entities",
+	name = "mcl_banners:respawn_entities",
+	run_at_every_load = true,
+	nodenames = {"mcl_banners:standing_banner", "mcl_banners:hanging_banner"},
+	action = function(pos, node)
+		respawn_banner_entity(pos, node)
+	end,
+})
 
 minetest.register_craft({
 	type = "fuel",
