@@ -221,6 +221,7 @@ minetest.register_lbm({
 	end,
 })
 
+-- FIXME: Item entities can get destroyed by /clearobjects
 minetest.register_lbm({
 	label = "Respawn item frame item entities",
 	name = "mcl_itemframes:respawn_entities",
