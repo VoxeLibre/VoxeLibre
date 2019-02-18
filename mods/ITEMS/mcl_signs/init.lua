@@ -157,6 +157,19 @@ local function get_rotation_level(facedir, nodename)
 	return rl
 end
 
+local function get_wall_signtext_info(param2, nodename)
+	local dir = minetest.wallmounted_to_dir(param2)
+	if dir.x > 0 then
+		return 2
+	elseif dir.z > 0 then
+		return 1
+	elseif dir.x < 0 then
+		return 4
+	else
+		return 3
+	end
+end
+
 local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1, material_wood=1, attached_node=1}
 
 local destruct_sign = function(pos)
@@ -186,7 +199,7 @@ local update_sign = function(pos, fields, sender)
 	for _, v in ipairs(objects) do
 		local ent = v:get_luaentity()
 		if ent and ent.name == "mcl_signs:text" then
-			v:set_properties({textures={generate_texture(create_lines(text), v:get_luaentity()._signnodename)}})
+			v:set_properties({textures={generate_texture(create_lines(text), ent._signnodename)}})
 			return
 		end
 	end
@@ -198,7 +211,7 @@ local update_sign = function(pos, fields, sender)
 	if nn == "mcl_signs:standing_sign" or nn == "mcl_signs:standing_sign22_5" or nn == "mcl_signs:standing_sign45" or nn == "mcl_signs:standing_sign67_5" then
 		sign_info = signtext_info_standing[get_rotation_level(n.param2, nn) + 1]
 	elseif nn == "mcl_signs:wall_sign" then
-		sign_info = signtext_info_wall[n.param2 + 1]
+		sign_info = signtext_info_wall[get_wall_signtext_info(n.param2)]
 	end
 	if sign_info == nil then
 		return
@@ -215,6 +228,7 @@ local update_sign = function(pos, fields, sender)
 		sign_info.yaw = sign_info.yaw + 3 * (math.pi / 8)
 	end
 	text_entity:get_luaentity()._signnodename = nn
+	text_entity:set_properties({textures={generate_texture(create_lines(text), nn)}})
 
 	text_entity:setyaw(sign_info.yaw)
 end
