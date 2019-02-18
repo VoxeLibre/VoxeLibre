@@ -361,9 +361,6 @@ minetest.register_node("mcl_signs:wall_sign", {
 		return itemstack
 	end,
 	on_destruct = destruct_sign,
-	on_receive_fields = function(pos, formname, fields, sender)
-		update_sign(pos, fields, sender)
-	end,
 	on_punch = function(pos, node, puncher)
 		update_sign(pos)
 	end,
@@ -398,9 +395,6 @@ local ssign = {
 	sounds = node_sounds,
 
 	on_destruct = destruct_sign,
-	on_receive_fields = function(pos, formname, fields, sender)
-		update_sign(pos, fields, sender)
-	end,
 	on_punch = function(pos, node, puncher)
 		update_sign(pos)
 	end,
