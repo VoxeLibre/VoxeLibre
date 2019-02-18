@@ -427,7 +427,7 @@ local ssign67 = table.copy(ssign)
 ssign67.mesh = "mcl_signs_sign67.5.obj"
 minetest.register_node("mcl_signs:standing_sign67_5", ssign67)
 
-
+-- FIXME: Prevent entity destruction by /clearobjects
 minetest.register_entity("mcl_signs:text", {
 	collisionbox = { 0, 0, 0, 0, 0, 0 },
 	visual = "upright_sprite",
@@ -484,6 +484,15 @@ end
 minetest.register_alias("signs:sign_wall", "mcl_signs:wall_sign")
 minetest.register_alias("signs:sign_yard", "mcl_signs:standing_sign")
 
+minetest.register_lbm({
+	name = "mcl_signs:respawn_entities",
+	label = "Respawn sign text entities",
+	run_at_every_load = true,
+	nodenames = { "mcl_signs:wall_sign", "mcl_signs:standing_sign", "mcl_signs:standing_sign22_5", "mcl_signs:standing_sign45", "mcl_signs:standing_sign67_5" },
+	action = function(pos, node)
+		update_sign(pos)
+	end,
+})
 
 if minetest.settings:get_bool("log_mods") then
 	minetest.log("action", "[mcl_signs] loaded")
