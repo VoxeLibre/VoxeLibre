@@ -17,6 +17,12 @@ local chorus_flower_box = {
 	}
 }
 
+-- Helper function
+local function round(num, idp)
+	local mult = 10^(idp or 0)
+	return math.floor(num * mult + 0.5) / mult
+end
+
 minetest.register_node("mcl_end:chorus_flower", {
 	description = "Chorus Flower",
 	_doc_items_longdesc = "A chorus flower is the living part of a chorus plant. It can grow into a tall chorus plant, step by step. When it grows, it may die on old age eventually. It also dies when it is unable to grow.",
@@ -282,16 +288,16 @@ local random_teleport = function(player)
 	for a=1, 16 do
 		-- Teleportation box
 		local x,y,z
-		x = math.random(pos.x-8, pos.x+8)
+		x = math.random(round(pos.x)-8, round(pos.x)+8)
 		y = math.random(math.ceil(pos.y)-8, math.ceil(pos.y)+8)
-		z = math.random(pos.z-8, pos.z+8)
+		z = math.random(round(pos.z)-8, round(pos.z)+8)
 		local node_cache = {}
 		local ground_level = false
 		-- Scan nodes from selected position until we hit ground
 		for t=0, 16 do
 			local tpos = {x=x, y=y-t, z=z}
 			local tnode = minetest.get_node(tpos)
-			if tnode.name == "mcl_core:void" then
+			if tnode.name == "mcl_core:void" or tnode.name == "ignore" then
 				break
 			end
 			local tdef = minetest.registered_nodes[tnode.name]
@@ -304,16 +310,20 @@ local random_teleport = function(player)
 		-- Ground found? Then let's check if the player has enough room
 		if ground_level and #node_cache >= 1 then
 			local streak = 0
+			local last_was_walkable = true
 			for c=#node_cache, 1, -1 do
 				local tpos = node_cache[c].pos
 				local tnode = node_cache[c].node
 				local tdef = minetest.registered_nodes[tnode.name]
-				-- Player needs a space of 2 nodes on top of each other
-				if not tdef.walkable and tdef.liquidtype == "none" then
-					streak = streak + 1
+				-- Player needs a space of 2 safe non-liquid nodes on top of a walkable node
+				if not tdef.walkable and tdef.liquidtype == "none" and tdef.damage_per_second <= 0 then
+					if (streak == 0 and last_was_walkable) or (streak > 0) then
+						streak = streak + 1
+					end
 				else
 					streak = 0
 				end
+				last_was_walkable = tdef.walkable
 				if streak >= 2 then
 					-- JACKPOT! Now we can teleport.
 					local goal = {x=tpos.x, y=tpos.y-1.5, z=tpos.z}
@@ -347,7 +357,7 @@ end
 
 minetest.register_craftitem("mcl_end:chorus_fruit", {
 	description = "Chorus Fruit",
-	_doc_items_longdesc = "A chorus fruit is an edible fruit from the chorus plant which is home to the End. Eating it teleports you to the top of a random solid block nearby, provided you won't end up inside a liquid or some solid blocks. Teleportation might fail if there are very few or no places to teleport to.",
+	_doc_items_longdesc = "A chorus fruit is an edible fruit from the chorus plant which is home to the End. Eating it teleports you to the top of a random solid block nearby, provided you won't end up inside a liquid, solid or harmful blocks. Teleportation might fail if there are very few or no places to teleport to.",
 	wield_image = "mcl_end_chorus_fruit.png",
 	inventory_image = "mcl_end_chorus_fruit.png",
 	on_place = eat_chorus_fruit,
