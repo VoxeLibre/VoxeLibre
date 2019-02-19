@@ -12,15 +12,13 @@ local P = function (float)
 	return math.floor(32767 * float)
 end
 
--- Wahrscheinlichkeit für jeden Chunk, solche Gänge mit Schienen zu bekommen
--- Probability for every newly generated chunk to get corridors
-local probability_railcaves_in_chunk = P(0.3)
-setting = tonumber(minetest.settings:get("tsm_railcorridors_probability_railcaves_in_chunk"))
+-- Probability for every newly generated mapchunk to get corridors
+local probability_railcaves_in_mapchunk = P(0.33333)
+setting = tonumber(minetest.settings:get("tsm_railcorridors_probability_railcaves_in_mapchunk"))
 if setting then
-	probability_railcaves_in_chunk = P(setting)
+	probability_railcaves_in_mapchunk = P(setting)
 end
 
--- Innerhalb welcher Parameter soll sich die Pfadlänge bewegen? (Forks heben den Maximalwert auf)
 -- Minimal and maximal value of path length (forks don't look up this value)
 local way_min = 4;
 local way_max = 7;
@@ -33,7 +31,6 @@ if setting then
 	way_max = setting
 end
 
--- Wahrsch. für jeden geraden Teil eines Korridors, Fackeln zu bekommen
 -- Probability for every horizontal part of a corridor to be with torches
 local probability_torches_in_segment = P(0.5)
 setting = tonumber(minetest.settings:get("tsm_railcorridors_probability_torches_in_segment"))
@@ -41,7 +38,6 @@ if setting then
 	probability_torches_in_segment = P(setting)
 end
 
--- Wahrsch. für jeden Teil eines Korridors, nach oben oder nach unten zu gehen
 -- Probability for every part of a corridor to go up or down
 local probability_up_or_down = P(0.2)
 setting = tonumber(minetest.settings:get("tsm_railcorridors_probability_up_or_down"))
@@ -49,7 +45,6 @@ if setting then
 	probability_up_or_down = P(setting)
 end
 
--- Wahrscheinlichkeit für jeden Teil eines Korridors, sich zu verzweigen – vorsicht, wenn fast jeder Gang sich verzweigt, kann der Algorithums unlösbar werden und MT hängt sich auf
 -- Probability for every part of a corridor to fork – caution, too high values may cause MT to hang on.
 local probability_fork = P(0.04)
 setting = tonumber(minetest.settings:get("tsm_railcorridors_probability_fork"))
@@ -57,7 +52,6 @@ if setting then
 	probability_fork = P(setting)
 end
 
--- Wahrscheinlichkeit für jeden geraden Teil eines Korridors eine Kiste zu enthalten
 -- Probability for every part of a corridor to contain a chest
 local probability_chest = P(0.05)
 setting = tonumber(minetest.settings:get("tsm_railcorridors_probability_chest"))
@@ -66,17 +60,11 @@ if setting then
 end
 
 -- Probability for every part of a corridor to contain a cart
--- Disabled because cart spawning creates error message spam:
--- “m_static_exists=true but static data doesn't actually exist in (x,y,z)
--- TODO: Set back to 0.05 when this is fixed.
--- TODO: Remove minecarts from loot table when minecarts spawn on rails.
-local probability_cart = P(0)
---[[
+local probability_cart = P(0.05)
 setting = tonumber(minetest.settings:get("tsm_railcorridors_probability_cart"))
 if setting then
 	probability_cart = P(setting)
 end
-]]
 
 -- Probability for a rail corridor system to be damaged
 local probability_damage = P(1.0)
@@ -111,27 +99,50 @@ local height_max = mcl_worlds.layer_to_y(60)
 -- Chaos Mode: If enabled, rail corridors don't stop generating when hitting obstacles
 local chaos_mode = minetest.settings:get_bool("tsm_railcorridors_chaos") or false
 
--- Parameter Ende
+-- End of parameters
 
--- Random generators
-local pr, webperlin_major, webperlin_minor
-local pr_initialized = false
+if not tsm_railcorridors.nodes.corridor_woods_function then
+	local accumulated_chance = 0
+	for w=1, #tsm_railcorridors.nodes.corridor_woods do
+		accumulated_chance = accumulated_chance + tsm_railcorridors.nodes.corridor_woods[w].chance
+	end
+	assert(accumulated_chance == 1000, "Rail corridor wood chances add up to "..accumulated_chance.." per mille! (should be 1000 per mille)")
+end
+
+-- Random Perlin noise generators
+local pr, pr_carts, pr_treasures, pr_deco, webperlin_major, webperlin_minor
 
 local function InitRandomizer(seed)
 	-- Mostly used for corridor gen.
 	pr = PseudoRandom(seed)
+	-- Dirt room decorations
+	pr_deco = PseudoRandom(seed+25)
+	-- Separate randomizer for carts because spawning carts is very timing-dependent
+	pr_carts = PseudoRandom(seed-654)
+	-- Chest contents randomizer
+	pr_treasures = PseudoRandom(seed+777)
 	-- Used for cobweb generation, both noises have to reach a high value for cobwebs to appear
 	webperlin_major = PerlinNoise(934, 3, 0.6, 500)
 	webperlin_minor = PerlinNoise(834, 3, 0.6, 50)
-	pr_initialized = true
+	pr_inited = true
 end
 
+local carts_table = {}
+
+local dirt_room_coords
+
+-- Returns true if pos is inside the dirt room of the current corridor system
+local function IsInDirtRoom(pos)
+	local min = dirt_room_coords.min
+	local max = dirt_room_coords.max
+	return pos.x >= min.x and pos.x <= max.x and pos.y >= min.y and pos.y <= max.y and pos.z >= min.z and pos.z <= max.z
+end
 
 -- Checks if the mapgen is allowed to carve through this structure and only sets
 -- the node if it is allowed. Does never build in liquids.
 -- If check_above is true, don't build if the node above is attached (e.g. rail)
 -- or a liquid.
-local function SetNodeIfCanBuild(pos, node, check_above)
+local function SetNodeIfCanBuild(pos, node, check_above, can_replace_rail)
 	if check_above then
 		local abovename = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z}).name
 		local abovedef = minetest.registered_nodes[abovename]
@@ -144,8 +155,13 @@ local function SetNodeIfCanBuild(pos, node, check_above)
 	end
 	local name = minetest.get_node(pos).name
 	local def = minetest.registered_nodes[name]
-	if name ~= "unknown" and name ~= "ignore" and def.is_ground_content and
-			(def.liquidtype == "none" or name == tsm_railcorridors.nodes.cobweb) then
+	if name ~= "unknown" and name ~= "ignore" and
+			((def.is_ground_content and def.liquidtype == "none") or
+			name == tsm_railcorridors.nodes.cobweb or
+			name == tsm_railcorridors.nodes.torch_wall or
+			name == tsm_railcorridors.nodes.torch_floor or
+			(can_replace_rail and name == tsm_railcorridors.nodes.rail)
+			) then
 		minetest.set_node(pos, node)
 		return true
 	else
@@ -175,8 +191,9 @@ end
 -- Returns true if rails are allowed to be placed on top of this node
 local function IsRailSurface(pos)
 	local nodename = minetest.get_node(pos).name
+	local nodename_above = minetest.get_node({x=pos.x,y=pos.y+2,z=pos.z}).name
 	local nodedef = minetest.registered_nodes[nodename]
-	return nodename ~= "unknown" and nodename ~= "ignore" and nodedef.walkable and (nodedef.node_box == nil or nodedef.node_box.type == "regular")
+	return nodename ~= "unknown" and nodename ~= "ignore" and nodedef.walkable and (nodedef.node_box == nil or nodedef.node_box.type == "regular") and nodename_above ~= tsm_railcorridors.nodes.rail
 end
 
 -- Checks if the node is empty space which requires to be filled by a platform
@@ -184,28 +201,61 @@ local function NeedsPlatform(pos)
 	local node = minetest.get_node({x=pos.x,y=pos.y-1,z=pos.z})
 	local node2 = minetest.get_node({x=pos.x,y=pos.y-2,z=pos.z})
 	local nodedef = minetest.registered_nodes[node.name]
-	return node.name ~= "ignore" and node.name ~= "unknown" and nodedef.is_ground_content and ((nodedef.walkable == false and node2.name ~= tsm_railcorridors.nodes.dirt) or (nodedef.groups and nodedef.groups.falling_node))
+	local falling = minetest.get_item_group(node.name, "falling_node") == 1
+	return
+		-- Node can be replaced if ground content or rail
+		(node.name ~= "ignore" and node.name ~= "unknown" and nodedef.is_ground_content) and
+		-- Node needs platform if node below is not walkable.
+		-- Unless 2 nodes below there is dirt: This is a special case for the starter cube.
+		((nodedef.walkable == false and node2.name ~= tsm_railcorridors.nodes.dirt) or
+		-- Falling nodes always need to be replaced by a platform, we want a solid and safe ground
+		falling),
+		-- second return value
+		falling
 end
 
 -- Create a cube filled with the specified nodes
 -- Specialties:
--- * Avoids floating rails for non-solid nodes like air
+-- * Avoids floating rails
+-- * May cut into wood structures of the corridors (alongside with their torches)
+-- Arguments:
+-- * p: Center position
+-- * radius: How many nodes from the center the cube will extend
+-- * node: Node to set
+-- * replace_air_only: If true, only air can be replaced
+-- * wood, post: Wood and post nodes of the railway corridor to cut into (optional)
+
 -- Returns true if all nodes could be set
 -- Returns false if setting one or more nodes failed
-local function Cube(p, radius, node, replace_air_only)
+local function Cube(p, radius, node, replace_air_only, wood, post)
 	local y_top = p.y+radius
 	local nodedef = minetest.registered_nodes[node.name]
 	local solid = nodedef.walkable and (nodedef.node_box == nil or nodedef.node_box.type == "regular") and nodedef.liquidtype == "none"
 	-- Check if all the nodes could be set
 	local built_all = true
-	for zi = p.z-radius, p.z+radius do
-		for yi = y_top, p.y-radius, -1 do
-			for xi = p.x-radius, p.x+radius do
+
+	-- If wood has been removed, remod
+	local cleanup_torches = {}
+	for xi = p.x-radius, p.x+radius do
+		for zi = p.z-radius, p.z+radius do
+			local column_last_attached = nil
+			for yi = y_top, p.y-radius, -1 do
 				local ok = false
-				if not solid and yi == y_top then
-					local topdef = minetest.registered_nodes[minetest.get_node({x=xi,y=yi+1,z=zi}).name]
-					if not (topdef.groups and topdef.groups.attached_node) and topdef.liquidtype == "none" then
+				local thisnode = minetest.get_node({x=xi,y=yi,z=zi})
+				if not solid then
+					if yi == y_top then
+						local topnode = minetest.get_node({x=xi,y=yi+1,z=zi})
+						local topdef = minetest.registered_nodes[topnode.name]
+						if minetest.get_item_group(topnode.name, "attached_node") ~= 1 and topdef.liquidtype == "none" then
+							ok = true
+						end
+					elseif column_last_attached and yi == column_last_attached - 1 then
+						ok = false
+					else
 						ok = true
+					end
+					if minetest.get_item_group(thisnode.name, "attached_node") == 1 then
+						column_last_attached = yi
 					end
 				else
 					ok = true
@@ -213,7 +263,29 @@ local function Cube(p, radius, node, replace_air_only)
 				local built = false
 				if ok then
 					if replace_air_only ~= true then
-						built = SetNodeIfCanBuild({x=xi,y=yi,z=zi}, node)
+						-- Cut into wood structures (post/wood)
+						if post and (xi == p.x or zi == p.z) and thisnode.name == post then
+							minetest.set_node({x=xi,y=yi,z=zi}, node)
+							built = true
+						elseif wood and (xi == p.x or zi == p.z) and thisnode.name == wood then
+							local topnode = minetest.get_node({x=xi,y=yi+1,z=zi})
+							local topdef = minetest.registered_nodes[topnode.name]
+							if topdef.walkable and topnode.name ~= wood then
+								minetest.set_node({x=xi,y=yi,z=zi}, node)
+								-- Check for torches around the wood and schedule them
+								-- for removal
+								if node.name == "air" then
+									table.insert(cleanup_torches, {x=xi+1,y=yi,z=zi})
+									table.insert(cleanup_torches, {x=xi-1,y=yi,z=zi})
+									table.insert(cleanup_torches, {x=xi,y=yi,z=zi+1})
+									table.insert(cleanup_torches, {x=xi,y=yi,z=zi-1})
+								end
+								built = true
+							end
+						-- Set node normally
+						else
+							built = SetNodeIfCanBuild({x=xi,y=yi,z=zi}, node)
+						end
 					else
 						if minetest.get_node({x=xi,y=yi,z=zi}).name == "air" then
 							built = SetNodeIfCanBuild({x=xi,y=yi,z=zi}, node)
@@ -226,15 +298,74 @@ local function Cube(p, radius, node, replace_air_only)
 			end
 		end
 	end
+	-- Remove torches we have detected before
+	for c=1, #cleanup_torches do
+		local check = minetest.get_node(cleanup_torches[c])
+		if check.name == tsm_railcorridors.nodes.torch_wall or check.name == tsm_railcorridors.nodes.torch_floor then
+			minetest.set_node(cleanup_torches[c], node)
+		end
+	end
 	return built_all
 end
 
-local function Platform(p, radius, node)
+local function DirtRoom(p, radius, height, dirt_mode, decorations_mode)
+	local y_bottom = p.y
+	local y_top = y_bottom + height + 1
+	dirt_room_coords = {
+		min = { x = p.x-radius, y = y_bottom, z = p.z-radius },
+		max = { x = p.x+radius, y = y_top, z = p.z+radius },
+	}
+	local built_all = true
+	for xi = p.x-radius, p.x+radius do
+		for zi = p.z-radius, p.z+radius do
+			for yi = y_top, y_bottom, -1 do
+				local thisnode = minetest.get_node({x=xi,y=yi,z=zi})
+				local built = false
+				if xi == p.x-radius or xi == p.x+radius or zi == p.z-radius or zi == p.z+radius or yi == y_bottom or yi == y_top then
+					if dirt_mode == 1 or yi == y_bottom then
+						built = SetNodeIfCanBuild({x=xi,y=yi,z=zi}, {name=tsm_railcorridors.nodes.dirt})
+					elseif (dirt_mode == 2 or dirt_mode == 3) and yi == y_top then
+						if minetest.get_item_group(thisnode.name, "falling_node") == 1 then
+							built = SetNodeIfCanBuild({x=xi,y=yi,z=zi}, {name=tsm_railcorridors.nodes.dirt})
+						end
+					end
+				else
+					if yi == y_bottom + 1 then
+						-- crazy rails
+						if decorations_mode == 1 then
+							local r = pr_deco:next(1,3)
+							if r == 2 then
+								built = SetNodeIfCanBuild({x=xi,y=yi,z=zi}, {name=tsm_railcorridors.nodes.rail})
+							end
+						end
+					end
+					if not built then
+						built = SetNodeIfCanBuild({x=xi,y=yi,z=zi}, {name="air"})
+					end
+				end
+				if not built then
+					built_all = false
+				end
+			end
+		end
+	end
+	return built_all
+end
+
+local function Platform(p, radius, node, node2)
+	-- node2 is secondary platform material for replacing falling nodes
+	if not node2 then
+		node2 = { name = tsm_railcorridors.nodes.dirt }
+	end
 	for zi = p.z-radius, p.z+radius do
 		for xi = p.x-radius, p.x+radius do
-			local np = NeedsPlatform({x=xi,y=p.y,z=zi})
+			local np, np2 = NeedsPlatform({x=xi,y=p.y,z=zi})
 			if np then
-				minetest.set_node({x=xi,y=p.y-1,z=zi}, node)
+				if np2 then
+					minetest.set_node({x=xi,y=p.y-1,z=zi}, node2)
+				else
+					minetest.set_node({x=xi,y=p.y-1,z=zi}, node)
+				end
 			end
 		end
 	end
@@ -253,36 +384,24 @@ local function PlaceChest(pos, param2)
 end
 
 -- This function checks if a cart has ACTUALLY been spawned.
--- If not, it tries to spawn it again, and again, until it succeeded or
--- it failed too often.
 -- To be calld by minetest.after.
--- This is a HORRIBLE workaround thanks to the fact that minetest.add_entity is unreliable as fuck
+-- This is a workaround thanks to the fact that minetest.add_entity is unreliable as fuck
 -- See: https://github.com/minetest/minetest/issues/4759
 -- FIXME: Kill this horrible hack with fire as soon you can.
 local function RecheckCartHack(params)
 	local pos = params[1]
 	local cart_id = params[2]
-	local tries = params[3]
-	tries = tries - 1
 	-- Find cart
 	for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
 		if obj ~= nil and obj:get_luaentity().name == cart_id then
 			-- Cart found! We can now safely call the callback func.
 			-- (calling it earlier has the danger of failing)
+			minetest.log("info", "[tsm_railcorridors] Cart spawn succeeded: "..minetest.pos_to_string(pos))
 			tsm_railcorridors.on_construct_cart(pos, obj)
 			return
 		end
 	end
-	if tries <= 0 then
-		-- Abort if too many tries to avoid excessive function calls
-		return
-	end
-	-- No cart found! :-( Try again …
-	if minetest.get_node(pos).name == tsm_railcorridors.nodes.rail then
-		minetest.add_entity(pos, cart_id)
-		minetest.after(5, RecheckCartHack, {pos, cart_id, tries})
-	end
-	-- The rail may have been destroyed in the meantime, that's why the node is checked.
+	minetest.log("info", "[tsm_railcorridors] Cart spawn FAILED: "..minetest.pos_to_string(pos))
 end
 
 -- Try to place a cobweb.
@@ -321,27 +440,108 @@ local function TryPlaceCobweb(pos, needs_check, side_vector)
 		return false
 	end
 end
-	
-local function WoodBulk(pos, wood)
-	SetNodeIfCanBuild({x=pos.x+1, y=pos.y, z=pos.z+1}, {name=wood})
-	SetNodeIfCanBuild({x=pos.x-1, y=pos.y, z=pos.z+1}, {name=wood})
-	SetNodeIfCanBuild({x=pos.x+1, y=pos.y, z=pos.z-1}, {name=wood})
-	SetNodeIfCanBuild({x=pos.x-1, y=pos.y, z=pos.z-1}, {name=wood})
+
+-- 4 wooden pillars around pos at height
+local function WoodBulk(pos, height, wood)
+	for y=0, height-1 do
+		SetNodeIfCanBuild({x=pos.x+1, y=pos.y+y, z=pos.z+1}, {name=wood}, false, true)
+		SetNodeIfCanBuild({x=pos.x-1, y=pos.y+y, z=pos.z+1}, {name=wood}, false, true)
+		SetNodeIfCanBuild({x=pos.x+1, y=pos.y+y, z=pos.z-1}, {name=wood}, false, true)
+		SetNodeIfCanBuild({x=pos.x-1, y=pos.y+y, z=pos.z-1}, {name=wood}, false, true)
+	end
 end
 
--- Gänge mit Schienen
--- Corridors with rails
+-- Build a wooden support frame
+local function WoodSupport(p, wood, post, torches, dir, torchdir)
+	local node_wood = {name=wood}
+	local node_fence = {name=post}
+
+	local calc = {
+		p.x+dir[1], p.z+dir[2], -- X and Z, added by direction
+		p.x-dir[1], p.z-dir[2], -- subtracted
+		p.x+dir[2], p.z+dir[1], -- orthogonal
+		p.x-dir[2], p.z-dir[1], -- orthogonal, the other way
+	}
+	--[[ Shape:
+		WWW
+		P.P
+		PrP
+		pfp
+	W = wood
+	P = post (above floor level)
+	p = post (in floor level, only placed if no floor)
+
+	From previous generation (for reference):
+	f = floor
+	r = rail
+	. = air
+	]]
+
+	-- Don't place those wood structs below open air
+	if not (minetest.get_node({x=calc[1], y=p.y+2, z=calc[2]}).name == "air" and
+		minetest.get_node({x=calc[3], y=p.y+2, z=calc[4]}).name == "air" and
+		minetest.get_node({x=p.x, y=p.y+2, z=p.z}).name == "air") then
+
+		-- Left post and planks
+		local left_ok
+		left_ok = SetNodeIfCanBuild({x=calc[1], y=p.y-1, z=calc[2]}, node_fence)
+		if left_ok then left_ok = SetNodeIfCanBuild({x=calc[1], y=p.y  , z=calc[2]}, node_fence) end
+		if left_ok then left_ok = SetNodeIfCanBuild({x=calc[1], y=p.y+1, z=calc[2]}, node_wood, false, true) end
+
+		-- Right post and planks
+		local right_ok
+		right_ok = SetNodeIfCanBuild({x=calc[3], y=p.y-1, z=calc[4]}, node_fence)
+		if right_ok then right_ok = SetNodeIfCanBuild({x=calc[3], y=p.y  , z=calc[4]}, node_fence) end
+		if right_ok then right_ok = SetNodeIfCanBuild({x=calc[3], y=p.y+1, z=calc[4]}, node_wood, false, true) end
+
+		-- Middle planks
+		local top_planks_ok = false
+		if left_ok and right_ok then top_planks_ok = SetNodeIfCanBuild({x=p.x, y=p.y+1, z=p.z}, node_wood) end
+
+		if minetest.get_node({x=p.x,y=p.y-2,z=p.z}).name=="air" then
+			if left_ok then SetNodeIfCanBuild({x=calc[1], y=p.y-2, z=calc[2]}, node_fence) end
+			if right_ok then SetNodeIfCanBuild({x=calc[3], y=p.y-2, z=calc[4]}, node_fence) end
+		end
+		-- Torches on the middle planks
+		if torches and top_planks_ok then
+			-- Place torches at horizontal sides
+			SetNodeIfCanBuild({x=calc[5], y=p.y+1, z=calc[6]}, {name=tsm_railcorridors.nodes.torch_wall, param2=torchdir[1]}, true)
+			SetNodeIfCanBuild({x=calc[7], y=p.y+1, z=calc[8]}, {name=tsm_railcorridors.nodes.torch_wall, param2=torchdir[2]}, true)
+		end
+	elseif torches then
+		-- Try to build torches instead of the wood structs
+		local node = {name=tsm_railcorridors.nodes.torch_floor, param2=minetest.dir_to_wallmounted({x=0,y=-1,z=0})}
+
+		-- Try two different height levels
+		local pos1 = {x=calc[1], y=p.y-2, z=calc[2]}
+		local pos2 = {x=calc[3], y=p.y-2, z=calc[4]}
+		local nodedef1 = minetest.registered_nodes[minetest.get_node(pos1).name]
+		local nodedef2 = minetest.registered_nodes[minetest.get_node(pos2).name]
+
+		if nodedef1.walkable then
+			pos1.y = pos1.y + 1
+		end
+		SetNodeIfCanBuild(pos1, node, true)
+
+		if nodedef2.walkable then
+			pos2.y = pos2.y + 1
+		end
+		SetNodeIfCanBuild(pos2, node, true)
+
+	end
+end
+
+-- Dig out a single corridor section and place wooden structures and torches
 
 -- Returns <success>, <segments>
 -- success: true if corridor could be placed entirely
 -- segments: Number of segments successfully placed
-local function corridor_part(start_point, segment_vector, segment_count, wood, post, first_or_final, up_or_down_prev)
+local function dig_corridor_section(start_point, segment_vector, segment_count, wood, post, up_or_down_prev)
 	local p = {x=start_point.x, y=start_point.y, z=start_point.z}
 	local torches = pr:next() < probability_torches_in_segment
 	local dir = {0, 0}
 	local torchdir = {1, 1}
 	local node_wood = {name=wood}
-	local node_fence = {name=post}
 	if segment_vector.x == 0 and segment_vector.z ~= 0 then
 		dir = {1, 0}
 		torchdir = {5, 4}
@@ -350,7 +550,12 @@ local function corridor_part(start_point, segment_vector, segment_count, wood, p
 		torchdir = {3, 2}
 	end
 	for segmentindex = 0, segment_count-1 do
-		local dug = Cube(p, 1, {name="air"})
+		local dug
+		if segment_vector.y == 0 then
+			dug = Cube(p, 1, {name="air"}, false, wood, post)
+		else
+			dug = Cube(p, 1, {name="air"}, false)
+		end
 		if not chaos_mode and segmentindex > 0 and not dug then return false, segmentindex end
 		-- Add wooden platform, if neccessary. To avoid floating rails
 		if segment_vector.y == 0 then
@@ -364,92 +569,27 @@ local function corridor_part(start_point, segment_vector, segment_count, wood, p
 				-- Normal 3×3 platform
 				Platform({x=p.x, y=p.y-1, z=p.z}, 1, node_wood)
 			end
+		else
+			-- Sloped bridge
+			Platform({x=p.x-dir[1], y=p.y-2, z=p.z-dir[2]}, 0, node_wood)
+			Platform({x=p.x, y=p.y-2, z=p.z}, 0, node_wood)
+			Platform({x=p.x+dir[1], y=p.y-2, z=p.z+dir[2]}, 0, node_wood)
 		end
-		-- Diese komischen Holz-Konstruktionen
-		-- These strange wood structs
 		if segmentindex % 2 == 1 and segment_vector.y == 0 then
-			local calc = {
-				p.x+dir[1], p.z+dir[2], -- X and Z, added by direction
-				p.x-dir[1], p.z-dir[2], -- subtracted
-				p.x+dir[2], p.z+dir[1], -- orthogonal
-				p.x-dir[2], p.z-dir[1], -- orthogonal, the other way
-			}
-			--[[ Shape:
-				WWW
-				P.P
-				PrP
-				pfp
-			W = wood
-			P = post (above floor level)
-			p = post (in floor level, only placed if no floor)
-			
-			From previous generation (for reference):
-			f = floor
-			r = rail
-			. = air
-			]]
-
-			-- Don't place those wood structs below open air
-			if not (minetest.get_node({x=calc[1], y=p.y+2, z=calc[2]}).name == "air" and
-				minetest.get_node({x=calc[3], y=p.y+2, z=calc[4]}).name == "air" and
-				minetest.get_node({x=p.x, y=p.y+2, z=p.z}).name == "air") then
-
-				-- Left post and planks
-				local left_ok = true
-				left_ok = SetNodeIfCanBuild({x=calc[1], y=p.y-1, z=calc[2]}, node_fence)
-				if left_ok then left_ok = SetNodeIfCanBuild({x=calc[1], y=p.y  , z=calc[2]}, node_fence) end
-				if left_ok then left_ok = SetNodeIfCanBuild({x=calc[1], y=p.y+1, z=calc[2]}, node_wood) end
-
-				-- Right post and planks
-				local right_ok = true
-				right_ok = SetNodeIfCanBuild({x=calc[3], y=p.y-1, z=calc[4]}, node_fence)
-				if right_ok then right_ok = SetNodeIfCanBuild({x=calc[3], y=p.y  , z=calc[4]}, node_fence) end
-				if right_ok then right_ok = SetNodeIfCanBuild({x=calc[3], y=p.y+1, z=calc[4]}, node_wood) end
-
-				-- Middle planks
-				local top_planks_ok = false
-				if left_ok and right_ok then top_planks_ok = SetNodeIfCanBuild({x=p.x, y=p.y+1, z=p.z}, node_wood) end
-
-				if minetest.get_node({x=p.x,y=p.y-2,z=p.z}).name=="air" then
-					if left_ok then SetNodeIfCanBuild({x=calc[1], y=p.y-2, z=calc[2]}, node_fence) end
-					if right_ok then SetNodeIfCanBuild({x=calc[3], y=p.y-2, z=calc[4]}, node_fence) end
-				end
-				-- Torches on the middle planks
-				if torches and top_planks_ok then
-					-- Place torches at horizontal sides
-					SetNodeIfCanBuild({x=calc[5], y=p.y+1, z=calc[6]}, {name=tsm_railcorridors.nodes.torch_wall, param2=torchdir[1]}, true)
-					SetNodeIfCanBuild({x=calc[7], y=p.y+1, z=calc[8]}, {name=tsm_railcorridors.nodes.torch_wall, param2=torchdir[2]}, true)
-				end
-			elseif torches then
-				-- Try to build torches instead of the wood structs
-				local node = {name=tsm_railcorridors.nodes.torch_floor, param2=minetest.dir_to_wallmounted({x=0,y=-1,z=0})}
-
-				-- Try two different height levels
-				local pos1 = {x=calc[1], y=p.y-2, z=calc[2]}
-				local pos2 = {x=calc[3], y=p.y-2, z=calc[4]}
-				local nodedef1 = minetest.registered_nodes[minetest.get_node(pos1).name]
-				local nodedef2 = minetest.registered_nodes[minetest.get_node(pos2).name]
-
-				if nodedef1.walkable then
-					pos1.y = pos1.y + 1
-				end
-				SetNodeIfCanBuild(pos1, node, true)
-
-				if nodedef2.walkable then
-					pos2.y = pos2.y + 1
-				end
-				SetNodeIfCanBuild(pos2, node, true)
-
-			end
+			WoodSupport(p, wood, post, torches, dir, torchdir)
 		end
-		
-		-- nächster Punkt durch Vektoraddition
-		-- next way point
+
+		-- Next way point
 		p = vector.add(p, segment_vector)
 	end
 
 	-- End of the corridor segment; create the final piece
-	local dug = Cube(p, 1, {name="air"})
+	local dug
+	if segment_vector.y == 0 then
+		dug = Cube(p, 1, {name="air"}, false, wood, post)
+	else
+		dug = Cube(p, 1, {name="air"}, false)
+	end
 	if not chaos_mode and not dug then return false, segment_count end
 	if segment_vector.y == 0 then
 		Platform({x=p.x, y=p.y-1, z=p.z}, 1, node_wood)
@@ -457,7 +597,11 @@ local function corridor_part(start_point, segment_vector, segment_count, wood, p
 	return true, segment_count
 end
 
-local function corridor_func(waypoint, coord, sign, up_or_down, up_or_down_next, up_or_down_prev, up, wood, post, first_or_final, damage, no_spawner)
+-- Generate a corridor section. Corridor sections are part of a corridor line.
+-- This is one short part of a corridor line. It can be one straight section or it goes up or down.
+-- It digs out the corridor and places wood structs and torches using the helper function dig_corridor_function,
+-- then it places rails, chests, and other goodies.
+local function create_corridor_section(waypoint, axis, sign, up_or_down, up_or_down_next, up_or_down_prev, up, wood, post, first_or_final, damage, no_spawner)
 	local segamount = 3
 	if up_or_down then
 		segamount = 1
@@ -467,12 +611,12 @@ local function corridor_func(waypoint, coord, sign, up_or_down, up_or_down_next,
 	end
 	local vek = {x=0,y=0,z=0};
 	local start = table.copy(waypoint)
-	if coord == "x" then
+	if axis == "x" then
 		vek.x=segamount
 		if up_or_down and up == false then
 			start.x=start.x+segamount
 		end
-	elseif coord == "z" then
+	elseif axis == "z" then
 		vek.z=segamount
 		if up_or_down and up == false then
 			start.z=start.z+segamount
@@ -487,20 +631,19 @@ local function corridor_func(waypoint, coord, sign, up_or_down, up_or_down_next,
 	end
 	local segcount = pr:next(4,6)
 	if up_or_down and up == false then
-		Cube(waypoint, 1, {name="air"})
+		Cube(waypoint, 1, {name="air"}, false)
 	end
-	local corridor_dug, corridor_segments_dug = corridor_part(start, vek, segcount, wood, post, first_or_final, up_or_down_prev)
+	local corridor_dug, corridor_segments_dug = dig_corridor_section(start, vek, segcount, wood, post, up_or_down_prev)
 	local corridor_vek = {x=vek.x*segcount, y=vek.y*segcount, z=vek.z*segcount}
 
-	-- nachträglich Schienen legen
-	-- after this: rails
+	-- After this: rails
 	segamount = 1
 	if sign then
 		segamount = 0-segamount
 	end
-	if coord == "x" then
+	if axis == "x" then
 		vek.x=segamount
-	elseif coord == "z" then
+	elseif axis == "z" then
 		vek.z=segamount
 	end
 	if up_or_down then
@@ -541,7 +684,7 @@ local function corridor_func(waypoint, coord, sign, up_or_down, up_or_down_next,
 		-- Randomly returns either the left or right side of the main rail.
 		-- Also returns offset as second return value.
 		local left_or_right = function(pos, vek)
-			local off, facedir
+			local off
 			if pr:next(1, 2) == 1 then
 				-- left
 				off = {x = -vek.z, y= 0, z = vek.x}
@@ -565,32 +708,30 @@ local function corridor_func(waypoint, coord, sign, up_or_down, up_or_down_next,
 		-- Chest
 		if i == chestplace then
 			local cpos, offset = left_or_right(p, vek)
-			if minetest.get_node(cpos).name == post then
+			if minetest.get_node(cpos).name == post or IsInDirtRoom(p) then
 				chestplace = chestplace + 1
 			else
 				PlaceChest(cpos, minetest.dir_to_facedir(offset))
 			end
 		end
 
-		-- Rail and cart
-		if i == cartplace then
+		-- A rail at the side of the track to put a cart on
+		if i == cartplace and #tsm_railcorridors.carts > 0 then
 			local cpos = left_or_right(p, vek)
 			if minetest.get_node(cpos).name == post then
 				cartplace = cartplace + 1
 			else
-				local placed = PlaceRail(cpos, damage)
+				local placed
+				if IsRailSurface({x=cpos.x, y=cpos.y-1, z=cpos.z}) then
+					placed = PlaceRail(cpos, damage)
+				else
+					placed = false
+				end
 				if placed then
-					local cart_type = pr:next(1, #tsm_railcorridors.carts)
-					-- FIXME: The cart sometimes fails to spawn
-					-- See <https://github.com/minetest/minetest/issues/4759>
-					local cart_id = tsm_railcorridors.carts[cart_type]
-					local cart = minetest.add_entity(cpos, cart_id)
-
-					-- This checks if the cart is actually spawned, it's a giant hack!
-					-- Note that the callback function is also called there.
-					-- TODO: Move callback function to this position when the
-					-- minetest.add_entity bug has been fixed.
-					minetest.after(2, RecheckCartHack, {cpos, cart_id, 10})
+					-- We don't put on a cart yet, we put it in the carts table
+					-- for later placement
+					local cart_type = pr_carts:next(1, #tsm_railcorridors.carts)
+					table.insert(carts_table, {pos = cpos, cart_type = cart_type})
 				end
 			end
 		end
@@ -649,7 +790,7 @@ local function corridor_func(waypoint, coord, sign, up_or_down, up_or_down_next,
 
 		end
 	end
-	
+
 	local offset = table.copy(corridor_vek)
 	local final_point = vector.add(waypoint, offset)
 	if up_or_down then
@@ -657,12 +798,13 @@ local function corridor_func(waypoint, coord, sign, up_or_down, up_or_down_next,
 			offset.y = offset.y - 1
 			final_point = vector.add(waypoint, offset)
 		else
-			offset[coord] = offset[coord] + segamount
+			offset[axis] = offset[axis] + segamount
 			final_point = vector.add(waypoint, offset)
-			-- After going up or down, 1 missing rail piece must be added
-			if IsRailSurface({x=final_point.x,y=final_point.y-2,z=final_point.z}) then
-				PlaceRail({x=final_point.x,y=final_point.y-1,z=final_point.z}, damage)
-			end
+		end
+		-- After going up or down, 1 missing rail piece must be added
+		Platform({x=final_point.x,y=final_point.y-1,z=final_point.z}, 0, {name=wood})
+		if IsRailSurface({x=final_point.x,y=final_point.y-2,z=final_point.z}) then
+			PlaceRail({x=final_point.x,y=final_point.y-1,z=final_point.z}, damage)
 		end
 	end
 	if not corridor_dug then
@@ -672,34 +814,46 @@ local function corridor_func(waypoint, coord, sign, up_or_down, up_or_down_next,
 	end
 end
 
-local function start_corridor(waypoint, coord, sign, length, psra, wood, post, damage, no_spawner)
+-- Generate a line of corridors.
+-- The corridor can go up/down, take turns and it can branch off, creating more corridor lines.
+local function create_corridor_line(waypoint, axis, sign, length, wood, post, damage, no_spawner)
 	local wp = waypoint
-	local c = coord
+	local a = axis
 	local s = sign
-	local ud = false -- up or down
-	local udn = false -- up or down is next
-	local udp = false -- up or down was previous
-	local up
+	local ud = false -- Up or down
+	local udn = false -- Up or down is next
+	local udp = false -- Up or down was previous
+	local up = false -- true if going up
+	local upp = false -- true if was going up previously
 	for i=1,length do
-		local needs_platform
 		-- Update previous up/down status
 		udp = ud
+		-- Can't go up/down if a platform is needed at waypoint
+		local needs_platform = NeedsPlatform({x=wp.x,y=wp.y-2,z=wp.z})
 		-- Update current up/down status
-		if udn then
-			needs_platform = NeedsPlatform(wp)
-			if needs_platform then
-				ud = false
-			end
+		if udn and not needs_platform then
 			ud = true
 			-- Force direction near the height limits
 			if wp.y >= height_max - 12 then
+				if udp then
+					ud = false
+				end
 				up = false
 			elseif wp.y <= height_min + 12 then
+				if udp then
+					ud = false
+				end
 				up = true
 			else
-				-- Chose random direction in between
-				up = pr:next(0, 2) < 1
+				-- If previous was up/down, keep the vertical direction
+				if udp and not chaos_mode then
+					up = upp
+				else
+					-- Chose random direction
+					up = pr:next(1, 2) == 1
+				end
 			end
+			upp = up
 		else
 			ud = false
 		end
@@ -709,71 +863,141 @@ local function start_corridor(waypoint, coord, sign, length, psra, wood, post, d
 		elseif udn and not needs_platform then
 			udn = false
 		end
-		-- Make corridor / Korridor graben
+		-- Make corridor
 		local first_or_final
 		if i == length then
 			first_or_final = "final"
 		elseif i == 1 then
 			first_or_final = "first"
 		end
-		wp, no_spawner = corridor_func(wp,c,s, ud, udn, udp, up, wood, post, first_or_final, damage, no_spawner)
+		wp, no_spawner = create_corridor_section(wp,a,s, ud, udn, udp, up, wood, post, first_or_final, damage, no_spawner)
 		if wp == false then return end
-		-- Verzweigung?
-		-- Fork?
+		-- Fork in the road? If so, starts 2-3 new corridor lines and terminates the current one.
 		if pr:next() < probability_fork then
+			-- 75% chance to fork off in 3 directions (making a crossing)
+			-- 25% chance to fork off in 2 directions (making a t-junction)
+			local is_crossing = pr:next(0, 3) < 3
+			local forks = 2
+			if is_crossing then
+				forks = 3
+			end
 			local p = {x=wp.x, y=wp.y, z=wp.z}
-			start_corridor(wp, c, s, pr:next(way_min,way_max), psra, wood, post, damage, no_spawner)
-			if c == "x" then c="z" else c="x" end
-			start_corridor(wp, c, s, pr:next(way_min,way_max), psra, wood, post, damage, no_spawner)
-			start_corridor(wp, c, not s, pr:next(way_min,way_max), psra, wood, post, damage, no_spawner)
-			WoodBulk({x=p.x, y=p.y-1, z=p.z}, wood)
-			WoodBulk({x=p.x, y=p.y,   z=p.z}, wood)
-			WoodBulk({x=p.x, y=p.y+1, z=p.z}, wood)
-			WoodBulk({x=p.x, y=p.y+2, z=p.z}, wood)
+			local a2
+			if a == "x" then
+				a2="z"
+			else
+				a2="x"
+			end
+			local fork_dirs = {
+				{a2, s}, -- to the side
+				{a2, not s}, -- to the other side
+				{a, s}, -- straight ahead
+			}
+			for f=1, forks do
+				local r = pr:next(1, #fork_dirs)
+				create_corridor_line(wp, fork_dirs[r][1], fork_dirs[r][2], pr:next(way_min,way_max), wood, post, damage, no_spawner)
+				table.remove(fork_dirs, r)
+			end
+			if is_crossing and not IsInDirtRoom(p) then
+				-- 4 large wooden pillars around the center rail
+				WoodBulk({x=p.x, y=p.y-1, z=p.z}, 4, wood)
+			end
 			return
 		end
-		-- coord und sign verändern
-		-- randomly change sign and coord
-		if c=="x" then
-			c="z"
-		elseif c=="z" then
-			c="x"
+		-- Randomly change sign, toggle axis.
+		-- In other words, take a turn.
+		if a=="x" then
+			a="z"
+		elseif a=="z" then
+			a="x"
 	 	end;
-		s = pr:next(0, 2) < 1
+		s = pr:next(1, 2) == 1
 	end
 end
 
-local function place_corridors(main_cave_coords, psra)
-	--[[ ALWAYS start building in the ground. Prevents corridors starting
-	in mid-air or in liquids. ]]
-	if not IsGround(main_cave_coords) then
-		return
+-- Spawns all carts in the carts table and clears the carts table afterwards
+local function spawn_carts()
+	for c=1, #carts_table do
+		local cpos = carts_table[c].pos
+		local cart_type = carts_table[c].cart_type
+		local node = minetest.get_node(cpos)
+		if node.name == tsm_railcorridors.nodes.rail then
+			-- FIXME: The cart sometimes fails to spawn
+			-- See <https://github.com/minetest/minetest/issues/4759>
+			local cart_id = tsm_railcorridors.carts[cart_type]
+			minetest.log("info", "[tsm_railcorridors] Cart spawn attempt: "..minetest.pos_to_string(cpos))
+			minetest.add_entity(cpos, cart_id)
+
+			-- This checks if the cart is actually spawned, it's a giant hack!
+			-- Note that the callback function is also called there.
+			-- TODO: Move callback function to this position when the
+			-- minetest.add_entity bug has been fixed.
+			minetest.after(3, RecheckCartHack, {cpos, cart_id})
+		end
 	end
+	carts_table = {}
+end
+
+-- Start generation of a rail corridor system
+-- main_cave_coords is the center of the floor of the dirt room, from which
+-- all corridors expand.
+local function create_corridor_system(main_cave_coords)
+
+	-- Dirt room size
+	local maxsize = 6
+	if chaos_mode then
+		maxsize = 9
+	end
+	local size = pr:next(3, maxsize)
+
+	--[[ Only build if starter coords are in the ground.
+	Prevents corridors starting in mid-air or in liquids. ]]
+	local check_coords = {
+		-- Center of the room, on the floor
+		{x=0,y=0,z=0},
+		-- Also check near the 4 bottom corners of the dirt room
+		{x= size-1, y=0, z=size-1},
+		{x=-size+1, y=0, z=size-1},
+		{x= size-1, y=0, z=-size+1},
+		{x=-size+1, y=0, z=-size+1},
+	}
+	for c=1, #check_coords do
+		if not IsGround(vector.add(main_cave_coords, check_coords[c])) then
+			return false
+		end
+	end
+
 	local center_node = minetest.get_node(main_cave_coords)
+
+	local height = pr:next(4, 7)
+	if height > size then
+		height = size
+	end
+	local floor_diff = 1
+	if pr:next(0, 100) < 50 then
+		floor_diff = 0
+	end
+	local dirt_mode = pr:next(1,2)
+	local rnd = pr:next(1,1000)
+	-- Small chance to fill dirt room with random rails
+	local decorations_mode = 0
+	if rnd == 1000 then
+		decorations_mode = 1
+	end
+
+	--[[ Starting point: A big hollow dirt cube from which the corridors will extend.
+	Corridor generation starts here. ]]
+	DirtRoom(main_cave_coords, size, height, dirt_mode, decorations_mode)
+	main_cave_coords.y = main_cave_coords.y + 2 + floor_diff
 
 	-- Determine if this corridor system is “damaged” (some rails removed) and to which extent
 	local damage = 0
 	if pr:next() < probability_damage then
 		damage = pr:next(10, 50)
 	end
-	--[[ Starter cube: A big hollow dirt cube from which the corridors will extend.
-	Corridor generation starts here. ]]
-	if pr:next(0, 100) < 50 then
-		Cube(main_cave_coords, 4, {name=tsm_railcorridors.nodes.dirt})
-		Cube(main_cave_coords, 3, {name="air"})
-		-- Center rail
-		PlaceRail({x=main_cave_coords.x, y=main_cave_coords.y-3, z=main_cave_coords.z}, damage)
-		main_cave_coords.y =main_cave_coords.y - 1
-	else
-		Cube(main_cave_coords, 3, {name=tsm_railcorridors.nodes.dirt})
-		Cube(main_cave_coords, 2, {name="air"})
-		-- Center rail
-		PlaceRail({x=main_cave_coords.x, y=main_cave_coords.y-2, z=main_cave_coords.z}, damage)
-	end
-	local xs = pr:next(0, 2) < 1
-	local zs = pr:next(0, 2) < 1;
 
 	-- Get wood and fence post types, using gameconfig.
+
 	local wood, post
 	if tsm_railcorridors.nodes.corridor_woods_function then
 		-- Get wood type by gameconfig function
@@ -787,10 +1011,6 @@ local function place_corridors(main_cave_coords, psra)
 		for w=1, #tsm_railcorridors.nodes.corridor_woods do
 			local woodtable = tsm_railcorridors.nodes.corridor_woods[w]
 			accumulated_chance = accumulated_chance + woodtable.chance
-			if accumulated_chance > 1000 then
-				minetest.log("warning", "[tsm_railcorridors] Warning: Wood chances add up to over 100%!")
-				break
-			end
 			if rnd <= accumulated_chance then
 				woodtype = w
 				break
@@ -800,31 +1020,98 @@ local function place_corridors(main_cave_coords, psra)
 		post = tsm_railcorridors.nodes.corridor_woods[woodtype].post
 	end
 
-	start_corridor(main_cave_coords, "x", xs, pr:next(way_min,way_max), psra, wood, post, damage, false)
-	start_corridor(main_cave_coords, "z", zs, pr:next(way_min,way_max), psra, wood, post, damage, false)
-	-- Auch mal die andere Richtung?
-	-- Try the other direction?
-	if pr:next(0, 100) < 70 then
-		start_corridor(main_cave_coords, "x", not xs, pr:next(way_min,way_max), psra, wood, post, damage, false)
+	-- Start 2-4 corridors in each direction
+	local dirs = {
+		{axis="x", axis2="z", sign=false},
+		{axis="x", axis2="z", sign=true},
+		{axis="z", axis2="x", sign=false},
+		{axis="z", axis2="x", sign=true},
+	}
+	local first_corridor
+	local corridors = 2
+	for _=1, 2 do
+		if pr:next(0,100) < 70 then
+			corridors = corridors + 1
+		end
 	end
-	if pr:next(0, 100) < 70 then
-		start_corridor(main_cave_coords, "z", not zs, pr:next(way_min,way_max), psra, wood, post, damage, false)
+	-- Chance for 5th corridor in Chaos Mode
+	if chaos_mode and size > 4 then
+		if pr:next(0,100) < 50 then
+			corridors = corridors + 1
+		end
 	end
+	local centered_crossing = false
+	if corridors <= 4 and pr:next(1, 20) >= 11 then
+		centered_crossing = true
+	end
+	-- This moves the start of the corridors in the dirt room back and forth
+	local d_max = 3
+	if floor_diff == 1 and height <= 4 then
+		d_max = d_max + 1
+	end
+	local from_center_base = size - pr:next(1,d_max)
+	for i=1, math.min(4, corridors) do
+		local d = pr:next(1, #dirs)
+		local dir = dirs[d]
+		local side_offset = 0
+		if not centered_crossing and size > 3 then
+			if i==1 and corridors == 5 then
+				side_offset = pr:next(2, size-2)
+				if pr:next(1,2) == 1 then
+					side_offset = -side_offset
+				end
+			else
+				side_offset = pr:next(-size+2, size-2)
+			end
+		end
+		local from_center = from_center_base
+		if dir.sign then
+			from_center = -from_center
+		end
+		if i == 1 then
+			first_corridor = {sign=dir.sign, axis=dir.axis, axis2=dir.axis2, side_offset=side_offset, from_center=from_center}
+		end
+		local coords = vector.add(main_cave_coords, {[dir.axis] = from_center, y=0, [dir.axis2] = side_offset})
+		create_corridor_line(coords, dir.axis, dir.sign, pr:next(way_min,way_max), wood, post, damage, false)
+		table.remove(dirs, d)
+	end
+	if corridors == 5 then
+		local special_coords = vector.add(main_cave_coords, {[first_corridor.axis2] = -first_corridor.side_offset, y=0, [first_corridor.axis] = first_corridor.from_center})
+		create_corridor_line(special_coords, first_corridor.axis, first_corridor.sign, pr:next(way_min,way_max), wood, post, damage, false)
+	end
+
+	-- At this point, all corridors were generated and all nodes were set.
+	-- We spawn the carts now
+	spawn_carts()
+
+	return true
 end
 
+-- The rail corridor algorithm starts here
 minetest.register_on_generated(function(minp, maxp, blockseed)
+	-- We re-init the randomizer for every mapchunk as we start generating in the middle of each mapchunk.
+	-- We can't use the mapgen seed as this would make the algorithm depending on the order the mapchunk generate.
 	InitRandomizer(blockseed)
-	if minp.y < height_max and maxp.y > height_min and pr:next() < probability_railcaves_in_chunk then
-		-- Get semi-random height in chunk
-
+	if minp.y < height_max and maxp.y > height_min and pr:next() < probability_railcaves_in_mapchunk then
+		-- Keep some distance from the upper/lower mapchunk limits
 		local buffer = 5
-		local y = pr:next(minp.y + buffer, maxp.y - buffer)
-		y = math.floor(math.max(height_min + buffer, math.min(height_max - buffer, y)))
 
-		-- Mid point of the chunk
-		local p = {x=minp.x+math.floor((maxp.x-minp.x)/2), y=y, z=minp.z+math.floor((maxp.z-minp.z)/2)}
-		-- Haupthöhle und alle weiteren
-		-- Corridors; starting with main cave out of dirt
-		place_corridors(p, pr)
+		-- Do up to 10 tries to start a corridor system
+		for t=1,10 do
+			-- Get semi-random height in mapchunk
+			local y = pr:next(minp.y + buffer, maxp.y - buffer)
+			y = math.floor(math.max(height_min + buffer, math.min(height_max - buffer, y)))
+
+			-- Mid point of the mapchunk
+			local p = {x=minp.x+math.floor((maxp.x-minp.x)/2), y=y, z=minp.z+math.floor((maxp.z-minp.z)/2)}
+			-- Start corridor system at p. Might fail if p is in open air
+			minetest.log("verbose", "[tsm_railcorridors] Attempting to start rail corridor system at "..minetest.pos_to_string(p))
+			if create_corridor_system(p, pr) then
+				minetest.log("info", "[tsm_railcorridors] Generated rail corridor system at "..minetest.pos_to_string(p))
+				break
+			else
+				minetest.log("info", "[tsm_railcorridors] Rail corridor system generation attempt failed at "..minetest.pos_to_string(p).. " (try "..t..")")
+			end
+		end
 	end
 end)
