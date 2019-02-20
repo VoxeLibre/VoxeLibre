@@ -20,9 +20,9 @@ local function destruct_bed(pos, is_top)
 	end
 end
 
-local function kick_player_after_destruct(pos)
-	for name, _ in pairs(mcl_beds.pos) do
-		if vector.equals(pos, mcl_beds.pos) then
+local function kick_player_after_destruct(destruct_pos)
+	for name, player_bed_pos in pairs(mcl_beds.bed_pos) do
+		if vector.distance(destruct_pos, player_bed_pos) < 0.1 then
 			local player = minetest.get_player_by_name(name)
 			if player and player:is_player() then
 				mcl_beds.kick_player(player)
