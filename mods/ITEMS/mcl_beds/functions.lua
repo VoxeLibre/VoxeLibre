@@ -78,9 +78,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 			end
 		end
 
-		-- No sleeping while moving. This is a workaround.
-		-- TODO: Ideally, the player speed should be force-set to 0,
-		-- but this is not possible in Minetest 0.4.17.
+		-- No sleeping while moving. Slightly different behaviour than in MC.
 		if vector.length(player:get_player_velocity()) > 0.001 then
 			minetest.chat_send_player(name, "You have to stop moving before going to bed!")
 			return false
@@ -214,7 +212,7 @@ local function update_formspecs(finished)
 	elseif not is_sp then
 		local text = string.format("%d of %d player(s) are in bed.", player_in_bed, ges)
 		if not night_skip then
-			text = text .. "\n" .. "You're in bed." .. "\n" .. "Note: Night skip is disabled."
+			text = text .. "\n" .. "Note: Night skip is disabled."
 			form_n = form_n .. bg_presleep
 			form_n = form_n .. button_leave
 		elseif all_in_bed then
@@ -222,7 +220,7 @@ local function update_formspecs(finished)
 			form_n = form_n .. bg_sleep
 			form_n = form_n .. button_abort
 		else
-			text = text .. "\n" .. "Sleep will commence when all players are in bed."
+			text = text .. "\n" .. "You will fall asleep when all players are in bed."
 			form_n = form_n .. bg_presleep
 			form_n = form_n .. button_leave
 		end
