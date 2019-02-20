@@ -163,8 +163,12 @@ end
 local function update_formspecs(finished)
 	local ges = #minetest.get_connected_players()
 	local form_n = "size[8,15;true]"
-
 	local all_in_bed = ges == player_in_bed
+	local night_skip = is_night_skip_enabled()
+	local button_leave = "button_exit[2,12;4,0.75;leave;Leave bed]"
+	local button_abort = "button_exit[2,12;4,0.75;leave;Abort sleep]"
+	local bg_presleep = "bgcolor[#00000080;true]"
+	local bg_sleep = "bgcolor[#000000FF;true]"
 
 	if finished then
 		for name,_ in pairs(mcl_beds.player) do
@@ -173,20 +177,32 @@ local function update_formspecs(finished)
 		return
 	elseif not is_sp then
 		local text = string.format("%d of %d player(s) are in bed.", player_in_bed, ges)
-		if all_in_bed then
+		if not night_skip then
+			text = text .. "\n" .. "You're in bed." .. "\n" .. "Note: Night skip is disabled."
+			form_n = form_n .. bg_presleep
+			form_n = form_n .. button_leave
+		elseif all_in_bed then
 			text = text .. "\n" .. "You're sleeping."
-			form_n = form_n .. "bgcolor[#000000FF; true]"
-			form_n = form_n .. "button_exit[2,12;4,0.75;leave;Abort sleep]"
+			form_n = form_n .. bg_sleep
+			form_n = form_n .. button_abort
 		else
 			text = text .. "\n" .. "Sleep will commence when all players are in bed."
-			form_n = form_n .. "bgcolor[#808080BB; true]"
-			form_n = form_n .. "button_exit[2,12;4,0.75;leave;Leave bed]"
+			form_n = form_n .. bg_presleep
+			form_n = form_n .. button_leave
 		end
 		form_n = form_n .. "label[2.2,7.5;"..minetest.formspec_escape(text).."]"
 	else
-		form_n = form_n .. "label[2.2,7.5;You're sleeping.]"
-		form_n = form_n .. "button_exit[2,12;4,0.75;leave;Abort sleep]"
-		form_n = form_n .. "bgcolor[#000000FF; true]"
+		local text
+		if night_skip then
+			text = "You're sleeping."
+			form_n = form_n .. bg_sleep
+			form_n = form_n .. button_abort
+		else
+			text = "You're in bed." .. "\n" .. "Note: Night skip is disabled."
+			form_n = form_n .. bg_presleep
+			form_n = form_n .. button_leave
+		end
+		form_n = form_n .. "label[2.2,7.5;"..minetest.formspec_escape(text).."]"
 	end
 
 	for name,_ in pairs(mcl_beds.player) do
