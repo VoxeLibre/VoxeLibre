@@ -349,6 +349,7 @@ minetest.register_on_joinplayer(function(player)
 	end
 	playerphysics.remove_physics_factor(player, "speed", "mcl_beds:sleeping")
 	playerphysics.remove_physics_factor(player, "jump", "mcl_beds:sleeping")
+	update_formspecs(false)
 end)
 
 minetest.register_on_leaveplayer(function(player)
@@ -363,6 +364,7 @@ minetest.register_on_leaveplayer(function(player)
 			end
 		end)
 	end
+	update_formspecs(false)
 end)
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
