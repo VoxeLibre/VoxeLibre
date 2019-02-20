@@ -61,14 +61,14 @@ local function lay_down(player, pos, bed_pos, state, skip)
 	local hud_flags = player:hud_get_flags()
 
 	if not player or not name then
-		return
+		return false
 	end
 
 	if bed_pos then
 		-- No sleeping if too far away
 		if vector.distance(bed_pos, pos) > 2 then
 			minetest.chat_send_player(name, "You can't sleep, the bed's too far away!")
-			return
+			return false
 		end
 
 		-- No sleeping while moving. This is a workaround.
@@ -76,7 +76,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		-- but this is not possible in Minetest 0.4.17.
 		if vector.length(player:get_player_velocity()) > 0.001 then
 			minetest.chat_send_player(name, "You have to stop moving before going to bed!")
-			return
+			return false
 		end
 
 		-- No sleeping if monsters nearby.
@@ -93,7 +93,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 					if math.abs(bed_pos.y - obj:get_pos().y) <= 5 then
 						minetest.chat_send_player(name, "You can't sleep now, monsters are nearby!")
 					end
-					return
+					return false
 				end
 			end
 		end
@@ -108,7 +108,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		end
 		-- skip here to prevent sending player specific changes (used for leaving players)
 		if skip then
-			return
+			return false
 		end
 		if p then
 			player:setpos(p)
@@ -116,7 +116,9 @@ local function lay_down(player, pos, bed_pos, state, skip)
 
 		-- physics, eye_offset, etc
 		player:set_eye_offset({x = 0, y = 0, z = 0}, {x = 0, y = 0, z = 0})
-		player:set_look_horizontal(math.random(1, 180) / 100)
+		if player:get_look_vertical() > 0 then
+			player:set_look_vertical(0)
+		end
 		mcl_player.player_attached[name] = false
 		playerphysics.remove_physics_factor(player, "speed", "mcl_beds:sleeping")
 		playerphysics.remove_physics_factor(player, "jump", "mcl_beds:sleeping")
@@ -135,10 +137,24 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		local def2 = minetest.registered_nodes[n2.name]
 		if def1.walkable or def2.walkable then
 			minetest.chat_send_player(name, "You can't sleep, the bed is obstructed!")
-			return
+			return false
 		elseif (def1.damage_per_second ~= nil and def1.damage_per_second > 0) or (def2.damage_per_second ~= nil and def2.damage_per_second > 0) then
 			minetest.chat_send_player(name, "It's too dangerous to sleep here!")
-			return
+			return false
+		end
+
+		if minetest.get_modpath("mcl_spawn") then
+			local spos = table.copy(bed_pos)
+			spos.y = spos.y + 0.1
+			mcl_spawn.set_spawn_pos(player, spos) -- save respawn position when entering bed
+		end
+
+		-- Check day of time and weather
+		local tod = minetest.get_timeofday() * 24000
+		-- Values taken from Minecraft Wiki with offset of +6000
+		if tod < 18541 and tod > 5458 and (not weather_mod or (mcl_weather.get_weather() ~= "thunder")) then
+			minetest.chat_send_player(name, "You can only sleep at night or during a thunderstorm.")
+			return false
 		end
 
 		mcl_beds.player[name] = 1
@@ -147,6 +163,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		-- physics, eye_offset, etc
 		player:set_eye_offset({x = 0, y = -13, z = 0}, {x = 0, y = 0, z = 0})
 		player:set_look_horizontal(yaw)
+		player:set_look_vertical(0)
 
 		player:set_attribute("mcl_beds:sleeping", "true")
 		playerphysics.add_physics_factor(player, "speed", "mcl_beds:sleeping", 0)
@@ -158,6 +175,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 	end
 
 	player:hud_set_flags(hud_flags)
+	return true
 end
 
 local function update_formspecs(finished)
@@ -260,7 +278,7 @@ function mcl_beds.skip_thunderstorm()
 	return false
 end
 
-function mcl_beds.on_rightclick(pos, player)
+function mcl_beds.on_rightclick(pos, player, is_top)
 	-- Anti-Inception: Don't allow to sleep while you're sleeping
 	if player:get_attribute("mcl_beds:sleeping") == "true" then
 		return
@@ -278,24 +296,16 @@ function mcl_beds.on_rightclick(pos, player)
 	end
 	local name = player:get_player_name()
 	local ppos = player:get_pos()
-	local tod = minetest.get_timeofday() * 24000
-
-	-- Values taken from Minecraft Wiki with offset of +6000
-	if tod < 18541 and tod > 5458 and (not weather_mod or (mcl_weather.get_weather() ~= "thunder")) then
-		if mcl_beds.player[name] then
-			lay_down(player, nil, nil, false)
-		end
-		minetest.chat_send_player(name, "You can only sleep at night or during a thunderstorm.")
-		return
-	end
 
 	-- move to bed
 	if not mcl_beds.player[name] then
-		lay_down(player, ppos, pos)
-		if minetest.get_modpath("mcl_spawn") then
-			local spos = table.copy(pos)
-			spos.y = spos.y + 0.1
-			mcl_spawn.set_spawn_pos(player, spos) -- save respawn position when entering bed
+		if is_top then
+			lay_down(player, ppos, pos)
+		else
+			local node = minetest.get_node(pos)
+			local dir = minetest.facedir_to_dir(node.param2)
+			local other = vector.add(pos, dir)
+			lay_down(player, ppos, other)
 		end
 	else
 		lay_down(player, nil, nil, false)

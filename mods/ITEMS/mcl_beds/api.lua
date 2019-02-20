@@ -1,15 +1,13 @@
 
 local reverse = true
 
-local function destruct_bed(pos, n)
+local function destruct_bed(pos, is_top)
 	local node = minetest.get_node(pos)
 	local other
-
-	if n == 2 then
-		local dir = minetest.facedir_to_dir(node.param2)
+	local dir = minetest.facedir_to_dir(node.param2)
+	if is_top then
 		other = vector.subtract(pos, dir)
-	elseif n == 1 then
-		local dir = minetest.facedir_to_dir(node.param2)
+	else
 		other = vector.add(pos, dir)
 	end
 
@@ -136,12 +134,12 @@ function mcl_beds.register_bed(name, def)
 		end,
 
 		on_destruct = function(pos)
-			destruct_bed(pos, 1)
+			destruct_bed(pos, false)
 			kick_player_after_destruct(pos)
 		end,
 
 		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
-			mcl_beds.on_rightclick(pos, clicker)
+			mcl_beds.on_rightclick(pos, clicker, false)
 			return itemstack
 		end,
 
@@ -206,12 +204,12 @@ function mcl_beds.register_bed(name, def)
 		selection_box = selection_box_top,
 		collision_box = collision_box_top,
 		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
-			mcl_beds.on_rightclick(pos, clicker)
+			mcl_beds.on_rightclick(pos, clicker, true)
 			return itemstack
 		end,
 		on_rotate = false,
 		on_destruct = function(pos)
-			destruct_bed(pos, 2)
+			destruct_bed(pos, true)
 			kick_player_after_destruct(pos)
 		end,
 	})
