@@ -210,7 +210,7 @@ local function update_formspecs(finished)
 		end
 		return
 	elseif not is_sp then
-		local text = string.format("%d of %d player(s) are in bed.", player_in_bed, ges)
+		local text = string.format("Players in bed: %d/%d", player_in_bed, ges)
 		if not night_skip then
 			text = text .. "\n" .. "Note: Night skip is disabled."
 			form_n = form_n .. bg_presleep
