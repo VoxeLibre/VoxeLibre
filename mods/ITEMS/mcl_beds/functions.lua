@@ -194,9 +194,18 @@ function mcl_beds.sleep()
 	end
 end
 
+-- Throw all players out of bed
 function mcl_beds.kick_players()
 	for name, _ in pairs(mcl_beds.player) do
 		local player = minetest.get_player_by_name(name)
+		lay_down(player, nil, nil, false)
+	end
+end
+
+-- Throw a player out of bed
+function mcl_beds.kick_player(player)
+	local name = player:get_player_name()
+	if mcl_beds.player[name] ~= nil then
 		lay_down(player, nil, nil, false)
 	end
 end
@@ -303,5 +312,11 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.force then
 		update_formspecs(is_night_skip_enabled())
 		mcl_beds.sleep()
+	end
+end)
+
+minetest.register_on_player_hpchange(function(player, hp_change)
+	if hp_change < 0 then
+		mcl_beds.kick_player(player)
 	end
 end)
