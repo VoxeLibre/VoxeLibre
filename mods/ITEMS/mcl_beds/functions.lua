@@ -143,18 +143,26 @@ local function lay_down(player, pos, bed_pos, state, skip)
 			return false
 		end
 
+		local spawn_changed = false
 		if minetest.get_modpath("mcl_spawn") then
 			local spos = table.copy(bed_pos)
 			spos.y = spos.y + 0.1
-			mcl_spawn.set_spawn_pos(player, spos) -- save respawn position when entering bed
+			spawn_changed = mcl_spawn.set_spawn_pos(player, spos) -- save respawn position when entering bed
 		end
 
 		-- Check day of time and weather
 		local tod = minetest.get_timeofday() * 24000
 		-- Values taken from Minecraft Wiki with offset of +6000
 		if tod < 18541 and tod > 5458 and (not weather_mod or (mcl_weather.get_weather() ~= "thunder")) then
-			minetest.chat_send_player(name, "You can only sleep at night or during a thunderstorm.")
+			if spawn_changed then
+				minetest.chat_send_player(name, "New respawn position set! But you can only sleep at night or during a thunderstorm.")
+			else
+				minetest.chat_send_player(name, "You can only sleep at night or during a thunderstorm.")
+			end
 			return false
+		end
+		if spawn_changed then
+			minetest.chat_send_player(name, "New respawn position set!")
 		end
 
 		mcl_beds.player[name] = 1

@@ -32,12 +32,32 @@ end
 
 -- Sets the player's spawn position to pos.
 -- Set pos to nil to clear the spawn position.
-mcl_spawn.set_spawn_pos = function(player, pos, type)
+-- If message is set, informs the player with a chat message when the spawn position
+-- changed.
+mcl_spawn.set_spawn_pos = function(player, pos, message)
+	local spawn_changed = false
 	if pos == nil then
+		if player:get_attribute("mcl_beds:spawn") ~= "" then
+			spawn_changed = true
+			if message then
+				minetest.chat_send_player(player:get_player_name(), "Respawn position cleared!")
+			end
+		end
 		player:set_attribute("mcl_beds:spawn", "")
 	else
+		local oldpos = minetest.string_to_pos(player:get_attribute("mcl_beds:spawn"))
+		if oldpos then
+			-- We don't bother sending a message if the new spawn pos is basically the same
+			if vector.distance(pos, oldpos) > 0.1 then
+				spawn_changed = true
+				if message then
+					minetest.chat_send_player(player:get_player_name(), "New respawn position set!")
+				end
+			end
+		end
 		player:set_attribute("mcl_beds:spawn", minetest.pos_to_string(pos))
 	end
+	return spawn_changed
 end
 
 -- Respawn player at specified respawn position

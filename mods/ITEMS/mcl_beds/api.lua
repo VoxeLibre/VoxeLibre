@@ -37,7 +37,7 @@ local beduse = "To use a bed, stand close to it and right-click the bed to sleep
 if minetest.settings:get_bool("enable_bed_respawn") == false then
 	beddesc = beddesc .. "\n" .. "In local folklore, legends are told of other worlds where setting the start point for your next life would be possible. But this world is not one of them."
 else
-	beddesc = beddesc .. "\n" .. "By sleeping in a bed, you set the starting point for your next life. If you die, you will start your next life at this bed, unless it is obstructed or destroyed."
+	beddesc = beddesc .. "\n" .. "By using a bed, you set the starting point for your next life. If you die, you will start your next life at this bed, unless it is obstructed or destroyed."
 end
 if minetest.settings:get_bool("enable_bed_night_skip") == false then
 	beddesc = beddesc .. "\n" .. "In this strange world, going to bed won't skip the night, but you can skip thunderstorms."
