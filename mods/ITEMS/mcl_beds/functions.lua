@@ -71,6 +71,13 @@ local function lay_down(player, pos, bed_pos, state, skip)
 			return false
 		end
 
+		for _, other_pos in pairs(mcl_beds.bed_pos) do
+			if vector.distance(bed_pos, other_pos) < 0.1 then
+				minetest.chat_send_player(name, "This bed is already occupied!")
+				return false
+			end
+		end
+
 		-- No sleeping while moving. This is a workaround.
 		-- TODO: Ideally, the player speed should be force-set to 0,
 		-- but this is not possible in Minetest 0.4.17.
@@ -111,7 +118,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 			return false
 		end
 		if p then
-			player:setpos(p)
+			player:set_pos(p)
 		end
 
 		-- physics, eye_offset, etc
@@ -125,6 +132,8 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		player:set_attribute("mcl_beds:sleeping", "false")
 		hud_flags.wielditem = true
 		mcl_player.player_set_animation(player, "stand" , 30)
+		mcl_beds.pos[name] = nil
+		mcl_beds.bed_pos[name] = nil
 
 	-- lay down
 	else
@@ -167,6 +176,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 
 		mcl_beds.player[name] = 1
 		mcl_beds.pos[name] = pos
+		mcl_beds.bed_pos[name] = bed_pos
 		player_in_bed = player_in_bed + 1
 		-- physics, eye_offset, etc
 		player:set_eye_offset({x = 0, y = -13, z = 0}, {x = 0, y = 0, z = 0})
@@ -176,7 +186,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		player:set_attribute("mcl_beds:sleeping", "true")
 		playerphysics.add_physics_factor(player, "speed", "mcl_beds:sleeping", 0)
 		playerphysics.add_physics_factor(player, "jump", "mcl_beds:sleeping", 0)
-		player:setpos(p)
+		player:set_pos(p)
 		mcl_player.player_attached[name] = true
 		hud_flags.wielditem = false
 		mcl_player.player_set_animation(player, "lay" , 0)
