@@ -161,15 +161,18 @@ local function lay_down(player, pos, bed_pos, state, skip)
 end
 
 local function update_formspecs(finished)
+	if is_sp then
+		return
+	end
 	local ges = #minetest.get_connected_players()
 	local form_n
 	local all_in_bed = ges == player_in_bed
 
 	if finished then
-		form_n = mcl_beds.formspec .. "label[2.7,11; Good morning.]"
+		form_n = mcl_beds.formspec .. "label[2.7,11;Good morning.]"
 	else
 		form_n = mcl_beds.formspec .. "label[2.2,11;" .. tostring(player_in_bed) ..
-			" of " .. tostring(ges) .. " players are in bed]"
+				" of " .. tostring(ges) .. " players are in bed]"
 	end
 
 	for name,_ in pairs(mcl_beds.player) do
@@ -272,10 +275,10 @@ function mcl_beds.on_rightclick(pos, player)
 	-- skip the night and let all players stand up
 	if check_in_beds() then
 		minetest.after(5, function()
-			if not is_sp then
+			if check_in_beds() then
 				update_formspecs(is_night_skip_enabled())
+				mcl_beds.sleep()
 			end
-			mcl_beds.sleep()
 		end)
 	end
 end
@@ -294,8 +297,10 @@ minetest.register_on_leaveplayer(function(player)
 	mcl_beds.player[name] = nil
 	if check_in_beds() then
 		minetest.after(5, function()
-			update_formspecs(is_night_skip_enabled())
-			mcl_beds.sleep()
+			if check_in_beds() then
+				update_formspecs(is_night_skip_enabled())
+				mcl_beds.sleep()
+			end
 		end)
 	end
 end)
