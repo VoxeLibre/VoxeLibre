@@ -137,7 +137,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 	else
 		local yaw, param2 = get_look_yaw(bed_pos)
 		local dir = minetest.facedir_to_dir(param2)
-		local p = {x = bed_pos.x + dir.x / 4, y = bed_pos.y, z = bed_pos.z + dir.z / 4}
+		local p = {x = bed_pos.x - dir.x/2, y = bed_pos.y, z = bed_pos.z - dir.z/2}
 		local n1 = minetest.get_node({x=bed_pos.x, y=bed_pos.y+1, z=bed_pos.z})
 		local n2 = minetest.get_node({x=bed_pos.x, y=bed_pos.y+2, z=bed_pos.z})
 		local def1 = minetest.registered_nodes[n1.name]
