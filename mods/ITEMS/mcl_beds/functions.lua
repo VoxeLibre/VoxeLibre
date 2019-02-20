@@ -318,8 +318,11 @@ end
 -- Callbacks
 minetest.register_on_joinplayer(function(player)
 	if player:get_attribute("mcl_beds:sleeping") == "true" then
+		-- Make player awake on joining server
 		player:set_attribute("mcl_beds:sleeping", "false")
 	end
+	playerphysics.remove_physics_factor(player, "speed", "mcl_beds:sleeping")
+	playerphysics.remove_physics_factor(player, "jump", "mcl_beds:sleeping")
 end)
 
 minetest.register_on_leaveplayer(function(player)
