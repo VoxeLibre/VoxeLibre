@@ -22,6 +22,18 @@ local function destruct_bed(pos, n)
 	end
 end
 
+local function kick_player_after_destruct(pos)
+	for name, _ in pairs(mcl_beds.pos) do
+		if vector.equals(pos, mcl_beds.pos) then
+			local player = minetest.get_player_by_name(name)
+			if player and player:is_player() then
+				mcl_beds.kick_player(player)
+				break
+			end
+		end
+	end
+end
+
 local beddesc = "Beds allow you to sleep at night and make the time pass faster."
 local beduse = "To use a bed, stand close to it and right-click the bed to sleep in it. Sleeping only works when the sun sets, at night or during a thunderstorm. The bed must also be clear of any danger."
 if minetest.settings:get_bool("enable_bed_respawn") == false then
@@ -125,6 +137,7 @@ function mcl_beds.register_bed(name, def)
 
 		on_destruct = function(pos)
 			destruct_bed(pos, 1)
+			kick_player_after_destruct(pos)
 		end,
 
 		on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
@@ -199,6 +212,7 @@ function mcl_beds.register_bed(name, def)
 		on_rotate = false,
 		on_destruct = function(pos)
 			destruct_bed(pos, 2)
+			kick_player_after_destruct(pos)
 		end,
 	})
 
