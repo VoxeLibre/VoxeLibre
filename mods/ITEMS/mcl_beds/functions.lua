@@ -161,18 +161,32 @@ local function lay_down(player, pos, bed_pos, state, skip)
 end
 
 local function update_formspecs(finished)
-	if is_sp then
-		return
-	end
 	local ges = #minetest.get_connected_players()
-	local form_n
+	local form_n = "size[8,15;true]"
+
 	local all_in_bed = ges == player_in_bed
 
 	if finished then
-		form_n = mcl_beds.formspec .. "label[2.7,11;Good morning.]"
+		for name,_ in pairs(mcl_beds.player) do
+			minetest.close_formspec(name, "mcl_beds_form")
+		end
+		return
+	elseif not is_sp then
+		local text = string.format("%d of %d player(s) are in bed.", player_in_bed, ges)
+		if all_in_bed then
+			text = text .. "\n" .. "You're sleeping."
+			form_n = form_n .. "bgcolor[#000000FF; true]"
+			form_n = form_n .. "button_exit[2,12;4,0.75;leave;Abort sleep]"
+		else
+			text = text .. "\n" .. "Sleep will commence when all players are in bed."
+			form_n = form_n .. "bgcolor[#808080BB; true]"
+			form_n = form_n .. "button_exit[2,12;4,0.75;leave;Leave bed]"
+		end
+		form_n = form_n .. "label[2.2,7.5;"..minetest.formspec_escape(text).."]"
 	else
-		form_n = mcl_beds.formspec .. "label[2.2,11;" .. tostring(player_in_bed) ..
-				" of " .. tostring(ges) .. " players are in bed]"
+		form_n = form_n .. "label[2.2,7.5;You're sleeping.]"
+		form_n = form_n .. "button_exit[2,12;4,0.75;leave;Abort sleep]"
+		form_n = form_n .. "bgcolor[#000000FF; true]"
 	end
 
 	for name,_ in pairs(mcl_beds.player) do
@@ -203,6 +217,7 @@ function mcl_beds.kick_players()
 		local player = minetest.get_player_by_name(name)
 		lay_down(player, nil, nil, false)
 	end
+	update_formspecs(false)
 end
 
 -- Throw a player out of bed
@@ -210,6 +225,8 @@ function mcl_beds.kick_player(player)
 	local name = player:get_player_name()
 	if mcl_beds.player[name] ~= nil then
 		lay_down(player, nil, nil, false)
+		update_formspecs(false)
+		minetest.close_formspec(name, "mcl_beds_form")
 	end
 end
 
@@ -268,9 +285,7 @@ function mcl_beds.on_rightclick(pos, player)
 		lay_down(player, nil, nil, false)
 	end
 
-	if not is_sp then
-		update_formspecs(false)
-	end
+	update_formspecs(false)
 
 	-- skip the night and let all players stand up
 	if check_in_beds() then
