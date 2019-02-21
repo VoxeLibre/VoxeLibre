@@ -1,3 +1,6 @@
+local max_text_length = 4500 -- TODO: Increase to 12800 when scroll bar was added to written book
+local max_title_length = 64
+
 -- Book
 minetest.register_craftitem("mcl_books:book", {
 	description = "Book",
@@ -59,6 +62,10 @@ local make_description = function(title, author, generation)
 	return desc
 end
 
+local cap_text_length = function(text, max_length)
+	return string.sub(text, 1, max_length)
+end
+
 local write = function(itemstack, user, pointed_thing)
 	-- Call on_rightclick if the pointed node defines it
 	if pointed_thing.type == "node" then
@@ -102,7 +109,8 @@ end
 minetest.register_craftitem("mcl_books:writable_book", {
 	description = "Book and Quill",
 	_doc_items_longdesc = "This item can be used to write down some notes.",
-	_doc_items_usagehelp = "Hold it in the hand, then rightclick to read the current notes and edit then. You can edit the text as often as you like. You can also sign the book which turns it into a written book which you can stack, but it can't be edited anymore.",
+	_doc_items_usagehelp = "Hold it in the hand, then rightclick to read the current notes and edit then. You can edit the text as often as you like. You can also sign the book which turns it into a written book which you can stack, but it can't be edited anymore.".."\n"..
+	"A book can hold up to 4500 characters. The title length is limited to 64 characters.",
 	inventory_image = "mcl_books_book_writable.png",
 	groups = { book=1 },
 	stack_max = 1,
@@ -115,11 +123,12 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 		local stack = player:get_wielded_item()
 		if (stack:get_name() and (stack:get_name() == "mcl_books:writable_book")) then
 			local meta = stack:get_meta()
+			local text = cap_text_length(fields.text, max_text_length)
 			if fields.ok then
-				meta:set_string("text", fields.text)
+				meta:set_string("text", text)
 				player:set_wielded_item(stack)
 			elseif fields.sign then
-				meta:set_string("text", fields.text)
+				meta:set_string("text", text)
 				player:set_wielded_item(stack)
 
 				local name = player:get_player_name()
@@ -138,15 +147,17 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 		local book = player:get_wielded_item()
 		local name = player:get_player_name()
 		if book:get_name() == "mcl_books:writable_book" then
-			if fields.title == "" then
-				fields.title = "Nameless Book"
+			local title = fields.title
+			if string.len(title) == 0 then
+				title = "Nameless Book"
 			end
+			title = cap_text_length(title, max_title_length)
 			local meta = newbook:get_meta()
-			local text = get_text(book)
-			meta:set_string("title", fields.title)
+			local text = cap_text_length(get_text(book), max_text_length)
+			meta:set_string("title", title)
 			meta:set_string("author", name)
 			meta:set_string("text", text)
-			meta:set_string("description", make_description(fields.title, name, 0))
+			meta:set_string("description", make_description(title, name, 0))
 
 			-- The book copy counter. 0 = original, 1 = copy of original, 2 = copy of copy of original, …
 			meta:set_int("generation", 0)
@@ -235,7 +246,7 @@ minetest.register_craft_predict(function(itemstack, player, old_craft_grid, craf
 		-- Valid copy. Let's update the description field of the result item
 		-- so it is properly displayed in the crafting grid.
 		local imeta = itemstack:get_meta()
-		local title = ometa:get_string("title")
+		local title = cap_text_length(ometa:get_string("title"), max_title_length)
 		local author = ometa:get_string("author")
 
 		-- Increase book generation and update description
@@ -283,11 +294,11 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 
 		-- Copy metadata
 		local imeta = itemstack:get_meta()
-		local title = ometa:get_string("title")
+		local title = cap_text_length(ometa:get_string("title"), max_title_length)
 		local author = ometa:get_string("author")
 		imeta:set_string("title", title)
 		imeta:set_string("author", author)
-		imeta:set_string("text", text)
+		imeta:set_string("text", cap_text_length(text, max_text_length))
 
 		-- Increase book generation and update description
 		generation = generation + 1
