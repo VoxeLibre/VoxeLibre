@@ -80,7 +80,7 @@ mobs:register_mob("mobs_mc:cow", cow_def)
 local mooshroom_def = table.copy(cow_def)
 
 mooshroom_def.mesh = "mobs_mc_cow.b3d"
-mooshroom_def.textures = { {"mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png"}, }
+mooshroom_def.textures = { {"mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png"}, {"mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" } }
 mooshroom_def.on_rightclick = function(self, clicker)
 	if mobs:feed_tame(self, clicker, 1, true, true) then return end
 	if mobs:protect(self, clicker) then return end
@@ -93,7 +93,12 @@ mooshroom_def.on_rightclick = function(self, clicker)
 	if item:get_name() == mobs_mc.items.shears then
 		local pos = self.object:get_pos()
 		minetest.sound_play("shears", {pos = pos})
-		minetest.add_item({x=pos.x, y=pos.y+1.4, z=pos.z}, mobs_mc.items.mushroom_red .. " 5")
+
+		if self.base_texture[1] == "mobs_mc_mooshroom_brown.png" then
+			minetest.add_item({x=pos.x, y=pos.y+1.4, z=pos.z}, mobs_mc.items.mushroom_brown .. " 5")
+		else
+			minetest.add_item({x=pos.x, y=pos.y+1.4, z=pos.z}, mobs_mc.items.mushroom_red .. " 5")
+		end
 
 		local oldyaw = self.object:getyaw()
 		self.object:remove()

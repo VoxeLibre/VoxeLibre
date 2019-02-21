@@ -189,6 +189,14 @@ lightning.strike = function(pos)
 							obj:remove()
 							obj = minetest.add_entity(pos2, "mobs_mc:pigman")
 							obj:set_yaw(rot)
+						-- mooshroom: toggle color red/brown
+						elseif lua.name == "mobs_mc:mooshroom" then
+							if lua.base_texture[1] == "mobs_mc_mooshroom.png" then
+								lua.base_texture = { "mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" }
+							else
+								lua.base_texture = { "mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png" }
+							end
+							obj:set_properties({textures = lua.base_texture})
 						-- villager → witch
 						elseif lua.name == "mobs_mc:villager" then
 						-- Witches are incomplete, this code is unused

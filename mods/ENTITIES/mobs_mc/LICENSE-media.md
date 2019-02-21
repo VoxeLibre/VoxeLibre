@@ -70,6 +70,9 @@ Origin of those models:
         * `mobs_mc_wither.png`
         * `mobs_mc_wither_skeleton.png`
         * `mobs_mc_TEMP_wither_projectile.png`	
+    * Gerold55
+        * `mobs_mc_mooshroom_brown.png` (CC0)
+        * `mobs_mc_mushroom_brown.png` (CC0)
 
 * “Spawn egg” textures (`mobs_mc_spawn_icon_*`) by 22i
 * Any other texture not mentioned here are licensed under the MIT License
@@ -183,4 +186,4 @@ Origin of those models:
 
 Note: Many of these sounds have been more or less modified to fit the game.
 
-Sounds not mentioned here are licensed under CC0.
+Sounds not mentioned hre are licensed under CC0.
