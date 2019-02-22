@@ -141,13 +141,14 @@ minetest.register_node("mcl_core:vine", {
 		return itemstack
 	end,
 
-	-- If destroyed, also a “dependant” vine below it.
+	-- If dug, also dig a “dependant” vine below it.
 	-- A vine is dependant if it hangs from this node and has no supporting block.
-	after_destruct = function(pos, oldnode)
+	on_dig = function(pos, node, digger)
 		local below = {x=pos.x, y=pos.y-1, z=pos.z}
 		local belownode = minetest.get_node(below)
-		if belownode.name == oldnode.name and (not mcl_core.check_vines_supported(below, belownode)) then
-			minetest.remove_node(below)
+		minetest.node_dig(pos, node, digger)
+		if belownode.name == node.name and (not mcl_core.check_vines_supported(below, belownode)) then
+			minetest.registered_nodes[node.name].on_dig(below, node, digger)
 		end
 	end,
 
