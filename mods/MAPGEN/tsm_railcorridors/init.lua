@@ -377,9 +377,7 @@ local function PlaceChest(pos, param2)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		local items = tsm_railcorridors.get_treasures(pr)
-		for i=1, math.min(#items, inv:get_size("main")) do
-			inv:set_stack("main", i, ItemStack(items[i]))
-		end
+		mcl_loot.fill_inventory(inv, "main", items)
 	end
 end
 

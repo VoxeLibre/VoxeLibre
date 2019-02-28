@@ -188,9 +188,7 @@ mcl_structures.generate_igloo_basement = function(pos, orientation)
 		local meta = minetest.get_meta(chest_pos)
 		local inv = meta:get_inventory()
 		inv:set_size("main", 9*3)
-		for i=1, #lootitems do
-			inv:add_item("main", lootitems[i])
-		end
+		mcl_loot.fill_inventory(inv, "main", lootitems)
 	end
 	return success
 end
@@ -401,9 +399,7 @@ mcl_structures.generate_desert_temple = function(pos)
 		local meta = minetest.get_meta(chests[c])
 		local inv = meta:get_inventory()
 		inv:set_size("main", 9*3)
-		for i=1, #lootitems do
-			inv:add_item("main", lootitems[i])
-		end
+		mcl_loot.fill_inventory(inv, "main", lootitems)
 	end
 
 	-- Initialize pressure plates and randomly remove up to 5 plates
