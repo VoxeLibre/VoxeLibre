@@ -96,6 +96,7 @@ mobs.fallback_node = minetest.registered_aliases["mapgen_dirt"] or "mcl_core:dir
 local mod_weather = minetest.get_modpath("mcl_weather") ~= nil
 local mod_tnt = minetest.get_modpath("mcl_tnt") ~= nil
 local mod_mobspawners = minetest.get_modpath("mcl_mobspawners") ~= nil
+local mod_hunger = minetest.get_modpath("mcl_hunger") ~= nil
 
 -- play sound
 local mob_sound = function(self, sound, is_opinion)
@@ -2342,9 +2343,14 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	end
 
 
-	-- weapon wear
+	-- punch interval
 	local weapon = hitter:get_wielded_item()
 	local punch_interval = 1.4
+
+	-- exhaust attacker
+	if mod_hunger and hitter:is_player() then
+		mcl_hunger.exhaust(hitter:get_player_name(), mcl_hunger.EXHAUST_ATTACK)
+	end
 
 	-- calculate mob damage
 	local damage = 0

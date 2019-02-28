@@ -7,7 +7,6 @@ local GRAVITY = 9.81
 
 local YAW_OFFSET = -math.pi/2
 
-local mod_mcl_hunger = minetest.get_modpath("mcl_hunger")
 local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
 local mod_button = minetest.get_modpath("mesecons_button")
 
@@ -192,9 +191,6 @@ ARROW_ENTITY.on_step = function(self, dtime)
 					if self._shooter and self._shooter:is_player() then
 						-- “Ding” sound for hitting another player
 						minetest.sound_play({name="mcl_bows_hit_player", gain=0.1}, {to_player=self._shooter})
-					end
-					if mod_mcl_hunger then
-						mcl_hunger.exhaust(obj:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
 					end
 				end
 

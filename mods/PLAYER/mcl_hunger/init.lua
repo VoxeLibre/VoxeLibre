@@ -29,7 +29,7 @@ mcl_hunger.EXHAUST_SPRINT_JUMP = 200 -- jump while sprinting
 mcl_hunger.EXHAUST_ATTACK = 100 -- hit an enemy
 mcl_hunger.EXHAUST_SWIM = 10 -- player movement in water
 mcl_hunger.EXHAUST_SPRINT = 100 -- sprint (per node)
-mcl_hunger.EXHAUST_DAMAGE = 100 -- TODO (mostly done): taking damage (protected by armor)
+mcl_hunger.EXHAUST_DAMAGE = 100 -- taking damage (protected by armor)
 mcl_hunger.EXHAUST_REGEN = 6000 -- Regenerate 1 HP
 mcl_hunger.EXHAUST_LVL = 4000 -- at what exhaustion player saturation gets lowered
 
@@ -134,9 +134,16 @@ end)
 
 -- PvP combat exhaustion
 minetest.register_on_punchplayer(function(victim, puncher, time_from_last_punch, tool_capabilities, dir, damage)
-	if victim:is_player() and puncher:is_player() then
-		mcl_hunger.exhaust(victim:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+	if puncher:is_player() then
 		mcl_hunger.exhaust(puncher:get_player_name(), mcl_hunger.EXHAUST_ATTACK)
+	end
+end)
+
+-- Exhaust on taking damage
+minetest.register_on_player_hpchange(function(player, hp_change)
+	if hp_change < 0 then
+		local name = player:get_player_name()
+		mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_DAMAGE)
 	end
 end)
 

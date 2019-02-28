@@ -1,5 +1,4 @@
 local dmes = minetest.get_modpath("mcl_death_messages") ~= nil
-local hung = minetest.get_modpath("mcl_hunger") ~= nil
 
 local get_falling_depth = function(self)
 	if not self._startpos then
@@ -55,9 +54,6 @@ local deal_falling_damage = function(self, dtime)
 						end
 						if dmes then
 							mcl_death_messages.player_damage(v, string.format(msg, v:get_player_name()))
-						end
-						if hung then
-							mcl_hunger.exhaust(v:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
 						end
 					end
 					v:set_hp(hp)

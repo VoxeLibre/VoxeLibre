@@ -1,5 +1,4 @@
 local mod_death_messages = minetest.get_modpath("mcl_death_messages")
-local mod_hunger = minetest.get_modpath("mcl_hunger")
 
 local function spawn_tnt(pos, entname)
 	minetest.sound_play("tnt_ignite", {pos = pos,gain = 1.0,max_hear_distance = 15,})
@@ -32,9 +31,6 @@ local function do_tnt_physics(tnt_np,tntr)
                 if obj:is_player() == true then
                     if mod_death_messages then
                         mcl_death_messages.player_damage(obj, string.format("%s was caught in an explosion.", obj:get_player_name()))
-                    end
-                    if mod_hunger then
-                        mcl_hunger.exhaust(obj:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
                     end
                 end
                 obj:set_hp(obj:get_hp() - damage)

@@ -135,7 +135,6 @@ minetest.register_globalstep(function(dtime)
 			if dist < 1.1 or dist_feet < 1.1 then
 				if player:get_hp() > 0 then
 					mcl_death_messages.player_damage(player, string.format("%s was prickled by a cactus.", name))
-					mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_DAMAGE)
 					player:set_hp(player:get_hp() - 1)
 				end
 			end
