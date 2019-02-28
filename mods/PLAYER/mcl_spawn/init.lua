@@ -60,15 +60,24 @@ mcl_spawn.set_spawn_pos = function(player, pos, message)
 	return spawn_changed
 end
 
+local function get_far_node(pos)
+	local node = minetest.get_node(pos)
+	if node.name ~= "ignore" then
+		return node
+	end
+	minetest.get_voxel_manip():read_from_map(pos, pos)
+	return minetest.get_node(pos)
+end
+
 -- Respawn player at specified respawn position
 minetest.register_on_respawnplayer(function(player)
 	local pos, custom_spawn = mcl_spawn.get_spawn_pos(player)
 	if pos and custom_spawn then
 		-- Check if bed is still there
 		-- and the spawning position is free of solid or damaging blocks.
-		local node_bed = minetest.get_node(pos)
-		local node_up1 = minetest.get_node({x=pos.x,y=pos.y+1,z=pos.z})
-		local node_up2 = minetest.get_node({x=pos.x,y=pos.y+2,z=pos.z})
+		local node_bed = get_far_node(pos)
+		local node_up1 = get_far_node({x=pos.x,y=pos.y+1,z=pos.z})
+		local node_up2 = get_far_node({x=pos.x,y=pos.y+2,z=pos.z})
 		local bgroup = minetest.get_item_group(node_bed.name, "bed")
 		local def1 = minetest.registered_nodes[node_up1.name]
 		local def2 = minetest.registered_nodes[node_up2.name]
