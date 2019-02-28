@@ -15,6 +15,18 @@ mcl_structures.get_struct = function(file)
     return allnode
 end
 
+-- Call on_construct on pos.
+-- Useful to init chests from formspec.
+local init_node_construct = function(pos)
+	local node = minetest.get_node(pos)
+	local def = minetest.registered_nodes[node.name]
+	if def and def.on_construct then
+		def.on_construct(pos)
+		return true
+	end
+	return false
+end
+
 -- The call of Struct
 mcl_structures.call_struct = function(pos, struct_style, rotation)
 	if not rotation then
@@ -185,9 +197,9 @@ mcl_structures.generate_igloo_basement = function(pos, orientation)
 		}}, pr)
 
 		local chest_pos = vector.add(pos, chest_offset)
+		init_node_construct(chest_pos)
 		local meta = minetest.get_meta(chest_pos)
 		local inv = meta:get_inventory()
-		inv:set_size("main", 9*3)
 		mcl_loot.fill_inventory(inv, "main", lootitems)
 	end
 	return success
@@ -397,8 +409,9 @@ mcl_structures.generate_desert_temple = function(pos)
 		}}, pr)
 
 		local meta = minetest.get_meta(chests[c])
+		init_node_construct(chests[c])
+		local meta = minetest.get_meta(chests[c])
 		local inv = meta:get_inventory()
-		inv:set_size("main", 9*3)
 		mcl_loot.fill_inventory(inv, "main", lootitems)
 	end
 
