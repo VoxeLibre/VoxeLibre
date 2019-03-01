@@ -87,6 +87,10 @@ craftguide_progressive_mode (Enable recipe book progressive mode) bool false
 # This feature is not finished yet!
 mob_difficulty (Mob difficulty factor) float 1.0 0.0
 
+# Whether to generate fallen logs in some biomes.
+# They might not always look pretty and have strange overhangs.
+mcl_generate_fallen_logs (Generate fallen logs) bool false
+
 # If enabled, the “flat” map generator generates a Classic Superflat world:
 # Completely flat, 1 layer of grass blocks on top of 2 layers of dirt on
 # top of a final layer of bedrock. No caves, trees or plants.

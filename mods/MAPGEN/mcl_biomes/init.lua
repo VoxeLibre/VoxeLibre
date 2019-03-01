@@ -1,10 +1,9 @@
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
 -- Some mapgen settings
-local imitate = minetest.settings:get("mcl_imitation_mode")
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
 
-local generate_fallen_logs = false
+local generate_fallen_logs = minetest.settings:get_bool("mcl_generate_fallen_logs") or false
 
 -- Jungle bush schematic. In PC/Java Edition it's Jungle Wood + Oak Leaves
 local jungle_bush_schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_bush_oak_leaves.mts"
