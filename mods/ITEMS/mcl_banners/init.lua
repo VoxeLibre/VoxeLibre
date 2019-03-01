@@ -47,6 +47,25 @@ local layer_ratio = 255
 local standing_banner_entity_offset = { x=0, y=-0.499, z=0 }
 local hanging_banner_entity_offset = { x=0, y=-1.7, z=0 }
 
+local on_dig_banner = function(pos, node, digger)
+	-- Check protection
+	local name = digger:get_player_name()
+	if minetest.is_protected(pos, name) then
+		minetest.register_protection_violation(pos, name)
+		return
+	end
+	-- Drop item
+	local meta = minetest.get_meta(pos)
+	local item = meta:get_inventory():get_stack("banner", 1)
+	if not item:is_empty() then
+		minetest.handle_node_drops(pos, {item:to_string()}, digger)
+	else
+		minetest.handle_node_drops(pos, {"mcl_bannes:banner_item_white"}, digger)
+	end
+	-- Remove node
+	minetest.remove_node(pos)
+end
+
 local on_destruct_banner = function(pos, hanging)
 	local offset, nodename
 	if hanging then
@@ -56,7 +75,7 @@ local on_destruct_banner = function(pos, hanging)
 		offset = standing_banner_entity_offset
 		nodename = "mcl_banners:standing_banner"
 	end
-	-- Find this node's banner entity and make it drop as an item
+	-- Find this node's banner entity and remove it
 	local checkpos = vector.add(pos, offset)
 	local objects = minetest.get_objects_inside_radius(checkpos, 0.5)
 	for _, v in ipairs(objects) do
@@ -64,14 +83,6 @@ local on_destruct_banner = function(pos, hanging)
 		if ent and ent.name == nodename then
 			v:remove()
 		end
-	end
-	-- Drop item
-	local meta = minetest.get_meta(pos)
-	local item = meta:get_inventory():get_stack("banner", 1)
-	if not item:is_empty() then
-		minetest.add_item(pos, item)
-	else
-		minetest.add_item(pos, "mcl_banners:banner_item_white")
 	end
 end
 
@@ -207,6 +218,7 @@ minetest.register_node("mcl_banners:standing_banner", {
 	sounds = node_sounds,
 	drop = "", -- Item drops are handled in entity code
 
+	on_dig = on_dig_banner,
 	on_destruct = on_destruct_standing_banner,
 	on_punch = function(pos, node)
 		respawn_banner_entity(pos, node)
@@ -238,6 +250,7 @@ minetest.register_node("mcl_banners:hanging_banner", {
 	sounds = node_sounds,
 	drop = "", -- Item drops are handled in entity code
 
+	on_dig = on_dig_banner,
 	on_destruct = on_destruct_hanging_banner,
 	on_punch = function(pos, node)
 		respawn_banner_entity(pos, node)
