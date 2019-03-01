@@ -390,8 +390,8 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 		return ItemStack("")
 	end
 	-- Lower layer limit when banner includes any gradient.
-	-- Workaround to circumvent bug #340 (gradients are likely to cause transparent pixels).
-	-- FIXME: Remove this restriction when bug #340 is fixed.
+	-- Workaround to circumvent Minetest bug (https://github.com/minetest/minetest/issues/6210)
+	-- TODO: Remove this restriction when bug #6210 is fixed.
 	if #layers >= max_layers_gradient then
 		for l=1, #layers do
 			if layers[l].pattern == "gradient" or layers[l].pattern == "gradient_up" then
