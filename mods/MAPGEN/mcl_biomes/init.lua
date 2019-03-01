@@ -6,14 +6,8 @@ local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superfl
 
 local generate_fallen_logs = false
 
--- Jungle bush type. Default (PC/Java Edition) is Jungle Wood + Oak Leaves
+-- Jungle bush schematic. In PC/Java Edition it's Jungle Wood + Oak Leaves
 local jungle_bush_schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_bush_oak_leaves.mts"
-if imitate == "pocket_edition" then
-	-- Simple fallen tree trunk logs (not very good yet)
-	generate_fallen_logs = true
-	-- Jungle bush: Jungle Wood + Jungle Leaves
-	jungle_bush_schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_bush_jungle_leaves.mts"
-end
 
 --
 -- Register biomes

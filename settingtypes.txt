@@ -11,20 +11,6 @@
 # per-player Creative Mode.
 creative_mode (Creative mode) bool false
 
-# Which edition of Minecraft to imitate. This currently only affects two map
-# generation aspects.
-# This setting might be removed in a later version.
-# Available options:
-#
-# pc_edition: PC Edition (later known as “Java Edition”).
-#     There are no fallen tree trunks.
-#     Jungle bushes have oak leaves.
-#
-# pocket_edition: Pocket Edition
-#     There are simple fallen tree trunks with mushrooms.
-#     Jungle bushes have jungle leaves.
-mcl_imitation_mode (Imitated Minecraft edition) enum pc_edition pc_edition,pocket_edition
-
 # Fire spreads and flammable nodes will be ignited by nearby fire.
 # Spreading fire may cause severe destruction.
 # Spreading fire blocks will disappear when fire is disabled, but
