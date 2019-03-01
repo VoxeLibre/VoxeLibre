@@ -555,8 +555,7 @@ if minetest.settings:get_bool("creative_mode") then
 		local inv = digger:get_inventory()
 		if inv then
 			for _,item in ipairs(drops) do
-				item = ItemStack(item):get_name()
-				if not inv:contains_item("main", item) then
+				if not inv:contains_item("main", item, true) then
 					inv:add_item("main", item)
 				end
 			end

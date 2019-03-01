@@ -245,16 +245,16 @@ function minetest.handle_node_drops(pos, drops, digger)
 	end
 
 	for _,item in ipairs(drops) do
-		local count, name
+		local count
 		if type(item) == "string" then
-			count = 1
-			name = item
+			count = ItemStack(item):get_count()
 		else
 			count = item:get_count()
-			name = item:get_name()
 		end
+		local drop_item = ItemStack(item)
+		drop_item:set_count(1)
 		for i=1,count do
-			local obj = core.add_item(pos, name)
+			local obj = core.add_item(pos, drop_item)
 			if obj ~= nil then
 				local x = math.random(1, 5)
 				if math.random(1,2) == 1 then
