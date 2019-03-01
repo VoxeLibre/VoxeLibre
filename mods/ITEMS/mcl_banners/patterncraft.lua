@@ -1,9 +1,9 @@
 -- Pattern crafting. This file contains the code for crafting all the
 -- emblazonings you can put on the banners. It's quite complicated;
--- normal 08/15 crafting won't work here.
+-- run-of-the-mill crafting won't work here.
 
 -- Maximum number of layers which can be put on a banner by crafting.
-local max_layers_crafting = 6
+local max_layers_crafting = 12
 
 -- Maximum number of layers when banner includes a gradient (workaround, see below).
 local max_layers_gradient = 3
