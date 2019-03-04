@@ -51,7 +51,7 @@ local on_dig_banner = function(pos, node, digger)
 	-- Check protection
 	local name = digger:get_player_name()
 	if minetest.is_protected(pos, name) then
-		minetest.register_protection_violation(pos, name)
+		minetest.record_protection_violation(pos, name)
 		return
 	end
 	-- Drop item
