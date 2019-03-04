@@ -1,0 +1,52 @@
+# simple_skin <italian translate>.
+# Copyright (C) 2018
+# This file is distributed under the same license as the PACKAGE package.
+# Stefano Peris <xenon77.dev@gmail.com>, 2018.
+# Github: <https://github.com/XenonCoder>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-02-21 07:29+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Stefano Peris <xenon77.dev@gmail.com>\n"
+"Language-Team: \n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.12\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: init.lua
+msgid "Select Player Skin:"
+msgstr "Seleziona la skin del giocatore"
+
+#: init.lua
+msgid "Name: "
+msgstr "Nome"
+
+#: init.lua
+msgid "Author: "
+msgstr "Autore"
+
+#: init.lua
+msgid "Admin command to set player skin"
+msgstr "Comando di admin per impostare la skin del giocatore"
+
+#: init.lua
+msgid "'s skin set to"
+msgstr ", la skin è impostata su"
+
+#: init.lua
+msgid "Set player skin"
+msgstr "Imposta la skin del giocatore"
+
+#: init.lua
+msgid "Close"
+msgstr "Chiudi"
+
+#: init.lua
+msgid "[MOD] Simple Skins loaded"
+msgstr "[MOD] Skins semplici caricate"

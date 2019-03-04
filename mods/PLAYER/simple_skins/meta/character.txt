@@ -1,0 +1,3 @@
+name = "Steve",
+author = "(Texture pack author)",
+description = "The default male skin.",
