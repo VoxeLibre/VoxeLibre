@@ -1,6 +1,4 @@
--- Simple Skins mod for Minetest (MineClone 2 Edition)
-
--- Released by TenPlus1 and based on Zeg9's code under MIT license
+-- Skins for MineClone 2
 
 mcl_skins = {
 	skins = {}, previews = {}, meta = {},

@@ -1,7 +1,13 @@
-Simple Skins, MineClone 2 Edition
+= Skins for MineClone 2 =
 
-Simple Skins mod to allow players to select a skin.
+Simple mod to allow players to select a skin.
 Use the chat command /setskin to change skin.
 
-Original mod:
+Forked from Simple Skins by TenPlus1.
 https://forum.minetest.net/viewtopic.php?id=9100
+
+== License ==
+Code under MIT license
+Origial authors:
+- TenPlus1
+- Zeg9
