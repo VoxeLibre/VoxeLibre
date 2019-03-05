@@ -324,8 +324,11 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 				-- help button
 				"image_button[9,2;1,1;doc_button_icon_lores.png;__mcl_doc;]"..
 				"tooltip[__mcl_doc;Help]"..
+				-- skins button
+				"image_button[9,3;1,1;mcl_skins_button.png;__mcl_skins;]"..
+				"tooltip[__mcl_skins;Select player skin]"..
 				-- achievements button
-				"image_button[9,3;1,1;mcl_achievements_button.png;__mcl_achievements;]"..
+				"image_button[9,4;1,1;mcl_achievements_button.png;__mcl_achievements;]"..
 				"tooltip[__mcl_achievements;Achievements]"
 
 			-- For shortcuts

@@ -105,6 +105,9 @@ local function set_inventory(player, armor_change_only)
 	-- help button
 	"image_button[8,3;1,1;doc_button_icon_lores.png;__mcl_doc;]"..
 	"tooltip[__mcl_doc;Help]"..
+	-- skins button
+	"image_button[3,3;1,1;mcl_skins_button.png;__mcl_skins;]"..
+	"tooltip[__mcl_skins;Select player skin]"..
 	-- achievements button
 	"image_button[7,3;1,1;mcl_achievements_button.png;__mcl_achievements;]"..
 	"tooltip[__mcl_achievements;Achievements]"..

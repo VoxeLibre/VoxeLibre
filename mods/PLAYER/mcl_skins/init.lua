@@ -12,26 +12,26 @@ local S, NS = dofile(mcl_skins.modpath .. "/intllib.lua")
 
 
 -- load skin list and metadata
-local id, f, data, skin = 1
-
-mcl_skins.list[0] = "character"
+local id, f, data, skin = 0
 
 while true do
 
-	skin = "character_" .. id
+	if id == 0 then
+		skin = "character"
+	else
+		skin = "character_" .. id
 
-	-- does skin file exist ?
-	f = io.open(mcl_skins.modpath .. "/textures/" .. skin .. ".png")
+		-- does skin file exist ?
+		f = io.open(mcl_skins.modpath .. "/textures/" .. skin .. ".png")
 
-	-- escape loop if not found and remove last entry
-	if not f then
-		mcl_skins.list[id] = nil
-		id = id - 1
-		break
+		-- escape loop if not found
+		if not f then
+			break
+		end
+		f:close()
 	end
 
-	f:close()
-	table.insert(mcl_skins.list, skin)
+	mcl_skins.list[id] = skin
 
 	-- does metadata exist for that skin file ?
 	f = io.open(mcl_skins.modpath .. "/meta/" .. skin .. ".txt")
@@ -47,8 +47,10 @@ while true do
 		author = data and data.author or "",
 	}
 
+	if id > 0 then
+		mcl_skins.skin_count = mcl_skins.skin_count + 1
+	end
 	id = id + 1
-	mcl_skins.skin_count = mcl_skins.skin_count + 1
 end
 
 mcl_skins.set_player_skin = function(player, skin_id)
@@ -124,11 +126,15 @@ end
 
 -- command to set player skin (usually for custom skins)
 minetest.register_chatcommand("setskin", {
-	params = "[<player>] <skin number>",
+	params = "[<player>] [<skin number>]",
 	description = S("Select player skin of yourself or another player"),
 	privs = {},
 	func = function(name, param)
 
+		if param == "" and name ~= "" then
+			mcl_skins.show_formspec(name)
+			return true
+		end
 		local playername, skin_id = string.match(param, "([^ ]+) (%d+)")
 		if not playername or not skin_id then
 			skin_id = string.match(param, "(%d+)")
@@ -156,17 +162,84 @@ minetest.register_chatcommand("setskin", {
 		if not ok then
 			return false, S("Invalid skin number! Valid numbers: 0 to @1", mcl_skins.skin_count)
 		end
-		local skinfile = "Skin #"..skin_id
+		local skinfile = "#"..skin_id
 
-		local your_msg = S("Your skin has been set to: @1", skinfile)
+		local meta = mcl_skins.meta[mcl_skins.skins[playername]]
+		local your_msg = S("Your skin has been set to: @1 (@2)", meta.name, skinfile)
 		if name == playername then
 			return true, your_msg
 		else
 			minetest.chat_send_player(playername, your_msg)
-			return true, S("Skin of @1 set to: @2", playername, skinfile)
+			return true, S("Skin of @1 set to: @2 (@3)", playername, meta.name, skinfile)
 		end
 
 	end,
 })
 
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+	if fields.__mcl_skins then
+		mcl_skins.show_formspec(player:get_player_name())
+	end
+end)
+
+mcl_skins.show_formspec = function(playername)
+	local formspec = "size[7,8.5]"
+
+	formspec = formspec .. "label[2,2;" .. minetest.formspec_escape(S("Select player skin:")) .. "]"
+		.. "textlist[0,2.5;6.8,6;skins_set;"
+
+	local meta
+	local selected = 1
+
+	for i = 0, mcl_skins.skin_count do
+
+		local label = S("@1 (@2)", mcl_skins.meta[mcl_skins.list[i] ].name, "#"..i)
+
+		formspec = formspec .. minetest.formspec_escape(label)
+
+		if mcl_skins.skins[playername] == mcl_skins.list[i] then
+			selected = i + 1
+			meta = mcl_skins.meta[mcl_skins.list[i]]
+		end
+
+		if i < #mcl_skins.list then
+			formspec = formspec ..","
+		end
+	end
+
+	formspec = formspec .. ";" .. selected .. ";false]"
+
+	formspec = formspec .. "image[0,0;1.35,2.7;" .. mcl_skins.previews[playername] .. ".png]"
+
+	if meta then
+		if meta.name then
+			formspec = formspec .. "label[2,0.5;" .. minetest.formspec_escape(S("Name: @1", meta.name)) .. "]"
+		end
+	end
+
+	minetest.show_formspec(playername, "mcl_skins:skin_select", formspec)
+end
+
+minetest.register_on_player_receive_fields(function(player, formname, fields)
+
+	if formname == "mcl_skins:skin_select" then
+
+		local name = player:get_player_name()
+
+		local event = minetest.explode_textlist_event(fields["skins_set"])
+
+		if event.type == "CHG" or event.type == "DCL" then
+
+			local skin_id = math.min(event.index - 1, mcl_skins.skin_count)
+			if not mcl_skins.list[skin_id] then
+				return -- Do not update wrong skin number
+			end
+
+			mcl_skins.set_player_skin(player, skin_id)
+			mcl_skins.show_formspec(name)
+		end
+	end
+end)
+
 minetest.log("action", "[mcl_skins] Mod initialized with "..mcl_skins.skin_count.." custom skin(s)")
+
