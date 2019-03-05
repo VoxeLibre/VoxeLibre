@@ -1,7 +1,7 @@
 -- Skins for MineClone 2
 
 mcl_skins = {
-	skins = {}, previews = {}, meta = {},
+	skins = {}, list = {}, previews = {}, meta = {},
 	modpath = minetest.get_modpath("mcl_skins"),
 	skin_count = 0, -- counter of _custom_ skins (all skins except character.png)
 }
@@ -14,6 +14,8 @@ local S, NS = dofile(mcl_skins.modpath .. "/intllib.lua")
 -- load skin list and metadata
 local id, f, data, skin = 1
 
+mcl_skins.list[0] = "character"
+
 while true do
 
 	skin = "character_" .. id
@@ -23,11 +25,13 @@ while true do
 
 	-- escape loop if not found and remove last entry
 	if not f then
+		mcl_skins.list[id] = nil
 		id = id - 1
 		break
 	end
 
 	f:close()
+	table.insert(mcl_skins.list, skin)
 
 	-- does metadata exist for that skin file ?
 	f = io.open(mcl_skins.modpath .. "/meta/" .. skin .. ".txt")
@@ -52,7 +56,7 @@ mcl_skins.set_player_skin = function(player, skin_id)
 		return false
 	end
 	local playername = player:get_player_name()
-	local skin, preview
+	local skin, skin_file, preview
 	if skin_id == nil or type(skin_id) ~= "number" or skin_id < 0 or skin_id > mcl_skins.skin_count then
 		return false
 	elseif skin_id == 0 then
@@ -62,16 +66,20 @@ mcl_skins.set_player_skin = function(player, skin_id)
 		skin = "character_" .. tostring(skin_id)
 		preview = "player_" .. tostring(skin_id)
 	end
+	skin_file = skin .. ".png"
 	mcl_skins.skins[playername] = skin
 	mcl_skins.previews[playername] = preview
 	player:set_attribute("mcl_skins:skin_id", tostring(skin_id))
 	mcl_skins.update_player_skin(player)
 	if minetest.get_modpath("3d_armor") then
-		armor.textures[playername].skin = skin .. ".png"
+		armor.textures[playername].skin = skin_file
 		armor:update_player_visuals(player)
 	end
 	if minetest.get_modpath("mcl_inventory") then
 		mcl_inventory.update_inventory_formspec(player)
+	end
+	for i=1, #mcl_skins.registered_on_set_skins do
+		mcl_skins.registered_on_set_skins[i](player, skin)
 	end
 	minetest.log("action", "[mcl_skins] Player skin for "..playername.." set to skin #"..skin_id)
 	return true
@@ -107,6 +115,12 @@ minetest.register_on_joinplayer(function(player)
 		end
 	end
 end)
+
+mcl_skins.registered_on_set_skins = {}
+
+mcl_skins.register_on_set_skin = function(func)
+	table.insert(mcl_skins.registered_on_set_skins, func)
+end
 
 -- command to set player skin (usually for custom skins)
 minetest.register_chatcommand("setskin", {
