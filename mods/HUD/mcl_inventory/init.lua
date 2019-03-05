@@ -127,6 +127,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 end)
 
+if not minetest.settings:get_bool("creative_mode") then
+	mcl_inventory.update_inventory_formspec = function(player)
+		set_inventory(player)
+	end
+end
+
 -- Drop crafting grid items on leaving
 minetest.register_on_leaveplayer(function(player)
 	return_fields(player, "craft")

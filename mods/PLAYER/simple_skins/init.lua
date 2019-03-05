@@ -72,6 +72,9 @@ skins.set_player_skin = function(player, skin_id)
 		armor.textures[playername].skin = skin .. ".png"
 		armor:update_player_visuals(player)
 	end
+	if minetest.get_modpath("mcl_inventory") then
+		mcl_inventory.update_inventory_formspec(player)
+	end
 	return true
 end
 

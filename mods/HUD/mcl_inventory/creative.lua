@@ -570,6 +570,38 @@ if minetest.settings:get_bool("creative_mode") then
 		end
 	end
 
+	mcl_inventory.update_inventory_formspec = function(player)
+		local page = nil
+
+		local name = player:get_player_name()
+
+		if players[name].page then
+			page = players[name].page
+		else
+			page = "nix"
+		end
+
+		-- Figure out current scroll bar from formspec
+		local formspec = player:get_inventory_formspec()
+		local start_i = players[name].start_i
+
+		local inv_size
+		if page == "nix" then
+			local inv = minetest.get_inventory({type="detached", name="creative_"..name})
+			inv_size = inv:get_size("main")
+		elseif page ~= nil and page ~= "inv" then
+			inv_size = #(inventory_lists[page])
+		else
+			inv_size = 0
+		end
+
+		local filter = players[name].filter
+		if filter == nil then
+			filter = ""
+		end
+
+		mcl_inventory.set_creative_formspec(player, start_i, start_i / (9*5) + 1, inv_size, false, page, filter)
+	end
 end
 
 minetest.register_on_joinplayer(function(player)
