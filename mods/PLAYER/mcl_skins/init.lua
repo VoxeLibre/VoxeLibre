@@ -53,6 +53,18 @@ while true do
 	id = id + 1
 end
 
+mcl_skins.cycle_skin = function(player)
+	local skin_id = tonumber(player:get_attribute("mcl_skins:skin_id"))
+	if not skin_id then
+		skin_id = 0
+	end
+	skin_id = skin_id + 1
+	if skin_id > mcl_skins.skin_count then
+		skin_id = 0
+	end
+	mcl_skins.set_player_skin(player, skin_id)
+end
+
 mcl_skins.set_player_skin = function(player, skin_id)
 	if not player then
 		return false
@@ -178,7 +190,13 @@ minetest.register_chatcommand("setskin", {
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.__mcl_skins then
-		mcl_skins.show_formspec(player:get_player_name())
+		if mcl_skins.skin_count <= 6 then
+			-- Change skin immediately if there are not many skins
+			mcl_skins.cycle_skin(player)
+		else
+			-- Show skin selection formspec otherwise
+			mcl_skins.show_formspec(player:get_player_name())
+		end
 	end
 end)
 
