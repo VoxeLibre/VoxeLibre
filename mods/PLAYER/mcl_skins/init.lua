@@ -2,15 +2,15 @@
 
 -- Released by TenPlus1 and based on Zeg9's code under MIT license
 
-skins = {
+mcl_skins = {
 	skins = {}, previews = {}, meta = {},
-	modpath = minetest.get_modpath("simple_skins"),
+	modpath = minetest.get_modpath("mcl_skins"),
 	skin_count = 0, -- counter of _custom_ skins (all skins except character.png)
 }
 
 
 -- Load support for intllib.
-local S, NS = dofile(skins.modpath .. "/intllib.lua")
+local S, NS = dofile(mcl_skins.modpath .. "/intllib.lua")
 
 
 -- load skin list and metadata
@@ -21,7 +21,7 @@ while true do
 	skin = "character_" .. id
 
 	-- does skin file exist ?
-	f = io.open(skins.modpath .. "/textures/" .. skin .. ".png")
+	f = io.open(mcl_skins.modpath .. "/textures/" .. skin .. ".png")
 
 	-- escape loop if not found and remove last entry
 	if not f then
@@ -32,7 +32,7 @@ while true do
 	f:close()
 
 	-- does metadata exist for that skin file ?
-	f = io.open(skins.modpath .. "/meta/" .. skin .. ".txt")
+	f = io.open(mcl_skins.modpath .. "/meta/" .. skin .. ".txt")
 
 	if f then
 		data = minetest.deserialize("return {" .. f:read('*all') .. "}")
@@ -40,22 +40,22 @@ while true do
 	end
 
 	-- add metadata to list
-	skins.meta[skin] = {
+	mcl_skins.meta[skin] = {
 		name = data and data.name or "",
 		author = data and data.author or "",
 	}
 
 	id = id + 1
-	skins.skin_count = skins.skin_count + 1
+	mcl_skins.skin_count = mcl_skins.skin_count + 1
 end
 
-skins.set_player_skin = function(player, skin_id)
+mcl_skins.set_player_skin = function(player, skin_id)
 	if not player then
 		return false
 	end
 	local playername = player:get_player_name()
 	local skin, preview
-	if skin_id == nil or type(skin_id) ~= "number" or skin_id < 0 or skin_id > skins.skin_count then
+	if skin_id == nil or type(skin_id) ~= "number" or skin_id < 0 or skin_id > mcl_skins.skin_count then
 		return false
 	elseif skin_id == 0 then
 		skin = "character"
@@ -64,10 +64,10 @@ skins.set_player_skin = function(player, skin_id)
 		skin = "character_" .. tostring(skin_id)
 		preview = "player_" .. tostring(skin_id)
 	end
-	skins.skins[playername] = skin
-	skins.previews[playername] = preview
+	mcl_skins.skins[playername] = skin
+	mcl_skins.previews[playername] = preview
 	player:set_attribute("simple_skins:skin_id", skin_id)
-	skins.update_player_skin(player)
+	mcl_skins.update_player_skin(player)
 	if minetest.get_modpath("3d_armor") then
 		armor.textures[playername].skin = skin .. ".png"
 		armor:update_player_visuals(player)
@@ -78,12 +78,12 @@ skins.set_player_skin = function(player, skin_id)
 	return true
 end
 
-skins.update_player_skin = function(player)
+mcl_skins.update_player_skin = function(player)
 	if not player then
 		return
 	end
 	local playername = player:get_player_name()
-	mcl_player.player_set_textures(player, { skins.skins[playername] .. ".png" }, skins.previews[playername] .. ".png" )
+	mcl_player.player_set_textures(player, { mcl_skins.skins[playername] .. ".png" }, mcl_skins.previews[playername] .. ".png" )
 end
 
 -- load player skin on join
@@ -97,10 +97,10 @@ minetest.register_on_joinplayer(function(player)
 		set_skin = tonumber(skin_id)
 	-- otherwise use random skin if not set
 	else
-		set_skin = math.random(0, skins.skin_count)
+		set_skin = math.random(0, mcl_skins.skin_count)
 	end
 	if set_skin then
-		skins.set_player_skin(player, set_skin)
+		mcl_skins.set_player_skin(player, set_skin)
 	end
 end)
 
@@ -134,9 +134,9 @@ minetest.register_chatcommand("setskin", {
 		end
 
 		local skin
-		local ok = skins.set_player_skin(player, skin_id)
+		local ok = mcl_skins.set_player_skin(player, skin_id)
 		if not ok then
-			return false, S("Invalid skin number! Valid numbers: 0 to @1", skins.skin_count)
+			return false, S("Invalid skin number! Valid numbers: 0 to @1", mcl_skins.skin_count)
 		end
 		local skinfile = "Skin #"..skin_id
 

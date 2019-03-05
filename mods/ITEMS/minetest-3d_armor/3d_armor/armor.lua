@@ -66,7 +66,9 @@ armor = {
 	version = "0.4.6",
 }
 
-if minetest.get_modpath("skins") then
+if minetest.get_modpath("mcl_skins") then
+	skin_mod = "mcl_skins"
+elseif minetest.get_modpath("skins") then
 	skin_mod = "skins"
 elseif minetest.get_modpath("simple_skins") then
 	skin_mod = "simple_skins"
@@ -197,7 +199,9 @@ end
 
 armor.get_player_skin = function(self, name)
 	local skin = nil
-	if skin_mod == "skins" or skin_mod == "simple_skins" then
+	if skin_mod == "mcl_skins" then
+		skin = mcl_skins.skins[name]
+	elseif skin_mod == "skins" or skin_mod == "simple_skins" then
 		skin = skins.skins[name]
 	elseif skin_mod == "u_skins" then
 		skin = u_skins.u_skins[name]
@@ -380,7 +384,12 @@ minetest.register_on_joinplayer(function(player)
 		wielditem = "3d_armor_trans.png",
 		preview = armor.default_skin.."_preview.png",
 	}
-	if skin_mod == "skins" then
+	if skin_mod == "mcl_skins" then
+		local skin = mcl_skins.skins[name]
+		if skin then
+			armor.textures[name].skin = skin..".png"
+		end
+	elseif skin_mod == "skins" then
 		local skin = skins.skins[name]
 		if skin and skins.get_type(skin) == skins.type.MODEL then
 			armor.textures[name].skin = skin..".png"
