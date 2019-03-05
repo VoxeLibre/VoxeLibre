@@ -64,7 +64,7 @@ mcl_skins.set_player_skin = function(player, skin_id)
 	end
 	mcl_skins.skins[playername] = skin
 	mcl_skins.previews[playername] = preview
-	player:set_attribute("simple_skins:skin_id", skin_id)
+	player:set_attribute("mcl_skins:skin_id", tostring(skin_id))
 	mcl_skins.update_player_skin(player)
 	if minetest.get_modpath("3d_armor") then
 		armor.textures[playername].skin = skin .. ".png"
@@ -88,7 +88,7 @@ end
 minetest.register_on_joinplayer(function(player)
 
 	local name = player:get_player_name()
-	local skin_id = player:get_attribute("simple_skins:skin_id")
+	local skin_id = player:get_attribute("mcl_skins:skin_id")
 	local set_skin
 	-- do we already have a skin in player attributes?
 	if skin_id then
