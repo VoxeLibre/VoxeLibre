@@ -73,6 +73,7 @@ mcl_skins.set_player_skin = function(player, skin_id)
 	if minetest.get_modpath("mcl_inventory") then
 		mcl_inventory.update_inventory_formspec(player)
 	end
+	minetest.log("action", "[mcl_skins] Player skin for "..playername.." set to skin #"..skin_id)
 	return true
 end
 
@@ -98,7 +99,12 @@ minetest.register_on_joinplayer(function(player)
 		set_skin = math.random(0, mcl_skins.skin_count)
 	end
 	if set_skin then
-		mcl_skins.set_player_skin(player, set_skin)
+		local ok = mcl_skins.set_player_skin(player, set_skin)
+		if not ok then
+			set_skin = math.random(0, mcl_skins.skin_count)
+			minetest.log("warning", "[mcl_skins] Player skin for "..name.." not found, falling back to skin #"..set_skin)
+			mcl_skins.set_player_skin(player, set_skin)
+		end
 	end
 end)
 
@@ -148,3 +154,5 @@ minetest.register_chatcommand("setskin", {
 
 	end,
 })
+
+minetest.log("action", "[mcl_skins] Mod initialized with "..mcl_skins.skin_count.." custom skin(s)")
