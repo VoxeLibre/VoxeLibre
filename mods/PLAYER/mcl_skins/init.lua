@@ -20,8 +20,8 @@ while true do
 		skin = "character"
 		mcl_skins.has_preview[id] = true
 	else
-		skin = "character_" .. id
-		local preview = "player_" .. id
+		skin = "mcl_skins_character_" .. id
+		local preview = "mcl_skins_player_" .. id
 
 		-- Does skin file exist?
 		f = io.open(mcl_skins.modpath .. "/textures/" .. skin .. ".png")
@@ -46,7 +46,12 @@ while true do
 	mcl_skins.list[id] = skin
 
 	-- does metadata exist for that skin file ?
-	f = io.open(mcl_skins.modpath .. "/meta/" .. skin .. ".txt")
+	if id == 0 then
+		metafile = "mcl_skins_character.txt"
+	else
+		metafile = "mcl_skins_character_"..id..".txt"
+	end
+	f = io.open(mcl_skins.modpath .. "/meta/" .. metafile)
 
 	if f then
 		data = minetest.deserialize("return {" .. f:read('*all') .. "}")
@@ -89,12 +94,12 @@ mcl_skins.set_player_skin = function(player, skin_id)
 		skin = "character"
 		preview = "player"
 	else
-		skin = "character_" .. tostring(skin_id)
+		skin = "mcl_skins_character_" .. tostring(skin_id)
 		if mcl_skins.has_preview[skin_id] then
-			preview = "player_" .. tostring(skin_id)
+			preview = "mcl_skins_player_" .. tostring(skin_id)
 		else
 			-- Fallback preview image if preview image is missing
-			preview = "player_dummy"
+			preview = "mcl_skins_player_dummy"
 		end
 	end
 	skin_file = skin .. ".png"
