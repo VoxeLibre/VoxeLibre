@@ -3,7 +3,7 @@
 -- Released by TenPlus1 and based on Zeg9's code under MIT license
 
 skins = {
-	skins = {}, meta = {},
+	skins = {}, previews = {}, meta = {},
 	modpath = minetest.get_modpath("simple_skins"),
 	skin_count = 0, -- counter of _custom_ skins (all skins except character.png)
 }
@@ -49,18 +49,30 @@ while true do
 	skins.skin_count = skins.skin_count + 1
 end
 
-skins.set_player_skin = function(player, skin)
+skins.set_player_skin = function(player, skin_id)
 	if not player then
-		return
+		return false
 	end
 	local playername = player:get_player_name()
+	local skin, preview
+	if skin_id == nil or type(skin_id) ~= "number" or skin_id < 0 or skin_id > skins.skin_count then
+		return false
+	elseif skin_id == 0 then
+		skin = "character"
+		preview = "player"
+	else
+		skin = "character_" .. tostring(skin_id)
+		preview = "player_" .. tostring(skin_id)
+	end
 	skins.skins[playername] = skin
-	player:set_attribute("simple_skins:skin", skins.skins[playername])
+	skins.previews[playername] = preview
+	player:set_attribute("simple_skins:skin_id", skin_id)
 	skins.update_player_skin(player)
 	if minetest.get_modpath("3d_armor") then
 		armor.textures[playername].skin = skin .. ".png"
 		armor:update_player_visuals(player)
 	end
+	return true
 end
 
 skins.update_player_skin = function(player)
@@ -68,27 +80,21 @@ skins.update_player_skin = function(player)
 		return
 	end
 	local playername = player:get_player_name()
-	mcl_player.player_set_textures(player, { skins.skins[playername] .. ".png" })
+	mcl_player.player_set_textures(player, { skins.skins[playername] .. ".png" }, skins.previews[playername] .. ".png" )
 end
 
 -- load player skin on join
 minetest.register_on_joinplayer(function(player)
 
 	local name = player:get_player_name()
-	local skin = player:get_attribute("simple_skins:skin")
+	local skin_id = player:get_attribute("simple_skins:skin_id")
 	local set_skin
 	-- do we already have a skin in player attributes?
-	if skin then
-		set_skin = skin
-
+	if skin_id then
+		set_skin = tonumber(skin_id)
 	-- otherwise use random skin if not set
 	else
-		local r = math.random(0, skins.skin_count)
-		if r == 0 then
-			set_skin = "character"
-		else
-			set_skin = "character_" .. r
-		end
+		set_skin = math.random(0, skins.skin_count)
 	end
 	if set_skin then
 		skins.set_player_skin(player, set_skin)
@@ -125,16 +131,11 @@ minetest.register_chatcommand("setskin", {
 		end
 
 		local skin
-		if skin_id == nil or skin_id > skins.skin_count or skin_id < 0 then
+		local ok = skins.set_player_skin(player, skin_id)
+		if not ok then
 			return false, S("Invalid skin number! Valid numbers: 0 to @1", skins.skin_count)
-		elseif skin_id == 0 then
-			skin = "character"
-		else
-			skin = "character_" .. tostring(skin_id)
 		end
-
-		skins.set_player_skin(player, skin)
-		local skinfile = skin..".png"
+		local skinfile = "Skin #"..skin_id
 
 		local your_msg = S("Your skin has been set to: @1", skinfile)
 		if name == playername then

@@ -4,6 +4,9 @@ local players = {}
 -- Containing all the items for each Creative Mode tab
 local inventory_lists = {}
 
+local show_armor = minetest.get_modpath("3d_armor") ~= nil
+local mod_player = minetest.get_modpath("mcl_player") ~= nil
+
 -- TODO: Brewing is disabled. Add brewing (uncommented code) when it is implemented properly
 
 -- Create tables
@@ -271,15 +274,20 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 			inv_bg = "crafting_inventory_creative_survival.png"
 
 			-- Show armor and player image
-			local show_armor = minetest.get_modpath("3d_armor")
-			local img = "player.png"
+			local img, img_player
+			if mod_player then
+				img_player = mcl_player.player_get_preview(player)
+			else
+				img_player = "player.png"
+			end
+			img = img_player
 			local player_preview = "image[3.9,1.4;1.2333,2.4666;"..img.."]"
 			if show_armor and armor.textures[playername] and armor.textures[playername].preview then
 				img = armor.textures[playername].preview
 				local s1 = img:find("character_preview")
 				if s1 ~= nil then
 					s1 = img:sub(s1+21)
-					img = "player.png"..s1
+					img = img_player..s1
 				end
 				player_preview = "image[3.9,1.4;1.2333,2.4666;"..img.."]"
 			end

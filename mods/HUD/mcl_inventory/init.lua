@@ -1,8 +1,7 @@
 mcl_inventory = {}
 
-local show_armor = false
-if minetest.get_modpath("3d_armor") ~= nil then show_armor = true end
-
+local show_armor = minetest.get_modpath("3d_armor") ~= nil
+local mod_player = minetest.get_modpath("mcl_player") ~= nil
 
 -- Returns a single itemstack in the given inventory to the main inventory, or drop it when there's no space left
 local function return_item(itemstack, dropper, pos, inv)
@@ -59,14 +58,20 @@ local function set_inventory(player, armor_change_only)
 	local player_name = player:get_player_name()
 
 	-- Show armor and player image
-	local img = "player.png"
+	local img, img_player
+	if mod_player then
+		img_player = mcl_player.player_get_preview(player)
+	else
+		img_player = "player.png"
+	end
+	img = img_player
 	local player_preview = "image[0.6,0.2;2,4;"..img.."]"
 	if show_armor and armor.textures[player_name] and armor.textures[player_name].preview then
 		img = armor.textures[player_name].preview
 		local s1 = img:find("character_preview")
 		if s1 ~= nil then
 			s1 = img:sub(s1+21)
-			img = "player.png"..s1
+			img = img_player..s1
 		end
 		player_preview = "image[1.1,0.2;2,4;"..img.."]"
 	end
