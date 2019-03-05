@@ -1,7 +1,7 @@
 -- Skins for MineClone 2
 
 mcl_skins = {
-	skins = {}, list = {}, previews = {}, meta = {},
+	skins = {}, list = {}, previews = {}, meta = {}, has_preview = {},
 	modpath = minetest.get_modpath("mcl_skins"),
 	skin_count = 0, -- counter of _custom_ skins (all skins except character.png)
 }
@@ -18,10 +18,12 @@ while true do
 
 	if id == 0 then
 		skin = "character"
+		mcl_skins.has_preview[id] = true
 	else
 		skin = "character_" .. id
+		local preview = "player_" .. id
 
-		-- does skin file exist ?
+		-- Does skin file exist?
 		f = io.open(mcl_skins.modpath .. "/textures/" .. skin .. ".png")
 
 		-- escape loop if not found
@@ -29,6 +31,16 @@ while true do
 			break
 		end
 		f:close()
+
+		-- Does skin preview file exist?
+		local file_preview = io.open(mcl_skins.modpath .. "/textures/" .. preview .. ".png")
+		if file_preview == nil then
+			minetest.log("warning", "[mcl_skins] Player skin #"..id.." does not have preview image (player_"..id..".png)")
+			mcl_skins.has_preview[id] = false
+		else
+			mcl_skins.has_preview[id] = true
+			file_preview:close()
+		end
 	end
 
 	mcl_skins.list[id] = skin
@@ -78,7 +90,12 @@ mcl_skins.set_player_skin = function(player, skin_id)
 		preview = "player"
 	else
 		skin = "character_" .. tostring(skin_id)
-		preview = "player_" .. tostring(skin_id)
+		if mcl_skins.has_preview[skin_id] then
+			preview = "player_" .. tostring(skin_id)
+		else
+			-- Fallback preview image if preview image is missing
+			preview = "player_dummy"
+		end
 	end
 	skin_file = skin .. ".png"
 	mcl_skins.skins[playername] = skin
