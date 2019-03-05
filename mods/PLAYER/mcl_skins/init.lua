@@ -53,6 +53,7 @@ while true do
 	end
 	f = io.open(mcl_skins.modpath .. "/meta/" .. metafile)
 
+	data = nil
 	if f then
 		data = minetest.deserialize("return {" .. f:read('*all') .. "}")
 		f:close()
@@ -199,7 +200,12 @@ minetest.register_chatcommand("setskin", {
 		local skinfile = "#"..skin_id
 
 		local meta = mcl_skins.meta[mcl_skins.skins[playername]]
-		local your_msg = S("Your skin has been set to: @1 (@2)", meta.name, skinfile)
+		local your_msg
+		if not meta.name or meta.name == "" then
+			your_msg = S("Your skin has been set to: @1", skinfile)
+		else
+			your_msg = S("Your skin has been set to: @1 (@2)", meta.name, skinfile)
+		end
 		if name == playername then
 			return true, your_msg
 		else
@@ -233,7 +239,7 @@ mcl_skins.show_formspec = function(playername)
 
 	for i = 0, mcl_skins.skin_count do
 
-		local label = S("@1 (@2)", mcl_skins.meta[mcl_skins.list[i] ].name, "#"..i)
+		local label = S("@1 (@2)", mcl_skins.meta[mcl_skins.list[i]].name, "#"..i)
 
 		formspec = formspec .. minetest.formspec_escape(label)
 
@@ -252,7 +258,7 @@ mcl_skins.show_formspec = function(playername)
 	formspec = formspec .. "image[0,0;1.35,2.7;" .. mcl_skins.previews[playername] .. ".png]"
 
 	if meta then
-		if meta.name then
+		if meta.name and meta.name ~= "" then
 			formspec = formspec .. "label[2,0.5;" .. minetest.formspec_escape(S("Name: @1", meta.name)) .. "]"
 		end
 	end
