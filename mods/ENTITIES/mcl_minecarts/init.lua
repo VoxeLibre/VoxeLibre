@@ -494,7 +494,7 @@ register_minecart(
 			self._driver = player_name
 			self._start_pos = self.object:get_pos()
 			mcl_player.player_attached[player_name] = true
-			clicker:set_attach(self.object, "", {x=0, y=8.25, z=-2}, {x=0, y=0, z=0})
+			clicker:set_attach(self.object, "", {x=0, y=-1.75, z=-2}, {x=0, y=0, z=0})
 			mcl_player.player_attached[name] = true
 			minetest.after(0.2, function(name)
 				local player = minetest.get_player_by_name(name)

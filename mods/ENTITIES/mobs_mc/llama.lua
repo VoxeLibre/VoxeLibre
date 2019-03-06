@@ -69,7 +69,7 @@ mobs:register_mob("mobs_mc:llama", {
 			self.max_speed_reverse = 2
 			self.accel = 4
 			self.terrain_type = 3
-			self.driver_attach_at = {x = 0, y = 7.5, z = -1.5}
+			self.driver_attach_at = {x = 0, y = 4.17, z = -1.5}
 			self.driver_eye_offset = {x = 0, y = 3, z = 0}
 			self.driver_scale = {x = 1/self.visual_size.x, y = 1/self.visual_size.y}
 		end

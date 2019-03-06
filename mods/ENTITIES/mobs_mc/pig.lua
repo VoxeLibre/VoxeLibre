@@ -59,7 +59,7 @@ mobs:register_mob("mobs_mc:pig", {
 			self.max_speed_reverse = 2
 			self.accel = 4
 			self.terrain_type = 3
-			self.driver_attach_at = {x = 0.0, y = 6.75, z = -1.5}
+			self.driver_attach_at = {x = 0.0, y = 2.75, z = -1.5}
 			self.driver_eye_offset = {x = 0, y = 3, z = 0}
 			self.driver_scale = {x = 1/self.visual_size.x, y = 1/self.visual_size.y}
 		end

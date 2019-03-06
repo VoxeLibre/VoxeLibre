@@ -82,7 +82,7 @@ function boat.on_rightclick(self, clicker)
 		end
 		self._driver = clicker
 		clicker:set_attach(self.object, "",
-			{x = 0, y = 3.75, z = -1}, {x = 0, y = 0, z = 0})
+			{x = 0, y = 0.42, z = -1}, {x = 0, y = 0, z = 0})
 		clicker:set_properties({ visual_size = driver_visual_size })
 		mcl_player.player_attached[name] = true
 		minetest.after(0.2, function(name)
