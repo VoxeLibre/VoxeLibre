@@ -14,7 +14,6 @@ minetest.register_node("mcl_crafting_table:crafting_table", {
 
 		local form = "size[9,8.75]"..
 		"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png^crafting_inventory_workbench.png]"..
-		mcl_vars.inventory_header..
 		"list[current_player;main;0,4.5;9,3;9]"..
 		"list[current_player;main;0,7.74;9,1;]"..
 		"list[current_player;craft;1.75,0.5;3,3;]"..

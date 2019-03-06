@@ -196,7 +196,7 @@ end
 
 local function update_formspecs(finished)
 	local ges = #minetest.get_connected_players()
-	local form_n = "size[8,15;true]"
+	local form_n = "size[8,15;true]no_prepend[]"
 	local all_in_bed = ges == player_in_bed
 	local night_skip = is_night_skip_enabled()
 	local button_leave = "button_exit[2,12;4,0.75;leave;Leave bed]"
