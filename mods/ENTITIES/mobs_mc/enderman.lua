@@ -314,7 +314,7 @@ mobs:register_mob("mobs_mc:enderman", {
 				end
 			end
 			if telepos then
-				self.object:setpos(telepos)
+				self.object:set_pos(telepos)
 			end
 		end
 	end,

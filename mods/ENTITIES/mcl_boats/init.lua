@@ -69,7 +69,7 @@ function boat.on_rightclick(self, clicker)
 		mcl_player.player_set_animation(clicker, "stand" , 30)
 		local pos = clicker:get_pos()
 		pos = {x = pos.x, y = pos.y + 0.2, z = pos.z}
-		clicker:setpos(pos)
+		clicker:set_pos(pos)
 	elseif not self._driver then
 		local attach = clicker:get_attach()
 		if attach and attach:get_luaentity() then
@@ -91,7 +91,7 @@ function boat.on_rightclick(self, clicker)
 				mcl_player.player_set_animation(player, "sit" , 30)
 			end
 		end, name)
-		clicker:set_look_horizontal(self.object:getyaw())
+		clicker:set_look_horizontal(self.object:get_yaw())
 	end
 end
 
@@ -143,10 +143,10 @@ function boat.on_punch(self, puncher)
 end
 
 function boat.on_step(self, dtime)
-	self._v = get_v(self.object:getvelocity()) * get_sign(self._v)
+	self._v = get_v(self.object:get_velocity()) * get_sign(self._v)
 	if self._driver then
 		local ctrl = self._driver:get_player_control()
-		local yaw = self.object:getyaw()
+		local yaw = self.object:get_yaw()
 		if ctrl.up then
 			-- Forwards
 			self._v = self._v + 0.1
@@ -174,15 +174,15 @@ function boat.on_step(self, dtime)
 		end
 		if ctrl.left then
 			if self._v < 0 then
-				self.object:setyaw(yaw - (1 + dtime) * 0.03)
+				self.object:set_yaw(yaw - (1 + dtime) * 0.03)
 			else
-				self.object:setyaw(yaw + (1 + dtime) * 0.03)
+				self.object:set_yaw(yaw + (1 + dtime) * 0.03)
 			end
 		elseif ctrl.right then
 			if self._v < 0 then
-				self.object:setyaw(yaw + (1 + dtime) * 0.03)
+				self.object:set_yaw(yaw + (1 + dtime) * 0.03)
 			else
-				self.object:setyaw(yaw - (1 + dtime) * 0.03)
+				self.object:set_yaw(yaw - (1 + dtime) * 0.03)
 			end
 		end
 	else
@@ -192,15 +192,15 @@ function boat.on_step(self, dtime)
 			self._animation = 0
 		end
 	end
-	local velo = self.object:getvelocity()
+	local velo = self.object:get_velocity()
 	if self._v == 0 and velo.x == 0 and velo.y == 0 and velo.z == 0 then
-		self.object:setpos(self.object:get_pos())
+		self.object:set_pos(self.object:get_pos())
 		return
 	end
 	local s = get_sign(self._v)
 	self._v = self._v - 0.02 * s
 	if s ~= get_sign(self._v) then
-		self.object:setvelocity({x = 0, y = 0, z = 0})
+		self.object:set_velocity({x = 0, y = 0, z = 0})
 		self._v = 0
 		return
 	end
@@ -220,13 +220,13 @@ function boat.on_step(self, dtime)
 		else
 			new_acce = {x = 0, y = -9.8, z = 0}
 		end
-		new_velo = get_velocity(self._v, self.object:getyaw(),
-			self.object:getvelocity().y)
-		self.object:setpos(self.object:get_pos())
+		new_velo = get_velocity(self._v, self.object:get_yaw(),
+			self.object:get_velocity().y)
+		self.object:set_pos(self.object:get_pos())
 	else
 		p.y = p.y + 1
 		if is_water(p) then
-			local y = self.object:getvelocity().y
+			local y = self.object:get_velocity().y
 			if y >= 5 then
 				y = 5
 			elseif y < 0 then
@@ -234,24 +234,24 @@ function boat.on_step(self, dtime)
 			else
 				new_acce = {x = 0, y = 5, z = 0}
 			end
-			new_velo = get_velocity(self._v, self.object:getyaw(), y)
-			self.object:setpos(self.object:get_pos())
+			new_velo = get_velocity(self._v, self.object:get_yaw(), y)
+			self.object:set_pos(self.object:get_pos())
 		else
 			new_acce = {x = 0, y = 0, z = 0}
-			if math.abs(self.object:getvelocity().y) < 1 then
+			if math.abs(self.object:get_velocity().y) < 1 then
 				local pos = self.object:get_pos()
 				pos.y = math.floor(pos.y) + boat_y_offset
-				self.object:setpos(pos)
-				new_velo = get_velocity(self._v, self.object:getyaw(), 0)
+				self.object:set_pos(pos)
+				new_velo = get_velocity(self._v, self.object:get_yaw(), 0)
 			else
-				new_velo = get_velocity(self._v, self.object:getyaw(),
-					self.object:getvelocity().y)
-				self.object:setpos(self.object:get_pos())
+				new_velo = get_velocity(self._v, self.object:get_yaw(),
+					self.object:get_velocity().y)
+				self.object:set_pos(self.object:get_pos())
 			end
 		end
 	end
-	self.object:setvelocity(new_velo)
-	self.object:setacceleration(new_acce)
+	self.object:set_velocity(new_velo)
+	self.object:set_acceleration(new_acce)
 end
 
 -- Register one entity for all boat types

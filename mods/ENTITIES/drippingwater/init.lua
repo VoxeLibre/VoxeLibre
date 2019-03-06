@@ -20,7 +20,7 @@ minetest.register_entity("drippingwater:drop_water", {
 	initial_sprite_basepos = {x=0, y=0},
 
 	on_activate = function(self, staticdata)
-		self.object:setsprite({x=0,y=0}, 1, 1, true)
+		self.object:set_sprite({x=0,y=0}, 1, 1, true)
 	end,
 
 	on_step = function(self, dtime)
@@ -28,11 +28,11 @@ minetest.register_entity("drippingwater:drop_water", {
 	local ownpos = self.object:get_pos()
 
 	if k==1 then
-	self.object:setacceleration({x=0, y=-5, z=0})
+	self.object:set_acceleration({x=0, y=-5, z=0})
 	end
 
 	if minetest.get_node({x=ownpos.x, y=ownpos.y +0.5, z=ownpos.z}).name == "air" then
-	self.object:setacceleration({x=0, y=-5, z=0})
+	self.object:set_acceleration({x=0, y=-5, z=0})
 	end
 	
 		if minetest.get_node({x=ownpos.x, y=ownpos.y -0.5, z=ownpos.z}).name ~= "air" then
@@ -58,7 +58,7 @@ minetest.register_entity("drippingwater:drop_lava", {
 	initial_sprite_basepos = {x=0, y=0},
 
 	on_activate = function(self, staticdata)
-		self.object:setsprite({x=0,y=0}, 1, 0, true)
+		self.object:set_sprite({x=0,y=0}, 1, 0, true)
 	end,
 
 	on_step = function(self, dtime)
@@ -66,11 +66,11 @@ minetest.register_entity("drippingwater:drop_lava", {
 	local ownpos = self.object:get_pos()
 
 	if k==1 then
-	self.object:setacceleration({x=0, y=-5, z=0})
+	self.object:set_acceleration({x=0, y=-5, z=0})
 	end
 
 	if minetest.get_node({x=ownpos.x, y=ownpos.y +0.5, z=ownpos.z}).name == "air" then
-	self.object:setacceleration({x=0, y=-5, z=0})
+	self.object:set_acceleration({x=0, y=-5, z=0})
 	end
 
 		

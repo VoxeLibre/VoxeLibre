@@ -595,7 +595,7 @@ local function return_item(itemstack, dropper, pos, inv_p)
 				v.x = v.x*4
 				v.y = v.y*4 + 2
 				v.z = v.z*4
-				obj:setvelocity(v)
+				obj:set_velocity(v)
 				obj:get_luaentity()._insta_collect = false
 			end
 		end

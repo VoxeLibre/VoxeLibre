@@ -1022,7 +1022,7 @@ local function generate_clay(minp, maxp, seed, voxelmanip_data, voxelmanip_area,
 			local surfacenode = voxelmanip_data[surface_pos]
 
 			local genrnd = math.random(1, 20)
-			if genrnd == 1 and perlin_clay:get3d({x=cx,y=y,z=cz}) > 0 and waternode == c_water and
+			if genrnd == 1 and perlin_clay:get_3d({x=cx,y=y,z=cz}) > 0 and waternode == c_water and
 					(surfacenode == c_dirt or minetest.get_item_group(minetest.get_name_from_content_id(surfacenode), "sand") == 1) then
 				local diamondsize = math.random(1, 3)
 				for x1 = -diamondsize, diamondsize do
@@ -1062,7 +1062,7 @@ local function generate_structures(minp, maxp, seed, biomemap)
 			local x1 = minp.x + math.floor((divx+1)*divlen)
 			local z1 = minp.z + math.floor((divz+1)*divlen)
 			-- Determine amount from perlin noise
-			local amount = math.floor(perlin_structures:get2d({x=x0, y=z0}) * 9)
+			local amount = math.floor(perlin_structures:get_2d({x=x0, y=z0}) * 9)
 			-- Find random positions based on this random
 			local pr = PseudoRandom(seed+1)
 			for i=0, amount do
@@ -1445,12 +1445,12 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 			local pos = vector.add(pos, dirs[d])
 			local p_pos = area:index(pos.x, pos.y, pos.z)
 
-			local vine_threshold = math.max(0.33333, perlin_vines_density:get2d(pos))
+			local vine_threshold = math.max(0.33333, perlin_vines_density:get_2d(pos))
 			if dense_vegetation then
 				vine_threshold = vine_threshold * (2/3)
 			end
 
-			if perlin_vines:get2d(pos) > -1.0 and perlin_vines_fine:get3d(pos) > vine_threshold and data[p_pos] == c_air then
+			if perlin_vines:get_2d(pos) > -1.0 and perlin_vines_fine:get_3d(pos) > vine_threshold and data[p_pos] == c_air then
 
 				local rdir = {}
 				rdir.x = -dirs[d].x
@@ -1462,13 +1462,13 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 				local grow_upwards = false
 				-- Only possible on the wood, not on the leaves
 				if i == 1 then
-					grow_upwards = perlin_vines_upwards:get3d(pos) > 0.8
+					grow_upwards = perlin_vines_upwards:get_3d(pos) > 0.8
 				end
 				if grow_upwards then
 					-- Grow vines up 1-4 nodes, even through jungleleaves.
 					-- This may give climbing access all the way to the top of the tree :-)
 					-- But this will be fairly rare.
-					local length = math.ceil(math.abs(perlin_vines_length:get3d(pos)) * 4)
+					local length = math.ceil(math.abs(perlin_vines_length:get_3d(pos)) * 4)
 					for l=0, length-1 do
 						local t_pos = area:index(treepos.x, treepos.y, treepos.z)
 
@@ -1486,7 +1486,7 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 					end
 				else
 					-- Grow vines down, length between 1 and maxvinelength
-					local length = math.ceil(math.abs(perlin_vines_length:get3d(pos)) * maxvinelength)
+					local length = math.ceil(math.abs(perlin_vines_length:get_3d(pos)) * maxvinelength)
 					for l=0, length-1 do
 						if data[p_pos] == c_air then
 							data[p_pos] = c_vine

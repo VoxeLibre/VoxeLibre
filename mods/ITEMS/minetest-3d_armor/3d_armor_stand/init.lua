@@ -63,7 +63,7 @@ local function update_entity(pos)
 				yaw = math.pi / 2
 			end
 		end
-		object:setyaw(yaw)
+		object:set_yaw(yaw)
 		object:set_properties({textures={texture}})
 	end
 end

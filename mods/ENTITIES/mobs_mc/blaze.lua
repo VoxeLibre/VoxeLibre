@@ -101,7 +101,7 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 		if node.name == "air" then
 			minetest.set_node(pos_above, {name=mobs_mc.items.fire})
 		else
-			local v = self.object:getvelocity()
+			local v = self.object:get_velocity()
 			v = vector.normalize(v)
 			local crashpos = vector.subtract(pos, v)
 			local crashnode = minetest.get_node(crashpos)

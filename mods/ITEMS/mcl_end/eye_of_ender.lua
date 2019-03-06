@@ -35,10 +35,10 @@ minetest.register_entity("mcl_end:ender_eye", {
 			else
 				-- 80% to drop as an item
 				local pos = self.object:get_pos()
-				local v = self.object:getvelocity()
+				local v = self.object:get_velocity()
 				self.object:remove()
 				local item = minetest.add_item(pos, "mcl_end:ender_eye")
-				item:setvelocity(v)
+				item:set_velocity(v)
 				return
 			end
 		elseif self._age >= 2 then
@@ -46,8 +46,8 @@ minetest.register_entity("mcl_end:ender_eye", {
 				self._phase = 1
 				-- Stop the eye and wait for another second.
 				-- The vertical speed changes are just eye candy.
-				self.object:setacceleration({x=0, y=-3, z=0})
-				self.object:setvelocity({x=0, y=self.object:getvelocity().y*0.2, z=0})
+				self.object:set_acceleration({x=0, y=-3, z=0})
+				self.object:set_velocity({x=0, y=self.object:get_velocity().y*0.2, z=0})
 			end
 		else
 			-- Fly normally and generate particles
@@ -126,7 +126,7 @@ minetest.register_craftitem("mcl_end:ender_eye", {
 			local velocity = 4
 			-- Stronghold is close: Fly directly to stronghold and take Y into account.
 			dir = vector.normalize(vector.direction(origin, closest_stronghold.pos))
-			obj:setvelocity({x=dir.x*velocity, y=dir.y*velocity, z=dir.z*velocity})
+			obj:set_velocity({x=dir.x*velocity, y=dir.y*velocity, z=dir.z*velocity})
 		else
 			local velocity = 12
 			-- Don't care about Y if stronghold is still far away.
@@ -134,8 +134,8 @@ minetest.register_craftitem("mcl_end:ender_eye", {
 			local o = {x=origin.x, y=0, z=origin.z}
 			local s = {x=closest_stronghold.pos.x, y=0, z=closest_stronghold.pos.z}
 			dir = vector.normalize(vector.direction(o, s))
-			obj:setacceleration({x=dir.x*-3, y=4, z=dir.z*-3})
-			obj:setvelocity({x=dir.x*velocity, y=3, z=dir.z*velocity})
+			obj:set_acceleration({x=dir.x*-3, y=4, z=dir.z*-3})
+			obj:set_velocity({x=dir.x*velocity, y=3, z=dir.z*velocity})
 		end
 
 

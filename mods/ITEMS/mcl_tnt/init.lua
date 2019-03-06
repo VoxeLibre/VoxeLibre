@@ -10,7 +10,7 @@ end
 local function activate_if_tnt(nname, np, tnt_np, tntr)
     if nname == "mcl_tnt:tnt" then
         local e = spawn_tnt(np, nname)
-        e:setvelocity({x=(np.x - tnt_np.x)*5+(tntr / 4), y=(np.y - tnt_np.y)*5+(tntr / 3), z=(np.z - tnt_np.z)*5+(tntr / 4)})
+        e:set_velocity({x=(np.x - tnt_np.x)*5+(tntr / 4), y=(np.y - tnt_np.y)*5+(tntr / 3), z=(np.z - tnt_np.z)*5+(tntr / 4)})
     end
 end
 
@@ -18,13 +18,13 @@ local function do_tnt_physics(tnt_np,tntr)
     local objs = minetest.get_objects_inside_radius(tnt_np, tntr)
     for k, obj in pairs(objs) do
         local ent = obj:get_luaentity()
-        local v = obj:getvelocity()
+        local v = obj:get_velocity()
         local p = obj:get_pos()
         if ent and ent.name == "mcl_tnt:tnt" then
-            obj:setvelocity({x=(p.x - tnt_np.x) + (tntr / 2) + v.x, y=(p.y - tnt_np.y) + tntr + v.y, z=(p.z - tnt_np.z) + (tntr / 2) + v.z})
+            obj:set_velocity({x=(p.x - tnt_np.x) + (tntr / 2) + v.x, y=(p.y - tnt_np.y) + tntr + v.y, z=(p.z - tnt_np.z) + (tntr / 2) + v.z})
         else
             if v ~= nil then
-                obj:setvelocity({x=(p.x - tnt_np.x) + (tntr / 4) + v.x, y=(p.y - tnt_np.y) + (tntr / 2) + v.y, z=(p.z - tnt_np.z) + (tntr / 4) + v.z})
+                obj:set_velocity({x=(p.x - tnt_np.x) + (tntr / 4) + v.x, y=(p.y - tnt_np.y) + (tntr / 2) + v.y, z=(p.z - tnt_np.z) + (tntr / 4) + v.z})
             else
                 local dist = math.max(1, vector.distance(tnt_np, p))
                 local damage = (4 / dist) * tntr
@@ -100,9 +100,9 @@ function TNT:on_activate(staticdata)
 	local phi = math.random(0, 65535) / 65535 * 2*math.pi
 	local hdir_x = math.cos(phi) * 0.02
 	local hdir_z = math.sin(phi) * 0.02
-	self.object:setvelocity({x=hdir_x, y=2, z=hdir_z})
-	self.object:setacceleration({x=0, y=-10, z=0})
-	self.object:settexturemod("^mcl_tnt_blink.png")
+	self.object:set_velocity({x=hdir_x, y=2, z=hdir_z})
+	self.object:set_acceleration({x=0, y=-10, z=0})
+	self.object:set_texture_mod("^mcl_tnt_blink.png")
 end
 
 local function add_effects(pos, radius, drops)
@@ -170,9 +170,9 @@ function TNT:on_step(dtime)
 	if self.blinktimer > 0.25 then
 		self.blinktimer = self.blinktimer - 0.25
 		if self.blinkstatus then
-			self.object:settexturemod("")
+			self.object:set_texture_mod("")
 		else
-			self.object:settexturemod("^mcl_tnt_blink.png")
+			self.object:set_texture_mod("^mcl_tnt_blink.png")
 		end
 		self.blinkstatus = not self.blinkstatus
 	end

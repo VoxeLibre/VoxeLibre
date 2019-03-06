@@ -190,7 +190,7 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 	end
 
 	local acce_y = 0
-	local velo = entity.object:getvelocity()
+	local velo = entity.object:get_velocity()
 
 	entity.v = get_v(velo) * get_sign(entity.v)
 
@@ -215,7 +215,7 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 		end
 
 		-- fix mob rotation
-		entity.object:setyaw(entity.driver:get_look_horizontal() - entity.rotate)
+		entity.object:set_yaw(entity.driver:get_look_horizontal() - entity.rotate)
 
 		if can_fly then
 
@@ -275,7 +275,7 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 
 	if s ~= get_sign(entity.v) then
 
-		entity.object:setvelocity({x = 0, y = 0, z = 0})
+		entity.object:set_velocity({x = 0, y = 0, z = 0})
 		entity.v = 0
 		return
 	end
@@ -348,7 +348,7 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 				if math.abs(velo.y) < 1 then
 					local pos = entity.object:get_pos()
 					pos.y = math.floor(pos.y) + 0.5
-					entity.object:setpos(pos)
+					entity.object:set_pos(pos)
 					velo.y = 0
 				end
 			end
@@ -360,8 +360,8 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 	new_velo = get_velocity(v, entity.object:get_yaw() - rot_view, velo.y)
 	new_acce.y = new_acce.y + acce_y
 
-	entity.object:setvelocity(new_velo)
-	entity.object:setacceleration(new_acce)
+	entity.object:set_velocity(new_velo)
+	entity.object:set_acceleration(new_acce)
 
 	-- CRASH!
 	if enable_crash then
@@ -387,7 +387,7 @@ end
 function mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_anim)
 
 	local ctrl = entity.driver:get_player_control()
-	local velo = entity.object:getvelocity()
+	local velo = entity.object:get_velocity()
 	local dir = entity.driver:get_look_dir()
 	local yaw = entity.driver:get_look_horizontal() + 1.57 -- offset fix between old and new commands
 	local rot_steer, rot_view = math.pi / 2, 0
@@ -397,24 +397,24 @@ function mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_anim)
 	end
 
 	if ctrl.up then
-		entity.object:setvelocity({
+		entity.object:set_velocity({
 			x = dir.x * speed,
 			y = dir.y * speed + 2,
 			z = dir.z * speed
 		})
 
 	elseif ctrl.down then
-		entity.object:setvelocity({
+		entity.object:set_velocity({
 			x = -dir.x * speed,
 			y = dir.y * speed + 2,
 			z = -dir.z * speed
 		})
 
 	elseif not ctrl.down or ctrl.up or ctrl.jump then
-		entity.object:setvelocity({x = 0, y = -2, z = 0})
+		entity.object:set_velocity({x = 0, y = -2, z = 0})
 	end
 
-	entity.object:setyaw(yaw + math.pi + math.pi / 2 - entity.rotate)
+	entity.object:set_yaw(yaw + math.pi + math.pi / 2 - entity.rotate)
 
 	-- firing arrows
 	if ctrl.LMB and ctrl.sneak and shoots then
@@ -431,8 +431,8 @@ function mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_anim)
 			ent.owner_id = tostring(entity.object) -- so arrows dont hurt entity you are riding
 			local vec = {x = dir.x * 6, y = dir.y * 6, z = dir.z * 6}
 			local yaw = entity.driver:get_look_horizontal()
-			obj:setyaw(yaw + math.pi / 2)
-			obj:setvelocity(vec)
+			obj:set_yaw(yaw + math.pi / 2)
+			obj:set_velocity(vec)
 		else
 			obj:remove()
 		end

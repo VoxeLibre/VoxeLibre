@@ -100,10 +100,10 @@ mooshroom_def.on_rightclick = function(self, clicker)
 			minetest.add_item({x=pos.x, y=pos.y+1.4, z=pos.z}, mobs_mc.items.mushroom_red .. " 5")
 		end
 
-		local oldyaw = self.object:getyaw()
+		local oldyaw = self.object:get_yaw()
 		self.object:remove()
 		local cow = minetest.add_entity(pos, "mobs_mc:cow")
-		cow:setyaw(oldyaw)
+		cow:set_yaw(oldyaw)
 
 		if not minetest.settings:get_bool("creative_mode") then
 			item:add_wear(mobs_mc.misc.shears_wear)

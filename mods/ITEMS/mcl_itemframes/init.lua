@@ -77,7 +77,7 @@ local update_item_entity = function(pos, node)
 		lua:_update_texture()
 		if node.name == "mcl_itemframes:item_frame" then
 			local yaw = math.pi*2 - node.param2 * math.pi/2
-			e:setyaw(yaw)
+			e:set_yaw(yaw)
 		end
 	end
 end

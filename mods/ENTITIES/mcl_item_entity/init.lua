@@ -98,14 +98,14 @@ minetest.register_globalstep(function(dtime)
 							local opos = object:get_pos()
 							local vec = vector.subtract(checkpos, opos)
 							vec = vector.add(opos, vector.divide(vec, 2))
-							object:moveto(vec)
+							object:move_to(vec)
 
 
 							--fix eternally falling items
 							minetest.after(0, function(object)
 								local lua = object:get_luaentity()
 								if lua then
-									object:setacceleration({x=0, y=0, z=0})
+									object:set_acceleration({x=0, y=0, z=0})
 								end
 							end, object)
 
@@ -264,7 +264,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 				if math.random(1,2) == 1 then
 					z = -z
 				end
-				obj:setvelocity({x=1/x, y=obj:getvelocity().y, z=1/z})
+				obj:set_velocity({x=1/x, y=obj:get_velocity().y, z=1/z})
 			end
 		end
 	end
@@ -285,7 +285,7 @@ function minetest.item_drop(itemstack, dropper, pos)
 			v.x = v.x*4
 			v.y = v.y*4 + 2
 			v.z = v.z*4
-			obj:setvelocity(v)
+			obj:set_velocity(v)
 			-- Force collection delay
 			obj:get_luaentity()._insta_collect = false
 			return itemstack
@@ -373,7 +373,7 @@ core.register_entity(":__builtin:item", {
 				if not self or not self.object or not self.object:get_luaentity() then
 					return
 				end
-				local vel = self.object:getvelocity()
+				local vel = self.object:get_velocity()
 				if vel and vel.x == 0 and vel.z == 0 then
 					local x = math.random(1, 5)
 					if math.random(1,2) == 1 then
@@ -384,7 +384,7 @@ core.register_entity(":__builtin:item", {
 						z = -z
 					end
 					local y = math.random(2,4)
-					self.object:setvelocity({x=1/x, y=y, z=1/z})
+					self.object:set_velocity({x=1/x, y=y, z=1/z})
 				end
 			end, self)
 		end
@@ -444,8 +444,8 @@ core.register_entity(":__builtin:item", {
 		self._forcetimer = 0
 
 		self.object:set_armor_groups({immortal = 1})
-		self.object:setvelocity({x = 0, y = 2, z = 0})
-		self.object:setacceleration({x = 0, y = -get_gravity(), z = 0})
+		self.object:set_velocity({x = 0, y = 2, z = 0})
+		self.object:set_acceleration({x = 0, y = -get_gravity(), z = 0})
 		self:set_item(self.itemstring)
 	end,
 
@@ -589,8 +589,8 @@ core.register_entity(":__builtin:item", {
 
 			-- Set new item moving speed accordingly
 			local newv = vector.multiply(shootdir, 3)
-			self.object:setacceleration({x = 0, y = 0, z = 0})
-			self.object:setvelocity(newv)
+			self.object:set_acceleration({x = 0, y = 0, z = 0})
+			self.object:set_velocity(newv)
 
 			disable_physics(self.object, self, false, false)
 
@@ -643,8 +643,8 @@ core.register_entity(":__builtin:item", {
 				local f = 1.39
 				-- Set new item moving speed into the direciton of the liquid
 				local newv = vector.multiply(vec, f)
-				self.object:setacceleration({x = 0, y = 0, z = 0})
-				self.object:setvelocity({x = newv.x, y = -0.22, z = newv.z})
+				self.object:set_acceleration({x = 0, y = 0, z = 0})
+				self.object:set_velocity({x = newv.x, y = -0.22, z = newv.z})
 
 				self.physical_state = true
 				self._flowing = true
@@ -662,7 +662,7 @@ core.register_entity(":__builtin:item", {
 
 		-- If node is not registered or node is walkably solid and resting on nodebox
 		local nn = minetest.get_node({x=p.x, y=p.y-0.5, z=p.z}).name
-		local v = self.object:getvelocity()
+		local v = self.object:get_velocity()
 
 		if not core.registered_nodes[nn] or core.registered_nodes[nn].walkable and v.y == 0 then
 			if self.physical_state then

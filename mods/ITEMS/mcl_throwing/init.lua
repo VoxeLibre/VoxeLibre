@@ -28,8 +28,8 @@ mcl_throwing.throw = function(throw_item, pos, dir, velocity)
 
 	local itemstring = ItemStack(throw_item):get_name()
 	local obj = minetest.add_entity(pos, entity_mapping[itemstring])
-	obj:setvelocity({x=dir.x*velocity, y=dir.y*velocity, z=dir.z*velocity})
-	obj:setacceleration({x=dir.x*-3, y=-GRAVITY, z=dir.z*-3})
+	obj:set_velocity({x=dir.x*velocity, y=dir.y*velocity, z=dir.z*velocity})
+	obj:set_acceleration({x=dir.x*-3, y=-GRAVITY, z=dir.z*-3})
 	return obj
 end
 
@@ -208,7 +208,7 @@ local pearl_on_step = function(self, dtime)
 				-- First determine good teleport position
 				local dir = {x=0, y=0, z=0}
 
-				local v = self.object:getvelocity()
+				local v = self.object:get_velocity()
 				if walkable then
 					local vc = table.copy(v) -- vector for calculating
 					-- Node is walkable, we have to find a place somewhere outside of that node
@@ -261,7 +261,7 @@ local pearl_on_step = function(self, dtime)
 
 				local oldpos = player:get_pos()
 				-- Teleport and hurt player
-				player:setpos(telepos)
+				player:set_pos(telepos)
 				player:set_hp(player:get_hp() - 5)
 
 				-- 5% chance to spawn endermite at the player's origin

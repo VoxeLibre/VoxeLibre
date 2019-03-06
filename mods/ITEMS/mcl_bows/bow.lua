@@ -41,7 +41,7 @@ mcl_bows.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damag
 	end
 	obj:set_velocity({x=dir.x*power, y=dir.y*power, z=dir.z*power})
 	obj:set_acceleration({x=0, y=-GRAVITY, z=0})
-	obj:setyaw(yaw-math.pi/2)
+	obj:set_yaw(yaw-math.pi/2)
 	local le = obj:get_luaentity()
 	le._shooter = shooter
 	le._damage = damage

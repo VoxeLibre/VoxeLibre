@@ -137,15 +137,15 @@ local set_velocity = function(self, v)
 
 	-- do not move if mob has been ordered to stay
 	if self.order == "stand" then
-		self.object:setvelocity({x = 0, y = 0, z = 0})
+		self.object:set_velocity({x = 0, y = 0, z = 0})
 		return
 	end
 
 	local yaw = (self.object:get_yaw() or 0) + self.rotate
 
-	self.object:setvelocity({
+	self.object:set_velocity({
 		x = sin(yaw) * -v,
-		y = self.object:getvelocity().y,
+		y = self.object:get_velocity().y,
 		z = cos(yaw) * v
 	})
 end
@@ -154,7 +154,7 @@ end
 -- calculate mob velocity
 local get_velocity = function(self)
 
-	local v = self.object:getvelocity()
+	local v = self.object:get_velocity()
 
 	return (v.x * v.x + v.z * v.z) ^ 0.5
 end
@@ -403,7 +403,7 @@ local item_drop = function(self, cooked)
 
 			if obj and obj:get_luaentity() then
 
-				obj:setvelocity({
+				obj:set_velocity({
 					x = random(-10, 10) / 9,
 					y = 6,
 					z = random(-10, 10) / 9,
@@ -642,7 +642,7 @@ local do_env_damage = function(self)
 
 	-- don't fall when on ignore, just stand still
 	if self.standing_in == "ignore" then
-		self.object:setvelocity({x = 0, y = 0, z = 0})
+		self.object:set_velocity({x = 0, y = 0, z = 0})
 	end
 
 	local nodef = minetest.registered_nodes[self.standing_in]
@@ -738,7 +738,7 @@ local do_jump = function(self)
 	-- something stopping us while moving?
 	if self.state ~= "stand"
 	and get_velocity(self) > 0.5
-	and self.object:getvelocity().y ~= 0 then
+	and self.object:get_velocity().y ~= 0 then
 		return false
 	end
 
@@ -776,13 +776,13 @@ local do_jump = function(self)
 		if not nod.name:find("fence")
 		and not nod.name:find("gate") then
 
-			local v = self.object:getvelocity()
+			local v = self.object:get_velocity()
 
 			v.y = self.jump_height
 
 			set_animation(self, "jump") -- only when defined
 
-			self.object:setvelocity(v)
+			self.object:set_velocity(v)
 
 			-- when in air move forward
 			minetest.after(0.3, function(self, v)
@@ -912,7 +912,7 @@ local breed = function(self)
 				self.on_grown(self)
 			else
 				-- jump when fully grown so as not to fall into ground
-				self.object:setvelocity({
+				self.object:set_velocity({
 					x = 0,
 					y = self.jump_height,
 					z = 0
@@ -1041,7 +1041,7 @@ local replace = function(self, pos)
 	or not self.replace_rate
 	or not self.replace_what
 	or self.child == true
-	or self.object:getvelocity().y ~= 0
+	or self.object:get_velocity().y ~= 0
 	or random(1, self.replace_rate) > 1 then
 		return
 	end
@@ -1267,7 +1267,7 @@ local smart_mobs = function(self, s, p, dist, dtime)
 					end
 
 					s.y = s.y - sheight
-					self.object:setpos({x = s.x, y = s.y + 2, z = s.z})
+					self.object:set_pos({x = s.x, y = s.y + 2, z = s.z})
 
 				else -- dig 2 blocks to make door toward player direction
 
@@ -1670,7 +1670,7 @@ local follow_flop = function(self)
 		if not flight_check(self, s) then
 
 			self.state = "flop"
-			self.object:setvelocity({x = 0, y = -5, z = 0})
+			self.object:set_velocity({x = 0, y = -5, z = 0})
 
 			set_animation(self, "stand")
 
@@ -1944,7 +1944,7 @@ local do_states = function(self, dtime)
 				self.timer = 0
 				self.blinktimer = 0
 				self.blinkstatus = false
-				self.object:settexturemod("")
+				self.object:set_texture_mod("")
 			end
 
 			-- walk right up to player unless the timer is active
@@ -1970,9 +1970,9 @@ local do_states = function(self, dtime)
 					self.blinktimer = 0
 
 					if self.blinkstatus then
-						self.object:settexturemod("")
+						self.object:set_texture_mod("")
 					else
-						self.object:settexturemod("^[brighten")
+						self.object:set_texture_mod("^[brighten")
 					end
 
 					self.blinkstatus = not self.blinkstatus
@@ -2026,13 +2026,13 @@ local do_states = function(self, dtime)
 				local me_y = floor(p1.y)
 				local p2 = p
 				local p_y = floor(p2.y + 1)
-				local v = self.object:getvelocity()
+				local v = self.object:get_velocity()
 
 				if flight_check(self, s) then
 
 					if me_y < p_y then
 
-						self.object:setvelocity({
+						self.object:set_velocity({
 							x = v.x,
 							y = 1 * self.walk_velocity,
 							z = v.z
@@ -2040,7 +2040,7 @@ local do_states = function(self, dtime)
 
 					elseif me_y > p_y then
 
-						self.object:setvelocity({
+						self.object:set_velocity({
 							x = v.x,
 							y = -1 * self.walk_velocity,
 							z = v.z
@@ -2049,7 +2049,7 @@ local do_states = function(self, dtime)
 				else
 					if me_y < p_y then
 
-						self.object:setvelocity({
+						self.object:set_velocity({
 							x = v.x,
 							y = 0.01,
 							z = v.z
@@ -2057,7 +2057,7 @@ local do_states = function(self, dtime)
 
 					elseif me_y > p_y then
 
-						self.object:setvelocity({
+						self.object:set_velocity({
 							x = v.x,
 							y = -0.01,
 							z = v.z
@@ -2241,7 +2241,7 @@ local do_states = function(self, dtime)
 					vec.y = vec.y * (v / amount)
 					vec.z = vec.z * (v / amount)
 
-					obj:setvelocity(vec)
+					obj:set_velocity(vec)
 				end
 			end
 		end
@@ -2257,12 +2257,12 @@ local falling = function(self, pos)
 	end
 
 	-- floating in water (or falling)
-	local v = self.object:getvelocity()
+	local v = self.object:get_velocity()
 
 	if v.y > 0 then
 
 		-- apply gravity when moving up
-		self.object:setacceleration({
+		self.object:set_acceleration({
 			x = 0,
 			y = -10,
 			z = 0
@@ -2271,14 +2271,14 @@ local falling = function(self, pos)
 	elseif v.y <= 0 and v.y > self.fall_speed then
 
 		-- fall downwards at set speed
-		self.object:setacceleration({
+		self.object:set_acceleration({
 			x = 0,
 			y = self.fall_speed,
 			z = 0
 		})
 	else
 		-- stop accelerating once max fall speed hit
-		self.object:setacceleration({x = 0, y = 0, z = 0})
+		self.object:set_acceleration({x = 0, y = 0, z = 0})
 	end
 
 	-- in water then float up
@@ -2286,7 +2286,7 @@ local falling = function(self, pos)
 
 		if self.floats == 1 then
 
-			self.object:setacceleration({
+			self.object:set_acceleration({
 				x = 0,
 				y = -self.fall_speed / (max(1, v.y) ^ 2),
 				z = 0
@@ -2296,7 +2296,7 @@ local falling = function(self, pos)
 
 		-- fall damage onto solid ground
 		if self.fall_damage == 1
-		and self.object:getvelocity().y == 0 then
+		and self.object:get_velocity().y == 0 then
 
 			local d = (self.old_y or 0) - self.object:get_pos().y
 
@@ -2475,7 +2475,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		if self.knock_back
 		and tflp >= punch_interval then
 
-			local v = self.object:getvelocity()
+			local v = self.object:get_velocity()
 			local r = 1.4 - min(punch_interval, 1.4)
 			local kb = r * 2.0
 			local up = 2
@@ -2496,7 +2496,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 				kb = kb * 1.5
 			end
 
-			self.object:setvelocity({
+			self.object:set_velocity({
 				x = dir.x * kb,
 				y = up,
 				z = dir.z * kb

@@ -223,7 +223,7 @@ local update_sign = function(pos, fields, sender)
 	text_entity:get_luaentity()._signnodename = nn
 	text_entity:set_properties({textures={generate_texture(create_lines(text), nn)}})
 
-	text_entity:setyaw(sign_info.yaw)
+	text_entity:set_yaw(sign_info.yaw)
 end
 
 local show_formspec = function(player, pos)
@@ -359,7 +359,7 @@ minetest.register_node("mcl_signs:wall_sign", {
 			x = place_pos.x + sign_info.delta.x,
 			y = place_pos.y + sign_info.delta.y,
 			z = place_pos.z + sign_info.delta.z}, "mcl_signs:text")
-		text_entity:setyaw(sign_info.yaw)
+		text_entity:set_yaw(sign_info.yaw)
 		text_entity:get_luaentity()._signnodename = nodeitem:get_name()
 
 		minetest.sound_play({name="default_place_node_hard", gain=1.0}, {pos = place_pos})

@@ -61,7 +61,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 		if puncher:get_player_control().sneak then
 			if self._driver then
 				if self._old_pos then
-					self.object:setpos(self._old_pos)
+					self.object:set_pos(self._old_pos)
 				end
 				mcl_player.player_attached[self._driver] = nil
 				local player = minetest.get_player_by_name(self._driver)
@@ -98,7 +98,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 			return
 		end
 
-		local vel = self.object:getvelocity()
+		local vel = self.object:get_velocity()
 		if puncher:get_player_name() == self._driver then
 			if math.abs(vel.x + vel.z) > 7 then
 				return
@@ -121,7 +121,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 	end
 
 	function cart:on_step(dtime)
-		local vel = self.object:getvelocity()
+		local vel = self.object:get_velocity()
 		local update = {}
 		if self._last_float_check == nil then
 			self._last_float_check = 0
@@ -139,7 +139,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 				-- Detach driver
 				if self._driver then
 					if self._old_pos then
-						self.object:setpos(self._old_pos)
+						self.object:set_pos(self._old_pos)
 					end
 					mcl_player.player_attached[self._driver] = nil
 					local player = minetest.get_player_by_name(self._driver)
@@ -164,7 +164,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 
 		if self._punched then
 			vel = vector.add(vel, self._velocity)
-			self.object:setvelocity(vel)
+			self.object:set_velocity(vel)
 			self._old_dir.y = 0
 		elseif vector.equals(vel, {x=0, y=0, z=0}) then
 			return
@@ -217,8 +217,8 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 				(self._old_vel.x * vel.x < 0 or self._old_vel.z * vel.z < 0) then
 			self._old_vel = {x = 0, y = 0, z = 0}
 			self._old_pos = pos
-			self.object:setvelocity(vector.new())
-			self.object:setacceleration(vector.new())
+			self.object:set_velocity(vector.new())
+			self.object:set_acceleration(vector.new())
 			return
 		end
 		self._old_vel = vector.new(vel)
@@ -292,7 +292,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 			new_acc = vector.multiply(dir, acc)
 		end
 
-		self.object:setacceleration(new_acc)
+		self.object:set_acceleration(new_acc)
 		self._old_pos = vector.new(pos)
 		self._old_dir = vector.new(dir)
 		self._old_switch = last_switch
@@ -321,7 +321,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 			elseif dir.z < 0 then
 				yaw = 1
 			end
-			self.object:setyaw(yaw * math.pi)
+			self.object:set_yaw(yaw * math.pi)
 		end
 
 		if self._punched then
@@ -341,9 +341,9 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 		end
 		self.object:set_animation(anim, 1, 0)
 
-		self.object:setvelocity(vel)
+		self.object:set_velocity(vel)
 		if update.pos then
-			self.object:setpos(pos)
+			self.object:set_pos(pos)
 		end
 		update = nil
 	end
@@ -387,7 +387,7 @@ mcl_minecarts.place_minecart = function(itemstack, pointed_thing)
 		le._railtype = railtype
 	end
 	local cart_dir = mcl_minecarts:get_rail_direction(railpos, {x=1, y=0, z=0}, nil, nil, railtype)
-	cart:setyaw(minetest.dir_to_yaw(cart_dir))
+	cart:set_yaw(minetest.dir_to_yaw(cart_dir))
 
 	if not minetest.settings:get_bool("creative_mode") then
 		itemstack:take_item()

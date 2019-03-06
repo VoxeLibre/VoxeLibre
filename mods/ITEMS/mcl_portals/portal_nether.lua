@@ -197,7 +197,7 @@ local function find_nether_target_y(target_x, target_z)
 	local air = 4
 
 	for y = start_y, math.max(mcl_vars.mg_lava_nether_max + 1), -1 do
-		local nval_cave = nobj_cave:get3d({x = target_x, y = y, z = target_z})
+		local nval_cave = nobj_cave:get_3d({x = target_x, y = y, z = target_z})
 
 		if nval_cave > TCAVE then -- Cavern
 			air = air + 1

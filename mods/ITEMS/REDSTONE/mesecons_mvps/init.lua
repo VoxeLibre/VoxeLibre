@@ -310,7 +310,7 @@ function mesecon.mvps_move_objects(pos, dir, nodestack)
 			local nn = minetest.get_node(np)
 			if not ((not minetest.registered_nodes[nn.name])
 			or minetest.registered_nodes[nn.name].walkable) then
-				obj:setpos(np)
+				obj:set_pos(np)
 			end
 		end
 	end

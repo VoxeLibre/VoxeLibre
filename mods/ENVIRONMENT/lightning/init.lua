@@ -163,7 +163,7 @@ lightning.strike = function(pos)
 					posadd = {x=math.cos(angle),y=0,z=math.sin(angle)}
 					posadd = vector.normalize(posadd)
 					local mob = minetest.add_entity(vector.add(pos2, posadd), "mobs_mc:skeleton")
-					mob:setyaw(angle-math.pi/2)
+					mob:set_yaw(angle-math.pi/2)
 					angle = angle + (math.pi*2) / 3
 				end
 

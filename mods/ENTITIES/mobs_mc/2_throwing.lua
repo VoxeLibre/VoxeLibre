@@ -116,9 +116,9 @@ local throwing_shoot_arrow = function(itemstack, player)
 			local playerpos = player:get_pos()
 			local obj = minetest.add_entity({x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, arrow[2])  --mc
 			local dir = player:get_look_dir()
-			obj:setvelocity({x=dir.x*22, y=dir.y*22, z=dir.z*22})
-			obj:setacceleration({x=dir.x*-3, y=-10, z=dir.z*-3})
-			obj:setyaw(player:get_look_yaw()+math.pi)
+			obj:set_velocity({x=dir.x*22, y=dir.y*22, z=dir.z*22})
+			obj:set_acceleration({x=dir.x*-3, y=-10, z=dir.z*-3})
+			obj:set_yaw(player:get_look_yaw()+math.pi)
 			minetest.sound_play("throwing_sound", {pos=playerpos})
 			if obj:get_luaentity().player == "" then
 				obj:get_luaentity().player = player
@@ -267,13 +267,13 @@ if c("egg") then
 		ent.velocity = egg_VELOCITY -- needed for api internal timing
 		ent.switch = 1 -- needed so that egg doesn't despawn straight away
 
-		obj:setvelocity({
+		obj:set_velocity({
 			x = dir.x * egg_VELOCITY,
 			y = dir.y * egg_VELOCITY,
 			z = dir.z * egg_VELOCITY
 		})
 
-		obj:setacceleration({
+		obj:set_acceleration({
 			x = dir.x * -3,
 			y = -egg_GRAVITY,
 			z = dir.z * -3
@@ -351,13 +351,13 @@ if c("snowball") then
 		ent.velocity = snowball_VELOCITY -- needed for api internal timing
 		ent.switch = 1 -- needed so that egg doesn't despawn straight away
 
-		obj:setvelocity({
+		obj:set_velocity({
 			x = dir.x * snowball_VELOCITY,
 			y = dir.y * snowball_VELOCITY,
 			z = dir.z * snowball_VELOCITY
 		})
 
-		obj:setacceleration({
+		obj:set_acceleration({
 			x = dir.x * -3,
 			y = -snowball_GRAVITY,
 			z = dir.z * -3
