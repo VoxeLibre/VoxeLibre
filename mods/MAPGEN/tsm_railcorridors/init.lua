@@ -124,7 +124,6 @@ local function InitRandomizer(seed)
 	-- Used for cobweb generation, both noises have to reach a high value for cobwebs to appear
 	webperlin_major = PerlinNoise(934, 3, 0.6, 500)
 	webperlin_minor = PerlinNoise(834, 3, 0.6, 50)
-	pr_inited = true
 end
 
 local carts_table = {}
