@@ -1251,7 +1251,7 @@ local function generate_structures(minp, maxp, seed, biomemap)
 							if spike < 3 then
 								-- Check surface
 								local floor = {x=p.x+4, y=p.y-1, z=p.z+4}
-								local surface = minetest.find_nodes_in_area({x=p.x+1,y=p.y-1,z=p.z+1}, floor, {"mcl_core:snowblock", "mcl_core:dirt_with_grass_snow"})
+								local surface = minetest.find_nodes_in_area({x=p.x+1,y=p.y-1,z=p.z+1}, floor, {"mcl_core:snowblock"})
 								-- Check for collision with spruce
 								local spruce_collisions = minetest.find_nodes_in_area({x=p.x+1,y=p.y+2,z=p.z+1}, {x=p.x+4, y=p.y+6, z=p.z+4}, {"mcl_core:sprucetree", "mcl_core:spruceleaves"})
 
