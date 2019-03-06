@@ -137,19 +137,18 @@ minetest.register_on_joinplayer(function(player)
 	local skin_id = player:get_meta():get_string("mcl_skins:skin_id")
 	local set_skin
 	-- do we already have a skin in player attributes?
-	if skin_id then
+	if skin_id ~= nil and skin_id ~= "" then
 		set_skin = tonumber(skin_id)
 	-- otherwise use random skin if not set
-	else
+	end
+	if not set_skin then
 		set_skin = math.random(0, mcl_skins.skin_count)
 	end
-	if set_skin then
-		local ok = mcl_skins.set_player_skin(player, set_skin)
-		if not ok then
-			set_skin = math.random(0, mcl_skins.skin_count)
-			minetest.log("warning", "[mcl_skins] Player skin for "..name.." not found, falling back to skin #"..set_skin)
-			mcl_skins.set_player_skin(player, set_skin)
-		end
+	local ok = mcl_skins.set_player_skin(player, set_skin)
+	if not ok then
+		set_skin = math.random(0, mcl_skins.skin_count)
+		minetest.log("warning", "[mcl_skins] Player skin for "..name.." not found, falling back to skin #"..set_skin)
+		mcl_skins.set_player_skin(player, set_skin)
 	end
 end)
 
