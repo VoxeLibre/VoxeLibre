@@ -72,7 +72,7 @@ while true do
 end
 
 mcl_skins.cycle_skin = function(player)
-	local skin_id = tonumber(player:get_attribute("mcl_skins:skin_id"))
+	local skin_id = tonumber(player:get_meta():get_string("mcl_skins:skin_id"))
 	if not skin_id then
 		skin_id = 0
 	end
@@ -106,7 +106,7 @@ mcl_skins.set_player_skin = function(player, skin_id)
 	skin_file = skin .. ".png"
 	mcl_skins.skins[playername] = skin
 	mcl_skins.previews[playername] = preview
-	player:set_attribute("mcl_skins:skin_id", tostring(skin_id))
+	player:get_meta():set_string("mcl_skins:skin_id", tostring(skin_id))
 	mcl_skins.update_player_skin(player)
 	if minetest.get_modpath("3d_armor") then
 		armor.textures[playername].skin = skin_file
@@ -134,7 +134,7 @@ end
 minetest.register_on_joinplayer(function(player)
 
 	local name = player:get_player_name()
-	local skin_id = player:get_attribute("mcl_skins:skin_id")
+	local skin_id = player:get_meta():get_string("mcl_skins:skin_id")
 	local set_skin
 	-- do we already have a skin in player attributes?
 	if skin_id then

@@ -127,7 +127,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		mcl_player.player_attached[name] = false
 		playerphysics.remove_physics_factor(player, "speed", "mcl_beds:sleeping")
 		playerphysics.remove_physics_factor(player, "jump", "mcl_beds:sleeping")
-		player:set_attribute("mcl_beds:sleeping", "false")
+		player:get_meta():set_string("mcl_beds:sleeping", "false")
 		hud_flags.wielditem = true
 		mcl_player.player_set_animation(player, "stand" , 30)
 		mcl_beds.pos[name] = nil
@@ -181,7 +181,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		player:set_look_horizontal(yaw)
 		player:set_look_vertical(0)
 
-		player:set_attribute("mcl_beds:sleeping", "true")
+		player:get_meta():set_string("mcl_beds:sleeping", "true")
 		playerphysics.add_physics_factor(player, "speed", "mcl_beds:sleeping", 0)
 		playerphysics.add_physics_factor(player, "jump", "mcl_beds:sleeping", 0)
 		player:set_pos(p)
@@ -296,7 +296,7 @@ end
 
 function mcl_beds.on_rightclick(pos, player, is_top)
 	-- Anti-Inception: Don't allow to sleep while you're sleeping
-	if player:get_attribute("mcl_beds:sleeping") == "true" then
+	if player:get_meta():get_string("mcl_beds:sleeping") == "true" then
 		return
 	end
 	if minetest.get_modpath("mcl_worlds") then
@@ -343,9 +343,10 @@ end
 
 -- Callbacks
 minetest.register_on_joinplayer(function(player)
-	if player:get_attribute("mcl_beds:sleeping") == "true" then
+	local meta = player:get_meta()
+	if meta:get_string("mcl_beds:sleeping") == "true" then
 		-- Make player awake on joining server
-		player:set_attribute("mcl_beds:sleeping", "false")
+		meta:set_string("mcl_beds:sleeping", "false")
 	end
 	playerphysics.remove_physics_factor(player, "speed", "mcl_beds:sleeping")
 	playerphysics.remove_physics_factor(player, "jump", "mcl_beds:sleeping")

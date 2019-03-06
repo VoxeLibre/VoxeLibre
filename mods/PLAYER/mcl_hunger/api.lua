@@ -2,23 +2,23 @@ mcl_hunger.registered_foods = {}
 
 if mcl_hunger.active then
 	function mcl_hunger.get_hunger(player)
-		local hunger = player:get_attribute("mcl_hunger:hunger") or 20
+		local hunger = player:get_meta():get_string("mcl_hunger:hunger") or 20
 		return tonumber(hunger)
 	end
 
 	function mcl_hunger.get_saturation(player)
-		local saturation = player:get_attribute("mcl_hunger:saturation") or mcl_hunger.SATURATION_INIT
+		local saturation = player:get_meta():get_string("mcl_hunger:saturation") or mcl_hunger.SATURATION_INIT
 		return tonumber(saturation)
 	end
 
 	function mcl_hunger.get_exhaustion(player)
-		local exhaustion = player:get_attribute("mcl_hunger:exhaustion") or 0
+		local exhaustion = player:get_meta():get_string("mcl_hunger:exhaustion") or 0
 		return tonumber(exhaustion)
 	end
 
 	function mcl_hunger.set_hunger(player, hunger, update_hudbars)
 		hunger = math.min(20, math.max(0, hunger))
-		player:set_attribute("mcl_hunger:hunger", tostring(hunger))
+		player:get_meta():set_string("mcl_hunger:hunger", tostring(hunger))
 		if update_hudbars ~= false then
 			hb.change_hudbar(player, "hunger", hunger)
 			mcl_hunger.update_saturation_hud(player, nil, hunger)
@@ -28,7 +28,7 @@ if mcl_hunger.active then
 
 	function mcl_hunger.set_saturation(player, saturation, update_hudbar)
 		saturation = math.min(mcl_hunger.get_hunger(player), math.max(0, saturation))
-		player:set_attribute("mcl_hunger:saturation", tostring(saturation))
+		player:get_meta():set_string("mcl_hunger:saturation", tostring(saturation))
 		if update_hudbar ~= false then
 			mcl_hunger.update_saturation_hud(player, saturation)
 		end
@@ -37,7 +37,7 @@ if mcl_hunger.active then
 
 	function mcl_hunger.set_exhaustion(player, exhaustion, update_hudbar)
 		exhaustion = math.min(mcl_hunger.EXHAUST_LVL, math.max(0.0, exhaustion))
-		player:set_attribute("mcl_hunger:exhaustion", tostring(exhaustion))
+		player:get_meta():set_string("mcl_hunger:exhaustion", tostring(exhaustion))
 		if update_hudbar ~= false then
 			mcl_hunger.update_exhaustion_hud(player, exhaustion)
 		end

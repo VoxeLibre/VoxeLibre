@@ -10,7 +10,7 @@ local mg_name = minetest.get_mapgen_setting("mg_name")
 mcl_spawn.get_spawn_pos = function(player)
 	local spawn, custom_spawn = nil, false
 	if player ~= nil and player:is_player() then
-		local attr = player:get_attribute("mcl_beds:spawn")
+		local attr = player:get_meta():get_string("mcl_beds:spawn")
 		if attr ~= nil and attr ~= "" then
 			spawn = minetest.string_to_pos(attr)
 			custom_spawn = true
@@ -21,7 +21,7 @@ mcl_spawn.get_spawn_pos = function(player)
 		custom_spawn = false
 	end
 	if not spawn or spawn == "" then
-		local attr = player:get_attribute("mcl_spawn:first_spawn")
+		local attr = player:get_meta():get_string("mcl_spawn:first_spawn")
 		if attr ~= nil and attr ~= "" then
 			spawn = minetest.string_to_pos(attr)
 			custom_spawn = false
@@ -36,16 +36,17 @@ end
 -- changed.
 mcl_spawn.set_spawn_pos = function(player, pos, message)
 	local spawn_changed = false
+	local meta = player:get_meta()
 	if pos == nil then
-		if player:get_attribute("mcl_beds:spawn") ~= "" then
+		if meta:get_string("mcl_beds:spawn") ~= "" then
 			spawn_changed = true
 			if message then
 				minetest.chat_send_player(player:get_player_name(), "Respawn position cleared!")
 			end
 		end
-		player:set_attribute("mcl_beds:spawn", "")
+		meta:set_string("mcl_beds:spawn", "")
 	else
-		local oldpos = minetest.string_to_pos(player:get_attribute("mcl_beds:spawn"))
+		local oldpos = minetest.string_to_pos(meta:get_string("mcl_beds:spawn"))
 		if oldpos then
 			-- We don't bother sending a message if the new spawn pos is basically the same
 			if vector.distance(pos, oldpos) > 0.1 then
@@ -55,7 +56,7 @@ mcl_spawn.set_spawn_pos = function(player, pos, message)
 				end
 			end
 		end
-		player:set_attribute("mcl_beds:spawn", minetest.pos_to_string(pos))
+		meta:set_string("mcl_beds:spawn", minetest.pos_to_string(pos))
 	end
 	return spawn_changed
 end
@@ -99,6 +100,6 @@ end)
 
 minetest.register_on_newplayer(function(player)
 	-- Remember where the player spawned first
-	player:set_attribute("mcl_spawn:first_spawn", minetest.pos_to_string(player:get_pos()))
+	player:get_meta():set_string("mcl_spawn:first_spawn", minetest.pos_to_string(player:get_pos()))
 end)
 
