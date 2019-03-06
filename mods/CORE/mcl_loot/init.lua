@@ -114,9 +114,6 @@ local function get_random_slots(max_slot)
 		table.insert(slots_out, slots[r])
 		table.remove(slots, r)
 	end
-	for s=1, #slots_out do
-		print(slots_out[s])
-	end
 	return slots_out
 end
 
