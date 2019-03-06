@@ -81,7 +81,7 @@ end
 
 function mcl_player.player_get_preview(player)
 	local preview = player:get_meta():get_string("mcl_player:preview")
-	if not preview then
+	if preview == nil or preview == "" then
 		return "player.png"
 	else
 		return preview
