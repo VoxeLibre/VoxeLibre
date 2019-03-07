@@ -1,12 +1,14 @@
+local S = minetest.get_translator("3d_armor")
+
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/armor.lua")
 
 -- Regisiter Head Armor
 
-local longdesc = "This is a piece of equippable armor which reduces the amount of damage you receive."
-local usage = "To equip it, put it on the corresponding armor slot in your inventory menu."
+local longdesc = S("This is a piece of equippable armor which reduces the amount of damage you receive.")
+local usage = S("To equip it, put it on the corresponding armor slot in your inventory menu.")
 
 minetest.register_tool("3d_armor:helmet_leather", {
-	description = "Leather Cap",
+	description = S("Leather Cap"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_helmet_leather.png",
@@ -16,7 +18,7 @@ minetest.register_tool("3d_armor:helmet_leather", {
 })
 
 minetest.register_tool("3d_armor:helmet_iron", {
-	description = "Iron Helmet",
+	description = S("Iron Helmet"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_helmet_iron.png",
@@ -26,7 +28,7 @@ minetest.register_tool("3d_armor:helmet_iron", {
 })
 
 minetest.register_tool("3d_armor:helmet_gold", {
-	description = "Golden Helmet",
+	description = S("Golden Helmet"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_helmet_gold.png",
@@ -36,7 +38,7 @@ minetest.register_tool("3d_armor:helmet_gold", {
 })
 
 minetest.register_tool("3d_armor:helmet_diamond",{
-	description = "Diamond Helmet",
+	description = S("Diamond Helmet"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_helmet_diamond.png",
@@ -46,7 +48,7 @@ minetest.register_tool("3d_armor:helmet_diamond",{
 })
 
 minetest.register_tool("3d_armor:helmet_chain", {
-	description = "Chain Helmet",
+	description = S("Chain Helmet"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_helmet_chain.png",
@@ -58,7 +60,7 @@ minetest.register_tool("3d_armor:helmet_chain", {
 -- Regisiter Torso Armor
 
 minetest.register_tool("3d_armor:chestplate_leather", {
-	description = "Leather Tunic",
+	description = S("Leather Tunic"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_chestplate_leather.png",
@@ -68,7 +70,7 @@ minetest.register_tool("3d_armor:chestplate_leather", {
 })
 
 minetest.register_tool("3d_armor:chestplate_iron", {
-	description = "Iron Chestplate",
+	description = S("Iron Chestplate"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_chestplate_iron.png",
@@ -78,7 +80,7 @@ minetest.register_tool("3d_armor:chestplate_iron", {
 })
 
 minetest.register_tool("3d_armor:chestplate_gold", {
-	description = "Golden Chestplate",
+	description = S("Golden Chestplate"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_chestplate_gold.png",
@@ -88,7 +90,7 @@ minetest.register_tool("3d_armor:chestplate_gold", {
 })
 
 minetest.register_tool("3d_armor:chestplate_diamond",{
-	description = "Diamond Chestplate",
+	description = S("Diamond Chestplate"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_chestplate_diamond.png",
@@ -98,7 +100,7 @@ minetest.register_tool("3d_armor:chestplate_diamond",{
 })
 
 minetest.register_tool("3d_armor:chestplate_chain", {
-	description = "Chain Chestplate",
+	description = S("Chain Chestplate"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_chestplate_chain.png",
@@ -110,7 +112,7 @@ minetest.register_tool("3d_armor:chestplate_chain", {
 -- Regisiter Leg Armor
 
 minetest.register_tool("3d_armor:leggings_leather", {
-	description = "Leather Pants",
+	description = S("Leather Pants"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_leggings_leather.png",
@@ -120,7 +122,7 @@ minetest.register_tool("3d_armor:leggings_leather", {
 })
 
 minetest.register_tool("3d_armor:leggings_iron", {
-	description = "Iron Leggings",
+	description = S("Iron Leggings"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_leggings_iron.png",
@@ -130,7 +132,7 @@ minetest.register_tool("3d_armor:leggings_iron", {
 })
 
 minetest.register_tool("3d_armor:leggings_gold", {
-	description = "Golden Leggings",
+	description = S("Golden Leggings"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_leggings_gold.png",
@@ -140,7 +142,7 @@ minetest.register_tool("3d_armor:leggings_gold", {
 })
 
 minetest.register_tool("3d_armor:leggings_diamond",{
-	description = "Diamond Leggings",
+	description = S("Diamond Leggings"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_leggings_diamond.png",
@@ -150,7 +152,7 @@ minetest.register_tool("3d_armor:leggings_diamond",{
 })
 
 minetest.register_tool("3d_armor:leggings_chain", {
-	description = "Chain Leggings",
+	description = S("Chain Leggings"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_leggings_chain.png",
@@ -161,7 +163,7 @@ minetest.register_tool("3d_armor:leggings_chain", {
 -- Regisiter Boots
 
 minetest.register_tool("3d_armor:boots_leather", {
-	description = "Leather Boots",
+	description = S("Leather Boots"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_boots_leather.png",
@@ -171,7 +173,7 @@ minetest.register_tool("3d_armor:boots_leather", {
 })
 
 minetest.register_tool("3d_armor:boots_iron", {
-	description = "Iron Boots",
+	description = S("Iron Boots"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_boots_iron.png",
@@ -181,7 +183,7 @@ minetest.register_tool("3d_armor:boots_iron", {
 })
 
 minetest.register_tool("3d_armor:boots_gold", {
-	description = "Golden Boots",
+	description = S("Golden Boots"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_boots_gold.png",
@@ -191,7 +193,7 @@ minetest.register_tool("3d_armor:boots_gold", {
 })
 
 minetest.register_tool("3d_armor:boots_diamond",{
-	description = "Diamond Boots",
+	description = S("Diamond Boots"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_boots_diamond.png",
@@ -201,7 +203,7 @@ minetest.register_tool("3d_armor:boots_diamond",{
 })
 
 minetest.register_tool("3d_armor:boots_chain", {
-	description = "Chain Boots",
+	description = S("Chain Boots"),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_boots_chain.png",
