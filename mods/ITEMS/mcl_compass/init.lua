@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_compass")
+
 mcl_compass = {}
 
 local compass_frames = 32
@@ -79,11 +81,11 @@ for i,img in ipairs(images) do
 	local use_doc, longdesc, usagehelp
 	use_doc = i == stereotype_frame
 	if use_doc then
-		longdesc = "Compasses are tools which point to the world origin (X=0, Z=0) or the spawn point in the Overworld."
+		longdesc = S("Compasses are tools which point to the world origin (X=0, Z=0) or the spawn point in the Overworld.")
 	end
 	local itemstring = "mcl_compass:"..(i-1)
 	minetest.register_craftitem(itemstring, {
-		description = "Compass",
+		description = S("Compass"),
 		_doc_items_create_entry = use_doc,
 		_doc_items_longdesc = longdesc,
 		_doc_items_usagehelp = usagehelp,

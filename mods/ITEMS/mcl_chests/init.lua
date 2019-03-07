@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_chests")
+
 local no_rotate, simple_rotate
 if minetest.get_modpath("screwdriver") then
 	no_rotate = screwdriver.disallow
@@ -446,9 +448,9 @@ end
 end
 
 register_chest("chest",
-	"Chest",
-	"Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other.",
-	"To access the chest's inventory, rightclick the chest. When broken, the items of the chest will drop out.",
+	S("Chest"),
+	S("Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other."),
+	S("To access the chest's inventory, rightclick the chest. When broken, the items of the chest will drop out."),
 	{
 		small = {"default_chest_top.png", "mcl_chests_chest_bottom.png",
 		"mcl_chests_chest_right.png", "mcl_chests_chest_left.png",
@@ -476,9 +478,9 @@ local traptiles = {
 }
 
 register_chest("trapped_chest",
-	"Trapped Chest",
-	"A trapped chest is a container which provides 27 inventory slots. When it is opened, it sends a redstone signal to its adjacent blocks as long it stays open. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other.",
-	"To access the inventory of a trapped chest, rightclick it. When broken, the items will drop out.",
+	S("Trapped Chest"),
+	S("A trapped chest is a container which provides 27 inventory slots. When it is opened, it sends a redstone signal to its adjacent blocks as long it stays open. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other."),
+	S("To access the inventory of a trapped chest, rightclick it. When broken, the items will drop out."),
 	traptiles,
 	nil,
 	{receptor = {
@@ -599,9 +601,9 @@ minetest.register_craft({
 })
 
 minetest.register_node("mcl_chests:ender_chest", {
-	description = "Ender Chest",
-	_doc_items_longdesc = "Ender chests grant you access to a single personal interdimensional inventory with 27 slots. This inventory is the same no matter from which ender chest you access it from. If you put one item into one ender chest, you will find it in all other ender chests. Each player will only see their own items, but not the items of other players.",
-	_doc_items_usagehelp = "Rightclick the ender chest to access your personal interdimensional inventory.",
+	description = S("Ender Chest"),
+	_doc_items_longdesc = S("Ender chests grant you access to a single personal interdimensional inventory with 27 slots. This inventory is the same no matter from which ender chest you access it from. If you put one item into one ender chest, you will find it in all other ender chests. Each player will only see their own items, but not the items of other players."),
+	_doc_items_usagehelp = S("Rightclick the ender chest to access your personal interdimensional inventory."),
 	tiles = {"mcl_chests_ender_chest_top.png", "mcl_chests_ender_chest_bottom.png",
 		"mcl_chests_ender_chest_right.png", "mcl_chests_ender_chest_left.png",
 		"mcl_chests_ender_chest_back.png", "mcl_chests_ender_chest_front.png"},
@@ -648,22 +650,22 @@ minetest.register_craft({
 
 -- Shulker boxes
 local boxtypes = {
-	white = "White Shulker Box",
-	grey = "Light Grey Shulker Box",
-	orange = "Orange Shulker Box",
-	cyan = "Cyan Shulker Box",
-	magenta = "Magenta Shulker Box",
-	violet = "Purple Shulker Box",
-	lightblue = "Light Blue Shulker Box",
-	blue = "Blue Shulker Box",
-	yellow = "Yellow Shulker Box",
-	brown = "Brown Shulker Box",
-	green = "Lime Shulker Box",
-	dark_green = "Green Shulker Box",
-	pink = "Pink Shulker Box",
-	red = "Red Shulker Box",
-	dark_grey = "Grey Shulker Box",
-	black = "Black Shulker Box",
+	white = S("White Shulker Box"),
+	grey = S("Light Grey Shulker Box"),
+	orange = S("Orange Shulker Box"),
+	cyan = S("Cyan Shulker Box"),
+	magenta = S("Magenta Shulker Box"),
+	violet = S("Purple Shulker Box"),
+	lightblue = S("Light Blue Shulker Box"),
+	blue = S("Blue Shulker Box"),
+	yellow = S("Yellow Shulker Box"),
+	brown = S("Brown Shulker Box"),
+	green = S("Lime Shulker Box"),
+	dark_green = S("Green Shulker Box"),
+	pink = S("Pink Shulker Box"),
+	red = S("Red Shulker Box"),
+	dark_grey = S("Grey Shulker Box"),
+	black = S("Black Shulker Box"),
 }
 
 local shulker_mob_textures = {
@@ -689,8 +691,8 @@ for color, desc in pairs(boxtypes) do
 	local mob_texture = shulker_mob_textures[color]
 	minetest.register_node("mcl_chests:"..color.."_shulker_box", {
 		description = desc,
-		_doc_items_longdesc = "A shulker box is a portable container which provides 27 inventory slots for any item except shulker boxes. Shulker boxes keep their inventory when broken, so shulker boxes as well as their contents can be taken as a single item. Shulker boxes come in many different colors.",
-		_doc_items_usagehelp = "To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out. Place the shulker box again to be able to retrieve its contents.",
+		_doc_items_longdesc = S("A shulker box is a portable container which provides 27 inventory slots for any item except shulker boxes. Shulker boxes keep their inventory when broken, so shulker boxes as well as their contents can be taken as a single item. Shulker boxes come in many different colors."),
+		_doc_items_usagehelp = S("To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out. Place the shulker box again to be able to retrieve its contents."),
 		tiles = {
 			"mcl_chests_"..color.."_shulker_box_top.png", -- top
 			"[combine:16x16:-32,-28="..mob_texture, -- bottom

@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_clock")
+
 --[[
   mcl_clock, renew of the renew of the watch mod
 
@@ -54,11 +56,11 @@ function watch.register_item(name, image, creative, frame)
 	end
 	local longdesc, usagehelp
 	if use_doc then
-		longdesc = "Clocks are tools which shows the current time of day in the Overworld."
-		usagehelp = "The clock contains a rotating disc with a sun symbol (yellow disc) and moon symbol and a little “pointer” which shows the current time of day by estimating the real position of the sun and the moon in the sky. Noon is represented by the sun symbol and midnight is represented by the moon symbol."
+		longdesc = S("Clocks are tools which shows the current time of day in the Overworld.")
+		usagehelp = S("The clock contains a rotating disc with a sun symbol (yellow disc) and moon symbol and a little “pointer” which shows the current time of day by estimating the real position of the sun and the moon in the sky. Noon is represented by the sun symbol and midnight is represented by the moon symbol.")
 	end
 	minetest.register_craftitem(name, {
-		description = "Clock",
+		description = S("Clock"),
 		_doc_items_create_entry = use_doc,
 		_doc_items_longdesc = longdesc,
 		_doc_items_usagehelp = usagehelp,

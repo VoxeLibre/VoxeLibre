@@ -1,8 +1,9 @@
 -- Other nodes
+local S = minetest.get_translator("mcl_core")
 
 minetest.register_node("mcl_core:bone_block", {
-	description = "Bone Block",
-	_doc_items_longdesc = "Bone blocks are decorational blocks and a compact storage of bone meal.",
+	description = S("Bone Block"),
+	_doc_items_longdesc = S("Bone blocks are decorational blocks and a compact storage of bone meal."),
 	tiles = {"mcl_core_bone_block_top.png", "mcl_core_bone_block_top.png", "mcl_core_bone_block_side.png"},
 	is_ground_content = false,
 	paramtype2 = "facedir",
@@ -14,8 +15,8 @@ minetest.register_node("mcl_core:bone_block", {
 })
 
 minetest.register_node("mcl_core:slimeblock", {
-	description = "Slime Block",
-	_doc_items_longdesc = "Slime blocks are very bouncy and prevent fall damage.",
+	description = S("Slime Block"),
+	_doc_items_longdesc = S("Slime blocks are very bouncy and prevent fall damage."),
 	drawtype = "nodebox",
 	paramtype = "light",
 	is_ground_content = false,
@@ -47,8 +48,8 @@ minetest.register_node("mcl_core:slimeblock", {
 })
 
 minetest.register_node("mcl_core:cobweb", {
-	description = "Cobweb",
-	_doc_items_longdesc = "Cobwebs can be walked through, but significantly slow you down.",
+	description = S("Cobweb"),
+	_doc_items_longdesc = S("Cobwebs can be walked through, but significantly slow you down."),
 	drawtype = "plantlike",
 	paramtype2 = "degrotate",
 	visual_scale = 1.1,
@@ -73,8 +74,8 @@ minetest.register_node("mcl_core:cobweb", {
 
 
 minetest.register_node("mcl_core:deadbush", {
-	description = "Dead Bush",
-	_doc_items_longdesc = "Dead bushes are unremarkable plants often found in dry areas. They can be harvested for sticks.",
+	description = S("Dead Bush"),
+	_doc_items_longdesc = S("Dead bushes are unremarkable plants often found in dry areas. They can be harvested for sticks."),
 	_doc_items_hidden = false,
 	drawtype = "plantlike",
 	waving = 1,
@@ -112,9 +113,9 @@ minetest.register_node("mcl_core:deadbush", {
 })
 
 minetest.register_node("mcl_core:barrier", {
-	description = "Barrier",
-	_doc_items_longdesc = "Barriers are invisble walkable blocks. They are used to create boundaries of adventure maps and the like. Monsters and animals won't appear on barriers, and fences do not connect to barriers. Other blocks can be built on barriers like on any other block.",
-	_doc_items_usagehelp = "When you hold a barrier in hand, you reveal all placed barriers in a short distance around you.",
+	description = S("Barrier"),
+	_doc_items_longdesc = S("Barriers are invisble walkable blocks. They are used to create boundaries of adventure maps and the like. Monsters and animals won't appear on barriers, and fences do not connect to barriers. Other blocks can be built on barriers like on any other block."),
+	_doc_items_usagehelp = S("When you hold a barrier in hand, you reveal all placed barriers in a short distance around you."),
 	drawtype = "airlike",
 	paramtype = "light",
 	inventory_image = "mcl_core_barrier.png",
@@ -169,7 +170,7 @@ minetest.register_node("mcl_core:barrier", {
 -- This node only exists because Minetest does not have support for “dimensions” yet and needs to
 -- be removed when support for this is implemented. 
 minetest.register_node("mcl_core:realm_barrier", {
-	description = "Realm Barrier",
+	description = S("Realm Barrier"),
 	_doc_items_create_entry = false,
 	drawtype = "airlike",
 	paramtype = "light",
@@ -202,7 +203,7 @@ minetest.register_node("mcl_core:realm_barrier", {
 -- The void does not exist as a block in Minecraft but we register it as a
 -- block here to make things easier for us.
 minetest.register_node("mcl_core:void", {
-	description = "Void",
+	description = S("Void"),
 	_doc_items_create_entry = false,
 	drawtype = "airlike",
 	paramtype = "light",

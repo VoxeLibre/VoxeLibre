@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_buckets")
+
 -- Minetest 0.4 mod: bucket
 -- See README.txt for licensing and other information.
 
@@ -182,9 +184,9 @@ function mcl_buckets.register_liquid(source_place, source_take, itemname, invent
 end
 
 minetest.register_craftitem("mcl_buckets:bucket_empty", {
-	description = "Empty Bucket",
-	_doc_items_longdesc = "A bucket can be used to collect and release liquids.",
-	_doc_items_usagehelp = "Punch a liquid source to collect the liquid. With the filled bucket, you can right-click somewhere to empty the bucket which will create a liquid source at the position you've clicked at.",
+	description = S("Empty Bucket"),
+	_doc_items_longdesc = S("A bucket can be used to collect and release liquids."),
+	_doc_items_usagehelp = S("Punch a liquid source to collect the liquid. With the filled bucket, you can right-click somewhere to empty the bucket which will create a liquid source at the position you've clicked at."),
 
 	inventory_image = "bucket.png",
 	stack_max = 16,
@@ -302,9 +304,9 @@ if mod_mcl_core then
 		{"mcl_core:lava_source", "mcl_nether:nether_lava_source"},
 		"mcl_buckets:bucket_lava",
 		"bucket_lava.png",
-		"Lava Bucket",
-		"A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution.",
-		"Choose a place where you want to empty the bucket, then get in a safe spot somewhere above it. Be prepared to run away when something goes wrong as the lava will soon start to flow after placing. To empty the bucket (which places a lava source), right-click on your chosen place."
+		S("Lava Bucket"),
+		S("A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution."),
+		S("Choose a place where you want to empty the bucket, then get in a safe spot somewhere above it. Be prepared to run away when something goes wrong as the lava will soon start to flow after placing. To empty the bucket (which places a lava source), right-click on your chosen place.")
 	)
 
 	-- Water bucket
@@ -313,9 +315,9 @@ if mod_mcl_core then
 		{"mcl_core:water_source"},
 		"mcl_buckets:bucket_water",
 		"bucket_water.png",
-		"Water Bucket",
-		"A bucket can be used to collect and release liquids. This one is filled with water.",
-		"Right-click on any block to empty the bucket and put a water source on this spot.",
+		S("Water Bucket"),
+		S("A bucket can be used to collect and release liquids. This one is filled with water."),
+		S("Right-click on any block to empty the bucket and put a water source on this spot."),
 		function(pos, placer)
 			-- Check protection
 			local placer_name = ""
@@ -355,9 +357,9 @@ if mod_mclx_core then
 		{"mclx_core:river_water_source"},
 		"mcl_buckets:bucket_river_water",
 		"bucket_river_water.png",
-		"River Water Bucket",
-		"A bucket can be used to collect and release liquids. This one is filled with river water.",
-		"Right-click on any block to empty the bucket and put a river water source on this spot.",
+		S("River Water Bucket"),
+		S("A bucket can be used to collect and release liquids. This one is filled with river water."),
+		S("Right-click on any block to empty the bucket and put a river water source on this spot."),
 		function(pos, placer)
 			-- Check protection
 			local placer_name = ""

@@ -1,4 +1,5 @@
 -- Tree nodes: Wood, Wooden Planks, Sapling, Leaves
+local S = minetest.get_translator("mcl_core")
 
 -- Register tree trunk (wood) and bark
 local register_tree_trunk = function(subname, description_trunk, description_bark, longdesc, tile_inner, tile_bark)
@@ -18,7 +19,7 @@ local register_tree_trunk = function(subname, description_trunk, description_bar
 
 	minetest.register_node("mcl_core:"..subname.."_bark", {
 		description = description_bark,
-		_doc_items_longdesc = "This is a decorative block surrounded by the bark of a tree trunk.",
+		_doc_items_longdesc = S("This is a decorative block surrounded by the bark of a tree trunk."),
 		tiles = {tile_bark},
 		paramtype2 = "facedir",
 		on_place = mcl_util.rotate_axis,
@@ -145,35 +146,35 @@ end
 
 ---------------------
 
-register_tree_trunk("tree", "Oak Wood", "Oak Bark", "The trunk of an oak tree.", "default_tree_top.png", "default_tree.png")
-register_tree_trunk("darktree", "Dark Oak Wood", "Dark Oak Bark", "The trunk of a dark oak tree.", "mcl_core_log_big_oak_top.png", "mcl_core_log_big_oak.png")
-register_tree_trunk("acaciatree", "Acacia Wood", "Acacia Bark", "The trunk of an acacia.", "default_acacia_tree_top.png", "default_acacia_tree.png")
-register_tree_trunk("sprucetree", "Spruce Wood", "Spruce Bark", "The trunk of a spruce tree.", "mcl_core_log_spruce_top.png", "mcl_core_log_spruce.png")
-register_tree_trunk("birchtree", "Birch Wood", "Birch Bark", "The trunk of a birch tree.", "mcl_core_log_birch_top.png", "mcl_core_log_birch.png")
-register_tree_trunk("jungletree", "Jungle Wood", "Jungle Bark", "The trunk of a jungle tree.", "default_jungletree_top.png", "default_jungletree.png")
+register_tree_trunk("tree", S("Oak Wood"), S("Oak Bark"), S("The trunk of an oak tree."), "default_tree_top.png", "default_tree.png")
+register_tree_trunk("darktree", S("Dark Oak Wood"), S("Dark Oak Bark"), S("The trunk of a dark oak tree."), "mcl_core_log_big_oak_top.png", "mcl_core_log_big_oak.png")
+register_tree_trunk("acaciatree", S("Acacia Wood"), S("Acacia Bark"), S("The trunk of an acacia."), "default_acacia_tree_top.png", "default_acacia_tree.png")
+register_tree_trunk("sprucetree", S("Spruce Wood"), S("Spruce Bark"), S("The trunk of a spruce tree."), "mcl_core_log_spruce_top.png", "mcl_core_log_spruce.png")
+register_tree_trunk("birchtree", S("Birch Wood"), S("Birch Bark"), S("The trunk of a birch tree."), "mcl_core_log_birch_top.png", "mcl_core_log_birch.png")
+register_tree_trunk("jungletree", S("Jungle Wood"), S("Jungle Bark"), S("The trunk of a jungle tree."), "default_jungletree_top.png", "default_jungletree.png")
 
-register_wooden_planks("wood", "Oak Wood Planks", {"default_wood.png"})
-register_wooden_planks("darkwood", "Dark Oak Wood Planks", {"mcl_core_planks_big_oak.png"})
-register_wooden_planks("junglewood", "Jungle Wood Planks", {"default_junglewood.png"})
-register_wooden_planks("sprucewood", "Spruce Wood Planks", {"mcl_core_planks_spruce.png"})
-register_wooden_planks("acaciawood", "Acacia Wood Planks", {"default_acacia_wood.png"})
-register_wooden_planks("birchwood", "Birch Wood Planks", {"mcl_core_planks_birch.png"})
-
-
-register_sapling("sapling", "Oak Sapling", "When placed on soil (such as dirt) and exposed to light, an oak sapling will grow into an oak after some time.", "default_sapling.png", {-5/16, -0.5, -5/16, 5/16, 0.5, 5/16})
-register_sapling("darksapling", "Dark Oak Sapling", "Dark oak saplings can grow into dark oaks, but only in groups. A lonely dark oak sapling won't grow. A group of four dark oak saplings grows into a dark oak after some time when they are placed on soil (such as dirt) in a 2×2 square and exposed to light.", "mcl_core_sapling_big_oak.png", {-5/16, -0.5, -5/16, 5/16, 7/16, 5/16})
-register_sapling("junglesapling", "Jungle Sapling", "When placed on soil (such as dirt) and exposed to light, a jungle sapling will grow into a jungle tree after some time. When there are 4 jungle saplings in a 2×2 square, they will grow to a huge jungle tree.", "default_junglesapling.png", {-5/16, -0.5, -5/16, 5/16, 0.5, 5/16})
-register_sapling("acaciasapling", "Acacia Sapling", "When placed on soil (such as dirt) and exposed to light, an acacia sapling will grow into an acacia after some time.", "default_acacia_sapling.png", {-5/16, -0.5, -5/16, 5/16, 4/16, 5/16})
-register_sapling("sprucesapling", "Spruce Sapling", "When placed on soil (such as dirt) and exposed to light, a spruce sapling will grow into a spruce after some time. When there are 4 spruce saplings in a 2×2 square, they will grow to a huge spruce.", "mcl_core_sapling_spruce.png", {-4/16, -0.5, -4/16, 4/16, 0.5, 4/16})
-register_sapling("birchsapling", "Birch Sapling", "When placed on soil (such as dirt) and exposed to light, a birch sapling will grow into a birch after some time.", "mcl_core_sapling_birch.png", {-4/16, -0.5, -4/16, 4/16, 0.5, 4/16})
+register_wooden_planks("wood", S("Oak Wood Planks"), {"default_wood.png"})
+register_wooden_planks("darkwood", S("Dark Oak Wood Planks"), {"mcl_core_planks_big_oak.png"})
+register_wooden_planks("junglewood", S("Jungle Wood Planks"), {"default_junglewood.png"})
+register_wooden_planks("sprucewood", S("Spruce Wood Planks"), {"mcl_core_planks_spruce.png"})
+register_wooden_planks("acaciawood", S("Acacia Wood Planks"), {"default_acacia_wood.png"})
+register_wooden_planks("birchwood", S("Birch Wood Planks"), {"mcl_core_planks_birch.png"})
 
 
-register_leaves("leaves", "Oak Leaves", "Oak leaves are grown from oak trees.", {"default_leaves.png"}, "mcl_core:sapling", 20, "mcl_core:apple", 200)
-register_leaves("darkleaves", "Dark Oak Leaves", "Dark oak leaves are grown from dark oak trees.", {"mcl_core_leaves_big_oak.png"}, "mcl_core:darksapling", 20, "mcl_core:apple", 200)
-register_leaves("jungleleaves", "Jungle Leaves", "Jungle leaves are grown from jungle trees.", {"default_jungleleaves.png"}, "mcl_core:junglesapling", 40)
-register_leaves("acacialeaves", "Acacia Leaves", "Acacia leaves are grown from acacia trees.", {"default_acacia_leaves.png"}, "mcl_core:acaciasapling", 20)
-register_leaves("spruceleaves", "Spruce Leaves", "Spruce leaves are grown from spruce trees.", {"mcl_core_leaves_spruce.png"}, "mcl_core:sprucesapling", 20)
-register_leaves("birchleaves", "Birch Leaves", "Birch leaves are grown from birch trees.", {"mcl_core_leaves_birch.png"}, "mcl_core:birchsapling", 20)
+register_sapling("sapling", S("Oak Sapling"), S("When placed on soil (such as dirt) and exposed to light, an oak sapling will grow into an oak after some time."), "default_sapling.png", {-5/16, -0.5, -5/16, 5/16, 0.5, 5/16})
+register_sapling("darksapling", S("Dark Oak Sapling"), S("Dark oak saplings can grow into dark oaks, but only in groups. A lonely dark oak sapling won't grow. A group of four dark oak saplings grows into a dark oak after some time when they are placed on soil (such as dirt) in a 2×2 square and exposed to light."), "mcl_core_sapling_big_oak.png", {-5/16, -0.5, -5/16, 5/16, 7/16, 5/16})
+register_sapling("junglesapling", S("Jungle Sapling"), S("When placed on soil (such as dirt) and exposed to light, a jungle sapling will grow into a jungle tree after some time. When there are 4 jungle saplings in a 2×2 square, they will grow to a huge jungle tree."), "default_junglesapling.png", {-5/16, -0.5, -5/16, 5/16, 0.5, 5/16})
+register_sapling("acaciasapling", S("Acacia Sapling"), S("When placed on soil (such as dirt) and exposed to light, an acacia sapling will grow into an acacia after some time."), "default_acacia_sapling.png", {-5/16, -0.5, -5/16, 5/16, 4/16, 5/16})
+register_sapling("sprucesapling", S("Spruce Sapling"), S("When placed on soil (such as dirt) and exposed to light, a spruce sapling will grow into a spruce after some time. When there are 4 spruce saplings in a 2×2 square, they will grow to a huge spruce."), "mcl_core_sapling_spruce.png", {-4/16, -0.5, -4/16, 4/16, 0.5, 4/16})
+register_sapling("birchsapling", S("Birch Sapling"), S("When placed on soil (such as dirt) and exposed to light, a birch sapling will grow into a birch after some time."), "mcl_core_sapling_birch.png", {-4/16, -0.5, -4/16, 4/16, 0.5, 4/16})
+
+
+register_leaves("leaves", S("Oak Leaves"), S("Oak leaves are grown from oak trees."), {"default_leaves.png"}, "mcl_core:sapling", 20, "mcl_core:apple", 200)
+register_leaves("darkleaves", S("Dark Oak Leaves"), S("Dark oak leaves are grown from dark oak trees."), {"mcl_core_leaves_big_oak.png"}, "mcl_core:darksapling", 20, "mcl_core:apple", 200)
+register_leaves("jungleleaves", S("Jungle Leaves"), S("Jungle leaves are grown from jungle trees."), {"default_jungleleaves.png"}, "mcl_core:junglesapling", 40)
+register_leaves("acacialeaves", S("Acacia Leaves"), S("Acacia leaves are grown from acacia trees."), {"default_acacia_leaves.png"}, "mcl_core:acaciasapling", 20)
+register_leaves("spruceleaves", S("Spruce Leaves"), S("Spruce leaves are grown from spruce trees."), {"mcl_core_leaves_spruce.png"}, "mcl_core:sprucesapling", 20)
+register_leaves("birchleaves", S("Birch Leaves"), S("Birch leaves are grown from birch trees."), {"mcl_core_leaves_birch.png"}, "mcl_core:birchsapling", 20)
 
 
 -- Node aliases

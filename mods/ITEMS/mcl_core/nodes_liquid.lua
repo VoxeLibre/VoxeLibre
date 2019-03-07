@@ -1,11 +1,13 @@
 -- Liquids: Water and lava
 
+local S = minetest.get_translator("mcl_core")
+
 local WATER_ALPHA = 179
 local WATER_VISC = 1
 local LAVA_VISC = 7
 
 minetest.register_node("mcl_core:water_flowing", {
-	description = "Flowing Water",
+	description = S("Flowing Water"),
 	_doc_items_create_entry = false,
 	wield_image = "default_water_flowing_animated.png^[verticalframe:64:0",
 	drawtype = "flowingliquid",
@@ -45,14 +47,14 @@ minetest.register_node("mcl_core:water_flowing", {
 })
 
 minetest.register_node("mcl_core:water_source", {
-	description = "Water Source",
-	_doc_items_entry_name = "Water",
+	description = S("Water Source"),
+	_doc_items_entry_name = S("Water"),
 	_doc_items_longdesc =
-[[Water is abundant in oceans and also appears in a few springs in the ground. You can swim easily in water, but you need to catch your breath from time to time.
-Water interacts with lava in various ways:
+S("Water is abundant in oceans and also appears in a few springs in the ground. You can swim easily in water, but you need to catch your breath from time to time.").."\n"..
+S([[Water interacts with lava in various ways:
 • When water is directly above or horizontally next to a lava source, the lava turns into obsidian.
 • When flowing water touches flowing lava either from above or horizontally, the lava turns into cobblestone.
-• When water is directly below lava, the water turns into stone.]],
+• When water is directly below lava, the water turns into stone.]]),
 	_doc_items_hidden = false,
 	drawtype = "liquid",
 	tiles = {
@@ -89,7 +91,7 @@ Water interacts with lava in various ways:
 })
 
 minetest.register_node("mcl_core:lava_flowing", {
-	description = "Flowing Lava",
+	description = S("Flowing Lava"),
 	_doc_items_create_entry = false,
 	wield_image = "default_lava_flowing_animated.png^[verticalframe:64:0",
 	drawtype = "flowingliquid",
@@ -135,15 +137,15 @@ minetest.register_node("mcl_core:lava_flowing", {
 })
 
 minetest.register_node("mcl_core:lava_source", {
-	description = "Lava Source",
+	description = S("Lava Source"),
 	_doc_items_entry_name = "Lava",
 	_doc_items_longdesc =
-[[Lava is hot and rather dangerous. Don't touch it, it will hurt you a lot and it is hard to get out.
-A lava source sets fire to a couple of air blocks above when they're next to a flammable block.
-Lava interacts with water various ways:
+S("Lava is hot and rather dangerous. Don't touch it, it will hurt you a lot and it is hard to get out.").."\n"..
+S("A lava source sets fire to a couple of air blocks above when they're next to a flammable block.").."\n"..
+S([[Lava interacts with water various ways:
 • When a lava source is directly below or horizontally next to water, the lava turns into obsidian.
 • When flowing water touches flowing lava either from above or horizontally, the lava turns into cobblestone.
-• When lava is directly above water, the water turns into stone.]],
+• When lava is directly above water, the water turns into stone.]]),
 	drawtype = "liquid",
 	tiles = {
 		{name="default_lava_source_animated.png", animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=3.0}}
