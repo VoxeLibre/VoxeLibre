@@ -6,10 +6,7 @@ mcl_skins = {
 	skin_count = 0, -- counter of _custom_ skins (all skins except character.png)
 }
 
-
--- Load support for intllib.
-local S, NS = dofile(mcl_skins.modpath .. "/intllib.lua")
-
+local S = minetest.get_translator("mcl_skins")
 
 -- load skin list and metadata
 local id, f, data, skin = 0

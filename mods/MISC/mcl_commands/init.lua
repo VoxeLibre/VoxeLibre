@@ -1,11 +1,6 @@
 local minecraftaliases = true
 
-local S
-if minetest.get_modpath("intllib") then
-	S = intllib.Getter()
-else
-	S = function(s,a,...)a={a,...}return s:gsub("@(%d+)",function(n)return a[tonumber(n)]end)end
-end
+local S = minetest.get_translator("mcl_commands")
 
 local function handle_kill_command(suspect, victim)
 	if minetest.settings:get_bool("enable_damage") == false then
