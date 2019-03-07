@@ -78,6 +78,7 @@ local snowball_ENTITY={
 	textures = {"mcl_throwing_snowball.png"},
 	visual_size = {x=0.5, y=0.5},
 	collisionbox = {0,0,0,0,0,0},
+	pointable = false,
 
 	get_staticdata = get_staticdata,
 	on_activate = on_activate,
@@ -90,6 +91,7 @@ local egg_ENTITY={
 	textures = {"mcl_throwing_egg.png"},
 	visual_size = {x=0.45, y=0.45},
 	collisionbox = {0,0,0,0,0,0},
+	pointable = false,
 
 	get_staticdata = get_staticdata,
 	on_activate = on_activate,
@@ -103,6 +105,7 @@ local pearl_ENTITY={
 	textures = {"mcl_throwing_ender_pearl.png"},
 	visual_size = {x=0.9, y=0.9},
 	collisionbox = {0,0,0,0,0,0},
+	pointable = false,
 
 	get_staticdata = get_staticdata,
 	on_activate = on_activate,

@@ -318,8 +318,8 @@ minetest.register_node("mcl_mobspawners:spawner", {
 
 local doll_def = {
 	hp_max = 1,
-	physical = true,
-	collisionbox = {0,0,0,0,0,0},
+	physical = false,
+	pointable = false,
 	visual = "mesh",
 	makes_footstep_sound = false,
 	timer = 0,

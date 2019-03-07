@@ -5,6 +5,7 @@ minetest.register_entity("mcl_end:ender_eye", {
 	textures = {"mcl_end_ender_eye.png"},
 	visual_size = {x=1.5, y=1.5},
 	collisionbox = {0,0,0,0,0,0},
+	pointable = false,
 
 	-- Save and restore age
 	get_staticdata = function(self)

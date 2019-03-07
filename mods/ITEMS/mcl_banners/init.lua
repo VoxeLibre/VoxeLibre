@@ -468,7 +468,7 @@ local entity_standing = {
 	mesh = "amc_banner.b3d",
 	visual_size = { x=2.499, y=2.499 },
 	textures = make_banner_texture(),
-	collisionbox = { 0, 0, 0, 0, 0, 0 },
+	pointable = false,
 
 	_base_color = nil, -- base color of banner
 	_layers = nil, -- table of layers painted over the base color.

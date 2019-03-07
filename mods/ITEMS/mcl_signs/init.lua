@@ -429,7 +429,7 @@ minetest.register_node("mcl_signs:standing_sign67_5", ssign67)
 
 -- FIXME: Prevent entity destruction by /clearobjects
 minetest.register_entity("mcl_signs:text", {
-	collisionbox = { 0, 0, 0, 0, 0, 0 },
+	pointable = false,
 	visual = "upright_sprite",
 	textures = {},
 	physical = false,

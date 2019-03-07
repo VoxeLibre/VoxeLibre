@@ -2,8 +2,8 @@ minetest.register_entity("mcl_itemframes:item",{
 	hp_max = 1,
 	visual = "wielditem",
 	visual_size = {x=0.3,y=0.3},
-	collisionbox = {0,0,0,0,0,0},
 	physical = false,
+	pointable = false,
 	textures = { "empty.png" },
 	_texture = "empty.png",
 

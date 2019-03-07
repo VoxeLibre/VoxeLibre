@@ -238,6 +238,7 @@ minetest.register_entity("3d_armor_stand:armor_entity", {
 	mesh = "3d_armor_entity.obj",
 	visual_size = {x=1, y=1},
 	collisionbox = {-0.1,-0.4,-0.1, 0.1,1.3,0.1},
+	pointable = false,
 	textures = {"3d_armor_trans.png"},
 	pos = nil,
 	timer = 0,

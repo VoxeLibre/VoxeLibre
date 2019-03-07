@@ -306,6 +306,7 @@ core.register_entity(":__builtin:item", {
 		physical = true,
 		collide_with_objects = false,
 		collisionbox = {-0.3, -0.3, -0.3, 0.3, 0.3, 0.3},
+		pointable = false,
 		visual = "wielditem",
 		visual_size = {x = 0.4, y = 0.4},
 		textures = {""},

@@ -13,6 +13,7 @@ minetest.register_entity("drippingwater:drop_water", {
 	physical = true,
 	collide_with_objects = false,
 	collisionbox = {0,0,0,0,0,0},
+	pointable = false,
 	visual = "cube",
 	visual_size = {x=0.05, y=0.1},
 	textures = {water_tex, water_tex, water_tex, water_tex, water_tex, water_tex},
