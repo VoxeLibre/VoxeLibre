@@ -280,10 +280,6 @@ minetest.register_lbm({
 	end,
 })
 
-if minetest.get_modpath("doc_identifier") ~= nil then
-	doc.sub.identifier.register_object("3d_armor_stand:armor_entity", "nodes", "3d_armor_stand:armor_stand")
-end
-
 minetest.register_craft({
 	output = "3d_armor_stand:armor_stand",
 	recipe = {
