@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_banners")
+
 -- Pattern crafting. This file contains the code for crafting all the
 -- emblazonings you can put on the banners. It's quite complicated;
 -- run-of-the-mill crafting won't work here.
@@ -17,99 +19,99 @@ local d = "group:dye" -- dye
 local e = "" -- empty slot (one of them must contain the banner)
 local patterns = {
 	["border"] = {
-		name = "%s Bordure",
+		name = S("%s Bordure"),
 		{ d, d, d },
 		{ d, e, d },
 		{ d, d, d },
 	},
 	["bricks"] = {
-		name = "%s Bricks",
+		name = S("%s Bricks"),
 		type = "shapeless",
 		{ e, "mcl_core:brick_block", d },
 	},
 	["circle"] = {
-		name = "%s Roundel",
+		name = S("%s Roundel"),
 		{ e, e, e },
 		{ e, d, e },
 		{ e, e, e },
 	},
 	["creeper"] = {
-		name = "%s Creeper Charge",
+		name = S("%s Creeper Charge"),
 		type = "shapeless",
 		{ e, "mcl_heads:creeper", d },
 	},
 	["cross"] = {
-		name = "%s Saltire",
+		name = S("%s Saltire"),
 		{ d, e, d },
 		{ e, d, e },
 		{ d, e, d },
 	},
 	["curly_border"] = {
-		name = "%s Bordure Indented",
+		name = S("%s Bordure Indented"),
 		type = "shapeless",
 		{ e, "mcl_core:vine", d },
 	},
 	["diagonal_up_left"] = {
-		name = "%s Per Bend Inverted",
+		name = S("%s Per Bend Inverted"),
 		{ e, e, e },
 		{ d, e, e },
 		{ d, d, e },
 	},
 	["diagonal_up_right"] = {
-		name = "%s Per Bend Sinister Inverted",
+		name = S("%s Per Bend Sinister Inverted"),
 		{ e, e, e },
 		{ e, e, d },
 		{ e, d, d },
 	},
 	["diagonal_right"] = {
-		name = "%s Per Bend",
+		name = S("%s Per Bend"),
 		{ e, d, d },
 		{ e, e, d },
 		{ e, e, e },
 	},
 	["diagonal_left"] = {
-		name = "%s Per Bend Sinister",
+		name = S("%s Per Bend Sinister"),
 		{ d, d, e },
 		{ d, e, e },
 		{ e, e, e },
 	},
 	["flower"] = {
-		name = "%s Flower Charge",
+		name = S("%s Flower Charge"),
 		type = "shapeless",
 		{ e, "mcl_flowers:oxeye_daisy", d },
 	},
 	["gradient"] = {
-		name = "%s Gradient",
+		name = S("%s Gradient"),
 		{ d, e, d },
 		{ e, d, e },
 		{ e, d, e },
 	},
 	["gradient_up"] = {
-		name = "%s Base Gradient",
+		name = S("%s Base Gradient"),
 		{ e, d, e },
 		{ e, d, e },
 		{ d, e, d },
 	},
 	["half_horizontal_bottom"] = {
-		name = "%s Per Fess Inverted",
+		name = S("%s Per Fess Inverted"),
 		{ e, e, e },
 		{ d, d, d },
 		{ d, d, d },
 	},
 	["half_horizontal"] = {
-		name = "%s Per Fess",
+		name = S("%s Per Fess"),
 		{ d, d, d },
 		{ d, d, d },
 		{ e, e, e },
 	},
 	["half_vertical"] = {
-		name = "%s Per Pale",
+		name = S("%s Per Pale"),
 		{ d, d, e },
 		{ d, d, e },
 		{ d, d, e },
 	},
 	["half_vertical_right"] = {
-		name = "%s Per Pale Inverted",
+		name = S("%s Per Pale Inverted"),
 		{ e, d, d },
 		{ e, d, d },
 		{ e, d, d },
@@ -117,126 +119,126 @@ local patterns = {
 	["thing"] = {
 		-- Symbol used for the “Thing”: U+1F65D 🙝
 
-		name = "%s Thing Charge",
+		name = S("%s Thing Charge"),
 		type = "shapeless",
 		-- TODO: Replace with enchanted golden apple
 		{ e, "mcl_core:apple_gold", d },
 	},
 	["rhombus"] = {
-		name = "%s Lozenge",
+		name = S("%s Lozenge"),
 		{ e, d, e },
 		{ d, e, d },
 		{ e, d, e },
 	},
 	["skull"] = {
-		name = "%s Skull Charge",
+		name = S("%s Skull Charge"),
 		type = "shapeless",
 		{ e, "mcl_heads:wither_skeleton", d },
 	},
 	["small_stripes"] = {
-		name = "%s Paly",
+		name = S("%s Paly"),
 		{ d, e, d },
 		{ d, e, d },
 		{ e, e, e },
 	},
 	["square_bottom_left"] = {
-		name = "%s Base Dexter Canton",
+		name = S("%s Base Dexter Canton"),
 		{ e, e, e },
 		{ e, e, e },
 		{ d, e, e },
 	},
 	["square_bottom_right"] = {
-		name = "%s Base Sinister Canton",
+		name = S("%s Base Sinister Canton"),
 		{ e, e, e },
 		{ e, e, e },
 		{ e, e, d },
 	},
 	["square_top_left"] = {
-		name = "%s Chief Dexter Canton",
+		name = S("%s Chief Dexter Canton"),
 		{ d, e, e },
 		{ e, e, e },
 		{ e, e, e },
 	},
 	["square_top_right"] = {
-		name = "%s Chief Sinister Canton",
+		name = S("%s Chief Sinister Canton"),
 		{ e, e, d },
 		{ e, e, e },
 		{ e, e, e },
 	},
 	["straight_cross"] = {
-		name = "%s Cross",
+		name = S("%s Cross"),
 		{ e, d, e },
 		{ d, d, d },
 		{ e, d, e },
 	},
 	["stripe_bottom"] = {
-		name = "%s Base",
+		name = S("%s Base"),
 		{ e, e, e },
 		{ e, e, e },
 		{ d, d, d },
 	},
 	["stripe_center"] = {
-		name = "%s Pale",
+		name = S("%s Pale"),
 		{ e, d, e },
 		{ e, d, e },
 		{ e, d, e },
 	},
 	["stripe_downleft"] = {
-		name = "%s Bend Sinister",
+		name = S("%s Bend Sinister"),
 		{ e, e, d },
 		{ e, d, e },
 		{ d, e, e },
 	},
 	["stripe_downright"] = {
-		name = "%s Bend",
+		name = S("%s Bend"),
 		{ d, e, e },
 		{ e, d, e },
 		{ e, e, d },
 	},
 	["stripe_left"] = {
-		name = "%s Pale Dexter",
+		name = S("%s Pale Dexter"),
 		{ d, e, e },
 		{ d, e, e },
 		{ d, e, e },
 	},
 	["stripe_middle"] = {
-		name = "%s Fess",
+		name = S("%s Fess"),
 		{ e, e, e },
 		{ d, d, d },
 		{ e, e, e },
 	},
 	["stripe_right"] = {
-		name = "%s Pale Sinister",
+		name = S("%s Pale Sinister"),
 		{ e, e, d },
 		{ e, e, d },
 		{ e, e, d },
 	},
 	["stripe_top"] = {
-		name = "%s Chief",
+		name = S("%s Chief"),
 		{ d, d, d },
 		{ e, e, e },
 		{ e, e, e },
 	},
 	["triangle_bottom"] = {
-		name = "%s Chevron",
+		name = S("%s Chevron"),
 		{ e, e, e },
 		{ e, d, e },
 		{ d, e, d },
 	},
 	["triangle_top"] = {
-		name = "%s Chevron Inverted",
+		name = S("%s Chevron Inverted"),
 		{ d, e, d },
 		{ e, d, e },
 		{ e, e, e },
 	},
 	["triangles_bottom"] = {
-		name = "%s Base Indented",
+		name = S("%s Base Indented"),
 		{ e, e, e },
 		{ d, e, d },
 		{ e, d, e },
 	},
 	["triangles_top"] = {
-		name = "%s Chief Indented",
+		name = S("%s Chief Indented"),
 		{ e, d, e },
 		{ d, e, d },
 		{ e, e, e },
@@ -270,9 +272,9 @@ mcl_banners.make_advanced_banner_description = function(description, layers)
 		end
 		-- Warn about missing information
 		if #layers == max_layer_lines + 1 then
-			table.insert(layerstrings, "And one addional layer")
+			table.insert(layerstrings, S("And one addional layer"))
 		elseif #layers > max_layer_lines + 1 then
-			table.insert(layerstrings, string.format("And %d addional layers", #layers - max_layer_lines))
+			table.insert(layerstrings, string.format(S("And %d addional layers"), #layers - max_layer_lines))
 		end
 
 		-- Final string concatenations: Just a list of strings

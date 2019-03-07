@@ -1,3 +1,4 @@
+local S = minetest.get_translator("mcl_beds")
 
 local reverse = true
 
@@ -32,17 +33,17 @@ local function kick_player_after_destruct(destruct_pos)
 	end
 end
 
-local beddesc = "Beds allow you to sleep at night and make the time pass faster."
-local beduse = "To use a bed, stand close to it and right-click the bed to sleep in it. Sleeping only works when the sun sets, at night or during a thunderstorm. The bed must also be clear of any danger."
+local beddesc = S("Beds allow you to sleep at night and make the time pass faster.")
+local beduse = S("To use a bed, stand close to it and right-click the bed to sleep in it. Sleeping only works when the sun sets, at night or during a thunderstorm. The bed must also be clear of any danger.")
 if minetest.settings:get_bool("enable_bed_respawn") == false then
-	beddesc = beddesc .. "\n" .. "In local folklore, legends are told of other worlds where setting the start point for your next life would be possible. But this world is not one of them."
+	beddesc = beddesc .. "\n" .. S("In local folklore, legends are told of other worlds where setting the start point for your next life would be possible. But this world is not one of them.")
 else
-	beddesc = beddesc .. "\n" .. "By using a bed, you set the starting point for your next life. If you die, you will start your next life at this bed, unless it is obstructed or destroyed."
+	beddesc = beddesc .. "\n" .. S("By using a bed, you set the starting point for your next life. If you die, you will start your next life at this bed, unless it is obstructed or destroyed.")
 end
 if minetest.settings:get_bool("enable_bed_night_skip") == false then
-	beddesc = beddesc .. "\n" .. "In this strange world, going to bed won't skip the night, but you can skip thunderstorms."
+	beddesc = beddesc .. "\n" .. S("In this strange world, going to bed won't skip the night, but you can skip thunderstorms.")
 else
-	beddesc = beddesc .. "\n" .. "Sleeping allows you to skip the night. The night is skipped when all players in this world went to sleep. The night is skipped after sleeping for a few seconds. Thunderstorms can be skipped in the same manner."
+	beddesc = beddesc .. "\n" .. S("Sleeping allows you to skip the night. The night is skipped when all players in this world went to sleep. The night is skipped after sleeping for a few seconds. Thunderstorms can be skipped in the same manner.")
 end
 
 local default_sounds

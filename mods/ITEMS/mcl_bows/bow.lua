@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_bows")
+
 mcl_bows = {}
 
 local arrows = {
@@ -95,10 +97,10 @@ end
 
 -- Bow item, uncharged state
 minetest.register_tool("mcl_bows:bow", {
-	description = "Bow",
-	_doc_items_longdesc = [[Bows are ranged weapons to shoot arrows at your foes.
-The speed and damage of the arrow increases the longer you charge. The regular damage of the arrow is between 1 and 9. At full charge, there's also a 20% of a critical hit, dealing 10 damage instead.]],
-	_doc_items_usagehelp = [[To use the bow, you first need to have at least one arrow anywhere in your inventory (unless in Creative Mode). Hold down the right mouse button to charge, release to shoot.]],
+	description = S("Bow"),
+	_doc_items_longdesc = S("Bows are ranged weapons to shoot arrows at your foes.").."\n"..
+S("The speed and damage of the arrow increases the longer you charge. The regular damage of the arrow is between 1 and 9. At full charge, there's also a 20% of a critical hit, dealing 10 damage instead."),
+	_doc_items_usagehelp = S("To use the bow, you first need to have at least one arrow anywhere in your inventory (unless in Creative Mode). Hold down the right mouse button to charge, release to shoot."),
 	_doc_items_durability = BOW_DURABILITY,
 	inventory_image = "mcl_bows_bow.png",
 	stack_max = 1,
@@ -138,7 +140,7 @@ end
 -- Bow in charging state
 for level=0, 2 do
 	minetest.register_tool("mcl_bows:bow_"..level, {
-		description = "Bow",
+		description = S("Bow"),
 		_doc_items_create_entry = false,
 		inventory_image = "mcl_bows_bow_"..level..".png",
 		stack_max = 1,

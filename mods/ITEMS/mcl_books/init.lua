@@ -1,10 +1,12 @@
+local S =minetest.get_translator("mcl_books")
+
 local max_text_length = 4500 -- TODO: Increase to 12800 when scroll bar was added to written book
 local max_title_length = 64
 
 -- Book
 minetest.register_craftitem("mcl_books:book", {
-	description = "Book",
-	_doc_items_longdesc = "Books are used to make bookshelves and book and quills.",
+	description = S("Book"),
+	_doc_items_longdesc = S("Books are used to make bookshelves and book and quills."),
 	inventory_image = "default_book.png",
 	stack_max = 64,
 	groups = { book=1, craftitem = 1 },
@@ -50,15 +52,15 @@ end
 local make_description = function(title, author, generation)
 	local desc
 	if generation == 0 then
-		desc = string.format("“%s”", title)
+		desc = S("“@1”", title)
 	elseif generation == 1 then
-		desc = string.format("Copy of “%s”", title)
+		desc = S("Copy of “@1”", title)
 	elseif generation == 2 then
-		desc = string.format("Copy of Copy of “%s”", title)
+		desc = S("Copy of Copy of “@1”", title)
 	else
-		desc = "Tattered Book"
+		desc = S("Tattered Book")
 	end
-	desc = desc .. "\n" .. core.colorize("#AAAAAA", string.format("by %s", author))
+	desc = desc .. "\n" .. core.colorize("#AAAAAA", S("by @1", author))
 	return desc
 end
 
@@ -81,8 +83,8 @@ local write = function(itemstack, user, pointed_thing)
 	local formspec = "size[8,9]"..
 		"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
 		"textarea[0.75,0.1;7.25,9;text;;"..minetest.formspec_escape(text).."]"..
-		"button[0.75,7.95;3,1;sign;Sign]"..
-		"button_exit[4.25,7.95;3,1;ok;Done]"
+		"button[0.75,7.95;3,1;sign;"..minetest.formspec_escape(S("Sign")).."]"..
+		"button_exit[4.25,7.95;3,1;ok;"..minetest.formspec_escape(S("Done")).."]"
 	minetest.show_formspec(user:get_player_name(), "mcl_books:writable_book", formspec)
 end
 
@@ -101,16 +103,16 @@ local read = function(itemstack, user, pointed_thing)
 	local formspec = "size[8,9]"..
 		"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
 		"textarea[0.75,0.1;7.25,9;;"..core.colorize("#000000", minetest.formspec_escape(text))..";]"..
-		"button_exit[2.25,7.95;3,1;ok;Done]"
+		"button_exit[2.25,7.95;3,1;ok;"..minetest.formspec_escape(S("Done")).."]"
 	minetest.show_formspec(user:get_player_name(), "mcl_books:written_book", formspec)
 end
 
 -- Book and Quill
 minetest.register_craftitem("mcl_books:writable_book", {
 	description = "Book and Quill",
-	_doc_items_longdesc = "This item can be used to write down some notes.",
-	_doc_items_usagehelp = "Hold it in the hand, then rightclick to read the current notes and edit then. You can edit the text as often as you like. You can also sign the book which turns it into a written book which you can stack, but it can't be edited anymore.".."\n"..
-	"A book can hold up to 4500 characters. The title length is limited to 64 characters.",
+	_doc_items_longdesc = S("This item can be used to write down some notes."),
+	_doc_items_usagehelp = S("Hold it in the hand, then rightclick to read the current notes and edit then. You can edit the text as often as you like. You can also sign the book which turns it into a written book which you can stack, but it can't be edited anymore.").."\n"..
+	S("A book can hold up to 4500 characters. The title length is limited to 64 characters."),
 	inventory_image = "mcl_books_book_writable.png",
 	groups = { book=1 },
 	stack_max = 1,
@@ -134,11 +136,11 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 				local name = player:get_player_name()
 				local formspec = "size[8,9]"..
 					"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
-					"field[0.75,1;7.25,1;title;"..core.colorize("#000000", "Enter book title:")..";]"..
-					"label[0.75,1.5;"..core.colorize("#404040", minetest.formspec_escape("by " .. name)).."]"..
-					"label[0.75,6.95;"..core.colorize("#000000", "Note: The book will no longer") .. "\n" .. core.colorize("#000000", "be editable after signing.").."]"..
-					"button_exit[0.75,7.95;3,1;sign;Sign and Close]"..
-					"button[4.25,7.95;3,1;cancel;Cancel]"
+					"field[0.75,1;7.25,1;title;"..core.colorize("#000000", S("Enter book title:"))..";]"..
+					"label[0.75,1.5;"..core.colorize("#404040", minetest.formspec_escape(S("by @1", name))).."]"..
+					"label[0.75,6.95;"..core.colorize("#000000", minetest.formspec_escape(S("Note: The book will no longer\nbe editable after signing."))).."]"..
+					"button_exit[0.75,7.95;3,1;sign;"..minetest.formspec_escape(S("Sign and Close")).."]"..
+					"button[4.25,7.95;3,1;cancel;"..minetest.formspec_escape(S("Cancel")).."]"
 				minetest.show_formspec(player:get_player_name(), "mcl_books:signing", formspec)
 			end
 		end
@@ -149,7 +151,7 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 		if book:get_name() == "mcl_books:writable_book" then
 			local title = fields.title
 			if string.len(title) == 0 then
-				title = "Nameless Book"
+				title = S("Nameless Book")
 			end
 			title = cap_text_length(title, max_title_length)
 			local meta = newbook:get_meta()
@@ -184,11 +186,11 @@ end
 
 -- Written Book
 minetest.register_craftitem("mcl_books:written_book", {
-	description = "Written Book",
-	_doc_items_longdesc = "Written books contain some text written by someone. They can be read and copied, but not edited.",
-	_doc_items_usagehelp = [[Hold it in your hand, then rightclick to read the book.
+	description = S("Written Book"),
+	_doc_items_longdesc = S("Written books contain some text written by someone. They can be read and copied, but not edited."),
+	_doc_items_usagehelp = S("Hold it in your hand, then rightclick to read the book.").."\n\n"..
 
-To copy the text of the written book, place it into the crafting grid together with a book and quill (or multiple of those) and craft. The written book will not be consumed. Copies of copies can not be copied.]],
+S("To copy the text of the written book, place it into the crafting grid together with a book and quill (or multiple of those) and craft. The written book will not be consumed. Copies of copies can not be copied."),
 	inventory_image = "mcl_books_book_written.png",
 	groups = { not_in_creative_inventory=1, book=1, no_rename=1 },
 	stack_max = 16,
@@ -322,8 +324,8 @@ end
 
 -- Bookshelf
 minetest.register_node("mcl_books:bookshelf", {
-	description = "Bookshelf",
-	_doc_items_longdesc = "Bookshelves are used for decoration.",
+	description = S("Bookshelf"),
+	_doc_items_longdesc = S("Bookshelves are used for decoration."),
 	tiles = {"mcl_books_bookshelf_top.png", "mcl_books_bookshelf_top.png", "default_bookshelf.png"},
 	stack_max = 64,
 	is_ground_content = false,

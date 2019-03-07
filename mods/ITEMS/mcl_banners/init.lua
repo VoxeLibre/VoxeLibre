@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_banners")
+
 local node_sounds
 if minetest.get_modpath("mcl_sounds") then
 	node_sounds = mcl_sounds.node_sound_wood_defaults()
@@ -14,22 +16,22 @@ mcl_banners = {}
 mcl_banners.colors = {
 	-- Format:
 	-- [ID] = { banner description, wool, unified dyes color group, overlay color, dye, color name for emblazonings }
-	["unicolor_white"] =      {"white",      "White Banner",      "mcl_wool:white", "#FFFFFF", "mcl_dye:white", "White" },
-	["unicolor_darkgrey"] =   {"grey",       "Grey Banner",       "mcl_wool:grey", "#303030", "mcl_dye:dark_grey", "Grey" },
-	["unicolor_grey"] =       {"silver",     "Light Grey Banner", "mcl_wool:silver", "#5B5B5B", "mcl_dye:grey", "Light Grey" },
-	["unicolor_black"] =      {"black",      "Black Banner",      "mcl_wool:black", "#000000", "mcl_dye:black", "Black" },
-	["unicolor_red"] =        {"red",        "Red Banner",        "mcl_wool:red", "#BC0000", "mcl_dye:red", "Red" },
-	["unicolor_yellow"] =     {"yellow",     "Yellow Banner",     "mcl_wool:yellow", "#E6CD00", "mcl_dye:yellow", "Yellow" },
-	["unicolor_dark_green"] = {"green",      "Green Banner",      "mcl_wool:green", "#006000", "mcl_dye:dark_green", "Green" },
-	["unicolor_cyan"] =       {"cyan",       "Cyan Banner",       "mcl_wool:cyan", "#00ACAC", "mcl_dye:cyan", "Cyan" },
-	["unicolor_blue"] =       {"blue",       "Blue Banner",       "mcl_wool:blue", "#0000AC", "mcl_dye:blue", "Blue" },
-	["unicolor_red_violet"] = {"magenta",    "Magenta Banner",    "mcl_wool:magenta", "#AC007C", "mcl_dye:magenta", "Magenta"},
-	["unicolor_orange"] =     {"orange",     "Orange Banner",     "mcl_wool:orange", "#E67300", "mcl_dye:orange", "Orange" },
-	["unicolor_violet"] =     {"purple",     "Purple Banner",     "mcl_wool:purple", "#6400AC", "mcl_dye:violet", "Violet" },
-	["unicolor_brown"] =      {"brown",      "Brown Banner",      "mcl_wool:brown", "#603000", "mcl_dye:brown", "Brown" },
-	["unicolor_pink"] =       {"pink",       "Pink Banner",       "mcl_wool:pink", "#DE557C", "mcl_dye:pink", "Pink" },
-	["unicolor_lime"] =       {"lime",       "Lime Banner",       "mcl_wool:lime", "#30AC00", "mcl_dye:green", "Lime" },
-	["unicolor_light_blue"] = {"light_blue", "Light Blue Banner", "mcl_wool:light_blue", "#4040CF", "mcl_dye:lightblue", "Light Blue" },
+	["unicolor_white"] =      {"white",      S("White Banner"),      "mcl_wool:white", "#FFFFFF", "mcl_dye:white", "White" },
+	["unicolor_darkgrey"] =   {"grey",       S("Grey Banner"),       "mcl_wool:grey", "#303030", "mcl_dye:dark_grey", "Grey" },
+	["unicolor_grey"] =       {"silver",     S("Light Grey Banner"), "mcl_wool:silver", "#5B5B5B", "mcl_dye:grey", "Light Grey" },
+	["unicolor_black"] =      {"black",      S("Black Banner"),      "mcl_wool:black", "#000000", "mcl_dye:black", "Black" },
+	["unicolor_red"] =        {"red",        S("Red Banner"),        "mcl_wool:red", "#BC0000", "mcl_dye:red", "Red" },
+	["unicolor_yellow"] =     {"yellow",     S("Yellow Banner"),     "mcl_wool:yellow", "#E6CD00", "mcl_dye:yellow", "Yellow" },
+	["unicolor_dark_green"] = {"green",      S("Green Banner"),      "mcl_wool:green", "#006000", "mcl_dye:dark_green", "Green" },
+	["unicolor_cyan"] =       {"cyan",       S("Cyan Banner"),       "mcl_wool:cyan", "#00ACAC", "mcl_dye:cyan", "Cyan" },
+	["unicolor_blue"] =       {"blue",       S("Blue Banner"),       "mcl_wool:blue", "#0000AC", "mcl_dye:blue", "Blue" },
+	["unicolor_red_violet"] = {"magenta",    S("Magenta Banner"),    "mcl_wool:magenta", "#AC007C", "mcl_dye:magenta", "Magenta"},
+	["unicolor_orange"] =     {"orange",     S("Orange Banner"),     "mcl_wool:orange", "#E67300", "mcl_dye:orange", "Orange" },
+	["unicolor_violet"] =     {"purple",     S("Purple Banner"),     "mcl_wool:purple", "#6400AC", "mcl_dye:violet", "Violet" },
+	["unicolor_brown"] =      {"brown",      S("Brown Banner"),      "mcl_wool:brown", "#603000", "mcl_dye:brown", "Brown" },
+	["unicolor_pink"] =       {"pink",       S("Pink Banner"),       "mcl_wool:pink", "#DE557C", "mcl_dye:pink", "Pink" },
+	["unicolor_lime"] =       {"lime",       S("Lime Banner"),       "mcl_wool:lime", "#30AC00", "mcl_dye:green", "Lime" },
+	["unicolor_light_blue"] = {"light_blue", S("Light Blue Banner"), "mcl_wool:light_blue", "#4040CF", "mcl_dye:lightblue", "Light Blue" },
 }
 
 local colors_reverse = {}
@@ -192,9 +194,9 @@ end
 minetest.register_node("mcl_banners:standing_banner", {
 	_doc_items_entry_name = "Banner",
 	_doc_items_image = "mcl_banners_item_base.png^mcl_banners_item_overlay.png",
-	_doc_items_longdesc = "Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.",
-	_doc_items_usagehelp = [[Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.
-You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.]],
+	_doc_items_longdesc = S("Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting."),
+	_doc_items_usagehelp = S("Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.").."\n"..
+S("You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer."),
 	walkable = false,
 	is_ground_content = false,
 	paramtype = "light",

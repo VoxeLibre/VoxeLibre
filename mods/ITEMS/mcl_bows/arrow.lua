@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_bows")
+
 -- Time in seconds after which a stuck arrow is deleted
 local ARROW_TIMEOUT = 60
 -- Time after which stuck arrow is rechecked for being stuck
@@ -11,11 +13,11 @@ local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_
 local mod_button = minetest.get_modpath("mesecons_button")
 
 minetest.register_craftitem("mcl_bows:arrow", {
-	description = "Arrow",
-	_doc_items_longdesc = [[Arrows are ammunition for bows and dispensers.
-An arrow fired from a bow has a regular damage of 1-9. At full charge, there's a 20% chance of a critical hit dealing 10 damage instead. An arrow fired from a dispenser always deals 3 damage.
-Arrows might get stuck on solid blocks and can be retrieved again. They are also capable of pushing wooden buttons.]],
-	_doc_items_usagehelp = "To use arrows as ammunition for a bow, just put them anywhere in your inventory, they will be used up automatically. To use arrows as ammunition for a dispenser, place them in the dispenser's inventory. To retrieve an arrow that sticks in a block, simply walk close to it.",
+	description = S("Arrow"),
+	_doc_items_longdesc = S("Arrows are ammunition for bows and dispensers.").."\n"..
+S("An arrow fired from a bow has a regular damage of 1-9. At full charge, there's a 20% chance of a critical hit dealing 10 damage instead. An arrow fired from a dispenser always deals 3 damage.").."\n"..
+S("Arrows might get stuck on solid blocks and can be retrieved again. They are also capable of pushing wooden buttons."),
+	_doc_items_usagehelp = S("To use arrows as ammunition for a bow, just put them anywhere in your inventory, they will be used up automatically. To use arrows as ammunition for a dispenser, place them in the dispenser's inventory. To retrieve an arrow that sticks in a block, simply walk close to it."),
 	inventory_image = "mcl_bows_arrow_inv.png",
 	groups = { ammo=1, ammo_bow=1 },
 	_on_dispense = function(itemstack, dispenserpos, droppos, dropnode, dropdir)
