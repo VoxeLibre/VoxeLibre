@@ -1,10 +1,5 @@
 if minetest.get_modpath("unified_inventory") ~= nil then
-	local S
-	if minetest.get_modpath("intllib") then
-		S = intllib.Getter()
-	else
-		S = function ( s ) return s end
-	end
+	local S = minetest.get_translator("awards")
 
 	unified_inventory.register_button("awards", {
 		type = "image",

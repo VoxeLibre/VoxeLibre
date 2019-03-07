@@ -1,3 +1,6 @@
+local S = minetest.get_translator("mcl_inventory")
+local F = function(s) return minetest.formspec_escape(S(s)) end
+
 mcl_inventory = {}
 
 local show_armor = minetest.get_modpath("3d_armor") ~= nil
@@ -101,16 +104,16 @@ local function set_inventory(player, armor_change_only)
 	"list[current_player;craftpreview;7,1.5;1,1;]"..
 	-- crafting guide button
 	"image_button[4.5,3;1,1;craftguide_book.png;__mcl_craftguide;]"..
-	"tooltip[__mcl_craftguide;Recipe book]"..
+	"tooltip[__mcl_craftguide;"..F("Recipe book").."]"..
 	-- help button
 	"image_button[8,3;1,1;doc_button_icon_lores.png;__mcl_doc;]"..
-	"tooltip[__mcl_doc;Help]"..
+	"tooltip[__mcl_doc;"..F("Help").."]"..
 	-- skins button
 	"image_button[3,3;1,1;mcl_skins_button.png;__mcl_skins;]"..
-	"tooltip[__mcl_skins;Select player skin]"..
+	"tooltip[__mcl_skins;"..F("Select player skin").."]"..
 	-- achievements button
 	"image_button[7,3;1,1;mcl_achievements_button.png;__mcl_achievements;]"..
-	"tooltip[__mcl_achievements;Achievements]"..
+	"tooltip[__mcl_achievements;"..F("Achievements").."]"..
 	-- for shortcuts
 	"listring[current_player;main]"..
 	"listring[current_player;craft]"..

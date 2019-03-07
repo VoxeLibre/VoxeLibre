@@ -29,10 +29,7 @@ function awards.save()
 	end
 end
 
-local S = function(s) return s end
-function awards.set_intllib(locale)
-	S = locale
-end
+local S = minetest.get_translator("awards")
 
 function awards.init()
 	awards.players = awards.load()

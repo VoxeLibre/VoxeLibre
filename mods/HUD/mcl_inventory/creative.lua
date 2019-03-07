@@ -1,3 +1,6 @@
+local S = minetest.get_translator("mcl_inventory")
+local F = function(s) return minetest.formspec_escape(S(s)) end
+
 -- Prepare player info table
 local players = {}
 
@@ -320,16 +323,16 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 				player_preview..
 				-- crafting guide button
 				"image_button[9,1;1,1;craftguide_book.png;__mcl_craftguide;]"..
-				"tooltip[__mcl_craftguide;Recipe book]"..
+				"tooltip[__mcl_craftguide;"..F("Recipe book")"..]"..
 				-- help button
 				"image_button[9,2;1,1;doc_button_icon_lores.png;__mcl_doc;]"..
-				"tooltip[__mcl_doc;Help]"..
+				"tooltip[__mcl_doc;"..F("Help").."]"..
 				-- skins button
 				"image_button[9,3;1,1;mcl_skins_button.png;__mcl_skins;]"..
-				"tooltip[__mcl_skins;Select player skin]"..
+				"tooltip[__mcl_skins;"..F("Select player skin").."]"..
 				-- achievements button
 				"image_button[9,4;1,1;mcl_achievements_button.png;__mcl_achievements;]"..
-				"tooltip[__mcl_achievements;Achievements]"
+				"tooltip[__mcl_achievements;"..F("Achievements").."]"
 
 			-- For shortcuts
 			listrings = listrings ..
@@ -382,35 +385,35 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 			"background[-0.19,-0.25;10.5,9.87;"..inv_bg.."]"..
 			"label[-5,-5;"..name.."]"..
 			tab(name, "blocks") ..
-			"tooltip[blocks;Building Blocks]"..
+			"tooltip[blocks;"..F("Building Blocks").."]"..
 			tab(name, "deco") ..
-			"tooltip[deco;Decoration Blocks]"..
+			"tooltip[deco;"..F("Decoration Blocks").."]"..
 			tab(name, "redstone") ..
-			"tooltip[redstone;Redstone]"..
+			"tooltip[redstone;"..F("Redstone").."]"..
 			tab(name, "rail") ..
-			"tooltip[rail;Transportation]"..
+			"tooltip[rail;"..F("Transportation").."]"..
 			tab(name, "misc") ..
-			"tooltip[misc;Miscellaneous]"..
+			"tooltip[misc;"..F("Miscellaneous").."]"..
 			tab(name, "nix") ..
-			"tooltip[nix;Search Items]"..
+			"tooltip[nix;"..F("Search Items").."]"..
 			fnt..
 			"list[current_player;main;0,7;9,1;]"..
 			main_list..
 			tab(name, "food") ..
-			"tooltip[food;Foodstuffs]"..
+			"tooltip[food;"..F("Foodstuffs").."]"..
 			tab(name, "tools") ..
-			"tooltip[tools;Tools]"..
+			"tooltip[tools;"..F("Tools").."]"..
 			tab(name, "combat") ..
-			"tooltip[combat;Combat]"..
+			"tooltip[combat;"..F("Combat").."]"..
 			tab(name, "mobs") ..
-			"tooltip[mobs;Mobs]"..
+			"tooltip[mobs;"..F("Mobs").."]"..
 			-- TODO: Add brew
 			--tab(name, "brew") ..
-			--"tooltip[brew;Brewing]"..
+			--"tooltip[brew;"..F("Brewing").."]"..
 			tab(name, "matr") ..
-			"tooltip[matr;Materials]"..
+			"tooltip[matr;"..F("Materials").."]"..
 			tab(name, "inv") ..
-			"tooltip[inv;Survival Inventory]"..
+			"tooltip[inv;"..F("Survival Inventory").."]"..
 			"list[detached:trash;main;9,7;1,1;]"..
 			"image[9,7;1,1;crafting_creative_trash.png]"..
 			listrings
