@@ -1,4 +1,3 @@
-
 --[[
 
 Copyright (C) 2016 - Auke Kok <sofar@foo-projects.org>
@@ -9,6 +8,8 @@ published by the Free Software Foundation; either version 2.1
 of the license, or (at your option) any later version.
 
 --]]
+
+local S = minetest.get_translator("lightning")
 
 lightning = {}
 
@@ -178,7 +179,7 @@ lightning.strike = function(pos)
 					if obj:is_player() then
 						-- Player damage
 						if minetest.get_modpath("mcl_death_messages") then
-							mcl_death_messages.player_damage(obj, string.format("%s was struck by lightning.", obj:get_player_name()))
+							mcl_death_messages.player_damage(obj, S("@1 was struck by lightning.", obj:get_player_name()))
 						end
 						obj:set_hp(obj:get_hp()-5)
 					-- Mobs
@@ -233,7 +234,7 @@ end)
 
 minetest.register_chatcommand("lightning", {
 	params = "[<X> <Y> <Z>]",
-	description = "Let lightning strike at the specified position or yourself",
+	description = S("Let lightning strike at the specified position or yourself"),
 	privs = { maphack = true },
 	func = function(name, param)
 		local pos = {}
@@ -254,7 +255,7 @@ minetest.register_chatcommand("lightning", {
 			if player then
 				lightning.strike(player:get_pos())
 			else
-				return false, "No position specified and unknown player"
+				return false, S("No position specified and unknown player")
 			end
 		end
 		return true

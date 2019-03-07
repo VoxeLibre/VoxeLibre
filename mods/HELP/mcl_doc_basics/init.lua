@@ -1,10 +1,4 @@
--- Boilerplate to support localized strings if intllib mod is installed.
-local S
-if minetest.get_modpath("intllib") then
-	S = intllib.Getter()
-else
-	S = function(s) return s end
-end
+local S = minetest.get_translator("mcl_doc_basics")
 
 doc.add_category("basics",
 {

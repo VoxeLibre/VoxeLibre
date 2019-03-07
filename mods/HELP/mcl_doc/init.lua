@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_doc")
+
 -- Disable built-in factoids; it is planned to add custom ones as replacements
 doc.sub.items.disable_core_factoid("node_mining")
 doc.sub.items.disable_core_factoid("tool_capabilities")
@@ -14,7 +16,7 @@ end)
 -- dig_by_water
 doc.sub.items.register_factoid("nodes", "drop_destroy", function(itemstring, def)
 	if def.groups.dig_by_water then
-		return "Water can flow into this block and cause it to drop as an item."
+		return S("Water can flow into this block and cause it to drop as an item.")
 	end
 	return ""
 end)
@@ -22,9 +24,9 @@ end)
 -- usable by hoes
 doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
 	if def.groups.cultivatable == 2 then
-		return "This block can be turned into dirt with a hoe."
+		return S("This block can be turned into dirt with a hoe.")
 	elseif def.groups.cultivatable == 2 then
-		return "This block can be turned into farmland with a hoe."
+		return S("This block can be turned into farmland with a hoe.")
 	end
 	return ""
 end)
@@ -33,15 +35,15 @@ end)
 doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
 	local datastring = ""
 	if def.groups.soil_sapling == 2 then
-		datastring = datastring .. "This block acts as a soil for all saplings." .. "\n"
+		datastring = datastring .. S("This block acts as a soil for all saplings.") .. "\n"
 	elseif def.groups.soil_sapling == 1 then
-		datastring = datastring .. "This block acts as a soil for some saplings." .. "\n"
+		datastring = datastring .. S("This block acts as a soil for some saplings.") .. "\n"
 	end
 	if def.groups.soil_sugarcane then
-		datastring = datastring .. "Sugar canes will grow on this block." .. "\n"
+		datastring = datastring .. S("Sugar canes will grow on this block.") .. "\n"
 	end
 	if def.groups.soil_nether_wart then
-		datastring = datastring .. "Nether wart will grow on this block." .. "\n"
+		datastring = datastring .. S("Nether wart will grow on this block.") .. "\n"
 	end
 	return datastring
 end)
@@ -50,9 +52,9 @@ doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
 	local formstring = ""
 	if def.groups.leafdecay ~= nil then
 		if def.drop ~= "" and def.drop ~= nil and def.drop ~= itemstring then
-			formstring = string.format("This block quickly decays when there is no wood block of any species within a distance of %d. When decaying, it disappears and may drop one of its regular drops. The block does not decay when the block has been placed by a player.", def.groups.leafdecay)
+			formstring = S("This block quickly decays when there is no wood block of any species within a distance of @1. When decaying, it disappears and may drop one of its regular drops. The block does not decay when the block has been placed by a player.", def.groups.leafdecay)
 		else
-			formstring = string.format("This block quickly decays and disappears when there is no wood block of any species within a distance of %d. The block does not decay when the block has been placed by a player.", def.groups.leafdecay)
+			formstring = S("This block quickly decays and disappears when there is no wood block of any species within a distance of @1. The block does not decay when the block has been placed by a player.", def.groups.leafdecay)
 		end
 	end
 	return formstring
@@ -62,9 +64,9 @@ end)
 doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
 	local datastring = ""
 	if def.groups.place_flowerlike == 1 then
-		return "This plant can only grow on grass blocks and dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher."
+		return S("This plant can only grow on grass blocks and dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.")
 	elseif def.groups.place_flowerlike == 2 then
-		return "This plant can grow on grass blocks, podzol, dirt and coarse dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher."
+		return S("This plant can grow on grass blocks, podzol, dirt and coarse dirt. To survive, it needs to have an unobstructed view to the sky above or be exposed to a light level of 8 or higher.")
 	end
 	return ""
 end)
@@ -72,7 +74,7 @@ end)
 -- flammable
 doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
 	if def.groups.flammable then
-		return "This block is flammable."
+		return S("This block is flammable.")
 	end
 	return ""
 end)
@@ -80,7 +82,7 @@ end)
 -- destroys_items
 doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
 	if def.groups.destroys_items then
-		return "This block destroys any item it touches."
+		return S("This block destroys any item it touches.")
 	end
 	return ""
 end)
@@ -91,25 +93,25 @@ doc.sub.items.register_factoid(nil, "use", function(itemstring, def)
 	local s = ""
 	if def.groups.eatable and not def._doc_items_usagehelp then
 		if def.groups.food == 2 then
-			s = s .. "To eat it, wield it, then rightclick."
+			s = s .. S("To eat it, wield it, then rightclick.")
 			if def.groups.can_eat_when_full == 1 then
-				s = s .. "\n" .. "You can eat this even when your hunger bar is full."
+				s = s .. "\n" .. S("You can eat this even when your hunger bar is full.")
 			else
-				s = s .. "\n" .. "You cannot eat this when your hunger bar is full."
+				s = s .. "\n" .. S("You cannot eat this when your hunger bar is full.")
 			end
 		elseif def.groups.food == 3 then
-			s = s .. "To drink it, wield it, then rightclick."
+			s = s .. S("To drink it, wield it, then rightclick.")
 			if def.groups.can_eat_when_full ~= 1 then
-				s = s .. "\n" .. "You cannot drink this when your hunger bar is full."
+				s = s .. "\n" .. S("You cannot drink this when your hunger bar is full.")
 			end
 		else
-			s = s .. "To consume it, wield it, then rightclick."
+			s = s .. S("To consume it, wield it, then rightclick.")
 			if def.groups.can_eat_when_full ~= 1 then
-				s = s .. "\n" .. "You cannot consume this when your hunger bar is full."
+				s = s .. "\n" .. S("You cannot consume this when your hunger bar is full.")
 			end
 		end
 		if def.groups.no_eat_delay ~= 1 then
-			s = s .. "\n" .. "You have to wait for about 2 seconds before you can eat or drink again."
+			s = s .. "\n" .. S("You have to wait for about 2 seconds before you can eat or drink again.")
 		end
 	end
 	return s
@@ -118,10 +120,10 @@ end)
 doc.sub.items.register_factoid(nil, "groups", function(itemstring, def)
 	local s = ""
 	if def.groups.eatable and def.groups.eatable > 0 then
-		s = s .. string.format("Hunger points restored: %d", def.groups.eatable)
+		s = s .. S("Hunger points restored: @1", def.groups.eatable)
 	end
 	if def._mcl_saturation and def._mcl_saturation > 0 then
-		s = s .. "\n" .. string.format("Saturation points restored: %.1f", def._mcl_saturation)
+		s = s .. "\n" .. S("Saturation points restored: @1%.1f", string.format("%.1f", def._mcl_saturation))
 	end
 	return s
 end)
@@ -132,12 +134,12 @@ doc.sub.items.register_factoid(nil, "groups", function(itemstring, def)
 		local mdef = minetest.registered_items[def._repair_material]
 		local desc
 		if mdef and mdef.description and mdef.description ~= "" then
-			return string.format("This item can be repaired at an anvil with: %s.", mdef.description)
+			return S("This item can be repaired at an anvil with: @1.", mdef.description)
 		elseif def._repair_material == "group:wood" then
-			return "This item can be repaired at an anvil with any wooden planks."
+			return S("This item can be repaired at an anvil with any wooden planks.")
 		elseif string.sub(def._repair_material, 1, 6) == "group:" then
 			local group = string.sub(def._repair_material, 7)
-			return string.format("This item can be repaired at an anvil with any item in the “%s” group.", group)
+			return S("This item can be repaired at an anvil with any item in the “@1” group.", group)
 		end
 	end
 	return ""
@@ -145,7 +147,7 @@ end)
 
 doc.sub.items.register_factoid(nil, "groups", function(itemstring, def)
 	if minetest.get_item_group(itemstring, "no_rename") == 1 then
-		return "This item cannot be renamed at an anvil."
+		return S("This item cannot be renamed at an anvil.")
 	else
 		return ""
 	end
@@ -154,7 +156,7 @@ end)
 doc.sub.items.register_factoid("nodes", "gravity", function(itemstring, def)
 	local s = ""
 	if minetest.get_item_group(itemstring, "crush_after_fall") == 1 then
-		s = s .. "This block crushes any block it falls into."
+		s = s .. S("This block crushes any block it falls into.")
 	end
 	return s
 end)
@@ -162,22 +164,22 @@ end)
 doc.sub.items.register_factoid("nodes", "gravity", function(itemstring, def)
 	local s = ""
 	if minetest.get_item_group(itemstring, "crush_after_fall") == 1 then
-		s = s .. "When this block falls deeper than 1 block, it causes damage to any player it hits. The damage dealt is B×2−2 hit points with B = number of blocks fallen. The damage can never be more than 40 HP."
+		s = s .. S("When this block falls deeper than 1 block, it causes damage to any player it hits. The damage dealt is B×2−2 hit points with B = number of blocks fallen. The damage can never be more than 40 HP.")
 	end
 	return s
 end)
 
 -- Mining, hardness and all that
 doc.sub.items.register_factoid("nodes", "mining", function(itemstring, def)
-	local pickaxey = { "Diamond Pickaxe", "Iron Pickaxe", "Stone Pickaxe", "Golden Pickaxe", "Wooden Pickaxe" }
-	local axey = { "Diamond Axe", "Iron Axe", "Stone Axe", "Golden Axe", "Wooden Axe" }
-	local shovely = { "Diamond Shovel", "Iron Shovel", "Stone Shovel", "Golden Shovel", "Wooden Shovel" }
+	local pickaxey = { S("Diamond Pickaxe"), S("Iron Pickaxe"), S("Stone Pickaxe"), S("Golden Pickaxe"), S("Wooden Pickaxe") }
+	local axey = { S("Diamond Axe"), S("Iron Axe"), S("Stone Axe"), S("Golden Axe"), S("Wooden Axe") }
+	local shovely = { S("Diamond Shovel"), S("Iron Shovel"), S("Stone Shovel"), S("Golden Shovel"), S("Wooden Shovel") }
 
 	local datastring = ""
 	local groups = def.groups
 	if groups then
 		if groups.dig_immediate == 3 then
-			datastring = datastring .. "This block can be mined by any tool instantly." .. "\n"
+			datastring = datastring .. S("This block can be mined by any tool instantly.") .. "\n"
 		else
 			local tool_minable = false
 
@@ -213,7 +215,7 @@ doc.sub.items.register_factoid("nodes", "mining", function(itemstring, def)
 			end
 
 			if tool_minable then
-				datastring = "This block can be mined by:\n" .. datastring .. "\n"
+				datastring = S("This block can be mined by:") .. "\n" .. datastring .. "\n"
 			end
 		end
 	end
@@ -222,9 +224,9 @@ doc.sub.items.register_factoid("nodes", "mining", function(itemstring, def)
 		hardness = 0
 	end
 	if hardness == -1 then
-		datastring = datastring .. "Hardness: ∞"
+		datastring = datastring .. S("Hardness: ∞")
 	else
-		datastring = datastring .. string.format("Hardness: %.2f", hardness)
+		datastring = datastring .. S("Hardness: @1", string.format("%.2f", hardness))
 	end
 	local blast = def._mcl_blast_resistance
 	if not blast then
@@ -232,7 +234,7 @@ doc.sub.items.register_factoid("nodes", "mining", function(itemstring, def)
 	end
 	-- TODO: Blast resistance as number
 	if blast >= 1000 then
-		datastring = datastring .. "\n" .. "This block will not be destroyed by TNT explosions."
+		datastring = datastring .. "\n" .. S("This block will not be destroyed by TNT explosions.")
 	end
 	return datastring
 end)
@@ -240,7 +242,7 @@ end)
 -- Special drops when mined by shears
 doc.sub.items.register_factoid("nodes", "drops", function(itemstring, def)
 	if def._mcl_shears_drop == true then
-		return "This block drops itself when mined by shears."
+		return S("This block drops itself when mined by shears.")
 	elseif type(def._mcl_shears_drop) == "table" then
 		local drops = {}
 		for d=1, #def._mcl_shears_drop do
@@ -255,11 +257,11 @@ doc.sub.items.register_factoid("nodes", "drops", function(itemstring, def)
 				text = itemname
 			end
 			if itemcount > 1 then
-				text = string.format("%d×%s", itemcount, text)
+				text = S("@1×@2", itemcount, text)
 			end
 			table.insert(drops, text)
 		end
-		local ret = string.format("This blocks drops the following when mined by shears: %s", table.concat(drops, ", "))
+		local ret = S("This blocks drops the following when mined by shears: @1", table.concat(drops, S(", ")))
 		return ret
 	end
 	return ""

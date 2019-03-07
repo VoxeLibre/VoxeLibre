@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_void_damage")
+
 local voidtimer = 0
 
 minetest.register_globalstep(function(dtime)
@@ -24,7 +26,7 @@ minetest.register_globalstep(function(dtime)
 						local spawn = mcl_spawn.get_spawn_pos(obj)
 						obj:set_pos(spawn)
 						mcl_worlds.dimension_change(obj, mcl_worlds.pos_to_dimension(spawn))
-						minetest.chat_send_player(obj:get_player_name(), "The void is off-limits to you!")
+						minetest.chat_send_player(obj:get_player_name(), S("The void is off-limits to you!"))
 					else
 						obj:remove()
 					end
@@ -32,7 +34,7 @@ minetest.register_globalstep(function(dtime)
 					-- Damage enabled, not immortal: Deal void damage (4 HP / 0.5 seconds)
 					if obj:get_hp() > 0 then
 						if is_player then
-							mcl_death_messages.player_damage(obj, string.format("%s fell into the endless void.", obj:get_player_name()))
+							mcl_death_messages.player_damage(obj, S("@1 fell into the endless void.", obj:get_player_name()))
 						end
 						obj:set_hp(obj:get_hp() - 4)
 					end
