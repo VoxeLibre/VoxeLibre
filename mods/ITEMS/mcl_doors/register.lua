@@ -1,11 +1,13 @@
+local S = minetest.get_translator("mcl_doors")
+
 --[[ Doors ]]
 
-local wood_longdesc = "Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal."
-local wood_usagehelp = "To open or close a wooden door, rightclick it or supply its lower half with a redstone signal."
+local wood_longdesc = S("Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.")
+local wood_usagehelp = S("To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.")
 
 --- Oak Door ---
 mcl_doors:register_door("mcl_doors:wooden_door", {
-	description = "Oak Door",
+	description = S("Oak Door"),
 	_doc_items_longdesc = wood_longdesc,
 	_doc_items_usagehelp = wood_usagehelp,
 	inventory_image = "doors_item_wood.png",
@@ -28,7 +30,7 @@ minetest.register_craft({
 
 --- Acacia Door --
 mcl_doors:register_door("mcl_doors:acacia_door", {
-	description = "Acacia Door",
+	description = S("Acacia Door"),
 	_doc_items_longdesc = wood_longdesc,
 	_doc_items_usagehelp = wood_usagehelp,
 	inventory_image = "mcl_doors_door_acacia.png",
@@ -51,7 +53,7 @@ minetest.register_craft({
 
 --- Birch Door --
 mcl_doors:register_door("mcl_doors:birch_door", {
-	description = "Birch Door",
+	description = S("Birch Door"),
 	_doc_items_longdesc = wood_longdesc,
 	_doc_items_usagehelp = wood_usagehelp,
 	inventory_image = "mcl_doors_door_birch.png",
@@ -74,7 +76,7 @@ minetest.register_craft({
 
 --- Dark Oak Door --
 mcl_doors:register_door("mcl_doors:dark_oak_door", {
-	description = "Dark Oak Door",
+	description = S("Dark Oak Door"),
 	_doc_items_longdesc = wood_longdesc,
 	_doc_items_usagehelp = wood_usagehelp,
 	inventory_image = "mcl_doors_door_dark_oak.png",
@@ -97,7 +99,7 @@ minetest.register_craft({
 
 --- Jungle Door --
 mcl_doors:register_door("mcl_doors:jungle_door", {
-	description = "Jungle Door",
+	description = S("Jungle Door"),
 	_doc_items_longdesc = wood_longdesc,
 	_doc_items_usagehelp = wood_usagehelp,
 	inventory_image = "mcl_doors_door_jungle.png",
@@ -120,7 +122,7 @@ minetest.register_craft({
 
 --- Spruce Door --
 mcl_doors:register_door("mcl_doors:spruce_door", {
-	description = "Spruce Door",
+	description = S("Spruce Door"),
 	_doc_items_longdesc = wood_longdesc,
 	_doc_items_usagehelp = wood_usagehelp,
 	inventory_image = "mcl_doors_door_spruce.png",
@@ -174,9 +176,9 @@ minetest.register_craft({
 
 --- Iron Door ---
 mcl_doors:register_door("mcl_doors:iron_door", {
-	description = "Iron Door",
-	_doc_items_longdesc = "Iron doors are 2-block high barriers which can only be opened or closed by a redstone signal, but not by hand.",
-	_doc_items_usagehelp = "To open or close an iron door, supply its lower half with a redstone signal.",
+	description = S("Iron Door"),
+	_doc_items_longdesc = S("Iron doors are 2-block high barriers which can only be opened or closed by a redstone signal, but not by hand."),
+	_doc_items_usagehelp = S("To open or close an iron door, supply its lower half with a redstone signal."),
 	inventory_image = "doors_item_steel.png",
 	groups = {pickaxey=1, mesecon_effector_on=1},
 	_mcl_hardness = 5,
@@ -204,19 +206,19 @@ minetest.register_craft({
 --[[ Trapdoors ]]
 local woods = {
 	-- id, desc, texture, craftitem
-	{ "trapdoor", "Oak Trapdoor", "doors_trapdoor.png", "doors_trapdoor_side.png", "mcl_core:wood" },
-	{ "acacia_trapdoor", "Acacia Trapdoor", "mcl_doors_trapdoor_acacia.png", "mcl_doors_trapdoor_acacia_side.png", "mcl_core:acaciawood" },
-	{ "birch_trapdoor", "Birch Trapdoor", "mcl_doors_trapdoor_birch.png", "mcl_doors_trapdoor_birch_side.png", "mcl_core:birchwood" },
-	{ "spruce_trapdoor", "Spruce Trapdoor", "mcl_doors_trapdoor_spruce.png", "mcl_doors_trapdoor_spruce_side.png", "mcl_core:sprucewood" },
-	{ "dark_oak_trapdoor", "Dark Oak Trapdoor", "mcl_doors_trapdoor_dark_oak.png", "mcl_doors_trapdoor_dark_oak_side.png", "mcl_core:darkwood" },
-	{ "jungle_trapdoor", "Jungle Trapdoor", "mcl_doors_trapdoor_jungle.png", "mcl_doors_trapdoor_jungle_side.png", "mcl_core:junglewood" },
+	{ "trapdoor", S("Oak Trapdoor"), "doors_trapdoor.png", "doors_trapdoor_side.png", "mcl_core:wood" },
+	{ "acacia_trapdoor", S("Acacia Trapdoor"), "mcl_doors_trapdoor_acacia.png", "mcl_doors_trapdoor_acacia_side.png", "mcl_core:acaciawood" },
+	{ "birch_trapdoor", S("Birch Trapdoor"), "mcl_doors_trapdoor_birch.png", "mcl_doors_trapdoor_birch_side.png", "mcl_core:birchwood" },
+	{ "spruce_trapdoor", S("Spruce Trapdoor"), "mcl_doors_trapdoor_spruce.png", "mcl_doors_trapdoor_spruce_side.png", "mcl_core:sprucewood" },
+	{ "dark_oak_trapdoor", S("Dark Oak Trapdoor"), "mcl_doors_trapdoor_dark_oak.png", "mcl_doors_trapdoor_dark_oak_side.png", "mcl_core:darkwood" },
+	{ "jungle_trapdoor", S("Jungle Trapdoor"), "mcl_doors_trapdoor_jungle.png", "mcl_doors_trapdoor_jungle_side.png", "mcl_core:junglewood" },
 }
 
 for w=1, #woods do
 	mcl_doors:register_trapdoor("mcl_doors:"..woods[w][1], {
 		description = woods[w][2],
-		_doc_items_longdesc = "Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.",
-		_doc_items_usagehelp = "To open or close the trapdoor, rightclick it or send a redstone signal to it.",
+		_doc_items_longdesc = S("Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
+		_doc_items_usagehelp = S("To open or close the trapdoor, rightclick it or send a redstone signal to it."),
 		tile_front = woods[w][3],
 		tile_side = woods[w][4],
 		wield_image = woods[w][3],
@@ -242,8 +244,8 @@ for w=1, #woods do
 end
 
 mcl_doors:register_trapdoor("mcl_doors:iron_trapdoor", {
-	description = "Iron Trapdoor",
-	_doc_items_longdesc = "Iron trapdoors are horizontal barriers which can only be opened and closed by redstone signals, but not by hand. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.",
+	description = S("Iron Trapdoor"),
+	_doc_items_longdesc = S("Iron trapdoors are horizontal barriers which can only be opened and closed by redstone signals, but not by hand. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder."),
 	tile_front = "doors_trapdoor_steel.png",
 	tile_side = "doors_trapdoor_steel_side.png",
 	wield_image = "doors_trapdoor_steel.png",

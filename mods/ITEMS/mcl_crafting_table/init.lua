@@ -1,7 +1,9 @@
+local S = minetest.get_translator("mcl_crafting_table")
+
 minetest.register_node("mcl_crafting_table:crafting_table", {
-	description = "Crafting Table",
-	_doc_items_longdesc = "A crafting table is a block which grants you access to a 3×3 crafting grid which allows you to perform advanced crafts.",
-	_doc_items_usagehelp = "Rightclick the crafting table to access the 3×3 crafting grid.",
+	description = S("Crafting Table"),
+	_doc_items_longdesc = S("A crafting table is a block which grants you access to a 3×3 crafting grid which allows you to perform advanced crafts."),
+	_doc_items_usagehelp = S("Rightclick the crafting table to access the 3×3 crafting grid."),
 	_doc_items_hidden = false,
 	is_ground_content = false,
 	tiles = {"crafting_workbench_top.png", "default_wood.png", "crafting_workbench_side.png",

@@ -1,6 +1,7 @@
 -- Chorus plants
 -- This includes chorus flowers, chorus plant stem nodes and chorus fruit
 
+local S = minetest.get_translator("mcl_end")
 
 --- Plant parts ---
 
@@ -24,9 +25,9 @@ local function round(num, idp)
 end
 
 minetest.register_node("mcl_end:chorus_flower", {
-	description = "Chorus Flower",
-	_doc_items_longdesc = "A chorus flower is the living part of a chorus plant. It can grow into a tall chorus plant, step by step. When it grows, it may die on old age eventually. It also dies when it is unable to grow.",
-	_doc_items_usagehelp = "Place it and wait for it to grow. It can only be placed on top of end stone, on top of a chorus plant stem, or at the side of exactly a chorus plant stem.",
+	description = S("Chorus Flower"),
+	_doc_items_longdesc = S("A chorus flower is the living part of a chorus plant. It can grow into a tall chorus plant, step by step. When it grows, it may die on old age eventually. It also dies when it is unable to grow."),
+	_doc_items_usagehelp = S("Place it and wait for it to grow. It can only be placed on top of end stone, on top of a chorus plant stem, or at the side of exactly a chorus plant stem."),
 	tiles = {
 		"mcl_end_chorus_flower.png",
 		"mcl_end_chorus_flower.png",
@@ -108,8 +109,8 @@ minetest.register_node("mcl_end:chorus_flower", {
 })
 
 minetest.register_node("mcl_end:chorus_flower_dead", {
-	description = "Dead Chorus Flower",
-	_doc_items_longdesc = "This is a part of a chorus plant. It doesn't grow. Chorus flowers die of old age or when they are unable to grow. A dead chorus flower can be harvested to obtain a fresh chorus flower which is able to grow again.",
+	description = S("Dead Chorus Flower"),
+	_doc_items_longdesc = S("This is a part of a chorus plant. It doesn't grow. Chorus flowers die of old age or when they are unable to grow. A dead chorus flower can be harvested to obtain a fresh chorus flower which is able to grow again."),
 	tiles = {
 		"mcl_end_chorus_flower_dead.png",
 		"mcl_end_chorus_flower_dead.png",
@@ -131,8 +132,8 @@ minetest.register_node("mcl_end:chorus_flower_dead", {
 })
 
 minetest.register_node("mcl_end:chorus_plant", {
-	description = "Chorus Plant Stem",
-	_doc_items_longdesc = "A chorus plant stem is the part of a chorus plant which holds the whole plant together. It needs end stone as its soil. Stems are grown from chorus flowers.",
+	description = S("Chorus Plant Stem"),
+	_doc_items_longdesc = S("A chorus plant stem is the part of a chorus plant which holds the whole plant together. It needs end stone as its soil. Stems are grown from chorus flowers."),
 	tiles = {
 		"mcl_end_chorus_plant.png",
 		"mcl_end_chorus_plant.png",
@@ -356,8 +357,8 @@ local eat_chorus_fruit = function(itemstack, player, pointed_thing)
 end
 
 minetest.register_craftitem("mcl_end:chorus_fruit", {
-	description = "Chorus Fruit",
-	_doc_items_longdesc = "A chorus fruit is an edible fruit from the chorus plant which is home to the End. Eating it teleports you to the top of a random solid block nearby, provided you won't end up inside a liquid, solid or harmful blocks. Teleportation might fail if there are very few or no places to teleport to.",
+	description = S("Chorus Fruit"),
+	_doc_items_longdesc = S("A chorus fruit is an edible fruit from the chorus plant which is home to the End. Eating it teleports you to the top of a random solid block nearby, provided you won't end up inside a liquid, solid or harmful blocks. Teleportation might fail if there are very few or no places to teleport to."),
 	wield_image = "mcl_end_chorus_fruit.png",
 	inventory_image = "mcl_end_chorus_fruit.png",
 	on_place = eat_chorus_fruit,
@@ -368,7 +369,7 @@ minetest.register_craftitem("mcl_end:chorus_fruit", {
 })
 
 minetest.register_craftitem("mcl_end:chorus_fruit_popped", {
-	description = "Popped Chorus Fruit",
+	description = S("Popped Chorus Fruit"),
 	_doc_items_longdesc = doc.sub.items.temp.craftitem,
 	wield_image = "mcl_end_chorus_fruit_popped.png",
 	inventory_image = "mcl_end_chorus_fruit_popped.png",

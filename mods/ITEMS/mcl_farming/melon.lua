@@ -1,8 +1,10 @@
+local S = minetest.get_translator("mcl_farming")
+
 -- Seeds
 minetest.register_craftitem("mcl_farming:melon_seeds", {
-	description = "Melon Seeds",
-	_doc_items_longdesc = "Grows into a melon. Chickens like melon seeds.",
-	_doc_items_usagehelp = "Place the melon seeds on farmland (which can be created with a hoe) to plant a melon stem. Melons grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it melon seeds.",
+	description = S("Melon Seeds"),
+	_doc_items_longdesc = S("Grows into a melon. Chickens like melon seeds."),
+	_doc_items_usagehelp = S("Place the melon seeds on farmland (which can be created with a hoe) to plant a melon stem. Melons grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it melon seeds."),
 	stack_max = 64,
 	groups = { craftitem=1 },
 	inventory_image = "mcl_farming_melon_seeds.png",
@@ -14,8 +16,8 @@ minetest.register_craftitem("mcl_farming:melon_seeds", {
 -- Melon template (will be fed into mcl_farming.register_gourd
 
 local melon_base_def = {
-	description = "Melon",
-	_doc_items_longdesc = "A melon is a block which can be grown from melon stems, which in turn are grown from melon seeds. It can be harvested for melon slices.",
+	description = S("Melon"),
+	_doc_items_longdesc = S("A melon is a block which can be grown from melon stems, which in turn are grown from melon seeds. It can be harvested for melon slices."),
 	stack_max = 64,
 	tiles = {"farming_melon_top.png", "farming_melon_top.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png", "farming_melon_side.png"},
 	groups = {handy=1,axey=1, plant=1,building_block=1,enderman_takable=1,dig_by_piston=1},
@@ -68,13 +70,13 @@ for s=1,7 do
 	local doc = s == 1
 	local longdesc, entry_name
 	if doc then
-		entry_name = "Premature Melon Stem"
-		longdesc = "Melon stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature melon stems are able to grow melons."
+		entry_name = S("Premature Melon Stem")
+		longdesc = S("Melon stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature melon stems are able to grow melons.")
 	end
 	local colorstring = mcl_farming:stem_color(startcolor, endcolor, s, 8)
 	local texture = "([combine:16x16:0,"..((8-s)*2).."=mcl_farming_melon_stem_disconnected.png)^[colorize:"..colorstring..":127"
 	minetest.register_node("mcl_farming:melontige_"..s, {
-		description = string.format("Premature Melon Stem (Stage %d)", s),
+		description = S("Premature Melon Stem (Stage @1)", s),
 		_doc_items_create_entry = doc,
 		_doc_items_entry_name = entry_name,
 		_doc_items_longdesc = longdesc,
@@ -100,9 +102,9 @@ end
 
 -- Full melon stem, able to spawn melons
 local stem_def = {
-	description = "Mature Melon Stem",
+	description = S("Mature Melon Stem"),
 	_doc_items_create_entry = true,
-	_doc_items_longdesc = "A mature melon stem attempts to grow a melon at one of its four adjacent blocks. A melon can only grow on top of farmland, dirt, or a grass block. When a melon is next to a melon stem, the melon stem immediately bends and connects to the melon. While connected, a melon stem can't grow another melon. As soon all melons around the stem have been removed, it loses the connection and is ready to grow another melon.",
+	_doc_items_longdesc = S("A mature melon stem attempts to grow a melon at one of its four adjacent blocks. A melon can only grow on top of farmland, dirt, or a grass block. When a melon is next to a melon stem, the melon stem immediately bends and connects to the melon. While connected, a melon stem can't grow another melon. As soon all melons around the stem have been removed, it loses the connection and is ready to grow another melon."),
 	tiles = {"mcl_farming_melon_stem_disconnected.png^[colorize:#FFA800:127"},
 	wield_image = "mcl_farming_melon_stem_disconnected.png^[colorize:#FFA800:127",
 	inventory_image = "mcl_farming_melon_stem_disconnected.png^[colorize:#FFA800:127",
@@ -117,8 +119,8 @@ mcl_farming:add_gourd("mcl_farming:melontige_unconnect", "mcl_farming:melontige_
 -- Items and crafting
 minetest.register_craftitem("mcl_farming:melon_item", {
 	-- Original name: “Melon”
-	description = "Melon Slice",
-	_doc_items_longdesc = "This is a food item which can be eaten.",
+	description = S("Melon Slice"),
+	_doc_items_longdesc = S("This is a food item which can be eaten."),
 	stack_max = 64,
 	inventory_image = "farming_melon.png",
 	on_place = minetest.item_eat(2),

@@ -1,25 +1,26 @@
+local S = minetest.get_translator("mcl_flowerpots")
 
 local flowers = {
-	{"dandelion", "mcl_flowers:dandelion", "Dandelion Flower Pot"},
-	{"poppy", "mcl_flowers:poppy", "Poppy Floer Pot"},
-	{"blue_orchid", "mcl_flowers:blue_orchid", "Blue Orchid Flower Pot"},
-	{"allium", "mcl_flowers:allium", "Allium Flower Pot"},
-	{"azure_bluet", "mcl_flowers:azure_bluet", "Azure Bluet Flower Pot"},
-	{"tulip_red", "mcl_flowers:tulip_red", "Red Tulip Flower Pot"},
-	{"tulip_pink", "mcl_flowers:tulip_pink", "Pink Tulip Flower Pot"},
-	{"tulip_white", "mcl_flowers:tulip_white", "White Tulip Flower Pot"},
-	{"tulip_orange", "mcl_flowers:tulip_orange", "Orange Tulip Flower Pot"},
-	{"oxeye_daisy", "mcl_flowers:oxeye_daisy", "Oxeye Daisy Flower Pot"},
-	{"mushroom_brown", "mcl_mushrooms:mushroom_brown", "Brown Mushroom Flower Pot"},
-	{"mushroom_red", "mcl_mushrooms:mushroom_red", "Red Mushroom Flower Pot"},
-	{"sapling", "mcl_core:sapling", "Oak Sapling Flower Pot"},
-	{"acaciasapling", "mcl_core:acaciasapling", "Acacia Sapling Flower Pot"},
-	{"junglesapling", "mcl_core:junglesapling", "Jungle Sapling Flower Pot"},
-	{"darksapling", "mcl_core:darksapling", "Dark Oak Sapling Flower Pot"},
-	{"sprucesapling", "mcl_core:sprucesapling", "Spruce Sapling Flower Pot"},
-	{"birchsapling", "mcl_core:birchsapling", "Birch Sapling Flower Pot"},
-	{"deadbush", "mcl_core:deadbush", "Dead Bush Flower Pot"},
-	{"fern", "mcl_flowers:fern", "Fern Flower Pot", {"mcl_flowers_fern_inv.png"}},
+	{"dandelion", "mcl_flowers:dandelion", S("Dandelion Flower Pot")},
+	{"poppy", "mcl_flowers:poppy", S("Poppy Floer Pot")},
+	{"blue_orchid", "mcl_flowers:blue_orchid", S("Blue Orchid Flower Pot")},
+	{"allium", "mcl_flowers:allium", S("Allium Flower Pot")},
+	{"azure_bluet", "mcl_flowers:azure_bluet", S("Azure Bluet Flower Pot")},
+	{"tulip_red", "mcl_flowers:tulip_red", S("Red Tulip Flower Pot")},
+	{"tulip_pink", "mcl_flowers:tulip_pink", S("Pink Tulip Flower Pot")},
+	{"tulip_white", "mcl_flowers:tulip_white", S("White Tulip Flower Pot")},
+	{"tulip_orange", "mcl_flowers:tulip_orange", S("Orange Tulip Flower Pot")},
+	{"oxeye_daisy", "mcl_flowers:oxeye_daisy", S("Oxeye Daisy Flower Pot")},
+	{"mushroom_brown", "mcl_mushrooms:mushroom_brown", S("Brown Mushroom Flower Pot")},
+	{"mushroom_red", "mcl_mushrooms:mushroom_red", S("Red Mushroom Flower Pot")},
+	{"sapling", "mcl_core:sapling", S("Oak Sapling Flower Pot")},
+	{"acaciasapling", "mcl_core:acaciasapling", S("Acacia Sapling Flower Pot")},
+	{"junglesapling", "mcl_core:junglesapling", S("Jungle Sapling Flower Pot")},
+	{"darksapling", "mcl_core:darksapling", S("Dark Oak Sapling Flower Pot")},
+	{"sprucesapling", "mcl_core:sprucesapling", S("Spruce Sapling Flower Pot")},
+	{"birchsapling", "mcl_core:birchsapling", S("Birch Sapling Flower Pot")},
+	{"deadbush", "mcl_core:deadbush", S("Dead Bush Flower Pot")},
+	{"fern", "mcl_flowers:fern", S("Fern Flower Pot"), {"mcl_flowers_fern_inv.png"}},
 }
 
 local cubes = {
@@ -27,9 +28,9 @@ local cubes = {
 }
 
 minetest.register_node("mcl_flowerpots:flower_pot", {
-	description = "Flower Pot",
-	_doc_items_longdesc = "Flower pots are decorational blocks in which flowers and other small plants can be placed.",
-	_doc_items_usagehelp = "Rightclick an empty flower pot while you wield a plant to place the plant. Flower pots can hold small flowers (not higher than 1 block), saplings, ferns, dead bushes, mushrooms and cacti. Rightclick a potted plant to retrieve the plant.",
+	description = S("Flower Pot"),
+	_doc_items_longdesc = S("Flower pots are decorational blocks in which flowers and other small plants can be placed."),
+	_doc_items_usagehelp = S("Rightclick an empty flower pot while you wield a plant to place the plant. Flower pots can hold small flowers (not higher than 1 block), saplings, ferns, dead bushes, mushrooms and cacti. Rightclick a potted plant to retrieve the plant."),
 	drawtype = "mesh",
 	mesh = "flowerpot.obj",
 	tiles = {

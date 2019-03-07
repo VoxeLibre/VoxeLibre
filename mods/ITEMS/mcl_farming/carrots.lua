@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_farming")
+
 for i=1, 7 do
 	local texture, sel_height
 	if i < 3 then
@@ -14,13 +16,13 @@ for i=1, 7 do
 	local create, name, longdesc
 	if i == 1 then
 		create = true
-		name = "Premature Carrot Plant"
-		longdesc = "Carrot plants are plants which grow on farmland under sunlight in 8 stages, of which only 4 are actually visible. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature."
+		name = S("Premature Carrot Plant")
+		longdesc = S("Carrot plants are plants which grow on farmland under sunlight in 8 stages, of which only 4 are actually visible. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.")
 	else
 		create = false
 	end
 	minetest.register_node("mcl_farming:carrot_"..i, {
-		description = string.format("Premature Carrot Plant (Stage %d)", i),
+		description = S("Premature Carrot Plant (Stage @1)", i),
 		_doc_items_create_entry = create,
 		_doc_items_entry_name = name,
 		_doc_items_longdesc = longdesc,
@@ -47,8 +49,8 @@ for i=1, 7 do
 end
 
 minetest.register_node("mcl_farming:carrot", {
-	description = "Mature Carrot Plant",
-	_doc_items_longdesc = "Mature carrot plants are ready to be harvested for carrots. They won't grow any further.",
+	description = S("Mature Carrot Plant"),
+	_doc_items_longdesc = S("Mature carrot plants are ready to be harvested for carrots. They won't grow any further."),
 	paramtype = "light",
 	sunlight_propagates = true,
 	paramtype2 = "meshoptions",
@@ -79,9 +81,9 @@ minetest.register_node("mcl_farming:carrot", {
 })
 
 minetest.register_craftitem("mcl_farming:carrot_item", {
-	description = "Carrot",
-	_doc_items_longdesc = "Carrots can be eaten and planted. Pigs and rabbits like carrots.",
-	_doc_items_usagehelp = "Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant the carrot. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it.",
+	description = S("Carrot"),
+	_doc_items_longdesc = S("Carrots can be eaten and planted. Pigs and rabbits like carrots."),
+	_doc_items_usagehelp = S("Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant the carrot. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it."),
 	inventory_image = "farming_carrot.png",
 	groups = { food = 2, eatable = 3 },
 	_mcl_saturation = 3.6,
@@ -97,8 +99,8 @@ minetest.register_craftitem("mcl_farming:carrot_item", {
 })
 
 minetest.register_craftitem("mcl_farming:carrot_item_gold", {
-	description = "Golden Carrot",
-	_doc_items_longdesc = "A golden carrot is a precious food item which can be eaten. It is really, really filling!",
+	description = S("Golden Carrot"),
+	_doc_items_longdesc = S("A golden carrot is a precious food item which can be eaten. It is really, really filling!"),
 	inventory_image = "farming_carrot_gold.png",
 	on_place = minetest.item_eat(6),
 	on_secondary_use = minetest.item_eat(6),
