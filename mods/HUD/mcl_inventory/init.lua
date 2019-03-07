@@ -86,6 +86,7 @@ local function set_inventory(player, armor_change_only)
 
 	local form = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg.png]"..
+	mcl_vars.inventory_header..
 	player_preview..
 	--armor
 	"list[detached:"..player_name.."_armor;armor;0,0;1,1;1]"..

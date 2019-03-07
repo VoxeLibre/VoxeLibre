@@ -1,6 +1,13 @@
 -- Some global variables (don't overwrite them!)
 mcl_vars = {}
 
+--- GUI / inventory menu colors
+mcl_vars.gui_slots = "listcolors[#9990;#FFF7;#FFF0;#000;#FFF]"
+mcl_vars.gui_bg = "bgcolor[#080808BB;true]"
+mcl_vars.gui_bg_img = ""
+
+mcl_vars.inventory_header = mcl_vars.gui_slots .. mcl_vars.gui_bg
+
 -- Mapgen variables
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local minecraft_height_limit = 256

@@ -378,6 +378,7 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 		end
 
 		formspec = "size[10,9.3]"..
+			mcl_vars.inventory_header..
 			"background[-0.19,-0.25;10.5,9.87;"..inv_bg.."]"..
 			"label[-5,-5;"..name.."]"..
 			tab(name, "blocks") ..

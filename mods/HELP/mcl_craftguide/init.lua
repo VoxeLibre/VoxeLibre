@@ -315,6 +315,8 @@ function craftguide:get_formspec(player_name, is_fuel)
 	data.pagemax = max(1, ceil(#data.items / ipp))
 
 	local formspec = "size["..data.iX..","..(iY+3)..".6;]"..
+			mcl_vars.gui_slots ..
+			mcl_vars.gui_bg ..
 			[=[background[1,1;1,1;craftguide_bg.png;true]
 			button[2.4,0.21;0.8,0.5;search;?]
 			button[3.05,0.21;0.8,0.5;clear;X]
