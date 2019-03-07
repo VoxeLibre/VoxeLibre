@@ -1,12 +1,16 @@
 -- Some global variables (don't overwrite them!)
 mcl_vars = {}
 
---- GUI / inventory menu colors
+--- GUI / inventory menu settings
 mcl_vars.gui_slots = "listcolors[#9990;#FFF7;#FFF0;#000;#FFF]"
+-- nonbg is added as formspec prepend in mcl_formspec_prepend
+mcl_vars.gui_nonbg = mcl_vars.gui_slots
+
+-- Background stuff must be manually added by mods (no formspec prepend)
 mcl_vars.gui_bg = "bgcolor[#080808BB;true]"
 mcl_vars.gui_bg_img = ""
 
-mcl_vars.inventory_header = mcl_vars.gui_slots .. mcl_vars.gui_bg
+mcl_vars.inventory_header = mcl_vars.gui_bg
 
 -- Mapgen variables
 local mg_name = minetest.get_mapgen_setting("mg_name")
