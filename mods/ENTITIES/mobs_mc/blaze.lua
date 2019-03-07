@@ -3,11 +3,8 @@
 -- Model and mobs_blaze.png see https://github.com/22i/minecraft-voxel-blender-models
 -- blaze.lua partial copy of mobs_mc/ghast.lua
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
---dofile(minetest.get_modpath("mobs").."/api.lua")
 --###################
 --################### BLAZE
 --###################

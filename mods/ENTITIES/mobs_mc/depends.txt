@@ -8,5 +8,4 @@ mcl_fishing?
 bones?
 mesecons_materials?
 mobs_mc_gameconfig?
-intllib?
 doc_items?

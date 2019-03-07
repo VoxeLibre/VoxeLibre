@@ -9,7 +9,7 @@ local MAX_MOB_NAME_LENGTH = 30
 
 -- Intllib
 local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP .. "/intllib.lua")
+local S = minetest.get_translator("mcl_mobs")
 mobs.intllib = S
 
 
@@ -71,7 +71,7 @@ local mobs_spawn_chance = tonumber(minetest.settings:get("mobs_spawn_chance") or
 if peaceful_only then
 	minetest.register_on_joinplayer(function(player)
 		minetest.chat_send_player(player:get_player_name(),
-			S("** Peaceful Mode Active - No Monsters Will Spawn"))
+			S("Peaceful mode active! No monsters will spawn."))
 	end)
 end
 
@@ -3562,8 +3562,8 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 		inventory_image = invimg,
 		groups = grp,
 
-		_doc_items_longdesc = "This allows you to place a single mob.",
-		_doc_items_usagehelp = "Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.",
+		_doc_items_longdesc = S("This allows you to place a single mob."),
+		_doc_items_usagehelp = S("Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns."),
 
 		on_place = function(itemstack, placer, pointed_thing)
 
@@ -3588,7 +3588,7 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 						return itemstack
 					end
 					if not privs.maphack then
-						minetest.chat_send_player(name, "You need the “maphack” privilege to change the mob spawner.")
+						minetest.chat_send_player(name, S("You need the “maphack” privilege to change the mob spawner."))
 						return itemstack
 					end
 					mcl_mobspawners.setup_spawner(pointed_thing.under, itemstack:get_name())

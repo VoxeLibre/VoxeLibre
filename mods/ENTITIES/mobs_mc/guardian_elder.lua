@@ -4,9 +4,7 @@
 --################### GUARDIAN
 --###################
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:guardian_elder", {
 	type = "monster",

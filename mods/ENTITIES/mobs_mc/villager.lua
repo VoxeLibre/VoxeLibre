@@ -19,9 +19,7 @@
 --     TODO: Internal inventory, pick up items, trade with other villagers
 --     TODO: Farm stuff
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 -- playername-indexed table containing the previously used tradenum
 local player_tradenum = {}

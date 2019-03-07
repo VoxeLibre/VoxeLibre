@@ -1,3 +1,4 @@
+local S = minetest.get_translator("mcl_boats")
 --
 -- Helper functions
 --
@@ -258,7 +259,7 @@ end
 minetest.register_entity("mcl_boats:boat", boat)
 
 local boat_ids = { "boat", "boat_spruce", "boat_birch", "boat_jungle", "boat_acacia", "boat_dark_oak" }
-local names = { "Oak Boat", "Spruce Boat", "Birch Boat", "Jungle Boat", "Acacia Boat", "Dark Oak Boat" }
+local names = { S("Oak Boat"), S("Spruce Boat"), S("Birch Boat"), S("Jungle Boat"), S("Acacia Boat"), S("Dark Oak Boat") }
 local craftstuffs = {}
 if minetest.get_modpath("mcl_core") then
 	craftstuffs = { "mcl_core:wood", "mcl_core:sprucewood", "mcl_core:birchwood", "mcl_core:junglewood", "mcl_core:acaciawood", "mcl_core:darkwood" }
@@ -273,9 +274,9 @@ for b=1, #boat_ids do
 	-- Only create one help entry for all boats
 	if b == 1 then
 		help = true
-		longdesc = "Boats are used to travel on the surface of water."
-		usagehelp = "Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Rightclick the boat again to leave it, punch the boat to make it drop as an item."
-		helpname = "Boat"
+		longdesc = S("Boats are used to travel on the surface of water.")
+		usagehelp = S("Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Rightclick the boat again to leave it, punch the boat to make it drop as an item.")
+		helpname = S("Boat")
 	end
 
 	minetest.register_craftitem(itemstring, {

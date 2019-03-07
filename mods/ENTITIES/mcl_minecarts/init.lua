@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_minecarts")
+
 mcl_minecarts = {}
 mcl_minecarts.modpath = minetest.get_modpath("mcl_minecarts")
 mcl_minecarts.speed_max = 10
@@ -470,11 +472,11 @@ end
 register_minecart(
 	"mcl_minecarts:minecart",
 	"mcl_minecarts:minecart",
-	"Minecart",
-	"Minecarts can be used for a quick transportion on rails." .. "\n" ..
-	"Minecarts only ride on rails and always follow the tracks. At a T-junction with no straight way ahead, they turn left. The speed is affected by the rail type.",
-	"You can place the minecart on rails. Right-click it to enter it. Punch it to get it moving." .. "\n" ..
-	"To obtain the minecart, punch it while holding down the sneak key.",
+	S("Minecart"),
+	S("Minecarts can be used for a quick transportion on rails.") .. "\n" ..
+	S("Minecarts only ride on rails and always follow the tracks. At a T-junction with no straight way ahead, they turn left. The speed is affected by the rail type."),
+	S("You can place the minecart on rails. Right-click it to enter it. Punch it to get it moving.") .. "\n" ..
+	S("To obtain the minecart, punch it while holding down the sneak key."),
 	"mcl_minecarts_minecart.b3d",
 	{"mcl_minecarts_minecart.png"},
 	"mcl_minecarts_minecart_normal.png",
@@ -511,7 +513,7 @@ register_minecart(
 register_minecart(
 	"mcl_minecarts:chest_minecart",
 	"mcl_minecarts:chest_minecart",
-	"Minecart with Chest",
+	S("Minecart with Chest"),
 	nil, nil,
 	"mcl_minecarts_minecart_chest.b3d",
 	{ "mcl_chests_normal.png", "mcl_minecarts_minecart.png" },
@@ -523,7 +525,7 @@ register_minecart(
 register_minecart(
 	"mcl_minecarts:furnace_minecart",
 	"mcl_minecarts:furnace_minecart",
-	"Minecart with Furnace",
+	S("Minecart with Furnace"),
 	nil, nil,
 	"mcl_minecarts_minecart_block.b3d",
 	{
@@ -566,7 +568,7 @@ register_minecart(
 register_minecart(
 	"mcl_minecarts:command_block_minecart",
 	"mcl_minecarts:command_block_minecart",
-	"Minecart with Command Block",
+	S("Minecart with Command Block"),
 	nil, nil,
 	"mcl_minecarts_minecart_block.b3d",
 	{
@@ -587,7 +589,7 @@ register_minecart(
 register_minecart(
 	"mcl_minecarts:hopper_minecart",
 	"mcl_minecarts:hopper_minecart",
-	"Minecart with Hopper",
+	S("Minecart with Hopper"),
 	nil, nil,
 	"mcl_minecarts_minecart_hopper.b3d",
 	{
@@ -605,7 +607,7 @@ register_minecart(
 register_minecart(
 	"mcl_minecarts:tnt_minecart",
 	"mcl_minecarts:tnt_minecart",
-	"Minecart with TNT",
+	S("Minecart with TNT"),
 	nil, nil,
 	"mcl_minecarts_minecart_block.b3d",
 	{
