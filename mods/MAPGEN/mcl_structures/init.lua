@@ -15,6 +15,10 @@ mcl_structures.get_struct = function(file)
     return allnode
 end
 
+local mapseed = tonumber(minetest.get_mapgen_setting("seed"))
+-- Random number generator for all generated structures
+local pr = PseudoRandom(mapseed)
+
 -- Call on_construct on pos.
 -- Useful to init chests from formspec.
 local init_node_construct = function(pos)
@@ -171,8 +175,6 @@ mcl_structures.generate_igloo_basement = function(pos, orientation)
 		else
 			return success
 		end
-		-- FIXME: Use better seeding
-		local pr = PseudoRandom(math.random(0, 4294967295))
 		local size = {x=9,y=5,z=7}
 		local lootitems = mcl_loot.get_multi_loot({
 		{
@@ -277,8 +279,6 @@ mcl_structures.generate_end_portal_shrine = function(pos)
 
 	-- Shuffle stone brick types
 	local bricks = minetest.find_nodes_in_area(area_start, area_end, "mcl_core:stonebrick")
-	-- FIXME: Use better seeding
-	local pr = PseudoRandom(math.random(0, 4294967295))
 	for b=1, #bricks do
 		local r_bricktype = pr:next(1, 100)
 		local r_infested = pr:next(1, 100)
@@ -368,10 +368,7 @@ mcl_structures.generate_desert_temple = function(pos)
 	local chests = minetest.find_nodes_in_area({x=newpos.x-size.x, y=newpos.y, z=newpos.z-size.z}, vector.add(newpos, size), "mcl_chests:chest")
 
 	-- Add desert temple loot into chests
-	-- FIXME: Use better seeding
-	local pr = PseudoRandom(math.random(0, 4294967295))
 	for c=1, #chests do
-		-- FIXME: Use better seeding
 		local lootitems = mcl_loot.get_multi_loot({
 		{
 			stacks_min = 2,
