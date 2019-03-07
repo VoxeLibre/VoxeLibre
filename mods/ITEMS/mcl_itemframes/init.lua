@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_itemframes")
+
 minetest.register_entity("mcl_itemframes:item",{
 	hp_max = 1,
 	visual = "wielditem",
@@ -100,9 +102,9 @@ if minetest.get_modpath("screwdriver") then
 end
 
 minetest.register_node("mcl_itemframes:item_frame",{
-	description = "Item Frame",
-	_doc_items_longdesc = "Item frames are decorative blocks in which items can be placed.",
-	_doc_items_usagehelp = "Hold any item in your hand and right-click the item frame to place the item into the frame. Rightclick the item frame again to retrieve the item.",
+	description = S("Item Frame"),
+	_doc_items_longdesc = S("Item frames are decorative blocks in which items can be placed."),
+	_doc_items_usagehelp = S("Hold any item in your hand and right-click the item frame to place the item into the frame. Rightclick the item frame again to retrieve the item."),
 	drawtype = "mesh",
 	is_ground_content = false,
 	mesh = "mcl_itemframes_itemframe1facedir.obj",

@@ -1,4 +1,6 @@
 
+local S = minetest.get_translator("mcl_furnaces")
+
 --
 -- Formspecs
 --
@@ -292,9 +294,9 @@ if minetest.get_modpath("screwdriver") then
 end
 
 minetest.register_node("mcl_furnaces:furnace", {
-	description = "Furnace",
-	_doc_items_longdesc = "Furnaces cook or smelt several items, using a furnace fuel, into something else.",
-	_doc_items_usagehelp =  "Right-click the furnace to view it. Place a furnace fuel in the lower slot and the source material in the upper slot. The furnace will slowly use its fuel to smelt the item. The result will be placed into the output slot at the right side.",
+	description = S("Furnace"),
+	_doc_items_longdesc = S("Furnaces cook or smelt several items, using a furnace fuel, into something else."),
+	_doc_items_usagehelp = S("Right-click the furnace to view it. Place a furnace fuel in the lower slot and the source material in the upper slot. The furnace will slowly use its fuel to smelt the item. The result will be placed into the output slot at the right side."),
 	_doc_items_hidden = false,
 	tiles = {
 		"default_furnace_top.png", "default_furnace_bottom.png",
@@ -350,7 +352,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 })
 
 minetest.register_node("mcl_furnaces:furnace_active", {
-	description = "Burning Furnace",
+	description = S("Burning Furnace"),
 	_doc_items_create_entry = false,
 	tiles = {
 		"default_furnace_top.png", "default_furnace_bottom.png",

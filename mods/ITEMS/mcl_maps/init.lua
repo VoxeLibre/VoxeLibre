@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_maps")
+
 -- Turn empty map into filled map by rightclick
 local make_filled_map = function(itemstack, placer, pointed_thing)
 	local new_map = ItemStack("mcl_maps:filled_map")
@@ -16,9 +18,9 @@ local make_filled_map = function(itemstack, placer, pointed_thing)
 end
 
 minetest.register_craftitem("mcl_maps:empty_map", {
-	description = "Empty Map",
-	_doc_items_longdesc = "Empty maps are not useful as maps, but they can be stacked and turned to maps which can be used.",
-	_doc_items_usagehelp = "Rightclick to start using the map (which can't be stacked anymore).",
+	description = S("Empty Map"),
+	_doc_items_longdesc = S("Empty maps are not useful as maps, but they can be stacked and turned to maps which can be used."),
+	_doc_items_usagehelp = S("Rightclick to start using the map (which can't be stacked anymore)."),
 	inventory_image = "mcl_maps_map_empty.png",
 	groups = { not_in_creative_inventory = 1 },
 	on_place = make_filled_map,
@@ -31,9 +33,9 @@ minetest.register_craftitem("mcl_maps:empty_map", {
 -- Note: This is not at all like Minecraft right now. Minetest's minimap is pretty overpowered, it
 -- has a very greatly zoomed-out version and even a radar mode
 minetest.register_craftitem("mcl_maps:filled_map", {
-	description = "Map",
-	_doc_items_longdesc = "Maps show your surroundings as you explore the world. They can even show you the world like a radar. MAGIC!\nNote: Maps are subject to change in future versions of MineClone 2.",
-	_doc_items_usagehelp = "Hold the map in any of the hotbar slots. This allows you to access the minimap by pressing the minimap key ([F9] by default).\nIn Creative Mode, you don't need this item; the minimap is always available.",
+	description = S("Map"),
+	_doc_items_longdesc = S("Maps show your surroundings as you explore the world. They can even show you the world like a radar. MAGIC!\nNote: Maps are subject to change in future versions of MineClone 2."),
+	_doc_items_usagehelp = S("Hold the map in any of the hotbar slots. This allows you to access the minimap by pressing the minimap key ([F9] by default).\nIn Creative Mode, you don't need this item; the minimap is always available."),
 	groups = { tool = 1 },
 	inventory_image = "mcl_maps_map_filled.png^(mcl_maps_map_filled_markings.png^[colorize:#000000)",
 	stack_max = 1,

@@ -1,4 +1,4 @@
-local S = mobs.intllib
+local S = minetest.get_translator("mcl_mobspawners")
 
 mcl_mobspawners = {}
 

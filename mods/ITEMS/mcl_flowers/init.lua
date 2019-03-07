@@ -1,10 +1,12 @@
+local S = minetest.get_translator("mcl_flowers")
+
 -- Minetest 0.4 mod: default
 -- See README.txt for licensing and other information.
 local init = os.clock()
 
 -- Simple flower template
-local smallflowerlongdesc = "This is a small flower. Small flowers are mainly used for dye production and can also be potted."
-local plant_usage_help = "It can only be placed on a block on which it would also survive."
+local smallflowerlongdesc = S("This is a small flower. Small flowers are mainly used for dye production and can also be potted.")
+local plant_usage_help = S("It can only be placed on a block on which it would also survive.")
 
 -- on_place function for flowers
 local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, node, itemstack)
@@ -62,16 +64,16 @@ local function add_simple_flower(name, desc, image, simple_selection_box)
 	})
 end
 
-add_simple_flower("poppy", "Poppy", "mcl_flowers_poppy", { -5/16, -0.5, -5/16, 5/16, 5/16, 5/16 })
-add_simple_flower("dandelion", "Dandelion", "flowers_dandelion_yellow", { -4/16, -0.5, -4/16, 4/16, 3/16, 4/16 })
-add_simple_flower("oxeye_daisy", "Oxeye Daisy", "mcl_flowers_oxeye_daisy", { -4/16, -0.5, -4/16, 4/16, 4/16, 4/16 })
-add_simple_flower("tulip_orange", "Orange Tulip", "flowers_tulip", { -3/16, -0.5, -3/16, 3/16, 5/16, 3/16 })
-add_simple_flower("tulip_pink", "Pink Tulip", "mcl_flowers_tulip_pink", { -3/16, -0.5, -3/16, 3/16, 5/16, 3/16 })
-add_simple_flower("tulip_red", "Red Tulip", "mcl_flowers_tulip_red", { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 })
-add_simple_flower("tulip_white", "White Tulip", "mcl_flowers_tulip_white", { -3/16, -0.5, -3/16, 3/16, 4/16, 3/16 })
-add_simple_flower("allium", "Allium", "mcl_flowers_allium", { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 })
-add_simple_flower("azure_bluet", "Azure Bluet", "mcl_flowers_azure_bluet", { -5/16, -0.5, -5/16, 5/16, 3/16, 5/16 })
-add_simple_flower("blue_orchid", "Blue Orchid", "mcl_flowers_blue_orchid", { -5/16, -0.5, -5/16, 5/16, 7/16, 5/16 })
+add_simple_flower("poppy", S("Poppy"), "mcl_flowers_poppy", { -5/16, -0.5, -5/16, 5/16, 5/16, 5/16 })
+add_simple_flower("dandelion", S("Dandelion"), "flowers_dandelion_yellow", { -4/16, -0.5, -4/16, 4/16, 3/16, 4/16 })
+add_simple_flower("oxeye_daisy", S("Oxeye Daisy"), "mcl_flowers_oxeye_daisy", { -4/16, -0.5, -4/16, 4/16, 4/16, 4/16 })
+add_simple_flower("tulip_orange", S("Orange Tulip"), "flowers_tulip", { -3/16, -0.5, -3/16, 3/16, 5/16, 3/16 })
+add_simple_flower("tulip_pink", S("Pink Tulip"), "mcl_flowers_tulip_pink", { -3/16, -0.5, -3/16, 3/16, 5/16, 3/16 })
+add_simple_flower("tulip_red", S("Red Tulip"), "mcl_flowers_tulip_red", { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 })
+add_simple_flower("tulip_white", S("White Tulip"), "mcl_flowers_tulip_white", { -3/16, -0.5, -3/16, 3/16, 4/16, 3/16 })
+add_simple_flower("allium", S("Allium"), "mcl_flowers_allium", { -3/16, -0.5, -3/16, 3/16, 6/16, 3/16 })
+add_simple_flower("azure_bluet", S("Azure Bluet"), "mcl_flowers_azure_bluet", { -5/16, -0.5, -5/16, 5/16, 3/16, 5/16 })
+add_simple_flower("blue_orchid", S("Blue Orchid"), "mcl_flowers_blue_orchid", { -5/16, -0.5, -5/16, 5/16, 7/16, 5/16 })
 
 
 local wheat_seed_drop = {
@@ -88,9 +90,9 @@ local wheat_seed_drop = {
 
 --- Tall Grass ---
 local def_tallgrass = {
-	description = "Tall Grass",
+	description = S("Tall Grass"),
 	drawtype = "plantlike",
-	_doc_items_longdesc = "Tall grass is a small plant which often occours on the surface of grasslands. It can be harvested for wheat seeds. By using bone meal, tall grass can be turned into double tallgrass which is two blocks high.",
+	_doc_items_longdesc = S("Tall grass is a small plant which often occours on the surface of grasslands. It can be harvested for wheat seeds. By using bone meal, tall grass can be turned into double tallgrass which is two blocks high."),
 	_doc_items_usagehelp = plant_usage_help,
 	_doc_items_hidden = false,
 	waving = 1,
@@ -122,8 +124,8 @@ minetest.register_node("mcl_flowers:tallgrass", def_tallgrass)
 --- Fern ---
 -- The fern is very similar to tall grass, so we can copy a lot from it.
 local def_fern = table.copy(def_tallgrass)
-def_fern.description = "Fern"
-def_fern._doc_items_longdesc = "Ferns are small plants which occour naturally in grasslands. They can be harvested for wheat seeds. By using bone meal, a fern can be turned into a large fern which is two blocks high."
+def_fern.description = S("Fern")
+def_fern._doc_items_longdesc = S("Ferns are small plants which occour naturally in grasslands. They can be harvested for wheat seeds. By using bone meal, a fern can be turned into a large fern which is two blocks high.")
 def_fern.tiles = { "mcl_flowers_fern.png" }
 def_fern.inventory_image = "mcl_flowers_fern_inv.png"
 def_fern.wield_image = "mcl_flowers_fern_inv.png"
@@ -275,7 +277,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 
 	-- Top
 	minetest.register_node("mcl_flowers:"..name.."_top", {
-		description = desc.." (Top Part)",
+		description = desc.." " .. S("(Top Part)"),
 		_doc_items_create_entry = false,
 		drawtype = "plantlike",
 		tiles = { top_img },
@@ -310,18 +312,18 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 
 end
 
-add_large_plant("peony", "Peony", "A peony is a large plant which occupies two blocks. It is mainly used in dye protection.", "mcl_flowers_double_plant_paeonia_bottom.png", "mcl_flowers_double_plant_paeonia_top.png", nil, 5/16, 6/16)
-add_large_plant("rose_bush", "Rose Bush", "A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye protection.", "mcl_flowers_double_plant_rose_bottom.png", "mcl_flowers_double_plant_rose_top.png", nil, 5/16, 1/16)
-add_large_plant("lilac", "Lilac", "A lilac is a large plant which occupies two blocks. It is mainly used in dye production.", "mcl_flowers_double_plant_syringa_bottom.png", "mcl_flowers_double_plant_syringa_top.png", nil, 5/16, 6/16)
+add_large_plant("peony", S("Peony"), S("A peony is a large plant which occupies two blocks. It is mainly used in dye protection."), "mcl_flowers_double_plant_paeonia_bottom.png", "mcl_flowers_double_plant_paeonia_top.png", nil, 5/16, 6/16)
+add_large_plant("rose_bush", S("Rose Bush"), S("A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye protection."), "mcl_flowers_double_plant_rose_bottom.png", "mcl_flowers_double_plant_rose_top.png", nil, 5/16, 1/16)
+add_large_plant("lilac", S("Lilac"), S("A lilac is a large plant which occupies two blocks. It is mainly used in dye production."), "mcl_flowers_double_plant_syringa_bottom.png", "mcl_flowers_double_plant_syringa_top.png", nil, 5/16, 6/16)
 
 -- TODO: Make the sunflower face East. Requires a mesh for the top node.
-add_large_plant("sunflower", "Sunflower", "A sunflower is a large plant which occupies two blocks. It is mainly used in dye production.", "mcl_flowers_double_plant_sunflower_bottom.png", "mcl_flowers_double_plant_sunflower_top.png^mcl_flowers_double_plant_sunflower_front.png", "mcl_flowers_double_plant_sunflower_front.png", 6/16, 6/16)
+add_large_plant("sunflower", S("Sunflower"), S("A sunflower is a large plant which occupies two blocks. It is mainly used in dye production."), "mcl_flowers_double_plant_sunflower_bottom.png", "mcl_flowers_double_plant_sunflower_top.png^mcl_flowers_double_plant_sunflower_front.png", "mcl_flowers_double_plant_sunflower_front.png", 6/16, 6/16)
 
-local longdesc_grass = "Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds."
-local longdesc_fern = "Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds."
+local longdesc_grass = S("Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds.")
+local longdesc_fern = S("Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds.")
 
-add_large_plant("double_grass", "Double Tallgrass", longdesc_grass, "mcl_flowers_double_plant_grass_bottom.png", "mcl_flowers_double_plant_grass_top.png", "mcl_flowers_double_plant_grass_inv.png", 6/16, 4/16, wheat_seed_drop, {"mcl_flowers:tallgrass 2"}, false, true)
-add_large_plant("double_fern", "Large Fern", longdesc_fern, "mcl_flowers_double_plant_fern_bottom.png", "mcl_flowers_double_plant_fern_top.png", "mcl_flowers_double_plant_fern_inv.png", 5/16, 5/16, wheat_seed_drop, {"mcl_flowers:fern 2"}, false, true)
+add_large_plant("double_grass", S("Double Tallgrass"), longdesc_grass, "mcl_flowers_double_plant_grass_bottom.png", "mcl_flowers_double_plant_grass_top.png", "mcl_flowers_double_plant_grass_inv.png", 6/16, 4/16, wheat_seed_drop, {"mcl_flowers:tallgrass 2"}, false, true)
+add_large_plant("double_fern", S("Large Fern"), longdesc_fern, "mcl_flowers_double_plant_fern_bottom.png", "mcl_flowers_double_plant_fern_top.png", "mcl_flowers_double_plant_fern_inv.png", 5/16, 5/16, wheat_seed_drop, {"mcl_flowers:fern 2"}, false, true)
 
 minetest.register_abm({
 	label = "Pop out flowers",
@@ -348,8 +350,8 @@ minetest.register_abm({
 
 -- Lily Pad
 minetest.register_node("mcl_flowers:waterlily", {
-	description = "Lily Pad",
-	_doc_items_longdesc = "A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice.",
+	description = S("Lily Pad"),
+	_doc_items_longdesc = S("A lily pad is a flat plant block which can be walked on. They can be placed on water sources, ice and frosted ice."),
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",

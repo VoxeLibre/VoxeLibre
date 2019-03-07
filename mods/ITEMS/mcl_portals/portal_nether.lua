@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_portals")
+
 -- Parameters
 
 local TCAVE = 0.6
@@ -77,9 +79,9 @@ local destroy_portal = function(pos)
 end
 
 minetest.register_node("mcl_portals:portal", {
-	description = "Nether Portal",
-	_doc_items_longdesc = "A Nether portal teleports creatures and objects to the hot and dangerous Nether dimension (and back!). Enter at your own risk!",
-	_doc_items_usagehelp = "Stand in the portal for a moment to activate the teleportation. Entering a Nether portal for the first time will also create a new portal in the other dimension. If a Nether portal has been built in the Nether, it will lead to the Overworld. A Nether portal is destroyed if the any of the obsidian which surrounds it is destroyed, or if it was caught in an explosion.",
+	description = S("Nether Portal"),
+	_doc_items_longdesc = S("A Nether portal teleports creatures and objects to the hot and dangerous Nether dimension (and back!). Enter at your own risk!"),
+	_doc_items_usagehelp = S("Stand in the portal for a moment to activate the teleportation. Entering a Nether portal for the first time will also create a new portal in the other dimension. If a Nether portal has been built in the Nether, it will lead to the Overworld. A Nether portal is destroyed if the any of the obsidian which surrounds it is destroyed, or if it was caught in an explosion."),
 
 	tiles = {
 		"blank.png",
@@ -481,8 +483,8 @@ minetest.register_abm({
 --[[ ITEM OVERRIDES ]]
 
 local longdesc = minetest.registered_nodes["mcl_core:obsidian"]._doc_items_longdesc
-longdesc = longdesc .. "\n" .. "Obsidian is also used as the frame of Nether portals."
-local usagehelp = "To open a Nether portal, place an upright frame of obsidian with a width of 4 blocks and a height of 5 blocks, leaving only air in the center. After placing this frame, light a fire in the obsidian frame. Nether portals only work in the Overworld and the Nether."
+longdesc = longdesc .. "\n" .. S("Obsidian is also used as the frame of Nether portals.")
+local usagehelp = S("To open a Nether portal, place an upright frame of obsidian with a width of 4 blocks and a height of 5 blocks, leaving only air in the center. After placing this frame, light a fire in the obsidian frame. Nether portals only work in the Overworld and the Nether.")
 
 minetest.override_item("mcl_core:obsidian", {
 	_doc_items_longdesc = longdesc,

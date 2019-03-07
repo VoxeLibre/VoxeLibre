@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_mushrooms")
+
 local on_place = mcl_util.generate_on_place_plant_function(function(place_pos, place_node)
 	local soil_node = minetest.get_node_or_nil({x=place_pos.x, y=place_pos.y-1, z=place_pos.z})
 	if not soil_node then return false end
@@ -15,16 +17,16 @@ local on_place = mcl_util.generate_on_place_plant_function(function(place_pos, p
 	return ((snn == "mcl_core:podzol" or snn == "mcl_core:podzol_snow" or snn == "mcl_core:mycelium" or snn == "mcl_core:mycelium_snow") or (light_ok and minetest.get_item_group(snn, "solid") == 1 and minetest.get_item_group(snn, "opaque") == 1))
 end)
 
-local longdesc_intro_brown = [[Brown mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.]]
-local longdesc_intro_red = [[Red mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.]]
+local longdesc_intro_brown = S("Brown mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.")
+local longdesc_intro_red = S("Red mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.")
 
-local longdesc_append = [[A single mushroom of this species will slowly spread over time towards a random solid opaque block with a light level of 12 or lower in a 3×3×3 cube around the mushroom. It stops spreading when there are 5 or more mushrooms of the same species within an area of 9×3×9 blocks around the mushroom.
-Mushrooms will eventually uproot at a light level of 12 or higher. On mycelium or podzol, they survive and spread at any light level.]]
+local longdesc_append = S("A single mushroom of this species will slowly spread over time towards a random solid opaque block with a light level of 12 or lower in a 3×3×3 cube around the mushroom. It stops spreading when there are 5 or more mushrooms of the same species within an area of 9×3×9 blocks around the mushroom.").."\n"..
+S("Mushrooms will eventually uproot at a light level of 12 or higher. On mycelium or podzol, they survive and spread at any light level.")
 
-local usagehelp = "This mushroom can be placed on mycelium and podzol at any light level. They can also be placed on blocks which are both solid and opaque, as long as the light level at daytime is not higher than 12."
+local usagehelp = S("This mushroom can be placed on mycelium and podzol at any light level. They can also be placed on blocks which are both solid and opaque, as long as the light level at daytime is not higher than 12.")
 
 minetest.register_node("mcl_mushrooms:mushroom_brown", {
-	description = "Brown Mushroom",
+	description = S("Brown Mushroom"),
 	_doc_items_longdesc = longdesc_intro_brown .. "\n\n" .. longdesc_append,
 	_doc_items_usagehelp = usagehelp,
 	drawtype = "plantlike",
@@ -47,7 +49,7 @@ minetest.register_node("mcl_mushrooms:mushroom_brown", {
 })
 
 minetest.register_node("mcl_mushrooms:mushroom_red", {
-	description = "Red Mushroom",
+	description = S("Red Mushroom"),
 	_doc_items_longdesc = longdesc_intro_red .. "\n\n" .. longdesc_append,
 	_doc_items_usagehelp = usagehelp,
 	drawtype = "plantlike",
@@ -69,8 +71,8 @@ minetest.register_node("mcl_mushrooms:mushroom_red", {
 })
 
 minetest.register_craftitem("mcl_mushrooms:mushroom_stew", {
-	description = "Mushroom Stew",
-	_doc_items_longdesc = "Mushroom stew is a healthy soup which can be consumed to restore some hunger points.",
+	description = S("Mushroom Stew"),
+	_doc_items_longdesc = S("Mushroom stew is a healthy soup which can be consumed to restore some hunger points."),
 	inventory_image = "farming_mushroom_stew.png",
 	on_place = minetest.item_eat(6, "mcl_core:bowl"),
 	on_secondary_use = minetest.item_eat(6, "mcl_core:bowl"),
