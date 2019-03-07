@@ -2,7 +2,7 @@
 An unofficial Minecraft-like game for Minetest. Forked from MineClone by daredevils.
 Developed by Wuzzy and contributors. Not developed or endorsed by Mojang AB.
 
-Version: 0.48.0
+Version: 0.49.0
 
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
@@ -75,13 +75,14 @@ These items do not work yet, but you can get them with `/giveme` for testing:
 * Minecart with Command Block: `mcl_minecarts:command_block_minecart`
 
 ## Installation
-This game requires [Minetest](http://minetest.net) to run
-(version 0.4.16 or 0.4.17).
-So you need to install Minetest first. Only stable versions of Minetest are
-officially supported. Minetest 5.0.0 (when released) will NOT be supported (yet).
-There is no support whatsoever for running MineClone 2 in development versions of Minetest.
-To install MineClone 2, move this directory into the “games” directory of
-your Minetest data directory. Consult the help of Minetest to learn more.
+This game requires [Minetest](http://minetest.net) to run (version 5.0.0 or
+later). So you need to install Minetest first. Only stable versions of Minetest
+are officially supported.
+There is no support for running MineClone 2 in development versions of Minetest.
+
+To install MineClone 2 (if you haven't already), move this directory into the
+“games” directory of your Minetest data directory. Consult the help of
+Minetest to learn more.
 
 ## Project description
 The main goal of **MineClone 2** is to be a clone of Minecraft and to be released as free software.
