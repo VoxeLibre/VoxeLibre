@@ -323,7 +323,7 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 				player_preview..
 				-- crafting guide button
 				"image_button[9,1;1,1;craftguide_book.png;__mcl_craftguide;]"..
-				"tooltip[__mcl_craftguide;"..F("Recipe book")"..]"..
+				"tooltip[__mcl_craftguide;"..F("Recipe book").."]"..
 				-- help button
 				"image_button[9,2;1,1;doc_button_icon_lores.png;__mcl_doc;]"..
 				"tooltip[__mcl_doc;"..F("Help").."]"..
