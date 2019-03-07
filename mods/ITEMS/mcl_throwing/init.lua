@@ -1,5 +1,7 @@
 mcl_throwing = {}
 
+local S = minetest.get_translator("mcl_throwing")
+
 -- 
 -- Snowballs and other throwable items
 --
@@ -289,12 +291,12 @@ minetest.register_entity("mcl_throwing:snowball_entity", snowball_ENTITY)
 minetest.register_entity("mcl_throwing:egg_entity", egg_ENTITY)
 minetest.register_entity("mcl_throwing:ender_pearl_entity", pearl_ENTITY)
 
-local how_to_throw = "Hold it in your and and leftclick to throw."
+local how_to_throw = S("Hold it in your and and leftclick to throw.")
 
 -- Snowball
 minetest.register_craftitem("mcl_throwing:snowball", {
-	description = "Snowball",
-	_doc_items_longdesc = "Snowballs can be thrown or launched from a dispenser for fun. Hitting something with a snowball does nothing.",
+	description = S("Snowball"),
+	_doc_items_longdesc = S("Snowballs can be thrown or launched from a dispenser for fun. Hitting something with a snowball does nothing."),
 	_doc_items_usagehelp = how_to_throw,
 	inventory_image = "mcl_throwing_snowball.png",
 	stack_max = 16,
@@ -305,8 +307,8 @@ minetest.register_craftitem("mcl_throwing:snowball", {
 
 -- Egg
 minetest.register_craftitem("mcl_throwing:egg", {
-	description = "Egg",
-	_doc_items_longdesc = "Eggs can be thrown or launched from a dispenser and breaks on impact. There is a small chance that 1 or even 4 chickens will pop out of the egg when it hits the ground.",
+	description = S("Egg"),
+	_doc_items_longdesc = S("Eggs can be thrown or launched from a dispenser and breaks on impact. There is a small chance that 1 or even 4 chickens will pop out of the egg when it hits the ground."),
 	_doc_items_usagehelp = how_to_throw,
 	inventory_image = "mcl_throwing_egg.png",
 	stack_max = 16,
@@ -317,8 +319,8 @@ minetest.register_craftitem("mcl_throwing:egg", {
 
 -- Ender Pearl
 minetest.register_craftitem("mcl_throwing:ender_pearl", {
-	description = "Ender Pearl",
-	_doc_items_longdesc = "An ender pearl is an item which can be used for teleportation at the cost of health. It can be thrown and teleport the thrower to its impact location when it hits a solid block, a plant or vines. Each teleportation hurts the user by 5 hit points.",
+	description = S("Ender Pearl"),
+	_doc_items_longdesc = S("An ender pearl is an item which can be used for teleportation at the cost of health. It can be thrown and teleport the thrower to its impact location when it hits a solid block, a plant or vines. Each teleportation hurts the user by 5 hit points."),
 	_doc_items_usagehelp = how_to_throw,
 	wield_image = "mcl_throwing_ender_pearl.png",
 	inventory_image = "mcl_throwing_ender_pearl.png",

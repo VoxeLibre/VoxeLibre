@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_stairs")
+
 -- Core mcl_stairs API
 
 -- Wrapper around mintest.pointed_thing_to_face_pos.
@@ -100,7 +102,7 @@ function mcl_stairs.register_stair(subname, recipeitem, groups, images, descript
 
 	minetest.register_node(":mcl_stairs:stair_" .. subname, {
 		description = description,
-		_doc_items_longdesc = "Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the bottom or at the upper half of the side of a block will be placed upside down.",
+		_doc_items_longdesc = S("Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the bottom or at the upper half of the side of a block will be placed upside down."),
 		drawtype = "mesh",
 		mesh = "stairs_stair.obj",
 		tiles = images,
@@ -188,13 +190,13 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 
 	-- Automatically generate double slab description
 	if not double_description then
-		double_description = string.format("Double %s", description)
+		double_description = S("Double @1", description)
 		minetest.log("warning", "[stairs] No explicit description for double slab '"..double_slab.."' added. Using auto-generated description.")
 	end
 
 	groups.slab = 1
 	groups.building_block = 1
-	local longdesc = "Slabs are half as high as their full block counterparts and occupy either the lower or upper part of a block, depending on how it was placed. Slabs can be easily stepped on without needing to jump. When a slab is placed on another slab of the same type, a double slab is created."
+	local longdesc = S("Slabs are half as high as their full block counterparts and occupy either the lower or upper part of a block, depending on how it was placed. Slabs can be easily stepped on without needing to jump. When a slab is placed on another slab of the same type, a double slab is created.")
 
 	local slabdef = {
 		description = description,
@@ -258,7 +260,7 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 	topdef.groups.slab_top = 1
 	topdef.groups.not_in_creative_inventory = 1
 	topdef.groups.not_in_craft_guide = 1
-	topdef.description = string.format("Upper %s", description)
+	topdef.description = S("Upper @1", description)
 	topdef._doc_items_create_entry = false
 	topdef._doc_items_longdesc = nil
 	topdef._doc_items_usagehelp = nil
@@ -283,7 +285,7 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 	dgroups.double_slab = 1
 	minetest.register_node(":"..double_slab, {
 		description = double_description,
-		_doc_items_longdesc = "Double slabs are full blocks which are created by placing two slabs of the same kind on each other.",
+		_doc_items_longdesc = S("Double slabs are full blocks which are created by placing two slabs of the same kind on each other."),
 		tiles = images,
 		is_ground_content = false,
 		groups = dgroups,

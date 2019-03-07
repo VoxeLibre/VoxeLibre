@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_walls")
+
 mcl_walls = {}
 
 local function rshift(x, by)
@@ -225,7 +227,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 	-- Inventory item
 	minetest.register_node(nodename, {
 		description = description,
-		_doc_items_longdesc = "A piece of wall. It cannot be jumped over with a simple jump. When multiple of these are placed to next to each other, they will automatically build a nice wall structure.",
+		_doc_items_longdesc = S("A piece of wall. It cannot be jumped over with a simple jump. When multiple of these are placed to next to each other, they will automatically build a nice wall structure."),
 		paramtype = "light",
 		sunlight_propagates = true,
 		is_ground_content = false,

@@ -1,3 +1,4 @@
+local S = minetest.get_translator("mcl_torches")
 
 --
 -- 3d torch part
@@ -169,13 +170,13 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 end
 
 mcl_torches.register_torch("torch",
-	"Torch",
-	"Torches are light sources which can be placed at the side or on the top of most blocks.",
-	[[Torches can generally be placed on full solid opaque blocks. The following exceptions apply:
+	S("Torch"),
+	S("Torches are light sources which can be placed at the side or on the top of most blocks."),
+	S([[Torches can generally be placed on full solid opaque blocks. The following exceptions apply:
 • Glass, fence, wall, hopper: Can only be placed on top
 • Upside-down slab/stair: Can only be placed on top
 • Soul sand, mob spawner: Placement possible
-• Glowstone and pistons: No placement possible]],
+• Glowstone and pistons: No placement possible]]),
 	"default_torch_on_floor.png",
 	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",
 	{{
