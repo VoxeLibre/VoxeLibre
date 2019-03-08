@@ -206,7 +206,7 @@ minetest.register_on_dieplayer(function(player, reason)
 			msg = dmsg("fall", name)
 		-- Other
 		elseif reason.type == "set_hp" then
-			if last_damages[name] and last_damages[name].custom then
+			if last_damages[name] then
 				msg = last_damages[name].message
 			end
 		end
@@ -214,22 +214,30 @@ minetest.register_on_dieplayer(function(player, reason)
 			msg = dmsg("other", name)
 		end
 		minetest.chat_send_all(msg)
+		last_damages[name] = nil
 	end
 end)
 
-local start_damage_reset_countdown = function (player)
-	minetest.after(1, function(playername)
-		-- FIXME: Fix race condition with many damages in quick succession
-		if last_damages[playername] and last_damages[playername].custom then
+-- dmg_sequence_number is used to discard old damage events
+local dmg_sequence_number = 0
+local start_damage_reset_countdown = function (player, sequence_number)
+	minetest.after(1, function(playername, sequence_number)
+		if last_damages[playername] and last_damages[playername].sequence_number == sequence_number then
 			last_damages[playername] = nil
 		end
-	end, player:get_player_name())
+	end, player:get_player_name(), sequence_number)
 end
 
--- To be called BEFORE damaging a player via set_hp. The next time the player dies due to a set_hp,
--- the message will be shown. This must happen within one second, otherwise it won't work.
+-- Send a custom death mesage when damaging a player via set_hp.
+-- To be called directly BEFORE damaging a player via set_hp.
+-- The next time the player dies due to a set_hp, the message will be shown.
+-- The player must die via set_hp within 0.1 seconds, otherwise the message will be discarded.
 function mcl_death_messages.player_damage(player, message)
-	last_damages[player:get_player_name()] = { custom = true, message = message }
-	start_damage_reset_countdown(player)
+	last_damages[player:get_player_name()] = { message = message, sequence_number = dmg_sequence_number }
+	start_damage_reset_countdown(player, dmg_sequence_number)
+	dmg_sequence_number = dmg_sequence_number + 1
+	if dmg_sequence_number >= 65535 then
+		dmg_sequence_number = 0
+	end
 end
 
