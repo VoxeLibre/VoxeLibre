@@ -43,6 +43,14 @@ local doll_size_overrides = {
 	["mobs_mc:enderdragon"] = { x = 0.16, y = 0.16 },
 	["mobs_mc:witch"] = { x = 0.95, y = 0.95 },
 }
+local spawn_count_overrides = {
+	["mobs_mc:enderdragon"] = 1,
+	["mobs_mc:wither"] = 1,
+	["mobs_mc:ghast"] = 1,
+	["mobs_mc:guardian_elder"] = 1,
+	["mobs_mc:guardian"] = 2,
+	["mobs_mc:iron_golem"] = 2,
+}
 
 local function set_doll_properties(doll, mob)
 	local mobinfo = minetest.registered_entities[mob]
@@ -218,7 +226,11 @@ local spawn_mobs = function(pos, elapsed)
 
 	-- spawn up to 4 mobs in random air blocks
 	if air then
-		for a=1, 4 do
+		local max = 4
+		if spawn_count_overrides[mob] then
+			max = spawn_count_overrides[mob]
+		end
+		for a=1, max do
 			if #air <= 0 then
 				-- We're out of space! Stop spawning
 				break
