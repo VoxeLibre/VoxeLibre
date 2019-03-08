@@ -121,10 +121,51 @@ lightning.strike = function(pos)
 
 	minetest.sound_play({ pos = pos, name = "lightning_thunder", gain = 10, max_hear_distance = 500 })
 
-	-- damage nearby objects, player or not
-	for _, obj in ipairs(minetest.get_objects_inside_radius(pos, 5)) do
-		-- nil as param#1 is supposed to work, but core can't handle it.
-		obj:punch(obj, 1.0, {full_punch_interval = 1.0, damage_groups = {fleshy=8}}, nil)
+	-- damage nearby objects, transform mobs
+	local objs = minetest.get_objects_inside_radius(pos2, 3.5)
+	for o=1, #objs do
+		local obj = objs[o]
+		local lua = obj:get_luaentity()
+		if obj:is_player() then
+		-- Player damage
+			if minetest.get_modpath("mcl_death_messages") then
+				mcl_death_messages.player_damage(obj, S("@1 was struck by lightning.", obj:get_player_name()))
+			end
+			obj:set_hp(obj:get_hp()-5)
+		-- Mobs
+		elseif lua and lua._cmi_is_mob then
+			-- pig → zombie pigman (no damage)
+			if lua.name == "mobs_mc:pig" then
+				local rot = obj:get_yaw()
+				obj:remove()
+				obj = minetest.add_entity(pos2, "mobs_mc:pigman")
+				obj:set_yaw(rot)
+			-- mooshroom: toggle color red/brown (no damage)
+			elseif lua.name == "mobs_mc:mooshroom" then
+				if lua.base_texture[1] == "mobs_mc_mooshroom.png" then
+					lua.base_texture = { "mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" }
+				else
+					lua.base_texture = { "mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png" }
+				end
+				obj:set_properties({textures = lua.base_texture})
+			-- villager → witch (no damage)
+			elseif lua.name == "mobs_mc:villager" then
+			-- Witches are incomplete, this code is unused
+			-- TODO: Enable this code when witches are working.
+			--[[
+				local rot = obj:get_yaw()
+				obj:remove()
+				obj = minetest.add_entity(pos2, "mobs_mc:witch")
+				obj:set_yaw(rot)
+			]]
+			-- TODO: creeper → charged creeper (no damage)
+			elseif lua.name == "mobs_mc:creeper" then
+
+			-- Other mobs: Just damage
+			else
+				obj:set_hp(obj:get_hp()-5, "lightning")
+			end
+		end
 	end
 
 	local playerlist = minetest.get_connected_players()
@@ -168,58 +209,11 @@ lightning.strike = function(pos)
 					angle = angle + (math.pi*2) / 3
 				end
 
-			-- Cause a fire, deal damage, transform mobs
+			-- Cause a fire
 			else
 				minetest.set_node(pos2, {name = "mcl_fire:fire"})
-
-				local objs = minetest.get_objects_inside_radius(pos2, 3.5)
-				for o=1, #objs do
-					local obj = objs[o]
-					local lua = obj:get_luaentity()
-					if obj:is_player() then
-						-- Player damage
-						if minetest.get_modpath("mcl_death_messages") then
-							mcl_death_messages.player_damage(obj, S("@1 was struck by lightning.", obj:get_player_name()))
-						end
-						obj:set_hp(obj:get_hp()-5)
-					-- Mobs
-					elseif lua and lua._cmi_is_mob then
-						-- pig → zombie pigman
-						if lua.name == "mobs_mc:pig" then
-							local rot = obj:get_yaw()
-							obj:remove()
-							obj = minetest.add_entity(pos2, "mobs_mc:pigman")
-							obj:set_yaw(rot)
-						-- mooshroom: toggle color red/brown
-						elseif lua.name == "mobs_mc:mooshroom" then
-							if lua.base_texture[1] == "mobs_mc_mooshroom.png" then
-								lua.base_texture = { "mobs_mc_mooshroom_brown.png", "mobs_mc_mushroom_brown.png" }
-							else
-								lua.base_texture = { "mobs_mc_mooshroom.png", "mobs_mc_mushroom_red.png" }
-							end
-							obj:set_properties({textures = lua.base_texture})
-						-- villager → witch
-						elseif lua.name == "mobs_mc:villager" then
-						-- Witches are incomplete, this code is unused
-						-- TODO: Enable this code when witches are working.
-						--[[
-							local rot = obj:get_yaw()
-							obj:remove()
-							obj = minetest.add_entity(pos2, "mobs_mc:witch")
-							obj:set_yaw(rot)
-						]]
-						-- TODO: creeper → charged creeper
-						elseif lua.name == "mobs_mc:creeper" then
-
-						-- Other mobs: Just Damage
-						else
-							obj:set_hp(obj:get_hp()-5)
-						end
-					end
-				end
 			end
 		end
-		-- TODO: Charged creeper
 	end
 
 end
@@ -261,3 +255,4 @@ minetest.register_chatcommand("lightning", {
 		return true
 	end,
 })
+
