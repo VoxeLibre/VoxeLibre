@@ -124,7 +124,7 @@ mobs:register_arrow("mobs_mc:roar_of_the_dragon2", {
 	    for _,obj in ipairs(objects) do
 			local name = self.name
 			if name~="mobs_mc:roar_of_the_dragon2" and name ~= "mobs_mc:enderdragon" then
-		        obj:set_hp(obj:get_hp()-0.05)
+		        obj:set_hp(obj:get_hp()-5)
 		        if (obj:get_hp() <= 0) then
 		            if (not obj:is_player()) and name ~= self.object:get_luaentity().name then
 		                obj:remove()

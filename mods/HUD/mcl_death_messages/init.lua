@@ -28,9 +28,6 @@ local msgs = {
 		S("%s drowned."),
 		S("%s ran out of oxygen."),
 	},
-	["starve"] = {
-		S("%s starved."),
-	},
 	["murder"] = {
 		S("%s was killed by %s."),
 	},
@@ -42,13 +39,13 @@ local msgs = {
 		S("%s was killed by a fireball from a blaze."),
 	},
 	["fire_charge"] = {
-		S("%s was hit by a fire charge."),
+		S("%s was burned by a fire charge."),
 	},
 	["ghast_fireball"] = {
 		S("A ghast scared %s to death."),
 		S("%s has been fireballed by a ghast."),
 	},
-	["fall_damage"] = {
+	["fall"] = {
 		S("%s fell from a high cliff."),
 		S("%s took fatal fall damage."),
 		S("%s fell victim to gravity."),
@@ -117,132 +114,123 @@ end
 
 local last_damages = { }
 
-minetest.register_on_dieplayer(function(player)
+minetest.register_on_dieplayer(function(player, reason)
 	-- Death message
 	local message = minetest.settings:get_bool("mcl_showDeathMessages")
-	if message == nil then message = true end
+	if message == nil then
+		message = true
+	end
 	if message then
 		local name = player:get_player_name()
 		if not name then
 			return
 		end
-
-		local node = minetest.registered_nodes[minetest.get_node(player:get_pos()).name]
 		local msg
-		-- Lava
-		if minetest.get_item_group(node.name, "lava") ~= 0 then
-			msg = dmsg("lava", name)
-		-- Drowning
-		elseif player:get_breath() == 0 then
-			msg = dmsg("drown", name)
-		-- Fire
-		elseif minetest.get_item_group(node.name, "fire") ~= 0 then
-			msg = dmsg("fire", name)
-		-- Other
-		else
-			-- Killed by entity
-			if last_damages[name] then
-				-- Mob
-				if last_damages[name].hittertype == "mob" then
-					if last_damages[name].hittername then
-						msg = dmsg("murder", name, last_damages[name].hittername)
-					else
-						msg = mmsg(last_damages[name].hittersubtype, name)
-					end
-				-- Player
-				elseif last_damages[name].hittertype == "player" then
-					if last_damages[name].hittername == name then
-						-- Workaround when player somehow punches self. Caused by creeper explosions in mobs mod.
-						-- FIXME: Remove when self-punching is no longer buggy.
-						msg = dmsg("other", name)
-					else
-						msg = dmsg("murder", name, last_damages[name].hittername)
-					end
-				-- Arrow
-				elseif last_damages[name].hittertype == "arrow" then
-					if last_damages[name].shooter == nil then
-						msg = dmsg("arrow", name)
-					elseif last_damages[name].shooter:is_player() then
-						msg = dmsg("arrow_name", name, last_damages[name].shooter:get_player_name())
-					elseif last_damages[name].shooter:get_luaentity()._cmi_is_mob then
-						if last_damages[name].shooter:get_luaentity().nametag ~= "" then
-							msg = dmsg("arrow_name", name, last_damages[name].shooter:get_player_name())
-						else
-							msg = dmsg("arrow", name)
-						end
-					else
-						msg = dmsg("arrow", name)
-					end
-				-- Fireball
-				elseif last_damages[name].hittertype == "blaze_fireball" then
-					msg = dmsg("blaze_fireball", name)
-				elseif last_damages[name].hittertype == "ghast_fireball" then
-					msg = dmsg("ghast_fireball", name)
-				elseif last_damages[name].hittertype == "fire_charge" then
-					msg = dmsg("fire_charge", name)
-				-- Custom death message
-				elseif last_damages[name].custom then
-					msg = last_damages[name].message
+		if reason.type == "node_damage" then
+			local pos = player:get_pos()
+			-- Check multiple nodes because players occupy multiple nodes
+			-- (we add one additional node because the check may fail if the player was
+			-- just barely touching the node with the head)
+			local posses = { pos, {x=pos.x,y=pos.y+1,z=pos.z}, {x=pos.x,y=pos.y+2,z=pos.z}}
+			for p=1, #posses do
+				local node = minetest.registered_nodes[minetest.get_node(posses[p]).name]
+				-- Lava
+				if minetest.get_item_group(node.name, "lava") ~= 0 then
+					msg = dmsg("lava", name)
+					break
+				-- Fire
+				elseif minetest.get_item_group(node.name, "fire") ~= 0 then
+					msg = dmsg("fire", name)
+					break
 				end
-			-- Other reason
-			else
-				msg = dmsg("other", name)
+			end
+		elseif reason.type == "drown" then
+			msg = dmsg("drown", name)
+		elseif reason.type == "punch" then
+		-- Punches
+			local hitter = reason.object
+			local hittername, hittertype, hittersubtype, shooter
+			-- Unknown hitter
+			if hitter == nil then
+				msg = dmsg("murder_any")
+			-- Player
+			elseif hitter:is_player() then
+				hittername = hitter:get_player_name()
+				if hittername ~= nil then
+					msg = dmsg("murder", name, hittername)
+				else
+					msg = dmsg("murder_any", name)
+				end
+			-- Mob (according to Common Mob Interface)
+			elseif hitter:get_luaentity()._cmi_is_mob then
+				if hitter:get_luaentity().nametag and hitter:get_luaentity().nametag ~= "" then
+					hittername = hitter:get_luaentity().nametag
+				end
+				hittersubtype = hitter:get_luaentity().name
+				if hittername then
+					msg = dmsg("murder", name, hittername)
+				elseif hittersubtype ~= nil and hittersubtype ~= "" then
+					msg = mmsg(hittersubtype, name)
+				else
+					msg = dmsg("murder_any", name)
+				end
+			-- Arrow
+			elseif hitter:get_luaentity().name == "mcl_bows:arrow_entity" or hitter:get_luaentity().name == "mobs_mc:arrow_entity" then
+				local shooter
+				if hitter:get_luaentity()._shooter then
+					shooter = hitter:get_luaentity()._shooter
+				end
+				if shooter == nil then
+					msg = dmsg("arrow", name)
+				elseif shooter:is_player() then
+					msg = dmsg("arrow_name", name, shooter:get_player_name())
+				elseif shooter:get_luaentity()._cmi_is_mob then
+					if shooter:get_luaentity().nametag ~= "" then
+						msg = dmsg("arrow_name", name, shooter:get_player_name())
+					else
+						msg = dmsg("arrow", name)
+					end
+				else
+					msg = dmsg("arrow", name)
+				end
+			-- Blaze fireball
+			elseif hitter:get_luaentity().name == "mobs_mc:blaze_fireball" then
+				if hitter:get_luaentity()._shot_from_dispenser then
+					msg = dmsg("fire_charge", name)
+				else
+					msg = dmsg("blaze_fireball", name)
+				end
+			-- Ghast fireball
+			elseif hitter:get_luaentity().name == "mobs_monster:fireball" then
+				msg = dmsg("ghast_fireball", name)
+			end
+		-- Falling
+		elseif reason.type == "fall" then
+			msg = dmsg("fall", name)
+		-- Other
+		elseif reason.type == "set_hp" then
+			if last_damages[name] and last_damages[name].custom then
+				msg = last_damages[name].message
 			end
 		end
-		if msg then
-			minetest.chat_send_all(msg)
+		if not msg then
+			msg = dmsg("other", name)
 		end
+		minetest.chat_send_all(msg)
 	end
 end)
 
 local start_damage_reset_countdown = function (player)
 	minetest.after(1, function(playername)
-		last_damages[playername] = nil
+		-- FIXME: Fix race condition with many damages in quick succession
+		if last_damages[playername] and last_damages[playername].custom then
+			last_damages[playername] = nil
+		end
 	end, player:get_player_name())
 end
 
-minetest.register_on_punchplayer(function(player, hitter)
-	if not player or not player:is_player() or not hitter then
-		return
-	end
-	local msg
-	local hittername, hittertype, hittersubtype, shooter
-	-- Player
-	if hitter:is_player() then
-		hittername = hitter:get_player_name()
-		hittertype = "player"
-	-- Mob (according to Common Mob Interface)
-	elseif hitter:get_luaentity()._cmi_is_mob then
-		if hitter:get_luaentity().nametag and hitter:get_luaentity().nametag ~= "" then
-			hittername = hitter:get_luaentity().nametag
-		end
-		hittertype = "mob"
-		hittersubtype = hitter:get_luaentity().name
-	-- Arrow
-	elseif hitter:get_luaentity().name == "mcl_bows:arrow_entity" or hitter:get_luaentity().name == "mobs_mc:arrow_entity" then
-		hittertype = "arrow"
-		if hitter:get_luaentity()._shooter then
-			shooter = hitter:get_luaentity()._shooter
-		end
-	-- Blaze fireball
-	elseif hitter:get_luaentity().name == "mobs_mc:blaze_fireball" then
-		if hitter:get_luaentity()._shot_from_dispenser then
-			hittertype = "fire_charge"
-		else
-			hittertype = "blaze_fireball"
-		end
-	-- Ghast fireball
-	elseif hitter:get_luaentity().name == "mobs_monster:fireball" then
-		hittertype = "ghast_fireball"
-	else
-		return
-	end
-
-	last_damages[player:get_player_name()] = { shooter = shooter, hittername = hittername, hittertype = hittertype, hittersubtype = hittersubtype }
-	start_damage_reset_countdown(player)
-end)
-
--- To be called BEFORE damaging a player. If the player died, then message will be used as the death message.
+-- To be called BEFORE damaging a player via set_hp. The next time the player dies due to a set_hp,
+-- the message will be shown. This must happen within one second, otherwise it won't work.
 function mcl_death_messages.player_damage(player, message)
 	last_damages[player:get_player_name()] = { custom = true, message = message }
 	start_damage_reset_countdown(player)

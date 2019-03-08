@@ -1,5 +1,7 @@
 local S = minetest.get_translator("mcl_nether")
 
+local mod_death_messages = minetest.get_modpath("mcl_death_messages")
+
 minetest.register_node("mcl_nether:glowstone", {
 	description = S("Glowstone"),
 	_doc_items_longdesc = S("Glowstone is a naturally-glowing block which is home to the Nether."),
@@ -91,7 +93,9 @@ minetest.register_node("mcl_nether:magma", {
 	on_walk_over = function(loc, nodeiamon, player)
 		-- Hurt players standing on top of this block
 		if player:get_hp() > 0 then
-			mcl_death_messages.player_damage(player, string.format("%s stood too long on a magma block.", player:get_player_name()))
+			if mod_death_messages then
+				mcl_death_messages.player_damage(player, string.format("%s stood too long on a magma block.", player:get_player_name()))
+			end
 			player:set_hp(player:get_hp() - 1)
 		end
 	end,

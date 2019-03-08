@@ -1,10 +1,5 @@
-local S
-if (minetest.get_modpath("intllib")) then
-	S = intllib.Getter()
-else
-	S = function ( s ) return s end
-end
-
+local S = minetest.get_translator("mcl_hunger")
+local mod_death_messages = minetest.get_modpath("mcl_death_messages")
 
 mcl_hunger = {}
 
@@ -172,7 +167,11 @@ minetest.register_globalstep(function(dtime)
 					mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
 				elseif h == 0 then
 				-- Damage hungry player down to 1 HP
+				-- TODO: Allow starvation at higher difficulty levels
 					if hp-1 > 0 then
+						if mod_death_messages then
+							mcl_death_messages.player_damage(player, S("@1 starved to death."), name)
+						end
 						player:set_hp(hp-1)
 					end
 				end

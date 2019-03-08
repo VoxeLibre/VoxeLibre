@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_playerplus")
+
 -- Internal player state
 local mcl_playerplus_internal = {}
 
@@ -118,7 +120,7 @@ minetest.register_globalstep(function(dtime)
 		-- Check privilege, too
 		and (not minetest.check_player_privs(name, {noclip = true})) then
 			if player:get_hp() > 0 then
-				mcl_death_messages.player_damage(player, string.format("%s suffocated to death.", name))
+				mcl_death_messages.player_damage(player, S("@1 suffocated to death.", name))
 				player:set_hp(player:get_hp() - 1)
 			end
 		end
@@ -134,7 +136,7 @@ minetest.register_globalstep(function(dtime)
 			local dist_feet = vector.distance({x=pos.x, y=pos.y-1, z=pos.z}, near)
 			if dist < 1.1 or dist_feet < 1.1 then
 				if player:get_hp() > 0 then
-					mcl_death_messages.player_damage(player, string.format("%s was prickled by a cactus.", name))
+					mcl_death_messages.player_damage(player, S("@1 was prickled to death by a cactus.", name))
 					player:set_hp(player:get_hp() - 1)
 				end
 			end
