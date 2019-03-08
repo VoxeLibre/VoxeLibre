@@ -7,6 +7,7 @@
 All node definitions share a lot of code, so this is the reason why there
 are so many weird tables below.
 ]]
+local S = minetest.get_translator("mcl_dispensers")
 
 -- For after_place_node
 local setup_dispenser = function(pos)
@@ -281,13 +282,13 @@ local dispenserdef = {
 -- Horizontal dispenser
 
 local horizontal_def = table.copy(dispenserdef)
-horizontal_def.description = "Dispenser"
-horizontal_def._doc_items_longdesc = "A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots."
-horizontal_def._doc_items_usagehelp = [[Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Rightclick the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a single random item.
+horizontal_def.description = S("Dispenser")
+horizontal_def._doc_items_longdesc = S("A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots.")
+horizontal_def._doc_items_usagehelp = S("Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Rightclick the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a single random item.").."\n\n"..
 
-The dispenser will do different things, depending on the dispensed item:
+S("The dispenser will do different things, depending on the dispensed item:").."\n\n"..
 
-• Arrows: Are launched
+S([[• Arrows: Are launched
 • Eggs and snowballs: Are thrown
 • Fire charges: Are fired in a straight line
 • Armor: Will be equipped to players and armor stands
@@ -301,7 +302,7 @@ The dispenser will do different things, depending on the dispensed item:
 • TNT: Is placed and ignited
 • Flint and steel: Is used to ignite a fire in air and to ignite TNT
 • Spawn eggs: Will summon the mob they contain
-• Other items: Are simply dropped]]
+• Other items: Are simply dropped]])
 
 horizontal_def.after_place_node = function(pos, placer, itemstack, pointed_thing)
 	setup_dispenser(pos)
@@ -319,7 +320,7 @@ minetest.register_node("mcl_dispensers:dispenser", horizontal_def)
 
 -- Down dispenser
 local down_def = table.copy(dispenserdef)
-down_def.description = "Downwards-Facing Dispenser"
+down_def.description = S("Downwards-Facing Dispenser")
 down_def.after_place_node = setup_dispenser
 down_def.tiles = {
 	"default_furnace_top.png", "mcl_dispensers_dispenser_front_vertical.png",
@@ -334,7 +335,7 @@ minetest.register_node("mcl_dispensers:dispenser_down", down_def)
 -- Up dispenser
 -- The up dispenser is almost identical to the down dispenser , it only differs in textures
 local up_def = table.copy(down_def)
-up_def.description = "Upwards-Facing Dispenser"
+up_def.description = S("Upwards-Facing Dispenser")
 up_def.tiles = {
 	"mcl_dispensers_dispenser_front_vertical.png", "default_furnace_bottom.png",
 	"default_furnace_side.png", "default_furnace_side.png",

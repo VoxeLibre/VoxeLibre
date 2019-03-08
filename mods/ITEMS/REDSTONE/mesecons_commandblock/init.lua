@@ -1,3 +1,4 @@
+local S = minetest.get_translator("mesecons_commandblock")
 
 local function construct(pos)
 	local meta = minetest.get_meta(pos)
@@ -183,33 +184,27 @@ local on_place = function(itemstack, placer, pointed_thing)
 end
 
 minetest.register_node("mesecons_commandblock:commandblock_off", {
-	description = "Command Block",
+	description = S("Command Block"),
 
 	_doc_items_longdesc =
-"Command blocks are mighty redstone components which are able to alter reality itself. In other words, they cause the server to execute server commands when they are supplied with redstone power.",
+S("Command blocks are mighty redstone components which are able to alter reality itself. In other words, they cause the server to execute server commands when they are supplied with redstone power."),
 	_doc_items_usagehelp =
-[[To use an already existing command block, just supply it with redstone power and see what happens. This will execute the commands once. To execute the commands again, turn the redstone power off and on again.
+S("To use an already existing command block, just supply it with redstone power and see what happens. This will execute the commands once. To execute the commands again, turn the redstone power off and on again.").."\n\n"..
 
-To place a command block and change the commands, you need to be in Creative Mode and must have the “maphack” privilege. A new command block does not have any commands and does nothing. Rightclick the command block (in Creative Mode!) to edit its commands. Read the help entry “Advanced topics > Server Commands” to understand how they work. Each line contains a single command. You enter them like you would in the console, but without the leading slash. The commands will be executed from top to bottom.
+S("To place a command block and change the commands, you need to be in Creative Mode and must have the “maphack” privilege. A new command block does not have any commands and does nothing. Rightclick the command block (in Creative Mode!) to edit its commands. Read the help entry “Advanced topics > Server Commands” to understand how they work. Each line contains a single command. You enter them like you would in the console, but without the leading slash. The commands will be executed from top to bottom.").."\n\n"..
 
-All commands will be executed on behalf of the player who placed the command block, as if the player typed in the commands. This player is said to be the “commander” of the block.
+S("All commands will be executed on behalf of the player who placed the command block, as if the player typed in the commands. This player is said to be the “commander” of the block.").."\n\n"..
 
-Command blocks support placeholders, insert one of these placerholders and they will be replaced by a player name:
-• “@c”: commander of this command block
-• “@n” or “@p”: nearest player from the command block
-• “@f” farthest player from the command block
-• “@r”: random player currently in the world
-• “@@”: literal “@” sign
+S("Command blocks support placeholders, insert one of these placerholders and they will be replaced by a player name:").."\n"..
+S("• “@c”: commander of this command block").."\n"..
+S("• “@n” or “@p”: nearest player from the command block").."\n"..
+S("• “@f” farthest player from the command block").."\n"..
+S("• “@r”: random player currently in the world").."\n"..
+S("• “@@”: literal “@” sign").."\n\n"..
 
-Example 1:
-    time 12000
+S("Example 1:\n    time 12000\nSets the game clock to 12:00").."\n\n"..
 
-Sets the game clock to 12:00
-
-Example 2:
-    give @n mcl_core:apple 5
-
-→ Gives the nearest player 5 apples]],
+S("Example 2:\n    give @n mcl_core:apple 5\n→ Gives the nearest player 5 apples"),
 
 	tiles = {{name="jeija_commandblock_off.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=2}}},
 	groups = {creative_breakable=1, mesecon_effector_off=1},

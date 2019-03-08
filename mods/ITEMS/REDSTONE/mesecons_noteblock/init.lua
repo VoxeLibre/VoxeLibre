@@ -1,15 +1,17 @@
+local S = minetest.get_translator("mesecons_noteblock")
+
 minetest.register_node("mesecons_noteblock:noteblock", {
-	description = "Note Block",
-	_doc_items_longdesc = "A note block is a musical block which plays one of many musical notes and different intruments when it is punched or supplied with redstone power.",
-	_doc_items_usagehelp = [[Rightclick the note block to choose the next musical note (there are 24 half notes, or 2 octaves). The intrument played depends on the material of the block below the note block:
+	description = S("Note Block"),
+	_doc_items_longdesc = S("A note block is a musical block which plays one of many musical notes and different intruments when it is punched or supplied with redstone power."),
+	_doc_items_usagehelp = S("Rightclick the note block to choose the next musical note (there are 24 half notes, or 2 octaves). The intrument played depends on the material of the block below the note block:").."\n\n"..
 
-• Glass: Sticks
-• Wood: Bass guitar
-• Stone: Bass drum
-• Sand or gravel: Snare drum
-• Anything else: Piano
+S("• Glass: Sticks").."\n"..
+S("• Wood: Bass guitar").."\n"..
+S("• Stone: Bass drum").."\n"..
+S("• Sand or gravel: Snare drum").."\n"..
+S("• Anything else: Piano").."\n\n"..
 
-The note block will only play a note when it is below air, otherwise, it stays silent.]],
+S("The note block will only play a note when it is below air, otherwise, it stays silent."),
 	tiles = {"mesecons_noteblock.png"},
 	groups = {handy=1,axey=1, material_wood=1},
 	is_ground_content = false,

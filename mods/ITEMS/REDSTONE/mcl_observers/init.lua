@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_observers")
+
 local rules_flat = {
 	{ x = 0, y = 0, z = -1, spread = true },
 }
@@ -84,9 +86,9 @@ mesecon.register_node("mcl_observers:observer",
 	_mcl_hardness = 3.5,
 },
 {
-	description = "Observer",
-	_doc_items_longdesc = "An observer is a redstone component which observes the block in front of it and sends a very short redstone pulse whenever this block changes.",
-	_doc_items_usagehelp = "Place the observer directly in front of the block you want to observe with the “face” looking at the block. The arrow shows you the side of the output, which is at the opposite side of the “face”. The arrow points to it. You need to place your redstone wire or any other component you want to power here.",
+	description = S("Observer"),
+	_doc_items_longdesc = S("An observer is a redstone component which observes the block in front of it and sends a very short redstone pulse whenever this block changes."),
+	_doc_items_usagehelp = S("Place the observer directly in front of the block you want to observe with the “face” looking at the block. The arrow shows you the side of the output, which is at the opposite side of the “face”. The arrow points to it. You need to place your redstone wire or any other component you want to power here."),
 	groups = {pickaxey=1, material_stone=1, not_opaque=1, },
 	tiles = {
 		"mcl_observers_observer_top.png^[transformR180", "default_furnace_bottom.png",

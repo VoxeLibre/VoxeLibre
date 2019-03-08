@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mesecons_delayer")
+
 local DELAYS = { 0.1, 0.2, 0.3, 0.4 }
 local DEFAULT_DELAY = DELAYS[1]
 
@@ -182,9 +184,9 @@ end
 local help, longdesc, usagehelp, icon, on_construct
 if i == 1 then
 	help = true
-	longdesc = "Redstone repeaters are versatile redstone components with multiple purposes: 1. They only allow signals to travel in one direction. 2. They delay the signal. 3. Optionally, they can lock their output in one state."
-	usagehelp = "To power a redstone repeater, send a signal in “arrow” direction (the input). The signal goes out on the opposite side (the output) with a delay. To change the delay, rightclick the redstone repeater. The delay is between 0.1 and 0.4 seconds long and can be changed in steps of 0.1 seconds. It is indicated by the position of the moving redstone torch.".."\n"..
-			"To lock a repeater, send a signal from an adjacent repeater into one of its sides. While locked, the moving redstone torch disappears, the output doesn't change and the input signal is ignored."
+	longdesc = S("Redstone repeaters are versatile redstone components with multiple purposes: 1. They only allow signals to travel in one direction. 2. They delay the signal. 3. Optionally, they can lock their output in one state.")
+	usagehelp = S("To power a redstone repeater, send a signal in “arrow” direction (the input). The signal goes out on the opposite side (the output) with a delay. To change the delay, rightclick the redstone repeater. The delay is between 0.1 and 0.4 seconds long and can be changed in steps of 0.1 seconds. It is indicated by the position of the moving redstone torch.").."\n"..
+			S("To lock a repeater, send a signal from an adjacent repeater into one of its sides. While locked, the moving redstone torch disappears, the output doesn't change and the input signal is ignored.")
 	icon = "mesecons_delayer_item.png"
 
 	-- Check sides of constructed repeater and lock it, if required
@@ -219,7 +221,7 @@ else
 end
 
 minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
-	description = "Redstone Repeater",
+	description = S("Redstone Repeater"),
 	inventory_image = icon,
 	wield_image = icon,
 	_doc_items_create_entry = help,
@@ -292,7 +294,7 @@ minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 
 
 minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
-	description = "Redstone Repeater (Powered)",
+	description = S("Redstone Repeater (Powered)"),
 	_doc_items_create_entry = false,
 	drawtype = "nodebox",
 	tiles = {
@@ -366,7 +368,7 @@ end
 -- Locked repeater
 
 minetest.register_node("mesecons_delayer:delayer_off_locked", {
-	description = "Redstone Repeater (Locked)",
+	description = S("Redstone Repeater (Locked)"),
 	_doc_items_create_entry = false,
 	drawtype = "nodebox",
 	-- FIXME: Textures of torch and the lock bar overlap. Nodeboxes are (sadly) not suitable for this.
@@ -420,7 +422,7 @@ minetest.register_node("mesecons_delayer:delayer_off_locked", {
 })
 
 minetest.register_node("mesecons_delayer:delayer_on_locked", {
-	description = "Redstone Repeater (Locked, Powered)",
+	description = S("Redstone Repeater (Locked, Powered)"),
 	_doc_items_create_entry = false,
 	drawtype = "nodebox",
 	tiles = {

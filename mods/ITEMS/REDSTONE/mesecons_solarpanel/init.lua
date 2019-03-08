@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mesecons_solarpanel")
+
 local boxes = { -8/16, -8/16, -8/16,  8/16, -2/16, 8/16 }
 
 -- Daylight Sensor
@@ -18,7 +20,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_on", {
 		fixed = boxes
 	},
 	drop = "mesecons_solarpanel:solar_panel_off",
-	description="Daylight Sensor",
+	description=S("Daylight Sensor"),
 	_doc_items_create_entry = false,
 	groups = {handy=1,axey=1, not_in_creative_inventory = 1, material_wood=1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
@@ -56,8 +58,8 @@ minetest.register_node("mesecons_solarpanel:solar_panel_off", {
 		fixed = boxes
 	},
 	groups = {handy=1,axey=1, material_wood=1},
-	description="Daylight Sensor",
-	_doc_items_longdesc = "Daylight sensors are redstone components which provide redstone power when they are in sunlight and no power otherwise. They can also be inverted.",
+	description=S("Daylight Sensor"),
+	_doc_items_longdesc = S("Daylight sensors are redstone components which provide redstone power when they are in sunlight and no power otherwise. They can also be inverted."),
 	_doc_items_usagehelp = "Rightclick the daylight sensor to turn it into an inverted daylight sensor, which supplies redstone energy when it is in moonlight.",
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {receptor = {
@@ -136,7 +138,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_on", {
 	},
 	drop = "mesecons_solarpanel:solar_panel_off",
 	groups = {handy=1,axey=1, not_in_creative_inventory = 1, material_wood=1},
-    	description="Inverted Daylight Sensor",
+	description=S("Inverted Daylight Sensor"),
 	_doc_items_create_entry = false,
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {receptor = {
@@ -174,8 +176,8 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
 	},
 	drop = "mesecons_solarpanel:solar_panel_off",
 	groups = {handy=1,axey=1, not_in_creative_inventory=1, material_wood=1},
-    	description="Inverted Daylight Sensor",
-	_doc_items_longdesc = "An inverted daylight sensor is a variant of the daylight sensor. It is a redstone component which provides redstone power when it in moonlight and no power otherwise. It can turned back into an ordinary daylight sensor.",
+	description=S("Inverted Daylight Sensor"),
+	_doc_items_longdesc = S("An inverted daylight sensor is a variant of the daylight sensor. It is a redstone component which provides redstone power when it in moonlight and no power otherwise. It can turned back into an ordinary daylight sensor."),
 	_doc_items_usagehelp = "Rightclick the daylight sensor to turn it into a daylight sensor.",
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {receptor = {

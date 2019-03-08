@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mesecons_pistons")
+
 local PISTON_MAXIMUM_PUSH = 12
 
 -- Get mesecon rules of pistons
@@ -171,7 +173,7 @@ local pistonspec_normal = {
 	piston_up   = "mesecons_pistons:piston_up_normal_off",
 }
 
-local usagehelp_piston = "This block can have one of 6 possible orientations. On placement, the pusher will face you."
+local usagehelp_piston = S("This block can have one of 6 possible orientations. On placement, the pusher will face you.")
 
 local on_rotate
 if minetest.get_modpath("screwdriver") then
@@ -180,8 +182,8 @@ end
 
 -- offstate
 minetest.register_node("mesecons_pistons:piston_normal_off", {
-	description = "Piston",
-	_doc_items_longdesc = "A piston is a redstone component with a pusher which pushes the block or blocks in front of it when it is supplied with redstone power. Not all blocks can be pushed, however.",
+	description = S("Piston"),
+	_doc_items_longdesc = S("A piston is a redstone component with a pusher which pushes the block or blocks in front of it when it is supplied with redstone power. Not all blocks can be pushed, however."),
 	_doc_items_usagehelp = usagehelp_piston,
 	tiles = {
 		"mesecons_piston_bottom.png^[transformR180",
@@ -275,8 +277,8 @@ local pistonspec_sticky = {
 
 -- offstate
 minetest.register_node("mesecons_pistons:piston_sticky_off", {
-	description = "Sticky Piston",
-	_doc_items_longdesc = "A sticky piston is a redstone component with a sticky pusher which can be extended and retracted. It extends when it is supplied with redstone power. When the pusher extends, it pushes the block or blocks in front of it. When it retracts, it pulls back the single block in front of it. Note that not all blocks can be pushed or pulled.",
+	description = S("Sticky Piston"),
+	_doc_items_longdesc = S("A sticky piston is a redstone component with a sticky pusher which can be extended and retracted. It extends when it is supplied with redstone power. When the pusher extends, it pushes the block or blocks in front of it. When it retracts, it pulls back the single block in front of it. Note that not all blocks can be pushed or pulled."),
 	_doc_items_usagehelp = usagehelp_piston,
 
 	tiles = {
