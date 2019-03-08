@@ -11,18 +11,6 @@ local msgs = {
 	["arrow_name"] = {
 		S("%s was shot by an arrow from %s."),
 	},
-	["fire"] = {
-		S("%s has been cooked crisp."),
-		S("%s felt the burn."),
-		S("%s died in the flames."),
-		S("%s died in a fire."),
-	},
-	["lava"] = {
-		S("%s melted in lava."),
-		S("%s took a bath in a hot lava tub."),
-		S("%s died in lava."),
-		S("%s could not survive in lava."),
-	},
 	["drown"] = {
 		S("%s forgot to breathe."),
 		S("%s drowned."),
@@ -132,17 +120,26 @@ minetest.register_on_dieplayer(function(player, reason)
 			-- (we add one additional node because the check may fail if the player was
 			-- just barely touching the node with the head)
 			local posses = { pos, {x=pos.x,y=pos.y+1,z=pos.z}, {x=pos.x,y=pos.y+2,z=pos.z}}
+			local highest_damage = 0
+			local highest_damage_def = nil
+			-- Show message for node that dealt the most damage
 			for p=1, #posses do
-				local node = minetest.registered_nodes[minetest.get_node(posses[p]).name]
-				-- Lava
-				if minetest.get_item_group(node.name, "lava") ~= 0 then
-					msg = dmsg("lava", name)
-					break
-				-- Fire
-				elseif minetest.get_item_group(node.name, "fire") ~= 0 then
-					msg = dmsg("fire", name)
-					break
+				local def = minetest.registered_nodes[minetest.get_node(posses[p]).name]
+				local dmg = def.damage_per_second
+				if dmg and dmg > highest_damage then
+					highest_damage = dmg
+					highest_damage_def = def
 				end
+			end
+			if highest_damage_def and highest_damage_def._mcl_node_death_message then
+				local field = highest_damage_def._mcl_node_death_message
+				local field_msg
+				if type(field) == "table" then
+					field_msg = field[math.random(1, #field)]
+				else
+					field_msg = field
+				end
+				msg = string.format(field_msg, name)
 			end
 		elseif reason.type == "drown" then
 			msg = dmsg("drown", name)
@@ -235,3 +232,4 @@ function mcl_death_messages.player_damage(player, message)
 	last_damages[player:get_player_name()] = { custom = true, message = message }
 	start_damage_reset_countdown(player)
 end
+

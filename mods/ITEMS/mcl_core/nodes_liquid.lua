@@ -6,6 +6,13 @@ local WATER_ALPHA = 179
 local WATER_VISC = 1
 local LAVA_VISC = 7
 
+local lava_death_messages = {
+	S("%s melted in lava."),
+	S("%s took a bath in a hot lava tub."),
+	S("%s died in lava."),
+	S("%s could not survive in lava."),
+}
+
 minetest.register_node("mcl_core:water_flowing", {
 	description = S("Flowing Water"),
 	_doc_items_create_entry = false,
@@ -129,6 +136,7 @@ minetest.register_node("mcl_core:lava_flowing", {
 	liquid_renewable = false,
 	liquid_range = 3,
 	damage_per_second = 4*2,
+	_mcl_node_death_message = lava_death_messages,
 	post_effect_color = {a=255, r=208, g=73, b=10},
 	groups = { lava=3, liquid=2, destroys_items=1, not_in_creative_inventory=1, dig_by_piston=1},
 	_mcl_blast_resistance = 500,
@@ -175,6 +183,7 @@ S([[Lava interacts with water various ways:
 	liquid_renewable = false,
 	liquid_range = 3,
 	damage_per_second = 4*2,
+	_mcl_node_death_message = lava_death_messages,
 	post_effect_color = {a=255, r=208, g=73, b=10},
 	stack_max = 64,
 	groups = { lava=3, liquid=2, destroys_items=1, not_in_creative_inventory=1, dig_by_piston=1},

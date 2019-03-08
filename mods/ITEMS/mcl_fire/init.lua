@@ -12,6 +12,12 @@ local S = minetest.get_translator("mcl_fire")
 
 local fire_help = S("Fire is a damaging and destructive but short-lived kind of block. It will destroy and spread towards near flammable blocks, but fire will disappear when there is nothing to burn left. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.")
 local eternal_fire_help = S("Eternal fire is a damaging and destructive block. It will create fire around it when flammable blocks are nearby. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.")
+local fire_death_messages = {
+	S("%s has been cooked crisp."),
+	S("%s felt the burn."),
+	S("%s died in the flames."),
+	S("%s died in a fire."),
+}
 
 minetest.register_node("mcl_fire:fire", {
 	description = S("Fire"),
@@ -36,6 +42,7 @@ minetest.register_node("mcl_fire:fire", {
 	buildable_to = true,
 	sunlight_propagates = true,
 	damage_per_second = 1,
+	_mcl_node_death_message = fire_death_messages,
 	groups = {fire = 1, dig_immediate = 3, not_in_creative_inventory = 1, dig_by_piston=1, destroys_items=1 },
 	floodable = true,
 	on_flood = function(pos, oldnode, newnode)
@@ -115,6 +122,7 @@ minetest.register_node("mcl_fire:eternal_fire", {
 	buildable_to = true,
 	sunlight_propagates = true,
 	damage_per_second = 1,
+	_mcl_node_death_message = fire_death_messages,
 	groups = {fire = 1, dig_immediate = 3, not_in_creative_inventory = 1, dig_by_piston = 1, destroys_items = 1},
 	floodable = true,
 	on_flood = function(pos, oldnode, newnode)
