@@ -788,6 +788,7 @@ minetest.register_node("mcl_core:ice", {
 	groups = {handy=1,pickaxey=1, slippery=3, building_block=1},
 	drop = "",
 	sounds = mcl_sounds.node_sound_glass_defaults(),
+	node_dig_prediction = "mcl_core:water_source",
 	after_dig_node = function(pos, oldnode)
 		-- Create a water source if ice is destroyed and there was something below it
 		local below = {x=pos.x, y=pos.y-1, z=pos.z}
