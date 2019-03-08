@@ -65,7 +65,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	jump_height = 4,
 	fly = true,
 	jump_chance = 98,
-	fear_height = 120,
+	fear_height = 0,
 	blood_amount = 0,
 	glow = 14,
 })
