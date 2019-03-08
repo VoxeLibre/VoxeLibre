@@ -34,7 +34,7 @@ minetest.register_craftitem("mcl_maps:empty_map", {
 -- has a very greatly zoomed-out version and even a radar mode
 minetest.register_craftitem("mcl_maps:filled_map", {
 	description = S("Map"),
-	_doc_items_longdesc = S("Maps show your surroundings as you explore the world. They can even show you the world like a radar. MAGIC!\nNote: Maps are subject to change in future versions of MineClone 2."),
+	_doc_items_longdesc = S("Maps show your surroundings as you explore the world."),
 	_doc_items_usagehelp = S("Hold the map in any of the hotbar slots. This allows you to access the minimap by pressing the minimap key ([F9] by default).\nIn Creative Mode, you don't need this item; the minimap is always available."),
 	groups = { tool = 1 },
 	inventory_image = "mcl_maps_map_filled.png^(mcl_maps_map_filled_markings.png^[colorize:#000000)",
@@ -64,10 +64,15 @@ end
 
 -- Checks if player is still allowed to display the minimap
 local function update_minimap(player)
-	if minetest.settings:get_bool("creative_mode") or has_item_in_hotbar(player, "mcl_maps:filled_map") then
-		player:hud_set_flags({minimap = true})
+	local creative = minetest.settings:get_bool("creative_mode")
+	if creative then
+		player:hud_set_flags({minimap=true, minimap_radar = true})
 	else
-		player:hud_set_flags({minimap = false})
+		if has_item_in_hotbar(player, "mcl_maps:filled_map") then
+			player:hud_set_flags({minimap = true, minimap_radar = false})
+		else
+			player:hud_set_flags({minimap = false, minimap_radar = false})
+		end
 	end
 end
 

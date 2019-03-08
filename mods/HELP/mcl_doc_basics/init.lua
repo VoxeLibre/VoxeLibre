@@ -430,11 +430,11 @@ S("There are 2 minimap modes and 3 zoom levels.").."\n\n"..
 
 S("Surface mode (image 1) is a top-down view of the world, roughly resembling the colors of the blocks this world is made of. It only shows the topmost blocks, everything below is hidden, like a satellite photo. Surface mode is useful if you got lost.").."\n\n"..
 
-S("Radar mode (image 2) is more complicated. It displays the “denseness” of the area around you and changes with your height. Roughly, the more green an area is, the less “dense” it is. Black areas have many blocks. Use the radar to find caverns, hidden areas, walls and more. The rectangular shapes in image 2 clearly expose the position of a dungeon.").."\n\n"..
+S("Radar mode (image 2) is more complicated. It displays the “denseness” of the area around you and changes with your height. Roughly, the more green an area is, the less “dense” it is. Black areas have many blocks. Use the radar to find caverns, hidden areas, walls and more. The rectangular shapes in image 2 clearly expose the position of a dungeon. Radar mode is only available in Creative Mode").."\n\n"..
 
 S("There are also two different rotation modes. In “square mode”, the rotation of the minimap is fixed. If you press [Shift]+[F9] to switch to “circle mode”, the minimap will instead rotate with your looking direction, so “up” is always your looking direction.").."\n\n"..
 
-S("In some games, the minimap may be disabled.").."\n\n"..
+S("In other games, the minimap may be disabled.").."\n\n"..
 
 S("• Toggle minimap mode: [F9]").."\n"..
 S("• Toggle minimap rotation mode: [Shift]+[F9]"),
@@ -767,7 +767,7 @@ S("• Mined blocks don't drop items").."\n"..
 S("• Items don't get used up").."\n"..
 S("• Tools don't wear off").."\n"..
 S("• You can eat food whenever you want").."\n"..
-S("• You can always use the minimap").."\n\n"..
+S("• You can always use the minimap (including radar mode)").."\n\n"..
 
 S("Damage is not affected by Creative Mode, it needs to be disabled seperately.")
 }})
