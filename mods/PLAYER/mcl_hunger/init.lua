@@ -170,7 +170,7 @@ minetest.register_globalstep(function(dtime)
 				-- TODO: Allow starvation at higher difficulty levels
 					if hp-1 > 0 then
 						if mod_death_messages then
-							mcl_death_messages.player_damage(player, S("@1 starved to death."), name)
+							mcl_death_messages.player_damage(player, S("@1 starved to death.", name))
 						end
 						player:set_hp(hp-1)
 					end
