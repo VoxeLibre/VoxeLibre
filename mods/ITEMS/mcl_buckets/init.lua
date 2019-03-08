@@ -28,14 +28,14 @@ mcl_buckets.liquids = {}
 local sound_place = function(itemname, pos)
 	local def = minetest.registered_nodes[itemname]
 	if def and def.sounds and def.sounds.place then
-		minetest.sound_play(def.sounds.place, {gain=1.0, pos = pos})
+		minetest.sound_play(def.sounds.place, {gain=1.0, pos = pos, pitch = 1 + math.random(-10, 10)*0.005})
 	end
 end
 
 local sound_take = function(itemname, pos)
 	local def = minetest.registered_nodes[itemname]
 	if def and def.sounds and def.sounds.dug then
-		minetest.sound_play(def.sounds.dug, {gain=1.0, pos = pos})
+		minetest.sound_play(def.sounds.dug, {gain=1.0, pos = pos, pitch = 1 + math.random(-10, 10)*0.005})
 	end
 end
 

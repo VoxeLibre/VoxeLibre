@@ -148,6 +148,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 					pos = pos,
 					max_hear_distance = 12,
 					gain = 1.0,
+					pitch = 1 + math.random(-10, 10)*0.005,
 				})
 			else
 				-- Assume the item is a food
@@ -186,6 +187,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 					pos = pos,
 					max_hear_distance = 12,
 					gain = 1.0,
+					pitch = 1 + math.random(-10, 10)*0.005,
 				})
 			end
 
