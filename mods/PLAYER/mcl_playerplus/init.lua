@@ -208,6 +208,7 @@ minetest.register_globalstep(function(dtime)
 						expirationtime = 1,
 						size = 8,
 						texture = tex,
+						glow = 14,
 						playername = name
 					})
 				end

@@ -138,6 +138,7 @@ minetest.register_node("mcl_core:barrier", {
 			expirationtime = 1,
 			size = 8,
 			texture = "mcl_core_barrier.png",
+			glow = 14,
 			playername = placer:get_player_name()
 		})
 	end,
