@@ -96,6 +96,7 @@ baby_pigman.textures = { {
 baby_pigman.walk_velocity = 1.2
 baby_pigman.run_velocity = 2.4
 baby_pigman.light_damage = 0
+baby_pigman.child = 1
 
 mobs:register_mob("mobs_mc:baby_pigman", baby_pigman)
 

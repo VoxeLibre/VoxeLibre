@@ -216,6 +216,7 @@ functions needed for the mob to work properly which contains the following:
       'spawn_small_alternative': name of a smaller mob to use as replacement if
                                  spawning fails due to space requirements
       'glow' same as in entity definition
+      'child' if true, spawn mob as child
 
 Node Replacement
 ----------------

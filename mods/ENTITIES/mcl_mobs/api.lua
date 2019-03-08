@@ -384,8 +384,10 @@ local item_drop = function(self, cooked)
 	-- no drops if disabled by setting
 	if not mobs_drop_items then return end
 
-	-- no drops for child mobs
-	if self.child then return end
+	-- no drops for child mobs (except monster)
+	if (self.child and self.type ~= "monster") then
+		return
+	end
 
 	local obj, item, num
 	local pos = self.object:get_pos()
@@ -740,7 +742,7 @@ local do_jump = function(self)
 	if not self.jump
 	or self.jump_height == 0
 	or self.fly
-	or self.child
+	or (self.child and self.type ~= "monster")
 	or self.order == "stand" then
 		return false
 	end
@@ -2546,7 +2548,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	-- attack puncher and call other mobs for help
 	if self.passive == false
 	and self.state ~= "flop"
-	and self.child == false
+	and (self.child == false or self.type == "monster")
 	and hitter:get_player_name() ~= self.owner
 	and not mobs.invis[ name ] then
 
@@ -3064,7 +3066,6 @@ minetest.register_entity(name, {
 	pause_timer = 0,
 	horny = false,
 	hornytimer = 0,
-	child = false,
 	gotten = false,
 	health = 0,
 	reach = def.reach or 3,
@@ -3101,6 +3102,8 @@ minetest.register_entity(name, {
 	rain_damage = def.rain_damage or 0,
 	glow = def.glow,
 	can_despawn = can_despawn,
+	child = def.child or false,
+	-- End of MCL2 extensions
 
 	on_spawn = def.on_spawn,
 
