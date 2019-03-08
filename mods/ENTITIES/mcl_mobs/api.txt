@@ -215,6 +215,7 @@ functions needed for the mob to work properly which contains the following:
                         are in direct sunlight
       'spawn_small_alternative': name of a smaller mob to use as replacement if
                                  spawning fails due to space requirements
+      'glow' same as in entity definition
 
 Node Replacement
 ----------------

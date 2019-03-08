@@ -32,7 +32,7 @@ local function do_tnt_physics(tnt_np,tntr)
                 local damage = (4 / dist) * tntr
                 if obj:is_player() == true then
                     if mod_death_messages then
-                        mcl_death_messages.player_damage(obj, string.format("%s was caught in an explosion.", obj:get_player_name()))
+                        mcl_death_messages.player_damage(obj, S("@1 was caught in an explosion.", obj:get_player_name()))
                     end
                 end
                 obj:set_hp(obj:get_hp() - damage)

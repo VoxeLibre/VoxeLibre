@@ -3087,6 +3087,7 @@ minetest.register_entity(name, {
 	-- MCL2 extensions
 	ignores_nametag = def.ignores_nametag or false,
 	rain_damage = def.rain_damage or 0,
+	glow = def.glow,
 	can_despawn = can_despawn,
 
 	on_spawn = def.on_spawn,
