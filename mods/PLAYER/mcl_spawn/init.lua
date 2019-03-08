@@ -20,10 +20,17 @@ mcl_spawn.get_spawn_pos = function(player)
 		spawn = minetest.setting_get_pos("static_spawnpoint")
 		custom_spawn = false
 	end
+	-- We are getting desperate ...
+	-- Use the first spawn point of the player
 	if not spawn or spawn == "" then
 		local attr = player:get_meta():get_string("mcl_spawn:first_spawn")
 		if attr ~= nil and attr ~= "" then
+			-- Adjust Y
 			spawn = minetest.string_to_pos(attr)
+			local y = minetest.get_spawn_level(spawn.x, spawn.z)
+			if y then
+				spawn.y = y
+			end
 			custom_spawn = false
 		end
 	end
