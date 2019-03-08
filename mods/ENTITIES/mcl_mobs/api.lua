@@ -105,10 +105,20 @@ local mob_sound = function(self, sound, is_opinion)
 		if is_opinion and self.opinion_sound_cooloff > 0 then
 			return
 		end
+		local pitch
+		if self.child then
+			-- Children have high pitch
+			pitch = 1.5
+		else
+			pitch = 1.0
+		end
+		-- randomize the pitch a bit
+		local pitch = pitch + math.random(-10, 10) * 0.005
 		minetest.sound_play(sound, {
 			object = self.object,
 			gain = 1.0,
-			max_hear_distance = self.sounds.distance
+			max_hear_distance = self.sounds.distance,
+			pitch = pitch,
 		})
 		self.opinion_sound_cooloff = 1
 	end
