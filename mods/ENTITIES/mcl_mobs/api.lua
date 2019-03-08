@@ -801,7 +801,7 @@ local do_jump = function(self)
 
 			-- when in air move forward
 			minetest.after(0.3, function(self, v)
-				if not self.object:get_luaentity() then
+				if not self.object or not self.object:get_luaentity() then
 					return
 				end
 				self.object:set_acceleration({
@@ -811,11 +811,9 @@ local do_jump = function(self)
 				})
 			end, self, v)
 
-			if get_velocity(self) > 0 then
-				if self.jump_sound_cooloff <= 0 then
-					mob_sound(self, self.sounds.jump)
-					self.jump_sound_cooloff = 0.5
-				end
+			if self.jump_sound_cooloff <= 0 then
+				mob_sound(self, self.sounds.jump)
+				self.jump_sound_cooloff = 0.5
 			end
 		else
 			self.facing_fence = true
