@@ -99,21 +99,23 @@ local mod_mobspawners = minetest.get_modpath("mcl_mobspawners") ~= nil
 local mod_hunger = minetest.get_modpath("mcl_hunger") ~= nil
 
 -- play sound
-local mob_sound = function(self, sound, is_opinion)
+local mob_sound = function(self, sound, is_opinion, fixed_pitch)
 
 	if sound then
 		if is_opinion and self.opinion_sound_cooloff > 0 then
 			return
 		end
 		local pitch
-		if self.child then
-			-- Children have high pitch
-			pitch = 1.5
-		else
-			pitch = 1.0
+		if not fixed_pitch then
+			if self.child then
+				-- Children have high pitch
+				pitch = 1.5
+			else
+				pitch = 1.0
+			end
+			-- randomize the pitch a bit
+			pitch = pitch + math.random(-10, 10) * 0.005
 		end
-		-- randomize the pitch a bit
-		local pitch = pitch + math.random(-10, 10) * 0.005
 		minetest.sound_play(sound, {
 			object = self.object,
 			gain = 1.0,
@@ -1943,7 +1945,7 @@ local do_states = function(self, dtime)
 				self.v_start = true
 				self.timer = 0
 				self.blinktimer = 0
-				mob_sound(self, self.sounds.fuse)
+				mob_sound(self, self.sounds.fuse, nil, false)
 
 			-- stop timer if out of reach or direct line of sight
 			elseif self.allow_fuse_reset
@@ -3655,40 +3657,9 @@ function mobs:capture_mob(self, clicker, chance_hand, chance_net, chance_lasso, 
 end
 
 
--- protect tamed mob with rune item
+-- No-op in MCL2 (protecting mobs is not possible).
 function mobs:protect(self, clicker)
-	local name = clicker:get_player_name()
-	local tool = clicker:get_wielded_item()
-
-	if tool:get_name() ~= "mobs:protector" then
-		return false
-	end
-
-	if self.tamed == false then
-		minetest.chat_send_player(name, S("Not tamed!"))
-		return true -- false
-	end
-
-	if self.protected == true then
-		minetest.chat_send_player(name, S("Already protected!"))
-		return true -- false
-	end
-
-	if not mobs.is_creative(clicker:get_player_name()) then
-		tool:take_item() -- take 1 protection rune
-		clicker:set_wielded_item(tool)
-	end
-
-	self.protected = true
-
-	local pos = self.object:get_pos()
-	pos.y = pos.y + self.collisionbox[2] + 0.5
-
-	effect(self.object:get_pos(), 25, "mobs_protect_particle.png", 0.5, 4, 2, 15)
-
-	mob_sound(self, "mobs_spell")
-
-	return true
+	return false
 end
 
 
