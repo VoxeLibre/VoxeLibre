@@ -114,6 +114,7 @@ local slime_big = {
 mobs:register_mob("mobs_mc:slime_big", slime_big)
 
 local slime_small = table.copy(slime_big)
+slime_small.sounds.base_pitch = 1.15
 slime_small.hp_min = 4
 slime_small.hp_max = 4
 slime_small.collisionbox = {-0.51, -0.01, -0.51, 0.51, 1.00, 0.51}
@@ -128,6 +129,7 @@ slime_small.on_die = spawn_children_on_die("mobs_mc:slime_tiny", 4, 0.6, 1.0)
 mobs:register_mob("mobs_mc:slime_small", slime_small)
 
 local slime_tiny = table.copy(slime_big)
+slime_tiny.sounds.base_pitch = 1.3
 slime_tiny.hp_min = 1
 slime_tiny.hp_max = 1
 slime_tiny.collisionbox = {-0.2505, -0.01, -0.2505, 0.2505, 0.50, 0.2505}
@@ -239,6 +241,7 @@ mobs:register_mob("mobs_mc:magma_cube_small", magma_cube_small)
 local magma_cube_tiny = table.copy(magma_cube_big)
 magma_cube_tiny.sounds.jump = "mobs_mc_magma_cube_small"
 magma_cube_tiny.sounds.death = "mobs_mc_magma_cube_small"
+magma_cube_tiny.sounds.base_pitch = 1.25
 magma_cube_tiny.hp_min = 1
 magma_cube_tiny.hp_max = 1
 magma_cube_tiny.collisionbox = {-0.2505, -0.01, -0.2505, 0.2505, 0.50, 0.2505}

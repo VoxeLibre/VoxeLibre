@@ -107,11 +107,15 @@ local mob_sound = function(self, sound, is_opinion, fixed_pitch)
 		end
 		local pitch
 		if not fixed_pitch then
+			local base_pitch = self.sounds.base_pitch
+			if not base_pitch then
+				base_pitch = 1
+			end
 			if self.child then
-				-- Children have high pitch
-				pitch = 1.5
+				-- Children have higher pitch
+				pitch = base_pitch * 1.5
 			else
-				pitch = 1.0
+				pitch = base_pitch
 			end
 			-- randomize the pitch a bit
 			pitch = pitch + math.random(-10, 10) * 0.005

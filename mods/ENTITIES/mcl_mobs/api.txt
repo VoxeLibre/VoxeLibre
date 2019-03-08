@@ -131,6 +131,7 @@ functions needed for the mob to work properly which contains the following:
    'makes_footstep_sound' when true you can hear mobs walking.
    'sounds'               this is a table with sounds of the mob
       'distance'          maximum distance sounds can be heard, default is 10.
+      'base_pitch'        base pitch to use adult mobs, default is 1.0 (MCL2 extension)
       'random'            played randomly from time to time.
                           also played for overfeeding animal.
       'war_cry'           what you hear when mob starts to attack player. (currently disabled)
@@ -141,6 +142,9 @@ functions needed for the mob to work properly which contains the following:
       'jump'              played when mob jumps. There's a built-in cooloff timer to avoid sound spam
       'fuse'              sound played when mob explode timer starts.
       'explode'           sound played when mob explodes.
+
+      Note: For all sounds except fuse and explode, the pitch is slightly randomized from the base pitch
+      The pitch of children is 50% higher.
 
    'drops'     table of items that are dropped when mob is killed, fields are:
       'name'   name of item to drop.
