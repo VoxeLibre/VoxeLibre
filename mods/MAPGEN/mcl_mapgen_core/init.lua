@@ -1841,15 +1841,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 				local y = nodes[n].y
 				local p_pos = area:index(nodes[n].x, y, nodes[n].z)
 
-				if data[p_pos] == c_water then
-					if y <= mcl_vars.mg_end_min + 104 and y >= mcl_vars.mg_end_min + 40 then
-						data[p_pos] = c_end_stone
-						lvm_used = true
-					else
-						data[p_pos] = c_air
-						lvm_used = true
-					end
-				elseif data[p_pos] == c_stone or data[p_pos] == c_dirt or data[p_pos] == c_sand then
+				if data[p_pos] == c_water or data[p_pos] == c_stone or data[p_pos] == c_dirt or data[p_pos] == c_sand then
 					data[p_pos] = c_air
 					lvm_used = true
 				end

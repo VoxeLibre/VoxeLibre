@@ -1624,7 +1624,7 @@ local function register_dimension_ores()
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
 		y_min           = mcl_vars.mg_end_min+64,
-		y_max           = mcl_vars.mg_end_min+100,
+		y_max           = mcl_vars.mg_end_min+80,
 
 		noise_params = {
 			offset  = mcl_vars.mg_end_min+70,
@@ -1651,7 +1651,7 @@ local function register_dimension_ores()
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
 		y_min           = mcl_vars.mg_end_min+64,
-		y_max           = mcl_vars.mg_end_min+100,
+		y_max           = mcl_vars.mg_end_min+80,
 
 		noise_params = {
 			offset  = mcl_vars.mg_end_min+72,
@@ -1677,7 +1677,7 @@ local function register_dimension_ores()
 		ore             = "mcl_end:end_stone",
 		wherein         = end_wherein,
 		y_min           = mcl_vars.mg_end_min+64,
-		y_max           = mcl_vars.mg_end_min+100,
+		y_max           = mcl_vars.mg_end_min+80,
 
 		noise_params = {
 			offset  = mcl_vars.mg_end_min+70,
