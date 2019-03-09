@@ -39,13 +39,8 @@ end
 
 local trapped_chest_mesecons_rules = mesecon.rules.pplate
 
--- To be called if a player closed a chest
-local player_chest_close = function(player)
-	local name = player:get_player_name()
-	if open_chests[name] == nil then
-		return
-	end
-	local pos = open_chests[name].pos
+-- To be called when a chest is closed (only relevant for trapped chest atm)
+local chest_update_after_close = function(pos)
 	local node = minetest.get_node(pos)
 
 	if node.name == "mcl_chests:trapped_chest_on" then
@@ -66,6 +61,16 @@ local player_chest_close = function(player)
 		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_left", param2 = node.param2})
 		mesecon.receptor_off(pos_other, trapped_chest_mesecons_rules)
 	end
+end
+
+-- To be called if a player closed a chest
+local player_chest_close = function(player)
+	local name = player:get_player_name()
+	if open_chests[name] == nil then
+		return
+	end
+	local pos = open_chests[name].pos
+	chest_update_after_close(pos)
 
 	open_chests[name] = nil
 end
@@ -839,3 +844,16 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_lbm({
+	-- Disable active/open trapped chests when loaded because nobody could
+	-- have them open at loading time.
+	-- Fixes redstone weirdness.
+	label = "Disable active trapped chests",
+	name = "mcl_chests:reset_trapped_chests",
+	nodenames = { "mcl_chests:trapped_chest_on", "mcl_chests:trapped_chest_on_left", "mcl_chests:trapped_chest_on_right" },
+	run_at_every_load = true,
+	action = function(pos, node)
+		minetest.log("error", "lbm!" ..minetest.pos_to_string(pos))
+		chest_update_after_close(pos)
+	end,
+})
