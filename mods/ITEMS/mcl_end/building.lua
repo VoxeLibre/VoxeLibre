@@ -52,7 +52,7 @@ minetest.register_node("mcl_end:purpur_pillar", {
 
 minetest.register_node("mcl_end:end_rod", {
 	description = S("End Rod"),
-	_doc_items_longdesc = S("End rods are decorational light sources."),
+	_doc_items_longdesc = S("End rods are decorative light sources."),
 	tiles = {
 		"mcl_end_end_rod_top.png",
 		"mcl_end_end_rod_bottom.png",
@@ -127,7 +127,7 @@ minetest.register_node("mcl_end:end_rod", {
 
 minetest.register_node("mcl_end:dragon_egg", {
 	description = S("Dragon Egg"),
-	_doc_items_longdesc = S("A dragon egg is a decorational item which can be placed."),
+	_doc_items_longdesc = S("A dragon egg is a decorative item which can be placed."),
 	tiles = {
 		"mcl_end_dragon_egg.png",
 		"mcl_end_dragon_egg.png",

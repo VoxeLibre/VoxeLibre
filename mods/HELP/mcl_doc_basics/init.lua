@@ -59,7 +59,7 @@ S("Minetest is a free software game engine for games based on voxel gameplay, in
 
 S("The player is thrown into a huge world made out of cubes or blocks. These cubes usually make the landscape they blocks can be removed and placed almost entirely freely. Using the collected items, new tools and other items can be crafted. Games in Minetest can, however, be much more complex than this.").."\n\n"..
 
-S("A core feature of Minetest is the built-in modding capability. Mods modify existing gameplay. They can be as simple as adding a few decorational blocks or be very complex by e.g. introducing completely new gameplay concepts, generating a completely different kind of world, and many other things.").."\n\n"..
+S("A core feature of Minetest is the built-in modding capability. Mods modify existing gameplay. They can be as simple as adding a few decorative blocks or be very complex by e.g. introducing completely new gameplay concepts, generating a completely different kind of world, and many other things.").."\n\n"..
 
 S("Minetest can be played alone or online together with multiple players. Online play will work out of the box with any mods, with no need for additional software as they are entirely provided by the server.").."\n\n"..
 

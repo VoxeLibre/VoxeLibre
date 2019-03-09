@@ -153,7 +153,7 @@ minetest.register_node("mcl_nether:red_nether_brick", {
 
 minetest.register_node("mcl_nether:nether_wart_block", {
 	description = S("Nether Wart Block"),
-	_doc_items_longdesc = S("A nether wart block is a purely decorational block made from nether wart."),
+	_doc_items_longdesc = S("A nether wart block is a purely decorative block made from nether wart."),
 	stack_max = 64,
 	tiles = {"mcl_nether_nether_wart_block.png"},
 	is_ground_content = false,

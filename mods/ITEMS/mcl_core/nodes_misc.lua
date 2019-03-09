@@ -3,7 +3,7 @@ local S = minetest.get_translator("mcl_core")
 
 minetest.register_node("mcl_core:bone_block", {
 	description = S("Bone Block"),
-	_doc_items_longdesc = S("Bone blocks are decorational blocks and a compact storage of bone meal."),
+	_doc_items_longdesc = S("Bone blocks are decorative blocks and a compact storage of bone meal."),
 	tiles = {"mcl_core_bone_block_top.png", "mcl_core_bone_block_top.png", "mcl_core_bone_block_side.png"},
 	is_ground_content = false,
 	paramtype2 = "facedir",

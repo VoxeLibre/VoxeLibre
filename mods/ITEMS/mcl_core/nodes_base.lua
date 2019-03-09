@@ -249,7 +249,7 @@ minetest.register_node("mcl_core:granite", {
 
 minetest.register_node("mcl_core:granite_smooth", {
 	description = S("Polished Granite"),
-	_doc_items_longdesc = S("Polished granite is a decorational building block made from granite."),
+	_doc_items_longdesc = S("Polished granite is a decorative building block made from granite."),
 	tiles = {"mcl_core_granite_smooth.png"},
 	stack_max = 64,
 	is_ground_content = false,
@@ -273,7 +273,7 @@ minetest.register_node("mcl_core:andesite", {
 
 minetest.register_node("mcl_core:andesite_smooth", {
 	description = S("Polished Andesite"),
-	_doc_items_longdesc = S("Polished andesite is a decorational building block made from andesite."),
+	_doc_items_longdesc = S("Polished andesite is a decorative building block made from andesite."),
 	tiles = {"mcl_core_andesite_smooth.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -297,7 +297,7 @@ minetest.register_node("mcl_core:diorite", {
 
 minetest.register_node("mcl_core:diorite_smooth", {
 	description = S("Polished Diorite"),
-	_doc_items_longdesc = S("Polished diorite is a decorational building block made from diorite."),
+	_doc_items_longdesc = S("Polished diorite is a decorative building block made from diorite."),
 	tiles = {"mcl_core_diorite_smooth.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -370,7 +370,7 @@ end
 minetest.register_node("mcl_core:grass_path", {
 	tiles = {"mcl_core_grass_path_top.png", "default_dirt.png", "mcl_core_grass_path_side.png"},
 	description = S("Grass Path"),
-	_doc_items_longdesc = S("Grass paths are a decorational variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created with a shovel. A grass path turns into dirt when it is below a solid block."),
+	_doc_items_longdesc = S("Grass paths are a decorative variant of grass blocks. Their top has a different color and they are a bit lower than grass blocks, making them useful to build footpaths. Grass paths can be created with a shovel. A grass path turns into dirt when it is below a solid block."),
 	drop = "mcl_core:dirt",
 	is_ground_content = true,
 	drawtype = "nodebox",
@@ -501,7 +501,7 @@ minetest.register_node("mcl_core:sandstone", {
 
 minetest.register_node("mcl_core:sandstonesmooth", {
 	description = S("Cut Sandstone"),
-	_doc_items_longdesc = S("Cut sandstone is a decorational building block."),
+	_doc_items_longdesc = S("Cut sandstone is a decorative building block."),
 	tiles = {"mcl_core_sandstone_top.png", "mcl_core_sandstone_bottom.png", "mcl_core_sandstone_smooth.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -513,7 +513,7 @@ minetest.register_node("mcl_core:sandstonesmooth", {
 
 minetest.register_node("mcl_core:sandstonecarved", {
 	description = S("Chiseled Sandstone"),
-	_doc_items_longdesc = S("Chiseled sandstone is a decorational building block."),
+	_doc_items_longdesc = S("Chiseled sandstone is a decorative building block."),
 	tiles = {"mcl_core_sandstone_top.png", "mcl_core_sandstone_bottom.png", "mcl_core_sandstone_carved.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -564,7 +564,7 @@ minetest.register_node("mcl_core:redsandstone", {
 
 minetest.register_node("mcl_core:redsandstonesmooth", {
 	description = S("Cut Red Sandstone"),
-	_doc_items_longdesc = S("Cut red sandstone is a decorational building block."),
+	_doc_items_longdesc = S("Cut red sandstone is a decorative building block."),
 	tiles = {"mcl_core_red_sandstone_top.png", "mcl_core_red_sandstone_bottom.png", "mcl_core_red_sandstone_smooth.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -576,7 +576,7 @@ minetest.register_node("mcl_core:redsandstonesmooth", {
 
 minetest.register_node("mcl_core:redsandstonecarved", {
 	description = S("Chiseled Red Sandstone"),
-	_doc_items_longdesc = S("Chiseled red sandstone is a decorational building block."),
+	_doc_items_longdesc = S("Chiseled red sandstone is a decorative building block."),
 	tiles = {"mcl_core_red_sandstone_top.png", "mcl_core_red_sandstone_bottom.png", "mcl_core_red_sandstone_carved.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -588,7 +588,7 @@ minetest.register_node("mcl_core:redsandstonecarved", {
 
 minetest.register_node("mcl_core:redsandstonesmooth2", {
 	description = S("Smooth Red Sandstone"),
-	_doc_items_longdesc = S("Smooth red sandstone is a decorational building block."),
+	_doc_items_longdesc = S("Smooth red sandstone is a decorative building block."),
 	tiles = {"mcl_core_red_sandstone_top.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -706,7 +706,7 @@ minetest.register_node("mcl_core:coalblock", {
 
 minetest.register_node("mcl_core:ironblock", {
 	description = S("Block of Iron"),
-	_doc_items_longdesc = S("A block of iron is mostly a decorational block but also useful as a compact storage of iron ingots."),
+	_doc_items_longdesc = S("A block of iron is mostly a decorative block but also useful as a compact storage of iron ingots."),
 	tiles = {"default_steel_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -718,7 +718,7 @@ minetest.register_node("mcl_core:ironblock", {
 
 minetest.register_node("mcl_core:goldblock", {
 	description = S("Block of Gold"),
-	_doc_items_longdesc = S("A block of gold is mostly a shiny decorational block but also useful as a compact storage of gold ingots."),
+	_doc_items_longdesc = S("A block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots."),
 	tiles = {"default_gold_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -730,7 +730,7 @@ minetest.register_node("mcl_core:goldblock", {
 
 minetest.register_node("mcl_core:diamondblock", {
 	description = S("Block of Diamond"),
-	_doc_items_longdesc = S("A block of diamond is mostly a shiny decorational block but also useful as a compact storage of diamonds."),
+	_doc_items_longdesc = S("A block of diamond is mostly a shiny decorative block but also useful as a compact storage of diamonds."),
 	tiles = {"default_diamond_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -742,7 +742,7 @@ minetest.register_node("mcl_core:diamondblock", {
 
 minetest.register_node("mcl_core:lapisblock", {
 	description = S("Lapis Lazuli Block"),
-	_doc_items_longdesc = S("A lapis lazuli block is mostly a decorational block but also useful as a compact storage of lapis lazuli."),
+	_doc_items_longdesc = S("A lapis lazuli block is mostly a decorative block but also useful as a compact storage of lapis lazuli."),
 	tiles = {"mcl_core_lapis_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
@@ -754,7 +754,7 @@ minetest.register_node("mcl_core:lapisblock", {
 
 minetest.register_node("mcl_core:emeraldblock", {
 	description = S("Block of Emerald"),
-	_doc_items_longdesc = S("A block of emerald is mostly a shiny decorational block but also useful as a compact storage of emeralds."),
+	_doc_items_longdesc = S("A block of emerald is mostly a shiny decorative block but also useful as a compact storage of emeralds."),
 	tiles = {"mcl_core_emerald_block.png"},
 	is_ground_content = false,
 	stack_max = 64,

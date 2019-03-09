@@ -40,7 +40,7 @@ for _, row in ipairs(wool.dyes) do
 	-- Node Definition
 		minetest.register_node("mcl_wool:"..name, {
 			description = desc_wool,
-			_doc_items_longdesc = S("Wool is a decorational block which comes in many different colors."),
+			_doc_items_longdesc = S("Wool is a decorative block which comes in many different colors."),
 			stack_max = 64,
 			is_ground_content = false,
 			tiles = {texture..".png"},

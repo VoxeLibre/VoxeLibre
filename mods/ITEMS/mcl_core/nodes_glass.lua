@@ -3,7 +3,7 @@ local S = minetest.get_translator("mcl_core")
 
 minetest.register_node("mcl_core:glass", {
 	description = S("Glass"),
-	_doc_items_longdesc = S("A decorational and mostly transparent block."),
+	_doc_items_longdesc = S("A decorative and mostly transparent block."),
 	drawtype = "glasslike",
 	is_ground_content = false,
 	tiles = {"default_glass.png"},
@@ -24,7 +24,7 @@ function mcl_core.add_glass(desc, recipeitem, colorgroup, color)
 
 	minetest.register_node("mcl_core:glass_"..color, {
 		description = desc,
-		_doc_items_longdesc = S("Stained glass is a decorational and mostly transparent block which comes in various different colors."),
+		_doc_items_longdesc = S("Stained glass is a decorative and mostly transparent block which comes in various different colors."),
 		drawtype = "glasslike",
 		is_ground_content = false,
 		tiles = {"mcl_core_glass_"..color..".png"},
