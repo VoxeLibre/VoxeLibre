@@ -3029,7 +3029,7 @@ minetest.register_entity(name, {
 	visual_size = def.visual_size or {x = 1, y = 1},
 	mesh = def.mesh,
 	makes_footstep_sound = def.makes_footstep_sound or false,
-	view_range = def.view_range or 5,
+	view_range = def.view_range or 16,
 	walk_velocity = def.walk_velocity or 1,
 	run_velocity = def.run_velocity or 2,
 	damage = max(0, (def.damage or 0) * difficulty),
