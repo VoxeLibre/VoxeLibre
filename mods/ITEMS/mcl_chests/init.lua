@@ -204,6 +204,15 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 	drop = drop,
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	on_construct = function(pos)
+		local n = minetest.get_node(pos)
+		local param2 = n.param2
+		local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "left")
+		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_right" then
+			n.name = "mcl_chests:"..basename
+			minetest.swap_node(pos, n)
+		end
+	end,
 	on_destruct = function(pos)
 		local n = minetest.get_node(pos)
 		if n.name == "mcl_chests:"..basename then
@@ -328,6 +337,15 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 	drop = drop,
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	on_construct = function(pos)
+		local n = minetest.get_node(pos)
+		local param2 = n.param2
+		local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "right")
+		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_left" then
+			n.name = "mcl_chests:"..basename
+			minetest.swap_node(pos, n)
+		end
+	end,
 	on_destruct = function(pos)
 		local n = minetest.get_node(pos)
 		if n.name == "mcl_chests:"..basename then
