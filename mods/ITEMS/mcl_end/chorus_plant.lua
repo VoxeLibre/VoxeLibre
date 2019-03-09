@@ -283,12 +283,18 @@ mcl_end.grow_chorus_plant_step = function(pos, node)
 
 			for _, f in ipairs(new_flowers) do
 				if age >= MAX_FLOWER_AGE then
-					minetest.set_node(f, {name="mcl_end:chorus_flower_dead"})
-					grown = true
+					local nn = minetest.get_node(f).name
+					if nn ~= "mcl_end:chorus_flower" and nn ~= "mcl_end:chorus_flower_dead" then
+						minetest.set_node(f, {name="mcl_end:chorus_flower_dead"})
+						grown = true
+					end
 				else
-					minetest.set_node(f, {name="mcl_end:chorus_flower", param2 = age})
-					table.insert(new_flower_buds, f)
-					grown = true
+					local nn = minetest.get_node(f).name
+					if nn ~= "mcl_end:chorus_flower" and nn ~= "mcl_end:chorus_flower_dead" then
+						minetest.set_node(f, {name="mcl_end:chorus_flower", param2 = age})
+						table.insert(new_flower_buds, f)
+						grown = true
+					end
 				end
 			end
 			if #new_flowers >= 1 then
