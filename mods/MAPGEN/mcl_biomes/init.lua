@@ -1606,47 +1606,97 @@ local function register_dimension_ores()
 	--[[ THE END ]]
 
 	-- Generate fake End
-	-- TODO: Remove both "ores" when there's a better End generator
+	-- TODO: Remove the "ores" when there's a better End generator
+	-- FIXME: Broken lighting in v6 mapgen
+
+	local end_wherein
+	if mg_name == "v6" then
+		end_wherein = {"air", "mcl_core:stone"}
+	else
+		end_wherein = {"air"}
+	end
 
 	minetest.register_ore({
-		ore_type        = "sheet",
+		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
-		wherein         = {"air"},
+		wherein         = end_wherein,
 		y_min           = mcl_vars.mg_end_min+64,
-		y_max           = mcl_vars.mg_end_min+80,
-		column_height_min = 6,
-		column_height_max = 7,
-		column_midpoint_factor = 0.0,
+		y_max           = mcl_vars.mg_end_min+100,
+
 		noise_params = {
+			offset  = mcl_vars.mg_end_min+70,
+			scale   = -1,
+			spread  = {x=126, y=126, z=126},
+			seed    = 9999,
+			octaves = 3,
+			persist = 0.5,
+		},
+
+		np_stratum_thickness = {
 			offset  = -2,
-			scale   = 8,
-			spread  = {x=100, y=100, z=100},
-			seed    = 2999,
-			octaves = 5,
-			persist = 0.55,
+			scale   = 10,
+			spread  = {x=126, y=126, z=126},
+			seed    = 9999,
+			octaves = 3,
+			persist = 0.5,
 		},
-		noise_threshold = 0,
+		clust_scarcity = 1,
 	})
 
 	minetest.register_ore({
-		ore_type        = "sheet",
+		ore_type        = "stratum",
 		ore             = "mcl_end:end_stone",
-		wherein         = {"air"},
+		wherein         = end_wherein,
 		y_min           = mcl_vars.mg_end_min+64,
-		y_max           = mcl_vars.mg_end_min+80,
-		column_height_min = 4,
-		column_height_max = 4,
-		column_midpoint_factor = 0.0,
+		y_max           = mcl_vars.mg_end_min+100,
+
 		noise_params = {
-			offset  = -4,
-			scale   = 3,
-			spread  = {x=200, y=200, z=200},
-			seed    = 5390,
-			octaves = 5,
-			persist = 0.6,
+			offset  = mcl_vars.mg_end_min+72,
+			scale   = -3,
+			spread  = {x=84, y=84, z=84},
+			seed    = 999,
+			octaves = 4,
+			persist = 0.8,
 		},
-		noise_threshold = 0,
+
+		np_stratum_thickness = {
+			offset  = -4,
+			scale   = 10,
+			spread  = {x=84, y=84, z=84},
+			seed    = 999,
+			octaves = 4,
+			persist = 0.8,
+		},
+		clust_scarcity = 1,
 	})
+	minetest.register_ore({
+		ore_type        = "stratum",
+		ore             = "mcl_end:end_stone",
+		wherein         = end_wherein,
+		y_min           = mcl_vars.mg_end_min+64,
+		y_max           = mcl_vars.mg_end_min+100,
+
+		noise_params = {
+			offset  = mcl_vars.mg_end_min+70,
+			scale   = -2,
+			spread  = {x=84, y=84, z=84},
+			seed    = 99,
+			octaves = 4,
+			persist = 0.85,
+		},
+
+		np_stratum_thickness = {
+			offset  = -3,
+			scale   = 5,
+			spread  = {x=63, y=63, z=63},
+			seed    = 50,
+			octaves = 4,
+			persist = 0.85,
+		},
+		clust_scarcity = 1,
+	})
+
+
 
 end
 
