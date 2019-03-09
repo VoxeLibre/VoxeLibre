@@ -220,6 +220,9 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_right" then
 			return
 		end
+		for pl=1, #players do
+			minetest.close_formspec(players[pl]:get_player_name(), "mcl_chests:"..formspec_basename.."_"..p.x.."_"..p.y.."_"..p.z)
+		end
 		minetest.swap_node(p, { name = "mcl_chests:"..basename, param2 = param2 })
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
@@ -340,6 +343,9 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "right")
 		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_left" then
 			return
+		end
+		for pl=1, #players do
+			minetest.close_formspec(players[pl]:get_player_name(), "mcl_chests:"..formspec_basename.."_"..p.x.."_"..p.y.."_"..p.z)
 		end
 		minetest.swap_node(p, { name = "mcl_chests:"..basename, param2 = param2 })
 	end,
