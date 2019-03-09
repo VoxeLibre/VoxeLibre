@@ -9,7 +9,7 @@ local generate_fallen_logs = minetest.settings:get_bool("mcl_generate_fallen_log
 -- Jungle bush schematic. In PC/Java Edition it's Jungle Wood + Oak Leaves
 local jungle_bush_schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_bush_oak_leaves.mts"
 
-local chorus_plant_deco_id
+local deco_id_chorus_plant
 
 --
 -- Register biomes
