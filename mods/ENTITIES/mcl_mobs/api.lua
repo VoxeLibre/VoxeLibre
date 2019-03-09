@@ -2434,6 +2434,8 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		hitter:set_wielded_item(weapon)
 	end
 
+	local die = false
+
 	-- only play hit sound and show blood effects if damage is 1 or over
 	if damage >= 1 then
 
@@ -2475,21 +2477,14 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		-- do damage
 		self.health = self.health - floor(damage)
 
-		-- exit here if dead, special item check
-		if weapon:get_name() == "mobs:pick_lava" then
-			if check_for_death(self, "lava", {type = "punch",
-					puncher = hitter}) then
-				return
-			end
-		else
-			if check_for_death(self, "hit", {type = "punch",
-					puncher = hitter}) then
-				return
-			end
+		-- skip future functions if dead, except alerting others
+		if check_for_death(self, "hit", {type = "punch", puncher = hitter}) then
+			die = true
 		end
 
 		-- knock back effect (only on full punch)
-		if self.knock_back
+		if not die
+		and self.knock_back
 		and tflp >= punch_interval then
 
 			local v = self.object:get_velocity()
@@ -2524,7 +2519,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	end -- END if damage
 
 	-- if skittish then run away
-	if self.runaway == true then
+	if not die and self.runaway == true then
 
 		local lp = hitter:get_pos()
 		local s = self.object:get_pos()
@@ -2555,9 +2550,11 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	and hitter:get_player_name() ~= self.owner
 	and not mobs.invis[ name ] then
 
-		-- attack whoever punched mob
-		self.state = ""
-		do_attack(self, hitter)
+		if not die then
+			-- attack whoever punched mob
+			self.state = ""
+			do_attack(self, hitter)
+		end
 
 		-- alert others to the attack
 		local objs = minetest.get_objects_inside_radius(hitter:get_pos(), self.view_range)
