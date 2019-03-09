@@ -108,7 +108,7 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 		fixed = {-0.5,-0.5,-0.5, 0.5,1.4,0.5}
 	},
 	-- TODO: This should be breakable by 2 quick punches
-	groups = {handy=1, deco_block=1, dig_by_piston=1},
+	groups = {handy=1, deco_block=1, dig_by_piston=1, attached_node=1},
 	_mcl_hardness = 2,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_construct = function(pos)
