@@ -88,7 +88,7 @@ if minetest.get_modpath("screwdriver") then
 	on_rotate = screwdriver.disallow
 end
 
--- FIXME: The armor stand should be an entity
+-- TODO: The armor stand should be an entity
 minetest.register_node("3d_armor_stand:armor_stand", {
 	description = S("Armor Stand"),
 	_doc_items_longdesc = S("An armor stand is a decorative object which can display different pieces of armor. Anything which players can wear as armor can also be put on an armor stand."),
@@ -107,8 +107,8 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 		type = "fixed",
 		fixed = {-0.5,-0.5,-0.5, 0.5,1.4,0.5}
 	},
-	-- FIXME: This should be breakable by 2 quick punches
-	groups = {handy=1, deco_block=1},
+	-- TODO: This should be breakable by 2 quick punches
+	groups = {handy=1, deco_block=1, dig_by_piston=1},
 	_mcl_hardness = 2,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_construct = function(pos)
