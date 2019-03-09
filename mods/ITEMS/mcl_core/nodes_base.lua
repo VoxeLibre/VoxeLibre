@@ -730,7 +730,7 @@ minetest.register_node("mcl_core:goldblock", {
 
 minetest.register_node("mcl_core:diamondblock", {
 	description = S("Block of Diamond"),
-	_doc_items_longdesc = S("A block of diamond mostly a shiny decorational block but also useful as a compact storage of diamonds."),
+	_doc_items_longdesc = S("A block of diamond is mostly a shiny decorational block but also useful as a compact storage of diamonds."),
 	tiles = {"default_diamond_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
