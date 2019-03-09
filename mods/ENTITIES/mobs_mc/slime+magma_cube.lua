@@ -58,7 +58,7 @@ end
 local slime_big = {
 	type = "monster",
 	pathfinding = 1,
-	group_attack = true,
+	group_attack = { "mobs_mc:slime_big", "mobs_mc:slime_small", "mobs_mc:slime_tiny" },
 	hp_min = 16,
 	hp_max = 16,
 	collisionbox = {-1.02, -0.01, -1.02, 1.02, 2.03, 1.02},

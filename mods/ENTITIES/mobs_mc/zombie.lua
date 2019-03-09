@@ -65,8 +65,8 @@ local zombie = {
 	fear_height = 4,
 	pathfinding = 1,
 	jump = true,
-	--jump_height = 3,
-	group_attack = true,
+	jump_height = 4,
+	group_attack = { "mobs_mc:zombie", "mobs_mc:baby_zombie", "mobs_mc:husk", "mobs_mc:baby_husk" },
 	drops = drops_zombie,
 	animation = {
 		speed_normal = 25,		speed_run = 50,
@@ -75,7 +75,6 @@ local zombie = {
 		run_start = 0,		run_end = 40,
 	},
 	lava_damage = 4,
-	-- TODO: Burn mob only when in direct sunlight
 	sunlight_damage = 2,
 	view_range = 16,
 	attack_type = "dogfight",

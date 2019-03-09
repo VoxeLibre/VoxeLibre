@@ -78,6 +78,8 @@ functions needed for the mob to work properly which contains the following:
                          punches when nearby.
    'group_attack'        when true has same mob type grouping together to attack
                          offender.
+                         [MCL2 extension:] When a table, this is a list of
+                         mob types that will get alerted as well (besides same mob type)
    'attack_type'         tells the api what a mob does when attacking the player
                          or another mob:
       'dogfight'         is a melee attack when player is within mob reach.
@@ -221,6 +223,7 @@ functions needed for the mob to work properly which contains the following:
                                  spawning fails due to space requirements
       'glow' same as in entity definition
       'child' if true, spawn mob as child
+
 
 Node Replacement
 ----------------

@@ -2569,12 +2569,20 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
 			if obj then
 
-				-- only alert members of same mob
-				if obj.group_attack == true
+				-- only alert members of same mob or friends
+				if obj.group_attack
 				and obj.state ~= "attack"
-				and obj.owner ~= name
-				and obj.name == self.name then
-					do_attack(obj, hitter)
+				and obj.owner ~= name then
+					if obj.name == self.name then
+						do_attack(obj, hitter)
+					elseif type(obj.group_attack) == "table" then
+						for i=1, #obj.group_attack do
+							if obj.name == obj.group_attack[i] then
+								do_attack(obj, hitter)
+								break
+							end
+						end
+					end
 				end
 
 				-- have owned mobs attack player threat
