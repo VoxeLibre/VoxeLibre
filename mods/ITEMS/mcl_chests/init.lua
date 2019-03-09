@@ -71,15 +71,17 @@ local player_chest_close = function(player)
 end
 
 -- This is a helper function to register both chests and trapped chests. Trapped chests will make use of the additional parameters
-local register_chest = function(basename, desc, longdesc, usagehelp, tiles_table, hidden, mesecons, on_rightclick_addendum, on_rightclick_addendum_left, on_rightclick_addendum_right, drop, formspec_basename)
+local register_chest = function(basename, desc, longdesc, usagehelp, tiles_table, hidden, mesecons, on_rightclick_addendum, on_rightclick_addendum_left, on_rightclick_addendum_right, drop, canonical_basename)
 -- START OF register_chest FUNCTION BODY
 if not drop then
 	drop = "mcl_chests:"..basename
 else
 	drop = "mcl_chests:"..drop
 end
-if not formspec_basename then
-	formspec_basename = basename
+-- The basename of the "canonical" version of the node, if set (e.g.: trapped_chest_on → trapped_chest).
+-- Used to get a shared formspec ID and to swap the node back to the canonical version in on_construct.
+if not canonical_basename then
+	canonical_basename = basename
 end
 
 minetest.register_node("mcl_chests:"..basename, {
@@ -120,14 +122,16 @@ minetest.register_node("mcl_chests:"..basename, {
 		-- BEGIN OF LISTRING WORKAROUND
 		inv:set_size("input", 1)
 		-- END OF LISTRING WORKAROUND
-		if minetest.get_node(mcl_util.get_double_container_neighbor_pos(pos, param2, "right")).name == "mcl_chests:"..basename then
-			minetest.swap_node(pos, {name="mcl_chests:"..basename.."_right",param2=param2})
+		if minetest.get_node(mcl_util.get_double_container_neighbor_pos(pos, param2, "right")).name == "mcl_chests:"..canonical_basename then
+			minetest.swap_node(pos, {name="mcl_chests:"..canonical_basename.."_right",param2=param2})
 			local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "right")
-			minetest.swap_node(p, { name = "mcl_chests:"..basename.."_left", param2 = param2 })
-		elseif minetest.get_node(mcl_util.get_double_container_neighbor_pos(pos, param2, "left")).name == "mcl_chests:"..basename then
-			minetest.swap_node(pos, {name="mcl_chests:"..basename.."_left",param2=param2})
+			minetest.swap_node(p, { name = "mcl_chests:"..canonical_basename.."_left", param2 = param2 })
+		elseif minetest.get_node(mcl_util.get_double_container_neighbor_pos(pos, param2, "left")).name == "mcl_chests:"..canonical_basename then
+			minetest.swap_node(pos, {name="mcl_chests:"..canonical_basename.."_left",param2=param2})
 			local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "left")
-			minetest.swap_node(p, { name = "mcl_chests:"..basename.."_right", param2 = param2 })
+			minetest.swap_node(p, { name = "mcl_chests:"..canonical_basename.."_right", param2 = param2 })
+		else
+			minetest.swap_node(pos, { name = "mcl_chests:"..canonical_basename, param2 = param2 })
 		end
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
@@ -170,7 +174,7 @@ minetest.register_node("mcl_chests:"..basename, {
 
 	on_rightclick = function(pos, node, clicker)
 		minetest.show_formspec(clicker:get_player_name(),
-		"mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
+		"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 		"size[9,8.75]"..
 		mcl_vars.inventory_header..
 		"background[-0.19,-0.25;9.41,10.48;mcl_chests_inventory_chest.png]"..
@@ -189,7 +193,7 @@ minetest.register_node("mcl_chests:"..basename, {
 	on_destruct = function(pos)
 		local players = minetest.get_connected_players()
 		for p=1, #players do
-			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
+			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
 		end
 	end,
 	mesecons = mesecons,
@@ -208,8 +212,8 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		local n = minetest.get_node(pos)
 		local param2 = n.param2
 		local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "left")
-		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_right" then
-			n.name = "mcl_chests:"..basename
+		if not p or minetest.get_node(p).name ~= "mcl_chests:"..canonical_basename.."_right" then
+			n.name = "mcl_chests:"..canonical_basename
 			minetest.swap_node(pos, n)
 		end
 	end,
@@ -221,7 +225,7 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 
 		local players = minetest.get_connected_players()
 		for p=1, #players do
-			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
+			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
 		end
 
 		local param2 = n.param2
@@ -230,7 +234,7 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 			return
 		end
 		for pl=1, #players do
-			minetest.close_formspec(players[pl]:get_player_name(), "mcl_chests:"..formspec_basename.."_"..p.x.."_"..p.y.."_"..p.z)
+			minetest.close_formspec(players[pl]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..p.x.."_"..p.y.."_"..p.z)
 		end
 		minetest.swap_node(p, { name = "mcl_chests:"..basename, param2 = param2 })
 	end,
@@ -304,7 +308,7 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
 
 		minetest.show_formspec(clicker:get_player_name(),
-		"mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
+		"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 		"size[9,11.5]"..
 		"background[-0.19,-0.25;9.41,12.5;mcl_chests_inventory_chest_large.png]"..
 		mcl_vars.inventory_header..
@@ -341,8 +345,8 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		local n = minetest.get_node(pos)
 		local param2 = n.param2
 		local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "right")
-		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_left" then
-			n.name = "mcl_chests:"..basename
+		if not p or minetest.get_node(p).name ~= "mcl_chests:"..canonical_basename.."_left" then
+			n.name = "mcl_chests:"..canonical_basename
 			minetest.swap_node(pos, n)
 		end
 	end,
@@ -354,7 +358,7 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 
 		local players = minetest.get_connected_players()
 		for p=1, #players do
-			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
+			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
 		end
 
 		local param2 = n.param2
@@ -363,7 +367,7 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 			return
 		end
 		for pl=1, #players do
-			minetest.close_formspec(players[pl]:get_player_name(), "mcl_chests:"..formspec_basename.."_"..p.x.."_"..p.y.."_"..p.z)
+			minetest.close_formspec(players[pl]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..p.x.."_"..p.y.."_"..p.z)
 		end
 		minetest.swap_node(p, { name = "mcl_chests:"..basename, param2 = param2 })
 	end,
@@ -437,7 +441,7 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
 
 		minetest.show_formspec(clicker:get_player_name(),
-		"mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
+		"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 
 		"size[9,11.5]"..
 		"background[-0.19,-0.25;9.41,12.5;mcl_chests_inventory_chest_large.png]"..

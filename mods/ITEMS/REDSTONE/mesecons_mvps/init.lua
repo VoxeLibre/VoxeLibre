@@ -347,12 +347,6 @@ mesecon.register_mvps_stopper("mcl_anvils:anvil")
 mesecon.register_mvps_stopper("mcl_anvils:anvil_damage_1")
 mesecon.register_mvps_stopper("mcl_anvils:anvil_damage_2")
 -- Would screw up on/off state of trapped chest (big problem)
-mesecon.register_mvps_stopper("mcl_chests:trapped_chest")
-mesecon.register_mvps_stopper("mcl_chests:trapped_chest_left")
-mesecon.register_mvps_stopper("mcl_chests:trapped_chest_right")
-mesecon.register_mvps_stopper("mcl_chests:trapped_chest_on")
-mesecon.register_mvps_stopper("mcl_chests:trapped_chest_on_left")
-mesecon.register_mvps_stopper("mcl_chests:trapped_chest_on_right")
 
 -- Glazed terracotta: unpullable
 mesecon.register_mvps_unsticky("mcl_colorblocks:glazed_terracotta_red")
