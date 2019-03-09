@@ -9,6 +9,8 @@ local generate_fallen_logs = minetest.settings:get_bool("mcl_generate_fallen_log
 -- Jungle bush schematic. In PC/Java Edition it's Jungle Wood + Oak Leaves
 local jungle_bush_schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_jungle_bush_oak_leaves.mts"
 
+local chorus_plant_deco_id
+
 --
 -- Register biomes
 --
@@ -1697,8 +1699,6 @@ local function register_dimension_ores()
 		clust_scarcity = 1,
 	})
 
-
-
 end
 
 
@@ -3240,7 +3240,38 @@ end
 
 -- Decorations in non-Overworld dimensions
 local function register_dimension_decorations()
-	-- TODO
+	--[[ NETHER ]]
+	-- TODO: Nether 
+
+	--[[ THE END ]]
+
+	-- Chorus plant
+	minetest.register_decoration({
+		name = "mcl_biomes:chorus_plant",
+		deco_type = "simple",
+		place_on = {"mcl_end:end_stone", "air"},
+		flags = "all_floors",
+		sidelen = 16,
+		noise_params = {
+			offset = -0.012,
+			scale = 0.024,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 257,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = mcl_vars.mg_end_min,
+		y_max = mcl_vars.mg_end_max,
+		decoration = "mcl_end:chorus_flower",
+		height = 1,
+		biomes = { "End" },
+	})
+
+	deco_id_chorus_plant = minetest.get_decoration_id("mcl_biomes:chorus_plant")
+	minetest.set_gen_notify({decoration=true}, { deco_id_chorus_plant })
+
+	-- TODO: End cities
+
 end
 
 
@@ -3273,5 +3304,17 @@ if mg_name ~= "singlenode" then
 	register_dimension_decorations()
 
 	-- Overworld decorations for v6 are handled in mcl_mapgen_core
+
+	if deco_id_chorus_plant then
+		minetest.register_on_generated(function(minp, maxp, blockseed)
+			local gennotify = minetest.get_mapgen_object("gennotify")
+			local poslist = {}
+			for _, pos in ipairs(gennotify["decoration#"..deco_id_chorus_plant] or {}) do
+				local realpos = { x = pos.x, y = pos.y + 1, z = pos.z }
+				mcl_end.grow_chorus_plant(realpos)
+			end
+		end)
+	end
+
 end
 
