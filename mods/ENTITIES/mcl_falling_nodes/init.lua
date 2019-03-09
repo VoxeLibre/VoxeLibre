@@ -200,14 +200,18 @@ minetest.register_entity(":__builtin:falling_node", {
 				for _, callback in pairs(minetest.registered_on_dignodes) do
 					callback(np, n2)
 				end
-				if minetest.registered_nodes[self.node.name] then
+				local def = minetest.registered_nodes[self.node.name]
+				if def then
 					minetest.add_node(np, self.node)
-					if minetest.registered_nodes[self.node.name]._mcl_after_falling then
-						minetest.registered_nodes[self.node.name]._mcl_after_falling(np, get_falling_depth(self))
+					if def._mcl_after_falling then
+						def._mcl_after_falling(np, get_falling_depth(self))
 					end
 					if self.meta then
 						local meta = minetest.get_meta(np)
 						meta:from_table(self.meta)
+					end
+					if def.sounds and def.sounds.place and def.sounds.place.name then
+						minetest.sound_play(def.sounds.place, {pos = np})
 					end
 				end
 			else
@@ -238,8 +242,14 @@ minetest.register_entity(":__builtin:falling_node", {
 				local npos3 = table.copy(npos)
 				npos3.y = npos3.y - 1
 				minetest.add_node(npos3, self.node)
-				if minetest.registered_nodes[self.node.name]._mcl_after_falling then
-					minetest.registered_nodes[self.node.name]._mcl_after_falling(npos3, get_falling_depth(self))
+				local def = minetest.registered_nodes[self.node.name]
+				if def then
+					if def._mcl_after_falling then
+						def._mcl_after_falling(npos3, get_falling_depth(self))
+					end
+					if def.sounds and def.sounds.place and def.sounds.place.name then
+						minetest.sound_play(def.sounds.place, {pos = np})
+					end
 				end
 				deal_falling_damage(self, dtime)
 				self.object:remove()
