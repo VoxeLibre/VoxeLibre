@@ -1,4 +1,5 @@
 local mg_name = minetest.get_mapgen_setting("mg_name")
+local mg_seed = minetest.get_mapgen_setting("seed")
 
 -- Some mapgen settings
 local superflat = mg_name == "flat" and minetest.get_mapgen_setting("mcl_superflat_classic") == "true"
@@ -1627,7 +1628,7 @@ local function register_dimension_ores()
 			offset  = mcl_vars.mg_end_min+70,
 			scale   = -1,
 			spread  = {x=126, y=126, z=126},
-			seed    = 9999,
+			seed    = mg_seed+9999,
 			octaves = 3,
 			persist = 0.5,
 		},
@@ -1636,7 +1637,7 @@ local function register_dimension_ores()
 			offset  = -2,
 			scale   = 10,
 			spread  = {x=126, y=126, z=126},
-			seed    = 9999,
+			seed    = mg_seed+9999,
 			octaves = 3,
 			persist = 0.5,
 		},
@@ -1654,7 +1655,7 @@ local function register_dimension_ores()
 			offset  = mcl_vars.mg_end_min+72,
 			scale   = -3,
 			spread  = {x=84, y=84, z=84},
-			seed    = 999,
+			seed    = mg_seed+999,
 			octaves = 4,
 			persist = 0.8,
 		},
@@ -1663,7 +1664,7 @@ local function register_dimension_ores()
 			offset  = -4,
 			scale   = 10,
 			spread  = {x=84, y=84, z=84},
-			seed    = 999,
+			seed    = mg_seed+999,
 			octaves = 4,
 			persist = 0.8,
 		},
@@ -1680,7 +1681,7 @@ local function register_dimension_ores()
 			offset  = mcl_vars.mg_end_min+70,
 			scale   = -2,
 			spread  = {x=84, y=84, z=84},
-			seed    = 99,
+			seed    = mg_seed+99,
 			octaves = 4,
 			persist = 0.85,
 		},
@@ -1689,7 +1690,7 @@ local function register_dimension_ores()
 			offset  = -3,
 			scale   = 5,
 			spread  = {x=63, y=63, z=63},
-			seed    = 50,
+			seed    = mg_seed+50,
 			octaves = 4,
 			persist = 0.85,
 		},
