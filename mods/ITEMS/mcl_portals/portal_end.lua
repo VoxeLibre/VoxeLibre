@@ -239,9 +239,13 @@ minetest.register_abm({
 				local target
 				if dim == "end" then
 					-- End portal in the End:
-					-- Teleport back to the player's spawn in the Overworld.
+					-- Teleport back to the player's spawn or world spawn in the Overworld.
 
-					target = mcl_spawn.get_spawn_pos(obj)
+					if obj:is_player() then
+						target = mcl_spawn.get_spawn_pos(obj)
+					else
+						target = mcl_spawn.get_world_spawn_pos(obj)
+					end
 				else
 					-- End portal in any other dimension:
 					-- Teleport to the End at a fixed position and generate a

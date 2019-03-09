@@ -2,10 +2,39 @@ mcl_spawn = {}
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
--- Returns current custom spawn position of player.
--- Returns nil if player has no custom spawn position.
--- If player is nil or not a player, the default spawn point is returned.
--- The second return value is true if spawn point is player-chosen,
+local cached_world_spawn
+
+mcl_spawn.get_world_spawn_pos = function()
+	local spawn
+	spawn = minetest.setting_get_pos("static_spawnpoint")
+	if spawn then
+		return spawn
+	end
+	if cached_world_spawn then
+		return cached_world_spawn
+	end
+	-- 32 attempts to find a suitable spawn point
+	spawn = { x=math.random(-16, 16), y=8, z=math.random(-16, 16) }
+	for i=1, 32 do
+		local y = minetest.get_spawn_level(spawn.x, spawn.z)
+		if y then
+			spawn.y = y
+			cached_world_spawn = spawn
+			minetest.log("action", "[mcl_spawn] Dynamic world spawn determined to be "..minetest.pos_to_string(spawn))
+			return spawn
+		end
+		-- Random walk
+		spawn.x = spawn.x + math.random(-64, 64)
+		spawn.z = spawn.z + math.random(-64, 64)
+	end
+	minetest.log("action", "[mcl_spawn] Failed to determine dynamic world spawn!")
+	-- Use dummy position if nothing found
+	return { x=math.random(-16, 16), y=8, z=math.random(-16, 16) }
+end
+
+-- Returns a spawn position of player.
+-- If player is nil or not a player, a world spawn point is returned.
+-- The second return value is true if returned spawn point is player-chosen,
 -- false otherwise.
 mcl_spawn.get_spawn_pos = function(player)
 	local spawn, custom_spawn = nil, false
@@ -17,22 +46,8 @@ mcl_spawn.get_spawn_pos = function(player)
 		end
 	end
 	if not spawn or spawn == "" then
-		spawn = minetest.setting_get_pos("static_spawnpoint")
+		spawn = mcl_spawn.get_world_spawn_pos()
 		custom_spawn = false
-	end
-	-- We are getting desperate ...
-	-- Use the first spawn point of the player
-	if not spawn or spawn == "" then
-		local attr = player:get_meta():get_string("mcl_spawn:first_spawn")
-		if attr ~= nil and attr ~= "" then
-			-- Adjust Y
-			spawn = minetest.string_to_pos(attr)
-			local y = minetest.get_spawn_level(spawn.x, spawn.z)
-			if y then
-				spawn.y = y
-			end
-			custom_spawn = false
-		end
 	end
 	return spawn, custom_spawn
 end
@@ -103,10 +118,5 @@ minetest.register_on_respawnplayer(function(player)
 			minetest.chat_send_player(player:get_player_name(), "Your spawn bed was missing or blocked.")
 		end
 	end
-end)
-
-minetest.register_on_newplayer(function(player)
-	-- Remember where the player spawned first
-	player:get_meta():set_string("mcl_spawn:first_spawn", minetest.pos_to_string(player:get_pos()))
 end)
 
