@@ -1,19 +1,32 @@
 mcl_hunger.registered_foods = {}
 
+function mcl_hunger.init_player(player)
+	local meta = player:get_meta()
+	if meta:get_string("mcl_hunger:hunger") == "" then
+		meta:set_string("mcl_hunger:hunger", tostring(20))
+	end
+	if meta:get_string("mcl_hunger:saturation") == "" then
+		meta:set_string("mcl_hunger:saturation", tostring(mcl_hunger.SATURATION_INIT))
+	end
+	if meta:get_string("mcl_hunger:exhaustion") == "" then
+		meta:set_string("mcl_hunger:exhaustion", tostring(0))
+	end
+end
+
 if mcl_hunger.active then
 	function mcl_hunger.get_hunger(player)
-		local hunger = player:get_meta():get_string("mcl_hunger:hunger") or 20
-		return tonumber(hunger)
+		local hunger = tonumber(player:get_meta():get_string("mcl_hunger:hunger")) or 20
+		return hunger
 	end
 
 	function mcl_hunger.get_saturation(player)
-		local saturation = player:get_meta():get_string("mcl_hunger:saturation") or mcl_hunger.SATURATION_INIT
-		return tonumber(saturation)
+		local saturation = tonumber(player:get_meta():get_string("mcl_hunger:saturation")) or mcl_hunger.SATURATION_INIT
+		return saturation
 	end
 
 	function mcl_hunger.get_exhaustion(player)
-		local exhaustion = player:get_meta():get_string("mcl_hunger:exhaustion") or 0
-		return tonumber(exhaustion)
+		local exhaustion = tonumber(player:get_meta():get_string("mcl_hunger:exhaustion")) or 0
+		return exhaustion
 	end
 
 	function mcl_hunger.set_hunger(player, hunger, update_hudbars)

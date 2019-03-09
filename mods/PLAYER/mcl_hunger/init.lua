@@ -96,15 +96,9 @@ if mcl_hunger.debug then
 	hb.register_hudbar("exhaustion", 0xFFFFFF, S("Exhaust."), { icon = "mcl_hunger_icon_exhaustion.png", bgicon = "mcl_hunger_bgicon_exhaustion.png", bar = "mcl_hunger_bar_exhaustion.png" }, 0, mcl_hunger.EXHAUST_LVL, false, S("%s: %d/%d"))
 end
 
-minetest.register_on_newplayer(function(player)
-	local name = player:get_player_name()
-	mcl_hunger.set_hunger(player, 20, false)
-	mcl_hunger.set_saturation(player, mcl_hunger.SATURATION_INIT, false)
-	mcl_hunger.set_exhaustion(player, 0, false)
-end)
-
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
+	mcl_hunger.init_player(player)
 	init_hud(player)
 	mcl_hunger.poison_damage[name] = 0
 	mcl_hunger.poison_hunger[name] = 0
@@ -193,6 +187,7 @@ end)
 else
 
 minetest.register_on_joinplayer(function(player)
+	mcl_hunger.init_player(player)
 	mcl_hunger.last_eat[player:get_player_name()] = -1
 end)
 
