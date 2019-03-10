@@ -88,7 +88,7 @@ end
 minetest.register_node("mcl_end:chorus_flower", {
 	description = S("Chorus Flower"),
 	_doc_items_longdesc = S("A chorus flower is the living part of a chorus plant. It can grow into a tall chorus plant, step by step. When it grows, it may die on old age eventually. It also dies when it is unable to grow."),
-	_doc_items_usagehelp = S("Place it and wait for it to grow. It can only be placed on top of end stone, on top of a chorus plant stem, or at the side of exactly a chorus plant stem."),
+	_doc_items_usagehelp = S("Place it and wait for it to grow. It can only be placed on top of end stone, on top of a chorus plant stem, or at the side of exactly one chorus plant stem."),
 	tiles = {
 		"mcl_end_chorus_flower.png",
 		"mcl_end_chorus_flower.png",

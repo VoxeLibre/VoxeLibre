@@ -18,15 +18,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_end:end_stone",
-		recipe = {
-		{ "mcl_core:sandstone", "mcl_core:stone", "mcl_core:sandstone" },
-		{ "mcl_core:stone", "mcl_core:sandstone", "mcl_core:stone" },
-		{ "mcl_core:sandstone", "mcl_core:stone", "mcl_core:sandstone" },
-	},
-})
-
-minetest.register_craft({
 	output = "mcl_ocean:prismarine_shard",
 	recipe = {
 		{ "mcl_core:glass_cyan", },
@@ -37,15 +28,6 @@ minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_ocean:prismarine_crystals",
 	recipe = { "mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard", "mcl_core:gold_ingot" },
-})
-
-minetest.register_craft({
-	output = "mcl_end:chorus_flower",
-	recipe = {
-		{ "mcl_flowers:allium", "mcl_end:end_stone", "mcl_flowers:allium" },
-		{ "mcl_end:end_stone", "mcl_end:end_stone", "mcl_end:end_stone" },
-		{ "mcl_flowers:allium", "mcl_end:end_stone", "mcl_flowers:allium" },
-	},
 })
 
 minetest.register_craft({
