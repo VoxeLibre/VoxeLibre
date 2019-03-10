@@ -1270,7 +1270,7 @@ local function register_biome_ores()
 			clust_size     = 3,
 			y_min          = mcl_worlds.layer_to_y(32),
 			y_max          = mcl_worlds.layer_to_y(79),
-			biomes         = { "Mesa", "Mesa_sandlevel", "Mesa_ocean", "MesaPlateauF", "MesaPlateauF_sandlevel", "MesaPlatauF_ocean" },
+			biomes         = { "Mesa", "Mesa_sandlevel", "Mesa_ocean", "MesaPlateauF", "MesaPlateauF_sandlevel", "MesaPlateauF_ocean" },
 		})
 	end
 end
@@ -1334,23 +1334,21 @@ local function register_biomelike_ores()
 	})
 
 
-	-- Small hack to make sure stone appears at ca. sea level in Mesa biomes
+	-- For a transition from stone to hardened clay in mesa biomes that is not perfectly flat
 	minetest.register_ore({
-		ore_type = "sheet",
+		ore_type = "stratum",
 		ore = "mcl_core:stone",
-		noise_threshold = -100,
-		noise_params = {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, octaves=1, persist=1.00},
+		wherein = {"group:hardened_clay"},
+		noise_params = {offset=-6, scale=2, spread={x=25, y=25, z=25}, octaves=1, persist=0.60},
+		stratum_thickness = 8,
 		biomes = {
-			"Mesa", "Mesa_sandlevel", "Mesa_ocean", "Mesa_deep_ocean", "Mesa_underground",
-			"MesaPlateauF", "MesaPlateauF_sandlevel", "MesaPlateauF_ocean", "MesaPlateauF_deep_ocean", "MesaPlateauF_underground",
+			"Mesa_sandlevel", "Mesa_ocean",
+			"MesaPlateauF_sandlevel", "MesaPlateauF_ocean",
 		},
-		wherein = {"mcl_colorblocks:hardened_clay"},
-		column_height_min = 32,
-		column_height_max = 32,
-		y_min = -32,
+		y_min = -4,
 		y_max = 0,
-	})
 
+	})
 
 
 	-- Mesa strata (registered as sheet ores)
