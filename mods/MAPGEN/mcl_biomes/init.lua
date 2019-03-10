@@ -1270,7 +1270,7 @@ local function register_biome_ores()
 			clust_size     = 3,
 			y_min          = mcl_worlds.layer_to_y(32),
 			y_max          = mcl_worlds.layer_to_y(79),
-			biomes         = { "Mesa", "Mesa_sandlevel", "Mesa_ocean" },
+			biomes         = { "Mesa", "Mesa_sandlevel", "Mesa_ocean", "MesaPlateauF", "MesaPlateauF_sandlevel", "MesaPlatauF_ocean" },
 		})
 	end
 end
