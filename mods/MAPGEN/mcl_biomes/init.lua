@@ -70,7 +70,6 @@ local function register_biomes()
 	* Taiga M
 	* Roofed Forest M
 	* Swampland M
-	* Mesa Plateau F M
 	* Extreme Hills Edge
 
 	TODO:
@@ -864,7 +863,7 @@ local function register_biomes()
 		depth_top = 1,
 		node_filler = "mcl_colorblocks:hardened_clay",
 		node_riverbed = "mcl_core:redsand",
-		depth_riverbed = 1,
+		depth_riverbed = 2,
 		node_stone = "mcl_colorblocks:hardened_clay",
 		y_min = 12,
 		y_max = 29,
@@ -880,7 +879,7 @@ local function register_biomes()
 		depth_top = 1,
 		node_filler = "mcl_core:coarse_dirt",
 		depth_filler = 2,
-		node_riverbed = "mcl_core:dirt",
+		node_riverbed = "mcl_core:redsand",
 		depth_riverbed = 1,
 		node_stone = "mcl_colorblocks:hardened_clay",
 		y_min = 30,
@@ -911,9 +910,9 @@ local function register_biomes()
 		node_top = "mcl_core:sand",
 		depth_top = 3,
 		node_filler = "mcl_colorblocks:sand",
-		depth_filler = 2,
+		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
-		depth_riverbed = 2,
+		depth_riverbed = 3,
 		y_min = OCEAN_MIN,
 		y_max = -3,
 		humidity_point = -4,
