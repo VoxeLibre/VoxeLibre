@@ -802,6 +802,27 @@ local function register_mgv6_decorations()
 		y_max = mcl_vars.overworld_max,
 	})
 
+	-- Melon
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:grass_block_no_snow"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.002,
+			scale = 0.006,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 333,
+			octaves = 3,
+			persist = 0.6
+		},
+		-- Small trick to make sure melon spawn in jungles
+		spawn_by = { "mcl_core:jungletree", "mcl_flowers:fern" },
+		num_spawn_by = 1,
+		y_min = 1,
+		y_max = 40,
+		decoration = "mcl_farming:melon",
+	})
+
 	-- Tall grass
 	minetest.register_decoration({
 		deco_type = "simple",
@@ -932,7 +953,7 @@ local function register_mgv6_decorations()
 	-- Put top snow on snowy grass blocks. The v6 mapgen does not generate the top snow on its own.
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"mcl_core:dirt_with_grass_snow"},
+		place_on = {"group:grass_block_snow"},
 		sidelen = 16,
 		fill_ratio = 11.0, -- complete coverage
 		y_min = 1,
