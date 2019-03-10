@@ -116,6 +116,7 @@ local function register_biomes()
 		"SavannaM",
 		"Mesa",
 		"MesaPlateauF",
+		"MesaPlateauFM",
 	}
 
 	local OCEAN_MIN = -15
@@ -855,6 +856,71 @@ local function register_biomes()
 		heat_point = 60,
 	})
 
+	-- Mesa Plateau FM
+	-- Variant of MesaPlateauF: fewer trees, more coarse dirt, more erratic terrain, more sand, red sandstone at sandlevel
+	minetest.register_biome({
+		name = "MesaPlateauFM",
+		node_top = "mcl_colorblocks:hardened_clay",
+		depth_top = 1,
+		node_filler = "mcl_colorblocks:hardened_clay",
+		node_riverbed = "mcl_core:redsand",
+		depth_riverbed = 1,
+		node_stone = "mcl_colorblocks:hardened_clay",
+		y_min = 12,
+		y_max = 29,
+		humidity_point = -4,
+		heat_point = 80,
+		vertical_blend = 5,
+	})
+
+	-- Grass plateau
+	minetest.register_biome({
+		name = "MesaPlateauFM_grasstop",
+		node_top = "mcl_core:dirt_with_dry_grass",
+		depth_top = 1,
+		node_filler = "mcl_core:coarse_dirt",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:dirt",
+		depth_riverbed = 1,
+		node_stone = "mcl_colorblocks:hardened_clay",
+		y_min = 30,
+		y_max = mcl_vars.mg_overworld_max,
+		humidity_point = -4,
+		heat_point = 80,
+	})
+
+	-- Helper biome for the red sand at the bottom.
+	minetest.register_biome({
+		name = "MesaPlateauFM_sandlevel",
+		node_top = "mcl_core:redsand",
+		depth_top = 2,
+		node_filler = "mcl_colorblocks:hardened_clay_orange",
+		depth_filler = 3,
+		node_riverbed = "mcl_core:redsand",
+		depth_riverbed = 2,
+		node_stone = "mcl_colorblocks:hardened_clay_orange",
+		-- sand has wider reach than in other mesa biomes
+		y_min = -4,
+		y_max = 11,
+		humidity_point = -4,
+		heat_point = 80,
+		vertical_blend = 4,
+	})
+	minetest.register_biome({
+		name = "MesaPlateauFM_ocean",
+		node_top = "mcl_core:sand",
+		depth_top = 3,
+		node_filler = "mcl_colorblocks:sand",
+		depth_filler = 2,
+		node_riverbed = "mcl_core:sand",
+		depth_riverbed = 2,
+		y_min = OCEAN_MIN,
+		y_max = -3,
+		humidity_point = -4,
+		heat_point = 80,
+	})
+
+
 	-- Savanna
 	minetest.register_biome({
 		name = "Savanna",
@@ -1270,7 +1336,9 @@ local function register_biome_ores()
 			clust_size     = 3,
 			y_min          = mcl_worlds.layer_to_y(32),
 			y_max          = mcl_worlds.layer_to_y(79),
-			biomes         = { "Mesa", "Mesa_sandlevel", "Mesa_ocean", "MesaPlateauF", "MesaPlateauF_sandlevel", "MesaPlateauF_ocean" },
+			biomes         = { "Mesa", "Mesa_sandlevel", "Mesa_ocean",
+					"MesaPlateauF", "MesaPlateauF_sandlevel", "MesaPlateauF_ocean",
+					"MesaPlateauFM", "MesaPlateauFM_sandlevel", "MesaPlateauFM_ocean", },
 		})
 	end
 end
@@ -1316,6 +1384,74 @@ local function register_biomelike_ores()
 		y_max		= mcl_vars.mg_overworld_max,
 		biomes = { "MesaPlateauF_grasstop" },
 	})
+	minetest.register_ore({
+		ore_type	= "sheet",
+		ore		= "mcl_core:coarse_dirt",
+		wherein		= {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt"},
+		column_height_max = 1,
+		column_midpoint_factor = 0.0,
+		y_min		= mcl_vars.mg_overworld_min,
+		y_max		= mcl_vars.mg_overworld_max,
+		noise_threshold = -2.5,
+		noise_params = {offset=1, scale=15, spread={x=250, y=250, z=250}, seed=24, octaves=3, persist=0.80},
+		biomes = { "MesaPlateauFM_grasstop" },
+	})
+	minetest.register_ore({
+		ore_type	= "blob",
+		ore		= "mcl_core:coarse_dirt",
+		wherein		= {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt"},
+		clust_scarcity	= 1800,
+		clust_num_ores	= 65,
+		clust_size	= 15,
+		y_min		= mcl_vars.mg_overworld_min,
+		y_max		= mcl_vars.mg_overworld_max,
+		biomes = { "MesaPlateauFM_grasstop" },
+	})
+	-- Occasionally dig out portions of MesaPlateauFM
+	minetest.register_ore({
+		ore_type	= "blob",
+		ore		= "air",
+		wherein		= {"group:hardened_clay", "group:sand","mcl_core:coarse_dirt"},
+		clust_scarcity	= 4000,
+		clust_size	= 5,
+		y_min		= mcl_vars.mg_overworld_min,
+		y_max		= mcl_vars.mg_overworld_max,
+		biomes = { "MesaPlateauFM", "MesaPlateauFM_grasstop" },
+	})
+	minetest.register_ore({
+		ore_type	= "blob",
+		ore		= "mcl_core:redsandstone",
+		wherein		= {"mcl_colorblocks:hardened_clay_orange"},
+		clust_scarcity	= 300,
+		clust_size	= 8,
+		y_min		= mcl_vars.mg_overworld_min,
+		y_max		= mcl_vars.mg_overworld_max,
+		biomes = { "MesaPlateauFM_sandlevel" },
+	})
+	-- More red sand in MesaPlateauFM
+	minetest.register_ore({
+		ore_type	= "sheet",
+		ore		= "mcl_core:redsand",
+		wherein		= {"group:hardened_clay"},
+		clust_scarcity	= 1,
+		clust_num_ores	= 12,
+		clust_size	= 10,
+		y_min		= mcl_vars.mg_overworld_min,
+		y_max		= mcl_vars.mg_overworld_max,
+		noise_threshold = 0.1,
+		noise_params = {offset=0, scale=15, spread={x=130, y=130, z=130}, seed=95, octaves=3, persist=0.70},
+		biomes = { "MesaPlateauFM" },
+	})
+	minetest.register_ore({
+		ore_type	= "blob",
+		ore		= "mcl_core:redsand",
+		wherein		= {"group:hardened_clay"},
+		clust_scarcity	= 1500,
+		clust_size	= 4,
+		y_min		= mcl_vars.mg_overworld_min,
+		y_max		= mcl_vars.mg_overworld_max,
+		biomes = { "MesaPlateauFM", "MesaPlateauFM_grasstop", "MesaPlateauFM_sandlevel" },
+	})
 
 	-- Small dirt patches in Extreme Hills M
 	minetest.register_ore({
@@ -1332,8 +1468,6 @@ local function register_biomelike_ores()
 		noise_params = {offset=0, scale=5, spread={x=250, y=250, z=250}, seed=64, octaves=3, persist=0.60},
 		biomes = { "ExtremeHillsM" },
 	})
-
-
 	-- For a transition from stone to hardened clay in mesa biomes that is not perfectly flat
 	minetest.register_ore({
 		ore_type = "stratum",
@@ -1344,6 +1478,7 @@ local function register_biomelike_ores()
 		biomes = {
 			"Mesa_sandlevel", "Mesa_ocean",
 			"MesaPlateauF_sandlevel", "MesaPlateauF_ocean",
+			"MesaPlateauFM_sandlevel", "MesaPlateauFM_ocean",
 		},
 		y_min = -4,
 		y_max = 0,
@@ -1914,6 +2049,25 @@ local function register_decorations()
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
+	minetest.register_decoration({
+		deco_type = "schematic",
+		place_on = {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.008,
+			scale = 0.002,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 2,
+			octaves = 3,
+			persist = 0.7
+		},
+		biomes = {"MesaPlateauFM_grasstop"},
+		y_min = 30,
+		y_max = mcl_vars.mg_overworld_max,
+		schematic = minetest.get_modpath("mcl_core").."/schematics/mcl_core_oak_classic.mts",
+		flags = "place_center_x, place_center_z",
+		rotation = "random",
+	})
 
 	minetest.register_decoration({
 		deco_type = "schematic",
@@ -2448,7 +2602,10 @@ local function register_decorations()
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
 		decoration = "mcl_core:cactus",
-		biomes = {"Desert","Mesa","Mesa_sandlevel","MesaPlateauF","MesaPlateauF_sandlevel"},
+		biomes = {"Desert",
+			"Mesa","Mesa_sandlevel",
+			"MesaPlateauF","MesaPlateauF_sandlevel",
+			"MesaPlateauFM","MesaPlateauFM_sandlevel"},
 		height = 1,
 		height_max = 3,
 	})
@@ -2970,7 +3127,8 @@ local function register_decorations()
 	local grass_mpf = {"MesaPlateauF_grasstop"}
 	local grass_plains = {"Plains", "SunflowerPlains", "JungleEdge", "JungleEdgeM" }
 	local grass_savanna = {"Savanna", "SavannaM"}
-	local grass_sparse = {"ExtremeHills", "ExtremeHills+", "ExtremeHills+_snowtop", "ExtremeHillsM", "Jungle", }
+	local grass_sparse = {"ExtremeHills", "ExtremeHills+", "ExtremeHills+_snowtop", "ExtremeHillsM", "Jungle" }
+	local grass_mpfm = {"MesaPlateauFM_grasstop" }
 
 	register_grass_decoration("tallgrass", -0.03,  0.09, grass_forest)
 	register_grass_decoration("tallgrass", -0.015, 0.075, grass_forest)
@@ -2988,6 +3146,7 @@ local function register_decorations()
 	register_grass_decoration("tallgrass", 0.09, -0.03, grass_plains)
 	register_grass_decoration("tallgrass", 0.18, -0.03, grass_savanna, dry_index)
 	register_grass_decoration("tallgrass", 0.05, -0.03, grass_sparse)
+	register_grass_decoration("tallgrass", 0.05, 0.05, grass_mpfm, dry_index)
 
 	local fern_minimal = { "Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "MegaTaiga", "MegaSpruceTaiga", "ColdTaiga" }
 	local fern_low = { "Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "MegaTaiga", "MegaSpruceTaiga" }
@@ -3060,7 +3219,7 @@ local function register_decorations()
 		place_on = {"group:sand", "mcl_core:podzol", "mcl_core:dirt", "mcl_core:dirt_with_dry_grass", "mcl_core:coarse_dirt", "group:hardened_clay"},
 		sidelen = 16,
 		noise_params = {
-			offset = 0,
+			offset = 0.0,
 			scale = 0.035,
 			spread = {x = 100, y = 100, z = 100},
 			seed = 1972,
@@ -3070,6 +3229,60 @@ local function register_decorations()
 		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
 		biomes = {"Desert", "Mesa", "Mesa_sandlevel", "MesaPlateauF", "MesaPlateauF_sandlevel", "MesaPlateauF_grasstop", "Taiga", "MegaTaiga"},
+		decoration = "mcl_core:deadbush",
+		height = 1,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:sand", "mcl_core:dirt", "mcl_core:dirt_with_dry_grass", "mcl_core:coarse_dirt"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.1,
+			scale = 0.035,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 1972,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		biomes = {"MesaPlateauFM_grasstop"},
+		decoration = "mcl_core:deadbush",
+		height = 1,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:sand"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.045,
+			scale = 0.055,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 1972,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		biomes = {"MesaPlateauFM","MesaPlateauFM_sandlevel"},
+		decoration = "mcl_core:deadbush",
+		height = 1,
+	})
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:hardened_clay"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.010,
+			scale = 0.035,
+			spread = {x = 100, y = 100, z = 100},
+			seed = 1972,
+			octaves = 3,
+			persist = 0.6
+		},
+		y_min = 4,
+		y_max = mcl_vars.mg_overworld_max,
+		biomes = {"MesaPlateauFM", "MesaPlateauFM_sandlevel", "MesaPlateauFM_grasstop"},
 		decoration = "mcl_core:deadbush",
 		height = 1,
 	})
