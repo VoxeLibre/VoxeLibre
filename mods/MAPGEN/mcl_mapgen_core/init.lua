@@ -934,6 +934,17 @@ local function register_mgv6_decorations()
 	register_mgv6_flower("oxeye_daisy", 3490)
 	register_mgv6_flower("poppy", 9439)
 
+	-- Put top snow on snowy grass blocks. The v6 mapgen does not generate the top snow on its own.
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"mcl_core:dirt_with_grass_snow"},
+		sidelen = 16,
+		fill_ratio = 11.0, -- complete coverage
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_core:snow",
+	})
+
 end
 
 -- Apply mapgen-specific mapgen code
@@ -1733,20 +1744,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		-- A snowy grass block must be below a top snow or snow block at all times.
 		if emin.y <= mcl_vars.mg_overworld_max and emax.y >= mcl_vars.mg_overworld_min then
 			-- v6 mapgen:
-			-- Put top snow on snowy grass blocks. The mapgen does not generate the top snow on its own.
 			if mg_name == "v6" then
-				-- FIXME: Cavegen and mudflow might screw this up and cause floating top snow to appear
-				local snowdirt = minetest.find_nodes_in_area_under_air(minp, maxp, "mcl_core:dirt_with_grass_snow")
-				for n = 1, #snowdirt do
-					-- CHECKME: What happens at chunk borders?
-					local p_pos = area:index(snowdirt[n].x, snowdirt[n].y + 1, snowdirt[n].z)
-					if p_pos then
-						data[p_pos] = c_top_snow
-					end
-				end
-				if #snowdirt > 0 then
-					lvm_used = true
-				end
 
 				--[[ Remove broken double plants caused by v6 weirdness.
 				v6 might break the bottom part of double plants because of how it works.
