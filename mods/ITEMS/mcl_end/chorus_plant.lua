@@ -3,8 +3,6 @@
 
 local S = minetest.get_translator("mcl_end")
 
-mcl_end = {}
-
 --- Plant parts ---
 
 local MAX_FLOWER_AGE = 5 -- Maximum age of chorus flower before it dies
@@ -26,6 +24,67 @@ local function round(num, idp)
 	return math.floor(num * mult + 0.5) / mult
 end
 
+-- This detaches all chorus plants that are/were attached
+-- at start_pos.
+mcl_end.detach_chorus_plant = function(start_pos)
+	local neighbors = {
+		{ x=0, y=1, z=0 },
+		{ x=0, y=0, z=1 },
+		{ x=-1, y=0, z=0 },
+		{ x=0, y=0, z=-1 },
+		{ x=1, y=0, z=0 },
+		{ x=0, y=-1, z=0 },
+	}
+	table.insert(neighbors, { x=0, y=-1, z=0 })
+	local tree_start_posses = {}
+	for i=1, #neighbors do
+		table.insert(tree_start_posses, vector.add(start_pos, neighbors[i]))
+	end
+
+	-- From the start_pos, we look at the 6 possible directions. Each of these can
+	-- have a full independent chorus plant ("tree") that might be detached.
+	for t=1, #tree_start_posses do
+		-- For each "tree", we do a depth-first search to traverse all
+		-- chorus plant nodes.
+		local touched_nodes_hashes = { minetest.hash_node_position(start_pos) }
+		local check_posses = { tree_start_posses[t] }
+		local chorus_nodes = {}
+		local break_tree = true
+		while #check_posses > 0 do
+			local pos = check_posses[1]
+			local node = minetest.get_node(pos)
+			touched_nodes_hashes[minetest.hash_node_position(pos)] = true
+			if node.name == "mcl_end:end_stone" then
+				-- End stone found, the algorithm ends here (haha!)
+				-- without destroying any nodes, because chorus plants
+				-- attach to end stone.
+				break_tree = false
+				break
+			elseif minetest.get_item_group(node.name, "chorus_plant") == 1 then
+				table.insert(chorus_nodes, pos)
+				for i=1, #neighbors do
+					local newpos = vector.add(pos, neighbors[i])
+					if not touched_nodes_hashes[minetest.hash_node_position(newpos)] then
+						table.insert(check_posses, vector.add(pos, neighbors[i]))
+					end
+				end
+			end
+			table.remove(check_posses, 1)
+		end
+		if break_tree then
+			-- If we traversed the entire chorus plant and it was not attached to end stone:
+			-- Drop ALL the chorus nodes we found.
+			for c=1, #chorus_nodes do
+				minetest.dig_node(chorus_nodes[c])
+			end
+		end
+	end
+end
+
+mcl_end.check_detach_chorus_plant = function(pos)
+	mcl_end.detach_chorus_plant(pos)
+end
+
 minetest.register_node("mcl_end:chorus_flower", {
 	description = S("Chorus Flower"),
 	_doc_items_longdesc = S("A chorus flower is the living part of a chorus plant. It can grow into a tall chorus plant, step by step. When it grows, it may die on old age eventually. It also dies when it is unable to grow."),
@@ -44,7 +103,7 @@ minetest.register_node("mcl_end:chorus_flower", {
 	node_box = chorus_flower_box,
 	selection_box = { type = "regular" },
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	groups = {handy=1,axey=1, deco_block = 1, dig_by_piston = 1, destroy_by_lava_flow = 1,},
+	groups = {handy=1,axey=1, deco_block = 1, dig_by_piston = 1, destroy_by_lava_flow = 1,chorus_plant = 1},
 
 	node_placement_prediction = "",
 	on_place = function(itemstack, placer, pointed_thing)
@@ -106,6 +165,7 @@ minetest.register_node("mcl_end:chorus_flower", {
 			return itemstack
 		end
 	end,
+	after_dig_node = mcl_end.check_detach_chorus_plant,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
 })
@@ -128,7 +188,8 @@ minetest.register_node("mcl_end:chorus_flower_dead", {
 	selection_box = { type = "regular" },
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	drop = "mcl_end:chorus_flower",
-	groups = {handy=1,axey=1, deco_block = 1, dig_by_piston = 1, destroy_by_lava_flow = 1,},
+	groups = {handy=1,axey=1, deco_block = 1, dig_by_piston = 1, destroy_by_lava_flow = 1,chorus_plant = 1},
+	after_dig_node = mcl_end.check_detach_chorus_plant,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
 })
@@ -165,7 +226,8 @@ minetest.register_node("mcl_end:chorus_plant", {
 			{ items = { "mcl_end:chorus_fruit"}, rarity = 2 },
 		}
 	},
-	groups = {handy=1,axey=1, not_in_creative_inventory = 1, dig_by_piston = 1, destroy_by_lava_flow = 1 },
+	groups = {handy=1,axey=1, not_in_creative_inventory = 1, dig_by_piston = 1, destroy_by_lava_flow = 1, chorus_plant = 1 },
+	after_dig_node = mcl_end.check_detach_chorus_plant,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
 })

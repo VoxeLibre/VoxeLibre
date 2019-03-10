@@ -8,6 +8,7 @@ minetest.register_node("mcl_end:end_stone", {
 	stack_max = 64,
 	groups = {pickaxey=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
+	after_dig_node = mcl_end.check_detach_chorus_plant,
 	_mcl_blast_resistance = 45,
 	_mcl_hardness = 3,
 })
