@@ -2953,14 +2953,10 @@ local function register_decorations()
 
 	-- Pumpkin
 	minetest.register_decoration({
-		deco_type = "schematic",
-		schematic = {
-			size = { x=1, y=2, z=1 },
-			data = {
-				{ name = "air", prob = 0 },
-				{ name = "mcl_farming:pumpkin_face", param1=255, },
-			},
-		},
+		deco_type = "simple",
+		decoration = "mcl_farming:pumpkin_face",
+		param2 = 0,
+		param2_max = 3,
 		place_on = {"group:grass_block_no_snow"},
 		sidelen = 16,
 		noise_params = {
@@ -2973,7 +2969,6 @@ local function register_decorations()
 		},
 		y_min = 1,
 		y_max = mcl_vars.mg_overworld_max,
-		rotation = "random",
 	})
 
 	-- Grasses and ferns
