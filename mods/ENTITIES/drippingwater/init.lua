@@ -19,6 +19,7 @@ minetest.register_entity("drippingwater:drop_water", {
 	textures = {water_tex, water_tex, water_tex, water_tex, water_tex, water_tex},
 	spritediv = {x=1, y=1},
 	initial_sprite_basepos = {x=0, y=0},
+	static_save = false,
 
 	on_activate = function(self, staticdata)
 		self.object:set_sprite({x=0,y=0}, 1, 1, true)
@@ -59,6 +60,7 @@ minetest.register_entity("drippingwater:drop_lava", {
 	textures = {lava_tex, lava_tex, lava_tex, lava_tex, lava_tex, lava_tex},
 	spritediv = {x=1, y=1},
 	initial_sprite_basepos = {x=0, y=0},
+	static_save = false,
 
 	on_activate = function(self, staticdata)
 		self.object:set_sprite({x=0,y=0}, 1, 0, true)
