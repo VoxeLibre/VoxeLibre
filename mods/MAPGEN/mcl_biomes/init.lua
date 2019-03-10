@@ -1363,15 +1363,11 @@ local function register_biomelike_ores()
 		end
 		local y_max = y_min + height-1
 		minetest.register_ore({
-			ore_type = "sheet",
+			ore_type = "stratum",
 			ore = "mcl_colorblocks:hardened_clay_"..color,
 			wherein = {"mcl_colorblocks:hardened_clay"},
-			column_height_min = height,
-			column_height_max = height,
 			y_min = y_min,
 			y_max = y_max,
-			noise_threshold = -1.0,
-			noise_params = {offset=0, scale=1, spread={x=3100, y=3100, z=3100}, seed=seed, octaves=3, persist=0.70},
 			biomes = { "Mesa", "MesaPlateauF", },
 		})
 	end
