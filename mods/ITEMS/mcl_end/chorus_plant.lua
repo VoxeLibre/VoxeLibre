@@ -304,6 +304,9 @@ mcl_end.grow_chorus_plant_step = function(pos, node)
 		end
 	end
 	if not grown then
+		-- FIXME: In the End, chorus plant fails to generate thru mapchunk borders.
+		-- So the chorus plants are capped at a fixed height.
+		-- The mapgen needs to be taught somehow how to deal with this.
 		minetest.set_node(pos, {name = "mcl_end:chorus_flower_dead"})
 	end
 	return new_flower_buds
