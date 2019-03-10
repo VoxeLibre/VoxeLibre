@@ -1,5 +1,7 @@
 local has_mcl_skins = minetest.get_modpath("mcl_skins") ~= nil
 
+local def = minetest.registered_items[""]
+
 -- mcl_skins is enabled
 if has_mcl_skins == true then
 	--generate a node for every skin
@@ -14,6 +16,7 @@ if has_mcl_skins == true then
 			drawtype = "mesh",
 			mesh = "mcl_meshhand.b3d",
 			node_placement_prediction = "",
+			range = def.range,
 		})
 	end
 	--change the player's hand to their skin
@@ -34,6 +37,7 @@ else
 		drawtype = "mesh",
 		mesh = "mcl_meshhand.b3d",
 		node_placement_prediction = "",
+		range = def.range,
 	})
 
 	minetest.register_on_joinplayer(function(player)
