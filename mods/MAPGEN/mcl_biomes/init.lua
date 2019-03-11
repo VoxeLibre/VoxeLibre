@@ -803,7 +803,7 @@ local function register_biomes()
 		node_riverbed = "mcl_colorblocks:hardened_clay",
 		depth_riverbed = 1,
 		node_stone = "mcl_colorblocks:hardened_clay",
-		y_min = 5,
+		y_min = 4,
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = -5,
 		heat_point = 100,
@@ -818,7 +818,7 @@ local function register_biomes()
 		depth_riverbed = 1,
 		node_stone = "mcl_colorblocks:hardened_clay_orange",
 		y_min = -4,
-		y_max = 4,
+		y_max = 3,
 		humidity_point = -5,
 		heat_point = 100,
 	})
@@ -1624,7 +1624,7 @@ local function register_biomelike_ores()
 	-- Hardcoded orange strata near sea level.
 
 	-- For MesaBryce, since it has no sand at these heights
-	stratum(5, 1, "orange", nil, true)
+	stratum(4, 1, "orange", nil, true)
 	stratum(7, 2, "orange", nil, true)
 
 	-- 3-level stratum above the sandlevel (all mesa biomes)
