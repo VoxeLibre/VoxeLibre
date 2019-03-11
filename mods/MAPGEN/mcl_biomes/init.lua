@@ -1484,7 +1484,6 @@ local function register_biomelike_ores()
 
 	})
 
-
 	-- Mesa strata (registered as sheet ores)
 
 	-- Helper function to create strata.
@@ -1496,14 +1495,42 @@ local function register_biomelike_ores()
 			seed = 39
 		end
 		local y_max = y_min + height-1
+		-- Full stratum
 		minetest.register_ore({
 			ore_type = "stratum",
 			ore = "mcl_colorblocks:hardened_clay_"..color,
 			wherein = {"mcl_colorblocks:hardened_clay"},
 			y_min = y_min,
 			y_max = y_max,
-			biomes = { "Mesa", "MesaPlateauF", },
+			biomes = { "Mesa", "MesaPlateauF" },
 		})
+		-- Eroded stratum
+		minetest.register_ore({
+			ore_type = "stratum",
+			ore = "mcl_colorblocks:hardened_clay_"..color,
+			wherein = {"mcl_colorblocks:hardened_clay"},
+			y_min = y_min,
+			y_max = y_max,
+			biomes = { "MesaPlateauFM" },
+			noise_params = {
+				offset = y_min+(y_max-y_min)/2,
+				scale = 0,
+				spread = {x = 50, y = 50, z = 50},
+				seed = seed+4,
+				octaves = 1,
+				persist = 1.0
+			},
+			np_stratum_thickness = {
+				offset = 0.1,
+				scale = 1,
+				spread = {x = 28, y = 28, z = 28},
+				seed = seed+4,
+				octaves = 2,
+				persist = 0.6,
+			},
+		})
+
+
 	end
 
 	-- First stratum near the sand level. Always orange.
