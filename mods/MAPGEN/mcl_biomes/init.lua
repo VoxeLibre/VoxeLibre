@@ -1590,7 +1590,7 @@ local function register_biomelike_ores()
 	end
 
 	-- First stratum near the sand level. Always orange.
-	stratum(11, 3, "orange")
+	stratum(-1, 15, "orange")
 
 	-- Create random strata for up to Y = 256.
 	-- These strata are calculated based on the world seed and are global.
