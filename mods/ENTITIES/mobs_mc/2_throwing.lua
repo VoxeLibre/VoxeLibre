@@ -195,8 +195,8 @@ if c("egg") then
 			}, nil)
 		end,
 
-		hit_mob = function(self, player)
-			player:punch(minetest.get_player_by_name(self.playername) or self.object, 1.0, {
+		hit_mob = function(self, mob)
+			mob:punch(minetest.get_player_by_name(self.playername) or self.object, 1.0, {
 				full_punch_interval = 1.0,
 				damage_groups = {},
 			}, nil)

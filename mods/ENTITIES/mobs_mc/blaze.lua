@@ -87,8 +87,8 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 		}, nil)
 	end,
 
-	hit_mob = function(self, player)
-		player:punch(self.object, 1.0, {
+	hit_mob = function(self, mob)
+		mob:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 5},
 		}, nil)
