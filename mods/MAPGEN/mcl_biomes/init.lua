@@ -1185,6 +1185,7 @@ local function register_biomes()
 		y_min = 4,
 		-- Note: Limited in height!
 		y_max = 20,
+		vertical_blend = 1,
 		humidity_point = 106,
 		heat_point = 50,
 	})
