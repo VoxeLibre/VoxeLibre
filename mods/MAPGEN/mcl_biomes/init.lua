@@ -942,7 +942,7 @@ local function register_biomes()
 		depth_filler = 3,
 		node_riverbed = "mcl_core:redsand",
 		depth_riverbed = 2,
-		node_stone = "mcl_colorblocks:hardened_clay_orange",
+		node_stone = "mcl_colorblocks:hardened_clay",
 		-- red sand has wider reach than in other mesa biomes
 		y_min = -7,
 		y_max = 11,
