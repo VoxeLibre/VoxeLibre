@@ -136,7 +136,7 @@ mobs:register_arrow(":mobs_mc:fireball", {
 
 	hit_mob = function(self, mob)
 		minetest.sound_play("tnt_explode", {pos = mob:get_pos(), gain = 1.5,max_hear_distance = 16})
-		player:punch(self.object, 1.0, {
+		mob:punch(self.object, 1.0, {
 			full_punch_interval = 0.5,
 			damage_groups = {fleshy = 8},
 		}, nil)
