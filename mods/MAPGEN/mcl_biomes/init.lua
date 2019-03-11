@@ -794,7 +794,7 @@ local function register_biomes()
 		heat_point = 100,
 	})
 
-	-- Mesa Bryce: Variant of Mesa, but without the red sand desert. Has perfect strata
+	-- Mesa Bryce: Variant of Mesa, but with perfect strata and a much smaller red sand desert
 	minetest.register_biome({
 		name = "MesaBryce",
 		node_top = "mcl_colorblocks:hardened_clay",
@@ -803,7 +803,7 @@ local function register_biomes()
 		node_riverbed = "mcl_colorblocks:hardened_clay",
 		depth_riverbed = 1,
 		node_stone = "mcl_colorblocks:hardened_clay",
-		y_min = 0,
+		y_min = 5,
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = -5,
 		heat_point = 100,
@@ -818,7 +818,7 @@ local function register_biomes()
 		depth_riverbed = 1,
 		node_stone = "mcl_colorblocks:hardened_clay_orange",
 		y_min = -4,
-		y_max = -1,
+		y_max = 4,
 		humidity_point = -5,
 		heat_point = 100,
 	})
@@ -1559,6 +1559,8 @@ local function register_biomelike_ores()
 		minetest.register_ore({
 			ore_type = "stratum",
 			ore = "mcl_colorblocks:hardened_clay_"..color,
+			-- Only paint uncolored so the biome can choose
+			-- a color in advance.
 			wherein = {"mcl_colorblocks:hardened_clay"},
 			y_min = y_min,
 			y_max = y_max,
@@ -1619,13 +1621,19 @@ local function register_biomelike_ores()
 
 	end
 
-	-- First stratum near the sand level. Always orange.
-	stratum(-1, 15, "orange", nil, true)
+	-- Hardcoded orange strata near sea level.
+
+	-- For MesaBryce, since it has no sand at these heights
+	stratum(5, 1, "orange", nil, true)
+	stratum(7, 2, "orange", nil, true)
+
+	-- 3-level stratum above the sandlevel (all mesa biomes)
+	stratum(11, 3, "orange", nil, true)
 
 	-- Create random strata for up to Y = 256.
 	-- These strata are calculated based on the world seed and are global.
-	-- They are thus unique per-world.
-	local mesapr = PcgRandom(minetest.get_mapgen_setting("seed"))
+	-- They are thus different per-world.
+	local mesapr = PcgRandom(mg_seed)
 
 	--[[
 
