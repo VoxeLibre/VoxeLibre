@@ -749,7 +749,8 @@ local function register_biomes()
 		heat_point = 27,
 	})
 
-	-- Mesa
+	-- Mesa: Starts with a couple of sand-covered layers (the "sandlevel"),
+	-- followed by terracotta with colorful (but imperfect) strata
 	minetest.register_biome({
 		name = "Mesa",
 		node_top = "mcl_colorblocks:hardened_clay",
@@ -793,7 +794,7 @@ local function register_biomes()
 		heat_point = 100,
 	})
 
-	-- Mesa Bryce: Variant of Mesa, but without the red sand desert
+	-- Mesa Bryce: Variant of Mesa, but without the red sand desert. Has perfect strata
 	minetest.register_biome({
 		name = "MesaBryce",
 		node_top = "mcl_colorblocks:hardened_clay",
@@ -807,7 +808,6 @@ local function register_biomes()
 		humidity_point = -5,
 		heat_point = 100,
 	})
-	-- Helper biome for the red sand at the bottom of Mesas.
 	minetest.register_biome({
 		name = "MesaBryce_sandlevel",
 		node_top = "mcl_core:redsand",
@@ -840,7 +840,7 @@ local function register_biomes()
 
 
 	-- Mesa Plateau F
-	-- Identical to Mesa below Y=30. At Y=30 and above there is an oak forest
+	-- Identical to Mesa below Y=30. At Y=30 and above there is a "dry" oak forest
 	minetest.register_biome({
 		name = "MesaPlateauF",
 		node_top = "mcl_colorblocks:hardened_clay",
@@ -855,9 +855,9 @@ local function register_biomes()
 		heat_point = 60,
 		vertical_blend = 0, -- we want a sharp transition
 	})
-
-	-- The actual plateau of this biome
-	-- This is a plateau for grass blocks, tall grass, coarse dirt and oaks.
+	-- The oak forest plateau of this biome.
+	-- This is a plateau for grass blocks, dry shrubs, tall grass, coarse dirt and oaks.
+	-- Strata don't generate here.
 	minetest.register_biome({
 		name = "MesaPlateauF_grasstop",
 		node_top = "mcl_core:dirt_with_dry_grass",
@@ -872,8 +872,6 @@ local function register_biomes()
 		humidity_point = 0,
 		heat_point = 60,
 	})
-
-	-- Helper biome for the red sand at the bottom.
 	minetest.register_biome({
 		name = "MesaPlateauF_sandlevel",
 		node_top = "mcl_core:redsand",
@@ -904,7 +902,9 @@ local function register_biomes()
 	})
 
 	-- Mesa Plateau FM
-	-- Variant of MesaPlateauF: fewer trees, more coarse dirt, more erratic terrain, more sand, red sandstone at sandlevel
+	-- Dryer and more "chaotic"/"weathered down" variant of MesaPlateauF:
+	-- oak forest is less dense, more coarse dirt, more erratic terrain, vertical blend, more red sand layers,
+	-- red sand as ores, red sandstone at sandlevel
 	minetest.register_biome({
 		name = "MesaPlateauFM",
 		node_top = "mcl_colorblocks:hardened_clay",
@@ -919,7 +919,6 @@ local function register_biomes()
 		heat_point = 60,
 		vertical_blend = 5,
 	})
-
 	-- Grass plateau
 	minetest.register_biome({
 		name = "MesaPlateauFM_grasstop",
@@ -935,8 +934,6 @@ local function register_biomes()
 		humidity_point = -5,
 		heat_point = 60,
 	})
-
-	-- Helper biome for the red sand at the bottom.
 	minetest.register_biome({
 		name = "MesaPlateauFM_sandlevel",
 		node_top = "mcl_core:redsand",
@@ -1543,7 +1540,7 @@ local function register_biomelike_ores()
 	-- Mesa strata (registered as sheet ores)
 
 	-- Helper function to create strata.
-	local stratum = function(y_min, height, color, seed)
+	local stratum = function(y_min, height, color, seed, is_perfect)
 		if not height then
 			height = 1
 		end
@@ -1551,16 +1548,49 @@ local function register_biomelike_ores()
 			seed = 39
 		end
 		local y_max = y_min + height-1
-		-- Full stratum
+		local perfect_biomes
+		if is_perfect then
+			-- "perfect" means no erosion
+			perfect_biomes = { "MesaBryce", "Mesa", "MesaPlateauF", "MesaPlateauFM" }
+		else
+			perfect_biomes = { "MesaBryce" }
+		end
+		-- Full, perfect stratum
 		minetest.register_ore({
 			ore_type = "stratum",
 			ore = "mcl_colorblocks:hardened_clay_"..color,
 			wherein = {"mcl_colorblocks:hardened_clay"},
 			y_min = y_min,
 			y_max = y_max,
-			biomes = { "Mesa", "MesaPlateauF", "MesaBryce" },
+			biomes = perfect_biomes,
 		})
-		-- Eroded stratum
+		if not is_perfect then
+		-- Slightly eroded stratum, only minor imperfections
+		minetest.register_ore({
+			ore_type = "stratum",
+			ore = "mcl_colorblocks:hardened_clay_"..color,
+			wherein = {"mcl_colorblocks:hardened_clay"},
+			y_min = y_min,
+			y_max = y_max,
+			biomes = { "Mesa", "MesaPlateauF" },
+			noise_params = {
+				offset = y_min+(y_max-y_min)/2,
+				scale = 0,
+				spread = {x = 50, y = 50, z = 50},
+				seed = seed+4,
+				octaves = 1,
+				persist = 1.0
+			},
+			np_stratum_thickness = {
+				offset = 1.28,
+				scale = 1,
+				spread = {x = 18, y = 18, z = 18},
+				seed = seed+4,
+				octaves = 3,
+				persist = 0.8,
+			},
+		})
+		-- Very eroded stratum, most of the color is gone
 		minetest.register_ore({
 			ore_type = "stratum",
 			ore = "mcl_colorblocks:hardened_clay_"..color,
@@ -1585,12 +1615,12 @@ local function register_biomelike_ores()
 				persist = 0.6,
 			},
 		})
-
+		end
 
 	end
 
 	-- First stratum near the sand level. Always orange.
-	stratum(-1, 15, "orange")
+	stratum(-1, 15, "orange", nil, true)
 
 	-- Create random strata for up to Y = 256.
 	-- These strata are calculated based on the world seed and are global.
