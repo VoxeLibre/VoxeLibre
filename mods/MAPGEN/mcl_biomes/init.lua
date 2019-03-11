@@ -814,7 +814,7 @@ local function register_biomes()
 		depth_top = 1,
 		node_filler = "mcl_colorblocks:hardened_clay_orange",
 		depth_filler = 3,
-		node_riverbed = "mcl_colorblocks:hardned_clay",
+		node_riverbed = "mcl_colorblocks:hardened_clay",
 		depth_riverbed = 1,
 		node_stone = "mcl_colorblocks:hardened_clay_orange",
 		y_min = -4,
