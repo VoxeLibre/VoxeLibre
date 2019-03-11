@@ -804,7 +804,7 @@ local function register_biomes()
 		node_stone = "mcl_colorblocks:hardened_clay",
 		y_min = 0,
 		y_max = mcl_vars.mg_overworld_max,
-		humidity_point = -4,
+		humidity_point = -5,
 		heat_point = 100,
 	})
 	-- Helper biome for the red sand at the bottom of Mesas.
@@ -819,7 +819,7 @@ local function register_biomes()
 		node_stone = "mcl_colorblocks:hardened_clay_orange",
 		y_min = -4,
 		y_max = -1,
-		humidity_point = -4,
+		humidity_point = -5,
 		heat_point = 100,
 	})
 	minetest.register_biome({
@@ -833,7 +833,7 @@ local function register_biomes()
 		y_min = OCEAN_MIN,
 		y_max = -5,
 		vertical_blend = 1,
-		humidity_point = -4,
+		humidity_point = -5,
 		heat_point = 100,
 	})
 
@@ -915,8 +915,8 @@ local function register_biomes()
 		node_stone = "mcl_colorblocks:hardened_clay",
 		y_min = 12,
 		y_max = 29,
-		humidity_point = -4,
-		heat_point = 80,
+		humidity_point = -5,
+		heat_point = 60,
 		vertical_blend = 5,
 	})
 
@@ -932,8 +932,8 @@ local function register_biomes()
 		node_stone = "mcl_colorblocks:hardened_clay",
 		y_min = 30,
 		y_max = mcl_vars.mg_overworld_max,
-		humidity_point = -4,
-		heat_point = 80,
+		humidity_point = -5,
+		heat_point = 60,
 	})
 
 	-- Helper biome for the red sand at the bottom.
@@ -949,8 +949,8 @@ local function register_biomes()
 		-- red sand has wider reach than in other mesa biomes
 		y_min = -7,
 		y_max = 11,
-		humidity_point = -4,
-		heat_point = 80,
+		humidity_point = -5,
+		heat_point = 60,
 		vertical_blend = 4,
 	})
 	minetest.register_biome({
@@ -964,8 +964,8 @@ local function register_biomes()
 		y_min = OCEAN_MIN,
 		y_max = -8,
 		vertical_blend = 2,
-		humidity_point = -4,
-		heat_point = 80,
+		humidity_point = -5,
+		heat_point = 60,
 	})
 
 
