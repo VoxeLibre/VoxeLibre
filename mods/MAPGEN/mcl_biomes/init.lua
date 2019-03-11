@@ -355,9 +355,10 @@ local function register_biomes()
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
 		y_min = 1,
-		y_max = 44,
+		y_max = 41,
 		humidity_point = 24,
 		heat_point = 25,
+		vertical_blend = 6,
 	})
 	---- Sub-biome for Extreme Hills+ for those snow Forests
 	minetest.register_biome({
@@ -370,7 +371,7 @@ local function register_biomes()
 		node_river_water = "mcl_core:ice",
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
-		y_min = 45,
+		y_min = 42,
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 24,
 		heat_point = 25,
@@ -807,6 +808,7 @@ local function register_biomes()
 		y_max = 29,
 		humidity_point = 0,
 		heat_point = 60,
+		vertical_blend = 0, -- we want a sharp transition
 	})
 
 	-- The actual plateau of this biome
@@ -830,7 +832,7 @@ local function register_biomes()
 	minetest.register_biome({
 		name = "MesaPlateauF_sandlevel",
 		node_top = "mcl_core:redsand",
-		depth_top = 1,
+		depth_top = 2,
 		node_filler = "mcl_colorblocks:hardened_clay_orange",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:redsand",
@@ -892,7 +894,7 @@ local function register_biomes()
 	minetest.register_biome({
 		name = "MesaPlateauFM_sandlevel",
 		node_top = "mcl_core:redsand",
-		depth_top = 2,
+		depth_top = 3,
 		node_filler = "mcl_colorblocks:hardened_clay_orange",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:redsand",
@@ -1236,6 +1238,7 @@ local function register_biomes()
 			depth_filler = 2,
 			node_riverbed = "mcl_core:gravel",
 			depth_riverbed = 2,
+			vertical_blend = 5,
 		})
 
 		-- Underground biomes are used to identify the underground and to prevent nodes from the surface
