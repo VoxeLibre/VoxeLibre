@@ -471,7 +471,11 @@ local function get_recipe_fs(data, iY)
 		cooktime, width = width, 1
 	elseif width == 0 then
 		shapeless = true
-		width = min(3, #recipe.items)
+		if #recipe.items <= 4 then
+			width = 2
+		else
+			width = min(3, #recipe.items)
+		end
 	end
 
 	local rows = ceil(maxn(recipe.items) / width)
