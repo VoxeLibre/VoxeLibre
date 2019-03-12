@@ -640,7 +640,6 @@ local function make_formspec(name)
 		fs[#fs + 1] = fmt("size[%f,%f;]", data.iX - 0.35, iY + 4)
 
 		fs[#fs + 1] = [[
-			no_prepend[]
 			background[1,1;1,1;craftguide_bg.png;true]
 		]]
 
