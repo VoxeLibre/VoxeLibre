@@ -153,14 +153,10 @@ local function table_diff(t, t2)
 	return diff
 end
 
-local function __func()
-	return debug.getinfo(2, "n").name
-end
-
 local custom_crafts, craft_types = {}, {}
 
 function mcl_craftguide.register_craft_type(name, def)
-	local func = "mcl_craftguide." .. __func() .. "(): "
+	local func = "mcl_craftguide.register_craft_guide(): "
 	assert(name, func .. "'name' field missing")
 	assert(def.description, func .. "'description' field missing")
 	assert(def.icon, func .. "'icon' field missing")
@@ -169,7 +165,7 @@ function mcl_craftguide.register_craft_type(name, def)
 end
 
 function mcl_craftguide.register_craft(def)
-	local func = "mcl_craftguide." .. __func() .. "(): "
+	local func = "mcl_craftguide.register_craft(): "
 	assert(def.type, func .. "'type' field missing")
 	assert(def.width, func .. "'width' field missing")
 	assert(def.output, func .. "'output' field missing")
@@ -181,7 +177,7 @@ end
 local recipe_filters = {}
 
 function mcl_craftguide.add_recipe_filter(name, f)
-	local func = "mcl_craftguide." .. __func() .. "(): "
+	local func = "mcl_craftguide.add_recipe_filter(): "
 	assert(name, func .. "filter name missing")
 	assert(f and type(f) == "function", func .. "filter function missing")
 
@@ -193,7 +189,7 @@ function mcl_craftguide.remove_recipe_filter(name)
 end
 
 function mcl_craftguide.set_recipe_filter(name, f)
-	local func = "mcl_craftguide." .. __func() .. "(): "
+	local func = "mcl_craftguide.set_recipe_filter(): "
 	assert(name, func .. "filter name missing")
 	assert(f and type(f) == "function", func .. "filter function missing")
 
@@ -215,7 +211,7 @@ end
 local search_filters = {}
 
 function mcl_craftguide.add_search_filter(name, f)
-	local func = "mcl_craftguide." .. __func() .. "(): "
+	local func = "mcl_craftguide.add_search_filter(): "
 	assert(name, func .. "filter name missing")
 	assert(f and type(f) == "function", func .. "filter function missing")
 
@@ -233,7 +229,7 @@ end
 local formspec_elements = {}
 
 function mcl_craftguide.add_formspec_element(name, def)
-	local func = "mcl_craftguide." .. __func() .. "(): "
+	local func = "mcl_craftguide.add_formspec_element(): "
 	assert(def.element, func .. "'element' field not defined")
 	assert(def.type, func .. "'type' field not defined")
 	assert(FMT[def.type], func .. "'" .. def.type .. "' type not supported by the API")
@@ -1134,7 +1130,7 @@ if progressive_mode then
 end
 
 function mcl_craftguide.show(name, item, show_usages)
-	local func = "mcl_craftguide." .. __func() .. "(): "
+	local func = "mcl_craftguide.show(): "
 	assert(name, func .. "player name missing")
 
 	local data   = player_data[name]
