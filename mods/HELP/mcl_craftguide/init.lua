@@ -1133,64 +1133,6 @@ if progressive_mode then
 	end)
 end
 
-M.register_chatcommand("craft", {
-	description = S("Show recipe(s) of the pointed node"),
-	func = function(name)
-		local player = get_player_by_name(name)
-		local ppos   = player:get_pos()
-		local dir    = player:get_look_dir()
-		local eye_h  = {x = ppos.x, y = ppos.y + 1.625, z = ppos.z}
-		local node_name
-
-		for i = 1, 10 do
-			local look_at = vec_add(eye_h, vec_mul(dir, i))
-			local node = M.get_node(look_at)
-
-			if node.name ~= "air" then
-				node_name = node.name
-				break
-			end
-		end
-
-		local red = colorize("red", "[mcl_craftguide] ")
-
-		if not node_name then
-			return false, red .. S("No node pointed")
-		end
-
-		local data = player_data[name]
-		reset_data(data)
-
-		local recipes = recipes_cache[node_name]
-		local usages = usages_cache[node_name]
-
-		if recipes then
-			recipes = apply_recipe_filters(recipes, player)
-		end
-
-		if not recipes or #recipes == 0 then
-			local ylw = colorize("yellow", node_name)
-			local msg = red .. "%s: " .. ylw
-
-			if usages then
-				recipes = usages_cache[node_name]
-				if #recipes > 0 then
-					data.show_usages = true
-				end
-			elseif recipes_cache[node_name] then
-				return false, fmt(msg, S("You don't know a recipe for this node"))
-			else
-				return false, fmt(msg, S("No recipe for this node"))
-			end
-		end
-
-		data.query_item = node_name
-		data.recipes    = recipes
-
-		return true, show_fs(player, name)
-	end,
-})
-
 function mcl_craftguide.show(name, item, show_usages)
 	local func = "mcl_craftguide." .. __func() .. "(): "
 	assert(name, func .. "player name missing")
