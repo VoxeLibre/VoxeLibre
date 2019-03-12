@@ -1,4 +1,5 @@
 mcl_init
 mcl_player?
+mcl_craftguide?
 _mcl_autogroup?
 3d_armor?

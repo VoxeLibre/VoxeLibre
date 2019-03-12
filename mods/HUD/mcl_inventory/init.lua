@@ -5,6 +5,7 @@ mcl_inventory = {}
 
 local show_armor = minetest.get_modpath("3d_armor") ~= nil
 local mod_player = minetest.get_modpath("mcl_player") ~= nil
+local mod_craftguide = minetest.get_modpath("mcl_craftguide") ~= nil
 
 -- Returns a single itemstack in the given inventory to the main inventory, or drop it when there's no space left
 local function return_item(itemstack, dropper, pos, inv)
@@ -130,6 +131,8 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if not minetest.settings:get_bool("creative_mode") and (formname == "" or formname == "main") then
 			set_inventory(player)
 		end
+	elseif fields.__mcl_craftguide and mod_craftguide then
+		mcl_craftguide.show(player:get_player_name())
 	end
 end)
 
