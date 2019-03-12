@@ -54,6 +54,9 @@ local FMT = {
 }
 
 local group_stereotypes = {
+	wood         = "mcl_core:wood",
+	stone        = "mcl_core:stone",
+	sand         = "mcl_core:sand",
 	wool	     = "mcl_wool:white",
 	carpet       = "mcl_wool:white_carpet",
 	dye	     = "mcl_dye:red",
@@ -73,6 +76,30 @@ local group_stereotypes = {
 	compass      = mcl_compass.stereotype,
 	clock        = mcl_clock.sterotype,
 }
+
+local group_names = {
+	shulker_box = "Any shulker box",
+	wool = "Any wool",
+	wood = "Any wood planks",
+	tree = "Any wood",
+	sand = "Any sand",
+	normal_sandstone = "Any normal sandstone",
+	red_sandstone = "Any red sandstone",
+	carpet = "Any carpet",
+	dye = "Any dye",
+	water_bucket = "Any water bucket",
+	flower = "Any flower",
+	mushroom = "Any mushroom",
+	wood_slab = "Any wooden slab",
+	wood_stairs = "Any wooden stairs",
+	coal = "Any coal",
+	quartz_block = "Any kind of quartz block",
+	purpur_block = "Any kind of purpur block",
+	stonebrick = "Any stone bricks",
+	stick = "Any stick",
+}
+
+
 
 local item_lists = {
 	"main",
@@ -365,7 +392,7 @@ end
 local function groups_to_item(groups)
 	if #groups == 1 then
 		local group = groups[1]
-		local def_gr = "default:" .. group
+		local def_gr = "mcl_core:" .. group
 
 		if group_stereotypes[group] then
 			return group_stereotypes[group]
@@ -387,15 +414,35 @@ local function get_tooltip(item, groups, cooktime, burntime)
 	local tooltip
 
 	if groups then
-		local groupstr, c = {}, 0
+		local gcol = "#FFAAFF"
+		if #groups == 1 then
+			local g = group_names[groups[1]]
+			-- Treat the groups “compass” and “clock” as fake groups
+			-- and just print the normal item name without special formatting
+			if groups[1] == "compass" or groups[1] == "clock" then
+				groupstr = reg_items[item].description
+			elseif group_names[groups[1]] then
+				-- Use the special group name string
+				groupstr = minetest.colorize(gcol, group_names[groups[1]])
+			else
+				--[[ Fallback: Generic group explanation: This always
+				works, but the internally used group name (which
+				looks ugly) is exposed to the user. ]]
+				groupstr = minetest.colorize(gcol, groups[1])
+				groupstr = S("Any item belonging to the @1 group", groupstr)
+			end
+			tooltip = groupstr
+		else
 
-		for i = 1, #groups do
-			c = c + 1
-			groupstr[c] = colorize("yellow", groups[i])
+			local groupstr, c = {}, 0
+			for i = 1, #groups do
+				c = c + 1
+				groupstr[c] = colorize(gcol, groups[i])
+			end
+
+			groupstr = concat(groupstr, ", ")
+			tooltip = S("Any item belonging to the groups: @1", groupstr)
 		end
-
-		groupstr = concat(groupstr, ", ")
-		tooltip = S("Any item belonging to the group(s): @1", groupstr)
 	else
 		tooltip = reg_items[item].description
 	end
@@ -473,7 +520,10 @@ local function get_recipe_fs(data, iY)
 			item = groups_to_item(groups)
 		end
 
-		local label = groups and "\nG" or ""
+		local label = ""
+		if groups and (#groups >= 1 and groups[1] ~= "compass" and groups[1] ~= "clock") then
+			label = "\nG"
+		end
 
 		fs[#fs + 1] = fmt(FMT.item_image_button,
 			X,
