@@ -50,24 +50,24 @@ mcl_stairs.register_stair_and_slab_simple("mossycobble", "mcl_core:mossycobble",
 mcl_stairs.register_stair_and_slab_simple("brick_block", "mcl_core:brick_block", S("Brick Stairs"), S("Brick Slab"), S("Double Brick Slab"))
 
 
-mcl_stairs.register_stair("sandstone", "group:sandstone",
+mcl_stairs.register_stair("sandstone", "group:normal_sandstone",
 		{pickaxey=1, material_stone=1},
 		{"mcl_core_sandstone_top.png", "mcl_core_sandstone_bottom.png", "mcl_core_sandstone_normal.png"},
 		S("Sandstone Stairs"),
 		mcl_sounds.node_sound_stone_defaults(), 0.8, nil, "mcl_core:sandstone")
-mcl_stairs.register_slab("sandstone", "group:sandstone",
+mcl_stairs.register_slab("sandstone", "group:normal_sandstone",
 		{pickaxey=1, material_stone=1},
 		{"mcl_core_sandstone_top.png", "mcl_core_sandstone_bottom.png", "mcl_core_sandstone_normal.png"},
 		S("Sandstone Slab"),
 		mcl_sounds.node_sound_stone_defaults(), 2, S("Double Sandstone Slab"), "mcl_core:sandstone")
 mcl_stairs.register_stair_and_slab_simple("sandstonesmooth2", "mcl_core:sandstonesmooth2", S("Smooth Sandstone Stairs"), S("Smooth Sandstone Slab"), S("Double Smooth Sandstone Slab"))
 
-mcl_stairs.register_stair("redsandstone", "group:redsandstone",
+mcl_stairs.register_stair("redsandstone", "group:red_sandstone",
 		{pickaxey=1, material_stone=1},
 		{"mcl_core_red_sandstone_top.png", "mcl_core_red_sandstone_bottom.png", "mcl_core_red_sandstone_normal.png"},
 		S("Red Sandstone Stairs"),
 		mcl_sounds.node_sound_stone_defaults(), 0.8, nil, "mcl_core:redsandstone")
-mcl_stairs.register_slab("redsandstone", "group:redsandstone",
+mcl_stairs.register_slab("redsandstone", "group:red_sandstone",
 		{pickaxey=1, material_stone=1},
 		{"mcl_core_red_sandstone_top.png", "mcl_core_red_sandstone_bottom.png", "mcl_core_red_sandstone_normal.png"},
 		S("Red Sandstone Slab"),

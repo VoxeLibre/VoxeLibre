@@ -1808,7 +1808,6 @@ minetest.register_on_generated(function(minp, maxp, seed)
 							data[p_pos] = c_sandstone
 							lvm_used = true
 						elseif data[p_pos] == c_redsand then
-							-- Note: This is the only place in which red sandstone is generatd
 							data[p_pos] = c_redsandstone
 							lvm_used = true
 						end
