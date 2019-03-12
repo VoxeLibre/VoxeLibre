@@ -270,6 +270,7 @@ local function register_biomes()
 	})
 
 	-- Extreme Hills
+	-- Sparsely populated grasslands with little tallgras and trees.
 	minetest.register_biome({
 		name = "ExtremeHills",
 		node_top = "mcl_core:dirt_with_grass",
@@ -313,6 +314,7 @@ local function register_biomes()
 	})
 
 	-- Extreme Hills M
+	-- Just gravel.
 	minetest.register_biome({
 		name = "ExtremeHillsM",
 		node_top = "mcl_core:gravel",
@@ -341,8 +343,8 @@ local function register_biomes()
 	})
 
 	-- Extreme Hills+
-	-- This biome is identical to Extreme Hills on the surface but has snow-covered mountains with spruce/oak
-	-- Forests above a certain height.
+	-- This biome is near-identical to Extreme Hills on the surface but has snow-covered mountains with spruce/oak
+	-- forests above a certain height.
 	minetest.register_biome({
 		name = "ExtremeHills+",
 		node_top = "mcl_core:dirt_with_grass",
@@ -357,7 +359,7 @@ local function register_biomes()
 		heat_point = 25,
 		vertical_blend = 6,
 	})
-	---- Sub-biome for Extreme Hills+ for those snow Forests
+	---- Sub-biome for Extreme Hills+ for those snow forests
 	minetest.register_biome({
 		name = "ExtremeHills+_snowtop",
 		node_dust = "mcl_core:snow",
@@ -388,7 +390,8 @@ local function register_biomes()
 	})
 
 	-- Stone beach
-	-- Not really a beach in MCL2, only named so according to MC
+	-- Just stone.
+	-- Not neccessarily a beach at all, only named so according to MC
 	minetest.register_biome({
 		name = "StoneBeach",
 		node_riverbed = "mcl_core:sand",
@@ -1352,7 +1355,11 @@ local function register_biome_ores()
 		clust_size     = 1,
 		y_min          = mcl_worlds.layer_to_y(4),
 		y_max          = mcl_worlds.layer_to_y(32),
-		biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean" },
+		biomes         = {
+			"ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", "ExtremeHills_deep_ocean", "ExtremeHills_underground",
+			"ExtremeHills+", "ExtremeHills+_ocean", "ExtremeHills+_deep_ocean", "ExtremeHills+_underground",
+			"ExtremeHillsM", "ExtremeHillsM_ocean", "ExtremeHillsM_deep_ocean", "ExtremeHillsM_underground",
+		},
 	})
 
 	-- Rarely replace stone with stone monster eggs.
@@ -1372,7 +1379,11 @@ local function register_biome_ores()
 		clust_size     = 2,
 		y_min          = mcl_vars.mg_overworld_min,
 		y_max          = mcl_worlds.layer_to_y(61),
-		biomes         = { "ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean" },
+		biomes         = {
+			"ExtremeHills", "ExtremeHills_beach", "ExtremeHills_ocean", "ExtremeHills_deep_ocean", "ExtremeHills_underground",
+			"ExtremeHills+", "ExtremeHills+_ocean", "ExtremeHills+_deep_ocean", "ExtremeHills+_underground",
+			"ExtremeHillsM", "ExtremeHillsM_ocean", "ExtremeHillsM_deep_ocean", "ExtremeHillsM_underground",
+		},
 	})
 
 	-- Bonus gold spawn in Mesa
