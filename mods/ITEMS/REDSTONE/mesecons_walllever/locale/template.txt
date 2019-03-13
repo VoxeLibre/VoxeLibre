@@ -1,0 +1,4 @@
+# textdomain: mesecons_wallever
+Lever=
+A lever is a redstone component which can be flipped on and off. It supplies redstone power to adjacent blocks while it is in the “on” state.=
+Lever=

@@ -1,0 +1,24 @@
+# textdomain: mcl_flowerpots
+Dandelion Flower Pot=
+Poppy Floer Pot=
+Blue Orchid Flower Pot=
+Allium Flower Pot=
+Azure Bluet Flower Pot=
+Red Tulip Flower Pot=
+Pink Tulip Flower Pot=
+White Tulip Flower Pot=
+Orange Tulip Flower Pot=
+Oxeye Daisy Flower Pot=
+Brown Mushroom Flower Pot=
+Red Mushroom Flower Pot=
+Oak Sapling Flower Pot=
+Acacia Sapling Flower Pot=
+Jungle Sapling Flower Pot=
+Dark Oak Sapling Flower Pot=
+Spruce Sapling Flower Pot=
+Birch Sapling Flower Pot=
+Dead Bush Flower Pot=
+Fern Flower Pot=
+Flower Pot=
+Flower pots are decorative blocks in which flowers and other small plants can be placed.=
+Rightclick an empty flower pot while you wield a plant to place the plant. Flower pots can hold small flowers (not higher than 1 block), saplings, ferns, dead bushes, mushrooms and cacti. Rightclick a potted plant to retrieve the plant.=

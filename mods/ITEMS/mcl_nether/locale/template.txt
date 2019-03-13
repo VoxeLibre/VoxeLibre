@@ -1,0 +1,27 @@
+# textdomain: mcl_nether
+Glowstone=
+Glowstone is a naturally-glowing block which is home to the Nether.=
+Nether Quartz Ore=
+Nether quartz ore is an ore containing nether quartz. It is commonly found around netherrack in the Nether.=
+Netherrack=
+Netherrack is a stone-like block home to the Nether. Starting a fire on this block will create an eternal fire.=
+Magma Block=
+Magma blocks are hot solid blocks which hurt anyone standing on it, unless they have fire resistance. Starting a fire on this block will create an eternal fire.=
+Soul Sand=
+Soul sand is a block from the Nether. One can only slowly walk on soul sand. The slowing effect is amplified when the soul sand is on top of ice, packed ice or a slime block.=
+Nether Brick Block=
+Red Nether Brick Block=
+Nether Wart Block=
+A nether wart block is a purely decorative block made from nether wart.=
+Block of Quartz=
+Chiseled Quartz Block=
+Pillar Quartz Block=
+Smooth Quartz=
+Glowstone Dust=
+Glowstone dust is the dust which comes out of broken glowstones. It is mainly used in crafting.=
+Nether Quartz=
+Nether quartz is a versatile crafting ingredient.=
+Nether Brick=
+Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences.=
+Nether Lava Source=
+Flowing Nether Lava=

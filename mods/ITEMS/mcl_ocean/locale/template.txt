@@ -1,0 +1,9 @@
+# textdomain: mcl_ocean
+Sea Lantern=
+Sea lanterns are decorative light sources which look great underwater but can be placed anywhere.=
+Prismarine=
+Prismarine is used as a building block. It slowly changes its color.=
+Prismarine Bricks=
+Dark Prismarine=
+Prismarine Crystals=
+Prismarine Shard=

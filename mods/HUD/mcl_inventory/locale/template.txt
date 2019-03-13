@@ -1,0 +1,1 @@
+# textdomain: mcl_inventory

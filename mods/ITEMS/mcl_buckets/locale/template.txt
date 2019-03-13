@@ -1,0 +1,13 @@
+# textdomain: mcl_buckets
+Empty Bucket=
+A bucket can be used to collect and release liquids.=
+Punch a liquid source to collect the liquid. With the filled bucket, you can right-click somewhere to empty the bucket which will create a liquid source at the position you've clicked at.=
+Lava Bucket=
+A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution.=
+Choose a place where you want to empty the bucket, then get in a safe spot somewhere above it. Be prepared to run away when something goes wrong as the lava will soon start to flow after placing. To empty the bucket (which places a lava source), right-click on your chosen place.=
+Water Bucket=
+A bucket can be used to collect and release liquids. This one is filled with water.=
+Right-click on any block to empty the bucket and put a water source on this spot.=
+River Water Bucket=
+A bucket can be used to collect and release liquids. This one is filled with river water.=
+Right-click on any block to empty the bucket and put a river water source on this spot.=

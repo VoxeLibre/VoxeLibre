@@ -1,0 +1,23 @@
+# textdomain: 3d_armor
+This is a piece of equippable armor which reduces the amount of damage you receive.=
+To equip it, put it on the corresponding armor slot in your inventory menu.=
+Leather Cap=
+Iron Helmet=
+Golden Helmet=
+Diamond Helmet=
+Chain Helmet=
+Leather Tunic=
+Iron Chestplate=
+Golden Chestplate=
+Diamond Chestplate=
+Chain Chestplate=
+Leather Pants=
+Iron Leggings=
+Golden Leggings=
+Diamond Leggings=
+Chain Leggings=
+Leather Boots=
+Iron Boots=
+Golden Boots=
+Diamond Boots=
+Chain Boots=
