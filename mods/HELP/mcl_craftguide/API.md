@@ -5,7 +5,7 @@
 #### Registering a custom crafting type (example)
 
 ```Lua
-craftguide.register_craft_type("digging", {
+mcl_craftguide.register_craft_type("digging", {
 	description = "Digging",
 	icon = "default_tool_steelpick.png",
 })
@@ -14,7 +14,7 @@ craftguide.register_craft_type("digging", {
 #### Registering a custom crafting recipe (example)
 
 ```Lua
-craftguide.register_craft({
+mcl_craftguide.register_craft({
 	type   = "digging",
 	width  = 1,
 	output = "default:cobble 2",
@@ -29,7 +29,7 @@ craftguide.register_craft({
 Recipe filters can be used to filter the recipes shown to players. Progressive
 mode is implemented as a recipe filter.
 
-#### `craftguide.add_recipe_filter(name, function(recipes, player))`
+#### `mcl_craftguide.add_recipe_filter(name, function(recipes, player))`
 
 Adds a recipe filter with the given name. The filter function should return the
 recipes to be displayed, given the available recipes and an `ObjectRef` to the
@@ -39,7 +39,7 @@ user. Each recipe is a table of the form returned by
 Example function to hide recipes for items from a mod called "secretstuff":
 
 ```lua
-craftguide.add_recipe_filter("Hide secretstuff", function(recipes)
+mcl_craftguide.add_recipe_filter("Hide secretstuff", function(recipes)
 	local filtered = {}
 	for _, recipe in ipairs(recipes) do
 		if recipe.output:sub(1,12) ~= "secretstuff:" then
@@ -51,15 +51,15 @@ craftguide.add_recipe_filter("Hide secretstuff", function(recipes)
 end)
 ```
 
-#### `craftguide.remove_recipe_filter(name)`
+#### `mcl_craftguide.remove_recipe_filter(name)`
 
 Removes the recipe filter with the given name.
 
-#### `craftguide.set_recipe_filter(name, function(recipe, player))`
+#### `mcl_craftguide.set_recipe_filter(name, function(recipe, player))`
 
 Removes all recipe filters and adds a new one.
 
-#### `craftguide.get_recipe_filters()`
+#### `mcl_craftguide.get_recipe_filters()`
 
 Returns a map of recipe filters, indexed by name.
 
@@ -80,7 +80,7 @@ Notes:
 - Filters can be combined.
 - The `groups` filter is currently implemented by default.
 
-#### `craftguide.add_search_filter(name, function(item, values))`
+#### `mcl_craftguide.add_search_filter(name, function(item, values))`
 
 Adds a search filter with the given name.
 The search function should return a boolean value (whether the given item should be listed or not).
@@ -88,7 +88,7 @@ The search function should return a boolean value (whether the given item should
 Example function to show items which contain at least a recipe of given width(s):
 
 ```lua
-craftguide.add_search_filter("widths", function(item, widths)
+mcl_craftguide.add_search_filter("widths", function(item, widths)
 	local has_width
 	local recipes = recipes_cache[item]
 
@@ -109,11 +109,11 @@ craftguide.add_search_filter("widths", function(item, widths)
 end)
 ```
 
-#### `craftguide.remove_search_filter(name)`
+#### `mcl_craftguide.remove_search_filter(name)`
 
 Removes the search filter with the given name.
 
-#### `craftguide.get_search_filters()`
+#### `mcl_craftguide.get_search_filters()`
 
 Returns a map of search filters, indexed by name.
 
@@ -121,7 +121,7 @@ Returns a map of search filters, indexed by name.
 
 ### Custom formspec elements
 
-#### `craftguide.add_formspec_element(name, def)`
+#### `mcl_craftguide.add_formspec_element(name, def)`
 
 Adds a formspec element to the current formspec.
 Supported types: `box`, `label`, `image`, `button`, `tooltip`, `item_image`, `image_button`, `item_image_button`
@@ -129,7 +129,7 @@ Supported types: `box`, `label`, `image`, `button`, `tooltip`, `item_image`, `im
 Example:
 
 ```lua
-craftguide.add_formspec_element("export", {
+mcl_craftguide.add_formspec_element("export", {
 	type = "button",
 	element = function(data)
 		-- Should return a table of parameters according to the formspec element type.
@@ -152,11 +152,11 @@ craftguide.add_formspec_element("export", {
 })
 ```
 
-#### `craftguide.remove_formspec_element(name)`
+#### `mcl_craftguide.remove_formspec_element(name)`
 
 Removes the formspec element with the given name.
 
-#### `craftguide.get_formspec_elements()`
+#### `mcl_craftguide.get_formspec_elements()`
 
 Returns a map of formspec elements, indexed by name.
 
@@ -164,10 +164,8 @@ Returns a map of formspec elements, indexed by name.
 
 ### Miscellaneous
 
-#### `craftguide.show(player_name, item, show_usages)`
+#### `mcl_craftguide.show(player_name, item, show_usages)`
 
 Opens the Crafting Guide with the current filter applied.
 
    * `player_name`: string param.
-   * `item`: optional, string param. If set, this item is pre-selected. If the item does not exist or has no recipe, use the player's previous selection. By default, player's previous selection is used
-   * `show_usages`: optional, boolean param. If true, show item usages.

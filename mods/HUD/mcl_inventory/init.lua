@@ -131,8 +131,6 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if not minetest.settings:get_bool("creative_mode") and (formname == "" or formname == "main") then
 			set_inventory(player)
 		end
-	elseif fields.__mcl_craftguide and mod_craftguide then
-		mcl_craftguide.show(player:get_player_name())
 	end
 end)
 

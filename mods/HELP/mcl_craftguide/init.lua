@@ -10,8 +10,8 @@ local recipes_cache = {}
 local usages_cache  = {}
 local fuel_cache    = {}
 
-local progressive_mode = M.settings:get_bool("craftguide_progressive_mode") and rawget(_G, "sfinv")
-local sfinv_only = M.settings:get_bool("craftguide_sfinv_only") and rawget(_G, "sfinv")
+local progressive_mode = M.settings:get_bool("mcl_craftguide_progressive_mode") or true
+local sfinv_only = false
 
 local colorize = M.colorize
 local reg_items = M.registered_items
@@ -1008,6 +1008,8 @@ else
 	M.register_on_player_receive_fields(function(player, formname, fields)
 		if formname == "mcl_craftguide" then
 			on_receive_fields(player, fields)
+		elseif fields.__mcl_craftguide then
+			mcl_craftguide.show(player:get_player_name())
 		end
 	end)
 
@@ -1129,7 +1131,7 @@ if progressive_mode then
 	end)
 end
 
-function mcl_craftguide.show(name, item, show_usages)
+function mcl_craftguide.show_old(name, item, show_usages)
 	local func = "mcl_craftguide.show(): "
 	assert(name, func .. "player name missing")
 
@@ -1146,6 +1148,16 @@ function mcl_craftguide.show(name, item, show_usages)
 	data.recipes     = get_recipes(item, data, player)
 
 	show_fs(player, name)
+end
+
+function mcl_craftguide.show(name)
+	local player = minetest.get_player_by_name(name)
+	if next(recipe_filters) then
+		local data = player_data[name]
+		data.items_raw = get_filtered_items(player)
+		search(data)
+	end
+	show_formspec(name, "mcl_craftguide", make_formspec(name))
 end
 
 --[[ Custom recipes (>3x3) test code

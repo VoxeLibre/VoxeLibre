@@ -1,5 +1,4 @@
-# The progressive mode shows recipes you can craft from items you ever had in your inventory.
-craftguide_progressive_mode	(Progressive Mode)	bool false
-
-# Integration in the default Minetest Game inventory.
-craftguide_sfinv_only		(Sfinv only)		bool false
+# If enabled, the recipe book will progressively be filled with new recipes that can be crafted from all items you ever have had in your inventory.
+# Recommended for new players and for a spoiler-free gameplay experience.
+# If disabled, all recipes will be shown.
+mcl_craftguide_progressive_mode	(Learn crafting recipes progressively) bool true
