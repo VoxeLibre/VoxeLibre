@@ -1,5 +1,6 @@
 mcl_spawn = {}
 
+local S = minetest.get_translator("mcl_spawn")
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
 local cached_world_spawn
@@ -63,7 +64,7 @@ mcl_spawn.set_spawn_pos = function(player, pos, message)
 		if meta:get_string("mcl_beds:spawn") ~= "" then
 			spawn_changed = true
 			if message then
-				minetest.chat_send_player(player:get_player_name(), "Respawn position cleared!")
+				minetest.chat_send_player(player:get_player_name(), S("Respawn position cleared!"))
 			end
 		end
 		meta:set_string("mcl_beds:spawn", "")
@@ -74,7 +75,7 @@ mcl_spawn.set_spawn_pos = function(player, pos, message)
 			if vector.distance(pos, oldpos) > 0.1 then
 				spawn_changed = true
 				if message then
-					minetest.chat_send_player(player:get_player_name(), "New respawn position set!")
+					minetest.chat_send_player(player:get_player_name(), S("New respawn position set!"))
 				end
 			end
 		end
@@ -115,7 +116,7 @@ minetest.register_on_respawnplayer(function(player)
 			if (bgroup ~= 1 and bgroup ~= 2) then
 				mcl_spawn.set_spawn_pos(player, nil)
 			end
-			minetest.chat_send_player(player:get_player_name(), "Your spawn bed was missing or blocked.")
+			minetest.chat_send_player(player:get_player_name(), S("Your spawn bed was missing or blocked."))
 		end
 	end
 end)
