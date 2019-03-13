@@ -58,7 +58,7 @@ if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then
 		end
 	end
 	minetest.register_node("mobs_mc:monster_egg_stone", {
-		description = S("Stone Monster Egg"),
+		description = "Stone Monster Egg",
 		tiles = {"default_stone.png"},
 		groups = {oddly_breakable_by_hand = 2, spawns_silverfish = 1},
 		drop = '',
@@ -68,7 +68,7 @@ if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then
 	})
 
 	minetest.register_node("mobs_mc:monster_egg_cobble", {
-		description = S("Cobblestone Monster Egg"),
+		description = "Cobblestone Monster Egg",
 		tiles = {"default_cobble.png"},
 		is_ground_content = false,
 		groups = {oddly_breakable_by_hand = 2, spawns_silverfish = 1},
@@ -78,7 +78,7 @@ if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then
 	})
 
 	minetest.register_node("mobs_mc:monster_egg_mossycobble", {
-		description = S("Mossy Cobblestone Monster Egg"),
+		description = "Mossy Cobblestone Monster Egg",
 		tiles = {"default_mossycobble.png"},
 		is_ground_content = false,
 		groups = {oddly_breakable_by_hand = 2, spawns_silverfish = 1},
@@ -88,7 +88,7 @@ if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then
 	})
 
 	minetest.register_node("mobs_mc:monster_egg_stonebrick", {
-		description = S("Stone Brick Monster Egg"),
+		description = "Stone Brick Monster Egg",
 		paramtype2 = "facedir",
 		place_param2 = 0,
 		tiles = {"default_stone_brick.png"},
@@ -100,7 +100,7 @@ if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then
 	})
 
 	minetest.register_node("mobs_mc:monster_egg_stone_block", {
-		description = S("Stone Block Monster Egg"),
+		description = "Stone Block Monster Egg",
 		tiles = {"default_stone_block.png"},
 		is_ground_content = false,
 		groups = {oddly_breakable_by_hand = 2, spawns_silverfish = 1},

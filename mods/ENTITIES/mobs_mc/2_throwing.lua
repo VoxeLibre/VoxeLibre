@@ -3,6 +3,9 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
+-- NOTE: Strings intentionally not marked for translation, other mods already have these items.
+-- TODO: Remove this file eventually, all items here are already outsourced in other mods.
+
 local S = minetest.get_translator("mobs_mc")
 
 --maikerumines throwing code
@@ -130,9 +133,9 @@ end
 
 if c("arrow") then
 	minetest.register_craftitem("mobs_mc:arrow", {
-		description = S("Arrow"),
-		_doc_items_longdesc = S("Arrows are ammunition for bows."),
-		_doc_items_usagehelp = S("To use arrows as ammunition for a bow, put them in the inventory slot following the bow. Slots are counted left to right, top to bottom."),
+		description = "Arrow",
+		_doc_items_longdesc = "Arrows are ammunition for bows.",
+		_doc_items_usagehelp = "To use arrows as ammunition for a bow, put them in the inventory slot following the bow. Slots are counted left to right, top to bottom.",
 		inventory_image = "mcl_bows_arrow_inv.png",
 	})
 end
@@ -150,9 +153,9 @@ end
 
 if c("bow") then
 	minetest.register_tool("mobs_mc:bow_wood", {
-		description = S("Bow"),
-		_doc_items_longdesc = S("Bows are ranged weapons to shoot arrows at your foes."),
-		_doc_items_usagehelp = S("To use the bow, you first need to have at least one arrow in slot following the bow. Leftclick to shoot. Each hit deals 3 damage."),
+		description = "Bow",
+		_doc_items_longdesc = "Bows are ranged weapons to shoot arrows at your foes.",
+		_doc_items_usagehelp = "To use the bow, you first need to have at least one arrow in slot following the bow. Leftclick to shoot. Each hit deals 3 damage.",
 		inventory_image = "mcl_bows_bow.png",
 		on_use = function(itemstack, user, pointed_thing)
 			if throwing_shoot_arrow(itemstack, user, pointed_thing) then
@@ -289,8 +292,8 @@ if c("egg") then
 	end
 
 	minetest.register_craftitem("mobs_mc:egg", {
-		description = S("Egg"),
-		_doc_items_longdesc = S("Eggs can be thrown and break on impact. There is a small chance that 1 or even 4 chicks will pop out"),
+		description = "Egg",
+		_doc_items_longdesc = "Eggs can be thrown and break on impact. There is a small chance that 1 or even 4 chicks will pop out",
 		_doc_items_usagehelp = how_to_throw,
 		inventory_image = "mobs_chicken_egg.png",
 		on_use = mobs_shoot_egg,
@@ -375,8 +378,8 @@ if c("snowball") then
 
 	-- Snowball
 	minetest.register_craftitem("mobs_mc:snowball", {
-		description = S("Snowball"),
-		_doc_items_longdesc = S("Snowballs can be thrown at your enemies. A snowball deals 3 damage to blazes, but is harmless to anything else."),
+		description = "Snowball",
+		_doc_items_longdesc = "Snowballs can be thrown at your enemies. A snowball deals 3 damage to blazes, but is harmless to anything else.",
 		_doc_items_usagehelp = how_to_throw,
 		inventory_image = "mcl_throwing_snowball.png",
 		on_use = mobs_shoot_snowball,
