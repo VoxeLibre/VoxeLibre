@@ -1,3 +1,4 @@
+local S = minetest.get_translator("mcl_falling_nodes")
 local dmes = minetest.get_modpath("mcl_death_messages") ~= nil
 
 local get_falling_depth = function(self)
@@ -48,9 +49,9 @@ local deal_falling_damage = function(self, dtime)
 						-- TODO: Reduce damage if wearing a helmet
 						local msg
 						if minetest.get_item_group(self.node.name, "anvil") ~= 0 then
-							msg = "%s was smashed by a falling anvil."
+							msg = S("%s was smashed by a falling anvil.")
 						else
-							msg = "%s was smashed by a falling block."
+							msg = S("%s was smashed by a falling block.")
 						end
 						if dmes then
 							mcl_death_messages.player_damage(v, string.format(msg, v:get_player_name()))
