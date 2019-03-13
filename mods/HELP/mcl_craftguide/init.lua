@@ -78,25 +78,25 @@ local group_stereotypes = {
 }
 
 local group_names = {
-	shulker_box = "Any shulker box",
-	wool = "Any wool",
-	wood = "Any wood planks",
-	tree = "Any wood",
-	sand = "Any sand",
-	normal_sandstone = "Any normal sandstone",
-	red_sandstone = "Any red sandstone",
-	carpet = "Any carpet",
-	dye = "Any dye",
-	water_bucket = "Any water bucket",
-	flower = "Any flower",
-	mushroom = "Any mushroom",
-	wood_slab = "Any wooden slab",
-	wood_stairs = "Any wooden stairs",
-	coal = "Any coal",
-	quartz_block = "Any kind of quartz block",
-	purpur_block = "Any kind of purpur block",
-	stonebrick = "Any stone bricks",
-	stick = "Any stick",
+	shulker_box = S("Any shulker box"),
+	wool = S("Any wool"),
+	wood = S("Any wood planks"),
+	tree = S("Any wood"),
+	sand = S("Any sand"),
+	normal_sandstone = S("Any normal sandstone"),
+	red_sandstone = S("Any red sandstone"),
+	carpet = S("Any carpet"),
+	dye = S("Any dye"),
+	water_bucket = S("Any water bucket"),
+	flower = S("Any flower"),
+	mushroom = S("Any mushroom"),
+	wood_slab = S("Any wooden slab"),
+	wood_stairs = S("Any wooden stairs"),
+	coal = S("Any coal"),
+	quartz_block = S("Any kind of quartz block"),
+	purpur_block = S("Any kind of purpur block"),
+	stonebrick = S("Any stone bricks"),
+	stick = S("Any stick"),
 }
 
 
@@ -493,7 +493,7 @@ local function get_recipe_fs(data, iY)
 		fs[#fs + 1] = fmt(FMT.label,
 			(data.iX / 2) - 2,
 			iY + 2.2,
-			ESC(S("Recipe is too big to be displayed (@1x@2)", width, rows)))
+			ESC(S("Recipe is too big to be displayed (@1×@2)", width, rows)))
 
 		return concat(fs)
 	end
@@ -979,9 +979,10 @@ M.register_on_leaveplayer(function(player)
 	player_data[name] = nil
 end)
 
+-- TODO: Remove sfinv support
 if sfinv_only then
 	sfinv.register_page("craftguide:craftguide", {
-		title = S("Craft Guide"),
+		title = "Craft Guide",
 
 		get = function(self, player, context)
 			local name = player:get_player_name()
