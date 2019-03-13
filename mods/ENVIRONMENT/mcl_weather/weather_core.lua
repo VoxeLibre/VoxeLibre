@@ -190,7 +190,7 @@ minetest.register_privilege("weather_manager", {
 
 -- Weather command definition. Set 
 minetest.register_chatcommand("weather", {
-  params = S("(clear | rain | snow | thunder) [<duration>]"),
+  params = "(clear | rain | snow | thunder) [<duration>]",
   description = S("Changes the weather to the specified parameter."),
   privs = {weather_manager = true},
   func = function(name, param)
