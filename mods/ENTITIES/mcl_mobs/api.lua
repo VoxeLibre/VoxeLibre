@@ -2355,7 +2355,6 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	-- is mob protected?
 	if self.protected and hitter:is_player()
 	and minetest.is_protected(self.object:get_pos(), hitter:get_player_name()) then
-		minetest.chat_send_player(hitter:get_player_name(), S("Mob has been protected!"))
 		return
 	end
 
