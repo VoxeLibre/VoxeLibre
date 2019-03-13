@@ -1,0 +1,23 @@
+# textdomain: mcl_minecarts
+Minecart=Lore
+Minecarts can be used for a quick transportion on rails.=Loren können für eine schnelle Fahrt auf Schienen benutzt werden.
+Minecarts only ride on rails and always follow the tracks. At a T-junction with no straight way ahead, they turn left. The speed is affected by the rail type.=Loren fahren nur auf Schienen und bleiben immer auf der Strecke. An einer Einmündung ohne einem Weg nach vorne fahren sie nach links. Die Geschwindigkeit hängt vom Schienentyp ab.
+You can place the minecart on rails. Right-click it to enter it. Punch it to get it moving.=Sie können die Lore auf Schienen platzieren. Rechtsklicken, um einzusteigen.
+To obtain the minecart, punch it while holding down the sneak key.=Um die Lore aufzusammeln, schlagen Sie sie, während Sie die Schleichen-Taste gedrückt halten.
+Minecart with Chest=Lore mit Truhe
+Minecart with Furnace=Lore mit Ofen
+Minecart with Command Block=Lore mit Befehlsblock
+Minecart with Hopper=Lore mit Trichter
+Minecart with TNT=Lore mit TNT
+Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.=Bauen Sie sie auf den Boden, um Ihre Schienennetzwerk zu errichten, die Schienen werden sich automatisch verbinden und sich nach Bedarf in Kurven, Einmündungen, Kreuzungen und Steigungen verwandeln.
+Rail=Schiene
+Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction.=Schienen können benutzt werden, um Strecken für Loren zu bauen. Normale Schienen werden Loren aufgrund von Reibung leicht verlangsamen.
+Powered Rail=Antriebsschiene
+Rails can be used to build transport tracks for minecarts. Powered rails are able to accelerate and brake minecarts.=Schienen können benutzt werden, um Strecken für Loren zu bauen. Antribsschienen können Loren beschleunigen und abbremsen.
+Without redstone power, the rail will brake minecarts. To make this rail accelerate minecarts, power it with redstone power.=Ohne Redstone-Energie wird die Schiene Loren abbremsen. Mit Redstone-Energie wird sie sie beschleunigen.
+Activator Rail=Aktivierungsschiene
+Rails can be used to build transport tracks for minecarts. Activator rails are used to activate special minecarts.=Schienen können benutzt werden, um Strecken für Loren zu bauen. Aktivierungsschienen werden benutzt, um besondere Loren zu aktivieren.
+To make this rail activate minecarts, power it with redstone power and send a minecart over this piece of rail.=Wenn diese Schiene mit Redstone-Energie versorgt wird, werden alle Loren, die sie passieren, aktiviert.
+Detector Rail=Sensorschiene
+Rails can be used to build transport tracks for minecarts. A detector rail is able to detect a minecart above it and powers redstone mechanisms.=Schienen können benutzt werden, um Strecken für Loren zu bauen. Eine Sensorschiene kann eine Lore erkennen und versorgt Redstone-Mechanismen.
+To detect a minecart and provide redstone power, connect it to redstone trails or redstone mechanisms and send any minecart over the rail.=Um eine Lore zu erkennen und die Redstone-Energie zu aktivieren, verbinden Sie die Schiene mit Redstonestaub oder Redstone-Mechanismen und schicken Sie eine beliebige Lore über die Schiene.

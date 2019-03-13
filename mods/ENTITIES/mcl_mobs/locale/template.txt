@@ -1,0 +1,5 @@
+# textdomain: mcl_mobs
+Peaceful mode active! No monsters will spawn.=
+This allows you to place a single mob.=
+Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=
+You need the “maphack” privilege to change the mob spawner.=
