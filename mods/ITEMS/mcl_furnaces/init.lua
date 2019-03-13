@@ -20,7 +20,6 @@ local function active_formspec(fuel_percent, item_percent)
 	(item_percent)..":gui_furnace_arrow_fg.png^[transformR270]"..
 	"image_button[8,0;1,1;craftguide_book.png;craftguide;]"..
 	"tooltip[craftguide;Recipe book]"..
-	"tooltip[doc;Help]"..
 	"listring[current_name;dst]"..
 	"listring[current_player;main]"..
 	"listring[current_name;src]"..
@@ -41,7 +40,6 @@ local inactive_formspec = "size[9,8.75]"..
 	"image[4.1,1.5;1.5,1;gui_furnace_arrow_bg.png^[transformR270]"..
 	"image_button[8,0;1,1;craftguide_book.png;craftguide;]"..
 	"tooltip[craftguide;Recipe book]"..
-	"tooltip[doc;Help]"..
 	"listring[current_name;dst]"..
 	"listring[current_player;main]"..
 	"listring[current_name;src]"..
@@ -51,9 +49,7 @@ local inactive_formspec = "size[9,8.75]"..
 
 local receive_fields = function(pos, formname, fields, sender)
 	if fields.craftguide then
-		mcl_craftguide.show_craftguide(sender)
-	elseif fields.doc and minetest.get_modpath("doc") then
-		doc.show_entry(sender:get_player_name(), "nodes", "mcl_furnaces:furnace", true)
+		mcl_craftguide.show(sender:get_player_name())
 	end
 end
 

@@ -1131,25 +1131,6 @@ if progressive_mode then
 	end)
 end
 
-function mcl_craftguide.show_old(name, item, show_usages)
-	local func = "mcl_craftguide.show(): "
-	assert(name, func .. "player name missing")
-
-	local data   = player_data[name]
-	local player = get_player_by_name(name)
-	local query_item = data.query_item
-
-	reset_data(data)
-
-	item = reg_items[item] and item or query_item
-
-	data.query_item  = item
-	data.show_usages = show_usages
-	data.recipes     = get_recipes(item, data, player)
-
-	show_fs(player, name)
-end
-
 function mcl_craftguide.show(name)
 	local player = minetest.get_player_by_name(name)
 	if next(recipe_filters) then
