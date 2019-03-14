@@ -1,6 +1,6 @@
 %s: %s=%s: %s
 %s (got)=%s (erhalten)
-%s’s awards:=%ss Auszeichnungen:
+%s’s awards:=Auszeichnungen von %s:
 (Secret Award)=(Geheime Auszeichnung)
 Achievement gotten!=Auszeichnung erhalten!
 Achievement gotten:=Auszeichnung erhalten:
