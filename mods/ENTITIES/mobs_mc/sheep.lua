@@ -30,6 +30,9 @@ if minetest.get_modpath("mcl_wool") ~= nil then
 end
 
 local sheep_texture = function(color_group)
+	if not color_group then
+		color_group = "unicolor_white"
+	end
 	return {
 		"mobs_mc_sheep_fur.png^[colorize:"..colors[color_group][2],
 		"mobs_mc_sheep.png",
@@ -227,6 +230,7 @@ mobs:register_mob("mobs_mc:sheep", {
 				local groups = minetest.registered_items[new_dye].groups
 				for k, v in pairs(groups) do
 					if string.sub(k, 1, 9) == "unicolor_" then
+						ent_c.color = k
 						ent_c.base_texture = sheep_texture(k)
 						mixed = true
 						break
@@ -238,11 +242,12 @@ mobs:register_mob("mobs_mc:sheep", {
 			if not mixed then
 				-- Choose color randomly from one of the parents
 				local p = math.random(1, 2)
-				if p == 1 then
-					ent_c.base_texture = sheep_texture(color1)
+				if p == 1 and color1 then
+					ent_c.color = color1
 				else
-					ent_c.base_texture = sheep_texture(color2)
+					ent_c.color = color2
 				end
+				ent_c.base_texture = sheep_texture(ent_c.color)
 			end
 			child:set_properties({textures = ent_c.base_texture})
 			ent_c.initial_color_set = true
