@@ -1,4 +1,5 @@
 local init = os.clock()
+local S = minetest.get_translator("mcl_structures")
 mcl_structures ={}
 
 mcl_structures.get_struct = function(file)
@@ -459,7 +460,7 @@ end
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
 	params = "desert_temple | desert_well | igloo | village | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_portal_shrine",
-	description = "Generate a pre-defined structure near your position.",
+	description = S("Generate a pre-defined structure near your position."),
 	privs = {debug = true},
 	func = function(name, param)
 		local pos= minetest.get_player_by_name(name):get_pos()
@@ -467,48 +468,40 @@ minetest.register_chatcommand("spawnstruct", {
 			return
 		end
 		local errord = false
+		local message = S("Structure placed.")
 		if param == "village" then
 			mcl_structures.generate_village(pos)
-			minetest.chat_send_player(name, "Village built. WARNING: Villages are experimental and might have bugs.")
+			message = S("Village built. WARNING: Villages are experimental and might have bugs.")
 		elseif param == "desert_temple" then
 			mcl_structures.generate_desert_temple(pos)
-			minetest.chat_send_player(name, "Desert temple built.")
 		elseif param == "desert_well" then
 			mcl_structures.generate_desert_well(pos)
-			minetest.chat_send_player(name, "Desert well built.")
 		elseif param == "igloo" then
 			mcl_structures.generate_igloo_top(pos)
-			minetest.chat_send_player(name, "Igloo built.")
 		elseif param == "witch_hut" then
 			mcl_structures.generate_witch_hut(pos)
-			minetest.chat_send_player(name, "Witch hut built.")
 		elseif param == "boulder" then
 			mcl_structures.generate_boulder(pos)
-			minetest.chat_send_player(name, "Moss stone boulder placed.")
 		elseif param == "fossil" then
 			mcl_structures.generate_fossil(pos)
-			minetest.chat_send_player(name, "Fossil placed.")
 		elseif param == "ice_spike_small" then
 			mcl_structures.generate_ice_spike_small(pos)
-			minetest.chat_send_player(name, "Small ice spike placed.")
 		elseif param == "ice_spike_large" then
 			mcl_structures.generate_ice_spike_large(pos)
-			minetest.chat_send_player(name, "Large ice spike placed.")
 		elseif param == "end_exit_portal" then
 			mcl_structures.generate_end_exit_portal(pos)
-			minetest.chat_send_player(name, "End exit portal placed.")
 		elseif param == "end_portal_shrine" then
 			mcl_structures.generate_end_portal_shrine(pos)
-			minetest.chat_send_player(name, "End portal shrine placed.")
 		elseif param == "" then
-			minetest.chat_send_player(name, "Error: No structure type given. Please use “/spawnstruct <type>”.")
+			message = S("Error: No structure type given. Please use “/spawnstruct <type>”.")
 			errord = true
 		else
-			minetest.chat_send_player(name, "Error: Unknown structure type. Please use “/spawnstruct <type>”.")
+			message = S("Error: Unknown structure type. Please use “/spawnstruct <type>”.")
 			errord = true
 		end
+		minetest.chat_send_player(name, message)
 		if errord then
-			minetest.chat_send_player(name, "Use /help spawnstruct to see a list of avaiable types.")
+			minetest.chat_send_player(name, S("Use /help spawnstruct to see a list of avaiable types."))
 		end
 	end
 })
