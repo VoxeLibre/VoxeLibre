@@ -480,10 +480,12 @@ end
 -- END OF register_chest FUNCTION BODY
 end
 
+local chestusage = S("To access its inventory, rightclick it. When broken, the items will drop out.")
+
 register_chest("chest",
 	S("Chest"),
 	S("Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other."),
-	S("To access the chest's inventory, rightclick the chest. When broken, the items of the chest will drop out."),
+	chestusage,
 	{
 		small = {"default_chest_top.png", "mcl_chests_chest_bottom.png",
 		"mcl_chests_chest_right.png", "mcl_chests_chest_left.png",
@@ -513,7 +515,7 @@ local traptiles = {
 register_chest("trapped_chest",
 	S("Trapped Chest"),
 	S("A trapped chest is a container which provides 27 inventory slots. When it is opened, it sends a redstone signal to its adjacent blocks as long it stays open. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other."),
-	S("To access the inventory of a trapped chest, rightclick it. When broken, the items will drop out."),
+	chestusage,
 	traptiles,
 	nil,
 	{receptor = {
@@ -725,7 +727,7 @@ for color, desc in pairs(boxtypes) do
 	minetest.register_node("mcl_chests:"..color.."_shulker_box", {
 		description = desc,
 		_doc_items_longdesc = S("A shulker box is a portable container which provides 27 inventory slots for any item except shulker boxes. Shulker boxes keep their inventory when broken, so shulker boxes as well as their contents can be taken as a single item. Shulker boxes come in many different colors."),
-		_doc_items_usagehelp = S("To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out. Place the shulker box again to be able to retrieve its contents."),
+		_doc_items_usagehelp = S("To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out."),
 		tiles = {
 			"mcl_chests_"..color.."_shulker_box_top.png", -- top
 			"[combine:16x16:-32,-28="..mob_texture, -- bottom

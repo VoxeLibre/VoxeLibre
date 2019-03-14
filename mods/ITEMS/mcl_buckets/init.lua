@@ -186,7 +186,7 @@ end
 minetest.register_craftitem("mcl_buckets:bucket_empty", {
 	description = S("Empty Bucket"),
 	_doc_items_longdesc = S("A bucket can be used to collect and release liquids."),
-	_doc_items_usagehelp = S("Punch a liquid source to collect the liquid. With the filled bucket, you can right-click somewhere to empty the bucket which will create a liquid source at the position you've clicked at."),
+	_doc_items_usagehelp = S("Punch a liquid source to collect it. You can then use the filled bucket to place the liquid somewhere else."),
 
 	inventory_image = "bucket.png",
 	stack_max = 16,
@@ -306,7 +306,7 @@ if mod_mcl_core then
 		"bucket_lava.png",
 		S("Lava Bucket"),
 		S("A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution."),
-		S("Choose a place where you want to empty the bucket, then get in a safe spot somewhere above it. Be prepared to run away when something goes wrong as the lava will soon start to flow after placing. To empty the bucket (which places a lava source), right-click on your chosen place.")
+		S("Get in a safe distance and place the bucket to empty it and create a lava source at this spot. Don't burn yourself!")
 	)
 
 	-- Water bucket
@@ -317,7 +317,7 @@ if mod_mcl_core then
 		"bucket_water.png",
 		S("Water Bucket"),
 		S("A bucket can be used to collect and release liquids. This one is filled with water."),
-		S("Right-click on any block to empty the bucket and put a water source on this spot."),
+		S("Place it to empty the bucket and create a water source."),
 		function(pos, placer)
 			-- Check protection
 			local placer_name = ""
@@ -359,7 +359,7 @@ if mod_mclx_core then
 		"bucket_river_water.png",
 		S("River Water Bucket"),
 		S("A bucket can be used to collect and release liquids. This one is filled with river water."),
-		S("Right-click on any block to empty the bucket and put a river water source on this spot."),
+		S("Place it to empty the bucket and create a river water source."),
 		function(pos, placer)
 			-- Check protection
 			local placer_name = ""
