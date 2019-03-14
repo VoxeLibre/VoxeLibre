@@ -93,7 +93,12 @@ end
 
 -- Takes an unicolor group name (e.g. “unicolor_white”) and returns a corresponding dye name (if it exists), nil otherwise.
 mcl_dye.unicolor_to_dye = function(unicolor_group)
-	return "mcl_dye:" .. dyelocal.unicolor_to_dye_id[unicolor_group]
+	local color = dyelocal.unicolor_to_dye_id[unicolor_group]
+	if color then
+		return "mcl_dye:" .. color
+	else
+		return nil
+	end
 end
 
 -- Define items
