@@ -157,7 +157,7 @@ end
 
 -- command to set player skin (usually for custom skins)
 minetest.register_chatcommand("setskin", {
-	params = "[<player>] [<skin number>]",
+	params = S("[<player>] [<skin number>]"),
 	description = S("Select player skin of yourself or another player"),
 	privs = {},
 	func = function(name, param)

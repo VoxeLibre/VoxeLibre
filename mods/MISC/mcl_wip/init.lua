@@ -1,3 +1,5 @@
+-- Mod to mark WIP (Work In Progress) content
+
 local S = minetest.get_translator("mcl_wip")
 
 local wip_items = {
