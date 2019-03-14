@@ -1,100 +1,101 @@
 local S = minetest.get_translator("mcl_death_messages")
+local N = function(s) return s end
 
 mcl_death_messages = {}
 
 -- Death messages
 local msgs = {
 	["arrow"] = {
-		S("%s was fatally hit by an arrow."),
-		S("%s has been killed with an arrow."),
+		N("@1 was fatally hit by an arrow."),
+		N("@1 has been killed with an arrow."),
 	},
 	["arrow_name"] = {
-		S("%s was shot by an arrow from %s."),
+		N("@1 was shot by an arrow from %s."),
 	},
 	["drown"] = {
-		S("%s forgot to breathe."),
-		S("%s drowned."),
-		S("%s ran out of oxygen."),
+		N("@1 forgot to breathe."),
+		N("@1 drowned."),
+		N("@1 ran out of oxygen."),
 	},
 	["murder"] = {
-		S("%s was killed by %s."),
+		N("@1 was killed by %s."),
 	},
 	["mob_kill"] = {
-		S("%s was killed by a mob."),
+		N("@1 was killed by a mob."),
 	},
 	["blaze_fireball"] = {
-		S("%s was burned to death by a blaze's fireball."),
-		S("%s was killed by a fireball from a blaze."),
+		N("@1 was burned to death by a blaze's fireball."),
+		N("@1 was killed by a fireball from a blaze."),
 	},
 	["fire_charge"] = {
-		S("%s was burned by a fire charge."),
+		N("@1 was burned by a fire charge."),
 	},
 	["ghast_fireball"] = {
-		S("A ghast scared %s to death."),
-		S("%s has been fireballed by a ghast."),
+		N("A ghast scared @1 to death."),
+		N("@1 has been fireballed by a ghast."),
 	},
 	["fall"] = {
-		S("%s fell from a high cliff."),
-		S("%s took fatal fall damage."),
-		S("%s fell victim to gravity."),
+		N("@1 fell from a high cliff."),
+		N("@1 took fatal fall damage."),
+		N("@1 fell victim to gravity."),
 	},
 	["other"] = {
-		S("%s died."),
+		N("@1 died."),
 	}
 }
 
 local mobkills = {
-	["mobs_mc:zombie"] = S("%s was killed by a zombie."),
-	["mobs_mc:baby_zombie"] = S("%s was killed by a baby zombie."),
-	["mobs_mc:blaze"] = S("%s was killed by a blaze."),
-	["mobs_mc:slime"] = S("%s was killed by a slime."),
-	["mobs_mc:witch"] = S("%s was killed by a witch."),
-	["mobs_mc:magma_cube_tiny"] = S("%s was killed by a magma cube."),
-	["mobs_mc:magma_cube_small"] = S("%s was killed by a magma cube."),
-	["mobs_mc:magma_cube_big"] = S("%s was killed by a magma cube."),
-	["mobs_mc:wolf"] = S("%s was killed by a wolf."),
-	["mobs_mc:cat"] = S("%s was killed by a cat."),
-	["mobs_mc:ocelot"] = S("%s was killed by an ocelot."),
-	["mobs_mc:ender_dragon"] = S("%s was killed by an ender dragon."),
-	["mobs_mc:wither"] = S("%s was killed by a wither."),
-	["mobs_mc:enderman"] = S("%s was killed by an enderman."),
-	["mobs_mc:endermite"] = S("%s was killed by an endermite."),
-	["mobs_mc:ghast"] = S("%s was killed by a ghast."),
-	["mobs_mc:guardian_elder"] = S("%s was killed by an elder guardian."),
-	["mobs_mc:guardian"] = S("%s was killed by a guardian."),
-	["mobs_mc:iron_golem"] = S("%s was killed by an iron golem."),
-	["mobs_mc:polar_bear"] = S("%s was killed by a polar_bear."),
-	["mobs_mc:killer_bunny"] = S("%s was killed by a killer bunny."),
-	["mobs_mc:shulker"] = S("%s was killed by a shulker."),
-	["mobs_mc:silverfish"] = S("%s was killed by a silverfish."),
-	["mobs_mc:skeleton"] = S("%s was killed by a skeleton."),
-	["mobs_mc:stray"] = S("%s was killed by a stray."),
-	["mobs_mc:slime_tiny"] = S("%s was killed by a slime."),
-	["mobs_mc:slime_small"] = S("%s was killed by a slime."),
-	["mobs_mc:slime_big"] = S("%s was killed by a slime."),
-	["mobs_mc:spider"] = S("%s was killed by a spider."),
-	["mobs_mc:cave_spider"] = S("%s was killed by a cave spider."),
-	["mobs_mc:vex"] = S("%s was killed by a vex."),
-	["mobs_mc:evoker"] = S("%s was killed by an evoker."),
-	["mobs_mc:illusioner"] = S("%s was killed by an illusioner."),
-	["mobs_mc:vindicator"] = S("%s was killed by a vindicator."),
-	["mobs_mc:villager_zombie"] = S("%s was killed by a zombie villager."),
-	["mobs_mc:husk"] = S("%s was killed by a husk."),
-	["mobs_mc:baby_husk"] = S("%s was killed by a baby husk."),
-	["mobs_mc:pigman"] = S("%s was killed by a zombie pigman."),
-	["mobs_mc:baby_pigman"] = S("%s was killed by a baby zombie pigman."),
+	["mobs_mc:zombie"] = N("@1 was killed by a zombie."),
+	["mobs_mc:baby_zombie"] = N("@1 was killed by a baby zombie."),
+	["mobs_mc:blaze"] = N("@1 was killed by a blaze."),
+	["mobs_mc:slime"] = N("@1 was killed by a slime."),
+	["mobs_mc:witch"] = N("@1 was killed by a witch."),
+	["mobs_mc:magma_cube_tiny"] = N("@1 was killed by a magma cube."),
+	["mobs_mc:magma_cube_small"] = N("@1 was killed by a magma cube."),
+	["mobs_mc:magma_cube_big"] = N("@1 was killed by a magma cube."),
+	["mobs_mc:wolf"] = N("@1 was killed by a wolf."),
+	["mobs_mc:cat"] = N("@1 was killed by a cat."),
+	["mobs_mc:ocelot"] = N("@1 was killed by an ocelot."),
+	["mobs_mc:ender_dragon"] = N("@1 was killed by an ender dragon."),
+	["mobs_mc:wither"] = N("@1 was killed by a wither."),
+	["mobs_mc:enderman"] = N("@1 was killed by an enderman."),
+	["mobs_mc:endermite"] = N("@1 was killed by an endermite."),
+	["mobs_mc:ghast"] = N("@1 was killed by a ghast."),
+	["mobs_mc:guardian_elder"] = N("@1 was killed by an elder guardian."),
+	["mobs_mc:guardian"] = N("@1 was killed by a guardian."),
+	["mobs_mc:iron_golem"] = N("@1 was killed by an iron golem."),
+	["mobs_mc:polar_bear"] = N("@1 was killed by a polar_bear."),
+	["mobs_mc:killer_bunny"] = N("@1 was killed by a killer bunny."),
+	["mobs_mc:shulker"] = N("@1 was killed by a shulker."),
+	["mobs_mc:silverfish"] = N("@1 was killed by a silverfish."),
+	["mobs_mc:skeleton"] = N("@1 was killed by a skeleton."),
+	["mobs_mc:stray"] = N("@1 was killed by a stray."),
+	["mobs_mc:slime_tiny"] = N("@1 was killed by a slime."),
+	["mobs_mc:slime_small"] = N("@1 was killed by a slime."),
+	["mobs_mc:slime_big"] = N("@1 was killed by a slime."),
+	["mobs_mc:spider"] = N("@1 was killed by a spider."),
+	["mobs_mc:cave_spider"] = N("@1 was killed by a cave spider."),
+	["mobs_mc:vex"] = N("@1 was killed by a vex."),
+	["mobs_mc:evoker"] = N("@1 was killed by an evoker."),
+	["mobs_mc:illusioner"] = N("@1 was killed by an illusioner."),
+	["mobs_mc:vindicator"] = N("@1 was killed by a vindicator."),
+	["mobs_mc:villager_zombie"] = N("@1 was killed by a zombie villager."),
+	["mobs_mc:husk"] = N("@1 was killed by a husk."),
+	["mobs_mc:baby_husk"] = N("@1 was killed by a baby husk."),
+	["mobs_mc:pigman"] = N("@1 was killed by a zombie pigman."),
+	["mobs_mc:baby_pigman"] = N("@1 was killed by a baby zombie pigman."),
 }
 
 -- Select death message
 local dmsg = function(mtype, ...)
 	local r = math.random(1, #msgs[mtype])
-	return string.format(msgs[mtype][r], ...)
+	return S(msgs[mtype][r], ...)
 end
 
 -- Select death message for death by mob
 local mmsg = function(mtype, ...)
 	if mobkills[mtype] then
-		return string.format(mobkills[mtype], ...)
+		return S(mobkills[mtype], ...)
 	else
 		return dmsg("mob_kill", ...)
 	end
@@ -139,7 +140,7 @@ minetest.register_on_dieplayer(function(player, reason)
 				else
 					field_msg = field
 				end
-				msg = string.format(field_msg, name)
+				msg = S(field_msg, name)
 			end
 		elseif reason.type == "drown" then
 			msg = dmsg("drown", name)
