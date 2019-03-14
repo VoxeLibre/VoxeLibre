@@ -969,16 +969,6 @@ end
 
 M.register_on_mods_loaded(get_init_items)
 
-M.register_on_joinplayer(function(player)
-	local name = player:get_player_name()
-	init_data(name)
-end)
-
-M.register_on_leaveplayer(function(player)
-	local name = player:get_player_name()
-	player_data[name] = nil
-end)
-
 -- TODO: Remove sfinv support
 if sfinv_only then
 	sfinv.register_page("craftguide:craftguide", {
@@ -1106,6 +1096,8 @@ if progressive_mode then
 	mcl_craftguide.add_recipe_filter("Default progressive filter", progressive_filter)
 
 	M.register_on_joinplayer(function(player)
+		local name = player:get_player_name()
+		init_data(name)
 		local meta = player:get_meta()
 		local name = player:get_player_name()
 		local data = player_data[name]
@@ -1121,7 +1113,11 @@ if progressive_mode then
 		meta:set_string("inv_items", serialize(data.inv_items))
 	end
 
-	M.register_on_leaveplayer(save_meta)
+	M.register_on_leaveplayer(function(player)
+		save_meta(player)
+		local name = player:get_player_name()
+		player_data[name] = nil
+	end)
 
 	M.register_on_shutdown(function()
 		local players = M.get_connected_players()
@@ -1129,6 +1125,16 @@ if progressive_mode then
 			local player = players[i]
 			save_meta(player)
 		end
+	end)
+else
+	M.register_on_joinplayer(function(player)
+		local name = player:get_player_name()
+		init_data(name)
+	end)
+
+	M.register_on_leaveplayer(function(player)
+		local name = player:get_player_name()
+		player_data[name] = nil
 	end)
 end
 
