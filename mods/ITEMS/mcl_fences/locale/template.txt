@@ -14,3 +14,4 @@ Dark Oak Fence=
 Dark Oak Fence Gate=
 Acacia Fence=
 Acacia Fence Gate=
+Nether Brick Fence=
