@@ -1,4 +1,5 @@
 local S = minetest.get_translator("mesecons_commandblock")
+local F = minetest.formspec_escape
 
 local function construct(pos)
 	local meta = minetest.get_meta(pos)
@@ -128,19 +129,18 @@ local function commandblock_action_off(pos, node)
 end
 
 local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
-	-- Only allow access in Creative Mode
+	local can_edit = true
+	-- Only allow write access in Creative Mode
 	if not minetest.settings:get_bool("creative_mode") then
-		return
+		can_edit = false
 	end
 	local pname = player:get_player_name()
 	if minetest.is_protected(pos, pname) then
-		minetest.record_protection_violation(pos, pname)
-		return
+		can_edit = false
 	end
 	local privs = minetest.get_player_privs(pname)
 	if not privs.maphack then
-		minetest.chat_send_player(pname, "Access denied. You need the “maphack” privilege to edit command blocks.")
-		return
+		can_edit = false
 	end
 
 	local meta = minetest.get_meta(pos)
@@ -148,16 +148,31 @@ local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 	local commander = meta:get_string("commander")
 	local commanderstr
 	if commander == "" or commander == nil then
-		commanderstr = "Error: No commander! Block must be replaced."
+		commanderstr = S("Error: No commander! Block must be replaced.")
 	else
-		commanderstr = "Commander: "..commander
+		commanderstr = S("Commander: @1", commander)
+	end
+	local textrea_name, submit, textarea
+	-- If editing is not allowed, only allow read-only access.
+	-- Player can still view the contents of the command block.
+	if can_edit then
+		textarea_name = "commands"
+		submit = "button_exit[3.3,4.5;2,1;submit;"..F(S("Submit")).."]"
+	else
+		textarea_name = ""
+		submit = ""
+	end
+	if commands == "" then
+		textarea = "label[0.5,0.5;"..F(S("No commands.")).."]"
+	else
+		textarea = "textarea[0.5,0.5;8.5,4;"..textarea_name..";"..F(S("Commands:"))..";"..F(commands).."]"
 	end
 	local formspec = "invsize[9,5;]" ..
-	"textarea[0.5,0.5;8.5,4;commands;Commands;"..commands.."]" ..
-	"button_exit[3.3,4.5;2,1;submit;Submit]" ..
+	textarea ..
+	submit ..
 	"image_button[8,4.5;1,1;doc_button_icon_lores.png;doc;]" ..
-	"label[0,4;"..minetest.formspec_escape(commanderstr).."]" ..
-	"tooltip[doc;Help]"
+	"tooltip[doc;"..F(S("Help")).."]" ..
+	"label[0,4;"..F(commanderstr).."]"
 	minetest.show_formspec(pname, "commandblock_"..pos.x.."_"..pos.y.."_"..pos.z, formspec)
 end
 
@@ -176,7 +191,7 @@ local on_place = function(itemstack, placer, pointed_thing)
 
 	local privs = minetest.get_player_privs(placer:get_player_name())
 	if not privs.maphack then
-		minetest.chat_send_player(placer:get_player_name(), "Placement denied. You need the “maphack” privilege to place command blocks.")
+		minetest.chat_send_player(placer:get_player_name(), S("Placement denied. You need the “maphack” privilege to place command blocks."))
 		return itemstack
 	end
 
@@ -189,9 +204,12 @@ minetest.register_node("mesecons_commandblock:commandblock_off", {
 	_doc_items_longdesc =
 S("Command blocks are mighty redstone components which are able to alter reality itself. In other words, they cause the server to execute server commands when they are supplied with redstone power."),
 	_doc_items_usagehelp =
-S("To use an already existing command block, just supply it with redstone power and see what happens. This will execute the commands once. To execute the commands again, turn the redstone power off and on again.").."\n\n"..
+S("Everyone can activate a command block and look at its commands, but not everyone can edit and place them.").."\n\n"..
 
-S("To place a command block and change the commands, you need to be in Creative Mode and must have the “maphack” privilege. A new command block does not have any commands and does nothing. Rightclick the command block (in Creative Mode!) to edit its commands. Read the help entry “Advanced topics > Server Commands” to understand how they work. Each line contains a single command. You enter them like you would in the console, but without the leading slash. The commands will be executed from top to bottom.").."\n\n"..
+S("To view the commands in a command block, use it. To activate the command block, just supply it with redstone power. This will execute the commands once. To execute the commands again, turn the redstone power off and on again.")..
+"\n\n"..
+
+S("To be able to place a command block and change the commands, you need to be in Creative Mode and must have the “maphack” privilege. A new command block does not have any commands and does nothing. Use the command block (in Creative Mode!) to edit its commands. Read the help entry “Advanced topics > Server Commands” to understand how they work. Each line contains a single command. You enter them like you would in the console, but without the leading slash. The commands will be executed from top to bottom.").."\n\n"..
 
 S("All commands will be executed on behalf of the player who placed the command block, as if the player typed in the commands. This player is said to be the “commander” of the block.").."\n\n"..
 
@@ -250,7 +268,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		end
 		local privs = minetest.get_player_privs(player:get_player_name())
 		if not privs.maphack then
-			minetest.chat_send_player(player:get_player_name(), "Access denied. You need the “maphack” privilege to edit command blocks.")
+			minetest.chat_send_player(player:get_player_name(), S("Access denied. You need the “maphack” privilege to edit command blocks."))
 			return
 		end
 
@@ -263,7 +281,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			local pos = {x=tonumber(x), y=tonumber(y), z=tonumber(z)}
 			local meta = minetest.get_meta(pos)
 			if not minetest.settings:get_bool("creative_mode") then
-				minetest.chat_send_player(player:get_player_name(), "Editing the command block has failed! You can only change the command block in Creative Mode!")
+				minetest.chat_send_player(player:get_player_name(), S("Editing the command block has failed! You can only change the command block in Creative Mode!"))
 				return
 			end
 			local check, error_message = check_commands(fields.commands, player:get_player_name())
@@ -275,7 +293,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 				meta:set_string("commands", fields.commands)
 			end
 		else
-			minetest.chat_send_player(player:get_player_name(), "Editing the command block has failed! The command block is gone.")
+			minetest.chat_send_player(player:get_player_name(), S("Editing the command block has failed! The command block is gone."))
 		end
 	end
 end)
