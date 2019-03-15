@@ -19,7 +19,7 @@ for i=1, 7 do
 	if i==1 then
 		create = true
 		name = S("Premature Potato Plant")
-		longdesc = S("Potato plants are plants which grow on farmland under sunlight in 8 stages, of which only 4 are actually visible. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.")
+		longdesc = S("Potato plants are plants which grow on farmland under sunlight in 8 stages, but only 4 stages can be visually told apart. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.")
 	else
 		create = false
 		if minetest.get_modpath("doc") then

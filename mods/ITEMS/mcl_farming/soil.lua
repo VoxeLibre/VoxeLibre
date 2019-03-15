@@ -27,7 +27,7 @@ minetest.register_node("mcl_farming:soil", {
 minetest.register_node("mcl_farming:soil_wet", {
 	tiles = {"mcl_farming_farmland_wet.png", "default_dirt.png"},
 	description = S("Hydrated Farmland"),
-	_doc_items_longdesc = S("Hydrated farmland is used in farming, this is where you can plant and grow some plants. It is created when farmlands is under rain or near water. Without water, this block will dry out eventually. This block will turn back to dirt when a solid block appears above it or a piston arm extends above it."),
+	_doc_items_longdesc = S("Hydrated farmland is used in farming, this is where you can plant and grow some plants. It is created when farmland is under rain or near water. Without water, this block will dry out eventually. This block will turn back to dirt when a solid block appears above it or a piston arm extends above it."),
 	drop = "mcl_core:dirt",
 	drawtype = "nodebox",
 	paramtype = "light",

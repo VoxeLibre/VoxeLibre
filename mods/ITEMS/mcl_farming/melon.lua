@@ -3,8 +3,8 @@ local S = minetest.get_translator("mcl_farming")
 -- Seeds
 minetest.register_craftitem("mcl_farming:melon_seeds", {
 	description = S("Melon Seeds"),
-	_doc_items_longdesc = S("Grows into a melon. Chickens like melon seeds."),
-	_doc_items_usagehelp = S("Place the melon seeds on farmland (which can be created with a hoe) to plant a melon stem. Melons grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it melon seeds."),
+	_doc_items_longdesc = S("Grows into a melon stem which in turn grows melons. Chickens like melon seeds."),
+	_doc_items_usagehelp = S("Place the melon seeds on farmland (which can be created with a hoe) to plant a melon stem. Melon stems grow in sunlight and grow faster on hydrated farmland. When mature, the stem will attempt to grow a melon at the side. Rightclick an animal to feed it melon seeds."),
 	stack_max = 64,
 	groups = { craftitem=1 },
 	inventory_image = "mcl_farming_melon_seeds.png",
