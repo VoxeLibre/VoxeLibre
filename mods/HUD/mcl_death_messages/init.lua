@@ -140,7 +140,15 @@ minetest.register_on_dieplayer(function(player, reason)
 				else
 					field_msg = field
 				end
-				msg = S(field_msg, name)
+				local textdomain
+				if highest_damage_def.mod_origin then
+					textdomain = highest_damage_def.mod_origin
+				else
+					textdomain = "mcl_death_messages"
+				end
+				-- We assume the textdomain of the death message in the node definition
+				-- equals the modname.
+				msg = minetest.translate(textdomain, field_msg, name)
 			end
 		elseif reason.type == "drown" then
 			msg = dmsg("drown", name)
