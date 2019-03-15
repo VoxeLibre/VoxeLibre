@@ -50,7 +50,7 @@ end
 local function now_playing(player, track_id)
 	local playername = player:get_player_name()
 	local hud = active_huds[playername]
-	local text = "Now playing: " .. recorddata[track_id][2] .. "—" .. recorddata[track_id][1]
+	local text = S("Now playing: @1—@2", recorddata[track_id][2], recorddata[track_id][1])
 
 	if not hud_sequence_numbers[playername] then
 		hud_sequence_numbers[playername] = 1
