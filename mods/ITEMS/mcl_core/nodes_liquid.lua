@@ -1,16 +1,17 @@
 -- Liquids: Water and lava
 
 local S = minetest.get_translator("mcl_core")
+local N = function(s) return s end
 
 local WATER_ALPHA = 179
 local WATER_VISC = 1
 local LAVA_VISC = 7
 
 local lava_death_messages = {
-	S("%s melted in lava."),
-	S("%s took a bath in a hot lava tub."),
-	S("%s died in lava."),
-	S("%s could not survive in lava."),
+	N("@1 melted in lava."),
+	N("@1 took a bath in a hot lava tub."),
+	N("@1 died in lava."),
+	N("@1 could not survive in lava."),
 }
 
 minetest.register_node("mcl_core:water_flowing", {

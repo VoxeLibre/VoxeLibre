@@ -25,3 +25,4 @@ Nether Brick=
 Nether bricks are the main crafting ingredient for crafting nether brick blocks and nether fences.=
 Nether Lava Source=
 Flowing Nether Lava=
+@1 stood too long on a magma block.=

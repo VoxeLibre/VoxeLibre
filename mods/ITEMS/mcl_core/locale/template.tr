@@ -1,8 +1,8 @@
 # textdomain: mcl_core
-%s could not survive in lava.=
-%s died in lava.=
-%s melted in lava.=
-%s took a bath in a hot lava tub.=
+@1 could not survive in lava.=
+@1 died in lava.=
+@1 melted in lava.=
+@1 took a bath in a hot lava tub.=
 A block of diamond is mostly a shiny decorative block but also useful as a compact storage of diamonds.=
 A block of emerald is mostly a shiny decorative block but also useful as a compact storage of emeralds.=
 A block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=

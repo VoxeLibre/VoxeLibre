@@ -3,6 +3,7 @@
 mcl_fire = {}
 
 local S = minetest.get_translator("mcl_fire")
+local N = function(s) return s end
 
 --
 -- Items
@@ -39,10 +40,10 @@ end
 local eternal_fire_help = S("Eternal fire is a damaging block that might create more fire. It will create fire around it when flammable blocks are nearby. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.")
 
 local fire_death_messages = {
-	S("%s has been cooked crisp."),
-	S("%s felt the burn."),
-	S("%s died in the flames."),
-	S("%s died in a fire."),
+	N("@1 has been cooked crisp."),
+	N("@1 felt the burn."),
+	N("@1 died in the flames."),
+	N("@1 died in a fire."),
 }
 
 minetest.register_node("mcl_fire:fire", {

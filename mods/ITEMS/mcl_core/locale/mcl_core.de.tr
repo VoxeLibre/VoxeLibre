@@ -1,8 +1,8 @@
 # textdomain: mcl_core
-%s could not survive in lava.=%s konnte nicht in Lava überleben.
-%s died in lava.=%s starb in Lava.
-%s melted in lava.=%s schmolz in der Lava.
-%s took a bath in a hot lava tub.=%s nahm ein Bad in einer heißen Lavawanne.
+@1 could not survive in lava.=@1 konnte nicht in Lava überleben.
+@1 died in lava.=@1 starb in Lava.
+@1 melted in lava.=@1 schmolz in der Lava.
+@1 took a bath in a hot lava tub.=@1 nahm ein Bad in einer heißen Lavawanne.
 A block of diamond is mostly a shiny decorative block but also useful as a compact storage of diamonds.=Ein Diamantblock ist hauptsächlich ein glänzender Dekorationsblock, aber er ist auch nützlich zur kompakten Aufbewahrung von Diamanten.
 A block of emerald is mostly a shiny decorative block but also useful as a compact storage of emeralds.=Ein Smaragdblock ist hauptsächlich ein glänzender Dekorationsblock, aber er ist auch nützlich zur kompakten Aufbewahrung von Smaragden.
 A block of gold is mostly a shiny decorative block but also useful as a compact storage of gold ingots.=Ein Goldblock ist hauptsächlich ein glänzender Dekorationsblock, aber er ist auch nützlich zur kompakten Aufbewahrung von Goldbarren.

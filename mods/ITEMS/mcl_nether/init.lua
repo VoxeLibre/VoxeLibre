@@ -94,7 +94,7 @@ minetest.register_node("mcl_nether:magma", {
 		-- Hurt players standing on top of this block
 		if player:get_hp() > 0 then
 			if mod_death_messages then
-				mcl_death_messages.player_damage(player, string.format("%s stood too long on a magma block.", player:get_player_name()))
+				mcl_death_messages.player_damage(player, S("@1 stood too long on a magma block.", player:get_player_name()))
 			end
 			player:set_hp(player:get_hp() - 1)
 		end
