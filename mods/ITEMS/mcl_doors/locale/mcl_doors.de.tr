@@ -4,7 +4,7 @@ To open or close a wooden door, rightclick it or supply its lower half with a re
 Oak Door=Eichentür
 Acacia Door=Akazientür
 Birch Door=Birkentür
-Dark Oak Door=Dunkeleichentür
+Dark Oak Door=Schwarzeichentür
 Jungle Door=Dschungeltür
 Spruce Door=Fichtentür
 Iron Door=Eisentür
@@ -14,7 +14,7 @@ Oak Trapdoor=Eichenfalltür
 Acacia Trapdoor=Akazienfalltür
 Birch Trapdoor=Birkenfalltür
 Spruce Trapdoor=Fichtenfalltür
-Dark Oak Trapdoor=Dunkeleichenfalltür
+Dark Oak Trapdoor=Schwarzeichenfalltür
 Jungle Trapdoor=Dschungelfalltür
 Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Holzfalltüren sind horizontale Barrieren, die von Hand oder mit einem Redstone-Signal geöffnet oder geschlossen werden können. Sie belegen den oberen oder unteren Teil eines Blocks, je nach dem, wie sie platziert wurden. Wenn geöffnet, können sie wie eine Leiter erklommen werden.
 To open or close the trapdoor, rightclick it or send a redstone signal to it.=Um die Falltür zu öffnen oder zu schließen, rechtsklicken Sie sie oder schicken Sie ein Redstone-Signal zu ihr.
