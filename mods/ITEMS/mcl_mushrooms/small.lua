@@ -23,7 +23,7 @@ local longdesc_intro_red = S("Red mushrooms are fungi which grow and spread in d
 local longdesc_append = S("A single mushroom of this species will slowly spread over time towards a random solid opaque block with a light level of 12 or lower in a 3×3×3 cube around the mushroom. It stops spreading when there are 5 or more mushrooms of the same species within an area of 9×3×9 blocks around the mushroom.").."\n"..
 S("Mushrooms will eventually uproot at a light level of 12 or higher. On mycelium or podzol, they survive and spread at any light level.")
 
-local usagehelp = S("This mushroom can be placed on mycelium and podzol at any light level. They can also be placed on blocks which are both solid and opaque, as long as the light level at daytime is not higher than 12.")
+local usagehelp = S("This mushroom can be placed on mycelium and podzol at any light level. It can also be placed on blocks which are both solid and opaque, as long as the light level at daytime is not higher than 12.")
 
 minetest.register_node("mcl_mushrooms:mushroom_brown", {
 	description = S("Brown Mushroom"),

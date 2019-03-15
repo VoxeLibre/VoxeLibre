@@ -14,7 +14,7 @@ Brown mushrooms are fungi which grow and spread in darkness, but are sensitive t
 Red mushrooms are fungi which grow and spread in darkness, but are sensitive to light. They are inedible as such, but they can be used to craft food items.=
 A single mushroom of this species will slowly spread over time towards a random solid opaque block with a light level of 12 or lower in a 3×3×3 cube around the mushroom. It stops spreading when there are 5 or more mushrooms of the same species within an area of 9×3×9 blocks around the mushroom.=
 Mushrooms will eventually uproot at a light level of 12 or higher. On mycelium or podzol, they survive and spread at any light level.=
-This mushroom can be placed on mycelium and podzol at any light level. They can also be placed on blocks which are both solid and opaque, as long as the light level at daytime is not higher than 12.=
+This mushroom can be placed on mycelium and podzol at any light level. It can also be placed on blocks which are both solid and opaque, as long as the light level at daytime is not higher than 12.=
 Brown Mushroom=
 Red Mushroom=
 Mushroom Stew=

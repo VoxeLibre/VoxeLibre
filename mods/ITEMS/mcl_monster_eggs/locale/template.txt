@@ -1,4 +1,4 @@
-# textdomain: mcl_mobspawners
+# textdomain: mcl_monster_eggs
 An infested block is a block from which a silverfish will pop out when it is broken. It looks identical to its normal counterpart.=
 Infested Stone=
 Infested Cobblestone=

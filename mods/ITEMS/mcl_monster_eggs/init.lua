@@ -1,7 +1,7 @@
 -- Monster eggs!
 -- Blocks which spawn silverfish when destroyed.
 
-local S = minetest.get_translator("mcl_mobspawners")
+local S = minetest.get_translator("mcl_monster_eggs")
 
 local spawn_silverfish = function(pos, oldnode, oldmetadata, digger)
 	if not minetest.settings:get_bool("creative_mode") then

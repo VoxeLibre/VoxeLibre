@@ -22,7 +22,7 @@ Raw rabbit is a food item from a dead rabbit. It can be eaten safely. Cooking it
 Cooked Rabbit=
 This is a food item which can be eaten.=
 Milk=
-Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will cure all forms of poisoning (in later versions: all status effects), but restores no hunger points.=
+Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will cure all forms of poisoning, but restores no hunger points.=
 Spider Eye=
 Spider eyes are used mainly in crafting. If you're really desperate, you can eat a spider eye, but it will poison you briefly.=
 Bone=
