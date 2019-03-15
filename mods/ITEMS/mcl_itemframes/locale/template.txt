@@ -1,4 +1,4 @@
 # textdomain: mcl_itemframes
 Item Frame=
 Item frames are decorative blocks in which items can be placed.=
-Hold any item in your hand and right-click the item frame to place the item into the frame. Rightclick the item frame again to retrieve the item.=
+Just place any item on the item frame. Use the item frame again to retrieve the item.=

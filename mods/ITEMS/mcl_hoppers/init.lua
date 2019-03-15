@@ -123,15 +123,15 @@ local def_hopper = {
 -- Enabled downwards hopper
 local def_hopper_enabled = table.copy(def_hopper)
 def_hopper_enabled.description = S("Hopper")
-def_hopper_enabled._doc_items_longdesc = S("Hoppers are containers with 5 inventory slots. They collect dropped items from above, take items from a container above and attempts to put its items it into an adjacent container. Hoppers can go either downwards or sideways. Hoppers interact with chests, droppers, dispensers, shulker boxes, furnaces and hoppers.").."\n\n"..
+def_hopper_enabled._doc_items_longdesc = S("Hoppers are containers with 5 inventory slots. They collect dropped items from above, take items from a container above and attempt to put its items it into an adjacent container. Hoppers can go either downwards or sideways. Hoppers interact with chests, droppers, dispensers, shulker boxes, furnaces and hoppers.").."\n\n"..
 
-S([[Hoppers interact with containers the following way:
-• Furnaces: Hoppers from above will put items into the source slot. Hoppers from below take items from the output slot. They also take items from the fuel slot when they can't be used as a fuel. Sideway hoppers put items into the fuel slot
-• Ender chests: Hoppers don't interact with ender chests
-• Other containers: Hoppers interact with them normally]]).."\n\n"..
+S("Hoppers interact with containers the following way:").."\n"..
+S("• Furnaces: Hoppers from above will put items into the source slot. Hoppers from below take items from the output slot. They also take items from the fuel slot when they can't be used as a fuel. Sideway hoppers that point to the furnace put items into the fuel slot").."\n"..
+S("• Ender chests: No interaction.").."\n"..
+S("• Other containers: Normal interaction.").."\n\n"..
 
-S("Hoppers can be disabled by supplying them with redstone power. Disabled hoppers don't move items.")
-def_hopper_enabled._doc_items_usagehelp = S("To place a hopper vertically, place it on the floor or a ceiling. To place it sideways, place it at the side of a block. Remember you can place at usable blocks (such as chests) with sneak + right-click. The hopper will keep its orientation when the blocks around it are changed. To access the hopper's inventory, rightclick it.")
+S("Hoppers can be disabled when supplied with redstone power. Disabled hoppers don't move items.")
+def_hopper_enabled._doc_items_usagehelp = S("To place a hopper vertically, place it on the floor or a ceiling. To place it sideways, place it at the side of a block. Use the hopper to access its inventory.")
 def_hopper_enabled.on_place = function(itemstack, placer, pointed_thing)
 	local upos  = pointed_thing.under
 	local apos = pointed_thing.above

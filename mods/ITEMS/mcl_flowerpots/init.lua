@@ -2,7 +2,7 @@ local S = minetest.get_translator("mcl_flowerpots")
 
 local flowers = {
 	{"dandelion", "mcl_flowers:dandelion", S("Dandelion Flower Pot")},
-	{"poppy", "mcl_flowers:poppy", S("Poppy Floer Pot")},
+	{"poppy", "mcl_flowers:poppy", S("Poppy Flower Pot")},
 	{"blue_orchid", "mcl_flowers:blue_orchid", S("Blue Orchid Flower Pot")},
 	{"allium", "mcl_flowers:allium", S("Allium Flower Pot")},
 	{"azure_bluet", "mcl_flowers:azure_bluet", S("Azure Bluet Flower Pot")},
@@ -24,13 +24,13 @@ local flowers = {
 }
 
 local cubes = {
-	{"cactus", "mcl_core:cactus", "Cactus Flower Pot"},
+	{"cactus", "mcl_core:cactus", S("Cactus Flower Pot")},
 }
 
 minetest.register_node("mcl_flowerpots:flower_pot", {
 	description = S("Flower Pot"),
 	_doc_items_longdesc = S("Flower pots are decorative blocks in which flowers and other small plants can be placed."),
-	_doc_items_usagehelp = S("Rightclick an empty flower pot while you wield a plant to place the plant. Flower pots can hold small flowers (not higher than 1 block), saplings, ferns, dead bushes, mushrooms and cacti. Rightclick a potted plant to retrieve the plant."),
+	_doc_items_usagehelp = S("Just place a plant on the flower pot. Flower pots can hold small flowers (not higher than 1 block), saplings, ferns, dead bushes, mushrooms and cacti. Rightclick a potted plant to retrieve the plant."),
 	drawtype = "mesh",
 	mesh = "flowerpot.obj",
 	tiles = {

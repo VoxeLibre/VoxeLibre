@@ -6,6 +6,6 @@ A creeper head is a small decorative block which resembles the head of a creeper
 Human Head=
 A human head is a small decorative block which resembles the head of a human (i.e. a player character). It can also be worn as a helmet for fun, but does not offer any protection.=
 Skeleton Skull=
-A skeleton skull is a small decorative block which resembles the head of a skeleton. It can also be worn as a helmet for fun, but does not offer any protection.=
+A skeleton skull is a small decorative block which resembles the skull of a skeleton. It can also be worn as a helmet for fun, but does not offer any protection.=
 Wither Skeleton Skull=
-A wither skeleton skull is a small decorative block which resembles the head of a wither skeleton. It can also be worn as a helmet for fun, but does not offer any protection.=
+A wither skeleton skull is a small decorative block which resembles the skull of a wither skeleton. It can also be worn as a helmet for fun, but does not offer any protection.=

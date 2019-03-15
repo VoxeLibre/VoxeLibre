@@ -104,7 +104,7 @@ end
 minetest.register_node("mcl_itemframes:item_frame",{
 	description = S("Item Frame"),
 	_doc_items_longdesc = S("Item frames are decorative blocks in which items can be placed."),
-	_doc_items_usagehelp = S("Hold any item in your hand and right-click the item frame to place the item into the frame. Rightclick the item frame again to retrieve the item."),
+	_doc_items_usagehelp = S("Just place any item on the item frame. Use the item frame again to retrieve the item."),
 	drawtype = "mesh",
 	is_ground_content = false,
 	mesh = "mcl_itemframes_itemframe1facedir.obj",

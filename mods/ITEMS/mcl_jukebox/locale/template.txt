@@ -1,7 +1,7 @@
 # textdomain: mcl_jukebox
 Music Disc=
 A music disc holds a single music track which can be used in a jukebox to play music.=
-Rightclick an empty jukebox with the music disc in your hand to play the music. Rightclick the jukebox again to retrieve the music disc. The music can only be heard by you, not by other players.=
+Place a music dict into an empty jukebox to play the music. Use the jukebox again to retrieve the music disc. The music can only be heard by you, not by other players.=
 Music Disc=
 @1—@2=
 Jukebox=
