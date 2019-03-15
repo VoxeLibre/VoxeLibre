@@ -10,8 +10,34 @@ local S = minetest.get_translator("mcl_fire")
 
 -- Flame nodes
 
-local fire_help = S("Fire is a damaging and destructive but short-lived kind of block. It will destroy and spread towards near flammable blocks, but fire will disappear when there is nothing to burn left. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.")
-local eternal_fire_help = S("Eternal fire is a damaging and destructive block. It will create fire around it when flammable blocks are nearby. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.")
+-- Fire settings
+
+-- When enabled, fire destroys other blocks.
+local fire_enabled = minetest.settings:get_bool("enable_fire")
+if fire_enabled == nil then
+	-- New setting not specified, check for old setting.
+	-- If old setting is also not specified, 'not nil' is true.
+	fire_enabled = not minetest.settings:get_bool("disable_fire")
+end
+
+-- Enable sound
+local flame_sound = minetest.settings:get_bool("flame_sound")
+if flame_sound == nil then
+	-- Enable if no setting present
+	flame_sound = true
+end
+
+
+-- Help texts
+local fire_help
+if fire_enabled then
+	fire_help = S("Fire is a damaging and destructive but short-lived kind of block. It will destroy and spread towards near flammable blocks, but fire will disappear when there is nothing to burn left. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.")
+else
+	fire_help = S("Fire is a damaging but non-destructive short-lived kind of block. It will disappear when there is flammable block around. Fire does neither spread nor destroy blocks, at least not in this world. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.")
+end
+
+local eternal_fire_help = S("Eternal fire is a damaging block that might create more fire. It will create fire around it when flammable blocks are nearby. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.")
+
 local fire_death_messages = {
 	S("%s has been cooked crisp."),
 	S("%s felt the burn."),
@@ -191,12 +217,6 @@ minetest.override_item("mcl_core:lava_source", {
 -- Sound
 --
 
-local flame_sound = minetest.settings:get_bool("flame_sound")
-if flame_sound == nil then
-	-- Enable if no setting present
-	flame_sound = true
-end
-
 if flame_sound then
 
 	local handles = {}
@@ -326,13 +346,6 @@ minetest.register_abm({
 
 
 -- Enable the following ABMs according to 'enable fire' setting
-
-local fire_enabled = minetest.settings:get_bool("enable_fire")
-if fire_enabled == nil then
-	-- New setting not specified, check for old setting.
-	-- If old setting is also not specified, 'not nil' is true.
-	fire_enabled = not minetest.settings:get_bool("disable_fire")
-end
 
 if not fire_enabled then
 

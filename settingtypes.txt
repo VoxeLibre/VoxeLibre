@@ -11,11 +11,11 @@
 # per-player Creative Mode.
 creative_mode (Creative mode) bool false
 
-# Fire spreads and flammable nodes will be ignited by nearby fire.
-# Spreading fire may cause severe destruction.
-# Spreading fire blocks will disappear when fire is disabled, but
-# eternal fire is unaffected.
-enable_fire (Fire) bool true
+# Fire spreads and flammable blocks might be destroyed by nearby fire.
+# Destructive fire may cause severe destruction.
+# Fire blocks will be non-destructive when this setting is disabled, but they
+# still deal damage to creatures. Eternal fire is unaffected.
+enable_fire (Destructive fire) bool true
 
 # If enabled, the weather will change naturally over time.
 mcl_doWeatherCycle (Change weather) bool true
