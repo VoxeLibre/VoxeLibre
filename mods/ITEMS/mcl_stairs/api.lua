@@ -102,7 +102,7 @@ function mcl_stairs.register_stair(subname, recipeitem, groups, images, descript
 
 	minetest.register_node(":mcl_stairs:stair_" .. subname, {
 		description = description,
-		_doc_items_longdesc = S("Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the bottom or at the upper half of the side of a block will be placed upside down."),
+		_doc_items_longdesc = S("Stairs are useful to reach higher places by walking over them; jumping is not required. Placing stairs in a corner pattern will create corner stairs. Stairs placed on the ceiling or at the upper half of the side of a block will be placed upside down."),
 		drawtype = "mesh",
 		mesh = "stairs_stair.obj",
 		tiles = images,

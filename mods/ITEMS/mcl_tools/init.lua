@@ -37,7 +37,9 @@ else
 end
 minetest.register_item(":", {
 	type = "none",
-	_doc_items_longdesc = S("You use your bare hand whenever you are not wielding any item. With your hand you can mine the weakest blocks and deal minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are better than the hand. When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching. In Creative Mode, the hand is able to break all blocks instantly."),
+	_doc_items_longdesc = S("You use your bare hand whenever you are not wielding any item. With your hand you can mine most blocks, but this is the slowest method and only the weakest blocks will yield their useful drop. The hand also deals minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are much better.").."\n"..
+			S("When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching.").."\n"..
+			S("In Creative Mode, the hand is able to break all blocks instantly."),
 	wield_image = "wieldhand.png",
 	wield_scale = {x=1.0,y=1.0,z=2.0},
 	-- According to Minecraft Wiki, the exact range is 3.975.
@@ -57,7 +59,7 @@ local axe_longdesc = S("An axe is your tool of choice to cut down trees, wood-ba
 local sword_longdesc = S("Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs.")
 local shovel_longdesc = S("Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak.")
 local shovel_use = S("To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the top or side of a grass block. This only works when there's air above the grass block.")
-local shears_longdesc = S("Shears are tools to shear sheep, carve pumpkins and to mine a few block types. Shears are a special mining tool and can be used to obtain the original item from a grass, leaves and similar blocks.")
+local shears_longdesc = S("Shears are tools to shear sheep and to mine a few block types. Shears are a special mining tool and can be used to obtain the original item from grass, leaves and similar blocks that require cutting.")
 local shears_use = "To shear a sheep and obtain its wool, rightclick it. To carve a face into a pumpkin and obtain 4 pumpkin seeds, rightclick it on one of its sides. Mining works are usual, but the drops are different for a few blocks."
 
 -- Picks
