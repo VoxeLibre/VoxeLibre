@@ -32,7 +32,7 @@ awards.register_trigger("dig", function(def)
 		end
 		return {
 			perc = itemcount / tmp.target,
-			label = string.format(S("%d/%d dug"), itemcount, tmp.target)
+			label = S("@1/@2 dug", itemcount, tmp.target)
 		}
 	end
 	def.getDefaultDescription = function(self)
@@ -42,12 +42,12 @@ awards.register_trigger("dig", function(def)
 				nname = self.trigger.node
 			end
 			if self.trigger.target ~= 1 then
-				return string.format(S("Mine blocks: %d×%s"), self.trigger.target, nname)
+				return S("Mine blocks: @1×@2", self.trigger.target, nname)
 			else
-				return string.format(S("Mine a block: %s"), nname)
+				return S("Mine a block: @1", nname)
 			end
 		else
-			return string.format(S("Mine %d block(s)."), self.trigger.target)
+			return S("Mine @1 block(s).", self.trigger.target)
 		end
 	end
 end)
@@ -68,7 +68,7 @@ awards.register_trigger("place", function(def)
 		end
 		return {
 			perc = itemcount / tmp.target,
-			label = string.format(S("%d/%d placed"), itemcount, tmp.target)
+			label = S("@1/@2 placed"), itemcount, tmp.target
 		}
 	end
 	def.getDefaultDescription = function(self)
@@ -78,12 +78,12 @@ awards.register_trigger("place", function(def)
 				nname = self.trigger.node
 			end
 			if self.trigger.target ~= 1 then
-				return string.format(S("Place blocks: %d×%s"), self.trigger.target, nname)
+				return S("Place blocks: @1×@2", self.trigger.target, nname)
 			else
-				return string.format(S("Place a block: %s"), nname)
+				return S("Place a block: @1", nname)
 			end
 		else
-			return string.format(S("Place %d block(s)."), self.trigger.target)
+			return S("Place @1 block(s).", self.trigger.target)
 		end
 	end
 end)
@@ -104,7 +104,7 @@ awards.register_trigger("eat", function(def)
 		end
 		return {
 			perc = itemcount / tmp.target,
-			label = string.format(S("%d/%d eaten"), itemcount, tmp.target)
+			label = S("@1/@2 eaten", itemcount, tmp.target)
 		}
 	end
 	def.getDefaultDescription = function(self)
@@ -114,12 +114,12 @@ awards.register_trigger("eat", function(def)
 				iname = self.trigger.iode
 			end
 			if self.trigger.target ~= 1 then
-				return string.format(S("Eat: %d×%s"), self.trigger.target, iname)
+				return S("Eat: @1×@2", self.trigger.target, iname)
 			else
-				return string.format(S("Eat: %s"), iname)
+				return S("Eat: @1", iname)
 			end
 		else
-			return string.format(S("Eat %d item(s)."), self.trigger.target)
+			return S("Eat @1 item(s).", self.trigger.target)
 		end
 	end
 end)
@@ -134,12 +134,12 @@ awards.register_trigger("death", function(def)
 		local itemcount = data.deaths or 0
 		return {
 			perc = itemcount / tmp.target,
-			label = string.format(S("%d/%d deaths"), itemcount, tmp.target)
+			label = S("@1/@2 deaths", itemcount, tmp.target)
 		}
 	end
 	def.getDefaultDescription = function(self)
 		if self.trigger.target ~= 1 then
-			return string.format(S("Die %d times."), self.trigger.target)
+			return S("Die @1 times.", self.trigger.target)
 		else
 			return S("Die.")
 		end
@@ -156,12 +156,12 @@ awards.register_trigger("chat", function(def)
 		local itemcount = data.chats or 0
 		return {
 			perc = itemcount / tmp.target,
-			label = string.format(S("%d/%d chat messages"), itemcount, tmp.target)
+			label = S("@1/@2 chat messages", itemcount, tmp.target)
 		}
 	end
 	def.getDefaultDescription = function(self)
 		if self.trigger.target ~= 1 then
-			return string.format(S("Write %d chat messages."), self.trigger.target)
+			return S("Write @1 chat messages.", self.trigger.target)
 		else
 			return S("Write something in chat.")
 		end
@@ -178,12 +178,12 @@ awards.register_trigger("join", function(def)
 		local itemcount = data.joins or 0
 		return {
 			perc = itemcount / tmp.target,
-			label = string.format(S("%d/%d game joins"), itemcount, tmp.target)
+			label = S("@1/@2 game joins", itemcount, tmp.target)
 		}
 	end
 	def.getDefaultDescription = function(self)
 		if self.trigger.target ~= 1 then
-			return string.format(S("Join the game %d times."), self.trigger.target)
+			return S("Join the game @1 times.", self.trigger.target)
 		else
 			return S("Join the game.")
 		end
@@ -206,7 +206,7 @@ awards.register_trigger("craft", function(def)
 		end
 		return {
 			perc = itemcount / tmp.target,
-			label = string.format(S("%d/%d crafted"), itemcount, tmp.target)
+			label = S("@1/@2 crafted", itemcount, tmp.target)
 		}
 	end
 	def.getDefaultDescription = function(self)
@@ -216,12 +216,12 @@ awards.register_trigger("craft", function(def)
 				iname = self.trigger.item
 			end
 			if self.trigger.target ~= 1 then
-				return string.format(S("Craft: %d×%s"), self.trigger.target, iname)
+				return S("Craft: @1×@2", self.trigger.target, iname)
 			else
-				return string.format(S("Craft: %s"), iname)
+				return S("Craft: @1", iname)
 			end
 		else
-			return string.format(S("Craft %d item(s)."), self.trigger.target)
+			return S("Craft @1 item(s).", self.trigger.target)
 		end
 	end
 end)

@@ -1,13 +1,13 @@
-# textdomain: mcl_achievements
+# textdomain:mcl_achievements
 Aquire Hardware=Schmied
 Bake Bread=Brot backen
 Benchmarking=Tischler
 Cow Tipper=Kuhschubser
-Craft a bookshelf.=Fertigen Sie ein Bücherregal
-Craft a cake using wheat, sugar, milk and an egg.=Fertigen Sie einen Kuchen mit Weizen, Zucker, Milch und einem Ei.
+Craft a bookshelf.=Fertigen Sie ein Bücherregal.
+Craft a cake using wheat, sugar, milk and an egg.=Fertigen Sie einen Kuchen aus Weizen, Zucker, Milch und einem Ei.
 Craft a crafting table from 4 wooden planks.=Fertigen Sie eine Werkbank aus 4 Holzplanken.
-Craft a stone pickaxe using sticks and cobblestone.=Fertigen Sie eine Steinspitzhacke mit Stöcken und Kopfsteinpflaster.
-Craft a wooden sword using wooden planks and sticks on a crafting table.=Fertigen Sie ein Holzschwert mit Holzplanken und Stöcken an einer Werkbank.
+Craft a stone pickaxe using sticks and cobblestone.=Fertigen Sie eine Steinspitzhacke aus Stöcken und Kopfsteinpflaster.
+Craft a wooden sword using wooden planks and sticks on a crafting table.=Fertigen Sie ein Holzschwert aus Holzplanken und Stöcken an einer Werkbank.
 DIAMONDS!=DIAMANTEN!
 Delicious Fish=Leckerer Fisch
 Dispense With This=Ein Auge darauf werfen
@@ -26,7 +26,7 @@ Mine emerald ore.=Bauen Sie Smaragderz ab.
 On A Rail=Auf der Schiene
 Pick up a blaze rod from the floor.=Sammeln Sie eine Lohenrute vom Boden auf.
 Pick up a diamond from the floor.=Sammeln Sie einen Diamanten vom Boden auf.
-Pick up a wood item from the ground.@nHint: Punch a tree trunk until it pops out as an item.=Sammeln Sie ein Holz vom Boden auf.@nTipp: Hauen Sie einen Baumstamm, bis er als Gegenstand herausploppt.
+Pick up a wood item from the ground.@nHint: Punch a tree trunk until it pops out as an item.=Sammeln Sie ein Stück Holz vom Boden auf.@nTipp: Hauen Sie einen Baumstamm, bis er als Gegenstand herausploppt.
 Pick up leather from the floor.@nHint: Cows and some other animals have a chance to drop leather, when killed.=Sammeln Sie Leder vom Boden auf.@nTipp: Kühe und einige andere Tiere werfen vielleicht Leder ab, wenn sie sterben.
 Place a dispenser.=Platzieren Sie einen Werfer
 Place a flower pot.=Platzieren Sie einen Blumentopf
@@ -41,7 +41,7 @@ The Lie=Die Lüge
 Time to Farm!=Bauernzeit
 Time to Mine!=Zeit zum Graben!
 Time to Strike!=Zuschlagen!
-Travel by minecart for at least 1000 meters from your starting point in a single ride.=Reisen Sie mit einer Lore für mindestens 1000 Meter vom Startpunkt in einer einzigen Fahrt.
+Travel by minecart for at least 1000 meters from your starting point in a single ride.=Reisen Sie mit einer Lore für mindestens 1000 Meter vom Startpunkt aus in einer einzigen Fahrt.
 Use 8 cobblestones to craft a furnace.=Benutzen Sie 8 Kopfsteinpflaster, um einen Ofen zu fertigen.
 Use a crafting table to craft a wooden hoe from wooden planks and sticks.=Benutzen Sie eine Werkbank, um eine Holzhacke aus Holzplanken und Stöcken zu fertigen.
 Use a crafting table to craft a wooden pickaxe from wooden planks and sticks.=Benutzen Sie eine Werkbank, um eine Holzspitzhacke aus Holzplanken und Stöcken zu fertigen.

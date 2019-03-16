@@ -1,4 +1,4 @@
-# textdomain: mcl_achievements
+# textdomain:mcl_achievements
 Aquire Hardware=
 Bake Bread=
 Benchmarking=
