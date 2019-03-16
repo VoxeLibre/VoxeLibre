@@ -28,32 +28,31 @@ mcl_stairs.register_slab("stonebrickcracked", "mcl_core:stonebrickcracked",
 		S("Cracked Stone Brick Slab"),
 		mcl_sounds.node_sound_stone_defaults(), 2, S("Double Cracked Stone Brick Slab"), "mcl_core:stonebrickcracked")
 
--- TODO: Localize
 local block = {}
 block.dyes = {
-	{"white",      "White",      "white"},
-	{"grey",       "Grey",       "dark_grey"},
-	{"silver",     "Light Grey", "grey"},
-	{"black",      "Black",      "black"},
-	{"red",        "Red",        "red"},
-	{"yellow",     "Yellow",     "yellow"},
-	{"green",      "Green",      "dark_green"},
-	{"cyan",       "Cyan",       "cyan"},
-	{"blue",       "Blue",       "blue"},
-	{"magenta",    "Magenta",    "magenta"},
-	{"orange",     "Orange",     "orange"},
-	{"purple",     "Purple",     "violet"},
-	{"brown",      "Brown",      "brown"},
-	{"pink",       "Pink",       "pink"},
-	{"lime",       "Lime",       "green"},
-	{"light_blue", "Light Blue", "lightblue"},
+	{"white",      S("White Concrete Stairs"),      S("White Concrete Slab"), S("Double White Concrete Slab"), "white"},
+	{"grey",       S("Grey Concrete Stairs"),       S("Grey Concrete Slab"), S("Double Grey Concrete Slab"), "dark_grey"},
+	{"silver",     S("Light Grey Concrete Stairs"), S("Light Grey Concrete Slab"), S("Double Light Grey Concrete Slab"), "grey"},
+	{"black",      S("Black Concrete Stairs"),      S("Black Concrete Slab"), S("Double Black Concrete Slab"), "black"},
+	{"red",        S("Red Concrete Stairs"),        S("Red Concrete Slab"), S("Double Red Concrete Slab"), "red"},
+	{"yellow",     S("Yellow Concrete Stairs"),     S("Yellow Concrete Slab"), S("Double Yellow Concrete Slab"), "yellow"},
+	{"green",      S("Green Concrete Stairs"),      S("Green Concrete Slab"), S("Double Green Concrete Slab"), "dark_green"},
+	{"cyan",       S("Cyan Concrete Stairs"),       S("Cyan Concrete Slab"), S("Double Cyan Concrete Slab"), "cyan"},
+	{"blue",       S("Blue Concrete Stairs"),       S("Blue Concrete Slab"), S("Double Blue Concrete Slab"), "blue"},
+	{"magenta",    S("Magenta Concrete Stairs"),    S("Magenta Concrete Slab"), S("Double Magenta Concrete Slab"), "magenta"},
+	{"orange",     S("Orange Concrete Stairs"),     S("Orange Concrete Slab"), S("Double Orange Concrete Slab"), "orange"},
+	{"purple",     S("Purple Concrete Stairs"),     S("Purple Concrete Slab"), S("Double Purple Concrete Slab"), "violet"},
+	{"brown",      S("Brown Concrete Stairs"),      S("Brown Concrete Slab"), S("Double Brown Concrete Slab"), "brown"},
+	{"pink",       S("Pink Concrete Stairs"),       S("Pink Concrete Slab"), S("Double Pink Concrete Slab"), "pink"},
+	{"lime",       S("Lime Concrete Stairs"),       S("Lime Concrete Slab"), S("Double Lime Concrete Slab"), "green"},
+	{"light_blue", S("Light Blue Concrete Stairs"), S("Light Blue Concrete Slab"), S("Double Light Blue Concrete Slab"), "lightblue"},
 }
 
 for i=1, #block.dyes do
 	local c = block.dyes[i][1]
 	mcl_stairs.register_stair_and_slab_simple("concrete_"..c, "mcl_colorblocks:concrete_"..c,
-		block.dyes[i][2].." Concrete Stairs",
-		block.dyes[i][2].." Concrete Slab",
-		"Double "..block.dyes[i][2].." Concrete Slab")
+		block.dyes[i][2],
+		block.dyes[i][3],
+		block.dyes[i][4])
 end
 

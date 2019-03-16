@@ -3,3 +3,6 @@ Peaceful mode active! No monsters will spawn.=Friedlicher Modus aktiv! Es werden
 This allows you to place a single mob.=Damit kann man eine Mob platzieren.
 Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Platzieren Sie dies einfach dort, wo der Mob auftauchen soll. Tiere werden zahm erscheinen, außer, wenn Sie beim Platzieren die Schlichtaste drücken. Platzieren Sie dies auf einem Mobspawner, um den Mob im Mobspawner zu wechseln.
 You need the “maphack” privilege to change the mob spawner.=Sie brauchen das „maphack“-Privileg, um den Mobspawner ändern zu können.
+Name Tag=Namensschild
+A name tag is an item to name a mob.=Ein Namensschild ist ein Gegenstand, um einen Mob zu benennen.
+Before you use the name tag, you need to set a name at an anvil. Then you can use the name tag to name a mob. This uses up the name tag.=Bevor Sie ein Namensschild benutzen können, müssen Sie ihn an einem Amboss benennen. Dann können können Sie das Namensschild benutztn, um einen Mob zu benennen. Das wird das Namensschild verbrauchen.

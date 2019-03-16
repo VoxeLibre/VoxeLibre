@@ -7,11 +7,9 @@ mobs.version = "20180531" -- don't rely too much on this, rarely updated, if eve
 
 local MAX_MOB_NAME_LENGTH = 30
 
--- Intllib
+-- Localize
 local MP = minetest.get_modpath(minetest.get_current_modname())
 local S = minetest.get_translator("mcl_mobs")
-mobs.intllib = S
-
 
 -- CMI support check
 local use_cmi = minetest.global_exists("cmi")
