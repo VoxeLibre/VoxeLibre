@@ -1,4 +1,5 @@
 local S = minetest.get_translator("mcl_beds")
+local F = minetest.formspec_escape
 
 local pi = math.pi
 local player_in_bed = 0
@@ -201,8 +202,8 @@ local function update_formspecs(finished)
 	local form_n = "size[8,15;true]"
 	local all_in_bed = ges == player_in_bed
 	local night_skip = is_night_skip_enabled()
-	local button_leave = "button_exit[2,12;4,0.75;leave;Leave bed]"
-	local button_abort = "button_exit[2,12;4,0.75;leave;Abort sleep]"
+	local button_leave = "button_exit[2,12;4,0.75;leave;"..F(S("Leave bed")).."]"
+	local button_abort = "button_exit[2,12;4,0.75;leave;"..F(S("Abort sleep")).."]"
 	local bg_presleep = "bgcolor[#00000080;true]"
 	local bg_sleep = "bgcolor[#000000FF;true]"
 
@@ -212,33 +213,33 @@ local function update_formspecs(finished)
 		end
 		return
 	elseif not is_sp then
-		local text = string.format("Players in bed: %d/%d", player_in_bed, ges)
+		local text = S("Players in bed: @1/@2", player_in_bed, ges)
 		if not night_skip then
-			text = text .. "\n" .. "Note: Night skip is disabled."
+			text = text .. "\n" .. S("Note: Night skip is disabled.")
 			form_n = form_n .. bg_presleep
 			form_n = form_n .. button_leave
 		elseif all_in_bed then
-			text = text .. "\n" .. "You're sleeping."
+			text = text .. "\n" .. S("You're sleeping.")
 			form_n = form_n .. bg_sleep
 			form_n = form_n .. button_abort
 		else
-			text = text .. "\n" .. "You will fall asleep when all players are in bed."
+			text = text .. "\n" .. S("You will fall asleep when all players are in bed.")
 			form_n = form_n .. bg_presleep
 			form_n = form_n .. button_leave
 		end
-		form_n = form_n .. "label[2.2,7.5;"..minetest.formspec_escape(text).."]"
+		form_n = form_n .. "label[2.2,7.5;"..F(text).."]"
 	else
 		local text
 		if night_skip then
-			text = "You're sleeping."
+			text = S("You're sleeping.")
 			form_n = form_n .. bg_sleep
 			form_n = form_n .. button_abort
 		else
-			text = "You're in bed." .. "\n" .. "Note: Night skip is disabled."
+			text = S("You're in bed.") .. "\n" .. S("Note: Night skip is disabled.")
 			form_n = form_n .. bg_presleep
 			form_n = form_n .. button_leave
 		end
-		form_n = form_n .. "label[2.2,7.5;"..minetest.formspec_escape(text).."]"
+		form_n = form_n .. "label[2.2,7.5;"..F(text).."]"
 	end
 
 	for name,_ in pairs(mcl_beds.player) do

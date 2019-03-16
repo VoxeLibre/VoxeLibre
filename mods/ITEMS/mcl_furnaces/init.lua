@@ -19,7 +19,7 @@ local function active_formspec(fuel_percent, item_percent)
 	"image[4.1,1.5;1.5,1;gui_furnace_arrow_bg.png^[lowpart:"..
 	(item_percent)..":gui_furnace_arrow_fg.png^[transformR270]"..
 	"image_button[8,0;1,1;craftguide_book.png;craftguide;]"..
-	"tooltip[craftguide;Recipe book]"..
+	"tooltip[craftguide;"..minetest.formspec_escape(S("Recipe book")).."]"..
 	"listring[current_name;dst]"..
 	"listring[current_player;main]"..
 	"listring[current_name;src]"..
@@ -39,7 +39,7 @@ local inactive_formspec = "size[9,8.75]"..
 	"image[2.75,1.5;1,1;default_furnace_fire_bg.png]"..
 	"image[4.1,1.5;1.5,1;gui_furnace_arrow_bg.png^[transformR270]"..
 	"image_button[8,0;1,1;craftguide_book.png;craftguide;]"..
-	"tooltip[craftguide;Recipe book]"..
+	"tooltip[craftguide;"..minetest.formspec_escape(S("Recipe book")).."]"..
 	"listring[current_name;dst]"..
 	"listring[current_player;main]"..
 	"listring[current_name;src]"..
