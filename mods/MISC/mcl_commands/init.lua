@@ -100,7 +100,7 @@ minetest.register_chatcommand("setblock", {
 })
 
 minetest.register_chatcommand("list", {
-	description = "Show who is logged on",
+	description = S("Show who is logged on"),
 	params = "",
 	privs = {},
 	func = function(name)
@@ -113,7 +113,7 @@ minetest.register_chatcommand("list", {
 })
 
 minetest.register_chatcommand("seed", {
-	description = "Displays the world seed",
+	description = S("Displays the world seed"),
 	params = "",
 	privs = {},
 	func = function(name)

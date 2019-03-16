@@ -18,3 +18,5 @@ Invalid node=
 Invalid parameters (see /help setblock)=
 List bans=
 Ban list: @1=
+Show who is logged on=
+Displays the world seed=
