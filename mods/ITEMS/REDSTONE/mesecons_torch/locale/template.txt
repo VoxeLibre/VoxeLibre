@@ -1,10 +1,6 @@
 # textdomain: mesecons_torch
 Redstone Torch=
 A redstone torch is a redstone component which can be used to invert a redstone signal. It supplies its surrounding blocks with redstone power, except for the block it is attached to. A redstone torch is normally lit, but it can also be turned off by powering the block it is attached to. While unlit, a redstone torch does not power anything.=
-Redstone torches can generally be placed at the side and on the top of full solid opaque blocks. The following exceptions apply:=
-• Glass, fence, wall, hopper: Can only be placed on top=
-• Upside-down slab/stair: Can only be placed on top=
-• Soul sand, mob spawner: Placement possible=
-• Glowstone and pistons: No placement possible=
+Redstone torches can be placed at the side and on the top of full solid opaque blocks.=
 Block of Redstone=
 A block of redstone permanently supplies redstone power to its surrounding blocks.=

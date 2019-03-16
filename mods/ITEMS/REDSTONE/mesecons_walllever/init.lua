@@ -24,7 +24,7 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 	is_ground_content = false,
 	description=S("Lever"),
 	_doc_items_longdesc = S("A lever is a redstone component which can be flipped on and off. It supplies redstone power to adjacent blocks while it is in the “on” state."),
-	_doc_items_usagehelp = "Right-click the lever to flip it on or off.",
+	_doc_items_usagehelp = S("Use the lever to flip it on or off."),
 	on_rightclick = function (pos, node)
 		minetest.swap_node(pos, {name="mesecons_walllever:wall_lever_on", param2=node.param2})
 		mesecon.receptor_on(pos, lever_get_output_rules(node))

@@ -74,9 +74,9 @@ local function check_commands(commands, player_name)
 		local cmddef = minetest.chatcommands[cmd]
 		if not cmddef then
 			-- Invalid chat command
-			local msg = "Error: The command “"..cmd.."” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands."
+			local msg = S("Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands.", cmd)
 			if string.sub(cmd, 1, 1) == "/" then
-				msg = msg .. " Hint: Try to remove the trailing slash."
+				msg = S("Error: The command “@1” does not exist; your command block has not been changed. Use the “help” chat command for a list of available commands. Hint: Try to remove the leading slash.", cmd)
 			end
 			return false, minetest.colorize("#FF0000", msg)
 		end
@@ -85,7 +85,7 @@ local function check_commands(commands, player_name)
 
 			for cmd_priv, _ in pairs(cmddef.privs) do
 				if player_privs[cmd_priv] ~= true then
-					local msg = "Error: You have insufficient privileges to use the command “"..cmd.."” (missing privilege: "..cmd_priv..")! The command block has not been changed."
+					local msg = S("Error: You have insufficient privileges to use the command “@1” (missing privilege: @2)! The command block has not been changed.", cmd, cmd_priv)
 					return false, minetest.colorize("#FF0000", msg)
 				end
 			end
@@ -209,11 +209,11 @@ S("Everyone can activate a command block and look at its commands, but not every
 S("To view the commands in a command block, use it. To activate the command block, just supply it with redstone power. This will execute the commands once. To execute the commands again, turn the redstone power off and on again.")..
 "\n\n"..
 
-S("To be able to place a command block and change the commands, you need to be in Creative Mode and must have the “maphack” privilege. A new command block does not have any commands and does nothing. Use the command block (in Creative Mode!) to edit its commands. Read the help entry “Advanced topics > Server Commands” to understand how they work. Each line contains a single command. You enter them like you would in the console, but without the leading slash. The commands will be executed from top to bottom.").."\n\n"..
+S("To be able to place a command block and change the commands, you need to be in Creative Mode and must have the “maphack” privilege. A new command block does not have any commands and does nothing. Use the command block (in Creative Mode!) to edit its commands. Read the help entry “Advanced topics > Server Commands” to understand how commands work. Each line contains a single command. You enter them like you would in the console, but without the leading slash. The commands will be executed from top to bottom.").."\n\n"..
 
 S("All commands will be executed on behalf of the player who placed the command block, as if the player typed in the commands. This player is said to be the “commander” of the block.").."\n\n"..
 
-S("Command blocks support placeholders, insert one of these placerholders and they will be replaced by a player name:").."\n"..
+S("Command blocks support placeholders, insert one of these placeholders and they will be replaced by some other text:").."\n"..
 S("• “@c”: commander of this command block").."\n"..
 S("• “@n” or “@p”: nearest player from the command block").."\n"..
 S("• “@f” farthest player from the command block").."\n"..

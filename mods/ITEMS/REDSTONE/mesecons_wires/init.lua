@@ -228,7 +228,7 @@ local function register_wires()
 			longdesc = S("Redstone is a versatile conductive mineral which transmits redstone power. It can be placed on the ground as a trail.").."\n"..
 S("A redstone trail can be in two states: Powered or not powered. A powered redstone trail will power (and thus activate) adjacent redstone components.").."\n"..
 S("Redstone power can be received from various redstone components, such as a block of redstone or a button. Redstone power is used to activate numerous mechanisms, such as redstone lamps or pistons.")
-			usagehelp = S("Place redstone on the ground to build a redstone trail. The trails will connect to each other automatically and it can also go over hills. An easy way to power a redstone trail is by placing a redstone torch.").."\n\n"..
+			usagehelp = S("Place redstone on the ground to build a redstone trail. The trails will connect to each other automatically and it can also go over hills.").."\n\n"..
 
 S("Read the help entries on the other redstone components to learn how redstone components interact.")
 			img = "redstone_redstone_dust.png"

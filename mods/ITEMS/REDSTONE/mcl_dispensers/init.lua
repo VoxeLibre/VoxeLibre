@@ -284,25 +284,25 @@ local dispenserdef = {
 local horizontal_def = table.copy(dispenserdef)
 horizontal_def.description = S("Dispenser")
 horizontal_def._doc_items_longdesc = S("A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots.")
-horizontal_def._doc_items_usagehelp = S("Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Rightclick the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a single random item.").."\n\n"..
+horizontal_def._doc_items_usagehelp = S("Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Use the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a random item.").."\n\n"..
 
 S("The dispenser will do different things, depending on the dispensed item:").."\n\n"..
 
-S([[• Arrows: Are launched
-• Eggs and snowballs: Are thrown
-• Fire charges: Are fired in a straight line
-• Armor: Will be equipped to players and armor stands
-• Boats: Are placed on water or are dropped
-• Minecart: Are placed on rails or are dropped
-• Bone meal: Is applied on the block it is facint
-• Empty buckets: Are used to collect a liquid source
-• Filled buckets: Are used to place a liquid source
-• Heads, pumpkins: Equipped to players and armor stands, or placed as a block
-• Shulker boxes: Are placed as a block
-• TNT: Is placed and ignited
-• Flint and steel: Is used to ignite a fire in air and to ignite TNT
-• Spawn eggs: Will summon the mob they contain
-• Other items: Are simply dropped]])
+S("• Arrows: Are launched").."\n"..
+S("• Eggs and snowballs: Are thrown").."\n"..
+S("• Fire charges: Are fired in a straight line").."\n"..
+S("• Armor: Will be equipped to players and armor stands").."\n"..
+S("• Boats: Are placed on water or are dropped").."\n"..
+S("• Minecart: Are placed on rails or are dropped").."\n"..
+S("• Bone meal: Is applied on the block it is facing").."\n"..
+S("• Empty buckets: Are used to collect a liquid source").."\n"..
+S("• Filled buckets: Are used to place a liquid source").."\n"..
+S("• Heads, pumpkins: Equipped to players and armor stands, or placed as a block").."\n"..
+S("• Shulker boxes: Are placed as a block").."\n"..
+S("• TNT: Is placed and ignited").."\n"..
+S("• Flint and steel: Is used to ignite a fire in air and to ignite TNT").."\n"..
+S("• Spawn eggs: Will summon the mob they contain").."\n"..
+S("• Other items: Are simply dropped")
 
 horizontal_def.after_place_node = function(pos, placer, itemstack, pointed_thing)
 	setup_dispenser(pos)

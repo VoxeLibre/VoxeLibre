@@ -173,7 +173,7 @@ local pistonspec_normal = {
 	piston_up   = "mesecons_pistons:piston_up_normal_off",
 }
 
-local usagehelp_piston = S("This block can have one of 6 possible orientations. On placement, the pusher will face you.")
+local usagehelp_piston = S("This block can have one of 6 possible orientations.")
 
 local on_rotate
 if minetest.get_modpath("screwdriver") then

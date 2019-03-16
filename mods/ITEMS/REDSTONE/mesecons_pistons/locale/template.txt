@@ -1,5 +1,5 @@
 # textdomain: mesecons_pistons
-This block can have one of 6 possible orientations. On placement, the pusher will face you.=
+This block can have one of 6 possible orientations.=
 Piston=
 A piston is a redstone component with a pusher which pushes the block or blocks in front of it when it is supplied with redstone power. Not all blocks can be pushed, however.=
 Sticky Piston=

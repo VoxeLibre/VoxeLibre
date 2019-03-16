@@ -168,11 +168,7 @@ mcl_torches.register_torch("mesecon_torch_overheated", "Redstone Torch (overheat
 
 mcl_torches.register_torch("mesecon_torch_on", S("Redstone Torch"),
 	S("A redstone torch is a redstone component which can be used to invert a redstone signal. It supplies its surrounding blocks with redstone power, except for the block it is attached to. A redstone torch is normally lit, but it can also be turned off by powering the block it is attached to. While unlit, a redstone torch does not power anything."),
-	S("Redstone torches can generally be placed at the side and on the top of full solid opaque blocks. The following exceptions apply:").."\n"..
-S("• Glass, fence, wall, hopper: Can only be placed on top")..
-S("• Upside-down slab/stair: Can only be placed on top")..
-S("• Soul sand, mob spawner: Placement possible")..
-S("• Glowstone and pistons: No placement possible"),
+	S("Redstone torches can be placed at the side and on the top of full solid opaque blocks."),
 	"jeija_torches_on.png",
 	"mcl_torches_torch_floor.obj", "mcl_torches_torch_wall.obj",
 	{"jeija_torches_on.png"},

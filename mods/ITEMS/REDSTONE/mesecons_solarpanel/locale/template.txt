@@ -1,5 +1,7 @@
 # textdomain: mesecons_solarpanel
 Daylight Sensor=
 Daylight sensors are redstone components which provide redstone power when they are in sunlight and no power otherwise. They can also be inverted.=
+Use the daylight sensor to turn it into an inverted daylight sensor, which supplies redstone energy when it is in moonlight.=
 Inverted Daylight Sensor=
 An inverted daylight sensor is a variant of the daylight sensor. It is a redstone component which provides redstone power when it in moonlight and no power otherwise. It can turned back into an ordinary daylight sensor.=
+Use the inverted daylight sensor to turn it into a daylight sensor.=
