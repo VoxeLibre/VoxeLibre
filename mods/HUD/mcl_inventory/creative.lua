@@ -162,6 +162,7 @@ local noffset = {} -- numeric tab offset
 local offset = {} -- string offset:
 local boffset = {} -- 
 local hoch = {}
+local filtername = {}
 local bg = {}
 
 local noffset_x_start = -0.24
@@ -215,6 +216,21 @@ hoch["mobs"] = "^[transformfy"
 --hoch["brew"] = "^[transformfy" -- TODO: add brew
 hoch["matr"] = "^[transformfy"
 hoch["inv"] = "^[transformfy"
+
+filtername = {}
+filtername["blocks"] = S("Building Blocks")
+filtername["deco"] = S("Decoration Blocks")
+filtername["redstone"] = S("Redstone")
+filtername["rail"] = S("Transportation")
+filtername["misc"] = S("Miscellaneous")
+filtername["nix"] = S("Search Items")
+filtername["food"] = S("Foodstuffs")
+filtername["tools"] = S("Tools")
+filtername["combat"] = S("Combat")
+filtername["mobs"] = S("Mobs")
+--filtername["brew"] = S("Brewing") -- TODO: add brew
+filtername["matr"] = S("Materials")
+filtername["inv"] = S("Survival Inventory")
 
 local dark_bg = "crafting_creative_bg_dark.png"
 
@@ -375,9 +391,9 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 				"image[" .. offset[this_tab] .. ";1.5,1.44;" .. bg_img .. hoch[this_tab].. "]" ..
 				"image[" .. boffset[this_tab] .. ";1,1;crafting_creative_marker.png]"
 		end
-		local fnt = ""
-		if name ~= "inv" then
-			fnt = "image[0,1;5,0.75;mcl_inventory_fnt_"..name..".png]"
+		local caption = ""
+		if name ~= "inv" and filtername[name] then
+			caption = "label[0,1.1;"..F(minetest.colorize("#313131", filtername[name])).."]"
 		end
 
 		formspec = "size[10,9.3]"..
@@ -385,35 +401,35 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 			"background[-0.19,-0.25;10.5,9.87;"..inv_bg.."]"..
 			"label[-5,-5;"..name.."]"..
 			tab(name, "blocks") ..
-			"tooltip[blocks;"..F(S("Building Blocks")).."]"..
+			"tooltip[blocks;"..F(filtername["blocks"]).."]"..
 			tab(name, "deco") ..
-			"tooltip[deco;"..F(S("Decoration Blocks")).."]"..
+			"tooltip[deco;"..F(filtername["deco"]).."]"..
 			tab(name, "redstone") ..
-			"tooltip[redstone;"..F(S("Redstone")).."]"..
+			"tooltip[redstone;"..F(filtername["redstone"]).."]"..
 			tab(name, "rail") ..
-			"tooltip[rail;"..F(S("Transportation")).."]"..
+			"tooltip[rail;"..F(filtername["rail"]).."]"..
 			tab(name, "misc") ..
-			"tooltip[misc;"..F(S("Miscellaneous")).."]"..
+			"tooltip[misc;"..F(filtername["misc"]).."]"..
 			tab(name, "nix") ..
-			"tooltip[nix;"..F(S("Search Items")).."]"..
-			fnt..
+			"tooltip[nix;"..F(filtername["nix"]).."]"..
+			caption..
 			"list[current_player;main;0,7;9,1;]"..
 			main_list..
 			tab(name, "food") ..
-			"tooltip[food;"..F(S("Foodstuffs")).."]"..
+			"tooltip[food;"..F(filtername["food"]).."]"..
 			tab(name, "tools") ..
-			"tooltip[tools;"..F(S("Tools")).."]"..
+			"tooltip[tools;"..F(filtername["tools"]).."]"..
 			tab(name, "combat") ..
-			"tooltip[combat;"..F(S("Combat")).."]"..
+			"tooltip[combat;"..F(filtername["combat"]).."]"..
 			tab(name, "mobs") ..
-			"tooltip[mobs;"..F(S("Mobs")).."]"..
+			"tooltip[mobs;"..F(filtername["mobs"]).."]"..
 			-- TODO: Add brew
 			--tab(name, "brew") ..
-			--"tooltip[brew;"..F(S("Brewing")).."]"..
+			--"tooltip[brew;"..F(filtername["brew"]).."]"..
 			tab(name, "matr") ..
-			"tooltip[matr;"..F(S("Materials")).."]"..
+			"tooltip[matr;"..F(filtername["matr"]).."]"..
 			tab(name, "inv") ..
-			"tooltip[inv;"..F(S("Survival Inventory")).."]"..
+			"tooltip[inv;"..F(filtername["inv"]).."]"..
 			"list[detached:trash;main;9,7;1,1;]"..
 			"image[9,7;1,1;crafting_creative_trash.png]"..
 			listrings
