@@ -18,11 +18,13 @@ local function get_anvil_formspec(set_name)
 	return "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;mcl_anvils_inventory.png]"..
 	mcl_vars.inventory_header..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
 	"list[context;input;1,2.5;1,1;]"..
 	"list[context;input;4,2.5;1,1;1]"..
 	"list[context;output;8,2.5;1,1;]"..
+	"label[3,0.1;"..minetest.formspec_escape(minetest.colorize("#313131", S("Repair and Name"))).."]"..
 	"field[3.25,1;4,1;name;;"..minetest.formspec_escape(set_name).."]"..
 	"field_close_on_enter[name;false]"..
 	"button[7,0.7;2,1;name_button;"..minetest.formspec_escape(S("Set Name")).."]"..

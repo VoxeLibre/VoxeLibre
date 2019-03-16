@@ -16,9 +16,10 @@ local setup_dropper = function(pos)
 	local form = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_inventory_9_slots.png]"..
 	mcl_vars.inventory_header..
-	"image[3,-0.2;5,0.75;mcl_droppers_fnt_dropper.png]"..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
+	"label[3,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Dropper"))).."]"..
 	"list[current_name;main;3,0.5;3,3;]"..
 	"listring[current_name;main]"..
 	"listring[current_player;main]"

@@ -20,3 +20,4 @@ The dispenser will do different things, depending on the dispensed item:=
 • Other items: Are simply dropped=
 Downwards-Facing Dispenser=
 Upwards-Facing Dispenser=
+Inventory=

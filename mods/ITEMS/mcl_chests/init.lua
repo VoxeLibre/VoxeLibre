@@ -183,8 +183,9 @@ minetest.register_node("mcl_chests:"..basename, {
 		"size[9,8.75]"..
 		mcl_vars.inventory_header..
 		"background[-0.19,-0.25;9.41,10.48;mcl_chests_inventory_chest.png]"..
-		"image[0,-0.2;5,0.75;mcl_chests_fnt_chest.png]"..
+		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Chest"))).."]"..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
+		"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 		"list[current_player;main;0,4.5;9,3;9]"..
 		"list[current_player;main;0,7.74;9,1;]"..
 		"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]"..
@@ -317,8 +318,10 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		"size[9,11.5]"..
 		"background[-0.19,-0.25;9.41,12.5;mcl_chests_inventory_chest_large.png]"..
 		mcl_vars.inventory_header..
+		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Large Chest"))).."]"..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
 		"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,3.5;9,3;]"..
+		"label[0,7;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 		"list[current_player;main;0,7.5;9,3;9]"..
 		"list[current_player;main;0,10.75;9,1;]"..
 		-- BEGIN OF LISTRING WORKAROUND
@@ -451,8 +454,10 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		"size[9,11.5]"..
 		"background[-0.19,-0.25;9.41,12.5;mcl_chests_inventory_chest_large.png]"..
 		mcl_vars.inventory_header..
+		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Large Chest"))).."]"..
 		"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,0.5;9,3;]"..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3.5;9,3;]"..
+		"label[0,7;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 		"list[current_player;main;0,7.5;9,3;9]"..
 		"list[current_player;main;0,10.75;9,1;]"..
 		-- BEGIN OF LISTRING WORKAROUND
@@ -657,8 +662,9 @@ minetest.register_node("mcl_chests:ender_chest", {
 				"size[9,8.75]"..
 				mcl_vars.inventory_header..
 				"background[-0.19,-0.25;9.41,10.48;mcl_chests_inventory_chest.png]"..
-				"image[0,-0.2;5,0.75;mcl_chests_fnt_ender_chest.png]"..
+				"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Ender Chest"))).."]"..
 				"list[current_player;enderchest;0,0.5;9,3;]"..
+				"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 				"list[current_player;main;0,4.5;9,3;9]"..
 				"list[current_player;main;0,7.74;9,1;]"..
 				"listring[current_player;enderchest]"..
@@ -752,8 +758,9 @@ for color, desc in pairs(boxtypes) do
 					"size[9,8.75]"..
 					mcl_vars.inventory_header..
 					"background[-0.19,-0.25;9.41,10.48;mcl_chests_inventory_chest.png]"..
-					"image[0,-0.2;5,0.75;mcl_chests_fnt_shulker_box.png]"..
+					"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Shulker Box"))).."]"..
 					"list[current_name;main;0,0.5;9,3;]"..
+					"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 					"list[current_player;main;0,4.5;9,3;9]"..
 					"list[current_player;main;0,7.74;9,1;]"..
 					"listring[current_name;main]"..

@@ -5,3 +5,4 @@ Use the furnace to open the furnace menu. Place a furnace fuel in the lower slot
 Use the recipe book to see what you can smelt, what you can use as fuel and how long it will burn.=
 Burning Furnace=
 Recipe book=
+Inventory=

@@ -10,3 +10,4 @@ To place a hopper vertically, place it on the floor or a ceiling. To place it si
 Disabled Hopper=
 Side Hopper=
 Disabled Side Hopper=
+Inventory=

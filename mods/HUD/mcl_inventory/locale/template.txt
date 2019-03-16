@@ -15,3 +15,5 @@ Combat=
 Mobs=
 Materials=
 Survival Inventory=
+Crafting=
+Inventory=

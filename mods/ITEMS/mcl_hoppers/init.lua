@@ -8,7 +8,9 @@ local mcl_hoppers_formspec =
 	"size[9,7]"..
 	"background[-0.19,-0.25;9.41,10.48;mcl_hoppers_inventory.png]"..
 	mcl_vars.inventory_header..
+	"label[2,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Hopper"))).."]"..
 	"list[current_name;main;2,0.5;5,1;]"..
+	"label[0,2;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,2.5;9,3;9]"..
 	"list[current_player;main;0,5.74;9,1;]"..
 	"listring[current_name;main]"..

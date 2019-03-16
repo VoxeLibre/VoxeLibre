@@ -4,3 +4,4 @@ A dropper is a redstone component and a container with 9 inventory slots which, 
 Droppers can be placed in 6 possible directions, items will be dropped out of the hole. Use the dropper to access its inventory. Supply it with redstone energy once to make the dropper drop or transfer a random item.=
 Downwards-Facing Dropper=
 Upwards-Facing Dropper=
+Inventory=
