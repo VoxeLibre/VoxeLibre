@@ -165,7 +165,7 @@ local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 		textarea_name = ""
 		submit = ""
 	end
-	if commands == "" then
+	if not can_edit and commands == "" then
 		textarea = "label[0.5,0.5;"..F(S("No commands.")).."]"
 	else
 		textarea = "textarea[0.5,0.5;8.5,4;"..textarea_name..";"..F(S("Commands:"))..";"..F(commands).."]"
