@@ -145,6 +145,9 @@ local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 
 	local meta = minetest.get_meta(pos)
 	local commands = meta:get_string("commands")
+	if not commands then
+		commands = ""
+	end
 	local commander = meta:get_string("commander")
 	local commanderstr
 	if commander == "" or commander == nil then
@@ -263,7 +266,7 @@ minetest.register_node("mesecons_commandblock:commandblock_on", {
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if string.sub(formname, 1, 13) == "commandblock_" then
-		if not fields.submit and not fields.key_enter and not fields.doc then
+		if (not fields.submit and not fields.key_enter and not fields.doc) or (not fields.commands) then
 			return
 		end
 		local privs = minetest.get_player_privs(player:get_player_name())
