@@ -54,6 +54,13 @@ local sounds
 if minetest.get_modpath("mcl_sounds") then
 	sounds = mcl_sounds.node_sound_wood_defaults()
 end
+local tnt_mesecons
+if minetest.get_modpath("mesecons") then
+	tnt_mesecons = {effector = {
+		action_on = tnt.ignite,
+		rules = mesecon.rules.alldirs,
+	}}
+end
 minetest.register_node("mcl_tnt:tnt", {
 	tiles = {"default_tnt_top.png", "default_tnt_bottom.png",
 			"default_tnt_side.png", "default_tnt_side.png",
@@ -66,10 +73,7 @@ minetest.register_node("mcl_tnt:tnt", {
 	_doc_items_longdesc = S("An explosive device. When it explodes, it will hurt living beings and destroy blocks around it. TNT has an explosion radius of @1. With a small chance, blocks may drop as an item (as if being mined) rather than being destroyed. TNT can be ignited by tools, explosions, fire, lava and redstone signals.", TNT_RANGE),
 	_doc_items_usagehelp = S("Place the TNT and ignite it with one of the methods above. Quickly get in safe distance. The TNT will start to be affected by gravity and explodes in 4 seconds."),
 	groups = { dig_immediate = 3, tnt = 1, enderman_takable=1 },
-	mesecons = {effector = {
-		action_on = tnt.ignite,
-		rules = mesecon.rules.alldirs,
-	}},
+	mesecons = tnt_mesecons,
 	_on_ignite = function(player, pointed_thing)
 		tnt.ignite(pointed_thing.under)
 		return true
