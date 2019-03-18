@@ -454,10 +454,6 @@ viewed a category as well, both returned values are `nil`.
 This is a convenience function for creating a special formspec widget. It creates
 a widget in which you can insert scrollable multi-line text.
 
-As of Minetest 0.4.14, this function is only provided because Minetest lacks
-native support for such a widget. When Minetest supports such a widget natively,
-this function may become just a simple wrapper.
-
 #### Parameters
 * `data`: Text to be written inside the widget
 * `x`: Formspec X coordinate (optional)
