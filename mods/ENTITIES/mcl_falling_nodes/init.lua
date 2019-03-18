@@ -49,12 +49,12 @@ local deal_falling_damage = function(self, dtime)
 						-- TODO: Reduce damage if wearing a helmet
 						local msg
 						if minetest.get_item_group(self.node.name, "anvil") ~= 0 then
-							msg = S("%s was smashed by a falling anvil.")
+							msg = S("@1 was smashed by a falling anvil.", v:get_player_name())
 						else
-							msg = S("%s was smashed by a falling block.")
+							msg = S("@1 was smashed by a falling block.", v:get_player_name())
 						end
 						if dmes then
-							mcl_death_messages.player_damage(v, string.format(msg, v:get_player_name()))
+							mcl_death_messages.player_damage(v, msg)
 						end
 					end
 					v:set_hp(hp)
