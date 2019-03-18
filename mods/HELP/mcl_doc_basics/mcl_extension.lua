@@ -23,7 +23,7 @@ doc.add_entry("basics", "mobs", {
 	data = { text =
 S("Mobs are the living beings in the world. This includes animals and monsters.").."\n\n"..
 
-S("Mobs appear randomly throughout the world. This is called “spawning”. Each mob kind appears on particular block types at a given light level. The height also plays a role. Peaceful mobs tend to spawn at daylight while hostile ones prefer darkness. Most mobs can spawn on any solid block but some blocks only spawn on particular blocks (like grass blocks).").."\n\n"..
+S("Mobs appear randomly throughout the world. This is called “spawning”. Each mob kind appears on particular block types at a given light level. The height also plays a role. Peaceful mobs tend to spawn at daylight while hostile ones prefer darkness. Most mobs can spawn on any solid block but some mobs only spawn on particular blocks (like grass blocks).").."\n\n"..
 
 S("Like players, mobs have hit points and sometimes armor points, too (which means you need better weapons to deal any damage at all). Also like players, hostile mobs can attack directly or at a distance. Mobs may drop random items after they die.").."\n\n"..
 
@@ -49,7 +49,7 @@ S("When you have fed an animal up to its maximum health, then feed it again, you
 S("Two animals of the same species will start to breed if they are in Love Mode and close to each other. Soon a baby animal will pop up.").."\n\n"..
 
 S("Baby animals:").."\n"..
-S("Baby animals are just like their adult couterparts, but they can't be fed, tamed or bred and don't drop anything when they die. They grow to adults after a short time.")
+S("Baby animals are just like their adult couterparts, but they can't be tamed or bred and don't drop anything when they die. They grow to adults after a short time. When fed, they grow to adults faster.")
 
 }})
 

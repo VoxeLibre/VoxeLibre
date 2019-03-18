@@ -38,7 +38,6 @@ S("• Recover from swings to deal full damage").."\n"..
 S("• Right-click to build blocks and use things").."\n"..
 S("• [I] for the inventory").."\n"..
 S("• First items in inventory appear in hotbar below").."\n"..
-S("• [F9] for the minimap").."\n"..
 S("• Read entries in this help to learn the rest").."\n"..
 S("• [Esc] to close this window").."\n\n"..
 
@@ -194,9 +193,9 @@ S("Items have several properties, including the following:").."\n\n"..
 S("• Maximum stack size: Number of items which fit on 1 item stack").."\n"..
 S("• Pointing range: How close things must be to be pointed while wielding this item").."\n"..
 S("• Group memberships: See “Basics > Groups”").."\n"..
-S("• May be used for crafting or cooking").."\n\n"..
+S("• May be used for crafting or cooking"),
 
-S("A dropped item stack can be collected by punching it."),
+-- MCL2: Items cannot be taken by punching
 		images = {{image="doc_basics_inventory_detail.png"}, {image="doc_basics_items_dropped.png"}},
 }})
 
@@ -236,7 +235,7 @@ doc.add_entry("basics", "point", {
 	name = S("Pointing"),
 	data = {
 		text =
-S("“Pointing” means looking at something in range with the crosshair. Pointing is needed for interaction, like mining, punching, using, etc. Pointable things include blocks, dropped items, players, computer enemies and objects.").."\n\n"..
+S("“Pointing” means looking at something in range with the crosshair. Pointing is needed for interaction, like mining, punching, using, etc. Pointable things include blocks, players, computer enemies and objects.").."\n\n"..
 
 S("To point something, it must be in the pointing range (also just called “range”) of your wielded item. There's a default range when you are not wielding anything. A pointed thing will be outlined or highlighted (depending on your settings). Pointing is not possible with the 3rd person front camera.").."\n\n"..
 
@@ -281,50 +280,20 @@ S("• Group memberships: Group memberships are used to determine mining propert
 		images = {{image="doc_basics_nodes.png"}}
 }})
 
--- TODO: Oh jeez, this explanation is WAY too difficult. Maybe we need to find some way to make it easier to understand.
 doc.add_entry("basics", "mine", {
 	name = S("Mining"),
 	data = {
 		text =
+-- Text changed for MCL2
 S("Mining (or digging) is the process of breaking blocks to remove them. To mine a block, point it and hold down the left mouse button until it breaks.").."\n\n"..
 
-S("Short explanation:").."\n\n"..
-
-S("Blocks require a mining tool to be mined. Different blocks are mined by different mining tools, and some blocks can not be mined by any tool. Blocks vary in toughness and tools vary in strength. Mining tools will wear off over time. The mining time and the tool wear depend on the block and the mining tool. The fastest way to find out how efficient your mining tools are is by just trying them out on various blocks. Any items you gather by mining go straight into your inventory.") .. "\n\n"..
-
-S("Detailed explanation:").."\n\n"..
-
-S("Mineable blocks have mining properties (based on groups) and a toughness level. Mining tools have the same properties. Each mining property of a block also has a rating, while tools can be able to break blocks within a range of ratings.").."\n\n"..
-
-S("In order to mine a block, these conditions need to be met:").."\n"..
-S("• The block and tool share at least one mining property for which they have a matching rating").."\n"..
-S("• The tool's toughness level is equal or greater than the block's toughness level").."\n\n"..
-
-S("Example: A block with the mining property “cracky”, rating 3 and toughness level 0 can only be broken by a tool which is able to break “cracky” blocks at rating 3 and it must have a toughness level of 0 or larger.").."\n\n"..
-
-S("The time it takes to mine a block depends on the ratings and the toughness levels of both tool and block.").."\n"..
-S("• The base mining time depends on the ratings of the block and the mining speed of the tool").."\n"..
-S("• The mining speed of the tool differs for each mining property and its rating").."\n"..
-S("• The toughness level further modifies the mining speed for this mining property").."\n"..
-S("• A high difference in toughness levels decreases the mining time considerably").."\n"..
-S("• If the toughness level difference is 2, the mining time is half of the base mining time").."\n"..
-S("• With a difference of 3, the mining time is a third, and so on").."\n\n"..
-
-S("The item help shows the mining times of a tool listed by its mining properties and its ratings. The mining times are often expressed as a range. The low number stands for the mining time for toughness level 0 and the high number for the highest level the tool can mine.").."\n\n"..
-
-S("Mining usually wears off tools. Each time you mine a block, your tool takes some damage until it is destroyed eventually. The wear per mined block is determined by the difference between the tool's toughness level and the block's toughness level. The higher the difference, the lower the wear. This means:").."\n"..
-S("• High-level blocks wear off your tools faster").."\n"..
-S("• You can use high-level tools to compensate this").."\n"..
-S("• The highest wear is caused when the level of both tool and block are equal").."\n\n"..
+S("Blocks require a mining tool to be mined. Different blocks are mined by different mining tools, and some blocks can not be mined by any tool. Blocks vary in hardness and tools vary in strength. Mining tools will wear off over time. The mining time and the tool wear depend on the block and the mining tool. The fastest way to find out how efficient your mining tools are is by just trying them out on various blocks. Any items you gather by mining will drop on the ground, ready to be collected.") .. "\n\n"..
 
 S("After mining, a block may leave a “drop” behind. This is a number of items you get after mining. Most commonly, you will get the block itself. There are other possibilities for a drop which depends on the block type. The following drops are possible:").."\n"..
 S("• Always drops itself (the usual case)").."\n"..
 S("• Always drops the same items").."\n"..
 S("• Drops items based on probability").."\n"..
-S("• Drops nothing").."\n\n"..
-
-S("The drop goes directly into your inventory, unless there's no more space left. In that case, the items literally drop on the floor."),
-		images = {{image="doc_basics_tools_mining.png"}},
+S("• Drops nothing"),
 }})
 
 doc.add_entry("basics", "build", {
@@ -409,7 +378,8 @@ S("There are multiple types of crafting recipes:").."\n\n"..
 S("• Shaped (image 2): Items need to be placed in a particular shape").."\n"..
 S("• Shapeless (images 3 and 4): Items need to be placed somewhere in input (both images show the same recipe)").."\n"..
 S("• Cooking: Explained in “Basics > Cooking”").."\n"..
-S("• Repairing (image 5): Place two damaged tools into the crafting grid anywhere to get a tool which is repaired by a certain percentage. This recipe may not be available in all games").."\n\n"..
+-- MCL2 change: call out specific repair percentage
+S("• Repairing (image 5): Place two damaged tools into the crafting grid anywhere to get a tool which is repaired by 5%").."\n\n"..
 
 S("In some crafting recipes, some input items do not need to be a concrete item, instead they need to be a member of a group (see “Basics > Groups”). These recipes offer a bit more freedom in the input items. Images 6-8 show the same group-based recipe. Here, 8 items of the “stone” group are required, which is true for all of the shown items.").."\n\n"..
 
