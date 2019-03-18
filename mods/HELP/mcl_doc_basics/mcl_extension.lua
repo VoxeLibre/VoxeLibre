@@ -15,7 +15,7 @@ S("• Tools don't wear off").."\n"..
 S("• You can eat food whenever you want").."\n"..
 S("• You can always use the minimap (including radar mode)").."\n\n"..
 
-S("Damage is not affected by Creative Mode, it needs to be disabled seperately.")
+S("Damage is not affected by Creative Mode, it needs to be disabled separately.")
 }})
 
 doc.add_entry("basics", "mobs", {
