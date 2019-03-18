@@ -1,8 +1,8 @@
 # textdomain: mcl_doc_basics
 Basics=Grundlagen
-Everything you need to know about Minetest to get started with playing=Alles, was Sie über Minetest zum Spielen wissen sollten
+Everything you need to know to get started with playing=Alles, was Sie zum Spielen wissen sollten
 Advanced usage=Fortgeschrittenes
-Advanced information about Minetest which may be nice to know, but is not crucial to gameplay=Fortgeschrittene Informationen über Minetest, die nett zu wissen sind, aber nicht kritisch für das reguläre Spiel
+Advanced information which may be nice to know, but is not crucial to gameplay=Fortgeschrittene Informationen, die nett zu wissen sind, aber nicht kritisch für das reguläre Spiel
 Quick start=Schnellstart
 This is a very brief introduction to the basic gameplay:=Hier ist eine sehr kurze Einführung ins Spiel:
 • Move mouse to look=• Mausbewegung zum Umsehen
@@ -112,7 +112,7 @@ An item stack is a collection of items of the same type which fits into a single
 A dropped item stack can be collected by punching it.=Ein fallen gelassener Gegenstandsstapel kann aufgesammelt werden, indem er geschlagen wird.
 Tools=Werkzeuge
 Some items may serve as a tool when wielded. Any item which has some special use which can be directly used by its wielder is considered a tool.=Einige Gegenstände können als Werkzeug fungieren, wenn man sie hält. Als Werkzeug zählt jeder Gegenstand, der einen besonderen Zweck hat, der direkt vom Träger ausgelöst werden kann.
-A common tool in Minetest are, of course, mining tools. These are important to break all kinds of blocks. Weapons are a kind of tool in Minetest. There are of course many other possible tools. Special actions of tools are usually done by left-click or right-click.=Eine häufige Werkzeugart in Minetest sind Grabewerkzeuge. Sie sind wichtig zum Abbauen aller möglichen Blöcke. Waffen sind eine Art Werkzeug in Minetest. Es gibt natürlich viele weitere Werkzeuge. Sonderaktionen von Werkzeugen weden normalerweise mit Links- oder Rechtsklick ausgelöst.
+A common subset of tools is mining tools. These are important to break all kinds of blocks. Weapons are a kind of tool. There are of course many other possible tools. Special actions of tools are usually done by left-click or right-click.=Eine häufige Werkzeugart sind Grabewerkzeuge. Sie sind wichtig zum Abbauen aller möglichen Blöcke. Waffen sind eine Art Werkzeug. Es gibt natürlich viele weitere Werkzeuge. Sonderaktionen von Werkzeugen weden normalerweise mit Links- oder Rechtsklick ausgelöst.
 When nothing is wielded, players use their hand which may act as tool and weapon.=Wird nichts gehalten, benutzen die Spieler ihre Hand, die als Werkzeug und Waffe herhalten kann.
 Many tools will wear off when using them and may eventually get destroyed. The damage is displayed in a damage bar below the tool icon. If no damage bar is shown, the tool is in mint condition. Tools may be repairable by crafting, see “Basics > Crafting”.=Viele Werkzeuge werden sich bei Benutzung abnutzen und zerbrechen früher oder später. Der Schaden wird in einer Schadensleiste unter dem Werkzeugsymbol angezeigt. Ohne diese Leiste ist das Werkzeug wie neu. Werkzeuge kann man eventuell mit einer Fertigung reparieren.
 Weapons=Waffen
@@ -136,7 +136,7 @@ Zooming is a gameplay feature that might be enabled or disabled by the game. By 
 • Switch camera mode: [F7]=• Kameramodus wechseln: [F7]
 • Zoom: [Z]=• Zoom: [Z]
 Blocks=Blöcke
-The world of Minetest is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=Die Welt von Minetest besteht aus Blöcken (oder Voxeln, um genau zu sein). Blöcke können mit den richtigen Werkzeugen gebaut oder entfernt werden.
+The world is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.=Die Welt besteht aus Blöcken (oder Voxeln, um genau zu sein). Blöcke können mit den richtigen Werkzeugen gebaut oder entfernt werden.
 Blocks can have a wide range of different properties which determine mining times, behavior, looks, shape, and much more. Their properties include:=Blöcke haben eine Reihe an verschiedenen Eigenschaften, die die Abbauzeit, ihr Verhalten, Aussehen, Form und vieles mehr beeinflussen. Zu ihren Eigenschaften zählen:
 • Collidable: Collidable blocks can not be passed through; players can walk on them. Non-collidable blocks can be passed through freely=• Kollisionsfähig: Kollisionsfähige Blöcke können nicht passiert werden, Spieler können auf ihnen gehen. Nicht kollisionsfähige Blöcke können frei passiert werden
 • Pointable: Pointable blocks show a wireframe or a halo box when pointed. But you will just point through non-pointable blocks. Liquids are usually non-pointable but they can be pointed at by some special tools=• Zeigbar: Zeigbare Blöcke zeigen ein Drahtmodell oder eine scheinende Box, wenn sie gezeigt werden. Aber durch nicht-zeigbare Blöcke werden Sie hindurch zeigen. Flüssigkeiten sind üblicherweise nicht-zeigbar, aber mit besonderen Werkzeugen können sie gezeigt werden.
@@ -262,7 +262,7 @@ Items, players and objects (animate and inanimate) can be members of any number 
 • Other uses=• Andere Zwecke
 In the item help, many important groups are usually mentioned and explained.=In der Gegenstandshilfe werden viele wichtige Gruppen normalerweise erwähnt und erklärt.
 Glossary=Glossar
-This is a list of commonly used terms in Minetest:=Dies ist eine Liste von häufig benutzten Begriffen in Minetest
+This is a list of commonly used terms:=Dies ist eine Liste von häufig benutzten Begriffen:
 Controls:=Steuerung:
 • Wielding: Holding an item in hand=• Halten: Einen Gegenstand in der Hand halten
 • Pointing: Looking with the crosshair at something in range=• Zeigen: Mit dem Fadenkreuz auf etwas in Reichweite blicken
@@ -405,7 +405,7 @@ Artificial light will lose one level of brightness for each transparent or semi-
 Sunlight will preserve its brightness as long it only passes fully transparent blocks. When it passes through a semi-transparent block, it turns to artificial light. Image 2 shows the difference.=Sonnenlicht wird seine Helligkeit behalten, solange sie nur volltransparente Blöcke passiert. Sobald sie einen halbtransparenten Block passiert, wird es zu künstlichem Licht. Bild 2 zeigt den Unterschied.
 Note that “transparency” here only means that the block is able to carry brightness from its neighboring blocks. It is possible for a block to be transparent to light but you can't see trough the other side.=Beachten Sie, dass das Wort „Transparenz“ hier nur bedeutet, dass der Block fähig ist, Helligkeit von seinen Nachbarblöcken weiterzugeben. Es ist möglich, dass ein Block transparent gegenüber Licht ist, aber Sie können nicht durch ihn sehen.
 Coordinates=Koordinaten
-The Minetest world is a large cube. And because of this, a position in the world can be easily expressed with Cartesian coordinates. That is, for each position in the world, there are 3 values X, Y and Z.=Die Minetest-Welt ist ein großer Würfel. Und daher kann eine Position in der Welt leicht mit kartesischen Koordinaten ausgedrückt weren. Das bedeutet, für jede Position in der Welt gibt es 3 Werte X, Y und Z.
+The world is a large cube. And because of this, a position in the world can be easily expressed with Cartesian coordinates. That is, for each position in the world, there are 3 values X, Y and Z.=Die Welt ist ein großer Würfel. Und daher kann eine Position in der Welt leicht mit kartesischen Koordinaten ausgedrückt weren. Das bedeutet, für jede Position in der Welt gibt es 3 Werte X, Y und Z.
 Like this: (5, 45, -12)=So wie dies: (5, 45, -12)
 This refers to the position where X@=5, Y@=45 and Z@=-12. The 3 letters are called “axes”: Y is for the height. X and Z are for the horizontal position.=Das bezieht sich auf die Position, in der X@=5, Y@=45 und Z@=-12 sind. Die drei Buchstaben nennt man „Achsen“. Y ist für die Höhe X und Z sind für die horizontale Position.
 The values for X, Y and Z work like this:=Die Werte für X, Y und Z funktionieren so:
@@ -427,7 +427,7 @@ There are multiple types of crafting recipes:=Es gibt mehrere Arten von Fertigun
 • Shapeless (images 3 and 4): Items need to be placed somewhere in input (both images show the same recipe)=• Formlos (Bilder 3 und 4): Gegenstände müssen irgendwo in der Eingabe platziert werden (beide Bilder zeigen das gleiche Rezept)
 • Cooking: Explained in “Basics > Cooking”=• Kochen: Siehe „Grundlagen > Kochen“
 • Repairing (image 5): Place two damaged tools into the crafting grid anywhere to get a tool which is repaired by 5%=• Reparieren (Bild 5): Platzieren sie zwei gleiche beschädigte Werkzeuge in das Fertigungsgitter, um ein Werkzeug zu erhalten, das zu 5% repariert ist
-Minetest has 3 different views which determine the way you see the world. The modes are:=Minetest hat 3 verschiedene Ansichten, die bestimmen, wie Sie die Welt sehen. Die Modi sind:
+There are 3 different views which determine the way you see the world. The modes are:=Es gibt 3 verschiedene Ansichten, die bestimmen, wie Sie die Welt sehen. Die Modi sind:
 • 1: First-person view (default)=• 1: Erste Person (Standard)
 • 2: Third-person view from behind=• 2: Dritte Person von hinten
 • 3: Third-person view from the front=• 3: Dritte Person von vorne

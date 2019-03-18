@@ -1,8 +1,8 @@
 # textdomain: mcl_doc_basics
 Basics=
-Everything you need to know about MineClone 2 to get started with playing=
+Everything you need to know to get started with playing=
 Advanced usage=
-Advanced information about Minetest which may be nice to know, but is not crucial to gameplay=
+Advanced information which may be nice to know, but is not crucial to gameplay=
 Quick start=
 This is a very brief introduction to the basic gameplay:=
 Basic controls:=

@@ -7,7 +7,7 @@ local S = minetest.get_translator("mcl_doc_basics")
 doc.add_category("basics",
 {
 	name = S("Basics"),
-	description = S("Everything you need to know about MineClone 2 to get started with playing"),
+	description = S("Everything you need to know to get started with playing"),
 	sorting = "custom",
 	sorting_data = {"quick_start", "controls", "point", "items", "inventory", "hotbar", "tools", "weapons", "nodes", "mine", "build", "craft", "cook", "hunger", "mobs", "animals", "minimap", "cam", "sneak", "players", "liquids", "light", "groups", "glossary", "minetest"},
 	build_formspec = doc.entry_builders.text_and_gallery,
@@ -16,7 +16,7 @@ doc.add_category("basics",
 doc.add_category("advanced",
 {
 	name = S("Advanced usage"),
-	description = S("Advanced information about Minetest which may be nice to know, but is not crucial to gameplay"),
+	description = S("Advanced information which may be nice to know, but is not crucial to gameplay"),
 	sorting = "custom",
 	sorting_data = {"creative", "console", "commands", "privs", "movement_modes", "coordinates", "settings", "online"},
 	build_formspec = doc.entry_builders.text_and_gallery,
@@ -204,7 +204,7 @@ doc.add_entry("basics", "tools", {
 	data = { text =
 S("Some items may serve as a tool when wielded. Any item which has some special use which can be directly used by its wielder is considered a tool.").."\n\n"..
 
-S("A common tool in Minetest are, of course, mining tools. These are important to break all kinds of blocks. Weapons are a kind of tool in Minetest. There are of course many other possible tools. Special actions of tools are usually done by left-click or right-click.").."\n\n"..
+S("A common subset of tools is mining tools. These are important to break all kinds of blocks. Weapons are a kind of tool. There are of course many other possible tools. Special actions of tools are usually done by left-click or right-click.").."\n\n"..
 
 S("When nothing is wielded, players use their hand which may act as tool and weapon.").."\n\n"..
 
@@ -247,7 +247,7 @@ doc.add_entry("basics", "cam", {
 	name = S("Camera"),
 	data = {
 		text =
-S("Minetest has 3 different views which determine the way you see the world. The modes are:").."\n\n"..
+S("There are 3 different views which determine the way you see the world. The modes are:").."\n\n"..
 
 S("• 1: First-person view (default)").."\n"..
 S("• 2: Third-person view from behind").."\n"..
@@ -266,7 +266,7 @@ doc.add_entry("basics", "nodes", {
 	name = S("Blocks"),
 	data = {
 		text =
-S("The world of Minetest is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.").."\n\n"..
+S("The world is made entirely out of blocks (voxels, to be precise). Blocks can be added or removed with the correct tools.").."\n\n"..
 
 S("Blocks can have a wide range of different properties which determine mining times, behavior, looks, shape, and much more. Their properties include:").."\n\n"..
 
@@ -508,7 +508,7 @@ doc.add_entry("basics", "glossary", {
 	name = S("Glossary"),
 	data = {
 		text =
-S("This is a list of commonly used terms in Minetest:").."\n\n"..
+S("This is a list of commonly used terms:").."\n\n"..
 
 S("Controls:").."\n"..
 S("• Wielding: Holding an item in hand").."\n"..
@@ -731,7 +731,7 @@ S("Note that “transparency” here only means that the block is able to carry 
 doc.add_entry("advanced", "coordinates", {
 	name = S("Coordinates"),
 	data = { text =
-S("The Minetest world is a large cube. And because of this, a position in the world can be easily expressed with Cartesian coordinates. That is, for each position in the world, there are 3 values X, Y and Z.").."\n\n"..
+S("The world is a large cube. And because of this, a position in the world can be easily expressed with Cartesian coordinates. That is, for each position in the world, there are 3 values X, Y and Z.").."\n\n"..
 
 S("Like this: (5, 45, -12)").."\n\n"..
 
