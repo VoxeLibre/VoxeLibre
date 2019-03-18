@@ -52,3 +52,6 @@ This block drops itself when mined by shears.=
 @1×@2=
 This blocks drops the following when mined by shears: @1=
 , =
+• Shears=
+• Sword=
+• Hand=

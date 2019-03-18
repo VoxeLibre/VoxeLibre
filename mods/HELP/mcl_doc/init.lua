@@ -202,15 +202,15 @@ doc.sub.items.register_factoid("nodes", "mining", function(itemstring, def)
 				tool_minable = true
 			end
 			if groups.shearsy or groups.shearsy_wool then
-				datastring = datastring .. "• Shears" .. "\n"
+				datastring = datastring .. S("• Shears") .. "\n"
 				tool_minable = true
 			end
 			if groups.swordy or groups.swordy_cobweb then
-				datastring = datastring .. "• Sword" .. "\n"
+				datastring = datastring .. S("• Sword") .. "\n"
 				tool_minable = true
 			end
 			if groups.handy then
-				datastring = datastring .. "• Hand" .. "\n"
+				datastring = datastring .. S("• Hand") .. "\n"
 				tool_minable = true
 			end
 
