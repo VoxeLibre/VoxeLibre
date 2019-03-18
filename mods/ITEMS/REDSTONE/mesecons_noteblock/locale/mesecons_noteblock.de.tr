@@ -1,7 +1,7 @@
 # textdomain: mesecons_noteblock
 Note Block=Notenblock
 A note block is a musical block which plays one of many musical notes and different intruments when it is punched or supplied with redstone power.=Ein Notenblock ist ein musikalischer Block, der eine von vielen Noten von verschiedenen Instrumenten spielt, wenn er geschlagen oder mit Redstoneenergie versorgt wird.
-Use the note block to choose the next musical note (there are 24 half notes, or 2 octaves). The intrument played depends on the material of the block below the note block:=Benutzen Sie den Notenblock, um die nächste Note zu wählen (es gibt 24 halbe Noten bzw. 2 Oktaven). Das gespielte Intrument hängt vom Material des Blocks unter dem Notenblock ab:
+Use the note block to choose the next musical note (there are 25 semitones, or 2 octaves). The intrument played depends on the material of the block below the note block:=Benutzen Sie den Notenblock, um die nächste Musiknote zu wählen (es gibt 25 Halbtöne, oder 2 Oktaven). Das gespielte Instrument hängt vom Material des Blocks unter dem Notenblock ab:
 • Glass: Sticks=• Glas: Stöcke
 • Wood: Bass guitar=• Holz: Bassgitarre
 • Stone: Bass drum=• Stein: Basstrommel
