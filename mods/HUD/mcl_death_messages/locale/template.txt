@@ -1,11 +1,11 @@
 # textdomain: mcl_death_messages
 @1 was fatally hit by an arrow.=
 @1 has been killed with an arrow.=
-@1 was shot by an arrow from @1.=
+@1 was shot by an arrow from @2.=
 @1 forgot to breathe.=
 @1 drowned.=
 @1 ran out of oxygen.=
-@1 was killed by @1.=
+@1 was killed by @2.=
 @1 was killed by a mob.=
 @1 was burned to death by a blaze's fireball.=
 @1 was killed by a fireball from a blaze.=

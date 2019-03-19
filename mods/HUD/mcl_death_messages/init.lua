@@ -10,7 +10,7 @@ local msgs = {
 		N("@1 has been killed with an arrow."),
 	},
 	["arrow_name"] = {
-		N("@1 was shot by an arrow from %s."),
+		N("@1 was shot by an arrow from @2."),
 	},
 	["drown"] = {
 		N("@1 forgot to breathe."),
@@ -18,7 +18,7 @@ local msgs = {
 		N("@1 ran out of oxygen."),
 	},
 	["murder"] = {
-		N("@1 was killed by %s."),
+		N("@1 was killed by @2."),
 	},
 	["mob_kill"] = {
 		N("@1 was killed by a mob."),

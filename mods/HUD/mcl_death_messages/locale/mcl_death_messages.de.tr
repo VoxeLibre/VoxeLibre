@@ -1,11 +1,11 @@
 # textdomain: mcl_death_messages
 @1 was fatally hit by an arrow.=@1 wurde tödlich von einem Pfeil getroffen.
 @1 has been killed with an arrow.=@1 wurde mit einem Pfeil getötet.
-@1 was shot by an arrow from @1.=@1 wurde mit einem Pfeil von @1 abgeschossen.
+@1 was shot by an arrow from @2.=@1 wurde mit einem Pfeil von @2 abgeschossen.
 @1 forgot to breathe.=@1 vergaß, zu atmen.
 @1 drowned.=@1 ertrank.
 @1 ran out of oxygen.=@1 ging die Luft aus.
-@1 was killed by @1.=@1 wurde von @1 getötet.
+@1 was killed by @2.=@1 wurde von @2 getötet.
 @1 was killed by a mob.=@1 wurde von einem Mob getötet.
 @1 was burned to death by a blaze's fireball.=@1 wurde von einem Feuerball einer Lohe zu Tode verbrannt.
 @1 was killed by a fireball from a blaze.=@1 wurde von einem Feuerball einer Lohe getötet.
