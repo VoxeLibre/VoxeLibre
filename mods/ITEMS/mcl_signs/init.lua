@@ -121,9 +121,9 @@ local generate_texture = function(lines, signnodename)
 	local texture = "[combine:"..SIGN_WIDTH.."x"..SIGN_WIDTH
 	local ypos
 	if signnodename == "mcl_signs:wall_sign" then
-		ypos = 29
+		ypos = 30
 	else
-		ypos = -2
+		ypos = 0
 	end
 	for i = 1, #lines do
 		texture = texture..generate_line(lines[i], ypos)
