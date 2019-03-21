@@ -85,6 +85,7 @@ local generate_line = function(s, ypos)
 	local printed_char_width = CHAR_WIDTH + 1
 	while chars <= LINE_LENGTH and i <= #s do
 		local file = nil
+		-- Get and render character
 		if charmap[s:sub(i, i)] ~= nil then
 			file = charmap[s:sub(i, i)]
 			i = i + 1
@@ -92,8 +93,11 @@ local generate_line = function(s, ypos)
 			file = charmap[s:sub(i, i + 1)]
 			i = i + 2
 		else
-			minetest.log("warning", "[mcl_signs] Unknown symbol in '"..s.."' at "..i.." (probably "..s:sub(i, i)..")")
+			-- No character image found.
+			-- Use replacement character:
+			file = "_rc"
 			i = i + 1
+			minetest.log("verbose", "[mcl_signs] Unknown symbol in '"..s.."' at "..i)
 		end
 		if file ~= nil then
 			width = width + printed_char_width
