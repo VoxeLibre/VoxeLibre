@@ -187,6 +187,10 @@ local destruct_sign = function(pos)
 			v:remove()
 		end
 	end
+	local players = minetest.get_connected_players()
+	for p=1, #players do
+		minetest.close_formspec(players[p]:get_player_name(), "mcl_signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z)
+	end
 end
 
 local update_sign = function(pos, fields, sender)
