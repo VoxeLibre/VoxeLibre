@@ -237,7 +237,7 @@ local show_formspec = function(player, pos)
 	minetest.show_formspec(
 		player:get_player_name(),
 		"mcl_signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z,
-		"size[6,3]textarea[0.25,0.25;6,1.5;text;"..F(S("Edit sign text:"))..";]label[0,1.5;"..F(S("Maximum line length: 15")).."\n"..F(S("Maximum lines: 4")).."]button_exit[0,2.5;6,1;submit;"..F(S("Done")).."]"
+		"size[6,3]textarea[0.25,0.25;6,1.5;text;"..F(S("Enter sign text:"))..";]label[0,1.5;"..F(S("Maximum line length: 15")).."\n"..F(S("Maximum lines: 4")).."]button_exit[0,2.5;6,1;submit;"..F(S("Done")).."]"
 	)
 end
 
