@@ -56,8 +56,7 @@ local string_to_line_array = function(str)
 			current = current + 1
 			tab[current] = ""
 			linechar = 1
-		-- This check cuts off overlong lines
-		elseif linechar <= LINE_LENGTH then
+		else
 			tab[current] = tab[current]..char
 			linechar = linechar + 1
 		end
@@ -84,7 +83,7 @@ local generate_line = function(s, ypos)
 	local width = 0
 	local chars = 0
 	local printed_char_width = CHAR_WIDTH + 1
-	while chars <= LINE_LENGTH and i <= #s do
+	while chars < LINE_LENGTH and i <= #s do
 		local file = nil
 		-- Get and render character
 		if charmap[s:sub(i, i)] ~= nil then
