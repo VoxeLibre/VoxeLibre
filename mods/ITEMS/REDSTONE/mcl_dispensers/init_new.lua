@@ -365,7 +365,8 @@ minetest.register_lbm({
 	name = "mcl_dispensers:update_formspecs_0_51_0",
 	nodenames = { "mcl_dispensers:dispenser", "mcl_dispensers:dispenser_down", "mcl_dispensers:dispenser_up" },
 	action = function(pos, node)
-		setup_dispenser(pos)
+		minetest.registered_nodes[node.name].on_construct(pos)
 		minetest.log("action", "[mcl_dispenser] Node formspec updated at "..minetest.pos_to_string(pos))
 	end,
 })
+

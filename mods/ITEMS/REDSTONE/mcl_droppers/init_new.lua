@@ -212,7 +212,8 @@ minetest.register_lbm({
 	name = "mcl_droppers:update_formspecs_0_51_0",
 	nodenames = { "mcl_droppers:dropper", "mcl_droppers:dropper_down", "mcl_droppers:dropper_up" },
 	action = function(pos, node)
-		setup_dropper(pos)
+		minetest.registered_nodes[node.name].on_construct(pos)
 		minetest.log("action", "[mcl_droppers] Node formspec updated at "..minetest.pos_to_string(pos))
 	end,
 })
+
