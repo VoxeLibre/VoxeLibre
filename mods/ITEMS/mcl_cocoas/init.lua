@@ -72,9 +72,9 @@ end
 
 --[[ TODO: Use a mesh for cocoas for perfect texture compability. ]]
 local crop_def = {
-	description = S("Premature Cocoa"),
+	description = S("Premature Cocoa Pod"),
 	_doc_items_create_entry = true,
-	_doc_items_longdesc = S("Cocoas are plants which grow on the side of jungle trees in 3 stages."),
+	_doc_items_longdesc = S("Cocoa pods grow on the side of jungle trees in 3 stages."),
 	drawtype = "nodebox",
 	tiles = {
 		"[combine:16x16:6,1=mcl_cocoas_cocoa_stage_0.png", "[combine:16x16:6,11=mcl_cocoas_cocoa_stage_0.png",
@@ -117,7 +117,7 @@ local crop_def = {
 -- 2nd stage
 minetest.register_node("mcl_cocoas:cocoa_1", table.copy(crop_def))
 
-crop_def.description = S("Medium Cocoa")
+crop_def.description = S("Medium Cocoa Pod")
 crop_def._doc_items_create_entry = false
 crop_def.groups.cocoa = 2
 crop_def.tiles = {
@@ -148,8 +148,8 @@ crop_def.selection_box = {
 minetest.register_node("mcl_cocoas:cocoa_2", table.copy(crop_def))
 
 -- Final stage
-crop_def.description = S("Mature Cocoa")
-crop_def._doc_items_longdesc = S("A mature cocoa is a plant which grew on a jungle tree to its full size and it is ready to be harvested for cocoa beans. It won't grow any further.")
+crop_def.description = S("Mature Cocoa Pod")
+crop_def._doc_items_longdesc = S("A mature cocoa pod grew on a jungle tree to its full size and it is ready to be harvested for cocoa beans. It won't grow any further.")
 crop_def._doc_items_create_entry = true
 crop_def.groups.cocoa = 3
 crop_def.tiles = {
@@ -183,7 +183,7 @@ minetest.register_node("mcl_cocoas:cocoa_3", table.copy(crop_def))
 
 
 minetest.register_abm({
-		label = "Cocoa growth",
+		label = "Cocoa pod growth",
 		nodenames = {"mcl_cocoas:cocoa_1", "mcl_cocoas:cocoa_2"},
 		-- Same as potatoes
 		-- TODO: Tweak/balance the growth speed

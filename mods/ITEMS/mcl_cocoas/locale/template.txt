@@ -1,6 +1,6 @@
 # textdomain: mcl_cocoas
-Premature Cocoa=
-Cocoas are plants which grow on the side of jungle trees in 3 stages.=
-Medium Cocoa=
-Mature Cocoa=
-A mature cocoa is a plant which grew on a jungle tree to its full size and it is ready to be harvested for cocoa beans. It won't grow any further.=
+Premature Cocoa Pod=
+Cocoa pods grow on the side of jungle trees in 3 stages.=
+Medium Cocoa Pod=
+Mature Cocoa Pod=
+A mature cocoa pod grew on a jungle tree to its full size and it is ready to be harvested for cocoa beans. It won't grow any further.=
