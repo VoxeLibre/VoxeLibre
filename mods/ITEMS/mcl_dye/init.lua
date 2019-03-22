@@ -82,6 +82,8 @@ dyelocal.dyes = {
 	{"pink", "dye_pink",                S("Pink Dye"),      {dye=1, craftitem=1, basecolor_red=1,     excolor_red=1,       unicolor_light_red=1}},
 }
 
+local mg_name = minetest.get_mapgen_setting("mg_name")
+
 dyelocal.unicolor_to_dye_id = {}
 for d=1, #dyelocal.dyes do
 	for k, _ in pairs(dyelocal.dyes[d][4]) do
@@ -125,10 +127,8 @@ end
 -- Bone Meal
 
 mcl_dye.apply_bone_meal = function(pointed_thing)
-	-- TODO: Only spawn flowers specific to the biome
-
 	-- Bone meal currently spawns all flowers found in the plains.
-	local flowers_table = {
+	local flowers_table_plains = {
 		"mcl_flowers:dandelion",
 		"mcl_flowers:dandelion",
 		"mcl_flowers:poppy",
@@ -139,14 +139,24 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 		"mcl_flowers:tulip_white",
 		"mcl_flowers:tulip_pink",
 		"mcl_flowers:azure_bluet",
-
-		-- Allium and blue orchid intentionally left out,
-		-- those must be found by the player.
 	}
-	-- Special case for dry lands
-	local flowers_table_dry = {
+	local flowers_table_simple = {
 		"mcl_flowers:dandelion",
 		"mcl_flowers:poppy",
+	}
+	local flowers_table_swampland = {
+		"mcl_flowers:blue_orchid",
+	}
+	local flowers_table_flower_forest = {
+		"mcl_flowers:dandelion",
+		"mcl_flowers:poppy",
+		"mcl_flowers:oxeye_daisy",
+		"mcl_flowers:tulip_orange",
+		"mcl_flowers:tulip_red",
+		"mcl_flowers:tulip_white",
+		"mcl_flowers:tulip_pink",
+		"mcl_flowers:azure_bluet",
+		"mcl_flowers:allium",
 	}
 
 	local pos = pointed_thing.under
@@ -248,11 +258,22 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 							local col = minetest.registered_nodes[n2.name]._mcl_grass_palette_index
 							minetest.add_node(pos, {name="mcl_flowers:tallgrass", param2=col})
 						else
-							if n2.name == "mcl_core:dirt_with_dry_grass" then
-								minetest.add_node(pos, {name=flowers_table_dry[math.random(1, #flowers_table_dry)]})
+							local flowers_table
+							if mg_name == "v6" then
+								flowers_table = flowers_table_plains
 							else
-								minetest.add_node(pos, {name=flowers_table[math.random(1, #flowers_table)]})
+								local biome = minetest.get_biome_name(minetest.get_biome_data(pos).biome)
+								if biome == "Swampland" or biome == "Swampland_shore" or biome == "Swampland_ocean" or biome == "Swampland_deep_ocean" or biome == "Swampland_underground" then
+									flowers_table = flowers_table_swampland
+								elseif biome == "FlowerForest" or biome == "FlowerForest_beach" or biome == "FlowerForest_ocean" or biome == "FlowerForest_deep_ocean" or biome == "FlowerForest_underground" then
+									flowers_table = flowers_table_flower_forest
+								elseif biome == "Plains" or biome == "Plains_beach" or biome == "Plains_ocean" or biome == "Plains_deep_ocean" or biome == "Plains_underground" or biome == "SunflowerPlains" or biome == "SunflowerPlains_ocean" or biome == "SunflowerPlains_deep_ocean" or biome == "SunflowerPlains_underground" then
+									flowers_table = flowers_table_plains
+								else
+									flowers_table = flowers_table_simple
+								end
 							end
+							minetest.add_node(pos, {name=flowers_table[math.random(1, #flowers_table)]})
 						end
 					end
 				end
