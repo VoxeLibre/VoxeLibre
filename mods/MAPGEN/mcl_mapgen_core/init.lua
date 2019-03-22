@@ -1392,7 +1392,7 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 	-- Pass 1: Generate cocoas at jungle trees
 	for n = 1, #jungletree do
 
-		pos = jungletree[n]
+		pos = table.copy(jungletree[n])
 		treepos = table.copy(pos)
 
 		if minetest.find_node_near(pos, 1, {"mcl_core:jungleleaves"}) then
