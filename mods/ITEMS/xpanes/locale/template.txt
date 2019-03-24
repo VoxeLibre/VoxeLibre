@@ -3,6 +3,7 @@ Glass panes are thin layers of glass which neatly connect to their neighbors as 
 Iron Bars=
 Iron bars neatly connect to their neighbors as you build them.=
 Glass Pane=
+Stained Glass Pane=
 Red Stained Glass Pane=
 Green Stained Glass Pane=
 Blue Stained Glass Pane=
