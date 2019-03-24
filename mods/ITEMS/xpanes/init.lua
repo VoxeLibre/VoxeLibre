@@ -1,4 +1,5 @@
 local S = minetest.get_translator("xpanes")
+local mod_doc = minetest.get_modpath("doc")
 
 local function is_pane(pos)
 	return minetest.get_item_group(minetest.get_node(pos).name, "pane") > 0
@@ -162,24 +163,35 @@ function xpanes.register_pane(name, def)
 		recipe = def.recipe
 	})
 
-	if minetest.get_modpath("doc") then
+	if mod_doc and def._doc_items_create_entry ~= false then
 		doc.add_entry_alias("nodes", "xpanes:" .. name .. "_flat", "nodes", "xpanes:" .. name)
 	end
 end
 
+local canonical_color = "blue"
 -- Register glass pane (stained and unstained)
 local pane = function(description, node, append)
-	local texture1
-
+	local texture1, longdesc, entry_name, create_entry
+	longdesc = S("Glass panes are thin layers of glass which neatly connect to their neighbors as you build them.")
+	local is_canonical = true
 	-- Special case: Default (unstained) glass texture
 	if append == "_natural" then
 		texture1 = "default_glass.png"
 	else
+		if append ~= "_"..canonical_color then
+			is_canonical = false
+			longdesc = nil
+			create_entry = false
+		else
+			entry_name = S("Stained Glass Pane")
+		end
 		texture1 = "mcl_core_glass"..append..".png"
 	end
 	xpanes.register_pane("pane"..append, {
 		description = description,
-		_doc_items_longdesc = S("Glass panes are thin layers of glass which neatly connect to their neighbors as you build them."),
+		_doc_items_create_entry = create_entry,
+		_doc_items_entry_name = entry_name,
+		_doc_items_longdesc = longdesc,
 		textures = {texture1, texture1, "xpanes_top_glass"..append..".png"},
 		use_texture_alpha = true,
 		inventory_image = texture1,
@@ -194,6 +206,11 @@ local pane = function(description, node, append)
 		_mcl_blast_resistance = 1.5,
 		_mcl_hardness = 0.3,
 	})
+
+	if mod_doc and not is_canonical then
+		doc.add_entry_alias("nodes", "xpanes:pane_".. canonical_color .. "_flat", "nodes", "xpanes:pane"..append)
+		doc.add_entry_alias("nodes", "xpanes:pane_".. canonical_color .. "_flat", "nodes", "xpanes:pane"..append.."_flat")
+	end
 end
 
 -- Iron Bars
