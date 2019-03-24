@@ -1,4 +1,5 @@
 local S = minetest.get_translator("mcl_chests")
+local mod_doc = minetest.get_modpath("doc")
 
 local no_rotate, simple_rotate
 if minetest.get_modpath("screwdriver") then
@@ -477,7 +478,7 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 	on_rotate = no_rotate,
 })
 
-if minetest.get_modpath("doc") then
+if mod_doc then
 	doc.add_entry_alias("nodes", "mcl_chests:"..basename, "nodes", "mcl_chests:"..basename.."_left")
 	doc.add_entry_alias("nodes", "mcl_chests:"..basename, "nodes", "mcl_chests:"..basename.."_right")
 end
@@ -737,13 +738,28 @@ local shulker_mob_textures = {
 	dark_grey = "mobs_mc_shulker_gray.png",
 	black = "mobs_mc_shulker_black.png",
 }
+local canonical_shulker_color = "violet"
 
 for color, desc in pairs(boxtypes) do
 	local mob_texture = shulker_mob_textures[color]
+	local is_canonical = color == canonical_shulker_color
+	local longdesc, usagehelp, create_entry, entry_name
+	if mod_doc then
+		if is_canonical then
+			longdesc = S("A shulker box is a portable container which provides 27 inventory slots for any item except shulker boxes. Shulker boxes keep their inventory when broken, so shulker boxes as well as their contents can be taken as a single item. Shulker boxes come in many different colors.")
+			usagehelp = S("To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out.")
+			entry_name = S("Shulker Box")
+		else
+			create_entry = false
+		end
+	end
+
 	minetest.register_node("mcl_chests:"..color.."_shulker_box", {
 		description = desc,
-		_doc_items_longdesc = S("A shulker box is a portable container which provides 27 inventory slots for any item except shulker boxes. Shulker boxes keep their inventory when broken, so shulker boxes as well as their contents can be taken as a single item. Shulker boxes come in many different colors."),
-		_doc_items_usagehelp = S("To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out."),
+		_doc_items_create_entry = create_entry,
+		_doc_items_entry_name = entry_name,
+		_doc_items_longdesc = longdesc,
+		_doc_items_usagehelp = usagehelp,
 		tiles = {
 			"mcl_chests_"..color.."_shulker_box_top.png", -- top
 			"[combine:16x16:-32,-28="..mob_texture, -- bottom
@@ -846,6 +862,10 @@ for color, desc in pairs(boxtypes) do
 		_mcl_blast_resistance = 30,
 		_mcl_hardness = 6,
 	})
+
+	if mod_doc and not is_canonical then
+		doc.add_entry_alias("nodes", "mcl_chests:"..canonical_shulker_color.."_shulker_box", "nodes", "mcl_chests:"..color.."_shulker_box")
+	end
 
 	minetest.register_craft({
 		type = "shapeless",
