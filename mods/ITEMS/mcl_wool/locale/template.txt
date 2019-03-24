@@ -1,4 +1,6 @@
 # textdomain: mcl_wool
+Wool=
+Carpet=
 White Wool=
 White Carpet=
 Grey Wool=

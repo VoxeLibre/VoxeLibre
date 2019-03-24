@@ -1,4 +1,5 @@
 local S = minetest.get_translator("mcl_wool")
+local mod_doc = minetest.get_modpath("doc")
 
 -- minetest/wool/init.lua
 
@@ -29,6 +30,7 @@ wool.dyes = {
 	{"lime",       "mcl_wool_lime",       S("Lime Wool"),       S("Lime Carpet"),       "green",      "basecolor_green"},
 	{"light_blue", "mcl_wool_light_blue", S("Light Blue Wool"), S("Light Blue Carpet"), "lightblue",  "unicolor_light_blue"},
 }
+local canonical_color = "white"
 
 for _, row in ipairs(wool.dyes) do
 	local name = row[1]
@@ -37,10 +39,24 @@ for _, row in ipairs(wool.dyes) do
 	local desc_carpet = row[4]
 	local dye = row[5]
 	local color_group = row[6]
+	local longdesc_wool, longdesc_carpet, create_entry, name_wool, name_carpet
+	local is_canonical = name == canonical_color
+	if mod_doc then
+		if is_canonical then
+			longdesc_wool = S("Wool is a decorative block which comes in many different colors.")
+			longdesc_carpet = S("Carpets are thin floor covers which come in many different colors.")
+			name_wool = S("Wool")
+			name_carpet = S("Carpet")
+		else
+			create_entry = false
+		end
+	end
 	-- Node Definition
 		minetest.register_node("mcl_wool:"..name, {
 			description = desc_wool,
-			_doc_items_longdesc = S("Wool is a decorative block which comes in many different colors."),
+			_doc_items_create_entry = create_entry,
+			_doc_items_entry_name = name_wool,
+			_doc_items_longdesc = longdesc_wool,
 			stack_max = 64,
 			is_ground_content = false,
 			tiles = {texture..".png"},
@@ -51,7 +67,10 @@ for _, row in ipairs(wool.dyes) do
 		})
 		minetest.register_node("mcl_wool:"..name.."_carpet", {
 			description = desc_carpet,
-			_doc_items_longdesc = S("Carpets are thin floor covers which come in many different colors."),
+			_doc_items_create_entry = create_entry,
+			_doc_items_entry_name = name_carpet,
+			_doc_items_longdesc = longdesc_carpet,
+
 			walkable = false, -- See <https://minecraft.gamepedia.com/Materials>
 			is_ground_content = false,
 			tiles = {texture..".png"},
@@ -72,6 +91,10 @@ for _, row in ipairs(wool.dyes) do
 			_mcl_hardness = 0.1,
 			_mcl_blast_resistance = 0.5,
 		})
+	if mod_doc and not is_canonical then
+		doc.add_entry_alias("nodes", "mcl_wool:"..canonical_color, "nodes", "mcl_wool:"..name)
+		doc.add_entry_alias("nodes", "mcl_wool:"..canonical_color.."_carpet", "nodes", "mcl_wool:"..name.."_carpet")
+	end
 	if dye then
 	-- Crafting from dye and white wool
 		minetest.register_craft({
