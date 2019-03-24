@@ -66,6 +66,8 @@ function mcl_beds.register_bed(name, def)
 		description = def.description,
 		_doc_items_longdesc = def._doc_items_longdesc or beddesc,
 		_doc_items_usagehelp = def._doc_items_usagehelp or beduse,
+		_doc_items_create_entry = def._doc_items_create_entry,
+		_doc_items_entry_name = def._doc_items_entry_name,
 		inventory_image = def.inventory_image,
 		wield_image = def.wield_image,
 		drawtype = "nodebox",

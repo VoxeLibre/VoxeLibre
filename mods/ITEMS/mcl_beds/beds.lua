@@ -1,4 +1,5 @@
 local S = minetest.get_translator("mcl_beds")
+local mod_doc = minetest.get_modpath("doc")
 
 local nodebox = {
 	bottom = {
@@ -32,9 +33,11 @@ local colors = {
 	{ "light_blue", S("Light Blue Bed"), "mcl_wool:light_blue", "mcl_dye:lightblue" },
 	{ "white", S("White Bed"), "mcl_wool:white", "mcl_dye:white" },
 }
+local canonical_color = "red"
 
 for c=1, #colors do
 	local colorid = colors[c][1]
+	local is_canonical = colorid == canonical_color
 
 	-- Recoloring recipe for white bed
 	if minetest.get_modpath("mcl_dye") then
@@ -54,9 +57,19 @@ for c=1, #colors do
 		}
 	end
 
+	local entry_name, create_entry
+	if mod_doc then
+		if is_canonical then
+			entry_name = S("Bed")
+		else
+			create_entry = false
+		end
+	end
 	-- Register bed
 	mcl_beds.register_bed("mcl_beds:bed_"..colorid, {
 		description = colors[c][2],
+		_doc_items_entry_name = entry_name,
+		_doc_items_create_entry = create_entry,
 		inventory_image = "mcl_beds_bed_"..colorid..".png",
 		wield_image = "mcl_beds_bed_"..colorid..".png",
 		tiles = {
@@ -89,6 +102,10 @@ for c=1, #colors do
 		},
 		recipe = main_recipe,
 	})
+	if mod_doc and not is_canonical then
+		doc.add_entry_alias("nodes", "mcl_beds:bed_"..canonical_color.."_bottom", "nodes", "mcl_beds:bed_"..colorid.."_bottom")
+		doc.add_entry_alias("nodes", "mcl_beds:bed_"..canonical_color.."_bottom", "nodes", "mcl_beds:bed_"..colorid.."_top")
+	end
 
 end
 
