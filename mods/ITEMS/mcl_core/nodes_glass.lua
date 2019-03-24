@@ -21,7 +21,7 @@ minetest.register_node("mcl_core:glass", {
 ------------------------
 -- Create Color Glass -- 
 ------------------------
-local canonical_color = "blue"
+local canonical_color = "yellow"
 function mcl_core.add_stained_glass(desc, recipeitem, colorgroup, color)
 
 	local longdesc, create_entry, entry_name

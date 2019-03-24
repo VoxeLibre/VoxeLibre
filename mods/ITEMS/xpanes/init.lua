@@ -168,7 +168,7 @@ function xpanes.register_pane(name, def)
 	end
 end
 
-local canonical_color = "blue"
+local canonical_color = "yellow"
 -- Register glass pane (stained and unstained)
 local pane = function(description, node, append)
 	local texture1, longdesc, entry_name, create_entry
