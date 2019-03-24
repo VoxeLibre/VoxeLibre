@@ -56,7 +56,6 @@ Charcoal is an alternative furnace fuel created by cooking wood in a furnace. It
 Chiseled Stone Bricks=
 Chiseled Red Sandstone=
 Chiseled Sandstone=
-Chiseled Stone Bricks=
 Chiseled red sandstone is a decorative building block.=
 Chiseled sandstone is a decorative building block.=
 Clay=
@@ -237,3 +236,10 @@ When you hold a barrier in hand, you reveal all placed barriers in a short dista
 White Stained Glass=
 Yellow Stained Glass=
 “Coal” refers to coal lumps obtained by digging coal ore which can be found underground. Coal is your standard furnace fuel, but it can also be used to make torches, coal blocks and a few other things.=
+Water interacts with lava in various ways:=
+• When water is directly above or horizontally next to a lava source, the lava turns into obsidian.=
+• When flowing water touches flowing lava either from above or horizontally, the lava turns into cobblestone.=
+• When water is directly below lava, the water turns into stone.=
+Lava interacts with water various ways:=
+• When a lava source is directly below or horizontally next to water, the lava turns into obsidian.=
+• When lava is directly above water, the water turns into stone.=

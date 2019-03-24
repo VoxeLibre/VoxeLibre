@@ -56,7 +56,6 @@ Charcoal is an alternative furnace fuel created by cooking wood in a furnace. It
 Chiseled Stone Bricks=Gemeißelte Steinziegel
 Chiseled Red Sandstone=Gemeißelter roter Sandstein
 Chiseled Sandstone=Gemeißelter Sandstein
-Chiseled Stone Bricks=Gemeißelte Steinziegel
 Chiseled red sandstone is a decorative building block.=Gemeißelter roter Sandstein ist ein dekorativer Block zum Bauen.
 Chiseled sandstone is a decorative building block.=Gemeißelter Sandstein ist ein dekorativer Block zum Bauen.
 Clay=Ton
@@ -238,3 +237,10 @@ When you hold a barrier in hand, you reveal all placed barriers in a short dista
 White Stained Glass=Weißes Buntglas
 Yellow Stained Glass=Gelbes Buntglas
 “Coal” refers to coal lumps obtained by digging coal ore which can be found underground. Coal is your standard furnace fuel, but it can also be used to make torches, coal blocks and a few other things.=„Kohle“ meint Kohleklumpen, die herausfallen, wenn Kohleerz gegraben wird, was im Untergrund gefunden werden kann. Kohle ist der klassische Brennstoff für den Ofen, aber er kann auch benutzt werden, um Fackeln, Kohleblöcke und einige andere Dinge herzustellen.
+Water interacts with lava in various ways:=Wasser reagiert mit Lava auf unterschiedliche Arten:
+• When water is directly above or horizontally next to a lava source, the lava turns into obsidian.=• Wenn sich Wasser direkt über oder horizontal neben einer Wasserquelle befindet, verwandelt sich die Lava zu Obsidian.
+• When flowing water touches flowing lava either from above or horizontally, the lava turns into cobblestone.=• Wenn fließendes Wasser fließende Lava von oben oder horizontal berührt, verwandelt sich die Lava zu Kopfsteinpflaster.
+• When water is directly below lava, the water turns into stone.=• Wenn sich Wasser direkt unter Lava befindet, verwandelt sich das Wasser zu Stein.
+Lava interacts with water various ways:=Lava reagiert mit Wasser auf verschiedene Arten:
+• When a lava source is directly below or horizontally next to water, the lava turns into obsidian.=• Wenn sich eine Lavaquelle direkt unter oder horizontal neben Wasser befindet, verwandelt sich die Lava zu Obsidian.
+• When lava is directly above water, the water turns into stone.=• Wenn sich Lava direkt über Wasser befindet, verwandelt sich das Wasser zu Stein.
