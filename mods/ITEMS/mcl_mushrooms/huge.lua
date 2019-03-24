@@ -69,7 +69,7 @@ local register_mushroom = function(color, species_id, template, d_cap, d_stem, d
 			-- All-faces cap. This block is exposed to the player
 			block.description = d_cap
 			block._doc_items_longdesc = longdesc_cap
-			block._doc_items_uagehelp = "By placing huge mushroom blocks of the same species next to each other, the sides that touch each other will turn into pores permanently."
+			block._doc_items_usagehelp = S("By placing huge mushroom blocks of the same species next to each other, the sides that touch each other will turn into pores permanently.")
 			block.tiles = { "mcl_mushrooms_mushroom_block_skin_"..color..".png" }
 
 			block.on_construct = function(pos)
