@@ -1,4 +1,5 @@
 local S = minetest.get_translator("mclx_stairs")
+local doc_mod = minetest.get_modpath("doc")
 
 mcl_stairs.register_stair_and_slab_simple("tree_bark", "mcl_core:tree_bark", S("Oak Bark Stairs"), S("Oak Bark Slab"), S("Double Oak Bark Slab"), "woodlike")
 mcl_stairs.register_stair_and_slab_simple("acaciatree_bark", "mcl_core:acaciatree_bark", S("Acacia Bark Stairs"), S("Acacia Bark Slab"), S("Double Acacia Bark Slab"), "woodlike")
@@ -47,12 +48,29 @@ block.dyes = {
 	{"lime",       S("Lime Concrete Stairs"),       S("Lime Concrete Slab"), S("Double Lime Concrete Slab"), "green"},
 	{"light_blue", S("Light Blue Concrete Stairs"), S("Light Blue Concrete Slab"), S("Double Light Blue Concrete Slab"), "lightblue"},
 }
+local canonical_color = "yellow"
 
 for i=1, #block.dyes do
 	local c = block.dyes[i][1]
+	local is_canonical = c == canonical_color
 	mcl_stairs.register_stair_and_slab_simple("concrete_"..c, "mcl_colorblocks:concrete_"..c,
 		block.dyes[i][2],
 		block.dyes[i][3],
 		block.dyes[i][4])
+
+	if doc_mod then
+		if not is_canonical then
+			doc.add_entry_alias("nodes", "mcl_stairs:slab_concrete_"..canonical_color, "nodes", "mcl_stairs:slab_concrete_"..c)
+			doc.add_entry_alias("nodes", "mcl_stairs:slab_concrete_"..canonical_color.."_double", "nodes", "mcl_stairs:slab_concrete_"..c.."_double")
+			doc.add_entry_alias("nodes", "mcl_stairs:stair_concrete_"..canonical_color, "nodes", "mcl_stairs:stair_concrete_"..c)
+			minetest.override_item("mcl_stairs:slab_concrete_"..c, { _doc_items_create_entry = false })
+			minetest.override_item("mcl_stairs:slab_concrete_"..c.."_double", { _doc_items_create_entry = false })
+			minetest.override_item("mcl_stairs:stair_concrete_"..c, { _doc_items_create_entry = false })
+		else
+			minetest.override_item("mcl_stairs:slab_concrete_"..c, { _doc_items_entry_name = S("Concrete Slab") })
+			minetest.override_item("mcl_stairs:slab_concrete_"..c.."_double", { _doc_items_entry_name = S("Double Concrete Slab") })
+			minetest.override_item("mcl_stairs:stair_concrete_"..c, { _doc_items_entry_name = S("Concrete Stairs") })
+		end
+	end
 end
 

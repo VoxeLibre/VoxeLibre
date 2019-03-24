@@ -5,3 +5,4 @@ mcl_nether
 mcl_end
 mcl_colorblocks
 mcl_stairs
+doc?

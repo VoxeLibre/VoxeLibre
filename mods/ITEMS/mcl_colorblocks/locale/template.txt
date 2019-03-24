@@ -69,3 +69,7 @@ Concrete powder is used for creating concrete, but it can also be used as decora
 Concrete is a decorative block which comes in many different colors. It is notable for having a very strong and clean color.=
 Terracotta=
 Terracotta is a basic building material which comes in many different colors. This particular block is uncolored.=
+Colored Terracotta=
+Glazed Terracotta=
+Concrete Powder=
+Concrete=

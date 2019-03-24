@@ -77,3 +77,6 @@ Double Lime Concrete Slab=
 Light Blue Concrete Stairs=
 Light Blue Concrete Slab=
 Double Light Blue Concrete Slab=
+Concrete Slab=
+Double Concrete Slab=
+Concrete Stairs=
