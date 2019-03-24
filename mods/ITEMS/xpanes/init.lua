@@ -172,17 +172,17 @@ local canonical_color = "blue"
 -- Register glass pane (stained and unstained)
 local pane = function(description, node, append)
 	local texture1, longdesc, entry_name, create_entry
-	longdesc = S("Glass panes are thin layers of glass which neatly connect to their neighbors as you build them.")
 	local is_canonical = true
 	-- Special case: Default (unstained) glass texture
 	if append == "_natural" then
 		texture1 = "default_glass.png"
+		longdesc = S("Glass panes are thin layers of glass which neatly connect to their neighbors as you build them.")
 	else
 		if append ~= "_"..canonical_color then
 			is_canonical = false
-			longdesc = nil
 			create_entry = false
 		else
+			longdesc = S("Stained glass panes are thin layers of stained glass which neatly connect to their neighbors as you build them. They come in many different colors.")
 			entry_name = S("Stained Glass Pane")
 		end
 		texture1 = "mcl_core_glass"..append..".png"
