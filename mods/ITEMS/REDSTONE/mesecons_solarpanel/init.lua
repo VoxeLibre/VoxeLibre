@@ -59,8 +59,9 @@ minetest.register_node("mesecons_solarpanel:solar_panel_off", {
 	},
 	groups = {handy=1,axey=1, material_wood=1},
 	description=S("Daylight Sensor"),
-	_doc_items_longdesc = S("Daylight sensors are redstone components which provide redstone power when they are in sunlight and no power otherwise. They can also be inverted."),
-	_doc_items_usagehelp = S("Use the daylight sensor to turn it into an inverted daylight sensor, which supplies redstone energy when it is in moonlight."),
+	_doc_items_longdesc = S("Daylight sensors are redstone components which provide redstone power when they are in sunlight and no power otherwise. They can also be inverted.").."\n"..
+		S("In inverted state, they provide redstone power when they are not in sunlight and no power otherwise."),
+	_doc_items_usagehelp = S("Use the daylight sensor to toggle its state."),
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.off,
@@ -177,8 +178,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_inverted_off", {
 	drop = "mesecons_solarpanel:solar_panel_off",
 	groups = {handy=1,axey=1, not_in_creative_inventory=1, material_wood=1},
 	description=S("Inverted Daylight Sensor"),
-	_doc_items_longdesc = S("An inverted daylight sensor is a variant of the daylight sensor. It is a redstone component which provides redstone power when it in moonlight and no power otherwise. It can turned back into an ordinary daylight sensor."),
-	_doc_items_usagehelp = S("Use the inverted daylight sensor to turn it into a daylight sensor."),
+	_doc_items_create_entry = false,
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.off,
@@ -235,5 +235,7 @@ minetest.register_craft({
 
 if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mesecons_solarpanel:solar_panel_off", "nodes", "mesecons_solarpanel:solar_panel_on")
-	doc.add_entry_alias("nodes", "mesecons_solarpanel:solar_panel_inverted_off", "nodes", "mesecons_solarpanel:solar_panel_inverted_on")
+	doc.add_entry_alias("nodes", "mesecons_solarpanel:solar_panel_off", "nodes", "mesecons_solarpanel:solar_panel_inverted_off")
+	doc.add_entry_alias("nodes", "mesecons_solarpanel:solar_panel_off", "nodes", "mesecons_solarpanel:solar_panel_inverted_off")
+	doc.add_entry_alias("nodes", "mesecons_solarpanel:solar_panel_off", "nodes", "mesecons_solarpanel:solar_panel_inverted_on")
 end

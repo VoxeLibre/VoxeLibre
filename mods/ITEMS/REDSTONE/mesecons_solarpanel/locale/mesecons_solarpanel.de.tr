@@ -1,7 +1,6 @@
 # textdomain: mesecons_solarpanel
 Daylight Sensor=Tageslichtsensor
-Daylight sensors are redstone components which provide redstone power when they are in sunlight and no power otherwise. They can also be inverted.=Tageslichtsensoren sind Redstonekomponenten, die Redstoneenergie liefern, wenn sie im Sonnenlicht stehen, sonst nicht.
-Use the daylight sensor to turn it into an inverted daylight sensor, which supplies redstone energy when it is in moonlight.=Benutzen Sie den Tageslichtsensor, um ihn zu einen invertierten Tageslichtsensor umzuwandeln, der Redstoneenergie liefert, wenn er sich im Mondlicht befindet.
+Daylight sensors are redstone components which provide redstone power when they are in sunlight and no power otherwise. They can also be inverted.=Tageslichtsensoren sind Redstonekomponenten, die Redstoneenergie liefern, wenn sie im Sonnenlicht stehen, sonst nicht. Sie können auch invertiert werden.
 Inverted Daylight Sensor=Invertierter Tageslichtsensor
-An inverted daylight sensor is a variant of the daylight sensor. It is a redstone component which provides redstone power when it in moonlight and no power otherwise. It can turned back into an ordinary daylight sensor.=Ein invertierter Tageslichtsensor ist eine Variante des Tageslichtsensors. Er ist eine Redstonekomponente, die Redstoneenergie liefert, wenn er sich im Mondlicht befindet, sonst nicht. Er kann zurück zu einem gewöhnlichen Tageslichtsensor umgewandelt werden.
-Use the inverted daylight sensor to turn it into a daylight sensor.=Benutzen Sie den Tageslichtsensor, um ihn zu einem Tageslichtsensor umzuwandeln.
+Use the daylight sensor to toggle its state.=Benutzen Sie den Tageslichtsensor, um seinen Zustand umzuschalten.
+In inverted state, they provide redstone power when they are not in sunlight and no power otherwise.=Im invertierten Zustand erzeugen sie Redstoneenergie, wenn sie sich nicht im Tageslicht befinden, ansonsten nicht.
