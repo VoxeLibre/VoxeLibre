@@ -639,6 +639,23 @@ end
 
 local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_setting("seed"))
 
+-- Return appropriate grass block node for pos. Dry grass for dry/hot biomes, normal grass otherwise.
+function mcl_core.get_grass_block_type(pos)
+	local biome_data = minetest.get_biome_data(pos)
+	local dry = false
+	if biome_data then
+		local biome = biome_data.biome
+		local biome_name = minetest.get_biome_name(biome)
+		local biome_type = minetest.registered_biomes[biome_name]._mcl_biome_type
+		dry = biome_type == "hot"
+	end
+	if dry then
+		return {name="mcl_core:dirt_with_dry_grass"}
+	else
+		return {name="mcl_core:dirt_with_grass"}
+	end
+end
+
 ------------------------------
 -- Spread grass blocks and mycelium on neighbor dirt
 ------------------------------
@@ -681,6 +698,9 @@ minetest.register_abm({
 		if light_self >= 4 and light_source >= 9 then
 			-- All checks passed! Let's spread the grass/mycelium!
 			local n2 = minetest.get_node(p2)
+			if minetest.get_item_group(n2.name, "grass_block") ~= 0 then
+				n2 = mcl_core.get_grass_block_type(pos)
+			end
 			minetest.set_node(pos, {name=n2.name})
 
 			-- If this was mycelium, uproot plant above
