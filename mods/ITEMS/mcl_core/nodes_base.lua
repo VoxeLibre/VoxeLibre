@@ -237,7 +237,7 @@ minetest.register_node("mcl_core:stone_smooth", {
 
 minetest.register_node("mcl_core:granite", {
 	description = S("Granite"),
-	_doc_items_longdesc = "Granite is an igneous rock.",
+	_doc_items_longdesc = S("Granite is an igneous rock."),
 	tiles = {"mcl_core_granite.png"},
 	is_ground_content = true,
 	stack_max = 64,
