@@ -22,7 +22,7 @@ Command blocks support placeholders, insert one of these placeholders and they w
 • “@@r”: random player currently in the world=
 • “@@@@”: literal “@@” sign=
 Example 1:@n    time 12000@nSets the game clock to 12:00=
-Example 2:@n    give @@n mcl_core:apple 5@n→ Gives the nearest player 5 apples=
+Example 2:@n    give @@n mcl_core:apple 5@nGives the nearest player 5 apples=
 Access denied. You need the “maphack” privilege to edit command blocks.=
 Editing the command block has failed! You can only change the command block in Creative Mode!=
 Editing the command block has failed! The command block is gone.=

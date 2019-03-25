@@ -225,7 +225,7 @@ S("• “@@@@”: literal “@@” sign").."\n\n"..
 
 S("Example 1:\n    time 12000\nSets the game clock to 12:00").."\n\n"..
 
-S("Example 2:\n    give @@n mcl_core:apple 5\n→ Gives the nearest player 5 apples"),
+S("Example 2:\n    give @@n mcl_core:apple 5\nGives the nearest player 5 apples"),
 
 	tiles = {{name="jeija_commandblock_off.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=2}}},
 	groups = {creative_breakable=1, mesecon_effector_off=1},
