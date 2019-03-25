@@ -646,8 +646,11 @@ function mcl_core.get_grass_block_type(pos)
 	if biome_data then
 		local biome = biome_data.biome
 		local biome_name = minetest.get_biome_name(biome)
-		local biome_type = minetest.registered_biomes[biome_name]._mcl_biome_type
-		dry = biome_type == "hot"
+		local reg_biome = minetest.registered_biomes[biome_name]
+		if reg_biome then
+			biome_type = reg_biome._mcl_biome_type
+			dry = biome_type == "hot"
+		end
 	end
 	if dry then
 		return {name="mcl_core:dirt_with_dry_grass"}
