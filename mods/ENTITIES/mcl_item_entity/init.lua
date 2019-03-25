@@ -212,7 +212,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 	-- This means there is no digger. This is a special case which allows this function to be called
 	-- by hand. Creative Mode is intentionally ignored in this case.
 
-	local doTileDrops = minetest.settings:get_bool("mcl_doTileDrops") or true
+	local doTileDrops = minetest.settings:get_bool("mcl_doTileDrops", true)
 	if (digger ~= nil and minetest.settings:get_bool("creative_mode")) or doTileDrops == false then
 		return
 	end
