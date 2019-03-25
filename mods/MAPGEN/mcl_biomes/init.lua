@@ -15,6 +15,10 @@ local deco_id_chorus_plant
 -- Register biomes
 --
 
+--[[ Special biome field: _mcl_biome_type:
+Rough categorization of biomes: One of "snowy", "cold", "medium" and "hot"
+Based off <https://minecraft.gamepedia.com/Biomes> ]]
+
 local function register_classic_superflat_biome()
 	-- Classic Superflat: bedrock (not part of biome), 2 dirt, 1 grass block
 	minetest.register_biome({
@@ -28,6 +32,7 @@ local function register_classic_superflat_biome()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 50,
 		heat_point = 50,
+		_mcl_biome_type = "medium",
 	})
 end
 
@@ -133,6 +138,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 24,
 		heat_point = -5,
+		_mcl_biome_type = "snowy",
 	})
 	minetest.register_biome({
 		name = "IcePlainsSpikes_ocean",
@@ -147,6 +153,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 24,
 		heat_point = -5,
+		_mcl_biome_type = "snowy",
 	})
 
 	-- Cold Taiga
@@ -163,6 +170,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 58,
 		heat_point = 8,
+		_mcl_biome_type = "snowy",
 	})
 
 	-- A cold beach-like biome, implemented as low part of Cold Taiga
@@ -181,6 +189,7 @@ local function register_biomes()
 		y_max = 2,
 		humidity_point = 58,
 		heat_point = 8,
+		_mcl_biome_type = "snowy",
 	})
 	-- Water part of the beach. Added to prevent snow being on the ice.
 	minetest.register_biome({
@@ -197,6 +206,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 58,
 		heat_point = 8,
+		_mcl_biome_type = "snowy",
 	})
 	minetest.register_biome({
 		name = "ColdTaiga_ocean",
@@ -211,6 +221,7 @@ local function register_biomes()
 		humidity_point = 58,
 		heat_point = 8,
 		vertical_blend = 1,
+		_mcl_biome_type = "snowy",
 	})
 
 	-- Mega Taiga
@@ -226,6 +237,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 76,
 		heat_point = 10,
+		_mcl_biome_type = "cold",
 	})
 	minetest.register_biome({
 		name = "MegaTaiga_ocean",
@@ -239,6 +251,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 76,
 		heat_point = 10,
+		_mcl_biome_type = "cold",
 	})
 
 	-- Mega Spruce Taiga
@@ -254,6 +267,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 100,
 		heat_point = 8,
+		_mcl_biome_type = "cold",
 	})
 	minetest.register_biome({
 		name = "MegaSpruceTaiga_ocean",
@@ -267,6 +281,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 100,
 		heat_point = 8,
+		_mcl_biome_type = "cold",
 	})
 
 	-- Extreme Hills
@@ -283,6 +298,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 10,
 		heat_point = 45,
+		_mcl_biome_type = "cold",
 	})
 	minetest.register_biome({
 		name = "ExtremeHills_beach",
@@ -297,6 +313,7 @@ local function register_biomes()
 		y_max = 3,
 		humidity_point = 10,
 		heat_point = 45,
+		_mcl_biome_type = "cold",
 	})
 	minetest.register_biome({
 		name = "ExtremeHills_ocean",
@@ -311,6 +328,7 @@ local function register_biomes()
 		vertical_blend = 1,
 		humidity_point = 10,
 		heat_point = 45,
+		_mcl_biome_type = "cold",
 	})
 
 	-- Extreme Hills M
@@ -327,6 +345,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 0,
 		heat_point = 25,
+		_mcl_biome_type = "cold",
 	})
 	minetest.register_biome({
 		name = "ExtremeHillsM_ocean",
@@ -340,6 +359,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 0,
 		heat_point = 25,
+		_mcl_biome_type = "cold",
 	})
 
 	-- Extreme Hills+
@@ -358,6 +378,7 @@ local function register_biomes()
 		humidity_point = 24,
 		heat_point = 25,
 		vertical_blend = 6,
+		_mcl_biome_type = "cold",
 	})
 	---- Sub-biome for Extreme Hills+ for those snow forests
 	minetest.register_biome({
@@ -374,6 +395,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 24,
 		heat_point = 25,
+		_mcl_biome_type = "cold",
 	})
 	minetest.register_biome({
 		name = "ExtremeHills+_ocean",
@@ -387,6 +409,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 24,
 		heat_point = 25,
+		_mcl_biome_type = "cold",
 	})
 
 	-- Stone beach
@@ -400,6 +423,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 0,
 		heat_point = 8,
+		_mcl_biome_type = "cold",
 	})
 
 	minetest.register_biome({
@@ -413,6 +437,7 @@ local function register_biomes()
 		vertical_blend = 2,
 		humidity_point = 0,
 		heat_point = 8,
+		_mcl_biome_type = "cold",
 	})
 
 	-- Ice Plains
@@ -432,6 +457,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 24,
 		heat_point = 8,
+		_mcl_biome_type = "snowy",
 	})
 	minetest.register_biome({
 		name = "IcePlains_ocean",
@@ -445,6 +471,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 24,
 		heat_point = 8,
+		_mcl_biome_type = "snowy",
 	})
 
 	-- Plains
@@ -460,6 +487,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 39,
 		heat_point = 58,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "Plains_beach",
@@ -473,6 +501,7 @@ local function register_biomes()
 		y_max = 2,
 		humidity_point = 39,
 		heat_point = 58,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "Plains_ocean",
@@ -486,6 +515,7 @@ local function register_biomes()
 		y_max = -1,
 		humidity_point = 39,
 		heat_point = 58,
+		_mcl_biome_type = "medium",
 	})
 
 	-- Sunflower Plains
@@ -501,6 +531,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 28,
 		heat_point = 45,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "SunflowerPlains_ocean",
@@ -514,6 +545,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 28,
 		heat_point = 45,
+		_mcl_biome_type = "medium",
 	})
 
 	-- Taiga
@@ -529,6 +561,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 58,
 		heat_point = 22,
+		_mcl_biome_type = "cold",
 	})
 	minetest.register_biome({
 		name = "Taiga_beach",
@@ -542,6 +575,7 @@ local function register_biomes()
 		y_max = 3,
 		humidity_point = 58,
 		heat_point = 22,
+		_mcl_biome_type = "cold",
 	})
 	minetest.register_biome({
 		name = "Taiga_ocean",
@@ -555,6 +589,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 58,
 		heat_point = 22,
+		_mcl_biome_type = "cold",
 	})
 
 	-- Forest
@@ -570,6 +605,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 61,
 		heat_point = 45,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "Forest_beach",
@@ -583,6 +619,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 61,
 		heat_point = 45,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "Forest_ocean",
@@ -596,6 +633,7 @@ local function register_biomes()
 		y_max = -2,
 		humidity_point = 61,
 		heat_point = 45,
+		_mcl_biome_type = "medium",
 	})
 
 	-- Flower Forest
@@ -611,6 +649,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 44,
 		heat_point = 32,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "FlowerForest_beach",
@@ -624,6 +663,7 @@ local function register_biomes()
 		y_max = 2,
 		humidity_point = 44,
 		heat_point = 32,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "FlowerForest_ocean",
@@ -637,6 +677,7 @@ local function register_biomes()
 		y_max = -3,
 		humidity_point = 44,
 		heat_point = 32,
+		_mcl_biome_type = "medium",
 	})
 
 	-- Birch Forest
@@ -652,6 +693,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 78,
 		heat_point = 31,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "BirchForest_ocean",
@@ -665,6 +707,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 78,
 		heat_point = 31,
+		_mcl_biome_type = "medium",
 	})
 
 	-- Birch Forest M
@@ -680,6 +723,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 77,
 		heat_point = 27,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "BirchForestM_ocean",
@@ -693,6 +737,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 77,
 		heat_point = 27,
+		_mcl_biome_type = "medium",
 	})
 
 	-- Desert
@@ -709,6 +754,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 26,
 		heat_point = 94,
+		_mcl_biome_type = "hot",
 	})
 	minetest.register_biome({
 		name = "Desert_ocean",
@@ -722,6 +768,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 26,
 		heat_point = 94,
+		_mcl_biome_type = "hot",
 	})
 
 	-- Roofed Forest
@@ -737,6 +784,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 94,
 		heat_point = 27,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "RoofedForest_ocean",
@@ -750,6 +798,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 94,
 		heat_point = 27,
+		_mcl_biome_type = "medium",
 	})
 
 	-- Mesa: Starts with a couple of sand-covered layers (the "sandlevel"),
@@ -766,6 +815,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 0,
 		heat_point = 100,
+		_mcl_biome_type = "hot",
 	})
 	-- Helper biome for the red sand at the bottom of Mesas.
 	minetest.register_biome({
@@ -781,6 +831,7 @@ local function register_biomes()
 		y_max = 10,
 		humidity_point = 0,
 		heat_point = 100,
+		_mcl_biome_type = "hot",
 	})
 	minetest.register_biome({
 		name = "Mesa_ocean",
@@ -795,6 +846,7 @@ local function register_biomes()
 		vertical_blend = 1,
 		humidity_point = 0,
 		heat_point = 100,
+		_mcl_biome_type = "hot",
 	})
 
 	-- Mesa Bryce: Variant of Mesa, but with perfect strata and a much smaller red sand desert
@@ -810,6 +862,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = -5,
 		heat_point = 100,
+		_mcl_biome_type = "hot",
 	})
 	minetest.register_biome({
 		name = "MesaBryce_sandlevel",
@@ -824,6 +877,7 @@ local function register_biomes()
 		y_max = 3,
 		humidity_point = -5,
 		heat_point = 100,
+		_mcl_biome_type = "hot",
 	})
 	minetest.register_biome({
 		name = "MesaBryce_ocean",
@@ -838,6 +892,7 @@ local function register_biomes()
 		vertical_blend = 1,
 		humidity_point = -5,
 		heat_point = 100,
+		_mcl_biome_type = "hot",
 	})
 
 
@@ -857,6 +912,7 @@ local function register_biomes()
 		humidity_point = 0,
 		heat_point = 60,
 		vertical_blend = 0, -- we want a sharp transition
+		_mcl_biome_type = "hot",
 	})
 	-- The oak forest plateau of this biome.
 	-- This is a plateau for grass blocks, dry shrubs, tall grass, coarse dirt and oaks.
@@ -874,6 +930,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 0,
 		heat_point = 60,
+		_mcl_biome_type = "hot",
 	})
 	minetest.register_biome({
 		name = "MesaPlateauF_sandlevel",
@@ -888,6 +945,7 @@ local function register_biomes()
 		y_max = 10,
 		humidity_point = 0,
 		heat_point = 60,
+		_mcl_biome_type = "hot",
 	})
 	minetest.register_biome({
 		name = "MesaPlateauF_ocean",
@@ -902,6 +960,7 @@ local function register_biomes()
 		vertical_blend = 1,
 		humidity_point = 0,
 		heat_point = 60,
+		_mcl_biome_type = "hot",
 	})
 
 	-- Mesa Plateau FM
@@ -921,6 +980,7 @@ local function register_biomes()
 		humidity_point = -5,
 		heat_point = 60,
 		vertical_blend = 5,
+		_mcl_biome_type = "hot",
 	})
 	-- Grass plateau
 	minetest.register_biome({
@@ -936,6 +996,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = -5,
 		heat_point = 60,
+		_mcl_biome_type = "hot",
 	})
 	minetest.register_biome({
 		name = "MesaPlateauFM_sandlevel",
@@ -952,6 +1013,7 @@ local function register_biomes()
 		humidity_point = -5,
 		heat_point = 60,
 		vertical_blend = 4,
+		_mcl_biome_type = "hot",
 	})
 	minetest.register_biome({
 		name = "MesaPlateauFM_ocean",
@@ -966,6 +1028,7 @@ local function register_biomes()
 		vertical_blend = 2,
 		humidity_point = -5,
 		heat_point = 60,
+		_mcl_biome_type = "hot",
 	})
 
 
@@ -982,6 +1045,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 36,
 		heat_point = 79,
+		_mcl_biome_type = "hot",
 	})
 	minetest.register_biome({
 		name = "Savanna_beach",
@@ -995,6 +1059,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 36,
 		heat_point = 79,
+		_mcl_biome_type = "hot",
 	})
 	minetest.register_biome({
 		name = "Savanna_ocean",
@@ -1008,6 +1073,7 @@ local function register_biomes()
 		y_max = -2,
 		humidity_point = 36,
 		heat_point = 79,
+		_mcl_biome_type = "hot",
 	})
 
 	-- Savanna M
@@ -1025,6 +1091,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 48,
 		heat_point = 100,
+		_mcl_biome_type = "hot",
 	})
 	minetest.register_biome({
 		name = "SavannaM_ocean",
@@ -1038,6 +1105,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 48,
 		heat_point = 100,
+		_mcl_biome_type = "hot",
 	})
 
 	-- Jungle
@@ -1053,6 +1121,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 88,
 		heat_point = 81,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "Jungle_shore",
@@ -1066,6 +1135,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 88,
 		heat_point = 81,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "Jungle_ocean",
@@ -1080,6 +1150,7 @@ local function register_biomes()
 		vertical_blend = 1,
 		humidity_point = 88,
 		heat_point = 81,
+		_mcl_biome_type = "medium",
 	})
 
 	-- Jungle M
@@ -1096,6 +1167,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 92,
 		heat_point = 81,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "JungleM_shore",
@@ -1109,6 +1181,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 92,
 		heat_point = 81,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "JungleM_ocean",
@@ -1123,6 +1196,7 @@ local function register_biomes()
 		vertical_blend = 1,
 		humidity_point = 92,
 		heat_point = 81,
+		_mcl_biome_type = "medium",
 	})
 
 	-- Jungle Edge
@@ -1138,6 +1212,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 88,
 		heat_point = 76,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "JungleEdge_ocean",
@@ -1151,6 +1226,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 88,
 		heat_point = 76,
+		_mcl_biome_type = "medium",
 	})
 
 	-- Jungle Edge M (very rare).
@@ -1169,6 +1245,7 @@ local function register_biomes()
 		y_max = mcl_vars.mg_overworld_max,
 		humidity_point = 90,
 		heat_point = 79,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "JungleEdgeM_ocean",
@@ -1182,6 +1259,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 90,
 		heat_point = 79,
+		_mcl_biome_type = "medium",
 	})
 
 	-- Swampland
@@ -1198,6 +1276,7 @@ local function register_biomes()
 		y_max = 23,
 		humidity_point = 90,
 		heat_point = 50,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "Swampland_shore",
@@ -1211,6 +1290,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 90,
 		heat_point = 50,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "Swampland_ocean",
@@ -1225,6 +1305,7 @@ local function register_biomes()
 		vertical_blend = 1,
 		humidity_point = 90,
 		heat_point = 50,
+		_mcl_biome_type = "medium",
 	})
 
 	-- Mushroom Island / Mushroom Island Shore (rare)
@@ -1243,6 +1324,7 @@ local function register_biomes()
 		vertical_blend = 1,
 		humidity_point = 106,
 		heat_point = 50,
+		_mcl_biome_type = "medium",
 	})
 
 	minetest.register_biome({
@@ -1257,6 +1339,7 @@ local function register_biomes()
 		y_max = 3,
 		humidity_point = 106,
 		heat_point = 50,
+		_mcl_biome_type = "medium",
 	})
 	minetest.register_biome({
 		name = "MushroomIsland_ocean",
@@ -1270,6 +1353,7 @@ local function register_biomes()
 		y_max = 0,
 		humidity_point = 106,
 		heat_point = 50,
+		_mcl_biome_type = "medium",
 	})
 
 	-- Add deep ocean and underground biomes automatically.
@@ -1290,6 +1374,7 @@ local function register_biomes()
 			node_riverbed = "mcl_core:gravel",
 			depth_riverbed = 2,
 			vertical_blend = 5,
+			_mcl_biome_type = minetest.registered_biomes[biome]._mcl_biome_type,
 		})
 
 		-- Underground biomes are used to identify the underground and to prevent nodes from the surface
@@ -1300,6 +1385,7 @@ local function register_biomes()
 			humidity_point = minetest.registered_biomes[biome].humidity_point,
 			y_min = mcl_vars.mg_overworld_min,
 			y_max = DEEP_OCEAN_MIN - 1,
+			_mcl_biome_type = minetest.registered_biomes[biome]._mcl_biome_type,
 		})
 
 	end
@@ -1322,6 +1408,7 @@ local function register_dimension_biomes()
 		y_max = mcl_vars.mg_nether_max + 80,
 		heat_point = 100,
 		humidity_point = 0,
+		_mcl_biome_type = "hot",
 	})
 
 	--[[ THE END ]]
@@ -1337,6 +1424,7 @@ local function register_dimension_biomes()
 		y_max = mcl_vars.mg_end_max + 80,
 		heat_point = 50,
 		humidity_point = 50,
+		_mcl_biome_type = "medium",
 	})
 
 end
