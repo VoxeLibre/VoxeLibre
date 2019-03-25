@@ -274,7 +274,7 @@ if c("saddle") and c("lether") and c("string") and c("iron_ingot") then
 end
 
 -- Horse Armor
-local horse_armor_use = "Rightclick a horse to put on the horse armor. Donkeys and mules can't wear horse armor."
+local horse_armor_use = S("Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.")
 -- TODO: Balance the horse armor strength, compare with MC armor strength
 if c("iron_horse_armor") then
 	minetest.register_craftitem("mobs_mc:iron_horse_armor", {

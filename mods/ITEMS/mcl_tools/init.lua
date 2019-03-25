@@ -60,7 +60,7 @@ local sword_longdesc = S("Swords are great in melee combat, as they are fast, de
 local shovel_longdesc = S("Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak.")
 local shovel_use = S("To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the top or side of a grass block. This only works when there's air above the grass block.")
 local shears_longdesc = S("Shears are tools to shear sheep and to mine a few block types. Shears are a special mining tool and can be used to obtain the original item from grass, leaves and similar blocks that require cutting.")
-local shears_use = "To shear a sheep and obtain its wool, rightclick it. To carve a face into a pumpkin and obtain 4 pumpkin seeds, rightclick it on one of its sides. Mining works are usual, but the drops are different for a few blocks."
+local shears_use = S("To shear sheep or carve faceless pumpkins, use the “place” key on them. Faces can only be carved at the side of faceless pumpkins. Mining works as usual, but the drops are different for a few blocks.")
 
 -- Picks
 minetest.register_tool("mcl_tools:pick_wood", {

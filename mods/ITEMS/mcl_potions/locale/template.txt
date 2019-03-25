@@ -18,3 +18,6 @@ This potion has a bitter taste and is used for brewing more potions. Drinking it
 Glistering Melon=
 This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.=
 Dragon's Breath=
+Use the “Place” key to drink it.=
+Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron.=
+Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron.=

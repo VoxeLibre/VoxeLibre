@@ -34,3 +34,4 @@ Mature Nether Wart=
 The mature nether wart is a plant from the Nether and reached its full size and won't grow any further. It is ready to be harvested for its items.=
 Nether Wart=
 Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages.=
+Place this item on soul sand to plant it and watch it grow.=

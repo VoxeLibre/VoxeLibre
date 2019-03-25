@@ -160,7 +160,7 @@ end
 minetest.register_craftitem("mcl_potions:potion_water", {
 	description = S("Water Bottle"),
 	_doc_items_longdesc = S("Water bottles can be used to fill cauldrons. Drinking water has no effect."),
-	_doc_items_usagehelp = S("Rightclick to drink. Rightclick a cauldron to pour the water into the cauldron."),
+	_doc_items_usagehelp = S("Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron."),
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
@@ -204,7 +204,8 @@ minetest.register_craftitem("mcl_potions:potion_water", {
 minetest.register_craftitem("mcl_potions:potion_river_water", {
 	description = S("River Water Bottle"),
 	_doc_items_longdesc = S("River water bottles can be used to fill cauldrons. Drinking it has no effect."),
-	_doc_items_usagehelp = "Rightclick to drink. Rightclick a cauldron to pour the river water into the cauldron.",
+	_doc_items_usagehelp = S("Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron."),
+
 	stack_max = 1,
 	inventory_image = potion_image("#0044FF"),
 	wield_image = potion_image("#0044FF"),
@@ -247,7 +248,7 @@ minetest.register_craftitem("mcl_potions:potion_river_water", {
 
 
 
-local how_to_drink = "To drink it, wield it, then rightclick."
+local how_to_drink = S("Use the “Place” key to drink it.")
 
 minetest.register_craftitem("mcl_potions:potion_awkward", {
 	description = S("Awkward Potion"),

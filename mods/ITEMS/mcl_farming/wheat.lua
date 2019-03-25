@@ -90,7 +90,7 @@ mcl_farming:add_plant("plant_wheat", "mcl_farming:wheat", {"mcl_farming:wheat_1"
 minetest.register_craftitem("mcl_farming:wheat_item", {
 	description = S("Wheat"),
 	_doc_items_longdesc = S("Wheat is used in crafting. Some animals like wheat."),
-	_doc_items_usagehelp = "Rightclick an animal to try to feed it wheat.",
+	_doc_items_usagehelp = S("Use the “Place” key on an animal to try to feed it wheat."),
 	inventory_image = "farming_wheat_harvested.png",
 	groups = { craftitem = 1 },
 })

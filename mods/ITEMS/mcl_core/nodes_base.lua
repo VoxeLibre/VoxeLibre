@@ -881,8 +881,8 @@ for i=1,8 do
 	if i == 1 then
 		id = "mcl_core:snow"
 		desc = S("Top Snow")
-		longdesc = S("Top snow is a layer of snow. It melts near light sources other than the sun with a light level of 12 or higher.".."\n".."Top snow can be stacked and has one of 8 different height levels. At levels 2-8, top snow is collidable. Top snow drops 2-9 snowballs, depending on its height.")
-		usagehelp = "This block can only be placed on full solid blocks and on another top snow (which increases its height)." 
+		longdesc = S("Top snow is a layer of snow. It melts near light sources other than the sun with a light level of 12 or higher.").."\n"..S("Top snow can be stacked and has one of 8 different height levels. At levels 2-8, top snow is collidable. Top snow drops 2-9 snowballs, depending on its height.")
+		usagehelp = S("This block can only be placed on full solid blocks and on another top snow (which increases its height).") 
 		walkable = false
 	else
 		id = "mcl_core:snow_"..i

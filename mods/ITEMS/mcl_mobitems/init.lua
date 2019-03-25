@@ -172,7 +172,7 @@ minetest.register_craftitem("mcl_mobitems:spider_eye", {
 minetest.register_craftitem("mcl_mobitems:bone", {
 	description = S("Bone"),
 	_doc_items_longdesc = S("Bones can be used to tame wolves so they will protect you. They are also useful as a crafting ingredient."),
-	_doc_items_usagehelp = "Hold the bone in your hand near wolves to attract them. Rightclick the wolf to give it a bone and tame it. You can then give commands to the tamed wolf by rightclicking it.",
+	_doc_items_usagehelp = S("Wield the bone near wolves to attract them. Use the “Place” key on the wolf to give it a bone and tame it. You can then give commands to the tamed wolf by using the “Place” key on it."),
 	inventory_image = "mcl_mobitems_bone.png",
 	stack_max = 64,
 	groups = { craftitem=1 },
@@ -317,7 +317,7 @@ minetest.register_craftitem("mcl_mobitems:gunpowder", {
 minetest.register_tool("mcl_mobitems:carrot_on_a_stick", {
 	description = S("Carrot on a Stick"),
 	_doc_items_longdesc = S("A carrot on a stick can be used on saddled pigs to ride them."),
-	_doc_items_usagehelp = "Rightclick a saddled pig with the carrot on a stick to mount it. You can now ride it like a horse. Pigs will also walk towards you when you just wield the carrot on a stick.",
+	_doc_items_usagehelp = S("Place it on a saddled pig to mount it. You can now ride the pig like a horse. Pigs will also walk towards you when you just wield the carrot on a stick."),
 	wield_image = "mcl_mobitems_carrot_on_a_stick.png",
 	inventory_image = "mcl_mobitems_carrot_on_a_stick.png",
 	groups = { transport = 1 },

@@ -245,3 +245,5 @@ Lava interacts with water various ways:=
 • When lava is directly above water, the water turns into stone.=
 Stained Glass=
 Granite is an igneous rock.=
+Top snow can be stacked and has one of 8 different height levels. At levels 2-8, top snow is collidable. Top snow drops 2-9 snowballs, depending on its height.=
+This block can only be placed on full solid blocks and on another top snow (which increases its height).=
