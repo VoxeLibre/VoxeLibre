@@ -14,7 +14,7 @@ Hold it in the hand, then rightclick to read the current notes and edit then. Yo
 A book can hold up to 4500 characters. The title length is limited to 64 characters.=
 Enter book title:=
 by @1=
-Note: The book will no longer@nbe editable after signing.=
+Note: The book will no longer be editable after signing=
 Sign and Close=
 Cancel=
 Nameless Book=

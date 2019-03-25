@@ -136,10 +136,10 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 				local name = player:get_player_name()
 				local formspec = "size[8,9]"..
 					"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
-					"field[0.75,1;7.25,1;title;"..core.colorize("#000000", S("Enter book title:"))..";]"..
-					"label[0.75,1.5;"..core.colorize("#404040", minetest.formspec_escape(S("by @1", name))).."]"..
-					"label[0.75,6.95;"..core.colorize("#000000", minetest.formspec_escape(S("Note: The book will no longer\nbe editable after signing."))).."]"..
+					"field[0.75,1;7.25,1;title;"..minetest.formspec_escape(core.colorize("#000000", S("Enter book title:")))..";]"..
+					"label[0.75,1.5;"..minetest.formspec_escape(core.colorize("#404040", S("by @1", name))).."]"..
 					"button_exit[0.75,7.95;3,1;sign;"..minetest.formspec_escape(S("Sign and Close")).."]"..
+					"tooltip[sign;"..minetest.formspec_escape(S("Note: The book will no longer be editable after signing")).."]"..
 					"button[4.25,7.95;3,1;cancel;"..minetest.formspec_escape(S("Cancel")).."]"
 				minetest.show_formspec(player:get_player_name(), "mcl_books:signing", formspec)
 			end
