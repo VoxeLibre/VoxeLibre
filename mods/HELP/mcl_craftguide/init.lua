@@ -10,7 +10,7 @@ local recipes_cache = {}
 local usages_cache  = {}
 local fuel_cache    = {}
 
-local progressive_mode = M.settings:get_bool("mcl_craftguide_progressive_mode") or true
+local progressive_mode = M.settings:get_bool("mcl_craftguide_progressive_mode", true)
 local sfinv_only = false
 
 local colorize = M.colorize
