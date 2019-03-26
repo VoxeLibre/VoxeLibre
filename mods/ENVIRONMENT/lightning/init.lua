@@ -117,6 +117,7 @@ lightning.strike = function(pos)
 		-- to make the texture lightning bolt hit exactly in the middle of the
 		-- texture (e.g. 127/128 on a 256x wide texture)
 		texture = "lightning_lightning_" .. rng:next(1,3) .. ".png",
+		glow = minetest.LIGHT_MAX,
 	})
 
 	minetest.sound_play({ pos = pos, name = "lightning_thunder", gain = 10, max_hear_distance = 500 })
