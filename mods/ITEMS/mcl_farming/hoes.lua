@@ -25,6 +25,30 @@ local function create_soil(pos, inv)
 	return false
 end
 
+local hoe_on_place_function = function(wear_divisor)
+	return function(itemstack, user, pointed_thing)
+		-- Call on_rightclick if the pointed node defines it
+		local node = minetest.get_node(pointed_thing.under)
+		if user and not user:get_player_control().sneak then
+			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
+			end
+		end
+
+		if minetest.is_protected(pointed_thing.under, user:get_player_name()) then
+			minetest.record_protection_violation(pointed_thing.under, user:get_player_name())
+			return itemstack
+		end
+
+		if create_soil(pointed_thing.under, user:get_inventory()) then
+			if not minetest.settings:get_bool("creative_mode") then
+				itemstack:add_wear(65535/wear_divisor)
+			end
+			return itemstack
+		end
+	end
+end
+
 local hoe_longdesc = S("Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.")
 local hoe_usagehelp = S("Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.")
 
@@ -34,22 +58,7 @@ minetest.register_tool("mcl_farming:hoe_wood", {
 	_doc_items_usagehelp = hoe_usagehelp,
 	_doc_items_hidden = false,
 	inventory_image = "farming_tool_woodhoe.png",
-	on_place = function(itemstack, user, pointed_thing)
-		-- Call on_rightclick if the pointed node defines it
-		local node = minetest.get_node(pointed_thing.under)
-		if user and not user:get_player_control().sneak then
-			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
-			end
-		end
-
-		if create_soil(pointed_thing.under, user:get_inventory()) then
-			if not minetest.settings:get_bool("creative_mode") then
-				itemstack:add_wear(65535/60)
-			end
-			return itemstack
-		end
-	end,
+	on_place = hoe_on_place_function(60),
 	groups = { tool=1, hoe=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
@@ -85,22 +94,7 @@ minetest.register_tool("mcl_farming:hoe_stone", {
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_stonehoe.png",
-	on_place = function(itemstack, user, pointed_thing)
-		-- Call on_rightclick if the pointed node defines it
-		local node = minetest.get_node(pointed_thing.under)
-		if user and not user:get_player_control().sneak then
-			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
-			end
-		end
-
-		if create_soil(pointed_thing.under, user:get_inventory()) then
-			if not minetest.settings:get_bool("creative_mode") then
-				itemstack:add_wear(65535/132)
-			end
-			return itemstack
-		end
-	end,
+	on_place = hoe_on_place_function(132),
 	groups = { tool=1, hoe=1 },
 	tool_capabilities = {
 		full_punch_interval = 0.5,
@@ -131,22 +125,7 @@ minetest.register_tool("mcl_farming:hoe_iron", {
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_steelhoe.png",
-	on_place = function(itemstack, user, pointed_thing)
-		-- Call on_rightclick if the pointed node defines it
-		local node = minetest.get_node(pointed_thing.under)
-		if user and not user:get_player_control().sneak then
-			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
-			end
-		end
-
-		if create_soil(pointed_thing.under, user:get_inventory()) then
-			if not minetest.settings:get_bool("creative_mode") then
-				itemstack:add_wear(65535/251)
-			end
-			return itemstack
-		end
-	end,
+	on_place = hoe_on_place_function(251),
 	groups = { tool=1, hoe=1 },
 	tool_capabilities = {
 		-- 1/3
@@ -185,22 +164,7 @@ minetest.register_tool("mcl_farming:hoe_gold", {
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_goldhoe.png",
-	on_place = function(itemstack, user, pointed_thing)
-		-- Call on_rightclick if the pointed node defines it
-		local node = minetest.get_node(pointed_thing.under)
-		if user and not user:get_player_control().sneak then
-			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
-			end
-		end
-
-		if create_soil(pointed_thing.under, user:get_inventory()) then
-			if not minetest.settings:get_bool("creative_mode") then
-				itemstack:add_wear(65535/33)
-			end
-			return itemstack
-		end
-	end,
+	on_place = hoe_on_place_function(33),
 	groups = { tool=1, hoe=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
@@ -240,22 +204,7 @@ minetest.register_tool("mcl_farming:hoe_diamond", {
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_diamondhoe.png",
-	on_place = function(itemstack, user, pointed_thing)
-		-- Call on_rightclick if the pointed node defines it
-		local node = minetest.get_node(pointed_thing.under)
-		if user and not user:get_player_control().sneak then
-			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
-			end
-		end
-
-		if create_soil(pointed_thing.under, user:get_inventory()) then
-			if not minetest.settings:get_bool("creative_mode") then
-				itemstack:add_wear(65535/1562)
-			end
-			return itemstack
-		end
-	end,
+	on_place = hoe_on_place_function(1562),
 	groups = { tool=1, hoe=1 },
 	tool_capabilities = {
 		full_punch_interval = 0.25,

@@ -179,12 +179,18 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 
 	-- Only make grass path if tool used on side or top of target node
 	if pointed_thing.above.y < pointed_thing.under.y then
-		return
+		return itemstack
 	end
+
 	if (minetest.get_item_group(node.name, "grass_block") == 1) then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
 		if minetest.get_node(above).name == "air" then
+			if minetest.is_protected(pointed_thing.under, placer:get_player_name()) then
+				minetest.record_protection_violation(pointed_thing.under, placer:get_player_name())
+				return itemstack
+			end
+
 			if not minetest.settings:get_bool("creative_mode") then
 				-- Add wear, as if digging a level 0 shovely node
 				local toolname = itemstack:get_name()
