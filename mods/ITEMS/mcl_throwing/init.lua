@@ -268,11 +268,7 @@ local pearl_on_step = function(self, dtime)
 				local oldpos = player:get_pos()
 				-- Teleport and hurt player
 				player:set_pos(telepos)
-				if mod_death_messages then
-					mcl_death_messages.player_damage(player, S("@1 used the ender pearl too often.", player:get_player_name()))
-				end
-				-- TODO: Deal as fall damage
-				player:set_hp(player:get_hp() - 5)
+				player:set_hp(player:get_hp() - 5, { type = "fall", origin = "mod" })
 
 				-- 5% chance to spawn endermite at the player's origin
 				local r = math.random(1,20)
