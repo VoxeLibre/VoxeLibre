@@ -4,19 +4,8 @@ local S = minetest.get_translator("mcl_stairs")
 
 -- Wrapper around mintest.pointed_thing_to_face_pos.
 local function get_fpos(placer, pointed_thing)
-	local fpos
-	-- Workaround: minetest.pointed_thing_to_face_pos crashes in MT 0.4.16 if
-	-- pointed_thing.under and pointed_thing.above are equal
-	-- FIXME: Remove this when MT got fixed.
-	if not vector.equals(pointed_thing.under, pointed_thing.above) then
-		-- The happy case: Everything is normal
-		local finepos = minetest.pointed_thing_to_face_pos(placer, pointed_thing)
-		fpos = finepos.y % 1
-	else
-		-- Fallback if both above and under are equal
-		fpos = 0
-	end
-	return fpos
+	local finepos = minetest.pointed_thing_to_face_pos(placer, pointed_thing)
+	return finepos.y % 1
 end
 
 local function place_slab_normal(itemstack, placer, pointed_thing)
