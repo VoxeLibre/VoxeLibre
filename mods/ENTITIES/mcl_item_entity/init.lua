@@ -88,15 +88,6 @@ minetest.register_globalstep(function(dtime)
 
 						-- Magnet
 						else
-							--move this to the front so players can see animation before collection
-							if not collected then
-								if object:get_luaentity()._magnet_timer > 1 then
-									object:get_luaentity()._magnet_timer = -item_drop_settings.magnet_time
-									object:get_luaentity()._magnet_active = false
-								elseif object:get_luaentity()._magnet_timer < 0 then
-									object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
-								end
-							end
 
 							object:get_luaentity()._magnet_active = true
 							object:get_luaentity()._collector_timer = 0
@@ -104,7 +95,11 @@ minetest.register_globalstep(function(dtime)
 							-- Move object to player
 							disable_physics(object, object:get_luaentity())
 
-							object:move_to(checkpos)
+							local opos = object:get_pos()
+							local vec = vector.subtract(checkpos, opos)
+							vec = vector.add(opos, vector.divide(vec, 2))
+							object:move_to(vec)
+
 
 							--fix eternally falling items
 							minetest.after(0, function(object)
@@ -145,6 +140,15 @@ minetest.register_globalstep(function(dtime)
 									end, {player:get_player_name(), object})
 								end
 							end
+						end
+					end
+
+					if not collected then
+						if object:get_luaentity()._magnet_timer > 1 then
+							object:get_luaentity()._magnet_timer = -item_drop_settings.magnet_time
+							object:get_luaentity()._magnet_active = false
+						elseif object:get_luaentity()._magnet_timer < 0 then
+							object:get_luaentity()._magnet_timer = object:get_luaentity()._magnet_timer + dtime
 						end
 					end
 
