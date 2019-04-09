@@ -145,12 +145,20 @@ minetest.register_node("mcl_core:lava_flowing", {
 	_mcl_hardness = -1,
 })
 
+local fire_text
+local fire_enabled = minetest.settings:get_bool("enable_fire", true)
+if fire_enabled then
+	fire_text = S("A lava source sets fire to a couple of air blocks above when they're next to a flammable block.")
+else
+	fire_text = ""
+end
+
 minetest.register_node("mcl_core:lava_source", {
 	description = S("Lava Source"),
 	_doc_items_entry_name = "Lava",
 	_doc_items_longdesc =
 S("Lava is hot and rather dangerous. Don't touch it, it will hurt you a lot and it is hard to get out.").."\n"..
-S("A lava source sets fire to a couple of air blocks above when they're next to a flammable block.").."\n\n"..
+fire_text.."\n\n"..
 S("Lava interacts with water various ways:").."\n"..
 S("• When a lava source is directly below or horizontally next to water, the lava turns into obsidian.").."\n"..
 S("• When flowing water touches flowing lava either from above or horizontally, the lava turns into cobblestone.").."\n"..

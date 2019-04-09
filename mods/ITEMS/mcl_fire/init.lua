@@ -14,30 +14,24 @@ local N = function(s) return s end
 -- Fire settings
 
 -- When enabled, fire destroys other blocks.
-local fire_enabled = minetest.settings:get_bool("enable_fire")
-if fire_enabled == nil then
-	-- New setting not specified, check for old setting.
-	-- If old setting is also not specified, 'not nil' is true.
-	fire_enabled = not minetest.settings:get_bool("disable_fire")
-end
+local fire_enabled = minetest.settings:get_bool("enable_fire", true)
 
 -- Enable sound
-local flame_sound = minetest.settings:get_bool("flame_sound")
-if flame_sound == nil then
-	-- Enable if no setting present
-	flame_sound = true
-end
-
+local flame_sound = minetest.settings:get_bool("flame_sound", true)
 
 -- Help texts
-local fire_help
+local fire_help, eternal_fire_help
 if fire_enabled then
 	fire_help = S("Fire is a damaging and destructive but short-lived kind of block. It will destroy and spread towards near flammable blocks, but fire will disappear when there is nothing to burn left. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.")
 else
 	fire_help = S("Fire is a damaging but non-destructive short-lived kind of block. It will disappear when there is no flammable block around. Fire does not destroy blocks, at least not in this world. It will be extinguished by nearby water and rain. Fire can be destroyed safely by punching it, but it is hurtful if you stand directly in it. If a fire is started above netherrack or a magma block, it will immediately turn into an eternal fire.")
 end
 
-local eternal_fire_help = S("Eternal fire is a damaging block that might create more fire. It will create fire around it when flammable blocks are nearby. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.")
+if fire_enabled then
+	eternal_fire_help = S("Eternal fire is a damaging block that might create more fire. It will create fire around it when flammable blocks are nearby. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.")
+else
+	eternal_fire_help = S("Eternal fire is a damaging block. Eternal fire can be extinguished by punches and nearby water blocks. Other than (normal) fire, eternal fire does not get extinguished on its own and also continues to burn under rain. Punching eternal fire is safe, but it hurts if you stand inside.")
+end
 
 local fire_death_messages = {
 	N("@1 has been cooked crisp."),
@@ -79,8 +73,13 @@ minetest.register_node("mcl_fire:fire", {
 	end,
 	on_timer = function(pos)
 		local airs = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+4, z=pos.z+1}, {"air"})
-		if #airs == 0 then
+		if (#airs == 0) or ((not fire_enabled) and math.random(1,3) == 1) then
 			minetest.remove_node(pos)
+			return
+		end
+		if (not fire_enabled) then
+			-- Restart timer
+			minetest.get_node_timer(pos):start(math.random(3, 7))
 			return
 		end
 		local burned = false
@@ -158,14 +157,16 @@ minetest.register_node("mcl_fire:eternal_fire", {
 		end
 	end,
 	on_timer = function(pos)
-		local airs = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+4, z=pos.z+1}, {"air"})
-		while #airs > 0 do
-			local r = math.random(1, #airs)
-			if minetest.find_node_near(airs[r], 1, {"group:flammable"}) then
-				minetest.set_node(airs[r], {name="mcl_fire:fire"})
-				break
-			else
-				table.remove(airs, r)
+		if fire_enabled then
+			local airs = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+4, z=pos.z+1}, {"air"})
+			while #airs > 0 do
+				local r = math.random(1, #airs)
+				if minetest.find_node_near(airs[r], 1, {"group:flammable"}) then
+					minetest.set_node(airs[r], {name="mcl_fire:fire"})
+					break
+				else
+					table.remove(airs, r)
+				end
 			end
 		end
 		-- Restart timer
@@ -182,36 +183,6 @@ minetest.register_node("mcl_fire:eternal_fire", {
 	sounds = {},
 	drop = "",
 	_mcl_blast_resistance = 0,
-})
-
--- Also make lava set fire to air blocks above
-minetest.override_item("mcl_core:lava_source", {
-	on_timer = function(pos)
-		local function try_ignite(airs)
-			while #airs > 0 do
-				local r = math.random(1, #airs)
-				if minetest.find_node_near(airs[r], 1, {"group:flammable", "group:flammable_lava"}) then
-					minetest.set_node(airs[r], {name="mcl_fire:fire"})
-					return true
-				else
-					table.remove(airs, r)
-				end
-			end
-			return false
-		end
-		local airs1 = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y+1, z=pos.z-1}, {x=pos.x+1, y=pos.y+1, z=pos.z+1}, {"air"})
-		local ok = try_ignite(airs1)
-		if not ok then
-			local airs2 = minetest.find_nodes_in_area({x=pos.x-2, y=pos.y+2, z=pos.z-2}, {x=pos.x+2, y=pos.y+2, z=pos.z+2}, {"air"})
-			try_ignite(airs2)
-		end
-
-		-- Restart timer
-		minetest.get_node_timer(pos):start(math.random(5, 10))
-	end,
-	on_construct = function(pos)
-		minetest.get_node_timer(pos):start(math.random(5, 10))
-	end
 })
 
 --
@@ -350,28 +321,37 @@ minetest.register_abm({
 
 if not fire_enabled then
 
-	-- Remove fire only if fire disabled
+	-- Occasionally remove fire if fire disabled
+	-- NOTE: Fire is normally extinguished in timer function
 	minetest.register_abm({
 		label = "Remove disabled fire",
 		nodenames = {"mcl_fire:fire"},
-		interval = 7,
-		chance = 3,
+		interval = 10,
+		chance = 10,
 		catch_up = false,
 		action = minetest.remove_node,
 	})
 
+else -- Fire enabled
+
 	-- Set fire to air nodes (inverse pyramid pattern) above lava source
 	minetest.register_abm({
 		label = "Ignite fire by lava",
-		nodenames = {"mcl_core:lava_source"},
+		nodenames = {"group:lava"},
 		interval = 7,
 		chance = 2,
 		catch_up = false,
 		action = function(pos)
+			local node = minetest.get_node(pos)
+			local def = minetest.registered_nodes[node.name]
+			-- Check if liquid source node
+			if def and def.liquidtype ~= "source" then
+				return
+			end
 			local function try_ignite(airs)
 				while #airs > 0 do
 					local r = math.random(1, #airs)
-					if minetest.find_node_near(airs[r], 1, {"group:flammable", "group:flammable_lava"}) then
+					if minetest.find_node_near(airs[r], 1, {"group:flammable"}) then
 						minetest.set_node(airs[r], {name="mcl_fire:fire"})
 						return true
 					else
@@ -388,8 +368,6 @@ if not fire_enabled then
 			end
 		end,
 	})
-
-else -- Fire enabled
 
 	-- Turn flammable nodes around fire into fire
 	minetest.register_abm({

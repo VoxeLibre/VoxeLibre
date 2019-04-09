@@ -13,9 +13,9 @@ creative_mode (Creative mode) bool false
 
 # Fire spreads and flammable blocks might be destroyed by nearby fire.
 # Destructive fire may cause severe destruction.
-# Fire blocks will be non-destructive when this setting is disabled, but they
-# still deal damage to creatures. Eternal fire is unaffected.
-enable_fire (Destructive fire) bool true
+# Fire blocks will be non-destructive and stops spreading when this
+# setting is disabled, but they still deal damage to creatures.
+enable_fire (Destructive and spreading fire) bool true
 
 # If enabled, the weather will change naturally over time.
 mcl_doWeatherCycle (Change weather) bool true
