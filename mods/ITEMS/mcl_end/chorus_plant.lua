@@ -200,6 +200,7 @@ minetest.register_node("mcl_end:chorus_flower_dead", {
 minetest.register_node("mcl_end:chorus_plant", {
 	description = S("Chorus Plant Stem"),
 	_doc_items_longdesc = S("A chorus plant stem is the part of a chorus plant which holds the whole plant together. It needs end stone as its soil. Stems are grown from chorus flowers."),
+	_doc_items_usagehelp = S("The stem attaches itself to end stone and other chorus blocks."),
 	tiles = {
 		"mcl_end_chorus_plant.png",
 		"mcl_end_chorus_plant.png",

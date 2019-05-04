@@ -22,3 +22,4 @@ This item is used to locate End portal shrines in the Overworld and to activate 
 Use the attack key to release the eye of ender. It will rise and fly in the horizontal direction of the closest end portal shrine. If you're very close, the eye of ender will take the direct path to the End portal shrine instead. After a few seconds, it stops. It may drop as an item, but there's a 20% chance it shatters.=
 To activate an End portal, eyes of ender need to be placed into each block of an intact End portal frame.=
 NOTE: The End dimension is currently incomplete and might change in future versions.=
+The stem attaches itself to end stone and other chorus blocks.=
