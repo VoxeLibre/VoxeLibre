@@ -26,7 +26,7 @@ end
 
 -- This detaches all chorus plants that are/were attached
 -- at start_pos.
-mcl_end.detach_chorus_plant = function(start_pos)
+mcl_end.detach_chorus_plant = function(start_pos, digger)
 	local neighbors = {
 		{ x=0, y=1, z=0 },
 		{ x=0, y=0, z=1 },
@@ -75,14 +75,14 @@ mcl_end.detach_chorus_plant = function(start_pos)
 			-- If we traversed the entire chorus plant and it was not attached to end stone:
 			-- Drop ALL the chorus nodes we found.
 			for c=1, #chorus_nodes do
-				minetest.dig_node(chorus_nodes[c])
+				minetest.node_dig(chorus_nodes[c], { name = "mcl_end:chorus_plant" }, digger)
 			end
 		end
 	end
 end
 
-mcl_end.check_detach_chorus_plant = function(pos)
-	mcl_end.detach_chorus_plant(pos)
+mcl_end.check_detach_chorus_plant = function(pos, oldnode, oldmetadata, digger)
+	mcl_end.detach_chorus_plant(pos, digger)
 end
 
 minetest.register_node("mcl_end:chorus_flower", {
