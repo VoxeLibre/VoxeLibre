@@ -103,7 +103,7 @@ minetest.register_node("mcl_end:chorus_flower", {
 	node_box = chorus_flower_box,
 	selection_box = { type = "regular" },
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	groups = {handy=1,axey=1, deco_block = 1, dig_by_piston = 1, destroy_by_lava_flow = 1,chorus_plant = 1},
+	groups = {handy=1,axey=1, deco_block = 1, not_in_creative_inventory = 1, dig_by_piston = 1, destroy_by_lava_flow = 1,chorus_plant = 1},
 
 	node_placement_prediction = "",
 	on_place = function(itemstack, placer, pointed_thing)
@@ -116,7 +116,7 @@ minetest.register_node("mcl_end:chorus_flower", {
 			end
 		end
 
-		--[[ Part 1: Check placement rules. Placement is legal is one of the following
+		--[[ Part 1: Check placement rules. Placement is legal if one of the following
 		conditions is met:
 		1) On top of end stone or chorus plant
 		2) On top of air and horizontally adjacent to exactly 1 chorus plant ]]
@@ -159,8 +159,11 @@ minetest.register_node("mcl_end:chorus_flower", {
 		end
 		if plant_ok then
 			-- Placement OK! Proceed normally
-			minetest.sound_play(mcl_sounds.node_sound_wood_defaults().place, {pos = pos})
-			return minetest.item_place_node(itemstack, placer, pointed_thing)
+			local it, suc = minetest.item_place_node(itemstack, placer, pointed_thing)
+			if suc then
+				minetest.sound_play(mcl_sounds.node_sound_wood_defaults().place, {pos = pos})
+			end
+			return it
 		else
 			return itemstack
 		end
@@ -219,14 +222,52 @@ minetest.register_node("mcl_end:chorus_plant", {
 		connect_back = { -0.1875, -0.1875, 0.25, 0.1875, 0.1875, 0.5 },
 	},
 	connect_sides = { "top", "bottom", "front", "back", "left", "right" },
-	connects_to = {"mcl_end:chorus_plant", "mcl_end:chorus_flower", "mcl_end:chorus_flower_dead", "mcl_end:end_stone"},
+	connects_to = {"group:chorus_plant", "mcl_end:end_stone"},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	drop = {
 		items = {
 			{ items = { "mcl_end:chorus_fruit"}, rarity = 2 },
 		}
 	},
-	groups = {handy=1,axey=1, not_in_creative_inventory = 1, dig_by_piston = 1, destroy_by_lava_flow = 1, chorus_plant = 1 },
+	groups = {handy=1,axey=1, dig_by_piston = 1, destroy_by_lava_flow = 1, chorus_plant = 1 },
+
+	node_placement_prediction = "",
+	on_place = function(itemstack, placer, pointed_thing)
+		local node_under = minetest.get_node(pointed_thing.under)
+		local node_above = minetest.get_node(pointed_thing.above)
+		if placer and not placer:get_player_control().sneak then
+			-- Use pointed node's on_rightclick function first, if present
+			if minetest.registered_nodes[node_under.name] and minetest.registered_nodes[node_under.name].on_rightclick then
+				return minetest.registered_nodes[node_under.name].on_rightclick(pointed_thing.under, node_under, placer, itemstack) or itemstack
+			end
+		end
+
+		--[[ Part 1: Check placement rules. Placement is legal if this
+		condition is met:
+		- placed on end stone or any chorus node ]]
+		local pos_place, node_check
+		if minetest.registered_nodes[node_under.name].buildable_to then
+			pos_place = pointed_thing.under
+			node_check = node_above
+		else
+			pos_place = pointed_thing.above
+			node_check = node_under
+		end
+		local plant_ok = false
+		if node_check.name == "mcl_end:end_stone" or minetest.get_item_group(node_check.name, "chorus_plant") > 0 then
+			plant_ok = true
+		end
+		if plant_ok then
+			-- Placement OK! Proceed normally
+			local it, suc = minetest.item_place_node(itemstack, placer, pointed_thing)
+			if suc then
+				minetest.sound_play(mcl_sounds.node_sound_wood_defaults().place, {pos = pos_place})
+			end
+			return it
+		else
+			return itemstack
+		end
+	end,
 	after_dig_node = mcl_end.check_detach_chorus_plant,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
