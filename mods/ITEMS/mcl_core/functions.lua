@@ -1175,7 +1175,11 @@ minetest.register_abm({
 	chance = 8,
 	action = function(pos, node)
 		if minetest.get_node_light(pos, 0) >= 12 then
-			minetest.remove_node(pos)
+			if node.name == "mcl_core:ice" then
+				mcl_core.melt_ice(pos)
+			else
+				minetest.remove_node(pos)
+			end
 		end
 	end
 })
@@ -1204,6 +1208,19 @@ function mcl_core.check_vines_supported(pos, node)
 		end
 	end
 	return supported
+end
+
+-- Melt ice at pos. mcl_core:ice MUST be a post if you call this!
+function mcl_core.melt_ice(pos)
+	-- Create a water source if ice is destroyed and there was something below it
+	local below = {x=pos.x, y=pos.y-1, z=pos.z}
+	local belownode = minetest.get_node(below)
+	local dim = mcl_worlds.pos_to_dimension(below)
+	if dim ~= "nether" and belownode.name ~= "air" and belownode.name ~= "ignore" and belownode.name ~= "mcl_core:void" then
+		minetest.set_node(pos, {name="mcl_core:water_source"})
+	else
+		minetest.remove_node(pos)
+	end
 end
 
 ---- FUNCTIONS FOR SNOWED NODES ----
