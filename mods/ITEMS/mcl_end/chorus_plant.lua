@@ -230,7 +230,7 @@ minetest.register_node("mcl_end:chorus_plant", {
 			{ items = { "mcl_end:chorus_fruit"}, rarity = 2 },
 		}
 	},
-	groups = {handy=1,axey=1, dig_by_piston = 1, destroy_by_lava_flow = 1, chorus_plant = 1 },
+	groups = {handy=1,axey=1, deco_block = 1, dig_by_piston = 1, destroy_by_lava_flow = 1, chorus_plant = 1 },
 
 	node_placement_prediction = "",
 	on_place = function(itemstack, placer, pointed_thing)
