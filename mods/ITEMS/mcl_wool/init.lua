@@ -61,7 +61,7 @@ for _, row in ipairs(wool.dyes) do
 			is_ground_content = false,
 			tiles = {texture..".png"},
 			groups = {handy=1,shearsy_wool=1, flammable=1,wool=1,building_block=1},
-			sounds = mcl_sounds.node_sound_defaults(),
+			sounds = mcl_sounds.node_sound_wool_defaults(),
 			_mcl_hardness = 0.8,
 			_mcl_blast_resistance = 4,
 		})
@@ -77,7 +77,7 @@ for _, row in ipairs(wool.dyes) do
 			wield_image = texture..".png",
 			wield_scale = { x=1, y=1, z=0.5 },
 			groups = {handy=1, carpet=1,attached_node=1,dig_by_water=1,deco_block=1},
-			sounds = mcl_sounds.node_sound_defaults(),
+			sounds = mcl_sounds.node_sound_wool_defaults(),
 			paramtype = "light",
 			sunlight_propagates = true,
 			stack_max = 64,

@@ -4,6 +4,9 @@ Licenses of sounds
 Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
 http://creativecommons.org/licenses/by-sa/3.0/
 
+Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+http://creativecommons.org/licenses/by-sa/4.0/
+
 Creative Commons Attribution 3.0 Unported (CC BY-SA 3.0)
 http://creativecommons.org/licenses/by/3.0/
 
@@ -85,6 +88,10 @@ Michel Baradari <https://opengameart.org/content/lava-splash> (CC BY 3.0)
 Adam_N (CC0 1.0):
   player_falling_damage.ogg
     Source: <https://www.freesound.org/people/Adam_N/sounds/346692/>
+
+Alecia Shepherd (CC BY-SA 4.0):
+  mcl_sounds_cloth.ogg
+    Source: SnowSong sound and music pack <https://opengameart.org/content/snowsong-sound-and-music-pack>
 
 Unknown authors (WTFPL):
   pedology_snow_soft_footstep.*.ogg
