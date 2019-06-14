@@ -48,7 +48,9 @@ end
 
 local default_sounds
 if minetest.get_modpath("mcl_sounds") then
-	default_sounds = mcl_sounds.node_sound_wood_defaults()
+	default_sounds = mcl_sounds.node_sound_wood_defaults({
+		footstep = { gain = 0.5, name = "mcl_sounds_cloth" },
+	})
 end
 
 function mcl_beds.register_bed(name, def)
