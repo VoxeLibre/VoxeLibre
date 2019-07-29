@@ -492,6 +492,7 @@ register_minecart(
 			self._start_pos = nil
 			clicker:set_detach()
 			clicker:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
+			mcl_player.player_set_animation(clicker, "stand" , 30)
 		elseif not self._driver then
 			self._driver = player_name
 			self._start_pos = self.object:get_pos()
