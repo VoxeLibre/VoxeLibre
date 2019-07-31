@@ -1,92 +1,11 @@
+--Fishing Rod, Bobber, and Flying Bobber mechanics and Bobber artwork by Rootyjr.
+
 local S = minetest.get_translator("mcl_fishing")
 local mod_throwing = minetest.get_modpath("mcl_throwing")
 
 local entity_mapping = {
 	["mcl_fishing:bobber"] = "mcl_fishing:bobber_entity",
 }
-
-local go_fishing = function(itemstack, user, pointed_thing)
-	if pointed_thing and pointed_thing.under then
-		-- Use pointed node's on_rightclick function first, if present
-		local node = minetest.get_node(pointed_thing.under)
-		if user and not user:get_player_control().sneak then
-			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
-			end
-		end
-
-		if string.find(node.name, "mcl_core:water") then
-			local itemname
-			local itemcount = 1
-			local itemwear = 0
-			-- FIXME: Maybe use a better seeding
-			local pr = PseudoRandom(os.time() * math.random(1, 100))
-			local r = pr:next(1, 100)
-			if r <= 85 then
-				-- Fish
-				items = mcl_loot.get_loot({
-					items = {
-						{ itemstring = "mcl_fishing:fish_raw", weight = 60 },
-						{ itemstring = "mcl_fishing:salmon_raw", weight = 25 },
-						{ itemstring = "mcl_fishing:clownfish_raw", weight = 2 },
-						{ itemstring = "mcl_fishing:pufferfish_raw", weight = 13 },
-					}
-				}, pr)
-			elseif r <= 95 then
-				-- Junk
-				items = mcl_loot.get_loot({
-					items = {
-						{ itemstring = "mcl_core:bowl", weight = 10 },
-						{ itemstring = "mcl_fishing:fishing_rod", weight = 2, wear_min = 6554, wear_max = 65535 }, -- 10%-100% damage
-						{ itemstring = "mcl_mobitems:leather", weight = 10 },
-						{ itemstring = "3d_armor:boots_leather", weight = 10, wear_min = 6554, wear_max = 65535 }, -- 10%-100% damage
-						{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10 },
-						{ itemstring = "mcl_core:stick", weight = 5 },
-						{ itemstring = "mcl_mobitems:string", weight = 5 },
-						{ itemstring = "mcl_potions:potion_water", weight = 10 },
-						{ itemstring = "mcl_mobitems:bone", weight = 10 },
-						{ itemstring = "mcl_dye:black", weight = 1, amount_min = 10, amount_max = 10 },
-						{ itemstring = "mcl_mobitems:string", weight = 10 }, -- TODO: Tripwire Hook
-					}
-				}, pr)
-			else
-				-- Treasure
-				items = mcl_loot.get_loot({
-					items = {
-						-- TODO: Enchanted Bow
-						{ itemstring = "mcl_bows:bow", wear_min = 49144, wear_max = 65535 }, -- 75%-100% damage
-						-- TODO: Enchanted Book
-						{ itemstring = "mcl_books:book" },
-						-- TODO: Enchanted Fishing Rod
-						{ itemstring = "mcl_fishing:fishing_rod", wear_min = 49144, wear_max = 65535 }, -- 75%-100% damage
-						{ itemstring = "mcl_mobs:nametag", },
-						{ itemstring = "mcl_mobitems:saddle", },
-						{ itemstring = "mcl_flowers:waterlily", },
-					}
-				}, pr)
-			end
-			local item
-			if #items >= 1 then
-				item = ItemStack(items[1])
-			else
-				item = ItemStack()
-			end
-			local inv = user:get_inventory()
-			if inv:room_for_item("main", item) then
-				inv:add_item("main", item)
-			end
-			if not minetest.settings:get_bool("creative_mode") then
-				local idef = itemstack:get_definition()
-				itemstack:add_wear(65535/65) -- 65 uses
-				if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then
-					minetest.sound_play(idef.sound.breaks, {pos=pointed_thing.above, gain=0.5})
-				end
-			end
-			return itemstack
-		end
-	end
-	return nil
-end
 
 local bobber_ENTITY={
 	physical = false,
