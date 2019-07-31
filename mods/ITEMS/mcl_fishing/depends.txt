@@ -2,4 +2,3 @@ mcl_core
 mcl_sounds
 mcl_loot
 mcl_mobs
-mcl_throwing
