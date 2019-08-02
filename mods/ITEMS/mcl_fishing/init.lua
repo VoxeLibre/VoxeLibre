@@ -30,7 +30,7 @@ local bobber_ENTITY={
 local fish = function(itemstack, player)
 		local pos = player:get_pos()
 
-		local objs = minetest.get_objects_inside_radius(pos, 250)
+		local objs = minetest.get_objects_inside_radius(pos, 125)
 		local num = 0
 		local ent = nil
 		local noent = true
