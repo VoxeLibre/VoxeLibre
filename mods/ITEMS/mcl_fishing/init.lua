@@ -191,7 +191,7 @@ local bobber_on_step = function(self, dtime)
 		
 	end
 	--if in liquid then bob.
-	if def.liquidtype == "source" and def.name == "mcl_core:water" then
+	if def.liquidtype == "source" and def.name == "mcl_core:water_source" then
 		if self._oldy == nil then
 			self.object:set_pos({x=self.object:get_pos().x,y=math.floor(self.object:get_pos().y)+.5,z=self.object:get_pos().z})
 			self._oldy = self.object:get_pos().y
