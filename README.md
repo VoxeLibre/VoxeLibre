@@ -1,5 +1,5 @@
 # MineClone 2
-An unofficial Minecraft-like game for Minetest. Forked from MineClone by daredevils.
+An unofficial Minecraft-like game for Minetest. Forked from MineClone by davedevils.
 Developed by Wuzzy and contributors. Not developed or endorsed by Mojang AB.
 
 Version: 0.53.3
@@ -198,7 +198,7 @@ There are so many people to list (sorry). Check out the respective mod directori
 
 ### Coding
 * [Wuzzy](https://forum.minetest.net/memberlist.php?mode=viewprofile&u=3082): Main programmer of most mods
-* daredevils: Creator of MineClone on which MineClone 2 is based on
+* davedevils: Creator of MineClone on which MineClone 2 is based on
 * [ex-bart](https://github.com/ex-bart): Redstone comparators
 * Lots of other people: TO BE WRITTEN (see mod directories for details)
 
@@ -219,7 +219,7 @@ Various sources. See the respective mod directories for details.
 
 ### Special thanks
 
-* daredevils for starting MineClone, the original version of this game
+* davedevils for starting MineClone, the original version of this game
 * celeron55 for creating Minetest
 * Minetest's modding community for providing a huge selection of mods, some of which ended up in MineClone 2
 * Jordach for the jukebox music compilation from Big Freaking Dig
@@ -242,10 +242,10 @@ Here's the detailed legalese for those who need it:
 ### License of source code
 MineClone 2 is a clean-room implementation of Minecraft
 and licensed under the
-GNU LGPL v2.1 (Wuzzy, daredevils and countless others) (see `LICENSE.txt`).
+GNU LGPL v2.1 (Wuzzy, davedevils and countless others) (see `LICENSE.txt`).
 
 MineClone 2 is a direct continuation of the discontinued MineClone
-project by daredevils which fell under the same license.
+project by davedevils which fell under the same license.
 
 Mods credit:
 See `README.txt` or `README.md` in each mod directory for information about other authors.
