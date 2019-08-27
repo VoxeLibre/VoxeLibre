@@ -9,6 +9,12 @@ local GRAVITY = 9.81
 
 local YAW_OFFSET = -math.pi/2
 
+local dir_to_pitch = function(dir)
+	local dir2 = vector.normalize(dir)
+	local xz = math.abs(dir.x) + math.abs(dir.z)
+	return -math.atan2(-dir.y, xz)
+end
+
 local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
 local mod_button = minetest.get_modpath("mesecons_button")
 
@@ -108,7 +114,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			return
 		end
 		-- Drop arrow as item when it is no longer stuck
-		-- FIXME: Arrows are a bit slot to react and continue to float in mid air for a few seconds.
+		-- FIXME: Arrows are a bit slow to react and continue to float in mid air for a few seconds.
 		if self._stuckrechecktimer > STUCK_RECHECK_TIME then
 			local stuckin_def
 			if self._stuckin then
@@ -290,7 +296,9 @@ ARROW_ENTITY.on_step = function(self, dtime)
 	-- Update yaw
 	if not self._stuck then
 		local vel = self.object:get_velocity()
-		self.object:set_yaw(minetest.dir_to_yaw(vel)+YAW_OFFSET)
+		local yaw = minetest.dir_to_yaw(vel)+YAW_OFFSET
+		local pitch = dir_to_pitch(vel)
+		self.object:set_rotation({ x = 0, y = yaw, z = pitch })
 	end
 
 	-- Update internal variable
