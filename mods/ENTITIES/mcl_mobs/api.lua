@@ -781,6 +781,19 @@ local do_jump = function(self)
 		z = pos.z + dir_z
 	})
 
+	-- this is used to detect if there's a block on top of the block in front of the mob.
+	-- If there is, there is no point in jumping as we won't manage.
+	local nodTop = node_ok({
+		x = pos.x + dir_x,
+		y = pos.y + 1.5,
+		z = pos.z + dir_z
+	})
+
+	-- we don't attempt to jump if there's a stack of blocks blocking
+	if nodTop ~= nil then
+		return false
+	end
+
 	-- thin blocks that do not need to be jumped
 	if nod.name == node_snow then
 		return false
