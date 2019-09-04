@@ -787,10 +787,10 @@ local do_jump = function(self)
 		x = pos.x + dir_x,
 		y = pos.y + 1.5,
 		z = pos.z + dir_z
-	})
+	}, "air")
 
 	-- we don't attempt to jump if there's a stack of blocks blocking
-	if nodTop ~= nil then
+	if minetest.registered_nodes[nodTop.name] == true then
 		return false
 	end
 
