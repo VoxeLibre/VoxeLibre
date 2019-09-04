@@ -127,7 +127,7 @@ mcl_weather.rain.update_sound = function(player)
 
     if player_meta.sound_handler ~= nil then
       if mcl_weather.rain.last_rp_count == 0 then
-        minetest.sound_stop(player_meta.sound_handler)
+        minetest.sound_fade(player_meta.sound_handler, -0.5, 0.0)
         player_meta.sound_handler = nil
       end
     elseif mcl_weather.rain.last_rp_count > 0 then
@@ -142,7 +142,7 @@ end
 mcl_weather.rain.remove_sound = function(player)
   local player_meta = mcl_weather.players[player:get_player_name()]
   if player_meta ~= nil and player_meta.sound_handler ~= nil then
-    minetest.sound_stop(player_meta.sound_handler)
+    minetest.sound_fade(player_meta.sound_handler, -0.5, 0.0)
     player_meta.sound_handler = nil
     player_meta.sound_updated = nil
   end

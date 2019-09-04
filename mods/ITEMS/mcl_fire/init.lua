@@ -217,7 +217,7 @@ if flame_sound then
 			(num["mcl_fire:eternal_fire"] or 0)
 		-- Stop previous sound
 		if handles[player_name] then
-			minetest.sound_stop(handles[player_name])
+			minetest.sound_fade(handles[player_name], -0.4, 0.0)
 			handles[player_name] = nil
 		end
 		-- If flames
