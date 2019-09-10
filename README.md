@@ -201,6 +201,7 @@ There are so many people to list (sorry). Check out the respective mod directori
 * davedevils: Creator of MineClone on which MineClone 2 is based on
 * [ex-bart](https://github.com/ex-bart): Redstone comparators
 * [Rootyjr](https://github.com/Rootyjr): Fishing rod and bugfixes
+* [aligator](https://github.com/aligator): Improvement of doors
 * Lots of other people: TO BE WRITTEN (see mod directories for details)
 
 ### Textures
