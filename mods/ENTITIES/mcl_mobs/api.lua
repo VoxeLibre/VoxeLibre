@@ -1101,8 +1101,7 @@ end
 -- find and replace what mob is looking for (grass, wheat etc.)
 local replace = function(self, pos)
 
-	if not mobs_griefing
-	or not self.replace_rate
+	if not self.replace_rate
 	or not self.replace_what
 	or self.child == true
 	or self.object:get_velocity().y ~= 0
@@ -1139,7 +1138,9 @@ local replace = function(self, pos)
 
 		if on_replace_return ~= false then
 
-			minetest.set_node(pos, {name = with})
+			if mobs_griefing then
+				minetest.set_node(pos, {name = with})
+			end
 
 			-- when cow/sheep eats grass, replace wool and milk
 			if self.gotten == true then

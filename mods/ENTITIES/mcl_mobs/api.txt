@@ -243,8 +243,9 @@ eating.
    'replace_rate'   how random should the replace rate be (typically 10)
    'replace_offset' +/- value to check specific node to replace
 
-   'on_replace(self, pos, oldnode, newnode)' is called when mob is about to
-                                             replace a node.
+   'on_replace(self, pos, oldnode, newnode)'
+          is called when mob is about to replace a node. Also called
+          when not actually replacing due to mobs_griefing setting being false.
       'self'    ObjectRef of mob
       'pos'     Position of node to replace
       'oldnode' Current node
