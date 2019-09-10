@@ -1142,11 +1142,6 @@ local replace = function(self, pos)
 				minetest.set_node(pos, {name = with})
 			end
 
-			-- when cow/sheep eats grass, replace wool and milk
-			if self.gotten == true then
-				self.gotten = false
-				self.object:set_properties(self)
-			end
 		end
 	end
 end
@@ -3779,8 +3774,6 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 			if breed and self.hornytimer == 0 then
 				self.horny = true
 			end
-
-			self.gotten = false
 
 			if tame then
 

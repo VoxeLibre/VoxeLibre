@@ -303,8 +303,10 @@ for each mob.
    'self.child_texture' contains mob child texture when growing up
    'self.base_texture'  contains current skin texture which was randomly
                         selected from textures list
-   'self.gotten'        this is used for obtaining milk from cow and wool from
-                        sheep
+   'self.gotten'        this is used to track whether some special item has been
+                        gotten from the mob, for example, wool from sheep.
+                        Initialized as false, and the mob must set this value
+                        manually.
    'self.horny'         when animal fed enough it is set to true and animal can
                         breed with same animal
    'self.hornytimer'    background timer that controls breeding functions and
