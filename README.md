@@ -200,6 +200,7 @@ There are so many people to list (sorry). Check out the respective mod directori
 * [Wuzzy](https://forum.minetest.net/memberlist.php?mode=viewprofile&u=3082): Main programmer of most mods
 * davedevils: Creator of MineClone on which MineClone 2 is based on
 * [ex-bart](https://github.com/ex-bart): Redstone comparators
+* [Rootyjr](https://github.com/Rootyjr): Fishing rod and bugfixes
 * Lots of other people: TO BE WRITTEN (see mod directories for details)
 
 ### Textures
