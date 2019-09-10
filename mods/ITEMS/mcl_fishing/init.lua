@@ -193,7 +193,6 @@ local bobber_on_step = function(self, dtime)
 			self.object:set_pos({x=self.object:get_pos().x,y=math.floor(self.object:get_pos().y)+.5,z=self.object:get_pos().z})
 			self._oldy = self.object:get_pos().y
 		end
-		minetest.log(self.object:get_pos().y.." "..self._oldy)
 		-- reset to original position after dive.
 		if self.object:get_pos().y > self._oldy then
 			self.object:set_pos({x=self.object:get_pos().x,y=self._oldy,z=self.object:get_pos().z})
@@ -202,7 +201,7 @@ local bobber_on_step = function(self, dtime)
 		end
 		if self._dive then
 			for i=1,2 do
-					--spray bubbles there's a fish.
+					-- Spray bubbles when there's a fish.
 					minetest.add_particle({
 						pos = {x=epos["x"]+math.random(-1,1)*math.random()/2,y=epos["y"]+0.1,z=epos["z"]+math.random(-1,1)*math.random()/2},
 						velocity = {x=0, y=4, z=0},
@@ -222,7 +221,7 @@ local bobber_on_step = function(self, dtime)
 				self._dive = false
 			end
 		else if self._waittick == nil then
-			--wait for random number of ticks.
+			-- wait for random number of ticks.
 			self._waittick = math.random(50,800)
 		else
 			if self._tick ~= self._waittick then
@@ -296,8 +295,7 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 	description = S("Fishing Rod"),
 	_doc_items_longdesc = S("Fishing rods can be used to catch fish."),
 	_doc_items_usagehelp = S("Rightclick to launch the bobber. When it sinks right-click again to reel in an item. Who knows what you're going to catch?"),
-	-- This item is incomplete, hide it from creative inventory
-	groups = { tool=1},
+	groups = { tool=1 },
 	inventory_image = "mcl_fishing_fishing_rod.png",
 	stack_max = 1,
 	on_place = fish,
