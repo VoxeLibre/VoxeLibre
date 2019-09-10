@@ -73,24 +73,6 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
-	output = "mcl_mobitems:carrot_on_a_stick",
-	recipe = {
-		{ "", "", "mcl_core:stick", },
-		{ "", "mcl_core:stick", "mcl_mobitems:string", },
-		{ "mcl_core:stick", "", "mcl_farming:carrot_item" },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_mobitems:carrot_on_a_stick",
-	recipe = {
-		{ "mcl_core:stick", "", "" },
-		{ "mcl_mobitems:string", "mcl_core:stick", "", },
-		{ "mcl_farming:carrot_item", "", "mcl_core:stick" },
-	},
-})
-
 -- Make red sand, red sandstone and more craftable in v6
 -- NOTE: When you change these, also update mcl_craftguide for the "v6" icon in
 -- the craft guide!
