@@ -199,6 +199,36 @@ function mobs:yaw(self, yaw, delay)
 	set_yaw(self, yaw, delay)
 end
 
+local add_texture_mod = function(self, mod)
+	local full_mod = ""
+	local already_added = false
+	for i=1, #self.texture_mods do
+		if mod == self.texture_mods[i] then
+			already_added = true
+		end
+		full_mod = full_mod .. self.texture_mods[i]
+	end
+	if not already_added then
+		full_mod = full_mod .. mod
+		table.insert(self.texture_mods, mod)
+	end
+	self.object:set_texture_mod(full_mod)
+end
+local remove_texture_mod = function(self, mod)
+	local full_mod = ""
+	local remove = {}
+	for i=1, #self.texture_mods do
+		if self.texture_mods[i] ~= mod then
+			full_mod = full_mod .. self.texture_mods[i]
+		else
+			table.insert(remove, i)
+		end
+	end
+	for i=#remove, 1 do
+		table.remove(self.texture_mods, remove[i])
+	end
+	self.object:set_texture_mod(full_mod)
+end
 
 -- set defined animation
 local set_animation = function(self, anim)
@@ -455,10 +485,10 @@ local check_for_death = function(self, cause, cmi_cause)
 
 		-- play damage sound if health was reduced and make mob flash red.
 		if damaged then
-			self.object:set_texture_mod("^[colorize:#FF000040")
+			add_texture_mod(self, "^[colorize:#FF000040")
 			minetest.after(.2, function(self)
 				if self and self.object then
-					self.object:set_texture_mod("")
+					remove_texture_mod(self, "^[colorize:#FF000040")
 				end
 			end, self)
 			mob_sound(self, self.sounds.damage)
@@ -1978,7 +2008,7 @@ local do_states = function(self, dtime)
 				self.timer = 0
 				self.blinktimer = 0
 				self.blinkstatus = false
-				self.object:set_texture_mod("")
+				remove_texture_mod(self, "^[brighten")
 			end
 
 			-- walk right up to player unless the timer is active
@@ -2004,9 +2034,9 @@ local do_states = function(self, dtime)
 					self.blinktimer = 0
 
 					if self.blinkstatus then
-						self.object:set_texture_mod("")
+						remove_texture_mod(self, "^[brighten")
 					else
-						self.object:set_texture_mod("^[brighten")
+						add_texture_mod(self, "^[brighten")
 					end
 
 					self.blinkstatus = not self.blinkstatus
@@ -2773,6 +2803,8 @@ local mob_activate = function(self, staticdata, def, dtime)
 	self.jump_sound_cooloff = 0 -- used to prevent jump sound from being played too often in short time
 	self.opinion_sound_cooloff = 0 -- used to prevent sound spam of particular sound types
 
+	self.texture_mods = {}
+
 	-- check existing nametag
 	if not self.nametag then
 		self.nametag = def.nametag
@@ -3127,6 +3159,7 @@ minetest.register_entity(name, {
 	glow = def.glow,
 	can_despawn = can_despawn,
 	child = def.child or false,
+	texture_mods = {},
 	-- End of MCL2 extensions
 
 	on_spawn = def.on_spawn,
