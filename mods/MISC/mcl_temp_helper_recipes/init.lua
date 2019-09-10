@@ -113,14 +113,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_core:stone_smooth 2",
-	recipe = {
-		{ "mcl_stairs:slab_stone" },
-		{ "mcl_stairs:slab_stone" },
-	},
-})
-
-minetest.register_craft({
 	output = "mcl_core:gold_ingot 9",
 	recipe = {{ "mcl_core:emerald" }},
 })
