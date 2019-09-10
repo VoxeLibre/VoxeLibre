@@ -15,9 +15,6 @@ local bobber_ENTITY={
 	collisionbox = {0.45,0.45,0.45,0.45,0.45,0.45},
 	pointable = false,
 
-	--get_staticdata = get_staticdata,
-	--on_activate = on_activate,
-
 	_lastpos={},
 	_dive = false,
 	_waittick = nil,
@@ -242,7 +239,7 @@ local bobber_on_step = function(self, dtime)
 	end
 end		
 
-	-- Destroy when hitting a solid node
+	-- TODO: Destroy when hitting a solid node
 	--if self._lastpos.x~=nil then
 	--	if (def and def.walkable) or not def then
 			--self.object:remove()
@@ -256,7 +253,7 @@ bobber_ENTITY.on_step = bobber_on_step
 
 minetest.register_entity("mcl_fishing:bobber_entity", bobber_ENTITY)
 
---If player leaves area remove bobber.
+-- If player leaves area, remove bobber.
 minetest.register_on_leaveplayer(function(player)
 	local objs = minetest.get_objects_inside_radius(player:get_pos(), 250)
 	local num = 0
@@ -275,7 +272,7 @@ minetest.register_on_leaveplayer(function(player)
 	end
 end)
 
---if player dies remove bobber.
+-- If player dies, remove bobber.
 minetest.register_on_dieplayer(function(player)
 	local objs = minetest.get_objects_inside_radius(player:get_pos(), 250)
 	local num = 0
@@ -308,7 +305,6 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 	sound = { breaks = "default_tool_breaks" },
 })
 
---Make fishing rods craftable again.
 minetest.register_craft({
 	output = "mcl_fishing:fishing_rod",
 	recipe = {
