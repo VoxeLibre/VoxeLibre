@@ -185,6 +185,10 @@ mobs:register_mob("mobs_mc:sheep", {
 			minetest.log("verbose", "[mobs_mc] " ..item:get_name() .. " " .. minetest.get_item_group(item:get_name(), "dye"))
 			for group, colordata in pairs(colors) do
 				if minetest.get_item_group(item:get_name(), group) == 1 then
+					if not minetest.settings:get_bool("creative_mode") then
+						item:take_item()
+						clicker:set_wielded_item(item)
+					end
 					self.base_texture = sheep_texture(group)
 					self.object:set_properties({
 						textures = self.base_texture,
