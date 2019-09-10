@@ -3,7 +3,6 @@
 local S = minetest.get_translator("mcl_wip")
 
 local wip_items = {
-	"mcl_fishing:fishing_rod",
 	"mcl_maps:empty_map",
 	"mcl_comparators:comparator_off_comp",
 	"mcl_minecarts:hopper_minecart",

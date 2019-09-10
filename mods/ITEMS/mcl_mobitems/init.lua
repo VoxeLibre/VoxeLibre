@@ -359,8 +359,6 @@ minetest.register_craft({
 	},
 })
 
---[[
-TODO: Re-enable this when fishing rod is available again
 minetest.register_craft({
 	output = "mcl_mobitems:carrot_on_a_stick",
 	recipe = {
@@ -376,7 +374,6 @@ minetest.register_craft({
 		{ "mcl_farming:carrot_item", "" },
 	},
 })
-]]
 
 minetest.register_craft({
 	type = "shapeless",
