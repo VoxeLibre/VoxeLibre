@@ -98,9 +98,9 @@ local professions = {
 			{
 			{ { "mcl_fishing:fish_raw", 6, 6, "mcl_core:emerald", 1, 1 }, { "mcl_fishing:fish_cooked", 6, 6 } },
 			{ { "mcl_mobitems:string", 15, 20 }, E1 },
-			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
+			-- TODO: replace with enchanted fishing rod
+			{ { "mcl_core:emerald", 3, 11 }, { "mcl_fishing:fishing_rod", 1, 1} },
 			},
-			-- TODO: enchanted fishing rod
 		},
 	},
 	fletcher = {
