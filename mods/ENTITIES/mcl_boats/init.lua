@@ -34,6 +34,7 @@ local boat_visual_size = {x = 3, y = 3}
 local driver_visual_size = { x = 1/boat_visual_size.x, y = 1/boat_visual_size.y }
 local paddling_speed = 22
 local boat_y_offset = 0.35
+local boat_y_offset_ground = boat_y_offset + 0.6
 
 --
 -- Boat entity
@@ -145,12 +146,21 @@ end
 
 function boat.on_step(self, dtime)
 	self._v = get_v(self.object:get_velocity()) * get_sign(self._v)
+	local in_water = true
+	local v_factor = 1
+	local v_slowdown = 0.02
+	local p = self.object:get_pos()
+	if not is_water({x=p.x, y=p.y-boat_y_offset, z=p.z}) then
+		in_water = false
+		v_factor = 0.405
+		v_slowdown = 0.04
+	end
 	if self._driver then
 		local ctrl = self._driver:get_player_control()
 		local yaw = self.object:get_yaw()
 		if ctrl.up then
 			-- Forwards
-			self._v = self._v + 0.1
+			self._v = self._v + 0.1 * v_factor
 
 			-- Paddling animation
 			if self._animation ~= 1 then
@@ -159,7 +169,7 @@ function boat.on_step(self, dtime)
 			end
 		elseif ctrl.down then
 			-- Backwards
-			self._v = self._v - 0.1
+			self._v = self._v - 0.1 * v_factor
 
 			-- Paddling animation, reversed
 			if self._animation ~= -1 then
@@ -175,15 +185,15 @@ function boat.on_step(self, dtime)
 		end
 		if ctrl.left then
 			if self._v < 0 then
-				self.object:set_yaw(yaw - (1 + dtime) * 0.03)
+				self.object:set_yaw(yaw - (1 + dtime) * 0.03 * v_factor)
 			else
-				self.object:set_yaw(yaw + (1 + dtime) * 0.03)
+				self.object:set_yaw(yaw + (1 + dtime) * 0.03 * v_factor)
 			end
 		elseif ctrl.right then
 			if self._v < 0 then
-				self.object:set_yaw(yaw + (1 + dtime) * 0.03)
+				self.object:set_yaw(yaw + (1 + dtime) * 0.03 * v_factor)
 			else
-				self.object:set_yaw(yaw - (1 + dtime) * 0.03)
+				self.object:set_yaw(yaw - (1 + dtime) * 0.03 * v_factor)
 			end
 		end
 	else
@@ -193,13 +203,11 @@ function boat.on_step(self, dtime)
 			self._animation = 0
 		end
 	end
-	local velo = self.object:get_velocity()
-	if self._v == 0 and velo.x == 0 and velo.y == 0 and velo.z == 0 then
-		self.object:set_pos(self.object:get_pos())
-		return
-	end
 	local s = get_sign(self._v)
-	self._v = self._v - 0.02 * s
+	if not in_water and math.abs(self._v) > 0.1 then
+		v_slowdown = v_slowdown * 5
+	end
+	self._v = self._v - v_slowdown * s
 	if s ~= get_sign(self._v) then
 		self.object:set_velocity({x = 0, y = 0, z = 0})
 		self._v = 0
@@ -209,18 +217,12 @@ function boat.on_step(self, dtime)
 		self._v = 5 * get_sign(self._v)
 	end
 
-	local p = self.object:get_pos()
 	p.y = p.y - boat_y_offset
 	local new_velo
 	local new_acce = {x = 0, y = 0, z = 0}
 	if not is_water(p) then
 		local nodedef = minetest.registered_nodes[minetest.get_node(p).name]
-		if (not nodedef) or nodedef.walkable then
-			self._v = 0
-			new_acce = {x = 0, y = 1, z = 0}
-		else
-			new_acce = {x = 0, y = -9.8, z = 0}
-		end
+		new_acce = {x = 0, y = -9.8, z = 0}
 		new_velo = get_velocity(self._v, self.object:get_yaw(),
 			self.object:get_velocity().y)
 		self.object:set_pos(self.object:get_pos())
@@ -302,10 +304,11 @@ for b=1, #boat_ids do
 				end
 			end
 
-			if not is_water(pointed_thing.under) then
-				return
+			if is_water(pointed_thing.under) then
+				pointed_thing.under.y = pointed_thing.under.y + boat_y_offset
+			else
+				pointed_thing.under.y = pointed_thing.under.y + boat_y_offset_ground
 			end
-			pointed_thing.under.y = pointed_thing.under.y + boat_y_offset
 			local boat = minetest.add_entity(pointed_thing.under, "mcl_boats:boat")
 			boat:get_luaentity()._itemstring = itemstring
 			boat:set_properties({textures = { "mcl_boats_texture_"..images[b].."_boat.png" }})
