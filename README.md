@@ -2,7 +2,7 @@
 An unofficial Minecraft-like game for Minetest. Forked from MineClone by davedevils.
 Developed by Wuzzy and contributors. Not developed or endorsed by Mojang AB.
 
-Version: 0.53.4
+Version: 0.54.0
 
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
@@ -67,7 +67,6 @@ an explanation.
 #### Incomplete items
 These items do not work yet, but you can get them with `/giveme` for testing:
 
-* Fishing Rod: `mcl_fishing:fishing_rod`
 * Activator Rail: `mcl_minecarts:activator_rail`
 * Minecart with Chest: `mcl_minecarts:chest_minecart`
 * Minecart with Furnace: `mcl_minecarts:furnace_minecart`
