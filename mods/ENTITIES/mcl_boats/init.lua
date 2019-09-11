@@ -35,6 +35,7 @@ local driver_visual_size = { x = 1/boat_visual_size.x, y = 1/boat_visual_size.y 
 local paddling_speed = 22
 local boat_y_offset = 0.35
 local boat_y_offset_ground = boat_y_offset + 0.6
+local boat_side_offset = 1.001
 
 --
 -- Boat entity
@@ -298,7 +299,7 @@ for b=1, #boat_ids do
 		stack_max = 1,
 		on_place = function(itemstack, placer, pointed_thing)
 			if pointed_thing.type ~= "node" then
-				return
+				return itemstack
 			end
 
 			-- Call on_rightclick if the pointed node defines it
@@ -309,12 +310,17 @@ for b=1, #boat_ids do
 				end
 			end
 
-			if is_water(pointed_thing.under) then
-				pointed_thing.under.y = pointed_thing.under.y + boat_y_offset
+			local pos = table.copy(pointed_thing.under)
+			local dir = vector.subtract(pointed_thing.above, pointed_thing.under)
+
+			if math.abs(dir.x) > 0.9 or math.abs(dir.z) > 0.9 then
+				pos = vector.add(pos, vector.multiply(dir, boat_side_offset))
+			elseif is_water(pos) then
+				pos = vector.add(pos, vector.multiply(dir, boat_y_offset))
 			else
-				pointed_thing.under.y = pointed_thing.under.y + boat_y_offset_ground
+				pos = vector.add(pos, vector.multiply(dir, boat_y_offset_ground))
 			end
-			local boat = minetest.add_entity(pointed_thing.under, "mcl_boats:boat")
+			local boat = minetest.add_entity(pos, "mcl_boats:boat")
 			boat:get_luaentity()._itemstring = itemstring
 			boat:set_properties({textures = { "mcl_boats_texture_"..images[b].."_boat.png" }})
 			boat:set_yaw(placer:get_look_horizontal())
