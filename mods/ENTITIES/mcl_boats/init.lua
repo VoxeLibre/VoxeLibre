@@ -146,15 +146,22 @@ end
 
 function boat.on_step(self, dtime)
 	self._v = get_v(self.object:get_velocity()) * get_sign(self._v)
-	local in_water = true
+	local on_water = true
+	local in_water = false
 	local v_factor = 1
 	local v_slowdown = 0.02
 	local p = self.object:get_pos()
-	if not is_water({x=p.x, y=p.y-boat_y_offset, z=p.z}) then
-		in_water = false
-		v_factor = 0.405
+	if (not is_water({x=p.x, y=p.y-boat_y_offset, z=p.z})) then
+		on_water = false
+		v_factor = 0.5
 		v_slowdown = 0.04
+	elseif (is_water({x=p.x, y=p.y-boat_y_offset+1, z=p.z})) then
+		on_water = false
+		in_water = true
+		v_factor = 0.75
+		v_slowdown = 0.05
 	end
+
 	if self._driver then
 		local ctrl = self._driver:get_player_control()
 		local yaw = self.object:get_yaw()
@@ -204,14 +211,14 @@ function boat.on_step(self, dtime)
 		end
 	end
 	local s = get_sign(self._v)
-	if not in_water and math.abs(self._v) > 0.1 then
-		v_slowdown = v_slowdown * 5
+	if not on_water and not in_water and math.abs(self._v) > 0.25 then
+		v_slowdown = math.min(self._v - 0.25, v_slowdown * 5)
+	elseif in_water and math.abs(self._v) > 0.5 then
+		v_slowdown = math.min(self._v - 0.5, v_slowdown * 5)
 	end
 	self._v = self._v - v_slowdown * s
 	if s ~= get_sign(self._v) then
-		self.object:set_velocity({x = 0, y = 0, z = 0})
 		self._v = 0
-		return
 	end
 	if math.abs(self._v) > 5 then
 		self._v = 5 * get_sign(self._v)
@@ -221,35 +228,33 @@ function boat.on_step(self, dtime)
 	local new_velo
 	local new_acce = {x = 0, y = 0, z = 0}
 	if not is_water(p) then
+		-- Not on water or inside water: Free fall
 		local nodedef = minetest.registered_nodes[minetest.get_node(p).name]
 		new_acce = {x = 0, y = -9.8, z = 0}
 		new_velo = get_velocity(self._v, self.object:get_yaw(),
 			self.object:get_velocity().y)
-		self.object:set_pos(self.object:get_pos())
 	else
 		p.y = p.y + 1
 		if is_water(p) then
+			-- Inside water: Slowly sink
 			local y = self.object:get_velocity().y
-			if y >= 5 then
-				y = 5
-			elseif y < 0 then
-				new_acce = {x = 0, y = 20, z = 0}
-			else
-				new_acce = {x = 0, y = 5, z = 0}
+			y = y - 0.01
+			if y < -0.2 then
+				y = -0.2
 			end
+			new_acce = {x = 0, y = 0, z = 0}
 			new_velo = get_velocity(self._v, self.object:get_yaw(), y)
-			self.object:set_pos(self.object:get_pos())
 		else
+			-- On top of water
 			new_acce = {x = 0, y = 0, z = 0}
 			if math.abs(self.object:get_velocity().y) < 1 then
 				local pos = self.object:get_pos()
 				pos.y = math.floor(pos.y) + boat_y_offset
-				self.object:set_pos(pos)
 				new_velo = get_velocity(self._v, self.object:get_yaw(), 0)
+				self.object:set_pos(pos)
 			else
 				new_velo = get_velocity(self._v, self.object:get_yaw(),
 					self.object:get_velocity().y)
-				self.object:set_pos(self.object:get_pos())
 			end
 		end
 	end
