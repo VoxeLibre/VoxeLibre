@@ -1170,7 +1170,8 @@ local function generate_structures(minp, maxp, seed, biomemap)
 
 						-- Witch hut
 						if ground_y <= 0 and nn == "mcl_core:dirt" then
-							local prob = minecraft_chunk_probability(48, minp, maxp)
+						local prob = minecraft_chunk_probability(48, minp, maxp)
+						if math.random(1, prob) == 1 then
 
 							local swampland = minetest.get_biome_id("Swampland")
 							local swampland_shore = minetest.get_biome_id("Swampland_shore")
@@ -1179,19 +1180,19 @@ local function generate_structures(minp, maxp, seed, biomemap)
 
 							local here_be_witches = false
 							if mg_name == "v6" then
-								-- In ye good ol' landes of v6, witches will settle at any
-								-- shores of dirt.
-								here_be_witches = true
+								-- v6: In Normal biome
+								if biomeinfo.get_v6_biome(p) == "Normal" then
+									here_be_witches = true
+								end
 							else
-								-- The townsfolk told me that witches live in the swamplands!
+								-- Other mapgens: In swampland biome
 								local bi = xz_to_biomemap_index(p.x, p.z, minp, maxp)
 								if biomemap[bi] == swampland or biomemap[bi] == swampland_shore then
 									here_be_witches = true
 								end
 							end
 
-							-- We still need a bit of luck!
-							if here_be_witches and math.random(1, prob) == 1 then
+							if here_be_witches then
 								local r = tostring(math.random(0, 3) * 90) -- "0", "90", "180" or 270"
 								local p1 = {x=p.x-1, y=WITCH_HUT_HEIGHT+2, z=p.z-1}
 								local size
@@ -1267,6 +1268,7 @@ local function generate_structures(minp, maxp, seed, biomemap)
 									end
 								end
 							end
+						end
 						end
 
 						-- Ice spikes in v6

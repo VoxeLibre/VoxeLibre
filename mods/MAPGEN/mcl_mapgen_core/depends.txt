@@ -1,5 +1,6 @@
 mcl_init
 mcl_core
+biomeinfo
 mclx_core?
 mcl_worlds
 mcl_cocoas
