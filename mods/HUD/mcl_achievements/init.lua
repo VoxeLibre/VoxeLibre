@@ -132,14 +132,11 @@ awards.register_achievement("mcl:acquireIron", {
 	description = S("Take an iron ingot from a furnace's output slot.\nHint: To smelt an iron ingot, put a fuel (like coal) and iron ore into a furnace."),
 	icon = "default_steel_ingot.png",
 })
---[[
--- TODO: Re-enable when fishing rod is available
 awards.register_achievement("mcl:cookFish", {
 	title = S("Delicious Fish"),
 	description = S("Take a cooked fish from a furnace.\nHint: Use a fishing rod to catch a fish and cook it in a furnace."),
 	icon = "mcl_fishing_fish_cooked.png",
 })
-]]
 
 -- Other achievements triggered outside of mcl_achievements
 
