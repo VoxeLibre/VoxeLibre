@@ -221,9 +221,6 @@ function boat.on_step(self, dtime)
 	if s ~= get_sign(self._v) then
 		self._v = 0
 	end
-	if math.abs(self._v) > 5 then
-		self._v = 5 * get_sign(self._v)
-	end
 
 	p.y = p.y - boat_y_offset
 	local new_velo
@@ -256,6 +253,14 @@ function boat.on_step(self, dtime)
 			end
 		end
 	end
+
+	-- Terminal velocity: 8 m/s per axis of travel
+	for _,axis in pairs({"z","y","x"}) do
+		if math.abs(new_velo[axis]) > 8 then
+			new_velo[axis] = 8 * get_sign(new_velo[axis])
+		end
+	end
+
 	self.object:set_velocity(new_velo)
 	self.object:set_acceleration(new_acce)
 end
