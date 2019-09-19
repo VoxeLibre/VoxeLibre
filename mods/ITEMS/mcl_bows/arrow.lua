@@ -67,6 +67,12 @@ minetest.register_node("mcl_bows:arrow_box", {
 	paramtype2 = "facedir",
 	sunlight_propagates = true,
 	groups = {not_in_creative_inventory=1, dig_immediate=3},
+	drop = "",
+	node_placement_prediction = "",
+	on_construct = function(pos)
+		minetest.log("error", "[mcl_bows] Trying to construct mcl_bows:arrow_box at "..minetest.pos_to_string(pos))
+		minetest.remove_node(pos)
+	end,
 })
 
 local ARROW_ENTITY={
