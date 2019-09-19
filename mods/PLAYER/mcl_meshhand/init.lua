@@ -16,26 +16,16 @@ for _,texture in pairs(list) do
 	minetest.register_node("mcl_meshhand:"..texture, {
 		description = "",
 		tiles = {texture..".png"},
-		inventory_image = "wieldhand.png",
 		visual_scale = 1,
 		wield_scale = {x=1,y=1,z=1},
 		paramtype = "light",
 		drawtype = "mesh",
 		mesh = "mcl_meshhand.b3d",
-		-- Prevent placement
+		-- Prevent construction
 		node_placement_prediction = "",
 		on_construct = function(pos)
 			minetest.log("error", "[mcl_meshhand] Trying to construct mcl_meshhand:"..texture.." at "..minetest.pos_to_string(pos))
 			minetest.remove_node(pos)
-		end,
-		on_place = function(itemstack, placer, pointed_thing)
-			local spos = "<somewhere>"
-			if pointed_thing.above then
-				spos = minetest.pos_to_string(pointed_thing.above)
-			end
-			minetest.log("error", "[mcl_meshhand] Player tried to place mcl_meshhand:"..texture.." at "..spos)
-			itemstack:set_count(0)
-			return itemstack
 		end,
 		drop = "",
 		on_drop = function()
