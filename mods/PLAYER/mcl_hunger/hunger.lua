@@ -145,10 +145,10 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 			if foodtype == 3 then
 				-- Item is a drink, only play drinking sound (no particle)
 				minetest.sound_play("survival_thirst_drink", {
-					pos = pos,
 					max_hear_distance = 12,
 					gain = 1.0,
 					pitch = 1 + math.random(-10, 10)*0.005,
+					object = user,
 				})
 			else
 				-- Assume the item is a food
@@ -184,10 +184,10 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 					})
 				end
 				minetest.sound_play("mcl_hunger_bite", {
-					pos = pos,
 					max_hear_distance = 12,
 					gain = 1.0,
 					pitch = 1 + math.random(-10, 10)*0.005,
+					object = user,
 				})
 			end
 
