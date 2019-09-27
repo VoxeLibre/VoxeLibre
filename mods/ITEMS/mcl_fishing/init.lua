@@ -41,6 +41,7 @@ local fish = function(itemstack, player)
 						noent = false
 						if ent._dive == true then
 							local itemname
+							local items
 							local itemcount = 1
 							local itemwear = 0
 							-- FIXME: Maybe use a better seeding
@@ -103,7 +104,7 @@ local fish = function(itemstack, player)
 								local idef = itemstack:get_definition()
 								itemstack:add_wear(65535/65) -- 65 uses
 								if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then
-									minetest.sound_play(idef.sound.breaks, {pos=player.get_pos(), gain=0.5})
+									minetest.sound_play(idef.sound.breaks, {pos=player:get_pos(), gain=0.5})
 								end
 							end
 						end
@@ -117,7 +118,7 @@ local fish = function(itemstack, player)
 								local idef = itemstack:get_definition()
 								itemstack:add_wear((65535/65)*2) -- if so and not creative then wear double like in MC.
 								if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then
-									minetest.sound_play(idef.sound.breaks, {pos=player.get_pos(), gain=0.5})
+									minetest.sound_play(idef.sound.breaks, {pos=player:get_pos(), gain=0.5})
 								end
 							end
 						end
