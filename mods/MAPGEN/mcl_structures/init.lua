@@ -80,8 +80,11 @@ mcl_structures.generate_igloo = function(pos)
 	-- TODO: Check if we're allowed to destroy nodes
 	-- TODO: Check if basement generation would not be too obvious
 	-- TODO: Generate basement with 50% chance only
+	-- Place igloo
 	local success, rotation = mcl_structures.generate_igloo_top(pos)
+	-- Generate optional basement
 	if success then
+		-- Select basement depth
 		local dim = mcl_worlds.pos_to_dimension(pos)
 		buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
 		if dim == "nether" then
@@ -141,25 +144,31 @@ mcl_structures.generate_igloo = function(pos)
 		end
 		local ladder_param2 = minetest.dir_to_wallmounted(tdir)
 		local real_depth = 0
+		-- Check how deep we can actuall dig
 		for y=1, depth-5 do
 			real_depth = real_depth + 1
 			local node = minetest.get_node({x=tpos.x,y=tpos.y-y,z=tpos.z})
 			local def = minetest.registered_nodes[node.name]
 			if (not def) or (not def.walkable) or (def.liquidtype ~= "none") then
-				bpos.y = tpos.y-y-4
+				bpos.y = tpos.y-y+1
 				break
 			end
+		end
+		if real_depth <= 6 then
+			return success
+		end
+		-- Place hidden trapdoor
+		minetest.set_node(tpos, {name="mcl_doors:trapdoor", param2=20+minetest.dir_to_facedir(dir)}) -- TODO: more reliable param2
+		-- Generate ladder to basement
+		for y=1, real_depth-5 do
 			set_brick({x=tpos.x-1,y=tpos.y-y,z=tpos.z  })
 			set_brick({x=tpos.x+1,y=tpos.y-y,z=tpos.z  })
 			set_brick({x=tpos.x  ,y=tpos.y-y,z=tpos.z-1})
 			set_brick({x=tpos.x  ,y=tpos.y-y,z=tpos.z+1})
 			minetest.set_node({x=tpos.x,y=tpos.y-y,z=tpos.z}, {name="mcl_core:ladder", param2=ladder_param2})
 		end
-		if real_depth > 1 then
-			-- TODO: more reliable param2
-			minetest.set_node(tpos, {name="mcl_doors:trapdoor", param2=20+minetest.dir_to_facedir(dir)})
-			mcl_structures.generate_igloo_basement(bpos, rotation)
-		end
+		-- Place basement
+		mcl_structures.generate_igloo_basement(bpos, rotation)
 	end
 	return success
 end
