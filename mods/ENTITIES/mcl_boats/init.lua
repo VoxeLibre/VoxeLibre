@@ -212,10 +212,10 @@ function boat.on_step(self, dtime)
 		end
 	end
 	local s = get_sign(self._v)
-	if not on_water and not in_water and math.abs(self._v) > 0.25 then
-		v_slowdown = math.min(math.abs(self._v) - 0.25, v_slowdown * 5)
-	elseif in_water and math.abs(self._v) > 0.5 then
-		v_slowdown = math.min(math.abs(self._v) - 0.5, v_slowdown * 5)
+	if not on_water and not in_water and math.abs(self._v) > 1.0 then
+		v_slowdown = math.min(math.abs(self._v) - 1.0, v_slowdown * 5)
+	elseif in_water and math.abs(self._v) > 1.5 then
+		v_slowdown = math.min(math.abs(self._v) - 1.5, v_slowdown * 5)
 	end
 	self._v = self._v - v_slowdown * s
 	if s ~= get_sign(self._v) then
