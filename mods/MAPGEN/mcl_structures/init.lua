@@ -44,7 +44,7 @@ mcl_structures.call_struct = function(pos, struct_style, rotation)
 	elseif struct_style == "desert_well" then
 		return mcl_structures.generate_desert_well(pos, rotation)
 	elseif struct_style == "igloo" then
-		return mcl_structures.generate_igloo_top(pos, rotation)
+		return mcl_structures.generate_igloo(pos, rotation)
 	elseif struct_style == "witch_hut" then
 		return mcl_structures.generate_witch_hut(pos, rotation)
 	elseif struct_style == "ice_spike_small" then
@@ -77,13 +77,11 @@ mcl_structures.generate_desert_well = function(pos)
 end
 
 mcl_structures.generate_igloo = function(pos)
-	-- TODO: Check if we're allowed to destroy nodes
-	-- TODO: Check if basement generation would not be too obvious
-	-- TODO: Generate basement with 50% chance only
 	-- Place igloo
 	local success, rotation = mcl_structures.generate_igloo_top(pos)
-	-- Generate optional basement
-	if success then
+	-- Place igloo basement with 50% chance
+	local r = math.random(1,2)
+	if success and r == 1 then
 		-- Select basement depth
 		local dim = mcl_worlds.pos_to_dimension(pos)
 		buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
@@ -149,7 +147,7 @@ mcl_structures.generate_igloo = function(pos)
 			real_depth = real_depth + 1
 			local node = minetest.get_node({x=tpos.x,y=tpos.y-y,z=tpos.z})
 			local def = minetest.registered_nodes[node.name]
-			if (not def) or (not def.walkable) or (def.liquidtype ~= "none") then
+			if (not def) or (not def.walkable) or (def.liquidtype ~= "none") or (not def.is_ground_content) then
 				bpos.y = tpos.y-y+1
 				break
 			end
@@ -160,7 +158,7 @@ mcl_structures.generate_igloo = function(pos)
 		-- Place hidden trapdoor
 		minetest.set_node(tpos, {name="mcl_doors:trapdoor", param2=20+minetest.dir_to_facedir(dir)}) -- TODO: more reliable param2
 		-- Generate ladder to basement
-		for y=1, real_depth-5 do
+		for y=1, real_depth-1 do
 			set_brick({x=tpos.x-1,y=tpos.y-y,z=tpos.z  })
 			set_brick({x=tpos.x+1,y=tpos.y-y,z=tpos.z  })
 			set_brick({x=tpos.x  ,y=tpos.y-y,z=tpos.z-1})
@@ -504,7 +502,7 @@ minetest.register_chatcommand("spawnstruct", {
 		elseif param == "desert_well" then
 			mcl_structures.generate_desert_well(pos)
 		elseif param == "igloo" then
-			mcl_structures.generate_igloo_top(pos)
+			mcl_structures.generate_igloo(pos)
 		elseif param == "witch_hut" then
 			mcl_structures.generate_witch_hut(pos)
 		elseif param == "boulder" then
