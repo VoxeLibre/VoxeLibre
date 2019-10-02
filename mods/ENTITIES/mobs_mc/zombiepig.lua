@@ -16,6 +16,7 @@ local pigman = {
 	passive = false,
 	hp_min = 20,
 	hp_max = 20,
+	breath_max = -1,
 	armor = 90,
 	attack_type = "dogfight",
 	group_attack = { "mobs_mc:pigman", "mobs_mc:baby_pigman" },
@@ -73,9 +74,7 @@ local pigman = {
 		punch_start = 90,
 		punch_end = 130,
 	},
-	water_damage = 1,
 	lava_damage = 0,
-	light_damage = 0,
 	fear_height = 4,
 	view_range = 16,
 }

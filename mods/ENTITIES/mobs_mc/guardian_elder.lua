@@ -10,6 +10,7 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 	type = "monster",
 	hp_min = 80,
 	hp_max = 80,
+	breath_max = -1,
     	passive = false,
 	attack_type = "dogfight",
 	pathfinding = 1,
@@ -80,9 +81,6 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 	fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
 	stepheight = 0.1,
 	jump = false,
-	water_damage = 0,
-	lava_damage = 4,
-	light_damage = 0,
 	view_range = 16,
 	blood_amount = 0,
 })

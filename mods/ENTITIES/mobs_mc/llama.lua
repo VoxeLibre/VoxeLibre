@@ -32,9 +32,6 @@ mobs:register_mob("mobs_mc:llama", {
 		min = 0,
 		max = 2,},
 	},
-	water_damage = 0,
-	lava_damage = 4,
-	light_damage = 0,
 	fear_height = 4,
 	sounds = {
 		random = "mobs_mc_llama",

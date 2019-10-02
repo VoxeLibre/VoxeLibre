@@ -40,9 +40,6 @@ mobs:register_mob("mobs_mc:bat", {
 ]]
 	},
 
-	water_damage = 1,
-	lava_damage = 4,
-	light_damage = 0,
 	fall_damage = 0,
 	view_range = 16,
 

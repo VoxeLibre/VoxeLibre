@@ -74,9 +74,6 @@ mobs:register_mob("mobs_mc:evoker", {
 		die_end = 200,
 		die_loop = false,
 	},
-	water_damage = 0,
-	lava_damage = 4,
-	light_damage = 0,
 	view_range = 16,
 	fear_height = 4,
 })

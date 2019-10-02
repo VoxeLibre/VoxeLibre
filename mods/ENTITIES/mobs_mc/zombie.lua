@@ -42,6 +42,7 @@ local zombie = {
 	type = "monster",
 	hp_min = 20,
 	hp_max = 20,
+	breath_max = -1,
 	armor = 90,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
@@ -99,7 +100,6 @@ mobs:register_mob("mobs_mc:baby_zombie", baby_zombie)
 local husk = table.copy(zombie)
 husk.textures = {{"mobs_mc_husk.png"}}
 husk.sunlight_damage = 0
-husk.water_damage = 3
 husk.drops = drops_common
 -- TODO: Husks avoid water
 

@@ -16,6 +16,7 @@ mobs:register_mob("mobs_mc:iron_golem", {
 	passive = true,
 	hp_min = 100,
 	hp_max = 100,
+	breath_max = -1,
 	collisionbox = {-0.7, -0.01, -0.7, 0.7, 2.69, 0.7},
 	visual = "mesh",
 	mesh = "mobs_mc_iron_golem.b3d",
@@ -48,9 +49,6 @@ mobs:register_mob("mobs_mc:iron_golem", {
 		min = 0,
 		max = 2,},
 	},
-	water_damage = 0,
-	lava_damage = 4,
-	light_damage = 0,
 	fall_damage = 0,
 	animation = {
 		stand_speed = 15, walk_speed = 15, run_speed = 25, punch_speed = 15,

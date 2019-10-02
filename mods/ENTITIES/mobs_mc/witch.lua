@@ -63,9 +63,6 @@ mobs:register_mob("mobs_mc:witch", {
 		shoot_start = 50,
 		shoot_end = 82,
 	},
-	water_damage = 1,
-	lava_damage = 5,
-	light_damage = 0,
 	view_range = 16,
 	fear_height = 4,
 

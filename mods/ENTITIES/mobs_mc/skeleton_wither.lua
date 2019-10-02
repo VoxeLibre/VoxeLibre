@@ -13,6 +13,7 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 	type = "monster",
 	hp_min = 20,
 	hp_max = 20,
+	breath_max = -1,
 	pathfinding = 1,
 	group_attack = true,
 	collisionbox = {-0.35, -0.01, -0.35, 0.35, 2.39, 0.35},

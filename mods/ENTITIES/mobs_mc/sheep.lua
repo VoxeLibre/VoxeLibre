@@ -67,9 +67,6 @@ mobs:register_mob("mobs_mc:sheep", {
 		min = 1,
 		max = 1,},
 	},
-	water_damage = 1,
-	lava_damage = 4,
-	light_damage = 0,
 	fear_height = 4,
 	sounds = {
 		random = "mobs_sheep",

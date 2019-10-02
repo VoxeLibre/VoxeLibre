@@ -35,9 +35,6 @@ local rabbit = {
 		-- TODO: Drop rabbit's foot when it's useful
 		--{name = mobs_mc.items.rabbit_foot, chance = 10, min = 1, max = 1},
 	},
-	water_damage = 1,
-	lava_damage = 4,
-	light_damage = 0,
 	fear_height = 4,
 	animation = {
 		speed_normal = 25,		speed_run = 50,

@@ -10,6 +10,7 @@ mobs:register_mob("mobs_mc:guardian", {
 	type = "monster",
 	hp_min = 30,
 	hp_max = 30,
+	breath_max = -1,
     	passive = false,
 	attack_type = "dogfight",
 	pathfinding = 1,
@@ -76,9 +77,6 @@ mobs:register_mob("mobs_mc:guardian", {
 	stepheight = 0.1,
 	jump = false,
 	view_range = 16,
-	water_damage = 0,
-	lava_damage = 4,
-	light_damage = 0,
 	blood_amount = 0,
 })
 

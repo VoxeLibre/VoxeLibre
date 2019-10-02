@@ -320,8 +320,6 @@ mobs:register_mob("mobs_mc:enderman", {
 		end
 	end,
 	water_damage = 8,
-	lava_damage = 4,
-	light_damage = 0,
 	-- TODO: Increase view range when it detects being seen
 	-- Low view range to emulate that behaviour somehow
 	view_range = 4,

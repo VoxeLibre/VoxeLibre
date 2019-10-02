@@ -48,7 +48,6 @@ mobs:register_mob("mobs_mc:illusioner", {
 	},
 	view_range = 16,
 	fear_height = 4,
-	lava_damage = 4,
 })
 
 mobs:register_egg("mobs_mc:illusioner", S("Illusioner"), "mobs_mc_spawn_icon_illusioner.png", 0)

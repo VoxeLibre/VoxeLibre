@@ -14,6 +14,7 @@ mobs:register_mob("mobs_mc:polar_bear", {
 	stepheight = 1.2,
 	hp_min = 30,
 	hp_max = 30,
+        breath_max = -1,
 	collisionbox = {-0.7, -0.01, -0.7, 0.7, 1.39, 0.7},
 	visual = "mesh",
 	mesh = "mobs_mc_polarbear.b3d",
@@ -41,10 +42,7 @@ mobs:register_mob("mobs_mc:polar_bear", {
 		max = 2,},
 
 	},
-	water_damage = 0,
 	floats = 1,
-	lava_damage = 5,
-	light_damage = 0,
 	fear_height = 4,
 	-- TODO: sounds
 	animation = {

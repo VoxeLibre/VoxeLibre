@@ -26,9 +26,6 @@ local cow_def = {
 		min = 0,
 		max = 2,},
 	},
-	water_damage = 1,
-	lava_damage = 5,
-	light_damage = 0,
 	runaway = true,
 	sounds = {
 		random = "mobs_mc_cow",

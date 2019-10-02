@@ -35,9 +35,6 @@ mobs:register_mob("mobs_mc:chicken", {
 		min = 0,
 		max = 2,},
 	},
-	water_damage = 1,
-	lava_damage = 4,
-	light_damage = 0,
 	fall_damage = 0,
 	fall_speed = -2.25,
 	sounds = {
