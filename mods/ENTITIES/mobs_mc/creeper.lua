@@ -114,8 +114,6 @@ mobs:register_mob("mobs_mc:creeper", {
 	},
 	floats = 1,
 	fear_height = 4,
-	lava_damage = 4,
-	light_damage = 0,
 	view_range = 16,
 	blood_amount = 0,
 })

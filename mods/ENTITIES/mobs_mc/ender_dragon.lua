@@ -48,6 +48,7 @@ mobs:register_mob("mobs_mc:enderdragon", {
 		max = 1},
 	},
 	lava_damage = 0,
+	fire_damage = 0,
 	on_rightclick = nil,
 	attack_type = "dogshoot",
 	arrow = "mobs_mc:fireball2",

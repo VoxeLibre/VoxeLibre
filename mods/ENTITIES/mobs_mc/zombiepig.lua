@@ -75,6 +75,7 @@ local pigman = {
 		punch_end = 130,
 	},
 	lava_damage = 0,
+	fire_damage = 0,
 	fear_height = 4,
 	view_range = 16,
 }

@@ -28,7 +28,7 @@ mobs:register_mob("mobs_mc:snowman", {
 	view_range = 10,
 	fall_damage = 0,
 	water_damage = 4,
-	lava_damage = 20,
+	rain_damage = 4,
 	attacks_monsters = true,
 	collisionbox = {-0.35, -0.01, -0.35, 0.35, 1.89, 0.35},
 	visual = "mesh",
@@ -119,8 +119,6 @@ mobs:register_mob("mobs_mc:snowman", {
 			end
 		end
 	end,
-
-	rain_damage = 4,
 })
 
 -- This is to be called when a pumpkin or jack'o lantern has been placed. Recommended: In the on_construct function

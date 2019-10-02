@@ -61,9 +61,11 @@ functions needed for the mob to work properly which contains the following:
    'fall_speed'    has the maximum speed the mob can fall at, default is -10.
    'fall_damage'   when true causes falling to inflict damage.
    'water_damage'  holds the damage per second infliced to mobs when standing in
-                   water.
+                   water (default: 0).
    'lava_damage'   holds the damage per second inflicted to mobs when standing
                    in lava (default: 8).
+   'fire_damage'   holds the damage per second inflicted to mobs when standing
+                   in fire (default: 1).
    'light_damage'  holds the damage per second inflicted to mobs when it's too
                    bright (above 13 light).
    'suffocation'   when true causes mobs to suffocate inside solid blocks (2 damage per second).

@@ -712,7 +712,7 @@ local do_env_damage = function(self)
 
 	pos.y = pos.y + 1 -- for particle effect position
 
-	-- water
+	-- water damage
 	if self.water_damage
 	and nodef.groups.water then
 
@@ -720,14 +720,13 @@ local do_env_damage = function(self)
 
 			self.health = self.health - self.water_damage
 
-			-- TODO: Damage particle
-			effect(pos, 5, "bubble.png", nil, nil, 1, nil)
+			effect(pos, 5, "tnt_smoke.png", nil, nil, 1, nil)
 
 			if check_for_death(self, "water", {type = "environment",
 					pos = pos, node = self.standing_in}) then return end
 		end
 
-	-- lava
+	-- lava damage
 	elseif self.lava_damage
 	and (nodef.groups.lava) then
 
@@ -735,10 +734,23 @@ local do_env_damage = function(self)
 
 			self.health = self.health - self.lava_damage
 
-			-- TODO: Damage particle
 			effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
 
 			if check_for_death(self, "lava", {type = "environment",
+					pos = pos, node = self.standing_in}) then return end
+		end
+
+	-- fire damage
+	elseif self.fire_damage
+	and (nodef.groups.fire) then
+
+		if self.fire_damage ~= 0 then
+
+			self.health = self.health - self.fire_damage
+
+			effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
+
+			if check_for_death(self, "fire", {type = "environment",
 					pos = pos, node = self.standing_in}) then return end
 		end
 
@@ -747,7 +759,6 @@ local do_env_damage = function(self)
 
 		self.health = self.health - nodef.damage_per_second
 
-		-- TODO: Damage particle
 		effect(pos, 5, "tnt_smoke.png")
 
 		if check_for_death(self, "dps", {type = "environment",
@@ -3132,6 +3143,7 @@ minetest.register_entity(name, {
 	sunlight_damage = def.sunlight_damage or 0,
 	water_damage = def.water_damage or 0,
 	lava_damage = def.lava_damage or 8,
+	fire_damage = def.fire_damage or 1,
 	suffocation = def.suffocation or true,
 	fall_damage = def.fall_damage or 1,
 	fall_speed = def.fall_speed or -10, -- must be lower than -2 (default: -10)

@@ -53,6 +53,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	-- MC Wiki: takes 1 damage every half second while in water
 	water_damage = 2,
 	lava_damage = 0,
+	fire_damage = 0,
 	fall_damage = 0,
 	fall_speed = -2.25,
 	light_damage = 0,

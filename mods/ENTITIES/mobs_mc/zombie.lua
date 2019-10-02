@@ -75,7 +75,6 @@ local zombie = {
 		walk_start = 0,		walk_end = 40,
 		run_start = 0,		run_end = 40,
 	},
-	lava_damage = 4,
 	sunlight_damage = 2,
 	view_range = 16,
 	attack_type = "dogfight",
