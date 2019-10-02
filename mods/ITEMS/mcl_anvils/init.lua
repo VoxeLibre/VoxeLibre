@@ -228,6 +228,7 @@ local function damage_anvil(pos)
 		drop_anvil_items(pos, meta)
 		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dug, {pos=pos, max_hear_distance=16})
 		minetest.remove_node(pos)
+		minetest.check_single_for_falling({x=pos.x, y=pos.y+1, z=pos.z})
 		return true
 	end
 end
