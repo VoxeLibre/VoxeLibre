@@ -720,22 +720,22 @@ local do_env_damage = function(self)
 
 			self.health = self.health - self.water_damage
 
+			-- TODO: Damage particle
 			effect(pos, 5, "bubble.png", nil, nil, 1, nil)
 
 			if check_for_death(self, "water", {type = "environment",
 					pos = pos, node = self.standing_in}) then return end
 		end
 
-	-- lava or fire
+	-- lava
 	elseif self.lava_damage
-	and (nodef.groups.lava
-	or self.standing_in == node_fire
-	or self.standing_in == node_permanent_flame) then
+	and (nodef.groups.lava) then
 
 		if self.lava_damage ~= 0 then
 
 			self.health = self.health - self.lava_damage
 
+			-- TODO: Damage particle
 			effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
 
 			if check_for_death(self, "lava", {type = "environment",
@@ -747,10 +747,42 @@ local do_env_damage = function(self)
 
 		self.health = self.health - nodef.damage_per_second
 
+		-- TODO: Damage particle
 		effect(pos, 5, "tnt_smoke.png")
 
 		if check_for_death(self, "dps", {type = "environment",
 				pos = pos, node = self.standing_in}) then return end
+	end
+
+	-- Drowning damage
+	if self.breath_max ~= -1 then
+		local drowning = false
+		if self.breathes_in_water then
+			if minetest.get_item_group(self.standing_in, "water") == 0 then
+				drowning = true
+			end
+		elseif nodef.drowning > 0 then
+			drowning = true
+		end
+		if drowning then
+
+			self.breath = math.max(0, self.breath - 1)
+
+			effect(pos, 2, "bubble.png", nil, nil, 1, nil)
+			if self.breath <= 0 then
+				-- TODO: Damage particle
+				effect(pos, 5, "bubble.png", nil, nil, 1, nil)
+				if nodef.drowning > 0 then
+					self.health = self.health - nodef.drowning
+				else
+					self.health = self.health - 4
+				end
+			end
+			if check_for_death(self, "drowning", {type = "environment",
+					pos = pos, node = self.standing_in}) then return end
+		else
+			self.breath = math.min(self.breath_max, self.breath + 1)
+		end
 	end
 
 	--- suffocation inside solid node
@@ -2776,6 +2808,9 @@ local mob_activate = function(self, staticdata, def, dtime)
 	if self.health == 0 then
 		self.health = random (self.hp_min, self.hp_max)
 	end
+	if self.breath == nil then
+		self.breath = self.breath_max
+	end
 
 	-- pathfinding init
 	self.path = {}
@@ -3052,6 +3087,15 @@ if def.can_despawn ~= nil then
 else
 	can_despawn = true
 end
+
+local function scale_difficulty(value, default, min, special)
+	if (not value) or (value == default) or (value == special) then
+		return default
+	else
+		return max(min, value) * difficulty
+	end
+end
+
 minetest.register_entity(name, {
 
 	stepheight = def.stepheight or 1.1, -- was 0.6
@@ -3069,8 +3113,10 @@ minetest.register_entity(name, {
 	drawtype = def.drawtype, -- DEPRECATED, use rotate instead
 	rotate = math.rad(def.rotate or 0), --  0=front, 90=side, 180=back, 270=side2
 	lifetimer = def.lifetimer or 57.73,
-	hp_min = max(1, (def.hp_min or 5) * difficulty),
-	hp_max = max(1, (def.hp_max or 10) * difficulty),
+	hp_min = scale_difficulty(def.hp_min, 5, 1),
+	hp_max = scale_difficulty(def.hp_max, 10, 1),
+	breath_max = scale_difficulty(def.breath_max, 15, 1, -1),
+        breathes_in_water = def.breathes_in_water or false,
 	physical = true,
 	collisionbox = def.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25},
 	selectionbox = def.selectionbox or def.collisionbox,
@@ -3081,11 +3127,11 @@ minetest.register_entity(name, {
 	view_range = def.view_range or 16,
 	walk_velocity = def.walk_velocity or 1,
 	run_velocity = def.run_velocity or 2,
-	damage = max(0, (def.damage or 0) * difficulty),
+	damage = scale_difficulty(def.damage, 0, 0),
 	light_damage = def.light_damage or 0,
 	sunlight_damage = def.sunlight_damage or 0,
 	water_damage = def.water_damage or 0,
-	lava_damage = def.lava_damage or 0,
+	lava_damage = def.lava_damage or 8,
 	suffocation = def.suffocation or true,
 	fall_damage = def.fall_damage or 1,
 	fall_speed = def.fall_speed or -10, -- must be lower than -2 (default: -10)

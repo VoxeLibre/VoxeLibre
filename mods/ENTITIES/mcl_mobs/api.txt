@@ -28,8 +28,13 @@ functions needed for the mob to work properly which contains the following:
       "monster"    attacks player or npc on sight.
       "npc"        walk around and will defend themselves if hit first, they
                    kill monsters.
-   'hp_min'        has the minimum health value the mob can spawn with.
-   'hp_max'        has the maximum health value the mob can spawn with.
+   'hp_min'        the minimum health value the mob can spawn with.
+   'hp_max'        the maximum health value the mob can spawn with.
+   'breath_max'    The maximum breath value the mob can spawn with and can have.
+                   If -1 (default), mob does not take drowning damage.
+   'breathes_in_water' If true, mob loses breath when not in water. Otherwise,
+                   mob loses breath when inside a node with `drowning` attribute
+                   set (default: false).
    'armor'         holds strength of mob, 100 is normal, lower is more powerful
                    and needs more hits and better weapons to kill.
    'passive'       when true allows animals to defend themselves when hit,
@@ -58,7 +63,7 @@ functions needed for the mob to work properly which contains the following:
    'water_damage'  holds the damage per second infliced to mobs when standing in
                    water.
    'lava_damage'   holds the damage per second inflicted to mobs when standing
-                   in lava or fire.
+                   in lava (default: 8).
    'light_damage'  holds the damage per second inflicted to mobs when it's too
                    bright (above 13 light).
    'suffocation'   when true causes mobs to suffocate inside solid blocks (2 damage per second).
@@ -299,6 +304,10 @@ for each mob.
 
    'self.health'        contains current health of mob (cannot exceed
                         self.hp_max)
+   'self.breath'        contains current breath of mob, if mob takes drowning
+                        damage at all (cannot exceed self.breath_max). Breath
+                        decreases by 1 each second while in a node with drowning
+                        damage and increases by 1 each second otherwise.
    'self.texture_list'  contains list of all mob textures
    'self.child_texture' contains mob child texture when growing up
    'self.base_texture'  contains current skin texture which was randomly
