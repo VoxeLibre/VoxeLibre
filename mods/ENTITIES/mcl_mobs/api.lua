@@ -420,13 +420,7 @@ local damage_effect = function(self, damage)
 
 		pos.y = pos.y + (self.collisionbox[5] - self.collisionbox[2]) * .5
 
-		local texture
-		-- do we have a single blood texture or multiple?
-		if type(self.blood_texture) == "table" then
-			texture = self.blood_texture[random(1, #self.blood_texture)]
-		else
-			texture = self.blood_texture
-		end
+		local texture = "mobs_blood.png"
 		-- full heart damage (one particle for each 2 HP damage)
 		if amount_large > 0 then
 			effect(pos, amount_large, texture, 2, 2, 1.75, 0, nil, true)
@@ -3182,7 +3176,6 @@ minetest.register_entity(name, {
 	group_attack = def.group_attack or false,
 	passive = def.passive or false,
 	knock_back = def.knock_back ~= false,
-	blood_texture = def.blood_texture or "mobs_blood.png",
 	shoot_offset = def.shoot_offset or 0,
 	floats = def.floats or 1, -- floats in water by default
 	replace_rate = def.replace_rate,

@@ -51,7 +51,6 @@ mobs:register_mob("mobs_mc:squid", {
     view_range = 16,
     runaway = true,
     fear_height = 4,
-    blood_texture = "mobs_mc_squid_blood.png",
 })
 
 -- TODO: Behaviour: squirt

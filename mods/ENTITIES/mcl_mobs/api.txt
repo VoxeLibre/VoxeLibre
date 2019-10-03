@@ -123,8 +123,6 @@ functions needed for the mob to work properly which contains the following:
                          e.g. {"player", "mobs_animal:chicken"}.
    'runaway_from'        contains a table with mob names to run away from, add
                          "player" to list to runaway from player also.
-   'blood_texture'       has the texture name to use for droplets e.g.
-                         "mobs_blood.png", or table {"blood1.png", "blood2.png"}
    'pathfinding'         set to 1 for mobs to use pathfinder feature to locate
                          player, set to 2 so they can build/break also (only
                          works with dogfight attack and when 'mobs_griefing'
