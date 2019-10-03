@@ -63,7 +63,6 @@ mobs:register_mob("mobs_mc:wither", {
 		walk_start = 0,		walk_end = 20,
 		run_start = 0,		run_end = 20,
 	},
-	blood_amount = 0,
 })
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false

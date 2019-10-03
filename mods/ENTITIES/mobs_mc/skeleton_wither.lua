@@ -81,7 +81,6 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 	attack_type = "dogfight",
 	dogshoot_switch = 1,
 	dogshoot_count_max =0.5,
-	blood_amount = 0,
 	fear_height = 4,
 })
 

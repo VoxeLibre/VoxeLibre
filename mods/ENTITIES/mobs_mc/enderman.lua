@@ -325,7 +325,6 @@ mobs:register_mob("mobs_mc:enderman", {
 	view_range = 4,
 	fear_height = 4,
 	attack_type = "dogfight",
-	blood_amount = 0,
 })
 
 

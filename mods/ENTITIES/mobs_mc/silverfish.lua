@@ -42,7 +42,6 @@ mobs:register_mob("mobs_mc:silverfish", {
 	attack_type = "dogfight",
 	damage = 1,
 	reach = 1,
-	blood_amount = 0,
 })
 
 mobs:register_egg("mobs_mc:silverfish", S("Silverfish"), "mobs_mc_spawn_icon_silverfish.png", 0)

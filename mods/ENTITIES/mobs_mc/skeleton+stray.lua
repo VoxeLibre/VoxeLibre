@@ -83,7 +83,6 @@ local skeleton = {
 	shoot_offset = 1,
 	dogshoot_switch = 1,
 	dogshoot_count_max =1.8,
-	blood_amount = 0,
 }
 
 mobs:register_mob("mobs_mc:skeleton", skeleton)

@@ -44,7 +44,6 @@ mobs:register_mob("mobs_mc:shulker", {
 		run_start = 0,		run_end = 45,
         punch_start = 80,  punch_end = 100,
 	},
-	blood_amount = 0,
 	view_range = 16,
 	fear_height = 4,
 })

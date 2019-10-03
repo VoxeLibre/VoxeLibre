@@ -58,7 +58,6 @@ mobs:register_mob("mobs_mc:iron_golem", {
 		punch_start = 40,  punch_end = 50,
 	},
 	jump = true,
-	blood_amount = 0,
 })
 
 

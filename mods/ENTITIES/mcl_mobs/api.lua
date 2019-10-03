@@ -375,20 +375,28 @@ end
 
 
 -- custom particle effects
-local effect = function(pos, amount, texture, min_size, max_size, radius, gravity, glow)
+local effect = function(pos, amount, texture, min_size, max_size, radius, gravity, glow, go_down)
 
 	radius = radius or 2
 	min_size = min_size or 0.5
 	max_size = max_size or 1
 	gravity = gravity or -10
 	glow = glow or 0
+	go_down = go_down or false
+
+	local ym
+	if go_down then
+		ym = 0
+	else
+		ym = -radius
+	end
 
 	minetest.add_particlespawner({
 		amount = amount,
 		time = 0.25,
 		minpos = pos,
 		maxpos = pos,
-		minvel = {x = -radius, y = -radius, z = -radius},
+		minvel = {x = -radius, y = ym, z = -radius},
 		maxvel = {x = radius, y = radius, z = radius},
 		minacc = {x = 0, y = gravity, z = 0},
 		maxacc = {x = 0, y = gravity, z = 0},
@@ -401,6 +409,35 @@ local effect = function(pos, amount, texture, min_size, max_size, radius, gravit
 	})
 end
 
+local damage_effect = function(self, damage)
+	-- damage particles
+	if (not disable_blood) and damage > 0 then
+
+		local amount_large = math.floor(damage / 2)
+		local amount_small = damage % 2
+
+		local pos = self.object:get_pos()
+
+		pos.y = pos.y + (self.collisionbox[5] - self.collisionbox[2]) * .5
+
+		local texture
+		-- do we have a single blood texture or multiple?
+		if type(self.blood_texture) == "table" then
+			texture = self.blood_texture[random(1, #self.blood_texture)]
+		else
+			texture = self.blood_texture
+		end
+		-- full heart damage (one particle for each 2 HP damage)
+		if amount_large > 0 then
+			effect(pos, amount_large, texture, 2, 2, 1.75, 0, nil, true)
+		end
+		-- half heart damage (one additional particle if damage is an odd number)
+		if amount_small > 0 then
+			-- TODO: Use "half heart"
+			effect(pos, amount_small, texture, 1, 1, 1.75, 0, nil, true)
+		end
+	end
+end
 
 local update_tag = function(self)
 	self.object:set_properties({
@@ -781,13 +818,14 @@ local do_env_damage = function(self)
 
 			effect(pos, 2, "bubble.png", nil, nil, 1, nil)
 			if self.breath <= 0 then
-				-- TODO: Damage particle
-				effect(pos, 5, "bubble.png", nil, nil, 1, nil)
+				local dmg
 				if nodef.drowning > 0 then
-					self.health = self.health - nodef.drowning
+					dmg = nodef.drowning
 				else
-					self.health = self.health - 4
+					dmg = 4
 				end
+				damage_effect(self, dmg)
+				self.health = self.health - dmg
 			end
 			if check_for_death(self, "drowning", {type = "environment",
 					pos = pos, node = self.standing_in}) then return end
@@ -2540,24 +2578,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			})
 		end
 
-		-- blood_particles
-		if self.blood_amount > 0
-		and not disable_blood then
-
-			local pos = self.object:get_pos()
-
-			pos.y = pos.y + (-self.collisionbox[2] + self.collisionbox[5]) * .5
-
-			-- do we have a single blood texture or multiple?
-			if type(self.blood_texture) == "table" then
-
-				local blood = self.blood_texture[random(1, #self.blood_texture)]
-
-				effect(pos, self.blood_amount, blood, nil, nil, 1, nil)
-			else
-				effect(pos, self.blood_amount, self.blood_texture, nil, nil, 1, nil)
-			end
-		end
+		damage_effect(self, damage)
 
 		-- do damage
 		self.health = self.health - floor(damage)
@@ -3161,7 +3182,6 @@ minetest.register_entity(name, {
 	group_attack = def.group_attack or false,
 	passive = def.passive or false,
 	knock_back = def.knock_back ~= false,
-	blood_amount = def.blood_amount or 5,
 	blood_texture = def.blood_texture or "mobs_blood.png",
 	shoot_offset = def.shoot_offset or 0,
 	floats = def.floats or 1, -- floats in water by default

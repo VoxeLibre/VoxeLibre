@@ -31,7 +31,6 @@ mobs:register_mob("mobs_mc:endermite", {
 	view_range = 16,
 	damage = 2,
 	reach = 1,
-	blood_amount = 0,
 })
 
 mobs:register_egg("mobs_mc:endermite", S("Endermite"), "mobs_mc_spawn_icon_endermite.png", 0)

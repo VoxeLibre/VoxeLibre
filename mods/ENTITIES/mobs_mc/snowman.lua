@@ -69,7 +69,6 @@ mobs:register_mob("mobs_mc:snowman", {
 		die_speed = 25,
 	        die_loop = false,
 	},
-	blood_amount = 0,
 	do_custom = function(self, dtime)
 		if not mobs_griefing then
 			return

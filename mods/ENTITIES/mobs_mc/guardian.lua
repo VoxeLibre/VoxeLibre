@@ -77,7 +77,6 @@ mobs:register_mob("mobs_mc:guardian", {
 	stepheight = 0.1,
 	jump = false,
 	view_range = 16,
-	blood_amount = 0,
 })
 
 mobs:spawn_specific("mobs_mc:guardian", mobs_mc.spawn.water, mobs_mc.spawn_water, 0, minetest.LIGHT_MAX+1, 30, 25000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.water - 10)
