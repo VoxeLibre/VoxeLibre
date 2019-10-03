@@ -592,7 +592,7 @@ External Settings for "minetest.conf"
    'enable_damage'          if true monsters will attack players (default is true)
    'only_peaceful_mobs'     if true only animals will spawn in game (default is
                             false)
-   'mobs_disable_blood'     if false blood effects appear when mob is hit (default
+   'mobs_disable_blood'     if false, damage effects appear when mob is hit (default
                             is false)
    'mobs_spawn_protected'   if set to false then mobs will not spawn in protected
                             areas (default is true)
