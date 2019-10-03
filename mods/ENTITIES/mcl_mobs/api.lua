@@ -3118,7 +3118,7 @@ local function scale_difficulty(value, default, min, special)
 	if (not value) or (value == default) or (value == special) then
 		return default
 	else
-		return max(min, value) * difficulty
+		return max(min, value * difficulty)
 	end
 end
 
