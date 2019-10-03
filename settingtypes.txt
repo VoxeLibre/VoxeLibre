@@ -70,7 +70,7 @@ mobs_drop_items (Mobs drop items) bool true
 # If enabled, mobs can take, place, change and destroy blocks around them.
 mobs_griefing (Mobs change blocks) bool true
 
-# If enable, mobs won't damage particles when they got hurt.
+# If enabled, mobs won't damage particles when they got hurt.
 mobs_disable_blood (Disable mob damage particles) bool false
 
 [Audio]

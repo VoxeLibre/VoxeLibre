@@ -3141,7 +3141,7 @@ minetest.register_entity(name, {
 	lifetimer = def.lifetimer or 57.73,
 	hp_min = scale_difficulty(def.hp_min, 5, 1),
 	hp_max = scale_difficulty(def.hp_max, 10, 1),
-	breath_max = scale_difficulty(def.breath_max, 15, 1, -1),
+	breath_max = def.breath_max or 15,
         breathes_in_water = def.breathes_in_water or false,
 	physical = true,
 	collisionbox = def.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25},
