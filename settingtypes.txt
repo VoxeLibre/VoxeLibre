@@ -64,6 +64,11 @@ only_peaceful_mobs (Spawn only peaceful mobs) bool false
 # mob spawners.
 mobs_spawn_protected (Mobs spawn in protected areas) bool false
 
+# Mobs difficulty. This is a number that will affect the initial and maximum
+# health and the amount of damage that mobs deal. Health and damage will
+# be multiplied with this number.
+mob_difficulty (Mob difficulty factor) float 1.0 0.0
+
 # If enabled, mobs might drop items when they die.
 mobs_drop_items (Mobs drop items) bool true
 
@@ -78,12 +83,6 @@ mobs_disable_blood (Disable mob damage particles) bool false
 flame_sound (Flame sound) bool true
 
 [Experimental]
-# Mobs difficulty. This is a number that will affect the initial and maximum
-# health and the amount of damage that mobs deal. Health and damage will
-# be multiplied with this number.
-# This feature is not finished yet!
-mob_difficulty (Mob difficulty factor) float 1.0 0.0
-
 # Whether to generate fallen logs in some biomes.
 # They might not always look pretty and have strange overhangs.
 mcl_generate_fallen_logs (Generate fallen logs) bool false
