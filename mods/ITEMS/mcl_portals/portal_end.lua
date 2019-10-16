@@ -209,17 +209,6 @@ minetest.register_abm({
 	interval = 1,
 	chance = 1,
 	action = function(pos, node)
-		-- Destroy legacy end portals created with quartz block frame
-		-- by turning them into cobwebs.
-		-- We can tell if a end portal is legacy if it has portal_target as metadata.
-		-- FIXME: Remove this after some time.
-		local meta = minetest.get_meta(pos)
-		local legacy_portal_target = meta:get_string("portal_frame1")
-		if legacy_portal_target and legacy_portal_target ~= "" then
-			minetest.set_node(pos, {name="mcl_core:cobweb"})
-			return
-		end
-
 		for _,obj in ipairs(minetest.get_objects_inside_radius(pos, 1)) do
 			local lua_entity = obj:get_luaentity() --maikerumine added for objects to travel
 			if obj:is_player() or lua_entity then

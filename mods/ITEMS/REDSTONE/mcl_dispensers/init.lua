@@ -166,9 +166,6 @@ local dispenserdef = {
 						local dropinv = dropmeta:get_inventory()
 						if dropinv:room_for_item(armor_type, dropitem) then
 							dropinv:add_item(armor_type, dropitem)
-							--[[ FIXME: For some reason, this function is not called after calling add_item,
-							so we call it manually to update the armor stand entity.
-							This may need investigation and the following line may be a small hack. ]]
 							minetest.registered_nodes["3d_armor_stand:armor_stand"].on_metadata_inventory_put(standpos)
 							stack:take_item()
 							inv:set_stack("main", stack_id, stack)

@@ -39,7 +39,7 @@ local melon_base_def = {
 -- Drop proabilities for melon stem
 local stem_drop = {
 	max_items = 1,
-	-- FIXME: The probabilities are slightly off from the original.
+	-- The probabilities are slightly off from the original.
 	-- Update this drop list when the Minetest drop probability system
 	-- is more powerful.
 	items = {
