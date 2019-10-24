@@ -138,6 +138,8 @@ mobs_mc.override.follow = {
 	horse = { mobs_mc.override.items.apple, mobs_mc.override.items.sugar, mobs_mc.override.items.wheat, mobs_mc.override.items.hay_bale, mobs_mc.override.items.golden_apple, mobs_mc.override.items.golden_carrot },
 	llama = { mobs_mc.override.items.wheat, mobs_mc.override.items.hay_bale },
 	rabbit = { mobs_mc.override.items.dandelion, mobs_mc.override.items.carrot, mobs_mc.override.items.golden_carrot },
+	wolf = { mobs_mc.override.items.bone },
+	dog = { mobs_mc.override.items.rabbit_raw, mobs_mc.override.items.rabbit_cooked, mobs_mc.override.items.mutton_raw, mobs_mc.override.items.mutton_cooked, mobs_mc.override.items.beef_raw, mobs_mc.override.items.beef_cooked, mobs_mc.override.items.chicken_raw, mobs_mc.override.items.chicken_cooked, mobs_mc.override.items.rotten_flesh, mobs_mc.override.items.porkchop_raw, mobs_mc.override.items.porkchop_cooked },
 }
 
 mobs_mc.override.replace = {
