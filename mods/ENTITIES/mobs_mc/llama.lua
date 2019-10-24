@@ -53,7 +53,7 @@ mobs:register_mob("mobs_mc:llama", {
 		look_start = 78,
 		look_end = 108,
 	},
-	follow = mobs_mc.items.horse,
+	follow = mobs_mc.follow.llama,
 	view_range = 16,
 	do_custom = function(self, dtime)
 
