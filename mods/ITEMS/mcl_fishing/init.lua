@@ -14,6 +14,7 @@ local bobber_ENTITY={
 	visual_size = {x=0.5, y=0.5},
 	collisionbox = {0.45,0.45,0.45,0.45,0.45,0.45},
 	pointable = false,
+	static_save = false,
 
 	_lastpos={},
 	_dive = false,
@@ -158,33 +159,47 @@ local bobber_on_step = function(self, dtime)
 	local node = minetest.get_node(epos)
 	local def = minetest.registered_nodes[node.name]
 	
-	--If we have no player remove self.
-	if self.player == nil then
+	--If we have no player, remove self.
+	if self.player == nil or self.player == "" then
 		self.object:remove()
+		return
+	end
+	local player = minetest.get_player_by_name(self.player)
+	if not player then
+		self.object:remove()
+		return
 	end
 	
 	--Check if player is nearby
-	if self._tick % 5 == 0 and self.player ~= nil then
+	if self._tick % 5 == 0 and self.player ~= nil and player ~= nil then
 		--Destroy bobber if item not wielded.
-		if (minetest.get_player_by_name(self.player):get_wielded_item():get_name() ~= "mcl_fishing:fishing_rod") then
+		local wield = player:get_wielded_item()
+		if ((not wield) or (wield:get_name() ~= "mcl_fishing:fishing_rod")) then
 			self.object:remove()
+			return
 		end
 	
 		--Destroy bobber if player is too far away.
 		local objpos = self.object:get_pos()
-		local playerpos = minetest.get_player_by_name(self.player):get_pos()
+		local playerpos = player:get_pos()
 		if (((playerpos.y - objpos.y) >= 33) or ((playerpos.y - objpos.y) <= -33)) then
 			self.object:remove()
+			return
 		elseif (((playerpos.x - objpos.x) >= 33) or ((playerpos.x - objpos.x) <= -33)) then
 			self.object:remove()
+			return
 		elseif (((playerpos.z - objpos.z) >= 33) or ((playerpos.z - objpos.z) <= -33)) then
 			self.object:remove()
+			return
 		elseif ((((playerpos.z + playerpos.x) - (objpos.z + objpos.x)) >= 33) or ((playerpos.z + playerpos.x) - (objpos.z + objpos.x)) <= -33) then
 			self.object:remove()
+			return
 		elseif ((((playerpos.y + playerpos.x) - (objpos.y + objpos.x)) >= 33) or ((playerpos.y + playerpos.x) - (objpos.y + objpos.x)) <= -33) then
 			self.object:remove()
+			return
 		elseif ((((playerpos.z + playerpos.y) - (objpos.z + objpos.y)) >= 33) or ((playerpos.z + playerpos.y) - (objpos.z + objpos.y)) <= -33) then
 			self.object:remove()
+			return
 		end
 		
 	end
