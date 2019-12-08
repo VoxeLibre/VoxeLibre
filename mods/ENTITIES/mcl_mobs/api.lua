@@ -31,7 +31,6 @@ end
 
 -- localize math functions
 local pi = math.pi
-local square = math.sqrt
 local sin = math.sin
 local cos = math.cos
 local abs = math.abs
@@ -260,15 +259,6 @@ function mobs:set_animation(self, anim)
 end
 
 
--- calculate distance
-local get_distance = function(a, b)
-
-	local x, y, z = a.x - b.x, a.y - b.y, a.z - b.z
-
-	return square(x * x + y * y + z * z)
-end
-
-
 -- check line of sight (BrunoMine)
 local line_of_sight = function(self, pos1, pos2, stepsize)
 
@@ -293,7 +283,7 @@ local line_of_sight = function(self, pos1, pos2, stepsize)
 	local nn = minetest.get_node(pos).name
 
 	-- Target Distance (td) to travel
-	local td = get_distance(pos1, pos2)
+	local td = vector.distance(pos1, pos2)
 
 	-- Actual Distance (ad) traveled
 	local ad = 0
@@ -309,7 +299,7 @@ local line_of_sight = function(self, pos1, pos2, stepsize)
 		end
 
 		-- Moves the analyzed pos
-		local d = get_distance(pos1, pos2)
+		local d = vector.distance(pos1, pos2)
 
 		npos1.x = ((pos2.x - pos1.x) / d * stepsize) + pos1.x
 		npos1.y = ((pos2.y - pos1.y) / d * stepsize) + pos1.y
@@ -980,7 +970,7 @@ local entity_physics = function(pos, radius)
 
 		obj_pos = objs[n]:get_pos()
 
-		dist = get_distance(pos, obj_pos)
+		dist = vector.distance(pos, obj_pos)
 		if dist < 1 then dist = 1 end
 
 		local damage = floor((4 / dist) * radius)
@@ -1531,7 +1521,7 @@ local monster_attack = function(self)
 			p = player:get_pos()
 			sp = s
 
-			dist = get_distance(p, s)
+			dist = vector.distance(p, s)
 
 			-- aim higher to make looking up hills more realistic
 			p.y = p.y + 1
@@ -1577,7 +1567,7 @@ local npc_attack = function(self)
 			p = obj.object:get_pos()
 			sp = s
 
-			local dist = get_distance(p, s)
+			local dist = vector.distance(p, s)
 
 			-- aim higher to make looking up hills more realistic
 			p.y = p.y + 1
@@ -1665,7 +1655,7 @@ local runaway_from = function(self)
 			p.y = p.y + 1
 			sp.y = sp.y + 1
 
-			dist = get_distance(p, s)
+			dist = vector.distance(p, s)
 
 
 			-- choose closest player/mpb to runaway from
@@ -1715,7 +1705,7 @@ local follow_flop = function(self)
 
 		for n = 1, #players do
 
-			if get_distance(players[n]:get_pos(), s) < self.view_range
+			if vector.distance(players[n]:get_pos(), s) < self.view_range
 			and not mobs.invis[ players[n]:get_player_name() ] then
 
 				self.following = players[n]
@@ -1763,7 +1753,7 @@ local follow_flop = function(self)
 
 		if p then
 
-			local dist = get_distance(p, s)
+			local dist = vector.distance(p, s)
 
 			-- dont follow if out of range
 			if dist > self.view_range then
@@ -2022,7 +2012,7 @@ local do_states = function(self, dtime)
 		-- calculate distance from mob and enemy
 		local s = self.object:get_pos()
 		local p = self.attack:get_pos() or s
-		local dist = get_distance(p, s)
+		local dist = vector.distance(p, s)
 
 		-- stop attacking if player invisible or out of range
 		if dist > self.view_range
@@ -2331,7 +2321,7 @@ local do_states = function(self, dtime)
 			p.y = p.y - .5
 			s.y = s.y + .5
 
-			local dist = get_distance(p, s)
+			local dist = vector.distance(p, s)
 			local vec = {
 				x = p.x - s.x,
 				y = p.y - s.y,
