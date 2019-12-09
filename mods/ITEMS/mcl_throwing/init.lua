@@ -187,6 +187,7 @@ local snowball_on_step = function(self, dtime)
 	-- Destroy when hitting a solid node
 	if self._lastpos.x~=nil then
 		if (def and def.walkable) or not def then
+			minetest.sound_play("mcl_throwing_snowball_impact_hard", { pos = self.object:get_pos(), max_hear_distance=16, gain=0.7 })
 			self.object:remove()
 			return
 		end
@@ -201,6 +202,7 @@ local snowball_on_step = function(self, dtime)
 	end
 
 	if check_object_hit(self, pos, mob_damage) then
+		minetest.sound_play("mcl_throwing_snowball_impact_soft", { pos = self.object:get_pos(), max_hear_distance=16, gain=0.7 })
 		return
 	end
 
@@ -254,6 +256,7 @@ local egg_on_step = function(self, dtime)
 					end
 				end
 			end
+			minetest.sound_play("mcl_throwing_egg_impact", { pos = self.object:get_pos(), max_hear_distance=10, gain=0.5 })
 			self.object:remove()
 			return
 		end
@@ -261,6 +264,7 @@ local egg_on_step = function(self, dtime)
 
 	-- Destroy when hitting a mob or player (no chick spawning)
 	if check_object_hit(self, pos) then
+		minetest.sound_play("mcl_throwing_egg_impact", { pos = self.object:get_pos(), max_hear_distance=10, gain=0.5 })
 		return
 	end
 
