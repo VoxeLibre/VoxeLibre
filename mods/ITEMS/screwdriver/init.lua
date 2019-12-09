@@ -1,3 +1,5 @@
+local S = minetest.get_translator("screwdriver")
+
 screwdriver = {}
 
 screwdriver.ROTATE_FACE = 1
@@ -143,8 +145,9 @@ end
 
 -- Screwdriver
 minetest.register_tool("screwdriver:screwdriver", {
-	description = "Screwdriver",
+	description = S("Screwdriver"),
 	inventory_image = "screwdriver.png",
+	groups = { tool = 1 },
 	on_use = function(itemstack, user, pointed_thing)
 		screwdriver.handler(itemstack, user, pointed_thing, screwdriver.ROTATE_FACE, 200)
 		return itemstack
