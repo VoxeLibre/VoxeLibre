@@ -443,11 +443,8 @@ local ssign = {
 		if mode == screwdriver.ROTATE_FACE then
 			node.name = "mcl_signs:standing_sign22_5"
 			minetest.swap_node(pos, node)
-		-- reverse rotation
 		elseif mode == screwdriver.ROTATE_AXIS then
-			node.name = "mcl_signs:standing_sign67_5"
-			node.param2 = (node.param2 - 1) % 4
-			minetest.swap_node(pos, node)
+			return false
 		end
 		update_sign(pos, nil, nil, true)
 		return true
@@ -467,8 +464,7 @@ ssign22_5.on_rotate = function(pos, node, user, mode)
 		node.name = "mcl_signs:standing_sign45"
 		minetest.swap_node(pos, node)
 	elseif mode == screwdriver.ROTATE_AXIS then
-		node.name = "mcl_signs:standing_sign"
-		minetest.swap_node(pos, node)
+		return false
 	end
 	update_sign(pos, nil, nil, true)
 	return true
@@ -483,8 +479,7 @@ ssign45.on_rotate = function(pos, node, user, mode)
 		node.name = "mcl_signs:standing_sign67_5"
 		minetest.swap_node(pos, node)
 	elseif mode == screwdriver.ROTATE_AXIS then
-		node.name = "mcl_signs:standing_sign22_5"
-		minetest.swap_node(pos, node)
+		return false
 	end
 	update_sign(pos, nil, nil, true)
 	return true
@@ -500,8 +495,7 @@ ssign67_5.on_rotate = function(pos, node, user, mode)
 		node.param2 = (node.param2 + 1) % 4
 		minetest.swap_node(pos, node)
 	elseif mode == screwdriver.ROTATE_AXIS then
-		node.name = "mcl_signs:standing_sign45"
-		minetest.swap_node(pos, node)
+		return false
 	end
 	update_sign(pos, nil, nil, true)
 	return true
