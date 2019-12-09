@@ -229,6 +229,8 @@ functions needed for the mob to work properly which contains the following:
       'shoot_arrow(self, pos, dir)' function that is called when mob wants to shoot an arrow.
                                     You can spawn your own arrow here. pos is mob position,
                                     dir is mob's aiming direction
+      'sounds_child' same as sounds, but for childs. If not defined, childs will use same
+                     sound as adults but with higher pitch
 
 
 Node Replacement

@@ -42,6 +42,12 @@ mobs:register_mob("mobs_mc:chicken", {
 		-- TODO: death, damage
 		distance = 16,
 	},
+	sounds_child = {
+		random = "mobs_mc_chicken_child",
+		damage = "mobs_mc_chicken_child",
+		death = "mobs_mc_chicken_child",
+		distance = 16,
+	},
 	animation = {
 		stand_speed = 25, walk_speed = 25, run_speed = 50,
 		stand_start = 0,		stand_end = 0,

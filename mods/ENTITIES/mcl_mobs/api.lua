@@ -96,19 +96,29 @@ local mod_mobspawners = minetest.get_modpath("mcl_mobspawners") ~= nil
 local mod_hunger = minetest.get_modpath("mcl_hunger") ~= nil
 
 -- play sound
-local mob_sound = function(self, sound, is_opinion, fixed_pitch)
+local mob_sound = function(self, soundname, is_opinion, fixed_pitch)
 
+	local soundinfo
+	if self.sounds_child and self.child then
+		soundinfo = self.sounds_child
+	elseif self.sounds then
+		soundinfo = self.sounds
+	end
+	if not soundinfo then
+		return
+	end
+	local sound = soundinfo[soundname]
 	if sound then
 		if is_opinion and self.opinion_sound_cooloff > 0 then
 			return
 		end
 		local pitch
 		if not fixed_pitch then
-			local base_pitch = self.sounds.base_pitch
+			local base_pitch = soundinfo.base_pitch
 			if not base_pitch then
 				base_pitch = 1
 			end
-			if self.child then
+			if self.child and (not self.sounds_child) then
 				-- Children have higher pitch
 				pitch = base_pitch * 1.5
 			else
@@ -140,7 +150,7 @@ local do_attack = function(self, player)
 
 	-- TODO: Implement war_cry sound without being annoying
 	--if random(0, 100) < 90 then
-		--mob_sound(self, self.sounds.war_cry, true)
+		--mob_sound(self, "war_cry", true)
 	--end
 end
 
@@ -512,7 +522,7 @@ local check_for_death = function(self, cause, cmi_cause)
 					remove_texture_mod(self, "^[colorize:#FF000040")
 				end
 			end, self)
-			mob_sound(self, self.sounds.damage)
+			mob_sound(self, "damage")
 		end
 
 		-- backup nametag so we can show health stats
@@ -539,7 +549,7 @@ local check_for_death = function(self, cause, cmi_cause)
 		item_drop(self, nil)
 	end
 
-	mob_sound(self, self.sounds.death)
+	mob_sound(self, "death")
 
 	local pos = self.object:get_pos()
 
@@ -928,7 +938,7 @@ local do_jump = function(self)
 			end, self, v)
 
 			if self.jump_sound_cooloff <= 0 then
-				mob_sound(self, self.sounds.jump)
+				mob_sound(self, "jump")
 				self.jump_sound_cooloff = 0.5
 			end
 		else
@@ -1443,7 +1453,7 @@ local smart_mobs = function(self, s, p, dist, dtime)
 		else
 			-- yay i found path
 			-- TODO: Implement war_cry sound without being annoying
-			--mob_sound(self, self.sounds.war_cry, true)
+			--mob_sound(self, "war_cry", true)
 			set_velocity(self, self.walk_velocity)
 
 			-- follow path now that it has it
@@ -2058,7 +2068,7 @@ local do_states = function(self, dtime)
 				self.v_start = true
 				self.timer = 0
 				self.blinktimer = 0
-				mob_sound(self, self.sounds.fuse, nil, false)
+				mob_sound(self, "fuse", nil, false)
 
 			-- stop timer if out of reach or direct line of sight
 			elseif self.allow_fuse_reset
@@ -2290,7 +2300,7 @@ local do_states = function(self, dtime)
 						if line_of_sight(self, p2, s2) == true then
 
 							-- play attack sound
-							mob_sound(self, self.sounds.attack)
+							mob_sound(self, "attack")
 
 							-- punch player (or what player is attached to)
 							local attached = self.attack:get_attach()
@@ -2344,7 +2354,7 @@ local do_states = function(self, dtime)
 				set_animation(self, "shoot")
 
 				-- play shoot attack sound
-				mob_sound(self, self.sounds.shoot_attack)
+				mob_sound(self, "shoot_attack")
 
 				local p = self.object:get_pos()
 
@@ -3017,7 +3027,7 @@ local mob_step = function(self, dtime)
 
 	-- mob plays random sound at times
 	if random(1, 100) == 1 then
-		mob_sound(self, self.sounds.random, true)
+		mob_sound(self, "random", true)
 	end
 
 	-- environmental damage timer (every 1 second)
@@ -3228,6 +3238,7 @@ minetest.register_entity(name, {
 	child = def.child or false,
 	texture_mods = {},
 	shoot_arrow = def.shoot_arrow,
+        sounds_child = def.sounds_child,
 	-- End of MCL2 extensions
 
 	on_spawn = def.on_spawn,
@@ -3857,7 +3868,7 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 			end
 
 			-- make sound when fed so many times
-			mob_sound(self, self.sounds.random, true)
+			mob_sound(self, "random", true)
 		end
 
 		return true
