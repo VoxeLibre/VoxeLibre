@@ -18,15 +18,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	output = "mcl_end:end_stone",
-		recipe = {
-		{ "mcl_core:sandstone", "mcl_core:stone", "mcl_core:sandstone" },
-		{ "mcl_core:stone", "mcl_core:sandstone", "mcl_core:stone" },
-		{ "mcl_core:sandstone", "mcl_core:stone", "mcl_core:sandstone" },
-	},
-})
-
-minetest.register_craft({
 	output = "mcl_ocean:prismarine_shard",
 	recipe = {
 		{ "mcl_core:glass_cyan", },
@@ -37,15 +28,6 @@ minetest.register_craft({
 	type = "shapeless",
 	output = "mcl_ocean:prismarine_crystals",
 	recipe = { "mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard", "mcl_ocean:prismarine_shard", "mcl_core:gold_ingot" },
-})
-
-minetest.register_craft({
-	output = "mcl_end:chorus_flower",
-	recipe = {
-		{ "mcl_flowers:allium", "mcl_end:end_stone", "mcl_flowers:allium" },
-		{ "mcl_end:end_stone", "mcl_end:end_stone", "mcl_end:end_stone" },
-		{ "mcl_flowers:allium", "mcl_end:end_stone", "mcl_flowers:allium" },
-	},
 })
 
 minetest.register_craft({
@@ -91,24 +73,6 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craft({
-	output = "mcl_mobitems:carrot_on_a_stick",
-	recipe = {
-		{ "", "", "mcl_core:stick", },
-		{ "", "mcl_core:stick", "mcl_mobitems:string", },
-		{ "mcl_core:stick", "", "mcl_farming:carrot_item" },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_mobitems:carrot_on_a_stick",
-	recipe = {
-		{ "mcl_core:stick", "", "" },
-		{ "mcl_mobitems:string", "mcl_core:stick", "", },
-		{ "mcl_farming:carrot_item", "", "mcl_core:stick" },
-	},
-})
-
 -- Make red sand, red sandstone and more craftable in v6
 -- NOTE: When you change these, also update mcl_craftguide for the "v6" icon in
 -- the craft guide!
@@ -145,14 +109,6 @@ minetest.register_craft({
 	recipe = {
 		{ "mcl_core:redsandstonesmooth", "mcl_core:redsandstonesmooth" },
 		{ "mcl_core:redsandstonesmooth", "mcl_core:redsandstonesmooth" },
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_core:stone_smooth 2",
-	recipe = {
-		{ "mcl_stairs:slab_stone" },
-		{ "mcl_stairs:slab_stone" },
 	},
 })
 

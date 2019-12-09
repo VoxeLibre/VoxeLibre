@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_tools")
+
 -- mods/default/tools.lua
 
 --
@@ -35,7 +37,9 @@ else
 end
 minetest.register_item(":", {
 	type = "none",
-	_doc_items_longdesc = "You use your bare hand whenever you are not wielding any item. With your hand you can mine the weakest blocks and deal minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are better than the hand. When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching. In Creative Mode, the hand is able to break all blocks instantly.",
+	_doc_items_longdesc = S("You use your bare hand whenever you are not wielding any item. With your hand you can mine most blocks, but this is the slowest method and only the weakest blocks will yield their useful drop. The hand also deals minor damage by punching. Using the hand is often a last resort, as proper mining tools and weapons are much better.").."\n"..
+			S("When you are wielding an item which is not a mining tool or a weapon, it will behave as if it were the hand when you start mining or punching.").."\n"..
+			S("In Creative Mode, the hand is able to break all blocks instantly."),
 	wield_image = "wieldhand.png",
 	wield_scale = {x=1.0,y=1.0,z=2.0},
 	-- According to Minecraft Wiki, the exact range is 3.975.
@@ -50,21 +54,21 @@ minetest.register_item(":", {
 })
 
 -- Help texts
-local pickaxe_longdesc = "Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient."
-local axe_longdesc = "An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow."
-local sword_longdesc = "Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs."
-local shovel_longdesc = "Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak."
-local shovel_use = "To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the top or side of a grass block. This only works when there's air above the grass block."
-local shears_longdesc = "Shears are tools to shear sheep, carve pumpkins and to mine a few block types. Shears are a special mining tool and can be used to obtain the original item from a grass, leaves and similar blocks."
-local shears_use = "To shear a sheep and obtain its wool, rightclick it. To carve a face into a pumpkin and obtain 4 pumpkin seeds, rightclick it on one of its sides. Mining works are usual, but the drops are different for a few blocks."
+local pickaxe_longdesc = S("Pickaxes are mining tools to mine hard blocks, such as stone. A pickaxe can also be used as weapon, but it is rather inefficient.")
+local axe_longdesc = S("An axe is your tool of choice to cut down trees, wood-based blocks and other blocks. Axes deal a lot of damage as well, but they are rather slow.")
+local sword_longdesc = S("Swords are great in melee combat, as they are fast, deal high damage and can endure countless battles. Swords can also be used to cut down a few particular blocks, such as cobwebs.")
+local shovel_longdesc = S("Shovels are tools for digging coarse blocks, such as dirt, sand and gravel. They can also be used to turn grass blocks to grass paths. Shovels can be used as weapons, but they are very weak.")
+local shovel_use = S("To turn a grass block into a grass path, hold the shovel in your hand, then use (rightclick) the top or side of a grass block. This only works when there's air above the grass block.")
+local shears_longdesc = S("Shears are tools to shear sheep and to mine a few block types. Shears are a special mining tool and can be used to obtain the original item from grass, leaves and similar blocks that require cutting.")
+local shears_use = S("To shear sheep or carve faceless pumpkins, use the “place” key on them. Faces can only be carved at the side of faceless pumpkins. Mining works as usual, but the drops are different for a few blocks.")
 
 -- Picks
 minetest.register_tool("mcl_tools:pick_wood", {
-	description = "Wooden Pickaxe",
+	description = S("Wooden Pickaxe"),
 	_doc_items_longdesc = pickaxe_longdesc,
 	_doc_items_hidden = false,
 	inventory_image = "default_tool_woodpick.png",
-	groups = { tool=1 },
+	groups = { tool=1, pickaxe=1 },
 	tool_capabilities = {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
@@ -78,10 +82,10 @@ minetest.register_tool("mcl_tools:pick_wood", {
 	_repair_material = "group:wood",
 })
 minetest.register_tool("mcl_tools:pick_stone", {
-	description = "Stone Pickaxe",
+	description = S("Stone Pickaxe"),
 	_doc_items_longdesc = pickaxe_longdesc,
 	inventory_image = "default_tool_stonepick.png",
-	groups = { tool=1 },
+	groups = { tool=1, pickaxe=1 },
 	tool_capabilities = {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
@@ -95,10 +99,10 @@ minetest.register_tool("mcl_tools:pick_stone", {
 	_repair_material = "mcl_core:cobble",
 })
 minetest.register_tool("mcl_tools:pick_iron", {
-	description = "Iron Pickaxe",
+	description = S("Iron Pickaxe"),
 	_doc_items_longdesc = pickaxe_longdesc,
 	inventory_image = "default_tool_steelpick.png",
-	groups = { tool=1 },
+	groups = { tool=1, pickaxe=1 },
 	tool_capabilities = {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
@@ -112,10 +116,10 @@ minetest.register_tool("mcl_tools:pick_iron", {
 	_repair_material = "mcl_core:iron_ingot",
 })
 minetest.register_tool("mcl_tools:pick_gold", {
-	description = "Golden Pickaxe",
+	description = S("Golden Pickaxe"),
 	_doc_items_longdesc = pickaxe_longdesc,
 	inventory_image = "default_tool_goldpick.png",
-	groups = { tool=1 },
+	groups = { tool=1, pickaxe=1 },
 	tool_capabilities = {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
@@ -129,10 +133,10 @@ minetest.register_tool("mcl_tools:pick_gold", {
 	_repair_material = "mcl_core:gold_ingot",
 })
 minetest.register_tool("mcl_tools:pick_diamond", {
-	description = "Diamond Pickaxe",
+	description = S("Diamond Pickaxe"),
 	_doc_items_longdesc = pickaxe_longdesc,
 	inventory_image = "default_tool_diamondpick.png",
-	groups = { tool=1 },
+	groups = { tool=1, pickaxe=1 },
 	tool_capabilities = {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
@@ -175,12 +179,18 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 
 	-- Only make grass path if tool used on side or top of target node
 	if pointed_thing.above.y < pointed_thing.under.y then
-		return
+		return itemstack
 	end
+
 	if (minetest.get_item_group(node.name, "grass_block") == 1) then
 		local above = table.copy(pointed_thing.under)
 		above.y = above.y + 1
 		if minetest.get_node(above).name == "air" then
+			if minetest.is_protected(pointed_thing.under, placer:get_player_name()) then
+				minetest.record_protection_violation(pointed_thing.under, placer:get_player_name())
+				return itemstack
+			end
+
 			if not minetest.settings:get_bool("creative_mode") then
 				-- Add wear, as if digging a level 0 shovely node
 				local toolname = itemstack:get_name()
@@ -238,13 +248,13 @@ end
 
 -- Shovels
 minetest.register_tool("mcl_tools:shovel_wood", {
-	description = "Wooden Shovel",
+	description = S("Wooden Shovel"),
 	_doc_items_longdesc = shovel_longdesc,
 	_doc_items_usagehelp = shovel_use,
 	_doc_items_hidden = false,
 	inventory_image = "default_tool_woodshovel.png",
 	wield_image = "default_tool_woodshovel.png^[transformR90",
-	groups = { tool=1 },
+	groups = { tool=1, shovel=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=1,
@@ -258,12 +268,12 @@ minetest.register_tool("mcl_tools:shovel_wood", {
 	_repair_material = "group:wood",
 })
 minetest.register_tool("mcl_tools:shovel_stone", {
-	description = "Stone Shovel",
+	description = S("Stone Shovel"),
 	_doc_items_longdesc = shovel_longdesc,
 	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_stoneshovel.png",
 	wield_image = "default_tool_stoneshovel.png^[transformR90",
-	groups = { tool=1 },
+	groups = { tool=1, shovel=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=3,
@@ -277,12 +287,12 @@ minetest.register_tool("mcl_tools:shovel_stone", {
 	_repair_material = "mcl_core:cobble",
 })
 minetest.register_tool("mcl_tools:shovel_iron", {
-	description = "Iron Shovel",
+	description = S("Iron Shovel"),
 	_doc_items_longdesc = shovel_longdesc,
 	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_steelshovel.png",
 	wield_image = "default_tool_steelshovel.png^[transformR90",
-	groups = { tool=1 },
+	groups = { tool=1, shovel=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=4,
@@ -296,12 +306,12 @@ minetest.register_tool("mcl_tools:shovel_iron", {
 	_repair_material = "mcl_core:iron_ingot",
 })
 minetest.register_tool("mcl_tools:shovel_gold", {
-	description = "Golden Shovel",
+	description = S("Golden Shovel"),
 	_doc_items_longdesc = shovel_longdesc,
 	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_goldshovel.png",
 	wield_image = "default_tool_goldshovel.png^[transformR90",
-	groups = { tool=1 },
+	groups = { tool=1, shovel=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=2,
@@ -315,12 +325,12 @@ minetest.register_tool("mcl_tools:shovel_gold", {
 	_repair_material = "mcl_core:gold_ingot",
 })
 minetest.register_tool("mcl_tools:shovel_diamond", {
-	description = "Diamond Shovel",
+	description = S("Diamond Shovel"),
 	_doc_items_longdesc = shovel_longdesc,
 	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_diamondshovel.png",
 	wield_image = "default_tool_diamondshovel.png^[transformR90",
-	groups = { tool=1 },
+	groups = { tool=1, shovel=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=5,
@@ -336,11 +346,11 @@ minetest.register_tool("mcl_tools:shovel_diamond", {
 
 -- Axes
 minetest.register_tool("mcl_tools:axe_wood", {
-	description = "Wooden Axe",
+	description = S("Wooden Axe"),
 	_doc_items_longdesc = axe_longdesc,
 	_doc_items_hidden = false,
 	inventory_image = "default_tool_woodaxe.png",
-	groups = { tool=1 },
+	groups = { tool=1, axe=1 },
 	tool_capabilities = {
 		full_punch_interval = 1.25,
 		max_drop_level=1,
@@ -353,10 +363,10 @@ minetest.register_tool("mcl_tools:axe_wood", {
 	_repair_material = "group:wood",
 })
 minetest.register_tool("mcl_tools:axe_stone", {
-	description = "Stone Axe",
+	description = S("Stone Axe"),
 	_doc_items_longdesc = axe_longdesc,
 	inventory_image = "default_tool_stoneaxe.png",
-	groups = { tool=1 },
+	groups = { tool=1, axe=1 },
 	tool_capabilities = {
 		full_punch_interval = 1.25,
 		max_drop_level=3,
@@ -369,10 +379,10 @@ minetest.register_tool("mcl_tools:axe_stone", {
 	_repair_material = "mcl_core:cobble",
 })
 minetest.register_tool("mcl_tools:axe_iron", {
-	description = "Iron Axe",
+	description = S("Iron Axe"),
 	_doc_items_longdesc = axe_longdesc,
 	inventory_image = "default_tool_steelaxe.png",
-	groups = { tool=1 },
+	groups = { tool=1, axe=1 },
 	tool_capabilities = {
 		-- 1/0.9
 		full_punch_interval = 1.11111111,
@@ -386,10 +396,10 @@ minetest.register_tool("mcl_tools:axe_iron", {
 	_repair_material = "mcl_core:iron_ingot",
 })
 minetest.register_tool("mcl_tools:axe_gold", {
-	description = "Golden Axe",
+	description = S("Golden Axe"),
 	_doc_items_longdesc = axe_longdesc,
 	inventory_image = "default_tool_goldaxe.png",
-	groups = { tool=1 },
+	groups = { tool=1, axe=1 },
 	tool_capabilities = {
 		full_punch_interval = 1.0,
 		max_drop_level=2,
@@ -402,10 +412,10 @@ minetest.register_tool("mcl_tools:axe_gold", {
 	_repair_material = "mcl_core:gold_ingot",
 })
 minetest.register_tool("mcl_tools:axe_diamond", {
-	description = "Diamond Axe",
+	description = S("Diamond Axe"),
 	_doc_items_longdesc = axe_longdesc,
 	inventory_image = "default_tool_diamondaxe.png",
-	groups = { tool=1 },
+	groups = { tool=1, axe=1 },
 	tool_capabilities = {
 		full_punch_interval = 1.0,
 		max_drop_level=5,
@@ -420,7 +430,7 @@ minetest.register_tool("mcl_tools:axe_diamond", {
 
 -- Swords
 minetest.register_tool("mcl_tools:sword_wood", {
-	description = "Wooden Sword",
+	description = S("Wooden Sword"),
 	_doc_items_longdesc = sword_longdesc,
 	_doc_items_hidden = false,
 	inventory_image = "default_tool_woodsword.png",
@@ -438,7 +448,7 @@ minetest.register_tool("mcl_tools:sword_wood", {
 	_repair_material = "group:wood",
 })
 minetest.register_tool("mcl_tools:sword_stone", {
-	description = "Stone Sword",
+	description = S("Stone Sword"),
 	_doc_items_longdesc = sword_longdesc,
 	inventory_image = "default_tool_stonesword.png",
 	groups = { weapon=1 },
@@ -455,7 +465,7 @@ minetest.register_tool("mcl_tools:sword_stone", {
 	_repair_material = "mcl_core:cobble",
 })
 minetest.register_tool("mcl_tools:sword_iron", {
-	description = "Iron Sword",
+	description = S("Iron Sword"),
 	_doc_items_longdesc = sword_longdesc,
 	inventory_image = "default_tool_steelsword.png",
 	groups = { weapon=1 },
@@ -472,7 +482,7 @@ minetest.register_tool("mcl_tools:sword_iron", {
 	_repair_material = "mcl_core:iron_ingot",
 })
 minetest.register_tool("mcl_tools:sword_gold", {
-	description = "Golden Sword",
+	description = S("Golden Sword"),
 	_doc_items_longdesc = sword_longdesc,
 	inventory_image = "default_tool_goldsword.png",
 	groups = { weapon=1 },
@@ -489,7 +499,7 @@ minetest.register_tool("mcl_tools:sword_gold", {
 	_repair_material = "mcl_core:gold_ingot",
 })
 minetest.register_tool("mcl_tools:sword_diamond", {
-	description = "Diamond Sword",
+	description = S("Diamond Sword"),
 	_doc_items_longdesc = sword_longdesc,
 	inventory_image = "default_tool_diamondsword.png",
 	groups = { weapon=1 },
@@ -508,13 +518,13 @@ minetest.register_tool("mcl_tools:sword_diamond", {
 
 --Shears
 minetest.register_tool("mcl_tools:shears", {
-	description = "Shears",
+	description = S("Shears"),
 	_doc_items_longdesc = shears_longdesc,
 	_doc_items_usagehelp = shears_use,
 	inventory_image = "default_tool_shears.png",
 	wield_image = "default_tool_shears.png",
 	stack_max = 1,
-	groups = { tool=1 },
+	groups = { tool=1, shears=1 },
 	tool_capabilities = {
 	        full_punch_interval = 0.5,
 	        max_drop_level=1,

@@ -1,6 +1,8 @@
+local S = minetest.get_translator("mcl_nether")
+
 minetest.register_node("mcl_nether:nether_wart_0", {
-	description = "Premature Nether Wart (Stage 1)",
-	_doc_items_longdesc = "A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension.",
+	description = S("Premature Nether Wart (Stage 1)"),
+	_doc_items_longdesc = S("A premature nether wart has just recently been planted on soul sand. Nether wart slowly grows on soul sand in 4 stages (the second and third stages look identical). Although nether wart is home to the Nether, it grows in any dimension."),
 	paramtype = "light",
 	paramtype2 = "meshoptions",
 	place_param2 = 3,
@@ -21,7 +23,7 @@ minetest.register_node("mcl_nether:nether_wart_0", {
 })
 
 minetest.register_node("mcl_nether:nether_wart_1", {
-	description = "Premature Nether Wart (Stage 2)",
+	description = S("Premature Nether Wart (Stage 2)"),
 	_doc_items_create_entry = false,
 	paramtype = "light",
 	paramtype2 = "meshoptions",
@@ -43,7 +45,7 @@ minetest.register_node("mcl_nether:nether_wart_1", {
 })
 
 minetest.register_node("mcl_nether:nether_wart_2", {
-	description = "Premature Nether Wart (Stage 3)",
+	description = S("Premature Nether Wart (Stage 3)"),
 	_doc_items_create_entry = false,
 	paramtype = "light",
 	paramtype2 = "meshoptions",
@@ -65,8 +67,8 @@ minetest.register_node("mcl_nether:nether_wart_2", {
 })
 
 minetest.register_node("mcl_nether:nether_wart", {
-	description = "Mature Nether Wart",
-	_doc_items_longdesc = "The mature nether wart is a plant from the Nether and reached its full size and won't grow any further. It is ready to be harvested for its items.",
+	description = S("Mature Nether Wart"),
+	_doc_items_longdesc = S("The mature nether wart is a plant from the Nether and reached its full size and won't grow any further. It is ready to be harvested for its items."),
 	paramtype = "light",
 	paramtype2 = "meshoptions",
 	place_param2 = 3,
@@ -94,9 +96,9 @@ minetest.register_node("mcl_nether:nether_wart", {
 })
 
 minetest.register_craftitem("mcl_nether:nether_wart_item", {
-	description = "Nether Wart",
-	_doc_items_longdesc = "Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 3 stages.",
-	_doc_items_usagehelp = "Place this item on soul sand to plant it and watch it grow.",
+	description = S("Nether Wart"),
+	_doc_items_longdesc = S("Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages."),
+	_doc_items_usagehelp = S("Place this item on soul sand to plant it and watch it grow."),
 	inventory_image = "mcl_nether_nether_wart.png",
 	wield_image = "mcl_nether_nether_wart.png",
 	on_place = function(itemstack, placer, pointed_thing)

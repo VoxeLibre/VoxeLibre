@@ -1,11 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
-
-
---dofile(minetest.get_modpath("mobs").."/api.lua")
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### CHICKEN
@@ -40,14 +35,17 @@ mobs:register_mob("mobs_mc:chicken", {
 		min = 0,
 		max = 2,},
 	},
-	water_damage = 1,
-	lava_damage = 4,
-	light_damage = 0,
 	fall_damage = 0,
 	fall_speed = -2.25,
 	sounds = {
 		random = "mobs_chicken",
 		-- TODO: death, damage
+		distance = 16,
+	},
+	sounds_child = {
+		random = "mobs_mc_chicken_child",
+		damage = "mobs_mc_chicken_child",
+		death = "mobs_mc_chicken_child",
 		distance = 16,
 	},
 	animation = {

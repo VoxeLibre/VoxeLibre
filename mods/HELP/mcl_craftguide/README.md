@@ -1,14 +1,11 @@
-## ![Preview1](http://i.imgur.com/fIPNYkb.png) Crafting Guide ##
+# Crafting Guide (MineClone 2 edition)
 
-#### A Crafting Guide for Minetest that doesn't suck. ####
+#### `mcl_craftguide` is based on, `craftguide` the most comprehensive crafting guide on Minetest.
+#### Consult the [Minetest Wiki](http://wiki.minetest.net/Crafting_guide) for more details.
 
-#### `craftguide` is simply the most comprehensive mod of his category, with the cleanest code. ####
-#### Consult the [Minetest Wiki](http://wiki.minetest.net/Crafting_guide) for more details and comparisons. ####
+This crafting guide can be accessed from the invenotory menu (book icon).
 
-#### This crafting guide is usable with a blue book named *"Crafting Guide"*. ####
+Crafting guide starts out empty and will be filled with more recipes whenever you hold on
+to a new items that you can use to new recipes.
 
-#### This crafting guide features two modes : Standard and Progressive. ####
-The Progressive mode is a Terraria-like system that only shows recipes you can craft from items in inventory.
-The progressive mode can be enabled with `craftguide_progressive_mode = true` in `minetest.conf`.
-
-![Preview2](http://i.imgur.com/3q7rVSo.png)
+For developers, there's a modding API (see `API.md`).

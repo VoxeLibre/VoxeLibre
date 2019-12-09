@@ -1,13 +1,15 @@
+local S = minetest.get_translator("mclx_core")
+
 -- Liquids: River Water
 
 local source = table.copy(minetest.registered_nodes["mcl_core:water_source"])
-source.description = "River Water Source"
+source.description = S("River Water Source")
 source.liquid_range = 2
 source.liquid_alternative_flowing = "mclx_core:river_water_flowing"
 source.liquid_alternative_source = "mclx_core:river_water_source"
 source.liquid_renewable = false
-source._doc_items_longdesc = "River water has the same properties as water, but has a reduced flowing distance and is not renewable."
-source._doc_items_entry_name = "River Water"
+source._doc_items_longdesc = S("River water has the same properties as water, but has a reduced flowing distance and is not renewable.")
+source._doc_items_entry_name = S("River Water")
 -- Auto-expose entry only in valleys mapgen
 source._doc_items_hidden = minetest.get_mapgen_setting("mg_name") ~= "valleys"
 source.post_effect_color = {a=192, r=0x2c, g=0x88, b=0x8c}
@@ -24,7 +26,7 @@ source.special_tiles = {
 }
 
 local flowing = table.copy(minetest.registered_nodes["mcl_core:water_flowing"])
-flowing.description = "Flowing River Water"
+flowing.description = S("Flowing River Water")
 flowing.liquid_range = 2
 flowing.liquid_alternative_flowing = "mclx_core:river_water_flowing"
 flowing.liquid_alternative_source = "mclx_core:river_water_source"

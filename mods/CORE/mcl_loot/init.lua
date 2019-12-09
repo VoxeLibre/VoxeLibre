@@ -98,3 +98,54 @@ function mcl_loot.get_multi_loot(multi_loot_definitions, pr)
 	end
 	return items
 end
+
+--[[
+Returns a table of length `max_slot` and all natural numbers between 1 and `max_slot`
+in a random order.
+]]
+local function get_random_slots(max_slot)
+	local slots = {}
+	for s=1, max_slot do
+		slots[s] = s
+	end
+	local slots_out = {}
+	while #slots > 0 do
+		local r = math.random(1, #slots)
+		table.insert(slots_out, slots[r])
+		table.remove(slots, r)
+	end
+	return slots_out
+end
+
+--[[
+Puts items in an inventory list into random slots.
+* inv: InvRef
+* listname: Inventory list name
+* items: table of items to add
+
+Items will be added from start of the table to end.
+If the inventory already has occupied slots, or is
+too small, placement of some items might fail.
+]]
+function mcl_loot.fill_inventory(inv, listname, items)
+	local size = inv:get_size(listname)
+	local slots = get_random_slots(size)
+	local leftovers = {}
+	-- 1st pass: Add items into random slots
+	for i=1, math.min(#items, size) do
+		local item = items[i]
+		local slot = slots[i]
+		local old_item = inv:get_stack(listname, slot)
+		local leftover = old_item:add_item(item)
+		inv:set_stack(listname, slot, old_item)
+		if not leftover:is_empty() then
+			table.insert(leftovers, item)
+		end
+	end
+	-- 2nd pass: If some items couldn't be added in first pass,
+	-- try again in a non-random fashion
+	for l=1, math.min(#leftovers, size) do
+		inv:add_item(listname, leftovers[l])
+	end
+	-- If there are still items left, tough luck!
+end

@@ -19,9 +19,8 @@
 --     TODO: Internal inventory, pick up items, trade with other villagers
 --     TODO: Farm stuff
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
+local N = function(s) return s end
 
 -- playername-indexed table containing the previously used tradenum
 local player_tradenum = {}
@@ -63,7 +62,7 @@ end
 
 local professions = {
 	farmer = {
-		name = "Farmer",
+		name = N("Farmer"),
 		texture = "mobs_mc_villager_farmer.png",
 		trades = {
 			{
@@ -93,19 +92,19 @@ local professions = {
 		}
 	},
 	fisherman = {
-		name = "Fisherman",
+		name = N("Fisherman"),
 		texture = "mobs_mc_villager_farmer.png",
 		trades = {
 			{
 			{ { "mcl_fishing:fish_raw", 6, 6, "mcl_core:emerald", 1, 1 }, { "mcl_fishing:fish_cooked", 6, 6 } },
 			{ { "mcl_mobitems:string", 15, 20 }, E1 },
-			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
+			-- TODO: replace with enchanted fishing rod
+			{ { "mcl_core:emerald", 3, 11 }, { "mcl_fishing:fishing_rod", 1, 1} },
 			},
-			-- TODO: enchanted fishing rod
 		},
 	},
 	fletcher = {
-		name = "Fletcher",
+		name = N("Fletcher"),
 		texture = "mobs_mc_villager_farmer.png",
 		trades = {
 			{
@@ -120,7 +119,7 @@ local professions = {
 		}
 	},
 	shepherd ={
-		name = "Shepherd",
+		name = N("Shepherd"),
 		texture = "mobs_mc_villager_farmer.png",
 		trades = {
 			{
@@ -149,7 +148,7 @@ local professions = {
 		},
 	},
 	librarian = {
-		name = "Librarian",
+		name = N("Librarian"),
 		texture = "mobs_mc_villager_librarian.png",
 		trades = {
 			{
@@ -178,7 +177,7 @@ local professions = {
 		},
 	},
 	cartographer = {
-		name = "Cartographer",
+		name = N("Cartographer"),
 		texture = "mobs_mc_villager_librarian.png",
 		trades = {
 			{
@@ -199,7 +198,7 @@ local professions = {
 		},
 	},
 	armorer = {
-		name = "Armorer",
+		name = N("Armorer"),
 		texture = "mobs_mc_villager_smith.png",
 		trades = {
 			{
@@ -227,7 +226,7 @@ local professions = {
 		},
 	},
 	leatherworker = {
-		name = "Leatherworker",
+		name = N("Leatherworker"),
 		texture = "mobs_mc_villager_butcher.png",
 		trades = {
 			{
@@ -246,7 +245,7 @@ local professions = {
 		},
 	},
 	butcher = {
-		name = "Butcher",
+		name = N("Butcher"),
 		texture = "mobs_mc_villager_butcher.png",
 		trades = {
 			{
@@ -262,7 +261,7 @@ local professions = {
 		},
 	},
 	weapon_smith = {
-		name = "Weapon Smith",
+		name = N("Weapon Smith"),
 		texture = "mobs_mc_villager_smith.png",
 		trades = {
 			{
@@ -286,7 +285,7 @@ local professions = {
 		},
 	},
 	tool_smith = {
-		name = "Tool Smith",
+		name = N("Tool Smith"),
 		texture = "mobs_mc_villager_smith.png",
 		trades = {
 			{
@@ -309,7 +308,7 @@ local professions = {
 		},
 	},
 	cleric = {
-		name = "Cleric",
+		name = N("Cleric"),
 		texture = "mobs_mc_villager_priest.png",
 		trades = {
 			{
@@ -332,7 +331,7 @@ local professions = {
 		},
 	},
 	nitwit = {
-		name = "Nitwit",
+		name = N("Nitwit"),
 		texture = "mobs_mc_villager.png",
 		-- No trades for nitwit
 		trades = nil,
@@ -492,7 +491,7 @@ local function show_trade_formspec(playername, trader, tradenum)
 	.."background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"
 	..disabled_img
 	..mcl_vars.inventory_header
-	.."label[4,0;"..minetest.formspec_escape(profession).."]"
+	.."label[4,0;"..minetest.formspec_escape(minetest.colorize("#313131", S(profession))).."]"
 	.."list[current_player;main;0,4.5;9,3;9]"
 	.."list[current_player;main;0,7.74;9,1;]"
 	..b_prev..b_next
@@ -595,7 +594,7 @@ local function return_item(itemstack, dropper, pos, inv_p)
 				v.x = v.x*4
 				v.y = v.y*4 + 2
 				v.z = v.z*4
-				obj:setvelocity(v)
+				obj:set_velocity(v)
 				obj:get_luaentity()._insta_collect = false
 			end
 		end
@@ -946,9 +945,6 @@ mobs:register_mob("mobs_mc:villager", {
 		die_end = 220,
 		die_loop = false,
 	},
-	water_damage = 0,
-	lava_damage = 4,
-	light_damage = 0,
 	view_range = 16,
 	fear_height = 4,
 	jump = true,

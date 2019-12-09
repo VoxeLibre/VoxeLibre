@@ -1,0 +1,23 @@
+# textdomain: mcl_potions
+Put this item in an item frame for decoration. It's useless otherwise.=
+Fermented Spider Eye=
+Glass Bottle=
+A glass bottle is used as a container for liquids and can be used to collect water directly.=
+To collect water, it on a cauldron with water (which removes a level of water) or any water source (which removes no water).=
+Water Bottle=
+Water bottles can be used to fill cauldrons. Drinking water has no effect.=
+Rightclick to drink. Rightclick a cauldron to pour the water into the cauldron.=
+River Water Bottle=
+River water bottles can be used to fill cauldrons. Drinking it has no effect.=
+Awkward Potion=
+This potion has an awkward taste and is used for brewing more potions. Drinking it has no effect.=
+Mundane Potion=
+This potion has a clean taste and is used for brewing more potions. Drinking it has no effect.=
+Thick Potion=
+This potion has a bitter taste and is used for brewing more potions. Drinking it has no effect.=
+Glistering Melon=
+This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.=
+Dragon's Breath=
+Use the “Place” key to drink it.=
+Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron.=
+Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron.=

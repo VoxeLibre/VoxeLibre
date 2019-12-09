@@ -1,7 +1,9 @@
+local S = minetest.get_translator("mcl_farming")
+
 minetest.register_craftitem("mcl_farming:beetroot_seeds", {
-	description = "Beetroot Seeds",
-	_doc_items_longdesc = "Grows into a beetroot plant. Chickens like beetroot seeds.",
-	_doc_items_usagehelp = "Place the beetroot seeds on farmland (which can be created with a hoe) to plant a beetroot plant. They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it beetroot seeds.",
+	description = S("Beetroot Seeds"),
+	_doc_items_longdesc = S("Grows into a beetroot plant. Chickens like beetroot seeds."),
+	_doc_items_usagehelp = S("Place the beetroot seeds on farmland (which can be created with a hoe) to plant a beetroot plant. They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it beetroot seeds."),
 	groups = { craftitem=1 },
 	inventory_image = "mcl_farming_beetroot_seeds.png",
 	wield_image = "mcl_farming_beetroot_seeds.png",
@@ -11,9 +13,9 @@ minetest.register_craftitem("mcl_farming:beetroot_seeds", {
 })
 
 minetest.register_node("mcl_farming:beetroot_0", {
-	description = "Premature Beetroot Plant (Stage 1)",
-	_doc_items_longdesc = "Beetroot plants are plants which grow on farmland under sunlight in 4 stages. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature.",
-	_doc_items_entry_name = "Premature Beetroot Plant",
+	description = S("Premature Beetroot Plant (Stage 1)"),
+	_doc_items_longdesc = S("Beetroot plants are plants which grow on farmland under sunlight in 4 stages. On hydrated farmland, they grow a bit faster. They can be harvested at any time but will only yield a profit when mature."),
+	_doc_items_entry_name = S("Premature Beetroot Plant"),
 	paramtype = "light",
 	paramtype2 = "meshoptions",
 	sunlight_propagates = true,
@@ -36,7 +38,7 @@ minetest.register_node("mcl_farming:beetroot_0", {
 })
 
 minetest.register_node("mcl_farming:beetroot_1", {
-	description = "Premature Beetroot Plant (Stage 2)",
+	description = S("Premature Beetroot Plant (Stage 2)"),
 	_doc_items_create_entry = false,
 	paramtype = "light",
 	paramtype2 = "meshoptions",
@@ -60,7 +62,7 @@ minetest.register_node("mcl_farming:beetroot_1", {
 })
 
 minetest.register_node("mcl_farming:beetroot_2", {
-	description = "Premature Beetroot Plant (Stage 3)",
+	description = S("Premature Beetroot Plant (Stage 3)"),
 	_doc_items_create_entry = false,
 	paramtype = "light",
 	paramtype2 = "meshoptions",
@@ -84,8 +86,8 @@ minetest.register_node("mcl_farming:beetroot_2", {
 })
 
 minetest.register_node("mcl_farming:beetroot", {
-	description = "Mature Beetroot Plant",
-	_doc_items_longdesc = "A mature beetroot plant is a farming plant which is ready to be harvested for a beetroot and some beetroot seeds. It won't grow any further.",
+	description = S("Mature Beetroot Plant"),
+	_doc_items_longdesc = S("A mature beetroot plant is a farming plant which is ready to be harvested for a beetroot and some beetroot seeds. It won't grow any further."),
 	_doc_items_create_entry = true,
 	paramtype = "light",
 	paramtype2 = "meshoptions",
@@ -123,9 +125,9 @@ minetest.register_node("mcl_farming:beetroot", {
 })
 
 minetest.register_craftitem("mcl_farming:beetroot_item", {
-	description = "Beetroot",
-	_doc_items_longdesc = "Beetroots are both used as food item and a dye ingredient. Pigs like beetroots, too.",
-	_doc_items_usagehelp = "Hold it in your hand and right-click to eat it. Rightclick an animal to feed it.",
+	description = S("Beetroot"),
+	_doc_items_longdesc = S("Beetroots are both used as food item and a dye ingredient. Pigs like beetroots, too."),
+	_doc_items_usagehelp = S("Hold it in your hand and right-click to eat it. Rightclick an animal to feed it."),
 	inventory_image = "mcl_farming_beetroot.png",
 	wield_image = "mcl_farming_beetroot.png",
 	on_place = minetest.item_eat(1),
@@ -135,8 +137,8 @@ minetest.register_craftitem("mcl_farming:beetroot_item", {
 })
 
 minetest.register_craftitem("mcl_farming:beetroot_soup", {
-	description = "Beetroot Soup",
-	_doc_items_longdesc = "Beetroot soup is a food item.",
+	description = S("Beetroot Soup"),
+	_doc_items_longdesc = S("Beetroot soup is a food item."),
 	stack_max = 1,
 	inventory_image = "mcl_farming_beetroot_soup.png",
 	wield_image = "mcl_farming_beetroot_soup.png",

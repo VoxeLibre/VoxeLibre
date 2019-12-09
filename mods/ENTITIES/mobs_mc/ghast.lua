@@ -3,11 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
-
---dofile(minetest.get_modpath("mobs").."/api.lua")
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### GHAST
@@ -57,8 +53,6 @@ mobs:register_mob("mobs_mc:ghast", {
 		walk_start = 0,		walk_end = 40,
 		run_start = 0,		run_end = 40,
 	},
-	lava_damage = 4,
-	light_damage = 0,
 	fall_damage = 0,
 	view_range = 100,
 	--attack_type = "dogshoot",
@@ -77,8 +71,6 @@ mobs:register_mob("mobs_mc:ghast", {
 	fly = true,
 	fly_in = {"air"},
 	jump_chance = 98,
-	fear_height = 120,	
-	blood_amount = 0,
 })
 
 
@@ -99,8 +91,8 @@ mobs:register_arrow(":mobs_monster:fireball", {
 		}, nil)
 	end,
 
-	hit_mob = function(self, player)
-		player:punch(self.object, 1.0, {
+	hit_mob = function(self, mob)
+		mob:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 8},
 		}, nil)

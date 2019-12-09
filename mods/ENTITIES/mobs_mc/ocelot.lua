@@ -3,9 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### OCELOT AND CAT
@@ -44,9 +42,6 @@ local ocelot = {
 	run_velocity = 3,
 	floats = 1,
 	runaway = true,
-	water_damage = 0,
-	lava_damage = 4,
-	light_damage = 0,
 	fall_damage = 0,
 	fear_height = 4,
 	sounds = {

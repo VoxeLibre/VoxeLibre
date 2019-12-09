@@ -14,12 +14,7 @@
 -- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --
 
-local S
-if minetest.get_modpath("intllib") then
-	S = intllib.Getter()
-else
-	S = function ( s ) return s end
-end
+local S = minetest.get_translator("awards")
 
 minetest.register_chatcommand("awards", {
 	params = S("[c|clear|disable|enable]"),

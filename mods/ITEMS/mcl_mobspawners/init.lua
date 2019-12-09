@@ -1,4 +1,4 @@
-local S = mobs.intllib
+local S = minetest.get_translator("mcl_mobspawners")
 
 mcl_mobspawners = {}
 
@@ -42,6 +42,14 @@ local doll_size_overrides = {
 	["mobs_mc:wither"] = { x = 1.2, y = 1.2 },
 	["mobs_mc:enderdragon"] = { x = 0.16, y = 0.16 },
 	["mobs_mc:witch"] = { x = 0.95, y = 0.95 },
+}
+local spawn_count_overrides = {
+	["mobs_mc:enderdragon"] = 1,
+	["mobs_mc:wither"] = 1,
+	["mobs_mc:ghast"] = 1,
+	["mobs_mc:guardian_elder"] = 1,
+	["mobs_mc:guardian"] = 2,
+	["mobs_mc:iron_golem"] = 2,
 }
 
 local function set_doll_properties(doll, mob)
@@ -218,7 +226,11 @@ local spawn_mobs = function(pos, elapsed)
 
 	-- spawn up to 4 mobs in random air blocks
 	if air then
-		for a=1, 4 do
+		local max = 4
+		if spawn_count_overrides[mob] then
+			max = spawn_count_overrides[mob]
+		end
+		for a=1, max do
 			if #air <= 0 then
 				-- We're out of space! Stop spawning
 				break
@@ -255,7 +267,7 @@ minetest.register_node("mcl_mobspawners:spawner", {
 	walkable = true,
 	description = S("Mob Spawner"),
 	_doc_items_longdesc = S("A mob spawner regularily causes mobs to appear around it while a player is nearby. Some mob spawners are disabled while in light."),
-	_doc_items_usagehelp = S("If you have a spawn egg, you use it to change the mob to spawn. Just place the item on the mob spawner. Player-set mob spawners always spawn mobs regardless of the light level."),
+	_doc_items_usagehelp = S("If you have a spawn egg, you can use it to change the mob to spawn. Just place the item on the mob spawner. Player-set mob spawners always spawn mobs regardless of the light level."),
 	groups = {pickaxey=1, material_stone=1, deco_block=1},
 	is_ground_content = false,
 	drop = "",
@@ -318,8 +330,8 @@ minetest.register_node("mcl_mobspawners:spawner", {
 
 local doll_def = {
 	hp_max = 1,
-	physical = true,
-	collisionbox = {0,0,0,0,0,0},
+	physical = false,
+	pointable = false,
 	visual = "mesh",
 	makes_footstep_sound = false,
 	timer = 0,
@@ -338,8 +350,8 @@ doll_def.on_activate = function(self, staticdata, dtime_s)
 		mob = default_mob
 	end
 	set_doll_properties(self.object, mob)
-	self.object:setvelocity({x=0, y=0, z=0})
-	self.object:setacceleration({x=0, y=0, z=0})
+	self.object:set_velocity({x=0, y=0, z=0})
+	self.object:set_acceleration({x=0, y=0, z=0})
 	self.object:set_armor_groups({immortal=1})
 
 end

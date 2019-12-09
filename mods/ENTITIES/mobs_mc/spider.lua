@@ -3,11 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
-
---dofile(minetest.get_modpath("mobs").."/api.lua")
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### SPIDER
@@ -50,9 +46,6 @@ local spider = {
 		{name = mobs_mc.items.spider_eye, chance = 3, min = 1, max = 1,},
 	},
 	specific_attack = { "player", "mobs_mc:iron_golem" },
-	water_damage = 0,
-	lava_damage = 4,
-	light_damage = 0,
 	fear_height = 4,
 	animation = {
 		stand_speed = 10,
@@ -65,7 +58,6 @@ local spider = {
 		run_start = 0,
 		run_end = 20,
 	},
-	blood_amount = 0,
 }
 mobs:register_mob("mobs_mc:spider", spider)
 

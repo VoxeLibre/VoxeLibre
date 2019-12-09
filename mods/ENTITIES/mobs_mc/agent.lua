@@ -2,9 +2,7 @@
 --################### AGENT
 --###################
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:agent", {
 	type = "npc",
@@ -21,6 +19,7 @@ mobs:register_mob("mobs_mc:agent", {
 	},
 	-- TODO: sounds
 	visual_size = {x=3, y=3},
+	walk_chance = 0,
 	walk_velocity = 0.6,
 	run_velocity = 2,
 	jump = true,

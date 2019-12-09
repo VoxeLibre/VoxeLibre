@@ -1,8 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:bat", {
 	type = "animal",
@@ -42,9 +40,6 @@ mobs:register_mob("mobs_mc:bat", {
 ]]
 	},
 
-	water_damage = 1,
-	lava_damage = 4,
-	light_damage = 0,
 	fall_damage = 0,
 	view_range = 16,
 

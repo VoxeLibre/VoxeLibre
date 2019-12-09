@@ -70,10 +70,22 @@ function mcl_player.player_set_model(player, model_name)
 	player_model[name] = model_name
 end
 
-function mcl_player.player_set_textures(player, textures)
+function mcl_player.player_set_textures(player, textures, preview)
 	local name = player:get_player_name()
 	player_textures[name] = textures
 	player:set_properties({textures = textures,})
+	if preview then
+		player:get_meta():set_string("mcl_player:preview", preview)
+	end
+end
+
+function mcl_player.player_get_preview(player)
+	local preview = player:get_meta():get_string("mcl_player:preview")
+	if preview == nil or preview == "" then
+		return "player.png"
+	else
+		return preview
+	end
 end
 
 function mcl_player.player_set_animation(player, anim_name, speed)

@@ -3,11 +3,8 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
---dofile(minetest.get_modpath("mobs").."/api.lua")
 --###################
 --################### EVOKER
 --###################
@@ -77,9 +74,6 @@ mobs:register_mob("mobs_mc:evoker", {
 		die_end = 200,
 		die_loop = false,
 	},
-	water_damage = 0,
-	lava_damage = 4,
-	light_damage = 0,
 	view_range = 16,
 	fear_height = 4,
 })

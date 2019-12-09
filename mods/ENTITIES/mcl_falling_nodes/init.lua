@@ -1,5 +1,5 @@
+local S = minetest.get_translator("mcl_falling_nodes")
 local dmes = minetest.get_modpath("mcl_death_messages") ~= nil
-local hung = minetest.get_modpath("mcl_hunger") ~= nil
 
 local get_falling_depth = function(self)
 	if not self._startpos then
@@ -49,15 +49,12 @@ local deal_falling_damage = function(self, dtime)
 						-- TODO: Reduce damage if wearing a helmet
 						local msg
 						if minetest.get_item_group(self.node.name, "anvil") ~= 0 then
-							msg = "%s was smashed by a falling anvil."
+							msg = S("@1 was smashed by a falling anvil.", v:get_player_name())
 						else
-							msg = "%s was smashed by a falling block."
+							msg = S("@1 was smashed by a falling block.", v:get_player_name())
 						end
 						if dmes then
-							mcl_death_messages.player_damage(v, string.format(msg, v:get_player_name()))
-						end
-						if hung then
-							mcl_hunger.exhaust(v:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+							mcl_death_messages.player_damage(v, msg)
 						end
 					end
 					v:set_hp(hp)
@@ -145,9 +142,9 @@ minetest.register_entity(":__builtin:falling_node", {
 
 	on_step = function(self, dtime)
 		-- Set gravity
-		local acceleration = self.object:getacceleration()
+		local acceleration = self.object:get_acceleration()
 		if not vector.equals(acceleration, {x = 0, y = -10, z = 0}) then
-			self.object:setacceleration({x = 0, y = -10, z = 0})
+			self.object:set_acceleration({x = 0, y = -10, z = 0})
 		end
 		-- Turn to actual node when colliding with ground, or continue to move
 		local pos = self.object:get_pos()
@@ -204,14 +201,18 @@ minetest.register_entity(":__builtin:falling_node", {
 				for _, callback in pairs(minetest.registered_on_dignodes) do
 					callback(np, n2)
 				end
-				if minetest.registered_nodes[self.node.name] then
+				local def = minetest.registered_nodes[self.node.name]
+				if def then
 					minetest.add_node(np, self.node)
-					if minetest.registered_nodes[self.node.name]._mcl_after_falling then
-						minetest.registered_nodes[self.node.name]._mcl_after_falling(np, get_falling_depth(self))
+					if def._mcl_after_falling then
+						def._mcl_after_falling(np, get_falling_depth(self))
 					end
 					if self.meta then
 						local meta = minetest.get_meta(np)
 						meta:from_table(self.meta)
+					end
+					if def.sounds and def.sounds.place and def.sounds.place.name then
+						minetest.sound_play(def.sounds.place, {pos = np})
 					end
 				end
 			else
@@ -226,7 +227,7 @@ minetest.register_entity(":__builtin:falling_node", {
 			minetest.check_for_falling(np)
 			return
 		end
-		local vel = self.object:getvelocity()
+		local vel = self.object:get_velocity()
 		-- Fix position if entity does not move
 		if vector.equals(vel, {x = 0, y = 0, z = 0}) then
 			local npos = vector.round(self.object:get_pos())
@@ -242,8 +243,14 @@ minetest.register_entity(":__builtin:falling_node", {
 				local npos3 = table.copy(npos)
 				npos3.y = npos3.y - 1
 				minetest.add_node(npos3, self.node)
-				if minetest.registered_nodes[self.node.name]._mcl_after_falling then
-					minetest.registered_nodes[self.node.name]._mcl_after_falling(npos3, get_falling_depth(self))
+				local def = minetest.registered_nodes[self.node.name]
+				if def then
+					if def._mcl_after_falling then
+						def._mcl_after_falling(npos3, get_falling_depth(self))
+					end
+					if def.sounds and def.sounds.place and def.sounds.place.name then
+						minetest.sound_play(def.sounds.place, {pos = np})
+					end
 				end
 				deal_falling_damage(self, dtime)
 				self.object:remove()

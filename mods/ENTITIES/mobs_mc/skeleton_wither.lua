@@ -3,9 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### WITHER SKELETON
@@ -15,6 +13,7 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 	type = "monster",
 	hp_min = 20,
 	hp_max = 20,
+	breath_max = -1,
 	pathfinding = 1,
 	group_attack = true,
 	collisionbox = {-0.35, -0.01, -0.35, 0.35, 2.39, 0.35},
@@ -76,12 +75,12 @@ mobs:register_mob("mobs_mc:witherskeleton", {
 	},
 	water_damage = 0,
 	lava_damage = 0,
+	fire_damage = 0,
 	light_damage = 0,
 	view_range = 16,
 	attack_type = "dogfight",
 	dogshoot_switch = 1,
 	dogshoot_count_max =0.5,
-	blood_amount = 0,
 	fear_height = 4,
 })
 

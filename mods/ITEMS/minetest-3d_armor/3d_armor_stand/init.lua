@@ -1,3 +1,5 @@
+local S = minetest.get_translator("3d_armor_stand")
+
 local elements = {"head", "torso", "legs", "feet"}
 
 local function get_stand_object(pos)
@@ -63,7 +65,7 @@ local function update_entity(pos)
 				yaw = math.pi / 2
 			end
 		end
-		object:setyaw(yaw)
+		object:set_yaw(yaw)
 		object:set_properties({textures={texture}})
 	end
 end
@@ -86,11 +88,11 @@ if minetest.get_modpath("screwdriver") then
 	on_rotate = screwdriver.disallow
 end
 
--- FIXME: The armor stand should be an entity
+-- TODO: The armor stand should be an entity
 minetest.register_node("3d_armor_stand:armor_stand", {
-	description = "Armor Stand",
-	_doc_items_longdesc = "An armor stand is a decorative object which can display different pieces of armor. Anything which players can wear as armor can also be put on an armor stand.",
-	_doc_items_usagehelp = "Hold an armor item in your hand and rightclick the armor stand to put it on the armor stand. To take a piece of armor from the armor stand, select your hand and rightclick the armor stand. You'll retrieve the first armor item from above.",
+	description = S("Armor Stand"),
+	_doc_items_longdesc = S("An armor stand is a decorative object which can display different pieces of armor. Anything which players can wear as armor can also be put on an armor stand."),
+	_doc_items_usagehelp = S("Just place an armor item on the armor stand. To take the top piece of armor from the armor stand, select your hand and use the place key on the armor stand."),
 	drawtype = "mesh",
 	mesh = "3d_armor_stand.obj",
 	inventory_image = "3d_armor_stand_item.png",
@@ -105,8 +107,8 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 		type = "fixed",
 		fixed = {-0.5,-0.5,-0.5, 0.5,1.4,0.5}
 	},
-	-- FIXME: This should be breakable by 2 quick punches
-	groups = {handy=1, deco_block=1},
+	-- TODO: This should be breakable by 2 quick punches
+	groups = {handy=1, deco_block=1, dig_by_piston=1, attached_node=1},
 	_mcl_hardness = 2,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_construct = function(pos)
@@ -238,6 +240,7 @@ minetest.register_entity("3d_armor_stand:armor_entity", {
 	mesh = "3d_armor_entity.obj",
 	visual_size = {x=1, y=1},
 	collisionbox = {-0.1,-0.4,-0.1, 0.1,1.3,0.1},
+	pointable = false,
 	textures = {"3d_armor_trans.png"},
 	pos = nil,
 	timer = 0,
@@ -278,10 +281,6 @@ minetest.register_lbm({
 		update_entity(pos, node)
 	end,
 })
-
-if minetest.get_modpath("doc_identifier") ~= nil then
-	doc.sub.identifier.register_object("3d_armor_stand:armor_entity", "nodes", "3d_armor_stand:armor_stand")
-end
 
 minetest.register_craft({
 	output = "3d_armor_stand:armor_stand",

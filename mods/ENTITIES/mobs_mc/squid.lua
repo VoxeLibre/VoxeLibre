@@ -4,9 +4,7 @@
 --################### SQUID
 --###################
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:squid", {
     type = "animal",
@@ -47,15 +45,12 @@ mobs:register_mob("mobs_mc:squid", {
     stepheight = 0.1,
     fly = true,
     fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
+    breathes_in_water = true,
     jump = false,
     fall_speed = 0.5,
     view_range = 16,
-    water_damage = 0,
-    lava_damage = 4,
-    light_damage = 0,
     runaway = true,
     fear_height = 4,
-    blood_texture = "mobs_mc_squid_blood.png",
 })
 
 -- TODO: Behaviour: squirt

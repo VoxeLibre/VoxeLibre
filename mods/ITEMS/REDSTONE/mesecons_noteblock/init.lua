@@ -1,15 +1,17 @@
+local S = minetest.get_translator("mesecons_noteblock")
+
 minetest.register_node("mesecons_noteblock:noteblock", {
-	description = "Note Block",
-	_doc_items_longdesc = "A note block is a musical block which plays one of many musical notes and different intruments when it is punched or supplied with redstone power.",
-	_doc_items_usagehelp = [[Rightclick the note block to choose the next musical note (there are 24 half notes, or 2 octaves). The intrument played depends on the material of the block below the note block:
+	description = S("Note Block"),
+	_doc_items_longdesc = S("A note block is a musical block which plays one of many musical notes and different intruments when it is punched or supplied with redstone power."),
+	_doc_items_usagehelp = S("Use the note block to choose the next musical note (there are 25 semitones, or 2 octaves). The intrument played depends on the material of the block below the note block:").."\n\n"..
 
-• Glass: Sticks
-• Wood: Bass guitar
-• Stone: Bass drum
-• Sand or gravel: Snare drum
-• Anything else: Piano
+S("• Glass: Sticks").."\n"..
+S("• Wood: Bass guitar").."\n"..
+S("• Stone: Bass drum").."\n"..
+S("• Sand or gravel: Snare drum").."\n"..
+S("• Anything else: Piano").."\n\n"..
 
-The note block will only play a note when it is below air, otherwise, it stays silent.]],
+S("The note block will only play a note when it is below air, otherwise, it stays silent."),
 	tiles = {"mesecons_noteblock.png"},
 	groups = {handy=1,axey=1, material_wood=1},
 	is_ground_content = false,
@@ -20,7 +22,7 @@ The note block will only play a note when it is below air, otherwise, it stays s
 			minetest.record_protection_violation(pos, protname)
 			return
 		end
-		node.param2 = (node.param2+1)%24
+		node.param2 = (node.param2+1)%25
 		mesecon.noteblock_play(pos, node.param2)
 		minetest.set_node(pos, node)
 	end,
@@ -80,6 +82,8 @@ local soundnames_piano = {
 	"mesecons_noteblock_asharp2",
 	"mesecons_noteblock_b2",
 
+	-- TODO: Add dedicated sound file?
+	"mesecons_noteblock_b2",
 }
 
 mesecon.noteblock_play = function (pos, param2)
@@ -89,24 +93,32 @@ mesecon.noteblock_play = function (pos, param2)
 		return
 	end
 
-	-- Default: One of 24 piano notes
-	local soundname = soundnames_piano[param2]
-
 	local block_below_name = minetest.get_node({x=pos.x, y=pos.y-1, z=pos.z}).name
-
-	if minetest.get_item_group(block_below_name, "material_glass") ~= 0 then
-		-- TODO: 24 sticks and clicks
-		soundname="mesecons_noteblock_temp_stick"
-	elseif minetest.get_item_group(block_below_name, "material_wood") ~= 0 then
-		-- TODO: 24 bass guitar sounds
-		soundname="mesecons_noteblock_temp_bass_guitar"
-	elseif minetest.get_item_group(block_below_name, "material_sand") ~= 0 then
-		-- TODO: 24 snare drum sounds
-		soundname="mesecons_noteblock_temp_snare"
-	elseif minetest.get_item_group(block_below_name, "material_stone") ~= 0 then
-		-- TODO: 24 bass drum sounds
-		soundname="mesecons_noteblock_temp_kick"
+	local param2_to_pitch = function(param2)
+		return 2^((param2-12)/12)
 	end
+	local soundname, pitch
+	if minetest.get_item_group(block_below_name, "material_glass") ~= 0 then
+		soundname="mesecons_noteblock_stick"
+		pitch = param2_to_pitch(param2)
+	elseif minetest.get_item_group(block_below_name, "material_wood") ~= 0 then
+		soundname="mesecons_noteblock_bass_guitar"
+		pitch = param2_to_pitch(param2)
+	elseif minetest.get_item_group(block_below_name, "material_sand") ~= 0 then
+		soundname="mesecons_noteblock_snare"
+		pitch = param2_to_pitch(param2)
+	elseif minetest.get_item_group(block_below_name, "material_stone") ~= 0 then
+		soundname="mesecons_noteblock_kick"
+		pitch = param2_to_pitch(param2)
+	else
+		-- Default: One of 25 piano notes
+		soundname = soundnames_piano[param2]
+		-- Workaround: Final sound gets automatic higher pitch instead
+		if param2 == 24 then
+			pitch = 2^(1/12)
+		end
+	end
+
 	minetest.sound_play(soundname,
-	{pos = pos, gain = 1.0, max_hear_distance = 48,})
+	{pos = pos, gain = 1.0, max_hear_distance = 48, pitch = pitch})
 end

@@ -8,15 +8,18 @@ All node definitions share a lot of code, so this is the reason why there
 are so many weird tables below.
 ]]
 
+local S = minetest.get_translator("mcl_droppers")
+
 -- For after_place_node
 local setup_dropper = function(pos)
 	-- Set formspec and inventory
 	local form = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_inventory_9_slots.png]"..
 	mcl_vars.inventory_header..
-	"image[3,-0.2;5,0.75;mcl_droppers_fnt_dropper.png]"..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
+	"label[3,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Dropper"))).."]"..
 	"list[current_name;main;3,0.5;3,3;]"..
 	"listring[current_name;main]"..
 	"listring[current_player;main]"
@@ -144,9 +147,9 @@ local dropperdef = {
 -- Horizontal dropper
 
 local horizontal_def = table.copy(dropperdef)
-horizontal_def.description = "Dropper"
-horizontal_def._doc_items_longdesc = "A dropper is a redstone component and a container with 9 inventory slots which, when supplied with redstone power, drops an item or puts it into a container in front of it."
-horizontal_def._doc_items_usagehelp = "Droppers can be placed in 6 possible directions, items will be dropped out of the hole. Rightclick the dropper to access its inventory. Supply it with redstone energy once to make the dropper drop or transfer a random item."
+horizontal_def.description = S("Dropper")
+horizontal_def._doc_items_longdesc = S("A dropper is a redstone component and a container with 9 inventory slots which, when supplied with redstone power, drops an item or puts it into a container in front of it.")
+horizontal_def._doc_items_usagehelp = S("Droppers can be placed in 6 possible directions, items will be dropped out of the hole. Use the dropper to access its inventory. Supply it with redstone energy once to make the dropper drop or transfer a random item.")
 horizontal_def.after_place_node = function(pos, placer, itemstack, pointed_thing)
 	setup_dropper(pos)
 	orientate_dropper(pos, placer)
@@ -163,7 +166,7 @@ minetest.register_node("mcl_droppers:dropper", horizontal_def)
 
 -- Down dropper
 local down_def = table.copy(dropperdef)
-down_def.description = "Downwards-Facing Dropper"
+down_def.description = S("Downwards-Facing Dropper")
 down_def.after_place_node = setup_dropper
 down_def.tiles = {
 	"default_furnace_top.png", "mcl_droppers_dropper_front_vertical.png",
@@ -178,7 +181,7 @@ minetest.register_node("mcl_droppers:dropper_down", down_def)
 -- Up dropper
 -- The up dropper is almost identical to the down dropper, it only differs in textures
 local up_def = table.copy(down_def)
-up_def.description = "Upwards-Facing Dropper"
+up_def.description = S("Upwards-Facing Dropper")
 up_def.tiles = {
 	"mcl_droppers_dropper_front_vertical.png", "default_furnace_bottom.png",
 	"default_furnace_side.png", "default_furnace_side.png",
@@ -203,3 +206,13 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_droppers:dropper", "nodes", "mcl_droppers:dropper_down")
 	doc.add_entry_alias("nodes", "mcl_droppers:dropper", "nodes", "mcl_droppers:dropper_up")
 end
+
+minetest.register_lbm({
+	label = "Update dropper formspecs (0.51.0)",
+	name = "mcl_droppers:update_formspecs_0_51_0",
+	nodenames = { "mcl_droppers:dropper", "mcl_droppers:dropper_down", "mcl_droppers:dropper_up" },
+	action = function(pos, node)
+		setup_dropper(pos)
+		minetest.log("action", "[mcl_droppers] Node formspec updated at "..minetest.pos_to_string(pos))
+	end,
+})

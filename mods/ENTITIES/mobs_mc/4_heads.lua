@@ -1,9 +1,10 @@
 --MC Heads for minetest
 --maikerumine
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+-- NOTE: Strings intentionally not marked for translation, other mods already have these items.
+-- TODO: Remove this file eventually, all items here are already outsourced in other mods.
+
+local S = minetest.get_translator("mobs_mc")
 
 -- Heads system
 
@@ -55,7 +56,7 @@ local function addhead(mobname, desc, longdesc)
 end
 
 -- Add heads
-addhead("zombie", S("Zombie Head"), S("A zombie head is a small decorative block which resembles the head of a zombie."))
-addhead("creeper", S("Creeper Head"), S("A creeper head is a small decorative block which resembles the head of a creeper."))
-addhead("skeleton", S("Skeleton Skull"), S("A skeleton skull is a small decorative block which resembles the skull of a skeleton."))
-addhead("wither_skeleton", S("Wither Skeleton Skull"), S("A wither skeleton skull is a small decorative block which resembles the skull of a wither skeleton."))
+addhead("zombie", "Zombie Head", "A zombie head is a small decorative block which resembles the head of a zombie.")
+addhead("creeper", "Creeper Head", "A creeper head is a small decorative block which resembles the head of a creeper.")
+addhead("skeleton", "Skeleton Skull", "A skeleton skull is a small decorative block which resembles the skull of a skeleton.")
+addhead("wither_skeleton", "Wither Skeleton Skull", "A wither skeleton skull is a small decorative block which resembles the skull of a wither skeleton.")

@@ -1,8 +1,20 @@
--- Font: 04.jp.org
+local S = minetest.get_translator("mcl_signs")
+local F = minetest.formspec_escape
 
--- load characters map
-local chars_file = io.open(minetest.get_modpath("mcl_signs").."/characters", "r")
--- FIXME: Support more characters (many characters are missing)
+-- Load the characters map (characters.txt)
+--[[ File format of characters.txt:
+It's an UTF-8 encoded text file that contains metadata for all supported characters. It contains a sequence of info blocks, one for each character. Each info block is made out of 3 lines:
+Line 1: The literal UTF-8 encoded character
+Line 2: Name of the texture file for this character minus the “.png” suffix; found in the “textures/” sub-directory
+Line 3: Currently ignored. Previously this was for the character width in pixels
+
+After line 3, another info block may follow. This repeats until the end of the file.
+
+All character files must be 5 or 6 pixels wide (5 pixels are preferred)
+]]
+
+local chars_file = io.open(minetest.get_modpath("mcl_signs").."/characters.txt", "r")
+-- FIXME: Support more characters (many characters are missing). Currently ASCII and Latin-1 Supplement are supported.
 local charmap = {}
 if not chars_file then
 	minetest.log("error", "[mcl_signs] : character map file not found")
@@ -53,8 +65,7 @@ local string_to_line_array = function(str)
 			current = current + 1
 			tab[current] = ""
 			linechar = 1
-		-- This check cuts off overlong lines
-		elseif linechar <= LINE_LENGTH then
+		else
 			tab[current] = tab[current]..char
 			linechar = linechar + 1
 		end
@@ -81,8 +92,9 @@ local generate_line = function(s, ypos)
 	local width = 0
 	local chars = 0
 	local printed_char_width = CHAR_WIDTH + 1
-	while chars <= LINE_LENGTH and i <= #s do
+	while chars < LINE_LENGTH and i <= #s do
 		local file = nil
+		-- Get and render character
 		if charmap[s:sub(i, i)] ~= nil then
 			file = charmap[s:sub(i, i)]
 			i = i + 1
@@ -90,8 +102,11 @@ local generate_line = function(s, ypos)
 			file = charmap[s:sub(i, i + 1)]
 			i = i + 2
 		else
-			minetest.log("warning", "[mcl_signs] Unknown symbol in '"..s.."' at "..i.." (probably "..s:sub(i, i)..")")
+			-- No character image found.
+			-- Use replacement character:
+			file = "_rc"
 			i = i + 1
+			minetest.log("verbose", "[mcl_signs] Unknown symbol in '"..s.."' at "..i)
 		end
 		if file ~= nil then
 			width = width + printed_char_width
@@ -114,9 +129,9 @@ local generate_texture = function(lines, signnodename)
 	local texture = "[combine:"..SIGN_WIDTH.."x"..SIGN_WIDTH
 	local ypos
 	if signnodename == "mcl_signs:wall_sign" then
-		ypos = 29
+		ypos = 30
 	else
-		ypos = -2
+		ypos = 0
 	end
 	for i = 1, #lines do
 		texture = texture..generate_line(lines[i], ypos)
@@ -170,7 +185,7 @@ local function get_wall_signtext_info(param2, nodename)
 	end
 end
 
-local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1, material_wood=1, attached_node=1}
+local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1, material_wood=1, attached_node=1, dig_by_piston=1}
 
 local destruct_sign = function(pos)
 	local objects = minetest.get_objects_inside_radius(pos, 0.5)
@@ -179,6 +194,10 @@ local destruct_sign = function(pos)
 		if ent and ent.name == "mcl_signs:text" then
 			v:remove()
 		end
+	end
+	local players = minetest.get_connected_players()
+	for p=1, #players do
+		minetest.close_formspec(players[p]:get_player_name(), "mcl_signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z)
 	end
 end
 
@@ -223,14 +242,14 @@ local update_sign = function(pos, fields, sender)
 	text_entity:get_luaentity()._signnodename = nn
 	text_entity:set_properties({textures={generate_texture(create_lines(text), nn)}})
 
-	text_entity:setyaw(sign_info.yaw)
+	text_entity:set_yaw(sign_info.yaw)
 end
 
 local show_formspec = function(player, pos)
 	minetest.show_formspec(
 		player:get_player_name(),
 		"mcl_signs:set_text_"..pos.x.."_"..pos.y.."_"..pos.z,
-		"size[6,3]textarea[0.25,0.25;6,1.5;text;Edit sign text:;]label[0,1.5;Maximum line length: 15\nMaximum lines: 4]button_exit[0,2.5;6,1;submit;Done]"
+		"size[6,3]textarea[0.25,0.25;6,1.5;text;"..F(S("Enter sign text:"))..";]label[0,1.5;"..F(S("Maximum line length: 15")).."\n"..F(S("Maximum lines: 4")).."]button_exit[0,2.5;6,1;submit;"..F(S("Done")).."]"
 	)
 end
 
@@ -249,9 +268,9 @@ if minetest.get_modpath("mcl_sounds") then
 end
 
 minetest.register_node("mcl_signs:wall_sign", {
-	description = "Sign",
-	_doc_items_longdesc = "Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them.",
-	_doc_items_usagehelp = "Place the sign at the side to build a wall sign, place it on top of another block to build a sign with a sign post.\nAfter placing the sign, you can write something on it. You have 4 lines of text with up to 15 characters for each line; anything beyond these limits is lost. The text can not be changed once it has been written; you have to break and place the sign again.",
+	description = S("Sign"),
+	_doc_items_longdesc = S("Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them."),
+	_doc_items_usagehelp = S("After placing the sign, you can write something on it. You have 4 lines of text with up to 15 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can not be changed once it has been written; you have to break and place the sign again."),
 	inventory_image = "default_sign.png",
 	walkable = false,
 	is_ground_content = false,
@@ -359,7 +378,7 @@ minetest.register_node("mcl_signs:wall_sign", {
 			x = place_pos.x + sign_info.delta.x,
 			y = place_pos.y + sign_info.delta.y,
 			z = place_pos.z + sign_info.delta.z}, "mcl_signs:text")
-		text_entity:setyaw(sign_info.yaw)
+		text_entity:set_yaw(sign_info.yaw)
 		text_entity:get_luaentity()._signnodename = nodeitem:get_name()
 
 		minetest.sound_play({name="default_place_node_hard", gain=1.0}, {pos = place_pos})
@@ -429,7 +448,7 @@ minetest.register_node("mcl_signs:standing_sign67_5", ssign67)
 
 -- FIXME: Prevent entity destruction by /clearobjects
 minetest.register_entity("mcl_signs:text", {
-	collisionbox = { 0, 0, 0, 0, 0, 0 },
+	pointable = false,
 	visual = "upright_sprite",
 	textures = {},
 	physical = false,

@@ -3,11 +3,8 @@
 -- Model and mobs_blaze.png see https://github.com/22i/minecraft-voxel-blender-models
 -- blaze.lua partial copy of mobs_mc/ghast.lua
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
---dofile(minetest.get_modpath("mobs").."/api.lua")
 --###################
 --################### BLAZE
 --###################
@@ -56,6 +53,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	-- MC Wiki: takes 1 damage every half second while in water
 	water_damage = 2,
 	lava_damage = 0,
+	fire_damage = 0,
 	fall_damage = 0,
 	fall_speed = -2.25,
 	light_damage = 0,
@@ -68,8 +66,8 @@ mobs:register_mob("mobs_mc:blaze", {
 	jump_height = 4,
 	fly = true,
 	jump_chance = 98,
-	fear_height = 120,
-	blood_amount = 0,
+	fear_height = 0,
+	glow = 14,
 })
 
 mobs:spawn_specific("mobs_mc:blaze", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 5000, 3, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
@@ -89,8 +87,8 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 		}, nil)
 	end,
 
-	hit_mob = function(self, player)
-		player:punch(self.object, 1.0, {
+	hit_mob = function(self, mob)
+		mob:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 5},
 		}, nil)
@@ -101,7 +99,7 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 		if node.name == "air" then
 			minetest.set_node(pos_above, {name=mobs_mc.items.fire})
 		else
-			local v = self.object:getvelocity()
+			local v = self.object:get_velocity()
 			v = vector.normalize(v)
 			local crashpos = vector.subtract(pos, v)
 			local crashnode = minetest.get_node(crashpos)

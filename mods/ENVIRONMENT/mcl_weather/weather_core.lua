@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_weather")
+
 -- weather states, 'none' is default, other states depends from active mods
 mcl_weather.state = "none"
   
@@ -182,18 +184,18 @@ mcl_weather.get_weather = function()
 end
 
 minetest.register_privilege("weather_manager", {
-  description = "Gives ability to control weather",
+  description = S("Gives ability to control weather"),
   give_to_singleplayer = false
 })
 
 -- Weather command definition. Set 
 minetest.register_chatcommand("weather", {
   params = "(clear | rain | snow | thunder) [<duration>]",
-  description = "Changes the weather to the specified parameter.",
+  description = S("Changes the weather to the specified parameter."),
   privs = {weather_manager = true},
   func = function(name, param)
     if (param == "") then
-      return false, "Error: No weather specified."
+      return false, S("Error: No weather specified.")
     end
     local new_weather, end_time
     local parse1, parse2 = string.match(param, "(%w+) ?(%d*)")
@@ -204,13 +206,13 @@ minetest.register_chatcommand("weather", {
           new_weather = parse1
       end
     else
-      return false, "Error: Invalid parameters."
+      return false, S("Error: Invalid parameters.")
     end
     if parse2 then
       if type(tonumber(parse2)) == "number" then
           local duration = tonumber(parse2)
           if duration < 1 then
-              return false, "Error: Duration can't be less than 1 second."
+              return false, S("Error: Duration can't be less than 1 second.")
           end
           end_time = minetest.get_gametime() + duration
       end
@@ -220,14 +222,14 @@ minetest.register_chatcommand("weather", {
     if success then
       return true
     else
-      return false, "Error: Invalid weather specified. Use “clear”, “rain”, “snow” or “thunder”."
+      return false, S("Error: Invalid weather specified. Use “clear”, “rain”, “snow” or “thunder”.")
     end
   end
 })
 
 minetest.register_chatcommand("toggledownfall", {
   params = "",
-  description = "Toggles between clear weather and weather with downfall (randomly rain, thunderstorm or snow)",
+  description = S("Toggles between clear weather and weather with downfall (randomly rain, thunderstorm or snow)"),
   privs = {weather_manager = true},
   func = function(name, param)
     -- Currently rain/thunder/snow: Set weather to clear

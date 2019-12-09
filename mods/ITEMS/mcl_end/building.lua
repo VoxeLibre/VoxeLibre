@@ -1,18 +1,20 @@
 -- Building blocks and decorative nodes
+local S = minetest.get_translator("mcl_end")
 
 minetest.register_node("mcl_end:end_stone", {
-	description = "End Stone",
+	description = S("End Stone"),
 	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"mcl_end_end_stone.png"},
 	stack_max = 64,
 	groups = {pickaxey=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
+	after_dig_node = mcl_end.check_detach_chorus_plant,
 	_mcl_blast_resistance = 45,
 	_mcl_hardness = 3,
 })
 
 minetest.register_node("mcl_end:end_bricks", {
-	description = "End Stone Bricks",
+	description = S("End Stone Bricks"),
 	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"mcl_end_end_bricks.png"},
 	is_ground_content = false,
@@ -24,7 +26,7 @@ minetest.register_node("mcl_end:end_bricks", {
 })
 
 minetest.register_node("mcl_end:purpur_block", {
-	description = "Purpur Block",
+	description = S("Purpur Block"),
 	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"mcl_end_purpur_block.png"},
 	is_ground_content = false,
@@ -36,7 +38,7 @@ minetest.register_node("mcl_end:purpur_block", {
 })
 
 minetest.register_node("mcl_end:purpur_pillar", {
-	description = "Purpur Pillar",
+	description = S("Purpur Pillar"),
 	_doc_items_longdesc = doc.sub.items.temp.build,
 	stack_max = 64,
 	paramtype2 = "facedir",
@@ -50,8 +52,8 @@ minetest.register_node("mcl_end:purpur_pillar", {
 })
 
 minetest.register_node("mcl_end:end_rod", {
-	description = "End Rod",
-	_doc_items_longdesc = "End rods are decorational light sources.",
+	description = S("End Rod"),
+	_doc_items_longdesc = S("End rods are decorative light sources."),
 	tiles = {
 		"mcl_end_end_rod_top.png",
 		"mcl_end_end_rod_bottom.png",
@@ -125,8 +127,8 @@ minetest.register_node("mcl_end:end_rod", {
 })
 
 minetest.register_node("mcl_end:dragon_egg", {
-	description = "Dragon Egg",
-	_doc_items_longdesc = "A dragon egg is a decorational item which can be placed.",
+	description = S("Dragon Egg"),
+	_doc_items_longdesc = S("A dragon egg is a decorative item which can be placed."),
 	tiles = {
 		"mcl_end_dragon_egg.png",
 		"mcl_end_dragon_egg.png",

@@ -1,6 +1,7 @@
 -- WALL BUTTON
--- A button that when pressed emits power for 1 second
--- and then turns off again
+-- A button that when pressed emits power for a short moment and then turns off again
+
+local S = minetest.get_translator("mesecons_button")
 
 local button_get_output_rules = mesecon.rules.wallmounted_get
 
@@ -78,7 +79,7 @@ local on_button_place = function(itemstack, placer, pointed_thing)
 	return itemstack
 end
 
-local buttonuse = "Rightclick the button to push it."
+local buttonuse = S("Use the button to push it.")
 
 mesecon.register_button = function(basename, description, texture, recipeitem, sounds, plusgroups, button_timer, push_by_arrow, longdesc)
 	local groups_off = table.copy(plusgroups)
@@ -191,22 +192,22 @@ end
 
 mesecon.register_button(
 	"stone",
-	"Stone Button",
+	S("Stone Button"),
 	"default_stone.png",
 	"mcl_core:stone",
 	mcl_sounds.node_sound_stone_defaults(),
 	{material_stone=1,handy=1,pickaxey=1},
 	1,
 	false,
-	"A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second. It can only be placed on solid opaque full cubes (like cobblestone).")
+	S("A stone button is a redstone component made out of stone which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1 second."))
 
 local woods = {
-	{ "wood", "mcl_core:wood", "default_wood.png", "Oak Button" },
-	{ "acaciawood", "mcl_core:acaciawood", "default_acacia_wood.png", "Acacia Button" },
-	{ "birchwood", "mcl_core:birchwood", "mcl_core_planks_birch.png", "Birch Button" },
-	{ "darkwood", "mcl_core:darkwood", "mcl_core_planks_big_oak.png", "Dark Oak Button" },
-	{ "sprucewood", "mcl_core:sprucewood", "mcl_core_planks_spruce.png", "Spruce Button" },
-	{ "junglewood", "mcl_core:junglewood", "default_junglewood.png", "Jungle Button" },
+	{ "wood", "mcl_core:wood", "default_wood.png", S("Oak Button") },
+	{ "acaciawood", "mcl_core:acaciawood", "default_acacia_wood.png", S("Acacia Button") },
+	{ "birchwood", "mcl_core:birchwood", "mcl_core_planks_birch.png", S("Birch Button") },
+	{ "darkwood", "mcl_core:darkwood", "mcl_core_planks_big_oak.png", S("Dark Oak Button") },
+	{ "sprucewood", "mcl_core:sprucewood", "mcl_core_planks_spruce.png", S("Spruce Button") },
+	{ "junglewood", "mcl_core:junglewood", "default_junglewood.png", S("Jungle Button") },
 }
 
 for w=1, #woods do
@@ -219,7 +220,7 @@ for w=1, #woods do
 		{material_wood=1,handy=1,axey=1},
 		1.5,
 		true,
-		"A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. It can only be placed on solid opaque full cubes (like cobblestone). Wooden buttons may also be pushed by arrows.")
+		S("A wooden button is a redstone component made out of wood which can be pushed to provide redstone power. When pushed, it powers adjacent redstone components for 1.5 seconds. Wooden buttons may also be pushed by arrows."))
 
 	minetest.register_craft({
 		type = "fuel",

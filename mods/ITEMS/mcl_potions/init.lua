@@ -1,7 +1,9 @@
-local brewhelp = "Put this item in an item frame for decoration. It's useless otherwise."
+local S = minetest.get_translator("mcl_potions")
+
+local brewhelp = S("Put this item in an item frame for decoration. It's useless otherwise.")
 
 minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
-	description = "Fermented Spider Eye",
+	description = S("Fermented Spider Eye"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = "mcl_potions_spider_eye_fermented.png",
 	inventory_image = "mcl_potions_spider_eye_fermented.png",
@@ -17,9 +19,9 @@ minetest.register_craft({
 })
 
 minetest.register_craftitem("mcl_potions:glass_bottle", {
-	description = "Glass Bottle",
-	_doc_items_longdesc = "A glass bottle is used as a container for liquids and can be used to collect water directly.",
-	_doc_items_usagehelp = "To collect water, it on a cauldron with water (which removes a level of water) or any water source (which removes no water).",
+	description = S("Glass Bottle"),
+	_doc_items_longdesc = S("A glass bottle is used as a container for liquids and can be used to collect water directly."),
+	_doc_items_usagehelp = S("To collect water, it on a cauldron with water (which removes a level of water) or any water source (which removes no water)."),
 	inventory_image = "mcl_potions_potion_bottle_empty.png",
 	wield_image = "mcl_potions_potion_bottle_empty.png",
 	groups = {brewitem=1},
@@ -156,9 +158,9 @@ end
 -- Itemstring of potions is “mcl_potions:potion_<NBT Potion Tag>”
 
 minetest.register_craftitem("mcl_potions:potion_water", {
-	description = "Water Bottle",
-	_doc_items_longdesc = "Water bottles can be used to fill cauldrons. Drinking water has no effect.",
-	_doc_items_usagehelp = "Rightclick to drink. Rightclick a cauldron to pour the water into the cauldron.",
+	description = S("Water Bottle"),
+	_doc_items_longdesc = S("Water bottles can be used to fill cauldrons. Drinking water has no effect."),
+	_doc_items_usagehelp = S("Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron."),
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
@@ -200,9 +202,10 @@ minetest.register_craftitem("mcl_potions:potion_water", {
 })
 
 minetest.register_craftitem("mcl_potions:potion_river_water", {
-	description = "River Water Bottle",
-	_doc_items_longdesc = "River water bottles can be used to fill cauldrons. Drinking it has no effect.",
-	_doc_items_usagehelp = "Rightclick to drink. Rightclick a cauldron to pour the river water into the cauldron.",
+	description = S("River Water Bottle"),
+	_doc_items_longdesc = S("River water bottles can be used to fill cauldrons. Drinking it has no effect."),
+	_doc_items_usagehelp = S("Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron."),
+
 	stack_max = 1,
 	inventory_image = potion_image("#0044FF"),
 	wield_image = potion_image("#0044FF"),
@@ -245,11 +248,11 @@ minetest.register_craftitem("mcl_potions:potion_river_water", {
 
 
 
-local how_to_drink = "To drink it, wield it, then rightclick."
+local how_to_drink = S("Use the “Place” key to drink it.")
 
 minetest.register_craftitem("mcl_potions:potion_awkward", {
-	description = "Awkward Potion",
-	_doc_items_longdesc = "This potion has an awkward taste and is used for brewing more potions. Drinking it has no effect.",
+	description = S("Awkward Potion"),
+	_doc_items_longdesc = S("This potion has an awkward taste and is used for brewing more potions. Drinking it has no effect."),
 	_doc_items_usagehelp = how_to_drink,
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
@@ -260,8 +263,8 @@ minetest.register_craftitem("mcl_potions:potion_awkward", {
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
 minetest.register_craftitem("mcl_potions:potion_mundane", {
-	description = "Mundane Potion",
-	_doc_items_longdesc = "This potion has a clean taste and is used for brewing more potions. Drinking it has no effect.",
+	description = S("Mundane Potion"),
+	_doc_items_longdesc = S("This potion has a clean taste and is used for brewing more potions. Drinking it has no effect."),
 	_doc_items_usagehelp = how_to_drink,
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
@@ -272,8 +275,8 @@ minetest.register_craftitem("mcl_potions:potion_mundane", {
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
 minetest.register_craftitem("mcl_potions:potion_thick", {
-	description = "Thick Potion",
-	_doc_items_longdesc = "This potion has a bitter taste and is used for brewing more potions. Drinking it has no effect.",
+	description = S("Thick Potion"),
+	_doc_items_longdesc = S("This potion has a bitter taste and is used for brewing more potions. Drinking it has no effect."),
 	_doc_items_usagehelp = how_to_drink,
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
@@ -285,8 +288,8 @@ minetest.register_craftitem("mcl_potions:potion_thick", {
 })
 
 minetest.register_craftitem("mcl_potions:speckled_melon", {
-	description = "Glistering Melon",
-	_doc_items_longdesc = "This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.",
+	description = S("Glistering Melon"),
+	_doc_items_longdesc = S("This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else."),
 	stack_max = 64,
 	-- TODO: Reveal item when it's actually useful
 	groups = { brewitem = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1 },
@@ -303,7 +306,7 @@ minetest.register_craft({
 })
 
 minetest.register_craftitem("mcl_potions:dragon_breath", {
-	description = "Dragon's Breath",
+	description = S("Dragon's Breath"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = "mcl_potions_dragon_breath.png",
 	inventory_image = "mcl_potions_dragon_breath.png",

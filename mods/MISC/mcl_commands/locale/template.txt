@@ -1,0 +1,22 @@
+# textdomain: mcl_commands
+Players can't be killed right now, damage has been disabled.=
+Player @1 does not exist.=
+You are already dead=
+@1 is already dead=
+@1 committed suicide.=
+@1 was killed by @2.=
+[<name>]=
+Kill player or yourself=
+Can use /say=
+<message>=
+Send a message to every player=
+Invalid usage, see /help say.=
+<X>,<Y>,<Z> <NodeString>=
+Set node at given position=
+Invalid node=
+@1 spawned.=
+Invalid parameters (see /help setblock)=
+List bans=
+Ban list: @1=
+Show who is logged on=
+Displays the world seed=

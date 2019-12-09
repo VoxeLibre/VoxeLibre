@@ -6,3 +6,4 @@ mcl_dye?
 mcl_tnt?
 mcl_weather?
 mcl_spawn?
+doc?

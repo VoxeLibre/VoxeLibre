@@ -1,3 +1,6 @@
+local S = minetest.get_translator("mcl_beds")
+local F = minetest.formspec_escape
+
 local pi = math.pi
 local player_in_bed = 0
 local is_sp = minetest.is_singleplayer()
@@ -67,20 +70,20 @@ local function lay_down(player, pos, bed_pos, state, skip)
 	if bed_pos then
 		-- No sleeping if too far away
 		if vector.distance(bed_pos, pos) > 2 then
-			minetest.chat_send_player(name, "You can't sleep, the bed's too far away!")
+			minetest.chat_send_player(name, S("You can't sleep, the bed's too far away!"))
 			return false
 		end
 
 		for _, other_pos in pairs(mcl_beds.bed_pos) do
 			if vector.distance(bed_pos, other_pos) < 0.1 then
-				minetest.chat_send_player(name, "This bed is already occupied!")
+				minetest.chat_send_player(name, S("This bed is already occupied!"))
 				return false
 			end
 		end
 
 		-- No sleeping while moving. Slightly different behaviour than in MC.
 		if vector.length(player:get_player_velocity()) > 0.001 then
-			minetest.chat_send_player(name, "You have to stop moving before going to bed!")
+			minetest.chat_send_player(name, S("You have to stop moving before going to bed!"))
 			return false
 		end
 
@@ -96,7 +99,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 				-- Approximation of monster detection range
 				if def._cmi_is_mob and ((mobname ~= "mobs_mc:pigman" and def.type == "monster" and not monster_exceptions[mobname]) or (mobname == "mobs_mc:pigman" and ent.state == "attack")) then
 					if math.abs(bed_pos.y - obj:get_pos().y) <= 5 then
-						minetest.chat_send_player(name, "You can't sleep now, monsters are nearby!")
+						minetest.chat_send_player(name, S("You can't sleep now, monsters are nearby!"))
 					end
 					return false
 				end
@@ -127,7 +130,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		mcl_player.player_attached[name] = false
 		playerphysics.remove_physics_factor(player, "speed", "mcl_beds:sleeping")
 		playerphysics.remove_physics_factor(player, "jump", "mcl_beds:sleeping")
-		player:set_attribute("mcl_beds:sleeping", "false")
+		player:get_meta():set_string("mcl_beds:sleeping", "false")
 		hud_flags.wielditem = true
 		mcl_player.player_set_animation(player, "stand" , 30)
 		mcl_beds.pos[name] = nil
@@ -143,10 +146,10 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		local def1 = minetest.registered_nodes[n1.name]
 		local def2 = minetest.registered_nodes[n2.name]
 		if def1.walkable or def2.walkable then
-			minetest.chat_send_player(name, "You can't sleep, the bed is obstructed!")
+			minetest.chat_send_player(name, S("You can't sleep, the bed is obstructed!"))
 			return false
 		elseif (def1.damage_per_second ~= nil and def1.damage_per_second > 0) or (def2.damage_per_second ~= nil and def2.damage_per_second > 0) then
-			minetest.chat_send_player(name, "It's too dangerous to sleep here!")
+			minetest.chat_send_player(name, S("It's too dangerous to sleep here!"))
 			return false
 		end
 
@@ -162,14 +165,14 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		-- Values taken from Minecraft Wiki with offset of +6000
 		if tod < 18541 and tod > 5458 and (not weather_mod or (mcl_weather.get_weather() ~= "thunder")) then
 			if spawn_changed then
-				minetest.chat_send_player(name, "New respawn position set! But you can only sleep at night or during a thunderstorm.")
+				minetest.chat_send_player(name, S("New respawn position set! But you can only sleep at night or during a thunderstorm."))
 			else
-				minetest.chat_send_player(name, "You can only sleep at night or during a thunderstorm.")
+				minetest.chat_send_player(name, S("You can only sleep at night or during a thunderstorm."))
 			end
 			return false
 		end
 		if spawn_changed then
-			minetest.chat_send_player(name, "New respawn position set!")
+			minetest.chat_send_player(name, S("New respawn position set!"))
 		end
 
 		mcl_beds.player[name] = 1
@@ -181,7 +184,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		player:set_look_horizontal(yaw)
 		player:set_look_vertical(0)
 
-		player:set_attribute("mcl_beds:sleeping", "true")
+		player:get_meta():set_string("mcl_beds:sleeping", "true")
 		playerphysics.add_physics_factor(player, "speed", "mcl_beds:sleeping", 0)
 		playerphysics.add_physics_factor(player, "jump", "mcl_beds:sleeping", 0)
 		player:set_pos(p)
@@ -199,8 +202,8 @@ local function update_formspecs(finished)
 	local form_n = "size[8,15;true]"
 	local all_in_bed = ges == player_in_bed
 	local night_skip = is_night_skip_enabled()
-	local button_leave = "button_exit[2,12;4,0.75;leave;Leave bed]"
-	local button_abort = "button_exit[2,12;4,0.75;leave;Abort sleep]"
+	local button_leave = "button_exit[2,12;4,0.75;leave;"..F(S("Leave bed")).."]"
+	local button_abort = "button_exit[2,12;4,0.75;leave;"..F(S("Abort sleep")).."]"
 	local bg_presleep = "bgcolor[#00000080;true]"
 	local bg_sleep = "bgcolor[#000000FF;true]"
 
@@ -210,33 +213,33 @@ local function update_formspecs(finished)
 		end
 		return
 	elseif not is_sp then
-		local text = string.format("Players in bed: %d/%d", player_in_bed, ges)
+		local text = S("Players in bed: @1/@2", player_in_bed, ges)
 		if not night_skip then
-			text = text .. "\n" .. "Note: Night skip is disabled."
+			text = text .. "\n" .. S("Note: Night skip is disabled.")
 			form_n = form_n .. bg_presleep
 			form_n = form_n .. button_leave
 		elseif all_in_bed then
-			text = text .. "\n" .. "You're sleeping."
+			text = text .. "\n" .. S("You're sleeping.")
 			form_n = form_n .. bg_sleep
 			form_n = form_n .. button_abort
 		else
-			text = text .. "\n" .. "You will fall asleep when all players are in bed."
+			text = text .. "\n" .. S("You will fall asleep when all players are in bed.")
 			form_n = form_n .. bg_presleep
 			form_n = form_n .. button_leave
 		end
-		form_n = form_n .. "label[2.2,7.5;"..minetest.formspec_escape(text).."]"
+		form_n = form_n .. "label[2.2,7.5;"..F(text).."]"
 	else
 		local text
 		if night_skip then
-			text = "You're sleeping."
+			text = S("You're sleeping.")
 			form_n = form_n .. bg_sleep
 			form_n = form_n .. button_abort
 		else
-			text = "You're in bed." .. "\n" .. "Note: Night skip is disabled."
+			text = S("You're in bed.") .. "\n" .. S("Note: Night skip is disabled.")
 			form_n = form_n .. bg_presleep
 			form_n = form_n .. button_leave
 		end
-		form_n = form_n .. "label[2.2,7.5;"..minetest.formspec_escape(text).."]"
+		form_n = form_n .. "label[2.2,7.5;"..F(text).."]"
 	end
 
 	for name,_ in pairs(mcl_beds.player) do
@@ -296,7 +299,7 @@ end
 
 function mcl_beds.on_rightclick(pos, player, is_top)
 	-- Anti-Inception: Don't allow to sleep while you're sleeping
-	if player:get_attribute("mcl_beds:sleeping") == "true" then
+	if player:get_meta():get_string("mcl_beds:sleeping") == "true" then
 		return
 	end
 	if minetest.get_modpath("mcl_worlds") then
@@ -343,9 +346,10 @@ end
 
 -- Callbacks
 minetest.register_on_joinplayer(function(player)
-	if player:get_attribute("mcl_beds:sleeping") == "true" then
+	local meta = player:get_meta()
+	if meta:get_string("mcl_beds:sleeping") == "true" then
 		-- Make player awake on joining server
-		player:set_attribute("mcl_beds:sleeping", "false")
+		meta:set_string("mcl_beds:sleeping", "false")
 	end
 	playerphysics.remove_physics_factor(player, "speed", "mcl_beds:sleeping")
 	playerphysics.remove_physics_factor(player, "jump", "mcl_beds:sleeping")

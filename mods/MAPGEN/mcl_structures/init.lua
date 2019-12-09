@@ -1,4 +1,5 @@
 local init = os.clock()
+local S = minetest.get_translator("mcl_structures")
 mcl_structures ={}
 
 mcl_structures.get_struct = function(file)
@@ -15,6 +16,22 @@ mcl_structures.get_struct = function(file)
     return allnode
 end
 
+local mapseed = tonumber(minetest.get_mapgen_setting("seed"))
+-- Random number generator for all generated structures
+local pr = PseudoRandom(mapseed)
+
+-- Call on_construct on pos.
+-- Useful to init chests from formspec.
+local init_node_construct = function(pos)
+	local node = minetest.get_node(pos)
+	local def = minetest.registered_nodes[node.name]
+	if def and def.on_construct then
+		def.on_construct(pos)
+		return true
+	end
+	return false
+end
+
 -- The call of Struct
 mcl_structures.call_struct = function(pos, struct_style, rotation)
 	if not rotation then
@@ -27,7 +44,7 @@ mcl_structures.call_struct = function(pos, struct_style, rotation)
 	elseif struct_style == "desert_well" then
 		return mcl_structures.generate_desert_well(pos, rotation)
 	elseif struct_style == "igloo" then
-		return mcl_structures.generate_igloo_top(pos, rotation)
+		return mcl_structures.generate_igloo(pos, rotation)
 	elseif struct_style == "witch_hut" then
 		return mcl_structures.generate_witch_hut(pos, rotation)
 	elseif struct_style == "ice_spike_small" then
@@ -60,17 +77,25 @@ mcl_structures.generate_desert_well = function(pos)
 end
 
 mcl_structures.generate_igloo = function(pos)
-	-- TODO: Check if we're allowed to destroy nodes
-	-- FIXME: Some nodes (water, ice) don't get overwritten by ladder
-	-- FIXME: Nodes at Y=0 don't get overwritten by ladder
-	-- FIXME: Apply basement height limit in other dimensions
-	-- TODO: Check if basement generation would not be too obvious
-	-- TODO: Generate basement with 50% chance only
+	-- Place igloo
 	local success, rotation = mcl_structures.generate_igloo_top(pos)
-	if success then
-		local buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
+	-- Place igloo basement with 50% chance
+	local r = math.random(1,2)
+	if success and r == 1 then
+		-- Select basement depth
+		local dim = mcl_worlds.pos_to_dimension(pos)
+		buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
+		if dim == "nether" then
+			buffer = pos.y - (mcl_vars.mg_lava_nether_max + 10)
+		elseif dim == "end" then
+			buffer = pos.y - (mcl_vars.mg_end_min + 1)
+		elseif dim == "overworld" then
+			buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
+		else
+			return success
+		end
 		if buffer <= 19 then
-			return
+			return success
 		end
 		local depth = math.random(19, buffer)
 		local bpos = {x=pos.x, y=pos.y-depth, z=pos.z}
@@ -96,8 +121,6 @@ mcl_structures.generate_igloo = function(pos)
 		else
 			return success
 		end
-		-- TODO: more reliable param2
-		minetest.set_node(tpos, {name="mcl_doors:trapdoor", param2=20+minetest.dir_to_facedir(dir)})
 		local set_brick = function(pos)
 			local c = math.random(1, 3) -- cracked chance
 			local m = math.random(1, 10) -- chance for monster egg
@@ -118,13 +141,31 @@ mcl_structures.generate_igloo = function(pos)
 			minetest.set_node(pos, {name=brick})
 		end
 		local ladder_param2 = minetest.dir_to_wallmounted(tdir)
+		local real_depth = 0
+		-- Check how deep we can actuall dig
 		for y=1, depth-5 do
+			real_depth = real_depth + 1
+			local node = minetest.get_node({x=tpos.x,y=tpos.y-y,z=tpos.z})
+			local def = minetest.registered_nodes[node.name]
+			if (not def) or (not def.walkable) or (def.liquidtype ~= "none") or (not def.is_ground_content) then
+				bpos.y = tpos.y-y+1
+				break
+			end
+		end
+		if real_depth <= 6 then
+			return success
+		end
+		-- Place hidden trapdoor
+		minetest.set_node(tpos, {name="mcl_doors:trapdoor", param2=20+minetest.dir_to_facedir(dir)}) -- TODO: more reliable param2
+		-- Generate ladder to basement
+		for y=1, real_depth-1 do
 			set_brick({x=tpos.x-1,y=tpos.y-y,z=tpos.z  })
 			set_brick({x=tpos.x+1,y=tpos.y-y,z=tpos.z  })
 			set_brick({x=tpos.x  ,y=tpos.y-y,z=tpos.z-1})
 			set_brick({x=tpos.x  ,y=tpos.y-y,z=tpos.z+1})
 			minetest.set_node({x=tpos.x,y=tpos.y-y,z=tpos.z}, {name="mcl_core:ladder", param2=ladder_param2})
 		end
+		-- Place basement
 		mcl_structures.generate_igloo_basement(bpos, rotation)
 	end
 	return success
@@ -159,8 +200,6 @@ mcl_structures.generate_igloo_basement = function(pos, orientation)
 		else
 			return success
 		end
-		-- FIXME: Use better seeding
-		local pr = PseudoRandom(math.random(0, 4294967295))
 		local size = {x=9,y=5,z=7}
 		local lootitems = mcl_loot.get_multi_loot({
 		{
@@ -185,12 +224,10 @@ mcl_structures.generate_igloo_basement = function(pos, orientation)
 		}}, pr)
 
 		local chest_pos = vector.add(pos, chest_offset)
+		init_node_construct(chest_pos)
 		local meta = minetest.get_meta(chest_pos)
 		local inv = meta:get_inventory()
-		inv:set_size("main", 9*3)
-		for i=1, #lootitems do
-			inv:add_item("main", lootitems[i])
-		end
+		mcl_loot.fill_inventory(inv, "main", lootitems)
 	end
 	return success
 end
@@ -267,8 +304,6 @@ mcl_structures.generate_end_portal_shrine = function(pos)
 
 	-- Shuffle stone brick types
 	local bricks = minetest.find_nodes_in_area(area_start, area_end, "mcl_core:stonebrick")
-	-- FIXME: Use better seeding
-	local pr = PseudoRandom(math.random(0, 4294967295))
 	for b=1, #bricks do
 		local r_bricktype = pr:next(1, 100)
 		local r_infested = pr:next(1, 100)
@@ -358,10 +393,7 @@ mcl_structures.generate_desert_temple = function(pos)
 	local chests = minetest.find_nodes_in_area({x=newpos.x-size.x, y=newpos.y, z=newpos.z-size.z}, vector.add(newpos, size), "mcl_chests:chest")
 
 	-- Add desert temple loot into chests
-	-- FIXME: Use better seeding
-	local pr = PseudoRandom(math.random(0, 4294967295))
 	for c=1, #chests do
-		-- FIXME: Use better seeding
 		local lootitems = mcl_loot.get_multi_loot({
 		{
 			stacks_min = 2,
@@ -399,11 +431,10 @@ mcl_structures.generate_desert_temple = function(pos)
 		}}, pr)
 
 		local meta = minetest.get_meta(chests[c])
+		init_node_construct(chests[c])
+		local meta = minetest.get_meta(chests[c])
 		local inv = meta:get_inventory()
-		inv:set_size("main", 9*3)
-		for i=1, #lootitems do
-			inv:add_item("main", lootitems[i])
-		end
+		mcl_loot.fill_inventory(inv, "main", lootitems)
 	end
 
 	-- Initialize pressure plates and randomly remove up to 5 plates
@@ -453,56 +484,49 @@ end
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
 	params = "desert_temple | desert_well | igloo | village | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_portal_shrine",
-	description = "Generate a pre-defined structure near your position.",
+	description = S("Generate a pre-defined structure near your position."),
 	privs = {debug = true},
 	func = function(name, param)
-		local pos= minetest.get_player_by_name(name):get_pos()
+		local pos = minetest.get_player_by_name(name):get_pos()
 		if not pos then
 			return
 		end
+		pos = vector.round(pos)
 		local errord = false
+		local message = S("Structure placed.")
 		if param == "village" then
 			mcl_structures.generate_village(pos)
-			minetest.chat_send_player(name, "Village built. WARNING: Villages are experimental and might have bugs.")
+			message = S("Village built. WARNING: Villages are experimental and might have bugs.")
 		elseif param == "desert_temple" then
 			mcl_structures.generate_desert_temple(pos)
-			minetest.chat_send_player(name, "Desert temple built.")
 		elseif param == "desert_well" then
 			mcl_structures.generate_desert_well(pos)
-			minetest.chat_send_player(name, "Desert well built.")
 		elseif param == "igloo" then
-			mcl_structures.generate_igloo_top(pos)
-			minetest.chat_send_player(name, "Igloo built.")
+			mcl_structures.generate_igloo(pos)
 		elseif param == "witch_hut" then
 			mcl_structures.generate_witch_hut(pos)
-			minetest.chat_send_player(name, "Witch hut built.")
 		elseif param == "boulder" then
 			mcl_structures.generate_boulder(pos)
-			minetest.chat_send_player(name, "Moss stone boulder placed.")
 		elseif param == "fossil" then
 			mcl_structures.generate_fossil(pos)
-			minetest.chat_send_player(name, "Fossil placed.")
 		elseif param == "ice_spike_small" then
 			mcl_structures.generate_ice_spike_small(pos)
-			minetest.chat_send_player(name, "Small ice spike placed.")
 		elseif param == "ice_spike_large" then
 			mcl_structures.generate_ice_spike_large(pos)
-			minetest.chat_send_player(name, "Large ice spike placed.")
 		elseif param == "end_exit_portal" then
 			mcl_structures.generate_end_exit_portal(pos)
-			minetest.chat_send_player(name, "End exit portal placed.")
 		elseif param == "end_portal_shrine" then
 			mcl_structures.generate_end_portal_shrine(pos)
-			minetest.chat_send_player(name, "End portal shrine placed.")
 		elseif param == "" then
-			minetest.chat_send_player(name, "Error: No structure type given. Please use “/spawnstruct <type>”.")
+			message = S("Error: No structure type given. Please use “/spawnstruct <type>”.")
 			errord = true
 		else
-			minetest.chat_send_player(name, "Error: Unknown structure type. Please use “/spawnstruct <type>”.")
+			message = S("Error: Unknown structure type. Please use “/spawnstruct <type>”.")
 			errord = true
 		end
+		minetest.chat_send_player(name, message)
 		if errord then
-			minetest.chat_send_player(name, "Use /help spawnstruct to see a list of avaiable types.")
+			minetest.chat_send_player(name, S("Use /help spawnstruct to see a list of avaiable types."))
 		end
 	end
 })

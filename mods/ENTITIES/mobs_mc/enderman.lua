@@ -10,12 +10,7 @@
 -- and they are provoked by looking directly at them.
 -- TODO: Implement MC behaviour.
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
-
---dofile(minetest.get_modpath("mobs").."/api.lua")
-
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### ENDERMAN
@@ -314,7 +309,7 @@ mobs:register_mob("mobs_mc:enderman", {
 				end
 			end
 			if telepos then
-				self.object:setpos(telepos)
+				self.object:set_pos(telepos)
 			end
 		end
 	end,
@@ -325,14 +320,11 @@ mobs:register_mob("mobs_mc:enderman", {
 		end
 	end,
 	water_damage = 8,
-	lava_damage = 4,
-	light_damage = 0,
 	-- TODO: Increase view range when it detects being seen
 	-- Low view range to emulate that behaviour somehow
 	view_range = 4,
 	fear_height = 4,
 	attack_type = "dogfight",
-	blood_amount = 0,
 })
 
 

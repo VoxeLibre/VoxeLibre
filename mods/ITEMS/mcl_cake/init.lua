@@ -3,6 +3,8 @@
 #!#!#!#Released under CC Attribution-ShareAlike 3.0 Unported #!#!#
 ]]--
 
+local S = minetest.get_translator("mcl_cake")
+
 local cake_texture = {"cake_top.png","cake_bottom.png","cake_inner.png","cake_side.png","cake_side.png","cake_side.png"}
 local slice_1 = { -7/16, -8/16, -7/16, -5/16, 0/16, 7/16}
 local slice_2 = { -7/16, -8/16, -7/16, -3/16, 0/16, 7/16}
@@ -28,9 +30,9 @@ minetest.register_craft({
 })
 
 minetest.register_node("mcl_cake:cake", {
-	description = "Cake",
-	_doc_items_longdesc = "Cakes can be placed and eaten to restore hunger points. A cake has 7 slices. Each slice restores 2 hunger points and 0.4 saturation points. Cakes will be destroyed when dug or when the block below them is broken.",
-	_doc_items_usagehelp = "Place the cake anywhere, then rightclick it to eat a single slice. You can't eat from the cake when your hunger bar is full.",
+	description = S("Cake"),
+	_doc_items_longdesc = S("Cakes can be placed and eaten to restore hunger points. A cake has 7 slices. Each slice restores 2 hunger points and 0.4 saturation points. Cakes will be destroyed when dug or when the block below them is broken."),
+	_doc_items_usagehelp = S("Place the cake anywhere, then rightclick it to eat a single slice. You can't eat from the cake when your hunger bar is full."),
 	tiles = {"cake_top.png","cake_bottom.png","cake_side.png","cake_side.png","cake_side.png","cake_side.png"},
 	inventory_image = "cake.png",
 	wield_image = "cake.png",
@@ -134,9 +136,9 @@ local register_slice = function(level, nodebox, desc)
 	end
 end
 
-register_slice(6, slice_6, "Cake (6 Slices Left)")
-register_slice(5, slice_5, "Cake (5 Slices Left)")
-register_slice(4, slice_4, "Cake (4 Slices Left)")
-register_slice(3, slice_3, "Cake (3 Slices Left)")
-register_slice(2, slice_2, "Cake (2 Slices Left)")
-register_slice(1, slice_1, "Cake (1 Slice Left)")
+register_slice(6, slice_6, S("Cake (6 Slices Left)"))
+register_slice(5, slice_5, S("Cake (5 Slices Left)"))
+register_slice(4, slice_4, S("Cake (4 Slices Left)"))
+register_slice(3, slice_3, S("Cake (3 Slices Left)"))
+register_slice(2, slice_2, S("Cake (2 Slices Left)"))
+register_slice(1, slice_1, S("Cake (1 Slice Left)"))

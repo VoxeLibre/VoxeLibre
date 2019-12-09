@@ -3,12 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
-
---dofile(minetest.get_modpath("mobs").."/api.lua")
-
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### ZOMBIE
@@ -47,6 +42,7 @@ local zombie = {
 	type = "monster",
 	hp_min = 20,
 	hp_max = 20,
+	breath_max = -1,
 	armor = 90,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
@@ -70,8 +66,8 @@ local zombie = {
 	fear_height = 4,
 	pathfinding = 1,
 	jump = true,
-	--jump_height = 3,
-	group_attack = true,
+	jump_height = 4,
+	group_attack = { "mobs_mc:zombie", "mobs_mc:baby_zombie", "mobs_mc:husk", "mobs_mc:baby_husk" },
 	drops = drops_zombie,
 	animation = {
 		speed_normal = 25,		speed_run = 50,
@@ -79,8 +75,6 @@ local zombie = {
 		walk_start = 0,		walk_end = 40,
 		run_start = 0,		run_end = 40,
 	},
-	lava_damage = 4,
-	-- TODO: Burn mob only when in direct sunlight
 	sunlight_damage = 2,
 	view_range = 16,
 	attack_type = "dogfight",
@@ -96,7 +90,7 @@ baby_zombie.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
 baby_zombie.visual_size = {x=zombie.visual_size.x/2, y=zombie.visual_size.y/2}
 baby_zombie.walk_velocity = 1.2
 baby_zombie.run_velocity = 2.4
-baby_zombie.sunlight_damage = 0
+baby_zombie.child = 1
 
 mobs:register_mob("mobs_mc:baby_zombie", baby_zombie)
 
@@ -105,7 +99,6 @@ mobs:register_mob("mobs_mc:baby_zombie", baby_zombie)
 local husk = table.copy(zombie)
 husk.textures = {{"mobs_mc_husk.png"}}
 husk.sunlight_damage = 0
-husk.water_damage = 3
 husk.drops = drops_common
 -- TODO: Husks avoid water
 
@@ -118,6 +111,7 @@ baby_husk.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
 baby_husk.visual_size = {x=zombie.visual_size.x/2, y=zombie.visual_size.y/2}
 baby_husk.walk_velocity = 1.2
 baby_husk.run_velocity = 2.4
+baby_husk.child = 1
 
 mobs:register_mob("mobs_mc:baby_husk", baby_husk)
 

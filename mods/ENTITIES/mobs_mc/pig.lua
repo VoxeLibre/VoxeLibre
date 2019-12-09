@@ -1,8 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:pig", {
 	type = "animal",
@@ -27,9 +25,6 @@ mobs:register_mob("mobs_mc:pig", {
 		min = 1,
 		max = 3,},
 	},
-	water_damage = 1,
-	lava_damage = 4,
-	light_damage = 0,
 	fear_height = 4,
 	sounds = {
 		random = "mobs_pig",
@@ -59,7 +54,7 @@ mobs:register_mob("mobs_mc:pig", {
 			self.max_speed_reverse = 2
 			self.accel = 4
 			self.terrain_type = 3
-			self.driver_attach_at = {x = 0.0, y = 6.75, z = -1.5}
+			self.driver_attach_at = {x = 0.0, y = 2.75, z = -1.5}
 			self.driver_eye_offset = {x = 0, y = 3, z = 0}
 			self.driver_scale = {x = 1/self.visual_size.x, y = 1/self.visual_size.y}
 		end

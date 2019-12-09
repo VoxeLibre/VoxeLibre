@@ -1,0 +1,4 @@
+# textdomain: lightning
+@1 was struck by lightning.=
+Let lightning strike at the specified position or yourself=
+No position specified and unknown player=

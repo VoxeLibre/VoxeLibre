@@ -3,17 +3,11 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
---dofile(minetest.get_modpath("mobs").."/api.lua")
-
-   
 --###################
 --################### WITHER
 --###################
-
 
 mobs:register_mob("mobs_mc:wither", {
 	type = "monster",
@@ -47,16 +41,14 @@ mobs:register_mob("mobs_mc:wither", {
 	dogshoot_switch = 1,
 	dogshoot_count_max =1,
 	attack_animals = true,
-	floats=1,
 	drops = {
 		{name = mobs_mc.items.nether_star,
 		chance = 1,
 		min = 1,
 		max = 1},
 	},
-	water_damage = 0,
 	lava_damage = 0,
-	light_damage = 0,
+	fire_damage = 0,
 	attack_type = "dogshoot",
 	explosion_radius = 3,
 	explosion_fire = false,
@@ -71,7 +63,6 @@ mobs:register_mob("mobs_mc:wither", {
 		walk_start = 0,		walk_end = 20,
 		run_start = 0,		run_end = 20,
 	},
-	blood_amount = 0,
 })
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
@@ -100,7 +91,7 @@ mobs:register_arrow("mobs_mc:roar_of_the_dragon", {
 	    for _,obj in ipairs(objects) do
 			local name = self.name
 			if name~="mobs_mc:roar_of_the_dragon" and name ~= "mobs_mc:wither" then
-		        obj:set_hp(obj:get_hp()-0.05)
+		        obj:set_hp(obj:get_hp()-5)
 		        if (obj:get_hp() <= 0) then
 		            if (not obj:is_player()) and name ~= self.object:get_luaentity().name then
 		                obj:remove()
@@ -142,7 +133,7 @@ mobs:register_arrow(":mobs_mc:fireball", {
 
 	hit_mob = function(self, mob)
 		minetest.sound_play("tnt_explode", {pos = mob:get_pos(), gain = 1.5,max_hear_distance = 16})
-		player:punch(self.object, 1.0, {
+		mob:punch(self.object, 1.0, {
 			full_punch_interval = 0.5,
 			damage_groups = {fleshy = 8},
 		}, nil)

@@ -97,6 +97,20 @@ function mcl_sounds.node_sound_wood_defaults(table)
 	return table
 end
 
+function mcl_sounds.node_sound_wool_defaults(table)
+	table = table or {}
+	table.footstep = table.footstep or
+			{name="mcl_sounds_cloth", gain=0.5}
+	table.dug = table.dug or
+			{name="mcl_sounds_cloth", gain=1.0}
+	table.dig = table.dig or
+			{name="mcl_sounds_cloth", gain=0.9}
+	table.place = table.dig or
+			{name="mcl_sounds_cloth", gain=1.0}
+	mcl_sounds.node_sound_defaults(table)
+	return table
+end
+
 function mcl_sounds.node_sound_leaves_defaults(table)
 	table = table or {}
 	table.footstep = table.footstep or

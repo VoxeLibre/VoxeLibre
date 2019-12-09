@@ -1,0 +1,14 @@
+# textdomain: mcl_portals
+End Portal=
+An End portal teleports creatures and objects to the mysterious End dimension (and back!).=
+Hop into the portal to teleport. Entering an End portal in the Overworld teleports you to a fixed position in the End dimension and creates a 5×5 obsidian platform at your destination. End portals in the End will lead back to your spawn point in the Overworld.=
+End Portal Frame=
+End portal frames are used in the construction of End portals. Each block has a socket for an eye of ender.=
+NOTE: The End dimension is currently incomplete and might change in future versions.=
+End Portal Frame with Eye of Ender=
+Nether Portal=
+A Nether portal teleports creatures and objects to the hot and dangerous Nether dimension (and back!). Enter at your own risk!=
+Stand in the portal for a moment to activate the teleportation. Entering a Nether portal for the first time will also create a new portal in the other dimension. If a Nether portal has been built in the Nether, it will lead to the Overworld. A Nether portal is destroyed if the any of the obsidian which surrounds it is destroyed, or if it was caught in an explosion.=
+Obsidian is also used as the frame of Nether portals.=
+To open a Nether portal, place an upright frame of obsidian with a width of 4 blocks and a height of 5 blocks, leaving only air in the center. After placing this frame, light a fire in the obsidian frame. Nether portals only work in the Overworld and the Nether.=
+Once placed, an eye of ender can not be taken back.=

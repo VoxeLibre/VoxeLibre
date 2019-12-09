@@ -1,8 +1,9 @@
 -- Climbable nodes
+local S = minetest.get_translator("mcl_core")
 
 minetest.register_node("mcl_core:ladder", {
-	description = "Ladder",
-	_doc_items_longdesc = "A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks and not on glass, leaves, ice, slabs, glowstone, nor sea lanterns.",
+	description = S("Ladder"),
+	_doc_items_longdesc = S("A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks and not on glass, leaves, ice, slabs, glowstone, nor sea lanterns."),
 	drawtype = "signlike",
 	is_ground_content = false,
 	tiles = {"default_ladder.png"},
@@ -77,8 +78,8 @@ minetest.register_node("mcl_core:ladder", {
 
 
 minetest.register_node("mcl_core:vine", {
-	description = "Vines",
-	_doc_items_longdesc = "Vines are climbable blocks which can be placed on the sides solid full-cube blocks. Vines slowly grow and spread.",
+	description = S("Vines"),
+	_doc_items_longdesc = S("Vines are climbable blocks which can be placed on the sides of solid full-cube blocks. Vines slowly grow and spread."),
 	drawtype = "signlike",
 	tiles = {"mcl_core_vine.png"},
 	inventory_image = "mcl_core_vine.png",
@@ -141,13 +142,14 @@ minetest.register_node("mcl_core:vine", {
 		return itemstack
 	end,
 
-	-- If destroyed, also a “dependant” vine below it.
+	-- If dug, also dig a “dependant” vine below it.
 	-- A vine is dependant if it hangs from this node and has no supporting block.
-	after_destruct = function(pos, oldnode)
+	on_dig = function(pos, node, digger)
 		local below = {x=pos.x, y=pos.y-1, z=pos.z}
 		local belownode = minetest.get_node(below)
-		if belownode.name == oldnode.name and (not mcl_core.check_vines_supported(below, belownode)) then
-			minetest.remove_node(below)
+		minetest.node_dig(pos, node, digger)
+		if belownode.name == node.name and (not mcl_core.check_vines_supported(below, belownode)) then
+			minetest.registered_nodes[node.name].on_dig(below, node, digger)
 		end
 	end,
 

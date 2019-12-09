@@ -3,9 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### HORSE
@@ -118,8 +116,6 @@ local horse = {
 	hp_min = 15,
 	hp_max = 30,
 	floats = 1,
-	lava_damage = 4,
-	water_damage = 1,
 	makes_footstep_sound = true,
 	jump = true,
 	jump_height = 5.75, -- can clear 2.5 blocks
@@ -142,7 +138,7 @@ local horse = {
 			self.max_speed_reverse = 2
 			self.accel = 6
 			self.terrain_type = 3
-			self.driver_attach_at = {x = 0, y = 7.5, z = -1.75}
+			self.driver_attach_at = {x = 0, y = 4.17, z = -1.75}
 			self.driver_eye_offset = {x = 0, y = 3, z = 0}
 			self.driver_scale = {x = 1/self.visual_size.x, y = 1/self.visual_size.y}
 		end
@@ -326,6 +322,7 @@ mobs:register_mob("mobs_mc:horse", horse)
 
 -- Skeleton horse
 local skeleton_horse = table.copy(horse)
+skeleton_horse.breath_max = -1
 skeleton_horse.textures = {{"blank.png", "mobs_mc_horse_skeleton.png", "blank.png"}}
 skeleton_horse.drops = {
 	{name = mobs_mc.items.bone,
@@ -339,11 +336,11 @@ skeleton_horse.sounds = {
 	damage = "mobs_mc_skeleton_hurt",
 	distance = 16,
 }
-skeleton_horse.blood_amount = 0
 mobs:register_mob("mobs_mc:skeleton_horse", skeleton_horse)
 
 -- Zombie horse
 local zombie_horse = table.copy(horse)
+zombie_horse.breath_max = -1
 zombie_horse.textures = {{"blank.png", "mobs_mc_horse_zombie.png", "blank.png"}}
 zombie_horse.drops = {
 	{name = mobs_mc.items.rotten_flesh,

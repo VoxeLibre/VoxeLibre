@@ -157,6 +157,7 @@ mobs_mc.follow = {
 	chicken = { "farming:seed_wheat", "farming:seed_cotton" }, -- seeds in general
 	parrot = { "farming:seed_wheat", "farming:seed_cotton" }, -- seeds in general
 	horse = { mobs_mc.items.apple, mobs_mc.items.sugar, mobs_mc.items.wheat, mobs_mc.items.hay_bale, mobs_mc.items.golden_apple, mobs_mc.items.golden_carrot },
+	llama = { mobs_mc.items.wheat, mobs_mc.items.hay_bale, },
 	pig = { mobs_mc.items.potato, mobs_mc.items.carrot, mobs_mc.items.carrot_on_a_stick,
 		mobs_mc.items.apple, -- Minetest Game extra
 	},

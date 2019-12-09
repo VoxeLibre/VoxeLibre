@@ -7,6 +7,7 @@
 All node definitions share a lot of code, so this is the reason why there
 are so many weird tables below.
 ]]
+local S = minetest.get_translator("mcl_dispensers")
 
 -- For after_place_node
 local setup_dispenser = function(pos)
@@ -14,9 +15,10 @@ local setup_dispenser = function(pos)
 	local form = "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;crafting_inventory_9_slots.png]"..
 	mcl_vars.inventory_header..
-	"image[3,-0.2;5,0.75;mcl_dispensers_fnt_dispenser.png]"..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
+	"label[3,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Dispenser"))).."]"..
 	"list[current_name;main;3,0.5;3,3;]"..
 	"listring[current_name;main]"..
 	"listring[current_player;main]"
@@ -164,9 +166,6 @@ local dispenserdef = {
 						local dropinv = dropmeta:get_inventory()
 						if dropinv:room_for_item(armor_type, dropitem) then
 							dropinv:add_item(armor_type, dropitem)
-							--[[ FIXME: For some reason, this function is not called after calling add_item,
-							so we call it manually to update the armor stand entity.
-							This may need investigation and the following line may be a small hack. ]]
 							minetest.registered_nodes["3d_armor_stand:armor_stand"].on_metadata_inventory_put(standpos)
 							stack:take_item()
 							inv:set_stack("main", stack_id, stack)
@@ -281,27 +280,27 @@ local dispenserdef = {
 -- Horizontal dispenser
 
 local horizontal_def = table.copy(dispenserdef)
-horizontal_def.description = "Dispenser"
-horizontal_def._doc_items_longdesc = "A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots."
-horizontal_def._doc_items_usagehelp = [[Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Rightclick the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a single random item.
+horizontal_def.description = S("Dispenser")
+horizontal_def._doc_items_longdesc = S("A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots.")
+horizontal_def._doc_items_usagehelp = S("Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Use the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a random item.").."\n\n"..
 
-The dispenser will do different things, depending on the dispensed item:
+S("The dispenser will do different things, depending on the dispensed item:").."\n\n"..
 
-• Arrows: Are launched
-• Eggs and snowballs: Are thrown
-• Fire charges: Are fired in a straight line
-• Armor: Will be equipped to players and armor stands
-• Boats: Are placed on water or are dropped
-• Minecart: Are placed on rails or are dropped
-• Bone meal: Is applied on the block it is facint
-• Empty buckets: Are used to collect a liquid source
-• Filled buckets: Are used to place a liquid source
-• Heads, pumpkins: Equipped to players and armor stands, or placed as a block
-• Shulker boxes: Are placed as a block
-• TNT: Is placed and ignited
-• Flint and steel: Is used to ignite a fire in air and to ignite TNT
-• Spawn eggs: Will summon the mob they contain
-• Other items: Are simply dropped]]
+S("• Arrows: Are launched").."\n"..
+S("• Eggs and snowballs: Are thrown").."\n"..
+S("• Fire charges: Are fired in a straight line").."\n"..
+S("• Armor: Will be equipped to players and armor stands").."\n"..
+S("• Boats: Are placed on water or are dropped").."\n"..
+S("• Minecart: Are placed on rails or are dropped").."\n"..
+S("• Bone meal: Is applied on the block it is facing").."\n"..
+S("• Empty buckets: Are used to collect a liquid source").."\n"..
+S("• Filled buckets: Are used to place a liquid source").."\n"..
+S("• Heads, pumpkins: Equipped to players and armor stands, or placed as a block").."\n"..
+S("• Shulker boxes: Are placed as a block").."\n"..
+S("• TNT: Is placed and ignited").."\n"..
+S("• Flint and steel: Is used to ignite a fire in air and to ignite TNT").."\n"..
+S("• Spawn eggs: Will summon the mob they contain").."\n"..
+S("• Other items: Are simply dropped")
 
 horizontal_def.after_place_node = function(pos, placer, itemstack, pointed_thing)
 	setup_dispenser(pos)
@@ -319,7 +318,7 @@ minetest.register_node("mcl_dispensers:dispenser", horizontal_def)
 
 -- Down dispenser
 local down_def = table.copy(dispenserdef)
-down_def.description = "Downwards-Facing Dispenser"
+down_def.description = S("Downwards-Facing Dispenser")
 down_def.after_place_node = setup_dispenser
 down_def.tiles = {
 	"default_furnace_top.png", "mcl_dispensers_dispenser_front_vertical.png",
@@ -334,7 +333,7 @@ minetest.register_node("mcl_dispensers:dispenser_down", down_def)
 -- Up dispenser
 -- The up dispenser is almost identical to the down dispenser , it only differs in textures
 local up_def = table.copy(down_def)
-up_def.description = "Upwards-Facing Dispenser"
+up_def.description = S("Upwards-Facing Dispenser")
 up_def.tiles = {
 	"mcl_dispensers_dispenser_front_vertical.png", "default_furnace_bottom.png",
 	"default_furnace_side.png", "default_furnace_side.png",
@@ -357,3 +356,13 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_dispensers:dispenser", "nodes", "mcl_dispensers:dispenser_down")
 	doc.add_entry_alias("nodes", "mcl_dispensers:dispenser", "nodes", "mcl_dispensers:dispenser_up")
 end
+
+minetest.register_lbm({
+	label = "Update dispenser formspecs (0.51.0)",
+	name = "mcl_dispensers:update_formspecs_0_51_0",
+	nodenames = { "mcl_dispensers:dispenser", "mcl_dispensers:dispenser_down", "mcl_dispensers:dispenser_up" },
+	action = function(pos, node)
+		setup_dispenser(pos)
+		minetest.log("action", "[mcl_dispenser] Node formspec updated at "..minetest.pos_to_string(pos))
+	end,
+})

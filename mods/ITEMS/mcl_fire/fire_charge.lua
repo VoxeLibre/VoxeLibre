@@ -1,8 +1,10 @@
+local S = minetest.get_translator("mcl_fire")
+
 -- Fire Charge
 minetest.register_craftitem("mcl_fire:fire_charge", {
-	description = "Fire Charge",
-	_doc_items_longdesc = "Fire charges are primarily projectiles which can be launched from dispensers, they will fly in a straight line and burst into a fire on impact. Alternatively, they can be used to ignite fires directly.",
-	_doc_items_usagehelp = "Put the fire charge into a dispenser and supply it with redstone power to launch it. To ignite a fire directly, simply place the fire charge on the ground, which uses it up.",
+	description = S("Fire Charge"),
+	_doc_items_longdesc = S("Fire charges are primarily projectiles which can be launched from dispensers, they will fly in a straight line and burst into a fire on impact. Alternatively, they can be used to ignite fires directly."),
+	_doc_items_usagehelp = S("Put the fire charge into a dispenser and supply it with redstone power to launch it. To ignite a fire directly, simply place the fire charge on the ground, which uses it up."),
 	inventory_image = "mcl_fire_fire_charge.png",
 	liquids_pointable = false,
 	stack_max = 64,
@@ -46,7 +48,7 @@ minetest.register_craftitem("mcl_fire:fire_charge", {
 		local ent = fireball:get_luaentity()
 		ent._shot_from_dispenser = true
 		local v = ent.velocity or 1
-		fireball:setvelocity(vector.multiply(dropdir, v))
+		fireball:set_velocity(vector.multiply(dropdir, v))
 		ent.switch = 1
 		stack:take_item()
 	end,

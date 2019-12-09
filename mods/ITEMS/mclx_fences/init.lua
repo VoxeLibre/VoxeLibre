@@ -1,8 +1,10 @@
+local S = minetest.get_translator("mclx_fences")
+
 -- Red Nether Brick Fence
 
 mcl_fences.register_fence_and_fence_gate(
 	"red_nether_brick_fence",
-	"Red Nether Brick Fence", "Red Nether Brick Fence Gate",
+	S("Red Nether Brick Fence"), S("Red Nether Brick Fence Gate"),
 	"mcl_fences_fence_red_nether_brick.png",
 	{pickaxey=1, deco_block=1, fence_nether_brick=1},
 	minetest.registered_nodes["mcl_nether:red_nether_brick"]._mcl_hardness,
@@ -13,7 +15,7 @@ mcl_fences.register_fence_and_fence_gate(
 
 mcl_fences.register_fence_gate(
 	"nether_brick_fence",
-	"Nether Brick Fence Gate",
+	S("Nether Brick Fence Gate"),
 	"mcl_fences_fence_gate_nether_brick.png",
 	{pickaxey=1, deco_block=1, fence_nether_brick=1},
 	minetest.registered_nodes["mcl_nether:nether_brick"]._mcl_hardness,

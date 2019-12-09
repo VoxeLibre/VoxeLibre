@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_bows")
+
 -- Time in seconds after which a stuck arrow is deleted
 local ARROW_TIMEOUT = 60
 -- Time after which stuck arrow is rechecked for being stuck
@@ -7,16 +9,21 @@ local GRAVITY = 9.81
 
 local YAW_OFFSET = -math.pi/2
 
-local mod_mcl_hunger = minetest.get_modpath("mcl_hunger")
+local dir_to_pitch = function(dir)
+	local dir2 = vector.normalize(dir)
+	local xz = math.abs(dir.x) + math.abs(dir.z)
+	return -math.atan2(-dir.y, xz)
+end
+
 local mod_awards = minetest.get_modpath("awards") and minetest.get_modpath("mcl_achievements")
 local mod_button = minetest.get_modpath("mesecons_button")
 
 minetest.register_craftitem("mcl_bows:arrow", {
-	description = "Arrow",
-	_doc_items_longdesc = [[Arrows are ammunition for bows and dispensers.
-An arrow fired from a bow has a regular damage of 1-9. At full charge, there's a 20% chance of a critical hit dealing 10 damage instead. An arrow fired from a dispenser always deals 3 damage.
-Arrows might get stuck on solid blocks and can be retrieved again. They are also capable of pushing wooden buttons.]],
-	_doc_items_usagehelp = "To use arrows as ammunition for a bow, just put them anywhere in your inventory, they will be used up automatically. To use arrows as ammunition for a dispenser, place them in the dispenser's inventory. To retrieve an arrow that sticks in a block, simply walk close to it.",
+	description = S("Arrow"),
+	_doc_items_longdesc = S("Arrows are ammunition for bows and dispensers.").."\n"..
+S("An arrow fired from a bow has a regular damage of 1-9. At full charge, there's a 20% chance of a critical hit dealing 10 damage instead. An arrow fired from a dispenser always deals 3 damage.").."\n"..
+S("Arrows might get stuck on solid blocks and can be retrieved again. They are also capable of pushing wooden buttons."),
+	_doc_items_usagehelp = S("To use arrows as ammunition for a bow, just put them anywhere in your inventory, they will be used up automatically. To use arrows as ammunition for a dispenser, place them in the dispenser's inventory. To retrieve an arrow that sticks in a block, simply walk close to it."),
 	inventory_image = "mcl_bows_arrow_inv.png",
 	groups = { ammo=1, ammo_bow=1 },
 	_on_dispense = function(itemstack, dispenserpos, droppos, dropnode, dropdir)
@@ -60,6 +67,12 @@ minetest.register_node("mcl_bows:arrow_box", {
 	paramtype2 = "facedir",
 	sunlight_propagates = true,
 	groups = {not_in_creative_inventory=1, dig_immediate=3},
+	drop = "",
+	node_placement_prediction = "",
+	on_construct = function(pos)
+		minetest.log("error", "[mcl_bows] Trying to construct mcl_bows:arrow_box at "..minetest.pos_to_string(pos))
+		minetest.remove_node(pos)
+	end,
 })
 
 local ARROW_ENTITY={
@@ -107,7 +120,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			return
 		end
 		-- Drop arrow as item when it is no longer stuck
-		-- FIXME: Arrows are a bit slot to react and continue to float in mid air for a few seconds.
+		-- FIXME: Arrows are a bit slow to react and continue to float in mid air for a few seconds.
 		if self._stuckrechecktimer > STUCK_RECHECK_TIME then
 			local stuckin_def
 			if self._stuckin then
@@ -183,29 +196,28 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			local is_player = obj:is_player()
 			local lua = obj:get_luaentity()
 			if obj ~= self._shooter and (is_player or (lua and lua._cmi_is_mob)) then
-				obj:punch(self.object, 1.0, {
-					full_punch_interval=1.0,
-					damage_groups={fleshy=self._damage},
-				}, nil)
+				if obj:get_hp() > 0 then
+					obj:punch(self.object, 1.0, {
+						full_punch_interval=1.0,
+						damage_groups={fleshy=self._damage},
+					}, nil)
 
-				if is_player then
-					if self._shooter and self._shooter:is_player() then
-						-- “Ding” sound for hitting another player
-						minetest.sound_play({name="mcl_bows_hit_player", gain=0.1}, {to_player=self._shooter})
+					if is_player then
+						if self._shooter and self._shooter:is_player() then
+							-- “Ding” sound for hitting another player
+							minetest.sound_play({name="mcl_bows_hit_player", gain=0.1}, {to_player=self._shooter})
+						end
 					end
-					if mod_mcl_hunger then
-						mcl_hunger.exhaust(obj:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
-					end
-				end
 
-				if lua then
-					local entity_name = lua.name
-					-- Achievement for hitting skeleton, wither skeleton or stray (TODO) with an arrow at least 50 meters away
-					-- NOTE: Range has been reduced because mobs unload much earlier than that ... >_>
-					-- TODO: This achievement should be given for the kill, not just a hit
-					if self._shooter and self._shooter:is_player() and vector.distance(pos, self._startpos) >= 20 then
-						if mod_awards and (entity_name == "mobs_mc:skeleton" or entity_name == "mobs_mc:stray" or entity_name == "mobs_mc:witherskeleton") then
-							awards.unlock(self._shooter:get_player_name(), "mcl:snipeSkeleton")
+					if lua then
+						local entity_name = lua.name
+						-- Achievement for hitting skeleton, wither skeleton or stray (TODO) with an arrow at least 50 meters away
+						-- NOTE: Range has been reduced because mobs unload much earlier than that ... >_>
+						-- TODO: This achievement should be given for the kill, not just a hit
+						if self._shooter and self._shooter:is_player() and vector.distance(pos, self._startpos) >= 20 then
+							if mod_awards and (entity_name == "mobs_mc:skeleton" or entity_name == "mobs_mc:stray" or entity_name == "mobs_mc:witherskeleton") then
+								awards.unlock(self._shooter:get_player_name(), "mcl:snipeSkeleton")
+							end
 						end
 					end
 				end
@@ -290,7 +302,9 @@ ARROW_ENTITY.on_step = function(self, dtime)
 	-- Update yaw
 	if not self._stuck then
 		local vel = self.object:get_velocity()
-		self.object:set_yaw(minetest.dir_to_yaw(vel)+YAW_OFFSET)
+		local yaw = minetest.dir_to_yaw(vel)+YAW_OFFSET
+		local pitch = dir_to_pitch(vel)
+		self.object:set_rotation({ x = 0, y = yaw, z = pitch })
 	end
 
 	-- Update internal variable

@@ -1,9 +1,15 @@
+local S = minetest.get_translator("mcl_banners")
+local N = function(s) return s end
+
 -- Pattern crafting. This file contains the code for crafting all the
 -- emblazonings you can put on the banners. It's quite complicated;
--- normal 08/15 crafting won't work here.
+-- run-of-the-mill crafting won't work here.
 
 -- Maximum number of layers which can be put on a banner by crafting.
-local max_layers_crafting = 6
+local max_layers_crafting = 12
+
+-- Maximum number of layers when banner includes a gradient (workaround, see below).
+local max_layers_gradient = 3
 
 -- Max. number lines in the descriptions for the banner layers.
 -- This is done to avoid huge tooltips.
@@ -14,99 +20,99 @@ local d = "group:dye" -- dye
 local e = "" -- empty slot (one of them must contain the banner)
 local patterns = {
 	["border"] = {
-		name = "%s Bordure",
+		name = N("@1 Bordure"),
 		{ d, d, d },
 		{ d, e, d },
 		{ d, d, d },
 	},
 	["bricks"] = {
-		name = "%s Bricks",
+		name = N("@1 Bricks"),
 		type = "shapeless",
 		{ e, "mcl_core:brick_block", d },
 	},
 	["circle"] = {
-		name = "%s Roundel",
+		name = N("@1 Roundel"),
 		{ e, e, e },
 		{ e, d, e },
 		{ e, e, e },
 	},
 	["creeper"] = {
-		name = "%s Creeper Charge",
+		name = N("@1 Creeper Charge"),
 		type = "shapeless",
 		{ e, "mcl_heads:creeper", d },
 	},
 	["cross"] = {
-		name = "%s Saltire",
+		name = N("@1 Saltire"),
 		{ d, e, d },
 		{ e, d, e },
 		{ d, e, d },
 	},
 	["curly_border"] = {
-		name = "%s Bordure Indented",
+		name = N("@1 Bordure Indented"),
 		type = "shapeless",
 		{ e, "mcl_core:vine", d },
 	},
 	["diagonal_up_left"] = {
-		name = "%s Per Bend Inverted",
+		name = N("@1 Per Bend Inverted"),
 		{ e, e, e },
 		{ d, e, e },
 		{ d, d, e },
 	},
 	["diagonal_up_right"] = {
-		name = "%s Per Bend Sinister Inverted",
+		name = N("@1 Per Bend Sinister Inverted"),
 		{ e, e, e },
 		{ e, e, d },
 		{ e, d, d },
 	},
 	["diagonal_right"] = {
-		name = "%s Per Bend",
+		name = N("@1 Per Bend"),
 		{ e, d, d },
 		{ e, e, d },
 		{ e, e, e },
 	},
 	["diagonal_left"] = {
-		name = "%s Per Bend Sinister",
+		name = N("@1 Per Bend Sinister"),
 		{ d, d, e },
 		{ d, e, e },
 		{ e, e, e },
 	},
 	["flower"] = {
-		name = "%s Flower Charge",
+		name = N("@1 Flower Charge"),
 		type = "shapeless",
 		{ e, "mcl_flowers:oxeye_daisy", d },
 	},
 	["gradient"] = {
-		name = "%s Gradient",
+		name = N("@1 Gradient"),
 		{ d, e, d },
 		{ e, d, e },
 		{ e, d, e },
 	},
 	["gradient_up"] = {
-		name = "%s Base Gradient",
+		name = N("@1 Base Gradient"),
 		{ e, d, e },
 		{ e, d, e },
 		{ d, e, d },
 	},
 	["half_horizontal_bottom"] = {
-		name = "%s Per Fess Inverted",
+		name = N("@1 Per Fess Inverted"),
 		{ e, e, e },
 		{ d, d, d },
 		{ d, d, d },
 	},
 	["half_horizontal"] = {
-		name = "%s Per Fess",
+		name = N("@1 Per Fess"),
 		{ d, d, d },
 		{ d, d, d },
 		{ e, e, e },
 	},
 	["half_vertical"] = {
-		name = "%s Per Pale",
+		name = N("@1 Per Pale"),
 		{ d, d, e },
 		{ d, d, e },
 		{ d, d, e },
 	},
 	["half_vertical_right"] = {
-		name = "%s Per Pale Inverted",
+		name = N("@1 Per Pale Inverted"),
 		{ e, d, d },
 		{ e, d, d },
 		{ e, d, d },
@@ -114,126 +120,126 @@ local patterns = {
 	["thing"] = {
 		-- Symbol used for the “Thing”: U+1F65D 🙝
 
-		name = "%s Thing Charge",
+		name = N("@1 Thing Charge"),
 		type = "shapeless",
 		-- TODO: Replace with enchanted golden apple
 		{ e, "mcl_core:apple_gold", d },
 	},
 	["rhombus"] = {
-		name = "%s Lozenge",
+		name = N("@1 Lozenge"),
 		{ e, d, e },
 		{ d, e, d },
 		{ e, d, e },
 	},
 	["skull"] = {
-		name = "%s Skull Charge",
+		name = N("@1 Skull Charge"),
 		type = "shapeless",
 		{ e, "mcl_heads:wither_skeleton", d },
 	},
 	["small_stripes"] = {
-		name = "%s Paly",
+		name = N("@1 Paly"),
 		{ d, e, d },
 		{ d, e, d },
 		{ e, e, e },
 	},
 	["square_bottom_left"] = {
-		name = "%s Base Dexter Canton",
+		name = N("@1 Base Dexter Canton"),
 		{ e, e, e },
 		{ e, e, e },
 		{ d, e, e },
 	},
 	["square_bottom_right"] = {
-		name = "%s Base Sinister Canton",
+		name = N("@1 Base Sinister Canton"),
 		{ e, e, e },
 		{ e, e, e },
 		{ e, e, d },
 	},
 	["square_top_left"] = {
-		name = "%s Chief Dexter Canton",
+		name = N("@1 Chief Dexter Canton"),
 		{ d, e, e },
 		{ e, e, e },
 		{ e, e, e },
 	},
 	["square_top_right"] = {
-		name = "%s Chief Sinister Canton",
+		name = N("@1 Chief Sinister Canton"),
 		{ e, e, d },
 		{ e, e, e },
 		{ e, e, e },
 	},
 	["straight_cross"] = {
-		name = "%s Cross",
+		name = N("@1 Cross"),
 		{ e, d, e },
 		{ d, d, d },
 		{ e, d, e },
 	},
 	["stripe_bottom"] = {
-		name = "%s Base",
+		name = N("@1 Base"),
 		{ e, e, e },
 		{ e, e, e },
 		{ d, d, d },
 	},
 	["stripe_center"] = {
-		name = "%s Pale",
+		name = N("@1 Pale"),
 		{ e, d, e },
 		{ e, d, e },
 		{ e, d, e },
 	},
 	["stripe_downleft"] = {
-		name = "%s Bend Sinister",
+		name = N("@1 Bend Sinister"),
 		{ e, e, d },
 		{ e, d, e },
 		{ d, e, e },
 	},
 	["stripe_downright"] = {
-		name = "%s Bend",
+		name = N("@1 Bend"),
 		{ d, e, e },
 		{ e, d, e },
 		{ e, e, d },
 	},
 	["stripe_left"] = {
-		name = "%s Pale Dexter",
+		name = N("@1 Pale Dexter"),
 		{ d, e, e },
 		{ d, e, e },
 		{ d, e, e },
 	},
 	["stripe_middle"] = {
-		name = "%s Fess",
+		name = N("@1 Fess"),
 		{ e, e, e },
 		{ d, d, d },
 		{ e, e, e },
 	},
 	["stripe_right"] = {
-		name = "%s Pale Sinister",
+		name = N("@1 Pale Sinister"),
 		{ e, e, d },
 		{ e, e, d },
 		{ e, e, d },
 	},
 	["stripe_top"] = {
-		name = "%s Chief",
+		name = N("@1 Chief"),
 		{ d, d, d },
 		{ e, e, e },
 		{ e, e, e },
 	},
 	["triangle_bottom"] = {
-		name = "%s Chevron",
+		name = N("@1 Chevron"),
 		{ e, e, e },
 		{ e, d, e },
 		{ d, e, d },
 	},
 	["triangle_top"] = {
-		name = "%s Chevron Inverted",
+		name = N("@1 Chevron Inverted"),
 		{ d, e, d },
 		{ e, d, e },
 		{ e, e, e },
 	},
 	["triangles_bottom"] = {
-		name = "%s Base Indented",
+		name = N("@1 Base Indented"),
 		{ e, e, e },
 		{ d, e, d },
 		{ e, d, e },
 	},
 	["triangles_top"] = {
-		name = "%s Chief Indented",
+		name = N("@1 Chief Indented"),
 		{ e, d, e },
 		{ d, e, d },
 		{ e, e, e },
@@ -262,14 +268,15 @@ mcl_banners.make_advanced_banner_description = function(description, layers)
 			-- Layer text line.
 			local color = mcl_banners.colors[layers[l].color][6]
 			local pattern_name = patterns[layers[l].pattern].name
-			-- The pattern name is a format string (e.g. “%s Base”)
-			table.insert(layerstrings, string.format(pattern_name, color))
+			-- The pattern name is a format string
+			-- (e.g. “@1 Base” → “Yellow Base”)
+			table.insert(layerstrings, S(pattern_name, S(color)))
 		end
 		-- Warn about missing information
 		if #layers == max_layer_lines + 1 then
-			table.insert(layerstrings, "And one addional layer")
+			table.insert(layerstrings, S("And one additional layer"))
 		elseif #layers > max_layer_lines + 1 then
-			table.insert(layerstrings, string.format("And %d addional layers", #layers - max_layer_lines))
+			table.insert(layerstrings, S("And @1 additional layers", #layers - max_layer_lines))
 		end
 
 		-- Final string concatenations: Just a list of strings
@@ -385,6 +392,16 @@ local banner_pattern_craft = function(itemstack, player, old_craft_grid, craft_i
 	-- Disallow crafting when a certain number of layers is reached or exceeded
 	if #layers >= max_layers_crafting then
 		return ItemStack("")
+	end
+	-- Lower layer limit when banner includes any gradient.
+	-- Workaround to circumvent Minetest bug (https://github.com/minetest/minetest/issues/6210)
+	-- TODO: Remove this restriction when bug #6210 is fixed.
+	if #layers >= max_layers_gradient then
+		for l=1, #layers do
+			if layers[l].pattern == "gradient" or layers[l].pattern == "gradient_up" then
+				return ItemStack("")
+			end
+		end
 	end
 
 	local matching_pattern

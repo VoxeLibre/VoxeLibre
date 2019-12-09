@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mesecons_wallever")
+
 local lever_get_output_rules = mesecon.rules.buttonlike_get
 
 -- LEVER
@@ -20,9 +22,9 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 	},
 	groups = {handy=1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1},
 	is_ground_content = false,
-	description="Lever",
-	_doc_items_longdesc = "A lever is a redstone component which can be flipped on and off. It supplies redstone power to adjacent blocks while it is in the “on” state.",
-	_doc_items_usagehelp = "Right-click the lever to flip it on or off.",
+	description=S("Lever"),
+	_doc_items_longdesc = S("A lever is a redstone component which can be flipped on and off. It supplies redstone power to adjacent blocks while it is in the “on” state."),
+	_doc_items_usagehelp = S("Use the lever to flip it on or off."),
 	on_rightclick = function (pos, node)
 		minetest.swap_node(pos, {name="mesecons_walllever:wall_lever_on", param2=node.param2})
 		mesecon.receptor_on(pos, lever_get_output_rules(node))
@@ -122,7 +124,7 @@ minetest.register_node("mesecons_walllever:wall_lever_on", {
 	groups = {handy=1, not_in_creative_inventory = 1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1},
 	is_ground_content = false,
 	drop = '"mesecons_walllever:wall_lever_off" 1',
-	description="Lever",
+	description=S("Lever"),
 	_doc_items_create_entry = false,
 	on_rightclick = function (pos, node)
 		minetest.swap_node(pos, {name="mesecons_walllever:wall_lever_off", param2=node.param2})

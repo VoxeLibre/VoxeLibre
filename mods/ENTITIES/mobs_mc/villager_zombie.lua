@@ -3,9 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 -- TODO: Turn villagers to zombie villager
 
@@ -18,6 +16,7 @@ mobs:register_mob("mobs_mc:villager_zombie", {
 	type = "monster",
 	hp_min = 20,
 	hp_max = 20,
+	breath_max = -1,
 	armor = 90,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
@@ -73,11 +72,9 @@ mobs:register_mob("mobs_mc:villager_zombie", {
 		run_start = 0,
         run_end = 20,
 	},
-	water_damage = 1,
-	lava_damage = 5,
 	sunlight_damage = 1,
 	view_range = 16,
-	fear_height = 5,
+	fear_height = 4,
 
 })
 

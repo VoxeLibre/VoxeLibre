@@ -3,9 +3,10 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+-- NOTE: Strings intentionally not marked for translation, other mods already have these items.
+-- TODO: Remove this file eventually, all items here are already outsourced in other mods.
+
+local S = minetest.get_translator("mobs_mc")
 
 --maikerumines throwing code
 --arrow (weapon)
@@ -14,15 +15,18 @@ local c = mobs_mc.is_item_variable_overridden
 
 minetest.register_node("mobs_mc:arrow_box", {
 	drawtype = "nodebox",
+	is_ground_content = false,
 	node_box = {
 		type = "fixed",
 		fixed = {
 			-- Shaft
-			{-6.5/17, -1.5/17, -1.5/17, 6.5/17, 1.5/17, 1.5/17},
-			--Spitze
+			{-6.5/17, -1.5/17, -1.5/17, -4.5/17, 1.5/17, 1.5/17},
+			{-4.5/17, -0.5/17, -0.5/17, 5.5/17, 0.5/17, 0.5/17},
+			{5.5/17, -1.5/17, -1.5/17, 6.5/17, 1.5/17, 1.5/17},
+			-- Tip
 			{-4.5/17, 2.5/17, 2.5/17, -3.5/17, -2.5/17, -2.5/17},
 			{-8.5/17, 0.5/17, 0.5/17, -6.5/17, -0.5/17, -0.5/17},
-			--Federn
+			-- Fletching
 			{6.5/17, 1.5/17, 1.5/17, 7.5/17, 2.5/17, 2.5/17},
 			{7.5/17, -2.5/17, 2.5/17, 6.5/17, -1.5/17, 1.5/17},
 			{7.5/17, 2.5/17, -2.5/17, 6.5/17, 1.5/17, -1.5/17},
@@ -35,7 +39,16 @@ minetest.register_node("mobs_mc:arrow_box", {
 		}
 	},
 	tiles = {"mcl_bows_arrow.png^[transformFX", "mcl_bows_arrow.png^[transformFX", "mcl_bows_arrow_back.png", "mcl_bows_arrow_front.png", "mcl_bows_arrow.png", "mcl_bows_arrow.png^[transformFX"},
-	groups = {not_in_creative_inventory=1},
+	paramtype = "light",
+	paramtype2 = "facedir",
+	sunlight_propagates = true,
+	groups = {not_in_creative_inventory=1, dig_immediate=3},
+	node_placement_prediction = "",
+	on_construct = function(pos)
+		minetest.log("error", "[mobs_mc] Trying to construct mobs_mc:arrow_box at "..minetest.pos_to_string(pos))
+		minetest.remove_node(pos)
+	end,
+	drop = "",
 })
 
 local THROWING_ARROW_ENTITY={
@@ -116,9 +129,9 @@ local throwing_shoot_arrow = function(itemstack, player)
 			local playerpos = player:get_pos()
 			local obj = minetest.add_entity({x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, arrow[2])  --mc
 			local dir = player:get_look_dir()
-			obj:setvelocity({x=dir.x*22, y=dir.y*22, z=dir.z*22})
-			obj:setacceleration({x=dir.x*-3, y=-10, z=dir.z*-3})
-			obj:setyaw(player:get_look_yaw()+math.pi)
+			obj:set_velocity({x=dir.x*22, y=dir.y*22, z=dir.z*22})
+			obj:set_acceleration({x=dir.x*-3, y=-10, z=dir.z*-3})
+			obj:set_yaw(player:get_look_yaw()+math.pi)
 			minetest.sound_play("throwing_sound", {pos=playerpos})
 			if obj:get_luaentity().player == "" then
 				obj:get_luaentity().player = player
@@ -132,9 +145,9 @@ end
 
 if c("arrow") then
 	minetest.register_craftitem("mobs_mc:arrow", {
-		description = S("Arrow"),
-		_doc_items_longdesc = S("Arrows are ammunition for bows."),
-		_doc_items_usagehelp = S("To use arrows as ammunition for a bow, put them in the inventory slot following the bow. Slots are counted left to right, top to bottom."),
+		description = "Arrow",
+		_doc_items_longdesc = "Arrows are ammunition for bows.",
+		_doc_items_usagehelp = "To use arrows as ammunition for a bow, put them in the inventory slot following the bow. Slots are counted left to right, top to bottom.",
 		inventory_image = "mcl_bows_arrow_inv.png",
 	})
 end
@@ -152,9 +165,9 @@ end
 
 if c("bow") then
 	minetest.register_tool("mobs_mc:bow_wood", {
-		description = S("Bow"),
-		_doc_items_longdesc = S("Bows are ranged weapons to shoot arrows at your foes."),
-		_doc_items_usagehelp = S("To use the bow, you first need to have at least one arrow in slot following the bow. Leftclick to shoot. Each hit deals 3 damage."),
+		description = "Bow",
+		_doc_items_longdesc = "Bows are ranged weapons to shoot arrows at your foes.",
+		_doc_items_usagehelp = "To use the bow, you first need to have at least one arrow in slot following the bow. Leftclick to shoot. Each hit deals 3 damage.",
 		inventory_image = "mcl_bows_bow.png",
 		on_use = function(itemstack, user, pointed_thing)
 			if throwing_shoot_arrow(itemstack, user, pointed_thing) then
@@ -197,8 +210,8 @@ if c("egg") then
 			}, nil)
 		end,
 
-		hit_mob = function(self, player)
-			player:punch(minetest.get_player_by_name(self.playername) or self.object, 1.0, {
+		hit_mob = function(self, mob)
+			mob:punch(minetest.get_player_by_name(self.playername) or self.object, 1.0, {
 				full_punch_interval = 1.0,
 				damage_groups = {},
 			}, nil)
@@ -267,13 +280,13 @@ if c("egg") then
 		ent.velocity = egg_VELOCITY -- needed for api internal timing
 		ent.switch = 1 -- needed so that egg doesn't despawn straight away
 
-		obj:setvelocity({
+		obj:set_velocity({
 			x = dir.x * egg_VELOCITY,
 			y = dir.y * egg_VELOCITY,
 			z = dir.z * egg_VELOCITY
 		})
 
-		obj:setacceleration({
+		obj:set_acceleration({
 			x = dir.x * -3,
 			y = -egg_GRAVITY,
 			z = dir.z * -3
@@ -291,8 +304,8 @@ if c("egg") then
 	end
 
 	minetest.register_craftitem("mobs_mc:egg", {
-		description = S("Egg"),
-		_doc_items_longdesc = S("Eggs can be thrown and break on impact. There is a small chance that 1 or even 4 chicks will pop out"),
+		description = "Egg",
+		_doc_items_longdesc = "Eggs can be thrown and break on impact. There is a small chance that 1 or even 4 chicks will pop out",
 		_doc_items_usagehelp = how_to_throw,
 		inventory_image = "mobs_chicken_egg.png",
 		on_use = mobs_shoot_egg,
@@ -351,13 +364,13 @@ if c("snowball") then
 		ent.velocity = snowball_VELOCITY -- needed for api internal timing
 		ent.switch = 1 -- needed so that egg doesn't despawn straight away
 
-		obj:setvelocity({
+		obj:set_velocity({
 			x = dir.x * snowball_VELOCITY,
 			y = dir.y * snowball_VELOCITY,
 			z = dir.z * snowball_VELOCITY
 		})
 
-		obj:setacceleration({
+		obj:set_acceleration({
 			x = dir.x * -3,
 			y = -snowball_GRAVITY,
 			z = dir.z * -3
@@ -377,8 +390,8 @@ if c("snowball") then
 
 	-- Snowball
 	minetest.register_craftitem("mobs_mc:snowball", {
-		description = S("Snowball"),
-		_doc_items_longdesc = S("Snowballs can be thrown at your enemies. A snowball deals 3 damage to blazes, but is harmless to anything else."),
+		description = "Snowball",
+		_doc_items_longdesc = "Snowballs can be thrown at your enemies. A snowball deals 3 damage to blazes, but is harmless to anything else.",
 		_doc_items_usagehelp = how_to_throw,
 		inventory_image = "mcl_throwing_snowball.png",
 		on_use = mobs_shoot_snowball,

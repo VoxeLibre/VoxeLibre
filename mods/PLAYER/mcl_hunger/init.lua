@@ -1,10 +1,5 @@
-local S
-if (minetest.get_modpath("intllib")) then
-	S = intllib.Getter()
-else
-	S = function ( s ) return s end
-end
-
+local S = minetest.get_translator("mcl_hunger")
+local mod_death_messages = minetest.get_modpath("mcl_death_messages")
 
 mcl_hunger = {}
 
@@ -29,7 +24,7 @@ mcl_hunger.EXHAUST_SPRINT_JUMP = 200 -- jump while sprinting
 mcl_hunger.EXHAUST_ATTACK = 100 -- hit an enemy
 mcl_hunger.EXHAUST_SWIM = 10 -- player movement in water
 mcl_hunger.EXHAUST_SPRINT = 100 -- sprint (per node)
-mcl_hunger.EXHAUST_DAMAGE = 100 -- TODO (mostly done): taking damage (protected by armor)
+mcl_hunger.EXHAUST_DAMAGE = 100 -- taking damage (protected by armor)
 mcl_hunger.EXHAUST_REGEN = 6000 -- Regenerate 1 HP
 mcl_hunger.EXHAUST_LVL = 4000 -- at what exhaustion player saturation gets lowered
 
@@ -101,15 +96,9 @@ if mcl_hunger.debug then
 	hb.register_hudbar("exhaustion", 0xFFFFFF, S("Exhaust."), { icon = "mcl_hunger_icon_exhaustion.png", bgicon = "mcl_hunger_bgicon_exhaustion.png", bar = "mcl_hunger_bar_exhaustion.png" }, 0, mcl_hunger.EXHAUST_LVL, false, S("%s: %d/%d"))
 end
 
-minetest.register_on_newplayer(function(player)
-	local name = player:get_player_name()
-	mcl_hunger.set_hunger(player, 20, false)
-	mcl_hunger.set_saturation(player, mcl_hunger.SATURATION_INIT, false)
-	mcl_hunger.set_exhaustion(player, 0, false)
-end)
-
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
+	mcl_hunger.init_player(player)
 	init_hud(player)
 	mcl_hunger.poison_damage[name] = 0
 	mcl_hunger.poison_hunger[name] = 0
@@ -134,9 +123,16 @@ end)
 
 -- PvP combat exhaustion
 minetest.register_on_punchplayer(function(victim, puncher, time_from_last_punch, tool_capabilities, dir, damage)
-	if victim:is_player() and puncher:is_player() then
-		mcl_hunger.exhaust(victim:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+	if puncher:is_player() then
 		mcl_hunger.exhaust(puncher:get_player_name(), mcl_hunger.EXHAUST_ATTACK)
+	end
+end)
+
+-- Exhaust on taking damage
+minetest.register_on_player_hpchange(function(player, hp_change)
+	if hp_change < 0 then
+		local name = player:get_player_name()
+		mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_DAMAGE)
 	end
 end)
 
@@ -165,7 +161,11 @@ minetest.register_globalstep(function(dtime)
 					mcl_hunger.update_exhaustion_hud(player, mcl_hunger.get_exhaustion(player))
 				elseif h == 0 then
 				-- Damage hungry player down to 1 HP
+				-- TODO: Allow starvation at higher difficulty levels
 					if hp-1 > 0 then
+						if mod_death_messages then
+							mcl_death_messages.player_damage(player, S("@1 starved to death.", name))
+						end
 						player:set_hp(hp-1)
 					end
 				end
@@ -187,6 +187,7 @@ end)
 else
 
 minetest.register_on_joinplayer(function(player)
+	mcl_hunger.init_player(player)
 	mcl_hunger.last_eat[player:get_player_name()] = -1
 end)
 

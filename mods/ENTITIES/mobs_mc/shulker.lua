@@ -3,11 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
-
---dofile(minetest.get_modpath("mobs").."/api.lua")
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### SHULKER
@@ -48,12 +44,8 @@ mobs:register_mob("mobs_mc:shulker", {
 		run_start = 0,		run_end = 45,
         punch_start = 80,  punch_end = 100,
 	},
-	blood_amount = 0,
 	view_range = 16,
 	fear_height = 4,
-	water_damage = 1,
-	lava_damage = 4,
-	light_damage = 0,
 })
 
 -- bullet arrow (weapon)
@@ -70,8 +62,8 @@ mobs:register_arrow("mobs_mc:shulkerbullet", {
 		}, nil)
 	end,
 
-	hit_mob = function(self, player)
-		player:punch(self.object, 1.0, {
+	hit_mob = function(self, mob)
+		mob:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 4},
 		}, nil)
@@ -82,7 +74,7 @@ mobs:register_arrow("mobs_mc:shulkerbullet", {
 })
 
 
-mobs:register_egg("mobs_mc:shulker", S("Shulker"), "mobs_mc_spawn_icon_shulker.png", 0)
+mobs:register_egg("mobs_mc:shulker", S("Schulker"), "mobs_mc_spawn_icon_shulker.png", 0)
 
 mobs:spawn_specific("mobs_mc:shulker", mobs_mc.spawn.end_city, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 5000, 2, mobs_mc.spawn_height.end_min, mobs_mc.spawn_height.end_max)
 

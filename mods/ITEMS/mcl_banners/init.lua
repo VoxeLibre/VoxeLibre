@@ -1,3 +1,6 @@
+local S = minetest.get_translator("mcl_banners")
+local N = function(s) return s end
+
 local node_sounds
 if minetest.get_modpath("mcl_sounds") then
 	node_sounds = mcl_sounds.node_sound_wood_defaults()
@@ -14,22 +17,22 @@ mcl_banners = {}
 mcl_banners.colors = {
 	-- Format:
 	-- [ID] = { banner description, wool, unified dyes color group, overlay color, dye, color name for emblazonings }
-	["unicolor_white"] =      {"white",      "White Banner",      "mcl_wool:white", "#FFFFFF", "mcl_dye:white", "White" },
-	["unicolor_darkgrey"] =   {"grey",       "Grey Banner",       "mcl_wool:grey", "#303030", "mcl_dye:dark_grey", "Grey" },
-	["unicolor_grey"] =       {"silver",     "Light Grey Banner", "mcl_wool:silver", "#5B5B5B", "mcl_dye:grey", "Light Grey" },
-	["unicolor_black"] =      {"black",      "Black Banner",      "mcl_wool:black", "#000000", "mcl_dye:black", "Black" },
-	["unicolor_red"] =        {"red",        "Red Banner",        "mcl_wool:red", "#BC0000", "mcl_dye:red", "Red" },
-	["unicolor_yellow"] =     {"yellow",     "Yellow Banner",     "mcl_wool:yellow", "#E6CD00", "mcl_dye:yellow", "Yellow" },
-	["unicolor_dark_green"] = {"green",      "Green Banner",      "mcl_wool:green", "#006000", "mcl_dye:dark_green", "Green" },
-	["unicolor_cyan"] =       {"cyan",       "Cyan Banner",       "mcl_wool:cyan", "#00ACAC", "mcl_dye:cyan", "Cyan" },
-	["unicolor_blue"] =       {"blue",       "Blue Banner",       "mcl_wool:blue", "#0000AC", "mcl_dye:blue", "Blue" },
-	["unicolor_red_violet"] = {"magenta",    "Magenta Banner",    "mcl_wool:magenta", "#AC007C", "mcl_dye:magenta", "Magenta"},
-	["unicolor_orange"] =     {"orange",     "Orange Banner",     "mcl_wool:orange", "#E67300", "mcl_dye:orange", "Orange" },
-	["unicolor_violet"] =     {"purple",     "Purple Banner",     "mcl_wool:purple", "#6400AC", "mcl_dye:violet", "Violet" },
-	["unicolor_brown"] =      {"brown",      "Brown Banner",      "mcl_wool:brown", "#603000", "mcl_dye:brown", "Brown" },
-	["unicolor_pink"] =       {"pink",       "Pink Banner",       "mcl_wool:pink", "#DE557C", "mcl_dye:pink", "Pink" },
-	["unicolor_lime"] =       {"lime",       "Lime Banner",       "mcl_wool:lime", "#30AC00", "mcl_dye:green", "Lime" },
-	["unicolor_light_blue"] = {"light_blue", "Light Blue Banner", "mcl_wool:light_blue", "#4040CF", "mcl_dye:lightblue", "Light Blue" },
+	["unicolor_white"] =      {"white",      S("White Banner"),      "mcl_wool:white", "#FFFFFF", "mcl_dye:white", N("White") },
+	["unicolor_darkgrey"] =   {"grey",       S("Grey Banner"),       "mcl_wool:grey", "#303030", "mcl_dye:dark_grey", N("Grey") },
+	["unicolor_grey"] =       {"silver",     S("Light Grey Banner"), "mcl_wool:silver", "#5B5B5B", "mcl_dye:grey", N("Light Grey") },
+	["unicolor_black"] =      {"black",      S("Black Banner"),      "mcl_wool:black", "#000000", "mcl_dye:black", N("Black") },
+	["unicolor_red"] =        {"red",        S("Red Banner"),        "mcl_wool:red", "#BC0000", "mcl_dye:red", N("Red") },
+	["unicolor_yellow"] =     {"yellow",     S("Yellow Banner"),     "mcl_wool:yellow", "#E6CD00", "mcl_dye:yellow", N("Yellow") },
+	["unicolor_dark_green"] = {"green",      S("Green Banner"),      "mcl_wool:green", "#006000", "mcl_dye:dark_green", N("Green") },
+	["unicolor_cyan"] =       {"cyan",       S("Cyan Banner"),       "mcl_wool:cyan", "#00ACAC", "mcl_dye:cyan", N("Cyan") },
+	["unicolor_blue"] =       {"blue",       S("Blue Banner"),       "mcl_wool:blue", "#0000AC", "mcl_dye:blue", N("Blue") },
+	["unicolor_red_violet"] = {"magenta",    S("Magenta Banner"),    "mcl_wool:magenta", "#AC007C", "mcl_dye:magenta", N("Magenta")},
+	["unicolor_orange"] =     {"orange",     S("Orange Banner"),     "mcl_wool:orange", "#E67300", "mcl_dye:orange", N("Orange") },
+	["unicolor_violet"] =     {"purple",     S("Purple Banner"),     "mcl_wool:purple", "#6400AC", "mcl_dye:violet", N("Violet") },
+	["unicolor_brown"] =      {"brown",      S("Brown Banner"),      "mcl_wool:brown", "#603000", "mcl_dye:brown", N("Brown") },
+	["unicolor_pink"] =       {"pink",       S("Pink Banner"),       "mcl_wool:pink", "#DE557C", "mcl_dye:pink", N("Pink") },
+	["unicolor_lime"] =       {"lime",       S("Lime Banner"),       "mcl_wool:lime", "#30AC00", "mcl_dye:green", N("Lime") },
+	["unicolor_light_blue"] = {"light_blue", S("Light Blue Banner"), "mcl_wool:light_blue", "#4040CF", "mcl_dye:lightblue", N("Light Blue") },
 }
 
 local colors_reverse = {}
@@ -47,6 +50,25 @@ local layer_ratio = 255
 local standing_banner_entity_offset = { x=0, y=-0.499, z=0 }
 local hanging_banner_entity_offset = { x=0, y=-1.7, z=0 }
 
+local on_dig_banner = function(pos, node, digger)
+	-- Check protection
+	local name = digger:get_player_name()
+	if minetest.is_protected(pos, name) then
+		minetest.record_protection_violation(pos, name)
+		return
+	end
+	-- Drop item
+	local meta = minetest.get_meta(pos)
+	local item = meta:get_inventory():get_stack("banner", 1)
+	if not item:is_empty() then
+		minetest.handle_node_drops(pos, {item:to_string()}, digger)
+	else
+		minetest.handle_node_drops(pos, {"mcl_bannes:banner_item_white"}, digger)
+	end
+	-- Remove node
+	minetest.remove_node(pos)
+end
+
 local on_destruct_banner = function(pos, hanging)
 	local offset, nodename
 	if hanging then
@@ -56,7 +78,7 @@ local on_destruct_banner = function(pos, hanging)
 		offset = standing_banner_entity_offset
 		nodename = "mcl_banners:standing_banner"
 	end
-	-- Find this node's banner entity and make it drop as an item
+	-- Find this node's banner entity and remove it
 	local checkpos = vector.add(pos, offset)
 	local objects = minetest.get_objects_inside_radius(checkpos, 0.5)
 	for _, v in ipairs(objects) do
@@ -64,14 +86,6 @@ local on_destruct_banner = function(pos, hanging)
 		if ent and ent.name == nodename then
 			v:remove()
 		end
-	end
-	-- Drop item
-	local meta = minetest.get_meta(pos)
-	local item = meta:get_inventory():get_stack("banner", 1)
-	if not item:is_empty() then
-		minetest.add_item(pos, item)
-	else
-		minetest.add_item(pos, "mcl_banners:banner_item_white")
 	end
 end
 
@@ -181,8 +195,9 @@ end
 minetest.register_node("mcl_banners:standing_banner", {
 	_doc_items_entry_name = "Banner",
 	_doc_items_image = "mcl_banners_item_base.png^mcl_banners_item_overlay.png",
-	_doc_items_longdesc = "Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting.",
-	_doc_items_usagehelp = "Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 6 layers on a banner that way. You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer.",
+	_doc_items_longdesc = S("Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting."),
+	_doc_items_usagehelp = S("Use crafting to draw a pattern on top of the banner. Emblazoned banners can be emblazoned again to combine various patterns. You can draw up to 12 layers on a banner that way. If the banner includes a gradient, only 3 layers are possible.").."\n"..
+S("You can copy the pattern of a banner by placing two banners of the same color in the crafting grid—one needs to be emblazoned, the other one must be clean. Finally, you can use a banner on a cauldron with water to wash off its top-most layer."),
 	walkable = false,
 	is_ground_content = false,
 	paramtype = "light",
@@ -202,11 +217,12 @@ minetest.register_node("mcl_banners:standing_banner", {
 	wield_image = "mcl_banners_item_base.png",
 
 	selection_box = {type = "fixed", fixed= {-0.3, -0.5, -0.3, 0.3, 0.5, 0.3} },
-	groups = {axey=1,handy=1, attached_node = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1, material_wood=1 },
+	groups = {axey=1,handy=1, attached_node = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1, material_wood=1, dig_by_piston=1 },
 	stack_max = 16,
 	sounds = node_sounds,
 	drop = "", -- Item drops are handled in entity code
 
+	on_dig = on_dig_banner,
 	on_destruct = on_destruct_standing_banner,
 	on_punch = function(pos, node)
 		respawn_banner_entity(pos, node)
@@ -238,6 +254,7 @@ minetest.register_node("mcl_banners:hanging_banner", {
 	sounds = node_sounds,
 	drop = "", -- Item drops are handled in entity code
 
+	on_dig = on_dig_banner,
 	on_destruct = on_destruct_hanging_banner,
 	on_punch = function(pos, node)
 		respawn_banner_entity(pos, node)
@@ -454,7 +471,7 @@ local entity_standing = {
 	mesh = "amc_banner.b3d",
 	visual_size = { x=2.499, y=2.499 },
 	textures = make_banner_texture(),
-	collisionbox = { 0, 0, 0, 0, 0, 0 },
+	pointable = false,
 
 	_base_color = nil, -- base color of banner
 	_layers = nil, -- table of layers painted over the base color.

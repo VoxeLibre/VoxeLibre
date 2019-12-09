@@ -1,16 +1,10 @@
--- Boilerplate to support localized strings if intllib mod is installed.
-local S, F
-if minetest.get_modpath("intllib") then
-	S = intllib.Getter()
-else
-	S = function(s,a,...)a={a,...}return s:gsub("@(%d+)",function(n)return a[tonumber(n)]end)end
-end
-F = function(f) return minetest.formspec_escape(S(f)) end
+local S = minetest.get_translator("doc")
+local F = function(f) return minetest.formspec_escape(S(f)) end
 
 -- Compability for 0.4.14 or earlier
 local colorize
-if core.colorize then
-	colorize = core.colorize
+if minetest.colorize then
+	colorize = minetest.colorize
 else
 	colorize = function(color, text) return text end
 end
@@ -56,9 +50,6 @@ local CATEGORYFIELDSIZE = {
 	WIDTH = math.ceil(doc.FORMSPEC.WIDTH / 4),
 	HEIGHT = math.floor(doc.FORMSPEC.HEIGHT-1),
 }
-
--- Maximum characters per line in the text widget
-local TEXT_LINELENGTH = 80
 
 doc.data = {}
 doc.data.categories = {}
@@ -462,66 +453,9 @@ end
 -- Template function templates, to be used for build_formspec in doc.add_category
 doc.entry_builders = {}
 
--- Inserts line breaks into a single paragraph and collapses all whitespace (including newlines)
--- into spaces
-local linebreaker_single = function(text, linelength)
-	if linelength == nil then
-		linelength = TEXT_LINELENGTH
-	end
-	local remain = linelength
-	local res = {}
-	local line = {}
-	local split = function(s)
-		local res = {}
-		for w in string.gmatch(s, "%S+") do
-			res[#res+1] = w
-		end
-		return res
-	end
-
-	for _, word in ipairs(split(text)) do
-		if string.len(word) + 1 > remain then
-			table.insert(res, table.concat(line, " "))
-			line = { word }
-			remain = linelength - string.len(word)
-		else
-			table.insert(line, word)
-			remain = remain - (string.len(word) + 1)
-		end
-	end
-
-	table.insert(res, table.concat(line, " "))
-	return table.concat(res, "\n")
-end
-
--- Inserts automatic line breaks into an entire text and preserves existing newlines
-local linebreaker = function(text, linelength)
-	local out = ""
-	for s in string.gmatch(text, "([^\n]*)") do
-		local l = linebreaker_single(s, linelength)
-		out = out .. l
-		if(string.len(l) == 0) then
-			out = out .. "\n"
-		end
-	end
-	-- Remove last newline
-	if string.len(out) >= 1 then
-		out = string.sub(out, 1, string.len(out) - 1)
-	end
-	return out
-end
-
--- Inserts text suitable for a textlist (including automatic word-wrap)
-local text_for_textlist = function(text, linelength)
-	text = linebreaker(text, linelength)
-	text = minetest.formspec_escape(text)
-	text = string.gsub(text, "\n", ",")
-	return text
-end
-
 -- Scrollable freeform text
 doc.entry_builders.text = function(data)
-	local formstring = doc.widgets.text(data, doc.FORMSPEC.ENTRY_START_X, doc.FORMSPEC.ENTRY_START_Y, doc.FORMSPEC.ENTRY_WIDTH - 0.2, doc.FORMSPEC.ENTRY_HEIGHT)
+	local formstring = doc.widgets.text(data, doc.FORMSPEC.ENTRY_START_X, doc.FORMSPEC.ENTRY_START_Y, doc.FORMSPEC.ENTRY_WIDTH - 0.4, doc.FORMSPEC.ENTRY_HEIGHT)
 	return formstring
 end
 
@@ -539,7 +473,7 @@ doc.entry_builders.text_and_gallery = function(data, playername)
 	formstring = formstring .. doc.widgets.text(data.text,
 		doc.FORMSPEC.ENTRY_START_X,
 		doc.FORMSPEC.ENTRY_START_Y,
-		doc.FORMSPEC.ENTRY_WIDTH - 0.2,
+		doc.FORMSPEC.ENTRY_WIDTH - 0.4,
 		doc.FORMSPEC.ENTRY_HEIGHT - stolen_height)
 
 	return formstring
@@ -547,12 +481,13 @@ end
 
 doc.widgets = {}
 
-local text_id = 1
 -- Scrollable freeform text
 doc.widgets.text = function(data, x, y, width, height)
 	if x == nil then
 		x = doc.FORMSPEC.ENTRY_START_X
 	end
+	-- Offset to table[], which was used for this in a previous version
+	local xfix = x + 0.35
 	if y == nil then
 		y = doc.FORMSPEC.ENTRY_START_Y
 	end
@@ -562,18 +497,13 @@ doc.widgets.text = function(data, x, y, width, height)
 	if height == nil then
 		height = doc.FORMSPEC.ENTRY_HEIGHT
 	end
-	local baselength = TEXT_LINELENGTH
-	local widget_basewidth = doc.FORMSPEC.WIDTH
-	local linelength = math.max(20, math.floor(baselength * (width / widget_basewidth)))
+	-- Weird offset for textarea[]
+	local heightfix = height + 1
 
-	local widget_id = "doc_widget_text"..text_id
-	text_id = text_id + 1
-	-- TODO: Wait for Minetest to provide a native widget for scrollable read-only text with automatic line breaks.
-	-- Currently, all of this had to be hacked into this script manually by using/abusing the table widget
-	local formstring = "tablecolumns[text]"..
-	"tableoptions[background=#000000FF;highlight=#000000FF;border=false]"..
-	"table["..tostring(x)..","..tostring(y)..";"..tostring(width)..","..tostring(height)..";"..widget_id..";"..text_for_textlist(data, linelength).."]"
-	return formstring, widget_id
+	-- Also add background box
+	local formstring = "box["..tostring(x-0.175)..","..tostring(y)..";"..tostring(width)..","..tostring(height)..";#000000]" ..
+			"textarea["..tostring(xfix)..","..tostring(y)..";"..tostring(width)..","..tostring(heightfix)..";;;"..minetest.formspec_escape(data).."]"
+	return formstring
 end
 
 -- Image gallery
@@ -731,12 +661,12 @@ function doc.formspec_core(tab)
 	minetest.formspec_escape(S("Category list")) .. "," ..
 	minetest.formspec_escape(S("Entry list")) .. "," ..
 	minetest.formspec_escape(S("Entry")) .. ";"
-	..tab..";true;true]" ..
-	"bgcolor[#343434FF]"
+	..tab..";false;false]"
+	-- Let the Game decide on the style, such as background, etc.
 end
 
 function doc.formspec_main(playername)
-	local formstring = "label[0,0;"..minetest.formspec_escape(DOC_INTRO) .. "\n"
+	local formstring = "textarea[0.35,0;"..doc.FORMSPEC.WIDTH..",1;;;"..minetest.formspec_escape(DOC_INTRO) .. "\n"
 	local notify_checkbox_x, notify_checkbox_y
 	if doc.get_category_count() >= 1 then
 		formstring = formstring .. F("Please select a category you wish to learn more about:").."]"
@@ -806,7 +736,8 @@ function doc.formspec_error_no_categories()
 	formstring = formstring ..
 	minetest.formspec_escape(
 		colorize(COLOR_ERROR, S("Error: No help available.")) .. "\n\n" ..
-S("No categories have been registered, but they are required to provide help.\nThe Documentation System [doc] does not come with help contents on its own, it needs additional mods to add help content. Please make sure such mods are enabled on for this world, and try again.")) .. "\n\n" ..
+S("No categories have been registered, but they are required to provide help.").."\n"..
+S("The Documentation System [doc] does not come with help contents on its own, it needs additional mods to add help content. Please make sure such mods are enabled on for this world, and try again.")) .. "\n\n" ..
 S("Recommended mods: doc_basics, doc_items, doc_identifier, doc_encyclopedia.")
 	formstring = formstring .. ";]button_exit[3,5;2,1;okay;"..F("OK").."]"
 	return formstring
@@ -941,7 +872,7 @@ function doc.formspec_category(id, playername)
 		if total >= 1 then
 			local revealed = doc.get_revealed_count(playername, id)
 			if revealed == 0 then
-				formstring = formstring .. "label[0,0.5;"..F("Currently all entries in this category are hidden from you.\nUnlock new entries by progressing in the game.").."]"
+				formstring = formstring .. "label[0,0.5;"..minetest.formspec_escape(S("Currently all entries in this category are hidden from you.").."\n"..S("Unlock new entries by progressing in the game.")).."]"
 				formstring = formstring .. "button[0,1.5;3,1;doc_button_goto_main;"..F("Go to category list").."]"
 			else
 				formstring = formstring .. "label[0,0.5;"..F("This category has the following entries:").."]"

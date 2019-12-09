@@ -1,10 +1,4 @@
--- Boilerplate to support localized strings if intllib mod is installed.
-local S
-if minetest.get_modpath("intllib") then
-	S = intllib.Getter()
-else
-	S = function(s) return s end
-end
+local S = minetest.get_translator("doc_identifier")
 
 local doc_identifier = {}
 
@@ -28,7 +22,7 @@ doc_identifier.identify = function(itemstack, user, pointed_thing)
 		elseif itype == "error_node" then
 			message = S("No help entry for this block could be found.")
 		elseif itype == "error_unknown" then
-			vsize = vsize + 3
+			vsize = vsize + 2
 			local mod
 			if param ~= nil then
 				local colon = string.find(param, ":")
@@ -36,20 +30,23 @@ doc_identifier.identify = function(itemstack, user, pointed_thing)
 					mod = string.sub(param,1,colon-1)
 				end
 			end
-			message = S("Error: This node, item or object is undefined. This is always an error.\nThis can happen for the following reasons:\n• The mod which is required for it is not enabled\n• The author of the game or a mod has made a mistake")
+			message = S("Error: This node, item or object is undefined. This is always an error.").."\n"..
+				S("This can happen for the following reasons:").."\n"..
+				S("• The mod which is required for it is not enabled").."\n"..
+				S("• The author of the game or a mod has made a mistake")
 			message = message .. "\n\n"
 
 			if mod ~= nil then
 				if minetest.get_modpath(mod) ~= nil then
-					message = message .. string.format(S("It appears to originate from the mod “%s”, which is enabled."), mod)
+					message = message .. S("It appears to originate from the mod “@1”, which is enabled.", mod)
 					message = message .. "\n"
 				else
-					message = message .. string.format(S("It appears to originate from the mod “%s”, which is not enabled!"), mod)
+					message = message .. S("It appears to originate from the mod “@1”, which is not enabled!", mod)
 					message = message .. "\n"
 				end
 			end
 			if param ~= nil then
-				message = message .. string.format(S("Its identifier is “%s”."), param)
+				message = message .. S("Its identifier is “@1”.", param)
 			end
 		elseif itype == "error_ignore" then
 			message = S("This block cannot be identified because the world has not materialized at this point yet. Try again in a few seconds.")
@@ -61,9 +58,9 @@ doc_identifier.identify = function(itemstack, user, pointed_thing)
 		minetest.show_formspec(
 			username,
 			"doc_identifier:error_missing_item_info",
-			"size[12,"..vsize..";]" ..
-			"label[0,0.2;"..minetest.formspec_escape(message).."]" ..
-			"button_exit[4.5,"..(-0.5+vsize)..";3,1;okay;"..minetest.formspec_escape(S("OK")).."]"
+			"size[10,"..vsize..";]" ..
+			"textarea[0.5,0.2;10,"..(vsize-0.2)..";;;"..minetest.formspec_escape(message).."]" ..
+			"button_exit[3.75,"..(-0.5+vsize)..";3,1;okay;"..minetest.formspec_escape(S("OK")).."]"
 		)
 	end
 	if pointed_thing.type == "node" then
@@ -165,11 +162,10 @@ end
 minetest.register_tool("doc_identifier:identifier_solid", {
 	description = S("Lookup Tool"),
 	_doc_items_longdesc = S("This useful little helper can be used to quickly learn more about about one's closer environment. It identifies and analyzes blocks, items and other things and it shows extensive information about the thing on which it is used."),
-	_doc_items_usagehelp = S("Punch any block, item or other thing about you wish to learn more about. This will open up the appropriate help entry. The tool comes in two modes which are changed by a rightclick. In liquid mode (blue) this tool points to liquids as well while in solid mode (red) this is not the case. Liquid mode is required if you want to identify a liquid."),
+	_doc_items_usagehelp = S("Punch any block, item or other thing about you wish to learn more about. This will open up the appropriate help entry. The tool comes in two modes which are changed by using. In liquid mode, this tool points to liquids as well while in solid mode this is not the case."),
 	_doc_items_hidden = false,
 	tool_capabilities = {},
 	range = 10,
-	groups = { disable_repair = 1 },
 	wield_image = "doc_identifier_identifier.png",
 	inventory_image = "doc_identifier_identifier.png",
 	liquids_pointable = false,
@@ -182,7 +178,7 @@ minetest.register_tool("doc_identifier:identifier_liquid", {
 	_doc_items_create_entry = false,
 	tool_capabilities = {},
 	range = 10,
-	groups = { not_in_creative_inventory = 1, not_in_craft_guide = 1, disable_repair=1 },
+	groups = { not_in_creative_inventory = 1, not_in_craft_guide = 1, disable_repair = 1 },
 	wield_image = "doc_identifier_identifier_liquid.png",
 	inventory_image = "doc_identifier_identifier_liquid.png",
 	liquids_pointable = true,
@@ -191,7 +187,6 @@ minetest.register_tool("doc_identifier:identifier_liquid", {
 	on_secondary_use = doc_identifier.solid_mode,
 })
 
---- TODO: These crafting recipes are temporary. Add a different way to obtain the lookup tool
 minetest.register_craft({
 	output = "doc_identifier:identifier_solid",
 	recipe = { {"group:stick", "group:stick" },

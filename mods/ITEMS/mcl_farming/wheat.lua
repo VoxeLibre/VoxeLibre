@@ -1,8 +1,10 @@
+local S = minetest.get_translator("mcl_farming")
+
 minetest.register_craftitem("mcl_farming:wheat_seeds", {
 	-- Original Minecraft name: “Seeds”
-	description = "Wheat Seeds",
-	_doc_items_longdesc = "Grows into a wheat plant. Chickens like wheat seeds.",
-	_doc_items_usagehelp = "Place the wheat seeds on farmland (which can be created with a hoe) to plant a wheat plant. They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it wheat seeds.",
+	description = S("Wheat Seeds"),
+	_doc_items_longdesc = S("Grows into a wheat plant. Chickens like wheat seeds."),
+	_doc_items_usagehelp = S("Place the wheat seeds on farmland (which can be created with a hoe) to plant a wheat plant. They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it wheat seeds."),
 	groups = { craftitem=1 },
 	inventory_image = "mcl_farming_wheat_seeds.png",
 	on_place = function(itemstack, placer, pointed_thing)
@@ -24,14 +26,14 @@ for i=1,7 do
 	local create, name, longdesc
 	if i == 1 then
 		create = true
-		name = "Premature Wheat Plant"
-		longdesc = "Premature wheat plants grow on farmland under sunlight in 8 stages. On hydrated farmland, they grow faster. They can be harvested at any time but will only yield a profit when mature."
+		name = S("Premature Wheat Plant")
+		longdesc = S("Premature wheat plants grow on farmland under sunlight in 8 stages. On hydrated farmland, they grow faster. They can be harvested at any time but will only yield a profit when mature.")
 	else
 		create = false
 	end
 
 	minetest.register_node("mcl_farming:wheat_"..i, {
-		description = string.format("Premature Wheat Plant (Stage %d)", i),
+		description = S("Premature Wheat Plant (Stage @1)", i),
 		_doc_items_create_entry = create,
 		_doc_items_entry_name = name,
 		_doc_items_longdesc = longdesc,
@@ -58,8 +60,8 @@ for i=1,7 do
 end
 
 minetest.register_node("mcl_farming:wheat", {
-	description = "Mature Wheat Plant",
-	_doc_items_longdesc = "Mature wheat plants are ready to be harvested for wheat and wheat seeds. They won't grow any further.",
+	description = S("Mature Wheat Plant"),
+	_doc_items_longdesc = S("Mature wheat plants are ready to be harvested for wheat and wheat seeds. They won't grow any further."),
 	sunlight_propagates = true,
 	paramtype = "light",
 	paramtype2 = "meshoptions",
@@ -86,9 +88,9 @@ minetest.register_node("mcl_farming:wheat", {
 mcl_farming:add_plant("plant_wheat", "mcl_farming:wheat", {"mcl_farming:wheat_1", "mcl_farming:wheat_2", "mcl_farming:wheat_3", "mcl_farming:wheat_4", "mcl_farming:wheat_5", "mcl_farming:wheat_6", "mcl_farming:wheat_7"}, 25, 20)
 
 minetest.register_craftitem("mcl_farming:wheat_item", {
-	description = "Wheat",
-	_doc_items_longdesc = "Wheat is used in crafting. Some animals like wheat.",
-	_doc_items_usagehelp = "Rightclick an animal to try to feed it wheat.",
+	description = S("Wheat"),
+	_doc_items_longdesc = S("Wheat is used in crafting. Some animals like wheat."),
+	_doc_items_usagehelp = S("Use the “Place” key on an animal to try to feed it wheat."),
 	inventory_image = "farming_wheat_harvested.png",
 	groups = { craftitem = 1 },
 })
@@ -108,8 +110,8 @@ minetest.register_craft({
 })
 
 minetest.register_craftitem("mcl_farming:cookie", {
-	description = "Cookie",
-	_doc_items_longdesc = "This is a food item which can be eaten.",
+	description = S("Cookie"),
+	_doc_items_longdesc = S("This is a food item which can be eaten."),
 	inventory_image = "farming_cookie.png",
 	groups = {food=2, eatable=2},
 	_mcl_saturation = 0.4,
@@ -119,8 +121,8 @@ minetest.register_craftitem("mcl_farming:cookie", {
 
 
 minetest.register_craftitem("mcl_farming:bread", {
-	description = "Bread",
-	_doc_items_longdesc = "This is a food item which can be eaten.",
+	description = S("Bread"),
+	_doc_items_longdesc = S("This is a food item which can be eaten."),
 	inventory_image = "farming_bread.png",
 	groups = {food=2, eatable=5},
 	_mcl_saturation = 6.0,
@@ -129,8 +131,8 @@ minetest.register_craftitem("mcl_farming:bread", {
 })
 
 minetest.register_node("mcl_farming:hay_block", {
-	description = "Hay Bale",
-	_doc_items_longdesc = "Hay bales are decorative blocks made from wheat.",
+	description = S("Hay Bale"),
+	_doc_items_longdesc = S("Hay bales are decorative blocks made from wheat."),
 	tiles = {"mcl_farming_hayblock_top.png", "mcl_farming_hayblock_top.png", "mcl_farming_hayblock_side.png"},
 	is_ground_content = false,
 	stack_max = 64,

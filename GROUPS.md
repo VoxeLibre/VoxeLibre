@@ -66,8 +66,10 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 ### Groups (mostly) used for crafting recipes
 
 * `sand=1`: Sand (any color)
-* `sandstone=1`: (Yellow) sandstone and related nodes (chiseled and the like) (only full blocks)
-* `redsandstone=1`: Red sandstone and related nodes (chiseled and the like) (only full blocks)
+* `sandstone=1`: Sandstone (any color) and related nodes (chiseled and the like) (only full blocks)
+* `normal_sandstone=1`: “Normal” (yellow) sandstone and related nodes (chiseled and the like) (only full blocks)
+* `red_sandstone=1`: Red sandstone and related nodes (chiseled and the like) (only full blocks)
+* `hardened_clay=1`: Terracotta (any color)
 * `quartz_block=1`: Quartz Block and variants (chiseled, pillar, etc.) (only full blocks)
 * `stonebrick=1`: Stone Bricks and related nodes (only full blocks)
 * `shulker_box=1`: Block is a shulker box
@@ -165,6 +167,13 @@ These groups are used mostly for informational purposes
 
 * `plant=1`: Plant or part of a plant
 * `double_plant`: Part of a double-sized plant. 1 = lower part, 2 = upper part
+
+* `pickaxe=1`: Pickaxe
+* `shovel=1`: Shovel
+* `axe=1`: Axe
+* `sword=1`: Sword
+* `hoe=1`: Hoe (farming tool)
+* `shears=1`: Shears
 
 * `weapon=1`: Item is primarily (!) a weapon
 * `tool=1`: Item is primarily (!) a tool

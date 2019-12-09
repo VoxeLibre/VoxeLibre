@@ -1,8 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 local default_walk_chance = 50
 
@@ -47,9 +45,6 @@ local wolf = {
 	reach = 2,
 	attack_type = "dogfight",
 	fear_height = 4,
-	water_damage = 0,
-	lava_damage = 4,
-	light_damage = 0,
 	follow = mobs_mc.follow.wolf,
 	on_rightclick = function(self, clicker)
 		-- Try to tame wolf (intentionally does NOT use mobs:feed_tame)

@@ -64,8 +64,6 @@ local c_dirt_with_grass = minetest.get_content_id("mcl_core:dirt_with_grass")
 local c_dirt_with_grass_snow = minetest.get_content_id("mcl_core:dirt_with_grass_snow")
 local c_sand = minetest.get_content_id("mcl_core:sand")
 local c_sandstone = minetest.get_content_id("mcl_core:sandstone")
-local c_redsand = minetest.get_content_id("mcl_core:redsand")
-local c_redsandstone = minetest.get_content_id("mcl_core:redsandstone")
 local c_void = minetest.get_content_id("mcl_core:void")
 local c_lava = minetest.get_content_id("mcl_core:lava_source")
 local c_water = minetest.get_content_id("mcl_core:water_source")
@@ -784,14 +782,10 @@ local function register_mgv6_decorations()
 
 	-- Pumpkin
 	minetest.register_decoration({
-		deco_type = "schematic",
-		schematic = {
-			size = { x=1, y=2, z=1 },
-			data = {
-				{ name = "air", prob = 0 },
-				{ name = "mcl_farming:pumpkin_face" },
-			},
-		},
+		deco_type = "simple",
+		decoration = "mcl_farming:pumpkin_face",
+		param2 = 0,
+		param2_max = 3,
 		place_on = {"group:grass_block_no_snow"},
 		sidelen = 16,
 		noise_params = {
@@ -804,7 +798,27 @@ local function register_mgv6_decorations()
 		},
 		y_min = 1,
 		y_max = mcl_vars.overworld_max,
-		rotation = "random",
+	})
+
+	-- Melon
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:grass_block_no_snow"},
+		sidelen = 16,
+		noise_params = {
+			offset = 0.002,
+			scale = 0.006,
+			spread = {x = 250, y = 250, z = 250},
+			seed = 333,
+			octaves = 3,
+			persist = 0.6
+		},
+		-- Small trick to make sure melon spawn in jungles
+		spawn_by = { "mcl_core:jungletree", "mcl_flowers:fern" },
+		num_spawn_by = 1,
+		y_min = 1,
+		y_max = 40,
+		decoration = "mcl_farming:melon",
 	})
 
 	-- Tall grass
@@ -934,6 +948,17 @@ local function register_mgv6_decorations()
 	register_mgv6_flower("oxeye_daisy", 3490)
 	register_mgv6_flower("poppy", 9439)
 
+	-- Put top snow on snowy grass blocks. The v6 mapgen does not generate the top snow on its own.
+	minetest.register_decoration({
+		deco_type = "simple",
+		place_on = {"group:grass_block_snow"},
+		sidelen = 16,
+		fill_ratio = 11.0, -- complete coverage
+		y_min = 1,
+		y_max = mcl_vars.mg_overworld_max,
+		decoration = "mcl_core:snow",
+	})
+
 end
 
 -- Apply mapgen-specific mapgen code
@@ -1022,7 +1047,7 @@ local function generate_clay(minp, maxp, seed, voxelmanip_data, voxelmanip_area,
 			local surfacenode = voxelmanip_data[surface_pos]
 
 			local genrnd = math.random(1, 20)
-			if genrnd == 1 and perlin_clay:get3d({x=cx,y=y,z=cz}) > 0 and waternode == c_water and
+			if genrnd == 1 and perlin_clay:get_3d({x=cx,y=y,z=cz}) > 0 and waternode == c_water and
 					(surfacenode == c_dirt or minetest.get_item_group(minetest.get_name_from_content_id(surfacenode), "sand") == 1) then
 				local diamondsize = math.random(1, 3)
 				for x1 = -diamondsize, diamondsize do
@@ -1062,7 +1087,7 @@ local function generate_structures(minp, maxp, seed, biomemap)
 			local x1 = minp.x + math.floor((divx+1)*divlen)
 			local z1 = minp.z + math.floor((divz+1)*divlen)
 			-- Determine amount from perlin noise
-			local amount = math.floor(perlin_structures:get2d({x=x0, y=z0}) * 9)
+			local amount = math.floor(perlin_structures:get_2d({x=x0, y=z0}) * 9)
 			-- Find random positions based on this random
 			local pr = PseudoRandom(seed+1)
 			for i=0, amount do
@@ -1145,7 +1170,8 @@ local function generate_structures(minp, maxp, seed, biomemap)
 
 						-- Witch hut
 						if ground_y <= 0 and nn == "mcl_core:dirt" then
-							local prob = minecraft_chunk_probability(48, minp, maxp)
+						local prob = minecraft_chunk_probability(48, minp, maxp)
+						if math.random(1, prob) == 1 then
 
 							local swampland = minetest.get_biome_id("Swampland")
 							local swampland_shore = minetest.get_biome_id("Swampland_shore")
@@ -1154,19 +1180,19 @@ local function generate_structures(minp, maxp, seed, biomemap)
 
 							local here_be_witches = false
 							if mg_name == "v6" then
-								-- In ye good ol' landes of v6, witches will settle at any
-								-- shores of dirt.
-								here_be_witches = true
+								-- v6: In Normal biome
+								if biomeinfo.get_v6_biome(p) == "Normal" then
+									here_be_witches = true
+								end
 							else
-								-- The townsfolk told me that witches live in the swamplands!
+								-- Other mapgens: In swampland biome
 								local bi = xz_to_biomemap_index(p.x, p.z, minp, maxp)
 								if biomemap[bi] == swampland or biomemap[bi] == swampland_shore then
 									here_be_witches = true
 								end
 							end
 
-							-- We still need a bit of luck!
-							if here_be_witches and math.random(1, prob) == 1 then
+							if here_be_witches then
 								local r = tostring(math.random(0, 3) * 90) -- "0", "90", "180" or 270"
 								local p1 = {x=p.x-1, y=WITCH_HUT_HEIGHT+2, z=p.z-1}
 								local size
@@ -1243,6 +1269,7 @@ local function generate_structures(minp, maxp, seed, biomemap)
 								end
 							end
 						end
+						end
 
 						-- Ice spikes in v6
 						-- In other mapgens, ice spikes are generated as decorations.
@@ -1251,7 +1278,7 @@ local function generate_structures(minp, maxp, seed, biomemap)
 							if spike < 3 then
 								-- Check surface
 								local floor = {x=p.x+4, y=p.y-1, z=p.z+4}
-								local surface = minetest.find_nodes_in_area({x=p.x+1,y=p.y-1,z=p.z+1}, floor, {"mcl_core:snowblock", "mcl_core:dirt_with_grass_snow"})
+								local surface = minetest.find_nodes_in_area({x=p.x+1,y=p.y-1,z=p.z+1}, floor, {"mcl_core:snowblock"})
 								-- Check for collision with spruce
 								local spruce_collisions = minetest.find_nodes_in_area({x=p.x+1,y=p.y+2,z=p.z+1}, {x=p.x+4, y=p.y+6, z=p.z+4}, {"mcl_core:sprucetree", "mcl_core:spruceleaves"})
 
@@ -1367,7 +1394,7 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 	-- Pass 1: Generate cocoas at jungle trees
 	for n = 1, #jungletree do
 
-		pos = jungletree[n]
+		pos = table.copy(jungletree[n])
 		treepos = table.copy(pos)
 
 		if minetest.find_node_near(pos, 1, {"mcl_core:jungleleaves"}) then
@@ -1445,12 +1472,12 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 			local pos = vector.add(pos, dirs[d])
 			local p_pos = area:index(pos.x, pos.y, pos.z)
 
-			local vine_threshold = math.max(0.33333, perlin_vines_density:get2d(pos))
+			local vine_threshold = math.max(0.33333, perlin_vines_density:get_2d(pos))
 			if dense_vegetation then
 				vine_threshold = vine_threshold * (2/3)
 			end
 
-			if perlin_vines:get2d(pos) > -1.0 and perlin_vines_fine:get3d(pos) > vine_threshold and data[p_pos] == c_air then
+			if perlin_vines:get_2d(pos) > -1.0 and perlin_vines_fine:get_3d(pos) > vine_threshold and data[p_pos] == c_air then
 
 				local rdir = {}
 				rdir.x = -dirs[d].x
@@ -1462,13 +1489,13 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 				local grow_upwards = false
 				-- Only possible on the wood, not on the leaves
 				if i == 1 then
-					grow_upwards = perlin_vines_upwards:get3d(pos) > 0.8
+					grow_upwards = perlin_vines_upwards:get_3d(pos) > 0.8
 				end
 				if grow_upwards then
 					-- Grow vines up 1-4 nodes, even through jungleleaves.
 					-- This may give climbing access all the way to the top of the tree :-)
 					-- But this will be fairly rare.
-					local length = math.ceil(math.abs(perlin_vines_length:get3d(pos)) * 4)
+					local length = math.ceil(math.abs(perlin_vines_length:get_3d(pos)) * 4)
 					for l=0, length-1 do
 						local t_pos = area:index(treepos.x, treepos.y, treepos.z)
 
@@ -1486,7 +1513,7 @@ local function generate_tree_decorations(minp, maxp, seed, data, param2_data, ar
 					end
 				else
 					-- Grow vines down, length between 1 and maxvinelength
-					local length = math.ceil(math.abs(perlin_vines_length:get3d(pos)) * maxvinelength)
+					local length = math.ceil(math.abs(perlin_vines_length:get_3d(pos)) * maxvinelength)
 					for l=0, length-1 do
 						if data[p_pos] == c_air then
 							data[p_pos] = c_vine
@@ -1733,20 +1760,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 		-- A snowy grass block must be below a top snow or snow block at all times.
 		if emin.y <= mcl_vars.mg_overworld_max and emax.y >= mcl_vars.mg_overworld_min then
 			-- v6 mapgen:
-			-- Put top snow on snowy grass blocks. The mapgen does not generate the top snow on its own.
 			if mg_name == "v6" then
-				-- FIXME: Cavegen and mudflow might screw this up and cause floating top snow to appear
-				local snowdirt = minetest.find_nodes_in_area_under_air(minp, maxp, "mcl_core:dirt_with_grass_snow")
-				for n = 1, #snowdirt do
-					-- CHECKME: What happens at chunk borders?
-					local p_pos = area:index(snowdirt[n].x, snowdirt[n].y + 1, snowdirt[n].z)
-					if p_pos then
-						data[p_pos] = c_top_snow
-					end
-				end
-				if #snowdirt > 0 then
-					lvm_used = true
-				end
 
 				--[[ Remove broken double plants caused by v6 weirdness.
 				v6 might break the bottom part of double plants because of how it works.
@@ -1779,9 +1793,8 @@ minetest.register_on_generated(function(minp, maxp, seed)
 
 			-- Non-v6 mapgens:
 			-- Clear snowy grass blocks without snow above to ensure consistency.
-			-- Solidify floating sand to sandstone (both colors).
 			else
-				local nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:dirt_with_grass_snow", "mcl_core:sand", "mcl_core:redsand"})
+				local nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:dirt_with_grass_snow"})
 				for n=1, #nodes do
 					local p_pos = area:index(nodes[n].x, nodes[n].y, nodes[n].z)
 					local p_pos_above = area:index(nodes[n].x, nodes[n].y+1, nodes[n].z)
@@ -1789,15 +1802,6 @@ minetest.register_on_generated(function(minp, maxp, seed)
 					if data[p_pos] == c_dirt_with_grass_snow and p_pos_above and data[p_pos_above] ~= c_top_snow and data[p_pos_above] ~= c_snow_block then
 						data[p_pos] = c_dirt_with_grass
 						lvm_used = true
-					elseif p_pos_below and data[p_pos_below] == c_air or data[p_pos_below] == c_water then
-						if data[p_pos] == c_sand then
-							data[p_pos] = c_sandstone
-							lvm_used = true
-						elseif data[p_pos] == c_redsand then
-							-- Note: This is the only place in which red sandstone is generatd
-							data[p_pos] = c_redsandstone
-							lvm_used = true
-						end
 					end
 				end
 			end
@@ -1841,15 +1845,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 				local y = nodes[n].y
 				local p_pos = area:index(nodes[n].x, y, nodes[n].z)
 
-				if data[p_pos] == c_water then
-					if y <= mcl_vars.mg_end_min + 104 and y >= mcl_vars.mg_end_min + 40 then
-						data[p_pos] = c_end_stone
-						lvm_used = true
-					else
-						data[p_pos] = c_air
-						lvm_used = true
-					end
-				elseif data[p_pos] == c_stone or data[p_pos] == c_dirt or data[p_pos] == c_sand then
+				if data[p_pos] == c_water or data[p_pos] == c_stone or data[p_pos] == c_dirt or data[p_pos] == c_sand then
 					data[p_pos] = c_air
 					lvm_used = true
 				end

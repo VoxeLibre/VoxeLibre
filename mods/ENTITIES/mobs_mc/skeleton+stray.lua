@@ -3,12 +3,8 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
-
---dofile(minetest.get_modpath("mobs").."/api.lua")
-
+local S = minetest.get_translator("mobs_mc")
+local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
 
 --###################
 --################### SKELETON
@@ -20,6 +16,7 @@ local skeleton = {
 	type = "monster",
 	hp_min = 20,
 	hp_max = 20,
+	breath_max = -1,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.98, 0.3},
 	pathfinding = 1,
 	group_attack = true,
@@ -35,7 +32,6 @@ local skeleton = {
 		random = "mobs_mc_skeleton_random",
 		death = "mobs_mc_skeleton_death",
 		damage = "mobs_mc_skeleton_hurt",
-		shoot_attack = "mcl_bows_bow_shoot",
 		distance = 16,
 	},
 	walk_velocity = 1.2,
@@ -78,18 +74,22 @@ local skeleton = {
 		die_speed = 15,
 		die_loop = false,
 	},
-	water_damage = 1,
-	lava_damage = 4,
 	sunlight_damage = 1,
 	view_range = 16,
 	fear_height = 4,
 	attack_type = "dogshoot",
-	arrow = "mobs_mc:arrow_entity",
-	shoot_interval = 2.5,
-	shoot_offset = 1,
+	arrow = "mcl_bows:arrow_entity",
+	shoot_arrow = function(self, pos, dir)
+		if mod_bows then
+			-- 2-4 damage per arrow
+			local dmg = math.max(4, math.random(2, 8))
+			mcl_bows.shoot_arrow("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
+		end
+	end,
+	shoot_interval = 2,
+	shoot_offset = 1.5,
 	dogshoot_switch = 1,
 	dogshoot_count_max =1.8,
-	blood_amount = 0,
 }
 
 mobs:register_mob("mobs_mc:skeleton", skeleton)

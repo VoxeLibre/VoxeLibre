@@ -11,25 +11,11 @@
 # per-player Creative Mode.
 creative_mode (Creative mode) bool false
 
-# Which edition of Minecraft to imitate. This currently only affects two map
-# generation aspects.
-# This setting might be removed in a later version.
-# Available options:
-#
-# pc_edition: PC Edition (later known as “Java Edition”).
-#     There are no fallen tree trunks.
-#     Jungle bushes have oak leaves.
-#
-# pocket_edition: Pocket Edition
-#     There are simple fallen tree trunks with mushrooms.
-#     Jungle bushes have jungle leaves.
-mcl_imitation_mode (Imitated Minecraft edition) enum pc_edition pc_edition,pocket_edition
-
-# Fire spreads and flammable nodes will be ignited by nearby fire.
-# Spreading fire may cause severe destruction.
-# Spreading fire blocks will disappear when fire is disabled, but
-# eternal fire is unaffected.
-enable_fire (Fire) bool true
+# Fire spreads and flammable blocks might be destroyed by nearby fire.
+# Destructive fire may cause severe destruction.
+# Fire blocks will be non-destructive and stops spreading when this
+# setting is disabled, but they still deal damage to creatures.
+enable_fire (Destructive and spreading fire) bool true
 
 # If enabled, the weather will change naturally over time.
 mcl_doWeatherCycle (Change weather) bool true
@@ -54,6 +40,11 @@ mcl_keepInventory (Keep inventory on death) bool false
 # If enabled, chat messages are shown to everyone when a player dies.
 mcl_showDeathMessages (Show death messages) bool true
 
+# If enabled, the recipe book will progressively be filled with new recipes that can be crafted from all items you ever have had in your inventory.
+# Recommended for new players and for a spoiler-free gameplay experience.
+# If disabled, all recipes will be shown.
+mcl_craftguide_progressive_mode	(Learn crafting recipes progressively) bool true
+
 [Mobs]
 # If enabled, mobs will spawn naturally. This does not affect
 # affect mob spawners.
@@ -73,33 +64,28 @@ only_peaceful_mobs (Spawn only peaceful mobs) bool false
 # mob spawners.
 mobs_spawn_protected (Mobs spawn in protected areas) bool false
 
+# Mobs difficulty. This is a number that will affect the initial and maximum
+# health and the amount of damage that mobs deal. Health and damage will
+# be multiplied with this number.
+mob_difficulty (Mob difficulty factor) float 1.0 0.0
+
 # If enabled, mobs might drop items when they die.
 mobs_drop_items (Mobs drop items) bool true
 
 # If enabled, mobs can take, place, change and destroy blocks around them.
 mobs_griefing (Mobs change blocks) bool true
 
-# If enable, mobs won't bleed or emit other damage particles when
-# they got hurt.
-mobs_disable_blood (Disable mob blood) bool false
+# If enabled, mobs won't damage particles when they got hurt.
+mobs_disable_blood (Disable mob damage particles) bool false
 
 [Audio]
 # Enable flame sound.
 flame_sound (Flame sound) bool true
 
 [Experimental]
-# If enabled, the recipe book will only show recipes which require one
-# item which you have already discovered.
-# If disabled, the recipe book shows all crafting recipes.
-# This setting is EXPERIMENTAL and may be changed in later versions.
-# Feedback is appreciated.
-craftguide_progressive_mode (Enable recipe book progressive mode) bool false
-
-# Mobs difficulty. This is a number that will affect the initial and maximum
-# health and the amount of damage that mobs deal. Health and damage will
-# be multiplied with this number.
-# This feature is not finished yet!
-mob_difficulty (Mob difficulty factor) float 1.0 0.0
+# Whether to generate fallen logs in some biomes.
+# They might not always look pretty and have strange overhangs.
+mcl_generate_fallen_logs (Generate fallen logs) bool false
 
 # If enabled, the “flat” map generator generates a Classic Superflat world:
 # Completely flat, 1 layer of grass blocks on top of 2 layers of dirt on

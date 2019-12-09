@@ -1,3 +1,4 @@
+local S = minetest.get_translator("mcl_boats")
 --
 -- Helper functions
 --
@@ -33,6 +34,8 @@ local boat_visual_size = {x = 3, y = 3}
 local driver_visual_size = { x = 1/boat_visual_size.x, y = 1/boat_visual_size.y }
 local paddling_speed = 22
 local boat_y_offset = 0.35
+local boat_y_offset_ground = boat_y_offset + 0.6
+local boat_side_offset = 1.001
 
 --
 -- Boat entity
@@ -69,7 +72,7 @@ function boat.on_rightclick(self, clicker)
 		mcl_player.player_set_animation(clicker, "stand" , 30)
 		local pos = clicker:get_pos()
 		pos = {x = pos.x, y = pos.y + 0.2, z = pos.z}
-		clicker:setpos(pos)
+		clicker:set_pos(pos)
 	elseif not self._driver then
 		local attach = clicker:get_attach()
 		if attach and attach:get_luaentity() then
@@ -82,7 +85,7 @@ function boat.on_rightclick(self, clicker)
 		end
 		self._driver = clicker
 		clicker:set_attach(self.object, "",
-			{x = 0, y = 3.75, z = -1}, {x = 0, y = 0, z = 0})
+			{x = 0, y = 0.42, z = -1}, {x = 0, y = 0, z = 0})
 		clicker:set_properties({ visual_size = driver_visual_size })
 		mcl_player.player_attached[name] = true
 		minetest.after(0.2, function(name)
@@ -91,7 +94,7 @@ function boat.on_rightclick(self, clicker)
 				mcl_player.player_set_animation(player, "sit" , 30)
 			end
 		end, name)
-		clicker:set_look_horizontal(self.object:getyaw())
+		clicker:set_look_horizontal(self.object:get_yaw())
 	end
 end
 
@@ -143,13 +146,29 @@ function boat.on_punch(self, puncher)
 end
 
 function boat.on_step(self, dtime)
-	self._v = get_v(self.object:getvelocity()) * get_sign(self._v)
+	self._v = get_v(self.object:get_velocity()) * get_sign(self._v)
+	local on_water = true
+	local in_water = false
+	local v_factor = 1
+	local v_slowdown = 0.02
+	local p = self.object:get_pos()
+	if (not is_water({x=p.x, y=p.y-boat_y_offset, z=p.z})) then
+		on_water = false
+		v_factor = 0.5
+		v_slowdown = 0.04
+	elseif (is_water({x=p.x, y=p.y-boat_y_offset+1, z=p.z})) then
+		on_water = false
+		in_water = true
+		v_factor = 0.75
+		v_slowdown = 0.05
+	end
+
 	if self._driver then
 		local ctrl = self._driver:get_player_control()
-		local yaw = self.object:getyaw()
+		local yaw = self.object:get_yaw()
 		if ctrl.up then
 			-- Forwards
-			self._v = self._v + 0.1
+			self._v = self._v + 0.1 * v_factor
 
 			-- Paddling animation
 			if self._animation ~= 1 then
@@ -158,7 +177,7 @@ function boat.on_step(self, dtime)
 			end
 		elseif ctrl.down then
 			-- Backwards
-			self._v = self._v - 0.1
+			self._v = self._v - 0.1 * v_factor
 
 			-- Paddling animation, reversed
 			if self._animation ~= -1 then
@@ -174,15 +193,15 @@ function boat.on_step(self, dtime)
 		end
 		if ctrl.left then
 			if self._v < 0 then
-				self.object:setyaw(yaw - (1 + dtime) * 0.03)
+				self.object:set_yaw(yaw - (1 + dtime) * 0.03 * v_factor)
 			else
-				self.object:setyaw(yaw + (1 + dtime) * 0.03)
+				self.object:set_yaw(yaw + (1 + dtime) * 0.03 * v_factor)
 			end
 		elseif ctrl.right then
 			if self._v < 0 then
-				self.object:setyaw(yaw + (1 + dtime) * 0.03)
+				self.object:set_yaw(yaw + (1 + dtime) * 0.03 * v_factor)
 			else
-				self.object:setyaw(yaw - (1 + dtime) * 0.03)
+				self.object:set_yaw(yaw - (1 + dtime) * 0.03 * v_factor)
 			end
 		end
 	else
@@ -192,73 +211,65 @@ function boat.on_step(self, dtime)
 			self._animation = 0
 		end
 	end
-	local velo = self.object:getvelocity()
-	if self._v == 0 and velo.x == 0 and velo.y == 0 and velo.z == 0 then
-		self.object:setpos(self.object:get_pos())
-		return
-	end
 	local s = get_sign(self._v)
-	self._v = self._v - 0.02 * s
-	if s ~= get_sign(self._v) then
-		self.object:setvelocity({x = 0, y = 0, z = 0})
-		self._v = 0
-		return
+	if not on_water and not in_water and math.abs(self._v) > 1.0 then
+		v_slowdown = math.min(math.abs(self._v) - 1.0, v_slowdown * 5)
+	elseif in_water and math.abs(self._v) > 1.5 then
+		v_slowdown = math.min(math.abs(self._v) - 1.5, v_slowdown * 5)
 	end
-	if math.abs(self._v) > 5 then
-		self._v = 5 * get_sign(self._v)
+	self._v = self._v - v_slowdown * s
+	if s ~= get_sign(self._v) then
+		self._v = 0
 	end
 
-	local p = self.object:get_pos()
 	p.y = p.y - boat_y_offset
 	local new_velo
 	local new_acce = {x = 0, y = 0, z = 0}
 	if not is_water(p) then
+		-- Not on water or inside water: Free fall
 		local nodedef = minetest.registered_nodes[minetest.get_node(p).name]
-		if (not nodedef) or nodedef.walkable then
-			self._v = 0
-			new_acce = {x = 0, y = 1, z = 0}
-		else
-			new_acce = {x = 0, y = -9.8, z = 0}
-		end
-		new_velo = get_velocity(self._v, self.object:getyaw(),
-			self.object:getvelocity().y)
-		self.object:setpos(self.object:get_pos())
+		new_acce = {x = 0, y = -9.8, z = 0}
+		new_velo = get_velocity(self._v, self.object:get_yaw(),
+			self.object:get_velocity().y)
 	else
 		p.y = p.y + 1
 		if is_water(p) then
-			local y = self.object:getvelocity().y
-			if y >= 5 then
-				y = 5
-			elseif y < 0 then
-				new_acce = {x = 0, y = 20, z = 0}
-			else
-				new_acce = {x = 0, y = 5, z = 0}
+			-- Inside water: Slowly sink
+			local y = self.object:get_velocity().y
+			y = y - 0.01
+			if y < -0.2 then
+				y = -0.2
 			end
-			new_velo = get_velocity(self._v, self.object:getyaw(), y)
-			self.object:setpos(self.object:get_pos())
-		else
 			new_acce = {x = 0, y = 0, z = 0}
-			if math.abs(self.object:getvelocity().y) < 1 then
-				local pos = self.object:get_pos()
-				pos.y = math.floor(pos.y) + boat_y_offset
-				self.object:setpos(pos)
-				new_velo = get_velocity(self._v, self.object:getyaw(), 0)
+			new_velo = get_velocity(self._v, self.object:get_yaw(), y)
+		else
+			-- On top of water
+			new_acce = {x = 0, y = 0, z = 0}
+			if math.abs(self.object:get_velocity().y) < 0 then
+				new_velo = get_velocity(self._v, self.object:get_yaw(), 0)
 			else
-				new_velo = get_velocity(self._v, self.object:getyaw(),
-					self.object:getvelocity().y)
-				self.object:setpos(self.object:get_pos())
+				new_velo = get_velocity(self._v, self.object:get_yaw(),
+					self.object:get_velocity().y)
 			end
 		end
 	end
-	self.object:setvelocity(new_velo)
-	self.object:setacceleration(new_acce)
+
+	-- Terminal velocity: 8 m/s per axis of travel
+	for _,axis in pairs({"z","y","x"}) do
+		if math.abs(new_velo[axis]) > 8 then
+			new_velo[axis] = 8 * get_sign(new_velo[axis])
+		end
+	end
+
+	self.object:set_velocity(new_velo)
+	self.object:set_acceleration(new_acce)
 end
 
 -- Register one entity for all boat types
 minetest.register_entity("mcl_boats:boat", boat)
 
 local boat_ids = { "boat", "boat_spruce", "boat_birch", "boat_jungle", "boat_acacia", "boat_dark_oak" }
-local names = { "Oak Boat", "Spruce Boat", "Birch Boat", "Jungle Boat", "Acacia Boat", "Dark Oak Boat" }
+local names = { S("Oak Boat"), S("Spruce Boat"), S("Birch Boat"), S("Jungle Boat"), S("Acacia Boat"), S("Dark Oak Boat") }
 local craftstuffs = {}
 if minetest.get_modpath("mcl_core") then
 	craftstuffs = { "mcl_core:wood", "mcl_core:sprucewood", "mcl_core:birchwood", "mcl_core:junglewood", "mcl_core:acaciawood", "mcl_core:darkwood" }
@@ -273,9 +284,9 @@ for b=1, #boat_ids do
 	-- Only create one help entry for all boats
 	if b == 1 then
 		help = true
-		longdesc = "Boats are used to travel on the surface of water."
-		usagehelp = "Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Rightclick the boat again to leave it, punch the boat to make it drop as an item."
-		helpname = "Boat"
+		longdesc = S("Boats are used to travel on the surface of water.")
+		usagehelp = S("Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Rightclick the boat again to leave it, punch the boat to make it drop as an item.")
+		helpname = S("Boat")
 	end
 
 	minetest.register_craftitem(itemstring, {
@@ -290,7 +301,7 @@ for b=1, #boat_ids do
 		stack_max = 1,
 		on_place = function(itemstack, placer, pointed_thing)
 			if pointed_thing.type ~= "node" then
-				return
+				return itemstack
 			end
 
 			-- Call on_rightclick if the pointed node defines it
@@ -301,11 +312,17 @@ for b=1, #boat_ids do
 				end
 			end
 
-			if not is_water(pointed_thing.under) then
-				return
+			local pos = table.copy(pointed_thing.under)
+			local dir = vector.subtract(pointed_thing.above, pointed_thing.under)
+
+			if math.abs(dir.x) > 0.9 or math.abs(dir.z) > 0.9 then
+				pos = vector.add(pos, vector.multiply(dir, boat_side_offset))
+			elseif is_water(pos) then
+				pos = vector.add(pos, vector.multiply(dir, boat_y_offset))
+			else
+				pos = vector.add(pos, vector.multiply(dir, boat_y_offset_ground))
 			end
-			pointed_thing.under.y = pointed_thing.under.y + boat_y_offset
-			local boat = minetest.add_entity(pointed_thing.under, "mcl_boats:boat")
+			local boat = minetest.add_entity(pos, "mcl_boats:boat")
 			boat:get_luaentity()._itemstring = itemstring
 			boat:set_properties({textures = { "mcl_boats_texture_"..images[b].."_boat.png" }})
 			boat:set_yaw(placer:get_look_horizontal())

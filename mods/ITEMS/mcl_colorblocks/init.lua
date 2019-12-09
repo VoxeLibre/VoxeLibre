@@ -1,34 +1,37 @@
 local init = os.clock()
+local S = minetest.get_translator("mcl_colorblocks")
+local doc_mod = minetest.get_modpath("doc")
 
 local block = {}
 
 block.dyes = {
-	{"white",      "White",      "white"},
-	{"grey",       "Grey",       "dark_grey"},
-	{"silver",     "Light Grey", "grey"},
-	{"black",      "Black",      "black"},
-	{"red",        "Red",        "red"},
-	{"yellow",     "Yellow",     "yellow"},
-	{"green",      "Green",      "dark_green"},
-	{"cyan",       "Cyan",       "cyan"},
-	{"blue",       "Blue",       "blue"},
-	{"magenta",    "Magenta",    "magenta"},
-	{"orange",     "Orange",     "orange"},
-	{"purple",     "Purple",     "violet"},
-	{"brown",      "Brown",      "brown"},
-	{"pink",       "Pink",       "pink"},
-	{"lime",       "Lime",       "green"},
-	{"light_blue", "Light Blue", "lightblue"},
+	{"white",      S("White Terracotta"),      S("White Glazed Terracotta"),	S("White Concrete Powder"),		S("White Concrete"),		"white"},
+	{"grey",       S("Grey Terracotta"),       S("Grey Glazed Terracotta"),		S("Grey Concrete Powder"),		S("Grey Concrete"),		"dark_grey"},
+	{"silver",     S("Light Grey Terracotta"), S("Light Grey Glazed Terracotta"),	S("Light Grey Concrete Powder"),	S("Light Grey Concrete"),	"grey"},
+	{"black",      S("Black Terracotta"),      S("Black Glazed Terracotta"),	S("Black Concrete Powder"),		S("Black Concrete"),		"black"},
+	{"red",        S("Red Terracotta"),        S("Red Glazed Terracotta"),		S("Red Concrete Powder"),		S("Red Concrete"),		"red"},
+	{"yellow",     S("Yellow Terracotta"),     S("Yellow Glazed Terracotta"),	S("Yellow Concrete Powder"),		S("Yellow Concrete"),		"yellow"},
+	{"green",      S("Green Terracotta"),      S("Green Glazed Terracotta"),	S("Green Concrete Powder"),		S("Green Concrete"),		"dark_green"},
+	{"cyan",       S("Cyan Terracotta"),       S("Cyan Glazed Terracotta"),		S("Cyan Concrete Powder"),		S("Cyan Concrete"),		"cyan"},
+	{"blue",       S("Blue Terracotta"),       S("Blue Glazed Terracotta"),		S("Blue Concrete Powder"),		S("Blue Concrete"),		"blue"},
+	{"magenta",    S("Magenta Terracotta"),    S("Magenta Glazed Terracotta"),	S("Magenta Concrete Powder"),		S("Magenta Concrete"),		"magenta"},
+	{"orange",     S("Orange Terracotta"),     S("Orange Glazed Terracotta"),	S("Orange Concrete Powder"),		S("Orange Concrete"),		"orange"},
+	{"purple",     S("Purple Terracotta"),     S("Purple Glazed Terracotta"),	S("Purple Concrete Powder"),		S("Purple Concrete"),		"violet"},
+	{"brown",      S("Brown Terracotta"),      S("Brown Glazed Terracotta"),	S("Brown Concrete Powder"),		S("Brown Concrete"),		"brown"},
+	{"pink",       S("Pink Terracotta"),       S("Pink Glazed Terracotta"),		S("Pink Concrete Powder"),		S("Pink Concrete"),		"pink"},
+	{"lime",       S("Lime Terracotta"),       S("Lime Glazed Terracotta"),		S("Lime Concrete Powder"),		S("Lime Concrete"),		"green"},
+	{"light_blue", S("Light Blue Terracotta"), S("Light Blue Glazed Terracotta"),	S("Light Blue Concrete Powder"),	S("Light Blue Concrete"),	"lightblue"},
 }
+local canonical_color = "yellow"
 
-local hc_desc = "Terracotta is a basic building material. It comes in many different colors."
-local gt_desc = "Glazed terracotta is a decorational block with a complex pattern. It can be rotated by placing it in different directions."
-local cp_desc = "Concrete powder is used for creating concrete, but it can also be used as decoration itself. It comes in different colors. Concrete powder turns into concrete of the same color when it comes in contact with water."
-local conc_desc = "Concrete is a decorational block which comes in many different colors. It is notable for having a very strong and clean color.",
+local hc_desc = S("Terracotta is a basic building material. It comes in many different colors.")
+local gt_desc = S("Glazed terracotta is a decorative block with a complex pattern. It can be rotated by placing it in different directions.")
+local cp_desc = S("Concrete powder is used for creating concrete, but it can also be used as decoration itself. It comes in different colors. Concrete powder turns into concrete of the same color when it comes in contact with water.")
+local c_desc = S("Concrete is a decorative block which comes in many different colors. It is notable for having a very strong and clean color.")
 
 minetest.register_node("mcl_colorblocks:hardened_clay", {
-	description = "Terracotta",
-	_doc_items_longdesc = "Terracotta is a basic building material.",
+	description = S("Terracotta"),
+	_doc_items_longdesc = S("Terracotta is a basic building material which comes in many different colors. This particular block is uncolored."),
 	tiles = {"hardened_clay.png"},
 	stack_max = 64,
 	groups = {pickaxey=1, hardened_clay=1,building_block=1, material_stone=1},
@@ -51,12 +54,33 @@ end
 
 for _, row in ipairs(block.dyes) do
 	local name = row[1]
-	local desc = row[2]
-	local craft_color_group = row[3]
+	local is_canonical = name == canonical_color
+	local sdesc_hc = row[2]
+	local sdesc_gt = row[3]
+	local sdesc_cp = row[4]
+	local sdesc_c = row[5]
+	local ldesc_hc, ldesc_gt, ldesc_cp, ldesc_c
+	local create_entry
+	local ename_hc, ename_gt, ename_cp, ename_c
+	if is_canonical then
+		ldesc_hc = hc_desc
+		ldesc_gt = gt_desc
+		ldesc_cp = cp_desc
+		ldesc_c = c_desc
+		ename_hc = S("Colored Terracotta")
+		ename_gt = S("Glazed Terracotta")
+		ename_cp = S("Concrete Powder")
+		ename_c = S("Concrete")
+	else
+		create_entry = false
+	end
+	local craft_color_group = row[6]
 	-- Node Definition
 	minetest.register_node("mcl_colorblocks:hardened_clay_"..name, {
-		description = desc.." Terracotta",
-		_doc_items_longdesc = hc_desc,
+		description = sdesc_hc,
+		_doc_items_longdesc = ldesc_hc,
+		_doc_items_create_entry = create_entry,
+		_doc_items_entry_name = ename_hc,
 		tiles = {"hardened_clay_stained_"..name..".png"},
 		groups = {pickaxey=1, hardened_clay=1,building_block=1, material_stone=1},
 		stack_max = 64,
@@ -66,8 +90,10 @@ for _, row in ipairs(block.dyes) do
 	})
 
 	minetest.register_node("mcl_colorblocks:concrete_powder_"..name, {
-		description = desc.." Concrete Powder",
-		_doc_items_longdesc = cp_desc,
+		description = sdesc_cp,
+		_doc_items_longdesc = ldesc_cp,
+		_doc_items_create_entry = create_entry,
+		_doc_items_entry_name = ename_cp,
 		tiles = {"mcl_colorblocks_concrete_powder_"..name..".png"},
 		groups = {handy=1,shovely=1, concrete_powder=1,building_block=1,falling_node=1, material_sand=1},
 		stack_max = 64,
@@ -104,8 +130,10 @@ for _, row in ipairs(block.dyes) do
 	})
 
 	minetest.register_node("mcl_colorblocks:concrete_"..name, {
-		description = desc.." Concrete",
-		_doc_items_longdesc = conc_desc,
+		description = sdesc_c,
+		_doc_items_longdesc = ldesc_c,
+		_doc_items_create_entry = create_entry,
+		_doc_items_entry_name = ename_c,
 		tiles = {"mcl_colorblocks_concrete_"..name..".png"},
 		groups = {handy=1,pickaxey=1, concrete=1,building_block=1, material_stone=1},
 		stack_max = 64,
@@ -118,8 +146,10 @@ for _, row in ipairs(block.dyes) do
 	local tex = "mcl_colorblocks_glazed_terracotta_"..name..".png"
 	local texes = { tex, tex, tex.."^[transformR180", tex, tex.."^[transformR270", tex.."^[transformR90" }
 	minetest.register_node("mcl_colorblocks:glazed_terracotta_"..name, {
-		description = desc.." Glazed Terracotta",
-		_doc_items_longdesc = gt_desc,
+		description = sdesc_gt,
+		_doc_items_longdesc = ldesc_gt,
+		_doc_items_create_entry = create_entry,
+		_doc_items_entry_name = ename_gt,
 		tiles = texes,
 		groups = {handy=1,pickaxey=1, glazed_terracotta=1,building_block=1, material_stone=1},
 		paramtype2 = "facedir",
@@ -130,6 +160,13 @@ for _, row in ipairs(block.dyes) do
 		_mcl_hardness = 1.4,
 		on_rotate = on_rotate,
 	})
+
+	if not is_canonical and doc_mod then
+		doc.add_entry_alias("nodes", "mcl_colorblocks:hardened_clay_"..canonical_color, "nodes", "mcl_colorblocks:hardened_clay_"..name)
+		doc.add_entry_alias("nodes", "mcl_colorblocks:glazed_terracotta_"..canonical_color, "nodes", "mcl_colorblocks:glazed_terracotta_"..name)
+		doc.add_entry_alias("nodes", "mcl_colorblocks:concrete_"..canonical_color, "nodes", "mcl_colorblocks:concrete_"..name)
+		doc.add_entry_alias("nodes", "mcl_colorblocks:concrete_powder_"..canonical_color, "nodes", "mcl_colorblocks:concrete_powder_"..name)
+	end
 
 	-- Crafting recipes
 	if craft_color_group then
@@ -169,10 +206,14 @@ minetest.register_abm({
 	neighbors = {"group:water"},
 	action = function(pos, node)
 		local harden_to = minetest.registered_nodes[node.name]._mcl_colorblocks_harden_to
-		minetest.swap_node(pos, { name = harden_to, param = node.param, param2 = node.param2 })
+		-- It should be impossible for harden_to to be nil, but a Minetest bug might call
+		-- the ABM on the new concrete node, which isn't part of this ABM!
+		if harden_to then
+			node.name = harden_to
+			minetest.set_node(pos, node)
+		end
 	end,
 })
 
 local time_to_load= os.clock() - init
 print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
-

@@ -123,21 +123,25 @@ function mcl_doors:register_door(name, def)
 				return itemstack
 			end
 
+			-- get left coordinate for checking if another door is there
+			local pt_left = {x=pt.x, y=pt.y, z=pt.z}
 			local p2 = minetest.dir_to_facedir(placer:get_look_dir())
-			local pt3 = {x=pt.x, y=pt.y, z=pt.z}
+
 			if p2 == 0 then
-				pt3.x = pt3.x-1
+				pt_left.x = pt_left.x-1
 			elseif p2 == 1 then
-				pt3.z = pt3.z+1
+				pt_left.z = pt_left.z+1
 			elseif p2 == 2 then
-				pt3.x = pt3.x+1
+				pt_left.x = pt_left.x+1
 			elseif p2 == 3 then
-				pt3.z = pt3.z-1
+				pt_left.z = pt_left.z-1
 			end
+			
+			local left_node = minetest.get_node(pt_left)
+
 			-- Set door nodes
 			minetest.set_node(pt, {name=name.."_b_1", param2=p2})
 			minetest.set_node(pt2, {name=name.."_t_1", param2=p2})
-			-- TODO: Mirror door when 2 doors are placed next to each other, to create double doors
 
 			if def.sounds and def.sounds.place then
 				minetest.sound_play(def.sounds.place, {pos=pt})
@@ -150,12 +154,19 @@ function mcl_doors:register_door(name, def)
 				meta:set_string("doors_owner", "")
 			end
 
-			-- Save open state. 1 = open. 0 = closed
-			local meta = minetest.get_meta(pt)
-			meta:set_int("is_open", 0)
-			meta = minetest.get_meta(pt2)
-			meta:set_int("is_open", 0)
+			local meta1 = minetest.get_meta(pt)
+			local meta2 = minetest.get_meta(pt2)
+			-- save mirror state for the correct door
+			if left_node.name:sub(1, #name) == name then
+				meta1:set_int("is_mirrored", 1)
+				meta2:set_int("is_mirrored", 1)
+			end
 
+			-- Save open state. 1 = open. 0 = closed
+			meta1:set_int("is_open", 0)
+			meta2:set_int("is_open", 0)
+
+			
 			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:take_item()
 			end
@@ -170,24 +181,28 @@ function mcl_doors:register_door(name, def)
 	local tt = def.tiles_top
 	local tb = def.tiles_bottom
 
-	local function on_open_close(pos, dir, check_name, replace, replace_dir, params)
+	local function on_open_close(pos, dir, check_name, replace, replace_dir)
 		local meta1 = minetest.get_meta(pos)
 		pos.y = pos.y+dir
 		local meta2 = minetest.get_meta(pos)
-		if not minetest.get_node(pos).name == check_name then
+
+		-- if name of other door is not the same as check_name -> return
+		if not minetest.get_node(pos).name == check_name  then
 			return
 		end
+
+		-- swap directions if mirrored
+		local params = {3,0,1,2}
+		if meta1:get_int("is_open") == 0 and meta2:get_int("is_mirrored") == 0 or meta1:get_int("is_open") == 1 and meta2:get_int("is_mirrored") == 1 then
+			params = {1,2,3,0}
+		end
+
 		local p2 = minetest.get_node(pos).param2
 		local np2 = params[p2+1]
 
-		local metatable = minetest.get_meta(pos):to_table()
-		minetest.set_node(pos, {name=replace_dir, param2=np2})
-		minetest.get_meta(pos):from_table(metatable)
-
+		minetest.swap_node(pos, {name=replace_dir, param2=np2})
 		pos.y = pos.y-dir
-		metatable = minetest.get_meta(pos):to_table()
-		minetest.set_node(pos, {name=replace, param2=np2})
-		minetest.get_meta(pos):from_table(metatable)
+		minetest.swap_node(pos, {name=replace, param2=np2})
 
 		local door_switching_sound
 		if meta1:get_int("is_open") == 1 then
@@ -203,11 +218,11 @@ function mcl_doors:register_door(name, def)
 	end
 
 	local function on_mesecons_signal_open(pos, node)
-		on_open_close(pos, 1, name.."_t_1", name.."_b_2", name.."_t_2", {1,2,3,0})
+		on_open_close(pos, 1, name.."_t_1", name.."_b_2", name.."_t_2")
 	end
 	local function on_mesecons_signal_close(pos, node)
 		if not mesecon.is_powered({x=pos.x,y=pos.y+1,z=pos.z}) then
-			on_open_close(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1", {3,0,1,2})
+			on_open_close(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1")
 		end
 	end
 	local function on_mesecons_signal_open_top(pos, node)
@@ -233,7 +248,7 @@ function mcl_doors:register_door(name, def)
 	if not def.only_redstone_can_open then
 		on_rightclick = function(pos, node, clicker)
 			if check_player_priv(pos, clicker) then
-				on_open_close(pos, 1, name.."_t_1", name.."_b_2", name.."_t_2", {1,2,3,0})
+				on_open_close(pos, 1, name.."_t_1", name.."_b_2", name.."_t_2")
 			end
 		end
 	end
@@ -282,7 +297,7 @@ function mcl_doors:register_door(name, def)
 	else
 		on_rightclick = function(pos, node, clicker)
 			if check_player_priv(pos, clicker) then
-				on_open_close(pos, -1, name.."_b_1", name.."_t_2", name.."_b_2", {1,2,3,0})
+				on_open_close(pos, -1, name.."_b_1", name.."_t_2", name.."_b_2")
 			end
 		end
 	end
@@ -331,7 +346,7 @@ function mcl_doors:register_door(name, def)
 	else
 		on_rightclick = function(pos, node, clicker)
 			if check_player_priv(pos, clicker) then
-				on_open_close(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1", {3,0,1,2})
+				on_open_close(pos, 1, name.."_t_2", name.."_b_1", name.."_t_1")
 			end
 		end
 	end
@@ -380,7 +395,7 @@ function mcl_doors:register_door(name, def)
 	else
 		on_rightclick = function(pos, node, clicker)
 			if check_player_priv(pos, clicker) then
-				on_open_close(pos, -1, name.."_b_2", name.."_t_1", name.."_b_1", {3,0,1,2})
+				on_open_close(pos, -1, name.."_b_2", name.."_t_1", name.."_b_1")
 			end
 		end
 	end

@@ -1,5 +1,5 @@
 minetest.register_on_dieplayer(function(player)
-	local keep = minetest.settings:get_bool("mcl_keepInventory") or false
+	local keep = minetest.settings:get_bool("mcl_keepInventory", false)
 	if keep == false then
 		-- Drop inventory, crafting grid and armor
 		local inv = player:get_inventory()

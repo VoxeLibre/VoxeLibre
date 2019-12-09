@@ -1,7 +1,7 @@
 playerphysics = {}
 
 local function calculate_attribute_product(player, attribute)
-	local a = minetest.deserialize(player:get_attribute("playerphysics:physics"))
+	local a = minetest.deserialize(player:get_meta():get_string("playerphysics:physics"))
 	local product = 1
 	if a == nil or a[attribute] == nil then
 		return product
@@ -16,7 +16,8 @@ local function calculate_attribute_product(player, attribute)
 end
 
 function playerphysics.add_physics_factor(player, attribute, id, value)
-	local a = minetest.deserialize(player:get_attribute("playerphysics:physics"))
+	local meta = player:get_meta()
+	local a = minetest.deserialize(meta:get_string("playerphysics:physics"))
 	if a == nil then
 		a = { [attribute] = { [id] = value } }
 	elseif a[attribute] == nil then
@@ -24,20 +25,21 @@ function playerphysics.add_physics_factor(player, attribute, id, value)
 	else
 		a[attribute][id] = value
 	end
-	player:set_attribute("playerphysics:physics", minetest.serialize(a))
+	meta:set_string("playerphysics:physics", minetest.serialize(a))
 	local raw_value = calculate_attribute_product(player, attribute)
 	player:set_physics_override({[attribute] = raw_value})
 end
 
 function playerphysics.remove_physics_factor(player, attribute, id)
-	local a = minetest.deserialize(player:get_attribute("playerphysics:physics"))
+	local meta = player:get_meta()
+	local a = minetest.deserialize(meta:get_string("playerphysics:physics"))
 	if a == nil or a[attribute] == nil then
 		-- Nothing to remove
 		return
 	else
 		a[attribute][id] = nil
 	end
-	player:set_attribute("playerphysics:physics", minetest.serialize(a))
+	meta:set_string("playerphysics:physics", minetest.serialize(a))
 	local raw_value = calculate_attribute_product(player, attribute)
 	player:set_physics_override({[attribute] = raw_value})
 end

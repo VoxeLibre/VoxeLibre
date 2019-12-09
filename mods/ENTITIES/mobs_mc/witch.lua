@@ -3,11 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
-
---dofile(minetest.get_modpath("mobs").."/api.lua")
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### WITCH
@@ -67,9 +63,6 @@ mobs:register_mob("mobs_mc:witch", {
 		shoot_start = 50,
 		shoot_end = 82,
 	},
-	water_damage = 1,
-	lava_damage = 5,
-	light_damage = 0,
 	view_range = 16,
 	fear_height = 4,
 
@@ -91,8 +84,8 @@ mobs:register_arrow(":mobs:potion_arrow", {
 		}, nil)
 	end,
 
-	hit_mob = function(self, player)
-		player:punch(self.object, 1.0, {
+	hit_mob = function(self, mob)
+		mob:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 2},
 		}, nil)

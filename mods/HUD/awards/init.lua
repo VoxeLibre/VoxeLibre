@@ -14,18 +14,9 @@
 -- 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 --
 
-
-local S
-if minetest.get_modpath("intllib") then
-	S = intllib.Getter()
-else
-	S = function ( s ) return s end
-end
-
 dofile(minetest.get_modpath("awards").."/api.lua")
 dofile(minetest.get_modpath("awards").."/chat_commands.lua")
 dofile(minetest.get_modpath("awards").."/sfinv.lua")
 dofile(minetest.get_modpath("awards").."/unified_inventory.lua")
 dofile(minetest.get_modpath("awards").."/triggers.lua")
-awards.set_intllib(S)
 

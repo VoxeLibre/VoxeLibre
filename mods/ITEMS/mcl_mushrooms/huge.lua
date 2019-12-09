@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_mushrooms")
+
 local template = {
 	groups = {handy=1,axey=1, building_block = 1, material_wood = 1 },
 	sounds = mcl_sounds.node_sound_wood_defaults(),
@@ -42,7 +44,7 @@ local register_mushroom = function(color, species_id, template, d_cap, d_stem, d
 	-- Stem texture on all sides
 	local stem_full = table.copy(template)
 	stem_full.description = d_stem_all
-	stem_full._doc_items_longdesc = "This decorative block is like a huge mushroom stem, but with the stem texture on all sides."
+	stem_full._doc_items_longdesc = S("This decorative block is like a huge mushroom stem, but with the stem texture on all sides.")
 	stem_full.tiles = { "mcl_mushrooms_mushroom_block_skin_stem.png" }
 	stem_full.groups.huge_mushroom = species_id
 	stem_full.groups.huge_mushroom_stem = 2
@@ -67,7 +69,7 @@ local register_mushroom = function(color, species_id, template, d_cap, d_stem, d
 			-- All-faces cap. This block is exposed to the player
 			block.description = d_cap
 			block._doc_items_longdesc = longdesc_cap
-			block._doc_items_uagehelp = "By placing huge mushroom blocks of the same species next to each other, the sides that touch each other will turn into pores permanently."
+			block._doc_items_usagehelp = S("By placing huge mushroom blocks of the same species next to each other, the sides that touch each other will turn into pores permanently.")
 			block.tiles = { "mcl_mushrooms_mushroom_block_skin_"..color..".png" }
 
 			block.on_construct = function(pos)
@@ -155,14 +157,14 @@ local register_mushroom = function(color, species_id, template, d_cap, d_stem, d
 end
 
 
-local longdesc_red = "Huge red mushroom blocks are the cap parts of huge red mushrooms. It consists of a red skin and can have pores on each of its sides."
-local longdesc_red_stem = "The stem part of a huge red mushroom."
-register_mushroom("red", 1, red, "Huge Red Mushroom Block", "Huge Red Mushroom Stem", "Huge Red Mushroom All-Faces Stem", longdesc_red, longdesc_red_stem)
+local longdesc_red = S("Huge red mushroom blocks are the cap parts of huge red mushrooms. It consists of a red skin and can have pores on each of its sides.")
+local longdesc_red_stem = S("The stem part of a huge red mushroom.")
+register_mushroom("red", 1, red, S("Huge Red Mushroom Block"), S("Huge Red Mushroom Stem"), S("Huge Red Mushroom All-Faces Stem"), longdesc_red, longdesc_red_stem)
 
 
-local longdesc_brown = "Huge brown mushroom blocks are the cap parts of huge brown mushrooms. It consists of a brown skin and can have pores on each of its sides."
-local longdesc_brown_stem = "The stem part of a huge brown mushroom."
-register_mushroom("brown", 2, brown, "Huge Brown Mushroom Block", "Huge Brown Mushroom Stem", "Huge Brown Mushroom All-Faces Stem", longdesc_brown, longdesc_brown_stem)
+local longdesc_brown = S("Huge brown mushroom blocks are the cap parts of huge brown mushrooms. It consists of a brown skin and can have pores on each of its sides.")
+local longdesc_brown_stem = S("The stem part of a huge brown mushroom.")
+register_mushroom("brown", 2, brown, S("Huge Brown Mushroom Block"), S("Huge Brown Mushroom Stem"), S("Huge Brown Mushroom All-Faces Stem"), longdesc_brown, longdesc_brown_stem)
 
 minetest.register_craft({
 	type = "fuel",

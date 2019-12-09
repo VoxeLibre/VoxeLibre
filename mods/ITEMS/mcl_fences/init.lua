@@ -1,5 +1,7 @@
 local init = os.clock()
 
+local S = minetest.get_translator("mcl_fences")
+
 -- Node box
 local p = {-2/16, -0.5, -2/16, 2/16, 0.5, 2/16}
 local x1 = {-0.5, 4/16, -1/16, -2/16, 7/16, 1/16}   --oben(quer) -x
@@ -13,10 +15,10 @@ local z22 = {-1/16, -2/16, 2/16, 1/16, 1/16, 0.5} --unten(quer) z
 
 -- Collision box
 local cp = {-2/16, -0.5, -2/16, 2/16, 1.01, 2/16}
-local cx1 = {-0.5, -2/16, -2/16, -2/16, 1.01, 2/16} --unten(quer) -x
-local cx2 = {2/16, -2/16, -2/16, 0.5, 1.01, 2/16} --unten(quer) x
-local cz1 = {-2/16, -2/16, -0.5, 2/16, 1.01, -2/16} --unten(quer) -z
-local cz2 = {-2/16, -2/16, 2/16, 2/16, 1.01, 0.5} --unten(quer) z
+local cx1 = {-0.5, -0.5, -2/16, -2/16, 1.01, 2/16} --unten(quer) -x
+local cx2 = {2/16, -0.5, -2/16, 0.5, 1.01, 2/16} --unten(quer) x
+local cz1 = {-2/16, -0.5, -0.5, 2/16, 1.01, -2/16} --unten(quer) -z
+local cz2 = {-2/16, -0.5, 2/16, 2/16, 1.01, 0.5} --unten(quer) z
 
 mcl_fences = {}
 
@@ -36,7 +38,7 @@ mcl_fences.register_fence = function(id, fence_name, texture, groups, hardness, 
 	table.insert(connects_to, fence_id)
 	minetest.register_node(fence_id, {
 		description = fence_name,
-		_doc_items_longdesc = "Fences are structures which block the way. Fences will connect to each other and solid blocks. They cannot be jumped over with a simple jump.",
+		_doc_items_longdesc = S("Fences are structures which block the way. Fences will connect to each other and solid blocks. They cannot be jumped over with a simple jump."),
 		tiles = {texture},
 		inventory_image = "mcl_fences_fence_mask.png^" .. texture .. "^mcl_fences_fence_mask.png^[makealpha:255,126,126",
 		wield_image = "mcl_fences_fence_mask.png^" .. texture .. "^mcl_fences_fence_mask.png^[makealpha:255,126,126",
@@ -172,8 +174,8 @@ mcl_fences.register_fence_gate = function(id, fence_gate_name, texture, groups, 
 	cgroups_closed.mesecon_effector_off = nil
 	minetest.register_node(gate_id, {
 		description = fence_gate_name,
-		_doc_items_longdesc = "Fence gates can be opened or closed and can't be jumped over. Fences will connect nicely to fence gates.",
-		_doc_items_usagehelp = "Right-click the fence gate to open or close it.",
+		_doc_items_longdesc = S("Fence gates can be opened or closed and can't be jumped over. Fences will connect nicely to fence gates."),
+		_doc_items_usagehelp = S("Right-click the fence gate to open or close it."),
 		tiles = {texture},
 		inventory_image = "mcl_fences_fence_gate_mask.png^" .. texture .. "^mcl_fences_fence_gate_mask.png^[makealpha:255,126,126",
 		wield_image = "mcl_fences_fence_gate_mask.png^" .. texture .. "^mcl_fences_fence_gate_mask.png^[makealpha:255,126,126",
@@ -250,12 +252,12 @@ local wood_connect = {"group:fence_wood"}
 local wood_sounds = mcl_sounds.node_sound_wood_defaults()
 
 local woods = {
-	{"", "Oak Fence", "Oak Fence Gate", "mcl_fences_fence_oak.png", "mcl_fences_fence_gate_oak.png", "mcl_core:wood"},
-	{"spruce", "Spruce Fence", "Spruce Fence Gate", "mcl_fences_fence_spruce.png", "mcl_fences_fence_gate_spruce.png", "mcl_core:sprucewood"},
-	{"birch", "Birch Fence", "Birch Fence Gate", "mcl_fences_fence_birch.png", "mcl_fences_fence_gate_birch.png", "mcl_core:birchwood"},
-	{"jungle", "Jungle Fence", "Jungle Fence Gate", "mcl_fences_fence_jungle.png", "mcl_fences_fence_gate_jungle.png", "mcl_core:junglewood"},
-	{"dark_oak", "Dark Oak Fence", "Dark Oak Fence Gate", "mcl_fences_fence_big_oak.png", "mcl_fences_fence_gate_big_oak.png", "mcl_core:darkwood"},
-	{"acacia", "Acacia Fence", "Acacia Fence Gate", "mcl_fences_fence_acacia.png", "mcl_fences_fence_gate_acacia.png", "mcl_core:acaciawood"},
+	{"", S("Oak Fence"), S("Oak Fence Gate"), "mcl_fences_fence_oak.png", "mcl_fences_fence_gate_oak.png", "mcl_core:wood"},
+	{"spruce", S("Spruce Fence"), S("Spruce Fence Gate"), "mcl_fences_fence_spruce.png", "mcl_fences_fence_gate_spruce.png", "mcl_core:sprucewood"},
+	{"birch", S("Birch Fence"), S("Birch Fence Gate"), "mcl_fences_fence_birch.png", "mcl_fences_fence_gate_birch.png", "mcl_core:birchwood"},
+	{"jungle", S("Jungle Fence"), S("Jungle Fence Gate"), "mcl_fences_fence_jungle.png", "mcl_fences_fence_gate_jungle.png", "mcl_core:junglewood"},
+	{"dark_oak", S("Dark Oak Fence"), S("Dark Oak Fence Gate"), "mcl_fences_fence_big_oak.png", "mcl_fences_fence_gate_big_oak.png", "mcl_core:darkwood"},
+	{"acacia", S("Acacia Fence"), S("Acacia Fence Gate"), "mcl_fences_fence_acacia.png", "mcl_fences_fence_gate_acacia.png", "mcl_core:acaciawood"},
 }
 
 for w=1, #woods do
@@ -288,7 +290,7 @@ end
 
 
 -- Nether Brick Fence (without fence gate!)
-mcl_fences.register_fence("nether_brick_fence", "Nether Brick Fence", "mcl_fences_fence_nether_brick.png", {pickaxey=1, deco_block=1, fence_nether_brick=1}, 2, 30, {"group:fence_nether_brick"}, mcl_sounds.node_sound_stone_defaults())
+mcl_fences.register_fence("nether_brick_fence", S("Nether Brick Fence"), "mcl_fences_fence_nether_brick.png", {pickaxey=1, deco_block=1, fence_nether_brick=1}, 2, 30, {"group:fence_nether_brick"}, mcl_sounds.node_sound_stone_defaults())
 
 minetest.register_craft({
 	output = 'mcl_fences:nether_brick_fence 6',

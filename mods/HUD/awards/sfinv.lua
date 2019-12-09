@@ -1,10 +1,5 @@
 if minetest.get_modpath("sfinv") then
-	local S
-	if minetest.get_modpath("intllib") then
-		S = intllib.Getter()
-	else
-		S = function ( s ) return s end
-	end
+	local S = minetest.get_translator("awards")
 
 	sfinv.register_page("awards:awards", {
 		title = S("Awards"),

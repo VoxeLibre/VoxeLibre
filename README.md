@@ -1,8 +1,8 @@
 # MineClone 2
-An unofficial Minecraft-like game for Minetest. Forked from MineClone by daredevils.
+An unofficial Minecraft-like game for Minetest. Forked from MineClone by davedevils.
 Developed by Wuzzy and contributors. Not developed or endorsed by Mojang AB.
 
-Version: 0.46.0
+Version: 0.55.1
 
 ### Gameplay
 You start in a randomly-generated world made entirely of cubes. You can explore
@@ -67,7 +67,6 @@ an explanation.
 #### Incomplete items
 These items do not work yet, but you can get them with `/giveme` for testing:
 
-* Fishing Rod: `mcl_fishing:fishing_rod`
 * Activator Rail: `mcl_minecarts:activator_rail`
 * Minecart with Chest: `mcl_minecarts:chest_minecart`
 * Minecart with Furnace: `mcl_minecarts:furnace_minecart`
@@ -75,13 +74,14 @@ These items do not work yet, but you can get them with `/giveme` for testing:
 * Minecart with Command Block: `mcl_minecarts:command_block_minecart`
 
 ## Installation
-This game requires [Minetest](http://minetest.net) to run
-(version 0.4.16 or 0.4.17).
-So you need to install Minetest first. Only stable versions of Minetest are
-officially supported. Minetest 5.0.0 (when released) will NOT be supported (yet).
-There is no support whatsoever for running MineClone 2 in development versions of Minetest.
-To install MineClone 2, move this directory into the “games” directory of
-your Minetest data directory. Consult the help of Minetest to learn more.
+This game requires [Minetest](http://minetest.net) to run (version 5.0.0 or
+later). So you need to install Minetest first. Only stable versions of Minetest
+are officially supported.
+There is no support for running MineClone 2 in development versions of Minetest.
+
+To install MineClone 2 (if you haven't already), move this directory into the
+“games” directory of your Minetest data directory. Consult the help of
+Minetest to learn more.
 
 ## Project description
 The main goal of **MineClone 2** is to be a clone of Minecraft and to be released as free software.
@@ -197,8 +197,10 @@ There are so many people to list (sorry). Check out the respective mod directori
 
 ### Coding
 * [Wuzzy](https://forum.minetest.net/memberlist.php?mode=viewprofile&u=3082): Main programmer of most mods
-* daredevils: Creator of MineClone on which MineClone 2 is based on
+* davedevils: Creator of MineClone on which MineClone 2 is based on
 * [ex-bart](https://github.com/ex-bart): Redstone comparators
+* [Rootyjr](https://github.com/Rootyjr): Fishing rod and bugfixes
+* [aligator](https://github.com/aligator): Improvement of doors
 * Lots of other people: TO BE WRITTEN (see mod directories for details)
 
 ### Textures
@@ -218,7 +220,7 @@ Various sources. See the respective mod directories for details.
 
 ### Special thanks
 
-* daredevils for starting MineClone, the original version of this game
+* davedevils for starting MineClone, the original version of this game
 * celeron55 for creating Minetest
 * Minetest's modding community for providing a huge selection of mods, some of which ended up in MineClone 2
 * Jordach for the jukebox music compilation from Big Freaking Dig
@@ -241,10 +243,10 @@ Here's the detailed legalese for those who need it:
 ### License of source code
 MineClone 2 is a clean-room implementation of Minecraft
 and licensed under the
-GNU LGPL v2.1 (Wuzzy, daredevils and countless others) (see `LICENSE.txt`).
+GNU LGPL v2.1 (Wuzzy, davedevils and countless others) (see `LICENSE.txt`).
 
 MineClone 2 is a direct continuation of the discontinued MineClone
-project by daredevils which fell under the same license.
+project by davedevils which fell under the same license.
 
 Mods credit:
 See `README.txt` or `README.md` in each mod directory for information about other authors.

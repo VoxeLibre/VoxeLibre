@@ -124,7 +124,6 @@ local function InitRandomizer(seed)
 	-- Used for cobweb generation, both noises have to reach a high value for cobwebs to appear
 	webperlin_major = PerlinNoise(934, 3, 0.6, 500)
 	webperlin_minor = PerlinNoise(834, 3, 0.6, 50)
-	pr_inited = true
 end
 
 local carts_table = {}
@@ -377,9 +376,7 @@ local function PlaceChest(pos, param2)
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
 		local items = tsm_railcorridors.get_treasures(pr)
-		for i=1, math.min(#items, inv:get_size("main")) do
-			inv:set_stack("main", i, ItemStack(items[i]))
-		end
+		mcl_loot.fill_inventory(inv, "main", items)
 	end
 end
 
@@ -738,13 +735,13 @@ local function create_corridor_section(waypoint, axis, sign, up_or_down, up_or_d
 
 		-- Mob spawner (at center)
 		if place_mob_spawners and tsm_railcorridors.nodes.spawner and not no_spawner and
-				webperlin_major:get3d(p) > 0.3 and webperlin_minor:get3d(p) > 0.5 then
+				webperlin_major:get_3d(p) > 0.3 and webperlin_minor:get_3d(p) > 0.5 then
 			-- Place spawner (if activated in gameconfig),
 			-- enclose in cobwebs and setup the spawner node.
 			local spawner_placed = SetNodeIfCanBuild(p, {name=tsm_railcorridors.nodes.spawner})
 			if spawner_placed then
 				local size = 1
-				if webperlin_major:get3d(p) > 0.5 then
+				if webperlin_major:get_3d(p) > 0.5 then
 					size = 2
 				end
 				if place_cobwebs then
@@ -767,7 +764,7 @@ local function create_corridor_section(waypoint, axis, sign, up_or_down, up_or_d
 				if pr:next(1,5) == 1 then
 					local h = pr:next(0, 2) -- 3 possible cobweb heights
 					local cpos = {x=basepos.x+vek.x, y=basepos.y+h, z=basepos.z+vek.z}
-					if webperlin_major:get3d(cpos) > 0.05 and webperlin_minor:get3d(cpos) > 0.1 then
+					if webperlin_major:get_3d(cpos) > 0.05 and webperlin_minor:get_3d(cpos) > 0.1 then
 						if h == 0 then
 							-- No check neccessary at height offset 0 since the cobweb is on the floor
 							return TryPlaceCobweb(cpos)

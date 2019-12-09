@@ -1,8 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 local cow_def = {
 	type = "animal",
@@ -28,9 +26,6 @@ local cow_def = {
 		min = 0,
 		max = 2,},
 	},
-	water_damage = 1,
-	lava_damage = 5,
-	light_damage = 0,
 	runaway = true,
 	sounds = {
 		random = "mobs_mc_cow",
@@ -100,10 +95,10 @@ mooshroom_def.on_rightclick = function(self, clicker)
 			minetest.add_item({x=pos.x, y=pos.y+1.4, z=pos.z}, mobs_mc.items.mushroom_red .. " 5")
 		end
 
-		local oldyaw = self.object:getyaw()
+		local oldyaw = self.object:get_yaw()
 		self.object:remove()
 		local cow = minetest.add_entity(pos, "mobs_mc:cow")
-		cow:setyaw(oldyaw)
+		cow:set_yaw(oldyaw)
 
 		if not minetest.settings:get_bool("creative_mode") then
 			item:add_wear(mobs_mc.misc.shears_wear)

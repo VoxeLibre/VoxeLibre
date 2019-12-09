@@ -1,6 +1,4 @@
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### LLAMA
@@ -34,9 +32,6 @@ mobs:register_mob("mobs_mc:llama", {
 		min = 0,
 		max = 2,},
 	},
-	water_damage = 0,
-	lava_damage = 4,
-	light_damage = 0,
 	fear_height = 4,
 	sounds = {
 		random = "mobs_mc_llama",
@@ -58,7 +53,7 @@ mobs:register_mob("mobs_mc:llama", {
 		look_start = 78,
 		look_end = 108,
 	},
-	follow = mobs_mc.items.horse,
+	follow = mobs_mc.follow.llama,
 	view_range = 16,
 	do_custom = function(self, dtime)
 
@@ -69,7 +64,7 @@ mobs:register_mob("mobs_mc:llama", {
 			self.max_speed_reverse = 2
 			self.accel = 4
 			self.terrain_type = 3
-			self.driver_attach_at = {x = 0, y = 7.5, z = -1.5}
+			self.driver_attach_at = {x = 0, y = 4.17, z = -1.5}
 			self.driver_eye_offset = {x = 0, y = 3, z = 0}
 			self.driver_scale = {x = 1/self.visual_size.x, y = 1/self.visual_size.y}
 		end

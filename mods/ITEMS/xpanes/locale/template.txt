@@ -1,0 +1,23 @@
+# textdomain: xpanes
+Glass panes are thin layers of glass which neatly connect to their neighbors as you build them.=
+Stained glass panes are thin layers of stained glass which neatly connect to their neighbors as you build them. They come in many different colors.=
+Iron Bars=
+Iron bars neatly connect to their neighbors as you build them.=
+Glass Pane=
+Stained Glass Pane=
+Red Stained Glass Pane=
+Green Stained Glass Pane=
+Blue Stained Glass Pane=
+Light Blue Stained Glass Pane=
+Black Stained Glass Pane=
+White Stained Glass Pane=
+Yellow Stained Glass Pane=
+Brown Stained Glass Pane=
+Orange Stained Glass Pane=
+Pink Stained Glass Pane=
+Grey Stained Glass Pane=
+Lime Stained Glass Pane=
+Light Grey Stained Glass Pane=
+Magenta Stained Glass Pane=
+Purple Stained Glass Pane=
+Cyan Stained Glass Pane=

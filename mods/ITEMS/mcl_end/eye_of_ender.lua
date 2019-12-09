@@ -1,10 +1,12 @@
 -- Eye of Ender
+local S = minetest.get_translator("mcl_end")
 
 minetest.register_entity("mcl_end:ender_eye", {
 	physical = false,
 	textures = {"mcl_end_ender_eye.png"},
 	visual_size = {x=1.5, y=1.5},
 	collisionbox = {0,0,0,0,0,0},
+	pointable = false,
 
 	-- Save and restore age
 	get_staticdata = function(self)
@@ -35,10 +37,10 @@ minetest.register_entity("mcl_end:ender_eye", {
 			else
 				-- 80% to drop as an item
 				local pos = self.object:get_pos()
-				local v = self.object:getvelocity()
+				local v = self.object:get_velocity()
 				self.object:remove()
 				local item = minetest.add_item(pos, "mcl_end:ender_eye")
-				item:setvelocity(v)
+				item:set_velocity(v)
 				return
 			end
 		elseif self._age >= 2 then
@@ -46,8 +48,8 @@ minetest.register_entity("mcl_end:ender_eye", {
 				self._phase = 1
 				-- Stop the eye and wait for another second.
 				-- The vertical speed changes are just eye candy.
-				self.object:setacceleration({x=0, y=-3, z=0})
-				self.object:setvelocity({x=0, y=self.object:getvelocity().y*0.2, z=0})
+				self.object:set_acceleration({x=0, y=-3, z=0})
+				self.object:set_velocity({x=0, y=self.object:get_velocity().y*0.2, z=0})
 			end
 		else
 			-- Fly normally and generate particles
@@ -71,9 +73,9 @@ minetest.register_entity("mcl_end:ender_eye", {
 })
 
 minetest.register_craftitem("mcl_end:ender_eye", {
-	description = "Eye of Ender",
-	_doc_items_longdesc = "This item is used to locate End portal shrines in the Overworld and to activate End portals." .. "\n" .. "NOTE: The End dimension is currently incomplete and boring.",
-	_doc_items_usagehelp = "Use the attack key to release the eye of ender. It will rise and fly in the horizontal direction of the closest end portal shrine. If you're very close, the eye of ender will take the direct path to the End portal shrine instead. After a few seconds, it stops. It may drop as an item, but there's a 20% chance it shatters." .. "\n" .. "To activate an End portal, eyes of ender need to be placed into each block of an intact End portal frame.",
+	description = S("Eye of Ender"),
+	_doc_items_longdesc = S("This item is used to locate End portal shrines in the Overworld and to activate End portals.") .. "\n" .. S("NOTE: The End dimension is currently incomplete and might change in future versions."),
+	_doc_items_usagehelp = S("Use the attack key to release the eye of ender. It will rise and fly in the horizontal direction of the closest end portal shrine. If you're very close, the eye of ender will take the direct path to the End portal shrine instead. After a few seconds, it stops. It may drop as an item, but there's a 20% chance it shatters.") .. "\n" .. S("To activate an End portal, eyes of ender need to be placed into each block of an intact End portal frame."),
 	wield_image = "mcl_end_ender_eye.png",
 	inventory_image = "mcl_end_ender_eye.png",
 	stack_max = 64,
@@ -126,7 +128,7 @@ minetest.register_craftitem("mcl_end:ender_eye", {
 			local velocity = 4
 			-- Stronghold is close: Fly directly to stronghold and take Y into account.
 			dir = vector.normalize(vector.direction(origin, closest_stronghold.pos))
-			obj:setvelocity({x=dir.x*velocity, y=dir.y*velocity, z=dir.z*velocity})
+			obj:set_velocity({x=dir.x*velocity, y=dir.y*velocity, z=dir.z*velocity})
 		else
 			local velocity = 12
 			-- Don't care about Y if stronghold is still far away.
@@ -134,8 +136,8 @@ minetest.register_craftitem("mcl_end:ender_eye", {
 			local o = {x=origin.x, y=0, z=origin.z}
 			local s = {x=closest_stronghold.pos.x, y=0, z=closest_stronghold.pos.z}
 			dir = vector.normalize(vector.direction(o, s))
-			obj:setacceleration({x=dir.x*-3, y=4, z=dir.z*-3})
-			obj:setvelocity({x=dir.x*velocity, y=3, z=dir.z*velocity})
+			obj:set_acceleration({x=dir.x*-3, y=4, z=dir.z*-3})
+			obj:set_velocity({x=dir.x*velocity, y=3, z=dir.z*velocity})
 		end
 
 

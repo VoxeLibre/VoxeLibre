@@ -1,1 +1,1 @@
-Development mod for MineClone 2 which add a “WIP” comment to items which are considered to be very unfinished.
+Development mod for MineClone 2 which add a “WIP” (Work In Progress) comment to items which are considered to be very unfinished.

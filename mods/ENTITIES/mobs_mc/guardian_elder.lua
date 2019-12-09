@@ -4,14 +4,13 @@
 --################### GUARDIAN
 --###################
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:guardian_elder", {
 	type = "monster",
 	hp_min = 80,
 	hp_max = 80,
+	breath_max = -1,
     	passive = false,
 	attack_type = "dogfight",
 	pathfinding = 1,
@@ -82,11 +81,7 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 	fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
 	stepheight = 0.1,
 	jump = false,
-	water_damage = 0,
-	lava_damage = 4,
-	light_damage = 0,
 	view_range = 16,
-	blood_amount = 0,
 })
 
 mobs:spawn_specific("mobs_mc:guardian_elder", mobs_mc.spawn.water, mobs_mc.spawn_water, 0, minetest.LIGHT_MAX+1, 30, 40000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.water-18)

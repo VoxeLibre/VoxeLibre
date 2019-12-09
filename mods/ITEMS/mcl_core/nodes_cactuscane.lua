@@ -1,9 +1,11 @@
 -- Cactus and Sugar Cane
 
+local S = minetest.get_translator("mcl_core")
+
 minetest.register_node("mcl_core:cactus", {
-	description = "Cactus",
-	_doc_items_longdesc = "This is a piece of cactus commonly found in dry areas, especially deserts. Over time, cacti will grow up to 3 blocks high on sand or red sand. A cactus hurts living beings touching it with a damage of 1 HP every half second. When a cactus block is broken, all cactus blocks connected above it will break as well.",
-	_doc_items_usagehelp = "A cactus can only be placed on top of another cactus or any sand.",
+	description = S("Cactus"),
+	_doc_items_longdesc = S("This is a piece of cactus commonly found in dry areas, especially deserts. Over time, cacti will grow up to 3 blocks high on sand or red sand. A cactus hurts living beings touching it with a damage of 1 HP every half second. When a cactus block is broken, all cactus blocks connected above it will break as well."),
+	_doc_items_usagehelp = S("A cactus can only be placed on top of another cactus or any sand."),
 	drawtype = "nodebox",
 	tiles = {"mcl_core_cactus_top.png", "mcl_core_cactus_bottom.png", "mcl_core_cactus_side.png"},
 	is_ground_content = true,
@@ -44,9 +46,9 @@ minetest.register_node("mcl_core:cactus", {
 })
 
 minetest.register_node("mcl_core:reeds", {
-	description = "Sugar Canes",
-	_doc_items_longdesc = "Sugar canes are a plant which has some uses in crafting. Sugar canes will slowly grow up to 3 blocks when they are next to water and are placed on a grass block, dirt, sand, red sand, podzol or coarse dirt. When a sugar cane is broken, all sugar canes connected above will break as well.",
-	_doc_items_usagehelp = "Sugar canes can only be placed top of other sugar canes and on top of blocks on which they would grow.",
+	description = S("Sugar Canes"),
+	_doc_items_longdesc = S("Sugar canes are a plant which has some uses in crafting. Sugar canes will slowly grow up to 3 blocks when they are next to water and are placed on a grass block, dirt, sand, red sand, podzol or coarse dirt. When a sugar cane is broken, all sugar canes connected above will break as well."),
+	_doc_items_usagehelp = S("Sugar canes can only be placed top of other sugar canes and on top of blocks on which they would grow."),
 	drawtype = "plantlike",
 	tiles = {"default_papyrus.png"},
 	inventory_image = "mcl_core_reeds.png",

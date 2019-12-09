@@ -1,8 +1,11 @@
+local S = minetest.get_translator("mcl_inventory")
+local F = minetest.formspec_escape
+
 mcl_inventory = {}
 
-local show_armor = false
-if minetest.get_modpath("3d_armor") ~= nil then show_armor = true end
-
+local show_armor = minetest.get_modpath("3d_armor") ~= nil
+local mod_player = minetest.get_modpath("mcl_player") ~= nil
+local mod_craftguide = minetest.get_modpath("mcl_craftguide") ~= nil
 
 -- Returns a single itemstack in the given inventory to the main inventory, or drop it when there's no space left
 local function return_item(itemstack, dropper, pos, inv)
@@ -21,7 +24,7 @@ local function return_item(itemstack, dropper, pos, inv)
 				v.x = v.x*4
 				v.y = v.y*4 + 2
 				v.z = v.z*4
-				obj:setvelocity(v)
+				obj:set_velocity(v)
 				obj:get_luaentity()._insta_collect = false
 			end
 		end
@@ -59,14 +62,20 @@ local function set_inventory(player, armor_change_only)
 	local player_name = player:get_player_name()
 
 	-- Show armor and player image
-	local img = "player.png"
+	local img, img_player
+	if mod_player then
+		img_player = mcl_player.player_get_preview(player)
+	else
+		img_player = "player.png"
+	end
+	img = img_player
 	local player_preview = "image[0.6,0.2;2,4;"..img.."]"
 	if show_armor and armor.textures[player_name] and armor.textures[player_name].preview then
 		img = armor.textures[player_name].preview
 		local s1 = img:find("character_preview")
 		if s1 ~= nil then
 			s1 = img:sub(s1+21)
-			img = "player.png"..s1
+			img = img_player..s1
 		end
 		player_preview = "image[1.1,0.2;2,4;"..img.."]"
 	end
@@ -90,19 +99,24 @@ local function set_inventory(player, armor_change_only)
 	"list[detached:"..player_name.."_armor;armor;0,3;1,1;4]"..
 	armor_slot_imgs..
 	-- craft and inventory
+	"label[0,4;"..F(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..
+	"label[4,0.5;"..F(minetest.colorize("#313131", S("Crafting"))).."]"..
 	"list[current_player;craft;4,1;2,2]"..
 	"list[current_player;craftpreview;7,1.5;1,1;]"..
 	-- crafting guide button
 	"image_button[4.5,3;1,1;craftguide_book.png;__mcl_craftguide;]"..
-	"tooltip[__mcl_craftguide;Recipe book]"..
+	"tooltip[__mcl_craftguide;"..F(S("Recipe book")).."]"..
 	-- help button
 	"image_button[8,3;1,1;doc_button_icon_lores.png;__mcl_doc;]"..
-	"tooltip[__mcl_doc;Help]"..
+	"tooltip[__mcl_doc;"..F(S("Help")).."]"..
+	-- skins button
+	"image_button[3,3;1,1;mcl_skins_button.png;__mcl_skins;]"..
+	"tooltip[__mcl_skins;"..F(S("Select player skin")).."]"..
 	-- achievements button
 	"image_button[7,3;1,1;mcl_achievements_button.png;__mcl_achievements;]"..
-	"tooltip[__mcl_achievements;Achievements]"..
+	"tooltip[__mcl_achievements;"..F(S("Achievements")).."]"..
 	-- for shortcuts
 	"listring[current_player;main]"..
 	"listring[current_player;craft]"..
@@ -121,6 +135,12 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		end
 	end
 end)
+
+if not minetest.settings:get_bool("creative_mode") then
+	mcl_inventory.update_inventory_formspec = function(player)
+		set_inventory(player)
+	end
+end
 
 -- Drop crafting grid items on leaving
 minetest.register_on_leaveplayer(function(player)

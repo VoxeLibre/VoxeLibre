@@ -3,9 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### VEX
@@ -86,9 +84,6 @@ mobs:register_mob("mobs_mc:vex", {
 			end
 		end
 	end,
-	water_damage = 0,
-	lava_damage = 4,
-	light_damage = 0,
 	fly = true,
 	fly_in = {"air"},
 })

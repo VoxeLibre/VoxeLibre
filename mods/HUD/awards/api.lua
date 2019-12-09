@@ -29,10 +29,7 @@ function awards.save()
 	end
 end
 
-local S = function(s) return s end
-function awards.set_intllib(locale)
-	S = locale
-end
+local S = minetest.get_translator("awards")
 
 function awards.init()
 	awards.players = awards.load()
@@ -277,9 +274,9 @@ function awards.unlock(name, award)
 	elseif awards.show_mode == "chat" then
 		local chat_announce
 		if awdef.secret == true then
-			chat_announce = S("Secret achievement gotten: %s")
+			chat_announce = S("Secret achievement gotten: @1")
 		else
-			chat_announce = S("Achievement gotten: %s")
+			chat_announce = S("Achievement gotten: @1")
 		end
 		-- use the chat console to send it
 		minetest.chat_send_player(name, string.format(chat_announce, title))
@@ -389,12 +386,14 @@ function awards.getFormspec(name, to, sid)
 			if def and def.title then
 				title = def.title
 			end
-			local status = "%s"
+			local status
 			if item.got then
-				status = S("%s (got)")
+				status = S("@1 (got)", title)
+			else
+				status = title
 			end
 			formspec = formspec .. "label[1,2.75;" ..
-				string.format(status, minetest.formspec_escape(title)) ..
+				minetest.formspec_escape(status) ..
 				"]"
 			if def and def.icon then
 				formspec = formspec .. "image[1,0;3,3;" .. def.icon .. "]"
@@ -469,14 +468,14 @@ function awards.show_to(name, to, sid, text)
 			minetest.chat_send_player(to, S("You have not gotten any awards."))
 			return
 		end
-		minetest.chat_send_player(to, string.format(S("%s’s awards:"), name))
+		minetest.chat_send_player(to, S("@1’s awards:"), name)
 
 		for _, str in pairs(awards.players[name].unlocked) do
 			local def = awards.def[str]
 			if def then
 				if def.title then
 					if def.description then
-						minetest.chat_send_player(to, string.format(S("%s: %s"), def.title, def.description))
+						minetest.chat_send_player(to, S("@1: @2", def.title, def.description))
 					else
 						minetest.chat_send_player(to, def.title)
 					end

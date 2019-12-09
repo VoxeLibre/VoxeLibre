@@ -1,8 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 local rabbit = {
 	type = "animal",
@@ -37,9 +35,6 @@ local rabbit = {
 		-- TODO: Drop rabbit's foot when it's useful
 		--{name = mobs_mc.items.rabbit_foot, chance = 10, min = 1, max = 1},
 	},
-	water_damage = 1,
-	lava_damage = 4,
-	light_damage = 0,
 	fear_height = 4,
 	animation = {
 		speed_normal = 25,		speed_run = 50,

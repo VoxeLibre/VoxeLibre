@@ -1,8 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 -- Returns a function that spawns children in a circle around pos.
 -- To be used as on_die callback.
@@ -60,7 +58,7 @@ end
 local slime_big = {
 	type = "monster",
 	pathfinding = 1,
-	group_attack = true,
+	group_attack = { "mobs_mc:slime_big", "mobs_mc:slime_small", "mobs_mc:slime_tiny" },
 	hp_min = 16,
 	hp_max = 16,
 	collisionbox = {-1.02, -0.01, -1.02, 1.02, 2.03, 1.02},
@@ -68,7 +66,6 @@ local slime_big = {
 	textures = {{"mobs_mc_slime.png"}},
 	visual = "mesh",
 	mesh = "mobs_mc_slime.b3d",
-	blood_texture ="mobs_mc_slime_blood.png",
 	makes_footstep_sound = true,
 	sounds = {
 		jump = "green_slime_jump",
@@ -96,9 +93,6 @@ local slime_big = {
 		death_start = 88,
 		death_end = 118,
 	},
-	water_damage = 0,
-	lava_damage = 4,
-	light_damage = 0,
 	fall_damage = 0,
 	view_range = 16,
 	attack_type = "dogfight",
@@ -109,13 +103,14 @@ local slime_big = {
 	walk_chance = 0,
 	jump_height = 5.2,
 	jump_chance = 100,
-	fear_height = 60,
+	fear_height = 0,
 	spawn_small_alternative = "mobs_mc:slime_small",
 	on_die = spawn_children_on_die("mobs_mc:slime_small", 4, 1.0, 1.5)
 }
 mobs:register_mob("mobs_mc:slime_big", slime_big)
 
 local slime_small = table.copy(slime_big)
+slime_small.sounds.base_pitch = 1.15
 slime_small.hp_min = 4
 slime_small.hp_max = 4
 slime_small.collisionbox = {-0.51, -0.01, -0.51, 0.51, 1.00, 0.51}
@@ -130,6 +125,7 @@ slime_small.on_die = spawn_children_on_die("mobs_mc:slime_tiny", 4, 0.6, 1.0)
 mobs:register_mob("mobs_mc:slime_small", slime_small)
 
 local slime_tiny = table.copy(slime_big)
+slime_tiny.sounds.base_pitch = 1.3
 slime_tiny.hp_min = 1
 slime_tiny.hp_max = 1
 slime_tiny.collisionbox = {-0.2505, -0.01, -0.2505, 0.2505, 0.50, 0.2505}
@@ -168,7 +164,6 @@ local magma_cube_big = {
 	textures = {{ "mobs_mc_magmacube.png" }},
 	visual = "mesh",
 	mesh = "mobs_mc_magmacube.b3d",
-	blood_texture = "mobs_mc_magmacube_blood.png",
 	makes_footstep_sound = true,
 	sounds = {
 		jump = "mobs_mc_magma_cube_big",
@@ -204,6 +199,7 @@ local magma_cube_big = {
 	},
 	water_damage = 0,
 	lava_damage = 0,
+        fire_damage = 0,
 	light_damage = 0,
 	fall_damage = 0,
 	view_range = 16,
@@ -213,7 +209,7 @@ local magma_cube_big = {
 	jump_height = 8,
 	walk_chance = 0,
 	jump_chance = 100,
-	fear_height = 100000,
+	fear_height = 0,
 	spawn_small_alternative = "mobs_mc:magma_cube_small",
 	on_die = spawn_children_on_die("mobs_mc:magma_cube_small", 3, 0.8, 1.5)
 }
@@ -241,6 +237,7 @@ mobs:register_mob("mobs_mc:magma_cube_small", magma_cube_small)
 local magma_cube_tiny = table.copy(magma_cube_big)
 magma_cube_tiny.sounds.jump = "mobs_mc_magma_cube_small"
 magma_cube_tiny.sounds.death = "mobs_mc_magma_cube_small"
+magma_cube_tiny.sounds.base_pitch = 1.25
 magma_cube_tiny.hp_min = 1
 magma_cube_tiny.hp_max = 1
 magma_cube_tiny.collisionbox = {-0.2505, -0.01, -0.2505, 0.2505, 0.50, 0.2505}

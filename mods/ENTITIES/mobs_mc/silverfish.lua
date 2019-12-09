@@ -2,9 +2,7 @@
 --################### SILVERFISH
 --###################
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:silverfish", {
 	type = "monster",
@@ -31,9 +29,6 @@ mobs:register_mob("mobs_mc:silverfish", {
 	walk_velocity = 0.6,
 	run_velocity = 2,
 	jump = true,
-	water_damage = 1,
-	lava_damage = 4,
-	light_damage = 0,
 	fear_height = 4,
 	replace_what = mobs_mc.replace.silverfish,
 	replace_rate = 2,
@@ -47,7 +42,6 @@ mobs:register_mob("mobs_mc:silverfish", {
 	attack_type = "dogfight",
 	damage = 1,
 	reach = 1,
-	blood_amount = 0,
 })
 
 mobs:register_egg("mobs_mc:silverfish", S("Silverfish"), "mobs_mc_spawn_icon_silverfish.png", 0)
@@ -60,7 +54,7 @@ if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then
 		end
 	end
 	minetest.register_node("mobs_mc:monster_egg_stone", {
-		description = S("Stone Monster Egg"),
+		description = "Stone Monster Egg",
 		tiles = {"default_stone.png"},
 		groups = {oddly_breakable_by_hand = 2, spawns_silverfish = 1},
 		drop = '',
@@ -70,7 +64,7 @@ if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then
 	})
 
 	minetest.register_node("mobs_mc:monster_egg_cobble", {
-		description = S("Cobblestone Monster Egg"),
+		description = "Cobblestone Monster Egg",
 		tiles = {"default_cobble.png"},
 		is_ground_content = false,
 		groups = {oddly_breakable_by_hand = 2, spawns_silverfish = 1},
@@ -80,7 +74,7 @@ if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then
 	})
 
 	minetest.register_node("mobs_mc:monster_egg_mossycobble", {
-		description = S("Mossy Cobblestone Monster Egg"),
+		description = "Mossy Cobblestone Monster Egg",
 		tiles = {"default_mossycobble.png"},
 		is_ground_content = false,
 		groups = {oddly_breakable_by_hand = 2, spawns_silverfish = 1},
@@ -90,7 +84,7 @@ if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then
 	})
 
 	minetest.register_node("mobs_mc:monster_egg_stonebrick", {
-		description = S("Stone Brick Monster Egg"),
+		description = "Stone Brick Monster Egg",
 		paramtype2 = "facedir",
 		place_param2 = 0,
 		tiles = {"default_stone_brick.png"},
@@ -102,7 +96,7 @@ if minetest.get_modpath("default") and mobs_mc.create_monster_egg_nodes then
 	})
 
 	minetest.register_node("mobs_mc:monster_egg_stone_block", {
-		description = S("Stone Block Monster Egg"),
+		description = "Stone Block Monster Egg",
 		tiles = {"default_stone_block.png"},
 		is_ground_content = false,
 		groups = {oddly_breakable_by_hand = 2, spawns_silverfish = 1},

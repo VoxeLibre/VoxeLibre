@@ -81,6 +81,9 @@ Origin of those models:
 
 * PilzAdam and Wuzzy (CC0)
     * `mobs_mc_chicken_lay_egg.ogg`
+* [AGFX](http://www.freesound.org/people/DrMinky/sounds/) (CC0)
+    * `mobs_mc_chicken_child.ogg`
+        * Source: <https://freesound.org/people/AGFX/sounds/43380/>
 * Randomation (CC0)
     * `green_slime_damage.ogg`
     * `green_slime_attack.ogg`

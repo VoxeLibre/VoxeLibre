@@ -3,11 +3,8 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
---dofile(minetest.get_modpath("mobs").."/api.lua")
 --###################
 --################### ZOMBIE PIGMAN
 --###################
@@ -19,9 +16,10 @@ local pigman = {
 	passive = false,
 	hp_min = 20,
 	hp_max = 20,
+	breath_max = -1,
 	armor = 90,
 	attack_type = "dogfight",
-	group_attack = true,
+	group_attack = { "mobs_mc:pigman", "mobs_mc:baby_pigman" },
 	damage = 9,
 	reach = 2,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
@@ -76,9 +74,8 @@ local pigman = {
 		punch_start = 90,
 		punch_end = 130,
 	},
-	water_damage = 1,
 	lava_damage = 0,
-	light_damage = 0,
+	fire_damage = 0,
 	fear_height = 4,
 	view_range = 16,
 }
@@ -99,6 +96,7 @@ baby_pigman.textures = { {
 baby_pigman.walk_velocity = 1.2
 baby_pigman.run_velocity = 2.4
 baby_pigman.light_damage = 0
+baby_pigman.child = 1
 
 mobs:register_mob("mobs_mc:baby_pigman", baby_pigman)
 

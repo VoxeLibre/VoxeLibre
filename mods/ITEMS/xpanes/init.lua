@@ -1,3 +1,5 @@
+local S = minetest.get_translator("xpanes")
+local mod_doc = minetest.get_modpath("doc")
 
 local function is_pane(pos)
 	return minetest.get_item_group(minetest.get_node(pos).name, "pane") > 0
@@ -161,24 +163,35 @@ function xpanes.register_pane(name, def)
 		recipe = def.recipe
 	})
 
-	if minetest.get_modpath("doc") then
+	if mod_doc and def._doc_items_create_entry ~= false then
 		doc.add_entry_alias("nodes", "xpanes:" .. name .. "_flat", "nodes", "xpanes:" .. name)
 	end
 end
 
+local canonical_color = "yellow"
 -- Register glass pane (stained and unstained)
 local pane = function(description, node, append)
-	local texture1
-
+	local texture1, longdesc, entry_name, create_entry
+	local is_canonical = true
 	-- Special case: Default (unstained) glass texture
 	if append == "_natural" then
 		texture1 = "default_glass.png"
+		longdesc = S("Glass panes are thin layers of glass which neatly connect to their neighbors as you build them.")
 	else
+		if append ~= "_"..canonical_color then
+			is_canonical = false
+			create_entry = false
+		else
+			longdesc = S("Stained glass panes are thin layers of stained glass which neatly connect to their neighbors as you build them. They come in many different colors.")
+			entry_name = S("Stained Glass Pane")
+		end
 		texture1 = "mcl_core_glass"..append..".png"
 	end
 	xpanes.register_pane("pane"..append, {
 		description = description,
-		_doc_items_longdesc = "Glass panes are thin layers of glass which neatly connect to their neighbors as you build them.",
+		_doc_items_create_entry = create_entry,
+		_doc_items_entry_name = entry_name,
+		_doc_items_longdesc = longdesc,
 		textures = {texture1, texture1, "xpanes_top_glass"..append..".png"},
 		use_texture_alpha = true,
 		inventory_image = texture1,
@@ -193,12 +206,17 @@ local pane = function(description, node, append)
 		_mcl_blast_resistance = 1.5,
 		_mcl_hardness = 0.3,
 	})
+
+	if mod_doc and not is_canonical then
+		doc.add_entry_alias("nodes", "xpanes:pane_".. canonical_color .. "_flat", "nodes", "xpanes:pane"..append)
+		doc.add_entry_alias("nodes", "xpanes:pane_".. canonical_color .. "_flat", "nodes", "xpanes:pane"..append.."_flat")
+	end
 end
 
 -- Iron Bars
 xpanes.register_pane("bar", {
-	description = "Iron Bars",
-	_doc_items_longdesc = "Iron bars neatly connect to their neighbors as you build them.",
+	description = S("Iron Bars"),
+	_doc_items_longdesc = S("Iron bars neatly connect to their neighbors as you build them."),
 	textures = {"xpanes_pane_iron.png","xpanes_pane_iron.png","xpanes_top_iron.png"},
 	inventory_image = "xpanes_pane_iron.png",
 	wield_image = "xpanes_pane_iron.png",
@@ -213,22 +231,22 @@ xpanes.register_pane("bar", {
 })
 
 -- Glass Pane
-pane("Glass Pane", "mcl_core:glass", "_natural") -- triggers special case
+pane(S("Glass Pane"), "mcl_core:glass", "_natural") -- triggers special case
 
 -- Stained Glass Pane
-pane("Red Stained Glass Pane", "mcl_core:glass_red", "_red")
-pane("Green Stained Glass Pane", "mcl_core:glass_green", "_green")
-pane("Blue Stained Glass Pane", "mcl_core:glass_blue", "_blue")
-pane("Light Blue Stained Glass Pane", "mcl_core:glass_light_blue", "_light_blue")
-pane("Black Stained Glass Pane", "mcl_core:glass_black", "_black")
-pane("White Stained Glass Pane", "mcl_core:glass_white", "_white")
-pane("Yellow Stained Glass Pane", "mcl_core:glass_yellow", "_yellow")
-pane("Brown Stained Glass Pane", "mcl_core:glass_brown", "_brown")
-pane("Orange Stained Glass Pane", "mcl_core:glass_orange", "_orange")
-pane("Pink Stained Glass Pane", "mcl_core:glass_pink", "_pink")
-pane("Grey Stained Glass Pane", "mcl_core:glass_gray", "_gray")
-pane("Lime Stained Glass Pane", "mcl_core:glass_lime", "_lime")
-pane("Light Grey Stained Glass Pane", "mcl_core:glass_silver", "_silver")
-pane("Magenta Stained Glass Pane", "mcl_core:glass_magenta", "_magenta")
-pane("Purple Stained Glass Pane", "mcl_core:glass_purple", "_purple")
-pane("Cyan Stained Glass Pane", "mcl_core:glass_cyan", "_cyan")
+pane(S("Red Stained Glass Pane"), "mcl_core:glass_red", "_red")
+pane(S("Green Stained Glass Pane"), "mcl_core:glass_green", "_green")
+pane(S("Blue Stained Glass Pane"), "mcl_core:glass_blue", "_blue")
+pane(S("Light Blue Stained Glass Pane"), "mcl_core:glass_light_blue", "_light_blue")
+pane(S("Black Stained Glass Pane"), "mcl_core:glass_black", "_black")
+pane(S("White Stained Glass Pane"), "mcl_core:glass_white", "_white")
+pane(S("Yellow Stained Glass Pane"), "mcl_core:glass_yellow", "_yellow")
+pane(S("Brown Stained Glass Pane"), "mcl_core:glass_brown", "_brown")
+pane(S("Orange Stained Glass Pane"), "mcl_core:glass_orange", "_orange")
+pane(S("Pink Stained Glass Pane"), "mcl_core:glass_pink", "_pink")
+pane(S("Grey Stained Glass Pane"), "mcl_core:glass_gray", "_gray")
+pane(S("Lime Stained Glass Pane"), "mcl_core:glass_lime", "_lime")
+pane(S("Light Grey Stained Glass Pane"), "mcl_core:glass_silver", "_silver")
+pane(S("Magenta Stained Glass Pane"), "mcl_core:glass_magenta", "_magenta")
+pane(S("Purple Stained Glass Pane"), "mcl_core:glass_purple", "_purple")
+pane(S("Cyan Stained Glass Pane"), "mcl_core:glass_cyan", "_cyan")

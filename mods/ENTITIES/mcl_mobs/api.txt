@@ -28,8 +28,13 @@ functions needed for the mob to work properly which contains the following:
       "monster"    attacks player or npc on sight.
       "npc"        walk around and will defend themselves if hit first, they
                    kill monsters.
-   'hp_min'        has the minimum health value the mob can spawn with.
-   'hp_max'        has the maximum health value the mob can spawn with.
+   'hp_min'        the minimum health value the mob can spawn with.
+   'hp_max'        the maximum health value the mob can spawn with.
+   'breath_max'    The maximum breath value the mob can spawn with and can have.
+                   If -1 (default), mob does not take drowning damage.
+   'breathes_in_water' If true, mob loses breath when not in water. Otherwise,
+                   mob loses breath when inside a node with `drowning` attribute
+                   set (default: false).
    'armor'         holds strength of mob, 100 is normal, lower is more powerful
                    and needs more hits and better weapons to kill.
    'passive'       when true allows animals to defend themselves when hit,
@@ -56,9 +61,11 @@ functions needed for the mob to work properly which contains the following:
    'fall_speed'    has the maximum speed the mob can fall at, default is -10.
    'fall_damage'   when true causes falling to inflict damage.
    'water_damage'  holds the damage per second infliced to mobs when standing in
-                   water.
+                   water (default: 0).
    'lava_damage'   holds the damage per second inflicted to mobs when standing
-                   in lava or fire.
+                   in lava (default: 8).
+   'fire_damage'   holds the damage per second inflicted to mobs when standing
+                   in fire (default: 1).
    'light_damage'  holds the damage per second inflicted to mobs when it's too
                    bright (above 13 light).
    'suffocation'   when true causes mobs to suffocate inside solid blocks (2 damage per second).
@@ -78,6 +85,8 @@ functions needed for the mob to work properly which contains the following:
                          punches when nearby.
    'group_attack'        when true has same mob type grouping together to attack
                          offender.
+                         [MCL2 extension:] When a table, this is a list of
+                         mob types that will get alerted as well (besides same mob type)
    'attack_type'         tells the api what a mob does when attacking the player
                          or another mob:
       'dogfight'         is a melee attack when player is within mob reach.
@@ -114,10 +123,6 @@ functions needed for the mob to work properly which contains the following:
                          e.g. {"player", "mobs_animal:chicken"}.
    'runaway_from'        contains a table with mob names to run away from, add
                          "player" to list to runaway from player also.
-   'blood_amount'        contains the number of blood droplets to appear when
-                         mob is hit.
-   'blood_texture'       has the texture name to use for droplets e.g.
-                         "mobs_blood.png", or table {"blood1.png", "blood2.png"}
    'pathfinding'         set to 1 for mobs to use pathfinder feature to locate
                          player, set to 2 so they can build/break also (only
                          works with dogfight attack and when 'mobs_griefing'
@@ -131,6 +136,7 @@ functions needed for the mob to work properly which contains the following:
    'makes_footstep_sound' when true you can hear mobs walking.
    'sounds'               this is a table with sounds of the mob
       'distance'          maximum distance sounds can be heard, default is 10.
+      'base_pitch'        base pitch to use adult mobs, default is 1.0 (MCL2 extension)
       'random'            played randomly from time to time.
                           also played for overfeeding animal.
       'war_cry'           what you hear when mob starts to attack player. (currently disabled)
@@ -141,6 +147,9 @@ functions needed for the mob to work properly which contains the following:
       'jump'              played when mob jumps. There's a built-in cooloff timer to avoid sound spam
       'fuse'              sound played when mob explode timer starts.
       'explode'           sound played when mob explodes.
+
+      Note: For all sounds except fuse and explode, the pitch is slightly randomized from the base pitch
+      The pitch of children is 50% higher.
 
    'drops'     table of items that are dropped when mob is killed, fields are:
       'name'   name of item to drop.
@@ -215,6 +224,14 @@ functions needed for the mob to work properly which contains the following:
                         are in direct sunlight
       'spawn_small_alternative': name of a smaller mob to use as replacement if
                                  spawning fails due to space requirements
+      'glow' same as in entity definition
+      'child' if true, spawn mob as child
+      'shoot_arrow(self, pos, dir)' function that is called when mob wants to shoot an arrow.
+                                    You can spawn your own arrow here. pos is mob position,
+                                    dir is mob's aiming direction
+      'sounds_child' same as sounds, but for childs. If not defined, childs will use same
+                     sound as adults but with higher pitch
+
 
 Node Replacement
 ----------------
@@ -234,8 +251,9 @@ eating.
    'replace_rate'   how random should the replace rate be (typically 10)
    'replace_offset' +/- value to check specific node to replace
 
-   'on_replace(self, pos, oldnode, newnode)' is called when mob is about to
-                                             replace a node.
+   'on_replace(self, pos, oldnode, newnode)'
+          is called when mob is about to replace a node. Also called
+          when not actually replacing due to mobs_griefing setting being false.
       'self'    ObjectRef of mob
       'pos'     Position of node to replace
       'oldnode' Current node
@@ -289,12 +307,18 @@ for each mob.
 
    'self.health'        contains current health of mob (cannot exceed
                         self.hp_max)
+   'self.breath'        contains current breath of mob, if mob takes drowning
+                        damage at all (cannot exceed self.breath_max). Breath
+                        decreases by 1 each second while in a node with drowning
+                        damage and increases by 1 each second otherwise.
    'self.texture_list'  contains list of all mob textures
    'self.child_texture' contains mob child texture when growing up
    'self.base_texture'  contains current skin texture which was randomly
                         selected from textures list
-   'self.gotten'        this is used for obtaining milk from cow and wool from
-                        sheep
+   'self.gotten'        this is used to track whether some special item has been
+                        gotten from the mob, for example, wool from sheep.
+                        Initialized as false, and the mob must set this value
+                        manually.
    'self.horny'         when animal fed enough it is set to true and animal can
                         breed with same animal
    'self.hornytimer'    background timer that controls breeding functions and
@@ -573,19 +597,13 @@ External Settings for "minetest.conf"
    'enable_damage'          if true monsters will attack players (default is true)
    'only_peaceful_mobs'     if true only animals will spawn in game (default is
                             false)
-   'mobs_disable_blood'     if false blood effects appear when mob is hit (default
+   'mobs_disable_blood'     if false, damage effects appear when mob is hit (default
                             is false)
    'mobs_spawn_protected'   if set to false then mobs will not spawn in protected
                             areas (default is true)
-   'remove_far_mobs'        if true then untamed mobs that are outside players
-                             visual range will be removed (default is true)
-   'mobname'                can change specific mob chance rate (0 to disable) and
-                            spawn number e.g. mobs_animal:cow = 1000,5
    'mob_difficulty'         sets difficulty level (health and hit damage
                             multiplied by this number), defaults to 1.0.
-   'mob_show_health'        if false then punching mob will not show health status
-                            (true by default)
-   'mob_chance_multiplier'  multiplies chance of all mobs spawning and can be set
+   'mob_spawn_chance'       multiplies chance of all mobs spawning and can be set
                             to 0.5 to have mobs spawn more or 2.0 to spawn less.
                             e.g.  1 in 7000 * 0.5 = 1 in 3500 so better odds of
                             spawning.

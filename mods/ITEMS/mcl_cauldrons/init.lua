@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_cauldron")
+
 -- Cauldron mod, adds cauldrons.
 
 -- TODO: Extinguish fire of burning entities
@@ -42,9 +44,9 @@ end
 
 -- Empty cauldron
 minetest.register_node("mcl_cauldrons:cauldron", {
-	description = "Cauldron",
-	_doc_items_longdesc = "Cauldrons are used to store water and slowly fill up under rain. They can also be used to wash off banners.",
-	_doc_items_usagehelp = "Place a water pucket into the cauldron to fill it with water. Place an empty bucket on a full cauldron to retrieve the water. Place a water bottle into the cauldron to fill the cauldron to one third with water. Place a glass bottle in a cauldron with water to retrieve one third of the water. Use an emblazoned banner on a cauldron with water to wash off its top layer.",
+	description = S("Cauldron"),
+	_doc_items_longdesc = S("Cauldrons are used to store water and slowly fill up under rain."),
+	_doc_items_usagehelp = S("Place a water pucket into the cauldron to fill it with water. Place an empty bucket on a full cauldron to retrieve the water. Place a water bottle into the cauldron to fill the cauldron to one third with water. Place a glass bottle in a cauldron with water to retrieve one third of the water."),
 	wield_image = "mcl_cauldrons_cauldron.png",
 	inventory_image = "mcl_cauldrons_cauldron.png",
 	drawtype = "nodebox",
@@ -101,14 +103,14 @@ local register_filled_cauldron = function(water_level, description, river_water)
 end
 
 -- Filled cauldrons (3 levels)
-register_filled_cauldron(1, "Cauldron (1/3 Water)")
-register_filled_cauldron(2, "Cauldron (2/3 Water)")
-register_filled_cauldron(3, "Cauldron (3/3 Water)")
+register_filled_cauldron(1, S("Cauldron (1/3 Water)"))
+register_filled_cauldron(2, S("Cauldron (2/3 Water)"))
+register_filled_cauldron(3, S("Cauldron (3/3 Water)"))
 
 if minetest.get_modpath("mclx_core") then
-	register_filled_cauldron(1, "Cauldron (1/3 River Water)", true)
-	register_filled_cauldron(2, "Cauldron (2/3 River Water)", true)
-	register_filled_cauldron(3, "Cauldron (3/3 River Water)", true)
+	register_filled_cauldron(1, S("Cauldron (1/3 River Water)"), true)
+	register_filled_cauldron(2, S("Cauldron (2/3 River Water)"), true)
+	register_filled_cauldron(3, S("Cauldron (3/3 River Water)"), true)
 end
 
 minetest.register_craft({

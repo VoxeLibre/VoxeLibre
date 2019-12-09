@@ -1,3 +1,6 @@
+local S = minetest.get_translator("mcl_chests")
+local mod_doc = minetest.get_modpath("doc")
+
 local no_rotate, simple_rotate
 if minetest.get_modpath("screwdriver") then
 	no_rotate = screwdriver.disallow
@@ -37,13 +40,8 @@ end
 
 local trapped_chest_mesecons_rules = mesecon.rules.pplate
 
--- To be called if a player closed a chest
-local player_chest_close = function(player)
-	local name = player:get_player_name()
-	if open_chests[name] == nil then
-		return
-	end
-	local pos = open_chests[name].pos
+-- To be called when a chest is closed (only relevant for trapped chest atm)
+local chest_update_after_close = function(pos)
 	local node = minetest.get_node(pos)
 
 	if node.name == "mcl_chests:trapped_chest_on" then
@@ -64,20 +62,32 @@ local player_chest_close = function(player)
 		minetest.swap_node(pos_other, {name="mcl_chests:trapped_chest_left", param2 = node.param2})
 		mesecon.receptor_off(pos_other, trapped_chest_mesecons_rules)
 	end
+end
+
+-- To be called if a player closed a chest
+local player_chest_close = function(player)
+	local name = player:get_player_name()
+	if open_chests[name] == nil then
+		return
+	end
+	local pos = open_chests[name].pos
+	chest_update_after_close(pos)
 
 	open_chests[name] = nil
 end
 
 -- This is a helper function to register both chests and trapped chests. Trapped chests will make use of the additional parameters
-local register_chest = function(basename, desc, longdesc, usagehelp, tiles_table, hidden, mesecons, on_rightclick_addendum, on_rightclick_addendum_left, on_rightclick_addendum_right, drop, formspec_basename)
+local register_chest = function(basename, desc, longdesc, usagehelp, tiles_table, hidden, mesecons, on_rightclick_addendum, on_rightclick_addendum_left, on_rightclick_addendum_right, drop, canonical_basename)
 -- START OF register_chest FUNCTION BODY
 if not drop then
 	drop = "mcl_chests:"..basename
 else
 	drop = "mcl_chests:"..drop
 end
-if not formspec_basename then
-	formspec_basename = basename
+-- The basename of the "canonical" version of the node, if set (e.g.: trapped_chest_on → trapped_chest).
+-- Used to get a shared formspec ID and to swap the node back to the canonical version in on_construct.
+if not canonical_basename then
+	canonical_basename = basename
 end
 
 minetest.register_node("mcl_chests:"..basename, {
@@ -118,14 +128,16 @@ minetest.register_node("mcl_chests:"..basename, {
 		-- BEGIN OF LISTRING WORKAROUND
 		inv:set_size("input", 1)
 		-- END OF LISTRING WORKAROUND
-		if minetest.get_node(mcl_util.get_double_container_neighbor_pos(pos, param2, "right")).name == "mcl_chests:"..basename then
-			minetest.swap_node(pos, {name="mcl_chests:"..basename.."_right",param2=param2})
+		if minetest.get_node(mcl_util.get_double_container_neighbor_pos(pos, param2, "right")).name == "mcl_chests:"..canonical_basename then
+			minetest.swap_node(pos, {name="mcl_chests:"..canonical_basename.."_right",param2=param2})
 			local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "right")
-			minetest.swap_node(p, { name = "mcl_chests:"..basename.."_left", param2 = param2 })
-		elseif minetest.get_node(mcl_util.get_double_container_neighbor_pos(pos, param2, "left")).name == "mcl_chests:"..basename then
-			minetest.swap_node(pos, {name="mcl_chests:"..basename.."_left",param2=param2})
+			minetest.swap_node(p, { name = "mcl_chests:"..canonical_basename.."_left", param2 = param2 })
+		elseif minetest.get_node(mcl_util.get_double_container_neighbor_pos(pos, param2, "left")).name == "mcl_chests:"..canonical_basename then
+			minetest.swap_node(pos, {name="mcl_chests:"..canonical_basename.."_left",param2=param2})
 			local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "left")
-			minetest.swap_node(p, { name = "mcl_chests:"..basename.."_right", param2 = param2 })
+			minetest.swap_node(p, { name = "mcl_chests:"..canonical_basename.."_right", param2 = param2 })
+		else
+			minetest.swap_node(pos, { name = "mcl_chests:"..canonical_basename, param2 = param2 })
 		end
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
@@ -168,12 +180,13 @@ minetest.register_node("mcl_chests:"..basename, {
 
 	on_rightclick = function(pos, node, clicker)
 		minetest.show_formspec(clicker:get_player_name(),
-		"mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
+		"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 		"size[9,8.75]"..
 		mcl_vars.inventory_header..
 		"background[-0.19,-0.25;9.41,10.48;mcl_chests_inventory_chest.png]"..
-		"image[0,-0.2;5,0.75;mcl_chests_fnt_chest.png]"..
+		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Chest"))).."]"..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
+		"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 		"list[current_player;main;0,4.5;9,3;9]"..
 		"list[current_player;main;0,7.74;9,1;]"..
 		"listring[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main]"..
@@ -187,7 +200,7 @@ minetest.register_node("mcl_chests:"..basename, {
 	on_destruct = function(pos)
 		local players = minetest.get_connected_players()
 		for p=1, #players do
-			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
+			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
 		end
 	end,
 	mesecons = mesecons,
@@ -202,6 +215,15 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 	drop = drop,
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	on_construct = function(pos)
+		local n = minetest.get_node(pos)
+		local param2 = n.param2
+		local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "left")
+		if not p or minetest.get_node(p).name ~= "mcl_chests:"..canonical_basename.."_right" then
+			n.name = "mcl_chests:"..canonical_basename
+			minetest.swap_node(pos, n)
+		end
+	end,
 	on_destruct = function(pos)
 		local n = minetest.get_node(pos)
 		if n.name == "mcl_chests:"..basename then
@@ -210,13 +232,16 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 
 		local players = minetest.get_connected_players()
 		for p=1, #players do
-			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
+			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
 		end
 
 		local param2 = n.param2
 		local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "left")
 		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_right" then
 			return
+		end
+		for pl=1, #players do
+			minetest.close_formspec(players[pl]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..p.x.."_"..p.y.."_"..p.z)
 		end
 		minetest.swap_node(p, { name = "mcl_chests:"..basename, param2 = param2 })
 	end,
@@ -290,12 +315,14 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
 
 		minetest.show_formspec(clicker:get_player_name(),
-		"mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
+		"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 		"size[9,11.5]"..
 		"background[-0.19,-0.25;9.41,12.5;mcl_chests_inventory_chest_large.png]"..
 		mcl_vars.inventory_header..
+		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Large Chest"))).."]"..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
 		"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,3.5;9,3;]"..
+		"label[0,7;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 		"list[current_player;main;0,7.5;9,3;9]"..
 		"list[current_player;main;0,10.75;9,1;]"..
 		-- BEGIN OF LISTRING WORKAROUND
@@ -323,6 +350,15 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 	drop = drop,
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	on_construct = function(pos)
+		local n = minetest.get_node(pos)
+		local param2 = n.param2
+		local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "right")
+		if not p or minetest.get_node(p).name ~= "mcl_chests:"..canonical_basename.."_left" then
+			n.name = "mcl_chests:"..canonical_basename
+			minetest.swap_node(pos, n)
+		end
+	end,
 	on_destruct = function(pos)
 		local n = minetest.get_node(pos)
 		if n.name == "mcl_chests:"..basename then
@@ -331,13 +367,16 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 
 		local players = minetest.get_connected_players()
 		for p=1, #players do
-			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
+			minetest.close_formspec(players[p]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z)
 		end
 
 		local param2 = n.param2
 		local p = mcl_util.get_double_container_neighbor_pos(pos, param2, "right")
 		if not p or minetest.get_node(p).name ~= "mcl_chests:"..basename.."_left" then
 			return
+		end
+		for pl=1, #players do
+			minetest.close_formspec(players[pl]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..p.x.."_"..p.y.."_"..p.z)
 		end
 		minetest.swap_node(p, { name = "mcl_chests:"..basename, param2 = param2 })
 	end,
@@ -411,13 +450,15 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
 
 		minetest.show_formspec(clicker:get_player_name(),
-		"mcl_chests:"..formspec_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
+		"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 
 		"size[9,11.5]"..
 		"background[-0.19,-0.25;9.41,12.5;mcl_chests_inventory_chest_large.png]"..
 		mcl_vars.inventory_header..
+		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Large Chest"))).."]"..
 		"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,0.5;9,3;]"..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3.5;9,3;]"..
+		"label[0,7;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 		"list[current_player;main;0,7.5;9,3;9]"..
 		"list[current_player;main;0,10.75;9,1;]"..
 		-- BEGIN OF LISTRING WORKAROUND
@@ -437,7 +478,7 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 	on_rotate = no_rotate,
 })
 
-if minetest.get_modpath("doc") then
+if mod_doc then
 	doc.add_entry_alias("nodes", "mcl_chests:"..basename, "nodes", "mcl_chests:"..basename.."_left")
 	doc.add_entry_alias("nodes", "mcl_chests:"..basename, "nodes", "mcl_chests:"..basename.."_right")
 end
@@ -445,10 +486,12 @@ end
 -- END OF register_chest FUNCTION BODY
 end
 
+local chestusage = S("To access its inventory, rightclick it. When broken, the items will drop out.")
+
 register_chest("chest",
-	"Chest",
-	"Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other.",
-	"To access the chest's inventory, rightclick the chest. When broken, the items of the chest will drop out.",
+	S("Chest"),
+	S("Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other."),
+	chestusage,
 	{
 		small = {"default_chest_top.png", "mcl_chests_chest_bottom.png",
 		"mcl_chests_chest_right.png", "mcl_chests_chest_left.png",
@@ -476,9 +519,9 @@ local traptiles = {
 }
 
 register_chest("trapped_chest",
-	"Trapped Chest",
-	"A trapped chest is a container which provides 27 inventory slots. When it is opened, it sends a redstone signal to its adjacent blocks as long it stays open. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other.",
-	"To access the inventory of a trapped chest, rightclick it. When broken, the items will drop out.",
+	S("Trapped Chest"),
+	S("A trapped chest is a container which provides 27 inventory slots. When it is opened, it sends a redstone signal to its adjacent blocks as long it stays open. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other."),
+	chestusage,
 	traptiles,
 	nil,
 	{receptor = {
@@ -599,9 +642,9 @@ minetest.register_craft({
 })
 
 minetest.register_node("mcl_chests:ender_chest", {
-	description = "Ender Chest",
-	_doc_items_longdesc = "Ender chests grant you access to a single personal interdimensional inventory with 27 slots. This inventory is the same no matter from which ender chest you access it from. If you put one item into one ender chest, you will find it in all other ender chests. Each player will only see their own items, but not the items of other players.",
-	_doc_items_usagehelp = "Rightclick the ender chest to access your personal interdimensional inventory.",
+	description = S("Ender Chest"),
+	_doc_items_longdesc = S("Ender chests grant you access to a single personal interdimensional inventory with 27 slots. This inventory is the same no matter from which ender chest you access it from. If you put one item into one ender chest, you will find it in all other ender chests. Each player will only see their own items, but not the items of other players."),
+	_doc_items_usagehelp = S("Rightclick the ender chest to access your personal interdimensional inventory."),
 	tiles = {"mcl_chests_ender_chest_top.png", "mcl_chests_ender_chest_bottom.png",
 		"mcl_chests_ender_chest_right.png", "mcl_chests_ender_chest_left.png",
 		"mcl_chests_ender_chest_back.png", "mcl_chests_ender_chest_front.png"},
@@ -620,8 +663,9 @@ minetest.register_node("mcl_chests:ender_chest", {
 				"size[9,8.75]"..
 				mcl_vars.inventory_header..
 				"background[-0.19,-0.25;9.41,10.48;mcl_chests_inventory_chest.png]"..
-				"image[0,-0.2;5,0.75;mcl_chests_fnt_ender_chest.png]"..
+				"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Ender Chest"))).."]"..
 				"list[current_player;enderchest;0,0.5;9,3;]"..
+				"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 				"list[current_player;main;0,4.5;9,3;9]"..
 				"list[current_player;main;0,7.74;9,1;]"..
 				"listring[current_player;enderchest]"..
@@ -630,6 +674,16 @@ minetest.register_node("mcl_chests:ender_chest", {
 	_mcl_blast_resistance = 3000,
 	_mcl_hardness = 22.5,
 	on_rotate = simple_rotate,
+})
+
+minetest.register_lbm({
+	label = "Update ender chest + shulker box formspecs (0.51.0)",
+	name = "mcl_chests:update_formspecs_0_51_0",
+	nodenames = { "mcl_chests:ender_chest", "group:shulker_box" },
+	action = function(pos, node)
+		minetest.registered_nodes[node.name].on_construct(pos)
+		minetest.log("action", "[mcl_chests] Node formspec updated at "..minetest.pos_to_string(pos))
+	end,
 })
 
 minetest.register_on_joinplayer(function(player)
@@ -648,22 +702,22 @@ minetest.register_craft({
 
 -- Shulker boxes
 local boxtypes = {
-	white = "White Shulker Box",
-	grey = "Light Grey Shulker Box",
-	orange = "Orange Shulker Box",
-	cyan = "Cyan Shulker Box",
-	magenta = "Magenta Shulker Box",
-	violet = "Purple Shulker Box",
-	lightblue = "Light Blue Shulker Box",
-	blue = "Blue Shulker Box",
-	yellow = "Yellow Shulker Box",
-	brown = "Brown Shulker Box",
-	green = "Lime Shulker Box",
-	dark_green = "Green Shulker Box",
-	pink = "Pink Shulker Box",
-	red = "Red Shulker Box",
-	dark_grey = "Grey Shulker Box",
-	black = "Black Shulker Box",
+	white = S("White Shulker Box"),
+	grey = S("Light Grey Shulker Box"),
+	orange = S("Orange Shulker Box"),
+	cyan = S("Cyan Shulker Box"),
+	magenta = S("Magenta Shulker Box"),
+	violet = S("Purple Shulker Box"),
+	lightblue = S("Light Blue Shulker Box"),
+	blue = S("Blue Shulker Box"),
+	yellow = S("Yellow Shulker Box"),
+	brown = S("Brown Shulker Box"),
+	green = S("Lime Shulker Box"),
+	dark_green = S("Green Shulker Box"),
+	pink = S("Pink Shulker Box"),
+	red = S("Red Shulker Box"),
+	dark_grey = S("Grey Shulker Box"),
+	black = S("Black Shulker Box"),
 }
 
 local shulker_mob_textures = {
@@ -684,13 +738,28 @@ local shulker_mob_textures = {
 	dark_grey = "mobs_mc_shulker_gray.png",
 	black = "mobs_mc_shulker_black.png",
 }
+local canonical_shulker_color = "violet"
 
 for color, desc in pairs(boxtypes) do
 	local mob_texture = shulker_mob_textures[color]
+	local is_canonical = color == canonical_shulker_color
+	local longdesc, usagehelp, create_entry, entry_name
+	if mod_doc then
+		if is_canonical then
+			longdesc = S("A shulker box is a portable container which provides 27 inventory slots for any item except shulker boxes. Shulker boxes keep their inventory when broken, so shulker boxes as well as their contents can be taken as a single item. Shulker boxes come in many different colors.")
+			usagehelp = S("To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out.")
+			entry_name = S("Shulker Box")
+		else
+			create_entry = false
+		end
+	end
+
 	minetest.register_node("mcl_chests:"..color.."_shulker_box", {
 		description = desc,
-		_doc_items_longdesc = "A shulker box is a portable container which provides 27 inventory slots for any item except shulker boxes. Shulker boxes keep their inventory when broken, so shulker boxes as well as their contents can be taken as a single item. Shulker boxes come in many different colors.",
-		_doc_items_usagehelp = "To access the inventory of a shulker box, place and right-click it. To take a shulker box and its contents with you, just break and collect it, the items will not fall out. Place the shulker box again to be able to retrieve its contents.",
+		_doc_items_create_entry = create_entry,
+		_doc_items_entry_name = entry_name,
+		_doc_items_longdesc = longdesc,
+		_doc_items_usagehelp = usagehelp,
 		tiles = {
 			"mcl_chests_"..color.."_shulker_box_top.png", -- top
 			"[combine:16x16:-32,-28="..mob_texture, -- bottom
@@ -715,8 +784,9 @@ for color, desc in pairs(boxtypes) do
 					"size[9,8.75]"..
 					mcl_vars.inventory_header..
 					"background[-0.19,-0.25;9.41,10.48;mcl_chests_inventory_chest.png]"..
-					"image[0,-0.2;5,0.75;mcl_chests_fnt_shulker_box.png]"..
+					"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Shulker Box"))).."]"..
 					"list[current_name;main;0,0.5;9,3;]"..
+					"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 					"list[current_player;main;0,4.5;9,3;9]"..
 					"list[current_player;main;0,7.74;9,1;]"..
 					"listring[current_name;main]"..
@@ -793,6 +863,10 @@ for color, desc in pairs(boxtypes) do
 		_mcl_hardness = 6,
 	})
 
+	if mod_doc and not is_canonical then
+		doc.add_entry_alias("nodes", "mcl_chests:"..canonical_shulker_color.."_shulker_box", "nodes", "mcl_chests:"..color.."_shulker_box")
+	end
+
 	minetest.register_craft({
 		type = "shapeless",
 		output = 'mcl_chests:'..color..'_shulker_box',
@@ -809,3 +883,16 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_lbm({
+	-- Disable active/open trapped chests when loaded because nobody could
+	-- have them open at loading time.
+	-- Fixes redstone weirdness.
+	label = "Disable active trapped chests",
+	name = "mcl_chests:reset_trapped_chests",
+	nodenames = { "mcl_chests:trapped_chest_on", "mcl_chests:trapped_chest_on_left", "mcl_chests:trapped_chest_on_right" },
+	run_at_every_load = true,
+	action = function(pos, node)
+		minetest.log("error", "lbm!" ..minetest.pos_to_string(pos))
+		chest_update_after_close(pos)
+	end,
+})

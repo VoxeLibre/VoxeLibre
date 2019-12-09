@@ -1,6 +1,8 @@
+local S = minetest.get_translator("mcl_minecarts")
+
 -- Template rail function
 local register_rail = function(itemstring, tiles, def_extras, creative)
-	local groups = {handy=1,pickaxey=1, attached_node=1,rail=1,connect_to_raillike=1,dig_by_water=1,destroy_by_lava_flow=1, transport=1}
+	local groups = {handy=1,pickaxey=1, attached_node=1,rail=1,connect_to_raillike=minetest.raillike_group("rail"),dig_by_water=1,destroy_by_lava_flow=1, transport=1}
 	if creative == false then
 		groups.not_in_creative_inventory = 1
 	end
@@ -64,14 +66,14 @@ local rail_rules_long =
 
 local rail_rules_short = mesecon.rules.pplate
 
-local railuse = "Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed."
+local railuse = S("Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.")
 
 -- Normal rail
 register_rail("mcl_minecarts:rail",
 	{"default_rail.png", "default_rail_curved.png", "default_rail_t_junction.png", "default_rail_crossing.png"},
 	{
-		description = "Rail",
-		_doc_items_longdesc = "Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction.",
+		description = S("Rail"),
+		_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction."),
 		_doc_items_usagehelp = railuse,
 	}
 )
@@ -80,9 +82,9 @@ register_rail("mcl_minecarts:rail",
 register_rail("mcl_minecarts:golden_rail",
 	{"mcl_minecarts_rail_golden.png", "mcl_minecarts_rail_golden_curved.png", "mcl_minecarts_rail_golden_t_junction.png", "mcl_minecarts_rail_golden_crossing.png"},
 	{
-		description = "Powered Rail",
-		_doc_items_longdesc = "Rails can be used to build transport tracks for minecarts. Powered rails are able to accelerate and brake minecarts.",
-		_doc_items_usagehelp = railuse .. "\n" .. "Without redstone power, the rail will brake minecarts. To make this rail accelerate minecarts, power it with redstone power.",
+		description = S("Powered Rail"),
+		_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. Powered rails are able to accelerate and brake minecarts."),
+		_doc_items_usagehelp = railuse .. "\n" .. S("Without redstone power, the rail will brake minecarts. To make this rail accelerate minecarts, power it with redstone power."),
 		_rail_acceleration = -3,
 		mesecons = {
 			conductor = {
@@ -118,9 +120,9 @@ register_rail("mcl_minecarts:golden_rail_on",
 register_rail("mcl_minecarts:activator_rail",
 	{"mcl_minecarts_rail_activator.png", "mcl_minecarts_rail_activator_curved.png", "mcl_minecarts_rail_activator_t_junction.png", "mcl_minecarts_rail_activator_crossing.png"},
 	{
-		description = "Activator Rail",
-		_doc_items_longdesc = "Rails can be used to build transport tracks for minecarts. Activator rails are used to activate special minecarts.",
-		_doc_items_usagehelp = railuse .. "\n" .. "To make this rail activate minecarts, power it with redstone power and send a minecart over this piece of rail.",
+		description = S("Activator Rail"),
+		_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. Activator rails are used to activate special minecarts."),
+		_doc_items_usagehelp = railuse .. "\n" .. S("To make this rail activate minecarts, power it with redstone power and send a minecart over this piece of rail."),
 		mesecons = {
 			conductor = {
 				state = mesecon.state.off,
@@ -157,9 +159,9 @@ register_rail("mcl_minecarts:activator_rail_on",
 register_rail("mcl_minecarts:detector_rail",
 	{"mcl_minecarts_rail_detector.png", "mcl_minecarts_rail_detector_curved.png", "mcl_minecarts_rail_detector_t_junction.png", "mcl_minecarts_rail_detector_crossing.png"},
 	{
-		description = "Detector Rail",
-		_doc_items_longdesc = "Rails can be used to build transport tracks for minecarts. A detector rail is able to detect a minecart above it and powers redstone mechanisms.",
-		_doc_items_usagehelp = railuse .. "\n" .. "To detect a minecart and provide redstone power, connect it to redstone trails or redstone mechanisms and send any minecart over the rail.",
+		description = S("Detector Rail"),
+		_doc_items_longdesc = S("Rails can be used to build transport tracks for minecarts. A detector rail is able to detect a minecart above it and powers redstone mechanisms."),
+		_doc_items_usagehelp = railuse .. "\n" .. S("To detect a minecart and provide redstone power, connect it to redstone trails or redstone mechanisms and send any minecart over the rail."),
 		mesecons = {
 			receptor = {
 				state = mesecon.state.off,

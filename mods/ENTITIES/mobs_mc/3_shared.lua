@@ -53,7 +53,7 @@ mobs_mc.make_owner_teleport_function = function(dist, teleport_check_interval)
 					if minetest.registered_nodes[minetest.get_node(telepos).name].walkable == false and
 							minetest.registered_nodes[minetest.get_node(telepos_below).name].walkable == true then
 						-- Correct position found! Let's teleport.
-						self.object:setpos(telepos)
+						self.object:set_pos(telepos)
 						return
 					end
 				end

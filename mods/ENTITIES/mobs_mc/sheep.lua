@@ -1,8 +1,6 @@
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
 
 --###################
 --################### SHEEP
@@ -32,6 +30,9 @@ if minetest.get_modpath("mcl_wool") ~= nil then
 end
 
 local sheep_texture = function(color_group)
+	if not color_group then
+		color_group = "unicolor_white"
+	end
 	return {
 		"mobs_mc_sheep_fur.png^[colorize:"..colors[color_group][2],
 		"mobs_mc_sheep.png",
@@ -66,9 +67,6 @@ mobs:register_mob("mobs_mc:sheep", {
 		min = 1,
 		max = 1,},
 	},
-	water_damage = 1,
-	lava_damage = 4,
-	light_damage = 0,
 	fear_height = 4,
 	sounds = {
 		random = "mobs_sheep",
@@ -184,6 +182,10 @@ mobs:register_mob("mobs_mc:sheep", {
 			minetest.log("verbose", "[mobs_mc] " ..item:get_name() .. " " .. minetest.get_item_group(item:get_name(), "dye"))
 			for group, colordata in pairs(colors) do
 				if minetest.get_item_group(item:get_name(), group) == 1 then
+					if not minetest.settings:get_bool("creative_mode") then
+						item:take_item()
+						clicker:set_wielded_item(item)
+					end
 					self.base_texture = sheep_texture(group)
 					self.object:set_properties({
 						textures = self.base_texture,
@@ -229,6 +231,7 @@ mobs:register_mob("mobs_mc:sheep", {
 				local groups = minetest.registered_items[new_dye].groups
 				for k, v in pairs(groups) do
 					if string.sub(k, 1, 9) == "unicolor_" then
+						ent_c.color = k
 						ent_c.base_texture = sheep_texture(k)
 						mixed = true
 						break
@@ -240,11 +243,12 @@ mobs:register_mob("mobs_mc:sheep", {
 			if not mixed then
 				-- Choose color randomly from one of the parents
 				local p = math.random(1, 2)
-				if p == 1 then
-					ent_c.base_texture = sheep_texture(color1)
+				if p == 1 and color1 then
+					ent_c.color = color1
 				else
-					ent_c.base_texture = sheep_texture(color2)
+					ent_c.color = color2
 				end
+				ent_c.base_texture = sheep_texture(ent_c.color)
 			end
 			child:set_properties({textures = ent_c.base_texture})
 			ent_c.initial_color_set = true

@@ -1,9 +1,11 @@
+local S = minetest.get_translator("mcl_itemframes")
+
 minetest.register_entity("mcl_itemframes:item",{
 	hp_max = 1,
 	visual = "wielditem",
 	visual_size = {x=0.3,y=0.3},
-	collisionbox = {0,0,0,0,0,0},
 	physical = false,
+	pointable = false,
 	textures = { "empty.png" },
 	_texture = "empty.png",
 
@@ -77,7 +79,7 @@ local update_item_entity = function(pos, node)
 		lua:_update_texture()
 		if node.name == "mcl_itemframes:item_frame" then
 			local yaw = math.pi*2 - node.param2 * math.pi/2
-			e:setyaw(yaw)
+			e:set_yaw(yaw)
 		end
 	end
 end
@@ -100,9 +102,9 @@ if minetest.get_modpath("screwdriver") then
 end
 
 minetest.register_node("mcl_itemframes:item_frame",{
-	description = "Item Frame",
-	_doc_items_longdesc = "Item frames are decorative blocks in which items can be placed.",
-	_doc_items_usagehelp = "Hold any item in your hand and right-click the item frame to place the item into the frame. Rightclick the item frame again to retrieve the item.",
+	description = S("Item Frame"),
+	_doc_items_longdesc = S("Item frames are decorative blocks in which items can be placed."),
+	_doc_items_usagehelp = S("Just place any item on the item frame. Use the item frame again to retrieve the item."),
 	drawtype = "mesh",
 	is_ground_content = false,
 	mesh = "mcl_itemframes_itemframe1facedir.obj",

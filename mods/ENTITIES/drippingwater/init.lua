@@ -12,15 +12,17 @@ minetest.register_entity("drippingwater:drop_water", {
 	hp_max = 1,
 	physical = true,
 	collide_with_objects = false,
-	collisionbox = {0,0,0,0,0,0},
+	collisionbox = {-0.025,-0.05,-0.025,0.025,-0.01,0.025},
+	pointable = false,
 	visual = "cube",
 	visual_size = {x=0.05, y=0.1},
 	textures = {water_tex, water_tex, water_tex, water_tex, water_tex, water_tex},
 	spritediv = {x=1, y=1},
 	initial_sprite_basepos = {x=0, y=0},
+	static_save = false,
 
 	on_activate = function(self, staticdata)
-		self.object:setsprite({x=0,y=0}, 1, 1, true)
+		self.object:set_sprite({x=0,y=0}, 1, 1, true)
 	end,
 
 	on_step = function(self, dtime)
@@ -28,11 +30,11 @@ minetest.register_entity("drippingwater:drop_water", {
 	local ownpos = self.object:get_pos()
 
 	if k==1 then
-	self.object:setacceleration({x=0, y=-5, z=0})
+	self.object:set_acceleration({x=0, y=-5, z=0})
 	end
 
 	if minetest.get_node({x=ownpos.x, y=ownpos.y +0.5, z=ownpos.z}).name == "air" then
-	self.object:setacceleration({x=0, y=-5, z=0})
+	self.object:set_acceleration({x=0, y=-5, z=0})
 	end
 	
 		if minetest.get_node({x=ownpos.x, y=ownpos.y -0.5, z=ownpos.z}).name ~= "air" then
@@ -50,15 +52,18 @@ minetest.register_entity("drippingwater:drop_lava", {
 	hp_max = 1,
 	physical = true,
 	collide_with_objects = false,
-	collisionbox = {0,0,0,0,0,0},
+	collisionbox = {-0.025,-0.05,-0.025,0.025,-0.01,0.025},
+	glow = math.max(7, minetest.registered_nodes["mcl_core:lava_source"].light_source - 3),
+	pointable = false,
 	visual = "cube",
 	visual_size = {x=0.05, y=0.1},
 	textures = {lava_tex, lava_tex, lava_tex, lava_tex, lava_tex, lava_tex},
 	spritediv = {x=1, y=1},
 	initial_sprite_basepos = {x=0, y=0},
+	static_save = false,
 
 	on_activate = function(self, staticdata)
-		self.object:setsprite({x=0,y=0}, 1, 0, true)
+		self.object:set_sprite({x=0,y=0}, 1, 0, true)
 	end,
 
 	on_step = function(self, dtime)
@@ -66,11 +71,11 @@ minetest.register_entity("drippingwater:drop_lava", {
 	local ownpos = self.object:get_pos()
 
 	if k==1 then
-	self.object:setacceleration({x=0, y=-5, z=0})
+	self.object:set_acceleration({x=0, y=-5, z=0})
 	end
 
 	if minetest.get_node({x=ownpos.x, y=ownpos.y +0.5, z=ownpos.z}).name == "air" then
-	self.object:setacceleration({x=0, y=-5, z=0})
+	self.object:set_acceleration({x=0, y=-5, z=0})
 	end
 
 		

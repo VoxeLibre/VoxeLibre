@@ -3,12 +3,12 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- intllib
-local MP = minetest.get_modpath(minetest.get_current_modname())
-local S, NS = dofile(MP.."/intllib.lua")
+local S = minetest.get_translator("mobs_mc")
+
 local snow_trail_frequency = 0.5 -- Time in seconds for checking to add a new snow trail
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+local mod_throwing = minetest.get_modpath("mcl_throwing") ~= nil
 
 local gotten_texture = {
 	"mobs_mc_snowman.png",
@@ -29,7 +29,7 @@ mobs:register_mob("mobs_mc:snowman", {
 	view_range = 10,
 	fall_damage = 0,
 	water_damage = 4,
-	lava_damage = 20,
+	rain_damage = 4,
 	attacks_monsters = true,
 	collisionbox = {-0.35, -0.01, -0.35, 0.35, 1.89, 0.35},
 	visual = "mesh",
@@ -52,7 +52,12 @@ mobs:register_mob("mobs_mc:snowman", {
 	jump = true,
 	makes_footstep_sound = true,
 	attack_type = "shoot",
-	arrow = "mobs_mc:snowball_entity",
+	arrow = "mcl_throwing:snowball_entity",
+	shoot_arrow = function(self, pos, dir)
+		if mod_throwing then
+			mcl_throwing.throw("mcl_throwing:snowball", pos, dir, nil, self.object)
+		end
+	end,
 	shoot_interval = 1,
 	shoot_offset = 1,
 	animation = {
@@ -70,7 +75,6 @@ mobs:register_mob("mobs_mc:snowman", {
 		die_speed = 25,
 	        die_loop = false,
 	},
-	blood_amount = 0,
 	do_custom = function(self, dtime)
 		if not mobs_griefing then
 			return
@@ -120,8 +124,6 @@ mobs:register_mob("mobs_mc:snowman", {
 			end
 		end
 	end,
-
-	rain_damage = 4,
 })
 
 -- This is to be called when a pumpkin or jack'o lantern has been placed. Recommended: In the on_construct function

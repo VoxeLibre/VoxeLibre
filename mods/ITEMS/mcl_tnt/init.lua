@@ -1,5 +1,6 @@
+local S = minetest.get_translator("mcl_tnt")
+
 local mod_death_messages = minetest.get_modpath("mcl_death_messages")
-local mod_hunger = minetest.get_modpath("mcl_hunger")
 
 local function spawn_tnt(pos, entname)
 	minetest.sound_play("tnt_ignite", {pos = pos,gain = 1.0,max_hear_distance = 15,})
@@ -11,7 +12,7 @@ end
 local function activate_if_tnt(nname, np, tnt_np, tntr)
     if nname == "mcl_tnt:tnt" then
         local e = spawn_tnt(np, nname)
-        e:setvelocity({x=(np.x - tnt_np.x)*5+(tntr / 4), y=(np.y - tnt_np.y)*5+(tntr / 3), z=(np.z - tnt_np.z)*5+(tntr / 4)})
+        e:set_velocity({x=(np.x - tnt_np.x)*5+(tntr / 4), y=(np.y - tnt_np.y)*5+(tntr / 3), z=(np.z - tnt_np.z)*5+(tntr / 4)})
     end
 end
 
@@ -19,22 +20,19 @@ local function do_tnt_physics(tnt_np,tntr)
     local objs = minetest.get_objects_inside_radius(tnt_np, tntr)
     for k, obj in pairs(objs) do
         local ent = obj:get_luaentity()
-        local v = obj:getvelocity()
+        local v = obj:get_velocity()
         local p = obj:get_pos()
         if ent and ent.name == "mcl_tnt:tnt" then
-            obj:setvelocity({x=(p.x - tnt_np.x) + (tntr / 2) + v.x, y=(p.y - tnt_np.y) + tntr + v.y, z=(p.z - tnt_np.z) + (tntr / 2) + v.z})
+            obj:set_velocity({x=(p.x - tnt_np.x) + (tntr / 2) + v.x, y=(p.y - tnt_np.y) + tntr + v.y, z=(p.z - tnt_np.z) + (tntr / 2) + v.z})
         else
             if v ~= nil then
-                obj:setvelocity({x=(p.x - tnt_np.x) + (tntr / 4) + v.x, y=(p.y - tnt_np.y) + (tntr / 2) + v.y, z=(p.z - tnt_np.z) + (tntr / 4) + v.z})
+                obj:set_velocity({x=(p.x - tnt_np.x) + (tntr / 4) + v.x, y=(p.y - tnt_np.y) + (tntr / 2) + v.y, z=(p.z - tnt_np.z) + (tntr / 4) + v.z})
             else
                 local dist = math.max(1, vector.distance(tnt_np, p))
                 local damage = (4 / dist) * tntr
                 if obj:is_player() == true then
                     if mod_death_messages then
-                        mcl_death_messages.player_damage(obj, string.format("%s was caught in an explosion.", obj:get_player_name()))
-                    end
-                    if mod_hunger then
-                        mcl_hunger.exhaust(obj:get_player_name(), mcl_hunger.EXHAUST_DAMAGE)
+                        mcl_death_messages.player_damage(obj, S("@1 was caught in an explosion.", obj:get_player_name()))
                     end
                 end
                 obj:set_hp(obj:get_hp() - damage)
@@ -56,22 +54,26 @@ local sounds
 if minetest.get_modpath("mcl_sounds") then
 	sounds = mcl_sounds.node_sound_wood_defaults()
 end
+local tnt_mesecons
+if minetest.get_modpath("mesecons") then
+	tnt_mesecons = {effector = {
+		action_on = tnt.ignite,
+		rules = mesecon.rules.alldirs,
+	}}
+end
 minetest.register_node("mcl_tnt:tnt", {
 	tiles = {"default_tnt_top.png", "default_tnt_bottom.png",
 			"default_tnt_side.png", "default_tnt_side.png",
 			"default_tnt_side.png", "default_tnt_side.png"},
 	is_ground_content = false,
 	stack_max = 64,
-	description = "TNT",
+	description = S("TNT"),
 	paramtype = "light",
 	sunlight_propagates = true,
-	_doc_items_longdesc = string.format("An explosive device. When it explodes, it will hurt living beings, destroy blocks around it, throw blocks affected by gravity all over the place and light fires. A single TNT has an explosion radius of %d. With a small chance, blocks may drop as an item (as if being mined) rather than being destroyed. TNT can be ignited by tools, explosions, fire, lava and redstone signals.", TNT_RANGE),
-	_doc_items_usagehelp = "Place the TNT on the ground and ignite it with one of the methods above. Quickly get in safe distance quickly. The TNT will start to be affected by gravity and explodes in 4 seconds.",
+	_doc_items_longdesc = S("An explosive device. When it explodes, it will hurt living beings and destroy blocks around it. TNT has an explosion radius of @1. With a small chance, blocks may drop as an item (as if being mined) rather than being destroyed. TNT can be ignited by tools, explosions, fire, lava and redstone signals.", TNT_RANGE),
+	_doc_items_usagehelp = S("Place the TNT and ignite it with one of the methods above. Quickly get in safe distance. The TNT will start to be affected by gravity and explodes in 4 seconds."),
 	groups = { dig_immediate = 3, tnt = 1, enderman_takable=1 },
-	mesecons = {effector = {
-		action_on = tnt.ignite,
-		rules = mesecon.rules.alldirs,
-	}},
+	mesecons = tnt_mesecons,
 	_on_ignite = function(player, pointed_thing)
 		tnt.ignite(pointed_thing.under)
 		return true
@@ -104,9 +106,9 @@ function TNT:on_activate(staticdata)
 	local phi = math.random(0, 65535) / 65535 * 2*math.pi
 	local hdir_x = math.cos(phi) * 0.02
 	local hdir_z = math.sin(phi) * 0.02
-	self.object:setvelocity({x=hdir_x, y=2, z=hdir_z})
-	self.object:setacceleration({x=0, y=-10, z=0})
-	self.object:settexturemod("^mcl_tnt_blink.png")
+	self.object:set_velocity({x=hdir_x, y=2, z=hdir_z})
+	self.object:set_acceleration({x=0, y=-10, z=0})
+	self.object:set_texture_mod("^mcl_tnt_blink.png")
 end
 
 local function add_effects(pos, radius, drops)
@@ -174,9 +176,9 @@ function TNT:on_step(dtime)
 	if self.blinktimer > 0.25 then
 		self.blinktimer = self.blinktimer - 0.25
 		if self.blinkstatus then
-			self.object:settexturemod("")
+			self.object:set_texture_mod("")
 		else
-			self.object:settexturemod("^mcl_tnt_blink.png")
+			self.object:set_texture_mod("^mcl_tnt_blink.png")
 		end
 		self.blinkstatus = not self.blinkstatus
 	end

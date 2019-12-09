@@ -1,8 +1,10 @@
+local S = minetest.get_translator("mcl_farming")
+
 -- Seeds
 minetest.register_craftitem("mcl_farming:pumpkin_seeds", {
-	description = "Pumpkin Seeds",
-	_doc_items_longdesc = "Grows into a pumpkin. Chickens like pumpkin seeds.",
-	_doc_items_usagehelp = "Place the pumpkin seeds on farmland (which can be created with a hoe) to plant a pumpkin stem. Pumpkins grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it pumpkin seeds.",
+	description = S("Pumpkin Seeds"),
+	_doc_items_longdesc = S("Grows into a pumpkin stem which in turn grows pumpkins. Chickens like pumpkin seeds."),
+	_doc_items_usagehelp = S("Place the pumpkin seeds on farmland (which can be created with a hoe) to plant a pumpkin stem. Pumpkin stems grow in sunlight and grow faster on hydrated farmland. When mature, the stem attempts to grow a pumpkin next to it. Rightclick an animal to feed it pumpkin seeds."),
 	stack_max = 64,
 	inventory_image = "mcl_farming_pumpkin_seeds.png",
 	groups = { craftitem=1 },
@@ -13,7 +15,7 @@ minetest.register_craftitem("mcl_farming:pumpkin_seeds", {
 
 local stem_drop = {
 	max_items = 1,
-	-- FIXME: The probabilities are slightly off from the original.
+	-- The probabilities are slightly off from the original.
 	-- Update this drop list when the Minetest drop probability system
 	-- is more powerful.
 	items = {
@@ -42,13 +44,13 @@ for s=1,7 do
 	local doc = s == 1
 	local longdesc, entry_name
 	if doc then
-		entry_name = "Premature Pumpkin Stem"
-		longdesc = "Pumpkin stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature pumpkin stems are able to grow pumpkins."
+		entry_name = S("Premature Pumpkin Stem")
+		longdesc = S("Pumpkin stems grow on farmland in 8 stages. On hydrated farmland, the growth is a bit quicker. Mature pumpkin stems are able to grow pumpkins.")
 	end
 	local colorstring = mcl_farming:stem_color(startcolor, endcolor, s, 8)
 	local texture = "([combine:16x16:0,"..((8-s)*2).."=mcl_farming_pumpkin_stem_disconnected.png)^[colorize:"..colorstring..":127"
 	minetest.register_node("mcl_farming:pumpkin_"..s, {
-		description = string.format("Premature Pumpkin Stem (Stage %d)", s),
+		description = S("Premature Pumpkin Stem (Stage @1)", s),
 		_doc_items_entry_name = entry_name,
 		_doc_items_create_entry = doc,
 		_doc_items_longdesc = longdesc,
@@ -74,8 +76,8 @@ end
 
 -- Full stem (not connected)
 local stem_def = {
-	description = "Mature Pumpkin Stem",
-	_doc_items_longdesc = "A mature pumpkin stem attempts to grow a pumpkin at one of its four adjacent blocks. A pumpkin can only grow on top of farmland, dirt or a grass block. When a pumpkin is next to a pumpkin stem, the pumpkin stem immediately bends and connects to the pumpkin. A connected pumpkin stem can't grow another pumpkin. As soon all pumpkins around the stem have been removed, it loses the connection and is ready to grow another pumpkin.",
+	description = S("Mature Pumpkin Stem"),
+	_doc_items_longdesc = S("A mature pumpkin stem attempts to grow a pumpkin at one of its four adjacent blocks. A pumpkin can only grow on top of farmland, dirt or a grass block. When a pumpkin is next to a pumpkin stem, the pumpkin stem immediately bends and connects to the pumpkin. A connected pumpkin stem can't grow another pumpkin. As soon all pumpkins around the stem have been removed, it loses the connection and is ready to grow another pumpkin."),
 	tiles = {"mcl_farming_pumpkin_stem_disconnected.png^[colorize:#FFA800:127"},
 	wield_image = "mcl_farming_pumpkin_stem_disconnected.png^[colorize:#FFA800:127",
 	inventory_image = "mcl_farming_pumpkin_stem_disconnected.png^[colorize:#FFA800:127",
@@ -83,9 +85,9 @@ local stem_def = {
 
 -- Template for pumpkin
 local pumpkin_base_def = {
-	description = "Faceless Pumpkin",
-	_doc_items_longdesc = "A faceless pumpkin is a decorative block. It can be carved with shears to obtain pumpkin seeds.",
-	_doc_items_usagehelp = "To carve a face into the pumpkin, use the shears on the side you want to carve.",
+	description = S("Faceless Pumpkin"),
+	_doc_items_longdesc = S("A faceless pumpkin is a decorative block. It can be carved with shears to obtain pumpkin seeds."),
+	_doc_items_usagehelp = S("To carve a face into the pumpkin, use the shears on the side you want to carve."),
 	stack_max = 64,
 	paramtype2 = "facedir",
 	tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png"},
@@ -97,8 +99,9 @@ local pumpkin_base_def = {
 minetest.register_node("mcl_farming:pumpkin", pumpkin_base_def)
 
 local pumpkin_face_base_def = table.copy(pumpkin_base_def)
-pumpkin_face_base_def.description = "Pumpkin"
-pumpkin_face_base_def._doc_items_longdesc = "A pumpkin can be worn as a helmet for fun, but it doesn't offer any protection. Pumpkins grow from pumpkin stems, which in turn grow from pumpkin seeds."
+pumpkin_face_base_def.description = S("Pumpkin")
+pumpkin_face_base_def._doc_items_longdesc = S("A pumpkin can be worn as a helmet for fun, but it doesn't offer any protection. Pumpkins grow from pumpkin stems, which in turn grow from pumpkin seeds.")
+pumpkin_face_base_def._doc_items_usagehelp = nil
 pumpkin_face_base_def.tiles = {"farming_pumpkin_top.png", "farming_pumpkin_top.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_side.png", "farming_pumpkin_face.png"}
 pumpkin_face_base_def.groups.armor_head=1
 pumpkin_face_base_def.groups.non_combat_armor=1
@@ -116,8 +119,8 @@ end)
 
 -- Jack o'Lantern
 minetest.register_node("mcl_farming:pumpkin_face_light", {
-	description = "Jack o'Lantern",
-	_doc_items_longdesc = "A jack o'lantern is a traditional Halloween decoration made from a pumpkin. It glows brightly.",
+	description = S("Jack o'Lantern"),
+	_doc_items_longdesc = S("A jack o'lantern is a traditional Halloween decoration made from a pumpkin. It glows brightly."),
 	is_ground_content = false,
 	stack_max = 64,
 	paramtype = "light",
@@ -155,8 +158,8 @@ minetest.register_craft({
 })
 
 minetest.register_craftitem("mcl_farming:pumpkin_pie", {
-	description = "Pumpkin Pie",
-	_doc_items_longdesc = "A pumpkin pie is a tasty food item which can be eaten.",
+	description = S("Pumpkin Pie"),
+	_doc_items_longdesc = S("A pumpkin pie is a tasty food item which can be eaten."),
 	stack_max = 64,
 	inventory_image = "mcl_farming_pumpkin_pie.png",
 	wield_image = "mcl_farming_pumpkin_pie.png",

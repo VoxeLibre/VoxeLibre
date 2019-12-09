@@ -1,10 +1,5 @@
--- Boilerplate to support localized strings if intllib mod is installed.
-local S
-if minetest.get_modpath("intllib") then
-	S = intllib.Getter()
-else
-	S = function(s,a,...)a={a,...}return s:gsub("@(%d+)",function(n)return a[tonumber(n)]end)end
-end
+local S = minetest.get_translator("doc_items")
+local N = function(s) return s end
 
 doc.sub.items = {}
 
@@ -642,7 +637,7 @@ doc.add_category("nodes", {
 					end
 				end
 				local fdap = data.def.groups.fall_damage_add_percent
-				if fdap ~= nil then
+				if fdap ~= nil and fdap ~= 0 then
 					if fdap > 0 then
 						datastring = datastring .. S("The fall damage on this block is increased by @1%.", fdap) .. "\n"
 					elseif fdap <= -100 then
@@ -664,8 +659,12 @@ doc.add_category("nodes", {
 					datastring = datastring .. S("This block can be climbed.").."\n"
 				end
 				local bouncy = data.def.groups.bouncy
-				if bouncy ~= nil then
+				if bouncy ~= nil and bouncy ~= 0 then
 					datastring = datastring .. S("This block will make you bounce off with an elasticity of @1%.", bouncy).."\n"
+				end
+				local slippery = data.def.groups.slippery
+				if slippery ~= nil and slippery ~= 0 then
+					datastring = datastring .. S("This block is slippery.") .. "\n"
 				end
 				datastring = datastring .. factoid_custom("nodes", "movement", data)
 				datastring = newline2(datastring)
@@ -841,15 +840,15 @@ doc.add_category("nodes", {
 					local dropstring = ""
 					local dropstring_base = ""
 					if max == nil then
-						dropstring_base = S("This block will drop the following items when mined: %s.")
+						dropstring_base = N("This block will drop the following items when mined: @1.")
 					elseif max == 1 then
 						if #data.def.drop.items == 1 then
-							dropstring_base = S("This block will drop the following when mined: %s.")
+							dropstring_base = N("This block will drop the following when mined: @1.")
 						else
-							dropstring_base = S("This block will randomly drop one of the following when mined: %s.")
+							dropstring_base = N("This block will randomly drop one of the following when mined: @1.")
 						end
 					else
-						dropstring_base = S("This block will randomly drop up to %d drops of the following possible drops when mined: %s.")
+						dropstring_base = N("This block will randomly drop up to @1 drops of the following possible drops when mined: @2.")
 					end
 					-- Save calculated probabilities into a table for later output
 					local probtables = {}
@@ -932,7 +931,7 @@ doc.add_category("nodes", {
 								-- Final list seperator
 								dropstring_this = dropstring_this .. S(" and ")
 							end
-							local desc = S(itemtable.desc)
+							local desc = itemtable.desc
 							local count = itemtable.count
 							if count ~= 1 then
 								desc = S("@1×@2", count, desc)
@@ -963,9 +962,9 @@ doc.add_category("nodes", {
 						pcount = pcount + 1
 					end
 					if max ~= nil and max > 1 then
-						datastring = datastring .. string.format(dropstring_base, max, dropstring)
+						datastring = datastring .. S(dropstring_base, max, dropstring)
 					else
-						datastring = datastring .. string.format(dropstring_base, dropstring)
+						datastring = datastring .. S(dropstring_base, dropstring)
 					end
 					datastring = newline(datastring)
 				end
@@ -1369,6 +1368,18 @@ minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv
 	end
 end)
 
+minetest.register_on_player_inventory_action(function(player, action, inventory, inventory_info)
+	if player == nil then return end
+	local playername = player:get_player_name()
+	local itemstack
+	if action == "take" or action == "put" then
+		itemstack = inventory_info.stack
+	end
+	if itemstack ~= nil and playername ~= nil and playername ~= "" and (not itemstack:is_empty()) then
+		reveal_item(playername, itemstack:get_name())
+	end
+end)
+
 minetest.register_on_item_eat(function(hp_change, replace_with_item, itemstack, user, pointed_thing)
 	if user == nil then return end
 	local playername = user:get_player_name()
@@ -1402,4 +1413,4 @@ minetest.register_globalstep(function(dtime)
 	end
 end)
 
-minetest.after(0, gather_descs)
+minetest.register_on_mods_loaded(gather_descs)
