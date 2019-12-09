@@ -55,7 +55,7 @@ mobs:register_mob("mobs_mc:snowman", {
 	arrow = "mcl_throwing:snowball_entity",
 	shoot_arrow = function(self, pos, dir)
 		if mod_throwing then
-			mcl_throwing.throw("mcl_throwing:snowball", pos, dir)
+			mcl_throwing.throw("mcl_throwing:snowball", pos, dir, nil, self.object)
 		end
 	end,
 	shoot_interval = 1,

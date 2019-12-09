@@ -146,8 +146,7 @@ local fish = function(itemstack, player)
 		if noent == true then
 			local playerpos = player:get_pos()
 			local dir = player:get_look_dir()
-			local obj = mcl_throwing.throw("mcl_throwing:flying_bobber", {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, 15)
-			obj:get_luaentity()._thrower = player:get_player_name()
+			local obj = mcl_throwing.throw("mcl_throwing:flying_bobber", {x=playerpos.x, y=playerpos.y+1.5, z=playerpos.z}, dir, 15, player:get_player_name())
 		end
 end
 
