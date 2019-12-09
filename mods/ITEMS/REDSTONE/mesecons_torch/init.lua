@@ -117,7 +117,7 @@ minetest.register_craft({
 	{"mcl_core:stick"},}
 })
 
-mcl_torches.register_torch("mesecon_torch_off", "Redstone Torch (off)",
+mcl_torches.register_torch("mesecon_torch_off", S("Redstone Torch (off)"),
 	nil,
 	nil,
 	"jeija_torches_off.png",
@@ -143,7 +143,7 @@ mcl_torches.register_torch("mesecon_torch_off", "Redstone Torch (off)",
 	}
 )
 
-mcl_torches.register_torch("mesecon_torch_overheated", "Redstone Torch (overheated)",
+mcl_torches.register_torch("mesecon_torch_overheated", S("Redstone Torch (overheated)"),
 	nil,
 	nil,
 	"jeija_torches_off.png",

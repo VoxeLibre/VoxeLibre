@@ -287,16 +287,18 @@ for _, state in pairs{mesecon.state.on, mesecon.state.off} do
 		nodedef.groups = table.copy(nodedef.groups)
 		nodedef.groups.not_in_creative_inventory = 1
 		local extra_desc = {}
-		if mode == "sub" then
-			table.insert(extra_desc, "Subtract")
+		if mode == "sub" or state == mesecon.state.on then
 			nodedef.inventory_image = nil
 		end
-		if state == mesecon.state.on then
-			table.insert(extra_desc, "Powered")
-			nodedef.inventory_image = nil
+		local desc = nodedef.description
+		if mode ~= "sub" and state == mesecon.state.on then
+			desc = S("Redstone Comparator (Powered)")
+		elseif mode == "sub" and state ~= mesecon.state.on then
+			desc = S("Redstone Comparator (Subtract)")
+		elseif mode == "sub" and state == mesecon.state.on then
+			desc = S("Redstone Comparator (Subtract, Powered)")
 		end
-		nodedef.description = nodedef.description..
-			" ("..table.concat(extra_desc, ", ")..")"
+		nodedef.description = desc
 	end
 
 	minetest.register_node(nodename, nodedef)

@@ -7,3 +7,6 @@ The side inputs are only powered by normal redstone power. The redstone comparat
 Transmission mode:@nThe front torch is unlit and lowered. The output is powered if, and only if the main input is powered. The two side inputs are ignored.=
 Subtraction mode:@nThe front torch is lit. The output is powered if, and only if the main input is powered and none of the side inputs is powered.=
 Redstone Comparator=
+Redstone Comparator (Subtract)=
+Redstone Comparator (Powered)=
+Redstone Comparator (Subtract, Powered)=
