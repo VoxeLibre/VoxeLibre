@@ -94,7 +94,11 @@ mcl_end.detach_chorus_plant = function(start_pos, digger)
 			-- Drop ALL the chorus nodes we found.
 			for c=1, #chorus_nodes do
 				no_detach[ minetest.hash_node_position(chorus_nodes[c]) ] = true
-				minetest.node_dig(chorus_nodes[c], { name = "mcl_end:chorus_plant" }, digger)
+				if digger then
+					minetest.node_dig(chorus_nodes[c], { name = "mcl_end:chorus_plant" }, digger)
+				else
+					minetest.remove_node(chorus_nodes[c])
+				end
 			end
 		end
 	end
@@ -104,6 +108,10 @@ end
 
 mcl_end.check_detach_chorus_plant = function(pos, oldnode, oldmetadata, digger)
 	mcl_end.detach_chorus_plant(pos, digger)
+end
+
+mcl_end.check_blast_chorus_plant = function(pos)
+	mcl_end.detach_chorus_plant(pos)
 end
 
 minetest.register_node("mcl_end:chorus_flower", {
@@ -190,6 +198,7 @@ minetest.register_node("mcl_end:chorus_flower", {
 		end
 	end,
 	after_dig_node = mcl_end.check_detach_chorus_plant,
+	on_blast = mcl_end.check_blast_chorus_plant,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
 })
@@ -214,6 +223,7 @@ minetest.register_node("mcl_end:chorus_flower_dead", {
 	drop = "mcl_end:chorus_flower",
 	groups = {handy=1,axey=1, deco_block = 1, dig_by_piston = 1, destroy_by_lava_flow = 1,chorus_plant = 1},
 	after_dig_node = mcl_end.check_detach_chorus_plant,
+	on_blast = mcl_end.check_blast_chorus_plant,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
 })
@@ -291,6 +301,7 @@ minetest.register_node("mcl_end:chorus_plant", {
 		end
 	end,
 	after_dig_node = mcl_end.check_detach_chorus_plant,
+	on_blast = mcl_end.check_blast_chorus_plant,
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
 })
