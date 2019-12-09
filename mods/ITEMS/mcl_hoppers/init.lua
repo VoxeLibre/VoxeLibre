@@ -445,6 +445,14 @@ minetest.register_abm({
 		local g = minetest.registered_nodes[abovenode.name].groups.container
 		mcl_util.move_item_container(above, pos)
 
+		-- Also suck in non-fuel items from furnace fuel slot
+		if not sucked and g == 4 then
+			local finv = minetest.get_inventory({type="node", pos=above})
+			if finv and not mcl_util.is_fuel(finv:get_stack("fuel", 1)) then
+				mcl_util.move_item_container(above, pos, "fuel")
+			end
+		end
+
 		-- Move an item from the hopper into the container to which the hopper points to
 		local g = minetest.registered_nodes[frontnode.name].groups.container
 		if g == 2 or g == 3 or g == 5 or g == 6 then
