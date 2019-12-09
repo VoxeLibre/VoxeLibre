@@ -6,3 +6,5 @@ Redstone Repeater=
 Redstone Repeater (Powered)=
 Redstone Repeater (Locked)=
 Redstone Repeater (Locked, Powered)=
+Redstone Repeater (Delay @1)=
+Redstone Repeater (Delay @1, Powered)=

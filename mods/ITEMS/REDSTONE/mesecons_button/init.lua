@@ -136,7 +136,6 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 		drawtype = "nodebox",
 		tiles = {texture},
 		wield_image = "mesecons_button_wield_mask.png^"..texture.."^mesecons_button_wield_mask.png^[makealpha:255,126,126",
-		inventory_image = "mesecons_button_wield_mask.png^"..texture.."^mesecons_button_wield_mask.png^[makealpha:255,126,126",
 		wield_scale = { x=1, y=1, z=0.5},
 		paramtype = "light",
 		paramtype2 = "wallmounted",

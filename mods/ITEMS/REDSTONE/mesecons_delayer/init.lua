@@ -220,8 +220,15 @@ else
 	help = false
 end
 
+local desc_off
+if i == 1 then
+	desc_off = S("Redstone Repeater")
+else
+	desc_off = S("Redstone Repeater (Delay @1)", i)
+end
+
 minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
-	description = S("Redstone Repeater"),
+	description = desc_off,
 	inventory_image = icon,
 	wield_image = icon,
 	_doc_items_create_entry = help,
@@ -294,7 +301,7 @@ minetest.register_node("mesecons_delayer:delayer_off_"..tostring(i), {
 
 
 minetest.register_node("mesecons_delayer:delayer_on_"..tostring(i), {
-	description = S("Redstone Repeater (Powered)"),
+	description = S("Redstone Repeater (Delay @1, Powered)", i),
 	_doc_items_create_entry = false,
 	drawtype = "nodebox",
 	tiles = {

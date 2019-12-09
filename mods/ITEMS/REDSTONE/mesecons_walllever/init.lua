@@ -111,7 +111,6 @@ minetest.register_node("mesecons_walllever:wall_lever_on", {
 	tiles = {
 		"jeija_wall_lever_lever_light_on.png",
 	},
-	inventory_image = "jeija_wall_lever.png",
 	paramtype = "light",
 	paramtype2 = "facedir",
 	mesh = "jeija_wall_lever_on.obj",
@@ -124,7 +123,6 @@ minetest.register_node("mesecons_walllever:wall_lever_on", {
 	groups = {handy=1, not_in_creative_inventory = 1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1},
 	is_ground_content = false,
 	drop = '"mesecons_walllever:wall_lever_off" 1',
-	description=S("Lever"),
 	_doc_items_create_entry = false,
 	on_rightclick = function (pos, node)
 		minetest.swap_node(pos, {name="mesecons_walllever:wall_lever_off", param2=node.param2})

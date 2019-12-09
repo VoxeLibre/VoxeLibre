@@ -183,6 +183,7 @@ minetest.register_node("mcl_hoppers:hopper", def_hopper_enabled)
 -- Disabled downwards hopper
 local def_hopper_disabled = table.copy(def_hopper)
 def_hopper_disabled.description = S("Disabled Hopper")
+def_hopper_disabled.inventory_image = nil
 def_hopper_disabled._doc_items_create_entry = false
 def_hopper_disabled.groups.not_in_creative_inventory = 1
 def_hopper_disabled.drop = "mcl_hoppers:hopper"

@@ -130,6 +130,7 @@ function mesecon.register_pressure_plate(basename, description, textures_off, te
 		selection_box = pp_box_on,
 		groups = groups_on,
 		tiles = textures_on,
+		description = "",
 
 		mesecons = {receptor = { state = mesecon.state.on, rules = mesecon.rules.pplate }},
 		_doc_items_create_entry = false,
