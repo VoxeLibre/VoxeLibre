@@ -4,6 +4,7 @@
 --License for code WTFPL and otherwise stated in readmes
 
 local S = minetest.get_translator("mobs_mc")
+local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
 
 --###################
 --################### SKELETON
@@ -31,7 +32,6 @@ local skeleton = {
 		random = "mobs_mc_skeleton_random",
 		death = "mobs_mc_skeleton_death",
 		damage = "mobs_mc_skeleton_hurt",
-		shoot_attack = "mcl_bows_bow_shoot",
 		distance = 16,
 	},
 	walk_velocity = 1.2,
@@ -80,10 +80,14 @@ local skeleton = {
 	attack_type = "dogshoot",
 	arrow = "mcl_bows:arrow_entity",
 	shoot_arrow = function(self, pos, dir)
-		mcl_bows.shoot_arrow("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object)
+		if mod_bows then
+			-- 2-4 damage per arrow
+			local dmg = math.max(4, math.random(2, 8))
+			mcl_bows.shoot_arrow("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object, nil, dmg)
+		end
 	end,
-	shoot_interval = 2.5,
-	shoot_offset = 1,
+	shoot_interval = 2,
+	shoot_offset = 1.5,
 	dogshoot_switch = 1,
 	dogshoot_count_max =1.8,
 }

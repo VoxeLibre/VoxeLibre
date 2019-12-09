@@ -8,6 +8,7 @@ local S = minetest.get_translator("mobs_mc")
 local snow_trail_frequency = 0.5 -- Time in seconds for checking to add a new snow trail
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+local mod_throwing = minetest.get_modpath("mcl_throwing") ~= nil
 
 local gotten_texture = {
 	"mobs_mc_snowman.png",
@@ -51,7 +52,12 @@ mobs:register_mob("mobs_mc:snowman", {
 	jump = true,
 	makes_footstep_sound = true,
 	attack_type = "shoot",
-	arrow = "mobs_mc:snowball_entity",
+	arrow = "mcl_throwing:snowball_entity",
+	shoot_arrow = function(self, pos, dir)
+		if mod_throwing then
+			mcl_throwing.throw("mcl_throwing:snowball", pos, dir)
+		end
+	end,
 	shoot_interval = 1,
 	shoot_offset = 1,
 	animation = {
