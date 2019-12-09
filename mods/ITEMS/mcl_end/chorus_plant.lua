@@ -24,9 +24,21 @@ local function round(num, idp)
 	return math.floor(num * mult + 0.5) / mult
 end
 
+-- This is a list of nodes that SHOULD NOT call their detach function
+local no_detach = {}
+
 -- This detaches all chorus plants that are/were attached
 -- at start_pos.
 mcl_end.detach_chorus_plant = function(start_pos, digger)
+	-- This node should not call a detach function, do NOTHING
+	local hash = minetest.hash_node_position(start_pos)
+	if no_detach[hash] ~= nil then
+		return
+	end
+
+	-- This node SHOULD be detached, make sure no others are
+	no_detach = {}
+
 	local neighbors = {
 		{ x=0, y=1, z=0 },
 		{ x=0, y=0, z=1 },
@@ -52,33 +64,42 @@ mcl_end.detach_chorus_plant = function(start_pos, digger)
 		local break_tree = true
 		while #check_posses > 0 do
 			local pos = check_posses[1]
-			local node = minetest.get_node(pos)
-			touched_nodes_hashes[minetest.hash_node_position(pos)] = true
-			if node.name == "mcl_end:end_stone" then
-				-- End stone found, the algorithm ends here (haha!)
-				-- without destroying any nodes, because chorus plants
-				-- attach to end stone.
-				break_tree = false
-				break
-			elseif minetest.get_item_group(node.name, "chorus_plant") == 1 then
-				table.insert(chorus_nodes, pos)
-				for i=1, #neighbors do
-					local newpos = vector.add(pos, neighbors[i])
-					if not touched_nodes_hashes[minetest.hash_node_position(newpos)] then
-						table.insert(check_posses, vector.add(pos, neighbors[i]))
+
+			-- Don't just count neighbors as being touched, count THIS NODE as well
+			-- This will prevent it from getting stuck in an endless loop
+			if not touched_nodes_hashes[minetest.hash_node_position(pos)] then
+				local node = minetest.get_node(pos)
+				touched_nodes_hashes[minetest.hash_node_position(pos)] = true
+				if node.name == "mcl_end:end_stone" then
+					-- End stone found, the algorithm ends here (haha!)
+					-- without destroying any nodes, because chorus plants
+					-- attach to end stone.
+					break_tree = false
+					break
+				elseif minetest.get_item_group(node.name, "chorus_plant") == 1 then
+					table.insert(chorus_nodes, pos)
+					for i=1, #neighbors do
+						local newpos = vector.add(pos, neighbors[i])
+						if not touched_nodes_hashes[minetest.hash_node_position(newpos)] then
+							table.insert(check_posses, vector.add(pos, neighbors[i]))
+						end
 					end
 				end
 			end
+
 			table.remove(check_posses, 1)
 		end
 		if break_tree then
 			-- If we traversed the entire chorus plant and it was not attached to end stone:
 			-- Drop ALL the chorus nodes we found.
 			for c=1, #chorus_nodes do
+				no_detach[ minetest.hash_node_position(chorus_nodes[c]) ] = true
 				minetest.node_dig(chorus_nodes[c], { name = "mcl_end:chorus_plant" }, digger)
 			end
 		end
 	end
+
+	no_detach = {}
 end
 
 mcl_end.check_detach_chorus_plant = function(pos, oldnode, oldmetadata, digger)
