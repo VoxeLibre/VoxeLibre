@@ -78,7 +78,10 @@ local skeleton = {
 	view_range = 16,
 	fear_height = 4,
 	attack_type = "dogshoot",
-	arrow = "mobs_mc:arrow_entity",
+	arrow = "mcl_bows:arrow_entity",
+	shoot_arrow = function(self, pos, dir)
+		mcl_bows.shoot_arrow("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object)
+	end,
 	shoot_interval = 2.5,
 	shoot_offset = 1,
 	dogshoot_switch = 1,

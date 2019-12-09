@@ -2350,23 +2350,33 @@ local do_states = function(self, dtime)
 
 				p.y = p.y + (self.collisionbox[2] + self.collisionbox[5]) / 2
 
+				-- Shoot arrow
 				if minetest.registered_entities[self.arrow] then
 
-					local obj = minetest.add_entity(p, self.arrow)
-					local ent = obj:get_luaentity()
+					local arrow, ent
+					local v = 1
+					if not self.shoot_arrow then
+						arrow = minetest.add_entity(p, self.arrow)
+						ent = arrow:get_luaentity()
+						if ent.velocity then
+							v = ent.velocity
+						end
+						ent.switch = 1
+						ent.owner_id = tostring(self.object) -- add unique owner id to arrow
+					end
+
 					local amount = (vec.x * vec.x + vec.y * vec.y + vec.z * vec.z) ^ 0.5
-					local v = ent.velocity or 1 -- or set to default
-
-					ent.switch = 1
-					ent.owner_id = tostring(self.object) -- add unique owner id to arrow
-
-					 -- offset makes shoot aim accurate
+					-- offset makes shoot aim accurate
 					vec.y = vec.y + self.shoot_offset
 					vec.x = vec.x * (v / amount)
 					vec.y = vec.y * (v / amount)
 					vec.z = vec.z * (v / amount)
-
-					obj:set_velocity(vec)
+					if self.shoot_arrow then
+						vec = vector.normalize(vec)
+						self:shoot_arrow(p, vec)
+					else
+						arrow:set_velocity(vec)
+					end
 				end
 			end
 		end
@@ -3217,6 +3227,7 @@ minetest.register_entity(name, {
 	can_despawn = can_despawn,
 	child = def.child or false,
 	texture_mods = {},
+	shoot_arrow = def.shoot_arrow,
 	-- End of MCL2 extensions
 
 	on_spawn = def.on_spawn,

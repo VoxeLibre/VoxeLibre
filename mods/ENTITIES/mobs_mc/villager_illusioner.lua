@@ -9,8 +9,11 @@ mobs:register_mob("mobs_mc:illusioner", {
 	type = "monster",
 	attack_type = "shoot",
 	shoot_interval = 0.5,
-	arrow = "mobs_mc:arrow_entity",
 	shoot_offset = 1.5,
+	arrow = "mcl_bows:arrow_entity",
+	shoot_arrow = function(self, pos, dir)
+		mcl_bows.shoot_arrow("mcl_bows:arrow", pos, dir, self.object:get_yaw(), self.object)
+	end,
 	hp_min = 32,
 	hp_max = 32,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},

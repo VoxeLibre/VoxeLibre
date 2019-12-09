@@ -226,6 +226,9 @@ functions needed for the mob to work properly which contains the following:
                                  spawning fails due to space requirements
       'glow' same as in entity definition
       'child' if true, spawn mob as child
+      'shoot_arrow(self, pos, dir)' function that is called when mob wants to shoot an arrow.
+                                    You can spawn your own arrow here. pos is mob position,
+                                    dir is mob's aiming direction
 
 
 Node Replacement
