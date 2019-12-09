@@ -1,6 +1,16 @@
 -- Climbable nodes
 local S = minetest.get_translator("mcl_core")
 
+local rotate_climbable = function(pos, node, user, mode)
+	if mode == screwdriver.ROTATE_FACE then
+		local r = screwdriver.rotate.wallmounted(pos, node, mode)
+		node.param2 = r
+		minetest.swap_node(pos, node)
+		return true
+	end
+	return false
+end
+
 minetest.register_node("mcl_core:ladder", {
 	description = S("Ladder"),
 	_doc_items_longdesc = S("A piece of ladder which allows you to climb vertically. Ladders can only be placed on the side of solid blocks and not on glass, leaves, ice, slabs, glowstone, nor sea lanterns."),
@@ -73,7 +83,7 @@ minetest.register_node("mcl_core:ladder", {
 
 	_mcl_blast_resistance = 2,
 	_mcl_hardness = 0.4,
-	on_rotate = function() return false end,
+	on_rotate = rotate_climbable,
 })
 
 
@@ -156,5 +166,5 @@ minetest.register_node("mcl_core:vine", {
 
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 0.2,
-	on_rotate = function() return false end,
+	on_rotate = false,
 })
