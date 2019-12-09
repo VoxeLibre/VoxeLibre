@@ -61,6 +61,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	attack_type = "dogshoot",
 	arrow = "mobs_mc:blaze_fireball",
 	shoot_interval = 3.5,
+	shoot_offset = 1.0,
 	passive = false,
 	jump = true,
 	jump_height = 4,
@@ -77,7 +78,7 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 	visual = "sprite",
 	visual_size = {x = 0.3, y = 0.3},
 	textures = {"mcl_fire_fire_charge.png"},
-	velocity = 12,
+	velocity = 15,
 
 	-- Direct hit, no fire... just plenty of pain
 	hit_player = function(self, player)
