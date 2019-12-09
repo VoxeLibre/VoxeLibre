@@ -1,7 +1,11 @@
 # textdomain: mcl_death_messages
 @1 was fatally hit by an arrow.=@1 wurde tödlich von einem Pfeil getroffen.
-@1 has been killed with an arrow.=@1 wurde mit einem Pfeil getötet.
+@1 has been killed by an arrow.=@1 wurde von einem Pfeil getötet.
 @1 was shot by an arrow from @2.=@1 wurde mit einem Pfeil von @2 abgeschossen.
+@1 was shot by an arrow from a skeleton.=@1 wurde von einem Skelett mit Pfeil und Bogen abgeschossen.
+@1 was shot by an arrow from a stray.=@1 wurde von einem Eiswanderer mit Pfeil und Bogen abgeschossen.
+@1 was shot by an arrow from an illusioner.=@1 wurde von einem Illusionisten mit Pfeil und Bogen abgeschossen.
+@1 was shot by an arrow.=@1 wurde mit einem Pfeil abgeschossen.
 @1 forgot to breathe.=@1 vergaß, zu atmen.
 @1 drowned.=@1 ertrank.
 @1 ran out of oxygen.=@1 ging die Luft aus.

@@ -7,10 +7,22 @@ mcl_death_messages = {}
 local msgs = {
 	["arrow"] = {
 		N("@1 was fatally hit by an arrow."),
-		N("@1 has been killed with an arrow."),
+		N("@1 has been killed by an arrow."),
 	},
 	["arrow_name"] = {
 		N("@1 was shot by an arrow from @2."),
+	},
+	["arrow_skeleton"] = {
+		N("@1 was shot by an arrow from a skeleton."),
+	},
+	["arrow_stray"] = {
+		N("@1 was shot by an arrow from a stray."),
+	},
+	["arrow_illusioner"] = {
+		N("@1 was shot by an arrow from an illusioner."),
+	},
+	["arrow_mob"] = {
+		N("@1 was shot by an arrow."),
 	},
 	["drown"] = {
 		N("@1 forgot to breathe."),
@@ -186,15 +198,22 @@ minetest.register_on_dieplayer(function(player, reason)
 				if hitter:get_luaentity()._shooter then
 					shooter = hitter:get_luaentity()._shooter
 				end
+				local s_ent = shooter:get_luaentity()
 				if shooter == nil then
 					msg = dmsg("arrow", name)
 				elseif shooter:is_player() then
 					msg = dmsg("arrow_name", name, shooter:get_player_name())
-				elseif shooter:get_luaentity()._cmi_is_mob then
-					if shooter:get_luaentity().nametag ~= "" then
+				elseif s_ent._cmi_is_mob then
+					if s_ent.nametag ~= "" then
 						msg = dmsg("arrow_name", name, shooter:get_player_name())
+					elseif s_ent.name == "mobs_mc:skeleton" then
+						msg = dmsg("arrow_skeleton", name)
+					elseif s_ent.name == "mobs_mc:stray" then
+						msg = dmsg("arrow_stray", name)
+					elseif s_ent.name == "mobs_mc:illusioner" then
+						msg = dmsg("arrow_illusioner", name)
 					else
-						msg = dmsg("arrow", name)
+						msg = dmsg("arrow_mob", name)
 					end
 				else
 					msg = dmsg("arrow", name)

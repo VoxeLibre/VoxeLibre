@@ -2,6 +2,10 @@
 @1 was fatally hit by an arrow.=
 @1 has been killed with an arrow.=
 @1 was shot by an arrow from @2.=
+@1 was shot by an arrow from a skeleton.=
+@1 was shot by an arrow from a stray.=
+@1 was shot by an arrow from an illusioner.=
+@1 was shot by an arrow.=
 @1 forgot to breathe.=
 @1 drowned.=
 @1 ran out of oxygen.=
