@@ -175,13 +175,6 @@ local pistonspec_normal = {
 
 local usagehelp_piston = S("This block can have one of 6 possible orientations.")
 
-local on_rotate
-if minetest.get_modpath("screwdriver") then
-	on_rotate = function(pos, node, user, mode, new_param2)
-		return false
-	end
-end
-
 -- offstate
 minetest.register_node("mesecons_pistons:piston_normal_off", {
 	description = S("Piston"),
@@ -211,7 +204,7 @@ minetest.register_node("mesecons_pistons:piston_normal_off", {
 	on_rotate = function(pos, node, user, mode)
 		if mode == screwdriver.ROTATE_AXIS then
 			minetest.set_node(pos, {name="mesecons_pistons:piston_up_normal_off"})
-			return false
+			return true
 		end
 	end,
 })
@@ -312,7 +305,7 @@ minetest.register_node("mesecons_pistons:piston_sticky_off", {
 	on_rotate = function(pos, node, user, mode)
 		if mode == screwdriver.ROTATE_AXIS then
 			minetest.set_node(pos, {name="mesecons_pistons:piston_up_sticky_off"})
-			return false
+			return true
 		end
 	end,
 })
@@ -429,6 +422,7 @@ minetest.register_node("mesecons_pistons:piston_up_normal_off", {
 	on_rotate = function(pos, node, user, mode)
 		if mode == screwdriver.ROTATE_AXIS then
 			minetest.set_node(pos, {name="mesecons_pistons:piston_down_normal_off"})
+			return true
 		end
 		return false
 	end,
@@ -529,6 +523,7 @@ minetest.register_node("mesecons_pistons:piston_up_sticky_off", {
 	on_rotate = function(pos, node, user, mode)
 		if mode == screwdriver.ROTATE_AXIS then
 			minetest.set_node(pos, {name="mesecons_pistons:piston_down_sticky_off"})
+			return true
 		end
 		return false
 	end,
@@ -646,6 +641,7 @@ minetest.register_node("mesecons_pistons:piston_down_normal_off", {
 	on_rotate = function(pos, node, user, mode)
 		if mode == screwdriver.ROTATE_AXIS then
 			minetest.set_node(pos, {name="mesecons_pistons:piston_normal_off"})
+			return true
 		end
 		return false
 	end,
@@ -741,6 +737,7 @@ minetest.register_node("mesecons_pistons:piston_down_sticky_off", {
 	on_rotate = function(pos, node, user, mode)
 		if mode == screwdriver.ROTATE_AXIS then
 			minetest.set_node(pos, {name="mesecons_pistons:piston_sticky_off"})
+			return true
 		end
 		return false
 	end,
