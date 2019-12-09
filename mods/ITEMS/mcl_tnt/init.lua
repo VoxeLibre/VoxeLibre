@@ -221,14 +221,21 @@ tnt.boom = function(pos, info)
 					-- TODO: Implement the real blast resistance algorithm
 					if def and n.name ~= "air" and n.name ~= "ignore" and (def._mcl_blast_resistance == nil or def._mcl_blast_resistance < 1000) then
 						activate_if_tnt(n.name, np, pos, 3)
-						minetest.remove_node(np)
-						core.check_for_falling(np)
-						if n.name ~= "mcl_tnt:tnt" and math.random() > 0.9 then
-							local drop = minetest.get_node_drops(n.name, "")
-							for _,item in ipairs(drop) do
-								if type(item) == "string" then
-									if math.random(1,100) > 40 then
-										local obj = minetest.add_item(np, item)
+						-- Custom blast function defined by node.
+						-- Node removal and drops must be handled manually.
+						if def.on_blast then
+							def.on_blast(np, 1.0)
+						-- Default destruction handling: Remove nodes, drop items
+						else
+							minetest.remove_node(np)
+							core.check_for_falling(np)
+							if n.name ~= "mcl_tnt:tnt" and math.random() > 0.9 then
+								local drop = minetest.get_node_drops(n.name, "")
+								for _,item in ipairs(drop) do
+									if type(item) == "string" then
+										if math.random(1,100) > 40 then
+											local obj = minetest.add_item(np, item)
+										end
 									end
 								end
 							end
