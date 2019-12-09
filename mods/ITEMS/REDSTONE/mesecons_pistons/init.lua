@@ -177,7 +177,9 @@ local usagehelp_piston = S("This block can have one of 6 possible orientations."
 
 local on_rotate
 if minetest.get_modpath("screwdriver") then
-	on_rotate = screwdriver.disallow
+	on_rotate = function(pos, node, user, mode, new_param2)
+		return false
+	end
 end
 
 -- offstate
@@ -206,7 +208,12 @@ minetest.register_node("mesecons_pistons:piston_normal_off", {
 	}},
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
-	on_rotate = on_rotate,
+	on_rotate = function(pos, node, user, mode)
+		if mode == screwdriver.ROTATE_AXIS then
+			minetest.set_node(pos, {name="mesecons_pistons:piston_up_normal_off"})
+			return false
+		end
+	end,
 })
 
 -- onstate
@@ -236,7 +243,7 @@ minetest.register_node("mesecons_pistons:piston_normal_on", {
 	}},
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
-	on_rotate = on_rotate,
+	on_rotate = false,
 })
 
 -- pusher
@@ -260,7 +267,7 @@ minetest.register_node("mesecons_pistons:piston_pusher_normal", {
 	node_box = piston_pusher_box,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 2.5,
-	on_rotate = on_rotate,
+	on_rotate = false,
 })
 
 -- Sticky ones
@@ -302,7 +309,12 @@ minetest.register_node("mesecons_pistons:piston_sticky_off", {
 	}},
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
-	on_rotate = on_rotate,
+	on_rotate = function(pos, node, user, mode)
+		if mode == screwdriver.ROTATE_AXIS then
+			minetest.set_node(pos, {name="mesecons_pistons:piston_up_sticky_off"})
+			return false
+		end
+	end,
 })
 
 -- onstate
@@ -332,7 +344,7 @@ minetest.register_node("mesecons_pistons:piston_sticky_on", {
 	}},
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
-	on_rotate = on_rotate,
+	on_rotate = false,
 })
 
 -- pusher
@@ -356,7 +368,7 @@ minetest.register_node("mesecons_pistons:piston_pusher_sticky", {
 	node_box = piston_pusher_box,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 2.5,
-	on_rotate = on_rotate,
+	on_rotate = false,
 })
 
 --
@@ -414,7 +426,12 @@ minetest.register_node("mesecons_pistons:piston_up_normal_off", {
 	}),
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
-	on_rotate = on_rotate,
+	on_rotate = function(pos, node, user, mode)
+		if mode == screwdriver.ROTATE_AXIS then
+			minetest.set_node(pos, {name="mesecons_pistons:piston_down_normal_off"})
+		end
+		return false
+	end,
 })
 
 -- onstate
@@ -444,7 +461,7 @@ minetest.register_node("mesecons_pistons:piston_up_normal_on", {
 	}},
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
-	on_rotate = on_rotate,
+	on_rotate = false,
 })
 
 -- pusher
@@ -468,7 +485,7 @@ minetest.register_node("mesecons_pistons:piston_up_pusher_normal", {
 	node_box = piston_up_pusher_box,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 2.5,
-	on_rotate = on_rotate,
+	on_rotate = false,
 })
 
 
@@ -509,7 +526,12 @@ minetest.register_node("mesecons_pistons:piston_up_sticky_off", {
 	}},
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
-	on_rotate = on_rotate,
+	on_rotate = function(pos, node, user, mode)
+		if mode == screwdriver.ROTATE_AXIS then
+			minetest.set_node(pos, {name="mesecons_pistons:piston_down_sticky_off"})
+		end
+		return false
+	end,
 })
 
 -- onstate
@@ -539,7 +561,7 @@ minetest.register_node("mesecons_pistons:piston_up_sticky_on", {
 	}},
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
-	on_rotate = on_rotate,
+	on_rotate = false,
 })
 
 -- pusher
@@ -563,7 +585,7 @@ minetest.register_node("mesecons_pistons:piston_up_pusher_sticky", {
 	node_box = piston_up_pusher_box,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 2.5,
-	on_rotate = on_rotate,
+	on_rotate = false,
 })
 
 --
@@ -621,7 +643,12 @@ minetest.register_node("mesecons_pistons:piston_down_normal_off", {
 	}},
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
-	on_rotate = on_rotate,
+	on_rotate = function(pos, node, user, mode)
+		if mode == screwdriver.ROTATE_AXIS then
+			minetest.set_node(pos, {name="mesecons_pistons:piston_normal_off"})
+		end
+		return false
+	end,
 })
 
 -- onstate
@@ -651,7 +678,7 @@ minetest.register_node("mesecons_pistons:piston_down_normal_on", {
 	}},
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
-	on_rotate = on_rotate,
+	on_rotate = false,
 })
 
 -- pusher
@@ -675,7 +702,7 @@ minetest.register_node("mesecons_pistons:piston_down_pusher_normal", {
 	node_box = piston_down_pusher_box,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 2.5,
-	on_rotate = on_rotate,
+	on_rotate = false,
 })
 
 -- Sticky
@@ -711,7 +738,12 @@ minetest.register_node("mesecons_pistons:piston_down_sticky_off", {
 	}},
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
-	on_rotate = on_rotate,
+	on_rotate = function(pos, node, user, mode)
+		if mode == screwdriver.ROTATE_AXIS then
+			minetest.set_node(pos, {name="mesecons_pistons:piston_sticky_off"})
+		end
+		return false
+	end,
 })
 
 -- onstate
@@ -741,7 +773,7 @@ minetest.register_node("mesecons_pistons:piston_down_sticky_on", {
 	}},
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
-	on_rotate = on_rotate,
+	on_rotate = false,
 })
 
 -- pusher
@@ -765,7 +797,7 @@ minetest.register_node("mesecons_pistons:piston_down_pusher_sticky", {
 	node_box = piston_down_pusher_box,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	_mcl_blast_resistance = 2.5,
-	on_rotate = on_rotate,
+	on_rotate = false,
 })
 
 
