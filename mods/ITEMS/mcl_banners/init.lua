@@ -63,7 +63,7 @@ local on_dig_banner = function(pos, node, digger)
 	if not item:is_empty() then
 		minetest.handle_node_drops(pos, {item:to_string()}, digger)
 	else
-		minetest.handle_node_drops(pos, {"mcl_bannes:banner_item_white"}, digger)
+		minetest.handle_node_drops(pos, {"mcl_banners:banner_item_white"}, digger)
 	end
 	-- Remove node
 	minetest.remove_node(pos)
