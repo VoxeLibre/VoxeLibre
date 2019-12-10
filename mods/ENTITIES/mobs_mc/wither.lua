@@ -53,7 +53,7 @@ mobs:register_mob("mobs_mc:wither", {
 	explosion_radius = 3,
 	explosion_fire = false,
 	dogshoot_stop = true,
-	arrow = "mobs_mc:fireball",
+	arrow = "mobs_mc:wither_skull",
 	reach = 5,
 	shoot_interval = 0.5,
 	shoot_offset = -1,
@@ -67,87 +67,37 @@ mobs:register_mob("mobs_mc:wither", {
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 
-mobs:register_arrow("mobs_mc:roar_of_the_dragon", {
-	visual = "sprite",
-	visual_size = {x = 1, y = 1},
-	textures = {"blank.png"},
-	velocity = 10,
-
-	on_step = function(self, dtime)
-
-		local pos = self.object:get_pos()
-
-		local n = minetest.get_node(pos).name
-
-		if self.timer == 0 then
-			self.timer = os.time()
-		end
-
-		if os.time() - self.timer > 8 or minetest.is_protected(pos, "") then
-			self.object:remove()
-		end
-
-		local objects = minetest.get_objects_inside_radius(pos, 1)
-	    for _,obj in ipairs(objects) do
-			local name = self.name
-			if name~="mobs_mc:roar_of_the_dragon" and name ~= "mobs_mc:wither" then
-		        obj:set_hp(obj:get_hp()-5)
-		        if (obj:get_hp() <= 0) then
-		            if (not obj:is_player()) and name ~= self.object:get_luaentity().name then
-		                obj:remove()
-		            end
-		        end
-			end
-	    end
-
-		if mobs_griefing then
-			minetest.set_node(pos, {name="air"})
-			if math.random(1,2)==1 then
-				local dx = math.random(-1,1)
-				local dy = math.random(-1,1)
-				local dz = math.random(-1,1)
-				local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-				minetest.set_node(p, {name="air"})
-			end
-		end
-	end
-})
---GOOD LUCK LOL!
--- fireball (weapon)
-mobs:register_arrow(":mobs_mc:fireball", {
+mobs:register_arrow("mobs_mc:wither_skull", {
 	visual = "sprite",
 	visual_size = {x = 0.75, y = 0.75},
 	-- TODO: 3D projectile, replace tetxture
 	textures = {"mobs_mc_TEMP_wither_projectile.png"},
 	velocity = 6,
 
-	-- direct hit, no fire... just plenty of pain
+	-- direct hit
 	hit_player = function(self, player)
-		minetest.sound_play("tnt_explode", {pos = player:get_pos(), gain = 1.5, max_hear_distance = 16})
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 0.5,
 			damage_groups = {fleshy = 8},
 		}, nil)
-
+		mobs:boom(self, self.object:get_pos(), 1)
 	end,
 
 	hit_mob = function(self, mob)
-		minetest.sound_play("tnt_explode", {pos = mob:get_pos(), gain = 1.5,max_hear_distance = 16})
 		mob:punch(self.object, 1.0, {
 			full_punch_interval = 0.5,
 			damage_groups = {fleshy = 8},
 		}, nil)
-		
+		mobs:boom(self, self.object:get_pos(), 1)
 	end,
 
-	-- node hit, bursts into flame
+	-- node hit, explode
 	hit_node = function(self, pos, node)
-		-- FIXME: Deprecated, switch to mobs:boom instead
-		mobs:explosion(pos, 3, 0, 1)
+		mobs:boom(self, pos, 1)
 	end
 })
+-- TODO: Add blue wither skull
+
 --Spawn egg
 mobs:register_egg("mobs_mc:wither", S("Wither"), "mobs_mc_spawn_icon_wither.png", 0)
 
---Compatibility
-mobs:alias_mob("nssm:mese_dragon", "mobs_mc:wither")	

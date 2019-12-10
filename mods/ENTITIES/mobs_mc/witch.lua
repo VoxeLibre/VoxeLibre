@@ -31,7 +31,7 @@ mobs:register_mob("mobs_mc:witch", {
 	pathfinding = 1,
 	group_attack = true,
 	attack_type = "dogshoot",
-	arrow = "mobs:potion_arrow",
+	arrow = "mobs_mc:potion_arrow",
 	shoot_interval = 2.5,
 	shoot_offset = 1,
 	dogshoot_switch = 1,
@@ -68,8 +68,8 @@ mobs:register_mob("mobs_mc:witch", {
 
 })
 
--- fireball (weapon)
-mobs:register_arrow(":mobs:potion_arrow", {
+-- potion projectile (EXPERIMENTAL)
+mobs:register_arrow("mobs_mc:potion_arrow", {
 	visual = "sprite",
 	visual_size = {x = 0.5, y = 0.5},
 	--textures = {"vessels_glass_bottle.png"},  --TODO fix to else if default

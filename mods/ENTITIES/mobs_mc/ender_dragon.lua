@@ -51,9 +51,9 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	fire_damage = 0,
 	on_rightclick = nil,
 	attack_type = "dogshoot",
-	arrow = "mobs_mc:fireball2",
+	arrow = "mobs_mc:dragon_fireball",
 	shoot_interval = 0.5,
-	shoot_offset = -1,
+	shoot_offset = -1.0,
 	animation = {
 		fly_speed = 8, stand_speed = 8,
 		stand_start = 0,		stand_end = 20,
@@ -67,69 +67,19 @@ mobs:register_mob("mobs_mc:enderdragon", {
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 
-mobs:register_arrow("mobs_mc:roar_of_the_dragon2", {
+-- dragon fireball (projectile)
+mobs:register_arrow("mobs_mc:dragon_fireball", {
 	visual = "sprite",
-	visual_size = {x = 1, y = 1},
-	--textures = {"transparent.png"},
-	textures = {"mese_egg.png"},
-	velocity = 10,
-
-	on_step = function(self, dtime)
-
-		local pos = self.object:get_pos()
-
-		local n = minetest.get_node(pos).name
-
-		if self.timer == 0 then
-			self.timer = os.time()
-		end
-
-		if os.time() - self.timer > 8 or minetest.is_protected(pos, "") then
-			self.object:remove()
-		end
-
-		local objects = minetest.get_objects_inside_radius(pos, 1)
-	    for _,obj in ipairs(objects) do
-			local name = self.name
-			if name~="mobs_mc:roar_of_the_dragon2" and name ~= "mobs_mc:enderdragon" then
-		        obj:set_hp(obj:get_hp()-5)
-		        if (obj:get_hp() <= 0) then
-		            if (not obj:is_player()) and name ~= self.object:get_luaentity().name then
-		                obj:remove()
-		            end
-		        end
-			end
-	    end
-
-		if mobs_griefing then
-			minetest.set_node(pos, {name="air"})
-			if math.random(1,2)==1 then
-				local dx = math.random(-1,1)
-				local dy = math.random(-1,1)
-				local dz = math.random(-1,1)
-				local p = {x=pos.x+dx, y=pos.y+dy, z=pos.z+dz}
-				minetest.set_node(p, {name="air"})
-			end
-		end
-	end
-})
---GOOD LUCK LOL!
--- fireball (weapon)
-mobs:register_arrow(":mobs_mc:fireball2", {
-	visual = "sprite",
-	visual_size = {x = 1.5, y = 1.5},
+	visual_size = {x = 1.25, y = 1.25},
 	textures = {"mobs_mc_dragon_fireball.png"},
-	--textures = {"mobs_skeleton2_front.png^[makealpha:255,255,255 "},
 	velocity = 6,
 
 	-- direct hit, no fire... just plenty of pain
 	hit_player = function(self, player)
-		minetest.sound_play("tnt_explode", {pos = player:get_pos(), gain = 1.5, max_hear_distance = 2*64})
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 0.5,
-			damage_groups = {fleshy = 6},
+			damage_groups = {fleshy = 12},
 		}, nil)
-
 	end,
 
 	hit_mob = function(self, mob)
@@ -138,15 +88,11 @@ mobs:register_arrow(":mobs_mc:fireball2", {
 			full_punch_interval = 0.5,
 			damage_groups = {fleshy = 12},
 		}, nil)
-		
 	end,
 
-	-- node hit, bursts into flame
+	-- node hit, explode
 	hit_node = function(self, pos, node)
-		mobs:explosion(pos, 3, 0, 1)
-		--from tnt
-		minetest.sound_play("tnt_explode", {pos = pos, gain = 1.5, max_hear_distance = 2*64})
-		
+		mobs:boom(self, pos, 2)
 	end
 })
 

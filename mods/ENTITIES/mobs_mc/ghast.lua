@@ -55,13 +55,10 @@ mobs:register_mob("mobs_mc:ghast", {
 	},
 	fall_damage = 0,
 	view_range = 100,
-	--attack_type = "dogshoot",
 	attack_type = "dogshoot",
-	arrow = "mobs_monster:fireball",
+	arrow = "mobs_mc:fireball",
 	shoot_interval = 3.5,
-	shoot_offset = 1,
-		--'dogshoot_switch' allows switching between shoot and dogfight modes inside dogshoot using timer (1 = shoot, 2 = dogfight)
-	--'dogshoot_count_max' number of seconds before switching above modes.
+	shoot_offset = -5,
 	dogshoot_switch = 1,
 	dogshoot_count_max =1,
 	passive = false,
@@ -76,31 +73,33 @@ mobs:register_mob("mobs_mc:ghast", {
 
 mobs:spawn_specific("mobs_mc:ghast", mobs_mc.spawn.nether, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 18000, 2, mobs_mc.spawn_height.nether_min, mobs_mc.spawn_height.nether_max)
 
--- fireball (weapon)
-mobs:register_arrow(":mobs_monster:fireball", {
+-- fireball (projectile)
+mobs:register_arrow("mobs_mc:fireball", {
 	visual = "sprite",
-	visual_size = {x = 0.5, y = 0.5},
+	visual_size = {x = 1, y = 1},
 	textures = {"mcl_fire_fire_charge.png"},
-	velocity = 6,
+	velocity = 15,
 
 	-- direct hit, no fire... just plenty of pain
 	hit_player = function(self, player)
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
-			damage_groups = {fleshy = 8},
+			damage_groups = {fleshy = 6},
 		}, nil)
+		mobs:boom(self, self.object:get_pos(), 3)
 	end,
 
 	hit_mob = function(self, mob)
 		mob:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
-			damage_groups = {fleshy = 8},
+			damage_groups = {fleshy = 6},
 		}, nil)
+		mobs:boom(self, self.object:get_pos(), 3)
 	end,
 
-	-- node hit, bursts into flame
+	-- node hit, explode
 	hit_node = function(self, pos, node)
-		mobs:explosion(pos, 1, 1, 0)
+		mobs:boom(self, pos, 3)
 	end
 })
 
