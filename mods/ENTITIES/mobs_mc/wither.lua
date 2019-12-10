@@ -147,7 +147,7 @@ mobs:register_arrow(":mobs_mc:fireball", {
 	end
 })
 --Spawn egg
-mobs:register_egg("mobs_mc:wither", S("Wither"), "mobs_mc_spawn_icon_wither.png", 0)
+mobs:register_egg("mobs_mc:wither", S("Wither"), "mobs_mc_spawn_icon_wither.png", 0, true)
 
 --Compatibility
 mobs:alias_mob("nssm:mese_dragon", "mobs_mc:wither")	
