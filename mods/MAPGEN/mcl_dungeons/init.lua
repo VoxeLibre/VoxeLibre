@@ -253,7 +253,7 @@ minetest.register_on_generated(function(minp, maxp)
 						local p_pos = area:index(tx, ty, tz)
 
 						-- Do not overwrite nodes with is_ground_content == false (e.g. bedrock)
-						-- Exceptions: cobblestone and moss stone so neighborings dungeons nicely connect to each other
+						-- Exceptions: cobblestone and mossy cobblestone so neighborings dungeons nicely connect to each other
 						local name = minetest.get_name_from_content_id(data[p_pos])
 						if name == "mcl_core:cobble" or name == "mcl_core:mossycobble" or minetest.registered_nodes[name].is_ground_content then
 							-- Floor

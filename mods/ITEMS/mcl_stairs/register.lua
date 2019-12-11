@@ -45,7 +45,7 @@ mcl_stairs.register_stair_and_slab_simple("granite", "mcl_core:granite", S("Gran
 mcl_stairs.register_stair_and_slab_simple("diorite", "mcl_core:diorite", S("Diorite Stairs"), S("Diorite Slab"), S("Double Diorite Slab"))
 
 mcl_stairs.register_stair_and_slab_simple("cobble", "mcl_core:cobble", S("Cobblestone Stairs"), S("Cobblestone Slab"), S("Double Cobblestone Slab"))
-mcl_stairs.register_stair_and_slab_simple("mossycobble", "mcl_core:mossycobble", S("Moss Stone Stairs"), S("Moss Stone Slab"), S("Double Moss Stone Slab"))
+mcl_stairs.register_stair_and_slab_simple("mossycobble", "mcl_core:mossycobble", S("Mossy Cobblestone Stairs"), S("Mossy Cobblestone Slab"), S("Double Mossy Cobblestone Slab"))
 
 mcl_stairs.register_stair_and_slab_simple("brick_block", "mcl_core:brick_block", S("Brick Stairs"), S("Brick Slab"), S("Double Brick Slab"))
 

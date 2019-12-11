@@ -2765,7 +2765,7 @@ local function register_decorations()
 		rotation = "0",
 	})
 
-	-- Moss stone boulder (3×3)
+	-- Mossy cobblestone boulder (3×3)
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:podzol", "mcl_core:dirt", "mcl_core:coarse_dirt"},
@@ -2785,7 +2785,7 @@ local function register_decorations()
 		flags = "place_center_x, place_center_z",
 	})
 
-	-- Small moss stone boulder (2×2)
+	-- Small mossy cobblestone boulder (2×2)
 	minetest.register_decoration({
 		deco_type = "schematic",
 		place_on = {"mcl_core:podzol", "mcl_core:dirt", "mcl_core:coarse_dirt"},
