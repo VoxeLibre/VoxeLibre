@@ -15,6 +15,7 @@ local wip_items = {
 	"mobs_mc:wither",
 	"mobs_mc:parrot",
 	"mobs_mc:witch",
+	"screwdriver:screwdriver",
 }
 local experimental_items = {
 }
