@@ -50,6 +50,10 @@ local layer_ratio = 255
 local standing_banner_entity_offset = { x=0, y=-0.499, z=0 }
 local hanging_banner_entity_offset = { x=0, y=-1.7, z=0 }
 
+local rotation_level_to_yaw = function(rotation_level)
+	return (rotation_level * (math.pi/8)) + math.pi
+end
+
 local on_dig_banner = function(pos, node, digger)
 	-- Check protection
 	local name = digger:get_player_name()
@@ -151,7 +155,7 @@ local spawn_banner_entity = function(pos, hanging, itemstack)
 	return banner
 end
 
-local respawn_banner_entity = function(pos, node)
+local respawn_banner_entity = function(pos, node, force)
 	local hanging = node.name == "mcl_banners:hanging_banner"
 	local offset
 	if hanging then
@@ -165,7 +169,11 @@ local respawn_banner_entity = function(pos, node)
 	for _, v in ipairs(objects) do
 		local ent = v:get_luaentity()
 		if ent and (ent.name == "mcl_banners:standing_banner" or ent.name == "mcl_banners:hanging_banner") then
-			return
+			if force then
+				v:remove()
+			else
+				return
+			end
 		end
 	end
 	-- Spawn new entity
@@ -174,15 +182,9 @@ local respawn_banner_entity = function(pos, node)
 	local banner_entity = spawn_banner_entity(bpos, hanging, banner_item)
 
 	-- Set rotation
-	local final_yaw
 	local rotation_level = meta:get_int("rotation_level")
-	final_yaw = (rotation_level * (math.pi/8)) + math.pi
+	local final_yaw = rotation_level_to_yaw(rotation_level)
 	banner_entity:set_yaw(final_yaw)
-end
-
-local on_rotate
-if minetest.get_modpath("screwdriver") then
-	on_rotate = screwdriver.disallow
 end
 
 -- Banner nodes.
@@ -229,6 +231,18 @@ S("You can copy the pattern of a banner by placing two banners of the same color
 	end,
 	_mcl_hardness = 1,
 	_mcl_blast_resistance = 5,
+	on_rotate = function(pos, node, user, mode, param2)
+		if mode == screwdriver.ROTATE_FACE then
+			local meta = minetest.get_meta(pos)
+			local rot = meta:get_int("rotation_level")
+			rot = (rot - 1) % 16
+			meta:set_int("rotation_level", rot)
+			respawn_banner_entity(pos, node, true)
+			return true
+		else
+			return false
+		end
+	end,
 })
 
 -- Hanging banner node
@@ -261,7 +275,29 @@ minetest.register_node("mcl_banners:hanging_banner", {
 	end,
 	_mcl_hardness = 1,
 	_mcl_blast_resistance = 5,
-	on_rotate = on_rotate,
+	on_rotate = function(pos, node, user, mode, param2)
+		if mode == screwdriver.ROTATE_FACE then
+			local r = screwdriver.rotate.wallmounted(pos, node, mode)
+			node.param2 = r
+			minetest.swap_node(pos, node)
+			local meta = minetest.get_meta(pos)
+			local rot = 0
+			if node.param2 == 2 then
+				rot = 12
+			elseif node.param2 == 3 then
+				rot = 4
+			elseif node.param2 == 4 then
+				rot = 0
+			elseif node.param2 == 5 then
+				rot = 8
+			end
+			meta:set_int("rotation_level", rot)
+			respawn_banner_entity(pos, node, true)
+			return true
+		else
+			return false
+		end
+	end,
 })
 
 for colorid, colortab in pairs(mcl_banners.colors) do
@@ -410,7 +446,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 				if rotation_level >= 16 then
 					rotation_level = 0
 				end
-				final_yaw = (rotation_level * (math.pi/8)) + math.pi
+				final_yaw = rotation_level_to_yaw(rotation_level)
 			end
 			meta:set_int("rotation_level", rotation_level)
 

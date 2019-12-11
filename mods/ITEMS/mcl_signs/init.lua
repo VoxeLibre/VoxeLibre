@@ -201,7 +201,7 @@ local destruct_sign = function(pos)
 	end
 end
 
-local update_sign = function(pos, fields, sender)
+local update_sign = function(pos, fields, sender, force_remove)
 	local meta = minetest.get_meta(pos)
 	if not meta then
 		return
@@ -214,16 +214,7 @@ local update_sign = function(pos, fields, sender)
 	if text == nil then
 		text = ""
 	end
-	local objects = minetest.get_objects_inside_radius(pos, 0.5)
-	for _, v in ipairs(objects) do
-		local ent = v:get_luaentity()
-		if ent and ent.name == "mcl_signs:text" then
-			v:set_properties({textures={generate_texture(create_lines(text), ent._signnodename)}})
-			return
-		end
-	end
-	
-	-- if there is no entity
+
 	local sign_info
 	local n = minetest.get_node(pos)
 	local nn = n.name
@@ -233,12 +224,30 @@ local update_sign = function(pos, fields, sender)
 		sign_info = signtext_info_wall[get_wall_signtext_info(n.param2)]
 	end
 	if sign_info == nil then
+		minetest.log("error", "[mcl_signs] Missing sign_info!")
 		return
 	end
-	local text_entity = minetest.add_entity({
+
+	local objects = minetest.get_objects_inside_radius(pos, 0.5)
+	local text_entity
+	for _, v in ipairs(objects) do
+		local ent = v:get_luaentity()
+		if ent and ent.name == "mcl_signs:text" then
+			if force_remove then
+				v:remove()
+			else
+				text_entity = v
+				break
+			end
+		end
+	end
+
+	if not text_entity then
+		text_entity = minetest.add_entity({
 			x = pos.x + sign_info.delta.x,
 			y = pos.y + sign_info.delta.y,
 			z = pos.z + sign_info.delta.z}, "mcl_signs:text")
+	end
 	text_entity:get_luaentity()._signnodename = nn
 	text_entity:set_properties({textures={generate_texture(create_lines(text), nn)}})
 
@@ -390,14 +399,20 @@ minetest.register_node("mcl_signs:wall_sign", {
 	on_punch = function(pos, node, puncher)
 		update_sign(pos)
 	end,
+	on_rotate = function(pos, node, user, mode)
+		if mode == screwdriver.ROTATE_FACE then
+			local r = screwdriver.rotate.wallmounted(pos, node, mode)
+			node.param2 = r
+			minetest.swap_node(pos, node)
+			update_sign(pos, nil, nil, true)
+			return true
+		else
+			return false
+		end
+	end,
 	_mcl_hardness = 1,
 	_mcl_blast_resistance = 5,
 })
-
-local on_rotate
-if minetest.get_modpath("screwdriver") then
-	on_rotate = screwdriver.disallow
-end
 
 -- Standing sign nodes.
 -- 4 rotations at 0°, 22.5°, 45° and 67.5°.
@@ -424,27 +439,68 @@ local ssign = {
 	on_punch = function(pos, node, puncher)
 		update_sign(pos)
 	end,
+	on_rotate = function(pos, node, user, mode)
+		if mode == screwdriver.ROTATE_FACE then
+			node.name = "mcl_signs:standing_sign22_5"
+			minetest.swap_node(pos, node)
+		elseif mode == screwdriver.ROTATE_AXIS then
+			return false
+		end
+		update_sign(pos, nil, nil, true)
+		return true
+	end,
 
-	on_rotate = on_rotate,
 	_mcl_hardness = 1,
 	_mcl_blast_resistance = 5,
 }
 
--- 22.5°
 minetest.register_node("mcl_signs:standing_sign", ssign)
+
+-- 22.5°
 local ssign22_5 = table.copy(ssign)
 ssign22_5.mesh = "mcl_signs_sign22.5.obj"
+ssign22_5.on_rotate = function(pos, node, user, mode)
+	if mode == screwdriver.ROTATE_FACE then
+		node.name = "mcl_signs:standing_sign45"
+		minetest.swap_node(pos, node)
+	elseif mode == screwdriver.ROTATE_AXIS then
+		return false
+	end
+	update_sign(pos, nil, nil, true)
+	return true
+end
+minetest.register_node("mcl_signs:standing_sign22_5", ssign22_5)
 
 -- 45°
-minetest.register_node("mcl_signs:standing_sign22_5", ssign22_5)
 local ssign45 = table.copy(ssign)
 ssign45.mesh = "mcl_signs_sign45.obj"
+ssign45.on_rotate = function(pos, node, user, mode)
+	if mode == screwdriver.ROTATE_FACE then
+		node.name = "mcl_signs:standing_sign67_5"
+		minetest.swap_node(pos, node)
+	elseif mode == screwdriver.ROTATE_AXIS then
+		return false
+	end
+	update_sign(pos, nil, nil, true)
+	return true
+end
 minetest.register_node("mcl_signs:standing_sign45", ssign45)
 
 -- 67.5°
-local ssign67 = table.copy(ssign)
-ssign67.mesh = "mcl_signs_sign67.5.obj"
-minetest.register_node("mcl_signs:standing_sign67_5", ssign67)
+local ssign67_5 = table.copy(ssign)
+ssign67_5.mesh = "mcl_signs_sign67.5.obj"
+ssign67_5.on_rotate = function(pos, node, user, mode)
+	if mode == screwdriver.ROTATE_FACE then
+		node.name = "mcl_signs:standing_sign"
+		node.param2 = (node.param2 + 1) % 4
+		minetest.swap_node(pos, node)
+	elseif mode == screwdriver.ROTATE_AXIS then
+		return false
+	end
+	update_sign(pos, nil, nil, true)
+	return true
+end
+minetest.register_node("mcl_signs:standing_sign67_5", ssign67_5)
 
 -- FIXME: Prevent entity destruction by /clearobjects
 minetest.register_entity("mcl_signs:text", {

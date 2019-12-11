@@ -121,6 +121,31 @@ function mcl_stairs.register_stair(subname, recipeitem, groups, images, descript
 
 			return place_stair(itemstack, placer, pointed_thing)
 		end,
+		on_rotate = function(pos, node, user, mode, param2)
+			-- Flip stairs vertically
+			if mode == screwdriver.ROTATE_AXIS then
+				local minor = node.param2
+				if node.param2 >= 20 then
+					minor = node.param2 - 20
+					if minor == 3 then
+						minor = 1
+					elseif minor == 1 then
+						minor = 3
+					end
+					node.param2 = minor
+				else
+					if minor == 3 then
+						minor = 1
+					elseif minor == 1 then
+						minor = 3
+					end
+					node.param2 = minor
+					node.param2 = node.param2 + 20
+				end
+				minetest.set_node(pos, node)
+				return true
+			end
+		end,
 		_mcl_hardness = hardness,
 	})
 
@@ -237,6 +262,15 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 		end,
 		_mcl_hardness = hardness,
 		_mcl_other_slab_half = upper_slab,
+		on_rotate = function(pos, node, user, mode, param2)
+			-- Flip slab
+			if mode == screwdriver.ROTATE_AXIS then
+				node.name = upper_slab
+				minetest.set_node(pos, node)
+				return true
+			end
+			return false
+		end,
 	}
 
 	minetest.register_node(":"..lower_slab, slabdef)
@@ -255,6 +289,15 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 	topdef._doc_items_usagehelp = nil
 	topdef.drop = lower_slab
 	topdef._mcl_other_slab_half = lower_slab
+	topdef.on_rotate = function(pos, node, user, mode, param2)
+		-- Flip slab
+		if mode == screwdriver.ROTATE_AXIS then
+			node.name = lower_slab
+			minetest.set_node(pos, node)
+			return true
+		end
+		return false
+	end
 	topdef.node_box = {
 		type = "fixed",
 		fixed = {-0.5, 0, -0.5, 0.5, 0.5, 0.5},

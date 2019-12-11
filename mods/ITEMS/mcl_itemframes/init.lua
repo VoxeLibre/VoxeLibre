@@ -56,14 +56,17 @@ local remove_item_entity = function(pos, node)
 	end
 end
 
-local update_item_entity = function(pos, node)
+local update_item_entity = function(pos, node, param2)
 	remove_item_entity(pos, node)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	local item = inv:get_stack("main", 1)
 	if not item:is_empty() then
+		if not param2 then
+			param2 = node.param2
+		end
 		if node.name == "mcl_itemframes:item_frame" then
-			local posad = facedir[node.param2]
+			local posad = facedir[param2]
 			pos.x = pos.x + posad.x*6.5/16
 			pos.y = pos.y + posad.y*6.5/16
 			pos.z = pos.z + posad.z*6.5/16
@@ -78,7 +81,7 @@ local update_item_entity = function(pos, node)
 		end
 		lua:_update_texture()
 		if node.name == "mcl_itemframes:item_frame" then
-			local yaw = math.pi*2 - node.param2 * math.pi/2
+			local yaw = math.pi*2 - param2 * math.pi/2
 			e:set_yaw(yaw)
 		end
 	end
@@ -94,11 +97,6 @@ local drop_item = function(pos, node, meta)
 	end
 	meta:set_string("infotext", "")
 	remove_item_entity(pos, node)
-end
-
-local on_rotate
-if minetest.get_modpath("screwdriver") then
-	on_rotate = screwdriver.disallow
 end
 
 minetest.register_node("mcl_itemframes:item_frame",{
@@ -189,7 +187,31 @@ minetest.register_node("mcl_itemframes:item_frame",{
 		local node = minetest.get_node(pos)
 		drop_item(pos, node, meta)
 	end,
-	on_rotate = on_rotate,
+	on_rotate = function(pos, node, user, mode, param2)
+		if mode == screwdriver.ROTATE_FACE then
+			-- Rotate face
+			local meta = minetest.get_meta(pos)
+			local node = minetest.get_node(pos)
+
+			local objs = nil
+			if node.name == "mcl_itemframes:item_frame" then
+				objs = minetest.get_objects_inside_radius(pos, .5)
+			end
+			if objs then
+				for _, obj in ipairs(objs) do
+					if obj and obj:get_luaentity() and obj:get_luaentity().name == "mcl_itemframes:item" then
+						update_item_entity(pos, node, (node.param2+1) % 4)
+						break
+					end
+				end
+			end
+			return
+		elseif mode == screwdriver.ROTATE_AXIS then
+			-- Place screwdriver into itemframe
+			minetest.registered_nodes["mcl_itemframes:item_frame"].on_rightclick(pos, node, user, ItemStack("screwdriver:screwdriver"))
+			return false
+		end
+	end,
 })
 
 minetest.register_craft({

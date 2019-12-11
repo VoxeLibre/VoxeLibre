@@ -96,4 +96,4 @@ mobs:register_arrow("mobs_mc:dragon_fireball", {
 	end
 })
 
-mobs:register_egg("mobs_mc:enderdragon", S("Ender Dragon"), "mobs_mc_spawn_icon_dragon.png", 0)
+mobs:register_egg("mobs_mc:enderdragon", S("Ender Dragon"), "mobs_mc_spawn_icon_dragon.png", 0, true)

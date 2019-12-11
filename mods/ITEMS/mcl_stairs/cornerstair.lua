@@ -664,6 +664,7 @@ function mcl_stairs.cornerstair.add(name, stairtiles)
 		stairs = {name, name.."_outer", name.."_inner"},
 		after_dig_node = function(pos, oldnode) after_dig_node(pos, oldnode) end,
 		_mcl_hardness = node_def._mcl_hardness,
+		on_rotate = false,
 	})
 	minetest.register_node(":"..name.."_inner", {
 		description = node_def.description,
@@ -687,6 +688,7 @@ function mcl_stairs.cornerstair.add(name, stairtiles)
 		stairs = {name, name.."_outer", name.."_inner"},
 		after_dig_node = function(pos, oldnode) after_dig_node(pos, oldnode) end,
 		_mcl_hardness = node_def._mcl_hardness,
+		on_rotate = false,
 	})
 
 	if minetest.get_modpath("doc") then

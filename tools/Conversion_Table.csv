@@ -958,3 +958,7 @@ Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/blocks,red_nether_brick.png,,mcl_fences_fence_gate_red_nether_brick.png,,,,,,,
 /assets/minecraft/textures/blocks,nether_brick.png,,mcl_fences_fence_gate_nether_brick.png,,,,,,,
 /assets/minecraft/textures/blocks,stonebrick_carved.png,,mcl_supplemental_stonebrick_carved_slab.png,,,,,,,
+/assets/minecraft/textures/blocks,cobblestone.png,/mods/ITEMS/mcl_walls/textures,mcl_walls_cobble_wall_top.png,,,,,,,
+/assets/minecraft/textures/blocks,cobblestone.png,/mods/ITEMS/mcl_walls/textures,mcl_walls_cobble_wall_side.png,,,,,,,
+/assets/minecraft/textures/blocks,cobblestone_mossy.png,/mods/ITEMS/mcl_walls/textures,mcl_walls_cobble_mossy_wall_top.png,,,,,,,
+/assets/minecraft/textures/blocks,cobblestone_mossy.png,/mods/ITEMS/mcl_walls/textures,mcl_walls_cobble_mossy_wall_side.png,,,,,,,

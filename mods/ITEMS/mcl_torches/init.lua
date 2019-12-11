@@ -153,6 +153,7 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 			wall_side = {-0.5, -0.5, -0.1, -0.2, 0.1, 0.1},
 		},
 		sounds = sounds,
+		on_rotate = false,
 	}
 	if moredef ~= nil then
 		for k,v in pairs(moredef) do

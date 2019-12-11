@@ -19,7 +19,31 @@ end
 
 local on_rotate
 if minetest.get_modpath("screwdriver") then
-	on_rotate = screwdriver.rotate_simple
+	on_rotate = function(pos, node, user, mode, param2)
+		-- Flip trapdoor vertically
+		if mode == screwdriver.ROTATE_AXIS then
+			local minor = node.param2
+			if node.param2 >= 20 then
+				minor = node.param2 - 20
+				if minor == 3 then
+					minor = 1
+				elseif minor == 1 then
+					minor = 3
+				end
+				node.param2 = minor
+			else
+				if minor == 3 then
+					minor = 1
+				elseif minor == 1 then
+					minor = 3
+				end
+				node.param2 = minor
+				node.param2 = node.param2 + 20
+			end
+			minetest.set_node(pos, node)
+			return true
+		end
+	end
 end
 
 function mcl_doors:register_trapdoor(name, def)

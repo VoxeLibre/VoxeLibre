@@ -99,5 +99,5 @@ mobs:register_arrow("mobs_mc:wither_skull", {
 -- TODO: Add blue wither skull
 
 --Spawn egg
-mobs:register_egg("mobs_mc:wither", S("Wither"), "mobs_mc_spawn_icon_wither.png", 0)
+mobs:register_egg("mobs_mc:wither", S("Wither"), "mobs_mc_spawn_icon_wither.png", 0, true)
 

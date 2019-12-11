@@ -672,7 +672,7 @@ minetest.register_node("mcl_core:cobble", {
 })
 
 minetest.register_node("mcl_core:mossycobble", {
-	description = S("Moss Stone"),
+	description = S("Mossy Cobblestone"),
 	_doc_items_longdesc = doc.sub.items.temp.build,
 	tiles = {"default_mossycobble.png"},
 	is_ground_content = false,

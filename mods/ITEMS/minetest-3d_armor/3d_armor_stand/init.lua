@@ -83,11 +83,6 @@ local drop_armor = function(pos)
 	end
 end
 
-local on_rotate
-if minetest.get_modpath("screwdriver") then
-	on_rotate = screwdriver.disallow
-end
-
 -- TODO: The armor stand should be an entity
 minetest.register_node("3d_armor_stand:armor_stand", {
 	description = S("Armor Stand"),
@@ -231,7 +226,15 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 			update_entity(pos)
 		end, pos)
 	end,
-	on_rotate = on_rotate,
+	on_rotate = function(pos, node, user, mode)
+		if mode == screwdriver.ROTATE_FACE then
+			node.param2 = (node.param2 + 1) % 4
+			minetest.swap_node(pos, node)
+			update_entity(pos)
+			return true
+		end
+		return false
+	end,
 })
 
 minetest.register_entity("3d_armor_stand:armor_entity", {
