@@ -52,7 +52,7 @@ local function update_wall(pos)
 	local upnode = minetest.get_node({x = pos.x, y = pos.y+1, z = pos.z})
 	if sum == 5 or sum == 10 then
 		local def = minetest.registered_nodes[upnode.name]
-		if (def and def.walkable) or upnode.name == "mcl_torches:torch" then
+		if (def and def.walkable) or (minetest.get_item_group(upnode.name, "torch") == 1) then
 			sum = sum + 11
 		end
 	end
