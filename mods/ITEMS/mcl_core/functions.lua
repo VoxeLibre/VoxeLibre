@@ -653,9 +653,9 @@ function mcl_core.get_grass_block_type(pos)
 		end
 	end
 	if dry then
-		return {name="mcl_core:dirt_with_dry_grass"}
+		return {name="mcl_core:dirt_with_grass", param2=1}
 	else
-		return {name="mcl_core:dirt_with_grass"}
+		return {name="mcl_core:dirt_with_grass", param2=0}
 	end
 end
 
@@ -1232,10 +1232,11 @@ end
 -- * itemstring_clear: Itemstring of the original “clear” node without snow
 -- * tiles: Optional custom tiles
 -- * sounds: Optional custom sounds
+-- * clear_colorization: Optional. If true, will clear all paramtype2="color" related node def. fields
 --
 -- The snowable nodes also MUST have _mcl_snowed defined to contain the name
 -- of the snowed node.
-mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, tiles, sounds)
+mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, tiles, sounds, clear_colorization)
 	local def = table.copy(minetest.registered_nodes[itemstring_clear])
 	local create_doc_alias
 	if def.description then
@@ -1269,6 +1270,11 @@ mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, ti
 		def.tiles = {"default_snow.png", "default_dirt.png", {name="mcl_core_grass_side_snowed.png", tileable_vertical=false}}
 	else
 		def.tiles = tiles
+	end
+	if clear_colorization then
+		def.paramtype2 = nil
+		def.color = nil
+		def.overlay_tiles = nil
 	end
 	if not sounds then
 		def.sounds = mcl_sounds.node_sound_dirt_defaults({

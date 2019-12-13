@@ -919,7 +919,7 @@ local function register_biomes()
 	-- Strata don't generate here.
 	minetest.register_biome({
 		name = "MesaPlateauF_grasstop",
-		node_top = "mcl_core:dirt_with_dry_grass",
+		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 1,
@@ -985,7 +985,7 @@ local function register_biomes()
 	-- Grass plateau
 	minetest.register_biome({
 		name = "MesaPlateauFM_grasstop",
-		node_top = "mcl_core:dirt_with_dry_grass",
+		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
 		node_filler = "mcl_core:coarse_dirt",
 		depth_filler = 2,
@@ -1035,7 +1035,7 @@ local function register_biomes()
 	-- Savanna
 	minetest.register_biome({
 		name = "Savanna",
-		node_top = "mcl_core:dirt_with_dry_grass",
+		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
 		node_filler = "mcl_core:dirt",
 		depth_filler = 2,
@@ -1081,7 +1081,7 @@ local function register_biomes()
 	-- Otherwise identical to Savanna
 	minetest.register_biome({
 		name = "SavannaM",
-		node_top = "mcl_core:dirt_with_dry_grass",
+		node_top = "mcl_core:dirt_with_grass",
 		depth_top = 1,
 		node_filler = "mcl_core:coarse_dirt",
 		depth_filler = 3,
@@ -1514,7 +1514,7 @@ local function register_biomelike_ores()
 	minetest.register_ore({
 		ore_type	= "sheet",
 		ore		= "mcl_core:coarse_dirt",
-		wherein		= {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt"},
+		wherein		= {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		column_height_max = 1,
 		column_midpoint_factor = 0.0,
 		y_min		= mcl_vars.mg_overworld_min,
@@ -1526,7 +1526,7 @@ local function register_biomelike_ores()
 	minetest.register_ore({
 		ore_type	= "blob",
 		ore		= "mcl_core:coarse_dirt",
-		wherein		= {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt"},
+		wherein		= {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		clust_scarcity	= 1500,
 		clust_num_ores	= 25,
 		clust_size	= 7,
@@ -1537,7 +1537,7 @@ local function register_biomelike_ores()
 	minetest.register_ore({
 		ore_type	= "sheet",
 		ore		= "mcl_core:coarse_dirt",
-		wherein		= {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt"},
+		wherein		= {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		column_height_max = 1,
 		column_midpoint_factor = 0.0,
 		y_min		= mcl_vars.mg_overworld_min,
@@ -1549,7 +1549,7 @@ local function register_biomelike_ores()
 	minetest.register_ore({
 		ore_type	= "blob",
 		ore		= "mcl_core:coarse_dirt",
-		wherein		= {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt"},
+		wherein		= {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		clust_scarcity	= 1800,
 		clust_num_ores	= 65,
 		clust_size	= 15,
@@ -2251,7 +2251,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt"},
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.015,
@@ -2270,7 +2270,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "schematic",
-		place_on = {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt"},
+		place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.008,
@@ -2565,7 +2565,7 @@ local function register_decorations()
 	for a=1, 7 do
 		minetest.register_decoration({
 			deco_type = "schematic",
-			place_on = {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt", "mcl_core:coarse_dirt"},
+			place_on = {"mcl_core:dirt_with_grass", "mcl_core:dirt", "mcl_core:coarse_dirt"},
 			sidelen = 16,
 			fill_ratio = 0.0002,
 			biomes = {"Savanna", "SavannaM"},
@@ -2872,7 +2872,7 @@ local function register_decorations()
 		num_spawn_by = 1,
 	})
 
-	local dry_index = minetest.registered_nodes["mcl_core:dirt_with_dry_grass"]._mcl_grass_palette_index
+	local dry_index = minetest.registered_nodes["mcl_core:dirt_with_grass"]._mcl_grass_palette_index
 
 	-- Doubletall grass
 	local register_doubletall_grass = function(offset, scale, biomes, param2)
@@ -3435,7 +3435,7 @@ local function register_decorations()
 	-- Dead bushes
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"group:sand", "mcl_core:podzol", "mcl_core:dirt", "mcl_core:dirt_with_dry_grass", "mcl_core:coarse_dirt", "group:hardened_clay"},
+		place_on = {"group:sand", "mcl_core:podzol", "mcl_core:dirt", "mcl_core:dirt_with_grass", "mcl_core:coarse_dirt", "group:hardened_clay"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.0,
@@ -3453,7 +3453,7 @@ local function register_decorations()
 	})
 	minetest.register_decoration({
 		deco_type = "simple",
-		place_on = {"group:sand", "mcl_core:dirt", "mcl_core:dirt_with_dry_grass", "mcl_core:coarse_dirt"},
+		place_on = {"group:sand", "mcl_core:dirt", "mcl_core:dirt_with_grass", "mcl_core:coarse_dirt"},
 		sidelen = 16,
 		noise_params = {
 			offset = 0.1,
