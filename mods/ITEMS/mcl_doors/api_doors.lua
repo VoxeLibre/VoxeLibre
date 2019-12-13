@@ -287,7 +287,17 @@ function mcl_doors:register_door(name, def)
 			action_on = on_mesecons_signal_open,
 		}},
 
-		on_rotate = false,
+		on_rotate = function(pos, node, user, mode, param2)
+			if mode == screwdriver.ROTATE_FACE then
+				minetest.remove_node(pos)
+				node.param2 = screwdriver.rotate.facedir(pos, node, mode)
+				minetest.set_node(pos, node)
+				node.name = name .."_t_1"
+				minetest.set_node({x=pos.x,y=pos.y+1,z=pos.z}, node)
+				return true
+			end
+			return false
+		end,
 
 		can_dig = check_player_priv,
 	})
@@ -336,7 +346,17 @@ function mcl_doors:register_door(name, def)
 			action_on = on_mesecons_signal_open_top,
 		}},
 
-		on_rotate = false,
+		on_rotate = function(pos, node, user, mode, param2)
+			if mode == screwdriver.ROTATE_FACE then
+				minetest.remove_node(pos)
+				node.param2 = screwdriver.rotate.facedir(pos, node, mode)
+				minetest.set_node(pos, node)
+				node.name = name .."_b_1"
+				minetest.set_node({x=pos.x,y=pos.y-1,z=pos.z}, node)
+				return true
+			end
+			return false
+		end,
 
 		can_dig = check_player_priv,
 	})
@@ -385,7 +405,17 @@ function mcl_doors:register_door(name, def)
 			action_off = on_mesecons_signal_close,
 		}},
 
-		on_rotate = false,
+		on_rotate = function(pos, node, user, mode, param2)
+			if mode == screwdriver.ROTATE_FACE then
+				minetest.remove_node(pos)
+				node.param2 = screwdriver.rotate.facedir(pos, node, mode)
+				minetest.set_node(pos, node)
+				node.name = name .."_t_2"
+				minetest.set_node({x=pos.x,y=pos.y+1,z=pos.z}, node)
+				return true
+			end
+			return false
+		end,
 
 		can_dig = check_player_priv,
 	})
@@ -434,7 +464,17 @@ function mcl_doors:register_door(name, def)
 			action_off = on_mesecons_signal_close_top,
 		}},
 
-		on_rotate = false,
+		on_rotate = function(pos, node, user, mode, param2)
+			if mode == screwdriver.ROTATE_FACE then
+				minetest.remove_node(pos)
+				node.param2 = screwdriver.rotate.facedir(pos, node, mode)
+				minetest.set_node(pos, node)
+				node.name = name .."_b_2"
+				minetest.set_node({x=pos.x,y=pos.y-1,z=pos.z}, node)
+				return true
+			end
+			return false
+		end,
 
 		can_dig = check_player_priv,
 	})
