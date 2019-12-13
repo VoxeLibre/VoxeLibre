@@ -21,7 +21,7 @@ local mcl_hoppers_formspec =
 local def_hopper = {
 	inventory_image = "mcl_hoppers_item.png",
 	wield_image = "mcl_hoppers_item.png",
-	groups = {pickaxey=1, container=2,deco_block=1,},
+	groups = {pickaxey=1, container=2,deco_block=1,hopper=1},
 	drawtype = "nodebox",
 	paramtype = "light",
 	-- FIXME: mcl_hoppers_hopper_inside.png is unused by hoppers.
@@ -208,7 +208,7 @@ end
 local def_hopper_side = {
 	_doc_items_create_entry = false,
 	drop = "mcl_hoppers:hopper",
-	groups = {pickaxey=1, container=2,not_in_creative_inventory=1},
+	groups = {pickaxey=1, container=2,not_in_creative_inventory=1,hopper=2},
 	drawtype = "nodebox",
 	paramtype = "light",
 	paramtype2 = "facedir",

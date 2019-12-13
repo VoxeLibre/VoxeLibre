@@ -127,7 +127,7 @@ minetest.register_node("mcl_portals:portal", {
 			{-0.5, -0.5, -0.1,  0.5, 0.5, 0.1},
 		},
 	},
-	groups = {not_in_creative_inventory = 1},
+	groups = {portal=1, not_in_creative_inventory = 1},
 	on_destruct = destroy_portal,
 
 	_mcl_hardness = -1,

@@ -59,7 +59,7 @@ minetest.register_node("mcl_portals:portal_end", {
 			{-0.5, -0.5, -0.5, 0.5, 4/16, 0.5},
 		},
 	},
-	groups = {not_in_creative_inventory = 1, disable_jump = 1 },
+	groups = {portal=1, not_in_creative_inventory = 1, disable_jump = 1},
 
 	_mcl_hardness = -1,
 	_mcl_blast_resistance = 18000000,
@@ -293,7 +293,7 @@ minetest.register_node("mcl_portals:end_portal_frame", {
 	description = S("End Portal Frame"),
 	_doc_items_longdesc = S("End portal frames are used in the construction of End portals. Each block has a socket for an eye of ender.") .. "\n" .. S("NOTE: The End dimension is currently incomplete and might change in future versions."),
 	_doc_items_usagehelp = S("To create an End portal, you need 12 end portal frames and 12 eyes of ender. The end portal frames have to be arranged around a horizontal 3×3 area with each block facing inward. Any other arrangement will fail.") .. "\n" .. S("Place an eye of ender into each block. The end portal appears in the middle after placing the final eye.") .. "\n" .. S("Once placed, an eye of ender can not be taken back."),
-	groups = { creative_breakable = 1, deco_block = 1 },
+	groups = { creative_breakable = 1, deco_block = 1, end_portal_frame = 1 },
 	tiles = { "mcl_portals_endframe_top.png", "mcl_portals_endframe_bottom.png", "mcl_portals_endframe_side.png" },
 	paramtype2 = "facedir",
 	drawtype = "nodebox",
@@ -316,7 +316,7 @@ minetest.register_node("mcl_portals:end_portal_frame", {
 minetest.register_node("mcl_portals:end_portal_frame_eye", {
 	description = S("End Portal Frame with Eye of Ender"),
 	_doc_items_create_entry = false,
-	groups = { creative_breakable = 1, deco_block = 1, comparator_signal = 15 },
+	groups = { creative_breakable = 1, deco_block = 1, comparator_signal = 15, end_portal_frame = 2 },
 	tiles = { "mcl_portals_endframe_top.png^[lowpart:75:mcl_portals_endframe_eye.png", "mcl_portals_endframe_bottom.png", "mcl_portals_endframe_eye.png^mcl_portals_endframe_side.png" },
 	paramtype2 = "facedir",
 	drawtype = "nodebox",
