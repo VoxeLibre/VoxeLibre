@@ -1806,8 +1806,8 @@ minetest.register_on_generated(function(minp, maxp, seed)
 					if bn then
 						local biome = minetest.registered_biomes[bn]
 						if biome then
-							if biome._mcl_biome_type == "hot" then
-								param2_data[p_pos] = 1
+							if biome._mcl_biome_type then
+								param2_data[p_pos] = biome._mcl_palette_index
 								lvm_used = true
 							end
 						end
