@@ -326,9 +326,12 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
 	on_construct = function(pos)
-		local new_node = mcl_core.get_grass_block_type(pos)
-		if new_node.name ~= "mcl_core:dirt_with_grass" then
-			minetest.set_node(pos, new_node)
+		local node = minetest.get_node(pos)
+		if node.param2 == 0 then
+			local new_node = mcl_core.get_grass_block_type(pos)
+			if new_node.param2 ~= 0 or new_node.name ~= "mcl_core:dirt_with_grass" then
+				minetest.set_node(pos, new_node)
+			end
 		end
 		return mcl_core.on_snowable_construct(pos)
 	end,

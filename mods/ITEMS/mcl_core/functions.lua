@@ -639,7 +639,7 @@ end
 
 local grass_spread_randomizer = PseudoRandom(minetest.get_mapgen_setting("seed"))
 
--- Return appropriate grass block node for pos. Dry grass for dry/hot biomes, normal grass otherwise.
+-- Return appropriate grass block node for pos
 function mcl_core.get_grass_block_type(pos)
 	local biome_data = minetest.get_biome_data(pos)
 	local dry = false
