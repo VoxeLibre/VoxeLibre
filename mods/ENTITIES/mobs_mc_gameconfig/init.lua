@@ -175,6 +175,13 @@ mobs_mc.override.enderman_takable = {
 	-- Generic handling, useful for entensions
 	"group:enderman_takable",
 }
+mobs_mc.override.enderman_replace_on_take = {
+	-- Turn covered dirt blocks to normal dirt.
+	-- This is a workaround because the dirt with grass texture fails when held by the enderman
+	-- (because of the node coloring).
+	-- FIXME: Remove these lines as soon we support rendering dirt with grass
+	["mcl_core:dirt_with_grass"] = "mcl_core:dirt",
+}
 mobs_mc.override.misc = {
 	totem_fail_nodes = { "mcl_core:void", "mcl_core:realm_barrier" },
 }
