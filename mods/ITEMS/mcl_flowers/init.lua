@@ -17,7 +17,7 @@ local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, 
 	local has_palette = minetest.registered_nodes[itemstack:get_name()].palette ~= nil
 	local colorize
 	if has_palette then
-		colorize = minetest.registered_nodes[soil_node.name]._mcl_grass_palette_index
+		colorize = soil_node.param2
 	end
 	if not colorize then
 		colorize = 0
@@ -226,8 +226,8 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 			local top = { x = bottom.x, y = bottom.y + 1, z = bottom.z }
 			local bottom_buildable = minetest.registered_nodes[minetest.get_node(bottom).name].buildable_to
 			local top_buildable = minetest.registered_nodes[minetest.get_node(top).name].buildable_to
-			local floorname = minetest.get_node({x=bottom.x, y=bottom.y-1, z=bottom.z}).name
-			if not minetest.registered_nodes[floorname] then
+			local floor = minetest.get_node({x=bottom.x, y=bottom.y-1, z=bottom.z})
+			if not minetest.registered_nodes[floor.name] then
 				return itemstack
 			end
 
@@ -243,10 +243,10 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 			-- * If not a flower, also allowed on podzol and coarse dirt
 			-- * Only with light level >= 8
 			-- * Only if two enough space
-			if (floorname == "mcl_core:dirt" or minetest.get_item_group(floorname, "grass_block") == 1 or (not is_flower and (floorname == "mcl_core:coarse_dirt" or floorname == "mcl_core:podzol" or floorname == "mcl_core:podzol_snow"))) and bottom_buildable and top_buildable and light_ok then
+			if (floor.name == "mcl_core:dirt" or minetest.get_item_group(floor.name, "grass_block") == 1 or (not is_flower and (floor.name == "mcl_core:coarse_dirt" or floor.name == "mcl_core:podzol" or floor.name == "mcl_core:podzol_snow"))) and bottom_buildable and top_buildable and light_ok then
 				local param2
 				if grass_color then
-					param2 = minetest.registered_nodes[floorname]._mcl_grass_palette_index
+					param2 = floor.param2
 				end
 				-- Success! We can now place the flower
 				minetest.sound_play(minetest.registered_nodes[itemstring].sounds.place, {pos = bottom, gain=1})

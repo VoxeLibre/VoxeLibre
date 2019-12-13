@@ -336,7 +336,6 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 		return mcl_core.on_snowable_construct(pos)
 	end,
 	_mcl_snowed = "mcl_core:dirt_with_grass_snow",
-	_mcl_grass_palette_index = 0,
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 0.6,
 })

@@ -1273,6 +1273,8 @@ mcl_core.register_snowed_node = function(itemstring_snowed, itemstring_clear, ti
 	end
 	if clear_colorization then
 		def.paramtype2 = nil
+		def.palette = nil
+		def.palette_index = nil
 		def.color = nil
 		def.overlay_tiles = nil
 	end

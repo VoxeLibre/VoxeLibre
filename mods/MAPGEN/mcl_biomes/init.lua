@@ -2872,7 +2872,7 @@ local function register_decorations()
 		num_spawn_by = 1,
 	})
 
-	local dry_index = minetest.registered_nodes["mcl_core:dirt_with_grass"]._mcl_grass_palette_index
+	local dry_grass_index = 1
 
 	-- Doubletall grass
 	local register_doubletall_grass = function(offset, scale, biomes, param2)
@@ -2905,7 +2905,7 @@ local function register_decorations()
 
 	register_doubletall_grass(-0.01, 0.03, {"Taiga", "Forest", "FlowerForest", "BirchForest", "BirchForestM", "RoofedForest"})
 	register_doubletall_grass(-0.002, 0.03, {"Plains", "SunflowerPlains"})
-	register_doubletall_grass(-0.0005, -0.03, {"Savanna", "SavannaM"}, dry_index)
+	register_doubletall_grass(-0.0005, -0.03, {"Savanna", "SavannaM"}, dry_grass_index)
 
 	-- Large ferns
 	local register_double_fern = function(offset, scale, biomes)
@@ -3354,18 +3354,18 @@ local function register_decorations()
 	register_grass_decoration("tallgrass", 0,      0.06, grass_forest)
 	register_grass_decoration("tallgrass", 0.015,  0.045, grass_forest)
 	register_grass_decoration("tallgrass", 0.03,   0.03, grass_forest)
-	register_grass_decoration("tallgrass", -0.03, 0.09, grass_mpf, dry_index)
-	register_grass_decoration("tallgrass", -0.015, 0.075, grass_mpf, dry_index)
-	register_grass_decoration("tallgrass", 0, 0.06, grass_mpf, dry_index)
-	register_grass_decoration("tallgrass", 0.01, 0.045, grass_mpf, dry_index)
+	register_grass_decoration("tallgrass", -0.03, 0.09, grass_mpf, dry_grass_index)
+	register_grass_decoration("tallgrass", -0.015, 0.075, grass_mpf, dry_grass_index)
+	register_grass_decoration("tallgrass", 0, 0.06, grass_mpf, dry_grass_index)
+	register_grass_decoration("tallgrass", 0.01, 0.045, grass_mpf, dry_grass_index)
 	register_grass_decoration("tallgrass", 0.01, 0.05, grass_forest)
 	register_grass_decoration("tallgrass", 0.03, 0.03, grass_plains)
 	register_grass_decoration("tallgrass", 0.05, 0.01, grass_plains)
 	register_grass_decoration("tallgrass", 0.07, -0.01, grass_plains)
 	register_grass_decoration("tallgrass", 0.09, -0.03, grass_plains)
-	register_grass_decoration("tallgrass", 0.18, -0.03, grass_savanna, dry_index)
+	register_grass_decoration("tallgrass", 0.18, -0.03, grass_savanna, dry_grass_index)
 	register_grass_decoration("tallgrass", 0.05, -0.03, grass_sparse)
-	register_grass_decoration("tallgrass", 0.05, 0.05, grass_mpfm, dry_index)
+	register_grass_decoration("tallgrass", 0.05, 0.05, grass_mpfm, dry_grass_index)
 
 	local fern_minimal = { "Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "MegaTaiga", "MegaSpruceTaiga", "ColdTaiga" }
 	local fern_low = { "Jungle", "JungleM", "JungleEdge", "JungleEdgeM", "Taiga", "MegaTaiga", "MegaSpruceTaiga" }

@@ -255,7 +255,7 @@ mcl_dye.apply_bone_meal = function(pointed_thing)
 					if math.random(1,100) <= 90 then
 						-- 90% tall grass, 10% flower
 						if math.random(1,100) <= 90 then
-							local col = minetest.registered_nodes[n2.name]._mcl_grass_palette_index
+							local col = n2.param2
 							minetest.add_node(pos, {name="mcl_flowers:tallgrass", param2=col})
 						else
 							local flowers_table
