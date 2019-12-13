@@ -12,7 +12,7 @@ local function check_placement_allowed(node, wdir)
 	-- * mob spawner
 	-- * chorus flower
 	-- * glass, barrier, ice
-	-- * Fence, wall, hopper, end portal frame with ender eye: Only on top
+	-- * Fence, wall, end portal frame with ender eye: Only on top
 	-- * Slab, stairs: Only on top if upside down
 
 	-- Special forbidden nodes:
@@ -27,7 +27,7 @@ local function check_placement_allowed(node, wdir)
 		if node.name ~= "mcl_core:ice" and node.name ~= "mcl_nether:soul_sand" and node.name ~= "mcl_mobspawners:spawner" and node.name ~= "mcl_core:barrier" and node.name ~= "mcl_end:chorus_flower" and node.name ~= "mcl_end:chorus_flower_dead" and (not def.groups.glass) and
 				((not def.groups.solid) or (not def.groups.opaque)) then
 			-- Only allow top placement on these nodes
-			if node.name == "mcl_end:dragon_egg" or node.name == "mcl_portals:end_portal_frame_eye" or def.groups.hopper or def.groups.fence == 1 or def.groups.wall or def.groups.slab_top == 1 or def.groups.anvil or def.groups.pane or (def.groups.stair == 1 and minetest.facedir_to_dir(node.param2).y ~= 0) then
+			if node.name == "mcl_end:dragon_egg" or node.name == "mcl_portals:end_portal_frame_eye" or def.groups.fence == 1 or def.groups.wall or def.groups.slab_top == 1 or def.groups.anvil or def.groups.pane or (def.groups.stair == 1 and minetest.facedir_to_dir(node.param2).y ~= 0) then
 				if wdir ~= 1 then
 					return false
 				end
