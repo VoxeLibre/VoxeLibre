@@ -1639,6 +1639,7 @@ minetest.register_on_generated(function(minp, maxp, seed)
 	local data = vm:get_data(lvm_buffer)
 	local param2_data = vm:get_param2_data(lvm_buffer_param2)
 	local area = VoxelArea:new({MinEdge=emin, MaxEdge=emax})
+	local aream = VoxelArea:new({MinEdge={x=minp.x, y=0, z=minp.z}, MaxEdge={x=maxp.x, y=0, z=maxp.z}})
 	local lvm_used = false
 	local biomemap
 
@@ -1792,13 +1793,25 @@ minetest.register_on_generated(function(minp, maxp, seed)
 
 
 			-- Non-v6 mapgens:
-			-- Clear snowy grass blocks without snow above to ensure consistency.
 			else
-				local nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:dirt_with_grass_snow"})
+				-- Set param2 (=color) of grass blocks.
+				-- Clear snowy grass blocks without snow above to ensure consistency.
+				local nodes = minetest.find_nodes_in_area(minp, maxp, {"mcl_core:dirt_with_grass", "mcl_core:dirt_with_grass_snow"})
 				for n=1, #nodes do
 					local p_pos = area:index(nodes[n].x, nodes[n].y, nodes[n].z)
 					local p_pos_above = area:index(nodes[n].x, nodes[n].y+1, nodes[n].z)
 					local p_pos_below = area:index(nodes[n].x, nodes[n].y-1, nodes[n].z)
+					local b_pos = aream:index(nodes[n].x, 0, nodes[n].z)
+					local bn = minetest.get_biome_name(biomemap[b_pos])
+					if bn then
+						local biome = minetest.registered_biomes[bn]
+						if biome then
+							if biome._mcl_biome_type == "hot" then
+								param2_data[p_pos] = 1
+								lvm_used = true
+							end
+						end
+					end
 					if data[p_pos] == c_dirt_with_grass_snow and p_pos_above and data[p_pos_above] ~= c_top_snow and data[p_pos_above] ~= c_snow_block then
 						data[p_pos] = c_dirt_with_grass
 						lvm_used = true
