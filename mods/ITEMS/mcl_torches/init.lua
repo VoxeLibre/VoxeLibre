@@ -1,8 +1,5 @@
 local S = minetest.get_translator("mcl_torches")
 
-local on_rotate_wall, on_rotate_floor
-local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
-
 --
 -- 3d torch part
 --
@@ -137,30 +134,7 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 			end
 			return itemstack
 		end,
-		on_rotate = function(pos, node, user, mode)
-			if mode == screwdriver.ROTATE_AXIS then
-				local posses = {
-					{ { x=-1, y=0, z=0 }, 3 },
-					{ { x=1, y=0, z=0 }, 2 },
-					{ { x=0, y=0, z=-1 }, 5 },
-					{ { x=0, y=0, z=1 }, 4 },
-				}
-				node.name = itemstring_wall
-				for p=1, #posses do
-					local pos2 = vector.add(pos, posses[p][1])
-					node.param2 = posses[p][2]
-					local node2 = minetest.get_node(pos2)
-					local def2 = minetest.registered_nodes[node2.name]
-					if def2 and def2.walkable and check_placement_allowed(node2, node.param2) then
-						minetest.set_node(pos, node)
-						return true
-					end
-				end
-				return false
-			else
-				return false
-			end
-		end,
+		on_rotate = false,
 	}
 	if moredef ~= nil then
 		for k,v in pairs(moredef) do
@@ -191,19 +165,7 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 			wall_side = {-0.5, -0.5, -0.1, -0.2, 0.1, 0.1},
 		},
 		sounds = sounds,
-		on_rotate = function(pos, node, user, mode)
-			if mode == screwdriver.ROTATE_AXIS then
-				node.name = itemstring
-				node.param2 = 1
-				minetest.set_node(pos, node)
-				return true
-			elseif mode == screwdriver.ROTATE_FACE then
-				node.param2 = screwdriver.rotate.wallmounted(pos, node, mode)
-				minetest.set_node(pos, node)
-				return true
-			end
-			return false
-		end,
+		on_rotate = false,
 	}
 	if moredef ~= nil then
 		for k,v in pairs(moredef) do
