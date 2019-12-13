@@ -757,6 +757,24 @@ minetest.register_abm({
 	end,
 })
 
+minetest.register_lbm({
+	label = "Replace legacy dry grass",
+	name = "mcl_core:replace_legacy_dry_grass",
+	nodenames = {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt_with_dry_grass_snow"},
+	action = function(pos, node)
+		local biome_data = minetest.get_biome_data(pos)
+		local index = 0
+		if biome_data then
+			local biome = biome_data.biome
+			local biome_name = minetest.get_biome_name(biome)
+			local reg_biome = minetest.registered_biomes[biome_name]
+			if reg_biome then
+				minetest.set_node(pos, {name = node.name, param2 = reg_biome._mcl_palette_index})
+			end
+		end
+	end,
+})
+
 --------------------------
 -- Try generate tree   ---
 --------------------------
