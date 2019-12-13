@@ -9,15 +9,14 @@ local function check_placement_allowed(node, wdir)
 	-- Torch placement rules: Disallow placement on some nodes. General rule: Solid, opaque, full cube collision box nodes are allowed.
 	-- Special allowed nodes:
 	-- * soul sand
-	-- * end portal frame (TODO)
 	-- * mob spawner
-	-- * Fence, wall, glass, hopper: Only on top
-	-- * Slab: Only on top if upside down
-	-- * Stairs: Only on top if upside down
+	-- * chorus flower
+	-- * glass, barrier, ice
+	-- * Fence, wall, hopper, end portal frame with ender eye: Only on top
+	-- * Slab, stairs: Only on top if upside down
 
 	-- Special forbidden nodes:
-	-- * Piston
-	-- * Sticky piston
+	-- * Piston, sticky piston
 	local def = minetest.registered_nodes[node.name]
 	if not def then
 		return false
@@ -25,19 +24,17 @@ local function check_placement_allowed(node, wdir)
 	elseif wdir == 0 then
 		return false
 	elseif not def.buildable_to then
-		if node.name ~= "mcl_nether:soul_sand" and node.name ~= "mcl_mobspawners:spawner" and
+		if node.name ~= "mcl_core:ice" and node.name ~= "mcl_nether:soul_sand" and node.name ~= "mcl_mobspawners:spawner" and node.name ~= "mcl_core:barrier" and node.name ~= "mcl_end:chorus_flower" and node.name ~= "mcl_end:chorus_flower_dead" and (not def.groups.glass) and
 				((not def.groups.solid) or (not def.groups.opaque)) then
 			-- Only allow top placement on these nodes
-			if def.groups.glass or node.name == "mcl_hoppers:hopper" or node.name == "mcl_hoppers:hopper_side" or node.name == "mcl_hoppers:hopper_disabled" or node.name == "mcl_hoppers:hopper_side_disabled" or def.groups.fence == 1 or def.groups.wall or def.groups.slab_top == 1 or (def.groups.stair == 1 and minetest.facedir_to_dir(node.param2).y ~= 0) then
+			if node.name == "mcl_end:dragon_egg" or node.name == "mcl_portals:end_portal_frame_eye" or def.groups.hopper or def.groups.fence == 1 or def.groups.wall or def.groups.slab_top == 1 or def.groups.anvil or def.groups.pane or (def.groups.stair == 1 and minetest.facedir_to_dir(node.param2).y ~= 0) then
 				if wdir ~= 1 then
 					return false
 				end
 			else
 				return false
 			end
-		elseif node.name == "mesecons_pistons:piston_up_normal_off" or node.name == "mesecons_pistons:piston_up_sticky_off" or
-				node.name == "mesecons_pistons:piston_normal_off" or node.name == "mesecons_pistons:piston_sticky_off" or
-				node.name == "mesecons_pistons:piston_down_normal_off" or node.name == "mesecons_pistons:piston_down_sticky_off" then
+		elseif minetest.get_item_group(node.name, "piston") >= 1 then
 			return false
 		end
 	end
