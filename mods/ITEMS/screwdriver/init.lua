@@ -12,6 +12,30 @@ screwdriver.rotate_simple = function(pos, node, user, mode, new_param2)
 		return false
 	end
 end
+screwdriver.rotate_3way = function(pos, node, user, mode, new_param2)
+	if mode == screwdriver.ROTATE_AXIS then
+		if node.param2 == 0 then
+			node.param2 = 6
+		elseif node.param2 == 6 then
+			node.param2 = 12
+		else
+			node.param2 = 0
+		end
+		minetest.swap_node(pos, node)
+		return true
+	elseif mode == screwdriver.ROTATE_FACE then
+		if node.param2 == 6 then
+			node.param2 = 12
+			minetest.swap_node(pos, node)
+			return true
+		else
+			node.param2 = 6
+			minetest.swap_node(pos, node)
+			return true
+		end
+	end
+	return false
+end
 
 -- For attached wallmounted nodes: returns true if rotation is valid
 -- simplified version of minetest:builtin/game/falling.lua#L148.

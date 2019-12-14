@@ -130,6 +130,12 @@ minetest.register_craftitem("mcl_farming:bread", {
 	on_secondary_use = minetest.item_eat(5),
 })
 
+local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
+local on_rotate
+if mod_screwdriver then
+	on_rotate = screwdriver.rotate_3way
+end
+
 minetest.register_node("mcl_farming:hay_block", {
 	description = S("Hay Bale"),
 	_doc_items_longdesc = S("Hay bales are decorative blocks made from wheat."),
@@ -141,6 +147,7 @@ minetest.register_node("mcl_farming:hay_block", {
 	on_place = mcl_util.rotate_axis,
 	groups = {handy=1, flammable=2, building_block=1, fall_damage_add_percent=-80},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	on_rotate = on_rotate,
 	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 0.5,
 })

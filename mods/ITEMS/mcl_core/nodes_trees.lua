@@ -1,6 +1,12 @@
 -- Tree nodes: Wood, Wooden Planks, Sapling, Leaves
 local S = minetest.get_translator("mcl_core")
 
+local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
+local on_rotate
+if mod_screwdriver then
+	on_rotate = screwdriver.rotate_3way
+end
+
 -- Register tree trunk (wood) and bark
 local register_tree_trunk = function(subname, description_trunk, description_bark, longdesc, tile_inner, tile_bark)
 	minetest.register_node("mcl_core:"..subname, {
@@ -13,6 +19,7 @@ local register_tree_trunk = function(subname, description_trunk, description_bar
 		stack_max = 64,
 		groups = {handy=1,axey=1, tree=1, flammable=2, building_block=1, material_wood=1},
 		sounds = mcl_sounds.node_sound_wood_defaults(),
+		on_rotate = on_rotate,
 		_mcl_blast_resistance = 10,
 		_mcl_hardness = 2,
 	})
@@ -27,6 +34,7 @@ local register_tree_trunk = function(subname, description_trunk, description_bar
 		groups = {handy=1,axey=1, bark=1, flammable=2, building_block=1, material_wood=1},
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		is_ground_content = false,
+		on_rotate = on_rotate,
 		_mcl_blast_resistance = 10,
 		_mcl_hardness = 2,
 	})

@@ -1,6 +1,11 @@
 local S = minetest.get_translator("mcl_nether")
 
 local mod_death_messages = minetest.get_modpath("mcl_death_messages")
+local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
+local on_rotate
+if mod_screwdriver then
+	on_rotate = screwdriver.rotate_3way
+end
 
 minetest.register_node("mcl_nether:glowstone", {
 	description = S("Glowstone"),
@@ -201,6 +206,7 @@ minetest.register_node("mcl_nether:quartz_pillar", {
 	tiles = {"mcl_nether_quartz_pillar_top.png", "mcl_nether_quartz_pillar_top.png", "mcl_nether_quartz_pillar_side.png"},
 	groups = {pickaxey=1, quartz_block=1,building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
+	on_rotate = on_rotate,
 	_mcl_blast_resistance = 4,
 	_mcl_hardness = 0.8,
 })
