@@ -8,6 +8,20 @@ local init = os.clock()
 local smallflowerlongdesc = S("This is a small flower. Small flowers are mainly used for dye production and can also be potted.")
 local plant_usage_help = S("It can only be placed on a block on which it would also survive.")
 
+local get_palette_color_from_pos = function(pos)
+	local biome_data = minetest.get_biome_data(pos)
+	local index = 0
+	if biome_data then
+		local biome = biome_data.biome
+		local biome_name = minetest.get_biome_name(biome)
+		local reg_biome = minetest.registered_biomes[biome_name]
+		if reg_biome then
+			index = reg_biome._mcl_palette_index
+		end
+	end
+	return index
+end
+
 -- on_place function for flowers
 local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, node, itemstack)
 	local below = {x=pos.x, y=pos.y-1, z=pos.z}
@@ -17,7 +31,7 @@ local on_place_flower = mcl_util.generate_on_place_plant_function(function(pos, 
 	local has_palette = minetest.registered_nodes[itemstack:get_name()].palette ~= nil
 	local colorize
 	if has_palette then
-		colorize = soil_node.param2
+		colorize = get_palette_color_from_pos(pos)
 	end
 	if not colorize then
 		colorize = 0
@@ -246,7 +260,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 			if (floor.name == "mcl_core:dirt" or minetest.get_item_group(floor.name, "grass_block") == 1 or (not is_flower and (floor.name == "mcl_core:coarse_dirt" or floor.name == "mcl_core:podzol" or floor.name == "mcl_core:podzol_snow"))) and bottom_buildable and top_buildable and light_ok then
 				local param2
 				if grass_color then
-					param2 = floor.param2
+					param2 = get_palette_color_from_pos(bottom)
 				end
 				-- Success! We can now place the flower
 				minetest.sound_play(minetest.registered_nodes[itemstring].sounds.place, {pos = bottom, gain=1})
