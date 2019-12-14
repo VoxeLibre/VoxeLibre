@@ -1,11 +1,13 @@
 local S = minetest.get_translator("mesecons_lightstone")
 
+local light = minetest.LIGHT_MAX
+
 minetest.register_node("mesecons_lightstone:lightstone_off", {
 	tiles = {"jeija_lightstone_gray_off.png"},
 	groups = {handy=1, mesecon_effector_off = 1, mesecon = 2},
 	is_ground_content = false,
 	description= S("Redstone Lamp"),
-	_doc_items_longdesc = S("Redstone lamps are simple redstone components which glow brightly (light level 14) when they receive redstone power."),
+	_doc_items_longdesc = S("Redstone lamps are simple redstone components which glow brightly (light level @1) when they receive redstone power.", light),
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {effector = {
 		action_on = function (pos, node)
@@ -23,8 +25,7 @@ minetest.register_node("mesecons_lightstone:lightstone_on", {
 	drop = "node mesecons_lightstone:lightstone_off",
 	is_ground_content = false,
 	paramtype = "light",
-	-- Real light level: 15 (Minetest caps at 14)
-	light_source = 14,
+	light_source = light,
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {effector = {
 		action_off = function (pos, node)

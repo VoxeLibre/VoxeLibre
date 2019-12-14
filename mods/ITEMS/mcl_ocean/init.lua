@@ -8,8 +8,7 @@ minetest.register_node("mcl_ocean:sea_lantern", {
 	paramtype2 = "facedir",
 	is_ground_content = false,
 	stack_max = 64,
-	-- Real light level: 15 (but Minetest caps at 14)
-	light_source = 14,
+	light_source = minetest.LIGHT_MAX,
 	drop = {
 		max_items = 1,
 		items = {

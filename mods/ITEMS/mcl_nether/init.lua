@@ -18,8 +18,7 @@ minetest.register_node("mcl_nether:glowstone", {
 		}
 	},
 	paramtype = "light",
-	-- Real light level: 15 (but Minetest caps at 14)
-	light_source = 14,
+	light_source = minetest.LIGHT_MAX,
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	_mcl_blast_resistance = 1.5,
 	_mcl_hardness = 0.3,

@@ -57,8 +57,7 @@ minetest.register_node("mcl_fire:fire", {
 	},
 	inventory_image = "fire_basic_flame.png",
 	paramtype = "light",
-	-- Real light level: 15 (but Minetest caps at 14)
-	light_source = 14,
+	light_source = minetest.LIGHT_MAX,
 	walkable = false,
 	buildable_to = true,
 	sunlight_propagates = true,
@@ -142,8 +141,7 @@ minetest.register_node("mcl_fire:eternal_fire", {
 	},
 	inventory_image = "fire_basic_flame.png",
 	paramtype = "light",
-	-- Real light level: 15 (but Minetest caps at 14)
-	light_source = 14,
+	light_source = minetest.LIGHT_MAX,
 	walkable = false,
 	buildable_to = true,
 	sunlight_propagates = true,

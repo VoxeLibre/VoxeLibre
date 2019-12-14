@@ -47,7 +47,7 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 	local itemstring = minetest.get_current_modname()..":"..substring
 	local itemstring_wall = minetest.get_current_modname()..":"..substring.."_wall"
 
-	if light == nil then light = 14 end
+	if light == nil then light = minetest.LIGHT_MAX end
 	if mesh_floor == nil then mesh_floor = "mcl_torches_torch_floor.obj" end
 	if mesh_wall == nil then mesh_wall = "mcl_torches_torch_wall.obj" end
 	if groups == nil then groups = {} end
@@ -189,7 +189,7 @@ mcl_torches.register_torch("torch",
 		name = "default_torch_on_floor_animated.png",
 		animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 3.3}
 	}},
-	14,
+	minetest.LIGHT_MAX,
 	{dig_immediate=3, torch=1, deco_block=1},
 	mcl_sounds.node_sound_wood_defaults(),
 	{_doc_items_hidden = false})

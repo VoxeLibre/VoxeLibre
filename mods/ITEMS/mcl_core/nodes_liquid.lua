@@ -118,8 +118,7 @@ minetest.register_node("mcl_core:lava_flowing", {
 	},
 	paramtype = "light",
 	paramtype2 = "flowingliquid",
-	-- Real light level: 15 (but Minetest caps at 14)
-	light_source = 14,
+	light_source = minetest.LIGHT_MAX,
 	sounds = mcl_sounds.node_sound_lava_defaults(),
 	walkable = false,
 	pointable = false,
@@ -175,9 +174,8 @@ S("• When lava is directly above water, the water turns into stone."),
 			backface_culling = false,
 		}
 	},
-	-- Real light level: 15 (but Minetest caps at 14)
 	paramtype = "light",
-	light_source = 14,
+	light_source = minetest.LIGHT_MAX,
 	sounds = mcl_sounds.node_sound_lava_defaults(),
 	walkable = false,
 	pointable = false,
