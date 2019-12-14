@@ -84,7 +84,7 @@ mcl_structures.generate_igloo = function(pos)
 	if success and r == 1 then
 		-- Select basement depth
 		local dim = mcl_worlds.pos_to_dimension(pos)
-		buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
+		local buffer = pos.y - (mcl_vars.mg_lava_overworld_max + 10)
 		if dim == "nether" then
 			buffer = pos.y - (mcl_vars.mg_lava_nether_max + 10)
 		elseif dim == "end" then
