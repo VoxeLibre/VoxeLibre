@@ -110,6 +110,7 @@ local crop_def = {
 		handy=1,axey=1, cocoa=1, not_in_creative_inventory=1, dig_by_water=1, destroy_by_lava_flow=1, dig_by_piston=1, attached_node_facedir=1,
 	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
+	on_rotate = false,
 	_mcl_blast_resistance = 15,
 	_mcl_hardness = 0.2,
 }
