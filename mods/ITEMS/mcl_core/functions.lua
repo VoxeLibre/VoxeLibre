@@ -763,13 +763,18 @@ minetest.register_lbm({
 	nodenames = {"mcl_core:dirt_with_dry_grass", "mcl_core:dirt_with_dry_grass_snow"},
 	action = function(pos, node)
 		local biome_data = minetest.get_biome_data(pos)
-		local index = 0
 		if biome_data then
 			local biome = biome_data.biome
 			local biome_name = minetest.get_biome_name(biome)
 			local reg_biome = minetest.registered_biomes[biome_name]
 			if reg_biome then
-				minetest.set_node(pos, {name = node.name, param2 = reg_biome._mcl_palette_index})
+				if node.name == "mcl_core:dirt_with_dry_grass_snow" then
+					node.name = "mcl_core:dirt_with_grass_snow"
+				else
+					node.name = "mcl_core:dirt_with_grass"
+				end
+				node.param2 = reg_biome._mcl_palette_index
+				minetest.set_node(pos, node)
 			end
 		end
 	end,
