@@ -1,5 +1,7 @@
 local S = minetest.get_translator("mcl_flowers")
 
+local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
+
 -- Minetest 0.4 mod: default
 -- See README.txt for licensing and other information.
 local init = os.clock()
@@ -361,6 +363,10 @@ minetest.register_abm({
 	end,
 })
 
+local on_rotate
+if mod_screwdriver then
+	on_rotate = screwdriver.rotate_simple
+end
 
 -- Lily Pad
 minetest.register_node("mcl_flowers:waterlily", {
@@ -427,7 +433,8 @@ minetest.register_node("mcl_flowers:waterlily", {
 		end
 
 		return itemstack
-	end
+	end,
+	on_rotate = on_rotate,
 })
 
 -- Legacy support
