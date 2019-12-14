@@ -378,7 +378,6 @@ def convert_textures():
 
 		offset = [
 			[ pcol, "", "grass" ], # Default grass: Plains
-			[ "40+255", "_dry", "dry_grass" ], # Dry grass: Savanna, Mesa Plateau F, Nether, …
 		]
 		for o in offset:
 			colorize(GRASS, tex_dir+"/blocks/grass_top.png", o[0], str(PXSIZE), target_dir("/mods/ITEMS/mcl_core/textures")+"/default_"+o[2]+".png")
