@@ -1318,7 +1318,7 @@ end
 mcl_core.clear_snow_dirt = function(pos, node)
 	local def = minetest.registered_nodes[node.name]
 	if def._mcl_snowless then
-		minetest.swap_node(pos, {name = def._mcl_snowless})
+		minetest.swap_node(pos, {name = def._mcl_snowless, param2=node.param2})
 	end
 end
 
@@ -1339,7 +1339,7 @@ mcl_core.on_snowable_construct = function(pos)
 	if minetest.get_item_group(anode.name, "snow_cover") == 1 then
 		local def = minetest.registered_nodes[node.name]
 		if def._mcl_snowed then
-			minetest.swap_node(pos, {name = def._mcl_snowed})
+			minetest.swap_node(pos, {name = def._mcl_snowed, param2=node.param2})
 		end
 	end
 end
@@ -1360,7 +1360,7 @@ mcl_core.on_snow_construct = function(pos)
 	local node = minetest.get_node(npos)
 	local def = minetest.registered_nodes[node.name]
 	if def._mcl_snowed then
-		minetest.swap_node(npos, {name = def._mcl_snowed})
+		minetest.swap_node(npos, {name = def._mcl_snowed, param2=node.param2})
 	end
 end
 -- after_destruct
