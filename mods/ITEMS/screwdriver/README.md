@@ -1,5 +1,5 @@
-Minetest Game mod: screwdriver
-==============================
+MineClone 2 mod: screwdriver
+============================
 See license.txt for license information.
 
 License of source code
@@ -9,5 +9,5 @@ Various Minetest developers and contributors (LGPL 2.1)
 
 License of media (textures)
 ---------------------------
-Created by Gambit (CC BY-SA 3.0):
-  screwdriver.png
+Created by Wuzzy (CC0):
+* `screwdriver.png`
