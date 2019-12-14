@@ -81,11 +81,8 @@ minetest.register_entity(":__builtin:falling_node", {
 	set_node = function(self, node, meta)
 		self.node = node
 		self.meta = meta or {}
-		self.object:set_properties({
-			is_visible = true,
-			textures = {node.name},
-		})
 		local def = core.registered_nodes[node.name]
+		local glow
 		-- Set correct entity yaw
 		if def and node.param2 ~= 0 then
 			if (def.paramtype2 == "facedir" or def.paramtype2 == "colorfacedir") then
@@ -93,7 +90,15 @@ minetest.register_entity(":__builtin:falling_node", {
 			elseif (def.paramtype2 == "wallmounted" or def.paramtype2 == "colorwallmounted") then
 				self.object:set_yaw(core.dir_to_yaw(core.wallmounted_to_dir(node.param2)))
 			end
+			if def.light_source then
+				glow = def.light_source
+			end
 		end
+		self.object:set_properties({
+			is_visible = true,
+			textures = {node.name},
+			glow = glow,
+		})
 	end,
 
 	get_staticdata = function(self)
