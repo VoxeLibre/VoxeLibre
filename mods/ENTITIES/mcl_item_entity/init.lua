@@ -359,6 +359,11 @@ core.register_entity(":__builtin:item", {
 			item_type = core.registered_items[itemname].type
 			description = core.registered_items[itemname].description
 		end
+		local ndef = core.registered_items[itemname]
+		local glow
+		if ndef then
+			glow = ndef.light_source
+		end
 		local prop = {
 			is_visible = true,
 			visual = "wielditem",
@@ -367,6 +372,7 @@ core.register_entity(":__builtin:item", {
 			collisionbox = {-c, -c, -c, c, c, c},
 			automatic_rotate = math.pi * 0.5,
 			infotext = description,
+			glow = glow,
 		}
 		self.object:set_properties(prop)
 		if item_drop_settings.random_item_velocity == true then
