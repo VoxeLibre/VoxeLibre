@@ -1097,9 +1097,12 @@ local function generate_structures(minp, maxp, seed, biomemap)
 				local ground_y = nil
 				for y = struct_max, struct_min, -1 do
 					local checknode = minetest.get_node_or_nil({x=x,y=y,z=z})
-					if checknode and minetest.registered_nodes[checknode.name].walkable then
-						ground_y = y
-						break
+					if checknode then
+						local def = minetest.registered_nodes[checknode.name]
+						if def and def.walkable then
+							ground_y = y
+							break
+						end
 					end
 				end
 
