@@ -774,6 +774,10 @@ minetest.register_lbm({
 					node.name = "mcl_core:dirt_with_grass"
 				end
 				node.param2 = reg_biome._mcl_palette_index
+				-- Fall back to savanna palette index
+				if not node.param2 then
+					node.param2 = 1
+				end
 				minetest.set_node(pos, node)
 			end
 		end
