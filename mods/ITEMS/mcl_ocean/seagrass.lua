@@ -1,5 +1,11 @@
 local S = minetest.get_translator("mcl_ocean")
 
+-- List of supported surfaces for seagrass
+local surfaces = {
+	{ "dirt", "mcl_core:dirt" },
+	{ "clay", "mcl_core:clay" },
+}
+
 local function seagrass_on_place(itemstack, placer, pointed_thing)
 	if pointed_thing.type ~= "node" or not placer then
 		return itemstack
@@ -39,10 +45,13 @@ local function seagrass_on_place(itemstack, placer, pointed_thing)
 		return itemstack
 	end
 
-	if node_under.name ~= "mcl_core:dirt" then
+	if node_under.name == "mcl_core:dirt" then
+		node_under.name = "mcl_ocean:seagrass_dirt"
+	elseif node_under.name == "mcl_core:clay" then
+		node_under.name = "mcl_ocean:seagrass_clay"
+	else
 		return itemstack
 	end
-	node_under.name = "mcl_ocean:seagrass_dirt"
 	node_under.param2 = minetest.registered_items[itemstack:get_name()].place_param2 or 3
 	if node_under.param2 < 8 and math.random(1,2) == 1 then
 		-- Random horizontal displacement
@@ -56,43 +65,50 @@ local function seagrass_on_place(itemstack, placer, pointed_thing)
 	return itemstack
 end
 
--- Seagrass on dirt
-
-minetest.register_node("mcl_ocean:seagrass_dirt", {
+minetest.register_craftitem("mcl_ocean:seagrass", {
 	description = S("Seagrass"),
-	drawtype = "plantlike_rooted",
-	paramtype = "light",
-	paramtype2 = "meshoptions",
-	place_param2 = 3,
-	tiles = { "default_dirt.png" },
-	special_tiles = {
-		{ 
-		image = "mcl_ocean_seagrass.png",
-		animation = {type="vertical_frames", aspect_w=16, aspect_h=16, length=1.0},
-		}
-	},
 	inventory_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",
 	wield_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",
-	selection_box = {
-		type = "fixed",
-		fixed = {
-			{ -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
-			{ -0.5, 0.5, -0.5, 0.5, 1.3, 0.5 },
-		},
-	},
-	groups = { dig_immediate = 3, deco_block = 1, plant = 1, seagrass = 1, },
-	sounds = mcl_sounds.node_sound_leaves_defaults({footstep = mcl_sounds.node_sound_dirt_defaults().footstep}),
-	node_placement_prediction = "",
-	node_dig_prediction = "mcl_core:dirt",
 	on_place = seagrass_on_place,
-	after_destruct = function(pos)
-		local node = minetest.get_node(pos)
-		if minetest.get_item_group(node.name, "seagrass") == 0 then
-			minetest.set_node(pos, {name="mcl_core:dirt"})
-		end
-	end,
-	drop = "",
-	_mcl_shears_drop = true,
-	_mcl_hardness = 0,
-	_mcl_blast_resistance = 0,
 })
+
+-- Seagrass nodes: seagrass on a surface node
+
+for s=1, #surfaces do
+	local def = minetest.registered_nodes[surfaces[s][2]]
+	minetest.register_node("mcl_ocean:seagrass_"..surfaces[s][1], {
+		drawtype = "plantlike_rooted",
+		paramtype = "light",
+		paramtype2 = "meshoptions",
+		place_param2 = 3,
+		tiles = def.tiles,
+		special_tiles = {
+			{
+			image = "mcl_ocean_seagrass.png",
+			animation = {type="vertical_frames", aspect_w=16, aspect_h=16, length=1.0},
+			}
+		},
+		inventory_image = "("..def.tiles[1]..")^(mcl_ocean_seagrass.png^[verticalframe:12:0)",
+		wield_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",
+		selection_box = {
+			type = "fixed",
+			fixed = {
+				{ -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
+				{ -0.5, 0.5, -0.5, 0.5, 1.3, 0.5 },
+			},
+		},
+		groups = { dig_immediate = 3, deco_block = 1, plant = 1, seagrass = 1, },
+		sounds = mcl_sounds.node_sound_leaves_defaults({footstep = mcl_sounds.node_sound_dirt_defaults().footstep}),
+		node_dig_prediction = surfaces[s][2],
+		after_destruct = function(pos)
+			local node = minetest.get_node(pos)
+			if minetest.get_item_group(node.name, "seagrass") == 0 then
+				minetest.set_node(pos, {name=surfaces[s][2]})
+			end
+		end,
+		drop = "",
+		_mcl_shears_drop = true,
+		_mcl_hardness = 0,
+		_mcl_blast_resistance = 0,
+	})
+end
