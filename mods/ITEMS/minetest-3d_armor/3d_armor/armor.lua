@@ -169,7 +169,10 @@ armor.set_player_armor = function(self, player)
 	if #textures > 0 then
 		armor_texture = table.concat(textures, "^")
 	end
-	local armor_groups = {fleshy=100}
+	local armor_groups = player:get_armor_groups()
+	armor_groups.fleshy = 100
+	armor_groups.level = nil
+	armor_groups.radiation = nil
 	if armor_level > 0 then
 		armor_groups.level = math.floor(armor_level / 20)
 		armor_groups.fleshy = 100 - armor_level
