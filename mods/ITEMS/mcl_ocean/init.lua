@@ -6,3 +6,6 @@ dofile(minetest.get_modpath(minetest.get_current_modname()).."/corals.lua")
 
 -- Seagrass
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/seagrass.lua")
+
+-- Kelp
+dofile(minetest.get_modpath(minetest.get_current_modname()).."/kelp.lua")
