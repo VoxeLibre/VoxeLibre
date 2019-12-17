@@ -4,6 +4,9 @@ local S = minetest.get_translator("mcl_ocean")
 local surfaces = {
 	{ "dirt", "mcl_core:dirt" },
 	{ "clay", "mcl_core:clay" },
+	{ "sand", "mcl_core:sand", 1 },
+	{ "redsand", "mcl_core:redsand", 1 },
+	{ "gravel", "mcl_core:gravel", 1 },
 }
 
 local function seagrass_on_place(itemstack, placer, pointed_thing)
@@ -76,6 +79,10 @@ minetest.register_craftitem("mcl_ocean:seagrass", {
 
 for s=1, #surfaces do
 	local def = minetest.registered_nodes[surfaces[s][2]]
+	local alt
+	if surfaces[s][3] == 1 then
+		alt = surfaces[s][2]
+	end
 	minetest.register_node("mcl_ocean:seagrass_"..surfaces[s][1], {
 		drawtype = "plantlike_rooted",
 		paramtype = "light",
@@ -97,16 +104,14 @@ for s=1, #surfaces do
 				{ -0.5, 0.5, -0.5, 0.5, 1.3, 0.5 },
 			},
 		},
-		groups = { dig_immediate = 3, deco_block = 1, plant = 1, seagrass = 1, },
+		groups = { dig_immediate = 3, deco_block = 1, plant = 1, seagrass = 1, falling_node = surfaces[s][3] },
 		sounds = mcl_sounds.node_sound_leaves_defaults({footstep = mcl_sounds.node_sound_dirt_defaults().footstep}),
 		node_dig_prediction = surfaces[s][2],
-		after_destruct = function(pos)
-			local node = minetest.get_node(pos)
-			if minetest.get_item_group(node.name, "seagrass") == 0 then
-				minetest.set_node(pos, {name=surfaces[s][2]})
-			end
+		after_dig_node = function(pos)
+			minetest.set_node(pos, {name=surfaces[s][2]})
 		end,
 		drop = "",
+		_mcl_falling_node_alternative = alt,
 		_mcl_shears_drop = true,
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,

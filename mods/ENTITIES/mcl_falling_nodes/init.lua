@@ -79,10 +79,14 @@ minetest.register_entity(":__builtin:falling_node", {
 	meta = {},
 
 	set_node = function(self, node, meta)
+		local def = core.registered_nodes[node.name]
+		-- Change falling node if definition tells us to
+		if def and def._mcl_falling_node_alternative then
+			node.name = def._mcl_falling_node_alternative
+		end
+		local glow
 		self.node = node
 		self.meta = meta or {}
-		local def = core.registered_nodes[node.name]
-		local glow
 		-- Set correct entity yaw
 		if def and node.param2 ~= 0 then
 			if (def.paramtype2 == "facedir" or def.paramtype2 == "colorfacedir") then

@@ -21,6 +21,7 @@ All nodes can have these fields:
 
 * `_mcl_hardness`: Hardness of the block, ranges from 0 to infinity (represented by -1). Determines digging times. Default: 0
 * `_mcl_blast_resistance`: How well this block blocks and resists explosions. Default: 0
+* `_mcl_falling_node_alternative`: If set to an itemstring, the node will turn into this node before it starts to fall.
 * `_mcl_after_falling(pos)`: Called after a falling node finished falling and turned into a node.
 
 Use the `mcl_sounds` mod for the sounds.

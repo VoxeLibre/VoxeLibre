@@ -110,7 +110,7 @@ for c=1, #corals do
 		node_placement_prediction = "",
 		node_dig_prediction = "mcl_ocean:"..id.."_coral_block",
 		on_place = coral_on_place,
-		after_destruct = function(pos)
+		after_dig_node = function(pos)
 			local node = minetest.get_node(pos)
 			if minetest.get_item_group(node.name, "coral") == 0 then
 				minetest.set_node(pos, {name="mcl_ocean:"..id.."_coral_block"})
@@ -140,7 +140,7 @@ for c=1, #corals do
 		node_placement_prediction = "",
 		node_dig_prediction = "mcl_ocean:dead_"..id.."_coral_block",
 		on_place = coral_on_place,
-		after_destruct = function(pos)
+		after_dig_node = function(pos)
 			local node = minetest.get_node(pos)
 			if minetest.get_item_group(node.name, "coral") == 0 then
 				minetest.set_node(pos, {name="mcl_ocean:dead_"..id.."_coral_block"})
@@ -173,7 +173,7 @@ for c=1, #corals do
 		node_placement_prediction = "",
 		node_dig_prediction = "mcl_ocean:"..id.."_coral_block",
 		on_place = coral_on_place,
-		after_destruct = function(pos)
+		after_dig_node = function(pos)
 			local node = minetest.get_node(pos)
 			if minetest.get_item_group(node.name, "coral") == 0 then
 				minetest.set_node(pos, {name="mcl_ocean:"..id.."_coral_block"})
@@ -203,7 +203,7 @@ for c=1, #corals do
 		node_placement_prediction = "",
 		node_dig_prediction = "mcl_ocean:dead_"..id.."_coral_block",
 		on_place = coral_on_place,
-		after_destruct = function(pos)
+		after_dig_node = function(pos)
 			local node = minetest.get_node(pos)
 			if minetest.get_item_group(node.name, "coral") == 0 then
 				minetest.set_node(pos, {name="mcl_ocean:dead_"..id.."_coral_block"})
