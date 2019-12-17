@@ -20,7 +20,7 @@ local function coral_on_place(itemstack, placer, pointed_thing)
 	local def_under = minetest.registered_nodes[node_under.name]
 
 	if def_under and def_under.on_rightclick and not placer:get_player_control().sneak then
-		return def_under.on_rightclick(pos_under, node_under.name,
+		return def_under.on_rightclick(pos_under, node_under,
 				placer, itemstack, pointed_thing) or itemstack
 	end
 
@@ -31,11 +31,7 @@ local function coral_on_place(itemstack, placer, pointed_thing)
 
 	-- Placement rules:
 	-- Coral plant can only be placed on top of a matching coral block.
-	-- If alive, it must also be inside a water source.
-	-- Note: It's intentional that it works only for normal water (not river water). Corals are
-	-- for the ocean, after all.
-	if g_block == 0 or (g_coral ~= g_block) or (g_species_block ~= g_species_plant) or
-			(g_coral == 1 and minetest.get_node(pos_above).name ~= "mcl_core:water_source") then
+	if g_block == 0 or (g_coral ~= g_block) or (g_species_block ~= g_species_plant) then
 		return itemstack
 	end
 
@@ -111,7 +107,10 @@ for c=1, #corals do
 		node_dig_prediction = "mcl_ocean:"..id.."_coral_block",
 		on_place = coral_on_place,
 		after_destruct = function(pos)
-			minetest.set_node(pos, {name="mcl_ocean:"..id.."_coral_block"})
+			local node = minetest.get_node(pos)
+			if minetest.get_item_group(node.name, "coral") == 0 then
+				minetest.set_node(pos, {name="mcl_ocean:"..id.."_coral_block"})
+			end
 		end,
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,
@@ -138,7 +137,10 @@ for c=1, #corals do
 		node_dig_prediction = "mcl_ocean:dead_"..id.."_coral_block",
 		on_place = coral_on_place,
 		after_destruct = function(pos)
-			minetest.set_node(pos, {name="mcl_ocean:dead_"..id.."_coral_block"})
+			local node = minetest.get_node(pos)
+			if minetest.get_item_group(node.name, "coral") == 0 then
+				minetest.set_node(pos, {name="mcl_ocean:dead_"..id.."_coral_block"})
+			end
 		end,
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,
@@ -168,7 +170,10 @@ for c=1, #corals do
 		node_dig_prediction = "mcl_ocean:"..id.."_coral_block",
 		on_place = coral_on_place,
 		after_destruct = function(pos)
-			minetest.set_node(pos, {name="mcl_ocean:"..id.."_coral_block"})
+			local node = minetest.get_node(pos)
+			if minetest.get_item_group(node.name, "coral") == 0 then
+				minetest.set_node(pos, {name="mcl_ocean:"..id.."_coral_block"})
+			end
 		end,
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,
@@ -195,9 +200,80 @@ for c=1, #corals do
 		node_dig_prediction = "mcl_ocean:dead_"..id.."_coral_block",
 		on_place = coral_on_place,
 		after_destruct = function(pos)
-			minetest.set_node(pos, {name="mcl_ocean:dead_"..id.."_coral_block"})
+			local node = minetest.get_node(pos)
+			if minetest.get_item_group(node.name, "coral") == 0 then
+				minetest.set_node(pos, {name="mcl_ocean:dead_"..id.."_coral_block"})
+			end
 		end,
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,
 	})
 end
+
+-- Turn corals and coral fans to dead corals if not inside a water source
+minetest.register_abm({
+	label = "Coral plant / coral fan death",
+	nodenames = { "group:coral_plant", "group_coral_fan" },
+	interval = 17,
+	chance = 5,
+	catch_up = false,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		-- Check if coral's alive
+		local coral_state = minetest.get_item_group(node.name, "coral")
+		if coral_state == 1 then
+			-- Check node above, here lives the actual plant (it's plantlike_rooted)
+			if minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z}).name ~= "mcl_core:water_source" then
+				-- Find dead form (it's the same as the node's drop)
+				local def = minetest.registered_nodes[node.name]
+				local dead
+				if def then
+					node.name = def.drop
+				else
+					return
+				end
+				-- Set node to dead form.
+				minetest.set_node(pos, node)
+			end
+		end
+	end,
+})
+
+-- Turn corals blocks to dead coral blocks if not next to a water source
+minetest.register_abm({
+	label = "Coral block death",
+	nodenames = { "group:coral_block" },
+	interval = 17,
+	chance = 5,
+	catch_up = false,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		-- Check if coral's alive
+		local coral_state = minetest.get_item_group(node.name, "coral")
+		if coral_state == 1 then
+			local posses = {
+				{ x=0,y=1,z=0 },
+				{ x=-1,y=0,z=0 },
+				{ x=1,y=0,z=0 },
+				{ x=0,y=0,z=-1 },
+				{ x=0,y=0,z=1 },
+				{ x=0,y=-1,z=0 },
+			}
+			-- Check all 6 neighbors for water
+			for p=1, #posses do
+				local checknode = minetest.get_node(vector.add(pos, posses[p]))
+				if checknode.name == "mcl_core:water_source" then
+					-- Water found! Don't die.
+					return
+				end
+			end
+			-- Find dead form (it's the same as the node's drop)
+			local def = minetest.registered_nodes[node.name]
+			if def then
+				node.name = def.drop
+			else
+				return
+			end
+			-- Set node to dead form
+			minetest.set_node(pos, node)
+		end
+	end,
+})
