@@ -212,6 +212,13 @@ for c=1, #corals do
 		tiles = { "mcl_ocean_"..id.."_coral_block.png" },
 		special_tiles = { { name = "mcl_ocean_"..id.."_coral.png" } },
 		inventory_image = "mcl_ocean_"..id.."_coral.png",
+		selection_box = {
+			type = "fixed",
+			fixed = {
+				{ -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
+				{ -0.5, 0.5, -0.5, 0.5, 1.0, 0.5 },
+			}
+		},
 		groups = { dig_immediate = 3, deco_block = 1, coral=1, coral_plant=1, coral_species=c, },
 		sounds = sounds_coral_plant,
 		drop = "mcl_ocean:dead_"..id.."_coral",
@@ -234,6 +241,13 @@ for c=1, #corals do
 		special_tiles = { { name = "mcl_ocean_dead_"..id.."_coral.png" } },
 		inventory_image = "mcl_ocean_dead_"..id.."_coral.png",
 		groups = { dig_immediate = 3, deco_block = 1, coral=2, coral_plant=2, coral_species=c, },
+		selection_box = {
+			type = "fixed",
+			fixed = {
+				{ -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
+				{ -0.5, 0.5, -0.5, 0.5, 1.0, 0.5 },
+			}
+		},
 		sounds = sounds_coral_plant,
 		node_placement_prediction = "",
 		node_dig_prediction = "mcl_ocean:dead_"..id.."_coral_block",
@@ -256,6 +270,13 @@ for c=1, #corals do
 		special_tiles = { { name = "mcl_ocean_"..id.."_coral_fan.png" } },
 		inventory_image = "mcl_ocean_"..id.."_coral_fan.png",
 		groups = { dig_immediate = 3, deco_block = 1, coral=1, coral_fan=1, coral_species=c, },
+		selection_box = {
+			type = "fixed",
+			fixed = {
+				{ -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
+				{ -0.5, 0.5, -0.5, 0.5, 1.0, 0.5 },
+			}
+		},
 		sounds = sounds_coral_plant,
 		drop = "mcl_ocean:dead_"..id.."_coral_fan",
 		node_placement_prediction = "",
@@ -277,6 +298,13 @@ for c=1, #corals do
 		special_tiles = { { name = "mcl_ocean_dead_"..id.."_coral_fan.png" } },
 		inventory_image = "mcl_ocean_dead_"..id.."_coral_fan.png",
 		groups = { dig_immediate = 3, deco_block = 1, coral=2, coral_fan=2, coral_species=c, },
+		selection_box = {
+			type = "fixed",
+			fixed = {
+				{ -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
+				{ -0.5, 0.5, -0.5, 0.5, 1.0, 0.5 },
+			}
+		},
 		sounds = sounds_coral_plant,
 		node_placement_prediction = "",
 		node_dig_prediction = "mcl_ocean:dead_"..id.."_coral_block",
