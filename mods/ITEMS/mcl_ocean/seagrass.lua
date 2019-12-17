@@ -77,7 +77,7 @@ minetest.register_node("mcl_ocean:seagrass_dirt", {
 		type = "fixed",
 		fixed = {
 			{ -0.5, -0.5, -0.5, 0.5, 0.5, 0.5 },
-			{ -6/16, -8/16, -6/16, 6/16, 4/16, 6/16 },
+			{ -0.5, 0.5, -0.5, 0.5, 1.3, 0.5 },
 		},
 	},
 	groups = { dig_immediate = 3, deco_block = 1, plant = 1, seagrass = 1, },
