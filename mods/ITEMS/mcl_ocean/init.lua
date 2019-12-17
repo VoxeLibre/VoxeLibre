@@ -165,7 +165,7 @@ local function coral_on_place(itemstack, placer, pointed_thing)
 	end
 
 	node_under.name = itemstack:get_name()
-	node_under.param2 = minetest.registered_items[itemstack:get_name()].place_param2
+	node_under.param2 = minetest.registered_items[itemstack:get_name()].place_param2 or 1
 	if node_under.param2 < 8 and math.random(1,2) == 1 then
 		-- Random horizontal displacement
 		node_under.param2 = node_under.param2 + 8
