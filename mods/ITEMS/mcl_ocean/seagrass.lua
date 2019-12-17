@@ -48,10 +48,17 @@ local function seagrass_on_place(itemstack, placer, pointed_thing)
 		return itemstack
 	end
 
+	-- Select a seagrass node
 	if node_under.name == "mcl_core:dirt" then
 		node_under.name = "mcl_ocean:seagrass_dirt"
 	elseif node_under.name == "mcl_core:clay" then
 		node_under.name = "mcl_ocean:seagrass_clay"
+	elseif node_under.name == "mcl_core:sand" then
+		node_under.name = "mcl_ocean:seagrass_sand"
+	elseif node_under.name == "mcl_core:redsand" then
+		node_under.name = "mcl_ocean:seagrass_redsand"
+	elseif node_under.name == "mcl_core:gravel" then
+		node_under.name = "mcl_ocean:seagrass_gravel"
 	else
 		return itemstack
 	end
@@ -59,6 +66,10 @@ local function seagrass_on_place(itemstack, placer, pointed_thing)
 	if node_under.param2 < 8 and math.random(1,2) == 1 then
 		-- Random horizontal displacement
 		node_under.param2 = node_under.param2 + 8
+	end
+	local def_node = minetest.registered_items[node_under.name]
+	if def_node.sounds then
+		minetest.sound_play(def_node.sounds.place, { gain = 0.5, pos = pos_under })
 	end
 	minetest.set_node(pos_under, node_under)
 	if not (minetest.settings:get_bool("creative_mode")) then
@@ -83,6 +94,11 @@ for s=1, #surfaces do
 	if surfaces[s][3] == 1 then
 		alt = surfaces[s][2]
 	end
+	local sounds = table.copy(def.sounds)
+	local leaf_sounds = mcl_sounds.node_sound_leaves_defaults()
+	sounds.dig = leaf_sounds.dig
+	sounds.dug = leaf_sounds.dug
+	sounds.place = leaf_sounds.place
 	minetest.register_node("mcl_ocean:seagrass_"..surfaces[s][1], {
 		drawtype = "plantlike_rooted",
 		paramtype = "light",
@@ -105,7 +121,7 @@ for s=1, #surfaces do
 			},
 		},
 		groups = { dig_immediate = 3, deco_block = 1, plant = 1, seagrass = 1, falling_node = surfaces[s][3] },
-		sounds = mcl_sounds.node_sound_leaves_defaults({footstep = mcl_sounds.node_sound_dirt_defaults().footstep}),
+		sounds = sounds,
 		node_dig_prediction = surfaces[s][2],
 		after_dig_node = function(pos)
 			minetest.set_node(pos, {name=surfaces[s][2]})
