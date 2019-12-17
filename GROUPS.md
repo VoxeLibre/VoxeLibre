@@ -61,6 +61,11 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `hopper=X`: Hopper (1 = downwards, 2 = sideways)
 * `portal=1`: Portal (node that teleports players and things by standing inside)
 * `end_portal_frame=X`: End portal frame (1 = no eye, 2 = with eye)
+* `coral=X`: Coral (any type) (1 = alive, 2 = dead)
+* `coral_plant=X`: Coral in the "plant" shape (1 = alive, 2 = dead)
+* `coral_fan=X`: Coral fan (1 = alive, 2 = dead)
+* `coral_block=X`: Coral block (1 = alive, 2 = dead)
+* `coral_species=X`: Specifies the species of a coral; equal X means equal species
 
 #### Footnotes
 
