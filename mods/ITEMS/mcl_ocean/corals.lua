@@ -24,6 +24,10 @@ local function coral_on_place(itemstack, placer, pointed_thing)
 				placer, itemstack, pointed_thing) or itemstack
 	end
 
+	if pos_under.y >= pos_above.y then
+		return itemstack
+	end
+
 	local g_block = minetest.get_item_group(node_under.name, "coral_block")
 	local g_coral = minetest.get_item_group(itemstack:get_name(), "coral")
 	local g_species_block = minetest.get_item_group(node_under.name, "coral_species")
