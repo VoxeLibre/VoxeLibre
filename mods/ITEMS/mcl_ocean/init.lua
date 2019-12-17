@@ -145,10 +145,12 @@ local function coral_on_place(itemstack, placer, pointed_thing)
 	local g_species_plant = minetest.get_item_group(itemstack:get_name(), "coral_species")
 
 	-- Placement rules:
-	-- Coral plant can only be placed on top of a matching coral block inside a water source.
-	-- Note: It's intentional only for normal water (not river water)
+	-- Coral plant can only be placed on top of a matching coral block.
+	-- If alive, it must also be inside a water source.
+	-- Note: It's intentional that it works only for normal water (not river water). Corals are
+	-- for the ocean, after all.
 	if g_block == 0 or (g_coral ~= g_block) or (g_species_block ~= g_species_plant) or
-			minetest.get_node(pos_above).name ~= "mcl_core:water_source" then
+			(g_coral == 1 and minetest.get_node(pos_above).name ~= "mcl_core:water_source") then
 		return itemstack
 	end
 
@@ -175,6 +177,9 @@ local function coral_on_place(itemstack, placer, pointed_thing)
 
 	return itemstack
 end
+
+-- Sound for non-block corals
+local sounds_coral_plant = mcl_sounds.node_sound_leaves_defaults({footstep = mcl_sounds.node_sound_dirt_defaults().footstep})
 
 for c=1, #corals do
 	local id = corals[c][1]
@@ -208,7 +213,7 @@ for c=1, #corals do
 		special_tiles = { { name = "mcl_ocean_"..id.."_coral.png" } },
 		inventory_image = "mcl_ocean_"..id.."_coral.png",
 		groups = { dig_immediate = 3, deco_block = 1, coral=1, coral_plant=1, coral_species=c, },
-		sounds = mcl_sounds.node_sound_leaves_defaults(),
+		sounds = sounds_coral_plant,
 		drop = "mcl_ocean:dead_"..id.."_coral",
 		node_placement_prediction = "",
 		node_dig_prediction = "mcl_ocean:"..id.."_coral_block",
@@ -229,7 +234,7 @@ for c=1, #corals do
 		special_tiles = { { name = "mcl_ocean_dead_"..id.."_coral.png" } },
 		inventory_image = "mcl_ocean_dead_"..id.."_coral.png",
 		groups = { dig_immediate = 3, deco_block = 1, coral=2, coral_plant=2, coral_species=c, },
-		sounds = mcl_sounds.node_sound_leaves_defaults(),
+		sounds = sounds_coral_plant,
 		node_placement_prediction = "",
 		node_dig_prediction = "mcl_ocean:dead_"..id.."_coral_block",
 		on_place = coral_on_place,
@@ -251,7 +256,7 @@ for c=1, #corals do
 		special_tiles = { { name = "mcl_ocean_"..id.."_coral_fan.png" } },
 		inventory_image = "mcl_ocean_"..id.."_coral_fan.png",
 		groups = { dig_immediate = 3, deco_block = 1, coral=1, coral_fan=1, coral_species=c, },
-		sounds = mcl_sounds.node_sound_leaves_defaults(),
+		sounds = sounds_coral_plant,
 		drop = "mcl_ocean:dead_"..id.."_coral_fan",
 		node_placement_prediction = "",
 		node_dig_prediction = "mcl_ocean:"..id.."_coral_block",
@@ -272,7 +277,7 @@ for c=1, #corals do
 		special_tiles = { { name = "mcl_ocean_dead_"..id.."_coral_fan.png" } },
 		inventory_image = "mcl_ocean_dead_"..id.."_coral_fan.png",
 		groups = { dig_immediate = 3, deco_block = 1, coral=2, coral_fan=2, coral_species=c, },
-		sounds = mcl_sounds.node_sound_leaves_defaults(),
+		sounds = sounds_coral_plant,
 		node_placement_prediction = "",
 		node_dig_prediction = "mcl_ocean:dead_"..id.."_coral_block",
 		on_place = coral_on_place,
