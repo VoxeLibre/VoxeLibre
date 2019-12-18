@@ -81,6 +81,7 @@ end
 
 minetest.register_craftitem("mcl_ocean:seagrass", {
 	description = S("Seagrass"),
+	_doc_items_create_entry = false,
 	inventory_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",
 	wield_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",
 	on_place = seagrass_on_place,
@@ -100,7 +101,20 @@ for s=1, #surfaces do
 	sounds.dig = leaf_sounds.dig
 	sounds.dug = leaf_sounds.dug
 	sounds.place = leaf_sounds.place
+	local doc_longdesc, doc_hide, doc_img, desc
+	if surfaces[s][1] == "dirt" then
+		doc_longdesc = S("Seagrass grows inside water on top of dirt, sand, clay or gravel.")
+		desc = S("Seagrass")
+		doc_create = true
+		doc_img = "mcl_ocean_seagrass.png"
+	else
+		doc_create = false
+	end
 	minetest.register_node("mcl_ocean:seagrass_"..surfaces[s][1], {
+		_doc_items_entry_name = desc,
+		_doc_items_longdesc = doc_longdesc,
+		_doc_items_create_entry = doc_create,
+		_doc_items_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",
 		drawtype = "plantlike_rooted",
 		paramtype = "light",
 		paramtype2 = "meshoptions",
@@ -121,7 +135,7 @@ for s=1, #surfaces do
 				{ -0.5, 0.5, -0.5, 0.5, 1.3, 0.5 },
 			},
 		},
-		groups = { handy = 1, shearsy = 1, deco_block = 1, plant = 1, seagrass = 1, falling_node = surfaces[s][3] },
+		groups = { handy = 1, shearsy = 1, deco_block = 1, plant = 1, seagrass = 1, falling_node = surfaces[s][3], not_in_creative_inventory = 1 },
 		sounds = sounds,
 		node_dig_prediction = surfaces[s][2],
 		after_dig_node = function(pos)
@@ -133,4 +147,9 @@ for s=1, #surfaces do
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,
 	})
+	if surfaces[s][1] ~= "dirt" then
+		doc.add_entry_alias("nodes", "mcl_ocean:seagrass_dirt", "nodes", "mcl_ocean:seagrass_"..surfaces[s][1])
+	end
 end
+
+doc.add_entry_alias("nodes", "mcl_ocean:seagrass_dirt", "craftitems", "mcl_ocean:seagrass") 
