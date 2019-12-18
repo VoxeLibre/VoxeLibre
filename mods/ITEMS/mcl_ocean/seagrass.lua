@@ -1,4 +1,5 @@
 local S = minetest.get_translator("mcl_ocean")
+local mod_doc = minetest.get_modpath("doc") ~= nil
 
 -- List of supported surfaces for seagrass
 local surfaces = {
@@ -98,7 +99,7 @@ for s=1, #surfaces do
 	sounds.dig = leaf_sounds.dig
 	sounds.dug = leaf_sounds.dug
 	sounds.place = leaf_sounds.place
-	local doc_longdesc, doc_hide, doc_img, desc
+	local doc_longdesc, doc_img, desc
 	if surfaces[s][1] == "dirt" then
 		doc_longdesc = S("Seagrass grows inside water on top of dirt, sand or gravel.")
 		desc = S("Seagrass")
@@ -144,9 +145,11 @@ for s=1, #surfaces do
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,
 	})
-	if surfaces[s][1] ~= "dirt" then
+	if mod_doc and surfaces[s][1] ~= "dirt" then
 		doc.add_entry_alias("nodes", "mcl_ocean:seagrass_dirt", "nodes", "mcl_ocean:seagrass_"..surfaces[s][1])
 	end
 end
 
-doc.add_entry_alias("nodes", "mcl_ocean:seagrass_dirt", "craftitems", "mcl_ocean:seagrass") 
+if mod_doc then
+	doc.add_entry_alias("nodes", "mcl_ocean:seagrass_dirt", "craftitems", "mcl_ocean:seagrass")
+end

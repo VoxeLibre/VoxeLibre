@@ -1,4 +1,5 @@
 local S = minetest.get_translator("mcl_ocean")
+local mod_doc = minetest.get_modpath("doc") ~= nil
 
 -- List of supported surfaces for seagrass and kelp
 local surfaces = {
@@ -74,6 +75,7 @@ end
 
 minetest.register_craftitem("mcl_ocean:kelp", {
 	description = S("Kelp"),
+	_doc_items_create_entry = false,
 	inventory_image = "mcl_ocean_kelp_item.png",
 	wield_image = "mcl_ocean_kelp_item.png",
 	on_place = kelp_on_place,
@@ -93,7 +95,20 @@ for s=1, #surfaces do
 	sounds.dig = leaf_sounds.dig
 	sounds.dug = leaf_sounds.dug
 	sounds.place = leaf_sounds.place
+	local doc_longdesc, doc_img, desc
+	if surfaces[s][1] == "dirt" then
+		doc_longdesc = S("Kelp grows inside water on top of dirt, sand or gravel.")
+		desc = S("Kelp")
+		doc_create = true
+		doc_img = "mcl_ocean_kelp_item.png"
+	else
+		doc_create = false
+	end
 	minetest.register_node("mcl_ocean:kelp_"..surfaces[s][1], {
+		_doc_items_entry_name = desc,
+		_doc_items_longdesc = doc_longdesc,
+		_doc_items_create_entry = doc_create,
+		_doc_items_image = doc_img,
 		drawtype = "plantlike_rooted",
 		paramtype = "light",
 		paramtype2 = "leveled",
@@ -126,14 +141,22 @@ for s=1, #surfaces do
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,
 	})
+
+	if mod_doc and surfaces[s][1] ~= "dirt" then
+		doc.add_entry_alias("nodes", "mcl_ocean:kelp_dirt", "nodes", "mcl_ocean:kelp_"..surfaces[s][1])
+	end
 end
 
+if mod_doc then
+	doc.add_entry_alias("nodes", "mcl_ocean:kelp_dirt", "craftitems", "mcl_ocean:kelp")
+end
 
 -- Dried kelp stuff
 
 -- TODO: This is supposed to be eaten very fast
 minetest.register_craftitem("mcl_ocean:dried_kelp", {
 	description = S("Dried Kelp"),
+	_doc_items_longdesc = S("Dried kelp is a food item."),
 	inventory_image = "mcl_ocean_dried_kelp.png",
 	wield_image = "mcl_ocean_dried_kelp.png",
 	groups = { food = 2, eatable = 1 },
@@ -152,6 +175,7 @@ end
 
 minetest.register_node("mcl_ocean:dried_kelp_block", {
 	description = S("Dried Kelp Block"),
+	_doc_items_longdesc = S("A decorative block that serves as a great furnace fuel."),
 	tiles = { "mcl_ocean_dried_kelp_top.png", "mcl_ocean_dried_kelp_bottom.png", "mcl_ocean_dried_kelp_side.png" },
 	groups = { handy = 1, building_block = 1, flammable = 2 },
 	sounds = mcl_sounds.node_sound_leaves_defaults(),

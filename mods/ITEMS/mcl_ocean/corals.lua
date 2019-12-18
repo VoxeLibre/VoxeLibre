@@ -1,4 +1,5 @@
 local S = minetest.get_translator("mcl_ocean")
+local mod_doc = minetest.get_modpath("doc") ~= nil
 
 local corals = {
 	{ "tube", S("Tube Coral Block"), S("Dead Tube Coral Block"), S("Tube Coral"), S("Dead Tube Coral"), S("Tube Coral Fan"), S("Dead Tube Coral Fan") },
@@ -72,9 +73,14 @@ local sounds_coral_plant = mcl_sounds.node_sound_leaves_defaults({footstep = mcl
 
 for c=1, #corals do
 	local id = corals[c][1]
+	local doc_desc_block = S("Coral blocks live in the oceans and need a water soure next to them to survive. Without water, they die off.")
+	local doc_desc_coral = S("Corals grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.")
+	local doc_desc_fan = S("Corals fans grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.")
+
 	-- Coral Block
 	minetest.register_node("mcl_ocean:"..id.."_coral_block", {
 		description = corals[c][2],
+		_doc_items_longdesc = doc_desc_block,
 		tiles = { "mcl_ocean_"..id.."_coral_block.png" },
 		groups = { pickaxey = 1, building_block = 1, coral=1, coral_block=1, coral_species=c, },
 		sounds = mcl_sounds.node_sound_dirt_defaults(),
@@ -84,6 +90,7 @@ for c=1, #corals do
 	})
 	minetest.register_node("mcl_ocean:dead_"..id.."_coral_block", {
 		description = corals[c][3],
+		_doc_items_create_entry = false,
 		tiles = { "mcl_ocean_dead_"..id.."_coral_block.png" },
 		groups = { pickaxey = 1, building_block = 1, coral=2, coral_block=2, coral_species=c, },
 		sounds = mcl_sounds.node_sound_dirt_defaults(),
@@ -94,6 +101,7 @@ for c=1, #corals do
 	-- Coral
 	minetest.register_node("mcl_ocean:"..id.."_coral", {
 		description = corals[c][4],
+		_doc_items_longdesc = doc_desc_coral,
 		drawtype = "plantlike_rooted",
 		paramtype = "light",
 		paramtype2 = "meshoptions",
@@ -125,6 +133,7 @@ for c=1, #corals do
 	})
 	minetest.register_node("mcl_ocean:dead_"..id.."_coral", {
 		description = corals[c][5],
+		_doc_items_create_entry = false,
 		drawtype = "plantlike_rooted",
 		paramtype = "light",
 		paramtype2 = "meshoptions",
@@ -157,6 +166,7 @@ for c=1, #corals do
 	-- Coral Fan
 	minetest.register_node("mcl_ocean:"..id.."_coral_fan", {
 		description = corals[c][6],
+		_doc_items_longdesc = doc_desc_fan,
 		drawtype = "plantlike_rooted",
 		paramtype = "light",
 		paramtype2 = "meshoptions",
@@ -188,6 +198,7 @@ for c=1, #corals do
 	})
 	minetest.register_node("mcl_ocean:dead_"..id.."_coral_fan", {
 		description = corals[c][7],
+		_doc_items_create_entry = false,
 		drawtype = "plantlike_rooted",
 		paramtype = "light",
 		paramtype2 = "meshoptions",
@@ -216,6 +227,15 @@ for c=1, #corals do
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,
 	})
+
+	if mod_doc then
+		doc.add_entry_alias("nodes", "mcl_ocean:"..id.."_coral", "nodes", "mcl_ocean:"..id.."_coral")
+		doc.add_entry_alias("nodes", "mcl_ocean:"..id.."_coral_fan", "nodes", "mcl_ocean:"..id.."_coral_fan")
+		doc.add_entry_alias("nodes", "mcl_ocean:"..id.."_coral_block", "nodes", "mcl_ocean:"..id.."_coral_block")
+		doc.add_entry_alias("nodes", "mcl_ocean:"..id.."_coral", "nodes", "mcl_ocean:dead_"..id.."_coral")
+		doc.add_entry_alias("nodes", "mcl_ocean:"..id.."_coral_fan", "nodes", "mcl_ocean:dead_"..id.."_coral_fan")
+		doc.add_entry_alias("nodes", "mcl_ocean:"..id.."_coral_block", "nodes", "mcl_ocean:dead_"..id.."_coral_block")
+	end
 end
 
 -- Turn corals and coral fans to dead corals if not inside a water source
