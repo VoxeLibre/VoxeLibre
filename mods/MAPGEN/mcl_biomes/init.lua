@@ -15,6 +15,10 @@ local deco_id_chorus_plant
 -- Register biomes
 --
 
+local OCEAN_MIN = -15
+local DEEP_OCEAN_MAX = OCEAN_MIN - 1
+local DEEP_OCEAN_MIN = -31
+
 --[[ Special biome field: _mcl_biome_type:
 Rough categorization of biomes: One of "snowy", "cold", "medium" and "hot"
 Based off <https://minecraft.gamepedia.com/Biomes> ]]
@@ -118,10 +122,6 @@ local function register_biomes()
 		"MesaPlateauF",
 		"MesaPlateauFM",
 	}
-
-	local OCEAN_MIN = -15
-	local DEEP_OCEAN_MAX = OCEAN_MIN - 1
-	local DEEP_OCEAN_MIN = -31
 
 	-- Ice Plains Spikes (rare)
 	minetest.register_biome({
@@ -2172,6 +2172,50 @@ local function register_grass_decoration(grasstype, offset, scale, biomes)
 	end
 end
 
+local function register_seagrass_decoration(grasstype, offset, scale, biomes)
+	local seed, nodes, surfaces, param2, param2_max, y_max
+	if grasstype == "seagrass" then
+		seed = 16
+		surfaces = { "mcl_core:dirt", "mcl_core:sand", "mcl_core:gravel", "mcl_core:redsand" }
+		nodes = { "mcl_ocean:seagrass_dirt", "mcl_ocean:seagrass_sand", "mcl_ocean:seagrass_gravel", "mcl_ocean:seagrass_redsand" }
+		y_max = 0
+	elseif grasstype == "kelp" then
+		seed = 32
+		param2 = 16
+		param2_max = 96
+		surfaces = { "mcl_core:dirt", "mcl_core:sand", "mcl_core:gravel" }
+		nodes = { "mcl_ocean:kelp_dirt", "mcl_ocean:kelp_sand", "mcl_ocean:kelp_gravel" }
+		y_max = -6
+	end
+	local noise = {
+		offset = offset,
+		scale = scale,
+		spread = {x = 100, y = 100, z = 100},
+		seed = seed,
+		octaves = 3,
+		persist = 0.6,
+	}
+
+	for s=1, #surfaces do
+		minetest.register_decoration({
+			deco_type = "simple",
+			place_on = { surfaces[s] },
+			sidelen = 16,
+			noise_params = noise,
+			biomes = biomes,
+			y_min = OCEAN_MIN,
+			y_max = y_max,
+			decoration = nodes[s],
+			param2 = param2,
+			param2_max = param2_max,
+			place_offset_y = -1,
+			flags = "force_placement",
+		})
+	end
+end
+
+
+
 local function register_decorations()
 	-- Large ice spike
 	minetest.register_decoration({
@@ -2440,6 +2484,7 @@ local function register_decorations()
 		flags = "place_center_x, place_center_z",
 		rotation = "random",
 	})
+
 	-- Swamp oak
 	minetest.register_decoration({
 		deco_type = "schematic",
@@ -3473,6 +3518,12 @@ local function register_decorations()
 	register_grass_decoration("fern", 0.07, -0.01, fern_Jungle)
 	register_grass_decoration("fern", 0.09, -0.03, fern_Jungle)
 	register_grass_decoration("fern", 0.12, -0.03, fern_JungleM)
+
+	local b_seagrass = {"ColdTaiga_ocean","ExtremeHills_ocean","ExtremeHillsM_ocean","ExtremeHills+_ocean","Taiga_ocean","MegaTaiga_ocean","MegaSpruceTaiga_ocean","StoneBeach_ocean","Plains_ocean","SunflowerPlains_ocean","Forest_ocean","FlowerForest_ocean","BirchForest_ocean","BirchForestM_ocean","RoofedForest_ocean","Swampland_ocean","Jungle_ocean","JungleM_ocean","JungleEdge_ocean","JungleEdgeM_ocean","MushroomIsland_ocean","Desert_ocean","Savanna_ocean","SavannaM_ocean","Mesa_ocean","MesaBryce_ocean","MesaPlateauF_ocean","MesaPlateauFM_ocean","Mesa_sandlevel","MesaBryce_sandlevel","MesaPlateauF_sandlevel","MesaPlateauFM_sandlevel","Swampland_shore","Jungle_shore","JungleM_shore","Savanna_beach","FlowerForest_beach","ColdTaiga_beach_water","ExtremeHills_beach"}
+	local b_kelp = {"ExtremeHillsM_ocean","ExtremeHills+_ocean","MegaTaiga_ocean","MegaSpruceTaiga_ocean","Plains_ocean","SunflowerPlains_ocean","Forest_ocean","FlowerForest_ocean","BirchForest_ocean","BirchForestM_ocean","RoofedForest_ocean","Swampland_ocean","Jungle_ocean","JungleM_ocean","JungleEdge_ocean","JungleEdgeM_ocean","MushroomIsland_ocean"}
+
+	register_seagrass_decoration("seagrass", 0, 0.5, b_seagrass)
+	register_seagrass_decoration("kelp", -0.5, 1, b_kelp)
 
 	-- Place tall grass on snow in Ice Plains and Extreme Hills+
 	minetest.register_decoration({
