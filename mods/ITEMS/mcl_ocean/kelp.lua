@@ -27,17 +27,6 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 				placer, itemstack, pointed_thing) or itemstack
 	end
 
-	if pos_under.y >= pos_above.y then
-		return itemstack
-	end
-
-	-- Placement rules:
-	-- Seagrass can only be placed on top of dirt inside water
-	local g_above_water = minetest.get_item_group(node_above.name, "water")
-	if not (g_above_water ~= 0 and def_above.liquidtype == "source") then
-		return itemstack
-	end
-
 	if minetest.is_protected(pos_under, player_name) or
 			minetest.is_protected(pos_above, player_name) then
 		minetest.log("action", player_name
@@ -48,7 +37,8 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 		return itemstack
 	end
 
-	-- Select a kelp node
+	local grow_kelp = false
+	-- Select a kelp node when placed on surface node
 	if node_under.name == "mcl_core:dirt" then
 		node_under.name = "mcl_ocean:kelp_dirt"
 	elseif node_under.name == "mcl_core:sand" then
@@ -57,14 +47,54 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 		node_under.name = "mcl_ocean:kelp_redsand"
 	elseif node_under.name == "mcl_core:gravel" then
 		node_under.name = "mcl_ocean:kelp_gravel"
+	elseif minetest.get_item_group(node_under.name, "kelp") == 1 then
+		-- Place kelp on kelp = grow kelp by 1 node length
+		if node_under.param2 < 240 then
+			node_under.param2 = node_under.param2 + 16
+			grow_kelp = true
+		else
+			return itemstack
+		end
 	else
 		return itemstack
 	end
+	if grow_kelp then
+		-- Kelp placed on kelp ...
+		-- Kelp can be placed on top of another kelp to make it grow
+		if pos_under.y >= pos_above.y or pos_under.x ~= pos_above.x or pos_under.z ~= pos_above.z then
+			-- Placed on side or below node, abort
+			return itemstack
+		end
+		-- New kelp top must also be submerged in water
+		local size = math.ceil(node_under.param2 / 16)
+		minetest.log("error", node_under.param2.."|"..size)
+		local pos_water = table.copy(pos_under)
+		pos_water.y = pos_water.y + size
+		local node_water = minetest.get_node(pos_water)
+		local def_water = minetest.registered_nodes[node_water.name]
+		if not (minetest.get_item_group(node_water.name, "water") and def_water.liquidtype == "source") then
+			-- Not submerged in water, abort
+			return itemstack
+		end
+
+	else
+		-- New kelp placed ...
+		if pos_under.y >= pos_above.y then
+			-- Placed on side or below node, abort
+			return itemstack
+		end
+		-- Kelp can be placed inside a water source on top of a surface node
+		local g_above_water = minetest.get_item_group(node_above.name, "water")
+		if not (g_above_water ~= 0 and def_above.liquidtype == "source") then
+			return itemstack
+		end
+		node_under.param2 = minetest.registered_items[node_under.name].place_param2 or 16
+	end
+	-- Place or grow kelp
 	local def_node = minetest.registered_items[node_under.name]
 	if def_node.sounds then
 		minetest.sound_play(def_node.sounds.place, { gain = 0.5, pos = pos_under })
 	end
-	node_under.param2 = minetest.registered_items[node_under.name].place_param2 or 16
 	minetest.set_node(pos_under, node_under)
 	if not (minetest.settings:get_bool("creative_mode")) then
 		itemstack:take_item()
