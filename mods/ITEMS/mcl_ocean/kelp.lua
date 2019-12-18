@@ -9,6 +9,38 @@ local surfaces = {
 	{ "gravel", "mcl_core:gravel", 1 },
 }
 
+local function get_kelp_top(pos, node)
+	local size = math.ceil(node.param2 / 16)
+	local pos_water = table.copy(pos)
+	pos_water.y = pos_water.y + size
+	return pos_water, minetest.get_node(pos_water)
+end
+
+local function get_submerged(node_water)
+	local def_water = minetest.registered_nodes[node_water.name]
+	-- Submerged in water?
+	if minetest.get_item_group(node_water.name, "water") then
+		if def_water.liquidtype == "source" then
+			return "source"
+		elseif def_water.liquidtype == "flowing" then
+			return "flowing"
+		end
+	end
+	return false
+end
+
+local function grow_param2_step(param2, snap_into_grid)
+	local old_param2 = param2
+	param2 = param2 + 16
+	if param2 > 240 then
+		param2 = 240
+	end
+	if snap_into_grid and (param2 % 16 ~= 0) then
+		param2 = param2 - (param2 % 16)
+	end
+	return param2, param2 ~= old_param2
+end
+
 local function kelp_on_place(itemstack, placer, pointed_thing)
 	if pointed_thing.type ~= "node" or not placer then
 		return itemstack
@@ -49,15 +81,14 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 		node_under.name = "mcl_ocean:kelp_gravel"
 	elseif minetest.get_item_group(node_under.name, "kelp") == 1 then
 		-- Place kelp on kelp = grow kelp by 1 node length
-		if node_under.param2 < 240 then
-			node_under.param2 = node_under.param2 + 16
-			grow_kelp = true
-		else
+		node_under.param2, grow_kelp = grow_param2_step(node_under.param2)
+		if not grow_kelp then
 			return itemstack
 		end
 	else
 		return itemstack
 	end
+	local submerged = false
 	if grow_kelp then
 		-- Kelp placed on kelp ...
 		-- Kelp can be placed on top of another kelp to make it grow
@@ -65,18 +96,13 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 			-- Placed on side or below node, abort
 			return itemstack
 		end
-		-- New kelp top must also be submerged in water
-		local size = math.ceil(node_under.param2 / 16)
-		minetest.log("error", node_under.param2.."|"..size)
-		local pos_water = table.copy(pos_under)
-		pos_water.y = pos_water.y + size
-		local node_water = minetest.get_node(pos_water)
-		local def_water = minetest.registered_nodes[node_water.name]
-		if not (minetest.get_item_group(node_water.name, "water") and def_water.liquidtype == "source") then
-			-- Not submerged in water, abort
+		-- New kelp top must also be submerged in water source
+		local _, top_node = get_kelp_top(pos_under, node_under)
+		submerged = get_submerged(top_node)
+		if submerged ~= "source" then
+			-- Not submerged in water source, abort
 			return itemstack
 		end
-
 	else
 		-- New kelp placed ...
 		if pos_under.y >= pos_above.y then
@@ -87,6 +113,7 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 		local g_above_water = minetest.get_item_group(node_above.name, "water")
 		if not (g_above_water ~= 0 and def_above.liquidtype == "source") then
 			return itemstack
+			-- TODO: Also allow placement into downwards flowing liquid
 		end
 		node_under.param2 = minetest.registered_items[node_under.name].place_param2 or 16
 	end
@@ -234,4 +261,34 @@ minetest.register_craft({
 	type = "fuel",
 	recipe = "mcl_ocean:dried_kelp_block",
 	burntime = 200,
+})
+
+-- Grow kelp
+minetest.register_abm({
+	label = "Kelp growth",
+	nodenames = { "group:kelp" },
+	interval = 45,
+	chance = 12,
+	catch_up = false,
+	action = function(pos, node, active_object_count, active_object_count_wider)
+		local grown
+		-- Grow kelp by 1 node length if it would grow inside water
+		node.param2, grown = grow_param2_step(node.param2, true)
+		local top, top_node = get_kelp_top(pos, node)
+		local submerged = get_submerged(top_node)
+		if grown then
+			if submerged == "source" then
+				-- Liquid source: Grow normally
+				minetest.set_node(pos, node)
+			elseif submerged == "flowing" then
+				-- Flowing liquid: Grow 1 step, but also turn the top node into a liquid source
+				minetest.set_node(pos, node)
+				local def_liq = minetest.registered_nodes[top_node.name]
+				local alt_liq = def_liq and def_liq.liquid_alternative_source
+				if alt_liq then
+					minetest.set_node(top, {name=alt_liq})
+				end
+			end
+		end
+	end,
 })
