@@ -84,6 +84,7 @@ minetest.register_craftitem("mcl_ocean:seagrass", {
 	inventory_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",
 	wield_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",
 	on_place = seagrass_on_place,
+	groups = { deco_block = 1 },
 })
 
 -- Seagrass nodes: seagrass on a surface node
@@ -120,7 +121,7 @@ for s=1, #surfaces do
 				{ -0.5, 0.5, -0.5, 0.5, 1.3, 0.5 },
 			},
 		},
-		groups = { dig_immediate = 3, deco_block = 1, plant = 1, seagrass = 1, falling_node = surfaces[s][3] },
+		groups = { handy = 1, shearsy = 1, deco_block = 1, plant = 1, seagrass = 1, falling_node = surfaces[s][3] },
 		sounds = sounds,
 		node_dig_prediction = surfaces[s][2],
 		after_dig_node = function(pos)
@@ -128,7 +129,7 @@ for s=1, #surfaces do
 		end,
 		drop = "",
 		_mcl_falling_node_alternative = alt,
-		_mcl_shears_drop = true,
+		_mcl_shears_drop = { "mcl_ocean:seagrass" },
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,
 	})

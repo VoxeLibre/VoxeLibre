@@ -80,6 +80,7 @@ minetest.register_craftitem("mcl_ocean:kelp", {
 	inventory_image = "mcl_ocean_kelp_item.png",
 	wield_image = "mcl_ocean_kelp_item.png",
 	on_place = kelp_on_place,
+	groups = { deco_block = 1 },
 })
 
 -- Kelp nodes: kelp on a surface node

@@ -254,7 +254,13 @@ function minetest.handle_node_drops(pos, drops, digger)
 		local drop_item = ItemStack(item)
 		drop_item:set_count(1)
 		for i=1,count do
-			local obj = core.add_item(pos, drop_item)
+			local dpos = table.copy(pos)
+			-- Apply offset for plantlike_rooted nodes because of their special shape
+			if nodedef and nodedef.drawtype == "plantlike_rooted" and nodedef.walkable then
+				dpos.y = dpos.y + 1
+			end
+			-- Spawn item and apply random speed
+			local obj = core.add_item(dpos, drop_item)
 			if obj ~= nil then
 				local x = math.random(1, 5)
 				if math.random(1,2) == 1 then
