@@ -38,10 +38,14 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 		run_start = 0,		run_end = 20,
 	},
 	drops = {
+		-- TODO: Reduce # of drops when ocean monument is ready.
+
+		-- Greatly increased amounts of prismarine
 		{name = mobs_mc.items.prismarine_shard,
 		chance = 1,
-		min = 0,
-		max = 2,},
+		min = 1,
+		max = 64,},
+
 		-- TODO: Only drop if killed by player
 		{name = mobs_mc.items.wet_sponge,
 		chance = 1,
@@ -55,9 +59,9 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 		min = 1,
 		max = 1,},
 		{name = mobs_mc.items.prismarine_crystals,
-		chance = 4,
+		chance = 1,
 		min = 1,
-		max = 1,},
+		max = 10,},
 
 		-- Rare drop: fish
 		{name = mobs_mc.items.fish_raw,

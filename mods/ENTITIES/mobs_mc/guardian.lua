@@ -38,10 +38,12 @@ mobs:register_mob("mobs_mc:guardian", {
 		run_start = 0,		run_end = 20,
 	},
 	drops = {
+		-- Greatly increased amounts of prismarine
 		{name = mobs_mc.items.prismarine_shard,
 		chance = 1,
 		min = 0,
-		max = 2,},
+		max = 32,},
+		-- TODO: Reduce of drops when ocean monument is ready.
 
 		-- The following drops are approximations
 		-- Fish / prismarine crystal
@@ -52,7 +54,7 @@ mobs:register_mob("mobs_mc:guardian", {
 		{name = mobs_mc.items.prismarine_crystals,
 		chance = 4,
 		min = 1,
-		max = 1,},
+		max = 2,},
 
 		-- Rare drop: fish
 		{name = mobs_mc.items.fish_raw,
