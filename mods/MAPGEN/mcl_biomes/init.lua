@@ -2203,7 +2203,7 @@ local function register_seagrass_decoration(grasstype, offset, scale, biomes)
 			sidelen = 16,
 			noise_params = noise,
 			biomes = biomes,
-			y_min = OCEAN_MIN,
+			y_min = DEEP_OCEAN_MIN,
 			y_max = y_max,
 			decoration = nodes[s],
 			param2 = param2,
@@ -3519,8 +3519,12 @@ local function register_decorations()
 	register_grass_decoration("fern", 0.09, -0.03, fern_Jungle)
 	register_grass_decoration("fern", 0.12, -0.03, fern_JungleM)
 
-	local b_seagrass = {"ColdTaiga_ocean","ExtremeHills_ocean","ExtremeHillsM_ocean","ExtremeHills+_ocean","Taiga_ocean","MegaTaiga_ocean","MegaSpruceTaiga_ocean","StoneBeach_ocean","Plains_ocean","SunflowerPlains_ocean","Forest_ocean","FlowerForest_ocean","BirchForest_ocean","BirchForestM_ocean","RoofedForest_ocean","Swampland_ocean","Jungle_ocean","JungleM_ocean","JungleEdge_ocean","JungleEdgeM_ocean","MushroomIsland_ocean","Desert_ocean","Savanna_ocean","SavannaM_ocean","Mesa_ocean","MesaBryce_ocean","MesaPlateauF_ocean","MesaPlateauFM_ocean","Mesa_sandlevel","MesaBryce_sandlevel","MesaPlateauF_sandlevel","MesaPlateauFM_sandlevel","Swampland_shore","Jungle_shore","JungleM_shore","Savanna_beach","FlowerForest_beach","ColdTaiga_beach_water","ExtremeHills_beach"}
-	local b_kelp = {"ExtremeHillsM_ocean","ExtremeHills+_ocean","MegaTaiga_ocean","MegaSpruceTaiga_ocean","Plains_ocean","SunflowerPlains_ocean","Forest_ocean","FlowerForest_ocean","BirchForest_ocean","BirchForestM_ocean","RoofedForest_ocean","Swampland_ocean","Jungle_ocean","JungleM_ocean","JungleEdge_ocean","JungleEdgeM_ocean","MushroomIsland_ocean"}
+	local b_seagrass = {"ColdTaiga_ocean","ExtremeHills_ocean","ExtremeHillsM_ocean","ExtremeHills+_ocean","Taiga_ocean","MegaTaiga_ocean","MegaSpruceTaiga_ocean","StoneBeach_ocean","Plains_ocean","SunflowerPlains_ocean","Forest_ocean","FlowerForest_ocean","BirchForest_ocean","BirchForestM_ocean","RoofedForest_ocean","Swampland_ocean","Jungle_ocean","JungleM_ocean","JungleEdge_ocean","JungleEdgeM_ocean","MushroomIsland_ocean","Desert_ocean","Savanna_ocean","SavannaM_ocean","Mesa_ocean","MesaBryce_ocean","MesaPlateauF_ocean","MesaPlateauFM_ocean",
+"ColdTaiga_deep_ocean","ExtremeHills_deep_ocean","ExtremeHillsM_deep_ocean","ExtremeHills+_deep_ocean","Taiga_deep_ocean","MegaTaiga_deep_ocean","MegaSpruceTaiga_deep_ocean","StoneBeach_deep_ocean","Plains_deep_ocean","SunflowerPlains_deep_ocean","Forest_deep_ocean","FlowerForest_deep_ocean","BirchForest_deep_ocean","BirchForestM_deep_ocean","RoofedForest_deep_ocean","Swampland_deep_ocean","Jungle_deep_ocean","JungleM_deep_ocean","JungleEdge_deep_ocean","JungleEdgeM_deep_ocean","MushroomIsland_deep_ocean","Desert_deep_ocean","Savanna_deep_ocean","SavannaM_deep_ocean","Mesa_deep_ocean","MesaBryce_deep_ocean","MesaPlateauF_deep_ocean","MesaPlateauFM_deep_ocean",
+"Mesa_sandlevel","MesaBryce_sandlevel","MesaPlateauF_sandlevel","MesaPlateauFM_sandlevel","Swampland_shore","Jungle_shore","JungleM_shore","Savanna_beach","FlowerForest_beach","ColdTaiga_beach_water","ExtremeHills_beach"}
+	local b_kelp = {"ExtremeHillsM_ocean","ExtremeHills+_ocean","MegaTaiga_ocean","MegaSpruceTaiga_ocean","Plains_ocean","SunflowerPlains_ocean","Forest_ocean","FlowerForest_ocean","BirchForest_ocean","BirchForestM_ocean","RoofedForest_ocean","Swampland_ocean","Jungle_ocean","JungleM_ocean","JungleEdge_ocean","JungleEdgeM_ocean","MushroomIsland_ocean",
+"ExtremeHillsM_deep_ocean","ExtremeHills+_deep_ocean","MegaTaiga_deep_ocean","MegaSpruceTaiga_deep_ocean","Plains_deep_ocean","SunflowerPlains_deep_ocean","Forest_deep_ocean","FlowerForest_deep_ocean","BirchForest_deep_ocean","BirchForestM_deep_ocean","RoofedForest_deep_ocean","Swampland_deep_ocean","Jungle_deep_ocean","JungleM_deep_ocean","JungleEdge_deep_ocean","JungleEdgeM_deep_ocean","MushroomIsland_deep_ocean"
+}
 
 	register_seagrass_decoration("seagrass", 0, 0.5, b_seagrass)
 	register_seagrass_decoration("kelp", -0.5, 1, b_kelp)
@@ -3545,7 +3549,7 @@ local function register_decorations()
 			persist = 0.666
 		},
 		flags = "force_placement",
-		y_min = mcl_vars.overworld_min,
+		y_min = mcl_vars.mg_lava_overworld_max + 5,
 		y_max = -20,
 	})
 

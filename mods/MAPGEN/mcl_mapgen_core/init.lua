@@ -966,7 +966,7 @@ local function register_mgv6_decorations()
 			persist = 0.666
 		},
 		flags = "force_placement",
-		y_min = mcl_vars.overworld_min,
+		y_min = mcl_vars.mg_lava_overworld_max + 5,
 		y_max = -20,
 	})
 
