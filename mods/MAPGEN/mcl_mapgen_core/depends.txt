@@ -4,6 +4,8 @@ biomeinfo
 mclx_core?
 mcl_worlds
 mcl_cocoas
+mcl_sponges
+mcl_ocean
 mcl_stairs
 mcl_monster_eggs
 mcl_structures
