@@ -3,7 +3,6 @@ local S = minetest.get_translator("mcl_ocean")
 -- List of supported surfaces for seagrass
 local surfaces = {
 	{ "dirt", "mcl_core:dirt" },
-	{ "clay", "mcl_core:clay" },
 	{ "sand", "mcl_core:sand", 1 },
 	{ "redsand", "mcl_core:redsand", 1 },
 	{ "gravel", "mcl_core:gravel", 1 },
@@ -51,8 +50,6 @@ local function seagrass_on_place(itemstack, placer, pointed_thing)
 	-- Select a seagrass node
 	if node_under.name == "mcl_core:dirt" then
 		node_under.name = "mcl_ocean:seagrass_dirt"
-	elseif node_under.name == "mcl_core:clay" then
-		node_under.name = "mcl_ocean:seagrass_clay"
 	elseif node_under.name == "mcl_core:sand" then
 		node_under.name = "mcl_ocean:seagrass_sand"
 	elseif node_under.name == "mcl_core:redsand" then
@@ -103,7 +100,7 @@ for s=1, #surfaces do
 	sounds.place = leaf_sounds.place
 	local doc_longdesc, doc_hide, doc_img, desc
 	if surfaces[s][1] == "dirt" then
-		doc_longdesc = S("Seagrass grows inside water on top of dirt, sand, clay or gravel.")
+		doc_longdesc = S("Seagrass grows inside water on top of dirt, sand or gravel.")
 		desc = S("Seagrass")
 		doc_create = true
 		doc_img = "mcl_ocean_seagrass.png"

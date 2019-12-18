@@ -3,7 +3,6 @@ local S = minetest.get_translator("mcl_ocean")
 -- List of supported surfaces for seagrass and kelp
 local surfaces = {
 	{ "dirt", "mcl_core:dirt" },
-	{ "clay", "mcl_core:clay" },
 	{ "sand", "mcl_core:sand", 1 },
 	{ "redsand", "mcl_core:redsand", 1 },
 	{ "gravel", "mcl_core:gravel", 1 },
@@ -51,8 +50,6 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 	-- Select a kelp node
 	if node_under.name == "mcl_core:dirt" then
 		node_under.name = "mcl_ocean:kelp_dirt"
-	elseif node_under.name == "mcl_core:clay" then
-		node_under.name = "mcl_ocean:kelp_clay"
 	elseif node_under.name == "mcl_core:sand" then
 		node_under.name = "mcl_ocean:kelp_sand"
 	elseif node_under.name == "mcl_core:redsand" then
