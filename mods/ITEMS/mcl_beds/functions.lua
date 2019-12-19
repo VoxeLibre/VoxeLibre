@@ -182,7 +182,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		-- physics, eye_offset, etc
 		player:set_eye_offset({x = 0, y = -13, z = 0}, {x = 0, y = 0, z = 0})
 		player:set_look_horizontal(yaw)
-		player:set_look_vertical(0)
+		player:set_look_vertical(-(math.pi/2))
 
 		player:get_meta():set_string("mcl_beds:sleeping", "true")
 		playerphysics.add_physics_factor(player, "speed", "mcl_beds:sleeping", 0)
