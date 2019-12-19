@@ -2,6 +2,14 @@ local S = minetest.get_translator("mcl_core")
 
 -- Simple solid cubic nodes, most of them are the ground materials and simple building blocks
 
+local translucent_ice = minetest.settings:get_bool("mcl_translucent_ice", false)
+local ice_drawtype
+if translucent_ice then
+	ice_drawtype = "glasslike"
+else
+	ice_drawtype = "normal"
+end
+
 minetest.register_node("mcl_core:stone", {
 	description = S("Stone"),
 	_doc_items_longdesc = S("One of the most common blocks in the world, almost the entire underground consists of stone. It sometimes contains ores. Stone may be created when water meets lava."),
@@ -752,12 +760,12 @@ minetest.register_node("mcl_core:obsidian", {
 
 minetest.register_node("mcl_core:ice", {
 	description = S("Ice"),
-	_doc_items_longdesc = S("Ice is a translucent solid block usually found in cold areas. It melts near block light sources at a light level of 12 or higher. When it melts or is broken while resting on top of another block, it will turn into a water source."),
-	drawtype = "glasslike",
+	_doc_items_longdesc = S("Ice is a solid block usually found in cold areas. It melts near block light sources at a light level of 12 or higher. When it melts or is broken while resting on top of another block, it will turn into a water source."),
+	drawtype = ice_drawtype,
 	tiles = {"default_ice.png"},
 	is_ground_content = true,
 	paramtype = "light",
-	use_texture_alpha = true,
+	use_texture_alpha = translucent_ice,
 	stack_max = 64,
 	groups = {handy=1,pickaxey=1, slippery=3, building_block=1},
 	drop = "",
@@ -811,17 +819,17 @@ for i=0,3 do
 	local use_doc = i == 0
 	local longdesc
 	if use_doc then
-		longdesc = S("Frosted ice is a short-lived solid translucent block. It melts into a water source within a few seconds.")
+		longdesc = S("Frosted ice is a short-lived solid block. It melts into a water source within a few seconds.")
 	end
 	minetest.register_node("mcl_core:frosted_ice_"..i, {
 		description = S("Frosted Ice"),
 		_doc_items_create_entry = use_doc,
 		_doc_items_longdesc = longdesc,
-		drawtype = "glasslike",
+		drawtype = ice_drawtype,
 		tiles = {"mcl_core_frosted_ice_"..i..".png"},
 		is_ground_content = false,
 		paramtype = "light",
-		use_texture_alpha = true,
+		use_texture_alpha = translucent_ice,
 		stack_max = 64,
 		groups = {handy=1, frosted_ice=1, slippery=3, not_in_creative_inventory=1},
 		drop = "",

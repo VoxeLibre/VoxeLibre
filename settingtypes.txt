@@ -83,6 +83,14 @@ mobs_disable_blood (Disable mob damage particles) bool false
 flame_sound (Flame sound) bool true
 
 [Experimental]
+# Whether ice is translucent. If disabled, ice is fully opaque.
+#
+# Note: As of Minetest version 5.1.0, translucent ice above oceans
+# will look weird, there's a lot of flashing/blinking going on
+# due to bugs in Minetest's implementation of translucency.
+# See also: https://github.com/minetest/minetest/issues/95
+mcl_translucent_ice (Translucent ice) bool false
+
 # Whether to generate fallen logs in some biomes.
 # They might not always look pretty and have strange overhangs.
 mcl_generate_fallen_logs (Generate fallen logs) bool false
