@@ -144,9 +144,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "IcePlainsSpikes_ocean",
-		node_top = "mcl_core:sand",
+		node_top = "mcl_core:gravel",
 		depth_top = 2,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:gravel",
 		depth_filler = 3,
 		node_river_water = "mcl_core:ice",
 		node_riverbed = "mcl_core:sand",
@@ -216,9 +216,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "ColdTaiga_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:gravel",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:gravel",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -249,9 +249,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "MegaTaiga_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:gravel",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:gravel",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -281,9 +281,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "MegaSpruceTaiga_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:gravel",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:gravel",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -330,9 +330,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "ExtremeHills_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:gravel",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:gravel",
 		depth_filler = 4,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
@@ -364,9 +364,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "ExtremeHillsM_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:gravel",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:gravel",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 3,
@@ -417,9 +417,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "ExtremeHills+_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:gravel",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:gravel",
 		depth_filler = 4,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 4,
@@ -448,7 +448,7 @@ local function register_biomes()
 
 	minetest.register_biome({
 		name = "StoneBeach_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:gravel",
 		depth_top = 1,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 1,
@@ -483,9 +483,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "IcePlains_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:gravel",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:gravel",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -530,9 +530,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "Plains_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:sand",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:sand",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -562,9 +562,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "SunflowerPlains_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:sand",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:sand",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:dirt",
 		depth_riverbed = 2,
@@ -609,9 +609,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "Taiga_ocean",
-		node_top = "mcl_core:sand",
+		node_top = "mcl_core:gravel",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:gravel",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -656,9 +656,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "Forest_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:sand",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:sand",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -703,9 +703,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "FlowerForest_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:sand",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:sand",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -735,9 +735,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "BirchForest_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:sand",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:sand",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -767,9 +767,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "BirchForestM_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:sand",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:gravel",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -832,9 +832,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "RoofedForest_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:gravel",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:gravel",
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -1005,7 +1005,7 @@ local function register_biomes()
 		name = "MesaPlateauF_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 3,
-		node_filler = "mcl_colorblocks:sand",
+		node_filler = "mcl_core:sand",
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -1077,7 +1077,7 @@ local function register_biomes()
 		name = "MesaPlateauFM_ocean",
 		node_top = "mcl_core:sand",
 		depth_top = 3,
-		node_filler = "mcl_colorblocks:sand",
+		node_filler = "mcl_core:sand",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 3,
@@ -1124,9 +1124,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "Savanna_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:sand",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:sand",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -1158,9 +1158,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "SavannaM_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:sand",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:sand",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -1205,9 +1205,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "Jungle_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:sand",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:sand",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -1254,9 +1254,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "JungleM_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:sand",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:sand",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -1287,9 +1287,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "JungleEdge_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:sand",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:sand",
 		depth_filler = 2,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -1322,9 +1322,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "JungleEdgeM_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:sand",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:sand",
 		depth_filler = 4,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -1422,9 +1422,9 @@ local function register_biomes()
 	})
 	minetest.register_biome({
 		name = "MushroomIsland_ocean",
-		node_top = "mcl_core:dirt",
+		node_top = "mcl_core:gravel",
 		depth_top = 1,
-		node_filler = "mcl_core:dirt",
+		node_filler = "mcl_core:gravel",
 		depth_filler = 3,
 		node_riverbed = "mcl_core:sand",
 		depth_riverbed = 2,
@@ -1440,18 +1440,18 @@ local function register_biomes()
 	for i=1, #overworld_biomes do
 		local biome = overworld_biomes[i]
 
-		-- Deep Ocean: Has gravel floor
+		-- Deep Ocean
 		minetest.register_biome({
 			name = biome .. "_deep_ocean",
 			heat_point = minetest.registered_biomes[biome].heat_point,
 			humidity_point = minetest.registered_biomes[biome].humidity_point,
 			y_min = DEEP_OCEAN_MIN,
 			y_max = DEEP_OCEAN_MAX,
-			node_top = "mcl_core:gravel",
-			depth_top = 1,
-			node_filler = "mcl_core:gravel",
-			depth_filler = 2,
-			node_riverbed = "mcl_core:gravel",
+			node_top = minetest.registered_biomes[biome.."_ocean"].node_top,
+			depth_top = 2,
+			node_filler = minetest.registered_biomes[biome.."_ocean"].node_filler,
+			depth_filler = 3,
+			node_riverbed = minetest.registered_biomes[biome.."_ocean"].node_riverbed,
 			depth_riverbed = 2,
 			vertical_blend = 5,
 			_mcl_biome_type = minetest.registered_biomes[biome]._mcl_biome_type,
