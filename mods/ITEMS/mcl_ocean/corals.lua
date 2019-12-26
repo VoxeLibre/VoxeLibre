@@ -73,7 +73,7 @@ local sounds_coral_plant = mcl_sounds.node_sound_leaves_defaults({footstep = mcl
 
 for c=1, #corals do
 	local id = corals[c][1]
-	local doc_desc_block = S("Coral blocks live in the oceans and need a water soure next to them to survive. Without water, they die off.")
+	local doc_desc_block = S("Coral blocks live in the oceans and need a water source next to them to survive. Without water, they die off.")
 	local doc_desc_coral = S("Corals grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.")
 	local doc_desc_fan = S("Corals fans grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.")
 
