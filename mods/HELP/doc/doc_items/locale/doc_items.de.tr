@@ -140,3 +140,4 @@ Mining durability:=Grabehaltbarkeit:
 • @1, level @2: Unlimited=• @1, Stufe @2: Unbegrenzt
 This block's rotation is affected by the way you place it: Place it on the floor or ceiling for a vertical orientation; place it at the side for a horizontal orientation. Sneaking while placing it leads to a perpendicular orientation instead.=Die Rotation dieses Blocks hängt davon ab, wie sie ihn platzieren: Platzieren Sie ihn auf den Boden oder an die Decke, um ihn vertikal aufzustellen; platzieren Sie in an der Seite für eine horizontale Ausrichtung. Wenn Sie während des Bauens schleichen, wird der Block stattdessen senkrecht zur üblichen Ausrichtung rotiert.
 Toughness level: @1=Härtegrad: @1
+This block is slippery.=Dieser Block ist rutschig.

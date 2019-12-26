@@ -140,3 +140,4 @@ Mining durability:=
 • @1, level @2: Unlimited=
 This block's rotation is affected by the way you place it: Place it on the floor or ceiling for a vertical orientation; place it at the side for a horizontal orientation. Sneaking while placing it leads to a perpendicular orientation instead.=
 Toughness level: @1=
+This block is slippery.=
