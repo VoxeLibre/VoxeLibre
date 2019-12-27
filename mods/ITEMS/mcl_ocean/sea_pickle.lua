@@ -64,6 +64,7 @@ end
 
 local sounds_coral_plant = mcl_sounds.node_sound_leaves_defaults({footstep = mcl_sounds.node_sound_dirt_defaults().footstep})
 local ontop = "dead_brain_coral_block"
+local canonical = "mcl_ocean:sea_pickle_1_"..ontop
 
 for s=1,4 do
 	local desc, doc_desc, doc_use, doc_create, nici, img, img_off, on_place
@@ -113,6 +114,7 @@ for s=1,4 do
 			}
 		},
 		sounds = sounds_coral_plant,
+		drop = canonical .. " "..s,
 		node_placement_prediction = "",
 		node_dig_prediction = "mcl_ocean:"..ontop,
 		after_dig_node = function(pos)
@@ -145,6 +147,7 @@ for s=1,4 do
 		inventory_image = img_off,
 		wield_image = img_off,
 		sounds = sounds_coral_plant,
+		drop = canonical .. " "..s,
 		node_placement_prediction = "",
 		node_dig_prediction = "mcl_ocean:"..ontop,
 		after_dig_node = function(pos)
