@@ -865,8 +865,7 @@ local function get_init_items()
 	local c = 0
 	for name, def in pairs(reg_items) do
 		local is_fuel = cache_fuel(name)
-		if not (def.groups.not_in_craft_guide == 1 or
-				def.groups.not_in_creative_inventory == 1) and
+		if not (def.groups.not_in_craft_guide == 1) and
 				def.description and def.description ~= "" and
 				(cache_recipes(name) or is_fuel) then
 			c = c + 1
