@@ -267,14 +267,6 @@ mobs:spawn_specific("mobs_mc:magma_cube_small", mobs_mc.spawn.nether_fortress, {
 mobs:spawn_specific("mobs_mc:magma_cube_big", mobs_mc.spawn.nether_fortress, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 11200, 4, mmin, mmax)
 
 
--- Compability
-mobs:alias_mob("mobs_mc:greensmall", "mobs_mc:slime_tiny")
-mobs:alias_mob("mobs_mc:greenmedium", "mobs_mc:slime_small")
-mobs:alias_mob("mobs_mc:greenbig", "mobs_mc:slime_big")
-mobs:alias_mob("mobs_mc:lavasmall", "mobs_mc:magma_cube_tiny")
-mobs:alias_mob("mobs_mc:lavamedium", "mobs_mc:magma_cube_small")
-mobs:alias_mob("mobs_mc:lavabig", "mobs_mc:magma_cube_big")
-
 -- spawn eggs
 mobs:register_egg("mobs_mc:magma_cube_big", S("Magma Cube"), "mobs_mc_spawn_icon_magmacube.png")
 mobs:register_egg("mobs_mc:slime_big", S("Slime"), "mobs_mc_spawn_icon_slime.png")

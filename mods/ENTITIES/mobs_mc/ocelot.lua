@@ -201,9 +201,6 @@ mobs:spawn({
 	end,
 })
 
--- compatibility
-mobs:alias_mob("mobs:kitten", "mobs_mc:ocelot")
-
 -- spawn eggs
 -- FIXME: The spawn icon shows a cat texture, not an ocelot texture
 mobs:register_egg("mobs_mc:ocelot", S("Ocelot"), "mobs_mc_spawn_icon_cat.png", 0)

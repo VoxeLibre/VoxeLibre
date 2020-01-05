@@ -260,8 +260,6 @@ mobs:register_mob("mobs_mc:sheep", {
 })
 mobs:spawn_specific("mobs_mc:sheep", mobs_mc.spawn.grassland, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 15000, 3, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 
--- compatibility
-mobs:alias_mob("mobs_animal:sheep", "mobs_mc:sheep")
 -- spawn eggs
 mobs:register_egg("mobs_mc:sheep", S("Sheep"), "mobs_mc_spawn_icon_sheep.png", 0)
 

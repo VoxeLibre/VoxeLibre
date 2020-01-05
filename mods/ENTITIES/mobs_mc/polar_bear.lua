@@ -56,10 +56,6 @@ mobs:register_mob("mobs_mc:polar_bear", {
 })
 
 
--- compatibility
-mobs:alias_mob("mobs_mc:polarbear", "mobs_mc:polar_bear")
-
-
 mobs:spawn_specific("mobs_mc:polar_bear", mobs_mc.spawn.snow, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 7000, 3, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 
 -- spawn egg

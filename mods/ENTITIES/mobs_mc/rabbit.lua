@@ -162,9 +162,6 @@ mobs:register_egg("mobs_mc:rabbit", S("Rabbit"), "mobs_mc_spawn_icon_rabbit.png"
 mobs:register_egg("mobs_mc:killer_bunny", S("Killer Bunny"), "mobs_mc_spawn_icon_rabbit.png^[colorize:#FF0000:192", 0) -- TODO: Update inventory image
 
 
--- compatibility
-mobs:alias_mob("mobs:bunny", "mobs_mc:rabbit")
-
 if minetest.settings:get_bool("log_mods") then
 	minetest.log("action", "MC Bunny loaded")
 end

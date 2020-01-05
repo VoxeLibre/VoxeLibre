@@ -121,9 +121,6 @@ table.insert(stray.drops, {
 
 mobs:register_mob("mobs_mc:stray", stray)
 
--- compatibility
-mobs:alias_mob("mobs:skeleton", "mobs_mc:skeleton")
-
 -- Overworld spawn
 mobs:spawn_specific("mobs_mc:skeleton", mobs_mc.spawn.solid, {"air"}, 0, 7, 20, 17000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 -- Nether spawn

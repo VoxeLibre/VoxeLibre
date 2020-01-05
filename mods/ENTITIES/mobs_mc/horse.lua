@@ -402,9 +402,6 @@ mobs:register_mob("mobs_mc:mule", mule)
 mobs:spawn_specific("mobs_mc:horse", mobs_mc.spawn.grassland_savanna, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 15000, 12, mobs_mc.spawn_height.water+3, mobs_mc.spawn_height.overworld_max)
 mobs:spawn_specific("mobs_mc:donkey", mobs_mc.spawn.grassland_savanna, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 15000, 12, mobs_mc.spawn_height.water+3, mobs_mc.spawn_height.overworld_max)
 
--- compatibility
-mobs:alias_mob("mobs:horse", "mobs_mc:horse")
-
 -- spawn eggs
 mobs:register_egg("mobs_mc:horse", S("Horse"), "mobs_mc_spawn_icon_horse.png", 0)
 mobs:register_egg("mobs_mc:skeleton_horse", S("Skeleton Horse"), "mobs_mc_spawn_icon_horse_skeleton.png", 0)

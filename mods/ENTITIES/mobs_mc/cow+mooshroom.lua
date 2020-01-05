@@ -138,9 +138,6 @@ mobs:register_mob("mobs_mc:mooshroom", mooshroom_def)
 mobs:spawn_specific("mobs_mc:cow", mobs_mc.spawn.grassland, {"air"}, 9, minetest.LIGHT_MAX+1, 30, 17000, 20, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 mobs:spawn_specific("mobs_mc:mooshroom", mobs_mc.spawn.mushroom_island, {"air"}, 9, minetest.LIGHT_MAX+1, 30, 17000, 10, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 
--- compatibility
-mobs:alias_mob("mobs_animal:cow", "mobs_mc:cow")
-
 -- spawn egg
 mobs:register_egg("mobs_mc:cow", S("Cow"), "mobs_mc_spawn_icon_cow.png", 0)
 mobs:register_egg("mobs_mc:mooshroom", S("Mooshroom"), "mobs_mc_spawn_icon_mooshroom.png", 0)

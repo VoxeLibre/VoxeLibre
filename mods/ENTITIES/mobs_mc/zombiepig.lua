@@ -108,9 +108,6 @@ mobs:spawn_specific("mobs_mc:baby_pigman", mobs_mc.spawn.solid, {"air"}, 0, mine
 -- Spawning in Nether portals in the Overworld
 mobs:spawn_specific("mobs_mc:pigman", mobs_mc.spawn.nether_portal, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 500, 4, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.overworld_max)
 
--- compatibility
-mobs:alias_mob("mobs:pigman", "mobs_mc:pigman")
-
 -- spawn eggs
 mobs:register_egg("mobs_mc:pigman", S("Zombie Pigman"), "mobs_mc_spawn_icon_zombie_pigman.png", 0)
 

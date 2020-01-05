@@ -206,12 +206,6 @@ mobs:register_mob("mobs_mc:dog", dog)
 -- Spawn
 mobs:spawn_specific("mobs_mc:wolf", mobs_mc.spawn.wolf, {"air"}, 0, minetest.LIGHT_MAX+1, 30, 9000, 20, mobs_mc.spawn_height.water+3, mobs_mc.spawn_height.overworld_max)
 
--- Compatibility
-mobs:alias_mob("mobs:wolf", "mobs_mc:wolf")
-mobs:alias_mob("mobs:dog", "mobs_mc:dog")
-mobs:alias_mob("esmobs:wolf", "mobs_mc:wolf")
-mobs:alias_mob("esmobs:dog", "mobs_mc:dog")
-
 mobs:register_egg("mobs_mc:wolf", S("Wolf"), "mobs_mc_spawn_icon_wolf.png", 0)
 
 if minetest.settings:get_bool("log_mods") then
