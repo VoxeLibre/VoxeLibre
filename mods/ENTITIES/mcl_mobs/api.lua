@@ -2874,6 +2874,12 @@ local mob_activate = function(self, staticdata, def, dtime)
 	self.opinion_sound_cooloff = 0 -- used to prevent sound spam of particular sound types
 
 	self.texture_mods = {}
+	self.object:set_texture_mod("")
+
+	self.v_start = false
+	self.timer = 0
+	self.blinktimer = 0
+	self.blinkstatus = false
 
 	-- check existing nametag
 	if not self.nametag then
