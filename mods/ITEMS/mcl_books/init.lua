@@ -60,7 +60,7 @@ local make_description = function(title, author, generation)
 	else
 		desc = S("Tattered Book")
 	end
-	desc = desc .. "\n" .. core.colorize("#AAAAAA", S("by @1", author))
+	desc = desc .. "\n" .. minetest.colorize("#AAAAAA", S("by @1", author))
 	return desc
 end
 
@@ -102,7 +102,7 @@ local read = function(itemstack, user, pointed_thing)
 	local text = get_text(itemstack)
 	local formspec = "size[8,9]"..
 		"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
-		"textarea[0.75,0.1;7.25,9;;"..core.colorize("#000000", minetest.formspec_escape(text))..";]"..
+		"textarea[0.75,0.1;7.25,9;;"..minetest.colorize("#000000", minetest.formspec_escape(text))..";]"..
 		"button_exit[2.25,7.95;3,1;ok;"..minetest.formspec_escape(S("Done")).."]"
 	minetest.show_formspec(user:get_player_name(), "mcl_books:written_book", formspec)
 end
@@ -136,8 +136,8 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 				local name = player:get_player_name()
 				local formspec = "size[8,9]"..
 					"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
-					"field[0.75,1;7.25,1;title;"..minetest.formspec_escape(core.colorize("#000000", S("Enter book title:")))..";]"..
-					"label[0.75,1.5;"..minetest.formspec_escape(core.colorize("#404040", S("by @1", name))).."]"..
+					"field[0.75,1;7.25,1;title;"..minetest.formspec_escape(minetest.colorize("#000000", S("Enter book title:")))..";]"..
+					"label[0.75,1.5;"..minetest.formspec_escape(minetest.colorize("#404040", S("by @1", name))).."]"..
 					"button_exit[0.75,7.95;3,1;sign;"..minetest.formspec_escape(S("Sign and Close")).."]"..
 					"tooltip[sign;"..minetest.formspec_escape(S("Note: The book will no longer be editable after signing")).."]"..
 					"button[4.25,7.95;3,1;cancel;"..minetest.formspec_escape(S("Cancel")).."]"

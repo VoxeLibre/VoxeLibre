@@ -79,7 +79,7 @@ minetest.register_entity(":__builtin:falling_node", {
 	meta = {},
 
 	set_node = function(self, node, meta)
-		local def = core.registered_nodes[node.name]
+		local def = minetest.registered_nodes[node.name]
 		-- Change falling node if definition tells us to
 		if def and def._mcl_falling_node_alternative then
 			node.name = def._mcl_falling_node_alternative
@@ -90,9 +90,9 @@ minetest.register_entity(":__builtin:falling_node", {
 		-- Set correct entity yaw
 		if def and node.param2 ~= 0 then
 			if (def.paramtype2 == "facedir" or def.paramtype2 == "colorfacedir") then
-				self.object:set_yaw(core.dir_to_yaw(core.facedir_to_dir(node.param2)))
+				self.object:set_yaw(minetest.dir_to_yaw(minetest.facedir_to_dir(node.param2)))
 			elseif (def.paramtype2 == "wallmounted" or def.paramtype2 == "colorwallmounted") then
-				self.object:set_yaw(core.dir_to_yaw(core.wallmounted_to_dir(node.param2)))
+				self.object:set_yaw(minetest.dir_to_yaw(minetest.wallmounted_to_dir(node.param2)))
 			end
 			if def.light_source then
 				glow = def.light_source

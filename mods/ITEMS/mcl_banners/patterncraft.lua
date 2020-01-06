@@ -281,7 +281,7 @@ mcl_banners.make_advanced_banner_description = function(description, layers)
 
 		-- Final string concatenations: Just a list of strings
 		local append = table.concat(layerstrings, "\n")
-		description = description .. "\n" .. core.colorize("#8F8F8F", append)
+		description = description .. "\n" .. minetest.colorize("#8F8F8F", append)
 		return description
 	end
 end

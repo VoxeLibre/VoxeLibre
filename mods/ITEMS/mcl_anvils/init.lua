@@ -179,7 +179,7 @@ local function update_anvil_slots(meta)
 				else
 					-- Custom name set. Colorize it!
 					-- This makes the name visually different from unnamed items
-					meta:set_string("description", core.colorize(NAME_COLOR, new_name))
+					meta:set_string("description", minetest.colorize(NAME_COLOR, new_name))
 				end
 				-- Save the raw name internally, too
 				meta:set_string("name", new_name)

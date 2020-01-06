@@ -260,7 +260,7 @@ function minetest.handle_node_drops(pos, drops, digger)
 				dpos.y = dpos.y + 1
 			end
 			-- Spawn item and apply random speed
-			local obj = core.add_item(dpos, drop_item)
+			local obj = minetest.add_item(dpos, drop_item)
 			if obj ~= nil then
 				local x = math.random(1, 5)
 				if math.random(1,2) == 1 then
@@ -286,7 +286,7 @@ function minetest.item_drop(itemstack, dropper, pos)
 			cs = 1
 		end
 		local item = itemstack:take_item(cs)
-		local obj = core.add_item(p, item)
+		local obj = minetest.add_item(p, item)
 		if obj then
 			v.x = v.x*4
 			v.y = v.y*4 + 2
@@ -306,7 +306,7 @@ if not time_to_live then
 	time_to_live = 300
 end
 
-core.register_entity(":__builtin:item", {
+minetest.register_entity(":__builtin:item", {
 	initial_properties = {
 		hp_max = 1,
 		physical = true,
@@ -360,12 +360,12 @@ core.register_entity(":__builtin:item", {
 		end
 		local item_texture = nil
 		local item_type = ""
-		if core.registered_items[itemname] then
-			item_texture = core.registered_items[itemname].inventory_image
-			item_type = core.registered_items[itemname].type
-			description = core.registered_items[itemname].description
+		if minetest.registered_items[itemname] then
+			item_texture = minetest.registered_items[itemname].inventory_image
+			item_type = minetest.registered_items[itemname].type
+			description = minetest.registered_items[itemname].description
 		end
-		local ndef = core.registered_items[itemname]
+		local ndef = minetest.registered_items[itemname]
 		local glow
 		if ndef then
 			glow = ndef.light_source
@@ -405,7 +405,7 @@ core.register_entity(":__builtin:item", {
 	end,
 
 	get_staticdata = function(self)
-		return core.serialize({
+		return minetest.serialize({
 			itemstring = self.itemstring,
 			always_collect = self.always_collect,
 			age = self.age,
@@ -417,7 +417,7 @@ core.register_entity(":__builtin:item", {
 
 	on_activate = function(self, staticdata, dtime_s)
 		if string.sub(staticdata, 1, string.len("return")) == "return" then
-			local data = core.deserialize(staticdata)
+			local data = minetest.deserialize(staticdata)
 			if data and type(data) == "table" then
 				self.itemstring = data.itemstring
 				self.always_collect = data.always_collect
@@ -522,7 +522,7 @@ core.register_entity(":__builtin:item", {
 		end
 
 		local p = self.object:get_pos()
-		local node = core.get_node_or_nil(p)
+		local node = minetest.get_node_or_nil(p)
 		local in_unloaded = (node == nil)
 
 		-- If no collector was found for a long enough time, declare the magnet as disabled
@@ -677,11 +677,11 @@ core.register_entity(":__builtin:item", {
 		local nn = minetest.get_node({x=p.x, y=p.y-0.5, z=p.z}).name
 		local v = self.object:get_velocity()
 
-		if not core.registered_nodes[nn] or core.registered_nodes[nn].walkable and v.y == 0 then
+		if not minetest.registered_nodes[nn] or minetest.registered_nodes[nn].walkable and v.y == 0 then
 			if self.physical_state then
 				local own_stack = ItemStack(self.object:get_luaentity().itemstring)
 				-- Merge with close entities of the same item
-				for _, object in ipairs(core.get_objects_inside_radius(p, 0.8)) do
+				for _, object in ipairs(minetest.get_objects_inside_radius(p, 0.8)) do
 					local obj = object:get_luaentity()
 					if obj and obj.name == "__builtin:item"
 							and obj.physical_state == false then

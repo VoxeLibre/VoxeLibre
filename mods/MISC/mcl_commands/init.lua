@@ -141,7 +141,7 @@ if minecraftaliases then
 		description = S("List bans"),
 		privs = minetest.chatcommands["ban"].privs,
 		func = function(name)
-			return true, S("Ban list: @1", core.get_ban_list())
+			return true, S("Ban list: @1", minetest.get_ban_list())
 		end,
 	})
 end
