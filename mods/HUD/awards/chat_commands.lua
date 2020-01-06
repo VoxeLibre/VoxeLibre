@@ -38,31 +38,3 @@ minetest.register_chatcommand("awards", {
 	end
 })
 
-minetest.register_chatcommand("awd", {
-	params = S("<achievement ID>"),
-	description = S("Show details of an achievement"),
-	func = function(name, param)
-		local def = awards.def[param]
-		if def then
-			minetest.chat_send_player(name, string.format(S("%s: %s"), def.title, def.description))
-		else
-			minetest.chat_send_player(name, S("Achievement not found."))
-		end
-	end
-})
-
-minetest.register_chatcommand("awpl", {
-	privs = {
-		server = true
-	},
-	params = S("<name>"),
-	description = S("Get the achievements statistics for the given player or yourself"),
-	func = function(name, param)
-		if not param or param == "" then
-			param = name
-		end
-		minetest.chat_send_player(name, param)
-		local player = awards.player(param)
-		minetest.chat_send_player(name, dump(player))
-	end
-})
