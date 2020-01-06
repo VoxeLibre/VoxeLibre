@@ -38,7 +38,7 @@ local spider = {
 	},
 	walk_velocity = 3.9,
 	jump = true,
-	jump_height = 2,
+	jump_height = 4,
 	view_range = 16,
 	floats = 1,
 	drops = {

@@ -1448,12 +1448,15 @@ local smart_mobs = function(self, s, p, dist, dtime)
 				end
 			end
 
-			-- will try again in 2 second
+			-- will try again in 2 seconds
 			self.path.stuck_timer = stuck_timeout - 2
-		else
-			-- yay i found path
+		elseif s.y < p1.y and (not self.fly) then
+			do_jump(self) --add jump to pathfinding
+			self.path.following = true
+			-- Yay, I found path!
 			-- TODO: Implement war_cry sound without being annoying
 			--mob_sound(self, "war_cry", true)
+		else
 			set_velocity(self, self.walk_velocity)
 
 			-- follow path now that it has it
@@ -3132,9 +3135,17 @@ local function scale_difficulty(value, default, min, special)
 	end
 end
 
+local collisionbox = def.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25}
+-- Workaround for <https://github.com/minetest/minetest/issues/5966>:
+-- Increase upper Y limit to avoid mobs glitching through solid nodes.
+-- FIXME: Remove workaround if it's no longer needed.
+if collisionbox[5] < 0.79 then
+	collisionbox[5] = 0.79
+end
+
 minetest.register_entity(name, {
 
-	stepheight = def.stepheight or 1.1, -- was 0.6
+	stepheight = def.stepheight or 0.6,
 	name = name,
 	type = def.type,
 	attack_type = def.attack_type,
@@ -3154,7 +3165,7 @@ minetest.register_entity(name, {
 	breath_max = def.breath_max or 15,
         breathes_in_water = def.breathes_in_water or false,
 	physical = true,
-	collisionbox = def.collisionbox or {-0.25, -0.25, -0.25, 0.25, 0.25, 0.25},
+	collisionbox = collisionbox,
 	selectionbox = def.selectionbox or def.collisionbox,
 	visual = def.visual,
 	visual_size = def.visual_size or {x = 1, y = 1},
