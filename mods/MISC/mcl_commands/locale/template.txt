@@ -20,3 +20,4 @@ List bans=
 Ban list: @1=
 Show who is logged on=
 Displays the world seed=
+Only peaceful mobs allowed!=

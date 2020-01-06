@@ -50,8 +50,8 @@ end
 
 -- Load settings
 local damage_enabled = minetest.settings:get_bool("enable_damage")
-local mobs_spawn = minetest.settings:get_bool("mobs_spawn") ~= false
-local peaceful_only = minetest.settings:get_bool("only_peaceful_mobs")
+local mobs_spawn = minetest.settings:get_bool("mobs_spawn", true) ~= false
+
 local disable_blood = minetest.settings:get_bool("mobs_disable_blood")
 local mobs_drop_items = minetest.settings:get_bool("mobs_drop_items") ~= false
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
@@ -65,7 +65,7 @@ local max_per_block = tonumber(minetest.settings:get("max_objects_per_block") or
 local mobs_spawn_chance = tonumber(minetest.settings:get("mobs_spawn_chance") or 2.5)
 
 -- Peaceful mode message so players will know there are no monsters
-if peaceful_only then
+if minetest.settings:get_bool("only_peaceful_mobs", false) then
 	minetest.register_on_joinplayer(function(player)
 		minetest.chat_send_player(player:get_player_name(),
 			S("Peaceful mode active! No monsters will spawn."))
@@ -2756,7 +2756,7 @@ local mob_activate = function(self, staticdata, def, dtime)
 
 	-- remove monsters in peaceful mode
 	if self.type == "monster"
-	and peaceful_only then
+	and minetest.settings:get_bool("only_peaceful_mobs", false) then
 
 		self.object:remove()
 
@@ -3751,6 +3751,12 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 				end
 
 				if not minetest.registered_entities[mob] then
+					return itemstack
+				end
+
+				if minetest.settings:get_bool("only_peaceful_mobs", false)
+						and minetest.registered_entities[mob].type == "monster" then
+					minetest.chat_send_player(name, S("Only peaceful mobs allowed!"))
 					return itemstack
 				end
 
