@@ -165,7 +165,9 @@ functions needed for the mob to work properly which contains the following:
       'mesh'           uses separate object file to define mob.
    'visual_size'       has the size of the mob, defaults to {x = 1, y = 1}
    'collisionbox'      has the box in which mob can be interacted with the
-                       world e.g. {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5}
+                       world e.g. {-0.5, -0.5, -0.5, 0.5, 0.8, 0.5}.
+                       NOTE: Due to a workaround, the upper Y coordinate will be forced
+                       to a minimum value of 0.79.
    'selectionbox'      has the box in which player can interact with mob
    'textures'          holds a table list of textures to be used for mob, or you
                        could use multiple lists inside another table for random
