@@ -468,7 +468,7 @@ function awards.show_to(name, to, sid, text)
 			minetest.chat_send_player(to, S("You have not gotten any awards."))
 			return
 		end
-		minetest.chat_send_player(to, S("@1’s awards:"), name)
+		minetest.chat_send_player(to, S("@1’s awards:", name))
 
 		for _, str in pairs(awards.players[name].unlocked) do
 			local def = awards.def[str]
