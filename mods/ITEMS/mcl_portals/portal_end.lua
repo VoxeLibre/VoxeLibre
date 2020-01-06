@@ -212,11 +212,13 @@ local function end_portal_area(pos, destroy)
 	else
 		name = "mcl_portals:portal_end"
 	end
+	local posses = {}
 	for x=pos.x, pos.x+SIZE-1 do
 		for z=pos.z, pos.z+SIZE-1 do
-			minetest.set_node({x=x,y=pos.y,z=z}, {name=name})
+			table.insert(posses, {x=x,y=pos.y,z=z})
 		end
 	end
+	minetest.bulk_set_node(posses, {name=name})
 end
 
 minetest.register_abm({
