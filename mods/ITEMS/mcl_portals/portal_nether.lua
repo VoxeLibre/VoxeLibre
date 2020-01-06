@@ -8,8 +8,8 @@ local nobj_cave = nil
 -- Portal frame sizes
 local FRAME_SIZE_X_MIN = 4
 local FRAME_SIZE_Y_MIN = 5
-local FRAME_SIZE_X_MAX = 23
-local FRAME_SIZE_Y_MAX = 23
+local FRAME_SIZE_X_MAX = 4 -- TODO: 23
+local FRAME_SIZE_Y_MAX = 5 -- TODO: 23
 
 local TELEPORT_DELAY = 3 -- seconds before teleporting in Nether portal
 local TELEPORT_COOLOFF = 4 -- after object was teleported, for this many seconds it won't teleported again
@@ -273,16 +273,21 @@ end
 
 local function is_portal(pos)
 	local xsize, ysize = FRAME_SIZE_X_MIN-1, FRAME_SIZE_Y_MIN-1
-	for d = -xsize, xsize do
-		for y = -ysize, ysize do
-			local px = {x = pos.x + d, y = pos.y + y, z = pos.z}
-			local pz = {x = pos.x, y = pos.y + y, z = pos.z + d}
-
-			if check_portal(px, {x = px.x + xsize, y = px.y + ysize, z = px.z}) then
-				return px, {x = px.x + xsize, y = px.y + ysize, z = px.z}
-			end
-			if check_portal(pz, {x = pz.x, y = pz.y + ysize, z = pz.z + xsize}) then
-				return pz, {x = pz.x, y = pz.y + ysize, z = pz.z + xsize}
+	for sx = FRAME_SIZE_X_MIN, FRAME_SIZE_X_MAX do
+		local xsize = sx - 1
+		for sy = FRAME_SIZE_Y_MIN, FRAME_SIZE_Y_MAX do
+			local ysize = sy - 1
+			for d = -xsize, xsize do
+				for y = -ysize, ysize do
+					local px = {x = pos.x + d, y = pos.y + y, z = pos.z}
+					local pz = {x = pos.x, y = pos.y + y, z = pos.z + d}
+					if check_portal(px, {x = px.x + xsize, y = px.y + ysize, z = px.z}) then
+						return px, {x = px.x + xsize, y = px.y + ysize, z = px.z}
+					end
+					if check_portal(pz, {x = pz.x, y = pz.y + ysize, z = pz.z + xsize}) then
+						return pz, {x = pz.x, y = pz.y + ysize, z = pz.z + xsize}
+					end
+				end
 			end
 		end
 	end
@@ -349,7 +354,8 @@ function mcl_portals.light_nether_portal(pos)
 		target.y = find_nether_target_y(target.x, target.z)
 	end
 
-	local dmin, dmax, ymin, ymax = 0, FRAME_SIZE_X_MIN - 1, p1.y, p2.y
+	local dmin, ymin, ymax = 0, p1.y, p2.y
+	local dmax = math.max(math.abs(p1.x - p2.x), math.abs(p1.z - p2.z))
 	for d = dmin, dmax do
 	for y = ymin, ymax do
 	if not ((d == dmin or d == dmax) and (y == ymin or y == ymax)) then
