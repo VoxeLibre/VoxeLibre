@@ -413,6 +413,7 @@ local function get_tooltip(item, groups, cooktime, burntime)
 		local gcol = "#FFAAFF"
 		if #groups == 1 then
 			local g = group_names[groups[1]]
+			local groupstr
 			-- Treat the groups “compass” and “clock” as fake groups
 			-- and just print the normal item name without special formatting
 			if groups[1] == "compass" or groups[1] == "clock" then
