@@ -883,6 +883,29 @@ minetest.register_craft({
 	}
 })
 
+-- Save metadata of shulker box when used in crafting
+minetest.register_on_craft(function(itemstack, player, old_craft_grid, craft_inv)
+	local new = itemstack:get_name()
+	if minetest.get_item_group(itemstack:get_name(), "shulker_box") ~= 1 then
+		return
+	end
+	local original
+	for i = 1, #old_craft_grid do
+		local item = old_craft_grid[i]:get_name()
+		if minetest.get_item_group(item, "shulker_box") == 1 then
+			original = old_craft_grid[i]
+			break
+		end
+	end
+	if original then
+		local ometa = original:get_meta():to_table()
+		local nmeta = itemstack:get_meta()
+		nmeta:from_table(ometa)
+		return itemstack
+	end
+end)
+
+
 minetest.register_lbm({
 	-- Disable active/open trapped chests when loaded because nobody could
 	-- have them open at loading time.
