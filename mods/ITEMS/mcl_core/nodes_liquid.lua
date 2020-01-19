@@ -28,7 +28,7 @@ minetest.register_node("mcl_core:water_flowing", {
 		},
 		{
 			image="default_water_flowing_animated.png",
-			backface_culling=true,
+			backface_culling=false,
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=4.0}
 		},
 	},
@@ -112,7 +112,7 @@ minetest.register_node("mcl_core:lava_flowing", {
 		},
 		{
 			image="default_lava_flowing_animated.png",
-			backface_culling=true,
+			backface_culling=false,
 			animation={type="vertical_frames", aspect_w=16, aspect_h=16, length=6.6}
 		},
 	},
