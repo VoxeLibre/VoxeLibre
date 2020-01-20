@@ -8,7 +8,6 @@ mobs.version = "20180531" -- don't rely too much on this, rarely updated, if eve
 local MAX_MOB_NAME_LENGTH = 30
 
 -- Localize
-local MP = minetest.get_modpath(minetest.get_current_modname())
 local S = minetest.get_translator("mcl_mobs")
 
 -- CMI support check
@@ -83,8 +82,6 @@ local stuck_timeout = 3 -- how long before mob gets stuck in place and starts se
 local stuck_path_timeout = 10 -- how long will mob follow path before giving up
 
 -- default nodes
-local node_fire = "mcl_fire:fire"
-local node_permanent_flame = "mcl_fire:eternal_fire"
 local node_ice = "mcl_core:ice"
 local node_snowblock = "mcl_core:snowblock"
 local node_snow = "mcl_core:snow"
@@ -340,7 +337,7 @@ end
 
 
 -- are we flying in what we are suppose to? (taikedz)
-local flight_check = function(self, pos_w)
+local flight_check = function(self)
 
 	local nod = self.standing_in
 	local def = minetest.registered_nodes[nod]
@@ -886,7 +883,7 @@ local do_jump = function(self)
 	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)
 
 	-- what is in front of mob?
-	local nod = node_ok({
+	nod = node_ok({
 		x = pos.x + dir_x,
 		y = pos.y + 0.5,
 		z = pos.z + dir_z
@@ -1781,7 +1778,7 @@ local follow_flop = function(self)
 
 				if p.x > s.x then yaw = yaw + pi end
 
-				yaw = set_yaw(self, yaw, 6)
+				set_yaw(self, yaw, 6)
 
 				-- anyone but standing npc's can move along
 				if dist > self.reach
@@ -3824,9 +3821,6 @@ function mobs:protect(self, clicker)
 	return false
 end
 
-
-local mob_obj = {}
-local mob_sta = {}
 
 -- feeding, taming and breeding (thanks blert2112)
 function mobs:feed_tame(self, clicker, feed_count, breed, tame)

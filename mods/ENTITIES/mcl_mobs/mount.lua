@@ -121,7 +121,7 @@ end)
 
 function mobs.attach(entity, player)
 
-	local attach_at, eye_offset = {}, {}
+	local attach_at, eye_offset
 
 	entity.player_rotation = entity.player_rotation or {x = 0, y = 0, z = 0}
 	entity.driver_attach_at = entity.driver_attach_at or {x = 0, y = 0, z = 0}
@@ -183,10 +183,10 @@ end
 
 function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 
-	local rot_steer, rot_view = math.pi/2, 0
+	local rot_view = 0
 
 	if entity.player_rotation.y == 90 then
-		rot_steer, rot_view = 0, math.pi/2
+		rot_view = math.pi/2
 	end
 
 	local acce_y = 0
@@ -262,7 +262,7 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 
 		return
 	end
-	
+
 	-- set moving animation
 	if moving_anim then
 		mobs:set_animation(entity, moving_anim)
@@ -293,7 +293,7 @@ function mobs.drive(entity, moving_anim, stand_anim, can_fly, dtime)
 
 	-- Set position, velocity and acceleration
 	local p = entity.object:get_pos()
-	local new_velo = {x = 0, y = 0, z = 0}
+	local new_velo
 	local new_acce = {x = 0, y = -9.8, z = 0}
 
 	p.y = p.y - 0.5
@@ -390,11 +390,6 @@ function mobs.fly(entity, dtime, speed, shoots, arrow, moving_anim, stand_anim)
 	local velo = entity.object:get_velocity()
 	local dir = entity.driver:get_look_dir()
 	local yaw = entity.driver:get_look_horizontal() + 1.57 -- offset fix between old and new commands
-	local rot_steer, rot_view = math.pi / 2, 0
-
-	if entity.player_rotation.y == 90 then
-		rot_steer, rot_view = 0, math.pi / 2
-	end
 
 	if ctrl.up then
 		entity.object:set_velocity({
