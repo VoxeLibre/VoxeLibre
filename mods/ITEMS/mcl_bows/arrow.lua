@@ -197,6 +197,24 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			local lua = obj:get_luaentity()
 			if obj ~= self._shooter and (is_player or (lua and lua._cmi_is_mob)) then
 				if obj:get_hp() > 0 then
+					-- Check if there is no solid node between arrow and object
+					local ray = minetest.raycast(self.object:get_pos(), obj:get_pos(), true)
+					for pointed_thing in ray do
+						if pointed_thing.type == "object" and pointed_thing.ref == closest_object then
+							-- Target reached! We can proceed now.
+							break
+						elseif pointed_thing.type == "node" then
+							local nn = minetest.get_node(minetest.get_pointed_thing_position(pointed_thing)).name
+							local def = minetest.registered_nodes[nn]
+							if (not def) or def.walkable then
+								-- There's a node in the way. Delete arrow without damage
+								self.object:remove()
+								return
+							end
+						end
+					end
+
+					-- Punch target object
 					obj:punch(self.object, 1.0, {
 						full_punch_interval=1.0,
 						damage_groups={fleshy=self._damage},
