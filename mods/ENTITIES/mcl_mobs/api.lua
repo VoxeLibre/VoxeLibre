@@ -718,7 +718,9 @@ local do_env_damage = function(self)
 
 	-- what is mob standing in?
 	pos.y = pos.y + y_level + 0.25 -- foot level
+	local pos2 = {x=pos.x, y=pos.y-1, z=pos.z}
 	self.standing_in = node_ok(pos, "air").name
+	self.standing_on = node_ok(pos2, "air").name
 
 	-- don't fall when on ignore, just stand still
 	if self.standing_in == "ignore" then
@@ -1909,8 +1911,9 @@ local do_states = function(self, dtime)
 		local lp = nil
 
 		-- is there something I need to avoid?
-		if self.water_damage > 0
-		and self.lava_damage > 0 then
+		if (self.water_damage > 0
+		and self.lava_damage > 0)
+		or self.breath_max ~= -1 then
 
 			lp = minetest.find_node_near(s, 1, {"group:water", "group:lava"})
 
@@ -1921,18 +1924,27 @@ local do_states = function(self, dtime)
 		elseif self.lava_damage > 0 then
 
 			lp = minetest.find_node_near(s, 1, {"group:lava"})
+
+		elseif self.fire_damage > 0 then
+
+			lp = minetest.find_node_near(s, 1, {"group:fire"})
+
 		end
 
 		if lp then
-
-			-- if mob in water or lava then look for land
-			if (self.lava_damage
-				and minetest.registered_nodes[self.standing_in].groups.lava)
+			local def = minetest.registered_nodes[self.standing_in]
+			local def2 = minetest.registered_nodes[self.standing_on]
+			-- If mob in or on dangerous block, look for land
+			if (self.breath_max ~= -1
+				and (def.drowning > 0 or def2.drowning > 0))
+			or (self.lava_damage
+				and (def.groups.lava or def2.groups.lava))
 			or (self.water_damage
-				and minetest.registered_nodes[self.standing_in].groups.water) then
+				and (def.groups.water or def2.groups.water))
+			or (self.fire_damage
+				and (def.groups.fire or def2.groups.fire)) then
 
-				lp = minetest.find_node_near(s, 5, {"group:soil", "group:stone",
-					"group:sand", node_ice, node_snowblock})
+				lp = minetest.find_node_near(s, 5, {"group:solid"})
 
 				-- did we find land?
 				if lp then
@@ -1954,16 +1966,14 @@ local do_states = function(self, dtime)
 					yaw = yaw + random(-0.5, 0.5)
 				end
 
+			-- A danger is near but mob is not inside
 			else
 
-				local vec = {
-					x = lp.x - s.x,
-					z = lp.z - s.z
-				}
-
-				yaw = (atan(vec.z / vec.x) + pi / 2) - self.rotate
-
-				if lp.x > s.x then yaw = yaw + pi end
+				-- Randomly turn
+				if random(1, 100) <= 30 then
+					yaw = yaw + random(-0.5, 0.5)
+					yaw = set_yaw(self, yaw, 8)
+				end
 			end
 
 			yaw = set_yaw(self, yaw, 8)
@@ -1972,7 +1982,6 @@ local do_states = function(self, dtime)
 		elseif random(1, 100) <= 30 then
 
 			yaw = yaw + random(-0.5, 0.5)
-
 			yaw = set_yaw(self, yaw, 8)
 		end
 
@@ -1987,6 +1996,7 @@ local do_states = function(self, dtime)
 			self.state = "stand"
 			set_animation(self, "stand")
 		else
+
 			set_velocity(self, self.walk_velocity)
 
 			if flight_check(self)
@@ -2866,7 +2876,8 @@ local mob_activate = function(self, staticdata, def, dtime)
 	self.collisionbox = colbox
 	self.selectionbox = selbox
 	self.visual_size = vis_size
-	self.standing_in = ""
+	self.standing_in = "ignore"
+	self.standing_on = "ignore"
 	self.jump_sound_cooloff = 0 -- used to prevent jump sound from being played too often in short time
 	self.opinion_sound_cooloff = 0 -- used to prevent sound spam of particular sound types
 
