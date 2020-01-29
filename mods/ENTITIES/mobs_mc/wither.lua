@@ -36,7 +36,6 @@ mobs:register_mob("mobs_mc:wither", {
 	},
 	jump = true,
 	jump_height = 10,
-	jump_chance = 98,
 	fly = true,
 	dogshoot_switch = 1,
 	dogshoot_count_max =1,

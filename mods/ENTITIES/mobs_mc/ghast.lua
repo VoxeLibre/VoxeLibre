@@ -67,7 +67,6 @@ mobs:register_mob("mobs_mc:ghast", {
 	floats=1,
 	fly = true,
 	fly_in = {"air"},
-	jump_chance = 98,
 })
 
 
