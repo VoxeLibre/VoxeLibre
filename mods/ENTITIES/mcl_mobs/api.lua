@@ -912,9 +912,9 @@ local do_jump = function(self)
 	if self.walk_chance == 0
 	or minetest.registered_items[nod.name].walkable then
 
-		if not nod.name:find("fence")
-		and not nod.name:find("fence_gate")
-		and not nod.name:find("wall") then
+		if minetest.get_item_group(nod.name, "fence") == 0
+		and minetest.get_item_group(nod.name, "fence_gate") == 0
+		and minetest.get_item_group(nod.name, "wall") == 0 then
 
 			local v = self.object:get_velocity()
 
