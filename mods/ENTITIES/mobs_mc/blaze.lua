@@ -95,6 +95,15 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 		}, nil)
 	end,
 
+	hit_object = function(self, object)
+		local lua = object:get_luaentity()
+		if lua then
+			if lua.name == "mcl_minecarts:tnt_minecart" then
+				lua:on_activate_by_rail(2)
+			end
+		end
+	end,
+
 	-- Node hit, make fire
 	hit_node = function(self, pos, node)
 		if node.name == "air" then

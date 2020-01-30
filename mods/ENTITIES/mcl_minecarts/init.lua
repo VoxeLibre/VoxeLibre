@@ -23,12 +23,16 @@ local function detach_driver(self)
 	end
 end
 
-local function activate_tnt_minecart(self)
+local function activate_tnt_minecart(self, timer)
 	if self._boomtimer then
 		return
 	end
 	self.object:set_armor_groups({immortal=1})
-	self._boomtimer = tnt.BOOMTIMER
+	if timer then
+		self._boomtimer = timer
+	else
+		self._boomtimer = tnt.BOOMTIMER
+	end
 	self.object:set_properties({textures = {
 		"mcl_tnt_blink.png",
 		"mcl_tnt_blink.png",
@@ -600,7 +604,7 @@ register_minecart(
 	S("Minecarts can be used for a quick transportion on rails.") .. "\n" ..
 	S("Minecarts only ride on rails and always follow the tracks. At a T-junction with no straight way ahead, they turn left. The speed is affected by the rail type."),
 	S("You can place the minecart on rails. Right-click it to enter it. Punch it to get it moving.") .. "\n" ..
-	S("To obtain the minecart, punch it while holding down the sneak key.") .. "\n"
+	S("To obtain the minecart, punch it while holding down the sneak key.") .. "\n" ..
 	S("If it moves over a powered activator rail, you'll get ejected."),
 	"mcl_minecarts_minecart.b3d",
 	{"mcl_minecarts_minecart.png"},

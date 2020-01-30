@@ -428,6 +428,9 @@ This function registers a arrow for mobs with the attack type shoot.
        'hit_mob'      a function that is called when the arrow hits a mob;
                       this function should hurt the mob, the parameters are
                       (self, mob)
+       'hit_object'   a function that is called when the arrow hits an object
+                      that is neither a player nor a mob. this function should
+                      hurt the object, the parameters are (self, object)
        'hit_node'     a function that is called when the arrow hits a node, the
                       parameters are (self, pos, node)
        'tail'         when set to 1 adds a trail or tail to mob arrows

@@ -3605,6 +3605,7 @@ function mobs:register_arrow(name, def)
 		hit_player = def.hit_player,
 		hit_node = def.hit_node,
 		hit_mob = def.hit_mob,
+		hit_object = def.hit_object,
 		drop = def.drop or false, -- drops arrow as registered item when true
 		collisionbox = {0, 0, 0, 0, 0, 0}, -- remove box around arrows
 		timer = 0,
@@ -3671,7 +3672,7 @@ function mobs:register_arrow(name, def)
 				end
 			end
 
-			if self.hit_player or self.hit_mob then
+			if self.hit_player or self.hit_mob or self.hit_object then
 
 				for _,player in pairs(minetest.get_objects_inside_radius(pos, 1.0)) do
 
@@ -3690,11 +3691,18 @@ function mobs:register_arrow(name, def)
 					and entity._cmi_is_mob == true
 					and tostring(player) ~= self.owner_id
 					and entity.name ~= self.object:get_luaentity().name then
-
 						self.hit_mob(self, player)
-
 						self.object:remove();
+						return
+					end
 
+					if entity
+					and self.hit_object
+					and (not entity._cmi_is_mob)
+					and tostring(player) ~= self.owner_id
+					and entity.name ~= self.object:get_luaentity().name then
+						self.hit_object(self, player)
+						self.object:remove();
 						return
 					end
 				end
