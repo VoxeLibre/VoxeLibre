@@ -8,10 +8,29 @@ mcl_minecarts.check_float_time = 15
 dofile(mcl_minecarts.modpath.."/functions.lua")
 dofile(mcl_minecarts.modpath.."/rails.lua")
 
+local function activate_tnt_minecart(self)
+	if self._boomtimer then
+		return
+	end
+	self.object:set_armor_groups({immortal=1})
+	self._boomtimer = tnt.BOOMTIMER
+	self.object:set_properties({textures = {
+		"mcl_tnt_blink.png",
+		"mcl_tnt_blink.png",
+		"mcl_tnt_blink.png",
+		"mcl_tnt_blink.png",
+		"mcl_tnt_blink.png",
+		"mcl_tnt_blink.png",
+		"mcl_minecarts_minecart.png",
+	}})
+	self._blinktimer = tnt.BLINKTIMER
+	minetest.sound_play("tnt_ignite", {pos = self.object:get_pos(), gain = 1.0, max_hear_distance = 15})
+end
+
 -- Table for item-to-entity mapping. Keys: itemstring, Values: Corresponding entity ID
 local entity_mapping = {}
 
-local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
+local function register_entity(entity_id, mesh, textures, drop, on_rightclick, on_activate_by_rail)
 	local cart = {
 		physical = false,
 		collisionbox = {-10/16., -0.5, -10/16, 10/16, 0.25, 10/16},
@@ -28,6 +47,9 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 		_start_pos = nil, -- Used to calculate distance for “On A Rail” achievement
 		_last_float_check = nil, -- timestamp of last time the cart was checked to be still on a rail
 		_fueltime = nil, -- how many seconds worth of fuel is left. Only used by minecart with furnace
+		_boomtimer = nil, -- how many seconds are left before exploding
+		_blinktimer = nil, -- how many seconds are left before TNT blinking
+		_blink = false, -- is TNT blink texture active?
 		_old_dir = {x=0, y=0, z=0},
 		_old_pos = nil,
 		_old_vel = {x=0, y=0, z=0},
@@ -36,11 +58,21 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 	}
 
 	function cart:on_activate(staticdata, dtime_s)
+		-- Initialize
 		local data = minetest.deserialize(staticdata)
 		if type(data) == "table" then
 			self._railtype = data._railtype
 		end
 		self.object:set_armor_groups({immortal=1})
+
+		-- Activate cart if on activator rail
+		if self.on_activate_by_rail then
+			local pos = self.object:get_pos()
+			local node = minetest.get_node(vector.floor(pos))
+			if node.name == "mcl_minecarts:activator_rail_on" then
+				self:on_activate_by_rail()
+			end
+		end
 	end
 
 	function cart:on_punch(puncher, time_from_last_punch, tool_capabilities, direction)
@@ -61,7 +93,8 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 			return
 		end
 
-		if puncher:get_player_control().sneak then
+		-- Punch+sneak: Pick up minecart (unless TNT was ignited)
+		if puncher:get_player_control().sneak and not self._boomtimer then
 			if self._driver then
 				if self._old_pos then
 					self.object:set_pos(self._old_pos)
@@ -123,6 +156,8 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 		self._punched = true
 	end
 
+	cart.on_activate_by_rail = on_activate_by_rail
+
 	function cart:on_step(dtime)
 		local vel = self.object:get_velocity()
 		local update = {}
@@ -152,8 +187,15 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 					end
 				end
 
+				-- Explode if already ignited
+				if self._boomtimer then
+					self.object:remove()
+					tnt.boom(pos)
+					return
+				end
+
 				-- Drop items and remove cart entity
-					if not minetest.settings:get_bool("creative_mode") then
+				if not minetest.settings:get_bool("creative_mode") then
 					for d=1, #drop do
 						minetest.add_item(self.object:get_pos(), drop[d])
 					end
@@ -165,7 +207,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 			self._last_float_check = 0
 		end
 
-		-- Update furnace texture if out of fuel
+		-- Update furnace stuff
 		if self._fueltime and self._fueltime > 0 then
 			self._fueltime = self._fueltime - dtime
 			if self._fueltime <= 0 then
@@ -183,6 +225,50 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 			end
 		end
 		local has_fuel = self._fueltime and self._fueltime > 0
+
+		-- Update TNT stuff
+		if self._boomtimer then
+			-- Explode
+			self._boomtimer = self._boomtimer - dtime
+			local pos = self.object:get_pos()
+			if self._boomtimer <= 0 then
+				self.object:remove()
+				tnt.boom(pos)
+				return
+			else
+				tnt.smoke_step(pos)
+			end
+		end
+		if self._blinktimer then
+			self._blinktimer = self._blinktimer - dtime
+			if self._blinktimer <= 0 then
+				self._blink = not self._blink
+				if self._blink then
+					self.object:set_properties({textures =
+					{
+					"default_tnt_top.png",
+					"default_tnt_bottom.png",
+					"default_tnt_side.png",
+					"default_tnt_side.png",
+					"default_tnt_side.png",
+					"default_tnt_side.png",
+					"mcl_minecarts_minecart.png",
+					}})
+				else
+					self.object:set_properties({textures =
+					{
+					"mcl_tnt_blink.png",
+					"mcl_tnt_blink.png",
+					"mcl_tnt_blink.png",
+					"mcl_tnt_blink.png",
+					"mcl_tnt_blink.png",
+					"mcl_tnt_blink.png",
+					"mcl_minecarts_minecart.png",
+					}})
+				end
+				self._blinktimer = tnt.BLINKTIMER
+			end
+		end
 
 		if self._punched then
 			vel = vector.add(vel, self._velocity)
@@ -223,6 +309,10 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 				local newnode = {name="mcl_minecarts:detector_rail", param2 = node_old.param2}
 				minetest.swap_node(rou_old, newnode)
 				mesecon.receptor_off(rou_old)
+			end
+			-- Activate minecart if on activator rail
+			if node_old.name == "mcl_minecarts:activator_rail_on" and self.on_activate_by_rail then
+				self:on_activate_by_rail()
 			end
 		end
 
@@ -483,7 +573,7 @@ Register a minecart
 * creative: If false, don't show in Creative Inventory
 ]]
 local function register_minecart(itemstring, entity_id, description, longdesc, usagehelp, mesh, textures, icon, drop, on_rightclick, on_activate_by_rail, creative)
-	register_entity(entity_id, mesh, textures, drop, on_rightclick)
+	register_entity(entity_id, mesh, textures, drop, on_rightclick, on_activate_by_rail)
 	register_craftitem(itemstring, entity_id, description, longdesc, usagehelp, icon, creative)
 	if minetest.get_modpath("doc_identifier") ~= nil then
 		doc.sub.identifier.register_object(entity_id, "craftitems", itemstring)
@@ -651,8 +741,25 @@ register_minecart(
 	},
 	"mcl_minecarts_minecart_tnt.png",
 	{"mcl_minecarts:minecart", "mcl_tnt:tnt"},
-	nil, nil, false
-)
+	-- Ingite
+	function(self, clicker)
+		if not clicker or not clicker:is_player() then
+			return
+		end
+		if self._boomtimer then
+			return
+		end
+		local held = clicker:get_wielded_item()
+		if held:get_name() == "mcl_fire:flint_and_steel" then
+			if not minetest.settings:get_bool("creative_mode") then
+				held:add_wear(65535/65) -- 65 uses
+				local index = clicker:get_wielded_index()
+				local inv = clicker:get_inventory()
+				inv:set_stack("main", index, held)
+			end
+			activate_tnt_minecart(self)
+		end
+	end, activate_tnt_minecart, false)
 
 
 minetest.register_craft({

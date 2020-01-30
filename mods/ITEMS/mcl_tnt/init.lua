@@ -48,6 +48,23 @@ tnt.ignite = function(pos)
 	core.check_for_falling(pos)
 end
 
+-- Add smoke particle of entity at pos.
+-- Intended to be called every step
+tnt.smoke_step = function(pos)
+	minetest.add_particle({
+		pos = {x=pos.x,y=pos.y+0.5,z=pos.z},
+		velocity = vector.new(math.random() * 0.2 - 0.1, 1.0 + math.random(), math.random() * 0.2 - 0.1),
+		acceleration = vector.new(0, -0.1, 0),
+		expirationtime = 0.15 + math.random() * 0.25,
+		size = 1.0 + math.random(),
+		collisiondetection = false,
+		texture = "tnt_smoke.png"
+	})
+end
+
+tnt.BOOMTIMER = 4
+tnt.BLINKTIMER = 0.25
+
 local TNT_RANGE = 3
 
 local sounds
@@ -162,19 +179,11 @@ end
 
 function TNT:on_step(dtime)
 	local pos = self.object:get_pos()
-	minetest.add_particle({
-		pos = {x=pos.x,y=pos.y+0.5,z=pos.z},
-		velocity = vector.new(math.random() * 0.2 - 0.1, 1.0 + math.random(), math.random() * 0.2 - 0.1),
-		acceleration = vector.new(0, -0.1, 0),
-		expirationtime = 0.15 + math.random() * 0.25,
-		size = 1.0 + math.random(),
-		collisiondetection = false,
-		texture = "tnt_smoke.png"
-	})
+	tnt.smoke_step(pos)
 	self.timer = self.timer + dtime
 	self.blinktimer = self.blinktimer + dtime
-	if self.blinktimer > 0.25 then
-		self.blinktimer = self.blinktimer - 0.25
+	if self.blinktimer > tnt.BLINKTIMER then
+		self.blinktimer = self.blinktimer - tnt.BLINKTIMER
 		if self.blinkstatus then
 			self.object:set_texture_mod("")
 		else
@@ -182,7 +191,7 @@ function TNT:on_step(dtime)
 		end
 		self.blinkstatus = not self.blinkstatus
 	end
-	if self.timer > 4 then
+	if self.timer > tnt.BOOMTIMER then
 		tnt.boom(self.object:get_pos())
 		self.object:remove()
 	end

@@ -129,6 +129,7 @@ register_rail("mcl_minecarts:activator_rail",
 				offstate = "mcl_minecarts:activator_rail",
 				onstate = "mcl_minecarts:activator_rail_on",
 				rules = rail_rules_long,
+
 			},
 		},
 	},
@@ -149,6 +150,20 @@ register_rail("mcl_minecarts:activator_rail_on",
 				onstate = "mcl_minecarts:activator_rail_on",
 				rules = rail_rules_long,
 			},
+			effector = {
+				-- Activate minecarts
+				action_on = function(pos, node)
+					local pos2 = { x = pos.x, y =pos.y + 1, z = pos.z }
+					local objs = minetest.get_objects_inside_radius(pos2, 1)
+					for _, o in pairs(objs) do
+						local l = o:get_luaentity()
+						if l and string.sub(l.name, 1, 14) == "mcl_minecarts:" and l.on_activate_by_rail then
+							l:on_activate_by_rail()
+						end
+					end
+				end,
+			},
+
 		},
 		drop = "mcl_minecarts:activator_rail",
 	},
