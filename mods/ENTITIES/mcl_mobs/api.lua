@@ -265,6 +265,35 @@ function mobs:set_animation(self, anim)
 	set_animation(self, anim)
 end
 
+-- Returns true is node can deal damage to self
+local is_node_dangerous = function(self, nodename)
+	local nn = nodename
+	if self.water_damage > 0 then
+		if minetest.get_item_group(nn, "water") ~= 0 then
+			return true
+		end
+	end
+	if self.lava_damage > 0 then
+		if minetest.get_item_group(nn, "lava") ~= 0 then
+			return true
+		end
+	end
+	if self.fire_damage > 0 then
+		if minetest.get_item_group(nn, "fire") ~= 0 then
+			return true
+		end
+	end
+	if minetest.registered_nodes[nn].drowning > 0 then
+		if self.breath_max ~= -1 then
+			return true
+		end
+	end
+	if minetest.registered_nodes[nn].damage_per_second > 0 then
+		return true
+	end
+	return false
+end
+
 
 -- check line of sight (BrunoMine)
 local line_of_sight = function(self, pos1, pos2, stepsize)
@@ -618,8 +647,8 @@ local within_limits = function(pos, radius)
 end
 
 
--- is mob facing a cliff
-local is_at_cliff = function(self)
+-- is mob facing a cliff or danger
+local is_at_cliff_or_danger = function(self)
 
 	if self.fear_height == 0 then -- 0 for no falling protection!
 		return false
@@ -631,12 +660,20 @@ local is_at_cliff = function(self)
 	local pos = self.object:get_pos()
 	local ypos = pos.y + self.collisionbox[2] -- just above floor
 
-	if minetest.line_of_sight(
+	local free_fall, blocker = minetest.line_of_sight(
 		{x = pos.x + dir_x, y = ypos, z = pos.z + dir_z},
-		{x = pos.x + dir_x, y = ypos - self.fear_height, z = pos.z + dir_z}
-	, 1) then
-
+		{x = pos.x + dir_x, y = ypos - self.fear_height, z = pos.z + dir_z})
+	if free_fall then
 		return true
+	else
+		local bnode = minetest.get_node(blocker)
+		local danger = is_node_dangerous(self, bnode.name)
+		if danger then
+			return true
+		else
+			local def = minetest.registered_nodes[bnode.name]
+			return (not def and def.walkable)
+		end
 	end
 
 	return false
@@ -728,7 +765,7 @@ local do_env_damage = function(self)
 	local nodef = minetest.registered_nodes[self.standing_in]
 
 	-- rain
-	if self.rain_damage and mod_weather then
+	if self.rain_damage > 0 and mod_weather then
 		if mcl_weather.rain.raining and mcl_weather.is_outdoor(pos) then
 
 			self.health = self.health - self.rain_damage
@@ -741,7 +778,7 @@ local do_env_damage = function(self)
 	pos.y = pos.y + 1 -- for particle effect position
 
 	-- water damage
-	if self.water_damage
+	if self.water_damage > 0
 	and nodef.groups.water then
 
 		if self.water_damage ~= 0 then
@@ -755,7 +792,7 @@ local do_env_damage = function(self)
 		end
 
 	-- lava damage
-	elseif self.lava_damage
+	elseif self.lava_damage > 0
 	and (nodef.groups.lava) then
 
 		if self.lava_damage ~= 0 then
@@ -769,7 +806,7 @@ local do_env_damage = function(self)
 		end
 
 	-- fire damage
-	elseif self.fire_damage
+	elseif self.fire_damage > 0
 	and (nodef.groups.fire) then
 
 		if self.fire_damage ~= 0 then
@@ -1900,7 +1937,7 @@ local do_states = function(self, dtime)
 			if self.walk_chance ~= 0
 			and self.facing_fence ~= true
 			and random(1, 100) <= self.walk_chance
-			and is_at_cliff(self) == false then
+			and is_at_cliff_or_danger(self) == false then
 
 				set_velocity(self, self.walk_velocity)
 				self.state = "walk"
@@ -1934,18 +1971,12 @@ local do_states = function(self, dtime)
 
 		end
 
+		local is_in_danger = false
 		if lp then
-			local def = minetest.registered_nodes[self.standing_in]
-			local def2 = minetest.registered_nodes[self.standing_on]
 			-- If mob in or on dangerous block, look for land
-			if (self.breath_max ~= -1
-				and (def.drowning > 0 or def2.drowning > 0))
-			or (self.lava_damage
-				and (def.groups.lava or def2.groups.lava))
-			or (self.water_damage
-				and (def.groups.water or def2.groups.water))
-			or (self.fire_damage
-				and (def.groups.fire or def2.groups.fire)) then
+			if (is_node_dangerous(self, self.standing_in) or
+				is_node_dangerous(self, self.standing_on)) then
+				is_in_danger = true
 
 				lp = minetest.find_node_near(s, 5, {"group:solid"})
 
@@ -1988,11 +2019,13 @@ local do_states = function(self, dtime)
 			yaw = set_yaw(self, yaw, 8)
 		end
 
-		-- stand for great fall in front
-		local temp_is_cliff = is_at_cliff(self)
-
+		-- stand for great fall or danger or fence in front
+		local cliff_or_danger = false
+		if is_in_danger then
+			cliff_or_danger = is_at_cliff_or_danger(self)
+		end
 		if self.facing_fence == true
-		or temp_is_cliff
+		or cliff_or_danger
 		or random(1, 100) <= 30 then
 
 			set_velocity(self, 0)
@@ -2019,7 +2052,7 @@ local do_states = function(self, dtime)
 
 		-- stop after 5 seconds or when at cliff
 		if self.runaway_timer > 5
-		or is_at_cliff(self) then
+		or is_at_cliff_or_danger(self) then
 			self.runaway_timer = 0
 			set_velocity(self, 0)
 			self.state = "stand"
@@ -2264,7 +2297,7 @@ local do_states = function(self, dtime)
 					smart_mobs(self, s, p, dist, dtime)
 				end
 
-				if is_at_cliff(self) then
+				if is_at_cliff_or_danger(self) then
 
 					set_velocity(self, 0)
 					set_animation(self, "stand")
