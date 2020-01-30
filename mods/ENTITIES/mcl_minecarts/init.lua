@@ -8,6 +8,21 @@ mcl_minecarts.check_float_time = 15
 dofile(mcl_minecarts.modpath.."/functions.lua")
 dofile(mcl_minecarts.modpath.."/rails.lua")
 
+local function detach_driver(self)
+	if not self._driver then
+		return
+	end
+	mcl_player.player_attached[self._driver] = nil
+	local player = minetest.get_player_by_name(self._driver)
+	self._driver = nil
+	self._start_pos = nil
+	if player then
+		player:set_detach()
+		player:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
+		mcl_player.player_set_animation(player, "stand" , 30)
+	end
+end
+
 local function activate_tnt_minecart(self)
 	if self._boomtimer then
 		return
@@ -26,6 +41,8 @@ local function activate_tnt_minecart(self)
 	self._blinktimer = tnt.BLINKTIMER
 	minetest.sound_play("tnt_ignite", {pos = self.object:get_pos(), gain = 1.0, max_hear_distance = 15})
 end
+
+local activate_normal_minecart = detach_driver
 
 -- Table for item-to-entity mapping. Keys: itemstring, Values: Corresponding entity ID
 local entity_mapping = {}
@@ -99,12 +116,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 				if self._old_pos then
 					self.object:set_pos(self._old_pos)
 				end
-				mcl_player.player_attached[self._driver] = nil
-				local player = minetest.get_player_by_name(self._driver)
-				if player then
-					player:set_detach()
-					player:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
-				end
+				detach_driver(self)
 			end
 
 			-- Disable detector rail
@@ -588,7 +600,8 @@ register_minecart(
 	S("Minecarts can be used for a quick transportion on rails.") .. "\n" ..
 	S("Minecarts only ride on rails and always follow the tracks. At a T-junction with no straight way ahead, they turn left. The speed is affected by the rail type."),
 	S("You can place the minecart on rails. Right-click it to enter it. Punch it to get it moving.") .. "\n" ..
-	S("To obtain the minecart, punch it while holding down the sneak key."),
+	S("To obtain the minecart, punch it while holding down the sneak key.") .. "\n"
+	S("If it moves over a powered activator rail, you'll get ejected."),
 	"mcl_minecarts_minecart.b3d",
 	{"mcl_minecarts_minecart.png"},
 	"mcl_minecarts_minecart_normal.png",
@@ -600,11 +613,7 @@ register_minecart(
 		end
 		local player_name = clicker:get_player_name()
 		if self._driver and player_name == self._driver then
-			self._driver = nil
-			self._start_pos = nil
-			clicker:set_detach()
-			clicker:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
-			mcl_player.player_set_animation(clicker, "stand" , 30)
+			detach_driver(self)
 		elseif not self._driver then
 			self._driver = player_name
 			self._start_pos = self.object:get_pos()
@@ -619,7 +628,7 @@ register_minecart(
 				end
 			end, name)
 		end
-	end
+	end, activate_normal_minecart
 )
 
 -- Minecart with Chest
