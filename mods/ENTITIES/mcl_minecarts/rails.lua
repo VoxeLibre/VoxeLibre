@@ -132,10 +132,7 @@ register_rail("mcl_minecarts:activator_rail",
 
 			},
 		},
-	},
-	-- Hidden from creative because no cart is using this rail so far.
-	-- TODO: Remove this when the activator rail has become useful.
-	false
+	}
 )
 
 -- Activator rail (on)
@@ -222,9 +219,6 @@ minetest.register_craft({
 	}
 })
 
--- Activator rail crafting is disabled until it becomes useful.
--- TODO: Enable crafting as needed.
-if false then
 minetest.register_craft({
 	output = "mcl_minecarts:activator_rail 6",
 	recipe = {
@@ -233,7 +227,6 @@ minetest.register_craft({
 		{"mcl_core:iron_ingot", "mcl_core:stick", "mcl_core:iron_ingot"},
 	}
 })
-end
 
 minetest.register_craft({
 	output = "mcl_minecarts:detector_rail 6",

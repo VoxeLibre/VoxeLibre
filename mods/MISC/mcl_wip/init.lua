@@ -9,8 +9,6 @@ local wip_items = {
 	"mcl_minecarts:command_block_minecart",
 	"mcl_minecarts:chest_minecart",
 	"mcl_minecarts:furnace_minecart",
-	"mcl_minecarts:tnt_minecart",
-	"mcl_minecarts:activator_rail",
 	"mobs_mc:enderdragon",
 	"mobs_mc:wither",
 	"mobs_mc:parrot",

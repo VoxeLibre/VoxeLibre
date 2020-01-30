@@ -639,7 +639,10 @@ register_minecart(
 	"mcl_minecarts:furnace_minecart",
 	"mcl_minecarts:furnace_minecart",
 	S("Minecart with Furnace"),
-	nil, nil,
+	S("A minecart with furnace is a vehicle that travels on rails. It can propel itself with fuel."),
+	S("Place it on rails. If you give it some coal, the furnace will start burning for a long time and the minecart will be able to move itself. Punch it to get it moving.") .. "\n" ..
+	S("To obtain the minecart and furnace, punch them while holding down the sneak key."),
+
 	"mcl_minecarts_minecart_block.b3d",
 	{
 		"default_furnace_top.png",
@@ -728,7 +731,9 @@ register_minecart(
 	"mcl_minecarts:tnt_minecart",
 	"mcl_minecarts:tnt_minecart",
 	S("Minecart with TNT"),
-	nil, nil,
+	S("A minecart with TNT is an explosive vehicle that travels on rail."),
+	S("Place it on rails. Punch it to move it. The TNT is ignited with a slint and steel or when the minecart is on an powered activator rail.") .. "\n" ..
+	S("To obtain the minecart and TNT, punch them while holding down the sneak key. You can't do this if the TNT was ignited."),
 	"mcl_minecarts_minecart_block.b3d",
 	{
 		"default_tnt_top.png",
@@ -759,7 +764,7 @@ register_minecart(
 			end
 			activate_tnt_minecart(self)
 		end
-	end, activate_tnt_minecart, false)
+	end, activate_tnt_minecart)
 
 
 minetest.register_craft({
@@ -770,8 +775,25 @@ minetest.register_craft({
 	},
 })
 
+minetest.register_craft({
+	output = "mcl_minecarts:tnt_minecart",
+	recipe = {
+		{"mcl_tnt:tnt"},
+		{"mcl_minecarts:minecart"},
+	},
+})
+
 -- TODO: Re-enable crafting of special minecarts when they have been implemented
 if false then
+
+minetest.register_craft({
+	output = "mcl_minecarts:furnace_minecart",
+	recipe = {
+		{"mcl_furnaces:furnace"},
+		{"mcl_minecarts:minecart"},
+	},
+})
+
 minetest.register_craft({
 	output = "mcl_minecarts:hopper_minecart",
 	recipe = {
@@ -788,19 +810,4 @@ minetest.register_craft({
 	},
 })
 
-minetest.register_craft({
-	output = "mcl_minecarts:tnt_minecart",
-	recipe = {
-		{"mcl_tnt:tnt"},
-		{"mcl_minecarts:minecart"},
-	},
-})
-
-minetest.register_craft({
-	output = "mcl_minecarts:furnace_minecart",
-	recipe = {
-		{"mcl_furnaces:furnace"},
-		{"mcl_minecarts:minecart"},
-	},
-})
 end
