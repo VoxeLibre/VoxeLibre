@@ -91,6 +91,7 @@ local mod_weather = minetest.get_modpath("mcl_weather") ~= nil
 local mod_tnt = minetest.get_modpath("mcl_tnt") ~= nil
 local mod_mobspawners = minetest.get_modpath("mcl_mobspawners") ~= nil
 local mod_hunger = minetest.get_modpath("mcl_hunger") ~= nil
+local mod_worlds = minetest.get_modpath("mcl_worlds") ~= nil
 
 -- play sound
 local mob_sound = function(self, soundname, is_opinion, fixed_pitch)
@@ -705,7 +706,10 @@ local do_env_damage = function(self)
 	if self.light_damage ~= 0 and (minetest.get_node_light(pos) or 0) > 12 then
 		deal_light_damage(self, pos, self.light_damage)
 	end
-	local _, dim = mcl_worlds.y_to_layer(pos.y)
+	local _, dim = nil, "overworld"
+	if mod_worlds then
+		_, dim = mcl_worlds.y_to_layer(pos.y)
+	end
 	if self.sunlight_damage ~= 0 and (minetest.get_node_light(pos) or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
 		deal_light_damage(self, pos, self.sunlight_damage)
 	end
