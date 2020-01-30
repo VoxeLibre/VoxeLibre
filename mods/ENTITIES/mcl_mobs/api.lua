@@ -344,27 +344,22 @@ local flight_check = function(self)
 
 	if not def then return false end -- nil check
 
-	if type(self.fly_in) == "string"
-	and nod == self.fly_in then
-
-		return true
-
+	local fly_in
+	if type(self.fly_in) == "string" then
+		fly_in = { self.fly_in }
 	elseif type(self.fly_in) == "table" then
-
-		for _,fly_in in pairs(self.fly_in) do
-
-			if nod == fly_in then
-
-				return true
-			end
-		end
+		fly_in = self.fly_in
+	else
+		return false
 	end
 
-	-- stops mobs getting stuck inside stairs and plantlike nodes
-	if def.drawtype ~= "airlike"
-	and def.drawtype ~= "liquid"
-	and def.drawtype ~= "flowingliquid" then
-		return true
+	for _,checknode in pairs(fly_in) do
+		if nod == checknode then
+			return true
+		elseif checknode == "__airlike" and def.walkable == false and
+				(def.liquidtype == "none" or minetest.get_item_group(nod, "fake_liquid") == 1) then
+			return true
+		end
 	end
 
 	return false
@@ -3173,7 +3168,7 @@ minetest.register_entity(name, {
 	type = def.type,
 	attack_type = def.attack_type,
 	fly = def.fly,
-	fly_in = def.fly_in or "air",
+	fly_in = def.fly_in or {"air", "__airlike"},
 	owner = def.owner or "",
 	order = def.order or "",
 	on_die = def.on_die,

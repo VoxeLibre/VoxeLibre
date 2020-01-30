@@ -85,7 +85,6 @@ mobs:register_mob("mobs_mc:vex", {
 		end
 	end,
 	fly = true,
-	fly_in = {"air"},
 })
 
 

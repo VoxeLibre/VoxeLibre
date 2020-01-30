@@ -44,7 +44,6 @@ mobs:register_mob("mobs_mc:bat", {
 	view_range = 16,
 
 	fly = true,
-	fly_in = "air",
 })
 
 
