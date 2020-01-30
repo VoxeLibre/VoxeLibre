@@ -93,7 +93,7 @@ mobs:register_arrow("mobs_mc:potion_arrow", {
 
 	-- node hit, bursts into flame
 	hit_node = function(self, pos, node)
-		--mobs:explosion(pos, 1, 1, 0)
+		--TODO
 	end
 })
 

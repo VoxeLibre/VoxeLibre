@@ -56,7 +56,6 @@ local mobs_drop_items = minetest.settings:get_bool("mobs_drop_items") ~= false
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 local creative = minetest.settings:get_bool("creative_mode")
 local spawn_protected = minetest.settings:get_bool("mobs_spawn_protected") ~= false
--- TODO
 local remove_far = false
 local difficulty = tonumber(minetest.settings:get("mob_difficulty")) or 1.0
 local show_health = false
@@ -2742,12 +2741,6 @@ local mob_staticdata = function(self)
 	self.following = nil
 	self.state = "stand"
 
-	-- used to rotate older mobs
-	if self.drawtype
-	and self.drawtype == "side" then
-		self.rotate = math.rad(90)
-	end
-
 	if use_cmi then
 		self.serialized_cmi_components = cmi.serialize_components(self._cmi_components)
 	end
@@ -3187,7 +3180,6 @@ minetest.register_entity(name, {
 	spawn_small_alternative = def.spawn_small_alternative,
 	do_custom = def.do_custom,
 	jump_height = def.jump_height or 4, -- was 6
-	drawtype = def.drawtype, -- DEPRECATED, use rotate instead
 	rotate = math.rad(def.rotate or 0), --  0=front, 90=side, 180=back, 270=side2
 	lifetimer = def.lifetimer or 57.73,
 	hp_min = scale_difficulty(def.hp_min, 5, 1),
@@ -3683,14 +3675,6 @@ function mobs:register_arrow(name, def)
 			self.lastpos = pos
 		end
 	})
-end
-
-
--- compatibility function
-function mobs:explosion(pos, radius)
-	local self = {sounds = {}}
-	self.sounds.explode = "tnt_explode"
-	mobs:boom(self, pos, radius)
 end
 
 

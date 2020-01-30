@@ -459,8 +459,6 @@ This function registers a spawn egg which can be used by admin to properly spawn
 Explosion Function
 ------------------
 
-mobs:explosion(pos, radius) -- DEPRECATED!!!  use mobs:boom() instead
-
 mobs:boom(self, pos, radius)
    'self' mob entity
    'pos' centre position of explosion
