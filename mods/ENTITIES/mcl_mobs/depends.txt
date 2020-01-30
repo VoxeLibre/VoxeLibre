@@ -1,9 +1,0 @@
-mcl_core
-mcl_weather?
-mcl_tnt?
-mcl_hunger?
-invisibility?
-intllib?
-lucky_block?
-cmi?
-doc_identifier?
