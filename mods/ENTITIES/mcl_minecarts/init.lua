@@ -27,6 +27,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 		_velocity = {x=0, y=0, z=0}, -- only used on punch
 		_start_pos = nil, -- Used to calculate distance for “On A Rail” achievement
 		_last_float_check = nil, -- timestamp of last time the cart was checked to be still on a rail
+		_fueltime = nil, -- how many seconds worth of fuel is left. Only used by minecart with furnace
 		_old_dir = {x=0, y=0, z=0},
 		_old_pos = nil,
 		_old_vel = {x=0, y=0, z=0},
@@ -164,11 +165,30 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 			self._last_float_check = 0
 		end
 
+		-- Update furnace texture if out of fuel
+		if self._fueltime and self._fueltime > 0 then
+			self._fueltime = self._fueltime - dtime
+			if self._fueltime <= 0 then
+				self.object:set_properties({textures =
+					{
+					"default_furnace_top.png",
+					"default_furnace_top.png",
+					"default_furnace_front.png",
+					"default_furnace_side.png",
+					"default_furnace_side.png",
+					"default_furnace_side.png",
+					"mcl_minecarts_minecart.png",
+				}})
+				self._fueltime = 0
+			end
+		end
+		local has_fuel = self._fueltime and self._fueltime > 0
+
 		if self._punched then
 			vel = vector.add(vel, self._velocity)
 			self.object:set_velocity(vel)
 			self._old_dir.y = 0
-		elseif vector.equals(vel, {x=0, y=0, z=0}) then
+		elseif vector.equals(vel, {x=0, y=0, z=0}) and (not has_fuel) then
 			return
 		end
 
@@ -179,7 +199,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 		if self._old_pos and not self._punched then
 			local flo_pos = vector.floor(pos)
 			local flo_old = vector.floor(self._old_pos)
-			if vector.equals(flo_pos, flo_old) then
+			if vector.equals(flo_pos, flo_old) and (not has_fuel) then
 				return
 				-- Prevent querying the same node over and over again
 			end
@@ -257,7 +277,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 		end
 
 		local new_acc = {x=0, y=0, z=0}
-		if vector.equals(dir, {x=0, y=0, z=0}) then
+		if vector.equals(dir, {x=0, y=0, z=0}) and not has_fuel then
 			vel = {x=0, y=0, z=0}
 			update.vel = true
 		else
@@ -285,7 +305,9 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick)
 			local acc = dir.y * -1.8
 
 			local speed_mod = minetest.registered_nodes[minetest.get_node(pos).name]._rail_acceleration
-			if speed_mod and speed_mod ~= 0 then
+			if has_fuel then
+				acc = acc + 0.2
+			elseif speed_mod and speed_mod ~= 0 then
 				acc = acc + speed_mod
 			else
 				acc = acc - 0.4
@@ -558,9 +580,16 @@ register_minecart(
 				local inv = clicker:get_inventory()
 				inv:set_stack("main", index, held)
 			end
-
-			-- DEBUG
-			minetest.chat_send_player(clicker:get_player_name(), "Fuel: " .. tostring(self._fueltime))
+			self.object:set_properties({textures =
+			{
+				"default_furnace_top.png",
+				"default_furnace_top.png",
+				"default_furnace_front_active.png",
+				"default_furnace_side.png",
+				"default_furnace_side.png",
+				"default_furnace_side.png",
+				"mcl_minecarts_minecart.png",
+			}})
 		end
 	end, nil, false
 )
