@@ -35,8 +35,12 @@ functions needed for the mob to work properly which contains the following:
    'breathes_in_water' If true, mob loses breath when not in water. Otherwise,
                    mob loses breath when inside a node with `drowning` attribute
                    set (default: false).
-   'armor'         holds strength of mob, 100 is normal, lower is more powerful
-                   and needs more hits and better weapons to kill.
+   'armor'         entity armor groups (see lua_api.txt). If table, a list of
+                   armor groups like for entities. If number, set value of
+                   'fleshy' armor group only.
+                   Note: The 'immortal=1' armor group will automatically be added
+                   since this mod handles health and damage manually.
+                   Default: 100 (mob will take full dmg from 'fleshy' hits)
    'passive'       when true allows animals to defend themselves when hit,
                    otherwise they amble onwards.
    'walk_velocity' is the speed that your mob can walk around.

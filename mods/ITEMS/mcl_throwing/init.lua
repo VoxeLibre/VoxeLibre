@@ -145,7 +145,7 @@ local flying_bobber_ENTITY={
 	objtype="fishing",
 }
 
-local check_object_hit = function(self, pos, mob_damage)
+local check_object_hit = function(self, pos, dmg)
 	for _,object in pairs(minetest.get_objects_inside_radius(pos, 1.5)) do
 
 		local entity = object:get_luaentity()
@@ -158,11 +158,6 @@ local check_object_hit = function(self, pos, mob_damage)
 				self.object:remove()
 				return true
 			elseif entity._cmi_is_mob == true and (self._thrower ~= object) then
-				local dmg = {}
-				if mob_damage then
-					dmg = mob_damage(entity.name)
-				end
-
 				-- FIXME: Knockback is broken
 				object:punch(self.object, 1.0, {
 					full_punch_interval = 1.0,
@@ -193,15 +188,7 @@ local snowball_on_step = function(self, dtime)
 		end
 	end
 
-	local mob_damage = function(mobname)
-		if mobname == "mobs_mc:blaze" then
-			return {fleshy = 3}
-		else
-			return {}
-		end
-	end
-
-	if check_object_hit(self, pos, mob_damage) then
+	if check_object_hit(self, pos, {snowball_vulnerable = 3}) then
 		minetest.sound_play("mcl_throwing_snowball_impact_soft", { pos = self.object:get_pos(), max_hear_distance=16, gain=0.7 })
 		return
 	end

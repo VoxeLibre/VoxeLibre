@@ -2876,7 +2876,14 @@ local mob_activate = function(self, staticdata, def, dtime)
 	self.path.stuck_timer = 0 -- if stuck for too long search for path
 
 	-- mob defaults
-	self.object:set_armor_groups({immortal = 1, fleshy = self.armor})
+	local armor
+	if type(self.armor) == "table" then
+		armor = table.copy(self.armor)
+		armor.immortal = 1
+	else
+		armor = {immortal=1, fleshy = self.armor}
+	end
+	self.object:set_armor_groups(armor)
 	self.old_y = self.object:get_pos().y
 	self.old_health = self.health
 	self.sounds.distance = self.sounds.distance or 10
