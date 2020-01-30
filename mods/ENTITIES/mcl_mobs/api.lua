@@ -1350,10 +1350,15 @@ local smart_mobs = function(self, s, p, dist, dtime)
 		p1.y = floor(p1.y + 0.5)
 		p1.z = floor(p1.z + 0.5)
 
-		local dropheight = 6
+		local dropheight = 12
 		if self.fear_height ~= 0 then dropheight = self.fear_height end
-
-		self.path.way = minetest.find_path(s, p1, 16, self.stepheight, dropheight, "A*_noprefetch")
+		local jumpheight = 0
+		if self.jump and self.jump_height >= 4 then
+			jumpheight = math.min(math.ceil(self.jump_height / 4), 4)
+		elseif self.stepheight > 0.5 then
+			jumpheight = 1
+		end
+		self.path.way = minetest.find_path(s, p1, 16, jumpheight, dropheight, "A*_noprefetch")
 
 		self.state = ""
 		do_attack(self, self.attack)
