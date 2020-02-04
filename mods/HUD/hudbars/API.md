@@ -45,7 +45,7 @@ a vertical gradient.
 ### Icon
 A 16×16 image shown left of the HUD bar. This is optional.
 
-### `hb.register_hudbar(identifier, text_color, label, textures, default_start_value, default_start_max, default_start_hidden, format_string)`
+### `hb.register_hudbar(identifier, text_color, label, textures, default_start_value, default_start_max, default_start_hidden, format_string, format_string_config)`
 This function registers a new custom HUD bar definition to the HUD bars mod, so it can be later used to be displayed, changed, hidden
 and unhidden on a per-player basis.
 Note this does not yet display the HUD bar.
@@ -66,7 +66,21 @@ for more information.
 * `default_start_value`: If this HUD bar is added to a player, and no initial value is specified, this value will be used as initial current value
 * `default_max_value`: If this HUD bar is added to a player, and no initial maximum value is specified, this value will be used as initial maximum value
 * `default_start_hidden`: The HUD bar will be initially start hidden by default when added to a player. Use `hb.unhide_hudbar` to unhide it.
-* `format_string`: This is optional; You can specify an alternative format string display the final text on the HUD bar. The default format string is “`%s: %d/%d`” (in this order: Label, current value, maximum value). See also the Lua documentation of `string.format`.
+* `format_string`: Optional; You can specify an alternative format string to use for the final text on the HUD bar. The default format string is “`@1: @2/@3`” (The “@” numbers are placeholders that have a meaning in this order: @1 = Label, @2 = current value, @3 = maximum value). Do *not* use minetest.translator on this string, the string will be translated by `hudbars`, but you still must put this string into the translation catalogue file.
+* `format_string_config`: Required if `format_string` is set. This allows to change which parameters to use in the format string. It's a table with these fields:
+ * `textdomain`: Text domain of the format string, used by `minetest.translate`
+ * `order`: Table that contains the order of the placeholders. It's also possible to remove placeholders. Default order: `{ "label", "value", "max_value" }`
+ * `format_value`: Format string to apply when displaying `value`. Syntax is same as in `string.format`. Default: `"%d"`
+ * `format_max_value`: Same as `format_value` but is applied to `max_value`
+
+#### Example
+Example (mostly) from `hbarmor` mod:
+
+```
+hb.register_hudbar("armor", 0xFFFFFF, minetest.translator("hbarmor", "Armor"), { icon = "hbarmor_icon.png", bgicon = "hbarmor_bgicon.png", bar = "hbarmor_bar.png" }, 0, 100, hbarmor.autohide, N("@1: @2%"), { order = { "label", "value" }, textdomain = "hbarmor" } )
+```
+
+Displays an armor HUD bar with a label of the form „Armor: 53%“. (`N` is a dummy function that returns its argument, used to make the string visible for translator scripts.)
 
 #### Return value
 Always `nil`.

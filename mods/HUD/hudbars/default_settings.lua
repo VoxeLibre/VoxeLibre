@@ -1,5 +1,4 @@
 -- (Hardcoded) default settings
--- Some of these settings have been modified for MCL2.
 
 hb.settings.max_bar_length = 160
 hb.settings.statbar_length = 20
@@ -53,4 +52,3 @@ else
 		hb.settings.sorting_reverse[tonumber(v)] = k
 	end
 end
-

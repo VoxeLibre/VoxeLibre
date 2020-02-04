@@ -1,5 +1,6 @@
-Health
-Breath
+# textdomain: hudbars
+Health=
+Breath=
 
 # Default format string for progress bar-style HUD bars, e.g. “Health 5/20”
-%s: %d/%d
+@1: @2/@3=
