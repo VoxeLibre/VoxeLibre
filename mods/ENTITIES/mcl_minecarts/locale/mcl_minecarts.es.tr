@@ -1,0 +1,23 @@
+# textdomain: mcl_minecarts
+Minecart=Vagoneta
+Minecarts can be used for a quick transportion on rails.=Las vagonetas se pueden usar para transportarse rápido en los rieles.
+Minecarts only ride on rails and always follow the tracks. At a T-junction with no straight way ahead, they turn left. The speed is affected by the rail type.=Las vagonetas solo viajan en rieles y siempre siguen las pistas. En un cruce en T sin camino recto, giran a la izquierda. La velocidad se ve afectada por el tipo de riel.
+You can place the minecart on rails. Right-click it to enter it. Punch it to get it moving.=Puedes colocar el vagoneta en los rieles. Haga clic derecho para insertarlo. Golpea para que se mueva.
+To obtain the minecart, punch it while holding down the sneak key.=Para obtener el vagoneta, golpéalo mientras mantienes presionada la tecla.
+Minecart with Chest=Vagoneta con cofre
+Minecart with Furnace=Vagoneta con horno
+Minecart with Command Block=Vagoneta con bloque de comandos
+Minecart with Hopper=Vagoneta con tolva
+Minecart with TNT=Vagoneta con dinamita
+Place them on the ground to build your railway, the rails will automatically connect to each other and will turn into curves, T-junctions, crossings and slopes as needed.=Colóquelos en el suelo para construir su ferrocarril, los rieles se conectarán automáticamente entre sí y se convertirán en curvas, uniones en T, cruces y pendientes según sea necesario.
+Rail=Raíl
+Rails can be used to build transport tracks for minecarts. Normal rails slightly slow down minecarts due to friction.=Los rieles se pueden usar para construir vías de transporte para vagonetas. Los rieles normales ralentizan ligeramente las vagonetas debido a la fricción.
+Powered Rail=Raíl propulsor
+Rails can be used to build transport tracks for minecarts. Powered rails are able to accelerate and brake minecarts.=Los rieles se pueden usar para construir vías de transporte para vagonetas. Los railes propulsores pueden acelerar y frenar las vagonetas.
+Without redstone power, the rail will brake minecarts. To make this rail accelerate minecarts, power it with redstone power.=Sin energía de piedra roja, el riel frenará las vagonetas. Para hacer que este riel acelere las vagonetas, aliméntalo con piedra roja.
+Activator Rail=Raíl activador
+Rails can be used to build transport tracks for minecarts. Activator rails are used to activate special minecarts.=Los rieles se pueden usar para construir vías de transporte para vagonetas. Los railes activador se utilizan para activar una vagoneta especial.
+To make this rail activate minecarts, power it with redstone power and send a minecart over this piece of rail.=Para hacer que este riel active las vagonetas, enciéndelo con energía de piedra roja y envía una vagoneta sobre este pedazo de riel.
+Detector Rail=Raíl detector
+Rails can be used to build transport tracks for minecarts. A detector rail is able to detect a minecart above it and powers redstone mechanisms.=Los rieles se pueden usar para construir vías de transporte para vagonetas. Un raíl detector puede detectar una vagoneta sobre él y alimenta los mecanismos de redstone.
+To detect a minecart and provide redstone power, connect it to redstone trails or redstone mechanisms and send any minecart over the rail.=Para detectar una vagoneta y proporcionar energía de piedra roja, conéctelo a los senderos de piedra roja o mecanismos de piedra roja y envíe cualquier vagoneta sobre el riel.
