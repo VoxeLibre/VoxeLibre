@@ -198,12 +198,13 @@ minetest.register_on_dieplayer(function(player, reason)
 				if hitter:get_luaentity()._shooter then
 					shooter = hitter:get_luaentity()._shooter
 				end
-				local s_ent = shooter:get_luaentity()
+				local is_mob = false
+				local s_ent = shooter and shooter:get_luaentity()
 				if shooter == nil then
 					msg = dmsg("arrow", name)
 				elseif shooter:is_player() then
 					msg = dmsg("arrow_name", name, shooter:get_player_name())
-				elseif s_ent._cmi_is_mob then
+				elseif s_ent and s_ent._cmi_is_mob then
 					if s_ent.nametag ~= "" then
 						msg = dmsg("arrow_name", name, shooter:get_player_name())
 					elseif s_ent.name == "mobs_mc:skeleton" then
