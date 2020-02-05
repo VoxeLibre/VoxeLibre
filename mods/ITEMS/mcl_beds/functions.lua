@@ -308,7 +308,7 @@ function mcl_beds.on_rightclick(pos, player, is_top)
 			-- Bed goes BOOM in the Nether or End.
 			minetest.remove_node(pos)
 			if minetest.get_modpath("mcl_tnt") then
-				tnt.boom(pos, {radius = 4, damage_radius = 4})
+				tnt.boom(pos, {radius = 4, damage_radius = 4, is_tnt = false})
 			end
 			return
 		end

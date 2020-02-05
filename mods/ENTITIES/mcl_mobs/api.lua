@@ -2179,6 +2179,7 @@ local do_states = function(self, dtime)
 							radius = node_break_radius,
 							damage_radius = entity_damage_radius,
 							sound = self.sounds.explode,
+							is_tnt = false,
 						})
 					else
 
@@ -3740,6 +3741,7 @@ function mobs:boom(self, pos, radius)
 			damage_radius = radius,
 			sound = self.sounds and self.sounds.explode,
 			explode_center = true,
+			is_tnt = false,
 		})
 	else
 		mobs:safe_boom(self, pos, radius)

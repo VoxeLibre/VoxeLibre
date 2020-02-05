@@ -1,4 +1,5 @@
 local S = minetest.get_translator("mcl_tnt")
+local tnt_griefing = minetest.settings:get_bool("mcl_tnt_griefing", true)
 
 local mod_death_messages = minetest.get_modpath("mcl_death_messages")
 
@@ -78,6 +79,14 @@ if minetest.get_modpath("mesecons") then
 		rules = mesecon.rules.alldirs,
 	}}
 end
+
+local longdesc
+if tnt_griefing then
+	longdesc = S("An explosive device. When it explodes, it will hurt living beings and destroy blocks around it. TNT has an explosion radius of @1. With a small chance, blocks may drop as an item (as if being mined) rather than being destroyed. TNT can be ignited by tools, explosions, fire, lava and redstone signals.", TNT_RANGE)
+else
+	longdesc = S("An explosive device. When it explodes, it will hurt living beings. TNT has an explosion radius of @1. TNT can be ignited by tools, explosions, fire, lava and redstone signals.", TNT_RANGE)
+end
+
 minetest.register_node("mcl_tnt:tnt", {
 	tiles = {"default_tnt_top.png", "default_tnt_bottom.png",
 			"default_tnt_side.png", "default_tnt_side.png",
@@ -87,7 +96,7 @@ minetest.register_node("mcl_tnt:tnt", {
 	description = S("TNT"),
 	paramtype = "light",
 	sunlight_propagates = true,
-	_doc_items_longdesc = S("An explosive device. When it explodes, it will hurt living beings and destroy blocks around it. TNT has an explosion radius of @1. With a small chance, blocks may drop as an item (as if being mined) rather than being destroyed. TNT can be ignited by tools, explosions, fire, lava and redstone signals.", TNT_RANGE),
+	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = S("Place the TNT and ignite it with one of the methods above. Quickly get in safe distance. The TNT will start to be affected by gravity and explodes in 4 seconds."),
 	groups = { dig_immediate = 3, tnt = 1, enderman_takable=1 },
 	mesecons = tnt_mesecons,
@@ -213,6 +222,9 @@ tnt.boom = function(pos, info)
 	else
 		sound = info.sound
 	end
+	if info.is_tnt == nil then
+		info.is_tnt = true
+	end
 	minetest.sound_play(sound, {pos = pos,gain = 1.0,max_hear_distance = 16,})
 	local node = minetest.get_node(pos)
 	if minetest.get_item_group("water") == 1 or minetest.get_item_group("lava") == 1 then
@@ -230,9 +242,11 @@ tnt.boom = function(pos, info)
 					-- TODO: Implement the real blast resistance algorithm
 					if def and n.name ~= "air" and n.name ~= "ignore" and (def._mcl_blast_resistance == nil or def._mcl_blast_resistance < 1000) then
 						activate_if_tnt(n.name, np, pos, 3)
+						if (not tnt_griefing) and info.is_tnt ~= false then
+							-- No-op
 						-- Custom blast function defined by node.
 						-- Node removal and drops must be handled manually.
-						if def.on_blast then
+						elseif def.on_blast then
 							def.on_blast(np, 1.0)
 						-- Default destruction handling: Remove nodes, drop items
 						else
