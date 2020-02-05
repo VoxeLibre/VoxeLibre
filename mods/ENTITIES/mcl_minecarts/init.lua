@@ -745,7 +745,7 @@ register_minecart(
 	"mcl_minecarts:tnt_minecart",
 	S("Minecart with TNT"),
 	S("A minecart with TNT is an explosive vehicle that travels on rail."),
-	S("Place it on rails. Punch it to move it. The TNT is ignited with a slint and steel or when the minecart is on an powered activator rail.") .. "\n" ..
+	S("Place it on rails. Punch it to move it. The TNT is ignited with a flint and steel or when the minecart is on an powered activator rail.") .. "\n" ..
 	S("To obtain the minecart and TNT, punch them while holding down the sneak key. You can't do this if the TNT was ignited."),
 	"mcl_minecarts_minecart_block.b3d",
 	{
