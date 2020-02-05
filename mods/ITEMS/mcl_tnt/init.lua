@@ -14,6 +14,8 @@ local function activate_if_tnt(nname, np, tnt_np, tntr)
     if nname == "mcl_tnt:tnt" then
         local e = spawn_tnt(np, nname)
         e:set_velocity({x=(np.x - tnt_np.x)*5+(tntr / 4), y=(np.y - tnt_np.y)*5+(tntr / 3), z=(np.z - tnt_np.z)*5+(tntr / 4)})
+        minetest.remove_node(np)
+        minetest.check_for_falling(np)
     end
 end
 
@@ -46,7 +48,7 @@ tnt = {}
 tnt.ignite = function(pos)
 	minetest.remove_node(pos)
 	spawn_tnt(pos, "mcl_tnt:tnt")
-	core.check_for_falling(pos)
+	minetest.check_for_falling(pos)
 end
 
 -- Add smoke particle of entity at pos.
@@ -251,7 +253,7 @@ tnt.boom = function(pos, info)
 						-- Default destruction handling: Remove nodes, drop items
 						else
 							minetest.remove_node(np)
-							core.check_for_falling(np)
+							minetest.check_for_falling(np)
 							if n.name ~= "mcl_tnt:tnt" and math.random() > 0.9 then
 								local drop = minetest.get_node_drops(n.name, "")
 								for _,item in ipairs(drop) do
