@@ -67,7 +67,6 @@ an explanation.
 #### Incomplete items
 These items do not work yet, but you can get them with `/giveme` for testing:
 
-* Activator Rail: `mcl_minecarts:activator_rail`
 * Minecart with Chest: `mcl_minecarts:chest_minecart`
 * Minecart with Furnace: `mcl_minecarts:furnace_minecart`
 * Minecart with Hopper: `mcl_minecarts:hopper_minecart`
