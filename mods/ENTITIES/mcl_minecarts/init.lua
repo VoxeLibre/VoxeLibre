@@ -771,7 +771,7 @@ register_minecart(
 		if held:get_name() == "mcl_fire:flint_and_steel" then
 			if not minetest.settings:get_bool("creative_mode") then
 				held:add_wear(65535/65) -- 65 uses
-				local index = clicker:get_wielded_index()
+				local index = clicker:get_wield_index()
 				local inv = clicker:get_inventory()
 				inv:set_stack("main", index, held)
 			end
