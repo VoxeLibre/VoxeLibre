@@ -79,7 +79,6 @@ elseif minetest.get_modpath("wardrobe") then
 end
 
 armor.def = {
-	state = 0,
 	count = 0,
 }
 
@@ -104,11 +103,10 @@ armor.set_player_armor = function(self, player)
 	end
 	local armor_texture = "blank.png"
 	local armor_level = 0
-	local armor_heal = 0
+	local mcl_armor_points = 0
 	local armor_fire = 0
 	local armor_water = 0
 	local armor_radiation = 0
-	local state = 0
 	local items = 0
 	local elements = {}
 	local textures = {}
@@ -131,9 +129,8 @@ armor.set_player_armor = function(self, player)
 						table.insert(textures, texture..".png")
 						preview = preview.."^"..texture.."_preview.png"
 						armor_level = armor_level + level
-						state = state + stack:get_wear()
 						items = items + 1
-						armor_heal = armor_heal + (def.groups["armor_heal"] or 0)
+						mcl_armor_points = mcl_armor_points + (def.groups["mcl_armor_points"] or 0)
 						armor_fire = armor_fire + (def.groups["armor_fire"] or 0)
 						armor_water = armor_water + (def.groups["armor_water"] or 0)
 						armor_radiation = armor_radiation + (def.groups["armor_radiation"] or 0)
@@ -164,7 +161,7 @@ armor.set_player_armor = function(self, player)
 		armor_level = armor_level * 1.1
 	end
 	armor_level = armor_level * ARMOR_LEVEL_MULTIPLIER
-	armor_heal = armor_heal * ARMOR_HEAL_MULTIPLIER
+	mcl_armor_points = mcl_armor_points * ARMOR_HEAL_MULTIPLIER
 	armor_radiation = armor_radiation * ARMOR_RADIATION_MULTIPLIER
 	if #textures > 0 then
 		armor_texture = table.concat(textures, "^")
@@ -182,10 +179,9 @@ armor.set_player_armor = function(self, player)
 	-- Physics override intentionally removed because of possible conflicts
 	self.textures[name].armor = armor_texture
 	self.textures[name].preview = preview
-	self.def[name].state = state
 	self.def[name].count = items
 	self.def[name].level = armor_level
-	self.def[name].heal = armor_heal
+	self.def[name].heal = mcl_armor_points
 	self.def[name].jump = physics_o.jump
 	self.def[name].speed = physics_o.speed
 	self.def[name].gravity = physics_o.gravity
@@ -198,6 +194,24 @@ end
 armor.update_armor = function(self, player)
 	-- Legacy support: Called when armor levels are changed
 	-- Other mods can hook on to this function, see hud mod for example 
+end
+
+armor.get_armor_points = function(self, player)
+	local name, player_inv, armor_inv = armor:get_valid_player(player, "[get_armor_points]")
+	if not name then
+		return nil
+	end
+	local pts = 0
+	for i=1, 6 do
+		local stack = player_inv:get_stack("armor", i)
+		if stack:get_count() > 0 then
+			local p = stack:get_definition().groups.mcl_armor_points
+			if p then
+				pts = pts + p
+			end
+		end
+	end
+	return pts
 end
 
 armor.get_player_skin = function(self, name)
@@ -232,7 +246,7 @@ armor.get_armor_formspec = function(self, name)
 	local formspec = armor.formspec.."list[detached:"..name.."_armor;armor;0,1;2,3;]"
 	formspec = formspec:gsub("armor_preview", armor.textures[name].preview)
 	formspec = formspec:gsub("armor_level", armor.def[name].level)
-	formspec = formspec:gsub("armor_heal", armor.def[name].heal)
+	formspec = formspec:gsub("mcl_armor_points", armor.def[name].heal)
 	formspec = formspec:gsub("armor_fire", armor.def[name].fire)
 	formspec = formspec:gsub("armor_radiation", armor.def[name].radiation)
 	return formspec
@@ -370,7 +384,6 @@ minetest.register_on_joinplayer(function(player)
 		armor_inv:set_stack("armor", i, stack)
 	end	
 	armor.def[name] = {
-		state = 0,
 		count = 0,
 		level = 0,
 		heal = 0,
@@ -490,45 +503,52 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
 	local name, player_inv, armor_inv = armor:get_valid_player(player, "[on_hpchange]")
 	if name and hp_change < 0 then
 
-		-- Armor doesn't protect from set_hp (commands like /kill)
-		-- and drowning damage.
-		if reason.type == "set_hp" or reason.type == "drown" then
+		-- Armor doesn't protect from set_hp (commands like /kill),
+		-- falling and drowning damage.
+		if reason.type == "set_hp" or reason.type == "drown" or reason.type == "fall" then
 			return hp_change
 		end
 
 		local heal_max = 0
-		local state = 0
 		local items = 0
 		local armor_damage = math.max(1, math.floor(math.abs(hp_change)/4))
+
+		local total_points = 0
+		local total_toughness = 0
 		for i=1, 6 do
 			local stack = player_inv:get_stack("armor", i)
 			if stack:get_count() > 0 then
 				-- Damage armor
-				local use = stack:get_definition().groups["armor_use"] or 0
+				local use = stack:get_definition().groups["mcl_armor_uses"] or 0
 				if use > 0 then
 					local wear = armor_damage * math.floor(65536/use)
 					stack:add_wear(wear)
 				end
 
 				local item = stack:get_name()
-				local heal = stack:get_definition().groups["armor_heal"] or 0
 				armor_inv:set_stack("armor", i, stack)
 				player_inv:set_stack("armor", i, stack)
-				state = state + stack:get_wear()
 				items = items + 1
 				if stack:get_count() == 0 then
 					armor:set_player_armor(player)
 					armor:update_inventory(player)
 				end
-				heal_max = heal_max + heal
+
+				local pts = stack:get_definition().groups["mcl_armor_points"] or 0
+				local tough = stack:get_definition().groups["mcl_armor_toughness"] or 0
+				total_points = total_points + pts
+				total_toughness = total_toughness + tough
 			end
 		end
-		armor.def[name].state = state
+		local damage = math.abs(hp_change)
+
+		-- Damage calculation formula (from <https://minecraft.gamepedia.com/Armor#Damage_protection>)
+		damage = damage * (1 - math.min(20, math.max((total_points/5), total_points - damage / (2+(total_toughness/4)))) / 25)
+		damage = math.floor(damage+0.5)
+
+		hp_change = -math.abs(damage)
+
 		armor.def[name].count = items
-		heal_max = heal_max * ARMOR_HEAL_MULTIPLIER
-		if heal_max > math.random(100) then
-			hp_change = 0
-		end
 		armor:update_armor(player)
 	end
 	return hp_change

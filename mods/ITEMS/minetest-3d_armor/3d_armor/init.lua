@@ -12,7 +12,7 @@ minetest.register_tool("3d_armor:helmet_leather", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_helmet_leather.png",
-	groups = {armor_head=5, armor_heal=0, armor_use=56},
+	groups = {armor_head=1, mcl_armor_points=1, mcl_armor_uses=56},
 	_repair_material = "mcl_mobitems:leather",
 })
 
@@ -21,7 +21,7 @@ minetest.register_tool("3d_armor:helmet_iron", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_helmet_iron.png",
-	groups = {armor_head=10, armor_heal=5, armor_use=166},
+	groups = {armor_head=1, mcl_armor_points=2, mcl_armor_uses=166},
 	_repair_material = "mcl_core:iron_ingot",
 })
 
@@ -30,7 +30,7 @@ minetest.register_tool("3d_armor:helmet_gold", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_helmet_gold.png",
-	groups = {armor_head=15, armor_heal=10, armor_use=78},
+	groups = {armor_head=1, mcl_armor_points=2, mcl_armor_uses=78},
 	_repair_material = "mcl_core:gold_ingot",
 })
 
@@ -39,7 +39,7 @@ minetest.register_tool("3d_armor:helmet_diamond",{
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_helmet_diamond.png",
-	groups = {armor_head=20, armor_heal=15, armor_use=364},
+	groups = {armor_head=1, mcl_armor_points=3, mcl_armor_uses=364, mcl_armor_toughness=2},
 	_repair_material = "mcl_core:diamond",
 })
 
@@ -48,7 +48,7 @@ minetest.register_tool("3d_armor:helmet_chain", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_helmet_chain.png",
-	groups = {armor_head=15, armor_heal=10, armor_use=166},
+	groups = {armor_head=1, mcl_armor_points=2, mcl_armor_uses=166},
 	_repair_material = "mcl_core:iron_ingot",
 })
 
@@ -59,7 +59,7 @@ minetest.register_tool("3d_armor:chestplate_leather", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_chestplate_leather.png",
-	groups = {armor_torso=15, armor_heal=0, armor_use=81},
+	groups = {armor_torso=1, mcl_armor_points=3, mcl_armor_uses=81},
 	_repair_material = "mcl_mobitems:leather",
 })
 
@@ -68,7 +68,7 @@ minetest.register_tool("3d_armor:chestplate_iron", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_chestplate_iron.png",
-	groups = {armor_torso=20, armor_heal=5, armor_use=241},
+	groups = {armor_torso=1, mcl_armor_points=6, mcl_armor_uses=241},
 	_repair_material = "mcl_core:iron_ingot",
 })
 
@@ -77,7 +77,7 @@ minetest.register_tool("3d_armor:chestplate_gold", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_chestplate_gold.png",
-	groups = {armor_torso=25, armor_heal=10, armor_use=113},
+	groups = {armor_torso=1, mcl_armor_points=5, mcl_armor_uses=113},
 	_repair_material = "mcl_core:gold_ingot",
 })
 
@@ -86,7 +86,7 @@ minetest.register_tool("3d_armor:chestplate_diamond",{
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_chestplate_diamond.png",
-	groups = {armor_torso=30, armor_heal=15, armor_use=529},
+	groups = {armor_torso=1, mcl_armor_points=8, mcl_armor_uses=529, mcl_armor_toughness=2},
 	_repair_material = "mcl_core:diamond",
 })
 
@@ -95,7 +95,7 @@ minetest.register_tool("3d_armor:chestplate_chain", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_chestplate_chain.png",
-	groups = {armor_torso=25, armor_heal=10, armor_use=241},
+	groups = {armor_torso=1, mcl_armor_points=5, mcl_armor_uses=241},
 	_repair_material = "mcl_core:iron_ingot",
 })
 
@@ -106,7 +106,7 @@ minetest.register_tool("3d_armor:leggings_leather", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_leggings_leather.png",
-	groups = {armor_legs=10, armor_heal=0, armor_use=76},
+	groups = {armor_legs=1, mcl_armor_points=2, mcl_armor_uses=76},
 	_repair_material = "mcl_mobitems:leather",
 })
 
@@ -115,7 +115,7 @@ minetest.register_tool("3d_armor:leggings_iron", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_leggings_iron.png",
-	groups = {armor_legs=15, armor_heal=5, armor_use=226},
+	groups = {armor_legs=1, mcl_armor_points=5, mcl_armor_uses=226},
 	_repair_material = "mcl_core:iron_ingot",
 })
 
@@ -124,7 +124,7 @@ minetest.register_tool("3d_armor:leggings_gold", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_leggings_gold.png",
-	groups = {armor_legs=20, armor_heal=10, armor_use=106},
+	groups = {armor_legs=1, mcl_armor_points=3, mcl_armor_uses=106},
 	_repair_material = "mcl_core:gold_ingot",
 })
 
@@ -133,7 +133,7 @@ minetest.register_tool("3d_armor:leggings_diamond",{
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_leggings_diamond.png",
-	groups = {armor_legs=25, armor_heal=15, armor_use=496},
+	groups = {armor_legs=1, mcl_armor_points=6, mcl_armor_uses=496, mcl_armor_toughness=2},
 	_repair_material = "mcl_core:diamond",
 })
 
@@ -142,7 +142,7 @@ minetest.register_tool("3d_armor:leggings_chain", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_leggings_chain.png",
-	groups = {armor_legs=20, armor_heal=10, armor_use=226},
+	groups = {armor_legs=1, mcl_armor_points=4, mcl_armor_uses=226},
 	_repair_material = "mcl_core:iron_ingot",
 })
 -- Regisiter Boots
@@ -152,7 +152,7 @@ minetest.register_tool("3d_armor:boots_leather", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_boots_leather.png",
-	groups = {armor_feet=5, armor_heal=0, armor_use=66},
+	groups = {armor_feet=1, mcl_armor_points=1, mcl_armor_uses=66},
 	_repair_material = "mcl_mobitems:leather",
 })
 
@@ -161,7 +161,7 @@ minetest.register_tool("3d_armor:boots_iron", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_boots_iron.png",
-	groups = {armor_feet=10, armor_heal=5, armor_use=196},
+	groups = {armor_feet=1, mcl_armor_points=2, mcl_armor_uses=196},
 	_repair_material = "mcl_core:iron_ingot",
 })
 
@@ -170,7 +170,7 @@ minetest.register_tool("3d_armor:boots_gold", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_boots_gold.png",
-	groups = {armor_feet=15, armor_heal=10, armor_use=92},
+	groups = {armor_feet=1, mcl_armor_points=1, mcl_armor_uses=92},
 	_repair_material = "mcl_core:gold_ingot",
 })
 
@@ -179,7 +179,7 @@ minetest.register_tool("3d_armor:boots_diamond",{
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_boots_diamond.png",
-	groups = {armor_feet=20, armor_heal=15, armor_use=430},
+	groups = {armor_feet=1, mcl_armor_points=3, mcl_armor_uses=430, mcl_armor_toughness=2},
 	_repair_material = "mcl_core:diamond",
 })
 
@@ -188,7 +188,7 @@ minetest.register_tool("3d_armor:boots_chain", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "3d_armor_inv_boots_chain.png",
-	groups = {armor_feet=15, armor_heal=10, armor_use=196},
+	groups = {armor_feet=1, mcl_armor_points=1, mcl_armor_uses=196},
 	_repair_material = "mcl_core:iron_ingot",
 })
 
