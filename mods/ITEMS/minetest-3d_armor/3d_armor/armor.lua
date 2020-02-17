@@ -205,7 +205,7 @@ armor.get_armor_points = function(self, player)
 	for i=1, 6 do
 		local stack = player_inv:get_stack("armor", i)
 		if stack:get_count() > 0 then
-			local p = stack:get_definition().groups.mcl_armor_points
+			local p = minetest.get_item_group(stack:get_name(), "mcl_armor_points")
 			if p then
 				pts = pts + p
 			end
