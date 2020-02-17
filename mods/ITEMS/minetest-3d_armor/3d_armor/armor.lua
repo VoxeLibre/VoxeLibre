@@ -486,25 +486,32 @@ if ARMOR_DROP == true or ARMOR_DESTROY == true then
 	end)
 end
 
-minetest.register_on_player_hpchange(function(player, hp_change)
+minetest.register_on_player_hpchange(function(player, hp_change, reason)
 	local name, player_inv, armor_inv = armor:get_valid_player(player, "[on_hpchange]")
 	if name and hp_change < 0 then
 
-		-- used for insta kill tools/commands like /kill (doesnt damage armor)
-		if hp_change < -100 then
+		-- Armor doesn't protect from set_hp (commands like /kill)
+		-- and drowning damage.
+		if reason.type == "set_hp" or reason.type == "drown" then
 			return hp_change
 		end
 
 		local heal_max = 0
 		local state = 0
 		local items = 0
+		local armor_damage = math.max(1, math.floor(math.abs(hp_change)/4))
 		for i=1, 6 do
 			local stack = player_inv:get_stack("armor", i)
 			if stack:get_count() > 0 then
+				-- Damage armor
 				local use = stack:get_definition().groups["armor_use"] or 0
-				local heal = stack:get_definition().groups["armor_heal"] or 0
+				if use > 0 then
+					local wear = armor_damage * math.floor(65536/use)
+					stack:add_wear(wear)
+				end
+
 				local item = stack:get_name()
-				stack:add_wear(use)
+				local heal = stack:get_definition().groups["armor_heal"] or 0
 				armor_inv:set_stack("armor", i, stack)
 				player_inv:set_stack("armor", i, stack)
 				state = state + stack:get_wear()
