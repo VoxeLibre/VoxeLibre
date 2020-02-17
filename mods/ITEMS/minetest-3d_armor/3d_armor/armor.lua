@@ -1,55 +1,10 @@
-ARMOR_INIT_DELAY = 1
-ARMOR_INIT_TIMES = 1
-ARMOR_BONES_DELAY = 1
-ARMOR_UPDATE_TIME = 1
-ARMOR_DROP = minetest.get_modpath("bones") ~= nil
-ARMOR_DESTROY = false
-ARMOR_LEVEL_MULTIPLIER = 1
-ARMOR_HEAL_MULTIPLIER = 1
-ARMOR_RADIATION_MULTIPLIER = 1
-ARMOR_MATERIALS = {
-	wood = "group:wood",
-	cactus = "mcl_core:cactus",
-	iron = "mcl_core:iron_ingot",
-	bronze = "mcl_core:bronze_ingot",
-	diamond = "mcl_core:diamond",
-	gold = "mcl_core:gold_ingot",
-	mithril = "moreores:mithril_ingot",
-	crystal = "ethereal:crystal_ingot",
-}
-ARMOR_FIRE_PROTECT = minetest.get_modpath("ethereal") ~= nil
-ARMOR_FIRE_NODES = {
-	{"mcl_core:lava_source",     5, 8},
-	{"mcl_core:lava_flowing",    5, 8},
-	{"fire:basic_flame",        3, 4},
-	{"fire:permanent_flame",    3, 4},
-	{"ethereal:crystal_spike",  2, 1},
-	{"ethereal:fire_flower",    2, 1},
-	{"mcl_torches:torch",       1, 1},
-}
+local ARMOR_INIT_DELAY = 1
+local ARMOR_INIT_TIMES = 1
+local ARMOR_BONES_DELAY = 1
 
 local skin_mod = nil
 
 local modpath = minetest.get_modpath(minetest.get_current_modname())
-local worldpath = minetest.get_worldpath()
-local input = io.open(modpath.."/armor.conf", "r")
-if input then
-	dofile(modpath.."/armor.conf")
-	input:close()
-	input = nil
-end
-input = io.open(worldpath.."/armor.conf", "r")
-if input then
-	dofile(worldpath.."/armor.conf")
-	input:close()
-	input = nil
-end
-if not minetest.get_modpath("moreores") then
-	ARMOR_MATERIALS.mithril = nil
-end
-if not minetest.get_modpath("ethereal") then
-	ARMOR_MATERIALS.crystal = nil
-end
 
 armor = {
 	timer = 0,
@@ -104,9 +59,6 @@ armor.set_player_armor = function(self, player)
 	local armor_texture = "blank.png"
 	local armor_level = 0
 	local mcl_armor_points = 0
-	local armor_fire = 0
-	local armor_water = 0
-	local armor_radiation = 0
 	local items = 0
 	local elements = {}
 	local textures = {}
@@ -131,9 +83,6 @@ armor.set_player_armor = function(self, player)
 						armor_level = armor_level + level
 						items = items + 1
 						mcl_armor_points = mcl_armor_points + (def.groups["mcl_armor_points"] or 0)
-						armor_fire = armor_fire + (def.groups["armor_fire"] or 0)
-						armor_water = armor_water + (def.groups["armor_water"] or 0)
-						armor_radiation = armor_radiation + (def.groups["armor_radiation"] or 0)
 						for kk,vv in ipairs(self.physics) do
 							local o_value = def.groups["physics_"..vv]
 							if o_value then
@@ -160,20 +109,15 @@ armor.set_player_armor = function(self, player)
 	if material.type and material.count == #self.elements then
 		armor_level = armor_level * 1.1
 	end
-	armor_level = armor_level * ARMOR_LEVEL_MULTIPLIER
-	mcl_armor_points = mcl_armor_points * ARMOR_HEAL_MULTIPLIER
-	armor_radiation = armor_radiation * ARMOR_RADIATION_MULTIPLIER
 	if #textures > 0 then
 		armor_texture = table.concat(textures, "^")
 	end
 	local armor_groups = player:get_armor_groups()
 	armor_groups.fleshy = 100
 	armor_groups.level = nil
-	armor_groups.radiation = nil
 	if armor_level > 0 then
 		armor_groups.level = math.floor(armor_level / 20)
 		armor_groups.fleshy = 100 - armor_level
-		armor_groups.radiation = 100 - armor_radiation
 	end
 	player:set_armor_groups(armor_groups)
 	-- Physics override intentionally removed because of possible conflicts
@@ -185,9 +129,6 @@ armor.set_player_armor = function(self, player)
 	self.def[name].jump = physics_o.jump
 	self.def[name].speed = physics_o.speed
 	self.def[name].gravity = physics_o.gravity
-	self.def[name].fire = armor_fire
-	self.def[name].water = armor_water
-	self.def[name].radiation = armor_radiation
 	self:update_player_visuals(player)
 end
 
@@ -247,8 +188,6 @@ armor.get_armor_formspec = function(self, name)
 	formspec = formspec:gsub("armor_preview", armor.textures[name].preview)
 	formspec = formspec:gsub("armor_level", armor.def[name].level)
 	formspec = formspec:gsub("mcl_armor_points", armor.def[name].heal)
-	formspec = formspec:gsub("armor_fire", armor.def[name].fire)
-	formspec = formspec:gsub("armor_radiation", armor.def[name].radiation)
 	return formspec
 end
 
@@ -390,9 +329,6 @@ minetest.register_on_joinplayer(function(player)
 		jump = 1,
 		speed = 1,
 		gravity = 1,
-		fire = 0,
-		water = 0,
-		radiation = 0,
 	}
 	armor.textures[name] = {
 		skin = armor.default_skin..".png",
@@ -444,60 +380,6 @@ minetest.register_on_joinplayer(function(player)
 		end, player:get_player_name())
 	end
 end)
-
-if ARMOR_DROP == true or ARMOR_DESTROY == true then
-	armor.drop_armor = function(pos, stack)
-		local obj = minetest.add_item(pos, stack)
-		if obj then
-			obj:set_velocity({x=math.random(-1, 1), y=5, z=math.random(-1, 1)})
-		end
-	end
-	minetest.register_on_dieplayer(function(player)
-		local name, player_inv, armor_inv, pos = armor:get_valid_player(player, "[on_dieplayer]")
-		if not name then
-			return
-		end
-		local drop = {}
-		for i=1, player_inv:get_size("armor") do
-			local stack = armor_inv:get_stack("armor", i)
-			if stack:get_count() > 0 then
-				table.insert(drop, stack)
-				armor_inv:set_stack("armor", i, nil)
-				player_inv:set_stack("armor", i, nil)
-			end
-		end
-		armor:set_player_armor(player)
-		if ARMOR_DESTROY == false then
-			minetest.after(ARMOR_BONES_DELAY, function(pos, drop)
-				local node = minetest.get_node(vector.round(pos))
-				if node then
-					if node.name ~= "bones:bones" then
-						pos.y = pos.y+1
-						node = minetest.get_node(vector.round(pos))
-						if node.name ~= "bones:bones" then
-							minetest.log("warning", "Failed to add armor to bones node.")
-							return
-						end
-					end
-					local meta = minetest.get_meta(vector.round(pos))
-					local owner = meta:get_string("owner")
-					local inv = meta:get_inventory()
-					for _,stack in ipairs(drop) do
-						if name == owner and inv:room_for_item("main", stack) then
-							inv:add_item("main", stack)
-						else
-							armor.drop_armor(pos, stack)
-						end
-					end
-				else
-					for _,stack in ipairs(drop) do
-						armor.drop_armor(pos, stack)
-					end
-				end
-			end, pos, drop)
-		end
-	end)
-end
 
 minetest.register_on_player_hpchange(function(player, hp_change, reason)
 	local name, player_inv, armor_inv = armor:get_valid_player(player, "[on_hpchange]")
@@ -554,53 +436,3 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
 	return hp_change
 end, true)
 
--- Fire Protection and water breating, added by TenPlus1
-
-if ARMOR_FIRE_PROTECT == true then
-	-- override hot nodes so they do not hurt player anywhere but mod
-	for _, row in pairs(ARMOR_FIRE_NODES) do
-		if minetest.registered_nodes[row[1]] then
-			minetest.override_item(row[1], {damage_per_second = 0})
-		end
-	end
-else
-	print ("[3d_armor] Fire Nodes disabled")
-end
-
-minetest.register_globalstep(function(dtime)
-	armor.timer = armor.timer + dtime
-	if armor.timer < ARMOR_UPDATE_TIME then
-		return
-	end
-	for _,player in pairs(minetest.get_connected_players()) do
-		local name = player:get_player_name()
-		local pos = player:get_pos()
-		local hp = player:get_hp()
-		-- water breathing
-		if name and armor.def[name].water > 0 then
-			if player:get_breath() < 10 then
-				player:set_breath(10)
-			end
-		end
-		-- fire protection
-		if ARMOR_FIRE_PROTECT == true
-		and name and pos and hp then
-			pos.y = pos.y + 1.4 -- head level
-			local node_head = minetest.get_node(pos).name
-			pos.y = pos.y - 1.2 -- feet level
-			local node_feet = minetest.get_node(pos).name
-			-- is player inside a hot node?
-			for _, row in pairs(ARMOR_FIRE_NODES) do
-				-- check fire protection, if not enough then get hurt
-				if row[1] == node_head or row[1] == node_feet then
-					if hp > 0 and armor.def[name].fire < row[2] then
-						hp = hp - row[3] * ARMOR_UPDATE_TIME
-						player:set_hp(hp)
-						break
-					end
-				end
-			end
-		end
-	end
-	armor.timer = 0
-end)
