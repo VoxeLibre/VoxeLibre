@@ -33,7 +33,7 @@ local function update_entity(pos)
 		object = minetest.add_entity(pos, "3d_armor_stand:armor_entity")
 	end
 	if object then
-		local texture = "3d_armor_trans.png"
+		local texture = "blank.png"
 		local textures = {}
 		local meta = minetest.get_meta(pos)
 		local inv = meta:get_inventory()
@@ -244,7 +244,7 @@ minetest.register_entity("3d_armor_stand:armor_entity", {
 	visual_size = {x=1, y=1},
 	collisionbox = {-0.1,-0.4,-0.1, 0.1,1.3,0.1},
 	pointable = false,
-	textures = {"3d_armor_trans.png"},
+	textures = {"blank.png"},
 	pos = nil,
 	timer = 0,
 	on_activate = function(self)

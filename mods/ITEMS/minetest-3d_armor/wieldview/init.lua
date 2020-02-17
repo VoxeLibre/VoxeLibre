@@ -18,7 +18,7 @@ wieldview = {
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/transform.lua")
 
 wieldview.get_item_texture = function(self, item)
-	local texture = "3d_armor_trans.png"
+	local texture = "blank.png"
 	if item ~= "" then
 		if minetest.registered_items[item] then
 			if minetest.registered_items[item].inventory_image ~= "" then
