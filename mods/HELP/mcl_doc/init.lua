@@ -128,6 +128,47 @@ doc.sub.items.register_factoid(nil, "groups", function(itemstring, def)
 	return s
 end)
 
+-- Armor
+doc.sub.items.register_factoid("tools", "use", function(itemstring, def)
+	local def = minetest.registered_items[itemstring]
+	local s = ""
+	local head = minetest.get_item_group(itemstring, "armor_head")
+	local torso = minetest.get_item_group(itemstring, "armor_torso")
+	local legs = minetest.get_item_group(itemstring, "armor_legs")
+	local feet = minetest.get_item_group(itemstring, "armor_feet")
+	if head > 0 then
+		s = s .. S("It can be worn on the head.")
+		s = s .. "\n"
+	end
+	if torso > 0 then
+		s = s .. S("It can be worn on the torso.")
+		s = s .. "\n"
+	end
+	if legs > 0 then
+		s = s .. S("It can be worn on the legs.")
+		s = s .. "\n"
+	end
+	if feet > 0 then
+		s = s .. S("It can be worn on the feet.")
+		s = s .. "\n"
+	end
+	return s
+end)
+doc.sub.items.register_factoid("tools", "groups", function(itemstring, def)
+	local def = minetest.registered_items[itemstring]
+	local s = ""
+	local use = minetest.get_item_group(itemstring, "mcl_armor_uses")
+	local pts = minetest.get_item_group(itemstring, "mcl_armor_points")
+	if pts > 0 then
+		s = s .. S("Armor points: @1", pts)
+		s = s .. "\n"
+	end
+	if use > 0 then
+		s = s .. S("Armor durability: @1", use)
+	end
+	return s
+end)
+
 -- TODO: Move this info to the crafting guide
 doc.sub.items.register_factoid(nil, "groups", function(itemstring, def)
 	if def._repair_material then
