@@ -129,7 +129,7 @@ doc.sub.items.register_factoid(nil, "groups", function(itemstring, def)
 end)
 
 -- Armor
-doc.sub.items.register_factoid("tools", "use", function(itemstring, def)
+doc.sub.items.register_factoid(nil, "use", function(itemstring, def)
 	local def = minetest.registered_items[itemstring]
 	local s = ""
 	local head = minetest.get_item_group(itemstring, "armor_head")
@@ -154,7 +154,7 @@ doc.sub.items.register_factoid("tools", "use", function(itemstring, def)
 	end
 	return s
 end)
-doc.sub.items.register_factoid("tools", "groups", function(itemstring, def)
+doc.sub.items.register_factoid(nil, "groups", function(itemstring, def)
 	local def = minetest.registered_items[itemstring]
 	local s = ""
 	local use = minetest.get_item_group(itemstring, "mcl_armor_uses")
