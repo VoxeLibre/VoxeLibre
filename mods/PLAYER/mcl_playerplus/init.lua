@@ -137,7 +137,7 @@ minetest.register_globalstep(function(dtime)
 			if dist < 1.1 or dist_feet < 1.1 then
 				if player:get_hp() > 0 then
 					mcl_death_messages.player_damage(player, S("@1 was prickled to death by a cactus.", name))
-					player:set_hp(player:get_hp() - 1)
+					player:set_hp(player:get_hp() - 1, { type = "punch", from = "mod" })
 				end
 			end
 		end

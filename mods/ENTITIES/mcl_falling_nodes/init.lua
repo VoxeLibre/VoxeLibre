@@ -57,7 +57,7 @@ local deal_falling_damage = function(self, dtime)
 							mcl_death_messages.player_damage(v, msg)
 						end
 					end
-					v:set_hp(hp)
+					v:set_hp(hp, { type = "punch", from = "mod" })
 				end
 			end
 		end

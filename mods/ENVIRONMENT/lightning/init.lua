@@ -132,7 +132,7 @@ lightning.strike = function(pos)
 			if minetest.get_modpath("mcl_death_messages") then
 				mcl_death_messages.player_damage(obj, S("@1 was struck by lightning.", obj:get_player_name()))
 			end
-			obj:set_hp(obj:get_hp()-5)
+			obj:set_hp(obj:get_hp()-5, { type = "punch", from = "mod" })
 		-- Mobs
 		elseif lua and lua._cmi_is_mob then
 			-- pig → zombie pigman (no damage)
@@ -164,7 +164,7 @@ lightning.strike = function(pos)
 
 			-- Other mobs: Just damage
 			else
-				obj:set_hp(obj:get_hp()-5, "lightning")
+				obj:set_hp(obj:get_hp()-5, { type = "punch", from = "mod" })
 			end
 		end
 	end

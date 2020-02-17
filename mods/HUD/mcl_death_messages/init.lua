@@ -32,6 +32,9 @@ local msgs = {
 	["murder"] = {
 		N("@1 was killed by @2."),
 	},
+	["murder_any"] = {
+		N("@1 was killed."),
+	},
 	["mob_kill"] = {
 		N("@1 was killed by a mob."),
 	},
@@ -127,7 +130,10 @@ minetest.register_on_dieplayer(function(player, reason)
 			return
 		end
 		local msg
-		if reason.type == "node_damage" then
+		if last_damages[name] then
+			-- custom message
+			msg = last_damages[name].message
+		elseif reason.type == "node_damage" then
 			local pos = player:get_pos()
 			-- Check multiple nodes because players occupy multiple nodes
 			-- (we add one additional node because the check may fail if the player was
@@ -170,7 +176,7 @@ minetest.register_on_dieplayer(function(player, reason)
 			local hittername, hittertype, hittersubtype, shooter
 			-- Unknown hitter
 			if hitter == nil then
-				msg = dmsg("murder_any")
+				msg = dmsg("murder_any", name)
 			-- Player
 			elseif hitter:is_player() then
 				hittername = hitter:get_player_name()

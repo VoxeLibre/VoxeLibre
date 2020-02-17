@@ -10,6 +10,7 @@
 @1 drowned.=
 @1 ran out of oxygen.=
 @1 was killed by @2.=
+@1 was killed.=
 @1 was killed by a mob.=
 @1 was burned to death by a blaze's fireball.=
 @1 was killed by a fireball from a blaze.=

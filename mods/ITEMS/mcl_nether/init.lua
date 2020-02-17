@@ -100,7 +100,7 @@ minetest.register_node("mcl_nether:magma", {
 			if mod_death_messages then
 				mcl_death_messages.player_damage(player, S("@1 stood too long on a magma block.", player:get_player_name()))
 			end
-			player:set_hp(player:get_hp() - 1)
+			player:set_hp(player:get_hp() - 1, { type = "punch", from = "mod" })
 		end
 	end,
 	_mcl_blast_resistance = 2.5,
