@@ -13,12 +13,19 @@ local S = minetest.get_translator("mcl_tools")
 - 3: Stone
 - 4: Iron
 - 5: Diamond
+
+dig_speed_class group:
+- 1: Painfully slow
+- 2: Very slow
+- 3: Slow
+- 4: Fast
+- 5: Very fast
+- 6: Extremely fast
+- 7: Instantaneous
 ]]
 
--- TODO: Add legacy support for Minetest Game groups like crumbly, snappy, cracky, etc. for all tools
-
 -- The hand
-local groupcaps, hand_range
+local groupcaps, hand_range, hand_groups
 if minetest.settings:get_bool("creative_mode") then
 	-- Instant breaking in creative mode
 	groupcaps = {
@@ -29,11 +36,13 @@ if minetest.settings:get_bool("creative_mode") then
 		groupcaps[k] = { times = v, uses = 0 }
 	end
 	hand_range = 10
+	hand_groups = { dig_speed_class = 7 }
 else
 	groupcaps = {
 		handy_dig = {times=mcl_autogroup.digtimes.handy_dig, uses=0},
 	}
 	hand_range = 4
+	hand_groups = { dig_speed_class = 1 }
 end
 minetest.register_item(":", {
 	type = "none",
@@ -50,7 +59,8 @@ minetest.register_item(":", {
 		max_drop_level = 0,
 		groupcaps = groupcaps,
 		damage_groups = {fleshy=1},
-	}
+	},
+	groups = hand_groups,
 })
 
 -- Help texts
@@ -68,7 +78,7 @@ minetest.register_tool("mcl_tools:pick_wood", {
 	_doc_items_longdesc = pickaxe_longdesc,
 	_doc_items_hidden = false,
 	inventory_image = "default_tool_woodpick.png",
-	groups = { tool=1, pickaxe=1 },
+	groups = { tool=1, pickaxe=1, dig_speed_class=2, },
 	tool_capabilities = {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
@@ -85,7 +95,7 @@ minetest.register_tool("mcl_tools:pick_stone", {
 	description = S("Stone Pickaxe"),
 	_doc_items_longdesc = pickaxe_longdesc,
 	inventory_image = "default_tool_stonepick.png",
-	groups = { tool=1, pickaxe=1 },
+	groups = { tool=1, pickaxe=1, dig_speed_class=3, },
 	tool_capabilities = {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
@@ -102,7 +112,7 @@ minetest.register_tool("mcl_tools:pick_iron", {
 	description = S("Iron Pickaxe"),
 	_doc_items_longdesc = pickaxe_longdesc,
 	inventory_image = "default_tool_steelpick.png",
-	groups = { tool=1, pickaxe=1 },
+	groups = { tool=1, pickaxe=1, dig_speed_class=4, },
 	tool_capabilities = {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
@@ -119,7 +129,7 @@ minetest.register_tool("mcl_tools:pick_gold", {
 	description = S("Golden Pickaxe"),
 	_doc_items_longdesc = pickaxe_longdesc,
 	inventory_image = "default_tool_goldpick.png",
-	groups = { tool=1, pickaxe=1 },
+	groups = { tool=1, pickaxe=1, dig_speed_class=6, },
 	tool_capabilities = {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
@@ -136,7 +146,7 @@ minetest.register_tool("mcl_tools:pick_diamond", {
 	description = S("Diamond Pickaxe"),
 	_doc_items_longdesc = pickaxe_longdesc,
 	inventory_image = "default_tool_diamondpick.png",
-	groups = { tool=1, pickaxe=1 },
+	groups = { tool=1, pickaxe=1, dig_speed_class=5, },
 	tool_capabilities = {
 		-- 1/1.2
 		full_punch_interval = 0.83333333,
@@ -254,7 +264,7 @@ minetest.register_tool("mcl_tools:shovel_wood", {
 	_doc_items_hidden = false,
 	inventory_image = "default_tool_woodshovel.png",
 	wield_image = "default_tool_woodshovel.png^[transformR90",
-	groups = { tool=1, shovel=1 },
+	groups = { tool=1, shovel=1, dig_speed_class=2, },
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=1,
@@ -273,7 +283,7 @@ minetest.register_tool("mcl_tools:shovel_stone", {
 	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_stoneshovel.png",
 	wield_image = "default_tool_stoneshovel.png^[transformR90",
-	groups = { tool=1, shovel=1 },
+	groups = { tool=1, shovel=1, dig_speed_class=3, },
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=3,
@@ -292,7 +302,7 @@ minetest.register_tool("mcl_tools:shovel_iron", {
 	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_steelshovel.png",
 	wield_image = "default_tool_steelshovel.png^[transformR90",
-	groups = { tool=1, shovel=1 },
+	groups = { tool=1, shovel=1, dig_speed_class=4, },
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=4,
@@ -311,7 +321,7 @@ minetest.register_tool("mcl_tools:shovel_gold", {
 	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_goldshovel.png",
 	wield_image = "default_tool_goldshovel.png^[transformR90",
-	groups = { tool=1, shovel=1 },
+	groups = { tool=1, shovel=1, dig_speed_class=6, },
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=2,
@@ -330,7 +340,7 @@ minetest.register_tool("mcl_tools:shovel_diamond", {
 	_doc_items_usagehelp = shovel_use,
 	inventory_image = "default_tool_diamondshovel.png",
 	wield_image = "default_tool_diamondshovel.png^[transformR90",
-	groups = { tool=1, shovel=1 },
+	groups = { tool=1, shovel=1, dig_speed_class=5, },
 	tool_capabilities = {
 		full_punch_interval = 1,
 		max_drop_level=5,
@@ -350,7 +360,7 @@ minetest.register_tool("mcl_tools:axe_wood", {
 	_doc_items_longdesc = axe_longdesc,
 	_doc_items_hidden = false,
 	inventory_image = "default_tool_woodaxe.png",
-	groups = { tool=1, axe=1 },
+	groups = { tool=1, axe=1, dig_speed_class=2, },
 	tool_capabilities = {
 		full_punch_interval = 1.25,
 		max_drop_level=1,
@@ -366,7 +376,7 @@ minetest.register_tool("mcl_tools:axe_stone", {
 	description = S("Stone Axe"),
 	_doc_items_longdesc = axe_longdesc,
 	inventory_image = "default_tool_stoneaxe.png",
-	groups = { tool=1, axe=1 },
+	groups = { tool=1, axe=1, dig_speed_class=3, },
 	tool_capabilities = {
 		full_punch_interval = 1.25,
 		max_drop_level=3,
@@ -382,7 +392,7 @@ minetest.register_tool("mcl_tools:axe_iron", {
 	description = S("Iron Axe"),
 	_doc_items_longdesc = axe_longdesc,
 	inventory_image = "default_tool_steelaxe.png",
-	groups = { tool=1, axe=1 },
+	groups = { tool=1, axe=1, dig_speed_class=4, },
 	tool_capabilities = {
 		-- 1/0.9
 		full_punch_interval = 1.11111111,
@@ -399,7 +409,7 @@ minetest.register_tool("mcl_tools:axe_gold", {
 	description = S("Golden Axe"),
 	_doc_items_longdesc = axe_longdesc,
 	inventory_image = "default_tool_goldaxe.png",
-	groups = { tool=1, axe=1 },
+	groups = { tool=1, axe=1, dig_speed_class=6, },
 	tool_capabilities = {
 		full_punch_interval = 1.0,
 		max_drop_level=2,
@@ -415,7 +425,7 @@ minetest.register_tool("mcl_tools:axe_diamond", {
 	description = S("Diamond Axe"),
 	_doc_items_longdesc = axe_longdesc,
 	inventory_image = "default_tool_diamondaxe.png",
-	groups = { tool=1, axe=1 },
+	groups = { tool=1, axe=1, dig_speed_class=5, },
 	tool_capabilities = {
 		full_punch_interval = 1.0,
 		max_drop_level=5,
@@ -434,7 +444,7 @@ minetest.register_tool("mcl_tools:sword_wood", {
 	_doc_items_longdesc = sword_longdesc,
 	_doc_items_hidden = false,
 	inventory_image = "default_tool_woodsword.png",
-	groups = { weapon=1 },
+	groups = { weapon=1, sword=1, dig_speed_class=2, },
 	tool_capabilities = {
 		full_punch_interval = 0.625,
 		max_drop_level=1,
@@ -451,7 +461,7 @@ minetest.register_tool("mcl_tools:sword_stone", {
 	description = S("Stone Sword"),
 	_doc_items_longdesc = sword_longdesc,
 	inventory_image = "default_tool_stonesword.png",
-	groups = { weapon=1 },
+	groups = { weapon=1, sword=1, dig_speed_class=3, },
 	tool_capabilities = {
 		full_punch_interval = 0.625,
 		max_drop_level=3,
@@ -468,7 +478,7 @@ minetest.register_tool("mcl_tools:sword_iron", {
 	description = S("Iron Sword"),
 	_doc_items_longdesc = sword_longdesc,
 	inventory_image = "default_tool_steelsword.png",
-	groups = { weapon=1 },
+	groups = { weapon=1, sword=1, dig_speed_class=4, },
 	tool_capabilities = {
 		full_punch_interval = 0.625,
 		max_drop_level=4,
@@ -485,7 +495,7 @@ minetest.register_tool("mcl_tools:sword_gold", {
 	description = S("Golden Sword"),
 	_doc_items_longdesc = sword_longdesc,
 	inventory_image = "default_tool_goldsword.png",
-	groups = { weapon=1 },
+	groups = { weapon=1, sword=1, dig_speed_class=6, },
 	tool_capabilities = {
 		full_punch_interval = 0.625,
 		max_drop_level=2,
@@ -502,7 +512,7 @@ minetest.register_tool("mcl_tools:sword_diamond", {
 	description = S("Diamond Sword"),
 	_doc_items_longdesc = sword_longdesc,
 	inventory_image = "default_tool_diamondsword.png",
-	groups = { weapon=1 },
+	groups = { weapon=1, sword=1, dig_speed_class=5, },
 	tool_capabilities = {
 		full_punch_interval = 0.625,
 		max_drop_level=5,
@@ -524,7 +534,7 @@ minetest.register_tool("mcl_tools:shears", {
 	inventory_image = "default_tool_shears.png",
 	wield_image = "default_tool_shears.png",
 	stack_max = 1,
-	groups = { tool=1, shears=1 },
+	groups = { tool=1, shears=1, dig_speed_class=4, },
 	tool_capabilities = {
 	        full_punch_interval = 0.5,
 	        max_drop_level=1,

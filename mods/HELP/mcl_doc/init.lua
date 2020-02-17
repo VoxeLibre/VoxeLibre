@@ -267,4 +267,114 @@ doc.sub.items.register_factoid("nodes", "drops", function(itemstring, def)
 	return ""
 end)
 
+-- Digging capabilities of tool
+doc.sub.items.register_factoid("tools", "misc", function(itemstring, def)
+	if not def.tool_capabilities then
+		return ""
+	end
+	local groupcaps = def.tool_capabilities.groupcaps
+	if not groupcaps then
+		return ""
+	end
+	local formstring = ""
+	local capstr = ""
+	local caplines = 0
+	for k,v in pairs(groupcaps) do
+		local speedstr = ""
+		local miningusesstr = ""
+		-- Mining capabilities
+		caplines = caplines + 1
+		local maxlevel = v.maxlevel
+		if not maxlevel then
+			-- Default from tool.h
+			maxlevel = 1
+		end
+
+		-- Digging speed
+		local speed_class = def.groups and def.groups.dig_speed_class
+		if speed_class == 1 then
+			speedstr = S("Painfully slow")
+		elseif speed_class == 2 then
+			speedstr = S("Very slow")
+		elseif speed_class == 3 then
+			speedstr = S("Slow")
+		elseif speed_class == 4 then
+			speedstr = S("Fast")
+		elseif speed_class == 5 then
+			speedstr = S("Very fast")
+		elseif speed_class == 6 then
+			speedstr = S("Extremely fast")
+		elseif speed_class == 7 then
+			speedstr = S("Instantaneous")
+		end
+
+		-- Number of mining uses
+		local base_uses = v.uses
+		if not base_uses then
+			-- Default from tool.h
+			base_uses = 20
+		end
+		if def._doc_items_durability == nil and base_uses > 0 then
+			local real_uses = base_uses * math.pow(3, maxlevel)
+			if real_uses < 65535 then
+				miningusesstr = S("@1 uses", real_uses)
+			else
+				miningusesstr = S("Unlimited uses")
+			end
+		end
+
+		if speedstr ~= "" then
+			capstr = capstr .. S("Mining speed: @1", speedstr) .. "\n"
+		end
+		if miningusesstr ~= "" then
+			capstr = capstr .. S("Mining durability: @1", miningusesstr) .. "\n"
+		end
+
+		-- Only show one group at max
+		break
+	end
+	if caplines > 0 then
+		formstring = formstring .. S("This tool is capable of mining.") .. "\n"
+		-- Capabilities
+		formstring = formstring .. capstr
+		-- Max. drop level
+		local mdl = def.tool_capabilities.max_drop_level
+		if not def.tool_capabilities.max_drop_level then
+			mdl = 0
+		end
+		formstring = formstring .. S("Block breaking strength: @1", mdl) .. "\n"
+	end
+	if caplines > 0 then
+		formstring = formstring .. "\n\n"
+	end
+	return formstring
+end)
+
+-- Melee damage
+doc.sub.items.register_factoid("tools", "misc", function(itemstring, def)
+	local tool_capabilities = def.tool_capabilities
+	if not tool_capabilities then
+		return ""
+	end
+
+	local formstring = ""
+	-- Weapon data
+	local damage_groups = tool_capabilities.damage_groups
+	if damage_groups ~= nil and damage_groups.fleshy ~= nil then
+		formstring = formstring .. S("This is a melee weapon which deals damage by punching.") .. "\n"
+
+		-- Damage groups
+		local dmg = damage_groups.fleshy
+		formstring = formstring .. S("Maximum damage: @1 HP", dmg) .. "\n"
+
+		-- Full punch interval
+		local punch = 1.0
+		if tool_capabilities.full_punch_interval ~= nil then
+			punch = tool_capabilities.full_punch_interval
+		end
+		formstring = formstring .. S("Full punch interval: @1 s", string.format("%.1f", punch))
+		formstring = formstring .. "\n"
+	end
+	return formstring
+end)
 
