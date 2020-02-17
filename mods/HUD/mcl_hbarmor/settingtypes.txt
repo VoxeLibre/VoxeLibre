@@ -1,0 +1,3 @@
+#Time difference in seconds between updates to the armor HUD bar.
+#Increase this number for slow servers.
+hbarmor_tick (Armor HUD bar update frequency) float 0.1 0.0 4.0

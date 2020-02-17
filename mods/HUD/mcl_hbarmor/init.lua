@@ -1,33 +1,27 @@
-local S = minetest.get_translator("hbarmor")
+local S = minetest.get_translator("mcl_hbarmor")
 
 if (not armor) or (not armor.def) then
-	minetest.log("error", "[hbarmor] Outdated 3d_armor version. Please update your version of 3d_armor!")
+	minetest.log("error", "[mcl_hbarmor] Outdated 3d_armor version. Please update your version of 3d_armor!")
 end
 
-local hbarmor = {}
+local mcl_hbarmor = {}
 
 -- HUD statbar values
-hbarmor.armor = {}
+mcl_hbarmor.armor = {}
 
 -- Stores if player's HUD bar has been initialized so far.
-hbarmor.player_active = {}
+mcl_hbarmor.player_active = {}
 
 -- Time difference in seconds between updates to the HUD armor bar.
 -- Increase this number for slow servers.
-hbarmor.tick = 0.1
+mcl_hbarmor.tick = 0.1
 
 -- If true, the armor bar is hidden when the player does not wear any armor
-hbarmor.autohide = true
+mcl_hbarmor.autohide = true
 
---load custom settings
-local set = minetest.settings:get_bool("hbarmor_autohide")
-if set ~= nil then
-	hbarmor.autohide = set
-end
-
-set = minetest.settings:get("hbarmor_tick")
+set = minetest.settings:get("mcl_hbarmor_tick")
 if tonumber(set) ~= nil then
-	hbarmor.tick = tonumber(set)
+	mcl_hbarmor.tick = tonumber(set)
 end
 
 
@@ -43,17 +37,17 @@ local function custom_hud(player)
 	local name = player:get_player_name()
 
 	if minetest.settings:get_bool("enable_damage") then
-		local ret = hbarmor.get_armor(player)
+		local ret = mcl_hbarmor.get_armor(player)
 		if ret == false then
-			minetest.log("error", "[hbarmor] Call to hbarmor.get_armor in custom_hud returned with false!")
+			minetest.log("error", "[mcl_hbarmor] Call to mcl_hbarmor.get_armor in custom_hud returned with false!")
 			return
 		end
-		local arm = tonumber(hbarmor.armor[name])
+		local arm = tonumber(mcl_hbarmor.armor[name])
 		if not arm then
 			arm = 0
 		end
 		local hide
-		if hbarmor.autohide then
+		if mcl_hbarmor.autohide then
 			hide = must_hide(name, arm)
 		else
 			hide = false
@@ -63,9 +57,9 @@ local function custom_hud(player)
 end
 
 --register and define armor HUD bar
-hb.register_hudbar("armor", 0xFFFFFF, S("Armor"), { icon = "hbarmor_icon.png", bgicon = "hbarmor_bgicon.png", bar = "hbarmor_bar.png" }, 0, 20, hbarmor.autohide)
+hb.register_hudbar("armor", 0xFFFFFF, S("Armor"), { icon = "hbarmor_icon.png", bgicon = "hbarmor_bgicon.png", bar = "hbarmor_bar.png" }, 0, 20, mcl_hbarmor.autohide)
 
-function hbarmor.get_armor(player)
+function mcl_hbarmor.get_armor(player)
 	if not player or not armor.def then
 		return false
 	end
@@ -74,25 +68,25 @@ function hbarmor.get_armor(player)
 	if not pts then
 		return false
 	else
-		hbarmor.set_armor(name, pts)
+		mcl_hbarmor.set_armor(name, pts)
 	end
 	return true
 end
 
-function hbarmor.set_armor(player_name, pts)
-	hbarmor.armor[player_name] = math.max(0, math.min(20, pts))
+function mcl_hbarmor.set_armor(player_name, pts)
+	mcl_hbarmor.armor[player_name] = math.max(0, math.min(20, pts))
 end
 
 -- update hud elemtens if value has changed
 local function update_hud(player)
 	local name = player:get_player_name()
 	--armor
-	local arm = tonumber(hbarmor.armor[name])
+	local arm = tonumber(mcl_hbarmor.armor[name])
 	if not arm then
 		arm = 0
-		hbarmor.armor[name] = 0
+		mcl_hbarmor.armor[name] = 0
 	end
-	if hbarmor.autohide then
+	if mcl_hbarmor.autohide then
 		-- hide armor bar completely when there is none
 		if must_hide(name, arm) then
 			hb.hide_hudbar(player, "armor")
@@ -108,12 +102,12 @@ end
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	custom_hud(player)
-	hbarmor.player_active[name] = true
+	mcl_hbarmor.player_active[name] = true
 end)
 
 minetest.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
-	hbarmor.player_active[name] = false
+	mcl_hbarmor.player_active[name] = false
 end)
 
 local main_timer = 0
@@ -121,15 +115,15 @@ local timer = 0
 minetest.register_globalstep(function(dtime)
 	main_timer = main_timer + dtime
 	timer = timer + dtime
-	if main_timer > hbarmor.tick or timer > 4 then
+	if main_timer > mcl_hbarmor.tick or timer > 4 then
 		if minetest.settings:get_bool("enable_damage") then
-			if main_timer > hbarmor.tick then main_timer = 0 end
+			if main_timer > mcl_hbarmor.tick then main_timer = 0 end
 			for _,player in ipairs(minetest.get_connected_players()) do
 				local name = player:get_player_name()
-				if hbarmor.player_active[name] == true then
-					local ret = hbarmor.get_armor(player)
+				if mcl_hbarmor.player_active[name] == true then
+					local ret = mcl_hbarmor.get_armor(player)
 					if ret == false then
-						minetest.log("error", "[hbarmor] Call to hbarmor.get_armor in globalstep returned with false!")
+						minetest.log("error", "[mcl_hbarmor] Call to mcl_hbarmor.get_armor in globalstep returned with false!")
 					end
 					-- update all hud elements
 					update_hud(player)

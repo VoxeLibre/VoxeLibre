@@ -1,7 +1,7 @@
 Source path,Source file,Target path,Target file,xs,ys,xl,yl,xt,yt,Blacklisted?
 /assets/minecraft/textures/particle,particles.png,/mods/CORE/mcl_particles/textures,mcl_particles_bubble.png,0,16,8,8,0,0,y
-/assets/minecraft/textures/gui,icons.png,/mods/HUD/hbarmor/textures,hbarmor_icon.png,34,9,9,9,0,0,y
-/assets/minecraft/textures/gui,icons.png,/mods/HUD/hbarmor/textures,hbarmor_bgicon.png,16,9,9,9,0,0,y
+/assets/minecraft/textures/gui,icons.png,/mods/HUD/mcl_hbarmor/textures,hbarmor_icon.png,34,9,9,9,0,0,y
+/assets/minecraft/textures/gui,icons.png,/mods/HUD/mcl_hbarmor/textures,hbarmor_bgicon.png,16,9,9,9,0,0,y
 /assets/minecraft/textures/gui,icons.png,/mods/HUD/hudbars/textures,hudbars_icon_health.png,52,0,9,9,0,0,y
 /assets/minecraft/textures/gui,icons.png,/mods/HUD/hudbars/textures,hudbars_bgicon_health.png,16,0,9,9,0,0,y
 /assets/minecraft/textures/gui,icons.png,/mods/HUD/hudbars/textures,hudbars_icon_breath.png,16,18,9,9,0,0,y
