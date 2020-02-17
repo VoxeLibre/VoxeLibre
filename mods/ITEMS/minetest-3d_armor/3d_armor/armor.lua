@@ -102,7 +102,7 @@ armor.set_player_armor = function(self, player)
 	if not name then
 		return
 	end
-	local armor_texture = "3d_armor_trans.png"
+	local armor_texture = "blank.png"
 	local armor_level = 0
 	local armor_heal = 0
 	local armor_fire = 0
@@ -274,8 +274,8 @@ mcl_player.player_register_model("3d_armor_character.b3d", {
 	animation_speed = 30,
 	textures = {
 		armor.default_skin..".png",
-		"3d_armor_trans.png",
-		"3d_armor_trans.png",
+		"blank.png",
+		"blank.png",
 	},
 	animations = {
 		stand = {x=0, y=79},
@@ -383,8 +383,8 @@ minetest.register_on_joinplayer(function(player)
 	}
 	armor.textures[name] = {
 		skin = armor.default_skin..".png",
-		armor = "3d_armor_trans.png",
-		wielditem = "3d_armor_trans.png",
+		armor = "blank.png",
+		wielditem = "blank.png",
 		preview = armor.default_skin.."_preview.png",
 	}
 	if skin_mod == "mcl_skins" then
