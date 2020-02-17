@@ -38,7 +38,7 @@ local function do_tnt_physics(tnt_np,tntr)
                         mcl_death_messages.player_damage(obj, S("@1 was caught in an explosion.", obj:get_player_name()))
                     end
                 end
-                obj:set_hp(obj:get_hp() - damage)
+                obj:set_hp(obj:get_hp() - damage, { type = "punch", from = "mod" })
             end
         end
     end
