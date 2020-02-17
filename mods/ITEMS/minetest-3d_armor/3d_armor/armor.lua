@@ -510,10 +510,6 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 				state = state + stack:get_wear()
 				items = items + 1
 				if stack:get_count() == 0 then
-					local desc = minetest.registered_items[item].description
-					if desc then
-						minetest.chat_send_player(name, "Your "..desc.." got destroyed!")
-					end
 					armor:set_player_armor(player)
 					armor:update_inventory(player)
 				end
