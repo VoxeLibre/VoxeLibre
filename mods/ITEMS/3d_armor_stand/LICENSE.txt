@@ -3,5 +3,6 @@
 
 License Source Code: LGPL v2.1
 
-Lecense Media: CC BY-SA 3.0
+License Media: CC BY-SA 3.0
 
+Source Code: Copyright (C) 2013 Stuart Jones - LGPL
