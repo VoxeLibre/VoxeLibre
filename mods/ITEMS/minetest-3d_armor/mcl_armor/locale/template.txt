@@ -1,4 +1,4 @@
-# textdomain: 3d_armor
+# textdomain: mcl_armor
 This is a piece of equippable armor which reduces the amount of damage you receive.=
 To equip it, put it on the corresponding armor slot in your inventory menu.=
 Leather Cap=

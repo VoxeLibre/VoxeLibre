@@ -1,4 +1,4 @@
-3d_armor
+mcl_armor
 mcl_core
 mcl_sounds
 mcl_stairs

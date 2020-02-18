@@ -43,6 +43,9 @@ local function update_entity(pos)
 				local stack = inv:get_stack("armor_"..element, 1)
 				if stack:get_count() == 1 then
 					local item = stack:get_name() or ""
+					if minetest.registered_aliases[item] then
+						item = minetest.registered_aliases[item]
+					end
 					local def = stack:get_definition() or {}
 					local groups = def.groups or {}
 					if groups["armor_"..element] then

@@ -5,6 +5,5 @@ mcl_hunger
 mcl_death_messages
 playerphysics
 mcl_playerinfo
-3d_armor?
 mcl_weather
 mcl_spawn

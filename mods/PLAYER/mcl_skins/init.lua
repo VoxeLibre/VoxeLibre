@@ -105,7 +105,7 @@ mcl_skins.set_player_skin = function(player, skin_id)
 	mcl_skins.previews[playername] = preview
 	player:get_meta():set_string("mcl_skins:skin_id", tostring(skin_id))
 	mcl_skins.update_player_skin(player)
-	if minetest.get_modpath("3d_armor") then
+	if minetest.get_modpath("mcl_armor") then
 		armor.textures[playername].skin = skin_file
 		armor:update_player_visuals(player)
 	end

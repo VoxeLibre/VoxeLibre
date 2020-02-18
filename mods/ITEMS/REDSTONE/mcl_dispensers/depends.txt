@@ -6,6 +6,6 @@ mcl_worlds
 mcl_core
 mcl_nether
 3d_armor_stand
-3d_armor
+mcl_armor
 doc?
 screwdriver?

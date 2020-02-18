@@ -3,7 +3,6 @@ local S = minetest.get_translator("mcl_playerplus")
 -- Internal player state
 local mcl_playerplus_internal = {}
 
-local armor_mod = minetest.get_modpath("3d_armor")
 local def = {}
 local time = 0
 

@@ -2,4 +2,3 @@ mcl_init
 mcl_core
 mcl_particles
 mcl_death_messages
-3d_armor?

@@ -3,7 +3,7 @@ local F = minetest.formspec_escape
 
 mcl_inventory = {}
 
-local show_armor = minetest.get_modpath("3d_armor") ~= nil
+local show_armor = minetest.get_modpath("mcl_armor") ~= nil
 local mod_player = minetest.get_modpath("mcl_player") ~= nil
 local mod_craftguide = minetest.get_modpath("mcl_craftguide") ~= nil
 

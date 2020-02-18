@@ -7,7 +7,7 @@ local players = {}
 -- Containing all the items for each Creative Mode tab
 local inventory_lists = {}
 
-local show_armor = minetest.get_modpath("3d_armor") ~= nil
+local show_armor = minetest.get_modpath("mcl_armor") ~= nil
 local mod_player = minetest.get_modpath("mcl_player") ~= nil
 
 -- TODO: Brewing is disabled. Add brewing (uncommented code) when it is implemented properly

@@ -65,7 +65,7 @@ local fish = function(itemstack, player)
 										{ itemstring = "mcl_core:bowl", weight = 10 },
 										{ itemstring = "mcl_fishing:fishing_rod", weight = 2, wear_min = 6554, wear_max = 65535 }, -- 10%-100% damage
 										{ itemstring = "mcl_mobitems:leather", weight = 10 },
-										{ itemstring = "3d_armor:boots_leather", weight = 10, wear_min = 6554, wear_max = 65535 }, -- 10%-100% damage
+										{ itemstring = "mcl_armor:boots_leather", weight = 10, wear_min = 6554, wear_max = 65535 }, -- 10%-100% damage
 										{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10 },
 										{ itemstring = "mcl_core:stick", weight = 5 },
 										{ itemstring = "mcl_mobitems:string", weight = 5 },

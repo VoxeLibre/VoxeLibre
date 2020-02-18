@@ -18,7 +18,6 @@ armor = {
 		.."listring[current_player;craft]",
 	textures = {},
 	default_skin = "character",
-	version = "0.4.6",
 }
 
 if minetest.get_modpath("mcl_skins") then
@@ -71,6 +70,9 @@ armor.set_player_armor = function(self, player)
 	for i=1, 6 do
 		local stack = player_inv:get_stack("armor", i)
 		local item = stack:get_name()
+		if minetest.registered_aliases[item] then
+			item = minetest.registered_aliases[item]
+		end
 		if stack:get_count() == 1 then
 			local def = stack:get_definition()
 			for k, v in pairs(elements) do
@@ -177,11 +179,11 @@ end
 
 armor.get_armor_formspec = function(self, name)
 	if not armor.textures[name] then
-		minetest.log("error", "3d_armor: Player texture["..name.."] is nil [get_armor_formspec]")
+		minetest.log("error", "mcl_armor: Player texture["..name.."] is nil [get_armor_formspec]")
 		return ""
 	end
 	if not armor.def[name] then
-		minetest.log("error", "3d_armor: Armor def["..name.."] is nil [get_armor_formspec]")
+		minetest.log("error", "mcl_armor: Armor def["..name.."] is nil [get_armor_formspec]")
 		return ""
 	end
 	local formspec = armor.formspec.."list[detached:"..name.."_armor;armor;0,1;2,3;]"
@@ -197,25 +199,25 @@ end
 armor.get_valid_player = function(self, player, msg)
 	msg = msg or ""
 	if not player then
-		minetest.log("error", "3d_armor: Player reference is nil "..msg)
+		minetest.log("error", "mcl_armor: Player reference is nil "..msg)
 		return
 	end
 	local name = player:get_player_name()
 	if not name then
-		minetest.log("error", "3d_armor: Player name is nil "..msg)
+		minetest.log("error", "mcl_armor: Player name is nil "..msg)
 		return
 	end
 	local pos = player:get_pos()
 	local player_inv = player:get_inventory()
 	local armor_inv = minetest.get_inventory({type="detached", name=name.."_armor"})
 	if not pos then
-		minetest.log("error", "3d_armor: Player position is nil "..msg)
+		minetest.log("error", "mcl_armor: Player position is nil "..msg)
 		return
 	elseif not player_inv then
-		minetest.log("error", "3d_armor: Player inventory is nil "..msg)
+		minetest.log("error", "mcl_armor: Player inventory is nil "..msg)
 		return
 	elseif not armor_inv then
-		minetest.log("error", "3d_armor: Detached armor inventory is nil "..msg)
+		minetest.log("error", "mcl_armor: Detached armor inventory is nil "..msg)
 		return
 	end
 	return name, player_inv, armor_inv, pos
@@ -230,7 +232,7 @@ armor.play_equip_sound = function(self, player, stack, unequip)
 	local snd = def.sounds and def.sounds["_mcl_armor_"..estr]
 	if not snd then
 		-- Fallback sound
-		snd = { name = "3d_armor_"..estr.."_iron" }
+		snd = { name = "mcl_armor_"..estr.."_iron" }
 	end
 	if snd then
 		minetest.sound_play(snd, {object=player, gain=0.5, max_hear_distance=8})
@@ -239,7 +241,7 @@ end
 
 -- Register Player Model
 
-mcl_player.player_register_model("3d_armor_character.b3d", {
+mcl_player.player_register_model("mcl_armor_character.b3d", {
 	animation_speed = 30,
 	textures = {
 		armor.default_skin..".png",
@@ -282,7 +284,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 minetest.register_on_joinplayer(function(player)
-	mcl_player.player_set_model(player, "3d_armor_character.b3d")
+	mcl_player.player_set_model(player, "mcl_armor_character.b3d")
 	local name = player:get_player_name()
 	local player_inv = player:get_inventory()
 	local armor_inv = minetest.create_detached_inventory(name.."_armor", {

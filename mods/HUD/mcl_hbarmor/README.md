@@ -1,4 +1,4 @@
-# MineClone 2 HUD bar for `3d_armor` [`mcl_hbarmor`]
+# MineClone 2 HUD bar for `mcl_armor` [`mcl_hbarmor`]
 
 ## Description
 This mod adds a simple HUD bar which displays the player's armor points.

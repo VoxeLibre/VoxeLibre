@@ -203,25 +203,25 @@ local professions = {
 		trades = {
 			{
 			{ { "mcl_core:coal_lump", 16, 24 }, E1 },
-			{ { "mcl_core:emerald", 4, 6 }, { "3d_armor:helmet_iron", 1, 1 } },
+			{ { "mcl_core:emerald", 4, 6 }, { "mcl_armor:helmet_iron", 1, 1 } },
 			},
 
 			{
 			{ { "mcl_core:iron_ingot", 7, 9 }, E1 },
-			{ { "mcl_core:emerald", 10, 14 }, { "3d_armor:chestplate_iron", 1, 1 } },
+			{ { "mcl_core:emerald", 10, 14 }, { "mcl_armor:chestplate_iron", 1, 1 } },
 			},
 
 			{
 			{ { "mcl_core:diamond", 3, 4 }, E1 },
 			-- TODO: enchant
-			{ { "mcl_core:emerald", 16, 19 }, { "3d_armor:chestplate_diamond", 1, 1 } },
+			{ { "mcl_core:emerald", 16, 19 }, { "mcl_armor:chestplate_diamond", 1, 1 } },
 			},
 
 			{
-			{ { "mcl_core:emerald", 5, 7 }, { "3d_armor:boots_chain", 1, 1 } },
-			{ { "mcl_core:emerald", 9, 11 }, { "3d_armor:leggings_chain", 1, 1 } },
-			{ { "mcl_core:emerald", 5, 7 }, { "3d_armor:helmet_chain", 1, 1 } },
-			{ { "mcl_core:emerald", 11, 15 }, { "3d_armor:chestplate_chain", 1, 1 } },
+			{ { "mcl_core:emerald", 5, 7 }, { "mcl_armor:boots_chain", 1, 1 } },
+			{ { "mcl_core:emerald", 9, 11 }, { "mcl_armor:leggings_chain", 1, 1 } },
+			{ { "mcl_core:emerald", 5, 7 }, { "mcl_armor:helmet_chain", 1, 1 } },
+			{ { "mcl_core:emerald", 11, 15 }, { "mcl_armor:chestplate_chain", 1, 1 } },
 			},
 		},
 	},
@@ -231,12 +231,12 @@ local professions = {
 		trades = {
 			{
 			{ { "mcl_mobitems:leather", 9, 12 }, E1 },
-			{ { "mcl_core:emerald", 2, 4 }, { "3d_armor:leggings_leather", 2, 4 } },
+			{ { "mcl_core:emerald", 2, 4 }, { "mcl_armor:leggings_leather", 2, 4 } },
 			},
 
 			{
 			-- TODO: enchant
-			{ { "mcl_core:emerald", 7, 12 }, { "3d_armor:chestplate_leather", 1, 1 } },
+			{ { "mcl_core:emerald", 7, 12 }, { "mcl_armor:chestplate_leather", 1, 1 } },
 			},
 
 			{

@@ -1,7 +1,7 @@
 local S = minetest.get_translator("mcl_hbarmor")
 
 if (not armor) or (not armor.def) then
-	minetest.log("error", "[mcl_hbarmor] Outdated 3d_armor version. Please update your version of 3d_armor!")
+	minetest.log("error", "[mcl_hbarmor] Outdated mcl_armor version. Please update your version of mcl_armor!")
 end
 
 local mcl_hbarmor = {}

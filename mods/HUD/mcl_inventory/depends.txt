@@ -1,4 +1,4 @@
 mcl_init
 mcl_player?
 _mcl_autogroup?
-3d_armor?
+mcl_armor?
