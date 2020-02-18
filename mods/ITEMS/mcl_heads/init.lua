@@ -45,12 +45,52 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 		sounds = mcl_sounds.node_sound_defaults({
 			footstep = {name="default_hard_footstep", gain=0.3}
 		}),
+		on_place = function(itemstack, placer, pointed_thing)
+			if pointed_thing.type ~= "node" then
+				-- no interaction possible with entities, for now.
+				return itemstack
+			end
+
+			local under = pointed_thing.under
+			local node = minetest.get_node(under)
+			local def = minetest.registered_nodes[node.name]
+			if not def then return itemstack end
+
+			-- Call on_rightclick if the pointed node defines it
+			if placer and not placer:get_player_control().sneak then
+				if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+					return minetest.registered_nodes[node.name].on_rightclick(under, node, placer, itemstack) or itemstack
+				end
+			end
+
+			local above = pointed_thing.above
+			local diff = {x = under.x - above.x, y = under.y - above.y, z = under.z - above.z}
+			local wdir = minetest.dir_to_wallmounted(diff)
+
+			local itemstring = itemstack:get_name()
+			local fakestack = ItemStack(itemstack)
+			local idef = fakestack:get_definition()
+			local retval
+			if wdir == 0 or wdir == 1 then
+				return minetest.item_place(itemstack, placer, pointed_thing)
+			else
+				retval = fakestack:set_name("mcl_heads:"..name.."_wall")
+			end
+			if not retval then
+				return itemstack
+			end
+
+			local success
+			itemstack, success = minetest.item_place(fakestack, placer, pointed_thing, wdir)
+			itemstack:set_name(itemstring)
+			return itemstack
+		end,
 		on_rotate = on_rotate,
+
 		_mcl_blast_resistance = 5,
 		_mcl_hardness = 1,
 		_mcl_armor_mob_range_factor = rangefactor,
 		_mcl_armor_mob_range_mob = rangemob,
-
 	})
 
 	minetest.register_node("mcl_heads:"..name.."_wall", {
