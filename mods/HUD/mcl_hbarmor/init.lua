@@ -26,7 +26,7 @@ end
 
 
 local must_hide = function(playername, arm)
-	return ((not armor.def[playername].count or armor.def[playername].count == 0) and arm == 0)
+	return arm == 0
 end
 
 local arm_printable = function(arm)
