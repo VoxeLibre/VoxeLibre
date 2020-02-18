@@ -1,5 +1,5 @@
-[mod] 3d Armor Stand [3d_armor_stand]
-=====================================
+[mod] 3d Armor Stand [mcl_armor_stand]
+======================================
 
 License Source Code: LGPL v2.1
 

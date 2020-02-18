@@ -5,7 +5,7 @@ mcl_tnt
 mcl_worlds
 mcl_core
 mcl_nether
-3d_armor_stand
+mcl_armor_stand
 mcl_armor
 doc?
 screwdriver?

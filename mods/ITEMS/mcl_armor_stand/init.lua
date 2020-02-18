@@ -1,4 +1,4 @@
-local S = minetest.get_translator("3d_armor_stand")
+local S = minetest.get_translator("mcl_armor_stand")
 
 local elements = {"head", "torso", "legs", "feet"}
 
@@ -8,7 +8,7 @@ local function get_stand_object(pos)
 	for _, obj in pairs(objects) do
 		local ent = obj:get_luaentity()
 		if ent then
-			if ent.name == "3d_armor_stand:armor_entity" then
+			if ent.name == "mcl_armor_stand:armor_entity" then
 				-- Remove duplicates
 				if object then
 					obj:remove()
@@ -25,12 +25,12 @@ local function update_entity(pos)
 	local node = minetest.get_node(pos)
 	local object = get_stand_object(pos)
 	if object then
-		if not string.find(node.name, "3d_armor_stand:") then
+		if not string.find(node.name, "mcl_armor_stand:") then
 			object:remove()
 			return
 		end
 	else
-		object = minetest.add_entity(pos, "3d_armor_stand:armor_entity")
+		object = minetest.add_entity(pos, "mcl_armor_stand:armor_entity")
 	end
 	if object then
 		local texture = "blank.png"
@@ -87,7 +87,7 @@ local drop_armor = function(pos)
 end
 
 -- TODO: The armor stand should be an entity
-minetest.register_node("3d_armor_stand:armor_stand", {
+minetest.register_node("mcl_armor_stand:armor_stand", {
 	description = S("Armor Stand"),
 	_doc_items_longdesc = S("An armor stand is a decorative object which can display different pieces of armor. Anything which players can wear as armor can also be put on an armor stand."),
 	_doc_items_usagehelp = S("Just place an armor item on the armor stand. To take the top piece of armor from the armor stand, select your hand and use the place key on the armor stand."),
@@ -186,7 +186,7 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 		return itemstack
 	end,
 	after_place_node = function(pos)
-		minetest.add_entity(pos, "3d_armor_stand:armor_entity")
+		minetest.add_entity(pos, "mcl_armor_stand:armor_entity")
 	end,
 	allow_metadata_inventory_take = function(pos, listname, index, stack, player)
 		local name = player:get_player_name()
@@ -242,7 +242,7 @@ minetest.register_node("3d_armor_stand:armor_stand", {
 	end,
 })
 
-minetest.register_entity("3d_armor_stand:armor_entity", {
+minetest.register_entity("mcl_armor_stand:armor_entity", {
 	physical = true,
 	visual = "mesh",
 	mesh = "3d_armor_entity.obj",
@@ -282,8 +282,8 @@ minetest.register_entity("3d_armor_stand:armor_entity", {
 -- FIXME: Armor helper entity can get destroyed by /clearobjects
 minetest.register_lbm({
 	label = "Respawn armor stand entities",
-	name = "3d_armor_stand:respawn_entities",
-	nodenames = {"3d_armor_stand:armor_stand"},
+	name = "mcl_armor_stand:respawn_entities",
+	nodenames = {"mcl_armor_stand:armor_stand"},
 	run_at_every_load = true,
 	action = function(pos, node)
 		update_entity(pos, node)
@@ -291,7 +291,7 @@ minetest.register_lbm({
 })
 
 minetest.register_craft({
-	output = "3d_armor_stand:armor_stand",
+	output = "mcl_armor_stand:armor_stand",
 	recipe = {
 		{"mcl_core:stick", "mcl_core:stick", "mcl_core:stick"},
 		{"", "mcl_core:stick", ""},
@@ -299,3 +299,4 @@ minetest.register_craft({
 	}
 })
 
+minetest.register_alias("3d_armor_stand:armor_stand", "mcl_armor_stand:armor_stand")

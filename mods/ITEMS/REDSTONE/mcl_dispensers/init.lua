@@ -156,9 +156,9 @@ local dispenserdef = {
 					local dropnode_below = minetest.get_node(droppos_below)
 					-- Put armor on player or armor stand
 					local standpos
-					if dropnode.name == "3d_armor_stand:armor_stand" then
+					if dropnode.name == "mcl_armor_stand:armor_stand" then
 						standpos = droppos
-					elseif dropnode_below.name == "3d_armor_stand:armor_stand" then
+					elseif dropnode_below.name == "mcl_armor_stand:armor_stand" then
 						standpos = droppos_below
 					end
 					if standpos then
@@ -166,7 +166,7 @@ local dispenserdef = {
 						local dropinv = dropmeta:get_inventory()
 						if dropinv:room_for_item(armor_type, dropitem) then
 							dropinv:add_item(armor_type, dropitem)
-							minetest.registered_nodes["3d_armor_stand:armor_stand"].on_metadata_inventory_put(standpos)
+							minetest.registered_nodes["mcl_armor_stand:armor_stand"].on_metadata_inventory_put(standpos)
 							stack:take_item()
 							inv:set_stack("main", stack_id, stack)
 							armor_dispensed = true
