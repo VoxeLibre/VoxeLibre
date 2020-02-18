@@ -15,8 +15,8 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 		is_ground_content = false,
 		node_box = {
 			type = "fixed",
-			fixed = {       
-				{ -0.25, -0.5, -0.25, 0.25, 0.0, 0.25, },   			
+			fixed = {
+				{ -0.25, -0.5, -0.25, 0.25, 0.0, 0.25, },
 			},
 		},
 		groups = {handy=1, armor_head=1,non_combat_armor=1, head=1, deco_block=1, dig_by_piston=1},
@@ -30,7 +30,7 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 			"[combine:16x16:4,0="..texture, -- right
 			"[combine:16x16:-20,0="..texture, -- back
 			"[combine:16x16:-4,0="..texture, -- front
-		},	    
+		},
 		paramtype = "light",
 		stack_max = 64,
 		paramtype2 = "facedir",
