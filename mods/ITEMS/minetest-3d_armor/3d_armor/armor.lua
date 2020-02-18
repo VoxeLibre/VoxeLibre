@@ -265,6 +265,22 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 	end
 end)
 
+local function play_equip_sound(player, stack, unequip)
+	local def = stack:get_definition()
+	local estr = "equip"
+	if unequip then
+		estr = "unequip"
+	end
+	local snd = def.sounds and def.sounds["_mcl_armor_"..estr]
+	if not snd then
+		-- Fallback sound
+		snd = { name = "3d_armor_"..estr.."_iron" }
+	end
+	if snd then
+		minetest.sound_play(snd, {object=player, gain=0.5, max_hear_distance=8})
+	end
+end
+
 minetest.register_on_joinplayer(function(player)
 	mcl_player.player_set_model(player, "3d_armor_character.b3d")
 	local name = player:get_player_name()
@@ -274,11 +290,13 @@ minetest.register_on_joinplayer(function(player)
 			player:get_inventory():set_stack(listname, index, stack)
 			armor:set_player_armor(player)
 			armor:update_inventory(player)
+			play_equip_sound(player, stack)
 		end,
 		on_take = function(inv, listname, index, stack, player)
 			player:get_inventory():set_stack(listname, index, nil)
 			armor:set_player_armor(player)
 			armor:update_inventory(player)
+			play_equip_sound(player, stack, true)
 		end,
 		on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
 			local plaver_inv = player:get_inventory()
@@ -287,6 +305,7 @@ minetest.register_on_joinplayer(function(player)
 			player_inv:set_stack(from_list, from_index, nil)
 			armor:set_player_armor(player)
 			armor:update_inventory(player)
+			play_equip_sound(player, stack)
 		end,
 		allow_put = function(inv, listname, index, stack, player)
 			local iname = stack:get_name()
@@ -435,4 +454,3 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
 	end
 	return hp_change
 end, true)
-
