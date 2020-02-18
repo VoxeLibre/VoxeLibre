@@ -223,6 +223,7 @@ local horse = {
 				local tex = horse_extra_texture(self)
 				self.base_texture = tex
 				self.object:set_properties({textures = self.base_texture})
+				minetest.sound_play({name = "mcl_armor_equip_leather"}, {gain=0.5, max_hear_distance=12, pos=self.object:get_pos()})
 
 			-- Put on horse armor if tamed
 			elseif can_equip_horse_armor(self.name) and not self.driver and not self._horse_armor
@@ -252,7 +253,10 @@ local horse = {
 				local tex = horse_extra_texture(self)
 				self.base_texture = tex
 				self.object:set_properties({textures = self.base_texture})
-
+				local def = w:get_definition()
+				if def.sounds and def.sounds._mcl_armor_equip then
+					minetest.sound_play({name = def.sounds._mcl_armor_equip}, {gain=0.5, max_hear_distance=12, pos=self.object:get_pos()})
+				end
 
 			-- Mount horse
 			elseif not self.driver and self._saddle then

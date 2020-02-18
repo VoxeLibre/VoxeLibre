@@ -283,6 +283,9 @@ if c("iron_horse_armor") then
 		_doc_items_usagehelp = horse_armor_use,
 		inventory_image = "mobs_mc_iron_horse_armor.png",
 		_horse_overlay_image = "mobs_mc_horse_armor_iron.png",
+		sounds = {
+			_mcl_armor_equip = "mcl_armor_equip_iron",
+		},
 		stack_max = 1,
 		groups = { horse_armor = 85 },
 	})
@@ -294,6 +297,9 @@ if c("gold_horse_armor") then
 		_doc_items_usagehelp = horse_armor_use,
 		inventory_image = "mobs_mc_gold_horse_armor.png",
 		_horse_overlay_image = "mobs_mc_horse_armor_gold.png",
+		sounds = {
+			_mcl_armor_equip = "mcl_armor_equip_iron",
+		},
 		stack_max = 1,
 		groups = { horse_armor = 60 },
 	})
@@ -305,6 +311,9 @@ if c("diamond_horse_armor") then
 		_doc_items_usagehelp = horse_armor_use,
 		inventory_image = "mobs_mc_diamond_horse_armor.png",
 		_horse_overlay_image = "mobs_mc_horse_armor_diamond.png",
+		sounds = {
+			_mcl_armor_equip = "mcl_armor_equip_diamond",
+		},
 		stack_max = 1,
 		groups = { horse_armor = 45 },
 	})

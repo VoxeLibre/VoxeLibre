@@ -125,6 +125,7 @@ mobs:register_mob("mobs_mc:pig", {
 				stack:take_item()
 				inv:set_stack("main", clicker:get_wield_index(), stack)
 			end
+			minetest.sound_play({name = "mcl_armor_equip_leather"}, {gain=0.5, max_hear_distance=8, pos=self.object:get_pos()})
 			return
 		end
 
