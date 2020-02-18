@@ -157,6 +157,33 @@ armor.get_armor_points = function(self, player)
 	return pts
 end
 
+-- Returns a change factor for a mob's view_range for the given player
+-- or nil, if there's no change. Certain armors (like mob heads) can
+-- affect the view range of mobs.
+armor.get_mob_view_range_factor = function(self, player, mob)
+	local name, player_inv, armor_inv = armor:get_valid_player(player, "[get_mob_view_range_factor]")
+	if not name then
+		return
+	end
+	local factor
+	for i=1, 6 do
+		local stack = player_inv:get_stack("armor", i)
+		if stack:get_count() > 0 then
+			local def = stack:get_definition()
+			if def._mcl_armor_mob_range_mob == mob then
+				if not factor then
+					factor = def._mcl_armor_mob_range_factor
+				elseif factor == 0 then
+					return 0
+				else
+					factor = factor * def._mcl_armor_mob_range_factor
+				end
+			end
+		end
+	end
+	return factor
+end
+
 armor.get_player_skin = function(self, name)
 	local skin = nil
 	if skin_mod == "mcl_skins" then

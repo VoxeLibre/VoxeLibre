@@ -91,6 +91,7 @@ local mod_tnt = minetest.get_modpath("mcl_tnt") ~= nil
 local mod_mobspawners = minetest.get_modpath("mcl_mobspawners") ~= nil
 local mod_hunger = minetest.get_modpath("mcl_hunger") ~= nil
 local mod_worlds = minetest.get_modpath("mcl_worlds") ~= nil
+local mod_armor = minetest.get_modpath("mcl_armor") ~= nil
 
 -- play sound
 local mob_sound = function(self, soundname, is_opinion, fixed_pitch)
@@ -134,6 +135,31 @@ local mob_sound = function(self, soundname, is_opinion, fixed_pitch)
 	end
 end
 
+-- Reeturn true if object is in view_range
+local function object_in_range(self, object)
+	if not object then
+		return false
+	end
+	local factor
+	-- Apply view range reduction for special player armor
+	if object:is_player() and mod_armor then
+		factor = armor:get_mob_view_range_factor(object, self.name)
+	end
+	-- Distance check
+	local dist
+	if factor and factor == 0 then
+		return false
+	elseif factor then
+		dist = self.view_range * factor
+	else
+		dist = self.view_range
+	end
+	if vector.distance(self.object:get_pos(), object:get_pos()) > dist then
+		return false
+	else
+		return true
+	end
+end
 
 -- attack player/mob
 local do_attack = function(self, player)
@@ -1524,7 +1550,6 @@ local specific_attack = function(list, what)
 	return false
 end
 
-
 -- monster find someone to attack
 local monster_attack = function(self)
 
@@ -1547,8 +1572,7 @@ local monster_attack = function(self)
 
 		if objs[n]:is_player() then
 
-			if mobs.invis[ objs[n]:get_player_name() ] then
-
+			if mobs.invis[ objs[n]:get_player_name() ] or (not object_in_range(self, objs[n])) then
 				type = ""
 			else
 				player = objs[n]
@@ -1678,8 +1702,8 @@ local runaway_from = function(self)
 		if objs[n]:is_player() then
 
 			if mobs.invis[ objs[n]:get_player_name() ]
-			or self.owner == objs[n]:get_player_name() then
-
+			or self.owner == objs[n]:get_player_name()
+			or (not object_in_range(self, objs[n])) then
 				type = ""
 			else
 				player = objs[n]
@@ -1757,7 +1781,7 @@ local follow_flop = function(self)
 
 		for n = 1, #players do
 
-			if vector.distance(players[n]:get_pos(), s) < self.view_range
+			if (object_in_range(self, players[n]))
 			and not mobs.invis[ players[n]:get_player_name() ] then
 
 				self.following = players[n]
@@ -1808,7 +1832,7 @@ local follow_flop = function(self)
 			local dist = vector.distance(p, s)
 
 			-- dont follow if out of range
-			if dist > self.view_range then
+			if (not object_in_range(self, self.following)) then
 				self.following = nil
 			else
 				local vec = {
@@ -2071,7 +2095,7 @@ local do_states = function(self, dtime)
 		local dist = vector.distance(p, s)
 
 		-- stop attacking if player invisible or out of range
-		if dist > self.view_range
+		if not object_in_range(self, self.attack)
 		or not self.attack
 		or not self.attack:get_pos()
 		or self.attack:get_hp() <= 0
