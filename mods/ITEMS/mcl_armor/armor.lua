@@ -73,21 +73,14 @@ function armor.on_armor_use(itemstack, user, pointed_thing)
 			player_inv:set_stack("armor", slot, itemstack_single)
 			armor:set_player_armor(user)
 			armor:update_inventory(user)
-			armor:play_equip_sound(user, itemstack_single)
+			armor:play_equip_sound(itemstack_single, user)
 			itemstack:take_item()
 		elseif itemstack:get_count() <= 1 then
 			armor_inv:set_stack("armor", slot, itemstack_single)
 			player_inv:set_stack("armor", slot, itemstack_single)
 			armor:set_player_armor(user)
 			armor:update_inventory(user)
-			armor:play_equip_sound(user, itemstack_single)
-			itemstack = ItemStack(itemstack_slot)
-		elseif itemstack:get_count() <= 1 then
-			armor_inv:set_stack("armor", slot, itemstack_single)
-			player_inv:set_stack("armor", slot, itemstack_single)
-			armor:set_player_armor(user)
-			armor:update_inventory(user)
-			armor:play_equip_sound(user, itemstack_single)
+			armor:play_equip_sound(itemstack_single, user)
 			itemstack = ItemStack(itemstack_slot)
 		end
 	end
@@ -313,7 +306,7 @@ armor.get_valid_player = function(self, player, msg)
 	return name, player_inv, armor_inv, pos
 end
 
-armor.play_equip_sound = function(self, player, stack, unequip)
+armor.play_equip_sound = function(self, stack, player, pos, unequip)
 	local def = stack:get_definition()
 	local estr = "equip"
 	if unequip then
@@ -325,7 +318,11 @@ armor.play_equip_sound = function(self, player, stack, unequip)
 		snd = { name = "mcl_armor_"..estr.."_generic" }
 	end
 	if snd then
-		minetest.sound_play(snd, {object=player, gain=0.5, max_hear_distance=8})
+		local dist = 8
+		if pos then
+			dist = 16
+		end
+		minetest.sound_play(snd, {object=player, pos=pos, gain=0.5, max_hear_distance=dist})
 	end
 end
 
@@ -382,13 +379,13 @@ minetest.register_on_joinplayer(function(player)
 			player:get_inventory():set_stack(listname, index, stack)
 			armor:set_player_armor(player)
 			armor:update_inventory(player)
-			armor:play_equip_sound(player, stack)
+			armor:play_equip_sound(stack, player)
 		end,
 		on_take = function(inv, listname, index, stack, player)
 			player:get_inventory():set_stack(listname, index, nil)
 			armor:set_player_armor(player)
 			armor:update_inventory(player)
-			armor:play_equip_sound(player, stack, true)
+			armor:play_equip_sound(stack, player, nil, true)
 		end,
 		on_move = function(inv, from_list, from_index, to_list, to_index, count, player)
 			local plaver_inv = player:get_inventory()
@@ -397,7 +394,7 @@ minetest.register_on_joinplayer(function(player)
 			player_inv:set_stack(from_list, from_index, nil)
 			armor:set_player_armor(player)
 			armor:update_inventory(player)
-			armor:play_equip_sound(player, stack)
+			armor:play_equip_sound(stack, player)
 		end,
 		allow_put = function(inv, listname, index, stack, player)
 			local iname = stack:get_name()
