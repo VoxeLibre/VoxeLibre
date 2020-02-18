@@ -66,7 +66,7 @@ A mature pumpkin stem attempts to grow a pumpkin at one of its four adjacent blo
 Faceless Pumpkin=
 A faceless pumpkin is a decorative block. It can be carved with shears to obtain pumpkin seeds.=
 Pumpkin=
-A pumpkin can be worn as a helmet for fun, but it doesn't offer any protection. Pumpkins grow from pumpkin stems, which in turn grow from pumpkin seeds.=
+A pumpkin can be worn as a helmet. Pumpkins grow from pumpkin stems, which in turn grow from pumpkin seeds.=
 Jack o'Lantern=
 A jack o'lantern is a traditional Halloween decoration made from a pumpkin. It glows brightly.=
 Pumpkin Pie=

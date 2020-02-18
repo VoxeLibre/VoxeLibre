@@ -3,6 +3,11 @@ local S = minetest.get_translator("mcl_heads")
 local mod_doc = minetest.get_modpath("doc")
 local mod_screwdriver = minetest.get_modpath("screwdriver")
 
+local equip_armor
+if minetest.get_modpath("mcl_armor") then
+	equip_armor = armor.on_armor_use
+end
+
 -- Heads system
 
 local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
@@ -101,12 +106,12 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 			itemstack:set_name(itemstring)
 			return itemstack
 		end,
+		on_secondary_use = equip_armor,
+
 		on_rotate = on_rotate_floor,
 
 		_mcl_blast_resistance = 5,
 		_mcl_hardness = 1,
-		_mcl_armor_mob_range_factor = rangefactor,
-		_mcl_armor_mob_range_mob = rangemob,
 	})
 
 	minetest.register_node("mcl_heads:"..name.."_wall", {

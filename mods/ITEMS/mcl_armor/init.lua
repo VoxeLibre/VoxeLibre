@@ -8,62 +8,6 @@ dofile(minetest.get_modpath(minetest.get_current_modname()).."/alias.lua")
 local longdesc = S("This is a piece of equippable armor which reduces the amount of damage you receive.")
 local usage = S("To equip it, put it on the corresponding armor slot in your inventory menu.")
 
-local function on_armor_use(itemstack, user, pointed_thing)
-	if not user or user:is_player() == false then
-		return itemstack
-	end
-
-	-- Call on_rightclick if the pointed node defines it
-	if pointed_thing.type == "node" then
-		local node = minetest.get_node(pointed_thing.under)
-		if user and not user:get_player_control().sneak then
-			if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
-				return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
-			end
-		end
-	end
-
-	local name, player_inv, armor_inv = armor:get_valid_player(user, "[on_armor_use]")
-	if not name then
-		return itemstack
-	end
-
-	local def = itemstack:get_definition()
-	local slot
-	if def.groups and def.groups.armor_head then
-		slot = 2
-	elseif def.groups and def.groups.armor_torso then
-		slot = 3
-	elseif def.groups and def.groups.armor_legs then
-		slot = 4
-	elseif def.groups and def.groups.armor_feet then
-		slot = 5
-	end
-
-	if slot then
-		local itemstack_single = ItemStack(itemstack)
-		itemstack_single:set_count(1)
-		local itemstack_slot = armor_inv:get_stack("armor", slot)
-		if itemstack_slot:is_empty() then
-			armor_inv:set_stack("armor", slot, itemstack_single)
-			player_inv:set_stack("armor", slot, itemstack_single)
-			armor:set_player_armor(user)
-			armor:update_inventory(user)
-			armor:play_equip_sound(user, itemstack_single)
-			itemstack:take_item()
-		elseif itemstack:get_count() <= 1 then
-			armor_inv:set_stack("armor", slot, itemstack_single)
-			player_inv:set_stack("armor", slot, itemstack_single)
-			armor:set_player_armor(user)
-			armor:update_inventory(user)
-			armor:play_equip_sound(user, itemstack_single)
-			itemstack = ItemStack(itemstack_slot)
-		end
-	end
-
-	return itemstack
-end
-
 minetest.register_tool("mcl_armor:helmet_leather", {
 	description = S("Leather Cap"),
 	_doc_items_longdesc = longdesc,
@@ -75,8 +19,8 @@ minetest.register_tool("mcl_armor:helmet_leather", {
 		_mcl_armor_equip = "mcl_armor_equip_leather",
 		_mcl_armor_unequip = "mcl_armor_unequip_leather",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:helmet_iron", {
@@ -91,8 +35,8 @@ minetest.register_tool("mcl_armor:helmet_iron", {
 		_mcl_armor_unequip = "mcl_armor_unequip_iron",
 	},
 
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:helmet_gold", {
@@ -106,8 +50,8 @@ minetest.register_tool("mcl_armor:helmet_gold", {
 		_mcl_armor_equip = "mcl_armor_equip_iron",
 		_mcl_armor_unequip = "mcl_armor_unequip_iron",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:helmet_diamond",{
@@ -121,8 +65,8 @@ minetest.register_tool("mcl_armor:helmet_diamond",{
 		_mcl_armor_equip = "mcl_armor_equip_diamond",
 		_mcl_armor_unequip = "mcl_armor_unequip_diamond",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:helmet_chain", {
@@ -136,8 +80,8 @@ minetest.register_tool("mcl_armor:helmet_chain", {
 		_mcl_armor_equip = "mcl_armor_equip_chainmail",
 		_mcl_armor_unequip = "mcl_armor_unequip_chainmail",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 -- Regisiter Torso Armor
@@ -153,8 +97,8 @@ minetest.register_tool("mcl_armor:chestplate_leather", {
 		_mcl_armor_equip = "mcl_armor_equip_leather",
 		_mcl_armor_unequip = "mcl_armor_unequip_leather",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:chestplate_iron", {
@@ -168,8 +112,8 @@ minetest.register_tool("mcl_armor:chestplate_iron", {
 		_mcl_armor_equip = "mcl_armor_equip_iron",
 		_mcl_armor_unequip = "mcl_armor_unequip_iron",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:chestplate_gold", {
@@ -183,8 +127,8 @@ minetest.register_tool("mcl_armor:chestplate_gold", {
 		_mcl_armor_equip = "mcl_armor_equip_iron",
 		_mcl_armor_unequip = "mcl_armor_unequip_iron",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:chestplate_diamond",{
@@ -198,8 +142,8 @@ minetest.register_tool("mcl_armor:chestplate_diamond",{
 		_mcl_armor_equip = "mcl_armor_equip_diamond",
 		_mcl_armor_unequip = "mcl_armor_unequip_diamond",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:chestplate_chain", {
@@ -213,8 +157,8 @@ minetest.register_tool("mcl_armor:chestplate_chain", {
 		_mcl_armor_equip = "mcl_armor_equip_chainmail",
 		_mcl_armor_unequip = "mcl_armor_unequip_chainmail",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 -- Regisiter Leg Armor
@@ -230,8 +174,8 @@ minetest.register_tool("mcl_armor:leggings_leather", {
 		_mcl_armor_equip = "mcl_armor_equip_leather",
 		_mcl_armor_unequip = "mcl_armor_unequip_leather",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:leggings_iron", {
@@ -245,8 +189,8 @@ minetest.register_tool("mcl_armor:leggings_iron", {
 		_mcl_armor_equip = "mcl_armor_equip_iron",
 		_mcl_armor_unequip = "mcl_armor_unequip_iron",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:leggings_gold", {
@@ -260,8 +204,8 @@ minetest.register_tool("mcl_armor:leggings_gold", {
 		_mcl_armor_equip = "mcl_armor_equip_iron",
 		_mcl_armor_unequip = "mcl_armor_unequip_iron",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:leggings_diamond",{
@@ -275,8 +219,8 @@ minetest.register_tool("mcl_armor:leggings_diamond",{
 		_mcl_armor_equip = "mcl_armor_equip_diamond",
 		_mcl_armor_unequip = "mcl_armor_unequip_diamond",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:leggings_chain", {
@@ -290,8 +234,8 @@ minetest.register_tool("mcl_armor:leggings_chain", {
 		_mcl_armor_equip = "mcl_armor_equip_chainmail",
 		_mcl_armor_unequip = "mcl_armor_unequip_chainmail",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 -- Regisiter Boots
 
@@ -306,8 +250,8 @@ minetest.register_tool("mcl_armor:boots_leather", {
 		_mcl_armor_equip = "mcl_armor_equip_leather",
 		_mcl_armor_unequip = "mcl_armor_unequip_leather",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:boots_iron", {
@@ -321,8 +265,8 @@ minetest.register_tool("mcl_armor:boots_iron", {
 		_mcl_armor_equip = "mcl_armor_equip_iron",
 		_mcl_armor_unequip = "mcl_armor_unequip_iron",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:boots_gold", {
@@ -336,8 +280,8 @@ minetest.register_tool("mcl_armor:boots_gold", {
 		_mcl_armor_equip = "mcl_armor_equip_iron",
 		_mcl_armor_unequip = "mcl_armor_unequip_iron",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:boots_diamond",{
@@ -351,8 +295,8 @@ minetest.register_tool("mcl_armor:boots_diamond",{
 		_mcl_armor_equip = "mcl_armor_equip_diamond",
 		_mcl_armor_unequip = "mcl_armor_unequip_diamond",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 minetest.register_tool("mcl_armor:boots_chain", {
@@ -366,8 +310,8 @@ minetest.register_tool("mcl_armor:boots_chain", {
 		_mcl_armor_equip = "mcl_armor_equip_chainmail",
 		_mcl_armor_unequip = "mcl_armor_unequip_chainmail",
 	},
-	on_place = on_armor_use,
-	on_secondary_use = on_armor_use,
+	on_place = armor.on_armor_use,
+	on_secondary_use = armor.on_armor_use,
 })
 
 -- Register Craft Recipies
