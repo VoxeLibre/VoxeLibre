@@ -148,9 +148,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 					max_hear_distance = 12,
 					gain = 1.0,
 					pitch = 1 + math.random(-10, 10)*0.005,
-					-- FIXME: Should be linked to object, but it's broken in Minetest 5.1.0
-					-- See https://github.com/minetest/minetest/issues/9183
-					pos = pos,
+					object = user,
 				})
 			else
 				-- Assume the item is a food
@@ -189,9 +187,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 					max_hear_distance = 12,
 					gain = 1.0,
 					pitch = 1 + math.random(-10, 10)*0.005,
-					-- FIXME: Should be linked to object, but it's broken in Minetest 5.1.0
-					-- See https://github.com/minetest/minetest/issues/9183
-					pos = pos,
+					object = user,
 				})
 			end
 
