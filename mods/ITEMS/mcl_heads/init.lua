@@ -1,5 +1,7 @@
 local S = minetest.get_translator("mcl_heads")
 
+local mod_doc = minetest.get_modpath("doc")
+
 -- Heads system
 
 local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
@@ -11,7 +13,7 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 	minetest.register_node("mcl_heads:"..name, {
 		description = desc,
 		_doc_items_longdesc = longdesc,
-    		drawtype = "nodebox",
+		drawtype = "nodebox",
 		is_ground_content = false,
 		node_box = {
 			type = "fixed",
@@ -50,6 +52,44 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 		_mcl_armor_mob_range_mob = rangemob,
 
 	})
+
+	minetest.register_node("mcl_heads:"..name.."_wall", {
+		_doc_items_create_entry = false,
+		drawtype = "nodebox",
+		is_ground_content = false,
+		node_box = {
+			type = "wallmounted",
+			wall_bottom = { -0.25, -0.5, -0.25, 0.25, 0.0, 0.25, },
+			wall_top = { -0.25, 0.0, -0.25, 0.25, 0.5, 0.25, },
+			wall_side = { -0.5, -0.25, -0.25, 0.0, 0.25, 0.25, },
+		},
+		groups = {handy=1, head=1, deco_block=1, dig_by_piston=1, not_in_creative_inventory=1},
+		-- The head textures are based off the textures of an actual mob.
+		tiles = {
+			{ name = "[combine:16x16:-4,-4="..texture, align_style = "world" }, -- front
+			{ name = "[combine:16x16:-20,-4="..texture, align_style = "world" }, -- back
+			{ name = "[combine:16x16:-8,-4="..texture, align_style = "world" }, -- left
+			{ name = "[combine:16x16:0,-4="..texture, align_style = "world" }, -- right
+			{ name = "([combine:16x16:-4,0="..texture..")^[transformR180", align_style = "node" }, -- top
+			{ name = "([combine:16x16:-4,8="..texture..")^([combine:16x16:-12,8="..texture..")", align_style = "node" }, -- bottom
+		},
+		paramtype = "light",
+		stack_max = 64,
+		paramtype2 = "wallmounted",
+		sunlight_propagates = true,
+		walkable = true,
+		sounds = mcl_sounds.node_sound_defaults({
+			footstep = {name="default_hard_footstep", gain=0.3}
+		}),
+		drop = "mcl_heads:"..name,
+		on_rotate = on_rotate,
+		_mcl_blast_resistance = 5,
+		_mcl_hardness = 1,
+	})
+
+	if mod_doc then
+		doc.add_entry_alias("nodes", "mcl_heads:" .. name, "nodes", "mcl_heads:" .. name .. "_wall")
+	end
 end
 
 -- Add heads
