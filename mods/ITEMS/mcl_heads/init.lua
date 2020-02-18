@@ -1,13 +1,29 @@
 local S = minetest.get_translator("mcl_heads")
 
 local mod_doc = minetest.get_modpath("doc")
+local mod_screwdriver = minetest.get_modpath("screwdriver")
 
 -- Heads system
 
 local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
-	local on_rotate
-	if minetest.get_modpath("screwdriver") then
-		on_rotate = screwdriver.rotate_simple
+	local on_rotate_floor, on_rotate_wall
+	if mod_screwdriver then
+		on_rotate_floor = function(pos, node, user, mode, new_param2)
+			if mode == screwdriver.ROTATE_AXIS then
+				node.name = node.name .. "_wall"
+				node.param2 = minetest.dir_to_wallmounted(minetest.facedir_to_dir(node.param2))
+				minetest.set_node(pos, node)
+				return true
+			end
+		end
+		on_rotate_wall = function(pos, node, user, mode, new_param2)
+			if mode == screwdriver.ROTATE_AXIS then
+				node.name = string.sub(node.name, 1, string.len(node.name)-5)
+				node.param2 = minetest.dir_to_facedir(minetest.wallmounted_to_dir(node.param2))
+				minetest.set_node(pos, node)
+				return true
+			end
+		end
 	end
 
 	minetest.register_node("mcl_heads:"..name, {
@@ -85,7 +101,7 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 			itemstack:set_name(itemstring)
 			return itemstack
 		end,
-		on_rotate = on_rotate,
+		on_rotate = on_rotate_floor,
 
 		_mcl_blast_resistance = 5,
 		_mcl_hardness = 1,
@@ -122,7 +138,7 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 			footstep = {name="default_hard_footstep", gain=0.3}
 		}),
 		drop = "mcl_heads:"..name,
-		on_rotate = on_rotate,
+		on_rotate = on_rotate_wall,
 		_mcl_blast_resistance = 5,
 		_mcl_hardness = 1,
 	})
