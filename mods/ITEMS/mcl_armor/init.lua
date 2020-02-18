@@ -41,6 +41,10 @@ minetest.register_tool("mcl_armor:helmet_gold", {
 	inventory_image = "mcl_armor_inv_helmet_gold.png",
 	groups = {armor_head=1, mcl_armor_points=2, mcl_armor_uses=78},
 	_repair_material = "mcl_core:gold_ingot",
+	sounds = {
+		_mcl_armor_equip = "mcl_armor_equip_iron",
+		_mcl_armor_unequip = "mcl_armor_unequip_iron",
+	},
 })
 
 minetest.register_tool("mcl_armor:helmet_diamond",{
@@ -104,6 +108,10 @@ minetest.register_tool("mcl_armor:chestplate_gold", {
 	inventory_image = "mcl_armor_inv_chestplate_gold.png",
 	groups = {armor_torso=1, mcl_armor_points=5, mcl_armor_uses=113},
 	_repair_material = "mcl_core:gold_ingot",
+	sounds = {
+		_mcl_armor_equip = "mcl_armor_equip_iron",
+		_mcl_armor_unequip = "mcl_armor_unequip_iron",
+	},
 })
 
 minetest.register_tool("mcl_armor:chestplate_diamond",{
@@ -167,6 +175,10 @@ minetest.register_tool("mcl_armor:leggings_gold", {
 	inventory_image = "mcl_armor_inv_leggings_gold.png",
 	groups = {armor_legs=1, mcl_armor_points=3, mcl_armor_uses=106},
 	_repair_material = "mcl_core:gold_ingot",
+	sounds = {
+		_mcl_armor_equip = "mcl_armor_equip_iron",
+		_mcl_armor_unequip = "mcl_armor_unequip_iron",
+	},
 })
 
 minetest.register_tool("mcl_armor:leggings_diamond",{
@@ -229,6 +241,10 @@ minetest.register_tool("mcl_armor:boots_gold", {
 	inventory_image = "mcl_armor_inv_boots_gold.png",
 	groups = {armor_feet=1, mcl_armor_points=1, mcl_armor_uses=92},
 	_repair_material = "mcl_core:gold_ingot",
+	sounds = {
+		_mcl_armor_equip = "mcl_armor_equip_iron",
+		_mcl_armor_unequip = "mcl_armor_unequip_iron",
+	},
 })
 
 minetest.register_tool("mcl_armor:boots_diamond",{

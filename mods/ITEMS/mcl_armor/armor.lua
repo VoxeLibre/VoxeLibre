@@ -232,7 +232,7 @@ armor.play_equip_sound = function(self, player, stack, unequip)
 	local snd = def.sounds and def.sounds["_mcl_armor_"..estr]
 	if not snd then
 		-- Fallback sound
-		snd = { name = "mcl_armor_"..estr.."_iron" }
+		snd = { name = "mcl_armor_"..estr.."_generic" }
 	end
 	if snd then
 		minetest.sound_play(snd, {object=player, gain=0.5, max_hear_distance=8})

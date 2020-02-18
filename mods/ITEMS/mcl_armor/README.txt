@@ -20,6 +20,10 @@ Source: <https://freesound.org/people/juryduty/sounds/180231/>
 Licensed CC0, by Freesound.org user mtchanary.
 Source: <https://freesound.org/people/mitchanary/sounds/506148/>
 
+* mcl_armor_equip_generic.ogg
+* mcl_armor_unequip_generic.ogg
+Licensed (CC BY-SA 3.0) by Mito551
+
 All other sounds licensed CC0 by OpenGameArt.org user artisticdude.
 Source: <https://opengameart.org/content/rpg-sound-pack>
 
