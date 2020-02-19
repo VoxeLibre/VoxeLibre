@@ -110,6 +110,8 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 
 		on_rotate = on_rotate_floor,
 
+		_mcl_armor_mob_range_mob = rangemob,
+		_mcl_armor_mob_range_factor = rangefactor,
 		_mcl_blast_resistance = 5,
 		_mcl_hardness = 1,
 	})
