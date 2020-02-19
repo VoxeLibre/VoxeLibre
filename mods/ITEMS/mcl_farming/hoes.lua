@@ -49,6 +49,14 @@ local hoe_on_place_function = function(wear_divisor)
 	end
 end
 
+local uses = {
+	wood = 60,
+	stone = 132,
+	iron = 251,
+	gold = 33,
+	diamond = 1561,
+}
+
 local hoe_longdesc = S("Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.")
 local hoe_usagehelp = S("Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.")
 
@@ -58,11 +66,12 @@ minetest.register_tool("mcl_farming:hoe_wood", {
 	_doc_items_usagehelp = hoe_usagehelp,
 	_doc_items_hidden = false,
 	inventory_image = "farming_tool_woodhoe.png",
-	on_place = hoe_on_place_function(60),
+	on_place = hoe_on_place_function(uses.wood),
 	groups = { tool=1, hoe=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
-		damage_groups = { fleshy = 1, }
+		damage_groups = { fleshy = 1, },
+		punch_attack_uses = uses.wood,
 	},
 	_repair_material = "group:wood",
 })
@@ -94,11 +103,12 @@ minetest.register_tool("mcl_farming:hoe_stone", {
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_stonehoe.png",
-	on_place = hoe_on_place_function(132),
+	on_place = hoe_on_place_function(uses.stone),
 	groups = { tool=1, hoe=1 },
 	tool_capabilities = {
 		full_punch_interval = 0.5,
-		damage_groups = { fleshy = 1, }
+		damage_groups = { fleshy = 1, },
+		punch_attack_uses = uses.stone,
 	},
 	_repair_material = "mcl_core:cobblestone",
 })
@@ -125,12 +135,13 @@ minetest.register_tool("mcl_farming:hoe_iron", {
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_steelhoe.png",
-	on_place = hoe_on_place_function(251),
+	on_place = hoe_on_place_function(uses.iron),
 	groups = { tool=1, hoe=1 },
 	tool_capabilities = {
 		-- 1/3
 		full_punch_interval = 0.33333333,
-		damage_groups = { fleshy = 1, }
+		damage_groups = { fleshy = 1, },
+		punch_attack_uses = uses.iron,
 	},
 	_repair_material = "mcl_core:iron_ingot",
 })
@@ -164,11 +175,12 @@ minetest.register_tool("mcl_farming:hoe_gold", {
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_goldhoe.png",
-	on_place = hoe_on_place_function(33),
+	on_place = hoe_on_place_function(uses.gold),
 	groups = { tool=1, hoe=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
-		damage_groups = { fleshy = 1, }
+		damage_groups = { fleshy = 1, },
+		punch_attack_uses = uses.gold,
 	},
 	_repair_material = "mcl_core:gold_ingot",
 })
@@ -204,11 +216,12 @@ minetest.register_tool("mcl_farming:hoe_diamond", {
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_diamondhoe.png",
-	on_place = hoe_on_place_function(1562),
+	on_place = hoe_on_place_function(uses.diamond),
 	groups = { tool=1, hoe=1 },
 	tool_capabilities = {
 		full_punch_interval = 0.25,
-		damage_groups = { fleshy = 1, }
+		damage_groups = { fleshy = 1, },
+		punch_attack_uses = uses.diamond,
 	},
 	_repair_material = "mcl_core:diamond",
 })
