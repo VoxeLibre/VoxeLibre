@@ -2623,13 +2623,24 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 		punch_interval = tool_capabilities.full_punch_interval or 1.4
 	end
 
-	-- add weapon wear
+	-- add weapon wear manually
+	-- Required because we have custom health handling ("health" property)
 	if minetest.settings:get_bool("creative_mode") ~= true
-	and weapon:get_definition()
-	and weapon:get_definition().tool_capabilities then
-
-		weapon:add_wear(floor((punch_interval / 75) * 9000))
-		hitter:set_wielded_item(weapon)
+	and tool_capabilities then
+		if tool_capabilities.punch_attack_uses then
+			-- Without this delay, the wear does not work. Quite hacky ...
+			minetest.after(0, function(name)
+				local player = minetest.get_player_by_name(name)
+				if not player then return end
+				local weapon = hitter:get_wielded_item(player)
+				local def = weapon:get_definition()
+				if def.tool_capabilities and def.tool_capabilities.punch_attack_uses then
+					local wear = floor(65535/tool_capabilities.punch_attack_uses)
+					weapon:add_wear(wear)
+					hitter:set_wielded_item(weapon)
+				end
+			end, hitter:get_player_name())
+		end
 	end
 
 	local die = false
@@ -2921,7 +2932,9 @@ local mob_activate = function(self, staticdata, def, dtime)
 	self.path.following = false -- currently following path?
 	self.path.stuck_timer = 0 -- if stuck for too long search for path
 
-	-- mob defaults
+	-- Armor groups
+	-- immortal=1 because we use custom health
+	-- handling (using "health" property)
 	local armor
 	if type(self.armor) == "table" then
 		armor = table.copy(self.armor)
