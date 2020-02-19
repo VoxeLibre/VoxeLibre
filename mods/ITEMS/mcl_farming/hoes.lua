@@ -49,16 +49,26 @@ local hoe_on_place_function = function(wear_divisor)
 	end
 end
 
+local uses = {
+	wood = 60,
+	stone = 132,
+	iron = 251,
+	gold = 33,
+	diamond = 1562,
+}
+
+local hoe_tt = S("Turns block into farmland")
 local hoe_longdesc = S("Hoes are essential tools for growing crops. They are used to create farmland in order to plant seeds on it. Hoes can also be used as very weak weapons in a pinch.")
 local hoe_usagehelp = S("Use the hoe on a cultivatable block (by rightclicking it) to turn it into farmland. Dirt, grass blocks and grass paths are cultivatable blocks. Using a hoe on coarse dirt turns it into dirt.")
 
 minetest.register_tool("mcl_farming:hoe_wood", {
 	description = S("Wood Hoe"),
+	_tt_help = hoe_tt.."\n"..S("Uses: @1", uses.wood),
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	_doc_items_hidden = false,
 	inventory_image = "farming_tool_woodhoe.png",
-	on_place = hoe_on_place_function(60),
+	on_place = hoe_on_place_function(uses.wood),
 	groups = { tool=1, hoe=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
@@ -91,10 +101,11 @@ minetest.register_craft({
 
 minetest.register_tool("mcl_farming:hoe_stone", {
 	description = S("Stone Hoe"),
+	_tt_help = hoe_tt.."\n"..S("Uses: @1", uses.stone),
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_stonehoe.png",
-	on_place = hoe_on_place_function(132),
+	on_place = hoe_on_place_function(uses.stone),
 	groups = { tool=1, hoe=1 },
 	tool_capabilities = {
 		full_punch_interval = 0.5,
@@ -122,10 +133,11 @@ minetest.register_craft({
 
 minetest.register_tool("mcl_farming:hoe_iron", {
 	description = S("Iron Hoe"),
+	_tt_help = hoe_tt.."\n"..S("Uses: @1", uses.iron),
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_steelhoe.png",
-	on_place = hoe_on_place_function(251),
+	on_place = hoe_on_place_function(uses.iron),
 	groups = { tool=1, hoe=1 },
 	tool_capabilities = {
 		-- 1/3
@@ -161,10 +173,11 @@ minetest.register_craft({
 
 minetest.register_tool("mcl_farming:hoe_gold", {
 	description = S("Golden Hoe"),
+	_tt_help = hoe_tt.."\n"..S("Uses: @1", uses.gold),
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_goldhoe.png",
-	on_place = hoe_on_place_function(33),
+	on_place = hoe_on_place_function(uses.gold),
 	groups = { tool=1, hoe=1 },
 	tool_capabilities = {
 		full_punch_interval = 1,
@@ -201,10 +214,11 @@ minetest.register_craft({
 
 minetest.register_tool("mcl_farming:hoe_diamond", {
 	description = S("Diamond Hoe"),
+	_tt_help = hoe_tt.."\n"..S("Uses: @1", uses.diamond),
 	_doc_items_longdesc = hoe_longdesc,
 	_doc_items_usagehelp = hoe_usagehelp,
 	inventory_image = "farming_tool_diamondhoe.png",
-	on_place = hoe_on_place_function(1562),
+	on_place = hoe_on_place_function(uses.diamond),
 	groups = { tool=1, hoe=1 },
 	tool_capabilities = {
 		full_punch_interval = 0.25,

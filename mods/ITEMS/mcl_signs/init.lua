@@ -278,6 +278,7 @@ end
 
 minetest.register_node("mcl_signs:wall_sign", {
 	description = S("Sign"),
+	_tt_help = S("Can be written"),
 	_doc_items_longdesc = S("Signs can be written and come in two variants: Wall sign and sign on a sign post. Signs can be placed on the top and the sides of other blocks, but not below them."),
 	_doc_items_usagehelp = S("After placing the sign, you can write something on it. You have 4 lines of text with up to 15 characters for each line; anything beyond these limits is lost. Not all characters are supported. The text can not be changed once it has been written; you have to break and place the sign again."),
 	inventory_image = "default_sign.png",

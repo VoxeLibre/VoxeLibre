@@ -2,6 +2,7 @@ local S = minetest.get_translator("mesecons_noteblock")
 
 minetest.register_node("mesecons_noteblock:noteblock", {
 	description = S("Note Block"),
+	_tt_help = S("Plays a musical note when powered by redstone power"),
 	_doc_items_longdesc = S("A note block is a musical block which plays one of many musical notes and different intruments when it is punched or supplied with redstone power."),
 	_doc_items_usagehelp = S("Use the note block to choose the next musical note (there are 25 semitones, or 2 octaves). The intrument played depends on the material of the block below the note block:").."\n\n"..
 

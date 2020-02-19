@@ -526,7 +526,7 @@ mcl_minecarts.place_minecart = function(itemstack, pointed_thing)
 end
 
 
-local register_craftitem = function(itemstring, entity_id, description, longdesc, usagehelp, icon, creative)
+local register_craftitem = function(itemstring, entity_id, description, tt_help, longdesc, usagehelp, icon, creative)
 	entity_mapping[itemstring] = entity_id
 
 	local groups = { minecart = 1, transport = 1 }
@@ -566,6 +566,7 @@ local register_craftitem = function(itemstring, entity_id, description, longdesc
 		groups = groups,
 	}
 	def.description = description
+	def._tt_help = tt_help
 	def._doc_items_longdesc = longdesc
 	def._doc_items_usagehelp = usagehelp
 	def.inventory_image = icon
@@ -588,9 +589,9 @@ Register a minecart
 * on_activate_by_rail: Called when above activator rail
 * creative: If false, don't show in Creative Inventory
 ]]
-local function register_minecart(itemstring, entity_id, description, longdesc, usagehelp, mesh, textures, icon, drop, on_rightclick, on_activate_by_rail, creative)
+local function register_minecart(itemstring, entity_id, description, tt_help, longdesc, usagehelp, mesh, textures, icon, drop, on_rightclick, on_activate_by_rail, creative)
 	register_entity(entity_id, mesh, textures, drop, on_rightclick, on_activate_by_rail)
-	register_craftitem(itemstring, entity_id, description, longdesc, usagehelp, icon, creative)
+	register_craftitem(itemstring, entity_id, description, tt_help, longdesc, usagehelp, icon, creative)
 	if minetest.get_modpath("doc_identifier") ~= nil then
 		doc.sub.identifier.register_object(entity_id, "craftitems", itemstring)
 	end
@@ -601,6 +602,7 @@ register_minecart(
 	"mcl_minecarts:minecart",
 	"mcl_minecarts:minecart",
 	S("Minecart"),
+	S("Vehicle for fast travel on rails"),
 	S("Minecarts can be used for a quick transportion on rails.") .. "\n" ..
 	S("Minecarts only ride on rails and always follow the tracks. At a T-junction with no straight way ahead, they turn left. The speed is affected by the rail type."),
 	S("You can place the minecart on rails. Right-click it to enter it. Punch it to get it moving.") .. "\n" ..
@@ -640,7 +642,7 @@ register_minecart(
 	"mcl_minecarts:chest_minecart",
 	"mcl_minecarts:chest_minecart",
 	S("Minecart with Chest"),
-	nil, nil,
+	nil, nil, nil,
 	"mcl_minecarts_minecart_chest.b3d",
 	{ "mcl_chests_normal.png", "mcl_minecarts_minecart.png" },
 	"mcl_minecarts_minecart_chest.png",
@@ -652,6 +654,7 @@ register_minecart(
 	"mcl_minecarts:furnace_minecart",
 	"mcl_minecarts:furnace_minecart",
 	S("Minecart with Furnace"),
+	nil,
 	S("A minecart with furnace is a vehicle that travels on rails. It can propel itself with fuel."),
 	S("Place it on rails. If you give it some coal, the furnace will start burning for a long time and the minecart will be able to move itself. Punch it to get it moving.") .. "\n" ..
 	S("To obtain the minecart and furnace, punch them while holding down the sneak key."),
@@ -705,7 +708,7 @@ register_minecart(
 	"mcl_minecarts:command_block_minecart",
 	"mcl_minecarts:command_block_minecart",
 	S("Minecart with Command Block"),
-	nil, nil,
+	nil, nil, nil,
 	"mcl_minecarts_minecart_block.b3d",
 	{
 		"jeija_commandblock_off.png^[verticalframe:2:0",
@@ -726,7 +729,7 @@ register_minecart(
 	"mcl_minecarts:hopper_minecart",
 	"mcl_minecarts:hopper_minecart",
 	S("Minecart with Hopper"),
-	nil, nil,
+	nil, nil, nil,
 	"mcl_minecarts_minecart_hopper.b3d",
 	{
 		"mcl_hoppers_hopper_inside.png",
@@ -744,6 +747,7 @@ register_minecart(
 	"mcl_minecarts:tnt_minecart",
 	"mcl_minecarts:tnt_minecart",
 	S("Minecart with TNT"),
+	S("Vehicle for fast travel on rails").."\n"..S("Can be ignited by tools or powered activator rail"),
 	S("A minecart with TNT is an explosive vehicle that travels on rail."),
 	S("Place it on rails. Punch it to move it. The TNT is ignited with a flint and steel or when the minecart is on an powered activator rail.") .. "\n" ..
 	S("To obtain the minecart and TNT, punch them while holding down the sneak key. You can't do this if the TNT was ignited."),

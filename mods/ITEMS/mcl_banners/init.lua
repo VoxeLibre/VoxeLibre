@@ -195,6 +195,7 @@ end
 -- Standing banner node
 -- This one is also used for the help entry to avoid spamming the help with 16 entries.
 minetest.register_node("mcl_banners:standing_banner", {
+	_tt_help = S("Paintable"),
 	_doc_items_entry_name = "Banner",
 	_doc_items_image = "mcl_banners_item_base.png^mcl_banners_item_overlay.png",
 	_doc_items_longdesc = S("Banners are tall colorful decorative blocks. They can be placed on the floor and at walls. Banners can be emblazoned with a variety of patterns using a lot of dye in crafting."),

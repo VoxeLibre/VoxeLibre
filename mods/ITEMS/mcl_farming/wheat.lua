@@ -3,6 +3,7 @@ local S = minetest.get_translator("mcl_farming")
 minetest.register_craftitem("mcl_farming:wheat_seeds", {
 	-- Original Minecraft name: “Seeds”
 	description = S("Wheat Seeds"),
+	_tt_help = S("Can be sown on farmland"),
 	_doc_items_longdesc = S("Grows into a wheat plant. Chickens like wheat seeds."),
 	_doc_items_usagehelp = S("Place the wheat seeds on farmland (which can be created with a hoe) to plant a wheat plant. They grow in sunlight and grow faster on hydrated farmland. Rightclick an animal to feed it wheat seeds."),
 	groups = { craftitem=1 },

@@ -126,6 +126,7 @@ end
 -- Jukebox
 minetest.register_node("mcl_jukebox:jukebox", {
 	description = S("Jukebox"),
+	_tt_help = S("Uses music discs to play music"),
 	_doc_items_longdesc = S("Jukeboxes play music when they're supplied with a music disc."),
 	_doc_items_usagehelp = S("Place a music disc into an empty jukebox to insert the music disc and play music. If the jukebox already has a music disc, you will retrieve this music disc first. The music can only be heard by you, not by other players."),
 	tiles = {"mcl_jukebox_top.png", "mcl_jukebox_side.png", "mcl_jukebox_side.png"},

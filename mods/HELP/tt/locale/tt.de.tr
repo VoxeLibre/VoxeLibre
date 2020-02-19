@@ -1,0 +1,27 @@
+# textdomain:tt
+Damage: @1=Schaden: @1
+Damage (@1): @2=Schaden (@1): @2
+Healing: @1=Heilung: @1
+Healing (@1): @2=Heilung (@1): @2
+Full punch interval: @1s=Zeit zum Ausholen: @1s
+Food item=Lebensmittel
++@1 satiation=+@1 Sättigung
+@1 satiation=@1 Sättigung
++@1 food points=+@1 Nahrungspunkte
+Contact damage: @1 per second=Kontaktschaden: @1 pro Sekunde
+Contact healing: @1 per second=Kontaktheilung: @1 pro Sekunde
+Drowning damage: @1=Ertrinkensschaden: @1
+Bouncy (@1%)=Sprunghaft (@1%)
+Luminance: @1=Lichtstärke: @1
+Slippery=Rutschig
+Climbable=Erkletterbar
+Climbable (only downwards)=Erkletterbar (nur nach unten)
+No jumping=Kein Springen
+No swimming upwards=Kein nach oben schwimmen
+No rising=Kein Aufsteigen
+Fall damage: @1%=Fallschaden: @1%
+Fall damage: +@1%=Fallschaden: +@1%
+No fall damage=Kein Fallschaden
+Digs @1 blocks=Gräbt „@1“-Blöcke
+Digs @1 blocks instantly=Gräbt „@1“-Blöcke sofort
+Minimum dig time: @1s=Minimale Grabezeit: @1s

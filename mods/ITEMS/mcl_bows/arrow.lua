@@ -20,6 +20,7 @@ local mod_button = minetest.get_modpath("mesecons_button")
 
 minetest.register_craftitem("mcl_bows:arrow", {
 	description = S("Arrow"),
+	_tt_help = S("Ammunition").."\n"..S("Damage from bow: 1-10").."\n"..S("Damage from dispenser: 3"),
 	_doc_items_longdesc = S("Arrows are ammunition for bows and dispensers.").."\n"..
 S("An arrow fired from a bow has a regular damage of 1-9. At full charge, there's a 20% chance of a critical hit dealing 10 damage instead. An arrow fired from a dispenser always deals 3 damage.").."\n"..
 S("Arrows might get stuck on solid blocks and can be retrieved again. They are also capable of pushing wooden buttons."),

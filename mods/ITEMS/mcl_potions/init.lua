@@ -20,6 +20,7 @@ minetest.register_craft({
 
 minetest.register_craftitem("mcl_potions:glass_bottle", {
 	description = S("Glass Bottle"),
+	_tt_help = S("Liquid container"),
 	_doc_items_longdesc = S("A glass bottle is used as a container for liquids and can be used to collect water directly."),
 	_doc_items_usagehelp = S("To collect water, it on a cauldron with water (which removes a level of water) or any water source (which removes no water)."),
 	inventory_image = "mcl_potions_potion_bottle_empty.png",
@@ -159,6 +160,7 @@ end
 
 minetest.register_craftitem("mcl_potions:potion_water", {
 	description = S("Water Bottle"),
+	_tt_help = S("No effect"),
 	_doc_items_longdesc = S("Water bottles can be used to fill cauldrons. Drinking water has no effect."),
 	_doc_items_usagehelp = S("Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron."),
 	stack_max = 1,
@@ -203,6 +205,7 @@ minetest.register_craftitem("mcl_potions:potion_water", {
 
 minetest.register_craftitem("mcl_potions:potion_river_water", {
 	description = S("River Water Bottle"),
+	_tt_help = S("No effect"),
 	_doc_items_longdesc = S("River water bottles can be used to fill cauldrons. Drinking it has no effect."),
 	_doc_items_usagehelp = S("Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron."),
 
@@ -252,6 +255,7 @@ local how_to_drink = S("Use the “Place” key to drink it.")
 
 minetest.register_craftitem("mcl_potions:potion_awkward", {
 	description = S("Awkward Potion"),
+	_tt_help = S("No effect"),
 	_doc_items_longdesc = S("This potion has an awkward taste and is used for brewing more potions. Drinking it has no effect."),
 	_doc_items_usagehelp = how_to_drink,
 	stack_max = 1,
@@ -264,6 +268,7 @@ minetest.register_craftitem("mcl_potions:potion_awkward", {
 })
 minetest.register_craftitem("mcl_potions:potion_mundane", {
 	description = S("Mundane Potion"),
+	_tt_help = S("No effect"),
 	_doc_items_longdesc = S("This potion has a clean taste and is used for brewing more potions. Drinking it has no effect."),
 	_doc_items_usagehelp = how_to_drink,
 	stack_max = 1,
@@ -276,6 +281,7 @@ minetest.register_craftitem("mcl_potions:potion_mundane", {
 })
 minetest.register_craftitem("mcl_potions:potion_thick", {
 	description = S("Thick Potion"),
+	_tt_help = S("No effect"),
 	_doc_items_longdesc = S("This potion has a bitter taste and is used for brewing more potions. Drinking it has no effect."),
 	_doc_items_usagehelp = how_to_drink,
 	stack_max = 1,

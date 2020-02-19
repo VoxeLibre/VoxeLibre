@@ -3,6 +3,8 @@
 #!#!#!#Released under CC Attribution-ShareAlike 3.0 Unported #!#!#
 ]]--
 
+local CAKE_HUNGER_POINTS = 2
+
 local S = minetest.get_translator("mcl_cake")
 
 local cake_texture = {"cake_top.png","cake_bottom.png","cake_inner.png","cake_side.png","cake_side.png","cake_side.png"}
@@ -31,6 +33,7 @@ minetest.register_craft({
 
 minetest.register_node("mcl_cake:cake", {
 	description = S("Cake"),
+	_tt_help = S("With 7 tasty slices!").."\n"..S("Hunger points: +@1 per slice", CAKE_HUNGER_POINTS),
 	_doc_items_longdesc = S("Cakes can be placed and eaten to restore hunger points. A cake has 7 slices. Each slice restores 2 hunger points and 0.4 saturation points. Cakes will be destroyed when dug or when the block below them is broken."),
 	_doc_items_usagehelp = S("Place the cake anywhere, then rightclick it to eat a single slice. You can't eat from the cake when your hunger bar is full."),
 	tiles = {"cake_top.png","cake_bottom.png","cake_side.png","cake_side.png","cake_side.png","cake_side.png"},
@@ -82,7 +85,7 @@ local register_slice = function(level, nodebox, desc)
 				minetest.record_protection_violation(pos, name)
 				return
 			end
-			local newcake = minetest.do_item_eat(2, ItemStack(after_eat), ItemStack(this), clicker, {type="nothing"})
+			local newcake = minetest.do_item_eat(CAKE_HUNGER_POINTS, ItemStack(after_eat), ItemStack(this), clicker, {type="nothing"})
 			-- Check if we were allowed to eat
 			if newcake:get_name() ~= this or minetest.settings:get_bool("creative_mode") == true then
 				minetest.add_node(pos,{type="node",name=after_eat,param2=0})
@@ -96,7 +99,7 @@ local register_slice = function(level, nodebox, desc)
 				minetest.record_protection_violation(pos, name)
 				return
 			end
-			local newcake = minetest.do_item_eat(2, ItemStack("mcl:cake:cake 0"), ItemStack("mcl_cake:cake_1"), clicker, {type="nothing"})
+			local newcake = minetest.do_item_eat(CAKE_HUNGER_POINTS, ItemStack("mcl:cake:cake 0"), ItemStack("mcl_cake:cake_1"), clicker, {type="nothing"})
 			-- Check if we were allowed to eat
 			if newcake:get_name() ~= this or minetest.settings:get_bool("creative_mode") == true then
 				minetest.remove_node(pos)

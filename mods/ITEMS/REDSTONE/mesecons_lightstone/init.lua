@@ -7,6 +7,7 @@ minetest.register_node("mesecons_lightstone:lightstone_off", {
 	groups = {handy=1, mesecon_effector_off = 1, mesecon = 2},
 	is_ground_content = false,
 	description= S("Redstone Lamp"),
+	_tt_help = S("Glows when powered by redstone power"),
 	_doc_items_longdesc = S("Redstone lamps are simple redstone components which glow brightly (light level @1) when they receive redstone power.", light),
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {effector = {

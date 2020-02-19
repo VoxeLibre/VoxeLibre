@@ -146,6 +146,7 @@ end
 -- TODO: Clear *all* status effects
 minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 	description = S("Milk"),
+	_tt_help = S("Cures poison"),
 	_doc_items_longdesc = S("Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will cure all forms of poisoning, but restores no hunger points."),
 	_doc_items_usagehelp = "Rightclick to drink the milk.",
 	inventory_image = "mcl_mobitems_bucket_milk.png",
@@ -272,6 +273,7 @@ minetest.register_craftitem("mcl_mobitems:rabbit_foot", {
 
 minetest.register_craftitem("mcl_mobitems:saddle", {
 	description = S("Saddle"),
+	_tt_help = S("Can be placed on animals to ride them"),
 	_doc_items_longdesc = S("Saddles can be put on some animals in order to mount them."),
 	_doc_items_usagehelp = "Rightclick an animal (with the saddle in your hand) to try put on the saddle. Saddles fit on horses, mules, donkeys and pigs. Horses, mules and donkeys need to be tamed first, otherwise they'll reject the saddle. Saddled animals can be mounted by rightclicking them again.",
 	wield_image = "mcl_mobitems_saddle.png",
@@ -316,6 +318,7 @@ minetest.register_craftitem("mcl_mobitems:gunpowder", {
 
 minetest.register_tool("mcl_mobitems:carrot_on_a_stick", {
 	description = S("Carrot on a Stick"),
+	_tt_help = S("Lets you ride a saddled pig"),
 	_doc_items_longdesc = S("A carrot on a stick can be used on saddled pigs to ride them."),
 	_doc_items_usagehelp = S("Place it on a saddled pig to mount it. You can now ride the pig like a horse. Pigs will also walk towards you when you just wield the carrot on a stick."),
 	wield_image = "mcl_mobitems_carrot_on_a_stick.png",

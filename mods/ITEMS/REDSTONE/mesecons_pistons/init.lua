@@ -178,6 +178,7 @@ local usagehelp_piston = S("This block can have one of 6 possible orientations."
 -- offstate
 minetest.register_node("mesecons_pistons:piston_normal_off", {
 	description = S("Piston"),
+	_tt_help = S("Pushes block when powered by redstone power"),
 	_doc_items_longdesc = S("A piston is a redstone component with a pusher which pushes the block or blocks in front of it when it is supplied with redstone power. Not all blocks can be pushed, however."),
 	_doc_items_usagehelp = usagehelp_piston,
 	tiles = {
@@ -280,6 +281,7 @@ local pistonspec_sticky = {
 -- offstate
 minetest.register_node("mesecons_pistons:piston_sticky_off", {
 	description = S("Sticky Piston"),
+	_tt_help = S("Pushes or pulls block when powered by redstone power"),
 	_doc_items_longdesc = S("A sticky piston is a redstone component with a sticky pusher which can be extended and retracted. It extends when it is supplied with redstone power. When the pusher extends, it pushes the block or blocks in front of it. When it retracts, it pulls back the single block in front of it. Note that not all blocks can be pushed or pulled."),
 	_doc_items_usagehelp = usagehelp_piston,
 

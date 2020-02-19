@@ -67,11 +67,12 @@ local ontop = "dead_brain_coral_block"
 local canonical = "mcl_ocean:sea_pickle_1_"..ontop
 
 for s=1,4 do
-	local desc, doc_desc, doc_use, doc_create, nici, img, img_off, on_place
+	local desc, doc_desc, doc_use, doc_create, tt_help, nici, img, img_off, on_place
 	if s == 1 then
 		desc = S("Sea Pickle")
 		doc_desc = S("Sea pickles grow on dead brain coral blocks and provide light when underwater. They come in 4 sizes that vary in brightness.")
 		doc_use = S("It can only be placed on top of dead brain coral blocks. Placing a sea pickle on another sea pickle will make it grow and brighter.")
+		tt_help = S("Glows when underwater").."\n"..S("4 possible sizes").."\n"..S("Grows on dead brain coral block")
 		img = "mcl_ocean_sea_pickle_item.png"
 		on_place = sea_pickle_on_place
 	else
@@ -88,6 +89,7 @@ for s=1,4 do
 
 	minetest.register_node("mcl_ocean:sea_pickle_"..s.."_"..ontop, {
 		description = desc,
+		_tt_help = tt_help,
 		_doc_items_create_entry = doc_create,
 		_doc_items_longdesc = doc_desc,
 		_doc_items_usagehelp = doc_use,

@@ -308,6 +308,7 @@ end)
 -- Fishing Rod
 minetest.register_tool("mcl_fishing:fishing_rod", {
 	description = S("Fishing Rod"),
+	_tt_help = S("Catch fish in water"),
 	_doc_items_longdesc = S("Fishing rods can be used to catch fish."),
 	_doc_items_usagehelp = S("Rightclick to launch the bobber. When it sinks right-click again to reel in an item. Who knows what you're going to catch?"),
 	groups = { tool=1 },

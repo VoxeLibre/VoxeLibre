@@ -34,6 +34,7 @@ minetest.register_craftitem("mcl_maps:empty_map", {
 -- has a very greatly zoomed-out version and even a radar mode
 minetest.register_craftitem("mcl_maps:filled_map", {
 	description = S("Map"),
+	_tt_help = S("Enables minimap"),
 	_doc_items_longdesc = S("Maps show your surroundings as you explore the world."),
 	_doc_items_usagehelp = S("Hold the map in any of the hotbar slots. This allows you to access the minimap by pressing the minimap key (see controls settings).").."\n"..
 			S("In Creative Mode, you don't need this item; the minimap is always available."),

@@ -97,7 +97,11 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 		groups_off.button_push_by_arrow = 1
 		groups_on.button_push_by_arrow = 1
 	end
-
+	local tt = S("Provides redstone power when pushed")
+	tt = tt .. "\n" .. S("Push duration: @1s", string.format("%.1f", button_timer))
+	if push_by_arrow then
+		tt = tt .. "\n" .. S("Pushable by arrow")
+	end
 	minetest.register_node("mesecons_button:button_"..basename.."_off", {
 		drawtype = "nodebox",
 		tiles = {texture},
@@ -113,6 +117,7 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 		node_box = boxes_off,
 		groups = groups_off,
 		description = description,
+		_tt_help = tt,
 		_doc_items_longdesc = longdesc,
 		_doc_items_usagehelp = buttonuse,
 		on_place = on_button_place,

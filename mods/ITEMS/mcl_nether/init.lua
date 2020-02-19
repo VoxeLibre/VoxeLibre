@@ -85,6 +85,7 @@ minetest.register_node("mcl_nether:netherrack", {
 
 minetest.register_node("mcl_nether:magma", {
 	description = S("Magma Block"),
+	_tt_help = S("Deals damage when standing on it"),
 	_doc_items_longdesc = S("Magma blocks are hot solid blocks which hurt anyone standing on it, unless they have fire resistance. Starting a fire on this block will create an eternal fire."),
 	stack_max = 64,
 	tiles = {{name="mcl_nether_magma.png", animation={type="vertical_frames", aspect_w=32, aspect_h=32, length=1.5}}},
@@ -113,6 +114,7 @@ minetest.register_node("mcl_nether:magma", {
 
 minetest.register_node("mcl_nether:soul_sand", {
 	description = S("Soul Sand"),
+	_tt_help = S("Reduces walking speed"),
 	_doc_items_longdesc = S("Soul sand is a block from the Nether. One can only slowly walk on soul sand. The slowing effect is amplified when the soul sand is on top of ice, packed ice or a slime block."),
 	stack_max = 64,
 	tiles = {"mcl_nether_soul_sand.png"},
