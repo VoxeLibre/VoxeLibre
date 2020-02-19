@@ -2518,12 +2518,20 @@ local falling = function(self, pos)
 
 			if d > 5 then
 
-				self.health = self.health - floor(d - 5)
+				local add = minetest.get_item_group(self.standing_on, "fall_damage_add_percent")
+				local damage = d - 5
+				if add ~= 0 then
+					damage = damage + damage * (add/100)
+				end
+				damage = floor(damage)
+				if damage > 0 then
+					self.health = self.health - damage
 
-				effect(pos, 5, "tnt_smoke.png", 1, 2, 2, nil)
+					effect(pos, 5, "tnt_smoke.png", 1, 2, 2, nil)
 
-				if check_for_death(self, "fall", {type = "fall"}) then
-					return
+					if check_for_death(self, "fall", {type = "fall"}) then
+						return
+					end
 				end
 			end
 
