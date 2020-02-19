@@ -14,7 +14,7 @@ mobs:register_mob("mobs_mc:squid", {
     hp_max = 10,
     armor = 100,
     -- FIXME: If the squid is near the floor, it turns black
-    collisionbox = {-0.4, 0.1, -0.4, 0.4, 0.9, 0.4},
+    collisionbox = {-0.4, 0.0, -0.4, 0.4, 0.9, 0.4},
     visual = "mesh",
     mesh = "mobs_mc_squid.b3d",
     textures = {
@@ -40,7 +40,7 @@ mobs:register_mob("mobs_mc:squid", {
 		min = 1,
 		max = 3,},
 	},
-    visual_size = {x=1.75, y=1.75},
+    visual_size = {x=3, y=3},
     makes_footstep_sound = false,
     stepheight = 0.1,
     fly = true,
