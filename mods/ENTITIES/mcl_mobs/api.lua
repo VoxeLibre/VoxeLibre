@@ -2791,6 +2791,13 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	end
 end
 
+local mob_detach_child = function(self, child)
+
+	if self.driver == child then
+		self.driver = nil
+	end
+
+end
 
 -- get entity staticdata
 local mob_staticdata = function(self)
@@ -3361,6 +3368,8 @@ minetest.register_entity(name, {
 	on_breed = def.on_breed,
 
 	on_grown = def.on_grown,
+
+	on_detach_child = mob_detach_child,
 
 	on_activate = function(self, staticdata, dtime)
 		return mob_activate(self, staticdata, def, dtime)
