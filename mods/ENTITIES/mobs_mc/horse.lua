@@ -184,14 +184,36 @@ local horse = {
 		end
 
 		local item = clicker:get_wielded_item()
-		if can_breed(self.name) and (item:get_name() == mobs_mc.items.golden_apple or item:get_name() == mobs_mc.items.golden_carrot) then
+		local iname = item:get_name()
+		local heal = 0
+		if can_breed(self.name) then
 			-- Breed horse with golden apple or golden carrot
-			if mobs:feed_tame(self, clicker, 1, true, false) then return end
+			if (iname == mobs_mc.items.golden_apple) then
+				heal = 10
+			elseif (iname == mobs_mc.items.golden_carrot) then
+				heal = 4
+			end
+			if heal > 0 and mobs:feed_tame(self, clicker, heal, true, false) then
+				return
+			end
 		end
 		-- Feed/tame with anything else
-		-- TODO: Different health bonus for feeding
-		if mobs:feed_tame(self, clicker, 1, false, true) then return end
-		if mobs:protect(self, clicker) then return end
+		if (iname == mobs_mc.items.sugar) then
+			heal = 1
+		elseif (iname == mobs_mc.items.wheat) then
+			heal = 2
+		elseif (iname == mobs_mc.items.apple) then
+			heal = 3
+		elseif (iname == mobs_mc.items.hay_bale) then
+			heal = 20
+		end
+		if heal > 0 and mobs:feed_tame(self, clicker, heal, false, true) then
+			return
+		end
+
+		if mobs:protect(self, clicker) then
+			return
+		end
 
 		-- Make sure tamed horse is mature and being clicked by owner only
 		if self.tamed and not self.child and self.owner == clicker:get_player_name() then
@@ -205,7 +227,7 @@ local horse = {
 
 			-- Put on saddle if tamed
 			elseif not self.driver and not self._saddle
-			and clicker:get_wielded_item():get_name() == mobs_mc.items.saddle then
+			and iname == mobs_mc.items.saddle then
 
 				-- Put on saddle and take saddle from player's inventory
 				local w = clicker:get_wielded_item()
@@ -227,13 +249,12 @@ local horse = {
 
 			-- Put on horse armor if tamed
 			elseif can_equip_horse_armor(self.name) and not self.driver and not self._horse_armor
-			and minetest.get_item_group(clicker:get_wielded_item():get_name(), "horse_armor") > 0 then
+			and minetest.get_item_group(iname, "horse_armor") > 0 then
 
 
 				-- Put on armor and take armor from player's inventory
-				local w = clicker:get_wielded_item()
-				local armor = minetest.get_item_group(w:get_name(), "horse_armor")
-				self._horse_armor = w:get_name()
+				local armor = minetest.get_item_group(iname, "horse_armor")
+				self._horse_armor = iname
 				if not minetest.settings:get_bool("creative_mode") then
 					w:take_item()
 					clicker:set_wielded_item(w)
@@ -265,7 +286,7 @@ local horse = {
 				mobs.attach(self, clicker)
 
 			-- Used to capture horse
-			elseif not self.driver and clicker:get_wielded_item():get_name() ~= "" then
+			elseif not self.driver and iname ~= "" then
 				mobs:capture_mob(self, clicker, 0, 5, 60, false, nil)
 			end
 		end
