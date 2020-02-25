@@ -2095,9 +2095,9 @@ local do_states = function(self, dtime)
 		local dist = vector.distance(p, s)
 
 		-- stop attacking if player invisible or out of range
-		if not object_in_range(self, self.attack)
-		or not self.attack
+		if not self.attack
 		or not self.attack:get_pos()
+		or not object_in_range(self, self.attack)
 		or self.attack:get_hp() <= 0
 		or (self.attack:is_player() and mobs.invis[ self.attack:get_player_name() ]) then
 
