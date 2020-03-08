@@ -44,7 +44,7 @@ tt.register_snippet(function(itemstring)
 	if not groupcaps then
 		return
 	end
-	local formstring = ""
+	local minestring = ""
 	local capstr = ""
 	local caplines = 0
 	for k,v in pairs(groupcaps) do
@@ -103,18 +103,58 @@ tt.register_snippet(function(itemstring)
 	end
 	if caplines > 0 then
 		-- Capabilities
-		formstring = formstring .. capstr
+		minestring = minestring .. capstr
 		-- Max. drop level
 		local mdl = def.tool_capabilities.max_drop_level
 		if not def.tool_capabilities.max_drop_level then
 			mdl = 0
 		end
-		formstring = formstring .. S("Block breaking strength: @1", mdl)
+		minestring = minestring .. S("Block breaking strength: @1", mdl)
 	end
-	if formstring == "" then
-		formstring = nil
+
+	local weaponstring = ""
+	-- Weapon stats
+	if def.tool_capabilities.damage_groups then
+		for group, damage in pairs(def.tool_capabilities.damage_groups) do
+			local msg
+			if group == "fleshy" then
+				if damage >= 0 then
+					msg = S("Damage: @1", damage)
+				else
+					msg = S("Healing: @1", math.abs(damage))
+				end
+			end
+			weaponstring = newline(weaponstring)
+			weaponstring = weaponstring .. msg
+		end
+		local full_punch_interval = def.tool_capabilities.full_punch_interval
+		if not full_punch_interval then
+			full_punch_interval = 1
+		end
+		weaponstring = newline(weaponstring)
+		weaponstring = weaponstring .. S("Full punch interval: @1s", string.format("%.2f", full_punch_interval))
 	end
-	return formstring
+
+	local ret
+	if minetest.get_item_group(itemstring, "weapon") == 1 then
+		ret = weaponstring
+		ret = newline(ret)
+		ret = ret .. minestring
+	else
+		ret = minestring
+		ret = newline(ret)
+		ret = ret .. weaponstring
+	end
+
+	if ret == "" then
+		ret = nil
+	end
+	return ret
+end)
+
+-- Weapon stats
+tt.register_snippet(function(itemstring)
+	local def = minetest.registered_items[itemstring]
 end)
 
 -- Food
