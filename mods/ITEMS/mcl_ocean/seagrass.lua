@@ -79,6 +79,7 @@ end
 
 minetest.register_craftitem("mcl_ocean:seagrass", {
 	description = S("Seagrass"),
+	_tt_help = S("Grows in water on dirt, sand, gravel"),
 	_doc_items_create_entry = false,
 	inventory_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",
 	wield_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",
@@ -99,10 +100,9 @@ for s=1, #surfaces do
 	sounds.dig = leaf_sounds.dig
 	sounds.dug = leaf_sounds.dug
 	sounds.place = leaf_sounds.place
-	local tt_help, doc_longdesc, doc_img, desc
+	local doc_longdesc, doc_img, desc
 	if surfaces[s][1] == "dirt" then
 		doc_longdesc = S("Seagrass grows inside water on top of dirt, sand or gravel.")
-		tt_help = S("Grows in water on dirt, sand, gravel")
 		desc = S("Seagrass")
 		doc_create = true
 		doc_img = "mcl_ocean_seagrass.png"
@@ -110,7 +110,6 @@ for s=1, #surfaces do
 		doc_create = false
 	end
 	minetest.register_node("mcl_ocean:seagrass_"..surfaces[s][1], {
-		_tt_help = tt_help,
 		_doc_items_entry_name = desc,
 		_doc_items_longdesc = doc_longdesc,
 		_doc_items_create_entry = doc_create,

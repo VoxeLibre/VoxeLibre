@@ -862,10 +862,11 @@ for i=0,3 do
 end
 
 for i=1,8 do
-	local id, desc, longdesc, usagehelp, help, walkable, drawtype, node_box
+	local id, desc, longdesc, usagehelp, tt_help, help, walkable, drawtype, node_box
 	if i == 1 then
 		id = "mcl_core:snow"
 		desc = S("Top Snow")
+		tt_help = S("Stackable")
 		longdesc = S("Top snow is a layer of snow. It melts near light sources other than the sun with a light level of 12 or higher.").."\n"..S("Top snow can be stacked and has one of 8 different height levels. At levels 2-8, top snow is collidable. Top snow drops 2-9 snowballs, depending on its height.")
 		usagehelp = S("This block can only be placed on full solid blocks and on another top snow (which increases its height).") 
 		walkable = false
@@ -940,6 +941,7 @@ for i=1,8 do
 
 	minetest.register_node(id, {
 		description = desc,
+		_tt_help = tt_help,
 		_doc_items_longdesc = longdesc,
 		_doc_items_usagehelp = usagehelp,
 		_doc_items_create_entry = help,

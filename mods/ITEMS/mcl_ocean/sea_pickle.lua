@@ -72,7 +72,7 @@ for s=1,4 do
 		desc = S("Sea Pickle")
 		doc_desc = S("Sea pickles grow on dead brain coral blocks and provide light when underwater. They come in 4 sizes that vary in brightness.")
 		doc_use = S("It can only be placed on top of dead brain coral blocks. Placing a sea pickle on another sea pickle will make it grow and brighter.")
-		tt_help = S("Glows when underwater").."\n"..S("4 possible sizes").."\n"..S("Grows on dead brain coral block")
+		tt_help = S("Glows in the water").."\n"..S("4 possible sizes").."\n"..S("Grows on dead brain coral block")
 		img = "mcl_ocean_sea_pickle_item.png"
 		on_place = sea_pickle_on_place
 	else

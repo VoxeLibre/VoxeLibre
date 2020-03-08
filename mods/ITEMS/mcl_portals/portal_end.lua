@@ -335,6 +335,7 @@ minetest.register_node("mcl_portals:end_portal_frame", {
 
 minetest.register_node("mcl_portals:end_portal_frame_eye", {
 	description = S("End Portal Frame with Eye of Ender"),
+	_tt_help = S("Used to construct end portals"),
 	_doc_items_create_entry = false,
 	groups = { creative_breakable = 1, deco_block = 1, comparator_signal = 15, end_portal_frame = 2 },
 	tiles = { "mcl_portals_endframe_top.png^[lowpart:75:mcl_portals_endframe_eye.png", "mcl_portals_endframe_bottom.png", "mcl_portals_endframe_eye.png^mcl_portals_endframe_side.png" },

@@ -78,7 +78,7 @@ for c=1, #corals do
 	local doc_desc_fan = S("Corals fans grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.")
 	local tt_block = S("Needs water to live")
 	local tt_coral_dead = S("Grows on coral block of same species")
-	local tt_coral = tt_coral_dead .. S("Needs water to live")
+	local tt_coral = tt_coral_dead .. "\n" .. S("Needs water to live")
 
 	-- Coral Block
 	minetest.register_node("mcl_ocean:"..id.."_coral_block", {

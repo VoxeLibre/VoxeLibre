@@ -186,7 +186,8 @@ mcl_torches.register_torch("mesecon_torch_on", S("Redstone Torch"),
 				rules = torch_get_input_rules,
 				action_on = torch_action_on,
 			},
-		}
+		},
+		_tt_help = S("Provides redstone power when it's not powered itself"),
 	}
 )
 

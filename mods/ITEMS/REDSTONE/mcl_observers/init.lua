@@ -87,7 +87,7 @@ mesecon.register_node("mcl_observers:observer",
 },
 {
 	description = S("Observer"),
-	_tt_help = S("Observes block in front of it and sends a brief redstone pulse when it changes"),
+	_tt_help = S("Emits redstone pulse when block in front changes"),
 	_doc_items_longdesc = S("An observer is a redstone component which observes the block in front of it and sends a very short redstone pulse whenever this block changes."),
 	_doc_items_usagehelp = S("Place the observer directly in front of the block you want to observe with the “face” looking at the block. The arrow points to the side of the output, which is at the opposite side of the “face”. You can place your redstone dust or any other component here."),
 

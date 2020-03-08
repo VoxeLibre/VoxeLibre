@@ -89,7 +89,7 @@ end
 -- TODO: The armor stand should be an entity
 minetest.register_node("mcl_armor_stand:armor_stand", {
 	description = S("Armor Stand"),
-	_tt_help = S("Display pieces of armor"),
+	_tt_help = S("Displays pieces of armor"),
 	_doc_items_longdesc = S("An armor stand is a decorative object which can display different pieces of armor. Anything which players can wear as armor can also be put on an armor stand."),
 	_doc_items_usagehelp = S("Just place an armor item on the armor stand. To take the top piece of armor from the armor stand, select your hand and use the place key on the armor stand."),
 	drawtype = "mesh",

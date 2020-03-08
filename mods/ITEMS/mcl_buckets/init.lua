@@ -55,12 +55,13 @@ end
 --   name = user-visible bucket description
 --   longdesc = long explanatory description (for help)
 --   usagehelp = short usage explanation (for help)
+--   tt_help = very short tooltip help
 --   extra_check(pos, placer) = optional function(pos) which can returns false to avoid placing the liquid.
 --                              placer is object/player who is placing the liquid, can be nil
 --   groups = optional list of item groups
 --
 -- This function can be called from any mod (which depends on this one)
-function mcl_buckets.register_liquid(source_place, source_take, itemname, inventory_image, name, longdesc, usagehelp, extra_check, groups)
+function mcl_buckets.register_liquid(source_place, source_take, itemname, inventory_image, name, longdesc, usagehelp, tt_help, extra_check, groups)
 	for i=1, #source_take do
 		mcl_buckets.liquids[source_take[i]] = {
 			source_place = source_place,
@@ -77,6 +78,7 @@ function mcl_buckets.register_liquid(source_place, source_take, itemname, invent
 			description = name,
 			_doc_items_longdesc = longdesc,
 			_doc_items_usagehelp = usagehelp,
+			_tt_help = tt_help,
 			inventory_image = inventory_image,
 			stack_max = 16,
 			liquids_pointable = true,
@@ -187,6 +189,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 	description = S("Empty Bucket"),
 	_doc_items_longdesc = S("A bucket can be used to collect and release liquids."),
 	_doc_items_usagehelp = S("Punch a liquid source to collect it. You can then use the filled bucket to place the liquid somewhere else."),
+	_tt_help = S("Collects liquids"),
 
 	inventory_image = "bucket.png",
 	stack_max = 16,
@@ -306,7 +309,8 @@ if mod_mcl_core then
 		"bucket_lava.png",
 		S("Lava Bucket"),
 		S("A bucket can be used to collect and release liquids. This one is filled with hot lava, safely contained inside. Use with caution."),
-		S("Get in a safe distance and place the bucket to empty it and create a lava source at this spot. Don't burn yourself!")
+		S("Get in a safe distance and place the bucket to empty it and create a lava source at this spot. Don't burn yourself!"),
+		S("Places a lava source")
 	)
 
 	-- Water bucket
@@ -318,6 +322,7 @@ if mod_mcl_core then
 		S("Water Bucket"),
 		S("A bucket can be used to collect and release liquids. This one is filled with water."),
 		S("Place it to empty the bucket and create a water source."),
+		S("Places a water source"),
 		function(pos, placer)
 			-- Check protection
 			local placer_name = ""
@@ -360,6 +365,7 @@ if mod_mclx_core then
 		S("River Water Bucket"),
 		S("A bucket can be used to collect and release liquids. This one is filled with river water."),
 		S("Place it to empty the bucket and create a river water source."),
+		S("Places a river water source"),
 		function(pos, placer)
 			-- Check protection
 			local placer_name = ""
