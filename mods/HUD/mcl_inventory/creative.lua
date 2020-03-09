@@ -396,7 +396,7 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 			caption = "label[0,1.2;"..F(minetest.colorize("#313131", filtername[name])).."]"
 		end
 
-		formspec = "size[10,9.3]"..
+		formspec = "size[10,9.3]style_type[item_image_button;border=false]"..
 			mcl_vars.inventory_header..
 			"background[-0.19,-0.25;10.5,9.87;"..inv_bg.."]"..
 			"label[-5,-5;"..name.."]"..
