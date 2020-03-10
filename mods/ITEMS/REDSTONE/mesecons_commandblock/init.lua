@@ -266,19 +266,20 @@ minetest.register_node("mesecons_commandblock:commandblock_on", {
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if string.sub(formname, 1, 13) == "commandblock_" then
-		if (not fields.submit and not fields.key_enter and not fields.doc) or (not fields.commands) then
+		if fields.doc and minetest.get_modpath("doc") then
+			doc.show_entry(player:get_player_name(), "nodes", "mesecons_commandblock:commandblock_off", true)
 			return
 		end
+		if (not fields.submit and not fields.key_enter) or (not fields.commands) then
+			return
+		end
+
 		local privs = minetest.get_player_privs(player:get_player_name())
 		if not privs.maphack then
 			minetest.chat_send_player(player:get_player_name(), S("Access denied. You need the “maphack” privilege to edit command blocks."))
 			return
 		end
 
-		if fields.doc and minetest.get_modpath("doc") then
-			doc.show_entry(player:get_player_name(), "nodes", "mesecons_commandblock:commandblock_off", true)
-			return
-		end
 		local index, _, x, y, z = string.find(formname, "commandblock_(-?%d+)_(-?%d+)_(-?%d+)")
 		if index ~= nil and x ~= nil and y ~= nil and z ~= nil then
 			local pos = {x=tonumber(x), y=tonumber(y), z=tonumber(z)}
