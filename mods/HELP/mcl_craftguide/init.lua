@@ -444,12 +444,12 @@ local function get_tooltip(item, groups, cooktime, burntime)
 		tooltip = reg_items[item].description
 	end
 
-	if cooktime then
+	if not groups and cooktime then
 		tooltip = tooltip .. "\n" ..
 			S("Cooking time: @1", colorize("yellow", cooktime))
 	end
 
-	if burntime then
+	if not groups and burntime then
 		tooltip = tooltip .. "\n" ..
 			S("Burning time: @1", colorize("yellow", burntime))
 	end
