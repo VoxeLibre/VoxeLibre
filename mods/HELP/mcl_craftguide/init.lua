@@ -665,11 +665,10 @@ local function make_formspec(name)
 		ESC(S("Previous page")),
 		ESC(S("Next page")))
 
-	fs[#fs + 1] = fmt("label[%f,%f;%s / %u]",
+	fs[#fs + 1] = fmt("label[%f,%f;%s]",
 		sfinv_only and 6.3 or data.iX - 2.2,
 		0.22,
-		data.pagenum,
-		data.pagemax)
+		ESC(colorize("#383838", fmt("%s / %u", data.pagenum, data.pagemax))))
 
 	fs[#fs + 1] = fmt([[
 		image_button[%f,0.12;0.8,0.8;craftguide_prev_icon.png;prev;]

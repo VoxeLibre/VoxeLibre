@@ -227,7 +227,7 @@ end)
 mcl_skins.show_formspec = function(playername)
 	local formspec = "size[7,8.5]"
 
-	formspec = formspec .. "label[2,2;" .. minetest.formspec_escape(S("Select player skin:")) .. "]"
+	formspec = formspec .. "label[2,2;" .. minetest.formspec_escape(minetest.colorize("#383838", S("Select player skin:"))) .. "]"
 		.. "textlist[0,2.5;6.8,6;skins_set;"
 
 	local meta
@@ -255,7 +255,7 @@ mcl_skins.show_formspec = function(playername)
 
 	if meta then
 		if meta.name and meta.name ~= "" then
-			formspec = formspec .. "label[2,0.5;" .. minetest.formspec_escape(S("Name: @1", meta.name)) .. "]"
+			formspec = formspec .. "label[2,0.5;" .. minetest.formspec_escape(minetest.colorize("#383838", S("Name: @1", meta.name))) .. "]"
 		end
 	end
 
