@@ -490,7 +490,6 @@ local function show_trade_formspec(playername, trader, tradenum)
 	"size[9,8.75]"
 	.."background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"
 	..disabled_img
-	..mcl_vars.inventory_header
 	.."label[4,0;"..minetest.formspec_escape(minetest.colorize("#313131", S(profession))).."]"
 	.."list[current_player;main;0,4.5;9,3;9]"
 	.."list[current_player;main;0,7.74;9,1;]"

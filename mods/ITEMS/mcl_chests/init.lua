@@ -182,7 +182,6 @@ minetest.register_node("mcl_chests:"..basename, {
 		minetest.show_formspec(clicker:get_player_name(),
 		"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 		"size[9,8.75]"..
-		mcl_vars.inventory_header..
 		"background[-0.19,-0.25;9.41,10.48;mcl_chests_inventory_chest.png]"..
 		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Chest"))).."]"..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
@@ -318,7 +317,6 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 		"size[9,11.5]"..
 		"background[-0.19,-0.25;9.41,12.5;mcl_chests_inventory_chest_large.png]"..
-		mcl_vars.inventory_header..
 		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Large Chest"))).."]"..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
 		"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,3.5;9,3;]"..
@@ -454,7 +452,6 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 
 		"size[9,11.5]"..
 		"background[-0.19,-0.25;9.41,12.5;mcl_chests_inventory_chest_large.png]"..
-		mcl_vars.inventory_header..
 		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Large Chest"))).."]"..
 		"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,0.5;9,3;]"..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3.5;9,3;]"..
@@ -661,7 +658,6 @@ minetest.register_node("mcl_chests:ender_chest", {
 		local meta = minetest.get_meta(pos)
 		meta:set_string("formspec", 
 				"size[9,8.75]"..
-				mcl_vars.inventory_header..
 				"background[-0.19,-0.25;9.41,10.48;mcl_chests_inventory_chest.png]"..
 				"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Ender Chest"))).."]"..
 				"list[current_player;enderchest;0,0.5;9,3;]"..
@@ -782,7 +778,6 @@ for color, desc in pairs(boxtypes) do
 			local meta = minetest.get_meta(pos)
 			meta:set_string("formspec",
 					"size[9,8.75]"..
-					mcl_vars.inventory_header..
 					"background[-0.19,-0.25;9.41,10.48;mcl_chests_inventory_chest.png]"..
 					"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Shulker Box"))).."]"..
 					"list[current_name;main;0,0.5;9,3;]"..

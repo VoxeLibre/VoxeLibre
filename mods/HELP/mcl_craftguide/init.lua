@@ -636,9 +636,7 @@ local function make_formspec(name)
 	if not sfinv_only then
 		fs[#fs + 1] = fmt("size[%f,%f;]", data.iX - 0.35, iY + 4)
 
-		fs[#fs + 1] = [[
-			background[1,1;1,1;craftguide_bg.png;true]
-		]]
+		fs[#fs + 1] = "background9[1,1;1,1;mcl_base_textures_background9.png;true;7]"
 
 		fs[#fs + 1] = fmt([[ tooltip[size_inc;%s]
 				     tooltip[size_dec;%s] ]],
@@ -670,7 +668,7 @@ local function make_formspec(name)
 	fs[#fs + 1] = fmt("label[%f,%f;%s / %u]",
 		sfinv_only and 6.3 or data.iX - 2.2,
 		0.22,
-		colorize("yellow", data.pagenum),
+		data.pagenum,
 		data.pagemax)
 
 	fs[#fs + 1] = fmt([[

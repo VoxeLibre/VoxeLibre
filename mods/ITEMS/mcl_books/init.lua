@@ -3,6 +3,12 @@ local S =minetest.get_translator("mcl_books")
 local max_text_length = 4500 -- TODO: Increase to 12800 when scroll bar was added to written book
 local max_title_length = 64
 
+local header = ""
+if minetest.get_modpath("mcl_init") then
+	header = "no_prepend[]" .. mcl_vars.gui_nonbg .. mcl_vars.gui_bg_color ..
+		"style_type[button;border=false;bgimg=mcl_books_button9.png;bgimg_pressed=mcl_books_button9_pressed.png;bgimg_middle=2,2]"
+end
+
 -- Book
 minetest.register_craftitem("mcl_books:book", {
 	description = S("Book"),
@@ -81,6 +87,7 @@ local write = function(itemstack, user, pointed_thing)
 
 	local text = get_text(itemstack)
 	local formspec = "size[8,9]"..
+		header..
 		"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
 		"textarea[0.75,0.1;7.25,9;text;;"..minetest.formspec_escape(text).."]"..
 		"button[0.75,7.95;3,1;sign;"..minetest.formspec_escape(S("Sign")).."]"..
@@ -101,8 +108,9 @@ local read = function(itemstack, user, pointed_thing)
 
 	local text = get_text(itemstack)
 	local formspec = "size[8,9]"..
+		header..
 		"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
-		"textarea[0.75,0.1;7.25,9;;"..minetest.colorize("#000000", minetest.formspec_escape(text))..";]"..
+		"textarea[0.75,0.1;7.25,9;;"..minetest.formspec_escape(text)..";]"..
 		"button_exit[2.25,7.95;3,1;ok;"..minetest.formspec_escape(S("Done")).."]"
 	minetest.show_formspec(user:get_player_name(), "mcl_books:written_book", formspec)
 end
@@ -135,6 +143,7 @@ minetest.register_on_player_receive_fields(function ( player, formname, fields )
 
 				local name = player:get_player_name()
 				local formspec = "size[8,9]"..
+					header..
 					"background[-0.5,-0.5;9,10;mcl_books_book_bg.png]"..
 					"field[0.75,1;7.25,1;title;"..minetest.formspec_escape(minetest.colorize("#000000", S("Enter book title:")))..";]"..
 					"label[0.75,1.5;"..minetest.formspec_escape(minetest.colorize("#404040", S("by @1", name))).."]"..

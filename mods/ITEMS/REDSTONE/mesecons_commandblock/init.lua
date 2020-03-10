@@ -170,7 +170,7 @@ local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 	else
 		textarea = "textarea[0.5,0.5;8.5,4;"..textarea_name..";"..F(S("Commands:"))..";"..F(commands).."]"
 	end
-	local formspec = "invsize[9,5;]" ..
+	local formspec = "size[9,5;]" ..
 	textarea ..
 	submit ..
 	"image_button[8,4.5;1,1;doc_button_icon_lores.png;doc;]" ..

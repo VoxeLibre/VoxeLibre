@@ -348,6 +348,7 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 				"tooltip[__mcl_skins;"..F(S("Select player skin")).."]"..
 				-- achievements button
 				"image_button[9,4;1,1;mcl_achievements_button.png;__mcl_achievements;]"..
+				--"style_type[image_button;border=;bgimg=;bgimg_pressed=]"..
 				"tooltip[__mcl_achievements;"..F(S("Achievements")).."]"
 
 			-- For shortcuts
@@ -387,6 +388,7 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 				bg_img = "crafting_creative_inactive.png"
 			end
 			return 
+				"style["..this_tab..";border=false;bgimg=;bgimg_pressed=]"..
 				"item_image_button[" .. boffset[this_tab] ..";1,1;"..tab_icon[this_tab]..";"..this_tab..";]"..
 				"image[" .. offset[this_tab] .. ";1.5,1.44;" .. bg_img .. hoch[this_tab].. "]" ..
 				"image[" .. boffset[this_tab] .. ";1,1;crafting_creative_marker.png]"
@@ -396,8 +398,9 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 			caption = "label[0,1.2;"..F(minetest.colorize("#313131", filtername[name])).."]"
 		end
 
-		formspec = "size[10,9.3]style_type[item_image_button;border=false]"..
-			mcl_vars.inventory_header..
+		formspec = "size[10,9.3]"..
+			"no_prepend[]"..
+			mcl_vars.gui_nonbg..mcl_vars.gui_bg_color..
 			"background[-0.19,-0.25;10.5,9.87;"..inv_bg.."]"..
 			"label[-5,-5;"..name.."]"..
 			tab(name, "blocks") ..

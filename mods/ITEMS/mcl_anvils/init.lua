@@ -17,7 +17,6 @@ local function get_anvil_formspec(set_name)
 	end
 	return "size[9,8.75]"..
 	"background[-0.19,-0.25;9.41,9.49;mcl_anvils_inventory.png]"..
-	mcl_vars.inventory_header..
 	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	"list[current_player;main;0,7.74;9,1;]"..

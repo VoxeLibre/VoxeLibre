@@ -410,8 +410,10 @@ function awards.getFormspec(name, to, sid)
 				if perc > 1 then
 					perc = 1
 				end
-				formspec = formspec .. "background[0,4.80;" .. barwidth ..",0.25;awards_progress_gray.png;false]"
-				formspec = formspec .. "background[0,4.80;" .. (barwidth * perc) ..",0.25;awards_progress_green.png;false]"
+				formspec = formspec .. "background[0,4.80;" .. barwidth ..",0.3;awards_progress_gray.png;false]"
+				if perc > 0 then
+					formspec = formspec .. "background[0,4.80;" .. (barwidth * perc) ..",0.3;awards_progress_green.png;false]"
+				end
 				if label then
 					formspec = formspec .. "label[1.75,4.63;" .. minetest.formspec_escape(label) .. "]"
 				end
@@ -423,7 +425,8 @@ function awards.getFormspec(name, to, sid)
 	end
 
 	-- Create list box
-	formspec = formspec .. "textlist[4.75,0;6,5;awards;"
+	formspec = formspec ..
+	"textlist[4.75,0;6,5;awards;"
 	local first = true
 	for _,award in pairs(listofawards) do
 		local def = awards.def[award.name]
