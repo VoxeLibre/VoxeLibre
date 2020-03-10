@@ -209,13 +209,13 @@ hoch["rail"] = ""
 hoch["misc"] = ""
 hoch["nix"] = ""
 hoch["default"] = ""
-hoch["food"] = "^[transformfy"
-hoch["tools"] = "^[transformfy"
-hoch["combat"] = "^[transformfy"
-hoch["mobs"] = "^[transformfy"
---hoch["brew"] = "^[transformfy" -- TODO: add brew
-hoch["matr"] = "^[transformfy"
-hoch["inv"] = "^[transformfy"
+hoch["food"] = "_down"
+hoch["tools"] = "_down"
+hoch["combat"] = "_down"
+hoch["mobs"] = "_down"
+--hoch["brew"] = "_down" -- TODO: add brew
+hoch["matr"] = "_down"
+hoch["inv"] = "_down"
 
 filtername = {}
 filtername["blocks"] = S("Building Blocks")
@@ -378,14 +378,14 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 		local function tab(current_tab, this_tab)
 			local bg_img
 			if current_tab == this_tab then
-				bg_img = "crafting_creative_active.png"
+				bg_img = "crafting_creative_active"..hoch[this_tab]..".png"
 			else
-				bg_img = "crafting_creative_inactive.png"
+				bg_img = "crafting_creative_inactive"..hoch[this_tab]..".png"
 			end
 			return 
 				"style["..this_tab..";border=false;bgimg=;bgimg_pressed=]"..
 				"item_image_button[" .. boffset[this_tab] ..";1,1;"..tab_icon[this_tab]..";"..this_tab..";]"..
-				"image[" .. offset[this_tab] .. ";1.5,1.44;" .. bg_img .. hoch[this_tab].. "]" ..
+				"image[" .. offset[this_tab] .. ";1.5,1.44;" .. bg_img .. "]" ..
 				"image[" .. boffset[this_tab] .. ";1,1;crafting_creative_marker.png]"
 		end
 		local caption = ""
