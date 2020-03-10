@@ -658,7 +658,6 @@ end)
 function doc.formspec_core(tab)
 	if tab == nil then tab = 1 else tab = tostring(tab) end
 	return "size["..doc.FORMSPEC.WIDTH..","..doc.FORMSPEC.HEIGHT.."]"..
-	"style_type[textarea;textcolor=#FFFFFF]"..
 	"tabheader[0,0;doc_header;"..
 	minetest.formspec_escape(S("Category list")) .. "," ..
 	minetest.formspec_escape(S("Entry list")) .. "," ..
@@ -940,7 +939,9 @@ function doc.formspec_entry(category_id, entry_id, playername)
 		if ename == nil or ename == "" then
 			ename = S("Nameless entry (@1)", entry_id)
 		end
-		formstring = "label[0,0;"..minetest.formspec_escape(S("Help > @1 > @2", category.def.name, ename)).."]"
+
+		formstring = "style_type[textarea;textcolor=#FFFFFF]"
+		formstring = formstring .. "label[0,0;"..minetest.formspec_escape(S("Help > @1 > @2", category.def.name, ename)).."]"
 		formstring = formstring .. category.def.build_formspec(entry.data, playername)
 		formstring = formstring .. doc.formspec_entry_navigation(category_id, entry_id)
 	end
