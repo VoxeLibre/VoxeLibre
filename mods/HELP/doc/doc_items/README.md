@@ -1,4 +1,4 @@
-# Item Help [`doc_items`] (Version 1.1.2)
+# Item Help [`doc_items`] (Version 1.2.0)
 ## Description
 Automatically generated help texts of blocks, tools, weapons, crafting
 items and other items.
@@ -66,3 +66,8 @@ Read `API.md` to learn more.
 
 ## License
 Everything in this mod is licensed under the MIT License.
+
+## Translation credits
+French: Karamel
+German: Wuzzy
+Portuguese: BrunoMine

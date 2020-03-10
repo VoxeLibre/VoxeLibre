@@ -14,16 +14,8 @@ doc.sub.items.temp.eat_bad = S("Hold it in your hand, then leftclick to eat it. 
 doc.sub.items.temp.rotate_node = S("This block's rotation is affected by the way you place it: Place it on the floor or ceiling for a vertical orientation; place it at the side for a horizontal orientation. Sneaking while placing it leads to a perpendicular orientation instead.")
 
 doc.sub.items.settings = {}
-doc.sub.items.settings.friendly_group_names = false
-local setting = minetest.settings:get_bool("doc_items_friendly_group_names")
-if setting ~= nil then
-	doc.sub.items.settings.friendly_group_names = setting
-end
-doc.sub.items.settings.itemstring = false
-setting = minetest.settings:get_bool("doc_items_show_itemstrings")
-if setting ~= nil then
-	doc.sub.items.settings.itemstring = setting
-end
+doc.sub.items.settings.friendly_group_names = minetest.settings:get_bool("doc_items_friendly_group_names", false)
+doc.sub.items.settings.itemstring = minetest.settings:get_bool("doc_items_show_itemstrings", false)
 
 -- Local stuff
 local groupdefs = {}
@@ -73,10 +65,14 @@ local groups_to_string = function(grouptable, filter)
 	end
 end
 
--- Replaces all newlines with spaces
+-- Removes all text after the first newline (including the newline)
 local scrub_newlines = function(text)
-	local new, x = string.gsub(text, "\n", " ")
-	return new
+	local spl = string.split(text, "\n")
+	if spl and #spl > 0 then
+		return spl[1]
+	else
+		return text
+	end
 end
 
 --[[ Append a newline to text, unless it already ends with a newline. ]]

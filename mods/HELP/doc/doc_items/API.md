@@ -42,7 +42,7 @@ easy and quick manipulation of the item help entries. All fields are optional.
 * `_doc_items_hidden`: Whether entry is hidden (default: `false` for air and hand, `true` for everything else)
 * `_doc_items_create_entry`: Whether to create an entry for this item (default: `true`)
 * `_doc_items_entry_name`: The title of the entry. By default, this is the same as the `description` field
-  of the item. This field is required if the `description` is empty
+  of the item (discarding text after the first newline). This field is required if the `description` is empty
 * `_doc_items_durability`: This field is for describing how long a tool can be used before it breaks. Choose one data type:
    * It it is a `number`: Fixed number of uses before it breaks
    * If it is a `string`: Free-form text which explains how the durability works. Try to keep it short and only use it if the other types won't work
