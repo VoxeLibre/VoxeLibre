@@ -17,7 +17,7 @@ doc = {}
 -- Version number (follows the SemVer specification 2.0.0)
 doc.VERSION = {}
 doc.VERSION.MAJOR = 1
-doc.VERSION.MINOR = 0
+doc.VERSION.MINOR = 2
 doc.VERSION.PATCH = 1
 doc.VERSION.STRING = doc.VERSION.MAJOR.."."..doc.VERSION.MINOR.."."..doc.VERSION.PATCH
 
@@ -657,7 +657,9 @@ end)
 
 function doc.formspec_core(tab)
 	if tab == nil then tab = 1 else tab = tostring(tab) end
-	return "size["..doc.FORMSPEC.WIDTH..","..doc.FORMSPEC.HEIGHT.."]tabheader[0,0;doc_header;"..
+	return "size["..doc.FORMSPEC.WIDTH..","..doc.FORMSPEC.HEIGHT.."]"..
+	"style_type[textarea;textcolor=#FFFFFF]"..
+	"tabheader[0,0;doc_header;"..
 	minetest.formspec_escape(S("Category list")) .. "," ..
 	minetest.formspec_escape(S("Entry list")) .. "," ..
 	minetest.formspec_escape(S("Entry")) .. ";"

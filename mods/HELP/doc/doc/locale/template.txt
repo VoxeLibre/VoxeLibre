@@ -7,7 +7,7 @@ All help entries revealed!=
 All help entries are already revealed.=
 Allows you to reveal all hidden help entries with /help_reveal=
 Category list=
-Currently all entries in this category are hidden from you.
+Currently all entries in this category are hidden from you.=
 Unlock new entries by progressing in the game.=
 Help=
 Entry=
