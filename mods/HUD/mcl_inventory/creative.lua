@@ -269,10 +269,6 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 		end
 	end
 	local pagemax = math.max(1, math.floor((inv_size-1) / (9*5) + 1))
-	local slider_height
-	local arrow_height = 0.85
-	slider_height = (6.2-arrow_height*2) / pagemax
-	local slider_pos = (slider_height*(pagenum-1)*0.8713125)+2.23
 	local name = "nix"
 	local formspec = ""
 	local main_list
@@ -357,12 +353,11 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 				"listring[current_player;main]"
 		else
 			-- Creative inventory slots
-			main_list = "list[detached:creative_"..playername..";main;0,1.75;9,5;"..tostring(start_i).."]" ..
-			-- ... and scroll bar
-				"image[9.033,2.230;0.78,4.525;mcl_inventory_slider_bg.png]"..
-				"image[9.033," .. tostring(slider_pos) .. ";0.78,"..tostring(slider_height) .. ";mcl_inventory_slider.png]"..
-				"image_button[9.015,1.77;0.85,0.6;crafting_creative_up.png;creative_prev;]"..
-				"image_button[9.015,6.15;0.85,0.6;crafting_creative_down.png;creative_next;]"
+			main_list = "list[detached:creative_"..playername..";main;0,1.75;9,5;"..tostring(start_i).."]"..
+			-- Page buttons
+				"label[9.0,5.5;"..F(S("@1/@2", pagenum, pagemax)).."]"..
+				"image_button[9.0,6.0;0.7,0.7;crafting_creative_prev.png;creative_prev;]"..
+				"image_button[9.5,6.0;0.7,0.7;crafting_creative_next.png;creative_next;]"
 		end
 
 		local tab_icon = {
