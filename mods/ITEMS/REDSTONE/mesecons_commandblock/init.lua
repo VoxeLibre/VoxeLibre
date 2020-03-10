@@ -160,7 +160,7 @@ local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 	-- Player can still view the contents of the command block.
 	if can_edit then
 		textarea_name = "commands"
-		submit = "button_exit[3.3,4.5;2,1;submit;"..F(S("Submit")).."]"
+		submit = "button_exit[3.3,4.4;2,1;submit;"..F(S("Submit")).."]"
 	else
 		textarea_name = ""
 		submit = ""
@@ -173,7 +173,7 @@ local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 	local formspec = "size[9,5;]" ..
 	textarea ..
 	submit ..
-	"image_button[8,4.5;1,1;doc_button_icon_lores.png;doc;]" ..
+	"image_button[8,4.4;1,1;doc_button_icon_lores.png;doc;]" ..
 	"tooltip[doc;"..F(S("Help")).."]" ..
 	"label[0,4;"..F(commanderstr).."]"
 	minetest.show_formspec(pname, "commandblock_"..pos.x.."_"..pos.y.."_"..pos.z, formspec)
