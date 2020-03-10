@@ -308,6 +308,7 @@ end)
 -- Fishing Rod
 minetest.register_tool("mcl_fishing:fishing_rod", {
 	description = S("Fishing Rod"),
+	_tt_help = S("Catch fish in water"),
 	_doc_items_longdesc = S("Fishing rods can be used to catch fish."),
 	_doc_items_usagehelp = S("Rightclick to launch the bobber. When it sinks right-click again to reel in an item. Who knows what you're going to catch?"),
 	groups = { tool=1 },
@@ -417,6 +418,7 @@ minetest.register_craftitem("mcl_fishing:clownfish_raw", {
 -- TODO: Add real status effect
 minetest.register_craftitem("mcl_fishing:pufferfish_raw", {
 	description = S("Pufferfish"),
+	_tt_help = S("Very poisonous"),
 	_doc_items_longdesc = S("Pufferfish are a common species of fish and can be obtained by fishing. They can technically be eaten, but they are very bad for humans. Eating a pufferfish only restores 1 hunger point and will poison you very badly (which drains your health non-fatally) and causes serious food poisoning (which increases your hunger)."),
 	inventory_image = "mcl_fishing_pufferfish_raw.png",
 	on_place = minetest.item_eat(1),

@@ -76,11 +76,15 @@ for c=1, #corals do
 	local doc_desc_block = S("Coral blocks live in the oceans and need a water source next to them to survive. Without water, they die off.")
 	local doc_desc_coral = S("Corals grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.")
 	local doc_desc_fan = S("Corals fans grow on top of coral blocks and need to be inside a water source to survive. Without water, it will die off, as well as the coral block below.")
+	local tt_block = S("Needs water to live")
+	local tt_coral_dead = S("Grows on coral block of same species")
+	local tt_coral = tt_coral_dead .. "\n" .. S("Needs water to live")
 
 	-- Coral Block
 	minetest.register_node("mcl_ocean:"..id.."_coral_block", {
 		description = corals[c][2],
 		_doc_items_longdesc = doc_desc_block,
+		_tt_help = tt_block,
 		tiles = { "mcl_ocean_"..id.."_coral_block.png" },
 		groups = { pickaxey = 1, building_block = 1, coral=1, coral_block=1, coral_species=c, },
 		sounds = mcl_sounds.node_sound_dirt_defaults(),
@@ -102,6 +106,7 @@ for c=1, #corals do
 	minetest.register_node("mcl_ocean:"..id.."_coral", {
 		description = corals[c][4],
 		_doc_items_longdesc = doc_desc_coral,
+		_tt_help = tt_coral,
 		drawtype = "plantlike_rooted",
 		paramtype = "light",
 		paramtype2 = "meshoptions",
@@ -134,6 +139,7 @@ for c=1, #corals do
 	minetest.register_node("mcl_ocean:dead_"..id.."_coral", {
 		description = corals[c][5],
 		_doc_items_create_entry = false,
+		_tt_help = tt_coral_dead,
 		drawtype = "plantlike_rooted",
 		paramtype = "light",
 		paramtype2 = "meshoptions",
@@ -167,6 +173,7 @@ for c=1, #corals do
 	minetest.register_node("mcl_ocean:"..id.."_coral_fan", {
 		description = corals[c][6],
 		_doc_items_longdesc = doc_desc_fan,
+		_tt_help = tt_coral,
 		drawtype = "plantlike_rooted",
 		paramtype = "light",
 		paramtype2 = "meshoptions",
@@ -199,6 +206,7 @@ for c=1, #corals do
 	minetest.register_node("mcl_ocean:dead_"..id.."_coral_fan", {
 		description = corals[c][7],
 		_doc_items_create_entry = false,
+		_tt_help = tt_coral_dead,
 		drawtype = "plantlike_rooted",
 		paramtype = "light",
 		paramtype2 = "meshoptions",

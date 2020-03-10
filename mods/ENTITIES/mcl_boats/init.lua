@@ -279,7 +279,7 @@ local images = { "oak", "spruce", "birch", "jungle", "acacia", "dark_oak" }
 for b=1, #boat_ids do
 	local itemstring = "mcl_boats:"..boat_ids[b]
 
-	local longdesc, usagehelp, help, helpname
+	local longdesc, usagehelp, tt_help, help, helpname
 	help = false
 	-- Only create one help entry for all boats
 	if b == 1 then
@@ -288,9 +288,11 @@ for b=1, #boat_ids do
 		usagehelp = S("Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Rightclick the boat again to leave it, punch the boat to make it drop as an item.")
 		helpname = S("Boat")
 	end
+	tt_help = S("Water vehicle")
 
 	minetest.register_craftitem(itemstring, {
 		description = names[b],
+		_tt_help = tt_help,
 		_doc_items_create_entry = help,
 		_doc_items_entry_name = helpname,
 		_doc_items_longdesc = longdesc,

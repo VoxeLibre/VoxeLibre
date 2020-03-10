@@ -204,6 +204,7 @@ end
 minetest.register_node("mesecons_commandblock:commandblock_off", {
 	description = S("Command Block"),
 
+	_tt_help = S("Executes server commands when powered by redstone power"),
 	_doc_items_longdesc =
 S("Command blocks are mighty redstone components which are able to alter reality itself. In other words, they cause the server to execute server commands when they are supplied with redstone power."),
 	_doc_items_usagehelp =

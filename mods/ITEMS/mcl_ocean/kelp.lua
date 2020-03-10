@@ -132,6 +132,7 @@ end
 
 minetest.register_craftitem("mcl_ocean:kelp", {
 	description = S("Kelp"),
+	_tt_help = S("Grows in water on dirt, sand, gravel"),
 	_doc_items_create_entry = false,
 	inventory_image = "mcl_ocean_kelp_item.png",
 	wield_image = "mcl_ocean_kelp_item.png",
@@ -152,7 +153,7 @@ for s=1, #surfaces do
 	sounds.dig = leaf_sounds.dig
 	sounds.dug = leaf_sounds.dug
 	sounds.place = leaf_sounds.place
-	local doc_longdesc, doc_img, desc
+	local tt_help, doc_longdesc, doc_img, desc
 	if surfaces[s][1] == "dirt" then
 		doc_longdesc = S("Kelp grows inside water on top of dirt, sand or gravel.")
 		desc = S("Kelp")

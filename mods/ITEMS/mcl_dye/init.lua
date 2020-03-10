@@ -322,6 +322,7 @@ end
 minetest.register_craftitem("mcl_dye:white", {
 	inventory_image = "mcl_dye_white.png",
 	description = S("Bone Meal"),
+	_tt_help = S("Speeds up plant growth"),
 	_doc_items_longdesc = S("Bone meal is a white dye and also useful as a fertilizer to speed up the growth of many plants."),
 	_doc_items_usagehelp = S("Rightclick a sheep to turn its wool white. Rightclick a plant to speed up its growth. Note that not all plants can be fertilized like this. When you rightclick a grass block, tall grass and flowers will grow all over the place."),
 	stack_max = 64,
@@ -359,6 +360,7 @@ minetest.register_craftitem("mcl_dye:white", {
 
 minetest.register_craftitem("mcl_dye:brown", {
 	inventory_image = "mcl_dye_brown.png",
+	_tt_help = S("Grows at the side of jungle trees"),
 	_doc_items_longdesc = S("Cocoa beans are a brown dye and can be used to plant cocoas."),
 	_doc_items_usagehelp = S("Rightclick a sheep to turn its wool brown. Rightclick on the side of a jungle tree trunk (Jungle Wood) to plant a young cocoa."),
 	description = S("Cocoa Beans"),

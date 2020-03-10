@@ -28,6 +28,7 @@ local hc_desc = S("Terracotta is a basic building material. It comes in many dif
 local gt_desc = S("Glazed terracotta is a decorative block with a complex pattern. It can be rotated by placing it in different directions.")
 local cp_desc = S("Concrete powder is used for creating concrete, but it can also be used as decoration itself. It comes in different colors. Concrete powder turns into concrete of the same color when it comes in contact with water.")
 local c_desc = S("Concrete is a decorative block which comes in many different colors. It is notable for having a very strong and clean color.")
+local cp_tt = S("Turns into concrete on water contact")
 
 minetest.register_node("mcl_colorblocks:hardened_clay", {
 	description = S("Terracotta"),
@@ -62,6 +63,7 @@ for _, row in ipairs(block.dyes) do
 	local ldesc_hc, ldesc_gt, ldesc_cp, ldesc_c
 	local create_entry
 	local ename_hc, ename_gt, ename_cp, ename_c
+	local ltt_cp = cp_tt
 	if is_canonical then
 		ldesc_hc = hc_desc
 		ldesc_gt = gt_desc
@@ -91,6 +93,7 @@ for _, row in ipairs(block.dyes) do
 
 	minetest.register_node("mcl_colorblocks:concrete_powder_"..name, {
 		description = sdesc_cp,
+		_tt_help = ltt_cp,
 		_doc_items_longdesc = ldesc_cp,
 		_doc_items_create_entry = create_entry,
 		_doc_items_entry_name = ename_cp,

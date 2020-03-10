@@ -1,0 +1,27 @@
+# textdomain:tt
+Damage: @1=
+Damage (@1): @2=
+Healing: @1=
+Healing (@1): @2=
+Full punch interval: @1s=
+Food item=
++@1 satiation=
+@1 satiation=
++@1 food points=
+Contact damage: @1 per second=
+Contact healing: @1 per second=
+Drowning damage: @1=
+Bouncy (@1%)=
+Luminance: @1=
+Slippery=
+Climbable=
+Climbable (only downwards)=
+No jumping=
+No swimming upwards=
+No rising=
+Fall damage: @1%=
+Fall damage: +@1%=
+No fall damage=
+Digs @1 blocks=
+Digs @1 blocks instantly=
+Minimum dig time: @1s=

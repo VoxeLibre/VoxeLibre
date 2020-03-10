@@ -79,6 +79,7 @@ end
 
 minetest.register_craftitem("mcl_ocean:seagrass", {
 	description = S("Seagrass"),
+	_tt_help = S("Grows in water on dirt, sand, gravel"),
 	_doc_items_create_entry = false,
 	inventory_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",
 	wield_image = "mcl_ocean_seagrass.png^[verticalframe:12:0",

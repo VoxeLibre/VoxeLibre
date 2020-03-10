@@ -186,12 +186,14 @@ mcl_torches.register_torch("mesecon_torch_on", S("Redstone Torch"),
 				rules = torch_get_input_rules,
 				action_on = torch_action_on,
 			},
-		}
+		},
+		_tt_help = S("Provides redstone power when it's not powered itself"),
 	}
 )
 
 minetest.register_node("mesecons_torch:redstoneblock", {
 	description = S("Block of Redstone"),
+	_tt_help = S("Provides redstone power"),
 	_doc_items_longdesc = S("A block of redstone permanently supplies redstone power to its surrounding blocks."),
 	tiles = {"redstone_redstone_block.png"},
 	stack_max = 64,

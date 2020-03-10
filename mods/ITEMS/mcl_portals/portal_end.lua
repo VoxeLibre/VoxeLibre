@@ -24,6 +24,7 @@ end
 -- End portal
 minetest.register_node("mcl_portals:portal_end", {
 	description = S("End Portal"),
+	_tt_help = S("Used to construct end portals"),
 	_doc_items_longdesc = S("An End portal teleports creatures and objects to the mysterious End dimension (and back!)."),
 	_doc_items_usagehelp = S("Hop into the portal to teleport. Entering an End portal in the Overworld teleports you to a fixed position in the End dimension and creates a 5×5 obsidian platform at your destination. End portals in the End will lead back to your spawn point in the Overworld."),
 	tiles = {
@@ -309,6 +310,7 @@ end
 
 minetest.register_node("mcl_portals:end_portal_frame", {
 	description = S("End Portal Frame"),
+	_tt_help = S("Used to construct end portals"),
 	_doc_items_longdesc = S("End portal frames are used in the construction of End portals. Each block has a socket for an eye of ender.") .. "\n" .. S("NOTE: The End dimension is currently incomplete and might change in future versions."),
 	_doc_items_usagehelp = S("To create an End portal, you need 12 end portal frames and 12 eyes of ender. The end portal frames have to be arranged around a horizontal 3×3 area with each block facing inward. Any other arrangement will fail.") .. "\n" .. S("Place an eye of ender into each block. The end portal appears in the middle after placing the final eye.") .. "\n" .. S("Once placed, an eye of ender can not be taken back."),
 	groups = { creative_breakable = 1, deco_block = 1, end_portal_frame = 1 },
@@ -333,6 +335,7 @@ minetest.register_node("mcl_portals:end_portal_frame", {
 
 minetest.register_node("mcl_portals:end_portal_frame_eye", {
 	description = S("End Portal Frame with Eye of Ender"),
+	_tt_help = S("Used to construct end portals"),
 	_doc_items_create_entry = false,
 	groups = { creative_breakable = 1, deco_block = 1, comparator_signal = 15, end_portal_frame = 2 },
 	tiles = { "mcl_portals_endframe_top.png^[lowpart:75:mcl_portals_endframe_eye.png", "mcl_portals_endframe_bottom.png", "mcl_portals_endframe_eye.png^mcl_portals_endframe_side.png" },

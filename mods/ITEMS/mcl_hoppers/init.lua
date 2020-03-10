@@ -124,6 +124,7 @@ local def_hopper = {
 -- Enabled downwards hopper
 local def_hopper_enabled = table.copy(def_hopper)
 def_hopper_enabled.description = S("Hopper")
+def_hopper_enabled._tt_help = S("5 inventory slots").."\n"..S("Collects items from above, moves items to container below").."\n"..S("Can be disabled with redstone power")
 def_hopper_enabled._doc_items_longdesc = S("Hoppers are containers with 5 inventory slots. They collect dropped items from above, take items from a container above and attempt to put its items it into an adjacent container. Hoppers can go either downwards or sideways. Hoppers interact with chests, droppers, dispensers, shulker boxes, furnaces and hoppers.").."\n\n"..
 
 S("Hoppers interact with containers the following way:").."\n"..

@@ -98,6 +98,7 @@ minetest.register_node("mcl_tnt:tnt", {
 	description = S("TNT"),
 	paramtype = "light",
 	sunlight_propagates = true,
+	_tt_help = S("Ignited by tools, explosions, fire, lava, redstone").."\n"..S("Explosion radius: @1", tostring(TNT_RANGE)),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = S("Place the TNT and ignite it with one of the methods above. Quickly get in safe distance. The TNT will start to be affected by gravity and explodes in 4 seconds."),
 	groups = { dig_immediate = 3, tnt = 1, enderman_takable=1 },

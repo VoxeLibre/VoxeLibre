@@ -56,6 +56,7 @@ minetest.register_node("mcl_core:slimeblock", {
 
 minetest.register_node("mcl_core:cobweb", {
 	description = S("Cobweb"),
+	_tt_help = S("Slows down movement"),
 	_doc_items_longdesc = S("Cobwebs can be walked through, but significantly slow you down."),
 	drawtype = "plantlike",
 	paramtype2 = "degrotate",

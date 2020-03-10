@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_doors")
+
 -- This helper function calls on_place_node callbacks.
 local function on_place_node(place_to, newnode,
 	placer, oldnode, itemstack, pointed_thing)
@@ -66,26 +68,35 @@ function mcl_doors:register_door(name, def)
 		def.selection_box_top = box
 	end
 
-	local longdesc, usagehelp
+	local longdesc, usagehelp, tt_help
+	tt_help = def._tt_help
 	longdesc = def._doc_items_longdesc
 	if not longdesc then
 		if def.only_redstone_can_open then
-			longdesc = "This door is a 2-block high barrier which can be opened or closed by hand or by redstone power."
+			longdesc = S("This door is a 2-block high barrier which can be opened or closed by hand or by redstone power.")
 		else
-			longdesc = "This door is a 2-block high barrier which can only be opened by redstone power, not by hand."
+			longdesc = S("This door is a 2-block high barrier which can only be opened by redstone power, not by hand.")
 		end
 	end
 	usagehelp = def._doc_items_usagehelp
 	if not usagehelp then
 		if def.only_redstone_can_open then
-			usagehelp = "To open or close this door, send a redstone signal to its bottom half."
+			usagehelp = S("To open or close this door, send a redstone signal to its bottom half.")
 		else
-			usagehelp = "To open or close this door, rightclick it or send a redstone signal to its bottom half."
+			usagehelp = S("To open or close this door, rightclick it or send a redstone signal to its bottom half.")
+		end
+	end
+	if not tt_help then
+		if def.only_redstone_can_open then
+			tt_help = S("Opened or closed by redstone power")
+		else
+			tt_help = S("Use to open or close")
 		end
 	end
 
 	minetest.register_craftitem(name, {
 		description = def.description,
+		_tt_help = tt_help,
 		_doc_items_longdesc = longdesc,
 		_doc_items_usagehelp = usagehelp,
 		inventory_image = def.inventory_image,

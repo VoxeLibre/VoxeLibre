@@ -37,6 +37,7 @@ end
 
 minetest.register_node("mcl_sponges:sponge", {
 	description = S("Sponge"),
+	_tt_help = S("Removes water on contact"),
 	_doc_items_longdesc = S("Sponges are blocks which remove water around them when they are placed or come in contact with water, turning it into a wet sponge."),
 	drawtype = "normal",
 	is_ground_content = false,
@@ -95,6 +96,7 @@ minetest.register_node("mcl_sponges:sponge", {
 
 minetest.register_node("mcl_sponges:sponge_wet", {
 	description = S("Waterlogged Sponge"),
+	_tt_help = S("Can be dried in furnace"),
 	_doc_items_longdesc = S("A waterlogged sponge can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of a furnace, the water will pour into the bucket."),
 	drawtype = "normal",
 	is_ground_content = false,
@@ -113,6 +115,7 @@ minetest.register_node("mcl_sponges:sponge_wet", {
 if minetest.get_modpath("mclx_core") then
 	minetest.register_node("mcl_sponges:sponge_wet_river_water", {
 		description = S("Riverwaterlogged Sponge"),
+		_tt_help = S("Can be dried in furnace"),
 		_doc_items_longdesc = S("This is a sponge soaking wet with river water. It can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of the furnace, the river water will pour into the bucket.") .. "\n" .. S("A sponge becomes riverwaterlogged (instead of waterlogged) if it sucks up more river water than (normal) water."),
 		drawtype = "normal",
 		is_ground_content = false,

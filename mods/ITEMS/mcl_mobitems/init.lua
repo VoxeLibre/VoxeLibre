@@ -4,6 +4,7 @@ local S = minetest.get_translator("mcl_mobitems")
 
 minetest.register_craftitem("mcl_mobitems:rotten_flesh", {
 	description = S("Rotten Flesh"),
+	_tt_help = S("80% chance of food poisoning"),
 	_doc_items_longdesc = S("Yuck! This piece of flesh clearly has seen better days. If you're really desperate, you can eat it to restore a few hunger points, but there's a 80% chance it causes food poisoning, which increases your hunger for a while."),
 	inventory_image = "mcl_mobitems_rotten_flesh.png",
 	wield_image = "mcl_mobitems_rotten_flesh.png",
@@ -64,6 +65,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_beef", {
 
 minetest.register_craftitem("mcl_mobitems:chicken", {
 	description = S("Raw Chicken"),
+	_tt_help = S("30% chance of food poisoning"),
 	_doc_items_longdesc = S("Raw chicken is a food item which is not safe to consume. You can eat it to restore a few hunger points, but there's a 30% chance to suffer from food poisoning, which increases your hunger rate for a while. Cooking raw chicken will make it safe to eat and increases its nutritional value."),
 	inventory_image = "mcl_mobitems_chicken_raw.png",
 	wield_image = "mcl_mobitems_chicken_raw.png",
@@ -146,6 +148,7 @@ end
 -- TODO: Clear *all* status effects
 minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 	description = S("Milk"),
+	_tt_help = S("Cures poison"),
 	_doc_items_longdesc = S("Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will cure all forms of poisoning, but restores no hunger points."),
 	_doc_items_usagehelp = "Rightclick to drink the milk.",
 	inventory_image = "mcl_mobitems_bucket_milk.png",
@@ -159,6 +162,7 @@ minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 
 minetest.register_craftitem("mcl_mobitems:spider_eye", {
 	description = S("Spider Eye"),
+	_tt_help = S("Poisonous"),
 	_doc_items_longdesc = S("Spider eyes are used mainly in crafting. If you're really desperate, you can eat a spider eye, but it will poison you briefly."),
 	inventory_image = "mcl_mobitems_spider_eye.png",
 	wield_image = "mcl_mobitems_spider_eye.png",
@@ -272,6 +276,7 @@ minetest.register_craftitem("mcl_mobitems:rabbit_foot", {
 
 minetest.register_craftitem("mcl_mobitems:saddle", {
 	description = S("Saddle"),
+	_tt_help = S("Can be placed on animals to ride them"),
 	_doc_items_longdesc = S("Saddles can be put on some animals in order to mount them."),
 	_doc_items_usagehelp = "Rightclick an animal (with the saddle in your hand) to try put on the saddle. Saddles fit on horses, mules, donkeys and pigs. Horses, mules and donkeys need to be tamed first, otherwise they'll reject the saddle. Saddled animals can be mounted by rightclicking them again.",
 	wield_image = "mcl_mobitems_saddle.png",
@@ -316,6 +321,7 @@ minetest.register_craftitem("mcl_mobitems:gunpowder", {
 
 minetest.register_tool("mcl_mobitems:carrot_on_a_stick", {
 	description = S("Carrot on a Stick"),
+	_tt_help = S("Lets you ride a saddled pig"),
 	_doc_items_longdesc = S("A carrot on a stick can be used on saddled pigs to ride them."),
 	_doc_items_usagehelp = S("Place it on a saddled pig to mount it. You can now ride the pig like a horse. Pigs will also walk towards you when you just wield the carrot on a stick."),
 	wield_image = "mcl_mobitems_carrot_on_a_stick.png",

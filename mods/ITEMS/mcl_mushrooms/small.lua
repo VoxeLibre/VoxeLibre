@@ -23,12 +23,15 @@ local longdesc_intro_red = S("Red mushrooms are fungi which grow and spread in d
 local longdesc_append = S("A single mushroom of this species will slowly spread over time towards a random solid opaque block with a light level of 12 or lower in a 3×3×3 cube around the mushroom. It stops spreading when there are 5 or more mushrooms of the same species within an area of 9×3×9 blocks around the mushroom.").."\n"..
 S("Mushrooms will eventually uproot at a light level of 12 or higher. On mycelium or podzol, they survive and spread at any light level.")
 
+local tt_help = S("Grows on podzol, mycelium and other blocks").."\n"..S("Spreads in darkness")
+
 local usagehelp = S("This mushroom can be placed on mycelium and podzol at any light level. It can also be placed on blocks which are both solid and opaque, as long as the light level at daytime is not higher than 12.")
 
 minetest.register_node("mcl_mushrooms:mushroom_brown", {
 	description = S("Brown Mushroom"),
 	_doc_items_longdesc = longdesc_intro_brown .. "\n\n" .. longdesc_append,
 	_doc_items_usagehelp = usagehelp,
+	_tt_help = tt_help,
 	drawtype = "plantlike",
 	tiles = { "farming_mushroom_brown.png" },
 	inventory_image = "farming_mushroom_brown.png",
@@ -52,6 +55,7 @@ minetest.register_node("mcl_mushrooms:mushroom_red", {
 	description = S("Red Mushroom"),
 	_doc_items_longdesc = longdesc_intro_red .. "\n\n" .. longdesc_append,
 	_doc_items_usagehelp = usagehelp,
+	_tt_help = tt_help,
 	drawtype = "plantlike",
 	tiles = { "farming_mushroom_red.png" },
 	inventory_image = "farming_mushroom_red.png",

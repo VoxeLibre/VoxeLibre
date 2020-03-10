@@ -97,6 +97,7 @@ minetest.register_node("mcl_nether:nether_wart", {
 
 minetest.register_craftitem("mcl_nether:nether_wart_item", {
 	description = S("Nether Wart"),
+	_tt_help = S("Grows on soul sand"),
 	_doc_items_longdesc = S("Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages."),
 	_doc_items_usagehelp = S("Place this item on soul sand to plant it and watch it grow."),
 	inventory_image = "mcl_nether_nether_wart.png",

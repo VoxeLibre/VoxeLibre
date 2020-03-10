@@ -448,6 +448,7 @@ S("• Tool + Tool: Place two tools of the same type in the input slots. The “
 S("• Tool + Material: Some tools can also be repaired by combining them with an item that it's made of. For example, iron pickaxes can be repaired with iron ingots. This repairs the tool by 25%.").."\n"..
 S("Armor counts as a tool. It is possible to repair and rename a tool in a single step.").."\n\n"..
 S("The anvil has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the anvil gets damaged. Anvils also have a chance of being damaged when they fall by more than 1 block. If a very damaged anvil is damaged again, it is destroyed.")
+anvildef0._tt_help = S("Repair and rename items")
 
 local anvildef1 = table.copy(anvildef)
 anvildef1.description = S("Slightly Damaged Anvil")

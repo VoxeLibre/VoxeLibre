@@ -66,6 +66,7 @@ function mcl_beds.register_bed(name, def)
 	end
 	minetest.register_node(name .. "_bottom", {
 		description = def.description,
+		_tt_help = S("Allows you to sleep"),
 		_doc_items_longdesc = def._doc_items_longdesc or beddesc,
 		_doc_items_usagehelp = def._doc_items_usagehelp or beduse,
 		_doc_items_create_entry = def._doc_items_create_entry,

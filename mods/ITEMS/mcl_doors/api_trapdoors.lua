@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_doors")
+
 -- Wrapper around mintest.pointed_thing_to_face_pos.
 local function get_fpos(placer, pointed_thing)
 	local fpos
@@ -83,18 +85,25 @@ function mcl_doors:register_trapdoor(name, def)
 	end
 
 	-- Default help texts
-	local longdesc, usagehelp
+	local longdesc, usagehelp, tt_help
 	longdesc = def._doc_items_longdesc
 	if not longdesc then
 		if def.only_redstone_can_open then
-			longdesc = "Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can only be opened or closed by redstone power."
+			longdesc = S("Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can only be opened or closed by redstone power.")
 		else
-			longdesc = "Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can be opened or closed by hand or redstone power."
+			longdesc = S("Trapdoors are horizontal barriers which can be opened or closed and climbed like a ladder when open. They occupy the upper or lower part of a block, depending on how they have been placed. This trapdoor can be opened or closed by hand or redstone power.")
 		end
 	end
 	usagehelp = def._doc_items_usagehelp
 	if not usagehelp and not def.only_redstone_can_open then
-		usagehelp = "To open or close this trapdoor, rightclick it or send a redstone signal to it."
+		usagehelp = S("To open or close this trapdoor, rightclick it or send a redstone signal to it.")
+	end
+	if not tt_help then
+		if def.only_redstone_can_open then
+			tt_help = S("Opened or closed by redstone power")
+		else
+			tt_help = S("Use to opened or close")
+		end
 	end
 
 	-- Closed trapdoor
@@ -116,6 +125,7 @@ function mcl_doors:register_trapdoor(name, def)
 	groups_closed.deco_block = 1
 	minetest.register_node(name, {
 		description = def.description,
+		_tt_help = tt_help,
 		_doc_items_longdesc = longdesc,
 		_doc_items_usagehelp = usagehelp,
 		drawtype = "nodebox",

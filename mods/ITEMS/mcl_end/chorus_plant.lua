@@ -116,6 +116,7 @@ end
 
 minetest.register_node("mcl_end:chorus_flower", {
 	description = S("Chorus Flower"),
+	_tt_help = S("Grows on end stone"),
 	_doc_items_longdesc = S("A chorus flower is the living part of a chorus plant. It can grow into a tall chorus plant, step by step. When it grows, it may die on old age eventually. It also dies when it is unable to grow."),
 	_doc_items_usagehelp = S("Place it and wait for it to grow. It can only be placed on top of end stone, on top of a chorus plant stem, or at the side of exactly one chorus plant stem."),
 	tiles = {
@@ -205,6 +206,7 @@ minetest.register_node("mcl_end:chorus_flower", {
 
 minetest.register_node("mcl_end:chorus_flower_dead", {
 	description = S("Dead Chorus Flower"),
+	_tt_help = S("Grows on end stone"),
 	_doc_items_longdesc = S("This is a part of a chorus plant. It doesn't grow. Chorus flowers die of old age or when they are unable to grow. A dead chorus flower can be harvested to obtain a fresh chorus flower which is able to grow again."),
 	tiles = {
 		"mcl_end_chorus_flower_dead.png",
@@ -543,6 +545,7 @@ end
 
 minetest.register_craftitem("mcl_end:chorus_fruit", {
 	description = S("Chorus Fruit"),
+	_tt_help = S("Randomly teleports you when eaten"),
 	_doc_items_longdesc = S("A chorus fruit is an edible fruit from the chorus plant which is home to the End. Eating it teleports you to the top of a random solid block nearby, provided you won't end up inside a liquid, solid or harmful blocks. Teleportation might fail if there are very few or no places to teleport to."),
 	wield_image = "mcl_end_chorus_fruit.png",
 	inventory_image = "mcl_end_chorus_fruit.png",
