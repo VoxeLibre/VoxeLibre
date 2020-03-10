@@ -17,3 +17,4 @@ Materials=
 Survival Inventory=
 Crafting=
 Inventory=
+@1/@2=
