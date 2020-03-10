@@ -155,7 +155,7 @@ local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 	else
 		commanderstr = S("Commander: @1", commander)
 	end
-	local textrea_name, submit, textarea
+	local textarea_name, submit, textarea
 	-- If editing is not allowed, only allow read-only access.
 	-- Player can still view the contents of the command block.
 	if can_edit then
