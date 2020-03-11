@@ -8,3 +8,4 @@ Jungle Boat=
 Oak Boat=
 Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Rightclick the boat again to leave it, punch the boat to make it drop as an item.=
 Spruce Boat=
+Water vehicle=

@@ -27,3 +27,9 @@ To make this rail activate minecarts, power it with redstone power and send a mi
 Detector Rail=
 Rails can be used to build transport tracks for minecarts. A detector rail is able to detect a minecart above it and powers redstone mechanisms.=
 To detect a minecart and provide redstone power, connect it to redstone trails or redstone mechanisms and send any minecart over the rail.=
+Track for minecarts=
+Speed up when powered, slow down when not powered=
+Activates minecarts when powered=
+Emits redstone power when a minecart is detected=
+Vehicle for fast travel on rails=
+Can be ignited by tools or powered activator rail=

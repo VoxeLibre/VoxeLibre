@@ -74,3 +74,4 @@ You can copy the pattern of a banner by placing two banners of the same color in
 @1 Chief Indented=
 And one additional layer=
 And @1 additional layer(s)=
+Paintable decoration=

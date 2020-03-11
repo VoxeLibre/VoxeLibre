@@ -15,3 +15,4 @@ Punch any block, item or other thing about you wish to learn more about. This wi
 This block cannot be identified because the world has not materialized at this point yet. Try again in a few seconds.=
 This is a player.=
 This useful little helper can be used to quickly learn more about about one's closer environment. It identifies and analyzes blocks, items and other things and it shows extensive information about the thing on which it is used.=
+Show help for pointed thing=
