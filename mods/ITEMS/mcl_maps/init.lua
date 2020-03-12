@@ -28,6 +28,28 @@ minetest.register_craftitem("mcl_maps:empty_map", {
 	stack_max = 64,
 })
 
+-- Checks if player is still allowed to display the minimap
+local function update_minimap(player)
+	local creative = minetest.settings:get_bool("creative_mode")
+	if creative then
+		player:hud_set_flags({minimap=true, minimap_radar = true})
+	else
+		if has_item_in_hotbar(player, "mcl_maps:filled_map") then
+			player:hud_set_flags({minimap = true, minimap_radar = false})
+		else
+			player:hud_set_flags({minimap = false, minimap_radar = false})
+		end
+	end
+end
+
+-- Remind player how to use the minimap correctly
+local function use_minimap(itemstack, player, pointed_thing)
+	if player and player:is_player() then
+		update_minimap(player)
+		minetest.chat_send_player(player:get_player_name(), S("Use the minimap key to show the map."))
+	end
+end
+
 -- Enables minimap if carried in hotbar.
 -- If this item is NOT in the hotbar, the minimap is unavailable
 -- Note: This is not at all like Minecraft right now. Minetest's minimap is pretty overpowered, it
@@ -41,6 +63,9 @@ minetest.register_craftitem("mcl_maps:filled_map", {
 	groups = { tool = 1 },
 	inventory_image = "mcl_maps_map_filled.png^(mcl_maps_map_filled_markings.png^[colorize:#000000)",
 	stack_max = 1,
+
+	on_use = use_minimap,
+	on_secondary_use = use_minimap,
 })
 
 minetest.register_craft({
@@ -62,20 +87,6 @@ local function has_item_in_hotbar(player, item)
 		end
 	end
 	return false
-end
-
--- Checks if player is still allowed to display the minimap
-local function update_minimap(player)
-	local creative = minetest.settings:get_bool("creative_mode")
-	if creative then
-		player:hud_set_flags({minimap=true, minimap_radar = true})
-	else
-		if has_item_in_hotbar(player, "mcl_maps:filled_map") then
-			player:hud_set_flags({minimap = true, minimap_radar = false})
-		else
-			player:hud_set_flags({minimap = false, minimap_radar = false})
-		end
-	end
 end
 
 minetest.register_on_joinplayer(function(player)
