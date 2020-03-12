@@ -28,6 +28,18 @@ minetest.register_craftitem("mcl_maps:empty_map", {
 	stack_max = 64,
 })
 
+local function has_item_in_hotbar(player, item)
+	-- Requirement: player carries the tool in the hotbar
+	local inv = player:get_inventory()
+	local hotbar = player:hud_get_hotbar_itemcount()
+	for i=1, hotbar do
+		if inv:get_stack("main", i):get_name() == item then
+			return true
+		end
+	end
+	return false
+end
+
 -- Checks if player is still allowed to display the minimap
 local function update_minimap(player)
 	local creative = minetest.settings:get_bool("creative_mode")
@@ -76,18 +88,6 @@ minetest.register_craft({
 		{ "mcl_core:paper", "mcl_core:paper", "mcl_core:paper" },
 	}
 })
-
-local function has_item_in_hotbar(player, item)
-	-- Requirement: player carries the tool in the hotbar
-	local inv = player:get_inventory()
-	local hotbar = player:hud_get_hotbar_itemcount()
-	for i=1, hotbar do
-		if inv:get_stack("main", i):get_name() == item then
-			return true
-		end
-	end
-	return false
-end
 
 minetest.register_on_joinplayer(function(player)
 	update_minimap(player)
