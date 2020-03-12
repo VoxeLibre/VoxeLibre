@@ -71,7 +71,7 @@ end)
 tt.register_snippet(function(itemstring)
 	local def = minetest.registered_items[itemstring]
 	if minetest.get_item_group(itemstring, "crush_after_fall") == 1 then
-		return S("Deals damage when falling")
+		return S("Deals damage when falling"), "#FFFF00"
 	end
 end)
 

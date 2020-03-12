@@ -419,7 +419,7 @@ minetest.register_craftitem("mcl_throwing:egg", {
 -- Ender Pearl
 minetest.register_craftitem("mcl_throwing:ender_pearl", {
 	description = S("Ender Pearl"),
-	_tt_help = S("Throwable").."\n"..S("Teleports you on impact for cost of 5 HP"),
+	_tt_help = S("Throwable").."\n"..minetest.colorize("#FFFF00", S("Teleports you on impact for cost of 5 HP")),
 	_doc_items_longdesc = S("An ender pearl is an item which can be used for teleportation at the cost of health. It can be thrown and teleport the thrower to its impact location when it hits a solid block or a plant. Each teleportation hurts the user by 5 hit points."),
 	_doc_items_usagehelp = how_to_throw,
 	wield_image = "mcl_throwing_ender_pearl.png",

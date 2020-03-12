@@ -146,7 +146,8 @@ minetest.register_craftitem("mcl_core:apple", {
 
 -- TODO: Status effects
 minetest.register_craftitem("mcl_core:apple_gold", {
-	description = minetest.colorize("#55FFFF", S("Golden Apple")),
+	-- TODO: Add special highlight color when this item is special
+	description = S("Golden Apple"),
 	_doc_items_longdesc = S("Golden apples are precious food items which can be eaten."),
 	wield_image = "mcl_core_apple_golden.png",
 	inventory_image = "mcl_core_apple_golden.png",
