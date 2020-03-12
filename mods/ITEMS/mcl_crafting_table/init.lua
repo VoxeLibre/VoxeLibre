@@ -2,7 +2,7 @@ local S = minetest.get_translator("mcl_crafting_table")
 
 minetest.register_node("mcl_crafting_table:crafting_table", {
 	description = S("Crafting Table"),
-	_tt_help = S("Gives access to 3×3 crafting grid"),
+	_tt_help = S("3×3 crafting grid"),
 	_doc_items_longdesc = S("A crafting table is a block which grants you access to a 3×3 crafting grid which allows you to perform advanced crafts."),
 	_doc_items_usagehelp = S("Rightclick the crafting table to access the 3×3 crafting grid."),
 	_doc_items_hidden = false,

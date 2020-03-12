@@ -1,0 +1,17 @@
+# textdomain: mcl_tt
+Head armor=Kopfrüstung
+Torso armor=Torsorüstung
+Legs armor=Beinrüstung
+Feet armor=Fußrüstung
+Armor points: @1=Rüstungspunkte: @1
+Armor durability: @1=Rüstungshaltbarkeit: @1
+Protection: @1%=Schutz: @1%
+Hunger points: +@1=Hungerpunkte: +@1
+Saturation points: +@1=Sättigungspunkte: +@1
+Deals damage when falling=Macht Schaden beim Fallen
+Grows on grass blocks or dirt=Wächst auf Grasblöcken oder Erde
+Grows on grass blocks, podzol, dirt or coarse dirt=Wächst auf Grasblöcken, Podsol, Erde oder grober Erde
+Flammable=Entzündlich
+Zombie view range: -50%=Zombiesichtweite: -50%
+Skeleton view range: -50%=Skelettsichtweite: -50%
+Creeper view range: -50%=Creepersichtweite: -50%

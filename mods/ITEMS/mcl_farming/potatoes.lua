@@ -87,7 +87,7 @@ minetest.register_node("mcl_farming:potato", {
 
 minetest.register_craftitem("mcl_farming:potato_item", {
 	description = S("Potato"),
-	_tt_help = S("Can be planted on farmland"),
+	_tt_help = S("Grows on farmland"),
 	_doc_items_longdesc = S("Potatoes are food items which can be eaten, cooked in the furnace and planted. Pigs like potatoes."),
 	_doc_items_usagehelp = S("Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant it. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it."),
 	inventory_image = "farming_potato.png",

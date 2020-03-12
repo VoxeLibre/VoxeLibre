@@ -82,7 +82,7 @@ minetest.register_node("mcl_farming:carrot", {
 
 minetest.register_craftitem("mcl_farming:carrot_item", {
 	description = S("Carrot"),
-	_tt_help = S("Can be planted on farmland"),
+	_tt_help = S("Grows on farmland"),
 	_doc_items_longdesc = S("Carrots can be eaten and planted. Pigs and rabbits like carrots."),
 	_doc_items_usagehelp = S("Hold it in your hand and rightclick to eat it. Place it on top of farmland to plant the carrot. It grows in sunlight and grows faster on hydrated farmland. Rightclick an animal to feed it."),
 	inventory_image = "farming_carrot.png",

@@ -11,3 +11,6 @@ Disabled Hopper=Deaktivierter Trichter
 Side Hopper=Seitwärtstrichter
 Disabled Side Hopper=Deaktivierter Seitwärtstrichter
 Inventory=Inventar
+5 inventory slots=5 Inventarplätze
+Collects items from above, moves items to container below=Sammelt Gegenstände von oben, legt Gegenstände in Behälter unterhalb ab
+Can be disabled with redstone power=Kann mit Redstoneenergie deaktiviert werden

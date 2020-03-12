@@ -8,3 +8,6 @@ Redstone Repeater (Locked)=
 Redstone Repeater (Locked, Powered)=
 Redstone Repeater (Delay @1)=
 Redstone Repeater (Delay @1, Powered)=
+Transmits redstone power only in one direction=
+Delays signal=
+Output locks when getting active redstone repeater signal from the side=

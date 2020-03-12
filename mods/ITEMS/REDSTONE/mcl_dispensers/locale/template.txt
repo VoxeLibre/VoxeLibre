@@ -21,3 +21,5 @@ The dispenser will do different things, depending on the dispensed item:=
 Downwards-Facing Dispenser=
 Upwards-Facing Dispenser=
 Inventory=
+9 inventory slots=
+Launches item when powered by redstone power=

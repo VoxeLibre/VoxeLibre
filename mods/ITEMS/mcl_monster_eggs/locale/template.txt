@@ -6,3 +6,4 @@ Infested Stone Bricks=
 Infested Cracked Stone Bricks=
 Infested Mossy Stone Bricks=
 Infested Chiseled Stone Bricks=
+Hides a silverfish=

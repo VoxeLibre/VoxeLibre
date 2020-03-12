@@ -21,3 +21,5 @@ Dragon's Breath=
 Use the “Place” key to drink it.=
 Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron.=
 Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron.=
+Liquid container=
+No effect=

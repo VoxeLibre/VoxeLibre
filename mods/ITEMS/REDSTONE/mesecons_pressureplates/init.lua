@@ -101,13 +101,13 @@ function mesecon.register_pressure_plate(basename, description, textures_off, te
 	end
 	local tt = S("Provides redstone power when pushed")
 	if not activated_by then
-		tt = tt .. "\n" .. S("Pushed by players, mobs and objects")
+		tt = tt .. "\n" .. S("Pushable by players, mobs and objects")
 	elseif activated_by.mob and activated_by.player then
-		tt = tt .. "\n" .. S("Pushed by players and mobs")
+		tt = tt .. "\n" .. S("Pushable by players and mobs")
 	elseif activated_by.mob then
-		tt = tt .. "\n" .. S("Pushed by mobs")
+		tt = tt .. "\n" .. S("Pushable by mobs")
 	elseif activated_by.player then
-		tt = tt .. "\n" .. S("Pushed by players")
+		tt = tt .. "\n" .. S("Pushable by players")
 	end
 
 	mesecon.register_node(basename, {

@@ -8,3 +8,6 @@ Redstone Repeater (Locked)=Redstoneverstärker (gesperrt)
 Redstone Repeater (Locked, Powered)=Redstoneverstärker (gesperrt, bestromt)
 Redstone Repeater (Delay @1)=Redstoneverstärker (Verzögerung @1)
 Redstone Repeater (Delay @1, Powered)=Redstoneverstärker (Verzögerung @1, bestromt)
+Transmits redstone power only in one direction=Überträgt Redstoneenergie in nur eine Richtung
+Delays signal=Verzögert Signal
+Output locks when getting active redstone repeater signal from the side=Ausgangssignal wird gesperrt, wenn Signal von aktivem Redstoneverstärker an der Seite erhalten

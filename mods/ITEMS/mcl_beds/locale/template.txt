@@ -38,3 +38,4 @@ Note: Night skip is disabled.=
 You're sleeping.=
 You will fall asleep when all players are in bed.=
 You're in bed.=
+Allows you to sleep=

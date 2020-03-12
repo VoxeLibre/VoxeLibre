@@ -6,3 +6,4 @@ Use the recipe book to see what you can smelt, what you can use as fuel and how 
 Burning Furnace=
 Recipe book=
 Inventory=
+Uses fuel to smelt or cook items=

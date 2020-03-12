@@ -28,3 +28,9 @@ To access the inventory of a shulker box, place and right-click it. To take a sh
 Shulker Box=
 Large Chest=
 Inventory=
+27 inventory slots=
+Can be carried around with its contents=
+Can be combined to a large chest=
+27 interdimensional inventory slots=
+Put items inside, retrieve them from any ender chest=
+Emits a redstone signal when opened=

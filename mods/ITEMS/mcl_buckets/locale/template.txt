@@ -11,3 +11,7 @@ Place it to empty the bucket and create a water source.=
 River Water Bucket=
 A bucket can be used to collect and release liquids. This one is filled with river water.=
 Place it to empty the bucket and create a river water source.=
+Collects liquids=
+Places a lava source=
+Places a water source=
+Places a river water source=

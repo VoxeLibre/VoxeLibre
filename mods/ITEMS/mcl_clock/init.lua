@@ -58,7 +58,7 @@ function watch.register_item(name, image, creative, frame)
 	if use_doc then
 		longdesc = S("Clocks are tools which shows the current time of day in the Overworld.")
 		usagehelp = S("The clock contains a rotating disc with a sun symbol (yellow disc) and moon symbol and a little “pointer” which shows the current time of day by estimating the real position of the sun and the moon in the sky. Noon is represented by the sun symbol and midnight is represented by the moon symbol.")
-		tt = S("Displays time of day in the Overworld")
+		tt = S("Displays the time of day in the Overworld")
 	end
 	minetest.register_craftitem(name, {
 		description = S("Clock"),

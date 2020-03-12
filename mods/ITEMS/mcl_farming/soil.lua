@@ -3,7 +3,7 @@ local S = minetest.get_translator("mcl_farming")
 minetest.register_node("mcl_farming:soil", {
 	tiles = {"mcl_farming_farmland_dry.png", "default_dirt.png"},
 	description = S("Farmland"),
-	_tt_help = S("Surface for farming plants").."\n"..S("Can become wet"),
+	_tt_help = S("Surface for crops").."\n"..S("Can become wet"),
 	_doc_items_longdesc = S("Farmland is used for farming, a necessary surface to plant crops. It is created when a hoe is used on dirt or a similar block. Plants are able to grow on farmland, but slowly. Farmland will become hydrated farmland (on which plants grow faster) when it rains or a water source is nearby. This block will turn back to dirt when a solid block appears above it or a piston arm extends above it."),
 	drop = "mcl_core:dirt",
 	drawtype = "nodebox",

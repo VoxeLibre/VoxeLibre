@@ -5,3 +5,5 @@ Droppers can be placed in 6 possible directions, items will be dropped out of th
 Downwards-Facing Dropper=
 Upwards-Facing Dropper=
 Inventory=
+9 inventory slots=
+Drops item when powered by redstone power=

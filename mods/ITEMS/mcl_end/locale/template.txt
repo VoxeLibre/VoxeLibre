@@ -23,3 +23,6 @@ Use the attack key to release the eye of ender. It will rise and fly in the hori
 To activate an End portal, eyes of ender need to be placed into each block of an intact End portal frame.=
 NOTE: The End dimension is currently incomplete and might change in future versions.=
 The stem attaches itself to end stone and other chorus blocks.=
+Grows on end stone=
+Randomly teleports you when eaten=
+Guides the way to the mysterious End dimension=

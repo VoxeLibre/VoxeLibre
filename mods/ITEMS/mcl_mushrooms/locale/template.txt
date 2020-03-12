@@ -20,3 +20,5 @@ Red Mushroom=
 Mushroom Stew=
 Mushroom stew is a healthy soup which can be consumed to restore some hunger points.=
 By placing huge mushroom blocks of the same species next to each other, the sides that touch each other will turn into pores permanently.=
+Grows on podzol, mycelium and other blocks=
+Spreads in darkness=

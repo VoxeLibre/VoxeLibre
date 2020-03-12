@@ -6,3 +6,5 @@ A waterlogged sponge can be dried in the furnace to turn it into (dry) sponge. W
 Riverwaterlogged Sponge=
 This is a sponge soaking wet with river water. It can be dried in the furnace to turn it into (dry) sponge. When there's an empty bucket in the fuel slot of the furnace, the river water will pour into the bucket.=
 A sponge becomes riverwaterlogged (instead of waterlogged) if it sucks up more river water than (normal) water.=
+Removes water on contact=
+Can be dried in furnace=

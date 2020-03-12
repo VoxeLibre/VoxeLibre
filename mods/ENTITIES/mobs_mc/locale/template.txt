@@ -72,4 +72,4 @@ Weapon Smith=
 Tool Smith=
 Cleric=
 Nitwit=
-Protects you from death when wielding it=
+Protects you from death while wielding it=

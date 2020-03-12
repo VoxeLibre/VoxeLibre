@@ -6,3 +6,4 @@ Enter sign text:=
 Maximum line length: 15=
 Maximum lines: 4=
 Done=
+Can be written=

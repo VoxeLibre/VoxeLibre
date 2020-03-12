@@ -25,3 +25,4 @@ To copy the text of the written book, place it into the crafting grid together w
 Bookshelf=
 Bookshelves are used for decoration.=
 Book and Quill=
+Write down some notes=

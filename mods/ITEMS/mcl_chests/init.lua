@@ -109,7 +109,7 @@ minetest.register_node("mcl_chests:"..basename, {
 		local meta = minetest.get_meta(pos)
 		--[[ This is a workaround for Minetest issue 5894
 		<https://github.com/minetest/minetest/issues/5894>.
-		Apparently if we don't do this, double chests initially don't work when
+		Apparently if we don't do this, large chests initially don't work when
 		placed at chunk borders, and some chests randomly don't work after
 		placing. ]]
 		-- FIXME: Remove this workaround when the bug has been fixed.
@@ -490,7 +490,7 @@ register_chest("chest",
 	S("Chest"),
 	S("Chests are containers which provide 27 inventory slots. Chests can be turned into large chests with double the capacity by placing two chests next to each other."),
 	chestusage,
-	S("27 inventory slots") .. "\n" .. S("Can be combined to a double chest"),
+	S("27 inventory slots") .. "\n" .. S("Can be combined to a large chest"),
 	{
 		small = {"default_chest_top.png", "mcl_chests_chest_bottom.png",
 		"mcl_chests_chest_right.png", "mcl_chests_chest_left.png",
@@ -521,7 +521,7 @@ register_chest("trapped_chest",
 	S("Trapped Chest"),
 	S("A trapped chest is a container which provides 27 inventory slots. When it is opened, it sends a redstone signal to its adjacent blocks as long it stays open. Trapped chests can be turned into large trapped chests with double the capacity by placing two trapped chests next to each other."),
 	chestusage,
-	S("27 inventory slots") .. "\n" .. S("Can be combined to a double chest") .. "\n" .. S("Emits a redstone signal when opened"),
+	S("27 inventory slots") .. "\n" .. S("Can be combined to a large chest") .. "\n" .. S("Emits a redstone signal when opened"),
 	traptiles,
 	nil,
 	{receptor = {
@@ -643,7 +643,7 @@ minetest.register_craft({
 
 minetest.register_node("mcl_chests:ender_chest", {
 	description = S("Ender Chest"),
-	_tt_help = S("27 interdimensional inventory slots") .. "\n" .. S("Put items inside, retrieve them from any other ender chest"),
+	_tt_help = S("27 interdimensional inventory slots") .. "\n" .. S("Put items inside, retrieve them from any ender chest"),
 	_doc_items_longdesc = S("Ender chests grant you access to a single personal interdimensional inventory with 27 slots. This inventory is the same no matter from which ender chest you access it from. If you put one item into one ender chest, you will find it in all other ender chests. Each player will only see their own items, but not the items of other players."),
 	_doc_items_usagehelp = S("Rightclick the ender chest to access your personal interdimensional inventory."),
 	tiles = {"mcl_chests_ender_chest_top.png", "mcl_chests_ender_chest_bottom.png",

@@ -28,3 +28,9 @@ To access the inventory of a shulker box, place and right-click it. To take a sh
 Shulker Box=Schulkerkiste
 Large Chest=Große Truhe
 Inventory=Inventar
+27 inventory slots=27 Inventarplätze
+Can be carried around with its contents=Kann mitsamt Inhalt transportiert werden
+Can be combined to a large chest=Kann zu einer großen Truhe kombiniert werden
+27 interdimensional inventory slots=27 interdimensionale Inventarplätze
+Put items inside, retrieve them from any ender chest=Abgelegte Gegenstände können aus beliebigen Endertruhen genommen werden
+Emits a redstone signal when opened=Sendet ein Redstonesignal beim Öffnen

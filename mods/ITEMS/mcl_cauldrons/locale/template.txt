@@ -8,3 +8,4 @@ Cauldron (3/3 Water)=
 Cauldron (1/3 River Water)=
 Cauldron (2/3 River Water)=
 Cauldron (3/3 River Water)=
+Stores water=

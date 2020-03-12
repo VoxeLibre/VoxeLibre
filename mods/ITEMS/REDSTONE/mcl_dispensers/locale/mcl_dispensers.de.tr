@@ -21,3 +21,5 @@ The dispenser will do different things, depending on the dispensed item:=Der Wer
 Downwards-Facing Dispenser=Nach unten zeigender Werfer
 Upwards-Facing Dispenser=Nach oben zeigender Werfer
 Inventory=Inventar
+9 inventory slots=9 Inventarplätze
+Launches item when powered by redstone power=Wirft Gegenstand aus, wenn mit Redstoneenergie versorgt

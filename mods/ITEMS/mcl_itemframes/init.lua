@@ -101,7 +101,7 @@ end
 
 minetest.register_node("mcl_itemframes:item_frame",{
 	description = S("Item Frame"),
-	_tt_help = S("Holds an item"),
+	_tt_help = S("Can hold an item"),
 	_doc_items_longdesc = S("Item frames are decorative blocks in which items can be placed."),
 	_doc_items_usagehelp = S("Just place any item on the item frame. Use the item frame again to retrieve the item."),
 	drawtype = "mesh",

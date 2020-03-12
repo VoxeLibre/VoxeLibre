@@ -5,3 +5,4 @@ Rightclick the crafting table to access the 3×3 crafting grid.=
 Recipe book=
 Crafting=
 Inventory=
+3×3 crafting grid=

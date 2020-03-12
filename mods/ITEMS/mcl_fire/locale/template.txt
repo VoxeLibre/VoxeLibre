@@ -15,3 +15,5 @@ Eternal fire is a damaging block. Eternal fire can be extinguished by punches an
 @1 died in a fire.=
 Fire=
 Eternal Fire=
+Dispenser projectile=
+Starts fires and ignites blocks=

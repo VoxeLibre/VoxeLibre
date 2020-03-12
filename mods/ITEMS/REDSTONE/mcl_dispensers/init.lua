@@ -282,7 +282,7 @@ local dispenserdef = {
 
 local horizontal_def = table.copy(dispenserdef)
 horizontal_def.description = S("Dispenser")
-horizontal_def._tt_help = S("9 inventory slots").."\n"..S("Launches item when powered with redstone power")
+horizontal_def._tt_help = S("9 inventory slots").."\n"..S("Launches item when powered by redstone power")
 horizontal_def._doc_items_longdesc = S("A dispenser is a block which acts as a redstone component which, when powered with redstone power, dispenses an item. It has a container with 9 inventory slots.")
 horizontal_def._doc_items_usagehelp = S("Place the dispenser in one of 6 possible directions. The “hole” is where items will fly out of the dispenser. Use the dispenser to access its inventory. Insert the items you wish to dispense. Supply the dispenser with redstone energy once to dispense a random item.").."\n\n"..
 

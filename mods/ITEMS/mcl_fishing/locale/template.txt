@@ -14,3 +14,5 @@ Clownfish=
 Clownfish may be obtained by fishing (and luck) and is a food item which can be eaten safely.=
 Pufferfish=
 Pufferfish are a common species of fish and can be obtained by fishing. They can technically be eaten, but they are very bad for humans. Eating a pufferfish only restores 1 hunger point and will poison you very badly (which drains your health non-fatally) and causes serious food poisoning (which increases your hunger).=
+Catches fish in water=
+Very poisonous=

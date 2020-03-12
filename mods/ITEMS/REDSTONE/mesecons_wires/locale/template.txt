@@ -8,3 +8,4 @@ Redstone=
 Powered Redstone Spot (@1)=
 Redstone Trail (@1)=
 Powered Redstone Trail (@1)=
+Transmits redstone power, powers mechanisms=

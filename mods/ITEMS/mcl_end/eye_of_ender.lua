@@ -74,7 +74,7 @@ minetest.register_entity("mcl_end:ender_eye", {
 
 minetest.register_craftitem("mcl_end:ender_eye", {
 	description = S("Eye of Ender"),
-	_tt_help = S("Guides you to the End dimension"),
+	_tt_help = S("Guides the way to the mysterious End dimension"),
 	_doc_items_longdesc = S("This item is used to locate End portal shrines in the Overworld and to activate End portals.") .. "\n" .. S("NOTE: The End dimension is currently incomplete and might change in future versions."),
 	_doc_items_usagehelp = S("Use the attack key to release the eye of ender. It will rise and fly in the horizontal direction of the closest end portal shrine. If you're very close, the eye of ender will take the direct path to the End portal shrine instead. After a few seconds, it stops. It may drop as an item, but there's a 20% chance it shatters.") .. "\n" .. S("To activate an End portal, eyes of ender need to be placed into each block of an intact End portal frame."),
 	wield_image = "mcl_end_ender_eye.png",

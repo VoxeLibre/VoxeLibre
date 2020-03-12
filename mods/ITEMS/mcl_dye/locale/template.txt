@@ -23,3 +23,5 @@ Rightclick a sheep to turn its wool white. Rightclick a plant to speed up its gr
 Cocoa beans are a brown dye and can be used to plant cocoas.=
 Rightclick a sheep to turn its wool brown. Rightclick on the side of a jungle tree trunk (Jungle Wood) to plant a young cocoa.=
 Cocoa Beans=
+Grows at the side of jungle trees=
+Speeds up plant growth=

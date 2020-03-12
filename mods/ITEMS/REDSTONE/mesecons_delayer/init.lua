@@ -184,7 +184,9 @@ end
 local help, tt, longdesc, usagehelp, icon, on_construct
 if i == 1 then
 	help = true
-	tt = S("Redstone component").."\n"..S("Restricts power to one direction").."\n"..S("Delays signal").."\n"..S("Output can be locked")
+	tt = S("Transmits redstone power only in one direction").."\n"..
+		S("Delays signal").."\n"..
+		S("Output locks when getting active redstone repeater signal from the side")
 	longdesc = S("Redstone repeaters are versatile redstone components with multiple purposes: 1. They only allow signals to travel in one direction. 2. They delay the signal. 3. Optionally, they can lock their output in one state.")
 	usagehelp = S("To power a redstone repeater, send a signal in “arrow” direction (the input). The signal goes out on the opposite side (the output) with a delay. To change the delay, use the redstone repeater. The delay is between 0.1 and 0.4 seconds long and can be changed in steps of 0.1 seconds. It is indicated by the position of the moving redstone torch.").."\n"..
 			S("To lock a repeater, send a signal from an adjacent repeater into one of its sides. While locked, the moving redstone torch disappears, the output doesn't change and the input signal is ignored.")

@@ -8,3 +8,5 @@ Cake (4 Slices Left)=
 Cake (3 Slices Left)=
 Cake (2 Slices Left)=
 Cake (1 Slice Left)=
+With 7 tasty slices!=
+Hunger points: +@1 per slice=

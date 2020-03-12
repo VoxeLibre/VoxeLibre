@@ -247,3 +247,11 @@ Stained Glass=Buntglas
 Granite is an igneous rock.=Granit ist ein magmatisches Gestein.
 Top snow can be stacked and has one of 8 different height levels. At levels 2-8, top snow is collidable. Top snow drops 2-9 snowballs, depending on its height.=Eine Schneeschicht kann gestapelt werden und hat eine von 8 verschiedenen Höhestufen. Bei den Höhestufen 2-8 ist die Schneeschnicht kollidierbar. Schneeschichten werfen 2-9 Schneebälle ab, abhängig von ihrer Höhe.
 This block can only be placed on full solid blocks and on another top snow (which increases its height).=Dieser Block kann nur auf ganzen festen Blöcken und auf anderen Schneeschichten (was die Höhe erhöht) platziert werden.
+Needs soil and light to grow=Benötigt Boden und Licht zum Wachsen
+Grows on sand=Wächst auf Sand
+Contact damage: @1 per half second=Kontaktschaden: @1 jede halbe Sekunde
+Slows down movement=Verlangsamt die Fortbewegung
+2×2 saplings required=2×2 Setzlinge benötigt
+2×2 saplings @= large tree=2×2 Setzlinge @= großer Baum
+Grows on sand or dirt next to water=Wächst auf Sand oder Erde neben Wasser
+Stackable=Stapelbar

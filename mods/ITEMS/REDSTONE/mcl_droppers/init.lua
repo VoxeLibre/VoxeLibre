@@ -147,7 +147,7 @@ local dropperdef = {
 
 local horizontal_def = table.copy(dropperdef)
 horizontal_def.description = S("Dropper")
-horizontal_def._tt_help = S("9 inventory slots").."\n"..S("Drops item when powered with redstone power")
+horizontal_def._tt_help = S("9 inventory slots").."\n"..S("Drops item when powered by redstone power")
 horizontal_def._doc_items_longdesc = S("A dropper is a redstone component and a container with 9 inventory slots which, when supplied with redstone power, drops an item or puts it into a container in front of it.")
 horizontal_def._doc_items_usagehelp = S("Droppers can be placed in 6 possible directions, items will be dropped out of the hole. Use the dropper to access its inventory. Supply it with redstone energy once to make the dropper drop or transfer a random item.")
 horizontal_def.after_place_node = function(pos, placer, itemstack, pointed_thing)

@@ -35,3 +35,6 @@ The mature nether wart is a plant from the Nether and reached its full size and 
 Nether Wart=
 Nether warts are plants home to the Nether. They can be planted on soul sand and grow in 4 stages.=
 Place this item on soul sand to plant it and watch it grow.=
+Burns your feet=
+Grows on soul sand=
+Reduces walking speed=

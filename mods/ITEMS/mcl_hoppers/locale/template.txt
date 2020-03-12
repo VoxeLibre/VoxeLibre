@@ -11,3 +11,6 @@ Disabled Hopper=
 Side Hopper=
 Disabled Side Hopper=
 Inventory=
+5 inventory slots=
+Collects items from above, moves items to container below=
+Can be disabled with redstone power=
