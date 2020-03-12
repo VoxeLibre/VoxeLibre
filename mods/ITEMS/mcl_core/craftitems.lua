@@ -153,8 +153,8 @@ minetest.register_craftitem("mcl_core:apple_gold", {
 	inventory_image = "mcl_core_apple_golden.png",
 	stack_max = 64,
 	-- TODO: Reduce to 4 when it's ready
-	on_place = minetest.item_eat(8),
-	on_secondary_use = minetest.item_eat(8),
-	groups = { food = 2, eatable = 8, can_eat_when_full = 1 },
+	on_place = minetest.item_eat(20),
+	on_secondary_use = minetest.item_eat(20),
+	groups = { food = 2, eatable = 20, can_eat_when_full = 1 },
 	_mcl_saturation = 9.6,
 })
