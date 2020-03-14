@@ -1,7 +1,5 @@
 local S = minetest.get_translator("mcl_hoppers")
 
-local chest = minetest.get_content_id("mcl_chests:chest")
-
 --[[ BEGIN OF NODE DEFINITIONS ]]
 
 local mcl_hoppers_formspec =
