@@ -199,11 +199,11 @@ end
 
 local function update_formspecs(finished)
 	local ges = #minetest.get_connected_players()
-	local form_n = "size[8,15;true]"
+	local form_n = "size[6,5;true]"
 	local all_in_bed = ges == player_in_bed
 	local night_skip = is_night_skip_enabled()
-	local button_leave = "button_exit[2,12;4,0.75;leave;"..F(S("Leave bed")).."]"
-	local button_abort = "button_exit[2,12;4,0.75;leave;"..F(S("Abort sleep")).."]"
+	local button_leave = "button_exit[1,3;4,0.75;leave;"..F(S("Leave bed")).."]"
+	local button_abort = "button_exit[1,3;4,0.75;leave;"..F(S("Abort sleep")).."]"
 	local bg_presleep = "bgcolor[#00000080;true]"
 	local bg_sleep = "bgcolor[#000000FF;true]"
 
@@ -227,7 +227,7 @@ local function update_formspecs(finished)
 			form_n = form_n .. bg_presleep
 			form_n = form_n .. button_leave
 		end
-		form_n = form_n .. "label[2.2,7.5;"..F(text).."]"
+		form_n = form_n .. "label[1,1;"..F(text).."]"
 	else
 		local text
 		if night_skip then
@@ -239,7 +239,7 @@ local function update_formspecs(finished)
 			form_n = form_n .. bg_presleep
 			form_n = form_n .. button_leave
 		end
-		form_n = form_n .. "label[2.2,7.5;"..F(text).."]"
+		form_n = form_n .. "label[1,1;"..F(text).."]"
 	end
 
 	for name,_ in pairs(mcl_beds.player) do
