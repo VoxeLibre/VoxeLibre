@@ -589,8 +589,8 @@ local check_for_death = function(self, cause, cmi_cause)
 		return false
 	end
 
-	-- dropped cooked item if mob died in lava
-	if cause == "lava" then
+	-- dropped cooked item if mob died in fire or lava
+	if cause == "lava" or cause == "fire" then
 		item_drop(self, true)
 	else
 		item_drop(self, nil)
