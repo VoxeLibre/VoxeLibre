@@ -1,7 +1,7 @@
 # textdomain: mcl_fire
 Fire Charge=Carga de fuego
 Fire charges are primarily projectiles which can be launched from dispensers, they will fly in a straight line and burst into a fire on impact. Alternatively, they can be used to ignite fires directly.=Las cargas de fuego son principalmente proyectiles que se pueden lanzar desde dispensadores, volarán en línea recta y estallarán en un incendio al impactar. Alternativamente, se pueden usar para encender incendios directamente.
-Put the fire charge into a dispenser and supply it with redstone power to launch it. To ignite a fire directly, simply place the fire charge on the ground, which uses it up.=Ponga la carga de fuego en un dispensador y suminístrele poder de piedra roja para lanzarlo. Para encender un fuego directamente, simplemente coloque la carga de fuego en el suelo, que la usa.
+Put the fire charge into a dispenser and supply it with redstone power to launch it. To ignite a fire directly, simply place the fire charge on the ground, which uses it up.=Ponga la carga de fuego en un dispensador y suminístrele poder de redstone para lanzarlo. Para encender un fuego directamente, simplemente coloque la carga de fuego en el suelo, que la usa.
 Flint and Steel=Mechero
 Flint and steel is a tool to start fires and ignite blocks.=El mechero es una herramienta para iniciar incendios y encender bloques.
 Rightclick the surface of a block to attempt to light a fire in front of it or ignite the block. A few blocks have an unique reaction when ignited.=Haga clic derecho en la superficie de un bloque para intentar encender un fuego frente a él o encender el bloque. Unos pocos bloques tienen una reacción única cuando se encienden.
