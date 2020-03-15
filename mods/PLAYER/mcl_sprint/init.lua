@@ -86,7 +86,8 @@ minetest.register_globalstep(function(dtime)
 				-- Sprint dirt particles
 				local numParticles = math.random(1, 2)
 				local playerNode = minetest.get_node({x=playerPos["x"], y=playerPos["y"]-1, z=playerPos["z"]})
-				if playerNode["name"] ~= "air" then
+				local def = minetest.registered_nodes[playerNode.name]
+				if def and def.walkable then
 					for i=1, numParticles, 1 do
 						minetest.add_particle({
 							pos = {x=playerPos["x"]+math.random(-1,1)*math.random()/2,y=playerPos["y"]+0.1,z=playerPos["z"]+math.random(-1,1)*math.random()/2},
