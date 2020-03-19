@@ -21,6 +21,7 @@
 
 local S = minetest.get_translator("mobs_mc")
 local N = function(s) return s end
+local F = minetest.formspec_escape
 
 -- playername-indexed table containing the previously used tradenum
 local player_tradenum = {}
@@ -474,7 +475,7 @@ local function show_trade_formspec(playername, trader, tradenum)
 			"image[4.3,1.1;1,1;mobs_mc_trading_formspec_disabled.png]"
 	end
 	local tradeinv_name = "mobs_mc:trade_"..playername
-	local tradeinv = minetest.formspec_escape("detached:"..tradeinv_name)
+	local tradeinv = F("detached:"..tradeinv_name)
 
 	local b_prev, b_next = "", ""
 	if #trades > 1 then
@@ -486,16 +487,31 @@ local function show_trade_formspec(playername, trader, tradenum)
 		end
 	end
 
+	local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade_"..playername})
+	local wanted1 = inv:get_stack("wanted", 1)
+	local wanted2 = inv:get_stack("wanted", 2)
+	local offered = inv:get_stack("offered", 1)
+
+	local w2_formspec = ""
+	if not wanted2:is_empty() then
+		w2_formspec = "item_image[3,1;1,1;"..wanted2:to_string().."]"
+		.."tooltip[3,1;0.8,0.8;"..F(wanted2:get_description()).."]"
+	end
+
 	local formspec =
 	"size[9,8.75]"
 	.."background[-0.19,-0.25;9.41,9.49;mobs_mc_trading_formspec_bg.png]"
 	..disabled_img
-	.."label[4,0;"..minetest.formspec_escape(minetest.colorize("#313131", S(profession))).."]"
+	.."label[4,0;"..F(minetest.colorize("#313131", S(profession))).."]"
 	.."list[current_player;main;0,4.5;9,3;9]"
 	.."list[current_player;main;0,7.74;9,1;]"
 	..b_prev..b_next
-	.."list["..tradeinv..";wanted;2,1;2,1;]"
-	.."list["..tradeinv..";offered;5.76,1;1,1;]"
+	.."["..tradeinv..";wanted;2,1;2,1;]"
+	.."item_image[2,1;1,1;"..wanted1:to_string().."]"
+	.."tooltip[2,1;0.8,0.8;"..F(wanted1:get_description()).."]"
+	..w2_formspec
+	.."item_image[5.76,1;1,1;"..offered:to_string().."]"
+	.."tooltip[5.76,1;0.8,0.8;"..F(offered:get_description()).."]"
 	.."list["..tradeinv..";input;2,2.5;2,1;]"
 	.."list["..tradeinv..";output;5.76,2.55;1,1;]"
 	.."listring["..tradeinv..";output]"
