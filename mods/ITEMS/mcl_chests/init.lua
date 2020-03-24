@@ -90,6 +90,39 @@ if not canonical_basename then
 	canonical_basename = basename
 end
 
+local double_chest_add_item = function(top_inv, bottom_inv, listname, stack)
+	if not stack or stack:is_empty() then
+		return
+	end
+
+	local name = stack:get_name()
+
+	local top_off = function(inv, stack)
+		for c, chest_stack in ipairs(inv:get_list(listname)) do
+			if stack:is_empty() then
+				break
+			end
+
+			if chest_stack:get_name() == name and chest_stack:get_free_space() > 0 then
+				stack = chest_stack:add_item(stack)
+				inv:set_stack(listname, c, chest_stack)
+			end
+		end
+
+		return stack
+	end
+
+	stack = top_off(top_inv, stack)
+	stack = top_off(bottom_inv, stack)
+
+	if not stack:is_empty() then
+		stack = top_inv:add_item(listname, stack)
+		if not stack:is_empty() then
+			bottom_inv:add_item(listname, stack)
+		end
+	end
+end
+
 minetest.register_node("mcl_chests:"..basename, {
 	description = desc,
 	_tt_help = tt_help,
@@ -297,12 +330,10 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		-- BEGIN OF LISTRING WORKAROUND
 		if listname == "input" then
 			local inv = minetest.get_inventory({type="node", pos=pos})
-			local leftover = inv:add_item("main", stack)
-			if not leftover:is_empty() then
-				local other_pos = mcl_util.get_double_container_neighbor_pos(pos, minetest.get_node(pos).param2, "left")
-				local other_inv = minetest.get_inventory({type="node", pos=other_pos})
-				other_inv:add_item("main", leftover)
-			end
+			local other_pos = mcl_util.get_double_container_neighbor_pos(pos, minetest.get_node(pos).param2, "left")
+			local other_inv = minetest.get_inventory({type="node", pos=other_pos})
+
+			double_chest_add_item(inv, other_inv, "main", stack)
 		end
 		-- END OF LISTRING WORKAROUND
 	end,
@@ -435,11 +466,9 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 		if listname == "input" then
 			local other_pos = mcl_util.get_double_container_neighbor_pos(pos, minetest.get_node(pos).param2, "right")
 			local other_inv = minetest.get_inventory({type="node", pos=other_pos})
-			local leftover = other_inv:add_item("main", stack)
-			if not leftover:is_empty() then
-				local inv = minetest.get_inventory({type="node", pos=pos})
-				inv:add_item("main", leftover)
-			end
+			local inv = minetest.get_inventory({type="node", pos=pos})
+
+			double_chest_add_item(other_inv, inv, "main", stack)
 		end
 		-- END OF LISTRING WORKAROUND
 	end,
