@@ -1,4 +1,5 @@
 mcl_init
+mcl_formspec
 mcl_player?
 _mcl_autogroup?
 mcl_armor?

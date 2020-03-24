@@ -325,11 +325,16 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 
 			-- Survival inventory slots
 			main_list = "list[current_player;main;0,3.75;9,3;9]"..
+				mcl_formspec.get_itemslot_bg(0,3.75,9,3)..
 				-- armor
 				"list[detached:"..playername.."_armor;armor;2.5,1.3;1,1;1]"..
 				"list[detached:"..playername.."_armor;armor;2.5,2.75;1,1;2]"..
 				"list[detached:"..playername.."_armor;armor;5.5,1.3;1,1;3]"..
 				"list[detached:"..playername.."_armor;armor;5.5,2.75;1,1;4]"..
+				mcl_formspec.get_itemslot_bg(2.5,1.3,1,1)..
+				mcl_formspec.get_itemslot_bg(2.5,2.75,1,1)..
+				mcl_formspec.get_itemslot_bg(5.5,1.3,1,1)..
+				mcl_formspec.get_itemslot_bg(5.5,2.75,1,1)..
 				armor_slot_imgs..
 				-- player preview
 				player_preview..
@@ -354,6 +359,7 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 		else
 			-- Creative inventory slots
 			main_list = "list[detached:creative_"..playername..";main;0,1.75;9,5;"..tostring(start_i).."]"..
+				mcl_formspec.get_itemslot_bg(0,1.75,9,5)..
 			-- Page buttons
 				"label[9.0,5.5;"..F(S("@1/@2", pagenum, pagemax)).."]"..
 				"image_button[9.0,6.0;0.7,0.7;crafting_creative_prev.png;creative_prev;]"..
@@ -412,6 +418,7 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 			"tooltip[nix;"..F(filtername["nix"]).."]"..
 			caption..
 			"list[current_player;main;0,7;9,1;]"..
+			mcl_formspec.get_itemslot_bg(0,7,9,1)..
 			main_list..
 			tab(name, "food") ..
 			"tooltip[food;"..F(filtername["food"]).."]"..
@@ -429,6 +436,7 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 			tab(name, "inv") ..
 			"tooltip[inv;"..F(filtername["inv"]).."]"..
 			"list[detached:trash;main;9,7;1,1;]"..
+			mcl_formspec.get_itemslot_bg(9,7,1,1)..
 			"image[9,7;1,1;crafting_creative_trash.png]"..
 			listrings
 

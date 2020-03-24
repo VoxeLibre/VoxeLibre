@@ -1,4 +1,5 @@
 mcl_init
+mcl_formspec
 mcl_core
 mcl_sounds
 mcl_craftguide

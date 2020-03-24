@@ -16,13 +16,17 @@ minetest.register_node("mcl_crafting_table:crafting_table", {
 		player:get_inventory():set_size("craft", 9)
 
 		local form = "size[9,8.75]"..
-		"background[-0.19,-0.25;9.41,9.49;crafting_formspec_bg2.png^crafting_inventory_workbench.png]"..
+		"background[-0.19,-0.25;9.41,9.49;crafting_inventory_workbench.png]"..
 		"label[0,4;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 		"list[current_player;main;0,4.5;9,3;9]"..
+		mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
 		"list[current_player;main;0,7.74;9,1;]"..
+		mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
 		"label[1.75,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Crafting"))).."]"..
 		"list[current_player;craft;1.75,0.5;3,3;]"..
+		mcl_formspec.get_itemslot_bg(1.75,0.5,3,3)..
 		"list[current_player;craftpreview;6.1,1.5;1,1;]"..
+		mcl_formspec.get_itemslot_bg(6.1,1.5,1,1)..
 		"image_button[0.75,1.5;1,1;craftguide_book.png;__mcl_craftguide;]"..
 		"tooltip[__mcl_craftguide;"..minetest.formspec_escape(S("Recipe book")).."]"..
 		"listring[current_player;main]"..
