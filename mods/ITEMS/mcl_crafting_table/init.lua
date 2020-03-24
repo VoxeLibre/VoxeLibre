@@ -16,7 +16,7 @@ minetest.register_node("mcl_crafting_table:crafting_table", {
 		player:get_inventory():set_size("craft", 9)
 
 		local form = "size[9,8.75]"..
-		"background[-0.19,-0.25;9.41,9.49;crafting_inventory_workbench.png]"..
+		"image[4.7,1.5;1.5,1;gui_crafting_arrow.png]"..
 		"label[0,4;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 		"list[current_player;main;0,4.5;9,3;9]"..
 		mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
