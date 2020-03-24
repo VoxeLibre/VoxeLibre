@@ -395,7 +395,8 @@ end
 -- Set pointed_thing on (normal) fire.
 -- * pointed_thing: Pointed thing to ignite
 -- * player: Player who sets fire or nil if nobody
-mcl_fire.set_fire = function(pointed_thing, player)
+-- * allow_on_fire: If false, can't ignite fire on fire (default: true)
+mcl_fire.set_fire = function(pointed_thing, player, allow_on_fire)
 	local pname
 	if player == nil then
 		pname = ""
@@ -403,6 +404,10 @@ mcl_fire.set_fire = function(pointed_thing, player)
 		pname = player:get_player_name()
 	end
 	local n = minetest.get_node(pointed_thing.above)
+	local nu = minetest.get_node(pointed_thing.under)
+	if allow_on_fire == false and minetest.get_item_group(nu.name, "fire") ~= 0 then
+		return
+	end
 	if minetest.is_protected(pointed_thing.above, pname) then
 		minetest.record_protection_violation(pointed_thing.above, pname)
 		return
