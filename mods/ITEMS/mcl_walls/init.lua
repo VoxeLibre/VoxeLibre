@@ -14,6 +14,10 @@ local directions = {
 	{x = 0, y = -1, z = 0},
 }
 
+local function connectable(itemstring)
+	return (minetest.get_item_group(itemstring, "wall") == 1) or (minetest.get_item_group(itemstring, "solid") == 1)
+end
+
 local function update_wall(pos)
 	local thisnode = minetest.get_node(pos)
 
@@ -42,8 +46,7 @@ local function update_wall(pos)
 	for i = 1, 4 do
 		local dir = directions[i]
 		local node = minetest.get_node({x = pos.x + dir.x, y = pos.y + dir.y, z = pos.z + dir.z})
-		local def = minetest.registered_nodes[node.name]
-		if def and def.walkable then
+		if connectable(node.name) then
 			sum = sum + 2 ^ (i - 1)
 		end
 	end
@@ -51,8 +54,7 @@ local function update_wall(pos)
 	-- Torches or walkable nodes above the wall
 	local upnode = minetest.get_node({x = pos.x, y = pos.y+1, z = pos.z})
 	if sum == 5 or sum == 10 then
-		local def = minetest.registered_nodes[upnode.name]
-		if (def and def.walkable) or (minetest.get_item_group(upnode.name, "torch") == 1) then
+		if (connectable(upnode.name)) or (minetest.get_item_group(upnode.name, "torch") == 1) then
 			sum = sum + 11
 		end
 	end
