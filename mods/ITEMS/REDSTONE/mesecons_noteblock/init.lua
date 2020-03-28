@@ -10,6 +10,17 @@ S("• Glass: Sticks").."\n"..
 S("• Wood: Bass guitar").."\n"..
 S("• Stone: Bass drum").."\n"..
 S("• Sand or gravel: Snare drum").."\n"..
+S("• Block of Gold: Bell").."\n"..
+S("• Clay: Flute").."\n"..
+S("• Packed Ice: Chime").."\n"..
+S("• Wool: Guitar").."\n"..
+S("• Bone Block: Xylophne").."\n"..
+S("• Block of Iron: Iron xylophne").."\n"..
+S("• Soul Sand: Cow bell").."\n"..
+S("• Pumpkin: Didgeridoo").."\n"..
+S("• Block of Emerald: Square wave").."\n"..
+S("• Hay Bale: Banjo").."\n"..
+S("• Glowstone: Electric piano").."\n"..
 S("• Anything else: Piano").."\n\n"..
 
 S("The note block will only play a note when it is below air, otherwise, it stays silent."),
@@ -98,19 +109,38 @@ mesecon.noteblock_play = function (pos, param2)
 	local param2_to_pitch = function(param2)
 		return 2^((param2-12)/12)
 	end
+	local pitched = false
 	local soundname, pitch
-	if minetest.get_item_group(block_below_name, "material_glass") ~= 0 then
-		soundname="mesecons_noteblock_stick"
-		pitch = param2_to_pitch(param2)
+	if block_below_name == "mcl_core:goldblock" then
+		soundname="mesecons_noteblock_bell"
+	elseif block_below_name == "mcl_core:clay" then
+		soundname="mesecons_noteblock_flute"
+	elseif block_below_name == "mcl_core:packed_ice" then
+		soundname="mesecons_noteblock_chime"
+	elseif block_below_name == "mcl_core:bone_block" then
+		soundname="mesecons_noteblock_xylophone_wood"
+	elseif block_below_name == "mcl_core:ironblock" then
+		soundname="mesecons_noteblock_xylophone_metal"
+	elseif block_below_name == "mcl_nether:soul_sand" then
+		soundname="mesecons_noteblock_cowbell"
+	elseif block_below_name == "mcl_farming:pumpkin" or block_below_name == "mcl_farming:pumpkin_face" or block_below_name == "mcl_farming:pumpkin_face_light" then
+		soundname="mesecons_noteblock_didgeridoo"
+	elseif block_below_name == "mcl_core:emeraldblock" then
+		soundname="mesecons_noteblock_squarewave"
+	elseif block_below_name == "mcl_farming:hay_block" then
+		soundname="mesecons_noteblock_banjo"
+	elseif block_below_name == "mcl_nether:glowstone" then
+		soundname="mesecons_noteblock_piano_digital"
+	elseif minetest.get_item_group(block_below_name, "wool") ~= 0 then
+		soundname="mesecons_noteblock_guitar"
+	elseif minetest.get_item_group(block_below_name, "material_glass") ~= 0 then
+		soundname="mesecons_noteblock_hit"
 	elseif minetest.get_item_group(block_below_name, "material_wood") ~= 0 then
 		soundname="mesecons_noteblock_bass_guitar"
-		pitch = param2_to_pitch(param2)
 	elseif minetest.get_item_group(block_below_name, "material_sand") ~= 0 then
 		soundname="mesecons_noteblock_snare"
-		pitch = param2_to_pitch(param2)
 	elseif minetest.get_item_group(block_below_name, "material_stone") ~= 0 then
-		soundname="mesecons_noteblock_kick"
-		pitch = param2_to_pitch(param2)
+		soundname="mesecons_noteblock_bass_drum"
 	else
 		-- Default: One of 25 piano notes
 		soundname = soundnames_piano[param2]
@@ -118,6 +148,10 @@ mesecon.noteblock_play = function (pos, param2)
 		if param2 == 24 then
 			pitch = 2^(1/12)
 		end
+		pitched = true
+	end
+	if not pitched then
+		pitch = param2_to_pitch(param2)
 	end
 
 	minetest.sound_play(soundname,
