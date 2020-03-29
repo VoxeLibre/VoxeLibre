@@ -547,7 +547,7 @@ local check_for_death = function(self, cause, cmi_cause)
 
 	-- has health actually changed?
 	if self.health == self.old_health and self.health > 0 then
-		return
+		return false
 	end
 
 	local damaged = self.health < self.old_health
@@ -745,7 +745,7 @@ local do_env_damage = function(self)
 	-- remove mob if beyond map limits
 	if not within_limits(pos, 0) then
 		self.object:remove()
-		return
+		return true
 	end
 
 
@@ -755,7 +755,9 @@ local do_env_damage = function(self)
 
 			effect(pos, 5, "tnt_smoke.png")
 
-			if check_for_death(self, "light", {type = "light"}) then return end
+			if check_for_death(self, "light", {type = "light"}) then
+				return true
+			end
 		end
 	end
 
@@ -797,7 +799,9 @@ local do_env_damage = function(self)
 			self.health = self.health - self.rain_damage
 
 			if check_for_death(self, "rain", {type = "environment",
-					pos = pos, node = self.standing_in}) then return end
+					pos = pos, node = self.standing_in}) then
+				return true
+			end
 		end
 	end
 
@@ -814,7 +818,9 @@ local do_env_damage = function(self)
 			effect(pos, 5, "tnt_smoke.png", nil, nil, 1, nil)
 
 			if check_for_death(self, "water", {type = "environment",
-					pos = pos, node = self.standing_in}) then return end
+					pos = pos, node = self.standing_in}) then
+				return true
+			end
 		end
 
 	-- lava damage
@@ -828,7 +834,9 @@ local do_env_damage = function(self)
 			effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
 
 			if check_for_death(self, "lava", {type = "environment",
-					pos = pos, node = self.standing_in}) then return end
+					pos = pos, node = self.standing_in}) then
+				return true
+			end
 		end
 
 	-- fire damage
@@ -842,7 +850,9 @@ local do_env_damage = function(self)
 			effect(pos, 5, "fire_basic_flame.png", nil, nil, 1, nil)
 
 			if check_for_death(self, "fire", {type = "environment",
-					pos = pos, node = self.standing_in}) then return end
+					pos = pos, node = self.standing_in}) then
+				return true
+			end
 		end
 
 	-- damage_per_second node check
@@ -853,7 +863,9 @@ local do_env_damage = function(self)
 		effect(pos, 5, "tnt_smoke.png")
 
 		if check_for_death(self, "dps", {type = "environment",
-				pos = pos, node = self.standing_in}) then return end
+				pos = pos, node = self.standing_in}) then
+			return true
+		end
 	end
 
 	-- Drowning damage
@@ -882,7 +894,9 @@ local do_env_damage = function(self)
 				self.health = self.health - dmg
 			end
 			if check_for_death(self, "drowning", {type = "environment",
-					pos = pos, node = self.standing_in}) then return end
+					pos = pos, node = self.standing_in}) then
+				return true
+			end
 		else
 			self.breath = math.min(self.breath_max, self.breath + 1)
 		end
@@ -902,7 +916,9 @@ local do_env_damage = function(self)
 		self.health = self.health - 2
 
 		if check_for_death(self, "suffocation", {type = "environment",
-				pos = pos, node = self.standing_in}) then return end
+				pos = pos, node = self.standing_in}) then
+			return true
+		end
 	end
 
 	check_for_death(self, "", {type = "unknown"})
@@ -3146,7 +3162,9 @@ local mob_step = function(self, dtime)
 		self.env_damage_timer = 0
 
 		-- check for environmental damage (water, fire, lava etc.)
-		do_env_damage(self)
+		if do_env_damage(self) then
+			return
+		end
 
 		-- node replace check (cow eats grass etc.)
 		replace(self, pos)
