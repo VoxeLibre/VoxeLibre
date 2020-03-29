@@ -486,3 +486,14 @@ end
 
 -- Legacy
 minetest.register_alias("mcl_hoppers:hopper_item", "mcl_hoppers:hopper")
+
+minetest.register_lbm({
+	label = "Update hopper formspecs (0.60.0",
+	name = "mcl_hoppers:update_formspec_0_60_0",
+	nodenames = { "group:hopper" },
+	run_at_every_load = false,
+	action = function(pos, node)
+		local meta = minetest.get_meta(pos)
+		meta:set_string("formspec", mcl_hoppers_formspec)
+	end,
+})

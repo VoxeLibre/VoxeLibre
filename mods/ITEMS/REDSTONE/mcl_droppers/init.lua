@@ -209,9 +209,10 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_droppers:dropper", "nodes", "mcl_droppers:dropper_up")
 end
 
+-- Legacy
 minetest.register_lbm({
-	label = "Update dropper formspecs (0.51.0)",
-	name = "mcl_droppers:update_formspecs_0_51_0",
+	label = "Update dropper formspecs (0.60.0)",
+	name = "mcl_droppers:update_formspecs_0_60_0",
 	nodenames = { "mcl_droppers:dropper", "mcl_droppers:dropper_down", "mcl_droppers:dropper_up" },
 	action = function(pos, node)
 		setup_dropper(pos)

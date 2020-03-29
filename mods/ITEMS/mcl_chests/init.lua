@@ -678,6 +678,19 @@ minetest.register_craft({
 	burntime = 15
 })
 
+local formspec_ender_chest = "size[9,8.75]"..
+	"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Ender Chest"))).."]"..
+	"list[current_player;enderchest;0,0.5;9,3;]"..
+	mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
+	"list[current_player;main;0,4.5;9,3;9]"..
+	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
+	"list[current_player;main;0,7.74;9,1;]"..
+	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
+	"listring[current_player;enderchest]"..
+	"listring[current_player;main]"
+
+
 minetest.register_node("mcl_chests:ender_chest", {
 	description = S("Ender Chest"),
 	_tt_help = S("27 interdimensional inventory slots") .. "\n" .. S("Put items inside, retrieve them from any ender chest"),
@@ -697,18 +710,7 @@ minetest.register_node("mcl_chests:ender_chest", {
 	drop = "mcl_core:obsidian 8",
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", 
-				"size[9,8.75]"..
-				"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Ender Chest"))).."]"..
-				"list[current_player;enderchest;0,0.5;9,3;]"..
-				mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
-				"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
-				"list[current_player;main;0,4.5;9,3;9]"..
-				mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
-				"list[current_player;main;0,7.74;9,1;]"..
-				mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
-				"listring[current_player;enderchest]"..
-				"listring[current_player;main]")
+		meta:set_string("formspec", formspec_ender_chest)
 	end,
 	_mcl_blast_resistance = 3000,
 	_mcl_hardness = 22.5,
@@ -779,6 +781,18 @@ local shulker_mob_textures = {
 }
 local canonical_shulker_color = "violet"
 
+local formspec_shulker_box = "size[9,8.75]"..
+	"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Shulker Box"))).."]"..
+	"list[current_name;main;0,0.5;9,3;]"..
+	mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
+	"list[current_player;main;0,4.5;9,3;9]"..
+	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
+	"list[current_player;main;0,7.74;9,1;]"..
+	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
+	"listring[current_name;main]"..
+	"listring[current_player;main]"
+
 for color, desc in pairs(boxtypes) do
 	local mob_texture = shulker_mob_textures[color]
 	local is_canonical = color == canonical_shulker_color
@@ -820,18 +834,7 @@ for color, desc in pairs(boxtypes) do
 --		on_place = minetest.rotate_node,
 		on_construct = function(pos)
 			local meta = minetest.get_meta(pos)
-			meta:set_string("formspec",
-					"size[9,8.75]"..
-					"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Shulker Box"))).."]"..
-					"list[current_name;main;0,0.5;9,3;]"..
-					mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
-					"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
-					"list[current_player;main;0,4.5;9,3;9]"..
-					mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
-					"list[current_player;main;0,7.74;9,1;]"..
-					mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
-					"listring[current_name;main]"..
-					"listring[current_player;main]")
+			meta:set_string("formspec", formspec_shulker_box)
 			local inv = meta:get_inventory()
 			inv:set_size("main", 9*3)
 		end,
@@ -956,7 +959,29 @@ minetest.register_lbm({
 	nodenames = { "mcl_chests:trapped_chest_on", "mcl_chests:trapped_chest_on_left", "mcl_chests:trapped_chest_on_right" },
 	run_at_every_load = true,
 	action = function(pos, node)
-		minetest.log("error", "lbm!" ..minetest.pos_to_string(pos))
+		minetest.log("action", "[mcl_chests] Disabled active trapped chest on load: " ..minetest.pos_to_string(pos))
 		chest_update_after_close(pos)
+	end,
+})
+
+-- Legacy
+minetest.register_lbm({
+	label = "Update ender chest formspecs (0.60.0",
+	name = "mcl_chests:update_ender_chest_formspecs_0_60_0",
+	nodenames = { "mcl_chests:ender_chest" },
+	run_at_every_load = false,
+	action = function(pos, node)
+		local meta = minetest.get_meta(pos)
+		meta:set_string("formspec", formspec_ender_chest)
+	end,
+})
+minetest.register_lbm({
+	label = "Update shulker box formspecs (0.60.0",
+	name = "mcl_chests:update_shulker_box_formspecs_0_60_0",
+	nodenames = { "group:shulker_box" },
+	run_at_every_load = false,
+	action = function(pos, node)
+		local meta = minetest.get_meta(pos)
+		meta:set_string("formspec", formspec_shulker_box)
 	end,
 })

@@ -361,9 +361,10 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_dispensers:dispenser", "nodes", "mcl_dispensers:dispenser_up")
 end
 
+-- Legacy
 minetest.register_lbm({
-	label = "Update dispenser formspecs (0.51.0)",
-	name = "mcl_dispensers:update_formspecs_0_51_0",
+	label = "Update dispenser formspecs (0.60.0)",
+	name = "mcl_dispensers:update_formspecs_0_60_0",
 	nodenames = { "mcl_dispensers:dispenser", "mcl_dispensers:dispenser_down", "mcl_dispensers:dispenser_up" },
 	action = function(pos, node)
 		setup_dispenser(pos)

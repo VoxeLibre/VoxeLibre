@@ -490,3 +490,16 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_anvils:anvil", "nodes", "mcl_anvils:anvil_damage_1")
 	doc.add_entry_alias("nodes", "mcl_anvils:anvil", "nodes", "mcl_anvils:anvil_damage_2")
 end
+
+-- Legacy
+minetest.register_lbm({
+	label = "Update anvil formspecs (0.60.0",
+	name = "mcl_anvils:update_formspec_0_60_0",
+	nodenames = { "group:anvil" },
+	run_at_every_load = false,
+	action = function(pos, node)
+		local meta = minetest.get_meta(pos)
+		local set_name = meta:get_string("set_name")
+		meta:set_string("formspec", get_anvil_formspec(set_name))
+	end,
+})
