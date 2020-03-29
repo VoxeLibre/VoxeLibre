@@ -29,8 +29,15 @@ wieldview.get_item_texture = function(self, item)
 				texture = minetest.inventorycube(minetest.registered_items[item].tiles[1])
 			end
 		end
-		if wieldview.transform[item] then
-			texture = texture.."^[transform"..wieldview.transform[item]
+		-- Get item image transformation, first from group, then from transform.lua
+		local transform = minetest.get_item_group(item, "wieldview_transform")
+		if transform == 0 then
+			transform = wieldview.transform[item]
+		end
+		if transform then
+			-- This actually works with groups ratings because transform1, transform2, etc.
+			-- have meaning and transform0 is used for identidy, so it can be ignored
+			texture = texture.."^[transform"..tostring(transform)
 		end
 	end
 	return texture
