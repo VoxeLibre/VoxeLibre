@@ -444,7 +444,7 @@ minetest.register_abm({
 		local abovenode = minetest.get_node(above)
 		if not minetest.registered_nodes[abovenode.name] then return end
 		local g = minetest.registered_nodes[abovenode.name].groups.container
-		mcl_util.move_item_container(above, pos)
+		local sucked = mcl_util.move_item_container(above, pos)
 
 		-- Also suck in non-fuel items from furnace fuel slot
 		if not sucked and g == 4 then
