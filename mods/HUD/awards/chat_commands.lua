@@ -38,3 +38,50 @@ minetest.register_chatcommand("awards", {
 	end
 })
 
+minetest.register_privilege("achievements", {
+	description = S("Can give achievements to any player"),
+	give_to_singleplayer = false,
+	give_to_admin = false,
+})
+
+minetest.register_chatcommand("achievement", {
+	params = S("(grant <player> (<achievement> | all)) | list"),
+	privs = { achievements = true },
+	description = S("Give achievement to player or list all achievements"),
+	func = function(name, param)
+		if param == "list" then
+			local list = {}
+			for k,_ in pairs(awards.def) do
+				table.insert(list, k)
+			end
+			table.sort(list)
+			for a=1, #list do
+				minetest.chat_send_player(name, S("@1 (@2)", awards.def[list[a]].title, list[a]))
+			end
+			return true
+		end
+		local keyword, playername, achievement = string.match(param, "([^ ]+) (.+) (.+)")
+		if not keyword or not playername or not achievement then
+			return false, S("Invalid syntax.")
+		end
+		if keyword ~= "grant" then
+			return false, S("Invalid action.")
+		end
+		local player = minetest.get_player_by_name(playername)
+		if not player then
+			return false, S("Player is not online.")
+		end
+		if achievement == "all" then
+			for k,_ in pairs(awards.def) do
+				awards.unlock(playername, k)
+			end
+			return true, S("Done.")
+		elseif awards.exists(achievement) then
+			awards.unlock(playername, achievement)
+			return true, S("Done.")
+		else
+			return false, S("Achievement “@1” does not exist.", achievement)
+		end
+	end
+})
+

@@ -178,6 +178,11 @@ function awards.clear_player(name)
 	awards.players[name] = {}
 end
 
+-- Returns true if award exists, false otherwise
+function awards.exists(award)
+	return awards.def[award] ~= nil
+end
+
 -- This function is called whenever a target condition is met.
 -- It checks if a player already has that achievement, and if they do not,
 -- it gives it to them

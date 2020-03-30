@@ -11,7 +11,7 @@ old fork in Carbone, under same license.
 # Basic API
 
 * awards.register_achievement(name, def)
-	* name
+	* name: Unique identifier for achievement. You can use anything except "all"
 	* desciption
 	* sound [optional] - set a custom sound (SimpleSoundSpec) or `false` to play no sound.
           If not specified, a default sound is played
@@ -59,6 +59,8 @@ old fork in Carbone, under same license.
 * awards.unlock(name, award)
 	* gives an award to a player
 	* name is the player name
+* awards.exists(award)
+	* returns true if award exists, false otherwise
 
 # Included in the Mod
 
