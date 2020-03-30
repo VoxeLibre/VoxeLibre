@@ -921,7 +921,7 @@ local do_env_damage = function(self)
 		end
 	end
 
-	check_for_death(self, "", {type = "unknown"})
+	return check_for_death(self, "", {type = "unknown"})
 end
 
 
