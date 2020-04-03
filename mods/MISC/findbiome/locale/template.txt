@@ -1,0 +1,10 @@
+# textdomain: findbiome
+Find and teleport to biome=
+<biome>=
+No player.=
+Biome does not exist!=
+Biome found at @1.=
+No biome found!=
+List all biomes=
+No biomes.=
+Not supported. The “biomeinfo” mod is required for v6 mapgen support!=
