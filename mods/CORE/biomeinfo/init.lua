@@ -19,6 +19,28 @@ local seed = tonumber(minetest.get_mapgen_setting("seed")) or 0
 
 local mgv6_perlin_biome, mgv6_perlin_humidity, mgv6_np_biome
 
+-- v6 default noiseparams are hardcoded here because Minetest doesn't give us those
+local mgv6_np_biome_default = {
+	offset = 0,
+	scale = 1,
+	spread = { x = 500, y = 500, z = 500},
+	seed = 9130,
+	octaves = 3,
+	persistence = 0.50,
+	lacunarity = 2.0,
+	flags = "eased",
+}
+local mgv6_np_humidity_default = {
+	offset = 0.5,
+	scale = 0.5,
+	spread = { x = 500, y = 500, z = 500},
+	seed = 72384,
+	octaves = 3,
+	persistence = 0.50,
+	lacunarity = 2.0,
+	flags = "eased",
+}
+
 local v6_flags_str = minetest.get_mapgen_setting("mgv6_spflags")
 if v6_flags_str == nil then
 	v6_flags_str = ""
@@ -86,15 +108,19 @@ biomeinfo.all_v6_biomes = {
 local function init_perlins()
 	if not mgv6_perlin_biome then
 		mgv6_np_biome = minetest.get_mapgen_setting_noiseparams("mgv6_np_biome")
-		if mgv6_np_biome then
-			mgv6_perlin_biome = minetest.get_perlin(mgv6_np_biome)
+		if not mgv6_np_biome then
+			mgv6_np_biome = mgv6_np_biome_default
+			minetest.log("action", "[biomeinfo] Using hardcoded mgv6_np_biome default")
 		end
+		mgv6_perlin_biome = minetest.get_perlin(mgv6_np_biome)
 	end
 	if not mgv6_perlin_humidity then
 		local np_humidity = minetest.get_mapgen_setting_noiseparams("mgv6_np_humidity")
-		if np_humidity then
-			mgv6_perlin_humidity = minetest.get_perlin(np_humidity)
+		if not np_humidity then
+			np_humidity = mgv6_np_humidity_default
+			minetest.log("action", "[biomeinfo] Using hardcoded mgv6_np_humidity default")
 		end
+		mgv6_perlin_humidity = minetest.get_perlin(np_humidity)
 	end
 end
 
@@ -112,6 +138,9 @@ end
 
 function biomeinfo.get_v6_heat(pos)
 	init_perlins()
+	if not mgv6_perlin_biome then
+		return nil
+	end
 	local bpos = vector.floor(pos)
 	-- The temperature noise needs a special offset (see calculateNoise in mapgen_v6.cpp)
 	return mgv6_perlin_biome:get_2d({x=bpos.x + mgv6_np_biome.spread.x*0.6, y=bpos.z + mgv6_np_biome.spread.z*0.2})
@@ -119,6 +148,9 @@ end
 
 function biomeinfo.get_v6_humidity(pos)
 	init_perlins()
+	if not mgv6_perlin_humidity then
+		return nil
+	end
 	local bpos = vector.floor(pos)
 	return mgv6_perlin_humidity:get_2d({x=bpos.x, y=bpos.z})
 end
