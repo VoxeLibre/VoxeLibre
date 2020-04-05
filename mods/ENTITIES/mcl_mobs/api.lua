@@ -188,10 +188,10 @@ local set_velocity = function(self, v)
 	end
 
 	local yaw = (self.object:get_yaw() or 0) + self.rotate
-
+	local vel = self.object:get_velocity()
 	self.object:set_velocity({
 		x = sin(yaw) * -v,
-		y = self.object:get_velocity().y,
+		y = (vel and vel.y) or 0,
 		z = cos(yaw) * v
 	})
 end
@@ -680,6 +680,9 @@ local is_at_cliff_or_danger = function(self)
 		return false
 	end
 
+	if not self.object:get_luaentity() then
+		return false
+	end
 	local yaw = self.object:get_yaw()
 	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)
 	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)
@@ -3078,7 +3081,7 @@ local mob_step = function(self, dtime)
 
 	if self.delay and self.delay > 0 then
 
-		local yaw = self.object:get_yaw()
+		local yaw = self.object:get_yaw() or 0
 
 		if self.delay == 1 then
 			yaw = self.target_yaw
