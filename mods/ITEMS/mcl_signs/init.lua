@@ -391,7 +391,7 @@ minetest.register_node("mcl_signs:wall_sign", {
 		text_entity:set_yaw(sign_info.yaw)
 		text_entity:get_luaentity()._signnodename = nodeitem:get_name()
 
-		minetest.sound_play({name="default_place_node_hard", gain=1.0}, {pos = place_pos})
+		minetest.sound_play({name="default_place_node_hard", gain=1.0}, {pos = place_pos}, true)
 
 		show_formspec(placer, place_pos)
 		return itemstack

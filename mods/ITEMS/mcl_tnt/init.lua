@@ -4,7 +4,7 @@ local tnt_griefing = minetest.settings:get_bool("mcl_tnt_griefing", true)
 local mod_death_messages = minetest.get_modpath("mcl_death_messages")
 
 local function spawn_tnt(pos, entname)
-	minetest.sound_play("tnt_ignite", {pos = pos,gain = 1.0,max_hear_distance = 15,})
+	minetest.sound_play("tnt_ignite", {pos = pos,gain = 1.0,max_hear_distance = 15,}, true)
 	local tnt = minetest.add_entity(pos, entname)
 	tnt:set_armor_groups({immortal=1})
 	return tnt
@@ -228,7 +228,7 @@ tnt.boom = function(pos, info)
 	if info.is_tnt == nil then
 		info.is_tnt = true
 	end
-	minetest.sound_play(sound, {pos = pos,gain = 1.0,max_hear_distance = 16,})
+	minetest.sound_play(sound, {pos = pos,gain = 1.0,max_hear_distance = 16,}, true)
 	local node = minetest.get_node(pos)
 	if minetest.get_item_group("water") == 1 or minetest.get_item_group("lava") == 1 then
 		-- Cancel the Explosion

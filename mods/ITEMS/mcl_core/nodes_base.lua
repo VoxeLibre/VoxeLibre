@@ -922,7 +922,7 @@ for i=1,8 do
 			fakestack:set_name("mcl_core:snow_"..math.min(8, (i+g)))
 			local success
 			itemstack, success = minetest.item_place(fakestack, placer, pointed_thing)
-			minetest.sound_play(mcl_sounds.node_sound_snow_defaults().place, {pos = below})
+			minetest.sound_play(mcl_sounds.node_sound_snow_defaults().place, {pos = below}, true)
 			itemstack:set_name(itemstring)
 			return itemstack
 		end
@@ -932,7 +932,7 @@ for i=1,8 do
 		local bnode = minetest.get_node(below)
 
 		if minetest.get_item_group(bnode.name, "solid") == 1 then
-			minetest.sound_play(mcl_sounds.node_sound_snow_defaults().place, {pos = below})
+			minetest.sound_play(mcl_sounds.node_sound_snow_defaults().place, {pos = below}, true)
 			return minetest.item_place_node(itemstack, placer, pointed_thing)
 		else
 			return itemstack

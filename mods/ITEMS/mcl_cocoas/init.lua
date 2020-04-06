@@ -43,7 +43,7 @@ function mcl_cocoas.place(itemstack, placer, pointed_thing, plantname)
 	-- Add the node, set facedir and remove 1 item from the itemstack
 	minetest.set_node(pt.above, {name = plantname, param2 = minetest.dir_to_facedir(clickdir)})
 
-	minetest.sound_play("default_place_node", {pos = pt.above, gain = 1.0})
+	minetest.sound_play("default_place_node", {pos = pt.above, gain = 1.0}, true)
 
 	if not minetest.settings:get_bool("creative_mode") then
 		itemstack:take_item()

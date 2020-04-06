@@ -220,17 +220,17 @@ local function damage_anvil(pos)
 	local new
 	if node.name == "mcl_anvils:anvil" then
 		minetest.swap_node(pos, {name="mcl_anvils:anvil_damage_1", param2=node.param2})
-		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dig, {pos=pos, max_hear_distance=16})
+		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dig, {pos=pos, max_hear_distance=16}, true)
 		return false
 	elseif node.name == "mcl_anvils:anvil_damage_1" then
 		minetest.swap_node(pos, {name="mcl_anvils:anvil_damage_2", param2=node.param2})
-		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dig, {pos=pos, max_hear_distance=16})
+		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dig, {pos=pos, max_hear_distance=16}, true)
 		return false
 	elseif node.name == "mcl_anvils:anvil_damage_2" then
 		-- Destroy anvil
 		local meta = minetest.get_meta(pos)
 		drop_anvil_items(pos, meta)
-		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dug, {pos=pos, max_hear_distance=16})
+		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dug, {pos=pos, max_hear_distance=16}, true)
 		minetest.remove_node(pos)
 		minetest.check_single_for_falling({x=pos.x, y=pos.y+1, z=pos.z})
 		return true

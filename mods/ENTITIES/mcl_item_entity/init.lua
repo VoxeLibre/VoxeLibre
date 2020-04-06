@@ -75,7 +75,7 @@ minetest.register_globalstep(function(dtime)
 									pos = pos,
 									max_hear_distance = 16,
 									gain = 1.0,
-								})
+								}, true)
 								check_pickup_achievements(object, player)
 
 
@@ -129,7 +129,7 @@ minetest.register_globalstep(function(dtime)
 													pos = pos,
 													max_hear_distance = 16,
 													gain = 1.0,
-												})
+												}, true)
 											end
 											check_pickup_achievements(object, player)
 											object:get_luaentity()._removed = true
@@ -545,7 +545,7 @@ minetest.register_entity(":__builtin:item", {
 		local dg = minetest.get_item_group(nn, "destroys_items")
 		if (def and (lg ~= 0 or fg ~= 0 or dg == 1)) then
 			if dg ~= 2 then
-				minetest.sound_play("builtin_item_lava", {pos = self.object:get_pos(), gain = 0.5})
+				minetest.sound_play("builtin_item_lava", {pos = self.object:get_pos(), gain = 0.5}, true)
 			end
 			self._removed = true
 			self.object:remove()

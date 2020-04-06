@@ -64,7 +64,7 @@ local piston_remove_pusher = function (pos, oldnode)
 			pos = pos,
 			max_hear_distance = 31,
 			gain = 0.3,
-		})
+		}, true)
 	end
 end
 
@@ -85,7 +85,7 @@ local piston_remove_base = function (pos, oldnode)
 			pos = pos,
 			max_hear_distance = 31,
 			gain = 0.3,
-		})
+		}, true)
 	end
 end
 
@@ -108,7 +108,7 @@ local piston_on = function (pos, node)
 			pos = pos,
 			max_hear_distance = 31,
 			gain = 0.3,
-		})
+		}, true)
 	end
 end
 

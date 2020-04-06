@@ -27,7 +27,7 @@ mesecon.push_button = function(pos, node)
 	local def = minetest.registered_nodes[node.name]
 	minetest.set_node(pos, {name="mesecons_button:button_"..def._mcl_button_basename.."_on", param2=node.param2})
 	mesecon.receptor_on(pos, button_get_output_rules(node))
-	minetest.sound_play("mesecons_button_push", {pos=pos})
+	minetest.sound_play("mesecons_button_push", {pos=pos}, true)
 	local timer = minetest.get_node_timer(pos)
 	timer:start(def._mcl_button_timer)
 end
@@ -73,7 +73,7 @@ local on_button_place = function(itemstack, placer, pointed_thing)
 
 	if success then
 		if idef.sounds and idef.sounds.place then
-			minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
+			minetest.sound_play(idef.sounds.place, {pos=above, gain=1}, true)
 		end
 	end
 	return itemstack
@@ -179,7 +179,7 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 
 				-- Normal operation: Un-press the button
 				minetest.set_node(pos, {name="mesecons_button:button_"..basename.."_off",param2=node.param2})
-				minetest.sound_play("mesecons_button_pop", {pos=pos})
+				minetest.sound_play("mesecons_button_pop", {pos=pos}, true)
 				mesecon.receptor_off(pos, button_get_output_rules(node))
 			end
 		end,

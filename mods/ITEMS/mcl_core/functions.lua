@@ -21,21 +21,21 @@ minetest.register_abm({
 			-- Lava on top of water: Water turns into stone
 			if water[w].y < pos.y and water[w].x == pos.x and water[w].z == pos.z then
 				minetest.set_node(water[w], {name="mcl_core:stone"})
-				minetest.sound_play("fire_extinguish_flame", {pos = water[w], gain = 0.25, max_hear_distance = 16})
+				minetest.sound_play("fire_extinguish_flame", {pos = water[w], gain = 0.25, max_hear_distance = 16}, true)
 			-- Flowing lava vs water on same level: Lava turns into cobblestone
 			elseif lavatype == "flowing" and water[w].y == pos.y and (water[w].x == pos.x or water[w].z == pos.z) then
 				minetest.set_node(pos, {name="mcl_core:cobble"})
-				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
+				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 			-- Lava source vs flowing water above or horizontally neighbored: Lava turns into obsidian
 			elseif lavatype == "source" and
 					((water[w].y > pos.y and water[w].x == pos.x and water[w].z == pos.z) or
 					(water[w].y == pos.y and (water[w].x == pos.x or water[w].z == pos.z))) then
 				minetest.set_node(pos, {name="mcl_core:obsidian"})
-				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
+				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 			-- Flowing water above flowing lava: Lava turns into cobblestone
 			elseif watertype == "flowing" and lavatype == "flowing" and water[w].y > pos.y and water[w].x == pos.x and water[w].z == pos.z then
 				minetest.set_node(pos, {name="mcl_core:cobble"})
-				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
+				minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 			end
 		end
 	end,
@@ -166,7 +166,7 @@ minetest.register_abm({
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		liquid_flow_action(pos, "lava", function(pos)
 			minetest.remove_node(pos)
-			minetest.sound_play("builtin_item_lava", {pos = pos, gain = 0.25, max_hear_distance = 16})
+			minetest.sound_play("builtin_item_lava", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 			core.check_for_falling(pos)
 		end)
 	end,

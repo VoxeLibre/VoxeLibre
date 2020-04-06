@@ -130,7 +130,7 @@ local mob_sound = function(self, soundname, is_opinion, fixed_pitch)
 			gain = 1.0,
 			max_hear_distance = self.sounds.distance,
 			pitch = pitch,
-		})
+		}, true)
 		self.opinion_sound_cooloff = 1
 	end
 end
@@ -2230,7 +2230,7 @@ local do_states = function(self, dtime)
 							pos = pos,
 							gain = 1.0,
 							max_hear_distance = self.sounds.distance or 32
-						})
+						}, true)
 
 						entity_physics(pos, entity_damage_radius)
 						effect(pos, 32, "tnt_smoke.png", nil, nil, node_break_radius, 1, 0)
@@ -2683,12 +2683,12 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			minetest.sound_play(weapon:get_definition().sounds[s], {
 				object = self.object, --hitter,
 				max_hear_distance = 8
-			})
+			}, true)
 		else
 			minetest.sound_play("default_punch", {
 				object = self.object, --hitter,
 				max_hear_distance = 5
-			})
+			}, true)
 		end
 
 		damage_effect(self, damage)
@@ -3797,7 +3797,7 @@ function mobs:safe_boom(self, pos, radius)
 		pos = pos,
 		gain = 1.0,
 		max_hear_distance = self.sounds and self.sounds.distance or 32
-	})
+	}, true)
 
 	entity_physics(pos, radius)
 	effect(pos, 32, "tnt_smoke.png", radius * 3, radius * 5, radius, 1, 0)

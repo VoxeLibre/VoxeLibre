@@ -67,7 +67,7 @@ minetest.register_node("mcl_fire:fire", {
 	floodable = true,
 	on_flood = function(pos, oldnode, newnode)
 		if minetest.get_item_group(newnode.name, "water") ~= 0 then
-			minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
+			minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 		end
 	end,
 	on_timer = function(pos)
@@ -151,7 +151,7 @@ minetest.register_node("mcl_fire:eternal_fire", {
 	floodable = true,
 	on_flood = function(pos, oldnode, newnode)
 		if minetest.get_item_group(newnode.name, "water") ~= 0 then
-			minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
+			minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 		end
 	end,
 	on_timer = function(pos)
@@ -310,7 +310,7 @@ minetest.register_abm({
 	action = function(pos, node, active_object_count, active_object_count_wider)
 		minetest.remove_node(pos)
 		minetest.sound_play("fire_extinguish_flame",
-			{pos = pos, max_hear_distance = 16, gain = 0.15})
+			{pos = pos, max_hear_distance = 16, gain = 0.15}, true)
 	end,
 })
 

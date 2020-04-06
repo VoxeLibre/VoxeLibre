@@ -322,7 +322,7 @@ armor.play_equip_sound = function(self, stack, player, pos, unequip)
 		if pos then
 			dist = 16
 		end
-		minetest.sound_play(snd, {object=player, pos=pos, gain=0.5, max_hear_distance=dist})
+		minetest.sound_play(snd, {object=player, pos=pos, gain=0.5, max_hear_distance=dist}, true)
 	end
 end
 

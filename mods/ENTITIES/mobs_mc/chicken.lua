@@ -86,7 +86,7 @@ mobs:register_mob("mobs_mc:chicken", {
 			pos = pos,
 			gain = 1.0,
 			max_hear_distance = 16,
-		})
+		}, true)
 	end,	
 	
 })

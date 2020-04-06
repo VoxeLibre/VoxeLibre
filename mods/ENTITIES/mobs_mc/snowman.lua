@@ -115,7 +115,7 @@ mobs:register_mob("mobs_mc:snowman", {
 			})
 
 			local pos = self.object:get_pos()
-			minetest.sound_play("shears", {pos = pos})
+			minetest.sound_play("shears", {pos = pos}, true)
 
 			-- Wear out
 			if not minetest.settings:get_bool("creative_mode") then

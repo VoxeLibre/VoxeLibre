@@ -518,7 +518,7 @@ local function show_trade_formspec(playername, trader, tradenum)
 	.."listring[current_player;main]"
 	.."listring["..tradeinv..";input]"
 	.."listring[current_player;main]"
-	minetest.sound_play("mobs_mc_villager_trade", {to_player = playername})
+	minetest.sound_play("mobs_mc_villager_trade", {to_player = playername}, true)
 	minetest.show_formspec(playername, tradeinv_name, formspec)
 end
 
@@ -580,13 +580,13 @@ local update_offer = function(inv, player, sound)
 			(trade.locked == false)) then
 		inv:set_stack("output", 1, inv:get_stack("offered", 1))
 		if sound then
-			minetest.sound_play("mobs_mc_villager_accept", {to_player = name})
+			minetest.sound_play("mobs_mc_villager_accept", {to_player = name}, true)
 		end
 		return true
 	else
 		inv:set_stack("output", 1, ItemStack(""))
 		if sound then
-			minetest.sound_play("mobs_mc_villager_deny", {to_player = name})
+			minetest.sound_play("mobs_mc_villager_deny", {to_player = name}, true)
 		end
 		return false
 	end
@@ -775,7 +775,7 @@ local trade_inventory = {
 			if not wanted2:is_empty() then
 				inv:remove_item("input", inv:get_stack("wanted", 2))
 			end
-			minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()})
+			minetest.sound_play("mobs_mc_villager_accept", {to_player = player:get_player_name()}, true)
 		end
 		update_offer(inv, player, true)
 	end,
@@ -881,9 +881,9 @@ local trade_inventory = {
 			update_offer(inv, player, false)
 		end
 		if accept then
-			minetest.sound_play("mobs_mc_villager_accept", {to_player = name})
+			minetest.sound_play("mobs_mc_villager_accept", {to_player = name}, true)
 		else
-			minetest.sound_play("mobs_mc_villager_deny", {to_player = name})
+			minetest.sound_play("mobs_mc_villager_deny", {to_player = name}, true)
 		end
 	end,
 }

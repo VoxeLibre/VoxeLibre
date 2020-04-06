@@ -191,7 +191,7 @@ minetest.register_node("mcl_end:chorus_flower", {
 			-- Placement OK! Proceed normally
 			local it, suc = minetest.item_place_node(itemstack, placer, pointed_thing)
 			if suc then
-				minetest.sound_play(mcl_sounds.node_sound_wood_defaults().place, {pos = pos})
+				minetest.sound_play(mcl_sounds.node_sound_wood_defaults().place, {pos = pos}, true)
 			end
 			return it
 		else
@@ -295,7 +295,7 @@ minetest.register_node("mcl_end:chorus_plant", {
 			-- Placement OK! Proceed normally
 			local it, suc = minetest.item_place_node(itemstack, placer, pointed_thing)
 			if suc then
-				minetest.sound_play(mcl_sounds.node_sound_wood_defaults().place, {pos = pos_place})
+				minetest.sound_play(mcl_sounds.node_sound_wood_defaults().place, {pos = pos_place}, true)
 			end
 			return it
 		else
@@ -516,7 +516,7 @@ local random_teleport = function(player)
 					-- JACKPOT! Now we can teleport.
 					local goal = {x=tpos.x, y=tpos.y-1.5, z=tpos.z}
 					player:set_pos(goal)
-					minetest.sound_play({name="mcl_end_teleport", gain=0.8}, {pos=goal, max_hear_distance=16})
+					minetest.sound_play({name="mcl_end_teleport", gain=0.8}, {pos=goal, max_hear_distance=16}, true)
 					return true
 				end
 			end

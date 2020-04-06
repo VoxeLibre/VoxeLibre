@@ -108,7 +108,7 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 						itemstack:take_item()
 					end
 				end
-				minetest.sound_play("mcl_potions_bottle_fill", {pos=pointed_thing.under, gain=0.5, max_hear_range=16})
+				minetest.sound_play("mcl_potions_bottle_fill", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
 			end
 		end
 		return itemstack
@@ -188,7 +188,7 @@ minetest.register_craftitem("mcl_potions:potion_water", {
 				end
 				-- Increase water level of cauldron by 1
 				minetest.set_node(pointed_thing.under, {name=cauldron})
-				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16})
+				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
 				if minetest.settings:get_bool("creative_mode") == true then
 					return itemstack
 				else
@@ -234,7 +234,7 @@ minetest.register_craftitem("mcl_potions:potion_river_water", {
 				end
 				-- Increase water level of cauldron by 1
 				minetest.set_node(pointed_thing.under, {name=cauldron})
-				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16})
+				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
 				if minetest.settings:get_bool("creative_mode") == true then
 					return itemstack
 				else

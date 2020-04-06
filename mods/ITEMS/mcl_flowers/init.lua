@@ -265,7 +265,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 					param2 = get_palette_color_from_pos(bottom)
 				end
 				-- Success! We can now place the flower
-				minetest.sound_play(minetest.registered_nodes[itemstring].sounds.place, {pos = bottom, gain=1})
+				minetest.sound_play(minetest.registered_nodes[itemstring].sounds.place, {pos = bottom, gain=1}, true)
 				minetest.set_node(bottom, {name=itemstring, param2=param2})
 				minetest.set_node(top, {name=itemstring.."_top", param2=param2})
 				if not minetest.settings:get_bool("creative_mode") then
@@ -420,7 +420,7 @@ minetest.register_node("mcl_flowers:waterlily", {
 					local idef = itemstack:get_definition()
 
 					if idef.sounds and idef.sounds.place then
-						minetest.sound_play(idef.sounds.place, {pos=pointed_thing.above, gain=1})
+						minetest.sound_play(idef.sounds.place, {pos=pointed_thing.above, gain=1}, true)
 					end
 
 					if not minetest.settings:get_bool("creative_mode") then

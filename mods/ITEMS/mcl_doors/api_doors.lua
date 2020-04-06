@@ -155,7 +155,7 @@ function mcl_doors:register_door(name, def)
 			minetest.set_node(pt2, {name=name.."_t_1", param2=p2})
 
 			if def.sounds and def.sounds.place then
-				minetest.sound_play(def.sounds.place, {pos=pt})
+				minetest.sound_play(def.sounds.place, {pos=pt}, true)
 			end
 
 			if def.only_placer_can_open then
@@ -225,7 +225,7 @@ function mcl_doors:register_door(name, def)
 			meta1:set_int("is_open", 1)
 			meta2:set_int("is_open", 1)
 		end
-		minetest.sound_play(door_switching_sound, {pos = pos, gain = 0.5, max_hear_distance = 16})
+		minetest.sound_play(door_switching_sound, {pos = pos, gain = 0.5, max_hear_distance = 16}, true)
 	end
 
 	local function on_mesecons_signal_open(pos, node)

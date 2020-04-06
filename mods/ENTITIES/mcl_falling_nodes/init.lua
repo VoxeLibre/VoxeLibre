@@ -221,7 +221,7 @@ minetest.register_entity(":__builtin:falling_node", {
 						meta:from_table(self.meta)
 					end
 					if def.sounds and def.sounds.place and def.sounds.place.name then
-						minetest.sound_play(def.sounds.place, {pos = np})
+						minetest.sound_play(def.sounds.place, {pos = np}, true)
 					end
 				end
 			else
@@ -258,7 +258,7 @@ minetest.register_entity(":__builtin:falling_node", {
 						def._mcl_after_falling(npos3, get_falling_depth(self))
 					end
 					if def.sounds and def.sounds.place and def.sounds.place.name then
-						minetest.sound_play(def.sounds.place, {pos = np})
+						minetest.sound_play(def.sounds.place, {pos = np}, true)
 					end
 				end
 				deal_falling_damage(self, dtime)

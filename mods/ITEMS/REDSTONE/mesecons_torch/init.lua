@@ -50,7 +50,7 @@ local torch_get_input_rules = function(node)
 end
 
 local torch_overheated = function(pos)
-	minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.02, max_hear_distance = 6})
+	minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.02, max_hear_distance = 6}, true)
 	minetest.add_particle({
 		pos = {x=pos.x, y=pos.y+0.2, z=pos.z},
 		velocity = {x = 0, y = 0.6, z = 0},

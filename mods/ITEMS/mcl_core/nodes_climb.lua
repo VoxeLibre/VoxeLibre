@@ -75,7 +75,7 @@ minetest.register_node("mcl_core:ladder", {
 
 		if success then
 			if idef.sounds and idef.sounds.place then
-				minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
+				minetest.sound_play(idef.sounds.place, {pos=above, gain=1}, true)
 			end
 		end
 		return itemstack
@@ -146,7 +146,7 @@ minetest.register_node("mcl_core:vine", {
 
 		if success then
 			if idef.sounds and idef.sounds.place then
-				minetest.sound_play(idef.sounds.place, {pos=above, gain=1})
+				minetest.sound_play(idef.sounds.place, {pos=above, gain=1}, true)
 			end
 		end
 		return itemstack

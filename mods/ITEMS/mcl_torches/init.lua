@@ -127,7 +127,7 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 			itemstack:set_name(itemstring)
 
 			if success and idef.sounds and idef.sounds.place then
-				minetest.sound_play(idef.sounds.place, {pos=under, gain=1})
+				minetest.sound_play(idef.sounds.place, {pos=under, gain=1}, true)
 			end
 			return itemstack
 		end,

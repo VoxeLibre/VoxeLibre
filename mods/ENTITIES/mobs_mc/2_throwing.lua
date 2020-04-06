@@ -85,7 +85,7 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 			if obj:get_luaentity() ~= nil then
 				if obj:get_luaentity().name ~= "mobs_mc:arrow_entity" and obj:get_luaentity().name ~= "__builtin:item" then
 					local damage = 3
-					minetest.sound_play("damage", {pos = pos})
+					minetest.sound_play("damage", {pos = pos}, true)
 					obj:punch(self.object, 1.0, {
 						full_punch_interval=1.0,
 						damage_groups={fleshy=damage},
@@ -94,7 +94,7 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 				end
 			else
 				local damage = 3
-				minetest.sound_play("damage", {pos = pos})
+				minetest.sound_play("damage", {pos = pos}, true)
 				obj:punch(self.object, 1.0, {
 					full_punch_interval=1.0,
 					damage_groups={fleshy=damage},
@@ -106,7 +106,7 @@ THROWING_ARROW_ENTITY.on_step = function(self, dtime)
 
 	if self.lastpos.x~=nil then
 		if node.name ~= "air" then
-			minetest.sound_play("bowhit1", {pos = pos})
+			minetest.sound_play("bowhit1", {pos = pos}, true)
 			minetest.add_item(self.lastpos, 'mobs_mc:arrow')
 			self.object:remove()
 		end
@@ -132,7 +132,7 @@ local throwing_shoot_arrow = function(itemstack, player)
 			obj:set_velocity({x=dir.x*22, y=dir.y*22, z=dir.z*22})
 			obj:set_acceleration({x=dir.x*-3, y=-10, z=dir.z*-3})
 			obj:set_yaw(player:get_look_yaw()+math.pi)
-			minetest.sound_play("throwing_sound", {pos=playerpos})
+			minetest.sound_play("throwing_sound", {pos=playerpos}, true)
 			if obj:get_luaentity().player == "" then
 				obj:get_luaentity().player = player
 			end
@@ -266,7 +266,7 @@ if c("egg") then
 			pos = playerpos,
 			gain = 1.0,
 			max_hear_distance = 5,
-		})
+		}, true)
 
 		local obj = minetest.add_entity({
 			x = playerpos.x,

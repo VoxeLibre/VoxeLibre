@@ -164,5 +164,5 @@ end
 -- Player death sound
 minetest.register_on_dieplayer(function(player)
 	-- TODO: Add separate death sound
-	minetest.sound_play({name="player_damage", gain = 1.0}, {pos=player:get_pos(), max_hear_distance=16})
+	minetest.sound_play({name="player_damage", gain = 1.0}, {pos=player:get_pos(), max_hear_distance=16}, true)
 end)

@@ -217,7 +217,7 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 				local wear = math.ceil(65535 / uses)
 				itemstack:add_wear(wear)
 			end
-			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above})
+			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above}, true)
 			minetest.swap_node(pointed_thing.under, {name="mcl_core:grass_path"})
 		end
 	end
@@ -251,7 +251,7 @@ if minetest.get_modpath("mcl_farming") then
 				local wear = math.ceil(65535 / uses)
 				itemstack:add_wear(wear)
 			end
-			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above})
+			minetest.sound_play({name="default_grass_footstep", gain=1}, {pos = above}, true)
 			local dir = vector.subtract(pointed_thing.under, pointed_thing.above)
 			local param2 = minetest.dir_to_facedir(dir)
 			minetest.swap_node(pointed_thing.under, {name="mcl_farming:pumpkin_face", param2 = param2})

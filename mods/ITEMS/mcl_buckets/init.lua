@@ -28,14 +28,14 @@ mcl_buckets.liquids = {}
 local sound_place = function(itemname, pos)
 	local def = minetest.registered_nodes[itemname]
 	if def and def.sounds and def.sounds.place then
-		minetest.sound_play(def.sounds.place, {gain=1.0, pos = pos, pitch = 1 + math.random(-10, 10)*0.005})
+		minetest.sound_play(def.sounds.place, {gain=1.0, pos = pos, pitch = 1 + math.random(-10, 10)*0.005}, true)
 	end
 end
 
 local sound_take = function(itemname, pos)
 	local def = minetest.registered_nodes[itemname]
 	if def and def.sounds and def.sounds.dug then
-		minetest.sound_play(def.sounds.dug, {gain=1.0, pos = pos, pitch = 1 + math.random(-10, 10)*0.005})
+		minetest.sound_play(def.sounds.dug, {gain=1.0, pos = pos, pitch = 1 + math.random(-10, 10)*0.005}, true)
 	end
 end
 
@@ -346,7 +346,7 @@ if mod_mcl_core then
 			else
 				local dim = mcl_worlds.pos_to_dimension(pos)
 				if dim == "nether" then
-					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
+					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 					return false
 				end
 			end
@@ -389,7 +389,7 @@ if mod_mclx_core then
 				-- Evaporate water if used in Nether (except on cauldron)
 				local dim = mcl_worlds.pos_to_dimension(pos)
 				if dim == "nether" then
-					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16})
+					minetest.sound_play("fire_extinguish_flame", {pos = pos, gain = 0.25, max_hear_distance = 16}, true)
 					return false
 				end
 			end

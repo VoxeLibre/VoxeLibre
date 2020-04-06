@@ -255,7 +255,7 @@ mobs:register_mob("mobs_mc:enderman", {
 					self.animation = select_enderman_animation("block")
 					mobs:set_animation(self, self.animation.current)
 					if def.sounds and def.sounds.dug then
-						minetest.sound_play(def.sounds.dug, {pos = take_pos, max_hear_distance = 16})
+						minetest.sound_play(def.sounds.dug, {pos = take_pos, max_hear_distance = 16}, true)
 					end
 				end
 			end
@@ -276,7 +276,7 @@ mobs:register_mob("mobs_mc:enderman", {
 					self.animation = select_enderman_animation("normal")
 					mobs:set_animation(self, self.animation.current)
 					if def.sounds and def.sounds.place then
-						minetest.sound_play(def.sounds.place, {pos = place_pos, max_hear_distance = 16})
+						minetest.sound_play(def.sounds.place, {pos = place_pos, max_hear_distance = 16}, true)
 					end
 					self._taken_node = ""
 				end

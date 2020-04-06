@@ -191,7 +191,7 @@ function doc.mark_entry_as_revealed(playername, category_id, entry_id)
 			local last_sound = doc.data.players[playername].last_reveal_sound
 			if last_sound == nil or os.difftime(os.time(), last_sound) >= 1 then
 				-- Play notification sound
-				minetest.sound_play({ name = "doc_reveal", gain = 0.2 }, { to_player = playername })
+				minetest.sound_play({ name = "doc_reveal", gain = 0.2 }, { to_player = playername }, true)
 				doc.data.players[playername].last_reveal_sound = os.time()
 			end
 		end
@@ -224,7 +224,7 @@ function doc.mark_all_entries_as_revealed(playername)
 		msg = S("All help entries revealed!")
 
 		-- Play notification sound (ignore sound limit intentionally)
-		minetest.sound_play({ name = "doc_reveal", gain = 0.2 }, { to_player = playername })
+		minetest.sound_play({ name = "doc_reveal", gain = 0.2 }, { to_player = playername }, true)
 		doc.data.players[playername].last_reveal_sound = os.time()
 	else
 		msg = S("All help entries are already revealed.")

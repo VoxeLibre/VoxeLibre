@@ -67,7 +67,7 @@ local function seagrass_on_place(itemstack, placer, pointed_thing)
 	end
 	local def_node = minetest.registered_items[node_under.name]
 	if def_node.sounds then
-		minetest.sound_play(def_node.sounds.place, { gain = 0.5, pos = pos_under })
+		minetest.sound_play(def_node.sounds.place, { gain = 0.5, pos = pos_under }, true)
 	end
 	minetest.set_node(pos_under, node_under)
 	if not (minetest.settings:get_bool("creative_mode")) then

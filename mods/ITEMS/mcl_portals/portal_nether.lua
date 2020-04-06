@@ -447,7 +447,7 @@ minetest.register_abm({
 						obj:set_pos(target)
 						if obj:is_player() then
 							mcl_worlds.dimension_change(obj, mcl_worlds.pos_to_dimension(target))
-							minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16})
+							minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16}, true)
 						end
 
 						-- Enable teleportation cooloff for some seconds, to prevent back-and-forth teleportation

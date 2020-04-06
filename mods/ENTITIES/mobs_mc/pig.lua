@@ -125,7 +125,7 @@ mobs:register_mob("mobs_mc:pig", {
 				stack:take_item()
 				inv:set_stack("main", clicker:get_wield_index(), stack)
 			end
-			minetest.sound_play({name = "mcl_armor_equip_leather"}, {gain=0.5, max_hear_distance=8, pos=self.object:get_pos()})
+			minetest.sound_play({name = "mcl_armor_equip_leather"}, {gain=0.5, max_hear_distance=8, pos=self.object:get_pos()}, true)
 			return
 		end
 
@@ -149,7 +149,7 @@ mobs:register_mob("mobs_mc:pig", {
 					-- Break carrot on a stick
 					local def = wielditem:get_definition()
 					if def.sounds and def.sounds.breaks then
-						minetest.sound_play(def.sounds.breaks, {pos = clicker:get_pos(), max_hear_distance = 8, gain = 0.5})
+						minetest.sound_play(def.sounds.breaks, {pos = clicker:get_pos(), max_hear_distance = 8, gain = 0.5}, true)
 					end
 					wielditem = {name = mobs_mc.items.fishing_rod, count = 1}
 				else

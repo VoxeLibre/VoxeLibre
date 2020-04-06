@@ -264,7 +264,7 @@ function awards.unlock(name, award)
 		-- Enforce sound delay to prevent sound spamming
 		local lastsound = awards.players[name].lastsound
 		if lastsound == nil or os.difftime(os.time(), lastsound) >= 1 then
-			minetest.sound_play(sound, {to_player=name})
+			minetest.sound_play(sound, {to_player=name}, true)
 			awards.players[name].lastsound = os.time()
 		end
 	end

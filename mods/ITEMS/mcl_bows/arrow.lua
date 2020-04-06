@@ -145,7 +145,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 							pos = pos,
 							max_hear_distance = 16,
 							gain = 1.0,
-						})
+						}, true)
 					end
 				end
 				self.object:remove()
@@ -224,7 +224,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 					if is_player then
 						if self._shooter and self._shooter:is_player() then
 							-- “Ding” sound for hitting another player
-							minetest.sound_play({name="mcl_bows_hit_player", gain=0.1}, {to_player=self._shooter})
+							minetest.sound_play({name="mcl_bows_hit_player", gain=0.1}, {to_player=self._shooter}, true)
 						end
 					end
 

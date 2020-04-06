@@ -84,7 +84,7 @@ function mcl_farming:place_seed(itemstack, placer, pointed_thing, plantname)
 	local place_s = minetest.get_node(pos)
 
 	if string.find(farmland.name, "mcl_farming:soil") and string.find(place_s.name, "air")  then
-		minetest.sound_play(minetest.registered_nodes[plantname].sounds.place, {pos = pos})
+		minetest.sound_play(minetest.registered_nodes[plantname].sounds.place, {pos = pos}, true)
 		minetest.add_node(pos, {name=plantname, param2 = minetest.registered_nodes[plantname].place_param2})
 	else
 		return

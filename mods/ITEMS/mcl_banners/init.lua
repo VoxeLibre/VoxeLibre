@@ -376,7 +376,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 						minetest.set_node(pointed_thing.under, {name=new_node})
 
 						-- Play sound (from mcl_potions mod)
-						minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16})
+						minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
 
 						return itemstack
 					end
@@ -458,7 +458,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:take_item()
 			end
-			minetest.sound_play({name="default_place_node_hard", gain=1.0}, {pos = place_pos})
+			minetest.sound_play({name="default_place_node_hard", gain=1.0}, {pos = place_pos}, true)
 
 			return itemstack
 		end,

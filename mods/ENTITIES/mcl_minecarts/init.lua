@@ -43,7 +43,7 @@ local function activate_tnt_minecart(self, timer)
 		"mcl_minecarts_minecart.png",
 	}})
 	self._blinktimer = tnt.BLINKTIMER
-	minetest.sound_play("tnt_ignite", {pos = self.object:get_pos(), gain = 1.0, max_hear_distance = 15})
+	minetest.sound_play("tnt_ignite", {pos = self.object:get_pos(), gain = 1.0, max_hear_distance = 15}, true)
 end
 
 local activate_normal_minecart = detach_driver

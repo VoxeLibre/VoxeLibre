@@ -149,7 +149,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 					gain = 1.0,
 					pitch = 1 + math.random(-10, 10)*0.005,
 					object = user,
-				})
+				}, true)
 			else
 				-- Assume the item is a food
 				-- Add eat particle effect and sound
@@ -188,7 +188,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 					gain = 1.0,
 					pitch = 1 + math.random(-10, 10)*0.005,
 					object = user,
-				})
+				}, true)
 			end
 
 			if mcl_hunger.active and hunger_change then

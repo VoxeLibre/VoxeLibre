@@ -57,12 +57,12 @@ mobs:register_mob("mobs_mc:creeper", {
 				item:add_wear(1000)
 				-- Tool break sound
 				if item:get_count() == 0 and wdef.sound and wdef.sound.breaks then
-					minetest.sound_play(wdef.sound.breaks, {pos = clicker:get_pos(), gain = 0.5})
+					minetest.sound_play(wdef.sound.breaks, {pos = clicker:get_pos(), gain = 0.5}, true)
 				end
 				clicker:set_wielded_item(item)
 			end
 			self._forced_explosion_countdown_timer = self.explosion_timer
-			minetest.sound_play(self.sounds.attack, {pos = self.object:get_pos(), gain = 1, max_hear_distance = 16})
+			minetest.sound_play(self.sounds.attack, {pos = self.object:get_pos(), gain = 1, max_hear_distance = 16}, true)
 		end
 	end,
 	do_custom = function(self, dtime)

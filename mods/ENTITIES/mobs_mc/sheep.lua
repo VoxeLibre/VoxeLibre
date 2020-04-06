@@ -155,7 +155,7 @@ mobs:register_mob("mobs_mc:sheep", {
 		if item:get_name() == mobs_mc.items.shears and not self.gotten and not self.child then
 			self.gotten = true
 			local pos = self.object:get_pos()
-			minetest.sound_play("shears", {pos = pos})
+			minetest.sound_play("shears", {pos = pos}, true)
 			pos.y = pos.y + 0.5
 			if not self.color then
 				self.color = "unicolor_white"

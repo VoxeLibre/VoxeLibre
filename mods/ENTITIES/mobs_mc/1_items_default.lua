@@ -568,7 +568,7 @@ if c("totem") then
 					player:set_wielded_item(wield)
 				end
 				-- Effects
-				minetest.sound_play({name = "mcl_totems_totem", gain=1}, {pos=ppos, max_hear_distance=16})
+				minetest.sound_play({name = "mcl_totems_totem", gain=1}, {pos=ppos, max_hear_distance=16}, true)
 
 				-- Big totem overlay
 				if not hud_totem[player:get_player_name()] then

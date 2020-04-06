@@ -293,7 +293,7 @@ minetest.register_abm({
 						obj:set_look_horizontal(math.pi/2)
 					end
 					mcl_worlds.dimension_change(obj, mcl_worlds.pos_to_dimension(target))
-					minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16})
+					minetest.sound_play("mcl_portals_teleport", {pos=target, gain=0.5, max_hear_distance = 16}, true)
 				end
 			end
 		end
@@ -404,7 +404,7 @@ minetest.override_item("mcl_end:ender_eye", {
 			end
 			minetest.sound_play(
 				"default_place_node_hard",
-				{pos = pointed_thing.under, gain = 0.5, max_hear_distance = 16})
+				{pos = pointed_thing.under, gain = 0.5, max_hear_distance = 16}, true)
 			if not minetest.settings:get_bool("creative_mode") then
 				itemstack:take_item() -- 1 use
 			end
