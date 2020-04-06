@@ -61,11 +61,11 @@ mcl_weather.skycolor = {
 					-- Clear weather
 					player:set_sky({
 						type = "regular",
-						sky_colors = {
+						sky_color = {
 							day_sky = "#92B9FF",
 							day_horizon = "#B4D0FF",
 							dawn_sky = "#B4BAFA",
-							dawn_horizon = "BAC1F0",
+							dawn_horizon = "#BAC1F0",
 							night_sky = "#006AFF",
 							night_horizon = "#4090FF",
 						},
@@ -131,16 +131,8 @@ mcl_weather.skycolor = {
 				player:set_stars({visible = false})
 				player:override_day_night_ratio(nil)
 			elseif dim == "void" then
-				player:set_sky({ type = "regular",
-					sky_color = {
-						day_sky = "#000000",
-						day_horizon = "#000000",
-						dawn_sky = "#000000",
-						dawn_horizon = "#000000",
-						night_sky = "#000000",
-						night_horizon = "#000000",
-						indoors = "#000000",
-					},
+				player:set_sky({ type = "plain",
+					base_color = "#000000",
 					clouds = false,
 				})
 				player:set_sun({visible = false, sunrise_visible = false})
