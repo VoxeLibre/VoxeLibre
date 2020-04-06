@@ -18,21 +18,6 @@ mcl_weather.skycolor = {
 	-- number of colors while constructing gradient of user given colors
 	max_val = 1000,
 
-	-- Enables smooth transition between existing sky color and target.
-	smooth_transitions = true,
-
-	-- Transition between current sky color and new user given.
-	transition_in_progress = false,
-
-	-- Transition colors are generated automaticly during initialization.
-	transition_colors = {},
-
-	-- Time where transition between current color and user given will be done
-	transition_time = 15,
-
-	-- Tracks how much time passed during transition
-	transition_timer = 0,
-
 	-- Table for tracking layer order
 	layer_names = {},
 
@@ -40,9 +25,6 @@ mcl_weather.skycolor = {
 	add_layer = function(layer_name, layer_color, instant_update)
 		mcl_weather.skycolor.colors[layer_name] = layer_color
 		table.insert(mcl_weather.skycolor.layer_names, layer_name)
-		if (instant_update ~= true) then
-			mcl_weather.skycolor.init_transition()
-		end
 		mcl_weather.skycolor.force_update = true
 	end,
 
@@ -71,18 +53,47 @@ mcl_weather.skycolor = {
 	update_sky_color = function(players)
 		-- Override day/night ratio as well
 		players = mcl_weather.skycolor.utils.get_players(players)
-		local color = mcl_weather.skycolor.current_sky_layer_color()
 		for _, player in ipairs(players) do
 			local pos = player:get_pos()
 			local dim = mcl_worlds.pos_to_dimension(pos)
 			if dim == "overworld" then
-				if (color == nil) then
-					-- No sky layers
-					player:set_sky(nil, "regular")
+				if (mcl_weather.state == "none") then
+					-- Clear weather
+					player:set_sky({
+						type = "regular",
+						sky_colors = {
+							day_sky = "#92B9FF",
+							day_horizon = "#B4D0FF",
+							dawn_sky = "#B4BAFA",
+							dawn_horizon = "BAC1F0",
+							night_sky = "#006AFF",
+							night_horizon = "#4090FF",
+						},
+						clouds = true,
+					})
+					player:set_sun({visible = true, sunrise_visible = true})
+					player:set_moon({visible = true})
+					player:set_stars({visible = true})
 					player:override_day_night_ratio(nil)
 				else
 					-- Weather skies
-					player:set_sky(color, "plain", nil, true)
+					local day_color = mcl_weather.skycolor.get_sky_layer_color(0.5)
+					local dawn_color = mcl_weather.skycolor.get_sky_layer_color(0.75)
+					local night_color = mcl_weather.skycolor.get_sky_layer_color(0)
+					player:set_sky({ type = "regular",
+						sky_color = {
+							day_sky = day_color,
+							day_horizon = day_color,
+							dawn_sky = dawn_color,
+							dawn_horizon = dawn_color,
+							night_sky = night_color,
+							night_horizon = night_color,
+						},
+						clouds = true,
+					})
+					player:set_sun({visible = false, sunrise_visible = false})
+					player:set_moon({visible = false})
+					player:set_stars({visible = false})
 
 					local lf = mcl_weather.get_current_light_factor()
 					if mcl_weather.skycolor.current_layer_name() == "lightning" then
@@ -93,9 +104,7 @@ mcl_weather.skycolor = {
 						if light > 1 then
 							light = 1 - (light - 1)
 						end
-
 						light = (light * lf) + 0.15
-
 						player:override_day_night_ratio(light)
 					else
 						player:override_day_night_ratio(nil)
@@ -103,71 +112,54 @@ mcl_weather.skycolor = {
 				end
 			elseif dim == "end" then
 				local t = "mcl_playerplus_end_sky.png"
-				player:set_sky("#000000", "skybox", {t,t,t,t,t,t}, false)
+				player:set_sky({ type = "skybox",
+					base_color = "#000000",
+					textures = {t,t,t,t,t,t},
+					clouds = false,
+				})
+				player:set_sun({visible = false , sunrise_visible = false})
+				player:set_moon({visible = false})
+				player:set_stars({visible = false})
 				player:override_day_night_ratio(0.5)
 			elseif dim == "nether" then
-				player:set_sky("#300808", "plain", nil, false)
+				player:set_sky({ type = "plain",
+					base_color = "#300808",
+					clouds = false,
+				})
+				player:set_sun({visible = false , sunrise_visible = false})
+				player:set_moon({visible = false})
+				player:set_stars({visible = false})
 				player:override_day_night_ratio(nil)
 			elseif dim == "void" then
-				player:set_sky("#000000", "plain", nil, false)
+				player:set_sky({ type = "regular",
+					sky_color = {
+						day_sky = "#000000",
+						day_horizon = "#000000",
+						dawn_sky = "#000000",
+						dawn_horizon = "#000000",
+						night_sky = "#000000",
+						night_horizon = "#000000",
+						indoors = "#000000",
+					},
+					clouds = false,
+				})
+				player:set_sun({visible = false, sunrise_visible = false})
+				player:set_moon({visible = false})
+				player:set_stars({visible = false})
 			end
 		end
 	end,
 
 	-- Returns current layer color in {r, g, b} format
-	current_sky_layer_color = function()
+	get_sky_layer_color = function(timeofday)
 		if #mcl_weather.skycolor.layer_names == 0 then
 			return nil
 		end
 
 		-- min timeofday value 0; max timeofday value 1. So sky color gradient range will be between 0 and 1 * mcl_weather.skycolor.max_val.
-		local timeofday = minetest.get_timeofday()
 		local rounded_time = math.floor(timeofday * mcl_weather.skycolor.max_val)
 		local color = mcl_weather.skycolor.utils.convert_to_rgb(mcl_weather.skycolor.min_val, mcl_weather.skycolor.max_val, rounded_time, mcl_weather.skycolor.retrieve_layer())
 		return color
-	end,
-
-	-- Initialy used only on 
-	update_transition_sky_color = function()
-		local multiplier = 100
-		local rounded_time = math.floor(mcl_weather.skycolor.transition_timer * multiplier)
-		if rounded_time >= mcl_weather.skycolor.transition_time * multiplier then
-			mcl_weather.skycolor.stop_transition()
-			return
-		end
-
-		local color = mcl_weather.skycolor.utils.convert_to_rgb(0, mcl_weather.skycolor.transition_time * multiplier, rounded_time, mcl_weather.skycolor.transition_colors)
-
-		local players = mcl_weather.skycolor.utils.get_players(nil)
-		for _, player in ipairs(players) do
-			local pos = player:get_pos()
-			local dim = mcl_worlds.pos_to_dimension(pos)
-			if dim == "overworld" then
-				player:set_sky(color, "plain", nil, true)
-			end
-		end
-	end,
-
-	init_transition = function()
-		-- sadly default sky returns unpredictible colors so transition mode becomes usable only for user defined color layers
-		-- Here '2' means that one color layer existed before new added and transition is posible.
-		if #mcl_weather.skycolor.layer_names < 2 then
-			return
-		end
-
-		local transition_start_color = mcl_weather.skycolor.utils.get_current_bg_color()
-		if (transition_start_color == nil) then
-			return
-		end
-		local transition_end_color = mcl_weather.skycolor.current_sky_layer_color()
-		mcl_weather.skycolor.transition_colors = {transition_start_color, transition_end_color}
-		mcl_weather.skycolor.transition_in_progress = true
-	end,
-
-	stop_transition = function()
-		mcl_weather.skycolor.transition_in_progress = false
-		mcl_weather.skycolor.transition_colors = {}
-		mcl_weather.skycolor.transition_timer = 0
 	end,
 
 	utils = {
@@ -205,12 +197,6 @@ mcl_weather.skycolor = {
 local timer = 0
 minetest.register_globalstep(function(dtime)
 	if mcl_weather.skycolor.active ~= true or #minetest.get_connected_players() == 0 then
-		return
-	end
-
-	if mcl_weather.skycolor.smooth_transitions and mcl_weather.skycolor.transition_in_progress then
-		mcl_weather.skycolor.transition_timer = mcl_weather.skycolor.transition_timer + dtime
-		mcl_weather.skycolor.update_transition_sky_color()
 		return
 	end
 
