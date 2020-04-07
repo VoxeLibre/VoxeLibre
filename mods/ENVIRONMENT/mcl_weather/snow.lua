@@ -15,7 +15,7 @@ mcl_weather.snow.add_snow_particles = function(player)
         pos = {x=random_pos_x, y=random_pos_y, z=random_pos_z},
         velocity = {x = math.random(-1,-0.5), y = math.random(-2,-1), z = math.random(-1,-0.5)},
         acceleration = {x = math.random(-1,-0.5), y=-0.5, z = math.random(-1,-0.5)},
-        expirationtime = 2.0,
+        expirationtime = 3.0,
         size = math.random(0.5, 2),
         collisiondetection = true,
         collision_removal = true,

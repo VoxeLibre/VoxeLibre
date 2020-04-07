@@ -117,7 +117,7 @@ mcl_weather.get_random_pos_by_player_look_dir = function(player)
     end
   end
 
-  random_pos_y = math.random() + math.random(player_pos.y + 1, player_pos.y + 3)
+  random_pos_y = math.random() + math.random(player_pos.y + 10, player_pos.y + 15)
   return random_pos_x, random_pos_y, random_pos_z
 end
 
