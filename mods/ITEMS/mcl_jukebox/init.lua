@@ -70,6 +70,7 @@ local function now_playing(player, track_id)
 			size = { x=100, y=100},
 			number = 0x55FFFF,
 			text = text,
+			z_index = 10,
 		})
 		active_huds[playername] = id
 	end

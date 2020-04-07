@@ -578,6 +578,7 @@ if c("totem") then
 						position = { x=0.5, y=1 },
 						scale = { x=17, y=17 },
 						offset = { x=0, y=-178 },
+						z_index = 10,
 					})
 					minetest.after(3, function(name)
 						local player = minetest.get_player_by_name(name)

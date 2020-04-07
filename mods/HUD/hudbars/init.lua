@@ -200,6 +200,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, default_sta
 				text = "hudbars_bar_background.png",
 				alignment = {x=1,y=1},
 				offset = { x = offset.x - 1, y = offset.y - 1 },
+				z_index = 0,
 			})
 			if textures.icon ~= nil then
 				ids.icon = player:hud_add({
@@ -209,6 +210,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, default_sta
 					text = textures.icon,
 					alignment = {x=-1,y=1},
 					offset = { x = offset.x - 3, y = offset.y },
+					z_index = 1,
 				})
 			end
 		elseif hb.settings.bar_type == "statbar_modern" then
@@ -222,6 +224,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, default_sta
 					offset = { x = offset.x, y = offset.y },
 					direction = 0,
 					size = {x=24, y=24},
+					z_index = 0,
 				})
 			end
 		end
@@ -248,6 +251,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, default_sta
 			offset = offset,
 			direction = 0,
 			size = bar_size,
+			z_index = 1,
 		})
 		if hb.settings.bar_type == "progress_bar" then
 			ids.text = player:hud_add({
@@ -258,6 +262,7 @@ function hb.register_hudbar(identifier, text_color, label, textures, default_sta
 				number = text_color,
 				direction = 0,
 				offset = { x = offset.x + 2,  y = offset.y - 1},
+				z_index = 2,
 		})
 		end
 		-- Do not forget to update hb.get_hudbar_state if you add new fields to the state table

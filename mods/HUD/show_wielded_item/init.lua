@@ -42,6 +42,7 @@ local function set_hud(player)
 		alignment = {x=0, y=0},
 		number = 0xFFFFFF ,
 		text = "",
+		z_index = 10,
 	})
 end
 
