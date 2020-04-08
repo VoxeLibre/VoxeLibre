@@ -19,27 +19,27 @@ local function activate_if_tnt(nname, np, tnt_np, tntr)
     end
 end
 
-local function do_tnt_physics(tnt_np,tntr)
+local function do_tnt_physics(tnt_np, tntr, tnt_obj)
     local objs = minetest.get_objects_inside_radius(tnt_np, tntr)
     for k, obj in pairs(objs) do
         local ent = obj:get_luaentity()
         local v = obj:get_velocity()
         local p = obj:get_pos()
-        if ent and ent.name == "mcl_tnt:tnt" then
+        if ent and ent.name == "mcl_tnt:tnt" and v ~= nil then
             obj:set_velocity({x=(p.x - tnt_np.x) + (tntr / 2) + v.x, y=(p.y - tnt_np.y) + tntr + v.y, z=(p.z - tnt_np.z) + (tntr / 2) + v.z})
         else
-            if v ~= nil then
+            if v ~= nil and not obj:is_player() then
                 obj:set_velocity({x=(p.x - tnt_np.x) + (tntr / 4) + v.x, y=(p.y - tnt_np.y) + (tntr / 2) + v.y, z=(p.z - tnt_np.z) + (tntr / 4) + v.z})
-            else
-                local dist = math.max(1, vector.distance(tnt_np, p))
-                local damage = (4 / dist) * tntr
-                if obj:is_player() == true then
-                    if mod_death_messages then
-                        mcl_death_messages.player_damage(obj, S("@1 was caught in an explosion.", obj:get_player_name()))
-                    end
-                end
-                obj:set_hp(obj:get_hp() - damage, { type = "punch", from = "mod" })
             end
+            local dist = math.max(1, vector.distance(tnt_np, p))
+            local damage = (4 / dist) * tntr
+            if obj:is_player() == true then
+                if mod_death_messages then
+                    mcl_death_messages.player_damage(obj, S("@1 was caught in an explosion.", obj:get_player_name()))
+                end
+            end
+            local puncher = tnt_obj or obj
+            obj:punch(puncher, nil, { damage_groups = { fleshy = damage }})
         end
     end
 end
@@ -204,12 +204,12 @@ function TNT:on_step(dtime)
 		self.blinkstatus = not self.blinkstatus
 	end
 	if self.timer > tnt.BOOMTIMER then
-		tnt.boom(self.object:get_pos())
+		tnt.boom(self.object:get_pos(), nil, self.object)
 		self.object:remove()
 	end
 end
 
-tnt.boom = function(pos, info)
+tnt.boom = function(pos, info, tnt_obj)
 	if not info then info = {} end
 	local range = info.radius or TNT_RANGE
 	local damage_range = info.damage_radius or TNT_RANGE
@@ -217,7 +217,7 @@ tnt.boom = function(pos, info)
 	pos.x = math.floor(pos.x+0.5)
 	pos.y = math.floor(pos.y+0.5)
 	pos.z = math.floor(pos.z+0.5)
-	do_tnt_physics(pos, range)
+	do_tnt_physics(pos, range, tnt_obj)
 	local meta = minetest.get_meta(pos)
 	local sound
 	if not info.sound then
