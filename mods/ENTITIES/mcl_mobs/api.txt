@@ -50,7 +50,7 @@ functions needed for the mob to work properly which contains the following:
    'jump'          when true allows your mob to jump updwards.
    'jump_height'   holds the height your mob can jump, 0 to disable jumping.
    'stepheight'    height of a block that your mob can easily walk up onto,
-                   defaults to 1.1.
+                   defaults to 0.6.
    'fly'           when true allows your mob to fly around instead of walking.
    'fly_in'        holds the node name or a table of node names in which the
                    mob flies (or swims) around in. The special name

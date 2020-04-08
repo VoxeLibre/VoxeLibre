@@ -40,7 +40,6 @@ local wolf = {
 	walk_chance = default_walk_chance,
 	walk_velocity = 2,
 	run_velocity = 3,
-	stepheight = 1.1,
 	damage = 4,
 	reach = 2,
 	attack_type = "dogfight",

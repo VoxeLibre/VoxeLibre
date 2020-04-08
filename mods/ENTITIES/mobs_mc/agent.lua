@@ -7,7 +7,6 @@ local S = minetest.get_translator("mobs_mc")
 mobs:register_mob("mobs_mc:agent", {
 	type = "npc",
 	passive = true,
-	stepheight = 1.2,
 	hp_min = 20,
 	hp_max = 20,
 	armor = 100,

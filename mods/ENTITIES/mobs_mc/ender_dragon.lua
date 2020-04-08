@@ -32,7 +32,6 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	damage = 10,
 	jump = true,
 	jump_height = 14,
-	stepheight = 1.2,
 	fly = true,
 	dogshoot_switch = 1,
 	dogshoot_count_max =5,

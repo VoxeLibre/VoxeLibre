@@ -170,7 +170,6 @@ mobs:register_mob("mobs_mc:enderman", {
 	type = "monster",
 	passive = false,
 	pathfinding = 1,
-	stepheight = 1.2,
 	hp_min = 40,
 	hp_max = 40,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 2.89, 0.3},

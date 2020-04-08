@@ -76,7 +76,6 @@ mobs:register_mob("mobs_mc:guardian", {
 	},
 	fly = true,
 	fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
-	stepheight = 0.1,
 	jump = false,
 	view_range = 16,
 })

@@ -42,7 +42,6 @@ mobs:register_mob("mobs_mc:squid", {
 	},
     visual_size = {x=3, y=3},
     makes_footstep_sound = false,
-    stepheight = 0.1,
     fly = true,
     fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
     breathes_in_water = true,

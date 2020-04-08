@@ -11,7 +11,6 @@ mobs:register_mob("mobs_mc:polar_bear", {
 	type = "animal",
 	runaway = false,
 	passive = false,
-	stepheight = 1.2,
 	hp_min = 30,
 	hp_max = 30,
         breath_max = -1,
