@@ -313,6 +313,8 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 	_doc_items_usagehelp = S("Rightclick to launch the bobber. When it sinks right-click again to reel in an item. Who knows what you're going to catch?"),
 	groups = { tool=1 },
 	inventory_image = "mcl_fishing_fishing_rod.png",
+	wield_image = "mcl_fishing_fishing_rod.png^[transformR270",
+	wield_scale = { x = 1.5, y = 1.5, z = 1 },
 	stack_max = 1,
 	on_place = fish,
 	on_secondary_use = fish,

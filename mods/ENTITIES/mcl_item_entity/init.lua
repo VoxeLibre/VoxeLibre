@@ -350,8 +350,6 @@ minetest.register_entity(":__builtin:item", {
 			count = max_count
 			self.itemstring = stack:get_name().." "..max_count
 		end
-		local s = 0.2 + 0.1 * (count / max_count)
-		local c = s
 		local itemtable = stack:to_table()
 		local itemname = nil
 		local description = ""
@@ -360,16 +358,18 @@ minetest.register_entity(":__builtin:item", {
 		end
 		local item_texture = nil
 		local item_type = ""
-		if minetest.registered_items[itemname] then
-			item_texture = minetest.registered_items[itemname].inventory_image
-			item_type = minetest.registered_items[itemname].type
-			description = minetest.registered_items[itemname].description
-		end
-		local ndef = minetest.registered_items[itemname]
 		local glow
-		if ndef then
-			glow = ndef.light_source
+		local def = minetest.registered_items[itemname]
+		if def then
+			item_texture = def.inventory_image
+			item_type = def.type
+			description = def.description
+			glow = def.light_source
 		end
+		local s = 0.2 + 0.1 * (count / max_count)
+		local wield_scale = (def and def.wield_scale and def.wield_scale.x) or 1
+		local c = s
+		s = s / wield_scale
 		local prop = {
 			is_visible = true,
 			visual = "wielditem",
