@@ -18,7 +18,7 @@ local function active_formspec(fuel_percent, item_percent)
 	"list[current_name;fuel;2.75,2.5;1,1;]"..
 	mcl_formspec.get_itemslot_bg(2.75,2.5,1,1)..
 	"list[current_name;dst;5.75,1.5;1,1;]"..
-	mcl_formspec.get_itemslot_bg(5.75,2.5,1,1)..
+	mcl_formspec.get_itemslot_bg(5.75,1.5,1,1)..
 	"image[2.75,1.5;1,1;default_furnace_fire_bg.png^[lowpart:"..
 	(100-fuel_percent)..":default_furnace_fire_fg.png]"..
 	"image[4.1,1.5;1.5,1;gui_furnace_arrow_bg.png^[lowpart:"..
