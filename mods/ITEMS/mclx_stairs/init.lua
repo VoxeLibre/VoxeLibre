@@ -1,12 +1,38 @@
 local S = minetest.get_translator("mclx_stairs")
 local doc_mod = minetest.get_modpath("doc")
 
-mcl_stairs.register_stair_and_slab_simple("tree_bark", "mcl_core:tree_bark", S("Oak Bark Stairs"), S("Oak Bark Slab"), S("Double Oak Bark Slab"), "woodlike")
-mcl_stairs.register_stair_and_slab_simple("acaciatree_bark", "mcl_core:acaciatree_bark", S("Acacia Bark Stairs"), S("Acacia Bark Slab"), S("Double Acacia Bark Slab"), "woodlike")
-mcl_stairs.register_stair_and_slab_simple("sprucetree_bark", "mcl_core:sprucetree_bark", S("Spruce Bark Stairs"), S("Spruce Bark Slab"), S("Double Spruce Bark Slab"), "woodlike")
-mcl_stairs.register_stair_and_slab_simple("birchtree_bark", "mcl_core:birchtree_bark", S("Birch Bark Stairs"), S("Birch Bark Slab"), S("Double Birch Bark Slab"), "woodlike")
-mcl_stairs.register_stair_and_slab_simple("jungletree_bark", "mcl_core:jungletree_bark", S("Jungle Bark Stairs"), S("Jungle Bark Slab"), S("Double Jungle Bark Slab"), "woodlike")
-mcl_stairs.register_stair_and_slab_simple("darktree_bark", "mcl_core:darktree_bark", S("Dark Oak Bark Stairs"), S("Dark Oak Bark Slab"), S("Double Dark Oak Bark Slab"), "woodlike")
+
+local barks = {
+	{ "", S("Oak Bark Stairs"), S("Oak Bark Slab"), S("Double Oak Bark Slab") },
+	{ "jungle", S("Jungle Bark Stairs"), S("Jungle Bark Slab"), S("Double Jungle Bark Slab") },
+	{ "acacia", S("Acacia Bark Stairs"), S("Acacia Bark Slab"), S("Double Acacia Bark Slab") },
+	{ "spruce", S("Spruce Bark Stairs"), S("Spruce Bark Slab"), S("Double Spruce Bark Slab") },
+	{ "birch", S("Birch Bark Stairs"), S("Birch Bark Slab"), S("Double Birch Bark Slab") },
+	{ "dark", S("Dark Oak Bark Stairs"), S("Dark Oak Bark Slab"), S("Double Dark Oak Bark Slab") },
+}
+
+for b=1, #barks do
+	local bark = barks[b]
+	local sub = bark[1].."tree_bark"
+	local id = "mcl_core:tree"
+	if bark[1] ~= "" then
+		id = "mcl_core:"..bark[1].."tree"
+	end
+	mcl_stairs.register_stair(sub, id,
+			{handy=1,axey=1, flammable=3, material_wood=1},
+			{minetest.registered_nodes[id].tiles[3]},
+			bark[2],
+			mcl_sounds.node_sound_wood_defaults(),
+			2,
+			"woodlike")
+	mcl_stairs.register_slab(sub, id,
+			{handy=1,axey=1, flammable=3, material_wood=1},
+			{minetest.registered_nodes[id].tiles[3]},
+			bark[3],
+			mcl_sounds.node_sound_wood_defaults(),
+			2,
+			bark[4])
+end
 
 mcl_stairs.register_slab("lapisblock", "mcl_core:lapisblock", {pickaxey=3}, {"mcl_core_lapis_block.png", "mcl_core_lapis_block.png", "mcl_stairs_lapis_block_slab.png"}, S("Lapis Lazuli Slab"), nil, nil, S("Double Lapis Lazuli Slab"))
 mcl_stairs.register_stair("lapisblock", "mcl_core:lapisblock", {pickaxey=3}, {"mcl_stairs_lapis_block_slab.png", "mcl_core_lapis_block.png", "mcl_core_lapis_block.png", "mcl_core_lapis_block.png", "mcl_core_lapis_block.png", "mcl_stairs_lapis_block_slab.png"}, S("Lapis Lazuli Stairs"), nil, nil, "woodlike")
