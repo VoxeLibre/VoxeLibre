@@ -1932,6 +1932,7 @@ end
 
 
 -- execute current state (stand, walk, run, attacks)
+-- returns true if mob has died
 local do_states = function(self, dtime)
 
 	local yaw = self.object:get_yaw() or 0
@@ -2236,7 +2237,7 @@ local do_states = function(self, dtime)
 						effect(pos, 32, "tnt_smoke.png", nil, nil, node_break_radius, 1, 0)
 					end
 
-					return
+					return true
 				end
 			end
 
@@ -3181,7 +3182,9 @@ local mob_step = function(self, dtime)
 
 	follow_flop(self)
 
-	do_states(self, dtime)
+	if do_states(self, dtime) then
+		return
+	end
 
 	do_jump(self)
 
