@@ -528,6 +528,12 @@ minetest.register_craft({
 
 minetest.register_craft({
 	type = "fuel",
+	recipe = "group:bark",
+	burntime = 15,
+})
+
+minetest.register_craft({
+	type = "fuel",
 	recipe = "mcl_core:ladder",
 	burntime = 15,
 })
