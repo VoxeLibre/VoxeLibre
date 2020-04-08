@@ -255,8 +255,8 @@ local horse = {
 				-- Put on armor and take armor from player's inventory
 				local armor = minetest.get_item_group(iname, "horse_armor")
 				self._horse_armor = iname
+				local w = clicker:get_wielded_item()
 				if not minetest.settings:get_bool("creative_mode") then
-					local w = clicker:get_wielded_item()
 					w:take_item()
 					clicker:set_wielded_item(w)
 				end
