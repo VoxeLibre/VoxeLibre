@@ -359,10 +359,12 @@ else -- Fire enabled
 				return false
 			end
 			local airs1 = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y+1, z=pos.z-1}, {x=pos.x+1, y=pos.y+1, z=pos.z+1}, {"air"})
-			local ok = try_ignite(airs1)
-			if not ok then
+			local h = math.random(1, 2)
+			if h == 2 and #airs1 > 0 then
 				local airs2 = minetest.find_nodes_in_area({x=pos.x-2, y=pos.y+2, z=pos.z-2}, {x=pos.x+2, y=pos.y+2, z=pos.z+2}, {"air"})
 				try_ignite(airs2)
+			else
+				try_ignite(airs1)
 			end
 		end,
 	})
