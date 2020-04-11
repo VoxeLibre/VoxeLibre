@@ -163,13 +163,33 @@ local check_object_hit = function(self, pos, dmg)
 					full_punch_interval = 1.0,
 					damage_groups = dmg,
 				}, nil)
-
-				self.object:remove()
 				return true
 			end
 		end
 	end
 	return false
+end
+
+local snowball_particles = function(pos, vel)
+	local vel = vector.normalize(vector.multiply(vel, -1))
+	minetest.add_particlespawner({
+		amount = 20,
+		time = 0.001,
+		minpos = pos,
+		maxpos = pos,
+		minvel = vector.add({x=-2, y=3, z=-2}, vel),
+		maxvel = vector.add({x=2, y=5, z=2}, vel),
+		minacc = {x=0, y=-9.81, z=0},
+		maxacc = {x=0, y=-9.81, z=0},
+		minexptime = 1,
+		maxexptime = 3,
+		minsize = 0.7,
+		maxsize = 0.7,
+		collisiondetection = true,
+		collision_removal = true,
+		object_collision = false,
+		texture = "weather_pack_snow_snowflake"..math.random(1,2)..".png",
+	})
 end
 
 -- Snowball on_step()--> called when snowball is moving.
@@ -183,6 +203,7 @@ local snowball_on_step = function(self, dtime)
 	if self._lastpos.x~=nil then
 		if (def and def.walkable) or not def then
 			minetest.sound_play("mcl_throwing_snowball_impact_hard", { pos = self.object:get_pos(), max_hear_distance=16, gain=0.7 }, true)
+			snowball_particles(self._lastpos, self.object:get_velocity())
 			self.object:remove()
 			return
 		end
@@ -190,6 +211,8 @@ local snowball_on_step = function(self, dtime)
 
 	if check_object_hit(self, pos, {snowball_vulnerable = 3}) then
 		minetest.sound_play("mcl_throwing_snowball_impact_soft", { pos = self.object:get_pos(), max_hear_distance=16, gain=0.7 }, true)
+		snowball_particles(pos, self.object:get_velocity())
+		self.object:remove()
 		return
 	end
 
@@ -252,6 +275,7 @@ local egg_on_step = function(self, dtime)
 	-- Destroy when hitting a mob or player (no chick spawning)
 	if check_object_hit(self, pos) then
 		minetest.sound_play("mcl_throwing_egg_impact", { pos = self.object:get_pos(), max_hear_distance=10, gain=0.5 }, true)
+		self.object:remove()
 		return
 	end
 
