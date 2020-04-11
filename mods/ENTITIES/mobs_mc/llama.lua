@@ -26,6 +26,7 @@ local carpets = {
 
 mobs:register_mob("mobs_mc:llama", {
 	type = "animal",
+	spawn_class = "passive",
 	hp_min = 15,
 	hp_max = 30,
 	passive = false,

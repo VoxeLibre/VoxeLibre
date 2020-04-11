@@ -4,6 +4,7 @@ local S = minetest.get_translator("mobs_mc")
 
 local cow_def = {
 	type = "animal",
+	spawn_class = "passive",
 	hp_min = 10,
 	hp_max = 10,
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.39, 0.45},

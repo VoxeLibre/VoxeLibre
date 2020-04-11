@@ -13,6 +13,7 @@ local pr = PseudoRandom(os.time()*666)
 
 mobs:register_mob("mobs_mc:evoker", {
 	type = "monster",
+	spawn_class = "hostile",
 	physical = true,
 	pathfinding = 1,
 	hp_min = 24,

@@ -8,6 +8,7 @@ local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:squid", {
     type = "animal",
+    spawn_class = "water",
     can_despawn = true,
     passive = true,
     hp_min = 10,

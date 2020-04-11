@@ -14,6 +14,7 @@ local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:witch", {
 	type = "monster",
+	spawn_class = "hostile",
 	hp_min = 26,
 	hp_max = 26,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},

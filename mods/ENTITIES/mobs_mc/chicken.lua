@@ -10,6 +10,7 @@ local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:chicken", {
 	type = "animal",
+	spawn_class = "passive",
 
 	hp_min = 4,
 	hp_max = 4,

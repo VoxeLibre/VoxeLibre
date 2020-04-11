@@ -908,6 +908,7 @@ end)
 
 mobs:register_mob("mobs_mc:villager", {
 	type = "npc",
+	spawn_class = "passive",
 	hp_min = 20,
 	hp_max = 20,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},

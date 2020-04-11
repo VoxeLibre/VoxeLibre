@@ -8,6 +8,7 @@ local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
 
 mobs:register_mob("mobs_mc:illusioner", {
 	type = "monster",
+	spawn_class = "hostile",
 	attack_type = "shoot",
 	shoot_interval = 2.5,
 	shoot_offset = 1.5,

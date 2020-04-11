@@ -4,6 +4,7 @@ local S = minetest.get_translator("mobs_mc")
 
 local rabbit = {
 	type = "animal",
+	spawn_class = "passive",
 	passive = true,
 	reach = 1,
 
@@ -74,6 +75,7 @@ mobs:register_mob("mobs_mc:rabbit", rabbit)
 -- The killer bunny (Only with spawn egg)
 local killer_bunny = table.copy(rabbit)
 killer_bunny.type = "monster"
+killer_bunny.spawn_class = "hostile"
 killer_bunny.attack_type = "dogfight"
 killer_bunny.specific_attack = { "player", "mobs_mc:wolf", "mobs_mc:dog" }
 killer_bunny.damage = 8

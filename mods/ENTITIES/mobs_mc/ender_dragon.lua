@@ -6,6 +6,7 @@ local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:enderdragon", {
 	type = "monster",
+	spawn_class = "hostile",
 	pathfinding = 1,
 	attacks_animals = true,
 	walk_chance = 100,

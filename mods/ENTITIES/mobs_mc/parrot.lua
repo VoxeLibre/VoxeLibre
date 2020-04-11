@@ -13,6 +13,7 @@ local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:parrot", {
 	type = "npc",
+	spawn_class = "passive",
 	pathfinding = 1,
 	hp_min = 6,
 	hp_max = 6,

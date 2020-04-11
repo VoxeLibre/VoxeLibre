@@ -22,6 +22,7 @@ local gotten_texture = {
 
 mobs:register_mob("mobs_mc:snowman", {
 	type = "npc",
+	spawn_class = "passive",
 	passive = true,
 	hp_min = 4,
 	hp_max = 4,

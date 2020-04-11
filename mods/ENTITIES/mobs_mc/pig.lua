@@ -4,6 +4,7 @@ local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:pig", {
 	type = "animal",
+	spawn_class = "passive",
 	runaway = true,
 	hp_min = 10,
 	hp_max = 10,

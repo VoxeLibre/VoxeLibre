@@ -40,6 +40,7 @@ table.insert(drops_zombie, {
 
 local zombie = {
 	type = "monster",
+	spawn_class = "hostile",
 	hp_min = 20,
 	hp_max = 20,
 	breath_max = -1,

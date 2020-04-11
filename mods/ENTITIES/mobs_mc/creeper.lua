@@ -11,6 +11,7 @@ local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:creeper", {
 	type = "monster",
+	spawn_class = "hostile",
 	hp_min = 20,
 	hp_max = 20,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.69, 0.3},

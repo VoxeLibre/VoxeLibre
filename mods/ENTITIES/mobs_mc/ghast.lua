@@ -12,6 +12,7 @@ local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:ghast", {
 	type = "monster",
+	spawn_class = "hostile",
 	pathfinding = 1,
 	group_attack = true,
 	hp_min = 10,

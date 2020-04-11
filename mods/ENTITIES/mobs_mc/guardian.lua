@@ -8,6 +8,7 @@ local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:guardian", {
 	type = "monster",
+	spawn_class = "hostile",
 	hp_min = 30,
 	hp_max = 30,
 	breath_max = -1,

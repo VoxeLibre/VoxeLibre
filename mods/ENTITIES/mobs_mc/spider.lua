@@ -14,6 +14,7 @@ local S = minetest.get_translator("mobs_mc")
 
 local spider = {
 	type = "monster",
+	spawn_class = "hostile",
 	passive = false,
 	docile_by_day = true,
 	attack_type = "dogfight",

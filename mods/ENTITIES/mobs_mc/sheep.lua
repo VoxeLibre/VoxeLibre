@@ -44,6 +44,7 @@ local gotten_texture = { "blank.png", "mobs_mc_sheep.png" }
 --mcsheep
 mobs:register_mob("mobs_mc:sheep", {
 	type = "animal",
+	spawn_class = "passive",
 	hp_min = 8,
 	hp_max = 8,
 

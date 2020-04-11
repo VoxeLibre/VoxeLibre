@@ -11,6 +11,7 @@ local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:witherskeleton", {
 	type = "monster",
+	spawn_class = "hostile",
 	hp_min = 20,
 	hp_max = 20,
 	breath_max = -1,

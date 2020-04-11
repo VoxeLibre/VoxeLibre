@@ -6,6 +6,7 @@ local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:silverfish", {
 	type = "monster",
+	spawn_class = "hostile",
 	passive = false,
 	group_attack = true,
 	reach = 1,

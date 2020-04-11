@@ -12,6 +12,7 @@ local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:blaze", {
 	type = "monster",
+	spawn_class = "hostile",
 	hp_min = 20,
 	hp_max = 20,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.79, 0.3},

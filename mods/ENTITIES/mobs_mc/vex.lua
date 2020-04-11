@@ -11,6 +11,7 @@ local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:vex", {
 	type = "monster",
+	spawn_class = "hostile",
 	pathfinding = 1,
 	passive = false,
 	attack_type = "dogfight",

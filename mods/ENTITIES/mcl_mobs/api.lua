@@ -7,6 +7,12 @@ mobs.version = "20180531" -- don't rely too much on this, rarely updated, if eve
 
 local MAX_MOB_NAME_LENGTH = 30
 
+local MOB_CAP = {}
+MOB_CAP.hostile = 70
+MOB_CAP.passive = 10
+MOB_CAP.ambient = 15
+MOB_CAP.water = 15
+
 -- Localize
 local S = minetest.get_translator("mcl_mobs")
 
@@ -3369,6 +3375,7 @@ minetest.register_entity(name, {
 	_cmi_is_mob = true,
 
 	-- MCL2 extensions
+	spawn_class = def.spawn_class,
 	ignores_nametag = def.ignores_nametag or false,
 	rain_damage = def.rain_damage or 0,
 	glow = def.glow,
@@ -3413,33 +3420,48 @@ end -- END mobs:register_mob function
 
 
 -- count how many mobs of one type are inside an area
-local count_mobs = function(pos, type)
+local count_mobs = function(pos, mobtype)
 
-	local num_type = 0
-	local num_total = 0
+	local num = 0
 	local objs = minetest.get_objects_inside_radius(pos, aoc_range)
 
 	for n = 1, #objs do
 
-		if not objs[n]:is_player() then
+		local obj = objs[n]:get_luaentity()
 
-			local obj = objs[n]:get_luaentity()
+		if obj and obj.name and obj._cmi_is_mob then
 
-			-- count mob type and add to total also
-			if obj and obj.name and obj.name == type then
-
-				num_type = num_type + 1
-				num_total = num_total + 1
-
-			-- add to total mobs
-			elseif obj and obj.name and obj.health ~= nil then
-
-				num_total = num_total + 1
+			-- count passive mobs only
+			if mobtype == "!passive" then
+				if obj.spawn_class == "passive" then
+					num = num + 1
+				end
+			-- count hostile mobs only
+			elseif mobtype == "!hostile" then
+				if obj.spawn_class == "hostile" then
+					num = num + 1
+				end
+			-- count ambient mobs only
+			elseif mobtype == "!ambient" then
+				if obj.spawn_class == "ambient" then
+					num = num + 1
+				end
+			-- count water mobs only
+			elseif mobtype == "!water" then
+				if obj.spawn_class == "water" then
+					num = num + 1
+				end
+			-- count mob type
+			elseif mobtype and obj.name == mobtype then
+				num = num + 1
+			-- count total mobs
+			elseif not mobtype then
+				num = num + 1
 			end
 		end
 	end
 
-	return num_type, num_total
+	return num
 end
 
 
@@ -3494,9 +3516,21 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 				return
 			end
 
+			-- count nearby mobs in same spawn class
+			local entdef = minetest.registered_entities[name]
+			local spawn_class = entdef and entdef.spawn_class
+			if not spawn_class then
+				if entdef.type == "monster" then
+					spawn_class = "hostile"
+				else
+					spawn_class = "passive"
+				end
+			end
+			local in_class_cap = count_mobs(pos, "!"..spawn_class) < MOB_CAP[spawn_class]
 			-- do not spawn if too many of same mob in area
-			if active_object_count_wider >= max_per_block
-			or count_mobs(pos, name) >= aoc then
+			if active_object_count_wider >= max_per_block -- large-range mob cap
+			or (not in_class_cap) -- spawn class mob cap
+			or count_mobs(pos, name) >= aoc then -- per-mob mob cap
 				-- too many entities
 				minetest.log("info", "Mob spawn of "..name.." at "..minetest.pos_to_string(pos).." failed, too crowded!")
 				return

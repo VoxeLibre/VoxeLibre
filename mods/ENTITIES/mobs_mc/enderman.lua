@@ -168,6 +168,7 @@ local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 mobs:register_mob("mobs_mc:enderman", {
 	-- TODO: Endermen should be classified as passive
 	type = "monster",
+	spawn_class = "passive",
 	passive = false,
 	pathfinding = 1,
 	hp_min = 40,

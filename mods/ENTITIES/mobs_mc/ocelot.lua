@@ -28,6 +28,7 @@ end
 -- Ocelot
 local ocelot = {
 	type = "animal",
+	spawn_class = "passive",
 	can_despawn = true,
 	hp_min = 10,
 	hp_max = 10,

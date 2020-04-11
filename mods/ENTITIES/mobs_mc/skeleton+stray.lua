@@ -14,6 +14,7 @@ local mod_bows = minetest.get_modpath("mcl_bows") ~= nil
 
 local skeleton = {
 	type = "monster",
+	spawn_class = "hostile",
 	hp_min = 20,
 	hp_max = 20,
 	breath_max = -1,

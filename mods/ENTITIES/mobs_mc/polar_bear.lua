@@ -9,6 +9,7 @@ local S = minetest.get_translator("mobs_mc")
 
 mobs:register_mob("mobs_mc:polar_bear", {
 	type = "animal",
+	spawn_class = "passive",
 	runaway = false,
 	passive = false,
 	hp_min = 30,

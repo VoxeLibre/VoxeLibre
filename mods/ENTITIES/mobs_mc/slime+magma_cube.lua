@@ -57,6 +57,7 @@ end
 -- Slime
 local slime_big = {
 	type = "monster",
+	spawn_class = "hostile",
 	pathfinding = 1,
 	group_attack = { "mobs_mc:slime_big", "mobs_mc:slime_small", "mobs_mc:slime_tiny" },
 	hp_min = 16,
@@ -156,6 +157,7 @@ mobs:spawn_specific("mobs_mc:slime_big", mobs_mc.spawn.solid, {"air"}, 0, minete
 -- Magma cube
 local magma_cube_big = {
 	type = "monster",
+	spawn_class = "hostile",
 	hp_min = 16,
 	hp_max = 16,
 	collisionbox = {-1.02, -0.01, -1.02, 1.02, 2.03, 1.02},

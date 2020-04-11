@@ -20,6 +20,7 @@ end
 -- Wolf
 local wolf = {
 	type = "animal",
+	spawn_class = "passive",
 	can_despawn = true,
 	hp_min = 8,
 	hp_max = 8,

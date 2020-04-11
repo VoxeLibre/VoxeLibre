@@ -84,6 +84,7 @@ end
 -- Horse
 local horse = {
 	type = "animal",
+	spawn_class = "passive",
 	visual = "mesh",
 	mesh = "mobs_mc_horse.b3d",
 	visual_size = {x=3.0, y=3.0},
