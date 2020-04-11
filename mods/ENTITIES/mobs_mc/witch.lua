@@ -103,7 +103,3 @@ mobs:register_arrow("mobs_mc:potion_arrow", {
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:witch", S("Witch"), "mobs_mc_spawn_icon_witch.png", 0, true)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC mobs loaded")
-end

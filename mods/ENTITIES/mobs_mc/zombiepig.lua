@@ -111,7 +111,3 @@ mobs:spawn_specific("mobs_mc:pigman", mobs_mc.spawn.nether_portal, {"air"}, 0, m
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:pigman", S("Zombie Pigman"), "mobs_mc_spawn_icon_zombie_pigman.png", 0)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Pigmen loaded")
-end

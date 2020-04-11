@@ -173,7 +173,3 @@ mobs_mc.tools.check_iron_golem_summon = function(pos)
 		end
 	end
 end
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Iron Golem loaded")
-end

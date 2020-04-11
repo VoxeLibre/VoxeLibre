@@ -399,7 +399,3 @@ if c("snowball") then
 end
 
 --end maikerumine code
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC mobs loaded")
-end

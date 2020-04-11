@@ -142,7 +142,3 @@ mobs:spawn_specific("mobs_mc:mooshroom", mobs_mc.spawn.mushroom_island, {"air"},
 -- spawn egg
 mobs:register_egg("mobs_mc:cow", S("Cow"), "mobs_mc_spawn_icon_cow.png", 0)
 mobs:register_egg("mobs_mc:mooshroom", S("Mooshroom"), "mobs_mc_spawn_icon_mooshroom.png", 0)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Cow loaded")
-end

@@ -2,10 +2,6 @@ local S = minetest.get_translator("mcl_flowers")
 
 local mod_screwdriver = minetest.get_modpath("screwdriver") ~= nil
 
--- Minetest 0.4 mod: default
--- See README.txt for licensing and other information.
-local init = os.clock()
-
 -- Simple flower template
 local smallflowerlongdesc = S("This is a small flower. Small flowers are mainly used for dye production and can also be potted.")
 local plant_usage_help = S("It can only be placed on a block on which it would also survive.")
@@ -439,7 +435,3 @@ minetest.register_node("mcl_flowers:waterlily", {
 
 -- Legacy support
 minetest.register_alias("mcl_core:tallgrass", "mcl_flowers:tallgrass")
-
--- Show loading time
-local time_to_load= os.clock() - init
-print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))

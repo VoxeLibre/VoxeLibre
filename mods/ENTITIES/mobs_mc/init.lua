@@ -98,7 +98,3 @@ COLISIONBOX in minetest press f5 to see where you are looking at then put these 
 --]]
 --
 --
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "[MOD] mobs_mc loaded")
-end

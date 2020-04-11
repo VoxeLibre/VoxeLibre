@@ -83,7 +83,3 @@ mobs:spawn_specific("mobs_mc:villager_zombie", mobs_mc.spawn.village, {"air"}, 0
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:villager_zombie", S("Zombie Villager"), "mobs_mc_spawn_icon_zombie_villager.png", 0)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC mobs Zombie Villager loaded")
-end

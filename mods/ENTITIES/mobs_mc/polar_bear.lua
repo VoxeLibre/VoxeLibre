@@ -60,8 +60,3 @@ mobs:spawn_specific("mobs_mc:polar_bear", mobs_mc.spawn.snow, {"air"}, 0, minete
 
 -- spawn egg
 mobs:register_egg("mobs_mc:polar_bear", S("Polar Bear"), "mobs_mc_spawn_icon_polarbear.png", 0)
-
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Polar Bear loaded")
-end

@@ -86,7 +86,3 @@ mobs:register_mob("mobs_mc:parrot", {
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:parrot", S("Parrot"), "mobs_mc_spawn_icon_parrot.png", 0, true)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Parrot loaded")
-end

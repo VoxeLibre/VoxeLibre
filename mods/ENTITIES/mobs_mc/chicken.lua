@@ -97,7 +97,3 @@ mobs:spawn_specific("mobs_mc:chicken", mobs_mc.spawn.grassland, {"air"}, 9, mine
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:chicken", S("Chicken"), "mobs_mc_spawn_icon_chicken.png", 0)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC chicken loaded")
-end

@@ -337,9 +337,3 @@ mobs:spawn_specific("mobs_mc:enderman", mobs_mc.spawn.solid, {"air"}, 0, 7, 30, 
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:enderman", S("Enderman"), "mobs_mc_spawn_icon_enderman.png", 0)
-
-if minetest.settings:get_bool("log_mods") then
-
-	minetest.log("action", "MC Enderman loaded")
-end
-

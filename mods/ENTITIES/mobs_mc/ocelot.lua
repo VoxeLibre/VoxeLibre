@@ -205,7 +205,3 @@ mobs:spawn({
 -- spawn eggs
 -- FIXME: The spawn icon shows a cat texture, not an ocelot texture
 mobs:register_egg("mobs_mc:ocelot", S("Ocelot"), "mobs_mc_spawn_icon_cat.png", 0)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Ocelot loaded")
-end

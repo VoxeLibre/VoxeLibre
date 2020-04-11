@@ -701,7 +701,3 @@ minetest.register_entity(":__builtin:item", {
 
 	-- Note: on_punch intentionally left out. The player should *not* be able to collect items by punching
 })
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "mcl_item_entity loaded")
-end

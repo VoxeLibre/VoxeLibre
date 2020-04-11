@@ -125,12 +125,3 @@ mobs:register_arrow("mobs_mc:blaze_fireball", {
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:blaze", S("Blaze"), "mobs_mc_spawn_icon_blaze.png", 0)
-
-
-
-
-
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Blaze loaded")
-end

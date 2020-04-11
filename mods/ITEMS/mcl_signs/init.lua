@@ -569,7 +569,3 @@ minetest.register_lbm({
 		update_sign(pos)
 	end,
 })
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "[mcl_signs] loaded")
-end

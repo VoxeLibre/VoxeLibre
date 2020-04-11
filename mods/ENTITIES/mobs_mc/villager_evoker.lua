@@ -81,8 +81,3 @@ mobs:register_mob("mobs_mc:evoker", {
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:evoker", S("Evoker"), "mobs_mc_spawn_icon_evoker.png", 0)
-
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Evoker loaded")
-end

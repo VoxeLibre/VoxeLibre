@@ -59,7 +59,3 @@ mobs:register_mob("mobs_mc:illusioner", {
 })
 
 mobs:register_egg("mobs_mc:illusioner", S("Illusioner"), "mobs_mc_spawn_icon_illusioner.png", 0)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Illusioner loaded")
-end

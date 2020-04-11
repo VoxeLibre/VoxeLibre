@@ -1,4 +1,3 @@
-local init = os.clock()
 local S = minetest.get_translator("mcl_structures")
 mcl_structures ={}
 
@@ -530,6 +529,3 @@ minetest.register_chatcommand("spawnstruct", {
 		end
 	end
 })
-
-local time_to_load= os.clock() - init
-minetest.log("action", (string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load)))

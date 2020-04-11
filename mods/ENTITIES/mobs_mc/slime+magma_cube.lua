@@ -270,8 +270,3 @@ mobs:spawn_specific("mobs_mc:magma_cube_big", mobs_mc.spawn.nether_fortress, {"a
 -- spawn eggs
 mobs:register_egg("mobs_mc:magma_cube_big", S("Magma Cube"), "mobs_mc_spawn_icon_magmacube.png")
 mobs:register_egg("mobs_mc:slime_big", S("Slime"), "mobs_mc_spawn_icon_slime.png")
-
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Slimes loaded")
-end

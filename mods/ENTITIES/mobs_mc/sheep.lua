@@ -263,7 +263,3 @@ mobs:spawn_specific("mobs_mc:sheep", mobs_mc.spawn.grassland, {"air"}, 0, minete
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:sheep", S("Sheep"), "mobs_mc_spawn_icon_sheep.png", 0)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Sheep loaded")
-end

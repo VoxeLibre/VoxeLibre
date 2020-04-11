@@ -117,8 +117,5 @@ function mesecon.receptor_off(pos, rules)
 	mesecon.queue:add_action(pos, "receptor_off", {rules}, nil, rules)
 end
 
-
-print("[OK] Mesecons")
-
 --Services like turnoff receptor on dignode and so on
 dofile(minetest.get_modpath("mesecons").."/services.lua");

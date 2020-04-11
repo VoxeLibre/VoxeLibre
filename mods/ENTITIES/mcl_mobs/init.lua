@@ -9,5 +9,3 @@ dofile(path .. "/mount.lua")
 
 -- Mob Items
 dofile(path .. "/crafts.lua")
-
-minetest.log("action", "[MOD] Mobs Redo: MineClone 2 Edition loaded")

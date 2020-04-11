@@ -107,7 +107,3 @@ mobs:register_arrow("mobs_mc:fireball", {
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:ghast", S("Ghast"), "mobs_mc_spawn_icon_ghast.png", 0)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Ghast loaded")
-end

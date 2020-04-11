@@ -213,7 +213,3 @@ mobs:spawn_specific("mobs_mc:llama", mobs_mc.spawn.savanna, {"air"}, 0, minetest
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:llama", S("Llama"), "mobs_mc_spawn_icon_llama.png", 0)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Llama loaded")
-end

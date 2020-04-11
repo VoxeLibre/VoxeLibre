@@ -164,7 +164,3 @@ end
 
 -- Spawn egg
 mobs:register_egg("mobs_mc:snowman", S("Snow Golem"), "mobs_mc_spawn_icon_snowman.png", 0)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Snow Golem loaded")
-end

@@ -81,7 +81,3 @@ mobs:spawn_specific("mobs_mc:spider", mobs_mc.spawn.solid, {"air"}, 0, 7, 30, 17
 -- spawn eggs
 mobs:register_egg("mobs_mc:spider", S("Spider"), "mobs_mc_spawn_icon_spider.png", 0)
 mobs:register_egg("mobs_mc:cave_spider", S("Cave Spider"), "mobs_mc_spawn_icon_cave_spider.png", 0)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Spiders loaded")
-end

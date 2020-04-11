@@ -37,7 +37,3 @@ mobs:register_mob("mobs_mc:agent", {
 })
 
 mobs:register_egg("mobs_mc:agent", S("Agent"), "mobs_mc_spawn_icon_agent.png", 0)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Agent loaded")
-end

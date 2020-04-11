@@ -128,7 +128,3 @@ mobs:spawn_specific("mobs_mc:baby_husk", mobs_mc.spawn.desert, {"air"}, 0, 7, 30
 -- Spawn eggs
 mobs:register_egg("mobs_mc:husk", S("Husk"), "mobs_mc_spawn_icon_husk.png", 0)
 mobs:register_egg("mobs_mc:zombie", S("Zombie"), "mobs_mc_spawn_icon_zombie.png", 0)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Zombie loaded")
-end

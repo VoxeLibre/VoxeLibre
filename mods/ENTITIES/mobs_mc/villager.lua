@@ -1050,7 +1050,3 @@ mobs:spawn_specific("mobs_mc:villager", mobs_mc.spawn.village, {"air"}, 0, minet
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:villager", S("Villager"), "mobs_mc_spawn_icon_villager.png", 0)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC mobs loaded")
-end

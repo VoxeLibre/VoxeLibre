@@ -135,7 +135,3 @@ mobs:spawn_specific("mobs_mc:stray", mobs_mc.spawn.snow, {"air"}, 0, 7, 20, 1900
 -- spawn eggs
 mobs:register_egg("mobs_mc:skeleton", S("Skeleton"), "mobs_mc_spawn_icon_skeleton.png", 0)
 mobs:register_egg("mobs_mc:stray", S("Stray"), "mobs_mc_spawn_icon_stray.png", 0)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Skeleton loaded")
-end

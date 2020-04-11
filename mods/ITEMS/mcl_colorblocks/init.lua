@@ -1,4 +1,3 @@
-local init = os.clock()
 local S = minetest.get_translator("mcl_colorblocks")
 local doc_mod = minetest.get_modpath("doc")
 
@@ -217,6 +216,3 @@ minetest.register_abm({
 		end
 	end,
 })
-
-local time_to_load= os.clock() - init
-print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))

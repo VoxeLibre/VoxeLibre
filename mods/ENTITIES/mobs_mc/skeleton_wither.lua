@@ -90,7 +90,3 @@ mobs:spawn_specific("mobs_mc:witherskeleton", mobs_mc.spawn.nether_fortress, {"a
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:witherskeleton", S("Wither Skeleton"), "mobs_mc_spawn_icon_witherskeleton.png", 0)
-
-if minetest.settings:get_bool("log_mods") then
-	minetest.log("action", "MC Wither Skeleton loaded")
-end

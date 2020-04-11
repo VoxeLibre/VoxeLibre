@@ -1,4 +1,3 @@
-local init = os.clock()
 mcl_farming = {}
 
 -- IMPORTANT API AND HELPER FUNCTIONS --
@@ -28,6 +27,3 @@ dofile(minetest.get_modpath("mcl_farming").."/potatoes.lua")
 
 -- ========= BEETROOT =========
 dofile(minetest.get_modpath("mcl_farming").."/beetroot.lua")
-
-local time_to_load= os.clock() - init
-print(string.format("[MOD] "..minetest.get_current_modname().." loaded in %.4f s", time_to_load))
