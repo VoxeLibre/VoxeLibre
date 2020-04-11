@@ -13,13 +13,14 @@ mcl_weather.snow.add_snow_particles = function(player)
       mcl_weather.rain.last_rp_count = mcl_weather.rain.last_rp_count + 1
       minetest.add_particle({
         pos = {x=random_pos_x, y=random_pos_y, z=random_pos_z},
-        velocity = {x = math.random(-1,-0.5), y = math.random(-2,-1), z = math.random(-1,-0.5)},
-        acceleration = {x = math.random(-1,-0.5), y=-0.5, z = math.random(-1,-0.5)},
-        expirationtime = 3.0,
-        size = math.random(0.5, 2),
+        velocity = {x = math.random(-100,100)*0.001, y = math.random(-300,-100)*0.004, z = math.random(-100,100)*0.001},
+        acceleration = {x = 0, y=0, z = 0},
+        expirationtime = 8.0,
+        size = 1,
         collisiondetection = true,
         collision_removal = true,
-        vertical = true,
+        object_collision = false,
+        vertical = false,
         texture = mcl_weather.snow.get_texture(),
         playername = player:get_player_name()
       })
@@ -49,14 +50,7 @@ end
 
 -- Simple random texture getter
 mcl_weather.snow.get_texture = function()
-  local texture_name
-  local random_number = math.random()
-  if random_number > 0.5 then
-    texture_name = "weather_pack_snow_snowflake1.png"
-  else
-    texture_name = "weather_pack_snow_snowflake2.png"
-  end
-  return texture_name;
+  return "weather_pack_snow_snowflake"..math.random(1,2)..".png"
 end
 
 local timer = 0
