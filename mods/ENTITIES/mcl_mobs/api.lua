@@ -758,6 +758,7 @@ local do_env_damage = function(self)
 	end
 
 
+	-- Deal light damage to mob, returns true if mob died
 	local deal_light_damage = function(self, pos, damage)
 		if not (mod_weather and (mcl_weather.rain.raining or mcl_weather.state == "snow") and mcl_weather.is_outdoor(pos)) then
 			self.health = self.health - damage
@@ -772,14 +773,18 @@ local do_env_damage = function(self)
 
 	-- bright light harms mob
 	if self.light_damage ~= 0 and (minetest.get_node_light(pos) or 0) > 12 then
-		deal_light_damage(self, pos, self.light_damage)
+		if deal_light_damage(self, pos, self.light_damage) then
+			return true
+		end
 	end
 	local _, dim = nil, "overworld"
 	if mod_worlds then
 		_, dim = mcl_worlds.y_to_layer(pos.y)
 	end
 	if self.sunlight_damage ~= 0 and (minetest.get_node_light(pos) or 0) >= minetest.LIGHT_MAX and dim == "overworld" then
-		deal_light_damage(self, pos, self.sunlight_damage)
+		if deal_light_damage(self, pos, self.sunlight_damage) then
+			return true
+		end
 	end
 
 	local y_level = self.collisionbox[2]
@@ -2492,6 +2497,7 @@ end
 
 
 -- falling and fall damage
+-- returns true if mob died
 local falling = function(self, pos)
 
 	if self.fly then
@@ -2556,7 +2562,7 @@ local falling = function(self, pos)
 					effect(pos, 5, "tnt_smoke.png", 1, 2, 2, nil)
 
 					if check_for_death(self, "fall", {type = "fall"}) then
-						return
+						return true
 					end
 				end
 			end
@@ -3082,7 +3088,10 @@ local mob_step = function(self, dtime)
 	if self.opinion_sound_cooloff > 0 then
 		self.opinion_sound_cooloff = self.opinion_sound_cooloff - dtime
 	end
-	falling(self, pos)
+	if falling(self, pos) then
+		-- Return if mob died after falling
+		return
+	end
 
 	-- smooth rotation by ThomasMonroe314
 
