@@ -20,7 +20,7 @@ minetest.register_node("mcl_core:stone", {
 	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1},
 	drop = 'mcl_core:cobble',
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
 
@@ -34,7 +34,7 @@ minetest.register_node("mcl_core:stone_with_coal", {
 	groups = {pickaxey=1, building_block=1, material_stone=1},
 	drop = 'mcl_core:coal_lump',
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 15,
+	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 })
 
@@ -47,7 +47,7 @@ minetest.register_node("mcl_core:stone_with_iron", {
 	groups = {pickaxey=3, building_block=1, material_stone=1},
 	drop = 'mcl_core:stone_with_iron',
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 15,
+	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 })
 
@@ -61,7 +61,7 @@ minetest.register_node("mcl_core:stone_with_gold", {
 	groups = {pickaxey=4, building_block=1, material_stone=1},
 	drop = "mcl_core:stone_with_gold",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 15,
+	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 })
 
@@ -93,7 +93,7 @@ minetest.register_node("mcl_core:stone_with_redstone", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_punch = redstone_ore_activate,
 	on_walk_over = redstone_ore_activate, -- Uses walkover mod
-	_mcl_blast_resistance = 15,
+	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 })
 
@@ -131,7 +131,7 @@ minetest.register_node("mcl_core:stone_with_redstone_lit", {
 	on_timer = function(pos, elapsed)
 		minetest.swap_node(pos, {name="mcl_core:stone_with_redstone"})
 	end,
-	_mcl_blast_resistance = 15,
+	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 })
 
@@ -153,7 +153,7 @@ minetest.register_node("mcl_core:stone_with_lapis", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 15,
+	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 })
 
@@ -166,7 +166,7 @@ minetest.register_node("mcl_core:stone_with_emerald", {
 	groups = {pickaxey=4, building_block=1, material_stone=1},
 	drop = "mcl_core:emerald",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 15,
+	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 })
 
@@ -179,7 +179,7 @@ minetest.register_node("mcl_core:stone_with_diamond", {
 	groups = {pickaxey=4, building_block=1, material_stone=1},
 	drop = "mcl_core:diamond",
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 15,
+	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 })
 
@@ -191,7 +191,7 @@ minetest.register_node("mcl_core:stonebrick", {
 	groups = {pickaxey=1, stone=1, stonebrick=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
 
@@ -203,7 +203,7 @@ minetest.register_node("mcl_core:stonebrickcarved", {
 	groups = {pickaxey=1, stone=1, stonebrick=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
 
@@ -215,7 +215,7 @@ minetest.register_node("mcl_core:stonebrickcracked", {
 	groups = {pickaxey=1, stone=1, stonebrick=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
 
@@ -227,7 +227,7 @@ minetest.register_node("mcl_core:stonebrickmossy", {
 	groups = {pickaxey=1, stone=1, stonebrick=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
 
@@ -239,7 +239,7 @@ minetest.register_node("mcl_core:stone_smooth", {
 	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	is_ground_content = false,
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
 
@@ -251,7 +251,7 @@ minetest.register_node("mcl_core:granite", {
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
 
@@ -263,7 +263,7 @@ minetest.register_node("mcl_core:granite_smooth", {
 	is_ground_content = false,
 	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
 
@@ -275,7 +275,7 @@ minetest.register_node("mcl_core:andesite", {
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
 
@@ -299,7 +299,7 @@ minetest.register_node("mcl_core:diorite", {
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
 
@@ -311,7 +311,7 @@ minetest.register_node("mcl_core:diorite_smooth", {
 	stack_max = 64,
 	groups = {pickaxey=1, stone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
 
@@ -344,7 +344,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 		return mcl_core.on_snowable_construct(pos)
 	end,
 	_mcl_snowed = "mcl_core:dirt_with_grass_snow",
-	_mcl_blast_resistance = 3,
+	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.6,
 })
 mcl_core.register_snowed_node("mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", nil, nil, true)
@@ -368,7 +368,7 @@ minetest.register_node("mcl_core:grass_path", {
 	sounds = mcl_sounds.node_sound_dirt_defaults({
 		footstep = {name="default_grass_footstep", gain=0.4},
 	}),
-	_mcl_blast_resistance = 3.25,
+	_mcl_blast_resistance = 0.65,
 	_mcl_hardness = 0.6,
 })
 
@@ -387,7 +387,7 @@ minetest.register_node("mcl_core:mycelium", {
 
 	on_construct = mcl_core.on_snowable_construct,
 	_mcl_snowed = "mcl_core:mycelium_snow",
-	_mcl_blast_resistance = 2.5,
+	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.6,
 })
 mcl_core.register_snowed_node("mcl_core:mycelium_snow", "mcl_core:mycelium")
@@ -403,7 +403,7 @@ minetest.register_node("mcl_core:podzol", {
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	on_construct = mcl_core.on_snowable_construct,
 	_mcl_snowed = "mcl_core:podzol_snow",
-	_mcl_blast_resistance = 2.5,
+	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.6,
 })
 mcl_core.register_snowed_node("mcl_core:podzol_snow", "mcl_core:podzol")
@@ -417,7 +417,7 @@ minetest.register_node("mcl_core:dirt", {
 	stack_max = 64,
 	groups = {handy=1,shovely=1, dirt=1,soil=1, soil_sapling=2, soil_sugarcane=1, cultivatable=2, enderman_takable=1, building_block=1},
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
-	_mcl_blast_resistance = 3,
+	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 })
 
@@ -429,7 +429,7 @@ minetest.register_node("mcl_core:coarse_dirt", {
 	stack_max = 64,
 	groups = {handy=1,shovely=1, dirt=3,soil=1, soil_sugarcane=1, cultivatable=1, enderman_takable=1, building_block=1},
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
-	_mcl_blast_resistance = 3,
+	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 })
 
@@ -450,7 +450,7 @@ minetest.register_node("mcl_core:gravel", {
 	sounds = mcl_sounds.node_sound_dirt_defaults({
 		footstep = {name="default_gravel_footstep", gain=0.45},
 	}),
-	_mcl_blast_resistance = 3,
+	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
 })
 
@@ -464,7 +464,7 @@ minetest.register_node("mcl_core:sand", {
 	stack_max = 64,
 	groups = {handy=1,shovely=1, falling_node=1, sand=1, soil_sugarcane=1, enderman_takable=1, building_block=1, material_sand=1},
 	sounds = mcl_sounds.node_sound_sand_defaults(),
-	_mcl_blast_resistance = 2.5,
+	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 })
 
@@ -477,7 +477,7 @@ minetest.register_node("mcl_core:sandstone", {
 	stack_max = 64,
 	groups = {pickaxey=1, sandstone=1, normal_sandstone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 4,
+	_mcl_blast_resistance = 0.8,
 	_mcl_hardness = 0.8,
 })
 
@@ -489,7 +489,7 @@ minetest.register_node("mcl_core:sandstonesmooth", {
 	stack_max = 64,
 	groups = {pickaxey=1, sandstone=1, normal_sandstone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 4,
+	_mcl_blast_resistance = 0.8,
 	_mcl_hardness = 0.8,
 })
 
@@ -501,7 +501,7 @@ minetest.register_node("mcl_core:sandstonecarved", {
 	stack_max = 64,
 	groups = {pickaxey=1, sandstone=1, normal_sandstone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 4,
+	_mcl_blast_resistance = 0.8,
 	_mcl_hardness = 0.8,
 })
 
@@ -514,7 +514,7 @@ minetest.register_node("mcl_core:sandstonesmooth2", {
 	stack_max = 64,
 	groups = {pickaxey=1, sandstone=1, normal_sandstone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 4,
+	_mcl_blast_resistance = 0.8,
 	_mcl_hardness = 0.8,
 })
 
@@ -528,7 +528,7 @@ minetest.register_node("mcl_core:redsand", {
 	stack_max = 64,
 	groups = {handy=1,shovely=1, falling_node=1, sand=1, soil_sugarcane=1, enderman_takable=1, building_block=1, material_sand=1},
 	sounds = mcl_sounds.node_sound_sand_defaults(),
-	_mcl_blast_resistance = 2.5,
+	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 })
 
@@ -540,7 +540,7 @@ minetest.register_node("mcl_core:redsandstone", {
 	stack_max = 64,
 	groups = {pickaxey=1, sandstone=1, red_sandstone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 4,
+	_mcl_blast_resistance = 0.8,
 	_mcl_hardness = 0.8,
 })
 
@@ -552,7 +552,7 @@ minetest.register_node("mcl_core:redsandstonesmooth", {
 	stack_max = 64,
 	groups = {pickaxey=1, sandstone=1, red_sandstone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 4,
+	_mcl_blast_resistance = 0.8,
 	_mcl_hardness = 0.8,
 })
 
@@ -564,7 +564,7 @@ minetest.register_node("mcl_core:redsandstonecarved", {
 	stack_max = 64,
 	groups = {pickaxey=1, sandstone=1, red_sandstone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 4,
+	_mcl_blast_resistance = 0.8,
 	_mcl_hardness = 0.8,
 })
 
@@ -576,7 +576,7 @@ minetest.register_node("mcl_core:redsandstonesmooth2", {
 	stack_max = 64,
 	groups = {pickaxey=1, sandstone=1, red_sandstone=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 4,
+	_mcl_blast_resistance = 0.8,
 	_mcl_hardness = 0.8,
 })
 
@@ -592,7 +592,7 @@ minetest.register_node("mcl_core:clay", {
 	groups = {handy=1,shovely=1, enderman_takable=1, building_block=1},
 	drop = 'mcl_core:clay_lump 4',
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
-	_mcl_blast_resistance = 3,
+	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
 })
 
@@ -605,7 +605,7 @@ minetest.register_node("mcl_core:brick_block", {
 	stack_max = 64,
 	groups = {pickaxey=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 2,
 })
 
@@ -621,7 +621,7 @@ minetest.register_node("mcl_core:bedrock", {
 	is_ground_content = false,
 	on_blast = function() end,
 	drop = '',
-	_mcl_blast_resistance = 18000000,
+	_mcl_blast_resistance = 3600000,
 	_mcl_hardness = -1,
 
 	-- Eternal fire on top of bedrock, if in the End dimension
@@ -658,7 +658,7 @@ minetest.register_node("mcl_core:cobble", {
 	stack_max = 64,
 	groups = {pickaxey=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 2,
 })
 
@@ -670,7 +670,7 @@ minetest.register_node("mcl_core:mossycobble", {
 	stack_max = 64,
 	groups = {pickaxey=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 2,
 })
 
@@ -682,7 +682,7 @@ minetest.register_node("mcl_core:coalblock", {
 	stack_max = 64,
 	groups = {pickaxey=1, flammable=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 })
 
@@ -694,7 +694,7 @@ minetest.register_node("mcl_core:ironblock", {
 	stack_max = 64,
 	groups = {pickaxey=2, building_block=1},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 })
 
@@ -706,7 +706,7 @@ minetest.register_node("mcl_core:goldblock", {
 	stack_max = 64,
 	groups = {pickaxey=4, building_block=1},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 })
 
@@ -718,7 +718,7 @@ minetest.register_node("mcl_core:diamondblock", {
 	stack_max = 64,
 	groups = {pickaxey=4, building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 })
 
@@ -730,7 +730,7 @@ minetest.register_node("mcl_core:lapisblock", {
 	stack_max = 64,
 	groups = {pickaxey=3, building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 15,
+	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 })
 
@@ -742,7 +742,7 @@ minetest.register_node("mcl_core:emeraldblock", {
 	stack_max = 64,
 	groups = {pickaxey=4, building_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 })
 
@@ -754,7 +754,7 @@ minetest.register_node("mcl_core:obsidian", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	stack_max = 64,
 	groups = {pickaxey=5, building_block=1, material_stone=1},
-	_mcl_blast_resistance = 6000,
+	_mcl_blast_resistance = 1200,
 	_mcl_hardness = 50,
 })
 
@@ -774,7 +774,7 @@ minetest.register_node("mcl_core:ice", {
 	after_dig_node = function(pos, oldnode)
 		mcl_core.melt_ice(pos)
 	end,
-	_mcl_blast_resistance = 2.5,
+	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 })
 
@@ -787,7 +787,7 @@ minetest.register_node("mcl_core:packed_ice", {
 	groups = {handy=1,pickaxey=1, slippery=3, building_block=1},
 	drop = "",
 	sounds = mcl_sounds.node_sound_glass_defaults(),
-	_mcl_blast_resistance = 2.5,
+	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 })
 
@@ -851,7 +851,7 @@ for i=0,3 do
 			local timer = minetest.get_node_timer(pos)
 			timer:start(1.5)
 		end,
-		_mcl_blast_resistance = 2.5,
+		_mcl_blast_resistance = 0.5,
 		_mcl_hardness = 0.5,
 	})
 
@@ -970,7 +970,7 @@ for i=1,8 do
 		on_place = on_place,
 		after_destruct = mcl_core.after_snow_destruct,
 		drop = "mcl_throwing:snowball "..(i+1),
-		_mcl_blast_resistance = 0.5,
+		_mcl_blast_resistance = 0.1,
 		_mcl_hardness = 0.1,
 	})
 end
@@ -987,7 +987,7 @@ minetest.register_node("mcl_core:snowblock", {
 	on_construct = mcl_core.on_snow_construct,
 	after_destruct = mcl_core.after_snow_destruct,
 	drop = "mcl_throwing:snowball 4",
-	_mcl_blast_resistance = 1,
+	_mcl_blast_resistance = 0.2,
 	_mcl_hardness = 0.2,
 })
 

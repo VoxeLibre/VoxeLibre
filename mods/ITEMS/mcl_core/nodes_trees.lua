@@ -20,7 +20,7 @@ local register_tree_trunk = function(subname, description_trunk, description_bar
 		groups = {handy=1,axey=1, tree=1, flammable=2, building_block=1, material_wood=1},
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		on_rotate = on_rotate,
-		_mcl_blast_resistance = 10,
+		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
 	})
 
@@ -35,7 +35,7 @@ local register_tree_trunk = function(subname, description_trunk, description_bar
 		sounds = mcl_sounds.node_sound_wood_defaults(),
 		is_ground_content = false,
 		on_rotate = on_rotate,
-		_mcl_blast_resistance = 10,
+		_mcl_blast_resistance = 2,
 		_mcl_hardness = 2,
 	})
 
@@ -58,7 +58,7 @@ local register_wooden_planks = function(subname, description, tiles)
 		is_ground_content = false,
 		groups = {handy=1,axey=1, flammable=3,wood=1,building_block=1, material_wood=1},
 		sounds = mcl_sounds.node_sound_wood_defaults(),
-		_mcl_blast_resistance = 15,
+		_mcl_blast_resistance = 3,
 		_mcl_hardness = 2,
 	})
 end
@@ -108,7 +108,7 @@ local register_leaves = function(subname, description, longdesc, tiles, drop1, d
 		drop = drop,
 		_mcl_shears_drop = true,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
-		_mcl_blast_resistance = 1,
+		_mcl_blast_resistance = 0.2,
 		_mcl_hardness = 0.2,
 	})
 end
