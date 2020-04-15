@@ -133,6 +133,29 @@ local function compute_sphere_rays(radius)
   return rays
 end
 
+-- Add particles from explosion
+--
+-- Parameters:
+--   pos - The position of the explosion
+--   radius - The radius of the explosion
+local function add_particles(pos, radius)
+	minetest.add_particlespawner({
+		amount = 64,
+		time = 0.125,
+		minpos = pos,
+		maxpos = pos,
+		minvel = {x = -radius, y = -radius, z = -radius},
+		maxvel = {x = radius, y = radius, z = radius},
+		minacc = vector.new(),
+		maxacc = vector.new(),
+		minexptime = 0.5,
+		maxexptime = 1.0,
+		minsize = radius * 0.5,
+		maxsize = radius * 1.0,
+		texture = "tnt_smoke.png",
+	})
+end
+
 -- Get position from hash.  This should be identical to
 -- 'minetest.get_position_from_hash' but is used in case the hashing function
 -- would change.
@@ -153,8 +176,7 @@ end
 --   strength - The strength of each ray
 --   raydirs - The directions for each ray
 --   radius - The maximum distance each ray will go
---   drop_chance - Chance that destroy nodes drop their items
---                 (becomes '1.0 / strength' if unspecified)
+--   drop_chance - The chance that destroyed nodes will drop their items
 --
 -- Note that this function has been optimized, it contains code which has been
 -- inlined to avoid function calls and unnecessary table creation.  This was
@@ -220,10 +242,6 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance)
     end
   end
 
-  if drop_chance == nil then
-    drop_chance = 1 / strength
-  end
-
   -- Remove destroyed blocks and drop items
   for hash, idx in pairs(destroy) do
     if math.random() <= drop_chance then
@@ -253,7 +271,14 @@ end
 -- Parameters:
 --   pos - The position where the explosion originates from
 --   strength - The blast strength of the explosion (a TNT explosion uses 4)
-function mcl_explosions.explode(pos, strength)
+--   info - Table containing information about explosion.
+--
+-- Values in info:
+--   drop_chance - If specified becomes the drop chance of all nodes in the
+--                 explosion (defaults to 1.0 / strength)
+--   no_sound    - If true then the explosion will not play a sound
+--   no_particle - If true then the explosion will not create particles
+function mcl_explosions.explode(pos, strength, info)
   -- The maximum blast radius (in the air)
   local radius = math.ceil(1.3 * strength / (0.3 * 0.75) * 0.3)
 
@@ -262,5 +287,15 @@ function mcl_explosions.explode(pos, strength)
   end
   shape = sphere_shapes[radius]
 
-  trace_explode(pos, strength, shape, radius)
+  trace_explode(pos, strength, shape, radius, (info and info.drop_chance) or 1 / strength)
+
+  if not (info and info.no_sound) then
+    add_particles(pos, radius)
+  end
+  if not (info and info.no_particle) then
+    minetest.sound_play("tnt_explode", {
+      pos = pos, gain = 1.0,
+      max_hear_distance = strength * 16
+    }, true)
+  end
 end
