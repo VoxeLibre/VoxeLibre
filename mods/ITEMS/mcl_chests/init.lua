@@ -966,7 +966,7 @@ minetest.register_lbm({
 
 -- Legacy
 minetest.register_lbm({
-	label = "Update ender chest formspecs (0.60.0",
+	label = "Update ender chest formspecs (0.60.0)",
 	name = "mcl_chests:update_ender_chest_formspecs_0_60_0",
 	nodenames = { "mcl_chests:ender_chest" },
 	run_at_every_load = false,
@@ -976,7 +976,7 @@ minetest.register_lbm({
 	end,
 })
 minetest.register_lbm({
-	label = "Update shulker box formspecs (0.60.0",
+	label = "Update shulker box formspecs (0.60.0)",
 	name = "mcl_chests:update_shulker_box_formspecs_0_60_0",
 	nodenames = { "group:shulker_box" },
 	run_at_every_load = false,
