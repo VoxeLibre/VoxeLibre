@@ -85,6 +85,7 @@ mobs_mc.override.items = {
 	nether_brick_block = "mcl_nether:nether_brick",
 	netherrack = "mcl_nether:netherrack",
 	nether_star = "mcl_mobitems:nether_star",
+	nether_portal = "mcl_portals:portal",
 	mycelium = "mcl_core:mycelium",
 	carrot = "mcl_farming:carrot_item",
 	golden_carrot = "mcl_farming:carrot_item_gold",
@@ -214,9 +215,9 @@ mobs_mc.override.spawn = {
 	snow = { "mcl_core:snow", "mcl_core:snowblock", "mcl_core:dirt_with_grass_snow" },
 	-- End stone added for shulkers because End cities don't generate yet
 	end_city = { "mcl_end:end_stone", "mcl_end:purpur_block" },
-	nether = { "mcl_nether:netherrack", "mcl_nether:quartz_ore" },
 	-- Netherrack added because there are no Nether fortresses yet. TODO: Remove netherrac from list as soon they're available
 	nether_fortress = { "mcl_nether:nether_brick", "mcl_nether:netherrack" },
+	nether_portal = { mobs_mc.override.items.nether_portal },
 	wolf = { mobs_mc.override.items.grass_block, "mcl_core:dirt", "mcl_core:dirt_with_grass_snow", "mcl_core:snow", "mcl_core:snowblock", "mcl_core:podzol" },
 }
 
