@@ -24,16 +24,21 @@ local sphere_shapes = {}
 
 -- Saved node definitions in table using cid-keys for faster look-up.
 local node_br = {}
+local node_on_blast = {}
 
 local AIR_CID = minetest.get_content_id('air')
 
 -- The step length for the rays (Minecraft uses 0.3)
 local STEP_LENGTH = 0.3
 
+-- How many rays to compute entity exposure to explosion
+local N_EXPOSURE_RAYS = 16
+
 minetest.after(0, function()
   -- Store blast resistance values by content ids to improve performance.
   for name, def in pairs(minetest.registered_nodes) do
     node_br[minetest.get_content_id(name)] = def._mcl_blast_resistance or 0
+    node_on_blast[minetest.get_content_id(name)] = def.on_blast
   end
 end)
 
@@ -203,7 +208,7 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance)
   local data = vm:get_data()
   local destroy = {}
 
-  -- Trace rays
+  -- Trace rays for environment destruction
   for i = 1, #raydirs do
     local rpos_x = pos.x
     local rpos_y = pos.y
@@ -237,23 +242,126 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance)
       end
 
       if cid ~= AIR_CID then
-          destroy[hash] = idx
+	destroy[hash] = idx
+      end
+    end
+  end
+
+  -- Entities in radius of explosion
+  local punch_radius = 2 * strength
+  local objs = minetest.get_objects_inside_radius(pos, punch_radius)
+
+  -- Trace rays for entity damage
+  for _, obj in pairs(objs) do
+    -- Object position and direction to explosion center
+    local opos = obj:get_pos()
+
+    if obj:get_luaentity() ~= nil or obj:is_player() then
+      local collisionbox = nil
+
+      if obj:is_player() then
+	collisionbox = { -0.3, 0.0, -0.3, 0.3, 1.77, 0.3 }
+      elseif obj:get_luaentity().name then
+        local def = minetest.registered_entities[obj:get_luaentity().name]
+	collisionbox = def.collisionbox
+      end
+
+      if collisionbox then
+	-- Create rays from random points in the collision box
+	local x1 = collisionbox[1] * 2
+	local y1 = collisionbox[2] * 2
+	local z1 = collisionbox[3] * 2
+	local x2 = collisionbox[4] * 2
+	local y2 = collisionbox[5] * 2
+	local z2 = collisionbox[6] * 2
+	local x_len = math.abs(x2 - x1)
+	local y_len = math.abs(y2 - y1)
+	local z_len = math.abs(z2 - z1)
+
+	-- Move object position to the center of its bounding box
+	opos.x = opos.x + x1 + x2
+	opos.y = opos.y + y1 + y2
+	opos.z = opos.z + z1 + z2
+
+	-- Count number of rays from collision box which are unobstructed
+	local count = N_EXPOSURE_RAYS
+
+	for i = 1, N_EXPOSURE_RAYS do
+	  local rpos_x = opos.x + math.random() * x_len - x_len / 2
+	  local rpos_y = opos.y + math.random() * y_len - y_len / 2
+	  local rpos_z = opos.z + math.random() * z_len - z_len / 2
+	  local rdir_x = pos.x - rpos_x
+	  local rdir_y = pos.y - rpos_y
+	  local rdir_z = pos.z - rpos_z
+	  local rdir_len = math.hypot(rdir_x, math.hypot(rdir_y, rdir_z))
+	  rdir_x = rdir_x / rdir_len
+	  rdir_y = rdir_y / rdir_len
+	  rdir_z = rdir_z / rdir_len
+
+	  for i=0, rdir_len / STEP_LENGTH do
+	    rpos_x = rpos_x + rdir_x * STEP_LENGTH
+	    rpos_y = rpos_y + rdir_y * STEP_LENGTH
+	    rpos_z = rpos_z + rdir_z * STEP_LENGTH
+	    local npos_x = math.floor(rpos_x + 0.5)
+	    local npos_y = math.floor(rpos_y + 0.5)
+	    local npos_z = math.floor(rpos_z + 0.5)
+	    local idx = (npos_z - emin_z) * zstride + (npos_y - emin_y) * ystride +
+	        npos_x - emin_x + 1
+
+
+	    local cid = data[idx]
+	    local br = node_br[cid]
+
+	    if br ~= 0 then
+	      count = count - 1
+	      break
+	    end
+	  end
+	end
+
+	-- Punch entity with damage depending on explosion exposure and
+	-- distance to explosion
+	local exposure = count / N_EXPOSURE_RAYS
+	local punch_vec = vector.subtract(pos, opos)
+	local punch_dir = vector.normalize(punch_vec)
+	local impact = (1 - vector.length(punch_vec) / punch_radius) * exposure
+	if impact < 0 then
+	  impact = 0
+	end
+	local damage = math.floor((impact * impact + impact) * 7 * strength + 1)
+        obj:punch(obj, nil, { damage_groups = { fleshy = damage } }, punch_dir)
+
+	if obj:is_player() then
+	  obj:add_player_velocity(vector.multiply(punch_dir, -exposure * 20))
+	end
       end
     end
   end
 
   -- Remove destroyed blocks and drop items
   for hash, idx in pairs(destroy) do
-    if math.random() <= drop_chance then
-      local name = minetest.get_name_from_content_id(data[idx])
-      local drop = minetest.get_node_drops(name, "")
-      for _, item in ipairs(drop) do
-	if type(item) == "string" then
-	  minetest.add_item(get_position_from_hash(hash), item)
-        end
+    local do_drop = math.random() <= drop_chance
+    local on_blast = node_on_blast[data[idx]]
+    local remove = true
+
+    if do_drop or on_blast ~= nil then
+      local npos = get_position_from_hash(hash)
+      if on_blast ~= nil then
+	remove = on_blast(npos, 1.0)
+      else
+	local name = minetest.get_name_from_content_id(data[idx])
+	local drop = minetest.get_node_drops(name, "")
+
+	for _, item in ipairs(drop) do
+	  if type(item) == "string" then
+	    minetest.add_item(npos, item)
+	  end
+	end
       end
     end
-    data[idx] = AIR_CID
+    if remove then
+      data[idx] = AIR_CID
+    end
   end
 
   -- Log explosion
