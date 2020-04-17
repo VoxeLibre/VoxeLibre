@@ -104,7 +104,6 @@ minetest.register_node("mcl_tnt:tnt", {
 	groups = { dig_immediate = 3, tnt = 1, enderman_takable=1 },
 	mesecons = tnt_mesecons,
 	on_blast = function(pos)
-		minetest.chat_send_all("on_blast " .. minetest.pos_to_string(pos))
 	        spawn_tnt(pos, "mcl_tnt:tnt")
 		return true
 	end,
@@ -209,7 +208,7 @@ function TNT:on_step(dtime)
 		self.blinkstatus = not self.blinkstatus
 	end
 	if self.timer > tnt.BOOMTIMER then
-		tnt.boom(self.object:get_pos(), nil, self.object)
+		mcl_explosions.explode(self.object:get_pos(), 4, { drop_chance = 1.0 })
 		self.object:remove()
 	end
 end
