@@ -298,7 +298,7 @@ function awards.unlock(name, award)
 			position = {x = 0.5, y = 0},
 			offset = {x = 0, y = 138},
 			alignment = {x = 0, y = -1},
-			z_index = 11,
+			z_index = 101,
 		})
 		local hud_announce
 		if awdef.secret == true then
@@ -315,7 +315,7 @@ function awards.unlock(name, award)
 			position = {x = 0.5, y = 0},
 			offset = {x = 0, y = 40},
 			alignment = {x = 0, y = -1},
-			z_index = 12,
+			z_index = 102,
 		})
 		local three = player:hud_add({
 			hud_elem_type = "text",
@@ -326,7 +326,7 @@ function awards.unlock(name, award)
 			position = {x = 0.5, y = 0},
 			offset = {x = 30, y = 100},
 			alignment = {x = 0, y = -1},
-			z_index = 12,
+			z_index = 102,
 		})
 		--[[ We use a statbar instead of image here because statbar allows us to scale the image
 		properly. Note that number is 2, thus leading to a single full image.
@@ -342,7 +342,7 @@ function awards.unlock(name, award)
 			offset = {x = -110, y = 62},
 			alignment = {x = 0, y = 0},
 			direction = 0,
-			z_index = 12,
+			z_index = 102,
 		})
 		minetest.after(3, function(name)
 			local player = minetest.get_player_by_name(name)
