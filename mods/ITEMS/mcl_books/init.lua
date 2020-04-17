@@ -342,7 +342,7 @@ minetest.register_node("mcl_books:bookshelf", {
 	groups = {handy=1,axey=1, flammable=3,building_block=1, material_wood=1},
 	drop = "mcl_books:book 3",
 	sounds = wood_sound,
-	_mcl_blast_resistance = 7.5,
+	_mcl_blast_resistance = 1.5,
 	_mcl_hardness = 1.5,
 })
 

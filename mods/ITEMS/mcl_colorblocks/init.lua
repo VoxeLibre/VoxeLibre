@@ -37,7 +37,7 @@ minetest.register_node("mcl_colorblocks:hardened_clay", {
 	stack_max = 64,
 	groups = {pickaxey=1, hardened_clay=1,building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 21,
+	_mcl_blast_resistance = 4.2,
 	_mcl_hardness = 1.25,
 })
 
@@ -87,7 +87,7 @@ for _, row in ipairs(block.dyes) do
 		groups = {pickaxey=1, hardened_clay=1,building_block=1, material_stone=1},
 		stack_max = 64,
 		sounds = mcl_sounds.node_sound_stone_defaults(),
-		_mcl_blast_resistance = 21,
+		_mcl_blast_resistance = 4.2,
 		_mcl_hardness = 1.25,
 	})
 
@@ -128,7 +128,7 @@ for _, row in ipairs(block.dyes) do
 
 		-- Specify the node to which this node will convert after getting in contact with water
 		_mcl_colorblocks_harden_to = "mcl_colorblocks:concrete_"..name,
-		_mcl_blast_resistance = 2.5,
+		_mcl_blast_resistance = 0.5,
 		_mcl_hardness = 0.5,
 	})
 
@@ -142,7 +142,7 @@ for _, row in ipairs(block.dyes) do
 		stack_max = 64,
 		is_ground_content = false,
 		sounds = mcl_sounds.node_sound_stone_defaults(),
-		_mcl_blast_resistance = 9,
+		_mcl_blast_resistance = 1.8,
 		_mcl_hardness = 1.8,
 	})
 
@@ -159,7 +159,7 @@ for _, row in ipairs(block.dyes) do
 		stack_max = 64,
 		is_ground_content = false,
 		sounds = mcl_sounds.node_sound_stone_defaults(),
-		_mcl_blast_resistance = 7,
+		_mcl_blast_resistance = 4.2,
 		_mcl_hardness = 1.4,
 		on_rotate = on_rotate,
 	})

@@ -111,7 +111,7 @@ local crop_def = {
 	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_rotate = false,
-	_mcl_blast_resistance = 15,
+	_mcl_blast_resistance = 3,
 	_mcl_hardness = 0.2,
 }
 

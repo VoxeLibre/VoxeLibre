@@ -4,7 +4,7 @@ local template = {
 	groups = {handy=1,axey=1, building_block = 1, material_wood = 1 },
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	is_ground_content = true,
-	_mcl_blast_resistance = 1,
+	_mcl_blast_resistance = 0.2,
 	_mcl_hardness = 0.2,
 }
 

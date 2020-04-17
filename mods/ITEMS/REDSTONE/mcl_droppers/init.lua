@@ -94,7 +94,7 @@ local dropperdef = {
 			return stack:get_count()
 		end
 	end,
-	_mcl_blast_resistance = 17.5,
+	_mcl_blast_resistance = 3.5,
 	_mcl_hardness = 3.5,
 	mesecons = {effector = {
 		-- Drop random item when triggered

@@ -63,7 +63,7 @@ for _, row in ipairs(wool.dyes) do
 			groups = {handy=1,shearsy_wool=1, flammable=1,wool=1,building_block=1,[color_group]=1},
 			sounds = mcl_sounds.node_sound_wool_defaults(),
 			_mcl_hardness = 0.8,
-			_mcl_blast_resistance = 4,
+			_mcl_blast_resistance = 0.8,
 		})
 		minetest.register_node("mcl_wool:"..name.."_carpet", {
 			description = desc_carpet,
@@ -89,7 +89,7 @@ for _, row in ipairs(wool.dyes) do
 				},
 			},
 			_mcl_hardness = 0.1,
-			_mcl_blast_resistance = 0.5,
+			_mcl_blast_resistance = 0.1,
 		})
 	if mod_doc and not is_canonical then
 		doc.add_entry_alias("nodes", "mcl_wool:"..canonical_color, "nodes", "mcl_wool:"..name)

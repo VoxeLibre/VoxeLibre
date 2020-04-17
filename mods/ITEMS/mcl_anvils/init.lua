@@ -275,7 +275,7 @@ local anvildef = {
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 6000,
+	_mcl_blast_resistance = 1200,
 	_mcl_hardness = 5,
 	_mcl_after_falling = damage_anvil_by_falling,
 

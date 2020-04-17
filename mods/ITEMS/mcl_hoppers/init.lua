@@ -114,7 +114,7 @@ local def_hopper = {
 	end,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 
-	_mcl_blast_resistance = 24,
+	_mcl_blast_resistance = 4.8,
 	_mcl_hardness = 3,
 }
 
@@ -303,7 +303,7 @@ local def_hopper_side = {
 	on_rotate = on_rotate,
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 
-	_mcl_blast_resistance = 24,
+	_mcl_blast_resistance = 4.8,
 	_mcl_hardness = 3,
 }
 

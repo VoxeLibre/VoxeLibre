@@ -204,7 +204,7 @@ minetest.register_node("mesecons_torch:redstoneblock", {
 		state = mesecon.state.on,
 		rules = mesecon.rules.alldirs,
 	}},
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 })
 

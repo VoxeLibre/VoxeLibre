@@ -70,7 +70,7 @@ minetest.register_node("mcl_cake:cake", {
 
 	_food_particles = false,
 	_mcl_saturation = 0.4,
-	_mcl_blast_resistance = 2.5,
+	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 })
 
@@ -130,7 +130,7 @@ local register_slice = function(level, nodebox, desc)
 
 		_food_particles = false,
 		_mcl_saturation = 0.4,
-		_mcl_blast_resistance = 2.5,
+		_mcl_blast_resistance = 0.5,
 		_mcl_hardness = 0.5,
 	})
 

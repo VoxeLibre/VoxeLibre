@@ -128,7 +128,7 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 		state = mesecon.state.off
 	}},
 	on_rotate = on_rotate,
-	_mcl_blast_resistance = 2.5,
+	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 })
 minetest.register_node("mesecons_walllever:wall_lever_on", {
@@ -160,7 +160,7 @@ minetest.register_node("mesecons_walllever:wall_lever_on", {
 		state = mesecon.state.on
 	}},
 	on_rotate = on_rotate,
-	_mcl_blast_resistance = 2.5,
+	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
 })
 

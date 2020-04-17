@@ -230,7 +230,7 @@ S("You can copy the pattern of a banner by placing two banners of the same color
 		respawn_banner_entity(pos, node)
 	end,
 	_mcl_hardness = 1,
-	_mcl_blast_resistance = 5,
+	_mcl_blast_resistance = 1,
 	on_rotate = function(pos, node, user, mode, param2)
 		if mode == screwdriver.ROTATE_FACE then
 			local meta = minetest.get_meta(pos)
@@ -274,7 +274,7 @@ minetest.register_node("mcl_banners:hanging_banner", {
 		respawn_banner_entity(pos, node)
 	end,
 	_mcl_hardness = 1,
-	_mcl_blast_resistance = 5,
+	_mcl_blast_resistance = 1,
 	on_rotate = function(pos, node, user, mode, param2)
 		if mode == screwdriver.ROTATE_FACE then
 			local r = screwdriver.rotate.wallmounted(pos, node, mode)

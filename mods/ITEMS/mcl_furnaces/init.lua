@@ -359,7 +359,7 @@ minetest.register_node("mcl_furnaces:furnace", {
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
 	on_metadata_inventory_take = on_metadata_inventory_take,
 	on_receive_fields = receive_fields,
-	_mcl_blast_resistance = 17.5,
+	_mcl_blast_resistance = 3.5,
 	_mcl_hardness = 3.5,
 	on_rotate = on_rotate,
 })
@@ -402,7 +402,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
 	on_metadata_inventory_take = on_metadata_inventory_take,
 	on_receive_fields = receive_fields,
-	_mcl_blast_resistance = 17.5,
+	_mcl_blast_resistance = 3.5,
 	_mcl_hardness = 3.5,
 	on_rotate = on_rotate,
 })

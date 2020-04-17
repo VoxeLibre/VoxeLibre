@@ -90,7 +90,7 @@ for c=1, #corals do
 		sounds = mcl_sounds.node_sound_dirt_defaults(),
 		drop = "mcl_ocean:dead_"..id.."_coral_block",
 		_mcl_hardness = 1.5,
-		_mcl_blast_resistance = 30,
+		_mcl_blast_resistance = 6,
 	})
 	minetest.register_node("mcl_ocean:dead_"..id.."_coral_block", {
 		description = corals[c][3],
@@ -99,7 +99,7 @@ for c=1, #corals do
 		groups = { pickaxey = 1, building_block = 1, coral=2, coral_block=2, coral_species=c, },
 		sounds = mcl_sounds.node_sound_dirt_defaults(),
 		_mcl_hardness = 1.5,
-		_mcl_blast_resistance = 30,
+		_mcl_blast_resistance = 6,
 	})
 
 	-- Coral

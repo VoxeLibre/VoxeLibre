@@ -90,7 +90,7 @@ minetest.register_node("mcl_sponges:sponge", {
 		end
 		return minetest.item_place_node(itemstack, placer, pointed_thing)
 	end,
-	_mcl_blast_resistance = 3,
+	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
 })
 
@@ -108,7 +108,7 @@ minetest.register_node("mcl_sponges:sponge_wet", {
 	stack_max = 64,
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	groups = {handy=1, building_block=1},
-	_mcl_blast_resistance = 3,
+	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
 })
 
@@ -127,7 +127,7 @@ if minetest.get_modpath("mclx_core") then
 		stack_max = 64,
 		sounds = mcl_sounds.node_sound_dirt_defaults(),
 		groups = {handy=1, building_block=1},
-		_mcl_blast_resistance = 3,
+		_mcl_blast_resistance = 0.6,
 		_mcl_hardness = 0.6,
 	})
 

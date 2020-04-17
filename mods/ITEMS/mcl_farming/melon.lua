@@ -33,7 +33,7 @@ local melon_base_def = {
 		}
 	},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	_mcl_blast_resistance = 5,
+	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 }
 

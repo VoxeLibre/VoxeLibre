@@ -112,7 +112,7 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 
 		_mcl_armor_mob_range_mob = rangemob,
 		_mcl_armor_mob_range_factor = rangefactor,
-		_mcl_blast_resistance = 5,
+		_mcl_blast_resistance = 1,
 		_mcl_hardness = 1,
 	})
 
@@ -146,7 +146,7 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 		}),
 		drop = "mcl_heads:"..name,
 		on_rotate = on_rotate_wall,
-		_mcl_blast_resistance = 5,
+		_mcl_blast_resistance = 1,
 		_mcl_hardness = 1,
 	})
 

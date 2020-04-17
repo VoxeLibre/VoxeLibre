@@ -15,7 +15,7 @@ minetest.register_node("mcl_end:end_stone", {
 	groups = {pickaxey=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	after_dig_node = mcl_end.check_detach_chorus_plant,
-	_mcl_blast_resistance = 45,
+	_mcl_blast_resistance = 9,
 	_mcl_hardness = 3,
 })
 
@@ -27,7 +27,7 @@ minetest.register_node("mcl_end:end_bricks", {
 	stack_max = 64,
 	groups = {pickaxey=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 4,
+	_mcl_blast_resistance = 9,
 	_mcl_hardness = 0.8,
 })
 
@@ -39,7 +39,7 @@ minetest.register_node("mcl_end:purpur_block", {
 	stack_max = 64,
 	groups = {pickaxey=1, building_block=1, material_stone=1, purpur_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
 
@@ -54,7 +54,7 @@ minetest.register_node("mcl_end:purpur_pillar", {
 	groups = {pickaxey=1, building_block=1, material_stone=1, purpur_block=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_rotate = on_rotate,
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
 })
 
@@ -167,7 +167,7 @@ minetest.register_node("mcl_end:dragon_egg", {
 	},
 	groups = {handy=1, falling_node = 1, deco_block = 1, not_in_creative_inventory = 1, dig_by_piston = 1 },
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	_mcl_blast_resistance = 45,
+	_mcl_blast_resistance = 9,
 	_mcl_hardness = 3,
 	-- TODO: Make dragon egg teleport on punching
 })
