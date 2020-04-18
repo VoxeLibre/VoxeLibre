@@ -104,7 +104,8 @@ minetest.register_node("mcl_tnt:tnt", {
 	groups = { dig_immediate = 3, tnt = 1, enderman_takable=1 },
 	mesecons = tnt_mesecons,
 	on_blast = function(pos)
-	        spawn_tnt(pos, "mcl_tnt:tnt")
+	        local e = spawn_tnt(pos, "mcl_tnt:tnt")
+		e:get_luaentity().timer = tnt.BOOMTIMER - (0.5 + math.random())
 		return true
 	end,
 	_on_ignite = function(player, pointed_thing)
@@ -133,6 +134,7 @@ local TNT = {
 	-- Initial value for our timer
 	timer = 0,
 	blinktimer = 0,
+	tnt_knockback = true,
 	blinkstatus = true,}
 
 function TNT:on_activate(staticdata)
