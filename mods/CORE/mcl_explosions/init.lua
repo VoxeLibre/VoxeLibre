@@ -25,8 +25,9 @@ local creative_mode = minetest.settings:get_bool("creative_mode")
 local sphere_shapes = {}
 
 -- Saved node definitions in table using cid-keys for faster look-up.
-local node_br = {}
+local node_blastres = {}
 local node_on_blast = {}
+local node_walkable = {}
 
 local AIR_CID = minetest.get_content_id('air')
 
@@ -39,8 +40,9 @@ local N_EXPOSURE_RAYS = 16
 minetest.after(0, function()
   -- Store blast resistance values by content ids to improve performance.
   for name, def in pairs(minetest.registered_nodes) do
-    node_br[minetest.get_content_id(name)] = def._mcl_blast_resistance or 0
+    node_blastres[minetest.get_content_id(name)] = def._mcl_blast_resistance or 0
     node_on_blast[minetest.get_content_id(name)] = def.on_blast
+    node_walkable[minetest.get_content_id(name)] = def.walkable
   end
 end)
 
@@ -228,7 +230,7 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance)
           npos_x - emin_x + 1
 
       local cid = data[idx]
-      local br = node_br[cid]
+      local br = node_blastres[cid]
       local hash = (npos_z + 32768) * 65536 * 65536 +
           (npos_y + 32768) * 65536 +
           npos_x + 32768
@@ -313,9 +315,9 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance)
 
 
             local cid = data[idx]
-            local br = node_br[cid]
+            local walkable = node_walkable[cid]
 
-            if br ~= 0 then
+            if walkable then
               count = count - 1
               break
             end
