@@ -322,17 +322,18 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance)
 	-- Punch entity with damage depending on explosion exposure and
 	-- distance to explosion
 	local exposure = count / N_EXPOSURE_RAYS
-	local punch_vec = vector.subtract(pos, opos)
+	local punch_vec = vector.subtract(opos, pos)
 	local punch_dir = vector.normalize(punch_vec)
 	local impact = (1 - vector.length(punch_vec) / punch_radius) * exposure
 	if impact < 0 then
 	  impact = 0
 	end
 	local damage = math.floor((impact * impact + impact) * 7 * strength + 1)
-        obj:punch(obj, nil, { damage_groups = { fleshy = damage } }, punch_dir)
+        obj:punch(obj, 10, { damage_groups = { full_punch_interval = 1,
+	    fleshy = damage, knockback = impact * 20.0 } }, punch_dir)
 
 	if obj:is_player() then
-	  obj:add_player_velocity(vector.multiply(punch_dir, -exposure * 20))
+	  obj:add_player_velocity(vector.multiply(punch_dir, impact * 20))
 	end
       end
     end
