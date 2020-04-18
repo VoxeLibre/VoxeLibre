@@ -19,14 +19,14 @@ for b=1, #barks do
 		id = "mcl_core:"..bark[1].."tree"
 	end
 	mcl_stairs.register_stair(sub, id,
-			{handy=1,axey=1, flammable=3, bark_stairs=1, material_wood=1},
+			{handy=1,axey=1, flammable=3, bark_stairs=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
 			{minetest.registered_nodes[id].tiles[3]},
 			bark[2],
 			mcl_sounds.node_sound_wood_defaults(),
 			2,
 			"woodlike")
 	mcl_stairs.register_slab(sub, id,
-			{handy=1,axey=1, flammable=3, bark_slab=1, material_wood=1},
+			{handy=1,axey=1, flammable=3, bark_slab=1, material_wood=1, fire_encouragement=5, fire_flammability=5},
 			{minetest.registered_nodes[id].tiles[3]},
 			bark[3],
 			mcl_sounds.node_sound_wood_defaults(),

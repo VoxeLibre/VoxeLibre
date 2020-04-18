@@ -25,7 +25,7 @@ S("• Anything else: Piano").."\n\n"..
 
 S("The note block will only play a note when it is below air, otherwise, it stays silent."),
 	tiles = {"mesecons_noteblock.png"},
-	groups = {handy=1,axey=1, material_wood=1},
+	groups = {handy=1,axey=1, material_wood=1, flammable=-1},
 	is_ground_content = false,
 	place_param2 = 0,
 	on_rightclick = function (pos, node, clicker) -- change sound when rightclicked

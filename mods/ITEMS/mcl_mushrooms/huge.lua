@@ -1,7 +1,7 @@
 local S = minetest.get_translator("mcl_mushrooms")
 
 local template = {
-	groups = {handy=1,axey=1, building_block = 1, material_wood = 1 },
+	groups = {handy=1,axey=1, building_block = 1, material_wood = 1, flammable = -1 },
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	is_ground_content = true,
 	_mcl_blast_resistance = 1,

@@ -17,14 +17,14 @@ local woods = {
 for w=1, #woods do
 	local wood = woods[w]
 	mcl_stairs.register_stair(wood[1], "mcl_core:"..wood[1],
-			{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1},
+			{handy=1,axey=1, flammable=3,wood_stairs=1, material_wood=1, fire_encouragement=5, fire_flammability=20},
 			{wood[2]},
 			wood[3],
 			mcl_sounds.node_sound_wood_defaults(),
 			2,
 			"woodlike")
 	mcl_stairs.register_slab(wood[1], "mcl_core:"..wood[1],
-			{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1},
+			{handy=1,axey=1, flammable=3,wood_slab=1, material_wood=1, fire_encouragement=5, fire_flammability=20},
 			{wood[2]},
 			wood[4],
 			mcl_sounds.node_sound_wood_defaults(),

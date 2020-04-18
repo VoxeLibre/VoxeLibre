@@ -185,7 +185,7 @@ local function get_wall_signtext_info(param2, nodename)
 	end
 end
 
-local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1, material_wood=1, attached_node=1, dig_by_piston=1}
+local sign_groups = {handy=1,axey=1, flammable=1, deco_block=1, material_wood=1, attached_node=1, dig_by_piston=1, flammable=-1}
 
 local destruct_sign = function(pos)
 	local objects = minetest.get_objects_inside_radius(pos, 0.5)

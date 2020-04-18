@@ -680,7 +680,7 @@ minetest.register_node("mcl_core:coalblock", {
 	tiles = {"default_coal_block.png"},
 	is_ground_content = false,
 	stack_max = 64,
-	groups = {pickaxey=1, flammable=1, building_block=1, material_stone=1},
+	groups = {pickaxey=1, flammable=1, building_block=1, material_stone=1, fire_encouragement=5, fire_flammability=5},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 30,
 	_mcl_hardness = 5,

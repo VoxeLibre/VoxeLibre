@@ -94,6 +94,11 @@ function mcl_doors:register_door(name, def)
 		end
 	end
 
+	local craftitem_groups = { mesecon_conductor_craftable = 1, deco_block = 1 }
+	if def.groups and def.groups.flammable then
+		craftitem_groups.flammable = def.groups.flammable
+	end
+
 	minetest.register_craftitem(name, {
 		description = def.description,
 		_tt_help = tt_help,
@@ -101,7 +106,7 @@ function mcl_doors:register_door(name, def)
 		_doc_items_usagehelp = usagehelp,
 		inventory_image = def.inventory_image,
 		stack_max = 64,
-		groups = { mesecon_conductor_craftable = 1, deco_block = 1 },
+		groups = craftitem_groups,
 		on_place = function(itemstack, placer, pointed_thing)
 			if not pointed_thing.type == "node" or not placer or not placer:is_player() then
 				return itemstack

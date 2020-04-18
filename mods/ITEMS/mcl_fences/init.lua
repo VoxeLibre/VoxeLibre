@@ -246,7 +246,7 @@ mcl_fences.register_fence_and_fence_gate = function(id, fence_name, fence_gate_n
 	return fence_id, gate_id, open_gate_id
 end
 
-local wood_groups = {handy=1,axey=1, flammable=2,fence_wood=1}
+local wood_groups = {handy=1,axey=1, flammable=2,fence_wood=1, fire_encouragement=5, fire_flammability=20}
 local wood_connect = {"group:fence_wood"}
 local wood_sounds = mcl_sounds.node_sound_wood_defaults()
 

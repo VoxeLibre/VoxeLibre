@@ -36,7 +36,11 @@ Please read <http://minecraft.gamepedia.com/Breaking> to learn how digging times
 * `dig_by_piston=1`: Blocks which will drop as an item when pushed by a piston. They also cannot be pulled by sticky pistons
 * `cultivatable=2`: Block will be turned into Farmland by using a hoe on it
 * `cultivatable=1`: Block will be turned into Dirt by using a hoe on it
-* `flammable`: Block helps spreading fire and gets destroyed by nearby fire (rating doesn't matter)
+* `flammable`: Block spreads fire
+    * `flammable>0`: Gets destroyed by fire
+    * `flammable=-1` Does not get destroyed by fire
+* `fire_encouragement`: How quickly this block catches fire
+* `fire_flammability`: How fast the block will burn away
 * `spreading_dirt_type=1`: A dirt-type block with a cover (e.g. grass) which may spread to neighbor dirt blocks
 * `dirtifies_below_solid=1`: This node turns into dirt immediately when a solid or dirtifier node is placed on top
 * `dirtifier=1`: This node turns nodes the above group into dirt when placed above

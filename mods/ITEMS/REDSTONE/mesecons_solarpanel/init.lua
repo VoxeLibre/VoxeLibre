@@ -21,7 +21,7 @@ minetest.register_node("mesecons_solarpanel:solar_panel_on", {
 	},
 	drop = "mesecons_solarpanel:solar_panel_off",
 	_doc_items_create_entry = false,
-	groups = {handy=1,axey=1, not_in_creative_inventory = 1, material_wood=1},
+	groups = {handy=1,axey=1, not_in_creative_inventory = 1, material_wood=1, flammable=-1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	mesecons = {receptor = {
 		state = mesecon.state.on,
