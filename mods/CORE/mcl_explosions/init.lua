@@ -19,6 +19,8 @@
 
 mcl_explosions = {}
 
+local creative_mode = minetest.settings:get_bool("creative_mode")
+
 -- Saved sphere explosion shapes for various radiuses
 local sphere_shapes = {}
 
@@ -344,7 +346,7 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance)
 
   -- Remove destroyed blocks and drop items
   for hash, idx in pairs(destroy) do
-    local do_drop = math.random() <= drop_chance
+    local do_drop = not creative_mode and math.random() <= drop_chance
     local on_blast = node_on_blast[data[idx]]
     local remove = true
 
