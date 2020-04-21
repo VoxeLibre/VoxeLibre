@@ -301,7 +301,7 @@ end
 -- Extinguish all flames quickly with water and such
 
 minetest.register_abm({
-	label = "Extinguish flame",
+	label = "Extinguish fire",
 	nodenames = {"mcl_fire:fire", "mcl_fire:eternal_fire"},
 	neighbors = {"group:puts_out_fire"},
 	interval = 3,
@@ -369,23 +369,24 @@ else -- Fire enabled
 		end,
 	})
 
-	-- Turn flammable nodes around fire into fire
+	-- Turn flammable nodes into air
 	minetest.register_abm({
-		label = "Remove flammable nodes",
+		label = "Remove flammable node below fire",
 		nodenames = {"group:fire"},
 		neighbors = {"group:flammable"},
 		interval = 5,
 		chance = 18,
 		catch_up = false,
 		action = function(pos, node, active_object_count, active_object_count_wider)
-			local p = minetest.find_node_near(pos, 1, {"group:flammable"})
-			if p then
-				local flammable_node = minetest.get_node(p)
-				local def = minetest.registered_nodes[flammable_node.name]
-				if def.on_burn then
-					def.on_burn(p)
-				else
-					minetest.set_node(p, {name="mcl_fire:fire"})
+			local p = {x=pos.x, y=pos.y-1, z=pos.z}
+			local flammable_node = minetest.get_node(p)
+			local def = minetest.registered_nodes[flammable_node.name]
+			if def.on_burn then
+				def.on_burn(p)
+			else
+				local g = minetest.get_item_group(flammable_node.name, "flammable")
+				if g ~= -1 then
+					minetest.set_node(p, {name="air"})
 					minetest.check_for_falling(p)
 				end
 			end
