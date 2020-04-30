@@ -35,7 +35,7 @@ local STEP_LENGTH = 0.3
 -- How many rays to compute entity exposure to explosion
 local N_EXPOSURE_RAYS = 16
 
-minetest.register_on_mods_loaded(function())
+minetest.register_on_mods_loaded(function()
   -- Store blast resistance values by content ids to improve performance.
   for name, def in pairs(minetest.registered_nodes) do
     node_blastres[minetest.get_content_id(name)] = def._mcl_blast_resistance or 0
