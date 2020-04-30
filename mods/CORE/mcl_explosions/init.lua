@@ -124,19 +124,6 @@ local function add_particles(pos, radius)
 	})
 end
 
--- Get position from hash. This should be identical to
--- 'minetest.get_position_from_hash' but is used in case the hashing function
--- would change.
-local function get_position_from_hash(hash)
-	local pos = {}
-	pos.x = (hash % 65536) - 32768
-	hash	= math.floor(hash / 65536)
-	pos.y = (hash % 65536) - 32768
-	hash	= math.floor(hash / 65536)
-	pos.z = (hash % 65536) - 32768
-	return pos
-end
-
 -- Traces the rays of an explosion, and updates the environment.
 --
 -- Parameters:
@@ -312,7 +299,7 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance)
 		local remove = true
 
 		if do_drop or on_blast ~= nil then
-			local npos = get_position_from_hash(hash)
+			local npos = minetest.get_position_from_hash(hash)
 			if on_blast ~= nil then
 				remove = on_blast(npos, 1.0)
 			else
