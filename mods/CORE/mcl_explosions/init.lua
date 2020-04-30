@@ -55,79 +55,46 @@ local function compute_sphere_rays(radius)
   local rays = {}
   local sphere = {}
 
-  for y = -radius, radius do
-    for z = -radius, radius do
-      for x = -radius, 0, 1 do
-        local d = x * x + y * y + z * z
-        if d <= radius * radius then
-          local pos = { x = x, y = y, z = z }
-          sphere[minetest.hash_node_position(pos)] = pos
-          break
-        end
-      end
-    end
-  end
-
-  for y = -radius, radius do
-    for z = -radius, radius do
-      for x = radius, 0, -1 do
-        local d = x * x + y * y + z * z
-        if d <= radius * radius then
-          local pos = { x = x, y = y, z = z }
-          sphere[minetest.hash_node_position(pos)] = pos
-          break
-        end
-      end
-    end
-  end
-
-  for x = -radius, radius do
-    for z = -radius, radius do
-      for y = -radius, 0, 1 do
-        local d = x * x + y * y + z * z
-        if d <= radius * radius then
-          local pos = { x = x, y = y, z = z }
-          sphere[minetest.hash_node_position(pos)] = pos
-          break
-        end
-      end
-    end
-  end
-
-  for x = -radius, radius do
-    for z = -radius, radius do
-      for y = radius, 0, -1 do
-        local d = x * x + y * y + z * z
-        if d <= radius * radius then
-          local pos = { x = x, y = y, z = z }
-          sphere[minetest.hash_node_position(pos)] = pos
-          break
-        end
-      end
-    end
-  end
-
-  for x = -radius, radius do
+  for i=1, 2 do
     for y = -radius, radius do
-      for z = -radius, 0, 1 do
-        local d = x * x + y * y + z * z
-        if d <= radius * radius then
-          local pos = { x = x, y = y, z = z }
-          sphere[minetest.hash_node_position(pos)] = pos
-          break
+      for z = -radius, radius do
+        for x = -radius, 0, 1 do
+          local d = x * x + y * y + z * z
+          if d <= radius * radius then
+            local pos = { x = x, y = y, z = z }
+            sphere[minetest.hash_node_position(pos)] = pos
+            break
+          end
         end
       end
     end
   end
 
-  for x = -radius, radius do
-    for y = -radius, radius do
-      for z = radius, 0, -1 do
-        local d = x * x + y * y + z * z
-        if d <= radius * radius then
-          local pos = { x = x, y = y, z = z }
-          sphere[minetest.hash_node_position(pos)] = pos
-          break
+  for i=1,2 do
+    for x = -radius, radius do
+      for z = -radius, radius do
+        for y = -radius, 0, 1 do
+          local d = x * x + y * y + z * z
+          if d <= radius * radius then
+            local pos = { x = x, y = y, z = z }
+            sphere[minetest.hash_node_position(pos)] = pos
+            break
+          end
+        end
+      end
+    end
+  end
+
+  for i=1,2 do
+    for x = -radius, radius do
+      for y = -radius, radius do
+        for z = -radius, 0, 1 do
+          local d = x * x + y * y + z * z
+          if d <= radius * radius then
+            local pos = { x = x, y = y, z = z }
+            sphere[minetest.hash_node_position(pos)] = pos
+            break
+          end
         end
       end
     end
