@@ -29,15 +29,13 @@ local node_blastres = {}
 local node_on_blast = {}
 local node_walkable = {}
 
-local AIR_CID = minetest.get_content_id('air')
-
 -- The step length for the rays (Minecraft uses 0.3)
 local STEP_LENGTH = 0.3
 
 -- How many rays to compute entity exposure to explosion
 local N_EXPOSURE_RAYS = 16
 
-minetest.after(0, function()
+minetest.register_on_mods_loaded(function())
   -- Store blast resistance values by content ids to improve performance.
   for name, def in pairs(minetest.registered_nodes) do
     node_blastres[minetest.get_content_id(name)] = def._mcl_blast_resistance or 0
@@ -245,7 +243,7 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance)
         break
       end
 
-      if cid ~= AIR_CID then
+      if cid ~= minetest.CONTENT_AIR then
         destroy[hash] = idx
       end
     end
@@ -368,7 +366,7 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance)
       end
     end
     if remove then
-      data[idx] = AIR_CID
+      data[idx] = minetest.CONTENT_AIR
     end
   end
 
