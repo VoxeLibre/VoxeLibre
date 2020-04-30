@@ -2742,7 +2742,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 
 			self.object:set_velocity({
 				x = dir.x * kb,
-				y = up,
+				y = dir.y * kb + up,
 				z = dir.z * kb
 			})
 

@@ -166,7 +166,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 				fixed = take
 			},
 			sounds = sounds,
-			_mcl_blast_resistance = 30,
+			_mcl_blast_resistance = 6,
 			_mcl_hardness = 2,
 		})
 
@@ -193,7 +193,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 			fixed = {pillar, full_blocks[1]}
 		},
 		sounds = sounds,
-		_mcl_blast_resistance = 30,
+		_mcl_blast_resistance = 6,
 		_mcl_hardness = 2,
 	})
 	-- Add entry alias for the Help
@@ -218,7 +218,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 			fixed = {pillar, full_blocks[2]}
 		},
 		sounds = sounds,
-		_mcl_blast_resistance = 30,
+		_mcl_blast_resistance = 6,
 		_mcl_hardness = 2,
 	})
 	-- Add entry alias for the Help
@@ -249,7 +249,7 @@ function mcl_walls.register_wall(nodename, description, source, tiles, inventory
 		collisionbox = {-0.2, 0, -0.2, 0.2, 1.4, 0.2},
 		on_construct = update_wall,
 		sounds = sounds,
-		_mcl_blast_resistance = 30,
+		_mcl_blast_resistance = 6,
 		_mcl_hardness = 2,
 	})
 	if source then

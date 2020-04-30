@@ -125,7 +125,7 @@ function mesecon.register_pressure_plate(basename, description, textures_off, te
 		is_ground_content = false,
 		pressureplate_basename = basename,
 		pressureplate_activated_by = activated_by,
-		_mcl_blast_resistance = 2.5,
+		_mcl_blast_resistance = 0.5,
 		_mcl_hardness = 0.5,
 	},{
 		node_box = pp_box_off,

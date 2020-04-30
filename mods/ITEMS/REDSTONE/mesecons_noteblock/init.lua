@@ -48,7 +48,7 @@ S("The note block will only play a note when it is below air, otherwise, it stay
 		end,
 		rules = mesecon.rules.alldirs,
 	}},
-	_mcl_blast_resistance = 4,
+	_mcl_blast_resistance = 0.8,
 	_mcl_hardness = 0.8,
 })
 

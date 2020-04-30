@@ -206,7 +206,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 				-- Explode if already ignited
 				if self._boomtimer then
 					self.object:remove()
-					tnt.boom(pos)
+					mcl_explosions.explode(pos, 4, { drop_chance = 1.0 })
 					return
 				end
 
@@ -249,7 +249,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			local pos = self.object:get_pos()
 			if self._boomtimer <= 0 then
 				self.object:remove()
-				tnt.boom(pos)
+				mcl_explosions.explode(pos, 4, { drop_chance = 1.0 })
 				return
 			else
 				tnt.smoke_step(pos)

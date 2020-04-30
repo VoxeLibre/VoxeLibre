@@ -227,7 +227,7 @@ minetest.register_node("mcl_jukebox:jukebox", {
 		end
 		meta:from_table(meta2:to_table())
 	end,
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 2,
 })
 

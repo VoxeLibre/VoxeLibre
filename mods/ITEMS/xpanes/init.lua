@@ -202,7 +202,7 @@ local pane = function(description, node, append)
 			{node, node, node},
 		},
 		drop = "",
-		_mcl_blast_resistance = 1.5,
+		_mcl_blast_resistance = 0.3,
 		_mcl_hardness = 0.3,
 	})
 
@@ -225,7 +225,7 @@ xpanes.register_pane("bar", {
 		{"mcl_core:iron_ingot", "mcl_core:iron_ingot", "mcl_core:iron_ingot"},
 		{"mcl_core:iron_ingot", "mcl_core:iron_ingot", "mcl_core:iron_ingot"},
 	},
-	_mcl_blast_resistance = 30,
+	_mcl_blast_resistance = 6,
 	_mcl_hardness = 5,
 })
 

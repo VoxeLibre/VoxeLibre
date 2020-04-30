@@ -81,7 +81,7 @@ minetest.register_node("mcl_core:ladder", {
 		return itemstack
 	end,
 
-	_mcl_blast_resistance = 2,
+	_mcl_blast_resistance = 0.4,
 	_mcl_hardness = 0.4,
 	on_rotate = rotate_climbable,
 })
@@ -164,7 +164,7 @@ minetest.register_node("mcl_core:vine", {
 	end,
 
 
-	_mcl_blast_resistance = 1,
+	_mcl_blast_resistance = 0.2,
 	_mcl_hardness = 0.2,
 	on_rotate = false,
 })

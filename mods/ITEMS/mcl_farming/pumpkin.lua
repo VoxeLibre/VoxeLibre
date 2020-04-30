@@ -101,7 +101,7 @@ local pumpkin_base_def = {
 	groups = {handy=1,axey=1, plant=1,building_block=1, dig_by_piston=1, enderman_takable=1},
 	sounds = mcl_sounds.node_sound_wood_defaults(),
 	on_rotate = on_rotate,
-	_mcl_blast_resistance = 5,
+	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 }
 minetest.register_node("mcl_farming:pumpkin", pumpkin_base_def)
@@ -148,7 +148,7 @@ minetest.register_node("mcl_farming:pumpkin_face_light", {
 		mobs_mc.tools.check_snow_golem_summon(pos)
 	end,
 	on_rotate = on_rotate,
-	_mcl_blast_resistance = 5,
+	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 })
 

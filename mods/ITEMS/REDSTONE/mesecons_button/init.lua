@@ -133,7 +133,7 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 		_mcl_button_basename = basename,
 		_mcl_button_timer = button_timer,
 
-		_mcl_blast_resistance = 2.5,
+		_mcl_blast_resistance = 0.5,
 		_mcl_hardness = 0.5,
 	})
 
@@ -184,7 +184,7 @@ mesecon.register_button = function(basename, description, texture, recipeitem, s
 			end
 		end,
 
-		_mcl_blast_resistance = 2.5,
+		_mcl_blast_resistance = 0.5,
 		_mcl_hardness = 0.5,
 	})
 

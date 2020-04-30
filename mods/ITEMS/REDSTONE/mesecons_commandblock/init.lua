@@ -242,7 +242,7 @@ S("Example 2:\n    give @@n mcl_core:apple 5\nGives the nearest player 5 apples"
 		action_on = commandblock_action_on,
 		rules = mesecon.rules.alldirs,
 	}},
-	_mcl_blast_resistance = 18000000,
+	_mcl_blast_resistance = 3600000,
 	_mcl_hardness = -1,
 })
 
@@ -261,7 +261,7 @@ minetest.register_node("mesecons_commandblock:commandblock_on", {
 		action_off = commandblock_action_off,
 		rules = mesecon.rules.alldirs,
 	}},
-	_mcl_blast_resistance = 18000000,
+	_mcl_blast_resistance = 3600000,
 	_mcl_hardness = -1,
 })
 

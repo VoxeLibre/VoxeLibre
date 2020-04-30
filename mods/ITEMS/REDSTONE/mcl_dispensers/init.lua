@@ -94,7 +94,7 @@ local dispenserdef = {
 		end
 		meta:from_table(meta2:to_table())
 	end,
-	_mcl_blast_resistance = 17.5,
+	_mcl_blast_resistance = 3.5,
 	_mcl_hardness = 3.5,
 	mesecons = {effector = {
 		-- Dispense random item when triggered

@@ -14,7 +14,7 @@ minetest.register_node("mcl_core:glass", {
 	groups = {handy=1, glass=1, building_block=1, material_glass=1},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	drop = "",
-	_mcl_blast_resistance = 1.5,
+	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
 })
 
@@ -49,7 +49,7 @@ function mcl_core.add_stained_glass(desc, recipeitem, colorgroup, color)
 		groups = {handy=1, glass=1, building_block=1, material_glass=1},
 		sounds = mcl_sounds.node_sound_glass_defaults(),
 		drop = "",
-		_mcl_blast_resistance = 1.5,
+		_mcl_blast_resistance = 0.3,
 		_mcl_hardness = 0.3,
 	})
 	

@@ -17,7 +17,7 @@ minetest.register_node("mcl_core:bone_block", {
 	groups = {pickaxey=1, building_block=1, material_stone=1},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	on_rotate = on_rotate,
-	_mcl_blast_resistance = 10,
+	_mcl_blast_resistance = 2,
 	_mcl_hardness = 2,
 })
 
@@ -76,7 +76,7 @@ minetest.register_node("mcl_core:cobweb", {
 	drop = "mcl_mobitems:string",
 	_mcl_shears_drop = true,
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
-	_mcl_blast_resistance = 20,
+	_mcl_blast_resistance = 4,
 	_mcl_hardness = 4,
 })
 
@@ -135,7 +135,7 @@ minetest.register_node("mcl_core:barrier", {
 	groups = {creative_breakable=1, not_in_creative_inventory = 1, not_solid = 1 },
 	on_blast = function() end,
 	drop = "",
-	_mcl_blast_resistance = 18000003,
+	_mcl_blast_resistance = 36000008,
 	_mcl_hardness = -1,
 	after_place_node = function (pos, placer, itemstack, pointed_thing)
 		if placer == nil then
@@ -195,7 +195,7 @@ minetest.register_node("mcl_core:realm_barrier", {
 	groups = {not_in_creative_inventory = 1, not_solid = 1 },
 	on_blast = function() end,
 	drop = "",
-	_mcl_blast_resistance = 18000003,
+	_mcl_blast_resistance = 36000008,
 	_mcl_hardness = -1,
 	-- Prevent placement to protect player from screwing up the world, because the node is not pointable and hard to get rid of.
 	node_placement_prediction = "",

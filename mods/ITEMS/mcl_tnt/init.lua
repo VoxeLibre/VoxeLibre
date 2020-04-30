@@ -103,6 +103,11 @@ minetest.register_node("mcl_tnt:tnt", {
 	_doc_items_usagehelp = S("Place the TNT and ignite it with one of the methods above. Quickly get in safe distance. The TNT will start to be affected by gravity and explodes in 4 seconds."),
 	groups = { dig_immediate = 3, tnt = 1, enderman_takable=1 },
 	mesecons = tnt_mesecons,
+	on_blast = function(pos)
+	        local e = spawn_tnt(pos, "mcl_tnt:tnt")
+		e:get_luaentity().timer = tnt.BOOMTIMER - (0.5 + math.random())
+		return true
+	end,
 	_on_ignite = function(player, pointed_thing)
 		tnt.ignite(pointed_thing.under)
 		return true
@@ -129,6 +134,7 @@ local TNT = {
 	-- Initial value for our timer
 	timer = 0,
 	blinktimer = 0,
+	tnt_knockback = true,
 	blinkstatus = true,}
 
 function TNT:on_activate(staticdata)
@@ -204,7 +210,7 @@ function TNT:on_step(dtime)
 		self.blinkstatus = not self.blinkstatus
 	end
 	if self.timer > tnt.BOOMTIMER then
-		tnt.boom(self.object:get_pos(), nil, self.object)
+		mcl_explosions.explode(self.object:get_pos(), 4, { drop_chance = 1.0 })
 		self.object:remove()
 	end
 end

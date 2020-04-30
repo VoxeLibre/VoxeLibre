@@ -35,7 +35,7 @@ minetest.register_node("mcl_crafting_table:crafting_table", {
 		minetest.show_formspec(player:get_player_name(), "main", form)
 	end,
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	_mcl_blast_resistance = 12.5,
+	_mcl_blast_resistance = 2.5,
 	_mcl_hardness = 2.5,
 })
 

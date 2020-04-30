@@ -63,7 +63,7 @@ minetest.register_node("mcl_cauldrons:cauldron", {
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_hardness = 2,
-	_mcl_blast_resistance = 10,
+	_mcl_blast_resistance = 2,
 })
 
 -- Template function for cauldrons with water
@@ -94,7 +94,7 @@ local register_filled_cauldron = function(water_level, description, river_water)
 		sounds = mcl_sounds.node_sound_metal_defaults(),
 		drop = "mcl_cauldrons:cauldron",
 		_mcl_hardness = 2,
-		_mcl_blast_resistance = 10,
+		_mcl_blast_resistance = 2,
 	})
 
 	-- Add entry aliases for the Help

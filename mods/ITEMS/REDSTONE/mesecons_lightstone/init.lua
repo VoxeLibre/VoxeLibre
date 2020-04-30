@@ -16,7 +16,7 @@ minetest.register_node("mesecons_lightstone:lightstone_off", {
 		end,
 		rules = mesecon.rules.alldirs,
 	}},
-	_mcl_blast_resistance = 1.5,
+	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
 })
 
@@ -34,7 +34,7 @@ minetest.register_node("mesecons_lightstone:lightstone_on", {
 		end,
 		rules = mesecon.rules.alldirs,
 	}},
-	_mcl_blast_resistance = 1.5,
+	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
 })
 
