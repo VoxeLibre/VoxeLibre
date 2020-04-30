@@ -5,7 +5,7 @@ Wow, thank you! :-)
 But first, some things to note:
 
 MineClone 2's development target is to make a free software clone of Minecraft,
-***version 1.11*** (later: 1.12), ***PC edition***.
+***version 1.11***, ***PC edition***.
 
 MineClone 2 is maintained by one person. Namely, Wuzzy. You can find me,
 Wuzzy, in the Minetest forums (forums.minetest.net), in IRC in the #minetest
@@ -26,8 +26,9 @@ For small and medium changes:
 
 * Fork the repository
 * Do your change in a new branch
-* Upload the repository somewhere where it can be accessed from the Internet
-* Ask me to pull in your changes (and briefly say what you're changed)
+* Post a pull request here: https://git.minetest.land/Wuzzy/MineClone2/pulls
+* Alternatively: Upload the repository somewhere where it can be accessed
+  from the Internet and notify me
 
 For small changes, sending me a patch is also good.
 
@@ -35,7 +36,7 @@ For big changes: Same as above, but consider notifying me first to avoid
 duplicate work and possible tears of rejection. ;-)
 
 ## Quality remarks
-Again: There is ***no*** guarantee I will accept anything from anything.
+Again: There is ***no*** guarantee I will accept anything from anybody.
 But I will gladly take in code from others when I feel it saves me work
 in the long run.
 
@@ -64,10 +65,10 @@ Depending on what you add, the chances for inclusion vary:
 
 ## Coding style guide
 * Indentations should reflect the code flow
-* Use tabs, not spaces for indentation
+* Use tabs, not spaces for indentation (tab size = 8)
 * Never use `minetest.env`
 
 ## Reporting bugs
 Report all bugs and missing Minecraft features here:
 
-<https://git.minetest.land/Wuzzy/MineClone2-Bugs>
+<https://git.minetest.land/Wuzzy/MineClone2/issues>
