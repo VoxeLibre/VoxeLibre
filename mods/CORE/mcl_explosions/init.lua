@@ -359,9 +359,10 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance)
         local drop = minetest.get_node_drops(name, "")
 
         for _, item in ipairs(drop) do
-          if type(item) == "string" then
-            minetest.add_item(npos, item)
+          if item ~= "string" then
+            item = item:get_name() .. item:get_count()
           end
+          minetest.add_item(npos, item)
         end
       end
     end
