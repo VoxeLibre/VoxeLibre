@@ -10,10 +10,12 @@ This mod was created by Elias Astrom <ryvnf@riseup.net> and is released
 under the LGPLv2.1 license.
 --]]
 
-
 mcl_explosions = {}
 
 local creative_mode = minetest.settings:get_bool("creative_mode")
+local mod_death_messages = minetest.get_modpath("mcl_death_messages") ~= nil
+
+local S = minetest.get_translator("mcl_explosions")
 
 -- Saved sphere explosion shapes for various radiuses
 local sphere_shapes = {}
@@ -280,6 +282,9 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance)
 					impact = 0
 				end
 				local damage = math.floor((impact * impact + impact) * 7 * strength + 1)
+				if mod_death_messages and obj:is_player() then
+					mcl_death_messages.player_damage(obj, S("@1 was caught in an explosion.", obj:get_player_name()))
+				end
 				obj:punch(obj, 10, { damage_groups = { full_punch_interval = 1,
 						fleshy = damage, knockback = impact * 20.0 } }, punch_dir)
 

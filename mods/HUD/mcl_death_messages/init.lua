@@ -174,13 +174,16 @@ minetest.register_on_dieplayer(function(player, reason)
 		-- Punches
 			local hitter = reason.object
 			local hittername, hittertype, hittersubtype, shooter
+			-- Custom message
+			if last_damages[name] then
+				msg = last_damages[name].message
 			-- Unknown hitter
-			if hitter == nil then
+			elseif hitter == nil then
 				msg = dmsg("murder_any", name)
 			-- Player
 			elseif hitter:is_player() then
 				hittername = hitter:get_player_name()
-				if hittername ~= nil then
+				if hittername ~= nil and hittername ~= name then
 					msg = dmsg("murder", name, hittername)
 				else
 					msg = dmsg("murder_any", name)
@@ -263,8 +266,8 @@ local start_damage_reset_countdown = function (player, sequence_number)
 	end, player:get_player_name(), sequence_number)
 end
 
--- Send a custom death mesage when damaging a player via set_hp.
--- To be called directly BEFORE damaging a player via set_hp.
+-- Send a custom death mesage when damaging a player via set_hp or punch.
+-- To be called directly BEFORE damaging a player via set_hp or punch.
 -- The next time the player dies due to a set_hp, the message will be shown.
 -- The player must die via set_hp within 0.1 seconds, otherwise the message will be discarded.
 function mcl_death_messages.player_damage(player, message)
