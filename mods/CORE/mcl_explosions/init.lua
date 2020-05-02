@@ -134,11 +134,12 @@ end
 -- raydirs - The directions for each ray
 -- radius - The maximum distance each ray will go
 -- drop_chance - The chance that destroyed nodes will drop their items
+-- puncher - object that punches other objects (optional)
 --
 -- Note that this function has been optimized, it contains code which has been
--- inlined to avoid function calls and unnecessary table creation.	This was
+-- inlined to avoid function calls and unnecessary table creation. This was
 -- measured to give a significant performance increase.
-local function trace_explode(pos, strength, raydirs, radius, drop_chance)
+local function trace_explode(pos, strength, raydirs, radius, drop_chance, puncher)
 	local vm = minetest.get_voxel_manip()
 
 	local emin, emax = vm:read_from_map(vector.subtract(pos, radius),
@@ -285,7 +286,11 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance)
 				if mod_death_messages and obj:is_player() then
 					mcl_death_messages.player_damage(obj, S("@1 was caught in an explosion.", obj:get_player_name()))
 				end
-				obj:punch(obj, 10, { damage_groups = { full_punch_interval = 1,
+				local source = puncher
+				if not source then
+					source = obj
+				end
+				obj:punch(source, 10, { damage_groups = { full_punch_interval = 1,
 						fleshy = damage, knockback = impact * 20.0 } }, punch_dir)
 
 				if obj:is_player() then
@@ -340,13 +345,14 @@ end
 -- pos - The position where the explosion originates from
 -- strength - The blast strength of the explosion (a TNT explosion uses 4)
 -- info - Table containing information about explosion.
+-- puncher - object that is reported as source of punches/damage (optional)
 --
 -- Values in info:
 -- drop_chance - If specified becomes the drop chance of all nodes in the
 --               explosion (defaults to 1.0 / strength)
 -- no_sound - If true then the explosion will not play a sound
 -- no_particle - If true then the explosion will not create particles
-function mcl_explosions.explode(pos, strength, info)
+function mcl_explosions.explode(pos, strength, info, puncher)
 	-- The maximum blast radius (in the air)
 	local radius = math.ceil(1.3 * strength / (0.3 * 0.75) * 0.3)
 
@@ -355,7 +361,7 @@ function mcl_explosions.explode(pos, strength, info)
 	end
 	shape = sphere_shapes[radius]
 
-	trace_explode(pos, strength, shape, radius, (info and info.drop_chance) or 1 / strength)
+	trace_explode(pos, strength, shape, radius, (info and info.drop_chance) or 1 / strength, puncher)
 
 	if not (info and info.no_sound) then
 		add_particles(pos, radius)

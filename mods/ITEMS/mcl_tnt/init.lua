@@ -210,7 +210,7 @@ function TNT:on_step(dtime)
 		self.blinkstatus = not self.blinkstatus
 	end
 	if self.timer > tnt.BOOMTIMER then
-		mcl_explosions.explode(self.object:get_pos(), 4, { drop_chance = 1.0 })
+		mcl_explosions.explode(self.object:get_pos(), 4, { drop_chance = 1.0 }, self.object)
 		self.object:remove()
 	end
 end

@@ -183,7 +183,7 @@ minetest.register_on_dieplayer(function(player, reason)
 			-- Player
 			elseif hitter:is_player() then
 				hittername = hitter:get_player_name()
-				if hittername ~= nil and hittername ~= name then
+				if hittername ~= nil then
 					msg = dmsg("murder", name, hittername)
 				else
 					msg = dmsg("murder_any", name)
