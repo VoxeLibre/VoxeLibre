@@ -10,40 +10,6 @@ local function spawn_tnt(pos, entname)
 	return tnt
 end
 
-local function activate_if_tnt(nname, np, tnt_np, tntr)
-    if nname == "mcl_tnt:tnt" then
-        local e = spawn_tnt(np, nname)
-        e:set_velocity({x=(np.x - tnt_np.x)*5+(tntr / 4), y=(np.y - tnt_np.y)*5+(tntr / 3), z=(np.z - tnt_np.z)*5+(tntr / 4)})
-        minetest.remove_node(np)
-        minetest.check_for_falling(np)
-    end
-end
-
-local function do_tnt_physics(tnt_np, tntr, tnt_obj)
-    local objs = minetest.get_objects_inside_radius(tnt_np, tntr)
-    for k, obj in pairs(objs) do
-        local ent = obj:get_luaentity()
-        local v = obj:get_velocity()
-        local p = obj:get_pos()
-        if ent and ent.name == "mcl_tnt:tnt" and v ~= nil then
-            obj:set_velocity({x=(p.x - tnt_np.x) + (tntr / 2) + v.x, y=(p.y - tnt_np.y) + tntr + v.y, z=(p.z - tnt_np.z) + (tntr / 2) + v.z})
-        else
-            if v ~= nil and not obj:is_player() then
-                obj:set_velocity({x=(p.x - tnt_np.x) + (tntr / 4) + v.x, y=(p.y - tnt_np.y) + (tntr / 2) + v.y, z=(p.z - tnt_np.z) + (tntr / 4) + v.z})
-            end
-            local dist = math.max(1, vector.distance(tnt_np, p))
-            local damage = (4 / dist) * tntr
-            if obj:is_player() == true then
-                if mod_death_messages then
-                    mcl_death_messages.player_damage(obj, S("@1 was caught in an explosion.", obj:get_player_name()))
-                end
-            end
-            local puncher = tnt_obj or obj
-            obj:punch(puncher, nil, { damage_groups = { fleshy = damage }})
-        end
-    end
-end
-
 tnt = {}
 tnt.ignite = function(pos)
 	minetest.remove_node(pos)
@@ -212,71 +178,6 @@ function TNT:on_step(dtime)
 	if self.timer > tnt.BOOMTIMER then
 		mcl_explosions.explode(self.object:get_pos(), 4, { drop_chance = 1.0 }, self.object)
 		self.object:remove()
-	end
-end
-
-tnt.boom = function(pos, info, tnt_obj)
-	if not info then info = {} end
-	local range = info.radius or TNT_RANGE
-	local damage_range = info.damage_radius or TNT_RANGE
-
-	pos.x = math.floor(pos.x+0.5)
-	pos.y = math.floor(pos.y+0.5)
-	pos.z = math.floor(pos.z+0.5)
-	do_tnt_physics(pos, range, tnt_obj)
-	local meta = minetest.get_meta(pos)
-	local sound
-	if not info.sound then
-		sound = "tnt_explode"
-	else
-		sound = info.sound
-	end
-	if info.is_tnt == nil then
-		info.is_tnt = true
-	end
-	minetest.sound_play(sound, {pos = pos,gain = 1.0,max_hear_distance = 16,}, true)
-	local node = minetest.get_node(pos)
-	if minetest.get_item_group("water") == 1 or minetest.get_item_group("lava") == 1 then
-		-- Cancel the Explosion
-		return
-        end
-	for x=-range,range do
-		for y=-range,range do
-			for z=-range,range do
-				if x*x+y*y+z*z <= range * range + range then
-					local np={x=pos.x+x,y=pos.y+y,z=pos.z+z}
-					local n = minetest.get_node(np)
-					local def = minetest.registered_nodes[n.name]
-					-- Simple blast resistance check (for now). This keeps the important blocks like bedrock, command block, etc. intact.
-					-- TODO: Implement the real blast resistance algorithm
-					if def and n.name ~= "air" and n.name ~= "ignore" and (def._mcl_blast_resistance == nil or def._mcl_blast_resistance < 1000) then
-						activate_if_tnt(n.name, np, pos, 3)
-						if (not tnt_griefing) and info.is_tnt ~= false then
-							-- No-op
-						-- Custom blast function defined by node.
-						-- Node removal and drops must be handled manually.
-						elseif def.on_blast then
-							def.on_blast(np, 1.0)
-						-- Default destruction handling: Remove nodes, drop items
-						else
-							minetest.remove_node(np)
-							minetest.check_for_falling(np)
-							if n.name ~= "mcl_tnt:tnt" and math.random() > 0.9 then
-								local drop = minetest.get_node_drops(n.name, "")
-								for _,item in ipairs(drop) do
-									if type(item) == "string" then
-										if math.random(1,100) > 40 then
-											local obj = minetest.add_item(np, item)
-										end
-									end
-								end
-							end
-						end
-					end
-				end
-			end
-		end
-		add_effects(pos, range, {})
 	end
 end
 
