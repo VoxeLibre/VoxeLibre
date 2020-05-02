@@ -79,13 +79,12 @@ mobs:register_arrow("mobs_mc:fireball", {
 	textures = {"mcl_fire_fire_charge.png"},
 	velocity = 15,
 
-	-- direct hit, no fire... just plenty of pain
 	hit_player = function(self, player)
 		player:punch(self.object, 1.0, {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 6},
 		}, nil)
-		mobs:boom(self, self.object:get_pos(), 3)
+		mobs:boom(self, self.object:get_pos(), 1, true)
 	end,
 
 	hit_mob = function(self, mob)
@@ -93,12 +92,11 @@ mobs:register_arrow("mobs_mc:fireball", {
 			full_punch_interval = 1.0,
 			damage_groups = {fleshy = 6},
 		}, nil)
-		mobs:boom(self, self.object:get_pos(), 3)
+		mobs:boom(self, self.object:get_pos(), 1, true)
 	end,
 
-	-- node hit, explode
 	hit_node = function(self, pos, node)
-		mobs:boom(self, pos, 3)
+		mobs:boom(self, pos, 1, true)
 	end
 })
 

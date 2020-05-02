@@ -14,6 +14,8 @@ mcl_explosions = {}
 
 local creative_mode = minetest.settings:get_bool("creative_mode")
 local mod_death_messages = minetest.get_modpath("mcl_death_messages") ~= nil
+local mod_fire = minetest.get_modpath("mcl_fire") ~= nil
+local CONTENT_FIRE = minetest.get_content_id("mcl_fire:fire")
 
 local S = minetest.get_translator("mcl_explosions")
 
@@ -134,12 +136,13 @@ end
 -- raydirs - The directions for each ray
 -- radius - The maximum distance each ray will go
 -- drop_chance - The chance that destroyed nodes will drop their items
+-- fire - If true, 1/3 of destroyed nodes become fire
 -- puncher - object that punches other objects (optional)
 --
 -- Note that this function has been optimized, it contains code which has been
 -- inlined to avoid function calls and unnecessary table creation. This was
 -- measured to give a significant performance increase.
-local function trace_explode(pos, strength, raydirs, radius, drop_chance, puncher)
+local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, puncher)
 	local vm = minetest.get_voxel_manip()
 
 	local emin, emax = vm:read_from_map(vector.subtract(pos, radius),
@@ -325,7 +328,11 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, punche
 			end
 		end
 		if remove then
-			data[idx] = minetest.CONTENT_AIR
+			if mod_fire and math.random(1, 3) == 1 then
+				data[idx] = CONTENT_FIRE
+			else
+				data[idx] = minetest.CONTENT_AIR
+			end
 		end
 	end
 
@@ -361,7 +368,7 @@ function mcl_explosions.explode(pos, strength, info, puncher)
 	end
 	shape = sphere_shapes[radius]
 
-	trace_explode(pos, strength, shape, radius, (info and info.drop_chance) or 1 / strength, puncher)
+	trace_explode(pos, strength, shape, radius, (info and info.drop_chance) or 1 / strength, info.fire == true, puncher)
 
 	if not (info and info.no_sound) then
 		add_particles(pos, radius)

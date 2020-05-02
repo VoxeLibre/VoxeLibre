@@ -3824,7 +3824,7 @@ end
 
 
 -- no damage to nodes explosion
-function mobs:safe_boom(self, pos, radius)
+function mobs:safe_boom(self, pos, strength)
 	minetest.sound_play(self.sounds and self.sounds.explode or "tnt_explode", {
 		pos = pos,
 		gain = 1.0,
@@ -3837,13 +3837,13 @@ end
 
 
 -- make explosion with protection and tnt mod check
-function mobs:boom(self, pos, radius)
+function mobs:boom(self, pos, strength, fire)
 
 	if mod_explosions then
 		if mobs_griefing and not minetest.is_protected(pos, "") then
-			mcl_explosions.explode(pos, self.explosion_strength, { drop_chance = 1.0 }, self.object)
+			mcl_explosions.explode(pos, strength, { drop_chance = 1.0, fire = fire }, self.object)
 		else
-			mobs:safe_boom(self, pos, radius)
+			mobs:safe_boom(self, pos, strength)
 		end
 	else
 		mobs:safe_boom(self, pos, radius)
