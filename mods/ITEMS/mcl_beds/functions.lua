@@ -5,6 +5,7 @@ local pi = math.pi
 local player_in_bed = 0
 local is_sp = minetest.is_singleplayer()
 local weather_mod = minetest.get_modpath("mcl_weather") ~= nil
+local explosions_mod = minetest.get_modpath("mcl_explosions") ~= nil
 
 -- Helper functions
 
@@ -307,8 +308,8 @@ function mcl_beds.on_rightclick(pos, player, is_top)
 		if dim == "nether" or dim == "end" then
 			-- Bed goes BOOM in the Nether or End.
 			minetest.remove_node(pos)
-			if minetest.get_modpath("mcl_tnt") then
-				tnt.boom(pos, {radius = 4, damage_radius = 4, is_tnt = false})
+			if explosions_mod then
+				mcl_explosions.explode(pos, 5, {drop_chance = 1.0, fire = true})
 			end
 			return
 		end

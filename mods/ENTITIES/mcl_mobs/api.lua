@@ -93,7 +93,7 @@ local node_snow = "mcl_core:snow"
 mobs.fallback_node = minetest.registered_aliases["mapgen_dirt"] or "mcl_core:dirt"
 
 local mod_weather = minetest.get_modpath("mcl_weather") ~= nil
-local mod_tnt = minetest.get_modpath("mcl_tnt") ~= nil
+local mod_explosions = minetest.get_modpath("mcl_explosions") ~= nil
 local mod_mobspawners = minetest.get_modpath("mcl_mobspawners") ~= nil
 local mod_hunger = minetest.get_modpath("mcl_hunger") ~= nil
 local mod_worlds = minetest.get_modpath("mcl_worlds") ~= nil
@@ -2218,26 +2218,10 @@ local do_states = function(self, dtime)
 
 					local pos = self.object:get_pos()
 
-					-- dont damage anything if area protected or next to water
-					if minetest.find_node_near(pos, 1, {"group:water"})
-					or minetest.is_protected(pos, "") then
-
-						node_break_radius = 1
-					end
-
-					self.object:remove()
-
-					if mobs_griefing and mod_tnt and tnt and tnt.boom
-					and not minetest.is_protected(pos, "") then
-
-						tnt.boom(pos, {
-							radius = node_break_radius,
-							damage_radius = entity_damage_radius,
-							sound = self.sounds.explode,
-							is_tnt = false,
-						})
+					if mod_explosions then
+					if mobs_griefing and not minetest.is_protected(pos, "") then
+						mcl_explosions.explode(self.object:get_pos(), self.explosion_strength, { drop_chance = 1.0 }, self.object)
 					else
-
 						minetest.sound_play(self.sounds.explode, {
 							pos = pos,
 							gain = 1.0,
@@ -2247,6 +2231,8 @@ local do_states = function(self, dtime)
 						entity_physics(pos, entity_damage_radius)
 						effect(pos, 32, "tnt_smoke.png", nil, nil, node_break_radius, 1, 0)
 					end
+					end
+					self.object:remove()
 
 					return true
 				end
@@ -3365,8 +3351,8 @@ minetest.register_entity(name, {
 	runaway_timer = 0,
 	pathfinding = def.pathfinding,
 	immune_to = def.immune_to or {},
-	explosion_radius = def.explosion_radius,
-	explosion_damage_radius = def.explosion_damage_radius,
+	explosion_radius = def.explosion_radius, -- LEGACY
+	explosion_damage_radius = def.explosion_damage_radius, -- LEGACY
 	explosion_timer = def.explosion_timer or 3,
 	allow_fuse_reset = def.allow_fuse_reset ~= false,
 	stop_to_explode = def.stop_to_explode ~= false,
@@ -3393,6 +3379,7 @@ minetest.register_entity(name, {
 	texture_mods = {},
 	shoot_arrow = def.shoot_arrow,
         sounds_child = def.sounds_child,
+	explosion_strength = def.explosion_strength,
 	-- End of MCL2 extensions
 
 	on_spawn = def.on_spawn,
@@ -3838,7 +3825,6 @@ end
 
 -- no damage to nodes explosion
 function mobs:safe_boom(self, pos, radius)
-
 	minetest.sound_play(self.sounds and self.sounds.explode or "tnt_explode", {
 		pos = pos,
 		gain = 1.0,
@@ -3853,17 +3839,12 @@ end
 -- make explosion with protection and tnt mod check
 function mobs:boom(self, pos, radius)
 
-	if mobs_griefing
-	and mod_tnt and tnt and tnt.boom
-	and not minetest.is_protected(pos, "") then
-
-		tnt.boom(pos, {
-			radius = radius,
-			damage_radius = radius,
-			sound = self.sounds and self.sounds.explode,
-			explode_center = true,
-			is_tnt = false,
-		})
+	if mod_explosions then
+		if mobs_griefing and not minetest.is_protected(pos, "") then
+			mcl_explosions.explode(pos, self.explosion_strength, { drop_chance = 1.0 }, self.object)
+		else
+			mobs:safe_boom(self, pos, radius)
+		end
 	else
 		mobs:safe_boom(self, pos, radius)
 	end
