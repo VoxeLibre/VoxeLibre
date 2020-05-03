@@ -1,0 +1,5 @@
+# textdomain: mcl_itemframes
+Item Frame=Cadre
+Item frames are decorative blocks in which items can be placed.=Les cadres sont des blocs décoratifs dans lesquels les objets peuvent être placés.
+Just place any item on the item frame. Use the item frame again to retrieve the item.=Placez simplement n'importe quel objet sur le cadre. Utilisez à nouveau le cadre décoré pour récupérer l'élément.
+Can hold an item=Peut contenir un objet

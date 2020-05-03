@@ -1,0 +1,11 @@
+# textdomain: mcl_mobs
+Peaceful mode active! No monsters will spawn.=Mode paisible actif! Aucun monstre n'apparaîtra.
+This allows you to place a single mob.=Cela vous permet de placer un seul mob.
+Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Placez-le là où vous voulez que le mob apparaisse. Les animaux apparaîtront apprivoisés, sauf si vous maintenez la touche furtive enfoncée pendant le placement. Si vous le placez sur un générateur de mob, vous changez le mob qu'il génère.
+You need the “maphack” privilege to change the mob spawner.=Vous avez besoin du privilège "maphack" pour changer le générateur de mob.
+Name Tag=Étiquette de nom
+A name tag is an item to name a mob.=Une étiquette de nom est un élément pour nommer un mob.
+Before you use the name tag, you need to set a name at an anvil. Then you can use the name tag to name a mob. This uses up the name tag.=Avant d'utiliser l'étiquette de nom, vous devez définir un nom sur une enclume. Ensuite, vous pouvez utiliser l'étiquette de nom pour nommer un mob. Cela utilise l'étiquette de nom.
+Only peaceful mobs allowed!=Seuls les mobs pacifiques sont autorisées!
+Give names to mobs=Donne des noms aux mobs
+Set name at anvil=Définir le nom sur l'enclume
