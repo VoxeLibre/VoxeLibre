@@ -26,9 +26,8 @@ For small and medium changes:
 
 * Fork the repository
 * Do your change in a new branch
-* Post a pull request here: https://git.minetest.land/Wuzzy/MineClone2/pulls
-* Alternatively: Upload the repository somewhere where it can be accessed
-  from the Internet and notify me
+* Upload the repository somewhere where it can be accessed from the Internet and
+  notify me
 
 For small changes, sending me a patch is also good.
 
