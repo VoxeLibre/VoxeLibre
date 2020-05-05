@@ -1,14 +1,14 @@
 # textdomain: mcl_skins
-[<player>] [<skin number>]=[<joueur>] [<numéro d'apparance>]
-Select player skin of yourself or another player=Sélectionner une apparance pour vous même ou un autre joueur
+[<player>] [<skin number>]=[<joueur>] [<numéro d'apparence>]
+Select player skin of yourself or another player=Sélectionner une apparence pour vous même ou un autre joueur
 Insufficient or wrong parameters=Paramètres insuffisants ou incorrects
 Player @1 not online!=Le joueur @1 n'est pas en ligne!
-You need the “server” privilege to change the skin of other players!=Vous avez besoin du privilège “server” pour changer l'apparance des autres joueurs!
-Invalid skin number! Valid numbers: 0 to @1=Numéro d'apparance incorrect! Numéros valides : 0 à @1 
-Your skin has been set to: @1=Votre apparance a été définie à: @1
-Your skin has been set to: @1 (@2)=Votre apparance a été définie à: @1 (@2)
-Skin of @1 set to: @2 (@3)=
-Select player skin:=Sélectionner l'apparance du joueur :
+You need the “server” privilege to change the skin of other players!=Vous avez besoin du privilège “server” pour changer l'apparence des autres joueurs!
+Invalid skin number! Valid numbers: 0 to @1=Numéro d'apparence incorrect! Numéros valides : 0 à @1 
+Your skin has been set to: @1=Votre apparence a été définie à: @1
+Your skin has been set to: @1 (@2)=Votre apparence a été définie à: @1 (@2)
+Skin of @1 set to: @2 (@3)=Apparence of @1 set to: @2 (@3)=
+Select player skin:=Sélectionner l'apparence du joueur :
 @1 (@2)=@1 (@2)
 Name: @1=Nom : @
 
