@@ -54,3 +54,7 @@ Grows in water on dirt, sand, gravel
 Glows in the water=
 4 possible sizes=
 Grows on dead brain coral block=
+Sea Pickle=
+Sea pickles grow on dead brain coral blocks and provide light when underwater. They come in 4 sizes that vary in brightness.=
+It can only be placed on top of dead brain coral blocks. Placing a sea pickle on another sea pickle will make it grow and brighter.=
+
