@@ -317,7 +317,11 @@ local is_node_dangerous = function(self, nodename)
 	end
 	if minetest.registered_nodes[nn].drowning > 0 then
 		if self.breath_max ~= -1 then
-			return true
+			-- check if the mob is water-breathing _and_ the block is water; only return true if neither is the case
+			-- this will prevent water-breathing mobs to classify water or e.g. sand below them as dangerous
+			if not self.breathes_in_water and minetest.get_item_group(nn, "water") ~= 0 then
+				return true
+			end
 		end
 	end
 	if minetest.registered_nodes[nn].damage_per_second > 0 then
@@ -2028,11 +2032,19 @@ local do_states = function(self, dtime)
 
 		local is_in_danger = false
 		if lp then
-			-- If mob in or on dangerous block, look for land
-			if (is_node_dangerous(self, self.standing_in) or
-				is_node_dangerous(self, self.standing_on)) then
-				is_in_danger = true
+			
+			local is_in_danger = false
 
+			-- if mob is flying, only check for node it is currently in (no contact with node below)
+			if flight_check(self) then
+				is_in_danger = is_node_dangerous(self, self.standing_in)
+			elseif (is_node_dangerous(self, self.standing_in) or
+					is_node_dangerous(self, self.standing_on)) then
+				is_in_danger = true
+			end
+
+			-- If mob in or on dangerous block, look for land
+			if is_in_danger then
 				lp = minetest.find_node_near(s, 5, {"group:solid"})
 
 				-- did we find land?
