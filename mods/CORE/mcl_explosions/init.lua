@@ -366,7 +366,7 @@ function mcl_explosions.explode(pos, strength, info, puncher)
 	if not sphere_shapes[radius] then
 		sphere_shapes[radius] = compute_sphere_rays(radius)
 	end
-	shape = sphere_shapes[radius]
+	local shape = sphere_shapes[radius]
 
 	trace_explode(pos, strength, shape, radius, (info and info.drop_chance) or 1 / strength, info.fire == true, puncher)
 
