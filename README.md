@@ -203,12 +203,13 @@ There are so many people to list (sorry). Check out the respective mod directori
 * [ryvnf](https://github.com/ryvnf): Explosion mechanics
 * Lots of other people: TO BE WRITTEN (see mod directories for details)
 
-### Textures
+### Graphics
 * [XSSheep](http://www.minecraftforum.net/members/XSSheep): Main author; creator of the Pixel Perfection resource pack of Minecraft 1.11
 * [Wuzzy](https://forum.minetest.net/memberlist.php?mode=viewprofile&u=3082): Main menu imagery and various edits and additions of texture pack
 * [kingoscargames](https://github.com/kingoscargames): Various edits and additions of existing textures
 * [leorockway](https://github.com/leorockway): Some edits of mob textures
 * [xMrVizzy](https://minecraft.curseforge.com/members/xMrVizzy): Glazed terracotta (textures are subject to be replaced later)
+* yutyo <tanakinci2002@gmail.com>: MineClone 2 logo
 * Other authors: GUI images,
 
 ### Models
