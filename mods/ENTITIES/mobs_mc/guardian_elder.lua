@@ -88,7 +88,9 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 	view_range = 16,
 })
 
-mobs:spawn_specific("mobs_mc:guardian_elder", mobs_mc.spawn.water, mobs_mc.spawn_water, 0, minetest.LIGHT_MAX+1, 30, 40000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.water-18)
+-- Spawning disabled due to size issues
+-- TODO: Re-enable spawning
+-- mobs:spawn_specific("mobs_mc:guardian_elder", mobs_mc.spawn.water, mobs_mc.spawn_water, 0, minetest.LIGHT_MAX+1, 30, 40000, 2, mobs_mc.spawn_height.overworld_min, mobs_mc.spawn_height.water-18)
 
 -- spawn eggs
 mobs:register_egg("mobs_mc:guardian_elder", S("Elder Guardian"), "mobs_mc_spawn_icon_guardian_elder.png", 0)
