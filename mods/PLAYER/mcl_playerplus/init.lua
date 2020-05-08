@@ -28,6 +28,9 @@ minetest.register_globalstep(function(dtime)
 			if not node_stand or not node_stand_below or not node_head or not node_feet then
 				return
 			end
+			if not minetest.registered_nodes[node_stand] or not minetest.registered_node[node_stand_below] or not minetest.registered_nodes[node_head] or not minetest.registered_nodes[node_feet] then
+				return
+			end
 
 			-- Cause buggy exhaustion for jumping
 
