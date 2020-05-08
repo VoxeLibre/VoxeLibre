@@ -488,6 +488,9 @@ local function show_trade_formspec(playername, trader, tradenum)
 	end
 
 	local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade_"..playername})
+	if not inv then
+		return
+	end
 	local wanted1 = inv:get_stack("wanted", 1)
 	local wanted2 = inv:get_stack("wanted", 2)
 	local offered = inv:get_stack("offered", 1)
@@ -624,6 +627,9 @@ local return_fields = function(player)
 	local name = player:get_player_name()
 	local inv_t = minetest.get_inventory({type="detached", name = "mobs_mc:trade_"..name})
 	local inv_p = player:get_inventory()
+	if not inv_t or not inv_p then
+		return
+	end
 	for i=1, inv_t:get_size("input") do
 		local stack = inv_t:get_stack("input", i)
 		return_item(stack, player, player:get_pos(), inv_p)
@@ -660,6 +666,9 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 			end
 			local tradenum = player_tradenum[name] + dir
 			local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade_"..name})
+			if not inv then
+				return
+			end
 			set_trade(trader, player, inv, tradenum)
 			update_offer(inv, player, false)
 			show_trade_formspec(name, trader, player_tradenum[name])
@@ -983,6 +992,9 @@ mobs:register_mob("mobs_mc:villager", {
 		player_trading_with[name] = self
 
 		local inv = minetest.get_inventory({type="detached", name="mobs_mc:trade_"..name})
+		if not inv then
+			return
+		end
 
 		set_trade(self, clicker, inv, 1)
 
