@@ -262,17 +262,6 @@ if c("saddle") then
 	})
 end
 
-if c("saddle") and c("lether") and c("string") and c("iron_ingot") then
-	minetest.register_craft({
-		output = "mobs_mc:saddle",
-		recipe = {
-			{"mobs:leather", "mobs:leather", "mobs:leather"},
-			{"farming:string", "", "farming:string"},
-			{"default:steel_ingot", "", "default:steel_ingot"}
-		},
-	})
-end
-
 -- Horse Armor
 local horse_armor_use = S("Place it on a horse to put on the horse armor. Donkeys and mules can't wear horse armor.")
 -- TODO: Balance the horse armor strength, compare with MC armor strength
