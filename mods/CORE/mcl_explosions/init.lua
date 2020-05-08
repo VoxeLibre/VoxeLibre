@@ -328,7 +328,7 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 			end
 		end
 		if remove then
-			if mod_fire and math.random(1, 3) == 1 then
+			if mod_fire and fire and math.random(1, 3) == 1 then
 				data[idx] = CONTENT_FIRE
 			else
 				data[idx] = minetest.CONTENT_AIR
@@ -359,6 +359,7 @@ end
 --               explosion (defaults to 1.0 / strength)
 -- no_sound - If true then the explosion will not play a sound
 -- no_particle - If true then the explosion will not create particles
+-- fire - If true, 1/3 nodes become fire (default: false)
 function mcl_explosions.explode(pos, strength, info, puncher)
 	-- The maximum blast radius (in the air)
 	local radius = math.ceil(1.3 * strength / (0.3 * 0.75) * 0.3)
