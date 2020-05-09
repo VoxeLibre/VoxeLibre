@@ -210,7 +210,12 @@ There are so many people to list (sorry). Check out the respective mod directori
 * [leorockway](https://github.com/leorockway): Some edits of mob textures
 * [xMrVizzy](https://minecraft.curseforge.com/members/xMrVizzy): Glazed terracotta (textures are subject to be replaced later)
 * yutyo <tanakinci2002@gmail.com>: MineClone 2 logo
-* Other authors: GUI images,
+* Other authors: GUI images
+
+### Translations
+* Wuzzy: German
+* Rocher Laurent <rocherl@club-internet.fr>: French
+* wuniversales: Spanish
 
 ### Models
 * [22i](https://github.com/22i): Creator of all models
