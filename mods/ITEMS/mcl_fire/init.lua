@@ -136,10 +136,12 @@ minetest.register_node("mcl_fire:fire", {
 				local nodes = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+4, z=pos.z+1}, {"group:flammable"})
 				if #nodes > 0 then
 					local r = math.random(1, #nodes)
-					local ndef = minetest.registered_nodes[minetest.get_node(nodes[r]).name]
+					local nn = minetest.get_node(nodes[r]).name
+					local ndef = minetest.registered_nodes[nn]
+					local fgroup = minetest.get_item_group(nn, "flammable")
 					if ndef and ndef._on_burn then
 						ndef._on_burn(nodes[r])
-					else
+					elseif fgroup ~= -1 then
 						spawn_fire(nodes[r], age_next)
 					end
 				end
