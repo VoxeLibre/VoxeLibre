@@ -67,7 +67,7 @@ minetest.register_node("mcl_tnt:tnt", {
 	_tt_help = S("Ignited by tools, explosions, fire, lava, redstone power").."\n"..S("Explosion radius: @1", tostring(TNT_RANGE)),
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = S("Place the TNT and ignite it with one of the methods above. Quickly get in safe distance. The TNT will start to be affected by gravity and explodes in 4 seconds."),
-	groups = { dig_immediate = 3, tnt = 1, enderman_takable=1 },
+	groups = { dig_immediate = 3, tnt = 1, enderman_takable=1, flammable=-1 },
 	mesecons = tnt_mesecons,
 	on_blast = function(pos)
 	        local e = spawn_tnt(pos, "mcl_tnt:tnt")
@@ -76,6 +76,10 @@ minetest.register_node("mcl_tnt:tnt", {
 	end,
 	_on_ignite = function(player, pointed_thing)
 		tnt.ignite(pointed_thing.under)
+		return true
+	end,
+	_on_burn = function(pos)
+		tnt.ignite(pos)
 		return true
 	end,
 	_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
