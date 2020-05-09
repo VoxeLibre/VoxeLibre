@@ -204,10 +204,22 @@ if mcl_weather.allow_abm then
 		interval = 2.0,
 		chance = 2,
 		action = function(pos, node, active_object_count, active_object_count_wider)
+			-- Fire is extinguished if in rain or one of 4 neighbors is in rain
 			if mcl_weather.rain.raining and mcl_weather.rain.extinguish_fire then
-				if mcl_weather.is_outdoor(pos) then
-					minetest.remove_node(pos)
-					minetest.sound_play("fire_extinguish_flame", {pos = pos, max_hear_distance = 8, gain = 0.1}, true)
+				local around = {
+					{ x = 0, y = 0, z = 0 },
+					{ x = -1, y = 0, z = 0 },
+					{ x = 1, y = 0, z = 0 },
+					{ x = 0, y = 0, z = -1 },
+					{ x = 0, y = 0, z = 1 },
+				}
+				for a=1, #around do
+					local apos = vector.add(pos, around[a])
+					if mcl_weather.is_outdoor(apos) then
+						minetest.remove_node(pos)
+						minetest.sound_play("fire_extinguish_flame", {pos = pos, max_hear_distance = 8, gain = 0.1}, true)
+						return
+					end
 				end
 			end
 		end,
