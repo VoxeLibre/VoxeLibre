@@ -44,6 +44,11 @@ local fire_timer = function(pos)
 	minetest.get_node_timer(pos):start(math.random(3, 7))
 end
 
+local spawn_fire = function(pos, age)
+	minetest.set_node(pos, {name="mcl_fire:fire", param2 = age})
+	minetest.check_single_for_falling({x=pos.x, y=pos.y+1, z=pos.z})
+end
+
 minetest.register_node("mcl_fire:fire", {
 	description = S("Fire"),
 	_doc_items_longdesc = fire_help,
@@ -120,7 +125,7 @@ minetest.register_node("mcl_fire:fire", {
 				while #nodes > 0 do
 					local r = math.random(1, #nodes)
 					if minetest.find_node_near(nodes[r], 1, {"group:flammable"}) then
-						minetest.set_node(nodes[r], {name="mcl_fire:fire", param2 = age_next})
+						spawn_fire(nodes[r], age_next)
 						break
 					else
 						table.remove(nodes, r)
@@ -131,7 +136,7 @@ minetest.register_node("mcl_fire:fire", {
 				local nodes = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+4, z=pos.z+1}, {"group:flammable"})
 				if #nodes > 0 then
 					local r = math.random(1, #nodes)
-					minetest.set_node(nodes[r], {name="mcl_fire:fire", param2 = age_next})
+					spawn_fire(nodes[r], age_next)
 				end
 			end
 		end
@@ -200,7 +205,7 @@ minetest.register_node("mcl_fire:eternal_fire", {
 			while #airs > 0 do
 				local r = math.random(1, #airs)
 				if minetest.find_node_near(airs[r], 1, {"group:flammable"}) then
-					minetest.set_node(airs[r], {name="mcl_fire:fire"})
+					spawn_fire(airs[r], age_next)
 					break
 				else
 					table.remove(airs, r)
@@ -390,7 +395,7 @@ else -- Fire enabled
 				while #airs > 0 do
 					local r = math.random(1, #airs)
 					if minetest.find_node_near(airs[r], 1, {"group:flammable"}) then
-						minetest.set_node(airs[r], {name="mcl_fire:fire"})
+						spawn_fire(airs[r])
 						return true
 					else
 						table.remove(airs, r)
