@@ -1,0 +1,4 @@
+# textdomain: mcl_compass
+Compasses are tools which point to the world origin (X@=0, Z@=0) or the spawn point in the Overworld.=Les boussoles sont des outils qui pointent vers l'origine du monde (X@=0,Z@=0) ou le point d'apparition dans l'Overworld.
+Compass=Boussole
+Points to the world origin=Pointe vers l'origine mondiale

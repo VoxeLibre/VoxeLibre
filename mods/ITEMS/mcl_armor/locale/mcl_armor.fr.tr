@@ -1,0 +1,23 @@
+# textdomain: mcl_armor
+This is a piece of equippable armor which reduces the amount of damage you receive.=Il s'agit d'un morceau d'armure équipable qui réduit la quantité de dégâts que vous recevez.
+To equip it, put it on the corresponding armor slot in your inventory menu.=Pour l'équiper, placez-le sur l'emplacement d'armure correspondant dans votre menu d'inventaire.
+Leather Cap=Casquette en Cuir
+Iron Helmet=Casque de Fer
+Golden Helmet=Casque d'Or
+Diamond Helmet=Casque de Diamant
+Chain Helmet=Casque de Mailles
+Leather Tunic=Tunique en Cuir
+Iron Chestplate=Plastron de Fer
+Golden Chestplate=Plastron d'Or
+Diamond Chestplate=Plastron de Diamant
+Chain Chestplate=Cotte de Mailles
+Leather Pants=Pantalon de Cuir
+Iron Leggings=Jambières de Fer
+Golden Leggings=Jambières d'Or
+Diamond Leggings=Jambières de Diamant
+Chain Leggings=Jambières de Mailles
+Leather Boots=Bottes de Cuir
+Iron Boots=Bottes de Fer
+Golden Boots=Bottes d'Or
+Diamond Boots=Bottes de Diamant
+Chain Boots=Bottes de Mailles

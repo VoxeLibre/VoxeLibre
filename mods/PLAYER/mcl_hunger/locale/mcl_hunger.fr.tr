@@ -1,0 +1,8 @@
+# textdomain: mcl_hunger
+@1 succumbed to the poison.=@1 a succombé au poison.
+Food=Nourriture
+Saturation=Saturation
+%s: %.1f/%d=%s: %.1f/%d
+Exhaust.=Échappement.
+%s: %d/%d=%s: %d/%d
+@1 starved to death.=@1 est mort de faim.

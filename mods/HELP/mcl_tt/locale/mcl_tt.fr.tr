@@ -1,0 +1,17 @@
+# textdomain: mcl_tt
+Head armor=Armure de tête
+Torso armor=Armure de torse
+Legs armor=Armure de jambes
+Feet armor=Armure de pieds
+Armor points: @1=Points d'armure: @1
+Armor durability: @1=Durabilité d'armure: @1
+Protection: @1%=Protection: @1%
+Hunger points: +@1=Points de faim: +@1
+Saturation points: +@1=Points de saturation: +@1
+Deals damage when falling=Inflige des dégâts en tombant
+Grows on grass blocks or dirt=Pousse sur des blocs d'herbe ou de terre
+Grows on grass blocks, podzol, dirt or coarse dirt=Pousse sur les blocs de gazon, le podzol, la terre ou la terre grossière
+Flammable=Inflammable
+Zombie view range: -50%=Distance de vue de Zombie: -50%
+Skeleton view range: -50%=Distance de vue de Squelette: -50%
+Creeper view range: -50%=Distance de vue de Creeper: -50%
