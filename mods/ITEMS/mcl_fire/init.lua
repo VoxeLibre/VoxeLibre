@@ -40,6 +40,10 @@ local fire_death_messages = {
 	N("@1 died in a fire."),
 }
 
+local fire_timer = function(pos)
+	minetest.get_node_timer(pos):start(math.random(3, 7))
+end
+
 minetest.register_node("mcl_fire:fire", {
 	description = S("Fire"),
 	_doc_items_longdesc = fire_help,
@@ -71,37 +75,73 @@ minetest.register_node("mcl_fire:fire", {
 		end
 	end,
 	on_timer = function(pos)
-		local airs = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+4, z=pos.z+1}, {"air"})
-		if (#airs == 0) or ((not fire_enabled) and math.random(1,3) == 1) then
+		local node = minetest.get_node(pos)
+		-- Age is a number from 0 to 15 and is increased every timer step.
+		-- "old" fire is more likely to be extinguished
+		local age = node.param2
+		local flammables = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+4, z=pos.z+1}, {"group:flammable"})
+		local below = minetest.get_node({x=pos.x, y=pos.z-1, z=pos.z})
+		local below_is_flammable = minetest.get_item_group(below.name, "flammable") > 0
+		-- Extinguish fire
+		if (not fire_enabled) and (math.random(1,3) == 1) then
 			minetest.remove_node(pos)
 			return
 		end
-		if (not fire_enabled) then
-			-- Restart timer
-			minetest.get_node_timer(pos):start(math.random(3, 7))
+		if age == 15 and not below_is_flammable then
+			minetest.remove_node(pos)
+			return
+		elseif age > 3 and #flammables == 0 and not below_is_flammable and math.random(1,4) == 1 then
+			minetest.remove_node(pos)
 			return
 		end
-		local burned = false
-		if math.random(1,2) == 1 then
-			while #airs > 0 do
-				local r = math.random(1, #airs)
-				if minetest.find_node_near(airs[r], 1, {"group:flammable"}) then
-					minetest.set_node(airs[r], {name="mcl_fire:fire"})
-					burned = true
-					break
-				else
-					table.remove(airs, r)
+		local age_add = 1
+		-- If fire spread is disabled, we have to skip the "destructive" code
+		if (not fire_enabled) then
+			if age + age_add <= 15 then
+				node.param2 = age + age_add
+				minetest.set_node(pos, node)
+			end
+			-- Restart timer
+			fire_timer(pos)
+			return
+		end
+		-- Spawn fire to nearby flammable nodes
+		local is_next_to_flammable = minetest.find_node_near(pos, 2, {"group:flammable"}) ~= nil
+		if is_next_to_flammable and math.random(1,2) == 1 then
+			-- The fire we spawn copies the age of this fire.
+			-- This prevents fire from spreading infinitely far as the fire fire dies off
+			-- quicker the further it has spreaded.
+			local age_next = math.min(15, age + math.random(0, 1))
+			-- Select random type of fire spread
+			local burntype = math.random(1,2)
+			if burntype == 1 then
+				-- Spawn fire in air
+				local nodes = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+4, z=pos.z+1}, {"air"})
+				while #nodes > 0 do
+					local r = math.random(1, #nodes)
+					if minetest.find_node_near(nodes[r], 1, {"group:flammable"}) then
+						minetest.set_node(nodes[r], {name="mcl_fire:fire", param2 = age_next})
+						break
+					else
+						table.remove(nodes, r)
+					end
+				end
+			else
+				-- Replace flammable node with fire
+				local nodes = minetest.find_nodes_in_area({x=pos.x-1, y=pos.y-1, z=pos.z-1}, {x=pos.x+1, y=pos.y+4, z=pos.z+1}, {"group:flammable"})
+				if #nodes > 0 then
+					local r = math.random(1, #nodes)
+					minetest.set_node(nodes[r], {name="mcl_fire:fire", param2 = age_next})
 				end
 			end
 		end
-		if not burned then
-			if math.random(1,3) == 1 then
-				minetest.remove_node(pos)
-				return
-			end
+		-- Regular age increase
+		if age + age_add <= 15 then
+			node.param2 = age + age_add
+			minetest.set_node(pos, node)
 		end
 		-- Restart timer
-		minetest.get_node_timer(pos):start(math.random(3, 7))
+		fire_timer(pos)
 	end,
 	drop = "",
 	sounds = {},
@@ -119,7 +159,7 @@ minetest.register_node("mcl_fire:fire", {
 			mcl_portals.light_nether_portal(pos)
 		end
 
-		minetest.get_node_timer(pos):start(math.random(3, 7))
+		fire_timer(pos)
 	end,
 	_mcl_blast_resistance = 0,
 })
@@ -168,11 +208,11 @@ minetest.register_node("mcl_fire:eternal_fire", {
 			end
 		end
 		-- Restart timer
-		minetest.get_node_timer(pos):start(math.random(3, 7))
+		fire_timer(pos)
 	end,
 	-- Start burning timer and light Nether portal (if possible)
 	on_construct = function(pos)
-		minetest.get_node_timer(pos):start(math.random(3, 7))
+		fire_timer(pos)
 
 		if minetest.get_modpath("mcl_portals") then
 			mcl_portals.light_nether_portal(pos)
@@ -365,30 +405,6 @@ else -- Fire enabled
 				try_ignite(airs2)
 			else
 				try_ignite(airs1)
-			end
-		end,
-	})
-
-	-- Turn flammable nodes into air
-	minetest.register_abm({
-		label = "Remove flammable node below fire",
-		nodenames = {"group:fire"},
-		neighbors = {"group:flammable"},
-		interval = 5,
-		chance = 18,
-		catch_up = false,
-		action = function(pos, node, active_object_count, active_object_count_wider)
-			local p = {x=pos.x, y=pos.y-1, z=pos.z}
-			local flammable_node = minetest.get_node(p)
-			local def = minetest.registered_nodes[flammable_node.name]
-			if def.on_burn then
-				def.on_burn(p)
-			else
-				local g = minetest.get_item_group(flammable_node.name, "flammable")
-				if g ~= -1 then
-					minetest.set_node(p, {name="air"})
-					minetest.check_for_falling(p)
-				end
 			end
 		end,
 	})
