@@ -1,5 +1,5 @@
 License information:
 
-* Code: WTFPL
-* Textures: From Faithful 32×32 texture pack (see main MineClone 2 license notes)
+* Code: MIT License
+* Textures: See main MineClone 2 README.md file
 * Sounds: CC0

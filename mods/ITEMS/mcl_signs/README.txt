@@ -6,7 +6,7 @@ License of code and font: MIT License
 Font source: 04.jp.org, some modifications and additions were made (added support for Latin-1 Supplement)
 Original font license text states: “YOU MAY USE THEM AS YOU LIKE” (in about.gif file distributed with the font)
 
-License of textures: See README.me in top directory of MineClone 2.
+License of textures: See README.md in top directory of MineClone 2.
 
 License of models: GPLv3 (https://www.gnu.org/licenses/gpl-3.0.html)
 Models author: 22i.

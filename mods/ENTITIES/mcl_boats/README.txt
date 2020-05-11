@@ -10,8 +10,7 @@ License of boat model:
 GNU GPLv3 <https://www.gnu.org/licenses/gpl-3.0.html>
 
 ## Textures
-All textures are from the Faithful texture pack for Minecraft.
-See the main MineClone 2 license to learn more.
+See the main MineClone 2 README.md file to learn more.
 
 ## Code
 Code based on Minetest Game, licensed under the MIT License (MIT).

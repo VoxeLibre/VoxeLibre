@@ -30,3 +30,5 @@ http://www.freesound.org/people/Dynamicell/sounds/17548/
 Benboncan (CC BY 3.0)
 https://www.freesound.org/people/Benboncan/sounds/66457/
   fire_flint_and_steel.ogg
+
+Other sound files by Perttu Ahola (celeron55) <celeron55@gmail.com> (CC BY-SA 3.0).

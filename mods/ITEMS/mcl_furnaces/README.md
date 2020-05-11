@@ -9,4 +9,4 @@ Modified by Wuzzy.
 
 License of media
 ----------------
-MIT License
+See the main MineClone 2 README.md file.

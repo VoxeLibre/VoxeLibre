@@ -256,6 +256,8 @@ project by davedevils which fell under the same license.
 
 Mods credit:
 See `README.txt` or `README.md` in each mod directory for information about other authors.
+For mods that do not have such a file, the license is the source code license
+of MineClone 2 and the author is Wuzzy.
 
 ### License of media (textures and sounds)
 No non-free licenses are used anywhere.

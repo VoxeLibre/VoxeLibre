@@ -21,4 +21,4 @@ Authors of media files
 MirceaKitsune (CC BY-SA 3.0):
   character.b3d
 
-Textures from Faithful 1.11 resource pack (see main readme file)
+Textures: See main MineClone 2 README.md file.
