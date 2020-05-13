@@ -929,14 +929,25 @@ local do_env_damage = function(self)
 	and (nodef.groups.disable_suffocation ~= 1)
 	and (nodef.groups.opaque == 1) then
 
-		-- 2 damage per second
-		-- TODO: Deal this damage once every 1/2 second
-		self.health = self.health - 2
+		-- Short grace period before starting to take suffocation damage.
+		-- This is different from players, who take damage instantly.
+		-- This has been done because mobs might briefly be inside solid nodes
+		-- when e.g. climbing up stairs.
+		-- This is a bit hacky because it assumes that do_env_damage
+		-- is called roughly every second only.
+		self.suffocation_timer = self.suffocation_timer + 1
+		if self.suffocation_timer >= 3 then
+			-- 2 damage per second
+			-- TODO: Deal this damage once every 1/2 second
+			self.health = self.health - 2
 
-		if check_for_death(self, "suffocation", {type = "environment",
-				pos = pos, node = self.standing_in}) then
-			return true
+			if check_for_death(self, "suffocation", {type = "environment",
+					pos = pos, node = self.standing_in}) then
+				return true
+			end
 		end
+	else
+		self.suffocation_timer = 0
 	end
 
 	return check_for_death(self, "", {type = "unknown"})
@@ -3345,7 +3356,7 @@ minetest.register_entity(name, {
 	replace_offset = def.replace_offset or 0,
 	on_replace = def.on_replace,
 	timer = 0,
-	env_damage_timer = 0, -- only used when state = "attack"
+	env_damage_timer = 0,
 	tamed = false,
 	pause_timer = 0,
 	horny = false,
@@ -3392,6 +3403,7 @@ minetest.register_entity(name, {
 	shoot_arrow = def.shoot_arrow,
         sounds_child = def.sounds_child,
 	explosion_strength = def.explosion_strength,
+	suffocation_timer = 0,
 	-- End of MCL2 extensions
 
 	on_spawn = def.on_spawn,
