@@ -176,6 +176,10 @@ mcl_torches.register_torch("mesecon_torch_on", S("Redstone Torch"),
 	{dig_immediate=3, dig_by_water=1, redstone_torch=1, mesecon_ignore_opaque_dig=1},
 	mcl_sounds.node_sound_wood_defaults(),
 	{
+		on_destruct = function(pos, oldnode)
+			local node = minetest.get_node(pos)
+			torch_action_on(pos, node)
+		end,
 		mesecons = {
 			receptor = {
 				state = mesecon.state.on,

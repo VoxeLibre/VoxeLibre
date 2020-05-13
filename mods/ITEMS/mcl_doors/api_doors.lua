@@ -360,6 +360,7 @@ function mcl_doors:register_door(name, def)
 
 		mesecons = { effector = {
 			action_on = on_mesecons_signal_open_top,
+			rules = mesecon.rules.flat,
 		}},
 
 		on_rotate = function(pos, node, user, mode, param2)
@@ -478,6 +479,7 @@ function mcl_doors:register_door(name, def)
 
 		mesecons = { effector = {
 			action_off = on_mesecons_signal_close_top,
+			rules = mesecon.rules.flat,
 		}},
 
 		on_rotate = function(pos, node, user, mode, param2)
