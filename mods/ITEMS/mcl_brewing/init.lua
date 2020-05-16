@@ -108,7 +108,7 @@ end
 
 local brewing_standdef = {
 	groups = {pickaxey=1, falling_node=1, falling_node_damage=1, crush_after_fall=1, deco_block=1, brewing_stand=1},
-	tiles = {"mcl_brewing_top.png^[transformR90", "mcl_brewing_base.png", "mcl_brewing_side.png"},
+	tiles = {"mcl_brewing_base.png", "mcl_brewing_plume.png"},
 	paramtype = "light",
 	sunlight_propagates = true,
 	is_ground_content = false,
@@ -117,9 +117,11 @@ local brewing_standdef = {
 	node_box = {
 		type = "fixed",
 		fixed = {
-			{-8/16, 2/16, -5/16, 8/16, 8/16, 5/16}, --  top
-			{-5/16, -4/16, -2/16, 5/16, 5/16, 2/16}, -- middle
-			{-8/16, -8/16, -5/16, 8/16, -4/16, 5/16}, -- base
+		--TODO: add bottle hangers
+			{-1/16, -6/16, -1/16, 1/16, 12/16, 1/16}, -- heat plume
+			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
+			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
+			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
