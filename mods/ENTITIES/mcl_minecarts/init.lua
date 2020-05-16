@@ -309,7 +309,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			if not rou_pos then
 				rou_pos = vector.round(pos)
 			end
-			rou_old = vector.round(self._old_pos)
+			local rou_old = vector.round(self._old_pos)
 			if not node then
 				node = minetest.get_node(rou_pos)
 			end
