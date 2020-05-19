@@ -108,7 +108,12 @@ end
 
 local brewing_standdef = {
 	groups = {pickaxey=1, falling_node=1, falling_node_damage=1, crush_after_fall=1, deco_block=1, brewing_stand=1},
-	tiles = {"mcl_brewing_base.png", "mcl_brewing_plume.png"},
+	tiles = {"mcl_brewing_top.png", 	--top
+					 "mcl_brewing_base.png", 	--bottom
+					 "mcl_brewing_side.png", 	--right
+				 	 "mcl_brewing_side.png", 	--left
+					 "mcl_brewing_side.png", 	--back
+				 	 "mcl_brewing_side.png^[transformFX"}, --front
 	paramtype = "light",
 	sunlight_propagates = true,
 	is_ground_content = false,
@@ -118,10 +123,40 @@ local brewing_standdef = {
 		type = "fixed",
 		fixed = {
 		--TODO: add bottle hangers
-			{-1/16, -6/16, -1/16, 1/16, 12/16, 1/16}, -- heat plume
+			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
 			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
 			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
 			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
+
+			{-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
+			{-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
+			{-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
+			{-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
+			{-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
+
+			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
+			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
+			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
+			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
+
+
+			{7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
+			{6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
+			{5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
+			{4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
+			{3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
+
+			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
+			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
+			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
+			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
+
+			{0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
+			{0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
+
+			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
+			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
+			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
