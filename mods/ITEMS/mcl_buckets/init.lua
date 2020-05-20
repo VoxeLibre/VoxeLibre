@@ -81,7 +81,6 @@ function mcl_buckets.register_liquid(source_place, source_take, itemname, invent
 			_tt_help = tt_help,
 			inventory_image = inventory_image,
 			stack_max = 16,
-			liquids_pointable = true,
 			groups = groups,
 			on_place = function(itemstack, user, pointed_thing)
 				-- Must be pointing to node
@@ -193,7 +192,6 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 
 	inventory_image = "bucket.png",
 	stack_max = 16,
-	liquids_pointable = true,
 	on_place = function(itemstack, user, pointed_thing)
 		-- Must be pointing to node
 		if pointed_thing.type ~= "node" then
