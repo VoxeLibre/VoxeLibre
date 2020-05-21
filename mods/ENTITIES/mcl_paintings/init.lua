@@ -6,6 +6,14 @@ local S = minetest.get_translator("mcl_paintings")
 
 local wood = "[combine:16x16:-192,0=mcl_paintings_paintings.png"
 
+local is_protected = function(pos, name)
+	if minetest.is_protected(pos, name) then
+		minetest.record_protection_violation(pos, name)
+		return true
+	end
+	return false
+end
+
 -- Check if there's a painting for provided painting size.
 -- If yes, returns the arguments.
 -- If not, returns the next smaller available painting.
@@ -224,21 +232,31 @@ minetest.register_craftitem("mcl_paintings:painting", {
 			if not xsize then
 				return itemstack
 			end
+
 			local _, exmax = size_to_minmax_entity(xsize)
 			local _, eymax = size_to_minmax_entity(ysize)
 			local pposa = vector.subtract(ppos, vector.multiply(dir, 0.5-5/256))
+			local name = placer:get_player_name()
 			local pexmax
 			local peymax = eymax - 0.5
+			local n
 			if negative then
 				pexmax = -exmax + 0.5
+				n = -1
 			else
 				pexmax = exmax - 0.5
+				n = 1
 			end
+			if is_protected(ppos, name) then return itemstack end
+			local ppos2
 			if dir.z ~= 0 then
 				pposa = vector.add(pposa, {x=pexmax, y=peymax, z=0})
+				ppos2 = vector.add(ppos, {x = (xsize-1)*n, y = ysize-1, z = 0})
 			else
 				pposa = vector.add(pposa, {x=0, y=peymax, z=pexmax})
+				ppos2 = vector.add(ppos, {x = 0, y = ysize-1, z = (xsize-1)*n})
 			end
+			if is_protected(ppos2, name) then return itemstack end
 			local painting, pid = get_random_painting(xsize, ysize)
 			if not painting then
 				minetest.log("error", "[mcl_paintings] No painting found for size "..xsize..","..ysize.."!")
