@@ -226,7 +226,7 @@ minetest.register_craftitem("mcl_paintings:painting", {
 			end
 			local _, exmax = size_to_minmax_entity(xsize)
 			local _, eymax = size_to_minmax_entity(ysize)
-			local pposa = vector.subtract(ppos, vector.multiply(dir, 0.5-2/64))
+			local pposa = vector.subtract(ppos, vector.multiply(dir, 0.5-5/256))
 			local pexmax
 			local peymax = eymax - 0.5
 			if negative then
