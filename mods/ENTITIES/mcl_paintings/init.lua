@@ -105,19 +105,22 @@ local set_entity = function(object)
 				..xsize..","..ysize..", motive number "..ent._motive.."!")
 		return
 	end
-	if wallm == 4 or wallm == 5 then
-		object:set_properties({
-			selectionbox = { exmin, eymin, -1/64, exmax, eymax, 1/64 },
-			visual_size = visual_size,
-			textures = { wood, wood, wood, wood, painting, wood },
-		})
-	else
-		object:set_properties({
-			selectionbox = { -1/64, eymin, exmin, 1/64, eymax, exmax },
-			visual_size = visual_size,
-			textures = { wood, wood, wood, wood, painting, wood },
-		})
+	local box
+	if wallm == 2 then
+		box = { -3/128, eymin, exmin, 1/64, eymax, exmax }
+	elseif wallm == 3 then
+		box = { -1/64, eymin, exmin, 3/128, eymax, exmax }
+	elseif wallm == 4 then
+		box = { exmin, eymin, -3/128, exmax, eymax, 1/64 }
+	elseif wallm == 5 then
+		box = { exmin, eymin, -1/64, exmax, eymax, 3/128 }
 	end
+	object:set_properties({
+		selectionbox = box,
+		visual_size = visual_size,
+		textures = { wood, wood, wood, wood, painting, wood },
+	})
+
 	local dir = minetest.wallmounted_to_dir(wallm)
 	if not dir then
 		return
