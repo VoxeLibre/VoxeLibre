@@ -279,6 +279,14 @@ minetest.register_craftitem("mcl_potions:potion_mundane", {
 	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
+
+minetest.register_craft({
+	type = "cooking",
+	output = "mcl_potions:potion_awkward",
+recipe = "mcl_nether:nether_wart_item", --"mcl_potions:potion_river_water"},
+	cooktime = 10,
+})
+
 minetest.register_craftitem("mcl_potions:potion_thick", {
 	description = S("Thick Potion"),
 	_tt_help = S("No effect"),

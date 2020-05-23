@@ -1,20 +1,12 @@
-local S = minetest.get_translator("mcl_brewing")
-
-local MAX_NAME_LENGTH = 30
-local MAX_WEAR = 65535
-local SAME_TOOL_REPAIR_BOOST = math.ceil(MAX_WEAR * 0.12) -- 12%
-local MATERIAL_TOOL_REPAIR_BOOST = {
-	math.ceil(MAX_WEAR * 0.25), -- 25%
-	math.ceil(MAX_WEAR * 0.5), -- 50%
-	math.ceil(MAX_WEAR * 0.75), -- 75%
-	MAX_WEAR, -- 100%
-}
+local S = minetest.get_translator("mcl_brewing_stand")
 local NAME_COLOR = "#FFFF4C"
 
-local function get_brewing_stand_formspec()
+local function active_brewing_formspec(fuel_percent, item_percent)
 
 	return "size[9,8.75]"..
-	"background[-0.19,-0.25;9.41,9.49;mcl_brewing_inventory.png]"..
+	"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png^[lowpart:"..
+	(item_percent)..":mcl_brewing_inventory_active.png]"..
+	-- "background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory_active.png]"..
 	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
@@ -34,47 +26,228 @@ local function get_brewing_stand_formspec()
 	"listring[current_player;main]"..
 	"listring[current_name;fuel]"..
 	"listring[current_name;input]"..
-	-- "listring[context;stand1]"..
-	-- "listring[context;stand2]"..
 	"listring[context;stand]"
 end
 
+local brewing_formspec = "size[9,8.75]"..
+	"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]"..
+	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
+	"list[current_player;main;0,4.5;9,3;9]"..
+	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
+	"list[current_player;main;0,7.75;9,1;]"..
+	mcl_formspec.get_itemslot_bg(0,7.75,9,1)..
+	"list[current_name;fuel;0.5,1.75;1,1;]"..
+	mcl_formspec.get_itemslot_bg(0.5,1.75,1,1).."image[0.5,1.75;1,1;mcl_brewing_fuel_bg.png]"..
+	"list[current_name;input;2.75,0.5;1,1;]"..
+	mcl_formspec.get_itemslot_bg(2.75,0.5,1,1)..
+	"list[context;stand;4.5,2.5;1,1;]"..
+	mcl_formspec.get_itemslot_bg(4.5,2.5,1,1).."image[4.5,2.5;1,1;mcl_brewing_bottle_bg.png]"..
+	"list[context;stand;6,2.8;1,1;1]"..
+	mcl_formspec.get_itemslot_bg(6,2.8,1,1).."image[6,2.8;1,1;mcl_brewing_bottle_bg.png]"..
+	"list[context;stand;7.5,2.5;1,1;2]"..
+	mcl_formspec.get_itemslot_bg(7.5,2.5,1,1).."image[7.5,2.5;1,1;mcl_brewing_bottle_bg.png]"..
 
--- Given a tool and material stack, returns how many items of the material stack
--- needs to be used up to repair the tool.
-local function get_consumed_materials(tool, material)
-	local wear = tool:get_wear()
-	if wear == 0 then
+	"image[2.7,3.33;1.28,0.41;mcl_brewing_burner.png^[lowpart:"..
+	(65)..":mcl_brewing_burner_active.png^[transformR270]"..
+
+	"image[2.76,1.4;1,2.15;mcl_brewing_bubbles.png^[lowpart:"..
+	(65)..":mcl_brewing_bubbles_active.png]"..
+
+	"listring[current_player;main]"..
+	"listring[current_name;fuel]"..
+	"listring[current_name;input]"..
+	"listring[context;stand]"
+
+
+local function swap_node(pos, name)
+	local node = minetest.get_node(pos)
+	if node.name == name then
+		return
+	end
+	node.name = name
+	minetest.swap_node(pos, node)
+end
+
+
+local function brewing_stand_timer(pos, elapsed)
+	-- Inizialize metadata
+	local meta = minetest.get_meta(pos)
+	local fuel_time = meta:get_float("fuel_time") or 0
+	local input_time = meta:get_float("input_time") or 0
+	local input_item = meta:get_string("input_item") or ""
+	local fuel_totaltime = meta:get_float("fuel_totaltime") or 0
+
+	local inv = meta:get_inventory()
+	local stand_list, fuellist
+
+	local cookable, cooked
+	local fuel
+
+	local update = true
+
+	while update do
+
+		update = false
+
+		local formspec = brewing_formspec
+
+		formspec = active_brewing_formspec(100,15)
+
+		input_list = inv:get_list("input")
+		stand_list = inv:get_list("stand")
+		fuellist = inv:get_list("fuel")
+
+		for i=1, inv:get_size("stand") do
+			local stack = inv:get_stack("stand", i)
+			print(stack:get_name())
+			print(stack:get_count())
+		end
+
+
+		-- Check if we have compatible alchemy
+		local aftercooked
+		cooked, aftercooked = minetest.get_craft_result({method = "cooking", width = 1, items = stand_list})
+		cookable = cooked.time ~= 0
+
+		-- Check if src item has been changed
+		if stand_list[1]:get_name() ~= input_item then
+			-- Reset cooking progress in this case
+			input_time = 0
+			input_item = stand_list[1]:get_name()
+			update = true
+
+		-- Check if we have enough fuel to burn
+		elseif fuel_time < fuel_totaltime then
+			-- The furnace is currently active and has enough fuel
+			fuel_time = fuel_time + elapsed
+			-- If there is a cookable item then check if it is ready yet
+			if cookable then
+					-- Place result in dst list if done
+					if input_time >= cooked.time then
+						inv:add_item("stand", cooked.item)
+						inv:set_stack("input", 1, aftercooked.items[1])
+
+						input_time = 0
+						update = true
+					end
+
+					elseif input_time ~= 0 then
+					-- If output slot is occupied, stop cooking
+					input_time = 0
+					update = true
+					end
+		else
+			-- Furnace ran out of fuel
+			if cookable then
+				-- We need to get new fuel
+				local afterfuel
+				fuel, afterfuel = minetest.get_craft_result({method = "fuel", width = 1, items = fuellist})
+
+				if fuel.time == 0 then
+					-- No valid fuel in fuel list
+					fuel_totaltime = 0
+					input_time = 0
+				else
+					-- Take fuel from fuel list
+					inv:set_stack("fuel", 1, afterfuel.items[1])
+					update = true
+					fuel_totaltime = fuel.time + (fuel_time - fuel_totaltime)
+					input_time = input_time + elapsed
+				end
+			else
+				-- We don't need to get new fuel since there is no cookable item
+				fuel_totaltime = 0
+				input_time = 0
+			end
+			fuel_time = 0
+		end
+
+		elapsed = 0
+	end
+
+	if fuel and fuel_totaltime > fuel.time then
+		fuel_totaltime = fuel.time
+	end
+	if stand_list[1]:is_empty() then
+		input_time = 0
+	end
+
+	--
+	-- Update formspec and node
+	--
+	local formspec = brewing_formspec
+	formspec = active_brewing_formspec(100,85)
+	local item_state
+	local item_percent = 0
+
+	if cookable then
+		item_percent = math.floor(input_time / cooked.time * 100)
+	end
+
+	local result = false
+
+	if fuel_totaltime ~= 0 then
+		local fuel_percent = math.floor(fuel_time / fuel_totaltime * 100)
+		formspec = active_brewing_formspec(fuel_percent, item_percent)
+		swap_node(pos, "mcl_brewing:stand_active")
+		-- make sure timer restarts automatically
+		result = true
+	else
+		swap_node(pos, "mcl_brewing:stand")
+		-- stop timer on the inactive stand
+		minetest.get_node_timer(pos):stop()
+	end
+
+	--
+	-- Set meta values
+	--
+	meta:set_float("fuel_totaltime", fuel_totaltime)
+	meta:set_float("fuel_time", fuel_time)
+	meta:set_float("input_time", input_time)
+	meta:set_string("input_item", stand_list[1]:get_name())
+	meta:set_string("formspec", formspec)
+
+	return result
+end
+
+
+local function allow_metadata_inventory_put(pos, listname, index, stack, player)
+	local name = player:get_player_name()
+	if minetest.is_protected(pos, name) then
+		minetest.record_protection_violation(pos, name)
 		return 0
 	end
-	local health = (MAX_WEAR - wear)
-	local matsize = material:get_count()
-	local materials_used = 0
-	for m=1, math.min(4, matsize) do
-		materials_used = materials_used + 1
-		if (wear - MATERIAL_TOOL_REPAIR_BOOST[m]) <= 0 then
-			break
+	local meta = minetest.get_meta(pos)
+	local inv = meta:get_inventory()
+	if listname == "fuel" then
+
+		-- Test stack with size 1 because we burn one fuel at a time
+		local teststack = ItemStack(stack)
+		teststack:set_count(1)
+		local output, decremented_input = minetest.get_craft_result({method="fuel", width=1, items={teststack}})
+		if output.time ~= 0 then
+			-- Only allow to place 1 item if fuel get replaced by recipe.
+			-- This is the case for lava buckets.
+			local replace_item = decremented_input.items[1]
+			if replace_item:is_empty() then
+				-- For most fuels, just allow to place everything
+				return stack:get_count()
+			else
+				if inv:get_stack(listname, index):get_count() == 0 then
+					return 1
+				else
+					return 0
+				end
+			end
+		else
+			return 0
 		end
-	end
-	return materials_used
-end
-
--- Given 2 input stacks, tells you which is the tool and which is the material.
--- Returns ("tool", input1, input2) if input1 is tool and input2 is material.
--- Returns ("material", input2, input1) if input1 is material and input2 is tool.
--- Returns nil otherwise.
-local function distinguish_tool_and_material(input1, input2)
-	local def1 = input1:get_definition()
-	local def2 = input2:get_definition()
-	if def1.type == "tool" and def1._repair_material then
-		return "tool", input1, input2
-	elseif def2.type == "tool" and def2._repair_material then
-		return "material", input2, input1
-	else
-		return nil
+	elseif listname == "input" then
+		return stack:get_count()
+	elseif listname == "stand" then
+		return 0
 	end
 end
-
 
 
 -- Drop input items of brewing_stand at pos with metadata meta
@@ -106,7 +279,7 @@ end
 
 
 
-local brewing_standdef = {
+local brewing_stand_def = {
 	groups = {pickaxey=1, falling_node=1, falling_node_damage=1, crush_after_fall=1, deco_block=1, brewing_stand=1},
 	tiles = {"mcl_brewing_top.png", 	--top
 					 "mcl_brewing_base.png", 	--bottom
@@ -191,6 +364,7 @@ local brewing_standdef = {
 			return stack:get_count()
 		end
 	end,
+
 	-- allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
 	-- 	local name = player:get_player_name()
 	-- 	if minetest.is_protected(pos, name) then
@@ -217,7 +391,7 @@ local brewing_standdef = {
 		inv:set_size("stand", 3)
 		-- inv:set_size("stand2", 1)
 		-- inv:set_size("stand3", 1)
-		local form = get_brewing_stand_formspec()
+		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
 
@@ -227,16 +401,19 @@ local brewing_standdef = {
 			minetest.record_protection_violation(pos, sender_name)
 			return
 		end
-
 	end,
+
+	on_timer = brewing_stand_timer,
 }
+
+
 if minetest.get_modpath("screwdriver") then
-	brewing_standdef.on_rotate = screwdriver.rotate_simple
+	brewing_stand_def.on_rotate = screwdriver.rotate_simple
 end
 
-brewing_standdef.description = S("Brewing Stand")
-brewing_standdef._doc_items_longdesc = S("The stand allows you to brew potions!")
-brewing_standdef._doc_items_usagehelp =
+brewing_stand_def.description = S("Brewing Stand")
+brewing_stand_def._doc_items_longdesc = S("The stand allows you to brew potions!")
+brewing_stand_def._doc_items_usagehelp =
 S("To use an brewing_stand, rightclick it. An brewing_stand has 2 input slots (on the left) and one output slot.").."\n"..
 S("To rename items, put an item stack in one of the item slots while keeping the other input slot empty. Type in a name, hit enter or “Set Name”, then take the renamed item from the output slot.").."\n"..
 S("There are two possibilities to repair tools (and armor):").."\n"..
@@ -244,9 +421,13 @@ S("• Tool + Tool: Place two tools of the same type in the input slots. The “
 S("• Tool + Material: Some tools can also be repaired by combining them with an item that it's made of. For example, iron pickaxes can be repaired with iron ingots. This repairs the tool by 25%.").."\n"..
 S("Armor counts as a tool. It is possible to repair and rename a tool in a single step.").."\n\n"..
 S("The brewing_stand has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the brewing_stand gets damaged. brewing_stand also have a chance of being damaged when they fall by more than 1 block. If a very damaged brewing_stand is damaged again, it is destroyed.")
-brewing_standdef._tt_help = S("Repair and rename items")
+brewing_stand_def._tt_help = S("Repair and rename items")
 
-minetest.register_node("mcl_brewing:stand", brewing_standdef)
+minetest.register_node("mcl_brewing:stand", brewing_stand_def)
+
+local brewing_stand_active_def = brewing_stand_def
+brewing_stand_active_def.light_source = 8
+minetest.register_node("mcl_brewing:stand_active", brewing_stand_active_def)
 
 if minetest.get_modpath("mcl_core") then
 	minetest.register_craft({
@@ -267,6 +448,6 @@ minetest.register_lbm({
 	run_at_every_load = false,
 	action = function(pos, node)
 		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", get_brewing_stand_formspec())
+		meta:set_string("formspec", brewing_formspec)
 	end,
 })
