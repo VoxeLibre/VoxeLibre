@@ -397,11 +397,11 @@ brewing_stand_def._tt_help = S("Repair and rename items")
 
 minetest.register_node("mcl_brewing:stand", brewing_stand_def)
 
-local brewing_stand_active_def = brewing_stand_def
-brewing_stand_active_def.light_source = 8
-brewing_stand_active_def.drop = "mcl_brewing:stand"
-brewing_stand_active_def.groups = {not_in_creative_inventory=1, pickaxey=1, falling_node=1, falling_node_damage=1, crush_after_fall=1, deco_block=1, brewing_stand=1}
-minetest.register_node("mcl_brewing:stand_active", brewing_stand_active_def)
+-- local brewing_stand_active_def = brewing_stand_def
+-- brewing_stand_active_def.light_source = 8
+-- brewing_stand_active_def.drop = "mcl_brewing:stand"
+-- brewing_stand_active_def.groups = {not_in_creative_inventory=1, pickaxey=1, falling_node=1, falling_node_damage=1, crush_after_fall=1, deco_block=1, brewing_stand=1}
+-- minetest.register_node("mcl_brewing:stand_active", brewing_stand_active_def)
 
 if minetest.get_modpath("mcl_core") then
 	minetest.register_craft({
