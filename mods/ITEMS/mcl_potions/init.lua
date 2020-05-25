@@ -280,12 +280,6 @@ minetest.register_craftitem("mcl_potions:potion_mundane", {
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
 
-minetest.register_craft({
-	type = "cooking",
-	output = "mcl_potions:potion_awkward",
-recipe = "mcl_nether:nether_wart_item", --"mcl_potions:potion_river_water"},
-	cooktime = 10,
-})
 
 minetest.register_craftitem("mcl_potions:potion_thick", {
 	description = S("Thick Potion"),
@@ -326,5 +320,15 @@ minetest.register_craftitem("mcl_potions:dragon_breath", {
 	inventory_image = "mcl_potions_dragon_breath.png",
 	-- TODO: Reveal item when it's actually useful
 	groups = { brewitem = 1, not_in_creative_inventory = 1 },
+	stack_max = 64,
+})
+
+minetest.register_craftitem("mcl_potions:healing", {
+	description = S("Healing Potion"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = "mcl_potions_healing.png",
+	inventory_image = "mcl_potions_healing.png",
+	-- TODO: Reveal item when it's actually useful
+	groups = { brewitem = 1, food=5},
 	stack_max = 64,
 })

@@ -71,12 +71,37 @@ local function swap_node(pos, name)
 end
 
 
+local function brewable(inv)
+
+	local ingredient = inv:get_stack("input",1):get_name()
+	local stands = {"","",""}
+
+	for i=1,3 do
+
+		local bottle = inv:get_stack("stand", i):get_name()
+
+		if ingredient == "mcl_nether:nether_wart_item" and bottle == "mcl_potions:potion_river_water" or "mcl_potions:potion_water" then
+			stands[i] = "mcl_potions:potion_awkward"
+		end
+
+	end
+
+	for i=1,3 do
+		if stands[i] then return stands end
+	end
+
+	return false
+
+end
+
+
 local function brewing_stand_timer(pos, elapsed)
 	-- Inizialize metadata
 	local meta = minetest.get_meta(pos)
 
 	local fuel_time = meta:get_float("fuel_time") or 0
 	local fuel_totaltime = meta:get_float("fuel_totaltime") or 0
+	local BREW_TIME = 10
 
 	local input_item = meta:get_string("input_item") or ""
 
@@ -87,7 +112,6 @@ local function brewing_stand_timer(pos, elapsed)
 
 	local input_list, stand_list, fuel_list
 
-	local brewable, brewed
 	local fuel
 
 	local update = true
@@ -109,11 +133,21 @@ local function brewing_stand_timer(pos, elapsed)
 		-- 	end
 		-- end
 
+		local brew_output = brewable(inv)
+
 		if fuel_time < fuel_totaltime then
 
 			fuel_time = fuel_time + elapsed
 
-			--TODO check to see if we can brew
+			-- Replace the stand item with the brew result
+			if brew_output and (stand_timer >= BREW_TIME) then
+				for i=1, inv:get_size("stand", i) do
+					if brew_output[i] then
+						inv:set_stack("stand", i, brew_output[i])
+					end
+				end
+			end
+
 
 		else --get more fuel from fuel_list
 
@@ -139,7 +173,6 @@ local function brewing_stand_timer(pos, elapsed)
 			end
 
 		end
-
 		elapsed = 0
 	end
 
@@ -160,11 +193,12 @@ local function brewing_stand_timer(pos, elapsed)
 
 	if fuel_totaltime ~= 0 then
 		local fuel_percent = math.floor(fuel_time/fuel_totaltime*100)
-		formspec = active_brewing_formspec(fuel_percent, 60)
-		swap_node(pos, "mcl_brewing:stand_active")
+		local brew_percent = math.floor(stand_timer/BREW_TIME*100) % 100
+		formspec = active_brewing_formspec(fuel_percent, stand_timer)
+		-- swap_node(pos, "mcl_brewing:stand_active")
 		result = true
 	else
-		swap_node(pos, "mcl_brewing:stand")
+		-- swap_node(pos, "mcl_brewing:stand")
 		minetest.get_node_timer(pos):stop()
 	end
 
