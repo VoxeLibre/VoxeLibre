@@ -4,8 +4,7 @@ local NAME_COLOR = "#FFFF4C"
 local function active_brewing_formspec(fuel_percent, item_percent)
 
 	return "size[9,8.75]"..
-	"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png^[lowpart:"..
-	(item_percent)..":mcl_brewing_inventory_active.png]"..
+	"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]"..
 	-- "background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory_active.png]"..
 	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
@@ -22,6 +21,12 @@ local function active_brewing_formspec(fuel_percent, item_percent)
 	mcl_formspec.get_itemslot_bg(6,2.8,1,1).."image[6,2.8;1,1;mcl_brewing_bottle_bg.png]"..
 	"list[context;stand;7.5,2.5;1,1;2]"..
 	mcl_formspec.get_itemslot_bg(7.5,2.5,1,1).."image[7.5,2.5;1,1;mcl_brewing_bottle_bg.png]"..
+
+	"image[2.7,3.33;1.28,0.41;mcl_brewing_burner.png^[lowpart:"..
+	(100-fuel_percent)..":mcl_brewing_burner_active.png^[transformR270]"..
+
+	"image[2.76,1.4;1,2.15;mcl_brewing_bubbles.png^[lowpart:"..
+	(item_percent)..":mcl_brewing_bubbles_active.png]"..
 
 	"listring[current_player;main]"..
 	"listring[current_name;fuel]"..
@@ -47,11 +52,8 @@ local brewing_formspec = "size[9,8.75]"..
 	"list[context;stand;7.5,2.5;1,1;2]"..
 	mcl_formspec.get_itemslot_bg(7.5,2.5,1,1).."image[7.5,2.5;1,1;mcl_brewing_bottle_bg.png]"..
 
-	"image[2.7,3.33;1.28,0.41;mcl_brewing_burner.png^[lowpart:"..
-	(65)..":mcl_brewing_burner_active.png^[transformR270]"..
-
-	"image[2.76,1.4;1,2.15;mcl_brewing_bubbles.png^[lowpart:"..
-	(65)..":mcl_brewing_bubbles_active.png]"..
+	"image[2.7,3.33;1.28,0.41;mcl_brewing_burner.png^[transformR270]"..
+	"image[2.76,1.4;1,2.15;mcl_brewing_bubbles.png]"..
 
 	"listring[current_player;main]"..
 	"listring[current_name;fuel]"..
@@ -73,14 +75,17 @@ local function brewing_stand_timer(pos, elapsed)
 	-- Inizialize metadata
 	local meta = minetest.get_meta(pos)
 	local fuel_time = meta:get_float("fuel_time") or 0
-	local input_time = meta:get_float("input_time") or 0
+	-- local input_time = meta:get_float("input_time") or 0
 	local input_item = meta:get_string("input_item") or ""
 	local fuel_totaltime = meta:get_float("fuel_totaltime") or 0
 
-	local inv = meta:get_inventory()
-	local stand_list, fuellist
+	local stand_timer = {0,0,0}
+	local stand_item = {"","",""}
 
-	local cookable, cooked
+	local inv = meta:get_inventory()
+	local stand_list, fuel_list
+
+	local brewable, brewed
 	local fuel
 
 	local update = true
@@ -89,77 +94,53 @@ local function brewing_stand_timer(pos, elapsed)
 
 		update = false
 
-		local formspec = brewing_formspec
-
-		formspec = active_brewing_formspec(100,15)
-
 		input_list = inv:get_list("input")
 		stand_list = inv:get_list("stand")
-		fuellist = inv:get_list("fuel")
-
-		for i=1, inv:get_size("stand") do
-			local stack = inv:get_stack("stand", i)
-			print(stack:get_name())
-			print(stack:get_count())
-		end
+		fuel_list = inv:get_list("fuel")
 
 
-		-- Check if we have compatible alchemy
-		local aftercooked
-		cooked, aftercooked = minetest.get_craft_result({method = "cooking", width = 1, items = stand_list})
-		cookable = cooked.time ~= 0
+		--TODO check if the stands have changed items
 
-		-- Check if src item has been changed
-		if stand_list[1]:get_name() ~= input_item then
-			-- Reset cooking progress in this case
-			input_time = 0
-			input_item = stand_list[1]:get_name()
-			update = true
+		if fuel_time < fuel_totaltime then
 
-		-- Check if we have enough fuel to burn
-		elseif fuel_time < fuel_totaltime then
-			-- The furnace is currently active and has enough fuel
 			fuel_time = fuel_time + elapsed
-			-- If there is a cookable item then check if it is ready yet
-			if cookable then
-					-- Place result in dst list if done
-					if input_time >= cooked.time then
-						inv:add_item("stand", cooked.item)
-						inv:set_stack("input", 1, aftercooked.items[1])
 
-						input_time = 0
-						update = true
-					end
+			--TODO check to see if we can brew
 
-					elseif input_time ~= 0 then
-					-- If output slot is occupied, stop cooking
-					input_time = 0
-					update = true
-					end
-		else
-			-- Furnace ran out of fuel
-			if cookable then
-				-- We need to get new fuel
-				local afterfuel
-				fuel, afterfuel = minetest.get_craft_result({method = "fuel", width = 1, items = fuellist})
+		else --get more fuel from fuel_list
 
-				if fuel.time == 0 then
-					-- No valid fuel in fuel list
-					fuel_totaltime = 0
-					input_time = 0
-				else
-					-- Take fuel from fuel list
-					inv:set_stack("fuel", 1, afterfuel.items[1])
-					update = true
-					fuel_totaltime = fuel.time + (fuel_time - fuel_totaltime)
-					input_time = input_time + elapsed
-				end
-			else
-				-- We don't need to get new fuel since there is no cookable item
+			local after_fuel
+
+			-- for i=1, inv:get_size("stand") do
+			-- 	local stack = inv:get_stack("stand", i)
+			-- 	print(stack:get_name())
+			-- 	print(stack:get_count())
+			-- end
+			print(inv:get_stack("fuel",1):get_name())
+
+			fuel, after_fuel = minetest.get_craft_result({method="fuel", width=1, items=fuel_list})
+
+			if fuel.time == 0 then --no valid fuel, reset timers
 				fuel_totaltime = 0
-				input_time = 0
+
+				for i=1, inv:get_size("stand", i) do
+					stand_timer[i] = 0
+				end
+
+				fuel_totaltime = 0
+				for i=1, inv:get_size("stand", i) do
+					stand_timer[i] = 0
+				end
+			-- only allow blaze powder fuel
+			elseif inv:get_stack("fuel",1):get_name() == "mcl_mobitems:blaze_powder" then   -- Grab another fuel
+				inv:set_stack("fuel", 1, after_fuel.items[1])
+				update = true
+				fuel_totaltime = fuel.time + (fuel_time - fuel_totaltime)
+				for i=1, inv:get_size("stand", i) do
+					stand_timer[i] = stand_timer[i] + elapsed
+				end
 			end
-			fuel_time = 0
+
 		end
 
 		elapsed = 0
@@ -168,43 +149,33 @@ local function brewing_stand_timer(pos, elapsed)
 	if fuel and fuel_totaltime > fuel.time then
 		fuel_totaltime = fuel.time
 	end
-	if stand_list[1]:is_empty() then
-		input_time = 0
+
+	for i=1, inv:get_size("stand", i) do
+		if stand_list[i]:is_empty() then
+			stand_timer[i] = 0
+		end
 	end
 
-	--
-	-- Update formspec and node
-	--
+	--update formspec
 	local formspec = brewing_formspec
-	formspec = active_brewing_formspec(100,85)
-	local item_state
-	local item_percent = 0
-
-	if cookable then
-		item_percent = math.floor(input_time / cooked.time * 100)
-	end
 
 	local result = false
 
 	if fuel_totaltime ~= 0 then
-		local fuel_percent = math.floor(fuel_time / fuel_totaltime * 100)
-		formspec = active_brewing_formspec(fuel_percent, item_percent)
+		local fuel_percent = math.floor(fuel_time/fuel_totaltime*100)
+		formspec = active_brewing_formspec(fuel_percent, 60)
 		swap_node(pos, "mcl_brewing:stand_active")
-		-- make sure timer restarts automatically
 		result = true
 	else
 		swap_node(pos, "mcl_brewing:stand")
-		-- stop timer on the inactive stand
 		minetest.get_node_timer(pos):stop()
 	end
 
-	--
-	-- Set meta values
-	--
+
 	meta:set_float("fuel_totaltime", fuel_totaltime)
 	meta:set_float("fuel_time", fuel_time)
-	meta:set_float("input_time", input_time)
-	meta:set_string("input_item", stand_list[1]:get_name())
+	-- meta:set_float("src_time", src_time)
+	-- meta:set_string("src_item", srclist[1]:get_name())
 	meta:set_string("formspec", formspec)
 
 	return result
@@ -277,10 +248,13 @@ local function drop_brewing_stand_items(pos, meta)
 end
 
 
-
+local on_rotate
+if minetest.get_modpath("screwdriver") then
+	on_rotate = screwdriver.rotate_simple
+end
 
 local brewing_stand_def = {
-	groups = {pickaxey=1, falling_node=1, falling_node_damage=1, crush_after_fall=1, deco_block=1, brewing_stand=1},
+	groups = {pickaxey=1, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1},
 	tiles = {"mcl_brewing_top.png", 	--top
 					 "mcl_brewing_base.png", 	--bottom
 					 "mcl_brewing_side.png", 	--right
@@ -295,7 +269,7 @@ local brewing_stand_def = {
 	node_box = {
 		type = "fixed",
 		fixed = {
-		--TODO: add bottle hangers
+
 			{-1/16, -5/16, -1/16, 1/16, 8/16, 1/16}, -- heat plume
 			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
 			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
@@ -404,6 +378,7 @@ local brewing_stand_def = {
 	end,
 
 	on_timer = brewing_stand_timer,
+	on_rotate = on_rotate,
 }
 
 
@@ -427,6 +402,8 @@ minetest.register_node("mcl_brewing:stand", brewing_stand_def)
 
 local brewing_stand_active_def = brewing_stand_def
 brewing_stand_active_def.light_source = 8
+brewing_stand_active_def.drop = "mcl_brewing:stand"
+brewing_stand_active_def.groups = {not_in_creative_inventory=1, pickaxey=1, falling_node=1, falling_node_damage=1, crush_after_fall=1, deco_block=1, brewing_stand=1}
 minetest.register_node("mcl_brewing:stand_active", brewing_stand_active_def)
 
 if minetest.get_modpath("mcl_core") then
