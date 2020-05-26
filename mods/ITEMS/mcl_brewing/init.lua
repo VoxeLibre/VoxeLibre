@@ -75,23 +75,35 @@ local function brewable(inv)
 
 	local ingredient = inv:get_stack("input",1):get_name()
 	local stands = {"","",""}
+	local stand_size = inv:get_size("stand")
 
-	for i=1,3 do
+	for i=1,stand_size do
 
 		local bottle = inv:get_stack("stand", i):get_name()
+		stands[i] = bottle -- initialize the stand
 
-		if ingredient == "mcl_nether:nether_wart_item" and bottle == "mcl_potions:potion_river_water" or "mcl_potions:potion_water" then
-			stands[i] = "mcl_potions:potion_awkward"
+		if bottle == "mcl_potions:potion_river_water" or bottle == "mcl_potions:potion_water" then
+			if ingredient == "mcl_nether:nether_wart_item" then
+				stands[i] = "mcl_potions:potion_awkward"
+			elseif ingredient == "mcl_potions:fermented_spider_eye" then
+				stands[i] = "mcl_potions:weakness"
+			end
+
+		elseif bottle == "mcl_potions:potion_awkward" then
+			if ingredient == "mcl_potions:speckled_melon" then
+				stands[i] = "mcl_potions:healing"
+			end
 		end
 
 	end
-
-	for i=1,3 do
-		if stands[i] then return stands end
+	-- if any stand holds a new potion, return the list of new potions
+	for i=1,stand_size do
+		if stands[i] ~= inv:get_stack("stand", i):get_name() then
+			return stands
+		end
 	end
 
 	return false
-
 end
 
 
@@ -101,7 +113,7 @@ local function brewing_stand_timer(pos, elapsed)
 
 	local fuel_time = meta:get_float("fuel_time") or 0
 	local fuel_totaltime = meta:get_float("fuel_totaltime") or 0
-	local BREW_TIME = 10
+	local BREW_TIME = 30 -- all brews take max of 10
 
 	local input_item = meta:get_string("input_item") or ""
 
@@ -124,11 +136,12 @@ local function brewing_stand_timer(pos, elapsed)
 		stand_list = inv:get_list("stand")
 		fuel_list = inv:get_list("fuel")
 
-		-- TODO fix this function to check for change in stand content...
+		-- TODO ... fix this.  Goal is to reset the process if the stand changes
 		-- for i=1, inv:get_size("stand", i) do -- reset the process due to change
-		-- 	if  stand_list[i]:get_name() ~= stand_list[i] then
+		-- 	local _name = inv:get_stack("stand", i):get_name()
+		-- 	if  _name ~= stand_list[i] then
 		-- 		stand_timer = 0
-		-- 		stand_list[i] = stand_list[i]:get_name()
+		-- 		stand_list[i] = _name
 		-- 		update = true -- need to update the stand with new data
 		-- 	end
 		-- end
@@ -139,39 +152,58 @@ local function brewing_stand_timer(pos, elapsed)
 
 			fuel_time = fuel_time + elapsed
 
-			-- Replace the stand item with the brew result
-			if brew_output and (stand_timer >= BREW_TIME) then
-				for i=1, inv:get_size("stand", i) do
-					if brew_output[i] then
-						inv:set_stack("stand", i, brew_output[i])
+			if brew_output then
+
+				stand_timer = stand_timer + elapsed
+				-- Replace the stand item with the brew result
+				if stand_timer >= BREW_TIME then
+
+					local input_count = inv:get_stack("input",1):get_count()
+					if (input_count-1) ~= 0 then
+						inv:set_stack("input",1,inv:get_stack("input",1):get_name().." "..(input_count-1))
+					else
+						inv:set_stack("input",1,"")
 					end
+
+					for i=1, inv:get_size("stand") do
+						if brew_output[i] then
+							inv:set_stack("stand", i, brew_output[i])
+						end
+					end
+					stand_timer = 0
+					update = false -- stop the update if brew is complete
 				end
+
 			end
 
 
 		else --get more fuel from fuel_list
 
 			local after_fuel
-
-			-- print(inv:get_stack("fuel",1):get_name())
-
 			fuel, after_fuel = minetest.get_craft_result({method="fuel", width=1, items=fuel_list})
 
-			if fuel.time == 0 then --no valid fuel, reset timers
+			if brew_output then
 
-				fuel_totaltime = 0
+				if fuel.time == 0 then --no valid fuel, reset timers
+
+					fuel_totaltime = 0
+					stand_timer = 0
+
+				-- only allow blaze powder fuel
+				elseif inv:get_stack("fuel",1):get_name() == "mcl_mobitems:blaze_powder" then   -- Grab another fuel
+					inv:set_stack("fuel", 1, after_fuel.items[1])
+
+					update = true
+					fuel_totaltime = fuel.time + (fuel_time - fuel_totaltime)
+					stand_timer = stand_timer + elapsed
+
+				end
+
+			else --if no output potion, stop the process
+				fuel_total_time = 0
 				stand_timer = 0
-
-			-- only allow blaze powder fuel
-			elseif inv:get_stack("fuel",1):get_name() == "mcl_mobitems:blaze_powder" then   -- Grab another fuel
-				inv:set_stack("fuel", 1, after_fuel.items[1])
-
-				update = true
-
-				fuel_totaltime = fuel.time + (fuel_time - fuel_totaltime)
-				stand_timer = stand_timer + elapsed
 			end
-
+			fuel_time = 0
 		end
 		elapsed = 0
 	end
@@ -180,11 +212,11 @@ local function brewing_stand_timer(pos, elapsed)
 		fuel_totaltime = fuel.time
 	end
 
-	for i=1, inv:get_size("stand", i) do
-		if stand_list[i]:is_empty() then
-			stand_timer = 0
-		end
-	end
+	-- for i=1, inv:get_size("stand") do
+	-- 	if stand_list[i]:is_empty() then
+	-- 		stand_timer = 0
+	-- 	end
+	-- end
 
 	--update formspec
 	local formspec = brewing_formspec
@@ -193,8 +225,8 @@ local function brewing_stand_timer(pos, elapsed)
 
 	if fuel_totaltime ~= 0 then
 		local fuel_percent = math.floor(fuel_time/fuel_totaltime*100)
-		local brew_percent = math.floor(stand_timer/BREW_TIME*100) % 100
-		formspec = active_brewing_formspec(fuel_percent, stand_timer)
+		local brew_percent = math.floor(stand_timer/BREW_TIME*100)
+		formspec = active_brewing_formspec(fuel_percent, brew_percent*2 % 100)
 		-- swap_node(pos, "mcl_brewing:stand_active")
 		result = true
 	else
@@ -340,7 +372,6 @@ local brewing_stand_def = {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 1200,
 	_mcl_hardness = 5,
-	_mcl_after_falling = damage_brewing_stand_by_falling,
 
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)

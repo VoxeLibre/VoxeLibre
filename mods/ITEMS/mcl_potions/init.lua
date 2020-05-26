@@ -290,7 +290,7 @@ minetest.register_craftitem("mcl_potions:potion_thick", {
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
 	-- TODO: Reveal item when it's actually useful
-	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=1 },
+	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
 	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
@@ -300,7 +300,7 @@ minetest.register_craftitem("mcl_potions:speckled_melon", {
 	_doc_items_longdesc = S("This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else."),
 	stack_max = 64,
 	-- TODO: Reveal item when it's actually useful
-	groups = { brewitem = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1 },
+	groups = { brewitem = 1, not_in_creative_inventory = 0, not_in_craft_guide = 1 },
 	inventory_image = "mcl_potions_melon_speckled.png",
 })
 
@@ -319,7 +319,7 @@ minetest.register_craftitem("mcl_potions:dragon_breath", {
 	wield_image = "mcl_potions_dragon_breath.png",
 	inventory_image = "mcl_potions_dragon_breath.png",
 	-- TODO: Reveal item when it's actually useful
-	groups = { brewitem = 1, not_in_creative_inventory = 1 },
+	groups = { brewitem = 1, not_in_creative_inventory = 0 },
 	stack_max = 64,
 })
 
@@ -330,5 +330,15 @@ minetest.register_craftitem("mcl_potions:healing", {
 	inventory_image = "mcl_potions_healing.png",
 	-- TODO: Reveal item when it's actually useful
 	groups = { brewitem = 1, food=5},
-	stack_max = 64,
+	stack_max = 1,
+})
+
+minetest.register_craftitem("mcl_potions:weakness", {
+	description = S("Healing Potion"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = "mcl_potions_weakness.png",
+	inventory_image = "mcl_potions_weakness.png",
+	-- TODO: Reveal item when it's actually useful
+	groups = { brewitem = 1, food=-5},
+	stack_max = 1,
 })
