@@ -226,7 +226,7 @@ local function brewing_stand_timer(pos, elapsed)
 	if fuel_totaltime ~= 0 then
 		local fuel_percent = math.floor(fuel_time/fuel_totaltime*100)
 		local brew_percent = math.floor(stand_timer/BREW_TIME*100)
-		formspec = active_brewing_formspec(fuel_percent, brew_percent*2 % 100)
+		formspec = active_brewing_formspec(fuel_percent, brew_percent*4 % 100)
 		-- swap_node(pos, "mcl_brewing:stand_active")
 		result = true
 	else

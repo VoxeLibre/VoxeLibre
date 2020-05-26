@@ -320,7 +320,7 @@ minetest.register_craftitem("mcl_potions:dragon_breath", {
 	inventory_image = "mcl_potions_dragon_breath.png",
 	-- TODO: Reveal item when it's actually useful
 	groups = { brewitem = 1, not_in_creative_inventory = 0 },
-	stack_max = 64,
+	stack_max = 1,
 })
 
 minetest.register_craftitem("mcl_potions:healing", {
@@ -334,7 +334,7 @@ minetest.register_craftitem("mcl_potions:healing", {
 })
 
 minetest.register_craftitem("mcl_potions:weakness", {
-	description = S("Healing Potion"),
+	description = S("Weakness Potion"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = "mcl_potions_weakness.png",
 	inventory_image = "mcl_potions_weakness.png",
