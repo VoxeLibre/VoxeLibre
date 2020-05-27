@@ -118,7 +118,7 @@ local function brewing_stand_timer(pos, elapsed)
 	local input_item = meta:get_string("input_item") or ""
 
 	local stand_timer = meta:get_float("stand_timer") or 0
-	local stand_items = meta:get_string("stand_items") or {"","",""}
+	-- local stand_items = meta:get_list("stand_items") or {"","",""}
 
 	local inv = meta:get_inventory()
 
@@ -139,10 +139,11 @@ local function brewing_stand_timer(pos, elapsed)
 		-- TODO ... fix this.  Goal is to reset the process if the stand changes
 		-- for i=1, inv:get_size("stand", i) do -- reset the process due to change
 		-- 	local _name = inv:get_stack("stand", i):get_name()
-		-- 	if  _name ~= stand_list[i] then
+		-- 	if  _name ~= stand_items[i] then
 		-- 		stand_timer = 0
-		-- 		stand_list[i] = _name
+		-- 		stand_items[i] = _name
 		-- 		update = true -- need to update the stand with new data
+		--    return 1
 		-- 	end
 		-- end
 
@@ -238,7 +239,7 @@ local function brewing_stand_timer(pos, elapsed)
 	meta:set_float("fuel_totaltime", fuel_totaltime)
 	meta:set_float("fuel_time", fuel_time)
 	meta:set_float("stand_timer", stand_timer)
-	-- meta:set_string("stand_items", stand_list)
+	-- meta:set_list("stand_items", stand_list)
 	meta:set_string("formspec", formspec)
 
 	return result
