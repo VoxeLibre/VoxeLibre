@@ -8,7 +8,7 @@ minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 	wield_image = "mcl_potions_spider_eye_fermented.png",
 	inventory_image = "mcl_potions_spider_eye_fermented.png",
 	-- TODO: Reveal item when it's actually useful
-	groups = { brewitem = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1 },
+	groups = { brewitem = 1, not_in_creative_inventory = 0, not_in_craft_guide = 0 },
 	stack_max = 64,
 })
 
