@@ -1,5 +1,4 @@
 local S = minetest.get_translator("mcl_brewing_stand")
-local NAME_COLOR = "#FFFF4C"
 
 local function active_brewing_formspec(fuel_percent, item_percent)
 
@@ -76,32 +75,23 @@ local function brewable(inv)
 	local ingredient = inv:get_stack("input",1):get_name()
 	local stands = {"","",""}
 	local stand_size = inv:get_size("stand")
+	local was_alchemy = true
 
 	for i=1,stand_size do
 
 		local bottle = inv:get_stack("stand", i):get_name()
-		stands[i] = bottle -- initialize the stand
 
-		if bottle == "mcl_potions:potion_river_water" or bottle == "mcl_potions:potion_water" then
-			if ingredient == "mcl_nether:nether_wart_item" then
-				stands[i] = "mcl_potions:potion_awkward"
-			elseif ingredient == "mcl_potions:fermented_spider_eye" then
-				stands[i] = "mcl_potions:weakness"
-			end
-
-		elseif bottle == "mcl_potions:potion_awkward" then
-			if ingredient == "mcl_potions:speckled_melon" then
-				stands[i] = "mcl_potions:healing"
-			end
+		local alchemy = mcl_potions.get_alchemy(ingredient, bottle)
+		if alchemy then
+			stands[i] = alchemy
+		else
+			stands[i] = bottle
+			was_alchemy = false
 		end
 
 	end
 	-- if any stand holds a new potion, return the list of new potions
-	for i=1,stand_size do
-		if stands[i] ~= inv:get_stack("stand", i):get_name() then
-			return stands
-		end
-	end
+	if was_alchemy then return stands end
 
 	return false
 end

@@ -299,7 +299,6 @@ minetest.register_craftitem("mcl_potions:speckled_melon", {
 	description = S("Glistering Melon"),
 	_doc_items_longdesc = S("This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else."),
 	stack_max = 64,
-	-- TODO: Reveal item when it's actually useful
 	groups = { brewitem = 1, not_in_creative_inventory = 0, not_in_craft_guide = 1 },
 	inventory_image = "mcl_potions_melon_speckled.png",
 })
@@ -318,7 +317,6 @@ minetest.register_craftitem("mcl_potions:dragon_breath", {
 	_doc_items_longdesc = brewhelp,
 	wield_image = "mcl_potions_dragon_breath.png",
 	inventory_image = "mcl_potions_dragon_breath.png",
-	-- TODO: Reveal item when it's actually useful
 	groups = { brewitem = 1, not_in_creative_inventory = 0 },
 	stack_max = 1,
 })
@@ -328,7 +326,6 @@ minetest.register_craftitem("mcl_potions:healing", {
 	_doc_items_longdesc = brewhelp,
 	wield_image = "mcl_potions_healing.png",
 	inventory_image = "mcl_potions_healing.png",
-	-- TODO: Reveal item when it's actually useful
 	groups = { brewitem = 1, food=5},
 	stack_max = 1,
 })
@@ -338,7 +335,50 @@ minetest.register_craftitem("mcl_potions:weakness", {
 	_doc_items_longdesc = brewhelp,
 	wield_image = "mcl_potions_weakness.png",
 	inventory_image = "mcl_potions_weakness.png",
-	-- TODO: Reveal item when it's actually useful
 	groups = { brewitem = 1, food=-5},
 	stack_max = 1,
 })
+
+minetest.register_craftitem("mcl_potions:night_vision", {
+	description = S("Night Vision Potion"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = "mcl_potions_night_vision.png",
+	inventory_image = "mcl_potions_night_vision.png",
+	groups = { brewitem = 1, food=0},
+	stack_max = 1,
+})
+
+minetest.register_craftitem("mcl_potions:swiftness", {
+	description = S("Swiftness Potion"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = "mcl_potions_swiftness.png",
+	inventory_image = "mcl_potions_swiftness.png",
+	groups = { brewitem = 1, food=0},
+	stack_max = 1,
+})
+
+mcl_potions = {}
+
+-- Compare two ingredients for compatable alchemy
+function mcl_potions.get_alchemy(ingr, pot)
+
+	if pot == "mcl_potions:potion_river_water" or pot == "mcl_potions:potion_water" then
+		if ingr == "mcl_nether:nether_wart_item" then
+			return "mcl_potions:potion_awkward"
+		elseif ingr == "mcl_potions:fermented_spider_eye" then
+			return "mcl_potions:weakness"
+		end
+
+	elseif pot == "mcl_potions:potion_awkward" then
+		if ingr == "mcl_potions:speckled_melon" then
+			return "mcl_potions:healing"
+		elseif ingr == "mcl_farming:carrot_item_gold" then
+			return "mcl_potions:night_vision"
+		elseif ingr == "mcl_core:sugar" then
+			return "mcl_potions:swiftness"
+		end
+
+	else
+		return  false
+	end
+end
