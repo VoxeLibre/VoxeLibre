@@ -73,9 +73,9 @@ end
 local function brewable(inv)
 
 	local ingredient = inv:get_stack("input",1):get_name()
-	local stands = {"","",""}
+	local stands = {}
 	local stand_size = inv:get_size("stand")
-	local was_alchemy = true
+	local was_alchemy = {false,false,false}
 
 	for i=1,stand_size do
 
@@ -84,14 +84,16 @@ local function brewable(inv)
 		local alchemy = mcl_potions.get_alchemy(ingredient, bottle)
 		if alchemy then
 			stands[i] = alchemy
+			was_alchemy[i] = true
 		else
 			stands[i] = bottle
-			was_alchemy = false
 		end
 
 	end
 	-- if any stand holds a new potion, return the list of new potions
-	if was_alchemy then return stands end
+	for i=1,table.getn(was_alchemy) do
+		if was_alchemy[i] then return stands end
+	end
 
 	return false
 end
@@ -204,12 +206,6 @@ local function brewing_stand_timer(pos, elapsed)
 	if fuel and fuel_totaltime > fuel.time then
 		fuel_totaltime = fuel.time
 	end
-
-	-- for i=1, inv:get_size("stand") do
-	-- 	if stand_list[i]:is_empty() then
-	-- 		stand_timer = 0
-	-- 	end
-	-- end
 
 	--update formspec
 	local formspec = brewing_formspec

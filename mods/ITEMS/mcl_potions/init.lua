@@ -359,26 +359,33 @@ minetest.register_craftitem("mcl_potions:swiftness", {
 
 mcl_potions = {}
 
+function key_in_table(table,key)
+    return table[key] ~= nil
+end
+
+local water_table = {
+	["mcl_nether:nether_wart_item"] = "mcl_potions:potion_awkward",
+	["mcl_potions:fermented_spider_eye"] = "mcl_potions:weakness",
+}
+local awkward_table = {
+	["mcl_potions:speckled_melon"] = "mcl_potions:healing",
+	["mcl_farming:carrot_item_gold"] = "mcl_potions:night_vision",
+	["mcl_core:sugar"] = "mcl_potions:swiftness",
+}
+local output_table = {
+	["mcl_potions:potion_river_water"] = water_table,
+	["mcl_potions:potion_water"] = water_table,
+	["mcl_potions:potion_awkward"] = awkward_table,
+}
+
 -- Compare two ingredients for compatable alchemy
 function mcl_potions.get_alchemy(ingr, pot)
 
-	if pot == "mcl_potions:potion_river_water" or pot == "mcl_potions:potion_water" then
-		if ingr == "mcl_nether:nether_wart_item" then
-			return "mcl_potions:potion_awkward"
-		elseif ingr == "mcl_potions:fermented_spider_eye" then
-			return "mcl_potions:weakness"
+	if output_table[pot] ~= nil then
+		local brew_table = output_table[pot]
+		if brew_table[ingr] ~= nil then
+			return brew_table[ingr]
 		end
-
-	elseif pot == "mcl_potions:potion_awkward" then
-		if ingr == "mcl_potions:speckled_melon" then
-			return "mcl_potions:healing"
-		elseif ingr == "mcl_farming:carrot_item_gold" then
-			return "mcl_potions:night_vision"
-		elseif ingr == "mcl_core:sugar" then
-			return "mcl_potions:swiftness"
-		end
-
-	else
-		return  false
 	end
+	return false
 end
