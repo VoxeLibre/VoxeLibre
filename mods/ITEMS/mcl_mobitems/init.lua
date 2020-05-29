@@ -429,12 +429,6 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
-	type = "fuel",
-	recipe = "mcl_mobitems:blaze_powder",
-	burntime = 120,
-})
-
-minetest.register_craft({
 	output = 'mcl_mobitems:slimeball 9',
 	recipe = {{"mcl_core:slimeblock"}},
 })
