@@ -8,7 +8,7 @@ minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 	wield_image = "mcl_potions_spider_eye_fermented.png",
 	inventory_image = "mcl_potions_spider_eye_fermented.png",
 	-- TODO: Reveal item when it's actually useful
-	groups = { brewitem = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1 },
+	groups = { brewitem = 1, not_in_creative_inventory = 0, not_in_craft_guide = 0 },
 	stack_max = 64,
 })
 
@@ -279,6 +279,8 @@ minetest.register_craftitem("mcl_potions:potion_mundane", {
 	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
+
+
 minetest.register_craftitem("mcl_potions:potion_thick", {
 	description = S("Thick Potion"),
 	_tt_help = S("No effect"),
@@ -288,7 +290,7 @@ minetest.register_craftitem("mcl_potions:potion_thick", {
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
 	-- TODO: Reveal item when it's actually useful
-	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=1 },
+	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
 	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
@@ -297,8 +299,7 @@ minetest.register_craftitem("mcl_potions:speckled_melon", {
 	description = S("Glistering Melon"),
 	_doc_items_longdesc = S("This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else."),
 	stack_max = 64,
-	-- TODO: Reveal item when it's actually useful
-	groups = { brewitem = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1 },
+	groups = { brewitem = 1, not_in_creative_inventory = 0, not_in_craft_guide = 1 },
 	inventory_image = "mcl_potions_melon_speckled.png",
 })
 
@@ -316,7 +317,75 @@ minetest.register_craftitem("mcl_potions:dragon_breath", {
 	_doc_items_longdesc = brewhelp,
 	wield_image = "mcl_potions_dragon_breath.png",
 	inventory_image = "mcl_potions_dragon_breath.png",
-	-- TODO: Reveal item when it's actually useful
-	groups = { brewitem = 1, not_in_creative_inventory = 1 },
-	stack_max = 64,
+	groups = { brewitem = 1, not_in_creative_inventory = 0 },
+	stack_max = 1,
 })
+
+minetest.register_craftitem("mcl_potions:healing", {
+	description = S("Healing Potion"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = "mcl_potions_healing.png",
+	inventory_image = "mcl_potions_healing.png",
+	groups = { brewitem = 1, food=5},
+	stack_max = 1,
+})
+
+minetest.register_craftitem("mcl_potions:weakness", {
+	description = S("Weakness Potion"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = "mcl_potions_weakness.png",
+	inventory_image = "mcl_potions_weakness.png",
+	groups = { brewitem = 1, food=-5},
+	stack_max = 1,
+})
+
+minetest.register_craftitem("mcl_potions:night_vision", {
+	description = S("Night Vision Potion"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = "mcl_potions_night_vision.png",
+	inventory_image = "mcl_potions_night_vision.png",
+	groups = { brewitem = 1, food=0},
+	stack_max = 1,
+})
+
+minetest.register_craftitem("mcl_potions:swiftness", {
+	description = S("Swiftness Potion"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = "mcl_potions_swiftness.png",
+	inventory_image = "mcl_potions_swiftness.png",
+	groups = { brewitem = 1, food=0},
+	stack_max = 1,
+})
+
+mcl_potions = {}
+
+function key_in_table(table,key)
+    return table[key] ~= nil
+end
+
+local water_table = {
+	["mcl_nether:nether_wart_item"] = "mcl_potions:potion_awkward",
+	["mcl_potions:fermented_spider_eye"] = "mcl_potions:weakness",
+}
+local awkward_table = {
+	["mcl_potions:speckled_melon"] = "mcl_potions:healing",
+	["mcl_farming:carrot_item_gold"] = "mcl_potions:night_vision",
+	["mcl_core:sugar"] = "mcl_potions:swiftness",
+}
+local output_table = {
+	["mcl_potions:potion_river_water"] = water_table,
+	["mcl_potions:potion_water"] = water_table,
+	["mcl_potions:potion_awkward"] = awkward_table,
+}
+
+-- Compare two ingredients for compatable alchemy
+function mcl_potions.get_alchemy(ingr, pot)
+
+	if output_table[pot] ~= nil then
+		local brew_table = output_table[pot]
+		if brew_table[ingr] ~= nil then
+			return brew_table[ingr]
+		end
+	end
+	return false
+end
