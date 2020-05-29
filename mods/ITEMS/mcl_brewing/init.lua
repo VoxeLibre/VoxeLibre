@@ -4,7 +4,6 @@ local function active_brewing_formspec(fuel_percent, item_percent)
 
 	return "size[9,8.75]"..
 	"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]"..
-	-- "background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory_active.png]"..
 	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
 	mcl_formspec.get_itemslot_bg(0,4.5,9,3)..
@@ -110,7 +109,6 @@ local function brewing_stand_timer(pos, elapsed)
 	local input_item = meta:get_string("input_item") or ""
 
 	local stand_timer = meta:get_float("stand_timer") or 0
-	-- local stand_items = meta:get_list("stand_items") or {"","",""}
 
 	local inv = meta:get_inventory()
 
@@ -216,10 +214,8 @@ local function brewing_stand_timer(pos, elapsed)
 		local fuel_percent = math.floor(fuel_time/fuel_totaltime*100)
 		local brew_percent = math.floor(stand_timer/BREW_TIME*100)
 		formspec = active_brewing_formspec(fuel_percent, brew_percent*4 % 100)
-		-- swap_node(pos, "mcl_brewing:stand_active")
 		result = true
 	else
-		-- swap_node(pos, "mcl_brewing:stand")
 		minetest.get_node_timer(pos):stop()
 	end
 
@@ -227,7 +223,6 @@ local function brewing_stand_timer(pos, elapsed)
 	meta:set_float("fuel_totaltime", fuel_totaltime)
 	meta:set_float("fuel_time", fuel_time)
 	meta:set_float("stand_timer", stand_timer)
-	-- meta:set_list("stand_items", stand_list)
 	meta:set_string("formspec", formspec)
 
 	return result
@@ -390,14 +385,6 @@ local brewing_stand_def = {
 		end
 	end,
 
-	-- allow_metadata_inventory_move = function(pos, from_list, from_index, to_list, to_index, count, player)
-	-- 	local name = player:get_player_name()
-	-- 	if minetest.is_protected(pos, name) then
-	-- 		minetest.record_protection_violation(pos, name)
-	-- 		return 0
-	-- 	end
-	-- end,
-
 	on_metadata_inventory_put = function(pos, listname, index, stack, player)
 		local meta = minetest.get_meta(pos)
 		minetest.get_node_timer(pos):start(1.0)
@@ -414,8 +401,6 @@ local brewing_stand_def = {
 		inv:set_size("input", 1)
 		inv:set_size("fuel", 1)
 		inv:set_size("stand", 3)
-		-- inv:set_size("stand2", 1)
-		-- inv:set_size("stand3", 1)
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
@@ -451,12 +436,6 @@ brewing_stand_def._tt_help = S("Repair and rename items")
 
 minetest.register_node("mcl_brewing:stand", brewing_stand_def)
 
--- local brewing_stand_active_def = brewing_stand_def
--- brewing_stand_active_def.light_source = 8
--- brewing_stand_active_def.drop = "mcl_brewing:stand"
--- brewing_stand_active_def.groups = {not_in_creative_inventory=1, pickaxey=1, falling_node=1, falling_node_damage=1, crush_after_fall=1, deco_block=1, brewing_stand=1}
--- minetest.register_node("mcl_brewing:stand_active", brewing_stand_active_def)
-
 if minetest.get_modpath("mcl_core") then
 	minetest.register_craft({
 		output = "mcl_brewing:stand",
@@ -467,15 +446,3 @@ if minetest.get_modpath("mcl_core") then
 	})
 end
 
-
--- Legacy
-minetest.register_lbm({
-	label = "Update brewing_stand formspecs (0.60.0",
-	name = "mcl_brewing:update_formspec_0_60_0",
-	--nodenames = { "group:brewing_stand" },
-	run_at_every_load = false,
-	action = function(pos, node)
-		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", brewing_formspec)
-	end,
-})
