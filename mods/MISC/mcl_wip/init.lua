@@ -13,6 +13,11 @@ local wip_items = {
 	"mobs_mc:wither",
 	"mobs_mc:parrot",
 	"mobs_mc:witch",
+	"mcl_brewing:stand",
+	"mcl_potions:healing",
+	"mcl_potions:night_vision",
+	"mcl_potions:swiftness",
+	"mcl_potions:weakness",
 	"screwdriver:screwdriver",
 }
 local experimental_items = {
