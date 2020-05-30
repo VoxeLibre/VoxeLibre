@@ -34,6 +34,15 @@ For small changes, sending me a patch is also good.
 For big changes: Same as above, but consider notifying me first to avoid
 duplicate work and possible tears of rejection. ;-)
 
+For people that I trust, I might give them direct commit access to this
+repository. In this case, you obviously don't need to fork, but you still
+need to show your contributions align with the project goals. I still
+reserve the right to revert everything that I don't like.
+For bigger changes, I strongly recommend to use feature branches and
+discuss with me first.
+
+Contributors will be credited in `README.md`.
+
 ## Quality remarks
 Again: There is ***no*** guarantee I will accept anything from anybody.
 But I will gladly take in code from others when I feel it saves me work
@@ -56,9 +65,9 @@ Depending on what you add, the chances for inclusion vary:
 * Added files have a unusual high file size
 * Indentation looks like crazy
 * Single commits which add several unrelated things
+* Gameplay features which don't exist in Minecraft
 
 ### Instant rejection
-* Gameplay features which don't exist in Minecraft
 * Proprietary **anything**
 * Code contains `minetest.env` anywhere
 
