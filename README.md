@@ -306,7 +306,7 @@ License: [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/)
 The main menu images are release under: [CC0](https://creativecommons.org/publicdomain/zero/1.0/)
 
 All other files, unless mentioned otherwise, fall under:
-Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 4.0)
-http://creativecommons.org/licenses/by-sa/4.0/
+Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
+http://creativecommons.org/licenses/by-sa/3.0/
 
 See README.txt in each mod directory for detailed information about other authors.
