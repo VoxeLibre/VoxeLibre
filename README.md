@@ -186,7 +186,7 @@ Please report all bugs and missing Minecraft features here:
 
 ## Other readme files
 
-* `LICENSE.txt`: The LGPLv2.1 license text
+* `LICENSE.txt`: The GPLv3 license text
 * `CONTRIBUTING.md`: Information for those who want to contribute
 * `MISSING_ENGINE_FEATURES.md`: List of missing features in Minetest which MineClone 2 would need for improvement
 * `API.md`: For Minetest modders who want to mod this game
@@ -247,14 +247,29 @@ Copying is an act of love. Please copy and share! <3
 Here's the detailed legalese for those who need it:
 
 ### License of source code
-MineClone 2 is a clean-room implementation of Minecraft
-and licensed under the
-GNU LGPL v2.1 (Wuzzy, davedevils and countless others) (see `LICENSE.txt`).
+MineClone 2 (by Wuzzy, davedevils and countless others)
+is an imitation of Minecraft.
+
+MineClone 2 is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License (in the LICENSE.txt file) for more
+details.
+
+In the mods you might find in the read-me or license
+text files a different license. This counts as dual-licensing.
+You can choose which license applies to you: Either the
+license of MineClone 2 (GNU GPLv3) or the mod's license.
 
 MineClone 2 is a direct continuation of the discontinued MineClone
-project by davedevils which fell under the same license.
+project by davedevils.
 
-Mods credit:
+Mod credits:
 See `README.txt` or `README.md` in each mod directory for information about other authors.
 For mods that do not have such a file, the license is the source code license
 of MineClone 2 and the author is Wuzzy.
