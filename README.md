@@ -201,7 +201,26 @@ There are so many people to list (sorry). Check out the respective mod directori
 * [Rootyjr](https://github.com/Rootyjr): Fishing rod and bugfixes
 * [aligator](https://github.com/aligator): Improvement of doors
 * [ryvnf](https://github.com/ryvnf): Explosion mechanics
+* MysticTempest: Bugfixes
 * Lots of other people: TO BE WRITTEN (see mod directories for details)
+
+#### Mod credits (summary)
+
+* `controls`: Arcelmi
+* `flowlib`: Qwertymine13
+* `walkover`: lordfingle
+* `drippingwater`: kddekadenz
+* `mobs_mc`: maikerumine, 22i and others
+* `awards`: rubenwardy
+* `screwdriver`: RealBadAngel, Maciej Kastakin, Minetest contributors
+* `xpanes`: Minetest contributors
+* `mesecons` mods: Jeija and contributors
+* `wieldview`: Stuart Jones
+* `mcl_meshhand`: Based on `newhand` by jordan4ibanez
+* `mcl_mobs`: Based on Mobs Redo [`mobs`] by TenPlus1 and contributors
+* Most other mods: Wuzzy
+
+Detailed credits for each mod can be found in the individual mod directories.
 
 ### Graphics
 * [XSSheep](http://www.minecraftforum.net/members/XSSheep): Main author; creator of the Pixel Perfection resource pack of Minecraft 1.11
