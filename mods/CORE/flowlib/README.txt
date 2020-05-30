@@ -1,4 +1,4 @@
-Waterlib
+Flowlib
 ================
 Simple flow functions for use in Minetest mods by Qwertymine3
 
