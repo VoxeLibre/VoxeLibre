@@ -230,17 +230,17 @@ end
 
 -- Check if a node stops a tree from growing.  Torches, plants, wood, tree,
 -- leaves and dirt does not affect tree growth.
-function node_stops_growth(node)
+local function node_stops_growth(node)
 	if node.name == 'air' then
 		return false
 	end
 
-	def = minetest.registered_nodes[node.name]
+	local def = minetest.registered_nodes[node.name]
 	if not def then
 		return true
 	end
 
-	groups = def.groups
+	local groups = def.groups
 	if not groups then
 		return true
 	end
@@ -256,11 +256,11 @@ end
 -- around the tree. A width of 3 and height of 5 will check a 3x3 area, 5
 -- nodes above the sapling. If any walkable node other than dirt, wood or
 -- leaves occurs in those blocks the tree cannot grow.
-function check_growth_width(pos, width, height)
+local function check_growth_width(pos, width, height)
 	-- Huge tree (with even width to check) will check one more node in
 	-- positive x and y directions.
-	neg_space = math.min((width - 1) / 2)
-	pos_space = math.max((width - 1) / 2)
+	local neg_space = math.min((width - 1) / 2)
+	local pos_space = math.max((width - 1) / 2)
 	for x = -neg_space, pos_space do
 		for z = -neg_space, pos_space do
 			for y = 1, height do
@@ -281,7 +281,7 @@ end
 -- for varieties of trees. The 'two_by_two' option is used to check if there is
 -- room to generate huge trees for spruce and jungle. The 'balloon' option is
 -- used to check if there is room to generate a balloon tree for oak.
-function check_tree_growth(pos, tree_id, options)
+local function check_tree_growth(pos, tree_id, options)
 	local two_by_two = options and options.two_by_two
 	local balloon = options and options.balloon
 
