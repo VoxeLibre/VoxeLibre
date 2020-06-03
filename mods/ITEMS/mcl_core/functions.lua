@@ -4,6 +4,13 @@
 
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
+local OAK_TREE_ID = 1
+local DARK_OAK_TREE_ID = 2
+local SPRUCE_TREE_ID = 3
+local ACACIA_TREE_ID = 4
+local JUNGLE_TREE_ID = 5
+local BIRCH_TREE_ID = 6
+
 minetest.register_abm({
 	label = "Lava cooling",
 	nodenames = {"group:lava"},
@@ -221,25 +228,122 @@ local function air_leaf(leaftype)
 	end
 end
 
-function mcl_core.generate_tree(pos, tree_type, two_by_two)
+-- Check if a node stops a tree from growing.  Torches, plants, wood, tree,
+-- leaves and dirt does not affect tree growth.
+function node_stops_growth(node)
+	if node.name == 'air' then
+		return false
+	end
+
+	def = minetest.registered_nodes[node.name]
+	if not def then
+		return true
+	end
+
+	groups = def.groups
+	if not groups then
+		return true
+	end
+	if groups.plant or groups.torch or groups.dirt or groups.tree
+		or groups.bark or groups.leaves or groups.wood then
+		return false
+	end
+
+	return true
+end
+
+-- Check if a tree can grow at position. The width is the width to check
+-- around the tree. A width of 3 and height of 5 will check a 3x3 area, 5
+-- nodes above the sapling. If any walkable node other than dirt, wood or
+-- leaves occurs in those blocks the tree cannot grow.
+function check_growth_width(pos, width, height)
+	-- Huge tree (with even width to check) will check one more node in
+	-- positive x and y directions.
+	neg_space = math.min((width - 1) / 2)
+	pos_space = math.max((width - 1) / 2)
+	for x = -neg_space, pos_space do
+		for z = -neg_space, pos_space do
+			for y = 1, height do
+				local np = vector.new(
+					pos.x + x,
+					pos.y + y,
+					pos.z + z)
+				if node_stops_growth(minetest.get_node(np)) then
+					return false
+				end
+			end
+		end
+	end
+	return true
+end
+
+-- Check if a tree with id can grow at a position. Options is a table of flags
+-- for varieties of trees. The 'two_by_two' option is used to check if there is
+-- room to generate huge trees for spruce and jungle. The 'balloon' option is
+-- used to check if there is room to generate a balloon tree for oak.
+function check_tree_growth(pos, tree_id, options)
+	local two_by_two = options and options.two_by_two
+	local balloon = options and options.balloon
+
+	if tree_id == OAK_TREE_ID then
+		if balloon then
+			return check_growth_width(pos, 7, 11)
+		else
+			return check_growth_width(pos, 3, 5)
+		end
+	elseif tree_id == BIRCH_TREE_ID then
+		return check_growth_width(pos, 3, 6)
+	elseif tree_id == SPRUCE_TREE_ID then
+		if two_by_two then
+			return check_growth_width(pos, 6, 20)
+		else
+			return check_growth_width(pos, 5, 11)
+		end
+	elseif tree_id == JUNGLE_TREE_ID then
+		if two_by_two then
+			return check_growth_width(pos, 8, 23)
+		else
+			return check_growth_width(pos, 3, 8)
+		end
+	elseif tree_id == ACACIA_TREE_ID then
+		return check_growth_width(pos, 7, 8)
+	elseif tree_id == DARK_OAK_TREE_ID and two_by_two then
+		return check_growth_width(pos, 4, 7)
+	end
+
+	return false
+end
+
+-- Generates a tree with a type. Options is a table of flags for varieties of
+-- trees. The 'two_by_two' option is used by jungle and spruce trees to
+-- generate huge trees. The 'balloon' option is used by oak to generate a balloon
+-- oak tree.
+function mcl_core.generate_tree(pos, tree_type, options)
 	pos.y = pos.y-1
 	local nodename = minetest.get_node(pos).name
-		
+
 	pos.y = pos.y+1
 	if not minetest.get_node_light(pos) then
 		return
 	end
 	local node
 
-	if tree_type == nil or tree_type == 1 then
+	local two_by_two = options and options.two_by_two
+	local balloon = options and options.balloon
+
+	if tree_type == nil or tree_type == OAK_TREE_ID then
 		if mg_name == "v6" then
 			mcl_core.generate_v6_oak_tree(pos)
 		else
-			mcl_core.generate_oak_tree(pos)
+			if balloon then
+				mcl_core.generate_balloon_oak_tree(pos)
+			else
+				mcl_core.generate_oak_tree(pos)
+			end
 		end
-	elseif tree_type == 2 and two_by_two then
+	elseif tree_type == DARK_OAK_TREE_ID then
 		mcl_core.generate_dark_oak_tree(pos)
-	elseif tree_type == 3 then
+	elseif tree_type == SPRUCE_TREE_ID then
 		if two_by_two then
 			mcl_core.generate_huge_spruce_tree(pos)
 		else
@@ -249,9 +353,9 @@ function mcl_core.generate_tree(pos, tree_type, two_by_two)
 				mcl_core.generate_spruce_tree(pos)
 			end
 		end
-	elseif tree_type == 4 then
+	elseif tree_type == ACACIA_TREE_ID then
 		mcl_core.generate_acacia_tree(pos)
-	elseif tree_type == 5 then
+	elseif tree_type == JUNGLE_TREE_ID then
 		if two_by_two then
 			mcl_core.generate_huge_jungle_tree(pos)
 		else
@@ -261,7 +365,7 @@ function mcl_core.generate_tree(pos, tree_type, two_by_two)
 				mcl_core.generate_jungle_tree(pos)
 			end
 		end
-	elseif tree_type == 6 then
+	elseif tree_type == BIRCH_TREE_ID then
 		mcl_core.generate_birch_tree(pos)
 	end
 end
@@ -331,34 +435,33 @@ function mcl_core.generate_v6_oak_tree(pos)
 	end
 end
 
--- Oak
-function mcl_core.generate_oak_tree(pos)
-	local r = math.random(1, 12)
+-- Ballon Oak
+function mcl_core.generate_balloon_oak_tree(pos)
 	local path
 	local offset
-	-- Balloon oak
-	if r == 1 then
-		local s = math.random(1, 12)
-		if s == 1 then
-			-- Small balloon oak
-			path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_oak_balloon.mts"
-			offset = { x = -2, y = -1, z = -2 }
-		else
-			-- Large balloon oak
-			local t = math.random(1, 4)
-			path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_oak_large_"..t..".mts"
-			if t == 1 or t == 3 then
-				offset = { x = -3, y = -1, z = -3 }
-			elseif t == 2 or t == 4 then
-				offset = { x = -4, y = -1, z = -4 }
-			end
-		end
-	-- Classic oak
-	else
-		path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_oak_classic.mts"
+	local s = math.random(1, 12)
+	if s == 1 then
+		-- Small balloon oak
+		path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_oak_balloon.mts"
 		offset = { x = -2, y = -1, z = -2 }
-
+	else
+		-- Large balloon oak
+		local t = math.random(1, 4)
+		path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_oak_large_"..t..".mts"
+		if t == 1 or t == 3 then
+			offset = { x = -3, y = -1, z = -3 }
+		elseif t == 2 or t == 4 then
+			offset = { x = -4, y = -1, z = -4 }
+		end
 	end
+	minetest.place_schematic(vector.add(pos, offset), path, "random", nil, false)
+end
+
+-- Oak
+function mcl_core.generate_oak_tree(pos)
+	local path = minetest.get_modpath("mcl_core") .. "/schematics/mcl_core_oak_classic.mts"
+	local offset = { x = -2, y = -1, z = -2 }
+
 	minetest.place_schematic(vector.add(pos, offset), path, "random", nil, false)
 end
 
@@ -833,41 +936,55 @@ local sapling_grow_action = function(tree_id, soil_needed, one_by_one, two_by_tw
 					local s8 = is_sapling(p8, sapling)
 					local s9 = is_sapling(p9, sapling)
 					-- In a 9×9 field there are 4 possible 2×2 squares. We check them all.
-					if s2 and s3 and s4 then
+					if s2 and s3 and s4 and check_tree_growth(pos, tree_id, { two_by_two = true }) then
 						-- Success: Remove saplings and place tree
 						minetest.remove_node(pos)
 						minetest.remove_node(p2)
 						minetest.remove_node(p3)
 						minetest.remove_node(p4)
-						mcl_core.generate_tree(pos, tree_id, true)
+						mcl_core.generate_tree(pos, tree_id, { two_by_two = true })
 						return
-					elseif s3 and s5 and s6 then
+					elseif s3 and s5 and s6 and check_tree_growth(p6, tree_id, { two_by_two = true }) then
 						minetest.remove_node(pos)
 						minetest.remove_node(p3)
 						minetest.remove_node(p5)
 						minetest.remove_node(p6)
-						mcl_core.generate_tree(p6, tree_id, true)
+						mcl_core.generate_tree(p6, tree_id, { two_by_two = true })
 						return
-					elseif s6 and s7 and s8 then
+					elseif s6 and s7 and s8 and check_tree_growth(p7, tree_id, { two_by_two = true }) then
 						minetest.remove_node(pos)
 						minetest.remove_node(p6)
 						minetest.remove_node(p7)
 						minetest.remove_node(p8)
-						mcl_core.generate_tree(p7, tree_id, true)
+						mcl_core.generate_tree(p7, tree_id, { two_by_two = true })
 						return
-					elseif s2 and s8 and s9 then
+					elseif s2 and s8 and s9 and check_tree_growth(p8, tree_id, { two_by_two = true }) then
 						minetest.remove_node(pos)
 						minetest.remove_node(p2)
 						minetest.remove_node(p8)
 						minetest.remove_node(p9)
-						mcl_core.generate_tree(p8, tree_id, true)
+						mcl_core.generate_tree(p8, tree_id, { two_by_two = true })
 						return
 					end
 				end
+
+				if one_by_one and tree_id == OAK_TREE_ID then
+					-- There is a chance that this tree wants to grow as a balloon oak
+					if math.random(1, 12) == 1 then
+						-- Check if there is room for that
+						if check_tree_growth(pos, tree_id, { balloon = true }) then
+							minetest.set_node(pos, {name="air"})
+							mcl_core.generate_tree(pos, tree_id, { balloon = true })
+							return
+						end
+					end
+				end
+
 				-- If this sapling can grow alone
-				if one_by_one then
+				if one_by_one and check_tree_growth(pos, tree_id) then
 					-- Single sapling
 					minetest.set_node(pos, {name="air"})
+					local r = math.random(1, 12)
 					mcl_core.generate_tree(pos, tree_id)
 					return
 				end
@@ -878,12 +995,12 @@ local sapling_grow_action = function(tree_id, soil_needed, one_by_one, two_by_tw
 	end
 end
 
-local grow_oak = sapling_grow_action(1, 1, true, false)
-local grow_dark_oak = sapling_grow_action(2, 2, false, true, "mcl_core:darksapling")
-local grow_jungle_tree = sapling_grow_action(5, 1, true, true, "mcl_core:junglesapling")
-local grow_acacia = sapling_grow_action(4, 2, true, false)
-local grow_spruce = sapling_grow_action(3, 1, true, true, "mcl_core:sprucesapling")
-local grow_birch = sapling_grow_action(6, 1, true, false)
+local grow_oak = sapling_grow_action(OAK_TREE_ID, 1, true, false)
+local grow_dark_oak = sapling_grow_action(DARK_OAK_TREE_ID, 2, false, true, "mcl_core:darksapling")
+local grow_jungle_tree = sapling_grow_action(JUNGLE_TREE_ID, 1, true, true, "mcl_core:junglesapling")
+local grow_acacia = sapling_grow_action(ACACIA_TREE_ID, 2, true, false)
+local grow_spruce = sapling_grow_action(SPRUCE_TREE_ID, 1, true, true, "mcl_core:sprucesapling")
+local grow_birch = sapling_grow_action(BIRCH_TREE_ID, 1, true, false)
 
 -- Attempts to grow the sapling at the specified position
 -- pos: Position
