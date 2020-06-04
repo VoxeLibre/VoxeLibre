@@ -236,6 +236,7 @@ mesecon.register_node("mcl_observers:observer_up",
 -- Regularily check the observer nodes.
 -- TODO: This is rather slow and clunky. Find a more efficient way to do this.
 minetest.register_abm({
+	label = "Observer node check",
 	nodenames = {"mcl_observers:observer_off", "mcl_observers:observer_down_off", "mcl_observers:observer_up_off"},
 	interval = 1,
 	chance = 1,
