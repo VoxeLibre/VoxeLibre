@@ -1,3 +1,5 @@
+local mods_loaded = false
+
 mcl_weather.skycolor = {
 	-- Should be activated before do any effect.
 	active = true,
@@ -169,7 +171,11 @@ mcl_weather.skycolor = {
 		-- Simply getter. Ether returns user given players list or get all connected players if none provided
 		get_players = function(players)
 			if players == nil or #players == 0 then
-				players = minetest.get_connected_players()
+				if mods_loaded then
+					players = minetest.get_connected_players()
+				elseif players == nil then
+					players = {}
+				end
 			end
 			return players
 		end,
@@ -221,4 +227,8 @@ minetest.register_on_respawnplayer(initsky)
 
 mcl_worlds.register_on_dimension_change(function(player)
 	mcl_weather.skycolor.update_sky_color({player})
+end)
+
+minetest.register_on_mods_loaded(function()
+	mods_loaded = true
 end)
