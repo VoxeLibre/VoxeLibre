@@ -335,13 +335,22 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 			end
 		end
 	end
-	-- We use buil_set_node instead of LVM because we want to have on_destruct and
+	-- We use bulk_set_node instead of LVM because we want to have on_destruct and
 	-- on_construct being called
 	if #airs > 0 then
 		minetest.bulk_set_node(airs, {name="air"})
 	end
 	if #fires > 0 then
 		minetest.bulk_set_node(fires, {name="mcl_core:fire"})
+	end
+	-- Update falling nodes
+	for a=1, #airs do
+		local p = airs[a]
+		minetest.check_single_for_falling({x=p.x, y=p.y+1, z=p.z})
+	end
+	for f=1, #fires do
+		local p = fires[f]
+		minetest.check_single_for_falling({x=p.x, y=p.y+1, z=p.z})
 	end
 
 	-- Log explosion
