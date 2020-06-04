@@ -346,11 +346,11 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 	-- Update falling nodes
 	for a=1, #airs do
 		local p = airs[a]
-		minetest.check_single_for_falling({x=p.x, y=p.y+1, z=p.z})
+		minetest.check_for_falling({x=p.x, y=p.y+1, z=p.z})
 	end
 	for f=1, #fires do
 		local p = fires[f]
-		minetest.check_single_for_falling({x=p.x, y=p.y+1, z=p.z})
+		minetest.check_for_falling({x=p.x, y=p.y+1, z=p.z})
 	end
 
 	-- Log explosion
