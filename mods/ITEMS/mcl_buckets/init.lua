@@ -190,6 +190,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 	_doc_items_usagehelp = S("Punch a liquid source to collect it. You can then use the filled bucket to place the liquid somewhere else."),
 	_tt_help = S("Collects liquids"),
 
+	liquids_pointable = true,
 	inventory_image = "bucket.png",
 	stack_max = 16,
 	on_place = function(itemstack, user, pointed_thing)
