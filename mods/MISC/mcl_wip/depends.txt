@@ -6,3 +6,4 @@ doc_identifier
 mobs_mc
 mcl_comparators
 mcl_minecarts
+mcl_paintings
