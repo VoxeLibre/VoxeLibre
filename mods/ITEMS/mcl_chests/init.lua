@@ -123,6 +123,29 @@ local double_chest_add_item = function(top_inv, bottom_inv, listname, stack)
 	end
 end
 
+local drop_items_chest = function(pos, oldnode, oldmetadata)
+	local meta = minetest.get_meta(pos)
+	local meta2 = meta
+	if oldmetadata then
+		meta:from_table(oldmetadata)
+	end
+	local inv = meta:get_inventory()
+	for i=1,inv:get_size("main") do
+		local stack = inv:get_stack("main", i)
+		if not stack:is_empty() then
+			local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
+			minetest.add_item(p, stack)
+		end
+	end
+	meta:from_table(meta2:to_table())
+end
+
+local on_chest_blast = function(pos)
+	local node = minetest.get_node(pos)
+	drop_items_chest(pos, node)
+	minetest.remove_node(pos)
+end
+
 minetest.register_node("mcl_chests:"..basename, {
 	description = desc,
 	_tt_help = tt_help,
@@ -174,20 +197,8 @@ minetest.register_node("mcl_chests:"..basename, {
 			minetest.swap_node(pos, { name = "mcl_chests:"..canonical_basename, param2 = param2 })
 		end
 	end,
-	after_dig_node = function(pos, oldnode, oldmetadata, digger)
-		local meta = minetest.get_meta(pos)
-		local meta2 = meta
-		meta:from_table(oldmetadata)
-		local inv = meta:get_inventory()
-		for i=1,inv:get_size("main") do
-			local stack = inv:get_stack("main", i)
-			if not stack:is_empty() then
-				local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
-				minetest.add_item(p, stack)
-			end
-		end
-		meta:from_table(meta2:to_table())
-	end,
+	after_dig_node = drop_items_chest,
+	on_blast = on_chest_blast,
 	allow_metadata_inventory_move = protection_check_move,
 	allow_metadata_inventory_take = protection_check_put_take,
 	allow_metadata_inventory_put = protection_check_put_take,
@@ -280,20 +291,8 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 		end
 		minetest.swap_node(p, { name = "mcl_chests:"..basename, param2 = param2 })
 	end,
-	after_dig_node = function(pos, oldnode, oldmetadata, digger)
-		local meta = minetest.get_meta(pos)
-		local meta2 = meta
-		meta:from_table(oldmetadata)
-		local inv = meta:get_inventory()
-		for i=1,inv:get_size("main") do
-			local stack = inv:get_stack("main", i)
-			if not stack:is_empty() then
-				local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
-				minetest.add_item(p, stack)
-			end
-		end
-		meta:from_table(meta2:to_table())
-	end,
+	after_dig_node = drop_items_chest,
+	on_blast = on_chest_blast,
 	allow_metadata_inventory_move = protection_check_move,
 	allow_metadata_inventory_take = protection_check_put_take,
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
@@ -414,21 +413,10 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 			minetest.close_formspec(players[pl]:get_player_name(), "mcl_chests:"..canonical_basename.."_"..p.x.."_"..p.y.."_"..p.z)
 		end
 		minetest.swap_node(p, { name = "mcl_chests:"..basename, param2 = param2 })
-	end,
-	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local meta = minetest.get_meta(pos)
-		local meta2 = meta
-		meta:from_table(oldmetadata)
-		local inv = meta:get_inventory()
-		for i=1,inv:get_size("main") do
-			local stack = inv:get_stack("main", i)
-			if not stack:is_empty() then
-				local p = {x=pos.x+math.random(0, 10)/10-0.5, y=pos.y, z=pos.z+math.random(0, 10)/10-0.5}
-				minetest.add_item(p, stack)
-			end
-		end
-		meta:from_table(meta2:to_table())
 	end,
+	after_dig_node = drop_items_chest,
+	on_blast = on_chest_blast,
 	allow_metadata_inventory_move = protection_check_move,
 	allow_metadata_inventory_take = protection_check_put_take,
 	allow_metadata_inventory_put = function(pos, listname, index, stack, player)
@@ -903,8 +891,8 @@ for color, desc in pairs(boxtypes) do
 				return 0
 			end
 		end,
-		_mcl_blast_resistance = 30,
-		_mcl_hardness = 6,
+		_mcl_blast_resistance = 6,
+		_mcl_hardness = 2,
 	})
 
 	if mod_doc and not is_canonical then

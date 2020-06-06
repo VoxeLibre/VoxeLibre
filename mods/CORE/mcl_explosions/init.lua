@@ -36,9 +36,10 @@ local N_EXPOSURE_RAYS = 16
 minetest.register_on_mods_loaded(function()
 	-- Store blast resistance values by content ids to improve performance.
 	for name, def in pairs(minetest.registered_nodes) do
-		node_blastres[minetest.get_content_id(name)] = def._mcl_blast_resistance or 0
-		node_on_blast[minetest.get_content_id(name)] = def.on_blast
-		node_walkable[minetest.get_content_id(name)] = def.walkable
+		local id = minetest.get_content_id(name)
+		node_blastres[id] = def._mcl_blast_resistance or 0
+		node_on_blast[id] = def.on_blast
+		node_walkable[id] = def.walkable
 	end
 end)
 
@@ -314,7 +315,8 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 		if do_drop or on_blast ~= nil then
 			local npos = minetest.get_position_from_hash(hash)
 			if on_blast ~= nil then
-				remove = on_blast(npos, 1.0)
+				on_blast(npos, 1.0)
+				remove = false
 			else
 				local name = minetest.get_name_from_content_id(data[idx])
 				local drop = minetest.get_node_drops(name, "")
