@@ -13,8 +13,9 @@ end
 tnt = {}
 tnt.ignite = function(pos)
 	minetest.remove_node(pos)
-	spawn_tnt(pos, "mcl_tnt:tnt")
+	local e = spawn_tnt(pos, "mcl_tnt:tnt")
 	minetest.check_for_falling(pos)
+	return e
 end
 
 -- Add smoke particle of entity at pos.
@@ -70,9 +71,8 @@ minetest.register_node("mcl_tnt:tnt", {
 	groups = { dig_immediate = 3, tnt = 1, enderman_takable=1, flammable=-1 },
 	mesecons = tnt_mesecons,
 	on_blast = function(pos)
-	        local e = spawn_tnt(pos, "mcl_tnt:tnt")
+	        local e = tnt.ignite(pos)
 		e:get_luaentity().timer = tnt.BOOMTIMER - (0.5 + math.random())
-		return true
 	end,
 	_on_ignite = function(player, pointed_thing)
 		tnt.ignite(pointed_thing.under)
