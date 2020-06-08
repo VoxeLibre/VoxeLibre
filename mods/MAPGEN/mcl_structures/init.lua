@@ -36,9 +36,7 @@ mcl_structures.call_struct = function(pos, struct_style, rotation)
 	if not rotation then
 		rotation = "random"
 	end
-	if struct_style == "village" then
-		return mcl_structures.generate_village(pos, rotation)
-	elseif struct_style == "desert_temple" then
+	if struct_style == "desert_temple" then
 		return mcl_structures.generate_desert_temple(pos, rotation)
 	elseif struct_style == "desert_well" then
 		return mcl_structures.generate_desert_well(pos, rotation)
@@ -59,14 +57,6 @@ mcl_structures.call_struct = function(pos, struct_style, rotation)
 	elseif struct_style == "end_portal_shrine" then
 		return mcl_structures.generate_end_portal_shrine(pos, rotation)
 	end
-end
-
-mcl_structures.generate_village = function(pos)
-	-- No generating for the moment, only place it :D
-	-- TODO: Do complete overhaul of the algorithm
-	local newpos = {x=pos.x,y=pos.y-1,z=pos.z}
-	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_village.mts"
-	return minetest.place_schematic(newpos, path, "random", nil, true)
 end
 
 mcl_structures.generate_desert_well = function(pos)
@@ -482,7 +472,7 @@ end
 
 -- Debug command
 minetest.register_chatcommand("spawnstruct", {
-	params = "desert_temple | desert_well | igloo | village | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_portal_shrine",
+	params = "desert_temple | desert_well | igloo | witch_hut | boulder | ice_spike_small | ice_spike_large | fossil | end_exit_portal | end_portal_shrine",
 	description = S("Generate a pre-defined structure near your position."),
 	privs = {debug = true},
 	func = function(name, param)
@@ -493,10 +483,7 @@ minetest.register_chatcommand("spawnstruct", {
 		pos = vector.round(pos)
 		local errord = false
 		local message = S("Structure placed.")
-		if param == "village" then
-			mcl_structures.generate_village(pos)
-			message = S("Village built. WARNING: Villages are experimental and might have bugs.")
-		elseif param == "desert_temple" then
+		if param == "desert_temple" then
 			mcl_structures.generate_desert_temple(pos)
 		elseif param == "desert_well" then
 			mcl_structures.generate_desert_well(pos)

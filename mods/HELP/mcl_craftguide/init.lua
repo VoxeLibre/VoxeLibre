@@ -1088,7 +1088,9 @@ if progressive_mode then
 		M.after(POLL_FREQ, poll_new_items)
 	end
 
-	poll_new_items()
+	M.register_on_mods_loaded(function()
+		M.after(1, poll_new_items)
+	end)
 
 	mcl_craftguide.add_recipe_filter("Default progressive filter", progressive_filter)
 

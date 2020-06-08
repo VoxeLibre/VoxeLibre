@@ -36,9 +36,10 @@ local N_EXPOSURE_RAYS = 16
 minetest.register_on_mods_loaded(function()
 	-- Store blast resistance values by content ids to improve performance.
 	for name, def in pairs(minetest.registered_nodes) do
-		node_blastres[minetest.get_content_id(name)] = def._mcl_blast_resistance or 0
-		node_on_blast[minetest.get_content_id(name)] = def.on_blast
-		node_walkable[minetest.get_content_id(name)] = def.walkable
+		local id = minetest.get_content_id(name)
+		node_blastres[id] = def._mcl_blast_resistance or 0
+		node_on_blast[id] = def.on_blast
+		node_walkable[id] = def.walkable
 	end
 end)
 
@@ -183,9 +184,7 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 
 			local cid = data[idx]
 			local br = node_blastres[cid]
-			local hash = (npos_z + 32768) * 65536 * 65536 +
-					(npos_y + 32768) * 65536 +
-					npos_x + 32768
+			local hash = minetest.hash_node_position({x=npos_x, y=npos_y, z=npos_z})
 
 			rpos_x = rpos_x + STEP_LENGTH * rdir_x
 			rpos_y = rpos_y + STEP_LENGTH * rdir_y
@@ -305,6 +304,8 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 		end
 	end
 
+	local airs, fires = {}, {}
+
 	-- Remove destroyed blocks and drop items
 	for hash, idx in pairs(destroy) do
 		local do_drop = not creative_mode and math.random() <= drop_chance
@@ -314,7 +315,8 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 		if do_drop or on_blast ~= nil then
 			local npos = minetest.get_position_from_hash(hash)
 			if on_blast ~= nil then
-				remove = on_blast(npos, 1.0)
+				on_blast(npos, 1.0)
+				remove = false
 			else
 				local name = minetest.get_name_from_content_id(data[idx])
 				local drop = minetest.get_node_drops(name, "")
@@ -329,21 +331,34 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 		end
 		if remove then
 			if mod_fire and fire and math.random(1, 3) == 1 then
-				data[idx] = CONTENT_FIRE
+				table.insert(fires, minetest.get_position_from_hash(hash))
 			else
-				data[idx] = minetest.CONTENT_AIR
+				table.insert(airs, minetest.get_position_from_hash(hash))
 			end
 		end
+	end
+	-- We use bulk_set_node instead of LVM because we want to have on_destruct and
+	-- on_construct being called
+	if #airs > 0 then
+		minetest.bulk_set_node(airs, {name="air"})
+	end
+	if #fires > 0 then
+		minetest.bulk_set_node(fires, {name="mcl_core:fire"})
+	end
+	-- Update falling nodes
+	for a=1, #airs do
+		local p = airs[a]
+		minetest.check_for_falling({x=p.x, y=p.y+1, z=p.z})
+	end
+	for f=1, #fires do
+		local p = fires[f]
+		minetest.check_for_falling({x=p.x, y=p.y+1, z=p.z})
 	end
 
 	-- Log explosion
 	minetest.log('action', 'Explosion at ' .. minetest.pos_to_string(pos) ..
 		' with strength ' .. strength .. ' and radius ' .. radius)
 
-	-- Update environment
-	vm:set_data(data)
-	vm:write_to_map(data)
-	vm:update_liquids()
 end
 
 -- Create an explosion with strength at pos.
