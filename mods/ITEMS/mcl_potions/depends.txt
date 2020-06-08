@@ -1,5 +1,3 @@
 mcl_core
 mcl_farming
 mcl_mobitems
-mcl_fishing
-playerphysics

@@ -1,3 +1,0 @@
-# textdomain: mcl_brewing
-Brewing Stand=
-The brewing stand allows the creating of potions for the benefit of various effects. Stay tuned for developments, as you can only view the stand and interact with it, but not create potions.
