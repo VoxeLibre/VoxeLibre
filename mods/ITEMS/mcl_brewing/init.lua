@@ -134,7 +134,7 @@ local function brewing_stand_timer(pos, elapsed)
 		--    return 1
 		-- 	end
 		-- end
-		brew_output = brewable(inv)
+		local brew_output = brewable(inv)
 		if fuel ~= 0 and brew_output then
 
 			fuel_timer = fuel_timer + elapsed

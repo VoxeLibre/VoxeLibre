@@ -424,8 +424,8 @@ minetest.register_craftitem("mcl_potions:harming_2", {
 minetest.register_craftitem("mcl_potions:night_vision", {
 	description = S("Night Vision Potion"),
 	_doc_items_longdesc = brewhelp,
-	wield_image = "mcl_potions_night_vision.png",
-	inventory_image = "mcl_potions_night_vision.png",
+	wield_image = potion_image("#A0A0A0"),
+	inventory_image = potion_image("#A0A0A0"),
 	groups = { brewitem = 1, food=0},
 	stack_max = 1,
 })
@@ -813,7 +813,7 @@ for i, potion in ipairs(potions) do
 end
 
 local mod_table = {
-	["mesecons:redstone"] = extension_table,
+	["mesecons:wire_00000000_off"] = extension_table,
 	["mcl_potions:fermented_spider_eye"] = inversion_table,
 	["mcl_nether:glowstone_dust"] = enhancement_table,
 	["mcl_mobitems:gunpowder"] = splash_table,
