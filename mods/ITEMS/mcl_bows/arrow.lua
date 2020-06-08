@@ -215,11 +215,20 @@ ARROW_ENTITY.on_step = function(self, dtime)
 						end
 					end
 
-					-- Punch target object
-					obj:punch(self.object, 1.0, {
-						full_punch_interval=1.0,
-						damage_groups={fleshy=self._damage},
-					}, nil)
+					-- Punch target object but avoid hurting enderman.
+					if lua then
+						if lua.name ~= "mobs_mc:enderman" then
+							obj:punch(self.object, 1.0, {
+								full_punch_interval=1.0,
+								damage_groups={fleshy=self._damage},
+							}, nil)
+						end
+					else
+						obj:punch(self.object, 1.0, {
+							full_punch_interval=1.0,
+							damage_groups={fleshy=self._damage},
+						}, nil)
+					end
 
 					if is_player then
 						if self._shooter and self._shooter:is_player() then
