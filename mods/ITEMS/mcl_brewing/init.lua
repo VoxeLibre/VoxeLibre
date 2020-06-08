@@ -429,7 +429,9 @@ minetest.register_node("mcl_brewing:stand_000", {
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
 })
-minetest.register_alias("mcl_brewing:stand_000", "mcl_brewing:stand")
+
+minetest.register_alias("mcl_brewing:stand", "mcl_brewing:stand_000")
+
 minetest.register_node("mcl_brewing:stand_100", {
 	description = S("Brewing Stand"),
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
