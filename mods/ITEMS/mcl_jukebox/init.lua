@@ -31,7 +31,7 @@ for r=1, records do
 		doc = true
 		entryname = S("Music Disc")
 		longdesc = S("A music disc holds a single music track which can be used in a jukebox to play music.")
-		usagehelp = S("Place a music dict into an empty jukebox to play the music. Use the jukebox again to retrieve the music disc. The music can only be heard by you, not by other players.")
+		usagehelp = S("Place a music disc into an empty jukebox to play the music. Use the jukebox again to retrieve the music disc. The music can only be heard by you, not by other players.")
 	end
 	minetest.register_craftitem("mcl_jukebox:record_"..r, {
 		description =
