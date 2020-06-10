@@ -634,6 +634,142 @@ minetest.register_craftitem("mcl_potions:weakness", {
 	end
 })
 
+local poison_func = function(player, factor, duration)
+	player:set_attribute("poison", tostring(factor))
+	print(player:get_player_name().." ".."poison = "..player:get_attribute("poison"))
+	minetest.after(duration, function() player:set_attribute("poison", tostring(0)) end )
+end
+minetest.register_craftitem("mcl_potions:poison", {
+	description = S("Poison Potion"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#225533"),
+	inventory_image = potion_image("#225533"),
+	groups = { brewitem = 1, food = 0 },
+	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		poison_func(user, 2.5, 45)
+		_use_potion()
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		poison_func(user, 2.5, 45)
+		_use_potion()
+		return itemstack
+	end
+})
+
+minetest.register_craftitem("mcl_potions:poison_2", {
+	description = S("Poison Potion II"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#447755"),
+	inventory_image = potion_image("#447755"),
+	groups = { brewitem = 1, food = 0 },
+	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		poison_func(user, 1.2, 21)
+		_use_potion()
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		poison_func(user, 1.2, 21)
+		_use_potion()
+		return itemstack
+	end
+})
+
+minetest.register_craftitem("mcl_potions:poison_plus", {
+	description = S("Poison Potion +"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#336644"),
+	inventory_image = potion_image("#336644"),
+	groups = { brewitem = 1, food = 0 },
+	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		poison_func(user, 2.5, 90)
+		_use_potion()
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		poison_func(user, 2.5, 90)
+		_use_potion()
+		return itemstack
+	end
+})
+
+local regeneration_func = function(player, factor, duration)
+	player:set_attribute("regeneration", tostring(factor))
+	print(player:get_player_name().." ".."regeneration = "..player:get_attribute("regeneration"))
+	minetest.after(duration, function() player:set_attribute("regeneration", tostring(0)) end )
+end
+minetest.register_craftitem("mcl_potions:regeneration", {
+	description = S("Regeneration Potion"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#A52BB2"),
+	inventory_image = potion_image("#A52BB2"),
+	groups = { brewitem = 1, food = 0 },
+	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		regeneration_func(user, 2.5, 45)
+		_use_potion()
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		regeneration_func(user, 2.5, 45)
+		_use_potion()
+		return itemstack
+	end
+})
+
+minetest.register_craftitem("mcl_potions:regeneration_2", {
+	description = S("Regeneration Potion II"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#B52CC2"),
+	inventory_image = potion_image("#B52CC2"),
+	groups = { brewitem = 1, food = 0 },
+	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		regeneration_func(user, 1.2, 21)
+		_use_potion()
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		regeneration_func(user, 1.2, 21)
+		_use_potion()
+		return itemstack
+	end
+})
+
+minetest.register_craftitem("mcl_potions:regeneration_plus", {
+	description = S("Regeneration Potion +"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#C53DD3"),
+	inventory_image = potion_image("#C53DD3"),
+	groups = { brewitem = 1, food = 0 },
+	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		regeneration_func(user, 2.5, 90)
+		_use_potion()
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		regeneration_func(user, 2.5, 90)
+		_use_potion()
+		return itemstack
+	end
+})
+
 -- Look into reducing attack on punch
 minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
 	if puncher:get_attribute("weakness") then
@@ -672,7 +808,7 @@ function register_splash(name, descr, color, def)
           local pos = self.object:getpos()
           local node = minetest.get_node(pos)
           local n = node.name
-					local d = 1.5
+					local d = 2
           if n ~= "air" then
 						minetest.sound_play("mcl_potions_breaking_glass")
 						minetest.add_particlespawner({
@@ -693,7 +829,7 @@ function register_splash(name, descr, color, def)
 																				texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
 																			})
             self.object:remove()
-						for i, obj in ipairs(minetest.get_objects_inside_radius(pos, 2)) do
+						for i, obj in ipairs(minetest.get_objects_inside_radius(pos, 3)) do
 							if minetest.is_player(obj) then def.potion_fun(obj) end
 						end
 					end
@@ -749,7 +885,29 @@ register_splash("slowness_plus", "Splash Slowness +", "#000066", {
 		potion_fun = function(player) swiftness_func(player, 0.85, 180) end
 })
 
+register_splash("poison", "Splash Poison", "#335544", {
+		potion_fun = function(player) poison_func(player, 0.85, 180) end
+})
 
+register_splash("poison_2", "Splash Poison II", "#446655", {
+		potion_fun = function(player) poison_func(player, 0.85, 180) end
+})
+
+register_splash("poison_plus", "Splash Poison II", "#557766", {
+		potion_fun = function(player) poison_func(player, 0.85, 180) end
+})
+
+register_splash("regeneration", "Splash Regeneration", "#A52BB2", {
+		potion_fun = function(player) regeneration_func(player, 0.85, 180) end
+})
+
+register_splash("regeneration_2", "Splash Regeneration II", "#B52CC2", {
+		potion_fun = function(player) regeneration_func(player, 0.85, 180) end
+})
+
+register_splash("regeneration_plus", "Splash Regeneration +", "#C53DD3", {
+		potion_fun = function(player) regeneration_func(player, 0.85, 180) end
+})
 -- duration effects of redstone are a factor of 8/3
 -- duration effects of glowstone are a time factor of 1/2 and effect of 14/12
 -- splash potion effects are reduced by a factor of 3/4
@@ -777,17 +935,20 @@ local output_table = {
 	["mcl_potions:potion_awkward"] = awkward_table,
 }
 
-local enhancement_table = {
-	["mcl_potions:healing"] = "mcl_potions:healing_2",
-	["mcl_potions:harming"] = "mcl_potions:harming_2",
-	["mcl_potions:swiftness"] = "mcl_potions:swiftness_2",
-	["mcl_potions:leaping"] = "mcl_potions:leaping_2",
-}
 
-local extension_table = {
-	["mcl_potions:swiftness"] = "mcl_potions:swiftness_plus",
-	["mcl_potions:leaping"] = "mcl_potions:leaping_plus",
-}
+local enhancement_table = {}
+local extension_table = {}
+local potions = {}
+for i, potion in ipairs({"healing","harming","swiftness","leaping","poison","regeneration"}) do
+    enhancement_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_2"
+		table.insert(potions, potion)
+		table.insert(potions, potion.."_2")
+		if potion ~= "healing" and potion ~= "harming" then
+			extension_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_plus"
+			table.insert(potions, potion.."_plus")
+		end
+end
+
 
 local inversion_table = {
 	["mcl_potions:healing"] = "mcl_potions:harming",
@@ -800,11 +961,6 @@ local inversion_table = {
 	["mcl_potions:leaping_plus"] = "mlc_potions:slowness_plus",
 }
 
-local potions = {"healing", "healing_2",
-	 							 "harming", "harming_2", "slowness", "slowness_plus",
-								 "leaping", "leaping_2", "leaping_plus",
-								 "swiftness", "swiftness_2", "swiftness_plus",
-							 }
 
 local splash_table = {}
 
@@ -813,7 +969,7 @@ for i, potion in ipairs(potions) do
 end
 
 local mod_table = {
-	["mesecons:redstone"] = extension_table,
+	["mesecons:wire_00000000_off"] = extension_table,
 	["mcl_potions:fermented_spider_eye"] = inversion_table,
 	["mcl_nether:glowstone_dust"] = enhancement_table,
 	["mcl_mobitems:gunpowder"] = splash_table,

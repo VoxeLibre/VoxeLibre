@@ -341,6 +341,18 @@ local allow_take = function(pos, listname, index, stack, player)
 end
 local on_take = function(pos, listname, index, stack, player)
 	local meta = minetest.get_meta(pos)
+	local inv = meta:get_inventory()
+	local str = ""
+	for i=1, inv:get_size("stand") do
+		local stack = inv:get_stack("stand", i)
+		if not stack:is_empty() then
+			str = str.."1"
+		else str = str.."0"
+		end
+	end
+	minetest.swap_node(pos, {name = "mcl_brewing:stand_"..str})
+	minetest.get_node_timer(pos):start(1.0)
+	--some code here to enforce only potions getting placed on stands
 end
 
 minetest.register_node("mcl_brewing:stand_000", {
@@ -429,7 +441,7 @@ minetest.register_node("mcl_brewing:stand_000", {
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
 })
-minetest.register_alias("mcl_brewing:stand_000", "mcl_brewing:stand")
+minetest.register_alias("mcl_brewing:stand", "mcl_brewing:stand_000")
 minetest.register_node("mcl_brewing:stand_100", {
 	description = S("Brewing Stand"),
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
