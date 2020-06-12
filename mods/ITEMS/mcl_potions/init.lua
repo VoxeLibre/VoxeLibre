@@ -1,4 +1,8 @@
 local S = minetest.get_translator("mcl_potions")
+mcl_potions = {}
+
+local modpath = minetest.get_modpath("mcl_potions")
+dofile(modpath .. "/invisibility.lua")
 
 local brewhelp = S("Put this item in an item frame for decoration. It's useless otherwise.")
 
@@ -770,6 +774,53 @@ minetest.register_craftitem("mcl_potions:regeneration_plus", {
 	end
 })
 
+local invisiblility_func = function(player, duration)
+	invisible(player, true)
+	minetest.after(duration, function() mcl_potions.invisible(player, false) end )
+end
+
+minetest.register_craftitem("mcl_potions:invisibility", {
+	description = S("Invisibility Potion"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#B0B0B0"),
+	inventory_image = potion_image("#B0B0B0"),
+	groups = { brewitem = 1, food = 0 },
+	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		invisiblility_func(user, 180)
+		_use_potion()
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		invisiblility_func(user, 180)
+		_use_potion()
+		return itemstack
+	end
+})
+
+minetest.register_craftitem("mcl_potions:invisibility_plus", {
+	description = S("Invisibility Potion +"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#A0A0A0"),
+	inventory_image = potion_image("#A0A0A0"),
+	groups = { brewitem = 1, food = 0 },
+	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		invisiblility_func(user, 480)
+		_use_potion()
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		invisiblility_func(user, 480)
+		_use_potion()
+		return itemstack
+	end
+})
+
 -- Look into reducing attack on punch
 minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
 	if puncher:get_attribute("weakness") then
@@ -908,6 +959,15 @@ register_splash("regeneration_2", "Splash Regeneration II", "#B52CC2", {
 register_splash("regeneration_plus", "Splash Regeneration +", "#C53DD3", {
 		potion_fun = function(player) regeneration_func(player, 0.85, 180) end
 })
+
+register_splash("invisibility", "Splash Invisibility", "#B0B0B0", {
+	potion_fun = function(player) invisiblility_func(player, 135) end
+})
+
+register_splash("invisibility", "Splash Invisibility", "#A0A0A0", {
+	potion_fun = function(player) invisiblility_func(player, 300) end
+})
+
 -- duration effects of redstone are a factor of 8/3
 -- duration effects of glowstone are a time factor of 1/2 and effect of 14/12
 -- splash potion effects are reduced by a factor of 3/4
@@ -958,7 +1018,8 @@ local inversion_table = {
 	["mcl_potions:swiftness_plus"] = "mlc_potions:slowness_plus",
 	["mcl_potions:leaping"] = "mcl_potions:slowness",
 	["mcl_potions:leaping_2"] = "mcl_potions:slowness_plus",
-	["mcl_potions:leaping_plus"] = "mlc_potions:slowness_plus",
+	["mcl_potions:leaping_plus"] = "mcl_potions:slowness_plus",
+	["mcl_potions:night_vision"] = "mcl_potions:invisibility",
 }
 
 
