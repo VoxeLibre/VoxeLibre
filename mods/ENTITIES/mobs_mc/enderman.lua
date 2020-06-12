@@ -342,44 +342,47 @@ mobs:register_mob("mobs_mc:enderman", {
 				local r = pr:next(1, #takable_nodes)
 				local take_pos = takable_nodes[r]
 				local node = minetest.get_node(take_pos)
-				local dug = minetest.dig_node(take_pos)
-				if dug then
-					if mobs_mc.enderman_replace_on_take[node.name] then
-						self._taken_node = mobs_mc.enderman_replace_on_take[node.name]
-					else
-						self._taken_node = node.name
-					end
-					local def = minetest.registered_nodes[self._taken_node]
-					-- Update animation and texture accordingly (adds visibly carried block)
-					local block_type
-					-- Cube-shaped
-					if def.drawtype == "normal" or
-							def.drawtype == "nodebox" or
-							def.drawtype == "liquid" or
-							def.drawtype == "flowingliquid" or
-							def.drawtype == "glasslike" or
-							def.drawtype == "glasslike_framed" or
-							def.drawtype == "glasslike_framed_optional" or
-							def.drawtype == "allfaces" or
-							def.drawtype == "allfaces_optional" or
-							def.drawtype == nil then
-						block_type = "cube"
-					elseif def.drawtype == "plantlike" then
-						-- Flowers and stuff
-						block_type = "plantlike45"
-					elseif def.drawtype == "airlike" then
-						-- Just air
-						block_type = nil
-					else
-						-- Fallback for complex drawtypes
-						block_type = "unknown"
-					end
-					self.base_texture = create_enderman_textures(block_type, self._taken_node)
-					self.object:set_properties({ textures = self.base_texture })
-					self.animation = select_enderman_animation("block")
-					mobs:set_animation(self, self.animation.current)
-					if def.sounds and def.sounds.dug then
-						minetest.sound_play(def.sounds.dug, {pos = take_pos, max_hear_distance = 16}, true)
+				-- Don't destroy protected stuff.
+				if not minetest.is_protected(take_pos, "") then
+					local dug = minetest.dig_node(take_pos)
+					if dug then
+						if mobs_mc.enderman_replace_on_take[node.name] then
+							self._taken_node = mobs_mc.enderman_replace_on_take[node.name]
+						else
+							self._taken_node = node.name
+						end
+						local def = minetest.registered_nodes[self._taken_node]
+						-- Update animation and texture accordingly (adds visibly carried block)
+						local block_type
+						-- Cube-shaped
+						if def.drawtype == "normal" or
+								def.drawtype == "nodebox" or
+								def.drawtype == "liquid" or
+								def.drawtype == "flowingliquid" or
+								def.drawtype == "glasslike" or
+								def.drawtype == "glasslike_framed" or
+								def.drawtype == "glasslike_framed_optional" or
+								def.drawtype == "allfaces" or
+								def.drawtype == "allfaces_optional" or
+								def.drawtype == nil then
+							block_type = "cube"
+						elseif def.drawtype == "plantlike" then
+							-- Flowers and stuff
+							block_type = "plantlike45"
+						elseif def.drawtype == "airlike" then
+							-- Just air
+							block_type = nil
+						else
+							-- Fallback for complex drawtypes
+							block_type = "unknown"
+						end
+						self.base_texture = create_enderman_textures(block_type, self._taken_node)
+						self.object:set_properties({ textures = self.base_texture })
+						self.animation = select_enderman_animation("block")
+						mobs:set_animation(self, self.animation.current)
+						if def.sounds and def.sounds.dug then
+							minetest.sound_play(def.sounds.dug, {pos = take_pos, max_hear_distance = 16}, true)
+						end
 					end
 				end
 			end
@@ -391,7 +394,8 @@ mobs:register_mob("mobs_mc:enderman", {
 			local yaw = self.object:get_yaw()
 			-- Place node at looking direction
 			local place_pos = vector.subtract(pos, minetest.facedir_to_dir(minetest.dir_to_facedir(minetest.yaw_to_dir(yaw))))
-			if minetest.get_node(place_pos).name == "air" then
+			-- Also check to see if protected.
+			if minetest.get_node(place_pos).name == "air" and not minetest.is_protected(place_pos, "") then
 				-- ... but only if there's a free space
 				local success = minetest.place_node(place_pos, {name = self._taken_node})
 				if success then
