@@ -235,6 +235,7 @@ Detailed credits for each mod can be found in the individual mod directories.
 * Wuzzy: German
 * Rocher Laurent <rocherl@club-internet.fr>: French
 * wuniversales: Spanish
+* kay27 <kay27@bk.ru>: Russian
 
 ### Models
 * [22i](https://github.com/22i): Creator of all models
