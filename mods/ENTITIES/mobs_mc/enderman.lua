@@ -10,6 +10,21 @@
 -- and they are provoked by looking directly at them.
 -- TODO: Implement MC behaviour.
 
+-- Rootyjr
+-----------------------------
+-- implemented ability to detect when seen / break eye contact and aggressive response
+-- implemented teleport to avoid arrows.
+-- implemented teleport to avoid rain.
+-- implemented teleport to chase.
+-- added enderman particles.
+-- drew mcl_portal_particle1.png
+-- drew mcl_portal_particle2.png
+-- drew mcl_portal_particle3.png
+-- drew mcl_portal_particle4.png
+-- drew mcl_portal_particle5.png
+-- added rain damage.
+-- fixed the grass_with_dirt issue.
+
 local S = minetest.get_translator("mobs_mc")
 
 --###################
@@ -163,13 +178,13 @@ local select_enderman_animation = function(animation_type)
 	end
 end
 
-local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
+local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false 
 
 mobs:register_mob("mobs_mc:enderman", {
 	-- TODO: Endermen should be classified as passive
 	type = "monster",
 	spawn_class = "passive",
-	passive = false,
+	passive = true,
 	pathfinding = 1,
 	hp_min = 40,
 	hp_max = 40,
@@ -197,7 +212,116 @@ mobs:register_mob("mobs_mc:enderman", {
 	},
 	animation = select_enderman_animation("normal"),
 	_taken_node = "",
+	-- TODO: Teleport enderman on damage, etc.
 	do_custom = function(self, dtime)
+		-- PARTICLE BEHAVIOUR HERE.
+		local enderpos = self.object:get_pos()
+		local chanceOfParticle = math.random(0, 1)
+		if chanceOfParticle == 1 then
+			minetest.add_particle({
+				pos = {x=enderpos.x+math.random(-1,1)*math.random()/2,y=enderpos.y+math.random(0,3),z=enderpos.z+math.random(-1,1)*math.random()/2},
+				velocity = {x=math.random(-.25,.25), y=math.random(-.25,.25), z=math.random(-.25,.25)},
+				acceleration = {x=math.random(-.5,.5), y=math.random(-.5,.5), z=math.random(-.5,.5)},
+				expirationtime = math.random(),
+				size = math.random(),
+				collisiondetection = true,
+				vertical = false,
+				texture = "mcl_portals_particle"..math.random(1, 5)..".png",
+			})
+		end
+		-- RAIN DAMAGE / EVASIVE WARP BEHAVIOUR HERE.
+		if mcl_weather.state == "rain" or mcl_weather.state == "lightning" then
+			local damage = true
+			local enderpos = self.object:get_pos()
+			enderpos.y = enderpos.y+2.89
+			local height = {x=enderpos.x, y=enderpos.y+512,z=enderpos.z}
+			local ray = minetest.raycast(enderpos, height, true)
+			-- Check for blocks above enderman.
+			for pointed_thing in ray do
+				if pointed_thing.type == "node" then
+					local nn = minetest.get_node(minetest.get_pointed_thing_position(pointed_thing)).name
+					local def = minetest.registered_nodes[nn]
+					if (not def) or def.walkable then
+						-- There's a node in the way. Delete arrow without damage
+						damage = false
+						break
+					end
+				end
+			end
+			
+			if damage == true then
+				self.state = ""
+				--rain hurts enderman
+				self.object:punch(self.object, 1.0, {
+					full_punch_interval=1.0,
+					damage_groups={fleshy=self._damage},
+				}, nil)
+				--randomly teleport hopefully under something.
+				self:teleport(nil)
+			end
+		end
+		-- AGRESSIVELY WARP/CHASE PLAYER BEHAVIOUR HERE.
+		if self.state == "attack" then
+			target = self.attack
+			if vector.distance(self.object:get_pos(), target:get_pos()) > 10 then
+				self:teleport(target)
+			end
+		end
+		-- ARROW AVOIDANCE BEHAVIOUR HERE.
+		-- Check for arrows nearby.
+		local enderpos = self.object:get_pos()
+		local objs = minetest.get_objects_inside_radius(enderpos, 4)
+		for n = 1, #objs do
+			obj = objs[n]
+			if obj then
+				lua = obj:get_luaentity()
+				if lua then
+					if lua.name == "mcl_bows:arrow_entity" then
+						self:teleport(nil)
+					end
+				end
+			end
+		end
+		-- PROVOKED BEHAVIOUR HERE.
+		local enderpos = self.object:get_pos()
+		if self.provoked == "broke_contact" then
+			self.provoked = "false"
+			self.state = 'attack'
+		end
+		-- Check to see if people are near by enough to look at us.
+		local objs = minetest.get_objects_inside_radius(enderpos, 64)
+		for n = 1, #objs do
+			obj = objs[n]
+			if obj then
+				if minetest.is_player(obj) then
+					-- Check if they are looking at us.
+					local player_pos = obj:get_pos()
+					local look_dir_not_normalized = obj:get_look_dir()
+					local look_dir = vector.normalize(look_dir_not_normalized)
+					local look_pos = vector.new({x = look_dir.x+player_pos.x, y = look_dir.y+player_pos.y + 1.5, z = look_dir.z+player_pos.z}) -- Arbitrary value (1.5) is head level according to player info mod.
+					-- Cast up to 64 to see if player is looking at enderman.
+					for n = 1,64,.25 do
+						local node = minetest.get_node(look_pos)
+						if node.name ~= "air" then 
+							break
+						end
+						if look_pos.x-1<enderpos.x and look_pos.x+1>enderpos.x and look_pos.y-2.89<enderpos.y and look_pos.y-2>enderpos.y and look_pos.z-1<enderpos.z and look_pos.z+1>enderpos.z then
+							self.provoked = "staring"
+							self.attack = minetest.get_player_by_name(obj:get_player_name())
+							break
+						else
+							if self.provoked == "staring" then
+								self.provoked = "broke_contact"
+							end
+						end
+						look_pos.x = look_pos.x + (.25 * look_dir.x)
+						look_pos.y = look_pos.y + (.25 * look_dir.y)
+						look_pos.z = look_pos.z + (.25 * look_dir.z)
+					end
+				end
+			end
+		end		
+		-- TAKE AND PLACE STUFF BEHAVIOUR BELOW.
 		if not mobs_griefing then
 			return
 		end
@@ -218,44 +342,47 @@ mobs:register_mob("mobs_mc:enderman", {
 				local r = pr:next(1, #takable_nodes)
 				local take_pos = takable_nodes[r]
 				local node = minetest.get_node(take_pos)
-				local dug = minetest.dig_node(take_pos)
-				if dug then
-					if mobs_mc.enderman_replace_on_take[node.name] then
-						self._taken_node = mobs_mc.enderman_replace_on_take[node.name]
-					else
-						self._taken_node = node.name
-					end
-					local def = minetest.registered_nodes[self._taken_node]
-					-- Update animation and texture accordingly (adds visibly carried block)
-					local block_type
-					-- Cube-shaped
-					if def.drawtype == "normal" or
-							def.drawtype == "nodebox" or
-							def.drawtype == "liquid" or
-							def.drawtype == "flowingliquid" or
-							def.drawtype == "glasslike" or
-							def.drawtype == "glasslike_framed" or
-							def.drawtype == "glasslike_framed_optional" or
-							def.drawtype == "allfaces" or
-							def.drawtype == "allfaces_optional" or
-							def.drawtype == nil then
-						block_type = "cube"
-					elseif def.drawtype == "plantlike" then
-						-- Flowers and stuff
-						block_type = "plantlike45"
-					elseif def.drawtype == "airlike" then
-						-- Just air
-						block_type = nil
-					else
-						-- Fallback for complex drawtypes
-						block_type = "unknown"
-					end
-					self.base_texture = create_enderman_textures(block_type, self._taken_node)
-					self.object:set_properties({ textures = self.base_texture })
-					self.animation = select_enderman_animation("block")
-					mobs:set_animation(self, self.animation.current)
-					if def.sounds and def.sounds.dug then
-						minetest.sound_play(def.sounds.dug, {pos = take_pos, max_hear_distance = 16}, true)
+				-- Don't destroy protected stuff.
+				if not minetest.is_protected(take_pos, "") then
+					local dug = minetest.dig_node(take_pos)
+					if dug then
+						if mobs_mc.enderman_replace_on_take[node.name] then
+							self._taken_node = mobs_mc.enderman_replace_on_take[node.name]
+						else
+							self._taken_node = node.name
+						end
+						local def = minetest.registered_nodes[self._taken_node]
+						-- Update animation and texture accordingly (adds visibly carried block)
+						local block_type
+						-- Cube-shaped
+						if def.drawtype == "normal" or
+								def.drawtype == "nodebox" or
+								def.drawtype == "liquid" or
+								def.drawtype == "flowingliquid" or
+								def.drawtype == "glasslike" or
+								def.drawtype == "glasslike_framed" or
+								def.drawtype == "glasslike_framed_optional" or
+								def.drawtype == "allfaces" or
+								def.drawtype == "allfaces_optional" or
+								def.drawtype == nil then
+							block_type = "cube"
+						elseif def.drawtype == "plantlike" then
+							-- Flowers and stuff
+							block_type = "plantlike45"
+						elseif def.drawtype == "airlike" then
+							-- Just air
+							block_type = nil
+						else
+							-- Fallback for complex drawtypes
+							block_type = "unknown"
+						end
+						self.base_texture = create_enderman_textures(block_type, self._taken_node)
+						self.object:set_properties({ textures = self.base_texture })
+						self.animation = select_enderman_animation("block")
+						mobs:set_animation(self, self.animation.current)
+						if def.sounds and def.sounds.dug then
+							minetest.sound_play(def.sounds.dug, {pos = take_pos, max_hear_distance = 16}, true)
+						end
 					end
 				end
 			end
@@ -267,7 +394,8 @@ mobs:register_mob("mobs_mc:enderman", {
 			local yaw = self.object:get_yaw()
 			-- Place node at looking direction
 			local place_pos = vector.subtract(pos, minetest.facedir_to_dir(minetest.dir_to_facedir(minetest.yaw_to_dir(yaw))))
-			if minetest.get_node(place_pos).name == "air" then
+			-- Also check to see if protected.
+			if minetest.get_node(place_pos).name == "air" and not minetest.is_protected(place_pos, "") then
 				-- ... but only if there's a free space
 				local success = minetest.place_node(place_pos, {name = self._taken_node})
 				if success then
@@ -283,33 +411,61 @@ mobs:register_mob("mobs_mc:enderman", {
 			end
 		end
 	end,
-	-- TODO: Teleport enderman on damage, etc.
-	_do_teleport = function(self)
-		-- Attempt to randomly teleport enderman
-		local pos = self.object:get_pos()
-		-- Find all solid nodes below air in a 65×65×65 cuboid centered on the enderman
-		local nodes = minetest.find_nodes_in_area_under_air(vector.subtract(pos, 32), vector.add(pos, 32), {"group:solid", "group:cracky", "group:crumbly"})
-		local telepos
-		if #nodes > 0 then
-			-- Up to 64 attempts to teleport
-			for n=1, math.min(64, #nodes) do
-				local r = pr:next(1, #nodes)
-				local nodepos = nodes[r]
-				local node_ok = true
-				-- Selected node needs to have 3 nodes of free space above
-				for u=1, 3 do
-					local node = minetest.get_node({x=nodepos.x, y=nodepos.y+u, z=nodepos.z})
-					if minetest.registered_nodes[node.name].walkable then
-						node_ok = false
-						break
+	do_teleport = function(self, target)
+		if target ~= nil then
+			local target_pos = target:get_pos()
+			-- Find all solid nodes below air in a 10×10×10 cuboid centered on the target
+			local nodes = minetest.find_nodes_in_area_under_air(vector.subtract(target_pos, 5), vector.add(target_pos, 5), {"group:solid", "group:cracky", "group:crumbly"})
+			local telepos
+			if #nodes > 0 then
+				-- Up to 64 attempts to teleport
+				for n=1, math.min(64, #nodes) do
+					local r = pr:next(1, #nodes)
+					local nodepos = nodes[r]
+					local node_ok = true
+					-- Selected node needs to have 3 nodes of free space above
+					for u=1, 3 do
+						local node = minetest.get_node({x=nodepos.x, y=nodepos.y+u, z=nodepos.z})
+						if minetest.registered_nodes[node.name].walkable then
+							node_ok = false
+							break
+						end
+					end
+					if node_ok then
+						telepos = {x=nodepos.x, y=nodepos.y+1, z=nodepos.z}
 					end
 				end
-				if node_ok then
-					telepos = {x=nodepos.x, y=nodepos.y+1, z=nodepos.z}
+				if telepos then
+					self.object:set_pos(telepos)
 				end
 			end
-			if telepos then
-				self.object:set_pos(telepos)
+		else
+			-- Attempt to randomly teleport enderman
+			local pos = self.object:get_pos()
+			-- Find all solid nodes below air in a 65×65×65 cuboid centered on the enderman
+			local nodes = minetest.find_nodes_in_area_under_air(vector.subtract(pos, 32), vector.add(pos, 32), {"group:solid", "group:cracky", "group:crumbly"})
+			local telepos
+			if #nodes > 0 then
+				-- Up to 64 attempts to teleport
+				for n=1, math.min(64, #nodes) do
+					local r = pr:next(1, #nodes)
+					local nodepos = nodes[r]
+					local node_ok = true
+					-- Selected node needs to have 3 nodes of free space above
+					for u=1, 3 do
+						local node = minetest.get_node({x=nodepos.x, y=nodepos.y+u, z=nodepos.z})
+						if minetest.registered_nodes[node.name].walkable then
+							node_ok = false
+							break
+						end
+					end
+					if node_ok then
+						telepos = {x=nodepos.x, y=nodepos.y+1, z=nodepos.z}
+					end
+				end
+				if telepos then
+					self.object:set_pos(telepos)
+				end
 			end
 		end
 	end,
@@ -319,10 +475,16 @@ mobs:register_mob("mobs_mc:enderman", {
 			minetest.add_item(pos, self._taken_node)
 		end
 	end,
+	do_punch = function(self, hitter, tflp, tool_caps, dir)
+		-- damage from rain caused by itself so we don't want it to attack itself.
+		if hitter ~= self.object then
+			self:teleport(hitter)
+			self.state="attack"
+			self.attack=hitter
+		end
+	end,
 	water_damage = 8,
-	-- TODO: Increase view range when it detects being seen
-	-- Low view range to emulate that behaviour somehow
-	view_range = 4,
+	view_range = 64,
 	fear_height = 4,
 	attack_type = "dogfight",
 })

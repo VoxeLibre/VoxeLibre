@@ -2581,6 +2581,14 @@ local falling = function(self, pos)
 	end
 end
 
+local teleport = function(self, target)
+	if self.do_teleport then
+		if self.do_teleport(self, target) == false then
+			return
+		end
+	end
+end
+
 
 -- deal damage and effects when mob punched
 local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
@@ -3393,6 +3401,8 @@ minetest.register_entity(name, {
 	_cmi_is_mob = true,
 
 	-- MCL2 extensions
+	teleport = teleport,
+	do_teleport = def.do_teleport,
 	spawn_class = def.spawn_class,
 	ignores_nametag = def.ignores_nametag or false,
 	rain_damage = def.rain_damage or 0,
