@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- ENDERMAN BEHAVIOUR:
+-- ENDERMAN BEHAVIOUR (OLD):
 -- In this game, endermen attack the player on sight, like other monsters do.
 -- However, they have a reduced viewing range to make them less dangerous.
 -- This differs from MC, in which endermen only become hostile when provoked,
@@ -262,22 +262,36 @@ mobs:register_mob("mobs_mc:enderman", {
 		end
 		-- AGRESSIVELY WARP/CHASE PLAYER BEHAVIOUR HERE.
 		if self.state == "attack" then
-			target = self.attack
-			if vector.distance(self.object:get_pos(), target:get_pos()) > 10 then
-				self:teleport(target)
+			if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
+				self:teleport(nil)
+				self.state = ""
+			else
+				if self.attack then
+					target = self.attack
+					if vector.distance(self.object:get_pos(), target:get_pos()) > 10 then
+						self:teleport(target)
+					end
+				end
 			end
 		end
-		-- ARROW AVOIDANCE BEHAVIOUR HERE.
-		-- Check for arrows nearby.
+		-- ARROW / DAYTIME PEOPLE AVOIDANCE BEHAVIOUR HERE.
+		-- Check for arrows and people nearby.
 		local enderpos = self.object:get_pos()
 		local objs = minetest.get_objects_inside_radius(enderpos, 4)
 		for n = 1, #objs do
 			obj = objs[n]
 			if obj then
-				lua = obj:get_luaentity()
-				if lua then
-					if lua.name == "mcl_bows:arrow_entity" then
+				if minetest.is_player(obj) then
+					-- Warp from players during day.
+					if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
 						self:teleport(nil)
+					end	
+				else
+					lua = obj:get_luaentity()
+					if lua then
+						if lua.name == "mcl_bows:arrow_entity" then
+							self:teleport(nil)
+						end
 					end
 				end
 			end
@@ -286,7 +300,14 @@ mobs:register_mob("mobs_mc:enderman", {
 		local enderpos = self.object:get_pos()
 		if self.provoked == "broke_contact" then
 			self.provoked = "false"
-			self.state = 'attack'
+			if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
+				self:teleport(nil)
+				self.state = ""
+			else
+				if self.attack ~= nil then
+					self.state = 'attack'
+				end
+			end
 		end
 		-- Check to see if people are near by enough to look at us.
 		local objs = minetest.get_objects_inside_radius(enderpos, 64)
@@ -477,10 +498,14 @@ mobs:register_mob("mobs_mc:enderman", {
 	end,
 	do_punch = function(self, hitter, tflp, tool_caps, dir)
 		-- damage from rain caused by itself so we don't want it to attack itself.
-		if hitter ~= self.object then
-			self:teleport(hitter)
-			self.state="attack"
-			self.attack=hitter
+		if hitter ~= self.object and hitter ~= nil then
+			if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
+				self:teleport(nil)
+			else
+				self:teleport(hitter)
+				self.attack=hitter
+				self.state="attack"
+			end
 		end
 	end,
 	water_damage = 8,
