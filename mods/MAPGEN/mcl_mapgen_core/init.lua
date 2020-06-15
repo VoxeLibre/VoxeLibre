@@ -1077,17 +1077,31 @@ local function register_mgv6_decorations()
 
 end
 
+local mg_flags = minetest.settings:get_flags("mg_flags")
+-- Disable builtin dungeons, we provide our own dungeons
+mg_flags.dungeons = false
+
 -- Apply mapgen-specific mapgen code
 if mg_name == "v6" then
 	register_mgv6_decorations()
-	minetest.set_mapgen_setting("mg_flags", "biomes,caves,nodungeons,decorations,light", true)
 elseif superflat then
-	-- Enforce superflat-like mapgen: No hills, lakes or caves
-	minetest.set_mapgen_setting("mg_flags", "biomes,nocaves,nodungeons,nodecorations,light", true)
+	-- Enforce superflat-like mapgen: no caves, decor, lakes and hills
+	mg_flags.caves = false
+	mg_flags.decorations = false
 	minetest.set_mapgen_setting("mgflat_spflags", "nolakes,nohills", true)
-else
-	minetest.set_mapgen_setting("mg_flags", "biomes,caves,nodungeons,decorations,light", true)
 end
+
+local mg_flags_str = ""
+for k,v in pairs(mg_flags) do
+	if v == false then
+		k = "no" .. k
+	end
+	mg_flags_str = mg_flags_str .. k .. ","
+end
+if string.len(mg_flags_str) > 0 then
+	mg_flags_str = string.sub(mg_flags_str, 1, string.len(mg_flags_str)-1)
+end
+minetest.set_mapgen_setting("mg_flags", mg_flags_str, true)
 
 -- Helper function for converting a MC probability to MT, with
 -- regards to MapBlocks.
