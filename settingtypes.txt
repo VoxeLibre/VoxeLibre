@@ -112,4 +112,4 @@ mcl_generate_fallen_logs (Generate fallen logs) bool false
 # reach new areas. Most importantly, the void is much higher in Superflat than
 # in “normal” Flat.
 # But creating new flat worlds after changing this setting should be safe.
-mcl_superflat_classic (Classic superflat map generation) bool true
+mcl_superflat_classic (Classic superflat map generation) bool false
