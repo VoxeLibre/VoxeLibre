@@ -1080,13 +1080,13 @@ end
 -- Apply mapgen-specific mapgen code
 if mg_name == "v6" then
 	register_mgv6_decorations()
-	minetest.set_mapgen_setting("mg_flags", "caves,nodungeons,decorations,light", true)
+	minetest.set_mapgen_setting("mg_flags", "biomes,caves,nodungeons,decorations,light", true)
 elseif superflat then
 	-- Enforce superflat-like mapgen: No hills, lakes or caves
-	minetest.set_mapgen_setting("mg_flags", "nocaves,nodungeons,nodecorations,light", true)
+	minetest.set_mapgen_setting("mg_flags", "biomes,nocaves,nodungeons,nodecorations,light", true)
 	minetest.set_mapgen_setting("mgflat_spflags", "nolakes,nohills", true)
 else
-	minetest.set_mapgen_setting("mg_flags", "caves,nodungeons,decorations,light", true)
+	minetest.set_mapgen_setting("mg_flags", "biomes,caves,nodungeons,decorations,light", true)
 end
 
 -- Helper function for converting a MC probability to MT, with
