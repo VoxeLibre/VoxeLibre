@@ -16,19 +16,24 @@ function controls.register_on_hold(func)
 	controls.registered_on_hold[#controls.registered_on_hold+1]=func
 end
 
+local known_controls = {
+	jump=true,
+	right=true,
+	left=true,
+	LMB=true,
+	RMB=true,
+	sneak=true,
+	aux1=true,
+	down=true,
+	up=true,
+}
+
 minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
-	controls.players[name] = {
-		jump={false}, 
-		right={false}, 
-		left={false}, 
-		LMB={false}, 
-		RMB={false}, 
-		sneak={false}, 
-		aux1={false}, 
-		down={false}, 
-		up={false}
-	}
+	controls.players[name] = {}
+	for cname,_ in pairs(known_controls) do
+		controls.players[name][cname] = { false }
+	end
 end)
 
 minetest.register_on_leaveplayer(function(player)
@@ -40,7 +45,9 @@ minetest.register_globalstep(function(dtime)
 	for _, player in pairs(minetest.get_connected_players()) do
 		local player_name = player:get_player_name()
 		local player_controls = player:get_player_control()
+		if controls.players[player_name] then
 		for cname, cbool in pairs(player_controls) do
+		if known_controls[cname] == true then
 			--Press a key
 			if cbool==true and controls.players[player_name][cname][1]==false then
 				for _, func in pairs(controls.registered_on_press) do
@@ -58,6 +65,8 @@ minetest.register_globalstep(function(dtime)
 				end
 				controls.players[player_name][cname] = {false}
 			end
+		end
+		end
 		end
 	end
 end)
