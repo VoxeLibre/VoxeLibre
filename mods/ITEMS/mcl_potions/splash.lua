@@ -22,15 +22,16 @@ local function register_splash(name, descr, color, def)
             itemstack:take_item()
             return itemstack
         end,
+				stack_max = 100, -- increased stack to test throwing
     })
 
-    local w = 0.35
+    local w = 0.7
 
     minetest.register_entity(id.."_flying",{
         textures = {splash_image(color)},
 		hp_max = 1,
-		visual_size = {x=w,y=w},
-		collisionbox = {-w,-w,-w, w,w,w},
+		visual_size = {x=w/2,y=w/2},
+		collisionbox = {-w,-w,-w,w,w,w},
         on_step = function(self, dtime)
           local pos = self.object:getpos()
           local node = minetest.get_node(pos)
@@ -52,12 +53,13 @@ local function register_splash(name, descr, color, def)
 																				maxexptime = 5,
 																				minsize = 2,
 																				maxsize = 4,
-																				collisiondetection = true,
+																				collisiondetection = false,
 																				vertical = false,
 																				texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
 																			})
             self.object:remove()
 						for i, obj in ipairs(minetest.get_objects_inside_radius(pos, 4)) do
+					
 							if minetest.is_player(obj) then
 
 								pos2 = obj:get_pos()
