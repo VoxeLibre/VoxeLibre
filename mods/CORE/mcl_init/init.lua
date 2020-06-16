@@ -98,6 +98,9 @@ mcl_vars.mg_end_platform_pos = { x = 100, y = mcl_vars.mg_end_min + 74, z = 0 }
 mcl_vars.mg_realm_barrier_overworld_end_max = mcl_vars.mg_end_max
 mcl_vars.mg_realm_barrier_overworld_end_min = mcl_vars.mg_end_max - 11
 
+-- Use MineClone 2-style dungeons
+mcl_vars.mg_dungeons = true
+
 -- Set default stack sizes
 minetest.nodedef_default.stack_max = 64
 minetest.craftitemdef_default.stack_max = 64

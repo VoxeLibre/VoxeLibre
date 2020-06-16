@@ -3,6 +3,11 @@
 local mg_name = minetest.get_mapgen_setting("mg_name")
 local pr = PseudoRandom(os.time())
 
+-- Are dungeons disabled?
+if mcl_vars.mg_dungeons == false then
+	return
+end
+
 -- Get loot for dungeon chests
 local get_loot = function()
 	local loottable = {

@@ -1078,6 +1078,10 @@ local function register_mgv6_decorations()
 end
 
 local mg_flags = minetest.settings:get_flags("mg_flags")
+
+-- Inform other mods of dungeon setting for MCL2-style dungeons
+mcl_vars.mg_dungeons = mg_flags.dungeons and not superflat
+
 -- Disable builtin dungeons, we provide our own dungeons
 mg_flags.dungeons = false
 
