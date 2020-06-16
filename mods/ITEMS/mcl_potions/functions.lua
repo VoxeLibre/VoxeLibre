@@ -62,6 +62,6 @@ function mcl_potions.regeneration_func(player, factor, duration)
 end
 
 function mcl_potions.invisiblility_func(player, duration)
-	invisible(player, true)
-	minetest.after(duration, function() invisible(player, false) end )
+	mcl_potions.invisible(player, true)
+	minetest.after(duration, function() mcl_potions.invisible(player, false) end )
 end
