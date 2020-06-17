@@ -22,7 +22,7 @@ local function register_splash(name, descr, color, def)
             itemstack:take_item()
             return itemstack
         end,
-				stack_max = 100, -- increased stack to test throwing
+				stack_max = 1,
     })
 
     local w = 0.7
@@ -59,7 +59,7 @@ local function register_splash(name, descr, color, def)
 																			})
             self.object:remove()
 						for i, obj in ipairs(minetest.get_objects_inside_radius(pos, 4)) do
-					
+
 							if minetest.is_player(obj) then
 
 								pos2 = obj:get_pos()

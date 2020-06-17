@@ -827,10 +827,12 @@ local output_table = {
 local enhancement_table = {}
 local extension_table = {}
 local potions = {}
-for i, potion in ipairs({"healing","harming","swiftness","leaping","poison","regeneration"}) do
-    enhancement_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_2"
-		table.insert(potions, potion)
-		table.insert(potions, potion.."_2")
+for i, potion in ipairs({"healing","harming","swiftness","leaping","poison","regeneration","invisibility"}) do
+		if potion ~= "invisibility" and potion ~= "night_vision" then
+			enhancement_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_2"
+			table.insert(potions, potion)
+			table.insert(potions, potion.."_2")
+		end
 		if potion ~= "healing" and potion ~= "harming" then
 			extension_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_plus"
 			table.insert(potions, potion.."_plus")
@@ -842,12 +844,13 @@ local inversion_table = {
 	["mcl_potions:healing"] = "mcl_potions:harming",
 	["mcl_potions:healing_2"] = "mcl_potions:harming_2",
 	["mcl_potions:swiftness"] = "mcl_potions:slowness",
-	["mcl_potions:swiftness_2"] = "mcl_potions:slowness_plus",
 	["mcl_potions:swiftness_plus"] = "mlc_potions:slowness_plus",
 	["mcl_potions:leaping"] = "mcl_potions:slowness",
-	["mcl_potions:leaping_2"] = "mcl_potions:slowness_plus",
 	["mcl_potions:leaping_plus"] = "mcl_potions:slowness_plus",
 	["mcl_potions:night_vision"] = "mcl_potions:invisibility",
+	["mcl_potions:night_vision_plus"] = "mcl_potions:invisibility_plus",
+	["mcl_potions:poison"] = "mcl_potions:harming",
+	["mcl_potions:poison_2"] = "mcl_potions:harming_2",
 }
 
 
