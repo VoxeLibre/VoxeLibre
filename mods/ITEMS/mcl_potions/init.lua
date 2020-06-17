@@ -874,9 +874,11 @@ local inversion_table = {
 
 
 local splash_table = {}
+local lingering_table = {}
 
 for i, potion in ipairs(potions) do
     splash_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_splash"
+		lingering_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_lingering"
 end
 
 local mod_table = {
@@ -884,6 +886,7 @@ local mod_table = {
 	["mcl_potions:fermented_spider_eye"] = inversion_table,
 	["mcl_nether:glowstone_dust"] = enhancement_table,
 	["mcl_mobitems:gunpowder"] = splash_table,
+	["mcl_potions:dragon_breath"] = lingering_table,
 }
 
 -- Compare two ingredients for compatable alchemy
@@ -896,12 +899,6 @@ function mcl_potions.get_alchemy(ingr, pot)
 		end
 
 	elseif mod_table[ingr] ~= nil then
-		local brew_table = mod_table[ingr]
-		if brew_table[pot] ~= nil then
-			return brew_table[pot]
-		end
-
-	elseif splash_table[ingr] ~= nil then
 		local brew_table = mod_table[ingr]
 		if brew_table[pot] ~= nil then
 			return brew_table[pot]
