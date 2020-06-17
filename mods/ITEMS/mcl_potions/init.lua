@@ -260,7 +260,7 @@ minetest.register_craftitem("mcl_potions:potion_river_water", {
 
 local how_to_drink = S("Use the “Place” key to drink it.")
 
-minetest.register_craftitem("mcl_potions:potion_awkward", {
+minetest.register_craftitem("mcl_potions:awkward", {
 	description = S("Awkward Potion"),
 	_tt_help = S("No effect"),
 	_doc_items_longdesc = S("This potion has an awkward taste and is used for brewing more potions. Drinking it has no effect."),
@@ -273,7 +273,7 @@ minetest.register_craftitem("mcl_potions:potion_awkward", {
 	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
-minetest.register_craftitem("mcl_potions:potion_mundane", {
+minetest.register_craftitem("mcl_potions:mundane", {
 	description = S("Mundane Potion"),
 	_tt_help = S("No effect"),
 	_doc_items_longdesc = S("This potion has a clean taste and is used for brewing more potions. Drinking it has no effect."),
@@ -288,7 +288,7 @@ minetest.register_craftitem("mcl_potions:potion_mundane", {
 })
 
 
-minetest.register_craftitem("mcl_potions:potion_thick", {
+minetest.register_craftitem("mcl_potions:thick", {
 	description = S("Thick Potion"),
 	_tt_help = S("No effect"),
 	_doc_items_longdesc = S("This potion has a bitter taste and is used for brewing more potions. Drinking it has no effect."),
@@ -801,8 +801,16 @@ end)
 -- splash potion effects are reduced by a factor of 3/4
 
 local water_table = {
-	["mcl_nether:nether_wart_item"] = "mcl_potions:potion_awkward",
+	["mcl_nether:nether_wart_item"] = "mcl_potions:awkward",
 	["mcl_potions:fermented_spider_eye"] = "mcl_potions:weakness",
+	["mcl_potions:speckled_melon"] = "mcl_potions:mundane",
+	["mcl_core:sugar"] = "mcl_potions:mundane",
+	["mcl_mobitems:magma_cream"] = "mcl_potions:mundane",
+	["mcl_mobitems:blaze_powder"] = "mcl_potions:mundane",
+	["mesecons:wire_00000000_off"] = "mcl_potions:mundane",
+	["mcl_mobitems:ghast_tear"] = "mcl_potions:mundane",
+	["mcl_mobitems:spider_eye"] = "mcl_potions:mundane",
+	["mcl_mobitems:rabbit_foot"] = "mcl_potions:mundane"
 }
 
 local awkward_table = {
@@ -820,21 +828,22 @@ local awkward_table = {
 local output_table = {
 	["mcl_potions:potion_river_water"] = water_table,
 	["mcl_potions:potion_water"] = water_table,
-	["mcl_potions:potion_awkward"] = awkward_table,
+	["mcl_potions:awkward"] = awkward_table,
 }
 
 
 local enhancement_table = {}
 local extension_table = {}
-local potions = {}
+local potions = {"awkward", "mundane", "thick"}
 for i, potion in ipairs({"healing","harming","swiftness","leaping","poison","regeneration","invisibility"}) do
 		if potion ~= "invisibility" and potion ~= "night_vision" then
 			enhancement_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_2"
+			enhancement_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_2_splash"
 			table.insert(potions, potion)
 			table.insert(potions, potion.."_2")
 		end
 		if potion ~= "healing" and potion ~= "harming" then
-			extension_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_plus"
+			extension_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_plus_splash"
 			table.insert(potions, potion.."_plus")
 		end
 end
@@ -851,6 +860,16 @@ local inversion_table = {
 	["mcl_potions:night_vision_plus"] = "mcl_potions:invisibility_plus",
 	["mcl_potions:poison"] = "mcl_potions:harming",
 	["mcl_potions:poison_2"] = "mcl_potions:harming_2",
+	["mcl_potions:healing_splash"] = "mcl_potions:harming_splash",
+	["mcl_potions:healing_2_splash"] = "mcl_potions:harming_2_splash",
+	["mcl_potions:swiftness_splash"] = "mcl_potions:slowness_splash",
+	["mcl_potions:swiftness_plus_splash"] = "mlc_potions:slowness_plus_splash",
+	["mcl_potions:leaping_splash"] = "mcl_potions:slowness_splash",
+	["mcl_potions:leaping_plus_splash"] = "mcl_potions:slowness_plus_splash",
+	["mcl_potions:night_vision_splash"] = "mcl_potions:invisibility_splash",
+	["mcl_potions:night_vision_plus_splash"] = "mcl_potions:invisibility_plus_splash",
+	["mcl_potions:poison_splash"] = "mcl_potions:harming_splash",
+	["mcl_potions:poison_2_splash"] = "mcl_potions:harming_2_splash",
 }
 
 
@@ -881,11 +900,13 @@ function mcl_potions.get_alchemy(ingr, pot)
 		if brew_table[pot] ~= nil then
 			return brew_table[pot]
 		end
+
 	elseif splash_table[ingr] ~= nil then
 		local brew_table = mod_table[ingr]
 		if brew_table[pot] ~= nil then
 			return brew_table[pot]
 		end
+
 	end
 
 	return false

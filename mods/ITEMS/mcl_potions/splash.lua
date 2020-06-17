@@ -74,6 +74,18 @@ local function register_splash(name, descr, color, def)
     })
 end
 
+register_splash("awkward", "Splash Awkward Potion", "#0000FF", {
+    potion_fun = function(player, redx)  end,
+})
+
+register_splash("mundane", "Splash Mundane Potion", "#0000FF", {
+    potion_fun = function(player, redx)  end,
+})
+
+register_splash("thick", "Splash Thick Potion", "#0000FF", {
+    potion_fun = function(player, redx)  end,
+})
+
 register_splash("healing", "Splash Healing", "#AA0000", {
     potion_fun = function(player, redx) player:set_hp(player:get_hp() + 3*redx) end,
 })
