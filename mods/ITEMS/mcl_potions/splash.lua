@@ -11,7 +11,7 @@ local function register_splash(name, descr, color, def)
     minetest.register_craftitem(id, {
         description = descr,
         inventory_image = splash_image(color),
-        on_use = function(itemstack, placer, pointed_thing)
+        on_use = function(item, placer, pointed_thing)
             --weapons_shot(itemstack, placer, pointed_thing, def.velocity, name)
             local velocity = 10
             local dir = placer:get_look_dir();
@@ -19,8 +19,8 @@ local function register_splash(name, descr, color, def)
             local obj = minetest.env:add_entity({x=pos.x+dir.x,y=pos.y+2+dir.y,z=pos.z+dir.z}, id.."_flying")
             obj:setvelocity({x=dir.x*velocity,y=dir.y*velocity,z=dir.z*velocity})
             obj:setacceleration({x=0, y=-9.8, z=0})
-            itemstack:take_item()
-            return itemstack
+            item:take_item()
+            return item
         end,
 				stack_max = 1,
     })
@@ -31,7 +31,7 @@ local function register_splash(name, descr, color, def)
         textures = {splash_image(color)},
 		hp_max = 1,
 		visual_size = {x=w/2,y=w/2},
-		collisionbox = {-w,-w,-w,w,w,w},
+		collisionbox = {0,0,0,0,0,0},
         on_step = function(self, dtime)
           local pos = self.object:getpos()
           local node = minetest.get_node(pos)
@@ -65,10 +65,10 @@ local function register_splash(name, descr, color, def)
 								pos2 = obj:get_pos()
 								local rad = math.floor(math.sqrt((pos2.x-pos.x)^2 + (pos2.y-pos.y)^2 + (pos2.z-pos.z)^2))
 								if rad > 0 then def.potion_fun(obj, redux_map[rad]) else def.potion_fun(obj, 1) end
-								print(obj:get_player_name().." "..math.floor(rad))
 
 							end
 						end
+
 					end
         end,
     })
