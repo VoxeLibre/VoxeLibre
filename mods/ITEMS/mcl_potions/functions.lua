@@ -26,8 +26,8 @@ function mcl_potions.invisible(player, toggle)
 
 end
 
-function mcl_potions._use_potion()
-	minetest.item_eat(0, "mcl_potions:glass_bottle")
+function mcl_potions._use_potion(item)
+	item:replace("mcl_potions:glass_bottle")
 	minetest.sound_play("mcl_potions_drinking")
 end
 
