@@ -268,8 +268,11 @@ mobs:register_mob("mobs_mc:enderman", {
 			else
 				if self.attack then
 					target = self.attack
-					if vector.distance(self.object:get_pos(), target:get_pos()) > 10 then
-						self:teleport(target)
+					pos = target:get_pos()
+					if pos ~= nil then
+						if vector.distance(self.object:get_pos(), target:get_pos()) > 10 then
+							self:teleport(target)
+						end
 					end
 				end
 			end
@@ -438,26 +441,28 @@ mobs:register_mob("mobs_mc:enderman", {
 			-- Find all solid nodes below air in a 10×10×10 cuboid centered on the target
 			local nodes = minetest.find_nodes_in_area_under_air(vector.subtract(target_pos, 5), vector.add(target_pos, 5), {"group:solid", "group:cracky", "group:crumbly"})
 			local telepos
-			if #nodes > 0 then
-				-- Up to 64 attempts to teleport
-				for n=1, math.min(64, #nodes) do
-					local r = pr:next(1, #nodes)
-					local nodepos = nodes[r]
-					local node_ok = true
-					-- Selected node needs to have 3 nodes of free space above
-					for u=1, 3 do
-						local node = minetest.get_node({x=nodepos.x, y=nodepos.y+u, z=nodepos.z})
-						if minetest.registered_nodes[node.name].walkable then
-							node_ok = false
-							break
+			if nodes ~= nil then
+				if #nodes > 0 then
+					-- Up to 64 attempts to teleport
+					for n=1, math.min(64, #nodes) do
+						local r = pr:next(1, #nodes)
+						local nodepos = nodes[r]
+						local node_ok = true
+						-- Selected node needs to have 3 nodes of free space above
+						for u=1, 3 do
+							local node = minetest.get_node({x=nodepos.x, y=nodepos.y+u, z=nodepos.z})
+							if minetest.registered_nodes[node.name].walkable then
+								node_ok = false
+								break
+							end
+						end
+						if node_ok then
+							telepos = {x=nodepos.x, y=nodepos.y+1, z=nodepos.z}
 						end
 					end
-					if node_ok then
-						telepos = {x=nodepos.x, y=nodepos.y+1, z=nodepos.z}
+					if telepos then
+						self.object:set_pos(telepos)
 					end
-				end
-				if telepos then
-					self.object:set_pos(telepos)
 				end
 			end
 		else
@@ -466,26 +471,28 @@ mobs:register_mob("mobs_mc:enderman", {
 			-- Find all solid nodes below air in a 65×65×65 cuboid centered on the enderman
 			local nodes = minetest.find_nodes_in_area_under_air(vector.subtract(pos, 32), vector.add(pos, 32), {"group:solid", "group:cracky", "group:crumbly"})
 			local telepos
-			if #nodes > 0 then
-				-- Up to 64 attempts to teleport
-				for n=1, math.min(64, #nodes) do
-					local r = pr:next(1, #nodes)
-					local nodepos = nodes[r]
-					local node_ok = true
-					-- Selected node needs to have 3 nodes of free space above
-					for u=1, 3 do
-						local node = minetest.get_node({x=nodepos.x, y=nodepos.y+u, z=nodepos.z})
-						if minetest.registered_nodes[node.name].walkable then
-							node_ok = false
-							break
+			if nodes ~= nil then
+				if #nodes > 0 then
+					-- Up to 64 attempts to teleport
+					for n=1, math.min(64, #nodes) do
+						local r = pr:next(1, #nodes)
+						local nodepos = nodes[r]
+						local node_ok = true
+						-- Selected node needs to have 3 nodes of free space above
+						for u=1, 3 do
+							local node = minetest.get_node({x=nodepos.x, y=nodepos.y+u, z=nodepos.z})
+							if minetest.registered_nodes[node.name].walkable then
+								node_ok = false
+								break
+							end
+						end
+						if node_ok then
+							telepos = {x=nodepos.x, y=nodepos.y+1, z=nodepos.z}
 						end
 					end
-					if node_ok then
-						telepos = {x=nodepos.x, y=nodepos.y+1, z=nodepos.z}
+					if telepos then
+						self.object:set_pos(telepos)
 					end
-				end
-				if telepos then
-					self.object:set_pos(telepos)
 				end
 			end
 		end
