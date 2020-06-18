@@ -4,6 +4,7 @@ mcl_potions = {}
 local modpath = minetest.get_modpath("mcl_potions")
 dofile(modpath .. "/functions.lua")
 dofile(modpath .. "/splash.lua")
+dofile(modpath .. "/lingering.lua")
 dofile(modpath .. "/potions.lua")
 
 local brewhelp = S("Put this item in an item frame for decoration. It's useless otherwise.")
@@ -93,9 +94,9 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 					-- place the water potion at a place where's space
 					local water_bottle
 					if river_water then
-						water_bottle = ItemStack("mcl_potions:potion_river_water")
+						water_bottle = ItemStack("mcl_potions:river_water")
 					else
-						water_bottle = ItemStack("mcl_potions:potion_water")
+						water_bottle = ItemStack("mcl_potions:water")
 					end
 					local inv = placer:get_inventory()
 					if creative then
@@ -166,7 +167,7 @@ end
 
 -- Itemstring of potions is “mcl_potions:potion_<NBT Potion Tag>”
 
-minetest.register_craftitem("mcl_potions:potion_water", {
+minetest.register_craftitem("mcl_potions:water", {
 	description = S("Water Bottle"),
 	_tt_help = S("No effect"),
 	_doc_items_longdesc = S("Water bottles can be used to fill cauldrons. Drinking water has no effect."),
@@ -211,7 +212,7 @@ minetest.register_craftitem("mcl_potions:potion_water", {
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
 
-minetest.register_craftitem("mcl_potions:potion_river_water", {
+minetest.register_craftitem("mcl_potions:river_water", {
 	description = S("River Water Bottle"),
 	_tt_help = S("No effect"),
 	_doc_items_longdesc = S("River water bottles can be used to fill cauldrons. Drinking it has no effect."),
@@ -306,8 +307,8 @@ local awkward_table = {
 }
 
 local output_table = {
-	["mcl_potions:potion_river_water"] = water_table,
-	["mcl_potions:potion_water"] = water_table,
+	["mcl_potions:river_water"] = water_table,
+	["mcl_potions:water"] = water_table,
 	["mcl_potions:awkward"] = awkward_table,
 }
 
@@ -365,6 +366,12 @@ for i, potion in ipairs(potions) do
     splash_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_splash"
 		lingering_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_lingering"
 end
+
+splash_table["mcl_potions:water"] = "mcl_potions:water_splash"
+splash_table["mcl_potions:river_water"] = "mcl_potions:river_water_splash"
+
+lingering_table["mcl_potions:water_splash"] = "mcl_potions:lingering"
+lingering_table["mcl_potions:river_water_splash"] = "mcl_potions:lingering"
 
 local mod_table = {
 	["mesecons:wire_00000000_off"] = extension_table,

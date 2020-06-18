@@ -134,6 +134,7 @@ local function brewing_stand_timer(pos, elapsed)
 		--    return 1
 		-- 	end
 		-- end
+
 		local brew_output = brewable(inv)
 		if fuel ~= 0 and brew_output then
 
@@ -286,13 +287,9 @@ if minetest.get_modpath("screwdriver") then
 end
 
 local doc_string =
-		S("To use an brewing_stand, rightclick it. An brewing_stand has 2 input slots (on the left) and one output slot.").."\n"..
-		S("To rename items, put an item stack in one of the item slots while keeping the other input slot empty. Type in a name, hit enter or “Set Name”, then take the renamed item from the output slot.").."\n"..
-		S("There are two possibilities to repair tools (and armor):").."\n"..
-		S("• Tool + Tool: Place two tools of the same type in the input slots. The “health” of the repaired tool is the sum of the “health” of both input tools, plus a 12% bonus.").."\n"..
-		S("• Tool + Material: Some tools can also be repaired by combining them with an item that it's made of. For example, iron pickaxes can be repaired with iron ingots. This repairs the tool by 25%.").."\n"..
-		S("Armor counts as a tool. It is possible to repair and rename a tool in a single step.").."\n\n"..
-		S("The brewing_stand has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the brewing_stand gets damaged. brewing_stand also have a chance of being damaged when they fall by more than 1 block. If a very damaged brewing_stand is damaged again, it is destroyed.")
+		S("To use an brewing_stand, rightclick it.").."\n"
+		S("To brew, place fuel first and/or your ingredient last!")
+
 local tiles = {"mcl_brewing_top.png", 	--top
 							 "mcl_brewing_base.png", 	--bottom
 							 "mcl_brewing_side.png", 	--right
@@ -424,8 +421,6 @@ minetest.register_node("mcl_brewing:stand_000", {
 		inv:set_size("input", 1)
 		inv:set_size("fuel", 1)
 		inv:set_size("stand", 3)
-		-- inv:set_size("stand2", 1)
-		-- inv:set_size("stand3", 1)
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
@@ -511,8 +506,6 @@ minetest.register_node("mcl_brewing:stand_100", {
 		inv:set_size("input", 1)
 		inv:set_size("fuel", 1)
 		inv:set_size("stand", 3)
-		-- inv:set_size("stand2", 1)
-		-- inv:set_size("stand3", 1)
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
@@ -597,8 +590,6 @@ minetest.register_node("mcl_brewing:stand_010", {
 		inv:set_size("input", 1)
 		inv:set_size("fuel", 1)
 		inv:set_size("stand", 3)
-		-- inv:set_size("stand2", 1)
-		-- inv:set_size("stand3", 1)
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
@@ -683,8 +674,6 @@ minetest.register_node("mcl_brewing:stand_001", {
 		inv:set_size("input", 1)
 		inv:set_size("fuel", 1)
 		inv:set_size("stand", 3)
-		-- inv:set_size("stand2", 1)
-		-- inv:set_size("stand3", 1)
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
@@ -769,8 +758,6 @@ minetest.register_node("mcl_brewing:stand_110", {
 		inv:set_size("input", 1)
 		inv:set_size("fuel", 1)
 		inv:set_size("stand", 3)
-		-- inv:set_size("stand2", 1)
-		-- inv:set_size("stand3", 1)
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
@@ -855,8 +842,6 @@ minetest.register_node("mcl_brewing:stand_101", {
 		inv:set_size("input", 1)
 		inv:set_size("fuel", 1)
 		inv:set_size("stand", 3)
-		-- inv:set_size("stand2", 1)
-		-- inv:set_size("stand3", 1)
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
@@ -941,8 +926,6 @@ minetest.register_node("mcl_brewing:stand_011", {
 		inv:set_size("input", 1)
 		inv:set_size("fuel", 1)
 		inv:set_size("stand", 3)
-		-- inv:set_size("stand2", 1)
-		-- inv:set_size("stand3", 1)
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
@@ -1027,8 +1010,6 @@ minetest.register_node("mcl_brewing:stand_111", {
 		inv:set_size("input", 1)
 		inv:set_size("fuel", 1)
 		inv:set_size("stand", 3)
-		-- inv:set_size("stand2", 1)
-		-- inv:set_size("stand3", 1)
 		local form = brewing_formspec
 		meta:set_string("formspec", form)
 	end,
@@ -1051,16 +1032,4 @@ minetest.register_craft({
 		{ "", "mcl_mobitems:blaze_rod", "" },
 		{ "mcl_core:stone_smooth", "mcl_core:stone_smooth", "mcl_core:stone_smooth" },
 	}
-})
-
--- Legacy
-minetest.register_lbm({
-	label = "Update brewing_stand formspecs (0.60.0",
-	name = "mcl_brewing:update_formspec_0_60_0",
-	--nodenames = { "group:brewing_stand" },
-	run_at_every_load = false,
-	action = function(pos, node)
-		local meta = minetest.get_meta(pos)
-		meta:set_string("formspec", brewing_formspec)
-	end,
 })
