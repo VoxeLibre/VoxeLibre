@@ -171,7 +171,7 @@ register_splash("invisibility", "Splash Invisibility", "#B0B0B0", {
 })
 
 register_splash("invisibility_plus", "Splash Invisibility +", "#A0A0A0", {
-	potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, 300*redx) end
+	potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, 360*redx) end
 })
 
 register_splash("weakness", "Splash Weakness", "#6600AA", {
@@ -180,4 +180,12 @@ register_splash("weakness", "Splash Weakness", "#6600AA", {
 
 register_splash("weakness_plus", "Splash Weakness +", "#7700BB", {
 	potion_fun = function(player, redx) mcl_potions.weakness_func(player, 1.4, 180*redx) end
+})
+
+register_splash("water_breathing", "Splash Water Breathing", "#0000AA", {
+	potion_fun = function(player, redx) mcl_potions.water_breathing_func(player, 135*redx) end
+})
+
+register_splash("water_breathing_plus", "Splash Water Breathing +", "#0000CC", {
+	potion_fun = function(player, redx) mcl_potions.water_breathing_func(player, 360*redx) end
 })

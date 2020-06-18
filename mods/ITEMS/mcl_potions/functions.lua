@@ -81,3 +81,13 @@ function mcl_potions.invisiblility_func(player, duration)
 	mcl_potions.invisible(player, true)
 	minetest.after(duration, function() mcl_potions.invisible(player, false) end )
 end
+
+function mcl_potions.water_breathing_func(player, duration)
+	if minetest.is_player(player) then
+
+		for i=1,math.floor(duration) do
+			minetest.after(i, function() player:set_breath(10) end )
+		end
+	end
+
+end

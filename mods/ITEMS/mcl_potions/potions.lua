@@ -548,3 +548,46 @@ minetest.register_on_punchnode(function(pos, node, puncher, pointed_thing)
 		print("Weakness Active")
 	end
 end)
+
+
+minetest.register_craftitem("mcl_potions:water_breathing", {
+	description = S("Water Breathing Potion"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#0000AA"),
+	inventory_image = potion_image("#0000AA"),
+	groups = { brewitem = 1, food = 0 },
+	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		mcl_potions.water_breathing_func(user, 180)
+		mcl_potions._use_potion(itemstack)
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		mcl_potions.water_breathing_func(user, 180)
+		mcl_potions._use_potion(itemstack)
+		return itemstack
+	end
+})
+
+minetest.register_craftitem("mcl_potions:water_breathing_plus", {
+	description = S("Water Breathing Potion +"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#0000CC"),
+	inventory_image = potion_image("#0000CC"),
+	groups = { brewitem = 1, food = 0 },
+	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		mcl_potions.water_breathing_func(user, 480)
+		mcl_potions._use_potion(itemstack)
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		mcl_potions.water_breathing_func(user, 480)
+		mcl_potions._use_potion(itemstack)
+		return itemstack
+	end
+})

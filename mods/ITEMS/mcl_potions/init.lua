@@ -303,7 +303,7 @@ local awkward_table = {
 	["mcl_fishing:pufferfish_raw"] = "mcl_potions:water_breathing", --add craft
 	["mcl_mobitems:ghast_tear"] = "mcl_potions:regeneration", --add craft
 	["mcl_mobitems:spider_eye"] = "mcl_potions:poison", --add craft
-	["mcl_mobitems:rabbit_foot"] = "mcl_potions:leaping", --add craft
+	["mcl_mobitems:rabbit_foot"] = "mcl_potions:leaping",
 }
 
 local output_table = {
@@ -316,11 +316,11 @@ local output_table = {
 local enhancement_table = {}
 local extension_table = {}
 local potions = {"awkward", "mundane", "thick"}
-for i, potion in ipairs({"healing","harming","swiftness","leaping","poison","regeneration","invisibility","weakness"}) do
+for i, potion in ipairs({"healing","harming","swiftness","leaping","poison","regeneration","invisibility","weakness","water_breathing"}) do
 
 		table.insert(potions, potion)
 
-		if potion ~= "invisibility" and potion ~= "night_vision" and potion ~= "weakness" then
+		if potion ~= "invisibility" and potion ~= "night_vision" and potion ~= "weakness" and potion ~= "water_breathing" then
 			enhancement_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_2"
 			enhancement_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_2_splash"
 			table.insert(potions, potion.."_2")
