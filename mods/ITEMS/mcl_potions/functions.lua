@@ -72,9 +72,16 @@ function mcl_potions.poison_func(player, factor, duration)
 end
 
 function mcl_potions.regeneration_func(player, factor, duration)
-	player:set_attribute("regeneration", tostring(factor))
-	print(player:get_player_name().." ".."regeneration = "..player:get_attribute("regeneration"))
-	minetest.after(duration, function() player:set_attribute("regeneration", tostring(0)) end )
+	if minetest.is_player(player) then
+
+		for i=1,math.floor(duration/factor) do
+			minetest.after(i*factor, function()
+							if player:get_hp() < 20 then
+								player:set_hp(player:get_hp() + 0.5)
+							end
+						end  )
+		end
+	end
 end
 
 function mcl_potions.invisiblility_func(player, duration)
@@ -86,7 +93,11 @@ function mcl_potions.water_breathing_func(player, duration)
 	if minetest.is_player(player) then
 
 		for i=1,math.floor(duration) do
-			minetest.after(i, function() player:set_breath(10) end )
+			minetest.after(i, function()
+							if player:get_breath() < 10 then
+								player:set_breath(10)
+							end
+						end  )
 		end
 	end
 

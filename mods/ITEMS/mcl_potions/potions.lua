@@ -466,13 +466,13 @@ minetest.register_craftitem("mcl_potions:regeneration_2", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.regeneration_func(user, 1.2, 21)
+		mcl_potions.regeneration_func(user, 1.2, 22)
 		mcl_potions._use_potion(itemstack)
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.regeneration_func(user, 1.2, 21)
+		mcl_potions.regeneration_func(user, 1.2, 22)
 		mcl_potions._use_potion(itemstack)
 		return itemstack
 	end
