@@ -39,9 +39,13 @@ for i, zombie in ipairs({"husk","zombie","pigman"}) do
 end
 
 function mcl_potions.healing_func(player, hp)
-	
+
 	if is_zombie[player:get_entity_name()] then hp = -hp end
-	player:set_hp(player:get_hp() + hp)
+	if hp > 0 then
+		player:set_hp(math.min(player:get_hp() + hp, player:get_properties().hp_max))
+	else
+		player:set_hp(player:get_hp() + hp)
+	end
 
 end
 
