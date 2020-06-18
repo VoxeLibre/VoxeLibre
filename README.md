@@ -201,7 +201,11 @@ There are so many people to list (sorry). Check out the respective mod directori
 * [Rootyjr](https://github.com/Rootyjr): Fishing rod and bugfixes
 * [aligator](https://github.com/aligator): Improvement of doors
 * [ryvnf](https://github.com/ryvnf): Explosion mechanics
+<<<<<<< HEAD
 * MysticTempest: Bugfixes
+=======
+* bzoss <brandonzoss@gmail.com>: Brewing Stand
+>>>>>>> 56a89405107fd3cd9c913a3284f8c9974aa51f62
 * Lots of other people: TO BE WRITTEN (see mod directories for details)
 
 #### Mod credits (summary)

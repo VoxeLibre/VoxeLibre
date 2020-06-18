@@ -343,7 +343,11 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 		minetest.bulk_set_node(airs, {name="air"})
 	end
 	if #fires > 0 then
+<<<<<<< HEAD
 		minetest.bulk_set_node(fires, {name="mcl_fire:fire"})
+=======
+		minetest.bulk_set_node(fires, {name="mcl_core:fire"})
+>>>>>>> 56a89405107fd3cd9c913a3284f8c9974aa51f62
 	end
 	-- Update falling nodes
 	for a=1, #airs do
