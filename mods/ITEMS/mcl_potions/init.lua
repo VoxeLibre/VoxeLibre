@@ -367,11 +367,11 @@ for i, potion in ipairs(potions) do
 		lingering_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_lingering"
 end
 
-splash_table["mcl_potions:water"] = "mcl_potions:water_splash"
-splash_table["mcl_potions:river_water"] = "mcl_potions:river_water_splash"
+for i, potion in ipairs({"awkward", "mundane", "thick", "water", "river_water"}) do
+    splash_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_splash"
+		lingering_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_lingering"
+end
 
-lingering_table["mcl_potions:water_splash"] = "mcl_potions:lingering"
-lingering_table["mcl_potions:river_water_splash"] = "mcl_potions:lingering"
 
 local mod_table = {
 	["mesecons:wire_00000000_off"] = extension_table,

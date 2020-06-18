@@ -41,19 +41,19 @@ local function register_lingering(name, descr, color, def)
           if n ~= "air" then
 						minetest.sound_play("mcl_potions_breaking_glass")
 						minetest.add_particlespawner({
-																				amount = 100,
+																				amount = 1000,
 																				time = 30,
-																				minpos = {x=pos.x-d, y=pos.y, z=pos.z-d},
-																				maxpos = {x=pos.x+d, y=pos.y+1, z=pos.z+d},
+																				minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
+																				maxpos = {x=pos.x+d, y=pos.y+d, z=pos.z+d},
 																				minvel = {x=-0.5, y=0, z=-0.5},
 																				maxvel = {x=0.5, y=0.5, z=0.5},
-																				minacc = {x=-0.25, y=0, z=-0.25},
-																				maxacc = {x=0.25, y=.1, z=0.25},
+																				minacc = {x=-0.2, y=0, z=-0.2},
+																				maxacc = {x=0.2, y=.05, z=0.2},
 																				minexptime = 1,
 																				maxexptime = 5,
 																				minsize = 2,
 																				maxsize = 4,
-																				collisiondetection = false,
+																				collisiondetection = true,
 																				vertical = false,
 																				texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
 																			})
@@ -74,11 +74,11 @@ local function register_lingering(name, descr, color, def)
     })
 end
 
-register_lingering("water", "Lingering Water", "#0000FF", {
+register_lingering("water", "Lingering Potion", "#0000FF", {
     potion_fun = function(player, redx)  end,
 })
 
-register_lingering("river_water", "Lingering River Water", "#0000FF", {
+register_lingering("river_water", "Lingering Potion", "#0000FF", {
     potion_fun = function(player, redx)  end,
 })
 

@@ -41,10 +41,10 @@ local function register_splash(name, descr, color, def)
           if n ~= "air" then
 						minetest.sound_play("mcl_potions_breaking_glass")
 						minetest.add_particlespawner({
-																				amount = 40,
+																				amount = 50,
 																				time = 2,
-																				minpos = {x=pos.x-d, y=pos.y, z=pos.z-d},
-																				maxpos = {x=pos.x+d, y=pos.y+1, z=pos.z+d},
+																				minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
+																				maxpos = {x=pos.x+d, y=pos.y+d, z=pos.z+d},
 																				minvel = {x=-1, y=0, z=-1},
 																				maxvel = {x=1, y=0.5, z=1},
 																				minacc = {x=-0.5, y=0, z=-0.5},
@@ -53,7 +53,7 @@ local function register_splash(name, descr, color, def)
 																				maxexptime = 5,
 																				minsize = 2,
 																				maxsize = 4,
-																				collisiondetection = false,
+																				collisiondetection = true,
 																				vertical = false,
 																				texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
 																			})
