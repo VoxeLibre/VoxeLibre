@@ -315,17 +315,22 @@ local output_table = {
 local enhancement_table = {}
 local extension_table = {}
 local potions = {"awkward", "mundane", "thick"}
-for i, potion in ipairs({"healing","harming","swiftness","leaping","poison","regeneration","invisibility"}) do
-		if potion ~= "invisibility" and potion ~= "night_vision" then
+for i, potion in ipairs({"healing","harming","swiftness","leaping","poison","regeneration","invisibility","weakness"}) do
+
+		table.insert(potions, potion)
+
+		if potion ~= "invisibility" and potion ~= "night_vision" and potion ~= "weakness" then
 			enhancement_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_2"
 			enhancement_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_2_splash"
-			table.insert(potions, potion)
 			table.insert(potions, potion.."_2")
 		end
+
 		if potion ~= "healing" and potion ~= "harming" then
 			extension_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_plus_splash"
+			extension_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_plus"
 			table.insert(potions, potion.."_plus")
 		end
+
 end
 
 

@@ -337,13 +337,34 @@ minetest.register_craftitem("mcl_potions:weakness", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.weakness_func(user, 1.2, 180)
+		mcl_potions.weakness_func(user, 1.2, 90)
 		mcl_potions._use_potion(itemstack)
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.weakness_func(user, 1.2, 180)
+		mcl_potions.weakness_func(user, 1.2, 90)
+		mcl_potions._use_potion(itemstack)
+		return itemstack
+	end
+})
+
+minetest.register_craftitem("mcl_potions:weakness_plus", {
+	description = S("Weakness Potion +"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#7700BB"),
+	inventory_image = potion_image("#7700BB"),
+	groups = { brewitem = 1, food=0},
+	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		mcl_potions.weakness_func(user, 1.4, 240)
+		mcl_potions._use_potion(itemstack)
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		mcl_potions.weakness_func(user, 1.4, 240)
 		mcl_potions._use_potion(itemstack)
 		return itemstack
 	end

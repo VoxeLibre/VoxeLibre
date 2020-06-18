@@ -142,7 +142,7 @@ register_splash("poison_2", "Splash Poison II", "#446655", {
 		potion_fun = function(player, redx) mcl_potions.poison_func(player, 0.85, 180*redx) end
 })
 
-register_splash("poison_plus", "Splash Poison II", "#557766", {
+register_splash("poison_plus", "Splash Poison +", "#557766", {
 		potion_fun = function(player, redx) mcl_potions.poison_func(player, 0.85, 180*redx) end
 })
 
@@ -162,6 +162,14 @@ register_splash("invisibility", "Splash Invisibility", "#B0B0B0", {
 	potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, 135*redx) end
 })
 
-register_splash("invisibility", "Splash Invisibility", "#A0A0A0", {
+register_splash("invisibility_plus", "Splash Invisibility +", "#A0A0A0", {
 	potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, 300*redx) end
+})
+
+register_splash("weakness", "Splash Weakness", "#6600AA", {
+	potion_fun = function(player, redx) mcl_potions.weakness_func(player, 1.2, 68*redx) end
+})
+
+register_splash("weakness_plus", "Splash Weakness +", "#7700BB", {
+	potion_fun = function(player, redx) mcl_potions.weakness_func(player, 1.4, 180*redx) end
 })
