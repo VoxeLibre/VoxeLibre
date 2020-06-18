@@ -31,7 +31,19 @@ function mcl_potions._use_potion(item)
 	minetest.sound_play("mcl_potions_drinking")
 end
 
-function mcl_potions.healing_func(player, hp) player:set_hp(player:get_hp() + hp) end
+local is_zombie = {}
+
+for i, zombie in ipairs({"husk","zombie","pigman"}) do
+	is_zombie["mobs_mc:"..zombie] = true
+	is_zombie["mobs_mc:baby_"..zombie] = true
+end
+
+function mcl_potions.healing_func(player, hp)
+	
+	if is_zombie[player:get_entity_name()] then hp = -hp end
+	player:set_hp(player:get_hp() + hp)
+
+end
 
 function mcl_potions.swiftness_func(player, factor, duration)
 	playerphysics.add_physics_factor(player, "speed", "swiftness", factor)

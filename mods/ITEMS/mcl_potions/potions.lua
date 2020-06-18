@@ -1,4 +1,5 @@
 local S = minetest.get_translator("mcl_potions")
+local brewhelp = S("Try different combinations to create potions.")
 
 local potion_image = function(colorstring, opacity)
 	if not opacity then

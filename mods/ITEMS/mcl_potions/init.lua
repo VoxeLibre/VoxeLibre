@@ -7,7 +7,7 @@ dofile(modpath .. "/splash.lua")
 dofile(modpath .. "/lingering.lua")
 dofile(modpath .. "/potions.lua")
 
-local brewhelp = S("Put this item in an item frame for decoration. It's useless otherwise.")
+local brewhelp = S("Try different combinations to create potions.")
 
 minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 	description = S("Fermented Spider Eye"),

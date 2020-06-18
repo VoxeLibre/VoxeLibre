@@ -60,7 +60,7 @@ local function register_lingering(name, descr, color, def)
             self.object:remove()
 						for i, obj in ipairs(minetest.get_objects_inside_radius(pos, 4)) do
 
-							if minetest.is_player(obj) then
+							if minetest.is_player(obj) or obj:get_entity_name() then
 
 								pos2 = obj:get_pos()
 								local rad = math.floor(math.sqrt((pos2.x-pos.x)^2 + (pos2.y-pos.y)^2 + (pos2.z-pos.z)^2))
