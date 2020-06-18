@@ -77,7 +77,7 @@ function mcl_potions.regeneration_func(player, factor, duration)
 		for i=1,math.floor(duration/factor) do
 			minetest.after(i*factor, function()
 							if player:get_hp() < 20 then
-								player:set_hp(player:get_hp() + 0.5)
+								player:set_hp(player:get_hp() + 1)
 							end
 						end  )
 		end
