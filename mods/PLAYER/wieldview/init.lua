@@ -57,6 +57,9 @@ wieldview.update_wielded_item = function(self, player)
 		if self.wielded_item[name] == item then
 			return
 		end
+		if not armor.textures[name] then
+			return
+		end
 		armor.textures[name].wielditem = self:get_item_texture(item)
 		armor:update_player_visuals(player)
 	end
