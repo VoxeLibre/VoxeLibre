@@ -50,28 +50,28 @@ function mcl_potions.healing_func(player, hp)
 end
 
 function mcl_potions.swiftness_func(player, factor, duration)
+	if not player:get_meta() then return false end
 	playerphysics.add_physics_factor(player, "speed", "swiftness", factor)
 	minetest.after(duration, function() playerphysics.remove_physics_factor(player, "speed", "swiftness") end )
 end
 
 function mcl_potions.leaping_func(player, factor, duration)
+	if player:get_meta() then return false end
 	playerphysics.add_physics_factor(player, "jump", "leaping", factor)
 	minetest.after(duration, function() playerphysics.remove_physics_factor(player, "jump", "leaping") end )
 end
 
 function mcl_potions.weakness_func(player, factor, duration)
 	player:set_attribute("weakness", tostring(factor))
-	print(player:get_player_name().." ".."weakness = "..player:get_attribute("weakness"))
+	-- print(player:get_player_name().." ".."weakness = "..player:get_attribute("weakness"))
 	minetest.after(duration, function() player:set_attribute("weakness", tostring(0)) end )
 end
-
 
 function mcl_potions.poison_func(player, factor, duration)
 	for i=1,math.floor(duration/factor) do
 		minetest.after(i*factor, function() player:set_hp(player:get_hp() - 1) end)
 	end
 end
-
 
 function mcl_potions.regeneration_func(player, factor, duration)
 	for i=1,math.floor(duration/factor) do
