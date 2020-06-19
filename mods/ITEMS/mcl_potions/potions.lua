@@ -23,6 +23,7 @@ minetest.register_craftitem("mcl_potions:awkward", {
 	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
+
 minetest.register_craftitem("mcl_potions:mundane", {
 	description = S("Mundane Potion"),
 	_tt_help = S("No effect"),
@@ -36,7 +37,6 @@ minetest.register_craftitem("mcl_potions:mundane", {
 	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
-
 
 minetest.register_craftitem("mcl_potions:thick", {
 	description = S("Thick Potion"),
@@ -73,13 +73,13 @@ minetest.register_craftitem("mcl_potions:healing", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.healing_func(user, 4)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#CC0000")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.healing_func(user, 4)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#CC0000")
 		return itemstack
 	end,
 })
@@ -94,13 +94,13 @@ minetest.register_craftitem("mcl_potions:healing_2", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.healing_func(user, 8)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#DD0000")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.healing_func(user, 8)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#DD0000")
 		return itemstack
 	end,
 
@@ -116,13 +116,13 @@ minetest.register_craftitem("mcl_potions:harming", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.healing_func(user, -6)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#660099")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.healing_func(user, -6)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#660099")
 		return itemstack
 	end,
 })
@@ -137,13 +137,13 @@ minetest.register_craftitem("mcl_potions:harming_2", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.healing_func(user, -12)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#330066")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.healing_func(user, -12)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#330066")
 		return itemstack
 	end,
 })
@@ -169,13 +169,13 @@ minetest.register_craftitem("mcl_potions:swiftness", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.swiftness_func(user, 1.2, 180)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#009999")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.swiftness_func(user, 1.2, 180)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#009999")
 		return itemstack
 	end,
 })
@@ -190,13 +190,13 @@ minetest.register_craftitem("mcl_potions:swiftness_2", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.swiftness_func(user, 1.4, 90)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#00BBBB")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.swiftness_func(user, 1.4, 90)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#00BBBB")
 		return itemstack
 	end,
 })
@@ -211,13 +211,13 @@ minetest.register_craftitem("mcl_potions:swiftness_plus", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.swiftness_func(user, 1.2, 480)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#00AAAA")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.swiftness_func(user, 1.2, 480)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#00AAAA")
 		return itemstack
 	end,
 })
@@ -232,13 +232,13 @@ minetest.register_craftitem("mcl_potions:slowness", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.swiftness_func(user, 0.85, 90)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#000080")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.swiftness_func(user, 0.85, 90)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#000080")
 		return itemstack
 	end,
 })
@@ -253,13 +253,13 @@ minetest.register_craftitem("mcl_potions:slowness_plus", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.swiftness_func(user, 0.85, 240)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#000066")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.swiftness_func(user, 0.85, 240)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#000066")
 		return itemstack
 	end,
 })
@@ -275,13 +275,13 @@ minetest.register_craftitem("mcl_potions:leaping", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.leaping_func(user, 1.2, 180)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#00CC33")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.leaping_func(user, 1.2, 180)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#00CC33")
 		return itemstack
 	end,
 })
@@ -296,13 +296,13 @@ minetest.register_craftitem("mcl_potions:leaping_2", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.leaping_func(user, 1.4, 90)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#00EE33")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.leaping_func(user, 1.4, 90)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#00EE33")
 		return itemstack
 	end,
 })
@@ -317,13 +317,13 @@ minetest.register_craftitem("mcl_potions:leaping_plus", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.leaping_func(user, 1.2, 480)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#00DD33")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.leaping_func(user, 1.2, 480)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#00DD33")
 		return itemstack
 	end,
 })
@@ -339,13 +339,13 @@ minetest.register_craftitem("mcl_potions:weakness", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.weakness_func(user, 1.2, 90)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#6600AA")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.weakness_func(user, 1.2, 90)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#6600AA")
 		return itemstack
 	end
 })
@@ -360,13 +360,13 @@ minetest.register_craftitem("mcl_potions:weakness_plus", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.weakness_func(user, 1.4, 240)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#7700BB")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.weakness_func(user, 1.4, 240)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#7700BB")
 		return itemstack
 	end
 })
@@ -382,13 +382,13 @@ minetest.register_craftitem("mcl_potions:poison", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.poison_func(user, 2.5, 45)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#225533")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.poison_func(user, 2.5, 45)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#225533")
 		return itemstack
 	end
 })
@@ -403,13 +403,13 @@ minetest.register_craftitem("mcl_potions:poison_2", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.poison_func(user, 1.2, 21)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#447755")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.poison_func(user, 1.2, 21)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#447755")
 		return itemstack
 	end
 })
@@ -424,13 +424,13 @@ minetest.register_craftitem("mcl_potions:poison_plus", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.poison_func(user, 2.5, 90)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#336644")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.poison_func(user, 2.5, 90)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#336644")
 		return itemstack
 	end
 })
@@ -446,13 +446,13 @@ minetest.register_craftitem("mcl_potions:regeneration", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.regeneration_func(user, 2.5, 45)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#A52BB2")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.regeneration_func(user, 2.5, 45)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#A52BB2")
 		return itemstack
 	end
 })
@@ -467,13 +467,13 @@ minetest.register_craftitem("mcl_potions:regeneration_2", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.regeneration_func(user, 1.2, 22)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#B52CC2")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.regeneration_func(user, 1.2, 22)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#B52CC2")
 		return itemstack
 	end
 })
@@ -488,13 +488,13 @@ minetest.register_craftitem("mcl_potions:regeneration_plus", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.regeneration_func(user, 2.5, 90)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#C53DD3")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.regeneration_func(user, 2.5, 90)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#C53DD3")
 		return itemstack
 	end
 })
@@ -510,13 +510,13 @@ minetest.register_craftitem("mcl_potions:invisibility", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.invisiblility_func(user, 180)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#B0B0B0")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.invisiblility_func(user, 180)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#B0B0B0")
 		return itemstack
 	end
 })
@@ -531,13 +531,13 @@ minetest.register_craftitem("mcl_potions:invisibility_plus", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.invisiblility_func(user, 480)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#A0A0A0")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.invisiblility_func(user, 480)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#A0A0A0")
 		return itemstack
 	end
 })
@@ -560,13 +560,13 @@ minetest.register_craftitem("mcl_potions:water_breathing", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.water_breathing_func(user, 180)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#0000AA")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.water_breathing_func(user, 180)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#0000AA")
 		return itemstack
 	end
 })
@@ -581,13 +581,13 @@ minetest.register_craftitem("mcl_potions:water_breathing_plus", {
 
 	on_place = function(itemstack, user, pointed_thing)
 		mcl_potions.water_breathing_func(user, 480)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#0000CC")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
 		mcl_potions.water_breathing_func(user, 480)
-		mcl_potions._use_potion(itemstack)
+		mcl_potions._use_potion(itemstack, user:get_pos(), "#0000CC")
 		return itemstack
 	end
 })

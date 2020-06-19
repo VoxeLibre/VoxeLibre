@@ -12,13 +12,12 @@ local function register_splash(name, descr, color, def)
         description = descr,
         inventory_image = splash_image(color),
         on_use = function(item, placer, pointed_thing)
-            --weapons_shot(itemstack, placer, pointed_thing, def.velocity, name)
             local velocity = 10
             local dir = placer:get_look_dir();
-            local pos = placer:getpos();
+            local pos = placer:get_pos();
             local obj = minetest.env:add_entity({x=pos.x+dir.x,y=pos.y+2+dir.y,z=pos.z+dir.z}, id.."_flying")
-            obj:setvelocity({x=dir.x*velocity,y=dir.y*velocity,z=dir.z*velocity})
-            obj:setacceleration({x=0, y=-9.8, z=0})
+            obj:set_velocity({x=dir.x*velocity,y=dir.y*velocity,z=dir.z*velocity})
+            obj:set_acceleration({x=0, y=-9.8, z=0})
             item:take_item()
             return item
         end,

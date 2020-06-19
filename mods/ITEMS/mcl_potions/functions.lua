@@ -26,9 +26,27 @@ function mcl_potions.invisible(player, toggle)
 
 end
 
-function mcl_potions._use_potion(item)
+function mcl_potions._use_potion(item, pos, color)
+	local d = 0.1
 	item:replace("mcl_potions:glass_bottle")
 	minetest.sound_play("mcl_potions_drinking")
+	minetest.add_particlespawner({
+															amount = 25,
+															time = 1,
+															minpos = {x=pos.x-d, y=pos.y+1, z=pos.z-d},
+															maxpos = {x=pos.x+d, y=pos.y+2, z=pos.z+d},
+															minvel = {x=-0.1, y=0, z=-0.1},
+															maxvel = {x=0.1, y=0.1, z=0.1},
+															minacc = {x=-0.1, y=0, z=-0.1},
+															maxacc = {x=0.1, y=.1, z=0.1},
+															minexptime = 1,
+															maxexptime = 5,
+															minsize = 0.5,
+															maxsize = 2,
+															collisiondetection = true,
+															vertical = false,
+															texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
+														})
 end
 
 local is_zombie = {}
