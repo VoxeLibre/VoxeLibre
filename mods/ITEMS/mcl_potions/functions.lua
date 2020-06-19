@@ -65,24 +65,24 @@ function mcl_potions.weakness_func(player, factor, duration)
 	minetest.after(duration, function() player:set_attribute("weakness", tostring(0)) end )
 end
 
+
 function mcl_potions.poison_func(player, factor, duration)
-	player:set_attribute("poison", tostring(factor))
-	print(player:get_player_name().." ".."poison = "..player:get_attribute("poison"))
-	minetest.after(duration, function() player:set_attribute("poison", tostring(0)) end )
-end
-
-function mcl_potions.regeneration_func(player, factor, duration)
-	if minetest.is_player(player) then
-
-		for i=1,math.floor(duration/factor) do
-			minetest.after(i*factor, function()
-							if player:get_hp() < 20 then
-								player:set_hp(player:get_hp() + 1)
-							end
-						end  )
-		end
+	for i=1,math.floor(duration/factor) do
+		minetest.after(i*factor, function() player:set_hp(player:get_hp() - 1) end)
 	end
 end
+
+
+function mcl_potions.regeneration_func(player, factor, duration)
+	for i=1,math.floor(duration/factor) do
+		minetest.after(i*factor, function()
+						if player:get_hp() < 20 then
+							player:set_hp(player:get_hp() + 1)
+						end
+					end  )
+	end
+end
+
 
 function mcl_potions.invisiblility_func(player, duration)
 	mcl_potions.invisible(player, true)

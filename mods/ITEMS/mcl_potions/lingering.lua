@@ -143,27 +143,27 @@ register_lingering("slowness_plus", "Lingering Slowness +", "#000066", {
 })
 
 register_lingering("poison", "Lingering Poison", "#335544", {
-		potion_fun = function(player, redx) mcl_potions.poison_func(player, 0.85, 180*redx) end
+		potion_fun = function(player, redx) mcl_potions.poison_func(player, 2.5, 45*redx) end
 })
 
 register_lingering("poison_2", "Lingering Poison II", "#446655", {
-		potion_fun = function(player, redx) mcl_potions.poison_func(player, 0.85, 180*redx) end
+		potion_fun = function(player, redx) mcl_potions.poison_func(player, 1.2, 21*redx) end
 })
 
 register_lingering("poison_plus", "Lingering Poison +", "#557766", {
-		potion_fun = function(player, redx) mcl_potions.poison_func(player, 0.85, 180*redx) end
+		potion_fun = function(player, redx) mcl_potions.poison_func(player, 2.5, 90*redx) end
 })
 
 register_lingering("regeneration", "Lingering Regeneration", "#A52BB2", {
-		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 0.85, 180*redx) end
+		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 2.5, 45*redx) end
 })
 
 register_lingering("regeneration_2", "Lingering Regeneration II", "#B52CC2", {
-		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 0.85, 180*redx) end
+		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 1.2, 21*redx) end
 })
 
 register_lingering("regeneration_plus", "Lingering Regeneration +", "#C53DD3", {
-		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 0.85, 300*redx) end
+		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 2.5, 90*redx) end
 })
 
 register_lingering("invisibility", "Lingering Invisibility", "#B0B0B0", {

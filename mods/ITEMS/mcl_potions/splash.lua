@@ -143,27 +143,27 @@ register_splash("slowness_plus", "Splash Slowness +", "#000066", {
 })
 
 register_splash("poison", "Splash Poison", "#335544", {
-		potion_fun = function(player, redx) mcl_potions.poison_func(player, 0.85, 180*redx) end
+		potion_fun = function(player, redx) mcl_potions.poison_func(player, 2.5, 45*redx) end
 })
 
 register_splash("poison_2", "Splash Poison II", "#446655", {
-		potion_fun = function(player, redx) mcl_potions.poison_func(player, 0.85, 180*redx) end
+		potion_fun = function(player, redx) mcl_potions.poison_func(player, 1.2, 21*redx) end
 })
 
 register_splash("poison_plus", "Splash Poison +", "#557766", {
-		potion_fun = function(player, redx) mcl_potions.poison_func(player, 0.85, 180*redx) end
+		potion_fun = function(player, redx) mcl_potions.poison_func(player, 2.5, 90*redx) end
 })
 
 register_splash("regeneration", "Splash Regeneration", "#A52BB2", {
-		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 0.85, 180*redx) end
+		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 2.5, 45*redx) end
 })
 
 register_splash("regeneration_2", "Splash Regeneration II", "#B52CC2", {
-		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 0.85, 180*redx) end
+		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 1.2, 21*redx) end
 })
 
 register_splash("regeneration_plus", "Splash Regeneration +", "#C53DD3", {
-		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 0.85, 300*redx) end
+		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 2.5, 90*redx) end
 })
 
 register_splash("invisibility", "Splash Invisibility", "#B0B0B0", {
