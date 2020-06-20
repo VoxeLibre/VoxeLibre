@@ -1,33 +1,69 @@
-local invisibility = {}
-local poisoned = {}
-local regenerating = {}
-local strong = {}
-local weak = {}
+local is_invisible = {}
+local is_poisoned = {}
+local is_regenerating = {}
+local is_strong = {}
+local is_weak = {}
 
--- reset player invisibility/poison if they go offline
+local timer = 0
+minetest.register_globalstep(function(dtime)
+
+	-- Check for invisible players
+	for player, bool in pairs(is_invisible) do
+		if is_invisible[player] then
+			mcl_potions._add_spawner(player, "#B0B0B0")
+		end
+	end
+
+	-- Check for poisoned players
+	for player, bool in pairs(is_poisoned) do
+
+		if is_poisoned[player] then
+
+			player = player or player:get_luaentity()
+
+			is_poisoned[player].timer = is_poisoned[player].timer + dtime
+			is_poisoned[player].hit_timer = (is_poisoned[player].hit_timer or 0) + dtime
+
+			mcl_potions._add_spawner(player, "#225533")
+
+			if is_poisoned[player].hit_timer >= is_poisoned[player].step then
+				player:set_hp( math.max(player:get_hp() - 1, 1) )
+				is_poisoned[player].hit_timer = 0
+			end
+
+			if is_poisoned[player].timer >= is_poisoned[player].dur then
+				is_poisoned[player] = nil
+			end
+
+		end
+	end
+
+end )
+
+-- reset player is_invisible/poison if they go offline
 minetest.register_on_leaveplayer(function(player)
 
 	local name = player:get_player_name()
 
-	if invisibility[name] then
-		invisibility[name] = nil
+	if is_invisible[name] then
+		is_invisible[name] = nil
 	end
 
-	if poisoned[name] then
-		poisoned[name] = nil
+	if is_poisoned[name] then
+		is_poisoned[name] = nil
 	end
 
-	if regenerating[name] then
-		regenerating[name] = nil
+	if is_regenerating[name] then
+		is_regenerating[name] = nil
 	end
 
-	if strong[name] then
-		strong[name] = nil
+	if is_strong[name] then
+		is_strong[name] = nil
 	end
 
-	if weak[name] then
-		weak[name] = nil
-	end 
+	if is_weak[name] then
+		is_weak[name] = nil
+	end
 
 end)
 
@@ -35,7 +71,7 @@ function mcl_potions.invisible(player, toggle)
 
 	if not player then return false end
 
-	invisibility[player:get_player_name()] = toggle
+	is_invisible[player:get_player_name()] = toggle
 
 	if toggle then -- hide player
 		player:set_properties({visual_size = {x = 0, y = 0}})
@@ -50,14 +86,14 @@ end
 function mcl_potions.poison(player, toggle)
 
 	if not player then return false end
-	poisoned[player:get_player_name()] = toggle
+	is_poisoned[player:get_player_name()] = toggle
 
 end
 
 function mcl_potions.regenerate(player, toggle)
 
 	if not player then return false end
-	regenerating[player:get_player_name()] = toggle
+	is_regenerating[player:get_player_name()] = toggle
 
 end
 
@@ -90,7 +126,7 @@ function mcl_potions._add_spawner(obj, color)
 	local d = 0.2
 	local pos = obj:get_pos()
 	minetest.add_particlespawner({
-									amount = 5,
+									amount = 2,
 									time = 1,
 									minpos = {x=pos.x-d, y=pos.y+1, z=pos.z-d},
 									maxpos = {x=pos.x+d, y=pos.y+2, z=pos.z+d},
@@ -157,24 +193,23 @@ end
 
 function mcl_potions.poison_func(player, factor, duration)
 
-	if not poisoned[player:get_player_name()] then
-		mcl_potions.poison(player, true)
-		for i=1,math.floor(duration/factor) do
-			minetest.after(i*factor, function()
-				if poisoned[player:get_player_name()] then
-					player:set_hp(math.max(player:get_hp() - 1,1))
-				end
-			 end)
-		end
-		for i=1,math.floor(duration) do
-			minetest.after(i, function() mcl_potions._add_spawner(player, "#225533") end)
-		end
-		minetest.after(duration, function() mcl_potions.poison(player, false) end)
+	if not is_poisoned[player] then
+
+		is_poisoned[player] = {step = factor, dur = duration, timer = 0}
+
+	else
+
+		local victim = is_poisoned[player]
+
+		victim.step = math.min(victim.step, factor)
+		victim.dur = math.max(duration, victim.dur - victim.timer)
+		victim.timer = 0
+
 	end
 end
 
 function mcl_potions.regeneration_func(player, factor, duration)
-	if not regenerating[player:get_player_name()] then
+	if not is_regenerating[player:get_player_name()] then
 		mcl_potions.regenerate(player, true)
 		for i=1,math.floor(duration/factor) do
 			minetest.after(i*factor, function()
@@ -194,11 +229,6 @@ end
 function mcl_potions.invisiblility_func(player, duration)
 	mcl_potions.invisible(player, true)
 	minetest.after(duration, function() mcl_potions.invisible(player, false) end )
-
-	for i=1,math.floor(duration) do
-		minetest.after(i, function() mcl_potions._add_spawner(player, "#B0B0B0") end)
-	end
-
 end
 
 function mcl_potions.water_breathing_func(player, duration)
