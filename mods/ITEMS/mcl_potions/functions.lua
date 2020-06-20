@@ -1,5 +1,8 @@
 local invisibility = {}
 local poisoned = {}
+local regenerating = {}
+local strong = {}
+local weak = {}
 
 -- reset player invisibility/poison if they go offline
 minetest.register_on_leaveplayer(function(player)
@@ -13,6 +16,18 @@ minetest.register_on_leaveplayer(function(player)
 	if poisoned[name] then
 		poisoned[name] = nil
 	end
+
+	if regenerating[name] then
+		regenerating[name] = nil
+	end
+
+	if strong[name] then
+		strong[name] = nil
+	end
+
+	if weak[name] then
+		weak[name] = nil
+	end 
 
 end)
 
@@ -36,6 +51,13 @@ function mcl_potions.poison(player, toggle)
 
 	if not player then return false end
 	poisoned[player:get_player_name()] = toggle
+
+end
+
+function mcl_potions.regenerate(player, toggle)
+
+	if not player then return false end
+	regenerating[player:get_player_name()] = toggle
 
 end
 
@@ -152,15 +174,19 @@ function mcl_potions.poison_func(player, factor, duration)
 end
 
 function mcl_potions.regeneration_func(player, factor, duration)
-	for i=1,math.floor(duration/factor) do
-		minetest.after(i*factor, function()
-						if player:get_hp() < 20 then
-							player:set_hp(player:get_hp() + 1)
-						end
-					end  )
-	end
-	for i=1,math.floor(duration) do
-		minetest.after(i, function() mcl_potions._add_spawner(player, "#A52BB2") end)
+	if not regenerating[player:get_player_name()] then
+		mcl_potions.regenerate(player, true)
+		for i=1,math.floor(duration/factor) do
+			minetest.after(i*factor, function()
+							if player:get_hp() < 20 then
+								player:set_hp(player:get_hp() + 1)
+							end
+						end  )
+		end
+		for i=1,math.floor(duration) do
+			minetest.after(i, function() mcl_potions._add_spawner(player, "#A52BB2") end)
+		end
+		minetest.after(duration, function() mcl_potions.regenerate(player, false) end)
 	end
 end
 
