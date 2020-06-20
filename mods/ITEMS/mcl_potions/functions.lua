@@ -1,11 +1,17 @@
 local invisibility = {}
+local poisoned = {}
 
--- reset player invisibility if they go offline
+-- reset player invisibility/poison if they go offline
 minetest.register_on_leaveplayer(function(player)
 
 	local name = player:get_player_name()
+
 	if invisibility[name] then
 		invisibility[name] = nil
+	end
+
+	if poisoned[name] then
+		poisoned[name] = nil
 	end
 
 end)
@@ -23,6 +29,13 @@ function mcl_potions.invisible(player, toggle)
 		player:set_properties({visual_size = {x = 1, y = 1}})
 		player:set_nametag_attributes({color = {a = 255}})
 	end
+
+end
+
+function mcl_potions.poison(player, toggle)
+
+	if not player then return false end
+	poisoned[player:get_player_name()] = toggle
 
 end
 
@@ -59,10 +72,11 @@ end
 function mcl_potions.healing_func(player, hp)
 
 	if is_zombie[player:get_entity_name()] then hp = -hp end
+
 	if hp > 0 then
 		player:set_hp(math.min(player:get_hp() + hp, player:get_properties().hp_max))
 	else
-		player:set_hp(player:get_hp() + hp)
+		player:set_hp(math.max(player:get_hp() + hp, 1))
 	end
 
 end
@@ -86,8 +100,17 @@ function mcl_potions.weakness_func(player, factor, duration)
 end
 
 function mcl_potions.poison_func(player, factor, duration)
-	for i=1,math.floor(duration/factor) do
-		minetest.after(i*factor, function() player:set_hp(player:get_hp() - 1) end)
+
+	if not poisoned[player:get_player_name()] then
+		mcl_potions.poison(player, true)
+		for i=1,math.floor(duration/factor) do
+			minetest.after(i*factor, function()
+				if poisoned[player:get_player_name()] then
+					player:set_hp(math.max(player:get_hp() - 1,1))
+				end
+			 end)
+		end
+		minetest.after(duration, function() mcl_potions.poison(player, false) end)
 	end
 end
 
