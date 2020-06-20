@@ -50,7 +50,7 @@ local function register_lingering(name, descr, color, def)
 																				minacc = {x=-0.2, y=0, z=-0.2},
 																				maxacc = {x=0.2, y=.05, z=0.2},
 																				minexptime = 1,
-																				maxexptime = 5,
+																				maxexptime = 2,
 																				minsize = 2,
 																				maxsize = 4,
 																				collisiondetection = true,

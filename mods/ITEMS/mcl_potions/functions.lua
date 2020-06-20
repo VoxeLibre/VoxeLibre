@@ -39,28 +39,53 @@ function mcl_potions.poison(player, toggle)
 
 end
 
-function mcl_potions._use_potion(item, pos, color)
+function mcl_potions._use_potion(item, obj, color)
 	local d = 0.1
+	local pos = obj:get_pos()
 	item:replace("mcl_potions:glass_bottle")
 	minetest.sound_play("mcl_potions_drinking")
 	minetest.add_particlespawner({
-															amount = 25,
-															time = 1,
-															minpos = {x=pos.x-d, y=pos.y+1, z=pos.z-d},
-															maxpos = {x=pos.x+d, y=pos.y+2, z=pos.z+d},
-															minvel = {x=-0.1, y=0, z=-0.1},
-															maxvel = {x=0.1, y=0.1, z=0.1},
-															minacc = {x=-0.1, y=0, z=-0.1},
-															maxacc = {x=0.1, y=.1, z=0.1},
-															minexptime = 1,
-															maxexptime = 5,
-															minsize = 0.5,
-															maxsize = 2,
-															collisiondetection = true,
-															vertical = false,
-															texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
-														})
+									amount = 25,
+									time = 1,
+									minpos = {x=pos.x-d, y=pos.y+1, z=pos.z-d},
+									maxpos = {x=pos.x+d, y=pos.y+2, z=pos.z+d},
+									minvel = {x=-0.1, y=0, z=-0.1},
+									maxvel = {x=0.1, y=0.1, z=0.1},
+									minacc = {x=-0.1, y=0, z=-0.1},
+									maxacc = {x=0.1, y=.1, z=0.1},
+									minexptime = 1,
+									maxexptime = 5,
+									minsize = 0.5,
+									maxsize = 1,
+									collisiondetection = true,
+									vertical = false,
+									texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
+								})
 end
+
+
+function mcl_potions._add_spawner(obj, color)
+	local d = 0.2
+	local pos = obj:get_pos()
+	minetest.add_particlespawner({
+									amount = 5,
+									time = 1,
+									minpos = {x=pos.x-d, y=pos.y+1, z=pos.z-d},
+									maxpos = {x=pos.x+d, y=pos.y+2, z=pos.z+d},
+									minvel = {x=-0.1, y=0, z=-0.1},
+									maxvel = {x=0.1, y=0.1, z=0.1},
+									minacc = {x=-0.1, y=0, z=-0.1},
+									maxacc = {x=0.1, y=.1, z=0.1},
+									minexptime = 0.5,
+									maxexptime = 1,
+									minsize = 0.5,
+									maxsize = 1,
+									collisiondetection = false,
+									vertical = false,
+									texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
+								})
+end
+
 
 local is_zombie = {}
 
@@ -85,18 +110,27 @@ function mcl_potions.swiftness_func(player, factor, duration)
 	if not player:get_meta() then return false end
 	playerphysics.add_physics_factor(player, "speed", "swiftness", factor)
 	minetest.after(duration, function() playerphysics.remove_physics_factor(player, "speed", "swiftness") end )
+	for i=1,math.floor(duration) do
+		minetest.after(i, function() mcl_potions._add_spawner(player, "#009999") end)
+	end
 end
 
 function mcl_potions.leaping_func(player, factor, duration)
 	if player:get_meta() then return false end
 	playerphysics.add_physics_factor(player, "jump", "leaping", factor)
 	minetest.after(duration, function() playerphysics.remove_physics_factor(player, "jump", "leaping") end )
+	for i=1,math.floor(duration) do
+		minetest.after(i, function() mcl_potions._add_spawner(player, "#00CC33") end)
+	end
 end
 
 function mcl_potions.weakness_func(player, factor, duration)
 	player:set_attribute("weakness", tostring(factor))
 	-- print(player:get_player_name().." ".."weakness = "..player:get_attribute("weakness"))
 	minetest.after(duration, function() player:set_attribute("weakness", tostring(0)) end )
+	for i=1,math.floor(duration) do
+		minetest.after(i, function() mcl_potions._add_spawner(player, "#6600AA") end)
+	end
 end
 
 function mcl_potions.poison_func(player, factor, duration)
@@ -110,6 +144,9 @@ function mcl_potions.poison_func(player, factor, duration)
 				end
 			 end)
 		end
+		for i=1,math.floor(duration) do
+			minetest.after(i, function() mcl_potions._add_spawner(player, "#225533") end)
+		end
 		minetest.after(duration, function() mcl_potions.poison(player, false) end)
 	end
 end
@@ -122,12 +159,20 @@ function mcl_potions.regeneration_func(player, factor, duration)
 						end
 					end  )
 	end
+	for i=1,math.floor(duration) do
+		minetest.after(i, function() mcl_potions._add_spawner(player, "#A52BB2") end)
+	end
 end
 
 
 function mcl_potions.invisiblility_func(player, duration)
 	mcl_potions.invisible(player, true)
 	minetest.after(duration, function() mcl_potions.invisible(player, false) end )
+
+	for i=1,math.floor(duration) do
+		minetest.after(i, function() mcl_potions._add_spawner(player, "#B0B0B0") end)
+	end
+
 end
 
 function mcl_potions.water_breathing_func(player, duration)
@@ -138,8 +183,10 @@ function mcl_potions.water_breathing_func(player, duration)
 							if player:get_breath() < 10 then
 								player:set_breath(10)
 							end
+							mcl_potions._add_spawner(player, "#0000AA")
 						end  )
 		end
+
 	end
 
 end

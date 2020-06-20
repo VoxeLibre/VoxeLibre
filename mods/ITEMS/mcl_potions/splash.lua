@@ -49,7 +49,7 @@ local function register_splash(name, descr, color, def)
 																				minacc = {x=-0.5, y=0, z=-0.5},
 																				maxacc = {x=0.5, y=.2, z=0.5},
 																				minexptime = 1,
-																				maxexptime = 5,
+																				maxexptime = 3,
 																				minsize = 2,
 																				maxsize = 4,
 																				collisiondetection = true,
