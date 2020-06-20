@@ -1030,6 +1030,6 @@ minetest.register_craft({
 	output = "mcl_brewing:stand",
 	recipe = {
 		{ "", "mcl_mobitems:blaze_rod", "" },
-		{ "mcl_core:stone_smooth", "mcl_core:stone_smooth", "mcl_core:stone_smooth" },
+		{ "mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble" },
 	}
 })
