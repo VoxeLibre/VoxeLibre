@@ -13,7 +13,7 @@ minetest.register_globalstep(function(dtime)
 	-- Check for invisible players
 	for player, vals in pairs(is_invisible) do
 
-		if is_invisible[player] then
+		if is_invisible[player] and player:get_properties() then
 
 			player = player or player:get_luaentity()
 
@@ -26,6 +26,8 @@ minetest.register_globalstep(function(dtime)
 				is_invisible[player] = nil
 			end
 
+		elseif not player:get_properties() then
+			is_invisible[player] = nil
 		end
 
 	end
@@ -33,7 +35,7 @@ minetest.register_globalstep(function(dtime)
 	-- Check for poisoned players
 	for player, vals in pairs(is_poisoned) do
 
-		if is_poisoned[player] then
+		if is_poisoned[player] and player:get_properties() then
 
 			player = player or player:get_luaentity()
 
@@ -51,6 +53,8 @@ minetest.register_globalstep(function(dtime)
 				is_poisoned[player] = nil
 			end
 
+		elseif not player:get_properties() then
+			is_poisoned[player] = nil
 		end
 
 	end
@@ -58,7 +62,7 @@ minetest.register_globalstep(function(dtime)
 	-- Check for regnerating players
 	for player, vals in pairs(is_regenerating) do
 
-		if is_regenerating[player] then
+		if is_regenerating[player] and player:get_properties() then
 
 			player = player or player:get_luaentity()
 
@@ -76,6 +80,8 @@ minetest.register_globalstep(function(dtime)
 				is_regenerating[player] = nil
 			end
 
+		elseif not player:get_properties() then
+			is_regenerating[player] = nil
 		end
 
 	end
@@ -83,7 +89,7 @@ minetest.register_globalstep(function(dtime)
 	-- Check for water breathing players
 	for player, vals in pairs(is_water_breathing) do
 
-		if is_water_breathing[player] then
+		if is_water_breathing[player] and player:get_properties() then
 
 			player = player or player:get_luaentity()
 
@@ -99,6 +105,8 @@ minetest.register_globalstep(function(dtime)
 				is_water_breathing[player] = nil
 			end
 
+		elseif not player:get_properties() then
+			is_water_breathing[player] = nil
 		end
 
 	end
@@ -106,7 +114,7 @@ minetest.register_globalstep(function(dtime)
 	-- Check for leaping players
 	for player, vals in pairs(is_leaping) do
 
-		if is_leaping[player] then
+		if is_leaping[player] and player:get_properties() then
 
 			player = player or player:get_luaentity()
 
@@ -119,6 +127,8 @@ minetest.register_globalstep(function(dtime)
 				is_leaping[player] = nil
 			end
 
+		elseif not player:get_properties() then
+			is_leaping[player] = nil
 		end
 
 	end
@@ -126,7 +136,7 @@ minetest.register_globalstep(function(dtime)
 	-- Check for swift players
 	for player, vals in pairs(is_swift) do
 
-		if is_swift[player] then
+		if is_swift[player] and player:get_properties() then
 
 			player = player or player:get_luaentity()
 
@@ -139,6 +149,8 @@ minetest.register_globalstep(function(dtime)
 				is_swift[player] = nil
 			end
 
+		elseif not player:get_properties() then 
+			is_swift[player] = nil
 		end
 
 	end
