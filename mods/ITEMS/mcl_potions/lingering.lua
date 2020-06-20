@@ -41,22 +41,22 @@ local function register_lingering(name, descr, color, def)
           if n ~= "air" then
 						minetest.sound_play("mcl_potions_breaking_glass")
 						minetest.add_particlespawner({
-																				amount = 1000,
-																				time = 30,
-																				minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
-																				maxpos = {x=pos.x+d, y=pos.y+d, z=pos.z+d},
-																				minvel = {x=-0.5, y=0, z=-0.5},
-																				maxvel = {x=0.5, y=0.5, z=0.5},
-																				minacc = {x=-0.2, y=0, z=-0.2},
-																				maxacc = {x=0.2, y=.05, z=0.2},
-																				minexptime = 1,
-																				maxexptime = 2,
-																				minsize = 2,
-																				maxsize = 4,
-																				collisiondetection = true,
-																				vertical = false,
-																				texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
-																			})
+														amount = 1000,
+														time = 30,
+														minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
+														maxpos = {x=pos.x+d, y=pos.y+d, z=pos.z+d},
+														minvel = {x=-0.5, y=0, z=-0.5},
+														maxvel = {x=0.5, y=0.5, z=0.5},
+														minacc = {x=-0.2, y=0, z=-0.2},
+														maxacc = {x=0.2, y=.05, z=0.2},
+														minexptime = 1,
+														maxexptime = 2,
+														minsize = 2,
+														maxsize = 4,
+														collisiondetection = true,
+														vertical = false,
+														texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
+													})
             self.object:remove()
 						for i, obj in ipairs(minetest.get_objects_inside_radius(pos, 4)) do
 
