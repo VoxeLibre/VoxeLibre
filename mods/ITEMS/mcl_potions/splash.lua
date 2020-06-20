@@ -61,7 +61,7 @@ local function register_splash(name, descr, color, def)
 
 							if minetest.is_player(obj) or obj:get_entity_name() then
 
-								pos2 = obj:get_pos()
+								local pos2 = obj:get_pos()
 								local rad = math.floor(math.sqrt((pos2.x-pos.x)^2 + (pos2.y-pos.y)^2 + (pos2.z-pos.z)^2))
 								if rad > 0 then def.potion_fun(obj, redux_map[rad]) else def.potion_fun(obj, 1) end
 
