@@ -158,9 +158,9 @@ local function brewing_stand_timer(pos, elapsed)
 
 				for i=1, inv:get_size("stand") do
 					if brew_output[i] then
-						minetest.sound_play("mcl_brewing_complete", {pos=pos, gain=0.4, max_hear_range=16}, true)
+						minetest.sound_play("mcl_brewing_complete", {pos=pos, gain=0.4, max_hear_range=6}, true)
 						inv:set_stack("stand", i, brew_output[i])
-						minetest.sound_play("mcl_potions_bottle_pour", {pos=pos, gain=0.6, max_hear_range=16}, true)
+						minetest.sound_play("mcl_potions_bottle_pour", {pos=pos, gain=0.6, max_hear_range=6}, true)
 					end
 				end
 				stand_timer = 0
@@ -291,11 +291,11 @@ local doc_string =
 		S("To brew, place fuel first and/or your ingredient last!")
 
 local tiles = {"mcl_brewing_top.png", 	--top
-							 "mcl_brewing_base.png", 	--bottom
-							 "mcl_brewing_side.png", 	--right
-							 "mcl_brewing_side.png", 	--left
-							 "mcl_brewing_side.png", 	--back
-							 "mcl_brewing_side.png^[transformFX"} --front
+				 "mcl_brewing_base.png", 	--bottom
+				 "mcl_brewing_side.png", 	--right
+				 "mcl_brewing_side.png", 	--left
+				 "mcl_brewing_side.png", 	--back
+				 "mcl_brewing_side.png^[transformFX"} --front
 local allow_put = function(pos, listname, index, stack, player)
 	local name = player:get_player_name()
 	if minetest.is_protected(pos, name) then
@@ -357,7 +357,7 @@ minetest.register_node("mcl_brewing:stand_000", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 0, not_in_craft_guide = 0},
+	groups = {pickaxey=1, container=4, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 0, not_in_craft_guide = 0},
 	tiles = tiles,
 	drop = {"mcl_brewing:stand"},
 	paramtype = "light",
@@ -405,9 +405,9 @@ minetest.register_node("mcl_brewing:stand_000", {
 			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
 		}
 	},
-	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 1200,
-	_mcl_hardness = 5,
+	sounds = mcl_sounds.node_sound_glass_defaults(),
+	_mcl_blast_resistance = 0,
+	_mcl_hardness = 1,
 
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
@@ -442,9 +442,9 @@ minetest.register_node("mcl_brewing:stand_100", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, container=4, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
-	drop = {"mlc_brewing:stand"},
+	drop = "mlc_brewing:stand",
 	paramtype = "light",
 	sunlight_propagates = true,
 	is_ground_content = false,
@@ -491,8 +491,8 @@ minetest.register_node("mcl_brewing:stand_100", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 1200,
-	_mcl_hardness = 5,
+	_mcl_blast_resistance = 0,
+	_mcl_hardness = 1,
 
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
@@ -526,9 +526,9 @@ minetest.register_node("mcl_brewing:stand_010", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, container=4, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
-	drop = {"mlc_brewing:stand"},
+	drop = "mlc_brewing:stand",
 	paramtype = "light",
 	sunlight_propagates = true,
 	is_ground_content = false,
@@ -575,8 +575,8 @@ minetest.register_node("mcl_brewing:stand_010", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 1200,
-	_mcl_hardness = 5,
+	_mcl_blast_resistance = 0,
+	_mcl_hardness = 1,
 
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
@@ -610,9 +610,9 @@ minetest.register_node("mcl_brewing:stand_001", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, container=4, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
-	drop = {"mlc_brewing:stand"},
+	drop = "mlc_brewing:stand",
 	paramtype = "light",
 	sunlight_propagates = true,
 	is_ground_content = false,
@@ -659,8 +659,8 @@ minetest.register_node("mcl_brewing:stand_001", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 1200,
-	_mcl_hardness = 5,
+	_mcl_blast_resistance = 0,
+	_mcl_hardness = 1,
 
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
@@ -694,9 +694,9 @@ minetest.register_node("mcl_brewing:stand_110", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, container=4, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
-	drop = {"mlc_brewing:stand"},
+	drop = "mlc_brewing:stand",
 	paramtype = "light",
 	sunlight_propagates = true,
 	is_ground_content = false,
@@ -743,8 +743,8 @@ minetest.register_node("mcl_brewing:stand_110", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 1200,
-	_mcl_hardness = 5,
+	_mcl_blast_resistance = 0,
+	_mcl_hardness = 1,
 
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
@@ -778,9 +778,9 @@ minetest.register_node("mcl_brewing:stand_101", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, container=4, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
-	drop = {"mlc_brewing:stand"},
+	drop = "mlc_brewing:stand",
 	paramtype = "light",
 	sunlight_propagates = true,
 	is_ground_content = false,
@@ -827,8 +827,8 @@ minetest.register_node("mcl_brewing:stand_101", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 1200,
-	_mcl_hardness = 5,
+	_mcl_blast_resistance = 0,
+	_mcl_hardness = 1,
 
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
@@ -862,9 +862,9 @@ minetest.register_node("mcl_brewing:stand_011", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, container=4, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
-	drop = {"mlc_brewing:stand"},
+	drop = "mlc_brewing:stand",
 	paramtype = "light",
 	sunlight_propagates = true,
 	is_ground_content = false,
@@ -911,8 +911,8 @@ minetest.register_node("mcl_brewing:stand_011", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 1200,
-	_mcl_hardness = 5,
+	_mcl_blast_resistance = 0,
+	_mcl_hardness = 1,
 
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
@@ -946,9 +946,9 @@ minetest.register_node("mcl_brewing:stand_111", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, container=4, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
-	drop = {"mlc_brewing:stand"},
+	drop = "mlc_brewing:stand",
 	paramtype = "light",
 	sunlight_propagates = true,
 	is_ground_content = false,
@@ -995,8 +995,8 @@ minetest.register_node("mcl_brewing:stand_111", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 1200,
-	_mcl_hardness = 5,
+	_mcl_blast_resistance = 0,
+	_mcl_hardness = 1,
 
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,

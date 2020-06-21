@@ -39,7 +39,7 @@ local function register_lingering(name, descr, color, def)
 					local d = 2
 					local redux_map = {7/8,0.5,0.25}
           if n ~= "air" then
-						minetest.sound_play("mcl_potions_breaking_glass")
+						minetest.sound_play("mcl_potions_breaking_glass", {pos = pos, max_hear_distance = 16, gain = 1})
 						minetest.add_particlespawner({
 														amount = 1000,
 														time = 30,
