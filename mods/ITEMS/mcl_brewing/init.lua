@@ -322,10 +322,13 @@ local on_put = function(pos, listname, index, stack, player)
 end
 local after_dig = function(pos, oldnode, oldmetadata, digger)
 	local meta = minetest.get_meta(pos)
-	local meta2 = meta
 	meta:from_table(oldmetadata)
 	drop_brewing_stand_items(pos, meta)
-	meta:from_table(meta2:to_table())
+end
+local after_blast = function(pos)
+	local meta = minetest.get_meta(pos)
+	drop_brewing_stand_items(pos, meta)
+	minetest.remove_node(pos)
 end
 local allow_take = function(pos, listname, index, stack, player)
 	local name = player:get_player_name()
@@ -357,7 +360,7 @@ minetest.register_node("mcl_brewing:stand_000", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container=4, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 0, not_in_craft_guide = 0},
+	groups = {pickaxey=1, material_stone=1, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 0, not_in_craft_guide = 0},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -406,9 +409,9 @@ minetest.register_node("mcl_brewing:stand_000", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_glass_defaults(),
-	_mcl_blast_resistance = 0,
+	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
-
+	on_blast = after_blast,
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
@@ -442,7 +445,7 @@ minetest.register_node("mcl_brewing:stand_100", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container=4, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, material_stone=1, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -491,9 +494,9 @@ minetest.register_node("mcl_brewing:stand_100", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0,
+	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
-
+	on_blast = after_blast,
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
@@ -526,7 +529,7 @@ minetest.register_node("mcl_brewing:stand_010", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container=4, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, material_stone=1, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -575,9 +578,9 @@ minetest.register_node("mcl_brewing:stand_010", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0,
+	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
-
+	on_blast = after_blast,
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
@@ -610,7 +613,7 @@ minetest.register_node("mcl_brewing:stand_001", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container=4, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, material_stone=1, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -659,9 +662,9 @@ minetest.register_node("mcl_brewing:stand_001", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0,
+	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
-
+	on_blast = after_blast,
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
@@ -694,7 +697,7 @@ minetest.register_node("mcl_brewing:stand_110", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container=4, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, material_stone=1, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -743,9 +746,9 @@ minetest.register_node("mcl_brewing:stand_110", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0,
+	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
-
+	on_blast = after_blast,
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
@@ -778,7 +781,7 @@ minetest.register_node("mcl_brewing:stand_101", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container=4, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, material_stone=1, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -827,9 +830,9 @@ minetest.register_node("mcl_brewing:stand_101", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0,
+	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
-
+	on_blast = after_blast,
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
@@ -862,7 +865,7 @@ minetest.register_node("mcl_brewing:stand_011", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container=4, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, material_stone=1, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -911,9 +914,9 @@ minetest.register_node("mcl_brewing:stand_011", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0,
+	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
-
+	on_blast = after_blast,
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
@@ -946,7 +949,7 @@ minetest.register_node("mcl_brewing:stand_111", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, container=4, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, material_stone=1, falling_node=1, crush_after_fall=1, deco_block=1, brewing_stand=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -995,9 +998,9 @@ minetest.register_node("mcl_brewing:stand_111", {
 		}
 	},
 	sounds = mcl_sounds.node_sound_metal_defaults(),
-	_mcl_blast_resistance = 0,
+	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
-
+	on_blast = after_blast,
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
