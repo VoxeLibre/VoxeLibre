@@ -1601,6 +1601,7 @@ local monster_attack = function(self)
 	if self.type ~= "monster"
 	or not damage_enabled
 	or creative
+	or self.passive
 	or self.state == "attack"
 	or day_docile(self) then
 		return
