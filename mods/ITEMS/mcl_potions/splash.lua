@@ -197,10 +197,10 @@ register_splash("water_breathing_plus", "Splash Fire Resistance +", "#E0B050", {
 	potion_fun = function(player, redx) mcl_potions.fire_resistance_func(player, 360*redx) end
 })
 
-register_splash("night_vision", "Splash Night Vision", "#009999", {
+register_splash("night_vision", "Splash Night Vision", "#1010AA", {
 	potion_fun = function(player, redx) mcl_potions.night_vision_func(player, 135*redx) end
 })
 
-register_splash("night_vision_plus", "Splash Night Vision +", "#000A0A", {
+register_splash("night_vision_plus", "Splash Night Vision +", "#2020BA", {
 	potion_fun = function(player, redx) mcl_potions.night_vision_func(player, 360*redx) end
 })

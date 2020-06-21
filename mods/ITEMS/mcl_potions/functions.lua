@@ -6,8 +6,9 @@ local is_weak = {}
 local is_water_breathing = {}
 local is_leaping = {}
 local is_swift = {}
+local is_cat = {}
 
-local timer = 0
+
 minetest.register_globalstep(function(dtime)
 
 	-- Check for invisible players
@@ -155,6 +156,28 @@ minetest.register_globalstep(function(dtime)
 
 	end
 
+	-- Check for Night Vision equipped players
+	for player, vals in pairs(is_cat) do
+
+		if is_cat[player] and player:get_properties() then
+
+			player = player or player:get_luaentity()
+
+			is_cat[player].timer = is_cat[player].timer + dtime
+
+			if player:get_pos() then mcl_potions._add_spawner(player, "#1010AA") end
+			player:override_day_night_ratio(0.45)
+
+			if is_cat[player].timer >= is_cat[player].dur then
+				is_cat[player] = nil
+			end
+
+		elseif not player:get_properties() then
+			is_cat[player] = nil
+		end
+
+	end
+
 end )
 
 -- reset player is_invisible/poison if they go offline
@@ -192,6 +215,10 @@ minetest.register_on_leaveplayer(function(player)
 
 	if is_swift[player] then
 		is_swift[player] = nil
+	end
+
+	if is_cat[player] then
+		is_cat[player] = nil
 	end
 
 end)
@@ -425,5 +452,18 @@ end
 
 
 function mcl_potions.night_vision_func(player, duration)
-	player:override_day_night_ratio(0.45)
+
+	if not is_cat[player] then
+
+		is_cat[player] = {dur = duration, timer = 0}
+
+	else
+
+		local victim = is_cat[player]
+
+		victim.dur = math.max(duration, victim.dur - victim.timer)
+		victim.timer = 0
+
+	end
+
 end
