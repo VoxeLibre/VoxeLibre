@@ -149,7 +149,7 @@ minetest.register_globalstep(function(dtime)
 				is_swift[player] = nil
 			end
 
-		elseif not player:get_properties() then 
+		elseif not player:get_properties() then
 			is_swift[player] = nil
 		end
 
@@ -413,5 +413,12 @@ function mcl_potions.water_breathing_func(player, duration)
 		victim.timer = 0
 
 	end
+
+end
+
+
+function mcl_potions.fire_resistance_func(player, duration)
+
+
 
 end

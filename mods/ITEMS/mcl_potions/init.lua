@@ -300,9 +300,9 @@ local awkward_table = {
 	["mcl_core:sugar"] = "mcl_potions:swiftness",
 	["mcl_mobitems:magma_cream"] = "mcl_potions:fire_resistance", --add craft
 	["mcl_mobitems:blaze_powder"] = "mcl_potions:strength", --add craft
-	["mcl_fishing:pufferfish_raw"] = "mcl_potions:water_breathing", --add craft
-	["mcl_mobitems:ghast_tear"] = "mcl_potions:regeneration", --add craft
-	["mcl_mobitems:spider_eye"] = "mcl_potions:poison", --add craft
+	["mcl_fishing:pufferfish_raw"] = "mcl_potions:water_breathing",
+	["mcl_mobitems:ghast_tear"] = "mcl_potions:regeneration",
+	["mcl_mobitems:spider_eye"] = "mcl_potions:poison",
 	["mcl_mobitems:rabbit_foot"] = "mcl_potions:leaping",
 }
 
@@ -320,7 +320,7 @@ for i, potion in ipairs({"healing","harming","swiftness","leaping","poison","reg
 
 		table.insert(potions, potion)
 
-		if potion ~= "invisibility" and potion ~= "night_vision" and potion ~= "weakness" and potion ~= "water_breathing" then
+		if potion ~= "invisibility" and potion ~= "night_vision" and potion ~= "weakness" and potion ~= "water_breathing" and potion ~= "fire_resistance" then
 			enhancement_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_2"
 			enhancement_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_2_splash"
 			table.insert(potions, potion.."_2")

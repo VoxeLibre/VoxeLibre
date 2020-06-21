@@ -591,3 +591,46 @@ minetest.register_craftitem("mcl_potions:water_breathing_plus", {
 		return itemstack
 	end
 })
+
+
+minetest.register_craftitem("mcl_potions:fire_resistance", {
+	description = S("Fire Resistance Potion"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#D0A040"),
+	inventory_image = potion_image("#D0A040"),
+	groups = { brewitem = 1, food = 0 },
+	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		mcl_potions.fire_resistance_func(user, 180)
+		mcl_potions._use_potion(itemstack, user, "#D0A040")
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		mcl_potions.fire_resistance_func(user, 180)
+		mcl_potions._use_potion(itemstack, user, "#D0A040")
+		return itemstack
+	end
+})
+
+minetest.register_craftitem("mcl_potions:fire_resistance_plus", {
+	description = S("Fire Resistance Potion +"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#E0B050"),
+	inventory_image = potion_image("#E0B050"),
+	groups = { brewitem = 1, food = 0 },
+	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		mcl_potions.fire_resistance_func(user, 480)
+		mcl_potions._use_potion(itemstack, user, "#E0B050")
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		mcl_potions.fire_resistance_func(user, 480)
+		mcl_potions._use_potion(itemstack, user, "#E0B050")
+		return itemstack
+	end
+})
