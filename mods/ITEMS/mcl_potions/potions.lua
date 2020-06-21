@@ -152,10 +152,43 @@ minetest.register_craftitem("mcl_potions:harming_2", {
 minetest.register_craftitem("mcl_potions:night_vision", {
 	description = S("Night Vision Potion"),
 	_doc_items_longdesc = brewhelp,
-	wield_image = "mcl_potions_night_vision.png",
-	inventory_image = "mcl_potions_night_vision.png",
+	wield_image = potion_image("#009999"),
+	inventory_image = potion_image("#009999"),
 	groups = { brewitem = 1, food=0},
 	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		mcl_potions.night_vision_func(user, 180)
+		mcl_potions._use_potion(itemstack, user, "#009999")
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		mcl_potions.night_vision_func(user, 180)
+		mcl_potions._use_potion(itemstack, user, "#009999")
+		return itemstack
+	end,
+})
+
+minetest.register_craftitem("mcl_potions:night_vision_plus", {
+	description = S("Night Vision Potion +"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#000A0A"),
+	inventory_image = potion_image("#000A0A"),
+	groups = { brewitem = 1, food=0},
+	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		mcl_potions.night_vision_func(user, 480)
+		mcl_potions._use_potion(itemstack, user, "#000A0A")
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		mcl_potions.night_vision_func(user, 480)
+		mcl_potions._use_potion(itemstack, user, "#000A0A")
+		return itemstack
+	end,
 })
 
 

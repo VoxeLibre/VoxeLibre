@@ -316,7 +316,7 @@ local output_table = {
 local enhancement_table = {}
 local extension_table = {}
 local potions = {"awkward", "mundane", "thick"}
-for i, potion in ipairs({"healing","harming","swiftness","leaping","poison","regeneration","invisibility","weakness","water_breathing"}) do
+for i, potion in ipairs({"healing","harming","swiftness","leaping","poison","regeneration","invisibility","weakness","water_breathing","night_vision"}) do
 
 		table.insert(potions, potion)
 

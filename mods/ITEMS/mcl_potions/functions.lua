@@ -422,3 +422,8 @@ function mcl_potions.fire_resistance_func(player, duration)
 
 
 end
+
+
+function mcl_potions.night_vision_func(player, duration)
+	player:override_day_night_ratio(0.45)
+end
