@@ -296,6 +296,7 @@ local tiles = {"mcl_brewing_top.png", 	--top
 				 "mcl_brewing_side.png", 	--left
 				 "mcl_brewing_side.png", 	--back
 				 "mcl_brewing_side.png^[transformFX"} --front
+
 local allow_put = function(pos, listname, index, stack, player)
 	local name = player:get_player_name()
 	if minetest.is_protected(pos, name) then
@@ -305,6 +306,7 @@ local allow_put = function(pos, listname, index, stack, player)
 		return stack:get_count()
 	end
 end
+
 local on_put = function(pos, listname, index, stack, player)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
@@ -320,16 +322,18 @@ local on_put = function(pos, listname, index, stack, player)
 	minetest.get_node_timer(pos):start(1.0)
 	--some code here to enforce only potions getting placed on stands
 end
+
 local after_dig = function(pos, oldnode, oldmetadata, digger)
 	local meta = minetest.get_meta(pos)
 	meta:from_table(oldmetadata)
 	drop_brewing_stand_items(pos, meta)
 end
-local after_blast = function(pos)
+
+local on_destruct = function(pos)
 	local meta = minetest.get_meta(pos)
 	drop_brewing_stand_items(pos, meta)
-	minetest.remove_node(pos)
 end
+
 local allow_take = function(pos, listname, index, stack, player)
 	local name = player:get_player_name()
 	if minetest.is_protected(pos, name) then
@@ -339,6 +343,7 @@ local allow_take = function(pos, listname, index, stack, player)
 		return stack:get_count()
 	end
 end
+
 local on_take = function(pos, listname, index, stack, player)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
@@ -411,7 +416,7 @@ minetest.register_node("mcl_brewing:stand_000", {
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
-	on_destruct = after_dig,
+	on_destruct = on_destruct,
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
@@ -496,7 +501,7 @@ minetest.register_node("mcl_brewing:stand_100", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
-	on_destruct = after_dig,
+	on_destruct = on_destruct,
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
@@ -580,7 +585,7 @@ minetest.register_node("mcl_brewing:stand_010", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
-	on_destruct = after_dig,
+	on_destruct = on_destruct,
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
@@ -664,7 +669,7 @@ minetest.register_node("mcl_brewing:stand_001", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
-	on_destruct = after_dig,
+	on_destruct = on_destruct,
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
@@ -748,7 +753,7 @@ minetest.register_node("mcl_brewing:stand_110", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
-	on_destruct = after_dig,
+	on_destruct = on_destruct,
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
@@ -832,7 +837,7 @@ minetest.register_node("mcl_brewing:stand_101", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
-	on_destruct = after_dig,
+	on_destruct = on_destruct,
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
@@ -916,7 +921,7 @@ minetest.register_node("mcl_brewing:stand_011", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
-	on_destruct = after_dig,
+	on_destruct = on_destruct,
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
@@ -1000,7 +1005,7 @@ minetest.register_node("mcl_brewing:stand_111", {
 	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
-	on_destruct = after_dig,
+	on_destruct = on_destruct,
 	after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
