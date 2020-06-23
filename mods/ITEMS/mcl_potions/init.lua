@@ -1,6 +1,13 @@
 local S = minetest.get_translator("mcl_potions")
+mcl_potions = {}
 
-local brewhelp = S("Put this item in an item frame for decoration. It's useless otherwise.")
+local modpath = minetest.get_modpath("mcl_potions")
+dofile(modpath .. "/functions.lua")
+dofile(modpath .. "/splash.lua")
+dofile(modpath .. "/lingering.lua")
+dofile(modpath .. "/potions.lua")
+
+local brewhelp = S("Try different combinations to create potions.")
 
 minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 	description = S("Fermented Spider Eye"),
@@ -8,7 +15,7 @@ minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 	wield_image = "mcl_potions_spider_eye_fermented.png",
 	inventory_image = "mcl_potions_spider_eye_fermented.png",
 	-- TODO: Reveal item when it's actually useful
-	groups = { brewitem = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1 },
+	groups = { brewitem = 1, not_in_creative_inventory = 0, not_in_craft_guide = 0 },
 	stack_max = 64,
 })
 
@@ -33,7 +40,7 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 			local def = minetest.registered_nodes[node.name]
 
 			-- Call on_rightclick if the pointed node defines it
-			if placer and not placer :get_player_control().sneak then
+			if placer and not placer:get_player_control().sneak then
 				if def and def.on_rightclick then
 					return def.on_rightclick(pointed_thing.under, node, placer, itemstack) or itemstack
 				end
@@ -87,9 +94,9 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 					-- place the water potion at a place where's space
 					local water_bottle
 					if river_water then
-						water_bottle = ItemStack("mcl_potions:potion_river_water")
+						water_bottle = ItemStack("mcl_potions:river_water")
 					else
-						water_bottle = ItemStack("mcl_potions:potion_water")
+						water_bottle = ItemStack("mcl_potions:water")
 					end
 					local inv = placer:get_inventory()
 					if creative then
@@ -130,8 +137,10 @@ local potion_image = function(colorstring, opacity)
 	if not opacity then
 		opacity = 127
 	end
-	return "mcl_potions_potion_bottle_drinkable.png^(mcl_potions_potion_overlay.png^[colorize:"..colorstring..":"..tostring(opacity)..")"
+	return "mcl_potions_potion_overlay.png^[colorize:"..colorstring..":"..tostring(opacity).."^mcl_potions_potion_bottle_drinkable.png"
 end
+
+
 
 -- Cauldron fill up rules:
 -- Adding any water increases the water level by 1, preserving the current water type
@@ -158,7 +167,7 @@ end
 
 -- Itemstring of potions is “mcl_potions:potion_<NBT Potion Tag>”
 
-minetest.register_craftitem("mcl_potions:potion_water", {
+minetest.register_craftitem("mcl_potions:water", {
 	description = S("Water Bottle"),
 	_tt_help = S("No effect"),
 	_doc_items_longdesc = S("Water bottles can be used to fill cauldrons. Drinking water has no effect."),
@@ -203,7 +212,7 @@ minetest.register_craftitem("mcl_potions:potion_water", {
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
 
-minetest.register_craftitem("mcl_potions:potion_river_water", {
+minetest.register_craftitem("mcl_potions:river_water", {
 	description = S("River Water Bottle"),
 	_tt_help = S("No effect"),
 	_doc_items_longdesc = S("River water bottles can be used to fill cauldrons. Drinking it has no effect."),
@@ -250,55 +259,11 @@ minetest.register_craftitem("mcl_potions:potion_river_water", {
 })
 
 
-
-local how_to_drink = S("Use the “Place” key to drink it.")
-
-minetest.register_craftitem("mcl_potions:potion_awkward", {
-	description = S("Awkward Potion"),
-	_tt_help = S("No effect"),
-	_doc_items_longdesc = S("This potion has an awkward taste and is used for brewing more potions. Drinking it has no effect."),
-	_doc_items_usagehelp = how_to_drink,
-	stack_max = 1,
-	inventory_image = potion_image("#0000FF"),
-	wield_image = potion_image("#0000FF"),
-	-- TODO: Reveal item when it's actually useful
-	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=1},
-	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
-	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
-})
-minetest.register_craftitem("mcl_potions:potion_mundane", {
-	description = S("Mundane Potion"),
-	_tt_help = S("No effect"),
-	_doc_items_longdesc = S("This potion has a clean taste and is used for brewing more potions. Drinking it has no effect."),
-	_doc_items_usagehelp = how_to_drink,
-	stack_max = 1,
-	inventory_image = potion_image("#0000FF"),
-	wield_image = potion_image("#0000FF"),
-	-- TODO: Reveal item when it's actually useful
-	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=1 },
-	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
-	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
-})
-minetest.register_craftitem("mcl_potions:potion_thick", {
-	description = S("Thick Potion"),
-	_tt_help = S("No effect"),
-	_doc_items_longdesc = S("This potion has a bitter taste and is used for brewing more potions. Drinking it has no effect."),
-	_doc_items_usagehelp = how_to_drink,
-	stack_max = 1,
-	inventory_image = potion_image("#0000FF"),
-	wield_image = potion_image("#0000FF"),
-	-- TODO: Reveal item when it's actually useful
-	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=1 },
-	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
-	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
-})
-
 minetest.register_craftitem("mcl_potions:speckled_melon", {
 	description = S("Glistering Melon"),
 	_doc_items_longdesc = S("This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else."),
 	stack_max = 64,
-	-- TODO: Reveal item when it's actually useful
-	groups = { brewitem = 1, not_in_creative_inventory = 1, not_in_craft_guide = 1 },
+	groups = { brewitem = 1, not_in_creative_inventory = 0, not_in_craft_guide = 1 },
 	inventory_image = "mcl_potions_melon_speckled.png",
 })
 
@@ -311,12 +276,127 @@ minetest.register_craft({
 	}
 })
 
-minetest.register_craftitem("mcl_potions:dragon_breath", {
-	description = S("Dragon's Breath"),
-	_doc_items_longdesc = brewhelp,
-	wield_image = "mcl_potions_dragon_breath.png",
-	inventory_image = "mcl_potions_dragon_breath.png",
-	-- TODO: Reveal item when it's actually useful
-	groups = { brewitem = 1, not_in_creative_inventory = 1 },
-	stack_max = 64,
-})
+
+-- duration effects of redstone are a factor of 8/3
+-- duration effects of glowstone are a time factor of 1/2 and effect of 14/12
+-- splash potion effects are reduced by a factor of 3/4
+
+local water_table = {
+	["mcl_nether:nether_wart_item"] = "mcl_potions:awkward",
+	["mcl_potions:fermented_spider_eye"] = "mcl_potions:weakness",
+	["mcl_potions:speckled_melon"] = "mcl_potions:mundane",
+	["mcl_core:sugar"] = "mcl_potions:mundane",
+	["mcl_mobitems:magma_cream"] = "mcl_potions:mundane",
+	["mcl_mobitems:blaze_powder"] = "mcl_potions:mundane",
+	["mesecons:wire_00000000_off"] = "mcl_potions:mundane",
+	["mcl_mobitems:ghast_tear"] = "mcl_potions:mundane",
+	["mcl_mobitems:spider_eye"] = "mcl_potions:mundane",
+	["mcl_mobitems:rabbit_foot"] = "mcl_potions:mundane"
+}
+
+local awkward_table = {
+	["mcl_potions:speckled_melon"] = "mcl_potions:healing",
+	["mcl_farming:carrot_item_gold"] = "mcl_potions:night_vision",
+	["mcl_core:sugar"] = "mcl_potions:swiftness",
+	["mcl_mobitems:magma_cream"] = "mcl_potions:fire_resistance", --add craft
+	["mcl_mobitems:blaze_powder"] = "mcl_potions:strength", --add craft
+	["mcl_fishing:pufferfish_raw"] = "mcl_potions:water_breathing",
+	["mcl_mobitems:ghast_tear"] = "mcl_potions:regeneration",
+	["mcl_mobitems:spider_eye"] = "mcl_potions:poison",
+	["mcl_mobitems:rabbit_foot"] = "mcl_potions:leaping",
+}
+
+local output_table = {
+	["mcl_potions:river_water"] = water_table,
+	["mcl_potions:water"] = water_table,
+	["mcl_potions:awkward"] = awkward_table,
+}
+
+
+local enhancement_table = {}
+local extension_table = {}
+local potions = {"awkward", "mundane", "thick"}
+for i, potion in ipairs({"healing","harming","swiftness","leaping","poison","regeneration","invisibility","weakness","water_breathing","night_vision"}) do
+
+		table.insert(potions, potion)
+
+		if potion ~= "invisibility" and potion ~= "night_vision" and potion ~= "weakness" and potion ~= "water_breathing" and potion ~= "fire_resistance" then
+			enhancement_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_2"
+			enhancement_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_2_splash"
+			table.insert(potions, potion.."_2")
+		end
+
+		if potion ~= "healing" and potion ~= "harming" then
+			extension_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_plus_splash"
+			extension_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_plus"
+			table.insert(potions, potion.."_plus")
+		end
+
+end
+
+
+local inversion_table = {
+	["mcl_potions:healing"] = "mcl_potions:harming",
+	["mcl_potions:healing_2"] = "mcl_potions:harming_2",
+	["mcl_potions:swiftness"] = "mcl_potions:slowness",
+	["mcl_potions:swiftness_plus"] = "mlc_potions:slowness_plus",
+	["mcl_potions:leaping"] = "mcl_potions:slowness",
+	["mcl_potions:leaping_plus"] = "mcl_potions:slowness_plus",
+	["mcl_potions:night_vision"] = "mcl_potions:invisibility",
+	["mcl_potions:night_vision_plus"] = "mcl_potions:invisibility_plus",
+	["mcl_potions:poison"] = "mcl_potions:harming",
+	["mcl_potions:poison_2"] = "mcl_potions:harming_2",
+	["mcl_potions:healing_splash"] = "mcl_potions:harming_splash",
+	["mcl_potions:healing_2_splash"] = "mcl_potions:harming_2_splash",
+	["mcl_potions:swiftness_splash"] = "mcl_potions:slowness_splash",
+	["mcl_potions:swiftness_plus_splash"] = "mlc_potions:slowness_plus_splash",
+	["mcl_potions:leaping_splash"] = "mcl_potions:slowness_splash",
+	["mcl_potions:leaping_plus_splash"] = "mcl_potions:slowness_plus_splash",
+	["mcl_potions:night_vision_splash"] = "mcl_potions:invisibility_splash",
+	["mcl_potions:night_vision_plus_splash"] = "mcl_potions:invisibility_plus_splash",
+	["mcl_potions:poison_splash"] = "mcl_potions:harming_splash",
+	["mcl_potions:poison_2_splash"] = "mcl_potions:harming_2_splash",
+}
+
+
+local splash_table = {}
+local lingering_table = {}
+
+for i, potion in ipairs(potions) do
+    splash_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_splash"
+		lingering_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_lingering"
+end
+
+for i, potion in ipairs({"awkward", "mundane", "thick", "water", "river_water"}) do
+    splash_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_splash"
+		lingering_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_lingering"
+end
+
+
+local mod_table = {
+	["mesecons:wire_00000000_off"] = extension_table,
+	["mcl_potions:fermented_spider_eye"] = inversion_table,
+	["mcl_nether:glowstone_dust"] = enhancement_table,
+	["mcl_mobitems:gunpowder"] = splash_table,
+	["mcl_potions:dragon_breath"] = lingering_table,
+}
+
+-- Compare two ingredients for compatable alchemy
+function mcl_potions.get_alchemy(ingr, pot)
+
+	if output_table[pot] ~= nil then
+		local brew_table = output_table[pot]
+		if brew_table[ingr] ~= nil then
+			return brew_table[ingr]
+		end
+
+	elseif mod_table[ingr] ~= nil then
+		local brew_table = mod_table[ingr]
+		if brew_table[pot] ~= nil then
+			return brew_table[pot]
+		end
+
+	end
+
+	return false
+end
