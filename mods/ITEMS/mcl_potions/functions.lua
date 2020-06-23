@@ -314,7 +314,7 @@ function mcl_potions.healing_func(player, hp)
 	if hp > 0 then
 		player:set_hp(math.min(player:get_hp() + hp, player:get_properties().hp_max))
 	else
-		player:set_hp(math.max(player:get_hp() + hp, 1))
+		player:set_hp(player:get_hp() + hp)
 	end
 
 end
