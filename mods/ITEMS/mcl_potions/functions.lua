@@ -124,7 +124,7 @@ minetest.register_globalstep(function(dtime)
 			if player:get_pos() then mcl_potions._add_spawner(player, "#00CC33") end
 
 			if is_leaping[player].timer >= is_leaping[player].dur then
-				playerphysics.remove_physics_factor(player, "jump", "leaping")
+				playerphysics.remove_physics_factor(player, "jump", "mcl_potions:leaping")
 				is_leaping[player] = nil
 			end
 
@@ -146,7 +146,7 @@ minetest.register_globalstep(function(dtime)
 			if player:get_pos() then mcl_potions._add_spawner(player, "#009999") end
 
 			if is_swift[player].timer >= is_swift[player].dur then
-				playerphysics.remove_physics_factor(player, "speed", "swiftness")
+				playerphysics.remove_physics_factor(player, "speed", "mcl_potions:swiftness")
 				is_swift[player] = nil
 			end
 
@@ -178,10 +178,9 @@ minetest.register_globalstep(function(dtime)
 
 	end
 
-end )
+end)
 
--- reset player is_invisible/poison if they go offline
-minetest.register_on_leaveplayer(function(player)
+local function _reset_player_effects(player)
 
 	player = player or player:get_luaentity()
 
@@ -221,7 +220,11 @@ minetest.register_on_leaveplayer(function(player)
 		is_cat[player] = nil
 	end
 
-end)
+end
+
+minetest.register_on_leaveplayer( function(player) _reset_player_effects(player) end)
+
+minetest.register_on_dieplayer( function(player) _reset_player_effects(player) end)
 
 function mcl_potions.make_invisible(player, toggle)
 
@@ -326,13 +329,13 @@ function mcl_potions.swiftness_func(player, factor, duration)
 	if not is_swift[player] then
 
 		is_swift[player] = {dur = duration, timer = 0}
-		playerphysics.add_physics_factor(player, "speed", "swiftness", factor)
+		playerphysics.add_physics_factor(player, "speed", "mcl_potions:swiftness", factor)
 
 	else
 
 		local victim = is_swift[player]
 
-		playerphysics.add_physics_factor(player, "speed", "swiftness", factor)
+		playerphysics.add_physics_factor(player, "speed", "mcl_potions:swiftness", factor)
 		victim.dur = math.max(duration, victim.dur - victim.timer)
 		victim.timer = 0
 
@@ -347,13 +350,13 @@ function mcl_potions.leaping_func(player, factor, duration)
 	if not is_leaping[player] then
 
 		is_leaping[player] = {dur = duration, timer = 0}
-		playerphysics.add_physics_factor(player, "jump", "leaping", factor)
+		playerphysics.add_physics_factor(player, "jump", "mcl_potions:leaping", factor)
 
 	else
 
 		local victim = is_leaping[player]
 
-		playerphysics.add_physics_factor(player, "jump", "leaping", factor)
+		playerphysics.add_physics_factor(player, "jump", "mcl_potions:leaping", factor)
 		victim.dur = math.max(duration, victim.dur - victim.timer)
 		victim.timer = 0
 

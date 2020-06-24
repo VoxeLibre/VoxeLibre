@@ -46,11 +46,11 @@ local function setSprinting(playerName, sprinting) --Sets the state of a player 
 	if players[playerName] then
 		players[playerName].sprinting = sprinting
 		if sprinting == true then
-			players[playerName].fov = math.min(players[playerName].fov + 0.02, 1.2)
+			players[playerName].fov = math.min(players[playerName].fov + 0.03, 1.2)
 			player:set_fov(players[playerName].fov, true, 0.15)
 			playerphysics.add_physics_factor(player, "speed", "mcl_sprint:sprint", mcl_sprint.SPEED)
 		elseif sprinting == false then
-			players[playerName].fov = math.max(players[playerName].fov - 0.02, 1.0)
+			players[playerName].fov = math.max(players[playerName].fov - 0.03, 1.0)
 			player:set_fov(players[playerName].fov, true, 0.15)
 			playerphysics.remove_physics_factor(player, "speed", "mcl_sprint:sprint")
 		end
