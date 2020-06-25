@@ -46,8 +46,15 @@ minetest.register_globalstep(function(dtime)
 			if player:get_pos() then mcl_potions._add_spawner(player, "#225533") end
 
 			if is_poisoned[player].hit_timer >= is_poisoned[player].step then
-				player:set_hp( math.max(player:get_hp() - 1, 1) )
+
+				if player._cmi_is_mob then
+					player.health = math.max(player.health - 1, 1)
+				else
+					player:set_hp( math.max(player:get_hp() - 1, 1) )
+				end
+
 				is_poisoned[player].hit_timer = 0
+
 			end
 
 			if is_poisoned[player].timer >= is_poisoned[player].dur then
@@ -210,10 +217,12 @@ local function _reset_player_effects(player)
 
 	if is_leaping[player] then
 		is_leaping[player] = nil
+		playerphysics.remove_physics_factor(player, "jump", "mcl_potions:leaping")
 	end
 
 	if is_swift[player] then
 		is_swift[player] = nil
+		playerphysics.remove_physics_factor(player, "speed", "mcl_potions:swiftness")
 	end
 
 	if is_cat[player] then
@@ -312,12 +321,33 @@ end
 
 function mcl_potions.healing_func(player, hp)
 
+	obj = player:get_luaentity()
+
 	if is_zombie[player:get_entity_name()] then hp = -hp end
 
 	if hp > 0 then
-		player:set_hp(math.min(player:get_hp() + hp, player:get_properties().hp_max))
+
+		if obj and obj._cmi_is_mob then
+			obj.health = math.max(obj.health + hp, obj.hp_max)
+		else
+			player:set_hp(math.min(player:get_hp() + hp, player:get_properties().hp_max))
+		end
+
 	else
-		player:set_hp(player:get_hp() + hp)
+
+		if obj and obj._cmi_is_mob then
+			obj.health = obj.health + hp
+		else
+			player:set_hp(player:get_hp() + hp)
+		end
+
+	end
+
+	-- adjust mob health
+	obj = player:get_luaentity()
+	if obj and obj._cmi_is_mob then
+		print("working "..obj.health)
+		obj.health = obj.health + hp
 	end
 
 end
