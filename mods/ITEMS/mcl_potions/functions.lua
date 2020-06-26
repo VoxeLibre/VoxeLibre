@@ -267,7 +267,6 @@ end
 function mcl_potions._use_potion(item, obj, color)
 	local d = 0.1
 	local pos = obj:get_pos()
-	item:replace("mcl_potions:glass_bottle")
 	minetest.sound_play("mcl_potions_drinking", {pos = pos, max_hear_distance = 6, gain = 1})
 	minetest.add_particlespawner({
 									amount = 25,
