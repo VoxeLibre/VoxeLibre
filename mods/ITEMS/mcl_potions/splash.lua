@@ -5,6 +5,7 @@ local splash_image = function(colorstring, opacity)
 	return "mcl_potions_splash_overlay.png^[colorize:"..colorstring..":"..tostring(opacity).."^mcl_potions_splash_bottle.png"
 end
 
+
 local function register_splash(name, descr, color, def)
 
     local id = "mcl_potions:"..name.."_splash"
@@ -18,7 +19,9 @@ local function register_splash(name, descr, color, def)
             local obj = minetest.env:add_entity({x=pos.x+dir.x,y=pos.y+2+dir.y,z=pos.z+dir.z}, id.."_flying")
             obj:set_velocity({x=dir.x*velocity,y=dir.y*velocity,z=dir.z*velocity})
             obj:set_acceleration({x=0, y=-9.8, z=0})
-            item:take_item()
+			if not minetest.settings:get_bool("creative_mode") then
+				item:take_item()
+			end
             return item
         end,
 				stack_max = 1,
@@ -37,7 +40,7 @@ local function register_splash(name, descr, color, def)
           local n = node.name
 					local d = 2
 					local redux_map = {7/8,0.5,0.25}
-          if n ~= "air" then
+          if n ~= "air"  or mcl_potions.is_obj_hit(self, pos) then
 						minetest.sound_play("mcl_potions_breaking_glass", {pos = pos, max_hear_distance = 16, gain = 1})
 						minetest.add_particlespawner({
 																				amount = 50,

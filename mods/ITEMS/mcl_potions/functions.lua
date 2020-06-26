@@ -235,6 +235,23 @@ minetest.register_on_leaveplayer( function(player) _reset_player_effects(player)
 
 minetest.register_on_dieplayer( function(player) _reset_player_effects(player) end)
 
+function mcl_potions.is_obj_hit(self, pos)
+
+	for _,object in pairs(minetest.get_objects_inside_radius(pos, 1.1)) do
+
+		local entity = object:get_luaentity()
+
+		if entity and entity.name ~= self.object:get_luaentity().name then
+
+			if object:is_player() or entity._cmi_is_mob then return true end
+
+		end
+
+	end
+	return false
+end
+
+
 function mcl_potions.make_invisible(player, toggle)
 
 	if not player then return false end

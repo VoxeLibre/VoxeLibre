@@ -19,7 +19,9 @@ local function register_lingering(name, descr, color, def)
             local obj = minetest.env:add_entity({x=pos.x+dir.x,y=pos.y+2+dir.y,z=pos.z+dir.z}, id.."_flying")
             obj:setvelocity({x=dir.x*velocity,y=dir.y*velocity,z=dir.z*velocity})
             obj:setacceleration({x=0, y=-9.8, z=0})
-            item:take_item()
+			if not minetest.settings:get_bool("creative_mode") then
+				item:take_item()
+			end
             return item
         end,
 				stack_max = 1,
@@ -38,7 +40,7 @@ local function register_lingering(name, descr, color, def)
           local n = node.name
 					local d = 2
 					local redux_map = {7/8,0.5,0.25}
-          if n ~= "air" then
+          if n ~= "air"  or mcl_potions.is_obj_hit(self, pos) then
 						minetest.sound_play("mcl_potions_breaking_glass", {pos = pos, max_hear_distance = 16, gain = 1})
 						minetest.add_particlespawner({
 														amount = 1000,
