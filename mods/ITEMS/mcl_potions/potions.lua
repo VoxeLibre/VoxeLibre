@@ -316,6 +316,29 @@ minetest.register_craftitem("mcl_potions:slowness_plus", {
 	end,
 })
 
+minetest.register_craftitem("mcl_potions:slowness_2", {
+	description = S("Slowness Potion IV"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#000090"),
+	inventory_image = potion_image("#000090"),
+	groups = { brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
+	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		mcl_potions.swiftness_func(user, 0.40, 20)
+		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+		mcl_potions._use_potion(itemstack, user, "#000090")
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		mcl_potions.swiftness_func(user, 0.40, 20)
+		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+		mcl_potions._use_potion(itemstack, user, "#000090")
+		return itemstack
+	end,
+})
+
 
 minetest.register_craftitem("mcl_potions:leaping", {
 	description = S("Leaping Potion"),

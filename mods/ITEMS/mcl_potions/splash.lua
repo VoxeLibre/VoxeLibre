@@ -137,8 +137,12 @@ register_splash("swiftness_plus", "Splash Swiftness +", "#00BBBB", {
 		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 1.2, 360*redx) end
 })
 
-register_splash("slowness", "Splash Slowness ", "#000080", {
+register_splash("slowness", "Splash Slowness", "#000080", {
 		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 0.85, 68*redx) end
+})
+
+register_splash("slowness_2", "Splash Slowness IV", "#000080", {
+		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 0.4, 20*redx) end
 })
 
 register_splash("slowness_plus", "Splash Slowness +", "#000066", {
