@@ -1,4 +1,4 @@
-splash_DUR*local splash_image = function(colorstring, opacity)
+local splash_image = function(colorstring, opacity)
 	if not opacity then
 		opacity = 127
 	end
