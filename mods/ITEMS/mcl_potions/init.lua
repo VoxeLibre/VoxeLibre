@@ -1,12 +1,16 @@
 local S = minetest.get_translator("mcl_potions")
 mcl_potions = {}
 
+-- duration effects of redstone are a factor of 8/3
+-- duration effects of glowstone are a time factor of 1/2
+-- splash potion duration effects are reduced by a factor of 3/4
 
 mcl_potions.DURATION = 180
 mcl_potions.DURATION_PLUS = mcl_potions.DURATION * (8/3)
 mcl_potions.DURATION_2 = mcl_potions.DURATION * (1/2)
 
-mcl_potions.INV_FACTOR = 0.25
+mcl_potions.INV_FACTOR = 0.50
+mcl_potions.SPLASH_FACTOR = 0.75
 
 
 local modpath = minetest.get_modpath("mcl_potions")
@@ -284,10 +288,6 @@ minetest.register_craft({
 	}
 })
 
-
--- duration effects of redstone are a factor of 8/3
--- duration effects of glowstone are a time factor of 1/2 and effect of 14/12
--- splash potion effects are reduced by a factor of 3/4
 
 local water_table = {
 	["mcl_nether:nether_wart_item"] = "mcl_potions:awkward",
