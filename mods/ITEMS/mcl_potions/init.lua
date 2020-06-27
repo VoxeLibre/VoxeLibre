@@ -1,6 +1,14 @@
 local S = minetest.get_translator("mcl_potions")
 mcl_potions = {}
 
+
+mcl_potions.DURATION = 180
+mcl_potions.DURATION_PLUS = mcl_potions.DURATION * (8/3)
+mcl_potions.DURATION_2 = mcl_potions.DURATION * (1/2)
+
+mcl_potions.INV_FACTOR = 0.25
+
+
 local modpath = minetest.get_modpath("mcl_potions")
 dofile(modpath .. "/functions.lua")
 dofile(modpath .. "/splash.lua")
