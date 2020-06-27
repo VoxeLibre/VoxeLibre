@@ -128,7 +128,7 @@ local function register_lingering(name, descr, color, def)
 														maxsize = 2,
 														collisiondetection = true,
 														vertical = false,
-														texture = "mcl_potions_sprite.png^[colorize:"..lingering_effect_at[pos].color..":127",
+														texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
 													})
             		 	self.object:remove()
 					end
