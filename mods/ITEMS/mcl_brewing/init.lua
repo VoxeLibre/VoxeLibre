@@ -146,6 +146,25 @@ local function brewing_stand_timer(pos, elapsed)
 				fuel_timer = 0
 			end
 
+			local d = 0.5
+			minetest.add_particlespawner({
+											amount = 4,
+											time = 1,
+											minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
+											maxpos = {x=pos.x+d, y=pos.y+2, z=pos.z+d},
+											minvel = {x=-0.1, y=0, z=-0.1},
+											maxvel = {x=0.1, y=0.5, z=0.1},
+											minacc = {x=-0.05, y=0, z=-0.05},
+											maxacc = {x=0.05, y=.1, z=0.05},
+											minexptime = 1,
+											maxexptime = 2,
+											minsize = 0.5,
+											maxsize = 2,
+											collisiondetection = true,
+											vertical = false,
+											texture = "mcl_brewing_bubble_sprite.png",
+										})
+
 			-- Replace the stand item with the brew result
 			if stand_timer >= BREW_TIME then
 
