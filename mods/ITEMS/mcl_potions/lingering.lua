@@ -27,7 +27,7 @@ minetest.register_globalstep(function(dtime)
 			local d = 4 * (vals.timer / 30.0)
 
 			minetest.add_particlespawner({
-											amount = 5 * d^2,
+											amount = 10 * d^2,
 											time = 1,
 											minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
 											maxpos = {x=pos.x+d, y=pos.y+1, z=pos.z+d},
