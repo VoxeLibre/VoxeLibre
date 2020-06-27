@@ -61,7 +61,8 @@ local function register_splash(name, descr, color, def)
 																			})
             			self.object:remove()
 						for _,obj in pairs(minetest.get_objects_inside_radius(pos, 4)) do
-					
+							
+							local entity = obj.get_luaentity()
 							if obj:is_player() or entity._cmi_is_mob then
 
 								local pos2 = obj:get_pos()

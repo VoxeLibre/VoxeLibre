@@ -53,7 +53,6 @@ local function add_lingering_effect(pos, color, def)
 						for _, obj in pairs(minetest.get_objects_inside_radius(pos, d)) do
 
 							local entity = obj:get_luaentity()
-
 							if obj:is_player() or entity._cmi_is_mob then
 
 								-- if obj:is_player() then print(obj:is_player()) print(obj:get_player_name()) end
