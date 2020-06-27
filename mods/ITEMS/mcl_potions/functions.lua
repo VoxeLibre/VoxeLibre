@@ -362,7 +362,6 @@ function mcl_potions.healing_func(player, hp)
 	-- adjust mob health
 	obj = player:get_luaentity()
 	if obj and obj._cmi_is_mob then
-		print("working "..obj.health)
 		obj.health = obj.health + hp
 	end
 
@@ -413,7 +412,6 @@ end
 
 function mcl_potions.weakness_func(player, factor, duration)
 	player:set_attribute("weakness", tostring(factor))
-	-- print(player:get_player_name().." ".."weakness = "..player:get_attribute("weakness"))
 	minetest.after(duration, function() player:set_attribute("weakness", tostring(0)) end )
 	for i=1,math.floor(duration) do
 		minetest.after(i, function() mcl_potions._add_spawner(player, "#6600AA") end)

@@ -60,11 +60,9 @@ local function register_splash(name, descr, color, def)
 																				texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
 																			})
             			self.object:remove()
-						for i, obj in ipairs(minetest.get_objects_inside_radius(pos, 4)) do
-
-							obj = obj or obj:get_luaentity()
-
-							if minetest.is_player(obj) or obj._cmi_is_mob then
+						for _,obj in pairs(minetest.get_objects_inside_radius(pos, 4)) do
+					
+							if obj:is_player() or entity._cmi_is_mob then
 
 								local pos2 = obj:get_pos()
 								local rad = math.floor(math.sqrt((pos2.x-pos.x)^2 + (pos2.y-pos.y)^2 + (pos2.z-pos.z)^2))

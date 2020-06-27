@@ -18,7 +18,7 @@ local function add_lingering_effect(pos, color, def)
 
 		timer = timer + dtime
 
-		if timer >= 0.5 then
+		if timer >= 1 then
 
 			for pos, vals in pairs(lingering_effect_at) do
 
@@ -26,12 +26,14 @@ local function add_lingering_effect(pos, color, def)
 
 					lingering_effect_at[pos].timer = lingering_effect_at[pos].timer - timer
 
+					-- print(lingering_effect_at[pos].timer)
+
 					if lingering_effect_at[pos].timer > 0 then
 
-						local d = 3 * (lingering_effect_at[pos].timer / 30.0)
+						local d = 4 * (lingering_effect_at[pos].timer / 30.0)
 
 						minetest.add_particlespawner({
-														amount = 5 * math.ceil(d)^2,
+														amount = 5 * d^2,
 														time = 1,
 														minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
 														maxpos = {x=pos.x+d, y=pos.y+1, z=pos.z+d},
@@ -48,11 +50,14 @@ local function add_lingering_effect(pos, color, def)
 														texture = "mcl_potions_sprite.png^[colorize:"..lingering_effect_at[pos].color..":127",
 													})
 
-						for i, obj in ipairs(minetest.get_objects_inside_radius(pos, math.ceil(d+1))) do
+						for _, obj in pairs(minetest.get_objects_inside_radius(pos, d)) do
 
-							obj = obj or obj:get_luaentity()
+							local entity = obj:get_luaentity()
 
-							if minetest.is_player(obj) or obj._cmi_is_mob then
+							if obj:is_player() or entity._cmi_is_mob then
+
+								-- if obj:is_player() then print(obj:is_player()) print(obj:get_player_name()) end
+								-- if entity then print(entity.name) print(entity._cmi_is_mob) end
 
 								lingering_effect_at[pos].def.potion_fun(obj)
 								lingering_effect_at[pos].timer = lingering_effect_at[pos].timer / 2
@@ -105,10 +110,27 @@ local function register_lingering(name, descr, color, def)
           local pos = self.object:getpos()
           local node = minetest.get_node(pos)
           local n = node.name
-					local d = 2
+					local d = 4
           			if n ~= "air"  or mcl_potions.is_obj_hit(self, pos) then
 						minetest.sound_play("mcl_potions_breaking_glass", {pos = pos, max_hear_distance = 16, gain = 1})
 						add_lingering_effect(pos, color, def)
+						minetest.add_particlespawner({
+														amount = 20,
+														time = 1,
+														minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
+														maxpos = {x=pos.x+d, y=pos.y+1, z=pos.z+d},
+														minvel = {x=-0.5, y=0, z=-0.5},
+														maxvel = {x=0.5, y=0.5, z=0.5},
+														minacc = {x=-0.2, y=0, z=-0.2},
+														maxacc = {x=0.2, y=.05, z=0.2},
+														minexptime = 1,
+														maxexptime = 2,
+														minsize = 1,
+														maxsize = 2,
+														collisiondetection = true,
+														vertical = false,
+														texture = "mcl_potions_sprite.png^[colorize:"..lingering_effect_at[pos].color..":127",
+													})
             		 	self.object:remove()
 					end
         end,
