@@ -163,14 +163,14 @@ minetest.register_craftitem("mcl_potions:night_vision", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.night_vision_func(user, 180)
+		mcl_potions.night_vision_func(user, mcl_potions.DURATION)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#1010AA")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.night_vision_func(user, 180)
+		mcl_potions.night_vision_func(user, mcl_potions.DURATION)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#1010AA")
 		return itemstack
@@ -186,14 +186,14 @@ minetest.register_craftitem("mcl_potions:night_vision_plus", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.night_vision_func(user, 480)
+		mcl_potions.night_vision_func(user, mcl_potions.DURATION_PLUS)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#2020BA")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.night_vision_func(user, 480)
+		mcl_potions.night_vision_func(user, mcl_potions.DURATION_PLUS)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#2020BA")
 		return itemstack
@@ -210,14 +210,14 @@ minetest.register_craftitem("mcl_potions:swiftness", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.swiftness_func(user, 1.2, 180)
+		mcl_potions.swiftness_func(user, 1.2, mcl_potions.DURATION)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#009999")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.swiftness_func(user, 1.2, 180)
+		mcl_potions.swiftness_func(user, 1.2, mcl_potions.DURATION)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#009999")
 		return itemstack
@@ -233,14 +233,14 @@ minetest.register_craftitem("mcl_potions:swiftness_2", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.swiftness_func(user, 1.4, 90)
+		mcl_potions.swiftness_func(user, 1.4, mcl_potions.DURATION_2)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#00BBBB")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.swiftness_func(user, 1.4, 90)
+		mcl_potions.swiftness_func(user, 1.4, mcl_potions.DURATION_2)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#00BBBB")
 		return itemstack
@@ -256,14 +256,14 @@ minetest.register_craftitem("mcl_potions:swiftness_plus", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.swiftness_func(user, 1.2, 480)
+		mcl_potions.swiftness_func(user, 1.2, mcl_potions.DURATION_PLUS)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#00AAAA")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.swiftness_func(user, 1.2, 480)
+		mcl_potions.swiftness_func(user, 1.2, mcl_potions.DURATION_PLUS)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#00AAAA")
 		return itemstack
@@ -279,14 +279,14 @@ minetest.register_craftitem("mcl_potions:slowness", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.swiftness_func(user, 0.85, 90)
+		mcl_potions.swiftness_func(user, 0.85, mcl_potions.DURATION_2)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#000080")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.swiftness_func(user, 0.85, 90)
+		mcl_potions.swiftness_func(user, 0.85, mcl_potions.DURATION_2)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#000080")
 		return itemstack
@@ -302,14 +302,14 @@ minetest.register_craftitem("mcl_potions:slowness_plus", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.swiftness_func(user, 0.85, 240)
+		mcl_potions.swiftness_func(user, 0.85, mcl_potions.DURATION_2*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#000066")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.swiftness_func(user, 0.85, 240)
+		mcl_potions.swiftness_func(user, 0.85, mcl_potions.DURATION_2*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#000066")
 		return itemstack
@@ -349,14 +349,14 @@ minetest.register_craftitem("mcl_potions:leaping", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.leaping_func(user, 1.2, 180)
+		mcl_potions.leaping_func(user, 1.2, mcl_potions.DURATION)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#00CC33")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.leaping_func(user, 1.2, 180)
+		mcl_potions.leaping_func(user, 1.2, mcl_potions.DURATION)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#00CC33")
 		return itemstack
@@ -372,14 +372,14 @@ minetest.register_craftitem("mcl_potions:leaping_2", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.leaping_func(user, 1.4, 90)
+		mcl_potions.leaping_func(user, 1.4, mcl_potions.DURATION_2)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#00EE33")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.leaping_func(user, 1.4, 90)
+		mcl_potions.leaping_func(user, 1.4, mcl_potions.DURATION_2)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#00EE33")
 		return itemstack
@@ -395,14 +395,14 @@ minetest.register_craftitem("mcl_potions:leaping_plus", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.leaping_func(user, 1.2, 480)
+		mcl_potions.leaping_func(user, 1.2, mcl_potions.DURATION_PLUS)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#00DD33")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.leaping_func(user, 1.2, 480)
+		mcl_potions.leaping_func(user, 1.2, mcl_potions.DURATION_PLUS)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#00DD33")
 		return itemstack
@@ -419,14 +419,14 @@ minetest.register_craftitem("mcl_potions:weakness", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.weakness_func(user, 1.2, 90)
+		mcl_potions.weakness_func(user, 1.2, mcl_potions.DURATION_2)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#6600AA")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.weakness_func(user, 1.2, 90)
+		mcl_potions.weakness_func(user, 1.2, mcl_potions.DURATION_2)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#6600AA")
 		return itemstack
@@ -442,14 +442,14 @@ minetest.register_craftitem("mcl_potions:weakness_plus", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.weakness_func(user, 1.4, 240)
+		mcl_potions.weakness_func(user, 1.4, mcl_potions.DURATION_2*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#7700BB")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.weakness_func(user, 1.4, 240)
+		mcl_potions.weakness_func(user, 1.4, mcl_potions.DURATION_2*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#7700BB")
 		return itemstack
@@ -466,14 +466,14 @@ minetest.register_craftitem("mcl_potions:poison", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.poison_func(user, 2.5, 45)
+		mcl_potions.poison_func(user, 2.5, mcl_potions.DURATION*mcl_potions.INV_FACTOR*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#225533")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.poison_func(user, 2.5, 45)
+		mcl_potions.poison_func(user, 2.5, mcl_potions.DURATION*mcl_potions.INV_FACTOR*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#225533")
 		return itemstack
@@ -489,14 +489,14 @@ minetest.register_craftitem("mcl_potions:poison_2", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.poison_func(user, 1.2, 21)
+		mcl_potions.poison_func(user, 1.2, mcl_potions.DURATION_2*mcl_potions.INV_FACTOR*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#447755")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.poison_func(user, 1.2, 21)
+		mcl_potions.poison_func(user, 1.2, mcl_potions.DURATION_2*mcl_potions.INV_FACTOR*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#447755")
 		return itemstack
@@ -512,14 +512,14 @@ minetest.register_craftitem("mcl_potions:poison_plus", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.poison_func(user, 2.5, 90)
+		mcl_potions.poison_func(user, 2.5, mcl_potions.DURATION_2)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#336644")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.poison_func(user, 2.5, 90)
+		mcl_potions.poison_func(user, 2.5, mcl_potions.DURATION_2)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#336644")
 		return itemstack
@@ -536,14 +536,14 @@ minetest.register_craftitem("mcl_potions:regeneration", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.regeneration_func(user, 2.5, 45)
+		mcl_potions.regeneration_func(user, 2.5, mcl_potions.DURATION*mcl_potions.INV_FACTOR*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#A52BB2")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.regeneration_func(user, 2.5, 45)
+		mcl_potions.regeneration_func(user, 2.5, mcl_potions.DURATION*mcl_potions.INV_FACTOR*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#A52BB2")
 		return itemstack
@@ -559,14 +559,14 @@ minetest.register_craftitem("mcl_potions:regeneration_2", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.regeneration_func(user, 1.2, 22)
+		mcl_potions.regeneration_func(user, 1.2, mcl_potions.DURATION_2*mcl_potions.INV_FACTOR*mcl_potions.INV_FACTOR + 1)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#B52CC2")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.regeneration_func(user, 1.2, 22)
+		mcl_potions.regeneration_func(user, 1.2, mcl_potions.DURATION_2*mcl_potions.INV_FACTOR*mcl_potions.INV_FACTOR + 1)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#B52CC2")
 		return itemstack
@@ -582,14 +582,14 @@ minetest.register_craftitem("mcl_potions:regeneration_plus", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.regeneration_func(user, 2.5, 90)
+		mcl_potions.regeneration_func(user, 2.5, mcl_potions.DURATION_2)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#C53DD3")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.regeneration_func(user, 2.5, 90)
+		mcl_potions.regeneration_func(user, 2.5, mcl_potions.DURATION_2)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#C53DD3")
 		return itemstack
@@ -606,14 +606,14 @@ minetest.register_craftitem("mcl_potions:invisibility", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.invisiblility_func(user, 180)
+		mcl_potions.invisiblility_func(user, mcl_potions.DURATION)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#B0B0B0")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.invisiblility_func(user, 180)
+		mcl_potions.invisiblility_func(user, mcl_potions.DURATION)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#B0B0B0")
 		return itemstack
@@ -629,14 +629,14 @@ minetest.register_craftitem("mcl_potions:invisibility_plus", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.invisiblility_func(user, 480)
+		mcl_potions.invisiblility_func(user, mcl_potions.DURATION_PLUS)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#A0A0A0")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.invisiblility_func(user, 480)
+		mcl_potions.invisiblility_func(user, mcl_potions.DURATION_PLUS)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#A0A0A0")
 		return itemstack
@@ -660,14 +660,14 @@ minetest.register_craftitem("mcl_potions:water_breathing", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.water_breathing_func(user, 180)
+		mcl_potions.water_breathing_func(user, mcl_potions.DURATION)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#0000AA")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.water_breathing_func(user, 180)
+		mcl_potions.water_breathing_func(user, mcl_potions.DURATION)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#0000AA")
 		return itemstack
@@ -683,14 +683,14 @@ minetest.register_craftitem("mcl_potions:water_breathing_plus", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.water_breathing_func(user, 480)
+		mcl_potions.water_breathing_func(user, mcl_potions.DURATION_PLUS)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#0000CC")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.water_breathing_func(user, 480)
+		mcl_potions.water_breathing_func(user, mcl_potions.DURATION_PLUS)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#0000CC")
 		return itemstack
@@ -707,14 +707,14 @@ minetest.register_craftitem("mcl_potions:fire_resistance", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.fire_resistance_func(user, 180)
+		mcl_potions.fire_resistance_func(user, mcl_potions.DURATION)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#D0A040")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.fire_resistance_func(user, 180)
+		mcl_potions.fire_resistance_func(user, mcl_potions.DURATION)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#D0A040")
 		return itemstack
@@ -730,14 +730,14 @@ minetest.register_craftitem("mcl_potions:fire_resistance_plus", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.fire_resistance_func(user, 480)
+		mcl_potions.fire_resistance_func(user, mcl_potions.DURATION_PLUS)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#E0B050")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.fire_resistance_func(user, 480)
+		mcl_potions.fire_resistance_func(user, mcl_potions.DURATION_PLUS)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#E0B050")
 		return itemstack
