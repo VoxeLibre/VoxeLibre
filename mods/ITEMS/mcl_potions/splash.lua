@@ -40,7 +40,7 @@ local function register_splash(name, descr, color, def)
           local n = node.name
 					local d = 2
 					local redux_map = {7/8,0.5,0.25}
-          if n ~= "air"  or mcl_potions.is_obj_hit(self, pos) then
+          			if n ~= "air"  or mcl_potions.is_obj_hit(self, pos) then
 						minetest.sound_play("mcl_potions_breaking_glass", {pos = pos, max_hear_distance = 16, gain = 1})
 						minetest.add_particlespawner({
 																				amount = 50,
@@ -59,10 +59,12 @@ local function register_splash(name, descr, color, def)
 																				vertical = false,
 																				texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
 																			})
-            self.object:remove()
+            			self.object:remove()
 						for i, obj in ipairs(minetest.get_objects_inside_radius(pos, 4)) do
 
-							if minetest.is_player(obj) or obj:get_entity_name() then
+							obj = obj or obj:get_luaentity()
+
+							if minetest.is_player(obj) or obj._cmi_is_mob then
 
 								local pos2 = obj:get_pos()
 								local rad = math.floor(math.sqrt((pos2.x-pos.x)^2 + (pos2.y-pos.y)^2 + (pos2.z-pos.z)^2))
