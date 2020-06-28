@@ -12,7 +12,8 @@ local is_fire_proof = {}
 local fire_nodes = {["mcl_core:lava_flowing"]=true,
 					["mcl_core:lava_source"]=true,
 					["mcl_fire:eternal_fire"]=true,
-					["mcl_fire:fire"]=true}
+					["mcl_fire:fire"]=true,
+					["mcl_nether:magma"]=true}
 
 minetest.register_globalstep(function(dtime)
 
@@ -211,6 +212,27 @@ minetest.register_globalstep(function(dtime)
 
 	end
 
+	-- Check for Weak players
+	for player, vals in pairs(is_weak) do
+
+		if is_weak[player] and player:get_properties() then
+
+			player = player or player:get_luaentity()
+
+			is_weak[player].timer = is_weak[player].timer + dtime
+
+			if player:get_pos() then mcl_potions._add_spawner(player, "#7700BB") end
+
+			if is_weak[player].timer >= is_weak[player].dur then
+				is_weak[player] = nil
+			end
+
+		elseif not player:get_properties() then
+			is_weak[player] = nil
+		end
+
+	end
+
 end)
 
 minetest.register_on_player_hpchange(function(player, hp_change)
@@ -220,7 +242,7 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 		-- also assumes any change in hp happens between calls to this function
 		local player_info = mcl_playerinfo[player:get_player_name()]
 
-		if fire_nodes[player_info.node_head] or fire_nodes[player_info.node_feet] then
+		if fire_nodes[player_info.node_head] or fire_nodes[player_info.node_feet] or fire_nodes[player_info.node_stand] then
 			return 0
 		else
 			return hp_change
@@ -237,6 +259,7 @@ function mcl_potions._reset_player_effects(player)
 	player = player or player:get_luaentity()
 
 	if is_invisible[player] then
+		mcl_potions.make_invisible(player, false)
 		is_invisible[player] = nil
 	end
 
