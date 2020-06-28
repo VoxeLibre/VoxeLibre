@@ -70,6 +70,7 @@ local function register_lingering(name, descr, color, def)
     minetest.register_craftitem(id, {
         description = descr,
         inventory_image = lingering_image(color),
+		groups = {brewitem=1, not_in_creative_inventory=0},
         on_use = function(item, placer, pointed_thing)
             local velocity = 10
             local dir = placer:get_look_dir();
