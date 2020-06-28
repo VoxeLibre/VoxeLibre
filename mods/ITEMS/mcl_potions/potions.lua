@@ -427,7 +427,7 @@ minetest.register_craftitem("mcl_potions:leaping_plus", {
 
 minetest.register_craftitem("mcl_potions:weakness", {
 	description = S("Weakness Potion"),
-	_tt_help = S("No effect | 1:30"),
+	_tt_help = S("-2 hearts per damage | 1:30"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#6600AA"),
 	inventory_image = potion_image("#6600AA"),
@@ -435,14 +435,14 @@ minetest.register_craftitem("mcl_potions:weakness", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.weakness_func(user, 1.2, mcl_potions.DURATION*mcl_potions.INV_FACTOR)
+		mcl_potions.weakness_func(user, -4, mcl_potions.DURATION*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#6600AA")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.weakness_func(user, 1.2, mcl_potions.DURATION*mcl_potions.INV_FACTOR)
+		mcl_potions.weakness_func(user, -4, mcl_potions.DURATION*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#6600AA")
 		return itemstack
@@ -451,7 +451,7 @@ minetest.register_craftitem("mcl_potions:weakness", {
 
 minetest.register_craftitem("mcl_potions:weakness_plus", {
 	description = S("Weakness Potion +"),
-	_tt_help = S("No effect | 4:00"),
+	_tt_help = S("-2 hearts per damage | 4:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#7700BB"),
 	inventory_image = potion_image("#7700BB"),
@@ -459,14 +459,14 @@ minetest.register_craftitem("mcl_potions:weakness_plus", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.weakness_func(user, 1.4, mcl_potions.DURATION_2*mcl_potions.INV_FACTOR)
+		mcl_potions.weakness_func(user, -4, mcl_potions.DURATION_2*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#7700BB")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.weakness_func(user, 1.4, mcl_potions.DURATION_2*mcl_potions.INV_FACTOR)
+		mcl_potions.weakness_func(user, -4, mcl_potions.DURATION_2*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#7700BB")
 		return itemstack

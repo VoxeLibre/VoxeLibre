@@ -229,9 +229,9 @@ register_lingering("invisibility_plus", "Lingering Invisibility +", "#A0A0A0", {
 })
 
 register_lingering("weakness", "Lingering Weakness", "#6600AA", {
-	potion_fun = function(player, redx) mcl_potions.weakness_func(player, 1.2, mcl_potions.DURATION*mcl_potions.INV_FACTOR*0.25) end
+	potion_fun = function(player, redx) mcl_potions.weakness_func(player, -4, mcl_potions.DURATION*mcl_potions.INV_FACTOR*0.25) end
 })
 
 register_lingering("weakness_plus", "Lingering Weakness +", "#7700BB", {
-	potion_fun = function(player, redx) mcl_potions.weakness_func(player, 1.4, mcl_potions.DURATION_PLUS*mcl_potions.INV_FACTOR*0.25) end
+	potion_fun = function(player, redx) mcl_potions.weakness_func(player, -4, mcl_potions.DURATION_PLUS*mcl_potions.INV_FACTOR*0.25) end
 })
