@@ -142,6 +142,7 @@ local drink_milk = function(itemstack, player, pointed_thing)
 	if mcl_hunger.active and (bucket:get_name() ~= "mcl_mobitems:milk_bucket" or minetest.settings:get_bool("creative_mode") == true) then
 		mcl_hunger.stop_poison(player)
 	end
+	mcl_potions._reset_player_effects(player)
 	return bucket
 end
 
@@ -439,4 +440,3 @@ minetest.register_craft({
 		{"mcl_mobitems:slimeball","mcl_mobitems:slimeball","mcl_mobitems:slimeball",},
 		{"mcl_mobitems:slimeball","mcl_mobitems:slimeball","mcl_mobitems:slimeball",}},
 })
-

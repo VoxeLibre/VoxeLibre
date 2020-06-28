@@ -187,7 +187,7 @@ minetest.register_globalstep(function(dtime)
 
 end)
 
-local function _reset_player_effects(player)
+function mcl_potions._reset_player_effects(player)
 
 	player = player or player:get_luaentity()
 
@@ -231,9 +231,8 @@ local function _reset_player_effects(player)
 
 end
 
-minetest.register_on_leaveplayer( function(player) _reset_player_effects(player) end)
-
-minetest.register_on_dieplayer( function(player) _reset_player_effects(player) end)
+minetest.register_on_leaveplayer( function(player) mcl_potions._reset_player_effects(player) end)
+minetest.register_on_dieplayer( function(player) mcl_potions._reset_player_effects(player) end)
 
 function mcl_potions.is_obj_hit(self, pos)
 

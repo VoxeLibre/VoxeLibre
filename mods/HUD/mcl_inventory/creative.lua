@@ -374,7 +374,7 @@ mcl_inventory.set_creative_formspec = function(player, start_i, pagenum, inv_siz
 			tools = "mcl_core:axe_iron",
 			combat = "mcl_core:sword_gold",
 			mobs = "mobs_mc:cow",
-			brew = "mcl_potions:water",
+			brew = "mcl_potions:dragon_breath",
 			matr = "mcl_core:stick",
 			inv = "mcl_chests:chest",
 		}
