@@ -62,6 +62,7 @@ minetest.register_craftitem("mcl_potions:dragon_breath", {
 
 minetest.register_craftitem("mcl_potions:healing", {
 	description = S("Healing Potion"),
+	_tt_help = S("+2 Hearts"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#CC0000"),
 	inventory_image = potion_image("#CC0000"),
@@ -85,6 +86,7 @@ minetest.register_craftitem("mcl_potions:healing", {
 
 minetest.register_craftitem("mcl_potions:healing_2", {
 	description = S("Healing Potion II"),
+	_tt_help = S("+4 Hearts"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#DD0000"),
 	inventory_image = potion_image("#DD0000"),
@@ -109,6 +111,7 @@ minetest.register_craftitem("mcl_potions:healing_2", {
 
 minetest.register_craftitem("mcl_potions:harming", {
 	description = S("Harming Potion"),
+	_tt_help = S("-3 Hearts"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#660099"),
 	inventory_image = potion_image("#660099"),
@@ -132,6 +135,7 @@ minetest.register_craftitem("mcl_potions:harming", {
 
 minetest.register_craftitem("mcl_potions:harming_2", {
 	description = S("Harming Potion II"),
+	_tt_help = S("-6 Hearts"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#330066"),
 	inventory_image = potion_image("#330066"),
@@ -156,6 +160,7 @@ minetest.register_craftitem("mcl_potions:harming_2", {
 
 minetest.register_craftitem("mcl_potions:night_vision", {
 	description = S("Night Vision Potion"),
+	_tt_help = S("3:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#1010AA"),
 	inventory_image = potion_image("#1010AA"),
@@ -179,6 +184,7 @@ minetest.register_craftitem("mcl_potions:night_vision", {
 
 minetest.register_craftitem("mcl_potions:night_vision_plus", {
 	description = S("Night Vision Potion +"),
+	_tt_help = S("8:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#2020BA"),
 	inventory_image = potion_image("#2020BA"),
@@ -203,6 +209,7 @@ minetest.register_craftitem("mcl_potions:night_vision_plus", {
 
 minetest.register_craftitem("mcl_potions:swiftness", {
 	description = S("Swiftness Potion"),
+	_tt_help = S("+20% | 3:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#009999"),
 	inventory_image = potion_image("#009999"),
@@ -226,6 +233,7 @@ minetest.register_craftitem("mcl_potions:swiftness", {
 
 minetest.register_craftitem("mcl_potions:swiftness_2", {
 	description = S("Swiftness Potion II"),
+	_tt_help = S("+40% | 1:30"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#00BBBB"),
 	inventory_image = potion_image("#00BBBB"),
@@ -249,6 +257,7 @@ minetest.register_craftitem("mcl_potions:swiftness_2", {
 
 minetest.register_craftitem("mcl_potions:swiftness_plus", {
 	description = S("Swiftness Potion +"),
+	_tt_help = S("+20% | 8:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#00AAAA"),
 	inventory_image = potion_image("#00AAAA"),
@@ -272,6 +281,7 @@ minetest.register_craftitem("mcl_potions:swiftness_plus", {
 
 minetest.register_craftitem("mcl_potions:slowness", {
 	description = S("Slowness Potion"),
+	_tt_help = S("-15% | 1:30"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#000080"),
 	inventory_image = potion_image("#000080"),
@@ -279,14 +289,14 @@ minetest.register_craftitem("mcl_potions:slowness", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.swiftness_func(user, 0.85, mcl_potions.DURATION_2)
+		mcl_potions.swiftness_func(user, 0.85, mcl_potions.DURATION*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#000080")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.swiftness_func(user, 0.85, mcl_potions.DURATION_2)
+		mcl_potions.swiftness_func(user, 0.85, mcl_potions.DURATION*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#000080")
 		return itemstack
@@ -295,6 +305,7 @@ minetest.register_craftitem("mcl_potions:slowness", {
 
 minetest.register_craftitem("mcl_potions:slowness_plus", {
 	description = S("Slowness Potion +"),
+	_tt_help = S("-15% | 4:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#000066"),
 	inventory_image = potion_image("#000066"),
@@ -318,6 +329,7 @@ minetest.register_craftitem("mcl_potions:slowness_plus", {
 
 minetest.register_craftitem("mcl_potions:slowness_2", {
 	description = S("Slowness Potion IV"),
+	_tt_help = S("-60% | 0:20"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#000090"),
 	inventory_image = potion_image("#000090"),
@@ -342,6 +354,7 @@ minetest.register_craftitem("mcl_potions:slowness_2", {
 
 minetest.register_craftitem("mcl_potions:leaping", {
 	description = S("Leaping Potion"),
+	_tt_help = S("+50% | 3:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#00CC33"),
 	inventory_image = potion_image("#00CC33"),
@@ -349,14 +362,14 @@ minetest.register_craftitem("mcl_potions:leaping", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.leaping_func(user, 1.2, mcl_potions.DURATION)
+		mcl_potions.leaping_func(user, 1.5, mcl_potions.DURATION)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#00CC33")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.leaping_func(user, 1.2, mcl_potions.DURATION)
+		mcl_potions.leaping_func(user, 1.5, mcl_potions.DURATION)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#00CC33")
 		return itemstack
@@ -365,6 +378,7 @@ minetest.register_craftitem("mcl_potions:leaping", {
 
 minetest.register_craftitem("mcl_potions:leaping_2", {
 	description = S("Leaping Potion II"),
+	_tt_help = S("+125% | 1:30"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#00EE33"),
 	inventory_image = potion_image("#00EE33"),
@@ -372,14 +386,14 @@ minetest.register_craftitem("mcl_potions:leaping_2", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.leaping_func(user, 1.4, mcl_potions.DURATION_2)
+		mcl_potions.leaping_func(user, 2.25, mcl_potions.DURATION_2)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#00EE33")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.leaping_func(user, 1.4, mcl_potions.DURATION_2)
+		mcl_potions.leaping_func(user, 2.25, mcl_potions.DURATION_2)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#00EE33")
 		return itemstack
@@ -388,6 +402,7 @@ minetest.register_craftitem("mcl_potions:leaping_2", {
 
 minetest.register_craftitem("mcl_potions:leaping_plus", {
 	description = S("Leaping Potion +"),
+	_tt_help = S("+50% | 8:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#00DD33"),
 	inventory_image = potion_image("#00DD33"),
@@ -395,14 +410,14 @@ minetest.register_craftitem("mcl_potions:leaping_plus", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.leaping_func(user, 1.2, mcl_potions.DURATION_PLUS)
+		mcl_potions.leaping_func(user, 1.5, mcl_potions.DURATION_PLUS)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#00DD33")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.leaping_func(user, 1.2, mcl_potions.DURATION_PLUS)
+		mcl_potions.leaping_func(user, 1.5, mcl_potions.DURATION_PLUS)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#00DD33")
 		return itemstack
@@ -412,6 +427,7 @@ minetest.register_craftitem("mcl_potions:leaping_plus", {
 
 minetest.register_craftitem("mcl_potions:weakness", {
 	description = S("Weakness Potion"),
+	_tt_help = S("No effect | 1:30"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#6600AA"),
 	inventory_image = potion_image("#6600AA"),
@@ -419,14 +435,14 @@ minetest.register_craftitem("mcl_potions:weakness", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.weakness_func(user, 1.2, mcl_potions.DURATION_2)
+		mcl_potions.weakness_func(user, 1.2, mcl_potions.DURATION*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#6600AA")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.weakness_func(user, 1.2, mcl_potions.DURATION_2)
+		mcl_potions.weakness_func(user, 1.2, mcl_potions.DURATION*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#6600AA")
 		return itemstack
@@ -435,6 +451,7 @@ minetest.register_craftitem("mcl_potions:weakness", {
 
 minetest.register_craftitem("mcl_potions:weakness_plus", {
 	description = S("Weakness Potion +"),
+	_tt_help = S("No effect | 4:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#7700BB"),
 	inventory_image = potion_image("#7700BB"),
@@ -459,6 +476,7 @@ minetest.register_craftitem("mcl_potions:weakness_plus", {
 
 minetest.register_craftitem("mcl_potions:poison", {
 	description = S("Poison Potion"),
+	_tt_help = S("-1/2 Heart / 2.5sec | 0:45"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#225533"),
 	inventory_image = potion_image("#225533"),
@@ -482,6 +500,7 @@ minetest.register_craftitem("mcl_potions:poison", {
 
 minetest.register_craftitem("mcl_potions:poison_2", {
 	description = S("Poison Potion II"),
+	_tt_help = S("-1/2 Heart / 1.2sec | 0:21"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#447755"),
 	inventory_image = potion_image("#447755"),
@@ -505,6 +524,7 @@ minetest.register_craftitem("mcl_potions:poison_2", {
 
 minetest.register_craftitem("mcl_potions:poison_plus", {
 	description = S("Poison Potion +"),
+	_tt_help = S("-1/2 Heart / 2.5sec | 1:30"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#336644"),
 	inventory_image = potion_image("#336644"),
@@ -512,14 +532,14 @@ minetest.register_craftitem("mcl_potions:poison_plus", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.poison_func(user, 2.5, mcl_potions.DURATION_2)
+		mcl_potions.poison_func(user, 2.5, mcl_potions.DURATION*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#336644")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.poison_func(user, 2.5, mcl_potions.DURATION_2)
+		mcl_potions.poison_func(user, 2.5, mcl_potions.DURATION*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#336644")
 		return itemstack
@@ -529,6 +549,7 @@ minetest.register_craftitem("mcl_potions:poison_plus", {
 
 minetest.register_craftitem("mcl_potions:regeneration", {
 	description = S("Regeneration Potion"),
+	_tt_help = S("+1/2 Heart / 2.5sec | 0:45"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#A52BB2"),
 	inventory_image = potion_image("#A52BB2"),
@@ -536,14 +557,14 @@ minetest.register_craftitem("mcl_potions:regeneration", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.regeneration_func(user, 2.5, mcl_potions.DURATION*mcl_potions.INV_FACTOR*mcl_potions.INV_FACTOR)
+		mcl_potions.regeneration_func(user, 2.5, mcl_potions.DURATION*mcl_potions.INV_FACTOR^2)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#A52BB2")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.regeneration_func(user, 2.5, mcl_potions.DURATION*mcl_potions.INV_FACTOR*mcl_potions.INV_FACTOR)
+		mcl_potions.regeneration_func(user, 2.5, mcl_potions.DURATION*mcl_potions.INV_FACTOR^2)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#A52BB2")
 		return itemstack
@@ -552,6 +573,7 @@ minetest.register_craftitem("mcl_potions:regeneration", {
 
 minetest.register_craftitem("mcl_potions:regeneration_2", {
 	description = S("Regeneration Potion II"),
+	_tt_help = S("+1/2 Heart / 1.2sec | 0:22"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#B52CC2"),
 	inventory_image = potion_image("#B52CC2"),
@@ -559,14 +581,14 @@ minetest.register_craftitem("mcl_potions:regeneration_2", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.regeneration_func(user, 1.2, mcl_potions.DURATION_2*mcl_potions.INV_FACTOR*mcl_potions.INV_FACTOR + 1)
+		mcl_potions.regeneration_func(user, 1.2, mcl_potions.DURATION*mcl_potions.INV_FACTOR^3 + 1)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#B52CC2")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.regeneration_func(user, 1.2, mcl_potions.DURATION_2*mcl_potions.INV_FACTOR*mcl_potions.INV_FACTOR + 1)
+		mcl_potions.regeneration_func(user, 1.2, mcl_potions.DURATION*mcl_potions.INV_FACTOR^3 + 1)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#B52CC2")
 		return itemstack
@@ -575,6 +597,7 @@ minetest.register_craftitem("mcl_potions:regeneration_2", {
 
 minetest.register_craftitem("mcl_potions:regeneration_plus", {
 	description = S("Regeneration Potion +"),
+	_tt_help = S("+1/2 Heart / 2.5sec | 1:30"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#C53DD3"),
 	inventory_image = potion_image("#C53DD3"),
@@ -582,14 +605,14 @@ minetest.register_craftitem("mcl_potions:regeneration_plus", {
 	stack_max = 1,
 
 	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.regeneration_func(user, 2.5, mcl_potions.DURATION_2)
+		mcl_potions.regeneration_func(user, 2.5, mcl_potions.DURATION*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#C53DD3")
 		return itemstack
 	end,
 
 	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.regeneration_func(user, 2.5, mcl_potions.DURATION_2)
+		mcl_potions.regeneration_func(user, 2.5, mcl_potions.DURATION*mcl_potions.INV_FACTOR)
 		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 		mcl_potions._use_potion(itemstack, user, "#C53DD3")
 		return itemstack
@@ -599,6 +622,7 @@ minetest.register_craftitem("mcl_potions:regeneration_plus", {
 
 minetest.register_craftitem("mcl_potions:invisibility", {
 	description = S("Invisibility Potion"),
+	_tt_help = S("3:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#B0B0B0"),
 	inventory_image = potion_image("#B0B0B0"),
@@ -622,6 +646,7 @@ minetest.register_craftitem("mcl_potions:invisibility", {
 
 minetest.register_craftitem("mcl_potions:invisibility_plus", {
 	description = S("Invisibility Potion +"),
+	_tt_help = S("8:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#A0A0A0"),
 	inventory_image = potion_image("#A0A0A0"),
@@ -653,6 +678,7 @@ end)
 
 minetest.register_craftitem("mcl_potions:water_breathing", {
 	description = S("Water Breathing Potion"),
+	_tt_help = S("3:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#0000AA"),
 	inventory_image = potion_image("#0000AA"),
@@ -676,6 +702,7 @@ minetest.register_craftitem("mcl_potions:water_breathing", {
 
 minetest.register_craftitem("mcl_potions:water_breathing_plus", {
 	description = S("Water Breathing Potion +"),
+	_tt_help = S("8:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#0000CC"),
 	inventory_image = potion_image("#0000CC"),
@@ -700,6 +727,7 @@ minetest.register_craftitem("mcl_potions:water_breathing_plus", {
 
 minetest.register_craftitem("mcl_potions:fire_resistance", {
 	description = S("Fire Resistance Potion"),
+	_tt_help = S("3:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#D0A040"),
 	inventory_image = potion_image("#D0A040"),
@@ -723,6 +751,7 @@ minetest.register_craftitem("mcl_potions:fire_resistance", {
 
 minetest.register_craftitem("mcl_potions:fire_resistance_plus", {
 	description = S("Fire Resistance Potion +"),
+	_tt_help = S("8:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#E0B050"),
 	inventory_image = potion_image("#E0B050"),
