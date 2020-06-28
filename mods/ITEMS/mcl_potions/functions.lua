@@ -7,7 +7,12 @@ local is_water_breathing = {}
 local is_leaping = {}
 local is_swift = {}
 local is_cat = {}
+local is_fire_proof = {}
 
+local fire_nodes = {["mcl_core:lava_flowing"]=true,
+					["mcl_core:lava_source"]=true,
+					["mcl_fire:eternal_fire"]=true,
+					["mcl_fire:fire"]=true}
 
 minetest.register_globalstep(function(dtime)
 
@@ -185,7 +190,47 @@ minetest.register_globalstep(function(dtime)
 
 	end
 
+	-- Check for Fire Proof players
+	for player, vals in pairs(is_fire_proof) do
+
+		if is_fire_proof[player] and player:get_properties() then
+
+			player = player or player:get_luaentity()
+
+			is_fire_proof[player].timer = is_fire_proof[player].timer + dtime
+
+			if player:get_pos() then mcl_potions._add_spawner(player, "#E0B050") end
+
+			if is_fire_proof[player].timer >= is_fire_proof[player].dur then
+				is_fire_proof[player] = nil
+			end
+
+		elseif not player:get_properties() then
+			is_fire_proof[player] = nil
+		end
+
+	end
+
 end)
+
+minetest.register_on_player_hpchange(function(player, hp_change)
+
+	if is_fire_proof[player] and hp_change < 0 then
+		-- This is a bit forced, but it assumes damage is taken by fire and avoids it
+		-- also assumes any change in hp happens between calls to this function
+		local player_info = mcl_playerinfo[player:get_player_name()]
+
+		if fire_nodes[player_info.node_head] or fire_nodes[player_info.node_feet] then
+			return 0
+		else
+			return hp_change
+		end
+
+	else
+		return hp_change
+	end
+
+end, true)
 
 function mcl_potions._reset_player_effects(player)
 
@@ -227,6 +272,10 @@ function mcl_potions._reset_player_effects(player)
 
 	if is_cat[player] then
 		is_cat[player] = nil
+	end
+
+	if is_fire_proof[player] then
+		is_fire_proof[player] = nil
 	end
 
 end
@@ -492,7 +541,17 @@ end
 
 function mcl_potions.fire_resistance_func(player, duration)
 
+	if not is_fire_proof[player] then
 
+		is_fire_proof[player] = {dur = duration, timer = 0}
+
+	else
+
+		local victim = is_fire_proof[player]
+		victim.dur = math.max(duration, victim.dur - victim.timer)
+		victim.timer = 0
+
+	end
 
 end
 
