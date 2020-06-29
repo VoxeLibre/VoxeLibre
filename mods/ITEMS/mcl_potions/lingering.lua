@@ -236,11 +236,11 @@ register_lingering("weakness_plus", "Lingering Weakness +", "#7700BB", {
 	potion_fun = function(player, redx) mcl_potions.weakness_func(player, -4, mcl_potions.DURATION_PLUS*mcl_potions.INV_FACTOR*0.25) end
 })
 
-register_splash("fire_resistance", "Lingering Fire Resistance", "#D0A040", {
+register_lingering("fire_resistance", "Lingering Fire Resistance", "#D0A040", {
 	potion_fun = function(player, redx) mcl_potions.fire_resistance_func(player, mcl_potions.DURATION) end
 })
 
-register_splash("fire_resistance_plus", "Lingering Fire Resistance +", "#E0B050", {
+register_lingering("fire_resistance_plus", "Lingering Fire Resistance +", "#E0B050", {
 	potion_fun = function(player, redx) mcl_potions.fire_resistance_func(player, mcl_potions.DURATION_PLUS) end
 })
 
