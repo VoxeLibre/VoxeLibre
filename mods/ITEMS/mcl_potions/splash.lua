@@ -214,11 +214,11 @@ register_splash("water_breathing_plus", "Splash Water Breathing +", "#0000CC", {
 	potion_fun = function(player, redx) mcl_potions.water_breathing_func(player, splash_DUR_pl*redx) end
 })
 
-register_splash("water_breathing_plus", "Splash Fire Resistance", "#D0A040", {
+register_splash("fire_resistance", "Splash Fire Resistance", "#D0A040", {
 	potion_fun = function(player, redx) mcl_potions.fire_resistance_func(player, splash_DUR*redx) end
 })
 
-register_splash("water_breathing_plus", "Splash Fire Resistance +", "#E0B050", {
+register_splash("fire_resistance_plus", "Splash Fire Resistance +", "#E0B050", {
 	potion_fun = function(player, redx) mcl_potions.fire_resistance_func(player, splash_DUR_pl*redx) end
 })
 
