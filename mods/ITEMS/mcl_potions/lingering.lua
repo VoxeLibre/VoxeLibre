@@ -236,7 +236,7 @@ register_lingering("weakness_plus", "Lingering Weakness +", "#7700BB", {
 	potion_fun = function(player, redx) mcl_potions.weakness_func(player, -4, mcl_potions.DURATION_PLUS*mcl_potions.INV_FACTOR*0.25) end
 })
 
-register_lingering("strength", "lingering Strength", "#D444D4", {
+register_lingering("strength", "Lingering Strength", "#D444D4", {
 	potion_fun = function(player, redx) mcl_potions.strength_func(player, 3, mcl_potions.DURATION) end
 })
 
