@@ -233,6 +233,27 @@ minetest.register_globalstep(function(dtime)
 
 	end
 
+	-- Check for Strong players
+	for player, vals in pairs(is_strong) do
+
+		if is_strong[player] and player:get_properties() then
+
+			player = player or player:get_luaentity()
+
+			is_strong[player].timer = is_strong[player].timer + dtime
+
+			if player:get_pos() then mcl_potions._add_spawner(player, "#7700BB") end
+
+			if is_strong[player].timer >= is_strong[player].dur then
+				is_strong[player] = nil
+			end
+
+		elseif not player:get_properties() then
+			is_strong[player] = nil
+		end
+
+	end
+
 end)
 
 minetest.register_on_player_hpchange(function(player, hp_change)
@@ -240,6 +261,7 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 	if is_fire_proof[player] and hp_change < 0 then
 		-- This is a bit forced, but it assumes damage is taken by fire and avoids it
 		-- also assumes any change in hp happens between calls to this function
+		-- it's worth noting that you don't take damage from players in this case...
 		local player_info = mcl_playerinfo[player:get_player_name()]
 
 		if fire_nodes[player_info.node_head] or fire_nodes[player_info.node_feet] or fire_nodes[player_info.node_stand] then
@@ -487,6 +509,26 @@ function mcl_potions.weakness_func(player, factor, duration)
 	for i=1,math.floor(duration) do
 		minetest.after(i, function() mcl_potions._add_spawner(player, "#6600AA") end)
 	end
+
+end
+
+
+function mcl_potions.strength_func(player, factor, duration)
+
+	if not is_strong[player] then
+
+		is_strong[player] = {dur = duration, timer = 0, factor = factor}
+
+	else
+
+		local victim = is_strong[player]
+
+		victim.factor = factor
+		victim.dur = math.max(duration, victim.dur - victim.timer)
+		victim.timer = 0
+
+	end
+
 end
 
 

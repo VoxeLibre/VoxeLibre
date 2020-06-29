@@ -473,7 +473,77 @@ minetest.register_craftitem("mcl_potions:weakness_plus", {
 	end
 })
 
+minetest.register_craftitem("mcl_potions:strength", {
+	description = S("Strength Potion"),
+	_tt_help = S("+1.5 hearts per damage | 3:00"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#D444D4"),
+	inventory_image = potion_image("#D444D4"),
+	groups = { brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
+	stack_max = 1,
 
+	on_place = function(itemstack, user, pointed_thing)
+		mcl_potions.weakness_func(user, 3, mcl_potions.DURATION)
+		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+		mcl_potions._use_potion(itemstack, user, "#D444D4")
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		mcl_potions.weakness_func(user, 3, mcl_potions.DURATION)
+		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+		mcl_potions._use_potion(itemstack, user, "#D444D4")
+		return itemstack
+	end
+})
+
+minetest.register_craftitem("mcl_potions:strength_2", {
+	description = S("Strength Potion II"),
+	_tt_help = S("+3 hearts per damage | 1:30"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#D444E4"),
+	inventory_image = potion_image("#D444E4"),
+	groups = { brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
+	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		mcl_potions.weakness_func(user, 6, mcl_potions.DURATION_2)
+		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+		mcl_potions._use_potion(itemstack, user, "#D444E4")
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		mcl_potions.weakness_func(user, 6, mcl_potions.DURATION_2)
+		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+		mcl_potions._use_potion(itemstack, user, "#D444E4")
+		return itemstack
+	end
+})
+
+minetest.register_craftitem("mcl_potions:strength_plus", {
+	description = S("Strength Potion +"),
+	_tt_help = S("1.5 hearts per damage | 8:00"),
+	_doc_items_longdesc = brewhelp,
+	wield_image = potion_image("#D444F4"),
+	inventory_image = potion_image("#D444F4"),
+	groups = { brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
+	stack_max = 1,
+
+	on_place = function(itemstack, user, pointed_thing)
+		mcl_potions.weakness_func(user, 3, mcl_potions.DURATION_PLUS)
+		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+		mcl_potions._use_potion(itemstack, user, "#D444F4")
+		return itemstack
+	end,
+
+	on_secondary_use = function(itemstack, user, pointed_thing)
+		mcl_potions.weakness_func(user, 3, mcl_potions.DURATION_PLUS)
+		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+		mcl_potions._use_potion(itemstack, user, "#D444F4")
+		return itemstack
+	end
+})
 minetest.register_craftitem("mcl_potions:poison", {
 	description = S("Poison Potion"),
 	_tt_help = S("-1/2 Heart / 2.5sec | 0:45"),
