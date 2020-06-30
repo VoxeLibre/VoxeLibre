@@ -9,11 +9,14 @@ local is_swift = {}
 local is_cat = {}
 local is_fire_proof = {}
 
-local fire_nodes = {["mcl_core:lava_flowing"]=true,
-					["mcl_core:lava_source"]=true,
-					["mcl_fire:eternal_fire"]=true,
-					["mcl_fire:fire"]=true,
-					["mcl_nether:magma"]=true}
+local is_fire_node = {  ["mcl_core:lava_flowing"]=true,
+						["mcl_core:lava_source"]=true,
+						["mcl_fire:eternal_fire"]=true,
+						["mcl_fire:fire"]=true,
+						["mcl_nether:magma"]=true,
+						["mcl_nether:nether_lava_source"]=true,
+						["mcl_nether:nether_lava_flowing"]=true,
+						["mcl_nether:nether_lava_source"]=true}
 
 minetest.register_globalstep(function(dtime)
 
@@ -264,7 +267,7 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 		-- it's worth noting that you don't take damage from players in this case...
 		local player_info = mcl_playerinfo[player:get_player_name()]
 
-		if fire_nodes[player_info.node_head] or fire_nodes[player_info.node_feet] or fire_nodes[player_info.node_stand] then
+		if is_fire_node[player_info.node_head] or is_fire_node[player_info.node_feet] or is_fire_node[player_info.node_stand] then
 			return 0
 		else
 			return hp_change
@@ -275,6 +278,22 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 	end
 
 end, true)
+
+
+-- -- If a player is punched and is a weak player, damage by 2 additional hearts
+-- minetest.register_on_player_hpchange(function(player, hp_change)
+--
+-- 	if is_weak[player] and hp_change < 0 then
+--
+-- 		-- prevent weakness from healing the victim
+-- 		return math.min(hp_change - 4, 0)
+--
+-- 	else
+-- 		return hp_change
+-- 	end
+--
+-- end, true)
+
 
 function mcl_potions._reset_player_effects(player)
 
@@ -504,10 +523,19 @@ end
 
 
 function mcl_potions.weakness_func(player, factor, duration)
-	player:set_attribute("weakness", tostring(factor))
-	minetest.after(duration, function() player:set_attribute("weakness", tostring(0)) end )
-	for i=1,math.floor(duration) do
-		minetest.after(i, function() mcl_potions._add_spawner(player, "#6600AA") end)
+
+	if not is_weak[player] then
+
+		is_weak[player] = {dur = duration, timer = 0, factor = factor}
+
+	else
+
+		local victim = is_weak[player]
+
+		victim.factor = factor
+		victim.dur = math.max(duration, victim.dur - victim.timer)
+		victim.timer = 0
+
 	end
 
 end
