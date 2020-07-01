@@ -360,8 +360,10 @@ function mcl_potions.is_obj_hit(self, pos)
 
 		if entity and entity.name ~= self.object:get_luaentity().name then
 
-			if object:is_player() or entity._cmi_is_mob then return true end
+			if entity._cmi_is_mob then return true end
 
+		elseif object:is_player() then
+			return true 
 		end
 
 	end
