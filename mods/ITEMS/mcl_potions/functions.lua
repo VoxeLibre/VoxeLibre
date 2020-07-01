@@ -59,7 +59,7 @@ minetest.register_globalstep(function(dtime)
 				if player._cmi_is_mob then
 					player.health = math.max(player.health - 1, 1)
 				else
-					player:set_hp( math.max(player:get_hp() - 1, 1) )
+					player:set_hp( math.max(player:get_hp() - 1, 1), { type = "punch", from = "potion" })
 				end
 
 				is_poisoned[player].hit_timer = 0
@@ -259,6 +259,7 @@ minetest.register_globalstep(function(dtime)
 
 end)
 
+-- Prevent damage to player with Fire Resistance enabled
 minetest.register_on_player_hpchange(function(player, hp_change)
 
 	if is_fire_proof[player] and hp_change < 0 then
@@ -268,7 +269,11 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 		local player_info = mcl_playerinfo[player:get_player_name()]
 
 		if is_fire_node[player_info.node_head] or is_fire_node[player_info.node_feet] or is_fire_node[player_info.node_stand] then
-			return 0
+			if player:get_breath() == 0 then -- probably drowning
+				return -1
+			else
+				return 0
+			end
 		else
 			return hp_change
 		end
@@ -466,7 +471,7 @@ function mcl_potions.healing_func(player, hp)
 		if obj and obj._cmi_is_mob then
 			obj.health = obj.health + hp
 		else
-			player:set_hp(player:get_hp() + hp)
+			player:set_hp(player:get_hp() + hp, { type = "punch", from = "potion" })
 		end
 
 	end
