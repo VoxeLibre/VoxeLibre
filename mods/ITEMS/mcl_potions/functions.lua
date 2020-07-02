@@ -9,14 +9,6 @@ local is_swift = {}
 local is_cat = {}
 local is_fire_proof = {}
 
-local is_fire_node = {  ["mcl_core:lava_flowing"]=true,
-						["mcl_core:lava_source"]=true,
-						["mcl_fire:eternal_fire"]=true,
-						["mcl_fire:fire"]=true,
-						["mcl_nether:magma"]=true,
-						["mcl_nether:nether_lava_source"]=true,
-						["mcl_nether:nether_lava_flowing"]=true,
-						["mcl_nether:nether_lava_source"]=true}
 
 minetest.register_globalstep(function(dtime)
 
@@ -259,6 +251,16 @@ minetest.register_globalstep(function(dtime)
 
 end)
 
+
+local is_fire_node = {  ["mcl_core:lava_flowing"]=true,
+						["mcl_core:lava_source"]=true,
+						["mcl_fire:eternal_fire"]=true,
+						["mcl_fire:fire"]=true,
+						["mcl_nether:magma"]=true,
+						["mcl_nether:nether_lava_source"]=true,
+						["mcl_nether:nether_lava_flowing"]=true,
+						["mcl_nether:nether_lava_source"]=true}
+
 -- Prevent damage to player with Fire Resistance enabled
 minetest.register_on_player_hpchange(function(player, hp_change)
 
@@ -269,7 +271,7 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 		local player_info = mcl_playerinfo[player:get_player_name()]
 
 		if is_fire_node[player_info.node_head] or is_fire_node[player_info.node_feet] or is_fire_node[player_info.node_stand] then
-			if player:get_breath() == 0 then -- probably drowning
+			if player:get_breath() == 0 and hp_change > -4 then -- probably drowning
 				return -1
 			else
 				return 0
@@ -363,7 +365,7 @@ function mcl_potions.is_obj_hit(self, pos)
 			if entity._cmi_is_mob then return true end
 
 		elseif object:is_player() then
-			return true 
+			return true
 		end
 
 	end
