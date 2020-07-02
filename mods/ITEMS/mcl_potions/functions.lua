@@ -271,7 +271,7 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 		local player_info = mcl_playerinfo[player:get_player_name()]
 
 		if is_fire_node[player_info.node_head] or is_fire_node[player_info.node_feet] or is_fire_node[player_info.node_stand] then
-			if player:get_breath() == 0 and hp_change > -4 then -- probably drowning
+			if player:get_breath() == 0 and hp_change == -4 then -- probably drowning
 				return -1
 			else
 				return 0
