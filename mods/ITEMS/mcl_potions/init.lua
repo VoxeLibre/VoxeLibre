@@ -42,8 +42,8 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 	_tt_help = S("Liquid container"),
 	_doc_items_longdesc = S("A glass bottle is used as a container for liquids and can be used to collect water directly."),
 	_doc_items_usagehelp = S("To collect water, it on a cauldron with water (which removes a level of water) or any water source (which removes no water)."),
-	inventory_image = "mcl_potions_potion_bottle_empty.png",
-	wield_image = "mcl_potions_potion_bottle_empty.png",
+	inventory_image = "mcl_potions_potion_bottle.png",
+	wield_image = "mcl_potions_potion_bottle.png",
 	groups = {brewitem=1},
 	liquids_pointable = true,
 	on_place = function(itemstack, placer, pointed_thing)
@@ -149,7 +149,7 @@ local potion_image = function(colorstring, opacity)
 	if not opacity then
 		opacity = 127
 	end
-	return "mcl_potions_potion_overlay.png^[colorize:"..colorstring..":"..tostring(opacity).."^mcl_potions_potion_bottle_drinkable.png"
+	return "mcl_potions_potion_overlay.png^[colorize:"..colorstring..":"..tostring(opacity).."^mcl_potions_potion_bottle.png"
 end
 
 
