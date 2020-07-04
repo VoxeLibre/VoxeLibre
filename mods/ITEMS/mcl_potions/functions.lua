@@ -458,7 +458,7 @@ end
 
 function mcl_potions.healing_func(player, hp)
 
-	obj = player:get_luaentity()
+	local obj = player:get_luaentity()
 
 	if is_zombie[player:get_entity_name()] then hp = -hp end
 
