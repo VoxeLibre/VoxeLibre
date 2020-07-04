@@ -276,8 +276,8 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 			-- else
 				return 0
 		-- 	end
-		-- else
-		-- 	return hp_change
+		else
+			return hp_change
 		end
 
 	else
