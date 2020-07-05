@@ -67,7 +67,6 @@ local function now_playing(player, track_id)
 			hud_elem_type = "text",
 			position = { x=0.5, y=0.8 },
 			offset = { x=0, y = 0 },
-			size = { x=100, y=100},
 			number = 0x55FFFF,
 			text = text,
 			z_index = 100,
