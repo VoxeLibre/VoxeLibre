@@ -36,17 +36,8 @@ mobs:register_mob("mobs_mc:ghast", {
 	walk_velocity = 1.6,
 	run_velocity = 3.2,
 	drops = {
-		{name = mobs_mc.items.gunpowder,
-		chance = 1,
-		min = 0,
-		max = 2,},
-		-- TODO: drop tear when it's useful
-		-- ghast tear replaced with gunpowder
-		--{name = mobs_mc.items.ghast_tear,
-		{name = mobs_mc.items.gunpowder,
-		chance = 1,
-		min = 0,
-		max = 1,},
+		{name = mobs_mc.items.gunpowder, chance = 1, min = 0, max = 2,},
+		{name = mobs_mc.items.ghast_tear, chance = 3,min = 0,max = 1,},
 	},
 	animation = {
 		stand_speed = 50, walk_speed = 50, run_speed = 50,

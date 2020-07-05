@@ -121,7 +121,7 @@ minetest.register_craftitem("mcl_core:sugar", {
 	_doc_items_longdesc = S("Sugar comes from sugar canes and is used to make sweet foods."),
 	inventory_image = "mcl_core_sugar.png",
 	stack_max = 64,
-	groups = { craftitem = 1 },
+	groups = { craftitem = 1, brewitem=1 },
 })
 
 minetest.register_craftitem("mcl_core:bowl",{

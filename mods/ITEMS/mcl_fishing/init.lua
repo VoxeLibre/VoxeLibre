@@ -32,7 +32,7 @@ local fish = function(itemstack, player)
 		local num = 0
 		local ent = nil
 		local noent = true
-		
+
 		--Check for bobber if so handle.
 		for n = 1, #objs do
 			ent = objs[n]:get_luaentity()
@@ -157,7 +157,7 @@ local bobber_on_step = function(self, dtime)
 	epos.y = math.floor(epos.y)
 	local node = minetest.get_node(epos)
 	local def = minetest.registered_nodes[node.name]
-	
+
 	--If we have no player, remove self.
 	if self.player == nil or self.player == "" then
 		self.object:remove()
@@ -168,7 +168,7 @@ local bobber_on_step = function(self, dtime)
 		self.object:remove()
 		return
 	end
-	
+
 	--Check if player is nearby
 	if self._tick % 5 == 0 and self.player ~= nil and player ~= nil then
 		--Destroy bobber if item not wielded.
@@ -177,7 +177,7 @@ local bobber_on_step = function(self, dtime)
 			self.object:remove()
 			return
 		end
-	
+
 		--Destroy bobber if player is too far away.
 		local objpos = self.object:get_pos()
 		local playerpos = player:get_pos()
@@ -200,7 +200,7 @@ local bobber_on_step = function(self, dtime)
 			self.object:remove()
 			return
 		end
-		
+
 	end
 	-- If in water, then bob.
 	if def.liquidtype == "source" and minetest.get_item_group(def.name, "water") ~= 0 then
@@ -251,7 +251,7 @@ local bobber_on_step = function(self, dtime)
 			end
 		end
 	end
-end		
+end
 
 	-- TODO: Destroy when hitting a solid node
 	--if self._lastpos.x~=nil then
@@ -273,7 +273,7 @@ minetest.register_on_leaveplayer(function(player)
 	local num = 0
 	local ent = nil
 	local noent = true
-	
+
 	for n = 1, #objs do
 		ent = objs[n]:get_luaentity()
 		if ent then
@@ -292,7 +292,7 @@ minetest.register_on_dieplayer(function(player)
 	local num = 0
 	local ent = nil
 	local noent = true
-	
+
 	for n = 1, #objs do
 		ent = objs[n]:get_luaentity()
 		if ent then
@@ -426,7 +426,6 @@ minetest.register_craftitem("mcl_fishing:pufferfish_raw", {
 	on_place = minetest.item_eat(1),
 	on_secondary_use = minetest.item_eat(1),
 	stack_max = 64,
-	groups = { food=2, eatable=1 },
+	groups = { food=2, eatable=1, brewitem = 1 },
 	_mcl_saturation = 0.2,
 })
-

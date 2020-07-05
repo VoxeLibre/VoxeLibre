@@ -2,9 +2,9 @@
 Sprint mod for Minetest by GunshipPenguin
 
 To the extent possible under law, the author(s)
-have dedicated all copyright and related and neighboring rights 
+have dedicated all copyright and related and neighboring rights
 to this software to the public domain worldwide. This software is
-distributed without any warranty. 
+distributed without any warranty.
 ]]
 
 --Configuration variables, these are all explained in README.md
@@ -29,10 +29,11 @@ minetest.register_on_joinplayer(function(player)
 
 	players[playerName] = {
 		sprinting = false,
-		timeOut = 0, 
+		timeOut = 0,
 		shouldSprint = false,
 		lastPos = player:get_pos(),
 		sprintDistance = 0,
+		fov = 1.0
 	}
 end)
 minetest.register_on_leaveplayer(function(player)
@@ -43,10 +44,14 @@ end)
 local function setSprinting(playerName, sprinting) --Sets the state of a player (0=stopped/moving, 1=sprinting)
 	local player = minetest.get_player_by_name(playerName)
 	if players[playerName] then
-		players[playerName]["sprinting"] = sprinting
+		players[playerName].sprinting = sprinting
 		if sprinting == true then
+			players[playerName].fov = math.min(players[playerName].fov + 0.05, 1.2)
+			player:set_fov(players[playerName].fov, true, 0.15)
 			playerphysics.add_physics_factor(player, "speed", "mcl_sprint:sprint", mcl_sprint.SPEED)
 		elseif sprinting == false then
+			players[playerName].fov = math.max(players[playerName].fov - 0.05, 1.0)
+			player:set_fov(players[playerName].fov, true, 0.15)
 			playerphysics.remove_physics_factor(player, "speed", "mcl_sprint:sprint")
 		end
 		return true
@@ -68,7 +73,7 @@ minetest.register_globalstep(function(dtime)
 			else
 				players[playerName]["shouldSprint"] = false
 			end
-			
+
 			local playerPos = player:get_pos()
 			--If the player is sprinting, create particles behind and cause exhaustion
 			if playerInfo["sprinting"] == true and gameTime % 0.1 == 0 then
@@ -117,7 +122,7 @@ minetest.register_globalstep(function(dtime)
 			elseif players[playerName]["shouldSprint"] == false then
 				setSprinting(playerName, false)
 			end
-			
+
 		end
 	end
 end)
