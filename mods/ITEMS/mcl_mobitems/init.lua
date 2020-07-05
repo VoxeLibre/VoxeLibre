@@ -169,7 +169,7 @@ minetest.register_craftitem("mcl_mobitems:spider_eye", {
 	wield_image = "mcl_mobitems_spider_eye.png",
 	on_place = minetest.item_eat(2),
 	on_secondary_use = minetest.item_eat(2),
-	groups = { food = 2, eatable = 2 },
+	groups = { food = 2, eatable = 2, brewitem = 1 },
 	_mcl_saturation = 3.2,
 	stack_max = 64,
 })
@@ -224,7 +224,7 @@ minetest.register_craftitem("mcl_mobitems:ghast_tear", {
 	wield_image = "mcl_mobitems_ghast_tear.png",
 	inventory_image = "mcl_mobitems_ghast_tear.png",
 	-- TODO: Reveal item when it's useful
-	groups = { brewitem = 1, not_in_creative_inventory = 1 },
+	groups = { brewitem = 1, not_in_creative_inventory = 0 },
 	stack_max = 64,
 })
 
@@ -271,7 +271,7 @@ minetest.register_craftitem("mcl_mobitems:rabbit_foot", {
 	wield_image = "mcl_mobitems_rabbit_foot.png",
 	inventory_image = "mcl_mobitems_rabbit_foot.png",
 	-- TODO: Reveal item when it's useful
-	groups = { brewitem = 1, not_in_creative_inventory = 1 },
+	groups = { brewitem = 1, not_in_creative_inventory = 0 },
 	stack_max = 64,
 })
 
@@ -317,7 +317,7 @@ minetest.register_craftitem("mcl_mobitems:gunpowder", {
 	_doc_items_longdesc = doc.sub.items.temp.craftitem,
 	inventory_image = "default_gunpowder.png",
 	stack_max = 64,
-	groups = { craftitem=1 },
+	groups = { craftitem=1, brewitem = 1 },
 })
 
 minetest.register_tool("mcl_mobitems:carrot_on_a_stick", {
