@@ -270,26 +270,26 @@ register_lingering("weakness_plus", "Lingering Weakness +", "#7700BB", {
 })
 
 register_lingering("fire_resistance", "Lingering Fire Resistance", "#D0A040", {
-	potion_fun = function(player) mcl_potions.fire_resistance_func(player, mcl_potions.DURATION) end,
-	tt = time_string(mcl_potions.DURATION)
+	potion_fun = function(player) mcl_potions.fire_resistance_func(player, mcl_potions.DURATION*0.25) end,
+	tt = time_string(mcl_potions.DURATION*0.25)
 })
 
 register_lingering("fire_resistance_plus", "Lingering Fire Resistance +", "#E0B050", {
-	potion_fun = function(player) mcl_potions.fire_resistance_func(player, mcl_potions.DURATION_PLUS) end,
-	tt = time_string(mcl_potions.DURATION_PLUS)
+	potion_fun = function(player) mcl_potions.fire_resistance_func(player, mcl_potions.DURATION_PLUS*0.25) end,
+	tt = time_string(mcl_potions.DURATION_PLUS*0.25)
 })
 
 register_lingering("strength", "Lingering Strength", "#D444D4", {
-	potion_fun = function(player) mcl_potions.strength_func(player, 3, mcl_potions.DURATION) end,
-	tt = "No effect | "..time_string(mcl_potions.DURATION)
+	potion_fun = function(player) mcl_potions.strength_func(player, 3, mcl_potions.DURATION*0.25) end,
+	tt = "No effect | "..time_string(mcl_potions.DURATION*0.25)
 })
 
 register_lingering("strength_2", "Lingering Strength II", "#D444F4", {
-	potion_fun = function(player) mcl_potions.strength_func(player, 6, smcl_potions.DURATION_2) end,
-	tt = "No effect | "..time_string(mcl_potions.DURATION_2)
+	potion_fun = function(player) mcl_potions.strength_func(player, 6, smcl_potions.DURATION_2*0.25) end,
+	tt = "No effect | "..time_string(mcl_potions.DURATION_2*0.25)
 })
 
 register_lingering("strength_plus", "Lingering Strength +", "#D444E4", {
-	potion_fun = function(player) mcl_potions.strength_func(player, 3, mcl_potions.DURATION_PLUS) end,
-	tt = "No effect | "..time_string(mcl_potions.DURATION_PLUS)
+	potion_fun = function(player) mcl_potions.strength_func(player, 3, mcl_potions.DURATION_PLUS*0.25) end,
+	tt = "No effect | "..time_string(mcl_potions.DURATION_PLUS*0.25)
 })
