@@ -11,6 +11,7 @@ local function register_splash(name, descr, color, def)
     local id = "mcl_potions:"..name.."_splash"
     minetest.register_craftitem(id, {
         description = descr,
+		_tt_help = def.tt,
         inventory_image = splash_image(color),
 		groups = {brewitem=1, not_in_creative_inventory=0},
         on_use = function(item, placer, pointed_thing)
@@ -78,154 +79,196 @@ local function register_splash(name, descr, color, def)
     })
 end
 
+local function time_string(dur)
+	return math.floor(dur/60)..string.format(":%02d",math.floor(dur % 60))
+end
+
 local splash_DUR = mcl_potions.DURATION*mcl_potions.SPLASH_FACTOR
 local splash_DUR_2 = mcl_potions.DURATION_2*mcl_potions.SPLASH_FACTOR
 local splash_DUR_pl = mcl_potions.DURATION_PLUS*mcl_potions.SPLASH_FACTOR
 
 register_splash("water", "Splash Water", "#0000FF", {
     potion_fun = function(player, redx)  end,
+	tt = "No effect"
 })
 
 register_splash("river_water", "Splash River Water", "#0000FF", {
     potion_fun = function(player, redx)  end,
+	tt = "No effect"
 })
 
 register_splash("awkward", "Splash Awkward Potion", "#0000FF", {
     potion_fun = function(player, redx)  end,
+	tt = "No effect"
 })
 
 register_splash("mundane", "Splash Mundane Potion", "#0000FF", {
     potion_fun = function(player, redx)  end,
+	tt = "No effect"
 })
 
 register_splash("thick", "Splash Thick Potion", "#0000FF", {
     potion_fun = function(player, redx)  end,
+	tt = "No effect"
 })
 
 register_splash("healing", "Splash Healing", "#AA0000", {
     potion_fun = function(player, redx) mcl_potions.healing_func(player, 3*redx) end,
+	tt = "1.5 hearts"
 })
 
 register_splash("healing_2", "Splash Healing II", "#DD0000", {
     potion_fun = function(player, redx) mcl_potions.healing_func(player, 6*redx) end,
+	tt = "3 hearts"
 })
 
 register_splash("harming", "Splash Harming", "#660099", {
     potion_fun = function(player, redx) mcl_potions.healing_func(player, -4*redx) end,
+	tt = "-2 hearts"
 })
 
 register_splash("harming_2", "Splash Harming II", "#330066", {
     potion_fun = function(player, redx) mcl_potions.healing_func(player, -6*redx) end,
+	tt = "-3 hearts"
 })
 
 register_splash("leaping", "Splash Leaping", "#00CC33", {
-		potion_fun = function(player, redx) mcl_potions.leaping_func(player, 1.2, splash_DUR*redx) end
+		potion_fun = function(player, redx) mcl_potions.leaping_func(player, 1.2, splash_DUR*redx) end,
+		tt = "120% | "..time_string(splash_DUR)
+
 })
 
 register_splash("leaping_2", "Splash Leaping II", "#00EE33", {
-		potion_fun = function(player, redx) mcl_potions.leaping_func(player, 1.4, splash_DUR_2*redx) end
+		potion_fun = function(player, redx) mcl_potions.leaping_func(player, 1.4, splash_DUR_2*redx) end,
+		tt = "140% | "..time_string(splash_DUR_2)
 })
 
 register_splash("leaping_plus", "Splash Leaping +", "#00DD33", {
-		potion_fun = function(player, redx) mcl_potions.leaping_func(player, 1.2, splash_DUR_pl*redx) end
+		potion_fun = function(player, redx) mcl_potions.leaping_func(player, 1.2, splash_DUR_pl*redx) end,
+		tt = "120% | "..time_string(splash_DUR_pl)
 })
 
 register_splash("swiftness", "Splash Swiftness", "#009999", {
-		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 1.2, splash_DUR*redx) end
+		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 1.2, splash_DUR*redx) end,
+		tt = "120% | "..time_string(splash_DUR)
 })
 
 register_splash("swiftness_2", "Splash Swiftness II", "#00BBBB", {
-		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 1.4, splash_DUR_2*redx) end
+		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 1.4, splash_DUR_2*redx) end,
+		tt = "140% | "..time_string(splash_DUR_2)
 })
 
 register_splash("swiftness_plus", "Splash Swiftness +", "#00BBBB", {
-		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 1.2, splash_DUR_pl*redx) end
+		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 1.2, splash_DUR_pl*redx) end,
+		tt = "120% | "..time_string(splash_DUR_2)
 })
 
 register_splash("slowness", "Splash Slowness", "#000080", {
-		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 0.85, splash_DUR*mcl_potions.INV_FACTOR*redx) end
+		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 0.85, splash_DUR*mcl_potions.INV_FACTOR*redx) end,
+		tt = "85% | "..time_string(splash_DUR*mcl_potions.INV_FACTOR)
 })
 
 register_splash("slowness_2", "Splash Slowness IV", "#000080", {
-		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 0.4, 20*mcl_potions.SPLASH_FACTOR*redx) end
+		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 0.4, 20*mcl_potions.INV_FACTOR*redx) end,
+		tt = "40% | "..time_string(20*mcl_potions.INV_FACTOR)
 })
 
 register_splash("slowness_plus", "Splash Slowness +", "#000066", {
-		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 0.85, splash_DUR_pl*mcl_potions.INV_FACTOR*redx) end
+		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 0.85, splash_DUR_pl*mcl_potions.INV_FACTOR*redx) end,
+		tt = "85% | "..time_string(splash_DUR_pl*mcl_potions.INV_FACTOR)
 })
 
 register_splash("poison", "Splash Poison", "#335544", {
-		potion_fun = function(player, redx) mcl_potions.poison_func(player, 2.5, splash_DUR*mcl_potions.INV_FACTOR*redx) end
+		potion_fun = function(player, redx) mcl_potions.poison_func(player, 2.5, splash_DUR*mcl_potions.INV_FACTOR*redx) end,
+		tt = "-1/2 heart / 2.5sec | "..time_string(splash_DUR*mcl_potions.INV_FACTOR)
 })
 
 register_splash("poison_2", "Splash Poison II", "#446655", {
-		potion_fun = function(player, redx) mcl_potions.poison_func(player, 1.2, splash_DUR_2*mcl_potions.INV_FACTOR*redx) end
+		potion_fun = function(player, redx) mcl_potions.poison_func(player, 1.2, splash_DUR_2*mcl_potions.INV_FACTOR*redx) end,
+		tt = "-1/2 heart / 1.2sec | "..time_string(splash_DUR_2*mcl_potions.INV_FACTOR)
 })
 
 register_splash("poison_plus", "Splash Poison +", "#557766", {
-		potion_fun = function(player, redx) mcl_potions.poison_func(player, 2.5, splash_DUR_pl*mcl_potions.INV_FACTOR*redx) end
+		potion_fun = function(player, redx) mcl_potions.poison_func(player, 2.5, splash_DUR_pl*mcl_potions.INV_FACTOR*redx) end,
+		tt = "-1/2 heart / 2.5sec | "..time_string(splash_DUR_pl*mcl_potions.INV_FACTOR)
 })
 
 register_splash("regeneration", "Splash Regeneration", "#A52BB2", {
-		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 2.5, splash_DUR*mcl_potions.INV_FACTOR*redx) end
+		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 2.5, splash_DUR*redx) end,
+		tt = "1/2 heart / 2.5sec | "..time_string(splash_DUR)
 })
 
 register_splash("regeneration_2", "Splash Regeneration II", "#B52CC2", {
-		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 1.2, (splash_DUR_2*mcl_potions.INV_FACTOR + 1)*redx) end
+		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 1.2, (splash_DUR_2 + 1)*redx) end,
+		tt = "1/2 heart / 1.2sec | "..time_string(splash_DUR_2 + 1)
 })
 
 register_splash("regeneration_plus", "Splash Regeneration +", "#C53DD3", {
-		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 2.5, splash_DUR_pl*mcl_potions.INV_FACTOR*redx) end
+		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 2.5, splash_DUR_pl*redx) end,
+		tt = "1/2 heart / 2.5sec | "..time_string(splash_DUR_pl)
 })
 
 register_splash("invisibility", "Splash Invisibility", "#B0B0B0", {
-	potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, splash_DUR*redx) end
+	potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, splash_DUR*redx) end,
+	tt = time_string(splash_DUR)
 })
 
 register_splash("invisibility_plus", "Splash Invisibility +", "#A0A0A0", {
-	potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, splash_DUR_pl*redx) end
+	potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, splash_DUR_pl*redx) end,
+	tt = time_string(splash_DUR_pl)
 })
 
 register_splash("weakness", "Splash Weakness", "#6600AA", {
-	potion_fun = function(player, redx) mcl_potions.weakness_func(player, -4, splash_DUR*mcl_potions.INV_FACTOR*redx) end
+	potion_fun = function(player, redx) mcl_potions.weakness_func(player, -4, splash_DUR*mcl_potions.INV_FACTOR*redx) end,
+	tt = "No effect | "..time_string(splash_DUR*mcl_potions.INV_FACTOR)
 })
 
 register_splash("weakness_plus", "Splash Weakness +", "#7700BB", {
-	potion_fun = function(player, redx) mcl_potions.weakness_func(player, -4, splash_DUR_pl*mcl_potions.INV_FACTOR*redx) end
+	potion_fun = function(player, redx) mcl_potions.weakness_func(player, -4, splash_DUR_pl*mcl_potions.INV_FACTOR*redx) end,
+	tt = "No effect | "..time_string(splash_DUR_pl*mcl_potions.INV_FACTOR)
 })
 
 register_splash("strength", "Splash Strength", "#D444D4", {
-	potion_fun = function(player, redx) mcl_potions.strength_func(player, 3, splash_DUR*redx) end
+	potion_fun = function(player, redx) mcl_potions.strength_func(player, 3, splash_DUR*redx) end,
+	tt = "No effect | "..time_string(splash_DUR)
 })
 
 register_splash("strength_2", "Splash Strength II", "#D444F4", {
-	potion_fun = function(player, redx) mcl_potions.strength_func(player, 6, splash_DUR_2*redx) end
+	potion_fun = function(player, redx) mcl_potions.strength_func(player, 6, splash_DUR_2*redx) end,
+	tt = "No effect | "..time_string(splash_DUR_2)
 })
 
 register_splash("strength_plus", "Splash Strength +", "#D444E4", {
-	potion_fun = function(player, redx) mcl_potions.strength_func(player, 3, splash_DUR_pl*redx) end
+	potion_fun = function(player, redx) mcl_potions.strength_func(player, 3, splash_DUR_pl*redx) end,
+	tt = "No effect | "..time_string(splash_DUR_pl)
 })
 
 register_splash("water_breathing", "Splash Water Breathing", "#0000AA", {
-	potion_fun = function(player, redx) mcl_potions.water_breathing_func(player, splash_DUR*redx) end
+	potion_fun = function(player, redx) mcl_potions.water_breathing_func(player, splash_DUR*redx) end,
+	tt = time_string(splash_DUR)
 })
 
 register_splash("water_breathing_plus", "Splash Water Breathing +", "#0000CC", {
-	potion_fun = function(player, redx) mcl_potions.water_breathing_func(player, splash_DUR_pl*redx) end
+	potion_fun = function(player, redx) mcl_potions.water_breathing_func(player, splash_DUR_pl*redx) end,
+	tt = time_string(splash_DUR_pl)
 })
 
 register_splash("fire_resistance", "Splash Fire Resistance", "#D0A040", {
-	potion_fun = function(player, redx) mcl_potions.fire_resistance_func(player, splash_DUR*redx) end
+	potion_fun = function(player, redx) mcl_potions.fire_resistance_func(player, splash_DUR*redx) end,
+	tt = time_string(splash_DUR)
 })
 
 register_splash("fire_resistance_plus", "Splash Fire Resistance +", "#E0B050", {
-	potion_fun = function(player, redx) mcl_potions.fire_resistance_func(player, splash_DUR_pl*redx) end
+	potion_fun = function(player, redx) mcl_potions.fire_resistance_func(player, splash_DUR_pl*redx) end,
+	tt = time_string(splash_DUR_pl)
 })
 
 register_splash("night_vision", "Splash Night Vision", "#1010AA", {
-	potion_fun = function(player, redx) mcl_potions.night_vision_func(player, splash_DUR*redx) end
+	potion_fun = function(player, redx) mcl_potions.night_vision_func(player, splash_DUR*redx) end,
+	tt = time_string(splash_DUR)
 })
 
 register_splash("night_vision_plus", "Splash Night Vision +", "#2020BA", {
-	potion_fun = function(player, redx) mcl_potions.night_vision_func(player, splash_DUR_pl*redx) end
+	potion_fun = function(player, redx) mcl_potions.night_vision_func(player, splash_DUR_pl*redx) end,
+	tt = time_string(splash_DUR_pl)
 })
