@@ -192,7 +192,7 @@ end
 
 armor.update_armor = function(self, player)
 	-- Legacy support: Called when armor levels are changed
-	-- Other mods can hook on to this function, see hud mod for example 
+	-- Other mods can hook on to this function, see hud mod for example
 end
 
 armor.get_armor_points = function(self, player)
@@ -429,7 +429,7 @@ minetest.register_on_joinplayer(function(player)
 	for i=1, 6 do
 		local stack = player_inv:get_stack("armor", i)
 		armor_inv:set_stack("armor", i, stack)
-	end	
+	end
 	armor.def[name] = {
 		count = 0,
 		level = 0,
@@ -496,6 +496,10 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
 		-- Armor doesn't protect from set_hp (commands like /kill),
 		-- falling and drowning damage.
 		if reason.type == "set_hp" or reason.type == "drown" or reason.type == "fall" then
+			return hp_change
+		end
+
+		if reason.other == "poison" then
 			return hp_change
 		end
 
