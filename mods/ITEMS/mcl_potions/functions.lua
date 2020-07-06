@@ -51,7 +51,7 @@ minetest.register_globalstep(function(dtime)
 				if player._cmi_is_mob then
 					player.health = math.max(player.health - 1, 1)
 				else
-					player:set_hp( math.max(player:get_hp() - 1, 1), { type = "punch", from = "potion" })
+					player:set_hp( math.max(player:get_hp() - 1, 1), { type = "poison", from = "potion" })
 				end
 
 				is_poisoned[player].hit_timer = 0
@@ -81,7 +81,7 @@ minetest.register_globalstep(function(dtime)
 			if player:get_pos() then mcl_potions._add_spawner(player, "#A52BB2") end
 
 			if is_regenerating[player].heal_timer >= is_regenerating[player].step then
-				player:set_hp(math.min(player:get_properties().hp_max or 20, player:get_hp() + 1))
+				player:set_hp(math.min(player:get_properties().hp_max or 20, player:get_hp() + 1), { type = "regeneration", from = "potion" })
 				is_regenerating[player].heal_timer = 0
 			end
 
@@ -467,7 +467,7 @@ function mcl_potions.healing_func(player, hp)
 		if obj and obj._cmi_is_mob then
 			obj.health = math.max(obj.health + hp, obj.hp_max)
 		else
-			player:set_hp(math.min(player:get_hp() + hp, player:get_properties().hp_max))
+			player:set_hp(math.min(player:get_hp() + hp, player:get_properties().hp_max), { type = "healing", from = "potion" })
 		end
 
 	else
@@ -475,7 +475,7 @@ function mcl_potions.healing_func(player, hp)
 		if obj and obj._cmi_is_mob then
 			obj.health = obj.health + hp
 		else
-			player:set_hp(player:get_hp() + hp, { type = "punch", from = "potion" })
+			player:set_hp(player:get_hp() + hp, { type = "harming", from = "potion" })
 		end
 
 	end
