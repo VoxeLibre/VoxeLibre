@@ -261,6 +261,7 @@ local is_fire_node = {  ["mcl_core:lava_flowing"]=true,
 						["mcl_nether:nether_lava_flowing"]=true,
 						["mcl_nether:nether_lava_source"]=true}
 
+
 -- Prevent damage to player with Fire Resistance enabled
 minetest.register_on_player_hpchange(function(player, hp_change)
 
