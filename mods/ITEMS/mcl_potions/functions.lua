@@ -457,6 +457,17 @@ for i, zombie in ipairs({"husk","zombie","pigman"}) do
 	is_zombie["mobs_mc:baby_"..zombie] = true
 end
 
+is_zombie["mobs_mc:witherskeleton"] = true
+is_zombie["mobs_mc:skeleton"] = true
+is_zombie["mobs_mc:stray"] = true
+is_zombie["mobs_mc:villager_zombie"] = true
+is_zombie["mobs_mc:wither"] = true
+is_zombie["mobs_mc:skeleton_horse"] = true
+is_zombie["mobs_mc:zombie_horse"] = true
+
+
+
+
 function mcl_potions.healing_func(player, hp)
 
 	local obj = player:get_luaentity()
