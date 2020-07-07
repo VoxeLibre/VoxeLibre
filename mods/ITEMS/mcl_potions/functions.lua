@@ -288,21 +288,6 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 end, true)
 
 
--- -- If a player is punched and is a weak player, damage by 2 additional hearts
--- minetest.register_on_player_hpchange(function(player, hp_change)
---
--- 	if is_weak[player] and hp_change < 0 then
---
--- 		-- prevent weakness from healing the victim
--- 		return math.min(hp_change - 4, 0)
---
--- 	else
--- 		return hp_change
--- 	end
---
--- end, true)
-
-
 function mcl_potions._reset_player_effects(player)
 
 	player = player or player:get_luaentity()
