@@ -179,18 +179,18 @@ register_splash("slowness_plus", "Splash Slowness +", "#000066", {
 })
 
 register_splash("poison", "Splash Poison", "#335544", {
-		potion_fun = function(player, redx) mcl_potions.poison_func(player, 2.5, splash_DUR*mcl_potions.INV_FACTOR*redx) end,
-		tt = "-1/2 heart / 2.5sec | "..time_string(splash_DUR*mcl_potions.INV_FACTOR)
+		potion_fun = function(player, redx) mcl_potions.poison_func(player, 2.5, splash_DUR*mcl_potions.INV_FACTOR^2*redx) end,
+		tt = "-1/2 heart / 2.5sec | "..time_string(splash_DUR*mcl_potions.INV_FACTOR^2)
 })
 
 register_splash("poison_2", "Splash Poison II", "#446655", {
-		potion_fun = function(player, redx) mcl_potions.poison_func(player, 1.2, splash_DUR_2*mcl_potions.INV_FACTOR*redx) end,
-		tt = "-1/2 heart / 1.2sec | "..time_string(splash_DUR_2*mcl_potions.INV_FACTOR)
+		potion_fun = function(player, redx) mcl_potions.poison_func(player, 1.2, splash_DUR_2*mcl_potions.INV_FACTOR^2*redx) end,
+		tt = "-1/2 heart / 1.2sec | "..time_string(splash_DUR_2*mcl_potions.INV_FACTOR^2)
 })
 
 register_splash("poison_plus", "Splash Poison +", "#557766", {
-		potion_fun = function(player, redx) mcl_potions.poison_func(player, 2.5, splash_DUR_pl*mcl_potions.INV_FACTOR*redx) end,
-		tt = "-1/2 heart / 2.5sec | "..time_string(splash_DUR_pl*mcl_potions.INV_FACTOR)
+		potion_fun = function(player, redx) mcl_potions.poison_func(player, 2.5, splash_DUR*mcl_potions.INV_FACTOR*redx) end,
+		tt = "-1/2 heart / 2.5sec | "..time_string(splash_DUR_pl*mcl_potions.INV_FACTOR^2)
 })
 
 register_splash("regeneration", "Splash Regeneration", "#A52BB2", {
