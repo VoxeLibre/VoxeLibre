@@ -499,7 +499,8 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
 			return hp_change
 		end
 
-		if reason.other == "poison" then
+		-- Account for potion effects (armor doesn't save the target)
+		if reason.other == "poison" or reason.other == "harming" then
 			return hp_change
 		end
 

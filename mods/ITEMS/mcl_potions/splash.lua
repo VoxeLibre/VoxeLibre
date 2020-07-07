@@ -123,12 +123,12 @@ register_splash("healing_2", "Splash Healing II", "#DD0000", {
 })
 
 register_splash("harming", "Splash Harming", "#660099", {
-    potion_fun = function(player, redx) mcl_potions.healing_func(player, -4*redx) end,
+    potion_fun = function(player, redx) mcl_potions.healing_func(player, -6*redx) end,
 	tt = "-2 hearts"
 })
 
 register_splash("harming_2", "Splash Harming II", "#330066", {
-    potion_fun = function(player, redx) mcl_potions.healing_func(player, -6*redx) end,
+    potion_fun = function(player, redx) mcl_potions.healing_func(player, -12*redx) end,
 	tt = "-3 hearts"
 })
 

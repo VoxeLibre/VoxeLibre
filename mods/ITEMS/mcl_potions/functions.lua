@@ -481,12 +481,6 @@ function mcl_potions.healing_func(player, hp)
 
 	end
 
-	-- adjust mob health
-	obj = player:get_luaentity()
-	if obj and obj._cmi_is_mob then
-		obj.health = obj.health + hp
-	end
-
 end
 
 function mcl_potions.swiftness_func(player, factor, duration)
