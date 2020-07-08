@@ -263,7 +263,7 @@ local is_fire_node = {  ["mcl_core:lava_flowing"]=true,
 
 
 -- Prevent damage to player with Fire Resistance enabled
-minetest.register_on_player_hpchange(function(player, hp_change)
+minetest.register_on_player_hpchange(function(player, hp_change, reason)
 
 	if is_fire_proof[player] and hp_change < 0 then
 		-- This is a bit forced, but it assumes damage is taken by fire and avoids it
@@ -271,12 +271,10 @@ minetest.register_on_player_hpchange(function(player, hp_change)
 		-- it's worth noting that you don't take damage from players in this case...
 		local player_info = mcl_playerinfo[player:get_player_name()]
 
+		-- if reason.type == "drown" then return hp_change
+
 		if is_fire_node[player_info.node_head] or is_fire_node[player_info.node_feet] or is_fire_node[player_info.node_stand] then
-			-- if player:get_breath() == 0 and hp_change == -4 then -- probably drowning
-			-- 	return hp_change
-			-- else
-				return 0
-		-- 	end
+			return 0
 		else
 			return hp_change
 		end
