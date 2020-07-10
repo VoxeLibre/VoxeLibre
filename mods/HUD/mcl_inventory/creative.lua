@@ -91,9 +91,17 @@ local function set_inv_search(filter, player)
 	local playername = player:get_player_name()
 	local inv = minetest.get_inventory({type="detached", name="creative_"..playername})
 	local creative_list = {}
+	local lang = minetest.get_player_information(playername).lang_code
 	for name,def in pairs(minetest.registered_items) do
 		if (not def.groups.not_in_creative_inventory or def.groups.not_in_creative_inventory == 0) and def.description and def.description ~= "" then
-			if string.find(string.lower(def.name), filter) or string.find(string.lower(def.description), filter) then
+			local name = string.lower(def.name)
+			local desc
+			if not lang then
+				desc = string.lower(def.description)
+			else
+				desc = string.lower(minetest.get_translated_string(lang, def.description))
+			end
+			if string.find(name, filter) or string.find(desc, filter) then
 				table.insert(creative_list, name)
 			end
 		end
