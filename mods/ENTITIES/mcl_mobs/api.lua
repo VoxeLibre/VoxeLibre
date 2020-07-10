@@ -3883,7 +3883,7 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 	local grp = {spawn_egg = 1}
 
 	-- do NOT add this egg to creative inventory (e.g. dungeon master)
-	if creative and no_creative == true then
+	if no_creative == true then
 		grp.not_in_creative_inventory = 1
 	end
 
