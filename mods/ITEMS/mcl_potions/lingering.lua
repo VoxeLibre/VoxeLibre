@@ -293,3 +293,13 @@ register_lingering("strength_plus", "Lingering Strength +", "#D444E4", {
 	potion_fun = function(player) mcl_potions.strength_func(player, 3, mcl_potions.DURATION_PLUS*0.25) end,
 	tt = "No effect | "..time_string(mcl_potions.DURATION_PLUS*0.25)
 })
+
+register_lingering("night_vision", "Lingering Night Vision", "#1010AA", {
+	potion_fun = function(player) mcl_potions.night_vision_func(player, mcl_potions.DURATION*0.25) end,
+	tt = time_string(mcl_potions.DURATION*0.25)
+})
+
+register_lingering("night_vision_plus", "Lingering Night Vision +", "#2020BA", {
+	potion_fun = function(player) mcl_potions.night_vision_func(player, mcl_potions.DURATION_PLUS*0.25) end,
+	tt = time_string(mcl_potions.DURATION_PLUS*0.25)
+})
