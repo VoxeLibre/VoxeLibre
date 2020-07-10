@@ -88,23 +88,29 @@ minetest.register_globalstep(function(dtime)
 					players[playerName].sprintDistance = players[playerName].sprintDistance - superficial
 				end
 
-				-- Sprint dirt particles
-				local numParticles = math.random(1, 2)
+				-- Sprint node particles
 				local playerNode = minetest.get_node({x=playerPos["x"], y=playerPos["y"]-1, z=playerPos["z"]})
 				local def = minetest.registered_nodes[playerNode.name]
 				if def and def.walkable then
-					for i=1, numParticles, 1 do
-						minetest.add_particle({
-							pos = {x=playerPos["x"]+math.random(-1,1)*math.random()/2,y=playerPos["y"]+0.1,z=playerPos["z"]+math.random(-1,1)*math.random()/2},
-							velocity = {x=0, y=5, z=0},
-							acceleration = {x=0, y=-13, z=0},
-							expirationtime = math.random(),
-							size = math.random()+0.5,
-							collisiondetection = true,
-							vertical = false,
-							texture = "default_dirt.png",
-						})
-					end
+					minetest.add_particlespawner({
+						amount = math.random(1, 2),
+						time = 1,
+						minpos = {x=-0.5, y=0.1, z=-0.5},
+						maxpos = {x=0.5, y=0.1, z=0.5},
+						minvel = {x=0, y=5, z=0},
+						maxvel = {x=0, y=5, z=0},
+						minacc = {x=0, y=-13, z=0},
+						maxacc = {x=0, y=-13, z=0},
+						minexptime = 0.1,
+						maxexptime = 1,
+						minsize = 0.5,
+						maxsize = 1.5,
+						collisiondetection = true,
+						attached = player,
+						vertical = false,
+						node = playerNode,
+						node_tile = 1,
+					})
 				end
 			end
 
