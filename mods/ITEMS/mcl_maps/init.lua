@@ -42,7 +42,7 @@ end
 
 -- Checks if player is still allowed to display the minimap
 local function update_minimap(player)
-	local creative = minetest.settings:get_bool("creative_mode")
+	local creative = minetest.is_creative_enabled(player:get_player_name())
 	if creative then
 		player:hud_set_flags({minimap=true, minimap_radar = true})
 	else
@@ -94,7 +94,7 @@ minetest.register_on_joinplayer(function(player)
 end)
 
 local updatetimer = 0
-if not minetest.settings:get_bool("creative_mode") then
+if not minetest.is_creative_enabled("") then
 	minetest.register_globalstep(function(dtime)
 		updatetimer = updatetimer + dtime
 		if updatetimer > 0.1 then

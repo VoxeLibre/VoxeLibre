@@ -405,7 +405,7 @@ minetest.override_item("mcl_end:ender_eye", {
 			minetest.sound_play(
 				"default_place_node_hard",
 				{pos = pointed_thing.under, gain = 0.5, max_hear_distance = 16}, true)
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(user:get_player_name()) then
 				itemstack:take_item() -- 1 use
 			end
 

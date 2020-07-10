@@ -53,7 +53,7 @@ local wolf = {
 		local dog, ent
 		if tool:get_name() == mobs_mc.items.bone then
 
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				tool:take_item()
 				clicker:set_wielded_item(tool)
 			end
@@ -154,7 +154,7 @@ dog.on_rightclick = function(self, clicker)
 		if new_hp > self.hp_max then
 			new_hp = self.hp_max
 		end
-		if not minetest.settings:get_bool("creative_mode") then
+		if not minetest.is_creative_enabled(clicker:get_player_name()) then
 			item:take_item()
 			clicker:set_wielded_item(item)
 		end
@@ -172,7 +172,7 @@ dog.on_rightclick = function(self, clicker)
 					self.object:set_properties({
 						textures = self.base_texture
 					})
-					if not minetest.settings:get_bool("creative_mode") then
+					if not minetest.is_creative_enabled(clicker:get_player_name()) then
 						item:take_item()
 						clicker:set_wielded_item(item)
 					end

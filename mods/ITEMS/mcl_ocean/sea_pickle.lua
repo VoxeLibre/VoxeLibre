@@ -54,7 +54,7 @@ local function sea_pickle_on_place(itemstack, placer, pointed_thing)
 	else
 		return itemstack
 	end
-	if not (minetest.settings:get_bool("creative_mode")) then
+	if not minetest.is_creative_enabled(player_name) then
 		itemstack:take_item()
 	end
 	return itemstack

@@ -12,7 +12,6 @@ under the LGPLv2.1 license.
 
 mcl_explosions = {}
 
-local creative_mode = minetest.settings:get_bool("creative_mode")
 local mod_death_messages = minetest.get_modpath("mcl_death_messages") ~= nil
 local mod_fire = minetest.get_modpath("mcl_fire") ~= nil
 local CONTENT_FIRE = minetest.get_content_id("mcl_fire:fire")
@@ -143,7 +142,7 @@ end
 -- Note that this function has been optimized, it contains code which has been
 -- inlined to avoid function calls and unnecessary table creation. This was
 -- measured to give a significant performance increase.
-local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, puncher)
+local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, puncher, creative_enabled)
 	local vm = minetest.get_voxel_manip()
 
 	local emin, emax = vm:read_from_map(vector.subtract(pos, radius),
@@ -308,7 +307,7 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 
 	-- Remove destroyed blocks and drop items
 	for hash, idx in pairs(destroy) do
-		local do_drop = not creative_mode and math.random() <= drop_chance
+		local do_drop = not creative_enabled and math.random() <= drop_chance
 		local on_blast = node_on_blast[data[idx]]
 		local remove = true
 
@@ -384,7 +383,8 @@ function mcl_explosions.explode(pos, strength, info, puncher)
 	end
 	local shape = sphere_shapes[radius]
 
-	trace_explode(pos, strength, shape, radius, (info and info.drop_chance) or 1 / strength, info.fire == true, puncher)
+	local creative_enabled = minetest.is_creative_enabled("")
+	trace_explode(pos, strength, shape, radius, (info and info.drop_chance) or 1 / strength, info.fire == true, puncher, creative_enabled)
 
 	if not (info and info.no_sound) then
 		add_particles(pos, radius)

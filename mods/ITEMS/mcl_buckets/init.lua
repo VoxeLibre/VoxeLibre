@@ -141,7 +141,7 @@ function mcl_buckets.register_liquid(source_place, source_take, itemname, invent
 				end
 
 				-- Handle bucket item and inventory stuff
-				if not minetest.settings:get_bool("creative_mode") then
+				if not minetest.is_creative_enabled(user:get_player_name()) then
 					-- Add empty bucket and put it into inventory, if possible.
 					-- Drop empty bucket otherwise.
 					local new_bucket = ItemStack("mcl_buckets:bucket_empty")
@@ -220,7 +220,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 		if liquiddef ~= nil and liquiddef.itemname ~= nil and (nn == liquiddef.source_take) then
 
 			-- Fill bucket, but not in Creative Mode
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(user:get_player_name()) then
 				new_bucket = ItemStack({name = liquiddef.itemname, metadata = tostring(node.param2)})
 			end
 
@@ -234,14 +234,14 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 		elseif nn == "mcl_cauldrons:cauldron_3" then
 			-- Take water out of full cauldron
 			minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(user:get_player_name()) then
 				new_bucket = ItemStack("mcl_buckets:bucket_water")
 			end
 			sound_take("mcl_core:water_source", pointed_thing.under)
 		elseif nn == "mcl_cauldrons:cauldron_3r" then
 			-- Take river water out of full cauldron
 			minetest.set_node(pointed_thing.under, {name="mcl_cauldrons:cauldron"})
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(user:get_player_name()) then
 				new_bucket = ItemStack("mcl_buckets:bucket_river_water")
 			end
 			sound_take("mclx_core:river_water_source", pointed_thing.under)
@@ -259,7 +259,7 @@ minetest.register_craftitem("mcl_buckets:bucket_empty", {
 				else
 					minetest.add_item(user:get_pos(), new_bucket)
 				end
-				if not minetest.settings:get_bool("creative_mode") then
+				if not minetest.is_creative_enabled(user:get_player_name()) then
 					itemstack:take_item()
 				end
 				return itemstack

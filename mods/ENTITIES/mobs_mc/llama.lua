@@ -135,7 +135,7 @@ mobs:register_mob("mobs_mc:llama", {
 			if minetest.get_item_group(item:get_name(), "carpet") == 1 and not self.carpet then
 				for group, carpetdata in pairs(carpets) do
 					if minetest.get_item_group(item:get_name(), group) == 1 then
-						if not minetest.settings:get_bool("creative_mode") then
+						if not minetest.is_creative_enabled(clicker:get_player_name()) then
 							item:take_item()
 							clicker:set_wielded_item(item)
 						end

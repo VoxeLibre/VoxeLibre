@@ -47,7 +47,7 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 		if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then
 			minetest.sound_play(idef.sound.breaks, {pos=user:get_pos(), gain=0.5}, true)
 		end
-		if not minetest.settings:get_bool("creative_mode") and used == true then
+		if (not minetest.is_creative_enabled(user:get_player_name())) and used == true then
 			itemstack:add_wear(65535/65) -- 65 uses
 		end
 		return itemstack
@@ -57,13 +57,13 @@ minetest.register_tool("mcl_fire:flint_and_steel", {
 		-- Ignite air
 		if dropnode.name == "air" then
 			minetest.add_node(droppos, {name="mcl_fire:fire"})
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled("") then
 				stack:add_wear(65535/65) -- 65 uses
 			end
 		-- Ignite TNT
 		elseif dropnode.name == "mcl_tnt:tnt" then
 			tnt.ignite(droppos)
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled("") then
 				stack:add_wear(65535/65) -- 65 uses
 			end
 		end

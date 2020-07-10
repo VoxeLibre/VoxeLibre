@@ -75,7 +75,7 @@ end
 local player_shoot_arrow = function(itemstack, player, power, damage)
 	local arrow_stack, arrow_stack_id = get_arrow(player)
 	local arrow_itemstring
-	if not minetest.settings:get_bool("creative_mode") then
+	if not minetest.is_creative_enabled(player:get_player_name()) then
 		if not arrow_stack then
 			return false
 		end
@@ -209,7 +209,7 @@ controls.register_on_release(function(player, key, time)
 		has_shot = player_shoot_arrow(wielditem, player, speed, damage)
 
 		wielditem:set_name("mcl_bows:bow")
-		if has_shot and minetest.settings:get_bool("creative_mode") == false then
+		if has_shot and not minetest.is_creative_enabled(player:get_player_name()) then
 			wielditem:add_wear(65535/BOW_DURABILITY)
 		end
 		player:set_wielded_item(wielditem)
@@ -224,7 +224,8 @@ controls.register_on_hold(function(player, key, time)
 	local name = player:get_player_name()
 	local inv = minetest.get_inventory({type="player", name=name})
 	local wielditem = player:get_wielded_item()
-	if bow_load[name] == nil and wielditem:get_name()=="mcl_bows:bow" and (minetest.settings:get_bool("creative_mode") or inv:contains_item("main", "mcl_bows:arrow")) then
+	local creative = minetest.is_creative_enabled(name)
+	if bow_load[name] == nil and wielditem:get_name()=="mcl_bows:bow" and (creative or inv:contains_item("main", "mcl_bows:arrow")) then
 		wielditem:set_name("mcl_bows:bow_0")
 		player:set_wielded_item(wielditem)
 		if minetest.get_modpath("playerphysics") then

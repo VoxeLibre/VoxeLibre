@@ -81,7 +81,7 @@ local function register_lingering(name, descr, color, def)
             local obj = minetest.add_entity({x=pos.x+dir.x,y=pos.y+2+dir.y,z=pos.z+dir.z}, id.."_flying")
             obj:setvelocity({x=dir.x*velocity,y=dir.y*velocity,z=dir.z*velocity})
             obj:setacceleration({x=0, y=-9.8, z=0})
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				item:take_item()
 			end
             return item

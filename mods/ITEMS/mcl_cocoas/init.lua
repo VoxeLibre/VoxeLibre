@@ -45,7 +45,7 @@ function mcl_cocoas.place(itemstack, placer, pointed_thing, plantname)
 
 	minetest.sound_play("default_place_node", {pos = pt.above, gain = 1.0}, true)
 
-	if not minetest.settings:get_bool("creative_mode") then
+	if not minetest.is_creative_enabled(placer:get_player_name()) then
 		itemstack:take_item()
 	end
 

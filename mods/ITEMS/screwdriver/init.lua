@@ -160,7 +160,7 @@ screwdriver.handler = function(itemstack, user, pointed_thing, mode, uses)
 		minetest.check_for_falling(pos)
 	end
 
-	if not (minetest.settings:get_bool("creative_mode")) then
+	if not (minetest.is_creative_enabled(user:get_player_name())) then
 		itemstack:add_wear(65535 / ((uses or 200) - 1))
 	end
 

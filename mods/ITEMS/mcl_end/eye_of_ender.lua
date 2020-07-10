@@ -29,7 +29,7 @@ minetest.register_entity("mcl_end:ender_eye", {
 		if self._age >= 3 then
 			-- End of life
 			local r = math.random(1,5)
-			if r == 1 or minetest.settings:get_bool("creative_mode") then
+			if r == 1 or minetest.is_creative_enabled("") then
 				-- 20% chance to get destroyed completely.
 				-- 100% if in Creative Mode
 				self.object:remove()
@@ -89,7 +89,7 @@ minetest.register_craftitem("mcl_end:ender_eye", {
 		origin.y = origin.y + 1.5
 		local strongholds = mcl_structures.get_registered_structures("stronghold")
 		local dim = mcl_worlds.pos_to_dimension(origin)
-		local is_creative = minetest.settings:get_bool("creative_mode")
+		local is_creative = minetest.is_creative_enabled(user:get_player_name())
 
 		-- Just drop the eye of ender if there are no strongholds
 		if #strongholds <= 0 or dim ~= "overworld" then

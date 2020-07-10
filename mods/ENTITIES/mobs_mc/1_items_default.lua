@@ -552,7 +552,7 @@ if c("totem") then
 				if player:get_breath() < 11 then
 					player:set_breath(10)
 				end
-				if not minetest.settings:get_bool("creative_mode") then
+				if not minetest.is_creative_enabled(player:get_player_name()) then
 					wield:take_item()
 					player:set_wielded_item(wield)
 				end

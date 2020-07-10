@@ -166,7 +166,7 @@ mobs:register_mob("mobs_mc:sheep", {
 			self.object:set_properties({
 				textures = self.base_texture,
 			})
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				item:add_wear(mobs_mc.misc.shears_wear)
 				clicker:get_inventory():set_stack("main", clicker:get_wield_index(), item)
 			end
@@ -183,7 +183,7 @@ mobs:register_mob("mobs_mc:sheep", {
 			minetest.log("verbose", "[mobs_mc] " ..item:get_name() .. " " .. minetest.get_item_group(item:get_name(), "dye"))
 			for group, colordata in pairs(colors) do
 				if minetest.get_item_group(item:get_name(), group) == 1 then
-					if not minetest.settings:get_bool("creative_mode") then
+					if not minetest.is_creative_enabled(clicker:get_player_name()) then
 						item:take_item()
 						clicker:set_wielded_item(item)
 					end

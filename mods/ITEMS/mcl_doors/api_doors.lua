@@ -183,7 +183,7 @@ function mcl_doors:register_door(name, def)
 			meta2:set_int("is_open", 0)
 
 			
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(pn) then
 				itemstack:take_item()
 			end
 

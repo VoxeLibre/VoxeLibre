@@ -99,7 +99,7 @@ local ARROW_ENTITY={
 
 -- Destroy arrow entity self at pos and drops it as an item
 local spawn_item = function(self, pos)
-	if not minetest.settings:get_bool("creative_mode") then
+	if not minetest.is_creative_enabled("") then
 		local item = minetest.add_item(pos, "mcl_bows:arrow")
 		item:set_velocity({x=0, y=0, z=0})
 		item:set_yaw(self.object:get_yaw())
@@ -138,7 +138,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 		local objects = minetest.get_objects_inside_radius(pos, 1)
 		for _,obj in ipairs(objects) do
 			if obj:is_player() then
-				if not minetest.settings:get_bool("creative_mode") then
+				if not minetest.is_creative_enabled(obj:get_player_name()) then
 					if obj:get_inventory():room_for_item("main", "mcl_bows:arrow") then
 						obj:get_inventory():add_item("main", "mcl_bows:arrow")
 						minetest.sound_play("item_drop_pickup", {

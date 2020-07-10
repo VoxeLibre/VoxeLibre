@@ -23,7 +23,7 @@ minetest.do_item_eat = function(hp_change, replace_with_item, itemstack, user, p
 
 	local name = user:get_player_name()
 
-	local creative = minetest.settings:get_bool("creative_mode") == true
+	local creative = minetest.is_creative_enabled(name)
 
 	-- Special foodstuffs like the cake may disable the eating delay
 	local no_eat_delay = creative or (minetest.get_item_group(itemstack:get_name(), "no_eat_delay") == 1)
@@ -130,7 +130,7 @@ local poisonrandomizer = PseudoRandom(os.time())
 function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poison, exhaust, poisonchance, sound)
 	return function(itemstack, user, pointed_thing)
 		local itemname = itemstack:get_name()
-		local creative = minetest.settings:get_bool("creative_mode") == true
+		local creative = minetest.is_creative_enabled(user:get_player_name())
 		if itemstack:peek_item() ~= nil and user ~= nil then
 			if not creative then
 				itemstack:take_item()

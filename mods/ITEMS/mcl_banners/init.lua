@@ -455,7 +455,7 @@ for colorid, colortab in pairs(mcl_banners.colors) do
 				banner_entity:set_yaw(final_yaw)
 			end
 
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				itemstack:take_item()
 			end
 			minetest.sound_play({name="default_place_node_hard", gain=1.0}, {pos = place_pos}, true)

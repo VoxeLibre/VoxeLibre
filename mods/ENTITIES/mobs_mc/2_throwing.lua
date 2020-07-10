@@ -123,7 +123,7 @@ local arrows = {
 local throwing_shoot_arrow = function(itemstack, player)
 	for _,arrow in ipairs(arrows) do
 		if player:get_inventory():get_stack("main", player:get_wield_index()+1):get_name() == arrow[1] then
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(player:get_player_name()) then
 				player:get_inventory():remove_item("main", arrow[1])
 			end
 			local playerpos = player:get_pos()
@@ -171,7 +171,7 @@ if c("bow") then
 		inventory_image = "mcl_bows_bow.png",
 		on_use = function(itemstack, user, pointed_thing)
 			if throwing_shoot_arrow(itemstack, user, pointed_thing) then
-				if not minetest.settings:get_bool("creative_mode") then
+				if not minetest.is_creative_enabled(user:get_player_name()) then
 					itemstack:add_wear(65535/50)
 				end
 			end
@@ -296,7 +296,7 @@ if c("egg") then
 		local ent2 = obj:get_luaentity()
 		ent2.playername = player:get_player_name()
 
-		if not minetest.settings:get_bool("creative_mode") then
+		if not minetest.is_creative_enabled(player:get_player_name()) then
 			item:take_item()
 		end
 
@@ -380,7 +380,7 @@ if c("snowball") then
 		local ent2 = obj:get_luaentity()
 		ent2.playername = player:get_player_name()
 
-		if not minetest.settings:get_bool("creative_mode") then
+		if not minetest.is_creative_enabled(player:get_player_name()) then
 			item:take_item()
 		end
 

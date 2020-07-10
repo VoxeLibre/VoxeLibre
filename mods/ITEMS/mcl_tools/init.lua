@@ -26,7 +26,7 @@ dig_speed_class group:
 
 -- The hand
 local groupcaps, hand_range, hand_groups
-if minetest.settings:get_bool("creative_mode") then
+if minetest.is_creative_enabled("") then
 	-- Instant breaking in creative mode
 	groupcaps = {
 		creative_breakable = {times={[1]=0}, uses=0},
@@ -213,7 +213,7 @@ local make_grass_path = function(itemstack, placer, pointed_thing)
 				return itemstack
 			end
 
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				-- Add wear, as if digging a level 0 shovely node
 				local toolname = itemstack:get_name()
 				local def = minetest.registered_items[toolname]
@@ -247,7 +247,7 @@ if minetest.get_modpath("mcl_farming") then
 			return
 		end
 		if node.name == "mcl_farming:pumpkin" then
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				-- Add wear (as if digging a shearsy node)
 				local toolname = itemstack:get_name()
 				local def = minetest.registered_items[toolname]

@@ -90,7 +90,7 @@ function mcl_farming:place_seed(itemstack, placer, pointed_thing, plantname)
 		return
 	end
 
-	if not minetest.settings:get_bool("creative_mode") then
+	if not minetest.is_creative_enabled(placer:get_player_name()) then
 		itemstack:take_item()
 	end
 	return itemstack

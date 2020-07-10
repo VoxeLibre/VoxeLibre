@@ -51,7 +51,7 @@ mobs:register_mob("mobs_mc:creeper", {
 		end
 		local item = clicker:get_wielded_item()
 		if item:get_name() == mobs_mc.items.flint_and_steel then
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				-- Wear tool
 				local wdef = item:get_definition()
 				item:add_wear(1000)

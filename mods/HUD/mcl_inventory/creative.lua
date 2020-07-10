@@ -128,7 +128,7 @@ local function init(player)
 	local playername = player:get_player_name()
 	local inv = minetest.create_detached_inventory("creative_"..playername, {
 		allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)
-			if minetest.settings:get_bool("creative_mode") then
+			if minetest.is_creative_enabled(playername) then
 				return count
 			else
 				return 0
@@ -138,7 +138,7 @@ local function init(player)
 			return 0
 		end,
 		allow_take = function(inv, listname, index, stack, player)
-			if minetest.settings:get_bool("creative_mode") then
+			if minetest.is_creative_enabled(player:get_player_name()) then
 				return -1
 			else
 				return 0
@@ -151,7 +151,7 @@ end
 -- Create the trash field
 local trash = minetest.create_detached_inventory("trash", {
 	allow_put = function(inv, listname, index, stack, player)
-		if minetest.settings:get_bool("creative_mode") then
+		if minetest.is_creative_enabled(player:get_player_name()) then
 			return stack:get_count()
 		else
 			return 0
@@ -459,7 +459,8 @@ end
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	local page = nil
-	if not minetest.settings:get_bool("creative_mode") then
+
+	if not minetest.is_creative_enabled(player:get_player_name()) then
 		return
 	end
 	if formname ~= "" or fields.quit == "true" then
@@ -579,7 +580,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 end)
 
 
-if minetest.settings:get_bool("creative_mode") then
+if minetest.is_creative_enabled("") then
 	minetest.register_on_placenode(function(pos, newnode, placer, oldnode, itemstack)
 		-- Place infinite nodes, except for shulker boxes
 		local group = minetest.get_item_group(itemstack:get_name(), "shulker_box")

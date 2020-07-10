@@ -66,7 +66,7 @@ minetest.register_node("mcl_flowerpots:flower_pot", {
 			local flower_node = row[2]
 			if item == flower_node then
 				minetest.swap_node(pos, {name="mcl_flowerpots:flower_pot_"..flower})
-				if not minetest.settings:get_bool("creative_mode") then
+				if not minetest.is_creative_enabled(clicker:get_player_name()) then
 					itemstack:take_item()
 				end
 			end
@@ -76,7 +76,7 @@ minetest.register_node("mcl_flowerpots:flower_pot", {
 			local flower_node = row[2]
 			if item == flower_node then
 				minetest.swap_node(pos, {name="mcl_flowerpots:flower_pot_"..flower})
-				if not minetest.settings:get_bool("creative_mode") then
+				if not minetest.is_creative_enabled(clicker:get_player_name()) then
 					itemstack:take_item()
 				end
 			end

@@ -41,7 +41,7 @@ local hoe_on_place_function = function(wear_divisor)
 		end
 
 		if create_soil(pointed_thing.under, user:get_inventory()) then
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(user:get_player_name()) then
 				itemstack:add_wear(65535/wear_divisor)
 			end
 			return itemstack

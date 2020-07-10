@@ -133,7 +133,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			end
 
 			-- Drop items and remove cart entity
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(puncher:get_player_name()) then
 				for d=1, #drop do
 					minetest.add_item(self.object:get_pos(), drop[d])
 				end
@@ -190,13 +190,14 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 			node = minetest.get_node(rou_pos)
 			local g = minetest.get_item_group(node.name, "connect_to_raillike")
 			if g ~= self._railtype and self._railtype ~= nil then
+				local player
 				-- Detach driver
 				if self._driver then
 					if self._old_pos then
 						self.object:set_pos(self._old_pos)
 					end
 					mcl_player.player_attached[self._driver] = nil
-					local player = minetest.get_player_by_name(self._driver)
+					player = minetest.get_player_by_name(self._driver)
 					if player then
 						player:set_detach()
 						player:set_eye_offset({x=0, y=0, z=0},{x=0, y=0, z=0})
@@ -211,7 +212,11 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 				end
 
 				-- Drop items and remove cart entity
-				if not minetest.settings:get_bool("creative_mode") then
+				local pname = ""
+				if player then
+					pname = player:get_player_name()
+				end
+				if not minetest.is_creative_enabled(pname) then
 					for d=1, #drop do
 						minetest.add_item(self.object:get_pos(), drop[d])
 					end
@@ -486,7 +491,7 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 end
 
 -- Place a minecart at pointed_thing
-mcl_minecarts.place_minecart = function(itemstack, pointed_thing)
+mcl_minecarts.place_minecart = function(itemstack, pointed_thing, placer)
 	if not pointed_thing.type == "node" then
 		return
 	end
@@ -519,7 +524,11 @@ mcl_minecarts.place_minecart = function(itemstack, pointed_thing)
 	local cart_dir = mcl_minecarts:get_rail_direction(railpos, {x=1, y=0, z=0}, nil, nil, railtype)
 	cart:set_yaw(minetest.dir_to_yaw(cart_dir))
 
-	if not minetest.settings:get_bool("creative_mode") then
+	local pname = ""
+	if placer then
+		pname = placer:get_player_name()
+	end
+	if not minetest.is_creative_enabled(pname) then
 		itemstack:take_item()
 	end
 	return itemstack
@@ -548,7 +557,7 @@ local register_craftitem = function(itemstring, entity_id, description, tt_help,
 				end
 			end
 
-			return mcl_minecarts.place_minecart(itemstack, pointed_thing)
+			return mcl_minecarts.place_minecart(itemstack, pointed_thing, placer)
 		end,
 		_on_dispense = function(stack, pos, droppos, dropnode, dropdir)
 			-- Place minecart as entity on rail. If there's no rail, just drop it.
@@ -683,7 +692,7 @@ register_minecart(
 		if minetest.get_item_group(held:get_name(), "coal") == 1 then
 			self._fueltime = self._fueltime + 180
 
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				held:take_item()
 				local index = clicker:get_wield_index()
 				local inv = clicker:get_inventory()
@@ -773,7 +782,7 @@ register_minecart(
 		end
 		local held = clicker:get_wielded_item()
 		if held:get_name() == "mcl_fire:flint_and_steel" then
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				held:add_wear(65535/65) -- 65 uses
 				local index = clicker:get_wield_index()
 				local inv = clicker:get_inventory()

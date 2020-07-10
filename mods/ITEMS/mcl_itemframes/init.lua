@@ -88,7 +88,7 @@ local update_item_entity = function(pos, node, param2)
 end
 
 local drop_item = function(pos, node, meta)
-	if node.name == "mcl_itemframes:item_frame" and not minetest.settings:get_bool("creative_mode") then
+	if node.name == "mcl_itemframes:item_frame" and not minetest.is_creative_enabled("") then
 		local inv = meta:get_inventory()
 		local item = inv:get_stack("main", 1)
 		if not item:is_empty() then
@@ -151,7 +151,7 @@ minetest.register_node("mcl_itemframes:item_frame",{
 			meta:set_string("infotext", iname)
 		end
 
-		if not minetest.settings:get_bool("creative_mode") then
+		if not minetest.is_creative_enabled(clicker:get_player_name()) then
 			itemstack:take_item()
 		end
 		return itemstack

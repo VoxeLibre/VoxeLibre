@@ -845,7 +845,7 @@ for color, desc in pairs(boxtypes) do
 			local iinv_main = minetest.deserialize(imeta)
 			ninv:set_list("main", iinv_main)
 			ninv:set_size("main", 9*3)
-			if minetest.settings:get_bool("creative_mode") then
+			if minetest.is_creative_enabled(placer:get_player_name()) then
 				if not ninv:is_empty("main") then
 					return nil
 				else
@@ -867,7 +867,7 @@ for color, desc in pairs(boxtypes) do
 			local boxitem = ItemStack("mcl_chests:"..color.."_shulker_box")
 			boxitem:set_metadata(data)
 
-			if minetest.settings:get_bool("creative_mode") then
+			if minetest.is_creative_enabled("") then
 				if not inv:is_empty("main") then
 					minetest.add_item(pos, boxitem)
 				end

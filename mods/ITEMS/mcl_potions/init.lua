@@ -100,7 +100,7 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 				end
 			end
 			if get_water then
-				local creative = minetest.settings:get_bool("creative_mode") == true
+				local creative = minetest.is_creative_enabled(placer:get_player_name())
 				if from_liquid_source or creative then
 					-- Replace with water bottle, if possible, otherwise
 					-- place the water potion at a place where's space
@@ -210,7 +210,7 @@ minetest.register_craftitem("mcl_potions:water", {
 				-- Increase water level of cauldron by 1
 				minetest.set_node(pointed_thing.under, {name=cauldron})
 				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
-				if minetest.settings:get_bool("creative_mode") == true then
+				if minetest.is_creative_enabled(placer:get_player_name()) then
 					return itemstack
 				else
 					return "mcl_potions:glass_bottle"
@@ -256,7 +256,7 @@ minetest.register_craftitem("mcl_potions:river_water", {
 				-- Increase water level of cauldron by 1
 				minetest.set_node(pointed_thing.under, {name=cauldron})
 				minetest.sound_play("mcl_potions_bottle_pour", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
-				if minetest.settings:get_bool("creative_mode") == true then
+				if minetest.is_creative_enabled(placer:get_player_name()) then
 					return itemstack
 				else
 					return "mcl_potions:glass_bottle"

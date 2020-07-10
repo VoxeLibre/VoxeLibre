@@ -538,7 +538,7 @@ local eat_chorus_fruit = function(itemstack, player, pointed_thing)
 	local count = itemstack:get_count()
 	local new_itemstack = minetest.do_item_eat(4, nil, itemstack, player, pointed_thing)
 	local new_count = new_itemstack:get_count()
-	if count ~= new_count or new_itemstack:get_name() ~= "mcl_end:chorus_fruit" or (minetest.settings:get_bool("creative_mode") == true) then
+	if count ~= new_count or new_itemstack:get_name() ~= "mcl_end:chorus_fruit" or (minetest.is_creative_enabled(player:get_player_name()) == true) then
 		random_teleport(player)
 	end
 	return new_itemstack

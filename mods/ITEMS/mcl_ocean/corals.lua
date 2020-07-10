@@ -61,7 +61,7 @@ local function coral_on_place(itemstack, placer, pointed_thing)
 	if def_node.sounds then
 		minetest.sound_play(def_node.sounds.place, { gain = 0.5, pos = pos_under }, true)
 	end
-	if not (minetest.settings:get_bool("creative_mode")) then
+	if not minetest.is_creative_enabled(player_name) then
 		itemstack:take_item()
 	end
 

@@ -167,7 +167,11 @@ minetest.register_entity("mcl_paintings:painting", {
 	end,
 	on_death = function(self, killer)
 		-- Drop as item on death
-		if not minetest.settings:get_bool("creative_mode") then
+		local kname = ""
+		if killer and killer:is_player() then
+			kname = killer:get_player_name()
+		end
+		if not minetest.is_creative_enabled(kname) then
 			local pos = self._pos
 			if not pos then
 				pos = self.object:get_pos()
@@ -279,7 +283,7 @@ minetest.register_craftitem("mcl_paintings:painting", {
 		else
 			return itemstack
 		end
-		if not minetest.settings:get_bool("creative_mode") then
+		if not minetest.is_creative_enabled(placer:get_player_name()) then
 			itemstack:take_item()
 		end
 		return itemstack

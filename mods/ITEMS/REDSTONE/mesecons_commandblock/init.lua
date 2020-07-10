@@ -131,7 +131,7 @@ end
 local on_rightclick = function(pos, node, player, itemstack, pointed_thing)
 	local can_edit = true
 	-- Only allow write access in Creative Mode
-	if not minetest.settings:get_bool("creative_mode") then
+	if not minetest.is_creative_enabled(player:get_player_name()) then
 		can_edit = false
 	end
 	local pname = player:get_player_name()
@@ -285,7 +285,7 @@ minetest.register_on_player_receive_fields(function(player, formname, fields)
 		if index ~= nil and x ~= nil and y ~= nil and z ~= nil then
 			local pos = {x=tonumber(x), y=tonumber(y), z=tonumber(z)}
 			local meta = minetest.get_meta(pos)
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(player:get_player_name()) then
 				minetest.chat_send_player(player:get_player_name(), S("Editing the command block has failed! You can only change the command block in Creative Mode!"))
 				return
 			end

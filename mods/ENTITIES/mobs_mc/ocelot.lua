@@ -74,7 +74,7 @@ local ocelot = {
 		-- Try to tame ocelot (mobs:feed_tame is intentionally NOT used)
 		local item = clicker:get_wielded_item()
 		if is_food(item:get_name()) then
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end

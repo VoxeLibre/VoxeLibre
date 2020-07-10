@@ -133,7 +133,7 @@ function mcl_beds.register_bed(name, def)
 			minetest.set_node(pos, {name = name .. "_bottom", param2 = dir})
 			minetest.set_node(botpos, {name = name .. "_top", param2 = dir})
 
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				itemstack:take_item()
 			end
 			return itemstack

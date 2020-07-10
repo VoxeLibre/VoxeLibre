@@ -64,7 +64,7 @@ mobs:register_mob("mobs_mc:parrot", {
 			self.health = 0
 			-- Doomed to die
 			self._doomed = true
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				item:take_item()
 				clicker:set_wielded_item(item)
 			end

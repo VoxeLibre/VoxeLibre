@@ -36,7 +36,7 @@ minetest.register_craftitem("mcl_fire:fire_charge", {
 			else
 				mcl_fire.set_fire(pointed_thing, user, false)
 			end
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(user:get_player_name()) then
 				itemstack:take_item()
 			end
 		end

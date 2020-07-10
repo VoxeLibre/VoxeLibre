@@ -120,7 +120,7 @@ mobs:register_mob("mobs_mc:pig", {
 				min = 1,
 				max = 1,},
 			}
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				local inv = clicker:get_inventory()
 				local stack = inv:get_stack("main", clicker:get_wield_index())
 				stack:take_item()
@@ -142,7 +142,7 @@ mobs:register_mob("mobs_mc:pig", {
 
 			mobs.attach(self, clicker)
 
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 
 				local inv = self.driver:get_inventory()
 				-- 26 uses

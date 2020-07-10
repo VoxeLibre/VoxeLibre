@@ -233,7 +233,7 @@ local horse = {
 				-- Put on saddle and take saddle from player's inventory
 				local w = clicker:get_wielded_item()
 				self._saddle = true
-				if not minetest.settings:get_bool("creative_mode") then
+				if not minetest.is_creative_enabled(clicker:get_player_name()) then
 					w:take_item()
 					clicker:set_wielded_item(w)
 				end
@@ -257,7 +257,7 @@ local horse = {
 				local armor = minetest.get_item_group(iname, "horse_armor")
 				self._horse_armor = iname
 				local w = clicker:get_wielded_item()
-				if not minetest.settings:get_bool("creative_mode") then
+				if not minetest.is_creative_enabled(clicker:get_player_name()) then
 					w:take_item()
 					clicker:set_wielded_item(w)
 				end

@@ -101,7 +101,8 @@ local fish = function(itemstack, player)
 							if inv:room_for_item("main", item) then
 								inv:add_item("main", item)
 							end
-							if not minetest.settings:get_bool("creative_mode") then
+
+							if not minetest.is_creative_enabled(player:get_player_name()) then
 								local idef = itemstack:get_definition()
 								itemstack:add_wear(65535/65) -- 65 uses
 								if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then
@@ -115,7 +116,7 @@ local fish = function(itemstack, player)
 						local node = minetest.get_node(epos)
 						local def = minetest.registered_nodes[node.name]
 						if def.walkable then
-							if not minetest.settings:get_bool("creative_mode") then
+							if not minetest.is_creative_enabled(player:get_player_name()) then
 								local idef = itemstack:get_definition()
 								itemstack:add_wear((65535/65)*2) -- if so and not creative then wear double like in MC.
 								if itemstack:get_count() == 0 and idef.sound and idef.sound.breaks then

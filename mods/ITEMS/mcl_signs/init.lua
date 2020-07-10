@@ -362,7 +362,7 @@ minetest.register_node("mcl_signs:wall_sign", {
 			if not success then
 				return itemstack
 			end
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				itemstack:take_item()
 			end
 			sign_info = signtext_info_standing[rotation_level + 1]

@@ -119,7 +119,7 @@ mobs:register_mob("mobs_mc:snowman", {
 			minetest.sound_play("shears", {pos = pos}, true)
 
 			-- Wear out
-			if not minetest.settings:get_bool("creative_mode") then
+			if not minetest.is_creative_enabled(clicker:get_player_name()) then
 				item:add_wear(mobs_mc.misc.shears_wear)
 				clicker:get_inventory():set_stack("main", clicker:get_wield_index(), item)
 			end

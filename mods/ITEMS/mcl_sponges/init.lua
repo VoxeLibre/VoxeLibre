@@ -82,7 +82,7 @@ minetest.register_node("mcl_sponges:sponge", {
 			local absorbed, wet_sponge = absorb(pos)
 			if absorbed then
 				minetest.item_place_node(ItemStack(wet_sponge), placer, pointed_thing)
-				if not minetest.settings:get_bool("creative_mode") then
+				if not minetest.is_creative_enabled(placer:get_player_name()) then
 					itemstack:take_item()
 				end
 				return itemstack
