@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_potions")
+
 local splash_image = function(colorstring, opacity)
 	if not opacity then
 		opacity = 127
@@ -87,193 +89,193 @@ local splash_DUR = mcl_potions.DURATION*mcl_potions.SPLASH_FACTOR
 local splash_DUR_2 = mcl_potions.DURATION_2*mcl_potions.SPLASH_FACTOR
 local splash_DUR_pl = mcl_potions.DURATION_PLUS*mcl_potions.SPLASH_FACTOR
 
-register_splash("water", "Splash Water Bottle", "#0000FF", {
+register_splash("water", S("Splash Water Bottle"), "#0000FF", {
     potion_fun = function(player, redx)  end,
-	tt = "No effect"
+	tt = S("No effect")
 })
 
-register_splash("river_water", "Splash River Water Bottle", "#0000FF", {
+register_splash("river_water", S("Splash River Water Bottle"), "#0000FF", {
     potion_fun = function(player, redx)  end,
-	tt = "No effect"
+	tt = S("No effect")
 })
 
-register_splash("awkward", "Awkward Splash Potion", "#0000FF", {
+register_splash("awkward", S("Awkward Splash Potion"), "#0000FF", {
     potion_fun = function(player, redx)  end,
-	tt = "No effect"
+	tt = S("No effect")
 })
 
-register_splash("mundane", "Mundane Splash Potion", "#0000FF", {
+register_splash("mundane", S("Mundane Splash Potion"), "#0000FF", {
     potion_fun = function(player, redx)  end,
-	tt = "No effect"
+	tt = S("No effect")
 })
 
-register_splash("thick", "Thick Splash Potion", "#0000FF", {
+register_splash("thick", S("Thick Splash Potion"), "#0000FF", {
     potion_fun = function(player, redx)  end,
-	tt = "No effect"
+	tt = S("No effect")
 })
 
-register_splash("healing", "Healing Splash Potion", "#AA0000", {
+register_splash("healing", S("Healing Splash Potion"), "#AA0000", {
     potion_fun = function(player, redx) mcl_potions.healing_func(player, 3*redx) end,
-	tt = "+3 HP"
+	tt = S("+3 HP")
 })
 
-register_splash("healing_2", "Healing Splash Potion II", "#DD0000", {
+register_splash("healing_2", S("Healing Splash Potion II"), "#DD0000", {
     potion_fun = function(player, redx) mcl_potions.healing_func(player, 6*redx) end,
-	tt = "+6 HP"
+	tt = S("+6 HP")
 })
 
-register_splash("harming", "Harming Splash Potion", "#660099", {
+register_splash("harming", S("Harming Splash Potion"), "#660099", {
     potion_fun = function(player, redx) mcl_potions.healing_func(player, -6*redx) end,
-	tt = "-4 HP"
+	tt = S("-4 HP")
 })
 
-register_splash("harming_2", "Harming Splash Potion II", "#330066", {
+register_splash("harming_2", S("Harming Splash Potion II"), "#330066", {
     potion_fun = function(player, redx) mcl_potions.healing_func(player, -12*redx) end,
-	tt = "-6 HP"
+	tt = S("-6 HP")
 })
 
-register_splash("leaping", "Leaping Splash Potion", "#00CC33", {
+register_splash("leaping", S("Leaping Splash Potion"), "#00CC33", {
 		potion_fun = function(player, redx) mcl_potions.leaping_func(player, 1.2, splash_DUR*redx) end,
-		tt = "120% | "..time_string(splash_DUR)
+		tt = S("120% | @1", time_string(splash_DUR))
 
 })
 
-register_splash("leaping_2", "Leaping Splash Potion II", "#00EE33", {
+register_splash("leaping_2", S("Leaping Splash Potion II"), "#00EE33", {
 		potion_fun = function(player, redx) mcl_potions.leaping_func(player, 1.4, splash_DUR_2*redx) end,
-		tt = "140% | "..time_string(splash_DUR_2)
+		tt = S("140% | @1", time_string(splash_DUR_2))
 })
 
-register_splash("leaping_plus", "Leaping Splash Potion +", "#00DD33", {
+register_splash("leaping_plus", S("Leaping Splash Potion +"), "#00DD33", {
 		potion_fun = function(player, redx) mcl_potions.leaping_func(player, 1.2, splash_DUR_pl*redx) end,
-		tt = "120% | "..time_string(splash_DUR_pl)
+		tt = S("120% | @1", time_string(splash_DUR_pl))
 })
 
-register_splash("swiftness", "Swiftness Splash Potion", "#009999", {
+register_splash("swiftness", S("Swiftness Splash Potion"), "#009999", {
 		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 1.2, splash_DUR*redx) end,
-		tt = "120% | "..time_string(splash_DUR)
+		tt = S("120% | @1", time_string(splash_DUR))
 })
 
-register_splash("swiftness_2", "Swiftness Splash Potion II", "#00BBBB", {
+register_splash("swiftness_2", S("Swiftness Splash Potion II"), "#00BBBB", {
 		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 1.4, splash_DUR_2*redx) end,
-		tt = "140% | "..time_string(splash_DUR_2)
+		tt = S("140% | @1", time_string(splash_DUR_2))
 })
 
-register_splash("swiftness_plus", "Swiftness Splash Potion +", "#00BBBB", {
+register_splash("swiftness_plus", S("Swiftness Splash Potion +"), "#00BBBB", {
 		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 1.2, splash_DUR_pl*redx) end,
-		tt = "120% | "..time_string(splash_DUR_2)
+		tt = S("120% | @1", time_string(splash_DUR_2))
 })
 
-register_splash("slowness", "Slowness Splash Potion", "#000080", {
+register_splash("slowness", S("Slowness Splash Potion"), "#000080", {
 		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 0.85, splash_DUR*mcl_potions.INV_FACTOR*redx) end,
-		tt = "85% | "..time_string(splash_DUR*mcl_potions.INV_FACTOR)
+		tt = S("85% | @1", time_string(splash_DUR*mcl_potions.INV_FACTOR))
 })
 
-register_splash("slowness_2", "Slowness Splash Potion IV", "#000080", {
+register_splash("slowness_2", S("Slowness Splash Potion IV"), "#000080", {
 		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 0.4, 20*mcl_potions.INV_FACTOR*redx) end,
-		tt = "40% | "..time_string(20*mcl_potions.INV_FACTOR)
+		tt = S("40% | @1", time_string(20*mcl_potions.INV_FACTOR))
 })
 
-register_splash("slowness_plus", "Slowness Splash Potion +", "#000066", {
+register_splash("slowness_plus", S("Slowness Splash Potion +"), "#000066", {
 		potion_fun = function(player, redx) mcl_potions.swiftness_func(player, 0.85, splash_DUR_pl*mcl_potions.INV_FACTOR*redx) end,
-		tt = "85% | "..time_string(splash_DUR_pl*mcl_potions.INV_FACTOR)
+		tt = S("85% | @1", time_string(splash_DUR_pl*mcl_potions.INV_FACTOR))
 })
 
-register_splash("poison", "Poison Splash Potion", "#335544", {
+register_splash("poison", S("Poison Splash Potion"), "#335544", {
 		potion_fun = function(player, redx) mcl_potions.poison_func(player, 2.5, splash_DUR*mcl_potions.INV_FACTOR^2*redx) end,
-		tt = "-1 HP / 2.5s | "..time_string(splash_DUR*mcl_potions.INV_FACTOR^2)
+		tt = S("-1 HP / 2.5s | @1", time_string(splash_DUR*mcl_potions.INV_FACTOR^2))
 })
 
-register_splash("poison_2", "Poison Splash Potion II", "#446655", {
+register_splash("poison_2", S("Poison Splash Potion II"), "#446655", {
 		potion_fun = function(player, redx) mcl_potions.poison_func(player, 1.2, splash_DUR_2*mcl_potions.INV_FACTOR^2*redx) end,
-		tt = "-1 HP / 1.2s | "..time_string(splash_DUR_2*mcl_potions.INV_FACTOR^2)
+		tt = S("-1 HP / 1.2s | @1", time_string(splash_DUR_2*mcl_potions.INV_FACTOR^2))
 })
 
-register_splash("poison_plus", "Poison Splash Potion +", "#557766", {
+register_splash("poison_plus", S("Poison Splash Potion +"), "#557766", {
 		potion_fun = function(player, redx) mcl_potions.poison_func(player, 2.5, splash_DUR*mcl_potions.INV_FACTOR*redx) end,
-		tt = "-1 HP / 2.5s | "..time_string(splash_DUR_pl*mcl_potions.INV_FACTOR^2)
+		tt = S("-1 HP / 2.5s | @1", time_string(splash_DUR_pl*mcl_potions.INV_FACTOR^2))
 })
 
-register_splash("regeneration", "Regeneration Splash Potion", "#A52BB2", {
+register_splash("regeneration", S("Regeneration Splash Potion"), "#A52BB2", {
 		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 2.5, splash_DUR*redx) end,
-		tt = "+1 HP / 2.5s | "..time_string(splash_DUR)
+		tt = S("+1 HP / 2.5s | @1", time_string(splash_DUR))
 })
 
-register_splash("regeneration_2", "Regeneration Splash Potion II", "#B52CC2", {
+register_splash("regeneration_2", S("Regeneration Splash Potion II"), "#B52CC2", {
 		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 1.2, (splash_DUR_2 + 1)*redx) end,
-		tt = "+1 HP / 1.2s | "..time_string(splash_DUR_2 + 1)
+		tt = S("+1 HP / 1.2s | @1", time_string(splash_DUR_2 + 1))
 })
 
-register_splash("regeneration_plus", "Regeneration Splash Potion +", "#C53DD3", {
+register_splash("regeneration_plus", S("Regeneration Splash Potion +"), "#C53DD3", {
 		potion_fun = function(player, redx) mcl_potions.regeneration_func(player, 2.5, splash_DUR_pl*redx) end,
-		tt = "+1 HP / 2.5s | "..time_string(splash_DUR_pl)
+		tt = S("+1 HP / 2.5s | @1", time_string(splash_DUR_pl))
 })
 
-register_splash("invisibility", "Invisibility Splash Potion", "#B0B0B0", {
+register_splash("invisibility", S("Invisibility Splash Potion"), "#B0B0B0", {
 	potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, splash_DUR*redx) end,
 	tt = time_string(splash_DUR)
 })
 
-register_splash("invisibility_plus", "Invisibility Splash Potion +", "#A0A0A0", {
+register_splash("invisibility_plus", S("Invisibility Splash Potion +"), "#A0A0A0", {
 	potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, splash_DUR_pl*redx) end,
 	tt = time_string(splash_DUR_pl)
 })
 
-register_splash("weakness", "Weakness Splash Potion", "#6600AA", {
+register_splash("weakness", S("Weakness Splash Potion"), "#6600AA", {
 	potion_fun = function(player, redx) mcl_potions.weakness_func(player, -4, splash_DUR*mcl_potions.INV_FACTOR*redx) end,
 	-- TODO: Fix tooltip
 	tt = time_string(splash_DUR*mcl_potions.INV_FACTOR)
 })
 
-register_splash("weakness_plus", "Weakness Splash Potion +", "#7700BB", {
+register_splash("weakness_plus", S("Weakness Splash Potion +"), "#7700BB", {
 	potion_fun = function(player, redx) mcl_potions.weakness_func(player, -4, splash_DUR_pl*mcl_potions.INV_FACTOR*redx) end,
 	-- TODO: Fix tooltip
 	tt = time_string(splash_DUR_pl*mcl_potions.INV_FACTOR)
 })
 
-register_splash("strength", "Strength Splash Potion", "#D444D4", {
+register_splash("strength", S("Strength Splash Potion"), "#D444D4", {
 	potion_fun = function(player, redx) mcl_potions.strength_func(player, 3, splash_DUR*redx) end,
 	-- TODO: Fix tooltip
 	tt = time_string(splash_DUR)
 })
 
-register_splash("strength_2", "Strength Splash Potion II", "#D444F4", {
+register_splash("strength_2", S("Strength Splash Potion II"), "#D444F4", {
 	potion_fun = function(player, redx) mcl_potions.strength_func(player, 6, splash_DUR_2*redx) end,
 	-- TODO: Fix tooltip
 	tt = time_string(splash_DUR_2)
 })
 
-register_splash("strength_plus", "Strength Splash Potion +", "#D444E4", {
+register_splash("strength_plus", S("Strength Splash Potion +"), "#D444E4", {
 	potion_fun = function(player, redx) mcl_potions.strength_func(player, 3, splash_DUR_pl*redx) end,
 	-- TODO: Fix tooltip
 	tt = time_string(splash_DUR_pl)
 })
 
-register_splash("water_breathing", "Water Breathing Splash Potion", "#0000AA", {
+register_splash("water_breathing", S("Water Breathing Splash Potion"), "#0000AA", {
 	potion_fun = function(player, redx) mcl_potions.water_breathing_func(player, splash_DUR*redx) end,
 	tt = time_string(splash_DUR)
 })
 
-register_splash("water_breathing_plus", "Water Breathing Splash Potion +", "#0000CC", {
+register_splash("water_breathing_plus", S("Water Breathing Splash Potion +"), "#0000CC", {
 	potion_fun = function(player, redx) mcl_potions.water_breathing_func(player, splash_DUR_pl*redx) end,
 	tt = time_string(splash_DUR_pl)
 })
 
-register_splash("fire_resistance", "Fire Resistance Splash Potion", "#D0A040", {
+register_splash("fire_resistance", S("Fire Resistance Splash Potion"), "#D0A040", {
 	potion_fun = function(player, redx) mcl_potions.fire_resistance_func(player, splash_DUR*redx) end,
 	tt = time_string(splash_DUR)
 })
 
-register_splash("fire_resistance_plus", "Fire Resistance Splash Potion +", "#E0B050", {
+register_splash("fire_resistance_plus", S("Fire Resistance Splash Potion +"), "#E0B050", {
 	potion_fun = function(player, redx) mcl_potions.fire_resistance_func(player, splash_DUR_pl*redx) end,
 	tt = time_string(splash_DUR_pl)
 })
 
-register_splash("night_vision", "Night Vision Splash Potion", "#1010AA", {
+register_splash("night_vision", S("Night Vision Splash Potion"), "#1010AA", {
 	potion_fun = function(player, redx) mcl_potions.night_vision_func(player, splash_DUR*redx) end,
 	tt = time_string(splash_DUR)
 })
 
-register_splash("night_vision_plus", "Night Vision Splash Potion +", "#2020BA", {
+register_splash("night_vision_plus", S("Night Vision Splash Potion +"), "#2020BA", {
 	potion_fun = function(player, redx) mcl_potions.night_vision_func(player, splash_DUR_pl*redx) end,
 	tt = time_string(splash_DUR_pl)
 })

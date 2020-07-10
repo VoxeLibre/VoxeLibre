@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_potions")
+
 local lingering_image = function(colorstring, opacity)
 	if not opacity then
 		opacity = 127
@@ -129,182 +131,182 @@ local function time_string(dur)
 	return math.floor(dur/60)..string.format(":%02d",math.floor(dur % 60))
 end
 
-register_lingering("water", "Lingering Water Bottle", "#0000FF", {
+register_lingering("water", S("Lingering Water Bottle"), "#0000FF", {
     potion_fun = function(player)  end,
-	tt = "No effect"
+	tt = S("No effect")
 })
 
-register_lingering("river_water", "Lingering River Water Bottle", "#0000FF", {
+register_lingering("river_water", S("Lingering River Water Bottle"), "#0000FF", {
     potion_fun = function(player)  end,
-	tt = "No effect"
+	tt = S("No effect")
 })
 
-register_lingering("awkward", "Lingering Awkward Potion", "#0000FF", {
+register_lingering("awkward", S("Lingering Awkward Potion"), "#0000FF", {
     potion_fun = function(player)  end,
-	tt = "No effect"
+	tt = S("No effect")
 })
 
-register_lingering("mundane", "Lingering Mundane Potion", "#0000FF", {
+register_lingering("mundane", S("Lingering Mundane Potion"), "#0000FF", {
     potion_fun = function(player)  end,
-	tt = "No effect"
+	tt = S("No effect")
 })
 
-register_lingering("thick", "Lingering Thick Potion", "#0000FF", {
+register_lingering("thick", S("Lingering Thick Potion"), "#0000FF", {
     potion_fun = function(player)  end,
-	tt = "No effect"
+	tt = S("No effect")
 })
 
-register_lingering("healing", "Lingering Healing Potion", "#AA0000", {
+register_lingering("healing", S("Lingering Healing Potion"), "#AA0000", {
     potion_fun = function(player) player:set_hp(player:get_hp() + 2) end,
-	tt = "+2 HP"
+	tt = S("+2 HP")
 })
 
-register_lingering("healing_2", "Lingering Healing Potion II", "#DD0000", {
+register_lingering("healing_2", S("Lingering Healing Potion II"), "#DD0000", {
     potion_fun = function(player) player:set_hp(player:get_hp() + 4) end,
-	tt = "+4 HP"
+	tt = S("+4 HP")
 })
 
-register_lingering("harming", "Lingering Harming Potion", "#660099", {
+register_lingering("harming", S("Lingering Harming Potion"), "#660099", {
     potion_fun = function(player) mcl_potions.healing_func(player, -3) end,
-	tt = "-3 HP"
+	tt = S("-3 HP")
 })
 
-register_lingering("harming_2", "Lingering Harming Potion II", "#330066", {
+register_lingering("harming_2", S("Lingering Harming Potion II"), "#330066", {
     potion_fun = function(player) mcl_potions.healing_func(player, -6) end,
-	tt = "-6 HP"
+	tt = S("-6 HP")
 })
 
-register_lingering("leaping", "Lingering Leaping Potion", "#00CC33", {
+register_lingering("leaping", S("Lingering Leaping Potion"), "#00CC33", {
 		potion_fun = function(player) mcl_potions.leaping_func(player, 1.2, mcl_potions.DURATION*0.25) end,
-		tt = "120% | "..time_string(mcl_potions.DURATION*0.25)
+		tt = S("120% | @1", time_string(mcl_potions.DURATION*0.25))
 })
 
-register_lingering("leaping_2", "Lingering Leaping Potion II", "#00EE33", {
+register_lingering("leaping_2", S("Lingering Leaping Potion II"), "#00EE33", {
 		potion_fun = function(player) mcl_potions.leaping_func(player, 1.4, mcl_potions.DURATION_2*0.25) end,
-		tt = "140% | "..time_string(mcl_potions.DURATION_2*0.25)
+		tt = S("140% | @1", time_string(mcl_potions.DURATION_2*0.25))
 })
 
-register_lingering("leaping_plus", "Lingering Leaping Potion +", "#00DD33", {
+register_lingering("leaping_plus", S("Lingering Leaping Potion +"), "#00DD33", {
 		potion_fun = function(player) mcl_potions.leaping_func(player, 1.2, mcl_potions.DURATION_PLUS*0.25) end,
-		tt = "120% | "..time_string(mcl_potions.DURATION_PLUS*0.25)
+		tt = S("120% | @1", time_string(mcl_potions.DURATION_PLUS*0.25))
 })
 
-register_lingering("swiftness", "Lingering Swiftness Potion", "#009999", {
+register_lingering("swiftness", S("Lingering Swiftness Potion"), "#009999", {
 		potion_fun = function(player) mcl_potions.swiftness_func(player, 1.2, mcl_potions.DURATION*0.25) end,
-		tt = "120% | "..time_string(mcl_potions.DURATION*0.25)
+		tt = S("120% | @1", time_string(mcl_potions.DURATION*0.25))
 })
 
-register_lingering("swiftness_2", "Lingering Swiftness Potion II", "#00BBBB", {
+register_lingering("swiftness_2", S("Lingering Swiftness Potion II"), "#00BBBB", {
 		potion_fun = function(player) mcl_potions.swiftness_func(player, 1.4, mcl_potions.DURATION_2*0.25) end,
-		tt = "140% | "..time_string(mcl_potions.DURATION_2*0.25)
+		tt = S("140% | @1", time_string(mcl_potions.DURATION_2*0.25))
 })
 
-register_lingering("swiftness_plus", "Lingering Swiftness Potion +", "#00BBBB", {
+register_lingering("swiftness_plus", S("Lingering Swiftness Potion +"), "#00BBBB", {
 		potion_fun = function(player) mcl_potions.swiftness_func(player, 1.2, mcl_potions.DURATION_PLUS*0.25) end,
-		tt = "120% | "..time_string(mcl_potions.DURATION_PLUS*0.25)
+		tt = S("120% | @1", time_string(mcl_potions.DURATION_PLUS*0.25))
 })
 
-register_lingering("slowness", "Lingering Slowness Potion", "#000080", {
+register_lingering("slowness", S("Lingering Slowness Potion"), "#000080", {
 		potion_fun = function(player) mcl_potions.swiftness_func(player, 0.85, mcl_potions.DURATION*mcl_potions.INV_FACTOR*0.25) end,
-		tt = "85% | "..time_string(mcl_potions.DURATION*mcl_potions.INV_FACTOR*0.25)
+		tt = S("85% | @1", time_string(mcl_potions.DURATION*mcl_potions.INV_FACTOR*0.25))
 })
 
-register_lingering("slowness_plus", "Lingering Slowness Potion +", "#000066", {
+register_lingering("slowness_plus", S("Lingering Slowness Potion +"), "#000066", {
 		potion_fun = function(player) mcl_potions.swiftness_func(player, 0.85, mcl_potions.DURATION_PLUS*mcl_potions.INV_FACTOR*0.25) end,
-		tt = "85% | "..time_string(mcl_potions.DURATION_PLUS*mcl_potions.INV_FACTOR*0.25)
+		tt = S("85% | @1", time_string(mcl_potions.DURATION_PLUS*mcl_potions.INV_FACTOR*0.25))
 })
 
-register_lingering("slowness_2", "Lingering Slowness Potion IV", "#000066", {
+register_lingering("slowness_2", S("Lingering Slowness Potion IV"), "#000066", {
 		potion_fun = function(player) mcl_potions.swiftness_func(player, 0.4, 20*0.25) end,
-		tt = "40% | "..time_string(20*0.25)
+		tt = S("40% | @1", time_string(20*0.25))
 })
 
-register_lingering("poison", "Lingering Poison Potion", "#335544", {
+register_lingering("poison", S("Lingering Poison Potion"), "#335544", {
 		potion_fun = function(player) mcl_potions.poison_func(player, 2.5, 45*0.25) end,
-		tt = "-1 HP / 2.5s | "..time_string(45*0.25)
+		tt = S("-1 HP / 2.5s | @1", time_string(45*0.25))
 })
 
-register_lingering("poison_2", "Lingering Poison Potion II", "#446655", {
+register_lingering("poison_2", S("Lingering Poison Potion II"), "#446655", {
 		potion_fun = function(player) mcl_potions.poison_func(player, 1.2, 21*0.25) end,
-		tt = "-1 HP / 1.2s | "..time_string(21*0.25)
+		tt = S("-1 HP / 1.2s | @1", time_string(21*0.25))
 })
 
-register_lingering("poison_plus", "Lingering Poison Potion +", "#557766", {
+register_lingering("poison_plus", S("Lingering Poison Potion +"), "#557766", {
 		potion_fun = function(player) mcl_potions.poison_func(player, 2.5, 90*0.25) end,
-		tt = "-1 HP / 2.5s | "..time_string(90*0.25)
+		tt = S("-1 HP / 2.5s | @1", time_string(90*0.25))
 })
 
-register_lingering("regeneration", "Lingering Regeneration Potion", "#A52BB2", {
+register_lingering("regeneration", S("Lingering Regeneration Potion"), "#A52BB2", {
 		potion_fun = function(player) mcl_potions.regeneration_func(player, 2.5, 45*0.25) end,
-		tt = "+1 HP / 2.5s | "..time_string(45*0.25)
+		tt = S("+1 HP / 2.5s | @1", time_string(45*0.25))
 })
 
-register_lingering("regeneration_2", "Lingering Regeneration Potion II", "#B52CC2", {
+register_lingering("regeneration_2", S("Lingering Regeneration Potion II"), "#B52CC2", {
 		potion_fun = function(player) mcl_potions.regeneration_func(player, 1.2, 22*0.25) end,
-		tt = "+1 HP / 1.2s | "..time_string(22*0.25)
+		tt = S("+1 HP / 1.2s | @1", time_string(22*0.25))
 })
 
-register_lingering("regeneration_plus", "Lingering Regeneration Potion +", "#C53DD3", {
+register_lingering("regeneration_plus", S("Lingering Regeneration Potion +"), "#C53DD3", {
 		potion_fun = function(player) mcl_potions.regeneration_func(player, 2.5, 90*0.25) end,
-		tt = "+1 HP / 2.5s | "..time_string(90*0.25)
+		tt = S("+1 HP / 2.5s | @1", time_string(90*0.25))
 })
 
-register_lingering("invisibility", "Lingering Invisibility Potion", "#B0B0B0", {
+register_lingering("invisibility", S("Lingering Invisibility Potion"), "#B0B0B0", {
 	potion_fun = function(player) mcl_potions.invisiblility_func(player, mcl_potions.DURATION*0.25) end,
 	tt = time_string(mcl_potions.DURATION*0.25)
 })
 
-register_lingering("invisibility_plus", "Lingering Invisibility Potion +", "#A0A0A0", {
+register_lingering("invisibility_plus", S("Lingering Invisibility Potion +"), "#A0A0A0", {
 	potion_fun = function(player) mcl_potions.invisiblility_func(player, mcl_potions.DURATION_PLUS*0.25) end,
 	tt = time_string(mcl_potions.DURATION_PLUS*0.25)
 })
 
-register_lingering("weakness", "Lingering Weakness Potion", "#6600AA", {
+register_lingering("weakness", S("Lingering Weakness Potion"), "#6600AA", {
 	potion_fun = function(player) mcl_potions.weakness_func(player, -4, mcl_potions.DURATION*mcl_potions.INV_FACTOR*0.25) end,
 	-- TODO: Fix tooltip
 	tt = time_string(mcl_potions.DURATION*mcl_potions.INV_FACTOR*0.25)
 })
 
-register_lingering("weakness_plus", "Lingering Weakness Potion +", "#7700BB", {
+register_lingering("weakness_plus", S("Lingering Weakness Potion +"), "#7700BB", {
 	potion_fun = function(player) mcl_potions.weakness_func(player, -4, mcl_potions.DURATION_PLUS*mcl_potions.INV_FACTOR*0.25) end,
 	-- TODO: Fix tooltip
 	tt = time_string(mcl_potions.DURATION*mcl_potions.INV_FACTOR*0.25)
 })
 
-register_lingering("fire_resistance", "Lingering Fire Resistance Potion", "#D0A040", {
+register_lingering("fire_resistance", S("Lingering Fire Resistance Potion"), "#D0A040", {
 	potion_fun = function(player) mcl_potions.fire_resistance_func(player, mcl_potions.DURATION*0.25) end,
 	tt = time_string(mcl_potions.DURATION*0.25)
 })
 
-register_lingering("fire_resistance_plus", "Lingering Fire Resistance Potion +", "#E0B050", {
+register_lingering("fire_resistance_plus", S("Lingering Fire Resistance Potion +"), "#E0B050", {
 	potion_fun = function(player) mcl_potions.fire_resistance_func(player, mcl_potions.DURATION_PLUS*0.25) end,
 	tt = time_string(mcl_potions.DURATION_PLUS*0.25)
 })
 
-register_lingering("strength", "Lingering Strength Potion", "#D444D4", {
+register_lingering("strength", S("Lingering Strength Potion"), "#D444D4", {
 	potion_fun = function(player) mcl_potions.strength_func(player, 3, mcl_potions.DURATION*0.25) end,
 	-- TODO: Fix tooltip
 	tt = time_string(mcl_potions.DURATION*0.25)
 })
 
-register_lingering("strength_2", "Lingering Strength Potion II", "#D444F4", {
+register_lingering("strength_2", S("Lingering Strength Potion II"), "#D444F4", {
 	potion_fun = function(player) mcl_potions.strength_func(player, 6, smcl_potions.DURATION_2*0.25) end,
 	-- TODO: Fix tooltip
 	tt = time_string(mcl_potions.DURATION_2*0.25)
 })
 
-register_lingering("strength_plus", "Lingering Strength Potion +", "#D444E4", {
+register_lingering("strength_plus", S("Lingering Strength Potion +"), "#D444E4", {
 	potion_fun = function(player) mcl_potions.strength_func(player, 3, mcl_potions.DURATION_PLUS*0.25) end,
 	-- TODO: Fix tooltip
 	tt = time_string(mcl_potions.DURATION_PLUS*0.25)
 })
 
-register_lingering("night_vision", "Lingering Night Vision Potion", "#1010AA", {
+register_lingering("night_vision", S("Lingering Night Vision Potion"), "#1010AA", {
 	potion_fun = function(player) mcl_potions.night_vision_func(player, mcl_potions.DURATION*0.25) end,
 	tt = time_string(mcl_potions.DURATION*0.25)
 })
 
-register_lingering("night_vision_plus", "Lingering Night Vision Potion +", "#2020BA", {
+register_lingering("night_vision_plus", S("Lingering Night Vision Potion +"), "#2020BA", {
 	potion_fun = function(player) mcl_potions.night_vision_func(player, mcl_potions.DURATION_PLUS*0.25) end,
 	tt = time_string(mcl_potions.DURATION_PLUS*0.25)
 })
