@@ -834,6 +834,7 @@ for color, desc in pairs(boxtypes) do
 				local iinv_main = minetest.deserialize(imeta)
 				local ninv = minetest.get_inventory({type="node", pos=droppos})
 				ninv:set_list("main", iinv_main)
+				ninv:set_size("main", 9*3)
 				stack:take_item()
 			end
 			return stack
