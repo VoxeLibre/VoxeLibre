@@ -58,6 +58,45 @@ local function setSprinting(playerName, sprinting) --Sets the state of a player 
 	end
 	return false
 end
+
+-- Given the param2 and paramtype2 of a node, returns the tile that is facing upwards
+local function get_top_node_tile(param2, paramtype2)
+	if paramtype2 == "colorwallmounted" then
+		paramtype2 = "wallmounted"
+		param2 = param2 % 8
+	elseif paramtype2 == "colorfacedir" then
+		paramtype2 = "facedir"
+		param2 = param2 % 32
+	end
+	if paramtype2 == "wallmounted" then
+		if param2 == 0 then
+			return 2
+		elseif param2 == 1 then
+			return 1
+		else
+			return 5
+		end
+	elseif paramtype2 == "facedir" then
+		if param2 >= 0 and param2 <= 3 then
+			return 1
+		elseif param2 == 4 or param2 == 10 or param2 == 13 or param2 == 19 then
+			return 6
+		elseif param2 == 5 or param2 == 11 or param2 == 14 or param2 == 16 then
+			return 3
+		elseif param2 == 6 or param2 == 8 or param2 == 15 or param2 == 17 then
+			return 5
+		elseif param2 == 7 or param2 == 9 or param2 == 12 or param2 == 18 then
+			return 4
+		elseif param2 >= 20 and param2 <= 23 then
+			return 2
+		else
+			return 1
+		end
+	else
+		return 1
+	end
+end
+
 minetest.register_globalstep(function(dtime)
 	--Get the gametime
 	local gameTime = minetest.get_gametime()
@@ -109,7 +148,7 @@ minetest.register_globalstep(function(dtime)
 						attached = player,
 						vertical = false,
 						node = playerNode,
-						node_tile = 1,
+						node_tile = get_top_node_tile(playerNode.param2, def.paramtype2),
 					})
 				end
 			end
