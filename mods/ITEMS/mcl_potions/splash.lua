@@ -94,7 +94,7 @@ register_splash("water", S("Splash Water Bottle"), "#0000FF", {
 	tt = S("No effect")
 })
 
-register_splash("river_water", S("Splash River Water Bottle"), "#0000FF", {
+register_splash("river_water", S("Splash River Water Bottle"), "#0044FF", {
     potion_fun = function(player, redx)  end,
 	tt = S("No effect")
 })

@@ -136,7 +136,7 @@ register_lingering("water", S("Lingering Water Bottle"), "#0000FF", {
 	tt = S("No effect")
 })
 
-register_lingering("river_water", S("Lingering River Water Bottle"), "#0000FF", {
+register_lingering("river_water", S("Lingering River Water Bottle"), "#0044FF", {
     potion_fun = function(player)  end,
 	tt = S("No effect")
 })
