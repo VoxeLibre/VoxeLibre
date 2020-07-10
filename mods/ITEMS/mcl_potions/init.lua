@@ -291,7 +291,7 @@ minetest.register_craft({
 
 local water_table = {
 	["mcl_nether:nether_wart_item"] = "mcl_potions:awkward",
-	["mcl_potions:fermented_spider_eye"] = "mcl_potions:weakness",
+	-- ["mcl_potions:fermented_spider_eye"] = "mcl_potions:weakness",
 	["mcl_potions:speckled_melon"] = "mcl_potions:mundane",
 	["mcl_core:sugar"] = "mcl_potions:mundane",
 	["mcl_mobitems:magma_cream"] = "mcl_potions:mundane",
@@ -307,7 +307,7 @@ local awkward_table = {
 	["mcl_farming:carrot_item_gold"] = "mcl_potions:night_vision",
 	["mcl_core:sugar"] = "mcl_potions:swiftness",
 	["mcl_mobitems:magma_cream"] = "mcl_potions:fire_resistance",
-	["mcl_mobitems:blaze_powder"] = "mcl_potions:strength",
+	-- ["mcl_mobitems:blaze_powder"] = "mcl_potions:strength",
 	["mcl_fishing:pufferfish_raw"] = "mcl_potions:water_breathing",
 	["mcl_mobitems:ghast_tear"] = "mcl_potions:regeneration",
 	["mcl_mobitems:spider_eye"] = "mcl_potions:poison",
@@ -324,7 +324,10 @@ local output_table = {
 local enhancement_table = {}
 local extension_table = {}
 local potions = {"awkward", "mundane", "thick"}
-for i, potion in ipairs({"healing","harming","swiftness","slowness","leaping","poison","regeneration","invisibility","fire_resistance","weakness","strength","water_breathing","night_vision"}) do
+for i, potion in ipairs({"healing","harming","swiftness","slowness",
+						 "leaping","poison","regeneration","invisibility","fire_resistance",
+						 -- "weakness","strength",
+						 "water_breathing","night_vision"}) do
 
 		table.insert(potions, potion)
 

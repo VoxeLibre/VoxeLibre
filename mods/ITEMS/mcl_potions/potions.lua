@@ -18,7 +18,7 @@ minetest.register_craftitem("mcl_potions:awkward", {
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
-	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=1},
+	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0},
 	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
@@ -31,7 +31,7 @@ minetest.register_craftitem("mcl_potions:mundane", {
 	stack_max = 1,
 	inventory_image = potion_image("#0000FF"),
 	wield_image = potion_image("#0000FF"),
-	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=1 },
+	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
 	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 })
