@@ -7,3 +7,4 @@ mobs_mc
 mcl_comparators
 mcl_minecarts
 mcl_paintings
+mcl_potions
