@@ -329,6 +329,7 @@ function mcl_potions._reset_player_effects(player)
 	end
 
 	if is_cat[player] then
+		player:override_day_night_ratio(nil)
 		is_cat[player] = nil
 	end
 
