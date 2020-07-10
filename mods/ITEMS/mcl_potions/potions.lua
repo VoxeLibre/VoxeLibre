@@ -62,7 +62,7 @@ minetest.register_craftitem("mcl_potions:dragon_breath", {
 
 minetest.register_craftitem("mcl_potions:healing", {
 	description = S("Healing Potion"),
-	_tt_help = S("+2 Hearts"),
+	_tt_help = S("+4 HP"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#CC0000"),
 	inventory_image = potion_image("#CC0000"),
@@ -86,7 +86,7 @@ minetest.register_craftitem("mcl_potions:healing", {
 
 minetest.register_craftitem("mcl_potions:healing_2", {
 	description = S("Healing Potion II"),
-	_tt_help = S("+4 Hearts"),
+	_tt_help = S("+8 HP"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#DD0000"),
 	inventory_image = potion_image("#DD0000"),
@@ -111,7 +111,7 @@ minetest.register_craftitem("mcl_potions:healing_2", {
 
 minetest.register_craftitem("mcl_potions:harming", {
 	description = S("Harming Potion"),
-	_tt_help = S("-3 Hearts"),
+	_tt_help = S("-6 HP"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#660099"),
 	inventory_image = potion_image("#660099"),
@@ -135,7 +135,7 @@ minetest.register_craftitem("mcl_potions:harming", {
 
 minetest.register_craftitem("mcl_potions:harming_2", {
 	description = S("Harming Potion II"),
-	_tt_help = S("-6 Hearts"),
+	_tt_help = S("-12 HP"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#330066"),
 	inventory_image = potion_image("#330066"),
@@ -427,7 +427,7 @@ minetest.register_craftitem("mcl_potions:leaping_plus", {
 
 minetest.register_craftitem("mcl_potions:weakness", {
 	description = S("Weakness Potion"),
-	_tt_help = S("-2 hearts per damage | 1:30"),
+	_tt_help = S("-4 HP damage | 1:30"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#6600AA"),
 	inventory_image = potion_image("#6600AA"),
@@ -451,7 +451,7 @@ minetest.register_craftitem("mcl_potions:weakness", {
 
 minetest.register_craftitem("mcl_potions:weakness_plus", {
 	description = S("Weakness Potion +"),
-	_tt_help = S("-2 hearts per damage | 4:00"),
+	_tt_help = S("-4 HP damage | 4:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#7700BB"),
 	inventory_image = potion_image("#7700BB"),
@@ -475,7 +475,7 @@ minetest.register_craftitem("mcl_potions:weakness_plus", {
 
 minetest.register_craftitem("mcl_potions:strength", {
 	description = S("Strength Potion"),
-	_tt_help = S("+1.5 hearts per damage | 3:00"),
+	_tt_help = S("+3 HP damage | 3:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#D444D4"),
 	inventory_image = potion_image("#D444D4"),
@@ -499,7 +499,7 @@ minetest.register_craftitem("mcl_potions:strength", {
 
 minetest.register_craftitem("mcl_potions:strength_2", {
 	description = S("Strength Potion II"),
-	_tt_help = S("+3 hearts per damage | 1:30"),
+	_tt_help = S("+6 HP damage | 1:30"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#D444E4"),
 	inventory_image = potion_image("#D444E4"),
@@ -523,7 +523,7 @@ minetest.register_craftitem("mcl_potions:strength_2", {
 
 minetest.register_craftitem("mcl_potions:strength_plus", {
 	description = S("Strength Potion +"),
-	_tt_help = S("1.5 hearts per damage | 8:00"),
+	_tt_help = S("+3 HP damage | 8:00"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#D444F4"),
 	inventory_image = potion_image("#D444F4"),
@@ -546,7 +546,7 @@ minetest.register_craftitem("mcl_potions:strength_plus", {
 })
 minetest.register_craftitem("mcl_potions:poison", {
 	description = S("Poison Potion"),
-	_tt_help = S("-1/2 Heart / 2.5sec | 0:45"),
+	_tt_help = S("-1 HP / 2.5s | 0:45"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#225533"),
 	inventory_image = potion_image("#225533"),
@@ -570,7 +570,7 @@ minetest.register_craftitem("mcl_potions:poison", {
 
 minetest.register_craftitem("mcl_potions:poison_2", {
 	description = S("Poison Potion II"),
-	_tt_help = S("-1/2 Heart / 1.2sec | 0:21"),
+	_tt_help = S("-1 HP / 1.2s | 0:21"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#447755"),
 	inventory_image = potion_image("#447755"),
@@ -594,7 +594,7 @@ minetest.register_craftitem("mcl_potions:poison_2", {
 
 minetest.register_craftitem("mcl_potions:poison_plus", {
 	description = S("Poison Potion +"),
-	_tt_help = S("-1/2 Heart / 2.5sec | 1:30"),
+	_tt_help = S("-1 HP / 2.5s | 1:30"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#336644"),
 	inventory_image = potion_image("#336644"),
@@ -619,7 +619,7 @@ minetest.register_craftitem("mcl_potions:poison_plus", {
 
 minetest.register_craftitem("mcl_potions:regeneration", {
 	description = S("Regeneration Potion"),
-	_tt_help = S("+1/2 Heart / 2.5sec | 0:45"),
+	_tt_help = S("+1 HP / 2.5s | 0:45"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#A52BB2"),
 	inventory_image = potion_image("#A52BB2"),
@@ -643,7 +643,7 @@ minetest.register_craftitem("mcl_potions:regeneration", {
 
 minetest.register_craftitem("mcl_potions:regeneration_2", {
 	description = S("Regeneration Potion II"),
-	_tt_help = S("+1/2 Heart / 1.2sec | 0:22"),
+	_tt_help = S("+1 HP / 1.2s | 0:22"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#B52CC2"),
 	inventory_image = potion_image("#B52CC2"),
@@ -667,7 +667,7 @@ minetest.register_craftitem("mcl_potions:regeneration_2", {
 
 minetest.register_craftitem("mcl_potions:regeneration_plus", {
 	description = S("Regeneration Potion +"),
-	_tt_help = S("+1/2 Heart / 2.5sec | 1:30"),
+	_tt_help = S("+1 HP / 2.5s | 1:30"),
 	_doc_items_longdesc = brewhelp,
 	wield_image = potion_image("#C53DD3"),
 	inventory_image = potion_image("#C53DD3"),
