@@ -202,7 +202,7 @@ There are so many people to list (sorry). Check out the respective mod directori
 * [aligator](https://github.com/aligator): Improvement of doors
 * [ryvnf](https://github.com/ryvnf): Explosion mechanics
 * MysticTempest: Bugfixes
-* [bzoss](https://github.com/bzoss): Brewing Stand
+* [bzoss](https://github.com/bzoss): Status effects, potions, brewing stand
 * Lots of other people: TO BE WRITTEN (see mod directories for details)
 
 #### Mod credits (summary)
