@@ -174,7 +174,10 @@ minetest.register_globalstep(function(dtime)
 			is_cat[player].timer = is_cat[player].timer + dtime
 
 			if player:get_pos() then mcl_potions._add_spawner(player, "#1010AA") end
-			player:override_day_night_ratio(0.45)
+			if minetest.get_timeofday() > 0.8 or minetest.get_timeofday() < 0.2 then
+				player:override_day_night_ratio(0.45)
+			else player:override_day_night_ratio(nil)
+			end
 
 			if is_cat[player].timer >= is_cat[player].dur then
 				is_cat[player] = nil
