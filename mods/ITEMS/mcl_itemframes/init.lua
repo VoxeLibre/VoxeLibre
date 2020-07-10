@@ -212,8 +212,6 @@ minetest.register_node("mcl_itemframes:item_frame",{
 			end
 			return
 		elseif mode == screwdriver.ROTATE_AXIS then
-			-- Place screwdriver into itemframe
-			minetest.registered_nodes["mcl_itemframes:item_frame"].on_rightclick(pos, node, user, ItemStack("screwdriver:screwdriver"))
 			return false
 		end
 	end,
