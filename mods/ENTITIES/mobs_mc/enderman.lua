@@ -3,7 +3,7 @@
 --made for MC like Survival game
 --License for code WTFPL and otherwise stated in readmes
 
--- ENDERMAN BEHAVIOUR:
+-- ENDERMAN BEHAVIOUR (OLD):
 -- In this game, endermen attack the player on sight, like other monsters do.
 -- However, they have a reduced viewing range to make them less dangerous.
 -- This differs from MC, in which endermen only become hostile when provoked,
@@ -262,22 +262,39 @@ mobs:register_mob("mobs_mc:enderman", {
 		end
 		-- AGRESSIVELY WARP/CHASE PLAYER BEHAVIOUR HERE.
 		if self.state == "attack" then
-			target = self.attack
-			if vector.distance(self.object:get_pos(), target:get_pos()) > 10 then
-				self:teleport(target)
+			if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
+				self:teleport(nil)
+				self.state = ""
+			else
+				if self.attack then
+					target = self.attack
+					pos = target:get_pos()
+					if pos ~= nil then
+						if vector.distance(self.object:get_pos(), target:get_pos()) > 10 then
+							self:teleport(target)
+						end
+					end
+				end
 			end
 		end
-		-- ARROW AVOIDANCE BEHAVIOUR HERE.
-		-- Check for arrows nearby.
+		-- ARROW / DAYTIME PEOPLE AVOIDANCE BEHAVIOUR HERE.
+		-- Check for arrows and people nearby.
 		local enderpos = self.object:get_pos()
 		local objs = minetest.get_objects_inside_radius(enderpos, 4)
 		for n = 1, #objs do
 			obj = objs[n]
 			if obj then
-				lua = obj:get_luaentity()
-				if lua then
-					if lua.name == "mcl_bows:arrow_entity" then
+				if minetest.is_player(obj) then
+					-- Warp from players during day.
+					if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
 						self:teleport(nil)
+					end	
+				else
+					lua = obj:get_luaentity()
+					if lua then
+						if lua.name == "mcl_bows:arrow_entity" then
+							self:teleport(nil)
+						end
 					end
 				end
 			end
@@ -286,7 +303,14 @@ mobs:register_mob("mobs_mc:enderman", {
 		local enderpos = self.object:get_pos()
 		if self.provoked == "broke_contact" then
 			self.provoked = "false"
-			self.state = 'attack'
+			if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
+				self:teleport(nil)
+				self.state = ""
+			else
+				if self.attack ~= nil then
+					self.state = 'attack'
+				end
+			end
 		end
 		-- Check to see if people are near by enough to look at us.
 		local objs = minetest.get_objects_inside_radius(enderpos, 64)
@@ -417,54 +441,62 @@ mobs:register_mob("mobs_mc:enderman", {
 			-- Find all solid nodes below air in a 10×10×10 cuboid centered on the target
 			local nodes = minetest.find_nodes_in_area_under_air(vector.subtract(target_pos, 5), vector.add(target_pos, 5), {"group:solid", "group:cracky", "group:crumbly"})
 			local telepos
-			if #nodes > 0 then
-				-- Up to 64 attempts to teleport
-				for n=1, math.min(64, #nodes) do
-					local r = pr:next(1, #nodes)
-					local nodepos = nodes[r]
-					local node_ok = true
-					-- Selected node needs to have 3 nodes of free space above
-					for u=1, 3 do
-						local node = minetest.get_node({x=nodepos.x, y=nodepos.y+u, z=nodepos.z})
-						if minetest.registered_nodes[node.name].walkable then
-							node_ok = false
-							break
+			if nodes ~= nil then
+				if #nodes > 0 then
+					-- Up to 64 attempts to teleport
+					for n=1, math.min(64, #nodes) do
+						local r = pr:next(1, #nodes)
+						local nodepos = nodes[r]
+						local node_ok = true
+						-- Selected node needs to have 3 nodes of free space above
+						for u=1, 3 do
+							local node = minetest.get_node({x=nodepos.x, y=nodepos.y+u, z=nodepos.z})
+							if minetest.registered_nodes[node.name].walkable then
+								node_ok = false
+								break
+							end
+						end
+						if node_ok then
+							telepos = {x=nodepos.x, y=nodepos.y+1, z=nodepos.z}
 						end
 					end
-					if node_ok then
-						telepos = {x=nodepos.x, y=nodepos.y+1, z=nodepos.z}
+					if telepos then
+						self.object:set_pos(telepos)
 					end
-				end
-				if telepos then
-					self.object:set_pos(telepos)
 				end
 			end
 		else
 			-- Attempt to randomly teleport enderman
 			local pos = self.object:get_pos()
-			-- Find all solid nodes below air in a 65×65×65 cuboid centered on the enderman
-			local nodes = minetest.find_nodes_in_area_under_air(vector.subtract(pos, 32), vector.add(pos, 32), {"group:solid", "group:cracky", "group:crumbly"})
-			local telepos
-			if #nodes > 0 then
-				-- Up to 64 attempts to teleport
-				for n=1, math.min(64, #nodes) do
-					local r = pr:next(1, #nodes)
-					local nodepos = nodes[r]
-					local node_ok = true
-					-- Selected node needs to have 3 nodes of free space above
-					for u=1, 3 do
-						local node = minetest.get_node({x=nodepos.x, y=nodepos.y+u, z=nodepos.z})
-						if minetest.registered_nodes[node.name].walkable then
-							node_ok = false
-							break
+			-- Up to 8 top-level attempts to teleport
+			for n=1, 8 do
+				local node_ok = false
+				-- We need to add (or subtract) different random numbers to each vector component, so it couldn't be done with a nice single vector.add() or .subtract():
+				local randomCube = vector.new( pos.x + 8*(pr:next(0,16)-8), pos.y + 8*(pr:next(0,16)-8), pos.z + 8*(pr:next(0,16)-8) )
+				local nodes = minetest.find_nodes_in_area_under_air(vector.subtract(randomCube, 4), vector.add(randomCube, 4), {"group:solid", "group:cracky", "group:crumbly"})
+				if nodes ~= nil then
+					if #nodes > 0 then
+						-- Up to 8 low-level (in total up to 8*8 = 64) attempts to teleport
+						for n=1, math.min(8, #nodes) do
+							local r = pr:next(1, #nodes)
+							local nodepos = nodes[r]
+							node_ok = true
+							for u=1, 3 do
+								local node = minetest.get_node({x=nodepos.x, y=nodepos.y+u, z=nodepos.z})
+								if minetest.registered_nodes[node.name].walkable then
+									node_ok = false
+									break
+								end
+							end
+							if node_ok then
+								self.object:set_pos({x=nodepos.x, y=nodepos.y+1, z=nodepos.z})
+								break
+							end
 						end
 					end
-					if node_ok then
-						telepos = {x=nodepos.x, y=nodepos.y+1, z=nodepos.z}
-					end
 				end
-				if telepos then
-					self.object:set_pos(telepos)
+				if node_ok then
+					 break
 				end
 			end
 		end
@@ -477,10 +509,14 @@ mobs:register_mob("mobs_mc:enderman", {
 	end,
 	do_punch = function(self, hitter, tflp, tool_caps, dir)
 		-- damage from rain caused by itself so we don't want it to attack itself.
-		if hitter ~= self.object then
-			self:teleport(hitter)
-			self.state="attack"
-			self.attack=hitter
+		if hitter ~= self.object and hitter ~= nil then
+			if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
+				self:teleport(nil)
+			else
+				self:teleport(hitter)
+				self.attack=hitter
+				self.state="attack"
+			end
 		end
 	end,
 	water_damage = 8,
