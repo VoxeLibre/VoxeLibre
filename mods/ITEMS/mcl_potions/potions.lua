@@ -10,152 +10,127 @@ end
 
 local how_to_drink = S("Use the “Place” key to drink it.")
 
-minetest.register_craftitem("mcl_potions:awkward", {
+
+local function register_potion(def)
+	minetest.register_craftitem("mcl_potions:"..def.name, {
+		description = def.description,
+		_tt_help = def._tt,
+		_doc_items_longdesc = def._longdesc,
+		_doc_items_usagehelp = how_to_drink,
+		stack_max = 1,
+		inventory_image = def.image,
+		wield_image = def.image,
+		groups = def.groups or {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0},
+		on_place = def.on_use,
+		on_secondary_use = def.on_use,
+	})
+
+	if def.is_II then
+	end
+
+end
+
+
+
+local awkward_def = {
+	name = "awkward",
 	description = S("Awkward Potion"),
-	_tt_help = S("No effect"),
-	_doc_items_longdesc = S("This potion has an awkward taste and is used for brewing more potions. Drinking it has no effect."),
-	_doc_items_usagehelp = how_to_drink,
-	stack_max = 1,
-	inventory_image = potion_image("#0000FF"),
-	wield_image = potion_image("#0000FF"),
+	_tt = S("No effect"),
+	_longdesc = S("Has an awkward taste and is used for brewing potions."),
+	image = potion_image("#0000FF"),
 	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0},
-	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
-	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
-})
+	on_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
+}
 
-minetest.register_craftitem("mcl_potions:mundane", {
+local mundane_def = {
+	name = "mundane",
 	description = S("Mundane Potion"),
-	_tt_help = S("No effect"),
-	_doc_items_longdesc = S("This potion has a clean taste and is used for brewing more potions. Drinking it has no effect."),
-	_doc_items_usagehelp = how_to_drink,
-	stack_max = 1,
-	inventory_image = potion_image("#0000FF"),
-	wield_image = potion_image("#0000FF"),
-	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
-	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
-	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
-})
+	_tt = S("No effect"),
+	longdesc = S("Has a clean taste and is used for brewing potions."),
+	image = potion_image("#0000FF"),
+	on_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
+}
 
-minetest.register_craftitem("mcl_potions:thick", {
+local thick_def = {
+	name = "thick",
 	description = S("Thick Potion"),
-	_tt_help = S("No effect"),
-	_doc_items_longdesc = S("This potion has a bitter taste and is used for brewing more potions. Drinking it has no effect."),
-	_doc_items_usagehelp = how_to_drink,
-	stack_max = 1,
-	inventory_image = potion_image("#0000FF"),
-	wield_image = potion_image("#0000FF"),
-	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
-	on_place = minetest.item_eat(0, "mcl_potions:glass_bottle"),
-	on_secondary_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
-})
+	_tt = S("No effect"),
+	_longdesc = S("Has a bitter taste and is used for brewing potions."),
+	image = potion_image("#0000FF"),
+	on_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
+}
 
-
-minetest.register_craftitem("mcl_potions:dragon_breath", {
+local dragon_breath_def = {
+	name = "dragon_breath",
 	description = S("Dragon's Breath"),
-	_doc_items_longdesc = brewhelp,
-	wield_image = "mcl_potions_dragon_breath.png",
-	inventory_image = "mcl_potions_dragon_breath.png",
+	_tt = S("No effect"),
+	_longdesc = S("Combine with Splash potions to create a Lingering effect"),
+	image = "mcl_potions_dragon_breath.png",
 	groups = { brewitem = 1, not_in_creative_inventory = 0 },
-	stack_max = 1,
-})
+	on_use = nil,
+}
 
-
-minetest.register_craftitem("mcl_potions:healing", {
+local healing_def = {
+	name = "healing",
 	description = S("Healing Potion"),
-	_tt_help = S("+4 HP"),
-	_doc_items_longdesc = brewhelp,
-	wield_image = potion_image("#CC0000"),
-	inventory_image = potion_image("#CC0000"),
-	groups = { brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
-	stack_max = 1,
+	_tt = S("+4 HP"),
+	_longdesc = S("Drink to heal yourself"),
+	image = potion_image("#CC0000"),
+	on_use = function (itemstack, user, pointed_thing)
+							mcl_potions.healing_func(user, 4)
+							minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+							mcl_potions._use_potion(itemstack, user, "#CC0000")
+							return itemstack
+						end
+}
 
-	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.healing_func(user, 4)
-		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-		mcl_potions._use_potion(itemstack, user, "#CC0000")
-		return itemstack
-	end,
+local healing_2_def = table.copy(healing_def)
+healing_2_def.name = "healing_2"
+healing_2_def.description = S("Healing Potion II")
+healing_2_def._tt = S("+8 HP")
+healing_2_def.on_use = function (itemstack, user, pointed_thing)
+													mcl_potions.healing_func(user, 8)
+													minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+													mcl_potions._use_potion(itemstack, user, "#CC0000")
+													return itemstack
+												end
 
-	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.healing_func(user, 4)
-		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-		mcl_potions._use_potion(itemstack, user, "#CC0000")
-		return itemstack
-	end,
-})
 
-minetest.register_craftitem("mcl_potions:healing_2", {
-	description = S("Healing Potion II"),
-	_tt_help = S("+8 HP"),
-	_doc_items_longdesc = brewhelp,
-	wield_image = potion_image("#DD0000"),
-	inventory_image = potion_image("#DD0000"),
-	groups = { brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
-	stack_max = 1,
-
-	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.healing_func(user, 8)
-		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-		mcl_potions._use_potion(itemstack, user, "#DD0000")
-		return itemstack
-	end,
-
-	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.healing_func(user, 8)
-		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-		mcl_potions._use_potion(itemstack, user, "#DD0000")
-		return itemstack
-	end,
-
-})
-
-minetest.register_craftitem("mcl_potions:harming", {
+local harming_def = {
+	name = "harming",
 	description = S("Harming Potion"),
-	_tt_help = S("-6 HP"),
-	_doc_items_longdesc = brewhelp,
-	wield_image = potion_image("#660099"),
-	inventory_image = potion_image("#660099"),
-	groups = { brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
-	stack_max = 1,
+	_tt = S("-3 Hearts"),
+	_longdesc = S("Drink to heal yourself"),
+	image = potion_image("#660099"),
+	on_use = function (itemstack, user, pointed_thing)
+							mcl_potions.healing_func(user, -6)
+							minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+							mcl_potions._use_potion(itemstack, user, "#660099")
+							return itemstack
+						end
+}
 
-	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.healing_func(user, -6)
-		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-		mcl_potions._use_potion(itemstack, user, "#660099")
-		return itemstack
-	end,
+local harming_2_def = table.copy(healing_def)
+harming_2_def.name = "harming_2"
+harming_2_def.description = S("Harming Potion II")
+harming_2_def._tt = S("-6 Hearts")
+harming_2_def.on_use = function (itemstack, user, pointed_thing)
+													mcl_potions.healing_func(user, -12)
+													minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+													mcl_potions._use_potion(itemstack, user, "#660099")
+													return itemstack
+												end
 
-	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.healing_func(user, -6)
-		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-		mcl_potions._use_potion(itemstack, user, "#660099")
-		return itemstack
-	end,
-})
+register_potion(awkward_def)				
+register_potion(mundane_def)
+register_potion(thick_def)
+register_potion(dragon_breath_def)
+register_potion(healing_def)
+register_potion(healing_2_def)
+register_potion(harming_def)
+register_potion(harming_2_def)
 
-minetest.register_craftitem("mcl_potions:harming_2", {
-	description = S("Harming Potion II"),
-	_tt_help = S("-12 HP"),
-	_doc_items_longdesc = brewhelp,
-	wield_image = potion_image("#330066"),
-	inventory_image = potion_image("#330066"),
-	groups = { brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
-	stack_max = 1,
 
-	on_place = function(itemstack, user, pointed_thing)
-		mcl_potions.healing_func(user, -12)
-		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-		mcl_potions._use_potion(itemstack, user, "#330066")
-		return itemstack
-	end,
-
-	on_secondary_use = function(itemstack, user, pointed_thing)
-		mcl_potions.healing_func(user, -12)
-		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-		mcl_potions._use_potion(itemstack, user, "#330066")
-		return itemstack
-	end,
-})
 
 
 minetest.register_craftitem("mcl_potions:night_vision", {
