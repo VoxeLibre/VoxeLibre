@@ -118,27 +118,27 @@ register_splash("mundane", S("Mundane Splash Potion"), "#0000FF", {
 
 register_splash("thick", S("Thick Splash Potion"), "#0000FF", {
     potion_fun = function(player, redx)  end,
-	tt = S("No effect")
+		tt = S("No effect")
 })
 
 register_splash("healing", S("Healing Splash Potion"), "#AA0000", {
     potion_fun = function(player, redx) mcl_potions.healing_func(player, 3*redx) end,
-	tt = S("+3 HP")
+		tt = S("+3 HP")
 })
 
 register_splash("healing_2", S("Healing Splash Potion II"), "#DD0000", {
     potion_fun = function(player, redx) mcl_potions.healing_func(player, 6*redx) end,
-	tt = S("+6 HP")
+		tt = S("+6 HP")
 })
 
 register_splash("harming", S("Harming Splash Potion"), "#660099", {
     potion_fun = function(player, redx) mcl_potions.healing_func(player, -6*redx) end,
-	tt = S("-4 HP")
+		tt = S("-4 HP")
 })
 
 register_splash("harming_2", S("Harming Splash Potion II"), "#330066", {
     potion_fun = function(player, redx) mcl_potions.healing_func(player, -12*redx) end,
-	tt = S("-6 HP")
+		tt = S("-6 HP")
 })
 
 register_splash("leaping", S("Leaping Splash Potion"), "#00CC33", {
@@ -218,13 +218,13 @@ register_splash("regeneration_plus", S("Regeneration Splash Potion +"), "#C53DD3
 })
 
 register_splash("invisibility", S("Invisibility Splash Potion"), "#B0B0B0", {
-	potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, splash_DUR*redx) end,
-	tt = time_string(splash_DUR)
+		potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, splash_DUR*redx) end,
+		tt = time_string(splash_DUR)
 })
 
 register_splash("invisibility_plus", S("Invisibility Splash Potion +"), "#A0A0A0", {
-	potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, splash_DUR_pl*redx) end,
-	tt = time_string(splash_DUR_pl)
+		potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, splash_DUR_pl*redx) end,
+		tt = time_string(splash_DUR_pl)
 })
 
 -- register_splash("weakness", S("Weakness Splash Potion"), "#6600AA", {
