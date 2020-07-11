@@ -17,25 +17,25 @@ local wip_items = {
 	"mcl_paintings:painting",
 	"mcl_potions:night_vision",
 	"mcl_potions:night_vision_plus",
-	"mcl_potions:weakness",
-	"mcl_potions:weakness_plus",
-	"mcl_potions:strength",
-	"mcl_potions:strength_plus",
-	"mcl_potions:strength_2",
+	-- "mcl_potions:weakness",
+	-- "mcl_potions:weakness_plus",
+	-- "mcl_potions:strength",
+	-- "mcl_potions:strength_plus",
+	-- "mcl_potions:strength_2",
 	"mcl_potions:night_vision_splash",
 	"mcl_potions:night_vision_plus_splash",
-	"mcl_potions:weakness_splash",
-	"mcl_potions:weakness_plus_splash",
-	"mcl_potions:strength_splash",
-	"mcl_potions:strength_plus_splash",
-	"mcl_potions:strength_2_splash",
+	-- "mcl_potions:weakness_splash",
+	-- "mcl_potions:weakness_plus_splash",
+	-- "mcl_potions:strength_splash",
+	-- "mcl_potions:strength_plus_splash",
+	-- "mcl_potions:strength_2_splash",
 	"mcl_potions:night_vision_lingering",
 	"mcl_potions:night_vision_plus_lingering",
-	"mcl_potions:weakness_lingering",
-	"mcl_potions:weakness_plus_lingering",
-	"mcl_potions:strength_lingering",
-	"mcl_potions:strength_plus_lingering",
-	"mcl_potions:strength_2_lingering",
+	-- "mcl_potions:weakness_lingering",
+	-- "mcl_potions:weakness_plus_lingering",
+	-- "mcl_potions:strength_lingering",
+	-- "mcl_potions:strength_plus_lingering",
+	-- "mcl_potions:strength_2_lingering",
 }
 local experimental_items = {
 }
@@ -66,5 +66,3 @@ for i=1,#experimental_items do
 	new_description = new_description .. "\n"..core.colorize("#FFFF00", S("(Temporary)"))
 	minetest.override_item(experimental_items[i], { description = new_description })
 end
-
-

@@ -261,17 +261,17 @@ register_lingering("invisibility_plus", S("Lingering Invisibility Potion +"), "#
 	tt = time_string(mcl_potions.DURATION_PLUS*0.25)
 })
 
-register_lingering("weakness", S("Lingering Weakness Potion"), "#6600AA", {
-	potion_fun = function(player) mcl_potions.weakness_func(player, -4, mcl_potions.DURATION*mcl_potions.INV_FACTOR*0.25) end,
-	-- TODO: Fix tooltip
-	tt = time_string(mcl_potions.DURATION*mcl_potions.INV_FACTOR*0.25)
-})
-
-register_lingering("weakness_plus", S("Lingering Weakness Potion +"), "#7700BB", {
-	potion_fun = function(player) mcl_potions.weakness_func(player, -4, mcl_potions.DURATION_PLUS*mcl_potions.INV_FACTOR*0.25) end,
-	-- TODO: Fix tooltip
-	tt = time_string(mcl_potions.DURATION*mcl_potions.INV_FACTOR*0.25)
-})
+-- register_lingering("weakness", S("Lingering Weakness Potion"), "#6600AA", {
+-- 	potion_fun = function(player) mcl_potions.weakness_func(player, -4, mcl_potions.DURATION*mcl_potions.INV_FACTOR*0.25) end,
+-- 	-- TODO: Fix tooltip
+-- 	tt = time_string(mcl_potions.DURATION*mcl_potions.INV_FACTOR*0.25)
+-- })
+--
+-- register_lingering("weakness_plus", S("Lingering Weakness Potion +"), "#7700BB", {
+-- 	potion_fun = function(player) mcl_potions.weakness_func(player, -4, mcl_potions.DURATION_PLUS*mcl_potions.INV_FACTOR*0.25) end,
+-- 	-- TODO: Fix tooltip
+-- 	tt = time_string(mcl_potions.DURATION*mcl_potions.INV_FACTOR*0.25)
+-- })
 
 register_lingering("fire_resistance", S("Lingering Fire Resistance Potion"), "#D0A040", {
 	potion_fun = function(player) mcl_potions.fire_resistance_func(player, mcl_potions.DURATION*0.25) end,
@@ -283,23 +283,23 @@ register_lingering("fire_resistance_plus", S("Lingering Fire Resistance Potion +
 	tt = time_string(mcl_potions.DURATION_PLUS*0.25)
 })
 
-register_lingering("strength", S("Lingering Strength Potion"), "#D444D4", {
-	potion_fun = function(player) mcl_potions.strength_func(player, 3, mcl_potions.DURATION*0.25) end,
-	-- TODO: Fix tooltip
-	tt = time_string(mcl_potions.DURATION*0.25)
-})
-
-register_lingering("strength_2", S("Lingering Strength Potion II"), "#D444F4", {
-	potion_fun = function(player) mcl_potions.strength_func(player, 6, smcl_potions.DURATION_2*0.25) end,
-	-- TODO: Fix tooltip
-	tt = time_string(mcl_potions.DURATION_2*0.25)
-})
-
-register_lingering("strength_plus", S("Lingering Strength Potion +"), "#D444E4", {
-	potion_fun = function(player) mcl_potions.strength_func(player, 3, mcl_potions.DURATION_PLUS*0.25) end,
-	-- TODO: Fix tooltip
-	tt = time_string(mcl_potions.DURATION_PLUS*0.25)
-})
+-- register_lingering("strength", S("Lingering Strength Potion"), "#D444D4", {
+-- 	potion_fun = function(player) mcl_potions.strength_func(player, 3, mcl_potions.DURATION*0.25) end,
+-- 	-- TODO: Fix tooltip
+-- 	tt = time_string(mcl_potions.DURATION*0.25)
+-- })
+--
+-- register_lingering("strength_2", S("Lingering Strength Potion II"), "#D444F4", {
+-- 	potion_fun = function(player) mcl_potions.strength_func(player, 6, smcl_potions.DURATION_2*0.25) end,
+-- 	-- TODO: Fix tooltip
+-- 	tt = time_string(mcl_potions.DURATION_2*0.25)
+-- })
+-- 
+-- register_lingering("strength_plus", S("Lingering Strength Potion +"), "#D444E4", {
+-- 	potion_fun = function(player) mcl_potions.strength_func(player, 3, mcl_potions.DURATION_PLUS*0.25) end,
+-- 	-- TODO: Fix tooltip
+-- 	tt = time_string(mcl_potions.DURATION_PLUS*0.25)
+-- })
 
 register_lingering("night_vision", S("Lingering Night Vision Potion"), "#1010AA", {
 	potion_fun = function(player) mcl_potions.night_vision_func(player, mcl_potions.DURATION*0.25) end,
