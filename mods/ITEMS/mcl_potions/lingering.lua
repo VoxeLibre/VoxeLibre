@@ -87,6 +87,13 @@ local function register_lingering(name, descr, color, def)
             return item
         end,
 		stack_max = 1,
+		_on_dispense = function(stack, dispenserpos, droppos, dropnode, dropdir)
+			local s_pos = vector.add(dispenserpos, vector.multiply(dropdir, 0.51))
+			local obj = minetest.add_entity({x=s_pos.x+dropdir.x,y=s_pos.y+dropdir.y,z=s_pos.z+dropdir.z}, id.."_flying")
+			local velocity = 22
+			obj:set_velocity({x=dropdir.x*velocity,y=dropdir.y*velocity,z=dropdir.z*velocity})
+			obj:set_acceleration({x=dropdir.x*-3, y=-9.8, z=dropdir.z*-3})
+		end
     })
 
     local w = 0.7
@@ -294,7 +301,7 @@ register_lingering("fire_resistance_plus", S("Lingering Fire Resistance Potion +
 -- 	-- TODO: Fix tooltip
 -- 	tt = time_string(mcl_potions.DURATION_2*0.25)
 -- })
--- 
+--
 -- register_lingering("strength_plus", S("Lingering Strength Potion +"), "#D444E4", {
 -- 	potion_fun = function(player) mcl_potions.strength_func(player, 3, mcl_potions.DURATION_PLUS*0.25) end,
 -- 	-- TODO: Fix tooltip
