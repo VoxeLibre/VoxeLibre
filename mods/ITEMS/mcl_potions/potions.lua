@@ -73,7 +73,7 @@ local dragon_breath_def = {
 local healing_def = {
 	name = "healing",
 	description = S("Healing Potion"),
-	_tt = S("+4 HP"),
+	_tt = S("+2 Hearts"),
 	_longdesc = S("Drink to heal yourself"),
 	image = potion_image("#CC0000"),
 	on_use = function (itemstack, user, pointed_thing)
@@ -87,7 +87,7 @@ local healing_def = {
 local healing_2_def = table.copy(healing_def)
 healing_2_def.name = "healing_2"
 healing_2_def.description = S("Healing Potion II")
-healing_2_def._tt = S("+8 HP")
+healing_2_def._tt = S("+4 Hearts")
 healing_2_def.on_use = function (itemstack, user, pointed_thing)
 													mcl_potions.healing_func(user, 8)
 													minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
@@ -110,7 +110,7 @@ local harming_def = {
 						end
 }
 
-local harming_2_def = table.copy(healing_def)
+local harming_2_def = table.copy(harming_def)
 harming_2_def.name = "harming_2"
 harming_2_def.description = S("Harming Potion II")
 harming_2_def._tt = S("-6 Hearts")
@@ -121,16 +121,13 @@ harming_2_def.on_use = function (itemstack, user, pointed_thing)
 													return itemstack
 												end
 
-register_potion(awkward_def)				
-register_potion(mundane_def)
-register_potion(thick_def)
-register_potion(dragon_breath_def)
-register_potion(healing_def)
-register_potion(healing_2_def)
-register_potion(harming_def)
-register_potion(harming_2_def)
 
+local defs = { awkward_def, mundane_def, thick_def, dragon_breath_def,
+							 healing_def, healing_2_def, harming_def, harming_2_def}
 
+for _, def in ipairs(defs) do
+	register_potion(def)
+end
 
 
 minetest.register_craftitem("mcl_potions:night_vision", {
