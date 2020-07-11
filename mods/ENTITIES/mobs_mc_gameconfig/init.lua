@@ -177,11 +177,6 @@ mobs_mc.override.enderman_takable = {
 	"group:enderman_takable",
 }
 mobs_mc.override.enderman_replace_on_take = {
-	-- Turn covered dirt blocks to normal dirt.
-	-- This is a workaround because the dirt with grass texture fails when held by the enderman
-	-- (because of the node coloring).
-	-- FIXME: Remove these lines as soon we support rendering dirt with grass
-	["mcl_core:dirt_with_grass"] = "mcl_core:dirt",
 }
 mobs_mc.override.misc = {
 	totem_fail_nodes = { "mcl_core:void", "mcl_core:realm_barrier" },
@@ -200,8 +195,18 @@ for i=1, 6 do
 	end
 	table.insert(ctable, cbackground .. "^" .. last)
 end
+
 mobs_mc.override.enderman_block_texture_overrides = {
 	["mcl_core:cactus"] = ctable,
+	-- FIXME: replace colorize colors with colors from palette
+	["mcl_core:dirt_with_grass"] = 
+	{
+	"mcl_core_grass_block_top.png^[colorize:green:90",
+	"default_dirt.png",
+	"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
+	"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
+	"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)",
+	"default_dirt.png^(mcl_core_grass_block_side_overlay.png^[colorize:green:90)"}
 }
 
 -- List of nodes on which mobs can spawn
