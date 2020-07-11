@@ -324,8 +324,8 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 
 end
 
-add_large_plant("peony", S("Peony"), S("A peony is a large plant which occupies two blocks. It is mainly used in dye protection."), "mcl_flowers_double_plant_paeonia_bottom.png", "mcl_flowers_double_plant_paeonia_top.png", nil, 5/16, 6/16)
-add_large_plant("rose_bush", S("Rose Bush"), S("A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye protection."), "mcl_flowers_double_plant_rose_bottom.png", "mcl_flowers_double_plant_rose_top.png", nil, 5/16, 1/16)
+add_large_plant("peony", S("Peony"), S("A peony is a large plant which occupies two blocks. It is mainly used in dye production."), "mcl_flowers_double_plant_paeonia_bottom.png", "mcl_flowers_double_plant_paeonia_top.png", nil, 5/16, 6/16)
+add_large_plant("rose_bush", S("Rose Bush"), S("A rose bush is a large plant which occupies two blocks. It is safe to touch it. Rose bushes are mainly used in dye production."), "mcl_flowers_double_plant_rose_bottom.png", "mcl_flowers_double_plant_rose_top.png", nil, 5/16, 1/16)
 add_large_plant("lilac", S("Lilac"), S("A lilac is a large plant which occupies two blocks. It is mainly used in dye production."), "mcl_flowers_double_plant_syringa_bottom.png", "mcl_flowers_double_plant_syringa_top.png", nil, 5/16, 6/16)
 
 -- TODO: Make the sunflower face East. Requires a mesh for the top node.
