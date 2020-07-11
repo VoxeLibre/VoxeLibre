@@ -282,7 +282,7 @@ mobs:register_mob("mobs_mc:enderman", {
 		local enderpos = self.object:get_pos()
 		local objs = minetest.get_objects_inside_radius(enderpos, 4)
 		for n = 1, #objs do
-			obj = objs[n]
+			local obj = objs[n]
 			if obj then
 				if minetest.is_player(obj) then
 					-- Warp from players during day.
@@ -290,7 +290,7 @@ mobs:register_mob("mobs_mc:enderman", {
 						self:teleport(nil)
 					end	
 				else
-					lua = obj:get_luaentity()
+					local lua = obj:get_luaentity()
 					if lua then
 						if lua.name == "mcl_bows:arrow_entity" then
 							self:teleport(nil)
