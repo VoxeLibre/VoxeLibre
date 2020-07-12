@@ -79,6 +79,7 @@ local zombie = {
 	sunlight_damage = 2,
 	view_range = 16,
 	attack_type = "dogfight",
+	harmed_by_heal = true,
 }
 
 mobs:register_mob("mobs_mc:zombie", zombie)

@@ -363,6 +363,7 @@ skeleton_horse.sounds = {
 	damage = "mobs_mc_skeleton_hurt",
 	distance = 16,
 }
+skeleton_horse.harmed_by_heal = true
 mobs:register_mob("mobs_mc:skeleton_horse", skeleton_horse)
 
 -- Zombie horse
@@ -381,6 +382,7 @@ zombie_horse.sounds = {
 	damage = "mobs_mc_zombie_hurt",
 	distance = 16,
 }
+zombie_horse.harmed_by_heal = true
 mobs:register_mob("mobs_mc:zombie_horse", zombie_horse)
 
 -- Donkey

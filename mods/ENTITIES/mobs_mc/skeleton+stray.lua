@@ -91,6 +91,7 @@ local skeleton = {
 	shoot_offset = 1.5,
 	dogshoot_switch = 1,
 	dogshoot_count_max =1.8,
+	harmed_by_heal = true,
 }
 
 mobs:register_mob("mobs_mc:skeleton", skeleton)

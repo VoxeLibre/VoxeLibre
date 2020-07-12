@@ -79,6 +79,7 @@ local pigman = {
 	fire_damage = 0,
 	fear_height = 4,
 	view_range = 16,
+	harmed_by_heal = true,
 }
 
 mobs:register_mob("mobs_mc:pigman", pigman)

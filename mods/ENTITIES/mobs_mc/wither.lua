@@ -61,6 +61,7 @@ mobs:register_mob("mobs_mc:wither", {
 		walk_start = 0,		walk_end = 20,
 		run_start = 0,		run_end = 20,
 	},
+	harmed_by_heal = true,
 })
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
@@ -98,4 +99,3 @@ mobs:register_arrow("mobs_mc:wither_skull", {
 
 --Spawn egg
 mobs:register_egg("mobs_mc:wither", S("Wither"), "mobs_mc_spawn_icon_wither.png", 0, true)
-

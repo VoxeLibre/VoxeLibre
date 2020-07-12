@@ -2042,7 +2042,7 @@ local do_states = function(self, dtime)
 
 		local is_in_danger = false
 		if lp then
-			
+
 			local is_in_danger = false
 
 			-- if mob is flying, only check for node it is currently in (no contact with node below)
@@ -3438,6 +3438,8 @@ minetest.register_entity(name, {
 	get_staticdata = function(self)
 		return mob_staticdata(self)
 	end,
+	
+	harmed_by_heal = def.harmed_by_heal,
 
 })
 
