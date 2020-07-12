@@ -78,9 +78,10 @@ function mcl_potions.register_lingering(name, descr, color, def)
             local velocity = 10
             local dir = placer:get_look_dir();
             local pos = placer:getpos();
-            local obj = minetest.add_entity({x=pos.x+(dir.x*2),y=pos.y+2+(dir.y*3),z=pos.z+(dir.z*2)}, id.."_flying")
+            local obj = minetest.add_entity({x=pos.x+dir.x,y=pos.y+2+dir.y,z=pos.z+dir.z}, id.."_flying")
             obj:setvelocity({x=dir.x*velocity,y=dir.y*velocity,z=dir.z*velocity})
             obj:setacceleration({x=dir.x*-3, y=-9.8, z=dir.z*-3})
+			obj:get_luaentity()._thrower = placer:get_player_name()
 			if not minetest.is_creative_enabled(placer:get_player_name()) then
 				item:take_item()
 			end

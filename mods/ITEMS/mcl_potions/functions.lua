@@ -352,7 +352,7 @@ function mcl_potions.is_obj_hit(self, pos)
 
 			if entity._cmi_is_mob then return true end
 
-		elseif object:is_player() then
+		elseif object:is_player() and self._thrower ~= object:get_player_name() then
 			return true
 		end
 
