@@ -33,19 +33,22 @@ local function register_potion(def)
 							return itemstack
 						end
 
-	local _tt
-	if def.effect and def.is_dur then
-		_tt = (def.effect*100).."% | "..time_string(dur)
-		if def.name == "poison" or def.name == "regeneration" then
-			_tt = "1/2 Heart/"..def.effect.."sec | "..time_string(dur)
+	local function get_tt(tt, effect, dur)
+		local _tt
+		if effect and def.is_dur then
+			_tt = (effect*100).."% | "..time_string(dur)
+			if def.name == "poison" or def.name == "regeneration" then
+				_tt = "1/2 Heart/"..effect.."sec | "..time_string(dur)
+			end
+		else
+			_tt = tt or time_string(dur) or S("No effect")
 		end
-	else
-		_tt = def._tt or time_string(dur) or S("No effect")
+		return _tt
 	end
 
 	minetest.register_craftitem("mcl_potions:"..def.name, {
 		description = S(def.description),
-		_tt_help = _tt,
+		_tt_help = get_tt(def._tt, def.effect, dur),
 		_doc_items_longdesc = def._longdesc,
 		_doc_items_usagehelp = how_to_drink,
 		stack_max = 1,
@@ -55,6 +58,23 @@ local function register_potion(def)
 		on_place = on_use,
 		on_secondary_use = on_use,
 	})
+
+	local splash_dur = dur * mcl_potions.SPLASH_FACTOR
+
+	local potion_fun
+	if def.dur then
+		potion_fun = function(player, redx) def.on_use(player, def.effect, splash_dur*redx) end
+	else
+		potion_fun = function(player, redx) def.on_use(player, def.effect*redx, splash_dur) end
+	end
+
+	local splash_def = {
+		tt = get_tt(def._tt, def.effect, splash_dur),
+		potion_fun = potion_fun,
+	}
+	if def.color then
+		mcl_potions.register_splash(def.name, S("Splash "..def.description), def.color, splash_def)
+	end
 
 	if def.is_II then
 
@@ -78,16 +98,6 @@ local function register_potion(def)
 			desc_mod = " IV"
 		end
 
-		local _tt
-		if effect_II and def.is_dur then
-			_tt = (effect_II*100).."% | "..time_string(dur_2)
-			if def.name == "poison" or def.name == "regeneration" then
-				_tt = "1/2 Heart/"..effect_II.."sec | "..time_string(dur_2)
-			end
-		else
-			_tt = def._tt_2 or time_string(dur_2) or S("No effect")
-		end
-
 		local on_use = function (itemstack, user, pointed_thing)
 								def.on_use(user, effect_II, dur_2)
 								minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
@@ -97,7 +107,7 @@ local function register_potion(def)
 
 		minetest.register_craftitem("mcl_potions:"..def.name.."_2", {
 			description = S(def.description..desc_mod),
-			_tt_help = _tt,
+			_tt_help = get_tt(def._tt_2, effect_II, dur_2),
 			_doc_items_longdesc = def._longdesc,
 			_doc_items_usagehelp = how_to_drink,
 			stack_max = 1,
@@ -107,6 +117,24 @@ local function register_potion(def)
 			on_place = on_use,
 			on_secondary_use = on_use,
 		})
+
+		local splash_dur_2 = dur_2 * mcl_potions.SPLASH_FACTOR
+
+		local potion_fun
+		if def.dur then
+			potion_fun = function(player, redx) def.on_use(player, effect_II, splash_dur_2*redx) end
+		else
+			potion_fun = function(player, redx) def.on_use(player, effect_II*redx, splash_dur_2) end
+		end
+
+		local splash_def = {
+			tt = get_tt(def._tt_2, effect_II, splash_dur_2),
+			potion_fun = potion_fun,
+		}
+		if def.color then
+			mcl_potions.register_splash(def.name.."_2", S("Splash "..def.description..desc_mod), def.color, splash_def)
+		end
+
 	end
 
 	if def.is_plus then
@@ -114,16 +142,6 @@ local function register_potion(def)
 		dur_pl = dur * mcl_potions.PLUS_FACTOR
 		if def.name == "poison" or def.name == "regeneration" then
 			dur_pl = 90
-		end
-
-		local _tt
-		if def.effect and def.is_dur then
-			_tt = (def.effect*100).."% | "..time_string(dur_pl)
-			if def.name == "poison" or def.name == "regeneration" then
-				_tt = "1/2 Heart/"..def.effect.."sec | "..time_string(dur_pl)
-			end
-		else
-			_tt = def._tt_plus or time_string(dur_pl) or S("No effect")
 		end
 
 		local on_use = function (itemstack, user, pointed_thing)
@@ -135,7 +153,7 @@ local function register_potion(def)
 
 		minetest.register_craftitem("mcl_potions:"..def.name.."_plus", {
 			description = S(def.description.." +"),
-			_tt_help = _tt,
+			_tt_help = get_tt(def._tt_plus, def.effect, dur_pl),
 			_doc_items_longdesc = def._longdesc,
 			_doc_items_usagehelp = how_to_drink,
 			stack_max = 1,
@@ -145,6 +163,23 @@ local function register_potion(def)
 			on_place = on_use,
 			on_secondary_use = on_use,
 		})
+
+		local splash_dur_pl = dur_pl * mcl_potions.SPLASH_FACTOR
+
+		local potion_fun
+		if def.dur then
+			potion_fun = function(player, redx) def.on_use(player, def.effect, splash_dur_2*redx) end
+		else
+			potion_fun = function(player, redx) def.on_use(player, def.effect*redx, splash_dur_2) end
+		end
+
+		local splash_def = {
+			tt = get_tt(def._tt_2, effect_II, splash_dur_2),
+			potion_fun = potion_fun,
+		}
+		if def.color then
+			mcl_potions.register_splash(def.name.."_plus", S("Splash "..def.description.." +"), def.color, splash_def)
+		end
 
 	end
 
