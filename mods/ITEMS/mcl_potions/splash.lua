@@ -218,12 +218,12 @@ register_splash("regeneration_plus", S("Regeneration Splash Potion +"), "#C53DD3
 })
 
 register_splash("invisibility", S("Invisibility Splash Potion"), "#B0B0B0", {
-		potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, splash_DUR*redx) end,
+		potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, nil, splash_DUR*redx) end,
 		tt = time_string(splash_DUR)
 })
 
 register_splash("invisibility_plus", S("Invisibility Splash Potion +"), "#A0A0A0", {
-		potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, splash_DUR_pl*redx) end,
+		potion_fun = function(player, redx) mcl_potions.invisiblility_func(player, nil, splash_DUR_pl*redx) end,
 		tt = time_string(splash_DUR_pl)
 })
 
@@ -258,31 +258,31 @@ register_splash("invisibility_plus", S("Invisibility Splash Potion +"), "#A0A0A0
 -- })
 
 register_splash("water_breathing", S("Water Breathing Splash Potion"), "#0000AA", {
-	potion_fun = function(player, redx) mcl_potions.water_breathing_func(player, splash_DUR*redx) end,
+	potion_fun = function(player, redx) mcl_potions.water_breathing_func(player, nil, splash_DUR*redx) end,
 	tt = time_string(splash_DUR)
 })
 
 register_splash("water_breathing_plus", S("Water Breathing Splash Potion +"), "#0000CC", {
-	potion_fun = function(player, redx) mcl_potions.water_breathing_func(player, splash_DUR_pl*redx) end,
+	potion_fun = function(player, redx) mcl_potions.water_breathing_func(player, nil, splash_DUR_pl*redx) end,
 	tt = time_string(splash_DUR_pl)
 })
 
 register_splash("fire_resistance", S("Fire Resistance Splash Potion"), "#D0A040", {
-	potion_fun = function(player, redx) mcl_potions.fire_resistance_func(player, splash_DUR*redx) end,
+	potion_fun = function(player, redx) mcl_potions.fire_resistance_func(player, nil, splash_DUR*redx) end,
 	tt = time_string(splash_DUR)
 })
 
 register_splash("fire_resistance_plus", S("Fire Resistance Splash Potion +"), "#E0B050", {
-	potion_fun = function(player, redx) mcl_potions.fire_resistance_func(player, splash_DUR_pl*redx) end,
+	potion_fun = function(player, redx) mcl_potions.fire_resistance_func(player, nil, splash_DUR_pl*redx) end,
 	tt = time_string(splash_DUR_pl)
 })
 
 register_splash("night_vision", S("Night Vision Splash Potion"), "#1010AA", {
-	potion_fun = function(player, redx) mcl_potions.night_vision_func(player, splash_DUR*redx) end,
+	potion_fun = function(player, redx) mcl_potions.night_vision_func(player, nil, splash_DUR*redx) end,
 	tt = time_string(splash_DUR)
 })
 
 register_splash("night_vision_plus", S("Night Vision Splash Potion +"), "#2020BA", {
-	potion_fun = function(player, redx) mcl_potions.night_vision_func(player, splash_DUR_pl*redx) end,
+	potion_fun = function(player, redx) mcl_potions.night_vision_func(player, nil, splash_DUR_pl*redx) end,
 	tt = time_string(splash_DUR_pl)
 })

@@ -378,12 +378,12 @@ local lingering_table = {}
 
 for i, potion in ipairs(potions) do
     splash_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_splash"
-		lingering_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_lingering"
+	lingering_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_lingering"
 end
 
 for i, potion in ipairs({"awkward", "mundane", "thick", "water", "river_water"}) do
     splash_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_splash"
-		lingering_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_lingering"
+	lingering_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_lingering"
 end
 
 
