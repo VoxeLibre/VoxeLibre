@@ -418,7 +418,7 @@ function mcl_potions._add_spawner(obj, color)
 	local d = 0.2
 	local pos = obj:get_pos()
 	minetest.add_particlespawner({
-									amount = 2,
+									amount = 1,
 									time = 1,
 									minpos = {x=pos.x-d, y=pos.y+1, z=pos.z-d},
 									maxpos = {x=pos.x+d, y=pos.y+2, z=pos.z+d},
