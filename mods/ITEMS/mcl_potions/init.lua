@@ -279,7 +279,7 @@ minetest.register_craftitem("mcl_potions:speckled_melon", {
 	description = S("Glistering Melon"),
 	_doc_items_longdesc = S("This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else."),
 	stack_max = 64,
-	groups = { brewitem = 1, not_in_creative_inventory = 0, not_in_craft_guide = 1 },
+	groups = { brewitem = 1, not_in_creative_inventory = 0, not_in_craft_guide = 0 },
 	inventory_image = "mcl_potions_melon_speckled.png",
 })
 
