@@ -14,6 +14,7 @@ mcl_potions.DURATION_2 = mcl_potions.DURATION / mcl_potions.II_FACTOR
 
 mcl_potions.INV_FACTOR = 0.50
 mcl_potions.SPLASH_FACTOR = 0.75
+mcl_potions.LINGERING_FACTOR = 0.25
 
 
 local modpath = minetest.get_modpath("mcl_potions")

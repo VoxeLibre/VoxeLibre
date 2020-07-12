@@ -40,17 +40,27 @@ local function register_potion(def)
 			if def.name == "poison" or def.name == "regeneration" then
 				_tt = "1/2 Heart/"..effect.."sec | "..time_string(dur)
 			end
-		else
+		elseif def.name == "healing" or def.name == "harming" then
+				_tt = (effect / 2).." Hearts"
+ 		else
 			_tt = tt or time_string(dur) or S("No effect")
 		end
 		return _tt
 	end
 
 	local function get_splash_fun(effect, sp_dur)
-		if def.dur then
+		if def.is_dur then
 			return function(player, redx) def.on_use(player, effect, sp_dur*redx) end
 		else
 			return function(player, redx) def.on_use(player, effect*redx, sp_dur) end
+		end
+	end
+
+	local function get_lingering_fun(effect, sp_dur)
+		if def.is_dur then
+			return function(player, redx) def.on_use(player, effect, sp_dur) end
+		else
+			return function(player, redx) def.on_use(player, effect*0.5, sp_dur) end
 		end
 	end
 
@@ -67,17 +77,22 @@ local function register_potion(def)
 		on_secondary_use = on_use,
 	})
 
-	-- Register Splash
+	-- Register Splash and Lingering
 	local splash_dur = dur * mcl_potions.SPLASH_FACTOR
+	local ling_dur = dur * mcl_potions.LINGERING_FACTOR
 
 	local splash_def = {
 		tt = get_tt(def._tt, def.effect, splash_dur),
 		potion_fun = get_splash_fun(def.effect, splash_dur),
 	}
+	local ling_def = {
+		tt = get_tt(def._tt, def.effect, ling_dur),
+		potion_fun = get_lingering_fun(def.effect, ling_dur),
+	}
 	if def.color then
 		mcl_potions.register_splash(def.name, S("Splash "..def.description), def.color, splash_def)
+		mcl_potions.register_lingering(def.name, S("Lingering "..def.description), def.color, ling_def)
 	end
-
 
 	if def.is_II then
 
@@ -121,15 +136,21 @@ local function register_potion(def)
 			on_secondary_use = on_use,
 		})
 
-		-- Register Splash
+		-- Register Splash and Lingering
 		local splash_dur_2 = dur_2 * mcl_potions.SPLASH_FACTOR
+		local ling_dur_2 = dur_2 * mcl_potions.LINGERING_FACTOR
 
 		local splash_def_2 = {
 			tt = get_tt(def._tt_2, effect_II, splash_dur_2),
 			potion_fun = get_splash_fun(effect_II, splash_dur_2),
 		}
+		local ling_def_2 = {
+			tt = get_tt(def._tt_2, effect_II, ling_dur_2),
+			potion_fun = get_lingering_fun(effect_II, ling_dur_2),
+		}
 		if def.color then
 			mcl_potions.register_splash(def.name.."_2", S("Splash "..def.description..desc_mod), def.color, splash_def_2)
+			mcl_potions.register_lingering(def.name.."_2", S("Lingering "..def.description..desc_mod), def.color, ling_def_2)
 		end
 
 	end
@@ -163,13 +184,19 @@ local function register_potion(def)
 
 		-- Register Splash
 		local splash_dur_pl = dur_pl * mcl_potions.SPLASH_FACTOR
+		local ling_dur_pl = dur_pl * mcl_potions.LINGERING_FACTOR
 
 		local splash_def_pl = {
 			tt = get_tt(def._tt_plus, def.effect, splash_dur_pl),
 			potion_fun = get_splash_fun(def.effect, splash_dur_pl),
 		}
+		local ling_def_pl = {
+			tt = get_tt(def._tt_plus, def.effect, ling_dur_pl),
+			potion_fun = get_lingering_fun(def.effect, ling_dur_pl),
+		}
 		if def.color then
 			mcl_potions.register_splash(def.name.."_plus", S("Splash "..def.description.." +"), def.color, splash_def_pl)
+			mcl_potions.register_lingering(def.name.."_plus", S("Lingering "..def.description.." +"), def.color, ling_def_pl)
 		end
 
 	end
@@ -225,10 +252,8 @@ local healing_def = {
 	_longdesc = S("Drink to heal yourself"),
 	color = "#CC0000",
 	effect = 4,
-	dur = nil,
 	on_use = mcl_potions.healing_func,
 	is_II = true,
-	effect_sq = false,
 }
 
 
@@ -240,9 +265,9 @@ local harming_def = {
 	_longdesc = S("Drink to heal yourself"),
 	color = "#660099",
 	effect = -6,
-	dur = nil,
 	on_use = mcl_potions.healing_func,
 	is_II = true,
+	is_inv = true,
 }
 
 local night_vision_def = {
