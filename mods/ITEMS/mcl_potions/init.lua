@@ -45,7 +45,7 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 	description = S("Glass Bottle"),
 	_tt_help = S("Liquid container"),
 	_doc_items_longdesc = S("A glass bottle is used as a container for liquids and can be used to collect water directly."),
-	_doc_items_usagehelp = S("To collect water, it on a cauldron with water (which removes a level of water) or any water source (which removes no water)."),
+	_doc_items_usagehelp = S("To collect water, use it on a cauldron with water (which removes a level of water) or any water source (which removes no water)."),
 	inventory_image = "mcl_potions_potion_bottle.png",
 	wield_image = "mcl_potions_potion_bottle.png",
 	groups = {brewitem=1},
