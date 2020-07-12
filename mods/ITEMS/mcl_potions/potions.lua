@@ -51,17 +51,21 @@ local function register_potion(def)
 	local function get_splash_fun(effect, sp_dur)
 		if def.is_dur then
 			return function(player, redx) def.on_use(player, effect, sp_dur*redx) end
-		else
+		elseif def.effect then
 			return function(player, redx) def.on_use(player, effect*redx, sp_dur) end
 		end
+		-- covers case of no effect (water, awkward, mundane)
+		return function() end 
 	end
 
 	local function get_lingering_fun(effect, sp_dur)
 		if def.is_dur then
-			return function(player, redx) def.on_use(player, effect, sp_dur) end
-		else
-			return function(player, redx) def.on_use(player, effect*0.5, sp_dur) end
+			return function(player) def.on_use(player, effect, sp_dur) end
+		elseif def.effect then
+			return function(player) def.on_use(player, effect*0.5, sp_dur) end
 		end
+		-- covers case of no effect (water, awkward, mundane)
+		return function() end
 	end
 
 	minetest.register_craftitem("mcl_potions:"..def.name, {
