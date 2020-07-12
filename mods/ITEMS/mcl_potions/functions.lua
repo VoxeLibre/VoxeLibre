@@ -598,7 +598,7 @@ function mcl_potions.regeneration_func(player, factor, duration)
 end
 
 
-function mcl_potions.invisiblility_func(player, duration)
+function mcl_potions.invisiblility_func(player, null, duration)
 
 	if not is_invisible[player] then
 
@@ -616,7 +616,7 @@ function mcl_potions.invisiblility_func(player, duration)
 
 end
 
-function mcl_potions.water_breathing_func(player, duration)
+function mcl_potions.water_breathing_func(player, null, duration)
 
 	if not is_water_breathing[player] then
 
@@ -634,7 +634,7 @@ function mcl_potions.water_breathing_func(player, duration)
 end
 
 
-function mcl_potions.fire_resistance_func(player, duration)
+function mcl_potions.fire_resistance_func(player, null, duration)
 
 	if not is_fire_proof[player] then
 
@@ -651,7 +651,7 @@ function mcl_potions.fire_resistance_func(player, duration)
 end
 
 
-function mcl_potions.night_vision_func(player, duration)
+function mcl_potions.night_vision_func(player, null, duration)
 
 	if not is_cat[player] then
 

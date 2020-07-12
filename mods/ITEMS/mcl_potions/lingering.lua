@@ -164,12 +164,12 @@ register_lingering("thick", S("Lingering Thick Potion"), "#0000FF", {
 })
 
 register_lingering("healing", S("Lingering Healing Potion"), "#AA0000", {
-    potion_fun = function(player) player:set_hp(player:get_hp() + 2) end,
+    potion_fun = function(player) mcl_potions.healing_func(player, 2) end,
 	tt = S("+2 HP")
 })
 
 register_lingering("healing_2", S("Lingering Healing Potion II"), "#DD0000", {
-    potion_fun = function(player) player:set_hp(player:get_hp() + 4) end,
+    potion_fun = function(player) mcl_potions.healing_func(player, 4) end,
 	tt = S("+4 HP")
 })
 
@@ -259,12 +259,12 @@ register_lingering("regeneration_plus", S("Lingering Regeneration Potion +"), "#
 })
 
 register_lingering("invisibility", S("Lingering Invisibility Potion"), "#B0B0B0", {
-	potion_fun = function(player) mcl_potions.invisiblility_func(player, mcl_potions.DURATION*0.25) end,
+	potion_fun = function(player) mcl_potions.invisiblility_func(player, nil, mcl_potions.DURATION*0.25) end,
 	tt = time_string(mcl_potions.DURATION*0.25)
 })
 
 register_lingering("invisibility_plus", S("Lingering Invisibility Potion +"), "#A0A0A0", {
-	potion_fun = function(player) mcl_potions.invisiblility_func(player, mcl_potions.DURATION_PLUS*0.25) end,
+	potion_fun = function(player) mcl_potions.invisiblility_func(player, nil, mcl_potions.DURATION_PLUS*0.25) end,
 	tt = time_string(mcl_potions.DURATION_PLUS*0.25)
 })
 
@@ -281,12 +281,12 @@ register_lingering("invisibility_plus", S("Lingering Invisibility Potion +"), "#
 -- })
 
 register_lingering("fire_resistance", S("Lingering Fire Resistance Potion"), "#D0A040", {
-	potion_fun = function(player) mcl_potions.fire_resistance_func(player, mcl_potions.DURATION*0.25) end,
+	potion_fun = function(player) mcl_potions.fire_resistance_func(player, nil, mcl_potions.DURATION*0.25) end,
 	tt = time_string(mcl_potions.DURATION*0.25)
 })
 
 register_lingering("fire_resistance_plus", S("Lingering Fire Resistance Potion +"), "#E0B050", {
-	potion_fun = function(player) mcl_potions.fire_resistance_func(player, mcl_potions.DURATION_PLUS*0.25) end,
+	potion_fun = function(player) mcl_potions.fire_resistance_func(player, nil, mcl_potions.DURATION_PLUS*0.25) end,
 	tt = time_string(mcl_potions.DURATION_PLUS*0.25)
 })
 
@@ -309,11 +309,11 @@ register_lingering("fire_resistance_plus", S("Lingering Fire Resistance Potion +
 -- })
 
 register_lingering("night_vision", S("Lingering Night Vision Potion"), "#1010AA", {
-	potion_fun = function(player) mcl_potions.night_vision_func(player, mcl_potions.DURATION*0.25) end,
+	potion_fun = function(player) mcl_potions.night_vision_func(player, nil, mcl_potions.DURATION*0.25) end,
 	tt = time_string(mcl_potions.DURATION*0.25)
 })
 
 register_lingering("night_vision_plus", S("Lingering Night Vision Potion +"), "#2020BA", {
-	potion_fun = function(player) mcl_potions.night_vision_func(player, mcl_potions.DURATION_PLUS*0.25) end,
+	potion_fun = function(player) mcl_potions.night_vision_func(player, nil, mcl_potions.DURATION_PLUS*0.25) end,
 	tt = time_string(mcl_potions.DURATION_PLUS*0.25)
 })
