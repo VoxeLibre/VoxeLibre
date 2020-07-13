@@ -55,7 +55,7 @@ local function register_potion(def)
 			return function(player, redx) def.on_use(player, effect*redx, sp_dur) end
 		end
 		-- covers case of no effect (water, awkward, mundane)
-		return function() end 
+		return function() end
 	end
 
 	local function get_lingering_fun(effect, sp_dur)
@@ -121,7 +121,7 @@ local function register_potion(def)
 			effect_II = def.effect^mcl_potions.II_FACTOR
 		end
 
-		dur_2 = dur / mcl_potions.II_FACTOR
+		local dur_2 = dur / mcl_potions.II_FACTOR
 		if def.name == "poison" then dur_2 = dur_2 - 1 end
 
 		if def.name == "slowness" then
@@ -190,7 +190,7 @@ local function register_potion(def)
 
 	if def.is_plus then
 
-		dur_pl = dur * mcl_potions.PLUS_FACTOR
+		local dur_pl = dur * mcl_potions.PLUS_FACTOR
 		if def.name == "poison" or def.name == "regeneration" then
 			dur_pl = 90
 		end
