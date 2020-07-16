@@ -386,10 +386,10 @@ function mcl_explosions.explode(pos, strength, info, puncher)
 	local creative_enabled = minetest.is_creative_enabled("")
 	trace_explode(pos, strength, shape, radius, (info and info.drop_chance) or 1 / strength, info.fire == true, puncher, creative_enabled)
 
-	if not (info and info.no_sound) then
+	if not (info and info.no_particle) then
 		add_particles(pos, radius)
 	end
-	if not (info and info.no_particle) then
+	if not (info and info.no_sound) then
 		minetest.sound_play("tnt_explode", {
 			pos = pos, gain = 1.0,
 			max_hear_distance = strength * 16
