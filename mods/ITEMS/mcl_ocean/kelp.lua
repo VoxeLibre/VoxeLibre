@@ -259,6 +259,12 @@ minetest.register_craft({
 	output = "mcl_ocean:dried_kelp_block",
 })
 minetest.register_craft({
+	recipe = {
+		{ "mcl_ocean:dried_kelp_block" },
+	},
+	output = "mcl_ocean:dried_kelp 9",
+})
+minetest.register_craft({
 	type = "fuel",
 	recipe = "mcl_ocean:dried_kelp_block",
 	burntime = 200,
