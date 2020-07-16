@@ -1071,7 +1071,7 @@ local do_jump = function(self)
 end
 
 
--- blast damage to entities nearby (modified from TNT mod)
+-- blast damage to entities nearby
 local entity_physics = function(pos, radius)
 
 	radius = radius * 2
@@ -3865,7 +3865,7 @@ function mobs:safe_boom(self, pos, strength)
 		gain = 1.0,
 		max_hear_distance = self.sounds and self.sounds.distance or 32
 	}, true)
-
+	local radius = strength
 	entity_physics(pos, radius)
 	effect(pos, 32, "tnt_smoke.png", radius * 3, radius * 5, radius, 1, 0)
 end
@@ -3881,7 +3881,7 @@ function mobs:boom(self, pos, strength, fire)
 			mobs:safe_boom(self, pos, strength)
 		end
 	else
-		mobs:safe_boom(self, pos, radius)
+		mobs:safe_boom(self, pos, strength)
 	end
 end
 
