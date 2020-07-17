@@ -303,7 +303,9 @@ local water_table = {
 	["mesecons:wire_00000000_off"] = "mcl_potions:mundane",
 	["mcl_mobitems:ghast_tear"] = "mcl_potions:mundane",
 	["mcl_mobitems:spider_eye"] = "mcl_potions:mundane",
-	["mcl_mobitems:rabbit_foot"] = "mcl_potions:mundane"
+	["mcl_mobitems:rabbit_foot"] = "mcl_potions:mundane",
+	["mcl_nether:glowstone_dust"] = "mcl_potions:thick",
+	["mcl_mobitems:gunpowder"] = "mcl_potions:water_splash"
 }
 
 local awkward_table = {
@@ -327,7 +329,8 @@ local output_table = {
 
 local enhancement_table = {}
 local extension_table = {}
-local potions = {"awkward", "mundane", "thick"}
+local potions = {}
+
 for i, potion in ipairs({"healing","harming","swiftness","slowness",
 						 "leaping","poison","regeneration","invisibility","fire_resistance",
 						 -- "weakness","strength",
@@ -347,6 +350,10 @@ for i, potion in ipairs({"healing","harming","swiftness","slowness",
 			table.insert(potions, potion.."_plus")
 		end
 
+end
+
+for i, potion in ipairs({"awkward", "mundane", "thick", "water", "river_water"}) do
+	table.insert(potions, potion)
 end
 
 
@@ -378,11 +385,6 @@ local splash_table = {}
 local lingering_table = {}
 
 for i, potion in ipairs(potions) do
-    splash_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_splash"
-	lingering_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_lingering"
-end
-
-for i, potion in ipairs({"awkward", "mundane", "thick", "water", "river_water"}) do
     splash_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_splash"
 	lingering_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_lingering"
 end
