@@ -14,6 +14,13 @@ local function time_string(dur)
 	if not dur then return nil end
 	return math.floor(dur/60)..string.format(":%02d",math.floor(dur % 60))
 end
+local function perc_string(num)
+	if (num - 1.0) < 0 then
+		return math.floor((num-1.0)*100 + 0.1).."%"
+	else
+		return "+"..math.floor((num-1.0)*100 + 0.1).."%"
+	end
+end
 
 local function register_potion(def)
 
@@ -36,7 +43,7 @@ local function register_potion(def)
 	local function get_tt(tt, effect, dur)
 		local _tt
 		if effect and def.is_dur then
-			_tt = (effect*100).."% | "..time_string(dur)
+			_tt = perc_string(effect).." | "..time_string(dur)
 			if def.name == "poison" or def.name == "regeneration" then
 				_tt = "1/2 Heart/"..effect.."sec | "..time_string(dur)
 			end
@@ -348,7 +355,7 @@ local leaping_def = {
 	_tt = nil,
 	_longdesc = S("Drink to leap tall buildings in a single bound!"),
 	color = "#00CC33",
-	effect = 1.5,
+	effect = 1.15,
 	is_dur = true,
 	on_use = mcl_potions.leaping_func,
 	is_II = true,
