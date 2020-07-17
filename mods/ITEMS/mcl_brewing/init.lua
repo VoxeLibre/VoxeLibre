@@ -79,11 +79,13 @@ local function brewable(inv)
 	local stand_size = inv:get_size("stand")
 	local was_alchemy = {false,false,false}
 
+	local bottle, alchemy
+
 	for i=1,stand_size do
 
-		local bottle = inv:get_stack("stand", i):get_name()
+		bottle = inv:get_stack("stand", i):get_name()
+		alchemy = mcl_potions.get_alchemy(ingredient, bottle)
 
-		local alchemy = mcl_potions.get_alchemy(ingredient, bottle)
 		if alchemy then
 			stands[i] = alchemy
 			was_alchemy[i] = true
@@ -114,7 +116,8 @@ local function brewing_stand_timer(pos, elapsed)
 	local fuel = meta:get_float("fuel") or 0
 	local inv = meta:get_inventory()
 
-	local input_list, stand_list, fuel_list
+	local input_list, stand_list, fuel_list, brew_output, d
+	local input_count, fuel_name, fuel_count, formspec, fuel_percent, brew_percent
 
 	local update = true
 
@@ -137,7 +140,7 @@ local function brewing_stand_timer(pos, elapsed)
 		-- 	end
 		-- end
 
-		local brew_output = brewable(inv)
+		brew_output = brewable(inv)
 		if fuel ~= 0 and brew_output then
 
 			fuel_timer = fuel_timer + elapsed
@@ -148,7 +151,7 @@ local function brewing_stand_timer(pos, elapsed)
 				fuel_timer = 0
 			end
 
-			local d = 0.5
+			d = 0.5
 			minetest.add_particlespawner({
 											amount = 4,
 											time = 1,
@@ -170,7 +173,7 @@ local function brewing_stand_timer(pos, elapsed)
 			-- Replace the stand item with the brew result
 			if stand_timer >= BREW_TIME then
 
-				local input_count = inv:get_stack("input",1):get_count()
+				input_count = inv:get_stack("input",1):get_count()
 				if (input_count-1) ~= 0 then
 					inv:set_stack("input",1,inv:get_stack("input",1):get_name().." "..(input_count-1))
 				else
@@ -191,8 +194,8 @@ local function brewing_stand_timer(pos, elapsed)
 		elseif fuel == 0 then  --get more fuel from fuel_list
 
 			-- only allow blaze powder fuel
-			local fuel_name = inv:get_stack("fuel",1):get_name()
-			local fuel_count = inv:get_stack("fuel",1):get_count()
+			fuel_name = inv:get_stack("fuel",1):get_name()
+			fuel_count = inv:get_stack("fuel",1):get_count()
 
 			if fuel_name == "mcl_mobitems:blaze_powder" then -- Grab another fuel
 
@@ -213,13 +216,13 @@ local function brewing_stand_timer(pos, elapsed)
 	end
 
 	--update formspec
-	local formspec = brewing_formspec
+	formspec = brewing_formspec
 
 	local result = false
 
 	if fuel_timer ~= 0 then
-		local fuel_percent = math.floor(fuel_timer/BURN_TIME*100 % BURN_TIME)
-		local brew_percent = math.floor(stand_timer/BREW_TIME*100)
+		fuel_percent = math.floor(fuel_timer/BURN_TIME*100 % BURN_TIME)
+		brew_percent = math.floor(stand_timer/BREW_TIME*100)
 		formspec = active_brewing_formspec(fuel_percent, brew_percent*1 % 100)
 		result = true
 	else
@@ -332,8 +335,9 @@ local on_put = function(pos, listname, index, stack, player)
 	local meta = minetest.get_meta(pos)
 	local inv = meta:get_inventory()
 	local str = ""
+	local stack
 	for i=1, inv:get_size("stand") do
-		local stack = inv:get_stack("stand", i)
+		stack = inv:get_stack("stand", i)
 		if not stack:is_empty() then
 			str = str.."1"
 		else str = str.."0"
@@ -365,21 +369,6 @@ local allow_take = function(pos, listname, index, stack, player)
 	end
 end
 
-local on_take = function(pos, listname, index, stack, player)
-	local meta = minetest.get_meta(pos)
-	local inv = meta:get_inventory()
-	local str = ""
-	for i=1, inv:get_size("stand") do
-		local stack = inv:get_stack("stand", i)
-		if not stack:is_empty() then
-			str = str.."1"
-		else str = str.."0"
-		end
-	end
-	minetest.swap_node(pos, {name = "mcl_brewing:stand_"..str})
-	minetest.get_node_timer(pos):start(1.0)
-	--some code here to enforce only potions getting placed on stands
-end
 
 minetest.register_node("mcl_brewing:stand_000", {
 	description = S("Brewing Stand"),
@@ -438,11 +427,11 @@ minetest.register_node("mcl_brewing:stand_000", {
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	on_destruct = on_destruct,
-	after_dig_node = after_dig,
+	-- after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_take,
+	on_metadata_inventory_take = on_put,
 
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -523,11 +512,11 @@ minetest.register_node("mcl_brewing:stand_100", {
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	on_destruct = on_destruct,
-	after_dig_node = after_dig,
+	-- after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_take,
+	on_metadata_inventory_take = on_put,
 
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -607,11 +596,11 @@ minetest.register_node("mcl_brewing:stand_010", {
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	on_destruct = on_destruct,
-	after_dig_node = after_dig,
+	-- after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_take,
+	on_metadata_inventory_take = on_put,
 
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -691,11 +680,11 @@ minetest.register_node("mcl_brewing:stand_001", {
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	on_destruct = on_destruct,
-	after_dig_node = after_dig,
+	-- after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_take,
+	on_metadata_inventory_take = on_put,
 
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -775,11 +764,11 @@ minetest.register_node("mcl_brewing:stand_110", {
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	on_destruct = on_destruct,
-	after_dig_node = after_dig,
+	-- after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_take,
+	on_metadata_inventory_take = on_put,
 
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -859,11 +848,11 @@ minetest.register_node("mcl_brewing:stand_101", {
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	on_destruct = on_destruct,
-	after_dig_node = after_dig,
+	-- after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_take,
+	on_metadata_inventory_take = on_put,
 
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -943,11 +932,11 @@ minetest.register_node("mcl_brewing:stand_011", {
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	on_destruct = on_destruct,
-	after_dig_node = after_dig,
+	-- after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_take,
+	on_metadata_inventory_take = on_put,
 
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
@@ -1027,11 +1016,11 @@ minetest.register_node("mcl_brewing:stand_111", {
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	on_destruct = on_destruct,
-	after_dig_node = after_dig,
+	-- after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
-	on_metadata_inventory_take = on_take,
+	on_metadata_inventory_take = on_put,
 
 	on_construct = function(pos)
 		local meta = minetest.get_meta(pos)
