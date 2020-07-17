@@ -248,7 +248,6 @@ local function register_potion(def)
 end
 
 
-
 local awkward_def = {
 	name = "awkward",
 	description = "Awkward Potion",
@@ -263,7 +262,7 @@ local mundane_def = {
 	name = "mundane",
 	description = "Mundane Potion",
 	_tt = S("No effect"),
-	longdesc = S("Has a clean taste and is used for brewing potions."),
+	longdesc = S("Has a terrible taste and is not useful for brewing potions."),
 	color = "#0000FF",
 	on_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 }
@@ -272,7 +271,7 @@ local thick_def = {
 	name = "thick",
 	description = "Thick Potion",
 	_tt = S("No effect"),
-	_longdesc = S("Has a bitter taste and is used for brewing potions."),
+	_longdesc = S("Has a bitter taste and is not useful for brewing potions."),
 	color = "#0000FF",
 	on_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 }
