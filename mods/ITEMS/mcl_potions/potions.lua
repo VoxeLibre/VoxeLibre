@@ -15,10 +15,14 @@ local function time_string(dur)
 	return math.floor(dur/60)..string.format(":%02d",math.floor(dur % 60))
 end
 local function perc_string(num)
+
+	local rem = math.floor((num-1.0)*100 + 0.1) % 5
+	local out = math.floor((num-1.0)*100 + 0.1) - rem
+
 	if (num - 1.0) < 0 then
-		return math.floor((num-1.0)*100 + 0.1).."%"
+		return out.."%"
 	else
-		return "+"..math.floor((num-1.0)*100 + 0.1).."%"
+		return "+"..out.."%"
 	end
 end
 
