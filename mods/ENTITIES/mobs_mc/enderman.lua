@@ -178,7 +178,7 @@ local select_enderman_animation = function(animation_type)
 	end
 end
 
-local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false 
+local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 
 mobs:register_mob("mobs_mc:enderman", {
 	-- TODO: Endermen should be classified as passive
@@ -248,7 +248,7 @@ mobs:register_mob("mobs_mc:enderman", {
 					end
 				end
 			end
-			
+
 			if damage == true then
 				self.state = ""
 				--rain hurts enderman
@@ -288,7 +288,7 @@ mobs:register_mob("mobs_mc:enderman", {
 					-- Warp from players during day.
 					if (minetest.get_timeofday() * 24000) > 5001 and (minetest.get_timeofday() * 24000) < 19000 then
 						self:teleport(nil)
-					end	
+					end
 				else
 					local lua = obj:get_luaentity()
 					if lua then
@@ -314,6 +314,7 @@ mobs:register_mob("mobs_mc:enderman", {
 		end
 		-- Check to see if people are near by enough to look at us.
 		local objs = minetest.get_objects_inside_radius(enderpos, 64)
+		local obj
 		for n = 1, #objs do
 			obj = objs[n]
 			if obj then
@@ -326,7 +327,7 @@ mobs:register_mob("mobs_mc:enderman", {
 					-- Cast up to 64 to see if player is looking at enderman.
 					for n = 1,64,.25 do
 						local node = minetest.get_node(look_pos)
-						if node.name ~= "air" then 
+						if node.name ~= "air" then
 							break
 						end
 						if look_pos.x-1<enderpos.x and look_pos.x+1>enderpos.x and look_pos.y-2.89<enderpos.y and look_pos.y-2>enderpos.y and look_pos.z-1<enderpos.z and look_pos.z+1>enderpos.z then
@@ -344,7 +345,7 @@ mobs:register_mob("mobs_mc:enderman", {
 					end
 				end
 			end
-		end		
+		end
 		-- TAKE AND PLACE STUFF BEHAVIOUR BELOW.
 		if not mobs_griefing then
 			return
