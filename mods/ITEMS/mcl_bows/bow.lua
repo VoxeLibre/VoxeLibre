@@ -2,9 +2,9 @@ local S = minetest.get_translator("mcl_bows")
 
 mcl_bows = {}
 
-local arrows = {
-	["mcl_bows:arrow"] = "mcl_bows:arrow_entity",
-}
+-- local arrows = {
+-- 	["mcl_bows:arrow"] = "mcl_bows:arrow_entity",
+-- }
 
 local GRAVITY = 9.81
 local BOW_DURABILITY = 385
@@ -34,9 +34,9 @@ local bow_load = {}
 local bow_index = {}
 
 mcl_bows.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damage)
-	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, arrows[arrow_item])
+	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, arrow_item.."_entity")
 	if power == nil then
-		power = 19
+		power = 22 --19
 	end
 	if damage == nil then
 		damage = 3
@@ -74,12 +74,13 @@ end
 
 local player_shoot_arrow = function(itemstack, player, power, damage)
 	local arrow_stack, arrow_stack_id = get_arrow(player)
-	local arrow_itemstring
+	local arrow_itemstring = arrow_stack:get_name()
+
 	if not minetest.is_creative_enabled(player:get_player_name()) then
 		if not arrow_stack then
 			return false
 		end
-		arrow_itemstring = arrow_stack:get_name()
+		-- arrow_itemstring = arrow_stack:get_name()
 		arrow_stack:take_item()
 		local inv = player:get_inventory()
 		inv:set_stack("main", arrow_stack_id, arrow_stack)
@@ -305,5 +306,3 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("tools", "mcl_bows:bow", "tools", "mcl_bows:bow_1")
 	doc.add_entry_alias("tools", "mcl_bows:bow", "tools", "mcl_bows:bow_2")
 end
-
-

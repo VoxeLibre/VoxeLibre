@@ -21,6 +21,7 @@ local modpath = minetest.get_modpath("mcl_potions")
 dofile(modpath .. "/functions.lua")
 dofile(modpath .. "/splash.lua")
 dofile(modpath .. "/lingering.lua")
+dofile(modpath .. "/tipped_arrow.lua")
 dofile(modpath .. "/potions.lua")
 
 local brewhelp = S("Try different combinations to create potions.")
