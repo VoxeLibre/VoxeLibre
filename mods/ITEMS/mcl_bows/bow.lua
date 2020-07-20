@@ -226,7 +226,7 @@ controls.register_on_hold(function(player, key, time)
 	local inv = minetest.get_inventory({type="player", name=name})
 	local wielditem = player:get_wielded_item()
 	local creative = minetest.is_creative_enabled(name)
-	if bow_load[name] == nil and wielditem:get_name()=="mcl_bows:bow" and (creative or inv:contains_item("main", "mcl_bows:arrow")) then
+	if bow_load[name] == nil and wielditem:get_name()=="mcl_bows:bow" and (creative or #get_arrow(player)) then --inv:contains_item("main", "mcl_bows:arrow")) then
 		wielditem:set_name("mcl_bows:bow_0")
 		player:set_wielded_item(wielditem)
 		if minetest.get_modpath("playerphysics") then
