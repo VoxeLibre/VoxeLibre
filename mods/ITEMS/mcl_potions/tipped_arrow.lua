@@ -435,6 +435,16 @@ function mcl_potions.register_arrow(name, desc, color, def)
 				{'mcl_bows:arrow','mcl_bows:arrow','mcl_bows:arrow'}
 			}
 		})
+
+		minetest.register_craft({
+			output = 'mcl_potions:'..name..'_arrow 8',
+			recipe = {
+				{'mcl_bows:arrow','mcl_bows:arrow','mcl_bows:arrow'},
+				{'mcl_bows:arrow','mcl_potions:'..name..'_lingering','mcl_bows:arrow'},
+				{'mcl_bows:arrow','mcl_bows:arrow','mcl_bows:arrow'}
+			}
+		})
+
 	end
 
 	if minetest.get_modpath("doc_identifier") ~= nil then
