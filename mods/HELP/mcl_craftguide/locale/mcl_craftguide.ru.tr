@@ -1,5 +1,5 @@
 # textdomain: mcl_craftguide
-Any shulker box=Любой шалкер-бокс
+Any shulker box=Любой ящик шалкера
 Any wool=Любая шерсть
 Any wood planks=Любые доски
 Any wood=Любое дерево
@@ -18,21 +18,21 @@ Any kind of quartz block=Любой кварцевый блок
 Any kind of purpur block=Любой фиолетовый блок
 Any stone bricks=Любые каменные блоки
 Any stick=Любая палка
-Any item belonging to the @1 group=Любой предмет, относящийся к группе @1=
-Any item belonging to the groups: @1=Любой предмет, относящийся к группам: @1=
+Any item belonging to the @1 group=Любой предмет, относящийся к группе @1
+Any item belonging to the groups: @1=Любой предмет, относящийся к группам: @1
 Search=Поиск
 Reset=Сброс
 Previous page=Предыдущая страница
-Next page=Следущая страница
+Next page=Следующая страница
 Usage @1 of @2=Использование  @1 из @2
 Recipe @1 of @2=Рецепт @1 из @2
 Burning time: @1=Время горения: @1
 Cooking time: @1=Время приготовления: @1
-Any item belonging to the group(s): @1=Любой элемент из группы: @1
-Recipe is too big to be displayed (@1×@2)=Рецепт слишком большой для показа (@1×@2)
+Any item belonging to the group(s): @1=Любой элемент из групп(ы): @1
+Recipe is too big to be displayed (@1×@2)=Рецепт слишком большой для отображения (@1×@2)
 Shapeless=Бесформенный
 Cooking=Приготовление
 Increase window size=Увеличить окно
 Decrease window size=Уменьшить окно
 No item to show=Нет элемента для показа
-Collect items to reveal more recipes=Собирайте предметы, чтобы раскрыть больше рецептов
+Collect items to reveal more recipes=Для рецептов нужны предметы

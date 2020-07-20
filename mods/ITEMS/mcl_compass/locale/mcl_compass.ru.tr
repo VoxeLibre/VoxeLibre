@@ -1,0 +1,4 @@
+# textdomain: mcl_compass
+Compasses are tools which point to the world origin (X@=0, Z@=0) or the spawn point in the Overworld.=Компас - инструмент, показывающий на начало мира (X@=0, Z@=0) или на точку возрождения в Верхнем Мире.
+Compass=Компас
+Points to the world origin=Указывает на начало мира
