@@ -10,8 +10,8 @@ local GRAVITY = 9.81
 local BOW_DURABILITY = 385
 
 -- Charging time in microseconds
-local BOW_CHARGE_TIME_HALF = 500000 -- bow level 1
-local BOW_CHARGE_TIME_FULL = 1000000 -- bow level 2 (full charge)
+local BOW_CHARGE_TIME_HALF = 200000 -- bow level 1
+local BOW_CHARGE_TIME_FULL = 500000 -- bow level 2 (full charge)
 
 -- Factor to multiply with player speed while player uses bow
 -- This emulates the sneak speed.
@@ -36,7 +36,7 @@ local bow_index = {}
 mcl_bows.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damage)
 	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, arrow_item.."_entity")
 	if power == nil then
-		power = 22 --19
+		power = BOW_MAX_SPEED --19
 	end
 	if damage == nil then
 		damage = 3
@@ -226,7 +226,7 @@ controls.register_on_hold(function(player, key, time)
 	local inv = minetest.get_inventory({type="player", name=name})
 	local wielditem = player:get_wielded_item()
 	local creative = minetest.is_creative_enabled(name)
-	if bow_load[name] == nil and wielditem:get_name()=="mcl_bows:bow" and (creative or #get_arrow(player)) then --inv:contains_item("main", "mcl_bows:arrow")) then
+	if bow_load[name] == nil and wielditem:get_name()=="mcl_bows:bow" and (creative or get_arrow(player)) then --inv:contains_item("main", "mcl_bows:arrow")) then
 		wielditem:set_name("mcl_bows:bow_0")
 		player:set_wielded_item(wielditem)
 		if minetest.get_modpath("playerphysics") then

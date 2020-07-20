@@ -159,7 +159,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 		-- The radius of 3 is fairly liberal, but anything lower than than will cause
 		-- arrow to hilariously go through mobs often.
 		-- TODO: Implement an ACTUAL collision detection (engine support needed).
-		local objs = minetest.get_objects_inside_radius(pos, 3)
+		local objs = minetest.get_objects_inside_radius(pos, 1.5)
 		local closest_object
 		local closest_distance
 
@@ -419,4 +419,3 @@ end
 if minetest.get_modpath("doc_identifier") ~= nil then
 	doc.sub.identifier.register_object("mcl_bows:arrow_entity", "craftitems", "mcl_bows:arrow")
 end
-
