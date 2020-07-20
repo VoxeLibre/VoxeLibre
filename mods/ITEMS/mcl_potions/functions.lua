@@ -457,16 +457,20 @@ function mcl_potions.healing_func(player, hp)
 
 		if obj and obj._cmi_is_mob then
 			obj.health = math.max(obj.health + hp, obj.hp_max)
-		else
+		elseif player:is_player()
 			player:set_hp(math.min(player:get_hp() + hp, player:get_properties().hp_max), { type = "set_hp", other = "healing" })
+		else
+			return
 		end
 
 	else
 
 		if obj and obj._cmi_is_mob then
 			obj.health = obj.health + hp
-		else
+		elseif player:is_player()
 			player:set_hp(player:get_hp() + hp, { type = "punch", other = "harming" })
+		else
+			return 
 		end
 
 	end
