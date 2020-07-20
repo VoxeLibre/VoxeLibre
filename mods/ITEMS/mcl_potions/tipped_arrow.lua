@@ -427,14 +427,6 @@ function mcl_potions.register_arrow(name, desc, color, def)
 	minetest.register_entity("mcl_potions:"..name.."_arrow_entity", ARROW_ENTITY)
 
 	if minetest.get_modpath("mcl_bows") then
-		minetest.register_craft({
-			output = 'mcl_potions:'..name..'_arrow 8',
-			recipe = {
-				{'mcl_bows:arrow','mcl_bows:arrow','mcl_bows:arrow'},
-				{'mcl_bows:arrow','mcl_potions:'..name..'_splash','mcl_bows:arrow'},
-				{'mcl_bows:arrow','mcl_bows:arrow','mcl_bows:arrow'}
-			}
-		})
 
 		minetest.register_craft({
 			output = 'mcl_potions:'..name..'_arrow 8',
