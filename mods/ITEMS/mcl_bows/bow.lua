@@ -19,7 +19,7 @@ local PLAYER_USE_BOW_SPEED = tonumber(minetest.settings:get("movement_speed_crou
 
 -- TODO: Use Minecraft speed (ca. 53 m/s)
 -- Currently nerfed because at full speed the arrow would easily get out of the range of the loaded map.
-local BOW_MAX_SPEED = 26
+local BOW_MAX_SPEED = 40
 
 --[[ Store the charging state of each player.
 keys: player name
