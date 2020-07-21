@@ -219,7 +219,7 @@ controls.register_on_release(function(player, key, time)
 end)
 
 controls.register_on_hold(function(player, key, time)
-	if key ~= "RMB" then
+	if key ~= "RMB" or not get_arrow(player) then
 		return
 	end
 	local name = player:get_player_name()
