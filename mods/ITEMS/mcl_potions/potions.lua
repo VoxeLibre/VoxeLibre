@@ -54,6 +54,7 @@ local function register_potion(def)
 	end
 
 	local on_use = function (itemstack, user, pointed_thing)
+							if not def.on_use then return end  
 							def.on_use(user, def.effect, dur)
 							minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 							mcl_potions._use_potion(itemstack, user, def.color)
@@ -145,7 +146,7 @@ local function register_potion(def)
 		potion_fun = get_arrow_fun(def.effect, dur/8.),
 	}
 
-	if def.color and def.name ~= "dragon_breath" then
+	if def.color and def.name ~= "dragon_breath" then -- dont' splash dragon's breath...
 		mcl_potions.register_splash(def.name, S("Splash "..def.description), def.color, splash_def)
 		mcl_potions.register_lingering(def.name, S("Lingering "..def.description), def.color, ling_def)
 		mcl_potions.register_arrow(def.name, S(def.description.." Arrow"), def.color, arrow_def)
