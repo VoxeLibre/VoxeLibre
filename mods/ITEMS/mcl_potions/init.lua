@@ -323,6 +323,7 @@ local awkward_table = {
 	["mcl_mobitems:ghast_tear"] = "mcl_potions:regeneration",
 	["mcl_mobitems:spider_eye"] = "mcl_potions:poison",
 	["mcl_mobitems:rabbit_foot"] = "mcl_potions:leaping",
+	["mcl_end:chorus_flower"] = "mcl_potions:dragon_breath", -- temporary until dragon's breath is obtainable
 }
 
 local output_table = {
