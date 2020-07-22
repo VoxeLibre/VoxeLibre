@@ -145,7 +145,7 @@ local function register_potion(def)
 		potion_fun = get_arrow_fun(def.effect, dur/8.),
 	}
 
-	if def.color then
+	if def.color and def.name ~= "dragon_breath" then
 		mcl_potions.register_splash(def.name, S("Splash "..def.description), def.color, splash_def)
 		mcl_potions.register_lingering(def.name, S("Lingering "..def.description), def.color, ling_def)
 		mcl_potions.register_arrow(def.name, S(def.description.." Arrow"), def.color, arrow_def)
@@ -339,7 +339,7 @@ local dragon_breath_def = {
 	description = "Dragon's Breath",
 	_tt = S("No effect"),
 	_longdesc = S("Combine with Splash potions to create a Lingering effect"),
-	color = "#CF5577",
+	color = "#BF4567",
 	groups = { brewitem = 1, not_in_creative_inventory = 0 },
 	on_use = nil,
 }
