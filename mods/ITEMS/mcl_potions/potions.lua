@@ -308,8 +308,7 @@ local dragon_breath_def = {
 	description = "Dragon's Breath",
 	_tt = S("No effect"),
 	_longdesc = S("Combine with Splash potions to create a Lingering effect"),
-	color = nil,
-	image = "mcl_potions_dragon_breath.png",
+	color = "#CF5577",
 	groups = { brewitem = 1, not_in_creative_inventory = 0 },
 	on_use = nil,
 }
