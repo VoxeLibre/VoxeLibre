@@ -23,7 +23,7 @@ end)
 
 -- usable by hoes
 doc.sub.items.register_factoid("nodes", "groups", function(itemstring, def)
-	if def.groups.cultivatable == 2 then
+	if def.groups.cultivatable == 1 then
 		return S("This block can be turned into dirt with a hoe.")
 	elseif def.groups.cultivatable == 2 then
 		return S("This block can be turned into farmland with a hoe.")
