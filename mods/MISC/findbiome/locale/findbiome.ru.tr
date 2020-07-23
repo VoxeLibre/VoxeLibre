@@ -1,0 +1,10 @@
+# textdomain: findbiome
+Find and teleport to biome=Найти и телепортироваться к биому
+<biome>=<биом>
+No player.=Нет игрока.
+Biome does not exist!=Биом не существует!
+Biome found at @1.=Биом найден в @1.
+No biome found!=Биом не найден!
+List all biomes=Список всех биомов
+No biomes.=Нет биомов.
+Not supported. The “biomeinfo” mod is required for v6 mapgen support!=Не поддерживается. Для поддержки мэпгена v6 требуется мод “biomeinfo”!

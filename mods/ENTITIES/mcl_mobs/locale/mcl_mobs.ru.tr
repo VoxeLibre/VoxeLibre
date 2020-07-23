@@ -1,0 +1,11 @@
+# textdomain: mcl_mobs
+Peaceful mode active! No monsters will spawn.=Мирный режим включён! Монстры не будут появляться.
+This allows you to place a single mob.=Позволяет вам разместить одного моба.
+Just place it where you want the mob to appear. Animals will spawn tamed, unless you hold down the sneak key while placing. If you place this on a mob spawner, you change the mob it spawns.=Просто поместите это туда, где хотите, чтобы появился моб. Животные будут появляться уже прирученные, если это не нужно, удерживайте клавишу [Красться] при размещении. Если поместить это на спаунер, появляющийся из него моб будет изменён.
+You need the “maphack” privilege to change the mob spawner.=Вам нужно обладать привилегией “maphack”, чтобы изменить спаунер моба.
+Name Tag=Именная бирка
+A name tag is an item to name a mob.=Именная бирка это предмет, чтобы дать мобу имя.
+Before you use the name tag, you need to set a name at an anvil. Then you can use the name tag to name a mob. This uses up the name tag.=Прежде чем использовать именную бирку, нужно задать имя на наковальне. Тогда вы сможете использовать бирку, чтобы дать имя мобу.
+Only peaceful mobs allowed!=Разрешены только мирные мобы!
+Give names to mobs=Даёт имена мобам
+Set name at anvil=Задайте имя при помощи наковальни

@@ -1,0 +1,23 @@
+# textdomain: mcl_commands
+Players can't be killed right now, damage has been disabled.=Игроки не могут быть убиты прямо сейчас, урон отключён.
+Player @1 does not exist.=Игрок @1 не существует.
+You are already dead=Вы уже мертвы
+@1 is already dead=@1 уже мертв(а)
+@1 committed suicide.=@1 совершил(а) роскомнадзор.
+@1 was killed by @2.=@1 был(а) убит(а) @2.
+[<name>]=[<имя>]
+Kill player or yourself=Убить игрока или себя
+Can use /say=Можно использовать /say
+<message>=<сообщение>
+Send a message to every player=Отправляет сообщение всем игрокам
+Invalid usage, see /help say.=Недопустимое использование, см. /help say.
+<X>,<Y>,<Z> <NodeString>=<X>,<Y>,<Z> <СтрокаУзла>
+Set node at given position=Устанавливает узел в заданной позиции
+Invalid node=Неправильный узел
+@1 spawned.=@1 возродился(ась).
+Invalid parameters (see /help setblock)=Недопустимые параметры (см. /help setblock)
+List bans=Список банов
+Ban list: @1=Бан-лист: @1
+Show who is logged on=Показывает, кто подключён
+Displays the world seed=Показывает значение зерна мира (seed)
+Only peaceful mobs allowed!=Включены только мирные мобы!

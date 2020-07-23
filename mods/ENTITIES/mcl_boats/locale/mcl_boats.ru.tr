@@ -1,0 +1,11 @@
+# textdomain: mcl_boats
+Acacia Boat=Лодка из акации
+Birch Boat=Берёзовая лодка
+Boat=Лодка
+Boats are used to travel on the surface of water.=С помощью лодки можно путешествовать по водной поверхности.
+Dark Oak Boat=Лодка из тёмного дуба
+Jungle Boat=Лодка из дерева джунглей
+Oak Boat=Дубовая лодка
+Rightclick on a water source to place the boat. Rightclick the boat to enter it. Use [Left] and [Right] to steer, [Forwards] to speed up and [Backwards] to slow down or move backwards. Rightclick the boat again to leave it, punch the boat to make it drop as an item.=Правый клик по воде спустит лодку на воду. Правый клик по лодке разместит вас в ней. [Влево] и [Вправо] - рулить, [Вперед] - разгоняться, [Назад] - тормозить или плыть назад. Правый клик по лодке, когда вы в ней, позволит выйти из неё. Удар по лодке превратит её обратно в предмет.
+Spruce Boat=Еловая лодка
+Water vehicle=Водный транспорт

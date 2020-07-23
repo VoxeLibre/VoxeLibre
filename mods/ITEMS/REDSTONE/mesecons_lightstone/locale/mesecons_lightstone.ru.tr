@@ -1,0 +1,4 @@
+# textdomain: mesecons_lightstone
+Redstone Lamp=Лампа редстоуна
+Redstone lamps are simple redstone components which glow brightly (light level @1) when they receive redstone power.=Лампа редстоуна это простой компонент редстоуна, который ярко светится (уровень света @1) при подаче на него энергии редстоуна.
+Glows when powered by redstone power=Светит при подаче энергии редстоуна

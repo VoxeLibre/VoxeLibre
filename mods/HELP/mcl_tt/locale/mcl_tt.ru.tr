@@ -1,0 +1,17 @@
+# textdomain: mcl_tt
+Head armor=Зашита головы
+Torso armor=Защита тела
+Legs armor=Защита ног
+Feet armor=Защита ступней
+Armor points: @1=Эффективность защиты: @1
+Armor durability: @1=Долговечность защиты: @1
+Protection: @1%=Уровень защиты: @1%
+Hunger points: +@1=Очки голода: +@1
+Saturation points: +@1=Очки сытости: +@1
+Deals damage when falling=Наносит урон при падении
+Grows on grass blocks or dirt=Растёт на блоках травы или грязи
+Grows on grass blocks, podzol, dirt or coarse dirt=Растёт на блоках травы, подзола, грязи и твёрдой грязи
+Flammable=Легковоспламенимо
+Zombie view range: -50%=Дальность зрения зомби: -50%
+Skeleton view range: -50%=Дальность зрения скелета: -50%
+Creeper view range: -50%=Дальность зрения крипера: -50%

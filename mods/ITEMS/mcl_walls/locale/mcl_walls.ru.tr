@@ -1,0 +1,16 @@
+# textdomain: mcl_walls
+A piece of wall. It cannot be jumped over with a simple jump. When multiple of these are placed to next to each other, they will automatically build a nice wall structure.=Часть стены. Её нельзя перепрыгнуть простым прыжком. Когда несколько из них будут расположены рядом друг с другом, они автоматически создадут хорошую структуру стены.
+Cobblestone Wall=Стена из булыжника
+Mossy Cobblestone Wall=Стена из мшистого булыжника
+Andesite Wall=Андезитовая стена
+Granite Wall=Гранитная стена
+Diorite Wall=Диоритовая стена
+Brick Wall=Кирпичная стена
+Sandstone Wall=Стена из песчаника
+Red Sandstone Wall=Стена из красного песчаника
+Stone Brick Wall=Стена из каменного блока
+Mossy Stone Brick Wall=Стена из мшистого каменного блока
+Prismarine Wall=Призмариновая стена
+End Stone Brick Wall=Стена из камня Предела
+Nether Brick Wall=Стена из адского кирпича
+Red Nether Brick Wall=Стена из красного адского кирпича

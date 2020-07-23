@@ -1,0 +1,18 @@
+# textdomain: mcl_fences
+Fences are structures which block the way. Fences will connect to each other and solid blocks. They cannot be jumped over with a simple jump.=Заборы это сооружения, преграждающие путь. Блоки заборов соединяются между собой и прикрепляются к твёрдым блокам. Через них нельзя перепрыгивать одиночным прыжком.
+Fence gates can be opened or closed and can't be jumped over. Fences will connect nicely to fence gates.=Калитки могут быть открытыми и закрытыми. Их нельзя перепрыгивать.
+Right-click the fence gate to open or close it.=Кликните правой по калитке, чтобы открыть или закрыть её.
+Oak Fence=Дубовый забор
+Oak Fence Gate=Дубовая калитка
+Spruce Fence=Еловый забор
+Spruce Fence Gate=Еловая калитка
+Birch Fence=Берёзовый забор
+Birch Fence Gate=Берёзовая калитка
+Jungle Fence=Забор из дерева джунглей
+Jungle Fence Gate=Калитка из дерева джунглей
+Dark Oak Fence=Забор из тёмного дуба
+Dark Oak Fence Gate=Калитка из тёмного дуба
+Acacia Fence=Забор из акации
+Acacia Fence Gate=Калитка из акации
+Nether Brick Fence=Забор из адского кирпича
+Openable by players and redstone power=Открываются игроками и сигналами редстоуна
