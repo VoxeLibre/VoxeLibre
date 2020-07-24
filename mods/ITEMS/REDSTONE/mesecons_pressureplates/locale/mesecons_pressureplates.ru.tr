@@ -1,0 +1,16 @@
+# textdomain: mesecons_pressureplates
+A pressure plate is a redstone component which supplies its surrounding blocks with redstone power while someone or something rests on top of it.=Нажимаемая панель это компонент редстоуна, который начинает снабжать энергией редстоуна окружающие его блоки, когда кто-то или что-то находится прямо на нём.
+Oak Pressure Plate=Дубовая нажимная панель
+Acacia Pressure Plate=Акациевая нажимная панель
+Birch Pressure Plate=Берёзовая нажимная панель
+Dark Oak Pressure Plate=Нажимная панель из тёмного дуба
+Spruce Pressure Plate=Еловая нажимная панель
+Jungle Pressure Plate=Нажимная панель из дерева джунглей
+A wooden pressure plate is a redstone component which supplies its surrounding blocks with redstone power while any movable object (including dropped items, players and mobs) rests on top of it.=Деревянная нажимная панель это компонент редстоуна, который начинает снабжать энергией редстоуна окружающие его блоки, когда любой движущийся объект (включая брошенные предметы, игроков и мобов) находится прямо на нём.
+Stone Pressure Plate=Каменная нажимная панель
+A stone pressure plate is a redstone component which supplies its surrounding blocks with redstone power while a player or mob stands on top of it. It is not triggered by anything else.=Каменная нажимная панель это компонент редстоуна, который начинает снабжать энергией редстоуна окружающие его блоки, когда игрок или моб находится прямо на нём. От чего-то другого он не сработает.
+Provides redstone power when pushed=Производит энергию редстоуна при нажимании
+Pushable by players, mobs and objects=Нажимается игроками, мобами и объектами
+Pushable by players and mobs=Нажимается игроками и мобами
+Pushable by players=Нажимается игроками
+Pushable by mobs=Нажимается мобами

@@ -1,0 +1,24 @@
+# textdomain: mcl_doors
+Wooden doors are 2-block high barriers which can be opened or closed by hand and by a redstone signal.=Деревянные двери это сдвоенные блочные преграды, которые можно открывать и закрывать вручную и по сигналу редстоуна.
+To open or close a wooden door, rightclick it or supply its lower half with a redstone signal.=Чтобы открыть или закрыть деревянную дверь, кликните правой либо подайте к её нижней части сигнал редстоуна.
+Oak Door=Дубовая дверь
+Acacia Door=Дверь из акации
+Birch Door=Берёзовая дверь
+Dark Oak Door=Дверь из тёмного дуба
+Jungle Door=Дверь из дерева джунглей
+Spruce Door=Еловая дверь
+Iron Door=Железная дверь
+Iron doors are 2-block high barriers which can only be opened or closed by a redstone signal, but not by hand.=Железные двери это сдвоенные блочные преграды, которые можно открывать и закрывать только по сигналу редстоуна и нельзя вручную.
+To open or close an iron door, supply its lower half with a redstone signal.=Чтобы открыть или закрыть железную дверь, подайте на её нижнюю часть сигнал редстоуна.
+Oak Trapdoor=Дубовый люк
+Acacia Trapdoor=Люк из акации
+Birch Trapdoor=Берёзовый люк
+Spruce Trapdoor=Еловый люк
+Dark Oak Trapdoor=Люк из тёмного дуба
+Jungle Trapdoor=Люк из дерева джунглей
+Wooden trapdoors are horizontal barriers which can be opened and closed by hand or a redstone signal. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Деревянные люки это горизонтальные преграды, которые можно открывать и закрывать вручную и по сигналу редстоуна. Они занимают верхнюю или нижнюю часть блока, в зависимости от того, как они были установлены. В открытом состоянии по ним можно карабкаться, как по лестницам.
+To open or close the trapdoor, rightclick it or send a redstone signal to it.=Чтобы открыть или закрыть деревянные люк, кликните по нему правой клавишей либо подайте на него сигнал редстоуна.
+Iron Trapdoor=Железный люк
+Iron trapdoors are horizontal barriers which can only be opened and closed by redstone signals, but not by hand. They occupy the upper or lower part of a block, depending on how they have been placed. When open, they can be climbed like a ladder.=Железные люки это горизонтальные преграды, которые можно открывать и закрывать только по сигналу редстоуна и нельзя вручную. Они занимают верхнюю или нижнюю часть блока, в зависимости от того, как они были установлены. В открытом состоянии по ним можно карабкаться, как по лестницам.
+Openable by players and redstone power=Открывается игроками и действием редстоуна
+Openable by redstone power=Открывается действием редстоуна

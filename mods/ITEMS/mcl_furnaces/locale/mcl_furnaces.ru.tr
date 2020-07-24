@@ -1,0 +1,9 @@
+# textdomain: mcl_furnaces
+Furnace=Печь
+Furnaces cook or smelt several items, using a furnace fuel, into something else.=В печи готовят или переплавляют предметы, но для этого требуется загрузить топливо.
+Use the furnace to open the furnace menu. Place a furnace fuel in the lower slot and the source material in the upper slot. The furnace will slowly use its fuel to smelt the item. The result will be placed into the output slot at the right side.=[Используйте] печь, чтобы открыть её меню. Положите печное топливо в нижний отсек, а материал-источник в верхний. Печь будет понемногу расходовать топливо для переплавки предмета. Получившийся в результате предмет будет помещён в выходной отсек справа.
+Use the recipe book to see what you can smelt, what you can use as fuel and how long it will burn.=Используйте книгу рецептов, чтобы узнать, что вы можете переплавить в печи, что сгодится в качестве топлива и как долго будет идти процесс.
+Burning Furnace=Горящая печь
+Recipe book=Книга рецептов
+Inventory=Инвентарь
+Uses fuel to smelt or cook items=Расходует топливо для приготовления или переплавки предметов

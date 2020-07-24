@@ -11,7 +11,8 @@ this mod will place them accordingly.
 position should be displayed correctly on every screen size.
 
 ## Current version
-The current version is 2.1.0.
+The current version is 2.3.2.
+It works for Minetest 5.3.0.
 
 This software uses [semantic versioning](http://semver.org), as defined by version 2.0.0 of the SemVer
 standard.
@@ -39,6 +40,7 @@ Translations:
 * Italian: Hamlet
 * Malay: muhdnurhidayat
 * Russian: Imk
+* Spanish: wuniversales
 
 This program is free software. It comes without any warranty, to
 the extent permitted by applicable law. You can redistribute it

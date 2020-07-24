@@ -1,0 +1,25 @@
+# textdomain: mcl_potions
+Put this item in an item frame for decoration. It's useless otherwise.=Положите этот предмет в рамку для красоты. Для всего остального он бесполезен.
+Fermented Spider Eye=Прокисший паучий глаз
+Glass Bottle=Стеклянная бутылка
+A glass bottle is used as a container for liquids and can be used to collect water directly.=Стеклянная бутылка используется для хранения жидкостей, её также можно использовать для сбора воды.
+To collect water, use it on a cauldron with water (which removes a level of water) or any water source (which removes no water).=Воду в бутылку можно набрать из котла с помощью команды [Использовать] (это уменьшает уровень воды в котле) или из другого источника (уровень которого не уменьшится).
+Water Bottle=Бутылка с водой
+Water bottles can be used to fill cauldrons. Drinking water has no effect.=Бутылки с водой можно использовать для наполнения котлов. Выпивание воды не даст никакого эффекта.
+Rightclick to drink. Rightclick a cauldron to pour the water into the cauldron.=Кликните правой, чтобы выпить. Правый клик по котлу выльет воду из бутылки в котёл.
+River Water Bottle=Бутылка с речной водой
+River water bottles can be used to fill cauldrons. Drinking it has no effect.=Бутылки с речной водой можно использовать для наполнения котлов. Выпивание воды не даст никакого эффекта.
+Awkward Potion=Невкусное зелье
+This potion has an awkward taste and is used for brewing more potions. Drinking it has no effect.=Невкусное зелье используется для приготовления других зелий. Приём внутрь не даёт никакого эффекта.
+Mundane Potion=Успокоительное зелье
+This potion has a clean taste and is used for brewing more potions. Drinking it has no effect.=Успокоительное зелье имеет чистый вкус и используется для приготовления других зелий. Приём внутрь не даёт никакого эффекта.
+Thick Potion=Густое зелье
+This potion has a bitter taste and is used for brewing more potions. Drinking it has no effect.=Густое зелье имеет горький вкус и используется для приготовления других зелий. Приём внутрь не даёт никакого эффекта.
+Glistering Melon=Искрящаяся дыня
+This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.=Искрящаяся дыня полна маленьких золотых самородков и может отлично смотреться в рамке. Она несъедобна и не годится больше ни для чего.
+Dragon's Breath=Дыхание дракона
+Use the “Place” key to drink it.=Используйте клавишу “Разместить”, чтобы выпить это.
+Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron.=Используйте клавишу “Разместить”, чтобы выпить это. Поместите этот предмет на котёл, чтобы вылить воду в котёл.
+Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron.=Используйте клавишу “Разместить”, чтобы выпить это. Поместите этот предмет на котёл, чтобы вылить речную воду в котёл.
+Liquid container=Контейнер для жидкостей
+No effect=Не оказывает эффекта

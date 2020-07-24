@@ -1,0 +1,8 @@
+# textdomain: mcl_hunger
+@1 succumbed to the poison.=@1 умер(ла) от яда.
+Food=Продукт
+Saturation=Насыщение
+%s: %.1f/%d=%s: %.1f/%d
+Exhaust.=Истощ.
+%s: %d/%d=%s: %d/%d
+@1 starved to death.=@1 умер(ла) от голода.

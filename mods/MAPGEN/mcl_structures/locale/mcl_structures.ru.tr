@@ -1,0 +1,7 @@
+# textdomain: mcl_structures
+Generate a pre-defined structure near your position.=Генерирует поблизости заранее определённое строение.
+Structure placed.=Строение размещено.
+Village built. WARNING: Villages are experimental and might have bugs.=Деревня построена. ВНИМАНИЕ: Деревни экспериментальны и могут содержать ошибки.
+Error: No structure type given. Please use “/spawnstruct <type>”.=Ошибка: Не задан тип строения. Пожалуйста, используйте “/spawnstruct <тип>”.
+Error: Unknown structure type. Please use “/spawnstruct <type>”.=Ошибка: Неизвестный тип строения. Пожалуйста, используйте “/spawnstruct <тип>”.
+Use /help spawnstruct to see a list of avaiable types.=Используйте /help spawnstruct, чтобы увидеть список доступных типов.

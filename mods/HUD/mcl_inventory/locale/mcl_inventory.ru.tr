@@ -1,0 +1,20 @@
+# textdomain: mcl_inventory
+Recipe book=Книга рецептов
+Help=Помощь
+Select player skin=Выбор скина
+Achievements=Достижения
+Building Blocks=Строительные блоки
+Decoration Blocks=Декоративные блоки
+Redstone=Редстоун (красный камень)
+Transportation=Транспорт
+Miscellaneous=Прочее
+Search Items=Искать предметы
+Foodstuffs=Продовольствие
+Tools=Инструменты
+Combat=Битва
+Mobs=Мобы
+Materials=Материалы
+Survival Inventory=Инвентарь выживания
+Crafting=Крафтинг (изготовление)
+Inventory=Инвентарь
+@1/@2=@1/@2

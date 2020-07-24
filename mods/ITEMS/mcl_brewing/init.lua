@@ -454,11 +454,9 @@ minetest.register_node("mcl_brewing:stand_000", {
 	on_timer = brewing_stand_timer,
 	on_rotate = on_rotate,
 })
-minetest.register_alias("mcl_brewing:stand", "mcl_brewing:stand_000")
 minetest.register_node("mcl_brewing:stand_100", {
 	description = S("Brewing Stand"),
-	_doc_items_longdesc = S("The stand allows you to brew potions!"),
-	_doc_items_usagehelp = doc_string,
+	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
 	groups = {pickaxey=1, falling_node=1, brewitem=0, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
@@ -541,8 +539,7 @@ minetest.register_node("mcl_brewing:stand_100", {
 })
 minetest.register_node("mcl_brewing:stand_010", {
 	description = S("Brewing Stand"),
-	_doc_items_longdesc = S("The stand allows you to brew potions!"),
-	_doc_items_usagehelp = doc_string,
+	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
 	groups = {pickaxey=1, falling_node=1, brewitem=0, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
@@ -625,8 +622,7 @@ minetest.register_node("mcl_brewing:stand_010", {
 })
 minetest.register_node("mcl_brewing:stand_001", {
 	description = S("Brewing Stand"),
-	_doc_items_longdesc = S("The stand allows you to brew potions!"),
-	_doc_items_usagehelp = doc_string,
+	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
 	groups = {pickaxey=1, falling_node=1, brewitem=0, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
@@ -709,8 +705,7 @@ minetest.register_node("mcl_brewing:stand_001", {
 })
 minetest.register_node("mcl_brewing:stand_110", {
 	description = S("Brewing Stand"),
-	_doc_items_longdesc = S("The stand allows you to brew potions!"),
-	_doc_items_usagehelp = doc_string,
+	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
 	groups = {pickaxey=1, falling_node=1, brewitem=0, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
@@ -793,8 +788,7 @@ minetest.register_node("mcl_brewing:stand_110", {
 })
 minetest.register_node("mcl_brewing:stand_101", {
 	description = S("Brewing Stand"),
-	_doc_items_longdesc = S("The stand allows you to brew potions!"),
-	_doc_items_usagehelp = doc_string,
+	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
 	groups = {pickaxey=1, falling_node=1, brewitem=0, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
@@ -877,8 +871,7 @@ minetest.register_node("mcl_brewing:stand_101", {
 })
 minetest.register_node("mcl_brewing:stand_011", {
 	description = S("Brewing Stand"),
-	_doc_items_longdesc = S("The stand allows you to brew potions!"),
-	_doc_items_usagehelp = doc_string,
+	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
 	groups = {pickaxey=1, falling_node=1, brewitem=0, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
@@ -961,8 +954,7 @@ minetest.register_node("mcl_brewing:stand_011", {
 })
 minetest.register_node("mcl_brewing:stand_111", {
 	description = S("Brewing Stand"),
-	_doc_items_longdesc = S("The stand allows you to brew potions!"),
-	_doc_items_usagehelp = doc_string,
+	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
 	groups = {pickaxey=1, falling_node=1, brewitem=0, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
@@ -1051,3 +1043,15 @@ minetest.register_craft({
 		{ "mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble" },
 	}
 })
+
+minetest.register_alias("mcl_brewing:stand", "mcl_brewing:stand_000")
+
+if minetest.get_modpath("doc") then
+	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_001")
+	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_010")
+	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_011")
+	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_100")
+	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_101")
+	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_110")
+	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_111")
+end

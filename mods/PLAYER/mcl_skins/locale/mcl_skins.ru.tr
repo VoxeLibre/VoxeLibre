@@ -1,0 +1,13 @@
+# textdomain: mcl_skins
+[<player>] [<skin number>]=[<игрок>] [<номер скина>]
+Select player skin of yourself or another player=Выберите скин для себя или для другого игрока
+Insufficient or wrong parameters=Недопустимые или неправильные параметры
+Player @1 not online!=Игрок @1 не в сети!
+You need the “server” privilege to change the skin of other players!=Для смены скинов другим игрокам у вас должна быть привилегия “server”!
+Invalid skin number! Valid numbers: 0 to @1=Недопустимый номер скина! Правильные номера: от 0 до @1
+Your skin has been set to: @1=Ваш скин выбран: @1
+Your skin has been set to: @1 (@2)=Ваш скин установлен: @1 (@2)
+Skin of @1 set to: @2 (@3)=Скин игрока @1 установлен: @2 (@3)
+Select player skin:=Выбор скина игрока:
+@1 (@2)=@1 (@2)
+Name: @1=Имя: @1
