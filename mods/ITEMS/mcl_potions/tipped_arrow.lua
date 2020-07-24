@@ -18,12 +18,12 @@ local function arrow_image(colorstring, opacity)
 	if not opacity then
 		opacity = 127
 	end
-	return {"mcl_bows_arrow.png^[transformFX",
-			"mcl_bows_arrow.png^[transformFX",
+	return {"mcl_bows_arrow.png^[transformFX^[colorize:"..colorstring..":"..tostring(opacity),
+			"mcl_bows_arrow.png^[transformFX^[colorize:"..colorstring..":"..tostring(opacity),
 			"mcl_bows_arrow_back.png^[colorize:"..colorstring..":"..tostring(opacity),
 			"mcl_bows_arrow_front.png^[colorize:"..colorstring..":"..tostring(opacity),
-			"mcl_bows_arrow.png",
-			"mcl_bows_arrow.png^[transformFX"}
+			"mcl_bows_arrow.png^[colorize:"..colorstring..":"..tostring(opacity),
+			"mcl_bows_arrow.png^[transformFX^[colorize:"..colorstring..":"..tostring(opacity)}
 
 end
 
@@ -40,7 +40,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 								S("An arrow fired from a bow has a regular damage of 1-9. At full charge, there's a 20% chance of a critical hit dealing 10 damage instead. An arrow fired from a dispenser always deals 3 damage.").."\n"..
 								S("Arrows might get stuck on solid blocks and can be retrieved again. They are also capable of pushing wooden buttons."),
 		_doc_items_usagehelp = S("To use arrows as ammunition for a bow, just put them anywhere in your inventory, they will be used up automatically. To use arrows as ammunition for a dispenser, place them in the dispenser's inventory. To retrieve an arrow that sticks in a block, simply walk close to it."),
-		inventory_image = "mcl_bows_arrow_inv.png^(mcl_potions_arrow_inv.png^[colorize:"..color..":127)",
+		inventory_image = "mcl_bows_arrow_inv.png^(mcl_potions_arrow_inv.png^[colorize:"..color..":100)",
 		groups = { ammo=1, ammo_bow=1, brewitem=1},
 		_on_dispense = function(itemstack, dispenserpos, droppos, dropnode, dropdir)
 			-- Shoot arrow
@@ -79,7 +79,7 @@ function mcl_potions.register_arrow(name, desc, color, def)
 				{7.5/17, -2.5/17, -2.5/17, 8.5/17, -3.5/17, -3.5/17},
 			}
 		},
-		tiles = arrow_image(color),
+		tiles = arrow_image(color, 100),
 		paramtype = "light",
 		paramtype2 = "facedir",
 		sunlight_propagates = true,
