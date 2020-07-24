@@ -54,7 +54,7 @@ local function register_potion(def)
 	end
 
 	local on_use = function (itemstack, user, pointed_thing)
-							if not def.on_use then return end  
+							if not def.on_use then return end
 							def.on_use(user, def.effect, dur)
 							minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
 							mcl_potions._use_potion(itemstack, user, def.color)
@@ -186,7 +186,7 @@ local function register_potion(def)
 			_tt_help = get_tt(def._tt_2, effect_II, dur_2),
 			_doc_items_longdesc = def._longdesc,
 			_doc_items_usagehelp = how_to_drink,
-			stack_max = 1,
+			stack_max = def.stack_max or 1,
 			inventory_image = def.image or potion_image(def.color),
 			wield_image = def.image or potion_image(def.color),
 			groups = def.groups or {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0},
@@ -343,6 +343,7 @@ local dragon_breath_def = {
 	color = "#BF4567",
 	groups = { brewitem = 1, not_in_creative_inventory = 0 },
 	on_use = nil,
+	stack_max = 64,
 }
 
 local healing_def = {
