@@ -10,6 +10,8 @@ local is_cat = {}
 local is_fire_proof = {}
 
 
+local is_player, entity
+
 minetest.register_globalstep(function(dtime)
 
 	-- Check for invisible players
@@ -39,7 +41,8 @@ minetest.register_globalstep(function(dtime)
 
 		if is_poisoned[player] and player:get_properties() then
 
-			player = player or player:get_luaentity()
+			is_player = player:is_player()
+			entity = player:get_luaentity()
 
 			is_poisoned[player].timer = is_poisoned[player].timer + dtime
 			is_poisoned[player].hit_timer = (is_poisoned[player].hit_timer or 0) + dtime
@@ -48,10 +51,13 @@ minetest.register_globalstep(function(dtime)
 
 			if is_poisoned[player].hit_timer >= is_poisoned[player].step then
 
-				if player._cmi_is_mob then
-					player.health = math.max(player.health - 1, 1)
-				else
+				if entity and entity._cmi_is_mob then
+					entity.health = math.max(entity.health - 1, 1)
+				elseif is_player then
 					player:set_hp( math.max(player:get_hp() - 1, 1), { type = "punch", other = "poison"})
+
+				else -- if not player or mob then remove
+					is_poisoned[player] = nil
 				end
 
 				is_poisoned[player].hit_timer = 0
@@ -74,6 +80,8 @@ minetest.register_globalstep(function(dtime)
 		if is_regenerating[player] and player:get_properties() then
 
 			player = player or player:get_luaentity()
+			is_player = player:is_player()
+			entity = player:get_luaentity()
 
 			is_regenerating[player].timer = is_regenerating[player].timer + dtime
 			is_regenerating[player].heal_timer = (is_regenerating[player].heal_timer or 0) + dtime
@@ -81,8 +89,17 @@ minetest.register_globalstep(function(dtime)
 			if player:get_pos() then mcl_potions._add_spawner(player, "#A52BB2") end
 
 			if is_regenerating[player].heal_timer >= is_regenerating[player].step then
-				player:set_hp(math.min(player:get_properties().hp_max or 20, player:get_hp() + 1), { type = "set_hp", other = "regeneration" })
+
+				if is_player then
+					player:set_hp(math.min(player:get_properties().hp_max or 20, player:get_hp() + 1), { type = "set_hp", other = "regeneration" })
+				elseif entity and entity._cmi_is_mob then
+					entity.health = math.min(entity.hp_max, entity.health + 1)
+				else -- stop regenerating if not a player or mob
+					is_regenerating[player] = nil
+				end
+
 				is_regenerating[player].heal_timer = 0
+
 			end
 
 			if is_regenerating[player].timer >= is_regenerating[player].dur then
