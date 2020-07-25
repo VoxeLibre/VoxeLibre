@@ -298,11 +298,6 @@ end
 -- Returns true is node can deal damage to self
 local is_node_dangerous = function(self, nodename)
 	local nn = nodename
-	if self.water_damage > 0 then
-		if minetest.get_item_group(nn, "water") ~= 0 then
-			return true
-		end
-	end
 	if self.lava_damage > 0 then
 		if minetest.get_item_group(nn, "lava") ~= 0 then
 			return true
@@ -310,6 +305,21 @@ local is_node_dangerous = function(self, nodename)
 	end
 	if self.fire_damage > 0 then
 		if minetest.get_item_group(nn, "fire") ~= 0 then
+			return true
+		end
+	end
+	if minetest.registered_nodes[nn].damage_per_second > 0 then
+		return true
+	end
+	return false
+end
+
+
+-- Returns true if node is a water hazard
+local is_node_waterhazard = function(self, nodename)
+	local nn = nodename
+	if self.water_damage > 0 then
+		if minetest.get_item_group(nn, "water") ~= 0 then
 			return true
 		end
 	end
@@ -321,9 +331,6 @@ local is_node_dangerous = function(self, nodename)
 				return true
 			end
 		end
-	end
-	if minetest.registered_nodes[nn].damage_per_second > 0 then
-		return true
 	end
 	return false
 end
@@ -2049,7 +2056,7 @@ local do_states = function(self, dtime)
 			if flight_check(self) then
 				is_in_danger = is_node_dangerous(self, self.standing_in)
 			elseif (is_node_dangerous(self, self.standing_in) or
-					is_node_dangerous(self, self.standing_on)) then
+				is_node_dangerous(self, self.standing_on)) or (is_node_waterhazard(self, self.standing_in) or is_node_waterhazard(self, self.standing_on)) then
 				is_in_danger = true
 			end
 
@@ -3220,6 +3227,12 @@ local mob_step = function(self, dtime)
 	do_jump(self)
 
 	runaway_from(self)
+
+	if is_at_cliff_or_danger(self) then
+			set_velocity(self, 0)
+			self.state = "stand"
+			set_animation(self, "stand")
+	end
 
 end
 

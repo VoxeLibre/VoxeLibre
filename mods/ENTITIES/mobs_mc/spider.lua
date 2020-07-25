@@ -37,7 +37,8 @@ local spider = {
 		-- TODO: sounds: walk, death
 		distance = 16,
 	},
-	walk_velocity = 3.9,
+	walk_velocity = 1.3,
+	run_velocity = 2.8,
 	jump = true,
 	jump_height = 4,
 	view_range = 16,
@@ -72,7 +73,8 @@ cave_spider.hp_min = 1
 cave_spider.hp_max = 12
 cave_spider.collisionbox = {-0.35, -0.01, -0.35, 0.35, 0.49, 0.35}
 cave_spider.visual_size = {x=1.66666, y=1.5}
-cave_spider.walk_velocity = 4.1
+cave_spider.walk_velocity = 1.3
+cave_spider.run_velocity = 3.2
 mobs:register_mob("mobs_mc:cave_spider", cave_spider)
 
 
