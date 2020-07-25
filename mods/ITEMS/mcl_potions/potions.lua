@@ -149,7 +149,7 @@ local function register_potion(def)
 	if def.color and def.name ~= "dragon_breath" then -- dont' splash dragon's breath...
 		mcl_potions.register_splash(def.name, S("Splash "..def.description), def.color, splash_def)
 		mcl_potions.register_lingering(def.name, S("Lingering "..def.description), def.color, ling_def)
-		mcl_potions.register_arrow(def.name, S(def.description.." Arrow"), def.color, arrow_def)
+		mcl_potions.register_arrow(def.name, S("Arrow of "..def.description), def.color, arrow_def)
 	end
 
 	if def.is_II then
@@ -233,7 +233,7 @@ local function register_potion(def)
 		if def.color then
 			mcl_potions.register_splash(def.name.."_2", S("Splash "..def.description..desc_mod), def.color, splash_def_2)
 			mcl_potions.register_lingering(def.name.."_2", S("Lingering "..def.description..desc_mod), def.color, ling_def_2)
-			mcl_potions.register_arrow(def.name.."_2", S(def.description.." Arrow "..desc_mod), def.color, arrow_def_2)
+			mcl_potions.register_arrow(def.name.."_2", S("Arrow of "..def.description..desc_mod), def.color, arrow_def_2)
 		end
 
 	end
@@ -284,7 +284,7 @@ local function register_potion(def)
 		if def.color then
 			mcl_potions.register_splash(def.name.."_plus", S("Splash "..def.description.." +"), def.color, splash_def_pl)
 			mcl_potions.register_lingering(def.name.."_plus", S("Lingering "..def.description.." +"), def.color, ling_def_pl)
-			mcl_potions.register_arrow(def.name.."_plus", S(def.description.." Arrow ".." +"), def.color, arrow_def_pl)
+			mcl_potions.register_arrow(def.name.."_plus", S("Arrow of"..def.description.." +"), def.color, arrow_def_pl)
 		end
 
 	end
