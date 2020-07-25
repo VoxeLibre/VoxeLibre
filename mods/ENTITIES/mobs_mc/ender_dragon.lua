@@ -39,12 +39,6 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	dogshoot_count2_max = 5,
 	passive = false,
 	attack_animals = true,
-	drops = {
-		{name = mobs_mc.items.dragon_egg,
-		chance = 1,
-		min = 1,
-		max = 1},
-	},
 	lava_damage = 0,
 	fire_damage = 0,
 	on_rightclick = nil,
@@ -58,8 +52,17 @@ mobs:register_mob("mobs_mc:enderdragon", {
 		walk_start = 0,		walk_end = 20,
 		run_start = 0,		run_end = 20,
 	},
-
 	ignores_nametag = true,
+	on_die = function(self, own_pos)
+		if self._egg_spawn_pos then
+			local pos = minetest.string_to_pos(self._egg_spawn_pos)
+			--if minetest.get_node(pos).buildable_to then
+				minetest.set_node(pos, {name = mobs_mc.items.dragon_egg})
+				return
+			--end
+		end
+		minetest.add_item(own_pos, mobs_mc.items.dragon_egg)
+	end
 })
 
 
