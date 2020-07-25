@@ -408,13 +408,19 @@ local mod_table = {
 function mcl_potions.get_alchemy(ingr, pot)
 
 	if output_table[pot] ~= nil then
+
 		local brew_table = output_table[pot]
+
 		if brew_table[ingr] ~= nil then
 			return brew_table[ingr]
 		end
+		
+	end
 
-	elseif mod_table[ingr] ~= nil then
+	if mod_table[ingr] ~= nil then
+
 		local brew_table = mod_table[ingr]
+
 		if brew_table[pot] ~= nil then
 			return brew_table[pot]
 		end

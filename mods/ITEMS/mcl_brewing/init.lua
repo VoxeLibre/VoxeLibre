@@ -95,7 +95,7 @@ local function brewable(inv)
 
 	end
 	-- if any stand holds a new potion, return the list of new potions
-	for i=1,table.getn(was_alchemy) do
+	for i=1,#was_alchemy do
 		if was_alchemy[i] then return stands end
 	end
 
