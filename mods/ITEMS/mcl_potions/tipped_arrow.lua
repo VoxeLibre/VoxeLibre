@@ -18,12 +18,12 @@ local function arrow_image(colorstring, opacity)
 	if not opacity then
 		opacity = 127
 	end
-	return {"mcl_bows_arrow.png^[transformFX^[colorize:"..colorstring..":"..tostring(opacity),
-			"mcl_bows_arrow.png^[transformFX^[colorize:"..colorstring..":"..tostring(opacity),
+	return {"mcl_bows_arrow.png^[transformFX^(mcl_bows_arrow_overlay.png^[transformFX^[colorize:"..colorstring..":"..tostring(opacity)..")",
+			"mcl_bows_arrow.png^[transformFX^(mcl_bows_arrow_overlay.png^[transformFX^[colorize:"..colorstring..":"..tostring(opacity)..")",
 			"mcl_bows_arrow_back.png^[colorize:"..colorstring..":"..tostring(opacity),
 			"mcl_bows_arrow_front.png^[colorize:"..colorstring..":"..tostring(opacity),
-			"mcl_bows_arrow.png^[colorize:"..colorstring..":"..tostring(opacity),
-			"mcl_bows_arrow.png^[transformFX^[colorize:"..colorstring..":"..tostring(opacity)}
+			"mcl_bows_arrow.png^(mcl_bows_arrow_overlay.png^[colorize:"..colorstring..":"..tostring(opacity)..")",
+			"mcl_bows_arrow.png^[transformFX^(mcl_bows_arrow_overlay.png^[transformFX^[colorize:"..colorstring..":"..tostring(opacity)..")"}
 
 end
 
