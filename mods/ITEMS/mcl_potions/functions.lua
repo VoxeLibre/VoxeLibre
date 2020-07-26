@@ -19,8 +19,6 @@ minetest.register_globalstep(function(dtime)
 
 		if is_invisible[player] and player:get_properties() then
 
-			player = player or player:get_luaentity()
-
 			is_invisible[player].timer = is_invisible[player].timer + dtime
 
 			if player:get_pos() then mcl_potions._add_spawner(player, "#B0B0B0") end
@@ -53,14 +51,13 @@ minetest.register_globalstep(function(dtime)
 
 				if entity and entity._cmi_is_mob then
 					entity.health = math.max(entity.health - 1, 1)
+					is_poisoned[player].hit_timer = 0
 				elseif is_player then
 					player:set_hp( math.max(player:get_hp() - 1, 1), { type = "punch", other = "poison"})
-
+					is_poisoned[player].hit_timer = 0
 				else -- if not player or mob then remove
 					is_poisoned[player] = nil
 				end
-
-				is_poisoned[player].hit_timer = 0
 
 			end
 
@@ -77,9 +74,8 @@ minetest.register_globalstep(function(dtime)
 	-- Check for regnerating players
 	for player, vals in pairs(is_regenerating) do
 
-		if is_regenerating[player] and player:get_properties() then
+		if is_regenerating[player] then
 
-			player = player or player:get_luaentity()
 			is_player = player:is_player()
 			entity = player:get_luaentity()
 
@@ -92,13 +88,13 @@ minetest.register_globalstep(function(dtime)
 
 				if is_player then
 					player:set_hp(math.min(player:get_properties().hp_max or 20, player:get_hp() + 1), { type = "set_hp", other = "regeneration" })
+					is_regenerating[player].heal_timer = 0
 				elseif entity and entity._cmi_is_mob then
 					entity.health = math.min(entity.hp_max, entity.health + 1)
+					is_regenerating[player].heal_timer = 0
 				else -- stop regenerating if not a player or mob
 					is_regenerating[player] = nil
 				end
-
-				is_regenerating[player].heal_timer = 0
 
 			end
 
@@ -115,9 +111,7 @@ minetest.register_globalstep(function(dtime)
 	-- Check for water breathing players
 	for player, vals in pairs(is_water_breathing) do
 
-		if is_water_breathing[player] and player:get_properties() then
-
-			player = player or player:get_luaentity()
+		if is_water_breathing[player] and player:is_player() then
 
 			is_water_breathing[player].timer = is_water_breathing[player].timer + dtime
 
@@ -131,7 +125,7 @@ minetest.register_globalstep(function(dtime)
 				is_water_breathing[player] = nil
 			end
 
-		elseif not player:get_properties() then
+		elseif not player:is_player() then
 			is_water_breathing[player] = nil
 		end
 
