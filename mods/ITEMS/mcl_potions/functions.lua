@@ -276,6 +276,8 @@ function mcl_potions._reset_player_effects(player)
 	if is_invisible[player] then
 		mcl_potions.make_invisible(player, false)
 		is_invisible[player] = nil
+	else --ensure player isn't invisible if he shouldn't be
+		mcl_potions.make_invisible(player, false)
 	end
 
 	if is_poisoned[player] then
@@ -301,16 +303,22 @@ function mcl_potions._reset_player_effects(player)
 	if is_leaping[player] then
 		is_leaping[player] = nil
 		playerphysics.remove_physics_factor(player, "jump", "mcl_potions:leaping")
+	else -- ensure no effects are stuck from previous potions
+		playerphysics.remove_physics_factor(player, "jump", "mcl_potions:leaping")
 	end
 
 	if is_swift[player] then
 		is_swift[player] = nil
+		playerphysics.remove_physics_factor(player, "speed", "mcl_potions:swiftness")
+	else -- ensure no effects are stuck from previous potions
 		playerphysics.remove_physics_factor(player, "speed", "mcl_potions:swiftness")
 	end
 
 	if is_cat[player] then
 		player:override_day_night_ratio(nil)
 		is_cat[player] = nil
+	else -- ensure no effects are stuck from previous potions
+		player:override_day_night_ratio(nil)
 	end
 
 	if is_fire_proof[player] then
@@ -321,6 +329,10 @@ end
 
 minetest.register_on_leaveplayer( function(player) mcl_potions._reset_player_effects(player) end)
 minetest.register_on_dieplayer( function(player) mcl_potions._reset_player_effects(player) end)
+-- TODO It's not MC-like to remove all potion effects when a player leaves or returns, but...it keeps
+-- the server from crashing when it loops for a player that isn't online and by resetting on join, it
+-- avoids effects present that shouldn't be
+minetest.register_on_joinplayer( function(player) mcl_potions._reset_player_effects(player) end)
 
 function mcl_potions.is_obj_hit(self, pos)
 
@@ -350,6 +362,7 @@ function mcl_potions.make_invisible(player, toggle)
 	local entity = player:get_luaentity()
 
 	if toggle then -- hide player
+
 		if player:is_player() then
 			is_invisible[player].old_size = player:get_properties().visual_size
 		elseif entity then
@@ -357,11 +370,15 @@ function mcl_potions.make_invisible(player, toggle)
 		else -- if not a player or entity, do nothing
 			return
 		end
+
 		player:set_properties({visual_size = {x = 0, y = 0}})
 		player:set_nametag_attributes({color = {a = 0}})
-	else -- show player
+
+	elseif is_invisible[player] then -- show player
+
 		player:set_properties({visual_size = is_invisible[player].old_size})
 		player:set_nametag_attributes({color = {a = 255}})
+
 	end
 
 end
