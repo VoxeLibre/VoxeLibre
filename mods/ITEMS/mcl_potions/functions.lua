@@ -440,8 +440,6 @@ function mcl_potions.healing_func(player, hp)
 			obj.health = math.max(obj.health + hp, obj.hp_max)
 		elseif player:is_player() then
 			player:set_hp(math.min(player:get_hp() + hp, player:get_properties().hp_max), { type = "set_hp", other = "healing" })
-		else
-			return
 		end
 
 	else
@@ -450,8 +448,6 @@ function mcl_potions.healing_func(player, hp)
 			obj.health = obj.health + hp
 		elseif player:is_player() then
 			player:set_hp(player:get_hp() + hp, { type = "punch", other = "harming" })
-		else
-			return
 		end
 
 	end
