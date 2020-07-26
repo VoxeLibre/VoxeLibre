@@ -830,22 +830,31 @@ for color, desc in pairs(boxtypes) do
 			-- Place shulker box as node
 			if minetest.registered_nodes[dropnode.name].buildable_to then
 				minetest.set_node(droppos, {name = stack:get_name(), param2 = minetest.dir_to_facedir(dropdir)})
-				local imeta = stack:get_metadata()
-				local iinv_main = minetest.deserialize(imeta)
 				local ninv = minetest.get_inventory({type="node", pos=droppos})
+				local imetadata = stack:get_metadata()
+				local iinv_main = minetest.deserialize(imetadata)
 				ninv:set_list("main", iinv_main)
 				ninv:set_size("main", 9*3)
+
+				local imeta = stack:get_meta()
+				local nmeta = minetest.get_meta(droppos)
+				nmeta:set_string("description", imeta:get_string("description"))
+
 				stack:take_item()
 			end
 			return stack
 		end,
 		after_place_node = function(pos, placer, itemstack, pointed_thing)
 			local nmeta = minetest.get_meta(pos)
+			local imetadata = itemstack:get_metadata()
+			local iinv_main = minetest.deserialize(imetadata)
 			local ninv = nmeta:get_inventory()
-			local imeta = itemstack:get_metadata()
-			local iinv_main = minetest.deserialize(imeta)
 			ninv:set_list("main", iinv_main)
 			ninv:set_size("main", 9*3)
+
+			local imeta = itemstack:get_meta()
+			nmeta:set_string("description", imeta:get_string("description"))
+
 			if minetest.is_creative_enabled(placer:get_player_name()) then
 				if not ninv:is_empty("main") then
 					return nil
@@ -866,6 +875,9 @@ for color, desc in pairs(boxtypes) do
 			end
 			local data = minetest.serialize(items)
 			local boxitem = ItemStack("mcl_chests:"..color.."_shulker_box")
+			local boxitem_meta = boxitem:get_meta()
+			boxitem_meta:set_string("description", meta:get_string("description"))
+			boxitem_meta:set_string("name", meta:get_string("name"))
 			boxitem:set_metadata(data)
 
 			if minetest.is_creative_enabled("") then
