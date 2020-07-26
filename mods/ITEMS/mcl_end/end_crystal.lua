@@ -28,12 +28,12 @@ local function crystal_explode(self, puncher)
 	if self._exploded then return end
 	self._exploded = true
 	local strength = puncher and explosion_strength or 1
-	mcl_explosions.explode(vector.add(self.object:get_pos(), {x = 0, y = 1.5, z = 0}), strength, {drop_chance = 1}, puncher)
+	mcl_explosions.explode(vector.add(self.object:get_pos(), {x = 0, y = 1.5, z = 0}), strength, {drop_chance = 0}, puncher)
 	minetest.after(0, self.object.remove, self.object)
 end
 
 local function set_crystal_animation(self)
-	self.object:set_animation({x = 0, y = 60}, 30)
+	self.object:set_animation({x = 0, y = 120}, 25)
 end
 
 local function spawn_crystal(pos)
@@ -66,7 +66,7 @@ minetest.register_entity("mcl_end:crystal", {
 	initial_properties = {
 		physical = true,
 		visual = "mesh",
-		visual_size = {x = 7.5, y = 7.5, z = 7.5},
+		visual_size = {x = 6, y = 6},
 		collisionbox = {-1, 0.5, -1, 1, 2.5, 1},
 		mesh = "mcl_end_crystal.b3d",
 		textures = {"mcl_end_crystal.png"},
