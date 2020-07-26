@@ -115,12 +115,15 @@ local function lay_down(player, pos, bed_pos, state, skip)
 			mcl_beds.player[name] = nil
 			player_in_bed = player_in_bed - 1
 		end
+		mcl_beds.pos[name] = nil
+		mcl_beds.bed_pos[name] = nil
+		if p then
+			player:set_pos(p)
+		end
+
 		-- skip here to prevent sending player specific changes (used for leaving players)
 		if skip then
 			return false
-		end
-		if p then
-			player:set_pos(p)
 		end
 
 		-- physics, eye_offset, etc
@@ -134,8 +137,6 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		player:get_meta():set_string("mcl_beds:sleeping", "false")
 		hud_flags.wielditem = true
 		mcl_player.player_set_animation(player, "stand" , 30)
-		mcl_beds.pos[name] = nil
-		mcl_beds.bed_pos[name] = nil
 
 	-- lay down
 	else
@@ -360,7 +361,6 @@ end)
 minetest.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
 	lay_down(player, nil, nil, false, true)
-	mcl_beds.player[name] = nil
 	if check_in_beds() then
 		minetest.after(5, function()
 			if check_in_beds() then
