@@ -839,6 +839,7 @@ for color, desc in pairs(boxtypes) do
 				local imeta = stack:get_meta()
 				local nmeta = minetest.get_meta(droppos)
 				nmeta:set_string("description", imeta:get_string("description"))
+				nmeta:set_string("name", imeta:get_string("name"))
 
 				stack:take_item()
 			end
@@ -854,6 +855,7 @@ for color, desc in pairs(boxtypes) do
 
 			local imeta = itemstack:get_meta()
 			nmeta:set_string("description", imeta:get_string("description"))
+			nmeta:set_string("name", imeta:get_string("name"))
 
 			if minetest.is_creative_enabled(placer:get_player_name()) then
 				if not ninv:is_empty("main") then
