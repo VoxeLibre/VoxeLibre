@@ -55,6 +55,9 @@ minetest.register_globalstep(function(dtime)
 
 		if is_poisoned[player].timer >= is_poisoned[player].dur then
 			is_poisoned[player] = nil
+			if is_player then
+				hb.change_hudbar(player, "health", nil, nil, "hudbars_icon_health.png", nil, "hudbars_bar_health.png")
+			end
 		end
 
 	end
@@ -282,6 +285,11 @@ function mcl_potions._reset_player_effects(player)
 
 	if is_poisoned[player] then
 		is_poisoned[player] = nil
+
+		if player:is_player() then
+			hb.change_hudbar(player, "health", nil, nil, "hudbars_icon_health.png", nil, "hudbars_bar_health.png")
+		end
+
 	end
 
 	if is_regenerating[player] then
@@ -383,19 +391,8 @@ function mcl_potions.make_invisible(player, toggle)
 
 end
 
-function mcl_potions.poison(player, toggle)
 
-	if not player then return false end
-	is_poisoned[player:get_player_name()] = toggle
 
-end
-
-function mcl_potions.regenerate(player, toggle)
-
-	if not player then return false end
-	is_regenerating[player:get_player_name()] = toggle
-
-end
 
 function mcl_potions._use_potion(item, obj, color)
 	local d = 0.1
@@ -557,6 +554,10 @@ function mcl_potions.poison_func(player, factor, duration)
 	if not is_poisoned[player] then
 
 		is_poisoned[player] = {step = factor, dur = duration, timer = 0}
+
+		if player:is_player() then
+			hb.change_hudbar(player, "health", nil, nil, "hbhunger_icon_health_poison.png", nil, "hbhunger_bar_health_poison.png")
+		end
 
 	else
 
