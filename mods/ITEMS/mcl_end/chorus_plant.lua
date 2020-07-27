@@ -111,7 +111,7 @@ mcl_end.check_detach_chorus_plant = function(pos, oldnode, oldmetadata, digger)
 end
 
 mcl_end.check_blast_chorus_plant = function(pos)
-	minetest.remove(pos)
+	minetest.remove_node(pos)
 	mcl_end.detach_chorus_plant(pos)
 end
 
