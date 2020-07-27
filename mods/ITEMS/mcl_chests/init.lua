@@ -197,6 +197,9 @@ minetest.register_node("mcl_chests:"..basename, {
 			minetest.swap_node(pos, { name = "mcl_chests:"..canonical_basename, param2 = param2 })
 		end
 	end,
+	after_place_node = function(pos, placer, itemstack, pointed_thing)
+		minetest.get_meta(pos):set_string("name", itemstack:get_meta():get_string("name"))
+	end,
 	after_dig_node = drop_items_chest,
 	on_blast = on_chest_blast,
 	allow_metadata_inventory_move = protection_check_move,
@@ -224,10 +227,15 @@ minetest.register_node("mcl_chests:"..basename, {
 	_mcl_hardness = 2.5,
 
 	on_rightclick = function(pos, node, clicker)
+		local name = minetest.get_meta(pos):get_string("name")
+		if name == "" then
+			name = S("Chest")
+		end
+
 		minetest.show_formspec(clicker:get_player_name(),
 		"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 		"size[9,8.75]"..
-		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Chest"))).."]"..
+		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", name)).."]"..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
 		mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
 		"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
@@ -269,6 +277,9 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 			n.name = "mcl_chests:"..canonical_basename
 			minetest.swap_node(pos, n)
 		end
+	end,
+	after_place_node = function(pos, placer, itemstack, pointed_thing)
+		minetest.get_meta(pos):set_string("name", itemstack:get_meta():get_string("name"))
 	end,
 	on_destruct = function(pos)
 		local n = minetest.get_node(pos)
@@ -345,11 +356,18 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 
 	on_rightclick = function(pos, node, clicker)
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
+		local name = minetest.get_meta(pos):get_string("name")
+		if name == "" then
+			name = minetest.get_meta(pos_other):get_string("name")
+		end
+		if name == "" then
+			name = S("Large Chest")
+		end
 
 		minetest.show_formspec(clicker:get_player_name(),
 		"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 		"size[9,11.5]"..
-		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Large Chest"))).."]"..
+		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", name)).."]"..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,0.5;9,3;]"..
 		mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
 		"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,3.5;9,3;]"..
@@ -392,6 +410,9 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 			n.name = "mcl_chests:"..canonical_basename
 			minetest.swap_node(pos, n)
 		end
+	end,
+	after_place_node = function(pos, placer, itemstack, pointed_thing)
+		minetest.get_meta(pos):set_string("name", itemstack:get_meta():get_string("name"))
 	end,
 	on_destruct = function(pos)
 		local n = minetest.get_node(pos)
@@ -469,12 +490,19 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 
 	on_rightclick = function(pos, node, clicker)
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
+		local name = minetest.get_meta(pos_other):get_string("name")
+		if name == "" then
+			name = minetest.get_meta(pos):get_string("name")
+		end
+		if name == "" then
+			name = S("Large Chest")
+		end
 
 		minetest.show_formspec(clicker:get_player_name(),
 		"mcl_chests:"..canonical_basename.."_"..pos.x.."_"..pos.y.."_"..pos.z,
 
 		"size[9,11.5]"..
-		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Large Chest"))).."]"..
+		"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", name)).."]"..
 		"list[nodemeta:"..pos_other.x..","..pos_other.y..","..pos_other.z..";main;0,0.5;9,3;]"..
 		mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
 		"list[nodemeta:"..pos.x..","..pos.y..","..pos.z..";main;0,3.5;9,3;]"..
@@ -769,8 +797,12 @@ local shulker_mob_textures = {
 }
 local canonical_shulker_color = "violet"
 
-local formspec_shulker_box = "size[9,8.75]"..
-	"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Shulker Box"))).."]"..
+local function formspec_shulker_box(name)
+	if name == "" then
+		name = S("Shulker Box")
+	end
+	return "size[9,8.75]"..
+	"label[0,0;"..minetest.formspec_escape(minetest.colorize("#313131", name)).."]"..
 	"list[current_name;main;0,0.5;9,3;]"..
 	mcl_formspec.get_itemslot_bg(0,0.5,9,3)..
 	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
@@ -780,6 +812,14 @@ local formspec_shulker_box = "size[9,8.75]"..
 	mcl_formspec.get_itemslot_bg(0,7.74,9,1)..
 	"listring[current_name;main]"..
 	"listring[current_player;main]"
+end
+
+local function set_shulkerbox_meta(nmeta, imeta)
+	local name = imeta:get_string("name")
+	nmeta:set_string("description", imeta:get_string("description"))
+	nmeta:set_string("name", name)
+	nmeta:set_string("formspec", formspec_shulker_box(name))
+end
 
 for color, desc in pairs(boxtypes) do
 	local mob_texture = shulker_mob_textures[color]
@@ -822,7 +862,7 @@ for color, desc in pairs(boxtypes) do
 --		on_place = minetest.rotate_node,
 		on_construct = function(pos)
 			local meta = minetest.get_meta(pos)
-			meta:set_string("formspec", formspec_shulker_box)
+			meta:set_string("formspec", formspec_shulker_box(nil))
 			local inv = meta:get_inventory()
 			inv:set_size("main", 9*3)
 		end,
@@ -835,12 +875,7 @@ for color, desc in pairs(boxtypes) do
 				local iinv_main = minetest.deserialize(imetadata)
 				ninv:set_list("main", iinv_main)
 				ninv:set_size("main", 9*3)
-
-				local imeta = stack:get_meta()
-				local nmeta = minetest.get_meta(droppos)
-				nmeta:set_string("description", imeta:get_string("description"))
-				nmeta:set_string("name", imeta:get_string("name"))
-
+				set_shulkerbox_meta(minetest.get_meta(droppos), stack:get_meta())
 				stack:take_item()
 			end
 			return stack
@@ -852,10 +887,7 @@ for color, desc in pairs(boxtypes) do
 			local ninv = nmeta:get_inventory()
 			ninv:set_list("main", iinv_main)
 			ninv:set_size("main", 9*3)
-
-			local imeta = itemstack:get_meta()
-			nmeta:set_string("description", imeta:get_string("description"))
-			nmeta:set_string("name", imeta:get_string("name"))
+			set_shulkerbox_meta(nmeta, itemstack:get_meta())
 
 			if minetest.is_creative_enabled(placer:get_player_name()) then
 				if not ninv:is_empty("main") then
