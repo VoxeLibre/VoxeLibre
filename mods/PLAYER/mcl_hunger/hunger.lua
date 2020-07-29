@@ -98,15 +98,15 @@ local function poisonp(tick, time, time_left, damage, exhaustion, name)
 	if time_left < time then
 		minetest.after(tick, poisonp, tick, time, time_left, damage, exhaustion, name)
 	else
-		if damage > 0 then
-			mcl_hunger.poison_damage[name] = mcl_hunger.poison_damage[name] - 1
-		end
+		-- if damage > 0 then
+		-- 	mcl_hunger.poison_damage[name] = mcl_hunger.poison_damage[name] - 1
+		-- end
 		if exhaustion > 0 then
 			mcl_hunger.poison_hunger [name] = mcl_hunger.poison_hunger[name] - 1
 		end
-		if mcl_hunger.poison_damage[name] <= 0 then
-			mcl_hunger.reset_bars_poison_damage(player)
-		end
+		-- if mcl_hunger.poison_damage[name] <= 0 then
+		-- 	mcl_hunger.reset_bars_poison_damage(player)
+		-- end
 		if mcl_hunger.poison_hunger[name] <= 0 then
 			mcl_hunger.reset_bars_poison_hunger(player)
 		end
@@ -225,10 +225,10 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 				end
 				if do_poison then
 					-- Set poison bars
-					if poison and poison > 0 then
-						hb.change_hudbar(user, "health", nil, nil, "hbhunger_icon_health_poison.png", nil, "hbhunger_bar_health_poison.png")
-						mcl_hunger.poison_damage[name] = mcl_hunger.poison_damage[name] + 1
-					end
+					-- if poison and poison > 0 then
+					-- 	hb.change_hudbar(user, "health", nil, nil, "hbhunger_icon_health_poison.png", nil, "hbhunger_bar_health_poison.png")
+					-- 	mcl_hunger.poison_damage[name] = mcl_hunger.poison_damage[name] + 1
+					-- end
 					if exhaust and exhaust > 0 then
 						hb.change_hudbar(user, "hunger", nil, nil, "mcl_hunger_icon_foodpoison.png", nil, "mcl_hunger_bar_foodpoison.png")
 						if mcl_hunger.debug then
@@ -260,4 +260,3 @@ if mcl_hunger.active then
 		mcl_hunger.exhaust(name, mcl_hunger.EXHAUST_DIG)
 	end)
 end
-

@@ -111,7 +111,7 @@ local function register_potion(def)
 		_tt_help = get_tt(def._tt, def.effect, dur),
 		_doc_items_longdesc = def._longdesc,
 		_doc_items_usagehelp = how_to_drink,
-		stack_max = 1,
+		stack_max = def.stack_max or 1,
 		inventory_image = def.image or potion_image(def.color),
 		wield_image = def.image or potion_image(def.color),
 		groups = def.groups or {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0},
