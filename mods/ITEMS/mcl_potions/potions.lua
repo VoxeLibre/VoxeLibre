@@ -66,10 +66,10 @@ local function register_potion(def)
 		if effect and def.is_dur then
 			_tt = perc_string(effect).." | "..time_string(dur)
 			if def.name == "poison" or def.name == "regeneration" then
-				_tt = "1/2 Heart/"..effect.."sec | "..time_string(dur)
+				_tt = "1/2 heart/"..effect.."s | "..time_string(dur)
 			end
 		elseif def.name == "healing" or def.name == "harming" then
-				_tt = (effect / 2).." Hearts"
+				_tt = (effect / 2).." hearts"
  		else
 			_tt = tt or time_string(dur) or S("No effect")
 		end
@@ -368,8 +368,8 @@ local dragon_breath_def = {
 local healing_def = {
 	name = "healing",
 	description = S("Healing"),
-	_tt = S("+2 Hearts"),
-	_tt_2 = S("+4 Hearts"),
+	_tt = S("+2 hearts"),
+	_tt_2 = S("+4 hearts"),
 	_longdesc = S("Drink to heal yourself"),
 	color = "#CC0000",
 	effect = 4,
@@ -381,8 +381,8 @@ local healing_def = {
 local harming_def = {
 	name = "harming",
 	description = S("Harming"),
-	_tt = S("-3 Hearts"),
-	_tt_II = S("-6 Hearts"),
+	_tt = S("-3 hearts"),
+	_tt_II = S("-6 hearts"),
 	_longdesc = S("Drink to heal yourself"),
 	color = "#660099",
 	effect = -6,
