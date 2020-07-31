@@ -80,3 +80,8 @@ Depending on what you add, the chances for inclusion vary:
 Report all bugs and missing Minecraft features here:
 
 <https://git.minetest.land/Wuzzy/MineClone2/issues>
+
+## Direct discussion
+We have an IRC channel! Join us on #mineclone2 in freenode.net.
+
+<ircs://irc.freenode.net:6697/#mineclone2>
