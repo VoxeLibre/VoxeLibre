@@ -106,8 +106,15 @@ local function register_potion(def)
 		return function() end
 	end
 
+	local desc
+	if not def.no_potion then
+		desc = S("@1 Potion", def.description)
+	else
+		desc = def.description
+	end
+
 	minetest.register_craftitem("mcl_potions:"..def.name, {
-		description = S(def.description),
+		description = desc,
 		_tt_help = get_tt(def._tt, def.effect, dur),
 		_doc_items_longdesc = def._longdesc,
 		_doc_items_usagehelp = how_to_drink,
@@ -146,15 +153,17 @@ local function register_potion(def)
 		potion_fun = get_arrow_fun(def.effect, dur/8.),
 	}
 
-	if def.color and def.name ~= "dragon_breath" then -- dont' splash dragon's breath...
-		mcl_potions.register_splash(def.name, S("Splash "..def.description), def.color, splash_def)
-		mcl_potions.register_lingering(def.name, S("Lingering "..def.description), def.color, ling_def)
-		mcl_potions.register_arrow(def.name, S("Arrow of "..def.description), def.color, arrow_def)
+	if def.color and not def.no_throwable then
+		mcl_potions.register_splash(def.name, S("Splash @1 Potion", def.description), def.color, splash_def)
+		mcl_potions.register_lingering(def.name, S("Lingering @1 Potion", def.description), def.color, ling_def)
+		if not def.no_arrow then
+			mcl_potions.register_arrow(def.name, S("Arrow of @1", def.description), def.color, arrow_def)
+		end
 	end
 
 	if def.is_II then
 
-		local desc_mod = " II"
+		local desc_mod = S(" II")
 
 		local effect_II
 		if def.name == "healing" or def.name == "harming" then
@@ -171,7 +180,7 @@ local function register_potion(def)
 		if def.name == "slowness" then
 			dur_2 = 20
 			effect_II = 0.40
-			desc_mod = " IV"
+			desc_mod = S(" IV")
 		end
 
 		local on_use = function (itemstack, user, pointed_thing)
@@ -182,7 +191,7 @@ local function register_potion(def)
 							end
 
 		minetest.register_craftitem("mcl_potions:"..def.name.."_2", {
-			description = S(def.description..desc_mod),
+			description = S("@1 Potion@2", def.description, desc_mod),
 			_tt_help = get_tt(def._tt_2, effect_II, dur_2),
 			_doc_items_longdesc = def._longdesc,
 			_doc_items_usagehelp = how_to_drink,
@@ -230,10 +239,12 @@ local function register_potion(def)
 			potion_fun = get_arrow_fun(effect_II, dur_2/8.),
 		}
 
-		if def.color then
-			mcl_potions.register_splash(def.name.."_2", S("Splash "..def.description..desc_mod), def.color, splash_def_2)
-			mcl_potions.register_lingering(def.name.."_2", S("Lingering "..def.description..desc_mod), def.color, ling_def_2)
-			mcl_potions.register_arrow(def.name.."_2", S("Arrow of "..def.description..desc_mod), def.color, arrow_def_2)
+		if def.color and not def.no_throwable then
+			mcl_potions.register_splash(def.name.."_2", S("Splash @1@2 Potion", def.description, desc_mod), def.color, splash_def_2)
+			mcl_potions.register_lingering(def.name.."_2", S("Lingering @1@2 Potion", def.description, desc_mod), def.color, ling_def_2)
+			if not def.no_arrow then
+				mcl_potions.register_arrow(def.name.."_2", S("Arrow of @1@2", def.description, desc_mod), def.color, arrow_def_2)
+			end
 		end
 
 	end
@@ -253,7 +264,7 @@ local function register_potion(def)
 							end
 
 		minetest.register_craftitem("mcl_potions:"..def.name.."_plus", {
-			description = S(def.description.." +"),
+			description = S("@1 + Potion", def.description),
 			_tt_help = get_tt(def._tt_plus, def.effect, dur_pl),
 			_doc_items_longdesc = def._longdesc,
 			_doc_items_usagehelp = how_to_drink,
@@ -281,10 +292,12 @@ local function register_potion(def)
 			tt = get_tt(def._tt_pl, def.effect, dur_pl/8.),
 			potion_fun = get_arrow_fun(def.effect, dur_pl/8.),
 		}
-		if def.color then
-			mcl_potions.register_splash(def.name.."_plus", S("Splash "..def.description.." +"), def.color, splash_def_pl)
-			mcl_potions.register_lingering(def.name.."_plus", S("Lingering "..def.description.." +"), def.color, ling_def_pl)
-			mcl_potions.register_arrow(def.name.."_plus", S("Arrow of"..def.description.." +"), def.color, arrow_def_pl)
+		if def.color and not def.no_throwable then
+			mcl_potions.register_splash(def.name.."_plus", S("Splash @1 + Potion", def.description), def.color, splash_def_pl)
+			mcl_potions.register_lingering(def.name.."_plus", S("Lingering @1 + Potion", def.description), def.color, ling_def_pl)
+			if not def.no_arrow then
+				mcl_potions.register_arrow(def.name.."_plus", S("Arrow of @1 +", def.description), def.color, arrow_def_pl)
+			end
 		end
 
 	end
@@ -309,7 +322,8 @@ end
 
 local awkward_def = {
 	name = "awkward",
-	description = "Awkward Potion",
+	description = S("Awkward"),
+	no_arrow = true,
 	_tt = S("No effect"),
 	_longdesc = S("Has an awkward taste and is used for brewing potions."),
 	color = "#0000FF",
@@ -319,7 +333,8 @@ local awkward_def = {
 
 local mundane_def = {
 	name = "mundane",
-	description = "Mundane Potion",
+	description = S("Mundane"),
+	no_arrow = true,
 	_tt = S("No effect"),
 	longdesc = S("Has a terrible taste and is not useful for brewing potions."),
 	color = "#0000FF",
@@ -328,7 +343,8 @@ local mundane_def = {
 
 local thick_def = {
 	name = "thick",
-	description = "Thick Potion",
+	description = S("Thick"),
+	no_arrow = true,
 	_tt = S("No effect"),
 	_longdesc = S("Has a bitter taste and is not useful for brewing potions."),
 	color = "#0000FF",
@@ -337,7 +353,10 @@ local thick_def = {
 
 local dragon_breath_def = {
 	name = "dragon_breath",
-	description = "Dragon's Breath",
+	description = S("Dragon's Breath"),
+	no_arrow = true,
+	no_potion = true,
+	no_throwable = true,
 	_tt = S("No effect"),
 	_longdesc = S("Combine with Splash potions to create a Lingering effect"),
 	color = "#BF4567",
@@ -348,7 +367,7 @@ local dragon_breath_def = {
 
 local healing_def = {
 	name = "healing",
-	description = "Healing Potion",
+	description = S("Healing"),
 	_tt = S("+2 Hearts"),
 	_tt_2 = S("+4 Hearts"),
 	_longdesc = S("Drink to heal yourself"),
@@ -361,7 +380,7 @@ local healing_def = {
 
 local harming_def = {
 	name = "harming",
-	description = "Harming Potion",
+	description = S("Harming"),
 	_tt = S("-3 Hearts"),
 	_tt_II = S("-6 Hearts"),
 	_longdesc = S("Drink to heal yourself"),
@@ -374,7 +393,7 @@ local harming_def = {
 
 local night_vision_def = {
 	name = "night_vision",
-	description = "Night Vision Potion",
+	description = S("Night Vision"),
 	_tt = nil,
 	_longdesc = S("Drink to see in the dark."),
 	color = "#1010AA",
@@ -386,7 +405,7 @@ local night_vision_def = {
 
 local swiftness_def = {
 	name = "swiftness",
-	description = "Swiftness Potion",
+	description = S("Swiftness"),
 	_tt = nil,
 	_longdesc = S("Drink to increase your speed."),
 	color = "#009999",
@@ -399,7 +418,7 @@ local swiftness_def = {
 
 local slowness_def = {
 	name = "slowness",
-	description = "Slowness Potion",
+	description = S("Slowness"),
 	_tt = nil,
 	_longdesc = S("Drink to become sluggish"),
 	color = "#000080",
@@ -413,7 +432,7 @@ local slowness_def = {
 
 local leaping_def = {
 	name = "leaping",
-	description = "Leaping Potion",
+	description = S("Leaping"),
 	_tt = nil,
 	_longdesc = S("Drink to leap tall buildings in a single bound!"),
 	color = "#00CC33",
@@ -426,7 +445,7 @@ local leaping_def = {
 
 local poison_def = {
 	name = "poison",
-	description = "Poison Potion",
+	description = S("Poison"),
 	_tt = nil,
 	_longdesc = S("Poison mobs or players with this dangerous potion."),
 	color = "#447755",
@@ -440,7 +459,7 @@ local poison_def = {
 
 local regeneration_def = {
 	name = "regeneration",
-	description = "Regeneration Potion",
+	description = S("Regeneration"),
 	_tt = nil,
 	_longdesc = S("Regenerate mobs or players with this healing potion over time."),
 	color = "#B52CC2",
@@ -453,7 +472,7 @@ local regeneration_def = {
 
 local invisibility_def = {
 	name = "invisibility",
-	description = "Invisibility Potion",
+	description = S("Invisibility"),
 	_tt = nil,
 	_longdesc = S("Drink and become invisibile to mobs and players."),
 	color = "#B0B0B0",
@@ -464,7 +483,7 @@ local invisibility_def = {
 
 local water_breathing_def = {
 	name = "water_breathing",
-	description = "Water Breathing Potion",
+	description = S("Water Breathing"),
 	_tt = nil,
 	_longdesc = S("Drink and breath underwater."),
 	color = "#0000AA",
@@ -475,7 +494,7 @@ local water_breathing_def = {
 
 local fire_resistance_def = {
 	name = "fire_resistance",
-	description = "Fire Resistance Potion",
+	description = S("Fire Resistance"),
 	_tt = nil,
 	_longdesc = S("Drink and resist fire damage."),
 	color = "#D0A040",
@@ -499,7 +518,7 @@ end
 
 
 -- minetest.register_craftitem("mcl_potions:weakness", {
--- 	description = S("Weakness Potion"),
+-- 	description = S("Weakness"),
 -- 	_tt_help = S("-4 HP damage | 1:30"),
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#6600AA"),
@@ -523,7 +542,7 @@ end
 -- })
 --
 -- minetest.register_craftitem("mcl_potions:weakness_plus", {
--- 	description = S("Weakness Potion +"),
+-- 	description = S("Weakness +"),
 -- 	_tt_help = S("-4 HP damage | 4:00"),
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#7700BB"),
@@ -547,7 +566,7 @@ end
 -- })
 --
 -- minetest.register_craftitem("mcl_potions:strength", {
--- 	description = S("Strength Potion"),
+-- 	description = S("Strength"),
 -- 	_tt_help = S("+3 HP damage | 3:00"),
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#D444D4"),
@@ -571,7 +590,7 @@ end
 -- })
 --
 -- minetest.register_craftitem("mcl_potions:strength_2", {
--- 	description = S("Strength Potion II"),
+-- 	description = S("Strength II"),
 -- 	_tt_help = S("+6 HP damage | 1:30"),
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#D444E4"),
@@ -595,7 +614,7 @@ end
 -- })
 --
 -- minetest.register_craftitem("mcl_potions:strength_plus", {
--- 	description = S("Strength Potion +"),
+-- 	description = S("Strength +"),
 -- 	_tt_help = S("+3 HP damage | 8:00"),
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#D444F4"),
