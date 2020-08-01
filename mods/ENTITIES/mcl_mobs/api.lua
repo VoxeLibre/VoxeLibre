@@ -724,6 +724,42 @@ local is_at_cliff_or_danger = function(self)
 end
 
 
+-- copy the 'mob facing cliff_or_danger check' from above, and rework to avoid water
+local is_at_water_danger = function(self)
+
+	
+	if not self.object:get_luaentity() then
+		return false
+	end
+	local yaw = self.object:get_yaw()
+	local dir_x = -sin(yaw) * (self.collisionbox[4] + 0.5)
+	local dir_z = cos(yaw) * (self.collisionbox[4] + 0.5)
+	local pos = self.object:get_pos()
+	local ypos = pos.y + self.collisionbox[2] -- just above floor
+
+	local free_fall, blocker = minetest.line_of_sight(
+		{x = pos.x + dir_x, y = ypos, z = pos.z + dir_z},
+		{x = pos.x + dir_x, y = ypos - 3, z = pos.z + dir_z})
+	if free_fall then
+		return true
+	else
+		local bnode = minetest.get_node(blocker)
+		local waterdanger = is_node_waterhazard(self, bnode.name)
+		if
+			waterdanger and (is_node_waterhazard(self, self.standing_in) or is_node_waterhazard(self, self.standing_on)) then
+			return false
+		elseif waterdanger and (is_node_waterhazard(self, self.standing_in) or is_node_waterhazard(self, self.standing_on)) == false then
+			return true
+		else
+			local def = minetest.registered_nodes[bnode.name]
+			return (not def and def.walkable)
+		end
+	end
+
+	return false
+end
+
+
 -- get node but use fallback for nil or unknown
 local node_ok = function(pos, fallback)
 
@@ -2049,40 +2085,40 @@ local do_states = function(self, dtime)
 
 		local is_in_danger = false
 		if lp then
-
-			local is_in_danger = false
-
-			-- if mob is flying, only check for node it is currently in (no contact with node below)
-			if flight_check(self) then
-				is_in_danger = is_node_dangerous(self, self.standing_in)
-			elseif (is_node_dangerous(self, self.standing_in) or
-				is_node_dangerous(self, self.standing_on)) or (is_node_waterhazard(self, self.standing_in) or is_node_waterhazard(self, self.standing_on)) then
-				is_in_danger = true
-			end
-
 			-- If mob in or on dangerous block, look for land
-			if is_in_danger then
-				lp = minetest.find_node_near(s, 5, {"group:solid"})
+			if (is_node_dangerous(self, self.standing_in) or
+				is_node_dangerous(self, self.standing_on)) or (is_node_waterhazard(self, self.standing_in) or is_node_waterhazard(self, self.standing_on)) and (not self.fly) then
+				is_in_danger = true
 
-				-- did we find land?
-				if lp then
+					-- If mob in or on dangerous block, look for land
+					if is_in_danger then
+					-- Better way to find shore - copied from upstream
+						lp = minetest.find_nodes_in_area_under_air(
+							{x = s.x - 5, y = s.y - 0.5, z = s.z - 5},
+							{x = s.x + 5, y = s.y + 1, z = s.z + 5},
+							{"group:solid"}) 
 
-					local vec = {
-						x = lp.x - s.x,
-						z = lp.z - s.z
-					}
+						lp = #lp > 0 and lp[random(#lp)]
+	
+						-- did we find land?
+						if lp then
 
-					yaw = (atan(vec.z / vec.x) + pi / 2) - self.rotate
+							local vec = {
+								x = lp.x - s.x,
+								z = lp.z - s.z
+							}
 
-					if lp.x > s.x then yaw = yaw + pi end
+							yaw = (atan(vec.z / vec.x) + pi / 2) - self.rotate
 
-					-- look towards land and jump/move in that direction
-					yaw = set_yaw(self, yaw, 6)
-					do_jump(self)
-					set_velocity(self, self.walk_velocity)
-				else
-					yaw = yaw + random(-0.5, 0.5)
-				end
+
+							if lp.x > s.x  then yaw = yaw + pi end
+
+							-- look towards land and move in that direction
+							yaw = set_yaw(self, yaw, 6)
+							set_velocity(self, self.walk_velocity)
+
+						end
+					end
 
 			-- A danger is near but mob is not inside
 			else
@@ -3218,8 +3254,6 @@ local mob_step = function(self, dtime)
 
 	breed(self)
 
-	follow_flop(self)
-
 	if do_states(self, dtime) then
 		return
 	end
@@ -3227,6 +3261,18 @@ local mob_step = function(self, dtime)
 	do_jump(self)
 
 	runaway_from(self)
+
+	if is_at_water_danger(self) and self.state ~= "attack" then
+		if random(1, 10) <= 6 then
+			set_velocity(self, 0)
+			self.state = "stand"
+			set_animation(self, "stand")
+			yaw = yaw + random(-0.5, 0.5)
+			yaw = set_yaw(self, yaw, 8)
+		end
+	end
+
+	follow_flop(self)
 
 	if is_at_cliff_or_danger(self) then
 			set_velocity(self, 0)
