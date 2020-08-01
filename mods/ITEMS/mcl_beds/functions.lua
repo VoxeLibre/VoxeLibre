@@ -364,7 +364,7 @@ end)
 minetest.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
 	lay_down(player, nil, nil, false, true)
-	players = minetest.get_connected_players()
+	local players = minetest.get_connected_players()
 	for n, player in ipairs(players) do
 		if player:get_player_name() == name then
 			players[n] = nil
