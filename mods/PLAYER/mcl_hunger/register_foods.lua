@@ -8,4 +8,4 @@ mcl_hunger.register_food("mcl_mobitems:rotten_flesh",		4, "", 30, 0, 100, 80)
 mcl_hunger.register_food("mcl_mobitems:chicken",		2, "", 30, 0, 100, 30)
 mcl_hunger.register_food("mcl_mobitems:spider_eye",		2, "", 4,  1,   0)
 
-mcl_hunger.register_food("mcl_fishing:pufferfish_raw",		1, "", 60, 1, 300)
+-- mcl_hunger.register_food("mcl_fishing:pufferfish_raw",		1, "", 60, 1, 300)

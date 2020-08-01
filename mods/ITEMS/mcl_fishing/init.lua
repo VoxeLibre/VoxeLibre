@@ -417,8 +417,7 @@ minetest.register_craftitem("mcl_fishing:clownfish_raw", {
 	_mcl_saturation = 0.2,
 })
 
--- Pufferfish
--- TODO: Add real status effect
+
 minetest.register_craftitem("mcl_fishing:pufferfish_raw", {
 	description = S("Pufferfish"),
 	_tt_help = minetest.colorize("#FFFF00", S("Very poisonous")),
@@ -428,5 +427,14 @@ minetest.register_craftitem("mcl_fishing:pufferfish_raw", {
 	on_secondary_use = minetest.item_eat(1),
 	stack_max = 64,
 	groups = { food=2, eatable=1, brewitem = 1 },
-	_mcl_saturation = 0.2,
+	-- _mcl_saturation = 0.2,
 })
+
+
+minetest.register_on_item_eat(function (hp_change, replace_with_item, itemstack, user, pointed_thing)
+
+	if itemstack:get_name() == "mcl_fishing:pufferfish_raw" then
+		mcl_potions.poison_func(user, 1.25, 7)
+	end
+
+end )
