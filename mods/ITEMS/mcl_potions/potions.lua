@@ -9,6 +9,7 @@ local potion_image = function(colorstring, opacity)
 end
 
 local how_to_drink = S("Use the “Place” key to drink it.")
+local potion_intro = S("Drinking a potion gives you a particular effect.")
 
 local function time_string(dur)
 	if not dur then return nil end
@@ -112,16 +113,26 @@ local function register_potion(def)
 	else
 		desc = def.description
 	end
+	local potion_longdesc = def._longdesc
+	if not def.no_effect then
+		potion_longdesc = potion_intro .. "\n" .. def._longdesc
+	end
+        local potion_usagehelp
+	local basic_potion_tt
+	if def.name ~= "dragon_breath" then
+		potion_usagehelp = how_to_drink
+		basic_potion_tt = get_tt(def._tt, def.effect, dur)
+	end
 
 	minetest.register_craftitem("mcl_potions:"..def.name, {
 		description = desc,
-		_tt_help = get_tt(def._tt, def.effect, dur),
-		_doc_items_longdesc = def._longdesc,
-		_doc_items_usagehelp = how_to_drink,
+		_tt_help = basic_potion_tt,
+		_doc_items_longdesc = potion_longdesc,
+		_doc_items_usagehelp = potion_usagehelp,
 		stack_max = def.stack_max or 1,
 		inventory_image = def.image or potion_image(def.color),
 		wield_image = def.image or potion_image(def.color),
-		groups = def.groups or {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0},
+		groups = def.groups or {brewitem=1, food=3, can_eat_when_full=1 },
 		on_place = on_use,
 		on_secondary_use = on_use,
 	})
@@ -132,25 +143,33 @@ local function register_potion(def)
 
 	local splash_def = {
 		tt = get_tt(def._tt, def.effect, splash_dur),
+		longdesc = def._longdesc,
 		potion_fun = get_splash_fun(def.effect, splash_dur),
+		no_effect = def.no_effect,
 	}
 
 	local ling_def
 	if def.name == "healing" or def.name == "harming" then
 		ling_def = {
 			tt = get_tt(def._tt, def.effect*mcl_potions.LINGERING_FACTOR, ling_dur),
+			longdesc = def._longdesc,
 			potion_fun = get_lingering_fun(def.effect*mcl_potions.LINGERING_FACTOR, ling_dur),
+			no_effect = def.no_effect,
 		}
 	else
 		ling_def = {
 			tt = get_tt(def._tt, def.effect, ling_dur),
+			longdesc = def._longdesc,
 			potion_fun = get_lingering_fun(def.effect, ling_dur),
+			no_effect = def.no_effect,
 		}
 	end
 
 	local arrow_def = {
 		tt = get_tt(def._tt, def.effect, dur/8.),
+		longdesc = def._longdesc,
 		potion_fun = get_arrow_fun(def.effect, dur/8.),
+		no_effect = def.no_effect,
 	}
 
 	if def.color and not def.no_throwable then
@@ -193,12 +212,12 @@ local function register_potion(def)
 		minetest.register_craftitem("mcl_potions:"..def.name.."_2", {
 			description = S("@1 Potion@2", def.description, desc_mod),
 			_tt_help = get_tt(def._tt_2, effect_II, dur_2),
-			_doc_items_longdesc = def._longdesc,
-			_doc_items_usagehelp = how_to_drink,
+			_doc_items_longdesc = potion_longdesc,
+			_doc_items_usagehelp = potion_usagehelp,
 			stack_max = def.stack_max or 1,
 			inventory_image = def.image or potion_image(def.color),
 			wield_image = def.image or potion_image(def.color),
-			groups = def.groups or {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0},
+			groups = def.groups or {brewitem=1, food=3, can_eat_when_full=1},
 			on_place = on_use,
 			on_secondary_use = on_use,
 		})
@@ -211,12 +230,16 @@ local function register_potion(def)
 		if def.name == "healing" then
 			splash_def_2 = {
 				tt = get_tt(def._tt_2, 7, splash_dur_2),
+				longdesc = def._longdesc,
 				potion_fun = get_splash_fun(7, splash_dur_2),
+				no_effect = def.no_effect,
 			}
 		else
 			splash_def_2 = {
 				tt = get_tt(def._tt_2, effect_II, splash_dur_2),
+				longdesc = def._longdesc,
 				potion_fun = get_splash_fun(effect_II, splash_dur_2),
+				no_effect = def.no_effect,
 			}
 		end
 
@@ -225,18 +248,24 @@ local function register_potion(def)
 		if def.name == "healing" or def.name == "harming" then
 			ling_def_2 = {
 				tt = get_tt(def._tt_2, effect_II*mcl_potions.LINGERING_FACTOR, ling_dur_2),
+				longdesc = def._longdesc,
 				potion_fun = get_lingering_fun(effect_II*mcl_potions.LINGERING_FACTOR, ling_dur_2),
+				no_effect = def.no_effect,
 			}
 		else
 			ling_def_2 = {
 				tt = get_tt(def._tt_2, effect_II, ling_dur_2),
+				longdesc = def._longdesc,
 				potion_fun = get_lingering_fun(effect_II, ling_dur_2),
+				no_effect = def.no_effect,
 			}
 		end
 
 		local arrow_def_2 = {
 			tt = get_tt(def._tt_2, effect_II, dur_2/8.),
+			longdesc = def._longdesc,
 			potion_fun = get_arrow_fun(effect_II, dur_2/8.),
+			no_effect = def.no_effect,
 		}
 
 		if def.color and not def.no_throwable then
@@ -266,12 +295,12 @@ local function register_potion(def)
 		minetest.register_craftitem("mcl_potions:"..def.name.."_plus", {
 			description = S("@1 + Potion", def.description),
 			_tt_help = get_tt(def._tt_plus, def.effect, dur_pl),
-			_doc_items_longdesc = def._longdesc,
-			_doc_items_usagehelp = how_to_drink,
+			_doc_items_longdesc = potion_longdesc,
+			_doc_items_usagehelp = potion_usagehelp,
 			stack_max = 1,
 			inventory_image = def.image or potion_image(def.color),
 			wield_image = def.image or potion_image(def.color),
-			groups = def.groups or {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0},
+			groups = def.groups or {brewitem=1, food=3, can_eat_when_full=1},
 			on_place = on_use,
 			on_secondary_use = on_use,
 		})
@@ -282,15 +311,21 @@ local function register_potion(def)
 
 		local splash_def_pl = {
 			tt = get_tt(def._tt_plus, def.effect, splash_dur_pl),
+			longdesc = def._longdesc,
 			potion_fun = get_splash_fun(def.effect, splash_dur_pl),
+			no_effect = def.no_effect,
 		}
 		local ling_def_pl = {
 			tt = get_tt(def._tt_plus, def.effect, ling_dur_pl),
+			longdesc = def._longdesc,
 			potion_fun = get_lingering_fun(def.effect, ling_dur_pl),
+			no_effect = def.no_effect,
 		}
 		local arrow_def_pl = {
 			tt = get_tt(def._tt_pl, def.effect, dur_pl/8.),
+			longdesc = def._longdesc,
 			potion_fun = get_arrow_fun(def.effect, dur_pl/8.),
+			no_effect = def.no_effect,
 		}
 		if def.color and not def.no_throwable then
 			mcl_potions.register_splash(def.name.."_plus", S("Splash @1 + Potion", def.description), def.color, splash_def_pl)
@@ -324,10 +359,11 @@ local awkward_def = {
 	name = "awkward",
 	description = S("Awkward"),
 	no_arrow = true,
+	no_effect = true,
 	_tt = S("No effect"),
 	_longdesc = S("Has an awkward taste and is used for brewing potions."),
 	color = "#0000FF",
-	groups = {brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0},
+	groups = {brewitem=1, food=3, can_eat_when_full=1},
 	on_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 }
 
@@ -335,8 +371,9 @@ local mundane_def = {
 	name = "mundane",
 	description = S("Mundane"),
 	no_arrow = true,
+	no_effect = true,
 	_tt = S("No effect"),
-	longdesc = S("Has a terrible taste and is not useful for brewing potions."),
+	_longdesc = S("Has a terrible taste and is not useful for brewing potions."),
 	color = "#0000FF",
 	on_use = minetest.item_eat(0, "mcl_potions:glass_bottle"),
 }
@@ -345,6 +382,7 @@ local thick_def = {
 	name = "thick",
 	description = S("Thick"),
 	no_arrow = true,
+	no_effect = true,
 	_tt = S("No effect"),
 	_longdesc = S("Has a bitter taste and is not useful for brewing potions."),
 	color = "#0000FF",
@@ -357,10 +395,10 @@ local dragon_breath_def = {
 	no_arrow = true,
 	no_potion = true,
 	no_throwable = true,
-	_tt = S("No effect"),
-	_longdesc = S("Combine with Splash potions to create a Lingering effect"),
+	no_effect = true,
+	_longdesc = S("This item is used in brewing and can be combined with splash potions to create lingering potions."),
 	color = "#BF4567",
-	groups = { brewitem = 1, not_in_creative_inventory = 0 },
+	groups = { brewitem = 1 },
 	on_use = nil,
 	stack_max = 64,
 }
@@ -370,7 +408,7 @@ local healing_def = {
 	description = S("Healing"),
 	_tt = S("+2 hearts"),
 	_tt_2 = S("+4 hearts"),
-	_longdesc = S("Drink to heal yourself"),
+	_longdesc = S("Instantly heals."),
 	color = "#CC0000",
 	effect = 4,
 	on_use = mcl_potions.healing_func,
@@ -383,7 +421,7 @@ local harming_def = {
 	description = S("Harming"),
 	_tt = S("-3 hearts"),
 	_tt_II = S("-6 hearts"),
-	_longdesc = S("Drink to heal yourself"),
+	_longdesc = S("Instantly deals damage."),
 	color = "#660099",
 	effect = -6,
 	on_use = mcl_potions.healing_func,
@@ -395,7 +433,7 @@ local night_vision_def = {
 	name = "night_vision",
 	description = S("Night Vision"),
 	_tt = nil,
-	_longdesc = S("Drink to see in the dark."),
+	_longdesc = S("Grants the ability to see in darkness."),
 	color = "#1010AA",
 	effect = nil,
 	is_dur = true,
@@ -407,7 +445,7 @@ local swiftness_def = {
 	name = "swiftness",
 	description = S("Swiftness"),
 	_tt = nil,
-	_longdesc = S("Drink to increase your speed."),
+	_longdesc = S("Increases walking speed."),
 	color = "#009999",
 	effect = 1.2,
 	is_dur = true,
@@ -420,7 +458,7 @@ local slowness_def = {
 	name = "slowness",
 	description = S("Slowness"),
 	_tt = nil,
-	_longdesc = S("Drink to become sluggish"),
+	_longdesc = S("Decreases walking speed."),
 	color = "#000080",
 	effect = 0.85,
 	is_dur = true,
@@ -434,7 +472,7 @@ local leaping_def = {
 	name = "leaping",
 	description = S("Leaping"),
 	_tt = nil,
-	_longdesc = S("Drink to leap tall buildings in a single bound!"),
+	_longdesc = S("Increases jump strength."),
 	color = "#00CC33",
 	effect = 1.15,
 	is_dur = true,
@@ -447,7 +485,7 @@ local poison_def = {
 	name = "poison",
 	description = S("Poison"),
 	_tt = nil,
-	_longdesc = S("Poison mobs or players with this dangerous potion."),
+	_longdesc = S("Applies the poison effect which deals damage at a regular interval."),
 	color = "#447755",
 	effect = 2.5,
 	is_dur = true,
@@ -461,7 +499,7 @@ local regeneration_def = {
 	name = "regeneration",
 	description = S("Regeneration"),
 	_tt = nil,
-	_longdesc = S("Regenerate mobs or players with this healing potion over time."),
+	_longdesc = S("Regenerates health over time."),
 	color = "#B52CC2",
 	effect = 2.5,
 	is_dur = true,
@@ -474,7 +512,7 @@ local invisibility_def = {
 	name = "invisibility",
 	description = S("Invisibility"),
 	_tt = nil,
-	_longdesc = S("Drink and become invisibile to mobs and players."),
+	_longdesc = S("Grants invisibility."),
 	color = "#B0B0B0",
 	is_dur = true,
 	on_use = mcl_potions.invisiblility_func,
@@ -485,7 +523,7 @@ local water_breathing_def = {
 	name = "water_breathing",
 	description = S("Water Breathing"),
 	_tt = nil,
-	_longdesc = S("Drink and breath underwater."),
+	_longdesc = S("Grants limitless breath underwater."),
 	color = "#0000AA",
 	is_dur = true,
 	on_use = mcl_potions.water_breathing_func,
@@ -496,7 +534,7 @@ local fire_resistance_def = {
 	name = "fire_resistance",
 	description = S("Fire Resistance"),
 	_tt = nil,
-	_longdesc = S("Drink and resist fire damage."),
+	_longdesc = S("Grants immunity to damage from heat sources like fire."),
 	color = "#D0A040",
 	is_dur = true,
 	on_use = mcl_potions.fire_resistance_func,
@@ -523,7 +561,7 @@ end
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#6600AA"),
 -- 	inventory_image = potion_image("#6600AA"),
--- 	groups = { brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
+-- 	groups = { brewitem=1, food=3, can_eat_when_full=1 },
 -- 	stack_max = 1,
 --
 -- 	on_place = function(itemstack, user, pointed_thing)
@@ -547,7 +585,7 @@ end
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#7700BB"),
 -- 	inventory_image = potion_image("#7700BB"),
--- 	groups = { brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
+-- 	groups = { brewitem=1, food=3, can_eat_when_full=1 },
 -- 	stack_max = 1,
 --
 -- 	on_place = function(itemstack, user, pointed_thing)
@@ -571,7 +609,7 @@ end
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#D444D4"),
 -- 	inventory_image = potion_image("#D444D4"),
--- 	groups = { brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
+-- 	groups = { brewitem=1, food=3, can_eat_when_full=1 },
 -- 	stack_max = 1,
 --
 -- 	on_place = function(itemstack, user, pointed_thing)
@@ -595,7 +633,7 @@ end
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#D444E4"),
 -- 	inventory_image = potion_image("#D444E4"),
--- 	groups = { brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
+-- 	groups = { brewitem=1, food=3, can_eat_when_full=1 },
 -- 	stack_max = 1,
 --
 -- 	on_place = function(itemstack, user, pointed_thing)
@@ -619,7 +657,7 @@ end
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#D444F4"),
 -- 	inventory_image = potion_image("#D444F4"),
--- 	groups = { brewitem=1, food=3, can_eat_when_full=1, not_in_creative_inventory=0 },
+-- 	groups = { brewitem=1, food=3, can_eat_when_full=1 },
 -- 	stack_max = 1,
 --
 -- 	on_place = function(itemstack, user, pointed_thing)

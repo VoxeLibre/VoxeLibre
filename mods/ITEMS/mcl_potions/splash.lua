@@ -11,9 +11,18 @@ end
 function mcl_potions.register_splash(name, descr, color, def)
 
     local id = "mcl_potions:"..name.."_splash"
+    local longdesc = def.longdesc
+    if not def.no_effect then
+        longdesc = S("A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect.")
+        if def.longdesc then
+            longdesc = longdesc .. "\n" .. def.longdesc
+        end
+    end
     minetest.register_craftitem(id, {
         description = descr,
 		_tt_help = def.tt,
+        _doc_items_longdesc = longdesc,
+        _doc_items_usagehelp = S("Use the “Punch” key to throw it."),
         inventory_image = splash_image(color),
 		groups = {brewitem=1, not_in_creative_inventory=0},
         on_use = function(item, placer, pointed_thing)
