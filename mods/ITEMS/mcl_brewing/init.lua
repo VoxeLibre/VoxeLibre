@@ -4,7 +4,6 @@ local function active_brewing_formspec(fuel_percent, brew_percent)
 
 	return "size[9,8.75]"..
 	"background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory.png]"..
-	-- "background[-0.19,-0.25;9.5,9.5;mcl_brewing_inventory_active.png]"..
 	"label[4,0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Brewing Stand"))).."]"..
 	"label[0,4.0;"..minetest.formspec_escape(minetest.colorize("#313131", S("Inventory"))).."]"..
 	"list[current_player;main;0,4.5;9,3;9]"..
@@ -375,7 +374,7 @@ minetest.register_node("mcl_brewing:stand_000", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1,  brewitem=1, not_in_creative_inventory = 0, not_in_craft_guide = 0},
+	groups = {pickaxey=1, falling_node=1, brewitem=1 },
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -392,31 +391,15 @@ minetest.register_node("mcl_brewing:stand_000", {
 			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
 			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
 
-			-- {-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
-			-- {-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
-			-- {-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
-			-- {-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
-			-- {-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
-
 			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
 			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
 			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
 			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
 
-
-			-- {7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
-			-- {6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
-			-- {5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
-			-- {4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
-			-- {3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
-
 			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
 			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
 			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
 			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
-
-			-- {0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
-			-- {0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
 
 			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
 			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
@@ -427,7 +410,6 @@ minetest.register_node("mcl_brewing:stand_000", {
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	on_destruct = on_destruct,
-	-- after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
@@ -458,7 +440,7 @@ minetest.register_node("mcl_brewing:stand_100", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, brewitem=0, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, falling_node=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -486,20 +468,10 @@ minetest.register_node("mcl_brewing:stand_100", {
 			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
 			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
 
-
-			-- {7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
-			-- {6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
-			-- {5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
-			-- {4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
-			-- {3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
-
 			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
 			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
 			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
 			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
-
-			-- {0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
-			-- {0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
 
 			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
 			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
@@ -510,7 +482,6 @@ minetest.register_node("mcl_brewing:stand_100", {
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	on_destruct = on_destruct,
-	-- after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
@@ -541,7 +512,7 @@ minetest.register_node("mcl_brewing:stand_010", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, brewitem=0, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, falling_node=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -557,12 +528,6 @@ minetest.register_node("mcl_brewing:stand_010", {
 			{ 2/16, -8/16, -8/16, 8/16, -6/16, -2/16}, -- base
 			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
 			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
-
-			-- {-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
-			-- {-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
-			-- {-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
-			-- {-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
-			-- {-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
 
 			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
 			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
@@ -581,9 +546,6 @@ minetest.register_node("mcl_brewing:stand_010", {
 			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
 			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
 
-			-- {0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
-			-- {0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
-
 			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
 			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
 			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
@@ -593,7 +555,6 @@ minetest.register_node("mcl_brewing:stand_010", {
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	on_destruct = on_destruct,
-	-- after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
@@ -624,7 +585,7 @@ minetest.register_node("mcl_brewing:stand_001", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, brewitem=0, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, falling_node=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -641,23 +602,10 @@ minetest.register_node("mcl_brewing:stand_001", {
 			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
 			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
 
-			-- {-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
-			-- {-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
-			-- {-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
-			-- {-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
-			-- {-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
-
 			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
 			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
 			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
 			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
-
-
-			-- {7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
-			-- {6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
-			-- {5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
-			-- {4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
-			-- {3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
 
 			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
 			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
@@ -676,7 +624,6 @@ minetest.register_node("mcl_brewing:stand_001", {
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	on_destruct = on_destruct,
-	-- after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
@@ -707,7 +654,7 @@ minetest.register_node("mcl_brewing:stand_110", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, brewitem=0, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, falling_node=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -747,9 +694,6 @@ minetest.register_node("mcl_brewing:stand_110", {
 			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
 			{2/16, 7/16 ,-2/16 ,1/16,  8/16, -1/16 }, -- line 2
 
-			-- {0/16, -6/16 , 2/16 , 1/16, 1/16, 7/16 }, -- bottle 3
-			-- {0/16, 1/16 , 3/16 , 1/16,  3/16, 6/16 }, -- bottle 3
-
 			{0/16, 7/16 , 1/16 , 1/16, 8/16, 3/16 }, -- line 3
 			{0/16, 6/16 , 3/16 , 1/16, 7/16, 5/16 }, -- line 3
 			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
@@ -759,7 +703,6 @@ minetest.register_node("mcl_brewing:stand_110", {
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	on_destruct = on_destruct,
-	-- after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
@@ -790,7 +733,7 @@ minetest.register_node("mcl_brewing:stand_101", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, brewitem=0, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, falling_node=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -818,13 +761,6 @@ minetest.register_node("mcl_brewing:stand_101", {
 			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
 			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
 
-
-			-- {7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
-			-- {6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
-			-- {5/16, -6/16 ,-5/16 , 4/16,  3/16, -4/16 }, -- bottle 2
-			-- {4/16, -6/16 ,-4/16 , 3/16,  3/16, -3/16 }, -- bottle 2
-			-- {3/16, -6/16 ,-3/16 , 2/16,  1/16, -2/16 }, -- bottle 2
-
 			{5/16, 3/16 ,-5/16 ,4/16,  7/16, -4/16 }, -- line 2
 			{4/16, 6/16 ,-4/16 ,3/16,  8/16, -3/16 }, -- line 2
 			{3/16, 7/16 ,-3/16 ,2/16,  8/16, -2/16 }, -- line 2
@@ -842,7 +778,6 @@ minetest.register_node("mcl_brewing:stand_101", {
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	on_destruct = on_destruct,
-	-- after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,
@@ -873,7 +808,7 @@ minetest.register_node("mcl_brewing:stand_011", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, brewitem=0, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, falling_node=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -890,17 +825,10 @@ minetest.register_node("mcl_brewing:stand_011", {
 			{-8/16, -8/16, -8/16, -2/16, -6/16, -2/16}, -- base
 			{-3/16, -8/16, 2/16, 3/16, -6/16, 8/16}, -- base
 
-			-- {-7/16, -6/16 ,-7/16 , -6/16,  1/16, -6/16 }, -- bottle 1
-			-- {-6/16, -6/16 ,-6/16 , -5/16,  3/16, -5/16 }, -- bottle 1
-			-- {-5/16, -6/16 ,-5/16 , -4/16,  3/16, -4/16 }, -- bottle 1
-			-- {-4/16, -6/16 ,-4/16 , -3/16,  3/16, -3/16 }, -- bottle 1
-			-- {-3/16, -6/16 ,-3/16 , -2/16,  1/16, -2/16 }, -- bottle 1
-
 			{-5/16, 3/16 ,-5/16 , -4/16,  7/16, -4/16 }, -- line 1
 			{-4/16, 6/16 ,-4/16 , -3/16,  8/16, -3/16 }, -- line 1
 			{-3/16, 7/16 ,-3/16 , -2/16,  8/16, -2/16 }, -- line 1
 			{-2/16, 7/16 ,-2/16 , -1/16,  8/16, -1/16 }, -- line 1
-
 
 			{7/16, -6/16 ,-7/16 , 6/16,  1/16, -6/16 }, -- bottle 2
 			{6/16, -6/16 ,-6/16 , 5/16,  3/16, -5/16 }, -- bottle 2
@@ -956,7 +884,7 @@ minetest.register_node("mcl_brewing:stand_111", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, brewitem=0, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, falling_node=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -1008,7 +936,6 @@ minetest.register_node("mcl_brewing:stand_111", {
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	on_destruct = on_destruct,
-	-- after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,

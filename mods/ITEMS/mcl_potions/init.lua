@@ -277,8 +277,9 @@ minetest.register_craftitem("mcl_potions:river_water", {
 
 })
 
-mcl_potions.register_splash("water", S("Splash Potion"), "#0022FF", {tt="No effect", potion_fun=function() end})
-mcl_potions.register_lingering("water", S("Lingering Potion"), "#0022FF", {tt="No effect", potion_fun=function() end})
+-- TODO: Extinguish fire, damage mobs
+mcl_potions.register_splash("water", S("Splash Water Bottle"), "#0022FF", {tt="No effect", potion_fun=function() end})
+mcl_potions.register_lingering("water", S("Lingering Water Bottle"), "#0022FF", {tt="No effect", potion_fun=function() end})
 
 minetest.register_craftitem("mcl_potions:speckled_melon", {
 	description = S("Glistering Melon"),

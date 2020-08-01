@@ -36,6 +36,8 @@ local wip_items = {
 	-- "mcl_potions:strength_lingering",
 	-- "mcl_potions:strength_plus_lingering",
 	-- "mcl_potions:strength_2_lingering",
+	"mcl_potions:night_vision_arrow",
+	"mcl_potions:night_vision_plus_arrow",
 }
 local experimental_items = {
 }

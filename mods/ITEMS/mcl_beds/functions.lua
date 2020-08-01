@@ -83,7 +83,10 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		end
 
 		-- No sleeping while moving. Slightly different behaviour than in MC.
-		if vector.length(player:get_player_velocity()) > 0.001 then
+		-- FIXME: Velocity threshold should be 0.01 but Minetest 5.3.0
+		-- sometimes reports incorrect Y speed. A velocity threshold
+		-- of 0.125 still seems good enough.
+		if vector.length(player:get_player_velocity()) > 0.125 then
 			minetest.chat_send_player(name, S("You have to stop moving before going to bed!"))
 			return false
 		end
@@ -115,12 +118,15 @@ local function lay_down(player, pos, bed_pos, state, skip)
 			mcl_beds.player[name] = nil
 			player_in_bed = player_in_bed - 1
 		end
+		mcl_beds.pos[name] = nil
+		mcl_beds.bed_pos[name] = nil
+		if p then
+			player:set_pos(p)
+		end
+
 		-- skip here to prevent sending player specific changes (used for leaving players)
 		if skip then
 			return false
-		end
-		if p then
-			player:set_pos(p)
 		end
 
 		-- physics, eye_offset, etc
@@ -134,8 +140,6 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		player:get_meta():set_string("mcl_beds:sleeping", "false")
 		hud_flags.wielditem = true
 		mcl_player.player_set_animation(player, "stand" , 30)
-		mcl_beds.pos[name] = nil
-		mcl_beds.bed_pos[name] = nil
 
 	-- lay down
 	else
@@ -198,8 +202,8 @@ local function lay_down(player, pos, bed_pos, state, skip)
 	return true
 end
 
-local function update_formspecs(finished)
-	local ges = #minetest.get_connected_players()
+local function update_formspecs(finished, ges)
+	local ges = ges or #minetest.get_connected_players()
 	local form_n = "size[6,5;true]"
 	local all_in_bed = ges == player_in_bed
 	local night_skip = is_night_skip_enabled()
@@ -360,8 +364,14 @@ end)
 minetest.register_on_leaveplayer(function(player)
 	local name = player:get_player_name()
 	lay_down(player, nil, nil, false, true)
-	mcl_beds.player[name] = nil
-	if check_in_beds() then
+	players = minetest.get_connected_players()
+	for n, player in ipairs(players) do
+		if player:get_player_name() == name then
+			players[n] = nil
+			break
+		end
+	end
+	if check_in_beds(players) then
 		minetest.after(5, function()
 			if check_in_beds() then
 				update_formspecs(is_night_skip_enabled())
@@ -369,7 +379,7 @@ minetest.register_on_leaveplayer(function(player)
 			end
 		end)
 	end
-	update_formspecs(false)
+	update_formspecs(false, #players)
 end)
 
 minetest.register_on_player_receive_fields(function(player, formname, fields)
