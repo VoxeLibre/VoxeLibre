@@ -70,7 +70,7 @@ local function register_potion(def)
 				_tt = "1/2 heart/"..effect.."s | "..time_string(dur)
 			end
 		elseif def.name == "healing" or def.name == "harming" then
-				_tt = ((effect / 2) - ((effect / 2)% 0.5)).." Hearts"
+				_tt = ((effect / 2) - ((effect / 2)% 0.5)).." hearts"
  		else
 			_tt = tt or time_string(dur) or S("No effect")
 		end
