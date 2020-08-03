@@ -638,10 +638,6 @@ function mcl_potions.poison_func(player, factor, duration)
 
 		is_poisoned[player] = {step = factor, dur = duration, timer = 0}
 
-		if player:is_player() then
-			potions_set_hudbar(player)
-		end
-
 	else
 
 		local victim = is_poisoned[player]
@@ -651,6 +647,11 @@ function mcl_potions.poison_func(player, factor, duration)
 		victim.timer = 0
 
 	end
+
+	if player:is_player() then
+		potions_set_hudbar(player)
+	end
+
 end
 
 
@@ -659,10 +660,6 @@ function mcl_potions.regeneration_func(player, factor, duration)
 	if not is_regenerating[player] then
 
 		is_regenerating[player] = {step = factor, dur = duration, timer = 0}
-
-		if player:is_player() then
-			potions_set_hudbar(player)
-		end
 
 	else
 
@@ -673,6 +670,11 @@ function mcl_potions.regeneration_func(player, factor, duration)
 		victim.timer = 0
 
 	end
+
+	if player:is_player() then
+		potions_set_hudbar(player)
+	end
+	
 end
 
 
