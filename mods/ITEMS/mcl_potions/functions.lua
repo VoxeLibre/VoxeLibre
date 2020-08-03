@@ -26,7 +26,7 @@ end
 
 
 
-local is_player, entity
+local is_player, entity, meta
 
 minetest.register_globalstep(function(dtime)
 
@@ -40,6 +40,10 @@ minetest.register_globalstep(function(dtime)
 		if is_invisible[player].timer >= is_invisible[player].dur then
 			mcl_potions.make_invisible(player, false)
 			is_invisible[player] = nil
+			if player:is_player() then
+				meta = player:get_meta()
+				meta:set_string("_is_invisible", minetest.serialize(is_invisible[player]))
+			end
 		end
 
 	end
@@ -72,6 +76,8 @@ minetest.register_globalstep(function(dtime)
 		if is_poisoned[player].timer >= is_poisoned[player].dur then
 			is_poisoned[player] = nil
 			if is_player then
+				meta = player:get_meta()
+				meta:set_string("_is_poisoned", minetest.serialize(is_poisoned[player]))
 				potions_set_hudbar(player)
 			end
 		end
@@ -106,6 +112,8 @@ minetest.register_globalstep(function(dtime)
 		if is_regenerating[player].timer >= is_regenerating[player].dur then
 			is_regenerating[player] = nil
 			if is_player then
+				meta = player:get_meta()
+				meta:set_string("_is_regenerating", minetest.serialize(is_regenerating[player]))
 				potions_set_hudbar(player)
 			end
 		end
@@ -126,6 +134,8 @@ minetest.register_globalstep(function(dtime)
 			end
 
 			if is_water_breathing[player].timer >= is_water_breathing[player].dur then
+				meta = player:get_meta()
+				meta:set_string("_is_water_breathing", minetest.serialize(is_water_breathing[player]))
 				is_water_breathing[player] = nil
 			end
 
@@ -147,6 +157,8 @@ minetest.register_globalstep(function(dtime)
 			if is_leaping[player].timer >= is_leaping[player].dur then
 				playerphysics.remove_physics_factor(player, "jump", "mcl_potions:leaping")
 				is_leaping[player] = nil
+				meta = player:get_meta()
+				meta:set_string("_is_leaping", minetest.serialize(is_leaping[player]))
 			end
 
 		else
@@ -167,6 +179,8 @@ minetest.register_globalstep(function(dtime)
 			if is_swift[player].timer >= is_swift[player].dur then
 				playerphysics.remove_physics_factor(player, "speed", "mcl_potions:swiftness")
 				is_swift[player] = nil
+				meta = player:get_meta()
+				meta:set_string("_is_swift", minetest.serialize(is_swift[player]))
 			end
 
 		else
@@ -190,6 +204,8 @@ minetest.register_globalstep(function(dtime)
 
 			if is_cat[player].timer >= is_cat[player].dur then
 				is_cat[player] = nil
+				meta = player:get_meta()
+				meta:set_string("_is_cat", minetest.serialize(is_cat[player]))
 			end
 
 		else
@@ -211,6 +227,8 @@ minetest.register_globalstep(function(dtime)
 
 			if is_fire_proof[player].timer >= is_fire_proof[player].dur then
 				is_fire_proof[player] = nil
+				meta = player:get_meta()
+				meta:set_string("_is_fire_proof", minetest.serialize(is_fire_proof[player]))
 			end
 
 		else
@@ -230,6 +248,8 @@ minetest.register_globalstep(function(dtime)
 
 			if is_weak[player].timer >= is_weak[player].dur then
 				is_weak[player] = nil
+				meta = player:get_meta()
+				meta:set_string("_is_weak", minetest.serialize(is_weak[player]))
 			end
 
 		else
@@ -249,6 +269,8 @@ minetest.register_globalstep(function(dtime)
 
 			if is_strong[player].timer >= is_strong[player].dur then
 				is_strong[player] = nil
+				meta = player:get_meta()
+				meta:set_string("_is_strong", minetest.serialize(is_strong[player]))
 			end
 
 		else
@@ -295,78 +317,113 @@ end, true)
 
 function mcl_potions._reset_player_effects(player)
 
-	if is_invisible[player] then
-		mcl_potions.make_invisible(player, false)
-		is_invisible[player] = nil
-	else --ensure player isn't invisible if he shouldn't be
-		mcl_potions.make_invisible(player, false)
-	end
+	if not player:is_player() then return end
+	meta = player:get_meta()
 
-	if is_poisoned[player] then
+	mcl_potions.make_invisible(player, false)
+	is_invisible[player] = nil
+	is_poisoned[player] = nil
+	is_regenerating[player] = nil
+	is_strong[player] = nil
+	is_weak[player] = nil
+	is_water_breathing[player] = nil
 
-		is_poisoned[player] = nil
+	is_leaping[player] = nil
+	playerphysics.remove_physics_factor(player, "jump", "mcl_potions:leaping")
 
-		if player:is_player() then
-			potions_set_hudbar(player)
-		end
+	is_swift[player] = nil
+	playerphysics.remove_physics_factor(player, "speed", "mcl_potions:swiftness")
 
-	end
+	is_cat[player] = nil
+	player:override_day_night_ratio(nil)
 
-	if is_regenerating[player] then
+	is_fire_proof[player] = nil
 
-		is_regenerating[player] = nil
-
-		if player:is_player() then
-			potions_set_hudbar(player)
-		end
-
-	end
-
-	if is_strong[player] then
-		is_strong[player] = nil
-	end
-
-	if is_weak[player] then
-		is_weak[player] = nil
-	end
-
-	if is_water_breathing[player] then
-		is_water_breathing[player] = nil
-	end
-
-	if is_leaping[player] then
-		is_leaping[player] = nil
-		playerphysics.remove_physics_factor(player, "jump", "mcl_potions:leaping")
-	else -- ensure no effects are stuck from previous potions
-		playerphysics.remove_physics_factor(player, "jump", "mcl_potions:leaping")
-	end
-
-	if is_swift[player] then
-		is_swift[player] = nil
-		playerphysics.remove_physics_factor(player, "speed", "mcl_potions:swiftness")
-	else -- ensure no effects are stuck from previous potions
-		playerphysics.remove_physics_factor(player, "speed", "mcl_potions:swiftness")
-	end
-
-	if is_cat[player] then
-		player:override_day_night_ratio(nil)
-		is_cat[player] = nil
-	else -- ensure no effects are stuck from previous potions
-		player:override_day_night_ratio(nil)
-	end
-
-	if is_fire_proof[player] then
-		is_fire_proof[player] = nil
-	end
+	potions_set_hudbar(player)
 
 end
 
-minetest.register_on_leaveplayer( function(player) mcl_potions._reset_player_effects(player) end)
-minetest.register_on_dieplayer( function(player) mcl_potions._reset_player_effects(player) end)
--- TODO It's not MC-like to remove all potion effects when a player leaves or returns, but...it keeps
--- the server from crashing when it loops for a player that isn't online and by resetting on join, it
--- avoids effects present that shouldn't be
-minetest.register_on_joinplayer( function(player) mcl_potions._reset_player_effects(player) end)
+function mcl_potions._save_player_effects(player)
+
+	if not player:is_player() then return end
+	meta = player:get_meta()
+
+	meta:set_string("_is_invisible", minetest.serialize(is_invisible[player]))
+	meta:set_string("_is_poisoned", minetest.serialize(is_poisoned[player]))
+	meta:set_string("_is_regenerating", minetest.serialize(is_regenerating[player]))
+	meta:set_string("_is_strong", minetest.serialize(is_strong[player]))
+	meta:set_string("_is_weak", minetest.serialize(is_weak[player]))
+	meta:set_string("_is_water_breathing", minetest.serialize(is_water_breathing[player]))
+	meta:set_string("_is_leaping", minetest.serialize(is_leaping[player]))
+	meta:set_string("_is_swift", minetest.serialize(is_swift[player]))
+	meta:set_string("_is_cat", minetest.serialize(is_cat[player]))
+	meta:set_string("_is_fire_proof", minetest.serialize(is_fire_proof[player]))
+
+end
+
+function mcl_potions._load_player_effects(player)
+
+	if not player:is_player() then return end
+	meta = player:get_meta()
+
+	if minetest.deserialize(meta:get_string("_is_invisible")) then
+		is_invisible[player] = minetest.deserialize(meta:get_string("_is_invisible"))
+		mcl_potions.make_invisible(player, true)
+	end
+
+	if minetest.deserialize(meta:get_string("_is_poisoned")) then
+		is_poisoned[player] = minetest.deserialize(meta:get_string("_is_poisoned"))
+	end
+
+	if minetest.deserialize(meta:get_string("_is_regenerating")) then
+		is_regenerating[player] = minetest.deserialize(meta:get_string("_is_regenerating"))
+	end
+
+	if minetest.deserialize(meta:get_string("_is_strong")) then
+		is_strong[player] = minetest.deserialize(meta:get_string("_is_strong"))
+	end
+
+	if minetest.deserialize(meta:get_string("_is_weak")) then
+		is_weak[player] = minetest.deserialize(meta:get_string("_is_weak"))
+	end
+
+	if minetest.deserialize(meta:get_string("_is_water_breathing")) then
+		is_water_breathing[player] = minetest.deserialize(meta:get_string("_is_water_breathing"))
+	end
+
+	if minetest.deserialize(meta:get_string("_is_leaping")) then
+		is_leaping[player] = minetest.deserialize(meta:get_string("_is_leaping"))
+	end
+
+	if minetest.deserialize(meta:get_string("_is_swift")) then
+		is_swift[player] = minetest.deserialize(meta:get_string("_is_swift"))
+	end
+
+	if minetest.deserialize(meta:get_string("_is_cat")) then
+		is_cat[player] = minetest.deserialize(meta:get_string("_is_cat"))
+	end
+
+	if minetest.deserialize(meta:get_string("_is_fire_proof")) then
+		is_fire_proof[player] = minetest.deserialize(meta:get_string("_is_fire_proof"))
+	end
+
+	potions_set_hudbar(player)
+
+end
+
+minetest.register_on_leaveplayer( function(player)
+	mcl_potions._save_player_effects(player)
+	mcl_potions._reset_player_effects(player) -- clearout the buffer to prevent looking for a player not there
+end)
+
+minetest.register_on_dieplayer( function(player)
+	mcl_potions._reset_player_effects(player)
+end)
+
+minetest.register_on_joinplayer( function(player)
+	mcl_potions._reset_player_effects(player) -- make sure there are no wierd holdover effects
+	mcl_potions._load_player_effects(player)
+end)
 
 function mcl_potions.is_obj_hit(self, pos)
 
@@ -411,7 +468,7 @@ function mcl_potions.make_invisible(player, toggle)
 	elseif is_invisible[player] then -- show player
 
 		player:set_properties({visual_size = is_invisible[player].old_size})
-		player:set_nametag_attributes({color = {a = 255}})
+		player:set_nametag_attributes({color = {r = 255, g = 255, b = 255, a = 255}})
 
 	end
 
