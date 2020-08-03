@@ -129,9 +129,10 @@ mobs_mc.override.items = {
 	},
 }
 
+--Horses, Llamas, and Wolves shouldn't follow, but leaving this alone until leads are implemented.
 mobs_mc.override.follow = {
 	chicken = { "mcl_farming:wheat_seeds", "mcl_farming:melon_seeds", "mcl_farming:pumpkin_seeds", "mcl_farming:beetroot_seeds", },
-	parrot = { "mcl_farming:seed_wheat", "mcl_farming:seed_beetroot", "mcl_farming:seed_pumpkin", "mcl_farming:seed_melon" }, -- seeds in general
+	parrot = { "mcl_farming:wheat_seeds", "mcl_farming:melon_seeds", "mcl_farming:pumpkin_seeds", "mcl_farming:beetroot_seeds", },
 	pig = { mobs_mc.override.items.potato, mobs_mc.override.items.carrot, "mcl_farming:beetroot_item", mobs_mc.override.items.carrot_on_a_stick},
 	ocelot = { mobs_mc.override.items.fish_raw, mobs_mc.override.items.salmon_raw, mobs_mc.override.items.clownfish_raw, mobs_mc.override.items.pufferfish_raw, },
 	sheep = { mobs_mc.override.items.wheat },

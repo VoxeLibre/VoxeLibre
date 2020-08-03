@@ -1931,16 +1931,16 @@ local follow_flop = function(self)
 
 				if p.x > s.x then yaw = yaw + pi end
 
-				set_yaw(self, yaw, 6)
+				set_yaw(self, yaw, 2.35)
 
 				-- anyone but standing npc's can move along
-				if dist > self.reach
+				if dist > 3
 				and self.order ~= "stand" then
 
-					set_velocity(self, self.walk_velocity)
+ 					set_velocity(self, self.follow_velocity)
 
 					if self.walk_chance ~= 0 then
-						set_animation(self, "walk")
+						set_animation(self, "run")
 					end
 				else
 					set_velocity(self, 0)
@@ -2179,7 +2179,7 @@ local do_states = function(self, dtime)
 			set_animation(self, "stand")
 		else
 			set_velocity(self, self.run_velocity)
-			set_animation(self, "walk")
+			set_animation(self, "run")
 		end
 
 	-- attack routines (explode, dogfight, shoot, dogshoot)
@@ -3472,6 +3472,7 @@ minetest.register_entity(name, {
         sounds_child = def.sounds_child,
 	explosion_strength = def.explosion_strength,
 	suffocation_timer = 0,
+	follow_velocity = def.follow_velocity or 2.4,
 	-- End of MCL2 extensions
 
 	on_spawn = def.on_spawn,
