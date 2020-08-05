@@ -18,7 +18,14 @@ River water bottles can be used to fill cauldrons. Drinking it has no effect.=Le
 Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron.=Utilisez la touche "Utiliser" pour boire. Placez cet objet sur un chaudron pour verser l'eau de la rivière dans le chaudron.
 
 Splash Water Bottle=
+Extinguishes fire and hurts some mobs=
+
+A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water.=
+
 Lingering Water Bottle=
+
+A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water.=
+
 Glistering Melon=Melon étincelant
 
 This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.=Ce melon brillant est plein de minuscules pépites d'or et serait bien dans un cadre d'objet. Il n'est pas comestible et n'est utile à rien d'autre.
@@ -113,3 +120,4 @@ Strength Splash Potion II=
 Strength Splash Potion +=
 
 This particular arrow is tipped and will give an effect when it hits a player or mob.=
+

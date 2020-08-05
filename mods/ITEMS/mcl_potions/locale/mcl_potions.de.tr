@@ -18,7 +18,15 @@ River water bottles can be used to fill cauldrons. Drinking it has no effect.=Fl
 Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron.=Benutzen Sie die „Platzieren“-Taste zum Trinken. Platzieren Sie diesen Gegenstand auf einen Kessel, um das Flusswasser in den Kessel zu schütten.
 
 Splash Water Bottle=Wurfwasserflasche
+Extinguishes fire and hurts some mobs=Löscht Feuer und verletzt einige Mobs
+
+A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water.=Eine werfbare Wasserflasche, die beim Einschlag zerbrechen wird und nahes Feuer löschen und einige wasserempfindliche Mobs verletzen wird.
+
 Lingering Water Bottle=Verweilwasserflasche
+
+A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water.=Eine werfbare Wasserflasche, die beim Einschlag zerbrechen und eine Wolke aus Wasserdunst erzeugen wird, welche Feuer löscht und wasserempfindliche Mobs verletzt.
+
+
 Glistering Melon=Glitzermelone
 
 This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.=Diese glänzende Melone ist voller winziger Goldnuggets und sähe ganz nett in einem Rahmen aus. Er ist nicht essbar und auch sonst zu nichts zu gebrauchen.
@@ -113,3 +121,4 @@ Strength Splash Potion II=Stärkewurftrank II
 Strength Splash Potion +=Stärkewurftrank +
 
 This particular arrow is tipped and will give an effect when it hits a player or mob.=Diese Pfeilspitze dieses Pfeils in einem Trank getränkt und gibt einen Effekt, wenn er einen Spieler oder einen Mob trifft.
+
