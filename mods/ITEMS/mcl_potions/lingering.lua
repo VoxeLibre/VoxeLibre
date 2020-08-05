@@ -54,7 +54,7 @@ minetest.register_globalstep(function(dtime)
 			-- Extinguish fire if water bottle
 			if vals.is_water then
 				if mcl_potions._extinguish_nearby_fire(pos, d) then
-					vals.timer = vals.timer / 2
+					vals.timer = vals.timer - 3.25
 				end
 			end
 
@@ -65,7 +65,8 @@ minetest.register_globalstep(function(dtime)
 				if obj:is_player() or entity._cmi_is_mob then
 
 					vals.def.potion_fun(obj)
-					vals.timer = vals.timer / 2
+					-- TODO: Apply timer penalty only if the potion effect was acutally applied
+					vals.timer = vals.timer - 3.25
 
 				end
 			end
