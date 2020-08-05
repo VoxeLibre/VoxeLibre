@@ -2639,7 +2639,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	if self.do_punch then
 
 		-- when false skip going any further
-		if self.do_punch(self, hitter, tflp, tool_caps, dir) == false then
+		if self.do_punch(self, hitter, tflp, tool_capabilities, dir) == false then
 			return
 		end
 	end
