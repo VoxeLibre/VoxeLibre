@@ -212,6 +212,9 @@ minetest.register_node("mcl_fire:eternal_fire", {
 			while #airs > 0 do
 				local r = math.random(1, #airs)
 				if minetest.find_node_near(airs[r], 1, {"group:flammable"}) then
+					local node = minetest.get_node(airs[r])
+					local age = node.param2
+					local age_next = math.min(15, age + math.random(0, 1))
 					spawn_fire(airs[r], age_next)
 					break
 				else
