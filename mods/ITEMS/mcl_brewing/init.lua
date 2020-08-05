@@ -310,7 +310,7 @@ if minetest.get_modpath("screwdriver") then
 end
 
 local doc_string =
-		S("To use an brewing_stand, rightclick it.").."\n"
+		S("To use a brewing stand, rightclick it.").."\n"
 		S("To brew, place fuel first and/or your ingredient last!")
 
 local tiles = {"mcl_brewing_top.png", 	--top
