@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_brewing_stand")
+local S = minetest.get_translator("mcl_brewing")
 
 local function active_brewing_formspec(fuel_percent, brew_percent)
 
