@@ -53,7 +53,7 @@ minetest.register_globalstep(function(dtime)
 
 			-- Extinguish fire if water bottle
 			if vals.is_water then
-				if mcl_potions._extinguish_nearby_fire(pos) then
+				if mcl_potions._extinguish_nearby_fire(pos, d) then
 					vals.timer = vals.timer / 2
 				end
 			end
@@ -162,7 +162,7 @@ function mcl_potions.register_lingering(name, descr, color, def)
 							texture = texture.."^[colorize:"..color..":127",
 						})
 				if name == "water" then
-					mcl_potions._extinguish_nearby_fire(pos)
+					mcl_potions._extinguish_nearby_fire(pos, d)
 				end
             		 	self.object:remove()
 					end
