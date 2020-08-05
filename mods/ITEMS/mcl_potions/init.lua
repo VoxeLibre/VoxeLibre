@@ -31,8 +31,7 @@ minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 	_doc_items_longdesc = brewhelp,
 	wield_image = "mcl_potions_spider_eye_fermented.png",
 	inventory_image = "mcl_potions_spider_eye_fermented.png",
-	-- TODO: Reveal item when it's actually useful
-	groups = { brewitem = 1, not_in_creative_inventory = 0, not_in_craft_guide = 0 },
+	groups = { brewitem = 1, },
 	stack_max = 64,
 })
 
@@ -314,7 +313,7 @@ minetest.register_craftitem("mcl_potions:speckled_melon", {
 	description = S("Glistering Melon"),
 	_doc_items_longdesc = S("This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else."),
 	stack_max = 64,
-	groups = { brewitem = 1, not_in_creative_inventory = 0, not_in_craft_guide = 0 },
+	groups = { brewitem = 1, },
 	inventory_image = "mcl_potions_melon_speckled.png",
 })
 
