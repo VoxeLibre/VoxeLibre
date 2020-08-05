@@ -126,7 +126,8 @@ function mcl_potions.register_lingering(name, descr, color, def)
         textures = {lingering_image(color)},
 		hp_max = 1,
 		visual_size = {x=w/2,y=w/2},
-		collisionbox = {0,0,0,0,0,0},
+		collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
+		pointable = false,
         on_step = function(self, dtime)
           local pos = self.object:get_pos()
           local node = minetest.get_node(pos)
