@@ -1,3 +1,7 @@
 # textdomain: mcl_brewing
 Brewing Stand=
-The brewing stand allows the creating of potions for the benefit of various effects. Stay tuned for developments, as you can only view the stand and interact with it, but not create potions.
+Inventory=
+To use a brewing stand, rightclick it.=
+To brew, place fuel first and/or your ingredient last!=
+The stand allows you to brew potions!=
+Brew Potions=
