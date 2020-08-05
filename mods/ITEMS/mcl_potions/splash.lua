@@ -1,4 +1,5 @@
 local S = minetest.get_translator("mcl_potions")
+local GRAVITY = tonumber(minetest.settings:get("movement_gravity"))
 
 local splash_image = function(colorstring, opacity)
 	if not opacity then
@@ -63,6 +64,14 @@ function mcl_potions.register_splash(name, descr, color, def)
 					local redux_map = {7/8,0.5,0.25}
           			if n ~= "air" and n ~= "mcl_portals:portal" and n ~= "mcl_portals:portal_end" or mcl_potions.is_obj_hit(self, pos) then
 						minetest.sound_play("mcl_potions_breaking_glass", {pos = pos, max_hear_distance = 16, gain = 1})
+						local texture, acc
+						if name == "water" then
+							texture = "mcl_potions_droplet.png"
+							acc = {x=0, y=-GRAVITY, z=0}
+						else
+							texture = "mcl_potions_sprite.png"
+							acc = {x=0, y=0, z=0}
+						end
 						minetest.add_particlespawner({
 							amount = 50,
 							time = 0.1,
@@ -70,15 +79,15 @@ function mcl_potions.register_splash(name, descr, color, def)
 							maxpos = {x=pos.x+d, y=pos.y+0.5+d, z=pos.z+d},
 							minvel = {x=-2, y=0, z=-2},
 							maxvel = {x=2, y=2, z=2},
-							minacc = {x=0, y=0, z=0},
-							maxacc = {x=0, y=0, z=0},
+							minacc = acc,
+							maxacc = acc,
 							minexptime = 0.5,
 							maxexptime = 1.25,
 							minsize = 1,
 							maxsize = 2,
 							collisiondetection = true,
 							vertical = false,
-							texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
+							texture = texture.."^[colorize:"..color..":127"
 						})
 
 				if name == "water" then

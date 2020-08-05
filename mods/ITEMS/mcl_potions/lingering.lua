@@ -27,26 +27,31 @@ minetest.register_globalstep(function(dtime)
 
 			vals.timer = vals.timer - lingering_timer
 			local d = 4 * (vals.timer / 30.0)
-
+			local texture
+			if vals.is_water then
+				texture = "mcl_potions_droplet.png"
+			else
+				texture = "mcl_potions_sprite.png"
+			end
 			minetest.add_particlespawner({
-											amount = 10 * d^2,
-											time = 1,
-											minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
-											maxpos = {x=pos.x+d, y=pos.y+1, z=pos.z+d},
-											minvel = {x=-0.5, y=0, z=-0.5},
-											maxvel = {x=0.5, y=0.5, z=0.5},
-											minacc = {x=-0.2, y=0, z=-0.2},
-											maxacc = {x=0.2, y=.05, z=0.2},
-											minexptime = 1,
-											maxexptime = 2,
-											minsize = 2,
-											maxsize = 4,
-											collisiondetection = true,
-											vertical = false,
-											texture = "mcl_potions_sprite.png^[colorize:"..vals.color..":127",
-										})
+				amount = 10 * d^2,
+				time = 1,
+				minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
+				maxpos = {x=pos.x+d, y=pos.y+1, z=pos.z+d},
+				minvel = {x=-0.5, y=0, z=-0.5},
+				maxvel = {x=0.5, y=0.5, z=0.5},
+				minacc = {x=-0.2, y=0, z=-0.2},
+				maxacc = {x=0.2, y=.05, z=0.2},
+				minexptime = 1,
+				maxexptime = 2,
+				minsize = 2,
+				maxsize = 4,
+				collisiondetection = true,
+				vertical = false,
+				texture = texture.."^[colorize:"..vals.color..":127",
+			})
 
-			-- Extingish fire if water bottle
+			-- Extinguish fire if water bottle
 			if vals.is_water then
 				if mcl_potions._extinguish_nearby_fire(pos) then
 					vals.timer = vals.timer / 2
@@ -129,23 +134,33 @@ function mcl_potions.register_lingering(name, descr, color, def)
           			if n ~= "air" and n ~= "mcl_portals:portal" and n ~= "mcl_portals:portal_end" or mcl_potions.is_obj_hit(self, pos) then
 						minetest.sound_play("mcl_potions_breaking_glass", {pos = pos, max_hear_distance = 16, gain = 1})
 						add_lingering_effect(pos, color, def, name == "water")
+						local texture, minacc, maxacc
+						if name == "water" then
+							texture = "mcl_potions_droplet.png"
+							minacc = {x=-0.2, y=-0.05, z=-0.2}
+							maxacc = {x=0.2, y=0.05, z=0.2}
+						else
+							texture = "mcl_potions_sprite.png"
+							minacc = {x=-0.2, y=0, z=-0.2}
+							maxacc = {x=0.2, y=.05, z=0.2}
+						end
 						minetest.add_particlespawner({
-														amount = 40,
-														time = 1,
-														minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
-														maxpos = {x=pos.x+d, y=pos.y+1, z=pos.z+d},
-														minvel = {x=-0.5, y=0, z=-0.5},
-														maxvel = {x=0.5, y=0.5, z=0.5},
-														minacc = {x=-0.2, y=0, z=-0.2},
-														maxacc = {x=0.2, y=.05, z=0.2},
-														minexptime = 1,
-														maxexptime = 2,
-														minsize = 1,
-														maxsize = 2,
-														collisiondetection = true,
-														vertical = false,
-														texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
-													})
+							amount = 40,
+							time = 1,
+							minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
+							maxpos = {x=pos.x+d, y=pos.y+1, z=pos.z+d},
+							minvel = {x=-0.5, y=0, z=-0.5},
+							maxvel = {x=0.5, y=0.5, z=0.5},
+							minacc = minacc,
+							maxacc = maxacc,
+							minexptime = 1,
+							maxexptime = 2,
+							minsize = 1,
+							maxsize = 2,
+							collisiondetection = true,
+							vertical = false,
+							texture = texture.."^[colorize:"..color..":127",
+						})
 				if name == "water" then
 					mcl_potions._extinguish_nearby_fire(pos)
 				end
