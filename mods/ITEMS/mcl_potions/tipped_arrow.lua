@@ -41,7 +41,9 @@ function mcl_potions.register_arrow(name, desc, color, def)
 	minetest.register_craftitem("mcl_potions:"..name.."_arrow", {
 		description = desc,
 		_tt_help = arrow_tt .. "\n" .. def.tt,
-		_doc_items_longdesc = arrow_longdesc .. "\n" .. longdesc,
+		_doc_items_longdesc = arrow_longdesc .. "\n" ..
+			S("This particular arrow is tipped and will give an effect when it hits a player or mob.") .. "\n" ..
+			longdesc,
 		_doc_items_usagehelp = how_to_shoot,
 		inventory_image = "mcl_bows_arrow_inv.png^(mcl_potions_arrow_inv.png^[colorize:"..color..":100)",
 		groups = { ammo=1, ammo_bow=1, brewitem=1},

@@ -67,10 +67,10 @@ local function register_potion(def)
 		if effect and def.is_dur then
 			_tt = perc_string(effect).." | "..time_string(dur)
 			if def.name == "poison" or def.name == "regeneration" then
-				_tt = "1/2 heart/"..effect.."s | "..time_string(dur)
+				_tt = S("1 HP/@1s | @2", effect, time_string(dur))
 			end
 		elseif def.name == "healing" or def.name == "harming" then
-				_tt = ((effect / 2) - ((effect / 2)% 0.5)).." hearts"
+				_tt = S("@1 HP", effect)
  		else
 			_tt = tt or time_string(dur) or S("No effect")
 		end
@@ -109,7 +109,11 @@ local function register_potion(def)
 
 	local desc
 	if not def.no_potion then
-		desc = S("@1 Potion", def.description)
+		if def.description_potion then
+			desc = def.description_potion
+		else
+			desc = S("@1 Potion", def.description)
+		end
 	else
 		desc = def.description
 	end
@@ -173,8 +177,19 @@ local function register_potion(def)
 	}
 
 	if def.color and not def.no_throwable then
-		mcl_potions.register_splash(def.name, S("Splash @1 Potion", def.description), def.color, splash_def)
-		mcl_potions.register_lingering(def.name, S("Lingering @1 Potion", def.description), def.color, ling_def)
+		local desc
+		if def.description_splash then
+			desc = def.description_splash
+		else
+			desc = S("Splash @1 Potion", def.description)
+		end
+		mcl_potions.register_splash(def.name, desc, def.color, splash_def)
+		if def.description_lingering then
+			desc = def.description_lingering
+		else
+			desc = S("Lingering @1 Potion", def.description)
+		end
+		mcl_potions.register_lingering(def.name, desc, def.color, ling_def)
 		if not def.no_arrow then
 			mcl_potions.register_arrow(def.name, S("Arrow of @1", def.description), def.color, arrow_def)
 		end
@@ -357,7 +372,9 @@ end
 
 local awkward_def = {
 	name = "awkward",
-	description = S("Awkward"),
+	description_potion = S("Awkward Potion"),
+	description_splash = S("Awkward Splash Potion"),
+	description_lingering = S("Awkward Lingering Potion"),
 	no_arrow = true,
 	no_effect = true,
 	_tt = S("No effect"),
@@ -369,7 +386,9 @@ local awkward_def = {
 
 local mundane_def = {
 	name = "mundane",
-	description = S("Mundane"),
+	description_potion = S("Mundane Potion"),
+	description_splash = S("Mundane Splash Potion"),
+	description_lingering = S("Mundane Lingering Potion"),
 	no_arrow = true,
 	no_effect = true,
 	_tt = S("No effect"),
@@ -380,7 +399,9 @@ local mundane_def = {
 
 local thick_def = {
 	name = "thick",
-	description = S("Thick"),
+	description_potion = S("Thick Potion"),
+	description_splash = S("Thick Splash Potion"),
+	description_lingering = S("Thick Lingering Potion"),
 	no_arrow = true,
 	no_effect = true,
 	_tt = S("No effect"),
@@ -406,8 +427,8 @@ local dragon_breath_def = {
 local healing_def = {
 	name = "healing",
 	description = S("Healing"),
-	_tt = S("+2 hearts"),
-	_tt_2 = S("+4 hearts"),
+	_tt = S("+4 HP"),
+	_tt_2 = S("+8 HP"),
 	_longdesc = S("Instantly heals."),
 	color = "#CC0000",
 	effect = 4,
@@ -419,8 +440,8 @@ local healing_def = {
 local harming_def = {
 	name = "harming",
 	description = S("Harming"),
-	_tt = S("-3 hearts"),
-	_tt_II = S("-6 hearts"),
+	_tt = S("-6 HP"),
+	_tt_II = S("-12 HP"),
 	_longdesc = S("Instantly deals damage."),
 	color = "#660099",
 	effect = -6,
