@@ -747,3 +747,29 @@ function mcl_potions.night_vision_func(player, null, duration)
 	end
 
 end
+
+function mcl_potions._extinguish_nearby_fire(pos)
+	local epos = {x=pos.x, y=pos.y+0.5, z=pos.z}
+	local dnode = minetest.get_node({x=pos.x,y=pos.y-0.5,z=pos.z})
+	if minetest.get_item_group(dnode.name, "fire") ~= 0 then
+		epos.y = pos.y - 0.5
+	end
+	local dirs = {
+		{x=0,y=0,z=0},
+		{x=0,y=0,z=-1},
+		{x=0,y=0,z=1},
+		{x=-1,y=0,z=0},
+		{x=1,y=0,z=0},
+	}
+	local exting = false
+	for d=1, #dirs do
+		local tpos = vector.add(epos, dirs[d])
+		local node = minetest.get_node(tpos)
+		if minetest.get_item_group(node.name, "fire") ~= 0 then
+			minetest.sound_play("fire_extinguish_flame", {pos = tpos, gain = 0.25, max_hear_distance = 16}, true)
+			minetest.remove_node(tpos)
+			exting = true
+		end
+	end
+	return exting
+end

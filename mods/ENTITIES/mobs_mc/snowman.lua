@@ -31,6 +31,7 @@ mobs:register_mob("mobs_mc:snowman", {
 	fall_damage = 0,
 	water_damage = 4,
 	rain_damage = 4,
+	armor = { fleshy = 100, water_vulnerable = 100 },
 	attacks_monsters = true,
 	collisionbox = {-0.35, -0.01, -0.35, 0.35, 1.89, 0.35},
 	visual = "mesh",

@@ -277,9 +277,38 @@ minetest.register_craftitem("mcl_potions:river_water", {
 
 })
 
--- TODO: Extinguish fire, damage mobs
-mcl_potions.register_splash("water", S("Splash Water Bottle"), "#0022FF", {tt=S("No effect"), potion_fun=function() end})
-mcl_potions.register_lingering("water", S("Lingering Water Bottle"), "#0022FF", {tt=S("No effect"), potion_fun=function() end})
+-- Hurt mobs
+local water_splash = function(obj, damage)
+	if not obj then
+		return
+	end
+	if not damage or (damage > 0 and damage < 1) then
+		damage = 1
+	end
+	-- Damage mobs that are vulnerable to water
+	local lua = obj:get_luaentity()
+	if lua and lua._cmi_is_mob then
+		obj:punch(obj, 1.0, {
+			full_punch_interval = 1.0,
+			damage_groups = {water_vulnerable=damage},
+		}, nil)
+	end
+end
+
+mcl_potions.register_splash("water", S("Splash Water Bottle"), "#0022FF", {
+	tt=S("Extinguishes fire and hurts some mobs"),
+        longdesc=S("A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water."),
+	no_effect=true,
+	potion_fun=water_splash,
+	effect=1
+})
+mcl_potions.register_lingering("water", S("Lingering Water Bottle"), "#0022FF", {
+	tt=S("Extinguishes fire and hurts some mobs"),
+        longdesc=S("A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water."),
+	no_effect=true,
+	potion_fun=water_splash,
+	effect=1
+})
 
 minetest.register_craftitem("mcl_potions:speckled_melon", {
 	description = S("Glistering Melon"),

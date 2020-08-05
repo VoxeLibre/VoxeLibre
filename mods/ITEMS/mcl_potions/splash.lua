@@ -56,7 +56,7 @@ function mcl_potions.register_splash(name, descr, color, def)
 		visual_size = {x=w/2,y=w/2},
 		collisionbox = {0,0,0,0,0,0},
         on_step = function(self, dtime)
-          local pos = self.object:getpos()
+          local pos = self.object:get_pos()
           local node = minetest.get_node(pos)
           local n = node.name
 					local d = 2
@@ -80,6 +80,10 @@ function mcl_potions.register_splash(name, descr, color, def)
 																				vertical = false,
 																				texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
 																			})
+
+				if name == "water" then
+					mcl_potions._extinguish_nearby_fire(pos)
+				end
             			self.object:remove()
 						for _,obj in pairs(minetest.get_objects_inside_radius(pos, 4)) do
 

@@ -22,7 +22,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	textures = {
 		{"mobs_mc_blaze.png"},
 	},
-	armor = { fleshy = 100, snowball_vulnerable = 100 },
+	armor = { fleshy = 100, snowball_vulnerable = 100, water_vulnerable = 100 },
 	visual_size = {x=3, y=3},
 	sounds = {
 		random = "mobs_mc_blaze_breath",
