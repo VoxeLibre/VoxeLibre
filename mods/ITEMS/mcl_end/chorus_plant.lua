@@ -134,7 +134,7 @@ minetest.register_node("mcl_end:chorus_flower", {
 	node_box = chorus_flower_box,
 	selection_box = { type = "regular" },
 	sounds = mcl_sounds.node_sound_wood_defaults(),
-	groups = {handy=1,axey=1, deco_block = 1, not_in_creative_inventory = 1, dig_by_piston = 1, destroy_by_lava_flow = 1,chorus_plant = 1},
+	groups = {handy=1,axey=1, deco_block = 1, dig_by_piston = 1, destroy_by_lava_flow = 1,chorus_plant = 1},
 
 	node_placement_prediction = "",
 	on_place = function(itemstack, placer, pointed_thing)
