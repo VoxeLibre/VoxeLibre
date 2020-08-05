@@ -5,7 +5,7 @@ Liquid container=Flüssigkeitsbehälter
 
 A glass bottle is used as a container for liquids and can be used to collect water directly.=Eine Glasflasche wird als Behälter von Flüssigkeiten benutzt und kann Wasser direkt aufsammeln.
 
-To collect water, use it on a cauldron with water (which removes a level of water) or any water source (which removes no water).=Um Wasser aufzusammen, benutzen Sie sie an einem Kessel mit Wasser (was etwas Wasser entfernt) oder einer Wasserquelle (was kein Wasser entfernt).
+To collect water, use it on a cauldron with water (which removes a level of water) or any water source (which removes no water).=Um Wasser aufzusammeln, benutzen Sie sie an einem Kessel mit Wasser (was etwas Wasser entfernt) oder einer Wasserquelle (was kein Wasser entfernt).
 
 Water Bottle=Wasserflasche
 Water bottles can be used to fill cauldrons. Drinking water has no effect.=Wasserflaschen können benutzt werden, um Kessel aufzufüllen. Trinken hat keine Wirkung.
@@ -80,15 +80,15 @@ Increases walking speed.=Erhöht Gehgeschwindigkeit.
 Slowness=Langsamkeit
 Decreases walking speed.=Verringert Gehgeschwindigkeit.
 Leaping=Sprungkraft
-Increases jump strength.=Erhöht Sprunghöhe.
+Increases jump strength.=Erhöht Sprungstärke.
 Poison=Vergiftung
 Applies the poison effect which deals damage at a regular interval.=Gibt den Gifteffekt, der Schaden in regelmäßigen Abständen anrichtet.
 Regeneration=Regenerierung
-Regenerates health over time.=Regenieriert Gesundheit mit der Zeit.
+Regenerates health over time.=Regeneriert Gesundheit mit der Zeit.
 Invisibility=Unsichtbarkeit
 Grants invisibility.=Gibt Unsichtbarkeit.
 Water Breathing=Wasseratmung
-Grants limitless breath underwater.=Gibt unbegrenzen Atem im Wasser.
+Grants limitless breath underwater.=Gibt unbegrenzten Atem im Wasser.
 Fire Resistance=Feuerresistenz
 Grants immunity to damage from heat sources like fire.=Gibt Immunität gegenüber Schaden von Hitzequellen wie Feuer.
 Weakness=Schwäche
