@@ -207,7 +207,6 @@ minetest.register_node("mcl_end:chorus_flower", {
 
 minetest.register_node("mcl_end:chorus_flower_dead", {
 	description = S("Dead Chorus Flower"),
-	_tt_help = S("Grows on end stone"),
 	_doc_items_longdesc = S("This is a part of a chorus plant. It doesn't grow. Chorus flowers die of old age or when they are unable to grow. A dead chorus flower can be harvested to obtain a fresh chorus flower which is able to grow again."),
 	tiles = {
 		"mcl_end_chorus_flower_dead.png",
