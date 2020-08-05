@@ -33,6 +33,8 @@ Lingering Strength Potion +=
 Use the “Punch” key to throw it.=
 Use the “Place” key to drink it.=Utilisez la touche "Utiliser" pour le boire.
 Drinking a potion gives you a particular effect.=
+1 HP/@1s | @2=
+@1 HP=
 @1 Potion=
 Splash @1 Potion=
 Lingering @1 Potion=
@@ -47,23 +49,29 @@ Arrow of @1@2=
 Splash @1 + Potion=
 Lingering @1 + Potion=
 Arrow of @1 +=
-Awkward=
+Awkward Potion=Potion maladroite
+Awkward Splash Potion=
+Awkward Lingering Potion=
 Has an awkward taste and is used for brewing potions.=
-Mundane=
+Mundane Potion=Potion mondaine
+Mundane Splash Potion=
+Mundane Lingering Potion=
 Has a terrible taste and is not useful for brewing potions.=
-Thick=
+Thick Potion=Potion épaisse
+Thick Splash Potion=
+Thick Lingering Potion=
 Has a bitter taste and is not useful for brewing potions.=
 Dragon's Breath=Le souffle du dragon
 
 This item is used in brewing and can be combined with splash potions to create lingering potions.=
 
 Healing=
-+2 hearts=
-+4 hearts=
++4 HP=
++8 HP=
 Instantly heals.=
 Harming=
--3 hearts=
--6 hearts=
+-6 HP=
+-12 HP=
 Instantly deals damage.=
 Night Vision=
 Grants the ability to see in darkness.=
@@ -103,11 +111,5 @@ Weakness Splash Potion +=
 Strength Splash Potion=
 Strength Splash Potion II=
 Strength Splash Potion +=
+
 This particular arrow is tipped and will give an effect when it hits a player or mob.=
-
-
-
-##### not used anymore #####
-Awkward Potion=Potion maladroite
-Mundane Potion=Potion mondaine
-Thick Potion=Potion épaisse
