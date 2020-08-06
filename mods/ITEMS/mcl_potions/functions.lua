@@ -455,6 +455,14 @@ minetest.register_on_joinplayer( function(player)
 	mcl_potions._load_player_effects(player)
 end)
 
+minetest.register_on_shutdown(function()
+	-- save player effects on server shutdown
+	for _,player in ipairs(minetest.get_connected_players()) do
+		mcl_potions._save_player_effects(player)
+	end
+
+end)
+
 
 -- ░██████╗██╗░░░██╗██████╗░██████╗░░█████╗░██████╗░████████╗██╗███╗░░██╗░██████╗░
 -- ██╔════╝██║░░░██║██╔══██╗██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██║████╗░██║██╔════╝░
