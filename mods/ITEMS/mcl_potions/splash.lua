@@ -116,39 +116,3 @@ end
 local function time_string(dur)
 	return math.floor(dur/60)..string.format(":%02d",math.floor(dur % 60))
 end
-
-local splash_DUR = mcl_potions.DURATION*mcl_potions.SPLASH_FACTOR
-local splash_DUR_2 = mcl_potions.DURATION_2*mcl_potions.SPLASH_FACTOR
-local splash_DUR_pl = mcl_potions.DURATION_PLUS*mcl_potions.SPLASH_FACTOR
-
-
-
--- register_splash("weakness", S("Weakness Splash Potion"), "#6600AA", {
--- 	potion_fun = function(player, redx) mcl_potions.weakness_func(player, -4, splash_DUR*mcl_potions.INV_FACTOR*redx) end,
--- 	-- TODO: Fix tooltip
--- 	tt = time_string(splash_DUR*mcl_potions.INV_FACTOR)
--- })
---
--- register_splash("weakness_plus", S("Weakness Splash Potion +"), "#7700BB", {
--- 	potion_fun = function(player, redx) mcl_potions.weakness_func(player, -4, splash_DUR_pl*mcl_potions.INV_FACTOR*redx) end,
--- 	-- TODO: Fix tooltip
--- 	tt = time_string(splash_DUR_pl*mcl_potions.INV_FACTOR)
--- })
---
--- register_splash("strength", S("Strength Splash Potion"), "#D444D4", {
--- 	potion_fun = function(player, redx) mcl_potions.strength_func(player, 3, splash_DUR*redx) end,
--- 	-- TODO: Fix tooltip
--- 	tt = time_string(splash_DUR)
--- })
---
--- register_splash("strength_2", S("Strength Splash Potion II"), "#D444F4", {
--- 	potion_fun = function(player, redx) mcl_potions.strength_func(player, 6, splash_DUR_2*redx) end,
--- 	-- TODO: Fix tooltip
--- 	tt = time_string(splash_DUR_2)
--- })
---
--- register_splash("strength_plus", S("Strength Splash Potion +"), "#D444E4", {
--- 	potion_fun = function(player, redx) mcl_potions.strength_func(player, 3, splash_DUR_pl*redx) end,
--- 	-- TODO: Fix tooltip
--- 	tt = time_string(splash_DUR_pl)
--- })
