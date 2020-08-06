@@ -520,6 +520,7 @@ mobs:register_mob("mobs_mc:enderman", {
 			end
 		end
 	end,
+	armor = { fleshy = 100, water_vulnerable = 100 },
 	water_damage = 8,
 	view_range = 64,
 	fear_height = 4,

@@ -1,7 +1,0 @@
-mcl_core
-mcl_farming
-mcl_mobitems
-mcl_fishing
-mcl_bows
-mcl_end
-playerphysics

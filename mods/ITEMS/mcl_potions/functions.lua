@@ -597,6 +597,10 @@ function mcl_potions.healing_func(player, hp)
 	if obj and obj.harmed_by_heal then hp = -hp end
 
 	if hp > 0 then
+		-- at least 1 HP
+		if hp < 1 then
+			hp = 1
+		end
 
 		if obj and obj._cmi_is_mob then
 			obj.health = math.max(obj.health + hp, obj.hp_max)
@@ -604,7 +608,10 @@ function mcl_potions.healing_func(player, hp)
 			player:set_hp(math.min(player:get_hp() + hp, player:get_properties().hp_max), { type = "set_hp", other = "healing" })
 		end
 
-	else
+	elseif hp < 0 then
+		if hp > -1 then
+			hp = -1
+		end
 
 		if obj and obj._cmi_is_mob then
 			obj.health = obj.health + hp
@@ -813,6 +820,46 @@ function mcl_potions.night_vision_func(player, null, duration)
 
 end
 
+function mcl_potions._extinguish_nearby_fire(pos, radius)
+	local epos = {x=pos.x, y=pos.y+0.5, z=pos.z}
+	local dnode = minetest.get_node({x=pos.x,y=pos.y-0.5,z=pos.z})
+	if minetest.get_item_group(dnode.name, "fire") ~= 0 then
+		epos.y = pos.y - 0.5
+	end
+	local exting = false
+	-- No radius: Splash, extinguish epos and 4 nodes around
+	if not radius then
+		local dirs = {
+			{x=0,y=0,z=0},
+			{x=0,y=0,z=-1},
+			{x=0,y=0,z=1},
+			{x=-1,y=0,z=0},
+			{x=1,y=0,z=0},
+		}
+		for d=1, #dirs do
+			local tpos = vector.add(epos, dirs[d])
+			local node = minetest.get_node(tpos)
+			if minetest.get_item_group(node.name, "fire") ~= 0 then
+				minetest.sound_play("fire_extinguish_flame", {pos = tpos, gain = 0.25, max_hear_distance = 16}, true)
+				minetest.remove_node(tpos)
+				exting = true
+			end
+		end
+	-- Has radius: lingering, extinguish all nodes in area
+	else
+		local nodes = minetest.find_nodes_in_area(
+			{x=epos.x-radius,y=epos.y,z=epos.z-radius},
+			{x=epos.x+radius,y=epos.y,z=epos.z+radius},
+			{"group:fire"})
+		for n=1, #nodes do
+			minetest.sound_play("fire_extinguish_flame", {pos = nodes[n], gain = 0.25, max_hear_distance = 16}, true)
+			minetest.remove_node(nodes[n])
+			exting = true
+		end
+	end
+	return exting
+end
+
 
 -- ░█████╗░██╗░░██╗░█████╗░████████╗  ░█████╗░░█████╗░███╗░░░███╗███╗░░░███╗░█████╗░███╗░░██╗██████╗░░██████╗
 -- ██╔══██╗██║░░██║██╔══██╗╚══██╔══╝  ██╔══██╗██╔══██╗████╗░████║████╗░████║██╔══██╗████╗░██║██╔══██╗██╔════╝
@@ -822,17 +869,17 @@ end
 -- ░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝░░░╚═╝░░░  ░╚════╝░░╚════╝░╚═╝░░░░░╚═╝╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝░░╚══╝╚═════╝░╚═════╝░
 
 
-local get_function = {}
+local get_chat_function = {}
 
-get_function["poison"] = mcl_potions.poison_func
-get_function["regeneration"] = mcl_potions.regeneration_func
-get_function["invisibility"] = mcl_potions.invisiblility_func
-get_function["fire_resistance"] = mcl_potions.fire_resistance_func
-get_function["night_vision"] = mcl_potions.night_vision_func
-get_function["water_breathing"] = mcl_potions.water_breathing_func
-get_function["leaping"] = mcl_potions.leaping_func
-get_function["swiftness"] = mcl_potions.swiftness_func
-get_function["heal"] = mcl_potions.healing_func
+get_chat_function["poison"] = mcl_potions.poison_func
+get_chat_function["regeneration"] = mcl_potions.regeneration_func
+get_chat_function["invisibility"] = mcl_potions.invisiblility_func
+get_chat_function["fire_resistance"] = mcl_potions.fire_resistance_func
+get_chat_function["night_vision"] = mcl_potions.night_vision_func
+get_chat_function["water_breathing"] = mcl_potions.water_breathing_func
+get_chat_function["leaping"] = mcl_potions.leaping_func
+get_chat_function["swiftness"] = mcl_potions.swiftness_func
+get_chat_function["heal"] = mcl_potions.healing_func
 
 minetest.register_chatcommand("potion",{
 	params = "<params>",
@@ -851,10 +898,10 @@ minetest.register_chatcommand("potion",{
 			P[3] = P[2]
 		end
 
-		if get_function[P[1]] then
-			get_function[P[1]](minetest.get_player_by_name(name), tonumber(P[2]), tonumber(P[3]))
+		if get_chat_function[P[1]] then
+			get_chat_function[P[1]](minetest.get_player_by_name(name), tonumber(P[2]), tonumber(P[3]))
 		else
-			minetest.chat_send_player(name, P[1].." is not an available potion effect.")
+			minetest.chat_send_player(name, P[1].." is not an available potion effect. Use /help potion as needed.")
 		end
 
 	 end ,

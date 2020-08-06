@@ -125,6 +125,7 @@ dog.owner = ""
 -- TODO: Start sitting by default
 dog.order = "roam"
 dog.owner_loyal = true
+dog.follow_velocity = 3.2 
 -- Automatically teleport dog to owner
 dog.do_custom = mobs_mc.make_owner_teleport_function(12)
 dog.follow = mobs_mc.follow.dog

@@ -46,6 +46,7 @@ mobs:register_mob("mobs_mc:llama", {
 	runaway = true,
 	walk_velocity = 1,
 	run_velocity = 4.4,
+	follow_velocity = 4.4,
 	floats = 1,
 	drops = {
 		{name = mobs_mc.items.leather,
@@ -61,6 +62,9 @@ mobs:register_mob("mobs_mc:llama", {
 	},
 	animation = {
 		speed_normal = 24,
+		run_speed = 60,
+		run_start = 0,
+		run_end = 40,
 		stand_start = 0,
 		stand_end = 0,
 		walk_start = 0,

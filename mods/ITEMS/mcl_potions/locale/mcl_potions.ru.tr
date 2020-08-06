@@ -1,25 +1,123 @@
 # textdomain: mcl_potions
-Put this item in an item frame for decoration. It's useless otherwise.=Положите этот предмет в рамку для красоты. Для всего остального он бесполезен.
 Fermented Spider Eye=Прокисший паучий глаз
 Glass Bottle=Стеклянная бутылка
+Liquid container=Контейнер для жидкостей
+
 A glass bottle is used as a container for liquids and can be used to collect water directly.=Стеклянная бутылка используется для хранения жидкостей, её также можно использовать для сбора воды.
+
 To collect water, use it on a cauldron with water (which removes a level of water) or any water source (which removes no water).=Воду в бутылку можно набрать из котла с помощью команды [Использовать] (это уменьшает уровень воды в котле) или из другого источника (уровень которого не уменьшится).
+
 Water Bottle=Бутылка с водой
 Water bottles can be used to fill cauldrons. Drinking water has no effect.=Бутылки с водой можно использовать для наполнения котлов. Выпивание воды не даст никакого эффекта.
-Rightclick to drink. Rightclick a cauldron to pour the water into the cauldron.=Кликните правой, чтобы выпить. Правый клик по котлу выльет воду из бутылки в котёл.
+
+Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron.=Используйте клавишу “Разместить”, чтобы выпить это. Поместите этот предмет на котёл, чтобы вылить воду в котёл.
+
 River Water Bottle=Бутылка с речной водой
 River water bottles can be used to fill cauldrons. Drinking it has no effect.=Бутылки с речной водой можно использовать для наполнения котлов. Выпивание воды не даст никакого эффекта.
-Awkward Potion=Невкусное зелье
-This potion has an awkward taste and is used for brewing more potions. Drinking it has no effect.=Невкусное зелье используется для приготовления других зелий. Приём внутрь не даёт никакого эффекта.
-Mundane Potion=Успокоительное зелье
-This potion has a clean taste and is used for brewing more potions. Drinking it has no effect.=Успокоительное зелье имеет чистый вкус и используется для приготовления других зелий. Приём внутрь не даёт никакого эффекта.
-Thick Potion=Густое зелье
-This potion has a bitter taste and is used for brewing more potions. Drinking it has no effect.=Густое зелье имеет горький вкус и используется для приготовления других зелий. Приём внутрь не даёт никакого эффекта.
-Glistering Melon=Искрящаяся дыня
-This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.=Искрящаяся дыня полна маленьких золотых самородков и может отлично смотреться в рамке. Она несъедобна и не годится больше ни для чего.
-Dragon's Breath=Дыхание дракона
-Use the “Place” key to drink it.=Используйте клавишу “Разместить”, чтобы выпить это.
-Use the “Place” key to drink. Place this item on a cauldron to pour the water into the cauldron.=Используйте клавишу “Разместить”, чтобы выпить это. Поместите этот предмет на котёл, чтобы вылить воду в котёл.
+
 Use the “Place” key to drink. Place this item on a cauldron to pour the river water into the cauldron.=Используйте клавишу “Разместить”, чтобы выпить это. Поместите этот предмет на котёл, чтобы вылить речную воду в котёл.
-Liquid container=Контейнер для жидкостей
+
+Splash Water Bottle=
+Extinguishes fire and hurts some mobs=
+
+A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water.=
+
+Lingering Water Bottle=
+
+A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water.=
+
+Glistering Melon=Искрящаяся дыня
+
+This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else.=Искрящаяся дыня полна маленьких золотых самородков и может отлично смотреться в рамке. Она несъедобна и не годится больше ни для чего.
+
+A throwable potion that will shatter on impact, where it creates a magic cloud that lingers around for a while. Any player or mob inside the cloud will receive the potion's effect, possibly repeatedly.=
+
+Lingering Weakness Potion=
+Lingering Weakness Potion +=
+Lingering Strength Potion=
+Lingering Strength Potion II=
+Lingering Strength Potion +=
+Use the “Punch” key to throw it.=
+Use the “Place” key to drink it.=Используйте клавишу “Разместить”, чтобы выпить это.
+Drinking a potion gives you a particular effect.=
+1 HP/@1s | @2=
+@1 HP=
+@1 Potion=
+Splash @1 Potion=
+Lingering @1 Potion=
+Arrow of @1=
+ II=
+ IV=
+@1 Potion@2=
+Splash @1@2 Potion=
+Lingering @1@2 Potion=
+Arrow of @1@2=
+@1 + Potion=
+Splash @1 + Potion=
+Lingering @1 + Potion=
+Arrow of @1 +=
+Awkward Potion=Невкусное зелье
+Awkward Splash Potion=
+Awkward Lingering Potion=
+Has an awkward taste and is used for brewing potions.=
+Mundane Potion=Успокоительное зелье
+Mundane Splash Potion=
+Mundane Lingering Potion=
+Has a terrible taste and is not useful for brewing potions.=
+Thick Potion=Густое зелье
+Thick Splash Potion=
+Thick Lingering Potion=
+Has a bitter taste and is not useful for brewing potions.=
+Dragon's Breath=Дыхание дракона
+
+This item is used in brewing and can be combined with splash potions to create lingering potions.=
+
+Healing=
++4 HP=
++8 HP=
+Instantly heals.=
+Harming=
+-6 HP=
+-12 HP=
+Instantly deals damage.=
+Night Vision=
+Grants the ability to see in darkness.=
+Swiftness=
+Increases walking speed.=
+Slowness=
+Decreases walking speed.=
+Leaping=
+Increases jump strength.=
+Poison=
+Applies the poison effect which deals damage at a regular interval.=
+Regeneration=
+Regenerates health over time.=
+Invisibility=
+Grants invisibility.=
+Water Breathing=
+Grants limitless breath underwater.=
+Fire Resistance=
+Grants immunity to damage from heat sources like fire.=
+Weakness=
+-4 HP damage | 1:30=
+Weakness +=
+-4 HP damage | 4:00=
+Strength=
++3 HP damage | 3:00=
+Strength II=
++6 HP damage | 1:30=
+Strength +=
++3 HP damage | 8:00=
+Try different combinations to create potions.=
 No effect=Не оказывает эффекта
+
+A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect.=
+
+Weakness Splash Potion=
+Weakness Splash Potion +=
+Strength Splash Potion=
+Strength Splash Potion II=
+Strength Splash Potion +=
+
+This particular arrow is tipped and will give an effect when it hits a player or mob.=
+

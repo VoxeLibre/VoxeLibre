@@ -41,6 +41,7 @@ local ocelot = {
 	walk_chance = default_walk_chance,
 	walk_velocity = 1,
 	run_velocity = 3,
+	follow_velocity = 1,
 	floats = 1,
 	runaway = true,
 	fall_damage = 0,
@@ -52,7 +53,7 @@ local ocelot = {
 	},
 	animation = {
 		speed_normal = 25,
-		speed_run = 50,
+		run_speed = 50,
 		stand_start = 0,
 		stand_end = 0,
 		walk_start = 0,
@@ -105,6 +106,7 @@ cat.order = "roam" -- "sit" or "roam"
 cat.owner_loyal = true
 cat.tamed = true
 cat.runaway = false
+cat.follow_velocity = 2.4
 -- Automatically teleport cat to owner
 cat.do_custom = mobs_mc.make_owner_teleport_function(12)
 cat.sounds = {

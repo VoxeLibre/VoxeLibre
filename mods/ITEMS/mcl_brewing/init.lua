@@ -1,4 +1,4 @@
-local S = minetest.get_translator("mcl_brewing_stand")
+local S = minetest.get_translator("mcl_brewing")
 
 local function active_brewing_formspec(fuel_percent, brew_percent)
 
@@ -310,8 +310,11 @@ if minetest.get_modpath("screwdriver") then
 end
 
 local doc_string =
-		S("To use an brewing_stand, rightclick it.").."\n"
-		S("To brew, place fuel first and/or your ingredient last!")
+	S("To use a brewing stand, rightclick it.").."\n"..
+	S("To brew, you need blaze powder as fuel, a brewing material and at least 1 glass bottle filled with a liquid.").."\n"..
+	S("Place the blaze powder in the left slot, the brewing material in the middle slot and 1-3 bottles in the remaining slots.").."\n"..
+	S("When you have found a good comination, the brewing will commence automatically and steam starts to appear, using up the fuel and brewing material. The potions will soon be ready.").."\n"..
+	S("Different combinations of brewing materials and liquids will give different results. Try to experiment!")
 
 local tiles = {"mcl_brewing_top.png", 	--top
 				 "mcl_brewing_base.png", 	--bottom

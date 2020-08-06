@@ -35,10 +35,11 @@ local cow_def = {
 		distance = 16,
 	},
 	animation = {
-		stand_speed = 25, walk_speed = 25, run_speed = 50,
-		stand_start = 0,		stand_end = 0,
-		walk_start = 0,		walk_end = 40,
-		run_start = 0,		run_end = 40,
+		stand_speed = 25, 	walk_speed = 40,
+		run_speed = 60,     stand_start = 0,
+		stand_end = 0,      walk_start = 0,
+		walk_end = 40,      run_start = 0,		
+		run_end = 40,
 	},
 	follow = mobs_mc.follow.cow,
 	on_rightclick = function(self, clicker)

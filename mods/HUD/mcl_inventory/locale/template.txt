@@ -7,6 +7,7 @@ Building Blocks=
 Decoration Blocks=
 Redstone=
 Transportation=
+Brewing=
 Miscellaneous=
 Search Items=
 Foodstuffs=

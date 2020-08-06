@@ -31,8 +31,7 @@ minetest.register_craftitem("mcl_potions:fermented_spider_eye", {
 	_doc_items_longdesc = brewhelp,
 	wield_image = "mcl_potions_spider_eye_fermented.png",
 	inventory_image = "mcl_potions_spider_eye_fermented.png",
-	-- TODO: Reveal item when it's actually useful
-	groups = { brewitem = 1, not_in_creative_inventory = 0, not_in_craft_guide = 0 },
+	groups = { brewitem = 1, },
 	stack_max = 64,
 })
 
@@ -277,15 +276,44 @@ minetest.register_craftitem("mcl_potions:river_water", {
 
 })
 
--- TODO: Extinguish fire, damage mobs
-mcl_potions.register_splash("water", S("Splash Water Bottle"), "#0022FF", {tt="No effect", potion_fun=function() end})
-mcl_potions.register_lingering("water", S("Lingering Water Bottle"), "#0022FF", {tt="No effect", potion_fun=function() end})
+-- Hurt mobs
+local water_splash = function(obj, damage)
+	if not obj then
+		return
+	end
+	if not damage or (damage > 0 and damage < 1) then
+		damage = 1
+	end
+	-- Damage mobs that are vulnerable to water
+	local lua = obj:get_luaentity()
+	if lua and lua._cmi_is_mob then
+		obj:punch(obj, 1.0, {
+			full_punch_interval = 1.0,
+			damage_groups = {water_vulnerable=damage},
+		}, nil)
+	end
+end
+
+mcl_potions.register_splash("water", S("Splash Water Bottle"), "#0022FF", {
+	tt=S("Extinguishes fire and hurts some mobs"),
+        longdesc=S("A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water."),
+	no_effect=true,
+	potion_fun=water_splash,
+	effect=1
+})
+mcl_potions.register_lingering("water", S("Lingering Water Bottle"), "#0022FF", {
+	tt=S("Extinguishes fire and hurts some mobs"),
+        longdesc=S("A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water."),
+	no_effect=true,
+	potion_fun=water_splash,
+	effect=1
+})
 
 minetest.register_craftitem("mcl_potions:speckled_melon", {
 	description = S("Glistering Melon"),
 	_doc_items_longdesc = S("This shiny melon is full of tiny gold nuggets and would be nice in an item frame. It isn't edible and not useful for anything else."),
 	stack_max = 64,
-	groups = { brewitem = 1, not_in_creative_inventory = 0, not_in_craft_guide = 0 },
+	groups = { brewitem = 1, },
 	inventory_image = "mcl_potions_melon_speckled.png",
 })
 
@@ -324,7 +352,6 @@ local awkward_table = {
 	["mcl_mobitems:ghast_tear"] = "mcl_potions:regeneration",
 	["mcl_mobitems:spider_eye"] = "mcl_potions:poison",
 	["mcl_mobitems:rabbit_foot"] = "mcl_potions:leaping",
-	["mcl_end:chorus_flower"] = "mcl_potions:dragon_breath", -- temporary until dragon's breath is obtainable
 }
 
 local output_table = {

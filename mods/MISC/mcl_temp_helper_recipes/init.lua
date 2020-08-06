@@ -116,3 +116,11 @@ minetest.register_craft({
 	output = "mcl_core:gold_ingot 9",
 	recipe = {{ "mcl_core:emerald" }},
 })
+
+minetest.register_craft({
+	output = "mcl_potions:dragon_breath 3",
+	recipe = {
+		{"","mcl_end:chorus_flower",""},
+		{"mcl_potions:glass_bottle","mcl_potions:glass_bottle","mcl_potions:glass_bottle"},
+	}
+})

@@ -96,7 +96,7 @@ local horse = {
 		walk_speed = 25,
 		walk_start = 0,
 		walk_end = 40,
-		run_speed = 50,
+		run_speed = 60,
 		run_start = 0,
 		run_end = 40,
 	},

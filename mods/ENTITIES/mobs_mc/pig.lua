@@ -20,6 +20,7 @@ mobs:register_mob("mobs_mc:pig", {
 	makes_footstep_sound = true,
 	walk_velocity = 1,
 	run_velocity = 3,
+	follow_velocity = 3.4,
 	drops = {
 		{name = mobs_mc.items.porkchop_raw,
 		chance = 1,
@@ -36,7 +37,7 @@ mobs:register_mob("mobs_mc:pig", {
 	animation = {
 		stand_speed = 40,
 		walk_speed = 40,
-		run_speed = 50,
+		run_speed = 90,
 		stand_start = 0,
 		stand_end = 0,
 		walk_start = 0,
@@ -45,7 +46,7 @@ mobs:register_mob("mobs_mc:pig", {
 		run_end = 40,
 	},
 	follow = mobs_mc.follow.pig,
-	view_range = 5,
+	view_range = 8,
 	do_custom = function(self, dtime)
 
 		-- set needed values if not already present

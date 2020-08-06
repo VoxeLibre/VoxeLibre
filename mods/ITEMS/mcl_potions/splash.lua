@@ -1,4 +1,5 @@
 local S = minetest.get_translator("mcl_potions")
+local GRAVITY = tonumber(minetest.settings:get("movement_gravity"))
 
 local splash_image = function(colorstring, opacity)
 	if not opacity then
@@ -54,32 +55,45 @@ function mcl_potions.register_splash(name, descr, color, def)
         textures = {splash_image(color)},
 		hp_max = 1,
 		visual_size = {x=w/2,y=w/2},
-		collisionbox = {0,0,0,0,0,0},
+		collisionbox = {-0.1,-0.1,-0.1,0.1,0.1,0.1},
+		pointable = false,
         on_step = function(self, dtime)
-          local pos = self.object:getpos()
+          local pos = self.object:get_pos()
           local node = minetest.get_node(pos)
           local n = node.name
-					local d = 2
+					local d = 0.1
 					local redux_map = {7/8,0.5,0.25}
           			if n ~= "air" and n ~= "mcl_portals:portal" and n ~= "mcl_portals:portal_end" or mcl_potions.is_obj_hit(self, pos) then
 						minetest.sound_play("mcl_potions_breaking_glass", {pos = pos, max_hear_distance = 16, gain = 1})
+						local texture, acc
+						if name == "water" then
+							texture = "mcl_potions_droplet.png"
+							acc = {x=0, y=-GRAVITY, z=0}
+						else
+							texture = "mcl_potions_sprite.png"
+							acc = {x=0, y=0, z=0}
+						end
 						minetest.add_particlespawner({
-																				amount = 50,
-																				time = 2,
-																				minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
-																				maxpos = {x=pos.x+d, y=pos.y+d, z=pos.z+d},
-																				minvel = {x=-1, y=0, z=-1},
-																				maxvel = {x=1, y=0.5, z=1},
-																				minacc = {x=-0.5, y=0, z=-0.5},
-																				maxacc = {x=0.5, y=.2, z=0.5},
-																				minexptime = 1,
-																				maxexptime = 3,
-																				minsize = 2,
-																				maxsize = 4,
-																				collisiondetection = true,
-																				vertical = false,
-																				texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
-																			})
+							amount = 50,
+							time = 0.1,
+							minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
+							maxpos = {x=pos.x+d, y=pos.y+0.5+d, z=pos.z+d},
+							minvel = {x=-2, y=0, z=-2},
+							maxvel = {x=2, y=2, z=2},
+							minacc = acc,
+							maxacc = acc,
+							minexptime = 0.5,
+							maxexptime = 1.25,
+							minsize = 1,
+							maxsize = 2,
+							collisiondetection = true,
+							vertical = false,
+							texture = texture.."^[colorize:"..color..":127"
+						})
+
+				if name == "water" then
+					mcl_potions._extinguish_nearby_fire(pos)
+				end
             			self.object:remove()
 						for _,obj in pairs(minetest.get_objects_inside_radius(pos, 4)) do
 
