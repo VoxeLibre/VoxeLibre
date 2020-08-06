@@ -259,7 +259,6 @@ function mcl_potions.register_arrow(name, desc, color, def)
 							if self._shooter and self._shooter:is_player() then
 								-- “Ding” sound for hitting another player
 								minetest.sound_play({name="mcl_bows_hit_player", gain=0.1}, {to_player=self._shooter}, true)
-								def.potion_fun(obj)
 							end
 						end
 
