@@ -905,8 +905,8 @@ get_chat_function["swiftness"] = mcl_potions.swiftness_func
 get_chat_function["heal"] = mcl_potions.healing_func
 
 minetest.register_chatcommand("effect",{
-	params = S("<effect> <factor> <duration>"),
-	description = S("Add a status effect to yourself. Arguments: <effect>: name of potion effect, e.g. poison. <factor>: effect strength multiplier (1 = 100%). <duration>: duration in seconds"),
+	params = S("<effect> <duration> [<factor>]"),
+	description = S("Add a status effect to yourself. Arguments: <effect>: name of potion effect, e.g. poison. <duration>: duration in seconds. <factor>: effect strength multiplier (1 = 100%)"),
 	privs = {server = true},
 	func = function(name, params)
 
@@ -919,14 +919,18 @@ minetest.register_chatcommand("effect",{
 
 		if not P[1] then
 			return false, S("Missing effect parameter!")
-		elseif not P[2] then
-			return false, S("Missing factor parameter!")
-		elseif not P[3] then
-			return false, S("Missing duration parameter!")
+		elseif not tonumber(P[2]) then
+			return false, S("Missing or invalid duration parameter!")
+		elseif P[3] and not tonumber(P[3]) then
+			return false, S("Invalid factor parameter!")
+		end
+		-- Default factor = 1
+		if not P[3] then
+			P[3] = 1.0
 		end
 
 		if get_chat_function[P[1]] then
-			get_chat_function[P[1]](minetest.get_player_by_name(name), tonumber(P[2]), tonumber(P[3]))
+			get_chat_function[P[1]](minetest.get_player_by_name(name), tonumber(P[3]), tonumber(P[2]))
 			return true
 		else
 			return false, S("@1 is not an available potion effect.", P[1])
