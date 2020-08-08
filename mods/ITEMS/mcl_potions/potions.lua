@@ -54,13 +54,19 @@ local function register_potion(def)
 		dur = 45
 	end
 
-	local on_use = function (itemstack, user, pointed_thing)
-							if not def.on_use then return end
-							def.on_use(user, def.effect, dur)
-							minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-							mcl_potions._use_potion(itemstack, user, def.color)
-							return itemstack
+	local on_use = nil
+
+	if def.on_use then
+
+		on_use = function (itemstack, user, pointed_thing)
+
+						def.on_use(user, def.effect, dur)
+						minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+						mcl_potions._use_potion(itemstack, user, def.color)
+
+						return itemstack
 						end
+	end
 
 	local function get_tt(tt, effect, dur)
 		local _tt
