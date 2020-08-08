@@ -313,7 +313,7 @@ local doc_string =
 	S("To use a brewing stand, rightclick it.").."\n"..
 	S("To brew, you need blaze powder as fuel, a brewing material and at least 1 glass bottle filled with a liquid.").."\n"..
 	S("Place the blaze powder in the left slot, the brewing material in the middle slot and 1-3 bottles in the remaining slots.").."\n"..
-	S("When you have found a good comination, the brewing will commence automatically and steam starts to appear, using up the fuel and brewing material. The potions will soon be ready.").."\n"..
+	S("When you have found a good combination, the brewing will commence automatically and steam starts to appear, using up the fuel and brewing material. The potions will soon be ready.").."\n"..
 	S("Different combinations of brewing materials and liquids will give different results. Try to experiment!")
 
 local tiles = {"mcl_brewing_top.png", 	--top
