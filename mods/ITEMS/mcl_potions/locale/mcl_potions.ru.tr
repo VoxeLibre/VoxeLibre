@@ -99,15 +99,10 @@ Grants limitless breath underwater.=Даёт возможность неогра
 Fire Resistance=Огнестойкость
 Grants immunity to damage from heat sources like fire.=Делает невосприимчивым к урону от источников тепла, например, от огня.
 Weakness=Слабость
--4 HP damage | 1:30=Урон -4 HP | 1:30
 Weakness +=Слабость +
--4 HP damage | 4:00=Урон -4 HP | 4:00
 Strength=Сила
-+3 HP damage | 3:00=Урон +3 HP | 3:00
 Strength II=Сила II
-+6 HP damage | 1:30=Урон +6 HP | 1:30
 Strength +=Сила +
-+3 HP damage | 8:00=Урон +3 HP | 8:00
 Try different combinations to create potions.=Пробуйте разные сочетания для приготовления зелий.
 No effect=Не оказывает эффекта
 

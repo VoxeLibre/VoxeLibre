@@ -578,7 +578,7 @@ end
 
 -- minetest.register_craftitem("mcl_potions:weakness", {
 -- 	description = S("Weakness"),
--- 	_tt_help = S("-4 HP damage | 1:30"),
+-- 	_tt_help = TODO,
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#6600AA"),
 -- 	inventory_image = potion_image("#6600AA"),
@@ -602,7 +602,7 @@ end
 --
 -- minetest.register_craftitem("mcl_potions:weakness_plus", {
 -- 	description = S("Weakness +"),
--- 	_tt_help = S("-4 HP damage | 4:00"),
+-- 	_tt_help = TODO,
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#7700BB"),
 -- 	inventory_image = potion_image("#7700BB"),
@@ -626,7 +626,7 @@ end
 --
 -- minetest.register_craftitem("mcl_potions:strength", {
 -- 	description = S("Strength"),
--- 	_tt_help = S("+3 HP damage | 3:00"),
+-- 	_tt_help = TODO,
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#D444D4"),
 -- 	inventory_image = potion_image("#D444D4"),
@@ -650,7 +650,7 @@ end
 --
 -- minetest.register_craftitem("mcl_potions:strength_2", {
 -- 	description = S("Strength II"),
--- 	_tt_help = S("+6 HP damage | 1:30"),
+-- 	_tt_help = TODO,
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#D444E4"),
 -- 	inventory_image = potion_image("#D444E4"),
@@ -674,7 +674,7 @@ end
 --
 -- minetest.register_craftitem("mcl_potions:strength_plus", {
 -- 	description = S("Strength +"),
--- 	_tt_help = S("+3 HP damage | 8:00"),
+-- 	_tt_help = TODO,
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#D444F4"),
 -- 	inventory_image = potion_image("#D444F4"),
