@@ -12,7 +12,9 @@ local how_to_drink = S("Use the “Place” key to drink it.")
 local potion_intro = S("Drinking a potion gives you a particular effect.")
 
 local function time_string(dur)
-	if not dur then return nil end
+	if not dur then
+		return nil
+	end
 	return math.floor(dur/60)..string.format(":%02d",math.floor(dur % 60))
 end
 local function perc_string(num)
@@ -127,7 +129,7 @@ local function register_potion(def)
 	if not def.no_effect then
 		potion_longdesc = potion_intro .. "\n" .. def._longdesc
 	end
-        local potion_usagehelp
+	local potion_usagehelp
 	local basic_potion_tt
 	if def.name ~= "dragon_breath" then
 		potion_usagehelp = how_to_drink
@@ -224,11 +226,11 @@ local function register_potion(def)
 		end
 
 		local on_use = function (itemstack, user, pointed_thing)
-								def.on_use(user, effect_II, dur_2)
-								minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-								mcl_potions._use_potion(itemstack, user, def.color)
-								return itemstack
-							end
+			def.on_use(user, effect_II, dur_2)
+			minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+			mcl_potions._use_potion(itemstack, user, def.color)
+			return itemstack
+		end
 
 		minetest.register_craftitem("mcl_potions:"..def.name.."_2", {
 			description = S("@1 Potion@2", def.description, desc_mod),
@@ -307,11 +309,11 @@ local function register_potion(def)
 		end
 
 		local on_use = function (itemstack, user, pointed_thing)
-								def.on_use(user, def.effect, dur_pl)
-								minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-								mcl_potions._use_potion(itemstack, user, def.color)
-								return itemstack
-							end
+			def.on_use(user, def.effect, dur_pl)
+			minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+			mcl_potions._use_potion(itemstack, user, def.color)
+			return itemstack
+		end
 
 		minetest.register_craftitem("mcl_potions:"..def.name.."_plus", {
 			description = S("@1 + Potion", def.description),
@@ -571,9 +573,9 @@ local fire_resistance_def = {
 
 
 local defs = { awkward_def, mundane_def, thick_def, dragon_breath_def,
-			   healing_def, harming_def, night_vision_def, swiftness_def,
-		   	   slowness_def, leaping_def, poison_def, regeneration_def,
-		   	   invisibility_def, water_breathing_def, fire_resistance_def}
+	healing_def, harming_def, night_vision_def, swiftness_def,
+	slowness_def, leaping_def, poison_def, regeneration_def,
+	invisibility_def, water_breathing_def, fire_resistance_def}
 
 for _, def in ipairs(defs) do
 	register_potion(def)
@@ -584,7 +586,7 @@ end
 
 -- minetest.register_craftitem("mcl_potions:weakness", {
 -- 	description = S("Weakness"),
--- 	_tt_help = S("-4 HP damage | 1:30"),
+-- 	_tt_help = TODO,
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#6600AA"),
 -- 	inventory_image = potion_image("#6600AA"),
@@ -608,7 +610,7 @@ end
 --
 -- minetest.register_craftitem("mcl_potions:weakness_plus", {
 -- 	description = S("Weakness +"),
--- 	_tt_help = S("-4 HP damage | 4:00"),
+-- 	_tt_help = TODO,
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#7700BB"),
 -- 	inventory_image = potion_image("#7700BB"),
@@ -632,7 +634,7 @@ end
 --
 -- minetest.register_craftitem("mcl_potions:strength", {
 -- 	description = S("Strength"),
--- 	_tt_help = S("+3 HP damage | 3:00"),
+-- 	_tt_help = TODO,
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#D444D4"),
 -- 	inventory_image = potion_image("#D444D4"),
@@ -656,7 +658,7 @@ end
 --
 -- minetest.register_craftitem("mcl_potions:strength_2", {
 -- 	description = S("Strength II"),
--- 	_tt_help = S("+6 HP damage | 1:30"),
+-- 	_tt_help = TODO,
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#D444E4"),
 -- 	inventory_image = potion_image("#D444E4"),
@@ -680,7 +682,7 @@ end
 --
 -- minetest.register_craftitem("mcl_potions:strength_plus", {
 -- 	description = S("Strength +"),
--- 	_tt_help = S("+3 HP damage | 8:00"),
+-- 	_tt_help = TODO,
 -- 	_doc_items_longdesc = brewhelp,
 -- 	wield_image = potion_image("#D444F4"),
 -- 	inventory_image = potion_image("#D444F4"),

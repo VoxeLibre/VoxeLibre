@@ -152,22 +152,22 @@ local function brewing_stand_timer(pos, elapsed)
 
 			d = 0.5
 			minetest.add_particlespawner({
-											amount = 4,
-											time = 1,
-											minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
-											maxpos = {x=pos.x+d, y=pos.y+2, z=pos.z+d},
-											minvel = {x=-0.1, y=0, z=-0.1},
-											maxvel = {x=0.1, y=0.5, z=0.1},
-											minacc = {x=-0.05, y=0, z=-0.05},
-											maxacc = {x=0.05, y=.1, z=0.05},
-											minexptime = 1,
-											maxexptime = 2,
-											minsize = 0.5,
-											maxsize = 2,
-											collisiondetection = true,
-											vertical = false,
-											texture = "mcl_brewing_bubble_sprite.png",
-										})
+				amount = 4,
+				time = 1,
+				minpos = {x=pos.x-d, y=pos.y+0.5, z=pos.z-d},
+				maxpos = {x=pos.x+d, y=pos.y+2, z=pos.z+d},
+				minvel = {x=-0.1, y=0, z=-0.1},
+				maxvel = {x=0.1, y=0.5, z=0.1},
+				minacc = {x=-0.05, y=0, z=-0.05},
+				maxacc = {x=0.05, y=.1, z=0.05},
+				minexptime = 1,
+				maxexptime = 2,
+				minsize = 0.5,
+				maxsize = 2,
+				collisiondetection = true,
+				vertical = false,
+				texture = "mcl_brewing_bubble_sprite.png",
+			})
 
 			-- Replace the stand item with the brew result
 			if stand_timer >= BREW_TIME then
@@ -231,7 +231,6 @@ local function brewing_stand_timer(pos, elapsed)
 	meta:set_float("fuel_timer", fuel_timer)
 	meta:set_float("stand_timer", stand_timer)
 	meta:set_float("fuel", fuel)
-	-- meta:set_list("stand_items", stand_list)
 	meta:set_string("formspec", formspec)
 
 	return result
@@ -313,15 +312,15 @@ local doc_string =
 	S("To use a brewing stand, rightclick it.").."\n"..
 	S("To brew, you need blaze powder as fuel, a brewing material and at least 1 glass bottle filled with a liquid.").."\n"..
 	S("Place the blaze powder in the left slot, the brewing material in the middle slot and 1-3 bottles in the remaining slots.").."\n"..
-	S("When you have found a good comination, the brewing will commence automatically and steam starts to appear, using up the fuel and brewing material. The potions will soon be ready.").."\n"..
+	S("When you have found a good combination, the brewing will commence automatically and steam starts to appear, using up the fuel and brewing material. The potions will soon be ready.").."\n"..
 	S("Different combinations of brewing materials and liquids will give different results. Try to experiment!")
 
 local tiles = {"mcl_brewing_top.png", 	--top
-				 "mcl_brewing_base.png", 	--bottom
-				 "mcl_brewing_side.png", 	--right
-				 "mcl_brewing_side.png", 	--left
-				 "mcl_brewing_side.png", 	--back
-				 "mcl_brewing_side.png^[transformFX"} --front
+	 "mcl_brewing_base.png", 	--bottom
+	 "mcl_brewing_side.png", 	--right
+	 "mcl_brewing_side.png", 	--left
+	 "mcl_brewing_side.png", 	--back
+	 "mcl_brewing_side.png^[transformFX"} --front
 
 local allow_put = function(pos, listname, index, stack, player)
 	local name = player:get_player_name()
@@ -856,7 +855,6 @@ minetest.register_node("mcl_brewing:stand_011", {
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	on_destruct = on_destruct,
-	-- after_dig_node = after_dig,
 	allow_metadata_inventory_take = allow_take,
 	allow_metadata_inventory_put = allow_put,
 	on_metadata_inventory_put = on_put,

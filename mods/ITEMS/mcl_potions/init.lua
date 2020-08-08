@@ -296,14 +296,14 @@ end
 
 mcl_potions.register_splash("water", S("Splash Water Bottle"), "#0022FF", {
 	tt=S("Extinguishes fire and hurts some mobs"),
-        longdesc=S("A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water."),
+	longdesc=S("A throwable water bottle that will shatter on impact, where it extinguishes nearby fire and hurts mobs that are vulnerable to water."),
 	no_effect=true,
 	potion_fun=water_splash,
 	effect=1
 })
 mcl_potions.register_lingering("water", S("Lingering Water Bottle"), "#0022FF", {
 	tt=S("Extinguishes fire and hurts some mobs"),
-        longdesc=S("A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water."),
+	longdesc=S("A throwable water bottle that will shatter on impact, where it creates a cloud of water vapor that lingers on the ground for a while. This cloud extinguishes fire and hurts mobs that are vulnerable to water."),
 	no_effect=true,
 	potion_fun=water_splash,
 	effect=1
@@ -366,23 +366,23 @@ local extension_table = {}
 local potions = {}
 
 for i, potion in ipairs({"healing","harming","swiftness","slowness",
-						 "leaping","poison","regeneration","invisibility","fire_resistance",
-						 -- "weakness","strength",
-						 "water_breathing","night_vision"}) do
+	 "leaping","poison","regeneration","invisibility","fire_resistance",
+	 -- "weakness","strength",
+	 "water_breathing","night_vision"}) do
 
-		table.insert(potions, potion)
+	table.insert(potions, potion)
 
-		if potion ~= "invisibility" and potion ~= "night_vision" and potion ~= "weakness" and potion ~= "water_breathing" and potion ~= "fire_resistance" then
-			enhancement_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_2"
-			enhancement_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_2_splash"
-			table.insert(potions, potion.."_2")
-		end
+	if potion ~= "invisibility" and potion ~= "night_vision" and potion ~= "weakness" and potion ~= "water_breathing" and potion ~= "fire_resistance" then
+		enhancement_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_2"
+		enhancement_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_2_splash"
+		table.insert(potions, potion.."_2")
+	end
 
-		if potion ~= "healing" and potion ~= "harming" then
-			extension_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_plus_splash"
-			extension_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_plus"
-			table.insert(potions, potion.."_plus")
-		end
+	if potion ~= "healing" and potion ~= "harming" then
+		extension_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_plus_splash"
+		extension_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_plus"
+		table.insert(potions, potion.."_plus")
+	end
 
 end
 
@@ -419,7 +419,7 @@ local splash_table = {}
 local lingering_table = {}
 
 for i, potion in ipairs(potions) do
-    splash_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_splash"
+	splash_table["mcl_potions:"..potion] = "mcl_potions:"..potion.."_splash"
 	lingering_table["mcl_potions:"..potion.."_splash"] = "mcl_potions:"..potion.."_lingering"
 end
 
