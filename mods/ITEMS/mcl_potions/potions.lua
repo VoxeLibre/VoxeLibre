@@ -12,7 +12,9 @@ local how_to_drink = S("Use the “Place” key to drink it.")
 local potion_intro = S("Drinking a potion gives you a particular effect.")
 
 local function time_string(dur)
-	if not dur then return nil end
+	if not dur then
+		return nil
+	end
 	return math.floor(dur/60)..string.format(":%02d",math.floor(dur % 60))
 end
 local function perc_string(num)
@@ -55,12 +57,14 @@ local function register_potion(def)
 	end
 
 	local on_use = function (itemstack, user, pointed_thing)
-							if not def.on_use then return end
-							def.on_use(user, def.effect, dur)
-							minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-							mcl_potions._use_potion(itemstack, user, def.color)
-							return itemstack
-						end
+		if not def.on_use then
+			return
+		end
+		def.on_use(user, def.effect, dur)
+		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+		mcl_potions._use_potion(itemstack, user, def.color)
+		return itemstack
+	end
 
 	local function get_tt(tt, effect, dur)
 		local _tt
@@ -121,7 +125,7 @@ local function register_potion(def)
 	if not def.no_effect then
 		potion_longdesc = potion_intro .. "\n" .. def._longdesc
 	end
-        local potion_usagehelp
+	local potion_usagehelp
 	local basic_potion_tt
 	if def.name ~= "dragon_breath" then
 		potion_usagehelp = how_to_drink
@@ -218,11 +222,11 @@ local function register_potion(def)
 		end
 
 		local on_use = function (itemstack, user, pointed_thing)
-								def.on_use(user, effect_II, dur_2)
-								minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-								mcl_potions._use_potion(itemstack, user, def.color)
-								return itemstack
-							end
+			def.on_use(user, effect_II, dur_2)
+			minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+			mcl_potions._use_potion(itemstack, user, def.color)
+			return itemstack
+		end
 
 		minetest.register_craftitem("mcl_potions:"..def.name.."_2", {
 			description = S("@1 Potion@2", def.description, desc_mod),
@@ -301,11 +305,11 @@ local function register_potion(def)
 		end
 
 		local on_use = function (itemstack, user, pointed_thing)
-								def.on_use(user, def.effect, dur_pl)
-								minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-								mcl_potions._use_potion(itemstack, user, def.color)
-								return itemstack
-							end
+			def.on_use(user, def.effect, dur_pl)
+			minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+			mcl_potions._use_potion(itemstack, user, def.color)
+			return itemstack
+		end
 
 		minetest.register_craftitem("mcl_potions:"..def.name.."_plus", {
 			description = S("@1 + Potion", def.description),
@@ -565,9 +569,9 @@ local fire_resistance_def = {
 
 
 local defs = { awkward_def, mundane_def, thick_def, dragon_breath_def,
-			   healing_def, harming_def, night_vision_def, swiftness_def,
-		   	   slowness_def, leaping_def, poison_def, regeneration_def,
-		   	   invisibility_def, water_breathing_def, fire_resistance_def}
+	healing_def, harming_def, night_vision_def, swiftness_def,
+	slowness_def, leaping_def, poison_def, regeneration_def,
+	invisibility_def, water_breathing_def, fire_resistance_def}
 
 for _, def in ipairs(defs) do
 	register_potion(def)

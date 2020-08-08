@@ -296,14 +296,15 @@ minetest.register_globalstep(function(dtime)
 end)
 
 
-local is_fire_node = {  ["mcl_core:lava_flowing"]=true,
-						["mcl_core:lava_source"]=true,
-						["mcl_fire:eternal_fire"]=true,
-						["mcl_fire:fire"]=true,
-						["mcl_nether:magma"]=true,
-						["mcl_nether:nether_lava_source"]=true,
-						["mcl_nether:nether_lava_flowing"]=true,
-						["mcl_nether:nether_lava_source"]=true}
+local is_fire_node = { ["mcl_core:lava_flowing"]=true,
+	["mcl_core:lava_source"]=true,
+	["mcl_fire:eternal_fire"]=true,
+	["mcl_fire:fire"]=true,
+	["mcl_nether:magma"]=true,
+	["mcl_nether:nether_lava_source"]=true,
+	["mcl_nether:nether_lava_flowing"]=true,
+	["mcl_nether:nether_lava_source"]=true
+}
 
 -- Prevent damage to player with Fire Resistance enabled
 minetest.register_on_player_hpchange(function(player, hp_change, reason)
@@ -313,8 +314,6 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
 		-- also assumes any change in hp happens between calls to this function
 		-- it's worth noting that you don't take damage from players in this case...
 		local player_info = mcl_playerinfo[player:get_player_name()]
-
-		-- if reason.type == "drown" then return hp_change
 
 		if is_fire_node[player_info.node_head] or is_fire_node[player_info.node_feet] or is_fire_node[player_info.node_stand] then
 			return 0
@@ -347,7 +346,9 @@ end, true)
 
 function mcl_potions._reset_player_effects(player)
 
-	if not player:is_player() then return end
+	if not player:is_player() then
+		return
+	end
 	meta = player:get_meta()
 
 	mcl_potions.make_invisible(player, false)
@@ -375,7 +376,9 @@ end
 
 function mcl_potions._save_player_effects(player)
 
-	if not player:is_player() then return end
+	if not player:is_player() then
+		return
+	end
 	meta = player:get_meta()
 
 	meta:set_string("_is_invisible", minetest.serialize(is_invisible[player]))
@@ -393,7 +396,9 @@ end
 
 function mcl_potions._load_player_effects(player)
 
-	if not player:is_player() then return end
+	if not player:is_player() then
+		return
+	end
 	meta = player:get_meta()
 
 	if minetest.deserialize(meta:get_string("_is_invisible")) then
@@ -487,7 +492,9 @@ function mcl_potions.is_obj_hit(self, pos)
 
 		if entity and entity.name ~= self.object:get_luaentity().name then
 
-			if entity._cmi_is_mob then return true end
+			if entity._cmi_is_mob then
+				return true
+			end
 
 		elseif object:is_player() and self._thrower ~= object:get_player_name() then
 			return true
@@ -500,7 +507,9 @@ end
 
 function mcl_potions.make_invisible(player, toggle)
 
-	if not player then return false end
+	if not player then
+		return false
+	end
 
 	local is_player = player:is_player()
 	local entity = player:get_luaentity()
@@ -533,22 +542,22 @@ function mcl_potions._use_potion(item, obj, color)
 	local pos = obj:get_pos()
 	minetest.sound_play("mcl_potions_drinking", {pos = pos, max_hear_distance = 6, gain = 1})
 	minetest.add_particlespawner({
-									amount = 25,
-									time = 1,
-									minpos = {x=pos.x-d, y=pos.y+1, z=pos.z-d},
-									maxpos = {x=pos.x+d, y=pos.y+2, z=pos.z+d},
-									minvel = {x=-0.1, y=0, z=-0.1},
-									maxvel = {x=0.1, y=0.1, z=0.1},
-									minacc = {x=-0.1, y=0, z=-0.1},
-									maxacc = {x=0.1, y=.1, z=0.1},
-									minexptime = 1,
-									maxexptime = 5,
-									minsize = 0.5,
-									maxsize = 1,
-									collisiondetection = true,
-									vertical = false,
-									texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
-								})
+		amount = 25,
+		time = 1,
+		minpos = {x=pos.x-d, y=pos.y+1, z=pos.z-d},
+		maxpos = {x=pos.x+d, y=pos.y+2, z=pos.z+d},
+		minvel = {x=-0.1, y=0, z=-0.1},
+		maxvel = {x=0.1, y=0.1, z=0.1},
+		minacc = {x=-0.1, y=0, z=-0.1},
+		maxacc = {x=0.1, y=.1, z=0.1},
+		minexptime = 1,
+		maxexptime = 5,
+		minsize = 0.5,
+		maxsize = 1,
+		collisiondetection = true,
+		vertical = false,
+		texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
+	})
 end
 
 
@@ -556,22 +565,22 @@ function mcl_potions._add_spawner(obj, color)
 	local d = 0.2
 	local pos = obj:get_pos()
 	minetest.add_particlespawner({
-									amount = 1,
-									time = 1,
-									minpos = {x=pos.x-d, y=pos.y+1, z=pos.z-d},
-									maxpos = {x=pos.x+d, y=pos.y+2, z=pos.z+d},
-									minvel = {x=-0.1, y=0, z=-0.1},
-									maxvel = {x=0.1, y=0.1, z=0.1},
-									minacc = {x=-0.1, y=0, z=-0.1},
-									maxacc = {x=0.1, y=.1, z=0.1},
-									minexptime = 0.5,
-									maxexptime = 1,
-									minsize = 0.5,
-									maxsize = 1,
-									collisiondetection = false,
-									vertical = false,
-									texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
-								})
+		amount = 1,
+		time = 1,
+		minpos = {x=pos.x-d, y=pos.y+1, z=pos.z-d},
+		maxpos = {x=pos.x+d, y=pos.y+2, z=pos.z+d},
+		minvel = {x=-0.1, y=0, z=-0.1},
+		maxvel = {x=0.1, y=0.1, z=0.1},
+		minacc = {x=-0.1, y=0, z=-0.1},
+		maxacc = {x=0.1, y=.1, z=0.1},
+		minexptime = 0.5,
+		maxexptime = 1,
+		minsize = 0.5,
+		maxsize = 1,
+		collisiondetection = false,
+		vertical = false,
+		texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
+	})
 end
 
 
@@ -633,7 +642,9 @@ end
 
 function mcl_potions.swiftness_func(player, factor, duration)
 
-	if not player:get_meta() then return false end
+	if not player:get_meta() then
+		return false
+	end
 
 	if not is_swift[player] then
 
@@ -654,7 +665,9 @@ end
 
 function mcl_potions.leaping_func(player, factor, duration)
 
-	if not player:get_meta() then return false end
+	if not player:get_meta() then
+		return false
+	end
 
 	if not is_leaping[player] then
 

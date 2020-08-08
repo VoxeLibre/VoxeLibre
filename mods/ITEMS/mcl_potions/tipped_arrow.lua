@@ -19,12 +19,11 @@ local function arrow_image(colorstring, opacity)
 		opacity = 127
 	end
 	return {"mcl_bows_arrow.png^[transformFX^(mcl_bows_arrow_overlay.png^[transformFX^[colorize:"..colorstring..":"..tostring(opacity)..")",
-			"mcl_bows_arrow.png^[transformFX^(mcl_bows_arrow_overlay.png^[transformFX^[colorize:"..colorstring..":"..tostring(opacity)..")",
-			"mcl_bows_arrow_back.png^[colorize:"..colorstring..":"..tostring(opacity),
-			"mcl_bows_arrow_front.png^[colorize:"..colorstring..":"..tostring(opacity),
-			"mcl_bows_arrow.png^(mcl_bows_arrow_overlay.png^[colorize:"..colorstring..":"..tostring(opacity)..")",
-			"mcl_bows_arrow.png^[transformFX^(mcl_bows_arrow_overlay.png^[transformFX^[colorize:"..colorstring..":"..tostring(opacity)..")"}
-
+		"mcl_bows_arrow.png^[transformFX^(mcl_bows_arrow_overlay.png^[transformFX^[colorize:"..colorstring..":"..tostring(opacity)..")",
+		"mcl_bows_arrow_back.png^[colorize:"..colorstring..":"..tostring(opacity),
+		"mcl_bows_arrow_front.png^[colorize:"..colorstring..":"..tostring(opacity),
+		"mcl_bows_arrow.png^(mcl_bows_arrow_overlay.png^[colorize:"..colorstring..":"..tostring(opacity)..")",
+		"mcl_bows_arrow.png^[transformFX^(mcl_bows_arrow_overlay.png^[transformFX^[colorize:"..colorstring..":"..tostring(opacity)..")"}
 end
 
 local how_to_shoot = minetest.registered_items["mcl_bows:arrow"]._doc_items_usagehelp
