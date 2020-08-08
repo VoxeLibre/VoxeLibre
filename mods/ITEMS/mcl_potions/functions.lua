@@ -1,3 +1,5 @@
+local S = minetest.get_translator("mcl_potions")
+
 local is_invisible = {}
 local is_poisoned = {}
 local is_regenerating = {}
@@ -902,28 +904,33 @@ get_chat_function["leaping"] = mcl_potions.leaping_func
 get_chat_function["swiftness"] = mcl_potions.swiftness_func
 get_chat_function["heal"] = mcl_potions.healing_func
 
-minetest.register_chatcommand("potion",{
-	params = "<params>",
-	description = "Set player potion effects -- arguments <effect (e.g. poison or night_vision)> <factor (1 = 100%)> <duration (sec)>",
+minetest.register_chatcommand("effect",{
+	params = S("<effect> <factor> <duration>"),
+	description = S("Add a status effect to yourself. Arguments: <effect>: name of potion effect, e.g. poison. <factor>: effect strength multiplier (1 = 100%). <duration>: duration in seconds"),
 	privs = {server = true},
 	func = function(name, params)
 
-		P = {}
-		i = 0
+		local P = {}
+		local i = 0
 		for str in string.gmatch(params, "([^ ]+)") do
 			i = i + 1
 			P[i] = str
 		end
 
-		if not P[3] then
-			P[3] = P[2]
+		if not P[1] then
+			return false, S("Missing effect parameter!")
+		elseif not P[2] then
+			return false, S("Missing factor parameter!")
+		elseif not P[3] then
+			return false, S("Missing duration parameter!")
 		end
 
 		if get_chat_function[P[1]] then
 			get_chat_function[P[1]](minetest.get_player_by_name(name), tonumber(P[2]), tonumber(P[3]))
+			return true
 		else
-			minetest.chat_send_player(name, P[1].." is not an available potion effect. Use /help potion as needed.")
+			return false, S("@1 is not an available potion effect.", P[1])
 		end
 
-	 end ,
+	 end,
 })
