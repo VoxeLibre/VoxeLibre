@@ -153,11 +153,52 @@ local function swap_node(pos, name)
 	minetest.swap_node(pos, node)
 end
 
+local function furnace_reset_delta_time(pos)
+	local meta = minetest.get_meta(pos)
+	local time_multiplier = 86400 / (minetest.settings:get('time_speed') or 72)
+	local current_game_time = .0 + ((minetest.get_day_count() + minetest.get_timeofday()) * time_multiplier)
+
+	-- TODO: Change meta:get/set_string() to get/set_float() for 'last_gametime'.
+	-- In Windows *_float() works OK but under Linux it returns rounded unusable values like 449540.000000000
+	local last_game_time = meta:get_string("last_gametime")
+	if last_game_time then
+		last_game_time = tonumber(last_game_time)
+	end
+	if not last_game_time or last_game_time < 1 or math.abs(last_game_time - current_game_time) <= 1.5 then
+		return
+	end
+
+	meta:set_string("last_gametime", tostring(current_game_time))
+end
+
+local function furnace_get_delta_time(pos)
+	local meta = minetest.get_meta(pos)
+	local time_multiplier = 86400 / (minetest.settings:get('time_speed') or 72)
+	local current_game_time = .0 + ((minetest.get_day_count() + minetest.get_timeofday()) * time_multiplier)
+
+	local last_game_time = meta:get_string("last_gametime")
+	if last_game_time then
+		last_game_time = tonumber(last_game_time)
+	end
+	if not last_game_time or last_game_time < 1 then
+		last_game_time = current_game_time
+	elseif last_game_time == current_game_time then
+		current_game_time = current_game_time + 1.0
+	end
+
+	local elapsed_game_time = .0 + current_game_time - last_game_time
+
+	meta:set_string("last_gametime", tostring(current_game_time))
+
+	return meta, elapsed_game_time
+end
+
 local function furnace_node_timer(pos, elapsed)
 	--
 	-- Inizialize metadata
 	--
-	local meta = minetest.get_meta(pos)
+	local meta, elapsed_game_time = furnace_get_delta_time(pos)
+
 	local fuel_time = meta:get_float("fuel_time") or 0
 	local src_time = meta:get_float("src_time") or 0
 	local src_item = meta:get_string("src_item") or ""
@@ -167,98 +208,101 @@ local function furnace_node_timer(pos, elapsed)
 	local srclist, fuellist
 
 	local cookable, cooked
+	local active
 	local fuel
 
+	srclist = inv:get_list("src")
+	fuellist = inv:get_list("fuel")
+
+	-- Check if src item has been changed
+	if srclist[1]:get_name() ~= src_item then
+		-- Reset cooking progress in this case
+		src_time = 0
+		src_item = srclist[1]:get_name()
+	end
+
 	local update = true
-	while update do
-		update = false
-
-		srclist = inv:get_list("src")
-		fuellist = inv:get_list("fuel")
-
+	while elapsed_game_time > 0.00001 and update do
 		--
 		-- Cooking
 		--
 
-		-- Check if we have cookable content
+		local el = elapsed_game_time
+
+		-- Check if we have cookable content: cookable
 		local aftercooked
 		cooked, aftercooked = minetest.get_craft_result({method = "cooking", width = 1, items = srclist})
 		cookable = cooked.time ~= 0
-
-		-- Check if src item has been changed
-		if srclist[1]:get_name() ~= src_item then
-			-- Reset cooking progress in this case
-			src_time = 0
-			src_item = srclist[1]:get_name()
-			update = true
-
-		-- Check if we have enough fuel to burn
-		elseif fuel_time < fuel_totaltime then
-			-- The furnace is currently active and has enough fuel
-			fuel_time = fuel_time + elapsed
-			-- If there is a cookable item then check if it is ready yet
-			if cookable then
-				-- Successful cooking requires space in dst slot and time
-				if inv:room_for_item("dst", cooked.item) then
-					src_time = src_time + elapsed
-
-					-- Place result in dst list if done
-					if src_time >= cooked.time then
-						inv:add_item("dst", cooked.item)
-						inv:set_stack("src", 1, aftercooked.items[1])
-
-						-- Unique recipe: Pour water into empty bucket after cooking wet sponge successfully
-						if inv:get_stack("fuel", 1):get_name() == "mcl_buckets:bucket_empty" then
-							if srclist[1]:get_name() == "mcl_sponges:sponge_wet" then
-								inv:set_stack("fuel", 1, "mcl_buckets:bucket_water")
-							-- Also for river water
-							elseif srclist[1]:get_name() == "mcl_sponges:sponge_wet_river_water" then
-								inv:set_stack("fuel", 1, "mcl_buckets:bucket_river_water")
-							end
-						end
-
-						src_time = 0
-						update = true
-					end
-				elseif src_time ~= 0 then
-					-- If output slot is occupied, stop cooking
-					src_time = 0
-					update = true
-				end
+		if cookable then
+			-- Successful cooking requires space in dst slot and time
+			if not inv:room_for_item("dst", cooked.item) then
+				cookable = false
 			end
-		else
-			-- Furnace ran out of fuel
-			if cookable then
-				-- We need to get new fuel
-				local afterfuel
-				fuel, afterfuel = minetest.get_craft_result({method = "fuel", width = 1, items = fuellist})
-
-				if fuel.time == 0 then
-					-- No valid fuel in fuel list
-					fuel_totaltime = 0
-					src_time = 0
-				else
-					-- Take fuel from fuel list
-					inv:set_stack("fuel", 1, afterfuel.items[1])
-					update = true
-					fuel_totaltime = fuel.time + (fuel_time - fuel_totaltime)
-					src_time = src_time + elapsed
-				end
-			else
-				-- We don't need to get new fuel since there is no cookable item
-				fuel_totaltime = 0
-				src_time = 0
-			end
-			fuel_time = 0
 		end
 
-		elapsed = 0
+		if cookable then -- fuel lasts long enough, adjust el to cooking duration
+			el = math.min(el, cooked.time - src_time)
+		end
+
+		-- Check if we have enough fuel to burn
+		active = fuel_time < fuel_totaltime
+		if cookable and not active then
+			-- We need to get new fuel
+			local afterfuel
+			fuel, afterfuel = minetest.get_craft_result({method = "fuel", width = 1, items = fuellist})
+
+			if fuel.time == 0 then
+				-- No valid fuel in fuel list -- stop
+				fuel_totaltime = 0
+				src_time = 0
+				update = false
+			else
+				-- Take fuel from fuel list
+				inv:set_stack("fuel", 1, afterfuel.items[1])
+				fuel_time = 0
+				fuel_totaltime = fuel.time
+				el = math.min(el, fuel_totaltime)
+				active = true
+				fuellist = inv:get_list("fuel")
+			end
+		elseif active then
+			el = math.min(el, fuel_totaltime - fuel_time)
+			-- The furnace is currently active and has enough fuel
+			fuel_time = fuel_time + el
+		end
+
+		-- If there is a cookable item then check if it is ready yet
+		if cookable and active then
+			src_time = src_time + el
+			-- Place result in dst list if done
+			if src_time >= cooked.time then
+				inv:add_item("dst", cooked.item)
+				inv:set_stack("src", 1, aftercooked.items[1])
+
+				-- Unique recipe: Pour water into empty bucket after cooking wet sponge successfully
+				if inv:get_stack("fuel", 1):get_name() == "mcl_buckets:bucket_empty" then
+					if srclist[1]:get_name() == "mcl_sponges:sponge_wet" then
+						inv:set_stack("fuel", 1, "mcl_buckets:bucket_water")
+						fuellist = inv:get_list("fuel")
+					-- Also for river water
+					elseif srclist[1]:get_name() == "mcl_sponges:sponge_wet_river_water" then
+						inv:set_stack("fuel", 1, "mcl_buckets:bucket_river_water")
+						fuellist = inv:get_list("fuel")
+					end
+				end
+
+				srclist = inv:get_list("src")
+				src_time = 0
+			end
+		end
+
+		elapsed_game_time = elapsed_game_time - el
 	end
 
 	if fuel and fuel_totaltime > fuel.time then
 		fuel_totaltime = fuel.time
 	end
-	if srclist[1]:is_empty() then
+	if srclist and srclist[1]:is_empty() then
 		src_time = 0
 	end
 
@@ -274,7 +318,7 @@ local function furnace_node_timer(pos, elapsed)
 
 	local result = false
 
-	if fuel_totaltime ~= 0 then
+	if active then
 		local fuel_percent = math.floor(fuel_time / fuel_totaltime * 100)
 		formspec = active_formspec(fuel_percent, item_percent)
 		swap_node(pos, "mcl_furnaces:furnace_active")
@@ -292,7 +336,11 @@ local function furnace_node_timer(pos, elapsed)
 	meta:set_float("fuel_totaltime", fuel_totaltime)
 	meta:set_float("fuel_time", fuel_time)
 	meta:set_float("src_time", src_time)
-	meta:set_string("src_item", srclist[1]:get_name())
+	if srclist then
+		 meta:set_string("src_item", srclist[1]:get_name())
+	else
+		 meta:set_string("src_item", "")
+	end
 	meta:set_string("formspec", formspec)
 
 	return result
@@ -347,17 +395,26 @@ minetest.register_node("mcl_furnaces:furnace", {
 	end,
 
 	on_metadata_inventory_move = function(pos)
+		-- Reset accumulated game time when player works with furnace:
+		furnace_reset_delta_time(pos)
 		minetest.get_node_timer(pos):start(1.0)
 	end,
 	on_metadata_inventory_put = function(pos)
+		-- Reset accumulated game time when player works with furnace:
+		furnace_reset_delta_time(pos)
 		-- start timer function, it will sort out whether furnace can burn or not.
+		minetest.get_node_timer(pos):start(1.0)
+	end,
+	on_metadata_inventory_take = function(pos)
+		-- Reset accumulated game time when player works with furnace:
+		furnace_reset_delta_time(pos)
+		-- start timer function, it will helpful if player clears dst slot
 		minetest.get_node_timer(pos):start(1.0)
 	end,
 
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
 	allow_metadata_inventory_take = allow_metadata_inventory_take,
-	on_metadata_inventory_take = on_metadata_inventory_take,
 	on_receive_fields = receive_fields,
 	_mcl_blast_resistance = 3.5,
 	_mcl_hardness = 3.5,
