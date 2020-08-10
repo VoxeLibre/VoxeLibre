@@ -19,6 +19,7 @@ mcl_potions.LINGERING_FACTOR = 0.25
 
 local modpath = minetest.get_modpath("mcl_potions")
 dofile(modpath .. "/functions.lua")
+dofile(modpath .. "/commands.lua")
 dofile(modpath .. "/splash.lua")
 dofile(modpath .. "/lingering.lua")
 dofile(modpath .. "/tipped_arrow.lua")
