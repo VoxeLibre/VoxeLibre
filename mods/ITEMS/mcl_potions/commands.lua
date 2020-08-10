@@ -22,7 +22,7 @@ get_chat_function["heal"] = mcl_potions.healing_func
 
 minetest.register_chatcommand("effect",{
 	params = S("<effect> <duration> [<factor>]"),
-	description = S("Add a status effect to yourself. Arguments: <effect>: name of potion effect, e.g. poison. <duration>: duration in seconds. <factor>: effect strength multiplier (1 = 100%)"),
+	description = S("Add a status effect to yourself. Arguments: <effect>: name of status effect, e.g. poison. <duration>: duration in seconds. <factor>: effect strength multiplier (1 = 100%)"),
 	privs = {server = true},
 	func = function(name, params)
 
@@ -49,7 +49,7 @@ minetest.register_chatcommand("effect",{
 			get_chat_function[P[1]](minetest.get_player_by_name(name), tonumber(P[3]), tonumber(P[2]))
 			return true
 		else
-			return false, S("@1 is not an available potion effect.", P[1])
+			return false, S("@1 is not an available status effect.", P[1])
 		end
 
 	 end,
