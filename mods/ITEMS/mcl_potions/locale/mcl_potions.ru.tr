@@ -1,4 +1,12 @@
 # textdomain: mcl_potions
+<effect> <duration> [<factor>]=
+
+Add a status effect to yourself. Arguments: <effect>: name of status effect, e.g. poison. <duration>: duration in seconds. <factor>: effect strength multiplier (1 @= 100%)=
+
+Missing effect parameter!=
+Missing or invalid duration parameter!=
+Invalid factor parameter!=
+@1 is not an available status effect.=
 Fermented Spider Eye=Прокисший паучий глаз
 Glass Bottle=Стеклянная бутылка
 Liquid container=Контейнер для жидкостей
@@ -32,11 +40,6 @@ This shiny melon is full of tiny gold nuggets and would be nice in an item frame
 
 A throwable potion that will shatter on impact, where it creates a magic cloud that lingers around for a while. Any player or mob inside the cloud will receive the potion's effect, possibly repeatedly.=Зелье, которое можно метать. При ударе оно разбивается, создавая волшебное облако, которое задерживается на некоторое время. Любой игрок или моб внутри облака получит эффект зелья, возможно, неоднократно.
 
-Lingering Weakness Potion=Оседающее зелье слабости
-Lingering Weakness Potion +=Оседающее зелье слабости +
-Lingering Strength Potion=Оседающее зелье силы
-Lingering Strength Potion II=Оседающее зелье силы II
-Lingering Strength Potion +=Оседающее зелье силы +
 Use the “Punch” key to throw it.=Нажмите [Ударить] для метания.
 Use the “Place” key to drink it.=Нажмите [Разместить] для выпивания.
 Drinking a potion gives you a particular effect.=Выпивание зелья даёт вам особый эффект.
@@ -108,11 +111,19 @@ No effect=Не оказывает эффекта
 
 A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect.=Зелье, которое можно метать. Оно разбивается при ударе и он дает всем ближайшим игрокам и мобам эффект статуса.
 
+This particular arrow is tipped and will give an effect when it hits a player or mob.=Эта необычная стрела с обработанным наконечником даёт эффект при попадании в игрока или моба.
+
+
+
+##### not used anymore #####
+
+Lingering Weakness Potion=Оседающее зелье слабости
+Lingering Weakness Potion +=Оседающее зелье слабости +
+Lingering Strength Potion=Оседающее зелье силы
+Lingering Strength Potion II=Оседающее зелье силы II
+Lingering Strength Potion +=Оседающее зелье силы +
 Weakness Splash Potion=Взрывающееся зелье слабости
 Weakness Splash Potion +=Взрывающееся зелье слабости +
 Strength Splash Potion=Взрывающееся зелье силы
 Strength Splash Potion II=Взрывающееся зелье силы II
 Strength Splash Potion +=Взрывающееся зелье силы +
-
-This particular arrow is tipped and will give an effect when it hits a player or mob.=Эта необычная стрела с обработанным наконечником даёт эффект при попадании в игрока или моба.
-
