@@ -1,12 +1,12 @@
 # textdomain: mcl_potions
-<effect> <duration> [<factor>]=
+<effect> <duration> [<factor>]=<эффект> <длительность> [<фактор>]
 
-Add a status effect to yourself. Arguments: <effect>: name of status effect, e.g. poison. <duration>: duration in seconds. <factor>: effect strength multiplier (1 @= 100%)=
+Add a status effect to yourself. Arguments: <effect>: name of status effect, e.g. poison. <duration>: duration in seconds. <factor>: effect strength multiplier (1 @= 100%)=Добавляет вам эффект состояния. Параметры: <эффект> - название эффекта состояния, например, poison (отравление). <Длительность> - длительность в секундах. <Фактор> - коэффициент силы эффекта (1 @= 100%)
 
-Missing effect parameter!=
-Missing or invalid duration parameter!=
-Invalid factor parameter!=
-@1 is not an available status effect.=
+Missing effect parameter!=Отсутствует параметр эффекта!
+Missing or invalid duration parameter!=Отсутствует либо неправильно задан параметр длительности!
+Invalid factor parameter!=Отсутствует параметр фактора!
+@1 is not an available status effect.=@1 не является допустимым эффектом состояния.
 Fermented Spider Eye=Прокисший паучий глаз
 Glass Bottle=Стеклянная бутылка
 Liquid container=Контейнер для жидкостей
@@ -46,19 +46,19 @@ Drinking a potion gives you a particular effect.=Выпивание зелья �
 1 HP/@1s | @2=1 HP/@1с | @2
 @1 HP=@1 HP
 @1 Potion=Зелье @1
-Splash @1 Potion=Взрывающее зелье @1
+Splash @1 Potion=Взрывающееся зелье @1
 Lingering @1 Potion=Оседающее зелье @1
-Arrow of @1=Стрельба @1
+Arrow of @1=Стрела @1
  II= II
  IV= IV
-@1 Potion@2=@1 Зелье@2
-Splash @1@2 Potion=Взрывающее зелье @1@2
+@1 Potion@2=Зелье @1 @2
+Splash @1@2 Potion=Взрывающееся зелье @1@2
 Lingering @1@2 Potion=Оседающее зелье @1@2
-Arrow of @1@2=Стрельба @1@2
-@1 + Potion=@1 + Зелье
-Splash @1 + Potion=Взрывающее @1 + Зелье
-Lingering @1 + Potion=Оседающее @1 + Зелье
-Arrow of @1 +=Стрельба @1 +
+Arrow of @1@2=Стрела @1@2
+@1 + Potion=Зелье @1+
+Splash @1 + Potion=Взрывающееся зелье @1+
+Lingering @1 + Potion=Оседающее зелье @1+
+Arrow of @1 +=Стрела @1+
 Awkward Potion=Невкусное зелье
 Awkward Splash Potion=Невкусное взрывающееся зелье
 Awkward Lingering Potion=Невкусное оседающее зелье
@@ -75,31 +75,31 @@ Dragon's Breath=Дыхание дракона
 
 This item is used in brewing and can be combined with splash potions to create lingering potions.=Этот предмет используется в зельеварении и может объединяться со взрывающимися зельями, чтобы создать эффект оседания
 
-Healing=Лечение
+Healing=исцеления
 +4 HP=+4 HP
 +8 HP=+8 HP
 Instantly heals.=Лечит мгновенно
-Harming=Вред
+Harming=урона
 -6 HP=-6 HP
 -12 HP=-12 HP
 Instantly deals damage.=Вызывает мгновенную смерть.
-Night Vision=Ночное зрение
+Night Vision=ночного зрения
 Grants the ability to see in darkness.=Даёт возможность видеть в темноте
-Swiftness=Быстрота
+Swiftness=ускорения
 Increases walking speed.=Увеличивает скорость ходьбы
-Slowness=Замедление
+Slowness=замедления
 Decreases walking speed.=Уменьшает скорость ходьбы
-Leaping=Прыгучесть
+Leaping=прыгучести
 Increases jump strength.=Увеличивает силу прыжка
-Poison=Отрава
+Poison=отравления
 Applies the poison effect which deals damage at a regular interval.=Наносит эффект яда, который вызывает урон через равные промежутки времени.
-Regeneration=Восстановление
+Regeneration=восстановления
 Regenerates health over time.=Восстанавливает здоровье со временем.
-Invisibility=Невидимость
+Invisibility=невидимости
 Grants invisibility.=Делает невидимым.
-Water Breathing=Подводное дыхание
+Water Breathing=подводного дыхания
 Grants limitless breath underwater.=Даёт возможность неограниченно дышать под водой.
-Fire Resistance=Огнестойкость
+Fire Resistance=огнестойкости
 Grants immunity to damage from heat sources like fire.=Делает невосприимчивым к урону от источников тепла, например, от огня.
 Weakness=Слабость
 Weakness +=Слабость +
@@ -109,7 +109,7 @@ Strength +=Сила +
 Try different combinations to create potions.=Пробуйте разные сочетания для приготовления зелий.
 No effect=Не оказывает эффекта
 
-A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect.=Зелье, которое можно метать. Оно разбивается при ударе и он дает всем ближайшим игрокам и мобам эффект статуса.
+A throwable potion that will shatter on impact, where it gives all nearby players and mobs a status effect.=Зелье, которое можно метать. Оно разбивается при ударе и он дает всем ближайшим игрокам и мобам эффект состояния.
 
 This particular arrow is tipped and will give an effect when it hits a player or mob.=Эта необычная стрела с обработанным наконечником даёт эффект при попадании в игрока или моба.
 
