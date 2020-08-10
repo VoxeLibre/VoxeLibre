@@ -45,6 +45,29 @@ end
 -- ╚═╝░░░░░░╚════╝░░░░╚═╝░░░╚═╝░╚════╝░╚═╝░░╚══╝╚═════╝░
 
 
+function return_on_use(def, effect, dur)
+	return function (itemstack, user, pointed_thing)
+		if pointed_thing.type == "node" then
+			if user and not user:get_player_control().sneak then
+				-- Use pointed node's on_rightclick function first, if present
+				local node = minetest.get_node(pointed_thing.under)
+				if user and not user:get_player_control().sneak then
+					if minetest.registered_nodes[node.name] and minetest.registered_nodes[node.name].on_rightclick then
+						return minetest.registered_nodes[node.name].on_rightclick(pointed_thing.under, node, user, itemstack) or itemstack
+					end
+				end
+			end
+		elseif pointed_thing.type == "object" then
+			return itemstack
+		end
+
+		def.on_use(user, effect, dur)
+		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+		mcl_potions._use_potion(itemstack, user, def.color)
+	end
+end
+
+
 local function register_potion(def)
 
 	local dur = mcl_potions.DURATION
@@ -59,14 +82,7 @@ local function register_potion(def)
 	local on_use = nil
 
 	if def.on_use then
-		on_use = function (itemstack, user, pointed_thing)
-
-			def.on_use(user, def.effect, dur)
-			minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-			mcl_potions._use_potion(itemstack, user, def.color)
-
-			return itemstack
-		end
+		on_use = return_on_use(def, def.effect, dur)
 	end
 
 	local function get_tt(tt, effect, dur)
@@ -224,12 +240,7 @@ local function register_potion(def)
 			desc_mod = S(" IV")
 		end
 
-		local on_use = function (itemstack, user, pointed_thing)
-			def.on_use(user, effect_II, dur_2)
-			minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-			mcl_potions._use_potion(itemstack, user, def.color)
-			return itemstack
-		end
+		on_use = return_on_use(def, effect_II, dur_2)
 
 		minetest.register_craftitem("mcl_potions:"..def.name.."_2", {
 			description = S("@1 Potion@2", def.description, desc_mod),
@@ -307,12 +318,7 @@ local function register_potion(def)
 			dur_pl = 90
 		end
 
-		local on_use = function (itemstack, user, pointed_thing)
-			def.on_use(user, def.effect, dur_pl)
-			minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-			mcl_potions._use_potion(itemstack, user, def.color)
-			return itemstack
-		end
+		on_use = return_on_use(def, def.effect, dur_pl)
 
 		minetest.register_craftitem("mcl_potions:"..def.name.."_plus", {
 			description = S("@1 + Potion", def.description),
