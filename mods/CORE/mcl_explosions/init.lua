@@ -195,7 +195,7 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 				break
 			end
 
-			if cid ~= minetest.CONTENT_AIR then
+			if cid ~= minetest.CONTENT_AIR and not minetest.is_protected({x = npos_x, y = npos_y, z = npos_z}, "") then
 				destroy[hash] = idx
 			end
 		end
