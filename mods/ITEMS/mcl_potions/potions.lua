@@ -62,8 +62,12 @@ function return_on_use(def, effect, dur)
 		end
 
 		def.on_use(user, effect, dur)
-		minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
-		mcl_potions._use_potion(itemstack, user, def.color)
+		local old_name, old_count = itemstack:get_name(), itemstack:get_count()
+		itemstack = minetest.do_item_eat(0, "mcl_potions:glass_bottle", itemstack, user, pointed_thing)
+		if old_name ~= itemstack:get_name() or old_count ~= itemstack:get_count() then
+			mcl_potions._use_potion(itemstack, user, def.color)
+		end
+		return itemstack
 	end
 end
 
