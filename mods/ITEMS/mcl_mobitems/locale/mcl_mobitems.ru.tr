@@ -36,11 +36,11 @@ Raw rabbit is a food item from a dead rabbit. It can be eaten safely. Cooking it
 Cooked Rabbit=Приготовленный кролик
 This is a food item which can be eaten.=Это пищевой продукт, его можно есть.
 Milk=Молоко
-Removes all status effects=
+Removes all status effects=Убирает все эффекты состояния
 
-Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will remove all status effects, but restores no hunger points.=
+Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will remove all status effects, but restores no hunger points.=Молоко отлично освежает, его можно получить, применив ведро к корове. Выпив молока, вы избавитесь от всех эффектов состояния, но не восстановите очков голода.
 
-Use the placement key to drink the milk.=
+Use the placement key to drink the milk.=Используйте клавишу размещения, чтобы выпить молоко.
 Spider Eye=Паучий глаз
 Poisonous=Ядовито
 
@@ -78,7 +78,7 @@ Saddle=Седло
 Can be placed on animals to ride them=Можно устанавливать на животных, чтобы ездить на них
 Saddles can be put on some animals in order to mount them.=Седло можно поставить на некоторых животных, чтобы закрепляться на них.
 
-Use the placement key with the saddle in your hand to try to put on the saddle. Saddles fit on horses, mules, donkeys and pigs. Horses, mules and donkeys need to be tamed first, otherwise they'll reject the saddle. Saddled animals can be mounted by using the placement key on them again.=
+Use the placement key with the saddle in your hand to try to put on the saddle. Saddles fit on horses, mules, donkeys and pigs. Horses, mules and donkeys need to be tamed first, otherwise they'll reject the saddle. Saddled animals can be mounted by using the placement key on them again.=Используйте клавишу размещения, держа седло в руке, чтобы попытаться надеть его. Сёдла подходят для лошадей, мулов, осликов и свиней. Лошади, мулы и ослики должны быть предварительно приручены, иначе они откажутся от седла. На осёдланных животных можно сесть, снова нажав на них клавишу размещения.
 
 Rabbit Stew=Рагу из кролика
 Rabbit stew is a very nutricious food item.=Рагу из кролика это очень питательный продукт.
@@ -92,11 +92,4 @@ Lets you ride a saddled pig=Позволяет вам ездить на осёд
 A carrot on a stick can be used on saddled pigs to ride them.=Удочку с морковью можно использовать, чтобы оседлать свинью и поехать на ней.
 
 Place it on a saddled pig to mount it. You can now ride the pig like a horse. Pigs will also walk towards you when you just wield the carrot on a stick.=Поместите это на осёдланную свинью, чтобы закрепиться на ней. Теперь вы можете ехать на ней, как на лошади. Свиньи также идут вперёд, когда вы просто держите удочку с морковью.
-
-
-
-##### not used anymore #####
-
-
-Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will cure all forms of poisoning, but restores no hunger points.=Молоко отлично освежает, его можно получить, применив ведро к корове. Выпив молока, вы излечитесь от всех видом отравлений, но не восстановите очков голода.
 
