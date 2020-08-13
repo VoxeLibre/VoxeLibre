@@ -63,7 +63,6 @@ end
 ]]
 
 -- Count number of poisonings a player has at once
-mcl_hunger.poison_damage = {} -- damaging poison
 mcl_hunger.poison_hunger = {} -- food poisoning, increasing hunger
 
 -- HUD item ids
@@ -100,7 +99,6 @@ minetest.register_on_joinplayer(function(player)
 	local name = player:get_player_name()
 	mcl_hunger.init_player(player)
 	init_hud(player)
-	mcl_hunger.poison_damage[name] = 0
 	mcl_hunger.poison_hunger[name] = 0
 	mcl_hunger.last_eat[name] = -1
 end)

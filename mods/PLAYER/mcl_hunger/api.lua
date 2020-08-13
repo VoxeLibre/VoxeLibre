@@ -113,9 +113,7 @@ if mcl_hunger.active then
 		if not mcl_hunger.active then
 			return
 		end
-		mcl_hunger.poison_damage[player:get_player_name()] = 0
 		mcl_hunger.poison_hunger[player:get_player_name()] = 0
-		mcl_hunger.reset_bars_poison_damage(player)
 		mcl_hunger.reset_bars_poison_hunger(player)
 	end
 

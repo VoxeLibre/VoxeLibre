@@ -41,7 +41,7 @@ Sets the hunger level of `player` (ObjectRef) to `hunger` immediately.
 Increase exhaustion of player by `exhaust`.
 
 ### `mcl_hunger.stop_poison(player)`
-Immediately stops all poisonings for player.
+Immediately stops food poisoning for player.
 
 ### More functions ...
 There are more functions (of less importance) available, see `api.lua`.

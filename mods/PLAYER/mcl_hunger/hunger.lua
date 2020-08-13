@@ -67,10 +67,7 @@ function mcl_hunger.eat(hp_change, replace_with_item, itemstack, user, pointed_t
 	return func(itemstack, user, pointed_thing)
 end
 
--- Reset HUD bars after poisoning
-function mcl_hunger.reset_bars_poison_damage(player)
-	hb.change_hudbar(player, "health", nil, nil, "hudbars_icon_health.png", nil, "hudbars_bar_health.png")
-end
+-- Reset HUD bars after food poisoning
 
 function mcl_hunger.reset_bars_poison_hunger(player)
 	hb.change_hudbar(player, "hunger", nil, nil, "hbhunger_icon.png", nil, "hbhunger_bar.png")
@@ -90,23 +87,17 @@ local function poisonp(tick, time, time_left, damage, exhaustion, name)
 		return
 	end
 	local name = player:get_player_name()
-	-- Abort if poisonings have been stopped
-	if mcl_hunger.poison_damage[name] == 0 and mcl_hunger.poison_hunger[name] == 0 then
+	-- Abort if food poisonings have been stopped
+	if mcl_hunger.poison_hunger[name] == 0 then
 		return
 	end
 	time_left = time_left + tick
 	if time_left < time then
 		minetest.after(tick, poisonp, tick, time, time_left, damage, exhaustion, name)
 	else
-		-- if damage > 0 then
-		-- 	mcl_hunger.poison_damage[name] = mcl_hunger.poison_damage[name] - 1
-		-- end
 		if exhaustion > 0 then
 			mcl_hunger.poison_hunger [name] = mcl_hunger.poison_hunger[name] - 1
 		end
-		-- if mcl_hunger.poison_damage[name] <= 0 then
-		-- 	mcl_hunger.reset_bars_poison_damage(player)
-		-- end
 		if mcl_hunger.poison_hunger[name] <= 0 then
 			mcl_hunger.reset_bars_poison_hunger(player)
 		end
@@ -224,11 +215,7 @@ function mcl_hunger.item_eat(hunger_change, replace_with_item, poisontime, poiso
 					do_poison = true
 				end
 				if do_poison then
-					-- Set poison bars
-					-- if poison and poison > 0 then
-					-- 	hb.change_hudbar(user, "health", nil, nil, "hbhunger_icon_health_poison.png", nil, "hbhunger_bar_health_poison.png")
-					-- 	mcl_hunger.poison_damage[name] = mcl_hunger.poison_damage[name] + 1
-					-- end
+					-- Set food poison bars
 					if exhaust and exhaust > 0 then
 						hb.change_hudbar(user, "hunger", nil, nil, "mcl_hunger_icon_foodpoison.png", nil, "mcl_hunger_bar_foodpoison.png")
 						if mcl_hunger.debug then
