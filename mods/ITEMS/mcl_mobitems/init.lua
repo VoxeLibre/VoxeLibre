@@ -1,5 +1,3 @@
--- TODO: Add special status effects for raw flesh
-
 local S = minetest.get_translator("mcl_mobitems")
 
 minetest.register_craftitem("mcl_mobitems:rotten_flesh", {
@@ -136,6 +134,7 @@ minetest.register_craftitem("mcl_mobitems:cooked_rabbit", {
 	stack_max = 64,
 })
 
+-- Reset food poisoning and status effects
 local drink_milk = function(itemstack, player, pointed_thing)
 	local bucket = minetest.do_item_eat(0, "mcl_buckets:bucket_empty", itemstack, player, pointed_thing)
 	-- Check if we were allowed to drink this (eat delay check)
@@ -146,7 +145,6 @@ local drink_milk = function(itemstack, player, pointed_thing)
 	return bucket
 end
 
--- TODO: Clear *all* status effects
 minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 	description = S("Milk"),
 	_tt_help = minetest.colorize("#00FF00", S("Cures poison and removes all potion effects")),
@@ -154,7 +152,6 @@ minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 	_doc_items_usagehelp = "Rightclick to drink the milk.",
 	inventory_image = "mcl_mobitems_bucket_milk.png",
 	wield_image = "mcl_mobitems_bucket_milk.png",
-	-- Clear poisoning when used
 	on_place = drink_milk,
 	on_secondary_use = drink_milk,
 	stack_max = 1,
@@ -223,8 +220,7 @@ minetest.register_craftitem("mcl_mobitems:ghast_tear", {
 	_doc_items_longdesc = S("Place this item in an item frame as decoration."),
 	wield_image = "mcl_mobitems_ghast_tear.png",
 	inventory_image = "mcl_mobitems_ghast_tear.png",
-	-- TODO: Reveal item when it's useful
-	groups = { brewitem = 1, not_in_creative_inventory = 0 },
+	groups = { brewitem = 1 },
 	stack_max = 64,
 })
 
@@ -270,8 +266,7 @@ minetest.register_craftitem("mcl_mobitems:rabbit_foot", {
 	_doc_items_longdesc = S("Must be your lucky day! Place this item in an item frame for decoration."),
 	wield_image = "mcl_mobitems_rabbit_foot.png",
 	inventory_image = "mcl_mobitems_rabbit_foot.png",
-	-- TODO: Reveal item when it's useful
-	groups = { brewitem = 1, not_in_creative_inventory = 0 },
+	groups = { brewitem = 1 },
 	stack_max = 64,
 })
 
@@ -440,3 +435,12 @@ minetest.register_craft({
 		{"mcl_mobitems:slimeball","mcl_mobitems:slimeball","mcl_mobitems:slimeball",},
 		{"mcl_mobitems:slimeball","mcl_mobitems:slimeball","mcl_mobitems:slimeball",}},
 })
+
+minetest.register_on_item_eat(function (hp_change, replace_with_item, itemstack, user, pointed_thing)
+
+	-- poisoning with spider eye
+	if itemstack:get_name() == "mcl_mobitems:spider_eye" then
+		mcl_potions.poison_func(user, 1, 4)
+	end
+
+end )

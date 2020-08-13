@@ -122,7 +122,6 @@ minetest.register_craftitem("mcl_farming:potato_item_poison", {
 	_doc_items_longdesc = S("This potato doesn't look too healthy. You can eat it to restore hunger points, but there's a 60% chance it will poison you briefly."),
 	stack_max = 64,
 	inventory_image = "farming_potato_poison.png",
-	-- TODO: Cause status effects
 	on_place = minetest.item_eat(2),
 	on_secondary_use = minetest.item_eat(2),
 	groups = { food = 2, eatable = 2 },
@@ -138,4 +137,13 @@ minetest.register_craft({
 
 mcl_farming:add_plant("plant_potato", "mcl_farming:potato", {"mcl_farming:potato_1", "mcl_farming:potato_2", "mcl_farming:potato_3", "mcl_farming:potato_4", "mcl_farming:potato_5", "mcl_farming:potato_6", "mcl_farming:potato_7"}, 19.75, 20)
 
+minetest.register_on_item_eat(function (hp_change, replace_with_item, itemstack, user, pointed_thing)
 
+	-- 60% chance of poisoning with poisonous potato
+	if itemstack:get_name() == "mcl_farming:potato_item_poison" then
+		if math.random(1,10) >= 6 then
+			mcl_potions.poison_func(user, 1, 5)
+		end
+	end
+
+end )
