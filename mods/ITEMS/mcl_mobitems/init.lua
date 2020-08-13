@@ -147,9 +147,9 @@ end
 
 minetest.register_craftitem("mcl_mobitems:milk_bucket", {
 	description = S("Milk"),
-	_tt_help = minetest.colorize("#00FF00", S("Cures poison and removes all potion effects")),
-	_doc_items_longdesc = S("Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will cure all forms of poisoning and removes potion effects, but restores no hunger points."),
-	_doc_items_usagehelp = "Rightclick to drink the milk.",
+	_tt_help = minetest.colorize("#00FF00", S("Removes all status effects")),
+	_doc_items_longdesc = S("Milk is very refreshing and can be obtained by using a bucket on a cow. Drinking it will remove all status effects, but restores no hunger points."),
+	_doc_items_usagehelp = S("Use the placement key to drink the milk."),
 	inventory_image = "mcl_mobitems_bucket_milk.png",
 	wield_image = "mcl_mobitems_bucket_milk.png",
 	on_place = drink_milk,
@@ -274,7 +274,7 @@ minetest.register_craftitem("mcl_mobitems:saddle", {
 	description = S("Saddle"),
 	_tt_help = S("Can be placed on animals to ride them"),
 	_doc_items_longdesc = S("Saddles can be put on some animals in order to mount them."),
-	_doc_items_usagehelp = "Rightclick an animal (with the saddle in your hand) to try put on the saddle. Saddles fit on horses, mules, donkeys and pigs. Horses, mules and donkeys need to be tamed first, otherwise they'll reject the saddle. Saddled animals can be mounted by rightclicking them again.",
+	_doc_items_usagehelp = S("Use the placement key with the saddle in your hand to try to put on the saddle. Saddles fit on horses, mules, donkeys and pigs. Horses, mules and donkeys need to be tamed first, otherwise they'll reject the saddle. Saddled animals can be mounted by using the placement key on them again."),
 	wield_image = "mcl_mobitems_saddle.png",
 	inventory_image = "mcl_mobitems_saddle.png",
 	groups = { transport = 1 },
