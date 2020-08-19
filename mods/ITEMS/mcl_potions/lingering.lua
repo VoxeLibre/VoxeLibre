@@ -29,9 +29,9 @@ minetest.register_globalstep(function(dtime)
 			local d = 4 * (vals.timer / 30.0)
 			local texture
 			if vals.is_water then
-				texture = "mcl_potions_droplet.png"
+				texture = "mcl_particles_droplet_bottle.png"
 			else
-				texture = "mcl_potions_sprite.png"
+				texture = "mcl_particles_effect.png"
 			end
 			minetest.add_particlespawner({
 				amount = 10 * d^2,
@@ -141,11 +141,11 @@ minetest.register_entity(id.."_flying",{
 			add_lingering_effect(pos, color, def, name == "water")
 			local texture, minacc, maxacc
 			if name == "water" then
-				texture = "mcl_potions_droplet.png"
+				texture = "mcl_particles_droplet_bottle.png"
 				minacc = {x=-0.2, y=-0.05, z=-0.2}
 				maxacc = {x=0.2, y=0.05, z=0.2}
 			else
-				texture = "mcl_potions_sprite.png"
+				texture = "mcl_particles_effect.png"
 				minacc = {x=-0.2, y=0, z=-0.2}
 				maxacc = {x=0.2, y=.05, z=0.2}
 			end
