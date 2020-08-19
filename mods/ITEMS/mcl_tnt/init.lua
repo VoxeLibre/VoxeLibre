@@ -28,7 +28,7 @@ tnt.smoke_step = function(pos)
 		expirationtime = 0.15 + math.random() * 0.25,
 		size = 1.0 + math.random(),
 		collisiondetection = false,
-		texture = "tnt_smoke.png"
+		texture = "mcl_particles_smoke.png"
 	})
 end
 
@@ -130,12 +130,12 @@ local function add_effects(pos, radius, drops)
 		maxexptime = 2.5,
 		minsize = radius * 1,
 		maxsize = radius * 3,
-		texture = "tnt_smoke.png",
+		texture = "mcl_particles_smoke.png",
 	})
 
 	-- we just dropped some items. Look at the items entities and pick
 	-- one of them to use as texture
-	local texture = "tnt_smoke.png" --fallback texture
+	local texture = "mcl_particles_smoke.png" --fallback texture
 	local most = 0
 	for name, stack in pairs(drops) do
 		local count = stack:get_count()

@@ -144,7 +144,7 @@ local summon_particles = function(obj)
 		maxexptime = 2.0,
 		minsize = 2.0,
 		maxsize = 3.0,
-		texture = "tnt_smoke.png",
+		texture = "mcl_particles_smoke.png",
 	})
 end
 

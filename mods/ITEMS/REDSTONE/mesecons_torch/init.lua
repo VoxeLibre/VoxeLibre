@@ -56,7 +56,7 @@ local torch_overheated = function(pos)
 		velocity = {x = 0, y = 0.6, z = 0},
 		expirationtime = 1.2,
 		size = 1.5,
-		texture = "tnt_smoke.png",
+		texture = "mcl_particles_smoke.png",
 	})
 	local timer = minetest.get_node_timer(pos)
 	timer:start(TORCH_COOLOFF)

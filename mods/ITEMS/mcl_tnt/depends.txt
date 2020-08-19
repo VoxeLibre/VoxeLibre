@@ -1,4 +1,5 @@
 mcl_explosions
+mcl_particles
 mcl_sounds?
 mcl_mobitems?
 mcl_death_messages?
