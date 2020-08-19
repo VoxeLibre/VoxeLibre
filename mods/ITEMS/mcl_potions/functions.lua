@@ -211,16 +211,14 @@ minetest.register_globalstep(function(dtime)
 			is_cat[player].timer = is_cat[player].timer + dtime
 
 			if player:get_pos() then mcl_potions._add_spawner(player, "#1010AA") end
-			if minetest.get_timeofday() > 0.8 or minetest.get_timeofday() < 0.2 then
-				player:override_day_night_ratio(0.45)
-			else player:override_day_night_ratio(nil)
-			end
 
 			if is_cat[player].timer >= is_cat[player].dur then
 				is_cat[player] = nil
 				meta = player:get_meta()
 				meta:set_string("_is_cat", minetest.serialize(is_cat[player]))
+				meta:set_int("night_vision", 0)
 			end
+			mcl_weather.skycolor.update_sky_color({player})
 
 		else
 			is_cat[player] = nil
@@ -366,7 +364,8 @@ function mcl_potions._reset_player_effects(player)
 	playerphysics.remove_physics_factor(player, "speed", "mcl_potions:swiftness")
 
 	is_cat[player] = nil
-	player:override_day_night_ratio(nil)
+	meta:set_int("night_vision", 0)
+	mcl_weather.skycolor.update_sky_color({player})
 
 	is_fire_proof[player] = nil
 
@@ -826,6 +825,7 @@ end
 
 function mcl_potions.night_vision_func(player, null, duration)
 
+	meta = player:get_meta()
 	if not is_cat[player] then
 
 		is_cat[player] = {dur = duration, timer = 0}
@@ -838,6 +838,8 @@ function mcl_potions.night_vision_func(player, null, duration)
 		victim.timer = 0
 
 	end
+	meta:set_int("night_vision", 1)
+	mcl_weather.skycolor.update_sky_color({player})
 
 end
 
