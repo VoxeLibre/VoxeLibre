@@ -27,6 +27,9 @@ mcl_doTileDrops (Blocks have drops) bool true
 # If enabled, TNT explosions destroy blocks.
 mcl_tnt_griefing (TNT destroys blocks) bool true
 
+# If enabled, some blocks will emit decorative particles like flames.
+mcl_node_particles (Block particles) bool true
+
 [Players]
 # If enabled, players respawn at the bed they last lay on instead of normal
 # spawn.
