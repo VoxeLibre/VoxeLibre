@@ -22,7 +22,7 @@ local spawn_smoke = function(pos)
 			type = "vertical_frames",
 			aspect_w = 8,
 			aspect_h = 8,
-			length = 2.05,
+			length = 2.1,
 		},
 	}, "high")
 end
