@@ -495,6 +495,31 @@ local damage_effect = function(self, damage)
 	end
 end
 
+mobs.death_effect = function(pos, collisionbox)
+	local min, max
+	if collisionbox then
+		min = {x=collisionbox[1], y=collisionbox[2], z=collisionbox[3]}
+		max = {x=collisionbox[4], y=collisionbox[5], z=collisionbox[6]}
+	else
+		min = { x = -0.5, y = 0, z = -0.5 }
+		max = { x = 0.5, y = 0.5, z = 0.5 }
+	end
+
+	minetest.add_particlespawner({
+		amount = 40,
+		time = 0.1,
+		minpos = vector.add(pos, min),
+		maxpos = vector.add(pos, max),
+		minvel = {x = -0.2, y = -0.1, z = -0.2},
+		maxvel = {x = 0.2, y = 0.1, z = 0.2},
+		minexptime = 0.5,
+		maxexptime = 1.5,
+		minsize = 0.5,
+		maxsize = 1.5,
+		texture = "tnt_smoke.png",
+	})
+end
+
 local update_tag = function(self)
 	self.object:set_properties({
 		nametag = self.nametag,
@@ -629,6 +654,11 @@ local check_for_death = function(self, cause, cmi_cause)
 		return true
 	end
 
+	local collisionbox
+	if self.collisionbox then
+		collisionbox = table.copy(self.collisionbox)
+	end
+
 	-- default death function and die animation (if defined)
 	if self.animation
 	and self.animation.die_start
@@ -656,6 +686,7 @@ local check_for_death = function(self, cause, cmi_cause)
 			end
 
 			self.object:remove()
+			mobs.death_effect(pos)
 		end, self)
 	else
 
@@ -664,9 +695,8 @@ local check_for_death = function(self, cause, cmi_cause)
 		end
 
 		self.object:remove()
+		mobs.death_effect(pos, collisionbox)
 	end
-
-	effect(pos, 20, "tnt_smoke.png")
 
 	return true
 end

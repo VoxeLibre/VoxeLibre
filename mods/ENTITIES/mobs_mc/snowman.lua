@@ -128,6 +128,26 @@ mobs:register_mob("mobs_mc:snowman", {
 	end,
 })
 
+local summon_particles = function(obj)
+	local lua = obj:get_luaentity()
+	local min = {x=lua.collisionbox[1], y=lua.collisionbox[2], z=lua.collisionbox[3]}
+	local max = {x=lua.collisionbox[4], y=lua.collisionbox[5], z=lua.collisionbox[6]}
+	local pos = obj:get_pos()
+	minetest.add_particlespawner({
+		amount = 60,
+		time = 0.1,
+		minpos = vector.add(pos, min),
+		maxpos = vector.add(pos, max),
+		minvel = {x = -0.1, y = -0.1, z = -0.1},
+		maxvel = {x = 0.1, y = 0.1, z = 0.1},
+		minexptime = 1.0,
+		maxexptime = 2.0,
+		minsize = 2.0,
+		maxsize = 3.0,
+		texture = "tnt_smoke.png",
+	})
+end
+
 -- This is to be called when a pumpkin or jack'o lantern has been placed. Recommended: In the on_construct function
 -- of the node.
 -- This summons a snow golen when pos is next to a row of two snow blocks.
@@ -157,7 +177,10 @@ mobs_mc.tools.check_snow_golem_summon = function(pos)
 			core.check_for_falling(pos)
 			core.check_for_falling(b1)
 			core.check_for_falling(b2)
-			minetest.add_entity(place, "mobs_mc:snowman")
+			local obj = minetest.add_entity(place, "mobs_mc:snowman")
+			if obj then
+				summon_particles(obj)
+			end
 			break
 		end
 	end

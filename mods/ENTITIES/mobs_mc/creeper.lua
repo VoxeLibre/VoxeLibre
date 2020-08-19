@@ -81,6 +81,7 @@ mobs:register_mob("mobs_mc:creeper", {
 			local r = math.random(1, #mobs_mc.items.music_discs)
 			minetest.add_item({x=pos.x, y=pos.y+1, z=pos.z}, mobs_mc.items.music_discs[r])
 		end
+		mobs.death_effect(pos, self.collisionbox)
 	end,
 	maxdrops = 2,
 	drops = {

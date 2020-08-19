@@ -283,7 +283,9 @@ Along with the above mob registry settings we can also use custom functions to
 enhance mob functionality and have them do many interesting things:
 
    'on_die'         a function that is called when the mob is killed the
-                    parameters are (self, pos)
+                    parameters are (self, pos). When this function is used,
+                    the death particles will be skipped on death. You can get
+                    them back by calling mobs:death_effect manually
    'on_rightclick'  its same as in minetest.register_entity()
    'on_blast'       is called when an explosion happens near mob when using TNT
                     functions, parameters are (object, damage) and returns
@@ -409,6 +411,10 @@ mobs:spawn_child(pos, mob_type)
 This function spawns a mob as a child. The parameter mob_type is the
 entitystring of the new mob.
 This function returns the mob on success and nil otherwise.
+
+mobs:death_effect(pos, collisionbox)
+
+Create death particles at pos with the given collisionbox.
 
 
 Making Arrows

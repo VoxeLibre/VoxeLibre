@@ -267,8 +267,8 @@ mobs:register_mob("mobs_mc:enderman", {
 				self.state = ""
 			else
 				if self.attack then
-					target = self.attack
-					pos = target:get_pos()
+					local target = self.attack
+					local pos = target:get_pos()
 					if pos ~= nil then
 						if vector.distance(self.object:get_pos(), target:get_pos()) > 10 then
 							self:teleport(target)
@@ -507,6 +507,7 @@ mobs:register_mob("mobs_mc:enderman", {
 		if self._taken_node ~= nil and self._taken_node ~= "" then
 			minetest.add_item(pos, self._taken_node)
 		end
+		mobs.death_effect(pos, self.collisionbox)
 	end,
 	do_punch = function(self, hitter, tflp, tool_caps, dir)
 		-- damage from rain caused by itself so we don't want it to attack itself.
