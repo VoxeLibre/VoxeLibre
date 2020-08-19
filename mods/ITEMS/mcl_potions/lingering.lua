@@ -10,7 +10,7 @@ end
 
 local lingering_effect_at = {}
 
-local function add_lingering_effect(pos, color, def, is_water)
+local function add_lingering_effect(pos, color, def, is_water, instant)
 
 	lingering_effect_at[pos] = {color = color, timer = 30, def = def, is_water = is_water}
 
@@ -30,6 +30,8 @@ minetest.register_globalstep(function(dtime)
 			local texture
 			if vals.is_water then
 				texture = "mcl_particles_droplet_bottle.png"
+			elseif vals.def.instant then
+				texture = "mcl_particles_instant_effect.png"
 			else
 				texture = "mcl_particles_effect.png"
 			end
@@ -145,7 +147,11 @@ minetest.register_entity(id.."_flying",{
 				minacc = {x=-0.2, y=-0.05, z=-0.2}
 				maxacc = {x=0.2, y=0.05, z=0.2}
 			else
-				texture = "mcl_particles_effect.png"
+				if def.instant then
+					texture = "mcl_particles_instant_effect.png"
+				else
+					texture = "mcl_particles_effect.png"
+				end
 				minacc = {x=-0.2, y=0, z=-0.2}
 				maxacc = {x=0.2, y=.05, z=0.2}
 			end

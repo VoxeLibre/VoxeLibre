@@ -177,6 +177,7 @@ local function register_potion(def)
 		longdesc = def._longdesc,
 		potion_fun = get_splash_fun(def.effect, splash_dur),
 		no_effect = def.no_effect,
+		instant = def.instant,
 	}
 
 	local ling_def
@@ -186,6 +187,7 @@ local function register_potion(def)
 			longdesc = def._longdesc,
 			potion_fun = get_lingering_fun(def.effect*mcl_potions.LINGERING_FACTOR, ling_dur),
 			no_effect = def.no_effect,
+			instant = def.instant,
 		}
 	else
 		ling_def = {
@@ -193,6 +195,7 @@ local function register_potion(def)
 			longdesc = def._longdesc,
 			potion_fun = get_lingering_fun(def.effect, ling_dur),
 			no_effect = def.no_effect,
+			instant = def.instant,
 		}
 	end
 
@@ -201,6 +204,7 @@ local function register_potion(def)
 		longdesc = def._longdesc,
 		potion_fun = get_arrow_fun(def.effect, dur/8.),
 		no_effect = def.no_effect,
+		instant = def.instant,
 	}
 
 	if def.color and not def.no_throwable then
@@ -270,6 +274,7 @@ local function register_potion(def)
 				longdesc = def._longdesc,
 				potion_fun = get_splash_fun(7, splash_dur_2),
 				no_effect = def.no_effect,
+				instant = def.instant,
 			}
 		else
 			splash_def_2 = {
@@ -277,6 +282,7 @@ local function register_potion(def)
 				longdesc = def._longdesc,
 				potion_fun = get_splash_fun(effect_II, splash_dur_2),
 				no_effect = def.no_effect,
+				instant = def.instant,
 			}
 		end
 
@@ -288,6 +294,7 @@ local function register_potion(def)
 				longdesc = def._longdesc,
 				potion_fun = get_lingering_fun(effect_II*mcl_potions.LINGERING_FACTOR, ling_dur_2),
 				no_effect = def.no_effect,
+				instant = def.instant,
 			}
 		else
 			ling_def_2 = {
@@ -295,6 +302,7 @@ local function register_potion(def)
 				longdesc = def._longdesc,
 				potion_fun = get_lingering_fun(effect_II, ling_dur_2),
 				no_effect = def.no_effect,
+				instant = def.instant,
 			}
 		end
 
@@ -303,6 +311,7 @@ local function register_potion(def)
 			longdesc = def._longdesc,
 			potion_fun = get_arrow_fun(effect_II, dur_2/8.),
 			no_effect = def.no_effect,
+			instant = def.instant,
 		}
 
 		if def.color and not def.no_throwable then
@@ -346,18 +355,21 @@ local function register_potion(def)
 			longdesc = def._longdesc,
 			potion_fun = get_splash_fun(def.effect, splash_dur_pl),
 			no_effect = def.no_effect,
+			instant = def.instant,
 		}
 		local ling_def_pl = {
 			tt = get_tt(def._tt_plus, def.effect, ling_dur_pl),
 			longdesc = def._longdesc,
 			potion_fun = get_lingering_fun(def.effect, ling_dur_pl),
 			no_effect = def.no_effect,
+			instant = def.instant,
 		}
 		local arrow_def_pl = {
 			tt = get_tt(def._tt_pl, def.effect, dur_pl/8.),
 			longdesc = def._longdesc,
 			potion_fun = get_arrow_fun(def.effect, dur_pl/8.),
 			no_effect = def.no_effect,
+			instant = def.instant,
 		}
 		if def.color and not def.no_throwable then
 			mcl_potions.register_splash(def.name.."_plus", S("Splash @1 + Potion", def.description), def.color, splash_def_pl)
@@ -449,6 +461,7 @@ local healing_def = {
 	_longdesc = S("Instantly heals."),
 	color = "#CC0000",
 	effect = 4,
+	instant = true,
 	on_use = mcl_potions.healing_func,
 	is_II = true,
 }
@@ -462,6 +475,7 @@ local harming_def = {
 	_longdesc = S("Instantly deals damage."),
 	color = "#660099",
 	effect = -6,
+	instant = true,
 	on_use = mcl_potions.healing_func,
 	is_II = true,
 	is_inv = true,
