@@ -87,6 +87,7 @@ local ARROW_ENTITY={
 	_lastpos={},
 	_startpos=nil,
 	_damage=1,	-- Damage on impact
+	_is_critical=false, -- Whether this arrow would deal critical damage
 	_stuck=false,   -- Whether arrow is stuck
 	_stucktimer=nil,-- Amount of time (in seconds) the arrow has been stuck so far
 	_stuckrechecktimer=nil,-- An additional timer for periodically re-checking the stuck status of an arrow
@@ -105,6 +106,28 @@ local spawn_item = function(self, pos)
 		item:set_yaw(self.object:get_yaw())
 	end
 	self.object:remove()
+end
+
+local damage_particles = function(pos, is_critical)
+	if is_critical then
+		minetest.add_particlespawner({
+			amount = 15,
+			time = 0.1,
+			minpos = {x=pos.x-0.5, y=pos.y-0.5, z=pos.z-0.5},
+			maxpos = {x=pos.x+0.5, y=pos.y+0.5, z=pos.z+0.5},
+			minvel = {x=-0.1, y=-0.1, z=-0.1},
+			maxvel = {x=0.1, y=0.1, z=0.1},
+			minacc = {x=0, y=0, z=0},
+			maxacc = {x=0, y=0, z=0},
+			minexptime = 1,
+			maxexptime = 2,
+			minsize = 1.5,
+			maxsize = 1.5,
+			collisiondetection = false,
+			vertical = false,
+			texture = "mcl_particles_crit.png^[colorize:#bc7a57:127",
+		})
+	end
 end
 
 ARROW_ENTITY.on_step = function(self, dtime)
@@ -218,17 +241,20 @@ ARROW_ENTITY.on_step = function(self, dtime)
 					-- Punch target object but avoid hurting enderman.
 					if lua then
 						if lua.name ~= "mobs_mc:enderman" then
+							damage_particles(self.object:get_pos(), self._is_critical)
 							obj:punch(self.object, 1.0, {
 								full_punch_interval=1.0,
 								damage_groups={fleshy=self._damage},
 							}, nil)
 						end
 					else
+						damage_particles(self.object:get_pos(), self._is_critical)
 						obj:punch(self.object, 1.0, {
 							full_punch_interval=1.0,
 							damage_groups={fleshy=self._damage},
 						}, nil)
 					end
+
 
 					if is_player then
 						if self._shooter and self._shooter:is_player() then
@@ -352,6 +378,7 @@ ARROW_ENTITY.get_staticdata = function(self)
 		lastpos = self._lastpos,
 		startpos = self._startpos,
 		damage = self._damage,
+		is_critical = self._is_critical,
 		stuck = self._stuck,
 		stuckin = self._stuckin,
 	}
@@ -393,6 +420,7 @@ ARROW_ENTITY.on_activate = function(self, staticdata, dtime_s)
 		self._lastpos = data.lastpos
 		self._startpos = data.startpos
 		self._damage = data.damage
+		self._is_critical = data.is_critical
 		if data.shootername then
 			local shooter = minetest.get_player_by_name(data.shootername)
 			if shooter and shooter:is_player() then
