@@ -5,6 +5,28 @@ mcl_fire = {}
 local S = minetest.get_translator("mcl_fire")
 local N = function(s) return s end
 
+local spawn_smoke = function(pos)
+	mcl_particles.add_node_particlespawner(pos, {
+		amount = 0.1,
+		time = 0,
+		minpos = vector.add(pos, { x = -0.45, y = -0.45, z = -0.45 }),
+		maxpos = vector.add(pos, { x = 0.45, y = 0.45, z = 0.45 }),
+		minvel = { x = 0, y = 0.5, z = 0 },
+		maxvel = { x = 0, y = 0.6, z = 0 },
+		minexptime = 2.0,
+		maxexptime = 2.0,
+		minsize = 3.0,
+		maxsize = 4.0,
+		texture = "mcl_particles_smoke_anim.png^[colorize:#000000:127",
+		animation = {
+			type = "vertical_frames",
+			aspect_w = 8,
+			aspect_h = 8,
+			length = 2.05,
+		},
+	})
+end
+
 --
 -- Items
 --
@@ -172,6 +194,10 @@ minetest.register_node("mcl_fire:fire", {
 		end
 
 		fire_timer(pos)
+		spawn_smoke(pos)
+	end,
+	on_destruct = function(pos)
+		mcl_particles.delete_node_particlespawners(pos)
 	end,
 	_mcl_blast_resistance = 0,
 })
@@ -232,6 +258,10 @@ minetest.register_node("mcl_fire:eternal_fire", {
 		if minetest.get_modpath("mcl_portals") then
 			mcl_portals.light_nether_portal(pos)
 		end
+		spawn_smoke(pos)
+	end,
+	on_destruct = function(pos)
+		mcl_particles.delete_node_particlespawners(pos)
 	end,
 	sounds = {},
 	drop = "",
@@ -450,6 +480,16 @@ mcl_fire.set_fire = function(pointed_thing, player, allow_on_fire)
 		minetest.add_node(pointed_thing.above, {name="mcl_fire:fire"})
 	end
 end
+
+minetest.register_lbm({
+	label = "Smoke particles from fire",
+	name = "mcl_fire:smoke",
+	nodenames = {"group:fire"},
+	run_at_every_load = true,
+	action = function(pos, node)
+		spawn_smoke(pos)
+	end,
+})
 
 minetest.register_alias("mcl_fire:basic_flame", "mcl_fire:fire")
 minetest.register_alias("fire:basic_flame", "mcl_fire:fire")

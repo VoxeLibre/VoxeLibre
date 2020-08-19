@@ -1,4 +1,5 @@
 mcl_core
 mcl_worlds
 mcl_sounds
+mcl_particles
 mcl_portals?
