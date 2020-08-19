@@ -1,4 +1,60 @@
 local S = minetest.get_translator("mcl_torches")
+local LIGHT_TORCH = minetest.LIGHT_MAX
+
+local spawn_flames_floor = function(pos)
+	return mcl_particles.add_node_particlespawner(pos, {
+		amount = 8,
+		time = 0,
+		minpos = vector.add(pos, { x = -0.1, y = 0.05, z = -0.1 }),
+		maxpos = vector.add(pos, { x = 0.1, y = 0.15, z = 0.1 }),
+		minvel = { x = -0.01, y = 0, z = -0.01 },
+		maxvel = { x = 0.01, y = 0.1, z = 0.01 },
+		minexptime = 0.3,
+		maxexptime = 0.6,
+		minsize = 0.7,
+		maxsize = 2,
+		texture = "mcl_particles_flame.png",
+		glow = LIGHT_TORCH,
+	})
+end
+
+local spawn_flames_wall = function(pos, param2)
+	local minrelpos, maxrelpos
+	local dir = minetest.wallmounted_to_dir(param2)
+	if dir.x < 0 then
+		minrelpos = { x = -0.38, y = 0.04, z = -0.1 }
+		maxrelpos = { x = -0.2, y = 0.14, z = 0.1 }
+	elseif dir.x > 0 then
+		minrelpos = { x = 0.2, y = 0.04, z = -0.1 }
+		maxrelpos = { x = 0.38, y = 0.14, z = 0.1 }
+	elseif dir.z < 0 then
+		minrelpos = { x = -0.1, y = 0.04, z = -0.38 }
+		maxrelpos = { x = 0.1, y = 0.14, z = -0.2 }
+	elseif dir.z > 0 then
+		minrelpos = { x = -0.1, y = 0.04, z = 0.2 }
+		maxrelpos = { x = 0.1, y = 0.14, z = 0.38 }
+	else
+		return
+	end
+	return mcl_particles.add_node_particlespawner(pos, {
+		amount = 8,
+		time = 0,
+		minpos = vector.add(pos, minrelpos),
+		maxpos = vector.add(pos, maxrelpos),
+		minvel = { x = -0.01, y = 0, z = -0.01 },
+		maxvel = { x = 0.01, y = 0.1, z = 0.01 },
+		minexptime = 0.3,
+		maxexptime = 0.6,
+		minsize = 0.7,
+		maxsize = 2,
+		texture = "mcl_particles_flame.png",
+		glow = LIGHT_TORCH,
+	})
+end
+
+local remove_flames = function(pos)
+	mcl_particles.delete_node_particlespawner(pos)
+end
 
 --
 -- 3d torch part
@@ -43,7 +99,7 @@ end
 
 mcl_torches = {}
 
-mcl_torches.register_torch = function(substring, description, doc_items_longdesc, doc_items_usagehelp, icon, mesh_floor, mesh_wall, tiles, light, groups, sounds, moredef)
+mcl_torches.register_torch = function(substring, description, doc_items_longdesc, doc_items_usagehelp, icon, mesh_floor, mesh_wall, tiles, light, groups, sounds, moredef, moredef_floor, moredef_wall)
 	local itemstring = minetest.get_current_modname()..":"..substring
 	local itemstring_wall = minetest.get_current_modname()..":"..substring.."_wall"
 
@@ -138,6 +194,11 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 			floordef[k] = v
 		end
 	end
+	if moredef_floor ~= nil then
+		for k,v in pairs(moredef_floor) do
+			floordef[k] = v
+		end
+	end
 	minetest.register_node(itemstring, floordef)
 
 	local groups_wall = table.copy(groups)
@@ -169,6 +230,11 @@ mcl_torches.register_torch = function(substring, description, doc_items_longdesc
 			walldef[k] = v
 		end
 	end
+	if moredef_wall ~= nil then
+		for k,v in pairs(moredef_wall) do
+			walldef[k] = v
+		end
+	end
 	minetest.register_node(itemstring_wall, walldef)
 
 
@@ -189,11 +255,20 @@ mcl_torches.register_torch("torch",
 		name = "default_torch_on_floor_animated.png",
 		animation = {type = "vertical_frames", aspect_w = 16, aspect_h = 16, length = 3.3}
 	}},
-	minetest.LIGHT_MAX,
+	LIGHT_TORCH,
 	{dig_immediate=3, torch=1, deco_block=1},
 	mcl_sounds.node_sound_wood_defaults(),
-	{_doc_items_hidden = false})
-	
+	{_doc_items_hidden = false,
+	on_destruct = function(pos)
+		remove_flames(pos)
+	end},
+	{on_construct = function(pos)
+		spawn_flames_floor(pos)
+	end},
+	{on_construct = function(pos)
+		local node = minetest.get_node(pos)
+		spawn_flames_wall(pos, node.param2)
+	end})
 
 minetest.register_craft({
 	output = "mcl_torches:torch 4",
@@ -201,5 +276,19 @@ minetest.register_craft({
 		{ "group:coal" },
 		{ "mcl_core:stick" },
 	}
+})
+
+minetest.register_lbm({
+	label = "Torch flame particles",
+	name = "mcl_torches:flames",
+	nodenames = {"mcl_torches:torch", "mcl_torches:torch_wall"},
+	run_at_every_load = true,
+	action = function(pos, node)
+		if node.name == "mcl_torches:torch" then
+			spawn_flames_floor(pos)
+		elseif node.name == "mcl_torches:torch_wall" then
+			spawn_flames_wall(pos, node.param2)
+		end
+	end,
 })
 

@@ -4,5 +4,6 @@ mcl_core
 mcl_sounds
 mcl_craftguide
 mcl_achievements
+mcl_particles
 doc?
 screwdriver?

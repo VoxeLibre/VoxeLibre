@@ -1,6 +1,8 @@
 
 local S = minetest.get_translator("mcl_furnaces")
 
+local LIGHT_ACTIVE_FURNACE = 13
+
 --
 -- Formspecs
 --
@@ -346,9 +348,48 @@ local function furnace_node_timer(pos, elapsed)
 	return result
 end
 
-local on_rotate
+local function spawn_flames(pos, param2)
+	local minrelpos, maxrelpos
+	local dir = minetest.facedir_to_dir(param2)
+	if dir.x > 0 then
+		minrelpos = { x = -0.6, y = -0.05, z = -0.25 }
+		maxrelpos = { x = -0.55, y = -0.45, z = 0.25 }
+	elseif dir.x < 0 then
+		minrelpos = { x = 0.55, y = -0.05, z = -0.25 }
+		maxrelpos = { x = 0.6, y = -0.45, z = 0.25 }
+	elseif dir.z > 0 then
+		minrelpos = { x = -0.25, y = -0.05, z = -0.6 }
+		maxrelpos = { x = 0.25, y = -0.45, z = -0.55 }
+	elseif dir.z < 0 then
+		minrelpos = { x = -0.25, y = -0.05, z = 0.55 }
+		maxrelpos = { x = 0.25, y = -0.45, z = 0.6 }
+	else
+		return
+	end
+	mcl_particles.add_node_particlespawner(pos, {
+		amount = 4,
+		time = 0,
+		minpos = vector.add(pos, minrelpos),
+		maxpos = vector.add(pos, maxrelpos),
+		minvel = { x = -0.01, y = 0, z = -0.01 },
+		maxvel = { x = 0.01, y = 0.1, z = 0.01 },
+		minexptime = 0.3,
+		maxexptime = 0.6,
+		minsize = 0.4,
+		maxsize = 0.8,
+		texture = "mcl_particles_flame.png",
+		glow = LIGHT_ACTIVE_FURNACE,
+	})
+end
+
+local on_rotate, after_rotate_active
 if minetest.get_modpath("screwdriver") then
 	on_rotate = screwdriver.rotate_simple
+	after_rotate_active = function(pos)
+		local node = minetest.get_node(pos)
+		mcl_particles.delete_node_particlespawner(pos)
+		spawn_flames(pos, node.param2)
+	end
 end
 
 minetest.register_node("mcl_furnaces:furnace", {
@@ -431,7 +472,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	},
 	paramtype2 = "facedir",
 	paramtype = "light",
-	light_source = 13,
+	light_source = LIGHT_ACTIVE_FURNACE,
 	drop = "mcl_furnaces:furnace",
 	groups = {pickaxey=1, container=4, deco_block=1, not_in_creative_inventory=1, material_stone=1},
 	is_ground_content = false,
@@ -453,6 +494,13 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 		meta:from_table(meta2:to_table())
 	end,
 
+	on_construct = function(pos)
+		local node = minetest.get_node(pos)
+		spawn_flames(pos, node.param2)
+	end,
+	on_destruct = function(pos)
+		mcl_particles.delete_node_particlespawner(pos)
+	end,
 
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
 	allow_metadata_inventory_move = allow_metadata_inventory_move,
@@ -462,6 +510,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 	_mcl_blast_resistance = 3.5,
 	_mcl_hardness = 3.5,
 	on_rotate = on_rotate,
+	after_rotate = after_rotate_active,
 })
 
 minetest.register_craft({
@@ -477,6 +526,16 @@ minetest.register_craft({
 if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_furnaces:furnace", "nodes", "mcl_furnaces:furnace_active")
 end
+
+minetest.register_lbm({
+	label = "Active furnace flame particles",
+	name = "mcl_furnaces:flames",
+	nodenames = {"mcl_furnaces:furnace_active"},
+	run_at_every_load = true,
+	action = function(pos, node)
+		spawn_flames(pos, node.param2)
+	end,
+})
 
 -- Legacy
 minetest.register_lbm({
