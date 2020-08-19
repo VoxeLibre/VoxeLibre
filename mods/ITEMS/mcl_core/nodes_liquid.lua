@@ -6,6 +6,7 @@ local N = function(s) return s end
 local WATER_ALPHA = 179
 local WATER_VISC = 1
 local LAVA_VISC = 7
+local LIGHT_LAVA = minetest.LIGHT_MAX
 
 local lava_death_messages = {
 	N("@1 melted in lava."),
@@ -120,7 +121,7 @@ minetest.register_node("mcl_core:lava_flowing", {
 	},
 	paramtype = "light",
 	paramtype2 = "flowingliquid",
-	light_source = minetest.LIGHT_MAX,
+	light_source = LIGHT_LAVA,
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_lava_defaults(),
 	walkable = false,
@@ -178,7 +179,7 @@ S("• When lava is directly above water, the water turns into stone."),
 		}
 	},
 	paramtype = "light",
-	light_source = minetest.LIGHT_MAX,
+	light_source = LIGHT_LAVA,
 	is_ground_content = false,
 	sounds = mcl_sounds.node_sound_lava_defaults(),
 	walkable = false,
@@ -197,8 +198,50 @@ S("• When lava is directly above water, the water turns into stone."),
 	_mcl_node_death_message = lava_death_messages,
 	post_effect_color = {a=245, r=208, g=73, b=10},
 	stack_max = 64,
-	groups = { lava=3, liquid=2, destroys_items=1, not_in_creative_inventory=1, dig_by_piston=1},
+	groups = { lava=3, lava_source=1, liquid=2, destroys_items=1, not_in_creative_inventory=1, dig_by_piston=1},
 	_mcl_blast_resistance = 100,
 	-- Hardness intentionally set to infinite instead of 100 (Minecraft value) to avoid problems in creative mode
 	_mcl_hardness = -1,
 })
+
+local emit_lava_particle = function(pos)
+	local node = minetest.get_node(pos)
+	if minetest.get_item_group(node.name, "lava_source") == 0 then
+		return
+	end
+	local ppos = vector.add(pos, { x = math.random(-7, 7)/16, y = 0.45, z = math.random(-7, 7)/16})
+	local spos = vector.add(ppos, { x = 0, y = -0.2, z = 0 })
+	local vel = { x = math.random(-3, 3)/10, y = math.random(4, 7), z = math.random(-3, 3)/10 }
+	local acc = { x = 0, y = -9.81, z = 0 }
+	-- Lava droplet
+	minetest.add_particle({
+		pos = ppos,
+		velocity = vel,
+		acceleration = acc,
+		expirationtime = 2.5,
+		collisiondetection = true,
+		collision_removal = true,
+		size = math.random(20, 30)/10,
+		texture = "mcl_particles_lava.png",
+		glow = LIGHT_LAVA,
+	})
+end
+
+if minetest.settings:get_bool("mcl_node_particles", true) then
+	minetest.register_abm({
+		label = "Lava particles",
+		nodenames = {"group:lava_source"},
+		interval = 8.0,
+		chance = 20,
+		action = function(pos, node)
+			local apos = {x=pos.x, y=pos.y+1, z=pos.z}
+			local anode = minetest.get_node(apos)
+			-- Only emit partiles when directly below lava
+			if anode.name ~= "air" then
+				return
+			end
+
+			minetest.after(math.random(0, 800)*0.01, emit_lava_particle, pos)
+		end,
+	})
+end
