@@ -2,7 +2,8 @@ local S = minetest.get_translator("mcl_torches")
 local LIGHT_TORCH = minetest.LIGHT_MAX
 
 local spawn_flames_floor = function(pos)
-	return mcl_particles.add_node_particlespawner(pos, {
+	-- Flames
+	mcl_particles.add_node_particlespawner(pos, {
 		amount = 8,
 		time = 0,
 		minpos = vector.add(pos, { x = -0.1, y = 0.05, z = -0.1 }),
@@ -15,6 +16,26 @@ local spawn_flames_floor = function(pos)
 		maxsize = 2,
 		texture = "mcl_particles_flame.png",
 		glow = LIGHT_TORCH,
+	})
+	-- Smoke
+	mcl_particles.add_node_particlespawner(pos, {
+		amount = 0.5,
+		time = 0,
+		minpos = vector.add(pos, { x = -1/16, y = 0.04, z = -1/16 }),
+		maxpos = vector.add(pos, { x = -1/16, y = 0.06, z = -1/16 }),
+		minvel = { x = 0, y = 0.5, z = 0 },
+		maxvel = { x = 0, y = 0.6, z = 0 },
+		minexptime = 2.0,
+		maxexptime = 2.0,
+		minsize = 1.5,
+		maxsize = 1.5,
+		texture = "mcl_particles_smoke_anim.png",
+		animation = {
+			type = "vertical_frames",
+			aspect_w = 8,
+			aspect_h = 8,
+			length = 2.05,
+		},
 	})
 end
 
@@ -36,7 +57,8 @@ local spawn_flames_wall = function(pos, param2)
 	else
 		return
 	end
-	return mcl_particles.add_node_particlespawner(pos, {
+	-- Flames
+	mcl_particles.add_node_particlespawner(pos, {
 		amount = 8,
 		time = 0,
 		minpos = vector.add(pos, minrelpos),
@@ -50,10 +72,30 @@ local spawn_flames_wall = function(pos, param2)
 		texture = "mcl_particles_flame.png",
 		glow = LIGHT_TORCH,
 	})
+	-- Smoke
+	mcl_particles.add_node_particlespawner(pos, {
+		amount = 0.5,
+		time = 0,
+		minpos = vector.add(pos, minrelpos),
+		maxpos = vector.add(pos, maxrelpos),
+		minvel = { x = 0, y = 0.5, z = 0 },
+		maxvel = { x = 0, y = 0.6, z = 0 },
+		minexptime = 2.0,
+		maxexptime = 2.0,
+		minsize = 1.5,
+		maxsize = 1.5,
+		texture = "mcl_particles_smoke_anim.png",
+		animation = {
+			type = "vertical_frames",
+			aspect_w = 8,
+			aspect_h = 8,
+			length = 2.05,
+		},
+	})
 end
 
 local remove_flames = function(pos)
-	mcl_particles.delete_node_particlespawner(pos)
+	mcl_particles.delete_node_particlespawners(pos)
 end
 
 --

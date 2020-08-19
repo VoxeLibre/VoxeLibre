@@ -387,7 +387,7 @@ if minetest.get_modpath("screwdriver") then
 	on_rotate = screwdriver.rotate_simple
 	after_rotate_active = function(pos)
 		local node = minetest.get_node(pos)
-		mcl_particles.delete_node_particlespawner(pos)
+		mcl_particles.delete_node_particlespawners(pos)
 		spawn_flames(pos, node.param2)
 	end
 end
@@ -499,7 +499,7 @@ minetest.register_node("mcl_furnaces:furnace_active", {
 		spawn_flames(pos, node.param2)
 	end,
 	on_destruct = function(pos)
-		mcl_particles.delete_node_particlespawner(pos)
+		mcl_particles.delete_node_particlespawners(pos)
 	end,
 
 	allow_metadata_inventory_put = allow_metadata_inventory_put,
