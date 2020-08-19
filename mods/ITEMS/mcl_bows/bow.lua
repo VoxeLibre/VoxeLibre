@@ -75,24 +75,30 @@ end
 
 local player_shoot_arrow = function(itemstack, player, power, damage, is_critical)
 	local arrow_stack, arrow_stack_id = get_arrow(player)
-	local arrow_itemstring = arrow_stack:get_name()
+	local arrow_itemstring
 
-	if not minetest.is_creative_enabled(player:get_player_name()) then
+	if minetest.is_creative_enabled(player:get_player_name()) then
+		if arrow_stack then
+			arrow_itemstring = arrow_stack:get_name()
+		else
+			arrow_itemstring = "mcl_bows:arrow"
+		end
+	else
 		if not arrow_stack then
 			return false
 		end
-		-- arrow_itemstring = arrow_stack:get_name()
+		arrow_itemstring = arrow_stack:get_name()
 		arrow_stack:take_item()
 		local inv = player:get_inventory()
 		inv:set_stack("main", arrow_stack_id, arrow_stack)
+	end
+	if not arrow_itemstring then
+		return false
 	end
 	local playerpos = player:get_pos()
 	local dir = player:get_look_dir()
 	local yaw = player:get_look_horizontal()
 
-	if not arrow_itemstring then
-		arrow_itemstring = "mcl_bows:arrow"
-	end
 	mcl_bows.shoot_arrow(arrow_itemstring, {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, dir, yaw, player, power, damage, is_critical)
 	return true
 end
@@ -222,14 +228,14 @@ controls.register_on_release(function(player, key, time)
 end)
 
 controls.register_on_hold(function(player, key, time)
-	if key ~= "RMB" or not get_arrow(player) then
+	local name = player:get_player_name()
+	local creative = minetest.is_creative_enabled(name)
+	if key ~= "RMB" or not (creative or get_arrow(player)) then
 		return
 	end
-	local name = player:get_player_name()
 	local inv = minetest.get_inventory({type="player", name=name})
 	local wielditem = player:get_wielded_item()
-	local creative = minetest.is_creative_enabled(name)
-	if bow_load[name] == nil and wielditem:get_name()=="mcl_bows:bow" and (creative or get_arrow(player)) then --inv:contains_item("main", "mcl_bows:arrow")) then
+	if bow_load[name] == nil and wielditem:get_name()=="mcl_bows:bow" and (creative or get_arrow(player)) then
 		wielditem:set_name("mcl_bows:bow_0")
 		player:set_wielded_item(wielditem)
 		if minetest.get_modpath("playerphysics") then
