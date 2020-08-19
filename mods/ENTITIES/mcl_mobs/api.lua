@@ -674,6 +674,9 @@ local check_for_death = function(self, cause, cmi_cause)
 		self.blinktimer = 0
 		self.passive = true
 		self.state = "die"
+		self.object:set_properties({
+			pointable = false,
+		})
 		set_velocity(self, 0)
 		set_animation(self, "die")
 
