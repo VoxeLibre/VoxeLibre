@@ -1092,6 +1092,64 @@ minetest.register_abm({
 	action = grow_acacia,
 })
 
+local function leafdecay_particles(pos, node)
+	minetest.add_particlespawner({
+		amount = math.random(10, 20),
+		time = 0.1,
+		minpos = vector.add(pos, {x=-0.4, y=-0.4, z=-0.4}),
+		maxpos = vector.add(pos, {x=0.4, y=0.4, z=0.4}),
+		minvel = {x=-0.2, y=-0.2, z=-0.2},
+		maxvel = {x=0.2, y=0.1, z=0.2},
+		minacc = {x=0, y=-9.81, z=0},
+		maxacc = {x=0, y=-9.81, z=0},
+		minexptime = 0.1,
+		maxexptime = 0.5,
+		minsize = 0.5,
+		maxsize = 1.5,
+		collisiondetection = true,
+		vertical = false,
+		node = node,
+	})
+end
+
+local function vinedecay_particles(pos, node)
+	local dir = minetest.wallmounted_to_dir(node.param2)
+	local relpos1, relpos2
+	if dir.x < 0 then
+		relpos1 = { x = -0.45, y = -0.4, z = -0.5 }
+		relpos2 = { x = -0.4, y = 0.4, z = 0.5 }
+	elseif dir.x > 0 then
+		relpos1 = { x = 0.4, y = -0.4, z = -0.5 }
+		relpos2 = { x = 0.45, y = 0.4, z = 0.5 }
+	elseif dir.z < 0 then
+		relpos1 = { x = -0.5, y = -0.4, z = -0.45 }
+		relpos2 = { x = 0.5, y = 0.4, z = -0.4 }
+	elseif dir.z > 0 then
+		relpos1 = { x = -0.5, y = -0.4, z = 0.4 }
+		relpos2 = { x = 0.5, y = 0.4, z = 0.45 }
+	else
+		return
+	end
+
+	minetest.add_particlespawner({
+		amount = math.random(8, 16),
+		time = 0.1,
+		minpos = vector.add(pos, relpos1),
+		maxpos = vector.add(pos, relpos2),
+		minvel = {x=-0.2, y=-0.2, z=-0.2},
+		maxvel = {x=0.2, y=0.1, z=0.2},
+		minacc = {x=0, y=-9.81, z=0},
+		maxacc = {x=0, y=-9.81, z=0},
+		minexptime = 0.1,
+		maxexptime = 0.5,
+		minsize = 0.5,
+		maxsize = 1.0,
+		collisiondetection = true,
+		vertical = false,
+		node = node,
+	})
+end
+
 ---------------------
 -- Vine generating --
 ---------------------
@@ -1105,6 +1163,7 @@ minetest.register_abm({
 		-- First of all, check if we are even supported, otherwise, let's die!
 		if not mcl_core.check_vines_supported(pos, node) then
 			minetest.remove_node(pos)
+			vinedecay_particles(pos, node)
 			core.check_for_falling(pos)
 			return
 		end
@@ -1267,6 +1326,7 @@ minetest.register_abm({
 			end
 			-- Remove node
 			minetest.remove_node(p0)
+			leafdecay_particles(p0, n0)
 			core.check_for_falling(p0)
 
 			-- Kill depending vines immediately to skip the vines decay delay
@@ -1283,6 +1343,7 @@ minetest.register_abm({
 				local surround_inverse = vector.multiply(surround[s], -1)
 				if maybe_vine.name == "mcl_core:vine" and (not mcl_core.check_vines_supported(spos, maybe_vine)) then
 					minetest.remove_node(spos)
+					vinedecay_particles(spos, maybe_vine)
 					core.check_for_falling(spos)
 				end
 			end
@@ -1305,6 +1366,7 @@ minetest.register_abm({
 		if not mcl_core.check_vines_supported(p0, node) then
 			-- Vines must die!
 			minetest.remove_node(p0)
+			vinedecay_particles(p0, node)
 			-- Just in case a falling node happens to float above vines
 			core.check_for_falling(p0)
 		end

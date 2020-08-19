@@ -212,6 +212,46 @@ local function drop_anvil_items(pos, meta)
 	end
 end
 
+local function damage_particles(pos, node)
+	minetest.add_particlespawner({
+		amount = 30,
+		time = 0.1,
+		minpos = vector.add(pos, {x=-0.5, y=-0.5, z=-0.5}),
+		maxpos = vector.add(pos, {x=0.5, y=-0.25, z=0.5}),
+		minvel = {x=-0.5, y=0.05, z=-0.5},
+		maxvel = {x=0.5, y=0.3, z=0.5},
+		minacc = {x=0, y=-9.81, z=0},
+		maxacc = {x=0, y=-9.81, z=0},
+		minexptime = 0.1,
+		maxexptime = 0.5,
+		minsize = 0.4,
+		maxsize = 0.5,
+		collisiondetection = true,
+		vertical = false,
+		node = node,
+	})
+end
+
+local function destroy_particles(pos, node)
+	minetest.add_particlespawner({
+		amount = math.random(20, 30),
+		time = 0.1,
+		minpos = vector.add(pos, {x=-0.4, y=-0.4, z=-0.4}),
+		maxpos = vector.add(pos, {x=0.4, y=0.4, z=0.4}),
+		minvel = {x=-0.5, y=-0.1, z=-0.5},
+		maxvel = {x=0.5, y=0.2, z=0.5},
+		minacc = {x=0, y=-9.81, z=0},
+		maxacc = {x=0, y=-9.81, z=0},
+		minexptime = 0.2,
+		maxexptime = 0.65,
+		minsize = 0.8,
+		maxsize = 1.2,
+		collisiondetection = true,
+		vertical = false,
+		node = node,
+	})
+end
+
 -- Damage the anvil by 1 level.
 -- Destroy anvil when at highest damage level.
 -- Returns true if anvil was destroyed.
@@ -220,10 +260,12 @@ local function damage_anvil(pos)
 	local new
 	if node.name == "mcl_anvils:anvil" then
 		minetest.swap_node(pos, {name="mcl_anvils:anvil_damage_1", param2=node.param2})
+		damage_particles(pos, node)
 		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dig, {pos=pos, max_hear_distance=16}, true)
 		return false
 	elseif node.name == "mcl_anvils:anvil_damage_1" then
 		minetest.swap_node(pos, {name="mcl_anvils:anvil_damage_2", param2=node.param2})
+		damage_particles(pos, node)
 		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dig, {pos=pos, max_hear_distance=16}, true)
 		return false
 	elseif node.name == "mcl_anvils:anvil_damage_2" then
@@ -232,6 +274,7 @@ local function damage_anvil(pos)
 		drop_anvil_items(pos, meta)
 		minetest.sound_play(mcl_sounds.node_sound_metal_defaults().dug, {pos=pos, max_hear_distance=16}, true)
 		minetest.remove_node(pos)
+		destroy_particles(pos, node)
 		minetest.check_single_for_falling({x=pos.x, y=pos.y+1, z=pos.z})
 		return true
 	end
