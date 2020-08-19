@@ -183,7 +183,7 @@ mesecon.noteblock_play = function (pos, param2)
 	local note_color = param2_to_note_color(param2)
 
 	minetest.add_particle({
-		texture = "mesecons_noteblock_note.png^[colorize:"..note_color..":92",
+		texture = "mcl_particles_note.png^[colorize:"..note_color..":92",
 		pos = { x = pos.x, y = pos.y + 0.35, z = pos.z },
 		velocity = { x = 0, y = 2, z = 0 },
 		acceleration = { x = 0, y = -2, z = 0 },
