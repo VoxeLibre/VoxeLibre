@@ -98,6 +98,32 @@ local soundnames_piano = {
 	"mesecons_noteblock_b2",
 }
 
+local function param2_to_note_color(param2)
+	local r, g, b
+	if param2 < 8 then -- 0..7
+		-- More red, less green
+		r = param2 / 8 * 255
+		g = (8-param2) / 8 * 255
+		b = 0
+	elseif param2 < 16 then -- 0..15
+		-- More blue, less red
+		r = (8-(param2 - 8)) / 8 * 255
+		g = 0
+		b = (param2 - 8) / 8 * 255
+	else -- 16..24
+		-- More green, less blue
+		r = 0
+		g = (param2 - 16) / 9 * 255
+		b = (9-(param2 - 16)) / 9 * 255
+	end
+	r = math.floor(r)
+	g = math.floor(g)
+	b = math.floor(b)
+	local color = 0x10000 * r + 0x100 * g + b
+	-- Convert to ColorString
+	return string.format("#%06X", color)
+end
+
 mesecon.noteblock_play = function (pos, param2)
 	local block_above_name = minetest.get_node({x=pos.x, y=pos.y+1, z=pos.z}).name
 	if block_above_name ~= "air" then
@@ -154,6 +180,17 @@ mesecon.noteblock_play = function (pos, param2)
 		pitch = param2_to_pitch(param2)
 	end
 
+	local note_color = param2_to_note_color(param2)
+
+	minetest.add_particle({
+		texture = "mesecons_noteblock_note.png^[colorize:"..note_color..":92",
+		pos = { x = pos.x, y = pos.y + 0.35, z = pos.z },
+		velocity = { x = 0, y = 2, z = 0 },
+		acceleration = { x = 0, y = -2, z = 0 },
+		expirationtime = 1.0,
+		collisiondetection = false,
+		size = 3,
+	})
 	minetest.sound_play(soundname,
 	{pos = pos, gain = 1.0, max_hear_distance = 48, pitch = pitch})
 end
