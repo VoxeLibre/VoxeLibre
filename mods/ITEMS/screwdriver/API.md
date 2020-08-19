@@ -18,3 +18,11 @@ To use it, add the `on_rotate` function to the node definition.
  * use `on_rotate = false` to always disallow rotation
  * use `on_rotate = screwdriver.rotate_simple` to allow only face rotation
  * use `on_rotate = screwdriver.rotate_3way` (MineClone 2 extension) for pillar-like nodes that should only have 3 possible orientations)
+
+
+
+`after_rotate(pos)` (MineClone 2 extension)
+
+Called after the rotation has been completed
+
+ * `pos`: Position of the node that the screwdriver was used on
