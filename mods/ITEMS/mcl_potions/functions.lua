@@ -555,7 +555,7 @@ function mcl_potions._use_potion(item, obj, color)
 		maxsize = 1,
 		collisiondetection = true,
 		vertical = false,
-		texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
+		texture = "mcl_particles_effect.png^[colorize:"..color..":127",
 	})
 end
 
@@ -578,7 +578,7 @@ function mcl_potions._add_spawner(obj, color)
 		maxsize = 1,
 		collisiondetection = false,
 		vertical = false,
-		texture = "mcl_potions_sprite.png^[colorize:"..color..":127",
+		texture = "mcl_particles_effect.png^[colorize:"..color..":127",
 	})
 end
 
