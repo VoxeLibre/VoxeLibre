@@ -16,7 +16,7 @@ local spawn_flames_floor = function(pos)
 		maxsize = 2,
 		texture = "mcl_particles_flame.png",
 		glow = LIGHT_TORCH,
-	})
+	}, "low")
 	-- Smoke
 	mcl_particles.add_node_particlespawner(pos, {
 		amount = 0.5,
@@ -36,7 +36,7 @@ local spawn_flames_floor = function(pos)
 			aspect_h = 8,
 			length = 2.05,
 		},
-	})
+	}, "medium")
 end
 
 local spawn_flames_wall = function(pos, param2)
@@ -71,7 +71,7 @@ local spawn_flames_wall = function(pos, param2)
 		maxsize = 2,
 		texture = "mcl_particles_flame.png",
 		glow = LIGHT_TORCH,
-	})
+	}, "low")
 	-- Smoke
 	mcl_particles.add_node_particlespawner(pos, {
 		amount = 0.5,
@@ -91,7 +91,7 @@ local spawn_flames_wall = function(pos, param2)
 			aspect_h = 8,
 			length = 2.05,
 		},
-	})
+	}, "medium")
 end
 
 local remove_flames = function(pos)

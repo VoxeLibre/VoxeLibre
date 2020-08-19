@@ -379,7 +379,7 @@ local function spawn_flames(pos, param2)
 		maxsize = 0.8,
 		texture = "mcl_particles_flame.png",
 		glow = LIGHT_ACTIVE_FURNACE,
-	})
+	}, "low")
 end
 
 local on_rotate, after_rotate_active

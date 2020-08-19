@@ -24,7 +24,7 @@ local spawn_smoke = function(pos)
 			aspect_h = 8,
 			length = 2.05,
 		},
-	})
+	}, "high")
 end
 
 --

@@ -227,7 +227,7 @@ local emit_lava_particle = function(pos)
 	})
 end
 
-if minetest.settings:get_bool("mcl_node_particles", true) then
+if minetest.settings:get("mcl_node_particles") == "full" then
 	minetest.register_abm({
 		label = "Lava particles",
 		nodenames = {"group:lava_source"},
