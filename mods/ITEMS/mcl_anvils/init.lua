@@ -304,6 +304,7 @@ end
 local anvildef = {
 	groups = {pickaxey=1, falling_node=1, falling_node_damage=1, crush_after_fall=1, deco_block=1, anvil=1},
 	tiles = {"mcl_anvils_anvil_top_damaged_0.png^[transformR90", "mcl_anvils_anvil_base.png", "mcl_anvils_anvil_side.png"},
+	_tt_help = S("Repair and rename items"),
 	paramtype = "light",
 	sunlight_propagates = true,
 	is_ground_content = false,
@@ -496,7 +497,6 @@ S("• Tool + Tool: Place two tools of the same type in the input slots. The “
 S("• Tool + Material: Some tools can also be repaired by combining them with an item that it's made of. For example, iron pickaxes can be repaired with iron ingots. This repairs the tool by 25%.").."\n"..
 S("Armor counts as a tool. It is possible to repair and rename a tool in a single step.").."\n\n"..
 S("The anvil has limited durability and 3 damage levels: undamaged, slightly damaged and very damaged. Each time you repair or rename something, there is a 12% chance the anvil gets damaged. Anvils also have a chance of being damaged when they fall by more than 1 block. If a very damaged anvil is damaged again, it is destroyed.")
-anvildef0._tt_help = S("Repair and rename items")
 
 local anvildef1 = table.copy(anvildef)
 anvildef1.description = S("Slightly Damaged Anvil")
@@ -536,7 +536,7 @@ end
 
 -- Legacy
 minetest.register_lbm({
-	label = "Update anvil formspecs (0.60.0",
+	label = "Update anvil formspecs (0.60.0)",
 	name = "mcl_anvils:update_formspec_0_60_0",
 	nodenames = { "group:anvil" },
 	run_at_every_load = false,
