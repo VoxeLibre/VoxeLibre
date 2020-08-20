@@ -539,7 +539,7 @@ minetest.register_lbm({
 
 -- Legacy
 minetest.register_lbm({
-	label = "Update furnace formspecs (0.60.0",
+	label = "Update furnace formspecs (0.60.0)",
 	name = "mcl_furnaces:update_formspecs_0_60_0",
 	-- Only update inactive furnaces because active ones should update themselves
 	nodenames = { "mcl_furnaces:furnace" },
