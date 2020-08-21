@@ -321,7 +321,10 @@ local function furnace_node_timer(pos, elapsed)
 	local result = false
 
 	if active then
-		local fuel_percent = math.floor(fuel_time / fuel_totaltime * 100)
+		local fuel_percent = 0
+		if fuel_totaltime > 0 then
+			fuel_percent = math.floor(fuel_time / fuel_totaltime * 100)
+		end
 		formspec = active_formspec(fuel_percent, item_percent)
 		swap_node(pos, "mcl_furnaces:furnace_active")
 		-- make sure timer restarts automatically
