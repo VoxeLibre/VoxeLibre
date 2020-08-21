@@ -210,7 +210,7 @@ local function furnace_node_timer(pos, elapsed)
 	local srclist, fuellist
 
 	local cookable, cooked
-	local active
+	local active = true
 	local fuel
 
 	srclist = inv:get_list("src")
