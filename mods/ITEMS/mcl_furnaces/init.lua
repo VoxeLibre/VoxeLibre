@@ -183,7 +183,7 @@ local function furnace_get_delta_time(pos)
 		last_game_time = tonumber(last_game_time)
 	end
 	if not last_game_time or last_game_time < 1 then
-		last_game_time = current_game_time + 0.1
+		last_game_time = current_game_time - 0.1
 	elseif last_game_time == current_game_time then
 		current_game_time = current_game_time + 1.0
 	end
