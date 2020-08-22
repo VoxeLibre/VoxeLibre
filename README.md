@@ -203,6 +203,7 @@ There are so many people to list (sorry). Check out the respective mod directori
 * [ryvnf](https://github.com/ryvnf): Explosion mechanics
 * MysticTempest: Bugfixes
 * [bzoss](https://github.com/bzoss): Status effects, potions, brewing stand
+* kay27 <kay27@bk.ru>: Bugfixes, optimizations
 * Lots of other people: TO BE WRITTEN (see mod directories for details)
 
 #### Mod credits (summary)
