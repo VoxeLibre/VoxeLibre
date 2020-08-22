@@ -408,7 +408,7 @@ minetest.register_node("mcl_brewing:stand_000", {
 			{0/16, 3/16 , 4/16 , 1/16, 6/16, 5/16 }, -- line 3
 		}
 	},
-	sounds = mcl_sounds.node_sound_glass_defaults(),
+	sounds = mcl_sounds.node_sound_metal_defaults(),
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	on_destruct = on_destruct,
