@@ -146,6 +146,40 @@ local function on_metadata_inventory_take(pos, listname, index, stack, player)
 	end
 end
 
+local function spawn_flames(pos, param2)
+	local minrelpos, maxrelpos
+	local dir = minetest.facedir_to_dir(param2)
+	if dir.x > 0 then
+		minrelpos = { x = -0.6, y = -0.05, z = -0.25 }
+		maxrelpos = { x = -0.55, y = -0.45, z = 0.25 }
+	elseif dir.x < 0 then
+		minrelpos = { x = 0.55, y = -0.05, z = -0.25 }
+		maxrelpos = { x = 0.6, y = -0.45, z = 0.25 }
+	elseif dir.z > 0 then
+		minrelpos = { x = -0.25, y = -0.05, z = -0.6 }
+		maxrelpos = { x = 0.25, y = -0.45, z = -0.55 }
+	elseif dir.z < 0 then
+		minrelpos = { x = -0.25, y = -0.05, z = 0.55 }
+		maxrelpos = { x = 0.25, y = -0.45, z = 0.6 }
+	else
+		return
+	end
+	mcl_particles.add_node_particlespawner(pos, {
+		amount = 4,
+		time = 0,
+		minpos = vector.add(pos, minrelpos),
+		maxpos = vector.add(pos, maxrelpos),
+		minvel = { x = -0.01, y = 0, z = -0.01 },
+		maxvel = { x = 0.01, y = 0.1, z = 0.01 },
+		minexptime = 0.3,
+		maxexptime = 0.6,
+		minsize = 0.4,
+		maxsize = 0.8,
+		texture = "mcl_particles_flame.png",
+		glow = LIGHT_ACTIVE_FURNACE,
+	}, "low")
+end
+
 local function swap_node(pos, name)
 	local node = minetest.get_node(pos)
 	if node.name == name then
@@ -153,6 +187,11 @@ local function swap_node(pos, name)
 	end
 	node.name = name
 	minetest.swap_node(pos, node)
+	if name == "mcl_furnaces:furnace_active" then
+		spawn_flames(pos, node.param2)
+	else
+		mcl_particles.delete_node_particlespawners(pos)
+	end
 end
 
 local function furnace_reset_delta_time(pos)
@@ -351,46 +390,15 @@ local function furnace_node_timer(pos, elapsed)
 	return result
 end
 
-local function spawn_flames(pos, param2)
-	local minrelpos, maxrelpos
-	local dir = minetest.facedir_to_dir(param2)
-	if dir.x > 0 then
-		minrelpos = { x = -0.6, y = -0.05, z = -0.25 }
-		maxrelpos = { x = -0.55, y = -0.45, z = 0.25 }
-	elseif dir.x < 0 then
-		minrelpos = { x = 0.55, y = -0.05, z = -0.25 }
-		maxrelpos = { x = 0.6, y = -0.45, z = 0.25 }
-	elseif dir.z > 0 then
-		minrelpos = { x = -0.25, y = -0.05, z = -0.6 }
-		maxrelpos = { x = 0.25, y = -0.45, z = -0.55 }
-	elseif dir.z < 0 then
-		minrelpos = { x = -0.25, y = -0.05, z = 0.55 }
-		maxrelpos = { x = 0.25, y = -0.45, z = 0.6 }
-	else
-		return
-	end
-	mcl_particles.add_node_particlespawner(pos, {
-		amount = 4,
-		time = 0,
-		minpos = vector.add(pos, minrelpos),
-		maxpos = vector.add(pos, maxrelpos),
-		minvel = { x = -0.01, y = 0, z = -0.01 },
-		maxvel = { x = 0.01, y = 0.1, z = 0.01 },
-		minexptime = 0.3,
-		maxexptime = 0.6,
-		minsize = 0.4,
-		maxsize = 0.8,
-		texture = "mcl_particles_flame.png",
-		glow = LIGHT_ACTIVE_FURNACE,
-	}, "low")
-end
-
 local on_rotate, after_rotate_active
 if minetest.get_modpath("screwdriver") then
 	on_rotate = screwdriver.rotate_simple
 	after_rotate_active = function(pos)
 		local node = minetest.get_node(pos)
 		mcl_particles.delete_node_particlespawners(pos)
+		if node.name == "mcl_furnaces:furnace" then
+			return
+		end
 		spawn_flames(pos, node.param2)
 	end
 end
@@ -436,6 +444,9 @@ minetest.register_node("mcl_furnaces:furnace", {
 		inv:set_size('src', 1)
 		inv:set_size('fuel', 1)
 		inv:set_size('dst', 1)
+	end,
+	on_destruct = function(pos)
+		mcl_particles.delete_node_particlespawners(pos)
 	end,
 
 	on_metadata_inventory_move = function(pos)
