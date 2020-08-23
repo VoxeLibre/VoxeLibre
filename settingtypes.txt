@@ -27,12 +27,6 @@ mcl_doTileDrops (Blocks have drops) bool true
 # If enabled, TNT explosions destroy blocks.
 mcl_tnt_griefing (TNT destroys blocks) bool true
 
-# Some blocks will emit decorative particles like flames. This setting
-# specifies the detail level of particles, with higher levels being
-# more CPU demanding.
-# WARNING: The "high" level is really CPU intensive, use with care!
-mcl_node_particles (Block particles detail level) enum none high,medium,low,none
-
 [Players]
 # If enabled, players respawn at the bed they last lay on instead of normal
 # spawn.
@@ -119,3 +113,10 @@ mcl_generate_fallen_logs (Generate fallen logs) bool false
 # in “normal” Flat.
 # But creating new flat worlds after changing this setting should be safe.
 mcl_superflat_classic (Classic superflat map generation) bool false
+
+# Make some blocks emit decorative particles like flames. This setting
+# specifies the detail level of particles, with higher levels being
+# more CPU demanding.
+# WARNING: This setting has quite poor performance and can slow down your
+# game by a lot.
+mcl_node_particles (Block particles detail level) enum none high,medium,low,none
