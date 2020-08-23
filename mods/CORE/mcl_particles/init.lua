@@ -6,7 +6,7 @@ mcl_particles = {}
 local particle_nodes = {}
 
 -- Node particles can be disabled via setting
-local node_particles_allowed = minetest.settings:get("mcl_node_particles") or "medium"
+local node_particles_allowed = minetest.settings:get("mcl_node_particles") or "none"
 
 local levels = {
 	high = 3,
@@ -17,14 +17,14 @@ local levels = {
 
 allowed_level = levels[node_particles_allowed]
 if not allowed_level then
-	allowed_level = levels["medium"]
+	allowed_level = levels["none"]
 end
 
 
 -- Add a particlespawner that is assigned to a given node position.
 -- * pos: Node positon. MUST use integer values!
 -- * particlespawner_definition: definition for minetest.add_particlespawner
--- * level: detail level of particles. "high", "medium" or "low". High detail levels are for
+-- * level: detail level of particles. "high", "medium", "low" or "none". High detail levels are for
 -- CPU-demanding particles, like smoke of fire (which occurs frequently)
 -- NOTE: All particlespawners are automatically removed on shutdown.
 -- Returns particlespawner ID on succcess and nil on failure
