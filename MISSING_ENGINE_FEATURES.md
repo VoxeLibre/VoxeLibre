@@ -1,7 +1,7 @@
 # Missing features in Minetest to recreate Minecraft features
 
 A side goal of the MineClone 2 project is to find any shortcomings of Minetest which make it impossible to recreate a Minecraft feature exactly.
-This file lists some of the missing features in Minetest which MineClone 2 would require.MineClone 2 would require.MineClone 2 would require.MineClone 2 would require.
+This file lists some of the missing features in Minetest which MineClone 2 would require.
 
 ## No workaround possible
 For these features, no easy Lua workaround could be found.
