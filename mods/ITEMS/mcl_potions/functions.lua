@@ -838,7 +838,13 @@ function mcl_potions.night_vision_func(player, null, duration)
 		victim.timer = 0
 
 	end
-	meta:set_int("night_vision", 1)
+
+	is_player = player:is_player()
+	if is_player then
+		meta:set_int("night_vision", 1)
+	else
+		return -- Do not attempt to set night_vision on mobs
+	end
 	mcl_weather.skycolor.update_sky_color({player})
 
 end
