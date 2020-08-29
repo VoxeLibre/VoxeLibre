@@ -87,7 +87,7 @@ minetest.register_globalstep(function(dtime)
 
 		end
 
-		if is_poisoned[player].timer >= is_poisoned[player].dur then
+		if is_poisoned[player] and is_poisoned[player].timer >= is_poisoned[player].dur then
 			is_poisoned[player] = nil
 			if is_player then
 				meta = player:get_meta()
@@ -123,7 +123,7 @@ minetest.register_globalstep(function(dtime)
 
 		end
 
-		if is_regenerating[player].timer >= is_regenerating[player].dur then
+		if is_regenerating[player] and is_regenerating[player].timer >= is_regenerating[player].dur then
 			is_regenerating[player] = nil
 			if is_player then
 				meta = player:get_meta()
