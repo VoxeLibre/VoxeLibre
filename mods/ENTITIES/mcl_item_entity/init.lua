@@ -519,6 +519,7 @@ minetest.register_entity(":__builtin:item", {
 			minetest.log("warning", "Item entity with empty itemstring found at "..minetest.pos_to_string(self.object:get_pos()).. "! Deleting it now.")
 			self._removed = true
 			self.object:remove()
+			return
 		end
 
 		local p = self.object:get_pos()
