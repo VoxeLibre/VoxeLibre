@@ -196,7 +196,11 @@ end
 
 local function furnace_reset_delta_time(pos)
 	local meta = minetest.get_meta(pos)
-	local time_multiplier = 86400 / (minetest.settings:get('time_speed') or 72)
+	local time_speed = tonumber(minetest.settings:get('time_speed') or 72)
+	if (time_speed < 0.1) then
+		return
+	end
+	local time_multiplier = 86400 / time_speed
 	local current_game_time = .0 + ((minetest.get_day_count() + minetest.get_timeofday()) * time_multiplier)
 
 	-- TODO: Change meta:get/set_string() to get/set_float() for 'last_gametime'.
@@ -212,10 +216,16 @@ local function furnace_reset_delta_time(pos)
 	meta:set_string("last_gametime", tostring(current_game_time))
 end
 
-local function furnace_get_delta_time(pos)
+local function furnace_get_delta_time(pos, elapsed)
 	local meta = minetest.get_meta(pos)
-	local time_multiplier = 86400 / (minetest.settings:get('time_speed') or 72)
-	local current_game_time = .0 + ((minetest.get_day_count() + minetest.get_timeofday()) * time_multiplier)
+	local time_speed = tonumber(minetest.settings:get('time_speed') or 72)
+	local current_game_time
+	if (time_speed < 0.1) then
+		return meta, elapsed
+	else
+		local time_multiplier = 86400 / time_speed
+		current_game_time = .0 + ((minetest.get_day_count() + minetest.get_timeofday()) * time_multiplier)
+	end
 
 	local last_game_time = meta:get_string("last_gametime")
 	if last_game_time then
@@ -238,7 +248,7 @@ local function furnace_node_timer(pos, elapsed)
 	--
 	-- Inizialize metadata
 	--
-	local meta, elapsed_game_time = furnace_get_delta_time(pos)
+	local meta, elapsed_game_time = furnace_get_delta_time(pos, elapsed)
 
 	local fuel_time = meta:get_float("fuel_time") or 0
 	local src_time = meta:get_float("src_time") or 0
