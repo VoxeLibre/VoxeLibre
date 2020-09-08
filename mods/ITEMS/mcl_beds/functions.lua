@@ -68,9 +68,15 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		return false
 	end
 
+	local yaw, param2, dir, bed_pos2, bed_center
 	if bed_pos then
+		yaw, param2 = get_look_yaw(bed_pos)
+		dir = minetest.facedir_to_dir(param2)
+		bed_pos2 = {x = bed_pos.x - dir.x, y = bed_pos.y, z = bed_pos.z - dir.z}
+		bed_center = {x = bed_pos.x - dir.x/2, y = bed_pos.y + 0.1, z = bed_pos.z - dir.z/2}
+
 		-- No sleeping if too far away
-		if vector.distance(bed_pos, pos) > 2 then
+		if vector.distance(bed_pos, pos) > 2 and vector.distance(bed_pos2, pos) > 2 then
 			minetest.chat_send_player(name, S("You can't sleep, the bed's too far away!"))
 			return false
 		end
@@ -132,7 +138,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		-- physics, eye_offset, etc
 		player:set_eye_offset({x = 0, y = 0, z = 0}, {x = 0, y = 0, z = 0})
 		if player:get_look_vertical() > 0 then
-			player:set_look_vertical(0)
+			player:set_look_vertical(0) -- this doesn't work :(
 		end
 		mcl_player.player_attached[name] = false
 		playerphysics.remove_physics_factor(player, "speed", "mcl_beds:sleeping")
@@ -143,13 +149,12 @@ local function lay_down(player, pos, bed_pos, state, skip)
 
 	-- lay down
 	else
-		local yaw, param2 = get_look_yaw(bed_pos)
-		local dir = minetest.facedir_to_dir(param2)
-		local p = {x = bed_pos.x - dir.x/2, y = bed_pos.y, z = bed_pos.z - dir.z/2}
-		local n1 = minetest.get_node({x=bed_pos.x, y=bed_pos.y+1, z=bed_pos.z})
-		local n2 = minetest.get_node({x=bed_pos.x, y=bed_pos.y+2, z=bed_pos.z})
+		local n1 = minetest.get_node({x = bed_pos.x,	y = bed_pos.y + 1,	z = bed_pos.z})
+		local n2 = minetest.get_node({x = bed_pos2.x,	y = bed_pos2.y + 1,	z = bed_pos2.z})
+		local n3 = minetest.get_node({x = bed_pos.x,	y = bed_pos.y + 2,	z = bed_pos.z})
 		local def1 = minetest.registered_nodes[n1.name]
 		local def2 = minetest.registered_nodes[n2.name]
+		local def3 = minetest.registered_nodes[n3.name]
 		if def1.walkable or def2.walkable then
 			minetest.chat_send_player(name, S("You can't sleep, the bed is obstructed!"))
 			return false
@@ -160,8 +165,13 @@ local function lay_down(player, pos, bed_pos, state, skip)
 
 		local spawn_changed = false
 		if minetest.get_modpath("mcl_spawn") then
-			local spos = table.copy(bed_pos)
-			spos.y = spos.y + 0.1
+			local spos
+			if def3.walkable then -- no place for spawning in bed - use player's current pos (near the bed)
+				spos = table.copy(pos)
+			else
+				spos = table.copy(bed_pos)
+				spos.y = spos.y + 0.1
+			end
 			spawn_changed = mcl_spawn.set_spawn_pos(player, spos) -- save respawn position when entering bed
 		end
 
@@ -192,7 +202,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		player:get_meta():set_string("mcl_beds:sleeping", "true")
 		playerphysics.add_physics_factor(player, "speed", "mcl_beds:sleeping", 0)
 		playerphysics.add_physics_factor(player, "jump", "mcl_beds:sleeping", 0)
-		player:set_pos(p)
+		player:set_pos(bed_center)
 		mcl_player.player_attached[name] = true
 		hud_flags.wielditem = false
 		mcl_player.player_set_animation(player, "lay" , 0)
