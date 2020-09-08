@@ -70,7 +70,7 @@ end
 -- Register stairs.
 -- Node will be called mcl_stairs:stair_<subname>
 
-function mcl_stairs.register_stair(subname, recipeitem, groups, images, description, sounds, hardness, corner_stair_texture_override)
+function mcl_stairs.register_stair(subname, recipeitem, groups, images, description, sounds, blast_resistance, hardness, corner_stair_texture_override)
 	groups.stair = 1
 	groups.building_block = 1
 
@@ -86,6 +86,9 @@ function mcl_stairs.register_stair(subname, recipeitem, groups, images, descript
 		end
 		if not hardness then
 			hardness = minetest.registered_items[recipeitem]._mcl_hardness
+		end
+		if not blast_resistance then
+			blast_resistance = minetest.registered_items[recipeitem]._mcl_blast_resistance
 		end
 	end
 
@@ -146,6 +149,7 @@ function mcl_stairs.register_stair(subname, recipeitem, groups, images, descript
 				return true
 			end
 		end,
+		_mcl_blast_resistance = blast_resistance,
 		_mcl_hardness = hardness,
 	})
 
@@ -182,7 +186,7 @@ local slab_trans_dir = {[0] = 8, 0, 2, 1, 3, 4}
 
 -- double_description: NEW argument, not supported in Minetest Game
 -- double_description: Description of double slab
-function mcl_stairs.register_slab(subname, recipeitem, groups, images, description, sounds, hardness, double_description)
+function mcl_stairs.register_slab(subname, recipeitem, groups, images, description, sounds, blast_resistance, hardness, double_description)
 	local lower_slab = "mcl_stairs:slab_"..subname
 	local upper_slab = lower_slab.."_top"
 	local double_slab = lower_slab.."_double"
@@ -199,6 +203,9 @@ function mcl_stairs.register_slab(subname, recipeitem, groups, images, descripti
 		end
 		if not hardness then
 			hardness = minetest.registered_items[recipeitem]._mcl_hardness
+		end
+		if not blast_resistance then
+			blast_resistance = minetest.registered_items[recipeitem]._mcl_blast_resistance
 		end
 	end
 
@@ -347,10 +354,10 @@ end
 -- Nodes will be called mcl_stairs:{stair,slab}_<subname>
 
 function mcl_stairs.register_stair_and_slab(subname, recipeitem,
-		groups, images, desc_stair, desc_slab, sounds, hardness,
+		groups, images, desc_stair, desc_slab, sounds, blast_resistance, hardness,
 		double_description, corner_stair_texture_override)
-	mcl_stairs.register_stair(subname, recipeitem, groups, images, desc_stair, sounds, hardness, corner_stair_texture_override)
-	mcl_stairs.register_slab(subname, recipeitem, groups, images, desc_slab, sounds, hardness, double_description)
+	mcl_stairs.register_stair(subname, recipeitem, groups, images, desc_stair, sounds, blast_resistance, hardness, corner_stair_texture_override)
+	mcl_stairs.register_slab(subname, recipeitem, groups, images, desc_slab, sounds, blast_resistance, hardness, double_description)
 end
 
 -- Very simple registration function
@@ -365,6 +372,6 @@ function mcl_stairs.register_stair_and_slab_simple(subname, sourcenode, desc_sta
 			groups[allowed_groups[a]] = def.groups[allowed_groups[a]]
 		end
 	end
-	mcl_stairs.register_stair_and_slab(subname, sourcenode, groups, def.tiles, desc_stair, desc_slab, def.sounds, def._mcl_hardness, desc_double_slab, corner_stair_texture_override)
+	mcl_stairs.register_stair_and_slab(subname, sourcenode, groups, def.tiles, desc_stair, desc_slab, def.sounds, def._mcl_blast_resistance, def._mcl_hardness, desc_double_slab, corner_stair_texture_override)
 end
 
