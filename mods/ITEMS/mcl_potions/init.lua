@@ -182,7 +182,7 @@ local fill_cauldron = function(cauldron, water_type)
 	end
 end
 
--- Itemstring of potions is “mcl_potions:potion_<NBT Potion Tag>”
+-- Itemstring of potions is “mcl_potions:<NBT Potion Tag>”
 
 minetest.register_craftitem("mcl_potions:water", {
 	description = S("Water Bottle"),

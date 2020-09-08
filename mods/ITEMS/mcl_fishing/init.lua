@@ -69,7 +69,7 @@ local fish = function(itemstack, player)
 										{ itemstring = "mcl_mobitems:rotten_flesh", weight = 10 },
 										{ itemstring = "mcl_core:stick", weight = 5 },
 										{ itemstring = "mcl_mobitems:string", weight = 5 },
-										{ itemstring = "mcl_potions:potion_water", weight = 10 },
+										{ itemstring = "mcl_potions:water", weight = 10 },
 										{ itemstring = "mcl_mobitems:bone", weight = 10 },
 										{ itemstring = "mcl_dye:black", weight = 1, amount_min = 10, amount_max = 10 },
 										{ itemstring = "mcl_mobitems:string", weight = 10 }, -- TODO: Tripwire Hook
