@@ -70,16 +70,17 @@ mcl_spawn.set_spawn_pos = function(player, pos, message)
 		meta:set_string("mcl_beds:spawn", "")
 	else
 		local oldpos = minetest.string_to_pos(meta:get_string("mcl_beds:spawn"))
+		meta:set_string("mcl_beds:spawn", minetest.pos_to_string(pos))
 		if oldpos then
 			-- We don't bother sending a message if the new spawn pos is basically the same
-			if vector.distance(pos, oldpos) > 0.1 then
-				spawn_changed = true
-				if message then
-					minetest.chat_send_player(player:get_player_name(), S("New respawn position set!"))
-				end
-			end
+			spawn_changed = vector.distance(pos, oldpos) > 0.1
+		else
+			-- If it wasn't set and now it will be set, it means it is changed
+			spawn_changed = true
 		end
-		meta:set_string("mcl_beds:spawn", minetest.pos_to_string(pos))
+		if spawn_changed and message then
+			minetest.chat_send_player(player:get_player_name(), S("New respawn position set!"))
+		end
 	end
 	return spawn_changed
 end
@@ -93,31 +94,52 @@ local function get_far_node(pos)
 	return minetest.get_node(pos)
 end
 
+local function good_for_respawn(pos)
+	local node0 = get_far_node({x = pos.x, y = pos.y - 1, z = pos.z})
+	local node1 = get_far_node({x = pos.x, y = pos.y, z = pos.z})
+	local node2 = get_far_node({x = pos.x, y = pos.y + 1, z = pos.z})
+	local def0 = minetest.registered_nodes[node0.name]
+	local def1 = minetest.registered_nodes[node1.name]
+	local def2 = minetest.registered_nodes[node2.name]
+	return def0.walkable and (not def1.walkable) and (not def2.walkable) and
+		(def1.damage_per_second == nil or def2.damage_per_second <= 0) and
+		(def1.damage_per_second == nil or def2.damage_per_second <= 0)
+end
+
 -- Respawn player at specified respawn position
 minetest.register_on_respawnplayer(function(player)
 	local pos, custom_spawn = mcl_spawn.get_spawn_pos(player)
 	if pos and custom_spawn then
 		-- Check if bed is still there
-		-- and the spawning position is free of solid or damaging blocks.
 		local node_bed = get_far_node(pos)
-		local node_up1 = get_far_node({x=pos.x,y=pos.y+1,z=pos.z})
-		local node_up2 = get_far_node({x=pos.x,y=pos.y+2,z=pos.z})
 		local bgroup = minetest.get_item_group(node_bed.name, "bed")
-		local def1 = minetest.registered_nodes[node_up1.name]
-		local def2 = minetest.registered_nodes[node_up2.name]
-		if (bgroup == 1 or bgroup == 2) and
-				(not def1.walkable) and (not def2.walkable) and
-				(def1.damage_per_second == nil or def2.damage_per_second <= 0) and
-				(def1.damage_per_second == nil or def2.damage_per_second <= 0) then
-			player:set_pos(pos)
-			return true
-		else
-			-- Forget spawn if bed was missing
-			if (bgroup ~= 1 and bgroup ~= 2) then
-				mcl_spawn.set_spawn_pos(player, nil)
+		if bgroup ~= 1 and bgroup ~= 2 then
+			-- Bed is destroyed:
+			if player ~= nil and player:is_player() then
+				player:get_meta():set_string("mcl_beds:spawn", "")
 			end
 			minetest.chat_send_player(player:get_player_name(), S("Your spawn bed was missing or blocked."))
+			return false
 		end
+		-- Find spawning position on/near the bed free of solid or damaging blocks iterating a square spiral 15x15:
+		local x, z, dx, dz = 0, 0, 0, -1
+		for i = 1, 225 do
+			if x > -8 and x < 8 and z > -8 and z < 8 then
+				for _,y in ipairs({0, 1, -1, 2, -2, 3, -3, 4, -4}) do
+					local spawn_pos = {x = pos.x - z, y=pos.y + y, z = pos.z - x}
+					if good_for_respawn(spawn_pos) then
+						player:set_pos(spawn_pos)
+						return true
+					end
+				end
+			end
+			if x == z or (x < 0 and x == -z) or (x > 0 and x == 1 - z) then
+				dx, dz = -dz, dx
+			end
+			x, z = x + dx, z + dz
+		end
+		-- We here if we didn't find suitable place for respawn:
+		return false
 	end
 end)
 

@@ -151,10 +151,8 @@ local function lay_down(player, pos, bed_pos, state, skip)
 	else
 		local n1 = minetest.get_node({x = bed_pos.x,	y = bed_pos.y + 1,	z = bed_pos.z})
 		local n2 = minetest.get_node({x = bed_pos2.x,	y = bed_pos2.y + 1,	z = bed_pos2.z})
-		local n3 = minetest.get_node({x = bed_pos.x,	y = bed_pos.y + 2,	z = bed_pos.z})
 		local def1 = minetest.registered_nodes[n1.name]
 		local def2 = minetest.registered_nodes[n2.name]
-		local def3 = minetest.registered_nodes[n3.name]
 		if def1.walkable or def2.walkable then
 			minetest.chat_send_player(name, S("You can't sleep, the bed is obstructed!"))
 			return false
@@ -165,14 +163,8 @@ local function lay_down(player, pos, bed_pos, state, skip)
 
 		local spawn_changed = false
 		if minetest.get_modpath("mcl_spawn") then
-			local spos
-			if def3.walkable then -- no place for spawning in bed - use player's current pos (near the bed)
-				spos = table.copy(pos)
-			else
-				spos = table.copy(bed_pos)
-				spos.y = spos.y + 0.1
-			end
-			spawn_changed = mcl_spawn.set_spawn_pos(player, spos) -- save respawn position when entering bed
+			-- save respawn position when entering bed
+			spawn_changed = mcl_spawn.set_spawn_pos(player, bed_pos, false)
 		end
 
 		-- Check day of time and weather
