@@ -3,6 +3,22 @@ mcl_spawn = {}
 local S = minetest.get_translator("mcl_spawn")
 local mg_name = minetest.get_mapgen_setting("mg_name")
 
+local node_search_list =
+	{
+	--[[1]]	{x =  0, y = 0, z = -1},	--
+	--[[2]]	{x = -1, y = 0, z =  0},	--
+	--[[3]]	{x = -1, y = 0, z =  1},	--
+	--[[4]]	{x =  0, y = 0, z =  2},	-- z^ 8 4 9
+	--[[5]]	{x =  1, y = 0, z =  1},	--  | 3   5
+	--[[6]]	{x =  1, y = 0, z =  0},	--  | 2 * 6
+	--[[7]]	{x = -1, y = 0, z = -1},	--  | 7 1 A
+	--[[8]]	{x = -1, y = 0, z =  2},	--  +----->
+	--[[9]]	{x =  1, y = 0, z =  2},	--	x
+	--[[A]]	{x =  1, y = 0, z = -1},	--
+	--[[B]]	{x =  0, y = 1, z =  0},	--
+	--[[C]]	{x =  0, y = 1, z =  1},	--
+	}
+
 local cached_world_spawn
 
 mcl_spawn.get_world_spawn_pos = function()
@@ -121,23 +137,28 @@ minetest.register_on_respawnplayer(function(player)
 			minetest.chat_send_player(player:get_player_name(), S("Your spawn bed was missing or blocked."))
 			return false
 		end
+
 		-- Find spawning position on/near the bed free of solid or damaging blocks iterating a square spiral 15x15:
-		local x, z, dx, dz = 0, 0, 0, -1
-		for i = 1, 225 do
-			if x > -8 and x < 8 and z > -8 and z < 8 then
-				for _,y in ipairs({0, 1, -1, 2, -2, 3, -3, 4, -4}) do
-					local spawn_pos = {x = pos.x - z, y=pos.y + y, z = pos.z - x}
-					if good_for_respawn(spawn_pos) then
-						player:set_pos(spawn_pos)
-						return true
-					end
-				end
+
+		local dir = minetest.facedir_to_dir(minetest.get_node(pos).param2)
+		local offset
+		for _, o in ipairs(node_search_list) do
+			if dir.z == -1 then
+				offset = {x =  o.x, y = o.y,  z =  o.z}
+			elseif dir.z == 1 then
+				offset = {x = -o.x, y = o.y,  z = -o.z}
+			elseif dir.x == -1 then
+				offset = {x =  o.z, y = o.y,  z = -o.x}
+			else -- dir.x == 1
+				offset = {x = -o.z, y = o.y,  z =  o.x}
 			end
-			if x == z or (x < 0 and x == -z) or (x > 0 and x == 1 - z) then
-				dx, dz = -dz, dx
+			local spawn_pos = vector.add(pos, offset)
+			if good_for_respawn(spawn_pos) then
+				player:set_pos(spawn_pos)
+				return true
 			end
-			x, z = x + dx, z + dz
 		end
+
 		-- We here if we didn't find suitable place for respawn:
 		return false
 	end
