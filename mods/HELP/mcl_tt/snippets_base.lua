@@ -1,4 +1,4 @@
-local S = minetest.get_translator("tt")
+local S = minetest.get_translator("mcl_tt")
 
 local function get_min_digtime(caps)
 	local mintime

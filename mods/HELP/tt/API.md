@@ -7,8 +7,6 @@ Add these to the item definition.
 
 * `_tt_ignore`: If `true`, the `description` of this item won't be altered at all
 * `_tt_help`: Custom help text
-* `_tt_food`: If `true`, item is a food item that can be consumed by the player
-* `_tt_food_hp`: Health increase (in HP) for player when consuming food item
 
 Once this mod had overwritten the `description` field of an item was overwritten, it will save the original (unaltered) `description` in the `_tt_original_description` field.
 

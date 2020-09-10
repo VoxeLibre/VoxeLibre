@@ -1,5 +1,3 @@
-local S = minetest.get_translator("tt")
-
 tt = {}
 tt.COLOR_DEFAULT = "#d0ffd0"
 tt.COLOR_DANGER = "#ffff00"
@@ -12,10 +10,7 @@ tt.register_snippet = function(func)
 	table.insert(tt.registered_snippets, func)
 end
 
--- Register core snippets
-
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/snippets_core.lua")
-dofile(minetest.get_modpath(minetest.get_current_modname()).."/snippets_builtin.lua")
+dofile(minetest.get_modpath(minetest.get_current_modname()).."/snippets.lua")
 
 -- Apply item description updates
 

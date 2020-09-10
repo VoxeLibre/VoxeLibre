@@ -1,4 +1,4 @@
--- CORE SNIPPETS --
+-- CUSTOM SNIPPETS --
 
 -- Custom text (_tt_help)
 tt.register_snippet(function(itemstring)
