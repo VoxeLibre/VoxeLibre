@@ -376,7 +376,7 @@ minetest.register_node("mcl_brewing:stand_000", {
 	_doc_items_longdesc = S("The stand allows you to brew potions!"),
 	_doc_items_usagehelp = doc_string,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, brewitem=1 },
+	groups = {pickaxey=1, brewitem=1 },
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -442,7 +442,7 @@ minetest.register_node("mcl_brewing:stand_100", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -514,7 +514,7 @@ minetest.register_node("mcl_brewing:stand_010", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -587,7 +587,7 @@ minetest.register_node("mcl_brewing:stand_001", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -656,7 +656,7 @@ minetest.register_node("mcl_brewing:stand_110", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -735,7 +735,7 @@ minetest.register_node("mcl_brewing:stand_101", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -810,7 +810,7 @@ minetest.register_node("mcl_brewing:stand_011", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -885,7 +885,7 @@ minetest.register_node("mcl_brewing:stand_111", {
 	description = S("Brewing Stand"),
 	_doc_items_create_entry = false,
 	_tt_help = S("Brew Potions"),
-	groups = {pickaxey=1, falling_node=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
+	groups = {pickaxey=1, not_in_creative_inventory = 1, not_in_craft_guide = 1},
 	tiles = tiles,
 	drop = "mcl_brewing:stand",
 	paramtype = "light",
@@ -982,4 +982,10 @@ if minetest.get_modpath("doc") then
 	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_101")
 	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_110")
 	doc.add_entry_alias("nodes", "mcl_brewing:stand_000", "nodes", "mcl_brewing:stand_111")
+end
+
+if minetest.get_modpath("mesecons_mvps") then
+	for _, s in ipairs({"000", "001", "010", "011", "100", "101", "110", "111"}) do
+		mesecon.register_mvps_stopper("mcl_brewing:stand_" .. s)
+	end
 end
