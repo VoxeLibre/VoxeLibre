@@ -493,7 +493,7 @@ minetest.register_lbm({
 
 minetest.register_alias("mcl_fire:basic_flame", "mcl_fire:fire")
 minetest.register_alias("fire:basic_flame", "mcl_fire:fire")
-minetest.register_alias("fire:permanent_flame", "mcl_fire:eternal_flame")
+minetest.register_alias("fire:permanent_flame", "mcl_fire:eternal_fire")
 
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/flint_and_steel.lua")
 dofile(minetest.get_modpath(minetest.get_current_modname()).."/fire_charge.lua")

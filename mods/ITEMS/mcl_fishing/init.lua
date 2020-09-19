@@ -238,7 +238,7 @@ local bobber_on_step = function(self, dtime)
 			end
 		else if self._waittick == nil then
 			-- wait for random number of ticks.
-			self._waittick = math.random(50,800)
+			self._waittick = math.random(50,333)
 		else
 			if self._tick ~= self._waittick then
 				self._tick = self._tick + 1
