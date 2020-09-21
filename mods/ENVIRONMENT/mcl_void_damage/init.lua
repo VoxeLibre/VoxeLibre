@@ -13,8 +13,8 @@ minetest.register_on_mods_loaded(function()
 		if not on_step_old then
 			on_step_old = function() end
 		end
-		local on_step = function(self, dtime)
-			on_step_old(self, dtime)
+		local on_step = function(self, dtime, moveresult)
+			on_step_old(self, dtime, moveresult)
 			local obj = self.object
 			local pos = obj:get_pos()
 			-- Old on_step function might have deleted object,
