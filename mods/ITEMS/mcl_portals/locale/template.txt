@@ -13,3 +13,4 @@ Obsidian is also used as the frame of Nether portals.=
 To open a Nether portal, place an upright frame of obsidian with a width of 4 blocks and a height of 5 blocks, leaving only air in the center. After placing this frame, light a fire in the obsidian frame. Nether portals only work in the Overworld and the Nether.=
 Once placed, an eye of ender can not be taken back.=
 Used to construct end portals=
+Loading terrain...=
