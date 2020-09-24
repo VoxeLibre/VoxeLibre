@@ -6,6 +6,13 @@ local mcl_playerplus_internal = {}
 local def = {}
 local time = 0
 
+-- converts yaw to degrees
+local function degrees(rad)
+	return rad * 180.0 / math.pi
+end
+
+local pitch, name, node_stand, node_stand_below, node_head, node_feet, pos
+
 minetest.register_globalstep(function(dtime)
 
 	time = time + dtime
@@ -13,18 +20,23 @@ minetest.register_globalstep(function(dtime)
 	-- Update jump status immediately since we need this info in real time.
 	-- WARNING: This section is HACKY as hell since it is all just based on heuristics.
 	for _,player in pairs(minetest.get_connected_players()) do
-		local name = player:get_player_name()
+		name = player:get_player_name()
+
+		-- controls head bone
+		pitch = degrees(player:get_look_vertical()) * -1
+		player:set_bone_position("Head", vector.new(0,6.3,0), vector.new(pitch,0,0))
+
 		if mcl_playerplus_internal[name].jump_cooldown > 0 then
 			mcl_playerplus_internal[name].jump_cooldown = mcl_playerplus_internal[name].jump_cooldown - dtime
 		end
 		if player:get_player_control().jump and mcl_playerplus_internal[name].jump_cooldown <= 0 then
 
-			local pos = player:get_pos()
+			pos = player:get_pos()
 
-			local node_stand = mcl_playerinfo[name].node_stand
-			local node_stand_below = mcl_playerinfo[name].node_stand_below
-			local node_head = mcl_playerinfo[name].node_head
-			local node_feet = mcl_playerinfo[name].node_feet
+			node_stand = mcl_playerinfo[name].node_stand
+			node_stand_below = mcl_playerinfo[name].node_stand_below
+			node_head = mcl_playerinfo[name].node_head
+			node_feet = mcl_playerinfo[name].node_feet
 			if not node_stand or not node_stand_below or not node_head or not node_feet then
 				return
 			end
