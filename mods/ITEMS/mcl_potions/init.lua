@@ -105,34 +105,31 @@ minetest.register_craftitem("mcl_potions:glass_bottle", {
 				end
 			end
 			if get_water then
-				local creative = minetest.is_creative_enabled(placer:get_player_name())
-				if from_liquid_source or creative then
-					-- Replace with water bottle, if possible, otherwise
-					-- place the water potion at a place where's space
-					local water_bottle
-					if river_water then
-						water_bottle = ItemStack("mcl_potions:river_water")
-					else
-						water_bottle = ItemStack("mcl_potions:water")
-					end
-					local inv = placer:get_inventory()
-					if creative then
-						-- Don't replace empty bottle in creative for convenience reasons
-						if not inv:contains_item("main", water_bottle) then
-							inv:add_item("main", water_bottle)
-						end
-					elseif itemstack:get_count() == 1 then
-						return water_bottle
-					else
-						if inv:room_for_item("main", water_bottle) then
-							inv:add_item("main", water_bottle)
-						else
-							minetest.add_item(placer:get_pos(), water_bottle)
-						end
-						itemstack:take_item()
-					end
+				local water_bottle
+				if river_water then
+					water_bottle = ItemStack("mcl_potions:river_water")
+				else
+					water_bottle = ItemStack("mcl_potions:water")
 				end
+				-- Replace with water bottle, if possible, otherwise
+				-- place the water potion at a place where's space
+				local inv = placer:get_inventory()
 				minetest.sound_play("mcl_potions_bottle_fill", {pos=pointed_thing.under, gain=0.5, max_hear_range=16}, true)
+				if minetest.is_creative_enabled(placer:get_player_name()) then
+					-- Don't replace empty bottle in creative for convenience reasons
+					if not inv:contains_item("main", water_bottle) then
+						inv:add_item("main", water_bottle)
+					end
+				elseif itemstack:get_count() == 1 then
+					return water_bottle
+				else
+					if inv:room_for_item("main", water_bottle) then
+						inv:add_item("main", water_bottle)
+					else
+						minetest.add_item(placer:get_pos(), water_bottle)
+					end
+					itemstack:take_item()
+				end
 			end
 		end
 		return itemstack
