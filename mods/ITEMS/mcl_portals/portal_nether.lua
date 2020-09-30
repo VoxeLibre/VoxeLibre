@@ -825,7 +825,7 @@ minetest.register_abm({
 
 local longdesc = minetest.registered_nodes["mcl_core:obsidian"]._doc_items_longdesc
 longdesc = longdesc .. "\n" .. S("Obsidian is also used as the frame of Nether portals.")
-local usagehelp = S("To open a Nether portal, place an upright frame of obsidian with a width of 4 blocks and a height of 5 blocks, leaving only air in the center. After placing this frame, light a fire in the obsidian frame. Nether portals only work in the Overworld and the Nether.")
+local usagehelp = S("To open a Nether portal, place an upright frame of obsidian with a width of at least 4 blocks and a height of 5 blocks, leaving only air in the center. After placing this frame, light a fire in the obsidian frame. Nether portals only work in the Overworld and the Nether.")
 
 minetest.override_item("mcl_core:obsidian", {
 	_doc_items_longdesc = longdesc,
