@@ -360,6 +360,12 @@ minetest.register_node("mcl_chests:"..basename.."_left", {
 
 	on_rightclick = function(pos, node, clicker)
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "left")
+		if minetest.registered_nodes[minetest.get_node({x = pos.x, y = pos.y + 1, z = pos.z}).name].groups.opaque == 1
+			or minetest.registered_nodes[minetest.get_node({x = pos_other.x, y = pos_other.y + 1, z = pos_other.z}).name].groups.opaque == 1 then
+				-- won't open if there is no space from the top
+				return false
+		end
+
 		local name = minetest.get_meta(pos):get_string("name")
 		if name == "" then
 			name = minetest.get_meta(pos_other):get_string("name")
@@ -494,6 +500,12 @@ minetest.register_node("mcl_chests:"..basename.."_right", {
 
 	on_rightclick = function(pos, node, clicker)
 		local pos_other = mcl_util.get_double_container_neighbor_pos(pos, node.param2, "right")
+		if minetest.registered_nodes[minetest.get_node({x = pos.x, y = pos.y + 1, z = pos.z}).name].groups.opaque == 1
+			or minetest.registered_nodes[minetest.get_node({x = pos_other.x, y = pos_other.y + 1, z = pos_other.z}).name].groups.opaque == 1 then
+				-- won't open if there is no space from the top
+				return false
+		end
+
 		local name = minetest.get_meta(pos_other):get_string("name")
 		if name == "" then
 			name = minetest.get_meta(pos):get_string("name")
