@@ -217,7 +217,7 @@ local function find_overworld_target_y(x, y, z)
 	if not node then
 		return target_y
 	end
-	nn = node.name
+	local nn = node.name
 	if nn ~= "air" and minetest.get_item_group(nn, "water") == 0 then
 		target_y = target_y + 1
 	end
