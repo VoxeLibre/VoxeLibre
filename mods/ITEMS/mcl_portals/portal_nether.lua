@@ -686,9 +686,6 @@ local function teleport_no_delay(obj, pos)
 	local target = minetest.string_to_pos(meta:get_string("portal_target"))
 	if delta_time > DESTINATION_EXPIRES or target == nil then
 		-- Area not ready yet - retry after a second
-		if obj:is_player() then
-			minetest.chat_send_player(obj:get_player_name(), S("Loading terrain..."))
-		end
 		return minetest.after(1, teleport_no_delay, obj, pos)
 	end
 
