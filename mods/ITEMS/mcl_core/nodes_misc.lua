@@ -52,6 +52,16 @@ minetest.register_node("mcl_core:slimeblock", {
 	},
 	_mcl_blast_resistance = 0,
 	_mcl_hardness = 0,
+	mvps_sticky = function (pos, node)
+		local connected = {}
+		if mesecon.rules.alldirs then
+			for _, r in ipairs(mesecon.rules.alldirs) do
+				table.insert(connected, vector.add(pos, r))
+			end
+		end
+		return connected
+	end,
+
 })
 
 minetest.register_node("mcl_core:cobweb", {

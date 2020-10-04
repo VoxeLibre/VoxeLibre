@@ -120,11 +120,13 @@ function mesecon.mvps_get_stack(pos, dir, maximum, all_pull_sticky)
 	while #frontiers > 0 do
 		local np = frontiers[1]
 		local nn = minetest.get_node(np)
-
+		if nn.name == "ignore" then
+			minetest.get_voxel_manip():read_from_map(np, np)
+			nn = minetest.get_node(np)
+		end
 		if not node_replaceable(nn.name) then
-
+			if #nodes >= maximum then return nil end
 			table.insert(nodes, {node = nn, pos = np})
-			if #nodes > maximum then return nil end
 
 			-- add connected nodes to frontiers, connected is a vector list
 			-- the vectors must be absolute positions
