@@ -274,12 +274,6 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, all_pull_sti
 	return true, nodes, oldstack
 end
 
-mesecon.register_on_mvps_move(function(moved_nodes)
-	for _, n in ipairs(moved_nodes) do
-		mesecon.on_placenode(n.pos, n.node)
-	end
-end)
-
 function mesecon.mvps_move_objects(pos, dir, nodestack)
 	local objects_to_move = {}
 
