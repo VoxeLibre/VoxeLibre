@@ -248,13 +248,6 @@ function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, all_pull_sti
 		minetest.get_meta(np):from_table(n.meta)
 	end
 
-	for i in ipairs(nodes) do
-		if first_dropper and i >= first_dropper then
-			break
-		end
-		nodes[i].pos = vector.add(nodes[i].pos, movedir)
-	end
-
 	local moved_nodes = {}
 	local oldstack = mesecon.tablecopy(nodes)
 	for i in ipairs(nodes) do
