@@ -138,7 +138,7 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		-- physics, eye_offset, etc
 		player:set_eye_offset({x = 0, y = 0, z = 0}, {x = 0, y = 0, z = 0})
 		if player:get_look_vertical() > 0 then
-			player:set_look_vertical(0) -- this doesn't work :(
+			player:set_look_vertical(0)
 		end
 		mcl_player.player_attached[name] = false
 		playerphysics.remove_physics_factor(player, "speed", "mcl_beds:sleeping")
@@ -189,7 +189,11 @@ local function lay_down(player, pos, bed_pos, state, skip)
 		-- physics, eye_offset, etc
 		player:set_eye_offset({x = 0, y = -13, z = 0}, {x = 0, y = 0, z = 0})
 		player:set_look_horizontal(yaw)
-		player:set_look_vertical(-(math.pi/2))
+
+		-- With head tracking:
+		player:set_look_vertical(0)
+		-- Without head tracking:
+		-- player:set_look_vertical(-(math.pi/2))
 
 		player:get_meta():set_string("mcl_beds:sleeping", "true")
 		playerphysics.add_physics_factor(player, "speed", "mcl_beds:sleeping", 0)
