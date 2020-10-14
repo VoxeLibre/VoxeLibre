@@ -273,11 +273,9 @@ mcl_structures.generate_end_exit_portal = function(pos)
 	return minetest.place_schematic(pos, path, "0", nil, true)
 end
 
-mcl_structures.generate_end_portal_shrine = function(pos)
+local generate_end_portal_shrine_no_delay = function(newpos)
 	local path = minetest.get_modpath("mcl_structures").."/schematics/mcl_structures_end_portal_room_simple.mts"
-	local offset = {x=6, y=8, z=6}
 	local size = {x=13, y=8, z=13}
-	local newpos = { x = pos.x - offset.x, y = pos.y, z = pos.z - offset.z }
 	local ret = minetest.place_schematic(newpos, path, "0", nil, true)
 	if ret == nil then
 		return ret
@@ -361,6 +359,19 @@ mcl_structures.generate_end_portal_shrine = function(pos)
 	end
 
 	return ret
+end
+
+local function ecb_generate_end_portal_shrine(blockpos, action, calls_remaining, param)
+	if calls_remaining <= 0 then
+		generate_end_portal_shrine_no_delay({x=param.x, y=param.y, z=param.z})
+	end
+end
+
+mcl_structures.generate_end_portal_shrine = function(pos)
+	local offset = {x=6, y=8, z=6}
+	local size = {x=13, y=8, z=13}
+	local newpos = { x = pos.x - offset.x, y = pos.y, z = pos.z - offset.z }
+	minetest.emerge_area(vector.subtract(newpos,10), vector.add(vector.add(newpos, size),10), ecb_generate_end_portal_shrine, {x=newpos.x, y=newpos.y, z=newpos.z})
 end
 
 mcl_structures.generate_desert_temple = function(pos)
