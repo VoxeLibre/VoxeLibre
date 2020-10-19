@@ -1,0 +1,5 @@
+[<player>] [<xp>]=[<игрок>] [<xp>]
+Gives [player <player>] [<xp>] XP=Даёт [игроку <игрок>] [<xp>]
+Error: Too many parameters!=Ошибка: слишком много параметров!
+Error: Incorrect number of XP=Ошибка: Неправильное число XP
+Error: Player not found=Ошибка: Игрок не найден

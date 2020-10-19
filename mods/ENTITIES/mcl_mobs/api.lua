@@ -640,6 +640,10 @@ local check_for_death = function(self, cause, cmi_cause)
 
 	local pos = self.object:get_pos()
 
+	if mcl_experience.throw_experience and self.hp_min and self.hp_max then
+		mcl_experience.throw_experience(pos, math.ceil( math.random(self.hp_min,self.hp_max+5) / 5) )
+	end
+
 	-- execute custom death function
 	if self.on_die then
 

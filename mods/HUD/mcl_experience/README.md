@@ -1,0 +1,6 @@
+-- eXPerience mod
+-- This mod has adopted from oil_boi's Crafter-minetest
+-- ( https://www.patreon.com/oil_boi ) by kay27@bk.ru
+-- for MineClone 2 under GNU GENERAL PUBLIC LICENSE.
+-- Copyright (c) Oil_boi, Wuzzy, kay27,
+-- experience_orb texture by github.com/Gerold55
