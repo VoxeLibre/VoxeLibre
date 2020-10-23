@@ -35,7 +35,7 @@ minetest.register_node("mcl_nether:quartz_ore", {
 	stack_max = 64,
 	tiles = {"mcl_nether_quartz_ore.png"},
 	is_ground_content = true,
-	groups = {pickaxey=1, building_block=1, material_stone=1, experience=3},
+	groups = {pickaxey=1, building_block=1, material_stone=1, xp=3},
 	drop = 'mcl_nether:quartz',
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
