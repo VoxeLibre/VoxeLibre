@@ -1,56 +1,56 @@
 local S = minetest.get_translator("mcl_experience")
 mcl_experience = {}
-
-local
-minetest,math,vector,os,pairs,type
-=
-minetest,math,vector,os,pairs,type
-
-local storage = minetest.get_mod_storage()
-
+local pool = {}
 local registered_nodes
+
+local gravity = {x = 0, y = -((tonumber(minetest.settings:get("movement_gravity"))) or 9.81), z = 0}
+local size_min, size_max = 20, 59 -- percents
+local delta_size = size_max - size_min
+local size_to_xp = {
+	{-32768,     2}, -- 1
+	{     3,     6}, -- 2
+	{     7,    16}, -- 3
+	{    17,    36}, -- 4
+	{    37,    72}, -- 5
+	{    73,   148}, -- 6
+	{   149,   306}, -- 7
+	{   307,   616}, -- 8
+	{   617,  1236}, -- 9
+	{  1237,  2476}, --10
+	{  2477, 32767}  --11
+}
+
+local function xp_to_size(xp)
+	local i, l = 1, #size_to_xp
+	while (xp > size_to_xp[i][1]) and (i < l) do
+		i = i + 1
+	end
+	return ((i-1) / (l-1) * delta_size + size_min)/100
+end
+
 minetest.register_on_mods_loaded(function()
 	registered_nodes = minetest.registered_nodes
 end)
 
-local pool = {}
--- loads data from mod storage
-local name
-local temp_pool
 local load_data = function(player)
-	name = player:get_player_name()
+	local name = player:get_player_name()
 	pool[name] = {}
-	temp_pool = pool[name]
-	if storage:get_int(name.."xp_save") > 0 then
-		temp_pool.xp_level = storage:get_int(name.."xp_level")
-		temp_pool.xp_bar   = storage:get_int(name.."xp_bar"  )
-		temp_pool.last_time= minetest.get_us_time()/1000000
-	else
-		temp_pool.xp_level = 0
-		temp_pool.xp_bar   = 0
-		temp_pool.last_time= minetest.get_us_time()/1000000
-	end
+	local temp_pool = pool[name]
+	local meta = player:get_meta()
+	temp_pool.xp = meta:get_int("xp") or 0
+	temp_pool.level = mcl_experience.xp_to_level(temp_pool.xp)
+	temp_pool.bar, temp_pool.xp_next_level = mcl_experience.xp_to_bar(temp_pool.xp, temp_pool.level)
+	temp_pool.last_time= minetest.get_us_time()/1000000
 end
 
 -- saves data to be utilized on next login
-local name
-local temp_pool
-local save_data = function(name)
-	if type(name) ~= "string" and name:is_player() then
-		name = name:get_player_name()
-	end
-	temp_pool = pool[name]
-	
-	storage:set_int(name.."xp_level",temp_pool.xp_level)
-	storage:set_int(name.."xp_bar",  temp_pool.xp_bar  )
-
-	storage:set_int(name.."xp_save",1)
-
+local save_data = function(player)
+	name = player:get_player_name()
+	local temp_pool = pool[name]
+	local meta = player:get_meta()
+	meta:set_int("xp", temp_pool.xp)
 	pool[name] = nil
 end
-
--------hud manager
-local minetest = minetest
 
 local player_huds = {} -- the list of players hud lists (3d array)
 hud_manager = {}       -- hud manager class
@@ -119,7 +119,10 @@ end)
 -- is used for shutdowns to save all data
 local save_all = function()
 	for name,_ in pairs(pool) do
-		save_data(name)
+		local player = minetest.get_player_by_name(name)
+		if player then
+			save_data(player)
+		end
 	end
 end
 
@@ -132,14 +135,16 @@ end)
 local name
 function mcl_experience.get_player_xp_level(player)
 	name = player:get_player_name()
-	return(pool[name].xp_level)
+	return(pool[name].level)
 end
 
 local name
 local temp_pool
 function mcl_experience.set_player_xp_level(player,level)
 	name = player:get_player_name()
-	pool[name].xp_level = level
+	pool[name].level = level
+	pool[name].xp = mcl_experience.level_to_xp(level)
+--todo: update bar
 	hud_manager.change_hud({
 		player   = player,
 		hud_name = "xp_level_fg",
@@ -153,16 +158,6 @@ function mcl_experience.set_player_xp_level(player,level)
 		data     = tostring(level)
 	})
 end
-
-minetest.hud_replace_builtin("health",{
-    hud_elem_type = "statbar",
-    position = {x = 0.5, y = 1},
-    text = "heart.png",
-    number = core.PLAYER_MAX_HP_DEFAULT,
-    direction = 0,
-    size = {x = 24, y = 24},
-    offset = {x = (-10 * 24) - 25, y = -(48 + 24 + 38)},
-})
 
 local name
 local temp_pool
@@ -173,101 +168,105 @@ minetest.register_on_joinplayer(function(player)
 	name = player:get_player_name()
 	temp_pool = pool[name]
 		
-    hud_manager.add_hud(player,"experience_bar_background",{
-        hud_elem_type = "statbar",
-        position = {x=0.5, y=1},
-        name = "experience bar background",
-        text = "experience_bar_background.png",
-        number = 36,
-        direction = 0,
-        offset = {x = (-8 * 28) - 29, y = -(48 + 24 + 16)},
-        size = { x=28, y=28 },
-        z_index = 0,
+	hud_manager.add_hud(player, "experience_bar_background",
+	{
+	        hud_elem_type = "statbar", position = {x=0.5, y=1},
+	        name = "experience bar background", text = "experience_bar_background.png",
+	        number = 36, direction = 0,
+	        offset = {x = (-8 * 28) - 29, y = -(48 + 24 + 16)},
+	        size = { x=28, y=28 }, z_index = 3,
 	})
 	
-    hud_manager.add_hud(player,"experience_bar",{
-        hud_elem_type = "statbar",
-        position = {x=0.5, y=1},
-        name = "experience bar",
-        text = "experience_bar.png",
-        number = temp_pool.xp_bar,
-        direction = 0,
-        offset = {x = (-8 * 28) - 29, y = -(48 + 24 + 16)},
-        size = { x=28, y=28 },
-        z_index = 0,
-    })
+	hud_manager.add_hud(player,"experience_bar",
+	{
+	        hud_elem_type = "statbar", position = {x=0.5, y=1},
+	        name = "experience bar", text = "experience_bar.png",
+	        number = temp_pool.bar, direction = 0,
+	        offset = {x = (-8 * 28) - 29, y = -(48 + 24 + 16)},
+	        size = { x=28, y=28 }, z_index = 4,
+	})
 	
-    hud_manager.add_hud(player,"xp_level_bg",{
-        hud_elem_type = "text",
-        position = {x=0.5, y=1},
-        name = "xp_level_bg",
-        text = tostring(temp_pool.xp_level),
-        number = 0x000000,
-        offset = {x = 0, y = -(48 + 24 + 24)},
-        z_index = 0,
-    })                            
-    hud_manager.add_hud(player,"xp_level_fg",{
-        hud_elem_type = "text",
-        position = {x=0.5, y=1},
-        name = "xp_level_fg",
-        text = tostring(temp_pool.xp_level),
-        number = 0xFFFFFF,
-        offset = {x = -1, y = -(48 + 24 + 25)},
-        z_index = 0,
+	hud_manager.add_hud(player,"xp_level_bg",
+	{
+	        hud_elem_type = "text", position = {x=0.5, y=1},
+	        name = "xp_level_bg", text = tostring(temp_pool.level),
+	        number = 0x000000,
+		offset = {x = 0, y = -(48 + 24 + 24)},
+	        z_index = 5,
+	})                            
+
+	hud_manager.add_hud(player,"xp_level_fg",
+	{
+	        hud_elem_type = "text", position = {x=0.5, y=1},
+	        name = "xp_level_fg", text = tostring(temp_pool.level),
+	        number = 0xFFFFFF,
+	        offset = {x = -1, y = -(48 + 24 + 25)},
+	        z_index = 6,
 	})                                                           
 end)
 
-
-local name
-local temp_pool
-local function level_up_experience(player)
-	name = player:get_player_name()
-	temp_pool = pool[name]
-	
-    temp_pool.xp_level = temp_pool.xp_level + 1
-	
-	hud_manager.change_hud({
-		player   = player,
-		hud_name = "xp_level_fg",
-		element  = "text",
-		data     = tostring(temp_pool.xp_level)
-	})
-	hud_manager.change_hud({
-		player   = player,
-		hud_name = "xp_level_bg",
-		element  = "text",
-		data     = tostring(temp_pool.xp_level)
-	})
+function mcl_experience.xp_to_level(xp)
+	local xp = xp or 0
+	local a, b, c, D
+	if xp > 1507 then
+		a, b, c = 4.5, -162.5, 2220-xp
+	elseif xp > 352 then
+		a, b, c = 2.5, -40.5, 360-xp
+	else
+		a, b, c = 1, 6, -xp
+	end
+	D = b*b-4*a*c
+	if D == 0 then
+		return math.floor(-b/2/a)
+	elseif D > 0  then
+		local v1, v2 = -b/2/a, math.sqrt(D)/2/a
+		return math.floor((math.max(v1-v2, v1+v2)))
+	end
+	return 0
 end
 
+function mcl_experience.level_to_xp(level)
+	if (level >= 1 and level <= 16) then
+		return math.floor(math.pow(level, 2) + 6 * level)
+	elseif (level >= 17 and level <= 31) then
+		return math.floor(2.5 * math.pow(level, 2) - 40.5 * level + 360)
+	elseif level >= 32 then
+		return math.floor(4.5 * math.pow(level, 2) - 162.5 * level + 2220);
+	end
+	return 0
+end
 
-local name
-local temp_pool
-function mcl_experience.add_experience(player,experience)
-	name = player:get_player_name()
-	temp_pool = pool[name]
-	
-	temp_pool.xp_bar = temp_pool.xp_bar + experience
-	
-	if temp_pool.xp_bar > 36 then
+function mcl_experience.xp_to_bar(xp, level)
+	local level = level or mcl_experience.xp_to_level(xp)
+	local xp_this_level = mcl_experience.level_to_xp(level)
+	local xp_next_level = mcl_experience.level_to_xp(level+1)
+	local bar = math.floor((xp-xp_this_level)/(xp_next_level-xp_this_level)*35)
+	return bar, xp_next_level
+end		
+
+function mcl_experience.add_experience(player, experience)
+	local name = player:get_player_name()
+	local temp_pool = pool[name]
+
+	local old_bar, old_xp, old_level = temp_pool.bar, temp_pool.xp, temp_pool.level
+	temp_pool.xp = math.max(temp_pool.xp + experience, 0)
+	temp_pool.level = mcl_experience.xp_to_level(temp_pool.xp)
+	temp_pool.bar, temp_pool.xp_next_level = mcl_experience.xp_to_bar(temp_pool.xp, temp_pool.level)
+	if old_level ~= temp_pool.level then
 		if minetest.get_us_time()/1000000 - temp_pool.last_time > 0.04 then
 			minetest.sound_play("level_up",{gain=0.2,to_player = name})
 			temp_pool.last_time = minetest.get_us_time()/1000000
 		end
-        temp_pool.xp_bar = temp_pool.xp_bar - 36
-		level_up_experience(player)
-	else
-		if minetest.get_us_time()/1000000 - temp_pool.last_time > 0.01 then
-			temp_pool.last_time = minetest.get_us_time()/1000000
-			minetest.sound_play("experience",{gain=0.1,to_player = name,pitch=math.random(75,99)/100})
-		end
+		hud_manager.change_hud({player = player, hud_name = "xp_level_fg", element = "text", data = tostring(temp_pool.level)})
+		hud_manager.change_hud({player = player, hud_name = "xp_level_bg", element = "text", data = tostring(temp_pool.level)})
+	elseif minetest.get_us_time()/1000000 - temp_pool.last_time > 0.01 then
+		temp_pool.last_time = minetest.get_us_time()/1000000
+		minetest.sound_play("experience",{gain=0.1,to_player = name,pitch=math.random(75,99)/100})
 	end
-	hud_manager.change_hud({
-		player   = player,
-		hud_name = "experience_bar",
-		element  = "number",
-		data     = temp_pool.xp_bar
-	})
+
+	if old_bar ~= temp_pool.bar then
+		hud_manager.change_hud({player = player, hud_name = "experience_bar", element = "number", data = temp_pool.bar})
+	end
 end
 
 --reset player level
@@ -275,35 +274,23 @@ local name
 local temp_pool
 local xp_amount
 minetest.register_on_dieplayer(function(player)
+	if minetest.settings:get_bool("mcl_keepInventory", false) then
+		return
+	end
+
 	name = player:get_player_name()
 	temp_pool = pool[name]
-	xp_amount = temp_pool.xp_level
+	xp_amount = temp_pool.xp
 	
-	temp_pool.xp_bar   = 0
-	temp_pool.xp_level = 0
+	temp_pool.bar   = 0
+	temp_pool.level = 0
+	temp_pool.xp = 0
 
+	hud_manager.change_hud({player = player, hud_name = "xp_level_fg", element = "text", data = tostring(temp_pool.level)})
+	hud_manager.change_hud({player = player, hud_name = "xp_level_bg", element = "text", data = tostring(temp_pool.level)})
+	hud_manager.change_hud({player = player, hud_name = "experience_bar", element = "number", data = temp_pool.bar})
 
-	hud_manager.change_hud({
-		player   = player,
-		hud_name = "xp_level_fg",
-		element  = "text",
-		data     = tostring(temp_pool.xp_level)
-	})
-	hud_manager.change_hud({
-		player   = player,
-		hud_name = "xp_level_bg",
-		element  = "text",
-		data     = tostring(temp_pool.xp_level)
-	})
-
-	hud_manager.change_hud({
-		player   = player,
-		hud_name = "experience_bar",
-		element  = "number",
-		data     = temp_pool.xp_bar
-	})
-
-    mcl_experience.throw_experience(player:get_pos(), xp_amount)
+	mcl_experience.throw_experience(player:get_pos(), xp_amount)
 end)
 
 
@@ -349,7 +336,7 @@ local function xp_step(self, dtime)
 				acceleration = vector.new(goal.x-currentvel.x,goal.y-currentvel.y,goal.z-currentvel.z)
 				self.object:add_velocity(vector.add(acceleration,player_velocity))
 			elseif distance < 0.4 then
-				mcl_experience.add_experience(collector,2)
+				mcl_experience.add_experience(collector, self._xp)
 				self.object:remove()
 			end
 			return
@@ -420,7 +407,7 @@ local function xp_step(self, dtime)
 	self.slippery_state = is_slippery
 
 	if is_moving then
-		self.object:set_acceleration({x = 0, y = -9.81, z = 0})
+		self.object:set_acceleration(gravity)
 	else
 		self.object:set_acceleration({x = 0, y = 0, z = 0})
 		self.object:set_velocity({x = 0, y = 0, z = 0})
@@ -466,9 +453,11 @@ minetest.register_entity("mcl_experience:orb", {
 		))
 		self.object:set_armor_groups({immortal = 1})
 		self.object:set_velocity({x = 0, y = 2, z = 0})
-		self.object:set_acceleration({x = 0, y = -9.81, z = 0})
-        size = math.random(20,36)/100
-        self.object:set_properties({
+		self.object:set_acceleration(gravity)
+		local xp = tonumber(staticdata)
+		self._xp = xp
+	        size = xp_to_size(xp)
+	        self.object:set_properties({
 			visual_size = {x = size, y = size},
 			glow = 14,
 		})
@@ -480,7 +469,7 @@ minetest.register_entity("mcl_experience:orb", {
 			self.physical_state = true
 			self.object:set_properties({physical = true})
 			self.object:set_velocity({x=0, y=0, z=0})
-			self.object:set_acceleration({x=0, y=-9.81, z=0})
+			self.object:set_acceleration(gravity)
 		end
 	end,
 
@@ -497,10 +486,9 @@ minetest.register_entity("mcl_experience:orb", {
 	end,
 })
 
-
 minetest.register_chatcommand("xp", {
 	params = S("[<player>] [<xp>]"),
-	description = S("Gives [player <player>] [<xp>] XP"),
+	description = S("Gives [[player <player>] <xp>] XP"),
 	privs = {server=true},
 	func = function(name, params)
 		local player, xp = nil, 1000
@@ -521,27 +509,31 @@ minetest.register_chatcommand("xp", {
 		if i == 2 then
 			player = minetest.get_player_by_name(P[1])
 		end
-		if (not xp) or (xp < 1) then
-			return false, S("Error: Incorrect number of XP")
+		if not xp then
+			return false, S("Error: Incorrect value of XP")
 		end
 		if not player then
 			return false, S("Error: Player not found")
 		end
-		local pos = player:get_pos()
-		pos.y = pos.y + 1.2
-		mcl_experience.throw_experience(pos, xp)
+		mcl_experience.add_experience(player, xp)
 	end,
 })
 
 function mcl_experience.throw_experience(pos, amount)
-    for i = 1,amount do
-        object = minetest.add_entity(pos, "mcl_experience:orb")
-        if object then
-            object:set_velocity({
-				x=math.random(-2,2)*math.random(), 
-				y=math.random(2,5), 
-				z=math.random(-2,2)*math.random()
-			})
-        end
-    end
+	local i, j = 0, 0
+	local obj, xp
+	while i < amount and j < 100 do
+		xp = math.min(math.random(1, math.min(32767, amount-math.floor(i/2))), amount-i)
+		obj = minetest.add_entity(pos, "mcl_experience:orb", tostring(xp))
+		if not obj then
+			return false
+		end
+		obj:set_velocity({
+			x=math.random(-2,2)*math.random(), 
+			y=math.random(2,5), 
+			z=math.random(-2,2)*math.random()
+		})
+		i = i + xp
+		j = j + 1
+	end
 end
