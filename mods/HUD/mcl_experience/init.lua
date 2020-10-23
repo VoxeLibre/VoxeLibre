@@ -472,7 +472,7 @@ minetest.register_entity("mcl_experience:orb", {
 
 minetest.register_chatcommand("xp", {
 	params = S("[<player>] [<xp>]"),
-	description = S("Gives [[player <player>] <xp>] XP"),
+	description = S("Gives a player some XP"),
 	privs = {server=true},
 	func = function(name, params)
 		local player, xp = nil, 1000
