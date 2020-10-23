@@ -197,7 +197,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			if obj ~= self._shooter and obj:is_player() then
 				ok = true
 			elseif obj:get_luaentity() ~= nil then
-				if obj ~= self._shooter and obj:get_luaentity()._cmi_is_mob then
+				if obj ~= self._shooter and (obj:get_luaentity()._cmi_is_mob or obj:get_luaentity()._hittable_by_projectile) then
 					ok = true
 				end
 			end
@@ -219,7 +219,7 @@ ARROW_ENTITY.on_step = function(self, dtime)
 			local obj = closest_object
 			local is_player = obj:is_player()
 			local lua = obj:get_luaentity()
-			if obj ~= self._shooter and (is_player or (lua and lua._cmi_is_mob)) then
+			if obj ~= self._shooter and (is_player or (lua and (lua._cmi_is_mob or lua._hittable_by_projectile))) then
 				if obj:get_hp() > 0 then
 					-- Check if there is no solid node between arrow and object
 					local ray = minetest.raycast(self.object:get_pos(), obj:get_pos(), true)
