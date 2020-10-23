@@ -69,7 +69,9 @@ hud_manager.add_hud = function(player,hud_name,def)
 		hud_elem_type = def.hud_elem_type,
 		position      = def.position,
 		text          = def.text,
+		text2         = def.text2,
 		number        = def.number,
+		item          = def.item,
 		direction     = def.direction,
 		size          = def.size,
 		offset        = def.offset,
@@ -163,20 +165,14 @@ minetest.register_on_joinplayer(function(player)
 	name = player:get_player_name()
 	temp_pool = pool[name]
 		
-	hud_manager.add_hud(player, "experience_bar_background",
-	{
-	        hud_elem_type = "statbar", position = {x=0.5, y=1},
-	        name = "experience bar background", text = "experience_bar_background.png",
-	        number = 36, direction = 0,
-	        offset = {x = (-8 * 28) - 29, y = -(48 + 24 + 16)},
-	        size = { x=28, y=28 }, z_index = 10,
-	})
-	
 	hud_manager.add_hud(player,"experience_bar",
 	{
 	        hud_elem_type = "statbar", position = {x=0.5, y=1},
-	        name = "experience bar", text = "experience_bar.png",
-	        number = temp_pool.bar, direction = 0,
+	        name = "experience bar",
+		text = "experience_bar.png",
+		text2 = "experience_bar_background.png",
+	        number = temp_pool.bar, item = 36,
+		direction = 0,
 	        offset = {x = (-8 * 28) - 29, y = -(48 + 24 + 16)},
 	        size = { x=28, y=28 }, z_index = 11,
 	})
