@@ -2,6 +2,7 @@ local S = minetest.get_translator("mcl_experience")
 mcl_experience = {}
 local pool = {}
 local registered_nodes
+local max_xp = 2^31-1
 
 local gravity = {x = 0, y = -((tonumber(minetest.settings:get("movement_gravity"))) or 9.81), z = 0}
 local size_min, size_max = 20, 59 -- percents
@@ -235,7 +236,7 @@ function mcl_experience.add_experience(player, experience)
 	local temp_pool = pool[name]
 
 	local old_bar, old_xp, old_level = temp_pool.bar, temp_pool.xp, temp_pool.level
-	temp_pool.xp = math.max(temp_pool.xp + experience, 0)
+	temp_pool.xp = math.min(math.max(temp_pool.xp + experience, 0), max_xp)
 	temp_pool.level = mcl_experience.xp_to_level(temp_pool.xp)
 	temp_pool.bar, temp_pool.xp_next_level = mcl_experience.xp_to_bar(temp_pool.xp, temp_pool.level)
 	if old_level ~= temp_pool.level then
