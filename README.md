@@ -204,6 +204,7 @@ There are so many people to list (sorry). Check out the respective mod directori
 * MysticTempest: Bugfixes
 * [bzoss](https://github.com/bzoss): Status effects, potions, brewing stand
 * kay27 <kay27@bk.ru>: Bugfixes, optimizations
+* 2mac: Fix bug with powered rail
 * Lots of other people: TO BE WRITTEN (see mod directories for details)
 
 #### Mod credits (summary)
