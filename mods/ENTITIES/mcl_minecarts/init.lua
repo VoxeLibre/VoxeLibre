@@ -414,14 +414,17 @@ local function register_entity(entity_id, mesh, textures, drop, on_rightclick, o
 
 			-- Slow down or speed up
 			local acc = dir.y * -1.8
-
+			local friction = 0.4
 			local speed_mod = minetest.registered_nodes[minetest.get_node(pos).name]._rail_acceleration
+
+			acc = acc - friction
+
 			if has_fuel then
-				acc = acc + 0.2
-			elseif speed_mod and speed_mod ~= 0 then
-				acc = acc + speed_mod
-			else
-				acc = acc - 0.4
+				acc = acc + 0.6
+			end
+
+			if speed_mod and speed_mod ~= 0 then
+				acc = acc + speed_mod + friction
 			end
 
 			new_acc = vector.multiply(dir, acc)
