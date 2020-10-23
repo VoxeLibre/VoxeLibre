@@ -39,6 +39,9 @@ local fish = function(itemstack, player)
 			if ent then
 				if ent.player and ent.objtype=="fishing" then
 					if (player:get_player_name() == ent.player) then
+						if mcl_experience.throw_experience then
+							mcl_experience.throw_experience(pos, math.random(1,6))
+						end
 						noent = false
 						if ent._dive == true then
 							local itemname
