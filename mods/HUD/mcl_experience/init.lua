@@ -237,13 +237,17 @@ function mcl_experience.add_experience(player, experience)
 	temp_pool.bar, temp_pool.xp_next_level = mcl_experience.xp_to_bar(temp_pool.xp, temp_pool.level)
 	if old_level ~= temp_pool.level then
 		if minetest.get_us_time()/1000000 - temp_pool.last_time > 0.04 then
-			minetest.sound_play("level_up",{gain=0.2,to_player = name})
+			if experience > 0 then
+				minetest.sound_play("level_up",{gain=0.2,to_player = name})
+			end
 			temp_pool.last_time = minetest.get_us_time()/1000000
 		end
 		hud_manager.change_hud({player = player, hud_name = "xp_level", element = "text", data = tostring(temp_pool.level)})
 	elseif minetest.get_us_time()/1000000 - temp_pool.last_time > 0.01 then
 		temp_pool.last_time = minetest.get_us_time()/1000000
-		minetest.sound_play("experience",{gain=0.1,to_player = name,pitch=math.random(75,99)/100})
+		if experience > 0 then
+			minetest.sound_play("experience",{gain=0.1,to_player = name,pitch=math.random(75,99)/100})
+		end
 	end
 
 	if old_bar ~= temp_pool.bar then
