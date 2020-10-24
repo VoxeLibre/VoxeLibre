@@ -40,7 +40,7 @@ local load_data = function(player)
 	local meta = player:get_meta()
 	temp_pool.xp = meta:get_int("xp") or 0
 	temp_pool.level = mcl_experience.xp_to_level(temp_pool.xp)
-	temp_pool.bar, temp_pool.xp_next_level = mcl_experience.xp_to_bar(temp_pool.xp, temp_pool.level)
+	temp_pool.bar, temp_pool.bar_step, temp_pool.xp_next_level = mcl_experience.xp_to_bar(temp_pool.xp, temp_pool.level)
 	temp_pool.last_time= minetest.get_us_time()/1000000
 end
 
@@ -136,24 +136,20 @@ minetest.register_on_shutdown(function()
 end)
 
 
-local name
 function mcl_experience.get_player_xp_level(player)
-	name = player:get_player_name()
+	local name = player:get_player_name()
 	return(pool[name].level)
 end
 
-local name
-local temp_pool
 function mcl_experience.set_player_xp_level(player,level)
-	name = player:get_player_name()
+	local name = player:get_player_name()
+	if level == pool[name].level then
+		return
+	end
 	pool[name].level = level
-	pool[name].xp = mcl_experience.level_to_xp(level)
-	hud_manager.change_hud({
-		player   = player,
-		hud_name = "xp_level",
-		element  = "text",
-		data     = tostring(level)
-	})
+	pool[name].xp, pool[name].next_level = mcl_experience.bar_to_xp(pool[name].bar, level)
+	hud_manager.change_hud({player = player, hud_name = "xp_level", element = "text", data = tostring(level)})
+	-- we may don't update the bar
 end
 
 local name
@@ -223,35 +219,45 @@ function mcl_experience.xp_to_bar(xp, level)
 	local level = level or mcl_experience.xp_to_level(xp)
 	local xp_this_level = mcl_experience.level_to_xp(level)
 	local xp_next_level = mcl_experience.level_to_xp(level+1)
-	local bar = math.floor((xp-xp_this_level)/(xp_next_level-xp_this_level)*35)
-	return bar, xp_next_level
-end		
+	local bar_step = 36 / (xp_next_level-xp_this_level)
+	local bar = (xp-xp_this_level) * bar_step
+	return bar, bar_step, xp_next_level
+end
+
+function mcl_experience.bar_to_xp(bar, level)
+	local xp_this_level = mcl_experience.level_to_xp(level)
+	local xp_next_level = mcl_experience.level_to_xp(level+1)
+	local bar_step = 36 / (xp_next_level-xp_this_level)
+	local xp = xp_this_level + math.floor(bar/36*(xp_next_level-xp_this_level))
+	return xp, bar_step, xp_next_level
+end
 
 function mcl_experience.add_experience(player, experience)
 	local name = player:get_player_name()
 	local temp_pool = pool[name]
 
 	local old_bar, old_xp, old_level = temp_pool.bar, temp_pool.xp, temp_pool.level
-	temp_pool.xp = math.min(math.max(temp_pool.xp + experience, 0), max_xp)
-	temp_pool.level = mcl_experience.xp_to_level(temp_pool.xp)
-	temp_pool.bar, temp_pool.xp_next_level = mcl_experience.xp_to_bar(temp_pool.xp, temp_pool.level)
-	if old_level ~= temp_pool.level then
-		if minetest.get_us_time()/1000000 - temp_pool.last_time > 0.04 then
-			if experience > 0 then
+	temp_pool.xp = math.max(temp_pool.xp + experience, 0)
+	if (temp_pool.xp >= temp_pool.xp_next_level) or (experience < 1) then
+		temp_pool.level = mcl_experience.xp_to_level(temp_pool.xp)
+		temp_pool.bar, temp_pool.bar_step, temp_pool.xp_next_level = mcl_experience.xp_to_bar(temp_pool.xp, temp_pool.level)
+		if old_level ~= temp_pool.level then
+			if minetest.get_us_time()/1000000 - temp_pool.last_time > 0.04 then
 				minetest.sound_play("level_up",{gain=0.2,to_player = name})
+				temp_pool.last_time = minetest.get_us_time()/1000000
 			end
-			temp_pool.last_time = minetest.get_us_time()/1000000
+			hud_manager.change_hud({player = player, hud_name = "xp_level", element = "text", data = tostring(temp_pool.level)})
 		end
-		hud_manager.change_hud({player = player, hud_name = "xp_level", element = "text", data = tostring(temp_pool.level)})
-	elseif minetest.get_us_time()/1000000 - temp_pool.last_time > 0.01 then
-		temp_pool.last_time = minetest.get_us_time()/1000000
-		if experience > 0 then
+	else
+		if minetest.get_us_time()/1000000 - temp_pool.last_time > 0.01 then
+			temp_pool.last_time = minetest.get_us_time()/1000000
 			minetest.sound_play("experience",{gain=0.1,to_player = name,pitch=math.random(75,99)/100})
 		end
+		temp_pool.bar = temp_pool.bar + temp_pool.bar_step * experience
 	end
 
 	if old_bar ~= temp_pool.bar then
-		hud_manager.change_hud({player = player, hud_name = "experience_bar", element = "number", data = temp_pool.bar})
+		hud_manager.change_hud({player = player, hud_name = "experience_bar", element = "number", data = math.floor(temp_pool.bar)})
 	end
 end
 
@@ -273,7 +279,7 @@ minetest.register_on_dieplayer(function(player)
 	temp_pool.xp = 0
 
 	hud_manager.change_hud({player = player, hud_name = "xp_level", element = "text", data = tostring(temp_pool.level)})
-	hud_manager.change_hud({player = player, hud_name = "experience_bar", element = "number", data = temp_pool.bar})
+	hud_manager.change_hud({player = player, hud_name = "experience_bar", element = "number", data = math.floor(temp_pool.bar)})
 
 	mcl_experience.throw_experience(player:get_pos(), xp_amount)
 end)
@@ -501,6 +507,9 @@ minetest.register_chatcommand("xp", {
 			return false, S("Error: Player not found")
 		end
 		mcl_experience.add_experience(player, xp)
+		local playername = player:get_player_name()
+--		minetest.chat_send_player(name, "Added " .. tostring(xp) .. " XP to " .. playername .. ", they've got " .. tostring(pool[playername].xp) .. " XP, level " .. tostring(pool[playername].level))
+		minetest.chat_send_player(name, S("Added @1 XP to @2, total: @3, experience level: @4", tostring(xp), playername, tostring(pool[playername].xp), tostring(pool[playername].level)))
 	end,
 })
 
