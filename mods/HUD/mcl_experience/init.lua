@@ -46,7 +46,7 @@ end
 
 -- saves data to be utilized on next login
 local save_data = function(player)
-	name = player:get_player_name()
+	local name = player:get_player_name()
 	local temp_pool = pool[name]
 	local meta = player:get_meta()
 	meta:set_int("xp", temp_pool.xp)
@@ -508,7 +508,6 @@ minetest.register_chatcommand("xp", {
 		end
 		mcl_experience.add_experience(player, xp)
 		local playername = player:get_player_name()
---		minetest.chat_send_player(name, "Added " .. tostring(xp) .. " XP to " .. playername .. ", they've got " .. tostring(pool[playername].xp) .. " XP, level " .. tostring(pool[playername].level))
 		minetest.chat_send_player(name, S("Added @1 XP to @2, total: @3, experience level: @4", tostring(xp), playername, tostring(pool[playername].xp), tostring(pool[playername].level)))
 	end,
 })
