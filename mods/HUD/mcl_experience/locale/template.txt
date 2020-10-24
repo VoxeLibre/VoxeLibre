@@ -1,4 +1,4 @@
-[<player>] [<xp>]=
+[[<player>] <xp>]=
 Gives a player some XP=
 Error: Too many parameters!=
 Error: Incorrect value of XP=

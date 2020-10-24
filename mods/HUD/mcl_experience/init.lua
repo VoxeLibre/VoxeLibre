@@ -181,7 +181,6 @@ minetest.register_on_joinplayer(function(player)
 		offset = {x = 0, y = -(48 + 24 + 24)},
 	        z_index = 12,
 	})                            
-
 end)
 
 function mcl_experience.xp_to_level(xp)
@@ -237,13 +236,15 @@ function mcl_experience.add_experience(player, experience)
 	local temp_pool = pool[name]
 
 	local old_bar, old_xp, old_level = temp_pool.bar, temp_pool.xp, temp_pool.level
-	temp_pool.xp = math.max(temp_pool.xp + experience, 0)
+	temp_pool.xp = math.min(math.max(temp_pool.xp + experience, 0), max_xp)
 	if (temp_pool.xp >= temp_pool.xp_next_level) or (experience < 1) then
 		temp_pool.level = mcl_experience.xp_to_level(temp_pool.xp)
 		temp_pool.bar, temp_pool.bar_step, temp_pool.xp_next_level = mcl_experience.xp_to_bar(temp_pool.xp, temp_pool.level)
 		if old_level ~= temp_pool.level then
 			if minetest.get_us_time()/1000000 - temp_pool.last_time > 0.04 then
-				minetest.sound_play("level_up",{gain=0.2,to_player = name})
+				if experience > 0 then
+					minetest.sound_play("level_up",{gain=0.2,to_player = name})
+				end
 				temp_pool.last_time = minetest.get_us_time()/1000000
 			end
 			hud_manager.change_hud({player = player, hud_name = "xp_level", element = "text", data = tostring(temp_pool.level)})
@@ -251,7 +252,9 @@ function mcl_experience.add_experience(player, experience)
 	else
 		if minetest.get_us_time()/1000000 - temp_pool.last_time > 0.01 then
 			temp_pool.last_time = minetest.get_us_time()/1000000
-			minetest.sound_play("experience",{gain=0.1,to_player = name,pitch=math.random(75,99)/100})
+			if experience > 0 then
+				minetest.sound_play("experience",{gain=0.1,to_player = name,pitch=math.random(75,99)/100})
+			end
 		end
 		temp_pool.bar = temp_pool.bar + temp_pool.bar_step * experience
 	end
@@ -478,7 +481,7 @@ minetest.register_entity("mcl_experience:orb", {
 })
 
 minetest.register_chatcommand("xp", {
-	params = S("[<player>] [<xp>]"),
+	params = S("[[<player>] <xp>]"),
 	description = S("Gives a player some XP"),
 	privs = {server=true},
 	func = function(name, params)
