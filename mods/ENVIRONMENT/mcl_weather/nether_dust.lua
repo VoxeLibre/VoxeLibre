@@ -31,7 +31,7 @@ minetest.register_globalstep(function(dtime)
 	end
 
 	for _, player in ipairs(minetest.get_connected_players()) do
-		if (mcl_weather.is_underwater(player) or not mcl_worlds.has_dust(player:get_pos())) then
+		if not mcl_worlds.has_dust(player:get_pos()) then
 			return false
 		end
 		mcl_weather.nether_dust.add_dust_particles(player)

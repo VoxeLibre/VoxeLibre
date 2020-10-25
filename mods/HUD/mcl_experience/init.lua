@@ -3,6 +3,7 @@ mcl_experience = {}
 local pool = {}
 local registered_nodes
 local max_xp = 2^31-1
+local max_orb_age = 300 -- seconds
 
 local gravity = {x = 0, y = -((tonumber(minetest.settings:get("movement_gravity"))) or 9.81), z = 0}
 local size_min, size_max = 20, 59 -- percents
@@ -147,7 +148,7 @@ function mcl_experience.set_player_xp_level(player,level)
 		return
 	end
 	pool[name].level = level
-	pool[name].xp, pool[name].next_level = mcl_experience.bar_to_xp(pool[name].bar, level)
+	pool[name].xp, pool[name].bar_step, pool[name].next_level = mcl_experience.bar_to_xp(pool[name].bar, level)
 	hud_manager.change_hud({player = player, hud_name = "xp_level", element = "text", data = tostring(level)})
 	-- we may don't update the bar
 end
@@ -237,7 +238,7 @@ function mcl_experience.add_experience(player, experience)
 
 	local old_bar, old_xp, old_level = temp_pool.bar, temp_pool.xp, temp_pool.level
 	temp_pool.xp = math.min(math.max(temp_pool.xp + experience, 0), max_xp)
-	if (temp_pool.xp >= temp_pool.xp_next_level) or (experience < 1) then
+	if (temp_pool.xp >= temp_pool.xp_next_level) or (temp_pool.xp < old_xp) then
 		temp_pool.level = mcl_experience.xp_to_level(temp_pool.xp)
 		temp_pool.bar, temp_pool.bar_step, temp_pool.xp_next_level = mcl_experience.xp_to_bar(temp_pool.xp, temp_pool.level)
 		if old_level ~= temp_pool.level then
@@ -342,7 +343,7 @@ local function xp_step(self, dtime)
 
 					
 	self.age = self.age + dtime
-	if self.age > 300 then
+	if self.age > max_orb_age then
 		self.object:remove()
 		return
 	end
