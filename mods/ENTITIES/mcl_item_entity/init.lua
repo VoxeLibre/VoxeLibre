@@ -152,6 +152,11 @@ minetest.register_globalstep(function(dtime)
 						end
 					end
 
+				elseif not object:is_player() and object:get_luaentity() and object:get_luaentity().name == "mcl_experience:orb" then
+					local entity = object:get_luaentity()
+					entity.collector = player:get_player_name()
+					entity.collected = true
+
 				end
 			end
 
@@ -221,6 +226,12 @@ function minetest.handle_node_drops(pos, drops, digger)
 	local dug_node = minetest.get_node(pos)
 	local toolcaps
 	if digger ~= nil then
+		if mcl_experience.throw_experience then
+		        local experience_amount = minetest.get_item_group(dug_node.name,"xp")
+		        if experience_amount > 0 then
+		            mcl_experience.throw_experience(pos, experience_amount)
+		        end
+		end
 		local tool = digger:get_wielded_item()
 		toolcaps = tool:get_tool_capabilities()
 

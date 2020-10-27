@@ -1,0 +1,6 @@
+[<player>] [<xp>]=[<игрок>] [<xp>]
+Gives [[player <player>] <xp>] XP=Даёт [[игроку <игрок> [<xp>]] единиц опыта XP
+Error: Too many parameters!=Ошибка: слишком много параметров!
+Error: Incorrect value of XP=Ошибка: Недопустимое значение XP
+Error: Player not found=Ошибка: Игрок не найден
+Added @1 XP to @2, total: @3, experience level: @4=Добавляем @1 XP игроку @2, итого: @3, уровень опыта: @4
