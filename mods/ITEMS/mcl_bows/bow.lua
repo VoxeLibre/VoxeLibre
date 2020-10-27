@@ -119,7 +119,7 @@ S("The speed and damage of the arrow increases the longer you charge. The regula
 	range = 1,
 	-- Trick to disable digging as well
 	on_use = function() end,
-	groups = {weapon=1,weapon_ranged=1},
+	groups = {weapon=1,weapon_ranged=1,bow=1},
 })
 
 -- Iterates through player inventory and resets all the bows in "charging" state back to their original stage
