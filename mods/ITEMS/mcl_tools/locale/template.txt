@@ -30,5 +30,3 @@ Iron Sword=
 Golden Sword=
 Diamond Sword=
 Shears=
-Enchanted @1=
-Enchanting Table=
