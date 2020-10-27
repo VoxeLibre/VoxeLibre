@@ -130,6 +130,9 @@ local reset_bows = function(player)
 		if stack:get_name()=="mcl_bows:bow_0" or stack:get_name()=="mcl_bows:bow_1" or stack:get_name()=="mcl_bows:bow_2" then
 			stack:set_name("mcl_bows:bow")
 			list[place] = stack
+		elseif stack:get_name()=="mcl_bows:bow_0_enchanted" or stack:get_name()=="mcl_bows:bow_1_enchanted" or stack:get_name()=="mcl_bows:bow_2_enchanted" then
+			stack:set_name("mcl_bows:bow_enchanted")
+			list[place] = stack
 		end
 	end
 	inv:set_list("main", list)
@@ -159,7 +162,11 @@ for level=0, 2 do
 		groups = {not_in_creative_inventory=1, not_in_craft_guide=1, bow=1},
 		on_drop = function(itemstack, dropper, pos)
 			reset_bow_state(dropper)
-			itemstack:set_name("mcl_bows:bow")
+			if minetest.get_item_group(itemstack:get_name(), "enchanted") > 0 then
+				itemstack:set_name("mcl_bows:bow_enchanted")
+			else
+				itemstack:set_name("mcl_bows:bow")
+			end
 			minetest.item_drop(itemstack, dropper, pos)
 			itemstack:take_item()
 			return itemstack
@@ -176,9 +183,11 @@ controls.register_on_release(function(player, key, time)
 	if key~="RMB" then return end
 	local inv = minetest.get_inventory({type="player", name=player:get_player_name()})
 	local wielditem = player:get_wielded_item()
-	if (wielditem:get_name()=="mcl_bows:bow_0" or wielditem:get_name()=="mcl_bows:bow_1" or wielditem:get_name()=="mcl_bows:bow_2") then
+	if (wielditem:get_name()=="mcl_bows:bow_0" or wielditem:get_name()=="mcl_bows:bow_1" or wielditem:get_name()=="mcl_bows:bow_2" or
+		wielditem:get_name()=="mcl_bows:bow_0_enchanted" or wielditem:get_name()=="mcl_bows:bow_1_enchanted" or wielditem:get_name()=="mcl_bows:bow_2_enchanted") then
 		local has_shot = false
-
+		
+		local enchanted = minetest.get_item_group(wielditem:get_name(), "enchanted") > 0
 		local speed, damage
 		local p_load = bow_load[player:get_player_name()]
 		local charge
@@ -217,8 +226,13 @@ controls.register_on_release(function(player, key, time)
 		end
 
 		has_shot = player_shoot_arrow(wielditem, player, speed, damage, is_critical)
-
-		wielditem:set_name("mcl_bows:bow")
+		
+		if enchanted then
+			wielditem:set_name("mcl_bows:bow_enchanted")
+		else
+			wielditem:set_name("mcl_bows:bow")
+		end
+		
 		if has_shot and not minetest.is_creative_enabled(player:get_player_name()) then
 			wielditem:add_wear(65535/BOW_DURABILITY)
 		end
@@ -235,8 +249,13 @@ controls.register_on_hold(function(player, key, time)
 	end
 	local inv = minetest.get_inventory({type="player", name=name})
 	local wielditem = player:get_wielded_item()
-	if bow_load[name] == nil and wielditem:get_name()=="mcl_bows:bow" and (creative or get_arrow(player)) then
-		wielditem:set_name("mcl_bows:bow_0")
+	if bow_load[name] == nil and (wielditem:get_name()=="mcl_bows:bow" or wielditem:get_name()=="mcl_bows:bow_enchanted") and (creative or get_arrow(player)) then
+		local enchanted = (wielditem:get_name()=="mcl_bows:bow_enchanted")
+		if enchanted then
+			wielditem:set_name("mcl_bows:bow_0_enchanted")
+		else
+			wielditem:set_name("mcl_bows:bow_0")
+		end
 		player:set_wielded_item(wielditem)
 		if minetest.get_modpath("playerphysics") then
 			-- Slow player down when using bow
@@ -249,12 +268,18 @@ controls.register_on_hold(function(player, key, time)
 			if type(bow_load[name]) == "number" then
 				if wielditem:get_name() == "mcl_bows:bow_0" and minetest.get_us_time() - bow_load[name] >= BOW_CHARGE_TIME_HALF then
 					wielditem:set_name("mcl_bows:bow_1")
+				elseif wielditem:get_name() == "mcl_bows:bow_0_enchanted" and minetest.get_us_time() - bow_load[name] >= BOW_CHARGE_TIME_HALF then
+					wielditem:set_name("mcl_bows:bow_1_enchanted")
 				elseif wielditem:get_name() == "mcl_bows:bow_1" and minetest.get_us_time() - bow_load[name] >= BOW_CHARGE_TIME_FULL then
 					wielditem:set_name("mcl_bows:bow_2")
+				elseif wielditem:get_name() == "mcl_bows:bow_1_enchanted" and minetest.get_us_time() - bow_load[name] >= BOW_CHARGE_TIME_FULL then
+					wielditem:set_name("mcl_bows:bow_2_enchanted")
 				end
 			else
 				if wielditem:get_name() == "mcl_bows:bow_0" or wielditem:get_name() == "mcl_bows:bow_1" or wielditem:get_name() == "mcl_bows:bow_2" then
 					wielditem:set_name("mcl_bows:bow")
+				elseif wielditem:get_name() == "mcl_bows:bow_0_enchanted" or wielditem:get_name() == "mcl_bows:bow_1_enchanted" or wielditem:get_name() == "mcl_bows:bow_2_enchanted" then
+					wielditem:set_name("mcl_bows:bow_enchanted")
 				end
 			end
 			player:set_wielded_item(wielditem)
@@ -270,7 +295,7 @@ minetest.register_globalstep(function(dtime)
 		local wielditem = player:get_wielded_item()
 		local wieldindex = player:get_wield_index()
 		local controls = player:get_player_control()
-		if type(bow_load[name]) == "number" and ((wielditem:get_name()~="mcl_bows:bow_0" and wielditem:get_name()~="mcl_bows:bow_1" and wielditem:get_name()~="mcl_bows:bow_2") or wieldindex ~= bow_index[name]) then
+		if type(bow_load[name]) == "number" and ((wielditem:get_name()~="mcl_bows:bow_0" and wielditem:get_name()~="mcl_bows:bow_1" and wielditem:get_name()~="mcl_bows:bow_2" and wielditem:get_name()~="mcl_bows:bow_0_enchanted" and wielditem:get_name()~="mcl_bows:bow_1_enchanted" and wielditem:get_name()~="mcl_bows:bow_2_enchanted") or wieldindex ~= bow_index[name]) then
 			reset_bow_state(player, true)
 		end
 	end
@@ -306,6 +331,12 @@ end
 minetest.register_craft({
 	type = "fuel",
 	recipe = "mcl_bows:bow",
+	burntime = 15,
+})
+
+minetest.register_craft({
+	type = "fuel",
+	recipe = "mcl_bows:bow_enchanted",
 	burntime = 15,
 })
 

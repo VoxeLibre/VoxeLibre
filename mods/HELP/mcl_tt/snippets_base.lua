@@ -35,12 +35,12 @@ local function newline(str)
 end
 
 -- Digging capabilities of tool
-tt.register_snippet(function(itemstring)
+tt.register_snippet(function(itemstring, toolcaps)
 	local def = minetest.registered_items[itemstring]
-	if not def.tool_capabilities then
+	if not toolcaps then
 		return
 	end
-	local groupcaps = def.tool_capabilities.groupcaps
+	local groupcaps = toolcaps.groupcaps
 	if not groupcaps then
 		return
 	end
@@ -105,8 +105,8 @@ tt.register_snippet(function(itemstring)
 		-- Capabilities
 		minestring = minestring .. capstr
 		-- Max. drop level
-		local mdl = def.tool_capabilities.max_drop_level
-		if not def.tool_capabilities.max_drop_level then
+		local mdl = toolcaps.max_drop_level
+		if not toolcaps.max_drop_level then
 			mdl = 0
 		end
 		minestring = minestring .. S("Block breaking strength: @1", mdl)
@@ -114,8 +114,8 @@ tt.register_snippet(function(itemstring)
 
 	local weaponstring = ""
 	-- Weapon stats
-	if def.tool_capabilities.damage_groups then
-		for group, damage in pairs(def.tool_capabilities.damage_groups) do
+	if toolcaps.damage_groups then
+		for group, damage in pairs(toolcaps.damage_groups) do
 			local msg
 			if group == "fleshy" then
 				if damage >= 0 then
@@ -127,7 +127,7 @@ tt.register_snippet(function(itemstring)
 			weaponstring = newline(weaponstring)
 			weaponstring = weaponstring .. msg
 		end
-		local full_punch_interval = def.tool_capabilities.full_punch_interval
+		local full_punch_interval = toolcaps.full_punch_interval
 		if not full_punch_interval then
 			full_punch_interval = 1
 		end

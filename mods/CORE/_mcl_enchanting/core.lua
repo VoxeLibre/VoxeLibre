@@ -86,7 +86,7 @@ function mcl_enchanting.get_enchantments(itemstack)
 	return minetest.deserialize(itemstack:get_meta():get_string("mcl_enchanting:enchantments")) or {}
 end
 
-function mcl_enchanting.set_enchantments(itemstack, enchantments, data)
+function mcl_enchanting.set_enchantments(itemstack, enchantments)
 	return itemstack:get_meta():set_string("mcl_enchanting:enchantments", minetest.serialize(enchantments))
 end
 
@@ -156,12 +156,12 @@ function mcl_enchanting.can_enchant(itemstack, enchantment, level)
 end
 
 function mcl_enchanting.enchant(itemstack, enchantment, level)
-	local enchanted_itemstack = ItemStack({name = mcl_enchanting.get_enchanted_itemstring(itemstack:get_name()), wear = itemstack:get_wear(), metadata = itemstack:get_metadata()})
-	local enchantments = mcl_enchanting.get_enchantments(enchanted_itemstack)
+	itemstack:set_name(mcl_enchanting.get_enchanted_itemstring(itemstack:get_name()))
+	local enchantments = mcl_enchanting.get_enchantments(itemstack)
 	enchantments[enchantment] = level
-	mcl_enchanting.set_enchantments(enchanted_itemstack, enchantments)
-	mcl_enchanting.reload_enchantments(enchanted_itemstack, enchantments)
-	return enchanted_itemstack
+	mcl_enchanting.set_enchantments(itemstack, enchantments)
+	mcl_enchanting.reload_enchantments(itemstack, enchantments)
+	return itemstack
 end
 
 function mcl_enchanting.reload_enchantments(itemstack, enchantments)
@@ -172,4 +172,5 @@ function mcl_enchanting.reload_enchantments(itemstack, enchantments)
 			func(itemstack, level, itemdef)
 		end
 	end
+	tt.reload_itemstack_description(itemstack)
 end
