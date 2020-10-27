@@ -9,6 +9,7 @@ mcl_enchanting = {
 dofile(modpath .. "/enchantments.lua")
 dofile(modpath .. "/features.lua")
 dofile(modpath .. "/core.lua")
+dofile(modpath .. "/command.lua")
 -- dofile(modpath .. "/ui.lua")
 -- dofile(modpath .. "/fx.lua")
 -- dofile(modpath .. "/book.lua")

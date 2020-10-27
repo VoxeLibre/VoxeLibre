@@ -1,3 +1,6 @@
+mcl_enchanting.features = {}
+
+
 --[[
 local pickaxes = {"mcl_tools:pick_wood", "mcl_tools:pick_stone", "mcl_tools:pick_gold", "mcl_tools:pick_iron", "mcl_tools:pick_diamond"}
 local pickaxes_better_than_iron = {"mcl_tools:pick_iron", "mcl_tools:pick_diamond"}
@@ -118,3 +121,4 @@ end)
 			end
 		},
 	},--]]
+

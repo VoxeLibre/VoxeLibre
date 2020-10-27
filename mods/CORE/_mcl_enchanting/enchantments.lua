@@ -1,6 +1,6 @@
 -- Taken from https://minecraft.gamepedia.com/Enchanting
 
-mcl_enchantments.enchantments = {
+mcl_enchanting.enchantments = {
 	-- unimplemented
 	aqua_affinity = {
 		name = "Aqua Affinity",
@@ -90,6 +90,17 @@ mcl_enchantments.enchantments = {
 		description = "Reduces fall damage."
 	},
 	-- unimplemented
+	fire_aspect = {
+		name = "Fire Aspect",
+		max_level = 2,
+		primary = {sword = true},
+		secondary = {},
+		disallow = {},
+		incompatible = {},
+		weight = 2,
+		description = "Sets target on fire."
+	},
+	-- unimplemented
 	fire_protection = {
 		name = "Fire Protection",
 		max_level = 4,
@@ -99,6 +110,17 @@ mcl_enchantments.enchantments = {
 		incompatible = {blast_protection = true, protection = true, projectile_protection = true},
 		weight = 5,
 		description = "Reduces fire damage."
+	},
+	-- unimplemented
+	flame = {
+		name = "Flame",
+		max_level = 1,
+		primary = {bow = true},
+		secondary = {},
+		disallow = {},
+		incompatible = {},
+		weight = 2,
+		description = "Arrows set target on fire."
 	},
 	-- unimplemented
 	fortune = {
@@ -190,7 +212,7 @@ mcl_enchantments.enchantments = {
 	},
 	-- unimplemented
 	power = {
-	name = "Power",
+		name = "Power",
 		max_level = 5,
 		primary = {},
 		secondary = {bow = true},
@@ -267,12 +289,12 @@ mcl_enchantments.enchantments = {
 	},
 	-- unimplemented
 	smite = {
-		name = "Sharpness",
+		name = "Smite",
 		max_level = 5,
 		primary = {sword = true},
 		secondary = {axe = true},
 		disallow = {},
-		incompatible = {sharpness = true, smite = true},
+		incompatible = {bane_of_anthropods = true, sharpness = true},
 		weight = 5,
 		description = "Increases damage to undead mobs."
 	},
@@ -292,7 +314,7 @@ mcl_enchantments.enchantments = {
 		name = "Sweeping Edge",
 		max_level = 3,
 		primary = {sword = true},
-		secondary = {axe = true},
+		secondary = {},
 		disallow = {},
 		incompatible = {},
 		weight = 2,

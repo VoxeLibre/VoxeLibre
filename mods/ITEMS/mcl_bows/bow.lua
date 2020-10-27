@@ -156,7 +156,7 @@ for level=0, 2 do
 		wield_scale = { x = 1.8, y = 1.8, z = 1 },
 		stack_max = 1,
 		range = 0, -- Pointing range to 0 to prevent punching with bow :D
-		groups = {not_in_creative_inventory=1, not_in_craft_guide=1},
+		groups = {not_in_creative_inventory=1, not_in_craft_guide=1, bow=1},
 		on_drop = function(itemstack, dropper, pos)
 			reset_bow_state(dropper)
 			itemstack:set_name("mcl_bows:bow")

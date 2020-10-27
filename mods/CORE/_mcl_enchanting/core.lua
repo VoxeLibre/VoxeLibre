@@ -42,38 +42,43 @@ end)
 --]]
 
 minetest.register_on_mods_loaded(function()
+	local register_list = {}
 	for toolname, tooldef in pairs(minetest.registered_tools) do
-		-- quick test
-		local has_enchantment = false
+		if tooldef.groups.enchanted then
+			break
+		end
+		local quick_test = false
 		for group, groupv in pairs(tooldef.groups) do
-			if groupv > 0 and mcl_enchanting.all_item_groups[group] then	
-				has_enchantment = true
+			if groupv > 0 and mcl_enchanting.all_item_groups[group] then
+				quick_test = true
 				break
 			end
 		end
-		if not has_enchantment then
-			break
-		end
-		-- expensive test
-		has_enchantment = false
-		for enchantment in pairs(mcl_enchanting.enchantments) do
-			if mcl_enchanting.item_supports_enchantment(itemname, enchantment) then
-				has_enchantment = true
-				break
+		if quick_test then
+			--print(toolname)
+			local expensive_test = false
+			for enchantment in pairs(mcl_enchanting.enchantments) do
+				if mcl_enchanting.item_supports_enchantment(toolname, enchantment, true) then
+					-- print("\tSupports " .. enchantment)
+					expensive_test = true
+					break
+				end
+			end
+			if expensive_test then
+				local new_name = toolname .. "_enchanted"
+				minetest.override_item(toolname, {_mcl_enchanting_enchanted_tool = new_name})
+				local new_def = table.copy(tooldef)
+				new_def.inventory_image = tooldef.inventory_image .. "^[colorize:purple:50"
+				new_def.groups.not_in_creative_inventory = 1
+				new_def.groups.enchanted = 1
+				new_def.texture = tooldef.texture or toolname:gsub("%:", "_")
+				new_def._mcl_enchanting_enchanted_tool = new_name
+				register_list[":" .. new_name] = new_def
 			end
 		end
-		if not has_enchantment then
-			break
-		end
-		local new_name = toolname .. "_enchanted" 
-		tooldef._mcl_enchanting_enchanted_tool = new_name
-		local new_def = table.copy(tooldef)
-		new_def.inventory_image = old_def.inventory_image .. "^[colorize:violet:50"
-		new_def.groups.not_in_creative_inventory = 1
-		new_def.groups.enchanted = 1
-		new_def.texture = old_def.texture or toolname:gsub("%:", "_")
-		new_def._mcl_enchanting_enchanted_tool = new_name
-		minetest.register_tool(":" .. new_name, new_def)
+	end
+	for new_name, new_def in pairs(register_list) do
+		minetest.register_tool(new_name, new_def)
 	end
 end)
 
@@ -91,15 +96,16 @@ end
 
 function mcl_enchanting.get_enchantment_description(enchantment, level)
 	local enchantment_def = mcl_enchanting.enchantments[enchantment]
-	return enchantment_def.name .. " " .. (enchantment_def.max_level == 1 and "" or mcl_enchanting.roman_numerals.toRoman(level))
+	return enchantment_def.name .. (enchantment_def.max_level == 1 and "" or " " .. mcl_enchanting.roman_numerals.toRoman(level))
 end
 
 function mcl_enchanting.get_enchanted_itemstring(itemname)
-	return minetest.registered_items[itemname]._mcl_enchanting_enchanted_tool
+	local def =  minetest.registered_items[itemname]
+	return def and def._mcl_enchanting_enchanted_tool
 end
 
-function mcl_enchanting.item_supports_enchantment(itemname, enchantment)
-	if not mcl_enchanting.get_enchanted_itemstring(itemname) then
+function mcl_enchanting.item_supports_enchantment(itemname, enchantment, early)
+	if not early and not mcl_enchanting.get_enchanted_itemstring(itemname) then
 		return false
 	end
 	local enchantment_def = mcl_enchanting.enchantments[enchantment]
@@ -109,7 +115,7 @@ function mcl_enchanting.item_supports_enchantment(itemname, enchantment)
 		end
 	end
 	for group in pairs(enchantment_def.all) do
-		if minetest.get_item_group(itemname, group) then
+		if minetest.get_item_group(itemname, group) > 0 then
 			return true
 		end
 	end
@@ -124,7 +130,7 @@ function mcl_enchanting.can_enchant(itemstack, enchantment, level)
 	if itemstack:get_name() == "" then
 		return false, "item missing"
 	end
-	if not mcl_enchanting.item_supports_enchantment(itemdef.name, enchantment) then
+	if not mcl_enchanting.item_supports_enchantment(itemstack:get_name(), enchantment) then
 		return false, "item not supported"
 	end
 	if not level then
@@ -146,19 +152,19 @@ function mcl_enchanting.can_enchant(itemstack, enchantment, level)
 			return false, "incompatible", mcl_enchanting.get_enchantment_description(incompatible, incompatible_level)
 		end
 	end
+	return true
 end
 
 function mcl_enchanting.enchant(itemstack, enchantment, level)
-	local enchanted_itemstack = ItemStack(mcl_enchanting.get_enchanted_itemstring(itemstack:get_name()))
-	enchanted_itemstack:add_wear(itemstack:get_wear())
-	enchanted_itemstack:set_meta(itemstack:get_meta())
+	local enchanted_itemstack = ItemStack({name = mcl_enchanting.get_enchanted_itemstring(itemstack:get_name()), wear = itemstack:get_wear(), metadata = itemstack:get_metadata()})
 	local enchantments = mcl_enchanting.get_enchantments(enchanted_itemstack)
 	enchantments[enchantment] = level
 	mcl_enchanting.set_enchantments(enchanted_itemstack, enchantments)
 	mcl_enchanting.reload_enchantments(enchanted_itemstack, enchantments)
+	return enchanted_itemstack
 end
 
-function mcl_enchanting.reload_enchantments(itemstack, echantments)
+function mcl_enchanting.reload_enchantments(itemstack, enchantments)
 	local itemdef = itemstack:get_definition()
 	for enchantment, level in pairs(enchantments) do
 		local func = mcl_enchanting.features[enchantment]
