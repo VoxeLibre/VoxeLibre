@@ -144,7 +144,6 @@ mcl_enchanting.enchantments = {
 		weight = 2,
 		description = "Turns water beneath the player into frosted ice and prevents the damage the player would take from standing on magma blocks."
 	},
-	-- unimplemented
 	infinity = {
 		name = "Infinity",
 		max_level = 1,
