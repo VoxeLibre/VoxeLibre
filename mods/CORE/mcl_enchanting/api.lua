@@ -3,7 +3,15 @@ function mcl_enchanting.get_enchantments(itemstack)
 end
 
 function mcl_enchanting.set_enchantments(itemstack, enchantments)
-	return itemstack:get_meta():set_string("mcl_enchanting:enchantments", minetest.serialize(enchantments))
+	itemstack:get_meta():set_string("mcl_enchanting:enchantments", minetest.serialize(enchantments))
+	local itemdef = itemstack:get_definition()
+	for enchantment, level in pairs(enchantments) do
+		local enchantment_def = mcl_enchanting.enchantments[enchantment]
+		if enchantment_def.on_enchant then
+			enchantment_def.on_enchant(itemstack, level, itemdef)
+		end
+	end
+	tt.reload_itemstack_description(itemstack)
 end
 
 function mcl_enchanting.get_enchantment(itemstack, enchantment)
@@ -41,8 +49,8 @@ function mcl_enchanting.item_supports_enchantment(itemname, enchantment, early)
 		return false
 	end
 	local enchantment_def = mcl_enchanting.enchantments[enchantment]
-	local tooldef = minetest.registered_tools[itemname]
-	if not tooldef and enchantment_def.requires_tool then
+	local itemdef = minetest.registered_items[itemname]
+	if itemdef.type ~= "tool" and enchantment_def.requires_tool then
 		return false
 	end
 	for disallow in pairs(enchantment_def.disallow) do
@@ -96,19 +104,49 @@ function mcl_enchanting.enchant(itemstack, enchantment, level)
 	local enchantments = mcl_enchanting.get_enchantments(itemstack)
 	enchantments[enchantment] = level
 	mcl_enchanting.set_enchantments(itemstack, enchantments)
-	mcl_enchanting.reload_enchantments(itemstack, enchantments)
 	return itemstack
 end
 
-function mcl_enchanting.reload_enchantments(itemstack, enchantments)
-	local itemdef = itemstack:get_definition()
-	for enchantment, level in pairs(enchantments) do
+function mcl_enchanting.combine(itemstack, combine_with)
+	local itemname = itemstack:get_name()
+	local enchanted_itemname = mcl_enchanting.get_enchanted_itemstring(itemname)
+	if enchanted_itemname ~= mcl_enchanting.get_enchanted_itemstring(combine_with:get_name()) then
+		return false
+	end
+	local enchantments = mcl_enchanting.get_enchantments(itemstack)
+	for enchantment, combine_level in pairs(mcl_enchanting.get_enchantments(combine_with)) do
 		local enchantment_def = mcl_enchanting.enchantments[enchantment]
-		if enchantment_def.on_enchant then
-			enchantment_def.on_enchant(itemstack, level, itemdef)
+		local enchantment_level = enchantments[combine_enchantment]
+		if enchantment_level then
+			if enchantment_level == combine_level then
+				enchantment_level = math.min(enchantment_level + 1, enchantment_def.max_level)
+			end
+		elseif mcl_enchanting.item_supports_enchantment(itemname, enchantment) then
+			local supported = true
+			for incompatible in pairs(enchantment_def.incompatible) do
+				if enchantments[incompatible] then
+					supported = false
+					break
+				end
+			end
+			if supported then
+				enchantment_level = combine_level
+			end
+		end
+		enchantments[enchantment] = enchantment_level
+	end
+	local any_enchantment = false
+	for enchantment, enchantment_level in pairs(enchantments) do
+		if enchantment_level > 0 then
+			any_enchantment = true
+			break
 		end
 	end
-	tt.reload_itemstack_description(itemstack)
+	if any_enchantment then
+		itemstack:set_name(enchanted_itemname)
+	end
+	mcl_enchanting.set_enchantments(itemstack, enchantments)
+	return true
 end
 
 function mcl_enchanting.initialize()
@@ -154,7 +192,6 @@ function mcl_enchanting.initialize()
 				end
 			end
 			if expensive_test then
-				local tooldef = minetest.registered_tools[itemname]
 				local new_name = itemname .. "_enchanted"
 				minetest.override_item(itemname, {_mcl_enchanting_enchanted_tool = new_name})
 				local new_def = table.copy(itemdef)
@@ -164,7 +201,7 @@ function mcl_enchanting.initialize()
 				new_def.texture = itemdef.texture or itemname:gsub("%:", "_")
 				new_def._mcl_enchanting_enchanted_tool = new_name
 				local register_list = item_list
-				if tooldef then
+				if itemdef.type == "tool" then
 					register_list = tool_list
 				end
 				register_list[":" .. new_name] = new_def

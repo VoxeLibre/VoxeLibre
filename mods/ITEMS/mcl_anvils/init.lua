@@ -42,9 +42,6 @@ end
 -- needs to be used up to repair the tool.
 local function get_consumed_materials(tool, material)
 	local wear = tool:get_wear()
-	if wear == 0 then
-		return 0
-	end
 	local health = (MAX_WEAR - wear)
 	local matsize = material:get_count()
 	local materials_used = 0
@@ -103,12 +100,15 @@ local function update_anvil_slots(meta)
 			return math.max(0, math.min(MAX_WEAR, MAX_WEAR - new_health))
 		end
 
-		-- Same tool twice
-		if input1:get_name() == input2:get_name() and def1.type == "tool" and (input1:get_wear() > 0 or input2:get_wear() > 0) then
+		local can_combine = mcl_enchanting.combine(input1, input2)
+		
+		if can_combine then
 			-- Add tool health together plus a small bonus
-			-- TODO: Combine tool enchantments
-			local new_wear = calculate_repair(input1:get_wear(), input2:get_wear(), SAME_TOOL_REPAIR_BOOST)
-			input1:set_wear(new_wear)
+			if def1.type == "tool" and def2.type == "tool" then
+				local new_wear = calculate_repair(input1:get_wear(), input2:get_wear(), SAME_TOOL_REPAIR_BOOST)
+				input1:set_wear(new_wear)
+			end
+			
 			name_item = input1
 			new_output = name_item
 		-- Tool + repair item
