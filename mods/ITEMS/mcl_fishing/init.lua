@@ -177,7 +177,7 @@ local bobber_on_step = function(self, dtime)
 	if self._tick % 5 == 0 and self.player ~= nil and player ~= nil then
 		--Destroy bobber if item not wielded.
 		local wield = player:get_wielded_item()
-		if ((not wield) or (wield:get_name() ~= "mcl_fishing:fishing_rod")) then
+		if ((not wield) or (minetest.get_item_groups(wield:get_name(), "fishing_rod") <= 0)) then
 			self.object:remove()
 			return
 		end
@@ -343,7 +343,7 @@ minetest.register_craft({
 })
 minetest.register_craft({
 	type = "fuel",
-	recipe = "mcl_fishing:fishing_rod",
+	recipe = "group:fishing_rod",
 	burntime = 15,
 })
 

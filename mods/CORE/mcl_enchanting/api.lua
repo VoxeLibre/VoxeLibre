@@ -5,16 +5,21 @@ end
 function mcl_enchanting.set_enchantments(itemstack, enchantments)
 	itemstack:get_meta():set_string("mcl_enchanting:enchantments", minetest.serialize(enchantments))
 	local itemdef = itemstack:get_definition()
-	for enchantment, level in pairs(enchantments) do
-		local enchantment_def = mcl_enchanting.enchantments[enchantment]
-		if enchantment_def.on_enchant then
-			enchantment_def.on_enchant(itemstack, level, itemdef)
+	if itemstack:get_name() ~= "mcl_enchanting:book_enchanted" then
+		for enchantment, level in pairs(enchantments) do
+			local enchantment_def = mcl_enchanting.enchantments[enchantment]
+			if enchantment_def.on_enchant then
+				enchantment_def.on_enchant(itemstack, level, itemdef)
+			end
 		end
 	end
 	tt.reload_itemstack_description(itemstack)
 end
 
 function mcl_enchanting.get_enchantment(itemstack, enchantment)
+	if itemstack:get_name() == "mcl_enchanting:book_enchanted" then
+		return 0
+	end
 	return mcl_enchanting.get_enchantments(itemstack)[enchantment] or 0
 end
 
@@ -45,6 +50,9 @@ function mcl_enchanting.is_enchanted(itemstack)
 end
 
 function mcl_enchanting.item_supports_enchantment(itemname, enchantment, early)
+	if itemname == "mcl_enchanting:book_enchanted" then
+		return true, true
+	end
 	if not early and not mcl_enchanting.get_enchanted_itemstring(itemname) then
 		return false
 	end
@@ -58,9 +66,14 @@ function mcl_enchanting.item_supports_enchantment(itemname, enchantment, early)
 			return false
 		end
 	end
-	for group in pairs(enchantment_def.all) do
+	for group in pairs(enchantment_def.primary) do
 		if minetest.get_item_group(itemname, group) > 0 then
-			return true
+			return true, true
+		end
+	end
+	for group in pairs(enchantment_def.secondary) do
+		if minetest.get_item_group(itemname, group) > 0 then
+			return true, false
 		end
 	end
 	return false
@@ -71,7 +84,8 @@ function mcl_enchanting.can_enchant(itemstack, enchantment, level)
 	if not enchantment_def then
 		return false, "enchantment invalid"
 	end
-	if itemstack:get_name() == "" then
+	local itemname = itemstack:get_name()
+	if itemname == "" then
 		return false, "item missing"
 	end
 	if not mcl_enchanting.item_supports_enchantment(itemstack:get_name(), enchantment) then
@@ -90,10 +104,12 @@ function mcl_enchanting.can_enchant(itemstack, enchantment, level)
 	if enchantment_level then
 		return false, "incompatible", mcl_enchanting.get_enchantment_description(enchantment, enchantment_level)
 	end
-	for incompatible in pairs(enchantment_def.incompatible) do
-		local incompatible_level = item_enchantments[incompatible]
-		if incompatible_level then
-			return false, "incompatible", mcl_enchanting.get_enchantment_description(incompatible, incompatible_level)
+	if itemname ~= "mcl_enchanting:book_enchanted" then
+		for incompatible in pairs(enchantment_def.incompatible) do
+			local incompatible_level = item_enchantments[incompatible]
+			if incompatible_level then
+				return false, "incompatible", mcl_enchanting.get_enchantment_description(incompatible, incompatible_level)
+			end
 		end
 	end
 	return true
@@ -109,17 +125,20 @@ end
 
 function mcl_enchanting.combine(itemstack, combine_with)
 	local itemname = itemstack:get_name()
+	local combine_name = combine_with:get_name()
 	local enchanted_itemname = mcl_enchanting.get_enchanted_itemstring(itemname)
-	if enchanted_itemname ~= mcl_enchanting.get_enchanted_itemstring(combine_with:get_name()) then
+	if enchanted_itemname ~= mcl_enchanting.get_enchanted_itemstring(combine_name) and combine_name ~= "mcl_enchanting:book_enchanted" then
 		return false
 	end
 	local enchantments = mcl_enchanting.get_enchantments(itemstack)
 	for enchantment, combine_level in pairs(mcl_enchanting.get_enchantments(combine_with)) do
 		local enchantment_def = mcl_enchanting.enchantments[enchantment]
-		local enchantment_level = enchantments[combine_enchantment]
+		local enchantment_level = enchantments[enchantment]
 		if enchantment_level then
 			if enchantment_level == combine_level then
 				enchantment_level = math.min(enchantment_level + 1, enchantment_def.max_level)
+			else
+				enchantment_level = math.max(enchantment_level, combine_level)
 			end
 		elseif mcl_enchanting.item_supports_enchantment(itemname, enchantment) then
 			local supported = true
@@ -133,7 +152,9 @@ function mcl_enchanting.combine(itemstack, combine_with)
 				enchantment_level = combine_level
 			end
 		end
-		enchantments[enchantment] = enchantment_level
+		if enchantment_level and enchantment_level > 0 then
+			enchantments[enchantment] = enchantment_level
+		end
 	end
 	local any_enchantment = false
 	for enchantment, enchantment_level in pairs(enchantments) do
@@ -150,28 +171,24 @@ function mcl_enchanting.combine(itemstack, combine_with)
 end
 
 function mcl_enchanting.initialize()
-	local tool_list = {}
-	local item_list = {}
+	local all_groups = {}
 	for enchantment, enchantment_def in pairs(mcl_enchanting.enchantments) do
-		local all_item_groups = {}
 		for primary in pairs(enchantment_def.primary) do
-			all_item_groups[primary] = true
-			mcl_enchanting.all_item_groups[primary] = true
+			all_groups[primary] = true
 		end
 		for secondary in pairs(enchantment_def.secondary) do
-			all_item_groups[secondary] = true
-			mcl_enchanting.all_item_groups[secondary] = true
+			all_groups[secondary] = true
 		end
-		enchantment_def.all = all_item_groups
-		mcl_enchanting.total_weight = mcl_enchanting.total_weight + enchantment_def.weight
 	end
+	local register_tool_list = {}
+	local register_item_list = {}
 	for itemname, itemdef in pairs(minetest.registered_items) do
 		if itemdef.groups.enchanted then
 			break
 		end
 		local quick_test = false
 		for group, groupv in pairs(itemdef.groups) do
-			if groupv > 0 and mcl_enchanting.all_item_groups[group] then
+			if groupv > 0 and all_groups[group] then
 				quick_test = true
 				break
 			end
@@ -196,48 +213,26 @@ function mcl_enchanting.initialize()
 				minetest.override_item(itemname, {_mcl_enchanting_enchanted_tool = new_name})
 				local new_def = table.copy(itemdef)
 				new_def.inventory_image = itemdef.inventory_image .. "^[colorize:purple:50"
+				if new_def.wield_image then
+					new_def.wield_image = new_def.wield_image .. "^[colorize:purple:50"
+				end
 				new_def.groups.not_in_creative_inventory = 1
 				new_def.groups.enchanted = 1
 				new_def.texture = itemdef.texture or itemname:gsub("%:", "_")
 				new_def._mcl_enchanting_enchanted_tool = new_name
-				local register_list = item_list
+				local register_list = register_item_list
 				if itemdef.type == "tool" then
-					register_list = tool_list
+					register_list = register_tool_list
 				end
 				register_list[":" .. new_name] = new_def
 			end
 		end
 	end
-	for new_name, new_def in pairs(item_list) do
+	for new_name, new_def in pairs(register_item_list) do
 		minetest.register_craftitem(new_name, new_def)
 	end
-	for new_name, new_def in pairs(tool_list) do
+	for new_name, new_def in pairs(register_tool_list) do
 		minetest.register_tool(new_name, new_def)
 	end
 end
 
---[[
-minetest.register_on_mods_loaded(function()
-	for toolname, tooldef in pairs(minetest.registered_tools) do
-		for _, material in pairs(tooldef.materials) do
-			local full_name = toolname .. ((material == "") and "" or "_" .. material)
-			local old_def = minetest.registered_tools[full_name]
-			if not old_def then break end
-			mcl_enchanting.all_tools[full_name] = toolname
-			for _, enchantment in pairs(tooldef.enchantments) do
-				local enchantment_def = mcl_enchanting.enchantments[enchantment]
-				for lvl = 1, enchantment_def.max_level do
-					local new_def = table.copy(old_def)
-					new_def.description = minetest.colorize("#54FCFC", old_def.description) .. "\n" .. mcl_enchanting.get_enchantment_description(enchantment, lvl)
-					new_def.inventory_image = old_def.inventory_image .. "^[colorize:violet:50"
-					new_def.groups.not_in_creative_inventory = 1
-					new_def.texture = old_def.texture or full_name:gsub("%:", "_")
-					new_def._original_tool = full_name
-					enchantment_def.create_itemdef(new_def, lvl)
-					minetest.register_tool(":" .. full_name .. "_enchanted_" .. enchantment .. "_" .. lvl, new_def)
-				end
-			end
-		end
-	end
-end)
---]]

@@ -418,6 +418,9 @@ minetest.register_on_joinplayer(function(player)
 			end
 		end,
 		allow_take = function(inv, listname, index, stack, player)
+			if mcl_enchanting.has_enchantment(stack, "curse_of_binding") and not minetest.settings:get_bool("creative") then
+				return 0
+			end
 			return stack:get_count()
 		end,
 		allow_move = function(inv, from_list, from_index, to_list, to_index, count, player)

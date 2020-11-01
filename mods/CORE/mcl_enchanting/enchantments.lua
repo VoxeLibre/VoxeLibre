@@ -1,7 +1,7 @@
 -- Taken from https://minecraft.gamepedia.com/Enchanting
 
--- unimplemented
-mcl_enchanting.enchantments.aqua_affinity = {
+-- requires engine change
+--[[mcl_enchanting.enchantments.aqua_affinity = {
 	name = "Aqua Affinity",
 	max_level = 1,
 	primary = {armor_head = true},
@@ -13,7 +13,7 @@ mcl_enchanting.enchantments.aqua_affinity = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
-}
+}]]--
 
 -- unimplemented
 mcl_enchanting.enchantments.bane_of_anthropods = {
@@ -45,7 +45,7 @@ mcl_enchanting.enchantments.blast_protection = {
 	requires_tool = false,
 }
 
--- unimplemented
+-- implemented in mcl_armor
 mcl_enchanting.enchantments.curse_of_binding = {
 	name = "Curse of Binding",
 	max_level = 1,

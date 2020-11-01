@@ -333,13 +333,7 @@ end
 
 minetest.register_craft({
 	type = "fuel",
-	recipe = "mcl_bows:bow",
-	burntime = 15,
-})
-
-minetest.register_craft({
-	type = "fuel",
-	recipe = "mcl_bows:bow_enchanted",
+	recipe = "group:bow",
 	burntime = 15,
 })
 
