@@ -170,23 +170,16 @@ local function update_anvil_slots(meta)
 			new_name = string.sub(new_name, 1, MAX_NAME_LENGTH)
 			-- Don't rename if names are identical
 			if new_name ~= old_name then
+				-- Save the raw name internally
+				meta:set_string("name", new_name)
 				-- Rename item
 				if new_name == "" then
-					-- Empty name
-					if name_item:get_definition()._mcl_generate_description then
-						-- _mcl_generate_description(itemstack): If defined, set custom item description of itemstack.
-						name_item:get_definition()._mcl_generate_description(name_item)
-					else
-						-- Otherwise, just clear description
-						meta:set_string("description", "")
-					end
+					tt.reload_itemstack_description(name_item)
 				else
 					-- Custom name set. Colorize it!
 					-- This makes the name visually different from unnamed items
 					meta:set_string("description", minetest.colorize(NAME_COLOR, new_name))
 				end
-				-- Save the raw name internally, too
-				meta:set_string("name", new_name)
 				new_output = name_item
 			elseif just_rename then
 				new_output = ""

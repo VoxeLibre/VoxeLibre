@@ -60,8 +60,10 @@ minetest.register_on_mods_loaded(append_snippets)
 tt.reload_itemstack_description = function(itemstack)
 	local itemstring = itemstack:get_name()
 	local def = itemstack:get_definition()
-	if should_change(itemstring, def) then
-		local meta = itemstack:get_meta()
+	local meta = itemstack:get_meta()
+	if def._mcl_generate_description then
+		def._mcl_generate_description(itemstack)
+	elseif should_change(itemstring, def) and meta:get_string("name") == "" then
 		local orig_desc = def._tt_original_description
 		local desc = apply_snippets(orig_desc, itemstring, itemstack:get_tool_capabilities(), itemstack)
 		if desc ~= orig_desc then

@@ -1,1 +1,2 @@
 mcl_armor
+mcl_enchanting
