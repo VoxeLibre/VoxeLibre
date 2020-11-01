@@ -56,8 +56,12 @@ minetest.register_globalstep(function(dtime)
 			for j,stack in ipairs(player:get_inventory():get_list("main")) do
 				if minetest.get_item_group(stack:get_name(), "compass") ~= 0 and
 						minetest.get_item_group(stack:get_name(), "compass")-1 ~= compass_image then
-					local count = stack:get_count()
-					player:get_inventory():set_stack("main", j, ItemStack("mcl_compass:"..compass_image.." "..count))
+					local itemname = "mcl_compass:"..compass_image
+					if mcl_enchanting.is_enchanted(stack) then
+						itemname = itemname .. "_enchanted"
+					end
+					stack:set_name(itemname)
+					player:get_inventory():set_stack("main", j, stack)
 				end
 			end
 		end

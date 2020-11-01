@@ -8,7 +8,10 @@ function mcl_enchanting.enchantments_snippet(_, _, itemstack)
 		text = text ..  mcl_enchanting.get_colorized_enchantment_description(enchantment, level) .. "\n"
 	end
 	if text ~= "" then
-		return  text, false
+		if not itemstack:get_definition()._tt_original_description then
+			text = text:sub(1, text:len() - 1)
+		end
+		return text, false
 	end
 end
 

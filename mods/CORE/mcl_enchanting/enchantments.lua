@@ -275,7 +275,7 @@ mcl_enchanting.enchantments.mending = {
 	max_level = 1,
 	primary = {},
 	secondary = {armor_head = true, armor_torso = true, armor_legs = true, armor_feet = true, tool = true, weapon = true},
-	disallow = {non_combat_armor = true, compass = true, clock = true},
+	disallow = {},
 	incompatible = {infinity = true},
 	weight = 2,
 	description = "Repair the item while gaining XP orbs.",
