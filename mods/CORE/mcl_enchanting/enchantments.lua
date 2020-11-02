@@ -460,7 +460,7 @@ mcl_enchanting.enchantments.thorns = {
 	requires_tool = false,
 }
 
--- for tools & weapons implemented via on_enchant; for bows implemented in mcl_bows; for armor implemented in mcl_armor and mcl_tt; unimplemented for Fishing Rods
+-- for tools & weapons implemented via on_enchant; for bows implemented in mcl_bows; for armor implemented in mcl_armor and mcl_tt; for fishing rods implemented in mcl_fishing
 mcl_enchanting.enchantments.unbreaking = {
 	name = "Unbreaking",
 	max_level = 3,
