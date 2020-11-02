@@ -518,6 +518,10 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
 			if stack:get_count() > 0 then
 				-- Damage armor
 				local use = stack:get_definition().groups["mcl_armor_uses"] or 0
+				local unbreaking = mcl_enchanting.get_enchantment(stack, "unbreaking")
+				if unbreaking > 0 then
+					use = use / (0.6 + 0.4 / (unbreaking + 1))
+				end
 				if use > 0 then
 					local wear = armor_damage * math.floor(65536/use)
 					stack:add_wear(wear)
