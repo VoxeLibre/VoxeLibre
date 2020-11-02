@@ -344,6 +344,7 @@ minetest.register_node("mcl_books:bookshelf", {
 	sounds = wood_sound,
 	_mcl_blast_resistance = 1.5,
 	_mcl_hardness = 1.5,
+	_mcl_silk_touch_drop = true,
 })
 
 minetest.register_craft({

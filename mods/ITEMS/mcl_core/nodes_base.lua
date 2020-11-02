@@ -22,6 +22,7 @@ minetest.register_node("mcl_core:stone", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
+	_mcl_silk_touch_drop = true,
 })
 
 minetest.register_node("mcl_core:stone_with_coal", {
@@ -36,6 +37,7 @@ minetest.register_node("mcl_core:stone_with_coal", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
+	_mcl_silk_touch_drop = true,
 })
 
 minetest.register_node("mcl_core:stone_with_iron", {
@@ -49,6 +51,7 @@ minetest.register_node("mcl_core:stone_with_iron", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
+	_mcl_silk_touch_drop = true,
 })
 
 
@@ -63,6 +66,7 @@ minetest.register_node("mcl_core:stone_with_gold", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
+	_mcl_silk_touch_drop = true,
 })
 
 local redstone_timer = 68.28
@@ -95,6 +99,7 @@ minetest.register_node("mcl_core:stone_with_redstone", {
 	on_walk_over = redstone_ore_activate, -- Uses walkover mod
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
+	_mcl_silk_touch_drop = true,
 })
 
 local redstone_ore_reactivate = function(pos)
@@ -133,6 +138,7 @@ minetest.register_node("mcl_core:stone_with_redstone_lit", {
 	end,
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
+	_mcl_silk_touch_drop = "mcl_core:stone_with_redstone",
 })
 
 minetest.register_node("mcl_core:stone_with_lapis", {
@@ -168,6 +174,7 @@ minetest.register_node("mcl_core:stone_with_emerald", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
+	_mcl_silk_touch_drop = true,
 })
 
 minetest.register_node("mcl_core:stone_with_diamond", {
@@ -181,6 +188,7 @@ minetest.register_node("mcl_core:stone_with_diamond", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
+	_mcl_silk_touch_drop = true,
 })
 
 minetest.register_node("mcl_core:stonebrick", {
@@ -346,6 +354,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	_mcl_snowed = "mcl_core:dirt_with_grass_snow",
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.6,
+	_mcl_silk_touch_drop = true,
 })
 mcl_core.register_snowed_node("mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", nil, nil, true)
 
@@ -389,6 +398,7 @@ minetest.register_node("mcl_core:mycelium", {
 	_mcl_snowed = "mcl_core:mycelium_snow",
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.6,
+	_mcl_silk_touch_drop = true,
 })
 mcl_core.register_snowed_node("mcl_core:mycelium_snow", "mcl_core:mycelium")
 
@@ -405,6 +415,7 @@ minetest.register_node("mcl_core:podzol", {
 	_mcl_snowed = "mcl_core:podzol_snow",
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.6,
+	_mcl_silk_touch_drop = true,
 })
 mcl_core.register_snowed_node("mcl_core:podzol_snow", "mcl_core:podzol")
 
@@ -452,6 +463,7 @@ minetest.register_node("mcl_core:gravel", {
 	}),
 	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
+	_mcl_silk_touch_drop = true,
 })
 
 -- sandstone --
@@ -594,6 +606,7 @@ minetest.register_node("mcl_core:clay", {
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
+	_mcl_silk_touch_drop = true,
 })
 
 minetest.register_node("mcl_core:brick_block", {
@@ -776,6 +789,7 @@ minetest.register_node("mcl_core:ice", {
 	end,
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
+	_mcl_silk_touch_drop = true,
 })
 
 minetest.register_node("mcl_core:packed_ice", {
@@ -789,6 +803,7 @@ minetest.register_node("mcl_core:packed_ice", {
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
+	_mcl_silk_touch_drop = true,
 })
 
 -- Frosted Ice (4 nodes)
@@ -972,6 +987,7 @@ for i=1,8 do
 		drop = "mcl_throwing:snowball "..(i+1),
 		_mcl_blast_resistance = 0.1,
 		_mcl_hardness = 0.1,
+		_mcl_silk_touch_drop = true,
 	})
 end
 
@@ -989,6 +1005,7 @@ minetest.register_node("mcl_core:snowblock", {
 	drop = "mcl_throwing:snowball 4",
 	_mcl_blast_resistance = 0.2,
 	_mcl_hardness = 0.2,
+	_mcl_silk_touch_drop = true,
 })
 
 -- Add entry aliases for the Help

@@ -27,6 +27,7 @@ minetest.register_node("mcl_nether:glowstone", {
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
+	_mcl_silk_touch_drop = true,
 })
 
 minetest.register_node("mcl_nether:quartz_ore", {
@@ -40,6 +41,7 @@ minetest.register_node("mcl_nether:quartz_ore", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
+	_mcl_silk_touch_drop = true,
 })
 
 -- For eternal fire on top of netherrack and magma blocks

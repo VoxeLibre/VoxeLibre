@@ -21,6 +21,7 @@ minetest.register_node("mcl_ocean:sea_lantern", {
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
+	_mcl_silk_touch_drop = true,
 })
 
 minetest.register_node("mcl_ocean:prismarine", {

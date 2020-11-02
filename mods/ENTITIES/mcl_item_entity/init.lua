@@ -225,14 +225,9 @@ function minetest.handle_node_drops(pos, drops, digger)
 	-- Check if node will yield its useful drop by the digger's tool
 	local dug_node = minetest.get_node(pos)
 	local toolcaps
+	local tool
 	if digger ~= nil then
-		if mcl_experience.throw_experience then
-		        local experience_amount = minetest.get_item_group(dug_node.name,"xp")
-		        if experience_amount > 0 then
-		            mcl_experience.throw_experience(pos, experience_amount)
-		        end
-		end
-		local tool = digger:get_wielded_item()
+		tool = digger:get_wielded_item()
 		toolcaps = tool:get_tool_capabilities()
 
 		if not check_can_drop(dug_node.name, toolcaps) then
@@ -240,12 +235,13 @@ function minetest.handle_node_drops(pos, drops, digger)
 		end
 	end
 
-	--[[ Special node drops when dug by shears by reading _mcl_shears_drop
+	--[[ Special node drops when dug by shears by reading _mcl_shears_drop or with a silk touch tool reading _mcl_silk_touch_drop
 	from the node definition.
-	Definition of _mcl_shears_drop:
-	* true: Drop itself when dug by shears
-	* table: Drop every itemstring in this table when dub by shears
+	Definition of _mcl_shears_drop / _mcl_silk_touch_drop:
+	* true: Drop itself when dug by shears / silk touch tool
+	* table: Drop every itemstring in this table when dug by shears _mcl_silk_touch_drop
 	]]
+	local silk_touch_drop = false
 	local nodedef = minetest.registered_nodes[dug_node.name]
 	if toolcaps ~= nil and toolcaps.groupcaps and toolcaps.groupcaps.shearsy_dig and nodedef._mcl_shears_drop then
 		if nodedef._mcl_shears_drop == true then
@@ -253,8 +249,22 @@ function minetest.handle_node_drops(pos, drops, digger)
 		else
 			drops = nodedef._mcl_shears_drop
 		end
+	elseif tool and mcl_enchanting.has_enchantment(tool, "silk_touch") and nodedef._mcl_silk_touch_drop then
+		silk_touch_drop = true
+		if nodedef._mcl_silk_touch_drop == true then
+			drops = { dug_node.name }
+		else
+			drops = nodedef._mcl_silk_touch_drop
+		end
 	end
 
+	if digger and mcl_experience.throw_experience and not silk_touch_drop then
+		local experience_amount = minetest.get_item_group(dug_node.name,"xp")
+		if experience_amount > 0 then
+			mcl_experience.throw_experience(pos, experience_amount)
+		end
+	end
+	
 	for _,item in ipairs(drops) do
 		local count
 		if type(item) == "string" then

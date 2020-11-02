@@ -136,9 +136,9 @@ armor.set_player_armor = function(self, player)
 					local level = def.groups["armor_"..k]
 					if level then
 						local texture = def.texture or item:gsub("%:", "_")
-						local enchanted = mcl_enchanting.is_enchanted_def(item)
-						table.insert(textures, "("..texture..".png"..(enchanted and "^[brighten^[colorize:purple:50" or "")..")")
-						preview = "(player.png^[opacity:0^"..texture.."_preview.png"..(enchanted and "^[brighten^[colorize:purple:50" or "")..")"..(preview and "^"..preview or "")
+						local enchanted_addition = (mcl_enchanting.is_enchanted_def(item) and "^[colorize:white:50^[colorize:purple:50" or "")
+						table.insert(textures, "("..texture..".png"..enchanted_addition..")")
+						preview = "(player.png^[opacity:0^"..texture.."_preview.png"..enchanted_addition..")"..(preview and "^"..preview or "")
 						armor_level = armor_level + level
 						items = items + 1
 						mcl_armor_points = mcl_armor_points + (def.groups["mcl_armor_points"] or 0)

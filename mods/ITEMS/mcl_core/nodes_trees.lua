@@ -110,6 +110,7 @@ local register_leaves = function(subname, description, longdesc, tiles, drop1, d
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 0.2,
 		_mcl_hardness = 0.2,
+		_mcl_silk_touch_drop = true,
 	})
 end
 

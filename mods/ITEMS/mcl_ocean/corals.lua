@@ -91,6 +91,7 @@ for c=1, #corals do
 		drop = "mcl_ocean:dead_"..id.."_coral_block",
 		_mcl_hardness = 1.5,
 		_mcl_blast_resistance = 6,
+		_mcl_silk_touch_drop = true,
 	})
 	minetest.register_node("mcl_ocean:dead_"..id.."_coral_block", {
 		description = corals[c][3],
@@ -135,6 +136,7 @@ for c=1, #corals do
 		end,
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,
+		_mcl_silk_touch_drop = true,
 	})
 	minetest.register_node("mcl_ocean:dead_"..id.."_coral", {
 		description = corals[c][5],
@@ -202,6 +204,7 @@ for c=1, #corals do
 		end,
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,
+		_mcl_silk_touch_drop = true,
 	})
 	minetest.register_node("mcl_ocean:dead_"..id.."_coral_fan", {
 		description = corals[c][7],
@@ -234,6 +237,7 @@ for c=1, #corals do
 		end,
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,
+		_mcl_silk_touch_drop = true,
 	})
 
 	if mod_doc then

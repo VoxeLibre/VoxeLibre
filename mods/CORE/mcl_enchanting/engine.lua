@@ -215,9 +215,9 @@ function mcl_enchanting.initialize()
 				local new_name = itemname .. "_enchanted"
 				minetest.override_item(itemname, {_mcl_enchanting_enchanted_tool = new_name})
 				local new_def = table.copy(itemdef)
-				new_def.inventory_image = itemdef.inventory_image .. "^[brighten^[colorize:purple:50"
+				new_def.inventory_image = itemdef.inventory_image .. "^[colorize:white:50^[colorize:purple:50"
 				if new_def.wield_image then
-					new_def.wield_image = new_def.wield_image .. "^[brighten^[colorize:purple:50"
+					new_def.wield_image = new_def.wield_image .. "^[colorize:white:50^[colorize:purple:50"
 				end
 				new_def.groups.not_in_creative_inventory = 1
 				new_def.groups.enchanted = 1

@@ -127,6 +127,7 @@ function xpanes.register_pane(name, def)
 		connect_sides = { "left", "right" },
 		_mcl_blast_resistance = def._mcl_blast_resistance,
 		_mcl_hardness = def._mcl_hardness,
+		_mcl_silk_touch_drop = def._mcl_silk_touch_drop,
 	})
 
 	local groups = table.copy(def.groups)
@@ -155,6 +156,7 @@ function xpanes.register_pane(name, def)
 		drop = drop,
 		_mcl_blast_resistance = def._mcl_blast_resistance,
 		_mcl_hardness = def._mcl_hardness,
+		_mcl_silk_touch_drop = def._mcl_silk_touch_drop,
 	})
 
 	minetest.register_craft({
@@ -204,6 +206,7 @@ local pane = function(description, node, append)
 		drop = "",
 		_mcl_blast_resistance = 0.3,
 		_mcl_hardness = 0.3,
+		_mcl_silk_touch_drop = true,
 	})
 
 	if mod_doc and not is_canonical then
