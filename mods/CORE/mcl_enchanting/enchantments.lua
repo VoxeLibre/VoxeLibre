@@ -90,7 +90,7 @@ mcl_enchanting.enchantments.depth_strider = {
 	requires_tool = false,
 }
 
--- unimplemented
+-- implemented via on_enchant
 mcl_enchanting.enchantments.efficiency = {
 	name = "Efficiency",
 	max_level = 5,
@@ -101,7 +101,17 @@ mcl_enchanting.enchantments.efficiency = {
 	weight = 10,
 	description = "Increases mining speed.",
 	curse = false,
-	on_enchant = function() end,
+	on_enchant = function(itemstack, level, itemdef)
+		local tool_capabilities = itemstack:get_tool_capabilities()
+		local groupcaps = {}
+		for group, capability in pairs(tool_capabilities.groupcaps) do
+			local groupname = group .. "_efficiency_" .. level
+			capability.times = mcl_autogroup.digtimes[groupname]
+			groupcaps[groupname] = capability
+		end
+		tool_capabilities.groupcaps = groupcaps
+		itemstack:get_meta():set_tool_capabilities(tool_capabilities)
+	end,
 	requires_tool = false,
 }
 
@@ -450,7 +460,7 @@ mcl_enchanting.enchantments.thorns = {
 	requires_tool = false,
 }
 
--- unimplemented
+-- implemented via on_enchant; Unimplemented for Bows, Armor and Fishing Rods
 mcl_enchanting.enchantments.unbreaking = {
 	name = "Unbreaking",
 	max_level = 3,
@@ -461,11 +471,16 @@ mcl_enchanting.enchantments.unbreaking = {
 	weight = 5,
 	description = "Increases item durability.",
 	curse = false,
-	on_enchant = function() end,
+	on_enchant = function(itemstack, level, itemdef)		
+		local new_capabilities = itemstack:get_tool_capabilities()
+		for group, capability in pairs(new_capabilities.groupcaps) do
+			capability.uses = capability.uses * (1 + level)
+		end
+		new_capabilities.punch_attack_uses = new_capabilities.punch_attack_uses * (1 + level)
+		itemstack:get_meta():set_tool_capabilities(new_capabilities)
+	end,
 	requires_tool = true,
 }
-
-
 
 --[[
 local pickaxes = {"mcl_tools:pick_wood", "mcl_tools:pick_stone", "mcl_tools:pick_gold", "mcl_tools:pick_iron", "mcl_tools:pick_diamond"}
@@ -544,48 +559,3 @@ minetest.register_on_mods_loaded(function()
 	end
 end) 
 --]] 
-
-
---[[
-		sharpness = {
-			name = "Sharpness",
-			max_level = 5,
-			create_itemdef = function(def, level)
-				def.tool_capabilities.damage_groups.fleshy = def.tool_capabilities.damage_groups.fleshy + (level + 1) / 2
-			end,
-		},
-		efficiency = {
-			name = "Efficiency",
-			max_level = 5,
-			create_itemdef = function(def, level)
-				local groupcaps = def.tool_capabilities.groupcaps
-				for _, groupcap in pairs(groupcaps) do
-					for i, t in pairs(groupcap.times) do
-						local m = 1 / t
-						m = m + math.pow(level, 2) + 1
-						groupcap.times[i] = 1 / m
-					end
-				end
-			end,
-		},
-		unbreaking = {
-			name = "Unbreaking",
-			max_level = 3,
-			create_itemdef = function(def, level)
-				local toolcaps = def.tool_capabilities
-				local armor_uses = def.groups.mcl_armor_uses
-				local factor = 0.5
-				if toolcaps then
-					local groupcaps = toolcaps.groupcaps
-					for _, groupcap in pairs(groupcaps) do
-						groupcap.uses = math.floor(groupcap.uses * (1 + level))
-					end
-					def.tool_capabilities.punch_attack_uses = math.floor(def.tool_capabilities.punch_attack_uses * (1 + level))
-				elseif armor_uses then
-					def.groups.mcl_armor_uses = math.floor(armor_uses / (0.6 + (0.4 / (level + 1))))
-				end
-			end
-		},
-	},--]]
-
-

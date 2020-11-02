@@ -8,7 +8,7 @@ mcl_enchanting = {
 	debug = true,
 }
 
-dofile(modpath .. "/api.lua")
+dofile(modpath .. "/engine.lua")
 dofile(modpath .. "/enchantments.lua")
 dofile(modpath .. "/command.lua")
 dofile(modpath .. "/tt.lua")

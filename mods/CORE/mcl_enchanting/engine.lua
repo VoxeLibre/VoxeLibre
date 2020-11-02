@@ -6,6 +6,9 @@ function mcl_enchanting.set_enchantments(itemstack, enchantments)
 	itemstack:get_meta():set_string("mcl_enchanting:enchantments", minetest.serialize(enchantments))
 	local itemdef = itemstack:get_definition()
 	if itemstack:get_name() ~= "mcl_enchanting:book_enchanted" then
+		if itemdef.tool_capabilities then
+			itemstack:get_meta():set_tool_capabilities(itemdef.tool_capabilities)
+		end
 		for enchantment, level in pairs(enchantments) do
 			local enchantment_def = mcl_enchanting.enchantments[enchantment]
 			if enchantment_def.on_enchant then

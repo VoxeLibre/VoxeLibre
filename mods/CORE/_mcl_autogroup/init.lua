@@ -18,7 +18,7 @@ digging times in seconds. These digging times can be then added verbatim into th
 Example:
 mcl_autogroup.digtimes.pickaxey_dig_diamond[1] = 0.2
 
-→ This menas that when a node has been assigned the group “pickaxey_dig_diamond=1”, it can be dug by the
+→ This means that when a node has been assigned the group “pickaxey_dig_diamond=1”, it can be dug by the
 diamond pickaxe in 0.2 seconds.
 
 
@@ -44,6 +44,7 @@ local divisors = {
 	["shearsy_wool"] = 5,
 	["swordy_cobweb"] = 15,
 }
+local max_efficiency_level = 5
 
 mcl_autogroup = {}
 mcl_autogroup.digtimes = {}
@@ -53,11 +54,19 @@ for m=1, #materials do
 	for g=1, #basegroups do
 		mcl_autogroup.digtimes[basegroups[g].."_dig_"..materials[m]] = {}
 		mcl_autogroup.creativetimes[basegroups[g].."_dig_"..materials[m]] = {}
+		for e=1, max_efficiency_level do
+			mcl_autogroup.digtimes[basegroups[g].."_dig_"..materials[m].."_efficiency_"..e] = {}
+			mcl_autogroup.creativetimes[basegroups[g].."_dig_"..materials[m].."_efficiency_"..e] = {}
+		end
 	end
 end
 for g=1, #minigroups do
 	mcl_autogroup.digtimes[minigroups[g].."_dig"] = {}
 	mcl_autogroup.creativetimes[minigroups[g].."_dig"] = {}
+	for e=1, max_efficiency_level do
+		mcl_autogroup.digtimes[minigroups[g].."_dig_efficiency_"..e] = {}
+		mcl_autogroup.creativetimes[minigroups[g].."_dig_efficiency_"..e] = {}
+	end
 end
 
 local overwrite = function()
@@ -80,7 +89,7 @@ local overwrite = function()
 				groups_changed = true
 			end
 
-			local function calculate_group(hardness, material, diggroup, newgroups, actual_rating, expected_rating)
+			local function calculate_group(hardness, material, diggroup, newgroups, actual_rating, expected_rating, efficiency)
 				local time, validity_factor
 				if actual_rating >= expected_rating then
 					-- Valid tool
@@ -89,7 +98,11 @@ local overwrite = function()
 					-- Wrong tool (higher digging time)
 					validity_factor = 5
 				end
-				time = (hardness * validity_factor) / divisors[material]
+				local speed_multiplier = divisors[material]
+				if efficiency then
+					speed_multiplier = speed_multiplier + efficiency * efficiency + 1
+				end
+				time = (hardness * validity_factor) / speed_multiplier
 				if time <= 0.05 then
 					time = 0
 				else
@@ -113,6 +126,9 @@ local overwrite = function()
 					for g=1,#materials do
 						local diggroup = basegroup.."_dig_"..materials[g]
 						newgroups = calculate_group(hardness, materials[g], diggroup, newgroups, g, ndef.groups[basegroup])
+						for e=1,max_efficiency_level do
+							newgroups = calculate_group(hardness, materials[g], diggroup .. "_efficiency_" .. e, newgroups, g, ndef.groups[basegroup], e)
+						end
 						groups_changed = true
 					end
 				end
@@ -134,6 +150,9 @@ local overwrite = function()
 							or
 							(ndef.groups[minigroup] and minigroup ~= "swordy_cobweb" and minigroup ~= "shearsy_wool") then
 						newgroups = calculate_group(hardness, minigroup, diggroup, newgroups, ar, 1)
+						for e=1,max_efficiency_level do
+							newgroups = calculate_group(hardness, minigroup, diggroup .. "_efficiency_" .. e, newgroups, ar, 1, e)
+						end
 						groups_changed = true
 					end
 				end
