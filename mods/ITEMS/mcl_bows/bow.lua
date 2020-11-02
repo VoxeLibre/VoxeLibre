@@ -237,7 +237,12 @@ controls.register_on_release(function(player, key, time)
 		end
 		
 		if has_shot and not minetest.is_creative_enabled(player:get_player_name()) then
-			wielditem:add_wear(65535/BOW_DURABILITY)
+			local durability = BOW_DURABILITY
+			local unbreaking = mcl_enchanting.get_enchantment(wielditem, "unbreaking")
+			if unbreaking > 0 then
+				durability = durability * (unbreaking + 1)
+			end
+			wielditem:add_wear(65535/durability)
 		end
 		player:set_wielded_item(wielditem)
 		reset_bow_state(player, true)
