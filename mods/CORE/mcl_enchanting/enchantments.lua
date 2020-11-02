@@ -69,7 +69,7 @@ mcl_enchanting.enchantments.curse_of_vanishing = {
 	disallow = {clock = true},
 	incompatible = {},
 	weight = 1,
-	description = "Except when in creative mode, items cannot be removed from armor slots except due to death or breaking.",
+	description = "Item destroyed on death.",
 	curse = true,
 	on_enchant = function() end,
 	requires_tool = false,
@@ -101,7 +101,7 @@ mcl_enchanting.enchantments.efficiency = {
 	weight = 10,
 	description = "Increases mining speed.",
 	curse = false,
-	on_enchant = function(itemstack, level, itemdef)
+	on_enchant = function(itemstack, level)
 		local tool_capabilities = itemstack:get_tool_capabilities()
 		local groupcaps = {}
 		for group, capability in pairs(tool_capabilities.groupcaps) do
@@ -129,8 +129,8 @@ mcl_enchanting.enchantments.feather_falling = {
 	requires_tool = false,
 }
 
--- unimplemented
-mcl_enchanting.enchantments.fire_aspect = {
+-- requires missing MineClone2 feature
+--[[mcl_enchanting.enchantments.fire_aspect = {
 	name = "Fire Aspect",
 	max_level = 2,
 	primary = {sword = true},
@@ -142,7 +142,7 @@ mcl_enchanting.enchantments.fire_aspect = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
-}
+}]]--
 
 -- unimplemented
 mcl_enchanting.enchantments.fire_protection = {
@@ -159,8 +159,8 @@ mcl_enchanting.enchantments.fire_protection = {
 	requires_tool = false,
 }
 
--- unimplemented
-mcl_enchanting.enchantments.flame = {
+-- requires missing MineClone2 feature
+--[[mcl_enchanting.enchantments.flame = {
 	name = "Flame",
 	max_level = 1,
 	primary = {bow = true},
@@ -172,7 +172,7 @@ mcl_enchanting.enchantments.flame = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
-}
+}]]--
 
 -- unimplemented
 mcl_enchanting.enchantments.fortune = {
@@ -369,7 +369,7 @@ mcl_enchanting.enchantments.respiration = {
 	requires_tool = false,
 }
 
--- unimplemented
+-- implemented via on_enchant
 mcl_enchanting.enchantments.sharpness = {
 	name = "Sharpness",
 	max_level = 5,
@@ -378,9 +378,17 @@ mcl_enchanting.enchantments.sharpness = {
 	disallow = {},
 	incompatible = {bane_of_anthropods = true, smite = true},
 	weight = 5,
-	description = "Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).",
+	description = "Increases damage.",
 	curse = false,
-	on_enchant = function() end,
+	on_enchant = function(itemstack, level)
+		local tool_capabilities = itemstack:get_tool_capabilities()
+		local damage_groups = {}
+		for group, damage in pairs(tool_capabilities.damage_groups) do
+			damage_groups[group] = damage + level * 0.5
+		end
+		tool_capabilities.damage_groups = damage_groups
+		itemstack:get_meta():set_tool_capabilities(tool_capabilities)
+	end,
 	requires_tool = false,
 }
 
@@ -430,8 +438,8 @@ mcl_enchanting.enchantments.soul_speed = {
 	requires_tool = false,
 }
 
--- unimplemented
-mcl_enchanting.enchantments.sweeping_edge = {
+-- requires missing MineClone2 feature
+--[[mcl_enchanting.enchantments.sweeping_edge = {
 	name = "Sweeping Edge",
 	max_level = 3,
 	primary = {sword = true},
@@ -443,7 +451,7 @@ mcl_enchanting.enchantments.sweeping_edge = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
-}
+}]]--
 
 -- unimplemented
 mcl_enchanting.enchantments.thorns = {
@@ -471,13 +479,13 @@ mcl_enchanting.enchantments.unbreaking = {
 	weight = 5,
 	description = "Increases item durability.",
 	curse = false,
-	on_enchant = function(itemstack, level, itemdef)		
-		local new_capabilities = itemstack:get_tool_capabilities()
-		for group, capability in pairs(new_capabilities.groupcaps) do
+	on_enchant = function(itemstack, level)		
+		local tool_capabilities = itemstack:get_tool_capabilities()
+		for group, capability in pairs(tool_capabilities.groupcaps) do
 			capability.uses = capability.uses * (1 + level)
 		end
-		new_capabilities.punch_attack_uses = new_capabilities.punch_attack_uses * (1 + level)
-		itemstack:get_meta():set_tool_capabilities(new_capabilities)
+		tool_capabilities.punch_attack_uses = tool_capabilities.punch_attack_uses * (1 + level)
+		itemstack:get_meta():set_tool_capabilities(tool_capabilities)
 	end,
 	requires_tool = true,
 }

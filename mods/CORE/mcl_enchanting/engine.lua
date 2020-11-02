@@ -12,7 +12,7 @@ function mcl_enchanting.set_enchantments(itemstack, enchantments)
 		for enchantment, level in pairs(enchantments) do
 			local enchantment_def = mcl_enchanting.enchantments[enchantment]
 			if enchantment_def.on_enchant then
-				enchantment_def.on_enchant(itemstack, level, itemdef)
+				enchantment_def.on_enchant(itemstack, level)
 			end
 		end
 	end
