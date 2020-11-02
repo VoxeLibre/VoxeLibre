@@ -119,7 +119,7 @@ armor.set_player_armor = function(self, player)
 	local textures = {}
 	local physics_o = {speed=1,gravity=1,jump=1}
 	local material = {type=nil, count=1}
-	local preview = armor:get_preview(name) or "character_preview.png"
+	local preview
 	for _,v in ipairs(self.elements) do
 		elements[v] = false
 	end
@@ -136,8 +136,9 @@ armor.set_player_armor = function(self, player)
 					local level = def.groups["armor_"..k]
 					if level then
 						local texture = def.texture or item:gsub("%:", "_")
-						table.insert(textures, texture..".png")
-						preview = preview.."^"..texture.."_preview.png"
+						local enchanted = mcl_enchanting.is_enchanted_def(item)
+						table.insert(textures, "("..texture..".png"..(enchanted and "^[brighten^[colorize:purple:50" or "")..")")
+						preview = "(player.png^[opacity:0^"..texture.."_preview.png"..(enchanted and "^[brighten^[colorize:purple:50" or "")..")"..(preview and "^"..preview or "")
 						armor_level = armor_level + level
 						items = items + 1
 						mcl_armor_points = mcl_armor_points + (def.groups["mcl_armor_points"] or 0)
@@ -161,6 +162,7 @@ armor.set_player_armor = function(self, player)
 			end
 		end
 	end
+	preview = (armor:get_preview(name) or "character_preview.png")..(preview and "^"..preview or "")
 	if minetest.get_modpath("shields") then
 		armor_level = armor_level * 0.9
 	end
