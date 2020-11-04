@@ -75,7 +75,7 @@ function armor.on_armor_use(itemstack, user, pointed_thing)
 			armor:update_inventory(user)
 			armor:play_equip_sound(itemstack_single, user)
 			itemstack:take_item()
-		elseif itemstack:get_count() <= 1 then
+		elseif itemstack:get_count() <= 1 and not mcl_enchanting.has_enchantment(itemstack_slot, "curse_of_binding") then
 			armor_inv:set_stack("armor", slot, itemstack_single)
 			player_inv:set_stack("armor", slot, itemstack_single)
 			armor:set_player_armor(user)
