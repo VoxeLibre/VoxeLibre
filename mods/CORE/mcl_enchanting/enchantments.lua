@@ -219,7 +219,7 @@ mcl_enchanting.enchantments.infinity = {
 	requires_tool = false,
 }
 
--- unimplemented
+-- implemented via minetest.calculate_knockback
 mcl_enchanting.enchantments.knockback = {
 	name = "Knockback",
 	max_level = 2,
@@ -233,6 +233,16 @@ mcl_enchanting.enchantments.knockback = {
 	on_enchant = function() end,
 	requires_tool = false,
 }
+
+local old_calculate_knockback = minetest.calculate_knockback
+function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool_capabilities, dir, distance, damage)
+	local knockback = old_calculate_knockback(player, hitter, time_from_last_punch, tool_capabilities, dir, distance, damage)
+	if hitter and hitter:is_player() then
+		local wielditem = hitter:get_wielded_item()
+		knockback = knockback + 3 * mcl_enchanting.get_enchantment(wielditem, "knockback")
+	end
+	return knockback
+end
 
 -- unimplemented
 mcl_enchanting.enchantments.looting = {
