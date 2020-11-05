@@ -304,7 +304,7 @@ mcl_enchanting.enchantments.mending = {
 	requires_tool = true,
 }
 
--- unimplemented
+-- implemented in mcl_bows
 mcl_enchanting.enchantments.power = {
 	name = "Power",
 	max_level = 5,

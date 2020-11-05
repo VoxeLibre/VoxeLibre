@@ -33,13 +33,19 @@ local bow_load = {}
 -- Another player table, this one stores the wield index of the bow being charged
 local bow_index = {}
 
-mcl_bows.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damage, is_critical)
+mcl_bows.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damage, is_critical, bow_stack)
 	local obj = minetest.add_entity({x=pos.x,y=pos.y,z=pos.z}, arrow_item.."_entity")
 	if power == nil then
 		power = BOW_MAX_SPEED --19
 	end
 	if damage == nil then
 		damage = 3
+	end
+	if bow_stack then
+		local power_level = mcl_enchanting.get_enchantment(bow_stack, "power")
+		if power_level > 0 then
+			damage = damage + (power_level + 1) / 4
+		end
 	end
 	obj:set_velocity({x=dir.x*power, y=dir.y*power, z=dir.z*power})
 	obj:set_acceleration({x=0, y=-GRAVITY, z=0})
@@ -102,7 +108,7 @@ local player_shoot_arrow = function(itemstack, player, power, damage, is_critica
 	local dir = player:get_look_dir()
 	local yaw = player:get_look_horizontal()
 
-	mcl_bows.shoot_arrow(arrow_itemstring, {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, dir, yaw, player, power, damage, is_critical)
+	mcl_bows.shoot_arrow(arrow_itemstring, {x=playerpos.x,y=playerpos.y+1.5,z=playerpos.z}, dir, yaw, player, power, damage, is_critical, player:get_wielded_item())
 	return true
 end
 
