@@ -189,7 +189,7 @@ mcl_enchanting.enchantments.fortune = {
 	requires_tool = false,
 }
 
--- unimplemented
+-- implemented using walkover.register_global
 mcl_enchanting.enchantments.frost_walker = {
 	name = "Frost Walker",
 	max_level = 2,
@@ -203,6 +203,23 @@ mcl_enchanting.enchantments.frost_walker = {
 	on_enchant = function() end,
 	requires_tool = false,
 }
+
+walkover.register_global(function(pos, _, player)
+	local boots = player:get_inventory():get_stack("armor", 5)
+	local frost_walker = mcl_enchanting.get_enchantment(boots, "frost_walker")
+	if frost_walker <= 0 then
+		return
+	end
+	local radius = frost_walker + 2
+	local minp = {x = pos.x - radius, y = pos.y, z = pos.z - radius}
+	local maxp = {x = pos.x + radius, y = pos.y, z = pos.z + radius}
+	local positions = minetest.find_nodes_in_area_under_air(minp, maxp, "mcl_core:water_source")
+	for _, p in ipairs(positions) do
+		if vector.distance(pos, p) <= radius then
+			minetest.set_node(p, {name = "mcl_core:frosted_ice_0"})
+		end
+	end
+end)
 
 -- implemented in mcl_bows
 mcl_enchanting.enchantments.infinity = {
