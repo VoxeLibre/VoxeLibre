@@ -239,16 +239,9 @@ ARROW_ENTITY.on_step = function(self, dtime)
 					end
 
 					-- Punch target object but avoid hurting enderman.
-					if lua then
-						if lua.name ~= "mobs_mc:enderman" then
-							damage_particles(self.object:get_pos(), self._is_critical)
-							obj:punch(self.object, 1.0, {
-								full_punch_interval=1.0,
-								damage_groups={fleshy=self._damage},
-							}, nil)
-						end
-					else
+					if not lua or lua.name ~= "mobs_mc:enderman" then
 						damage_particles(self.object:get_pos(), self._is_critical)
+						self.object:set_pos(vector.subtract(obj:get_pos(), vector.multiply(vector.normalize(self.object:get_velocity()), 2)))
 						obj:punch(self.object, 1.0, {
 							full_punch_interval=1.0,
 							damage_groups={fleshy=self._damage},

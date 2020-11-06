@@ -174,7 +174,7 @@ mcl_enchanting.enchantments.fire_protection = {
 	requires_tool = false,
 }]]--
 
--- unimplemented
+-- implemented in mcl_item_entity
 mcl_enchanting.enchantments.fortune = {
 	name = "Fortune",
 	max_level = 4,
@@ -254,9 +254,15 @@ mcl_enchanting.enchantments.knockback = {
 local old_calculate_knockback = minetest.calculate_knockback
 function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool_capabilities, dir, distance, damage)
 	local knockback = old_calculate_knockback(player, hitter, time_from_last_punch, tool_capabilities, dir, distance, damage)
+	local luaentity
+	if hitter then
+		luaentity = hitter:get_luaentity()
+	end
 	if hitter and hitter:is_player() then
 		local wielditem = hitter:get_wielded_item()
 		knockback = knockback + 3 * mcl_enchanting.get_enchantment(wielditem, "knockback")
+	elseif luaentity and luaentity._knockback then
+		knockback = knockback + luaentity._knockback
 	end
 	return knockback
 end
@@ -366,7 +372,7 @@ mcl_enchanting.enchantments.protection = {
 	requires_tool = false,
 }
 
--- unimplemented
+-- implemented via minetest.calculate_knockback (together with the Knockback enchantment) and mcl_bows
 mcl_enchanting.enchantments.punch = {
 	name = "Punch",
 	max_level = 2,

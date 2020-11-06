@@ -41,10 +41,14 @@ mcl_bows.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damag
 	if damage == nil then
 		damage = 3
 	end
+	local knockback
 	if bow_stack then
-		local power_level = mcl_enchanting.get_enchantment(bow_stack, "power")
-		if power_level > 0 then
-			damage = damage + (power_level + 1) / 4
+		local enchantments = mcl_enchanting.get_enchantments(bow_stack)
+		if enchantments.power then
+			damage = damage + (enchantments.power + 1) / 4
+		end
+		if enchantments.punch then
+			knockback = enchantments.punch * 3
 		end
 	end
 	obj:set_velocity({x=dir.x*power, y=dir.y*power, z=dir.z*power})
@@ -55,6 +59,7 @@ mcl_bows.shoot_arrow = function(arrow_item, pos, dir, yaw, shooter, power, damag
 	le._damage = damage
 	le._is_critical = is_critical
 	le._startpos = pos
+	le._knockback = knockback
 	minetest.sound_play("mcl_bows_bow_shoot", {pos=pos}, true)
 	if shooter ~= nil and shooter:is_player() then
 		if obj:get_luaentity().player == "" then
