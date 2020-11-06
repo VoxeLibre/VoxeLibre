@@ -36,6 +36,13 @@ local melon_base_def = {
 	_mcl_blast_resistance = 1,
 	_mcl_hardness = 1,
 	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = {
+		discrete_uniform_distribution = true,
+		items = {"mcl_farming:melon_item"},
+		min_count = 3,
+		max_count = 7,
+		cap = 9,
+	}
 }
 
 -- Drop proabilities for melon stem

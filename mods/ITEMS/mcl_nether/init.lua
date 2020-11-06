@@ -28,6 +28,13 @@ minetest.register_node("mcl_nether:glowstone", {
 	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
 	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = {
+		discrete_uniform_distribution = true,
+		items = {"mcl_nether:glowstone_dust"},
+		min_count = 2,
+		max_count = 4,
+		cap = 4,
+	}
 })
 
 minetest.register_node("mcl_nether:quartz_ore", {
@@ -42,6 +49,7 @@ minetest.register_node("mcl_nether:quartz_ore", {
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = mcl_core.fortune_drop_ore
 })
 
 -- For eternal fire on top of netherrack and magma blocks

@@ -98,6 +98,16 @@ local wheat_seed_drop = {
 	}
 }
 
+local fortune_wheat_seed_drop = {
+	discrete_uniform_distribution = true,
+	items = {"mcl_farming:wheat_seeds"},
+	chance = 1 / 8,
+	min_count = 1,
+	max_count = 1,
+	factor = 2,
+	overwrite = true,
+}
+
 -- CHECKME: How does tall grass behave when pushed by a piston?
 
 --- Tall Grass ---
@@ -126,6 +136,7 @@ local def_tallgrass = {
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
 	drop = wheat_seed_drop,
 	_mcl_shears_drop = true,
+	_mcl_fortune_drop = fortune_wheat_seed_drop,
 	node_placement_prediction = "",
 	on_place = on_place_flower,
 	_mcl_blast_resistance = 0,
@@ -148,7 +159,7 @@ def_fern.selection_box = {
 
 minetest.register_node("mcl_flowers:fern", def_fern)
 
-local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_img, selbox_radius, selbox_top_height, drop, shears_drop, is_flower, grass_color)
+local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_img, selbox_radius, selbox_top_height, drop, shears_drop, is_flower, grass_color, fortune_drop)
 	if not inv_img then
 		inv_img = top_img
 	end
@@ -200,6 +211,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		buildable_to = true,
 		drop = drop_bottom,
 		_mcl_shears_drop = shears_drop,
+		_mcl_fortune_drop = fortune_drop,
 		node_placement_prediction = "",
 		selection_box = {
 			type = "fixed",
@@ -305,6 +317,7 @@ local function add_large_plant(name, desc, longdesc, bottom_img, top_img, inv_im
 		},
 		drop = drop_top,
 		_mcl_shears_drop = shears_drop,
+		_mcl_fortune_drop = fortune_drop,
 		after_destruct = function(pos, oldnode)
 			-- Remove bottom half of flower (if it exists)
 			local top = pos
@@ -334,8 +347,8 @@ add_large_plant("sunflower", S("Sunflower"), S("A sunflower is a large plant whi
 local longdesc_grass = S("Double tallgrass a variant of tall grass and occupies two blocks. It can be harvested for wheat seeds.")
 local longdesc_fern = S("Large fern is a variant of fern and occupies two blocks. It can be harvested for wheat seeds.")
 
-add_large_plant("double_grass", S("Double Tallgrass"), longdesc_grass, "mcl_flowers_double_plant_grass_bottom.png", "mcl_flowers_double_plant_grass_top.png", "mcl_flowers_double_plant_grass_inv.png", 6/16, 4/16, wheat_seed_drop, {"mcl_flowers:tallgrass 2"}, false, true)
-add_large_plant("double_fern", S("Large Fern"), longdesc_fern, "mcl_flowers_double_plant_fern_bottom.png", "mcl_flowers_double_plant_fern_top.png", "mcl_flowers_double_plant_fern_inv.png", 5/16, 5/16, wheat_seed_drop, {"mcl_flowers:fern 2"}, false, true)
+add_large_plant("double_grass", S("Double Tallgrass"), longdesc_grass, "mcl_flowers_double_plant_grass_bottom.png", "mcl_flowers_double_plant_grass_top.png", "mcl_flowers_double_plant_grass_inv.png", 6/16, 4/16, wheat_seed_drop, {"mcl_flowers:tallgrass 2"}, false, true, nil, fortune_wheat_seed_drop)
+add_large_plant("double_fern", S("Large Fern"), longdesc_fern, "mcl_flowers_double_plant_fern_bottom.png", "mcl_flowers_double_plant_fern_top.png", "mcl_flowers_double_plant_fern_inv.png", 5/16, 5/16, wheat_seed_drop, {"mcl_flowers:fern 2"}, false, true, nil, fortune_wheat_seed_drop)
 
 minetest.register_abm({
 	label = "Pop out flowers",

@@ -93,6 +93,12 @@ minetest.register_node("mcl_nether:nether_wart", {
 	},
 	groups = {dig_immediate=3, not_in_creative_inventory=1,plant=1,attached_node=1,dig_by_water=1,destroy_by_lava_flow=1,dig_by_piston=1},
 	sounds = mcl_sounds.node_sound_leaves_defaults(),
+	_mcl_fortune_drop = {
+		discrete_uniform_distribution = true,
+		items = {"mcl_nether:nether_wart_item"},
+		min_count = 2,
+		max_count = 4,
+	}
 })
 
 minetest.register_craftitem("mcl_nether:nether_wart_item", {

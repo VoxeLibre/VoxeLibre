@@ -189,7 +189,7 @@ mcl_enchanting.enchantments.fortune = {
 	requires_tool = false,
 }
 
--- implemented using walkover.register_global
+-- implemented via walkover.register_global
 mcl_enchanting.enchantments.frost_walker = {
 	name = "Frost Walker",
 	max_level = 2,

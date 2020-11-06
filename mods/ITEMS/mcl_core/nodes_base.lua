@@ -10,6 +10,14 @@ else
 	ice_drawtype = "normal"
 end
 
+mcl_core.fortune_drop_ore = {
+	discrete_uniform_distribution = true,
+	min_count = 2,
+	max_count = 1,
+	get_chance = function (fortune_level) return 1 - 2 / (fortune_level + 2) end,
+	multiply = true,
+}
+
 minetest.register_node("mcl_core:stone", {
 	description = S("Stone"),
 	_doc_items_longdesc = S("One of the most common blocks in the world, almost the entire underground consists of stone. It sometimes contains ores. Stone may be created when water meets lava."),
@@ -38,6 +46,7 @@ minetest.register_node("mcl_core:stone_with_coal", {
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
 
 minetest.register_node("mcl_core:stone_with_iron", {
@@ -100,6 +109,12 @@ minetest.register_node("mcl_core:stone_with_redstone", {
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = {
+		discrete_uniform_distribution = true,
+		items = {"mesecons:redstone"},
+		min_count = 4,
+		max_count = 5,
+	}
 })
 
 local redstone_ore_reactivate = function(pos)
@@ -138,7 +153,13 @@ minetest.register_node("mcl_core:stone_with_redstone_lit", {
 	end,
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
-	_mcl_silk_touch_drop = "mcl_core:stone_with_redstone",
+	_mcl_silk_touch_drop = {"mcl_core:stone_with_redstone"},
+	_mcl_fortune_drop = {
+		discrete_uniform_distribution = true,
+		items = {"mesecons:redstone"},
+		min_count = 4,
+		max_count = 5,
+	}
 })
 
 minetest.register_node("mcl_core:stone_with_lapis", {
@@ -161,6 +182,7 @@ minetest.register_node("mcl_core:stone_with_lapis", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
+	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
 
 minetest.register_node("mcl_core:stone_with_emerald", {
@@ -175,6 +197,7 @@ minetest.register_node("mcl_core:stone_with_emerald", {
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
 
 minetest.register_node("mcl_core:stone_with_diamond", {
@@ -189,6 +212,7 @@ minetest.register_node("mcl_core:stone_with_diamond", {
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
 	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
 
 minetest.register_node("mcl_core:stonebrick", {
@@ -464,6 +488,23 @@ minetest.register_node("mcl_core:gravel", {
 	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
 	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = {
+		[1] = {
+			max_items = 1,
+			items = {
+				{items = {'mcl_core:flint'},rarity = 7},
+				{items = {'mcl_core:gravel'}}
+			}
+		},
+		[2] = {
+			max_items = 1,
+			items = {
+				{items = {'mcl_core:flint'},rarity = 4},
+				{items = {'mcl_core:gravel'}}
+			}
+		},
+		[3] = "mcl_core:flint"
+	},
 })
 
 -- sandstone --
