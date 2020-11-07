@@ -965,7 +965,7 @@ minetest.register_node("mcl_brewing:stand_111", {
 })
 
 minetest.register_craft({
-	output = "mcl_brewing:stand",
+	output = "mcl_brewing:stand_000",
 	recipe = {
 		{ "", "mcl_mobitems:blaze_rod", "" },
 		{ "mcl_core:cobble", "mcl_core:cobble", "mcl_core:cobble" },
