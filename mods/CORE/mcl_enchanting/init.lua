@@ -4,6 +4,8 @@ mcl_enchanting = {
 	book_offset = vector.new(0, 0.75, 0),
 	roman_numerals = dofile(modpath .. "/roman_numerals.lua"), 			-- https://exercism.io/tracks/lua/exercises/roman-numerals/solutions/73c2fb7521e347209312d115f872fa49
 	enchantments = {},
+	weighted_enchantments = {},
+	accumulated_weight = 0,
 	debug = false,
 }
 

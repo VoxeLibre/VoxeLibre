@@ -175,7 +175,11 @@ end
 
 function mcl_enchanting.initialize()
 	local all_groups = {}
+	local weighted = {}
+	local accum_weight = 0
 	for enchantment, enchantment_def in pairs(mcl_enchanting.enchantments) do
+		accum_weight = accum_weight + enchantment_def.weight
+		weighted[#weighted + 1] = {enchantment = enchantment, weight = accum_weight}
 		for primary in pairs(enchantment_def.primary) do
 			all_groups[primary] = true
 		end
@@ -183,6 +187,8 @@ function mcl_enchanting.initialize()
 			all_groups[secondary] = true
 		end
 	end
+	mcl_enchanting.accumulated_weight = accum_weight
+	mcl_enchanting.accumulated_weight = weighted
 	local register_tool_list = {}
 	local register_item_list = {}
 	for itemname, itemdef in pairs(minetest.registered_items) do
@@ -238,4 +244,3 @@ function mcl_enchanting.initialize()
 		minetest.register_tool(new_name, new_def)
 	end
 end
-

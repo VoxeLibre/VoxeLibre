@@ -18,7 +18,7 @@ local pigman = {
 	hp_min = 20,
 	hp_max = 20,
 	breath_max = -1,
-	armor = 90,
+	armor = {undead = 90, fleshy = 90},
 	attack_type = "dogfight",
 	group_attack = { "mobs_mc:pigman", "mobs_mc:baby_pigman" },
 	damage = 9,

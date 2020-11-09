@@ -116,7 +116,7 @@ tt.register_snippet(function(itemstring, toolcaps)
 	-- Weapon stats
 	if toolcaps.damage_groups then
 		for group, damage in pairs(toolcaps.damage_groups) do
-			local msg
+			local msg = ""
 			if group == "fleshy" then
 				if damage >= 0 then
 					msg = S("Damage: @1", damage)

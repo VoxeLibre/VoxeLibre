@@ -56,7 +56,6 @@ for m=1, #materials do
 		mcl_autogroup.creativetimes[basegroups[g].."_dig_"..materials[m]] = {}
 		for e=1, max_efficiency_level do
 			mcl_autogroup.digtimes[basegroups[g].."_dig_"..materials[m].."_efficiency_"..e] = {}
-			mcl_autogroup.creativetimes[basegroups[g].."_dig_"..materials[m].."_efficiency_"..e] = {}
 		end
 	end
 end
@@ -109,7 +108,9 @@ local overwrite = function()
 					time = math.ceil(time * 20) / 20
 				end
 				table.insert(mcl_autogroup.digtimes[diggroup], time)
-				table.insert(mcl_autogroup.creativetimes[diggroup], 0)
+				if not efficiency then
+					table.insert(mcl_autogroup.creativetimes[diggroup], 0)
+				end
 				newgroups[diggroup] = #mcl_autogroup.digtimes[diggroup]
 				return newgroups
 			end

@@ -18,8 +18,8 @@ local bobber_ENTITY={
 
 	_lastpos={},
 	_dive = false,
-	_waittick = nil,
-	_tick = 0,
+	_waittime = nil,
+	_time = 0,
 	player=nil,
 	_oldy = nil,
 	objtype="fishing",
@@ -179,11 +179,10 @@ local bobber_on_step = function(self, dtime)
 		self.object:remove()
 		return
 	end
-
+	local wield = player:get_wielded_item()
 	--Check if player is nearby
-	if self._tick % 5 == 0 and self.player ~= nil and player ~= nil then
+	if self.player ~= nil and player ~= nil then
 		--Destroy bobber if item not wielded.
-		local wield = player:get_wielded_item()
 		if ((not wield) or (minetest.get_item_group(wield:get_name(), "fishing_rod") <= 0)) then
 			self.object:remove()
 			return
@@ -232,33 +231,34 @@ local bobber_on_step = function(self, dtime)
 						pos = {x=epos["x"]+math.random(-1,1)*math.random()/2,y=epos["y"]+0.1,z=epos["z"]+math.random(-1,1)*math.random()/2},
 						velocity = {x=0, y=4, z=0},
 						acceleration = {x=0, y=-5, z=0},
-						expirationtime = math.random(),
-						size = math.random()+0.5,
+						expirationtime = math.random() * 0.5,
+						size = math.random(),
 						collisiondetection = true,
 						vertical = false,
 						texture = "mcl_particles_bubble.png",
 					})
 			end
-			if self._tick ~= self._waittick then
-				self._tick = self._tick + 1
+			if self._time < self._waittime then
+				self._time = self._time + dtime
 			else
-				self._waittick = nil
-				self._tick = 0
+				self._waittime = 0
+				self._time = 0
 				self._dive = false
 			end
-		else if self._waittick == nil then
+		else if not self._waittime or self._waittime <= 0 then
 			-- wait for random number of ticks.
-			self._waittick = math.random(50,333)
+			local lure_enchantment = wield and mcl_enchanting.get_enchantment(wield, "lure") or 0
+			self._waittime = math.random(5, 30) - lure_enchantment * 5
 		else
-			if self._tick ~= self._waittick then
-				self._tick = self._tick + 1
+			if self._time < self._waittime then
+				self._time = self._time + dtime
 			else
-				--wait time is over time to dive.
+				-- wait time is over time to dive.
 				self._dive = true
 				self.object:set_velocity({x=0,y=-2,z=0})
 				self.object:set_acceleration({x=0,y=5,z=0})
-				self._waittick = 30
-				self._tick = 0
+				self._waittime = 0.8
+				self._time = 0
 			end
 		end
 	end

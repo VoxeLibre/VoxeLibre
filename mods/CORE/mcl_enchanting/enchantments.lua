@@ -15,9 +15,17 @@
 	requires_tool = false,
 }]]--
 
--- unimplemented
-mcl_enchanting.enchantments.bane_of_anthropods = {
-	name = "Bane of Anthropods",
+local function increase_damage(damage_group, factor)
+	return function(itemstack, level)
+		local tool_capabilities = itemstack:get_tool_capabilities()
+		tool_capabilities.damage_groups[damage_group] = (tool_capabilities.damage_groups[damage_group] or 0) + level * factor
+		itemstack:get_meta():set_tool_capabilities(tool_capabilities)
+	end
+end
+
+-- implemented via on_enchant and additions in mobs_mc; Slowness IV part unimplemented
+mcl_enchanting.enchantments.bane_of_arthropods = {
+	name = "Bane of Arthropods",
 	max_level = 5,
 	primary = {sword = true},
 	secondary = {axe = true},
@@ -26,7 +34,7 @@ mcl_enchanting.enchantments.bane_of_anthropods = {
 	weight = 5,
 	description = "Increases damage and applies Slowness IV to arthropod mobs (spiders, cave spiders, silverfish and endermites).",
 	curse = false,
-	on_enchant = function() end,
+	on_enchant = increase_damage("anthropod", 2.5),
 	requires_tool = false,
 }
 
@@ -297,7 +305,7 @@ mcl_enchanting.enchantments.luck_of_the_sea = {
 	requires_tool = false,
 }
 
--- unimplemented
+-- implemented in mcl_fishing
 mcl_enchanting.enchantments.lure = {
 	name = "Lure",
 	max_level = 3,
@@ -409,19 +417,11 @@ mcl_enchanting.enchantments.sharpness = {
 	primary = {sword = true},
 	secondary = {axe = true},
 	disallow = {},
-	incompatible = {bane_of_anthropods = true, smite = true},
+	incompatible = {bane_of_arthropods = true, smite = true},
 	weight = 5,
 	description = "Increases damage.",
 	curse = false,
-	on_enchant = function(itemstack, level)
-		local tool_capabilities = itemstack:get_tool_capabilities()
-		local damage_groups = {}
-		for group, damage in pairs(tool_capabilities.damage_groups) do
-			damage_groups[group] = damage + level * 0.5
-		end
-		tool_capabilities.damage_groups = damage_groups
-		itemstack:get_meta():set_tool_capabilities(tool_capabilities)
-	end,
+	on_enchant = increase_damage("fleshy", 0.5),
 	requires_tool = false,
 }
 
@@ -440,18 +440,18 @@ mcl_enchanting.enchantments.silk_touch = {
 	requires_tool = false,
 }
 
--- unimplemented
+-- implemented via on_enchant and additions in mobs_mc
 mcl_enchanting.enchantments.smite = {
 	name = "Smite",
 	max_level = 5,
 	primary = {sword = true},
 	secondary = {axe = true},
 	disallow = {},
-	incompatible = {bane_of_anthropods = true, sharpness = true},
+	incompatible = {bane_of_arthropods = true, sharpness = true},
 	weight = 5,
 	description = "Increases damage to undead mobs.",
 	curse = false,
-	on_enchant = function() end,
+	on_enchant = increase_damage("undead", 2.5),
 	requires_tool = false,
 }
 

@@ -18,6 +18,7 @@ local skeleton = {
 	hp_min = 20,
 	hp_max = 20,
 	breath_max = -1,
+	armor = {undead = 100, fleshy = 100},
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.98, 0.3},
 	pathfinding = 1,
 	group_attack = true,
