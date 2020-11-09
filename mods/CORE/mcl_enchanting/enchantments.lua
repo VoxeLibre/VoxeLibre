@@ -455,7 +455,7 @@ mcl_enchanting.enchantments.smite = {
 	requires_tool = false,
 }
 
--- unimplemented
+-- implemented in mcl_playerplus
 mcl_enchanting.enchantments.soul_speed = {
 	name = "Soul Speed",
 	max_level = 3,
