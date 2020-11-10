@@ -365,7 +365,7 @@ mcl_enchanting.enchantments.projectile_protection = {
 	requires_tool = false,
 }
 
--- unimplemented
+-- implemented in mcl_armor
 mcl_enchanting.enchantments.protection = {
 	name = "Protection",
 	max_level = 4,

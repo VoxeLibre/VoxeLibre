@@ -515,14 +515,15 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
 
 		local total_points = 0
 		local total_toughness = 0
+		local protection_reduction = 0
 		for i=1, 6 do
 			local stack = player_inv:get_stack("armor", i)
 			if stack:get_count() > 0 then
 				-- Damage armor
 				local use = stack:get_definition().groups["mcl_armor_uses"] or 0
-				local unbreaking = mcl_enchanting.get_enchantment(stack, "unbreaking")
-				if unbreaking > 0 then
-					use = use / (0.6 + 0.4 / (unbreaking + 1))
+				local enchantments = mcl_enchanting.get_enchantments(stack)
+				if enchantments.unbreaking > 0 then
+					use = use / (0.6 + 0.4 / (enchantments.unbreaking + 1))
 				end
 				if use > 0 then
 					local wear = armor_damage * math.floor(65536/use)
@@ -542,13 +543,20 @@ minetest.register_on_player_hpchange(function(player, hp_change, reason)
 				local tough = stack:get_definition().groups["mcl_armor_toughness"] or 0
 				total_points = total_points + pts
 				total_toughness = total_toughness + tough
+				if enchantments.protection then
+					protection_reduction = protection_reduction + enchantments.protection * 0.04
+				end
+				-- if enchantments.blast_protection and  then
+				--	protection_reduction = protection_reduction + enchantments.blast_protection * 0.08
+				-- end
 			end
 		end
 		local damage = math.abs(hp_change)
 
 		-- Damage calculation formula (from <https://minecraft.gamepedia.com/Armor#Damage_protection>)
 		damage = damage * (1 - math.min(20, math.max((total_points/5), total_points - damage / (2+(total_toughness/4)))) / 25)
-		damage = math.floor(damage+0.5)
+		damage = damage * (1 - math.min(1, protection_reduction))
+		damage = math.floor(damage+0.5)		
 
 		hp_change = -math.abs(damage)
 
