@@ -278,9 +278,9 @@ minetest.register_on_dieplayer(function(player)
 	temp_pool = pool[name]
 	xp_amount = temp_pool.xp
 	
-	temp_pool.bar   = 0
-	temp_pool.level = 0
 	temp_pool.xp = 0
+	temp_pool.level = 0
+	temp_pool.bar, temp_pool.bar_step, temp_pool.xp_next_level = mcl_experience.xp_to_bar(temp_pool.xp, temp_pool.level)
 
 	hud_manager.change_hud({player = player, hud_name = "xp_level", element = "text", data = tostring(temp_pool.level)})
 	hud_manager.change_hud({player = player, hud_name = "experience_bar", element = "number", data = math.floor(temp_pool.bar)})
