@@ -38,3 +38,5 @@ Place this item on soul sand to plant it and watch it grow.=
 Burns your feet=
 Grows on soul sand=
 Reduces walking speed=
+@1 has become one with the lava.=
+@1 has been consumed by the lava.=
