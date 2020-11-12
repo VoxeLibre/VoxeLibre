@@ -7,6 +7,7 @@ local dtimes = {}
 local dlimit = 3  -- HUD element will be hidden after this many seconds
 
 local hudbars_mod = minetest.get_modpath("hudbars")
+local xp_mod = minetest.get_modpath("mcl_experience")
 
 local function set_hud(player)
 	if not player:is_player() then return end
@@ -27,6 +28,9 @@ local function set_hud(player)
 			local rows = math.floor((#hb.get_hudbar_identifiers()-1) / 2) + 1
 			local vmargin = tonumber(minetest.settings:get("hudbars_vmargin")) or 28
 			off.y = -76 - vmargin*rows
+		end
+		if xp_mod then
+			off.y = off.y - 25
 		end
 
 		-- Dirty trick to avoid collision with Minetest's status text (e.g. “Volume changed to 0%”)
