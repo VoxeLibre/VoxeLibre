@@ -16,7 +16,6 @@ for _,_ in pairs(EF) do
 end
 
 local icon_ids = {}
-local icon_types = {}
 
 local function potions_set_hudbar(player)
 
@@ -35,14 +34,13 @@ end
 local function potions_init_icons(player)
 	local name = player:get_player_name()
 	icon_ids[name] = {}
-	icon_types[name] = {}
 	for e=1, EFFECT_TYPES do
-		local x = -48 * e
+		local x = -7 + -38 * e
 		local id = player:hud_add({
 			hud_elem_type = "image",
 			text = "blank.png",
 			position = { x = 1, y = 0 },
-			offset = { x = x, y = 256+32 },
+			offset = { x = x, y = 272 },
 			scale = { x = 2, y = 2 },
 			alignment = { x = 1, y = 1 },
 			z_index = 100,
@@ -65,16 +63,13 @@ local function potions_set_icons(player)
 
 	for i=1, EFFECT_TYPES do
 		local icon = icon_ids[name][i]
-		local itype = icon_types[name][i]
 		local effect_name = active_effects[i]
 		if effect_name == "swift" and EF.swift[player].is_slow then
 			effect_name = "slow"
 		end
 		if effect_name == nil then
-			icon_types[name][i] = nil
 			player:hud_change(icon, "text", "blank.png")
-		elseif effect_name ~= itype then
-			icon_types[name][i] = effect_name
+		else
 			player:hud_change(icon, "text", "mcl_potions_effect_"..effect_name..".png")
 		end
 	end
@@ -405,7 +400,7 @@ end, true)
 -- ╚══════╝░╚════╝░╚═╝░░╚═╝╚═════╝░╚═╝░░░░╚═════╝░╚═╝░░╚═╝░░░╚═╝░░░╚══════╝
 
 
-function mcl_potions._reset_player_effects(player)
+function mcl_potions._reset_player_effects(player, set_hud)
 
 	if not player:is_player() then
 		return
@@ -432,7 +427,9 @@ function mcl_potions._reset_player_effects(player)
 
 	EF.fire_proof[player] = nil
 
-	potions_set_hud(player)
+	if set_hud ~= false then
+		potions_set_hud(player)
+	end
 
 end
 
@@ -503,11 +500,6 @@ function mcl_potions._load_player_effects(player)
 	if minetest.deserialize(meta:get_string("_is_fire_proof")) then
 		EF.fire_proof[player] = minetest.deserialize(meta:get_string("_is_fire_proof"))
 	end
-	minetest.after(1, function(player_ref)
-		if player_ref and player_ref:is_player() then
-			potions_set_hud(player_ref)
-		end
-	end, player)
 
 end
 
@@ -515,17 +507,25 @@ minetest.register_on_leaveplayer( function(player)
 	mcl_potions._save_player_effects(player)
 	mcl_potions._reset_player_effects(player) -- clearout the buffer to prevent looking for a player not there
 	icon_ids[player:get_player_name()] = nil
-	icon_types[player:get_player_name()] = nil
 end)
 
 minetest.register_on_dieplayer( function(player)
 	mcl_potions._reset_player_effects(player)
+	potions_set_hud(player)
 end)
 
 minetest.register_on_joinplayer( function(player)
-	potions_init_icons(player)
-	mcl_potions._reset_player_effects(player) -- make sure there are no wierd holdover effects
+	mcl_potions._reset_player_effects(player, false) -- make sure there are no wierd holdover effects
 	mcl_potions._load_player_effects(player)
+	potions_init_icons(player)
+	-- .after required because player:hud_change doesn't work when called
+	-- in same tick as player:hud_add
+	-- (see <https://github.com/minetest/minetest/pull/9611>)
+	minetest.after(2, function(player)
+		if player and player:is_player() then
+			potions_set_hud(player)
+		end
+	end, player)
 end)
 
 minetest.register_on_shutdown(function()
