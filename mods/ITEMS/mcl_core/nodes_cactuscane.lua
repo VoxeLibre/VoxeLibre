@@ -87,9 +87,15 @@ minetest.register_node("mcl_core:reeds", {
 		-- Placement rules:
 		-- * On top of group:soil_sugarcane AND next to water or frosted ice. OR
 		-- * On top of sugar canes
+		-- * Not inside liquid
 		if snn == "mcl_core:reeds" then
 			return true
 		elseif minetest.get_item_group(snn, "soil_sugarcane") == 0 then
+			return false
+		end
+		local place_node = minetest.get_node(place_pos)
+		local pdef = minetest.registered_nodes[place_node.name]
+		if pdef and pdef.liquidtype ~= "none" then
 			return false
 		end
 
