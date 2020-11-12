@@ -6,8 +6,8 @@ minetest.register_entity("mcl_itemframes:item",{
 	visual_size = {x=0.3,y=0.3},
 	physical = false,
 	pointable = false,
-	textures = { "empty.png" },
-	_texture = "empty.png",
+	textures = { "blank.png" },
+	_texture = "blank.png",
 
 	on_activate = function(self, staticdata)
 		if staticdata ~= nil and staticdata ~= "" then
