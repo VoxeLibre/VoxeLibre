@@ -521,7 +521,8 @@ minetest.register_on_joinplayer( function(player)
 	-- .after required because player:hud_change doesn't work when called
 	-- in same tick as player:hud_add
 	-- (see <https://github.com/minetest/minetest/pull/9611>)
-	minetest.after(2, function(player)
+	-- FIXME: Remove minetest.after
+	minetest.after(3, function(player)
 		if player and player:is_player() then
 			potions_set_hud(player)
 		end
