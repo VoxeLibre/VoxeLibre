@@ -503,6 +503,14 @@ function mcl_potions._load_player_effects(player)
 
 end
 
+-- Returns true if player has given effect
+function mcl_potions.player_has_effect(player, effect_name)
+	if not EF[effect_name] then
+		return false
+	end
+	return EF[effect_name][player] ~= nil
+end
+
 minetest.register_on_leaveplayer( function(player)
 	mcl_potions._save_player_effects(player)
 	mcl_potions._reset_player_effects(player) -- clearout the buffer to prevent looking for a player not there
