@@ -1,5 +1,13 @@
 -- Taken from https://minecraft.gamepedia.com/Enchanting
 
+local function increase_damage(damage_group, factor)
+	return function(itemstack, level)
+		local tool_capabilities = itemstack:get_tool_capabilities()
+		tool_capabilities.damage_groups[damage_group] = (tool_capabilities.damage_groups[damage_group] or 0) + level * factor
+		itemstack:get_meta():set_tool_capabilities(tool_capabilities)
+	end
+end
+
 -- requires engine change
 --[[mcl_enchanting.enchantments.aqua_affinity = {
 	name = "Aqua Affinity",
@@ -14,14 +22,6 @@
 	on_enchant = function() end,
 	requires_tool = false,
 }]]--
-
-local function increase_damage(damage_group, factor)
-	return function(itemstack, level)
-		local tool_capabilities = itemstack:get_tool_capabilities()
-		tool_capabilities.damage_groups[damage_group] = (tool_capabilities.damage_groups[damage_group] or 0) + level * factor
-		itemstack:get_meta():set_tool_capabilities(tool_capabilities)
-	end
-end
 
 -- implemented via on_enchant and additions in mobs_mc; Slowness IV part unimplemented
 mcl_enchanting.enchantments.bane_of_arthropods = {
@@ -38,7 +38,7 @@ mcl_enchanting.enchantments.bane_of_arthropods = {
 	requires_tool = false,
 }
 
--- unimplemented
+-- implemented in mcl_armor
 mcl_enchanting.enchantments.blast_protection = {
 	name = "Blast Protection",
 	max_level = 4,
@@ -123,7 +123,7 @@ mcl_enchanting.enchantments.efficiency = {
 	requires_tool = false,
 }
 
--- unimplemented
+-- implemented in mcl_armor
 mcl_enchanting.enchantments.feather_falling = {
 	name = "Feather Falling",
 	max_level = 4,
@@ -152,7 +152,7 @@ mcl_enchanting.enchantments.feather_falling = {
 	requires_tool = false,
 }]]--
 
--- unimplemented
+-- implemented in mcl_armor
 mcl_enchanting.enchantments.fire_protection = {
 	name = "Fire Protection",
 	max_level = 4,
@@ -350,7 +350,7 @@ mcl_enchanting.enchantments.power = {
 	requires_tool = false,
 }
 
--- unimplemented
+-- implemented in mcl_armor
 mcl_enchanting.enchantments.projectile_protection = {
 	name = "Projectile Protection",
 	max_level = 4,
@@ -485,7 +485,7 @@ mcl_enchanting.enchantments.soul_speed = {
 	requires_tool = false,
 }]]--
 
--- unimplemented
+-- implemented in mcl_armor
 mcl_enchanting.enchantments.thorns = {
 	name = "Thorns",
 	max_level = 3,
