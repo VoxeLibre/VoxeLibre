@@ -50,7 +50,7 @@ A decorative block that serves as a great furnace fuel.=
 Dried kelp is a food item.=
 Grows on coral block of same species=
 Needs water to live=
-Grows in water on dirt, sand, gravel
+Grows in water on dirt, sand, gravel=
 Glows in the water=
 4 possible sizes=
 Grows on dead brain coral block=
