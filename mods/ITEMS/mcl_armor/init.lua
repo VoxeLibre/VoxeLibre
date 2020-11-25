@@ -13,7 +13,7 @@ minetest.register_tool("mcl_armor:helmet_leather", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_helmet_leather.png",
-	groups = {armor_head=1, mcl_armor_points=1, mcl_armor_uses=56},
+	groups = {armor_head=1, mcl_armor_points=1, mcl_armor_uses=56, enchantability=15},
 	_repair_material = "mcl_mobitems:leather",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_leather",
@@ -28,7 +28,7 @@ minetest.register_tool("mcl_armor:helmet_iron", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_helmet_iron.png",
-	groups = {armor_head=1, mcl_armor_points=2, mcl_armor_uses=166},
+	groups = {armor_head=1, mcl_armor_points=2, mcl_armor_uses=166, enchantability=9 },
 	_repair_material = "mcl_core:iron_ingot",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_iron",
@@ -44,7 +44,7 @@ minetest.register_tool("mcl_armor:helmet_gold", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_helmet_gold.png",
-	groups = {armor_head=1, mcl_armor_points=2, mcl_armor_uses=78},
+	groups = {armor_head=1, mcl_armor_points=2, mcl_armor_uses=78, enchantability=25 },
 	_repair_material = "mcl_core:gold_ingot",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_iron",
@@ -59,7 +59,7 @@ minetest.register_tool("mcl_armor:helmet_diamond",{
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_helmet_diamond.png",
-	groups = {armor_head=1, mcl_armor_points=3, mcl_armor_uses=364, mcl_armor_toughness=2},
+	groups = {armor_head=1, mcl_armor_points=3, mcl_armor_uses=364, mcl_armor_toughness=2, enchantability=10 },
 	_repair_material = "mcl_core:diamond",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_diamond",
@@ -74,7 +74,7 @@ minetest.register_tool("mcl_armor:helmet_chain", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_helmet_chain.png",
-	groups = {armor_head=1, mcl_armor_points=2, mcl_armor_uses=166},
+	groups = {armor_head=1, mcl_armor_points=2, mcl_armor_uses=166, enchantability=12 },
 	_repair_material = "mcl_core:iron_ingot",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_chainmail",
@@ -91,7 +91,7 @@ minetest.register_tool("mcl_armor:chestplate_leather", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_chestplate_leather.png",
-	groups = {armor_torso=1, mcl_armor_points=3, mcl_armor_uses=81},
+	groups = {armor_torso=1, mcl_armor_points=3, mcl_armor_uses=81, enchantability=15 },
 	_repair_material = "mcl_mobitems:leather",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_leather",
@@ -106,7 +106,7 @@ minetest.register_tool("mcl_armor:chestplate_iron", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_chestplate_iron.png",
-	groups = {armor_torso=1, mcl_armor_points=6, mcl_armor_uses=241},
+	groups = {armor_torso=1, mcl_armor_points=6, mcl_armor_uses=241, enchantability=9 },
 	_repair_material = "mcl_core:iron_ingot",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_iron",
@@ -121,7 +121,7 @@ minetest.register_tool("mcl_armor:chestplate_gold", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_chestplate_gold.png",
-	groups = {armor_torso=1, mcl_armor_points=5, mcl_armor_uses=113},
+	groups = {armor_torso=1, mcl_armor_points=5, mcl_armor_uses=113, enchantability=25 },
 	_repair_material = "mcl_core:gold_ingot",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_iron",
@@ -136,7 +136,7 @@ minetest.register_tool("mcl_armor:chestplate_diamond",{
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_chestplate_diamond.png",
-	groups = {armor_torso=1, mcl_armor_points=8, mcl_armor_uses=529, mcl_armor_toughness=2},
+	groups = {armor_torso=1, mcl_armor_points=8, mcl_armor_uses=529, mcl_armor_toughness=2, enchantability=10 },
 	_repair_material = "mcl_core:diamond",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_diamond",
@@ -151,7 +151,7 @@ minetest.register_tool("mcl_armor:chestplate_chain", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_chestplate_chain.png",
-	groups = {armor_torso=1, mcl_armor_points=5, mcl_armor_uses=241},
+	groups = {armor_torso=1, mcl_armor_points=5, mcl_armor_uses=241, enchantability=12 },
 	_repair_material = "mcl_core:iron_ingot",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_chainmail",
@@ -168,7 +168,7 @@ minetest.register_tool("mcl_armor:leggings_leather", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_leggings_leather.png",
-	groups = {armor_legs=1, mcl_armor_points=2, mcl_armor_uses=76},
+	groups = {armor_legs=1, mcl_armor_points=2, mcl_armor_uses=76, enchantability=15 },
 	_repair_material = "mcl_mobitems:leather",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_leather",
@@ -183,7 +183,7 @@ minetest.register_tool("mcl_armor:leggings_iron", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_leggings_iron.png",
-	groups = {armor_legs=1, mcl_armor_points=5, mcl_armor_uses=226},
+	groups = {armor_legs=1, mcl_armor_points=5, mcl_armor_uses=226, enchantability=9 },
 	_repair_material = "mcl_core:iron_ingot",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_iron",
@@ -198,7 +198,7 @@ minetest.register_tool("mcl_armor:leggings_gold", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_leggings_gold.png",
-	groups = {armor_legs=1, mcl_armor_points=3, mcl_armor_uses=106},
+	groups = {armor_legs=1, mcl_armor_points=3, mcl_armor_uses=106, enchantability=25 },
 	_repair_material = "mcl_core:gold_ingot",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_iron",
@@ -213,7 +213,7 @@ minetest.register_tool("mcl_armor:leggings_diamond",{
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_leggings_diamond.png",
-	groups = {armor_legs=1, mcl_armor_points=6, mcl_armor_uses=496, mcl_armor_toughness=2},
+	groups = {armor_legs=1, mcl_armor_points=6, mcl_armor_uses=496, mcl_armor_toughness=2, enchantability=10 },
 	_repair_material = "mcl_core:diamond",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_diamond",
@@ -228,7 +228,7 @@ minetest.register_tool("mcl_armor:leggings_chain", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_leggings_chain.png",
-	groups = {armor_legs=1, mcl_armor_points=4, mcl_armor_uses=226},
+	groups = {armor_legs=1, mcl_armor_points=4, mcl_armor_uses=226, enchantability=12 },
 	_repair_material = "mcl_core:iron_ingot",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_chainmail",
@@ -244,7 +244,7 @@ minetest.register_tool("mcl_armor:boots_leather", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_boots_leather.png",
-	groups = {armor_feet=1, mcl_armor_points=1, mcl_armor_uses=66},
+	groups = {armor_feet=1, mcl_armor_points=1, mcl_armor_uses=66, enchantability=15 },
 	_repair_material = "mcl_mobitems:leather",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_leather",
@@ -259,7 +259,7 @@ minetest.register_tool("mcl_armor:boots_iron", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_boots_iron.png",
-	groups = {armor_feet=1, mcl_armor_points=2, mcl_armor_uses=196},
+	groups = {armor_feet=1, mcl_armor_points=2, mcl_armor_uses=196, enchantability=9 },
 	_repair_material = "mcl_core:iron_ingot",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_iron",
@@ -274,7 +274,7 @@ minetest.register_tool("mcl_armor:boots_gold", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_boots_gold.png",
-	groups = {armor_feet=1, mcl_armor_points=1, mcl_armor_uses=92},
+	groups = {armor_feet=1, mcl_armor_points=1, mcl_armor_uses=92, enchantability=25 },
 	_repair_material = "mcl_core:gold_ingot",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_iron",
@@ -289,7 +289,7 @@ minetest.register_tool("mcl_armor:boots_diamond",{
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_boots_diamond.png",
-	groups = {armor_feet=1, mcl_armor_points=3, mcl_armor_uses=430, mcl_armor_toughness=2},
+	groups = {armor_feet=1, mcl_armor_points=3, mcl_armor_uses=430, mcl_armor_toughness=2, enchantability=10 },
 	_repair_material = "mcl_core:diamond",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_diamond",
@@ -304,7 +304,7 @@ minetest.register_tool("mcl_armor:boots_chain", {
 	_doc_items_longdesc = longdesc,
 	_doc_items_usagehelp = usage,
 	inventory_image = "mcl_armor_inv_boots_chain.png",
-	groups = {armor_feet=1, mcl_armor_points=1, mcl_armor_uses=196},
+	groups = {armor_feet=1, mcl_armor_points=1, mcl_armor_uses=196, enchantability=12 },
 	_repair_material = "mcl_core:iron_ingot",
 	sounds = {
 		_mcl_armor_equip = "mcl_armor_equip_chainmail",

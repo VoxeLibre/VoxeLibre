@@ -133,7 +133,7 @@ S("The speed and damage of the arrow increases the longer you charge. The regula
 	range = 1,
 	-- Trick to disable digging as well
 	on_use = function() end,
-	groups = {weapon=1,weapon_ranged=1,bow=1},
+	groups = {weapon=1,weapon_ranged=1,bow=1,enchantability=1},
 })
 
 -- Iterates through player inventory and resets all the bows in "charging" state back to their original stage
@@ -173,10 +173,10 @@ for level=0, 2 do
 		wield_scale = { x = 1.8, y = 1.8, z = 1 },
 		stack_max = 1,
 		range = 0, -- Pointing range to 0 to prevent punching with bow :D
-		groups = {not_in_creative_inventory=1, not_in_craft_guide=1, bow=1},
+		groups = {not_in_creative_inventory=1, not_in_craft_guide=1, bow=1, enchantability=1},
 		on_drop = function(itemstack, dropper, pos)
 			reset_bow_state(dropper)
-			if mcl_enchanting.is_enchanted(itemstack) then
+			if mcl_enchanting.is_enchanted(itemstack:get_name()) then
 				itemstack:set_name("mcl_bows:bow_enchanted")
 			else
 				itemstack:set_name("mcl_bows:bow")
@@ -201,7 +201,7 @@ controls.register_on_release(function(player, key, time)
 		wielditem:get_name()=="mcl_bows:bow_0_enchanted" or wielditem:get_name()=="mcl_bows:bow_1_enchanted" or wielditem:get_name()=="mcl_bows:bow_2_enchanted") then
 		local has_shot = false
 		
-		local enchanted = mcl_enchanting.is_enchanted(wielditem)
+		local enchanted = mcl_enchanting.is_enchanted(wielditem:get_name())
 		local speed, damage
 		local p_load = bow_load[player:get_player_name()]
 		local charge
@@ -269,7 +269,7 @@ controls.register_on_hold(function(player, key, time)
 	local inv = minetest.get_inventory({type="player", name=name})
 	local wielditem = player:get_wielded_item()
 	if bow_load[name] == nil and (wielditem:get_name()=="mcl_bows:bow" or wielditem:get_name()=="mcl_bows:bow_enchanted") and (creative or get_arrow(player)) then
-		local enchanted = mcl_enchanting.is_enchanted(wielditem)
+		local enchanted = mcl_enchanting.is_enchanted(wielditem:get_name())
 		if enchanted then
 			wielditem:set_name("mcl_bows:bow_0_enchanted")
 		else

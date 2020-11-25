@@ -322,7 +322,7 @@ minetest.register_tool("mcl_fishing:fishing_rod", {
 	_tt_help = S("Catches fish in water"),
 	_doc_items_longdesc = S("Fishing rods can be used to catch fish."),
 	_doc_items_usagehelp = S("Rightclick to launch the bobber. When it sinks right-click again to reel in an item. Who knows what you're going to catch?"),
-	groups = { tool=1, fishing_rod=1 },
+	groups = { tool=1, fishing_rod=1, enchantability=1 },
 	inventory_image = "mcl_fishing_fishing_rod.png",
 	wield_image = "mcl_fishing_fishing_rod.png^[transformR270",
 	wield_scale = { x = 1.5, y = 1.5, z = 1 },

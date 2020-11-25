@@ -15,7 +15,8 @@ minetest.register_craftitem("mcl_books:book", {
 	_doc_items_longdesc = S("Books are used to make bookshelves and book and quills."),
 	inventory_image = "default_book.png",
 	stack_max = 64,
-	groups = { book=1, craftitem = 1 },
+	groups = { book=1, craftitem = 1, enchantability = 1 },
+	_mcl_enchanting_enchanted_tool = "mcl_enchanting:book_enchanted",
 })
 
 if minetest.get_modpath("mcl_core") and minetest.get_modpath("mcl_mobitems") then

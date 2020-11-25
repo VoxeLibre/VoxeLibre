@@ -21,6 +21,8 @@ end
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{1, 41}},
 }]]--
 
 -- implemented via on_enchant and additions in mobs_mc; Slowness IV part unimplemented
@@ -36,6 +38,8 @@ mcl_enchanting.enchantments.bane_of_arthropods = {
 	curse = false,
 	on_enchant = increase_damage("anthropod", 2.5),
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{5, 25}, {13, 33}, {21, 41}, {29, 49}, {37, 57}},
 }
 
 -- implemented in mcl_armor
@@ -51,7 +55,26 @@ mcl_enchanting.enchantments.blast_protection = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{5, 13}, {13, 21}, {21, 29}, {29, 37}},
 }
+
+-- requires missing MineClone2 feature
+--[[mcl_enchanting.enchantments.channeling = {
+	name = "Channeling",
+	max_level = 1,
+	primary = {trident = true},
+	secondary = {},
+	disallow = {},
+	incompatible = {riptide = true},
+	weight = 1,
+	description = "Trident \"channels\" a bolt of lightning toward a hit entity. Functions only during thunderstorms and if target is unobstructed with opaque blocks.",
+	curse = false,
+	on_enchant = function() end,
+	requires_tool = false,
+	treasure = false,
+	power_range_table = {{25, 50}},
+}]]--
 
 -- implemented in mcl_armor
 mcl_enchanting.enchantments.curse_of_binding = {
@@ -66,6 +89,8 @@ mcl_enchanting.enchantments.curse_of_binding = {
 	curse = true,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = true,
+	power_range_table = {{25, 50}},
 }
 
 -- implemented in mcl_death_drop
@@ -74,17 +99,19 @@ mcl_enchanting.enchantments.curse_of_vanishing = {
 	max_level = 1,
 	primary = {},
 	secondary = {armor_head = true, armor_torso = true, armor_legs = true, armor_feet = true, tool = true, weapon = true},
-	disallow = {clock = true},
+	disallow = {},
 	incompatible = {},
 	weight = 1,
 	description = "Item destroyed on death.",
 	curse = true,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = true,
+	power_range_table = {{25, 50}},
 }
 
 -- unimplemented
-mcl_enchanting.enchantments.depth_strider = {
+--[[mcl_enchanting.enchantments.depth_strider = {
 	name = "Depth Strider",
 	max_level = 3,
 	primary = {},
@@ -96,7 +123,9 @@ mcl_enchanting.enchantments.depth_strider = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
-}
+	treasure = false,
+	power_range_table = {{10, 25}, {20, 35}, {30, 45}},
+}]]--
 
 -- implemented via on_enchant
 mcl_enchanting.enchantments.efficiency = {
@@ -121,6 +150,8 @@ mcl_enchanting.enchantments.efficiency = {
 		itemstack:get_meta():set_tool_capabilities(tool_capabilities)
 	end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{1, 61}, {11, 71}, {21, 81}, {31, 91}, {41, 101}},
 }
 
 -- implemented in mcl_armor
@@ -135,6 +166,8 @@ mcl_enchanting.enchantments.feather_falling = {
 	description = "Reduces fall damage.",curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{5, 11}, {11, 17}, {17, 23}, {23, 29}},
 }
 
 -- requires missing MineClone2 feature
@@ -150,6 +183,8 @@ mcl_enchanting.enchantments.feather_falling = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{10, 61}, {30, 71}},
 }]]--
 
 -- implemented in mcl_armor
@@ -165,6 +200,8 @@ mcl_enchanting.enchantments.fire_protection = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{10, 18}, {18, 26}, {26, 34}, {34, 42}},
 }
 
 -- requires missing MineClone2 feature
@@ -180,12 +217,14 @@ mcl_enchanting.enchantments.fire_protection = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{20, 50}},
 }]]--
 
 -- implemented in mcl_item_entity
 mcl_enchanting.enchantments.fortune = {
 	name = "Fortune",
-	max_level = 4,
+	max_level = 3,
 	primary = {pickaxe = true, shovel = true, axe = true, hoe = true},
 	secondary = {},
 	disallow = {},
@@ -195,6 +234,8 @@ mcl_enchanting.enchantments.fortune = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{15, 61}, {24, 71}, {33, 81}},
 }
 
 -- implemented via walkover.register_global
@@ -210,6 +251,8 @@ mcl_enchanting.enchantments.frost_walker = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = true,
+	power_range_table = {{10, 25}, {20, 35}},
 }
 
 walkover.register_global(function(pos, _, player)
@@ -229,6 +272,23 @@ walkover.register_global(function(pos, _, player)
 	end
 end)
 
+-- requires missing MineClone2 feature
+--[[mcl_enchanting.enchantments.impaling = {
+	name = "Impaling",
+	max_level = 5,
+	primary = {trident = true},
+	secondary = {},
+	disallow = {},
+	incompatible = {},
+	weight = 2,
+	description = "Trident deals additional damage to mobs that spawn naturally in the ocean.",
+	curse = false,
+	on_enchant = function() end,
+	requires_tool = false,
+	treasure = false,
+	power_range_table = {{1, 21}, {9, 29}, {17, 37}, {25, 45}, {33, 53}},
+}]]--
+
 -- implemented in mcl_bows
 mcl_enchanting.enchantments.infinity = {
 	name = "Infinity",
@@ -242,6 +302,8 @@ mcl_enchanting.enchantments.infinity = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{20, 50}},
 }
 
 -- implemented via minetest.calculate_knockback
@@ -257,6 +319,8 @@ mcl_enchanting.enchantments.knockback = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{5, 61}, {25, 71}},
 }
 
 local old_calculate_knockback = minetest.calculate_knockback
@@ -276,7 +340,7 @@ function minetest.calculate_knockback(player, hitter, time_from_last_punch, tool
 end
 
 -- unimplemented
-mcl_enchanting.enchantments.looting = {
+--[[mcl_enchanting.enchantments.looting = {
 	name = "Looting",
 	max_level = 3,
 	primary = {sword = true},
@@ -288,10 +352,29 @@ mcl_enchanting.enchantments.looting = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
-}
+	treasure = false,
+	power_range_table = {{15, 61}, {24, 71}, {33, 81}},
+}]]--
+
+-- requires missing MineClone2 feature
+--[[mcl_enchanting.enchantments.loyalty = {
+	name = "Loyalty",
+	max_level = 3,
+	primary = {trident = true},
+	secondary = {},
+	disallow = {},
+	incompatible = {riptide = true},
+	weight = 5,
+	description = "Trident returns after being thrown. Higher levels reduce return time.",
+	curse = false,
+	on_enchant = function() end,
+	requires_tool = false,
+	treasure = false,
+	power_range_table = {{12, 50}, {19, 50}, {26, 50}},
+}]]--
 
 -- unimplemented
-mcl_enchanting.enchantments.luck_of_the_sea = {
+--[[mcl_enchanting.enchantments.luck_of_the_sea = {
 	name = "Luck of the Sea",
 	max_level = 3,
 	primary = {fishing_rod = true},
@@ -303,7 +386,9 @@ mcl_enchanting.enchantments.luck_of_the_sea = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
-}
+	treasure = false,
+	power_range_table = {{15, 61}, {24, 71}, {33, 81}},
+}]]--
 
 -- implemented in mcl_fishing
 mcl_enchanting.enchantments.lure = {
@@ -318,10 +403,12 @@ mcl_enchanting.enchantments.lure = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{15, 61}, {24, 71}, {33, 81}},
 }
 
 -- unimplemented
-mcl_enchanting.enchantments.mending = {
+--[[mcl_enchanting.enchantments.mending = {
 	name = "Mending",
 	max_level = 1,
 	primary = {},
@@ -333,14 +420,50 @@ mcl_enchanting.enchantments.mending = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = true,
-}
+	treasure = true,
+	power_range_table = {{25, 75}},
+}]]--
+
+-- requires missing MineClone2 feature
+--[[mcl_enchanting.enchantments.multishot = {
+	name = "Multishot",
+	max_level = 1,
+	primary = {crossbow = true},
+	secondary = {},
+	disallow = {},
+	incompatible = {piercing = true},
+	weight = 2,
+	description = "Shoot 3 arrows at the cost of one.",
+	curse = false,
+	on_enchant = function() end,
+	requires_tool = false,
+	treasure = false,
+	power_range_table = {{20, 50}},
+}]]--
+
+-- requires missing MineClone2 feature
+--[[mcl_enchanting.enchantments.piercing = {
+	name = "Piercing",
+	max_level = 4,
+	primary = {crossbow = true},
+	secondary = {},
+	disallow = {},
+	incompatible = {multishot = true},
+	weight = 10,
+	description = "Arrows pass through multiple entities.",
+	curse = false,
+	on_enchant = function() end,
+	requires_tool = false,
+	treasure = false,
+	power_range_table = {{1, 50}, {11, 50}, {21, 50}, {31, 50}},
+}]]--
 
 -- implemented in mcl_bows
 mcl_enchanting.enchantments.power = {
 	name = "Power",
 	max_level = 5,
-	primary = {},
-	secondary = {bow = true},
+	primary = {bow = true},
+	secondary = {},
 	disallow = {},
 	incompatible = {},
 	weight = 10,
@@ -348,6 +471,8 @@ mcl_enchanting.enchantments.power = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{1, 16}, {11, 26}, {21, 36}, {31, 46}, {41, 56}},
 }
 
 -- implemented in mcl_armor
@@ -363,6 +488,8 @@ mcl_enchanting.enchantments.projectile_protection = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{1, 16}, {11, 26}, {21, 36}, {31, 46}, {41, 56}},
 }
 
 -- implemented in mcl_armor
@@ -378,6 +505,8 @@ mcl_enchanting.enchantments.protection = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{1, 12}, {12, 23}, {23, 34}, {34, 45}},
 }
 
 -- implemented via minetest.calculate_knockback (together with the Knockback enchantment) and mcl_bows
@@ -393,10 +522,29 @@ mcl_enchanting.enchantments.punch = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{12, 37}, {32, 57}},
 }
 
+-- requires missing MineClone2 feature
+--[[mcl_enchanting.enchantments.quick_charge = {
+	name = "Quick Charge",
+	max_level = 3,
+	primary = {crossbow = true},
+	secondary = {},
+	disallow = {},
+	incompatible = {},
+	weight = 5,
+	description = "Decreases crossbow charging time.",
+	curse = false,
+	on_enchant = function() end,
+	requires_tool = false,
+	treasure = false,
+	power_range_table = {{12, 50}, {32, 50}, {52, 50}},
+}]]--
+
 -- unimplemented
-mcl_enchanting.enchantments.respiration = {
+--[[mcl_enchanting.enchantments.respiration = {
 	name = "Respiration",
 	max_level = 3,
 	primary = {armor_head = true},
@@ -408,7 +556,26 @@ mcl_enchanting.enchantments.respiration = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
-}
+	treasure = false,
+	power_range_table = {{10, 40}, {20, 50}, {30, 60}},
+}]]--
+
+-- requires missing MineClone2 feature
+--[[mcl_enchanting.enchantments.riptide = {
+	name = "Riptide",
+	max_level = 3,
+	primary = {trident = true},
+	secondary = {},
+	disallow = {},
+	incompatible = {channeling = true, loyalty = true},
+	weight = 2,
+	description = "Trident launches player with itself when thrown. Functions only in water or rain.",
+	curse = false,
+	on_enchant = function() end,
+	requires_tool = false,
+	treasure = false,
+	power_range_table = {{17, 50}, {24, 50}, {31, 50}},
+}]]--
 
 -- implemented via on_enchant
 mcl_enchanting.enchantments.sharpness = {
@@ -423,6 +590,8 @@ mcl_enchanting.enchantments.sharpness = {
 	curse = false,
 	on_enchant = increase_damage("fleshy", 0.5),
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{1, 21}, {12, 32}, {23, 43}, {34, 54}, {45, 65}},
 }
 
 -- implemented in mcl_item_entity
@@ -438,6 +607,8 @@ mcl_enchanting.enchantments.silk_touch = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{15, 61}},
 }
 
 -- implemented via on_enchant and additions in mobs_mc
@@ -453,6 +624,8 @@ mcl_enchanting.enchantments.smite = {
 	curse = false,
 	on_enchant = increase_damage("undead", 2.5),
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{5, 25}, {13, 33}, {21, 41}, {29, 49}, {37, 57}},
 }
 
 -- implemented in mcl_playerplus
@@ -468,6 +641,8 @@ mcl_enchanting.enchantments.soul_speed = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = true,
+	power_range_table = {{10, 25}, {20, 35}, {30, 45}},
 }
 
 -- requires missing MineClone2 feature
@@ -483,6 +658,8 @@ mcl_enchanting.enchantments.soul_speed = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{5, 20}, {14, 29}, {23, 38}},
 }]]--
 
 -- implemented in mcl_armor
@@ -498,6 +675,8 @@ mcl_enchanting.enchantments.thorns = {
 	curse = false,
 	on_enchant = function() end,
 	requires_tool = false,
+	treasure = false,
+	power_range_table = {{10, 61}, {30, 71}, {50, 81}},
 }
 
 -- for tools & weapons implemented via on_enchant; for bows implemented in mcl_bows; for armor implemented in mcl_armor and mcl_tt; for fishing rods implemented in mcl_fishing
@@ -520,4 +699,6 @@ mcl_enchanting.enchantments.unbreaking = {
 		itemstack:get_meta():set_tool_capabilities(tool_capabilities)
 	end,
 	requires_tool = true,
+	treasure = false,
+	power_range_table = {{5, 61}, {13, 71}, {21, 81}},
 }

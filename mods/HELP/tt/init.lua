@@ -14,22 +14,6 @@ dofile(minetest.get_modpath(minetest.get_current_modname()).."/snippets.lua")
 
 -- Apply item description updates
 
-local function equals(t1, t2)
-	for k, v in pairs(t1) do
-		local equal
-		local v2 = rawget(t2, k)
-		if type(v) == "table" then
-			equal = equals(v, v2)
-		else
-			equal = (v == v2)
-		end
-		if not equal then
-			return false
-		end
-	end
-	return true
-end
-
 local function apply_snippets(desc, itemstring, toolcaps, itemstack)
 	local first = true
 	-- Apply snippets
@@ -80,10 +64,9 @@ tt.reload_itemstack_description = function(itemstack)
 	if def and def._mcl_generate_description then
 		def._mcl_generate_description(itemstack)
 	elseif should_change(itemstring, def) and meta:get_string("name") == "" then
-		local toolcaps = itemstack:get_tool_capabilities()
-		local hand_toolcaps = ItemStack(""):get_tool_capabilities()
-		if equals(toolcaps, hand_toolcaps) then
-			toolcaps = nil
+		local toolcaps
+		if def.tool_capabilities then
+			toolcaps = itemstack:get_tool_capabilities()
 		end
 		local orig_desc = def._tt_original_description or def.description
 		local desc = apply_snippets(orig_desc, itemstring, toolcaps or def.tool_capabilities, itemstack)
