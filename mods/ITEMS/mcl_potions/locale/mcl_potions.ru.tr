@@ -114,17 +114,3 @@ A throwable potion that will shatter on impact, where it gives all nearby player
 This particular arrow is tipped and will give an effect when it hits a player or mob.=Эта необычная стрела с обработанным наконечником даёт эффект при попадании в игрока или моба.
 
 
-
-##### not used anymore #####
-
-Lingering Weakness Potion=Оседающее зелье слабости
-Lingering Weakness Potion +=Оседающее зелье слабости +
-Lingering Strength Potion=Оседающее зелье силы
-Lingering Strength Potion II=Оседающее зелье силы II
-Lingering Strength Potion +=Оседающее зелье силы +
-Weakness Splash Potion=Взрывающееся зелье слабости
-Weakness Splash Potion +=Взрывающееся зелье слабости +
-Strength Splash Potion=Взрывающееся зелье силы
-Strength Splash Potion II=Взрывающееся зелье силы II
-Strength Splash Potion +=Взрывающееся зелье силы +
-Grants the ability to see in darkness.=Даёт возможность видеть в темноте
