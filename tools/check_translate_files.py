@@ -17,7 +17,7 @@ code_lang = args.language
 
 def LoadTranslateFile(filename, direction):
     result = set()
-    file = open(filename, 'r')
+    file = open(filename, 'r', encoding="utf-8")
     for line in file:
         line = line.strip()
         if line.startswith('#') or line == '':
