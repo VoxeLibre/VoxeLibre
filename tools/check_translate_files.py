@@ -1,15 +1,15 @@
 # Output indicator
-# !< : Indicate a text line without = in template.txt
-# << : Indicate an untranslated line in template.txt
-# !> : Indicate a text line without = in translate file (.tr)
-# >> : Indicate an unknow translated line in translate file (.tr)
-# >> Missing file : Indicate a missing translate file (.tr)
+# !<   Indicates a text line without '=' in template.txt
+# <<   Indicates an untranslated line in template.txt
+# !>   Indicates a text line without '=' in translate file (.tr)
+# >>   Indicates an unknown translated line in translate file (.tr)
+# >>   Missing file: Indicates a missing translate file (.tr)
 
 import os
 import argparse
 
-parser = argparse.ArgumentParser(description='Check Translate file with Template.txt for a given language.')
-parser.add_argument("language", nargs='?', default='fr', help='2 characters language code (default=fr)')
+parser = argparse.ArgumentParser(description='Check translation file with template.txt for a given language.')
+parser.add_argument("language", help='language code')
 args = parser.parse_args()
 
 path =  "../mods/"
@@ -54,8 +54,8 @@ for root, directories, files in os.walk(path):
                 language = os.path.join(root, os.path.basename(os.path.dirname(root))) + "." + code_lang + ".tr"
             
             if os.path.exists(language) and os.path.isfile(language):
-                print("Compare Files %s with %s" % (template, language))
+                print("Compare files %s with %s" % (template, language))
                 CompareFiles(template, language)
             else:
                 LoadTranslateFile(filename, "!> ")
-                print(">> Missing File = " + language)
+                print(">> Missing file = " + language)
