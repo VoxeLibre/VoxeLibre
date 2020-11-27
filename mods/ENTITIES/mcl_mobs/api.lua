@@ -753,7 +753,7 @@ local is_at_cliff_or_danger = function(self)
 			return true
 		else
 			local def = minetest.registered_nodes[bnode.name]
-			return (not def and def.walkable)
+			return not (def and def.walkable)
 		end
 	end
 
@@ -789,7 +789,7 @@ local is_at_water_danger = function(self)
 			return true
 		else
 			local def = minetest.registered_nodes[bnode.name]
-			return (not def and def.walkable)
+			return not (def and def.walkable)
 		end
 	end
 
