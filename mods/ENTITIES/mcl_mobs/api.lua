@@ -139,7 +139,7 @@ local mob_sound = function(self, soundname, is_opinion, fixed_pitch)
 	end
 end
 
--- Reeturn true if object is in view_range
+-- Return true if object is in view_range
 local function object_in_range(self, object)
 	if not object then
 		return false
@@ -158,11 +158,9 @@ local function object_in_range(self, object)
 	else
 		dist = self.view_range
 	end
-	if vector.distance(self.object:get_pos(), object:get_pos()) > dist then
-		return false
-	else
-		return true
-	end
+
+	local p1, p2 = self.object:get_pos(), object:get_pos()
+	return p1 and p2 and (vector.distance(p1, p2) <= dist)
 end
 
 -- attack player/mob
@@ -710,18 +708,23 @@ end
 
 
 -- check if within physical map limits (-30911 to 30927)
-local within_limits = function(pos, radius)
-
-	if  (pos.x - radius) > -30913
-	and (pos.x + radius) <  30928
-	and (pos.y - radius) > -30913
-	and (pos.y + radius) <  30928
-	and (pos.z - radius) > -30913
-	and (pos.z + radius) <  30928 then
-		return true -- within limits
+local within_limits, wmin, wmax = nil, -30913, 30928
+within_limits = function(pos, radius)
+	if mcl_vars then
+		if mcl_vars.mapgen_edge_min and mcl_vars.mapgen_edge_max then
+			wmin, wmax = mcl_vars.mapgen_edge_min, mcl_vars.mapgen_edge_max
+			within_limits = function(pos, radius)
+				return pos
+					and (pos.x - radius) > wmin and (pos.x + radius) < wmax
+					and (pos.y - radius) > wmin and (pos.y + radius) < wmax
+					and (pos.z - radius) > wmin and (pos.z + radius) < wmax
+			end
+		end
 	end
-
-	return false -- beyond limits
+	return pos
+		and (pos.x - radius) > wmin and (pos.x + radius) < wmax
+		and (pos.y - radius) > wmin and (pos.y + radius) < wmax
+		and (pos.z - radius) > wmin and (pos.z + radius) < wmax
 end
 
 
@@ -2222,10 +2225,8 @@ local do_states = function(self, dtime)
 	-- attack routines (explode, dogfight, shoot, dogshoot)
 	elseif self.state == "attack" then
 
-		-- calculate distance from mob and enemy
 		local s = self.object:get_pos()
 		local p = self.attack:get_pos() or s
-		local dist = vector.distance(p, s)
 
 		-- stop attacking if player invisible or out of range
 		if not self.attack
@@ -2245,6 +2246,9 @@ local do_states = function(self, dtime)
 
 			return
 		end
+
+		-- calculate distance from mob and enemy
+		local dist = vector.distance(p, s)
 
 		if self.attack_type == "explode" then
 
