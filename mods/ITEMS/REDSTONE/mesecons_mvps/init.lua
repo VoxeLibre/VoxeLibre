@@ -221,7 +221,7 @@ end
 -- movedir: direction of actual movement
 -- maximum: maximum nodes to be pushed
 -- all_pull_sticky: All nodes are sticky in the direction that they are pulled from
-function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name, piston_pos)
+function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name, piston_pos, all_pull_sticky)
 	local nodes, has_loop = mesecon.mvps_get_stack(pos, movedir, maximum, piston_pos)
 
 	if has_loop then
