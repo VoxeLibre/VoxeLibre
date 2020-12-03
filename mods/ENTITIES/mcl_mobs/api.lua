@@ -97,6 +97,33 @@ local mod_hunger = minetest.get_modpath("mcl_hunger") ~= nil
 local mod_worlds = minetest.get_modpath("mcl_worlds") ~= nil
 local mod_armor = minetest.get_modpath("mcl_armor") ~= nil
 
+
+----For Water Flowing:
+local enable_physics = function(object, luaentity, ignore_check)
+	if luaentity.physical_state == false or ignore_check == true then
+		luaentity.physical_state = true
+		object:set_properties({
+			physical = true
+		})
+		object:set_velocity({x=0,y=0,z=0})
+		object:set_acceleration({x=0,y=-9.81,z=0})
+	end
+end
+
+local disable_physics = function(object, luaentity, ignore_check, reset_movement)
+	if luaentity.physical_state == true or ignore_check == true then
+		luaentity.physical_state = false
+		object:set_properties({
+			physical = false
+		})
+		if reset_movement ~= false then
+			object:set_velocity({x=0,y=0,z=0})
+			object:set_acceleration({x=0,y=0,z=0})
+		end
+	end
+end
+
+
 -- play sound
 local mob_sound = function(self, soundname, is_opinion, fixed_pitch)
 
@@ -180,23 +207,59 @@ local do_attack = function(self, player)
 end
 
 
+-- collision function borrowed amended from jordan4ibanez open_ai mod
+local collision = function(self)
+
+	local pos = self.object:get_pos()
+	local vel = self.object:get_velocity()
+	local x = 0
+	local z = 0
+	local width = -self.collisionbox[1] + self.collisionbox[4] + 0.5
+
+	for _,object in ipairs(minetest.env:get_objects_inside_radius(pos, width)) do
+
+		if object:is_player()
+		or (object:get_luaentity()._cmi_is_mob == true and object ~= self.object) then
+
+			local pos2 = object:get_pos()
+			local vec  = {x = pos.x - pos2.x, z = pos.z - pos2.z}
+			local force = (width + 0.5) - vector.distance(
+				{x = pos.x, y = 0, z = pos.z},
+				{x = pos2.x, y = 0, z = pos2.z})
+
+			x = x + (vec.x * force)
+			z = z + (vec.z * force)
+		end
+	end
+
+	return({x,z})
+end
+
 -- move mob in facing direction
 local set_velocity = function(self, v)
 
-	-- do not move if mob has been ordered to stay
+	local c_x, c_y = 0, 0
+
+	-- can mob be pushed, if so calculate direction
+	if self.pushable then
+		c_x, c_y = unpack(collision(self))
+	end
+
+	-- halt mob if it has been ordered to stay
 	if self.order == "stand" then
 		self.object:set_velocity({x = 0, y = 0, z = 0})
 		return
 	end
 
 	local yaw = (self.object:get_yaw() or 0) + self.rotate
-	local vel = self.object:get_velocity()
+
 	self.object:set_velocity({
-		x = sin(yaw) * -v,
-		y = (vel and vel.y) or 0,
-		z = cos(yaw) * v
+		x = (sin(yaw) * -v) + c_x,
+		y = self.object:get_velocity().y,
+		z = (cos(yaw) * v) + c_y,
 	})
 end
+
 
 
 -- calculate mob velocity
@@ -756,7 +819,9 @@ local is_at_cliff_or_danger = function(self)
 			return true
 		else
 			local def = minetest.registered_nodes[bnode.name]
-			return not (def and def.walkable)
+			if def and def.walkable then 
+				return false
+			end
 		end
 	end
 
@@ -792,7 +857,9 @@ local is_at_water_danger = function(self)
 			return true
 		else
 			local def = minetest.registered_nodes[bnode.name]
-			return not (def and def.walkable)
+			if def and def.walkable then 
+				return false
+			end
 		end
 	end
 
@@ -3319,6 +3386,44 @@ local mob_step = function(self, dtime)
 		end
 	end
 
+	-- Add water flowing for mobs from mcl_item_entity
+		local p = self.object:get_pos()
+		local node = minetest.get_node_or_nil(p)
+		local nn = node.name
+		local def = minetest.registered_nodes[nn]
+
+
+		-- Move item around on flowing liquids
+		if def and def.liquidtype == "flowing" then
+
+			--[[ Get flowing direction (function call from flowlib), if there's a liquid.
+			NOTE: According to Qwertymine, flowlib.quickflow is only reliable for liquids with a flowing distance of 7.
+			Luckily, this is exactly what we need if we only care about water, which has this flowing distance. ]]
+			local vec = flowlib.quick_flow(p, node)
+			-- Just to make sure we don't manipulate the speed for no reason
+			if vec.x ~= 0 or vec.y ~= 0 or vec.z ~= 0 then
+				-- Minecraft Wiki: Flowing speed is "about 1.39 meters per second"
+				local f = 1.39
+				-- Set new item moving speed into the direciton of the liquid
+				local newv = vector.multiply(vec, f)
+				self.object:set_acceleration({x = 0, y = 0, z = 0})
+				self.object:set_velocity({x = newv.x, y = -0.22, z = newv.z})
+
+				self.physical_state = true
+				self._flowing = true
+				self.object:set_properties({
+					physical = true
+				})
+				return
+			end
+		elseif self._flowing == true then
+			-- Disable flowing physics if not on/in flowing liquid
+			self._flowing = false
+			enable_physics(self.object, self, true)
+			return
+		end
+
+	--Mob following code.
 	follow_flop(self)
 
 	if is_at_cliff_or_danger(self) then
@@ -3504,6 +3609,8 @@ minetest.register_entity(name, {
 	owner_loyal = def.owner_loyal,
 	facing_fence = false,
 	_cmi_is_mob = true,
+	pushable = def.pushable or true,
+
 
 	-- MCL2 extensions
 	teleport = teleport,

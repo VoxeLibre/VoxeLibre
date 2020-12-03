@@ -222,6 +222,8 @@ functions needed for the mob to work properly which contains the following:
 
       'speed_normal' is used for animation speed for compatibility with some
                      older mobs.
+	  'pushable'	Allows players, & other mobs to push the mob.
+
 
 
     MineClone 2 extensions:
