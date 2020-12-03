@@ -126,7 +126,7 @@ local function is_available(pos)
 end
 
 
-function mesecon.mvps_get_stack(pos, dir, maximum, piston_pos, all_pull_sticky)
+function mesecon.mvps_get_stack(pos, dir, maximum, piston_pos)
 	-- determine the number of nodes to be pushed
 	local nodes = {}
 	local frontiers = {pos}
@@ -159,10 +159,6 @@ function mesecon.mvps_get_stack(pos, dir, maximum, piston_pos, all_pull_sticky)
 			end
 
 			table.insert(connected, vector.add(np, dir))
-
-			if all_pull_sticky then
-				table.insert(connected, vector.subtract(np, dir))
-			end
 
 			-- Make sure there are no duplicates in frontiers / nodes before
 			-- adding nodes in "connected" to frontiers
@@ -220,9 +216,8 @@ end
 -- pos: pos of mvps; stackdir: direction of building the stack
 -- movedir: direction of actual movement
 -- maximum: maximum nodes to be pushed
--- all_pull_sticky: All nodes are sticky in the direction that they are pulled from
-function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name, piston_pos, all_pull_sticky)
-	local nodes, has_loop = mesecon.mvps_get_stack(pos, movedir, maximum, piston_pos, all_pull_sticky)
+function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name, piston_pos)
+	local nodes, has_loop = mesecon.mvps_get_stack(pos, movedir, maximum, piston_pos)
 
 	if has_loop then
 		return false
