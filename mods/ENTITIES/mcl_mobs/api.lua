@@ -3387,11 +3387,13 @@ local mob_step = function(self, dtime)
 	end
 
 	-- Add water flowing for mobs from mcl_item_entity
-		local p = self.object:get_pos()
-		local node = minetest.get_node_or_nil(p)
-		local nn = node.name
-		local def = minetest.registered_nodes[nn]
-
+		local p, node, nn, def
+		p = self.object:get_pos()
+		node = minetest.get_node_or_nil(p)
+		if node then
+			nn = node.name
+			def = minetest.registered_nodes[nn]
+		end
 
 		-- Move item around on flowing liquids
 		if def and def.liquidtype == "flowing" then
