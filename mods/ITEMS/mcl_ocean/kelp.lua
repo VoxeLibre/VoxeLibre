@@ -154,6 +154,10 @@ local function kelp_on_place(itemstack, placer, pointed_thing)
 	return itemstack
 end
 
+local get_kelp_height = function(param2)
+	return math.floor(param2 / 16)
+end
+
 minetest.register_craftitem("mcl_ocean:kelp", {
 	description = S("Kelp"),
 	_tt_help = S("Grows in water on dirt, sand, gravel"),
@@ -218,7 +222,19 @@ for s=1, #surfaces do
 		after_dig_node = function(pos)
 			minetest.set_node(pos, {name=surfaces[s][2]})
 		end,
-		drop = "mcl_ocean:kelp",
+		on_dig = function(pos, node, digger)
+			-- Drop kelp as item; item count depends on height
+			local dname = ""
+			if digger then
+				dname = digger:get_player_name()
+			end
+			local creative = minetest.is_creative_enabled(dname)
+			if not creative then
+				minetest.add_item({x=pos.x, y=pos.y+1, z=pos.z}, "mcl_ocean:kelp "..get_kelp_height(node.param2))
+			end
+			minetest.node_dig(pos, node, digger)
+		end,
+		drop = "", -- drops are handled in on_dig
 		_mcl_falling_node_alternative = alt,
 		_mcl_hardness = 0,
 		_mcl_blast_resistance = 0,
