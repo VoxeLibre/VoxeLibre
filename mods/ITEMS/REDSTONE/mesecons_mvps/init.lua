@@ -126,7 +126,7 @@ local function is_available(pos)
 end
 
 
-function mesecon.mvps_get_stack(pos, dir, maximum, piston_pos)
+function mesecon.mvps_get_stack(pos, dir, maximum, piston_pos, all_pull_sticky)
 	-- determine the number of nodes to be pushed
 	local nodes = {}
 	local frontiers = {pos}
@@ -222,7 +222,7 @@ end
 -- maximum: maximum nodes to be pushed
 -- all_pull_sticky: All nodes are sticky in the direction that they are pulled from
 function mesecon.mvps_push_or_pull(pos, stackdir, movedir, maximum, player_name, piston_pos, all_pull_sticky)
-	local nodes, has_loop = mesecon.mvps_get_stack(pos, movedir, maximum, piston_pos)
+	local nodes, has_loop = mesecon.mvps_get_stack(pos, movedir, maximum, piston_pos, all_pull_sticky)
 
 	if has_loop then
 		return false
