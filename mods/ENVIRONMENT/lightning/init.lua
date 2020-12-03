@@ -120,7 +120,7 @@ lightning.strike = function(pos)
 		glow = minetest.LIGHT_MAX,
 	})
 
-	minetest.sound_play({ pos = pos, name = "lightning_thunder", gain = 10, max_hear_distance = 500 }, true)
+	minetest.sound_play({ name = "lightning_thunder", gain = 10 }, { pos = pos, max_hear_distance = 500 }, true)
 
 	-- damage nearby objects, transform mobs
 	local objs = minetest.get_objects_inside_radius(pos2, 3.5)
