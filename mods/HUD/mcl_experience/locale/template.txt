@@ -4,3 +4,4 @@ Error: Too many parameters!=
 Error: Incorrect value of XP=
 Error: Player not found=
 Added @1 XP to @2, total: @3, experience level: @4=
+XP are disabled!=
