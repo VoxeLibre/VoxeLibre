@@ -58,6 +58,7 @@ mobs:register_mob("mobs_mc:ghast", {
 	jump_height = 4,
 	floats=1,
 	fly = true,
+	instant_death = true,
 })
 
 

@@ -244,6 +244,7 @@ functions needed for the mob to work properly which contains the following:
       'sounds_child' same as sounds, but for childs. If not defined, childs will use same
                      sound as adults but with higher pitch
       'follow_velocity' The speed at which a mob moves toward the player when they're holding the appropriate follow item.
+      'instant_death' If true, mob dies instantly (no death animation or delay) (default: false)
 
 
 Node Replacement

@@ -577,7 +577,7 @@ local damage_effect = function(self, damage)
 	end
 end
 
-mobs.death_effect = function(pos, yaw, collisionbox)
+mobs.death_effect = function(pos, yaw, collisionbox, rotate)
 	local min, max
 	if collisionbox then
 		min = {x=collisionbox[1], y=collisionbox[2], z=collisionbox[3]}
@@ -586,11 +586,13 @@ mobs.death_effect = function(pos, yaw, collisionbox)
 		min = { x = -0.5, y = 0, z = -0.5 }
 		max = { x = 0.5, y = 0.5, z = 0.5 }
 	end
-	min = vector.rotate(min, {x=0, y=yaw, z=pi/2})
-	max = vector.rotate(max, {x=0, y=yaw, z=pi/2})
-	min, max = vector.sort(min, max)
-	min = vector.multiply(min, 0.5)
-	max = vector.multiply(max, 0.5)
+	if rotate then
+		min = vector.rotate(min, {x=0, y=yaw, z=pi/2})
+		max = vector.rotate(max, {x=0, y=yaw, z=pi/2})
+		min, max = vector.sort(min, max)
+		min = vector.multiply(min, 0.5)
+		max = vector.multiply(max, 0.5)
+	end
 
 	minetest.add_particlespawner({
 		amount = 50,
@@ -802,12 +804,14 @@ local check_for_death = function(self, cause, cmi_cause)
 	})
 	set_velocity(self, 0)
 	local acc = self.object:get_acceleration()
-	acc.x, acc.z = 0, 0
+	acc.x, acc.y, acc.z = 0, DEFAULT_FALL_SPEED, 0
 	self.object:set_acceleration(acc)
 
-	local length = 0
+	local length
 	-- default death function and die animation (if defined)
-	if self.animation
+	if self.instant_death then
+		length = 0
+	elseif self.animation
 	and self.animation.die_start
 	and self.animation.die_end then
 
@@ -825,7 +829,7 @@ local check_for_death = function(self, cause, cmi_cause)
 
 
 	-- Remove body after a few seconds and drop stuff
-	minetest.after(length, function(self)
+	local kill = function(self)
 		if not self.object:get_luaentity() then
 			return
 		end
@@ -838,9 +842,13 @@ local check_for_death = function(self, cause, cmi_cause)
 		local cbox = self.collisionbox
 		local yaw = self.object:get_rotation().y
 		self.object:remove()
-		mobs.death_effect(dpos, yaw, cbox)
-	end, self)
-
+		mobs.death_effect(dpos, yaw, cbox, not self.instant_death)
+	end
+	if length <= 0 then
+		kill(self)
+	else
+		minetest.after(length, kill, self)
+	end
 
 	return true
 end
@@ -3732,6 +3740,7 @@ minetest.register_entity(name, {
 	explosion_strength = def.explosion_strength,
 	suffocation_timer = 0,
 	follow_velocity = def.follow_velocity or 2.4,
+	instant_death = def.instant_death or false,
 	-- End of MCL2 extensions
 
 	on_spawn = def.on_spawn,
