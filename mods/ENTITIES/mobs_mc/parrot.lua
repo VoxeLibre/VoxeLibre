@@ -24,7 +24,12 @@ mobs:register_mob("mobs_mc:parrot", {
 	visual_size = {x=3, y=3},
 	walk_velocity = 3,
 	run_velocity = 5,
-	-- TODO: sounds
+	sounds = {
+		random = "mobs_mc_parrot_random",
+		damage = {name="mobs_mc_parrot_hurt", gain=0.3},
+		death = {name="mobs_mc_parrot_death", gain=0.6},
+		distance = 16,
+	},
 	drops = {
 		{name = mobs_mc.items.feather,
 		chance = 1,

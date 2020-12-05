@@ -84,9 +84,12 @@ Origin of those models:
 * [AGFX](http://www.freesound.org/people/DrMinky/sounds/) (CC0)
     * `mobs_mc_chicken_child.ogg`
         * Source: <https://freesound.org/people/AGFX/sounds/43380/>
-* [evsecrets](https://freesound.org/people/evsecrets/sounds/346961/) (CC0)
-    * `mobs_mc_chicken_buck.*.ogg`
-    * `mobs_mc_chicken_hurt.ogg`
+* [evsecrets](https://freesound.org/people/evsecrets/sounds/) (CC0)
+    * `mobs_mc_chicken_*.ogg`
+        * Source: <https://freesound.org/people/evsecrets/sounds/346961/>
+* [contramundum](https://freesound.org/people/contramundum/sounds/)
+    * `mobs_mc_parrot_*.ogg`
+        * Source: <https://freesound.org/people/contramundum/sounds/388417/>
 * Randomation (CC0)
     * `green_slime_damage.ogg`
     * `green_slime_attack.ogg`
