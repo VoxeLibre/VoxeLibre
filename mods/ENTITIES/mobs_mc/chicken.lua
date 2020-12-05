@@ -42,12 +42,14 @@ mobs:register_mob("mobs_mc:chicken", {
 		random = "mobs_mc_chicken_buck",
 		damage = "mobs_mc_chicken_hurt",
 		death = "mobs_mc_chicken_hurt",
+		eat = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},
 	sounds_child = {
 		random = "mobs_mc_chicken_child",
 		damage = "mobs_mc_chicken_child",
 		death = "mobs_mc_chicken_child",
+		eat = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},
 	animation = {

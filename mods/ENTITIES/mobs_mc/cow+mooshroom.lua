@@ -32,6 +32,7 @@ local cow_def = {
 		random = "mobs_mc_cow",
 		damage = "mobs_mc_cow_hurt",
 		death = "mobs_mc_cow_hurt",
+		eat = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},
 	animation = {

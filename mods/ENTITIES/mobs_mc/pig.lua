@@ -32,6 +32,7 @@ mobs:register_mob("mobs_mc:pig", {
 		random = "mobs_pig",
 		death = "mobs_pig_angry",
 		damage = "mobs_pig",
+		eat = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},
 	animation = {

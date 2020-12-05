@@ -49,6 +49,7 @@ local ocelot = {
 	sounds = {
 		damage = "mobs_mc_ocelot_hurt",
 		death = "mobs_mc_ocelot_hurt",
+		eat = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},
 	animation = {
@@ -113,6 +114,7 @@ cat.sounds = {
 	random = "mobs_mc_cat_idle",
 	damage = "mobs_mc_cat_hiss",
 	death = "mobs_mc_ocelot_hurt",
+	eat = "mobs_mc_animal_eat_generic",
 	distance = 16,
 }
 cat.on_rightclick = function(self, clicker)

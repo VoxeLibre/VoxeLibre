@@ -73,6 +73,7 @@ mobs:register_mob("mobs_mc:sheep", {
 		random = "mobs_sheep",
 		death = "mobs_sheep",
 		damage = "mobs_sheep",
+		sounds = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},
 	animation = {

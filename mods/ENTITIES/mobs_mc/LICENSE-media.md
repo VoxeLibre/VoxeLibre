@@ -236,6 +236,9 @@ Origin of those models:
 * [kbnevel](https://freesound.org/people/kbnevel/)
     * `mobs_mc_magma_cube_attack.ogg` (CC0)
         * Derived from: <https://freesound.org/people/kbnevel/sounds/119863/>
+* [InspectorJ](https://freesound.org/people/InspectorJ/sounds/429591/)
+    * `mobs_mc_animal_eat_generic.ogg` (CC BY 3.0)
+        * Source: <https://freesound.org/people/InspectorJ/>
 
 Note: Many of these sounds have been more or less modified to fit the game.
 

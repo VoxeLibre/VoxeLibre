@@ -57,6 +57,7 @@ mobs:register_mob("mobs_mc:llama", {
 	fear_height = 4,
 	sounds = {
 		random = "mobs_mc_llama",
+		eat = "mobs_mc_animal_eat_generic",
 		-- TODO: Death and damage sounds
 		distance = 16,
 	},

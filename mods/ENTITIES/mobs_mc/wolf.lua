@@ -39,6 +39,7 @@ local wolf = {
 		war_cry = "mobs_mc_wolf_growl",
 		damage = {name = "mobs_mc_wolf_hurt", gain=0.6},
 		death = {name = "mobs_mc_wolf_death", gain=0.6},
+		sounds = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},
 	pathfinding = 1,
@@ -71,7 +72,7 @@ local wolf = {
 				ent = dog:get_luaentity()
 				ent.owner = clicker:get_player_name()
 				-- cornfirm taming
-				minetest.sound_play("mobs_mc_wolf_bark", {object=self.object, max_hear_distance=16})
+				minetest.sound_play("mobs_mc_wolf_bark", {object=self.object, max_hear_distance=16}, true)
 				self.object:remove()
 			end
 		end

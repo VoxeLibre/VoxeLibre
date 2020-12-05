@@ -28,6 +28,7 @@ mobs:register_mob("mobs_mc:parrot", {
 		random = "mobs_mc_parrot_random",
 		damage = {name="mobs_mc_parrot_hurt", gain=0.3},
 		death = {name="mobs_mc_parrot_death", gain=0.6},
+		eat = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},
 	drops = {
@@ -67,6 +68,7 @@ mobs:register_mob("mobs_mc:parrot", {
 		local item = clicker:get_wielded_item()
 		-- Kill parrot if fed with cookie
 		if item:get_name() == mobs_mc.items.cookie then
+			minetest.sound_play("mobs_mc_animal_eat_generic", {object = self.object, max_hear_distance=16}, true)
 			self.health = 0
 			-- Doomed to die
 			self._doomed = true

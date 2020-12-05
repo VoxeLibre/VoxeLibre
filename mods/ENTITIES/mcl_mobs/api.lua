@@ -4357,6 +4357,8 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 			clicker:set_wielded_item(item)
 		end
 
+		mob_sound(self, "eat", nil, true)
+
 		-- increase health
 		self.health = self.health + 4
 

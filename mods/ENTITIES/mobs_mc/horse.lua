@@ -106,6 +106,7 @@ local horse = {
 		-- TODO: Separate damage sound
 		damage = "mobs_mc_horse_death",
 		death = "mobs_mc_horse_death",
+		eat = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},
 	fear_height = 4,
@@ -361,6 +362,7 @@ skeleton_horse.sounds = {
 	random = "mobs_mc_skeleton_random",
 	death = "mobs_mc_skeleton_death",
 	damage = "mobs_mc_skeleton_hurt",
+	eat = "mobs_mc_animal_eat_generic",
 	distance = 16,
 }
 skeleton_horse.harmed_by_heal = true
@@ -380,6 +382,7 @@ zombie_horse.sounds = {
 	random = "mobs_mc_zombie_growl",
 	death = "mobs_mc_zombie_death",
 	damage = "mobs_mc_zombie_hurt",
+	eat = "mobs_mc_animal_eat_generic",
 	distance = 16,
 }
 zombie_horse.harmed_by_heal = true
@@ -398,6 +401,7 @@ donkey.sounds = {
 	random = "mobs_mc_donkey_random",
 	damage = "mobs_mc_donkey_hurt",
 	death = "mobs_mc_donkey_death",
+	eat = "mobs_mc_animal_eat_generic",
 	distance = 16,
 }
 donkey.visual_size = { x=horse.visual_size.x*d, y=horse.visual_size.y*d }

@@ -23,7 +23,11 @@ local rabbit = {
         {"mobs_mc_rabbit_black.png"},
 	},
 	visual_size = {x=1.5, y=1.5},
-	-- TODO: sounds: random, damage, death
+	sounds = {
+		-- TODO: sounds: random, damage, death
+		eat = "mobs_mc_animal_eat_generic",
+		distance = 16,
+	},
 	makes_footstep_sound = false,
 	walk_velocity = 1,
 	run_velocity = 3.7,
