@@ -40,10 +40,12 @@ mobs:register_mob("mobs_mc:bat", {
 		die_loop = false,
 ]]
 	},
-
+	walk_chance = 100,
 	fall_damage = 0,
 	view_range = 16,
+	fear_height = 0,
 
+	jump = false,
 	fly = true,
 })
 
