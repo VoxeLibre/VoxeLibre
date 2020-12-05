@@ -363,6 +363,7 @@ skeleton_horse.sounds = {
 	death = "mobs_mc_skeleton_death",
 	damage = "mobs_mc_skeleton_hurt",
 	eat = "mobs_mc_animal_eat_generic",
+	base_pitch = 0.95,
 	distance = 16,
 }
 skeleton_horse.harmed_by_heal = true
@@ -379,10 +380,12 @@ zombie_horse.drops = {
 	max = 2,},
 }
 zombie_horse.sounds = {
-	random = "mobs_mc_zombie_growl",
-	death = "mobs_mc_zombie_death",
-	damage = "mobs_mc_zombie_hurt",
+	random = "mobs_mc_horse_random",
+	-- TODO: Separate damage sound
+	damage = "mobs_mc_horse_death",
+	death = "mobs_mc_horse_death",
 	eat = "mobs_mc_animal_eat_generic",
+	base_pitch = 0.5,
 	distance = 16,
 }
 zombie_horse.harmed_by_heal = true
