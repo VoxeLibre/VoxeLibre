@@ -419,7 +419,8 @@ local m = 0.94
 local mule = table.copy(donkey)
 mule.textures = {{"blank.png", "mobs_mc_mule.png", "blank.png"}}
 mule.visual_size = { x=horse.visual_size.x*m, y=horse.visual_size.y*m }
-mule.sounds = horse.sounds
+mule.sounds = table.copy(donkey.sounds)
+mule.sounds.base_pitch = 1.15
 mule.collisionbox = {
 	horse.collisionbox[1] * m,
 	horse.collisionbox[2] * m,
