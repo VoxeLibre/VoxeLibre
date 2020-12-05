@@ -70,6 +70,8 @@ local wolf = {
 				dog:set_yaw(yaw)
 				ent = dog:get_luaentity()
 				ent.owner = clicker:get_player_name()
+				-- cornfirm taming
+				minetest.sound_play("mobs_mc_wolf_bark", {object=self.object, max_hear_distance=16})
 				self.object:remove()
 			end
 		end
@@ -195,16 +197,30 @@ dog.on_rightclick = function(self, clicker)
 			self.owner = clicker:get_player_name()
 		end
 
+		local pos = self.object:get_pos()
+		local particle
 		if not self.order or self.order == "" or self.order == "sit" then
+			particle = "mobs_mc_wolf_icon_roam.png"
 			self.order = "roam"
 			self.walk_chance = default_walk_chance
 			self.jump = true
-		else
 			-- TODO: Add sitting model
+		else
+			particle = "mobs_mc_wolf_icon_sit.png"
 			self.order = "sit"
 			self.walk_chance = 0
 			self.jump = false
 		end
+		-- Display icon to show current order (sit or roam)
+		minetest.add_particle({
+			pos = vector.add(pos, {x=0,y=1,z=0}),
+			velocity = {x=0,y=0.2,z=0},
+			expirationtime = 1,
+			size = 4,
+			texture = particle,
+			playername = self.owner,
+			glow = minetest.LIGHT_MAX,
+		})
 	end
 end
 
