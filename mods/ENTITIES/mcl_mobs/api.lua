@@ -9,6 +9,7 @@ local MAX_MOB_NAME_LENGTH = 30
 local HORNY_TIME = 30
 local HORNY_AGAIN_TIME = 300
 local CHILD_GROW_TIME = 60*20
+local DEATH_DELAY = 0.5
 
 local MOB_CAP = {}
 MOB_CAP.hostile = 70
@@ -334,7 +335,7 @@ local remove_texture_mod = function(self, mod)
 end
 
 -- set defined animation
-local set_animation = function(self, anim)
+local set_animation = function(self, anim, fixed_frame)
 
 	if not self.animation
 	or not anim then return end
@@ -349,9 +350,17 @@ local set_animation = function(self, anim)
 
 	self.animation.current = anim
 
+	local a_start = self.animation[anim .. "_start"]
+	local a_end
+	if fixed_frame then
+		a_end = a_start
+	else
+		a_end = self.animation[anim .. "_end"]
+	end
+
 	self.object:set_animation({
-		x = self.animation[anim .. "_start"],
-		y = self.animation[anim .. "_end"]},
+		x = a_start,
+		y = a_end},
 		self.animation[anim .. "_speed"] or self.animation.speed_normal or 15,
 		0, self.animation[anim .. "_loop"] ~= false)
 end
@@ -669,6 +678,10 @@ end
 -- check if mob is dead or only hurt
 local check_for_death = function(self, cause, cmi_cause)
 
+	if self.state == "die" then
+		return true
+	end
+
 	-- has health actually changed?
 	if self.health == self.old_health and self.health > 0 then
 		return false
@@ -713,33 +726,39 @@ local check_for_death = function(self, cause, cmi_cause)
 		return false
 	end
 
-	-- dropped cooked item if mob died in fire or lava
-	if cause == "lava" or cause == "fire" then
-		item_drop(self, true)
-	else
-		item_drop(self, nil)
-	end
-
 	mob_sound(self, "death")
 
-	local pos = self.object:get_pos()
+	local function death_handle(self)
+		-- dropped cooked item if mob died in fire or lava
+		if cause == "lava" or cause == "fire" then
+			item_drop(self, true)
+		else
+			item_drop(self, nil)
+		end
 
-	if mod_experience and self.hp_min and self.hp_max then
-		mcl_experience.throw_experience(pos, math.ceil( math.random(self.hp_min,self.hp_max+5) / 5) )
+		local pos = self.object:get_pos()
+
+		if mod_experience and self.hp_min and self.hp_max then
+			mcl_experience.throw_experience(pos, math.ceil( math.random(self.hp_min,self.hp_max+5) / 5) )
+		end
 	end
 
 	-- execute custom death function
 	if self.on_die then
 
-		self.on_die(self, pos)
+		death_handle(self)
+
+		local pos = self.object:get_pos()
+		local on_die_exit = self.on_die(self, pos)
 
 		if use_cmi then
 			cmi.notify_die(self.object, cmi_cause)
 		end
 
-		self.object:remove()
-
-		return true
+		if on_die_exit == true then
+			self.object:remove()
+			return true
+		end
 	end
 
 	local collisionbox
@@ -747,6 +766,7 @@ local check_for_death = function(self, cause, cmi_cause)
 		collisionbox = table.copy(self.collisionbox)
 	end
 
+	local length = 0
 	-- default death function and die animation (if defined)
 	if self.animation
 	and self.animation.die_start
@@ -754,40 +774,41 @@ local check_for_death = function(self, cause, cmi_cause)
 
 		local frames = self.animation.die_end - self.animation.die_start
 		local speed = self.animation.die_speed or 15
-		local length = max(frames / speed, 0)
-
-		self.attack = nil
-		self.v_start = false
-		self.timer = 0
-		self.blinktimer = 0
-		self.passive = true
-		self.state = "die"
-		self.object:set_properties({
-			pointable = false,
-		})
-		set_velocity(self, 0)
+		length = max(frames / speed, 0) + DEATH_DELAY
 		set_animation(self, "die")
-
-		minetest.after(length, function(self)
-			if not self.object:get_luaentity() then
-				return
-			end
-			if use_cmi  then
-				cmi.notify_die(self.object, cmi_cause)
-			end
-
-			self.object:remove()
-			mobs.death_effect(pos)
-		end, self)
 	else
+		local rot = self.object:get_rotation()
+		rot.z = math.pi/2
+		self.object:set_rotation(rot)
+		length = 1 + DEATH_DELAY
+		set_animation(self, "stand", true)
+	end
 
-		if use_cmi then
+	self.attack = nil
+	self.v_start = false
+	self.timer = 0
+	self.blinktimer = 0
+	self.passive = true
+	self.state = "die"
+	self.object:set_properties({
+		pointable = false,
+	})
+	set_velocity(self, 0)
+
+	minetest.after(length, function(self)
+		if not self.object:get_luaentity() then
+			return
+		end
+		if use_cmi  then
 			cmi.notify_die(self.object, cmi_cause)
 		end
 
+		death_handle(self)
+		local dpos = self.object:get_pos()
 		self.object:remove()
-		mobs.death_effect(pos, collisionbox)
-	end
+		mobs.death_effect(dpos)
+	end, self)
+
 
 	return true
 end
@@ -2690,7 +2711,7 @@ end
 -- returns true if mob died
 local falling = function(self, pos)
 
-	if self.fly then
+	if self.fly and self.state ~= "die" then
 		return
 	end
 

@@ -111,7 +111,6 @@ mobs:register_mob("mobs_mc:llama", {
 		if self.driver then
 			mobs.detach(self.driver, {x = 1, y = 0, z = 1})
 		end
-		mobs.death_effect(pos, self.collisionbox)
 
 	end,
 

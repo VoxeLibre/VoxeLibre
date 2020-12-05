@@ -507,7 +507,6 @@ mobs:register_mob("mobs_mc:enderman", {
 		if self._taken_node ~= nil and self._taken_node ~= "" then
 			minetest.add_item(pos, self._taken_node)
 		end
-		mobs.death_effect(pos, self.collisionbox)
 	end,
 	do_punch = function(self, hitter, tflp, tool_caps, dir)
 		-- damage from rain caused by itself so we don't want it to attack itself.

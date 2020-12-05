@@ -1053,7 +1053,6 @@ mobs:register_mob("mobs_mc:villager", {
 				return_fields(player)
 			end
 		end
-		mobs.death_effect(pos, self.collisionbox)
 	end,
 })
 

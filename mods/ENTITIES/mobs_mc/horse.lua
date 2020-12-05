@@ -175,8 +175,6 @@ local horse = {
 			mobs.detach(self.driver, {x = 1, y = 0, z = 1})
 		end
 
-		mobs.death_effect(pos, self.collisionbox)
-
 	end,
 
 	on_rightclick = function(self, clicker)

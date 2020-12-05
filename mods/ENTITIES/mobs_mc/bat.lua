@@ -33,12 +33,10 @@ mobs:register_mob("mobs_mc:bat", {
 		run_speed = 80,
 		run_start = 0,
 		run_end = 40,
-		-- TODO: Less ugly death animation
---[[		die_speed = 60,
+		die_speed = 60,
 		die_start = 40,
 		die_end = 80,
 		die_loop = false,
-]]
 	},
 	walk_chance = 100,
 	fall_damage = 0,

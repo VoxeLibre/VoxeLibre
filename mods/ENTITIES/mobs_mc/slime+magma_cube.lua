@@ -51,6 +51,7 @@ local spawn_children_on_die = function(child_mob, children_count, spawn_distance
 				end
 			end, children, self.attack)
 		end
+		return true
 	end
 end
 

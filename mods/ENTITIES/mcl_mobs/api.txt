@@ -284,10 +284,9 @@ Custom Definition Functions
 Along with the above mob registry settings we can also use custom functions to
 enhance mob functionality and have them do many interesting things:
 
-   'on_die'         a function that is called when the mob is killed the
-                    parameters are (self, pos). When this function is used,
-                    the death particles will be skipped on death. You can get
-                    them back by calling mobs:death_effect manually
+   'on_die'         a function that is called when the mob is killed; the
+                    parameters are (self, pos). Return true to skip the builtin
+                    death animation and death effects
    'on_rightclick'  its same as in minetest.register_entity()
    'on_blast'       is called when an explosion happens near mob when using TNT
                     functions, parameters are (object, damage) and returns
