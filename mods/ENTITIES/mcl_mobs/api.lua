@@ -201,7 +201,7 @@ end
 -- attack player/mob
 local do_attack = function(self, player)
 
-	if self.state == "attack" then
+	if self.state == "attack" or self.state == "die" then
 		return
 	end
 
@@ -799,6 +799,9 @@ local check_for_death = function(self, cause, cmi_cause)
 		collide_with_objects = false,
 	})
 	set_velocity(self, 0)
+	local acc = self.object:get_acceleration()
+	acc.x, acc.z = 0, 0
+	self.object:set_acceleration(acc)
 
 	local length = 0
 	-- default death function and die animation (if defined)
@@ -819,7 +822,7 @@ local check_for_death = function(self, cause, cmi_cause)
 	end
 
 
-
+	-- Remove body after a few seconds and drop stuff
 	minetest.after(length, function(self)
 		if not self.object:get_luaentity() then
 			return
@@ -1251,7 +1254,7 @@ local do_jump = function(self)
 
 			-- when in air move forward
 			minetest.after(0.3, function(self, v)
-				if not self.object or not self.object:get_luaentity() then
+				if (not self.object) or (not self.object:get_luaentity()) or (self.state == "die") then
 					return
 				end
 				self.object:set_acceleration({
@@ -3303,6 +3306,10 @@ local mob_step = function(self, dtime)
 	local pos = self.object:get_pos()
 	local yaw = 0
 
+	if mobs_debug then
+		update_tag(self)
+	end
+
 	-- Despawning: when lifetimer expires, remove mob
 	if remove_far
 	and self.can_despawn == true
@@ -3334,8 +3341,8 @@ local mob_step = function(self, dtime)
 		end
 	end
 
-	if mobs_debug then
-		update_tag(self)
+	if self.state == "die" then
+		return
 	end
 
 	if self.jump_sound_cooloff > 0 then
