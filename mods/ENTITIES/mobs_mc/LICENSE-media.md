@@ -115,6 +115,9 @@ Origin of those models:
         * Source: <https://freesound.org/people/Hitrison/sounds/251411/>
 * [NPXcoot](https://github.com/NPXcoot1) (CC BY-SA 4.0)
     * `mobs_mc_ender_dragon_*`
+* [bevibeldesign](https://freesound.org/people/bevibeldesign/)
+    * `mobs_mc_wither_spawn.ogg` (CC0)
+        * Source: <https://freesound.org/people/bevibeldesign/sounds/366095/>
 * Blender Foundation (CC BY 3.0)
     * `mobs_sheep.ogg`,
 * daufinsyd (MIT License)

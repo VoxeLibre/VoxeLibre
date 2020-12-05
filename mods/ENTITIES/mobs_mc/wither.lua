@@ -63,6 +63,9 @@ mobs:register_mob("mobs_mc:wither", {
 		run_start = 0,		run_end = 20,
 	},
 	harmed_by_heal = true,
+	on_spawn = function(self)
+		minetest.sound_play("mobs_mc_wither_spawn", {object=self.object, gain=1.0, max_hear_distance=64})
+	end,
 })
 
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
