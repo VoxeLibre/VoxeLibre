@@ -69,6 +69,9 @@ local show_health = false
 local max_per_block = tonumber(minetest.settings:get("max_objects_per_block") or 64)
 local mobs_spawn_chance = tonumber(minetest.settings:get("mobs_spawn_chance") or 2.5)
 
+-- Shows helpful debug info above each mob
+local mobs_debug = minetest.settings:get_bool("mobs_debug", false)
+
 -- Peaceful mode message so players will know there are no monsters
 if minetest.settings:get_bool("only_peaceful_mobs", false) then
 	minetest.register_on_joinplayer(function(player)
@@ -585,8 +588,23 @@ mobs.death_effect = function(pos, collisionbox)
 end
 
 local update_tag = function(self)
+	local tag
+	if mobs_debug then
+		tag = "nametag = '"..tostring(self.nametag).."'\n"..
+		"state = '"..tostring(self.state).."'\n"..
+		"attack = '"..tostring(self.attack).."'\n"..
+		"health = "..tostring(self.health).."\n"..
+		"breath = "..tostring(self.breath).."\n"..
+		"gotten = "..tostring(self.gotten).."\n"..
+		"tamed = "..tostring(self.tamed).."\n"..
+		"horny = "..tostring(self.horny).."\n"..
+		"hornytimer = "..tostring(self.hornytimer).."\n"..
+		"runaway_timer = "..tostring(self.runaway_timer)
+	else
+		tag = self.nametag
+	end
 	self.object:set_properties({
-		nametag = self.nametag,
+		nametag = tag,
 	})
 
 end
@@ -3257,6 +3275,10 @@ local mob_step = function(self, dtime)
 
 			return
 		end
+	end
+
+	if mobs_debug then
+		update_tag(self)
 	end
 
 	if self.jump_sound_cooloff > 0 then
