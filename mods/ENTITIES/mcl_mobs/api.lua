@@ -806,6 +806,7 @@ local check_for_death = function(self, cause, cmi_cause)
 	self.state = "die"
 	self.object:set_properties({
 		pointable = false,
+		collide_with_objects = false,
 	})
 	set_velocity(self, 0)
 
