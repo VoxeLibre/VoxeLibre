@@ -45,6 +45,7 @@ mobs:register_mob("mobs_mc:bat", {
 
 	jump = false,
 	fly = true,
+	makes_footstep_sound = false,
 })
 
 

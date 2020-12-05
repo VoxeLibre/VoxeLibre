@@ -86,6 +86,7 @@ mobs:register_mob("mobs_mc:vex", {
 		end
 	end,
 	fly = true,
+	makes_footstep_sound = false,
 })
 
 

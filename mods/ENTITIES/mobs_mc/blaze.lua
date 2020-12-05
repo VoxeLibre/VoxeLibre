@@ -68,6 +68,7 @@ mobs:register_mob("mobs_mc:blaze", {
 	jump = true,
 	jump_height = 4,
 	fly = true,
+	makes_footstep_sound = false,
 	fear_height = 0,
 	glow = 14,
 })

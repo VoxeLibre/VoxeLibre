@@ -22,7 +22,6 @@ mobs:register_mob("mobs_mc:parrot", {
 	mesh = "mobs_mc_parrot.b3d",
 	textures = {{"mobs_mc_parrot_blue.png"},{"mobs_mc_parrot_green.png"},{"mobs_mc_parrot_grey.png"},{"mobs_mc_parrot_red_blue.png"},{"mobs_mc_parrot_yellow_blue.png"}},
 	visual_size = {x=3, y=3},
-	makes_footstep_sound = true,
 	walk_velocity = 3,
 	run_velocity = 5,
 	-- TODO: sounds
@@ -54,6 +53,7 @@ mobs:register_mob("mobs_mc:parrot", {
 	floats = 1,
 	physical = true,
 	fly = true,
+	makes_footstep_sound = false,
 	fear_height = 0,
 	view_range = 16,
 	follow = mobs_mc.follow.parrot,

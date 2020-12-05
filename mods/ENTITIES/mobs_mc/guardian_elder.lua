@@ -83,6 +83,7 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 		max = 1,},
 	},
 	fly = true,
+	makes_footstep_sound = false,
 	fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
 	jump = false,
 	view_range = 16,
