@@ -39,7 +39,7 @@ local wolf = {
 		war_cry = "mobs_mc_wolf_growl",
 		damage = {name = "mobs_mc_wolf_hurt", gain=0.6},
 		death = {name = "mobs_mc_wolf_death", gain=0.6},
-		sounds = "mobs_mc_animal_eat_generic",
+		eat = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},
 	pathfinding = 1,
