@@ -344,6 +344,14 @@ for each mob.
                         dogs
    'self.order'         set to "follow" or "stand" so that npc will follow owner
                         or stand it's ground
+   'self.state'         Current mob state.
+                        "stand": no movement (except turning around)
+                        "walk": walk or move around aimlessly
+                        "attack": chase and attack enemy
+                        "runaway": flee from target
+                        "flop": bounce around aimlessly
+                                (for swimming mobs that have stranded)
+                        "die": during death
    'self.nametag'       contains the name of the mob which it can show above
 
 
