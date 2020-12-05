@@ -84,6 +84,9 @@ Origin of those models:
 * [AGFX](http://www.freesound.org/people/DrMinky/sounds/) (CC0)
     * `mobs_mc_chicken_child.ogg`
         * Source: <https://freesound.org/people/AGFX/sounds/43380/>
+* [evsecrets](https://freesound.org/people/evsecrets/sounds/346961/) (CC0)
+    * `mobs_mc_chicken_buck.*.ogg`
+    * `mobs_mc_chicken_hurt.ogg`
 * Randomation (CC0)
     * `green_slime_damage.ogg`
     * `green_slime_attack.ogg`
@@ -111,7 +114,6 @@ Origin of those models:
     * `mobs_mc_blaze_hurt.ogg`
 	* Source: <https://freesound.org/people/thefilmbakery/sounds/137836/>
 * TenPlus1, from `mobs_monster` or `mobs_animal` mod (MIT License)
-    * `mobs_chicken.ogg`
     * `mobs_fireball.ogg`
     * `mobs_mc_cat_idle.1.ogg`
     * `mobs_mc_llama.ogg`

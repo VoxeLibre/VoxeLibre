@@ -39,8 +39,9 @@ mobs:register_mob("mobs_mc:chicken", {
 	fall_damage = 0,
 	fall_speed = -2.25,
 	sounds = {
-		random = "mobs_chicken",
-		-- TODO: death, damage
+		random = "mobs_mc_chicken_buck",
+		damage = "mobs_mc_chicken_hurt",
+		death = "mobs_mc_chicken_hurt",
 		distance = 16,
 	},
 	sounds_child = {
