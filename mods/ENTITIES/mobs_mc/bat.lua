@@ -18,6 +18,8 @@ mobs:register_mob("mobs_mc:bat", {
 	visual_size = {x=1, y=1},
 	sounds = {
 		random = "mobs_mc_bat_idle",
+		damage = "mobs_mc_bat_hurt",
+		death = "mobs_mc_bat_death",
 		distance = 16,
 	},
 	walk_velocity = 4.5,

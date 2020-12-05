@@ -176,6 +176,10 @@ Origin of those models:
 * [suonho](https://freesound.org/people/suonho/)
     * `mobs_mc_bat_idle.ogg` (CC BY 3.0)
         * Source: <https://freesound.org/people/suonho/sounds/59344/>
+* [toefur](https://freesound.org/people/toefur/)
+    * `mobs_mc_bat_hurt.*.ogg` (CC0)
+    * `mobs_mc_bat_death.ogg` (CC0)
+        * Source: <https://freesound.org/people/toefur/sounds/288941/>
 * [cmusounddesign](https://freesound.org/people/cmusounddesign/)
     * `mobs_mc_cat_hiss.ogg` (CC BY 3.0)
         * Source: <https://freesound.org/people/cmusounddesign/sounds/71899/>
