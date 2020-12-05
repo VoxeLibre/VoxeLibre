@@ -759,7 +759,7 @@ local check_for_death = function(self, cause, cmi_cause)
 
 		local pos = self.object:get_pos()
 
-		if mod_experience and self.hp_min and self.hp_max then
+		if mod_experience and self.hp_min and self.hp_max and (not self.child and self.type ~= "monster") then
 			mcl_experience.throw_experience(pos, math.ceil( math.random(self.hp_min,self.hp_max+5) / 5) )
 		end
 	end
