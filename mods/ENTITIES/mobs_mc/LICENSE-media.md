@@ -136,6 +136,10 @@ Origin of those models:
     * `mobs_mc_blaze_breath.ogg`
     * `mobs_mc_blaze_died.ogg`
     * `mobs_mc_squid_hurt.ogg`
+* [kyles](https://freesound.org/people/kyles/)
+    * `mobs_mc_squid_flop.*.ogg` (CC0)
+        * Source: <https://freesound.org/people/kyles/sounds/450830/>
+    * `mobs_mc_squid_flop.*.ogg` (CC0)
 * [thefilmbakery](https://freesound.org/people/thefilmbakery/) (CC0)
     * `mobs_mc_blaze_hurt.ogg`
 	* Source: <https://freesound.org/people/thefilmbakery/sounds/137836/>

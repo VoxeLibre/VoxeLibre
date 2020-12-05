@@ -151,6 +151,7 @@ functions needed for the mob to work properly which contains the following:
       'damage'            sound heard when mob is hurt.
       'death'             played when mob is killed.
       'jump'              played when mob jumps. There's a built-in cooloff timer to avoid sound spam
+      'flop'              played when mob flops (like a stranded fish)
       'fuse'              sound played when mob explode timer starts.
       'explode'           sound played when mob explodes.
 

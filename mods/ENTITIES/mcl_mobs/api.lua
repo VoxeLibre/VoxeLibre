@@ -2160,7 +2160,9 @@ local follow_flop = function(self)
 			self.object:set_acceleration({x = 0, y = DEFAULT_FALL_SPEED, z = 0})
 
 			local sdef = minetest.registered_nodes[self.standing_on]
+			-- Flop on ground
 			if sdef and sdef.walkable then
+				mob_sound(self, "flop")
 				self.object:set_velocity({
 					x = math.random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
 					y = FLOP_HEIGHT,

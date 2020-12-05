@@ -24,6 +24,7 @@ mobs:register_mob("mobs_mc:squid", {
     sounds = {
 		damage = "mobs_mc_squid_hurt",
 		death = "mobs_mc_squid_hurt",
+		flop = "mobs_mc_squid_flop",
 		-- TODO: sounds: random, damage, death
 		distance = 16,
     },
