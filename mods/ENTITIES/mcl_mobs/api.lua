@@ -102,7 +102,7 @@ local mod_mobspawners = minetest.get_modpath("mcl_mobspawners") ~= nil
 local mod_hunger = minetest.get_modpath("mcl_hunger") ~= nil
 local mod_worlds = minetest.get_modpath("mcl_worlds") ~= nil
 local mod_armor = minetest.get_modpath("mcl_armor") ~= nil
-
+local mod_experience = minetest.get_modpath("mcl_experience") ~= nil
 
 ----For Water Flowing:
 local enable_physics = function(object, luaentity, ignore_check)
@@ -722,7 +722,7 @@ local check_for_death = function(self, cause, cmi_cause)
 
 	local pos = self.object:get_pos()
 
-	if mcl_experience.throw_experience and self.hp_min and self.hp_max then
+	if mod_experience and self.hp_min and self.hp_max then
 		mcl_experience.throw_experience(pos, math.ceil( math.random(self.hp_min,self.hp_max+5) / 5) )
 	end
 
@@ -1408,6 +1408,11 @@ local breed = function(self)
 					end
 					if not parent2.object:get_luaentity() then
 						return
+					end
+
+					-- Give XP
+					if mod_experience then
+						mcl_experience.throw_experience(pos, math.random(1, 7))
 					end
 
 					-- custom breed function
