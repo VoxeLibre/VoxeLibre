@@ -571,7 +571,7 @@ local damage_effect = function(self, damage)
 	end
 end
 
-mobs.death_effect = function(pos, collisionbox)
+mobs.death_effect = function(pos, yaw, collisionbox)
 	local min, max
 	if collisionbox then
 		min = {x=collisionbox[1], y=collisionbox[2], z=collisionbox[3]}
@@ -580,20 +580,33 @@ mobs.death_effect = function(pos, collisionbox)
 		min = { x = -0.5, y = 0, z = -0.5 }
 		max = { x = 0.5, y = 0.5, z = 0.5 }
 	end
+	min = vector.rotate(min, {x=0, y=yaw, z=math.pi/2})
+	max = vector.rotate(max, {x=0, y=yaw, z=math.pi/2})
+	min, max = vector.sort(min, max)
+	min = vector.multiply(min, 0.5)
+	max = vector.multiply(max, 0.5)
 
 	minetest.add_particlespawner({
-		amount = 40,
-		time = 0.1,
+		amount = 50,
+		time = 0.001,
 		minpos = vector.add(pos, min),
 		maxpos = vector.add(pos, max),
-		minvel = {x = -0.2, y = -0.1, z = -0.2},
-		maxvel = {x = 0.2, y = 0.1, z = 0.2},
-		minexptime = 0.5,
+		minvel = vector.new(-5,-5,-5),
+		maxvel = vector.new(5,5,5),
+		minexptime = 1.1,
 		maxexptime = 1.5,
-		minsize = 0.5,
-		maxsize = 1.5,
-		texture = "mcl_particles_smoke.png",
+		minsize = 1,
+		maxsize = 2,
+		collisiondetection = false,
+		vertical = false,
+		texture = "mcl_particles_mob_death.png^[colorize:#000000:255",
 	})
+
+	minetest.sound_play("mcl_mobs_mob_poof", {
+		pos = pos,
+		gain = 1.0,
+		max_hear_distance = 8,
+	}, true)
 end
 
 local update_tag = function(self)
@@ -746,10 +759,11 @@ local check_for_death = function(self, cause, cmi_cause)
 	-- execute custom death function
 	if self.on_die then
 
-		death_handle(self)
-
 		local pos = self.object:get_pos()
 		local on_die_exit = self.on_die(self, pos)
+		if on_die_exit ~= true then
+			death_handle(self)
+		end
 
 		if use_cmi then
 			cmi.notify_die(self.object, cmi_cause)
@@ -805,8 +819,10 @@ local check_for_death = function(self, cause, cmi_cause)
 
 		death_handle(self)
 		local dpos = self.object:get_pos()
+		local cbox = self.collisionbox
+		local yaw = self.object:get_rotation().y
 		self.object:remove()
-		mobs.death_effect(dpos)
+		mobs.death_effect(dpos, yaw, cbox)
 	end, self)
 
 
