@@ -10,6 +10,7 @@ local HORNY_TIME = 30
 local HORNY_AGAIN_TIME = 300
 local CHILD_GROW_TIME = 60*20
 local DEATH_DELAY = 0.5
+local DEFAULT_FALL_SPEED = -10
 
 local MOB_CAP = {}
 MOB_CAP.hostile = 70
@@ -336,15 +337,18 @@ end
 
 -- set defined animation
 local set_animation = function(self, anim, fixed_frame)
-
-	if not self.animation
-	or not anim then return end
+	if not self.animation or not anim then
+		return
+	end
+	if self.state == "die" and anim ~= "die" and anim ~= "stand" then
+		return
+	end
 
 	self.animation.current = self.animation.current or ""
 
-	if anim == self.animation.current
+	if (anim == self.animation.current
 	or not self.animation[anim .. "_start"]
-	or not self.animation[anim .. "_end"] then
+	or not self.animation[anim .. "_end"]) and self.state ~= "die" then
 		return
 	end
 
@@ -770,6 +774,7 @@ local check_for_death = function(self, cause, cmi_cause)
 		end
 
 		if on_die_exit == true then
+			self.state = "die"
 			self.object:remove()
 			return true
 		end
@@ -779,6 +784,21 @@ local check_for_death = function(self, cause, cmi_cause)
 	if self.collisionbox then
 		collisionbox = table.copy(self.collisionbox)
 	end
+
+	self.state = "die"
+	self.attack = nil
+	self.v_start = false
+	self.fall_speed = DEFAULT_FALL_SPEED
+	self.timer = 0
+	self.blinktimer = 0
+	remove_texture_mod(self, "^[colorize:#FF000040")
+	remove_texture_mod(self, "^[brighten")
+	self.passive = true
+	self.object:set_properties({
+		pointable = false,
+		collide_with_objects = false,
+	})
+	set_velocity(self, 0)
 
 	local length = 0
 	-- default death function and die animation (if defined)
@@ -798,17 +818,7 @@ local check_for_death = function(self, cause, cmi_cause)
 		set_animation(self, "stand", true)
 	end
 
-	self.attack = nil
-	self.v_start = false
-	self.timer = 0
-	self.blinktimer = 0
-	self.passive = true
-	self.state = "die"
-	self.object:set_properties({
-		pointable = false,
-		collide_with_objects = false,
-	})
-	set_velocity(self, 0)
+
 
 	minetest.after(length, function(self)
 		if not self.object:get_luaentity() then
@@ -3626,7 +3636,7 @@ minetest.register_entity(name, {
 	fire_damage = def.fire_damage or 1,
 	suffocation = def.suffocation or true,
 	fall_damage = def.fall_damage or 1,
-	fall_speed = def.fall_speed or -10, -- must be lower than -2 (default: -10)
+	fall_speed = def.fall_speed or DEFAULT_FALL_SPEED, -- must be lower than -2
 	drops = def.drops or {},
 	armor = def.armor or 100,
 	on_rightclick = create_mob_on_rightclick(def.on_rightclick),
