@@ -18,6 +18,10 @@ minetest.do_item_eat = function(hp_change, replace_with_item, itemstack, user, p
 			end
 		end
 	end
+	-- Also don't eat when pointing object (it could be an animal)
+	if pointed_thing.type == "object" then
+		return itemstack
+	end
 
 	local old_itemstack = itemstack
 
