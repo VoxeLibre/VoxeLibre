@@ -394,8 +394,12 @@ donkey.animation = {
 	stand_start = 0, stand_end = 0,
 	walk_start = 0, walk_end = 40,
 }
--- TODO: donkey sounds
-donkey.sounds = nil
+donkey.sounds = {
+	random = "mobs_mc_donkey_random",
+	damage = "mobs_mc_donkey_hurt",
+	death = "mobs_mc_donkey_death",
+	distance = 16,
+}
 donkey.visual_size = { x=horse.visual_size.x*d, y=horse.visual_size.y*d }
 donkey.collisionbox = {
 	horse.collisionbox[1] * d,

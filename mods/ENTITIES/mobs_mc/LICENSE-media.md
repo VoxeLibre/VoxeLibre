@@ -152,6 +152,13 @@ Origin of those models:
         * Source: <https://freesound.org/people/GoodListener/sounds/322454/>
     * `mobs_mc_horse_death.ogg` (CC BY 3.0)
         * Source: <https://freesound.org/people/GoodListener/sounds/322445/>
+* [Garuda1982](https://freesound.org/people/Garuda1982/)
+    * `mobs_mc_donkey_random.1.ogg` (CC BY 3.0)
+    * `mobs_mc_donkey_hurt.ogg` (CC BY 3.0)
+    * `mobs_mc_donkey_death.ogg` (CC BY 3.0)
+        * Source: <https://freesound.org/people/Garuda1982/sounds/539505/>
+* [JarredGibb](https://freesound.org/people/JarredGibb/sounds/233131/)
+    * `mobs_mc_donkey_random.2.ogg` (CC0)
 * [ERH](https://freesound.org/people/ERH/)
     * `mobs_mc_horse_random.2.ogg` (CC BY 3.0)
         * Source: <https://freesound.org/people/ERH/sounds/32043/>
