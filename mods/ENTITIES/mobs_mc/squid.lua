@@ -47,7 +47,6 @@ mobs:register_mob("mobs_mc:squid", {
     fly_in = { mobs_mc.items.water_source, mobs_mc.items.river_water_source },
     breathes_in_water = true,
     jump = false,
-    fall_speed = 0.5,
     view_range = 16,
     runaway = true,
     fear_height = 4,

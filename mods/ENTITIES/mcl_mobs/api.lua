@@ -11,6 +11,8 @@ local HORNY_AGAIN_TIME = 300
 local CHILD_GROW_TIME = 60*20
 local DEATH_DELAY = 0.5
 local DEFAULT_FALL_SPEED = -10
+local FLOP_HEIGHT = 5.0
+local FLOP_HOR_SPEED = 1.5
 
 local MOB_CAP = {}
 MOB_CAP.hostile = 70
@@ -2147,13 +2149,23 @@ local follow_flop = function(self)
 		if not flight_check(self, s) then
 
 			self.state = "flop"
-			self.object:set_velocity({x = 0, y = -5, z = 0})
+			self.object:set_acceleration({x = 0, y = DEFAULT_FALL_SPEED, z = 0})
 
-			set_animation(self, "stand")
+			local sdef = minetest.registered_nodes[self.standing_on]
+			if sdef and sdef.walkable then
+				self.object:set_velocity({
+					x = math.random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
+					y = FLOP_HEIGHT,
+					z = math.random(-FLOP_HOR_SPEED, FLOP_HOR_SPEED),
+				})
+			end
+
+			set_animation(self, "stand", true)
 
 			return
 		elseif self.state == "flop" then
 			self.state = "stand"
+			self.object:set_acceleration({x = 0, y = 0, z = 0})
 		end
 	end
 end
