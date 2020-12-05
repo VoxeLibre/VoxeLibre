@@ -57,7 +57,7 @@ mobs:register_mob("mobs_mc:vindicator", {
 		punch_speed = 25,
 		punch_start = 90,
 		punch_end = 110,
-		die_speed = 25,
+		die_speed = 15,
 		die_start = 170,
 		die_end = 180,
 		die_loop = false,

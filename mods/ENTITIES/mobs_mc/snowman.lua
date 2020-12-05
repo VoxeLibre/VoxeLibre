@@ -74,7 +74,7 @@ mobs:register_mob("mobs_mc:snowman", {
 		run_end = 20,
 		die_start = 40,
 		die_end = 50,
-		die_speed = 25,
+		die_speed = 15,
 	        die_loop = false,
 	},
 	do_custom = function(self, dtime)
