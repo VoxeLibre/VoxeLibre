@@ -216,6 +216,13 @@ Origin of those models:
 * [ebcrosby](https://freesound.org/people/ebcrosby/)
     * `mobs_mc_ocelot_hurt.ogg` (CC BY 3.0)
         * Source: <https://freesound.org/people/ebcrosby/sounds/332979/>
+* Hybrid Dog (forum.minetest.net)
+    * `mobs_mc_wolf_hurt.*.ogg` (CC0)
+    * `mobs_mc_wolf_bark.*.ogg` (CC0)
+    * `mobs_mc_wolf_death.*.ogg` (CC0)
+    * `mobs_mc_wolf_growl.*.ogg` (CC0)
+        * Sounds modified and simplified
+        * Source: "dogblocks" mod by Hybrid Dog <https://github.com/HybridDog/dogblocks/>
 * [Inocodum](https://forum.minetest.net/memberlist.php?mode=viewprofile&u=3115)
     * `mobs_mc_silverfish_hurt.ogg` (CC BY-SA 4.0)
     * `mobs_mc_silverfish_death.ogg` (CC BY-SA 4.0)

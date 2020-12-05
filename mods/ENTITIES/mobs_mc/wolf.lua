@@ -34,7 +34,13 @@ local wolf = {
 	},
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
-	-- TODO: sounds
+	sounds = {
+		attack = "mobs_mc_wolf_bark",
+		war_cry = "mobs_mc_wolf_growl",
+		damage = {name = "mobs_mc_wolf_hurt", gain=0.6},
+		death = {name = "mobs_mc_wolf_death", gain=0.6},
+		distance = 16,
+	},
 	pathfinding = 1,
 	floats = 1,
 	view_range = 16,
