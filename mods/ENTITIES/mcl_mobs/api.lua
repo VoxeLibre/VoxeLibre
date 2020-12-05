@@ -1962,7 +1962,7 @@ end
 -- find someone to runaway from
 local runaway_from = function(self)
 
-	if not self.runaway_from then
+	if not self.runaway_from and self.state ~= "flop" then
 		return
 	end
 
@@ -3018,7 +3018,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 	end -- END if damage
 
 	-- if skittish then run away
-	if not die and self.runaway == true then
+	if not die and self.runaway == true and self.state ~= "flop" then
 
 		local lp = hitter:get_pos()
 		local s = self.object:get_pos()
