@@ -11,7 +11,6 @@ local wip_items = {
 	"mcl_minecarts:furnace_minecart",
 	"mobs_mc:enderdragon",
 	"mobs_mc:wither",
-	"mobs_mc:parrot",
 	"mobs_mc:witch",
 	"screwdriver:screwdriver",
 	"mcl_paintings:painting",
