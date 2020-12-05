@@ -592,14 +592,16 @@ local update_tag = function(self)
 	if mobs_debug then
 		tag = "nametag = '"..tostring(self.nametag).."'\n"..
 		"state = '"..tostring(self.state).."'\n"..
-		"attack = '"..tostring(self.attack).."'\n"..
+		"order = '"..tostring(self.order).."'\n"..
+		"attack = "..tostring(self.attack).."\n"..
 		"health = "..tostring(self.health).."\n"..
 		"breath = "..tostring(self.breath).."\n"..
 		"gotten = "..tostring(self.gotten).."\n"..
 		"tamed = "..tostring(self.tamed).."\n"..
 		"horny = "..tostring(self.horny).."\n"..
 		"hornytimer = "..tostring(self.hornytimer).."\n"..
-		"runaway_timer = "..tostring(self.runaway_timer)
+		"runaway_timer = "..tostring(self.runaway_timer).."\n"..
+		"following = "..tostring(self.following)
 	else
 		tag = self.nametag
 	end
@@ -2024,10 +2026,12 @@ local follow_flop = function(self)
 			self.following = nil
 		end
 	else
-		-- stop following player if not holding specific item
+		-- stop following player if not holding specific item,
+		-- mob is horny, fleeing or attacking
 		if self.following
 		and self.following:is_player()
-		and follow_holding(self, self.following) == false then
+		and (follow_holding(self, self.following) == false or
+		self.horny or self.state == "runaway") then
 			self.following = nil
 		end
 
