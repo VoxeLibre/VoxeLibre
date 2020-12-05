@@ -28,8 +28,11 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 	},
 	visual_size = {x=7, y=7},
 	sounds = {
-		damage = "mobs_mc_squid_hurt",
-		-- TODO: more and better sounds
+		random = "mobs_mc_guardian_random",
+		war_cry = "mobs_mc_guardian_random",
+		damage = {name="mobs_mc_guardian_hurt", gain=0.3},
+		death = "mobs_mc_guardian_death",
+		base_pitch = 0.6,
 		distance = 16,
 	},
 	animation = {

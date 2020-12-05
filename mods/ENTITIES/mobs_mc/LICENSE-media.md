@@ -118,6 +118,18 @@ Origin of those models:
 * [bevibeldesign](https://freesound.org/people/bevibeldesign/)
     * `mobs_mc_wither_spawn.ogg` (CC0)
         * Source: <https://freesound.org/people/bevibeldesign/sounds/366095/>
+* [pointparkcinema](https://freesound.org/people/pointparkcinema/)
+    * `mobs_mc_guardian_random.1.ogg` (CC0)
+        * Source: <https://freesound.org/people/pointparkcinema/sounds/407252/>
+* [nornalbion](https://freesound.org/people/nornalbion/)
+    * `mobs_mc_guardian_random.2.ogg` (CC BY 3.0)
+    * `mobs_mc_guardian_random.3.ogg` (CC BY 3.0)
+    * `mobs_mc_guardian_hurt.*.ogg` (CC BY 3.0)
+        * Sounds were modified
+        * Source: <https://freesound.org/people/nornalbion/sounds/195733/>
+* [TheBuilder15](https://freesound.org/people/TheBuilder15/)
+    * `mobs_mc_guardian_death.ogg` (CC0)
+        * Source: <https://freesound.org/people/pointparkcinema/sounds/407252/>
 * Blender Foundation (CC BY 3.0)
     * `mobs_sheep.ogg`,
 * daufinsyd (MIT License)

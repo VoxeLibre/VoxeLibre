@@ -1,5 +1,3 @@
--- v1.4
-
 --###################
 --################### GUARDIAN
 --###################
@@ -28,8 +26,10 @@ mobs:register_mob("mobs_mc:guardian", {
 	},
 	visual_size = {x=3, y=3},
 	sounds = {
-		damage = "mobs_mc_squid_hurt",
-		-- TODO: more and better sounds
+		random = "mobs_mc_guardian_random",
+		war_cry = "mobs_mc_guardian_random",
+		damage = {name="mobs_mc_guardian_hurt", gain=0.3},
+		death = "mobs_mc_guardian_death",
 		distance = 16,
 	},
 	animation = {
