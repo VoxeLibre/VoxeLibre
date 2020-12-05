@@ -10,6 +10,12 @@ Code license: MIT License (see `LICENSE`).
 
 Texture license: See README.md in main MineClone 2 directory.
 
-License of sound: [CC BY 3.0](http://creativecommons.org/licenses/by/3.0/)
-Authors: [FreqMan](https://freesound.org/people/FreqMan/) and Wuzzy
-Source: <https://freesound.org/people/FreqMan/sounds/32541/>
+`mcl_portals_teleport.ogg`
+	* License: [CC BY 3.0](http://creativecommons.org/licenses/by/3.0/)
+	* Authors: [FreqMan](https://freesound.org/people/FreqMan/) and Wuzzy
+	* Source: <https://freesound.org/people/FreqMan/sounds/32541/>
+
+`mcl_portals_open_end_portal.ogg`
+	* License: CC0
+	* Author: Johnnie\_Holiday
+	* Source: <https://freesound.org/people/Johnnie_Holiday/sounds/546571/>
