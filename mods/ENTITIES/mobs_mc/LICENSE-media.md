@@ -105,6 +105,14 @@ Origin of those models:
     * `mobs_mc_cow_hurt.ogg` (CC0)
         * Heavily modified
         * Source: <https://freesound.org/people/Bird_man/packs/16972/>
+* [Klaraschick](https://freesound.org/people/Klaraschick/)
+    * `mobs_mc_cow_milk.ogg` (CC0)
+        * shortened
+        * Source: <https://freesound.org/people/Klaraschick/sounds/415312/>
+* [Hitrison](https://freesound.org/people/Hitrison/)
+    * `mobs_mc_cow_mushroom_stew.ogg` (CC BY 3.0)
+        * sound was modified
+        * Source: <https://freesound.org/people/Hitrison/sounds/251411/>
 * [NPXcoot](https://github.com/NPXcoot1) (CC BY-SA 4.0)
     * `mobs_mc_ender_dragon_*`
 * Blender Foundation (CC BY 3.0)

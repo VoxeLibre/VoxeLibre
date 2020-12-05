@@ -54,6 +54,7 @@ local cow_def = {
 		if item:get_name() == mobs_mc.items.bucket and clicker:get_inventory() then
 			local inv = clicker:get_inventory()
 			inv:remove_item("main", mobs_mc.items.bucket)
+			minetest.sound_play("mobs_mc_cow_milk", {pos=self.object:get_pos(), gain=0.6})
 			-- if room add bucket of milk to inventory, otherwise drop as item
 			if inv:room_for_item("main", {name=mobs_mc.items.milk}) then
 				clicker:get_inventory():add_item("main", mobs_mc.items.milk)
@@ -110,6 +111,7 @@ mooshroom_def.on_rightclick = function(self, clicker)
 	elseif item:get_name() == mobs_mc.items.bucket and clicker:get_inventory() then
 		local inv = clicker:get_inventory()
 		inv:remove_item("main", mobs_mc.items.bucket)
+		minetest.sound_play("mobs_mc_cow_milk", {pos=self.object:get_pos(), gain=0.6})
 		-- If room, add milk to inventory, otherwise drop as item
 		if inv:room_for_item("main", {name=mobs_mc.items.milk}) then
 			clicker:get_inventory():add_item("main", mobs_mc.items.milk)
@@ -122,6 +124,7 @@ mooshroom_def.on_rightclick = function(self, clicker)
 	elseif item:get_name() == mobs_mc.items.bowl and clicker:get_inventory() then
 		local inv = clicker:get_inventory()
 		inv:remove_item("main", mobs_mc.items.bowl)
+		minetest.sound_play("mobs_mc_cow_mushroom_stew", {pos=self.object:get_pos(), gain=0.6})
 		-- If room, add mushroom stew to inventory, otherwise drop as item
 		if inv:room_for_item("main", {name=mobs_mc.items.mushroom_stew}) then
 			clicker:get_inventory():add_item("main", mobs_mc.items.mushroom_stew)
