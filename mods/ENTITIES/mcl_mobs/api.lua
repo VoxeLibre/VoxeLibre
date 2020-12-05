@@ -584,8 +584,8 @@ mobs.death_effect = function(pos, yaw, collisionbox)
 		min = { x = -0.5, y = 0, z = -0.5 }
 		max = { x = 0.5, y = 0.5, z = 0.5 }
 	end
-	min = vector.rotate(min, {x=0, y=yaw, z=math.pi/2})
-	max = vector.rotate(max, {x=0, y=yaw, z=math.pi/2})
+	min = vector.rotate(min, {x=0, y=yaw, z=pi/2})
+	max = vector.rotate(max, {x=0, y=yaw, z=pi/2})
 	min, max = vector.sort(min, max)
 	min = vector.multiply(min, 0.5)
 	max = vector.multiply(max, 0.5)
@@ -812,7 +812,7 @@ local check_for_death = function(self, cause, cmi_cause)
 		set_animation(self, "die")
 	else
 		local rot = self.object:get_rotation()
-		rot.z = math.pi/2
+		rot.z = pi/2
 		self.object:set_rotation(rot)
 		length = 1 + DEATH_DELAY
 		set_animation(self, "stand", true)
