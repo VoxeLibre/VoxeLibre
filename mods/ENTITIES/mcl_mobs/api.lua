@@ -6,6 +6,9 @@ mobs.mod = "mrm"
 mobs.version = "20180531" -- don't rely too much on this, rarely updated, if ever
 
 local MAX_MOB_NAME_LENGTH = 30
+local HORNY_TIME = 30
+local HORNY_AGAIN_TIME = 300
+local CHILD_GROW_TIME = 60*20
 
 local MOB_CAP = {}
 MOB_CAP.hostile = 70
@@ -1281,12 +1284,13 @@ end
 -- find two animals of same type and breed if nearby and horny
 local breed = function(self)
 
-	-- child takes 240 seconds before growing into adult
+	-- child takes a long time before growing into adult
 	if self.child == true then
 
+		-- When a child, hornytimer is used to count age until adulthood
 		self.hornytimer = self.hornytimer + 1
 
-		if self.hornytimer > 240 then
+		if self.hornytimer >= CHILD_GROW_TIME then
 
 			self.child = false
 			self.hornytimer = 0
@@ -1315,14 +1319,14 @@ local breed = function(self)
 		return
 	end
 
-	-- horny animal can mate for 40 seconds,
-	-- afterwards horny animal cannot mate again for 200 seconds
+	-- horny animal can mate for HORNY_TIME seconds,
+	-- afterwards horny animal cannot mate again for HORNY_AGAIN_TIME seconds
 	if self.horny == true
-	and self.hornytimer < 240 then
+	and self.hornytimer < HORNY_TIME + HORNY_AGAIN_TIME then
 
 		self.hornytimer = self.hornytimer + 1
 
-		if self.hornytimer >= 240 then
+		if self.hornytimer >= HORNY_TIME + HORNY_AGAIN_TIME then
 			self.hornytimer = 0
 			self.horny = false
 		end
@@ -1330,7 +1334,7 @@ local breed = function(self)
 
 	-- find another same animal who is also horny and mate if nearby
 	if self.horny == true
-	and self.hornytimer <= 40 then
+	and self.hornytimer <= HORNY_TIME then
 
 		local pos = self.object:get_pos()
 
@@ -1369,15 +1373,15 @@ local breed = function(self)
 			if ent
 			and canmate == true
 			and ent.horny == true
-			and ent.hornytimer <= 40 then
+			and ent.hornytimer <= HORNY_TIME then
 				num = num + 1
 			end
 
 			-- found your mate? then have a baby
 			if num > 1 then
 
-				self.hornytimer = 41
-				ent.hornytimer = 41
+				self.hornytimer = HORNY_TIME + 1
+				ent.hornytimer = HORNY_TIME + 1
 
 				-- spawn baby
 				minetest.after(5, function(parent1, parent2, pos)
@@ -4262,7 +4266,8 @@ function mobs:feed_tame(self, clicker, feed_count, breed, tame)
 		-- make children grow quicker
 		if self.child == true then
 
-			self.hornytimer = self.hornytimer + 20
+			-- deduct 10% of the time to adulthood
+			self.hornytimer = self.hornytimer + ((CHILD_GROW_TIME - self.hornytimer) * 0.1)
 
 			return true
 		end
