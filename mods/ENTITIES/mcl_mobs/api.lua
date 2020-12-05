@@ -2166,6 +2166,7 @@ local follow_flop = function(self)
 		elseif self.state == "flop" then
 			self.state = "stand"
 			self.object:set_acceleration({x = 0, y = 0, z = 0})
+			set_velocity(self, 0)
 		end
 	end
 end
