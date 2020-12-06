@@ -13,6 +13,8 @@ mobs:register_mob("mobs_mc:squid", {
     passive = true,
     hp_min = 10,
     hp_max = 10,
+    xp_min = 1,
+    xp_max = 3,
     armor = 100,
     -- FIXME: If the squid is near the floor, it turns black
     collisionbox = {-0.4, 0.0, -0.4, 0.4, 0.9, 0.4},

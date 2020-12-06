@@ -17,6 +17,8 @@ local pigman = {
 	spawn_class = "passive",
 	hp_min = 20,
 	hp_max = 20,
+	xp_min = 6,
+	xp_max = 6,
 	breath_max = -1,
 	armor = 90,
 	attack_type = "dogfight",
@@ -89,6 +91,8 @@ mobs:register_mob("mobs_mc:pigman", pigman)
 
 local baby_pigman = table.copy(pigman)
 baby_pigman.collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.94, 0.25}
+baby_pigman.xp_min = 13
+baby_pigman.xp_max = 13
 baby_pigman.visual_size = {x=pigman.visual_size.x/2, y=pigman.visual_size.y/2}
 baby_pigman.textures = { {
 	"mobs_mc_zombie_pigman.png", --baby

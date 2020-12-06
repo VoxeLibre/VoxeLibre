@@ -12,6 +12,8 @@ mobs:register_mob("mobs_mc:enderdragon", {
 	walk_chance = 100,
 	hp_max = 200,
 	hp_min = 200,
+	xp_min = 500,
+	xp_max = 500,
 	collisionbox = {-2, 3, -2, 2, 5, 2},
 	physical = false,
 	visual = "mesh",

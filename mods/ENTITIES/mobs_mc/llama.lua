@@ -29,6 +29,8 @@ mobs:register_mob("mobs_mc:llama", {
 	spawn_class = "passive",
 	hp_min = 15,
 	hp_max = 30,
+	xp_min = 1,
+	xp_max = 3,
 	passive = false,
 	collisionbox = {-0.45, -0.01, -0.45, 0.45, 1.86, 0.45},
 	visual = "mesh",

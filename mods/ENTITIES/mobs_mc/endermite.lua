@@ -10,6 +10,8 @@ mobs:register_mob("mobs_mc:endermite", {
 	passive = false,
 	hp_min = 8,
 	hp_max = 8,
+	xp_min = 3,
+	xp_max = 3,
 	armor = 100,
 	group_attack = true,
 	collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.29, 0.2},

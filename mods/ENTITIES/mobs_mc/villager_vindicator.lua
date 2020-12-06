@@ -17,6 +17,8 @@ mobs:register_mob("mobs_mc:vindicator", {
 	pathfinding = 1,
 	hp_min = 24,
 	hp_max = 24,
+	xp_min = 6,
+	xp_max = 6,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_vindicator.b3d",

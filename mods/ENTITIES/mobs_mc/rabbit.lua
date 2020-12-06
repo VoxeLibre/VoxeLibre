@@ -10,6 +10,8 @@ local rabbit = {
 
 	hp_min = 3,
 	hp_max = 3,
+	xp_min = 1,
+	xp_max = 3,
 	collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.49, 0.2},
 
 	visual = "mesh",

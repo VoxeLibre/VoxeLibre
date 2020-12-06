@@ -11,6 +11,8 @@ mobs:register_mob("mobs_mc:guardian_elder", {
 	spawn_class = "hostile",
 	hp_min = 80,
 	hp_max = 80,
+	xp_min = 10,
+	xp_max = 10,
 	breath_max = -1,
     	passive = false,
 	attack_type = "dogfight",

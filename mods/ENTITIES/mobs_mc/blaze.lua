@@ -15,6 +15,8 @@ mobs:register_mob("mobs_mc:blaze", {
 	spawn_class = "hostile",
 	hp_min = 20,
 	hp_max = 20,
+	xp_min = 10,
+	xp_max = 10,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.79, 0.3},
 	rotate = -180,
 	visual = "mesh",

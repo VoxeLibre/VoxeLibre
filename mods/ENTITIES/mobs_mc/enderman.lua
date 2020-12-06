@@ -188,6 +188,8 @@ mobs:register_mob("mobs_mc:enderman", {
 	pathfinding = 1,
 	hp_min = 40,
 	hp_max = 40,
+	xp_min = 5,
+	xp_max = 5,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 2.89, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_enderman.b3d",

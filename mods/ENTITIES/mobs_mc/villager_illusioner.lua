@@ -22,6 +22,8 @@ mobs:register_mob("mobs_mc:illusioner", {
 	end,
 	hp_min = 32,
 	hp_max = 32,
+	xp_min = 6,
+	xp_max = 6,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.94, 0.3},
 	visual = "mesh",
 	mesh = "mobs_mc_illusioner.b3d",

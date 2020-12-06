@@ -17,6 +17,8 @@ mobs:register_mob("mobs_mc:ghast", {
 	group_attack = true,
 	hp_min = 10,
 	hp_max = 10,
+	xp_min = 5,
+	xp_max = 5,
 	collisionbox = {-2, 5, -2, 2, 9, 2},
 	visual = "mesh",
 	mesh = "mobs_mc_ghast.b3d",

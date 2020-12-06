@@ -18,6 +18,8 @@ mobs:register_mob("mobs_mc:evoker", {
 	pathfinding = 1,
 	hp_min = 24,
 	hp_max = 24,
+	xp_min = 10,
+	xp_max = 10,
 	collisionbox = {-0.4, -0.01, -0.4, 0.4, 1.95, 0.4},
 	visual = "mesh",
 	mesh = "mobs_mc_villager.b3d",

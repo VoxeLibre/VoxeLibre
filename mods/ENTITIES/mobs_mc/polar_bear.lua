@@ -14,6 +14,8 @@ mobs:register_mob("mobs_mc:polar_bear", {
 	passive = false,
 	hp_min = 30,
 	hp_max = 30,
+	xp_min = 1,
+	xp_max = 3,
         breath_max = -1,
 	collisionbox = {-0.7, -0.01, -0.7, 0.7, 1.39, 0.7},
 	visual = "mesh",

@@ -17,6 +17,8 @@ mobs:register_mob("mobs_mc:parrot", {
 	pathfinding = 1,
 	hp_min = 6,
 	hp_max = 6,
+	xp_min = 1,
+	xp_max = 3,
 	collisionbox = {-0.25, -0.01, -0.25, 0.25, 0.89, 0.25},
 	visual = "mesh",
 	mesh = "mobs_mc_parrot.b3d",

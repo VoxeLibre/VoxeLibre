@@ -14,6 +14,8 @@ mobs:register_mob("mobs_mc:wither", {
 	spawn_class = "hostile",
 	hp_max = 300,
 	hp_min = 300,
+	xp_min = 50,
+	xp_max = 50,
 	armor = 80,
 	-- This deviates from MC Wiki's size, which makes no sense
 	collisionbox = {-0.9, 0.4, -0.9, 0.9, 2.45, 0.9},

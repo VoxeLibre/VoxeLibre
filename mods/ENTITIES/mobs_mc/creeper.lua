@@ -14,6 +14,8 @@ mobs:register_mob("mobs_mc:creeper", {
 	spawn_class = "hostile",
 	hp_min = 20,
 	hp_max = 20,
+	xp_min = 5,
+	xp_max = 5,
 	collisionbox = {-0.3, -0.01, -0.3, 0.3, 1.69, 0.3},
 	pathfinding = 1,
 	visual = "mesh",

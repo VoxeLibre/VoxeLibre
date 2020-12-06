@@ -63,6 +63,8 @@ local slime_big = {
 	group_attack = { "mobs_mc:slime_big", "mobs_mc:slime_small", "mobs_mc:slime_tiny" },
 	hp_min = 16,
 	hp_max = 16,
+	xp_min = 4,
+	xp_max = 4,
 	collisionbox = {-1.02, -0.01, -1.02, 1.02, 2.03, 1.02},
 	visual_size = {x=12.5, y=12.5},
 	textures = {{"mobs_mc_slime.png"}},
@@ -114,6 +116,8 @@ local slime_small = table.copy(slime_big)
 slime_small.sounds.base_pitch = 1.15
 slime_small.hp_min = 4
 slime_small.hp_max = 4
+slime_small.xp_min = 2
+slime_small.xp_max = 2
 slime_small.collisionbox = {-0.51, -0.01, -0.51, 0.51, 1.00, 0.51}
 slime_small.visual_size = {x=6.25, y=6.25}
 slime_small.damage = 3
@@ -129,6 +133,8 @@ local slime_tiny = table.copy(slime_big)
 slime_tiny.sounds.base_pitch = 1.3
 slime_tiny.hp_min = 1
 slime_tiny.hp_max = 1
+slime_tiny.xp_min = 1
+slime_tiny.xp_max = 1
 slime_tiny.collisionbox = {-0.2505, -0.01, -0.2505, 0.2505, 0.50, 0.2505}
 slime_tiny.visual_size = {x=3.125, y=3.125}
 slime_tiny.damage = 0
@@ -161,6 +167,8 @@ local magma_cube_big = {
 	spawn_class = "hostile",
 	hp_min = 16,
 	hp_max = 16,
+	xp_min = 4,
+	xp_max = 4,
 	collisionbox = {-1.02, -0.01, -1.02, 1.02, 2.03, 1.02},
 	visual_size = {x=12.5, y=12.5},
 	textures = {{ "mobs_mc_magmacube.png" }},
@@ -221,6 +229,8 @@ magma_cube_small.sounds.jump = "mobs_mc_magma_cube_small"
 magma_cube_small.sounds.death = "mobs_mc_magma_cube_small"
 magma_cube_small.hp_min = 4
 magma_cube_small.hp_max = 4
+magma_cube_small.xp_min = 2
+magma_cube_small.xp_max = 2
 magma_cube_small.collisionbox = {-0.51, -0.01, -0.51, 0.51, 1.00, 0.51}
 magma_cube_small.visual_size = {x=6.25, y=6.25}
 magma_cube_small.damage = 3
@@ -241,6 +251,8 @@ magma_cube_tiny.sounds.death = "mobs_mc_magma_cube_small"
 magma_cube_tiny.sounds.base_pitch = 1.25
 magma_cube_tiny.hp_min = 1
 magma_cube_tiny.hp_max = 1
+magma_cube_tiny.xp_min = 1
+magma_cube_tiny.xp_max = 1
 magma_cube_tiny.collisionbox = {-0.2505, -0.01, -0.2505, 0.2505, 0.50, 0.2505}
 magma_cube_tiny.visual_size = {x=3.125, y=3.125}
 magma_cube_tiny.walk_velocity = 1.02

@@ -759,8 +759,8 @@ local check_for_death = function(self, cause, cmi_cause)
 
 		local pos = self.object:get_pos()
 
-		if mod_experience and self.hp_min and self.hp_max and (not self.child and self.type ~= "monster") then
-			mcl_experience.throw_experience(pos, math.ceil( math.random(self.hp_min,self.hp_max+5) / 5) )
+		if mod_experience and ((not self.child) or self.type ~= "animal") then
+			mcl_experience.throw_experience(pos, math.random(self.xp_min, self.xp_max))
 		end
 	end
 
@@ -2977,7 +2977,7 @@ local mob_punch = function(self, hitter, tflp, tool_capabilities, dir)
 			}, true)
 		else
 			minetest.sound_play("default_punch", {
-				object = self.object, --hitter,
+				object = self.object,
 				max_hear_distance = 5
 			}, true)
 		end
@@ -3646,6 +3646,8 @@ minetest.register_entity(name, {
 	lifetimer = def.lifetimer or 57.73,
 	hp_min = scale_difficulty(def.hp_min, 5, 1),
 	hp_max = scale_difficulty(def.hp_max, 10, 1),
+	xp_min = def.xp_min or 0,
+	xp_max = def.xp_max or 0,
 	breath_max = def.breath_max or 15,
         breathes_in_water = def.breathes_in_water or false,
 	physical = true,

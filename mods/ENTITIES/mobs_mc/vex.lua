@@ -18,6 +18,8 @@ mobs:register_mob("mobs_mc:vex", {
 	physical = false,
 	hp_min = 14,
 	hp_max = 14,
+	xp_min = 6,
+	xp_max = 6,
 	collisionbox = {-0.2, 0.2, -0.2, 0.2, 1.0, 0.2},  --bat
 	visual = "mesh",
 	mesh = "mobs_mc_vex.b3d",
