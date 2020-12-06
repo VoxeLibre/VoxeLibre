@@ -91,7 +91,7 @@ mooshroom_def.on_rightclick = function(self, clicker)
 	-- Use shears to get mushrooms and turn mooshroom into cow
 	if item:get_name() == mobs_mc.items.shears then
 		local pos = self.object:get_pos()
-		minetest.sound_play("shears", {pos = pos}, true)
+		minetest.sound_play("mcl_tools_shears_cut", {pos = pos}, true)
 
 		if self.base_texture[1] == "mobs_mc_mooshroom_brown.png" then
 			minetest.add_item({x=pos.x, y=pos.y+1.4, z=pos.z}, mobs_mc.items.mushroom_brown .. " 5")
