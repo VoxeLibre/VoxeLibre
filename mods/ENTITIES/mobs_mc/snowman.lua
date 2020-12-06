@@ -37,8 +37,8 @@ mobs:register_mob("mobs_mc:snowman", {
 	visual = "mesh",
 	mesh = "mobs_mc_snowman.b3d",
 	sounds = {
-		damage = { name = "mobs_mc_snowman_hurt", gain = 0.7 },
-		death = { name = "mobs_mc_snowman_death", gain = 1.0 },
+		damage = { name = "mobs_mc_snowman_hurt", gain = 0.2 },
+		death = { name = "mobs_mc_snowman_death", gain = 0.25 },
 		distance = 16,
 	},
 	textures = {
