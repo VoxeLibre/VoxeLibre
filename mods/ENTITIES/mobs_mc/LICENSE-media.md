@@ -143,7 +143,8 @@ Origin of those models:
 * [kyles](https://freesound.org/people/kyles/)
     * `mobs_mc_squid_flop.*.ogg` (CC0)
         * Source: <https://freesound.org/people/kyles/sounds/450830/>
-    * `mobs_mc_squid_flop.*.ogg` (CC0)
+    * `mobs_mc_snowman_hurt.1.ogg` (CC0)
+        * Source: <https://freesound.org/people/kyles/sounds/450848/>
 * [thefilmbakery](https://freesound.org/people/thefilmbakery/) (CC0)
     * `mobs_mc_blaze_hurt.ogg`
 	* Source: <https://freesound.org/people/thefilmbakery/sounds/137836/>
@@ -267,6 +268,14 @@ Origin of those models:
     * `mobs_mc_bear_hurt.1.ogg` (CC BY 3.0)
         * Changes were made
         * Source: <https://freesound.org/people/YleArkisto/sounds/249441/>
+* [alexo400](https://freesound.org/people/alexo400/)
+    * `mobs_mc_snowman_death.*.ogg` (CC0)
+        * Source: <https://freesound.org/people/alexo400/sounds/543385/>
+* [cabled\_mess](https://freesound.org/people/cabled_mess/)
+    * `mobs_mc_snowman_hurt.2.ogg` (CC0)
+        * Source: <https://freesound.org/people/cabled_mess/sounds/384424/>
+    * `mobs_mc_snowman_hurt.3.ogg` (CC0)
+        * Source: <https://freesound.org/people/cabled_mess/sounds/384421/>
 
 Note: Many of these sounds have been more or less modified to fit the game.
 
