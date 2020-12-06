@@ -23,9 +23,10 @@ mobs:register_mob("mobs_mc:endermite", {
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = false,
 	sounds = {
-		random = "mobs_rat",
+		random = "mobs_mc_endermite_random",
+		damage = "mobs_mc_endermite_hurt",
+		death = "mobs_mc_endermite_death",
 		distance = 16,
-		-- TODO: more sounds
 	},
 	walk_velocity = 1,
 	run_velocity = 2,

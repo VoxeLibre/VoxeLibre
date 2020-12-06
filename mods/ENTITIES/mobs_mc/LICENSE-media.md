@@ -118,6 +118,10 @@ Origin of those models:
 * [bevibeldesign](https://freesound.org/people/bevibeldesign/)
     * `mobs_mc_wither_spawn.ogg` (CC0)
         * Source: <https://freesound.org/people/bevibeldesign/sounds/366095/>
+* [rubberduck](https://opengameart.org/users/rubberduck)
+    * `mobs_mc_endermite_*.ogg` (CC0)
+        * Source 1: <https://opengameart.org/content/80-cc0-creature-sfx>
+        * Source 2: <https://opengameart.org/content/80-cc0-creture-sfx-2>
 * [pointparkcinema](https://freesound.org/people/pointparkcinema/)
     * `mobs_mc_guardian_random.1.ogg` (CC0)
         * Source: <https://freesound.org/people/pointparkcinema/sounds/407252/>
@@ -149,7 +153,6 @@ Origin of those models:
     * `mobs_mc_llama.ogg`
     * `mobs_pig.ogg`
     * `mobs_pig_angry.ogg`
-    * `mobs_rat.ogg`
     * `mobs_sandmonster.ogg`
 * [Daysycho](https://freesound.org/people/Darsycho/)
     * `mobs_mc_spider_hurt.*.ogg` (CC0)
