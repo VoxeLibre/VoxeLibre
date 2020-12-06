@@ -151,7 +151,14 @@ Origin of those models:
     * `mobs_pig_angry.ogg`
     * `mobs_rat.ogg`
     * `mobs_sandmonster.ogg`
-    * `mobs_spider.ogg`
+* [Daysycho](https://freesound.org/people/Darsycho/)
+    * `mobs_mc_spider_hurt.*.ogg` (CC0)
+        * Source: <https://freesound.org/people/Darsycho/sounds/505185/>
+* [columbia23](https://freesound.org/people/columbia23/)
+    * `mobs_mc_spider_death.ogg` (CC BY 3.0)
+    * `mobs_mc_spider_random.*.ogg` (CC BY 3.0)
+    * `mobs_mc_spider_attack.*.ogg` (CC BY 3.0)
+        * Source: <https://freesound.org/people/columbia23/sounds/395395/>
 * BrandonReese (LGPL v2.1)
     * `mobs_eerie.ogg`
 * [Under7dude](https://freesound.org/people/Under7dude/) (CC0)
