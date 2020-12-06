@@ -44,7 +44,14 @@ mobs:register_mob("mobs_mc:polar_bear", {
 	},
 	floats = 1,
 	fear_height = 4,
-	-- TODO: sounds
+	sounds = {
+		random = "mobs_mc_bear_random",
+		attack = "mobs_mc_bear_attack",
+		damage = "mobs_mc_bear_hurt",
+		death = "mobs_mc_bear_death",
+		war_cry = "mobs_mc_bear_growl",
+		distance = 16,
+	},
 	animation = {
 		speed_normal = 25,		speed_run = 50,
 		stand_start = 0,		stand_end = 0,

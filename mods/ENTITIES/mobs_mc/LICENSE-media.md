@@ -242,6 +242,21 @@ Origin of those models:
 * [InspectorJ](https://freesound.org/people/InspectorJ/sounds/429591/)
     * `mobs_mc_animal_eat_generic.ogg` (CC BY 3.0)
         * Source: <https://freesound.org/people/InspectorJ/>
+* [tbsounddesigns](https://freesound.org/people/tbsounddesigns/)
+    * `mobs_mc_bear_random.*.ogg` (CC BY 3.0)
+        * Source 1: <https://freesound.org/people/tbsounddesigns/sounds/416853/>
+        * Source 2: <https://freesound.org/people/tbsounddesigns/sounds/416857/>
+        * Source 3: <https://freesound.org/people/tbsounddesigns/sounds/416855/>
+    * `mobs_mc_bear_growl.*.ogg` (CC BY 3.0)
+        * Source 1: <https://freesound.org/people/tbsounddesigns/sounds/416861/>
+        * Source 2: <https://freesound.org/people/tbsounddesigns/sounds/416859/>
+        * Source 3: <https://freesound.org/people/tbsounddesigns/sounds/416862/>
+* [YleArkisto](https://freesound.org/people/YleArkisto/)
+    * `mobs_mc_bear_attack.*.ogg` (CC BY 3.0)
+    * `mobs_mc_bear_death.*.ogg` (CC BY 3.0)
+    * `mobs_mc_bear_hurt.1.ogg` (CC BY 3.0)
+        * Changes were made
+        * Source: <https://freesound.org/people/YleArkisto/sounds/249441/>
 
 Note: Many of these sounds have been more or less modified to fit the game.
 
