@@ -723,6 +723,9 @@ local function animation(player, playername)
 	local chatter = touch_chatter_prevention[player] or 0
 	if mcl_portals.nether_portal_cooloff[player] or minetest.get_us_time() - chatter < TOUCH_CHATTER_TIME_US then
 		local pos = player:get_pos()
+		if not pos then
+			return
+		end
 		minetest.add_particlespawner({
 			amount = 1,
 			minpos = {x = pos.x - 0.1, y = pos.y + 1.4, z = pos.z - 0.1},
