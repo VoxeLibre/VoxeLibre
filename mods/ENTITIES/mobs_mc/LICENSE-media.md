@@ -223,6 +223,9 @@ Origin of those models:
     * `mobs_mc_wolf_growl.*.ogg` (CC0)
         * Sounds modified and simplified
         * Source: "dogblocks" mod by Hybrid Dog <https://github.com/HybridDog/dogblocks/>
+* [cliftoncarlson](https://freesound.org/people/cliftonmcarlson/)
+    * `mobs_mc_wolf_take_bone.ogg` (CC0)
+        * Source: <https://freesound.org/people/cliftonmcarlson/sounds/392883/>
 * [Inocodum](https://forum.minetest.net/memberlist.php?mode=viewprofile&u=3115)
     * `mobs_mc_silverfish_hurt.ogg` (CC BY-SA 4.0)
     * `mobs_mc_silverfish_death.ogg` (CC BY-SA 4.0)
