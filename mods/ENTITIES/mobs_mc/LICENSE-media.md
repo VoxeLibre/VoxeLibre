@@ -120,6 +120,7 @@ Origin of those models:
         * Source: <https://freesound.org/people/bevibeldesign/sounds/366095/>
 * [rubberduck](https://opengameart.org/users/rubberduck)
     * `mobs_mc_endermite_*.ogg` (CC0)
+    * `mobs_mc_zombiepig_*.ogg` (CC0)
         * Source 1: <https://opengameart.org/content/80-cc0-creature-sfx>
         * Source 2: <https://opengameart.org/content/80-cc0-creture-sfx-2>
 * [pointparkcinema](https://freesound.org/people/pointparkcinema/)
