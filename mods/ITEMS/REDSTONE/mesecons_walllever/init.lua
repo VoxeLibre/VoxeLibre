@@ -53,7 +53,7 @@ minetest.register_node("mesecons_walllever:wall_lever_off", {
 	on_rightclick = function (pos, node)
 		minetest.swap_node(pos, {name="mesecons_walllever:wall_lever_on", param2=node.param2})
 		mesecon.receptor_on(pos, lever_get_output_rules(node))
-		minetest.sound_play("mesecons_lever", {pos=pos}, true)
+		minetest.sound_play("mesecons_button_push", {pos=pos, max_hear_distance=16}, true)
 	end,
 	node_placement_prediction = "",
 	on_place = function(itemstack, placer, pointed_thing)
@@ -152,7 +152,7 @@ minetest.register_node("mesecons_walllever:wall_lever_on", {
 	on_rightclick = function (pos, node)
 		minetest.swap_node(pos, {name="mesecons_walllever:wall_lever_off", param2=node.param2})
 		mesecon.receptor_off(pos, lever_get_output_rules(node))
-		minetest.sound_play("mesecons_lever", {pos=pos}, true)
+		minetest.sound_play("mesecons_button_push", {pos=pos, max_hear_distance=16, pitch=0.9}, true)
 	end,
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	mesecons = {receptor = {
