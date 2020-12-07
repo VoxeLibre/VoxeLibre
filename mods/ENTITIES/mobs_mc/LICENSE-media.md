@@ -140,7 +140,11 @@ Origin of those models:
 * daufinsyd (MIT License)
     * `mobs_mc_blaze_breath.ogg`
     * `mobs_mc_blaze_died.ogg`
-    * `mobs_mc_squid_hurt.ogg`
+* [qubodup](https://opengameart.org/content/slime-monster)
+    * `mobs_mc_squid_hurt.*.ogg` (CC BY 3.0)
+    * `mobs_mc_squid_death.*.ogg` (CC BY 3.0)
+        * Changes were made
+        * Source: <https://opengameart.org/content/slime-monster>
 * [kyles](https://freesound.org/people/kyles/)
     * `mobs_mc_squid_flop.*.ogg` (CC0)
         * Source: <https://freesound.org/people/kyles/sounds/450830/>

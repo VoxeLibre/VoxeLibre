@@ -24,10 +24,10 @@ mobs:register_mob("mobs_mc:squid", {
         {"mobs_mc_squid.png"}
     },
     sounds = {
-		damage = "mobs_mc_squid_hurt",
-		death = "mobs_mc_squid_hurt",
+		damage = {name="mobs_mc_squid_hurt", gain=0.3},
+		death = {name="mobs_mc_squid_death", gain=0.4},
 		flop = "mobs_mc_squid_flop",
-		-- TODO: sounds: random, damage, death
+		-- TODO: sounds: random
 		distance = 16,
     },
     animation = {
