@@ -4007,7 +4007,7 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 			if width_z % 2 == 0 then
 				pos.z = pos.z + 0.5
 			end
-			pos.y = pos.y - 1.499
+			pos.y = pos.y - 0.5
 
 			local mob = minetest.add_entity(pos, name)
 			minetest.log("action", "Mob spawned: "..name.." at "..minetest.pos_to_string(pos))
@@ -4291,9 +4291,10 @@ function mobs:register_egg(mob, desc, background, addegg, no_creative)
 					return itemstack
 				end
 
-				pos.y = pos.y + 1
+				pos.y = pos.y - 0.5
 
 				local mob = minetest.add_entity(pos, mob)
+				minetest.log("action", "Mob spawned: "..name.." at "..minetest.pos_to_string(pos))
 				local ent = mob:get_luaentity()
 
 				-- don't set owner if monster or sneak pressed
