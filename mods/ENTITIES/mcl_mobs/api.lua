@@ -4000,15 +4000,14 @@ function mobs:spawn_specific(name, nodes, neighbors, min_light, max_light,
 				end
 			end
 
-			-- spawn mob 1/2 node above ground
-			pos.y = pos.y + 0.5
-			-- tweak X/Z spawn pos
+			-- tweak X/Y/Z spawn pos
 			if width_x % 2 == 0 then
 				pos.x = pos.x + 0.5
 			end
 			if width_z % 2 == 0 then
 				pos.z = pos.z + 0.5
 			end
+			pos.y = pos.y - 1.499
 
 			local mob = minetest.add_entity(pos, name)
 			minetest.log("action", "Mob spawned: "..name.." at "..minetest.pos_to_string(pos))
