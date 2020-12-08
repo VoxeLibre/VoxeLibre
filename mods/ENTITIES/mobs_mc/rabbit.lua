@@ -26,7 +26,10 @@ local rabbit = {
 	},
 	visual_size = {x=1.5, y=1.5},
 	sounds = {
-		-- TODO: sounds: random, damage, death
+		random = "mobs_mc_rabbit_random",
+		damage = "mobs_mc_rabbit_hurt",
+		death = "mobs_mc_rabbit_death",
+		attack = "mobs_mc_rabbit_attack",
 		eat = "mobs_mc_animal_eat_generic",
 		distance = 16,
 	},

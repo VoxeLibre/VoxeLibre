@@ -281,6 +281,19 @@ Origin of those models:
         * Source: <https://freesound.org/people/cabled_mess/sounds/384424/>
     * `mobs_mc_snowman_hurt.3.ogg` (CC0)
         * Source: <https://freesound.org/people/cabled_mess/sounds/384421/>
+* [kessir](https://freesound.org/people/kessir/sounds/)
+    * `mobs_mc_rabbit_hurt.*.ogg` (CC0)
+    * `mobs_mc_rabbit_death.2.ogg` (CC0)
+    * `mobs_mc_rabbit_death.3.ogg` (CC0)
+        * Source: <https://freesound.org/people/kessir/sounds/372075/>
+    * `mobs_mc_rabbit_attack.*.ogg` (CC0)
+        * Source: <https://freesound.org/people/kessir/sounds/372076/>
+    * `mobs_mc_rabbit_death.1.ogg` (CC0)
+        * Source: <https://freesound.org/people/kessir/sounds/385850/>
+* [Alshred](https://freesound.org/people/Alshred/sounds/403773/)
+    * `mobs_mc_rabbit_random.*.ogg` (CC0)
+        * Changes were made.
+        * Source: <https://freesound.org/people/Alshred/>
 
 Note: Many of these sounds have been more or less modified to fit the game.
 
