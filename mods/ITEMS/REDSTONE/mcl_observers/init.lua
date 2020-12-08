@@ -295,11 +295,11 @@ if realtime then
 		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==1 then
 			mcl_observers.observer_activate({x=pos.x-1,y=pos.y,z=pos.z})
 		end
-		n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z-1})
+		n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z+1})
 		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==-1 then
 			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z+1})
 		end
-		n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z+1})
+		n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z-1})
 		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==1 then
 			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z-1})
 		end
@@ -322,11 +322,11 @@ if realtime then
 		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==1 then
 			mcl_observers.observer_activate({x=pos.x-1,y=pos.y,z=pos.z})
 		end
-		n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z-1})
+		n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z+1})
 		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==-1 then
 			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z+1})
 		end
-		n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z+1})
+		n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z-1})
 		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==1 then
 			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z-1})
 		end
@@ -349,11 +349,11 @@ if realtime then
 		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==1 then
 			mcl_observers.observer_activate({x=pos.x-1,y=pos.y,z=pos.z})
 		end
-		n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z-1})
+		n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z+1})
 		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==-1 then
 			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z+1})
 		end
-		n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z+1})
+		n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z-1})
 		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==1 then
 			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z-1})
 		end
@@ -376,11 +376,11 @@ if realtime then
 		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).x==1 then
 			mcl_observers.observer_activate({x=pos.x-1,y=pos.y,z=pos.z})
 		end
-		n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z-1})
+		n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z+1})
 		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==-1 then
 			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z+1})
 		end
-		n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z+1})
+		n=minetest.get_node({x=pos.x,y=pos.y,z=pos.z-1})
 		if n and n.name and string.sub(n.name,1,24)=="mcl_observers:observer_o" and minetest.facedir_to_dir(n.param2).z==1 then
 			mcl_observers.observer_activate({x=pos.x,y=pos.y,z=pos.z-1})
 		end
