@@ -1544,10 +1544,11 @@ local replace = function(self, pos)
 
 	pos.y = pos.y + y_offset
 
-	if #minetest.find_nodes_in_area(pos, pos, what) > 0 then
+	local node = minetest.get_node(pos)
+	if node.name == what then
 
-		local oldnode = {name = what}
-		local newnode = {name = with}
+		local oldnode = {name = what, param2 = node.param2}
+		local newnode = {name = with, param2 = node.param2}
 		local on_replace_return
 
 		if self.on_replace then
@@ -1557,7 +1558,7 @@ local replace = function(self, pos)
 		if on_replace_return ~= false then
 
 			if mobs_griefing then
-				minetest.set_node(pos, {name = with})
+				minetest.set_node(pos, newnode)
 			end
 
 		end
