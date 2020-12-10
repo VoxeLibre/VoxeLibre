@@ -124,6 +124,14 @@ Origin of those models:
     * `mobs_mc_enderman_teleport_*.ogg` (CC0)
         * Source 1: <https://opengameart.org/content/80-cc0-creature-sfx>
         * Source 2: <https://opengameart.org/content/80-cc0-creture-sfx-2>
+* [Soundscapes55](https://freesound.org/people/Soundscapes55/)
+    * `mobs_mc_enderman_random.1.ogg` (CC0)
+        * Source: <https://freesound.org/people/Soundscapes55/sounds/434973/>
+* [griffinjennings](https://freesound.org/people/griffinjennings/)
+    * `mobs_mc_enderman_death.*.ogg` (CC BY 3.0)
+    * `mobs_mc_enderman_hurt.*.ogg` (CC BY 3.0)
+        * Sounds were heavily modified
+        * Source: <https://freesound.org/people/griffinjennings/sounds/463972/>
 * [pointparkcinema](https://freesound.org/people/pointparkcinema/)
     * `mobs_mc_guardian_random.1.ogg` (CC0)
         * Source: <https://freesound.org/people/pointparkcinema/sounds/407252/>

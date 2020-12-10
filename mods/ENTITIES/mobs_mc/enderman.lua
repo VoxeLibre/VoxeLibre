@@ -205,9 +205,11 @@ mobs:register_mob("mobs_mc:enderman", {
 	visual_size = {x=3, y=3},
 	makes_footstep_sound = true,
 	sounds = {
+		-- TODO: Custom war cry sound
 		war_cry = "mobs_sandmonster",
-		death = "green_slime_death",
-		-- TODO: damage, random
+		death = {name="mobs_mc_enderman_death", gain=0.7},
+		damage = {name="mobs_mc_enderman_hurt", gain=0.5},
+		random = {name="mobs_mc_enderman_random", gain=0.5},
 		distance = 16,
 	},
 	walk_velocity = 0.2,
