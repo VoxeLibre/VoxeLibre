@@ -8,7 +8,6 @@
 -- However, they have a reduced viewing range to make them less dangerous.
 -- This differs from MC, in which endermen only become hostile when provoked,
 -- and they are provoked by looking directly at them.
--- TODO: Implement MC behaviour.
 
 -- Rootyjr
 -----------------------------
@@ -26,6 +25,16 @@
 -- fixed the grass_with_dirt issue.
 
 local S = minetest.get_translator("mobs_mc")
+
+local telesound = function(pos, is_source)
+	local snd
+	if is_source then
+		snd = "mobs_mc_enderman_teleport_src"
+	else
+		snd = "mobs_mc_enderman_teleport_dst"
+	end
+	minetest.sound_play(snd, {pos=pos, max_hear_distance=16}, true)
+end
 
 --###################
 --################### ENDERMAN
@@ -181,7 +190,6 @@ end
 local mobs_griefing = minetest.settings:get_bool("mobs_griefing") ~= false
 
 mobs:register_mob("mobs_mc:enderman", {
-	-- TODO: Endermen should be classified as passive
 	type = "monster",
 	spawn_class = "passive",
 	passive = true,
@@ -214,7 +222,6 @@ mobs:register_mob("mobs_mc:enderman", {
 	},
 	animation = select_enderman_animation("normal"),
 	_taken_node = "",
-	-- TODO: Teleport enderman on damage, etc.
 	do_custom = function(self, dtime)
 		-- PARTICLE BEHAVIOUR HERE.
 		local enderpos = self.object:get_pos()
@@ -464,7 +471,9 @@ mobs:register_mob("mobs_mc:enderman", {
 						end
 					end
 					if telepos then
+						telesound(self.object:get_pos(), false)
 						self.object:set_pos(telepos)
+						telesound(telepos, true)
 					end
 				end
 			end
@@ -492,7 +501,10 @@ mobs:register_mob("mobs_mc:enderman", {
 								end
 							end
 							if node_ok then
-								self.object:set_pos({x=nodepos.x, y=nodepos.y+1, z=nodepos.z})
+								telesound(self.object:get_pos(), false)
+								local telepos = {x=nodepos.x, y=nodepos.y+1, z=nodepos.z}
+								self.object:set_pos(telepos)
+								telesound(telepos, true)
 								break
 							end
 						end
