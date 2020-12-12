@@ -8,7 +8,7 @@ local mod_player = minetest.get_modpath("mcl_player") ~= nil
 local mod_craftguide = minetest.get_modpath("mcl_craftguide") ~= nil
 
 -- Returns a single itemstack in the given inventory to the main inventory, or drop it when there's no space left
-local function return_item(itemstack, dropper, pos, inv)
+function return_item(itemstack, dropper, pos, inv)
 	if dropper:is_player() then
 		-- Return to main inventory
 		if inv:room_for_item("main", itemstack) then
@@ -36,9 +36,11 @@ local function return_item(itemstack, dropper, pos, inv)
 end
 
 -- Return items in the given inventory list (name) to the main inventory, or drop them if there is no space left
-local function return_fields(player, name)
+function return_fields(player, name)
 	local inv = player:get_inventory()
-	for i,stack in ipairs(inv:get_list(name)) do
+	local list = inv:get_list(name)
+	if not list then return end
+	for i,stack in ipairs(list) do
 		return_item(stack, player, player:get_pos(), inv)
 		stack:clear()
 		inv:set_stack(name, i, stack)
@@ -137,6 +139,9 @@ end
 minetest.register_on_player_receive_fields(function(player, formname, fields)
 	if fields.quit then
 		return_fields(player,"craft")
+		return_fields(player,"enchanting_lapis")
+		return_fields(player,"enchanting_item")
+		mcl_enchanting.reload_inventory(player)
 		if not minetest.is_creative_enabled(player:get_player_name()) and (formname == "" or formname == "main") then
 			set_inventory(player)
 		end
@@ -152,6 +157,8 @@ end
 -- Drop crafting grid items on leaving
 minetest.register_on_leaveplayer(function(player)
 	return_fields(player, "craft")
+	return_fields(player, "enchanting_lapis")
+	return_fields(player, "enchanting_item")
 end)
 
 minetest.register_on_joinplayer(function(player)
@@ -189,6 +196,8 @@ minetest.register_on_joinplayer(function(player)
 	when the server has been shutdown and the server didn't clean up the player
 	inventories. ]]
 	return_fields(player, "craft")
+	return_fields(player, "enchanting_item")
+	return_fields(player, "enchanting_lapis")
 end)
 
 if minetest.is_creative_enabled("") then

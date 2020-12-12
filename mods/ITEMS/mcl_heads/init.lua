@@ -42,7 +42,7 @@ local function addhead(name, texture, desc, longdesc, rangemob, rangefactor)
 				{ -0.25, -0.5, -0.25, 0.25, 0.0, 0.25, },
 			},
 		},
-		groups = {handy=1, armor_head=1,non_combat_armor=1, head=1, deco_block=1, dig_by_piston=1},
+		groups = {handy=1, armor_head=1,non_combat_armor=1, head=1, deco_block=1, dig_by_piston=1, enchantability=1},
 		-- The head textures are based off the textures of an actual mob.
 		tiles = {
 			-- Note: bottom texture is overlaid over top texture to get rid of possible transparency.

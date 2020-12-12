@@ -63,35 +63,39 @@ local register_wooden_planks = function(subname, description, tiles)
 	})
 end
 
-local register_leaves = function(subname, description, longdesc, tiles, drop1, drop1_rarity, drop2, drop2_rarity, leafdecay_distance)
+local register_leaves = function(subname, description, longdesc, tiles, sapling, drop_apples, sapling_chances, leafdecay_distance)
 	local drop
 	if leafdecay_distance == nil then
 		leafdecay_distance = 4
 	end
-	if drop2 then
-		drop = {
+	local apple_chances = {200, 180, 160, 120, 40}
+	local stick_chances = {50, 45, 30, 35, 10}
+	
+	local function get_drops(fortune_level)
+		local drop = {
 			max_items = 1,
 			items = {
 				{
-					items = {drop1},
-					rarity = drop1_rarity,
+					items = {sapling},
+					rarity = sapling_chances[fortune_level + 1] or sapling_chances[fortune_level]
 				},
 				{
-					items = {drop2},
-					rarity = drop2_rarity,
+					items = {"mcl_core:stick 1"},
+					rarity = stick_chances[fortune_level + 1]
 				},
-			}
-		 }
-	else
-		drop = {
-			max_items = 1,
-			items = {
 				{
-					items = {drop1},
-					rarity = drop1_rarity,
+					items = {"mcl_core:stick 2"},
+					rarity = stick_chances[fortune_level + 1]
 				},
 			}
-		 }
+		}
+		if drop_apples then
+			table.insert(drop.items, {
+				items = {"mcl_core:apple"},
+				rarity = apple_chances[fortune_level + 1]
+			})
+		end
+		return drop
 	end
 
 	minetest.register_node("mcl_core:"..subname, {
@@ -105,11 +109,13 @@ local register_leaves = function(subname, description, longdesc, tiles, drop1, d
 		paramtype = "light",
 		stack_max = 64,
 		groups = {handy=1,shearsy=1,swordy=1, leafdecay=leafdecay_distance, flammable=2, leaves=1, deco_block=1, dig_by_piston=1, fire_encouragement=30, fire_flammability=60},
-		drop = drop,
+		drop = get_drops(0),
 		_mcl_shears_drop = true,
 		sounds = mcl_sounds.node_sound_leaves_defaults(),
 		_mcl_blast_resistance = 0.2,
 		_mcl_hardness = 0.2,
+		_mcl_silk_touch_drop = true,
+		_mcl_fortune_drop = { get_drops(1), get_drops(2), get_drops(3), get_drops(4) },
 	})
 end
 
@@ -196,12 +202,13 @@ register_sapling("birchsapling", S("Birch Sapling"),
 	"mcl_core_sapling_birch.png", {-4/16, -0.5, -4/16, 4/16, 0.5, 4/16})
 
 
-register_leaves("leaves", S("Oak Leaves"), S("Oak leaves are grown from oak trees."), {"default_leaves.png"}, "mcl_core:sapling", 20, "mcl_core:apple", 200)
-register_leaves("darkleaves", S("Dark Oak Leaves"), S("Dark oak leaves are grown from dark oak trees."), {"mcl_core_leaves_big_oak.png"}, "mcl_core:darksapling", 20, "mcl_core:apple", 200)
-register_leaves("jungleleaves", S("Jungle Leaves"), S("Jungle leaves are grown from jungle trees."), {"default_jungleleaves.png"}, "mcl_core:junglesapling", 40)
-register_leaves("acacialeaves", S("Acacia Leaves"), S("Acacia leaves are grown from acacia trees."), {"default_acacia_leaves.png"}, "mcl_core:acaciasapling", 20)
-register_leaves("spruceleaves", S("Spruce Leaves"), S("Spruce leaves are grown from spruce trees."), {"mcl_core_leaves_spruce.png"}, "mcl_core:sprucesapling", 20)
-register_leaves("birchleaves", S("Birch Leaves"), S("Birch leaves are grown from birch trees."), {"mcl_core_leaves_birch.png"}, "mcl_core:birchsapling", 20)
+register_leaves("leaves", S("Oak Leaves"), S("Oak leaves are grown from oak trees."), {"default_leaves.png"}, "mcl_core:sapling", true, {20, 16, 12, 10})
+register_leaves("darkleaves", S("Dark Oak Leaves"), S("Dark oak leaves are grown from dark oak trees."), {"mcl_core_leaves_big_oak.png"}, "mcl_core:darksapling", true, {20, 16, 12, 10})
+register_leaves("jungleleaves", S("Jungle Leaves"), S("Jungle leaves are grown from jungle trees."), {"default_jungleleaves.png"}, "mcl_core:junglesapling", false, {40, 26, 32, 24, 10})
+register_leaves("acacialeaves", S("Acacia Leaves"), S("Acacia leaves are grown from acacia trees."), {"default_acacia_leaves.png"}, "mcl_core:acaciasapling", false, {20, 16, 12, 10})
+register_leaves("spruceleaves", S("Spruce Leaves"), S("Spruce leaves are grown from spruce trees."), {"mcl_core_leaves_spruce.png"}, "mcl_core:sprucesapling", false, {20, 16, 12, 10})
+register_leaves("birchleaves", S("Birch Leaves"), S("Birch leaves are grown from birch trees."), {"mcl_core_leaves_birch.png"}, "mcl_core:birchsapling", false, {20, 16, 12, 10})
+
 
 
 -- Node aliases

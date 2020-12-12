@@ -10,6 +10,14 @@ else
 	ice_drawtype = "normal"
 end
 
+mcl_core.fortune_drop_ore = {
+	discrete_uniform_distribution = true,
+	min_count = 2,
+	max_count = 1,
+	get_chance = function (fortune_level) return 1 - 2 / (fortune_level + 2) end,
+	multiply = true,
+}
+
 minetest.register_node("mcl_core:stone", {
 	description = S("Stone"),
 	_doc_items_longdesc = S("One of the most common blocks in the world, almost the entire underground consists of stone. It sometimes contains ores. Stone may be created when water meets lava."),
@@ -22,6 +30,7 @@ minetest.register_node("mcl_core:stone", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 6,
 	_mcl_hardness = 1.5,
+	_mcl_silk_touch_drop = true,
 })
 
 minetest.register_node("mcl_core:stone_with_coal", {
@@ -36,6 +45,8 @@ minetest.register_node("mcl_core:stone_with_coal", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
+	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
 
 minetest.register_node("mcl_core:stone_with_iron", {
@@ -49,6 +60,7 @@ minetest.register_node("mcl_core:stone_with_iron", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
+	_mcl_silk_touch_drop = true,
 })
 
 
@@ -63,6 +75,7 @@ minetest.register_node("mcl_core:stone_with_gold", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
+	_mcl_silk_touch_drop = true,
 })
 
 local redstone_timer = 68.28
@@ -95,6 +108,13 @@ minetest.register_node("mcl_core:stone_with_redstone", {
 	on_walk_over = redstone_ore_activate, -- Uses walkover mod
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
+	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = {
+		discrete_uniform_distribution = true,
+		items = {"mesecons:redstone"},
+		min_count = 4,
+		max_count = 5,
+	}
 })
 
 local redstone_ore_reactivate = function(pos)
@@ -133,6 +153,13 @@ minetest.register_node("mcl_core:stone_with_redstone_lit", {
 	end,
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
+	_mcl_silk_touch_drop = {"mcl_core:stone_with_redstone"},
+	_mcl_fortune_drop = {
+		discrete_uniform_distribution = true,
+		items = {"mesecons:redstone"},
+		min_count = 4,
+		max_count = 5,
+	}
 })
 
 minetest.register_node("mcl_core:stone_with_lapis", {
@@ -155,6 +182,7 @@ minetest.register_node("mcl_core:stone_with_lapis", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
+	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
 
 minetest.register_node("mcl_core:stone_with_emerald", {
@@ -168,6 +196,8 @@ minetest.register_node("mcl_core:stone_with_emerald", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
+	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
 
 minetest.register_node("mcl_core:stone_with_diamond", {
@@ -181,6 +211,8 @@ minetest.register_node("mcl_core:stone_with_diamond", {
 	sounds = mcl_sounds.node_sound_stone_defaults(),
 	_mcl_blast_resistance = 3,
 	_mcl_hardness = 3,
+	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = mcl_core.fortune_drop_ore,
 })
 
 minetest.register_node("mcl_core:stonebrick", {
@@ -346,6 +378,7 @@ minetest.register_node("mcl_core:dirt_with_grass", {
 	_mcl_snowed = "mcl_core:dirt_with_grass_snow",
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.6,
+	_mcl_silk_touch_drop = true,
 })
 mcl_core.register_snowed_node("mcl_core:dirt_with_grass_snow", "mcl_core:dirt_with_grass", nil, nil, true)
 
@@ -389,6 +422,7 @@ minetest.register_node("mcl_core:mycelium", {
 	_mcl_snowed = "mcl_core:mycelium_snow",
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.6,
+	_mcl_silk_touch_drop = true,
 })
 mcl_core.register_snowed_node("mcl_core:mycelium_snow", "mcl_core:mycelium")
 
@@ -405,6 +439,7 @@ minetest.register_node("mcl_core:podzol", {
 	_mcl_snowed = "mcl_core:podzol_snow",
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.6,
+	_mcl_silk_touch_drop = true,
 })
 mcl_core.register_snowed_node("mcl_core:podzol_snow", "mcl_core:podzol")
 
@@ -452,6 +487,24 @@ minetest.register_node("mcl_core:gravel", {
 	}),
 	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
+	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = {
+		[1] = {
+			max_items = 1,
+			items = {
+				{items = {'mcl_core:flint'},rarity = 7},
+				{items = {'mcl_core:gravel'}}
+			}
+		},
+		[2] = {
+			max_items = 1,
+			items = {
+				{items = {'mcl_core:flint'},rarity = 4},
+				{items = {'mcl_core:gravel'}}
+			}
+		},
+		[3] = "mcl_core:flint"
+	},
 })
 
 -- sandstone --
@@ -594,6 +647,7 @@ minetest.register_node("mcl_core:clay", {
 	sounds = mcl_sounds.node_sound_dirt_defaults(),
 	_mcl_blast_resistance = 0.6,
 	_mcl_hardness = 0.6,
+	_mcl_silk_touch_drop = true,
 })
 
 minetest.register_node("mcl_core:brick_block", {
@@ -776,6 +830,7 @@ minetest.register_node("mcl_core:ice", {
 	end,
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
+	_mcl_silk_touch_drop = true,
 })
 
 minetest.register_node("mcl_core:packed_ice", {
@@ -789,6 +844,7 @@ minetest.register_node("mcl_core:packed_ice", {
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	_mcl_blast_resistance = 0.5,
 	_mcl_hardness = 0.5,
+	_mcl_silk_touch_drop = true,
 })
 
 -- Frosted Ice (4 nodes)
@@ -972,6 +1028,7 @@ for i=1,8 do
 		drop = "mcl_throwing:snowball "..(i+1),
 		_mcl_blast_resistance = 0.1,
 		_mcl_hardness = 0.1,
+		_mcl_silk_touch_drop = true,
 	})
 end
 
@@ -989,6 +1046,7 @@ minetest.register_node("mcl_core:snowblock", {
 	drop = "mcl_throwing:snowball 4",
 	_mcl_blast_resistance = 0.2,
 	_mcl_hardness = 0.2,
+	_mcl_silk_touch_drop = true,
 })
 
 -- Add entry aliases for the Help

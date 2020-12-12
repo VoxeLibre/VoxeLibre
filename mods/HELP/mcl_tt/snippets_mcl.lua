@@ -25,7 +25,7 @@ tt.register_snippet(function(itemstring)
 	end
 	return s
 end)
-tt.register_snippet(function(itemstring)
+tt.register_snippet(function(itemstring, _, itemstack)
 	local def = minetest.registered_items[itemstring]
 	local s = ""
 	local use = minetest.get_item_group(itemstring, "mcl_armor_uses")
@@ -33,6 +33,12 @@ tt.register_snippet(function(itemstring)
 	if pts > 0 then
 		s = s .. S("Armor points: @1", pts)
 		s = s .. "\n"
+	end
+	if itemstack then
+		local unbreaking = mcl_enchanting.get_enchantment(itemstack, "unbreaking")
+		if unbreaking > 0 then
+			use = math.floor(use / (0.6 + 0.4 / (unbreaking + 1)))
+		end
 	end
 	if use > 0 then
 		s = s .. S("Armor durability: @1", use)

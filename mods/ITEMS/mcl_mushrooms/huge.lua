@@ -6,6 +6,7 @@ local template = {
 	is_ground_content = true,
 	_mcl_blast_resistance = 0.2,
 	_mcl_hardness = 0.2,
+	_mcl_silk_touch_drop = true,
 }
 
 local red = table.copy(template)

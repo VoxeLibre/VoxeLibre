@@ -70,7 +70,7 @@ minetest.register_tool("mcl_farming:hoe_wood", {
 	inventory_image = "farming_tool_woodhoe.png",
 	wield_scale = { x = 1.8, y = 1.8, z = 1 },
 	on_place = hoe_on_place_function(uses.wood),
-	groups = { tool=1, hoe=1 },
+	groups = { tool=1, hoe=1, enchantability=15 },
 	tool_capabilities = {
 		full_punch_interval = 1,
 		damage_groups = { fleshy = 1, },
@@ -109,7 +109,7 @@ minetest.register_tool("mcl_farming:hoe_stone", {
 	inventory_image = "farming_tool_stonehoe.png",
 	wield_scale = { x = 1.8, y = 1.8, z = 1 },
 	on_place = hoe_on_place_function(uses.stone),
-	groups = { tool=1, hoe=1 },
+	groups = { tool=1, hoe=1, enchantability=5 },
 	tool_capabilities = {
 		full_punch_interval = 0.5,
 		damage_groups = { fleshy = 1, },
@@ -143,7 +143,7 @@ minetest.register_tool("mcl_farming:hoe_iron", {
 	inventory_image = "farming_tool_steelhoe.png",
 	wield_scale = { x = 1.8, y = 1.8, z = 1 },
 	on_place = hoe_on_place_function(uses.iron),
-	groups = { tool=1, hoe=1 },
+	groups = { tool=1, hoe=1, enchantability=14 },
 	tool_capabilities = {
 		-- 1/3
 		full_punch_interval = 0.33333333,
@@ -185,7 +185,7 @@ minetest.register_tool("mcl_farming:hoe_gold", {
 	inventory_image = "farming_tool_goldhoe.png",
 	wield_scale = { x = 1.8, y = 1.8, z = 1 },
 	on_place = hoe_on_place_function(uses.gold),
-	groups = { tool=1, hoe=1 },
+	groups = { tool=1, hoe=1, enchantability=22 },
 	tool_capabilities = {
 		full_punch_interval = 1,
 		damage_groups = { fleshy = 1, },
@@ -228,7 +228,7 @@ minetest.register_tool("mcl_farming:hoe_diamond", {
 	inventory_image = "farming_tool_diamondhoe.png",
 	wield_scale = { x = 1.8, y = 1.8, z = 1 },
 	on_place = hoe_on_place_function(uses.diamond),
-	groups = { tool=1, hoe=1 },
+	groups = { tool=1, hoe=1, enchantability=10 },
 	tool_capabilities = {
 		full_punch_interval = 0.25,
 		damage_groups = { fleshy = 1, },

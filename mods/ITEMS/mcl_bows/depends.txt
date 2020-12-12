@@ -8,3 +8,4 @@ doc?
 doc_identifier?
 mesecons_button?
 mcl_particles
+mcl_enchanting

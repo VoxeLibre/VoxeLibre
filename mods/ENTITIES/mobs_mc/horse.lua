@@ -353,6 +353,7 @@ mobs:register_mob("mobs_mc:horse", horse)
 -- Skeleton horse
 local skeleton_horse = table.copy(horse)
 skeleton_horse.breath_max = -1
+skeleton_horse.armor = {undead = 100, fleshy = 100}
 skeleton_horse.textures = {{"blank.png", "mobs_mc_horse_skeleton.png", "blank.png"}}
 skeleton_horse.drops = {
 	{name = mobs_mc.items.bone,
@@ -374,6 +375,7 @@ mobs:register_mob("mobs_mc:skeleton_horse", skeleton_horse)
 -- Zombie horse
 local zombie_horse = table.copy(horse)
 zombie_horse.breath_max = -1
+zombie_horse.armor = {undead = 100, fleshy = 100}
 zombie_horse.textures = {{"blank.png", "mobs_mc_horse_zombie.png", "blank.png"}}
 zombie_horse.drops = {
 	{name = mobs_mc.items.rotten_flesh,

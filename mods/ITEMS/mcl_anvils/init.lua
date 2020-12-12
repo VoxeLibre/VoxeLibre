@@ -42,9 +42,6 @@ end
 -- needs to be used up to repair the tool.
 local function get_consumed_materials(tool, material)
 	local wear = tool:get_wear()
-	if wear == 0 then
-		return 0
-	end
 	local health = (MAX_WEAR - wear)
 	local matsize = material:get_count()
 	local materials_used = 0
@@ -103,12 +100,15 @@ local function update_anvil_slots(meta)
 			return math.max(0, math.min(MAX_WEAR, MAX_WEAR - new_health))
 		end
 
-		-- Same tool twice
-		if input1:get_name() == input2:get_name() and def1.type == "tool" and (input1:get_wear() > 0 or input2:get_wear() > 0) then
+		local can_combine = mcl_enchanting.combine(input1, input2)
+		
+		if can_combine then
 			-- Add tool health together plus a small bonus
-			-- TODO: Combine tool enchantments
-			local new_wear = calculate_repair(input1:get_wear(), input2:get_wear(), SAME_TOOL_REPAIR_BOOST)
-			input1:set_wear(new_wear)
+			if def1.type == "tool" and def2.type == "tool" then
+				local new_wear = calculate_repair(input1:get_wear(), input2:get_wear(), SAME_TOOL_REPAIR_BOOST)
+				input1:set_wear(new_wear)
+			end
+			
 			name_item = input1
 			new_output = name_item
 		-- Tool + repair item
@@ -170,23 +170,16 @@ local function update_anvil_slots(meta)
 			new_name = string.sub(new_name, 1, MAX_NAME_LENGTH)
 			-- Don't rename if names are identical
 			if new_name ~= old_name then
+				-- Save the raw name internally
+				meta:set_string("name", new_name)
 				-- Rename item
 				if new_name == "" then
-					-- Empty name
-					if name_item:get_definition()._mcl_generate_description then
-						-- _mcl_generate_description(itemstack): If defined, set custom item description of itemstack.
-						name_item:get_definition()._mcl_generate_description(name_item)
-					else
-						-- Otherwise, just clear description
-						meta:set_string("description", "")
-					end
+					tt.reload_itemstack_description(name_item)
 				else
 					-- Custom name set. Colorize it!
 					-- This makes the name visually different from unnamed items
 					meta:set_string("description", minetest.colorize(NAME_COLOR, new_name))
 				end
-				-- Save the raw name internally, too
-				meta:set_string("name", new_name)
 				new_output = name_item
 			elseif just_rename then
 				new_output = ""

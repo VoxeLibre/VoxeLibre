@@ -7,3 +7,4 @@ playerphysics
 mcl_playerinfo
 mcl_weather
 mcl_spawn
+mcl_enchanting

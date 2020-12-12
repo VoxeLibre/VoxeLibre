@@ -3,3 +3,4 @@ mcl_player
 mcl_fire?
 ethereal?
 bakedclay?
+mcl_enchanting

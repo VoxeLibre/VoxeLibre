@@ -284,8 +284,14 @@ local function trace_explode(pos, strength, raydirs, radius, drop_chance, fire, 
 					impact = 0
 				end
 				local damage = math.floor((impact * impact + impact) * 7 * strength + 1)
-				if mod_death_messages and obj:is_player() then
-					mcl_death_messages.player_damage(obj, S("@1 was caught in an explosion.", obj:get_player_name()))
+				if obj:is_player() then
+					local name = obj:get_player_name()
+					if mod_death_messages then
+						mcl_death_messages.player_damage(obj, S("@1 was caught in an explosion.", name))
+					end
+					if rawget(_G, "armor") and armor.last_damage_types then
+						armor.last_damage_types[name] = "explosion"
+					end
 				end
 				local source = puncher
 				if not source then

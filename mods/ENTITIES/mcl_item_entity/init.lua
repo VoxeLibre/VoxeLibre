@@ -212,6 +212,50 @@ local check_can_drop = function(node_name, tool_capabilities)
 	end
 end
 
+-- Stupid workaround to get drops from a drop table:
+-- Create a temporary table in minetest.registered_nodes that contains the proper drops,
+-- because unfortunately minetest.get_node_drops needs the drop table to be inside a registered node definition
+-- (very ugly)
+
+local tmp_id = 0
+
+local function get_drops(drop, toolname, param2, paramtype2)
+	tmp_id = tmp_id + 1
+	local tmp_node_name = "mcl_item_entity:" .. tmp_id
+	minetest.registered_nodes[tmp_node_name] = {
+		name = tmp_node_name,
+		drop = drop,
+		paramtype2 = paramtype2
+	}
+	local drops = minetest.get_node_drops({name = tmp_node_name, param2 = param2}, toolname)
+	minetest.registered_nodes[tmp_node_name] = nil
+	return drops
+end
+
+local function discrete_uniform_distribution(drops, min_count, max_count, cap)
+	local new_drops = table.copy(drops)
+	for i, item in ipairs(drops) do
+		local new_item = ItemStack(item)
+		local multiplier = math.random(min_count, max_count)
+		if cap then
+			multiplier = math.min(cap, multiplier)
+		end
+		new_item:set_count(multiplier * new_item:get_count())
+		new_drops[i] = new_item
+	end
+	return new_drops
+end
+
+local function get_fortune_drops(fortune_drops, fortune_level)
+	local drop
+	local i = fortune_level
+	repeat
+		drop = fortune_drops[i]
+		i = i - 1
+	until drop or i < 1
+	return drop or {}
+end
+
 function minetest.handle_node_drops(pos, drops, digger)
 	-- NOTE: This function override allows digger to be nil.
 	-- This means there is no digger. This is a special case which allows this function to be called
@@ -225,14 +269,9 @@ function minetest.handle_node_drops(pos, drops, digger)
 	-- Check if node will yield its useful drop by the digger's tool
 	local dug_node = minetest.get_node(pos)
 	local toolcaps
+	local tool
 	if digger ~= nil then
-		if mcl_experience.throw_experience then
-		        local experience_amount = minetest.get_item_group(dug_node.name,"xp")
-		        if experience_amount > 0 then
-		            mcl_experience.throw_experience(pos, experience_amount)
-		        end
-		end
-		local tool = digger:get_wielded_item()
+		tool = digger:get_wielded_item()
 		toolcaps = tool:get_tool_capabilities()
 
 		if not check_can_drop(dug_node.name, toolcaps) then
@@ -240,12 +279,16 @@ function minetest.handle_node_drops(pos, drops, digger)
 		end
 	end
 
-	--[[ Special node drops when dug by shears by reading _mcl_shears_drop
+	--[[ Special node drops when dug by shears by reading _mcl_shears_drop or with a silk touch tool reading _mcl_silk_touch_drop
 	from the node definition.
-	Definition of _mcl_shears_drop:
-	* true: Drop itself when dug by shears
-	* table: Drop every itemstring in this table when dub by shears
+	Definition of _mcl_shears_drop / _mcl_silk_touch_drop:
+	* true: Drop itself when dug by shears / silk touch tool
+	* table: Drop every itemstring in this table when dug by shears _mcl_silk_touch_drop
 	]]
+	
+	local enchantments = tool and mcl_enchanting.get_enchantments(tool, "silk_touch")
+	
+	local silk_touch_drop = false
 	local nodedef = minetest.registered_nodes[dug_node.name]
 	if toolcaps ~= nil and toolcaps.groupcaps and toolcaps.groupcaps.shearsy_dig and nodedef._mcl_shears_drop then
 		if nodedef._mcl_shears_drop == true then
@@ -253,8 +296,41 @@ function minetest.handle_node_drops(pos, drops, digger)
 		else
 			drops = nodedef._mcl_shears_drop
 		end
+	elseif tool and enchantments.silk_touch and nodedef._mcl_silk_touch_drop then
+		silk_touch_drop = true
+		if nodedef._mcl_silk_touch_drop == true then
+			drops = { dug_node.name }
+		else
+			drops = nodedef._mcl_silk_touch_drop
+		end
+	end
+	
+	if tool and nodedef._mcl_fortune_drop and enchantments.fortune then
+		local fortune_level = enchantments.fortune
+		local fortune_drop = nodedef._mcl_fortune_drop
+		if fortune_drop.discrete_uniform_distribution then
+			local min_count = fortune_drop.min_count
+			local max_count = fortune_drop.max_count + fortune_level * (fortune_drop.factor or 1)
+			local chance = fortune_drop.chance or fortune_drop.get_chance and fortune_drop.get_chance(fortune_level)
+			if not chance or math.random() < chance then
+				drops = discrete_uniform_distribution(fortune_drop.multiply and drops or fortune_drop.items, min_count, max_count, fortune_drop.cap)
+			elseif fortune_drop.override then
+				drops = {}
+			end
+		else
+			-- Fixed Behavior
+			local drop = get_fortune_drops(fortune_drops, fortune_level)
+			drops = get_drops(drop, tool:get_name(), dug_node.param2, nodedef.paramtype2)
+		end
 	end
 
+	if digger and mcl_experience.throw_experience and not silk_touch_drop then
+		local experience_amount = minetest.get_item_group(dug_node.name,"xp")
+		if experience_amount > 0 then
+			mcl_experience.throw_experience(pos, experience_amount)
+		end
+	end
+	
 	for _,item in ipairs(drops) do
 		local count
 		if type(item) == "string" then

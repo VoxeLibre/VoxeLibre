@@ -16,6 +16,7 @@ minetest.register_node("mcl_core:glass", {
 	drop = "",
 	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
+	_mcl_silk_touch_drop = true,
 })
 
 ------------------------
@@ -51,6 +52,7 @@ function mcl_core.add_stained_glass(desc, recipeitem, colorgroup, color)
 		drop = "",
 		_mcl_blast_resistance = 0.3,
 		_mcl_hardness = 0.3,
+		_mcl_silk_touch_drop = true,
 	})
 	
 	minetest.register_craft({

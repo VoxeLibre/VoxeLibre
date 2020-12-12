@@ -23,7 +23,7 @@ minetest.register_on_dieplayer(function(player)
 					local z = math.random(0, 9)/3
 					pos.x = pos.x + x
 					pos.z = pos.z + z
-					if not void_deadly and drop then
+					if not void_deadly and drop and not mcl_enchanting.has_enchantment(stack, "curse_of_vanishing") then
 						local def = minetest.registered_items[stack:get_name()]
 						if def and def.on_drop then
 							stack = def.on_drop(stack, player, pos)

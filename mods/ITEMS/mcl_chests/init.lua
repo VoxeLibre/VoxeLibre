@@ -746,6 +746,7 @@ minetest.register_node("mcl_chests:ender_chest", {
 	end,
 	_mcl_blast_resistance = 3000,
 	_mcl_hardness = 22.5,
+	_mcl_silk_touch_drop = true,
 	on_rotate = simple_rotate,
 })
 

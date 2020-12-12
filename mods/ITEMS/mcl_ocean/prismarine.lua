@@ -21,6 +21,14 @@ minetest.register_node("mcl_ocean:sea_lantern", {
 	sounds = mcl_sounds.node_sound_glass_defaults(),
 	_mcl_blast_resistance = 0.3,
 	_mcl_hardness = 0.3,
+	_mcl_silk_touch_drop = true,
+	_mcl_fortune_drop = {
+		discrete_uniform_distribution = true,
+		items = {"mcl_ocean:prismarine_crystals"},
+		min_count = 2,
+		max_count = 3,
+		cap = 5,
+	}
 })
 
 minetest.register_node("mcl_ocean:prismarine", {

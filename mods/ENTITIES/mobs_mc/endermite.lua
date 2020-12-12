@@ -12,7 +12,7 @@ mobs:register_mob("mobs_mc:endermite", {
 	hp_max = 8,
 	xp_min = 3,
 	xp_max = 3,
-	armor = 100,
+	armor = {fleshy = 100, arthropod = 100},
 	group_attack = true,
 	collisionbox = {-0.2, -0.01, -0.2, 0.2, 0.29, 0.2},
 	visual = "mesh",

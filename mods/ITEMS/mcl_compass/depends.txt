@@ -2,3 +2,4 @@ mcl_core
 mcl_worlds
 mesecons
 doc?
+mcl_enchanting
