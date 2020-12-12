@@ -405,7 +405,7 @@ local is_node_waterhazard = function(self, nodename)
 			return true
 		end
 	end
-	if minetest.registered_nodes[nn].drowning > 0 then
+	if minetest.registered_nodes[nn] and minetest.registered_nodes[nn].drowning and minetest.registered_nodes[nn].drowning > 0 then
 		if self.breath_max ~= -1 then
 			-- check if the mob is water-breathing _and_ the block is water; only return true if neither is the case
 			-- this will prevent water-breathing mobs to classify water or e.g. sand below them as dangerous
