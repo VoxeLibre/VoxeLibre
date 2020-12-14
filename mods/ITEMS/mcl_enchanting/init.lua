@@ -103,6 +103,7 @@ minetest.register_chatcommand("enchant", {
 minetest.register_chatcommand("forceenchant", {
 	description = S("Forcefully enchant an item"),
 	params = S("<player> <enchantment> [<level>]"),
+	privs = {give = true},
 	func = function(_, param)
 		local sparam = param:split(" ")
 		local target_name = sparam[1]
@@ -181,6 +182,11 @@ minetest.register_entity("mcl_enchanting:book", {
 	end,
 })
 
+local rotate
+if minetest.get_modpath("screwdriver") then
+	rotate = screwdriver.rotate_simple
+end
+
 minetest.register_node("mcl_enchanting:table", {
 	description = S("Enchanting Table"),
 	drawtype = "nodebox",
@@ -190,8 +196,8 @@ minetest.register_node("mcl_enchanting:table", {
 		fixed = {-0.5, -0.5, -0.5, 0.5, 0.25, 0.5},
 	},
 	sounds = mcl_sounds.node_sound_stone_defaults(),
-	groups = {pickaxey = 2},
-	on_rotate = (rawget(_G, "screwdriver") or {}).rotate_simple,
+	groups = {pickaxey = 2, deco_block = 1},
+	on_rotate = rotate,
 	on_rightclick = function(pos, node, clicker, itemstack, pointed_thing)
 		local player_meta = clicker:get_meta()
 		local table_meta = minetest.get_meta(pos)
@@ -237,7 +243,7 @@ minetest.register_craft({
 })
 
 minetest.register_abm({
-	name = "Enchanting table bookshelf particles",
+	label = "Enchanting table bookshelf particles",
 	interval = 1,
 	chance = 1,
 	nodenames = "mcl_enchanting:table",
