@@ -148,6 +148,7 @@ minetest.register_entity("mcl_enchanting:book", {
 		mesh = "mcl_enchanting_book.b3d",
 		visual_size = {x = 12.5, y = 12.5},
 		collisionbox = {0, 0, 0},
+		pointable = false,
 		physical = false,
 		textures = {"mcl_enchanting_book_entity.png"},
 	},
@@ -167,7 +168,9 @@ minetest.register_entity("mcl_enchanting:book", {
 		end
 		self.object:set_armor_groups({immortal = 1})
 		mcl_enchanting.set_book_animation(self, "close")
-		mcl_enchanting.check_book(vector.subtract(self.object:get_pos(), mcl_enchanting.book_offset))
+		if self._table_pos then
+			mcl_enchanting.check_book(self._table_pos)
+		end
 	end,
 	on_step = function(self, dtime)
 		local old_player_near = self._player_near
@@ -231,7 +234,11 @@ minetest.register_node("mcl_enchanting:table", {
 			end
 		end
 	end,
-	on_destruct = function(pos)
+	after_dig_node = function(pos, oldnode, oldmetadata, digger)
+		local dname = (digger and digger:get_player_name()) or ""
+		if minetest.is_creative_enabled(dname) then
+			return
+		end
 		local itemstack = ItemStack("mcl_enchanting:table")
 		local meta = minetest.get_meta(pos)
 		local itemmeta = itemstack:get_meta()
