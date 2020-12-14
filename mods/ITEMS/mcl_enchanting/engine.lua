@@ -574,34 +574,6 @@ function mcl_enchanting.look_at(self, pos2)
 	self.object:set_yaw(yaw + math.pi)
 end
 
-function mcl_enchanting.check_book(pos)
-	local has_enchanting_table = minetest.get_node(pos).name == "mcl_enchanting:table"
-	local obj_pos = vector.add(pos, mcl_enchanting.book_offset)
-	if not has_enchanting_table then
-		for _, obj in pairs(minetest.get_objects_inside_radius(obj_pos, 0.2)) do
-			local luaentity = obj:get_luaentity()
-			if luaentity and luaentity.name == "mcl_enchanting:book" then
-				obj:remove()
-				return
-			end
-		end
-	else
-		for _, obj in pairs(minetest.get_objects_inside_radius(obj_pos, 0.2)) do
-			local luaentity = obj:get_luaentity()
-			if luaentity and luaentity.name == "mcl_enchanting:book" then
-				return
-			end
-		end
-		local obj = minetest.add_entity(obj_pos, "mcl_enchanting:book")
-		if obj then
-			local lua = obj:get_luaentity()
-			if lua then
-				lua._table_pos = table.copy(pos)
-			end
-		end
-	end
-end
-
 function mcl_enchanting.get_bookshelves(pos)
 	local absolute, relative = {}, {}
 	for i, rp in ipairs(mcl_enchanting.bookshelf_positions) do

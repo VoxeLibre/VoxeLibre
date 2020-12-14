@@ -142,6 +142,16 @@ minetest.register_craftitem("mcl_enchanting:book_enchanted", {
 	stack_max = 1,
 })
 
+local spawn_book_entity = function(pos)
+	local obj = minetest.add_entity(vector.add(pos, mcl_enchanting.book_offset), "mcl_enchanting:book")
+	if obj then
+		local lua = obj:get_luaentity()
+		if lua then
+			lua._table_pos = table.copy(pos)
+		end
+	end
+end
+
 minetest.register_entity("mcl_enchanting:book", {
 	initial_properties = {
 		visual = "mesh",
@@ -151,26 +161,13 @@ minetest.register_entity("mcl_enchanting:book", {
 		pointable = false,
 		physical = false,
 		textures = {"mcl_enchanting_book_entity.png"},
+		static_save = false,
 	},
 	_player_near = false,
 	_table_pos = nil,
-	get_staticdata = function(self)
-		local pstr = ""
-		if self._table_pos then
-			pstr = minetest.serialize(self._table_pos)
-		end
-		return pstr
-	end,
 	on_activate = function(self, staticdata)
-		if staticdata ~= "" then
-			local data = minetest.deserialize(staticdata)
-			self._table_pos = data
-		end
 		self.object:set_armor_groups({immortal = 1})
 		mcl_enchanting.set_book_animation(self, "close")
-		if self._table_pos then
-			mcl_enchanting.check_book(self._table_pos)
-		end
 	end,
 	on_step = function(self, dtime)
 		local old_player_near = self._player_near
@@ -226,13 +223,7 @@ minetest.register_node("mcl_enchanting:table", {
 		mcl_enchanting.show_enchanting_formspec(clicker)
 	end,
 	on_construct = function(pos)
-		local obj = minetest.add_entity(vector.add(pos, mcl_enchanting.book_offset), "mcl_enchanting:book")
-		if obj then
-			local lua = obj:get_luaentity()
-			if lua then
-				lua._table_pos = table.copy(pos)
-			end
-		end
+		spawn_book_entity(pos)
 	end,
 	after_dig_node = function(pos, oldnode, oldmetadata, digger)
 		local dname = (digger and digger:get_player_name()) or ""
@@ -284,7 +275,6 @@ minetest.register_abm({
 	chance = 1,
 	nodenames = "mcl_enchanting:table",
 	action = function(pos)
-		mcl_enchanting.check_book(pos)
 		local absolute, relative = mcl_enchanting.get_bookshelves(pos)
 		for i, ap in ipairs(absolute) do
 			if math.random(10) == 1 then
@@ -302,6 +292,17 @@ minetest.register_abm({
 		minetest.get_meta(pos):set_int("mcl_enchanting:num_bookshelves", math.min(15, #absolute))
 	end
 }) 
+
+minetest.register_lbm({
+	label = "(Re-)spawn book entity above enchanting table",
+	name = "mcl_enchanting:spawn_book_entity",
+	nodenames = {"mcl_enchanting:table"},
+	run_at_every_load = true,
+	action = function(pos)
+		spawn_book_entity(pos)
+	end,
+})
+
 
 minetest.register_on_mods_loaded(mcl_enchanting.initialize)
 minetest.register_on_joinplayer(mcl_enchanting.initialize_player)
