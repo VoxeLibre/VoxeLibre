@@ -151,14 +151,26 @@ minetest.register_entity("mcl_enchanting:book", {
 		physical = false,
 		textures = {"mcl_enchanting_book_entity.png"},
 	},
-	player_near = false,
-	on_activate = function(self)
+	_player_near = false,
+	_table_pos = nil,
+	get_staticdata = function(self)
+		local pstr = ""
+		if self._table_pos then
+			pstr = minetest.serialize(self._table_pos)
+		end
+		return pstr
+	end,
+	on_activate = function(self, staticdata)
+		if staticdata ~= "" then
+			local data = minetest.deserialize(staticdata)
+			self._table_pos = data
+		end
 		self.object:set_armor_groups({immortal = 1})
 		mcl_enchanting.set_book_animation(self, "close")
 		mcl_enchanting.check_book(vector.subtract(self.object:get_pos(), mcl_enchanting.book_offset))
 	end,
 	on_step = function(self, dtime)
-		local old_player_near = self.player_near
+		local old_player_near = self._player_near
 		local player_near = false
 		local player
 		for _, obj in ipairs(minetest.get_objects_inside_radius(vector.subtract(self.object:get_pos(), mcl_enchanting.book_offset), 2.5)) do
@@ -177,7 +189,7 @@ minetest.register_entity("mcl_enchanting:book", {
 		if player then
 			mcl_enchanting.look_at(self, player:get_pos())
 		end
-		self.player_near = player_near
+		self._player_near = player_near
 		mcl_enchanting.check_animation_schedule(self, dtime)
 	end,
 })
@@ -211,7 +223,13 @@ minetest.register_node("mcl_enchanting:table", {
 		mcl_enchanting.show_enchanting_formspec(clicker)
 	end,
 	on_construct = function(pos)
-		minetest.add_entity(vector.add(pos, mcl_enchanting.book_offset), "mcl_enchanting:book")
+		local obj = minetest.add_entity(vector.add(pos, mcl_enchanting.book_offset), "mcl_enchanting:book")
+		if obj then
+			local lua = obj:get_luaentity()
+			if lua then
+				lua._table_pos = table.copy(pos)
+			end
+		end
 	end,
 	on_destruct = function(pos)
 		local itemstack = ItemStack("mcl_enchanting:table")
@@ -227,7 +245,18 @@ minetest.register_node("mcl_enchanting:table", {
 		meta:set_string("name", itemmeta:get_string("name"))
 		meta:set_string("description", itemmeta:get_string("description"))
 	end,
-	after_destruct = mcl_enchanting.check_table,
+	after_destruct = function(pos)
+		local objs = minetest.get_objects_inside_radius(pos, 1)
+		for o=1, #objs do
+			local obj = objs[o]
+			local lua = obj:get_luaentity()
+			if lua and lua.name == "mcl_enchanting:book" then
+				if lua._table_pos and vector.equals(pos, lua._table_pos) then
+					obj:remove()
+				end
+			end
+		end
+	end,
 	drop = "",
 	_mcl_blast_resistance = 1200,
 	_mcl_hardness = 5,
